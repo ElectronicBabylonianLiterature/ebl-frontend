@@ -150,7 +150,6 @@ describe('ApiClient - Edge Cases and Error Handling', () => {
       await expect(apiClient.fetchJson(path, true)).rejects.toThrow(
         'Token expired',
       )
-      // Auth errors are captured by ApiClient
       expect(errorReporter.captureException).toHaveBeenCalledWith(
         authError,
         expect.objectContaining({
@@ -194,7 +193,6 @@ describe('ApiClient - Edge Cases and Error Handling', () => {
       const promise = apiClient.fetchJson(path, true)
       promise.cancel()
 
-      // Bluebird cancelled promises throw CancellationError
       expect(promise.isCancelled()).toBe(true)
     })
 

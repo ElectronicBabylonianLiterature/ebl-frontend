@@ -1,8 +1,3 @@
-/**
- * Security test for Fragment View tabs
- * Ensures unauthenticated users cannot see protected tabs
- */
-
 import React from 'react'
 import { MemoryRouter } from 'react-router-dom'
 import { render, screen } from '@testing-library/react'
@@ -62,10 +57,8 @@ describe('Security: Fragment View Tabs', () => {
       </MemoryRouter>,
     )
 
-    // Guest users should only see "Display" tab
     expect(screen.getByRole('tab', { name: /display/i })).toBeInTheDocument()
 
-    // These tabs should NOT be visible to guests
     expect(
       screen.queryByRole('tab', { name: /edition/i }),
     ).not.toBeInTheDocument()
@@ -90,7 +83,6 @@ describe('Security: Fragment View Tabs', () => {
   })
 
   it('should show all tabs for authenticated users', () => {
-    // Create authenticated session with all permissions
     const authenticatedSession = new MemorySession([
       'read:words',
       'write:words',
@@ -112,7 +104,6 @@ describe('Security: Fragment View Tabs', () => {
       </MemoryRouter>,
     )
 
-    // Authenticated users should see all tabs
     expect(screen.getByRole('tab', { name: /display/i })).toBeInTheDocument()
     expect(screen.getByRole('tab', { name: /edition/i })).toBeInTheDocument()
     expect(
@@ -132,7 +123,6 @@ describe('Security: Fragment View Tabs', () => {
   })
 
   it('should show tabs but disable them based on permissions', () => {
-    // Create session with only read permissions (no write permissions)
     const readOnlySession = new MemorySession([
       'read:words',
       'read:fragments',
@@ -148,24 +138,20 @@ describe('Security: Fragment View Tabs', () => {
       </MemoryRouter>,
     )
 
-    // Display tab should be enabled
     const displayTab = screen.getByRole('tab', { name: /display/i })
     expect(displayTab).toBeInTheDocument()
     expect(displayTab).not.toHaveAttribute('aria-disabled', 'true')
 
-    // Edition tab should be disabled (requires transliterate:fragments)
     const editionTab = screen.getByRole('tab', { name: /edition/i })
     expect(editionTab).toBeInTheDocument()
     expect(editionTab).toHaveAttribute('aria-disabled', 'true')
 
-    // Lemmatization tab should be disabled (requires lemmatize:fragments)
     const lemmatizationTab = screen.getByRole('tab', {
       name: /lemmatization/i,
     })
     expect(lemmatizationTab).toBeInTheDocument()
     expect(lemmatizationTab).toHaveAttribute('aria-disabled', 'true')
 
-    // Named entities should be disabled (requires annotate:fragments)
     const namedEntitiesTab = screen.getByRole('tab', {
       name: /named entities/i,
     })

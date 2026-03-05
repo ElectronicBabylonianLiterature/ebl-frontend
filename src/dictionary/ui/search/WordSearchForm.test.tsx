@@ -32,7 +32,6 @@ beforeEach(() => {
 })
 
 it('Adds lemma to query string on submit', async () => {
-  // jest.spyOn(history, "push")
   const { container } = render(
     <MemoryRouter>
       <WordSearchForm query={query} />
@@ -135,7 +134,6 @@ it('Toggles all sources off then back to CDA', async () => {
 })
 
 it('Submits multiple origins as repeated params', async () => {
-  // jest.spyOn(history, "push")
   render(
     <MemoryRouter>
       <WordSearchForm query={query} />
@@ -181,7 +179,6 @@ it('Applies transliteration on word and root change', async () => {
 })
 
 it('Removes vowel when unchecked', async () => {
-  // jest.spyOn(history, "push")
   render(
     <MemoryRouter>
       <WordSearchForm query={query} />
@@ -207,7 +204,6 @@ it('Removes vowel when unchecked', async () => {
 })
 
 it('Removes origin when unchecked', async () => {
-  // jest.spyOn(history, "push")
   render(
     <MemoryRouter>
       <WordSearchForm
@@ -237,7 +233,6 @@ it('Removes origin when unchecked', async () => {
 })
 
 it('Allows changing meaning field without transliteration', async () => {
-  // jest.spyOn(history, "push")
   render(
     <MemoryRouter>
       <WordSearchForm query={query} />

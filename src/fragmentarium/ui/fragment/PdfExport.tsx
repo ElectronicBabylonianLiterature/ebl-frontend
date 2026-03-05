@@ -198,8 +198,6 @@ function addMainTableWithFootnotes(
   yPos: number,
   doc: jsPDF,
 ): number {
-  // table.hide()
-
   jQueryRef.append(table)
 
   const tablelines: JQuery = table.find('tr')
@@ -304,8 +302,7 @@ function addMainTableWithFootnotes(
                 if (xPos > maxXPos) maxXPos = xPos
               }
             })
-        } //textLine
-        else if (lineType === 'rulingDollarLine') {
+        } else if (lineType === 'rulingDollarLine') {
           const num = $(el)
             .parent()
             .find('.Transliteration__RulingDollarLine')
@@ -336,7 +333,7 @@ function addMainTableWithFootnotes(
           yPos = maxYPos.coords
           if (newPageStarted) doc.setPage(maxYPos.page)
         }
-      }) //td
+      })
 
     if (nextLineType === 'rulingDollarLine') {
       yPos += getLineHeight(doc) / 2
@@ -348,7 +345,7 @@ function addMainTableWithFootnotes(
         yPos = 15
       }
     }
-  }) //tr
+  })
 
   table.remove()
 
@@ -622,12 +619,7 @@ function dealWithFootNotesHtml(
         }
       })
     wordLength = subWordLength - xPos
-  }
-  // else if ($(el)[0].nodeType === 3){
-  //   setDocStyle($(el).parent(),doc)
-  //  wordLength = addText(text,xPos,yPos,doc)
-  // }
-  else if ($(el).is('sup')) {
+  } else if ($(el).is('sup')) {
     setDocStyle($(el) as JQuery<HTMLElement>, doc)
     wordLength = addText(text, xPos, yPos - getTextHeight(doc, text) / 2, doc)
   }

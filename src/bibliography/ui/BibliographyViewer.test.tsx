@@ -38,8 +38,6 @@ beforeEach(() => {
   }
   session.isAllowedToWriteBibliography.mockReturnValue(true)
   session.isAllowedToReadBibliography.mockReturnValue(true)
-
-  // // jest.spyOn(history, "push")
 })
 
 describe('BibliographyViewer', () => {

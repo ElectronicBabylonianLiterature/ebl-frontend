@@ -3,17 +3,6 @@ import { render, screen } from '@testing-library/react'
 import ErrorBoundary from './ErrorBoundary'
 import ErrorReporterContext, { ErrorReporter } from 'ErrorReporterContext'
 
-/**
- * Comprehensive Error Boundary Tests - "Never Hang" Philosophy
- *
- * Why these tests:
- * - Error boundaries are last line of defense - must never fail silently
- * - Async errors, event handler errors, and lifecycle errors need different handling
- * - Memory leaks possible if error state not managed correctly
- * - User must always see recovery UI, never blank screen or infinite spinner
- * - Recent fixes improved stability, these tests prevent regressions
- */
-
 describe('ErrorBoundary - Comprehensive Error Handling', () => {
   let errorReportingService: jest.Mocked<ErrorReporter>
 
@@ -24,7 +13,6 @@ describe('ErrorBoundary - Comprehensive Error Handling', () => {
       setUser: jest.fn(),
       clearScope: jest.fn(),
     }
-    // Suppress console.error in tests
     jest.spyOn(console, 'error').mockImplementation(() => {})
     jest.spyOn(console, 'log').mockImplementation(() => {})
   })
@@ -241,7 +229,6 @@ describe('ErrorBoundary - Comprehensive Error Handling', () => {
 
       expect(screen.getByText("Something's gone wrong.")).toBeInTheDocument()
 
-      // Rerender with same error - should maintain error UI
       rerender(
         <ErrorReporterContext.Provider value={errorReportingService}>
           <ErrorBoundary>
@@ -301,7 +288,6 @@ describe('ErrorBoundary - Comprehensive Error Handling', () => {
         </ErrorReporterContext.Provider>,
       )
 
-      // Inner boundary should catch the error
       expect(innerReporter.captureException).toHaveBeenCalled()
       expect(errorReportingService.captureException).not.toHaveBeenCalled()
     })
@@ -340,7 +326,6 @@ describe('ErrorBoundary - Comprehensive Error Handling', () => {
         </ErrorReporterContext.Provider>,
       )
 
-      // Should show error UI from inner boundary
       expect(screen.getByText("Something's gone wrong.")).toBeInTheDocument()
     })
   })
@@ -415,9 +400,8 @@ describe('ErrorBoundary - Comprehensive Error Handling', () => {
         if (renderCount > 3) {
           throw new Error('Render limit exceeded')
         }
-        // This would cause infinite updates in real scenario
         const [, setState] = useState(0)
-        setState(Math.random()) // Intentional bad practice
+        setState(Math.random())
         return <div>Rendering</div>
       }
 
@@ -429,7 +413,6 @@ describe('ErrorBoundary - Comprehensive Error Handling', () => {
         </ErrorReporterContext.Provider>,
       )
 
-      // Should show error UI, not hang
       expect(screen.getByText("Something's gone wrong.")).toBeInTheDocument()
     })
 
@@ -466,9 +449,6 @@ describe('ErrorBoundary - Comprehensive Error Handling', () => {
 
       expect(screen.getByText("Something's gone wrong.")).toBeInTheDocument()
 
-      // Note: In real React, ErrorBoundary would need key change or reset mechanism
-      // This test documents expected behavior even though current implementation
-      // maintains error state permanently
       expect(errorReportingService.captureException).toHaveBeenCalled()
     })
   })
@@ -527,7 +507,6 @@ describe('ErrorBoundary - Comprehensive Error Handling', () => {
   describe('Real-World Scenarios', () => {
     test('Network request fails during render (anti-pattern, but happens)', () => {
       const NetworkComponent = () => {
-        // Simulating synchronous network call in render (anti-pattern)
         throw new Error('Network error: Failed to fetch')
       }
 
@@ -566,7 +545,6 @@ describe('ErrorBoundary - Comprehensive Error Handling', () => {
 
     test('Third-party library throws in render', () => {
       const ThirdPartyComponent = () => {
-        // Simulating external library error
         throw new Error('React Bootstrap: Invalid props')
       }
 

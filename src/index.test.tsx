@@ -252,7 +252,6 @@ describe('InjectedAuth0Provider Hooks', () => {
 
       rerender(<TestComponent />)
       expect(renderCount).toBe(2)
-      // The callback should be the same reference due to memoization
     })
   })
 

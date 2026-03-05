@@ -131,3 +131,65 @@
   - `CI=true yarn test --watch=false --runTestsByPath src/fragmentarium/ui/SearchForm.test.tsx src/fragmentarium/ui/search/PaginationItems.test.tsx src/bibliography/ui/BibliographyViewer.test.tsx src/fragmentarium/ui/FragmentButton.test.tsx src/fragmentarium/ui/images/Images.test.tsx`
   - Result: `5` suites passed, `58` tests passed.
 - Ran `yarn lint` after changes; passed.
+
+### Src recent-comments audit
+
+- Scanned `src/` for comment-syntax lines and resolved per-line blame metadata.
+- Filtered entries to recent additions (`author-time >= 2026-01-01`).
+- Confirmed requested example comment in `src/setupTests.ts`:
+  - `// Polyfill for TextEncoder/TextDecoder required by some dependencies`.
+- Created artifact: `TASK-683-src-comments-audit.md` with:
+  - summary counts,
+  - per-file inventory,
+  - notable comments list (including placeholder spy comments and suppression comments).
+- Follow-up refinement: added a separate `Commented-out Code` section in `TASK-683-src-comments-audit.md` listing executable-code-like comment entries (`jest.spyOn(...)` placeholders and `PdfExport.tsx` commented logic).
+
+### Commented-out code cleanup (requested subset)
+
+- Removed requested commented-out spy lines from:
+  - `src/dictionary/ui/search/WordSearchForm.test.tsx` (5 lines)
+  - `src/bibliography/ui/BibliographyViewer.test.tsx` (1 line)
+- Updated `TASK-683-src-comments-audit.md` to keep original rows and mark these six entries as fixed (removed on 2026-03-05).
+- Verification:
+  - `CI=true yarn test --watch=false --runTestsByPath src/dictionary/ui/search/WordSearchForm.test.tsx src/bibliography/ui/BibliographyViewer.test.tsx` → passed (`2` suites, `26` tests).
+  - `yarn lint` → passed.
+
+### Commented-out code cleanup (PdfExport follow-up)
+
+- Removed remaining commented-out code lines from `src/fragmentarium/ui/fragment/PdfExport.tsx`:
+  - `// table.hide()`
+  - commented `else if ($(el)[0].nodeType === 3)` block lines
+- Updated `TASK-683-src-comments-audit.md` to keep the original rows and mark these four entries as fixed (removed on 2026-03-05).
+- Updated commented-out-code summary in audit: `10 originally identified; 10 fixed; 0 remaining`.
+- Verification:
+  - `CI=true yarn test --watch=false --runTestsByPath src/fragmentarium/ui/fragment/PdfExport.test.ts` → passed (`1` suite, `1` test).
+  - `yarn lint` → passed.
+
+### Audit classification correction
+
+- Updated `TASK-683-src-comments-audit.md` so the `jest.spyOn(history, "push")` placeholder entries are no longer listed in `Notable Comment Entries`.
+- These entries are now represented only in `Commented-out Code (separate list)` as requested.
+
+### Restore `react/prop-types` disable headers (master-aligned)
+
+- Re-added `/* eslint-disable react/prop-types */` at the top of:
+  - `src/common/List.tsx`
+  - `src/dictionary/ui/editor/FormList.tsx`
+  - `src/fragmentarium/ui/edition/TransliterationForm.test.tsx`
+- Verification:
+  - `git --no-pager diff master -- <three files>` → no diff output (matches `master` for these files).
+  - `yarn lint` → failed due unrelated pre-existing formatting errors:
+    - `src/__tests__/security-api.test.tsx` (`prettier/prettier`, delete leading blank line)
+    - `src/__tests__/security-fragment-tabs.test.tsx` (`prettier/prettier`, delete leading blank line)
+
+### Lint cleanup follow-up (security tests)
+
+- Fixed top-of-file formatting and syntax issues in:
+  - `src/__tests__/security-api.test.tsx`
+  - `src/__tests__/security-fragment-tabs.test.tsx`
+- Specific fixes:
+  - removed leading blank lines,
+  - restored missing closing `}` for `mockErrorReporter` object,
+  - restored missing closing `}` for `mockProps` object.
+- Verification:
+  - `yarn lint` → passed.
