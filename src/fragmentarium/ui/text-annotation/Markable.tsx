@@ -118,6 +118,7 @@ export default function Markable({
   setSelection,
   activeSpanId,
   setActiveSpanId,
+  selectionStartTokenIdRef,
   children,
 }: PropsWithChildren<{
   token: AnyWord
@@ -125,6 +126,7 @@ export default function Markable({
   setSelection: React.Dispatch<React.SetStateAction<readonly string[]>>
   activeSpanId: string | null
   setActiveSpanId: React.Dispatch<React.SetStateAction<string | null>>
+  selectionStartTokenIdRef?: React.MutableRefObject<string | null>
 }>): JSX.Element {
   const annotationContextValue = useContext(AnnotationContext)
   const [{ entities, words }] = annotationContextValue
@@ -141,10 +143,11 @@ export default function Markable({
   function handleSelection(event: React.MouseEvent) {
     const altPressed = event.altKey
     setActiveSpanId(null)
+    const startedOnDifferentToken =
+      !!selectionStartTokenIdRef?.current &&
+      selectionStartTokenIdRef.current !== token.id
 
-    window.setTimeout(() => {
-      const newSelection = getSelectedTokens(words)
-
+    const applySelection = (newSelection: readonly string[]) => {
       if (altPressed) {
         setSelection((currentSelection) =>
           sortSelection(mergeSelections(currentSelection, newSelection), words),
@@ -154,9 +157,20 @@ export default function Markable({
       }
 
       clearSelection()
-    }, 0)
+    }
 
-    event.stopPropagation()
+    const immediateSelection = getSelectedTokens(words)
+    const shouldHandleLocally =
+      immediateSelection.length > 1 ||
+      (!startedOnDifferentToken && immediateSelection.length === 1)
+
+    if (shouldHandleLocally) {
+      applySelection(immediateSelection)
+      if (selectionStartTokenIdRef) {
+        selectionStartTokenIdRef.current = null
+      }
+      event.stopPropagation()
+    }
   }
 
   const annotator = (
@@ -197,6 +211,11 @@ export default function Markable({
   return (
     <span
       ref={setTarget}
+      onMouseDown={() => {
+        if (selectionStartTokenIdRef) {
+          selectionStartTokenIdRef.current = token.id ?? null
+        }
+      }}
       className={classNames(markableClass, {
         selected:
           isSelected(token, selection) || hasActiveSpan(activeSpan, token.id),

@@ -1,6 +1,32 @@
 const markableClass = 'markable'
 
-function getTokenId(node: Node | null): string | null {
+function sortSelection(
+  selection: readonly string[],
+  words: readonly string[],
+): readonly string[] {
+  return [...new Set(selection)].sort(
+    (left, right) => words.indexOf(left) - words.indexOf(right),
+  )
+}
+
+function getSelectionRange(selection: Selection): Range | null {
+  if (
+    typeof selection.rangeCount !== 'number' ||
+    selection.rangeCount < 1 ||
+    typeof selection.getRangeAt !== 'function'
+  ) {
+    return null
+  }
+
+  const range = selection.getRangeAt(0)
+
+  return range.collapsed ? null : range
+}
+
+function getTokenId(
+  node: Node | null,
+  includeSiblingFallback: boolean,
+): string | null {
   if (!node) {
     return null
   }
@@ -12,44 +38,15 @@ function getTokenId(node: Node | null): string | null {
     return tokenNode.getAttribute('data-id')
   }
 
+  if (!includeSiblingFallback) {
+    return null
+  }
+
   const sibling =
     element?.previousElementSibling?.closest(`.${markableClass}`) ||
     element?.nextElementSibling?.closest(`.${markableClass}`)
 
   return sibling ? sibling.getAttribute('data-id') : null
-}
-
-function getBoundaryFromRange(
-  selection: Selection,
-): readonly [string | null, string | null] | null {
-  if (
-    typeof selection.rangeCount !== 'number' ||
-    selection.rangeCount < 1 ||
-    typeof selection.getRangeAt !== 'function'
-  ) {
-    return null
-  }
-
-  const range = selection.getRangeAt(0)
-
-  return [getTokenId(range.startContainer), getTokenId(range.endContainer)]
-}
-
-function getSelectionBoundaries(
-  selection: Selection,
-): readonly [string, string] | null {
-  const start = getTokenId(selection.anchorNode)
-  const end = getTokenId(selection.focusNode)
-  if (start && end) {
-    return [start, end]
-  }
-
-  const rangeBoundary = getBoundaryFromRange(selection)
-  if (rangeBoundary && rangeBoundary[0] && rangeBoundary[1]) {
-    return [rangeBoundary[0], rangeBoundary[1]]
-  }
-
-  return null
 }
 
 function expandSelection(
@@ -71,13 +68,61 @@ function expandSelection(
   return words.slice(startIndex, endIndex + 1)
 }
 
+function getTokensFromRange(range: Range): readonly string[] {
+  if (typeof range.intersectsNode !== 'function') {
+    return []
+  }
+
+  const nodes = document.querySelectorAll<HTMLElement>(
+    `.${markableClass}[data-id]`,
+  )
+
+  return Array.from(nodes)
+    .filter((node) => {
+      try {
+        return range.intersectsNode(node)
+      } catch {
+        return false
+      }
+    })
+    .map((node) => node.getAttribute('data-id'))
+    .filter((id): id is string => !!id)
+}
+
 export function getSelectedTokens(words: readonly string[]): readonly string[] {
   const selection = document.getSelection()
   if (!selection) {
     return []
   }
 
-  const boundaries = getSelectionBoundaries(selection)
+  const includeSiblingFallback = !selection.isCollapsed
+  const anchorTokenId = getTokenId(selection.anchorNode, includeSiblingFallback)
+  const focusTokenId = getTokenId(selection.focusNode, includeSiblingFallback)
 
-  return boundaries ? expandSelection(boundaries[0], boundaries[1], words) : []
+  if (anchorTokenId && focusTokenId) {
+    return expandSelection(anchorTokenId, focusTokenId, words)
+  }
+
+  const range = getSelectionRange(selection)
+  if (!range) {
+    return []
+  }
+
+  const intersectedTokens = sortSelection(getTokensFromRange(range), words)
+  if (intersectedTokens.length > 0) {
+    return intersectedTokens
+  }
+
+  const includeRangeSiblingFallback = !selection.isCollapsed || !range.collapsed
+  const startTokenId = getTokenId(
+    range.startContainer,
+    includeRangeSiblingFallback,
+  )
+  const endTokenId = getTokenId(range.endContainer, includeRangeSiblingFallback)
+
+  if (startTokenId && endTokenId) {
+    return expandSelection(startTokenId, endTokenId, words)
+  }
+
+  return []
 }

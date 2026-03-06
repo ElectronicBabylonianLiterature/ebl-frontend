@@ -1,4 +1,4 @@
-import React, { useContext, useMemo, useState } from 'react'
+import React, { useContext, useMemo, useRef, useState } from 'react'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import withData from 'http/withData'
@@ -43,11 +43,13 @@ function DisplayAnnotationLine({
   setSelection,
   activeSpanId,
   setActiveSpanId,
+  selectionStartTokenIdRef,
 }: LineProps & {
   selection: readonly string[]
   setSelection: React.Dispatch<React.SetStateAction<readonly string[]>>
   activeSpanId: string | null
   setActiveSpanId: React.Dispatch<React.SetStateAction<string | null>>
+  selectionStartTokenIdRef: React.MutableRefObject<string | null>
 }): JSX.Element {
   const textLine = line as TextLine
 
@@ -62,6 +64,7 @@ function DisplayAnnotationLine({
         setSelection={setSelection}
         activeSpanId={activeSpanId}
         setActiveSpanId={setActiveSpanId}
+        selectionStartTokenIdRef={selectionStartTokenIdRef}
       >
         {children}
       </Markable>
@@ -97,6 +100,7 @@ function DisplayRow({
   setSelection,
   activeSpanId,
   setActiveSpanId,
+  selectionStartTokenIdRef,
 }: LineProps & {
   lineIndex: number
   notes: Notes
@@ -104,6 +108,7 @@ function DisplayRow({
   setSelection: React.Dispatch<React.SetStateAction<readonly string[]>>
   activeSpanId: string | null
   setActiveSpanId: React.Dispatch<React.SetStateAction<string | null>>
+  selectionStartTokenIdRef: React.MutableRefObject<string | null>
 }): JSX.Element {
   const lineNumber = lineIndex + 1
 
@@ -120,6 +125,7 @@ function DisplayRow({
             setSelection={setSelection}
             activeSpanId={activeSpanId}
             setActiveSpanId={setActiveSpanId}
+            selectionStartTokenIdRef={selectionStartTokenIdRef}
           />
         </tr>
       </>
@@ -162,6 +168,7 @@ function SpanAnnotationDisplay({
 }): JSX.Element {
   const [selection, setSelection] = useState<readonly string[]>([])
   const [activeSpanId, setActiveSpanId] = React.useState<string | null>(null)
+  const selectionStartTokenIdRef = useRef<string | null>(null)
   const [{ entities, words }] = useContext(AnnotationContext)
   const isDirty = !_.isEqual(initialAnnotations, omitTiers(entities))
   const [isSaving, setIsSaving] = useState(false)
@@ -184,22 +191,38 @@ function SpanAnnotationDisplay({
   }
 
   const handleMouseUp = () => {
-    const browserSelection = document.getSelection()
-    if (!browserSelection || browserSelection.isCollapsed) {
+    const applySelection = (allowRetry: boolean) => {
+      const browserSelection = document.getSelection()
+      if (!browserSelection || browserSelection.isCollapsed) {
+        selectionStartTokenIdRef.current = null
+        resetSelections()
+        return
+      }
+
+      const selectedTokens = getSelectedTokens(words)
+      const startedOnDifferentToken =
+        !!selectionStartTokenIdRef.current &&
+        selectedTokens.length === 1 &&
+        selectionStartTokenIdRef.current !== selectedTokens[0]
+
+      if (startedOnDifferentToken && allowRetry) {
+        window.setTimeout(() => applySelection(false), 0)
+        return
+      }
+
+      if (selectedTokens.length > 0) {
+        setActiveSpanId(null)
+        setSelection(selectedTokens)
+        selectionStartTokenIdRef.current = null
+        clearSelection()
+        return
+      }
+
+      selectionStartTokenIdRef.current = null
       resetSelections()
-      return
     }
 
-    const selectedTokens = getSelectedTokens(words)
-
-    if (selectedTokens.length > 0) {
-      setActiveSpanId(null)
-      setSelection(selectedTokens)
-      clearSelection()
-      return
-    }
-
-    resetSelections()
+    window.setTimeout(() => applySelection(true), 0)
   }
 
   return (
@@ -229,6 +252,7 @@ function SpanAnnotationDisplay({
                           setSelection={setSelection}
                           activeSpanId={activeSpanId}
                           setActiveSpanId={setActiveSpanId}
+                          selectionStartTokenIdRef={selectionStartTokenIdRef}
                         />,
                       ]
                   return [rows, getCurrentLabels(labels, line)]
