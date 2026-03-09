@@ -1,5 +1,5 @@
 import React from 'react'
-import { render, act, screen, fireEvent } from '@testing-library/react'
+import { render, screen, fireEvent } from '@testing-library/react'
 import WordDownloadButton from 'common/WordDownloadButton'
 import { CorpusWordExportContext } from 'corpus/ui/Download'
 import { waitForSpinnerToBeRemoved } from 'test-support/waitForSpinnerToBeRemoved'
@@ -13,7 +13,7 @@ const contextMocked = CorpusWordExportContext as jest.Mock<
 const getWordDoc = jest.fn()
 const children = <span>Download as Word</span>
 
-beforeEach(async () => {
+async function setup() {
   render(
     <WordDownloadButton
       context={new contextMocked()}
@@ -21,20 +21,20 @@ beforeEach(async () => {
       getWordDoc={getWordDoc}
     >
       {children}
-    </WordDownloadButton>
+    </WordDownloadButton>,
   )
   const docxPromise = Promise.resolve(new Document())
   getWordDoc.mockImplementationOnce(() => docxPromise)
-  await act(async () => {
-    fireEvent.click(screen.getByRole('button'))
-  })
+  fireEvent.click(screen.getByRole('button'))
   await waitForSpinnerToBeRemoved(screen)
-})
+}
 
-it('Shows children', () => {
+it('Shows children', async () => {
+  await setup()
   expect(screen.getByText('Download as Word')).toBeInTheDocument()
 })
 
-it('Calls get method', () => {
+it('Calls get method', async () => {
+  await setup()
   expect(getWordDoc).toHaveBeenCalled()
 })

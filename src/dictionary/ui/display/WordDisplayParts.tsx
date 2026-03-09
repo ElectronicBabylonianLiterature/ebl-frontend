@@ -1,9 +1,9 @@
-import React, { FunctionComponent } from 'react'
+import React from 'react'
 import { Col, Row } from 'react-bootstrap'
 import { HashLink } from 'react-router-hash-link'
 import './wordInformationDisplay.sass'
 import { Markdown } from 'common/Markdown'
-import { AmplifiedMeaning, Form } from 'dictionary/domain/Word'
+import { AmplifiedMeaning, Form, Derived } from 'dictionary/domain/Word'
 
 export function OtherForm({ attested, lemma, notes }: Form): JSX.Element {
   const attestedSign = attested ? '' : '*'
@@ -25,12 +25,12 @@ export function OtherForm({ attested, lemma, notes }: Form): JSX.Element {
   )
 }
 
-interface JoinProps<T> {
+interface JoinProps<T extends object> {
   list: readonly T[]
   separator: string
-  Component: FunctionComponent<T>
+  Component: React.ComponentType<T>
 }
-export function Join<T>({
+export function Join<T extends object>({
   list,
   separator,
   Component,
@@ -140,7 +140,7 @@ export function SingleDerivative({
 export function Derivatives({
   derivatives,
 }: {
-  derivatives: readonly any[][]
+  derivatives: readonly Derived[][]
 }): JSX.Element {
   return (
     <>

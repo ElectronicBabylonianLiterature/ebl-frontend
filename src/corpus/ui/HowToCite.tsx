@@ -22,7 +22,7 @@ function ExportButton({
     const url = URL.createObjectURL(
       new Blob([data], {
         type: `${contentType};charset=UTF-8`,
-      })
+      }),
     )
     setUrl(url)
 
@@ -47,7 +47,7 @@ function ExportButton({
 function nameToString(
   name: { family: string; given: string },
   format = 'Name, GivenName',
-  initials = false
+  initials = false,
 ) {
   const givenName =
     initials === true
@@ -59,28 +59,30 @@ function nameToString(
   return format === 'Name, GivenName'
     ? `${name.family}, ${givenName}`
     : format === 'GivenName Name'
-    ? `${givenName} ${name.family}`
-    : `${givenName}, ${name.family}`
+      ? `${givenName} ${name.family}`
+      : `${givenName}, ${name.family}`
 }
 
 function namesToString(
   names: Array<{ family: string; given: string }>,
   prefix = '',
   format = 'Name, GivenName',
-  initials = false
+  initials = false,
 ) {
   prefix = prefix ? `${prefix} ` : prefix
   return !names.length
     ? ''
     : names.length > 1
-    ? `${prefix}${names
-        .sort((a, b) =>
-          a.family > b.family ? 1 : b.family > a.family ? -1 : 0
-        )
-        .slice(0, -1)
-        .map((name) => nameToString(name, format, initials))
-        .join(', ')} and ${nameToString(names.slice(-1)[0], format, initials)}`
-    : `${prefix}${nameToString(names[0], format, initials)}`
+      ? `${prefix}${names
+          .sort((a, b) =>
+            a.family > b.family ? 1 : b.family > a.family ? -1 : 0,
+          )
+          .slice(0, -1)
+          .map((name) => nameToString(name, format, initials))
+          .join(
+            ', ',
+          )} and ${nameToString(names.slice(-1)[0], format, initials)}`
+      : `${prefix}${nameToString(names[0], format, initials)}`
 }
 
 function CitationText({ chapter }: { chapter: ChapterDisplay }): JSX.Element {
@@ -89,19 +91,19 @@ function CitationText({ chapter }: { chapter: ChapterDisplay }): JSX.Element {
     citationData.authorPrimary,
     '',
     'Name, GivenName',
-    true
+    true,
   )} (${citationData.issued['date-parts'][0][0]})`
   const title = citationData.title.replace(' Chapter -', '')
   const contributors = namesToString(
     citationData.authorRevision,
     'With contributions by',
     'GivenName Name',
-    true
+    true,
   )
   const translators = namesToString(
     citationData.translator,
     'Translated by',
-    'GivenName Name'
+    'GivenName Name',
   )
   const url = citationData.DOI
     ? `https://doi.org/${citationData.DOI}`
@@ -133,10 +135,10 @@ export function HowToCite({
         type: 'json',
         style: 'csl',
       })[0],
-      (value, key) => key.startsWith('_')
+      (value, key) => key.startsWith('_'),
     ),
     null,
-    2
+    2,
   )
   return (
     <CollapsibleSection

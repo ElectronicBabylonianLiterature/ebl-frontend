@@ -17,7 +17,7 @@ export default class SignService {
   }
 
   associateSigns(
-    tokens: ReadonlyArray<ReadonlyArray<AnnotationToken>>
+    tokens: ReadonlyArray<ReadonlyArray<AnnotationToken>>,
   ): Bluebird<ReadonlyArray<ReadonlyArray<AnnotationToken>>> {
     return this.signsRepository.associateSigns(tokens)
   }
@@ -35,7 +35,7 @@ export default class SignService {
   }
   findSignsByOrder(
     signName: string,
-    sortEra: string
+    sortEra: string,
   ): Bluebird<[OrderedSign[]]> {
     return this.signsRepository.findSignsByOrder(signName, sortEra)
   }

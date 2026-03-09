@@ -5,7 +5,7 @@ import FragmentService from 'fragmentarium/application/FragmentService'
 import { Session } from 'auth/Session'
 import { Transliteration } from 'transliteration/ui/Transliteration'
 import './SimpleFragmentView.sass'
-import { useHistory } from 'react-router-dom'
+import { useHistory } from 'router/compat'
 import { parse } from 'query-string'
 
 function getLanguageUrlParam(query: string): string | undefined {
@@ -49,6 +49,6 @@ const SimpleFragmentView = withData<
       .then((fragment) => fragment.filterFolios(props.session)),
   {
     watch: (props) => [props.number],
-  }
+  },
 )
 export default SimpleFragmentView

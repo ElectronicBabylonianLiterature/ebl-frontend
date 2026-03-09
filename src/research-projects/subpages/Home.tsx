@@ -10,7 +10,7 @@ import {
 
 export type ProjectHomeProps = Omit<
   SearchFormProps,
-  'history' | 'location' | 'match' | 'project'
+  'history' | 'location' | 'match' | 'project' | 'navigate'
 > & {
   title: string
   children?: React.ReactNode | null

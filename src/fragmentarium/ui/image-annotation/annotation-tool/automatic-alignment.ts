@@ -16,7 +16,7 @@ function getCenterPoint(geometry: Geometry): Point {
 
 function getNeighbouringAnnotations(
   point: Point,
-  annotations: readonly Annotation[]
+  annotations: readonly Annotation[],
 ): Annotation[] {
   return annotations.filter((annotation) => {
     const isHeightInRange =
@@ -30,10 +30,10 @@ function getNeighbouringAnnotations(
 export default function automaticAlignment(
   tokens: readonly (readonly AnnotationToken[])[],
   annotation: Annotation,
-  annotations: readonly Annotation[]
+  annotations: readonly Annotation[],
 ): readonly Annotation[] {
   const enabledTokens = tokens.map((tokensRow) =>
-    tokensRow.filter((tokenSecond) => tokenSecond.enabled)
+    tokensRow.filter((tokenSecond) => tokenSecond.enabled),
   )
 
   const neighbouringTokens: AnnotationToken[] = []
@@ -53,7 +53,7 @@ export default function automaticAlignment(
   }
   const neighbouringAnnotations = getNeighbouringAnnotations(
     getCenterPoint(annotation.geometry),
-    annotations
+    annotations,
   )
 
   const mergedAnnotations = neighbouringAnnotations
@@ -72,7 +72,7 @@ export default function automaticAlignment(
   let filteredAnnotations = annotations
   for (const mergedAnnotation of mergedAnnotations) {
     filteredAnnotations = filteredAnnotations.filter(
-      (annotation) => annotation.data.id !== mergedAnnotation.data.id
+      (annotation) => annotation.data.id !== mergedAnnotation.data.id,
     )
   }
   return [...filteredAnnotations, ...mergedAnnotations]

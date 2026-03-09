@@ -1,4 +1,4 @@
-import produce, { Draft, immerable } from 'immer'
+import { produce, Draft, immerable } from 'immer'
 
 interface RecordData {
   readonly afoNumber: string
@@ -92,7 +92,7 @@ export default class AfoRegisterRecord {
     }
     const fragmentsString = this.fragmentNumbers
       .map(
-        (fragmentNumber) => `[${fragmentNumber}](/library/${fragmentNumber})`
+        (fragmentNumber) => `[${fragmentNumber}](/library/${fragmentNumber})`,
       )
       .join(', ')
     return ` (${fragmentsString})`

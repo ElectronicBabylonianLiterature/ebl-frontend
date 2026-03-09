@@ -19,7 +19,7 @@ interface Props {
 
 function sortSigns(signs: Sign[]): Sign[] {
   return signs.sort((sign1, sign2) =>
-    compareCleanedAkkadianString(sign1.name, sign2.name)
+    compareCleanedAkkadianString(sign1.name, sign2.name),
   )
 }
 
@@ -46,7 +46,7 @@ const renderSignColumn = (
   label,
   direction,
   language,
-  isFirstSubArray
+  isFirstSubArray,
 ) => (
   <>
     {renderSimilarText(label, isFirstSubArray, direction, language)}
@@ -86,7 +86,7 @@ const SignLists = withData<
       signIndex,
       direction,
       language,
-      isFirstSubArray
+      isFirstSubArray,
     ) => (
       <>
         {renderSignColumn(
@@ -96,7 +96,7 @@ const SignLists = withData<
           'before',
           direction,
           language,
-          isFirstSubArray
+          isFirstSubArray,
         )}
         {renderSignColumn(
           subArray,
@@ -105,7 +105,7 @@ const SignLists = withData<
           'center',
           direction,
           language,
-          isFirstSubArray
+          isFirstSubArray,
         )}
         {renderSignColumn(
           subArray,
@@ -114,7 +114,7 @@ const SignLists = withData<
           'after',
           direction,
           language,
-          isFirstSubArray
+          isFirstSubArray,
         )}
       </>
     )
@@ -123,7 +123,7 @@ const SignLists = withData<
       <>
         {data.map((subArray, index) => {
           const signIndex = subArray.findIndex(
-            (item) => item.name === sign.name
+            (item) => item.name === sign.name,
           )
           const isFirstSubArray = index === 0
           return (
@@ -133,7 +133,7 @@ const SignLists = withData<
                 signIndex,
                 direction,
                 language,
-                isFirstSubArray
+                isFirstSubArray,
               )}
             </tr>
           )
@@ -141,7 +141,7 @@ const SignLists = withData<
       </>
     )
   },
-  (props) => props.signService.findSignsByOrder(props.sign.name, props.sortEra)
+  (props) => props.signService.findSignsByOrder(props.sign.name, props.sortEra),
 )
 function SignsSearch({
   signs,
@@ -234,5 +234,5 @@ export default withData<
     watch: (props) => [props.signQuery],
     filter: (props) => _.some(props.signQuery),
     defaultData: () => [],
-  }
+  },
 )

@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import React, { ReactNode } from 'react'
 import { Badge, Button, Card, ListGroup } from 'react-bootstrap'
 import _ from 'lodash'
@@ -13,7 +14,7 @@ function SizeBadge({
 }): JSX.Element | null {
   const size = collection.length
   return size > 0 ? (
-    <Badge variant="light" pill>
+    <Badge bg="light" pill>
       {size}
     </Badge>
   ) : null
@@ -42,7 +43,7 @@ function listController(ListView) {
       onChange(
         produce(value, (draft) => {
           draft.push(newItem)
-        })
+        }),
       )
     }
 
@@ -50,7 +51,7 @@ function listController(ListView) {
       onChange(
         produce(value, (draft) => {
           draft.splice(index, 1)
-        })
+        }),
       )
     }
 
@@ -58,9 +59,13 @@ function listController(ListView) {
       onChange(
         produce(value, (draft) => {
           draft[index] = updated
-        })
+        }),
       )
     }
+
+    const elements = value.map((item, index) =>
+      children(item, update(index), index),
+    ) as ReactNode[]
 
     return (
       <div className="List">
@@ -68,9 +73,7 @@ function listController(ListView) {
           {...props}
           onDelete={delete_}
           onAdd={add}
-          elements={value.map((item, index) =>
-            children(item, update(index), index)
-          )}
+          elements={elements}
         />
       </div>
     )
@@ -88,7 +91,7 @@ function CardListView({
 }: {
   label: ReactNode
   noun: string
-  elements: any[]
+  elements: ReactNode[]
   ordered: boolean
   collapsed: boolean
   onAdd: () => void

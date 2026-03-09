@@ -33,7 +33,6 @@ export default function BibliographyRoutes({
           {...props}
           create={true}
           match={{
-            // eslint-disable-next-line react/prop-types
             ...props.match,
             params: { id: '' },
           }}
@@ -87,6 +86,11 @@ export default function BibliographyRoutes({
       from="/bibliography/afo-register"
       to="/tools/bibliography"
       key="bibliography-afo-redirect"
+    />,
+    <Redirect
+      from="/bibliography"
+      to="/bibliography/afo-register"
+      key="bibliography-root-redirect"
     />,
     <Route
       key="BibliographyNotFound"

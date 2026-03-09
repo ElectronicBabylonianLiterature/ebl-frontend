@@ -47,7 +47,7 @@ type contextServices = {
 export async function wordExport(
   chapter: ChapterDisplay,
   context: contextServices,
-  jQueryRef: JQuery
+  jQueryRef: JQuery,
 ): Promise<Document> {
   const tableHtml: JQuery = $(
     renderToString(
@@ -57,9 +57,9 @@ export async function wordExport(
           chapter={chapter}
           activeLine={''}
           textService={context.textService}
-        />
-      )
-    )
+        />,
+      ),
+    ),
   )
 
   const headline: Paragraph[] = getChapterHeadlines(chapter)
@@ -77,7 +77,7 @@ export async function wordExport(
 
 function WordExportContext(
   context: contextServices,
-  children: JSX.Element
+  children: JSX.Element,
 ): JSX.Element {
   return (
     <MemoryRouter>
@@ -103,14 +103,16 @@ function getChapterHeadlines(chapter: ChapterDisplay): Paragraph[] {
   ]
 }
 
-function getHeadingData(
-  chapter: ChapterDisplay
-): { stage: string; name: string; title: string } {
+function getHeadingData(chapter: ChapterDisplay): {
+  stage: string
+  name: string
+  title: string
+} {
   return {
     stage: !chapter.isSingleStage ? chapter.id.stage : '',
     name: chapter.textName !== defaultName ? chapter.textName : '',
     title: `Chapter ${$(
-      renderToString(<Markup container="span" parts={chapter.title} />)
+      renderToString(<Markup container="span" parts={chapter.title} />),
     ).text()}`,
   }
 }
@@ -129,12 +131,12 @@ function getCitation(chapter: ChapterDisplay): Paragraph[] {
       paragraphs.push(
         new Paragraph({
           children: runs,
-        })
+        }),
       )
       paragraphs.push(
         new Paragraph({
           children: [new TextRun({ text: $(el).text(), size: 24 })],
-        })
+        }),
       )
     }
   })
@@ -142,7 +144,7 @@ function getCitation(chapter: ChapterDisplay): Paragraph[] {
 }
 
 function getCitationNodes(
-  chapter: ChapterDisplay
+  chapter: ChapterDisplay,
 ): JQuery<HTMLSpanElement | Text | Comment | globalThis.Document> {
   const content = $(renderToString(<HowToCite chapter={chapter} />))
     .children()
@@ -152,7 +154,7 @@ function getCitationNodes(
 
 function getEdition(
   table: JQuery,
-  jQueryRef: JQuery<HTMLElement>
+  jQueryRef: JQuery<HTMLElement>,
 ): Array<Paragraph | Table> {
   table.hide()
   jQueryRef.append(table)
@@ -200,7 +202,7 @@ function getTableCells(el: HTMLElement): TableCell[] {
         : '1'
       const colspanInt: number = colspan ? parseInt(colspan) : 1
       tds.push(
-        getFormatedTableCell(para, nextLineType, nextElement, colspanInt)
+        getFormatedTableCell(para, nextLineType, nextElement, colspanInt),
       )
     })
   return tds
@@ -225,7 +227,7 @@ function getParallelLine(element: JQuery): Paragraph[] {
         new Paragraph({
           children: [new TextRun({ text: $(li).text(), size: 24 })],
           style: 'wellSpaced',
-        })
+        }),
       )
     })
   return paragraphs

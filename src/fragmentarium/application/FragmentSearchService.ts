@@ -1,4 +1,3 @@
-import _ from 'lodash'
 import Promise from 'bluebird'
 import {
   FragmentInfo,
@@ -25,29 +24,23 @@ export default class FragmentSearchService {
   }
 
   random(): FragmentInfoPromise {
-    return this.fragmentRepository
-      .random()
-      .then(_.head)
-      .then((info) => {
-        if (info) {
-          return info
-        } else {
-          throw new Error('No fragments found.')
-        }
-      })
+    return this.fragmentRepository.random().then((infos) => {
+      const info = infos[0]
+      if (info) {
+        return info
+      }
+      throw new Error('No fragments found.')
+    })
   }
 
   interesting(): FragmentInfoPromise {
-    return this.fragmentRepository
-      .interesting()
-      .then(_.head)
-      .then((info) => {
-        if (info) {
-          return info
-        } else {
-          throw new Error('No fragments found.')
-        }
-      })
+    return this.fragmentRepository.interesting().then((infos) => {
+      const info = infos[0]
+      if (info) {
+        return info
+      }
+      throw new Error('No fragments found.')
+    })
   }
 
   fetchNeedsRevision(): FragmentInfosPromise {

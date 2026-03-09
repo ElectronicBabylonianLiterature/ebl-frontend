@@ -18,9 +18,9 @@ export const oldSiglumFactory = Factory.define<OldSiglum>(
 
     return new OldSiglum(
       chance.word(),
-      referenceFactory.build({ document: entry }, { transient: { chance } })
+      referenceFactory.build({ document: entry }, { transient: { chance } }),
     )
-  }
+  },
 )
 
 export const oldSiglumDtoFactory = Factory.define<
@@ -34,7 +34,7 @@ export const oldSiglumDtoFactory = Factory.define<
     siglum: chance.string(),
     reference: referenceDtoFactory.build(
       {},
-      { associations: { document: cslData } }
+      { associations: { document: cslData } },
     ),
   }
 })

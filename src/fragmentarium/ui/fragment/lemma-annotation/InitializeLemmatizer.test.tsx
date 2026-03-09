@@ -7,7 +7,6 @@ import { AbstractLine } from 'transliteration/domain/abstract-line'
 import WordService from 'dictionary/application/WordService'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import Word from 'dictionary/domain/Word'
-import { act } from 'react-dom/test-utils'
 import textLine from 'test-support/lines/text-line'
 import { TextLine } from 'transliteration/domain/text-line'
 import { AkkadianWord } from 'transliteration/domain/token'
@@ -89,27 +88,29 @@ const MockWordService = WordService as jest.Mock<jest.Mocked<WordService>>
 const wordServiceMock = new MockWordService()
 const updateLemmaAnnotation = jest.fn()
 
-beforeEach(async () => {
+const setup = async () => {
   wordServiceMock.findAll.mockReturnValue(Promise.resolve(words))
-  await act(async () => {
-    container = await render(
-      <InitializeLemmatizer
-        text={text}
-        museumNumber={fragmentNumber}
-        wordService={wordServiceMock}
-        fragmentService={fragmentServiceMock}
-        updateAnnotation={updateLemmaAnnotation}
-      />
-    ).container
-  })
-})
+  container = render(
+    <InitializeLemmatizer
+      text={text}
+      museumNumber={fragmentNumber}
+      wordService={wordServiceMock}
+      fragmentService={fragmentServiceMock}
+      updateAnnotation={updateLemmaAnnotation}
+    />,
+  ).container
+  await screen.findByText('aklu I')
+}
 
 it('displays the annotation tool', async () => {
+  await setup()
   expect(container).toMatchSnapshot()
 })
 it('displays the existing lemmas', async () => {
+  await setup()
   expect(screen.getByText('aklu I')).toBeVisible()
 })
 it('loads existing lemmas', async () => {
+  await setup()
   expect(wordServiceMock.findAll).toBeCalledWith(['aklu I'])
 })

@@ -50,7 +50,7 @@ export const manuscriptLineDisplayFactory = ManuscriptLineDisplayFactory.define(
     return new ManuscriptLineDisplay(
       associations.provenance ??
         chance.pickone(
-          _.without(Object.values(Provenances), Provenances['Standard Text'])
+          _.without(Object.values(Provenances), Provenances['Standard Text']),
         ),
       associations.periodModifier ??
         chance.pickone(Object.values(PeriodModifiers)),
@@ -61,8 +61,8 @@ export const manuscriptLineDisplayFactory = ManuscriptLineDisplayFactory.define(
           _.without(
             Object.values(ManuscriptTypes),
             ManuscriptTypes.None,
-            ManuscriptTypes.Parallel
-          )
+            ManuscriptTypes.Parallel,
+          ),
         ),
       chance.word(),
       associations.oldSigla ??
@@ -71,7 +71,7 @@ export const manuscriptLineDisplayFactory = ManuscriptLineDisplayFactory.define(
           {},
           {
             transient: { chance },
-          }
+          },
         ),
       chance.pickone([[], ['r'], ['o'], ['o', 'i'], ['iii']]),
       associations.line ?? textLine,
@@ -84,7 +84,7 @@ export const manuscriptLineDisplayFactory = ManuscriptLineDisplayFactory.define(
       ],
       museumNumber,
       associations.isInFragmentarium ?? false,
-      associations.accession ?? chance.word()
+      associations.accession ?? chance.word(),
     )
-  }
+  },
 )

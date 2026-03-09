@@ -1,4 +1,4 @@
-import produce, { Draft, immerable } from 'immer'
+import { produce, Draft, immerable } from 'immer'
 import { AcquisitionDto } from './FragmentDtos'
 
 export class Acquisition {

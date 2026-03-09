@@ -37,7 +37,8 @@ export const ManuscriptTypes = {
   },
 } as const
 
-export type ManuscriptType = typeof ManuscriptTypes[keyof typeof ManuscriptTypes]
+export type ManuscriptType =
+  (typeof ManuscriptTypes)[keyof typeof ManuscriptTypes]
 export const types = [
   ManuscriptTypes.None,
   ManuscriptTypes.Library,
@@ -51,7 +52,7 @@ export const types = [
 
 export function compareManuscriptTypes(
   first: ManuscriptType,
-  second: ManuscriptType
+  second: ManuscriptType,
 ): number {
   if (_.isNil(first.order) && _.isNil(second.order)) {
     return 0
@@ -67,7 +68,10 @@ export function compareManuscriptTypes(
 export class OldSiglum {
   readonly [immerable] = true
 
-  constructor(readonly siglum: string, readonly reference: Reference) {}
+  constructor(
+    readonly siglum: string,
+    readonly reference: Reference,
+  ) {}
 }
 
 export class Manuscript {
@@ -88,7 +92,7 @@ export class Manuscript {
     readonly unplacedLines: string = '',
     readonly references: readonly Reference[] = [],
     readonly joins: Joins = [],
-    readonly isInFragmentarium: boolean = false
+    readonly isInFragmentarium: boolean = false,
   ) {}
 
   get siglum(): string {
@@ -103,7 +107,7 @@ export class Manuscript {
 
 export function compareManuscripts(
   first: Pick<Manuscript, 'provenance' | 'type'>,
-  second: Pick<Manuscript, 'provenance' | 'type'>
+  second: Pick<Manuscript, 'provenance' | 'type'>,
 ): number {
   return (
     compareStandardText(first.provenance, second.provenance) ||

@@ -16,40 +16,42 @@ export default class BibliographyRepository {
 
   find(id: string): Promise<BibliographyEntry> {
     return this.apiClient
-      .fetchJson(`/bibliography/${encodeURIComponent(id)}`, false)
+      .fetchJson<
+        Record<string, unknown>
+      >(`/bibliography/${encodeURIComponent(id)}`, false)
       .then(createEntry)
   }
 
   findMany(ids: readonly string[]): Promise<readonly BibliographyEntry[]> {
     return this.apiClient
-      .fetchJson(
-        `/bibliography/list?${stringify({ ids }, { arrayFormat: 'comma' })}`,
-        false
-      )
+      .fetchJson<
+        Record<string, unknown>[]
+      >(`/bibliography/list?${stringify({ ids }, { arrayFormat: 'comma' })}`, false)
       .then((result) => result.map(createEntry))
   }
 
   search(query: string): Promise<BibliographyEntry[]> {
     return this.apiClient
-      .fetchJson(`/bibliography?query=${encodeURIComponent(query)}`, false)
+      .fetchJson<
+        Record<string, unknown>[]
+      >(`/bibliography?query=${encodeURIComponent(query)}`, false)
       .then((result) => result.map(createEntry))
   }
 
   update(entry: BibliographyEntry): Promise<BibliographyEntry> {
     return this.apiClient
-      .postJson(
-        `/bibliography/${encodeURIComponent(entry.id)}`,
-        entry.toCslData()
-      )
+      .postJson<
+        Record<string, unknown>
+      >(`/bibliography/${encodeURIComponent(entry.id)}`, entry.toCslData())
       .then(createEntry)
   }
 
   create(entry: BibliographyEntry): Promise<BibliographyEntry> {
     return this.apiClient
-      .postJson(`/bibliography`, entry.toCslData())
+      .postJson<Record<string, unknown>>(`/bibliography`, entry.toCslData())
       .then(createEntry)
   }
   listAllBibliography(): Promise<string[]> {
-    return this.apiClient.fetchJson(`/bibliography/all`, false)
+    return this.apiClient.fetchJson<string[]>(`/bibliography/all`, false)
   }
 }

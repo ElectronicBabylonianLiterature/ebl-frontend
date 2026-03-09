@@ -25,6 +25,6 @@ test.each([
   span,
 ])('numberOfColumns', (line) => {
   expect(line.numberOfColumns).toEqual(
-    numberOfColumns(createColumns(line.content))
+    numberOfColumns(createColumns(line.content)),
   )
 })

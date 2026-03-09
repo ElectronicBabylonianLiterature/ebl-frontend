@@ -21,7 +21,7 @@ const referenceId = 'RN1'
 describe('ReferenceInjector', () => {
   const entry = bibliographyEntryFactory.build(
     {},
-    { associations: { id: referenceId } }
+    { associations: { id: referenceId } },
   )
   const referenceDto: ReferenceDto = {
     id: referenceId,
@@ -57,7 +57,7 @@ describe('ReferenceInjector', () => {
   beforeEach(() => {
     bibliographyServiceMock.find.mockReturnValueOnce(Promise.resolve(entry))
     bibliographyServiceMock.findMany.mockReturnValueOnce(
-      Promise.resolve([entry])
+      Promise.resolve([entry]),
     )
   })
 
@@ -67,7 +67,7 @@ describe('ReferenceInjector', () => {
       .then((injectedText) =>
         expect(injectedText.allLines).toEqual([
           { ...noteLine, parts: injectedParts },
-        ])
+        ]),
       )
   })
 
@@ -75,7 +75,7 @@ describe('ReferenceInjector', () => {
     return referenceInjector
       .injectReferencesToMarkup([emphasisPart, bibliographyPart, stringPart])
       .then((parts) =>
-        expect(parts).toEqual([emphasisPart, ...injectedParts, stringPart])
+        expect(parts).toEqual([emphasisPart, ...injectedParts, stringPart]),
       )
   })
 
@@ -86,7 +86,7 @@ describe('ReferenceInjector', () => {
         reference: referenceDto as Reference,
       })
       .then((oldLineNumber) =>
-        expect(oldLineNumber).toEqual({ number: 'A38', reference: reference })
+        expect(oldLineNumber).toEqual({ number: 'A38', reference: reference }),
       )
   })
 })

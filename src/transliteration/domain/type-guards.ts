@@ -65,7 +65,7 @@ export function isShift(token: Token): token is Shift {
 }
 
 export function isCommentaryProtocol(
-  token: Token
+  token: Token,
 ): token is CommentaryProtocol {
   return token.type === 'CommentaryProtocol'
 }
@@ -95,11 +95,11 @@ export function isNamedSign(token: Token): token is NamedSign {
 }
 
 export function isSignToken(
-  token: Token
+  token: Token,
 ): token is NamedSign | UnknownNumberOfSigns | UnknownSign {
   return (
     ['UnidentifiedSign', 'UnclearSign', 'UnknownNumberOfSigns'].includes(
-      token.type
+      token.type,
     ) || isNamedSign(token)
   )
 }
@@ -165,7 +165,7 @@ export function isTranslationLine(line: AbstractLine): line is TranslationLine {
 }
 
 export function isLemma(
-  value: DictionaryWord | null | undefined
+  value: DictionaryWord | null | undefined,
 ): value is DictionaryWord {
   return !_.isNil(value)
 }

@@ -21,7 +21,7 @@ function ReferencesDisplay({
   const InlineMarkdownWithPopover = ReferencePopover(
     ({ reference }: { reference: Reference }) => (
       <InlineMarkdown source={Citation.for(reference).getMarkdown()} />
-    )
+    ),
   )
   return (
     <>
@@ -114,10 +114,10 @@ function DossierPopover({
         id={`DossierReferencePopOver-${index}`}
         className="reference-popover__popover"
       >
-        <Popover.Title as="h3">{record.id}</Popover.Title>
-        <Popover.Content>
+        <Popover.Header as="h3">{record.id}</Popover.Header>
+        <Popover.Body>
           <DossierRecordDisplay record={record} index={index} />
-        </Popover.Content>
+        </Popover.Body>
       </Popover>
     </Overlay>
   )
@@ -191,14 +191,14 @@ const FragmentDossierRecordsDisplay = withData<
         .queryByIds([
           ...props.fragment.dossiers.map((record) => record.dossierId),
         ])
-        .then((records) => ({ records }))
+        .then((records) => ({ records })),
     )
   },
   {
     watch: (props) => [...props.fragment.dossiers],
     filter: (props) => !_.isEmpty(props.fragment.dossiers),
     defaultData: () => ({ records: [] }),
-  }
+  },
 )
 
 export default FragmentDossierRecordsDisplay

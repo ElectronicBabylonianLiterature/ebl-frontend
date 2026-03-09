@@ -19,7 +19,7 @@ jest.mock('fragmentarium/application/FragmentSearchService')
 const renderWithRouter = (children: React.ReactNode) =>
   render(<MemoryRouter>{children}</MemoryRouter>)
 
-beforeEach(() => {
+const setup = () => {
   updateEdition = jest.fn().mockReturnValue(Promise.resolve())
   fragmentSearchService = new (FragmentSearchService as jest.Mock<
     jest.Mocked<FragmentSearchService>
@@ -36,11 +36,12 @@ beforeEach(() => {
       updateEdition={updateEdition}
       onToggle={onToggle}
       isColumnVisible={isColumnVisible}
-    />
+    />,
   ).container
-})
+}
 
 it('Renders header', () => {
+  setup()
   expect(container).toHaveTextContent(fragment.publication)
 })
 
@@ -53,6 +54,7 @@ xit('Renders notes field', () => {
 })
 
 it('Calls updateEdition on save', () => {
+  setup()
   submitFormByTestId(screen, 'transliteration-form')
   expect(updateEdition).toHaveBeenCalled()
 })

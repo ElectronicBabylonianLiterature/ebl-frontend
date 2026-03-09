@@ -1,6 +1,6 @@
 import React from 'react'
 import { BrowserRouter as Router } from 'react-router-dom'
-import { act, render, screen, waitFor } from '@testing-library/react'
+import { render, screen, waitFor } from '@testing-library/react'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import selectEvent from 'react-select-event'
 import Promise from 'bluebird'
@@ -34,18 +34,18 @@ async function renderGenreSelection() {
           fragmentService={fragmentServiceMock}
         />
       </Router>
-    </SessionContext.Provider>
+    </SessionContext.Provider>,
   )
   await waitForSpinnerToBeRemoved(screen)
 }
-beforeEach(async () => {
+async function setup(): Promise<void> {
   fragment = fragmentFactory.build(
     {},
     {
       associations: {
         genres: new Genres([]),
       },
-    }
+    },
   )
   fragmentServiceMock.fetchGenres.mockReturnValue(Promise.resolve(mockGenres))
   session = {
@@ -53,44 +53,49 @@ beforeEach(async () => {
   }
   session.isAllowedToTransliterateFragments.mockReturnValue(true)
   await renderGenreSelection()
-  await act(async () => userEvent.click(screen.getByLabelText('edit-genre')))
-})
+  await userEvent.click(screen.getByLabelText('edit-genre'))
+}
 describe('Genre Editor', () => {
   it('shows the editor when the user clicks the edit button', async () => {
+    await setup()
     expect(screen).toMatchSnapshot()
   })
   it('shows the available options when clicking Select...', async () => {
-    userEvent.click(screen.getByLabelText('select-genre'))
+    await setup()
+    await userEvent.click(screen.getByLabelText('select-genre'))
     expect(fragmentServiceMock.fetchGenres).toHaveBeenCalled()
     mockGenres.forEach((genre) => {
       expect(screen.getByText(genre.join(' ➝ '))).toBeVisible()
     })
   })
   it('updates the genre when the user selects an option', async () => {
+    await setup()
     await selectEvent.select(
       screen.getByLabelText('select-genre'),
-      'ARCHIVAL ➝ Administrative'
+      'ARCHIVAL ➝ Administrative',
     )
-    userEvent.click(screen.getByLabelText('add-genre'))
+    await userEvent.click(screen.getByLabelText('add-genre'))
     await waitFor(() => expect(updateGenres).toHaveBeenCalled())
     expect(screen.getByText('ARCHIVAL ➝ Administrative')).toBeVisible()
   })
   it('sets uncertain=true', async () => {
-    userEvent.click(screen.getByLabelText('toggle-uncertain'))
+    await setup()
+    await userEvent.click(screen.getByLabelText('toggle-uncertain'))
     await selectEvent.select(
       screen.getByLabelText('select-genre'),
-      'CANONICAL (?)'
+      'CANONICAL (?)',
     )
-    userEvent.click(screen.getByLabelText('add-genre'))
+    await userEvent.click(screen.getByLabelText('add-genre'))
     await waitFor(() => expect(updateGenres).toHaveBeenCalled())
     expect(screen.getByText('CANONICAL (?)')).toBeVisible()
   })
   it('deletes the genre when the user clicks the delete button', async () => {
+    await setup()
     await selectEvent.select(screen.getByLabelText('select-genre'), 'ARCHIVAL')
-    userEvent.click(screen.getByLabelText('add-genre'))
+    await userEvent.click(screen.getByLabelText('add-genre'))
     await waitFor(() => expect(updateGenres).toHaveBeenCalled())
 
-    userEvent.click(screen.getByLabelText('delete-genre'))
+    await userEvent.click(screen.getByLabelText('delete-genre'))
     await waitFor(() => expect(updateGenres).toHaveBeenCalled())
     expect(screen.queryByText('ARCHIVAL')).not.toBeInTheDocument()
   })

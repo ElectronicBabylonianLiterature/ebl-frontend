@@ -12,7 +12,7 @@ export const queryItemFactory = Factory.define<QueryItem>(
       associations.museumNumber ?? `${defaultChance.word()}.${sequence}`,
     matchingLines: associations.matchingLines ?? [],
     matchCount: associations.matchCount ?? 0,
-  })
+  }),
 )
 
 export const corpusQueryItemFactory = Factory.define<CorpusQueryItem>(
@@ -23,5 +23,5 @@ export const corpusQueryItemFactory = Factory.define<CorpusQueryItem>(
     name: associations.name ?? defaultChance.sentence(),
     stage: associations.stage ?? defaultChance.pickone([...periods]).name,
     matchCount: associations.matchCount ?? 0,
-  })
+  }),
 )

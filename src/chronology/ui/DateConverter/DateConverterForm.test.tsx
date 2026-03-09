@@ -1,5 +1,5 @@
 import React from 'react'
-import { act, waitFor, within } from '@testing-library/react'
+import { waitFor, within } from '@testing-library/react'
 import { render, fireEvent, screen } from '@testing-library/react'
 import MarkupService from 'markup/application/MarkupService'
 import DateConverterForm, {
@@ -18,18 +18,14 @@ describe('AboutDateConverter', () => {
   >)()
   it('renders without crashing', async () => {
     markupServiceMock.fromString.mockReturnValue(
-      Bluebird.resolve(markupDtoSerialized)
+      Bluebird.resolve(markupDtoSerialized),
     )
-    await act(async () => {
-      await render(
-        <MemoryRouter>{AboutDateConverter(markupServiceMock)}</MemoryRouter>
-      )
-      await waitForSpinnerToBeRemoved(screen)
-      await waitFor(() => {
-        expect(screen.queryByText('Loading...')).not.toBeInTheDocument()
-      })
-      expect(screen.getByText(/proleptic Gregorian/i)).toBeInTheDocument()
+    render(<MemoryRouter>{AboutDateConverter(markupServiceMock)}</MemoryRouter>)
+    await waitForSpinnerToBeRemoved(screen)
+    await waitFor(() => {
+      expect(screen.queryByText('Loading...')).not.toBeInTheDocument()
     })
+    expect(screen.getByText(/proleptic Gregorian/i)).toBeInTheDocument()
   })
 })
 
@@ -62,21 +58,13 @@ describe('DateConverterForm', () => {
     expect(screen.getAllByLabelText(/cjdn|lunation/i)).toHaveLength(2)
     expect(optionToArray(screen.getByLabelText('Ruler'))).toStrictEqual(29)
     expect(screen.getAllByLabelText(/year/i).map(optionToArray)).toStrictEqual([
-      702,
-      702,
-      30,
-      701,
-      0,
-      0,
+      702, 702, 30, 701, 0, 0,
     ])
-    expect(
-      screen.getAllByLabelText(/month/i).map(optionToArray)
-    ).toStrictEqual([12, 12, 13, 0])
+    expect(screen.getAllByLabelText(/month/i).map(optionToArray)).toStrictEqual(
+      [12, 12, 13, 0],
+    )
     expect(screen.getAllByLabelText(/day/i).map(optionToArray)).toStrictEqual([
-      31,
-      7,
-      30,
-      29,
+      31, 7, 30, 29,
     ])
   })
 
@@ -106,28 +94,20 @@ describe('DateConverterForm', () => {
     const seleucidRadio = screen.getByLabelText('Seleucid (Babylonian) date')
     const nabonassarRadio = screen.getByLabelText('Nabonassar date')
     const modernRadio = screen.getByLabelText('Modern date')
-    act(() => {
-      fireEvent.click(julianRadio)
-    })
+    fireEvent.click(julianRadio)
     expect(screen.getByLabelText('Julian Year')).toBeEnabled()
     expect(screen.getByLabelText('Julian Month')).toBeEnabled()
     expect(screen.getByLabelText('Julian Day')).toBeEnabled()
-    act(() => {
-      fireEvent.click(seleucidRadio)
-    })
+    fireEvent.click(seleucidRadio)
     expect(screen.getByLabelText('SE Babylonian Year')).toBeEnabled()
     expect(screen.getByLabelText('Mesopotamian Month')).toBeEnabled()
     expect(screen.getByLabelText('Mesopotamian Day')).toBeEnabled()
-    act(() => {
-      fireEvent.click(nabonassarRadio)
-    })
+    fireEvent.click(nabonassarRadio)
     expect(screen.getByLabelText('Ruler')).toBeEnabled()
     expect(screen.getByLabelText('Regnal Year')).toBeEnabled()
     expect(screen.getByLabelText('Mesopotamian Month')).toBeEnabled()
     expect(screen.getByLabelText('Mesopotamian Day')).toBeEnabled()
-    act(() => {
-      fireEvent.click(modernRadio)
-    })
+    fireEvent.click(modernRadio)
     expect(screen.getByLabelText('Year')).toBeEnabled()
     expect(screen.getByLabelText('Month')).toBeEnabled()
     expect(screen.getByLabelText('Day')).toBeEnabled()
@@ -135,11 +115,7 @@ describe('DateConverterForm', () => {
 
   it('responds to select change', async () => {
     render(<DateConverterForm />)
-    await act(async () => {
-      fireEvent.click(
-        within(screen.getByLabelText('Year')).getByText('300 BCE')
-      )
-    })
+    fireEvent.click(within(screen.getByLabelText('Year')).getByText('300 BCE'))
     expect(screen.getByLabelText('Year')).toHaveValue('-310')
     expect(screen.getByLabelText('Month')).toHaveValue('3')
     expect(screen.getByLabelText('Day')).toHaveValue('29')
@@ -160,9 +136,7 @@ describe('DateConverterForm', () => {
 
   it("copies the form's JSON to clipboard", async () => {
     render(<DateConverterForm />)
-    await act(async () => {
-      fireEvent.click(screen.getByText('Copy JSON'))
-    })
+    fireEvent.click(screen.getByText('Copy JSON'))
     const expected = {
       gregorianYear: -310,
       gregorianMonth: 3,
@@ -186,7 +160,7 @@ describe('DateConverterForm', () => {
     }
     expect(navigator.clipboard.writeText).toHaveBeenCalled()
     expect(navigator.clipboard.writeText).toHaveBeenCalledWith(
-      JSON.stringify(expected)
+      JSON.stringify(expected),
     )
   })
 })

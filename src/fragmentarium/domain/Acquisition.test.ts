@@ -30,7 +30,7 @@ describe('Acquisition', () => {
         acquisition: new Acquisition(
           'British Museum',
           undefined,
-          'Clay tablet'
+          'Clay tablet',
         ),
         expected: {
           supplier: 'British Museum',

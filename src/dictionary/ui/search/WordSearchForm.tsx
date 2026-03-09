@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { stringify } from 'query-string'
 import { Form, FormControl, Button, Row, Col } from 'react-bootstrap'
-import { withRouter, RouteComponentProps } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import replaceTransliteration from 'fragmentarium/domain/replaceTransliteration'
 import { WordQuery } from 'dictionary/application/WordService'
 import {
@@ -77,7 +77,8 @@ function DictionarySourceSelector({
     { value: 'SAD', label: 'Supplements to the Akkadian Dictionaries' },
   ]
 
-  const isAllSelected = !selected || selected.length === 0
+  const normalizedSelected = Array.isArray(selected) ? selected : []
+  const isAllSelected = normalizedSelected.length === 0
 
   const handleAllChange = (checked: boolean) => {
     if (checked) {
@@ -90,17 +91,16 @@ function DictionarySourceSelector({
   const handleSourceChange = (source: string, checked: boolean) => {
     if (isAllSelected && checked) {
       onChange([source])
-    } else {
-      let originList: string[] = Array.isArray(selected)
-        ? [...(selected as string[])]
-        : []
-      if (checked) {
-        originList.push(source)
-      } else {
-        originList = originList.filter((s) => s !== source)
-      }
-      onChange(originList)
+      return
     }
+
+    let originList: string[] = [...normalizedSelected]
+    if (checked) {
+      originList.push(source)
+    } else {
+      originList = originList.filter((s) => s !== source)
+    }
+    onChange(originList)
   }
 
   const renderSwitch = (source: { value: string; label: string }) => (
@@ -110,11 +110,7 @@ function DictionarySourceSelector({
       inline
       id={`origin-${source.value}`}
       label={source.label}
-      checked={
-        !isAllSelected &&
-        Array.isArray(selected) &&
-        (selected as string[]).includes(source.value)
-      }
+      checked={!isAllSelected && normalizedSelected.includes(source.value)}
       onChange={(event) => {
         handleSourceChange(source.value, event.target.checked)
       }}
@@ -154,7 +150,7 @@ function DictionarySourceFormGroup({
       </Form.Label>
       <Col sm={1}>
         {HelpEntry(
-          'Select one or more dictionary sources. Select "All sources" to search across all dictionaries.'
+          'Select one or more dictionary sources. Select "All sources" to search across all dictionaries.',
         )}
       </Col>
       <Col sm={8}>
@@ -166,10 +162,8 @@ function DictionarySourceFormGroup({
 
 type Props = {
   query: WordQuery
-  history
-  location
-  match
-} & RouteComponentProps
+  navigate: (url: string) => void
+}
 type State = {
   query: WordQuery
 }
@@ -187,14 +181,14 @@ class WordSearch extends Component<Props, State> {
       const initialVowelClass = Array.isArray(baseQuery.vowelClass)
         ? (baseQuery.vowelClass as string[])
         : baseQuery.vowelClass
-        ? [baseQuery.vowelClass as string]
-        : []
+          ? [baseQuery.vowelClass as string]
+          : []
 
       const initialOrigin = Array.isArray(baseQuery.origin)
         ? (baseQuery.origin as string[])
         : baseQuery.origin
-        ? [baseQuery.origin as string]
-        : ['CDA']
+          ? [baseQuery.origin as string]
+          : ['CDA']
 
       return {
         ...baseQuery,
@@ -218,11 +212,11 @@ class WordSearch extends Component<Props, State> {
 
   submit = (event) => {
     event.preventDefault()
-    this.props.history.push(
+    this.props.navigate(
       `?${stringify(this.state.query, {
         skipEmptyString: true,
         arrayFormat: 'none',
-      })}`
+      })}`,
     )
   }
 
@@ -253,13 +247,13 @@ class WordSearch extends Component<Props, State> {
   makeFormRow(
     field: string,
     label: string,
-    helpText: JSX.Element | string
+    helpText: JSX.Element | string,
   ): JSX.Element {
     const help = HelpEntry(
       <>
         {helpText}
         {this.makeHelpHints(field)}
-      </>
+      </>,
     )
     return (
       <>
@@ -286,7 +280,7 @@ class WordSearch extends Component<Props, State> {
           {this.makeFormRow(
             'word',
             'Word',
-            'The lemma and other forms for the word.'
+            'The lemma and other forms for the word.',
           )}
           <Col sm={2}>
             <Button
@@ -302,7 +296,7 @@ class WordSearch extends Component<Props, State> {
           {this.makeFormRow(
             'meaning',
             'Meaning',
-            'The meaning(s) and explanation(s).'
+            'The meaning(s) and explanation(s).',
           )}
         </Form.Group>
         <Form.Group as={Row} controlId="root">
@@ -312,7 +306,7 @@ class WordSearch extends Component<Props, State> {
             <>
               The verbal root (e.g. <code>prs</code>, <code>&apos;bt</code>,{' '}
               <code>šṭr</code>, <code>mrr</code>
-            </>
+            </>,
           )}
         </Form.Group>
         <Form.Group as={Row} controlId="vowelClass">
@@ -351,4 +345,9 @@ class WordSearch extends Component<Props, State> {
   }
 }
 
-export default withRouter(WordSearch)
+function WordSearchWithRouter(props: Omit<Props, 'navigate'>) {
+  const navigate = useNavigate()
+  return <WordSearch {...props} navigate={navigate} />
+}
+
+export default WordSearchWithRouter

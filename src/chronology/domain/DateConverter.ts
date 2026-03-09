@@ -60,12 +60,12 @@ export default class DateConverter extends DateConverterBase {
   }
 
   setToEdgeIfOutsideRange(
-    params: GregorianProps | JulianProps | SeBabylonianProps
+    params: GregorianProps | JulianProps | SeBabylonianProps,
   ): boolean {
     const rangeCheck = this.checks.isDateWithinValidRange(
       params,
       this.earliestDate,
-      this.latestDate
+      this.latestDate,
     )
     if (rangeCheck.includes(false)) {
       if (rangeCheck[0] === false) {
@@ -81,7 +81,7 @@ export default class DateConverter extends DateConverterBase {
   setToGregorianDate(
     gregorianYear: number,
     gregorianMonth: number,
-    gregorianDay: number
+    gregorianDay: number,
   ): void {
     const params = {
       gregorianYear,
@@ -94,7 +94,7 @@ export default class DateConverter extends DateConverterBase {
     const monthLength = this.getMonthLength(
       false,
       gregorianYear,
-      gregorianMonth
+      gregorianMonth,
     )
     const cjdn = this.computeCjdnFromGregorianDate({
       ...params,
@@ -106,7 +106,7 @@ export default class DateConverter extends DateConverterBase {
   setToJulianDate(
     julianYear: number,
     julianMonth: number,
-    julianDay: number
+    julianDay: number,
   ): void {
     const params = { julianYear, julianMonth, julianDay }
     if (this.setToEdgeIfOutsideRange(params)) {
@@ -119,7 +119,7 @@ export default class DateConverter extends DateConverterBase {
         month: julianMonth,
         day: julianDay <= monthLength ? julianDay : monthLength,
       },
-      'julian'
+      'julian',
     )
     this.applyGregorianDateWhenJulian()
     this.updateBabylonianDate()
@@ -128,7 +128,7 @@ export default class DateConverter extends DateConverterBase {
   setToSeBabylonianDate(
     seBabylonianYear: number,
     mesopotamianMonth: number,
-    mesopotamianDay: number
+    mesopotamianDay: number,
   ): void {
     const params = { seBabylonianYear, mesopotamianMonth, mesopotamianDay }
     if (this.setToEdgeIfOutsideRange(params)) {
@@ -136,12 +136,12 @@ export default class DateConverter extends DateConverterBase {
     }
     const monthLength = this.getMesopotamianSeMonthLength(
       seBabylonianYear,
-      mesopotamianMonth
+      mesopotamianMonth,
     )
     const cjdn = this.computeCjdnFromSeBabylonian(
       seBabylonianYear,
       mesopotamianMonth,
-      mesopotamianDay <= monthLength ? mesopotamianDay : monthLength
+      mesopotamianDay <= monthLength ? mesopotamianDay : monthLength,
     )
     this.setToCjdn(cjdn)
   }
@@ -150,12 +150,12 @@ export default class DateConverter extends DateConverterBase {
     ruler: string,
     regnalYear: number,
     mesopotamianMonth: number,
-    mesopotamianDay: number
+    mesopotamianDay: number,
   ): void {
     mesopotamianMonth = this.shiftMesopotamianMonthIfNoMatchFound(
       ruler,
       regnalYear,
-      mesopotamianMonth
+      mesopotamianMonth,
     )
     const rulerIndex = data.rulerName.indexOf(ruler)
     if (rulerIndex === -1) throw new Error('Invalid ruler name.')
@@ -163,7 +163,7 @@ export default class DateConverter extends DateConverterBase {
     this.setToSeBabylonianDate(
       seBabylonianYear,
       mesopotamianMonth,
-      mesopotamianDay
+      mesopotamianDay,
     )
   }
 
@@ -176,14 +176,14 @@ export default class DateConverter extends DateConverterBase {
   private shiftMesopotamianMonthIfNoMatchFound(
     ruler: string,
     regnalYear: number,
-    mesopotamianMonth: number
+    mesopotamianMonth: number,
   ): number {
     if ([13, 14].includes(mesopotamianMonth)) {
       this.setToMesopotamianDate(ruler, regnalYear, 1, 1)
       if (
         !this.checks.isIncomingDateHasCorrespondingIntercalary(
           mesopotamianMonth,
-          this
+          this,
         )
       ) {
         mesopotamianMonth =

@@ -28,7 +28,7 @@ function GotoItem({
 export default function GotoButton({
   text,
   ...props
-}: { text: Text } & DropdownButtonProps): JSX.Element {
+}: { text: Text } & Omit<DropdownButtonProps, 'children'>): JSX.Element {
   return (
     <DropdownButton {...props}>
       {text.chapters.map((chapter, index) => (

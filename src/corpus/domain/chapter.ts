@@ -32,7 +32,7 @@ export class Chapter {
     readonly order: number,
     readonly manuscripts: ReadonlyArray<Manuscript>,
     readonly uncertainFragments: ReadonlyArray<string>,
-    readonly lines: ReadonlyArray<Line>
+    readonly lines: ReadonlyArray<Line>,
   ) {}
 
   get id(): ChapterId {
@@ -46,14 +46,14 @@ export class Chapter {
   get alignment(): ChapterAlignment {
     return new ChapterAlignment(
       this.lines.map((line) =>
-        line.variants.map((variant) => variant.alignment)
-      )
+        line.variants.map((variant) => variant.alignment),
+      ),
     )
   }
 
   getSiglum(manuscriptLine: ManuscriptLine): string {
     const manuscript = this.manuscripts.find(
-      (candidate) => candidate.id === manuscriptLine.manuscriptId
+      (candidate) => candidate.id === manuscriptLine.manuscriptId,
     )
     if (manuscript) {
       return manuscript.siglum
@@ -123,14 +123,14 @@ export class ChapterDisplay {
     readonly title: ReadonlyArray<MarkupPart>,
     readonly lines: ReadonlyArray<LineDisplay>,
     readonly record: Record,
-    readonly atf: string
+    readonly atf: string,
   ) {}
 
   get languages(): Set<string> {
     return flow(
       flatMap<LineDisplay, TranslationLine>((line) => line.translation),
       map((translation) => translation.language),
-      (languages) => new Set(languages)
+      (languages) => new Set(languages),
     )(this.lines)
   }
 
@@ -172,7 +172,7 @@ export class ChapterDisplay {
   }
 
   getNames(
-    names: readonly Author[] | readonly Translator[]
+    names: readonly Author[] | readonly Translator[],
   ): { family: string[]; given: string[] }[] {
     return names.map((name) => {
       return {
@@ -184,7 +184,7 @@ export class ChapterDisplay {
 
   getAuthorsByRole(role: string): { family: string[]; given: string[] }[] {
     return this.getNames(
-      this.record.authors.filter((author) => author.role === role)
+      this.record.authors.filter((author) => author.role === role),
     )
   }
 
@@ -225,7 +225,7 @@ export class ChapterDisplay {
 
   getTranslatorsOf(language: string): Translator[] {
     return this.record.translators.filter(
-      (translator) => translator.language === language
+      (translator) => translator.language === language,
     )
   }
 }

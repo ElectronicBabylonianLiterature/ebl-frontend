@@ -1,8 +1,8 @@
-import React, { ChangeEvent, Component } from 'react'
+import React, { ChangeEvent, Component, ReactNode } from 'react'
 import _ from 'lodash'
 import { FormGroup, FormLabel, FormControl } from 'react-bootstrap'
 
-class TextInput extends Component<{ value; onChange }> {
+class TextInput extends Component<{ value; onChange; children?: ReactNode }> {
   onChange = (event: ChangeEvent<HTMLInputElement>): void => {
     this.props.onChange(event.target.value)
   }

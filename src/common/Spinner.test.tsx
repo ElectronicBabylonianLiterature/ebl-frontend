@@ -24,7 +24,7 @@ it('Displays nothing if loading false', async () => {
   render(
     <div data-testid="wrapper">
       <Spinner loading={false} />
-    </div>
+    </div>,
   )
   expect(screen.getByTestId('wrapper')).toBeEmptyDOMElement()
 })

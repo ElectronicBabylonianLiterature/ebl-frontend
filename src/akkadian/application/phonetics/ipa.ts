@@ -35,15 +35,15 @@ export function transcriptionToIpa(
     isStressed: false,
     isAffricative: false,
     isPharyngealized: false,
-  }
+  },
 ): string {
   const map = getIpaMap(
     options.isAffricative ?? false,
-    options.isPharyngealized ?? false
+    options.isPharyngealized ?? false,
   )
   const ipa = Object.entries(map).reduce(
     (prev, entry) => prev.replace(...entry),
-    transcription
+    transcription,
   )
   return options.isStressed ? `ˈ${ipa}` : ipa
 }

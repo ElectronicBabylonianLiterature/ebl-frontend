@@ -34,7 +34,7 @@ import {
   englishTranslationLineWithExtent,
 } from 'test-support/lines/translation-lines'
 import { UncertainFragmentAttestation } from 'corpus/domain/uncertainFragmentAttestation'
-import produce, { castDraft, Draft } from 'immer'
+import { produce, castDraft, Draft } from 'immer'
 import { AbstractLine } from 'transliteration/domain/abstract-line'
 import { isIdToken } from 'transliteration/domain/type-guards'
 
@@ -54,14 +54,14 @@ export const fragmentFactory = Factory.define<Fragment>(
         new Acquisition(
           chance.company(),
           chance.year({ min: 1800, max: 2020 }),
-          chance.sentence({ words: 3 })
+          chance.sentence({ words: 3 }),
         ),
       fragmentDescription(chance),
       associations.joins ?? [
         [
           joinFactory.build(
             { museumNumber, isInFragmentarium: true },
-            { transient: { chance } }
+            { transient: { chance } },
           ),
         ],
         [joinFactory.build({}, { transient: { chance } })],
@@ -116,9 +116,9 @@ export const fragmentFactory = Factory.define<Fragment>(
         }),
       associations.datesInText ?? undefined,
       associations.archaeology ??
-        archaeologyFactory.build({}, { transient: { chance } })
+        archaeologyFactory.build({}, { transient: { chance } }),
     )
-  }
+  },
 )
 
 export const fragmentInfoFactory = Factory.define<FragmentInfo>(
@@ -134,13 +134,13 @@ export const fragmentInfoFactory = Factory.define<FragmentInfo>(
       {
         length: Math.floor(Math.random() * 6),
       },
-      () => mesopotamianDateFactory.build()
+      () => mesopotamianDateFactory.build(),
     ),
     // eslint-disable-next-line camelcase
     edition_date: fragmentDate(),
     references: associations.references ?? [],
     genres: new Genres([]),
-  })
+  }),
 )
 
 export const textConfig: Partial<CorpusText> = {
@@ -170,18 +170,17 @@ export const manuscriptAttestationFactory = Factory.define<
     associations.text ?? createText(textConfig),
     associations.chapterId ?? chapterIdFactory.build(),
     manuscript,
-    manuscript.siglum
+    manuscript.siglum,
   )
 })
 
-export const uncertainFragmentAttestationFactory = Factory.define<
-  UncertainFragmentAttestation
->(({ associations }) => {
-  return new UncertainFragmentAttestation(
-    associations.text ?? createText(textConfig),
-    associations.chapterId ?? chapterIdFactory.build()
-  )
-})
+export const uncertainFragmentAttestationFactory =
+  Factory.define<UncertainFragmentAttestation>(({ associations }) => {
+    return new UncertainFragmentAttestation(
+      associations.text ?? createText(textConfig),
+      associations.chapterId ?? chapterIdFactory.build(),
+    )
+  })
 
 const textLine2 = new TextLine({
   ...textLineDto,

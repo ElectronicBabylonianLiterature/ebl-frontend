@@ -1,5 +1,5 @@
 import React from 'react'
-import { render, screen, waitFor, act } from '@testing-library/react'
+import { render, screen, waitFor } from '@testing-library/react'
 import AfoRegisterService from 'afo-register/application/AfoRegisterService'
 import AfoRegisterSearch from 'afo-register/ui/AfoRegisterSearch'
 import { waitForSpinnerToBeRemoved } from 'test-support/waitForSpinnerToBeRemoved'
@@ -32,37 +32,34 @@ describe('AfO-Register search display', () => {
 
   it('renders correctly with initial state', async () => {
     afoRegisterService.search.mockReturnValue(Bluebird.resolve([record]))
-    await act(async () => {
-      render(
-        <AfoRegisterSearch
-          query={mockQuery}
-          afoRegisterService={afoRegisterService}
-          fragmentService={fragmentService}
-        />
-      )
-      await waitForSpinnerToBeRemoved(screen)
-      await waitFor(() => {
-        const item = screen.getByRole('listitem')
-        expect(item).toBeVisible()
-        expect(item).toHaveTextContent(record.text)
-      })
+    render(
+      <AfoRegisterSearch
+        query={mockQuery}
+        afoRegisterService={afoRegisterService}
+        fragmentService={fragmentService}
+      />,
+    )
+    await waitForSpinnerToBeRemoved(screen)
+    await waitFor(() => {
+      const item = screen.getByRole('listitem')
+      expect(item).toBeVisible()
     })
+    const item = screen.getByRole('listitem')
+    expect(item).toHaveTextContent(record.text)
   })
 
   it('renders correctly with empty result', async () => {
     afoRegisterService.search.mockReturnValue(Bluebird.resolve([]))
-    await act(async () => {
-      render(
-        <AfoRegisterSearch
-          query={mockQuery}
-          afoRegisterService={afoRegisterService}
-          fragmentService={fragmentService}
-        />
-      )
-      await waitForSpinnerToBeRemoved(screen)
-      await waitFor(() => {
-        expect(screen.getByText('No records found')).toBeVisible()
-      })
+    render(
+      <AfoRegisterSearch
+        query={mockQuery}
+        afoRegisterService={afoRegisterService}
+        fragmentService={fragmentService}
+      />,
+    )
+    await waitForSpinnerToBeRemoved(screen)
+    await waitFor(() => {
+      expect(screen.getByText('No records found')).toBeVisible()
     })
   })
 })

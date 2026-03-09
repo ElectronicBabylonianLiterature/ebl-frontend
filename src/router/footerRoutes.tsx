@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react'
-import { Route } from 'react-router-dom'
+import { Route } from 'router/compat'
 import { sitemapDefaults } from 'router/sitemap'
 import { HeadTagsService } from 'router/head'
 import Impressum from 'footer/ui/Impressum'

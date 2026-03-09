@@ -74,7 +74,7 @@ export class LineAccumulator {
 
   constructor(
     TokenActionWrapper?: FunctionComponent<TokenActionWrapperProps>,
-    lineIndex?: number
+    lineIndex?: number,
   ) {
     this.TokenActionWrapper = TokenActionWrapper || DefaultTokenActionWrapper
     this.lineIndex = lineIndex || null
@@ -110,7 +110,7 @@ export class LineAccumulator {
     token: Token,
     index: number,
     phoneticProps?: PhoneticProps,
-    bemModifiers: string[] = []
+    bemModifiers: string[] = [],
   ): void {
     if (_.isEmpty(this.columns)) {
       this.addColumn(1)
@@ -134,7 +134,7 @@ export class LineAccumulator {
           }
           phoneticProps={phoneticProps}
         />
-      </this.TokenActionWrapper>
+      </this.TokenActionWrapper>,
     )
     this.enclosureOpened = isOpenEnclosure(token)
   }
@@ -161,7 +161,7 @@ export class LineAccumulator {
     token: Token,
     index: number,
     phoneticProps?: PhoneticProps,
-    bemModifiers: string[] = []
+    bemModifiers: string[] = [],
   ): void {
     switch (token.type) {
       case 'LanguageShift':
@@ -199,7 +199,7 @@ export class LineAccumulator {
           key={`${this.index}-separator`}
           modifiers={this.bemModifiers}
         />
-      )
+      ),
     )
   }
 

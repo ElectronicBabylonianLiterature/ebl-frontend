@@ -1,5 +1,4 @@
 import React from 'react'
-import { RouteComponentProps } from 'react-router-dom'
 import _ from 'lodash'
 import AppContent from 'common/AppContent'
 import InfoBanner from 'common/InfoBanner'
@@ -29,7 +28,7 @@ type Props = Pick<
   wordService: WordService
   textService: TextService
   activeTab: string
-} & RouteComponentProps
+}
 
 export const linesToShow = 5
 
@@ -54,7 +53,7 @@ function FragmentariumSearch({
     fragmentQuery,
     'lemmas',
     'lemmaOperator',
-    'transliteration'
+    'transliteration',
   )
 
   const showResults =

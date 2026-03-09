@@ -20,12 +20,12 @@ function DisplayLemmaEntry({
         <>
           &nbsp;
           {isSuggestion ? (
-            <Badge variant="warning">
+            <Badge bg="warning">
               New
               <i className={'fas fa-wand-magic-sparkles'}></i>
             </Badge>
           ) : (
-            <Badge variant="success">New</Badge>
+            <Badge bg="success">New</Badge>
           )}
         </>
       )}
@@ -35,7 +35,7 @@ function DisplayLemmaEntry({
 
 function isEquivalent(
   a: readonly LemmaOption[] | null,
-  b: readonly LemmaOption[] | null
+  b: readonly LemmaOption[] | null,
 ): boolean {
   return _.isEqual(_.map(a, 'value'), _.map(b, 'value'))
 }
@@ -56,7 +56,7 @@ export default class EditableToken {
     indexInText: number,
     indexInLine: number,
     lineIndex: number,
-    lemmas: readonly LemmaOption[]
+    lemmas: readonly LemmaOption[],
   ) {
     this.token = token
     this.indexInText = indexInText
@@ -88,7 +88,7 @@ export default class EditableToken {
   confirmSuggestion = (): void => {
     if (_.some(this.newLemmas, 'isSuggestion')) {
       this.updateLemmas(
-        this.newLemmas?.map((lemma) => lemma.unsetSuggestion()) || null
+        this.newLemmas?.map((lemma) => lemma.unsetSuggestion()) || null,
       )
     }
   }
@@ -150,7 +150,7 @@ export default class EditableToken {
           this.isDirty ? (
             <DisplayLemmaEntry showBatch={true}>---</DisplayLemmaEntry>
           ) : (
-            <Badge variant="danger">Empty</Badge>
+            <Badge bg="danger">Empty</Badge>
           )
         ) : (
           this.lemmas.map((lemma, index) => (

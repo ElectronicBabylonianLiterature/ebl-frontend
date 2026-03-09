@@ -1,10 +1,9 @@
 import React from 'react'
-import { act, render, screen } from '@testing-library/react'
-import { Router } from 'react-router-dom'
+import { render, screen, fireEvent } from '@testing-library/react'
+import { MemoryRouter } from 'react-router-dom'
 import Header from './Header'
-import { createMemoryHistory } from 'history'
+
 import { AuthenticationContext, User } from 'auth/Auth'
-import userEvent from '@testing-library/user-event'
 
 let auth
 
@@ -16,29 +15,32 @@ beforeEach(() => {
 })
 
 describe('Logged out', () => {
-  beforeEach(async () => await renderHeader(false))
+  const renderLoggedOut = () => renderHeader(false)
 
-  commonTests()
+  commonTests(renderLoggedOut)
 
-  test('Login button', () => {
+  test('Login button', async () => {
+    await renderLoggedOut()
     expect(screen.getByText('Login')).toBeVisible()
   })
 })
 
 describe('Logged in', () => {
-  beforeEach(async () => await renderHeader(true))
+  const renderLoggedIn = () => renderHeader(true)
 
-  commonTests()
+  commonTests(renderLoggedIn)
 
   test('Logout button', async () => {
+    await renderLoggedIn()
     expect(screen.getByText('Logout Test User')).toBeVisible()
   })
 })
 
-function commonTests(): void {
-  test('Logo links to home', () => {
+function commonTests(renderHeader: () => Promise<void>): void {
+  test('Logo links to home', async () => {
+    await renderHeader()
     expect(
-      screen.getByTitle('electronic Babylonian Library (eBL)')
+      screen.getByTitle('electronic Babylonian Library (eBL)'),
     ).toHaveAttribute('href', '/')
   })
 
@@ -50,16 +52,16 @@ function commonTests(): void {
     ['Corpus', '/corpus'],
     ['About', '/about'],
     ['Tools', '/tools'],
-  ])('%s links to %s', (title, href) => {
+  ])('%s links to %s', async (title, href) => {
+    await renderHeader()
     expect(screen.getByText(title)).toHaveAttribute('href', href)
   })
 }
 describe('Unfocus Header Labels on clicking ebl Logo', () => {
-  beforeEach(async () => await renderHeader(true))
-
-  test('correct element becomes active when clicking link on the header', () => {
-    userEvent.click(screen.getByText('Library'))
-    userEvent.click(screen.getByTitle('electronic Babylonian Library (eBL)'))
+  test('correct element becomes active when clicking link on the header', async () => {
+    await renderHeader(true)
+    fireEvent.click(screen.getByText('Library'))
+    fireEvent.click(screen.getByTitle('electronic Babylonian Library (eBL)'))
     expectHeaderLabelNotActive('')
   })
 })
@@ -71,7 +73,7 @@ describe('Correct element is active based on the route', () => {
   })
   test('correct element becomes active when clicking link on the header after redirect', async () => {
     await renderHeader(true, 'bibliography')
-    userEvent.click(screen.getByText('Library'))
+    fireEvent.click(screen.getByText('Library'))
     expect(screen.getByText('Library')).toHaveClass('active')
     expectHeaderLabelNotActive('Library')
   })
@@ -94,15 +96,12 @@ function expectHeaderLabelNotActive(activeLabel: string): void {
 
 async function renderHeader(loggedIn: boolean, path?: string): Promise<void> {
   auth.isAuthenticated.mockReturnValue(loggedIn)
-  const history = createMemoryHistory()
-  path && history.push(path)
-  await act(async () => {
-    render(
-      <Router history={history}>
-        <AuthenticationContext.Provider value={auth}>
-          <Header />
-        </AuthenticationContext.Provider>
-      </Router>
-    )
-  })
+
+  render(
+    <MemoryRouter initialEntries={[path ? `/${path}` : '/']}>
+      <AuthenticationContext.Provider value={auth}>
+        <Header />
+      </AuthenticationContext.Provider>
+    </MemoryRouter>,
+  )
 }

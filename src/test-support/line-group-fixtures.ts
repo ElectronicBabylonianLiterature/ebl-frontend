@@ -90,5 +90,5 @@ export const highlightIndexSetterMock = jest.fn()
 export const lineGroup = new LineGroup(
   [lemmatizableToken],
   lineInfo,
-  highlightIndexSetterMock
+  highlightIndexSetterMock,
 )

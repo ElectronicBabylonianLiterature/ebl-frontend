@@ -47,7 +47,7 @@ const testData: TestData<AfoRegisterRepository>[] = [
     apiClient.fetchJson,
     [record],
     [`/afo-register?${stringify(query)}`, false],
-    Promise.resolve([resultStub])
+    Promise.resolve([resultStub]),
   ),
   new TestData(
     'searchTextsAndNumbers',
@@ -55,7 +55,7 @@ const testData: TestData<AfoRegisterRepository>[] = [
     apiClient.postJson,
     [record],
     ['/afo-register/texts-numbers', ['text1', 'number1'], false],
-    Promise.resolve([resultStub])
+    Promise.resolve([resultStub]),
   ),
   new TestData(
     'searchSuggestions',
@@ -63,7 +63,7 @@ const testData: TestData<AfoRegisterRepository>[] = [
     apiClient.fetchJson,
     [suggestionRecord],
     ['/afo-register/suggestions?text_query=suggestion query', false],
-    Promise.resolve([resultStub])
+    Promise.resolve([resultStub]),
   ),
 ]
 describe('afoRegisterService', () =>
@@ -76,7 +76,7 @@ describe('AfoRegisterRepository - search', () => {
     expect(response).toEqual([record])
     expect(apiClient.fetchJson).toHaveBeenCalledWith(
       `/afo-register?${stringify(query)}`,
-      false
+      false,
     )
   })
 
@@ -102,7 +102,7 @@ describe('AfoRegisterRepository - search', () => {
   it('handles API errors', async () => {
     apiClient.fetchJson.mockRejectedValueOnce(new Error('API Error'))
     await expect(
-      afoRegisterRepository.search(stringify(query))
+      afoRegisterRepository.search(stringify(query)),
     ).rejects.toThrow('API Error')
   })
 })
@@ -132,7 +132,7 @@ describe('AfoRegisterRepository - searchTextsAndNumbers', () => {
   it('handles API errors', async () => {
     apiClient.postJson.mockRejectedValueOnce(new Error('API Error'))
     await expect(
-      afoRegisterRepository.searchTextsAndNumbers(['text1', 'number1'])
+      afoRegisterRepository.searchTextsAndNumbers(['text1', 'number1']),
     ).rejects.toThrow('API Error')
   })
 })
@@ -151,16 +151,15 @@ describe('AfoRegisterRepository - searchSuggestions', () => {
 
   it('handles empty response', async () => {
     apiClient.fetchJson.mockResolvedValueOnce([])
-    const response = await afoRegisterRepository.searchSuggestions(
-      'suggestion query'
-    )
+    const response =
+      await afoRegisterRepository.searchSuggestions('suggestion query')
     expect(response).toEqual([])
   })
 
   it('handles API errors', async () => {
     apiClient.fetchJson.mockRejectedValueOnce(new Error('API Error'))
     await expect(
-      afoRegisterRepository.searchSuggestions('suggestion query')
+      afoRegisterRepository.searchSuggestions('suggestion query'),
     ).rejects.toThrow('API Error')
   })
 })
@@ -176,12 +175,12 @@ describe('AfoRegisterRepository - search with fragmentService', () => {
             fragmentNumbers: modifiedRecord.fragmentNumbers,
           },
         ],
-      } as FragmentAfoRegisterQueryResult)
+      } as FragmentAfoRegisterQueryResult),
     )
     apiClient.fetchJson.mockResolvedValueOnce([resultStub])
     const response = await afoRegisterRepository.search(
       stringify(query),
-      fragmentService
+      fragmentService,
     )
     expect(response).toEqual([modifiedRecord])
     expect(fragmentService.queryByTraditionalReferences).toHaveBeenCalledWith([

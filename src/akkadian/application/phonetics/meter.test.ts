@@ -12,10 +12,10 @@ test.each([
   'Converts syllable to meter',
   (weight, isStressed, expectedUnicode, expectedJunicode) => {
     expect(syllableToMeter(weight, isStressed, { useJunicode: false })).toEqual(
-      expectedUnicode
+      expectedUnicode,
     )
     expect(syllableToMeter(weight, isStressed, { useJunicode: true })).toEqual(
-      expectedJunicode
+      expectedJunicode,
     )
-  }
+  },
 )

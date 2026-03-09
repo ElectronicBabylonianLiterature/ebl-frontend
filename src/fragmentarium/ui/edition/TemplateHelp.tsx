@@ -15,7 +15,7 @@ const obverseReverseAndsuffix = `@obverse
 export default function TemplateHelp(): JSX.Element {
   return (
     <Popover id={_.uniqueId('TemplateHelp-')} title="Create template">
-      <Popover.Content>
+      <Popover.Body>
         <p>
           If only the first number is given, then only one list is created:
           <code>2</code> results in:
@@ -31,7 +31,7 @@ export default function TemplateHelp(): JSX.Element {
           to each number of the list. Thus, <code>1&apos;, 2</code> results in:
         </p>
         <pre>{obverseReverseAndsuffix}</pre>
-      </Popover.Content>
+      </Popover.Body>
     </Popover>
   )
 }

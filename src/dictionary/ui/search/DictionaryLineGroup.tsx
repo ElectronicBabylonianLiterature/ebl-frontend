@@ -21,7 +21,7 @@ import { LemmaPopover } from 'transliteration/ui/WordInfo'
 function createCorpusChapterUrl(
   textId: TextId,
   stage: string,
-  name: string
+  name: string,
 ): string {
   const urlParts = [
     textId.genre,
@@ -56,7 +56,7 @@ function LemmaLineHeader({
             href={createCorpusChapterUrl(
               lemmaLine.textId,
               lemmaLine.stage,
-              lemmaLine.chapterName
+              lemmaLine.chapterName,
             )}
           >
             {lemmaLine.textId.genre} {textIdToString(lemmaLine.textId)}
@@ -121,14 +121,14 @@ export default function DictionaryLineGroup({
   lemmaId: string
 }): JSX.Element {
   const columns = lines.map((dictionaryLine) =>
-    createColumns(dictionaryLine.line.variants[0].reconstruction)
+    createColumns(dictionaryLine.line.variants[0].reconstruction),
   )
   return (
     <>
       <LemmaLineHeader lemmaLine={lines[0]} />
       {lines.map((dictionaryLine, index) => {
         const translation = dictionaryLine.line.translation.filter(
-          (translation) => translation.language === 'en'
+          (translation) => translation.language === 'en',
         )
         return (
           <React.Fragment key={index}>

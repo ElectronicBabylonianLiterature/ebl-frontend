@@ -45,9 +45,9 @@ describe('DossierRecord', () => {
               reference.type,
               reference.pages,
               reference.notes,
-              reference.linesCited
-            )
-        )
+              reference.linesCited,
+            ),
+        ),
       )
     })
   })
@@ -72,7 +72,7 @@ describe('DossierRecord', () => {
       expect(markdown).toContain('**Description**: some description')
       expect(markdown).toContain('**Date**: ca. 500 BCE - 470 BCE')
       expect(markdown).toContain(
-        `**Related Kings**: ${king1String}; ${king2String}`
+        `**Related Kings**: ${king1String}; ${king2String}`,
       )
       expect(markdown).toContain('**Provenance**: Assyria')
       expect(markdown).toContain('**Period**: Neo-Assyrian')

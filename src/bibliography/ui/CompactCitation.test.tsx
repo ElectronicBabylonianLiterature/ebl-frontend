@@ -14,7 +14,7 @@ test('Shows compact citation', () => {
   expect(container).toHaveTextContent(
     `${reference.authors.join(' & ')}, ${reference.year}: ${
       reference.pages
-    } [l. ${reference.linesCited.join(', ')}] (${reference.typeAbbreviation})`
+    } [l. ${reference.linesCited.join(', ')}] (${reference.typeAbbreviation})`,
   )
 })
 
@@ -24,7 +24,7 @@ test('Shows compact citation with et al.', () => {
   expect(container).toHaveTextContent(
     `${reference.primaryAuthor} et al., ${reference.year}: ${
       reference.pages
-    } [l. ${reference.linesCited.join(', ')}] (${reference.typeAbbreviation})`
+    } [l. ${reference.linesCited.join(', ')}] (${reference.typeAbbreviation})`,
   )
 })
 
@@ -32,7 +32,7 @@ test('Shows compact citation with container title', () => {
   const reference = buildReferenceWithContainerTitle('COPY').setLinesCited([])
   const { container } = render(<CompactCitation references={[reference]} />)
   expect(container).toHaveTextContent(
-    `${reference.shortContainerTitle}, ${reference.pages} (${reference.typeAbbreviation})`
+    `${reference.shortContainerTitle}, ${reference.pages} (${reference.typeAbbreviation})`,
   )
 })
 
@@ -43,7 +43,7 @@ test('Shows compact citation with container title and collection number', () => 
   }).setLinesCited([])
   const { container } = render(<CompactCitation references={[reference]} />)
   expect(container).toHaveTextContent(
-    `${reference.shortContainerTitle} ${collectionNumber}, ${reference.pages} (${reference.typeAbbreviation})`
+    `${reference.shortContainerTitle} ${collectionNumber}, ${reference.pages} (${reference.typeAbbreviation})`,
   )
 })
 
@@ -57,7 +57,7 @@ test('Shows compact citation with container title, lines cites and collection nu
   expect(container).toHaveTextContent(
     `${reference.shortContainerTitle} ${collectionNumber}, ${
       reference.pages
-    } [l. ${linesCited.join(', ')}] (${reference.typeAbbreviation})`
+    } [l. ${linesCited.join(', ')}] (${reference.typeAbbreviation})`,
   )
 })
 
@@ -76,12 +76,12 @@ test('Shows grouped references', () => {
   render(<CompactCitation references={groupedReferences} />)
 
   expect(
-    screen.getByText(new RegExp(`${reference1.primaryAuthor}`))
+    screen.getByText(new RegExp(`${reference1.primaryAuthor}`)),
   ).toBeInTheDocument()
 
   expect(screen.getByText('10 [l. 1]')).toBeInTheDocument()
   expect(screen.getByText('12 [l. 2]')).toBeInTheDocument()
   expect(
-    screen.getByText(`(${reference1.typeAbbreviation})`)
+    screen.getByText(`(${reference1.typeAbbreviation})`),
   ).toBeInTheDocument()
 })

@@ -24,7 +24,7 @@ import { getLineTypeByHtml } from 'common/HtmlLineType'
 export async function pdfExport(
   fragment: Fragment,
   wordService: WordService,
-  jQueryRef: JQuery
+  jQueryRef: JQuery,
 ): Promise<jsPDF> {
   const tableHtml: JQuery = $(
     renderToString(
@@ -32,15 +32,15 @@ export async function pdfExport(
         <DictionaryContext.Provider value={wordService}>
           <TransliterationLines text={fragment.text} />
         </DictionaryContext.Provider>
-      </MemoryRouter>
-    )
+      </MemoryRouter>,
+    ),
   )
   const notesHtml: JQuery = $(
     renderToString(
       <DictionaryContext.Provider value={wordService}>
         <TransliterationNotes notes={fragment.text.notes} />
-      </DictionaryContext.Provider>
-    )
+      </DictionaryContext.Provider>,
+    ),
   )
 
   const pdf = getPdfDoc(tableHtml, notesHtml, jQueryRef, wordService, fragment)
@@ -55,7 +55,7 @@ async function getPdfDoc(
   notesHtml: JQuery,
   jQueryRef: JQuery,
   wordService: WordService,
-  fragment: Fragment
+  fragment: Fragment,
 ): Promise<jsPDF> {
   const doc = new jsPDF()
 
@@ -74,7 +74,7 @@ async function getPdfDoc(
     notesHtml,
     jQueryRef,
     posAfterHeadline,
-    doc
+    doc,
   )
 
   const glossaryHtml = await getGlossaryHtml(wordService, fragment)
@@ -98,7 +98,7 @@ function addCustomFonts(doc: jsPDF) {
 
 async function getGlossaryHtml(
   wordService: WordService,
-  fragment: Fragment
+  fragment: Fragment,
 ): Promise<JQuery> {
   const glossaryFactory: GlossaryFactory = new GlossaryFactory(wordService)
   const glossaryJsx: JSX.Element = await glossaryFactory
@@ -112,9 +112,9 @@ async function getGlossaryHtml(
       wrapWithMemoryRouter(
         <DictionaryContext.Provider value={wordService}>
           {glossaryJsx}
-        </DictionaryContext.Provider>
-      )
-    )
+        </DictionaryContext.Provider>,
+      ),
+    ),
   )
 
   return glossaryHtml
@@ -142,7 +142,7 @@ function addPdfHeadLine(doc: jsPDF, fragment: Fragment, yPos: number): number {
   const currentLineHeight = getLineHeight(doc)
   const creditsSplit = doc.splitTextToSize(
     headlineParts[1],
-    doc.internal.pageSize.width - outerPaddingForCredits
+    doc.internal.pageSize.width - outerPaddingForCredits,
   )
 
   for (const key in creditsSplit) {
@@ -156,8 +156,8 @@ function addPdfHeadLine(doc: jsPDF, fragment: Fragment, yPos: number): number {
   return yPos
 }
 
-function getLineHeight(doc: any): number {
-  return doc.internal.getFontSize() / 2
+function getLineHeight(doc: jsPDF): number {
+  return doc.getFontSize() / 2
 }
 
 function centerText(doc: jsPDF, text: string): number {
@@ -179,7 +179,7 @@ function getTextHeight(doc: jsPDF, text: string): number {
 
 function getPdfHeadline(fragment: Fragment): [string, string, string] {
   const records: JQuery = $(
-    renderToString(Record({ record: fragment.uniqueRecord }))
+    renderToString(Record({ record: fragment.uniqueRecord })),
   )
   const credit = getCredit(records)
   const link = getHyperLink(fragment)
@@ -194,9 +194,9 @@ function wrapWithMemoryRouter(component: JSX.Element): ReactElement {
 function addMainTableWithFootnotes(
   table: JQuery,
   notes: JQuery,
-  jQueryRef: any,
+  jQueryRef: JQuery,
   yPos: number,
-  doc: any
+  doc: jsPDF,
 ): number {
   // table.hide()
 
@@ -219,7 +219,7 @@ function addMainTableWithFootnotes(
     jQueryRef,
     outerPaddingForTable,
     firstColumnMinWidth,
-    doc
+    doc,
   )
 
   let xPos = 0
@@ -237,11 +237,11 @@ function addMainTableWithFootnotes(
 
     const originalYPos = {
       coords: yPos,
-      page: doc.internal.getCurrentPageInfo().pageNumber,
+      page: doc.getCurrentPageInfo().pageNumber,
     }
     const maxYPos = {
       coords: yPos,
-      page: doc.internal.getCurrentPageInfo().pageNumber,
+      page: doc.getCurrentPageInfo().pageNumber,
     }
     let newPageStarted = false
     let lastElement = false
@@ -280,7 +280,7 @@ function addMainTableWithFootnotes(
                   columnSizes,
                   tdIdx,
                   columnDefs['endpos'],
-                  colspanInt
+                  colspanInt,
                 )
 
                 if (test >= cellEndpos && !columnDefs['firstElement']) {
@@ -292,7 +292,7 @@ function addMainTableWithFootnotes(
                       doc.addPage()
                       yPos = 15
                       maxYPos.coords = 15
-                      maxYPos.page = doc.internal.getCurrentPageInfo().pageNumber
+                      maxYPos.page = doc.getCurrentPageInfo().pageNumber
                     }
                   }
 
@@ -311,9 +311,7 @@ function addMainTableWithFootnotes(
             .find('.Transliteration__RulingDollarLine')
             .children('div').length
           linePositions[yPos] = {}
-          linePositions[yPos][
-            'page'
-          ] = doc.internal.getCurrentPageInfo().pageNumber
+          linePositions[yPos]['page'] = doc.getCurrentPageInfo().pageNumber
           linePositions[yPos]['num'] = num
         } else if (lineType !== 'rulingDollarLine') {
           doc.text($(el).text(), xPos, yPos)
@@ -325,16 +323,14 @@ function addMainTableWithFootnotes(
           doc.text(
             noteNumber,
             doc.internal.pageSize.width - outerPaddingForTable,
-            originalYPos.coords - getTextHeight(doc, noteNumber) / 2
+            originalYPos.coords - getTextHeight(doc, noteNumber) / 2,
           )
           doc.setFontSize(10)
         }
 
         if (!lastElement) {
           yPos = originalYPos.coords
-          if (
-            doc.internal.getCurrentPageInfo().pageNumber !== originalYPos.page
-          )
+          if (doc.getCurrentPageInfo().pageNumber !== originalYPos.page)
             doc.setPage(originalYPos.page)
         } else {
           yPos = maxYPos.coords
@@ -366,19 +362,19 @@ function addMainTableWithFootnotes(
 }
 
 function addLines(
-  linePositions: any,
+  linePositions: Record<string, { num: number; page: number }>,
   maxXPos: number,
   endposFirstColumn: number,
-  doc: jsPDF
+  doc: jsPDF,
 ) {
   for (const yPos in linePositions) {
     addUnderLine(
-      yPos,
+      Number(yPos),
       maxXPos,
-      linePositions[yPos]['num'],
-      linePositions[yPos]['page'],
+      linePositions[yPos].num,
+      linePositions[yPos].page,
       endposFirstColumn,
-      doc
+      doc,
     )
   }
 }
@@ -398,10 +394,10 @@ function getFirstColumnSize(tablelines: JQuery, doc: jsPDF): number {
 }
 
 function getCellEndpos(
-  columnSizes: any,
+  columnSizes: Record<number, { endpos: number }>,
   tdIdx: number,
   endpos: number,
-  colspanInt: number
+  colspanInt: number,
 ) {
   if (colspanInt > 1) {
     return columnSizes[tdIdx + colspanInt - 1]['endpos']
@@ -420,8 +416,8 @@ function getColumnSizes(
   jQueryRef: JQuery,
   outerPaddingForTable: number,
   firstColumnMinWidth: number,
-  doc: jsPDF
-): any {
+  doc: jsPDF,
+): Record<number, { startpos: number; endpos: number; maxColWidth: number }> {
   const columnSizes = {}
 
   setJQueryRefTo1000Px(jQueryRef)
@@ -487,7 +483,7 @@ function addFootnotes(
   padding: number,
   jQueryRef: JQuery,
   yPos: number,
-  doc: jsPDF
+  doc: jsPDF,
 ) {
   notes.hide()
   jQueryRef.append(notes)
@@ -528,7 +524,7 @@ function addGlossary(
   glossaryHtml: JQuery,
   jQueryRef: JQuery,
   yPos: number,
-  doc: any
+  doc: jsPDF,
 ): void {
   glossaryHtml.hide()
   jQueryRef.append(glossaryHtml)
@@ -545,7 +541,7 @@ function addGlossary(
   doc.setFont('JunicodeBold', 'normal')
   doc.setFontSize(14)
 
-  doc.text(paddingForGlossary, yPos, headline)
+  doc.text(headline, paddingForGlossary, yPos)
 
   doc.setFont('Junicode', 'normal')
   doc.setFontSize(10)
@@ -578,8 +574,8 @@ function addGlossary(
   glossaryHtml.remove()
 }
 
-function addText(text: any, xPos: any, yPos: any, doc: jsPDF) {
-  doc.text(xPos, yPos, text)
+function addText(text: string, xPos: number, yPos: number, doc: jsPDF) {
+  doc.text(text, xPos, yPos)
   return getTextWidth(doc, text)
 }
 
@@ -587,13 +583,13 @@ function dealWithFootNotesHtml(
   el: HTMLElement | Text | Comment | Document,
   doc: jsPDF,
   xPos: number,
-  yPos: number
+  yPos: number,
 ): number {
   let wordLength = 0
   const text = $(el).text()
 
   if ($(el).is('a')) {
-    setDocStyle($(el), doc)
+    setDocStyle($(el) as JQuery<HTMLElement>, doc)
     wordLength = addText(text + ' ', xPos, yPos, doc)
   } else if ($(el).is('span.Transliteration__NoteLine')) {
     let subWordLength = xPos
@@ -610,7 +606,7 @@ function dealWithFootNotesHtml(
               doc,
               subWordLength,
               yPos,
-              true
+              true,
             )
           }
         } else {
@@ -619,7 +615,7 @@ function dealWithFootNotesHtml(
             $(el).contents()[0].nodeType === 3
           ) {
             if ($(el).text() !== ' ') {
-              setDocStyle($(el), doc)
+              setDocStyle($(el) as JQuery<HTMLElement>, doc)
               subWordLength += addText($(el).text(), subWordLength, yPos, doc)
             }
           }
@@ -632,7 +628,7 @@ function dealWithFootNotesHtml(
   //  wordLength = addText(text,xPos,yPos,doc)
   // }
   else if ($(el).is('sup')) {
-    setDocStyle($(el), doc)
+    setDocStyle($(el) as JQuery<HTMLElement>, doc)
     wordLength = addText(text, xPos, yPos - getTextHeight(doc, text) / 2, doc)
   }
 
@@ -643,16 +639,16 @@ function dealWithGlossaryHtml(
   el: HTMLElement | Text | Comment | Document,
   doc: jsPDF,
   xPos: number,
-  yPos: number
+  yPos: number,
 ) {
   let wordLength = 0
   const text = $(el).text()
 
   if ($(el).is('a')) {
-    setDocStyle($(el), doc)
+    setDocStyle($(el) as JQuery<HTMLElement>, doc)
     wordLength = addText(text, xPos, yPos, doc)
   } else if ($(el)[0].nodeType === 3) {
-    setDocStyle($(el).parent(), doc)
+    setDocStyle($(el).parent() as JQuery<HTMLElement>, doc)
     wordLength = addText(text, xPos, yPos, doc)
   } else if ($(el).is('span.Transliteration')) {
     let subWordLength = xPos
@@ -668,13 +664,13 @@ function dealWithGlossaryHtml(
             doc,
             subWordLength,
             yPos,
-            true
+            true,
           )
         }
       })
     wordLength = subWordLength - xPos
   } else if ($(el).is('sup')) {
-    setDocStyle($(el), doc)
+    setDocStyle($(el) as JQuery<HTMLElement>, doc)
     wordLength = addText(text, xPos, yPos - getTextHeight(doc, text) / 2, doc)
   }
 
@@ -686,9 +682,9 @@ function getTransliterationText(
   doc: jsPDF,
   xPos: number,
   yPos: number,
-  add: boolean
+  add: boolean,
 ): number {
-  setDocStyle($(el), doc)
+  setDocStyle($(el) as JQuery<HTMLElement>, doc)
 
   const superScript: boolean = $(el).is('sup') ? true : false
 
@@ -718,12 +714,12 @@ function getTransliterationText(
 }
 
 function addUnderLine(
-  yPos: any,
+  yPos: number,
   endpos: number,
   num: number,
   page: number,
   endposFirstColumn: number,
-  doc: jsPDF
+  doc: jsPDF,
 ) {
   doc.setPage(page)
 
@@ -735,13 +731,13 @@ function addUnderLine(
       endposFirstColumn,
       yPos + smallLineStep,
       endpos,
-      yPos + smallLineStep
+      yPos + smallLineStep,
     )
     doc.line(
       endposFirstColumn,
       yPos + smallLineStep * 2,
       endpos,
-      yPos + smallLineStep * 2
+      yPos + smallLineStep * 2,
     )
   } else if (num === 2) {
     doc.line(endposFirstColumn, yPos, endpos, yPos)
@@ -749,7 +745,7 @@ function addUnderLine(
       endposFirstColumn,
       yPos + smallLineStep,
       endpos,
-      yPos + smallLineStep
+      yPos + smallLineStep,
     )
   } else doc.line(endposFirstColumn, yPos, endpos, yPos)
 
@@ -776,7 +772,7 @@ function getCredit(records: JQuery): string {
   )
 }
 
-function setDocStyle(el: any, doc: jsPDF) {
+function setDocStyle(el: JQuery, doc: jsPDF) {
   const superScript = el.is('sup')
   const allSmall = el.css('font-variant') === 'all-small-caps'
 

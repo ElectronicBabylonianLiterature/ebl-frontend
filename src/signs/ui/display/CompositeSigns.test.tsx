@@ -3,7 +3,8 @@ import { signFactory } from 'test-support/sign-fixtures'
 import Bluebird from 'bluebird'
 import CompositeSigns from 'signs/ui/display/CompositeSigns'
 import { render, screen } from '@testing-library/react'
-import { MemoryRouter, Route } from 'react-router-dom'
+import { MemoryRouter } from 'react-router-dom'
+import { Route } from 'router/compat'
 import React, { ReactNode } from 'react'
 
 jest.mock('signs/application/SignService')
@@ -13,7 +14,7 @@ const sign1 = signFactory.build({ name: 'BAR' })
 const sign2 = signFactory.build({ name: 'PI' })
 
 describe('Composite Signs', () => {
-  beforeEach(async () => {
+  const setup = async (): Promise<void> => {
     signService.search.mockReturnValue(Bluebird.resolve([sign1, sign2]))
     render(
       <MemoryRouter>
@@ -25,16 +26,17 @@ describe('Composite Signs', () => {
             />
           )}
         />
-      </MemoryRouter>
+      </MemoryRouter>,
     )
     await screen.findByText('Composites:')
-  })
-  test('Composite Sign is link', () => {
+  }
+  test('Composite Sign is link', async () => {
+    await setup()
     expect(
-      screen.getByRole('link', { name: new RegExp(sign1.name) })
+      screen.getByRole('link', { name: new RegExp(sign1.name) }),
     ).toBeInTheDocument()
     expect(
-      screen.getByRole('link', { name: new RegExp(sign2.name) })
+      screen.getByRole('link', { name: new RegExp(sign2.name) }),
     ).toBeInTheDocument()
   })
 })

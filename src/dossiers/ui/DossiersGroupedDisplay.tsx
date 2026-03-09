@@ -25,13 +25,29 @@ function createGroupKey(record: DossierRecord): string {
   return `${scriptDescription} — ${provenance}`
 }
 
+function createDisplayKey(
+  record: DossierRecord,
+  showProvenance: boolean,
+): string {
+  const period = record.script?.period?.name || 'Unknown Period'
+  const modifier = record.script?.periodModifier?.name || ''
+  const provenance = record.provenance?.name || 'Unknown Provenance'
+
+  const scriptDescription = modifier ? `${period} (${modifier})` : period
+
+  if (showProvenance) {
+    return `${scriptDescription} — ${provenance}`
+  }
+  return scriptDescription
+}
+
 /**
  * Groups dossier records by script (period + modifier) and provenance
  * @param records - Array of dossier records to group
  * @returns Object with grouped dossiers keyed by "Period (Modifier) — Provenance"
  */
 function groupDossiersByScriptAndProvenance(
-  records: readonly DossierRecord[]
+  records: readonly DossierRecord[],
 ): GroupedDossiers {
   return _.groupBy(records, createGroupKey)
 }
@@ -78,10 +94,10 @@ function DossierItem({
           id={`DossierPopover-${dossierKey}`}
           className="reference-popover__popover"
         >
-          <Popover.Title as="h3">{record.id}</Popover.Title>
-          <Popover.Content>
+          <Popover.Header as="h3">{record.id}</Popover.Header>
+          <Popover.Body>
             <DossierRecordDisplay record={record} index={index} />
-          </Popover.Content>
+          </Popover.Body>
         </Popover>
       </Overlay>
     </>
@@ -97,17 +113,20 @@ function DossierGroup({
   groupIndex,
   activeDossier,
   setActiveDossier,
+  showProvenance,
 }: {
   groupKey: string
   records: DossierRecord[]
   groupIndex: number
   activeDossier: string | null
   setActiveDossier: React.Dispatch<React.SetStateAction<string | null>>
+  showProvenance: boolean
 }): JSX.Element {
+  const displayKey = createDisplayKey(records[0], showProvenance)
   return (
     <div className="dossier-group" key={groupKey}>
       <div className="dossier-group__header">
-        <InlineMarkdown source={`**${groupKey}**`} />
+        <InlineMarkdown source={`**${displayKey}**`} />
       </div>
       <div className="dossier-group__items">
         <span className="dossier-prefix">Dossiers: </span>
@@ -134,8 +153,10 @@ function DossierGroup({
  */
 export function DossiersGroupedDisplay({
   records,
+  showProvenance = true,
 }: {
   records: readonly DossierRecord[]
+  showProvenance?: boolean
 }): JSX.Element {
   const [activeDossier, setActiveDossier] = useState<string | null>(null)
 
@@ -156,6 +177,7 @@ export function DossiersGroupedDisplay({
           groupIndex={groupIndex}
           activeDossier={activeDossier}
           setActiveDossier={setActiveDossier}
+          showProvenance={showProvenance}
         />
       ))}
     </div>

@@ -14,15 +14,15 @@ beforeEach(() => {
 it('Equals', () => {
   const lemmatization = new Lemmatization(
     ['1.'],
-    [[new LemmatizationToken('kur', true, [new Lemma(words[0])], [])]]
+    [[new LemmatizationToken('kur', true, [new Lemma(words[0])], [])]],
   )
   const anotherLemmatization = new Lemmatization(
     ['1.'],
-    [[new LemmatizationToken('kur', true, [new Lemma(words[0])], [])]]
+    [[new LemmatizationToken('kur', true, [new Lemma(words[0])], [])]],
   )
   const differentLemmatization = new Lemmatization(
     ['1.'],
-    [[new LemmatizationToken('ra', true, [new Lemma(words[0])], [])]]
+    [[new LemmatizationToken('ra', true, [new Lemma(words[0])], [])]],
   )
   expect(_.isEqual(lemmatization, anotherLemmatization)).toEqual(true)
   expect(_.isEqual(lemmatization, differentLemmatization)).toEqual(false)
@@ -31,11 +31,11 @@ it('Equals', () => {
 it('Sets unique lemma', () => {
   const lemmatization = new Lemmatization(
     ['1.'],
-    [[new LemmatizationToken('kur', true, [new Lemma(words[0])], [])]]
+    [[new LemmatizationToken('kur', true, [new Lemma(words[0])], [])]],
   )
   const uniqueLemma = [new Lemma(words[1])]
   expect(
-    lemmatization.setLemma(0, 0, uniqueLemma).tokens[0][0].uniqueLemma
+    lemmatization.setLemma(0, 0, uniqueLemma).tokens[0][0].uniqueLemma,
   ).toEqual(uniqueLemma)
 })
 
@@ -49,13 +49,13 @@ it('setUniqueLemma clears sugegsted', () => {
           true,
           [new Lemma(words[0])],
           [[new Lemma(words[0])]],
-          true
+          true,
         ),
       ],
-    ]
+    ],
   )
   expect(
-    lemmatization.setLemma(0, 0, [new Lemma(words[1])]).tokens[0][0].suggested
+    lemmatization.setLemma(0, 0, [new Lemma(words[1])]).tokens[0][0].suggested,
   ).toEqual(false)
 })
 
@@ -67,7 +67,7 @@ it('Creates correct DTO', () => {
         new LemmatizationToken('kur', true, [new Lemma(words[0])], []),
         new LemmatizationToken('%sux', false),
       ],
-    ]
+    ],
   )
   expect(lemmatization.toDto()).toEqual([
     [
@@ -91,14 +91,14 @@ it('applySuggestions sets suggestions', () => {
           'kur',
           true,
           [new Lemma(words[0])],
-          [[new Lemma(words[1])]]
+          [[new Lemma(words[1])]],
         ),
         new LemmatizationToken('kur', true, [], [[new Lemma(words[1])]]),
       ],
-    ]
+    ],
   )
   expect(
-    _.map(lemmatization.applySuggestions().tokens[0], 'uniqueLemma')
+    _.map(lemmatization.applySuggestions().tokens[0], 'uniqueLemma'),
   ).toEqual([[new Lemma(words[0])], [new Lemma(words[1])]])
 })
 
@@ -111,20 +111,20 @@ it('clearSuggestionFlags clears flags', () => {
           'kur',
           true,
           [new Lemma(words[0])],
-          [[new Lemma(words[1])]]
+          [[new Lemma(words[1])]],
         ),
         new LemmatizationToken(
           'kur',
           true,
           [new Lemma(words[1])],
           [[new Lemma(words[1])]],
-          true
+          true,
         ),
       ],
-    ]
+    ],
   )
   expect(
-    _.map(lemmatization.clearSuggestionFlags().tokens[0], 'suggested')
+    _.map(lemmatization.clearSuggestionFlags().tokens[0], 'suggested'),
   ).toEqual([false, false])
 })
 
@@ -144,7 +144,7 @@ test.each([
           supplementsAkkadianDictionaries: 'word',
           oraccWords: [],
           akkadischeGlossareUndIndices: [],
-        })
+        }),
       ),
     ]),
     true,

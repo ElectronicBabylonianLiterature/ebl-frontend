@@ -40,7 +40,7 @@ test('constructor', () => {
     joins,
     museumNumber,
     isInFragmentarium,
-    accession
+    accession,
   )
 
   expect(manuscriptLineDisplay.provenance).toEqual(provenance)
@@ -83,7 +83,7 @@ describe.each([
 ])('paratext %s', (dollarLines, noteLines) => {
   const line = manuscriptLineDisplayFactory.build(
     {},
-    { associations: { paratext: [...dollarLines, ...noteLines] } }
+    { associations: { paratext: [...dollarLines, ...noteLines] } },
   )
   test('dollarLines', () => expect(line.dollarLines).toEqual(dollarLines))
   test('hasNotelines', () =>

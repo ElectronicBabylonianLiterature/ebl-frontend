@@ -89,7 +89,7 @@ export default function Editor({
                     <SubmitAnnotationButton
                       disabled={disabled}
                       isHoveringOverAnnotation={token.isEqualPath(
-                        hoveringAnnotation
+                        hoveringAnnotation,
                       )}
                       setSignOfHoveringButton={setSignOfHoveringButton}
                       handleSelection={handleSelection}

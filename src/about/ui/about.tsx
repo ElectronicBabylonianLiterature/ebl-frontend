@@ -21,7 +21,7 @@ export const tabIds = [
   'dictionary',
   'bibliography',
 ] as const
-export type TabId = typeof tabIds[number]
+export type TabId = (typeof tabIds)[number]
 
 const tabConfig = [
   { id: 'project', title: 'eBL Project', icon: '⚙' },

@@ -1,11 +1,16 @@
 import React from 'react'
-import { Router } from 'react-router-dom'
-import { createMemoryHistory } from 'history'
+import { MemoryRouter } from 'react-router-dom'
 import { fireEvent, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { changeValueByLabel, submitForm } from 'test-support/utils'
 import WordSearchForm from 'dictionary/ui/search/WordSearchForm'
 import { stringify } from 'query-string'
+
+const mockNavigate = jest.fn()
+jest.mock('react-router-dom', () => ({
+  ...jest.requireActual('react-router-dom'),
+  useNavigate: () => mockNavigate,
+}))
 
 const query = {
   word: '',
@@ -22,13 +27,16 @@ const modifiedQuery = {
   origin: ['CDA'],
 }
 
+beforeEach(() => {
+  mockNavigate.mockClear()
+})
+
 it('Adds lemma to query string on submit', async () => {
-  const history = createMemoryHistory()
-  jest.spyOn(history, 'push')
+  // jest.spyOn(history, "push")
   const { container } = render(
-    <Router history={history}>
+    <MemoryRouter>
       <WordSearchForm query={query} />
-    </Router>
+    </MemoryRouter>,
   )
 
   changeValueByLabel(screen, 'Word', 'lemma')
@@ -37,33 +45,32 @@ it('Adds lemma to query string on submit', async () => {
   await userEvent.click(screen.getByRole('checkbox', { name: 'a/a' }))
   await submitForm(container)
 
-  expect(history.push).toBeCalledWith(`?${stringify(modifiedQuery)}`)
+  expect(mockNavigate).toHaveBeenCalledWith(`?${stringify(modifiedQuery)}`)
 })
 
 it('Defaults to CDA when no origin provided', async () => {
-  const history = createMemoryHistory()
   const { container } = render(
-    <Router history={history}>
+    <MemoryRouter>
       <WordSearchForm
         query={{ word: '', meaning: '', root: '', vowelClass: [] }}
       />
-    </Router>
+    </MemoryRouter>,
   )
 
   expect(
-    screen.getByRole('checkbox', { name: 'All sources' })
+    screen.getByRole('checkbox', { name: 'All sources' }),
   ).not.toBeChecked()
   expect(
-    screen.getByRole('checkbox', { name: 'Concise Dictionary of Akkadian' })
+    screen.getByRole('checkbox', { name: 'Concise Dictionary of Akkadian' }),
   ).toBeChecked()
 
   await submitForm(container)
-  expect(history.location.search).toBe('?origin=CDA')
+  expect(mockNavigate).toHaveBeenCalledWith('?origin=CDA')
 })
 
 it('Parses string inputs for vowelClass and origin into arrays', () => {
   render(
-    <Router history={createMemoryHistory()}>
+    <MemoryRouter>
       <WordSearchForm
         query={{
           word: '',
@@ -73,7 +80,7 @@ it('Parses string inputs for vowelClass and origin into arrays', () => {
           origin: ['AFO_REGISTER'],
         }}
       />
-    </Router>
+    </MemoryRouter>,
   )
 
   expect(screen.getByRole('checkbox', { name: 'a/i' })).toBeChecked()
@@ -82,11 +89,11 @@ it('Parses string inputs for vowelClass and origin into arrays', () => {
 
 it('Allows selecting a source when All sources is on', async () => {
   render(
-    <Router history={createMemoryHistory()}>
+    <MemoryRouter>
       <WordSearchForm
         query={{ word: '', meaning: '', root: '', vowelClass: [], origin: [] }}
       />
-    </Router>
+    </MemoryRouter>,
   )
 
   const allSwitch = screen.getByRole('checkbox', { name: 'All sources' })
@@ -101,7 +108,7 @@ it('Allows selecting a source when All sources is on', async () => {
 
 it('Toggles all sources off then back to CDA', async () => {
   render(
-    <Router history={createMemoryHistory()}>
+    <MemoryRouter>
       <WordSearchForm
         query={{
           word: '',
@@ -111,7 +118,7 @@ it('Toggles all sources off then back to CDA', async () => {
           origin: ['CDA'],
         }}
       />
-    </Router>
+    </MemoryRouter>,
   )
 
   const allSwitch = screen.getByRole('checkbox', { name: 'All sources' })
@@ -123,17 +130,16 @@ it('Toggles all sources off then back to CDA', async () => {
   await userEvent.click(allSwitch)
   expect(allSwitch).not.toBeChecked()
   expect(
-    screen.getByRole('checkbox', { name: 'Concise Dictionary of Akkadian' })
+    screen.getByRole('checkbox', { name: 'Concise Dictionary of Akkadian' }),
   ).toBeChecked()
 })
 
 it('Submits multiple origins as repeated params', async () => {
-  const history = createMemoryHistory()
-  jest.spyOn(history, 'push')
+  // jest.spyOn(history, "push")
   render(
-    <Router history={history}>
+    <MemoryRouter>
       <WordSearchForm query={query} />
-    </Router>
+    </MemoryRouter>,
   )
 
   const wordInput = screen.getByPlaceholderText('word')
@@ -141,18 +147,18 @@ it('Submits multiple origins as repeated params', async () => {
 
   await userEvent.click(screen.getByRole('checkbox', { name: 'All sources' }))
   await userEvent.click(
-    screen.getByRole('checkbox', { name: 'Concise Dictionary of Akkadian' })
+    screen.getByRole('checkbox', { name: 'Concise Dictionary of Akkadian' }),
   )
   await userEvent.click(
     screen.getByRole('checkbox', {
       name: 'Supplements to the Akkadian Dictionaries',
-    })
+    }),
   )
 
   await userEvent.click(screen.getByRole('button', { name: 'Query' }))
 
-  expect(history.push).toHaveBeenCalled()
-  const callArg = (history.push as jest.Mock).mock.calls[0][0]
+  expect(mockNavigate).toHaveBeenCalled()
+  const callArg = mockNavigate.mock.calls[0][0]
   expect(callArg).toContain('word=test')
   expect(callArg).toContain('origin=CDA')
   expect(callArg).toContain('origin=SAD')
@@ -160,9 +166,9 @@ it('Submits multiple origins as repeated params', async () => {
 
 it('Applies transliteration on word and root change', async () => {
   render(
-    <Router history={createMemoryHistory()}>
+    <MemoryRouter>
       <WordSearchForm query={query} />
-    </Router>
+    </MemoryRouter>,
   )
 
   const wordInput = screen.getByPlaceholderText('word')
@@ -175,12 +181,11 @@ it('Applies transliteration on word and root change', async () => {
 })
 
 it('Removes vowel when unchecked', async () => {
-  const history = createMemoryHistory()
-  jest.spyOn(history, 'push')
+  // jest.spyOn(history, "push")
   render(
-    <Router history={history}>
+    <MemoryRouter>
       <WordSearchForm query={query} />
-    </Router>
+    </MemoryRouter>,
   )
 
   const wordInput = screen.getByPlaceholderText('word')
@@ -195,17 +200,16 @@ it('Removes vowel when unchecked', async () => {
 
   await userEvent.click(screen.getByRole('button', { name: 'Query' }))
 
-  expect(history.push).toHaveBeenCalled()
-  const callArg = (history.push as jest.Mock).mock.calls[0][0]
+  expect(mockNavigate).toHaveBeenCalled()
+  const callArg = mockNavigate.mock.calls[0][0]
   expect(callArg).toContain('word=test')
   expect(callArg).toContain('origin=CDA')
 })
 
 it('Removes origin when unchecked', async () => {
-  const history = createMemoryHistory()
-  jest.spyOn(history, 'push')
+  // jest.spyOn(history, "push")
   render(
-    <Router history={history}>
+    <MemoryRouter>
       <WordSearchForm
         query={{
           word: 'test',
@@ -215,7 +219,7 @@ it('Removes origin when unchecked', async () => {
           origin: ['CDA', 'AFO_REGISTER'],
         }}
       />
-    </Router>
+    </MemoryRouter>,
   )
 
   const afoCheckbox = screen.getByRole('checkbox', { name: 'AfO Register' })
@@ -225,20 +229,19 @@ it('Removes origin when unchecked', async () => {
   expect(afoCheckbox).not.toBeChecked()
 
   await userEvent.click(screen.getByRole('button', { name: 'Query' }))
-  expect(history.push).toHaveBeenCalled()
-  const callArg = (history.push as jest.Mock).mock.calls[0][0]
+  expect(mockNavigate).toHaveBeenCalled()
+  const callArg = mockNavigate.mock.calls[0][0]
   expect(callArg).toContain('word=test')
   expect(callArg).toContain('origin=CDA')
   expect(callArg).not.toContain('AFO_REGISTER')
 })
 
 it('Allows changing meaning field without transliteration', async () => {
-  const history = createMemoryHistory()
-  jest.spyOn(history, 'push')
+  // jest.spyOn(history, "push")
   render(
-    <Router history={history}>
+    <MemoryRouter>
       <WordSearchForm query={query} />
-    </Router>
+    </MemoryRouter>,
   )
 
   const meaningInput = screen.getByPlaceholderText('meaning')
@@ -246,14 +249,14 @@ it('Allows changing meaning field without transliteration', async () => {
   expect(meaningInput).toHaveValue('to drink')
 
   await userEvent.click(screen.getByRole('button', { name: 'Query' }))
-  expect(history.push).toHaveBeenCalledWith(
-    expect.stringMatching(/meaning=to%20drink/)
+  expect(mockNavigate).toHaveBeenCalledWith(
+    expect.stringMatching(/meaning=to%20drink/),
   )
 })
 
 it('Disables Query button when all fields are empty', () => {
   render(
-    <Router history={createMemoryHistory()}>
+    <MemoryRouter>
       <WordSearchForm
         query={{
           word: '',
@@ -263,7 +266,7 @@ it('Disables Query button when all fields are empty', () => {
           origin: ['CDA'],
         }}
       />
-    </Router>
+    </MemoryRouter>,
   )
 
   const queryButton = screen.getByRole('button', { name: 'Query' })
@@ -272,7 +275,7 @@ it('Disables Query button when all fields are empty', () => {
 
 it('Enables Query button when word field has content', () => {
   render(
-    <Router history={createMemoryHistory()}>
+    <MemoryRouter>
       <WordSearchForm
         query={{
           word: '',
@@ -282,7 +285,7 @@ it('Enables Query button when word field has content', () => {
           origin: ['CDA'],
         }}
       />
-    </Router>
+    </MemoryRouter>,
   )
 
   const wordInput = screen.getByPlaceholderText('word')
@@ -294,7 +297,7 @@ it('Enables Query button when word field has content', () => {
 
 it('Enables Query button when meaning field has content', () => {
   render(
-    <Router history={createMemoryHistory()}>
+    <MemoryRouter>
       <WordSearchForm
         query={{
           word: '',
@@ -304,7 +307,7 @@ it('Enables Query button when meaning field has content', () => {
           origin: ['CDA'],
         }}
       />
-    </Router>
+    </MemoryRouter>,
   )
 
   const meaningInput = screen.getByPlaceholderText('meaning')
@@ -316,7 +319,7 @@ it('Enables Query button when meaning field has content', () => {
 
 it('Enables Query button when root field has content', () => {
   render(
-    <Router history={createMemoryHistory()}>
+    <MemoryRouter>
       <WordSearchForm
         query={{
           word: '',
@@ -326,7 +329,7 @@ it('Enables Query button when root field has content', () => {
           origin: ['CDA'],
         }}
       />
-    </Router>
+    </MemoryRouter>,
   )
 
   const rootInput = screen.getByPlaceholderText('root')
@@ -336,9 +339,9 @@ it('Enables Query button when root field has content', () => {
   expect(queryButton).toBeEnabled()
 })
 
-it('Enables Query button when vowel class is selected', () => {
+it('Enables Query button when vowel class is selected', async () => {
   render(
-    <Router history={createMemoryHistory()}>
+    <MemoryRouter>
       <WordSearchForm
         query={{
           word: '',
@@ -348,11 +351,11 @@ it('Enables Query button when vowel class is selected', () => {
           origin: ['CDA'],
         }}
       />
-    </Router>
+    </MemoryRouter>,
   )
 
   const vowelCheckbox = screen.getByRole('checkbox', { name: 'a/a' })
-  userEvent.click(vowelCheckbox)
+  await userEvent.click(vowelCheckbox)
 
   const queryButton = screen.getByRole('button', { name: 'Query' })
   expect(queryButton).toBeEnabled()

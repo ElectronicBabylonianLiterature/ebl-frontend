@@ -21,7 +21,7 @@ export interface LineNumberRange {
 
 export function isNext(
   number: LineNumber | LineNumberRange,
-  other: LineNumber | LineNumberRange
+  other: LineNumber | LineNumberRange,
 ): boolean {
   const first = number.type === 'LineNumberRange' ? number.end : number
   const second = other.type === 'LineNumberRange' ? other.start : other

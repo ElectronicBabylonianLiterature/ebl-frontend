@@ -75,7 +75,7 @@ test('DisplayLanguagePart', () => {
   render(
     <DictionaryContext.Provider value={wordServiceMock}>
       <DisplayLanguagePart part={languagePart} />
-    </DictionaryContext.Provider>
+    </DictionaryContext.Provider>,
   )
 
   expect(screen.getByText('ra')).toBeVisible()
@@ -89,7 +89,7 @@ test('DisplayUrlPart', () => {
 
 test('DisplayBibliographyPart', () => {
   const { container } = render(
-    <DisplayBibliographyPart part={bibliographyPart} />
+    <DisplayBibliographyPart part={bibliographyPart} />,
   )
 
   expect(container).toHaveTextContent(reference.document.primaryAuthor)
@@ -108,7 +108,7 @@ test('Markup', () => {
   const { container } = render(
     <DictionaryContext.Provider value={wordServiceMock}>
       <Markup parts={parts} />
-    </DictionaryContext.Provider>
+    </DictionaryContext.Provider>,
   )
   expect(container).toMatchSnapshot()
 })

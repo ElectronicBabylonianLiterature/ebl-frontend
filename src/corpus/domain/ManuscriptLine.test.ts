@@ -33,7 +33,7 @@ function makeReading(value: string): NamedSign {
 const reading: NamedSign = makeReading('ra')
 
 function makeAtfToken(
-  token: NamedSign | UnknownSign | UnknownNumberOfSigns
+  token: NamedSign | UnknownSign | UnknownNumberOfSigns,
 ): Word {
   return {
     ...atfToken,

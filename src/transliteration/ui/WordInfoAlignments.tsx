@@ -46,11 +46,11 @@ const AlignedTokens = withData<
       () =>
         _(manuscripts)
           .flatMap((tokens) =>
-            tokens.filter((token) => token.alignment === tokenIndex)
+            tokens.filter((token) => token.alignment === tokenIndex),
           )
           .sortBy((token) => token.isVariant)
           .groupBy((token) => token.cleanValue),
-      [manuscripts, tokenIndex]
+      [manuscripts, tokenIndex],
     )
 
     let variantNumber = 1
@@ -65,7 +65,7 @@ const AlignedTokens = withData<
               .join(', ')
             const isDifferentLemma = !_.isEqual(
               reconstructionLemma,
-              lineToken.uniqueLemma
+              lineToken.uniqueLemma,
             )
             return (
               <React.Fragment key={index}>
@@ -119,7 +119,7 @@ const AlignedTokens = withData<
   {
     filter: (props) => !props.lineGroup.hasManuscriptLines,
     defaultData: (props) => props.lineGroup.lineDetails,
-  }
+  },
 )
 
 export function Alignments({

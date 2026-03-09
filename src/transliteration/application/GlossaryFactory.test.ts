@@ -26,18 +26,18 @@ test('create glossary', async () => {
           new Label().setLineNumber(firstLine.lineNumber),
           firstLine.content[0] as Word,
           0,
-          hepuI
+          hepuI,
         ),
         createGlossaryToken(
           new Label(
             object.label,
             surface.label,
             column.label,
-            secondLine.lineNumber
+            secondLine.lineNumber,
           ),
           secondLine.content[0] as Word,
           0,
-          hepuI
+          hepuI,
         ),
       ],
     ],
@@ -48,7 +48,7 @@ test('create glossary', async () => {
           new Label().setLineNumber(firstLine.lineNumber),
           firstLine.content[0] as Word,
           1,
-          hepuII
+          hepuII,
         ),
       ],
     ],

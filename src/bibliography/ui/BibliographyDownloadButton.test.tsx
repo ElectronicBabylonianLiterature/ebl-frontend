@@ -26,7 +26,7 @@ describe('BibliographyDownloadButton', () => {
           label="RIS"
           onClick={mockOnClick}
         />
-      </>
+      </>,
     )
 
     expect(screen.getByText('BibTeX')).toBeInTheDocument()
@@ -41,7 +41,7 @@ describe('BibliographyDownloadButton', () => {
         filename="test.bib"
         label="BibTeX"
         onClick={mockOnClick}
-      />
+      />,
     )
 
     const button = screen.getByText('BibTeX')

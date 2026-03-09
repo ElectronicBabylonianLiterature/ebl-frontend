@@ -9,7 +9,7 @@ import Lemmatization, {
 } from 'transliteration/domain/Lemmatization'
 import FragmentService from './FragmentService'
 import { Fragment } from 'fragmentarium/domain/fragment'
-import produce, { castDraft, Draft } from 'immer'
+import { produce, castDraft, Draft } from 'immer'
 import { Genres } from 'fragmentarium/domain/Genres'
 import Word from 'dictionary/domain/Word'
 import { ManuscriptAttestation } from 'corpus/domain/manuscriptAttestation'
@@ -102,7 +102,7 @@ const fragmentService = new FragmentService(
   fragmentRepository,
   imageRepository,
   wordRepository,
-  bibliographyService
+  bibliographyService,
 )
 const lemmas = 'foo I+bar II'
 const queryResultStub: QueryResult = { items: [], matchCountTotal: 0 }
@@ -113,7 +113,7 @@ const testData: TestData<FragmentService>[] = [
     'lineToVecRanking',
     ['X.0'],
     fragmentRepository.lineToVecRanking,
-    resultStub
+    resultStub,
   ),
   new TestData('findFolio', [folio], imageRepository.findFolio, resultStub, [
     folio,
@@ -129,19 +129,19 @@ const testData: TestData<FragmentService>[] = [
     [fragment, 'small'],
     imageRepository.findThumbnail,
     resultStub,
-    [fragment.number, 'small']
+    [fragment.number, 'small'],
   ),
   new TestData(
     'folioPager',
     [folio, 'K.1'],
     fragmentRepository.folioPager,
-    resultStub
+    resultStub,
   ),
   new TestData(
     'fragmentPager',
     ['K.1'],
     fragmentRepository.fragmentPager,
-    resultStub
+    resultStub,
   ),
   new TestData('searchLemma', ['lemma'], wordRepository.searchLemma, [
     resultStub,
@@ -150,25 +150,25 @@ const testData: TestData<FragmentService>[] = [
     'searchBibliography',
     ['Alba Cecilia 1998 The Qualifications'],
     bibliographyService.search,
-    [resultStub]
+    [resultStub],
   ),
   new TestData(
     'findAnnotations',
     [fragment.number, false],
     fragmentRepository.findAnnotations,
-    resultStub
+    resultStub,
   ),
   new TestData(
     'generateAnnotations',
     [fragment.number, true],
     fragmentRepository.findAnnotations,
-    resultStub
+    resultStub,
   ),
   new TestData(
     'updateAnnotations',
     [fragment.number, resultStub],
     fragmentRepository.updateAnnotations,
-    resultStub
+    resultStub,
   ),
   new TestData(
     'findSuggestions',
@@ -176,7 +176,7 @@ const testData: TestData<FragmentService>[] = [
     fragmentRepository.findLemmas,
     [[new Lemma(word)]],
     ['kur', true],
-    Promise.resolve([[word]])
+    Promise.resolve([[word]]),
   ),
   new TestData(
     'listAllFragments',
@@ -184,7 +184,7 @@ const testData: TestData<FragmentService>[] = [
     fragmentRepository.listAllFragments,
     [],
     [],
-    Promise.resolve([])
+    Promise.resolve([]),
   ),
   new TestData(
     'collectLemmaSuggestions',
@@ -192,7 +192,7 @@ const testData: TestData<FragmentService>[] = [
     fragmentRepository.collectLemmaSuggestions,
     lemmaSuggestions,
     ['K.1'],
-    Promise.resolve(lemmaSuggestions)
+    Promise.resolve(lemmaSuggestions),
   ),
 ]
 
@@ -230,17 +230,17 @@ describe('methods returning fragment', () => {
     const references = bibliographyEntryFactory
       .buildList(2)
       .map((entry: BibliographyEntry) =>
-        referenceFactory.build({}, { associations: { document: entry } })
+        referenceFactory.build({}, { associations: { document: entry } }),
       )
     fragment = fragmentFactory.build(
       { number: number },
-      { associations: { references: references, genres: new Genres([]) } }
+      { associations: { references: references, genres: new Genres([]) } },
     )
     bibliographyService.find.mockImplementation((id: string) =>
-      Promise.reject(new Error(`${id} not found.`))
+      Promise.reject(new Error(`${id} not found.`)),
     )
     bibliographyService.findMany.mockImplementation((ids: string[]) =>
-      Promise.reject(new Error(`${ids} not found.`))
+      Promise.reject(new Error(`${ids} not found.`)),
     )
     silenceConsoleErrors()
   })
@@ -256,7 +256,7 @@ describe('methods returning fragment', () => {
       expect(fragmentRepository.find).toHaveBeenCalledWith(
         number,
         undefined,
-        undefined
+        undefined,
       )
     })
   })
@@ -264,10 +264,10 @@ describe('methods returning fragment', () => {
   describe('Reject with permission denied', () => {
     test('Throws permission error', async () => {
       fragmentRepository.find.mockReturnValueOnce(
-        Promise.reject(new Error('403 Forbidden'))
+        Promise.reject(new Error('403 Forbidden')),
       )
       expect(fragmentRepository.find('X.1')).rejects.toThrowError(
-        "You don't have permissions to view this fragment."
+        "You don't have permissions to view this fragment.",
       )
     })
   })
@@ -281,7 +281,7 @@ describe('methods returning fragment', () => {
 
     beforeEach(async () => {
       fragmentRepository.updateEdition.mockReturnValue(
-        Promise.resolve(fragment)
+        Promise.resolve(fragment),
       )
       result = await fragmentService.updateEdition(fragment.number, edition)
     })
@@ -290,7 +290,7 @@ describe('methods returning fragment', () => {
     test('Finds correct fragment', () => {
       expect(fragmentRepository.updateEdition).toHaveBeenCalledWith(
         fragment.number,
-        edition
+        edition,
       )
     })
   })
@@ -298,7 +298,7 @@ describe('methods returning fragment', () => {
   describe('fetch genres', () => {
     beforeEach(async () => {
       fragmentRepository.fetchGenres.mockReturnValue(
-        Promise.resolve(genreOptions)
+        Promise.resolve(genreOptions),
       )
       genreResult = await fragmentService.fetchGenres()
     })
@@ -310,7 +310,7 @@ describe('methods returning fragment', () => {
   describe('fetch colophon names', () => {
     beforeEach(async () => {
       fragmentRepository.fetchColophonNames.mockReturnValue(
-        Promise.resolve(colophonNamesOptions)
+        Promise.resolve(colophonNamesOptions),
       )
       colophonNamesResult = await fragmentService.fetchColophonNames('u')
     })
@@ -328,7 +328,7 @@ describe('methods returning fragment', () => {
         draft.genres = castDraft(genres)
       })
       fragmentRepository.updateGenres.mockReturnValue(
-        Promise.resolve(expectedFragment)
+        Promise.resolve(expectedFragment),
       )
       result = await fragmentService.updateGenres(fragment.number, genres)
     })
@@ -337,7 +337,7 @@ describe('methods returning fragment', () => {
     test('calls repository with correct parameters', () =>
       expect(fragmentRepository.updateGenres).toHaveBeenCalledWith(
         fragment.number,
-        genres
+        genres,
       ))
   })
 
@@ -349,7 +349,7 @@ describe('methods returning fragment', () => {
         draft.date = castDraft(date)
       })
       fragmentRepository.updateDate.mockReturnValue(
-        Promise.resolve(expectedFragment)
+        Promise.resolve(expectedFragment),
       )
       result = await fragmentService.updateDate(fragment.number, date.toDto())
     })
@@ -358,7 +358,7 @@ describe('methods returning fragment', () => {
     test('calls repository with correct parameters', () =>
       expect(fragmentRepository.updateDate).toHaveBeenCalledWith(
         fragment.number,
-        date.toDto()
+        date.toDto(),
       ))
   })
 
@@ -370,11 +370,11 @@ describe('methods returning fragment', () => {
         draft.datesInText = castDraft(datesInText)
       })
       fragmentRepository.updateDatesInText.mockReturnValue(
-        Promise.resolve(expectedFragment)
+        Promise.resolve(expectedFragment),
       )
       result = await fragmentService.updateDatesInText(
         fragment.number,
-        datesInText.filter((date) => date).map((date) => date.toDto())
+        datesInText.filter((date) => date).map((date) => date.toDto()),
       )
     })
     test('returns updated fragment', () =>
@@ -382,7 +382,7 @@ describe('methods returning fragment', () => {
     test('calls repository with correct parameters', () =>
       expect(fragmentRepository.updateDatesInText).toHaveBeenCalledWith(
         fragment.number,
-        datesInText.filter((date) => date).map((date) => date.toDto())
+        datesInText.filter((date) => date).map((date) => date.toDto()),
       ))
   })
 
@@ -396,11 +396,11 @@ describe('methods returning fragment', () => {
         draft.archaeology = castDraft(archaeology)
       })
       fragmentRepository.updateArchaeology.mockReturnValue(
-        Promise.resolve(expectedFragment)
+        Promise.resolve(expectedFragment),
       )
       result = await fragmentService.updateArchaeology(
         fragment.number,
-        archaeologyDto
+        archaeologyDto,
       )
     })
     test('returns updated fragment', () =>
@@ -408,23 +408,23 @@ describe('methods returning fragment', () => {
     test('calls repository with correct parameters', () =>
       expect(fragmentRepository.updateArchaeology).toHaveBeenCalledWith(
         fragment.number,
-        archaeologyDto
+        archaeologyDto,
       ))
   })
 
   describe('update lemmatization', () => {
     const lemmatization: Lemmatization = new Lemmatization(
       ['1.'],
-      [[new LemmatizationToken('kur', true, [])]]
+      [[new LemmatizationToken('kur', true, [])]],
     )
 
     beforeEach(async () => {
       fragmentRepository.updateLemmatization.mockReturnValue(
-        Promise.resolve(fragment)
+        Promise.resolve(fragment),
       )
       result = await fragmentService.updateLemmatization(
         fragment.number,
-        lemmatization.toDto()
+        lemmatization.toDto(),
       )
     })
 
@@ -432,18 +432,18 @@ describe('methods returning fragment', () => {
     test('Finds correct fragment', () =>
       expect(fragmentRepository.updateLemmatization).toHaveBeenCalledWith(
         fragment.number,
-        lemmatization.toDto()
+        lemmatization.toDto(),
       ))
   })
 
   describe('update references', () => {
     beforeEach(async () => {
       fragmentRepository.updateReferences.mockReturnValue(
-        Promise.resolve(fragment)
+        Promise.resolve(fragment),
       )
       result = await fragmentService.updateReferences(
         fragment.number,
-        fragment.references
+        fragment.references,
       )
     })
 
@@ -451,7 +451,7 @@ describe('methods returning fragment', () => {
     test('Finds correct fragment', () =>
       expect(fragmentRepository.updateReferences).toHaveBeenCalledWith(
         fragment.number,
-        fragment.references
+        fragment.references,
       ))
   })
 })
@@ -468,7 +468,7 @@ test('createLemmatization', async () => {
   const result = await fragmentService.createLemmatization(text)
   expect(MockLemmatizationFactory).toHaveBeenCalledWith(
     fragmentService,
-    wordRepository
+    wordRepository,
   )
   expect(createLemmatization).toBeCalledWith(text)
   expect(result).toEqual(lemmatization)
@@ -478,9 +478,10 @@ describe('search for fragment in corpus', () => {
   const number = 'K.1'
   const manuscriptAttestation = manuscriptAttestationFactory.build(
     {},
-    { transient: { museumNumber: 'K.1' } }
+    { transient: { museumNumber: 'K.1' } },
   )
-  const uncertainFragmentAttestation = uncertainFragmentAttestationFactory.build()
+  const uncertainFragmentAttestation =
+    uncertainFragmentAttestationFactory.build()
   let result: {
     manuscriptAttestations: ReadonlyArray<ManuscriptAttestation>
     uncertainFragmentAttestations: ReadonlyArray<UncertainFragmentAttestation>
@@ -526,8 +527,8 @@ const queryTestData: TestData<FragmentService>[] = queryTestCases.map(
       fragmentRepository.query,
       queryResultStub,
       [parameters],
-      Promise.resolve(queryResultStub)
-    )
+      Promise.resolve(queryResultStub),
+    ),
 )
 
 describe('Query FragmentService', () =>
@@ -544,7 +545,7 @@ describe('Query by traditional references', () => {
   let result
   beforeEach(async () => {
     fragmentRepository.queryByTraditionalReferences.mockReturnValue(
-      Promise.resolve(returnData)
+      Promise.resolve(returnData),
     )
     result = fragmentService.queryByTraditionalReferences(['text 1'])
   })
@@ -552,6 +553,6 @@ describe('Query by traditional references', () => {
     expect(result).toEqual(expected))
   test('calls repository with correct parameters', () =>
     expect(
-      fragmentRepository.queryByTraditionalReferences
+      fragmentRepository.queryByTraditionalReferences,
     ).toHaveBeenCalledWith(['text 1']))
 })

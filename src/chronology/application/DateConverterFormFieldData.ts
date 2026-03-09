@@ -59,15 +59,13 @@ const specializedDateInformationFields = [
     type: 'number',
     placeholder: 'CJDN',
     required: true,
-    help:
-      'Chronological Julian Day Number, a continuous count of days since the beginning of the Julian Period.',
+    help: 'Chronological Julian Day Number, a continuous count of days since the beginning of the Julian Period.',
   },
   {
     name: 'lunationNabonassar',
     type: 'number',
     placeholder: 'Lunation Nabonassar',
-    help:
-      'Lunation following the Nabonassar (Nabû-nāṣir, 747-734 BCE) Era. Begins on Wednesday, February 26, 747 BCE.',
+    help: 'Lunation following the Nabonassar (Nabû-nāṣir, 747-734 BCE) Era. Begins on Wednesday, February 26, 747 BCE.',
     required: true,
   },
 ]
@@ -105,23 +103,20 @@ const mesopotamianDateInformationFields = [
     name: 'regnalYear',
     type: 'number',
     placeholder: 'Regnal Year',
-    help:
-      'Regnal year, or the year of the ruler’s reign, as a number starting from 1.',
+    help: 'Regnal year, or the year of the ruler’s reign, as a number starting from 1.',
   },
   {
     name: 'mesopotamianMonth',
     type: 'number',
     placeholder: 'Mesopotamian Month',
     required: true,
-    help:
-      'Mesopotamian month as a number from 1 to 12 or 13 (depending on the year).',
+    help: 'Mesopotamian month as a number from 1 to 12 or 13 (depending on the year).',
   },
   {
     name: 'mesopotamianDay',
     type: 'number',
     placeholder: 'Mesopotamian Day',
-    help:
-      'Mesopotamian day of the month as a number from 1 to 29-30 (depending on the month) or 31 (Nabonassar lunation 2916)',
+    help: 'Mesopotamian day of the month as a number from 1 to 29-30 (depending on the month) or 31 (Nabonassar lunation 2916)',
   },
   {
     name: 'mesopotamianMonthLength',

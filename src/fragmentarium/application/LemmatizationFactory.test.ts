@@ -26,10 +26,10 @@ test('createLemmatization', async () => {
     nu: [[new Lemma(words[3])]],
   }
   ;(wordRepositoryMock.find as jest.Mock).mockImplementation((id) =>
-    wordMap[id] ? Promise.resolve(wordMap[id]) : Promise.reject(new Error())
+    wordMap[id] ? Promise.resolve(wordMap[id]) : Promise.reject(new Error()),
   )
   ;(fragmetServiceMock.findSuggestions as jest.Mock).mockImplementation(
-    (word) => Promise.resolve(suggestions[word] ? suggestions[word] : [])
+    (word) => Promise.resolve(suggestions[word] ? suggestions[word] : []),
   )
 
   const expectedLemmas = _([words[0]])
@@ -45,15 +45,15 @@ test('createLemmatization', async () => {
             token.value,
             token.lemmatizable ?? false,
             token.uniqueLemma?.map((lemma) => expectedLemmas[lemma]) ?? null,
-            token.lemmatizable ? suggestions[token.cleanValue] ?? [] : null
-          )
-      )
-    )
+            token.lemmatizable ? (suggestions[token.cleanValue] ?? []) : null,
+          ),
+      ),
+    ),
   )
 
   const result = await new LemmatizationFactory(
     fragmetServiceMock,
-    wordRepositoryMock
+    wordRepositoryMock,
   ).createLemmatization(text)
   expect(result).toEqual(lemmatization)
 })

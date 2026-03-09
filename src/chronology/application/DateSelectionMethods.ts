@@ -17,7 +17,7 @@ interface SaveDateParams {
   setUpdatePromise: (promise: Bluebird<void>) => void
   updateDate: (
     date?: MesopotamianDate | undefined,
-    index?: number | undefined
+    index?: number | undefined,
   ) => Bluebird<Fragment>
   setDate: React.Dispatch<React.SetStateAction<MesopotamianDate | undefined>>
   setIsDisplayed: React.Dispatch<React.SetStateAction<boolean>>
@@ -43,7 +43,7 @@ export function saveDateDefault({
           setIsDisplayed(false)
         })
         .finally(() => setIsSaving(false))
-        .then(() => setDate(updatedDate))
+        .then(() => setDate(updatedDate)),
     )
   }
 }
@@ -100,7 +100,7 @@ function getKing(params: DateSelectionStateParams): KingDateField | undefined {
 }
 
 function getEponym(
-  params: DateSelectionStateParams
+  params: DateSelectionStateParams,
 ): EponymDateField | undefined {
   return params.eponym && params.isAssyrianDate
     ? {

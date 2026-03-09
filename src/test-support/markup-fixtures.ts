@@ -7,8 +7,7 @@ The tablet is part of a series, as can be seen from the existence of the catchli
 The tablet stems from the 27. campaign in Uruk 1969 of the residential area U XVIII and was published first by Hunger 1976 in SpTU 1, 2.`
 
 const markupPartOne: MarkupPart = {
-  text:
-    'This tablet is a one columned chronicle-fragment, telling about the faulty reignship of king Šulgi, who committed sins against Babylon and Uruk. The text is written in an accusatory tone, stressed by the repetition of exclamatory sentences about Šulgis sinfull deeds. It was discussed in lenghth by ',
+  text: 'This tablet is a one columned chronicle-fragment, telling about the faulty reignship of king Šulgi, who committed sins against Babylon and Uruk. The text is written in an accusatory tone, stressed by the repetition of exclamatory sentences about Šulgis sinfull deeds. It was discussed in lenghth by ',
   type: 'StringPart',
 }
 
@@ -61,14 +60,13 @@ const markupPartTwoSerialized: MarkupPart = {
           'date-parts': [[2005]],
         },
       },
-    })
+    }),
   ),
   type: 'BibliographyPart',
 }
 
 const markupPartThree: MarkupPart = {
-  text:
-    ', who pointed out its inspiration trough the Sumerian Kinglist as well as anachronistic allusions to Nabonid. The tablet is part of a series, as can be seen from the existence of the catchline and a “specular catchline” as it is called by Hunger, (',
+  text: ', who pointed out its inspiration trough the Sumerian Kinglist as well as anachronistic allusions to Nabonid. The tablet is part of a series, as can be seen from the existence of the catchline and a “specular catchline” as it is called by Hunger, (',
   type: 'StringPart',
 }
 
@@ -78,8 +76,7 @@ const markupPartFour: MarkupPart = {
 }
 
 const markupPartFive: MarkupPart = {
-  text:
-    ' 1, 20 n. 2), that seems to resume the content of the preceding chapter. About one half or even two thirds of the composition is missing. This is underlined by the colophon, that takes almost all of the space on the reverse but in many other cases covers only about a third and occasionally half of a tablet. The tablet stems from the 27. campaign in Uruk 1969 of the residential area U XVIII and was published first by Hunger 1976 in SpTU 1, 2.',
+  text: ' 1, 20 n. 2), that seems to resume the content of the preceding chapter. About one half or even two thirds of the composition is missing. This is underlined by the colophon, that takes almost all of the space on the reverse but in many other cases covers only about a third and occasionally half of a tablet. The tablet stems from the 27. campaign in Uruk 1969 of the residential area U XVIII and was published first by Hunger 1976 in SpTU 1, 2.',
   type: 'StringPart',
 }
 

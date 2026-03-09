@@ -141,7 +141,7 @@ function DisplayRow({
 }
 
 function omitTiers(
-  entities: readonly EntityAnnotationSpan[]
+  entities: readonly EntityAnnotationSpan[],
 ): readonly ApiEntityAnnotationSpan[] {
   return entities.map((entity) => _.omit(entity, 'tier', 'name'))
 }
@@ -192,7 +192,7 @@ function SpanAnnotationDisplay({
                 (
                   [elements, labels]: [JSX.Element[], Labels],
                   line: AbstractLine,
-                  index: number
+                  index: number,
                 ) => {
                   const rows = hideLine(line)
                     ? elements
@@ -213,7 +213,7 @@ function SpanAnnotationDisplay({
                       ]
                   return [rows, getCurrentLabels(labels, line)]
                 },
-                [[], defaultLabels]
+                [[], defaultLabels],
               )[0]
             }
           </tbody>
@@ -258,12 +258,11 @@ function TextAnnotationView({
       .flatMap((line) =>
         line.content
           .filter((token) => isIdToken(token))
-          .map((token) => (token as AnyWord).id || '')
+          .map((token) => (token as AnyWord).id || ''),
       )
   }, [fragment.text])
-  const [initialAnnotations, setInitialAnnotations] = useState<
-    readonly ApiEntityAnnotationSpan[]
-  >(annotations)
+  const [initialAnnotations, setInitialAnnotations] =
+    useState<readonly ApiEntityAnnotationSpan[]>(annotations)
   const annotationContext = useAnnotationContext(words, initialAnnotations)
 
   return (
@@ -298,6 +297,6 @@ export default withData<
         .then((annotations) => ({
           fragment,
           annotations,
-        }))
-    )
+        })),
+    ),
 )

@@ -46,14 +46,14 @@ test.each([
   render(
     <MemoryRouter>
       <DisplayParallel line={fragment} />
-    </MemoryRouter>
+    </MemoryRouter>,
   )
 
   const museumNumber = museumNumberToString(fragment.museumNumber)
 
   expect(screen.getByRole('link', { name: content })).toHaveAttribute(
     'href',
-    `/library/${encodeURIComponent(museumNumber)}#${encodeURIComponent(hash)}`
+    `/library/${encodeURIComponent(museumNumber)}#${encodeURIComponent(hash)}`,
   )
 })
 
@@ -87,8 +87,8 @@ test.each([
     expect(screen.getByRole('link', { name: content })).toHaveAttribute(
       'href',
       `/corpus/L/1/1/${encodeURIComponent(
-        stageToAbbreviation(linkChapter.stage)
-      )}/${encodeURIComponent(linkChapter.name)}#${encodeURIComponent(hash)}`
+        stageToAbbreviation(linkChapter.stage),
+      )}/${encodeURIComponent(linkChapter.name)}#${encodeURIComponent(hash)}`,
     )
   } else {
     fail('Bad test data. chapter or implicitChapter should be non null.')
@@ -106,7 +106,7 @@ test('parallel composition', () => {
   render(<DisplayParallel line={parallel.composition} />)
 
   const content = `(${parallel.composition.name} ${lineNumberToString(
-    parallel.composition.lineNumber
+    parallel.composition.lineNumber,
   )})`
 
   expect(screen.getByText(content)).toBeVisible()

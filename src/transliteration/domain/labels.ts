@@ -58,6 +58,6 @@ export function labelsAbbreviation(labels: Labels): string {
   return flow(
     reject(isNil),
     map(labelAbbreviation),
-    join(' ')
+    join(' '),
   )([labels.object, labels.surface, labels.column])
 }

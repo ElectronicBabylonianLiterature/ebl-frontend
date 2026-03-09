@@ -1,11 +1,5 @@
 import React from 'react'
-import {
-  render,
-  act,
-  screen,
-  fireEvent,
-  RenderResult,
-} from '@testing-library/react'
+import { render, screen, fireEvent, RenderResult } from '@testing-library/react'
 import Download from 'corpus/ui/Download'
 import { ChapterDisplay } from 'corpus/domain/chapter'
 import { chapterDisplayFactory } from 'test-support/chapter-fixtures'
@@ -24,46 +18,45 @@ const textServiceMock = new MockTextService()
 let chapter: ChapterDisplay
 let element: RenderResult
 
-beforeEach(async () => {
+async function setup() {
   ;(URL.createObjectURL as jest.Mock)
     .mockReturnValueOnce(jsonUrl)
     .mockReturnValueOnce(atfUrl)
 
   chapter = chapterDisplayFactory.build()
-  await act(async () => {
-    element = render(
-      <Download
-        chapter={chapter}
-        wordService={wordServiceMock}
-        textService={textServiceMock}
-      />
-    )
-  })
-  await act(async () => {
-    fireEvent.click(screen.getByRole('button'))
-  })
-})
+  element = render(
+    <Download
+      chapter={chapter}
+      wordService={wordServiceMock}
+      textService={textServiceMock}
+    />,
+  )
+  fireEvent.click(screen.getByRole('button'))
+}
 
 describe.each([
   ['Download as JSON File', 'json', jsonUrl],
   ['Download as ATF', 'atf', atfUrl],
 ])('%s download link', (name: string, type: string, url: string) => {
-  test('href', () => {
+  test('href', async () => {
+    await setup()
     expect(screen.getByRole('link', { name: `${name}` })).toHaveAttribute(
       'href',
-      url
+      url,
     )
   })
 
-  test('download', () => {
+  test('download', async () => {
+    await setup()
     expect(screen.getByRole('link', { name: `${name}` })).toHaveAttribute(
       'download',
-      `${chapter.uniqueIdentifier}.${type}`
+      `${chapter.uniqueIdentifier}.${type}`,
     )
   })
 })
 
-test('Revoke object URLs on unmount', () => {
+test('Revoke object URLs on unmount', async () => {
+  await setup()
   element.unmount()
   expect(URL.revokeObjectURL).toHaveBeenCalledWith(jsonUrl)
   expect(URL.revokeObjectURL).toHaveBeenCalledWith(atfUrl)

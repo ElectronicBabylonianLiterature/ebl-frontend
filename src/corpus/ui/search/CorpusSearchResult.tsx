@@ -107,11 +107,11 @@ const ChapterResult = withData<
     textService.findChapterDisplay(
       chapterId,
       _.take(lines, variantsToShow),
-      _.take(variants, variantsToShow)
+      _.take(variants, variantsToShow),
     ),
   {
     watch: ({ active }) => [active],
-  }
+  },
 )
 
 function ResultPages({
@@ -187,7 +187,7 @@ export const CorpusSearchResult = withData<
             queryLemmas={corpusQuery.lemmas?.split('+')}
             variantsToShow={Math.max(
               _.trimEnd(corpusQuery.transliteration || '').split('\n').length,
-              3
+              3,
             )}
           />
         )}
@@ -197,5 +197,5 @@ export const CorpusSearchResult = withData<
   ({ textService, corpusQuery }) => textService.query(corpusQuery),
   {
     watch: ({ corpusQuery }) => [corpusQuery],
-  }
+  },
 )

@@ -76,7 +76,7 @@ export function DisplayBibliographyPart({
   return reference instanceof Reference ? (
     <Citation reference={reference} />
   ) : (
-    <Badge variant="danger">
+    <Badge bg="danger">
       @bib&#123;{reference.id}@{reference.pages}&#125;
     </Badge>
   )
@@ -103,11 +103,11 @@ export default function Markup({
         return <DisplayUrlPart key={index} part={part} />
       } else if (isParagraphPart(part)) {
         throw new Error(
-          'Unexpected ParagraphPart. Use createParagraphs to split parts into paragraphs'
+          'Unexpected ParagraphPart. Use createParagraphs to split parts into paragraphs',
         )
       } else {
         return <DisplayTextPart key={index} part={part} />
       }
-    })
+    }),
   )
 }

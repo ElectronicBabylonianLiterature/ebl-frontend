@@ -6,7 +6,7 @@ import HelpTrigger from 'common/HelpTrigger'
 export function HelpEntry(definition: JSX.Element | string): JSX.Element {
   const SearchHelp = (
     <Popover id={_.uniqueId('WordSearchHelp-')} title="Search dictionary">
-      <Popover.Content>{definition}</Popover.Content>
+      <Popover.Body>{definition}</Popover.Body>
     </Popover>
   )
   return <HelpTrigger overlay={SearchHelp} />

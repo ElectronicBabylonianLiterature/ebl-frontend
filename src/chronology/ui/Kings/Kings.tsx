@@ -2,7 +2,8 @@ import React from 'react'
 import _ from 'lodash'
 import 'chronology/ui/Kings/Kings.sass'
 import _kings from 'chronology/domain/Kings.json'
-import Select, { ValueType } from 'react-select'
+import Select from 'react-select'
+import type { SingleValue } from 'react-select'
 import { KingDateField } from 'chronology/domain/DateParameters'
 
 export interface King {
@@ -23,11 +24,11 @@ const dynasties: string[] = _.uniq(_.map(Kings, 'dynastyName'))
 export const brinkmanDynasties: string[] = dynasties.filter(
   (dynastyName) =>
     !!getKingsByDynasty(dynastyName).every((king) => king.isNotInBrinkman) ===
-    false
+    false,
 )
 
 export function getKingsByDynasty(
-  dynastyName: string
+  dynastyName: string,
 ): King[] | KingDateField[] {
   return _.filter(Kings, ['dynastyName', dynastyName])
 }
@@ -64,9 +65,9 @@ export function KingField({
 }
 
 const onKingFieldChange = (
-  option: ValueType<{ label: string; value: King }, false>,
+  option: SingleValue<{ label: string; value: King }>,
   setKing: React.Dispatch<React.SetStateAction<KingDateField | undefined>>,
-  setIsCalenderFieldDisplayed?: React.Dispatch<React.SetStateAction<boolean>>
+  setIsCalenderFieldDisplayed?: React.Dispatch<React.SetStateAction<boolean>>,
 ): void => {
   setKing(option?.value)
   if (setIsCalenderFieldDisplayed) {
@@ -90,12 +91,12 @@ function getKingOptions(): Array<{ label: string; value: King }> {
         label: getKingSelectLabel(king),
         value: king,
       }
-    }
+    },
   )
 }
 
 function getCurrentKingOption(
-  king?: King | KingDateField
+  king?: King | KingDateField,
 ): { label: string; value: King } | undefined {
   if (king && ('isBroken' in king || 'isUncertain' in king)) {
     const { isBroken, isUncertain, ..._king } = king

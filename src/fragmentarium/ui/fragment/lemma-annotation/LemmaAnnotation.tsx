@@ -10,7 +10,7 @@ import TransliterationTd from 'transliteration/ui/TransliterationTd'
 import './Lemmatizer.sass'
 import { Col, Container, Row } from 'react-bootstrap'
 import WordService from 'dictionary/application/WordService'
-import StateManager, { ValueType } from 'react-select'
+import type { OnChangeValue, SelectInstance } from 'react-select'
 import EditableToken from 'fragmentarium/ui/fragment/linguistic-annotation/EditableToken'
 import _ from 'lodash'
 import { LemmaOption } from 'fragmentarium/ui/lemmatization/LemmaSelectionForm'
@@ -45,9 +45,9 @@ export default class LemmaAnnotation extends TokenAnnotation {
   private wordService: WordService
   private fragmentService: FragmentService
   private setText: TextSetter
-  private editorRef = createRef<StateManager<LemmaOption, true>>()
+  private editorRef = createRef<SelectInstance<LemmaOption, true>>()
   private updateAnnotation: (
-    annotations: LineLemmaAnnotations
+    annotations: LineLemmaAnnotations,
   ) => Bluebird<Fragment>
 
   constructor(props: LemmaAnnotatorProps) {
@@ -90,7 +90,7 @@ export default class LemmaAnnotation extends TokenAnnotation {
     )
   }
 
-  handleChange = (selected: ValueType<LemmaOption, true>): void => {
+  handleChange = (selected: OnChangeValue<LemmaOption, true>): void => {
     this.state.activeToken?.updateLemmas((selected || []) as LemmaOption[])
     this.setActiveToken(this.state.activeToken)
   }
@@ -114,7 +114,7 @@ export default class LemmaAnnotation extends TokenAnnotation {
     this.state.activeToken?.confirmSuggestion()
     const pendingTokens = this.tokens.filter((token) => token.isPending)
     pendingTokens.forEach((token) =>
-      token.updateLemmas(this.state.activeToken?.lemmas || [])
+      token.updateLemmas(this.state.activeToken?.lemmas || []),
     )
     this.unselectSimilarTokens()
   }
@@ -150,7 +150,7 @@ export default class LemmaAnnotation extends TokenAnnotation {
         this.tokens.forEach((token) => {
           if (suggestions.has(token.cleanValue)) {
             token.updateLemmas(
-              suggestions.get(token.cleanValue) as LemmaOption[]
+              suggestions.get(token.cleanValue) as LemmaOption[],
             )
           }
         })
@@ -170,7 +170,7 @@ export default class LemmaAnnotation extends TokenAnnotation {
           annotations,
           [lineIndex, indexInLine],
           newLemmas?.map((option) => option.value) || [],
-          Object
+          Object,
         )
       }
     })
@@ -191,7 +191,8 @@ export default class LemmaAnnotation extends TokenAnnotation {
     onMouseLeave: this.unselectSimilarTokens,
   }
   editHandlers = {
-    handleChange: this.handleChange,
+    handleChange: (options: LemmaOption[] | null): void =>
+      this.handleChange(options ?? []),
     autofillLemmas: (): void => this.autofillLemmas(),
     saveUpdates: this.saveUpdates,
     onResetCurrent: this.resetActiveToken,
@@ -203,7 +204,7 @@ export default class LemmaAnnotation extends TokenAnnotation {
     const token = this.state.activeToken
     const title = token
       ? `${lineNumberToString(
-          (this.text.allLines[token.lineIndex] as TextLine).lineNumber
+          (this.text.allLines[token.lineIndex] as TextLine).lineNumber,
         )}: ${token.token.cleanValue}`
       : 'Select a Token'
 

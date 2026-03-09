@@ -13,9 +13,7 @@ import { waitForSpinnerToBeRemoved } from 'test-support/waitForSpinnerToBeRemove
 
 jest.mock('dictionary/application/WordService')
 
-let element: RenderResult
-
-beforeEach(async () => {
+async function setup(): Promise<RenderResult> {
   const [firstLine, secondLine] = lemmatized
   const text = new Text({
     lines: [firstLine, object, surface, column, secondLine],
@@ -26,17 +24,19 @@ beforeEach(async () => {
     return Promise.resolve(words)
   })
 
-  element = render(
+  const view = render(
     <MemoryRouter>
       <DictionaryContext.Provider value={wordService}>
         <Glossary text={text} wordService={wordService} />
       </DictionaryContext.Provider>
-    </MemoryRouter>
+    </MemoryRouter>,
   )
   await waitForSpinnerToBeRemoved(screen)
-})
+  return view
+}
 
 test('Glossary snapshot', async () => {
+  const view = await setup()
   await screen.findByText('Glossary')
-  expect(element.container).toMatchSnapshot()
+  expect(view.container).toMatchSnapshot()
 })

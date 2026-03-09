@@ -1,5 +1,6 @@
 import React, { useMemo } from 'react'
 import { parse } from 'query-string'
+import { useLocation } from 'react-router-dom'
 
 import AppContent from 'common/AppContent'
 import SessionContext from 'auth/SessionContext'
@@ -11,11 +12,10 @@ import { Session } from 'auth/Session'
 import SignsSearchForm from 'signs/ui/search/SignsSearchForm'
 import SignsSearch from 'signs/ui/search/SignsSearch'
 import SignService from 'signs/application/SignService'
-import { RouteComponentProps } from 'react-router-dom'
 
 type Props = {
   signService: SignService
-} & RouteComponentProps
+}
 
 export default function Signs({ location, signService }: Props): JSX.Element {
   const query = useMemo(

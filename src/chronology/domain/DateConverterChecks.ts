@@ -19,12 +19,11 @@ export default class DateConverterChecks {
   isDateWithinValidRange(
     params: GregorianProps | JulianProps | SeBabylonianProps,
     earliestDate: CalendarProps,
-    latestDate: CalendarProps
+    latestDate: CalendarProps,
   ): [boolean, boolean] {
-    const [leftLimits, rightLimits] = [
-      earliestDate,
-      latestDate,
-    ].map((limitDate) => this.paramsToLimits(params, limitDate))
+    const [leftLimits, rightLimits] = [earliestDate, latestDate].map(
+      (limitDate) => this.paramsToLimits(params, limitDate),
+    )
     return [
       !this.isDateBeforeValidRange({
         ...this.paramsToYearMonthDay(params),
@@ -39,13 +38,14 @@ export default class DateConverterChecks {
 
   isIncomingDateHasCorrespondingIntercalary(
     mesopotamianMonth: number,
-    dateConverter: DateConverter
+    dateConverter: DateConverter,
   ): boolean {
-    const mesopotamianMonthsInYear = dateConverter.getMesopotamianMonthsOfSeYear(
-      dateConverter.calendar.seBabylonianYear
-    )
+    const mesopotamianMonthsInYear =
+      dateConverter.getMesopotamianMonthsOfSeYear(
+        dateConverter.calendar.seBabylonianYear,
+      )
     return !!mesopotamianMonthsInYear.find(
-      (month) => month.value === mesopotamianMonth
+      (month) => month.value === mesopotamianMonth,
     )
   }
 
@@ -54,7 +54,7 @@ export default class DateConverterChecks {
       | GregorianProps
       | JulianProps
       | SeBabylonianProps
-      | { [k: string]: number }
+      | { [k: string]: number },
   ): { year: number; month: number; day: number } {
     const result = { year: 0, month: 0, day: 0 }
     Object.keys(params).forEach((fieldName: string) => {
@@ -71,7 +71,7 @@ export default class DateConverterChecks {
 
   private paramsToLimits(
     params: GregorianProps | JulianProps | SeBabylonianProps,
-    limitDate: CalendarProps
+    limitDate: CalendarProps,
   ): {
     yearLimit: number
     monthLimit: number
@@ -79,8 +79,8 @@ export default class DateConverterChecks {
   } {
     const filteredLimitDate = Object.fromEntries(
       Object.entries(limitDate).filter(([key]) =>
-        Object.keys(params).includes(key)
-      )
+        Object.keys(params).includes(key),
+      ),
     )
     const limitsYMD = this.paramsToYearMonthDay(filteredLimitDate)
     return {

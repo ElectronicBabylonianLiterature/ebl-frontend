@@ -67,7 +67,7 @@ const fieldIsActive = (fieldName: string, scenario: string) => {
   switch (scenario) {
     case 'setToGregorianDate':
       return ['gregorianYear', 'gregorianMonth', 'gregorianDay'].includes(
-        fieldName
+        fieldName,
       )
     case 'setToJulianDate':
       return ['julianYear', 'julianMonth', 'julianDay'].includes(fieldName)
@@ -98,7 +98,7 @@ function DateConverterFormHelpTrigger({
     <HelpTrigger
       overlay={
         <Popover id={field.name} title={field.name}>
-          <Popover.Content>{field.help}</Popover.Content>
+          <Popover.Body>{field.help}</Popover.Body>
         </Popover>
       }
     />

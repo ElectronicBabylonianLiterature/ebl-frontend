@@ -44,11 +44,11 @@ export default function Info({
   const updateDate = (date) =>
     fragmentService.updateDate(fragment.number, date.toDto())
   const updateDatesInText = (
-    datesInText: readonly MesopotamianDate[]
+    datesInText: readonly MesopotamianDate[],
   ): Bluebird<Fragment> =>
     fragmentService.updateDatesInText(
       fragment.number,
-      datesInText.filter((date) => date).map((date) => date.toDto())
+      datesInText.filter((date) => date).map((date) => date.toDto()),
     )
 
   return (

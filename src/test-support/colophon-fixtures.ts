@@ -26,16 +26,15 @@ const provenanceAttestationFactory = Factory.define<ProvenanceAttestation>(
     value: chance.pickone(Object.values(Provenances)).name,
     isBroken: chance.bool(),
     isUncertain: chance.bool(),
-  })
+  }),
 )
 
-const individualTypeAttestationFactory = Factory.define<
-  IndividualTypeAttestation
->(() => ({
-  value: chance.pickone(Object.values(IndividualType)),
-  isBroken: chance.bool(),
-  isUncertain: chance.bool(),
-}))
+const individualTypeAttestationFactory =
+  Factory.define<IndividualTypeAttestation>(() => ({
+    value: chance.pickone(Object.values(IndividualType)),
+    isBroken: chance.bool(),
+    isUncertain: chance.bool(),
+  }))
 
 const individualAttestationFactory = Factory.define<IndividualAttestation>(
   () => {
@@ -47,7 +46,7 @@ const individualAttestationFactory = Factory.define<IndividualAttestation>(
       nativeOf: provenanceAttestationFactory.build(),
       type: individualTypeAttestationFactory.build(),
     })
-  }
+  },
 )
 
 export const colophonFactory = Factory.define<Colophon>(() => ({
@@ -58,6 +57,6 @@ export const colophonFactory = Factory.define<Colophon>(() => ({
   writtenIn: provenanceAttestationFactory.build(),
   notesToScribalProcess: chance.sentence(),
   individuals: individualAttestationFactory.buildList(
-    chance.integer({ min: 1, max: 5 })
+    chance.integer({ min: 1, max: 5 }),
   ),
 }))

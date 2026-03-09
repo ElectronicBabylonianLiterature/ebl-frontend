@@ -18,28 +18,30 @@ let fragmentSearchService
 let container: HTMLElement
 let fragments: FragmentInfo[]
 
-beforeEach(async () => {
+const setup = async (): Promise<void> => {
   fragments = fragmentInfoFactory.buildList(numberOfFragments)
   fragmentSearchService = {
     fetchNeedsRevision: jest.fn(),
   }
   fragmentSearchService.fetchNeedsRevision.mockReturnValueOnce(
-    Promise.resolve(fragments)
+    Promise.resolve(fragments),
   )
   container = render(
     <MemoryRouter>
       <NeedsRevision fragmentSearchService={fragmentSearchService} />
-    </MemoryRouter>
+    </MemoryRouter>,
   ).container
   await screen.findByText('Needs revision:')
-})
+}
 
-test('Columns', () => {
+test('Columns', async () => {
+  await setup()
   const expectedHeader = _.values(expectedColumns).join('')
   expect(container).toHaveTextContent(expectedHeader)
 })
 
-test.each(_.range(numberOfFragments))('Fragment %i', (index) => {
+test.each(_.range(numberOfFragments))('Fragment %i', async (index) => {
+  await setup()
   const expectedRow = _.keys(expectedColumns)
     .map((property) => fragments[index][property])
     .join('')

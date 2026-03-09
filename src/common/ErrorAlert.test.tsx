@@ -13,7 +13,7 @@ it('Displays nothing if no error provided', async () => {
   render(
     <div data-testid="wrapper">
       <ErrorAlert error={null} />
-    </div>
+    </div>,
   )
 
   expect(screen.getByTestId('wrapper')).toBeEmptyDOMElement()

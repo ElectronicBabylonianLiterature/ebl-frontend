@@ -26,8 +26,8 @@ export default function SignLogograms({
               (logogram2, logogram1) =>
                 -compareCleanedAkkadianString(
                   logogram1.wordId[0] || '',
-                  logogram2.wordId[0] || ''
-                )
+                  logogram2.wordId[0] || '',
+                ),
             )
             .map((logogram, index) => (
               <li key={index}>
@@ -109,7 +109,7 @@ function SignLogogramInfo(schrammLogogram: string): JSX.Element {
       title="Logogram Info"
       className={'signDisplay__LogogramInfo'}
     >
-      <Popover.Content>
+      <Popover.Body>
         <MarkdownAndHtmlToHtml
           className="text-center my-1"
           markdownAndHtml={schrammLogogram}
@@ -136,7 +136,7 @@ function SignLogogramInfo(schrammLogogram: string): JSX.Element {
             </ExternalLink>
           </small>
         </div>
-      </Popover.Content>
+      </Popover.Body>
     </Popover>
   )
 }

@@ -32,6 +32,6 @@ describe.each([
     '%s has expected value',
     (param) => {
       expect(museum[param]).toEqual(expected[param])
-    }
+    },
   )
 })

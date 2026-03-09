@@ -17,7 +17,7 @@ import { AnnotationToken } from 'fragmentarium/domain/annotation-token'
 global.ResizeObserver = ResizeObserver
 
 function typeToAnnotationTokenType(
-  tokenType: string
+  tokenType: string,
 ): AnnotationTokenType.HasSign | AnnotationTokenType.Number {
   return tokenType === 'Number'
     ? AnnotationTokenType.Number
@@ -26,14 +26,14 @@ function typeToAnnotationTokenType(
 
 function namedSignTokenToAnnotationToken(
   token: NamedSign,
-  path: readonly number[]
+  path: readonly number[],
 ): AnnotationToken {
   let tokenType: AnnotationTokenType
   if (effectiveEnclosure(token).includes('BROKEN_AWAY')) {
     return AnnotationToken.initDeactive(
       '',
       AnnotationTokenType.CompletelyBroken,
-      path
+      path,
     )
   } else if (token.flags.includes('#')) {
     tokenType = AnnotationTokenType.Damaged
@@ -48,20 +48,20 @@ function namedSignTokenToAnnotationToken(
     token.value,
     path,
     token.name,
-    token.subIndex
+    token.subIndex,
   )
 }
 
 function compoundGraphemeToAnnotationToken(
   token: CompoundGrapheme,
-  path: readonly number[]
+  path: readonly number[],
 ): AnnotationToken {
   const compoundGrapheme = token as CompoundGrapheme
   if (compoundGrapheme.enclosureType.includes('BROKEN_AWAY')) {
     return AnnotationToken.initDeactive(
       '',
       AnnotationTokenType.CompletelyBroken,
-      path
+      path,
     )
   } else {
     return AnnotationToken.initActive(
@@ -70,40 +70,40 @@ function compoundGraphemeToAnnotationToken(
       compoundGrapheme.value,
       path,
       compoundGrapheme.cleanValue,
-      1
+      1,
     )
   }
 }
 
 function unannotatableTokenToAnnotationToken(
   token: Token,
-  path: readonly number[]
+  path: readonly number[],
 ): AnnotationToken {
   if (token.enclosureType.includes('BROKEN_AWAY')) {
     return AnnotationToken.initDeactive(
       '',
       AnnotationTokenType.CompletelyBroken,
-      path
+      path,
     )
   } else {
     return AnnotationToken.initDeactive(
       token.value,
       AnnotationTokenType.Disabled,
-      path
+      path,
     )
   }
 }
 
 function tokenToAnnotationToken(
   token: Token,
-  path: readonly number[]
+  path: readonly number[],
 ): AnnotationToken {
   if ('sign' in token && token.sign) {
     return AnnotationToken.initFromTokenSign(
       token.cleanValue,
       token.value,
       path,
-      token.sign.cleanValue
+      token.sign.cleanValue,
     )
   }
   if (isNamedSign(token)) {
@@ -123,7 +123,7 @@ function tokenToAnnotationToken(
 
 function mapToken(
   token: Token,
-  path: readonly number[]
+  path: readonly number[],
 ): AnnotationToken | AnnotationToken[] {
   if (
     [
@@ -137,7 +137,7 @@ function mapToken(
     return tokenToAnnotationToken(token, path)
   } else if (token.parts) {
     return token.parts.flatMap((part: Token, index: number) =>
-      mapToken(part, [...path, index])
+      mapToken(part, [...path, index]),
     )
   } else {
     return unannotatableTokenToAnnotationToken(token, path)
@@ -145,42 +145,42 @@ function mapToken(
 }
 function surfaceAtLineToAnnotationToken(
   line: SurfaceAtLine,
-  path: readonly number[]
+  path: readonly number[],
 ): AnnotationToken {
   return AnnotationToken.initActive(
     line.label.surface,
     AnnotationTokenType.SurfaceAtLine,
     line.label.surface.toLowerCase(),
-    path
+    path,
   )
 }
 function columnAtLineToAnnotationToken(
   line: ColumnAtLine,
-  path: readonly number[]
+  path: readonly number[],
 ): AnnotationToken {
   return AnnotationToken.initActive(
     line.label.column.toString(),
     AnnotationTokenType.ColumnAtLine,
     `column ${line.label.column.toString()}`,
-    path
+    path,
   )
 }
 
 function rulingDollarLineToAnnotationToken(
   line: RulingDollarLine,
-  path: readonly number[]
+  path: readonly number[],
 ): AnnotationToken {
   return AnnotationToken.initActive(
     line.number,
     AnnotationTokenType.RulingDollarLine,
     `${line.number.toLowerCase()} ruling`,
-    path
+    path,
   )
 }
 
 function structureLineToTokens(
   line: AbstractLine,
-  lineNumber: number
+  lineNumber: number,
 ): readonly AnnotationToken[] {
   const results: AnnotationToken[] = [
     AnnotationToken.initDeactive(line.prefix, AnnotationTokenType.Disabled, [
@@ -196,15 +196,15 @@ function structureLineToTokens(
   } else {
     results.push(
       ...line.content.flatMap((token, index) =>
-        mapToken(token, [lineNumber, index])
-      )
+        mapToken(token, [lineNumber, index]),
+      ),
     )
   }
   return results
 }
 
 export function createAnnotationTokens(
-  text: Text
+  text: Text,
 ): ReadonlyArray<ReadonlyArray<AnnotationToken>> {
   return text.lines.map((line, lineNumber) => [
     ...structureLineToTokens(line, lineNumber),

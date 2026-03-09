@@ -31,6 +31,6 @@ const FragmentWithData = withData<
   Fragment
 >(
   ({ data, ...props }) => <RecordView fragment={data} {...props} />,
-  (props) => props.fragmentService.find(props.number)
+  (props) => props.fragmentService.find(props.number),
 )
 export default FragmentWithData

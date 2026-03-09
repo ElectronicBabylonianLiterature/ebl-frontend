@@ -2,13 +2,14 @@ import React from 'react'
 import { Button, Card } from 'react-bootstrap'
 
 import FormInput from './FormInput'
+import { Derived } from 'dictionary/domain/Word'
 
 function DerivedFromInput({
   value,
   onChange,
 }: {
-  value: any
-  onChange: (value) => void
+  value: Derived | null
+  onChange: (value: Derived | null) => void
 }): JSX.Element {
   return (
     <Card border="light">

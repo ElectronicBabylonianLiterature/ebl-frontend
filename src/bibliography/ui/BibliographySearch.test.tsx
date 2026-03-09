@@ -15,33 +15,31 @@ let bibliographyEntries: BibliographyEntry[]
 let bibliographyServiceMock
 
 async function renderBibliographySearchComponent() {
+  bibliographyEntries = bibliographyEntryFactory.buildList(2)
+  bibliographyServiceMock = {
+    search: jest.fn(),
+  }
+  bibliographyServiceMock.search.mockReturnValueOnce(
+    Promise.resolve(bibliographyEntries),
+  )
   render(
     <MemoryRouter>
       <BibliographySearch
         query={query}
         bibliographyService={bibliographyServiceMock}
       />
-    </MemoryRouter>
+    </MemoryRouter>,
   )
   await waitForSpinnerToBeRemoved(screen)
 }
 
-beforeEach(async () => {
-  bibliographyEntries = bibliographyEntryFactory.buildList(2)
-  bibliographyServiceMock = {
-    search: jest.fn(),
-  }
-  bibliographyServiceMock.search.mockReturnValueOnce(
-    Promise.resolve(bibliographyEntries)
-  )
+test('Fetch results from bibliography service', async () => {
   await renderBibliographySearchComponent()
-})
-
-test('Fetch results from bibliography service', () => {
   expect(bibliographyServiceMock.search).toHaveBeenCalledWith(query)
 })
 
-test('Display search results correctly', () => {
+test('Display search results correctly', async () => {
+  await renderBibliographySearchComponent()
   bibliographyEntries.forEach((entry) => {
     const reference = createReferenceForEntry(entry)
     const citation = Citation.for(reference)
@@ -69,6 +67,6 @@ function expectAuthorToBeDisplayed(entry: BibliographyEntry): void {
           authorRegExp.test(content)) ||
         false
       )
-    })
+    }),
   ).toBeInTheDocument()
 }

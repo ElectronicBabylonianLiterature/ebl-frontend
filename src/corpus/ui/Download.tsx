@@ -39,7 +39,7 @@ export default function DownloadChapter({
           wordService,
           textService,
           rowsContext,
-          translationContext
+          translationContext,
         )
       }
       baseFileName={baseFileName}
@@ -53,14 +53,14 @@ export default function DownloadChapter({
     const jsonUrl = URL.createObjectURL(
       new Blob([JSON.stringify(chapter, null, 2)], {
         type: 'application/json',
-      })
+      }),
     )
     setJson(jsonUrl)
 
     const atfUrl = URL.createObjectURL(
       new Blob([chapter.atf], {
         type: 'text/plain',
-      })
+      }),
     )
     setAtf(atfUrl)
 
@@ -88,13 +88,13 @@ export class CorpusWordExportContext {
     readonly wordService: WordService,
     readonly textService: TextService,
     readonly rowsContext: RowsContextService,
-    readonly translationContext: TranslationContextService
+    readonly translationContext: TranslationContextService,
   ) {}
 }
 
 function getWordDoc(
   this: CorpusWordExportContext,
-  jQueryRef: JQuery
+  jQueryRef: JQuery,
 ): Promise<Document> {
   return new Promise((resolve) => {
     resolve(
@@ -106,8 +106,8 @@ function getWordDoc(
           rowsContext: this.rowsContext,
           translationContext: this.translationContext,
         },
-        jQueryRef
-      )
+        jQueryRef,
+      ),
     )
   })
 }

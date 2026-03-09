@@ -143,7 +143,7 @@ export const ColophonTypeInput = ({
         onChange={(options) =>
           onChange(
             'colophonTypes',
-            options?.map((option) => option.value)
+            options?.map((option) => option.value),
           )
         }
         isClearable={true}

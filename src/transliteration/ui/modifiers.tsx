@@ -2,7 +2,7 @@ import React from 'react'
 
 export function createModifierClasses(
   element: string,
-  modifiers: readonly string[]
+  modifiers: readonly string[],
 ): readonly string[] {
   return modifiers.map((modifier) => `Transliteration__${element}--${modifier}`)
 }

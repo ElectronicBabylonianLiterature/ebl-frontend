@@ -1,4 +1,4 @@
-import produce from 'immer'
+import { produce } from 'immer'
 import { addBreves } from './accents'
 import { AkkadianWord } from './token'
 
@@ -41,6 +41,6 @@ test('addBreves', () => {
     produce(word, (draft) => {
       draft.parts[0].value = '\u1E2Au\u1E2B'
       draft.parts[1].value = '\u1E2Bu\u1E2B'
-    })
+    }),
   )
 })

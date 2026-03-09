@@ -1,10 +1,11 @@
 import 'ace-builds/src-noconflict/mode-plain_text'
 
-// @ts-ignore
+// @ts-expect-error - ace is not typed
 const acequire = window.ace.acequire
 
-export class AtfHighlightRules extends acequire('ace/mode/text_highlight_rules')
-  .TextHighlightRules {
+export class AtfHighlightRules
+  extends acequire('ace/mode/text_highlight_rules').TextHighlightRules
+{
   $rules
 
   constructor() {

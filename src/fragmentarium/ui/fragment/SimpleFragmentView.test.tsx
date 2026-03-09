@@ -3,8 +3,7 @@ import { render, act, screen } from '@testing-library/react'
 import MemorySession from 'auth/Session'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import SimpleFragmentView from 'fragmentarium/ui/fragment/SimpleFragmentView'
-import { createMemoryHistory, MemoryHistory } from 'history'
-import { Router } from 'react-router-dom'
+import { MemoryRouter } from 'react-router-dom'
 import { translatedFragment } from 'test-support/fragment-fixtures'
 
 jest.mock('fragmentarium/application/FragmentService')
@@ -16,18 +15,17 @@ const MockFragmentService = FragmentService as jest.Mock<
 const fragmentServiceMock = new MockFragmentService()
 const session = new (MemorySession as jest.Mock<jest.Mocked<MemorySession>>)()
 let container: HTMLElement
-let history: MemoryHistory
 
-async function renderSimpleFragmentView(history: MemoryHistory) {
+async function renderSimpleFragmentView(initialEntry = '/') {
   await act(async () => {
     container = render(
-      <Router history={history}>
+      <MemoryRouter initialEntries={[initialEntry]}>
         <SimpleFragmentView
           fragmentService={fragmentServiceMock}
           number={translatedFragment.number}
           session={session}
         />
-      </Router>
+      </MemoryRouter>,
     ).container
   })
 }
@@ -38,17 +36,13 @@ beforeEach(async () => {
 })
 
 it('correctly displays the simple fragment view', async () => {
-  history = createMemoryHistory()
-  await renderSimpleFragmentView(history)
+  await renderSimpleFragmentView()
 
   expect(container).toMatchSnapshot()
 })
 describe('language url parameter', () => {
   const renderWithLanguage = async (language: string) => {
-    history = createMemoryHistory({
-      initialEntries: [`/html?lang=${language}`],
-    })
-    await renderSimpleFragmentView(history)
+    await renderSimpleFragmentView(`/?lang=${language}`)
   }
 
   test.each([
@@ -60,14 +54,13 @@ describe('language url parameter', () => {
       await renderWithLanguage(lang)
       expect(screen.getByText(`${visibleLang} translation`)).toBeVisible()
       expect(
-        screen.queryByText(`${hiddenLang} translation`)
+        screen.queryByText(`${hiddenLang} translation`),
       ).not.toBeInTheDocument()
-    }
+    },
   )
 
   it('shows all languages when lang is not set', async () => {
-    history = createMemoryHistory()
-    await renderSimpleFragmentView(history)
+    await renderSimpleFragmentView('/')
     expect(screen.getByText('English translation')).toBeVisible()
     expect(screen.getByText('Arabic translation')).toBeVisible()
   })

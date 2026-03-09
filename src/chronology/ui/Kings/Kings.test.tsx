@@ -9,7 +9,7 @@ describe('getKingsByDynasty', () => {
     expect(result).toEqual(
       expect.arrayContaining([
         expect.objectContaining({ dynastyName: 'Dynasty of Akkad' }),
-      ])
+      ]),
     )
   })
 
@@ -33,7 +33,6 @@ describe('findKingByOrderGlobal', () => {
 
 describe('KingField Component', () => {
   it('renders without crashing', () => {
-    // eslint-disable-next-line @typescript-eslint/no-empty-function
     render(<KingField setKing={() => {}} />)
     expect(screen.getByLabelText(/select-king/i)).toBeInTheDocument()
   })
@@ -56,7 +55,7 @@ describe('KingField Component', () => {
         orderGlobal: 147,
         orderInDynasty: '22',
         totalOfYears: '5',
-      })
+      }),
     )
   })
 })

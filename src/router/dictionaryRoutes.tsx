@@ -33,7 +33,7 @@ export default function DictionaryRoutes({
       render={({ match }): ReactNode => (
         <WordEditor
           wordService={wordService}
-          id={decodeURIComponent(match.params.id)}
+          id={decodeURIComponent(match.params.id ?? '')}
         />
       )}
     />,
@@ -51,7 +51,7 @@ export default function DictionaryRoutes({
             wordService={wordService}
             fragmentService={fragmentService}
             signService={signService}
-            wordId={decodeURIComponent(match.params.id)}
+            wordId={decodeURIComponent(match.params.id ?? '')}
           />
         </HeadTagsService>
       )}

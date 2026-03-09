@@ -33,7 +33,7 @@ const GenreSearchFormGroup = withData<
       />
     )
   },
-  (props) => props.fragmentService.fetchGenres()
+  (props) => props.fragmentService.fetchGenres(),
 )
 
 export default GenreSearchFormGroup

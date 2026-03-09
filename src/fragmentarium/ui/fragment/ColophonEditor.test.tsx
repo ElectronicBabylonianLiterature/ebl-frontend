@@ -5,7 +5,7 @@ import { ColophonStatus, ColophonType } from 'fragmentarium/domain/Colophon'
 import { fragmentFactory } from 'test-support/fragment-fixtures'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import { Promise } from 'bluebird'
-import { act } from 'react-dom/test-utils'
+import {} from 'react-dom/test-utils'
 import userEvent from '@testing-library/user-event'
 import { Fragment } from 'fragmentarium/domain/fragment'
 
@@ -24,42 +24,38 @@ const names = ['Humbaba', 'Zababa', 'Enkidu']
 const selectOption = async function (
   dropdown: HTMLElement,
   optionLabel: string,
-  saveForm = true
+  saveForm = true,
 ) {
-  await act(async () => {
-    userEvent.click(dropdown)
-    const option = await screen.findByText(optionLabel)
-    userEvent.click(option)
-    if (saveForm) {
-      await userEvent.click(screen.getByLabelText('save-colophon'))
-    }
-  })
+  await userEvent.click(dropdown)
+  const option = await screen.findByText(optionLabel)
+  await userEvent.click(option)
+  if (saveForm) {
+    await userEvent.click(screen.getByLabelText('save-colophon'))
+  }
 }
 
 const renderColophonEditor = async function (
   initialFragment: Fragment,
   mockUpdateColophon,
-  fragmentServiceMock: jest.Mocked<FragmentService>
+  fragmentServiceMock: jest.Mocked<FragmentService>,
 ) {
-  await act(async () => {
-    await render(
-      <ColophonEditor
-        fragment={initialFragment}
-        updateColophon={mockUpdateColophon}
-        fragmentService={fragmentServiceMock}
-      />
-    )
-  })
+  render(
+    <ColophonEditor
+      fragment={initialFragment}
+      updateColophon={mockUpdateColophon}
+      fragmentService={fragmentServiceMock}
+    />,
+  )
 }
 
 describe('ColophonEditor', () => {
   let mockUpdateColophon
   beforeEach(() => {
     fragmentServiceMock.fetchProvenances.mockReturnValue(
-      Promise.resolve(provenances)
+      Promise.resolve(provenances),
     )
     fragmentServiceMock.fetchColophonNames.mockReturnValue(
-      Promise.resolve(names)
+      Promise.resolve(names),
     )
     mockUpdateColophon = jest.fn()
   })
@@ -74,17 +70,17 @@ describe('ColophonEditor', () => {
     await renderColophonEditor(
       initialFragment,
       mockUpdateColophon,
-      fragmentServiceMock
+      fragmentServiceMock,
     )
     await selectOption(
       screen.getByLabelText('select-colophon-status'),
-      ColophonStatus.OnlyColophon
+      ColophonStatus.OnlyColophon,
     )
     expect(mockUpdateColophon).toHaveBeenCalledTimes(1)
     expect(mockUpdateColophon).toHaveBeenCalledWith(
       expect.objectContaining({
         colophonStatus: ColophonStatus.OnlyColophon,
-      })
+      }),
     )
   })
 
@@ -95,11 +91,11 @@ describe('ColophonEditor', () => {
     await renderColophonEditor(
       initialFragment,
       mockUpdateColophon,
-      fragmentServiceMock
+      fragmentServiceMock,
     )
     await selectOption(
       screen.getByLabelText('select-colophon-type'),
-      ColophonType.AsbB
+      ColophonType.AsbB,
     )
     expect(mockUpdateColophon).toHaveBeenCalledTimes(1)
     expect(mockUpdateColophon).toHaveBeenCalledWith(
@@ -108,7 +104,7 @@ describe('ColophonEditor', () => {
           ColophonType.AsbA,
           ColophonType.AsbB,
         ]),
-      })
+      }),
     )
   })
 
@@ -119,15 +115,13 @@ describe('ColophonEditor', () => {
     await renderColophonEditor(
       initialFragment,
       mockUpdateColophon,
-      fragmentServiceMock
+      fragmentServiceMock,
     )
-    await act(async () => {
-      await userEvent.click(screen.getByText('Add Individual'))
-      await userEvent.click(screen.getByText('Individual 1.'))
-    })
-    userEvent.click(screen.getByLabelText('0-name-broken-switch'))
+    await userEvent.click(screen.getByText('Add Individual'))
+    await userEvent.click(screen.getByText('Individual 1.'))
+    await userEvent.click(screen.getByLabelText('0-name-broken-switch'))
     const nameInput = screen.getByLabelText('select-colophon-individual-name')
-    userEvent.type(nameInput, 'ba')
+    await userEvent.type(nameInput, 'ba')
     await selectOption(nameInput, 'Humbaba')
     expect(mockUpdateColophon).toHaveBeenCalledTimes(1)
     expect(mockUpdateColophon).toHaveBeenCalledWith(
@@ -137,7 +131,7 @@ describe('ColophonEditor', () => {
             name: { value: 'Humbaba', isBroken: true },
           }),
         ]),
-      })
+      }),
     )
   })
 })

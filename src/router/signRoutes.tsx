@@ -31,7 +31,7 @@ export default function SignRoutes({
           <SignDisplay
             signService={signService}
             wordService={wordService}
-            id={decodeURIComponent(match.params.id)}
+            id={decodeURIComponent(match.params.id ?? '')}
           />
         </HeadTagsService>
       )}

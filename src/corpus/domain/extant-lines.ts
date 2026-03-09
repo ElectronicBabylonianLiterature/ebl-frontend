@@ -28,7 +28,7 @@ function lastOf(range: ExtantLineRange): ExtantLine {
 }
 
 export function groupExtantLines(
-  lines: readonly ExtantLine[]
+  lines: readonly ExtantLine[],
 ): ExtantLineRange[] {
   return lines.reduce<ExtantLineRange[]>((ranges, line): ExtantLineRange[] => {
     const lastRange = _.last(ranges)

@@ -37,7 +37,7 @@ export default function FolioDropdown({
               key={index}
               onClick={(event) => {
                 event.preventDefault()
-                controller.openTab(String(index), event)
+                controller.openTab(String(index))
               }}
             >
               {label}

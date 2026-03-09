@@ -46,6 +46,6 @@ function renderUser(isAuthenticated: boolean) {
   render(
     <AuthenticationContext.Provider value={auth}>
       <User />
-    </AuthenticationContext.Provider>
+    </AuthenticationContext.Provider>,
   )
 }

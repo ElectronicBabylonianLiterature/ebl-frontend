@@ -1,13 +1,19 @@
-import React, { Component, ErrorInfo, ReactNode } from 'react'
+import React, {
+  Component,
+  ErrorInfo,
+  ReactNode,
+  PropsWithChildren,
+} from 'react'
 import { Alert, Button } from 'react-bootstrap'
 import ErrorReporterContext from 'ErrorReporterContext'
 
-class ErrorBoundary extends Component<{ children }> {
+class ErrorBoundary extends Component<PropsWithChildren<unknown>> {
   state = {
     error: null,
   }
 
   static contextType = ErrorReporterContext
+  context!: React.ContextType<typeof ErrorReporterContext>
 
   componentDidCatch(error: Error, info: ErrorInfo): void {
     console.log(error)

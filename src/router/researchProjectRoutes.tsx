@@ -1,6 +1,6 @@
 import React, { ReactNode } from 'react'
 import { parse } from 'query-string'
-import { Route } from 'react-router-dom'
+import { Route } from 'router/compat'
 import { sitemapDefaults } from 'router/sitemap'
 import { HeadTagsService } from 'router/head'
 import { ResearchProjects } from 'research-projects/researchProject'
@@ -58,10 +58,28 @@ export default function ResearchProjectRoutes({
     <Route
       key={`${key}-home`}
       exact
-      path={[
-        `/projects/${project.abbreviation}`,
-        `/projects/${project.abbreviation}/home`,
-      ]}
+      path={`/projects/${project.abbreviation}`}
+      render={(): ReactNode => (
+        <HeadTagsService
+          title={`${project.abbreviation} in eBL`}
+          description={project.name}
+        >
+          <HomeComponent
+            fragmentService={fragmentService}
+            fragmentSearchService={fragmentSearchService}
+            wordService={wordService}
+            bibliographyService={bibliographyService}
+            dossiersService={dossiersService}
+            project={project}
+          />
+        </HeadTagsService>
+      )}
+      {...(sitemap && sitemapDefaults)}
+    />,
+    <Route
+      key={`${key}-home-alias`}
+      exact
+      path={`/projects/${project.abbreviation}/home`}
       render={(): ReactNode => (
         <HeadTagsService
           title={`${project.abbreviation} in eBL`}

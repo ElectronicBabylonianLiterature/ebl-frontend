@@ -3,7 +3,7 @@ import { ResearchProjects } from 'research-projects/researchProject'
 import { MuseumKey } from 'fragmentarium/domain/museum'
 
 export const QueryTypes = ['and', 'or', 'line', 'phrase'] as const
-export type QueryType = typeof QueryTypes[number]
+export type QueryType = (typeof QueryTypes)[number]
 export type PeriodString = keyof typeof Periods | ''
 export type PeriodModifierString = keyof typeof PeriodModifiers | ''
 

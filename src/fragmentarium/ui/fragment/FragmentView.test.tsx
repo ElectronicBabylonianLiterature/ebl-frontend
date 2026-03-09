@@ -53,7 +53,7 @@ function renderFragmentView(
   number: string,
   folioName: string | null,
   folioNumber: string | null,
-  tab: string | null
+  tab: string | null,
 ) {
   container = render(
     <HelmetProvider context={helmetContext}>
@@ -77,7 +77,7 @@ function renderFragmentView(
           </DictionaryContext.Provider>
         </SessionContext.Provider>
       </MemoryRouter>
-    </HelmetProvider>
+    </HelmetProvider>,
   ).container
 }
 
@@ -98,7 +98,7 @@ beforeEach(() => {
     jest.Mocked<FragmentService>
   >)()
   fragmentService.createLemmatization.mockReturnValue(
-    Promise.resolve(new Lemmatization([], []))
+    Promise.resolve(new Lemmatization([], [])),
   )
   fragmentSearchService = new (FragmentSearchService as jest.Mock<
     jest.Mocked<FragmentSearchService>
@@ -119,17 +119,17 @@ beforeEach(() => {
   ])
   ;(URL.createObjectURL as jest.Mock).mockReturnValue('url')
   fragmentService.findFolio.mockReturnValue(
-    Promise.resolve(new Blob([''], { type: 'image/jpeg' }))
+    Promise.resolve(new Blob([''], { type: 'image/jpeg' })),
   )
   fragmentService.findPhoto.mockReturnValue(
-    Promise.resolve(new Blob([''], { type: 'image/jpeg' }))
+    Promise.resolve(new Blob([''], { type: 'image/jpeg' })),
   )
   fragmentService.folioPager.mockReturnValue(Promise.resolve(folioPager))
   fragmentService.fragmentPager.mockReturnValue(
-    Promise.resolve(fragmentPagerData)
+    Promise.resolve(fragmentPagerData),
   )
   fragmentService.fetchGenres.mockReturnValue(
-    Promise.resolve([['ARCHIVAL'], ['ARCHIVAL', 'Administrative']])
+    Promise.resolve([['ARCHIVAL'], ['ARCHIVAL', 'Administrative']]),
   )
   fragmentService.fetchPeriods.mockReturnValue(Promise.resolve([]))
   fragmentService.findInCorpus.mockResolvedValue({
@@ -144,6 +144,16 @@ describe('Fragment is loaded', () => {
   let fragment
   let selectedFolio
 
+  async function renderAndWaitForLoadedFragment(): Promise<void> {
+    renderFragmentView(
+      fragmentNumber,
+      selectedFolio.name,
+      selectedFolio.number,
+      'folio',
+    )
+    await waitForSpinnerToBeRemoved(screen)
+  }
+
   beforeEach(async () => {
     const folios = [
       folioFactory.build({ name: 'WGL' }),
@@ -156,77 +166,75 @@ describe('Fragment is loaded', () => {
           atf: '1. ku',
           hasPhoto: true,
         },
-        { associations: { folios: folios } }
+        { associations: { folios: folios } },
       )
       .setReferences(referenceFactory.buildList(2))
     selectedFolio = fragment.folios[0]
     fragmentService.find.mockReturnValue(Promise.resolve(fragment))
     fragmentService.updateGenres.mockReturnValue(Promise.resolve(fragment))
-    renderFragmentView(
-      fragmentNumber,
-      selectedFolio.name,
-      selectedFolio.number,
-      'folio'
-    )
-    await waitForSpinnerToBeRemoved(screen)
   })
 
   it('Queries the Fragmentarium API with given parameters', async () => {
+    await renderAndWaitForLoadedFragment()
     expect(fragmentService.find).toBeCalledWith(fragmentNumber)
   })
 
   it('Shows the fragment number', async () => {
+    await renderAndWaitForLoadedFragment()
     expect(container).toHaveTextContent(fragmentNumber)
   })
 
-  it('Shows pager', () => {
+  it('Shows pager', async () => {
+    await renderAndWaitForLoadedFragment()
     expect(screen.getByLabelText('Next')).toBeVisible()
   })
 
-  it('Shows annotate button', () => {
+  it('Shows annotate button', async () => {
+    await renderAndWaitForLoadedFragment()
     expect(screen.getByText('Tag signs')).not.toHaveAttribute('aria-disabled')
   })
 
-  it('Selects active folio', () => {
+  it('Selects active folio', async () => {
+    await renderAndWaitForLoadedFragment()
     expect(
       screen.getByText(
-        `${selectedFolio.humanizedName} Folio ${selectedFolio.number}`
-      )
+        `${selectedFolio.humanizedName} Folio ${selectedFolio.number}`,
+      ),
     ).toHaveAttribute('aria-selected', 'true')
   })
 })
 
 describe('Fragment without an image is loaded', () => {
+  let fragment: Fragment
+
+  async function renderAndWaitForFragment(): Promise<void> {
+    renderFragmentView(fragment.number, null, null, null)
+    await waitForSpinnerToBeRemoved(screen)
+  }
+
   beforeEach(async () => {
-    const fragment = fragmentFactory.build(
+    fragment = fragmentFactory.build(
       {
         number: fragmentNumber,
         atf: '1. ku',
         hasPhoto: false,
       },
-      { associations: { folios: [], references: [] } }
+      { associations: { folios: [], references: [] } },
     )
     fragmentService.find.mockReturnValue(Promise.resolve(fragment))
-    renderFragmentView(fragment.number, null, null, null)
-    await waitForSpinnerToBeRemoved(screen)
   })
 
-  it('Tag signs button is disabled', () => {
-    expect(screen.getByText('Tag signs')).toHaveAttribute(
-      'aria-disabled',
-      'true'
-    )
+  it('Tag signs button is disabled', async () => {
+    await renderAndWaitForFragment()
+    expect(screen.getByText('Tag signs')).toBeDisabled()
   })
 })
 
 describe('On error', () => {
-  beforeEach(async () => {
+  it('Shows the error message', async () => {
     fragmentService.find.mockReturnValue(Promise.reject(new Error(message)))
     renderFragmentView(fragmentNumber, null, null, null)
     await waitForSpinnerToBeRemoved(screen)
-  })
-
-  it('Shows the error message', async () => {
     await screen.findByText(message)
   })
 })
@@ -238,6 +246,11 @@ describe('Filter folios', () => {
     folioFactory.build({ name: 'WGL' }),
     folioFactory.build({ name: 'AKG' }),
   ]
+
+  async function renderAndWaitForFragment(): Promise<void> {
+    renderFragmentView(fragment.number, null, null, null)
+    await waitForSpinnerToBeRemoved(screen)
+  }
 
   beforeEach(async () => {
     session = new MemorySession(['read:WGL-folios', 'read:AKG-folios'])
@@ -251,26 +264,28 @@ describe('Filter folios', () => {
         atf: '1. ku',
         hasPhoto: true,
       },
-      { associations: { folios: folios } }
+      { associations: { folios: folios } },
     )
     fragmentService.find.mockReturnValue(Promise.resolve(fragment))
-    renderFragmentView(fragment.number, null, null, null)
-    await waitForSpinnerToBeRemoved(screen)
   })
 
   it("excludes folios the user doesn't have access to", async () => {
     expect(fragment.filterFolios(session).folios).toEqual(openFolios)
   })
 
-  it.each(openFolios)('shows the included folio %#', (folio) => {
+  it.each(openFolios)('shows the included folio %#', async (folio) => {
+    await renderAndWaitForFragment()
     expect(
-      screen.getByText(`${folio.humanizedName} Folio ${folio.number}`)
+      screen.getByText(`${folio.humanizedName} Folio ${folio.number}`),
     ).toBeVisible()
   })
 
   it('Does not show the excluded folios', async () => {
+    await renderAndWaitForFragment()
     expect(
-      screen.queryByText(`${folios[2].humanizedName} Folio ${folios[2].number}`)
+      screen.queryByText(
+        `${folios[2].humanizedName} Folio ${folios[2].number}`,
+      ),
     ).not.toBeInTheDocument()
   })
 })

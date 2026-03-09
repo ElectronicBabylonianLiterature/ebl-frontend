@@ -44,7 +44,7 @@ type FormData = {
 
 const handleBeforeUnload = (
   event: BeforeUnloadEvent,
-  hasChanges: () => boolean
+  hasChanges: () => boolean,
 ): string | void => {
   if (hasChanges()) {
     const confirmationMessage =
@@ -143,12 +143,12 @@ const TransliterationForm: React.FC<Props> = ({
   const [updatePromise, setUpdatePromise] = useState(Promise.resolve())
   const initialValues = useMemo(
     () => ({ transliteration, notes, introduction }),
-    [transliteration, notes, introduction]
+    [transliteration, notes, introduction],
   )
 
   const isDirty = (
     _value: unknown,
-    field: typeof editionFields[number]
+    field: (typeof editionFields)[number],
   ): boolean => formData[field] !== initialValues[field]
 
   const update = (property: keyof FormData) => (value: string) => {
@@ -170,7 +170,7 @@ const TransliterationForm: React.FC<Props> = ({
     setFormData({ ...formData, error: null })
     const updatedFields = _.pickBy(
       _.pick(formData, editionFields),
-      isDirty
+      isDirty,
     ) as EditionFields
     const promise = updateEdition(updatedFields)
       .then((fragment) => {
@@ -192,7 +192,7 @@ const TransliterationForm: React.FC<Props> = ({
       formData.transliteration !== transliteration ||
       formData.notes !== notes ||
       formData.introduction !== introduction,
-    [formData, transliteration, notes, introduction]
+    [formData, transliteration, notes, introduction],
   )
 
   useEffect(() => {
@@ -216,7 +216,7 @@ const TransliterationForm: React.FC<Props> = ({
         propsDisabled,
         update,
         formData,
-      })
+      }),
   )
 
   return (

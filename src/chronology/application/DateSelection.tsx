@@ -31,7 +31,7 @@ interface DateEditorProps extends DateEditorStateProps {
 
 function getSelectedDateAndValidation(
   state: DateSelectionState,
-  savedDate?: MesopotamianDate
+  savedDate?: MesopotamianDate,
 ): { selectedDate?: MesopotamianDate; isSelectedDateValid: boolean } {
   let isSelectedDateValid: boolean
   let selectedDate: MesopotamianDate | undefined
@@ -89,7 +89,7 @@ export function DateEditor({
 
   const { selectedDate, isSelectedDateValid } = getSelectedDateAndValidation(
     state,
-    date
+    date,
   )
 
   const saveButton = (
@@ -127,7 +127,7 @@ export function DateEditor({
       id="popover-select-date"
       className={'w-100'}
     >
-      <Popover.Content>
+      <Popover.Body>
         {dateOptionsInput}
         {dateInputGroups}
         {savedDateDisplay}
@@ -135,7 +135,7 @@ export function DateEditor({
         {date && deleteButton}
         {saveButton}
         <Spinner loading={isSaving}>Saving...</Spinner>
-      </Popover.Content>
+      </Popover.Body>
     </Popover>
   )
 
@@ -188,7 +188,7 @@ export default function DateSelection({
         <div className={'Details__inline-date'}>
           <DateDisplay date={date} />
           <MetaEditButton
-            target={target}
+            buttonRef={target}
             onClick={() => setIsDisplayed(true)}
             aria-label="Edit date button"
           />
@@ -200,7 +200,7 @@ export default function DateSelection({
     <div>
       {`Date:${date ? '' : ' -'}`}
       <MetaEditButton
-        target={target}
+        buttonRef={target}
         onClick={() => setIsDisplayed(true)}
         aria-label="Edit date button"
       />

@@ -15,7 +15,7 @@ describe('createDefaultLineFactory', () => {
       createLine({
         variants: [createVariant({ reconstruction: defaultReconstruction })],
         status: EditStatus.NEW,
-      })
+      }),
     )
   })
 
@@ -38,9 +38,9 @@ describe('createDefaultLineFactory', () => {
                     reconstruction: defaultReconstruction,
                   }),
                 ],
-              })
-            )
-          )()
+              }),
+            ),
+          )(),
         ).toEqual(
           createLine({
             number: expected,
@@ -50,7 +50,7 @@ describe('createDefaultLineFactory', () => {
               }),
             ],
             status: EditStatus.NEW,
-          })
+          }),
         )
       })
 
@@ -67,8 +67,8 @@ describe('createDefaultLineFactory', () => {
                   ],
                 }),
               ],
-            })
-          )()
+            }),
+          )(),
         ).toEqual(
           createLine({
             variants: [
@@ -82,10 +82,10 @@ describe('createDefaultLineFactory', () => {
               }),
             ],
             status: EditStatus.NEW,
-          })
+          }),
         )
       })
-    }
+    },
   )
 
   test('Has the manuscripts without transliteration in same order.', () => {
@@ -107,8 +107,8 @@ describe('createDefaultLineFactory', () => {
               manuscripts: manuscripts,
             }),
           ],
-        })
-      )()
+        }),
+      )(),
     ).toEqual(
       createLine({
         variants: [
@@ -122,7 +122,7 @@ describe('createDefaultLineFactory', () => {
           }),
         ],
         status: EditStatus.NEW,
-      })
+      }),
     )
   })
 })

@@ -59,7 +59,7 @@ function Translation({
   language: string
 }): JSX.Element {
   const translation = line.translation.filter(
-    (translation) => translation.language === language
+    (translation) => translation.language === language,
   )
   return translation.length > 0 ? (
     <>
@@ -175,9 +175,10 @@ export function ChapterViewLineVariant({
   const [{ language }] = useContext(TranslationContext)
   const hasIntertext = variant.intertext.length > 0
 
-  const columns = useMemo(() => createColumns(variant.reconstruction), [
-    variant.reconstruction,
-  ])
+  const columns = useMemo(
+    () => createColumns(variant.reconstruction),
+    [variant.reconstruction],
+  )
 
   const [, highlightIndexSetter] = useState(0)
   const lineGroup = useMemo(() => {
@@ -199,7 +200,7 @@ export function ChapterViewLineVariant({
   const transliteration = useMemo(() => {
     const variantLabel = (
       <span className="chapter-display__variant">{`variant${numberToUnicodeSubscript(
-        variant.originalIndex
+        variant.originalIndex,
       )}:\xa0`}</span>
     )
 
@@ -265,7 +266,7 @@ export function ChapterViewLineVariant({
         <Score lineGroup={lineGroup} />
       </CollapsibleRow>
     ),
-    [lineGroup, scoreId, showScore, totalColumns]
+    [lineGroup, scoreId, showScore, totalColumns],
   )
   const note = useMemo(
     () =>
@@ -281,7 +282,7 @@ export function ChapterViewLineVariant({
           />
         </CollapsibleRow>
       ),
-    [variant, noteId, showNotes, totalColumns]
+    [variant, noteId, showNotes, totalColumns],
   )
   const parallels = useMemo(
     () =>
@@ -294,7 +295,7 @@ export function ChapterViewLineVariant({
           <Parallels lines={variant.parallelLines} />
         </CollapsibleRow>
       ),
-    [variant, parallelsId, showParallels, totalColumns]
+    [variant, parallelsId, showParallels, totalColumns],
   )
 
   const scoreCaret = (

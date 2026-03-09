@@ -9,7 +9,7 @@ export default function Help(): JSX.Element {
       title="Annotation Help"
       style={{ maxWidth: '30%' }}
     >
-      <Popover.Content>
+      <Popover.Body>
         <ul>
           <li>
             <b>
@@ -58,7 +58,7 @@ export default function Help(): JSX.Element {
             whole line.
           </li>
         </ul>
-      </Popover.Content>
+      </Popover.Body>
     </Popover>
   )
 }

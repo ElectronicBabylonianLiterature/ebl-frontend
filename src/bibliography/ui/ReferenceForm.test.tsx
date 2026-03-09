@@ -18,7 +18,7 @@ let onChange
 let searchBibliography
 let entry
 
-beforeEach(() => {
+function setup() {
   reference = referenceFactory.build()
   entry = buildBorger1957()
   onChange = jest.fn()
@@ -29,11 +29,12 @@ beforeEach(() => {
       value={reference}
       onChange={onChange}
       searchBibliography={searchBibliography}
-    />
+    />,
   )
-})
+}
 
 test(`Changing document calls onChange with updated value`, async () => {
+  setup()
   changeValueByLabel(screen, /ReferenceForm-Document-.*/, 'Borger')
   await screen.findByText(/Borger 1957/)
   clickNth(screen, /Borger 1957/, 0)
@@ -49,10 +50,12 @@ describe.each([
   ['Notes', 'notes', 'setNotes', ''],
 ])('%s', (label, property, setter, newValue) => {
   it(`Has correct label and value`, () => {
+    setup()
     expect(screen.getByLabelText(label)).toHaveValue(reference[property])
   })
 
   it(`Calls onChange with updated value`, () => {
+    setup()
     whenChangedByLabel(screen, label, newValue)
       .expect(onChange)
       .toHaveBeenCalledWith((updatedItem) => reference[setter](updatedItem))
@@ -60,8 +63,9 @@ describe.each([
 })
 
 it('Displays Lines Cited', () => {
+  setup()
   expect(screen.getByLabelText('Lines Cited')).toHaveValue(
-    reference.linesCited.join(',')
+    reference.linesCited.join(','),
   )
 })
 
@@ -69,9 +73,10 @@ test.each([
   ['3.1,2', ['3.1', '2']],
   ['', []],
 ])('Calls onChange with updated Lines Cited %s', (newValue, expectedValue) => {
+  setup()
   whenChangedByLabel(screen, 'Lines Cited', newValue)
     .expect(onChange)
     .toHaveBeenCalledWith((updatedItem) =>
-      reference.setLinesCited(expectedValue)
+      reference.setLinesCited(expectedValue),
     )
 })

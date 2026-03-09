@@ -11,7 +11,7 @@ export default function LogogramInfo(schrammLogogram: string): JSX.Element {
       title="Logogram Info"
       className={'signDisplay__LogogramInfo'}
     >
-      <Popover.Content>
+      <Popover.Body>
         <MarkdownAndHtmlToHtml
           className="text-center my-1"
           markdownAndHtml={schrammLogogram}
@@ -32,7 +32,7 @@ export default function LogogramInfo(schrammLogogram: string): JSX.Element {
             </ExternalLink>
           </small>
         </div>
-      </Popover.Content>
+      </Popover.Body>
     </Popover>
   )
 }

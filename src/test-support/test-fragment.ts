@@ -28,6 +28,11 @@ const externalNumbers = {
   metropolitanNumber: '123',
   pierpontMorganNumber: '123',
   louvreNumber: '123',
+  ontarioNumber: '123',
+  kelseyNumber: '123',
+  harvardHamNumber: '123',
+  sketchfabNumber: '123',
+  arkNumber: '123',
   dublinTcdNumber: '123',
   cambridgeMaaNumber: '123',
   ashmoleanNumber: '123',
@@ -407,8 +412,7 @@ export const fragmentDto: FragmentDto = {
   ],
   uncuratedReferences: null,
   traditionalReferences: ['text 1'],
-  atf:
-    '10. sal/: š[im {gu}[...].GA\n10. ::/sal ši]m\n10. šim | šim\n10. ...+ku {KA.G[A} ... ....ku x',
+  atf: '10. sal/: š[im {gu}[...].GA\n10. ::/sal ši]m\n10. šim | šim\n10. ...+ku {KA.G[A} ... ....ku x',
   hasPhoto: true,
   genres: [
     {
@@ -512,7 +516,7 @@ export const fragment = new Fragment(
       '',
       '',
       [],
-      new BibliographyEntry({ id: 'RN52' })
+      new BibliographyEntry({ id: 'RN52' }),
     ),
   ],
   null,
@@ -550,5 +554,5 @@ export const fragment = new Fragment(
       day: { value: '1' },
       isSeleucidEra: true,
     }),
-  ]
+  ],
 )

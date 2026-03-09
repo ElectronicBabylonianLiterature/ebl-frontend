@@ -126,27 +126,28 @@ function WordDisplay({
     <EmptySection key="akkadischeGlossareUndIndices" />
   )
 
-  const supplementsAkkadianDictionaries = word.supplementsAkkadianDictionaries ? (
-    <Fragment key="supplementsAkkadianDictionaries">
-      <Row className="supplementsAkkadianDictionaries">
-        <Col>
-          {' '}
-          <Markdown text={word.supplementsAkkadianDictionaries} />
-        </Col>
-      </Row>
-      <LiteratureRedirectBox
-        authors="Streck, M.P."
-        book={Sections[4].title}
-        notelink="https://creativecommons.org/licenses/by-sa/3.0/"
-        subtitle="2013–"
-        note="CC BY-ND 3.0"
-        link="https://altorient.gko.uni-leipzig.de/etymd.html"
-        icon="pointer__hover my-2 fas fa-external-link-square-alt"
-      />
-    </Fragment>
-  ) : (
-    <EmptySection key="supplementsAkkadianDictionaries" />
-  )
+  const supplementsAkkadianDictionaries =
+    word.supplementsAkkadianDictionaries ? (
+      <Fragment key="supplementsAkkadianDictionaries">
+        <Row className="supplementsAkkadianDictionaries">
+          <Col>
+            {' '}
+            <Markdown text={word.supplementsAkkadianDictionaries} />
+          </Col>
+        </Row>
+        <LiteratureRedirectBox
+          authors="Streck, M.P."
+          book={Sections[4].title}
+          notelink="https://creativecommons.org/licenses/by-sa/3.0/"
+          subtitle="2013–"
+          note="CC BY-ND 3.0"
+          link="https://altorient.gko.uni-leipzig.de/etymd.html"
+          icon="pointer__hover my-2 fas fa-external-link-square-alt"
+        />
+      </Fragment>
+    ) : (
+      <EmptySection key="supplementsAkkadianDictionaries" />
+    )
 
   const fragmentarium = (
     <FragmentLemmaLines lemmaId={word._id} fragmentService={fragmentService} />
@@ -207,5 +208,5 @@ export default withData<
       fragmentService={fragmentService}
     />
   ),
-  (props) => props.wordService.find(props.wordId)
+  (props) => props.wordService.find(props.wordId),
 )

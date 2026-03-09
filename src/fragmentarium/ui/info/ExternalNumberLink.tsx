@@ -187,6 +187,51 @@ export function LouvreLink({ number }: { number: string }): JSX.Element {
     />
   )
 }
+export function ontarioLink({ number }: { number: string }): JSX.Element {
+  return (
+    <ExternalNumberLink
+      number={number}
+      baseUrl={'https://collections.rom.on.ca/objects/'}
+      label={'Royal Ontario Museum'}
+    />
+  )
+}
+export function kelseyLink({ number }: { number: string }): JSX.Element {
+  return (
+    <ExternalNumberLink
+      number={number}
+      baseUrl={'https://quod.lib.umich.edu/k/kelsey/x-'}
+      label={'Kelsey Museum'}
+    />
+  )
+}
+export function harvardHamLink({ number }: { number: string }): JSX.Element {
+  return (
+    <ExternalNumberLink
+      number={number}
+      baseUrl={'https://harvardartmuseums.org/collections/object/'}
+      label={'Harvard Art Museums'}
+    />
+  )
+}
+export function sketchfabLink({ number }: { number: string }): JSX.Element {
+  return (
+    <ExternalNumberLink
+      number={number}
+      baseUrl={'https://sketchfab.com/3d-models/'}
+      label={'SketchFab'}
+    />
+  )
+}
+export function arkLink({ number }: { number: string }): JSX.Element {
+  return (
+    <ExternalNumberLink
+      number={number}
+      baseUrl={'https://n2t.net/ark:/'}
+      label={'ark'}
+    />
+  )
+}
 export function dublinTcdLink({ number }: { number: string }): JSX.Element {
   return (
     <ExternalNumberLink
@@ -278,7 +323,7 @@ function OraccLink({
 }
 function SealLink({ sealTextNumber }: { sealTextNumber: string }): JSX.Element {
   const url = `https://seal.huji.ac.il/node/${encodeURIComponent(
-    sealTextNumber
+    sealTextNumber,
   )}`
   return (
     <ExternalLink href={url} aria-label={`Seal text ${sealTextNumber}`}>

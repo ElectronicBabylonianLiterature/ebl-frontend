@@ -1,5 +1,6 @@
 import React, { useMemo } from 'react'
 import { parse } from 'query-string'
+import { useLocation } from 'react-router-dom'
 
 import AppContent from 'common/AppContent'
 import WordSearchForm from './WordSearchForm'
@@ -10,12 +11,10 @@ import InfoBanner from 'common/InfoBanner'
 import './Dictionary.css'
 import { SectionCrumb } from 'common/Breadcrumbs'
 import { Session } from 'auth/Session'
-import { RouteComponentProps } from 'react-router-dom'
 import WordService from 'dictionary/application/WordService'
 
 export default function Dictionary({
   wordService,
-  location,
 }: {
   wordService: WordService
 } & RouteComponentProps): JSX.Element {

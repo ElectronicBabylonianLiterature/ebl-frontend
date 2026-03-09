@@ -7,7 +7,7 @@ export default class ChapterCrumb implements Crumb {
   constructor(
     readonly id: ChapterId,
     readonly displayPrefix: boolean = true,
-    readonly abbreviateStage: boolean = false
+    readonly abbreviateStage: boolean = false,
   ) {}
 
   get text(): React.ReactNode {

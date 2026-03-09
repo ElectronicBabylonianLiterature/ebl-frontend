@@ -1,7 +1,8 @@
 import React from 'react'
 import './ImageButtonGroup.css'
 import { Button, ButtonGroup, OverlayTrigger, Tooltip } from 'react-bootstrap'
-import { useCallback, useMemo } from 'react'
+import { useCallback } from 'react'
+import useObjectUrl from 'common/useObjectUrl'
 
 export const getImageActions = ({
   zoomIn,
@@ -25,26 +26,29 @@ export const getImageActions = ({
 
 export const useImageActions = (
   image: Blob,
-  fileName: string
+  fileName: string,
 ): {
   handleDownload: () => void
   handleOpenInNewTab: () => void
-  imageUrl: string
+  imageUrl: string | undefined
 } => {
+  const imageUrl = useObjectUrl(image)
+
   const handleDownload = useCallback(() => {
     const link = document.createElement('a')
-    link.href = URL.createObjectURL(image)
     const extension = image.type.split('/')[1]
     link.download = `eBL-${fileName}.${extension}`
-    link.click()
-  }, [image, fileName])
+    if (imageUrl) {
+      link.href = imageUrl
+      link.click()
+    }
+  }, [imageUrl, image.type, fileName])
 
   const handleOpenInNewTab = useCallback(() => {
     const photoUrl = URL.createObjectURL(image)
     window.open(photoUrl, '_blank')
+    setTimeout(() => URL.revokeObjectURL(photoUrl), 60000)
   }, [image])
-
-  const imageUrl = useMemo(() => URL.createObjectURL(image), [image])
 
   return {
     handleDownload,
@@ -87,13 +91,8 @@ interface ImageActions {
 const ImageButtonGroup: React.FC<{ imageActions: ImageActions }> = ({
   imageActions,
 }): JSX.Element => {
-  const {
-    onZoomIn,
-    onZoomOut,
-    onReset,
-    onDownload,
-    onOpenInNewTab,
-  } = imageActions
+  const { onZoomIn, onZoomOut, onReset, onDownload, onOpenInNewTab } =
+    imageActions
   return (
     <ButtonGroup className="photo-controls">
       <ButtonWithTooltip

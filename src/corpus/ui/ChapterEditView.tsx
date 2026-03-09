@@ -90,8 +90,8 @@ function ChapterEditView({
       textService.updateManuscripts(
         chapter.id,
         currentChapter.manuscripts,
-        currentChapter.uncertainFragments
-      )
+        currentChapter.uncertainFragments,
+      ),
     )
   }
 
@@ -129,7 +129,7 @@ function ChapterEditView({
         disabled={isSaving}
         dirty={isDirty}
         searchBibliography={(
-          query: string
+          query: string,
         ): Promise<readonly BibliographyEntry[]> =>
           bibliographyService.search(query)
         }
@@ -165,5 +165,5 @@ export default withData<
     Promise.all([textService.find(id.textId), textService.findChapter(id)]),
   {
     watch: (props) => [props.id],
-  }
+  },
 )

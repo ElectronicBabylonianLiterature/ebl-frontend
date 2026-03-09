@@ -19,7 +19,7 @@ export type Config<PROPS, DATA> = {
 export default function withData<PROPS, GETTER_PROPS, DATA>(
   WrappedComponent: React.ComponentType<WithData<PROPS, DATA>>,
   getter: (props: PROPS & GETTER_PROPS) => Promise<DATA>,
-  config: Partial<Config<PROPS & GETTER_PROPS, DATA>> = {}
+  config: Partial<Config<PROPS & GETTER_PROPS, DATA>> = {},
 ): React.ComponentType<PROPS & GETTER_PROPS> {
   const fullConfig: Config<PROPS & GETTER_PROPS, DATA> = {
     watch: () => [],
@@ -46,7 +46,7 @@ export default function withData<PROPS, GETTER_PROPS, DATA>(
         }
       },
       // eslint-disable-next-line react-hooks/exhaustive-deps
-      fullConfig.watch(props)
+      fullConfig.watch(props),
     )
 
     return (

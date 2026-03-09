@@ -32,7 +32,7 @@ export default function PdfDownloadButton({
       getPdfDoc(fragment, wordService, jQueryRef).then((doc) => {
         doc.save(fragment.number + '.pdf')
         setIsLoading(false)
-      })
+      }),
     )
   }
 
@@ -49,7 +49,7 @@ export default function PdfDownloadButton({
 function getPdfDoc(
   fragment: Fragment,
   wordService: WordService,
-  jQueryRef: JQuery
+  jQueryRef: JQuery,
 ): Promise<jsPDF> {
   return new Promise(function (resolve) {
     resolve(pdfExport(fragment, wordService, jQueryRef))

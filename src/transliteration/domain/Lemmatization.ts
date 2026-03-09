@@ -1,5 +1,5 @@
 import _ from 'lodash'
-import produce, { castDraft, Draft, immerable } from 'immer'
+import { produce, castDraft, Draft, immerable } from 'immer'
 
 import Lemma from './Lemma'
 
@@ -27,7 +27,7 @@ export class LemmatizationToken {
     lemmatizable: boolean,
     uniqueLemma: UniqueLemma | null = null,
     suggestions: ReadonlyArray<UniqueLemma> | null = null,
-    suggested = false
+    suggested = false,
   ) {
     this.value = value
     this.uniqueLemma = uniqueLemma
@@ -42,7 +42,7 @@ export class LemmatizationToken {
 
   setUniqueLemma(
     uniqueLemma: UniqueLemma,
-    suggested = false
+    suggested = false,
   ): LemmatizationToken {
     return produce((draft: Draft<LemmatizationToken>, uniqueLemma) => {
       draft.uniqueLemma = uniqueLemma
@@ -83,7 +83,7 @@ export default class Lemmatization {
 
   constructor(
     lines: ReadonlyArray<string>,
-    tokens: ReadonlyArray<ReadonlyArray<LemmatizationToken>>
+    tokens: ReadonlyArray<ReadonlyArray<LemmatizationToken>>,
   ) {
     this.lines = lines
     this.tokens = tokens
@@ -96,11 +96,11 @@ export default class Lemmatization {
   setLemma(
     rowIndex: number,
     columnIndex: number,
-    uniqueLemma: UniqueLemma
+    uniqueLemma: UniqueLemma,
   ): Lemmatization {
     return produce(this, (draft: Draft<Lemmatization>) => {
       draft.tokens[rowIndex][columnIndex] = castDraft(
-        this.tokens[rowIndex][columnIndex].setUniqueLemma(uniqueLemma)
+        this.tokens[rowIndex][columnIndex].setUniqueLemma(uniqueLemma),
       )
     })
   }
@@ -118,7 +118,7 @@ export default class Lemmatization {
   }
 
   private mapTokens(
-    iteratee: (token: LemmatizationToken) => LemmatizationToken
+    iteratee: (token: LemmatizationToken) => LemmatizationToken,
   ): Lemmatization {
     return produce(this, (draft: Draft<Lemmatization>) => {
       draft.tokens = castDraft(this.tokens.map((row) => row.map(iteratee)))

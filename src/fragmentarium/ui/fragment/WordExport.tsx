@@ -47,7 +47,7 @@ import { createParagraphs } from 'markup/ui/markup'
 export async function wordExport(
   fragment: Fragment,
   wordService: WordService,
-  jQueryRef: JQuery
+  jQueryRef: JQuery,
 ): Promise<Document> {
   const tableHtml: JQuery = $(
     renderToString(
@@ -55,24 +55,24 @@ export async function wordExport(
         <DictionaryContext.Provider value={wordService}>
           <TransliterationLines text={fragment.text} />
         </DictionaryContext.Provider>
-      </MemoryRouter>
-    )
+      </MemoryRouter>,
+    ),
   )
   const notesHtml: JQuery = $(
     renderToString(
       <DictionaryContext.Provider value={wordService}>
         <TransliterationNotes notes={fragment.text.notes} />
-      </DictionaryContext.Provider>
-    )
+      </DictionaryContext.Provider>,
+    ),
   )
   const records: JQuery = $(
-    renderToString(Record({ record: fragment.uniqueRecord }))
+    renderToString(Record({ record: fragment.uniqueRecord })),
   )
   const footNotes: Paragraph[] = getFootNotes(notesHtml, jQueryRef)
   const tableWithFootnotes = getMainTableWithFootnotes(
     tableHtml,
     footNotes,
-    jQueryRef
+    jQueryRef,
   )
   return generateWordDocument(
     tableWithFootnotes.footNotes,
@@ -84,7 +84,7 @@ export async function wordExport(
       ...tableWithFootnotes.table,
       ...(await getGlossaryOrEmpty(fragment, wordService, jQueryRef)),
     ],
-    getHyperLink(fragment)
+    getHyperLink(fragment),
   )
 }
 
@@ -95,7 +95,7 @@ function wrapWithMemoryRouter(component: JSX.Element): ReactElement {
 function getMainTableWithFootnotes(
   table: JQuery,
   footNotesLines: Paragraph[],
-  jQueryRef: JQuery
+  jQueryRef: JQuery,
 ): { table: Array<Table | Paragraph>; footNotes: Paragraph[] } {
   table.hide()
 
@@ -153,7 +153,7 @@ function getMainTableWithFootnotes(
         const colspanInt: number = colspan ? parseInt(colspan) : 1
 
         tds.push(
-          getFormatedTableCell(para, nextLineType, nextElement, colspanInt)
+          getFormatedTableCell(para, nextLineType, nextElement, colspanInt),
         )
       }) //td
     rows.push(new TableRow({ children: tds }))
@@ -190,12 +190,12 @@ function getIntroduction(fragment: Fragment): Paragraph[] {
         $(
           renderToString(
             wrapWithMemoryRouter(
-              <Markup parts={paragraphParts} key={index} container={'p'} />
-            )
-          )
-        )
+              <Markup parts={paragraphParts} key={index} container={'p'} />,
+            ),
+          ),
+        ),
       )
-    }
+    },
   )
   return [getHeading('Introduction'), ...paragraphs]
 }
@@ -203,7 +203,7 @@ function getIntroduction(fragment: Fragment): Paragraph[] {
 async function getGlossaryOrEmpty(
   fragment: Fragment,
   wordService: WordService,
-  jQueryRef: JQuery
+  jQueryRef: JQuery,
 ): Promise<Paragraph[]> {
   const glossaryFactory: GlossaryFactory = new GlossaryFactory(wordService)
   const glossaryJsx: JSX.Element = await glossaryFactory
@@ -216,9 +216,9 @@ async function getGlossaryOrEmpty(
       wrapWithMemoryRouter(
         <DictionaryContext.Provider value={wordService}>
           {glossaryJsx}
-        </DictionaryContext.Provider>
-      )
-    )
+        </DictionaryContext.Provider>,
+      ),
+    ),
   )
   return glossaryHtml.children().length > 1
     ? getGlossary(glossaryHtml, jQueryRef)

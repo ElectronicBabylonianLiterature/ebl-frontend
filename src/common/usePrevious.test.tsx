@@ -17,18 +17,17 @@ function TestCounter() {
 function renderTestCounter() {
   render(<TestCounter />)
 }
-beforeEach(async () => {
-  renderTestCounter()
-})
+
 describe('Test usePrevious Hook', () => {
   it('Change State', async () => {
-    userEvent.click(screen.getByRole('button'))
+    renderTestCounter()
+    await userEvent.click(screen.getByRole('button'))
     expect(screen.getByText('Now: 1, before: 0')).toBeInTheDocument()
 
-    userEvent.click(screen.getByRole('button'))
+    await userEvent.click(screen.getByRole('button'))
     expect(screen.getByText('Now: 2, before: 1')).toBeInTheDocument()
 
-    userEvent.click(screen.getByRole('button'))
+    await userEvent.click(screen.getByRole('button'))
     expect(screen.getByText('Now: 3, before: 2')).toBeInTheDocument()
   })
 })

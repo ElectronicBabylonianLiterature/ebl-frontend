@@ -34,7 +34,7 @@ const testData: TestData<BibliographyService>[] = [
     'search',
     ['Alba Cecilia 1998 The Qualifications'],
     bibliographyRepository.search,
-    [resultStub]
+    [resultStub],
   ),
   new TestData('search', ['Alba Cecilia'], bibliographyRepository.search, [
     resultStub,
@@ -43,7 +43,7 @@ const testData: TestData<BibliographyService>[] = [
     'listAllBibliography',
     [],
     bibliographyRepository.listAllBibliography,
-    []
+    [],
   ),
 ]
 describe('BibliographyService', () =>

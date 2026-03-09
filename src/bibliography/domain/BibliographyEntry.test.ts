@@ -24,7 +24,7 @@ test.each([
   ['link', 'URL'],
   ['shortContainerTitle', 'container-title-short'],
 ])('%s', (property, path) =>
-  expect(entry[property]).toEqual(_.get(cslData, path))
+  expect(entry[property]).toEqual(_.get(cslData, path)),
 )
 
 test('non-dropping particle', () => {
@@ -82,7 +82,7 @@ test('toHtml', () => {
       format: 'html',
       template: 'citation-apa',
       lang: 'de-DE',
-    })
+    }),
   )
 })
 
@@ -92,7 +92,7 @@ test('toBibtex', () => {
       format: 'string',
       type: 'string',
       style: 'bibtex',
-    })
+    }),
   )
 })
 

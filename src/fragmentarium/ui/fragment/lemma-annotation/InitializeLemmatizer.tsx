@@ -16,7 +16,7 @@ type LemmaWordMap = ReadonlyMap<LemmaId, Word>
 
 const createEditableTokens = (
   text: Text,
-  words: LemmaWordMap
+  words: LemmaWordMap,
 ): EditableToken[] => {
   const tokens: EditableToken[] = []
   let indexInText = 0
@@ -28,7 +28,7 @@ const createEditableTokens = (
           return new LemmaOption(words.get(lemma) as Word)
         })
         tokens.push(
-          new EditableToken(token, indexInText, indexInLine, lineIndex, lemmas)
+          new EditableToken(token, indexInText, indexInLine, lineIndex, lemmas),
         )
         indexInText++
       }
@@ -49,7 +49,7 @@ const LoadWords = withData<
     const tokens: Set<string> = new Set(
       props.text.allLines
         .flatMap((line) => line.content)
-        .flatMap((token) => token.uniqueLemma || [])
+        .flatMap((token) => token.uniqueLemma || []),
     )
 
     return props.wordService
@@ -59,11 +59,11 @@ const LoadWords = withData<
   },
   {
     watch: (props) => [props.text],
-  }
+  },
 )
 
 export const InitializeLemmatizer = (
-  props: Omit<LemmaAnnotatorProps, 'editableTokens' | 'setText'>
+  props: Omit<LemmaAnnotatorProps, 'editableTokens' | 'setText'>,
 ): JSX.Element => {
   const [text, setText] = useState<Text>(props.text)
 

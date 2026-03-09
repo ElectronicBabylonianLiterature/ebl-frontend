@@ -18,7 +18,7 @@ export default function UncuratedReferencesList({
       (ref) => ref.pages.length,
       'document',
     ],
-    ['asc', 'asc', 'asc']
+    ['asc', 'asc', 'asc'],
   )
 
   return (

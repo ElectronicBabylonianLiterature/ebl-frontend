@@ -14,11 +14,7 @@ export default function AboutLibrary(
   markupService: MarkupService
 ): JSX.Element {
   function MarkupParagraph({ text }: { text: string }): JSX.Element {
-    return (
-      <p>
-        <Markup markupService={markupService} text={text} />
-      </p>
-    )
+    return <Markup markupService={markupService} text={text} />
   }
 
   return (

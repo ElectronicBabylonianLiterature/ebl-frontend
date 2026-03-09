@@ -37,7 +37,7 @@ describe('AkkadianWordAnalysis', () => {
   it('displays meter', () => {
     render(<AkkadianWordAnalysis word={word} showMeter={true} showIpa={true} />)
     expect(
-      screen.getByText(`${stressedHeavyWeight} ${heavyWeight}`)
+      screen.getByText(`${stressedHeavyWeight} ${heavyWeight}`),
     ).toBeInTheDocument()
   })
   it('displays IPA', () => {

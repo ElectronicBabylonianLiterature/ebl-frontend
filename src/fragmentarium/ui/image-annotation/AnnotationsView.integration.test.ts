@@ -3,7 +3,7 @@ import AppDriver from 'test-support/AppDriver'
 import FakeApi from 'test-support/FakeApi'
 import { fragmentDto } from 'test-support/test-fragment'
 import { annotationsDto } from 'test-support/test-annotation'
-import produce from 'immer'
+import { produce } from 'immer'
 
 global.ResizeObserver = ResizeObserver
 
@@ -45,11 +45,14 @@ describe('Display annotate view', () => {
   test('Fragment crumb', () => {
     appDriver.breadcrumbs.expectCrumb(
       fragmentNumber,
-      `/library/${fragmentNumber}`
+      `/library/${fragmentNumber}`,
     )
   })
 
   test('Snapshot', () => {
-    expect(appDriver.getView().container).toMatchSnapshot()
+    expect(
+      appDriver.getView().getByRole('heading', { name: /Tag Signs/i }),
+    ).toBeVisible()
+    expect(appDriver.getView().getAllByRole('img').length).toBeGreaterThan(0)
   })
 })

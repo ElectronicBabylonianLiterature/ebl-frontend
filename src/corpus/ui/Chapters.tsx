@@ -18,7 +18,7 @@ import { ChapterId } from 'transliteration/domain/chapter-id'
 import './Chapters.sass'
 import ManuscriptJoins from './ManuscriptJoins'
 import ManuscriptReferences from './ManuscriptReferences'
-import produce, { castDraft } from 'immer'
+import { produce, castDraft } from 'immer'
 import { Join } from 'fragmentarium/domain/join'
 
 function ProvenanceHeading({
@@ -58,15 +58,15 @@ function excludeIndirectJoins(manuscripts: Manuscript[]): Manuscript[] {
     produce(manuscript, (draft) => {
       function isPrimaryJoin(joins: JoinGroup): boolean {
         return _.some(
-          joins.map((join) => join.museumNumber === manuscript.museumNumber)
+          joins.map((join) => join.museumNumber === manuscript.museumNumber),
         )
       }
       draft.joins = castDraft(
         manuscript.joins.filter(
-          (joinGroup) => isPrimaryJoin(joinGroup) || isUniqueJoin(joinGroup)
-        )
+          (joinGroup) => isPrimaryJoin(joinGroup) || isUniqueJoin(joinGroup),
+        ),
       )
-    })
+    }),
   )
 }
 
@@ -91,7 +91,7 @@ const Manuscripts = withData<
     const [extantLines, setExtantLines] = useState<ExtantLines>()
     if (_.isNil(extantLines)) {
       setExtantLinesPromise(
-        textService.findExtantLines(id).then(setExtantLines)
+        textService.findExtantLines(id).then(setExtantLines),
       )
     }
 
@@ -129,10 +129,10 @@ const Manuscripts = withData<
                 <HelpTrigger
                   overlay={
                     <Popover id={_.uniqueId('ExtantLinesHelp-')}>
-                      <Popover.Content>
+                      <Popover.Body>
                         Bold figures indicate lines at the beginning or end of
                         columns, sides, or excerpts.
-                      </Popover.Content>
+                      </Popover.Body>
                     </Popover>
                   }
                 />
@@ -166,7 +166,7 @@ const Manuscripts = withData<
                           </th>
                           <td
                             headers={[provenanceId, rowId, museumNumberId].join(
-                              ' '
+                              ' ',
                             )}
                             className="list-of-manuscripts__museum-numbers"
                           >
@@ -193,7 +193,7 @@ const Manuscripts = withData<
                           </td>
                         </tr>
                       )
-                    }
+                    },
                   )}
                 </React.Fragment>
               )
@@ -213,9 +213,10 @@ const Manuscripts = withData<
                         <FragmentariumLink
                           item={{
                             ...uncertainFragment,
-                            isInFragmentarium: fragmentService.isInFragmentarium(
-                              uncertainFragment.museumNumber
-                            ),
+                            isInFragmentarium:
+                              fragmentService.isInFragmentarium(
+                                uncertainFragment.museumNumber,
+                              ),
                           }}
                         />
                       </li>
@@ -229,7 +230,7 @@ const Manuscripts = withData<
       </table>
     )
   },
-  ({ id, textService }) => textService.findManuscripts(id)
+  ({ id, textService }) => textService.findManuscripts(id),
 )
 
 export default function Chapters({

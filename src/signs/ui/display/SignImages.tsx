@@ -1,7 +1,7 @@
 import SignService from 'signs/application/SignService'
 import React from 'react'
 import withData, { WithoutData } from 'http/withData'
-import { Button, Card, Col, Container, Figure, Row } from 'react-bootstrap'
+import { Col, Container, Figure, Row } from 'react-bootstrap'
 import Accordion from 'react-bootstrap/Accordion'
 
 import _ from 'lodash'
@@ -24,7 +24,7 @@ export default withData<
 >(
   ({ data }) =>
     data.length ? <SignImagePagination croppedAnnotations={data} /> : null,
-  (props) => props.signService.getImages(props.signName)
+  (props) => props.signService.getImages(props.signName),
 )
 function SignImage({
   croppedAnnotation,
@@ -62,7 +62,7 @@ function SignImagePagination({
 }) {
   const scripts = _.groupBy(
     croppedAnnotations,
-    (croppedAnnotation) => croppedAnnotation.script
+    (croppedAnnotation) => croppedAnnotation.script,
   )
   const periodsAbbr = [...periods.map((period) => period.abbreviation), '']
 
@@ -93,31 +93,26 @@ function SignImagePagination({
             }
 
             return (
-              <Accordion defaultActiveKey={index === 0 ? '0' : ''} key={index}>
-                <Card>
-                  <Accordion.Toggle
-                    as={Button}
-                    variant="link"
-                    eventKey={index.toString()}
-                  >
-                    {script}
-                  </Accordion.Toggle>
-                  <Accordion.Collapse eventKey={index.toString()}>
-                    <Card.Body>
-                      <Row>
-                        {_.sortBy(
-                          croppedAnnotation,
-                          (elem) => elem.fragmentNumber
-                        ).map((croppedAnnotation, index) => (
-                          <SignImage
-                            key={index}
-                            croppedAnnotation={croppedAnnotation}
-                          />
-                        ))}
-                      </Row>
-                    </Card.Body>
-                  </Accordion.Collapse>
-                </Card>
+              <Accordion
+                defaultActiveKey={index === 0 ? '0' : undefined}
+                key={index}
+              >
+                <Accordion.Item eventKey={index.toString()}>
+                  <Accordion.Header>{script}</Accordion.Header>
+                  <Accordion.Body>
+                    <Row>
+                      {_.sortBy(
+                        croppedAnnotation,
+                        (elem) => elem.fragmentNumber,
+                      ).map((croppedAnnotation, index) => (
+                        <SignImage
+                          key={index}
+                          croppedAnnotation={croppedAnnotation}
+                        />
+                      ))}
+                    </Row>
+                  </Accordion.Body>
+                </Accordion.Item>
               </Accordion>
             )
           })}

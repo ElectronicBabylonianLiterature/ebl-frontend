@@ -28,13 +28,13 @@ async function renderFragment() {
   container = render(
     <MemoryRouter>
       <FragmentInCorpus fragment={fragment} fragmentService={fragmentService} />
-    </MemoryRouter>
+    </MemoryRouter>,
   ).container
   await waitForSpinnerToBeRemoved(screen)
 }
 
 describe('Manuscript attestation rendering', () => {
-  beforeEach(async () => {
+  async function setup(): Promise<void> {
     fragmentService = new (FragmentService as jest.Mock<
       jest.Mocked<FragmentService>
     >)()
@@ -43,29 +43,30 @@ describe('Manuscript attestation rendering', () => {
       Promise.resolve({
         manuscriptAttestations: [manuscriptAttestation],
         uncertainFragmentAttestations: [],
-      })
+      }),
     )
     await renderFragment()
-  })
+  }
 
-  it('Renders manuscript attestations', () => {
+  it('Renders manuscript attestations', async () => {
+    await setup()
     const textName = manuscriptAttestation.text.name
     const textGenre = manuscriptAttestation.text.id.genre
     const textId = textIdToString(manuscriptAttestation.chapterId.textId)
     const chapterStage = stageToAbbreviation(
-      manuscriptAttestation.chapterId.stage
+      manuscriptAttestation.chapterId.stage,
     )
     const chapterName = manuscriptAttestation.chapterId.name
     const { manuscriptSiglum } = manuscriptAttestation
     expect(container).toHaveTextContent(
-      `Edited in Corpus${textGenre}${textId} ${textName}${chapterStage} ${chapterName}${manuscriptSiglum}`
+      `Edited in Corpus${textGenre}${textId} ${textName}${chapterStage} ${chapterName}${manuscriptSiglum}`,
     )
     expect(fragmentService.findInCorpus).toHaveBeenCalled()
   })
 })
 
 describe('Uncertain fragment attestation rendering', () => {
-  beforeEach(async () => {
+  async function setup(): Promise<void> {
     fragmentService = new (FragmentService as jest.Mock<
       jest.Mocked<FragmentService>
     >)()
@@ -74,22 +75,41 @@ describe('Uncertain fragment attestation rendering', () => {
       Promise.resolve({
         manuscriptAttestations: [],
         uncertainFragmentAttestations: [uncertainFragmentAttestation],
-      })
+      }),
     )
     await renderFragment()
-  })
+  }
 
-  it('Renders uncertain fragment attestations', () => {
+  it('Renders uncertain fragment attestations', async () => {
+    await setup()
     const textName = uncertainFragmentAttestation.text.name
     const textGenre = uncertainFragmentAttestation.text.id.genre
     const textId = textIdToString(uncertainFragmentAttestation.chapterId.textId)
     const chapterStage = stageToAbbreviation(
-      uncertainFragmentAttestation.chapterId.stage
+      uncertainFragmentAttestation.chapterId.stage,
     )
     const chapterName = uncertainFragmentAttestation.chapterId.name
     expect(container).toHaveTextContent(
-      `Edited in Corpus${textGenre}${textId} ${textName}${chapterStage} ${chapterName}`
+      `Edited in Corpus${textGenre}${textId} ${textName}${chapterStage} ${chapterName}`,
     )
+    expect(fragmentService.findInCorpus).toHaveBeenCalled()
+  })
+})
+
+describe('Missing attestation arrays', () => {
+  async function setup(): Promise<void> {
+    fragmentService = new (FragmentService as jest.Mock<
+      jest.Mocked<FragmentService>
+    >)()
+    fragmentService.findInCorpus = jest
+      .fn()
+      .mockReturnValue(Promise.resolve({}))
+    await renderFragment()
+  }
+
+  it('Does not crash without arrays', async () => {
+    await setup()
+    expect(container).not.toHaveTextContent('Edited in Corpus')
     expect(fragmentService.findInCorpus).toHaveBeenCalled()
   })
 })

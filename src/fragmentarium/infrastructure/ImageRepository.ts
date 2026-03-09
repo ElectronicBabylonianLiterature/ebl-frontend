@@ -18,7 +18,7 @@ class ApiImageRepository implements ImageRepository {
   find(fileName: string): Promise<Blob> {
     return this.apiClient.fetchBlob(
       `/images/${encodeURIComponent(fileName)}`,
-      false
+      false,
     )
   }
 
@@ -31,7 +31,7 @@ class ApiImageRepository implements ImageRepository {
   findPhoto(number: string): Promise<Blob> {
     return this.apiClient.fetchBlob(
       `/fragments/${encodeURIComponent(number)}/photo`,
-      false
+      false,
     )
   }
 
@@ -39,7 +39,7 @@ class ApiImageRepository implements ImageRepository {
     return this.apiClient
       .fetchBlob(
         `/fragments/${encodeURIComponent(number)}/thumbnail/${size}`,
-        false
+        false,
       )
       .then((data) => ({ blob: data }))
       .catch((error) => {

@@ -50,8 +50,8 @@ class ManuscriptFactory extends Factory<Manuscript> {
           Object.values(Provenances),
           Provenances['Standard Text'],
           Provenances.Assyria,
-          Provenances.Babylonia
-        )
+          Provenances.Babylonia,
+        ),
       ),
     })
   }
@@ -73,7 +73,7 @@ export const manuscriptFactory = ManuscriptFactory.define(
   ({ sequence, associations }) => {
     const hasMuseumNumber = defaultChance.bool()
     const museumNumber =
-      associations.museumNumber ?? hasMuseumNumber ? `X.${sequence}` : ''
+      (associations.museumNumber ?? hasMuseumNumber) ? `X.${sequence}` : ''
     const accessionNumber = !museumNumber ? `A ${sequence}` : ''
     return new Manuscript(
       defaultChance.natural(),
@@ -87,20 +87,20 @@ export const manuscriptFactory = ManuscriptFactory.define(
         defaultChance.pickone(_.without(Object.values(Periods), Periods.None)),
       associations.provenance ??
         defaultChance.pickone(
-          _.without(Object.values(Provenances), Provenances['Standard Text'])
+          _.without(Object.values(Provenances), Provenances['Standard Text']),
         ),
       associations.type ??
         defaultChance.pickone(
-          _.without(Object.values(ManuscriptTypes), ManuscriptTypes.None)
+          _.without(Object.values(ManuscriptTypes), ManuscriptTypes.None),
         ),
       defaultChance.sentence(),
       associations.colophon ?? '',
       associations.unplacedLines ?? '',
       associations.references ?? referenceFactory.buildList(2),
       associations.joins ?? [[joinFactory.build()]],
-      associations.isInFragmentarium ?? false
+      associations.isInFragmentarium ?? false,
     )
-  }
+  },
 )
 
 export const manuscriptDtoFactory = Factory.define<
@@ -137,10 +137,10 @@ export const manuscriptDtoFactory = Factory.define<
     period: chance.pickone(_.without(Object.values(Periods), Periods.None))
       .name,
     provenance: chance.pickone(
-      _.without(Object.values(Provenances), Provenances['Standard Text'])
+      _.without(Object.values(Provenances), Provenances['Standard Text']),
     ).name,
     type: chance.pickone(
-      _.without(Object.values(ManuscriptTypes), ManuscriptTypes.None)
+      _.without(Object.values(ManuscriptTypes), ManuscriptTypes.None),
     ).name,
     notes: chance.sentence(),
     colophon: '',

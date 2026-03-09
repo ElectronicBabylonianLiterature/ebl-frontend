@@ -2,7 +2,7 @@ import Promise from 'bluebird'
 
 export default function cancellableFetch(
   url: string,
-  options: RequestInit = {}
+  options: RequestInit = {},
 ): Promise<Response> {
   return new Promise((resolve, reject, onCancel) => {
     const abortController = new AbortController()

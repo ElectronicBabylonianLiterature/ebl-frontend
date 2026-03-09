@@ -11,7 +11,7 @@ export default class MarkupService {
 
   constructor(
     protected readonly apiClient: ApiClient,
-    bibliographyService: BibliographyService
+    bibliographyService: BibliographyService,
   ) {
     this.referenceInjector = new ReferenceInjector(bibliographyService)
   }
@@ -22,13 +22,13 @@ export default class MarkupService {
         `/${this.urlPath}?${stringify({
           text: text,
         })}`,
-        false
+        false,
       )
-      .then((parts) => {
-        return Bluebird.all(
-          parts && Bluebird.all(this.injectReferencesToMarkup(parts))
-        )
-      })
+      .then((parts) =>
+        parts
+          ? this.injectReferencesToMarkup(parts as readonly MarkupPart[])
+          : ([] as readonly MarkupPart[]),
+      )
   }
 
   toString(parts: readonly MarkupPart[]): string {
@@ -39,7 +39,7 @@ export default class MarkupService {
   }
 
   injectReferencesToMarkup(
-    parts: readonly MarkupPart[]
+    parts: readonly MarkupPart[],
   ): Bluebird<readonly MarkupPart[]> {
     return this.referenceInjector.injectReferencesToMarkup(parts)
   }

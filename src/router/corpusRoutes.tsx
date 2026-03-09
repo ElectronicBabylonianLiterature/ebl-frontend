@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react'
-import { Route } from 'react-router-dom'
+import { Route } from 'router/compat'
 
 import BibliographyService from 'bibliography/application/BibliographyService'
 import ChapterEditView from 'corpus/ui/ChapterEditView'
@@ -128,16 +128,12 @@ export default function CorpusRoutes({
       key="CorpusByGenre"
       path="/corpus/:genre"
       exact
-      render={({ match, history }): ReactNode => (
+      render={({ match }): ReactNode => (
         <HeadTagsService
           title="Corpus catalogue: eBL"
           description="Catalogue of the electronic Babylonian Library (eBL) Corpus."
         >
-          <Corpus
-            textService={textService}
-            genre={match.params.genre}
-            history={history}
-          />
+          <Corpus textService={textService} genre={match.params.genre} />
         </HeadTagsService>
       )}
       {...(sitemap && {

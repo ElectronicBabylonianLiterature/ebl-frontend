@@ -7,5 +7,5 @@ test.each([['in', 'ik', { wordContext: { nextWord: kurToken } }]])(
   (transcription: string, expected: string, phoneticProps: PhoneticProps) => {
     const result = getSandhiTransformations(transcription, phoneticProps)
     expect(result?.transformedForm).toEqual(expected)
-  }
+  },
 )

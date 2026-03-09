@@ -36,7 +36,7 @@ function BrinkmanKingsTable(): JSX.Element {
     <Table className="table-borderless chronology-display">
       <tbody>
         {brinkmanDynasties.map((dynastyName, index) =>
-          getDynasty(dynastyName, index, true)
+          getDynasty(dynastyName, index, true),
         )}
       </tbody>
     </Table>
@@ -46,10 +46,10 @@ function BrinkmanKingsTable(): JSX.Element {
 function getDynasty(
   dynastyName: string,
   dynastyIndex: number,
-  brinkmanOnly = false
+  brinkmanOnly = false,
 ): JSX.Element {
   const _kings = getKingsByDynasty(dynastyName).filter((king) =>
-    brinkmanOnly ? !king.isNotInBrinkman : true
+    brinkmanOnly ? !king.isNotInBrinkman : true,
   )
   const groups = _.countBy(_kings, 'groupWith')
   const kingsTags = _kings.map((king) => getKing(king, groups))
@@ -99,7 +99,7 @@ function getNoteTrigger(king: King): JSX.Element {
       placement="top"
       overlay={
         <Popover id={`${king.orderGlobal}_note`} title="Search References">
-          <Popover.Content>{king.notes}</Popover.Content>
+          <Popover.Body>{king.notes}</Popover.Body>
         </Popover>
       }
     />

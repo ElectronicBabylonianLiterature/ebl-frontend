@@ -12,14 +12,14 @@ const tokens = [
       AnnotationTokenType.HasSign,
       'one-one',
       [1],
-      true
+      true,
     ),
     new AnnotationToken(
       'one-two',
       AnnotationTokenType.HasSign,
       'one-two',
       [2],
-      true
+      true,
     ),
   ],
   [
@@ -29,7 +29,7 @@ const tokens = [
       AnnotationTokenType.HasSign,
       'two-one',
       [4],
-      true
+      true,
     ),
     new AnnotationToken(
       'two-three',
@@ -41,7 +41,7 @@ const tokens = [
         name: 'testname-2-3',
         displayCuneiformSigns: 'testsign-2-3',
         unicode: [],
-      }
+      },
     ),
     new AnnotationToken(
       'two-four',
@@ -53,7 +53,7 @@ const tokens = [
         name: 'testname-2-4',
         displayCuneiformSigns: 'testsign-2-4',
         unicode: [],
-      }
+      },
     ),
     new AnnotationToken(
       'two-five',
@@ -65,7 +65,7 @@ const tokens = [
         name: 'testname-2-5',
         displayCuneiformSigns: 'testsign-2-5',
         unicode: [],
-      }
+      },
     ),
   ],
 ]
@@ -79,7 +79,7 @@ const annotations = [
       type: AnnotationTokenType.HasSign,
       signName: '',
       path: [1],
-    }
+    },
   ),
   new Annotation(
     { type: 'RECTANGLE', x: 1, y: 0, width: 1, height: 1 },
@@ -89,7 +89,7 @@ const annotations = [
       type: AnnotationTokenType.HasSign,
       signName: '',
       path: [2],
-    }
+    },
   ),
   new Annotation(
     { type: 'RECTANGLE', x: 0, y: 2, width: 1, height: 1 },
@@ -99,7 +99,7 @@ const annotations = [
       type: AnnotationTokenType.HasSign,
       signName: 'testname-2-1',
       path: [4],
-    }
+    },
   ),
   new Annotation(
     { type: 'RECTANGLE', x: 1, y: 2, width: 1, height: 1 },
@@ -109,7 +109,7 @@ const annotations = [
       type: AnnotationTokenType.HasSign,
       signName: 'testname-2-3',
       path: [5],
-    }
+    },
   ),
   new Annotation(
     { type: 'RECTANGLE', x: 2, y: 2, width: 5, height: 5 },
@@ -119,7 +119,7 @@ const annotations = [
       type: AnnotationTokenType.Blank,
       signName: '',
       path: [-1],
-    }
+    },
   ),
   new Annotation(
     { type: 'RECTANGLE', x: 3, y: 2, width: 1, height: 1 },
@@ -129,7 +129,7 @@ const annotations = [
       type: AnnotationTokenType.Blank,
       signName: '',
       path: [-1],
-    }
+    },
   ),
 ]
 
@@ -143,7 +143,7 @@ it('automaticAlignment', () => {
         type: AnnotationTokenType.HasSign,
         signName: '',
         path: [1],
-      }
+      },
     ),
     new Annotation(
       { type: 'RECTANGLE', x: 1, y: 0, width: 1, height: 1 },
@@ -153,7 +153,7 @@ it('automaticAlignment', () => {
         type: AnnotationTokenType.HasSign,
         signName: '',
         path: [2],
-      }
+      },
     ),
     new Annotation(
       { type: 'RECTANGLE', x: 0, y: 2, width: 1, height: 1 },
@@ -163,7 +163,7 @@ it('automaticAlignment', () => {
         type: AnnotationTokenType.HasSign,
         signName: 'testname-2-1',
         path: [4],
-      }
+      },
     ),
     new Annotation(
       { type: 'RECTANGLE', x: 1, y: 2, width: 1, height: 1 },
@@ -173,7 +173,7 @@ it('automaticAlignment', () => {
         type: AnnotationTokenType.HasSign,
         signName: 'testname-2-3',
         path: [5],
-      }
+      },
     ),
     new Annotation(
       { type: 'RECTANGLE', x: 2, y: 2, width: 5, height: 5 },
@@ -183,7 +183,7 @@ it('automaticAlignment', () => {
         type: AnnotationTokenType.HasSign,
         signName: 'testname-2-4',
         path: [6],
-      }
+      },
     ),
     new Annotation(
       { type: 'RECTANGLE', x: 3, y: 2, width: 1, height: 1 },
@@ -193,7 +193,7 @@ it('automaticAlignment', () => {
         type: AnnotationTokenType.HasSign,
         signName: 'testname-2-5',
         path: [7],
-      }
+      },
     ),
   ]
   const selection = new Annotation(
@@ -204,9 +204,9 @@ it('automaticAlignment', () => {
       type: AnnotationTokenType.HasSign,
       signName: 'testname-2-3',
       path: [5],
-    }
+    },
   )
   expect(automaticAlignment(tokens, selection, annotations)).toStrictEqual(
-    expected
+    expected,
   )
 })

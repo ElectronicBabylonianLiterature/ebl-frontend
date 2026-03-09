@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { stringify } from 'query-string'
 import _ from 'lodash'
 import { Form, Button, Row, Col } from 'react-bootstrap'
-import { RouteComponentProps, withRouter, useHistory } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { AfoRegisterRecordSuggestion } from 'afo-register/domain/Record'
 import AfoRegisterService from 'afo-register/application/AfoRegisterService'
 import Select from 'react-select'
@@ -19,13 +19,13 @@ interface TextNumberOption {
 type FormProps = {
   queryProp: AfoRegisterQuery
   afoRegisterService: AfoRegisterService
-} & RouteComponentProps
+}
 
 interface TextOrPublicationSelectProps {
   query: AfoRegisterQuery
   setQuery: React.Dispatch<React.SetStateAction<AfoRegisterQuery>>
   searchTextSuggestions: (
-    text: string
+    text: string,
   ) => Promise<readonly AfoRegisterRecordSuggestion[]>
   textNumberOptions: TextNumberOption[]
   setTextNumberOptions: React.Dispatch<React.SetStateAction<TextNumberOption[]>>
@@ -44,14 +44,14 @@ async function fetchTextNumberOptions(
   setTextNumberOptions: React.Dispatch<
     React.SetStateAction<TextNumberOption[]>
   >,
-  afoRegisterService: AfoRegisterService
+  afoRegisterService: AfoRegisterService,
 ): Promise<void> {
   const suggestions = await searchTextSuggestions(
     query.text,
-    afoRegisterService
+    afoRegisterService,
   )
   const suggestion = suggestions.find(
-    (suggestion) => suggestion.text === query.text
+    (suggestion) => suggestion.text === query.text,
   )
   if (
     suggestion &&
@@ -64,7 +64,9 @@ async function fetchTextNumberOptions(
 
 function loadTextNumberOptions(
   textNumbers: string[] = [],
-  setTextNumberOptions: React.Dispatch<React.SetStateAction<TextNumberOption[]>>
+  setTextNumberOptions: React.Dispatch<
+    React.SetStateAction<TextNumberOption[]>
+  >,
 ): void {
   setTextNumberOptions([
     { label: '—', value: '' },
@@ -78,7 +80,7 @@ function makeTextNumberOption(textNumber: string): TextNumberOption {
 
 function searchTextSuggestions(
   queryText: string,
-  afoRegisterService: AfoRegisterService
+  afoRegisterService: AfoRegisterService,
 ): Promise<readonly AfoRegisterRecordSuggestion[]> {
   if (queryText.replace(/\s/g, '').length > 1) {
     return afoRegisterService.searchSuggestions(queryText)
@@ -88,7 +90,7 @@ function searchTextSuggestions(
 
 function makeTextSelectValue(
   query: AfoRegisterQuery,
-  textNumberOptions: TextNumberOption[]
+  textNumberOptions: TextNumberOption[],
 ): AfoRegisterRecordSuggestion | null {
   return query.text
     ? new AfoRegisterRecordSuggestion({
@@ -105,9 +107,9 @@ function AfoRegisterSearch({ queryProp, afoRegisterService }: FormProps) {
   >([makeTextNumberOption(queryProp.textNumber)])
   const [isTextNumberSelect, setIsTextNumberSelect] = useState<boolean>(
     !!queryProp.textNumber &&
-      queryProp.textNumber.length === query.textNumber.length + 2
+      queryProp.textNumber.length === query.textNumber.length + 2,
   )
-  const history = useHistory()
+  const navigate = useNavigate()
 
   useEffect(() => {
     if (query.text) {
@@ -115,7 +117,7 @@ function AfoRegisterSearch({ queryProp, afoRegisterService }: FormProps) {
         query,
         textNumberOptions,
         setTextNumberOptions,
-        afoRegisterService
+        afoRegisterService,
       )
     }
   }, [query, textNumberOptions, setTextNumberOptions, afoRegisterService])
@@ -126,7 +128,7 @@ function AfoRegisterSearch({ queryProp, afoRegisterService }: FormProps) {
     if (isTextNumberSelect) {
       _query.textNumber = `"${query.textNumber}"`
     }
-    history.push(`?${stringify(_query)}`)
+    navigate(`?${stringify(_query)}`)
   }
 
   return (
@@ -188,7 +190,7 @@ function TextOrPublicationSelect({
       onChange={(suggestion) => {
         loadTextNumberOptions(
           suggestion.textNumbers || [],
-          setTextNumberOptions
+          setTextNumberOptions,
         )
         setQuery({ text: suggestion.text, textNumber: '' })
       }}
@@ -260,4 +262,4 @@ function TextNumberExactSwitch({
   )
 }
 
-export default withRouter(AfoRegisterSearch)
+export default AfoRegisterSearch

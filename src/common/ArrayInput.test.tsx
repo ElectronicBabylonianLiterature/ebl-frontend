@@ -40,6 +40,6 @@ function renderArrayInput(value: string[]) {
   render(
     <ArrayInput value={value} separator={separator} onChange={onChange}>
       {label}
-    </ArrayInput>
+    </ArrayInput>,
   )
 }

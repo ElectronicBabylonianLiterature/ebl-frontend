@@ -28,7 +28,7 @@ export function RenderFragmentLines({
   totalLines: number
 }): JSX.Element {
   const lines = fragment.text.lines.filter(
-    (line) => line.type === 'TextLine'
+    (line) => line.type === 'TextLine',
   ) as TextLine[]
 
   return (
@@ -39,7 +39,7 @@ export function RenderFragmentLines({
             {
               span: 1,
               content: createColumns(line.content).flatMap(
-                (column) => column.content
+                (column) => column.content,
               ),
             },
           ]
@@ -88,8 +88,8 @@ const FragmentLines = withData<
   (props) =>
     props.fragmentService.find(
       props.museumNumber,
-      _.take(props.lineIndexes, linesToShow)
-    )
+      _.take(props.lineIndexes, linesToShow),
+    ),
 )
 
 function FragmentLemmaLines({
@@ -158,5 +158,5 @@ export default withData<
       </>
     )
   },
-  ({ fragmentService, lemmaId }) => fragmentService.query({ lemmas: lemmaId })
+  ({ fragmentService, lemmaId }) => fragmentService.query({ lemmas: lemmaId }),
 )

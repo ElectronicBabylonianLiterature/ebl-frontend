@@ -1,7 +1,7 @@
-import produce, { castDraft, Draft } from 'immer'
+import { produce, castDraft, Draft } from 'immer'
 import _ from 'lodash'
 import React from 'react'
-import { Button, Card, Col, Form, ListGroup } from 'react-bootstrap'
+import { Button, Card, Col, Form, ListGroup, Row } from 'react-bootstrap'
 import ListForm from 'common/List'
 import { createDefaultLineFactory } from 'corpus/application/line-factory'
 import {
@@ -28,16 +28,18 @@ function LineVariantForm({
   onChange,
   disabled = false,
 }: VariantFormProps) {
-  const handleChange = (property: string) => (propertyValue): void =>
-    onChange(
-      produce(value, (draft) => {
-        draft[property] = propertyValue
-      })
-    )
+  const handleChange =
+    (property: string) =>
+    (propertyValue): void =>
+      onChange(
+        produce(value, (draft) => {
+          draft[property] = propertyValue
+        }),
+      )
 
   return (
     <>
-      <Form.Row>
+      <Row>
         <Col>
           <label>Intertext</label>
           <Editor
@@ -47,8 +49,8 @@ function LineVariantForm({
             disabled={disabled}
           />
         </Col>
-      </Form.Row>
-      <Form.Row>
+      </Row>
+      <Row>
         <Col>
           <label>Ideal reconstruction</label>
           <Editor
@@ -58,7 +60,7 @@ function LineVariantForm({
             disabled={disabled}
           />
         </Col>
-      </Form.Row>
+      </Row>
       <ManuscriptLines
         lines={value.manuscripts}
         manuscripts={manuscripts}
@@ -82,18 +84,20 @@ function ChapterLineForm({
   onChange,
   disabled = false,
 }: FormProps) {
-  const handleChange = (property: string) => (propertyValue): void =>
-    onChange(
-      produce(value, (draft) => {
-        if (draft.status !== EditStatus.NEW) {
-          draft.status = EditStatus.EDITED
-        }
-        draft[property] = propertyValue
-      })
-    )
+  const handleChange =
+    (property: string) =>
+    (propertyValue): void =>
+      onChange(
+        produce(value, (draft) => {
+          if (draft.status !== EditStatus.NEW) {
+            draft.status = EditStatus.EDITED
+          }
+          draft[property] = propertyValue
+        }),
+      )
 
   const handleNumberChange = (
-    event: React.ChangeEvent<HTMLInputElement>
+    event: React.ChangeEvent<HTMLInputElement>,
   ): void => {
     onChange(
       produce(value, (draft) => {
@@ -101,7 +105,7 @@ function ChapterLineForm({
         if (draft.status !== EditStatus.NEW) {
           draft.status = EditStatus.EDITED
         }
-      })
+      }),
     )
   }
   const handleVariantsChange = (variants: LineVariant[]): void =>
@@ -111,11 +115,11 @@ function ChapterLineForm({
         if (draft.status !== EditStatus.NEW) {
           draft.status = EditStatus.EDITED
         }
-      })
+      }),
     )
   return (
     <>
-      <Form.Row>
+      <Row>
         <Col md={1}>
           <Form.Group controlId={_.uniqueId('Lines-')}>
             <Form.Label>Number</Form.Label>
@@ -131,7 +135,7 @@ function ChapterLineForm({
             checked={value.isSecondLineOfParallelism}
             onChange={(): void =>
               handleChange('isSecondLineOfParallelism')(
-                !value.isSecondLineOfParallelism
+                !value.isSecondLineOfParallelism,
               )
             }
           />
@@ -155,8 +159,8 @@ function ChapterLineForm({
             disabled={disabled}
           />
         </Col>
-      </Form.Row>
-      <Form.Row>
+      </Row>
+      <Row>
         <Col>
           <ListForm
             noun="variant"
@@ -166,7 +170,7 @@ function ChapterLineForm({
           >
             {(
               variant: LineVariant,
-              onChange: (variant: LineVariant) => void
+              onChange: (variant: LineVariant) => void,
             ) => (
               <LineVariantForm
                 onChange={onChange}
@@ -177,8 +181,8 @@ function ChapterLineForm({
             )}
           </ListForm>
         </Col>
-      </Form.Row>
-      <Form.Row>
+      </Row>
+      <Row>
         <Button
           variant="outline-secondary"
           size="sm"
@@ -186,7 +190,7 @@ function ChapterLineForm({
         >
           Delete line
         </Button>
-      </Form.Row>
+      </Row>
     </>
   )
 }
@@ -208,7 +212,7 @@ export default function ChapterLines({
     onChange(
       produce(chapter, (draft) => {
         draft.lines = castDraft(lines)
-      })
+      }),
     )
   return (
     <Form>
@@ -224,7 +228,7 @@ export default function ChapterLines({
                         handleChange(
                           produce(chapter.lines, (draft: Draft<Line[]>) => {
                             draft[index] = castDraft(line)
-                          })
+                          }),
                         )
                       }
                       value={line}
@@ -232,7 +236,7 @@ export default function ChapterLines({
                       disabled={disabled}
                     />
                   </ListGroup.Item>
-                )
+                ),
             )}
           </ListGroup>
           <Card.Body>
@@ -245,7 +249,7 @@ export default function ChapterLines({
                   createDefaultLineFactory(
                     _(chapter.lines)
                       .reject((line) => line.status === EditStatus.DELETED)
-                      .last()
+                      .last(),
                   )(),
                 ])
               }

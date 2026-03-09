@@ -6,7 +6,7 @@ import MarkupService from 'markup/application/MarkupService'
 import afoRegisterCover from 'about/ui/static/afoRegister.png'
 
 export default function AboutBibliography(
-  markupService: MarkupService
+  markupService: MarkupService,
 ): JSX.Element {
   return (
     <>
@@ -16,12 +16,13 @@ export default function AboutBibliography(
         updated bibliography of publications of cuneiform tablets. To this end, books
         and articles are regularly indexed and the indices are added to the Library and Corpus.
         Hundreds of books and articles have been catalogued for the eBL, especially by S. Arroyo, C. 
-        Dankwardt, E. Gogokhia, L. Grill, K. Kashani, D. López, F. Müller, L. Sáenz, and M. Scheiblecker."
+        Dankwardt, E. Gogokhia, L. Grill, G. Habets, K. Kashani, D. López, F. Müller, L. Sáenz,
+        and M. Scheiblecker."
       />
       <MarkdownParagraph
-        text="The reference collection of the eBL platform consists of almost 11,497 entries.
-        The Library contains a total of 337,279 references to these, the Corpus
-        4,957 (as of April 2025). A complete list of the ca. 950 books and articles
+        text="The reference collection of the eBL platform consists of almost 21,500 entries.
+        The Library contains a total of 368,002 references to these, the Corpus
+        5,432 (as of February 2026). A complete list of the ca. 1100 books and articles
         that have been fully and systematically indexed by the project staff is given below:"
       />
       <h3>II. AfO-Register</h3>
@@ -80,7 +81,8 @@ export default function AboutBibliography(
       <h4>A</h4>
       <Markup
         markupService={markupService}
-        text="@bib{abraham2004business};
+        text="@bib{aaboe1968atypical};
+              @bib{abraham2004business};
               @bib{RN2544};
               @bib{RN3108axd};
               @bib{RN108};
@@ -88,8 +90,10 @@ export default function AboutBibliography(
               @bib{ahmad2007archives};
               @bib{AitSaidGhanem2020archives};
               @bib{StPM_13};
+              @bib{ali1970sumerian};
               @bib{Ali_Sumer_61};
               @bib{AlMagasees2023FSMaul};
+              @bib{Al-Rawi1991More};
               @bib{CT0058};
               @bib{Altavilla2005Neo-Sumerian};
               @bib{alzeebari1964altbabylonische};
@@ -97,7 +101,9 @@ export default function AboutBibliography(
               @bib{RN760};
               @bib{RN1688};
               @bib{Arnaud1976UET7};
-              @bib{Asyag2023Corpus}"
+              @bib{Asyag2023Corpus};
+              @bib{Attia2003JMC1};
+              @bib{Attia2005JMC6}"
       />
       <h4>B</h4>
       <Markup
@@ -111,13 +117,19 @@ export default function AboutBibliography(
               @bib{Baragli2023Utu};
               @bib{fromebllab0035};
               @bib{Bartash2015Nisaba25};
+              @bib{RN2813};
+              @bib{RN3501};
               @bib{barton1900some}; 
               @bib{PBS_9_1};
               @bib{RN1744};
               @bib{YOS_19};
               @bib{RN2374};
               @bib{RN72aa};
+              @bib{Beckman1987Three};
+              @bib{Beckman1988Catalogue};
+              @bib{Beckman1988Join-piece};
               @bib{BelmonteMarín1997Old};
+              @bib{beltz2025everyday};
               @bib{fromebllab0047};
               @bib{Beranger2020troupeaux};
               @bib{Beranger2020reprNABU2020-52};
@@ -130,6 +142,7 @@ export default function AboutBibliography(
               @bib{RN429xdd};
               @bib{Biggs_Al-Hiba_1976};
               @bib{biggs1988early};
+              @bib{biggs2006appendix};
               @bib{NABU1987-34};
               @bib{Nisaba_19};
               @bib{RN61};
@@ -140,15 +153,19 @@ export default function AboutBibliography(
               @bib{Boeck2023FSMaul};
               @bib{RN59aa};
               @bib{deBoer2016Yahrurum};
+              @bib{deBoer2016YahrurumShaplum};
+              @bib{deBoer2017Two};
               @bib{Boehl1932Inschriften};
               @bib{UBHD-65281075};
               @bib{RN3177};
               @bib{RN850};
               @bib{Borger1954Omentext};
+              @bib{Borger1988Koenig};
               @bib{RN54}; 
               @bib{RN56};
               @bib{RN883};
               @bib{RN773};
+              @bib{Brinkman2017Babylonia};
               @bib{RN1530};
               @bib{RN1599};
               @bib{UET_2};
@@ -175,8 +192,10 @@ export default function AboutBibliography(
               @bib{campbellthompson1927catalogue};
               @bib{RN2980};
               @bib{Caplice1973Further};
+              @bib{LS230};
               @bib{RN2406};
               @bib{LS134};
+              @bib{RN1294};
               @bib{RN21};
               @bib{Cecilia2019Late};
               @bib{Charpin2020decouvertes};
@@ -203,11 +222,13 @@ export default function AboutBibliography(
               @bib{Charpin2020reprNABU2020-60};
               @bib{Charpin2020reprNABU2020-90};
               @bib{charpin2025ur};
+              @bib{Chen 2020 CM 51};
               @bib{PBS_8_1};
               @bib{PBS_11_2}; 
               @bib{RN2137ax};
               @bib{PBS_11_3};
               @bib{PBS_8_2};
+              @bib{Cifola1990Kudurru};
               @bib{RN14b};
               @bib{RN1450};
               @bib{RN861}; 
@@ -230,8 +251,10 @@ export default function AboutBibliography(
               @bib{PBS_2_2};
               @bib{YOS_1};
               @bib{YOS_3}; 
+              @bib{Clayden2017Dūr-Kurigalzu};
               @bib{cohen_sumerian_1981};
               @bib{RN230};
+              @bib{MVS_17};
               @bib{RN311a};
               @bib{RN791}; 
               @bib{RN1557};
@@ -246,6 +269,9 @@ export default function AboutBibliography(
         text="@bib{riva2018two};
               @bib{Nisaba_5};
               @bib{dagostino2003silverrings};
+              @bib{OECT_15};
+              @bib{OECT_13};
+              @bib{danmanville1960deux};
               @bib{vondassow2000neobabylonian};
               @bib{vondassow2000neobabylonianprivate}; 
               @bib{RN2265};
@@ -255,6 +281,8 @@ export default function AboutBibliography(
               @bib{delaunay1977moldenke};
               @bib{LS151};
               @bib{deller1995saab9}; 
+              @bib{Devecchi2017Kings};
+              @bib{devecchi2025gula};
               @bib{CT0054};
               @bib{RN2769};
               @bib{dietrich1969soziale};
@@ -262,13 +290,21 @@ export default function AboutBibliography(
               @bib{dietrich1970soziale};
               @bib{dietrich1997vertrag};
               @bib{TLB_2};
+              @bib{LS82};
               @bib{VS_17};
               @bib{RN570};
               @bib{RN569};
               @bib{dijk2003ur};
               @bib{YOS_11};
               @bib{Donbaz1979Another};
+              @bib{Donbaz1983Building};
+              @bib{Donbaz1985Zwei};
+              @bib{Donbaz1990Fragments};
+              @bib{Donbaz1990Two};
+              @bib{Donbaz1991Brick};
+              @bib{NABU1998-9};
               @bib{donbaz2001ninive};
+              @bib{Donbaz2001Some};
               @bib{NABU2002-90};
               @bib{Donbaz2009Middle};
               @bib{KAM11};
@@ -277,6 +313,8 @@ export default function AboutBibliography(
               @bib{RN932};
               @bib{YOS_20};
               @bib{YOS_6};
+              @bib{OECT_3};
+              @bib{driver1933cappadocian};
               @bib{Durand2023FSMaul}"
       />
       <h4>E</h4>
@@ -287,9 +325,11 @@ export default function AboutBibliography(
               @bib{RN1271vv};
               @bib{Edzard2000U7804};
               @bib{LS184};
+              @bib{eilers1935eine};
               @bib{ellis1984neobabylonian};
               @bib{ellis1997notes};
               @bib{englund2014late};
+              @bib{MSVO_1};
               @bib{epping1891neue};
               @bib{epping1891neue2};
               @bib{epping1891neue3};
@@ -298,7 +338,14 @@ export default function AboutBibliography(
       <h4>F</h4>
       <Markup
         markupService={markupService}
-        text="@bib{Fadhil2023FSMaul};
+        text="@bib{BB03};
+              @bib{RN2732};
+              @bib{Fadhil2023FSMaul};
+              @bib{BB07kk};
+              @bib{SipLib2};
+              @bib{SipLib3};
+              @bib{fadhil2023literary};
+              @bib{fahd1996نصوص};
               @bib{NAR3};
               @bib{RN2304};
               @bib{fales1991saab5};
@@ -306,6 +353,7 @@ export default function AboutBibliography(
               @bib{RN311i}; 
               @bib{falkenstein_literarische_1931};
               @bib{RN1355};
+              @bib{Farber1991Shalim-ahum};
               @bib{RN1824};
               @bib{YOS_8}; 
               @bib{YOS_12};
@@ -334,6 +382,7 @@ export default function AboutBibliography(
               @bib{Fincke2021InSearch};
               @bib{RN2672};
               @bib{RN1609}; 
+              @bib{Finkel1988Fragment};
               @bib{RN168};
               @bib{finkel2005documents};
               @bib{RN1804};
@@ -351,11 +400,14 @@ export default function AboutBibliography(
               @bib{fromebllab0043};
               @bib{fromebllab0045};
               @bib{VS_14}; 
+              @bib{Foster1990Naram-Sin};
               @bib{Foster2020};
               @bib{RN812};
               @bib{Frahm2023FSMaul};
               @bib{YOS_21};
               @bib{RN15210aa};
+              @bib{Frame1987Three};
+              @bib{Frame1991Mace};
               @bib{frame2014nassyrian};
               @bib{frame2014nbinscriptions};
               @bib{frame2014neoassyrian}; 
@@ -371,6 +423,9 @@ export default function AboutBibliography(
               @bib{AbB_3};
               @bib{RN1991};
               @bib{RN2246};
+              @bib{Frayne1983New};
+              @bib{Frayne1984Hammurapi};
+              @bib{Frayne1984Notes};
               @bib{Frazer2020Neo};
               @bib{RN148}; 
               @bib{freedman2005documents};
@@ -389,6 +444,7 @@ export default function AboutBibliography(
               @bib{RN1279};
               @bib{friberg2005mathematical};
               @bib{RN3094xf}; 
+              @bib{Fuchs2017Kassiten};
               @bib{RN311f}"
       />
       <h4>G</h4>
@@ -410,23 +466,32 @@ export default function AboutBibliography(
               @bib{UET_6_2};
               @bib{UET_1};
               @bib{RN2813xs}; 
+              @bib{Galter1984Tempel};
+              @bib{Galter1985Bleitafeln};
+              @bib{Galter1987Beads};
               @bib{GarcíaRecio1999VAT17256a};
               @bib{garcíarecio2022de};
+              @bib{garelli1960nouveau};
               @bib{LS242};
               @bib{RN1169};
               @bib{RN1818};
               @bib{RN903};
+              @bib{MAD_5};
               @bib{LS250};
               @bib{RN1134a};
               @bib{Geller2001Kultmittel};
+              @bib{Geller2004JMC4};
               @bib{RN1711};
               @bib{RN967};
               @bib{Geller2005Catalogue};
+              @bib{Geller2006JMC8maladies};
+              @bib{Geller2006JMC8medecine};
               @bib{Geller2009CM37};
               @bib{RN1199tz};
               @bib{RN2547};
               @bib{Geller2023Longevity};
               @bib{Geller2020};
+              @bib{George1985Inscription};
               @bib{RN124};
               @bib{RN1914};
               @bib{RN117}; 
@@ -435,24 +500,45 @@ export default function AboutBibliography(
               @bib{RN1013a};
               @bib{RN1013ab}; 
               @bib{george2024old};
+              @bib{Gerardi1986New};
               @bib{gesche2005latebabylonian};
+              @bib{Glassner2005JMC6};
+              @bib{santag_9};
               @bib{goddeeris2016old};
               @bib{Goddeeris2023Some};
               @bib{YOS_10};
+              @bib{temp_id_7776727669690788};
               @bib{YOS_15};
               @bib{RN262};
               @bib{BBDCP};
               @bib{RN2799};
               @bib{RN258};
               @bib{RN904};
+              @bib{Grayson1983Fragmentary};
+              @bib{Grayson1983Two};
+              @bib{RN2832};
+              @bib{Grayson1985Rivalry};
+              @bib{Grayson1988Three};
+              @bib{Grayson1991Fragment};
+              @bib{Grayson1991Text};
+              @bib{Green1988Sin-iqisham};
+              @bib{gregoire1996aaicab1_1};
+              @bib{gregoire2000aaicab1_2};
+              @bib{gregoire2001aaicab1_3};
+              @bib{gregoire2002aaicab1_4};
               @bib{YOS_5}; 
               @bib{RN250};
               @bib{UET_7};
+              @bib{gurney1974fifth};
+              @bib{gurney1977inscribed};
               @bib{RN728};
               @bib{gurney1982three};
+              @bib{gurney1982gate};
               @bib{Gurney1983MBLETU};
+              @bib{RN697};
               @bib{RN2069cc};
               @bib{RN2069};
+              @bib{OECT_5};
               @bib{Güterbock1979Some}"
       />
       <h4>H</h4>
@@ -472,6 +558,7 @@ export default function AboutBibliography(
               @bib{RN2604aaa}; 
               @bib{RN2604azz};
               @bib{RN2623};
+              @bib{Harrak1984Inscription};
               @bib{fromebllab0002};
               @bib{fromebllab0011}; 
               @bib{fromebllab0022};
@@ -481,10 +568,12 @@ export default function AboutBibliography(
               @bib{Haetinen2023FSMaul};
               @bib{RN1745xx};
               @bib{HauptNimrod};
+              @bib{RN686};
               @bib{RN690};
               @bib{RN1156};
               @bib{Heessel2009CM37};
               @bib{RN2805};
+              @bib{heesel_zur_2017};
               @bib{KAL13};
               @bib{Heessel2023FSMaul};
               @bib{RN3094a};
@@ -513,7 +602,10 @@ export default function AboutBibliography(
               @bib{LS159};
               @bib{LS159as}; 
               @bib{LS159asdf};
-              @bib{hunger2022astronomical}"
+              @bib{hunger2017so-called};
+              @bib{hunger2022astronomical};
+              @bib{OECT_8};
+              @bib{Hurowitz2006JMC8}"
       />
       <h4>J</h4>
       <Markup
@@ -546,6 +638,7 @@ export default function AboutBibliography(
               @bib{NABU2024-47};
               @bib{fromebllab0032};
               @bib{joannes1987fragments};
+              @bib{OECT_12};
               @bib{RN1735};
               @bib{jursa1995vermessungen};
               @bib{jursa1999archiv};
@@ -564,9 +657,11 @@ export default function AboutBibliography(
               @bib{YOS_4};
               @bib{CT0049};
               @bib{kennedy1986documentary};
+              @bib{kennedy1960seize};
               @bib{LS21};
               @bib{LS40};
               @bib{LS243}; 
+              @bib{LS243};
               @bib{LS146};
               @bib{kessler2000hellenistische};
               @bib{kilmer2005akkadian};
@@ -589,6 +684,7 @@ export default function AboutBibliography(
               @bib{CT0033};
               @bib{RN2604a};
               @bib{RN1189a};
+              @bib{RN5002};
               @bib{RN1189};
               @bib{RN1153ax}; 
               @bib{AOAT_358};
@@ -606,6 +702,9 @@ export default function AboutBibliography(
               @bib{RN1271a};
               @bib{RN1271}; 
               @bib{RN464};
+              @bib{Koch-Westenholz2002OldBabylonian};
+              @bib{vanKoppen2017Early};
+              @bib{koshurnikov1986babylonian};
               @bib{SLTNi};
               @bib{ISET_1};
               @bib{ISET_2};
@@ -660,14 +759,20 @@ export default function AboutBibliography(
               @bib{LS78};
               @bib{RN2023ab};
               @bib{RN311b};
+              @bib{UBHD-370186};
               @bib{RN2689a};
               @bib{BE_A_31};
               @bib{RN2137}; 
+              @bib{RN1538};
               @bib{PBS_10_2};
               @bib{PBS_10_3};
               @bib{PBS_12_1};
               @bib{PBS_10_4}; 
+              @bib{OECT_1};
+              @bib{OECT_2};
               @bib{langdon_babylonian_1927};
+              @bib{OECT_7};
+              @bib{langdon1930double};
               @bib{RN3242ax};
               @bib{larsen1988oldassyrian}; 
               @bib{lauinger2015following};
@@ -716,6 +821,7 @@ export default function AboutBibliography(
         markupService={markupService}
         text="@bib{macginnis1995letter};
               @bib{RN3094};
+              @bib{Malko2017Dūr-Kurigalzu};
               @bib{RN715};
               @bib{MárquezRowe1997Inscripciones};
               @bib{MárquezRowe1998Dos};
@@ -727,6 +833,7 @@ export default function AboutBibliography(
               @bib{marquezrowe2016middle};
               @bib{MárquezRowe2006Cuneiform};
               @bib{MárquezRowe1997The};
+              @bib{Marti2005JMC5};
               @bib{Martin2023FSMaul};
               @bib{VS_25};
               @bib{VS_27}; 
@@ -748,16 +855,29 @@ export default function AboutBibliography(
               @bib{RN365};
               @bib{RN2844};
               @bib{RN355};
+              @bib{mcewan1981priest};
+              @bib{OECT_9};
+              @bib{RN2108};
               @bib{mcewan1986seleucid};
               @bib{RN2740yy};
               @bib{UBHD-LS};
+              @bib{OECT_4};
+              @bib{meer1939tablets};
+              @bib{LS272bb};
               @bib{RN347a};
               @bib{Meinhold2023FSMaul};
               @bib{RN2875};
               @bib{meissnerBabylonischenKleinplastiken1934};
               @bib{RN346};
               @bib{VS_1}; 
+              @bib{Miglus2017Die};
               @bib{Miglus2023FSMaul};
+              @bib{Millard1985Copy};
+              @bib{Millard1985Royal};
+              @bib{Millard1987Copy};
+              @bib{Millard1988Text};
+              @bib{Millard1990Fragments};
+              @bib{Miller2017Political};
               @bib{HES_4};
               @bib{Mittermayer2023FSMaul};
               @bib{fromebllab0007};
@@ -780,6 +900,9 @@ export default function AboutBibliography(
               @bib{Molina1997Textos};
               @bib{PBS_3};
               @bib{moran1988amarna};
+              @bib{Mouton2005JMC5};
+              @bib{muḥammad2002texts};
+              @bib{muḥammad1997دراسة};
               @bib{mueller-kessler2005zauberschalentexte}; 
               @bib{RN2800};
               @bib{BE_A_3_1}"
@@ -792,6 +915,7 @@ export default function AboutBibliography(
               @bib{RN1438};
               @bib{NganTillard2018Two};
               @bib{niedroff2008mittelbabylonischen};
+              @bib{Nougayrol 1967};
               @bib{Nougayrol1979}"
       />
       <h4>O</h4>
@@ -799,13 +923,17 @@ export default function AboutBibliography(
         markupService={markupService}
         text="@bib{RN698};
               @bib{Oelsner1989MBLETU};
+              @bib{Oelsner1990Eine};
               @bib{RN1458};
               @bib{Oelsner2023Nippur};
+              @bib{Oller1987New};
               @bib{RN681};
               @bib{RN804};
               @bib{Ormsby1972Business};
               @bib{RN3639ax};
               @bib{RN7458};
+              @bib{ossendrijver2017bm};
+              @bib{ossendrijver2025babylonian};
               @bib{Nisaba_34}"
       />
       <h4>P</h4>
@@ -818,12 +946,14 @@ export default function AboutBibliography(
               @bib{RN311g};
               @bib{RN311x};
               @bib{RN311aaa};
+              @bib{Paulus2017Babylonian};
               @bib{PearceLate};
               @bib{RN1274};
               @bib{RN945}; 
               @bib{Pedersen2004fish};
               @bib{RN673};
               @bib{Pedersen2009Neo-Assyrian};
+              @bib{Pedersén2025South};
               @bib{RN2589};
               @bib{Peterson2018Divine};
               @bib{CDLP-15.0};
@@ -838,6 +968,7 @@ export default function AboutBibliography(
               @bib{pettinato1970cuneiform};
               @bib{Pinches1888Peek};
               @bib{CT002};
+              @bib{pinches1897some};
               @bib{CT004};
               @bib{CT006};
               @bib{Pinches1898Babylonian};
@@ -853,6 +984,7 @@ export default function AboutBibliography(
               @bib{CT0056};
               @bib{CT0057};
               @bib{RN808a};
+              @bib{pingree1974neo-babylonian};
               @bib{pittman1988seal};
               @bib{BE_A_6_2};
               @bib{PBS_5}; 
@@ -865,6 +997,8 @@ export default function AboutBibliography(
               @bib{RN296}; 
               @bib{Porada1976Seal};
               @bib{postgate1969neoassyrian};
+              @bib{UBHD-65157905};
+              @bib{LS346};
               @bib{postgate1988middleassyrian};
               @bib{RN1507}; 
               @bib{postgate2000neoassyrian};
@@ -885,7 +1019,11 @@ export default function AboutBibliography(
               @bib{BE_A_6_1};
               @bib{RN1971ax}; 
               @bib{RN1971axx};
+              @bib{Reade1986Foundation};
+              @bib{Reade1987Babylonian};
+              @bib{Reade1987Shamshi-ilu};
               @bib{CDLB2024-4};
+              @bib{OECT_16};
               @bib{RN986a};
               @bib{RN2016};
               @bib{RN2064};
@@ -899,9 +1037,17 @@ export default function AboutBibliography(
               @bib{RN3157};
               @bib{RN3085};
               @bib{Reisner1901TUT};
+              @bib{Renaut2003JMC2};
+              @bib{Renzi-Sepe2023Pleiades};
               @bib{RN2769a}; 
               @bib{reynolds_2019};
+              @bib{Richardson2002Ewe};
               @bib{deRidder2023Ludlul};
+              @bib{deridder2025nocturnal};
+              @bib{YOS_23};
+              @bib{Wallenfels AUWE 19};
+              @bib{Roaf2017Kassite};
+              @bib{robson2004mathematical};
               @bib{RN275};
               @bib{rochberg1998babylonian}; 
               @bib{fromebllab0021};
@@ -927,10 +1073,12 @@ export default function AboutBibliography(
               @bib{sandowicz2019dubsar};
               @bib{sarkisian1974new};
               @bib{sarkisian1978bruchstuecke};
+              @bib{scarpelli2024wetter};
               @bib{schaudig_2020_Staatsrituale}; 
               @bib{Schaudig2023FSMaul};
               @bib{Schlossman1976Two};
               @bib{temp_id_11313936447857387};
+              @bib{schmidtchen2025neues};
               @bib{schneider1930geschaeftsurkunden};
               @bib{Schneider1932Drehem};
               @bib{Schneider2023Context};
@@ -948,8 +1096,11 @@ export default function AboutBibliography(
               @bib{RN518a};
               @bib{Schwemer2022Maqlu};
               @bib{Schwemer2022CMAwR};
+              @bib{Scurlock2003JMC2};
               @bib{RN541};
+              @bib{Seidl2017Babylonische};
               @bib{UET_6_3};
+              @bib{Shelley2017Kaššû};
               @bib{RN1287};
               @bib{Shibata2023FSMaul};
               @bib{sigrist1988brick};
@@ -971,6 +1122,7 @@ export default function AboutBibliography(
               @bib{AbB_13}; 
               @bib{RN566};
               @bib{UET_8};
+              @bib{LS323};
               @bib{CT0050};
               @bib{Sollberger1980Cuneiform};
               @bib{sollberger1988oldakkadian};
@@ -984,24 +1136,30 @@ export default function AboutBibliography(
               @bib{RN829};
               @bib{spar2014ctmma4}; 
               @bib{vanderspek1998cuneiform};
+              @bib{vanderspek2025babylonian};
               @bib{RN615};
               @bib{starr2005documents};
               @bib{steele2015late};
+              @bib{steele2017text};
+              @bib{steele2017mysterious};
               @bib{Steinkeller1982Two};
               @bib{YOS_9}; 
               @bib{RN1333};
               @bib{Stol1982State};
+              @bib{Stol1984Fragment};
               @bib{RN1707};
               @bib{stol1988oldbabylonian};
               @bib{Stol2020reprNABU2020-111};
               @bib{stolper1985entrepreneurs}; 
               @bib{LS133};
               @bib{stolper1991property};
+              @bib{stolper1993late};
               @bib{RN2956};
               @bib{Stolper2003No-one};
               @bib{Stolper2007Kasr};
               @bib{stolper2014neolate};
               @bib{stolper2014royal};
+              @bib{MS22};
               @bib{RN1436fg}; 
               @bib{RN2702xzz};
               @bib{RN2702zzz};
@@ -1017,7 +1175,10 @@ export default function AboutBibliography(
         markupService={markupService}
         text="@bib{RN588};
               @bib{tarasewicz2018dubsar};
+              @bib{tarasewicz2018animal};
+              @bib{Tenney2017Servile};
               @bib{YOS_7};
+              @bib{Tsukimoto1990New};
               @bib{Tulaikov2023Towards}"
       />
       <h4>U</h4>
@@ -1027,15 +1188,18 @@ export default function AboutBibliography(
               @bib{VS_4};
               @bib{VS_5};
               @bib{VS_6};
+              @bib{Ungnad1908Leberschau};
               @bib{VS_7};
               @bib{VS_8};
               @bib{VS_9};
+              @bib{Ungnad1909Neuer};
               @bib{PBS_7}"
       />
       <h4>V</h4>
       <Markup
         markupService={markupService}
         text="@bib{VanDeMieroop1987Archive};
+              @bib{BIN_10};
               @bib{VanDeMieroop2011Hammurabi};
               @bib{RN563};
               @bib{VS_26};
@@ -1058,11 +1222,13 @@ export default function AboutBibliography(
       <Markup
         markupService={markupService}
         text="@bib{RN2276};
+              @bib{waerzeggers2014marduk};
               @bib{waetzoldt1976hallo};
               @bib{Waetzoldt2023FSMaul};
               @bib{wagensonner2024unchain};
               @bib{RN2604aa};
               @bib{CT0052};
+              @bib{Walker1984Shamshi-Adad};
               @bib{walker2005astronomical};
               @bib{RN778}; 
               @bib{wallenfels2014latebabylonian};
@@ -1070,6 +1236,7 @@ export default function AboutBibliography(
               @bib{RN3091};
               @bib{wasserman2022akkadian};
               @bib{RN545a}; 
+              @bib{Watson1991Stone};
               @bib{RN3242av};
               @bib{WeiHru2018};
               @bib{KAL11};
@@ -1083,6 +1250,10 @@ export default function AboutBibliography(
               @bib{UBHD-1553950};
               @bib{wiseman1953alalakh}; 
               @bib{wiseman1954supplementary};
+              @bib{Worthington2003JMC2K19766};
+              @bib{Worthington2003JMC2propositions};
+              @bib{RN1266};
+              @bib{RN3131};
               @bib{Wunsch1993A};
               @bib{Wunsch1993B}; 
               @bib{Wunsch1997Neu};
@@ -1097,15 +1268,20 @@ export default function AboutBibliography(
         text="@bib{zadok1997late-babylonian};
               @bib{Zand2023FSMaul};
               @bib{Zawadzki1985Foundry};
+              @bib{zawadzkiGarmentsGodsVol2006};
+              @bib{zawadzki2024dubsar};
               @bib{RN637};
+              @bib{Ziegler2005JMC5};
               @bib{Ziegler2023FSMaul};
               @bib{RN1693};
               @bib{VS_2};
               @bib{VS_10};
               @bib{zisa2022the};
+              @bib{zólyomi2003manuscript};
               @bib{NABU2006-65};
               @bib{RN635};
               @bib{NABU2024-50};
+              @bib{zólyomi2025sumerian};
               @bib{RN3006ax};
               @bib{Zomer2023Hymn}"
       />

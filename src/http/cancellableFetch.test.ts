@@ -17,7 +17,7 @@ describe('Successful request', () => {
 
   test('Resolves', async () => {
     expect(
-      cancellableFetch(url).then((response) => response.json())
+      cancellableFetch(url).then((response) => response.json()),
     ).resolves.toEqual(result)
   })
 

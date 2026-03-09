@@ -17,7 +17,7 @@ import rgbHex from 'rgb-hex'
 export function generateWordDocument(
   footNotes: Paragraph[],
   docParts: Array<Paragraph | Table>,
-  hyperlink: IPropertiesOptions['hyperlinks']
+  hyperlink: IPropertiesOptions['hyperlinks'],
 ): Document {
   const doc: Document = new Document({
     styles: getStyles(),
@@ -44,7 +44,7 @@ export function getCreditForHead(records: JQuery): Paragraph {
 
 export function getFootNotes(
   footNotesHtml: JQuery<HTMLElement>,
-  jQueryRef: JQuery<HTMLElement>
+  jQueryRef: JQuery<HTMLElement>,
 ): Paragraph[] {
   footNotesHtml.hide()
   jQueryRef.append(footNotesHtml)
@@ -65,7 +65,7 @@ export function getFootNotes(
 
 export function getGlossary(
   glossaryHtml: JQuery<HTMLElement>,
-  jQueryRef: JQuery<HTMLElement>
+  jQueryRef: JQuery<HTMLElement>,
 ): Paragraph[] {
   glossaryHtml.hide()
   jQueryRef.append(glossaryHtml)
@@ -143,7 +143,7 @@ export function getTextRun(el: JQuery): TextRun {
   const smallCaps: boolean = el.css('font-variant') === 'all-small-caps'
   const size: number = el.css('font-variant') === 'all-small-caps' ? 16 : 24
   const characterSpacing: number | undefined = !['0', ''].includes(
-    el.css('letter-spacing')
+    el.css('letter-spacing'),
   )
     ? 40
     : undefined
@@ -162,7 +162,7 @@ export function getFormatedTableCell(
   para: Paragraph[],
   nextLineType: string,
   nextElement: JQuery,
-  colspan: number
+  colspan: number,
 ): TableCell {
   return new TableCell({
     children: para,

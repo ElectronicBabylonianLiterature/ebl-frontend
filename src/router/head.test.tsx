@@ -9,13 +9,13 @@ it('should render all metadata', () => {
   render(
     <HelmetProvider context={helmetContext}>
       <HeadTags title={'title'} description={''} />
-    </HelmetProvider>
+    </HelmetProvider>,
   )
   expect(helmetContext['helmet']['title']['toString']()).toEqual(
-    '<title data-rh="true">title</title>'
+    '<title data-rh="true">title</title>',
   )
   expect(helmetContext['helmet']['meta']['toString']()).toEqual(
-    '<meta data-rh="true" name="description" content=""/><meta data-rh="true" property="og:title" content="title"/><meta data-rh="true" property="og:description" content=""/><meta data-rh="true" name="twitter:title" content="title"/><meta data-rh="true" name="twitter:description" content=""/>'
+    '<meta data-rh="true" name="description" content=""/><meta data-rh="true" property="og:title" content="title"/><meta data-rh="true" property="og:description" content=""/><meta data-rh="true" name="twitter:title" content="title"/><meta data-rh="true" name="twitter:description" content=""/>',
   )
 })
 
@@ -23,12 +23,12 @@ it('should render all metadata', () => {
   render(
     <HelmetProvider context={helmetContext}>
       <HeadTagsService title={'title'} description={''}></HeadTagsService>
-    </HelmetProvider>
+    </HelmetProvider>,
   )
   expect(helmetContext['helmet']['title']['toString']()).toEqual(
-    '<title data-rh="true">title</title>'
+    '<title data-rh="true">title</title>',
   )
   expect(helmetContext['helmet']['meta']['toString']()).toEqual(
-    '<meta data-rh="true" name="description" content=""/><meta data-rh="true" property="og:title" content="title"/><meta data-rh="true" property="og:description" content=""/><meta data-rh="true" name="twitter:title" content="title"/><meta data-rh="true" name="twitter:description" content=""/>'
+    '<meta data-rh="true" name="description" content=""/><meta data-rh="true" property="og:title" content="title"/><meta data-rh="true" property="og:description" content=""/><meta data-rh="true" name="twitter:title" content="title"/><meta data-rh="true" name="twitter:description" content=""/>',
   )
 })

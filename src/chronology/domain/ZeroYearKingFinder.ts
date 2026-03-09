@@ -3,7 +3,7 @@ import { DateField, KingDateField } from 'chronology/domain/DateParameters'
 
 export default function getPreviousKingAndYearIfYearZero(
   king: KingDateField | undefined,
-  year: DateField
+  year: DateField,
 ): { king: KingDateField | undefined; year: DateField } {
   if (
     year.value === '0' &&
@@ -12,7 +12,7 @@ export default function getPreviousKingAndYearIfYearZero(
   ) {
     const orderInDynasty = (parseInt(king?.orderInDynasty) - 1).toString()
     const previousKing = getKingsByDynasty(king.dynastyName).find(
-      (_king) => _king.orderInDynasty === orderInDynasty
+      (_king) => _king.orderInDynasty === orderInDynasty,
     )
     if (previousKing) {
       return {
@@ -27,7 +27,7 @@ export default function getPreviousKingAndYearIfYearZero(
 
 function getPreviousKingField(
   previousKing: King,
-  king: KingDateField
+  king: KingDateField,
 ): KingDateField {
   return {
     ...previousKing,
@@ -38,7 +38,7 @@ function getPreviousKingField(
 
 function getLastYearField(
   year: DateField,
-  previousKing: KingDateField
+  previousKing: KingDateField,
 ): DateField {
   return {
     value: previousKing?.totalOfYears.replaceAll('?', '') ?? '',
@@ -46,7 +46,7 @@ function getLastYearField(
     isUncertain: year.isUncertain
       ? year.isUncertain
       : previousKing?.totalOfYears.includes('?')
-      ? true
-      : undefined,
+        ? true
+        : undefined,
   }
 }

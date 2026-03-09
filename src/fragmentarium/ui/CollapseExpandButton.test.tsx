@@ -1,13 +1,9 @@
 import React from 'react'
-import { render, screen, cleanup } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import CollapseExpandButton from './CollapseExpandButton'
 
 describe('CollapseExpandButton', () => {
-  afterEach(() => {
-    cleanup()
-  })
-
   it('renders with initial text', () => {
     render(<CollapseExpandButton onToggle={jest.fn()} />)
     const button = screen.getByRole('button', { name: /Hide Image Column/i })
@@ -39,12 +35,12 @@ describe('CollapseExpandButton', () => {
         <CollapseExpandButton
           onToggle={jest.fn()}
           initialCollapsed={initialCollapsed}
-        />
+        />,
       )
       const button = screen.getByRole('button', {
         name: new RegExp(expectedText, 'i'),
       })
       expect(button).toHaveTextContent(expectedText)
-    }
+    },
   )
 })

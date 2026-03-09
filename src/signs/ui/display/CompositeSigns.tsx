@@ -17,7 +17,7 @@ function CompositeSign({
   mainSign: string
 }): JSX.Element | null {
   const signCompositesWithoutMainSign = [...signComposites].filter(
-    (sign) => sign.displaySignName !== mainSign?.toUpperCase()
+    (sign) => sign.displaySignName !== mainSign?.toUpperCase(),
   )
   return signCompositesWithoutMainSign.length > 0 ? (
     <Row>
@@ -52,13 +52,13 @@ function CompositeSignsInfo(): JSX.Element {
       id={_.uniqueId('CompositeSignsInfo-')}
       title="Composite Signs Info"
     >
-      <Popover.Content>
+      <Popover.Body>
         From Oracc Global Sign List &nbsp;&nbsp;
         <ExternalLink href={'http://oracc.org/ogsl/'} className={'text-dark'}>
           {' '}
           <i className="fas fa-external-link-square-alt" />
         </ExternalLink>
-      </Popover.Content>
+      </Popover.Body>
     </Popover>
   )
 }
@@ -82,5 +82,5 @@ export default withData<
   ({ data, query }) => (
     <CompositeSign signComposites={data} mainSign={query.value} />
   ),
-  (props) => props.signService.search(props.query)
+  (props) => props.signService.search(props.query),
 )

@@ -8,7 +8,7 @@ import eblteam2023 from 'about/ui/static/eblteam2023.jpg'
 import './project.sass'
 
 export default function AboutProject(
-  markupService: MarkupService
+  markupService: MarkupService,
 ): JSX.Element {
   return (
     <div className="project-page">

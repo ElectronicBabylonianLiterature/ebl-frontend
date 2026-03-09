@@ -6,12 +6,13 @@ import { LiteratureRedirectBox } from 'common/LiteratureRedirectBox'
 
 function splitMesZl(
   mesZl: string,
-  cutOff: number
+  cutOff: number,
 ): { mesZlHeadMarkdown: string; mesZlBodyMarkdown: string } {
   const mesZlLines = mesZl.split('\n')
   const mesZlBody = mesZlLines
     .slice(1, cutOff)
     .join('\n\n')
+    .replace(/\\/g, '\\\\')
     .replace(/\[/g, '\\[')
     .replace(/]/g, '\\]')
   return { mesZlHeadMarkdown: mesZlLines[0], mesZlBodyMarkdown: mesZlBody }

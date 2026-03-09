@@ -8,7 +8,7 @@ export function createGlossaryToken(
   label: Label,
   word: Word,
   lemmaIndex: number,
-  dictionaryWord: DictionaryWord
+  dictionaryWord: DictionaryWord,
 ): GlossaryToken {
   return {
     label: label,

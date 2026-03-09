@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Button } from 'react-bootstrap'
-import { withRouter, RouteComponentProps } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import Promise from 'bluebird'
 import ErrorAlert from 'common/ErrorAlert'
 import Spinner from 'common/Spinner'
@@ -11,9 +11,10 @@ import { FragmentInfo } from 'fragmentarium/domain/fragment'
 type Props = {
   query: () => Promise<FragmentInfo>
   children?: React.ReactNode
-} & RouteComponentProps
+}
 
-function FragmentButton({ query, history, children }: Props) {
+function FragmentButton({ query, children }: Props) {
+  const navigate = useNavigate()
   const [error, setError] = useState(null)
   const [isLoading, setIsLoading] = useState(false)
   const [setPromise, cancelPromise] = usePromiseEffect()
@@ -24,13 +25,15 @@ function FragmentButton({ query, history, children }: Props) {
   }
 
   const navigateToFragment = (fragmentInfo) =>
-    history.push(createFragmentUrl(fragmentInfo.number))
+    navigate(createFragmentUrl(fragmentInfo.number))
 
   const handleClick = (event) => {
     cancelPromise()
     setIsLoading(true)
     setError(null)
-    setPromise(query().then(navigateToFragment).catch(onError))
+    const request = query()
+    setPromise(request)
+    request.then(navigateToFragment).catch(onError)
   }
 
   return (
@@ -43,4 +46,4 @@ function FragmentButton({ query, history, children }: Props) {
   )
 }
 
-export default withRouter(FragmentButton)
+export default FragmentButton

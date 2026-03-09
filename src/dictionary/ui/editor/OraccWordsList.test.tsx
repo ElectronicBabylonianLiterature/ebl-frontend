@@ -7,19 +7,17 @@ import OraccWordsList from './OraccWordsList'
 let value
 let onChange
 
-beforeEach(() => {
+const setup = (): void => {
   onChange = jest.fn()
-})
-
-beforeEach(() => {
   value = [
     { lemma: 'foo', guideWord: 'bar' },
     { lemma: 'baz', guideWord: '' },
   ]
   render(<OraccWordsList value={value} onChange={onChange} />)
-})
+}
 
 it('Displays all elements', () => {
+  setup()
   for (const item of value) {
     expect(screen.getByDisplayValue(item.lemma)).toBeVisible()
     expect(screen.getByDisplayValue(item.guideWord)).toBeVisible()
@@ -27,12 +25,14 @@ it('Displays all elements', () => {
 })
 
 it('Adds emtpy item when Add is clicked', async () => {
+  setup()
   await whenClicked(screen, 'Add Oracc word')
     .expect(onChange)
     .toHaveBeenCalledWith([...value, { lemma: '', guideWord: '' }])
 })
 
 it('Calls onChange with updated value on change', () => {
+  setup()
   whenChangedByValue(screen, value[0].lemma, 'new')
     .expect(onChange)
     .toHaveBeenCalledWith((newValue) => [

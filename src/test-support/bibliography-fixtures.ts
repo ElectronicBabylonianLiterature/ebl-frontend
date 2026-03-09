@@ -73,7 +73,7 @@ export const bibliographyEntryFactory = Factory.define<
     cslDataFactory.build(transientParams, {
       transient: { chance },
       associations,
-    })
+    }),
   )
 })
 
@@ -85,7 +85,7 @@ export function buildBorger1957(): BibliographyEntry {
         author: [{ family: 'Borger' }],
         issued: { 'date-parts': [[1957]] },
       },
-    }
+    },
   )
 }
 
@@ -116,19 +116,19 @@ export const referenceFactory = Factory.define<
     chance.sentence(),
     chance.pickset(['1.', '2.', "3'.", "4'.2."], 2),
     associations.document ??
-      bibliographyEntryFactory.build({}, { transient: { chance } })
+      bibliographyEntryFactory.build({}, { transient: { chance } }),
   )
 })
 
 export function buildReferenceWithContainerTitle(
   type: ReferenceType,
-  cslData = {}
+  cslData = {},
 ): Reference {
   return referenceFactory.build({
     type: type,
     document: bibliographyEntryFactory.build(
       {},
-      { transient: cslDataWithContainerTitleShortFactory.build(cslData) }
+      { transient: cslDataWithContainerTitleShortFactory.build(cslData) },
     ),
   })
 }
@@ -138,7 +138,7 @@ export function buildReferenceWithManyAuthors(): Reference {
     type: 'COPY',
     document: bibliographyEntryFactory.build(
       {},
-      { transient: { author: authorFactory.buildList(4) } }
+      { transient: { author: authorFactory.buildList(4) } },
     ),
   })
 }

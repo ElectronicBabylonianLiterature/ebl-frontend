@@ -45,11 +45,11 @@ export default function ManuscriptPopOver({
       id={_.uniqueId('ManuscriptPopOver-')}
       className="manuscript-popover__popover"
     >
-      <Popover.Title as="h3" className="manuscript-popover__header">
+      <Popover.Header as="h3" className="manuscript-popover__header">
         {manuscript.siglum}
         <OldSiglumList siglumList={manuscript.oldSigla} />
-      </Popover.Title>
-      <Popover.Content className="manuscript-popover__body">
+      </Popover.Header>
+      <Popover.Body className="manuscript-popover__body">
         <p>
           <ManuscriptJoins manuscript={manuscript} />
         </p>
@@ -67,7 +67,7 @@ export default function ManuscriptPopOver({
           <br />
         </p>
         <ManuscriptReferences references={manuscript.references} />
-      </Popover.Content>
+      </Popover.Body>
     </Popover>
   )
   return (

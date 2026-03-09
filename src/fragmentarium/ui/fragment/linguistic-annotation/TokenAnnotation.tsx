@@ -7,7 +7,7 @@ import {
   LineComponentMap,
 } from 'transliteration/ui/TransliterationLines'
 import { Token } from 'transliteration/domain/token'
-import { ValueType, OptionTypeBase } from 'react-select'
+import type { OnChangeValue } from 'react-select'
 import EditableToken from 'fragmentarium/ui/fragment/linguistic-annotation/EditableToken'
 import _ from 'lodash'
 import { defaultLabels, Labels } from 'transliteration/domain/labels'
@@ -15,6 +15,7 @@ import { AbstractLine } from 'transliteration/domain/abstract-line'
 import DisplayControlLine from 'transliteration/ui/DisplayControlLine'
 import { createLineId, NoteLinks } from 'transliteration/ui/note-links'
 import { isNoteLine, isParallelLine } from 'transliteration/domain/type-guards'
+import type { LemmaOption } from 'fragmentarium/ui/lemmatization/LemmaSelectionForm'
 
 type TextSetter = React.Dispatch<React.SetStateAction<Text>>
 
@@ -31,7 +32,7 @@ export const annotationProcesses = {
 export type TokenAnnotationState = {
   activeToken: EditableToken | null
   activeLine: number | null
-  updates: Map<Token, ValueType<OptionTypeBase, true>>
+  updates: Map<Token, OnChangeValue<LemmaOption, true>>
   pendingLines: Set<number>
   process: keyof typeof annotationProcesses | null
 }
@@ -75,7 +76,7 @@ const MemoizedRowDisplay = React.memo(
       !nextProps.hasToken &&
       prevProps.isPending === nextProps.isPending
     )
-  }
+  },
 )
 
 export const hideLine = (line: AbstractLine): boolean =>
@@ -131,7 +132,7 @@ export default abstract class TokenAnnotation extends React.Component<
   selectPreviousToken = (): void => {
     if (this.state.activeToken !== null) {
       this.selectTokenAtIndex(
-        Math.max(this.state.activeToken.indexInText - 1, 0)
+        Math.max(this.state.activeToken.indexInText - 1, 0),
       )
     }
   }
@@ -139,7 +140,10 @@ export default abstract class TokenAnnotation extends React.Component<
   selectNextToken = (): void => {
     if (this.state.activeToken !== null) {
       this.selectTokenAtIndex(
-        Math.min(this.state.activeToken.indexInText + 1, this.tokens.length - 1)
+        Math.min(
+          this.state.activeToken.indexInText + 1,
+          this.tokens.length - 1,
+        ),
       )
     }
   }
@@ -167,7 +171,7 @@ export default abstract class TokenAnnotation extends React.Component<
   reduceLines = (
     [elements, labels]: [JSX.Element[], Labels],
     line: AbstractLine,
-    index: number
+    index: number,
   ): [JSX.Element[], Labels] => {
     const currentLabels = getCurrentLabels(labels, line)
     const LineComponent =
@@ -205,7 +209,7 @@ export default abstract class TokenAnnotation extends React.Component<
             {
               this.text.allLines.reduce<[JSX.Element[], Labels]>(
                 this.reduceLines,
-                [[], defaultLabels]
+                [[], defaultLabels],
               )[0]
             }
           </tbody>

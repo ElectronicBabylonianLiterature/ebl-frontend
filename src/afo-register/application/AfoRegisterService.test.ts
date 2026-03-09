@@ -38,7 +38,7 @@ const testData: TestData<AfoRegisterService>[] = [
     afoRegisterRepository.search,
     [entry],
     [stringify(query), undefined],
-    Promise.resolve([entry])
+    Promise.resolve([entry]),
   ),
   new TestData(
     'searchTextsAndNumbers',
@@ -46,7 +46,7 @@ const testData: TestData<AfoRegisterService>[] = [
     afoRegisterRepository.searchTextsAndNumbers,
     [entry],
     [['text1', 'number1']],
-    Promise.resolve([entry])
+    Promise.resolve([entry]),
   ),
   new TestData(
     'searchSuggestions',
@@ -54,7 +54,7 @@ const testData: TestData<AfoRegisterService>[] = [
     afoRegisterRepository.searchSuggestions,
     [suggestionEntry],
     ['suggestion query'],
-    Promise.resolve([suggestionEntry])
+    Promise.resolve([suggestionEntry]),
   ),
 ]
 

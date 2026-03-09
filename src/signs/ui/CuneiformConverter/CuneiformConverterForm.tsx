@@ -5,6 +5,7 @@ import SignService from 'signs/application/SignService'
 import replaceTransliteration from 'fragmentarium/domain/replaceTransliteration'
 import { displayUnicode } from 'signs/ui/search/SignsSearch'
 import './CuneiformConverterForm.sass'
+import 'signs/ui/display/SignDisplay.css'
 
 function CuneiformConverterForm({
   signService,
@@ -22,22 +23,22 @@ function CuneiformConverterForm({
   const handleConvert = () => {
     const lines = content.split('\n')
     const replacedLines = lines.map((line) =>
-      replaceTransliteration(line.toLowerCase())
+      replaceTransliteration(line.toLowerCase()),
     )
 
     Promise.all(
       replacedLines
         .filter((line) => line.trim() !== '')
-        .map((line) => query(line))
+        .map((line) => query(line)),
     )
       .then((results) => {
         const convertedText = results
           .map((result) =>
             result
               .map((entry) =>
-                entry.unicode[0] === 9999 ? ' ' : displayUnicode(entry.unicode)
+                entry.unicode[0] === 9999 ? ' ' : displayUnicode(entry.unicode),
               )
-              .join('')
+              .join(''),
           )
           .join('\n')
 
@@ -90,26 +91,26 @@ function CuneiformConverterForm({
       <Form.Text id="textHelpBlock" muted>
         Enter the text you want to convert to Unicode.
       </Form.Text>
-      <Form.Label htmlFor="fontSelector" style={{ paddingRight: '8px' }}>
-        Select Font
-      </Form.Label>
-      <select
-        id="fontSelector"
-        className="form-select"
-        value={selectedFont}
-        onChange={handleFontChange}
-      >
-        <option value="Assurbanipal">Neo-Assyrian</option>
-        <option value="Esagil">Neo-Babylonian</option>
-        <option value="Santakku">Old Babylonian</option>
-        <option value="OBFreie">Old Babylonian Literature</option>
-        <option value="SantakkuM">Old Babylonian Monumental</option>
-        <option value="UllikummiA">Hittite</option>
-      </select>
-      <br></br>
+      <Form.Group className="mt-3 mb-3">
+        <Form.Label htmlFor="fontSelector">Select Font</Form.Label>
+        <select
+          id="fontSelector"
+          className="form-select"
+          value={selectedFont}
+          onChange={handleFontChange}
+        >
+          <option value="Assurbanipal">Neo-Assyrian</option>
+          <option value="Esagil">Neo-Babylonian</option>
+          <option value="Santakku">Old Babylonian</option>
+          <option value="OBFreie">Old Babylonian Literature</option>
+          <option value="SantakkuM">Old Babylonian Monumental</option>
+          <option value="UllikummiA">Hittite</option>
+        </select>
+      </Form.Group>
       <Button onClick={handleConvert}>Convert</Button>
-      <br></br>
-      <Form.Label htmlFor="outputText">Converted Text</Form.Label>
+      <Form.Label htmlFor="outputText" className="mt-3">
+        Converted Text
+      </Form.Label>
       <Form.Control
         as="textarea"
         id="outputText"

@@ -20,7 +20,7 @@ export default function TransliterationNotes({
               <Markup container="span" parts={line.parts} />
             </li>
           )
-        })
+        }),
       )}
     </ol>
   )

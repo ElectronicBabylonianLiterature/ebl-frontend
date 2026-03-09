@@ -29,14 +29,14 @@ export default function ChapterManuscripts({
     onChange(
       produce(chapter, (draft) => {
         draft.uncertainFragments = uncertainFragments
-      })
+      }),
     )
   }
   const handeManuscriptsChange = (manuscripts: Manuscript[]) =>
     onChange(
       produce(chapter, (draft) => {
         draft.manuscripts = castDraft(populateIds(manuscripts))
-      })
+      }),
     )
   return (
     <Form>

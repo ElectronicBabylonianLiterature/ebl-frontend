@@ -54,5 +54,5 @@ export default withData<
   (props) => props.fragmentService.fragmentPager(props.fragmentNumber),
   {
     watch: (props) => [props.fragmentNumber],
-  }
+  },
 )

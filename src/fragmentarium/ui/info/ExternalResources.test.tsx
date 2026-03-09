@@ -21,6 +21,11 @@ const digitaleKeilschriftBibliothekNumber = 'H00765'
 const metropolitanNumber = 'M123'
 const pierpontMorganNumber = 'P123'
 const louvreNumber = 'L123'
+const ontarioNumber = 'L123'
+const kelseyNumber = 'L123'
+const harvardHamNumber = 'L123'
+const sketchfabNumber = 'L123'
+const arkNumber = 'L123'
 const dublinTcdNumber = 'L123'
 const cambridgeMaaNumber = 'L123'
 const ashmoleanNumber = 'L123'
@@ -32,7 +37,7 @@ let fragment: Fragment
 let container: HTMLElement
 
 describe('external resources', () => {
-  beforeEach(async () => {
+  function setup(): void {
     fragment = fragmentFactory.build(
       {},
       {
@@ -53,6 +58,11 @@ describe('external resources', () => {
             metropolitanNumber,
             pierpontMorganNumber,
             louvreNumber,
+            ontarioNumber,
+            kelseyNumber,
+            harvardHamNumber,
+            sketchfabNumber,
+            arkNumber,
             dublinTcdNumber,
             cambridgeMaaNumber,
             ashmoleanNumber,
@@ -62,10 +72,10 @@ describe('external resources', () => {
             yalePeabodyNumber,
           }),
         },
-      }
+      },
     )
     container = render(<ExternalResources fragment={fragment} />).container
-  })
+  }
 
   test.each([
     ['CDLI', 'https://cdli.earth/', cdliNumber],
@@ -116,6 +126,19 @@ describe('external resources', () => {
     ],
     ['Louvre', 'https://collections.louvre.fr/ark:/53355/', louvreNumber],
     [
+      'Royal Ontario Museum',
+      'https://collections.rom.on.ca/objects/',
+      ontarioNumber,
+    ],
+    ['Kelsey Museum', 'https://quod.lib.umich.edu/k/kelsey/x-', kelseyNumber],
+    [
+      'Harvard Art Museums',
+      'https://harvardartmuseums.org/collections/object/',
+      harvardHamNumber,
+    ],
+    ['SketchFab', 'https://sketchfab.com/3d-models/', sketchfabNumber],
+    ['ark', 'https://n2t.net/ark:/', arkNumber],
+    [
       'Trinity College Dublin',
       'https://digitalcollections.tcd.ie/concern/works/',
       dublinTcdNumber,
@@ -151,26 +174,30 @@ describe('external resources', () => {
       yalePeabodyNumber,
     ],
   ])('%s number is shown', async (label, link, number) => {
+    setup()
     expect(screen.getByLabelText(`${label} text ${number}`)).toHaveAttribute(
       'href',
-      `${link}${encodeURIComponent(number)}`
+      `${link}${encodeURIComponent(number)}`,
     )
   })
-  test('Snapshot', async () => expect(container).toMatchSnapshot())
+  test('Snapshot', async () => {
+    setup()
+    expect(container).toMatchSnapshot()
+  })
 })
 
 describe('missing external resources', () => {
-  beforeEach(async () => {
+  function setup(): void {
     fragment = fragmentFactory.build(
       {},
       {
         associations: {
           externalNumbers: {},
         },
-      }
+      },
     )
     render(<ExternalResources fragment={fragment} />)
-  })
+  }
 
   test.each([
     'CDLI',
@@ -188,6 +215,11 @@ describe('missing external resources', () => {
     'The Metropolitan Museum of Art',
     'Pierpont Morgan Library',
     'Louvre',
+    'Royal Ontario Museum',
+    'Kelsey Museum',
+    'Harvard Art Museums',
+    'SketchFab',
+    'ark',
     'Trinity College Dublin',
     'MAA Cambridge',
     'Ashmolean Museum',
@@ -196,6 +228,7 @@ describe('missing external resources', () => {
     'Penn Museum',
     'Yale Babylonian Collection',
   ])('Mising %s number is not shown', async (label) => {
+    setup()
     expect(screen.queryByText(label)).not.toBeInTheDocument()
   })
 })

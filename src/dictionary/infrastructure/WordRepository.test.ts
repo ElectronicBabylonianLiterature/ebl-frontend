@@ -21,7 +21,7 @@ const testData: TestData<WordRepository>[] = [
     apiClient.fetchJson,
     resultStub,
     [`/words/${encodeURIComponent(wordId)}`, false],
-    Promise.resolve(resultStub)
+    Promise.resolve(resultStub),
   ),
   new TestData(
     'search',
@@ -29,7 +29,7 @@ const testData: TestData<WordRepository>[] = [
     apiClient.fetchJson,
     [resultStub],
     [`/words?query=${encodeURIComponent(query)}`, false],
-    Promise.resolve([resultStub])
+    Promise.resolve([resultStub]),
   ),
   new TestData(
     'searchLemma',
@@ -37,7 +37,7 @@ const testData: TestData<WordRepository>[] = [
     apiClient.fetchJson,
     [resultStub],
     [`/words?lemma=${encodeURIComponent(query)}`, false],
-    Promise.resolve([resultStub])
+    Promise.resolve([resultStub]),
   ),
   new TestData(
     'update',
@@ -45,7 +45,7 @@ const testData: TestData<WordRepository>[] = [
     apiClient.postJson,
     resultStub,
     [`/words/${encodeURIComponent(word._id)}`, word],
-    Promise.resolve(resultStub)
+    Promise.resolve(resultStub),
   ),
   new TestData(
     'listAllWords',
@@ -53,7 +53,7 @@ const testData: TestData<WordRepository>[] = [
     apiClient.fetchJson,
     [word._id],
     ['/words/all', false],
-    Promise.resolve([word._id])
+    Promise.resolve([word._id]),
   ),
 ]
 describe('test word repository', () => {

@@ -84,7 +84,7 @@ const chapterDtos = [
           joins: [],
           isInFragmentarium: false,
         },
-        { transient: { chance } }
+        { transient: { chance } },
       ),
     ],
     uncertainFragments: [],
@@ -109,7 +109,7 @@ const chapterDtos = [
     name: 'The Second Chapter',
     order: 5,
     manuscripts: [1, 2].map((id) =>
-      manuscriptDtoFactory.build({ id }, { transient: { chance } })
+      manuscriptDtoFactory.build({ id }, { transient: { chance } }),
     ),
     uncertainFragments: [],
     lines: [
@@ -315,7 +315,7 @@ describe('Lines', () => {
       appDriver.expectInputElement(label, newValue)
       appDriver.click('Save lines')
       await appDriver.waitForTextToDisappear('Saving...')
-    }
+    },
   )
 
   test.each([
@@ -404,9 +404,9 @@ async function setup(chapter) {
 
 function createChapterPath(stage: string, name: string) {
   return `/corpus/${encodeURIComponent(genre)}/${encodeURIComponent(
-    category
+    category,
   )}/${encodeURIComponent(index)}/${encodeURIComponent(
-    stageToAbbreviation(stage)
+    stageToAbbreviation(stage),
   )}/${encodeURIComponent(name)}/edit`
 }
 

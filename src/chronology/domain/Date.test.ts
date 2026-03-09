@@ -106,7 +106,7 @@ describe('MesopotamianDate', () => {
       isSeleucidEra: true,
     })
     expect(date.toString()).toBe(
-      '12.V.10 SE (30 August 302 BCE PJC | 25 August 302 BCE PGC)'
+      '12.V.10 SE (30 August 302 BCE PJC | 25 August 302 BCE PGC)',
     )
   })
 
@@ -118,7 +118,7 @@ describe('MesopotamianDate', () => {
       isSeleucidEra: true,
     })
     expect(date.toString()).toBe(
-      '∅.V.10 SE (ca. 19 August - 16 September 302 BCE PJC | ca. 14 August - 11 September 302 BCE PGC)'
+      '∅.V.10 SE (ca. 19 August - 16 September 302 BCE PJC | ca. 14 August - 11 September 302 BCE PGC)',
     )
   })
 
@@ -130,7 +130,7 @@ describe('MesopotamianDate', () => {
       isSeleucidEra: true,
     })
     expect(date.toString()).toBe(
-      '12.∅.10 SE (ca. 4 May 302 - 24 March 301 BCE PJC | ca. 29 April 302 - 20 March 301 BCE PGC)'
+      '12.∅.10 SE (ca. 4 May 302 - 24 March 301 BCE PJC | ca. 29 April 302 - 20 March 301 BCE PGC)',
     )
   })
 
@@ -153,7 +153,7 @@ describe('MesopotamianDate', () => {
       isSeleucidEra: false,
     })
     expect(date.toString()).toBe(
-      '12.V.10 Darius I (11 August 512 BCE PJC | 5 August 512 BCE PGC)'
+      '12.V.10 Darius I (11 August 512 BCE PJC | 5 August 512 BCE PGC)',
     )
   })
 
@@ -177,7 +177,7 @@ describe('MesopotamianDate', () => {
       isSeleucidEra: false,
     })
     expect(date.toString()).toBe(
-      '12.V.0 Darius I (3 August 522 BCE PJC | 28 July 522 BCE PGC)'
+      '12.V.0 Darius I (3 August 522 BCE PJC | 28 July 522 BCE PGC)',
     )
   })
 
@@ -190,7 +190,7 @@ describe('MesopotamianDate', () => {
       isSeleucidEra: false,
     })
     expect(date.toString()).toBe(
-      '∅.V.10 Darius I (ca. 31 July - 29 August 512 BCE PJC | ca. 25 July - 23 August 512 BCE PGC)'
+      '∅.V.10 Darius I (ca. 31 July - 29 August 512 BCE PJC | ca. 25 July - 23 August 512 BCE PGC)',
     )
   })
 
@@ -203,7 +203,7 @@ describe('MesopotamianDate', () => {
       isSeleucidEra: false,
     })
     expect(date.toString()).toBe(
-      '12.∅.10 Darius I (ca. 16 April 512 - 6 March 511 BCE PJC | ca. 10 April 512 - 28 February 511 BCE PGC)'
+      '12.∅.10 Darius I (ca. 16 April 512 - 6 March 511 BCE PJC | ca. 10 April 512 - 28 February 511 BCE PGC)',
     )
   })
 
@@ -216,7 +216,7 @@ describe('MesopotamianDate', () => {
       isSeleucidEra: false,
     })
     expect(date.toString()).toBe(
-      '∅.V.10 Darius I (ca. 31 July - 29 August 512 BCE PJC | ca. 25 July - 23 August 512 BCE PGC)'
+      '∅.V.10 Darius I (ca. 31 July - 29 August 512 BCE PJC | ca. 25 July - 23 August 512 BCE PGC)',
     )
   })
 
@@ -229,7 +229,7 @@ describe('MesopotamianDate', () => {
       isSeleucidEra: false,
     })
     expect(date.toString()).toBe(
-      'Darius I (ca. 14 April 521 - 5 April 485 BCE PJC | ca. 8 April 521 - 31 March 485 BCE PGC)'
+      'Darius I (ca. 14 April 521 - 5 April 485 BCE PJC | ca. 8 April 521 - 31 March 485 BCE PGC)',
     )
   })
 
@@ -242,7 +242,7 @@ describe('MesopotamianDate', () => {
       ur3Calendar: Ur3Calendar.UR,
     })
     expect(date.toString()).toBe(
-      '12.V.10 Amar-Suen, Ur calendar (ca. 2035 BCE PJC)'
+      '12.V.10 Amar-Suen, Ur calendar (ca. 2035 BCE PJC)',
     )
   })
 
@@ -256,7 +256,7 @@ describe('MesopotamianDate', () => {
     })
 
     expect(date.toString()).toBe(
-      '1.I.1 Adad-nērārī (II) (NA eponym) (ca. 910 BCE PJC)'
+      '1.I.1 Adad-nērārī (II) (NA eponym) (ca. 910 BCE PJC)',
     )
   })
 

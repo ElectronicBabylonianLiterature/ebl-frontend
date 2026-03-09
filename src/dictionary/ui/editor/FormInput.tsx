@@ -5,14 +5,12 @@ import _ from 'lodash'
 import LemmaInput from './LemmaInput'
 import ListInput from './TextListInput'
 import TextInput from './TextInput'
-import { Word } from 'transliteration/domain/token'
-
 export default function FormInput({
   value,
   onChange,
 }: {
   value
-  onChange: (word: Word) => void
+  onChange: (word) => void
 }): JSX.Element {
   const lemmaChanged = (lemma): void => {
     onChange({

@@ -11,13 +11,13 @@ export interface TextLineColumn {
 export function updatePhoneticPropsContext(
   content: Token[],
   index: number,
-  phoneticProps?: PhoneticProps
+  phoneticProps?: PhoneticProps,
 ): PhoneticProps {
   const previousWord = _.find(content.slice(0, index).reverse(), (token) =>
-    isAkkadianWord(token)
+    isAkkadianWord(token),
   )
   const nextWord = _.find(content.slice(index + 1), (token) =>
-    isAkkadianWord(token)
+    isAkkadianWord(token),
   )
   return {
     ...phoneticProps,
@@ -76,6 +76,6 @@ export function createColumns(tokens: readonly Token[]): TextLineColumn[] {
       }
       return columns
     },
-    []
+    [],
   )
 }

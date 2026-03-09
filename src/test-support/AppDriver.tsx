@@ -23,7 +23,7 @@ import MemorySession, { Session, guestSession } from 'auth/Session'
 import BibliographyRepository from 'bibliography/infrastructure/BibliographyRepository'
 import BibliographyService from 'bibliography/application/BibliographyService'
 import FragmentSearchService from 'fragmentarium/application/FragmentSearchService'
-import { Promise } from 'bluebird'
+import Promise from 'bluebird'
 import { eblNameProperty, AuthenticationContext } from 'auth/Auth'
 import SignRepository from 'signs/infrastructure/SignRepository'
 import SignService from 'signs/application/SignService'
@@ -37,10 +37,19 @@ import { ApiFindspotRepository } from 'fragmentarium/infrastructure/FindspotRepo
 import FakeApi from 'test-support/FakeApi'
 import DossiersService from 'dossiers/application/DossiersService'
 import DossiersRepository from 'dossiers/infrastructure/DossiersRepository'
+import ApiClient from 'http/ApiClient'
 
-export function getServices(
-  api: any = FakeApi
-): {
+type JsonApiClient = {
+  fetchJson: <T = unknown>(url: string, authorize: boolean) => Promise<T>
+  postJson: <T = unknown>(
+    url: string,
+    body: Record<string, unknown>,
+    authorize?: boolean,
+  ) => Promise<T>
+  fetchBlob: (url: string, authorize: boolean) => Promise<Blob>
+}
+
+export function getServices(api: JsonApiClient = new FakeApi().client): {
   signService: SignService
   wordService: WordService
   fragmentService: FragmentService
@@ -53,10 +62,11 @@ export function getServices(
   dossiersService: DossiersService
   findspotService: FindspotService
 } {
-  const wordRepository = new WordRepository(api)
+  const apiClient = api as unknown as ApiClient
+  const wordRepository = new WordRepository(apiClient)
   const fragmentRepository = new FragmentRepository(api)
   const imageRepository = new ApiImageRepository(api)
-  const bibliographyRepository = new BibliographyRepository(api)
+  const bibliographyRepository = new BibliographyRepository(apiClient)
   const findspotRepository = new ApiFindspotRepository(api)
 
   const wordService = new WordService(wordRepository)
@@ -65,21 +75,24 @@ export function getServices(
     fragmentRepository,
     imageRepository,
     wordRepository,
-    bibliographyService
+    bibliographyService,
   )
   const fragmentSearchService = new FragmentSearchService(fragmentRepository)
   const textService = new TextService(
-    api,
+    apiClient,
     fragmentService,
     wordService,
-    bibliographyService
+    bibliographyService,
   )
-  const signsRepository = new SignRepository(api)
-  const afoRegisterRepository = new AfoRegisterRepository(api)
-  const dossiersRepository = new DossiersRepository(api)
+  const signsRepository = new SignRepository(apiClient)
+  const afoRegisterRepository = new AfoRegisterRepository(apiClient)
+  const dossiersRepository = new DossiersRepository(apiClient)
   const signService = new SignService(signsRepository)
-  const markupService = new MarkupService(api, bibliographyService)
-  const cachedMarkupService = new CachedMarkupService(api, bibliographyService)
+  const markupService = new MarkupService(apiClient, bibliographyService)
+  const cachedMarkupService = new CachedMarkupService(
+    apiClient,
+    bibliographyService,
+  )
   const afoRegisterService = new AfoRegisterService(afoRegisterRepository)
   const dossiersService = new DossiersService(dossiersRepository)
   const findspotService = new FindspotService(findspotRepository)
@@ -118,7 +131,7 @@ const breadcrumbs = {
 
   expectCrumb(crumb: string, link: string): void {
     expect(
-      within(this.getBreadcrumbs()).getByRole('link', { name: crumb })
+      within(this.getBreadcrumbs()).getByRole('link', { name: crumb }),
     ).toHaveAttribute('href', link)
   },
 } as const
@@ -162,7 +175,7 @@ export default class AppDriver {
         <AuthenticationContext.Provider
           value={{
             login: _.noop,
-            logout: _.noop,
+            logout: async () => {},
             getSession: (): Session => this.session ?? guestSession,
             isAuthenticated: (): boolean => this.session !== null,
             getAccessToken(): Promise<string> {
@@ -175,7 +188,7 @@ export default class AppDriver {
         >
           {createApp(this.api)}
         </AuthenticationContext.Provider>
-      </MemoryRouter>
+      </MemoryRouter>,
     )
 
     return this
@@ -205,7 +218,7 @@ export default class AppDriver {
 
   expectInputElement(label: Matcher, expectedValue: unknown): void {
     expect(this.getView().getByLabelText(label)).toHaveValue(
-      String(expectedValue)
+      String(expectedValue),
     )
   }
 
@@ -224,11 +237,25 @@ export default class AppDriver {
 
   click(text: Matcher, n = 0): void {
     const clickable = this.getView().getAllByText(text)[n]
-    userEvent.click(clickable)
+    fireEvent.click(clickable)
   }
 
   clickByRole(role: ByRoleMatcher, name: string | RegExp, n = 0): void {
     const clickable = this.getView().getAllByRole(role, { name })[n]
-    userEvent.click(clickable)
+    fireEvent.click(clickable)
+  }
+
+  async clickasync(text: Matcher, n = 0): Promise<void> {
+    const clickable = this.getView().getAllByText(text)[n]
+    await userEvent.click(clickable)
+  }
+
+  async clickByRoleasync(
+    role: ByRoleMatcher,
+    name: string | RegExp,
+    n = 0,
+  ): Promise<void> {
+    const clickable = this.getView().getAllByRole(role, { name })[n]
+    await userEvent.click(clickable)
   }
 }

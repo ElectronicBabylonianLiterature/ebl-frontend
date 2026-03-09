@@ -4,7 +4,7 @@ import { CalendarProps } from './DateConverterBase'
 
 function divmod(
   numerator: number,
-  denominator: number
+  denominator: number,
 ): { quotient: number; remainder: number } {
   const quotient = Math.floor(numerator / denominator)
   const remainder = numerator % denominator
@@ -29,7 +29,7 @@ export default class DateConverterCompute {
   computeCjdnFromSeBabylonian(
     seBabylonianYear: number,
     mesopotamianMonth: number,
-    mesopotamianDay: number
+    mesopotamianDay: number,
   ): number {
     const i = this.findIndexInSeBabylonianYearMonthPeriod([
       seBabylonianYear,
@@ -38,9 +38,11 @@ export default class DateConverterCompute {
     return data.babylonianCjdnPeriod[i] + mesopotamianDay - 1
   }
 
-  computeJulianDateFromCjnd(
-    cjdn: number
-  ): { year: number; month: number; day: number } {
+  computeJulianDateFromCjnd(cjdn: number): {
+    year: number
+    month: number
+    day: number
+  } {
     const b = cjdn + 1524
     const c = Math.floor((b - 122.1) / 365.25)
     const d = Math.floor(365.25 * c)
@@ -51,16 +53,18 @@ export default class DateConverterCompute {
     return { year, month, day }
   }
 
-  computeGregorianDateFromCjdn(
-    cjdn: number
-  ): { year: number; month: number; day: number } {
+  computeGregorianDateFromCjdn(cjdn: number): {
+    year: number
+    month: number
+    day: number
+  } {
     const J0 = 1721120
     const s = cjdn - J0
     const alpha1 = Math.floor((400 * s + 799) / 146097)
     const a1 = alpha1 + Math.floor(this.sTmp(s, alpha1) / 367)
     const { quotient: m1, remainder: epsilon1 } = divmod(
       5 * this.sTmp(s, a1) + 2,
-      153
+      153,
     )
     const { quotient: alpha2b, remainder: m0 } = divmod(m1 + 2, 12)
     return {
@@ -127,19 +131,15 @@ export default class DateConverterCompute {
     return ((cjdn + 1) % 7) + 1
   }
 
-  computeBabylonianValues(
-    cjdn: number
-  ): {
+  computeBabylonianValues(cjdn: number): {
     i: number
     lunationNabonassar: number
     seBabylonianYear: number
     mesopotamianMonth: number
   } {
     const i = this.findIndexInBabylonianCjdnPeriod(cjdn)
-    const [
-      seBabylonianYear,
-      mesopotamianMonth,
-    ] = data.seBabylonianYearMonthPeriod[i - 1]
+    const [seBabylonianYear, mesopotamianMonth] =
+      data.seBabylonianYearMonthPeriod[i - 1]
     return {
       i,
       lunationNabonassar: 1498 + i,
@@ -148,9 +148,11 @@ export default class DateConverterCompute {
     }
   }
 
-  computeRegnalValues(
-    seBabylonianYear: number
-  ): { ruler?: string; regnalYear: number; regnalYears: number } {
+  computeRegnalValues(seBabylonianYear: number): {
+    ruler?: string
+    regnalYear: number
+    regnalYears: number
+  } {
     const j = data.rulerSeYears.findIndex((year) => year > seBabylonianYear)
     const ruler = seBabylonianYear < 168 ? data.rulerName[j - 1] : undefined
     const regnalYear = seBabylonianYear - data.rulerSeYears[j - 1] + 1
@@ -160,7 +162,7 @@ export default class DateConverterCompute {
 
   calculateSeMacedonianYear(
     seBabylonianYear: number,
-    mesopotamianMonth: number
+    mesopotamianMonth: number,
   ): number | undefined {
     if (seBabylonianYear > 0 && mesopotamianMonth < 7) {
       return seBabylonianYear
@@ -177,7 +179,7 @@ export default class DateConverterCompute {
 
   findIndexInSeBabylonianYearMonthPeriod(yearMonth: [number, number]): number {
     const i = data.seBabylonianYearMonthPeriod.findIndex((ym) =>
-      _.isEqual(ym, yearMonth)
+      _.isEqual(ym, yearMonth),
     )
     if (i === -1)
       throw new Error('Could not find matching Babylonian date in data.')

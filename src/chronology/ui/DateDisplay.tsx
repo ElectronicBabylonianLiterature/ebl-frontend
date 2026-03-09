@@ -17,7 +17,7 @@ interface DateDisplayParams {
 
 function getDateDisplayParams(
   date: MesopotamianDate,
-  modernCalendar: 'PJC' | 'PGC'
+  modernCalendar: 'PJC' | 'PGC',
 ): DateDisplayParams {
   const parsedDate: string = date.toString()
   const match = parsedDate.match(/(.*) \((.*) PJC \| (.*) PGC\)/)
@@ -90,13 +90,8 @@ const DateDisplay: React.FC<Props> = ({ date }): ReactElement => {
   const toggleCalendar = (): void => {
     setModernCalendar((prev) => (prev === 'PJC' ? 'PGC' : 'PJC'))
   }
-  const {
-    dateString,
-    pjcDate,
-    pgcDate,
-    isDateSwitchable,
-    tooltipMessage,
-  } = getDateDisplayParams(date, modernCalendar)
+  const { dateString, pjcDate, pgcDate, isDateSwitchable, tooltipMessage } =
+    getDateDisplayParams(date, modernCalendar)
   return (
     <div className="mesopotamian-date-display" role="time">
       {formatDateString(dateString)}

@@ -11,7 +11,7 @@ import { EmptySection } from 'dictionary/ui/display/EmptySection'
 
 function filterLogogramsData(
   signs: readonly Sign[],
-  wordId: string
+  wordId: string,
 ): { firstSignName: string; unicode: string; note: string }[] {
   return flatten(
     signs.map((sign) =>
@@ -23,8 +23,8 @@ function filterLogogramsData(
             unicode: logogram.unicode,
             note: logogram.schrammLogogramme,
           }
-        })
-    )
+        }),
+    ),
   )
 }
 
@@ -91,7 +91,7 @@ export default withData<
   },
   ({ signService, wordId }) => {
     return Bluebird.all(
-      signService.search({ wordId: decodeURIComponent(wordId) })
+      signService.search({ wordId: decodeURIComponent(wordId) }),
     )
-  }
+  },
 )

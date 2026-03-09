@@ -44,7 +44,7 @@ const getDiscussedBy = (): string =>
 const getFragmentNumber = (): string[] =>
   Array.from(
     { length: chance.integer({ min: 0, max: 5 }) },
-    () => `${chance.word()}.${chance.natural()}`
+    () => `${chance.word()}.${chance.natural()}`,
   )
 
 export const afoRegisterRecordFactory = Factory.define<AfoRegisterRecord>(
@@ -58,15 +58,14 @@ export const afoRegisterRecordFactory = Factory.define<AfoRegisterRecord>(
       discussedBy: getDiscussedBy(),
       discussedByNotes: chance.sentence(),
       fragmentNumbers: getFragmentNumber(),
-    })
+    }),
 )
 
-export const afoRegisterRecordSuggestionFactory = Factory.define<
-  AfoRegisterRecordSuggestion
->(
-  () =>
-    new AfoRegisterRecordSuggestion({
-      text: getText(),
-      textNumbers: getTextNumbers().sort(),
-    })
-)
+export const afoRegisterRecordSuggestionFactory =
+  Factory.define<AfoRegisterRecordSuggestion>(
+    () =>
+      new AfoRegisterRecordSuggestion({
+        text: getText(),
+        textNumbers: getTextNumbers().sort(),
+      }),
+  )

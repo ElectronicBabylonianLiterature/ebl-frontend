@@ -26,9 +26,9 @@ import { LineLemmaAnnotations } from 'fragmentarium/ui/fragment/lemma-annotation
 import { InitializeLemmatizer } from 'fragmentarium/ui/fragment/lemma-annotation/InitializeLemmatizer'
 import TextAnnotation from 'fragmentarium/ui/text-annotation/TextAnnotation'
 
-const ContentSection: FunctionComponent = ({
+const ContentSection = ({
   children,
-}: PropsWithChildren<unknown>) => (
+}: PropsWithChildren<unknown>): JSX.Element => (
   <section className="CuneiformFragment__content">
     <ErrorBoundary>{children}</ErrorBoundary>
   </section>
@@ -119,17 +119,27 @@ function isTabDisabled({
   name: TabName
   session: Session
 }): boolean {
-  return {
-    display: false,
-    edition: !session.isAllowedToTransliterateFragments(),
-    lemmatization:
-      _.isEmpty(props.fragment.text.lines) ||
-      !session.isAllowedToLemmatizeFragments(),
-    references: props.disabled,
-    archeology: props.disabled,
-    colophon: props.disabled,
-    scope: props.disabled,
-  }[name]
+  return (
+    {
+      display: false,
+      edition: !session.isAllowedToTransliterateFragments(),
+      lemmatization:
+        _.isEmpty(props.fragment.text.lines) ||
+        !session.isAllowedToLemmatizeFragments(),
+      'named entities': !session.isAllowedToAnnotateFragments(),
+      references: props.disabled,
+      archaeology: props.disabled,
+      colophon: props.disabled,
+      permissions: props.disabled,
+    }[name] ?? false
+  )
+}
+
+function shouldShowTab(name: TabName, session: Session): boolean {
+  if (session.isGuestSession()) {
+    return name === 'display'
+  }
+  return true
 }
 
 export const EditorTabs: FunctionComponent<TabsProps> = ({
@@ -139,31 +149,35 @@ export const EditorTabs: FunctionComponent<TabsProps> = ({
   const tabsId = _.uniqueId('fragment-container-')
   return (
     <SessionContext.Consumer>
-      {(session) => (
-        <Tabs
-          id={tabsId}
-          defaultActiveKey={
-            session.isAllowedToTransliterateFragments() ? 'edition' : 'display'
-          }
-          mountOnEnter={true}
-          className={
-            session.isGuestSession() ? 'CuneiformFragment__tabs-hidden' : ''
-          }
-        >
-          {tabNames.map((name) => {
-            const children = TabContentsMatcher({
-              name,
-              props: { disabled, ...props },
-              session,
-            })
-            return EditorTab({
-              children,
-              name,
-              disabled: isTabDisabled({ name, session, props }),
-            })
-          })}
-        </Tabs>
-      )}
+      {(session) => {
+        const visibleTabs = tabNames.filter((name) =>
+          shouldShowTab(name, session),
+        )
+        return (
+          <Tabs
+            id={tabsId}
+            defaultActiveKey={
+              session.isAllowedToTransliterateFragments()
+                ? 'edition'
+                : 'display'
+            }
+            mountOnEnter={true}
+          >
+            {visibleTabs.map((name) => {
+              const children = TabContentsMatcher({
+                name,
+                props: { disabled, ...props },
+                session,
+              })
+              return EditorTab({
+                children,
+                name,
+                disabled: isTabDisabled({ name, session, props }),
+              })
+            })}
+          </Tabs>
+        )
+      }}
     </SessionContext.Consumer>
   )
 }
@@ -175,7 +189,7 @@ function DisplayContents(props: TabsProps): JSX.Element {
 function EditionContents(props: TabsProps): JSX.Element {
   const updateEdition = (fields: EditionFields) =>
     props.onSave(
-      props.fragmentService.updateEdition(props.fragment.number, fields)
+      props.fragmentService.updateEdition(props.fragment.number, fields),
     )
   return <Edition updateEdition={updateEdition} {...props} />
 }
@@ -185,8 +199,8 @@ function LemmatizationContents(props: TabsProps): JSX.Element {
     props.onSave(
       props.fragmentService.updateLemmaAnnotation(
         props.fragment.number,
-        annotations
-      )
+        annotations,
+      ),
     )
   return (
     <InitializeLemmatizer
@@ -213,8 +227,8 @@ function ReferencesContents(props: TabsProps): JSX.Element {
     props.onSave(
       props.fragmentService.updateReferences(
         props.fragment.number,
-        references.map(serializeReference)
-      )
+        references.map(serializeReference),
+      ),
     )
   const searchBibliography = (query) =>
     props.fragmentService.searchBibliography(query)
@@ -233,8 +247,8 @@ function ArchaeologyContents(props: TabsProps): JSX.Element {
     props.onSave(
       props.fragmentService.updateArchaeology(
         props.fragment.number,
-        archaeology
-      )
+        archaeology,
+      ),
     )
   return (
     <ArchaeologyEditor
@@ -248,7 +262,7 @@ function ArchaeologyContents(props: TabsProps): JSX.Element {
 function ColophonContents(props: TabsProps): JSX.Element {
   const updateColophon = async (colophon: Colophon) => {
     props.onSave(
-      props.fragmentService.updateColophon(props.fragment.number, colophon)
+      props.fragmentService.updateColophon(props.fragment.number, colophon),
     )
   }
 
@@ -258,7 +272,7 @@ function ColophonContents(props: TabsProps): JSX.Element {
 function ScopeContents(props: TabsProps, session: Session): JSX.Element {
   const updateScopes = async (scopes: string[]) => {
     props.onSave(
-      props.fragmentService.updateScopes(props.fragment.number, scopes)
+      props.fragmentService.updateScopes(props.fragment.number, scopes),
     )
   }
 

@@ -16,6 +16,6 @@ test('link', () => {
   expect(crumb.link).toEqual(
     `/corpus/${id.textId.genre}/${id.textId.category}/${
       id.textId.index
-    }/${stageToAbbreviation(id.stage)}/${id.name}`
+    }/${stageToAbbreviation(id.stage)}/${id.name}`,
   )
 })

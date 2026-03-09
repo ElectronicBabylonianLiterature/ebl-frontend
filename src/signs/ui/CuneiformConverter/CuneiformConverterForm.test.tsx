@@ -11,35 +11,40 @@ const signServiceMock = new (SignService as jest.Mock<
 let container: HTMLElement
 
 describe('CuneiformConverterForm', () => {
-  beforeEach(() => {
+  const setup = (): void => {
     Object.defineProperty(window.navigator, 'clipboard', {
       value: {
         writeText: jest.fn().mockResolvedValue(true),
       },
       writable: true,
     })
-    container = render(<CuneiformConverterForm signService={signServiceMock} />)
-      .container
-  })
+    container = render(
+      <CuneiformConverterForm signService={signServiceMock} />,
+    ).container
+  }
 
   afterEach(() => {
     jest.resetAllMocks()
   })
 
   it('renders form, options, and scenario panel correctly', () => {
+    setup()
     expect(container).toMatchSnapshot()
   })
   it('handles input change', () => {
+    setup()
     const inputTextArea = screen.getByLabelText('input-atf')
     fireEvent.change(inputTextArea, { target: { value: 'test text' } })
     expect(inputTextArea).toHaveValue('test text')
   })
   it('handles font change', () => {
+    setup()
     const fontSelector = screen.getByLabelText('Select Font')
     fireEvent.change(fontSelector, { target: { value: 'Esagil' } })
     expect(fontSelector).toHaveValue('Esagil')
   })
   it('converts text correctly', async () => {
+    setup()
     signServiceMock.getUnicodeFromAtf.mockResolvedValueOnce([
       { unicode: [73979] },
     ])
@@ -56,6 +61,7 @@ describe('CuneiformConverterForm', () => {
   })
 
   it('copies converted text to clipboard', async () => {
+    setup()
     signServiceMock.getUnicodeFromAtf.mockResolvedValueOnce([
       { unicode: [73979] },
     ])

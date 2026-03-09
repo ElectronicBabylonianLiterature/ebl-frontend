@@ -98,27 +98,27 @@ describe('DateConverter', () => {
     expect(mesopotamianDate.calendar).toEqual(expected)
     expect(mesopotamianDate.toDateString()).toEqual('29 March 311 BCE PGC')
     expect(mesopotamianDate.toDateString('Julian')).toEqual(
-      '3 April 311 BCE PJC'
+      '3 April 311 BCE PJC',
     )
   })
 
   test('Set to 1 BCE', () => {
     mesopotamianDate.setToGregorianDate(0, 1, 1)
     expect(mesopotamianDate.toDateString('Gregorian')).toEqual(
-      '1 January 1 BCE PGC'
+      '1 January 1 BCE PGC',
     )
     expect(mesopotamianDate.toDateString('Julian')).toEqual(
-      '3 January 1 BCE PJC'
+      '3 January 1 BCE PJC',
     )
   })
 
   test('Set to 2 BCE', () => {
     mesopotamianDate.setToGregorianDate(-1, 1, 1)
     expect(mesopotamianDate.toDateString('Gregorian')).toEqual(
-      '1 January 2 BCE PGC'
+      '1 January 2 BCE PGC',
     )
     expect(mesopotamianDate.toDateString('Julian')).toEqual(
-      '3 January 2 BCE PJC'
+      '3 January 2 BCE PJC',
     )
   })
 
@@ -128,7 +128,7 @@ describe('DateConverter', () => {
     expect(mesopotamianDate.calendar).toEqual(expected)
     expect(mesopotamianDate.toDateString()).toEqual('28 March 561 BCE PGC')
     expect(mesopotamianDate.toDateString('Julian')).toEqual(
-      '3 April 561 BCE PJC'
+      '3 April 561 BCE PJC',
     )
   })
 
@@ -138,7 +138,7 @@ describe('DateConverter', () => {
     expect(mesopotamianDate.calendar).toEqual(expected)
     expect(mesopotamianDate.toDateString()).toEqual('28 March 561 BCE PGC')
     expect(mesopotamianDate.toDateString('Julian')).toEqual(
-      '3 April 561 BCE PJC'
+      '3 April 561 BCE PJC',
     )
   })
 
@@ -148,7 +148,7 @@ describe('DateConverter', () => {
     expect(mesopotamianDate.calendar).toEqual(expected)
     expect(mesopotamianDate.toDateString()).toEqual('28 December 582 BCE PGC')
     expect(mesopotamianDate.toDateString('Julian')).toEqual(
-      '3 January 581 BCE PJC'
+      '3 January 581 BCE PJC',
     )
   })
 
@@ -158,7 +158,7 @@ describe('DateConverter', () => {
     expect(mesopotamianDate.calendar).toEqual(expected)
     expect(mesopotamianDate.toDateString()).toEqual('30 March 211 BCE PGC')
     expect(mesopotamianDate.toDateString('Julian')).toEqual(
-      '3 April 211 BCE PJC'
+      '3 April 211 BCE PJC',
     )
   })
 })

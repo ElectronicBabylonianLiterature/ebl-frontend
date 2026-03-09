@@ -2,7 +2,7 @@ import ListForm from 'common/List'
 import { Manuscript } from 'corpus/domain/manuscript'
 import React from 'react'
 import { castDraft, produce } from 'immer'
-import { Col, Form } from 'react-bootstrap'
+import { Col, Form, Row } from 'react-bootstrap'
 import _ from 'lodash'
 import ArrayInput from 'common/ArrayInput'
 import Editor from 'editor/Editor'
@@ -25,16 +25,16 @@ function ManuscriptLineForm({
     onChange(
       produce(value, (draft) => {
         draft[property] = event.target.value
-      })
+      }),
     )
   const handleIdChange = (event) =>
     onChange(
       produce(value, (draft) => {
         draft.manuscriptId = Number(event.target.value)
-      })
+      }),
     )
   return (
-    <Form.Row>
+    <Row>
       <Form.Group as={Col} md={2} controlId={_.uniqueId('ManuscriptLine-')}>
         <Form.Label>Siglum</Form.Label>
         <Form.Control
@@ -60,7 +60,7 @@ function ManuscriptLineForm({
             onChange(
               produce(value, (draft) => {
                 draft.labels = castDraft(labels)
-              })
+              }),
             )
           }
         >
@@ -80,13 +80,13 @@ function ManuscriptLineForm({
             onChange(
               produce(value, (draft) => {
                 draft.atf = atf
-              })
+              }),
             )
           }
           disabled={disabled}
         />
       </Col>
-    </Form.Row>
+    </Row>
   )
 }
 

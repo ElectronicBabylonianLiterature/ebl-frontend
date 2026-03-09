@@ -78,7 +78,7 @@ class Accumulator {
             ...token,
             value: this.addAccentsToValue(token.value),
           }
-        : token
+        : token,
     )
     return this
   }
@@ -112,11 +112,11 @@ class Accumulator {
 }
 
 export function addAccents(
-  namedSign: NamedSign
+  namedSign: NamedSign,
 ): readonly [readonly Token[], boolean] {
   return namedSign.nameParts.reduce(
     (acc, token) => acc.addToken(token),
-    new Accumulator(namedSign.subIndex)
+    new Accumulator(namedSign.subIndex),
   ).result
 }
 
@@ -130,7 +130,7 @@ export function addBreves(word: AkkadianWord): AkkadianWord {
             ...part,
             value: part.value.replaceAll(regexp, (c) => breves.get(c) || c),
           }
-        : part
+        : part,
     ),
   }
 }

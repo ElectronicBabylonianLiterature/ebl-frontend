@@ -6,7 +6,7 @@ import './ReferenceList.css'
 
 function groupReferencesById(references: readonly Reference[]): Reference[][] {
   return _.values(
-    _.groupBy(references, (reference) => `${reference.id}-${reference.type}`)
+    _.groupBy(references, (reference) => `${reference.id}-${reference.type}`),
   )
 }
 

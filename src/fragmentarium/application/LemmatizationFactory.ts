@@ -13,18 +13,18 @@ import { FragmentService } from './FragmentService'
 export abstract class AbstractLemmatizationFactory<T, U> {
   private readonly findSuggestions: (
     value: string,
-    isNormalized: boolean
+    isNormalized: boolean,
   ) => Promise<readonly UniqueLemma[]>
   private readonly findWord: (word: string) => Promise<DictionaryWord>
 
   constructor(
     fragmentService: FragmentService,
-    wordRepository: { find(word: string): Promise<DictionaryWord> }
+    wordRepository: { find(word: string): Promise<DictionaryWord> },
   ) {
     this.findSuggestions = _.memoize(
       _.bind(fragmentService.findSuggestions, fragmentService),
       (...args: Parameters<typeof fragmentService.findSuggestions>) =>
-        String(args)
+        String(args),
     )
     this.findWord = _.memoize(_.bind(wordRepository.find, wordRepository))
   }
@@ -32,7 +32,7 @@ export abstract class AbstractLemmatizationFactory<T, U> {
   abstract createLemmatization(text: T): Promise<U>
 
   protected createLemmatizationLine(
-    tokens: readonly Token[]
+    tokens: readonly Token[],
   ): Promise<LemmatizationToken[]> {
     return Promise.mapSeries(tokens, (token) =>
       token.lemmatizable
@@ -41,14 +41,14 @@ export abstract class AbstractLemmatizationFactory<T, U> {
             this.createSuggestions(token),
           ]).then(
             ([lemmas, suggestions]) =>
-              new LemmatizationToken(token.value, true, lemmas, suggestions)
+              new LemmatizationToken(token.value, true, lemmas, suggestions),
           )
-        : Promise.resolve(new LemmatizationToken(token.value, false))
+        : Promise.resolve(new LemmatizationToken(token.value, false)),
     )
   }
 
   private createSuggestions(
-    token: LemmatizableToken
+    token: LemmatizableToken,
   ): Promise<readonly UniqueLemma[]> {
     return _.isEmpty(token.uniqueLemma)
       ? this.findSuggestions(token.cleanValue, token.normalized)
@@ -57,7 +57,7 @@ export abstract class AbstractLemmatizationFactory<T, U> {
 
   protected createLemmas(token: LemmatizableToken): Promise<UniqueLemma> {
     return Promise.mapSeries(token.uniqueLemma, (lemma) =>
-      this.findWord(lemma).then((word: DictionaryWord) => new Lemma(word))
+      this.findWord(lemma).then((word: DictionaryWord) => new Lemma(word)),
     )
   }
 }
@@ -67,13 +67,13 @@ export default class LemmatizationFactory extends AbstractLemmatizationFactory<
 > {
   createLemmatization(text: Text): Promise<Lemmatization> {
     return Promise.mapSeries(text.allLines, (line) =>
-      this.createLemmatizationLine(line.content)
+      this.createLemmatizationLine(line.content),
     ).then(
       (lines) =>
         new Lemmatization(
           text.allLines.map((line) => line.prefix),
-          lines
-        )
+          lines,
+        ),
     )
   }
 }

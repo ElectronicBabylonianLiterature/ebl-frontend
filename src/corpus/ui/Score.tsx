@@ -85,13 +85,13 @@ function Manuscript({
                 id={_.uniqueId('ManuscriptLineNotesPopOver-')}
                 className=""
               >
-                <Popover.Content>
+                <Popover.Body>
                   <ol className="chapter-display__manuscript-notes">
                     {manuscript.noteLines.map((note, index) => (
                       <Markup key={index} container="li" parts={note.parts} />
                     ))}
                   </ol>
-                </Popover.Content>
+                </Popover.Body>
               </Popover>
             }
             trigger={['click']}
@@ -133,7 +133,7 @@ const Score = withData<
   {
     filter: (props) => !props.lineGroup.hasManuscriptLines,
     defaultData: (props) => props.lineGroup.lineDetails,
-  }
+  },
 )
 
 export default Score

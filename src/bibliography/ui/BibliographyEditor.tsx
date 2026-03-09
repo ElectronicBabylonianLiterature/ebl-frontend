@@ -5,11 +5,10 @@ import BibliographyEntryFormController from 'bibliography/ui/BibliographyEntryFo
 import BibliographyEntry, {
   template,
 } from 'bibliography/domain/BibliographyEntry'
-import { History } from 'history'
-import { match } from 'react-router'
 import { Crumb, SectionCrumb, TextCrumb } from 'common/Breadcrumbs'
 import Promise from 'bluebird'
 import { Button } from 'react-bootstrap'
+import { useNavigate } from 'react-router-dom'
 
 type Props = {
   data: BibliographyEntry
@@ -19,8 +18,8 @@ type Props = {
     update(entry: BibliographyEntry): Promise<BibliographyEntry>
   }
   create?: boolean
-  history: History
-  match: match<{ id: string }>
+  history?: { push: (path: string) => void }
+  match: { params: Record<string, string | undefined> }
 }
 
 function BibliographyEditor({
@@ -30,11 +29,21 @@ function BibliographyEditor({
   history,
   match,
 }: Props): JSX.Element {
+  const navigate = useNavigate()
+  const entryId = match.params.id ?? ''
+  const push = (path: string): void => {
+    if (history) {
+      history.push(path)
+    } else {
+      navigate(path)
+    }
+  }
+
   function createEntry(entry: BibliographyEntry): Promise<void> {
     return bibliographyService
       .create(entry)
       .then(() =>
-        history.push(`/bibliography/references/${encodeURIComponent(entry.id)}`)
+        push(`/bibliography/references/${encodeURIComponent(entry.id)}`),
       )
   }
 
@@ -57,9 +66,7 @@ function BibliographyEditor({
         !create && (
           <Button
             variant="outline-primary"
-            onClick={() =>
-              history.push(`/bibliography/references/${match.params.id}`)
-            }
+            onClick={() => push(`/bibliography/references/${entryId}`)}
           >
             View
           </Button>
@@ -76,20 +83,20 @@ function BibliographyEditor({
 
 export default withData<
   WithoutData<Props>,
-  { match: match<{ id: string }> },
+  { match: { params: Record<string, string | undefined> } },
   BibliographyEntry
 >(
   BibliographyEditor,
   (props) => {
-    const decodedId = decodeURIComponent(props.match.params['id'])
+    const decodedId = decodeURIComponent(props.match.params['id'] ?? '')
     return props.bibliographyService.find(decodedId)
   },
   {
     watch: (props) => [
       props.create,
-      decodeURIComponent(props.match.params['id']),
+      decodeURIComponent(props.match.params['id'] ?? ''),
     ],
     filter: (props) => !props.create,
     defaultData: () => template,
-  }
+  },
 )

@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { Nav, Navbar, Container } from 'react-bootstrap'
 import { LinkContainer } from 'react-router-bootstrap'
 import _ from 'lodash'
+import { useLocation } from 'react-router-dom'
 
 import User from './auth/User'
 import BAdWLogo from './BAdW_Logo.svg'
@@ -37,9 +38,9 @@ export function NavItem({
 }): JSX.Element {
   return (
     <Nav.Item as={as}>
-      <LinkContainer to={href}>
-        <Nav.Link>{title}</Nav.Link>
-      </LinkContainer>
+      <Nav.Link as={Link} to={href} eventKey={href}>
+        {title}
+      </Nav.Link>
     </Nav.Item>
   )
 }
@@ -47,6 +48,11 @@ export function NavItem({
 export default function Header(): JSX.Element {
   const [activeKey, setActiveKey] = useState<string>()
   const id = _.uniqueId('Header-')
+  const location = useLocation()
+
+  useEffect(() => {
+    setActiveKey(location.pathname)
+  }, [location.pathname])
   return (
     <header className="Header">
       <div className="Header__partner-strip">
@@ -87,7 +93,8 @@ export default function Header(): JSX.Element {
       </div>
       <Navbar variant="light" expand="md">
         <Container>
-          <LinkContainer
+          <Navbar.Brand
+            as={Link}
             to="/"
             title="electronic Babylonian Library (eBL)"
             onClick={() => setActiveKey('/')}

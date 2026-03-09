@@ -9,7 +9,7 @@ export default function SubmitCorrectionsButton({
   const email = process.env.REACT_APP_CORRECTIONS_EMAIL
   const subject = encodeURIComponent(`eBL Correction to ${id}`)
   const body = encodeURIComponent(
-    `To the ${id} (${window.location.href}), I have the following correction:\n\n[comment]`
+    `To the ${id} (${window.location.href}), I have the following correction:\n\n[comment]`,
   )
   const renderTooltip = (props) => (
     <Tooltip id="button-tooltip" {...props}>

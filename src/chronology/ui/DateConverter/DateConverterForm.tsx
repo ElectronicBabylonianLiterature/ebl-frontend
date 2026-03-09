@@ -67,7 +67,7 @@ export interface FormChangeProps extends ConverterFormParams {
 interface FormProps extends ConverterFormParams, ConverterFormMethods {}
 
 function useConverterFormMethods(
-  converterFormState: ConverterFormParams
+  converterFormState: ConverterFormParams,
 ): ConverterFormMethods {
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) =>
     handleDateConverterFormChange({
@@ -79,7 +79,7 @@ function useConverterFormMethods(
   }
   const copyToClipboard = async () => {
     await navigator.clipboard.writeText(
-      JSON.stringify(converterFormState.formData)
+      JSON.stringify(converterFormState.formData),
     )
   }
   return {

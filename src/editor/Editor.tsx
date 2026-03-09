@@ -28,7 +28,7 @@ function createAnnotations(compositeError): IAnnotation[] {
 function createCompleter(
   triggerRegex: RegExp,
   snippets,
-  lineStartOnly = false
+  lineStartOnly = false,
 ) {
   return {
     getCompletions: function (editor, session, pos, prefix, callback) {
@@ -50,7 +50,7 @@ const specialCharacterKeys: ICommand[] = Object.entries(specialCharacters).map(
     exec(editor: Ace.Editor): void {
       editor.insert(key)
     },
-  })
+  }),
 )
 
 interface Props {
@@ -75,7 +75,7 @@ class Editor extends Component<Props> {
   }
 
   componentDidMount(): void {
-    const customMode = (new AtfMode() as unknown) as Ace.SyntaxMode
+    const customMode = new AtfMode() as unknown as Ace.SyntaxMode
     this.aceEditor.current?.editor.getSession().setMode(customMode)
   }
 
@@ -90,14 +90,14 @@ class Editor extends Component<Props> {
     const { row } = editor.selection.getCursor()
     const thisLine = editor.session.getTextRange(new Range(row, 0, row, 10))
     const nextLine = editor.session.getTextRange(
-      new Range(row + 1, 0, row + 1, 10)
+      new Range(row + 1, 0, row + 1, 10),
     )
     const match = thisLine.match(/^(\d+)([^.]*)\./)
     if (!nextLine && match) {
       const [, lineNumber, suffix] = match
       const incrementedLineNumber = parseInt(lineNumber) + 1
       editor.insert(
-        `\n${incrementedLineNumber}${suffix.match(/\w/) ? '' : suffix}. `
+        `\n${incrementedLineNumber}${suffix.match(/\w/) ? '' : suffix}. `,
       )
     } else {
       editor.insert('\n')
@@ -127,7 +127,7 @@ class Editor extends Component<Props> {
     const newEnd = editor.selection.getCursor()
 
     editor.selection.setRange(
-      new Range(start.row, 0, newEnd.row, newEnd.column)
+      new Range(start.row, 0, newEnd.row, newEnd.column),
     )
   }
 
@@ -158,7 +158,7 @@ class Editor extends Component<Props> {
           }}
           setOptions={{
             showLineNumbers: false,
-            // @ts-ignore https://github.com/securingsincity/react-ace/issues/752
+            // @ts-expect-error https://github.com/securingsincity/react-ace/issues/752
             newLineMode: 'unix',
             autoScrollEditorIntoView: true,
             rtlText: true,

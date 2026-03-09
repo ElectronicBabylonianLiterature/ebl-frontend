@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 //https://github.com/Secretmapper/react-image-annotation
 /*
 The MIT License (MIT)
@@ -48,7 +49,7 @@ const Target = Items
 
 export default compose(
   isMouseHovering(),
-  withRelativeMousePos()
+  withRelativeMousePos(),
 )(
   class Annotation extends Component {
     static propTypes = {
@@ -62,7 +63,7 @@ export default compose(
       annotations: T.arrayOf(
         T.shape({
           type: T.string,
-        })
+        }),
       ).isRequired,
       type: T.string,
       selectors: T.arrayOf(
@@ -71,7 +72,7 @@ export default compose(
           intersects: T.func.isRequired,
           area: T.func.isRequired,
           methods: T.object.isRequired,
-        })
+        }),
       ).isRequired,
 
       value: T.shape({
@@ -246,7 +247,7 @@ export default compose(
     shouldAnnotationBeActive = (annotation, top) => {
       if (this.props.activeAnnotations) {
         const isActive = !!this.props.activeAnnotations.find((active) =>
-          this.props.activeAnnotationComparator(annotation, active)
+          this.props.activeAnnotationComparator(annotation, active),
         )
 
         return isActive || top === annotation
@@ -270,7 +271,7 @@ export default compose(
 
       const topAnnotationAtMouse = this.getTopAnnotationAt(
         this.props.relativeMousePos.x,
-        this.props.relativeMousePos.y
+        this.props.relativeMousePos.y,
       )
       return (
         <Row>
@@ -352,9 +353,9 @@ export default compose(
                             annotation,
                             active: this.shouldAnnotationBeActive(
                               annotation,
-                              topAnnotationAtMouse
+                              topAnnotationAtMouse,
                             ),
-                          })
+                          }),
                         )}
                         {!props.disableSelector &&
                           props.value &&
@@ -380,12 +381,12 @@ export default compose(
                         (annotation) =>
                           this.shouldAnnotationBeActive(
                             annotation,
-                            topAnnotationAtMouse
+                            topAnnotationAtMouse,
                           ) &&
                           renderContent({
                             key: annotation.data.id,
                             annotation: annotation,
-                          })
+                          }),
                       )}
                       <div>{props.children}</div>
                     </Container>
@@ -397,5 +398,5 @@ export default compose(
         </Row>
       )
     }
-  }
+  },
 )

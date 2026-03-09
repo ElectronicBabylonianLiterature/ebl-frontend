@@ -37,5 +37,5 @@ export default withData<
     watch: (props) => [...props.fragment.traditionalReferences],
     filter: (props) => !_.isEmpty(props.fragment.traditionalReferences),
     defaultData: () => ({ records: [] }),
-  }
+  },
 )

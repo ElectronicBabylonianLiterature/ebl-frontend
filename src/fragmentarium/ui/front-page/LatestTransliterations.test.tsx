@@ -33,18 +33,18 @@ const dossiersService = new (DossiersService as jest.Mock<
   jest.Mocked<DossiersService>
 >)()
 
-beforeEach(async () => {
+const setup = async (): Promise<void> => {
   session = new MemorySession(['read:fragments'])
   fragments = fragmentFactory.buildList(
     numberOfFragments,
     {},
-    { transient: { chance } }
+    { transient: { chance } },
   )
   fragmentService.queryLatest.mockReturnValueOnce(
     Promise.resolve({
       items: fragments.map(queryItemOf),
       matchCountTotal: 0,
-    })
+    }),
   )
   fragmentService.find
     .mockReturnValueOnce(Promise.resolve(fragments[0]))
@@ -62,11 +62,12 @@ beforeEach(async () => {
           />
         </SessionContext.Provider>
       </DictionaryContext.Provider>
-    </MemoryRouter>
+    </MemoryRouter>,
   ).container
   await screen.findByText('Latest additions:')
-})
+}
 
-test('Snapshot', () => {
+test('Snapshot', async () => {
+  await setup()
   expect(container).toMatchSnapshot()
 })

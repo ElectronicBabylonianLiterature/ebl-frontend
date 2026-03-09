@@ -24,7 +24,7 @@ import classNames from 'classnames'
 function createCorpusChapterUrl(
   textId: TextId,
   stage: string,
-  name: string
+  name: string,
 ): string {
   const urlParts = [
     textId.genre,
@@ -51,7 +51,7 @@ function LemmaLineNumber({
       href={`${createCorpusChapterUrl(
         dictionaryLine.textId,
         dictionaryLine.stage,
-        dictionaryLine.chapterName
+        dictionaryLine.chapterName,
       )}#${encodeURIComponent(lineNumber)}`}
     >
       {lineNumber}
@@ -73,9 +73,9 @@ export default function DictionaryLineVariant({
   const [lemmaMap, lemmaSetter] = useState<LemmaMap>(
     createLemmaMap(
       _.flatten(
-        variant.reconstruction.map((token: Token) => token.uniqueLemma ?? [])
-      )
-    )
+        variant.reconstruction.map((token: Token) => token.uniqueLemma ?? []),
+      ),
+    ),
   )
   const isVariant = variantNumber !== 0
 

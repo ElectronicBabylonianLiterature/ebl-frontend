@@ -48,11 +48,11 @@ export default withData<
   (props) =>
     props.afoRegisterService.search(
       stringify(props.query),
-      props.fragmentService
+      props.fragmentService,
     ),
   {
     watch: (props) => [props.query],
     filter: (props) => !_.isEmpty(props.query),
     defaultData: () => [],
-  }
+  },
 )

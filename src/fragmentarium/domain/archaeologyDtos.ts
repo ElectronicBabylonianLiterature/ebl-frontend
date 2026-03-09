@@ -9,7 +9,7 @@ import MuseumNumber, { museumNumberToString } from './MuseumNumber'
 export function createArchaeology(
   dto: Omit<ArchaeologyDto, 'excavationNumber'> & {
     excavationNumber?: MuseumNumber
-  }
+  },
 ): Archaeology {
   return {
     ...dto,
@@ -109,7 +109,7 @@ export function fromFindspotDto(dto: FindspotDto): Findspot {
     dto.room,
     dto.context,
     dto.primaryContext,
-    dto.notes
+    dto.notes,
   )
 }
 

@@ -108,7 +108,7 @@ function GlossComponent({ token, Wrapper }: TokenProps): JSX.Element {
           <DisplayToken key={index} token={token} />
         ) : (
           <DisplayToken key={index} token={token} Wrapper={GlossWrapper} />
-        )
+        ),
       )}
     </>
   )
@@ -181,7 +181,7 @@ function NamedSignComponent({ token, Wrapper }: TokenProps): JSX.Element {
             <DisplayToken key={index} token={token} />
           ) : (
             <DisplayToken key={index} token={token} Wrapper={Wrapper} />
-          )
+          ),
         )}
         <Wrapper>
           {!omitSubindex && <SubIndex token={namedSign} />}

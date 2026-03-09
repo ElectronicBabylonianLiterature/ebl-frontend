@@ -30,43 +30,41 @@ const noteFirstLineCases: [number, number[]][] = [
   [1, []],
 ]
 
-let element: RenderResult
-let lines: HTMLElement[]
-
 describe.each([
   [textWithNormalFirstLine, false, normaFirsLineCases],
   [textWithNoteOnFirstLine, true, noteFirstLineCases],
 ])('%#', (text, noteOnFirstLine, lineCases: [number, number[]][]) => {
-  beforeEach(() => {
-    element = render(<TransliterationLines text={text} />)
-    lines = screen.getAllByRole('row')
-  })
+  function setup(): { view: RenderResult; lines: HTMLElement[] } {
+    const view = render(<TransliterationLines text={text} />)
+    const lines = screen.getAllByRole('row')
+    return { view, lines }
+  }
 
   test('Snapshot', () => {
-    expect(element.container).toMatchSnapshot()
+    const { view } = setup()
+    expect(view.container).toMatchSnapshot()
   })
 
   test('Shows all lines', () => {
+    const { lines } = setup()
     expect(lines.length).toEqual(lineCases.length)
   })
 
   describe.each(lineCases)(
     'Line %s with notes %p',
     (lineNumber, noteNumbers) => {
-      let line: HTMLElement
-      let links: HTMLElement[]
-
-      beforeEach(() => {
-        const index = noteOnFirstLine ? lineNumber : lineNumber - 1
-        line = lines[index]
-        links = within(line).queryAllByRole('link')
-      })
-
       test('ID', () => {
+        const { lines } = setup()
+        const index = noteOnFirstLine ? lineNumber : lineNumber - 1
+        const line = lines[index]
         expect(line).toHaveAttribute('id', `line-${lineNumber}`)
       })
 
       test('Shows all links', () => {
+        const { lines } = setup()
+        const index = noteOnFirstLine ? lineNumber : lineNumber - 1
+        const line = lines[index]
+        const links = within(line).queryAllByRole('link')
         expect(links.length).toEqual(noteNumbers.length)
       })
 
@@ -74,15 +72,19 @@ describe.each([
         test.each(_.range(1, noteNumbers.length + 1))(
           '%s. link',
           (linkNumber) => {
+            const { lines } = setup()
+            const lineIndex = noteOnFirstLine ? lineNumber : lineNumber - 1
+            const line = lines[lineIndex]
+            const links = within(line).queryAllByRole('link')
             const index = linkNumber - 1
             const noteNumber = noteNumbers[index]
             const link = links[index]
 
             expect(link).toHaveAttribute('href', `#note-${noteNumber}`)
             expect(link).toHaveTextContent(String(noteNumber))
-          }
+          },
         )
       }
-    }
+    },
   )
 })

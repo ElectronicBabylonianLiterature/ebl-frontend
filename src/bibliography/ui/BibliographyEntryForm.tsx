@@ -166,7 +166,7 @@ export default class BibliographyEntryForm extends Component<Props, State> {
   }
 
   private applyCustomIdIfNeeded = (
-    cslData: CslData
+    cslData: CslData,
   ): CslData & { id: string } => {
     const id = cslData.id?.trim()
     const isEditingExistingEntry = this.state.isEditingExistingEntry
@@ -182,7 +182,7 @@ export default class BibliographyEntryForm extends Component<Props, State> {
   }
 
   render(): JSX.Element {
-    const parsed = new Parser().parse(this.state.citation)
+    const parsed = Parser().parse(this.state.citation)
     return (
       <>
         <Form onSubmit={this.handleSubmit}>

@@ -16,5 +16,5 @@ test.each([
     })[0]
     expect(result.ipa).toEqual(expectedIpa)
     expect(result.meter).toEqual(expectedMeter)
-  }
+  },
 )

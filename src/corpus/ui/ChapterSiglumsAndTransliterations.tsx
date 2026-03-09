@@ -47,5 +47,5 @@ export default withData<
   ({ id, textService, method }) => textService[method](id),
   {
     watch: (props) => [props.id],
-  }
+  },
 )

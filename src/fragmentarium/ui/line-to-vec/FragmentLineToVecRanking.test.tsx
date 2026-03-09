@@ -14,10 +14,10 @@ import { helmetContext } from 'router/head'
 
 const script = scriptFactory.build(
   {},
-  { associations: { period: Periods['Neo-Assyrian'] } }
+  { associations: { period: Periods['Neo-Assyrian'] } },
 )
 
-beforeEach(async () => {
+it('Shows the number of transliterated tablets', async () => {
   const session = {
     isAllowedToReadFragments: jest.fn().mockReturnValue(true),
   }
@@ -35,24 +35,21 @@ beforeEach(async () => {
     lineToVecRanking: jest.fn(),
   }
   fragmentService.lineToVecRanking.mockReturnValueOnce(
-    Promise.resolve(lineToVecRankingsResults)
+    Promise.resolve(lineToVecRankingsResults),
   )
   render(
     <HelmetProvider context={helmetContext}>
       <MemoryRouter>
-        <SessionContext.Provider value={(session as unknown) as Session}>
+        <SessionContext.Provider value={session as unknown as Session}>
           <FragmentLineToVecRanking
             number={'X.0'}
             fragmentService={fragmentService}
           />
         </SessionContext.Provider>
       </MemoryRouter>
-    </HelmetProvider>
+    </HelmetProvider>,
   )
   await waitForSpinnerToBeRemoved(screen)
-})
-
-it('Shows the number of transliterated tablets', async () => {
   expect(screen.getAllByText(/X.1/)[0]).toBeVisible()
   expect(screen.getByText(/,\s*Neo-Assyrian:\s*10/)).toBeVisible()
 })

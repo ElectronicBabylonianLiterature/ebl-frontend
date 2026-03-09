@@ -15,7 +15,7 @@ const testData: TestData<FindspotService>[] = [
     findspotRepository.fetchFindspots,
     expectedFindspots,
     null,
-    Promise.resolve(expectedFindspots)
+    Promise.resolve(expectedFindspots),
   ),
 ]
 

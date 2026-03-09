@@ -1,7 +1,7 @@
 import React, { useContext, useMemo } from 'react'
 import Bluebird from 'bluebird'
 import AppContent from 'common/AppContent'
-import { LinkContainer } from 'react-router-bootstrap'
+import { Link } from 'react-router-dom'
 import { SectionCrumb } from 'common/Breadcrumbs'
 import { ChapterDisplay } from 'corpus/domain/chapter'
 import { ChapterId } from 'transliteration/domain/chapter-id'
@@ -58,23 +58,24 @@ function Title({ chapter }: Props): JSX.Element {
 
 function EditChapterButton({ chapter }: Props): JSX.Element {
   const session = useContext(SessionContext)
-  return (
-    <LinkContainer
-      to={`/corpus/${encodeURIComponent(
-        chapter.id.textId.genre
-      )}/${encodeURIComponent(chapter.id.textId.category)}/${encodeURIComponent(
-        chapter.id.textId.index
-      )}/${encodeURIComponent(
-        stageToAbbreviation(chapter.id.stage)
-      )}/${encodeURIComponent(chapter.id.name)}/edit`}
-    >
-      <Button
-        variant="outline-primary"
-        disabled={!session.isAllowedToWriteTexts()}
-      >
+  const editUrl = `/corpus/${encodeURIComponent(
+    chapter.id.textId.genre,
+  )}/${encodeURIComponent(chapter.id.textId.category)}/${encodeURIComponent(
+    chapter.id.textId.index,
+  )}/${encodeURIComponent(
+    stageToAbbreviation(chapter.id.stage),
+  )}/${encodeURIComponent(chapter.id.name)}/edit`
+  if (!session.isAllowedToWriteTexts()) {
+    return (
+      <Button variant="outline-primary" disabled>
         <i className="fas fa-edit"></i> Edit
       </Button>
-    </LinkContainer>
+    )
+  }
+  return (
+    <Link to={editUrl} className="btn btn-outline-primary">
+      <i className="fas fa-edit"></i> Edit
+    </Link>
   )
 }
 
@@ -90,9 +91,9 @@ export function ChapterViewTable({
   const columns = useMemo(
     () =>
       chapter.lines.map((line) =>
-        createColumns(line.variants[0].reconstruction)
+        createColumns(line.variants[0].reconstruction),
       ),
-    [chapter.lines]
+    [chapter.lines],
   )
   const maxColumns_ = maxColumns(columns)
   return (
@@ -129,7 +130,7 @@ function ChapterViewHeadTags({
       description={`Edition of ${
         chapter.fullName
       } in the electronic Babylonian Library (eBL) Corpus. ${markupService.toString(
-        chapter.title
+        chapter.title,
       )}.`}
     />
   )
@@ -226,5 +227,5 @@ export default withData<
     ]),
   {
     watch: (props) => [props.id],
-  }
+  },
 )

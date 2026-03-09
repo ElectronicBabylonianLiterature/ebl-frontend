@@ -1,4 +1,4 @@
-import produce, { immerable, Draft, castDraft } from 'immer'
+import { produce, immerable, Draft, castDraft } from 'immer'
 import { LineNumber, LineNumberRange } from './line-number'
 import { ObjectLabel, SurfaceLabel, ColumnLabel } from './labels'
 
@@ -13,7 +13,7 @@ export default class Label {
     object: ObjectLabel | null = null,
     surface: SurfaceLabel | null = null,
     column: ColumnLabel | null = null,
-    line: LineNumber | LineNumberRange | null = null
+    line: LineNumber | LineNumberRange | null = null,
   ) {
     this.object = object
     this.surface = surface

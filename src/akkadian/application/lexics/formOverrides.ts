@@ -71,12 +71,12 @@ function ruleToRegex(rule: string): string {
 
 function isRuleApplicable(
   rules?: FormOverrideRules,
-  phoneticProps?: PhoneticProps
+  phoneticProps?: PhoneticProps,
 ): boolean {
   if (rules?.nextWordBeginsWith && phoneticProps?.wordContext?.nextWord) {
     const regexp = new RegExp(
       `^(${ruleToRegex(rules.nextWordBeginsWith)}).*`,
-      'g'
+      'g',
     )
     return regexp.test(phoneticProps.wordContext.nextWord.cleanValue)
   }
@@ -85,7 +85,7 @@ function isRuleApplicable(
 
 function isOverrideApplicable(
   overrideFormProps: OverrideFormProps,
-  phoneticProps: PhoneticProps
+  phoneticProps: PhoneticProps,
 ): boolean {
   const { rules } = overrideFormProps
   return (
@@ -97,13 +97,13 @@ function isOverrideApplicable(
 function getOverrideFormBooleanProp(
   lemmaProps: LemmaProps,
   overrideFormProps: OverrideFormProps,
-  prop: 'isStressless' | 'isSandhi'
+  prop: 'isStressless' | 'isSandhi',
 ): boolean {
   return !!lemmaProps[prop] || !!overrideFormProps[prop] === true
 }
 
 const MidSyllableSandhiRegexp = new RegExp(
-  `(^${consonantRegex}$)|(${consonantRegex}{2,}$)`
+  `(^${consonantRegex}$)|(${consonantRegex}{2,}$)`,
 )
 
 function isMidSyllableSandhi(isSandhi: boolean, form: string): boolean {
@@ -113,7 +113,7 @@ function isMidSyllableSandhi(isSandhi: boolean, form: string): boolean {
 export function getFormOverrideAndTransform(
   initialForm: string,
   uniqueLemma: string,
-  phoneticProps: PhoneticProps = {}
+  phoneticProps: PhoneticProps = {},
 ): FormOverride | undefined {
   const { overrideForm, rules, isStressless, isSandhi, isMidSyllableSandhi } = {
     ...getOverrideData(uniqueLemma, initialForm, phoneticProps),
@@ -121,7 +121,7 @@ export function getFormOverrideAndTransform(
   if (overrideForm || isStressless || isSandhi) {
     const transformations = getSandhiTransformations(
       overrideForm ?? initialForm,
-      phoneticProps
+      phoneticProps,
     )
     return {
       initialForm,
@@ -142,7 +142,7 @@ export function getFormOverrideAndTransform(
 function getOverrideData(
   uniqueLemma: string,
   initialForm: string,
-  phoneticProps: PhoneticProps
+  phoneticProps: PhoneticProps,
 ): OverrideData | undefined {
   const lemmaProps = lemmasRules[uniqueLemma]
   if (lemmaProps?.overrideForms) {
@@ -153,7 +153,7 @@ function getOverrideData(
         const isSandhi = getOverrideFormBooleanProp(
           lemmaProps,
           overrideFormProps,
-          'isSandhi'
+          'isSandhi',
         )
         return {
           overrideForm: form,
@@ -161,7 +161,7 @@ function getOverrideData(
           isStressless: getOverrideFormBooleanProp(
             lemmaProps,
             overrideFormProps,
-            'isStressless'
+            'isStressless',
           ),
           isSandhi,
           isMidSyllableSandhi: isMidSyllableSandhi(isSandhi, form),
@@ -174,7 +174,7 @@ function getOverrideData(
 
 function getOverrideDataNoForm(
   initialForm: string,
-  lemmaProps: LemmaProps
+  lemmaProps: LemmaProps,
 ): OverrideData {
   const isSandhi = getOverrideFormBooleanProp(lemmaProps, {}, 'isSandhi')
   return {

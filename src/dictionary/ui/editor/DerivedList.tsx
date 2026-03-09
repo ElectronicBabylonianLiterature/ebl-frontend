@@ -3,14 +3,15 @@ import { FormGroup } from 'react-bootstrap'
 
 import FormList from './FormList'
 import List from 'common/List'
+import { Derived } from 'dictionary/domain/Word'
 
 export default function DerivedList({
   value,
   onChange,
   children,
 }: {
-  value: any
-  onChange: (value: void) => void
+  value: readonly Derived[][]
+  onChange: (value: readonly Derived[][]) => void
   children: ReactNode
 }): JSX.Element {
   return (

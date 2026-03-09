@@ -20,7 +20,7 @@ export class AnnotationToken {
     readonly enabled: boolean,
     readonly sign: SignStripped | null = null,
     readonly name: string = '',
-    readonly subIndex: number | null = null
+    readonly subIndex: number | null = null,
   ) {}
 
   get hasSign(): boolean {
@@ -36,14 +36,14 @@ export class AnnotationToken {
       this.enabled,
       sign,
       this.name,
-      this.subIndex
+      this.subIndex,
     )
   }
   static initFromTokenSign(
     value: string,
     displayValue: string,
     path: readonly number[],
-    signName: string
+    signName: string,
   ): AnnotationToken {
     return new AnnotationToken(
       value,
@@ -57,7 +57,7 @@ export class AnnotationToken {
         get displayCuneiformSigns(): string {
           return this.name
         },
-      }
+      },
     )
   }
   static initActive(
@@ -74,7 +74,7 @@ export class AnnotationToken {
     displayValue: string,
     path: readonly number[],
     name = '',
-    subIndex: number | null = null
+    subIndex: number | null = null,
   ): AnnotationToken {
     return new AnnotationToken(
       value,
@@ -84,7 +84,7 @@ export class AnnotationToken {
       true,
       null,
       name,
-      subIndex
+      subIndex,
     )
   }
   static initDeactive(
@@ -93,7 +93,7 @@ export class AnnotationToken {
       | AnnotationTokenType.CompletelyBroken
       | AnnotationTokenType.Blank
       | AnnotationTokenType.Disabled,
-    path: readonly number[]
+    path: readonly number[],
   ): AnnotationToken {
     return new AnnotationToken('', type, displayValue, path, false)
   }
@@ -106,7 +106,7 @@ export class AnnotationToken {
       AnnotationTokenType.Struct,
       'struct',
       [],
-      true
+      true,
     )
   }
   static unclear(path): AnnotationToken {
@@ -115,15 +115,15 @@ export class AnnotationToken {
       AnnotationTokenType.UnclearSign,
       'x',
       path,
-      true
+      true,
     )
   }
 
   isPathInAnnotations(annotation: readonly Annotation[]): boolean {
     return Boolean(
       _.find(annotation, (singleAnnotation) =>
-        _.isEqual(singleAnnotation.data.path, this.path)
-      )
+        _.isEqual(singleAnnotation.data.path, this.path),
+      ),
     )
   }
 

@@ -11,32 +11,36 @@ const separator = ' '
 let value
 let onChange
 
-beforeEach(() => {
+const setup = (): void => {
   onChange = jest.fn()
   value = {
     [property]: ['LOG1', 'LOG2'],
     notes: ['note1'],
   }
   renderArrayWithNotes()
-})
+}
 
 it('Displays all array items', () => {
+  setup()
   expect(
-    screen.getByDisplayValue(value[property].join(separator))
+    screen.getByDisplayValue(value[property].join(separator)),
   ).toBeVisible()
 })
 
 it('Displays all notes', () => {
+  setup()
   value.notes.forEach((note) =>
-    expect(screen.getByDisplayValue(note)).toBeVisible()
+    expect(screen.getByDisplayValue(note)).toBeVisible(),
   )
 })
 
 it('Displays label', () => {
+  setup()
   expect(screen.getByText(_.startCase(noun))).toBeVisible()
 })
 
 it('Calls onChange with updated property on change', () => {
+  setup()
   whenChangedByValue(screen, value[property].join(separator), 'NEW LOG')
     .expect(onChange)
     .toHaveBeenCalledWith((newValue) => ({
@@ -46,6 +50,7 @@ it('Calls onChange with updated property on change', () => {
 })
 
 it('Calls onChange with updated notes on change', async () => {
+  setup()
   await whenClicked(screen, 'Add')
     .expect(onChange)
     .toHaveBeenCalledWith({
@@ -62,6 +67,6 @@ function renderArrayWithNotes() {
       separator={separator}
       value={value}
       onChange={onChange}
-    />
+    />,
   )
 }

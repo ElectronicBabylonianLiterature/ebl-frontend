@@ -70,17 +70,17 @@ const Info = withData<
       lemmaKeys.map((uniqueLemma) =>
         dictionary
           .find(uniqueLemma)
-          .then((lemma: DictionaryWord) => [uniqueLemma, lemma])
-      )
+          .then((lemma: DictionaryWord) => [uniqueLemma, lemma]),
+      ),
     ),
   {
     filter: (props) =>
       !props.word.uniqueLemma.every((lemmaKey: string) =>
-        props.lemmaMap.get(lemmaKey)
+        props.lemmaMap.get(lemmaKey),
       ),
     defaultData: (props) =>
       [...props.lemmaMap.entries()] as [string, DictionaryWord][],
-  }
+  },
 )
 
 export default function LemmaInfo({

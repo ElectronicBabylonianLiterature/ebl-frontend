@@ -22,8 +22,10 @@ function Date({ date, humanFormat, machineFormat }: DateProps): JSX.Element {
   return <time dateTime={machineDate}>{humanDate}</time>
 }
 
-function Year({ date }: { date: DateTime }) {
-  return <Date date={date} humanFormat="yyyy" machineFormat="yyyy" />
+function Year({ date }: { date: DateTime | null }) {
+  return date ? (
+    <Date date={date} humanFormat="yyyy" machineFormat="yyyy" />
+  ) : null
 }
 
 function BasicEntry({ entry }: EntryProps) {

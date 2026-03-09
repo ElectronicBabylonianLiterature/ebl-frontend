@@ -1,5 +1,5 @@
 import React from 'react'
-import { Form, Col } from 'react-bootstrap'
+import { Form, Col, Row } from 'react-bootstrap'
 import _ from 'lodash'
 import { Chapter } from 'corpus/domain/chapter'
 
@@ -10,7 +10,7 @@ export default function ChapterDetails({
 }): JSX.Element {
   return (
     <Form>
-      <Form.Row>
+      <Row>
         <Form.Group as={Col} controlId={_.uniqueId('ChapterView-')}>
           <Form.Label>Classification</Form.Label>
           <Form.Control plaintext readOnly value={chapter.classification} />
@@ -27,7 +27,7 @@ export default function ChapterDetails({
           <Form.Label>Name</Form.Label>
           <Form.Control plaintext readOnly value={chapter.name} />
         </Form.Group>
-      </Form.Row>
+      </Row>
     </Form>
   )
 }

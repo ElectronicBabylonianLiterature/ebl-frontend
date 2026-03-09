@@ -8,7 +8,7 @@ import { MetaAddButton } from 'fragmentarium/ui/info/MetaEditButton'
 interface Props {
   datesInText: readonly MesopotamianDate[]
   updateDatesInText: (
-    datesInText: readonly MesopotamianDate[]
+    datesInText: readonly MesopotamianDate[],
   ) => Bluebird<Fragment>
 }
 
@@ -29,13 +29,12 @@ interface DatesInTextSelectionMethods {
   saveDates: (updatedDate?: MesopotamianDate, index?: number) => Promise<void>
   updateDateInArray: (
     date?: MesopotamianDate | undefined,
-    index?: number
+    index?: number,
   ) => Bluebird<Fragment>
 }
 
 interface DatesInTextSelectionState
-  extends DatesInTextSelectionAttrs,
-    DatesInTextSelectionMethods {}
+  extends DatesInTextSelectionAttrs, DatesInTextSelectionMethods {}
 
 async function updateDateInArray({
   updateDatesInText,
@@ -97,11 +96,10 @@ function useDateInTextSelectionState({
   updateDatesInText,
 }: Props): DatesInTextSelectionState {
   const [newDate, setNewDate] = useState<MesopotamianDate | undefined>(
-    undefined
+    undefined,
   )
-  const [isAddDateEditorDisplayed, setIsAddDateEditorDisplayed] = useState(
-    false
-  )
+  const [isAddDateEditorDisplayed, setIsAddDateEditorDisplayed] =
+    useState(false)
   const [isSaving, setIsSaving] = useState(false)
   const [datesInTextDisplay, setDatesInTextDisplay] = useState(datesInText)
 
@@ -156,7 +154,7 @@ export default function DatesInTextSelection({
       <MetaAddButton
         aria-label="Add date button"
         onClick={() => state.setIsAddDateEditorDisplayed(true)}
-        target={target}
+        buttonRef={target}
       />
       {popover}
       {state.datesInTextDisplay.map((date, index) => {

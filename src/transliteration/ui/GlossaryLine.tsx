@@ -60,7 +60,7 @@ function GlossaryWord({
 }): JSX.Element {
   const token = _.head(tokens)?.word
   const [lemmaMap, lemmaSetter] = useState<LemmaMap>(
-    createLemmaMap(tokens.map((token) => token.uniqueLemma))
+    createLemmaMap(tokens.map((token) => token.uniqueLemma)),
   )
 
   return (
@@ -90,7 +90,7 @@ function GlossaryWord({
               .concat(
                 <React.Fragment key="line number">
                   {label.line && lineNumberToString(label.line)}
-                </React.Fragment>
+                </React.Fragment>,
               )}
           </React.Fragment>
         ))

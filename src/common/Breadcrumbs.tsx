@@ -1,6 +1,6 @@
 import React from 'react'
 import { Breadcrumb } from 'react-bootstrap'
-import { LinkContainer } from 'react-router-bootstrap'
+import { Link } from 'react-router-dom'
 import _ from 'lodash'
 import { ResearchProject } from 'research-projects/researchProject'
 
@@ -67,7 +67,9 @@ function CrumbComponent({ crumb }: { crumb: Crumb }): JSX.Element {
     <Breadcrumb.Item active={!crumb.link}>{crumb.text}</Breadcrumb.Item>
   )
   return crumb.link ? (
-    <LinkContainer to={crumb.link}>{item}</LinkContainer>
+    <Breadcrumb.Item linkAs={Link} linkProps={{ to: crumb.link }}>
+      {crumb.text}
+    </Breadcrumb.Item>
   ) : (
     item
   )

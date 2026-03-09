@@ -8,7 +8,7 @@ const chance = new Chance()
 it('Creates encoded URL', () => {
   const number = chance.string()
   expect(createFragmentUrl(number)).toEqual(
-    `/library/${encodeURIComponent(number)}`
+    `/library/${encodeURIComponent(number)}`,
   )
 })
 
@@ -16,7 +16,7 @@ it('Creates URL with hash', () => {
   const number = chance.string()
   const hash = chance.string()
   expect(createFragmentUrl(number, hash)).toEqual(
-    `/library/${encodeURIComponent(number)}#${encodeURIComponent(hash)}`
+    `/library/${encodeURIComponent(number)}#${encodeURIComponent(hash)}`,
   )
 })
 

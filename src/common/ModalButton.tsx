@@ -28,7 +28,11 @@ export default function ModalButton({
         onHide={() => onToggle(false)}
         animation={false}
         size="lg"
-        centered
+        backdrop={false}
+        keyboard={true}
+        enforceFocus={false}
+        restoreFocus={false}
+        container={typeof document !== 'undefined' ? document.body : undefined}
       >
         <Modal.Body>{dialog}</Modal.Body>
       </Modal>

@@ -123,7 +123,7 @@ const lineConfig: Line = {
       ],
       [createManuscriptLine(manuscrpitLineConfig)],
       'intertext',
-      'note'
+      'note',
     ),
   ],
   isSecondLineOfParallelism: true,
@@ -248,7 +248,7 @@ describe('Chapter', () => {
             },
           ],
         ],
-      ])
+      ]),
     )
   })
 })
@@ -272,8 +272,8 @@ describe('Manuscript', () => {
         manuscriptConfig.unplacedLines,
         manuscriptConfig.references,
         manuscriptConfig.joins,
-        manuscriptConfig.isInFragmentarium
-      )
+        manuscriptConfig.isInFragmentarium,
+      ),
   )
 })
 
@@ -287,7 +287,7 @@ describe('Line', () => {
 
 function testProperties<T>(
   config: Partial<T>,
-  factory: (config: Partial<T>) => T
+  factory: (config: Partial<T>) => T,
 ) {
   test.each(_.toPairs(config))('%s', (property, expected) => {
     expect(factory(config)[property]).toEqual(expected)

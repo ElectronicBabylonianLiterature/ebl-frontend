@@ -1,6 +1,6 @@
 import React from 'react'
 import { parse } from 'query-string'
-import { RouteComponentProps } from 'react-router-dom'
+import { useLocation } from 'react-router-dom'
 import AfoRegisterSearch from 'afo-register/ui/AfoRegisterSearch'
 import AfoRegisterSearchForm, {
   AfoRegisterQuery,
@@ -9,10 +9,8 @@ import AfoRegisterService from 'afo-register/application/AfoRegisterService'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import { Markdown } from 'common/Markdown'
 
-function getAfoRegisterQueryFromLocation(
-  location: RouteComponentProps['location']
-): AfoRegisterQuery {
-  const query = parse(location.search) as AfoRegisterQuery
+function getAfoRegisterQueryFromLocation(search: string): AfoRegisterQuery {
+  const query = parse(search) as AfoRegisterQuery
   if (!query) {
     return { text: '', textNumber: '' }
   }
@@ -37,12 +35,12 @@ function AfoRegisterIntroduction(): JSX.Element {
 export default function AfoRegisterSearchPage({
   afoRegisterService,
   fragmentService,
-  location,
 }: {
   afoRegisterService: AfoRegisterService
   fragmentService: FragmentService
-} & RouteComponentProps): JSX.Element {
-  const query = getAfoRegisterQueryFromLocation(location)
+}): JSX.Element {
+  const location = useLocation()
+  const query = getAfoRegisterQueryFromLocation(location.search)
   return (
     <>
       <AfoRegisterIntroduction />
