@@ -196,6 +196,25 @@
 
 ## 2026-03-10
 
+### Full test rerun + warning re-analysis (follow-up)
+
+- Re-ran full CI-style test command and captured output to new file:
+  - `TASK-683-test-output-rerun-2026-03-10.txt`
+- Run terminated before Jest summary with:
+  - `The build failed because the process exited too early.`
+  - `error Command failed with exit code 1.`
+- Re-ran full CI-style test command with lower parallelism (`--maxWorkers=25%`) and captured output to:
+  - `TASK-683-test-output-rerun-2026-03-10-2.txt`
+- Second rerun also terminated early with the same exit message.
+- Parsed warning classes from latest rerun and created a new summary artifact:
+  - `TASK-683-test-issues-rerun-2026-03-10-2.md`
+- Key warning counts in latest rerun:
+  - FormLabel `controlId` ignored warnings: `88`
+  - FormControl `controlId` ignored warnings: `88`
+  - `act(...)` wrapping warnings: `17`
+  - React Router future flag warnings: `2`
+  - DOM nesting warnings: `2`
+
 ### File structure and test-placement analysis (documentation-only)
 
 - Analyzed project-wide test placement with `find src -type f -name '*.test.ts' -o -name '*.test.tsx'`.
