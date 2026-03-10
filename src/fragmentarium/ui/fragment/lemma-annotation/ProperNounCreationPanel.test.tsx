@@ -50,6 +50,17 @@ describe('ProperNounCreationPanel', () => {
       })
     })
 
+    it('trims leading and trailing whitespace before storing input', async () => {
+      renderPanel()
+      const input = screen.getByLabelText('properNoun-input')
+
+      fireEvent.change(input, { target: { value: '  marduk  ' } })
+
+      await waitFor(() => {
+        expect(input).toHaveValue('Marduk')
+      })
+    })
+
     it('filters out non-Latin characters', async () => {
       renderPanel()
       const input = screen.getByLabelText('properNoun-input')
@@ -113,6 +124,15 @@ describe('ProperNounCreationPanel', () => {
       renderPanel()
       const input = screen.getByLabelText('properNoun-input')
       fireEvent.change(input, { target: { value: 'marduk' } })
+      await waitFor(() => {
+        expect(wordServiceMock.searchLemma).toHaveBeenCalledWith('Marduk')
+      })
+    })
+
+    it('searches with normalized trimmed input', async () => {
+      renderPanel()
+      const input = screen.getByLabelText('properNoun-input')
+      fireEvent.change(input, { target: { value: '  marduk  ' } })
       await waitFor(() => {
         expect(wordServiceMock.searchLemma).toHaveBeenCalledWith('Marduk')
       })
@@ -231,6 +251,37 @@ describe('ProperNounCreationPanel', () => {
         expect(
           screen.queryByText(/This lemma already exists/),
         ).not.toBeInTheDocument()
+      })
+    })
+
+    it('clears match state when lemma search fails', async () => {
+      const exactMatchWord: Word = wordFactory.build({
+        _id: 'Marduk I',
+        lemma: ['Marduk'],
+        homonym: 'I',
+      })
+      wordServiceMock.searchLemma
+        .mockResolvedValueOnce([exactMatchWord])
+        .mockRejectedValueOnce(new Error('Search failed'))
+
+      renderPanel()
+      const input = screen.getByLabelText('properNoun-input')
+
+      fireEvent.change(input, { target: { value: 'marduk' } })
+
+      expect(
+        await screen.findByText(/This lemma already exists/),
+      ).toBeInTheDocument()
+
+      fireEvent.change(input, { target: { value: 'shamash' } })
+
+      await waitFor(() => {
+        expect(
+          screen.queryByText(/This lemma already exists/),
+        ).not.toBeInTheDocument()
+      })
+      await waitFor(() => {
+        expect(input).not.toHaveClass('is-invalid')
       })
     })
   })
@@ -462,6 +513,30 @@ describe('ProperNounCreationPanel', () => {
       const createButton = screen.getByLabelText('save-properNoun-creation')
 
       fireEvent.change(input, { target: { value: 'shamash' } })
+      fireEvent.change(select, { target: { value: 'DN' } })
+
+      await waitFor(() => {
+        expect(createButton).toBeEnabled()
+      })
+
+      fireEvent.click(createButton)
+
+      await waitFor(() => {
+        expect(wordServiceMock.createProperNoun).toHaveBeenCalledWith(
+          'Shamash',
+          'DN',
+        )
+      })
+    })
+
+    it('calls createProperNoun with trimmed normalized lemma', async () => {
+      wordServiceMock.createProperNoun.mockResolvedValue(testWord)
+      renderPanel()
+      const input = screen.getByLabelText('properNoun-input')
+      const select = screen.getByLabelText('properNoun-pos-select')
+      const createButton = screen.getByLabelText('save-properNoun-creation')
+
+      fireEvent.change(input, { target: { value: '  shamash  ' } })
       fireEvent.change(select, { target: { value: 'DN' } })
 
       await waitFor(() => {

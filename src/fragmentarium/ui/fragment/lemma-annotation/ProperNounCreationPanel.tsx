@@ -49,11 +49,36 @@ function hasWordId(value: Word): value is Word {
 }
 
 function formatProperNounInput(input: string): string {
-  const latinOnly = input.replace(/[^a-zA-Z\u00C0-\u024F\u1E00-\u1EFF\s-]/g, '')
+  const latinOnly = input
+    .replace(/[^a-zA-Z\u00C0-\u024F\u1E00-\u1EFF\s-]/g, '')
+    .trim()
   if (latinOnly.length === 0) {
     return ''
   }
   return latinOnly.charAt(0).toUpperCase() + latinOnly.slice(1)
+}
+
+function shouldDisableCreateButton({
+  hasInputValue,
+  hasExactMatch,
+  hasPosTag,
+  loading,
+}: {
+  hasInputValue: boolean
+  hasExactMatch: boolean
+  hasPosTag: boolean
+  loading: boolean
+}): boolean {
+  if (!hasInputValue) {
+    return true
+  }
+  if (hasExactMatch) {
+    return true
+  }
+  if (!hasPosTag) {
+    return true
+  }
+  return loading
 }
 
 function findMatchState(
@@ -112,12 +137,20 @@ export default function ProperNounCreationPanel({
       }
     }
 
-    wordService.searchLemma(properNounInputValue).then((results) => {
-      if (cancelled) {
-        return
-      }
-      setMatchState(findMatchState(properNounInputValue, results))
-    })
+    wordService
+      .searchLemma(properNounInputValue)
+      .then((results) => {
+        if (cancelled) {
+          return
+        }
+        setMatchState(findMatchState(properNounInputValue, results))
+      })
+      .catch(() => {
+        if (cancelled) {
+          return
+        }
+        setMatchState(emptyMatchState)
+      })
 
     return () => {
       cancelled = true
@@ -148,8 +181,12 @@ export default function ProperNounCreationPanel({
   const hasInputValue = Boolean(properNounInputValue.trim())
   const hasExactMatch = Boolean(exactMatch)
   const hasPosTag = Boolean(properNounPosTag)
-  const createDisabled =
-    !hasInputValue || hasExactMatch || !hasPosTag || loading
+  const createDisabled = shouldDisableCreateButton({
+    hasInputValue,
+    hasExactMatch,
+    hasPosTag,
+    loading,
+  })
 
   const properNounInput = (
     <>
