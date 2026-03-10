@@ -12,6 +12,7 @@ import { EntityAnnotationSpan } from 'fragmentarium/ui/text-annotation/EntityTyp
 import AnnotationContext from 'fragmentarium/ui/text-annotation/TextAnnotationContext'
 import { SelectInstance } from 'react-select'
 import SpanEditor from 'fragmentarium/ui/text-annotation/SpanEditor'
+import { getSelectedTokens } from 'fragmentarium/ui/text-annotation/selectionUtils'
 
 const markableClass = 'markable'
 
@@ -20,36 +21,6 @@ function sortSelection(
   words: readonly string[],
 ): readonly string[] {
   return _.sortBy(selection, (id) => words.indexOf(id))
-}
-
-function expandSelection(
-  start: string,
-  end: string,
-  words: readonly string[],
-): readonly string[] {
-  const positions = [words.indexOf(start), words.indexOf(end)]
-  const [startIndex, endIndex] = _.sortBy(positions)
-
-  return words.slice(startIndex, endIndex + 1)
-}
-
-function getTokenId(node: Node | null): string | null {
-  const tokenNode = node?.parentElement?.closest(`.${markableClass}`)
-  return tokenNode ? tokenNode.getAttribute('data-id') : null
-}
-
-function getSelectedTokens(words: readonly string[]): readonly string[] {
-  const selection = document.getSelection()
-  if (selection) {
-    const start = getTokenId(selection.anchorNode)
-    const end = getTokenId(selection.focusNode)
-
-    if (start && end) {
-      clearSelection()
-      return expandSelection(start, end, words)
-    }
-  }
-  return []
 }
 
 function isSelected(token: AnyWord, selection: readonly string[]): boolean {
@@ -147,6 +118,7 @@ export default function Markable({
   setSelection,
   activeSpanId,
   setActiveSpanId,
+  selectionStartTokenIdRef,
   children,
 }: PropsWithChildren<{
   token: AnyWord
@@ -154,6 +126,7 @@ export default function Markable({
   setSelection: React.Dispatch<React.SetStateAction<readonly string[]>>
   activeSpanId: string | null
   setActiveSpanId: React.Dispatch<React.SetStateAction<string | null>>
+  selectionStartTokenIdRef?: React.MutableRefObject<string | null>
 }>): JSX.Element {
   const annotationContextValue = useContext(AnnotationContext)
   const [{ entities, words }] = annotationContextValue
@@ -168,17 +141,36 @@ export default function Markable({
     hasWords && !!token.id && _.head(selection) === token.id
 
   function handleSelection(event: React.MouseEvent) {
-    const newSelection = getSelectedTokens(words)
+    const altPressed = event.altKey
     setActiveSpanId(null)
+    const startedOnDifferentToken =
+      !!selectionStartTokenIdRef?.current &&
+      selectionStartTokenIdRef.current !== token.id
 
-    setSelection(
-      sortSelection(
-        event.altKey ? mergeSelections(selection, newSelection) : newSelection,
-        words,
-      ),
-    )
+    const applySelection = (newSelection: readonly string[]) => {
+      if (altPressed) {
+        setSelection((currentSelection) =>
+          sortSelection(mergeSelections(currentSelection, newSelection), words),
+        )
+      } else {
+        setSelection(sortSelection(newSelection, words))
+      }
 
-    event.stopPropagation()
+      clearSelection()
+    }
+
+    const immediateSelection = getSelectedTokens(words)
+    const shouldHandleLocally =
+      immediateSelection.length > 1 ||
+      (!startedOnDifferentToken && immediateSelection.length === 1)
+
+    if (shouldHandleLocally) {
+      applySelection(immediateSelection)
+      if (selectionStartTokenIdRef) {
+        selectionStartTokenIdRef.current = null
+      }
+      event.stopPropagation()
+    }
   }
 
   const annotator = (
@@ -219,6 +211,11 @@ export default function Markable({
   return (
     <span
       ref={setTarget}
+      onMouseDown={() => {
+        if (selectionStartTokenIdRef) {
+          selectionStartTokenIdRef.current = token.id ?? null
+        }
+      }}
       className={classNames(markableClass, {
         selected:
           isSelected(token, selection) || hasActiveSpan(activeSpan, token.id),
