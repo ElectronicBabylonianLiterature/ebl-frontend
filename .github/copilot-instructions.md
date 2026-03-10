@@ -52,4 +52,9 @@ Provide project context and coding guidelines that AI should follow when generat
 - Verify changed behavior locally while running the modified application before finalizing review conclusions.
 - Export every detailed review to a `.md` file using the same convention: `TASK-<id>-review.md`.
 - Use a consistent review template with these sections: `Summary`, `Findings`, `Severity`, `Reproduction Steps`, and `Recommendation`.
+- When asked to check PR reviews, always gather both inline comments and timeline review events (for example `CHANGES_REQUESTED`, `APPROVED`, `COMMENTED`).
+- In the review file, explicitly include comment status tracking: unresolved vs resolved comments.
+- In the review file, add a mandatory final section named `What Has To Be Done` with a numbered list of concrete required actions.
+- In `What Has To Be Done`, include all unresolved review threads, required code changes, required test updates, and re-review/requested-reviewer follow-up.
+- If a reviewer requested changes, clearly mark those items as blockers before approval.
 - Keep the review file updated as findings change, and remind to remove it before a PR is merged.
