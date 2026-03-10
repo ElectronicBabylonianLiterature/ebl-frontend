@@ -14,6 +14,7 @@
   - `The build failed because the process exited too early.`
   - `error Command failed with exit code 1.`
 - Note: the Jest end summary (`Test Suites`, `Tests`, `Snapshots`) is not present in this log because the run terminated early.
+- Revert note: attempted mitigation commit `a141e29e` was reverted by `576377ac` because termination behavior remained.
 
 ## Warning/Issue Summary
 
@@ -51,4 +52,4 @@
    - avoid combining `controlId` with explicit `htmlFor` / explicit `id` on child controls.
 3. Address `act(...)` warnings in the listed tests by wrapping async UI updates or using helpers that flush updates.
 4. Fix invalid nesting in about/app content (`figure`/`figcaption` currently rendered under paragraph context).
-5. Re-run full suite after fixes and regenerate this summary from a successful complete run.
+5. Re-run full suite after termination stabilization and regenerate this summary from a successful complete run.

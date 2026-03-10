@@ -393,3 +393,9 @@
   - `yarn lint` -> passed.
   - `yarn tsc` -> passed.
   - `grep` search confirms no remaining `/* eslint-disable react/prop-types */` in `src/**/*.{ts,tsx}`.
+
+### Revert of singleton/concurrency experiment (2026-03-10)
+
+- Reverted commit `a141e29e` via commit `576377ac`.
+- Reason: the change did not resolve the top-priority termination issue (`The build failed because the process exited too early.`) in this environment.
+- Direction reaffirmed: termination stabilization is the first and foremost blocker before any secondary warning cleanup.

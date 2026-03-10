@@ -4,6 +4,11 @@
 
 This report summarizes issues/warnings observed from the latest local validation runs after CI workflow hardening changes.
 
+## Status Update (2026-03-10)
+
+- Commit `a141e29e` (singleton full-test guard + CI concurrency) was reverted by `576377ac` because it did not resolve the termination failure.
+- The highest-priority unresolved problem remains full test process termination before Jest summary.
+
 ## Latest Test Run
 
 - Command: `CI=true yarn test --coverage --forceExit --detectOpenHandles --maxWorkers=50% --watch=false`
@@ -14,7 +19,7 @@ This report summarizes issues/warnings observed from the latest local validation
 
 | ID  | Area                 | Symptom / Warning                                                                                                                              | Evidence                                                                                                                                                                    | Severity | Current Status          | Suggested Action                                                                                                       |
 | --- | -------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- | ----------------------- | ---------------------------------------------------------------------------------------------------------------------- |
-| P1  | Build                | `yarn build` exits early with `The build failed because the process exited too early.`                                                         | Reproduced with `yarn build`, `CI=true yarn build`, sourcemap-off, ESLint-plugin-off, and increased heap                                                                    | High     | Open                    | Validate on fresh runner/container; collect kernel/runner termination events where available                           |
+| P1  | Build/Test runtime   | Long runs exit early with `The build failed because the process exited too early.`                                                             | Reproduced in full test reruns and `yarn build`; latest rerun logs still terminate before Jest summary                                                                      | High     | Open                    | Validate on fresh runner/container; collect kernel/runner termination events where available                           |
 | P2  | Tests                | React warning: `Spinner` uses `defaultProps` on function component                                                                             | `74` occurrences in `TASK-683-test-output.txt`                                                                                                                              | Medium   | Open                    | Refactor `Spinner` to use default parameters                                                                           |
 | P3  | Tests                | React Router future flag warning: `v7_startTransition`                                                                                         | `71` occurrences in `TASK-683-test-output.txt`                                                                                                                              | Low      | Open                    | Add Router future flags / prepare v7 migration path                                                                    |
 | P4  | Tests                | React Router future flag warning: `v7_relativeSplatPath`                                                                                       | `71` occurrences in `TASK-683-test-output.txt`                                                                                                                              | Low      | Open                    | Add Router future flags / prepare v7 migration path                                                                    |
@@ -29,8 +34,9 @@ This report summarizes issues/warnings observed from the latest local validation
 
 ## Summary
 
-- **Good news:** full CI-style test command passes and output has been captured in `TASK-683-test-output.txt`.
-- **Primary blocker:** build early-exit remains unresolved and appears to be external process termination rather than deterministic app/test failure.
+- **Good news:** baseline full CI-style test command has a passing historical run in `TASK-683-test-output.txt`.
+- **Primary blocker (unchanged):** process termination remains unresolved and blocks reliable completion of current full reruns.
+- **Important:** the singleton/concurrency attempt was reverted because it did not fix termination behavior.
 - **Secondary issues:** test output includes repeated non-fatal warnings (React defaultProps + React Router future flags) that should be tracked as cleanup work.
 - **Structure follow-up:** security and `useObjectUrl` placement inconsistencies are resolved; optional overlap de-duplication remains for the two `useObjectUrl` regression suites.
 - **Common follow-up:** `src/common` now uses the minimal four-way subdivision (`ui/hooks/utils/errors`) and import paths have been aligned.
@@ -39,8 +45,8 @@ This report summarizes issues/warnings observed from the latest local validation
 
 ## Next Verification Checklist (Actions)
 
-1. Run CI on a fresh GitHub Actions runner and compare build behavior to local container.
-2. Inspect whether workflow retries/timeouts reduce flaky terminations for unit and docker jobs.
-3. If build still terminates, capture runner-level termination diagnostics (job logs around abrupt end, infra events if available).
+1. Run the same full test command on a fresh GitHub Actions runner and compare completion behavior.
+2. Capture runner-level termination diagnostics (job timeline, cancellation source, infra events).
+3. Stabilize this blocker first before further warning-cleanup work.
 4. Optionally consolidate overlapping `useObjectUrl` regression suites to reduce duplicated assertions.
 5. Add/install-step guardrails in CI (`yarn install --frozen-lockfile` and optional `yarn check --integrity`) to prevent node_modules drift recurrence.
