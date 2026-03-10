@@ -14,7 +14,6 @@ import fetchMock from 'jest-fetch-mock'
 
 fetchMock.enableMocks()
 
-// Polyfill for TextEncoder/TextDecoder required by some dependencies
 global.TextEncoder = TextEncoder
 global.TextDecoder = TextDecoder as typeof global.TextDecoder
 
@@ -36,8 +35,6 @@ Promise.config({
 afterEach(() => localStorage.clear())
 
 if (global.document) {
-  // Fixes "TypeError: document.createRange is not a function" with Popover.
-  // See: https://github.com/FezVrasta/popper.js/issues/478
   const originalCreateRange = document.createRange?.bind(document)
   document.createRange = () => {
     const range = originalCreateRange ? originalCreateRange() : ({} as Range)

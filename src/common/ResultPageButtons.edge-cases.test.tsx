@@ -4,16 +4,6 @@ import userEvent from '@testing-library/user-event'
 import { ResultPageButtons } from './ResultPageButtons'
 import { queryItemFactory } from 'test-support/query-item-factory'
 
-/**
- * Edge Case Tests for Search Results Pagination
- *
- * Why these tests:
- * - Pagination is critical UX - users must navigate large result sets reliably
- * - Edge cases (0 results, 1 page, boundary conditions) often cause UI bugs
- * - State management errors can cause infinite loops or crashes
- * - Button generation logic with ellipsis has complex branching
- */
-
 describe('ResultPageButtons - Edge Cases and Boundary Conditions', () => {
   const setActive = jest.fn()
 
@@ -102,7 +92,6 @@ describe('ResultPageButtons - Edge Cases and Boundary Conditions', () => {
     })
 
     test('Active page beyond pages length - handles gracefully', () => {
-      // Should not crash even if active index is out of bounds
       render(
         <ResultPageButtons pages={pages} active={25} setActive={setActive} />,
       )
@@ -150,7 +139,7 @@ describe('ResultPageButtons - Edge Cases and Boundary Conditions', () => {
       const ellipses = screen.getAllByText('…')
       expect(ellipses.length).toBeGreaterThanOrEqual(1)
       const page26 = getPageItem('26')
-      expect(page26).toHaveClass('active') // 0-indexed becomes 1-indexed
+      expect(page26).toHaveClass('active')
     })
 
     test('No ellipsis needed for 5 pages', () => {
@@ -178,7 +167,6 @@ describe('ResultPageButtons - Edge Cases and Boundary Conditions', () => {
         />,
       )
 
-      // May or may not show ellipsis at exactly 8 pages depending on implementation
       const pagination = screen.getByLabelText('result-pagination')
       expect(pagination).toBeInTheDocument()
     })
@@ -197,7 +185,7 @@ describe('ResultPageButtons - Edge Cases and Boundary Conditions', () => {
       const page5Button = screen.getByText('5')
       await userEvent.click(page5Button)
 
-      expect(setActive).toHaveBeenCalledWith(4) // 0-indexed
+      expect(setActive).toHaveBeenCalledWith(4)
     })
 
     test('Clicking active page button does not call setActive', async () => {
@@ -240,7 +228,6 @@ describe('ResultPageButtons - Edge Cases and Boundary Conditions', () => {
       )
 
       const ellipsis = screen.getByText('…')
-      // Ellipsis should not be clickable/interactive
       expect(ellipsis).not.toHaveAttribute('role', 'button')
     })
   })
@@ -261,7 +248,7 @@ describe('ResultPageButtons - Edge Cases and Boundary Conditions', () => {
         <ResultPageButtons pages={pages} active={2} setActive={setActive} />,
       )
 
-      page1 = getPageItem('1') // Re-query after rerender
+      page1 = getPageItem('1')
       expect(page1).not.toHaveClass('active')
       const page3 = getPageItem('3')
       expect(page3).toHaveClass('active')
@@ -333,7 +320,7 @@ describe('ResultPageButtons - Edge Cases and Boundary Conditions', () => {
       )
 
       const renderTime = performance.now() - start
-      expect(renderTime).toBeLessThan(1000) // Should render in less than 1 second
+      expect(renderTime).toBeLessThan(1000)
 
       expect(screen.getByText('1')).toBeInTheDocument()
       expect(screen.getByText('100')).toBeInTheDocument()

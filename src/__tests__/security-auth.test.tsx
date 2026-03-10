@@ -1,9 +1,3 @@
-/**
- * Critical Security Tests for Authentication & Authorization
- * These tests verify that unauthenticated users cannot access protected features
- * and that expired/invalid tokens fall back to guest sessions.
- */
-
 import { render, screen, waitFor } from '@testing-library/react'
 import { Auth0Client } from '@auth0/auth0-spa-js'
 import { Auth0Provider } from 'auth/react-auth0-spa'
@@ -13,7 +7,6 @@ import Folio from 'fragmentarium/domain/Folio'
 
 import { createAuth0Client } from '@auth0/auth0-spa-js'
 
-// Mock Auth0 client
 const createMockAuth0Client = (
   overrides: Partial<Auth0Client> = {},
 ): jest.Mocked<Auth0Client> =>
@@ -39,18 +32,17 @@ const mockCreateAuth0Client = createAuth0Client as jest.MockedFunction<
 describe('Security: Authentication & Session Management', () => {
   beforeEach(() => {
     jest.clearAllMocks()
-    // Clear localStorage to simulate clean state
     localStorage.clear()
   })
 
   describe('Expired Token Handling', () => {
     it('should fall back to guest session when token validation fails', async () => {
       const mockClient = createMockAuth0Client({
-        isAuthenticated: jest.fn().mockResolvedValue(true), // Claims to be authenticated
+        isAuthenticated: jest.fn().mockResolvedValue(true),
         getUser: jest.fn().mockResolvedValue({ name: 'Test User' }),
-        getTokenSilently: jest.fn().mockRejectedValue(
-          new Error('Login required'), // But token is expired
-        ),
+        getTokenSilently: jest
+          .fn()
+          .mockRejectedValue(new Error('Login required')),
       })
       mockCreateAuth0Client.mockResolvedValue(mockClient)
 
@@ -72,8 +64,6 @@ describe('Security: Authentication & Session Management', () => {
         expect(screen.getByText('Test')).toBeInTheDocument()
       })
 
-      // Verify that even though isAuthenticated was true,
-      // the service falls back to guest session when token fails
       expect(mockClient.getTokenSilently).toHaveBeenCalled()
     })
 
@@ -191,7 +181,6 @@ describe('Security: Authentication & Session Management', () => {
         expect(screen.getByText('Loaded')).toBeInTheDocument()
       })
 
-      // Component should render successfully with guest session
       expect(mockClient.isAuthenticated).toHaveBeenCalled()
     })
   })
@@ -231,14 +220,13 @@ describe('Security: Authentication & Session Management', () => {
 
   describe('localStorage Token Security', () => {
     it('should not trust localStorage tokens without validation', async () => {
-      // Simulate stale token in localStorage
       localStorage.setItem('auth0.token', 'expired-token')
 
       const mockClient = createMockAuth0Client({
-        isAuthenticated: jest.fn().mockResolvedValue(true), // localStorage says authenticated
+        isAuthenticated: jest.fn().mockResolvedValue(true),
         getTokenSilently: jest
           .fn()
-          .mockRejectedValue(new Error('Login required')), // But token is invalid
+          .mockRejectedValue(new Error('Login required')),
       })
       mockCreateAuth0Client.mockResolvedValue(mockClient)
 
@@ -258,7 +246,6 @@ describe('Security: Authentication & Session Management', () => {
         expect(screen.getByText('App')).toBeInTheDocument()
       })
 
-      // Should attempt to validate the token
       expect(mockClient.getTokenSilently).toHaveBeenCalled()
     })
   })
@@ -289,7 +276,6 @@ describe('Security: Authentication & Session Management', () => {
         expect(screen.getByText('Content')).toBeInTheDocument()
       })
 
-      // Should fallback to guest session on network error
       expect(mockClient.isAuthenticated).toHaveBeenCalled()
     })
   })
@@ -322,7 +308,6 @@ describe('Security: Authentication & Session Management', () => {
         expect(screen.getByText('Test')).toBeInTheDocument()
       })
 
-      // First call should succeed
       expect(mockClient.getTokenSilently).toHaveBeenCalled()
     })
   })
@@ -332,7 +317,6 @@ describe('Security: Authorization Enforcement', () => {
   it('should not expose write permissions to unauthenticated users', () => {
     const session = guestSession
 
-    // Verify all write operations are blocked
     const writePermissions = [
       'isAllowedToWriteWords',
       'isAllowedToWriteBibliography',

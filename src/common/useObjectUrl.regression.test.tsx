@@ -1,16 +1,6 @@
 import { renderHook } from '@testing-library/react'
 import useObjectUrl from './useObjectUrl'
 
-/**
- * Regression Tests for Blob URL Lifecycle Management
- *
- * Why these tests:
- * - Recent fix addressed memory leak where blob URLs weren't properly revoked
- * - URL.createObjectURL creates persistent references that must be cleaned up
- * - Component unmounts must revoke URLs to prevent browser memory exhaustion
- * - Multiple renders/updates must not leak intermediate blob URLs
- */
-
 describe('useObjectUrl - Blob URL Lifecycle Regression Tests', () => {
   type BlobHookProps = { blob: Blob | null }
   type BlobHookResult = ReturnType<typeof useObjectUrl>
@@ -97,7 +87,7 @@ describe('useObjectUrl - Blob URL Lifecycle Regression Tests', () => {
 
       const { unmount } = renderHook(() => useObjectUrl(blob))
       unmount()
-      unmount() // Second unmount should not throw
+      unmount()
 
       expect(mockRevokeObjectURL).toHaveBeenCalledTimes(1)
     })
@@ -205,9 +195,8 @@ describe('useObjectUrl - Blob URL Lifecycle Regression Tests', () => {
       expect(mockCreateObjectURL).toHaveBeenCalledTimes(1)
       const firstUrl = result.current
 
-      rerender({ blob }) // Same blob reference
+      rerender({ blob })
 
-      // useMemo with [data] dependency means same blob = same URL (memoized)
       expect(mockCreateObjectURL).toHaveBeenCalledTimes(1)
       expect(result.current).toBe(firstUrl)
       expect(mockRevokeObjectURL).not.toHaveBeenCalled()
@@ -272,7 +261,6 @@ describe('useObjectUrl - Blob URL Lifecycle Regression Tests', () => {
 
   describe('Integration Scenarios', () => {
     test('Download button workflow - fetch, display, unmount', () => {
-      // Simulates: user clicks download, blob fetched, URL created, modal shown, modal closed
       const fileBlob = new Blob(['file content'], { type: 'application/pdf' })
       const blobUrl = 'blob:http://localhost/download-file'
       mockCreateObjectURL.mockReturnValue(blobUrl)
@@ -282,7 +270,6 @@ describe('useObjectUrl - Blob URL Lifecycle Regression Tests', () => {
       expect(mockCreateObjectURL).toHaveBeenCalledWith(fileBlob)
       expect(result.current).toBe(blobUrl)
 
-      // Simulate modal close/unmount
       unmount()
 
       expect(mockRevokeObjectURL).toHaveBeenCalledWith(blobUrl)
@@ -302,7 +289,6 @@ describe('useObjectUrl - Blob URL Lifecycle Regression Tests', () => {
         { initialProps: { blob: images[0] } },
       )
 
-      // User navigates through images
       images.slice(1).forEach((image, index) => {
         const prevUrl = result.current
         rerender({ blob: image })
@@ -322,7 +308,6 @@ describe('useObjectUrl - Blob URL Lifecycle Regression Tests', () => {
 
       expect(result.current).toBe(blobUrl)
 
-      // Immediate unmount after triggering download
       unmount()
 
       expect(mockRevokeObjectURL).toHaveBeenCalledWith(blobUrl)

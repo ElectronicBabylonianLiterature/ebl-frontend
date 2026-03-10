@@ -9,8 +9,6 @@ const STOPWORDS = {
   fr: new Set(stopwords.french),
 }
 
-// Note: Explicit ASCII punctuation class is used instead of \p{P} for
-// compatibility with environments that may not support Unicode property escapes.
 const PUNCTUATION_PATTERN = /[!"#$%&'()*+,\-./:;<=>?@[\\\]^_`{|}~]/g
 
 export function generateIds(entry: CslData): string {

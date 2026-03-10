@@ -10,11 +10,6 @@ interface GroupedDossiers {
   [key: string]: DossierRecord[]
 }
 
-/**
- * Creates a group key from script period and provenance for dossier grouping
- * @param record - The dossier record to extract grouping key from
- * @returns A string key combining period, modifier, and provenance
- */
 function createGroupKey(record: DossierRecord): string {
   const period = record.script?.period?.name || 'Unknown Period'
   const modifier = record.script?.periodModifier?.name || ''
@@ -41,20 +36,12 @@ function createDisplayKey(
   return scriptDescription
 }
 
-/**
- * Groups dossier records by script (period + modifier) and provenance
- * @param records - Array of dossier records to group
- * @returns Object with grouped dossiers keyed by "Period (Modifier) — Provenance"
- */
 function groupDossiersByScriptAndProvenance(
   records: readonly DossierRecord[],
 ): GroupedDossiers {
   return _.groupBy(records, createGroupKey)
 }
 
-/**
- * Individual clickable dossier item with popover
- */
 function DossierItem({
   record,
   index,
@@ -104,9 +91,6 @@ function DossierItem({
   )
 }
 
-/**
- * Displays a single group of dossiers with a shared script/provenance heading
- */
 function DossierGroup({
   groupKey,
   records,
@@ -147,10 +131,6 @@ function DossierGroup({
   )
 }
 
-/**
- * Main component for displaying grouped dossiers in search results
- * Groups by script (period + periodModifier) and provenance for better organization
- */
 export function DossiersGroupedDisplay({
   records,
   showProvenance = true,

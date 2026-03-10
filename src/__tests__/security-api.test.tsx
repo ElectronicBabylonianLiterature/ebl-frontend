@@ -1,8 +1,3 @@
-/**
- * API Client Security Tests
- * Verify that API calls properly include/exclude auth headers based on context
- */
-
 import ApiClient, { ApiError } from 'http/ApiClient'
 import { AuthenticationService } from 'auth/Auth'
 import { guestSession } from 'auth/Session'
@@ -86,7 +81,6 @@ describe('Security: API Client Authorization', () => {
         json: async () => ({ data: 'test' }),
       } as Response)
 
-      // Even though authenticate=false, user is logged in so token should be included
       await apiClient.fetchJson('/endpoint', false)
 
       const callHeaders = (global.fetch as jest.Mock).mock.calls[0][1].headers
@@ -113,7 +107,6 @@ describe('Security: API Client Authorization', () => {
 
       await apiClient.fetchJson('/test', true)
 
-      // Should retry once
       expect(mockGetToken).toHaveBeenCalledTimes(2)
       expect(mockErrorReporter.captureException).toHaveBeenCalledTimes(1)
     })
@@ -130,7 +123,6 @@ describe('Security: API Client Authorization', () => {
         json: async () => null,
       } as Response)
 
-      // postJson defaults authenticate to true
       await apiClient.postJson('/create-resource', { data: 'test' })
 
       const callHeaders = (global.fetch as jest.Mock).mock.calls[0][1].headers
@@ -210,7 +202,6 @@ describe('Security: API Client Authorization', () => {
 
       await expect(apiClient.fetchJson('/test', true)).rejects.toThrow()
 
-      // Should not capture already-captured errors
       expect(mockErrorReporter.captureException).not.toHaveBeenCalled()
     })
   })
@@ -243,7 +234,6 @@ describe('Security: API Client Authorization', () => {
 
       await expect(apiClient.fetchJson('/test', true)).rejects.toThrow()
 
-      // Should retry once (0th attempt + 1 retry = 2 total calls)
       expect(mockGetToken).toHaveBeenCalledTimes(2)
     })
   })
@@ -261,7 +251,6 @@ describe('Security: API Client Authorization', () => {
       await apiClient.fetchJson('/endpoint?param=value', true)
 
       const url = (global.fetch as jest.Mock).mock.calls[0][0]
-      // Token should be in header, not URL
       expect(url).not.toContain('secret-token')
       expect(url).not.toContain('token=')
       expect(url).not.toContain('Bearer')
@@ -270,7 +259,6 @@ describe('Security: API Client Authorization', () => {
     it('should use HTTPS API URL (environment check)', () => {
       const apiUrl = process.env.REACT_APP_DICTIONARY_API_URL
 
-      // In production, this should be HTTPS
       if (process.env.NODE_ENV === 'production' && apiUrl) {
         expect(apiUrl).toMatch(/^https:\/\//)
       }
@@ -290,8 +278,6 @@ describe('Security: API Error Messages', () => {
       }),
     } as Response)
 
-    // Frontend preserves backend error messages
-    // Backend is responsible for not leaking sensitive data
     expect(apiError.message).toBeTruthy()
     expect(apiError.status).toBe(500)
   })

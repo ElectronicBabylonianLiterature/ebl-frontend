@@ -18,6 +18,13 @@ import userEvent from '@testing-library/user-event'
 import Word from 'dictionary/domain/Word'
 import WordService from 'dictionary/application/WordService'
 
+const mockNavigate = jest.fn()
+
+jest.mock('react-router-dom', () => ({
+  ...jest.requireActual('react-router-dom'),
+  useNavigate: () => mockNavigate,
+}))
+
 jest.mock('fragmentarium/application/FragmentService')
 jest.mock('fragmentarium/application/FragmentSearchService')
 jest.mock('bibliography/application/BibliographyService')
@@ -75,11 +82,14 @@ async function renderSearchForm(): Promise<void> {
 }
 
 async function expectNavigation(search: string): Promise<void> {
-  // expect(history.push).toHaveBeenCalledWith({
-  //   pathname: '/library/search/',
-  //   search,
-  // })
-  await waitFor(() => expect(true).toBe(true))
+  await waitFor(() =>
+    expect(mockNavigate).toHaveBeenCalledWith(
+      expect.objectContaining({
+        pathname: expect.stringContaining('/search/'),
+        search,
+      }),
+    ),
+  )
 }
 
 async function testInputDisplay(
@@ -123,6 +133,7 @@ async function selectOptionAndSearch(
 }
 
 beforeEach(async () => {
+  mockNavigate.mockClear()
   fragmentService = new (FragmentService as jest.Mock<
     jest.Mocked<FragmentService>
   >)()

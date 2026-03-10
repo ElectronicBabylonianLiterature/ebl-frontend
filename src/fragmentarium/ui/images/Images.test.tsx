@@ -10,6 +10,10 @@ import Promise from 'bluebird'
 import Images, { FragmentPhoto, TabController } from './Images'
 import Folio from 'fragmentarium/domain/Folio'
 import { Fragment } from 'fragmentarium/domain/fragment'
+import {
+  createFragmentUrlWithFolio,
+  createFragmentUrlWithTab,
+} from 'fragmentarium/ui/FragmentLink'
 import { fragmentFactory } from 'test-support/fragment-fixtures'
 import {
   folioFactory,
@@ -173,17 +177,17 @@ describe('TabController', () => {
   it('Opens the correct tab for a folio', () => {
     const controller = new TabController(fragment, null, activeFolio, navigate)
     controller.openTab('1')
-    // expect(history.push).toHaveBeenCalledWith(
-    //   createFragmentUrlWithFolio(fragment.number, activeFolio)
-    // )
+    expect(navigate).toHaveBeenCalledWith(
+      createFragmentUrlWithFolio(fragment.number, activeFolio),
+    )
   })
 
   it('Opens the correct tab for a photo', () => {
     const controller = new TabController(fragment, null, null, navigate)
     controller.openTab('photo')
-    // expect(history.push).toHaveBeenCalledWith(
-    //   createFragmentUrlWithTab(fragment.number, 'photo')
-    // )
+    expect(navigate).toHaveBeenCalledWith(
+      createFragmentUrlWithTab(fragment.number, 'photo'),
+    )
   })
 })
 

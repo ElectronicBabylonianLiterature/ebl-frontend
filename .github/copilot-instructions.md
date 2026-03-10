@@ -27,6 +27,12 @@ Provide project context and coding guidelines that AI should follow when generat
 ## Commands and Tooling
 
 - When running shell commands for project tasks, always use `yarn` instead of `npm`.
+- After any code change, always run `yarn lint` before finalizing work.
+
+## File Restore Rules
+
+- When asked to restore a file to its previous state, always restore it from the `master` branch reference.
+- After restoring, always verify the file exactly matches `master` (for example via a direct git diff check) and report the confirmation.
 
 ## Testing and Quality
 
