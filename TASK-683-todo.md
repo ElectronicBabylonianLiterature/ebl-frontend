@@ -40,7 +40,6 @@ Upgrade `@typescript-eslint` stack to support TypeScript 5.9.x cleanly, verify l
 - [x] Relocate `src/__tests__/` security tests to feature-co-located paths and verify lint/focused tests
 - [x] Relocate root-level `useObjectUrl` tests to `src/common/` and verify lint/focused tests
 - [x] Subdivide `src/common` into `ui`, `hooks`, `utils`, `errors` and update affected imports
-- [x] Add a singleton full-test runner wrapper and wire CI to use it so overlapping full test runs fail closed
 
 ## Notes
 
