@@ -1,5 +1,5 @@
 import React from 'react'
-import { fireEvent, render, screen } from '@testing-library/react'
+import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { Text } from 'transliteration/domain/text'
 import LemmaAnnotation, {
@@ -202,6 +202,26 @@ describe('LemmaAnnotation', () => {
       )
       await userEvent.click(screen.getByText('Autofill'))
       expect(screen.getAllByText('mockLemma')).toHaveLength(2)
+    })
+  })
+
+  describe('Proper Noun Creation', () => {
+    it('sets created lemma to active token and auto-saves updates', async () => {
+      const createdWord = wordFactory.build({
+        _id: 'Shamash I',
+        lemma: ['Shamash'],
+      })
+      updateAnnotationMock.mockResolvedValue({ text })
+      const annotation = new LemmaAnnotation(props)
+
+      annotation.onCreateProperNoun(createdWord)
+
+      await waitFor(() => {
+        expect(updateAnnotationMock).toHaveBeenCalledWith({
+          '0': { '0': ['Shamash I'] },
+        })
+      })
+      expect(setTextMock).toHaveBeenCalledWith(text)
     })
   })
 })

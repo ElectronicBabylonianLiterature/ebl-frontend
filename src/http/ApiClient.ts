@@ -14,8 +14,18 @@ export function apiUrl(path: string): string {
   return `${process.env.REACT_APP_DICTIONARY_API_URL}${path}`
 }
 
-function deserializeJson(response: Response): unknown {
-  return [201, 204].includes(response.status) ? null : response.json()
+async function deserializeJson(response: Response): Promise<unknown> {
+  if (response.status === 204) {
+    return null
+  }
+  if (response.status === 201) {
+    if (typeof response.text !== 'function') {
+      return typeof response.json === 'function' ? response.json() : null
+    }
+    const responseText = await response.text()
+    return responseText.trim() ? JSON.parse(responseText) : null
+  }
+  return response.json()
 }
 
 function createOptions(body: unknown, method: string): Options {
