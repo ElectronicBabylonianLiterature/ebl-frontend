@@ -258,6 +258,21 @@
 ### Relocation execution (requested)
 
 - Relocated files with `git mv`:
+
+### Singleton full-test enforcement
+
+- Added `scripts/run-singleton-test.sh` to make full-suite execution fail closed when another workspace test process is already running.
+- Wrapper behavior:
+  - acquires an exclusive repo-scoped lock with `flock` under `.git/`,
+  - writes current run metadata for diagnostics,
+  - refuses to start if matching `craco test` / `react-scripts test` / `jest` processes already exist in this workspace,
+  - launches the full run in a separate process group with `setsid`,
+  - enforces a default `60m` timeout, and
+  - kills the whole process group on interruption or cleanup.
+- Added package entrypoint `yarn test:full` so local full runs use the guarded path instead of a raw test invocation.
+- Updated `.github/workflows/main.yml` to:
+  - use `yarn test:full` for the unit-test step, and
+  - enable workflow concurrency with `cancel-in-progress: true` so older CI runs are canceled instead of overlapping.
   - `src/__tests__/security-api.test.tsx` -> `src/http/ApiClient.security.test.ts`
   - `src/__tests__/security-auth.test.tsx` -> `src/auth/react-auth0-spa.security.test.tsx`
   - `src/__tests__/security-fragment-tabs.test.tsx` -> `src/fragmentarium/ui/fragment/CuneiformFragmentEditor.security.test.tsx`

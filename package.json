@@ -25,6 +25,7 @@
     "build": "craco build",
     "test": "craco test --maxWorkers=50%",
     "test:fast": "craco test --maxWorkers=50% --bail --no-coverage",
+    "test:full": "./scripts/run-singleton-test.sh",
     "eject": "react-scripts eject",
     "lighthouse": "node scripts/lighthouse.js",
     "lint": "eslint 'src/**/*.{ts,tsx}' && stylelint 'src/**/*.css'",
