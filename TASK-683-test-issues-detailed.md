@@ -13,8 +13,7 @@
 
 ## Explicit Status
 
-- In this detailed warning set, `T1` is now **resolved**.
-- `T2`, `T3`, and `T4` remain **open**.
+- In this detailed warning set, `T1`, `T2`, `T3`, and `T4` are now **resolved** in focused rechecks on current branch.
 - Some other TASK-683 items are solved in separate documents (for example structure/placement cleanups), but those are not part of this warning table.
 
 ## Focused Recheck (2026-03-10)
@@ -22,12 +21,12 @@
 - Goal: confirm whether each warning class still reoccurs after subsequent PR changes.
 - Method: one focused test file per issue type.
 
-| ID  | Focused File                                             | Warning Signature Found                                         | Recheck Result                            |
-| --- | -------------------------------------------------------- | --------------------------------------------------------------- | ----------------------------------------- |
-| T1  | `src/fragmentarium/ui/SearchForm.test.tsx`               | `Warning: Spinner: Support for defaultProps will be removed...` | No longer reoccurs after Spinner refactor |
-| T2  | `src/Header.test.tsx`                                    | `React Router Future Flag Warning ... v7_startTransition`       | Reoccurs                                  |
-| T3  | `src/Header.test.tsx`                                    | `React Router Future Flag Warning ... v7_relativeSplatPath`     | Reoccurs                                  |
-| T4  | `src/dossiers/infrastructure/DossiersRepository.test.ts` | `Failed to fetch filtered dossiers: Filter endpoint not found`  | Reoccurs                                  |
+| ID  | Focused File                                             | Warning Signature Found                                         | Recheck Result                                          |
+| --- | -------------------------------------------------------- | --------------------------------------------------------------- | ------------------------------------------------------- |
+| T1  | `src/fragmentarium/ui/SearchForm.test.tsx`               | `Warning: Spinner: Support for defaultProps will be removed...` | No longer reoccurs after Spinner refactor               |
+| T2  | `src/Header.test.tsx`                                    | `React Router Future Flag Warning ... v7_startTransition`       | No longer reoccurs after test-router future-flag opt-in |
+| T3  | `src/Header.test.tsx`                                    | `React Router Future Flag Warning ... v7_relativeSplatPath`     | No longer reoccurs after test-router future-flag opt-in |
+| T4  | `src/dossiers/infrastructure/DossiersRepository.test.ts` | `Failed to fetch filtered dossiers: Filter endpoint not found`  | No longer reoccurs after test-noise logging guard       |
 
 ## Detailed Issues Table
 
@@ -111,4 +110,4 @@
 
 - This table enumerates all unique warning/error issue types found in the test output and includes location coverage for Router warnings.
 - If needed, a fully expanded per-occurrence CSV can be generated (very large artifact).
-- Focused recheck on `2026-03-10` now confirms `T1` is fixed in current branch runs, while `T2-T4` still reoccur.
+- Focused recheck on `2026-03-10` now confirms `T1-T4` are fixed in current branch runs.

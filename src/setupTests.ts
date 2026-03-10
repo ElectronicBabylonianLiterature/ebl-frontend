@@ -12,6 +12,26 @@ import 'jest-canvas-mock'
 
 import fetchMock from 'jest-fetch-mock'
 
+jest.mock('react-router-dom', () => {
+  const mockReact = jest.requireActual('react')
+  const actualReactRouterDom = jest.requireActual('react-router-dom')
+  return {
+    ...actualReactRouterDom,
+    MemoryRouter: ({ children, ...props }: Record<string, unknown>) =>
+      mockReact.createElement(
+        actualReactRouterDom.MemoryRouter,
+        {
+          ...props,
+          future: Object.fromEntries([
+            ['v7_startTransition', true],
+            ['v7_relativeSplatPath', true],
+          ]),
+        },
+        children,
+      ),
+  }
+})
+
 fetchMock.enableMocks()
 
 global.TextEncoder = TextEncoder

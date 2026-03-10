@@ -338,3 +338,26 @@
   - `yarn tsc` -> passed.
 - Outcome:
   - `T1` warning no longer reoccurs in the focused reproduction file after the fix.
+
+### T2/T3 fix implementation (React Router future-flag warnings)
+
+- Implemented a test-environment-only `MemoryRouter` override in `src/setupTests.ts` using `jest.mock('react-router-dom', ...)`.
+- The override keeps existing props and adds:
+  - `future.v7_startTransition = true`
+  - `future.v7_relativeSplatPath = true`
+- Focused verification:
+  - `CI=true yarn test --watch=false --runTestsByPath src/Header.test.tsx`
+  - `grep -n "v7_startTransition\|v7_relativeSplatPath" /tmp/task683-t23-final.log` returned no matches.
+- Outcome:
+  - `T2` and `T3` warnings no longer reoccur in the focused reproduction file after the fix.
+
+### T4 fix implementation (Dossiers fallback warning noise)
+
+- Updated `src/dossiers/infrastructure/DossiersRepository.ts` to suppress warning logs during tests only:
+  - added `shouldLogWarnings = process.env.NODE_ENV !== 'test'`
+  - wrapped both warning callsites in `if (this.shouldLogWarnings)` guards
+- Focused verification:
+  - `CI=true yarn test --watch=false --runTestsByPath src/dossiers/infrastructure/DossiersRepository.test.ts`
+  - `grep -n "Failed to fetch filtered dossiers\|Failed to fetch dossiers" /tmp/task683-t4-final.log` returned no matches.
+- Outcome:
+  - `T4` warning no longer reoccurs in the focused reproduction file after the fix.
