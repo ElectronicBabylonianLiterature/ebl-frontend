@@ -6,6 +6,7 @@ import { tokenIdFragment } from 'test-support/fragment-fixtures'
 import { ApiEntityAnnotationSpan } from 'fragmentarium/ui/text-annotation/EntityType'
 import userEvent from '@testing-library/user-event'
 import { ThemeProvider } from 'react-bootstrap'
+import { getSelectedTokens } from 'fragmentarium/ui/text-annotation/selectionUtils'
 
 jest.mock('react-bootstrap', () => {
   const actual = jest.requireActual('react-bootstrap')
@@ -58,6 +59,49 @@ const testAnnotations: readonly ApiEntityAnnotationSpan[] = [
     span: ['Word-4', 'Word-5', 'Word-6', 'Word-10'],
   },
 ]
+
+type SelectionConfig = {
+  anchorNode: Node
+  focusNode: Node
+  isCollapsed: boolean
+  rangeCount: number
+  range: Range | null
+}
+
+const createSelection = ({
+  anchorNode,
+  focusNode,
+  isCollapsed,
+  rangeCount,
+  range,
+}: SelectionConfig): Selection =>
+  ({
+    anchorNode,
+    focusNode,
+    isCollapsed,
+    rangeCount,
+    getRangeAt: jest.fn().mockReturnValue(range),
+    empty: jest.fn(),
+    removeAllRanges: jest.fn(),
+  }) as unknown as Selection
+
+const createRange = ({
+  startContainer,
+  endContainer,
+  collapsed,
+  intersectsNode,
+}: {
+  startContainer: Node
+  endContainer: Node
+  collapsed: boolean
+  intersectsNode: (node: Node) => boolean
+}): Range =>
+  ({
+    startContainer,
+    endContainer,
+    collapsed,
+    intersectsNode,
+  }) as unknown as Range
 
 describe('Named Entity Annotation', () => {
   const setup = async (): Promise<void> => {
@@ -402,5 +446,72 @@ describe('Named Entity Annotation', () => {
 
     documentSelection.mockRestore()
     windowSelection.mockRestore()
+  })
+
+  it('selects tokens from range intersections when anchors are not tokens', async () => {
+    await setup()
+
+    const markables = getMarkableButtons()
+    const words = markables
+      .map((markable) => markable.getAttribute('data-id'))
+      .filter((id): id is string => !!id)
+    const selectionAnchor = screen.getByText('(obverse?!)')
+
+    const range = createRange({
+      startContainer: selectionAnchor,
+      endContainer: selectionAnchor,
+      collapsed: false,
+      intersectsNode: (node: Node) =>
+        node === markables[0] || node === markables[1],
+    })
+
+    const selection = createSelection({
+      anchorNode: selectionAnchor,
+      focusNode: selectionAnchor,
+      isCollapsed: false,
+      rangeCount: 1,
+      range,
+    })
+
+    const documentSelection = jest
+      .spyOn(document, 'getSelection')
+      .mockReturnValue(selection)
+
+    expect(getSelectedTokens(words)).toEqual([words[0], words[1]])
+
+    documentSelection.mockRestore()
+  })
+
+  it('selects tokens from range boundaries when intersections are empty', async () => {
+    await setup()
+
+    const markables = getMarkableButtons()
+    const words = markables
+      .map((markable) => markable.getAttribute('data-id'))
+      .filter((id): id is string => !!id)
+    const selectionAnchor = screen.getByText('(obverse?!)')
+
+    const range = createRange({
+      startContainer: markables[1],
+      endContainer: markables[2],
+      collapsed: false,
+      intersectsNode: () => false,
+    })
+
+    const selection = createSelection({
+      anchorNode: selectionAnchor,
+      focusNode: selectionAnchor,
+      isCollapsed: false,
+      rangeCount: 1,
+      range,
+    })
+
+    const documentSelection = jest
+      .spyOn(document, 'getSelection')
+      .mockReturnValue(selection)
+
+    expect(getSelectedTokens(words)).toEqual(words.slice(1, 3))
+
+    documentSelection.mockRestore()
   })
 })
