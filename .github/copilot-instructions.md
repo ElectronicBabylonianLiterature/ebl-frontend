@@ -12,6 +12,7 @@ Provide project context and coding guidelines that AI should follow when generat
 ## Coding Standards
 
 - Follow the existing coding style and conventions used in the project.
+- Always use full import paths (for example `common/useObjectUrl`) instead of local relative paths like `./useObjectUrl` whenever module aliases are available.
 - Always use full variable and function names for clarity.
 - Ensure that all functions and methods in TypeScript have appropriate type annotations. Avoid using `any` or `unknown` unless very necessary.
 - Functions should be small and focused on a single task.

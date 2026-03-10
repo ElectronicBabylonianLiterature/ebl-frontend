@@ -31,6 +31,11 @@ Upgrade `@typescript-eslint` stack to support TypeScript 5.9.x cleanly, verify l
 - [x] Restore identified commented-out assertions and placeholders in affected test files, then verify with focused test runs
 - [x] Audit `src/` for recently added comments and document findings in `TASK-683-src-comments-audit.md`
 - [x] Restore removed `/* eslint-disable react/prop-types */` headers in targeted files and verify against `master`
+- [x] Analyze `src/__tests__` placement against project-wide test structure conventions
+- [x] Audit files added/renamed since `2026-01-01` for structure-placement mismatches
+- [x] Decide relocation plan for out-of-place test files
+- [x] Relocate `src/__tests__/` security tests to feature-co-located paths and verify lint/focused tests
+- [x] Relocate root-level `useObjectUrl` tests to `src/common/` and verify lint/focused tests
 
 ## Notes
 

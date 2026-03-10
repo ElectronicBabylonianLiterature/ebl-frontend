@@ -193,3 +193,65 @@
   - restored missing closing `}` for `mockProps` object.
 - Verification:
   - `yarn lint` → passed.
+
+## 2026-03-10
+
+### File structure and test-placement analysis (documentation-only)
+
+- Analyzed project-wide test placement with `find src -type f -name '*.test.ts' -o -name '*.test.tsx'`.
+- Observed dominant repository convention: tests are colocated with the code they validate (same feature/domain directory).
+- Verified `src/__tests__` is the only `__tests__` directory in the entire `src/` tree.
+- Reviewed files added/renamed since `2026-01-01` using:
+  - `git log --since='2026-01-01' --name-status --diff-filter=AR`
+  - `git diff --name-status master...HEAD`
+
+### Placement findings
+
+- High-confidence mismatch cluster in `src/__tests__/`:
+  - `src/__tests__/security-api.test.tsx`
+  - `src/__tests__/security-auth.test.tsx`
+  - `src/__tests__/security-fragment-tabs.test.tsx`
+- Why flagged: each file validates feature-specific behavior (`http`, `auth`, `fragmentarium`) while project convention is feature-level colocation.
+
+### Recommended target locations (no moves yet)
+
+- `src/__tests__/security-api.test.tsx`
+  - Recommended: `src/http/ApiClient.security.test.ts`
+  - Reason: exercises `ApiClient` authorization/error logic.
+- `src/__tests__/security-auth.test.tsx`
+  - Recommended: `src/auth/react-auth0-spa.security.test.tsx`
+  - Reason: exercises `Auth0Provider`, token/session handling, and guest-session behavior.
+- `src/__tests__/security-fragment-tabs.test.tsx`
+  - Recommended: `src/fragmentarium/ui/fragment/CuneiformFragmentEditor.security.test.tsx`
+  - Reason: validates `EditorTabs` permission/tab visibility behavior.
+
+### Additional likely mismatch from recent period
+
+- `src/useObjectUrl.regression.test.tsx` (added in 2026-02 commit) imports `./common/useObjectUrl`, not a same-folder module.
+- Existing `src/useObjectUrl.test.tsx` also imports `./common/useObjectUrl`.
+- Recommendation: colocate both under `src/common/` with the hook, or retain one canonical suite in `src/common/` and de-duplicate overlap.
+
+### Other files checked for placement anomalies (since 2026-01)
+
+- No other high-confidence structural mismatches identified in added/renamed files.
+- Root-level `TASK-683-*.md` artifacts are intentional task-tracking docs per current repo instructions.
+
+### Relocation execution (requested)
+
+- Relocated files with `git mv`:
+  - `src/__tests__/security-api.test.tsx` -> `src/http/ApiClient.security.test.ts`
+  - `src/__tests__/security-auth.test.tsx` -> `src/auth/react-auth0-spa.security.test.tsx`
+  - `src/__tests__/security-fragment-tabs.test.tsx` -> `src/fragmentarium/ui/fragment/CuneiformFragmentEditor.security.test.tsx`
+- Post-move validation:
+  - `yarn lint` -> passed (existing TypeScript support warning from `@typescript-eslint/typescript-estree` only).
+  - `CI=true yarn test --watch=false --runTestsByPath src/http/ApiClient.security.test.ts src/auth/react-auth0-spa.security.test.tsx src/fragmentarium/ui/fragment/CuneiformFragmentEditor.security.test.tsx` -> passed (`3` suites, `33` tests).
+
+### Additional placement cleanup (useObjectUrl tests)
+
+- Relocated root-level tests into `src/common/`:
+  - `src/useObjectUrl.test.tsx` -> `src/common/useObjectUrl.basic.test.tsx`
+  - `src/useObjectUrl.regression.test.tsx` -> `src/common/useObjectUrl.root-regression.test.tsx`
+- Updated imports in relocated files from `./common/useObjectUrl` to `./useObjectUrl`.
+- Validation after relocation:
+  - `yarn lint` -> passed (same existing TypeScript support warning only).
+  - `CI=true yarn test --watch=false --runTestsByPath src/common/useObjectUrl.basic.test.tsx src/common/useObjectUrl.root-regression.test.tsx src/common/useObjectUrl.regression.test.tsx` -> passed (`3` suites, `41` tests).

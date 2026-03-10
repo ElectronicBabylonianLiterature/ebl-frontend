@@ -1,6 +1,6 @@
 import React from 'react'
 import { render, RenderResult, screen } from '@testing-library/react'
-import useObjectUrl from './common/useObjectUrl'
+import useObjectUrl from 'common/useObjectUrl'
 
 const objectUrl = 'object URL mock'
 let data: Blob
