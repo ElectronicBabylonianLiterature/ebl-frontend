@@ -14,6 +14,7 @@ Upgrade `@typescript-eslint` stack to support TypeScript 5.9.x cleanly, verify l
 - [ ] Run `yarn tsc`, `yarn test --coverage`, and `yarn build` (tsc/tests pass; build currently exits early in container)
 - [ ] Verify GitHub Actions workflows still use correct commands/runtime (unit-test command validated locally; docker command requires Actions runner validation)
 - [ ] Resolve/reproduce build issue: `yarn build` exits early (`The build failed because the process exited too early`) (reproduced with `CI=true`, sourcemap-off, ESLint-plugin-off, `npx react-scripts build`, and increased heap)
+- [x] Investigate and document lint TypeScript warning root cause (`@typescript-eslint` runtime install drift vs lockfile)
 - [x] Treat build/test terminations as shared runner-process-kill class issue and keep CI mitigations aligned (unit-test + docker workflows hardened with retries/timeouts)
 - [x] Review warning: `Resolution field "eslint@8.57.1" is incompatible with requested version "eslint@^7.12.0"`
 - [ ] Review warning: `bare-fs@4.5.3: The engine "bare" appears to be invalid` (via `lighthouse` transitive deps; only plain-update path is `lighthouse` version change)
@@ -24,7 +25,7 @@ Upgrade `@typescript-eslint` stack to support TypeScript 5.9.x cleanly, verify l
 - [x] Review warning: `react-image-annotation@0.9.10 has incorrect peer dependency "react@^16.3"` (wontfix via plain updates; latest version already in use)
 - [x] Review warning: `react-image-annotation > styled-components@3.4.10 has incorrect peer dependency "react@>= 0.14.0 < 17.0.0-0"` (wontfix via plain updates; inherited from package above)
 - [x] Decide and apply mitigation for `postcss-resolve-url` deprecation warning (`resolve-url-loader` transitive upgrade)
-- [ ] Summarize changes, risks, and follow-up cleanup reminder
+- [x] Summarize changes, risks, and follow-up cleanup reminder
 - [x] Create artifacts: full test output log and issues summary table
 - [x] Create separate detailed all-test-issues table with locations and solution options
 - [x] Audit repo for commented-out test assertions/placeholders and document findings in `TASK-683-commented-test-assertions-audit.md`

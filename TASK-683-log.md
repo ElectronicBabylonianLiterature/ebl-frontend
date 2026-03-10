@@ -274,3 +274,38 @@
   - `src/corpus/domain/manuscript.ts`
 - Validation:
   - `yarn lint` -> passed (existing TypeScript support warning from `@typescript-eslint/typescript-estree` only).
+
+### Lint TypeScript support warning investigation (documentation-only)
+
+- Reproduced warning during `yarn lint`:
+  - `SUPPORTED TYPESCRIPT VERSIONS: >=4.7.4 <5.6.0`
+  - `YOUR TYPESCRIPT VERSION: 5.9.3`
+- Confirmed project declaration still pins TypeScript `~5.9.3` in `package.json`.
+- Verified runtime installed lint stack in `node_modules`:
+  - `@typescript-eslint/parser@7.18.0`
+  - `@typescript-eslint/eslint-plugin@7.18.0`
+  - `@typescript-eslint/typescript-estree@7.18.0`
+- Compared with lockfile/graph expectations:
+  - `yarn why @typescript-eslint/parser` reports `8.56.1` from dependency graph.
+  - `yarn.lock` entries are aligned to `8.56.1` for primary parser/plugin paths.
+- Integrity check result:
+  - `yarn check --integrity` failed with `Top level patterns don't match`.
+- Conclusion recorded for PR docs:
+  - The warning is caused by install-state drift (`node_modules` out of sync with lockfile), not by application source code changes.
+- No dependency or source-code changes were applied in this step (documentation update only).
+
+### Lint mismatch remediation execution
+
+- Executed clean reinstall to resync runtime dependencies with lockfile:
+  - `rm -rf node_modules && yarn install --frozen-lockfile`
+- Validation after reinstall:
+  - `yarn check --integrity` -> `success Folder in sync.`
+  - `yarn lint` -> passed with no TypeScript support warning.
+  - `yarn tsc` -> passed.
+- Captured active runtime versions after reinstall:
+  - `typescript@5.9.3`
+  - `@typescript-eslint/parser@8.56.1`
+  - `@typescript-eslint/eslint-plugin@8.56.1`
+  - `@typescript-eslint/typescript-estree@8.56.1`
+- Outcome:
+  - Original warning resolved without changing source files or modifying dependency declarations.
