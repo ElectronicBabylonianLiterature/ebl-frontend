@@ -2,12 +2,12 @@ import React from 'react'
 import { Spinner as BootstrapSpinner } from 'react-bootstrap'
 
 type Props = {
-  loading: boolean
+  loading?: boolean
   children?: React.ReactNode
 }
 
 export default function Spinner({
-  loading,
+  loading = true,
   children,
 }: Props): JSX.Element | null {
   return loading ? (
@@ -24,7 +24,4 @@ export default function Spinner({
       {children || ' Loading...'}
     </>
   ) : null
-}
-Spinner.defaultProps = {
-  loading: true,
 }

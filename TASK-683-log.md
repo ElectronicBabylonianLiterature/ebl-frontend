@@ -309,3 +309,32 @@
   - `@typescript-eslint/typescript-estree@8.56.1`
 - Outcome:
   - Original warning resolved without changing source files or modifying dependency declarations.
+
+### Detailed test-issues explicit status + focused warning recheck
+
+- Updated `TASK-683-test-issues-detailed.md` to explicitly state that `T1-T4` are still open in that warning set.
+- Added a focused recheck matrix (2026-03-10) with one test file per issue type.
+- Verification runs:
+  - `CI=true yarn test --watch=false --runTestsByPath src/fragmentarium/ui/SearchForm.test.tsx`
+    - confirmed warning: `Spinner: Support for defaultProps will be removed...`
+  - `CI=true yarn test --watch=false --runTestsByPath src/Header.test.tsx`
+    - confirmed warning: `v7_startTransition`
+    - confirmed warning: `v7_relativeSplatPath`
+  - `CI=true yarn test --watch=false --runTestsByPath src/dossiers/infrastructure/DossiersRepository.test.ts`
+    - confirmed warning: `Failed to fetch filtered dossiers: Filter endpoint not found`
+- Conclusion: all four detailed warning classes still reoccur in focused runs.
+
+### T1 fix implementation (Spinner defaultProps deprecation)
+
+- Updated `src/common/ui/Spinner.tsx` to remove function-component `defaultProps` and use a default parameter instead:
+  - `loading` changed from required prop to optional prop (`loading?: boolean`)
+  - default applied in signature (`loading = true`)
+  - removed `Spinner.defaultProps`
+- Focused verification:
+  - `CI=true yarn test --watch=false --runTestsByPath src/fragmentarium/ui/SearchForm.test.tsx`
+  - `grep -n "Spinner: Support for defaultProps" /tmp/task683-t1-after-fix.log` returned no matches.
+- Validation gates:
+  - `yarn lint` -> passed.
+  - `yarn tsc` -> passed.
+- Outcome:
+  - `T1` warning no longer reoccurs in the focused reproduction file after the fix.
