@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { Image } from 'react-bootstrap'
-import ExternalLink from 'common/ExternalLink'
+import ExternalLink from 'common/ui/ExternalLink'
 
 type Props = {
   src: string

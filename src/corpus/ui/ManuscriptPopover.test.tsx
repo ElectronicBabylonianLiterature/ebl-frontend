@@ -5,7 +5,7 @@ import { manuscriptLineDisplayFactory } from 'test-support/line-details-fixtures
 import userEvent from '@testing-library/user-event'
 import { MemoryRouter } from 'react-router-dom'
 import { Provenances } from 'corpus/domain/provenance'
-import { Periods } from 'common/period'
+import { Periods } from 'common/utils/period'
 import Chance from 'chance'
 
 const chance = new Chance('manuscript-popover-test')

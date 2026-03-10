@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react'
 import DossierRecord from 'dossiers/domain/DossierRecord'
-import MarkdownAndHtmlToHtml from 'common/MarkdownAndHtmlToHtml'
+import MarkdownAndHtmlToHtml from 'common/utils/MarkdownAndHtmlToHtml'
 import withData from 'http/withData'
 import DossiersService from 'dossiers/application/DossiersService'
 import _ from 'lodash'
@@ -10,7 +10,7 @@ import { Fragment } from 'fragmentarium/domain/fragment'
 import './DossiersDisplay.sass'
 import ReferencePopover from 'bibliography/ui/referencePopover'
 import Citation from 'bibliography/domain/Citation'
-import InlineMarkdown from 'common/InlineMarkdown'
+import InlineMarkdown from 'common/ui/InlineMarkdown'
 import Reference from 'bibliography/domain/Reference'
 
 function ReferencesDisplay({

@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import _ from 'lodash'
 
 import TextListInput from './TextListInput'
-import ArrayInput from 'common/ArrayInput'
+import ArrayInput from 'common/ui/ArrayInput'
 
 class ArrayWithNotes extends Component<{
   onChange

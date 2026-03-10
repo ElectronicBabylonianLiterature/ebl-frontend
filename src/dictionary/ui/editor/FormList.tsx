@@ -4,7 +4,7 @@ import { FormGroup } from 'react-bootstrap'
 import _ from 'lodash'
 
 import FormInput from './FormInput'
-import List from 'common/List'
+import List from 'common/ui/List'
 
 const defaultForm = {
   lemma: [],

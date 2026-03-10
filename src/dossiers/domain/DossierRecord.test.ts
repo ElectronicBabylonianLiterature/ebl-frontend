@@ -1,5 +1,5 @@
 import DossierRecord from 'dossiers/domain/DossierRecord'
-import { PeriodModifiers, Periods } from 'common/period'
+import { PeriodModifiers, Periods } from 'common/utils/period'
 import { Provenances } from 'corpus/domain/provenance'
 import { referenceDtoFactory } from 'test-support/bibliography-fixtures'
 import Reference from 'bibliography/domain/Reference'

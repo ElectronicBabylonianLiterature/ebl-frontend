@@ -23,14 +23,14 @@ import {
   getFormatedTableCell,
   getTextRun,
   HtmlToWordParagraph,
-} from 'common/HtmlToWord'
+} from 'common/utils/HtmlToWord'
 import {
   getHeading,
   getHyperLinkParagraph,
   isNoteCell,
-} from 'common/HtmlToWordUtils'
-import { getLineTypeByHtml } from 'common/HtmlLineType'
-import { fixHtmlParseOrder } from 'common/HtmlParsing'
+} from 'common/utils/HtmlToWordUtils'
+import { getLineTypeByHtml } from 'common/utils/HtmlLineType'
+import { fixHtmlParseOrder } from 'common/utils/HtmlParsing'
 import { ReactElement } from 'react'
 import TransliterationLines from 'transliteration/ui/TransliterationLines'
 import TransliterationNotes from 'transliteration/ui/TransliterationNotes'

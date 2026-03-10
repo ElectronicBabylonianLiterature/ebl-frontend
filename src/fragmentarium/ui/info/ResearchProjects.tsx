@@ -1,4 +1,4 @@
-import ExternalLink from 'common/ExternalLink'
+import ExternalLink from 'common/ui/ExternalLink'
 import React from 'react'
 import { ResearchProject } from 'research-projects/researchProject'
 import './ResearchProjectList.sass'

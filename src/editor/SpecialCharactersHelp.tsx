@@ -1,6 +1,6 @@
 import React from 'react'
 import { Popover } from 'react-bootstrap'
-import HelpTrigger from 'common/HelpTrigger'
+import HelpTrigger from 'common/ui/HelpTrigger'
 import _ from 'lodash'
 
 function SpecialCharactersHelp() {

@@ -1,7 +1,7 @@
 import React from 'react'
 import { render, screen, fireEvent } from '@testing-library/react'
 
-import SubmitCorrectionsButton from 'common/SubmitCorrectionsButton'
+import SubmitCorrectionsButton from 'common/ui/SubmitCorrectionsButton'
 
 let windowSpy
 

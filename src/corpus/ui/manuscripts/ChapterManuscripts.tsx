@@ -1,7 +1,7 @@
 import _ from 'lodash'
 import React from 'react'
 import Promise from 'bluebird'
-import ListForm from 'common/List'
+import ListForm from 'common/ui/List'
 import { Chapter } from 'corpus/domain/chapter'
 import { Manuscript } from 'corpus/domain/manuscript'
 import ManuscriptForm from './ManuscriptForm'

@@ -1,7 +1,7 @@
 import React from 'react'
 import { Image } from 'react-bootstrap'
-import ExternalLink from './ExternalLink'
-import useObjectUrl from './useObjectUrl'
+import ExternalLink from 'common/ui/ExternalLink'
+import useObjectUrl from 'common/hooks/useObjectUrl'
 
 export default function BlobImage({
   data,

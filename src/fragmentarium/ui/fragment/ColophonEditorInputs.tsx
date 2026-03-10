@@ -10,7 +10,7 @@ import {
 import _ from 'lodash'
 import ProvenanceSearchForm from '../search/SearchFormProvenance'
 import FragmentService from 'fragmentarium/application/FragmentService'
-import { BrokenAndUncertainSwitches } from 'common/BrokenAndUncertain'
+import { BrokenAndUncertainSwitches } from 'common/ui/BrokenAndUncertain'
 
 export const ProvenanceAttestationInput = ({
   fieldName,

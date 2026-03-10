@@ -3,8 +3,8 @@ import { Redirect, Route, useHistory } from 'router/compat'
 import MarkupService from 'markup/application/MarkupService'
 import { sitemapDefaults } from 'router/sitemap'
 import { HeadTagsService } from 'router/head'
-import AppContent from 'common/AppContent'
-import { TextCrumb } from 'common/Breadcrumbs'
+import AppContent from 'common/ui/AppContent'
+import { TextCrumb } from 'common/ui/Breadcrumbs'
 import { Tab, Tabs } from 'react-bootstrap'
 import DateConverterForm, {
   AboutDateConverter,

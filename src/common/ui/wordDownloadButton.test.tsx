@@ -1,6 +1,6 @@
 import React from 'react'
 import { render, screen, fireEvent } from '@testing-library/react'
-import WordDownloadButton from 'common/WordDownloadButton'
+import WordDownloadButton from 'common/ui/WordDownloadButton'
 import { CorpusWordExportContext } from 'corpus/ui/Download'
 import { waitForSpinnerToBeRemoved } from 'test-support/waitForSpinnerToBeRemoved'
 import { Document } from 'docx'

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Markdown, MarkdownParagraph } from 'common/Markdown'
+import { Markdown, MarkdownParagraph } from 'common/ui/Markdown'
 import Markup from 'markup/ui/markup'
 import MarkupService from 'markup/application/MarkupService'
 

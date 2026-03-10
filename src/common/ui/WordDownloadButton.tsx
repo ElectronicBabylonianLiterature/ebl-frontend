@@ -1,11 +1,11 @@
 import React, { useState } from 'react'
 import { Dropdown } from 'react-bootstrap'
 import { saveAs } from 'file-saver'
-import Spinner from 'common/Spinner'
+import Spinner from 'common/ui/Spinner'
 import { Document, Packer } from 'docx'
 import $ from 'jquery'
 import Promise from 'bluebird'
-import usePromiseEffect from 'common/usePromiseEffect'
+import usePromiseEffect from 'common/hooks/usePromiseEffect'
 import { FragmentWordExportContext } from 'fragmentarium/ui/fragment/Download'
 import { CorpusWordExportContext } from 'corpus/ui/Download'
 

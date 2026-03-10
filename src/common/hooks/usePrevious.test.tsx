@@ -1,4 +1,4 @@
-import { usePrevious } from 'common/usePrevious'
+import { usePrevious } from 'common/hooks/usePrevious'
 import React, { useState } from 'react'
 import { Button } from 'react-bootstrap'
 import { render, screen } from '@testing-library/react'

@@ -31,7 +31,7 @@ import { LineDetails, ManuscriptLineDisplay } from 'corpus/domain/line-details'
 import { TextLine } from 'transliteration/domain/text-line'
 import { ManuscriptTypes, OldSiglum } from 'corpus/domain/manuscript'
 
-import { PeriodModifiers, Periods } from 'common/period'
+import { PeriodModifiers, Periods } from 'common/utils/period'
 import { Provenances } from 'corpus/domain/provenance'
 import TranslationLine from 'transliteration/domain/translation-line'
 import type { Draft } from 'immer'

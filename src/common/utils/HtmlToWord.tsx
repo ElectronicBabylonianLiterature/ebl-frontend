@@ -9,8 +9,12 @@ import {
 } from 'docx'
 import { IPropertiesOptions } from 'docx/build/file/core-properties/properties.d'
 import $ from 'jquery'
-import { fixHtmlParseOrder } from 'common/HtmlParsing'
-import { getStyles, getHeading, getBottomStyle } from 'common/HtmlToWordUtils'
+import { fixHtmlParseOrder } from 'common/utils/HtmlParsing'
+import {
+  getStyles,
+  getHeading,
+  getBottomStyle,
+} from 'common/utils/HtmlToWordUtils'
 
 import rgbHex from 'rgb-hex'
 

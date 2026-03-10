@@ -2,7 +2,7 @@ import React from 'react'
 import ReactGA from 'react-ga4'
 
 import SessionContext from 'auth/SessionContext'
-import ErrorBoundary from 'common/ErrorBoundary'
+import ErrorBoundary from 'common/errors/ErrorBoundary'
 
 import { useAuthentication } from 'auth/Auth'
 import Router from 'router/router'

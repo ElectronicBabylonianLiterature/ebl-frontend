@@ -1,4 +1,4 @@
-import ExternalLink from 'common/ExternalLink'
+import ExternalLink from 'common/ui/ExternalLink'
 import React, { Fragment } from 'react'
 
 interface Props {

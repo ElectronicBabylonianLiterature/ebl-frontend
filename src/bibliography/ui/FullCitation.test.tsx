@@ -10,7 +10,7 @@ import {
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 import Reference from 'bibliography/domain/Reference'
 
-jest.mock('common/MarkdownAndHtmlToHtml', () => ({
+jest.mock('common/utils/MarkdownAndHtmlToHtml', () => ({
   __esModule: true,
   default: ({ markdownAndHtml }: { markdownAndHtml: string }) => (
     <span>{markdownAndHtml}</span>

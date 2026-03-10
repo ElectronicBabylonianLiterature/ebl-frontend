@@ -255,3 +255,22 @@
 - Validation after relocation:
   - `yarn lint` -> passed (same existing TypeScript support warning only).
   - `CI=true yarn test --watch=false --runTestsByPath src/common/useObjectUrl.basic.test.tsx src/common/useObjectUrl.root-regression.test.tsx src/common/useObjectUrl.regression.test.tsx` -> passed (`3` suites, `41` tests).
+
+### `src/common` minimal subdivision implementation
+
+- Implemented minimal structure under `src/common/`:
+  - `src/common/ui/`
+  - `src/common/hooks/`
+  - `src/common/utils/`
+  - `src/common/errors/`
+- Moved files with `git mv` to preserve history:
+  - `errors`: `ErrorAlert*`, `ErrorBoundary*`, `SentryErrorReporter*`
+  - `hooks`: `useObjectUrl*`, `usePrevious*`, `usePromiseEffect*`
+  - `utils`: `period*`, `HtmlLineType`, `HtmlParsing`, `HtmlToWord`, `HtmlToWordUtils`, `MarkdownAndHtmlToHtml`
+  - `ui`: all remaining top-level files previously in `src/common/`
+- Updated imports across the codebase from legacy `common/<name>` paths to the new structure (`common/ui/*`, `common/hooks/*`, `common/utils/*`, `common/errors/*`).
+- Applied minimal prettier-format fixes caused by longer import specifiers in:
+  - `src/common/utils/HtmlToWord.tsx`
+  - `src/corpus/domain/manuscript.ts`
+- Validation:
+  - `yarn lint` -> passed (existing TypeScript support warning from `@typescript-eslint/typescript-estree` only).

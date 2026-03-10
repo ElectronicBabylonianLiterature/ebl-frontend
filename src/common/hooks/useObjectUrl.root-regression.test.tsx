@@ -1,5 +1,5 @@
 import { renderHook } from '@testing-library/react'
-import useObjectUrl from 'common/useObjectUrl'
+import useObjectUrl from 'common/hooks/useObjectUrl'
 
 describe('useObjectUrl - Blob URL Lifecycle Regression Tests', () => {
   type BlobHookProps = { blob: Blob | null | undefined }

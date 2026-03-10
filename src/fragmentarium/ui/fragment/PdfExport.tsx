@@ -18,8 +18,8 @@ import getJunicodeItalic from './pdf-fonts/JunicodeItalic'
 
 import { jsPDF } from 'jspdf'
 import { DictionaryContext } from 'dictionary/ui/dictionary-context'
-import { fixHtmlParseOrder } from 'common/HtmlParsing'
-import { getLineTypeByHtml } from 'common/HtmlLineType'
+import { fixHtmlParseOrder } from 'common/utils/HtmlParsing'
+import { getLineTypeByHtml } from 'common/utils/HtmlLineType'
 
 export async function pdfExport(
   fragment: Fragment,

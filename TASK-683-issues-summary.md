@@ -24,6 +24,7 @@ This report summarizes issues/warnings observed from the latest local validation
 | P8  | Dependencies (known) | `react-image-annotation` / `styled-components` React peer mismatches                   | Latest already in use (`0.9.10`)                                                                                                                                            | Low      | Wontfix (plain updates) | Leave as known upstream constraint                                                                                     |
 | P9  | Test structure       | Security tests were centralized in `src/__tests__` instead of feature-level colocation | Relocated to `src/http/ApiClient.security.test.ts`, `src/auth/react-auth0-spa.security.test.tsx`, `src/fragmentarium/ui/fragment/CuneiformFragmentEditor.security.test.tsx` | Medium   | Resolved                | Keep security-focused naming while colocating by feature                                                               |
 | P10 | Test structure       | Root-level `useObjectUrl` tests were outside module directory                          | Relocated to `src/common/useObjectUrl.basic.test.tsx` and `src/common/useObjectUrl.root-regression.test.tsx`                                                                | Low      | Resolved                | Optionally de-duplicate overlap between `useObjectUrl.root-regression.test.tsx` and `useObjectUrl.regression.test.tsx` |
+| P11 | Common structure     | `src/common` was flat and hard to maintain                                             | Subdivided into `src/common/ui/`, `src/common/hooks/`, `src/common/utils/`, `src/common/errors/`; imports updated across `src/`                                             | Low      | Resolved                | Keep new files in the relevant subfolder and use full import paths                                                     |
 
 ## Summary
 
@@ -31,6 +32,7 @@ This report summarizes issues/warnings observed from the latest local validation
 - **Primary blocker:** build early-exit remains unresolved and appears to be external process termination rather than deterministic app/test failure.
 - **Secondary issues:** test output includes repeated non-fatal warnings (React defaultProps + React Router future flags) that should be tracked as cleanup work.
 - **Structure follow-up:** security and `useObjectUrl` placement inconsistencies are resolved; optional overlap de-duplication remains for the two `useObjectUrl` regression suites.
+- **Common follow-up:** `src/common` now uses the minimal four-way subdivision (`ui/hooks/utils/errors`) and import paths have been aligned.
 - **Environment caveat:** Docker workflow command path cannot be fully validated locally in this container due missing Docker CLI.
 
 ## Next Verification Checklist (Actions)

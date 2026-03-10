@@ -1,4 +1,4 @@
-import ExternalLink from 'common/ExternalLink'
+import ExternalLink from 'common/ui/ExternalLink'
 import WordService from 'dictionary/application/WordService'
 import LemmaActionButton, {
   LemmaActionCallbacks,

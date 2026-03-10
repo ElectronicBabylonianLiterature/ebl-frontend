@@ -1,6 +1,6 @@
 import { Factory } from 'fishery'
 import Chance from 'chance'
-import { periods } from 'common/period'
+import { periods } from 'common/utils/period'
 import _ from 'lodash'
 import { reconstructionTokens } from 'test-support/test-corpus-text'
 import {

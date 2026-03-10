@@ -18,11 +18,11 @@ import {
   generateWordDocument,
   getFormatedTableCell,
   HtmlToWordParagraph,
-} from 'common/HtmlToWord'
-import { getHeading, getHyperLinkParagraph } from 'common/HtmlToWordUtils'
+} from 'common/utils/HtmlToWord'
+import { getHeading, getHyperLinkParagraph } from 'common/utils/HtmlToWordUtils'
 
-import { fixHtmlParseOrder } from 'common/HtmlParsing'
-import { getLineTypeByHtml } from 'common/HtmlLineType'
+import { fixHtmlParseOrder } from 'common/utils/HtmlParsing'
+import { getLineTypeByHtml } from 'common/utils/HtmlLineType'
 
 import { renderToString } from 'react-dom/server'
 import $ from 'jquery'

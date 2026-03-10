@@ -1,7 +1,7 @@
 import { Factory } from 'fishery'
 import Chance from 'chance'
 import { CorpusQueryItem, QueryItem } from 'query/QueryResult'
-import { periods } from 'common/period'
+import { periods } from 'common/utils/period'
 import { textIdFactory } from './chapter-fixtures'
 
 const defaultChance = new Chance()

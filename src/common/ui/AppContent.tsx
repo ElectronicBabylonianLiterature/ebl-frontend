@@ -3,7 +3,7 @@ import { ButtonToolbar } from 'react-bootstrap'
 import classNames from 'classnames'
 import _ from 'lodash'
 
-import Breadcrumbs, { Crumb } from 'common/Breadcrumbs'
+import Breadcrumbs, { Crumb } from 'common/ui/Breadcrumbs'
 
 import './AppContent.sass'
 

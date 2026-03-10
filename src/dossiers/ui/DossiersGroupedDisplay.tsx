@@ -3,7 +3,7 @@ import DossierRecord from 'dossiers/domain/DossierRecord'
 import _ from 'lodash'
 import { Overlay, Popover } from 'react-bootstrap'
 import { DossierRecordDisplay } from './DossiersDisplay'
-import InlineMarkdown from 'common/InlineMarkdown'
+import InlineMarkdown from 'common/ui/InlineMarkdown'
 import './DossiersDisplay.sass'
 
 interface GroupedDossiers {

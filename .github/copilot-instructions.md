@@ -23,6 +23,9 @@ Provide project context and coding guidelines that AI should follow when generat
 
 - When running shell commands for project tasks, always use `yarn` instead of `npm`.
 - After any code change, always run `yarn lint` before finalizing work.
+- Treat lint as a hard gate: do not stop after changes until `yarn lint` reports no lint errors.
+- After any code change, always run `yarn tsc` before finalizing work.
+- Treat TypeScript compilation as a hard gate: do not stop after changes until `yarn tsc` reports no errors.
 
 ## File Restore Rules
 
