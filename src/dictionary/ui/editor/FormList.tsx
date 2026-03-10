@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 import React from 'react'
 import { FormGroup } from 'react-bootstrap'
 import _ from 'lodash'
@@ -12,13 +11,28 @@ const defaultForm = {
   homonym: '',
   notes: [],
 }
+
+type DictionaryForm = {
+  lemma?: readonly string[]
+  attested?: boolean
+  homonym?: string
+  notes?: readonly string[]
+}
+
+type Props = {
+  value: readonly unknown[]
+  fields?: string[]
+  onChange: (value: unknown) => void
+  children?: React.ReactNode
+}
+
 export default function FormList({
   value,
   fields,
   onChange,
   children,
-}): JSX.Element {
-  const defaultValue = () => {
+}: Props): JSX.Element {
+  const defaultValue = (): DictionaryForm => {
     const fieldsResult = fields || _.keys(defaultForm)
     return _.pick(defaultForm, fieldsResult)
   }
@@ -31,7 +45,12 @@ export default function FormList({
         noun="form"
         defaultValue={defaultValue}
       >
-        {(form, onChange) => <FormInput onChange={onChange} value={form} />}
+        {(form, onChange) => (
+          <FormInput
+            onChange={onChange as (word: unknown) => void}
+            value={form}
+          />
+        )}
       </List>
     </FormGroup>
   )

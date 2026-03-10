@@ -361,3 +361,16 @@
   - `grep -n "Failed to fetch filtered dossiers\|Failed to fetch dossiers" /tmp/task683-t4-final.log` returned no matches.
 - Outcome:
   - `T4` warning no longer reoccurs in the focused reproduction file after the fix.
+
+### Remove `react/prop-types` disable headers with explicit typing
+
+- Removed `/* eslint-disable react/prop-types */` from:
+  - `src/common/ui/List.tsx`
+  - `src/dictionary/ui/editor/FormList.tsx`
+  - `src/fragmentarium/ui/edition/TransliterationForm.test.tsx`
+- Added explicit TypeScript annotations for component props and callback parameters in those files (including typed mock props in `TransliterationForm.test.tsx`).
+- Kept `List`/`FormList` typings compatible with existing call sites while preserving explicit types and avoiding `any`.
+- Verification:
+  - `yarn lint` -> passed.
+  - `yarn tsc` -> passed.
+  - `grep` search confirms no remaining `/* eslint-disable react/prop-types */` in `src/**/*.{ts,tsx}`.

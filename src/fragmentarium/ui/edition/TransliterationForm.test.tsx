@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 import React from 'react'
 import { fireEvent, render, screen } from '@testing-library/react'
 import { submitFormByTestId } from 'test-support/utils'
@@ -8,14 +7,29 @@ import TransliterationForm from './TransliterationForm'
 import { act } from 'react-dom/test-utils'
 import userEvent from '@testing-library/user-event'
 
+type EditorMockProps = {
+  name: string
+  value: string
+  onChange: (value: string) => void
+  disabled?: boolean
+}
+
 jest.mock('editor/Editor', () => {
-  return function EditorMock({ name, value, onChange, disabled, ...rest }) {
+  return function EditorMock({
+    name,
+    value,
+    onChange,
+    disabled,
+    ...rest
+  }: EditorMockProps & Record<string, unknown>): JSX.Element {
     return (
       <textarea
         aria-label={name}
         value={value}
         disabled={disabled}
-        onChange={(event) => onChange(event.target.value)}
+        onChange={(event: React.ChangeEvent<HTMLTextAreaElement>) =>
+          onChange(event.target.value)
+        }
         {...rest}
       />
     )
