@@ -175,7 +175,6 @@ describe('LemmaActionButton', () => {
         screen.getByText(/Create a new proper noun for/),
       ).toBeInTheDocument()
     })
-
     it('displays divider between menu items', () => {
       renderButton()
       const dropdownToggle = getDropdownToggle()
