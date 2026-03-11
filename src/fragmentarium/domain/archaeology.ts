@@ -1,18 +1,20 @@
 import Reference from 'bibliography/domain/Reference'
-import { Provenances } from 'corpus/domain/provenance'
 import _ from 'lodash'
 
-export const excavationSites = {
-  ..._.omit(Provenances, 'Standard Text'),
+export type SiteKey = string
+export interface ExcavationSite {
+  readonly name: string
+  readonly abbreviation: string
+  readonly parent: string | null
+}
+
+export const excavationSites: Record<string, ExcavationSite> = {
   '': {
     name: '',
     abbreviation: '',
     parent: null,
   },
 }
-
-export type SiteKey = keyof typeof excavationSites
-export type ExcavationSite = (typeof excavationSites)[SiteKey]
 export type BuildingType =
   | 'RESIDENTIAL'
   | 'TEMPLE'

@@ -41,19 +41,8 @@ exports[`Snapshot 1`] = `
               </p>
               <p>
                 Provenance: 
-                Periphery
+                Assyria
               </p>
-              <div
-                class="text-center my-5 withData-spinner"
-              >
-                <span
-                  aria-hidden="true"
-                  aria-label="Spinner"
-                  class="mr-2 spinner-border spinner-border-sm"
-                  role="status"
-                />
-                 Loading...
-              </div>
             </small>
           </div>
           <ul
@@ -5617,19 +5606,8 @@ exports[`Snapshot 1`] = `
               </p>
               <p>
                 Provenance: 
-                ‘Anah
+                Assyria
               </p>
-              <div
-                class="text-center my-5 withData-spinner"
-              >
-                <span
-                  aria-hidden="true"
-                  aria-label="Spinner"
-                  class="mr-2 spinner-border spinner-border-sm"
-                  role="status"
-                />
-                 Loading...
-              </div>
             </small>
           </div>
           <ul

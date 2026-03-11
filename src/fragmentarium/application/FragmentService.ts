@@ -33,6 +33,15 @@ import {
 import { MesopotamianDateDto } from 'fragmentarium/domain/FragmentDtos'
 import { UncertainFragmentAttestation } from 'corpus/domain/uncertainFragmentAttestation'
 import { ApiEntityAnnotationSpan } from 'fragmentarium/ui/text-annotation/EntityType'
+import {
+  ProvenanceRecord,
+  sanitizeProvenanceRecord,
+  sortProvenances,
+} from 'fragmentarium/domain/Provenance'
+import {
+  setProvenanceRecords,
+  upsertProvenanceRecord,
+} from 'corpus/domain/provenance'
 
 export type ThumbnailSize = 'small' | 'medium' | 'large'
 
@@ -81,7 +90,9 @@ export interface FragmentRepository {
     uncertainFragmentAttestations: ReadonlyArray<UncertainFragmentAttestation>
   }>
   fetchGenres(): Bluebird<string[][]>
-  fetchProvenances(): Bluebird<string[][]>
+  fetchProvenances(): Bluebird<readonly ProvenanceRecord[]>
+  fetchProvenance(id: string): Bluebird<ProvenanceRecord>
+  fetchProvenanceChildren(id: string): Bluebird<readonly ProvenanceRecord[]>
   fetchPeriods(): Bluebird<string[]>
   fetchColophonNames(query: string): Bluebird<string[]>
   updateGenres(number: string, genres: Genres): Bluebird<Fragment>
@@ -142,6 +153,23 @@ export interface AnnotationRepository {
 }
 export class FragmentService {
   private readonly referenceInjector: ReferenceInjector
+  private cachedProvenances: readonly ProvenanceRecord[] | null = null
+  private cachedProvenancesRequest: Bluebird<
+    readonly ProvenanceRecord[]
+  > | null = null
+  private readonly cachedProvenanceById = new Map<string, ProvenanceRecord>()
+  private readonly cachedProvenanceByIdRequest = new Map<
+    string,
+    Bluebird<ProvenanceRecord>
+  >()
+  private readonly cachedProvenanceChildrenById = new Map<
+    string,
+    readonly ProvenanceRecord[]
+  >()
+  private readonly cachedProvenanceChildrenByIdRequest = new Map<
+    string,
+    Bluebird<readonly ProvenanceRecord[]>
+  >()
 
   constructor(
     private readonly fragmentRepository: FragmentRepository &
@@ -221,8 +249,94 @@ export class FragmentService {
     return this.fragmentRepository.fetchGenres()
   }
 
-  fetchProvenances(): Bluebird<string[][]> {
-    return this.fragmentRepository.fetchProvenances()
+  fetchProvenances(): Bluebird<readonly ProvenanceRecord[]> {
+    if (this.cachedProvenances) {
+      return Bluebird.resolve(this.cachedProvenances)
+    }
+    if (this.cachedProvenancesRequest) {
+      return this.cachedProvenancesRequest
+    }
+
+    this.cachedProvenancesRequest = this.fragmentRepository
+      .fetchProvenances()
+      .then((provenances) => {
+        const sanitized = provenances.map(sanitizeProvenanceRecord)
+        const sorted = sortProvenances(sanitized)
+        setProvenanceRecords(sorted)
+        this.cachedProvenances = sorted
+        sorted.forEach((provenance) => {
+          this.cachedProvenanceById.set(provenance.id, provenance)
+        })
+        return sorted
+      })
+      .catch((error) => {
+        this.cachedProvenances = null
+        this.cachedProvenanceById.clear()
+        throw error
+      })
+      .finally(() => {
+        this.cachedProvenancesRequest = null
+      })
+
+    return this.cachedProvenancesRequest
+  }
+
+  fetchProvenance(id: string): Bluebird<ProvenanceRecord> {
+    const cachedProvenance = this.cachedProvenanceById.get(id)
+    if (cachedProvenance) {
+      return Bluebird.resolve(cachedProvenance)
+    }
+
+    const cachedRequest = this.cachedProvenanceByIdRequest.get(id)
+    if (cachedRequest) {
+      return cachedRequest
+    }
+
+    const request = this.fragmentRepository
+      .fetchProvenance(id)
+      .then((provenance) => {
+        const sanitized = sanitizeProvenanceRecord(provenance)
+        upsertProvenanceRecord(sanitized)
+        this.cachedProvenanceById.set(id, sanitized)
+        return sanitized
+      })
+      .finally(() => {
+        this.cachedProvenanceByIdRequest.delete(id)
+      })
+
+    this.cachedProvenanceByIdRequest.set(id, request)
+    return request
+  }
+
+  fetchProvenanceChildren(id: string): Bluebird<readonly ProvenanceRecord[]> {
+    const cachedChildren = this.cachedProvenanceChildrenById.get(id)
+    if (cachedChildren) {
+      return Bluebird.resolve(cachedChildren)
+    }
+
+    const cachedRequest = this.cachedProvenanceChildrenByIdRequest.get(id)
+    if (cachedRequest) {
+      return cachedRequest
+    }
+
+    const request = this.fragmentRepository
+      .fetchProvenanceChildren(id)
+      .then((children) => {
+        const sanitized = children.map(sanitizeProvenanceRecord)
+        const sorted = sortProvenances(sanitized)
+        this.cachedProvenanceChildrenById.set(id, sorted)
+        sorted.forEach((provenance) => {
+          upsertProvenanceRecord(provenance)
+          this.cachedProvenanceById.set(provenance.id, provenance)
+        })
+        return sorted
+      })
+      .finally(() => {
+        this.cachedProvenanceChildrenByIdRequest.delete(id)
+      })
+
+    this.cachedProvenanceChildrenByIdRequest.set(id, request)
+    return request
   }
 
   fetchPeriods(): Bluebird<string[]> {

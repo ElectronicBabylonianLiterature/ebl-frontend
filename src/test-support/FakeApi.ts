@@ -87,6 +87,81 @@ export default class FakeApi {
     return this
   }
 
+  expectProvenances(provenances: Dto[]): FakeApi {
+    this.expectations.push(
+      new Expectation({
+        method: 'GET',
+        path: '/provenances',
+        authenticate: false,
+        response: provenances,
+        verify: true,
+      }),
+    )
+    return this
+  }
+
+  allowProvenances(provenances: Dto[]): FakeApi {
+    this.expectations.push(
+      new Expectation({
+        method: 'GET',
+        path: '/provenances',
+        authenticate: false,
+        response: provenances,
+      }),
+    )
+    return this
+  }
+
+  expectProvenance(id: string, provenance: Dto): FakeApi {
+    this.expectations.push(
+      new Expectation({
+        method: 'GET',
+        path: `/provenances/${id}`,
+        authenticate: false,
+        response: provenance,
+        verify: true,
+      }),
+    )
+    return this
+  }
+
+  expectProvenanceChildren(id: string, children: Dto[]): FakeApi {
+    this.expectations.push(
+      new Expectation({
+        method: 'GET',
+        path: `/provenances/${id}/children`,
+        authenticate: false,
+        response: children,
+        verify: true,
+      }),
+    )
+    return this
+  }
+
+  allowProvenance(id: string, provenance: Dto): FakeApi {
+    this.expectations.push(
+      new Expectation({
+        method: 'GET',
+        path: `/provenances/${id}`,
+        authenticate: false,
+        response: provenance,
+      }),
+    )
+    return this
+  }
+
+  allowProvenanceChildren(id: string, children: Dto[]): FakeApi {
+    this.expectations.push(
+      new Expectation({
+        method: 'GET',
+        path: `/provenances/${id}/children`,
+        authenticate: false,
+        response: children,
+      }),
+    )
+    return this
+  }
+
   allowText(text: Dto): FakeApi {
     this.expectations.push(
       new Expectation({

@@ -3,6 +3,7 @@ import withData from 'http/withData'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import { ProvenanceSearchHelp } from 'fragmentarium/ui/SearchHelp'
 import SelectFormGroup from './SelectFromGroup'
+import { ProvenanceRecord } from 'fragmentarium/domain/Provenance'
 
 interface ProvenanceSearchFormGroupProps {
   value: string | null
@@ -14,12 +15,12 @@ interface ProvenanceSearchFormGroupProps {
 const ProvenanceSearchFormGroup = withData<
   ProvenanceSearchFormGroupProps,
   { fragmentService: FragmentService },
-  ReadonlyArray<ReadonlyArray<string>>
+  readonly ProvenanceRecord[]
 >(
   ({ data, value, onChange, placeholder }) => {
     const options = data.map((site) => ({
-      value: site.join(' '),
-      label: site.join(' '),
+      value: site.longName,
+      label: site.longName,
     }))
 
     return (

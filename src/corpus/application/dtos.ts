@@ -27,7 +27,7 @@ import {
 } from 'corpus/domain/manuscript'
 import { ReferenceDto } from 'bibliography/domain/referenceDto'
 import { PeriodModifiers, Periods } from 'common/period'
-import { Provenances } from 'corpus/domain/provenance'
+import { getProvenanceByName } from 'corpus/domain/provenance'
 import SiglumAndTransliteration from 'corpus/domain/SiglumAndTransliteration'
 import {
   ChapterListing,
@@ -153,7 +153,7 @@ export function fromManuscriptDto(manuscriptDto): Manuscript {
     manuscriptDto.accession,
     PeriodModifiers[manuscriptDto.periodModifier],
     Periods[manuscriptDto.period],
-    Provenances[manuscriptDto.provenance],
+    getProvenanceByName(manuscriptDto.provenance),
     ManuscriptTypes[manuscriptDto.type],
     manuscriptDto.notes,
     manuscriptDto.colophon,
@@ -215,7 +215,7 @@ export function fromMatchingLineDto(lineDto): ChapterInfoLine {
 
 function fromManuscriptLineDisplay(manuscript): ManuscriptLineDisplay {
   return new ManuscriptLineDisplay(
-    Provenances[manuscript.provenance],
+    getProvenanceByName(manuscript.provenance),
     PeriodModifiers[manuscript.periodModifier],
     Periods[manuscript.period],
     ManuscriptTypes[manuscript.type],

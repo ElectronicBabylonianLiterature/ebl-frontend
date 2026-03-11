@@ -1,7 +1,10 @@
 import { findspotFactory } from 'test-support/fragment-data-fixtures'
 import { ApiFindspotRepository } from './FindspotRepository'
 import { testDelegation, TestData } from 'test-support/utils'
-import { toFindspotDto } from 'fragmentarium/domain/archaeologyDtos'
+import {
+  fromFindspotDto,
+  toFindspotDto,
+} from 'fragmentarium/domain/archaeologyDtos'
 
 const apiClient = {
   fetchJson: jest.fn(),
@@ -9,7 +12,9 @@ const apiClient = {
   fetchBlob: jest.fn(),
 }
 const findspotRepository = new ApiFindspotRepository(apiClient)
-const expectedFindspots = findspotFactory.buildList(3)
+const expectedFindspots = findspotFactory
+  .buildList(3)
+  .map((findspot) => fromFindspotDto(toFindspotDto(findspot)))
 
 const testData: TestData<ApiFindspotRepository>[] = [
   new TestData(
