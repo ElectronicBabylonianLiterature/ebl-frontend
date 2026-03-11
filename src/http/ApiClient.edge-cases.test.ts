@@ -230,6 +230,17 @@ describe('ApiClient - Edge Cases and Error Handling', () => {
       await expect(apiClient.postJson(path, {})).resolves.toBeNull()
     })
 
+    test('201 Created returns parsed JSON when body is present', async () => {
+      const createdPayload = { _id: 'Artax I', lemma: ['Artax'], pos: ['ON'] }
+      fetchMock.mockResponseOnce(JSON.stringify(createdPayload), {
+        status: 201,
+      })
+
+      await expect(apiClient.postJson(path, {})).resolves.toEqual(
+        createdPayload,
+      )
+    })
+
     test('204 No Content returns null', async () => {
       fetchMock.mockResponseOnce('', { status: 204 })
 
