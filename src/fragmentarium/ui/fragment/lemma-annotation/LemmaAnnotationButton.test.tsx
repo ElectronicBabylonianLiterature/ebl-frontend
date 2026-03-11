@@ -118,8 +118,7 @@ describe('LemmaActionButton', () => {
       expect(screen.getByText(/Reset all instances of/)).toBeInTheDocument()
     })
 
-    it('displays "Create a new proper noun" menu item when token is dirty', () => {
-      token.updateLemmas(dirtyLemmas)
+    it('displays "Create a new proper noun" menu item for empty unannotated token with scope', () => {
       renderButton()
 
       const dropdownToggle = getDropdownToggle()
@@ -142,7 +141,19 @@ describe('LemmaActionButton', () => {
       ).not.toBeInTheDocument()
     })
 
-    it('does not display "Create a new proper noun" menu item when token is not dirty', () => {
+    it('displays "Create a new proper noun" menu item for empty token (not dirty)', () => {
+      renderButton()
+
+      const dropdownToggle = getDropdownToggle()
+      fireEvent.click(dropdownToggle)
+
+      expect(
+        screen.getByText(/Create a new proper noun for/),
+      ).toBeInTheDocument()
+    })
+
+    it('does not display "Create a new proper noun" menu item for annotated clean token', () => {
+      token = new EditableToken(kurToken, 0, 0, 0, dirtyLemmas)
       renderButton()
 
       const dropdownToggle = getDropdownToggle()
@@ -151,6 +162,18 @@ describe('LemmaActionButton', () => {
       expect(
         screen.queryByText(/Create a new proper noun for/),
       ).not.toBeInTheDocument()
+    })
+
+    it('displays "Create a new proper noun" menu item when token is dirty', () => {
+      token.updateLemmas(dirtyLemmas)
+      renderButton()
+
+      const dropdownToggle = getDropdownToggle()
+      fireEvent.click(dropdownToggle)
+
+      expect(
+        screen.getByText(/Create a new proper noun for/),
+      ).toBeInTheDocument()
     })
 
     it('displays divider between menu items', () => {
@@ -208,7 +231,6 @@ describe('LemmaActionButton', () => {
     })
 
     it('calls onCreateProperNoun when "Create a new proper noun" is clicked', () => {
-      token.updateLemmas(dirtyLemmas)
       renderButton()
 
       const dropdownToggle = getDropdownToggle()
@@ -287,7 +309,6 @@ describe('LemmaActionButton', () => {
     })
 
     it('calls onMouseEnter on "Create proper noun" hover when visible', () => {
-      token.updateLemmas(dirtyLemmas)
       renderButton()
 
       const dropdownToggle = getDropdownToggle()
@@ -300,7 +321,6 @@ describe('LemmaActionButton', () => {
     })
 
     it('calls onMouseLeave on "Create proper noun" hover leave when visible', () => {
-      token.updateLemmas(dirtyLemmas)
       renderButton()
 
       const dropdownToggle = getDropdownToggle()
