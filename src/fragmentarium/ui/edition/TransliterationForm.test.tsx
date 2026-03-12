@@ -202,3 +202,59 @@ it('clears error after successful save', async () => {
   await screen.findByDisplayValue('saved transliteration')
   await waitFor(() => expect(editorError).toBeNull())
 })
+
+it('does not set an error for a cancellation error', async () => {
+  const cancellationError = Object.assign(new Error('cancelled'), {
+    name: 'CancellationError',
+  })
+
+  updateEdition = jest.fn()
+  updateEdition.mockReturnValue(Promise.reject(cancellationError))
+
+  render(
+    <TransliterationForm
+      transliteration={transliteration}
+      notes={notes}
+      introduction={introduction}
+      updateEdition={updateEdition}
+    />,
+  )
+
+  submitFormByTestId(screen, 'transliteration-form')
+
+  await waitFor(() => expect(updateEdition).toHaveBeenCalledWith({}))
+  await waitFor(() => expect(editorError).toBeNull())
+})
+
+it('does not set an error when the promise reports cancellation', async () => {
+  const requestError = new Error('request failed')
+  const cancelledPromise = {
+    then: jest.fn(),
+    catch: jest.fn(),
+    isCancelled: jest.fn(() => true),
+    cancel: jest.fn(),
+  }
+  cancelledPromise.then.mockReturnValue(cancelledPromise)
+  cancelledPromise.catch.mockImplementation((onRejected) => {
+    queueMicrotask(() => onRejected(requestError))
+    return cancelledPromise
+  })
+
+  updateEdition = jest.fn()
+  updateEdition.mockReturnValue(cancelledPromise as unknown as Promise<never>)
+
+  render(
+    <TransliterationForm
+      transliteration={transliteration}
+      notes={notes}
+      introduction={introduction}
+      updateEdition={updateEdition}
+    />,
+  )
+
+  submitFormByTestId(screen, 'transliteration-form')
+
+  await waitFor(() => expect(updateEdition).toHaveBeenCalledWith({}))
+  await waitFor(() => expect(cancelledPromise.isCancelled).toHaveBeenCalled())
+  await waitFor(() => expect(editorError).toBeNull())
+})

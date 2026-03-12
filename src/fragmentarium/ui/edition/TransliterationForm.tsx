@@ -185,10 +185,11 @@ const TransliterationForm: React.FC<Props> = ({
         }))
       })
       .catch((error) => {
-        const p = promise as { isCancelled?: () => boolean }
         const isCancellationError =
-          (error as { name?: string } | null)?.name === 'CancellationError' ||
-          (typeof p.isCancelled === 'function' && p.isCancelled())
+          (error as { name?: string })?.name === 'CancellationError' ||
+          (typeof (promise as { isCancelled?: () => boolean })?.isCancelled ===
+            'function' &&
+            (promise as { isCancelled: () => boolean }).isCancelled())
         if (isCancellationError) {
           return
         }
