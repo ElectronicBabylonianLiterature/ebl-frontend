@@ -45,13 +45,11 @@ function commonTests(renderHeader: () => Promise<void>): void {
   })
 
   test.each([
-    ['Signs', '/signs'],
-    ['Dictionary', '/dictionary'],
     ['Library', '/library'],
     ['Bibliography', '/bibliography'],
-    ['Corpus', '/corpus'],
     ['About', '/about'],
     ['Tools', '/tools'],
+    ['Projects', '/projects'],
   ])('%s links to %s', async (title, href) => {
     await renderHeader()
     expect(screen.getByText(title)).toHaveAttribute('href', href)
@@ -81,13 +79,11 @@ describe('Correct element is active based on the route', () => {
 
 function expectHeaderLabelNotActive(activeLabel: string): void {
   const allHeaderLabels = [
-    'Signs',
     'Library',
     'Bibliography',
-    'Dictionary',
-    'Corpus',
     'About',
     'Tools',
+    'Projects',
   ]
   allHeaderLabels
     .filter((label) => label !== activeLabel)

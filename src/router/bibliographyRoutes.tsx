@@ -1,5 +1,6 @@
 import React, { ReactNode } from 'react'
-import { Redirect, Route } from 'react-router-dom'
+import { Redirect, Route } from 'router/compat'
+import Bibliography from 'bibliography/ui/Bibliography'
 import BibliographyEditor from 'bibliography/ui/BibliographyEditor'
 import BibliographyViewer from 'bibliography/ui/BibliographyViewer'
 import BibliographyService from 'bibliography/application/BibliographyService'
@@ -23,6 +24,51 @@ export default function BibliographyRoutes({
   bibliographySlugs?: BibliographySlugs
 }): JSX.Element[] {
   return [
+    <Route
+      key="BibliographyReferencesSearch"
+      path="/bibliography/references"
+      exact
+      render={(props): ReactNode => (
+        <HeadTagsService
+          title="Bibliography References: eBL"
+          description="Bibliography references search in the electronic Babylonian Library (eBL)."
+        >
+          <Bibliography
+            bibliographyService={bibliographyService}
+            afoRegisterService={afoRegisterService}
+            fragmentService={fragmentService}
+            {...props}
+            activeTab={'references'}
+          />
+        </HeadTagsService>
+      )}
+      {...(sitemap && sitemapDefaults)}
+    />,
+    <Route
+      key="BibliographyAfoRegisterSearch"
+      path="/bibliography/afo-register"
+      exact
+      render={(props): ReactNode => (
+        <HeadTagsService
+          title="Bibliography AfO-Register: eBL"
+          description="AfO-Register search in the electronic Babylonian Library (eBL)."
+        >
+          <Bibliography
+            bibliographyService={bibliographyService}
+            afoRegisterService={afoRegisterService}
+            fragmentService={fragmentService}
+            {...props}
+            activeTab={'afo-register'}
+          />
+        </HeadTagsService>
+      )}
+      {...(sitemap && sitemapDefaults)}
+    />,
+    <Redirect
+      from="/bibliography"
+      to="/bibliography/afo-register"
+      key="bibliography-root-redirect"
+    />,
     <Route
       key="BibliographyEditorNew"
       path="/bibliography/references/new-reference"
@@ -87,21 +133,10 @@ export default function BibliographyRoutes({
       to="/tools/bibliography"
       key="bibliography-afo-redirect"
     />,
-    <Redirect
-      from="/bibliography"
-      to="/bibliography/afo-register"
-      key="bibliography-root-redirect"
-    />,
     <Route
       key="BibliographyNotFound"
       path="/bibliography/*"
       render={(): ReactNode => <NotFoundPage />}
-    />,
-    <Redirect
-      from="/bibliography"
-      to="/tools/bibliography"
-      key="bibliography-root-redirect"
-      strict={true}
     />,
   ]
 }

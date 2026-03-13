@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react'
-import { Route, Redirect } from 'react-router-dom'
+import { Route, Redirect } from 'router/compat'
 import Library from 'library/ui/Library'
 import Signs from 'signs/ui/search/Signs'
 import SignDisplay from 'signs/ui/display/SignDisplay'
@@ -74,7 +74,7 @@ export default function LibraryRoutes({
             <SignDisplay
               signService={signService}
               wordService={wordService}
-              id={decodeURIComponent(match.params.id)}
+              id={decodeURIComponent(match.params.id ?? '')}
             />
           </HeadTagsService>
         </Library>
@@ -110,7 +110,7 @@ export default function LibraryRoutes({
         <Library>
           <WordEditor
             wordService={wordService}
-            id={decodeURIComponent(match.params.id)}
+            id={decodeURIComponent(match.params.id ?? '')}
           />
         </Library>
       )}
@@ -130,7 +130,7 @@ export default function LibraryRoutes({
               wordService={wordService}
               fragmentService={fragmentService}
               signService={signService}
-              wordId={decodeURIComponent(match.params.id)}
+              wordId={decodeURIComponent(match.params.id ?? '')}
             />
           </HeadTagsService>
         </Library>

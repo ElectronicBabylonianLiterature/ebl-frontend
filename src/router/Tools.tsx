@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Container, Row, Col, Nav } from 'react-bootstrap'
-import { useHistory, useLocation } from 'react-router-dom'
+import { useLocation } from 'react-router-dom'
 import { TextCrumb } from 'common/Breadcrumbs'
 import _ from 'lodash'
 import Breadcrumbs from 'common/Breadcrumbs'
@@ -19,7 +19,7 @@ import WordService from 'dictionary/application/WordService'
 import BibliographyService from 'bibliography/application/BibliographyService'
 import AfoRegisterService from 'afo-register/application/AfoRegisterService'
 import FragmentService from 'fragmentarium/application/FragmentService'
-import { RouteComponentProps } from 'react-router-dom'
+import { useHistory } from 'router/compat'
 
 export const tabIds = [
   'signs',
@@ -29,7 +29,24 @@ export const tabIds = [
   'list-of-kings',
   'cuneiform-converter',
 ] as const
-export type TabId = typeof tabIds[number]
+export type TabId = (typeof tabIds)[number]
+
+type ContentLocation = {
+  hash: string
+  pathname: string
+  search: string
+}
+
+type ContentHistory = {
+  push: (to: string) => void
+}
+
+type ContentMatch = {
+  params: Record<string, string>
+  isExact: boolean
+  path: string
+  url: string
+}
 
 const tabConfig = [
   { id: 'signs', title: 'Signs', icon: '𒀀' },
@@ -92,11 +109,11 @@ function getContent({
   bibliographyService: BibliographyService
   afoRegisterService: AfoRegisterService
   fragmentService: FragmentService
-  history: RouteComponentProps['history']
-  location: RouteComponentProps['location']
-  match: RouteComponentProps['match']
+  history: ContentHistory
+  location: ContentLocation
+  match: ContentMatch
 }): React.ReactElement {
-  const routeProps = { location, match, history } as RouteComponentProps
+  const routeProps = { location, match, history }
 
   if (!activeTab) {
     return <ToolsIntroduction markupService={markupService} />

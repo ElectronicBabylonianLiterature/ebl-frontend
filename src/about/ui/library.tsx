@@ -11,7 +11,7 @@ import kerslakebm from 'about/ui/static/kerslakebm.jpg'
 import { folios } from 'about/ui/folios'
 
 export default function AboutLibrary(
-  markupService: MarkupService
+  markupService: MarkupService,
 ): JSX.Element {
   function MarkupParagraph({ text }: { text: string }): JSX.Element {
     return <Markup markupService={markupService} text={text} />

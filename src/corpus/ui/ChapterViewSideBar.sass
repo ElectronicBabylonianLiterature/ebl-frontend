@@ -1,33 +1,60 @@
 .settings
-    margin-top: 6em
+  margin-top: 4rem
+  background: linear-gradient(180deg, #0d1b2e 0%, #0f2240 100%)
+  border-radius: 0.5rem
+  padding: 1.25rem 1.5rem
+  border: 1px solid rgba(255, 255, 255, 0.08)
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3)
+  color: rgba(200, 220, 245, 0.9)
 
-    &__heading,
-    &__footer
-        text-align: right
-        font-size: 1.1em
-        cursor: pointer
-    
-    &__section
-        margin-bottom: 2.5em
-        padding-left: 2.5em
+  &__heading,
+  &__footer
+    text-align: right
+    font-size: 0.9rem
+    cursor: pointer
+    color: #64b5f6
+    font-weight: 600
+    letter-spacing: 0.03em
 
-    &__subheading
-        font-size: 1.2em
+    &:hover
+      color: #90caf9
 
-    &__switch
-        margin-left: 1em
+  &__section
+    margin-bottom: 2rem
+    padding-left: 1.25rem
+    border-left: 2px solid rgba(66, 170, 255, 0.2)
 
-    &__languages
-        list-style: none
-        margin: 0
-        padding: 0
+  &__subheading
+    font-size: 0.8rem
+    font-weight: 700
+    text-transform: uppercase
+    letter-spacing: 0.06em
+    color: rgba(160, 200, 240, 0.7)
+    margin-bottom: 0.5rem
 
-    &__language
-        &--active
-            text-decoration: underline
+  &__switch
+    margin-left: 1em
 
-        cursor: pointer
-        margin-left: 1em
+  &__languages
+    list-style: none
+    margin: 0
+    padding: 0
 
-    &__translators
-        font-size: 80%
+  &__language
+    cursor: pointer
+    margin-left: 1em
+    color: rgba(190, 215, 245, 0.65)
+    font-size: 0.875rem
+    transition: color 0.15s ease
+
+    &:hover
+      color: rgba(200, 225, 255, 0.95)
+
+    &--active
+      text-decoration: none
+      color: #64b5f6
+      font-weight: 600
+
+  &__translators
+    font-size: 80%
+    color: rgba(160, 190, 220, 0.6)

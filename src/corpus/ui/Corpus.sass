@@ -1,0 +1,134 @@
+.Corpus
+  &__tabs
+    .nav-tabs
+      border-bottom: 2px solid rgba(13, 27, 46, 0.12)
+      gap: 0.25rem
+      margin-bottom: 1.5rem
+
+      .nav-item
+        .nav-link
+          color: #435570
+          font-weight: 600
+          font-size: 0.875rem
+          letter-spacing: 0.03em
+          padding: 0.55rem 1.1rem
+          border: 1px solid transparent
+          border-bottom: none
+          border-radius: 8px 8px 0 0
+          transition: color 0.2s ease, background-color 0.2s ease
+          background-color: transparent
+
+          &:hover
+            color: #0f2240
+            background-color: rgba(33, 150, 243, 0.06)
+            border-color: rgba(33, 150, 243, 0.15)
+
+          &.active
+            color: #0f2240
+            background: #ffffff
+            border-color: rgba(13, 27, 46, 0.12)
+            border-bottom-color: #ffffff
+            box-shadow: 0 -2px 0 0 #2196f3
+
+  &__text-list
+    list-style: none
+    padding: 0
+    margin: 0
+
+    li
+      padding: 0.35rem 0
+      border-bottom: 1px solid rgba(0, 0, 0, 0.04)
+      font-size: 0.9rem
+
+      a
+        color: #1976d2
+        text-decoration: none
+        transition: color 0.15s ease
+
+        &:hover
+          color: #0d5fbc
+          text-decoration: underline
+
+  h3
+    font-size: 1rem
+    font-weight: 700
+    color: #0f2240
+    margin: 1.5rem 0 0.75rem
+    padding-bottom: 0.4rem
+    border-bottom: 2px solid rgba(33, 150, 243, 0.2)
+    letter-spacing: 0.01em
+
+.corpus-search-result
+  &__count
+    font-size: 0.85rem
+    color: #6c757d
+    padding: 0.5rem 0 1.25rem
+    text-align: center
+
+  &__chapter
+    border: 1px solid rgba(0, 0, 0, 0.08)
+    border-radius: 8px
+    padding: 1.25rem 1.5rem
+    margin-bottom: 1.25rem
+    background: #ffffff
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05)
+    transition: box-shadow 0.2s ease
+
+    &:hover
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1)
+
+  &__genre-link
+    font-size: 0.8rem
+    color: #1976d2
+    text-decoration: none
+    font-weight: 500
+
+    &:hover
+      color: #0d5fbc
+
+hr
+  border-color: rgba(0, 0, 0, 0.07)
+  margin: 1.5rem 0
+
+[data-theme="dark"]
+  .Corpus
+    &__tabs
+      .nav-tabs
+        border-bottom-color: rgba(255, 255, 255, 0.1)
+
+        .nav-item .nav-link
+          color: rgba(190, 215, 245, 0.6)
+
+          &:hover
+            color: rgba(200, 225, 255, 0.9)
+            background-color: rgba(66, 170, 255, 0.08)
+            border-color: rgba(66, 170, 255, 0.15)
+
+          &.active
+            color: #90caf9
+            background: var(--bg-secondary, #2d2d2d)
+            border-color: rgba(255, 255, 255, 0.1)
+            border-bottom-color: var(--bg-secondary, #2d2d2d)
+            box-shadow: 0 -2px 0 0 #42aaff
+
+    &__text-list li
+      border-bottom-color: rgba(255, 255, 255, 0.05)
+
+      a
+        color: #64b5f6
+
+        &:hover
+          color: #90caf9
+
+    h3
+      color: #90caf9
+      border-bottom-color: rgba(66, 170, 255, 0.25)
+
+  .corpus-search-result
+    &__chapter
+      background: var(--bg-secondary, #2d2d2d)
+      border-color: rgba(255, 255, 255, 0.08)
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3)
+
+      &:hover
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4)

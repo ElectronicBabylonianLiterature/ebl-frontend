@@ -1,0 +1,9 @@
+.BlobImage__thumbnail {
+  width: 72px !important;
+  min-width: 72px !important;
+  max-width: 72px !important;
+  height: 48px !important;
+  max-height: 48px !important;
+  object-fit: cover;
+  display: block;
+}

@@ -17,10 +17,12 @@ export default function Dictionary({
   wordService,
 }: {
   wordService: WordService
-} & RouteComponentProps): JSX.Element {
-  const query = useMemo(() => parse(location.search, { arrayFormat: 'none' }), [
-    location.search,
-  ])
+}): JSX.Element {
+  const location = useLocation()
+  const query = useMemo(
+    () => parse(location.search, { arrayFormat: 'none' }),
+    [location.search],
+  )
 
   return (
     <AppContent crumbs={[new SectionCrumb('Dictionary')]}>

@@ -1,64 +1,65 @@
 .info-banner
-  background: linear-gradient(135deg, rgba(0, 119, 190, 0.05) 0%, rgba(0, 119, 190, 0.08) 100%)
-  border-left: 4px solid var(--bs-primary, #0077be)
-  border-radius: 0.375rem
+  background: linear-gradient(135deg, rgba(13, 27, 46, 0.04) 0%, rgba(15, 34, 64, 0.07) 100%)
+  border-left: 3px solid #2196f3
+  border-radius: 0 0.375rem 0.375rem 0
   margin-bottom: 2rem
   padding: 1.25rem 1.5rem
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04)
-  transition: box-shadow 0.3s ease
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06)
+  transition: box-shadow 0.2s ease
   border-right: none
   border-top: none
   border-bottom: none
 
   &:hover
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08)
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1)
 
   &__content
     margin: 0
 
   &__title
-    font-size: 1.1rem
-    font-weight: 600
-    color: var(--bs-primary, #0077be)
-    margin-bottom: 0.5rem
+    font-size: 1rem
+    font-weight: 700
+    color: #0f2240
+    margin-bottom: 0.4rem
     margin-top: 0
+    letter-spacing: 0.01em
 
   &__description
-    font-size: 0.95rem
-    line-height: 1.6
-    color: var(--bs-body-color, #333)
-    margin-bottom: 0.75rem
+    font-size: 0.9rem
+    line-height: 1.65
+    color: #435570
+    margin-bottom: 0.6rem
 
   &__link
-    color: var(--bs-primary, #0077be)
+    color: #1976d2
     text-decoration: none
-    font-weight: 500
-    font-size: 0.9rem
+    font-weight: 600
+    font-size: 0.875rem
     display: inline-flex
     align-items: center
     transition: color 0.2s ease
 
     &:hover
-      color: #005a8f
-      text-decoration: underline
+      color: #0d5fbc
+      text-decoration: none
 
 [data-theme="dark"]
   .info-banner
-    background: linear-gradient(135deg, rgba(51, 153, 204, 0.1) 0%, rgba(51, 153, 204, 0.15) 100%)
-    border-left-color: var(--bs-primary, #3399cc)
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2)
+    background: linear-gradient(135deg, rgba(33, 150, 243, 0.06) 0%, rgba(25, 118, 210, 0.1) 100%)
+    border-left-color: #42aaff
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3)
 
     &:hover
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3)
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4)
 
     &__title
-      color: var(--bs-primary, #3399cc)
+      color: #90caf9
 
     &__description
-      color: var(--bs-body-color, #e0e0e0)
+      color: rgba(200, 220, 245, 0.75)
 
     &__link
-      color: var(--bs-primary, #3399cc)
+      color: #64b5f6
 
       &:hover
-        color: #66b3e0
+        color: #90caf9

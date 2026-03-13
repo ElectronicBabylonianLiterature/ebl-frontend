@@ -42,9 +42,9 @@ describe('Searching for word', () => {
     const view = render(
       <MemoryRouter initialEntries={[path]}>
         <SessionContext.Provider value={session}>
-          <SignsWithRouter signService={signService} />
+          <Signs signService={signService} />
         </SessionContext.Provider>
-      </MemoryRouter>
+      </MemoryRouter>,
     )
 
     await screen.findAllByText('Signs')
@@ -53,9 +53,9 @@ describe('Searching for word', () => {
     view.rerender(
       <MemoryRouter initialEntries={[path]}>
         <SessionContext.Provider value={session}>
-          <SignsWithRouter signService={signService} />
+          <Signs signService={signService} />
         </SessionContext.Provider>
-      </MemoryRouter>
+      </MemoryRouter>,
     )
 
     expect(signService.search.mock.calls.length).toBe(callsAfterInitialRender)

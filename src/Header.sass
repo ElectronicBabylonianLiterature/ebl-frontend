@@ -1,167 +1,191 @@
 @import src/fonts
 
 .Header
-  padding: 0
+  background: linear-gradient(160deg, #0d1b2e 0%, #0f2240 60%, #0d1b2e 100%)
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07)
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3)
+  position: sticky
+  top: 0
+  z-index: 1000
 
-  &__partner-strip
-    background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%)
-    border-bottom: 1px solid rgba(0, 119, 190, 0.1)
-    padding: 0.75rem 0
-    transition: all 0.3s ease
+  .navbar
+    padding: 0.85rem 0
 
-    &:hover
-      background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%)
-      border-bottom-color: rgba(0, 119, 190, 0.2)
+  &__toggle
+    border-color: rgba(255, 255, 255, 0.2)
+    padding: 0.35rem 0.55rem
 
-  &__partner-strip-content
+    .navbar-toggler-icon
+      filter: invert(1) opacity(0.8)
+
+  &__title
+    font-size: 1em
+    display: flex
+    flex-direction: row
+    align-items: center
+    gap: 0.65rem
+    margin: 0
+    line-height: 1
+
+    &-abbreviation
+      color: #ffffff
+      font-size: 2.5em
+      padding: 0.1em 0.22em
+      background: linear-gradient(145deg, #2196f3 0%, #0d5fbc 100%)
+      border-radius: 10px
+      letter-spacing: -0.01em
+      flex-shrink: 0
+      font-weight: 700
+
+      &__caps
+        font-variant-caps: all-small-caps
+
+    &-main
+      display: flex
+      flex-direction: column
+      gap: 0
+      text-align: left
+
+      &__line
+        display: block
+        color: rgba(200, 220, 245, 0.85)
+        font-size: 0.72rem
+        font-weight: 400
+        letter-spacing: 0.04em
+        line-height: 1.45
+        white-space: nowrap
+
+      &__caps
+        font-variant-caps: all-small-caps
+
+  &__nav
+    display: flex
+    flex-direction: row
+    flex-wrap: nowrap
+    align-items: center
+    gap: 0.1rem
+
+    .nav-item
+      .nav-link
+        color: rgba(190, 215, 245, 0.72) !important
+        font-weight: 500
+        font-size: 0.875rem
+        letter-spacing: 0.04em
+        padding: 0.45rem 1rem
+        border-radius: 6px
+        transition: color 0.2s ease, background-color 0.2s ease
+        position: relative
+        white-space: nowrap
+        text-decoration: none
+
+        &::after
+          content: ''
+          position: absolute
+          bottom: 3px
+          left: 50%
+          transform: translateX(-50%) scaleX(0)
+          width: 40%
+          height: 2px
+          background: linear-gradient(90deg, #42aaff, #1976d2)
+          border-radius: 2px
+          transition: transform 0.2s ease
+
+        &:hover
+          color: rgba(255, 255, 255, 0.95) !important
+          background-color: rgba(66, 170, 255, 0.1)
+          text-decoration: none
+
+          &::after
+            transform: translateX(-50%) scaleX(1)
+
+        &.active
+          color: #64b5f6 !important
+          background-color: rgba(66, 170, 255, 0.12)
+
+          &::after
+            transform: translateX(-50%) scaleX(1)
+
+  &__right
     display: flex
     align-items: center
-    justify-content: flex-end
-    gap: 1.25rem
-
-  &__partner-label
-    font-size: 0.75rem
-    font-weight: 500
-    color: #6c757d
-    text-transform: uppercase
-    letter-spacing: 0.5px
+    gap: 1rem
+    flex-shrink: 0
 
   &__partner-logos
     display: flex
     align-items: center
-    gap: 1.25rem
+    gap: 0.7rem
+    padding: 0.45rem 1rem
+    background: rgba(255, 255, 255, 0.07)
+    border: 1px solid rgba(255, 255, 255, 0.12)
+    border-radius: 10px
+    backdrop-filter: blur(6px)
 
   &__partner-logo-link
     display: flex
     align-items: center
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1)
-    position: relative
+    opacity: 0.8
+    transition: opacity 0.2s ease, transform 0.2s ease
     text-decoration: none
 
-    &::after
-      content: ''
-      position: absolute
-      bottom: -4px
-      left: 50%
-      transform: translateX(-50%) scaleX(0)
-      width: 100%
-      height: 2px
-      background: linear-gradient(90deg, #0077be, #005a8f)
-      border-radius: 2px
-      transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)
-
     &:hover
-      transform: translateY(-2px)
+      opacity: 1
+      transform: translateY(-1px)
       text-decoration: none
 
-      &::after
-        transform: translateX(-50%) scaleX(1)
-
-      .Header__partner-logo-img
-        filter: brightness(1.1) contrast(1.05)
-
-  &__partner-logo-img
-    height: 2rem
+  &__lmu-logo
+    height: 1.75rem
     width: auto
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1)
-    filter: brightness(1) contrast(1)
+    filter: brightness(0) invert(1)
 
-  &__partner-divider
+  &__badw-logo
+    height: 1.75rem
+    width: auto
+    filter: brightness(0) invert(1)
+
+  &__logo-divider
+    display: inline-block
     width: 1px
     height: 1.5rem
-    background: linear-gradient(180deg, transparent 0%, rgba(0, 119, 190, 0.3) 50%, transparent 100%)
+    background: rgba(255, 255, 255, 0.2)
+    flex-shrink: 0
 
-  .navbar
-    padding: 1.5rem 0
-
-  &__logo-container
-    display: flex
-    flex-direction: row
-    align-items: center
-    gap: 0.9em
-    text-align: center
-    min-width: 100px
-
-  &__title
-    font-size: 1.1em
+  &__user
     display: flex
     align-items: center
 
-    &-main
-      display: inline-block
-      margin-right: 0.6em
-      text-align: right
-      vertical-align: middle
-      line-height: 1.3
-
-      &__caps
-        font-variant-caps: all-small-caps
-        font-size: 1em
-
-    &-abbreviation
-      color: white
-      font-size: 3.2em
-      padding: 0.05em 0.15em
-      background-color: #0077be
-      vertical-align: middle
-      margin-right: 0.2em
-      border-radius: 4px
-
-      &__caps
-        font-variant-caps: all-small-caps
-        font-size: 1em
-
-#navbar-container
-  width: 100%
-
-#main-nav
-  gap: 1.5rem
-  margin-left: 3rem
-
-  .nav-item
-    .nav-link
-      padding: 0.5rem 0
-      font-weight: 500
-      font-size: 1rem
-      transition: all 0.2s ease
-
-      &:hover
-        color: #0077be
-
-@media (max-width: 992px)
-  #main-nav
-    gap: 1rem
-    margin-left: 1.5rem
-
-@media (max-width: 768px)
+@media (max-width: 991px)
   .Header
-    &__partner-strip
+    &__nav
+      flex-direction: column
+      align-items: flex-start
       padding: 0.5rem 0
+      gap: 0.15rem
 
-    &__partner-strip-content
-      justify-content: center
+      .nav-item
+        width: 100%
+
+        .nav-link
+          padding: 0.55rem 0.75rem
+          font-size: 0.9rem
+          border-radius: 6px
+
+          &::after
+            display: none
+
+    &__right
+      flex-direction: row
+      flex-wrap: wrap
+      padding: 0.75rem 0
       gap: 0.75rem
+      border-top: 1px solid rgba(255, 255, 255, 0.07)
+      width: 100%
 
-    &__partner-label
-      display: none
-
+@media (max-width: 575px)
+  .Header
     &__partner-logos
-      gap: 1rem
-
-    &__partner-logo-img
-      height: 1.5rem
-
-    &__partner-divider
-      height: 1.25rem
-
-    .navbar
-      padding: 1rem 0
-
-  #main-nav
-    gap: 0.75rem
-    margin-left: 0
-    flex-direction: column
-    align-items: flex-start
+      flex: 1
+      justify-content: center
 
 .Header__info-banner
   padding-left: 0

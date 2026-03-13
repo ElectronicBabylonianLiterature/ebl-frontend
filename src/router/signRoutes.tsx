@@ -1,6 +1,6 @@
 import React, { ReactNode } from 'react'
 import WordService from 'dictionary/application/WordService'
-import { Route, Redirect } from 'react-router-dom'
+import { Route, Redirect } from 'router/compat'
 import SignService from 'signs/application/SignService'
 import SignDisplay from 'signs/ui/display/SignDisplay'
 import { SignSlugs, sitemapDefaults } from 'router/sitemap'

@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import ReactMarkdown from 'react-markdown'
 import { Container } from 'react-bootstrap'
-import { useHistory } from 'react-router-dom'
-import { History } from 'history'
 import AppContent from 'common/AppContent'
 import { TextCrumb } from 'common/Breadcrumbs'
 import NewsletterTimeline from 'about/ui/NewsletterTimeline'
+import { useHistory } from 'router/compat'
 import './news.sass'
 import newsletter20 from 'about/ui/newsletter/020.md'
 import newsletter19 from 'about/ui/newsletter/019.md'
@@ -35,7 +34,6 @@ interface Newsletter {
 }
 
 export const newsletters: readonly Newsletter[] = [
-  { content: newsletter21, date: new Date('02/10/2026'), number: 21 },
   { content: newsletter20, date: new Date('09/10/2025'), number: 20 },
   { content: newsletter19, date: new Date('04/04/2025'), number: 19 },
   { content: newsletter18, date: new Date('01/08/2025'), number: 18 },
@@ -109,12 +107,10 @@ export default function AboutNews({
     window.scrollTo(0, 0)
   }, [])
 
-  useEffect(() => setNewsletterMarkdown(activeNewsletter.content), [
-    activeNewsletter,
-  ])
-  useEffect(() => () =>
-    onHistoryChange({ activeNewsletter, setActiveNewsletter, history })
-  )
+  useEffect(() => {
+    setNewsletterMarkdown(activeNewsletter.content)
+  }, [activeNewsletter])
+
   useEffect(() => {
     onHistoryChange({
       activeNewsletter,

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Container, Row, Col, Nav } from 'react-bootstrap'
-import { useHistory, useLocation } from 'react-router-dom'
+import { useLocation } from 'react-router-dom'
 import { TextCrumb } from 'common/Breadcrumbs'
 import MarkupService from 'markup/application/MarkupService'
 import 'about/ui/about.sass'
@@ -12,6 +12,7 @@ import AboutDictionary from 'about/ui/dictionary'
 import AboutBibliography from 'about/ui/bibliography'
 import _ from 'lodash'
 import Breadcrumbs from 'common/Breadcrumbs'
+import { useHistory } from 'router/compat'
 
 export const tabIds = [
   'project',

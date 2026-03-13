@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react'
-import { Route, Redirect } from 'react-router-dom'
+import { Route, Redirect } from 'router/compat'
 import MarkupService from 'markup/application/MarkupService'
 import { sitemapDefaults } from 'router/sitemap'
 import { HeadTagsService } from 'router/head'

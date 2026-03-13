@@ -29,7 +29,7 @@ export default function Timeline({ items }: TimelineProps): JSX.Element {
       {
         threshold: 0.1,
         rootMargin: '0px 0px -100px 0px',
-      }
+      },
     )
 
     const items = document.querySelectorAll('.timeline-item')

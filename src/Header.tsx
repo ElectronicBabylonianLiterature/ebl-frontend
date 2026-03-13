@@ -1,28 +1,30 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Nav, Navbar, Container } from 'react-bootstrap'
-import { LinkContainer } from 'react-router-bootstrap'
+import { Link } from 'react-router-dom'
 import _ from 'lodash'
 import { useLocation } from 'react-router-dom'
 
 import User from './auth/User'
-import BAdWLogo from './BAdW_Logo.svg'
-import LMULogo from './LMU_Logo.svg'
-
 import './Header.sass'
+import lmuLogo from './LMU_Logo.svg'
+import badwLogo from './BAdW_Logo.svg'
+import ExternalLink from 'common/ExternalLink'
 
 function EblLogo(): JSX.Element {
   return (
     <h1 className="Header__title">
-      <span className="Header__title-main">
-        electronic
-        <br />
-        <span className="Header__title-main__caps">B</span>abylonian
-        <br />
-        <span className="Header__title-main__caps">L</span>ibrary
+      <span className="Header__title-abbreviation">
+        e<span className="Header__title-abbreviation__caps">bl</span>
       </span>
-      <small className="Header__title-abbreviation">
-        e<small className="Header__title-abbreviation__caps">bl</small>
-      </small>
+      <span className="Header__title-main">
+        <span className="Header__title-main__line">electronic</span>
+        <span className="Header__title-main__line">
+          <span className="Header__title-main__caps">B</span>abylonian
+        </span>
+        <span className="Header__title-main__line">
+          <span className="Header__title-main__caps">L</span>ibrary
+        </span>
+      </span>
     </h1>
   )
 }
@@ -45,6 +47,34 @@ export function NavItem({
   )
 }
 
+function PartnerLogos(): JSX.Element {
+  return (
+    <div className="Header__partner-logos">
+      <ExternalLink
+        href="https://www.lmu.de"
+        className="Header__partner-logo-link"
+      >
+        <img
+          className="Header__lmu-logo"
+          src={lmuLogo}
+          alt="Ludwig-Maximilians-Universitat Munchen"
+        />
+      </ExternalLink>
+      <span className="Header__logo-divider" aria-hidden="true" />
+      <ExternalLink
+        href="https://badw.de/"
+        className="Header__partner-logo-link"
+      >
+        <img
+          className="Header__badw-logo"
+          src={badwLogo}
+          alt="Bayerische Akademie der Wissenschaften"
+        />
+      </ExternalLink>
+    </div>
+  )
+}
+
 export default function Header(): JSX.Element {
   const [activeKey, setActiveKey] = useState<string>()
   const id = _.uniqueId('Header-')
@@ -55,43 +85,7 @@ export default function Header(): JSX.Element {
   }, [location.pathname])
   return (
     <header className="Header">
-      <div className="Header__partner-strip">
-        <Container>
-          <div className="Header__partner-strip-content">
-            <span className="Header__partner-label">In partnership with</span>
-            <div className="Header__partner-logos">
-              <a
-                href="https://badw.de/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="Header__partner-logo-link"
-                title="Bayerische Akademie der Wissenschaften"
-              >
-                <img
-                  src={BAdWLogo}
-                  alt="BAdW"
-                  className="Header__partner-logo-img"
-                />
-              </a>
-              <span className="Header__partner-divider"></span>
-              <a
-                href="https://www.lmu.de/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="Header__partner-logo-link"
-                title="Ludwig-Maximilians-Universität München"
-              >
-                <img
-                  src={LMULogo}
-                  alt="LMU"
-                  className="Header__partner-logo-img"
-                />
-              </a>
-            </div>
-          </div>
-        </Container>
-      </div>
-      <Navbar variant="light" expand="md">
+      <Navbar variant="dark" expand="lg">
         <Container>
           <Navbar.Brand
             as={Link}
@@ -99,26 +93,30 @@ export default function Header(): JSX.Element {
             title="electronic Babylonian Library (eBL)"
             onClick={() => setActiveKey('/')}
           >
-            <Navbar.Brand>
-              <EblLogo />
-            </Navbar.Brand>
-          </LinkContainer>
-          <Navbar.Toggle aria-controls={id} />
+            <span className="visually-hidden">
+              electronic Babylonian Library (eBL)
+            </span>
+            <EblLogo />
+          </Navbar.Brand>
+          <Navbar.Toggle aria-controls={id} className="Header__toggle" />
           <Navbar.Collapse id={id}>
             <Nav
               activeKey={activeKey}
               onSelect={(key) => setActiveKey(key ?? undefined)}
-              className="mx-auto"
+              className="Header__nav mx-auto"
             >
-              <NavItem href="/corpus" title="Corpus" />
               <NavItem href="/library" title="Library" />
               <NavItem href="/about" title="About" />
+              <NavItem href="/bibliography" title="Bibliography" />
               <NavItem href="/tools" title="Tools" />
               <NavItem href="/projects" title="Projects" />
             </Nav>
-            <Navbar.Text id="user">
-              <User />
-            </Navbar.Text>
+            <div className="Header__right">
+              <PartnerLogos />
+              <div className="Header__user">
+                <User />
+              </div>
+            </div>
           </Navbar.Collapse>
         </Container>
       </Navbar>

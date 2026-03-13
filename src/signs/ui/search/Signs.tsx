@@ -17,22 +17,23 @@ type Props = {
   signService: SignService
 }
 
-export default function Signs({ location, signService }: Props): JSX.Element {
+export default function Signs({ signService }: Props): JSX.Element {
+  const location = useLocation()
   const query = useMemo(
     () =>
       parse(location.search, {
         parseBooleans: true,
         parseNumbers: true,
       }),
-    [location.search]
+    [location.search],
   )
   const signQuery = useMemo(
     () =>
       _.pickBy(
         { ...query, sign: null },
-        (property) => _.identity(property) || property === ''
+        (property) => _.identity(property) || property === '',
       ),
-    [query]
+    [query],
   )
 
   return (

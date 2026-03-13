@@ -56,9 +56,9 @@ describe('Searching for word', () => {
     const view = render(
       <MemoryRouter initialEntries={[path]}>
         <SessionContext.Provider value={session}>
-          <DictionaryWithRouter wordService={wordService} />
+          <Dictionary wordService={wordService} />
         </SessionContext.Provider>
-      </MemoryRouter>
+      </MemoryRouter>,
     )
 
     await screen.findByText(words[1].meaning)
@@ -67,9 +67,9 @@ describe('Searching for word', () => {
     view.rerender(
       <MemoryRouter initialEntries={[path]}>
         <SessionContext.Provider value={session}>
-          <DictionaryWithRouter wordService={wordService} />
+          <Dictionary wordService={wordService} />
         </SessionContext.Provider>
-      </MemoryRouter>
+      </MemoryRouter>,
     )
 
     expect(wordService.search.mock.calls.length).toBe(callsAfterInitialRender)

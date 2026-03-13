@@ -14,6 +14,7 @@ import { SectionCrumb } from 'common/Breadcrumbs'
 import Promise from 'bluebird'
 import createGenreLink from './createGenreLink'
 import { useHistory } from 'router/compat'
+import './Corpus.sass'
 
 type SelectCallback = (eventKey: string | null) => void
 
@@ -47,7 +48,7 @@ function TextLine({ text }: { text: TextInfo }): JSX.Element {
 }
 
 export function groupTextsByCategory(
-  texts: readonly TextInfo[]
+  texts: readonly TextInfo[],
 ): Record<number, readonly TextInfo[]> {
   return _(texts)
     .groupBy((text) => text.category)
@@ -56,7 +57,7 @@ export function groupTextsByCategory(
 }
 
 export function groupTextsByGenre(
-  texts: readonly TextInfo[]
+  texts: readonly TextInfo[],
 ): Record<string, readonly TextInfo[]> {
   return _.groupBy(texts, (text) => text.genre)
 }
@@ -152,6 +153,8 @@ function Corpus({
   history?: History
 }): JSX.Element {
   const textsByGenre = useMemo(() => groupTextsByGenre(texts), [texts])
+  const routerHistory = useHistory()
+  const activeHistory = history ?? routerHistory
 
   const openTab: SelectCallback = (eventKey: string | null): void => {
     if (eventKey !== null) {
@@ -167,19 +170,21 @@ function Corpus({
         description="The eBL corpus presents the best text reconstructions available, incorporating all previous scholarship and new manuscripts identified by the eBL team. Editions are constantly updated with new discoveries and include comprehensive translations and manuscript references."
         learnMorePath="/about/corpus"
       />
-      <Container fluid>
+      <Container fluid className="Corpus">
         <Row>
           <Col md={6}>
-            <Tabs activeKey={genre} onSelect={openTab} id="CorpusTab">
-              {genres.map(({ genre, name, categories }) => (
-                <Tab eventKey={genre} title={name} key={genre}>
-                  <Texts
-                    texts={textsByGenre[genre] ?? []}
-                    categories={categories}
-                  />
-                </Tab>
-              ))}
-            </Tabs>
+            <div className="Corpus__tabs">
+              <Tabs activeKey={genre} onSelect={openTab} id="CorpusTab">
+                {genres.map(({ genre, name, categories }) => (
+                  <Tab eventKey={genre} title={name} key={genre}>
+                    <Texts
+                      texts={textsByGenre[genre] ?? []}
+                      categories={categories}
+                    />
+                  </Tab>
+                ))}
+              </Tabs>
+            </div>
           </Col>
           <Col md={6}>
             <ApiImage fileName="LibraryCropped.svg" />

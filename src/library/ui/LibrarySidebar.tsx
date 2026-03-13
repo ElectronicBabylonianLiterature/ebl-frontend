@@ -1,6 +1,6 @@
 import React from 'react'
 import { Nav } from 'react-bootstrap'
-import { LinkContainer } from 'react-router-bootstrap'
+import { Link } from 'react-router-dom'
 import './LibrarySidebar.sass'
 
 interface LibrarySidebarProps {
@@ -42,25 +42,24 @@ export default function LibrarySidebar({
 
       <Nav className="flex-column LibrarySidebar__nav">
         {sections.map((section) => (
-          <LinkContainer key={section.key} to={section.path}>
-            <Nav.Link
-              className={`LibrarySidebar__nav-item ${
-                activeSection === section.key ? 'active' : ''
-              }`}
-            >
-              <div className="LibrarySidebar__nav-item-icon">
-                {section.icon}
+          <Nav.Link
+            key={section.key}
+            as={Link}
+            to={section.path}
+            className={`LibrarySidebar__nav-item ${
+              activeSection === section.key ? 'active' : ''
+            }`}
+          >
+            <div className="LibrarySidebar__nav-item-icon">{section.icon}</div>
+            <div className="LibrarySidebar__nav-item-content">
+              <div className="LibrarySidebar__nav-item-title">
+                {section.title}
               </div>
-              <div className="LibrarySidebar__nav-item-content">
-                <div className="LibrarySidebar__nav-item-title">
-                  {section.title}
-                </div>
-                <div className="LibrarySidebar__nav-item-description">
-                  {section.description}
-                </div>
+              <div className="LibrarySidebar__nav-item-description">
+                {section.description}
               </div>
-            </Nav.Link>
-          </LinkContainer>
+            </div>
+          </Nav.Link>
         ))}
       </Nav>
     </div>

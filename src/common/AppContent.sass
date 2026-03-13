@@ -4,6 +4,7 @@
   margin-left: auto
   margin-right: auto
   max-width: 1200px
+  padding-top: 1em
   padding-bottom: 1em
   padding-left: 1.5em
   padding-right: 1.5em
@@ -19,34 +20,61 @@
 
   &__breadcrumbs
     flex: 0 0 100%
-    background-color: #f8f9fa
-    padding: 0.75rem 1rem
-    margin: -1em -1.5em 1.5em -1.5em
-    border-bottom: 2px solid #0077be
+    background: linear-gradient(160deg, #0d1b2e 0%, #0f2240 100%)
+    padding: 0.55rem 1.5rem
+    margin: -1em -1.5em 1.75em -1.5em
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06)
 
     .breadcrumb
       margin: 0
       background-color: transparent
       padding: 0
+      align-items: center
+      flex-wrap: nowrap
 
       .breadcrumb-item
-        font-size: 0.9rem
+        font-size: 0.8rem
+        font-weight: 500
+        display: flex
+        align-items: center
+        white-space: nowrap
+
+        &:first-child a
+          display: inline-flex
+          align-items: center
+          gap: 0.3rem
+
+          &::before
+            content: '⌂'
+            font-size: 0.9rem
 
         a
-          color: #0077be
+          color: rgba(160, 200, 240, 0.75)
           text-decoration: none
-          transition: color 0.2s ease
+          padding: 0.2rem 0.45rem
+          border-radius: 4px
+          transition: background-color 0.15s ease, color 0.15s ease
 
           &:hover
-            color: #005a8f
-            text-decoration: underline
+            color: #fff
+            background-color: rgba(255, 255, 255, 0.1)
+            text-decoration: none
 
         &.active
-          color: var(--text-primary)
-          font-weight: 500
+          color: rgba(255, 255, 255, 0.95)
+          font-weight: 600
+          background-color: rgba(33, 150, 243, 0.18)
+          padding: 0.2rem 0.6rem
+          border-radius: 4px
+          border: 1px solid rgba(66, 170, 255, 0.25)
 
-        + .breadcrumb-item::before
-          color: var(--text-secondary)
+        + .breadcrumb-item
+          &::before
+            content: '›'
+            color: rgba(255, 255, 255, 0.2)
+            font-size: 1.1rem
+            font-weight: 300
+            padding: 0 0.1rem
 
   &__heading
     flex: auto
@@ -58,14 +86,16 @@
     flex: auto
 
   &__sidebar
-    border-radius: 0.25rem
-    background: #417DD2
-    background-blend-mode: lighten
+    border-radius: 0.5rem
+    background: linear-gradient(160deg, #0d1b2e 0%, #0f2240 60%, #0d1b2e 100%)
+    background-blend-mode: multiply
     background-image: url(https://www.ebl.lmu.de/api/images/Babel_Project_01_cropped.svg)
     background-position: right -12em bottom
     background-repeat: no-repeat
     background-size: 20em
-    color: #FFFFFF
+    border: 1px solid rgba(255, 255, 255, 0.07)
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.4)
+    color: rgba(200, 220, 245, 0.9)
     flex: 1 0 content
     margin-left: 1em
     max-height: 100vh
