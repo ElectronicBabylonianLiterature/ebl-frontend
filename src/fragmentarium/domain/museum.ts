@@ -34,6 +34,13 @@ export const Museums = {
     country: 'IE',
     url: 'https://chesterbeatty.ie/',
   },
+  COLUMBIA_UNIVERSITY: {
+    key: 'COLUMBIA_UNIVERSITY',
+    name: 'Columbia University Cuneiform Collection',
+    city: 'New York',
+    country: 'US',
+    url: 'https://library.columbia.edu/libraries/rbml.html',
+  },
   COUVENT_SAINTE_ANNE: {
     key: 'COUVENT_SAINTE_ANNE',
     name: 'Couvent Sainte-Anne',
@@ -118,6 +125,13 @@ export const Museums = {
     city: 'Cape Town',
     country: 'ZA',
     url: 'https://www.iziko.org.za/',
+  },
+  KATZ_CENTER: {
+    key: 'KATZ_CENTER',
+    name: 'Katz Center for Advanced Judaic Studies',
+    city: 'Philadelphia',
+    country: 'US',
+    url: 'https://katz.sas.upenn.edu/',
   },
   KELSEY_MUSEUM: {
     key: 'KELSEY_MUSEUM',
