@@ -119,6 +119,13 @@ export const Museums = {
     country: 'ZA',
     url: 'https://www.iziko.org.za/',
   },
+  KATZ_CENTER: {
+    key: 'KATZ_CENTER',
+    name: 'Katz Center for Advanced Judaic Studies',
+    city: 'Philadelphia',
+    country: 'US',
+    url: 'https://katz.sas.upenn.edu/',
+  },
   KELSEY_MUSEUM: {
     key: 'KELSEY_MUSEUM',
     name: 'Kelsey Museum of Archaeology',
