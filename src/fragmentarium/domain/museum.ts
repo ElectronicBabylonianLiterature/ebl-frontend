@@ -34,6 +34,13 @@ export const Museums = {
     country: 'IE',
     url: 'https://chesterbeatty.ie/',
   },
+  COLUMBIA_UNIVERSITY: {
+    key: 'COLUMBIA_UNIVERSITY',
+    name: 'Columbia University Cuneiform Collection',
+    city: 'New York',
+    country: 'US',
+    url: 'https://library.columbia.edu/libraries/rbml.html',
+  },
   COUVENT_SAINTE_ANNE: {
     key: 'COUVENT_SAINTE_ANNE',
     name: 'Couvent Sainte-Anne',
