@@ -1,4 +1,11 @@
 export const Museums = {
+  ABBEY_MUSEUM: {
+    key: 'ABBEY_MUSEUM',
+    name: 'Abbey Museum',
+    city: 'Caboolture',
+    country: 'AU',
+    url: 'https://abbeymuseum.com.au',
+  },
   ANCIENT_CULTURES_CHICAGO: {
     key: 'ANCIENT_CULTURES_CHICAGO',
     name: 'Institute for the Study of Ancient Cultures, West Asia & North Africa',
