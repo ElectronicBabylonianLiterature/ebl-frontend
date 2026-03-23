@@ -62,7 +62,20 @@ describe('postJson', () => {
     await expect(apiClient.postJson(path, requestJson)).resolves.toEqual(result)
   })
 
-  test.each([201, 204])('%i resolves to null', async (status) => {
+  test('201 resolves to parsed JSON when body is present', async () => {
+    auth.getAccessToken.mockReturnValueOnce(accessToken)
+    fetchMock.mockResponse(JSON.stringify(result), { status: 201 })
+
+    await expect(apiClient.postJson(path, requestJson)).resolves.toEqual(result)
+  })
+
+  test('201 resolves to null for empty body', async () => {
+    setUpEmptyResponse(201)
+
+    await expect(apiClient.postJson(path, requestJson)).resolves.toBeNull()
+  })
+
+  test.each([204])('%i resolves to null', async (status) => {
     setUpEmptyResponse(status)
 
     await expect(apiClient.postJson(path, requestJson)).resolves.toBeNull()

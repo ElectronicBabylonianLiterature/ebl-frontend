@@ -16,7 +16,7 @@ import {
   measuresFactory,
 } from 'test-support/fragment-data-fixtures'
 import { joinFactory } from 'test-support/join-fixtures'
-import { PartialDate } from 'fragmentarium/domain/archaeology'
+import { excavationSites, PartialDate } from 'fragmentarium/domain/archaeology'
 import { Periods } from 'common/period'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import DossiersService from 'dossiers/application/DossiersService'
@@ -72,11 +72,16 @@ describe('All details', () => {
     )
     const number = 'X.1'
     const museum = Museums['THE_BRITISH_MUSEUM']
+    const provenanceSite =
+      excavationSites['Ur'] ??
+      Object.values(excavationSites).find((site) => site.name) ??
+      excavationSites['']
     fragment = fragmentFactory.build(
       {
         number,
         collection: 'The Collection',
         museum,
+        archaeology: archaeologyFactory.build({ site: provenanceSite }),
       },
       {
         associations: {
@@ -187,8 +192,10 @@ describe('All details', () => {
   it('Renders provenance', async () => {
     await setupAllDetails()
     expect(screen.getByText(/Provenance:/)).toBeInTheDocument()
+    const provenanceName = fragment.archaeology?.site?.name
+    expect(provenanceName).toBeTruthy()
     expect(
-      screen.getByText(`${fragment.archaeology?.site?.name}`),
+      screen.getByRole('link', { name: provenanceName as string }),
     ).toBeInTheDocument()
   })
 })

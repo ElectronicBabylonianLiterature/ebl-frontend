@@ -241,6 +241,7 @@ export const Provenances = {
     parent: 'Periphery',
   },
   Nagar: { name: 'Nagar', abbreviation: 'Nag', parent: 'Periphery' },
+  Nereb: { name: 'Nereb', abbreviation: 'Ner', parent: 'Periphery' },
   Nuzi: { name: 'Nuzi', abbreviation: 'Nuzi', parent: 'Periphery' },
   Pašime: { name: 'Pašime', abbreviation: 'Paš', parent: 'Periphery' },
   Persepolis: { name: 'Persepolis', abbreviation: 'Per', parent: 'Periphery' },

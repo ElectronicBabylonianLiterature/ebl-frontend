@@ -44,7 +44,7 @@ export default function AkkadianWordAnalysis({
         {showIpa && <Ipa segments={segments} enclose={false} />}
       </>
     )
-  } catch (error) {
+  } catch {
     return <></>
   }
 }

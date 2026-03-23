@@ -82,6 +82,16 @@ export default class LemmaAnnotationForm extends React.Component<Props, State> {
     }
   }
 
+  componentDidUpdate(): void {
+    const tokenLemmas = this.props.token?.lemmas ?? []
+
+    if (!_.isEqual(this.state.options, tokenLemmas)) {
+      this.setState({
+        options: tokenLemmas,
+      })
+    }
+  }
+
   render(): JSX.Element {
     return (
       <AsyncSelect

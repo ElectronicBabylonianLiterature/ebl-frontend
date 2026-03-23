@@ -1,4 +1,11 @@
 export const Museums = {
+  ABBEY_MUSEUM: {
+    key: 'ABBEY_MUSEUM',
+    name: 'Abbey Museum',
+    city: 'Caboolture',
+    country: 'AU',
+    url: 'https://abbeymuseum.com.au',
+  },
   ANCIENT_CULTURES_CHICAGO: {
     key: 'ANCIENT_CULTURES_CHICAGO',
     name: 'Institute for the Study of Ancient Cultures, West Asia & North Africa',
@@ -33,6 +40,13 @@ export const Museums = {
     city: 'Dublin',
     country: 'IE',
     url: 'https://chesterbeatty.ie/',
+  },
+  COLUMBIA_UNIVERSITY: {
+    key: 'COLUMBIA_UNIVERSITY',
+    name: 'Columbia University Cuneiform Collection',
+    city: 'New York',
+    country: 'US',
+    url: 'https://library.columbia.edu/libraries/rbml.html',
   },
   COUVENT_SAINTE_ANNE: {
     key: 'COUVENT_SAINTE_ANNE',
@@ -118,6 +132,13 @@ export const Museums = {
     city: 'Cape Town',
     country: 'ZA',
     url: 'https://www.iziko.org.za/',
+  },
+  KATZ_CENTER: {
+    key: 'KATZ_CENTER',
+    name: 'Katz Center for Advanced Judaic Studies',
+    city: 'Philadelphia',
+    country: 'US',
+    url: 'https://katz.sas.upenn.edu/',
   },
   KELSEY_MUSEUM: {
     key: 'KELSEY_MUSEUM',

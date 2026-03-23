@@ -1,6 +1,6 @@
 import React from 'react'
 import { MemoryRouter } from 'react-router-dom'
-import { render, screen } from '@testing-library/react'
+import { render, screen, within } from '@testing-library/react'
 import Promise from 'bluebird'
 import BibliographySearch from './BibliographySearch'
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
@@ -59,9 +59,15 @@ function expectCitationToBeDisplayed(citation: Citation): void {
 
 function expectAuthorToBeDisplayed(entry: BibliographyEntry): void {
   const authorRegExp = createAuthorRegExp(entry)
+  const citation = Citation.for(createReferenceForEntry(entry))
+  const bibliographyEntry = screen
+    .getAllByRole('listitem')
+    .find((item) => within(item).queryByText(citation.getMarkdown()) !== null)
+
+  expect(bibliographyEntry).not.toBeNull()
 
   expect(
-    screen.getByText((content, element) => {
+    within(bibliographyEntry as HTMLElement).getByText((content, element) => {
       return (
         (element?.classList.contains('csl-entry') &&
           authorRegExp.test(content)) ||
