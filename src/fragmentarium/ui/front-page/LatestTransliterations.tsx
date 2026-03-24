@@ -11,6 +11,7 @@ import FragmentLink from 'fragmentarium/ui/FragmentLink'
 import DateDisplay from 'chronology/ui/DateDisplay'
 import ReferenceList from 'bibliography/ui/ReferenceList'
 import FragmentDossierRecordsDisplay from 'dossiers/ui/DossiersDisplay'
+import { RenderFragmentLines } from 'dictionary/ui/search/FragmentLemmaLines'
 import './LatestTransliterations.css'
 
 const LATEST_COUNT = 5
@@ -34,10 +35,12 @@ function formatRecordDate(entry: RecordEntry): string {
 
 function FragmentCard({
   fragment,
+  queryItem,
   mode,
   dossiersService,
 }: {
   fragment: Fragment
+  queryItem: QueryItem
   mode: LatestTransliterationsMode
   dossiersService: DossiersService
 }): JSX.Element {
@@ -60,6 +63,15 @@ function FragmentCard({
         <p className="latest-card__collection">{fragment.collection}</p>
       )}
       {description && <p className="latest-card__description">{description}</p>}
+      {isLibraryMode && queryItem.matchingLines.length > 0 && (
+        <div className="latest-card__lines">
+          <RenderFragmentLines
+            fragment={fragment}
+            linesToShow={3}
+            totalLines={queryItem.matchingLines.length}
+          />
+        </div>
+      )}
       {isLibraryMode && (
         <div className="latest-card__details">
           {fragment.accession && (
@@ -137,15 +149,20 @@ const FragmentCardLoader = withData<
   },
   Fragment
 >(
-  ({ data: fragment, mode, dossiersService }) => (
+  ({ data: fragment, mode, dossiersService, queryItem }) => (
     <FragmentCard
       fragment={fragment}
+      queryItem={queryItem}
       mode={mode}
       dossiersService={dossiersService}
     />
   ),
   ({ fragmentService, queryItem }) =>
-    fragmentService.find(queryItem.museumNumber, [], true),
+    fragmentService.find(
+      queryItem.museumNumber,
+      queryItem.matchingLines.slice(0, 3),
+      queryItem.matchingLines.length === 0,
+    ),
 )
 
 function LatestAdditions({

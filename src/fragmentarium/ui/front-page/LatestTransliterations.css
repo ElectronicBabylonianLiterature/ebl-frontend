@@ -141,6 +141,31 @@
   overflow: hidden;
 }
 
+.latest-card__lines {
+  margin-top: 0.5rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid #edf0f5;
+}
+
+.latest-card__lines table {
+  width: 100%;
+  margin: 0;
+}
+
+.latest-card__lines td {
+  font-size: 0.72rem;
+  color: #5a6a7e;
+  vertical-align: top;
+  padding: 0.08rem 0;
+}
+
+.latest-card__lines .fragment-lines-with-lemma__line-number {
+  color: #6b7a90;
+  width: 2.5rem;
+  white-space: nowrap;
+  padding-right: 0.5rem;
+}
+
 .latest-card__details {
   margin-top: 0.55rem;
   padding-top: 0.5rem;

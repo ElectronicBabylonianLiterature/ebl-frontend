@@ -6,12 +6,15 @@ import Promise from 'bluebird'
 import LatestTransliterations from './LatestTransliterations'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import DossiersService from 'dossiers/application/DossiersService'
+import WordService from 'dictionary/application/WordService'
+import { DictionaryContext } from 'dictionary/ui/dictionary-context'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import { fragmentFactory } from 'test-support/fragment-fixtures'
 import { queryItemOf } from 'test-support/utils'
 
 jest.mock('fragmentarium/application/FragmentService')
 jest.mock('dossiers/application/DossiersService')
+jest.mock('dictionary/application/WordService')
 
 const chance = new Chance('latest-test')
 
@@ -23,6 +26,7 @@ const fragmentService = new (FragmentService as jest.Mock<
 const dossiersService = new (DossiersService as jest.Mock<
   jest.Mocked<DossiersService>
 >)()
+const wordService = new (WordService as jest.Mock<jest.Mocked<WordService>>)()
 
 const setup = async (
   mode: 'homepage' | 'library' = 'library',
@@ -51,11 +55,13 @@ const setup = async (
 
   render(
     <MemoryRouter>
-      <LatestTransliterations
-        fragmentService={fragmentService}
-        dossiersService={dossiersService}
-        mode={mode}
-      />
+      <DictionaryContext.Provider value={wordService}>
+        <LatestTransliterations
+          fragmentService={fragmentService}
+          dossiersService={dossiersService}
+          mode={mode}
+        />
+      </DictionaryContext.Provider>
     </MemoryRouter>,
   )
   await screen.findByText(
@@ -106,4 +112,41 @@ test('shows full metadata details in library mode', async () => {
   expect(screen.getByText(/Excavation no\.:/)).toBeInTheDocument()
   expect(screen.getByText(/Provenance:/)).toBeInTheDocument()
   expect(screen.getByText('References')).toBeInTheDocument()
+})
+
+test('loads matching lines like master in library mode', async () => {
+  const fragment = fragmentFactory.build({}, { transient: { chance } })
+  fragmentService.queryLatest.mockReturnValueOnce(
+    Promise.resolve({
+      items: [
+        {
+          museumNumber: fragment.number,
+          matchingLines: [1, 2, 3, 4],
+          matchCount: 4,
+        },
+      ],
+      matchCountTotal: 4,
+    }),
+  )
+  fragmentService.find.mockResolvedValueOnce(fragment)
+
+  render(
+    <MemoryRouter>
+      <DictionaryContext.Provider value={wordService}>
+        <LatestTransliterations
+          fragmentService={fragmentService}
+          dossiersService={dossiersService}
+          mode="library"
+        />
+      </DictionaryContext.Provider>
+    </MemoryRouter>,
+  )
+
+  await screen.findByText('Latest Transliterations')
+
+  expect(fragmentService.find).toHaveBeenCalledWith(
+    fragment.number,
+    [1, 2, 3],
+    false,
+  )
 })
