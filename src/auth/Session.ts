@@ -22,6 +22,8 @@ export interface Session {
 
   isAllowedToWriteTexts(): boolean
 
+  isAllowedToCreateProperNouns(): boolean
+
   hasBetaAccess(): boolean
 
   isAllowedToReadFolio(folio: Folio): boolean
@@ -67,6 +69,10 @@ class GuestSession implements Session {
   }
 
   isAllowedToWriteTexts(): boolean {
+    return false
+  }
+
+  isAllowedToCreateProperNouns(): boolean {
     return false
   }
 
@@ -130,6 +136,10 @@ export default class MemorySession implements Session {
 
   isAllowedToWriteTexts(): boolean {
     return this.hasApplicationScope('writeTexts')
+  }
+
+  isAllowedToCreateProperNouns(): boolean {
+    return this.hasApplicationScope('createProperNouns')
   }
 
   hasBetaAccess(): boolean {
