@@ -28,8 +28,8 @@ beforeEach(async () => {
 
 test('renders dictionary search page', () => {
   expect(
-    appDriver.getView().getByRole('heading', { name: 'Dictionary' }),
-  ).toBeInTheDocument()
+    appDriver.getView().getAllByRole('heading', { name: 'Dictionary' }),
+  ).not.toHaveLength(0)
 })
 
 test.each([

@@ -1,50 +1,145 @@
 .fragment-result
   &__match-info
     display: flex
+    align-items: center
     justify-content: center
-    padding: 1em 0
-  &__fragment-number, &__record
-    margin-bottom: 0
+    padding: 0.6em 1.25em
+    margin: 0.75em 0 1.25em
+    background-color: #f0f4fa
+    border: 1px solid #dce2ea
+    border-radius: 6px
+    font-size: 0.9rem
+    color: #4a5568
+    font-weight: 500
+
+    a
+      color: #1a5fa8
+      text-decoration: none
+      &:hover
+        text-decoration: underline
+
+  &__card
+    background: #ffffff
+    border: 1px solid #dce2ea
+    border-radius: 10px
+    padding: 1.25rem 1.5rem
+    margin-bottom: 1rem
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05)
+    transition: box-shadow 0.2s ease, border-color 0.2s ease
+    max-width: 100%
+
+    &:hover
+      box-shadow: 0 3px 12px rgba(0, 0, 0, 0.08)
+      border-color: #b8c8de
+
+    hr
+      border: none
+      border-top: 1px solid #edf0f5
+      margin: 0.9rem 0
+      display: none
+
+  &__fragment-number
+    font-size: 1.1rem
+    font-weight: 700
+    margin-bottom: 0.35rem
+
+    a
+      color: #1a3a6b
+      text-decoration: none
+
+      &:hover
+        color: #1a5fa8
+        text-decoration: underline
+
   &__record
+    margin-bottom: 0
     display: flex
     justify-content: flex-start
 
     .Record__entry
       font-size: 80%
-  &__genre ul
-    padding-left: 0
-    margin-bottom: 0.2em
+
+  &__genre
+    padding-top: 0.1rem
+
+    ul
+      padding-left: 0
+      margin-bottom: 0
+      list-style: none
+
+      ul
+        padding-left: 0
+        margin-bottom: 0.25rem
+        list-style: none
+
+        small
+          display: inline-block
+          background-color: #eef3fb
+          color: #2d5a9e
+          border: 1px solid #c8d9f0
+          border-radius: 4px
+          padding: 0.1rem 0.5rem
+          font-size: 0.72rem
+          font-weight: 500
+          letter-spacing: 0.01em
+          line-height: 1.6
 
   &__header
     flex-wrap: wrap-reverse
+    padding-bottom: 0.5rem
+    border-bottom: 1px solid #edf0f5
+    margin-bottom: 0.75rem
 
     ul.ResultList
       padding: 0
-      margin: 0
+      margin: 0.25rem 0 0
+      list-style: none
 
       img
         margin: 0
+        height: 1.5rem
+        width: auto
+        opacity: 0.8
+        transition: opacity 0.15s ease
+
+        &:hover
+          opacity: 1
 
   &__archaeology-info
-    padding-bottom: 1em
+    padding-bottom: 0.25rem
 
     p
-      margin-bottom: 0
+      margin-bottom: 0.1rem
+      font-size: 0.8rem
+      color: #5a6a7e
+
+      &:empty
+        display: none
 
   &__preview
     display: flex
-    justify-content: flex-start
+    justify-content: flex-end
     align-items: flex-start
+
     a
       display: inline-block
+      border-radius: 4px
+      overflow: hidden
+      border: 1px solid #dce2ea
+      transition: box-shadow 0.15s ease
+
+      &:hover
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12)
+
     img
-      width: 92px
-      min-width: 92px
-      max-width: 92px
+      width: 100px
+      min-width: 100px
+      max-width: 100px
       height: auto
-      max-height: 64px
+      max-height: 80px
       object-fit: contain
+      display: block
 
   &__record, &__preview
     @media (min-width: 576px)
-      padding-left: 10vw
+      padding-left: 0

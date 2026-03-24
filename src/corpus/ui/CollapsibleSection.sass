@@ -1,6 +1,30 @@
 .collapsible_section__heading
-    cursor: pointer
+  cursor: pointer
+  display: flex
+  align-items: center
+  justify-content: space-between
+  gap: 0.5rem
+  background: #f4f6f9
+  border: 1px solid #dce2ea
+  border-radius: 8px
+  padding: 0.55rem 0.8rem
+  color: #1a3a6b
+  font-size: 0.84rem
+  letter-spacing: 0.04em
+  text-transform: uppercase
+  font-weight: 700
+  margin-bottom: 0.65rem
+
+  &:hover
+    background: #edf2f8
 
 .collapsible_section__collapse-indicator
   font-size: 1rem
   text-indent: 0
+  color: #1a5fa8
+
+.collapsible_section__heading + div
+  background: #ffffff
+  border: 1px solid #dce2ea
+  border-radius: 8px
+  padding: 0.75rem 0.9rem

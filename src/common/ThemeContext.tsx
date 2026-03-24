@@ -12,13 +12,11 @@ const ThemeContext = createContext<ThemeContextType | undefined>(undefined)
 const THEME_STORAGE_KEY = 'ebl-theme-preference'
 
 function getInitialTheme(): Theme {
-  // Check localStorage first
   const storedTheme = localStorage.getItem(THEME_STORAGE_KEY) as Theme | null
   if (storedTheme === 'light' || storedTheme === 'dark') {
     return storedTheme
   }
 
-  // Check system preference
   if (
     window.matchMedia &&
     window.matchMedia('(prefers-color-scheme: dark)').matches
@@ -37,7 +35,6 @@ export function ThemeProvider({
   const [theme, setTheme] = useState<Theme>(getInitialTheme)
 
   useEffect(() => {
-    // Apply theme to document
     document.documentElement.setAttribute('data-theme', theme)
     localStorage.setItem(THEME_STORAGE_KEY, theme)
   }, [theme])

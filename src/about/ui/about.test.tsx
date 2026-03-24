@@ -4,7 +4,12 @@ import Bluebird from 'bluebird'
 import '@testing-library/jest-dom'
 import MarkupService from 'markup/application/MarkupService'
 import { markupDtoSerialized } from 'test-support/markup-fixtures'
-import { render, screen, fireEvent } from '@testing-library/react'
+import {
+  render,
+  screen,
+  fireEvent,
+  waitForElementToBeRemoved,
+} from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 
 jest.mock('markup/application/MarkupService')
@@ -39,6 +44,13 @@ const renderAbout = async (
       />
     </MemoryRouter>,
   )
+
+  if (activeTab === 'project') {
+    await waitForElementToBeRemoved(() => {
+      const loadingIndicators = screen.queryAllByText(/Loading\.\.\./)
+      return loadingIndicators.length > 0 ? loadingIndicators : null
+    })
+  }
 }
 
 describe('About component', () => {
@@ -50,13 +62,9 @@ describe('About component', () => {
   })
 
   test('renders corpus tab content', async () => {
-    render(
-      <MemoryRouter>
-        <About markupService={markupServiceMock} activeTab="corpus" />
-      </MemoryRouter>,
-    )
-    expect(screen.getByRole('tab', { selected: true })).toHaveTextContent(
-      'Corpus',
+    await renderAbout(['/about/corpus'], 'corpus')
+    expect(screen.getByRole('button', { name: '⊞ Corpus' })).toHaveClass(
+      'active',
     )
     expect(
       screen.getByRole('heading', { name: /I\. Corpus/i }),
@@ -65,10 +73,15 @@ describe('About component', () => {
 
   test('renders with default tab content', async () => {
     await renderAbout(['/about/project'], 'project')
-    expect(screen.getByText('eBL Project')).toBeInTheDocument()
-    expect(screen.getByRole('tab', { selected: true })).toHaveTextContent(
-      'eBL Project',
+    expect(
+      screen.getByRole('button', { name: '⚙ eBL Project' }),
+    ).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: '⚙ eBL Project' })).toHaveClass(
+      'active',
     )
+    expect(
+      screen.getByRole('button', { name: '⚙ eBL Project' }),
+    ).toHaveTextContent('eBL Project')
   })
 
   test('updates tab when activeTab prop changes', async () => {
@@ -78,8 +91,13 @@ describe('About component', () => {
       </MemoryRouter>,
     )
 
-    expect(screen.getByRole('tab', { selected: true })).toHaveTextContent(
-      'eBL Project',
+    await waitForElementToBeRemoved(() => {
+      const loadingIndicators = screen.queryAllByText(/Loading\.\.\./)
+      return loadingIndicators.length > 0 ? loadingIndicators : null
+    })
+
+    expect(screen.getByRole('button', { name: '⚙ eBL Project' })).toHaveClass(
+      'active',
     )
 
     view.rerender(
@@ -88,8 +106,8 @@ describe('About component', () => {
       </MemoryRouter>,
     )
 
-    expect(screen.getByRole('tab', { selected: true })).toHaveTextContent(
-      'Signs',
+    expect(screen.getByRole('button', { name: '𒀀 Signs' })).toHaveClass(
+      'active',
     )
   })
 
@@ -102,22 +120,19 @@ describe('About component', () => {
       'Signs',
       'Dictionary',
       'Bibliography',
-      'News',
     ]
 
     expectedTabs.forEach((tabText) => {
-      expect(screen.getByText(tabText)).toBeInTheDocument()
+      expect(
+        screen.getByRole('button', { name: new RegExp(tabText) }),
+      ).toBeInTheDocument()
     })
   })
 
   test('does not change tab when clicking active tab', async () => {
-    render(
-      <MemoryRouter>
-        <About markupService={markupServiceMock} activeTab="project" />
-      </MemoryRouter>,
-    )
+    await renderAbout(['/about/project'], 'project')
 
-    const projectTab = screen.getByText('eBL Project')
+    const projectTab = screen.getByRole('button', { name: '⚙ eBL Project' })
     fireEvent.click(projectTab)
   })
 })

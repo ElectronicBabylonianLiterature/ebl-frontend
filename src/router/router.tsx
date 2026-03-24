@@ -49,13 +49,12 @@ export function WebsiteRoutes(
   slugs?: Slugs,
 ): JSX.Element[] {
   return [
-    <Route
-      key="Introduction"
-      component={Introduction}
-      exact
-      path="/"
-      {...(sitemap && sitemapDefaults)}
-    />,
+    <Route key="Introduction" exact path="/" {...(sitemap && sitemapDefaults)}>
+      <Introduction
+        fragmentService={services.fragmentService}
+        dossiersService={services.dossiersService}
+      />
+    </Route>,
     ...AboutRoutes({ sitemap, ...services }),
     ...ToolsRoutes({ sitemap, ...services }),
     ...LibraryRoutes({ sitemap, ...services, ...slugs }),

@@ -74,11 +74,11 @@ function Texts({
   return (
     <>
       {categories.map((title, category) => (
-        <section key={category}>
+        <section key={category} className="Corpus__category">
           <h3>
             <InlineMarkdown source={title} />
           </h3>
-          <Container fluid as="ol">
+          <Container fluid as="ol" className="Corpus__text-list">
             {(textsByCategory[category] ?? []).map((text) => (
               <TextLine
                 key={`${text.genre}-${text.category}-${text.index}`}
@@ -171,8 +171,8 @@ function Corpus({
         learnMorePath="/about/corpus"
       />
       <Container fluid className="Corpus">
-        <Row>
-          <Col md={6}>
+        <Row className="Corpus__layout">
+          <Col md={7}>
             <div className="Corpus__tabs">
               <Tabs activeKey={genre} onSelect={openTab} id="CorpusTab">
                 {genres.map(({ genre, name, categories }) => (
@@ -186,7 +186,7 @@ function Corpus({
               </Tabs>
             </div>
           </Col>
-          <Col md={6}>
+          <Col md={5} className="Corpus__image-col">
             <ApiImage fileName="LibraryCropped.svg" />
           </Col>
         </Row>

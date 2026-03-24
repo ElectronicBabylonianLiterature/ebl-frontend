@@ -9,14 +9,184 @@
     section
       padding-bottom: 1rem
 
+    .form-label
+      font-size: 0.72rem
+      font-weight: 700
+      letter-spacing: 0.06em
+      text-transform: uppercase
+      color: #6b7a90
+      margin-bottom: 0.3rem
+
+    .form-control,
+    .form-select
+      border-color: #dce2ea
+      border-radius: 6px
+      font-size: 0.88rem
+      color: #1a3a6b
+
+      &:focus
+        border-color: #1a5fa8
+        box-shadow: 0 0 0 0.2rem rgba(26, 95, 168, 0.15)
+
+    .form-check-input
+      border-color: #b8c8de
+
+      &:checked
+        background-color: #1a5fa8
+        border-color: #1a5fa8
+
+      &:focus
+        box-shadow: 0 0 0 0.2rem rgba(26, 95, 168, 0.15)
+
+    .form-check-label
+      font-size: 0.88rem
+      color: #2d3748
+
   &__markup-section
     text-align: justify
 
     .type-abbreviation
       display: none
 
+    h4
+      font-size: 0.72rem
+      font-weight: 700
+      letter-spacing: 0.06em
+      text-transform: uppercase
+      color: #6b7a90
+      margin-bottom: 0.75rem
+      padding-bottom: 0.4rem
+      border-bottom: 1px solid #edf0f5
+
   &__info section
     margin-bottom: 1rem
 
   &__tabs-hidden
     display: none
+
+  &__tab-title
+    display: flex
+    flex-direction: column
+    align-items: center
+    gap: 0.2rem
+    padding: 0.1rem 0.15rem
+
+  &__tab-icon
+    font-size: 1rem
+    line-height: 1
+
+  &__tab-label
+    font-size: 0.68rem
+    font-weight: 600
+    letter-spacing: 0.04em
+    text-transform: uppercase
+    white-space: nowrap
+    line-height: 1
+
+.CuneiformFragment .nav-tabs
+  border-bottom: 2px solid #dce2ea
+  gap: 0.15rem
+  flex-wrap: nowrap
+  overflow-x: auto
+  overflow-y: hidden
+  padding-bottom: 0
+  scrollbar-width: none
+
+  &::-webkit-scrollbar
+    display: none
+
+  .nav-item .nav-link
+    color: #5a6a7e
+    border: 1px solid transparent
+    border-bottom: 2px solid transparent
+    border-radius: 6px 6px 0 0
+    margin-bottom: -2px
+    padding: 0.5rem 0.7rem
+    transition: color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease
+
+    &:hover:not(.disabled)
+      color: #1a5fa8
+      background-color: rgba(26, 95, 168, 0.05)
+      border-color: #dce2ea #dce2ea transparent
+
+    &.active
+      color: #1a3a6b
+      background-color: #ffffff
+      border-color: #dce2ea #dce2ea #ffffff
+      font-weight: 600
+
+    &.disabled
+      color: #b0bec5
+      opacity: 0.6
+
+.CuneiformFragment .tab-content
+  background: #ffffff
+  border: 1px solid #dce2ea
+  border-top: none
+  border-radius: 0 0 8px 8px
+  padding: 1rem
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04)
+
+  .btn-primary
+    background-color: #1a5fa8
+    border-color: #1a5fa8
+    font-size: 0.82rem
+    padding: 0.4rem 1.25rem
+    border-radius: 6px
+    font-weight: 600
+
+    &:hover:not(:disabled)
+      background-color: #1a3a6b
+      border-color: #1a3a6b
+
+    &:focus
+      box-shadow: 0 0 0 0.2rem rgba(26, 95, 168, 0.25)
+
+    &:disabled
+      background-color: #b0c4de
+      border-color: #b0c4de
+      opacity: 1
+
+  .btn-secondary
+    background-color: #f4f6f9
+    border-color: #dce2ea
+    color: #5a6a7e
+    font-size: 0.82rem
+    padding: 0.35rem 0.85rem
+    border-radius: 6px
+
+    &:hover:not(:disabled)
+      background-color: #dce2ea
+      border-color: #b8c8de
+      color: #1a3a6b
+
+    &:focus
+      box-shadow: 0 0 0 0.2rem rgba(26, 95, 168, 0.15)
+
+  .btn-outline-info
+    color: #1a5fa8
+    border-color: #1a5fa8
+    font-size: 0.78rem
+    border-radius: 6px
+
+    &:hover:not(:disabled)
+      background-color: #1a5fa8
+      border-color: #1a5fa8
+      color: #ffffff
+
+.ScopeEditor
+  &__description
+    font-size: 0.82rem
+    color: #5a6a7e
+    margin-bottom: 1.25rem
+    padding: 0.65rem 0.9rem
+    background: #f4f6f9
+    border-left: 3px solid #1a5fa8
+    border-radius: 0 4px 4px 0
+    line-height: 1.5
+
+  &__check
+    margin-bottom: 0.6rem
+
+  &__submit
+    margin-top: 1.25rem

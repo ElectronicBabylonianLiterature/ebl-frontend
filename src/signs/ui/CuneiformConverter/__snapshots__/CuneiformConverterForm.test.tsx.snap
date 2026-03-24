@@ -23,58 +23,59 @@ exports[`CuneiformConverterForm renders form, options, and scenario panel correc
     >
       Enter the text you want to convert to Unicode.
     </small>
-    <label
-      class="form-label"
-      for="fontSelector"
-      style="padding-right: 8px;"
+    <div
+      class="mt-3 mb-3"
     >
-      Select Font
-    </label>
-    <select
-      class="form-select"
-      id="fontSelector"
-    >
-      <option
-        value="Assurbanipal"
+      <label
+        class="form-label"
+        for="fontSelector"
       >
-        Neo-Assyrian
-      </option>
-      <option
-        value="Esagil"
+        Select Font
+      </label>
+      <select
+        class="form-select"
+        id="fontSelector"
       >
-        Neo-Babylonian
-      </option>
-      <option
-        value="Santakku"
-      >
-        Old Babylonian
-      </option>
-      <option
-        value="OBFreie"
-      >
-        Old Babylonian Literature
-      </option>
-      <option
-        value="SantakkuM"
-      >
-        Old Babylonian Monumental
-      </option>
-      <option
-        value="UllikummiA"
-      >
-        Hittite
-      </option>
-    </select>
-    <br />
+        <option
+          value="Assurbanipal"
+        >
+          Neo-Assyrian
+        </option>
+        <option
+          value="Esagil"
+        >
+          Neo-Babylonian
+        </option>
+        <option
+          value="Santakku"
+        >
+          Old Babylonian
+        </option>
+        <option
+          value="OBFreie"
+        >
+          Old Babylonian Literature
+        </option>
+        <option
+          value="SantakkuM"
+        >
+          Old Babylonian Monumental
+        </option>
+        <option
+          value="UllikummiA"
+        >
+          Hittite
+        </option>
+      </select>
+    </div>
     <button
       class="btn btn-primary"
       type="button"
     >
       Convert
     </button>
-    <br />
     <label
-      class="form-label"
+      class="mt-3 form-label"
       for="outputText"
     >
       Converted Text

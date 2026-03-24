@@ -106,8 +106,8 @@ export default function Header(): JSX.Element {
               className="Header__nav mx-auto"
             >
               <NavItem href="/library" title="Library" />
+              <NavItem href="/corpus" title="Corpus" />
               <NavItem href="/about" title="About" />
-              <NavItem href="/bibliography" title="Bibliography" />
               <NavItem href="/tools" title="Tools" />
               <NavItem href="/projects" title="Projects" />
             </Nav>

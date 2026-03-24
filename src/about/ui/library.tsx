@@ -228,14 +228,13 @@ export default function AboutLibrary(
       </p>
       <Timeline
         items={folios.map((folio, index) => {
-          // Extract birth and death years from the title (e.g., "1840 – 1876")
           const dateMatch = folio.title.match(/\(([^)]+)\)/)
           const dateRange = dateMatch ? dateMatch[1] : ''
 
           return {
             id: folio.initials,
             date: dateRange,
-            title: folio.title.replace(/\s*\([^)]+\)\s*$/, ''), // Remove date from title
+            title: folio.title.replace(/\s*\([^)]+\)\s*$/, ''),
             content: folio.content(markupService),
           }
         })}

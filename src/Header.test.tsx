@@ -46,7 +46,7 @@ function commonTests(renderHeader: () => Promise<void>): void {
 
   test.each([
     ['Library', '/library'],
-    ['Bibliography', '/bibliography'],
+    ['Corpus', '/corpus'],
     ['About', '/about'],
     ['Tools', '/tools'],
     ['Projects', '/projects'],
@@ -65,26 +65,20 @@ describe('Unfocus Header Labels on clicking ebl Logo', () => {
 })
 describe('Correct element is active based on the route', () => {
   test('Logout button', async () => {
-    await renderHeader(true, 'bibliography')
-    expect(screen.getByText('Bibliography')).toHaveClass('active')
-    expectHeaderLabelNotActive('Bibliography')
-  })
-  test('correct element becomes active when clicking link on the header after redirect', async () => {
-    await renderHeader(true, 'bibliography')
-    fireEvent.click(screen.getByText('Library'))
+    await renderHeader(true, 'library')
     expect(screen.getByText('Library')).toHaveClass('active')
     expectHeaderLabelNotActive('Library')
+  })
+  test('correct element becomes active when clicking link on the header after redirect', async () => {
+    await renderHeader(true, 'library')
+    fireEvent.click(screen.getByText('About'))
+    expect(screen.getByText('About')).toHaveClass('active')
+    expectHeaderLabelNotActive('About')
   })
 })
 
 function expectHeaderLabelNotActive(activeLabel: string): void {
-  const allHeaderLabels = [
-    'Library',
-    'Bibliography',
-    'About',
-    'Tools',
-    'Projects',
-  ]
+  const allHeaderLabels = ['Library', 'Corpus', 'About', 'Tools', 'Projects']
   allHeaderLabels
     .filter((label) => label !== activeLabel)
     .map((label) => expect(screen.getByText(label)).not.toHaveClass('active'))

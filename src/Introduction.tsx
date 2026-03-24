@@ -5,6 +5,11 @@ import AppContent from 'common/AppContent'
 import './Introduction.sass'
 import { HeadTags } from 'router/head'
 import { newsletters } from 'about/ui/news'
+import SessionContext from 'auth/SessionContext'
+import { Session } from 'auth/Session'
+import LatestTransliterations from 'fragmentarium/ui/front-page/LatestTransliterations'
+import FragmentService from 'fragmentarium/application/FragmentService'
+import DossiersService from 'dossiers/application/DossiersService'
 
 function Hero(): JSX.Element {
   return (
@@ -255,13 +260,32 @@ function NewsSection(): JSX.Element {
   )
 }
 
-export default function Introduction(): JSX.Element {
+export default function Introduction({
+  fragmentService,
+  dossiersService,
+}: {
+  fragmentService: FragmentService
+  dossiersService: DossiersService
+}): JSX.Element {
   return (
     <>
       <Hero />
       <AppContent crumbs={[]}>
         <IntroText />
         <FeatureCards />
+        <SessionContext.Consumer>
+          {(session: Session) =>
+            session.isAllowedToReadFragments() ? (
+              <Container>
+                <LatestTransliterations
+                  fragmentService={fragmentService}
+                  dossiersService={dossiersService}
+                  mode="homepage"
+                />
+              </Container>
+            ) : null
+          }
+        </SessionContext.Consumer>
         <NewsSection />
         <HeadTags
           title="Introduction: eBL"

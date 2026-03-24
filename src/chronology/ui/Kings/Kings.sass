@@ -1,43 +1,102 @@
+.kings-tool
+  &__intro
+    background: #f8fafc
+    border: 1px solid #dce2ea
+    border-left: 4px solid #1a5fa8
+    border-radius: 10px
+    padding: 0.95rem 1.1rem
+    margin-bottom: 1rem
+    color: #2d3748
+    line-height: 1.6
+
+  &__table
+    margin-bottom: 0
+
+  &__column-header
+    font-size: 0.72rem
+    text-transform: uppercase
+    letter-spacing: 0.07em
+    font-weight: 700
+    color: #6b7a90
+    background: #f4f6f9
+    border-bottom: 2px solid #dce2ea
+    padding: 0.6rem 0.85rem
+
+  &__dynasty
+    background: linear-gradient(90deg, rgba(26, 95, 168, 0.12) 0%, #ffffff 100%)
+    border-top: 1px solid #dce2ea
+    border-bottom: 1px solid #edf0f5
+    padding: 0.7rem 0.85rem
+
+  &__dynasty-title
+    margin: 0
+    font-size: 0.95rem
+    font-weight: 700
+    color: #1a3a6b
+
+  &__index
+    width: 3.5rem
+    color: #6b7a90
+    font-weight: 700
+    text-align: right
+    vertical-align: top
+
+  &__name
+    color: #1a3a6b
+    font-weight: 600
+    vertical-align: top
+
+  &__date
+    color: #4a5568
+    font-size: 0.88rem
+    vertical-align: top
+
 .chronology-display
-  background: white
-  border-radius: 12px
+  background: #ffffff
+  border: 1px solid #dce2ea
+  border-radius: 10px
   overflow: hidden
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08)
+  box-shadow: 0 2px 10px rgba(17, 35, 64, 0.06)
 
-  thead
-    background: linear-gradient(135deg, #0077be 0%, #005a8f 100%)
-    
-    th
-      color: white
-      font-weight: 600
-      padding: 1rem 1.5rem
-      border: none
+  thead th
+    border-top: none
 
-  tbody
-    tr
-      transition: background 0.2s ease
+  tbody tr
+    transition: background-color 0.18s ease
 
 td.chronology-display
   vertical-align: middle
-  padding: 1rem 1.5rem
-  border-bottom: 1px solid #f0f0f0
+  padding: 0.65rem 0.85rem
+  border-bottom: 1px solid #edf0f5
 
   &__section
     padding-bottom: 0
-    font-weight: 700
-    color: #2c3e50
-    font-size: 1.1rem
-    background: linear-gradient(90deg, rgba(0, 119, 190, 0.1) 0%, transparent 100%)
-    border-left: 4px solid #0077be
 
 tr.kings
   &:hover
-    background: rgba(0, 119, 190, 0.05)
-    transform: scale(1.001)
+    background: rgba(26, 95, 168, 0.05)
 
   td
-    border-bottom: 1px solid #f5f5f5
+    border-bottom: 1px solid #edf0f5
 
 tr:not(:first-child) td.chronology-display__section
-  padding-top: 2rem
+  padding-top: 1rem
+
+@media (max-width: 767px)
+  .kings-tool
+    &__intro
+      padding: 0.75rem 0.8rem
+
+    &__column-header
+      font-size: 0.66rem
+      padding: 0.45rem 0.55rem
+
+    &__dynasty-title
+      font-size: 0.86rem
+
+    &__date
+      font-size: 0.8rem
+
+  td.chronology-display
+    padding: 0.48rem 0.55rem
 

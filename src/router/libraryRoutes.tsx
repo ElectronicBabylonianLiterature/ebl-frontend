@@ -24,18 +24,6 @@ import {
 import { HeadTagsService } from 'router/head'
 import NotFoundPage from 'NotFoundPage'
 
-/**
- * LibraryRoutes consolidates the Signs, Dictionary, and Bibliography sections
- * into a unified Reference Library interface with sidebar navigation.
- *
- * This provides a more intuitive user experience by grouping related reference
- * resources together while maintaining their individual search and display functionality.
- *
- * Each section retains its specific features:
- * - Signs: Cuneiform sign search and detailed sign information
- * - Dictionary: Word search with lemma display and editing capabilities
- * - Bibliography: Reference management with AfO Register integration
- */
 export default function LibraryRoutes({
   sitemap,
   wordService,
@@ -60,7 +48,6 @@ export default function LibraryRoutes({
   bibliographySlugs?: BibliographySlugs
 }): JSX.Element[] {
   return [
-    // Signs Routes - wrapped in Library component
     <Route
       key="library-signDisplay"
       path="/reference-library/signs/:id"
@@ -101,7 +88,6 @@ export default function LibraryRoutes({
       {...(sitemap && sitemapDefaults)}
     />,
 
-    // Dictionary Routes - wrapped in Library component
     <Route
       key="library-wordEditor"
       path="/reference-library/dictionary/:id/edit"
@@ -157,7 +143,6 @@ export default function LibraryRoutes({
       {...(sitemap && sitemapDefaults)}
     />,
 
-    // Bibliography Routes - wrapped in Library component
     <Route
       key="library-bibliographyEditorNew"
       path="/reference-library/bibliography/references/new-reference"
@@ -169,7 +154,6 @@ export default function LibraryRoutes({
             {...props}
             create={true}
             match={{
-              // eslint-disable-next-line react/prop-types
               ...props.match,
               params: { id: '' },
             }}
@@ -270,7 +254,6 @@ export default function LibraryRoutes({
       )}
     />,
 
-    // Default redirect to signs when accessing /reference-library
     <Route
       key="library-root"
       path="/reference-library"
@@ -278,7 +261,6 @@ export default function LibraryRoutes({
       render={(): ReactNode => <Redirect to="/reference-library/signs" />}
     />,
 
-    // Catch-all for unmatched library routes
     <Route
       key="library-notFound"
       path="/reference-library/*"

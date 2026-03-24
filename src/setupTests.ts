@@ -23,6 +23,11 @@ const onAbort = jest.fn()
 
 global.URL.createObjectURL = jest.fn()
 global.URL.revokeObjectURL = jest.fn()
+window.scrollTo = jest.fn()
+
+if (!window.HTMLElement.prototype.scrollIntoView) {
+  window.HTMLElement.prototype.scrollIntoView = jest.fn()
+}
 
 afterEach(() => {
   abort.mockReset()

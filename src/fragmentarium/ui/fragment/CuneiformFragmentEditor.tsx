@@ -68,6 +68,28 @@ const tabNames: TabName[] = [
   'permissions',
 ]
 
+const tabIcons: Record<TabName, string> = {
+  display: '𒀭',
+  edition: '✏',
+  lemmatization: 'Ꞌ',
+  'named entities': '⊛',
+  references: '§',
+  archaeology: '⛏',
+  colophon: '⊕',
+  permissions: '⊗',
+}
+
+function TabTitle({ name }: { name: TabName }): JSX.Element {
+  return (
+    <span className="CuneiformFragment__tab-title">
+      <span className="CuneiformFragment__tab-icon" aria-hidden="true">
+        {tabIcons[name]}
+      </span>
+      <span className="CuneiformFragment__tab-label">{_.startCase(name)}</span>
+    </span>
+  )
+}
+
 function EditorTab({
   children,
   name,
@@ -81,7 +103,7 @@ function EditorTab({
     <Tab
       key={name}
       eventKey={name}
-      title={_.startCase(name)}
+      title={<TabTitle name={name} />}
       disabled={disabled}
     >
       <ContentSection>{children}</ContentSection>

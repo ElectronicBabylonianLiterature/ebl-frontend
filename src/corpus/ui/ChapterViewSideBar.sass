@@ -1,60 +1,74 @@
 .settings
-  margin-top: 4rem
-  background: linear-gradient(180deg, #0d1b2e 0%, #0f2240 100%)
-  border-radius: 0.5rem
-  padding: 1.25rem 1.5rem
-  border: 1px solid rgba(255, 255, 255, 0.08)
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3)
-  color: rgba(200, 220, 245, 0.9)
+  margin-top: 1.25rem
+  background: #ffffff
+  border-radius: 10px
+  padding: 1rem 1.1rem
+  border: 1px solid #dce2ea
+  box-shadow: 0 2px 10px rgba(17, 35, 64, 0.06)
+  color: #2d3748
 
   &__heading,
   &__footer
     text-align: right
     font-size: 0.9rem
     cursor: pointer
-    color: #64b5f6
+    color: #1a5fa8
     font-weight: 600
     letter-spacing: 0.03em
 
     &:hover
-      color: #90caf9
+      color: #0d3f72
 
   &__section
-    margin-bottom: 2rem
-    padding-left: 1.25rem
-    border-left: 2px solid rgba(66, 170, 255, 0.2)
+    margin-bottom: 1.2rem
+    padding-left: 0.95rem
+    border-left: 2px solid rgba(26, 95, 168, 0.25)
 
   &__subheading
-    font-size: 0.8rem
+    font-size: 0.72rem
     font-weight: 700
     text-transform: uppercase
     letter-spacing: 0.06em
-    color: rgba(160, 200, 240, 0.7)
+    color: #6b7a90
     margin-bottom: 0.5rem
 
   &__switch
-    margin-left: 1em
+    margin-left: 0.1em
+
+    .form-check-input
+      border-color: #b8c8de
+
+      &:checked
+        background-color: #1a5fa8
+        border-color: #1a5fa8
+
+    .form-check-label
+      font-size: 0.88rem
+      color: #2d3748
 
   &__languages
     list-style: none
     margin: 0
     padding: 0
 
+    li
+      margin-bottom: 0.35rem
+
   &__language
     cursor: pointer
-    margin-left: 1em
-    color: rgba(190, 215, 245, 0.65)
+    margin-left: 0.1em
+    color: #4a5f7c
     font-size: 0.875rem
     transition: color 0.15s ease
 
     &:hover
-      color: rgba(200, 225, 255, 0.95)
+      color: #0d3f72
 
     &--active
       text-decoration: none
-      color: #64b5f6
+      color: #1a5fa8
       font-weight: 600
 
   &__translators
     font-size: 80%
-    color: rgba(160, 190, 220, 0.6)
+    color: #6b7a90

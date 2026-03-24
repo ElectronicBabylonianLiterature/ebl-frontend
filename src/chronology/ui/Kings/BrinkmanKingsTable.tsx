@@ -13,9 +13,10 @@ import {
 
 export default function ListOfKings(): JSX.Element {
   return (
-    <>
-      <Markdown
-        text="The list of kings presented here has been prepared by John A.
+    <section className="kings-tool">
+      <div className="kings-tool__intro">
+        <Markdown
+          text="The list of kings presented here has been prepared by John A.
               Brinkman. It is the eighth edition of the chronology first published
               as an appendix to A. L. Oppenheim’s *Ancient Mesopotamia* (1964).
               The principal new feature of this edition is the recalculation of
@@ -25,15 +26,29 @@ export default function ListOfKings(): JSX.Element {
               including their relationship with a set of known intercalary months
               from the fourteenth and thirteenth centuries. This presentation
               reflects research current in January 2023."
-      />
+        />
+      </div>
       <BrinkmanKingsTable />
-    </>
+    </section>
   )
 }
 
 function BrinkmanKingsTable(): JSX.Element {
   return (
-    <Table className="table-borderless chronology-display">
+    <Table className="table-borderless chronology-display kings-tool__table">
+      <thead>
+        <tr>
+          <th scope="col" className="kings-tool__column-header">
+            No.
+          </th>
+          <th scope="col" className="kings-tool__column-header">
+            King
+          </th>
+          <th scope="col" className="kings-tool__column-header">
+            Dates and Notes
+          </th>
+        </tr>
+      </thead>
       <tbody>
         {brinkmanDynasties.map((dynastyName, index) =>
           getDynasty(dynastyName, index, true),
@@ -58,10 +73,10 @@ function getDynasty(
       <tr key={dynastyName}>
         <td
           key={`${dynastyName}_title`}
-          className="chronology-display__section"
+          className="chronology-display__section kings-tool__dynasty"
           colSpan={3}
         >
-          <h3>{`${dynastyIndex + 1}. ${dynastyName}`}</h3>
+          <h3 className="kings-tool__dynasty-title">{`${dynastyIndex + 1}. ${dynastyName}`}</h3>
         </td>
       </tr>
       {kingsTags}
@@ -73,15 +88,21 @@ function getKing(king: King, groups): JSX.Element {
   const rowSpan = groups[king.orderGlobal] ? groups[king.orderGlobal] + 1 : 1
   return (
     <tr className="kings" key={king.orderGlobal}>
-      <td className="chronology-display" key={`${king.orderGlobal}_index`}>
+      <td
+        className="chronology-display kings-tool__index"
+        key={`${king.orderGlobal}_index`}
+      >
         {king.orderInDynasty}
       </td>
-      <td className="chronology-display" key={`${king.orderGlobal}_name`}>
+      <td
+        className="chronology-display kings-tool__name"
+        key={`${king.orderGlobal}_name`}
+      >
         {king.name}
       </td>
       {!king.groupWith && (
         <td
-          className="chronology-display"
+          className="chronology-display kings-tool__date"
           key={`${king.orderGlobal}_date`}
           rowSpan={rowSpan}
         >

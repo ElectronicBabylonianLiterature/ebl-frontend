@@ -1,12 +1,38 @@
 .info
-      &__help
-            margin-left: 0.5rem
-      &__header
-            display: flex
-            align-items: baseline
+  &__section
+    background: #ffffff
+    border: 1px solid #dce2ea
+    border-radius: 8px
+    padding: 0.85rem 1rem
+    margin-bottom: 0.65rem
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04)
+
+    &--muted
+      background: #f8fafc
+      box-shadow: none
+
+  &__section-header
+    display: flex
+    align-items: center
+    justify-content: space-between
+    margin-bottom: 0.5rem
+    padding-bottom: 0.4rem
+    border-bottom: 1px solid #edf0f5
+
+  &__section-title
+    font-size: 0.7rem
+    font-weight: 700
+    letter-spacing: 0.08em
+    text-transform: uppercase
+    color: #6b7a90
+    margin: 0
+
+  &__help
+    margin-left: 0.5rem
+    color: #9aabb8
 
 ol.AfORegisterRecordsInFragment
-      padding-left: 15px
+  padding-left: 15px
 
-      li small.text-black-50.ml-3
-            display: none
+  li small.text-black-50.ml-3
+    display: none
