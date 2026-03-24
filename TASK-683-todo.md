@@ -4,21 +4,27 @@
 
 Upgrade `@typescript-eslint` stack to support TypeScript 5.9.x cleanly, verify local lint/test/build, and confirm CI/remote actions remain aligned.
 
+Detailed build-termination findings: `TASK-683-build-investigation.md`.
+
 ## Progress
 
-- Completed: 29
-- Remaining: 7
-- Total: 36
+- Completed: 30
+- Remaining: 10
+- Total: 40
 
 ## Remaining Tasks
 
 - [ ] Capture current dependency/config baseline (`package.json`, ESLint configs, workflows)
-- [ ] Run `yarn tsc`, `yarn test --coverage`, and `yarn build` (tsc/tests pass; build currently exits early in container)
-- [ ] Verify GitHub Actions workflows still use correct commands/runtime (unit-test command validated locally; docker command requires Actions runner validation)
-- [ ] Resolve/reproduce build issue: `yarn build` exits early (`The build failed because the process exited too early`) (reproduced with `CI=true`, sourcemap-off, ESLint-plugin-off, `npx react-scripts build`, and increased heap)
+- [ ] Run `yarn tsc`, `yarn test --coverage`, and `yarn build` (tsc/tests pass; build remains intermittent with external kill `exit 137`; see `TASK-683-build-investigation.md`; full coverage rerun still pending)
+- [ ] Verify GitHub Actions workflows still use correct commands/runtime (experimental retry/build workflow changes were reverted because build stability was not proven; docker command still requires Actions runner validation)
+- [ ] Resolve/reproduce build issue: `yarn build` exits early (`The build failed because the process exited too early`) (root cause direction documented in `TASK-683-build-investigation.md`; external `SIGTERM` reproduced; stable fix still not proven)
 - [ ] Review warning: `bare-fs@4.5.3: The engine "bare" appears to be invalid` (via `lighthouse` transitive deps; only plain-update path is `lighthouse` version change)
 - [ ] Review warning: `bare-os@3.6.2: The engine "bare" appears to be invalid` (via `lighthouse` transitive deps; only plain-update path is `lighthouse` version change)
 - [ ] Stabilize full test termination first and obtain one complete rerun with Jest final summary
+- [ ] Apply constrained no-infra build command policy (env-limited build: `GENERATE_SOURCEMAP=false`, `DISABLE_ESLINT_PLUGIN=true`, `NODE_OPTIONS=--max_old_space_size=1536`)
+- [ ] Apply constrained no-infra test command policy (`NODE_OPTIONS=--max_old_space_size=1536`, `--runInBand`, `--watch=false`, `CI=true` in CI)
+- [ ] Validate constrained policy with three consecutive local test runs and three consecutive local build runs (no exit `137`)
+- [ ] Validate constrained policy once in GitHub Actions with the same command shape and capture evidence in task artifacts
 
 ## Completed Tasks
 
@@ -51,6 +57,7 @@ Upgrade `@typescript-eslint` stack to support TypeScript 5.9.x cleanly, verify l
 - [x] Relocate root-level `useObjectUrl` tests to `src/common/` and verify lint/focused tests
 - [x] Subdivide `src/common` into `ui`, `hooks`, `utils`, `errors` and update affected imports
 - [x] Revert singleton/concurrency commit (`a141e29e`) because test termination remained unresolved
+- [x] Document constrained no-infrastructure OOM-prevention plan for build and tests (planning only, no code/workflow implementation yet)
 
 ## Notes
 
