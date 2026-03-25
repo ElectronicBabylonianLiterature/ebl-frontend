@@ -1,5 +1,26 @@
 # TASK-683 Test Issues Summary (Rerun 2)
 
+## Actualization Update (2026-03-25)
+
+- A newer full diagnostic run is now available and should be treated as the current warning baseline.
+- Command executed:
+  - `yarn test:diag`
+- Output log:
+  - `TASK-683-test-diag-2026-03-25.txt`
+- Result:
+  - **PASS** (`289` suites passed, `22235` tests passed, `2` skipped)
+  - no `process exited too early` marker in this run.
+- Current warning counts from the latest run:
+  - React-Bootstrap `controlId` ignored on `FormLabel`: `153`
+  - React-Bootstrap `controlId` ignored on `FormControl`: `153`
+  - React state updates not wrapped in `act(...)`: `173`
+  - React Router future-flag warnings: `26`
+  - Invalid DOM nesting (`validateDOMNesting`): `10`
+- Current compact tracking artifact:
+  - `TASK-683-test-diag-hotspots-2026-03-25.md`
+
+Historical note: this document still preserves the 2026-03-10 failed rerun details below for audit context.
+
 ## Source
 
 - Command executed:

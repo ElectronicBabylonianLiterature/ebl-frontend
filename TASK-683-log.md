@@ -602,3 +602,43 @@
   - Updated progress counts: 33/40 completed (was 30/40), 7 remaining (was 10)
 
 - **Next priority**: Test command validation (currently pending; requires retry with extended timeout or background monitoring due to earlier process hang during test startup). Followed by: GitHub Actions workflow validation (requires single trial run to confirm CI stability under constrained policy).
+
+### Codespace CPU saturation during full test run (2026-03-25)
+
+- User-reported warning during full command:
+  - `High codespace CPU (100%) utilization detected. Consider stopping some processes for the best experience.`
+- Root cause class confirmed:
+  - test execution itself (`yarn test --coverage --forceExit --detectOpenHandles --watch=false`) is CPU-intensive in this 2-vCPU Codespace,
+  - coverage instrumentation plus open-handle detection over the full suite can saturate available CPU,
+  - this is resource pressure, not a test-source correctness issue.
+- Instruction alignment:
+  - reverted temporary modifications in `src/fragmentarium/ui/search/FragmentariumSearch.test.tsx` so test files remain unchanged.
+- Applied mitigation (non-test-code):
+  - updated `package.json` `test` script from `craco test --maxWorkers=50%` to `craco test --runInBand` (still with `NODE_OPTIONS=--max_old_space_size=1536`).
+  - objective: cap test execution to a single Jest worker process to reduce peak CPU bursts and avoid Codespace 100% utilization alerts.
+- Validation gates after script change:
+  - `yarn lint` -> passed.
+  - `yarn tsc` -> passed.
+
+### Diagnostic heap-logging command added (2026-03-25)
+
+- Added a dedicated diagnostics-only script in `package.json`:
+  - `test:diag`: `CI=true NODE_OPTIONS=--max_old_space_size=1536 craco test --runInBand --coverage --forceExit --detectOpenHandles --watch=false --logHeapUsage`
+- Purpose:
+  - provide a reproducible, explicit command for memory/CPU investigations,
+  - keep default test paths (`test`, `test:fast`) focused on normal development and CI behavior.
+
+### Diagnostic hotspot report artifact (2026-03-25)
+
+- Ran `yarn test:diag` and captured output in `TASK-683-test-diag-2026-03-25.txt`.
+- Result summary:
+  - `289` suites passed, `22237` tests total (`22235` passed, `2` skipped), no early-exit marker.
+- Extracted warning counts:
+  - React Router Future Flag: `26`
+  - `not wrapped in act(...)`: `173`
+  - `validateDOMNesting`: `10`
+  - `controlId` FormLabel ignored: `153`
+  - `controlId` FormControl ignored: `153`
+- Created compact tracking artifact:
+  - `TASK-683-test-diag-hotspots-2026-03-25.md`
+  - includes top 20 suites by heap usage and warning counts for trend comparison.

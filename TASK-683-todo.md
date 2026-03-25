@@ -15,6 +15,9 @@ Detailed build-termination findings: `TASK-683-build-investigation.md`.
 - [ ] Review warning: `bare-fs@4.5.3: The engine "bare" appears to be invalid` (via `lighthouse` transitive deps; only plain-update path is `lighthouse` version change)
 - [ ] Review warning: `bare-os@3.6.2: The engine "bare" appears to be invalid` (via `lighthouse` transitive deps; only plain-update path is `lighthouse` version change)
 - [ ] Stabilize full test termination first and obtain one complete rerun with Jest final summary
+- [ ] Verify CPU-saturation mitigation for full test runs in Codespace (`test` script now uses `--runInBand`) and confirm no 100% CPU warning recurrence in repeated runs
+- [x] Add a dedicated diagnostic test command with `--logHeapUsage` for memory/CPU investigation runs (`yarn test:diag`)
+- [x] Generate compact hotspot report artifact from diagnostic run (`TASK-683-test-diag-hotspots-2026-03-25.md`)
 - [x] Update dependency declarations and `resolutions`
 - [x] Reinstall dependencies with `yarn install` and refresh lockfile
 - [x] Run `yarn lint` and fix upgrade-related config/rule breaks only
