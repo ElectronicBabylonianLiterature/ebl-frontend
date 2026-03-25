@@ -24,7 +24,13 @@ export const tabIds = [
 ] as const
 export type TabId = (typeof tabIds)[number]
 
-const tabConfig = [
+type TabConfig = {
+  id: TabId
+  title: string
+  icon: string
+}
+
+const tabConfig: TabConfig[] = [
   { id: 'project', title: 'eBL Project', icon: '⚙' },
   { id: 'library', title: 'Library', icon: '⌂' },
   { id: 'corpus', title: 'Corpus', icon: '⊞' },
@@ -56,6 +62,26 @@ function getContent({
 }): React.ReactElement {
   const contentResolver = tabContent[activeTab] ?? tabContent.project
   return contentResolver(markupService)
+}
+
+function AboutNavItem({
+  tab,
+  isActive,
+  onSelect,
+}: {
+  tab: TabConfig
+  isActive: boolean
+  onSelect: (tabId: TabId) => void
+}): JSX.Element {
+  return (
+    <Nav.Link
+      className={`about-nav__item ${isActive ? 'active' : ''}`}
+      onClick={() => onSelect(tab.id)}
+    >
+      <span className="about-nav__icon">{tab.icon}</span>
+      <span className="about-nav__title">{tab.title}</span>
+    </Nav.Link>
+  )
 }
 
 export default function About({
@@ -121,16 +147,12 @@ export default function About({
           <Col md={3} className="about-sidebar">
             <Nav className="flex-column about-nav">
               {tabConfig.map((tab) => (
-                <Nav.Link
+                <AboutNavItem
                   key={tab.id}
-                  className={`about-nav__item ${
-                    selectedTab === tab.id ? 'active' : ''
-                  }`}
-                  onClick={() => handleSelect(tab.id as TabId)}
-                >
-                  <span className="about-nav__icon">{tab.icon}</span>
-                  <span className="about-nav__title">{tab.title}</span>
-                </Nav.Link>
+                  tab={tab}
+                  isActive={selectedTab === tab.id}
+                  onSelect={handleSelect}
+                />
               ))}
             </Nav>
           </Col>
