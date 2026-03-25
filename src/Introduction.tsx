@@ -11,6 +11,41 @@ import LatestTransliterations from 'fragmentarium/ui/front-page/LatestTransliter
 import FragmentService from 'fragmentarium/application/FragmentService'
 import DossiersService from 'dossiers/application/DossiersService'
 
+type FeatureCard = {
+  icon: string
+  title: string
+  description: string
+  to: string
+  linkText: string
+}
+
+const featureCards: FeatureCard[] = [
+  {
+    icon: '𒀀',
+    title: 'Signs',
+    description:
+      'Comprehensive reference tool for cuneiform script with palaeographic resources',
+    to: '/signs',
+    linkText: 'Explore Signs →',
+  },
+  {
+    icon: 'Aa',
+    title: 'Dictionary',
+    description:
+      'Flexible reference for Akkadian vocabulary with CDA and guide words',
+    to: '/dictionary',
+    linkText: 'Browse Dictionary →',
+  },
+  {
+    icon: '⊞',
+    title: 'Bibliography',
+    description:
+      'Complete bibliography of cuneiform publications with 11,497+ entries',
+    to: '/bibliography/references',
+    linkText: 'View Bibliography →',
+  },
+]
+
 function Hero(): JSX.Element {
   return (
     <div className="hero">
@@ -89,54 +124,22 @@ function FeatureCards(): JSX.Element {
     <section className="introduction-content">
       <Container>
         <Row>
-          <Col md={4} className="mb-4">
-            <Card className="feature-card">
-              <Card.Body>
-                <div className="feature-card__icon">𒀀</div>
-                <h3 className="feature-card__title">Signs</h3>
-                <p className="feature-card__text">
-                  Comprehensive reference tool for cuneiform script with
-                  palaeographic resources
-                </p>
-                <Link to="/signs" className="feature-card__link">
-                  Explore Signs →
-                </Link>
-              </Card.Body>
-            </Card>
-          </Col>
-          <Col md={4} className="mb-4">
-            <Card className="feature-card">
-              <Card.Body>
-                <div className="feature-card__icon">Aa</div>
-                <h3 className="feature-card__title">Dictionary</h3>
-                <p className="feature-card__text">
-                  Flexible reference for Akkadian vocabulary with CDA and guide
-                  words
-                </p>
-                <Link to="/dictionary" className="feature-card__link">
-                  Browse Dictionary →
-                </Link>
-              </Card.Body>
-            </Card>
-          </Col>
-          <Col md={4} className="mb-4">
-            <Card className="feature-card">
-              <Card.Body>
-                <div className="feature-card__icon">⊞</div>
-                <h3 className="feature-card__title">Bibliography</h3>
-                <p className="feature-card__text">
-                  Complete bibliography of cuneiform publications with 11,497+
-                  entries
-                </p>
-                <Link
-                  to="/bibliography/references"
-                  className="feature-card__link"
-                >
-                  View Bibliography →
-                </Link>
-              </Card.Body>
-            </Card>
-          </Col>
+          {featureCards.map((featureCard) => (
+            <Col key={featureCard.title} md={4} className="mb-4">
+              <Card className="feature-card">
+                <Card.Body>
+                  <div className="feature-card__icon">{featureCard.icon}</div>
+                  <h3 className="feature-card__title">{featureCard.title}</h3>
+                  <p className="feature-card__text">
+                    {featureCard.description}
+                  </p>
+                  <Link to={featureCard.to} className="feature-card__link">
+                    {featureCard.linkText}
+                  </Link>
+                </Card.Body>
+              </Card>
+            </Col>
+          ))}
         </Row>
       </Container>
     </section>

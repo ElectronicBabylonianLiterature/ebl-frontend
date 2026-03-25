@@ -3,52 +3,87 @@ import { Container, Row, Col } from 'react-bootstrap'
 import ExternalLink from 'common/ExternalLink'
 import './Footer.sass'
 
+type FooterLink = {
+  label: string
+  href: string
+  isExternal?: boolean
+}
+
+type FooterSection = {
+  title: string
+  links: FooterLink[]
+}
+
+const footerSections: FooterSection[] = [
+  {
+    title: 'About eBL',
+    links: [
+      { label: 'About', href: '/about' },
+      { label: 'Research Projects', href: '/projects' },
+      { label: 'CAIC', href: 'https://caic.badw.de', isExternal: true },
+    ],
+  },
+  {
+    title: 'Resources',
+    links: [
+      { label: 'Signs', href: '/reference-library/signs' },
+      { label: 'Dictionary', href: '/reference-library/dictionary' },
+      { label: 'Bibliography', href: '/reference-library/bibliography' },
+    ],
+  },
+  {
+    title: 'Legal',
+    links: [
+      { label: 'Impressum', href: '/impressum' },
+      { label: 'Datenschutz', href: '/datenschutz' },
+    ],
+  },
+]
+
+const partnerLinks = [
+  {
+    label: 'BAdW',
+    href: 'https://badw.de/',
+    title: 'Bayerische Akademie der Wissenschaften',
+  },
+  {
+    label: 'LMU',
+    href: 'https://www.lmu.de/',
+    title: 'Ludwig-Maximilians-Universität München',
+  },
+  {
+    label: 'LRZ',
+    href: 'https://www.lrz.de/',
+    title: 'Leibniz-Rechenzentrum',
+  },
+  {
+    label: 'AvH',
+    href: 'https://www.humboldt-foundation.de/',
+    title: 'Alexander von Humboldt Stiftung',
+  },
+]
+
 export default function Footer(): JSX.Element {
   return (
     <footer className="main-footer">
       <Container>
         <Row className="main-footer__content">
-          <Col md={3} className="main-footer__section">
-            <h6 className="main-footer__title">About eBL</h6>
-            <ul className="main-footer__links">
-              <li>
-                <a href="/about">About</a>
-              </li>
-              <li>
-                <a href="/projects">Research Projects</a>
-              </li>
-              <li>
-                <ExternalLink href="https://caic.badw.de">CAIC</ExternalLink>
-              </li>
-            </ul>
-          </Col>
-
-          <Col md={3} className="main-footer__section">
-            <h6 className="main-footer__title">Resources</h6>
-            <ul className="main-footer__links">
-              <li>
-                <a href="/reference-library/signs">Signs</a>
-              </li>
-              <li>
-                <a href="/reference-library/dictionary">Dictionary</a>
-              </li>
-              <li>
-                <a href="/reference-library/bibliography">Bibliography</a>
-              </li>
-            </ul>
-          </Col>
-
-          <Col md={3} className="main-footer__section">
-            <h6 className="main-footer__title">Legal</h6>
-            <ul className="main-footer__links">
-              <li>
-                <a href="/impressum">Impressum</a>
-              </li>
-              <li>
-                <a href="/datenschutz">Datenschutz</a>
-              </li>
-            </ul>
-          </Col>
+          {footerSections.map((section) => (
+            <Col key={section.title} md={3} className="main-footer__section">
+              <h6 className="main-footer__title">{section.title}</h6>
+              <ul className="main-footer__links">
+                {section.links.map((link) => (
+                  <li key={link.label}>
+                    {link.isExternal ? (
+                      <ExternalLink href={link.href}>{link.label}</ExternalLink>
+                    ) : (
+                      <a href={link.href}>{link.label}</a>
+                    )}
+                  </li>
+                ))}
+              </ul>
+            </Col>
+          ))}
 
           <Col md={3} className="main-footer__section">
             <h6 className="main-footer__title">Connect</h6>
@@ -84,37 +119,20 @@ export default function Footer(): JSX.Element {
         <Row className="main-footer__bottom">
           <Col>
             <div className="main-footer__partners">
-              <ExternalLink
-                href="https://badw.de/"
-                className="main-footer__partner-link"
-                title="Bayerische Akademie der Wissenschaften"
-              >
-                BAdW
-              </ExternalLink>
-              <span className="main-footer__separator">·</span>
-              <ExternalLink
-                href="https://www.lmu.de/"
-                className="main-footer__partner-link"
-                title="Ludwig-Maximilians-Universität München"
-              >
-                LMU
-              </ExternalLink>
-              <span className="main-footer__separator">·</span>
-              <ExternalLink
-                href="https://www.lrz.de/"
-                className="main-footer__partner-link"
-                title="Leibniz-Rechenzentrum"
-              >
-                LRZ
-              </ExternalLink>
-              <span className="main-footer__separator">·</span>
-              <ExternalLink
-                href="https://www.humboldt-foundation.de/"
-                className="main-footer__partner-link"
-                title="Alexander von Humboldt Stiftung"
-              >
-                AvH
-              </ExternalLink>
+              {partnerLinks.map((partner, index) => (
+                <React.Fragment key={partner.label}>
+                  {index > 0 && (
+                    <span className="main-footer__separator">·</span>
+                  )}
+                  <ExternalLink
+                    href={partner.href}
+                    className="main-footer__partner-link"
+                    title={partner.title}
+                  >
+                    {partner.label}
+                  </ExternalLink>
+                </React.Fragment>
+              ))}
             </div>
           </Col>
         </Row>

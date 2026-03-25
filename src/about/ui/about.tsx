@@ -33,6 +33,18 @@ const tabConfig = [
   { id: 'bibliography', title: 'Bibliography', icon: '※' },
 ]
 
+const tabContent: Record<
+  TabId,
+  (markupService: MarkupService) => React.ReactElement
+> = {
+  project: AboutProject,
+  library: AboutLibrary,
+  corpus: AboutCorpus,
+  signs: AboutSigns,
+  dictionary: AboutDictionary,
+  bibliography: AboutBibliography,
+}
+
 function getContent({
   markupService,
   activeTab,
@@ -42,22 +54,8 @@ function getContent({
   activeTab: TabId
   activeSection?: string
 }): React.ReactElement {
-  switch (activeTab) {
-    case 'project':
-      return AboutProject(markupService)
-    case 'library':
-      return AboutLibrary(markupService)
-    case 'corpus':
-      return AboutCorpus(markupService)
-    case 'signs':
-      return AboutSigns(markupService)
-    case 'dictionary':
-      return AboutDictionary(markupService)
-    case 'bibliography':
-      return AboutBibliography(markupService)
-    default:
-      return AboutProject(markupService)
-  }
+  const contentResolver = tabContent[activeTab] ?? tabContent.project
+  return contentResolver(markupService)
 }
 
 export default function About({
