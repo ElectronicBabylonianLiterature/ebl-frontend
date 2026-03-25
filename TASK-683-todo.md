@@ -47,6 +47,10 @@ Detailed build-termination findings: `TASK-683-build-investigation.md`.
 - [x] Subdivide `src/common` into `ui`, `hooks`, `utils`, `errors` and update affected imports
 - [x] Revert singleton/concurrency commit (`a141e29e`) because test termination remained unresolved
 - [x] Document constrained no-infrastructure OOM-prevention plan for build and tests (planning only, no code/workflow implementation yet)
+- [x] Revalidate blocker with fresh 2026-03-25 probes (`yarn build` twice + `CI=true yarn build`) and reconcile conflicting artifact claims (result: blocker still open; reliability not proven)
+- [x] Run A/B proof for build instability (`yarn build` vs `GENERATE_SOURCEMAP=false yarn build`, including `CI=true` variants) and document causal difference
+- [x] Implement production-safe sourcemap disablement fix: add `GENERATE_SOURCEMAP=false` to CI workflow Build step only (not to package.json or Dockerfile to preserve production behavior)
+- [x] Validate CI-style build passes with new GENERATE_SOURCEMAP=false flag (`CI=true GENERATE_SOURCEMAP=false yarn build` -> exit 0, no early-exit marker, 65.73s)
 
 ## Notes
 

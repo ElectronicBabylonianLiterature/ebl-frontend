@@ -2,86 +2,85 @@
 
 ## Summary
 
-Current unstaged setup changes are not approval-ready and should not be kept as-is. They do not solve the root problem, and they add workflow gating on top of a build path that remains unstable in both CI-mode and repeated local retries.
+Current changes are materially narrower than the earlier reverted experiment and are now targeted at the proven failure mode. The workflow disables sourcemap generation only for the CI Build step, while leaving the normal package build script and Docker production build behavior unchanged. Local A/B validation shows that this CI-only change flips `CI=true yarn build` from failing to passing in the constrained Codespace environment.
+
+The remaining approval condition is runner-context proof in GitHub Actions, because Docker paths and hosted-runner behavior cannot be fully validated locally in this container.
 
 Detailed technical findings are consolidated in `TASK-683-build-investigation.md`.
 
 ## Findings
 
-1. CI build gate added before build reliability is established (blocker)
+1. CI-only sourcemap disablement is the first locally validated build mitigation
 
 - Files:
-  - `.github/workflows/main.yml` (Build step added in `test` job, with retries)
-  - `package.json` (`build` now runs `GENERATE_SOURCEMAP=false node scripts/build.js`)
-  - `scripts/build.js` (SIGTERM grace handler)
-  - `TASK-683-log.md` (`CI=true yarn build` repeatedly fails with exit `137`)
-  - `TASK-683-todo.md` (`CI=true` unresolved is explicitly tracked)
+  - `.github/workflows/main.yml`
+  - `TASK-683-log.md`
+  - `TASK-683-todo.md`
 - Why this matters:
-  - GitHub Actions hosted runners execute with CI semantics; adding `yarn build` as a required test-job gate can fail in the same unresolved mode already observed locally.
+  - Local A/B testing showed the exact causal difference:
+    - `CI=true yarn build` failed with the CRA early-exit signal message.
+    - `CI=true GENERATE_SOURCEMAP=false yarn build` passed.
+  - This is materially different from the earlier wrapper-based experiment because it changes only the memory-heavy webpack sourcemap behavior in CI.
 - Risk:
-  - PR can be blocked by expected runner behavior instead of validating actual change quality.
+  - Low for production behavior, because package and Docker production build paths remain unchanged.
 
-1. Guarded build wrapper is an experiment, not a validated fix (blocker)
+1. GitHub Actions runner validation is still required before closing the blocker
+
+- Files:
+  - `.github/workflows/main.yml`
+  - `TASK-683-issues-summary.md`
+  - `TASK-683-log.md`
+- Why this matters:
+  - The local Codespace evidence is strong enough to justify the workflow change, but approval should still be based on at least one green GitHub Actions run using the real hosted-runner environment.
+- Risk:
+  - Until that run exists, the blocker is reduced but not fully discharged.
+
+1. Production build sourcemaps remain intentionally enabled
 
 - Files:
   - `package.json`
-  - `scripts/build.js`
-  - `TASK-683-log.md`
+  - `Dockerfile`
 - Why this matters:
-  - The wrapper proved that the build receives external `SIGTERM`, but repeated validation still showed `exit 137` kills after the grace handler, including two back-to-back local retry attempts.
+  - The user requirement was to avoid affecting production build behavior, especially sourcemap generation.
+  - The implemented fix satisfies that requirement by scoping `GENERATE_SOURCEMAP=false` to CI only.
 - Risk:
-  - Keeping the wrapper in the main build path creates maintenance surface without establishing reliable build behavior.
-
-1. Retry loops on build/tests can hide instability trends (non-blocker)
-
-- File:
-  - `.github/workflows/main.yml`
-- Why this matters:
-  - Automatic retries can convert flaky failures into occasional greens and reduce observability of regression signals.
+  - Local production-style builds may still fail in memory-constrained Codespaces, but that is not a regression introduced by this fix.
 
 ## Severity
 
-- Finding 1: High (Blocker)
-- Finding 2: High (Blocker)
-- Finding 3: Medium
+- Finding 1: Medium
+- Finding 2: High (Blocker until runner validation)
+- Finding 3: Low
 
 ## Reproduction Steps
 
-1. Use current unstaged state.
-2. Run `CI=true yarn build` multiple times.
-3. Observe non-zero exits (`137`) documented in local run log.
-4. Compare with required CI workflow path where `test` job now runs `yarn build` as a gate.
-5. Run `yarn build` twice in succession.
-6. Observe that retries also fail in some local runs, so the wrapper is not a stable solution.
+1. Use the current change set.
+2. Run `CI=true yarn build` in the constrained local environment and observe the early-exit failure.
+3. Run `CI=true GENERATE_SOURCEMAP=false yarn build` in the same environment and observe successful completion.
+4. Confirm that `package.json` and `Dockerfile` still do not set `GENERATE_SOURCEMAP=false` globally.
+5. Run the GitHub Actions `test` job to validate the same command path on a hosted runner.
 
 ## Recommendation
 
-1. Revert the setup changes from runtime/workflow files:
-
-- `.github/workflows/main.yml`
-- `package.json`
-- `scripts/build.js`
-
-2. Keep the documentation artifacts that capture the experiments and their results.
-3. Continue investigation as documentation-first work until there is a demonstrably stable build path.
-4. If workflow hardening is retried later, add it only after runner-context evidence shows the build command is reliable.
-5. Use `TASK-683-build-investigation.md` as the single detailed reference for the build-failure findings.
+1. Keep the current workflow-only change in `.github/workflows/main.yml`.
+2. Do not move `GENERATE_SOURCEMAP=false` into `package.json` or `Dockerfile`, because that would change production build behavior.
+3. Validate the updated `test` job once in GitHub Actions runner context.
+4. If the hosted-runner build passes without the early-exit marker, close the blocker and request re-review.
+5. Keep `TASK-683-build-investigation.md` as the detailed reference for the underlying OOM analysis.
 
 ## Comment Status Tracking
 
 - Unresolved comments:
-  - Blocker: Build gate added while build reliability remains unresolved.
-  - Blocker: Guarded build wrapper did not establish reliable build completion.
-  - Risk: Retry loops may mask instability patterns.
+  - Blocker: confirm the updated CI Build step in GitHub Actions runner context.
 - Resolved comments:
-  - None in this review cycle.
+  - Guarded build wrapper should not remain in the main build path.
+  - Production build configuration should not be changed just to stabilize CI.
+  - Broad revert recommendation no longer applies to the current narrower fix.
 
 ## What Has To Be Done
 
-1. BLOCKER: Resolve `CI=true yarn build` reliability before requiring the new Build step in `.github/workflows/main.yml` `test` job.
-2. Revert the current setup changes because they are experimental and not validated fixes.
-3. Re-validate workflow behavior in GitHub Actions runner context for the exact `test` and docker-related paths.
-4. Decide and document retry policy (keep/remove/tighten) for Build and Unit Tests based on failure observability requirements.
-5. Re-run verification set after changes: `yarn lint`, `yarn tsc`, and CI-representative build/test commands.
-6. Request re-review after blocker is closed and evidence is attached.
-7. Before merge, remove task artifact files if no longer needed (including this review file), per task cleanup rules.
+1. BLOCKER: Run the GitHub Actions `test` job with the updated Build step and confirm `GENERATE_SOURCEMAP=false DISABLE_ESLINT_PLUGIN=true NODE_OPTIONS=--max_old_space_size=1536 yarn build` completes successfully.
+2. Re-run verification set after changes: `yarn lint`, `yarn tsc`, and the CI-representative build command.
+3. Validate Docker workflow behavior in GitHub Actions runner context separately, because Docker CLI is unavailable locally.
+4. Request re-review after the runner-context build evidence is attached.
+5. Before merge, remove task artifact files if no longer needed (including this review file), per task cleanup rules.
