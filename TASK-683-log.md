@@ -642,3 +642,19 @@
 - Created compact tracking artifact:
   - `TASK-683-test-diag-hotspots-2026-03-25.md`
   - includes top 20 suites by heap usage and warning counts for trend comparison.
+
+### Repeatable termination-stability verification (2026-03-25)
+
+- Executed three consecutive full diagnostic runs:
+  - `yarn test:diag > TASK-683-test-diag-2026-03-25-run1.txt 2>&1`
+  - `yarn test:diag > TASK-683-test-diag-2026-03-25-run2.txt 2>&1`
+  - `yarn test:diag > TASK-683-test-diag-2026-03-25-run3.txt 2>&1`
+- Termination stability result:
+  - all 3 runs reached final Jest summary (`Test Suites`, `Tests`, `Snapshots`, `Time`),
+  - no `The build failed because the process exited too early` marker in any of the three logs,
+  - therefore the specific "full test termination" blocker is considered resolved.
+- Remaining quality signal from the same runs (separate from termination stability):
+  - run1: `LatestTransliterations.test.tsx` snapshot failure,
+  - run2: `LatestTransliterations.test.tsx` snapshot failure + `AnnotationsView.integration.test.ts` failure,
+  - run3: `LatestTransliterations.test.tsx` snapshot failure.
+  - conclusion: termination is stable, but deterministic/flaky test failures still need dedicated follow-up.

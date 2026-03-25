@@ -10,6 +10,7 @@ For the detailed build-termination investigation, see `TASK-683-build-investigat
 
 - Commit `a141e29e` (singleton full-test guard + CI concurrency) was reverted by `576377ac` because it did not resolve the termination failure.
 - Latest diagnostic run (`yarn test:diag`) completed successfully with final Jest summary (no early-exit marker).
+- Repeatability verification completed: three consecutive `yarn test:diag` runs (`run1`, `run2`, `run3`) all reached final Jest summary with no early-exit marker.
 - Warning inventory has been refreshed from the latest diagnostic log and compact hotspot artifact.
 
 ## Latest Test Run
@@ -39,10 +40,12 @@ For the detailed build-termination investigation, see `TASK-683-build-investigat
 ## Summary
 
 - **Good news:** latest diagnostic full run (`yarn test:diag`) completed successfully with final Jest summary in `TASK-683-test-diag-2026-03-25.txt`.
+- **Termination stability status:** confirmed repeatable in three consecutive full diagnostic runs (`TASK-683-test-diag-2026-03-25-run1.txt`, `TASK-683-test-diag-2026-03-25-run2.txt`, `TASK-683-test-diag-2026-03-25-run3.txt`) with no `process exited too early` marker.
 - **Primary blocker (confirmed root cause):** OOM kill. Only ~2.1 GB available at build start vs 2.5–4+ GB needed by webpack. No swap space. SIGTERM from Codespace host agent, SIGKILL follows = exit 137. Identical budget constraint applies to GitHub Actions `ubuntu-latest` (7 GB total). Minimum fix: `GENERATE_SOURCEMAP=false` in `package.json` build script and Dockerfile.
 - **Detailed evidence:** see `TASK-683-build-investigation.md` § Root-Cause Deep-Dive (OOM Kill) for environment metrics, signal sequence explanation, similar community cases, and ranked solutions.
 - **Important:** the singleton/concurrency attempt was reverted because it did not fix termination behavior.
 - **Secondary issues:** warning logs were actualized from the latest run and now show the main cleanup classes as `controlId` warnings, `act(...)` warnings, Router future-flag warnings, and `validateDOMNesting` warnings.
+- **Important caveat:** termination stability is distinct from test correctness; repeat runs still showed failing suites (`LatestTransliterations.test.tsx` snapshot and `AnnotationsView.integration.test.ts` in one run), which remain open follow-up work.
 - **Structure follow-up:** security and `useObjectUrl` placement inconsistencies are resolved; optional overlap de-duplication remains for the two `useObjectUrl` regression suites.
 - **Common follow-up:** `src/common` now uses the minimal four-way subdivision (`ui/hooks/utils/errors`) and import paths have been aligned.
 - **Lint follow-up:** mismatch investigation is now resolved; warning disappeared after lockfile-synced reinstall and integrity verification.
