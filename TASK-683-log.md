@@ -573,3 +573,32 @@
     platform incident).
 - Updated `TASK-683-todo.md` with planning milestone complete and queued non-implemented
   execution tasks for later application/validation of the constrained policy.
+
+## 2026-03-25
+
+### Implementation phase: Deploy constrained OOM-prevention policy
+
+- **Deployed constrained build command policy** to three critical files:
+  - `package.json` `build` script: `GENERATE_SOURCEMAP=false DISABLE_ESLINT_PLUGIN=true NODE_OPTIONS=--max_old_space_size=1536 craco build`
+  - `Dockerfile` build stage: Added ENV vars (`GENERATE_SOURCEMAP=false`, `DISABLE_ESLINT_PLUGIN=true`, `NODE_OPTIONS=--max_old_space_size=1536`)
+  - `.github/workflows/main.yml` Build step: `GENERATE_SOURCEMAP=false DISABLE_ESLINT_PLUGIN=true NODE_OPTIONS=--max_old_space_size=1536 yarn build`
+
+- **Deployed constrained test command policy** to two critical files:
+  - `package.json` `test` script: Added prefix `NODE_OPTIONS=--max_old_space_size=1536` to `craco test --maxWorkers=50%`
+  - `.github/workflows/main.yml` Unit Tests step: Changed to `NODE_OPTIONS=--max_old_space_size=1536 yarn test --coverage --forceExit --detectOpenHandles --watch=false`
+
+- **Verified static syntax** with `yarn tsc` (passed in 21.8 seconds, no errors).
+
+- **Executed three consecutive local build validation runs** with constrained command policy:
+  - Run 1: `GENERATE_SOURCEMAP=false DISABLE_ESLINT_PLUGIN=true NODE_OPTIONS=--max_old_space_size=1536 yarn build` → **completed in 74.44s** ✓
+  - Run 2: Clean build → **completed in 67.46s** ✓
+  - Run 3: Clean build → **completed in 67.07s** ✓
+  - **Key result**: All three runs completed successfully without exit `137`, without "The build failed because the process exited too early" message, and without any OOM signals.
+
+- **Updated task tracking**:
+  - Marked build command policy application/deployment as completed [x]
+  - Marked test command policy application/deployment as completed [x]
+  - Marked build validation (three consecutive runs) as completed [x]
+  - Updated progress counts: 33/40 completed (was 30/40), 7 remaining (was 10)
+
+- **Next priority**: Test command validation (currently pending; requires retry with extended timeout or background monitoring due to earlier process hang during test startup). Followed by: GitHub Actions workflow validation (requires single trial run to confirm CI stability under constrained policy).

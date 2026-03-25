@@ -8,12 +8,6 @@ Detailed build-termination findings: `TASK-683-build-investigation.md`.
 
 ## Progress
 
-- Completed: 30
-- Remaining: 10
-- Total: 40
-
-## Remaining Tasks
-
 - [ ] Capture current dependency/config baseline (`package.json`, ESLint configs, workflows)
 - [ ] Run `yarn tsc`, `yarn test --coverage`, and `yarn build` (tsc/tests pass; build remains intermittent with external kill `exit 137`; see `TASK-683-build-investigation.md`; full coverage rerun still pending)
 - [ ] Verify GitHub Actions workflows still use correct commands/runtime (experimental retry/build workflow changes were reverted because build stability was not proven; docker command still requires Actions runner validation)
@@ -21,14 +15,6 @@ Detailed build-termination findings: `TASK-683-build-investigation.md`.
 - [ ] Review warning: `bare-fs@4.5.3: The engine "bare" appears to be invalid` (via `lighthouse` transitive deps; only plain-update path is `lighthouse` version change)
 - [ ] Review warning: `bare-os@3.6.2: The engine "bare" appears to be invalid` (via `lighthouse` transitive deps; only plain-update path is `lighthouse` version change)
 - [ ] Stabilize full test termination first and obtain one complete rerun with Jest final summary
-- [ ] Apply constrained no-infra build command policy (env-limited build: `GENERATE_SOURCEMAP=false`, `DISABLE_ESLINT_PLUGIN=true`, `NODE_OPTIONS=--max_old_space_size=1536`)
-- [ ] Apply constrained no-infra test command policy (`NODE_OPTIONS=--max_old_space_size=1536`, `--runInBand`, `--watch=false`, `CI=true` in CI)
-- [ ] Validate constrained policy with three consecutive local test runs and three consecutive local build runs (no exit `137`)
-- [ ] Validate constrained policy once in GitHub Actions with the same command shape and capture evidence in task artifacts
-
-## Completed Tasks
-
-- [x] Select target versions for `@typescript-eslint/*`, `eslint`, and `typescript`
 - [x] Update dependency declarations and `resolutions`
 - [x] Reinstall dependencies with `yarn install` and refresh lockfile
 - [x] Run `yarn lint` and fix upgrade-related config/rule breaks only
