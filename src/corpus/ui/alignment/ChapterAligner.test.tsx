@@ -1,7 +1,6 @@
 import React from 'react'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import selectEvent from 'react-select-event'
 import { whenClicked, clickNth } from 'test-support/utils'
 import { ChapterAlignment } from 'corpus/domain/alignment'
 import ChapterAligner from './ChapterAligner'
@@ -80,10 +79,9 @@ test('Omit word', async () => {
     },
   )
 
-  await selectEvent.select(
-    await screen.findByLabelText('Omitted words'),
-    'kur-kur',
-  )
+  const omittedWordsInput = await screen.findByLabelText('Omitted words')
+  await userEvent.click(omittedWordsInput)
+  await userEvent.type(omittedWordsInput, 'kur-kur{enter}')
   await whenClicked(screen, 'Save alignment')
     .expect(onSave)
     .toHaveBeenCalledWith(expected)

@@ -16,7 +16,7 @@
   font-size: 1rem;
   font-weight: 700;
   color: #1a3a6b;
-  margin: 0 0 0.2rem 0;
+  margin: 0 0 0.2rem;
 }
 
 .latest-additions__subtitle {
@@ -64,7 +64,7 @@
 }
 
 .latest-card {
-  background: #ffffff;
+  background: #fff;
   border: 1px solid #dce2ea;
   border-left: 3px solid #1a5fa8;
   border-radius: 0 8px 8px 0;
@@ -79,7 +79,7 @@
 }
 
 .latest-card:hover {
-  box-shadow: 0 4px 14px rgba(26, 95, 168, 0.13);
+  box-shadow: 0 4px 14px rgb(26 95 168 / 13%);
   transform: translateY(-2px);
   border-left-color: #1a3a6b;
 }
@@ -126,7 +126,7 @@
 .latest-card__collection {
   font-size: 0.7rem;
   color: #9aabb8;
-  margin: 0 0 0.3rem 0;
+  margin: 0 0 0.3rem;
   font-style: italic;
 }
 
@@ -134,7 +134,7 @@
   font-size: 0.78rem;
   color: #4a5568;
   line-height: 1.45;
-  margin: 0 0 auto 0;
+  margin: 0 0 auto;
   display: -webkit-box;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
@@ -173,7 +173,7 @@
 }
 
 .latest-card__meta-line {
-  margin: 0 0 0.22rem 0;
+  margin: 0 0 0.22rem;
   font-size: 0.72rem;
   color: #5a6a7e;
   line-height: 1.35;
@@ -188,7 +188,7 @@
 }
 
 .latest-card__genres {
-  margin: 0.4rem 0 0.35rem 0;
+  margin: 0.4rem 0 0.35rem;
   padding: 0;
   list-style: none;
 }
@@ -216,7 +216,7 @@
 }
 
 .latest-card__references .ReferenceList__list {
-  margin: 0.2rem 0 0 0;
+  margin: 0.2rem 0 0;
   padding-left: 0;
   list-style: none;
 }

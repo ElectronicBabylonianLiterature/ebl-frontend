@@ -1,4 +1,4 @@
-FROM node:16-alpine AS build
+FROM node:20-alpine AS build
 
 ENV NODE_ENV production
 WORKDIR /usr/src/ebl-frontend
@@ -28,7 +28,7 @@ ARG REACT_APP_GA_TRACKING_ID
 RUN yarn build
 
 
-FROM node:16-alpine
+FROM node:20-alpine
 
 EXPOSE 5000
 RUN yarn global add serve@13.0.2
