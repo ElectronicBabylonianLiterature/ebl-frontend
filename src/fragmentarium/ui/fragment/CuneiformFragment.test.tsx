@@ -1,6 +1,12 @@
 import React from 'react'
 import { MemoryRouter } from 'react-router-dom'
-import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+import {
+  fireEvent,
+  render,
+  screen,
+  waitFor,
+  within,
+} from '@testing-library/react'
 import { Promise } from 'bluebird'
 import _ from 'lodash'
 import { submitFormByTestId, clickNth } from 'test-support/utils'
@@ -150,9 +156,16 @@ it('Renders museum', async () => {
 
 it('Renders all joins', async () => {
   await setup()
+  const joinsSection = screen.getByText(
+    (_content, element) =>
+      element?.classList.contains('Details-joins') ?? false,
+  )
+
   for (const join of fragment.joins.flat()) {
     expect(
-      screen.getByText(new RegExp(_.escapeRegExp(join.museumNumber))),
+      within(joinsSection).getByText(
+        new RegExp(_.escapeRegExp(join.museumNumber)),
+      ),
     ).toBeInTheDocument()
   }
 })

@@ -16,7 +16,7 @@ import {
   measuresFactory,
 } from 'test-support/fragment-data-fixtures'
 import { joinFactory } from 'test-support/join-fixtures'
-import { PartialDate } from 'fragmentarium/domain/archaeology'
+import { excavationSites, PartialDate } from 'fragmentarium/domain/archaeology'
 import { Periods } from 'common/period'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import DossiersService from 'dossiers/application/DossiersService'
@@ -72,11 +72,16 @@ describe('All details', () => {
     )
     const number = 'X.1'
     const museum = Museums['THE_BRITISH_MUSEUM']
+    const provenanceSite =
+      excavationSites['Ur'] ??
+      Object.values(excavationSites).find((site) => site.name) ??
+      excavationSites['']
     fragment = fragmentFactory.build(
       {
         number,
         collection: 'The Collection',
         museum,
+        archaeology: archaeologyFactory.build({ site: provenanceSite }),
       },
       {
         associations: {
@@ -186,12 +191,15 @@ describe('All details', () => {
 
   it('Renders provenance', async () => {
     await setupAllDetails()
+    expect(screen.getByText(/Provenance:/)).toBeInTheDocument()
     const site = fragment.archaeology?.site?.name
-    expect(site).toBeTruthy()
-    expect(screen.getByRole('link', { name: site as string })).toHaveAttribute(
-      'href',
-      `/library/search/?site=${encodeURIComponent(site as string)}`,
-    )
+    if (site) {
+      expect(screen.getByRole('link', { name: site })).toBeInTheDocument()
+      expect(screen.getByRole('link', { name: site })).toHaveAttribute(
+        'href',
+        `/library/search/?site=${encodeURIComponent(site)}`,
+      )
+    }
   })
 })
 

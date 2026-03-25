@@ -20,6 +20,7 @@ import FragmentService from 'fragmentarium/application/FragmentService'
 import lineNumberToString from 'transliteration/domain/lineNumberToString'
 import TokenAnnotation from 'fragmentarium/ui/fragment/linguistic-annotation/TokenAnnotation'
 import LemmaEditorModal from 'fragmentarium/ui/fragment/lemma-annotation/LemmaEditorModal'
+import Word from 'dictionary/domain/Word'
 
 type TextSetter = React.Dispatch<React.SetStateAction<Text>>
 type LineLemmaUpdate = {
@@ -184,6 +185,19 @@ export default class LemmaAnnotation extends TokenAnnotation {
       .then((fragment) => this.setText(fragment.text))
       .then(() => this.setState({ process: null }))
   }
+
+  onCreateProperNoun = (createdWord: Word): void => {
+    if (!createdWord?._id) {
+      this.setState({ process: null })
+      return
+    }
+
+    const createdLemma = new LemmaOption(createdWord)
+    this.handleChange([createdLemma])
+    this.state.activeToken?.confirmSuggestion()
+    this.saveUpdates()
+  }
+
   selectionHandlers = {
     selectNextToken: this.selectNextToken,
     selectPreviousToken: this.selectPreviousToken,
@@ -198,6 +212,8 @@ export default class LemmaAnnotation extends TokenAnnotation {
     onResetCurrent: this.resetActiveToken,
     onMultiApply: this.applyToPendingInstances,
     onMultiReset: this.undoPendingInstances,
+    onCreateProperNoun: (): void => undefined,
+    onProperNounCreated: this.onCreateProperNoun,
   }
 
   render(): React.ReactNode {
