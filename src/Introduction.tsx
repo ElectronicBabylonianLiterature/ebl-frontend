@@ -10,41 +10,9 @@ import { Session } from 'auth/Session'
 import LatestTransliterations from 'fragmentarium/ui/front-page/LatestTransliterations'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import DossiersService from 'dossiers/application/DossiersService'
+import { getIntroductionFeatureCards } from 'library/application/referenceSections'
 
-type FeatureCard = {
-  icon: string
-  title: string
-  description: string
-  to: string
-  linkText: string
-}
-
-const featureCards: FeatureCard[] = [
-  {
-    icon: '𒀀',
-    title: 'Signs',
-    description:
-      'Comprehensive reference tool for cuneiform script with palaeographic resources',
-    to: '/signs',
-    linkText: 'Explore Signs →',
-  },
-  {
-    icon: 'Aa',
-    title: 'Dictionary',
-    description:
-      'Flexible reference for Akkadian vocabulary with CDA and guide words',
-    to: '/dictionary',
-    linkText: 'Browse Dictionary →',
-  },
-  {
-    icon: '⊞',
-    title: 'Bibliography',
-    description:
-      'Complete bibliography of cuneiform publications with 11,497+ entries',
-    to: '/bibliography/references',
-    linkText: 'View Bibliography →',
-  },
-]
+const featureCards = getIntroductionFeatureCards()
 
 function Hero(): JSX.Element {
   return (

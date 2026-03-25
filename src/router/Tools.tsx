@@ -115,39 +115,35 @@ function getContent({
 }): React.ReactElement {
   const routeProps = { location, match, history }
 
-  if (!activeTab) {
-    return <ToolsIntroduction markupService={markupService} />
+  const contentByTab: Partial<Record<TabId, React.ReactElement>> = {
+    signs: <Signs {...routeProps} signService={signService} />,
+    dictionary: <Dictionary wordService={wordService} {...routeProps} />,
+    bibliography: (
+      <Bibliography
+        bibliographyService={bibliographyService}
+        afoRegisterService={afoRegisterService}
+        fragmentService={fragmentService}
+        activeTab="references"
+        {...routeProps}
+      />
+    ),
+    'date-converter': (
+      <>
+        {AboutDateConverter(markupService)}
+        <DateConverterForm />
+      </>
+    ),
+    'list-of-kings': ListOfKings(),
+    'cuneiform-converter': <CuneiformConverterForm signService={signService} />,
   }
 
-  switch (activeTab) {
-    case 'signs':
-      return <Signs {...routeProps} signService={signService} />
-    case 'dictionary':
-      return <Dictionary wordService={wordService} {...routeProps} />
-    case 'bibliography':
-      return (
-        <Bibliography
-          bibliographyService={bibliographyService}
-          afoRegisterService={afoRegisterService}
-          fragmentService={fragmentService}
-          activeTab="references"
-          {...routeProps}
-        />
-      )
-    case 'date-converter':
-      return (
-        <>
-          {AboutDateConverter(markupService)}
-          <DateConverterForm />
-        </>
-      )
-    case 'list-of-kings':
-      return ListOfKings()
-    case 'cuneiform-converter':
-      return <CuneiformConverterForm signService={signService} />
-    default:
-      return <ToolsIntroduction markupService={markupService} />
-  }
+  return activeTab ? (
+    (contentByTab[activeTab] ?? (
+      <ToolsIntroduction markupService={markupService} />
+    ))
+  ) : (
+    <ToolsIntroduction markupService={markupService} />
+  )
 }
 
 export default function Tools({

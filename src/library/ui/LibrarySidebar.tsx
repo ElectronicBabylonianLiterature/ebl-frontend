@@ -1,6 +1,7 @@
 import React from 'react'
 import { Nav } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
+import { getReferenceLibrarySections } from 'library/application/referenceSections'
 import './LibrarySidebar.sass'
 
 interface LibrarySidebarProps {
@@ -10,29 +11,7 @@ interface LibrarySidebarProps {
 export default function LibrarySidebar({
   activeSection,
 }: LibrarySidebarProps): JSX.Element {
-  const sections = [
-    {
-      key: 'signs',
-      title: 'Signs',
-      path: '/reference-library/signs',
-      description: 'Cuneiform sign search',
-      icon: '𒀀',
-    },
-    {
-      key: 'dictionary',
-      title: 'Dictionary',
-      path: '/reference-library/dictionary',
-      description: 'Akkadian & Sumerian words',
-      icon: 'Aa',
-    },
-    {
-      key: 'bibliography',
-      title: 'Bibliography',
-      path: '/reference-library/bibliography',
-      description: 'References & citations',
-      icon: '⊞',
-    },
-  ]
+  const sections = getReferenceLibrarySections()
 
   return (
     <div className="LibrarySidebar">
