@@ -91,4 +91,9 @@ describe('Tools', () => {
     renderTools('cuneiform-converter')
     expect(screen.getByText('Cuneiform Converter Mock')).toBeInTheDocument()
   })
+
+  it('renders introduction for unknown activeTab', () => {
+    renderTools('unknown-tab' as Parameters<typeof Tools>[0]['activeTab'])
+    expect(screen.getByText('Welcome to eBL Tools')).toBeInTheDocument()
+  })
 })
