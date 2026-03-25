@@ -1,5 +1,6 @@
 import React from 'react'
 import { render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import { MemoryRouter } from 'react-router-dom'
 import Tools from 'router/Tools'
 import MarkupService from 'markup/application/MarkupService'
@@ -8,6 +9,13 @@ import WordService from 'dictionary/application/WordService'
 import BibliographyService from 'bibliography/application/BibliographyService'
 import AfoRegisterService from 'afo-register/application/AfoRegisterService'
 import FragmentService from 'fragmentarium/application/FragmentService'
+
+const mockPush = jest.fn()
+
+jest.mock('router/compat', () => ({
+  ...jest.requireActual('router/compat'),
+  useHistory: () => ({ push: mockPush }),
+}))
 
 jest.mock('signs/ui/search/Signs', () => ({
   __esModule: true,
@@ -61,6 +69,10 @@ function renderTools(activeTab?: Parameters<typeof Tools>[0]['activeTab']) {
 }
 
 describe('Tools', () => {
+  beforeEach(() => {
+    mockPush.mockReset()
+  })
+
   it('renders tools introduction when no tab is selected', () => {
     renderTools()
     expect(screen.getByText('Welcome to eBL Tools')).toBeInTheDocument()
@@ -95,5 +107,75 @@ describe('Tools', () => {
   it('renders introduction for unknown activeTab', () => {
     renderTools('unknown-tab' as Parameters<typeof Tools>[0]['activeTab'])
     expect(screen.getByText('Welcome to eBL Tools')).toBeInTheDocument()
+  })
+
+  it('updates selected tab and pushes route when nav item is clicked', async () => {
+    renderTools()
+    await userEvent.click(screen.getByRole('button', { name: /Dictionary/ }))
+    expect(mockPush).toHaveBeenCalledWith('/tools/dictionary')
+  })
+
+  it('does not push route when clicking the already active tab', async () => {
+    renderTools('dictionary')
+    await userEvent.click(screen.getByRole('button', { name: /Dictionary/ }))
+    expect(mockPush).not.toHaveBeenCalled()
+  })
+
+  it('syncs selected tab when activeTab prop changes', () => {
+    const props = {
+      markupService: {} as MarkupService,
+      signService: {} as SignService,
+      wordService: {} as WordService,
+      bibliographyService: {} as BibliographyService,
+      afoRegisterService: {} as AfoRegisterService,
+      fragmentService: {} as FragmentService,
+      activeTab: 'signs' as Parameters<typeof Tools>[0]['activeTab'],
+    }
+
+    const { rerender } = render(
+      <MemoryRouter>
+        <Tools {...props} />
+      </MemoryRouter>,
+    )
+
+    expect(screen.getByText('Signs Mock')).toBeInTheDocument()
+
+    rerender(
+      <MemoryRouter>
+        <Tools {...props} activeTab="dictionary" />
+      </MemoryRouter>,
+    )
+
+    expect(screen.getByText('Dictionary Mock')).toBeInTheDocument()
+  })
+
+  it('scrolls to element from hash location', () => {
+    jest.useFakeTimers()
+    const scrollIntoView = jest.fn()
+    const getElementByIdSpy = jest
+      .spyOn(document, 'getElementById')
+      .mockReturnValue({
+        scrollIntoView,
+      } as unknown as HTMLElement)
+
+    render(
+      <MemoryRouter initialEntries={['/tools#target-section']}>
+        <Tools
+          markupService={{} as MarkupService}
+          signService={{} as SignService}
+          wordService={{} as WordService}
+          bibliographyService={{} as BibliographyService}
+          afoRegisterService={{} as AfoRegisterService}
+          fragmentService={{} as FragmentService}
+        />
+      </MemoryRouter>,
+    )
+
+    jest.runAllTimers()
+    expect(getElementByIdSpy).toHaveBeenCalledWith('target-section')
+    expect(scrollIntoView).toHaveBeenCalledWith({ behavior: 'smooth' })
+
+    getElementByIdSpy.mockRestore()
+    jest.useRealTimers()
   })
 })

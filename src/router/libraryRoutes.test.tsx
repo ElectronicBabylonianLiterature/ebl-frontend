@@ -88,6 +88,51 @@ function renderRoutes(path: string, sitemap = false) {
 }
 
 describe('libraryRoutes bibliography routes', () => {
+  it('renders routes when sitemap is enabled', () => {
+    renderRoutes('/reference-library/signs', true)
+    expect(screen.getByText('Signs Route')).toBeInTheDocument()
+  })
+
+  it('renders signs search route', () => {
+    renderRoutes('/reference-library/signs')
+    expect(screen.getByText('Signs Route')).toBeInTheDocument()
+  })
+
+  it('renders sign display route', () => {
+    renderRoutes('/reference-library/signs/SIGN.1')
+    expect(screen.getByText('Sign Display Route')).toBeInTheDocument()
+  })
+
+  it('renders dictionary search route', () => {
+    renderRoutes('/reference-library/dictionary')
+    expect(screen.getByText('Dictionary Route')).toBeInTheDocument()
+  })
+
+  it('renders word display route', () => {
+    renderRoutes('/reference-library/dictionary/word-id')
+    expect(screen.getByText('Word Display Route')).toBeInTheDocument()
+  })
+
+  it('renders word editor route', () => {
+    renderRoutes('/reference-library/dictionary/word-id/edit')
+    expect(screen.getByText('Word Editor Route')).toBeInTheDocument()
+  })
+
+  it('renders bibliography new reference editor route', () => {
+    renderRoutes('/reference-library/bibliography/references/new-reference')
+    expect(screen.getByText('Bibliography Editor')).toBeInTheDocument()
+  })
+
+  it('renders bibliography viewer route', () => {
+    renderRoutes('/reference-library/bibliography/references/RN1')
+    expect(screen.getByText('Bibliography Viewer')).toBeInTheDocument()
+  })
+
+  it('renders bibliography editor route', () => {
+    renderRoutes('/reference-library/bibliography/references/RN1/edit')
+    expect(screen.getByText('Bibliography Editor')).toBeInTheDocument()
+  })
+
   it('renders bibliography references tab route', () => {
     renderRoutes('/reference-library/bibliography/references')
     expect(
@@ -112,5 +157,10 @@ describe('libraryRoutes bibliography routes', () => {
   it('renders not found for unknown reference-library path', () => {
     renderRoutes('/reference-library/unknown-route')
     expect(screen.getByText('Library Not Found')).toBeInTheDocument()
+  })
+
+  it('redirects library root to signs', () => {
+    renderRoutes('/reference-library')
+    expect(screen.getByText('Signs Route')).toBeInTheDocument()
   })
 })
