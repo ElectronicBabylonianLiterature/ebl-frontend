@@ -258,6 +258,44 @@ describe('ExcavationDate', () => {
   })
 })
 
+describe('Findspot uncertain display', () => {
+  beforeEach(() => {
+    fragmentService.fetchGenres.mockResolvedValue([])
+    fragmentService.fetchPeriods.mockResolvedValue([])
+  })
+
+  it('appends (?) to findspot string when isFindspotUncertain is true', async () => {
+    fragment = fragmentFactory.build({
+      archaeology: archaeologyFactory.build({ isFindspotUncertain: true }),
+    })
+    const findspotString = fragment.archaeology?.findspot?.toString()
+    await renderDetails()
+
+    if (findspotString) {
+      expect(
+        screen.getByText(`Findspot: ${findspotString} (?)`),
+      ).toBeInTheDocument()
+    } else {
+      expect(screen.getByText('Findspot: -')).toBeInTheDocument()
+    }
+  })
+
+  it('does not append (?) when isFindspotUncertain is false', async () => {
+    fragment = fragmentFactory.build({
+      archaeology: archaeologyFactory.build({ isFindspotUncertain: false }),
+    })
+    const findspotString = fragment.archaeology?.findspot?.toString()
+    await renderDetails()
+
+    if (findspotString) {
+      expect(
+        screen.getByText(`Findspot: ${findspotString}`),
+      ).toBeInTheDocument()
+      expect(screen.queryByText(/\(\?\)/)).not.toBeInTheDocument()
+    }
+  })
+})
+
 describe('Missing details', () => {
   async function setupMissingDetails(): Promise<void> {
     const archaeology = archaeologyFactory.build({

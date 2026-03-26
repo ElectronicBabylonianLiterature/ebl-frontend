@@ -258,6 +258,7 @@ export const archaeologyFactory = Factory.define<Archaeology>(
       excavationNumber: `${chance.word()}.${sequence}`,
       site: chance.pickone(Object.values(excavationSites)),
       isRegularExcavation: chance.bool(),
+      isFindspotUncertain: chance.bool(),
       findspot: associations.findspot,
       findspotId: associations.findspot?.id,
     }
