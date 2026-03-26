@@ -93,6 +93,16 @@ describe('libraryRoutes bibliography routes', () => {
     expect(screen.getByText('Signs Route')).toBeInTheDocument()
   })
 
+  it('renders dictionary route when sitemap is enabled', () => {
+    renderRoutes('/reference-library/dictionary', true)
+    expect(screen.getByText('Dictionary Route')).toBeInTheDocument()
+  })
+
+  it('renders bibliography viewer route when sitemap is enabled', () => {
+    renderRoutes('/reference-library/bibliography/references/RN1', true)
+    expect(screen.getByText('Bibliography Viewer')).toBeInTheDocument()
+  })
+
   it('renders signs search route', () => {
     renderRoutes('/reference-library/signs')
     expect(screen.getByText('Signs Route')).toBeInTheDocument()

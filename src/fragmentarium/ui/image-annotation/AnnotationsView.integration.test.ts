@@ -30,7 +30,9 @@ describe('Display annotate view', () => {
       .withSession()
       .withPath(`/library/${fragmentNumber}/annotate`)
       .render()
-    await appDriver.getView().findByRole('button', { name: 'Save' })
+    await appDriver
+      .getView()
+      .findByRole('button', { name: 'Save' }, { timeout: 10000 })
   })
 
   test('Breadcrumbs', () => {

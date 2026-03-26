@@ -57,6 +57,29 @@ const tabConfig = [
   { id: 'cuneiform-converter', title: 'Cuneiform Converter', icon: '𒐕' },
 ]
 
+export function getCurrentTab(selectedTab?: TabId) {
+  return tabConfig.find((tab) => tab.id === selectedTab)
+}
+
+export function getDisplayTitle(selectedTab?: TabId): string {
+  if (!selectedTab) {
+    return 'Tools'
+  }
+
+  return getCurrentTab(selectedTab)?.title ?? 'Tools'
+}
+
+export function getToolsBreadcrumbs(
+  displayTitle: string,
+  selectedTab?: TabId,
+): TextCrumb[] {
+  if (!selectedTab) {
+    return [new TextCrumb('Tools')]
+  }
+
+  return [new TextCrumb('Tools'), new TextCrumb(_.capitalize(displayTitle))]
+}
+
 interface ToolsIntroductionProps {
   markupService: MarkupService
 }
@@ -195,8 +218,8 @@ export default function Tools({
     }
   }, [location])
 
-  const currentTab = tabConfig.find((tab) => tab.id === selectedTab)
-  const displayTitle = selectedTab ? currentTab?.title : 'Tools'
+  const currentTab = getCurrentTab(selectedTab)
+  const displayTitle = getDisplayTitle(selectedTab)
 
   return (
     <>
@@ -204,14 +227,7 @@ export default function Tools({
         <Container>
           <Breadcrumbs
             className="tools-header__breadcrumbs"
-            crumbs={
-              selectedTab
-                ? [
-                    new TextCrumb('Tools'),
-                    new TextCrumb(_.capitalize(displayTitle)),
-                  ]
-                : [new TextCrumb('Tools')]
-            }
+            crumbs={getToolsBreadcrumbs(displayTitle, selectedTab)}
           />
           <h1 className="tools-header__title">Tools</h1>
         </Container>

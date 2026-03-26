@@ -24,6 +24,31 @@ import {
 import { HeadTagsService } from 'router/head'
 import NotFoundPage from 'NotFoundPage'
 
+function buildSitemapProps({
+  sitemap,
+  slugs,
+}: {
+  sitemap: boolean
+  slugs?: SignSlugs | DictionarySlugs | BibliographySlugs
+}):
+  | Record<string, never>
+  | {
+      changefreq: string
+      priority: number
+      slugs?: SignSlugs | DictionarySlugs | BibliographySlugs
+    } {
+  if (!sitemap) {
+    return {}
+  }
+
+  return slugs
+    ? {
+        ...sitemapDefaults,
+        slugs,
+      }
+    : sitemapDefaults
+}
+
 function bibliographySearchRoute({
   key,
   path,
@@ -63,7 +88,7 @@ function bibliographySearchRoute({
           </HeadTagsService>
         </Library>
       )}
-      {...(sitemap && sitemapDefaults)}
+      {...buildSitemapProps({ sitemap })}
     />
   )
 }
@@ -110,10 +135,7 @@ export default function LibraryRoutes({
           </HeadTagsService>
         </Library>
       )}
-      {...(sitemap && {
-        ...sitemapDefaults,
-        slugs: signSlugs,
-      })}
+      {...buildSitemapProps({ sitemap, slugs: signSlugs })}
     />,
     <Route
       key="library-signs"
@@ -129,7 +151,7 @@ export default function LibraryRoutes({
           </HeadTagsService>
         </Library>
       )}
-      {...(sitemap && sitemapDefaults)}
+      {...buildSitemapProps({ sitemap })}
     />,
 
     <Route
@@ -165,10 +187,7 @@ export default function LibraryRoutes({
           </HeadTagsService>
         </Library>
       )}
-      {...(sitemap && {
-        ...sitemapDefaults,
-        slugs: dictionarySlugs,
-      })}
+      {...buildSitemapProps({ sitemap, slugs: dictionarySlugs })}
     />,
     <Route
       key="library-dictionary"
@@ -184,7 +203,7 @@ export default function LibraryRoutes({
           </HeadTagsService>
         </Library>
       )}
-      {...(sitemap && sitemapDefaults)}
+      {...buildSitemapProps({ sitemap })}
     />,
 
     <Route
@@ -222,10 +241,7 @@ export default function LibraryRoutes({
           </HeadTagsService>
         </Library>
       )}
-      {...(sitemap && {
-        ...sitemapDefaults,
-        slugs: bibliographySlugs,
-      })}
+      {...buildSitemapProps({ sitemap, slugs: bibliographySlugs })}
     />,
     <Route
       key="library-bibliographyEditor"

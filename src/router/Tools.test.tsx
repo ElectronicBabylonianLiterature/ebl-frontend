@@ -2,7 +2,11 @@ import React from 'react'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { MemoryRouter } from 'react-router-dom'
-import Tools from 'router/Tools'
+import Tools, {
+  getCurrentTab,
+  getDisplayTitle,
+  getToolsBreadcrumbs,
+} from 'router/Tools'
 import MarkupService from 'markup/application/MarkupService'
 import SignService from 'signs/application/SignService'
 import WordService from 'dictionary/application/WordService'
@@ -111,7 +115,9 @@ describe('Tools', () => {
 
   it('updates selected tab and pushes route when nav item is clicked', async () => {
     renderTools()
+    mockPush.mockReset()
     await userEvent.click(screen.getByRole('button', { name: /Dictionary/ }))
+    expect(mockPush).toHaveBeenCalledTimes(1)
     expect(mockPush).toHaveBeenCalledWith('/tools/dictionary')
   })
 
@@ -177,5 +183,48 @@ describe('Tools', () => {
 
     getElementByIdSpy.mockRestore()
     jest.useRealTimers()
+  })
+
+  it('does not scroll when hash target element is missing', () => {
+    jest.useFakeTimers()
+    const getElementByIdSpy = jest
+      .spyOn(document, 'getElementById')
+      .mockReturnValue(null)
+
+    render(
+      <MemoryRouter initialEntries={['/tools#missing-section']}>
+        <Tools
+          markupService={{} as MarkupService}
+          signService={{} as SignService}
+          wordService={{} as WordService}
+          bibliographyService={{} as BibliographyService}
+          afoRegisterService={{} as AfoRegisterService}
+          fragmentService={{} as FragmentService}
+        />
+      </MemoryRouter>,
+    )
+
+    jest.runAllTimers()
+    expect(getElementByIdSpy).toHaveBeenCalledWith('missing-section')
+
+    getElementByIdSpy.mockRestore()
+    jest.useRealTimers()
+  })
+
+  it('resolves tab metadata and fallback display title', () => {
+    expect(getCurrentTab('dictionary')?.title).toEqual('Dictionary')
+    expect(getCurrentTab(undefined)).toBeUndefined()
+    expect(getDisplayTitle(undefined)).toEqual('Tools')
+    expect(
+      getDisplayTitle(
+        'unknown-tab' as Parameters<typeof Tools>[0]['activeTab'],
+      ),
+    ).toEqual('Tools')
+    expect(getDisplayTitle('signs')).toEqual('Signs')
+  })
+
+  it('builds breadcrumbs for selected and unselected states', () => {
+    expect(getToolsBreadcrumbs('Tools')).toHaveLength(1)
+    expect(getToolsBreadcrumbs('Dictionary', 'dictionary')).toHaveLength(2)
   })
 })
