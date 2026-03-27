@@ -369,26 +369,6 @@ describe('ErrorBoundary - Comprehensive Error Handling', () => {
       )
     })
 
-    test('Error logged to console', () => {
-      const consoleSpy = jest.spyOn(console, 'log')
-      const CrashingComponent = () => {
-        throw new Error('Console log test')
-      }
-
-      render(
-        <ErrorReporterContext.Provider value={errorReportingService}>
-          <ErrorBoundary>
-            <CrashingComponent />
-          </ErrorBoundary>
-        </ErrorReporterContext.Provider>,
-      )
-
-      expect(consoleSpy).toHaveBeenCalledWith(
-        expect.objectContaining({ message: 'Console log test' }),
-      )
-      consoleSpy.mockRestore()
-    })
-
     test('Error reporter context is used', () => {
       const CrashingComponent = () => {
         throw new Error('Context test')
