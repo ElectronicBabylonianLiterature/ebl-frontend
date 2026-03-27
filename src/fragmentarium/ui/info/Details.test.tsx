@@ -13,6 +13,7 @@ import { fragmentFactory } from 'test-support/fragment-fixtures'
 import {
   archaeologyFactory,
   externalNumbersFactory,
+  findspotFactory,
   measuresFactory,
 } from 'test-support/fragment-data-fixtures'
 import { joinFactory } from 'test-support/join-fixtures'
@@ -255,6 +256,48 @@ describe('ExcavationDate', () => {
 
     expect(screen.queryByText(/Regular Excavation/)).not.toBeInTheDocument()
     expect(screen.queryByText(/10\/05\/2024/)).not.toBeInTheDocument()
+  })
+})
+
+describe('Findspot uncertain display', () => {
+  beforeEach(() => {
+    fragmentService.fetchGenres.mockResolvedValue([])
+    fragmentService.fetchPeriods.mockResolvedValue([])
+  })
+
+  it('appends (?) to findspot string when isFindspotUncertain is true', async () => {
+    const findspot = findspotFactory.build()
+    fragment = fragmentFactory.build({
+      archaeology: archaeologyFactory.build(
+        { isFindspotUncertain: true },
+        { associations: { findspot } },
+      ),
+    })
+    const findspotString = fragment.archaeology?.findspot?.toString()
+    await renderDetails()
+
+    expect(findspotString).toBeTruthy()
+    expect(
+      screen.getByText(`Findspot: ${findspotString} (?)`),
+    ).toBeInTheDocument()
+  })
+
+  it('does not append (?) when isFindspotUncertain is false', async () => {
+    const findspot = findspotFactory.build()
+    fragment = fragmentFactory.build({
+      archaeology: archaeologyFactory.build(
+        { isFindspotUncertain: false },
+        { associations: { findspot } },
+      ),
+    })
+    const findspotString = fragment.archaeology?.findspot?.toString()
+    await renderDetails()
+
+    expect(findspotString).toBeTruthy()
+    expect(screen.getByText(`Findspot: ${findspotString}`)).toBeInTheDocument()
+    expect(
+      screen.queryByText(`Findspot: ${findspotString} (?)`),
+    ).not.toBeInTheDocument()
   })
 })
 
