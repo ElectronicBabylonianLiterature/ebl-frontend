@@ -121,18 +121,6 @@ export default function BibliographyRoutes({
         </HeadTagsService>
       )}
     />,
-    <Redirect
-      exact
-      from="/bibliography/references"
-      to="/tools/bibliography"
-      key="bibliography-references-redirect"
-    />,
-    <Redirect
-      exact
-      from="/bibliography/afo-register"
-      to="/tools/bibliography"
-      key="bibliography-afo-redirect"
-    />,
     <Route
       key="BibliographyNotFound"
       path="/bibliography/*"

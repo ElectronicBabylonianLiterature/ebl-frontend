@@ -1,5 +1,6 @@
 import React from 'react'
 import { Container, Row, Col } from 'react-bootstrap'
+import { Link } from 'react-router-dom'
 import ExternalLink from 'common/ExternalLink'
 import './Footer.sass'
 
@@ -77,7 +78,7 @@ export default function Footer(): JSX.Element {
                     {link.isExternal ? (
                       <ExternalLink href={link.href}>{link.label}</ExternalLink>
                     ) : (
-                      <a href={link.href}>{link.label}</a>
+                      <Link to={link.href}>{link.label}</Link>
                     )}
                   </li>
                 ))}

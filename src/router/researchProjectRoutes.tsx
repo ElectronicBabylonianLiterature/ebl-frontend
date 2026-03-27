@@ -1,6 +1,6 @@
 import React, { ReactNode } from 'react'
 import { parse } from 'query-string'
-import { Route } from 'router/compat'
+import { Route, Redirect } from 'router/compat'
 import { sitemapDefaults } from 'router/sitemap'
 import { HeadTagsService } from 'router/head'
 import { ResearchProjects } from 'research-projects/researchProject'
@@ -76,26 +76,11 @@ export default function ResearchProjectRoutes({
       )}
       {...(sitemap && sitemapDefaults)}
     />,
-    <Route
+    <Redirect
       key={`${key}-home-alias`}
       exact
-      path={`/projects/${project.abbreviation}/home`}
-      render={(): ReactNode => (
-        <HeadTagsService
-          title={`${project.abbreviation} in eBL`}
-          description={project.name}
-        >
-          <HomeComponent
-            fragmentService={fragmentService}
-            fragmentSearchService={fragmentSearchService}
-            wordService={wordService}
-            bibliographyService={bibliographyService}
-            dossiersService={dossiersService}
-            project={project}
-          />
-        </HeadTagsService>
-      )}
-      {...(sitemap && sitemapDefaults)}
+      from={`/projects/${project.abbreviation}/home`}
+      to={`/projects/${project.abbreviation}`}
     />,
     <Route
       key={`${key}-search`}

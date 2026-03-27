@@ -54,11 +54,9 @@ const tabContent: Record<
 function getContent({
   markupService,
   activeTab,
-  activeSection,
 }: {
   markupService: MarkupService
   activeTab: TabId
-  activeSection?: string
 }): React.ReactElement {
   const contentResolver = tabContent[activeTab] ?? tabContent.project
   return contentResolver(markupService)
@@ -87,18 +85,16 @@ function AboutNavItem({
 export default function About({
   markupService,
   activeTab,
-  activeSection,
 }: {
   markupService: MarkupService
   activeTab: TabId
-  activeSection?: string
 }): JSX.Element {
   const history = useHistory()
   const location = useLocation()
   const [selectedTab, setSelectedTab] = useState(activeTab)
 
   const handleSelect = (newTab: TabId) => {
-    if (newTab === activeTab) {
+    if (newTab === selectedTab) {
       return
     }
     history.push(`/about/${newTab}`)
@@ -106,11 +102,8 @@ export default function About({
   }
 
   useEffect(() => {
-    if (activeTab === selectedTab) {
-      return
-    }
     setSelectedTab(activeTab)
-  }, [selectedTab, activeTab])
+  }, [activeTab])
 
   useEffect(() => {
     const hash = location.hash
@@ -163,7 +156,7 @@ export default function About({
               <h2 className="about-content__title">{currentTab?.title}</h2>
             </div>
             <div className="about-content__body">
-              {getContent({ markupService, activeTab, activeSection })}
+              {getContent({ markupService, activeTab: selectedTab })}
             </div>
           </Col>
         </Row>

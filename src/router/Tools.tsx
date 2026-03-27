@@ -191,7 +191,7 @@ export default function Tools({
   const [selectedTab, setSelectedTab] = useState(activeTab)
 
   const handleSelect = (newTab: TabId) => {
-    if (newTab === activeTab) {
+    if (newTab === selectedTab) {
       return
     }
     history.push(`/tools/${newTab}`)
@@ -199,11 +199,8 @@ export default function Tools({
   }
 
   useEffect(() => {
-    if (activeTab === selectedTab) {
-      return
-    }
     setSelectedTab(activeTab)
-  }, [selectedTab, activeTab])
+  }, [activeTab])
 
   useEffect(() => {
     const hash = location.hash

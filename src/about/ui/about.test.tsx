@@ -33,15 +33,10 @@ const markupServiceMock = new (MarkupService as jest.Mock<
 const renderAbout = async (
   initialEntries: string[] = ['/about/project'],
   activeTab: TabId = 'project',
-  activeSection?: string,
 ) => {
   render(
     <MemoryRouter initialEntries={initialEntries}>
-      <About
-        markupService={markupServiceMock}
-        activeTab={activeTab}
-        activeSection={activeSection}
-      />
+      <About markupService={markupServiceMock} activeTab={activeTab} />
     </MemoryRouter>,
   )
 

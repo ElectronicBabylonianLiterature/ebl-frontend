@@ -56,11 +56,7 @@ export default function AboutRoutes({
             title="About: eBL"
             description="This section provides detailed information about the electronic Babylonian Library (eBL) and the materials and tools available."
           >
-            <About
-              markupService={cachedMarkupService}
-              activeTab={tabId}
-              activeSection={undefined}
-            />
+            <About markupService={cachedMarkupService} activeTab={tabId} />
           </HeadTagsService>
         )}
         {...(sitemap && sitemapDefaults)}
