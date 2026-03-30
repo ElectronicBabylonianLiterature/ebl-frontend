@@ -113,9 +113,37 @@ export function getRenderableProvenanceGeometry(provenance: ProvenanceRecord):
 export function sortProvenances(
   provenances: readonly ProvenanceRecord[],
 ): readonly ProvenanceRecord[] {
-  return [...provenances].sort(
-    (first, second) =>
-      first.sortKey - second.sortKey ||
-      first.longName.localeCompare(second.longName),
-  )
+  const compare = (first: ProvenanceRecord, second: ProvenanceRecord): number =>
+    first.sortKey - second.sortKey ||
+    first.longName.localeCompare(second.longName)
+
+  const roots = provenances.filter((provenance) => !provenance.parent)
+
+  const childrenByParent = new Map<string, ProvenanceRecord[]>()
+  for (const provenance of provenances) {
+    if (provenance.parent) {
+      const siblings = childrenByParent.get(provenance.parent) ?? []
+      siblings.push(provenance)
+      childrenByParent.set(provenance.parent, siblings)
+    }
+  }
+
+  const rootNames = new Set(roots.map((root) => root.longName))
+  const orphans = provenances
+    .filter(
+      (provenance) => provenance.parent && !rootNames.has(provenance.parent),
+    )
+    .slice()
+    .sort(compare)
+
+  return [
+    ...roots
+      .slice()
+      .sort(compare)
+      .flatMap((root) => [
+        root,
+        ...(childrenByParent.get(root.longName) ?? []).slice().sort(compare),
+      ]),
+    ...orphans,
+  ]
 }

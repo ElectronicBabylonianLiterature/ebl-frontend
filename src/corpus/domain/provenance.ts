@@ -1,4 +1,5 @@
 import { ProvenanceRecord } from 'fragmentarium/domain/Provenance'
+import { sortProvenances } from 'fragmentarium/domain/Provenance'
 
 export interface Provenance {
   readonly id?: string
@@ -50,13 +51,7 @@ export function setProvenanceRecords(
 ): void {
   provenanceById.clear()
 
-  const sortedRecords = records
-    .slice()
-    .sort(
-      (first, second) =>
-        first.sortKey - second.sortKey ||
-        first.longName.localeCompare(second.longName),
-    )
+  const sortedRecords = sortProvenances(records)
 
   const nextProvenances = sortedRecords.map((record) =>
     addOrUpdateProvenance(toProvenance(record)),
