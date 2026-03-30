@@ -110,3 +110,25 @@ it('shows findspot choices', async () => {
       expect(screen.getByText(findspot.toString())).toBeVisible(),
     )
 })
+
+it('shows findspot-uncertain checkbox with stored value', async () => {
+  await setup()
+  const checkbox = screen.getByLabelText('findspot-uncertain')
+  expect(checkbox).toBeInTheDocument()
+  if (archaeology.isFindspotUncertain) {
+    expect(checkbox).toBeChecked()
+  } else {
+    expect(checkbox).not.toBeChecked()
+  }
+})
+
+it('updates isFindspotUncertain on change', async () => {
+  await setup()
+  const checkbox = screen.getByLabelText('findspot-uncertain')
+  await userEvent.click(checkbox)
+  if (archaeology.isFindspotUncertain) {
+    expect(checkbox).not.toBeChecked()
+  } else {
+    expect(checkbox).toBeChecked()
+  }
+})

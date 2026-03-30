@@ -5586,9 +5586,9 @@ exports[`Snapshot 1`] = `
             class="fragment-result__fragment-number"
           >
             <a
-              href="/library/wegi.4"
+              href="/library/jif.4"
             >
-              wegi.4
+              jif.4
             </a>
              (Aram)
           </h4>
@@ -5598,7 +5598,7 @@ exports[`Snapshot 1`] = `
             <small>
               <p>
                 Accession no.: 
-                osfohfa.4
+                nusfoh.4
               </p>
               <p>
                 Excavation no.: 
@@ -11128,19 +11128,7 @@ exports[`Snapshot 1`] = `
         </div>
         <div
           class="fragment-result__preview col-sm-4 col-12"
-        >
-          <div
-            class="text-center my-5 withData-spinner"
-          >
-            <span
-              aria-hidden="true"
-              aria-label="Spinner"
-              class="mr-2 spinner-border spinner-border-sm"
-              role="status"
-            />
-             Loading...
-          </div>
-        </div>
+        />
       </div>
       <hr />
     </div>
