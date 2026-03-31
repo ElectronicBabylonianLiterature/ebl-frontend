@@ -795,3 +795,30 @@
 - Lint gate: ✓ PASSED.
 - TypeScript gate: ✓ PASSED.
 - Updated `TASK-683-todo.md`: marked item done.
+
+### Fix #3: validateDOMNesting warnings (10 occurrences)
+
+- Three distinct violation types across 4 test suites:
+
+#### `<div>` in `<tbody>` (4 warnings, `Signs.test.tsx` + `SignSearch.test.tsx`)
+
+- Root cause: `withData` HOC wraps content in `<div>` (spinner/error), and `SignLists` (a `withData` component) was rendered inside `<tbody>` in `src/signs/ui/search/SignsSearch.tsx`.
+- Fix: moved `<table><tbody>` from `SignsSearch` into the `SignLists` data renderer. Each parameter's data callback now returns `<table><tbody><tr>…</tr></tbody></table>` when data exists, `null` when empty. `SignsSearch` no longer wraps in `<table><tbody>`.
+- File changed: `src/signs/ui/search/SignsSearch.tsx`.
+
+#### `<figure>`/`<figcaption>` in `<p>` (4 warnings, `App.test.ts`)
+
+- Root cause: explicit `<figure>` elements nested inside `<p>` tags in `src/about/ui/fragmentarium.tsx` (lines ~133 and ~173).
+- Fix: moved `<figure>` elements out of `<p>` tags to be siblings instead of children.
+- File changed: `src/about/ui/fragmentarium.tsx`.
+
+#### `<td>` in `<div>` (1 warning, `line-tokens.test.tsx`)
+
+- Root cause: test rendered `<LineColumns>` (which produces `<td>`) directly in a `<div>` container without table structure.
+- Fix: added `<table><tbody><tr>` wrapper around `<LineColumns>` in the test.
+- Files changed: `src/transliteration/ui/line-tokens.test.tsx`, `src/transliteration/ui/__snapshots__/line-tokens.test.tsx.snap` (updated snapshot).
+
+- Focused test verification: all 4 affected suites (`App.test.ts`, `Signs.test.tsx`, `SignSearch.test.tsx`, `line-tokens.test.tsx`) — zero validateDOMNesting warnings.
+- Lint gate: ✓ PASSED.
+- TypeScript gate: ✓ PASSED.
+- Updated `TASK-683-todo.md`: marked item done.
