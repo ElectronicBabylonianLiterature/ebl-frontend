@@ -782,3 +782,16 @@
 - Lint gate: ✓ PASSED.
 - TypeScript gate: ✓ PASSED.
 - Updated `TASK-683-todo.md`: marked item done.
+
+### Fix #2: controlId ignored on FormLabel/FormControl (306 occurrences)
+
+- Traced all 306 warnings to a single source component: `src/dictionary/ui/editor/LemmaInput.tsx`.
+- Warning distribution by test suite (from diagnostic logs):
+  - `WordEditor.test.tsx`: 176, `WordEditor.integration.test.ts`: 50, `FormInput.test.tsx`: 22, `FormList.test.tsx`: 16, `DerivedList.test.tsx`: 16, `LemmaInput.test.tsx`: 14, `DerivedFromInput.test.tsx`: 12.
+- Root cause: `Form.Group controlId={this.inputId}` + `Form.Label htmlFor={this.inputId}` + `Form.Control id={this.inputId}` — React Bootstrap's `controlId` already handles label-control binding, making explicit `htmlFor`/`id` redundant and triggering warnings.
+- Fix: removed `htmlFor={this.inputId}` from `Form.Label` and `id={this.inputId}` from `Form.Control`.
+- Focused test verification: `LemmaInput.test.tsx` — 7 tests passed, zero controlId warnings. `WordEditor.test.tsx` — zero controlId warnings.
+- Coverage: 90% stmts / 100% branches / 80% functions / 90% lines (unchanged from pre-fix; uncovered line 13 is pre-existing `hasAttested` getter).
+- Lint gate: ✓ PASSED.
+- TypeScript gate: ✓ PASSED.
+- Updated `TASK-683-todo.md`: marked item done.

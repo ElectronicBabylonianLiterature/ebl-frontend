@@ -53,7 +53,7 @@ Detailed build-termination findings: `TASK-683-build-investigation.md`.
 - [x] Validate CI-style build passes with new GENERATE_SOURCEMAP=false flag (`CI=true GENERATE_SOURCEMAP=false yarn build` -> exit 0, no early-exit marker, 65.73s)
 - [x] Investigate test diagnostic hotspots report (`TASK-683-test-diag-hotspots-2026-03-25.md`) and research all 5 warning classes
 - [x] Fix React Router future flag warnings (26 occurrences): add `future` prop to `BrowserRouter` in `src/index.tsx`
-- [ ] Fix `controlId ignored on FormLabel/FormControl` warnings (306 occurrences): remove redundant `htmlFor`/`id` when `controlId` is on `Form.Group`, or remove `controlId`
+- [x] Fix `controlId ignored on FormLabel/FormControl` warnings (306 occurrences): remove redundant `htmlFor`/`id` from `LemmaInput.tsx` where `controlId` on `Form.Group` handles binding
 - [ ] Fix `validateDOMNesting` warnings (10 occurrences): fix 4 structural HTML violations across `SignsSearch`, `markup.tsx`, `LineAccumulator`
 - [ ] Fix `act(...)` warnings (173 occurrences): wrap shared test helpers (`changeValue`, `clickNth`) in `act()`, then audit individual test files
 

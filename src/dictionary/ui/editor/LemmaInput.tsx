@@ -16,7 +16,6 @@ class LemmaInput extends Component<{
   lemmaFormControl = (): JSX.Element => (
     <Form.Control
       type="text"
-      id={this.inputId}
       value={this.props.value.lemma.join(' ')}
       onChange={this.lemmaChanged}
     />
@@ -39,7 +38,7 @@ class LemmaInput extends Component<{
   render(): JSX.Element {
     return (
       <Form.Group controlId={this.inputId}>
-        <Form.Label htmlFor={this.inputId}>Lemma</Form.Label>
+        <Form.Label>Lemma</Form.Label>
         {_.has(this.props.value, 'attested') ? (
           <InputGroup>
             <InputGroup.Text>
