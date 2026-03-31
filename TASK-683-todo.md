@@ -51,6 +51,11 @@ Detailed build-termination findings: `TASK-683-build-investigation.md`.
 - [x] Run A/B proof for build instability (`yarn build` vs `GENERATE_SOURCEMAP=false yarn build`, including `CI=true` variants) and document causal difference
 - [x] Implement production-safe sourcemap disablement fix: add `GENERATE_SOURCEMAP=false` to CI workflow Build step only (not to package.json or Dockerfile to preserve production behavior)
 - [x] Validate CI-style build passes with new GENERATE_SOURCEMAP=false flag (`CI=true GENERATE_SOURCEMAP=false yarn build` -> exit 0, no early-exit marker, 65.73s)
+- [x] Investigate test diagnostic hotspots report (`TASK-683-test-diag-hotspots-2026-03-25.md`) and research all 5 warning classes
+- [x] Fix React Router future flag warnings (26 occurrences): add `future` prop to `BrowserRouter` in `src/index.tsx`
+- [ ] Fix `controlId ignored on FormLabel/FormControl` warnings (306 occurrences): remove redundant `htmlFor`/`id` when `controlId` is on `Form.Group`, or remove `controlId`
+- [ ] Fix `validateDOMNesting` warnings (10 occurrences): fix 4 structural HTML violations across `SignsSearch`, `markup.tsx`, `LineAccumulator`
+- [ ] Fix `act(...)` warnings (173 occurrences): wrap shared test helpers (`changeValue`, `clickNth`) in `act()`, then audit individual test files
 
 ## Notes
 

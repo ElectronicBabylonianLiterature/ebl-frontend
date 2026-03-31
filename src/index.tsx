@@ -156,7 +156,8 @@ const root = createRoot(container)
 root.render(
   <ErrorReporterContext.Provider value={errorReporter}>
     <ErrorBoundary>
-      <Router>
+      {/* eslint-disable-next-line camelcase */}
+      <Router future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
         <div className="mh-100">
           <div>
             <InjectedAuth0Provider>

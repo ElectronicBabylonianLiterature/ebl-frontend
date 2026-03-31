@@ -735,3 +735,50 @@
   - `TASK-683-issues-summary.md`: P1 status changed from "Mitigation implemented" to "Resolved"; Next Verification Checklist step 1 marked done.
 - Lint gate: ✓ PASSED.
 - TypeScript gate: ✓ PASSED.
+
+### Investigate test diagnostic hotspots warning classes
+
+- Input: `TASK-683-test-diag-hotspots-2026-03-25.md` (5 warning classes, 515 total occurrences).
+- Researched all 5 warning classes across the codebase:
+
+#### 1. React Router Future Flag Warning (26 occurrences)
+
+- Partially fixed: `src/setupTests.ts` already mocks `MemoryRouter` with `v7_startTransition` and `v7_relativeSplatPath` flags.
+- Remaining: production `BrowserRouter` in `src/index.tsx` has no future flags set.
+- Fix: add `future={{ v7_startTransition: true, v7_relativeSplatPath: true }}` to `<Router>` in `src/index.tsx`.
+
+#### 2. `act(...)` warnings (173 occurrences)
+
+- Root cause: `fireEvent` calls without `act()` wrapping; async state updates after unmount.
+- Shared helpers `changeValue()` and `clickNth()` in `src/test-support/utils.ts` lack `act()`.
+- Strategy: fix shared helpers first (high-leverage), then audit individual test files, consider migrating to `userEvent`.
+
+#### 3. `validateDOMNesting` (10 occurrences)
+
+- 4 violations: `<div>` in `<tbody>` — `ErrorBoundary` via `withData` wrapping table content in `src/signs/ui/search/SignsSearch.tsx`.
+- 2+2 violations: `<figure>`/`<figcaption>` in `<p>` — `src/markup/ui/markup.tsx` uses `<p>` container for block-level markup content.
+- 1 violation: `<td>` in `<div>` — `LineLemmasContext.Provider` wrapping `<td>` in `src/transliteration/ui/LineAccumulator.tsx`.
+
+#### 4+5. `controlId ignored on FormLabel/FormControl` (153+153 = 306 occurrences)
+
+- React Bootstrap `^2.9.0` warns when `Form.Group` has `controlId` and children also have explicit `htmlFor`/`id`.
+- Key files: `LemmaInput.tsx`, `DateConverterFormField.tsx`, `CuneiformConverterForm.tsx`, plus many more.
+- Fix: remove redundant `htmlFor`/`id` from children (keep `controlId`), or remove `controlId` if manual management is intended.
+
+#### Prioritized fix plan
+
+1. React Router future flags — 1 file change, eliminates 26 warnings.
+2. controlId cleanup — mechanical, eliminates 306 warnings.
+3. validateDOMNesting — targeted structural fixes, eliminates 10 warnings.
+4. act() warnings — largest effort (phased), eliminates 173 warnings.
+
+- Updated `TASK-683-todo.md` with 4 new fix items.
+
+### Fix #1: React Router future flag warnings (26 occurrences)
+
+- Added `future={{ v7_startTransition: true, v7_relativeSplatPath: true }}` to `<Router>` (BrowserRouter) in `src/index.tsx`.
+- Added `{/* eslint-disable-next-line camelcase */}` to suppress camelcase lint error on React Router's snake_case API identifiers.
+- Focused test verification: `src/Header.test.tsx` — 21 tests passed, zero React Router future flag warnings.
+- Lint gate: ✓ PASSED.
+- TypeScript gate: ✓ PASSED.
+- Updated `TASK-683-todo.md`: marked item done.
