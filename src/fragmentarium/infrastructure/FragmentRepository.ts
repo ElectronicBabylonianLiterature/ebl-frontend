@@ -254,14 +254,14 @@ class ApiFragmentRepository
 
   fetchProvenance(id: string): Promise<ProvenanceRecord> {
     return this.apiClient.fetchJson<ProvenanceRecord>(
-      `/provenances/${id}`,
+      `/provenances/${encodeURIComponent(id)}`,
       false,
     )
   }
 
   fetchProvenanceChildren(id: string): Promise<readonly ProvenanceRecord[]> {
     return this.apiClient.fetchJson<readonly ProvenanceRecord[]>(
-      `/provenances/${id}/children`,
+      `/provenances/${encodeURIComponent(id)}/children`,
       false,
     )
   }
