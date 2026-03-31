@@ -120,25 +120,27 @@ const SignLists = withData<
     )
 
     return _.isEmpty(data) ? null : (
-      <>
-        {data.map((subArray, index) => {
-          const signIndex = subArray.findIndex(
-            (item) => item.name === sign.name,
-          )
-          const isFirstSubArray = index === 0
-          return (
-            <tr key={index}>
-              {renderColumns(
-                subArray,
-                signIndex,
-                direction,
-                language,
-                isFirstSubArray,
-              )}
-            </tr>
-          )
-        })}
-      </>
+      <table>
+        <tbody>
+          {data.map((subArray, index) => {
+            const signIndex = subArray.findIndex(
+              (item) => item.name === sign.name,
+            )
+            const isFirstSubArray = index === 0
+            return (
+              <tr key={index}>
+                {renderColumns(
+                  subArray,
+                  signIndex,
+                  direction,
+                  language,
+                  isFirstSubArray,
+                )}
+              </tr>
+            )
+          })}
+        </tbody>
+      </table>
     )
   },
   (props) => props.signService.findSignsByOrder(props.sign.name, props.sortEra),
@@ -160,18 +162,14 @@ function SignsSearch({
       {signsNew.map((sign, index) => (
         <li key={index} className="WordSearch-results__result">
           <SignComponent sign={sign} />
-          <table>
-            <tbody>
-              {parameters.map((params, idx) => (
-                <SignLists
-                  key={idx}
-                  sign={sign}
-                  signService={signService}
-                  sortEra={params}
-                />
-              ))}
-            </tbody>
-          </table>
+          {parameters.map((params, idx) => (
+            <SignLists
+              key={idx}
+              sign={sign}
+              signService={signService}
+              sortEra={params}
+            />
+          ))}
         </li>
       ))}
     </ul>

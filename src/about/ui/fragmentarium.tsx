@@ -130,17 +130,17 @@ export default function AboutFragmentarium(
         eBL website courtesy of Dr. Jon Taylor, director of the “Ashurbanipal
         Library Project.”
       </p>
+      <figure className="Introduction__photoLeft">
+        <img
+          className="Introduction__400px"
+          src={kerslakebm}
+          alt="I. Kerslake in the British Museum"
+        />
+        <figcaption className="Introduction__caption">
+          I. Kerslake photographs tablets in the British Museum, 2019
+        </figcaption>
+      </figure>
       <p>
-        <figure className="Introduction__photoLeft">
-          <img
-            className="Introduction__400px"
-            src={kerslakebm}
-            alt="I. Kerslake in the British Museum"
-          />
-          <figcaption className="Introduction__caption">
-            I. Kerslake photographs tablets in the British Museum, 2019
-          </figcaption>
-        </figure>
         The photographs of the The British Museum’s Babylon collection are taken
         by Alberto Giannese and Ivor Kerslake (2019–present) in the framework of
         the “electronic Babylonian Literature” project, funded by a Sofia
@@ -170,17 +170,17 @@ export default function AboutFragmentarium(
         images.
       </p>
       <h3>IV. Editions in the Library</h3>
+      <figure className="Introduction__photoRight">
+        <img
+          className="Introduction__250px"
+          src={fragmentstorevise}
+          alt="List of fragments to revise"
+        />
+        <figcaption className="Introduction__caption">
+          List of texts to revise, eBL team
+        </figcaption>
+      </figure>
       <p>
-        <figure className="Introduction__photoRight">
-          <img
-            className="Introduction__250px"
-            src={fragmentstorevise}
-            alt="List of fragments to revise"
-          />
-          <figcaption className="Introduction__caption">
-            List of texts to revise, eBL team
-          </figcaption>
-        </figure>
         The editions in the Library have been produced by the entire eBL Team,
         starting in 2018. Thousands of them were produced on the basis of
         photographs and have not been collated in the museum. Although the speed
