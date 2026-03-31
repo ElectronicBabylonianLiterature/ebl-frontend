@@ -2,9 +2,9 @@
 
 ## Summary
 
-Current changes are materially narrower than the earlier reverted experiment and are now targeted at the proven failure mode. The workflow disables sourcemap generation only for the CI Build step, while leaving the normal package build script and Docker production build behavior unchanged. Local A/B validation shows that this CI-only change flips `CI=true yarn build` from failing to passing in the constrained Codespace environment.
+Current changes are materially narrower than the earlier reverted experiment and are now targeted at the proven failure mode. The workflow disables sourcemap generation only for the CI Build step, while leaving the normal package build script and Docker production build behavior unchanged. Local A/B validation showed that this CI-only change flips `CI=true yarn build` from failing to passing.
 
-The remaining approval condition is runner-context proof in GitHub Actions, because Docker paths and hosted-runner behavior cannot be fully validated locally in this container.
+Runner-context validation is now confirmed: the GitHub Actions `test` job passed on the actual ubuntu-latest runner (PR #692, commit `c748b4d8`). The build blocker is fully closed.
 
 Detailed technical findings are consolidated in `TASK-683-build-investigation.md`.
 
@@ -24,16 +24,18 @@ Detailed technical findings are consolidated in `TASK-683-build-investigation.md
 - Risk:
   - Low for production behavior, because package and Docker production build paths remain unchanged.
 
-1. GitHub Actions runner validation is still required before closing the blocker
+1. GitHub Actions runner validation is confirmed (blocker closed)
 
 - Files:
   - `.github/workflows/main.yml`
   - `TASK-683-issues-summary.md`
   - `TASK-683-log.md`
 - Why this matters:
-  - The local Codespace evidence is strong enough to justify the workflow change, but approval should still be based on at least one green GitHub Actions run using the real hosted-runner environment.
+  - PR #692 CI `test` job returned `success` on GitHub Actions ubuntu-latest runner.
+  - The Build step (`GENERATE_SOURCEMAP=false DISABLE_ESLINT_PLUGIN=true NODE_OPTIONS=--max_old_space_size=1536 yarn build`) completed without the early-exit marker on the actual hosted runner.
+  - This closes the blocker that was pending runner-context evidence.
 - Risk:
-  - Until that run exists, the blocker is reduced but not fully discharged.
+  - None remaining for this finding. Build behavior in CI is proven.
 
 1. Production build sourcemaps remain intentionally enabled
 
@@ -49,7 +51,7 @@ Detailed technical findings are consolidated in `TASK-683-build-investigation.md
 ## Severity
 
 - Finding 1: Medium
-- Finding 2: High (Blocker until runner validation)
+- Finding 2: Resolved
 - Finding 3: Low
 
 ## Reproduction Steps
@@ -70,17 +72,18 @@ Detailed technical findings are consolidated in `TASK-683-build-investigation.md
 
 ## Comment Status Tracking
 
-- Unresolved comments:
-  - Blocker: confirm the updated CI Build step in GitHub Actions runner context.
+- Unresolved comments: none.
 - Resolved comments:
+  - Blocker (runner-context validation): confirmed — PR #692 CI `test` job passed on GitHub Actions runner.
   - Guarded build wrapper should not remain in the main build path.
   - Production build configuration should not be changed just to stabilize CI.
   - Broad revert recommendation no longer applies to the current narrower fix.
+  - qlty `zizmor/excessive-permissions` findings in PR review threads: all 3 marked resolved.
 
 ## What Has To Be Done
 
-1. BLOCKER: Run the GitHub Actions `test` job with the updated Build step and confirm `GENERATE_SOURCEMAP=false DISABLE_ESLINT_PLUGIN=true NODE_OPTIONS=--max_old_space_size=1536 yarn build` completes successfully.
-2. Re-run verification set after changes: `yarn lint`, `yarn tsc`, and the CI-representative build command.
-3. Validate Docker workflow behavior in GitHub Actions runner context separately, because Docker CLI is unavailable locally.
-4. Request re-review after the runner-context build evidence is attached.
+1. ~~BLOCKER: Run the GitHub Actions `test` job with the updated Build step and confirm `GENERATE_SOURCEMAP=false DISABLE_ESLINT_PLUGIN=true NODE_OPTIONS=--max_old_space_size=1536 yarn build` completes successfully.~~ **Done — PR #692 `test` job: success.**
+2. ~~Re-run verification set after changes: `yarn lint`, `yarn tsc`, and the CI-representative build command.~~ **Done — lint and tsc both pass; CI build confirmed green.**
+3. Validate Docker workflow behavior in GitHub Actions runner context separately, because Docker CLI is unavailable locally. _(Docker and docker-test jobs only run on master push; will be validated at merge time.)_
+4. Request re-review after the runner-context build evidence is attached. _(Evidence available via PR #692 CI status checks.)_
 5. Before merge, remove task artifact files if no longer needed (including this review file), per task cleanup rules.

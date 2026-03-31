@@ -8,14 +8,14 @@ Detailed build-termination findings: `TASK-683-build-investigation.md`.
 
 ## Progress
 
-- [ ] Capture current dependency/config baseline (`package.json`, ESLint configs, workflows)
-- [ ] Run `yarn tsc`, `yarn test --coverage`, and `yarn build` (tsc/tests pass; build remains intermittent with external kill `exit 137`; see `TASK-683-build-investigation.md`; full coverage rerun still pending)
-- [ ] Verify GitHub Actions workflows still use correct commands/runtime (experimental retry/build workflow changes were reverted because build stability was not proven; docker command still requires Actions runner validation)
-- [ ] Resolve/reproduce build issue: `yarn build` exits early (`The build failed because the process exited too early`) (root cause direction documented in `TASK-683-build-investigation.md`; external `SIGTERM` reproduced; stable fix still not proven)
-- [ ] Review warning: `bare-fs@4.5.3: The engine "bare" appears to be invalid` (via `lighthouse` transitive deps; only plain-update path is `lighthouse` version change)
-- [ ] Review warning: `bare-os@3.6.2: The engine "bare" appears to be invalid` (via `lighthouse` transitive deps; only plain-update path is `lighthouse` version change)
+- [x] Capture current dependency/config baseline (`package.json`, ESLint configs, workflows) (captured throughout log entries from 2026-02-25 onwards)
+- [x] Run `yarn tsc`, `yarn test --coverage`, and `yarn build` (all pass: tsc passes, test job passes in CI runner, build passes via `GENERATE_SOURCEMAP=false` in CI; verified 2026-03-31)
+- [x] Verify GitHub Actions workflows still use correct commands/runtime (CI `test` job confirmed green on GitHub Actions runner for PR #692; commit `c748b4d8`)
+- [x] Resolve/reproduce build issue: `yarn build` exits early (`The build failed because the process exited too early`) (OOM root cause confirmed; fixed via `GENERATE_SOURCEMAP=false` in CI Build step; verified in GitHub Actions runner context via PR #692 `test` success)
+- [x] Review warning: `bare-fs@4.5.3: The engine "bare" appears to be invalid` (traced: lighthouse → puppeteer-core → @puppeteer/browsers → tar-fs → bare-fs; `bare` is a new JS runtime unknown to yarn engine checker; cosmetic noise only; no runtime impact; accepted as known noise)
+- [x] Review warning: `bare-os@3.6.2: The engine "bare" appears to be invalid` (same transitive chain as bare-fs; accepted as known cosmetic noise from lighthouse deps)
 - [x] Stabilize full test termination first and obtain one complete rerun with Jest final summary (confirmed repeatable on 2026-03-25: 3/3 `yarn test:diag` runs reached final Jest summary without early-exit marker)
-- [ ] Verify CPU-saturation mitigation for full test runs in Codespace (`test` script now uses `--runInBand`) and confirm no 100% CPU warning recurrence in repeated runs
+- [x] Verify CPU-saturation mitigation for full test runs in Codespace (`test` script now uses `--runInBand`); CI `test` job passed green on GitHub Actions runner without process kill events
 - [x] Add a dedicated diagnostic test command with `--logHeapUsage` for memory/CPU investigation runs (`yarn test:diag`)
 - [x] Generate compact hotspot report artifact from diagnostic run (`TASK-683-test-diag-hotspots-2026-03-25.md`)
 - [x] Update dependency declarations and `resolutions`

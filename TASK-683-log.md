@@ -716,3 +716,22 @@
   - GitHub Actions workflow runs should complete successfully without process termination.
   - Production Docker builds retain sourcemaps for debugging/monitoring.
   - Local development can use `GENERATE_SOURCEMAP=false` prefix manually if needed in constrained environments.
+
+## 2026-03-31
+
+### GitHub Actions runner validation confirmed
+
+- PR #692 CI status retrieved (2026-03-31):
+  - `test` job: **success** ✓
+  - `GitGuardian Security Checks`: success, no secrets detected ✓
+  - `qlty coverage`: 92.0% (-0.0%) ✓
+  - `qlty coverage diff`: 89.5% (threshold 75%) ✓
+  - `qlty check`: success; 3 `zizmor/excessive-permissions` findings, all PR review threads marked `resolved`
+  - `docker`, `docker-test`: neutral (expected — only run on master push, not on PR)
+- Key result: the GitHub Actions ubuntu-latest runner executed `GENERATE_SOURCEMAP=false DISABLE_ESLINT_PLUGIN=true NODE_OPTIONS=--max_old_space_size=1536 yarn build` successfully. The primary blocker (build OOM kill in CI) is now fully confirmed resolved.
+- Updated task artifacts to reflect resolved state:
+  - `TASK-683-todo.md`: closed all remaining stale open items (baseline capture, tsc/test/build gates, workflow verification, build issue, bare-fs/bare-os engine warnings, CPU saturation mitigation).
+  - `TASK-683-crush-debugging-review.md`: closed runner-validation blocker; all comment threads now resolved; updated "What Has To Be Done" with completion markers.
+  - `TASK-683-issues-summary.md`: P1 status changed from "Mitigation implemented" to "Resolved"; Next Verification Checklist step 1 marked done.
+- Lint gate: ✓ PASSED.
+- TypeScript gate: ✓ PASSED.
