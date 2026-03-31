@@ -386,20 +386,20 @@ describe('methods returning fragment', () => {
       provenanceResult = await fragmentService.fetchProvenances()
     })
 
-    test('returns provenances sorted by sortKey', () =>
+    test('returns provenances in API order', () =>
       expect(provenanceResult.map((provenance) => provenance.id)).toEqual([
-        'assur',
         'babylon',
+        'assur',
         'sippar',
       ]))
 
     test('keeps records with valid coordinates and polygons', () => {
-      expect(provenanceResult[0].coordinates).toBeUndefined()
-      expect(provenanceResult[0].polygonCoordinates).toBeUndefined()
-      expect(provenanceResult[1].coordinates).toEqual(
+      expect(provenanceResult[0].coordinates).toEqual(
         expect.objectContaining({ latitude: 32.542, longitude: 44.42 }),
       )
-      expect(provenanceResult[1].polygonCoordinates).toHaveLength(3)
+      expect(provenanceResult[0].polygonCoordinates).toHaveLength(3)
+      expect(provenanceResult[1].coordinates).toBeUndefined()
+      expect(provenanceResult[1].polygonCoordinates).toBeUndefined()
       expect(provenanceResult[2].coordinates).toBeUndefined()
       expect(provenanceResult[2].polygonCoordinates).toEqual([
         { latitude: 33.1, longitude: 44.2 },
@@ -463,12 +463,12 @@ describe('methods returning fragment', () => {
       )
     })
 
-    test('returns sorted children for parent id', async () => {
+    test('returns children for parent id in API order', async () => {
       await expect(
         fragmentService.fetchProvenanceChildren('babylonia'),
       ).resolves.toEqual([
-        expect.objectContaining({ id: 'babylon' }),
         expect.objectContaining({ id: 'nippur' }),
+        expect.objectContaining({ id: 'babylon' }),
       ])
     })
 

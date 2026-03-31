@@ -69,6 +69,13 @@ function sanitizePolygonCoordinates(
   return validCoordinates.length >= 3 ? validCoordinates : undefined
 }
 
+function stripBrackets(value: string | null | undefined): string | undefined {
+  if (!value) {
+    return undefined
+  }
+  return value.replace(/^\[|\]$/g, '')
+}
+
 export function sanitizeProvenanceRecord(
   provenance: ProvenanceRecord,
 ): ProvenanceRecord {
@@ -76,9 +83,11 @@ export function sanitizeProvenanceRecord(
   const polygonCoordinates = sanitizePolygonCoordinates(
     provenance.polygonCoordinates,
   )
+  const parent = stripBrackets(provenance.parent)
 
   return {
     ...provenance,
+    parent,
     coordinates,
     polygonCoordinates,
   }
@@ -113,10 +122,6 @@ export function getRenderableProvenanceGeometry(provenance: ProvenanceRecord):
 export function sortProvenances(
   provenances: readonly ProvenanceRecord[],
 ): readonly ProvenanceRecord[] {
-  const compare = (first: ProvenanceRecord, second: ProvenanceRecord): number =>
-    first.sortKey - second.sortKey ||
-    first.longName.localeCompare(second.longName)
-
   const roots = provenances.filter((provenance) => !provenance.parent)
 
   const childrenByParent = new Map<string, ProvenanceRecord[]>()
@@ -129,21 +134,15 @@ export function sortProvenances(
   }
 
   const rootNames = new Set(roots.map((root) => root.longName))
-  const orphans = provenances
-    .filter(
-      (provenance) => provenance.parent && !rootNames.has(provenance.parent),
-    )
-    .slice()
-    .sort(compare)
+  const orphans = provenances.filter(
+    (provenance) => provenance.parent && !rootNames.has(provenance.parent),
+  )
 
   return [
-    ...roots
-      .slice()
-      .sort(compare)
-      .flatMap((root) => [
-        root,
-        ...(childrenByParent.get(root.longName) ?? []).slice().sort(compare),
-      ]),
+    ...roots.flatMap((root) => [
+      root,
+      ...(childrenByParent.get(root.longName) ?? []),
+    ]),
     ...orphans,
   ]
 }

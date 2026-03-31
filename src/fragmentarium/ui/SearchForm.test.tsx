@@ -356,15 +356,19 @@ describe('Advanced Search', () => {
       await setupProvenanceSelection()
       const provenanceInput = await screen.findByLabelText('select-site')
       await userEvent.type(provenanceInput, 'Assur')
-      await waitFor(() => expect(screen.getByText('Aššur')).toBeVisible())
+      await waitFor(() =>
+        expect(screen.getByText('Aššur [Assyria]')).toBeVisible(),
+      )
     })
 
     it('Selects option when clicked', async () => {
       await setupProvenanceSelection()
       const provenanceInput = await screen.findByLabelText('select-site')
       await userEvent.type(provenanceInput, 'Assur')
-      await waitFor(() => expect(screen.getByText('Aššur')).toBeVisible())
-      await userEvent.click(screen.getByText('Aššur'))
+      await waitFor(() =>
+        expect(screen.getByText('Aššur [Assyria]')).toBeVisible(),
+      )
+      await userEvent.click(screen.getByText('Aššur [Assyria]'))
       await userEvent.click(screen.getByText('Search'))
       await expectNavigation('?site=A%C5%A1%C5%A1ur')
     })

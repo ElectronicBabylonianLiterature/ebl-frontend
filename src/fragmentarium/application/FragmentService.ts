@@ -261,13 +261,12 @@ export class FragmentService {
       .fetchProvenances()
       .then((provenances) => {
         const sanitized = provenances.map(sanitizeProvenanceRecord)
-        const sorted = sortProvenances(sanitized)
-        setProvenanceRecords(sorted)
-        this.cachedProvenances = sorted
-        sorted.forEach((provenance) => {
+        setProvenanceRecords(sanitized)
+        this.cachedProvenances = sanitized
+        sanitized.forEach((provenance) => {
           this.cachedProvenanceById.set(provenance.id, provenance)
         })
-        return sorted
+        return sanitized
       })
       .catch((error) => {
         this.cachedProvenances = null

@@ -11,6 +11,7 @@ import { castDraft, produce } from 'immer'
 import { Button, Form } from 'react-bootstrap'
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 import FragmentService from 'fragmentarium/application/FragmentService'
+import { sortProvenances } from 'fragmentarium/domain/Provenance'
 import { Provenance, toProvenance } from 'corpus/domain/provenance'
 
 interface Props {
@@ -96,5 +97,5 @@ export default withData<
   (props) =>
     props.fragmentService
       .fetchProvenances()
-      .then((provenances) => provenances.map(toProvenance)),
+      .then((provenances) => sortProvenances(provenances).map(toProvenance)),
 )

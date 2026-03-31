@@ -18,21 +18,13 @@ const ProvenanceSearchFormGroup = withData<
   readonly ProvenanceRecord[]
 >(
   ({ data, value, onChange, placeholder }) => {
-    const sorted = [...data].sort((first, second) => {
-      const firstIsRoot = !first.parent
-      const secondIsRoot = !second.parent
-      if (firstIsRoot !== secondIsRoot) return firstIsRoot ? -1 : 1
-      if (firstIsRoot && secondIsRoot)
-        return (
-          first.sortKey - second.sortKey ||
-          first.longName.localeCompare(second.longName)
-        )
-      return first.longName.localeCompare(second.longName)
-    })
+    const roots = data.filter((site) => !site.parent)
+    const children = data.filter((site) => !!site.parent)
+    const sorted = [...roots, ...children]
 
     const options = sorted.map((site) => ({
       value: site.longName,
-      label: site.longName,
+      label: site.parent ? `${site.longName} [${site.parent}]` : site.longName,
     }))
 
     return (

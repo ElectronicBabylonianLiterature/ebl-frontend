@@ -1,6 +1,7 @@
 import {
   getRenderableProvenanceGeometry,
   sanitizeProvenanceRecord,
+  sortProvenances,
   ProvenanceRecord,
 } from './Provenance'
 
@@ -119,5 +120,86 @@ describe('getRenderableProvenanceGeometry', () => {
     }
 
     expect(getRenderableProvenanceGeometry(record)).toBeUndefined()
+  })
+})
+
+describe('sortProvenances', () => {
+  function rec(longName: string, parent?: string): ProvenanceRecord {
+    return {
+      id: longName.toLowerCase(),
+      longName,
+      abbreviation: longName.slice(0, 3),
+      sortKey: -1,
+      ...(parent ? { parent } : {}),
+    }
+  }
+
+  it('groups children under their parent preserving API order', () => {
+    const apiData: ProvenanceRecord[] = [
+      rec('A'),
+      rec('B'),
+      rec('C'),
+      rec('a1', 'A'),
+      rec('a2', 'A'),
+      rec('b1', 'B'),
+      rec('b2', 'B'),
+      rec('c1', 'C'),
+    ]
+
+    const sorted = sortProvenances(apiData)
+
+    expect(sorted.map((r) => r.longName)).toEqual([
+      'A',
+      'a1',
+      'a2',
+      'B',
+      'b1',
+      'b2',
+      'C',
+      'c1',
+    ])
+  })
+
+  it('keeps childless roots in their original position', () => {
+    const apiData: ProvenanceRecord[] = [
+      rec('A'),
+      rec('B'),
+      rec('C'),
+      rec('a1', 'A'),
+    ]
+
+    const sorted = sortProvenances(apiData)
+
+    expect(sorted.map((r) => r.longName)).toEqual(['A', 'a1', 'B', 'C'])
+  })
+
+  it('preserves parent field for indentation in UI', () => {
+    const apiData: ProvenanceRecord[] = [
+      rec('Assyria'),
+      rec('Babylonia'),
+      rec('Aššur', 'Assyria'),
+      rec('Babylon', 'Babylonia'),
+    ]
+
+    const sorted = sortProvenances(apiData)
+    expect(sorted.map((r) => ({ name: r.longName, parent: r.parent }))).toEqual(
+      [
+        { name: 'Assyria', parent: undefined },
+        { name: 'Aššur', parent: 'Assyria' },
+        { name: 'Babylonia', parent: undefined },
+        { name: 'Babylon', parent: 'Babylonia' },
+      ],
+    )
+  })
+
+  it('appends orphan children at the end', () => {
+    const apiData: ProvenanceRecord[] = [
+      rec('Assyria'),
+      rec('Aššur', 'Assyria'),
+      rec('Emar', 'Periphery'),
+    ]
+
+    const sorted = sortProvenances(apiData)
+    expect(sorted.map((r) => r.longName)).toEqual(['Assyria', 'Aššur', 'Emar'])
   })
 })

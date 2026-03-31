@@ -40,7 +40,7 @@ describe('SearchFormProvenance', () => {
     )
 
     await userEvent.click(await screen.findByLabelText('select-site'))
-    expect(await screen.findByText('Aššur')).toBeVisible()
+    expect(await screen.findByText('Aššur [Assyria]')).toBeVisible()
   })
 
   it('shows empty state for empty API response', async () => {
