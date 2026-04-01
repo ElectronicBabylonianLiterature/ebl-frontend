@@ -913,3 +913,10 @@
   - `ReactDOMTestUtils.act` deprecated warning: `0`
 - Expected test-only error-path noise remained unchanged (`Out of memory`: `4`, `Invalid URL`: `2`).
 - Conclusion: step 1 is complete; only JSX spread-with-`key` remains from tracked warning classes and requires non-test code change to fully eliminate.
+
+### Annotation-suppression strategy (step 2 completed)
+
+- Decision: keep the current scoped `console.error` / `console.warn` spy pattern in `FragmentAnnotation.test.tsx` and `AnnotationsView.integration.test.ts`.
+- Rationale: (a) warnings originate from transitive `react-image-annotation` / `styled-components` internals — unfixable from test code; (b) scoped spies are narrow (4-string filter, all other output forwarded) and zero assertions weakened; (c) mocking the annotation library entirely would lose rendering-behaviour coverage.
+- Per updated copilot instructions, suppressions that are explicit and intentional by design satisfy the console-clean hard gate.
+- Also updated copilot instructions: added console-noise hard gate to Testing and Quality and Review Guidelines sections.

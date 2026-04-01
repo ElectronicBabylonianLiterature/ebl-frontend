@@ -12,14 +12,24 @@ import './Glossary.sass'
 import GlossaryFactory from 'transliteration/application/GlossaryFactory'
 import _ from 'lodash'
 
-export function Glossary({ data }: { data: GlossaryData }): JSX.Element {
+export function Glossary({
+  data,
+  useRouterLinks = true,
+}: {
+  data: GlossaryData
+  useRouterLinks?: boolean
+}): JSX.Element {
   return _.isEmpty(data) ? (
     <></>
   ) : (
     <section>
       <h4>Glossary</h4>
       {[...data].sort(compareGlossaryEntries).map(([lemma, tokensByLemma]) => (
-        <GlossaryLine key={lemma} tokens={tokensByLemma} />
+        <GlossaryLine
+          key={lemma}
+          tokens={tokensByLemma}
+          useRouterLinks={useRouterLinks}
+        />
       ))}
     </section>
   )

@@ -1,7 +1,8 @@
-import React, { ReactNode, PropsWithChildren } from 'react'
+import React, { ReactNode, PropsWithChildren, useContext } from 'react'
 import { Link } from 'react-router-dom'
 import { stringify } from 'query-string'
 import Folio from 'fragmentarium/domain/Folio'
+import RouterLinkModeContext from 'common/ui/RouterLinkModeContext'
 
 export function createFragmentUrl(number: string, hash = ''): string {
   return `/library/${encodeURIComponent(number)}${
@@ -42,12 +43,21 @@ export default function FragmentLink({
   folio?: Folio | null
   hash?: string
 }>): JSX.Element {
+  const useRouterLinks = useContext(RouterLinkModeContext)
   const link = folio
     ? createFragmentUrlWithFolio(number, folio, hash)
     : createFragmentUrl(number, hash)
   return (
-    <Link to={link} {...props}>
-      {children}
-    </Link>
+    <>
+      {useRouterLinks ? (
+        <Link to={link} {...props}>
+          {children}
+        </Link>
+      ) : (
+        <a href={link} {...props}>
+          {children}
+        </a>
+      )}
+    </>
   )
 }

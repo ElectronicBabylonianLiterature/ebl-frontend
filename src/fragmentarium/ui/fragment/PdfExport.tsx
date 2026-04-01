@@ -2,7 +2,6 @@ import React from 'react'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import Record from 'fragmentarium/ui/info/Record'
 
-import { ReactElement } from 'react'
 import TransliterationLines from 'transliteration/ui/TransliterationLines'
 import TransliterationNotes from 'transliteration/ui/TransliterationNotes'
 import { Glossary } from 'transliteration/ui/Glossary'
@@ -11,7 +10,6 @@ import $ from 'jquery'
 import rgbHex from 'rgb-hex'
 import WordService from 'dictionary/application/WordService'
 import GlossaryFactory from 'transliteration/application/GlossaryFactory'
-import { MemoryRouter } from 'react-router-dom'
 import getJunicodeRegular from './pdf-fonts/Junicode'
 import getJunicodeBold from './pdf-fonts/JunicodeBold'
 import getJunicodeItalic from './pdf-fonts/JunicodeItalic'
@@ -20,6 +18,7 @@ import { jsPDF } from 'jspdf'
 import { DictionaryContext } from 'dictionary/ui/dictionary-context'
 import { fixHtmlParseOrder } from 'common/utils/HtmlParsing'
 import { getLineTypeByHtml } from 'common/utils/HtmlLineType'
+import RouterLinkModeContext from 'common/ui/RouterLinkModeContext'
 
 export async function pdfExport(
   fragment: Fragment,
@@ -28,11 +27,11 @@ export async function pdfExport(
 ): Promise<jsPDF> {
   const tableHtml: JQuery = $(
     renderToString(
-      <MemoryRouter>
+      <RouterLinkModeContext.Provider value={false}>
         <DictionaryContext.Provider value={wordService}>
           <TransliterationLines text={fragment.text} />
         </DictionaryContext.Provider>
-      </MemoryRouter>,
+      </RouterLinkModeContext.Provider>,
     ),
   )
   const notesHtml: JQuery = $(
@@ -104,16 +103,16 @@ async function getGlossaryHtml(
   const glossaryJsx: JSX.Element = await glossaryFactory
     .createGlossary(fragment.text)
     .then((glossaryData) => {
-      return Glossary({ data: glossaryData })
+      return Glossary({ data: glossaryData, useRouterLinks: false })
     })
 
   const glossaryHtml: JQuery = $(
     renderToString(
-      wrapWithMemoryRouter(
+      <RouterLinkModeContext.Provider value={false}>
         <DictionaryContext.Provider value={wordService}>
           {glossaryJsx}
-        </DictionaryContext.Provider>,
-      ),
+        </DictionaryContext.Provider>
+      </RouterLinkModeContext.Provider>,
     ),
   )
 
@@ -185,10 +184,6 @@ function getPdfHeadline(fragment: Fragment): [string, string, string] {
   const link = getHyperLink(fragment)
 
   return [fragment.number, credit, link]
-}
-
-function wrapWithMemoryRouter(component: JSX.Element): ReactElement {
-  return <MemoryRouter>{component}</MemoryRouter>
 }
 
 function addMainTableWithFootnotes(
