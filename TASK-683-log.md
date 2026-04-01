@@ -822,3 +822,41 @@
 - Lint gate: ✓ PASSED.
 - TypeScript gate: ✓ PASSED.
 - Updated `TASK-683-todo.md`: marked item done.
+
+## 2026-04-01
+
+### Semantic-restore pass for modified tests
+
+- Performed targeted semantic audit on modified uncommitted tests and wrote findings to `TASK-683-test-semantic-changes-audit.md`.
+- Restored previously weakened/semantic-risk changes in:
+  - `src/about/ui/about.test.tsx`
+  - `src/bibliography/ui/Bibliography.test.tsx`
+  - `src/bibliography/ui/BibliographyEditor.test.tsx`
+  - `src/fragmentarium/ui/fragment/FragmentView.test.tsx`
+  - `src/fragmentarium/ui/fragment/WordExport.test.ts`
+  - `src/fragmentarium/ui/search/SearchFormDossier.test.tsx`
+  - `src/fragmentarium/ui/edition/TransliterationForm.test.tsx`
+
+### Warning-safe fixes with semantics preserved
+
+- Added deterministic render-settle waits in async UI tests to remove `act(...)` warning noise without reducing assertions.
+- Added future-flagged test router wrappers where needed for React Router warning cleanup.
+- Replaced deprecated `react-dom/test-utils` `act` import with `react` `act` in relevant tests.
+- Added narrow test harness mocks for router/bootstrap internals in `WordExport.test.ts` to avoid SSR `useLayoutEffect` warnings while preserving export assertions.
+
+### LemmaAnnotation intentional delta
+
+- Kept `src/fragmentarium/ui/fragment/lemma-annotation/LemmaAnnotation.test.tsx` intentionally different from `master`:
+  - setup uses pending default `searchLemma` mock with per-test resolve overrides;
+  - proper noun creation test calls `onCreateProperNoun` through mounted ref + `act`.
+- Rationale: removes persistent async-select / unmounted-setState warnings while preserving tested outcomes.
+
+### Validation
+
+- Focused affected-suite command passed across About/Bibliography/BibliographyEditor/FragmentView/WordExport/LemmaAnnotation/SearchFormDossier/TransliterationForm/Fragmentarium.
+- `yarn lint` passed.
+- `yarn tsc` passed.
+
+### Tracking correction
+
+- Updated `TASK-683-test-semantic-changes-audit.md` to current state and updated `TASK-683-todo.md` with completed semantic-restore items.

@@ -4,7 +4,7 @@ import Bluebird from 'bluebird'
 import '@testing-library/jest-dom'
 import MarkupService from 'markup/application/MarkupService'
 import { markupDtoSerialized } from 'test-support/markup-fixtures'
-import { render, screen, fireEvent } from '@testing-library/react'
+import { render, screen, fireEvent, waitFor } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 
 jest.mock('markup/application/MarkupService')
@@ -39,6 +39,9 @@ const renderAbout = async (
       />
     </MemoryRouter>,
   )
+  await waitFor(() => {
+    expect(screen.queryAllByLabelText('Spinner')).toHaveLength(0)
+  })
 }
 
 describe('About component', () => {
@@ -55,6 +58,10 @@ describe('About component', () => {
         <About markupService={markupServiceMock} activeTab="corpus" />
       </MemoryRouter>,
     )
+    await waitFor(() => {
+      expect(screen.queryAllByLabelText('Spinner')).toHaveLength(0)
+    })
+    await screen.findByRole('heading', { name: /I\. Corpus/i })
     expect(screen.getByRole('tab', { selected: true })).toHaveTextContent(
       'Corpus',
     )
@@ -78,9 +85,13 @@ describe('About component', () => {
       </MemoryRouter>,
     )
 
-    expect(screen.getByRole('tab', { selected: true })).toHaveTextContent(
-      'eBL Project',
-    )
+    await waitFor(() => {
+      expect(screen.queryAllByLabelText('Spinner')).toHaveLength(0)
+    })
+
+    expect(
+      await screen.findByRole('tab', { selected: true }),
+    ).toHaveTextContent('eBL Project')
 
     view.rerender(
       <MemoryRouter>
@@ -88,9 +99,13 @@ describe('About component', () => {
       </MemoryRouter>,
     )
 
-    expect(screen.getByRole('tab', { selected: true })).toHaveTextContent(
-      'Signs',
-    )
+    await waitFor(() => {
+      expect(screen.queryAllByLabelText('Spinner')).toHaveLength(0)
+    })
+
+    expect(
+      await screen.findByRole('tab', { selected: true }),
+    ).toHaveTextContent('Signs')
   })
 
   test('renders all tabs', async () => {
@@ -117,7 +132,11 @@ describe('About component', () => {
       </MemoryRouter>,
     )
 
-    const projectTab = screen.getByText('eBL Project')
+    await waitFor(() => {
+      expect(screen.queryAllByLabelText('Spinner')).toHaveLength(0)
+    })
+
+    const projectTab = await screen.findByText('eBL Project')
     fireEvent.click(projectTab)
   })
 })

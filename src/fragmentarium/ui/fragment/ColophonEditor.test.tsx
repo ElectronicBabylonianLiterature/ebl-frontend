@@ -5,7 +5,6 @@ import { ColophonStatus, ColophonType } from 'fragmentarium/domain/Colophon'
 import { fragmentFactory } from 'test-support/fragment-fixtures'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import { Promise } from 'bluebird'
-import {} from 'react-dom/test-utils'
 import userEvent from '@testing-library/user-event'
 import { Fragment } from 'fragmentarium/domain/fragment'
 
@@ -46,6 +45,7 @@ const renderColophonEditor = async function (
       fragmentService={fragmentServiceMock}
     />,
   )
+  await screen.findByLabelText('save-colophon')
 }
 
 describe('ColophonEditor', () => {

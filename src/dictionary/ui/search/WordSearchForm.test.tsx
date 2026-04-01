@@ -6,6 +6,19 @@ import { changeValueByLabel, submitForm } from 'test-support/utils'
 import WordSearchForm from 'dictionary/ui/search/WordSearchForm'
 import { stringify } from 'query-string'
 
+function TestMemoryRouter({ children }: React.PropsWithChildren): JSX.Element {
+  return (
+    <MemoryRouter
+      future={Object.fromEntries([
+        ['v7_startTransition', true],
+        ['v7_relativeSplatPath', true],
+      ])}
+    >
+      {children}
+    </MemoryRouter>
+  )
+}
+
 const mockNavigate = jest.fn()
 jest.mock('react-router-dom', () => ({
   ...jest.requireActual('react-router-dom'),
@@ -33,9 +46,9 @@ beforeEach(() => {
 
 it('Adds lemma to query string on submit', async () => {
   const { container } = render(
-    <MemoryRouter>
+    <TestMemoryRouter>
       <WordSearchForm query={query} />
-    </MemoryRouter>,
+    </TestMemoryRouter>,
   )
 
   changeValueByLabel(screen, 'Word', 'lemma')
@@ -49,11 +62,11 @@ it('Adds lemma to query string on submit', async () => {
 
 it('Defaults to CDA when no origin provided', async () => {
   const { container } = render(
-    <MemoryRouter>
+    <TestMemoryRouter>
       <WordSearchForm
         query={{ word: '', meaning: '', root: '', vowelClass: [] }}
       />
-    </MemoryRouter>,
+    </TestMemoryRouter>,
   )
 
   expect(
@@ -69,7 +82,7 @@ it('Defaults to CDA when no origin provided', async () => {
 
 it('Parses string inputs for vowelClass and origin into arrays', () => {
   render(
-    <MemoryRouter>
+    <TestMemoryRouter>
       <WordSearchForm
         query={{
           word: '',
@@ -79,7 +92,7 @@ it('Parses string inputs for vowelClass and origin into arrays', () => {
           origin: ['AFO_REGISTER'],
         }}
       />
-    </MemoryRouter>,
+    </TestMemoryRouter>,
   )
 
   expect(screen.getByRole('checkbox', { name: 'a/i' })).toBeChecked()
@@ -88,11 +101,11 @@ it('Parses string inputs for vowelClass and origin into arrays', () => {
 
 it('Allows selecting a source when All sources is on', async () => {
   render(
-    <MemoryRouter>
+    <TestMemoryRouter>
       <WordSearchForm
         query={{ word: '', meaning: '', root: '', vowelClass: [], origin: [] }}
       />
-    </MemoryRouter>,
+    </TestMemoryRouter>,
   )
 
   const allSwitch = screen.getByRole('checkbox', { name: 'All sources' })
@@ -107,7 +120,7 @@ it('Allows selecting a source when All sources is on', async () => {
 
 it('Toggles all sources off then back to CDA', async () => {
   render(
-    <MemoryRouter>
+    <TestMemoryRouter>
       <WordSearchForm
         query={{
           word: '',
@@ -117,7 +130,7 @@ it('Toggles all sources off then back to CDA', async () => {
           origin: ['CDA'],
         }}
       />
-    </MemoryRouter>,
+    </TestMemoryRouter>,
   )
 
   const allSwitch = screen.getByRole('checkbox', { name: 'All sources' })
@@ -135,9 +148,9 @@ it('Toggles all sources off then back to CDA', async () => {
 
 it('Submits multiple origins as repeated params', async () => {
   render(
-    <MemoryRouter>
+    <TestMemoryRouter>
       <WordSearchForm query={query} />
-    </MemoryRouter>,
+    </TestMemoryRouter>,
   )
 
   const wordInput = screen.getByPlaceholderText('word')
@@ -164,9 +177,9 @@ it('Submits multiple origins as repeated params', async () => {
 
 it('Applies transliteration on word and root change', async () => {
   render(
-    <MemoryRouter>
+    <TestMemoryRouter>
       <WordSearchForm query={query} />
-    </MemoryRouter>,
+    </TestMemoryRouter>,
   )
 
   const wordInput = screen.getByPlaceholderText('word')
@@ -180,9 +193,9 @@ it('Applies transliteration on word and root change', async () => {
 
 it('Removes vowel when unchecked', async () => {
   render(
-    <MemoryRouter>
+    <TestMemoryRouter>
       <WordSearchForm query={query} />
-    </MemoryRouter>,
+    </TestMemoryRouter>,
   )
 
   const wordInput = screen.getByPlaceholderText('word')
@@ -205,7 +218,7 @@ it('Removes vowel when unchecked', async () => {
 
 it('Removes origin when unchecked', async () => {
   render(
-    <MemoryRouter>
+    <TestMemoryRouter>
       <WordSearchForm
         query={{
           word: 'test',
@@ -215,7 +228,7 @@ it('Removes origin when unchecked', async () => {
           origin: ['CDA', 'AFO_REGISTER'],
         }}
       />
-    </MemoryRouter>,
+    </TestMemoryRouter>,
   )
 
   const afoCheckbox = screen.getByRole('checkbox', { name: 'AfO Register' })
@@ -234,9 +247,9 @@ it('Removes origin when unchecked', async () => {
 
 it('Allows changing meaning field without transliteration', async () => {
   render(
-    <MemoryRouter>
+    <TestMemoryRouter>
       <WordSearchForm query={query} />
-    </MemoryRouter>,
+    </TestMemoryRouter>,
   )
 
   const meaningInput = screen.getByPlaceholderText('meaning')
@@ -251,7 +264,7 @@ it('Allows changing meaning field without transliteration', async () => {
 
 it('Disables Query button when all fields are empty', () => {
   render(
-    <MemoryRouter>
+    <TestMemoryRouter>
       <WordSearchForm
         query={{
           word: '',
@@ -261,7 +274,7 @@ it('Disables Query button when all fields are empty', () => {
           origin: ['CDA'],
         }}
       />
-    </MemoryRouter>,
+    </TestMemoryRouter>,
   )
 
   const queryButton = screen.getByRole('button', { name: 'Query' })
@@ -270,7 +283,7 @@ it('Disables Query button when all fields are empty', () => {
 
 it('Enables Query button when word field has content', () => {
   render(
-    <MemoryRouter>
+    <TestMemoryRouter>
       <WordSearchForm
         query={{
           word: '',
@@ -280,7 +293,7 @@ it('Enables Query button when word field has content', () => {
           origin: ['CDA'],
         }}
       />
-    </MemoryRouter>,
+    </TestMemoryRouter>,
   )
 
   const wordInput = screen.getByPlaceholderText('word')
@@ -292,7 +305,7 @@ it('Enables Query button when word field has content', () => {
 
 it('Enables Query button when meaning field has content', () => {
   render(
-    <MemoryRouter>
+    <TestMemoryRouter>
       <WordSearchForm
         query={{
           word: '',
@@ -302,7 +315,7 @@ it('Enables Query button when meaning field has content', () => {
           origin: ['CDA'],
         }}
       />
-    </MemoryRouter>,
+    </TestMemoryRouter>,
   )
 
   const meaningInput = screen.getByPlaceholderText('meaning')
@@ -314,7 +327,7 @@ it('Enables Query button when meaning field has content', () => {
 
 it('Enables Query button when root field has content', () => {
   render(
-    <MemoryRouter>
+    <TestMemoryRouter>
       <WordSearchForm
         query={{
           word: '',
@@ -324,7 +337,7 @@ it('Enables Query button when root field has content', () => {
           origin: ['CDA'],
         }}
       />
-    </MemoryRouter>,
+    </TestMemoryRouter>,
   )
 
   const rootInput = screen.getByPlaceholderText('root')
@@ -336,7 +349,7 @@ it('Enables Query button when root field has content', () => {
 
 it('Enables Query button when vowel class is selected', async () => {
   render(
-    <MemoryRouter>
+    <TestMemoryRouter>
       <WordSearchForm
         query={{
           word: '',
@@ -346,7 +359,7 @@ it('Enables Query button when vowel class is selected', async () => {
           origin: ['CDA'],
         }}
       />
-    </MemoryRouter>,
+    </TestMemoryRouter>,
   )
 
   const vowelCheckbox = screen.getByRole('checkbox', { name: 'a/a' })

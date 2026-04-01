@@ -1,7 +1,7 @@
 import React from 'react'
 import { render, screen, fireEvent } from '@testing-library/react'
 import ImageButtonGroup, { useImageActions } from './ImageButtonGroup'
-import { act } from 'react-dom/test-utils'
+import { act } from 'react'
 
 HTMLAnchorElement.prototype.click = jest.fn()
 

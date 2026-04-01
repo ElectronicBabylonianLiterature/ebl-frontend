@@ -1,5 +1,6 @@
 import React from 'react'
 import { render, screen, waitFor } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import complexText from 'test-support/complexTestText'
 import WordService from 'dictionary/application/WordService'
@@ -73,7 +74,7 @@ describe('Translation display layouts', () => {
       'TranslationColumn',
     )
 
-    screen.getByLabelText('toggle-layout').click()
+    await userEvent.click(screen.getByLabelText('toggle-layout'))
 
     await waitFor(() => {
       expect(screen.getByText(/en\s*:/)).toBeInTheDocument()
@@ -84,7 +85,7 @@ describe('Translation display layouts', () => {
   })
   it('switches the language', async () => {
     await renderFragment(translatedFragment)
-    screen.getByLabelText('switch-language').click()
+    await userEvent.click(screen.getByLabelText('switch-language'))
     await waitFor(() => {
       expect(screen.queryByText('English translation')).not.toBeInTheDocument()
     })

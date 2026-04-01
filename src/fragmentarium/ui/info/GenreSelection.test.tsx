@@ -2,7 +2,6 @@ import React from 'react'
 import { BrowserRouter as Router } from 'react-router-dom'
 import { render, screen, waitFor } from '@testing-library/react'
 import { Fragment } from 'fragmentarium/domain/fragment'
-import selectEvent from 'react-select-event'
 import Promise from 'bluebird'
 import GenreSelection from 'fragmentarium/ui/info/GenreEditor'
 import userEvent from '@testing-library/user-event'
@@ -70,10 +69,8 @@ describe('Genre Editor', () => {
   })
   it('updates the genre when the user selects an option', async () => {
     await setup()
-    await selectEvent.select(
-      screen.getByLabelText('select-genre'),
-      'ARCHIVAL ➝ Administrative',
-    )
+    await userEvent.click(screen.getByLabelText('select-genre'))
+    await userEvent.click(await screen.findByText('ARCHIVAL ➝ Administrative'))
     await userEvent.click(screen.getByLabelText('add-genre'))
     await waitFor(() => expect(updateGenres).toHaveBeenCalled())
     expect(screen.getByText('ARCHIVAL ➝ Administrative')).toBeVisible()
@@ -81,17 +78,16 @@ describe('Genre Editor', () => {
   it('sets uncertain=true', async () => {
     await setup()
     await userEvent.click(screen.getByLabelText('toggle-uncertain'))
-    await selectEvent.select(
-      screen.getByLabelText('select-genre'),
-      'CANONICAL (?)',
-    )
+    await userEvent.click(screen.getByLabelText('select-genre'))
+    await userEvent.click(await screen.findByText('CANONICAL (?)'))
     await userEvent.click(screen.getByLabelText('add-genre'))
     await waitFor(() => expect(updateGenres).toHaveBeenCalled())
     expect(screen.getByText('CANONICAL (?)')).toBeVisible()
   })
   it('deletes the genre when the user clicks the delete button', async () => {
     await setup()
-    await selectEvent.select(screen.getByLabelText('select-genre'), 'ARCHIVAL')
+    await userEvent.click(screen.getByLabelText('select-genre'))
+    await userEvent.click(await screen.findByText('ARCHIVAL'))
     await userEvent.click(screen.getByLabelText('add-genre'))
     await waitFor(() => expect(updateGenres).toHaveBeenCalled())
 

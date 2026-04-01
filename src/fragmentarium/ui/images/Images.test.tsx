@@ -1,6 +1,6 @@
 import React from 'react'
 import ResizeObserver from 'resize-observer-polyfill'
-import { MemoryRouter } from 'react-router'
+import { MemoryRouter } from 'react-router-dom'
 import {
   render,
   screen,
@@ -86,6 +86,7 @@ it('Displays selected folio', async () => {
   const selected = folios[0]
   const selectedTitle = `${selected.humanizedName} Folio ${selected.number}`
   renderImages(selected)
+  await waitForElementToBeRemoved(() => screen.queryAllByLabelText('Spinner'))
   expect(await screen.findByText(selectedTitle)).toHaveAttribute(
     'aria-selected',
     'true',
@@ -102,6 +103,7 @@ it('Displays photo if no folio specified', async () => {
     { associations: { folios: folios } },
   )
   renderImages()
+  await waitForElementToBeRemoved(() => screen.queryAllByLabelText('Spinner'))
   expect(
     await screen.findByAltText(`Fragment ${fragment.number}`),
   ).toBeVisible()
@@ -117,6 +119,7 @@ it('Displays CDLI photo if no photo and no folio specified', async () => {
     { associations: { folios: folios } },
   )
   renderImages()
+  await waitForElementToBeRemoved(() => screen.queryAllByLabelText('Spinner'))
   expect(await screen.findByAltText('CDLI Photo')).toBeVisible()
 })
 
@@ -126,6 +129,7 @@ test('No photo, folios, CDLI photo', async () => {
     { associations: { folios: [] } },
   )
   renderImages()
+  await waitForElementToBeRemoved(() => screen.queryAllByLabelText('Spinner'))
   expect(screen.queryByText('CDLI')).not.toBeInTheDocument()
 })
 

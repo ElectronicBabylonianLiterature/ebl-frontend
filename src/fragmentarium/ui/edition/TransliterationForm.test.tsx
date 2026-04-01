@@ -4,7 +4,7 @@ import { submitFormByTestId } from 'test-support/utils'
 import { Promise } from 'bluebird'
 
 import TransliterationForm from './TransliterationForm'
-import { act } from 'react-dom/test-utils'
+import { act } from 'react'
 import userEvent from '@testing-library/user-event'
 
 type EditorMockProps = {
@@ -76,7 +76,10 @@ it('Updates transliteration on change', async () => {
 
 it('calls updateEdition when submitting the form', async () => {
   setup()
-  submitFormByTestId(screen, 'transliteration-form')
+  await act(async () => {
+    submitFormByTestId(screen, 'transliteration-form')
+    await Promise.resolve()
+  })
   expect(updateEdition).toHaveBeenCalledWith({})
 })
 

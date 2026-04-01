@@ -18,6 +18,23 @@ import userEvent from '@testing-library/user-event'
 import Word from 'dictionary/domain/Word'
 import WordService from 'dictionary/application/WordService'
 
+function TestMemoryRouter({
+  children,
+  ...props
+}: React.PropsWithChildren<Record<string, unknown>>): JSX.Element {
+  return (
+    <MemoryRouter
+      {...props}
+      future={Object.fromEntries([
+        ['v7_startTransition', true],
+        ['v7_relativeSplatPath', true],
+      ])}
+    >
+      {children}
+    </MemoryRouter>
+  )
+}
+
 const mockNavigate = jest.fn()
 
 jest.mock('react-router-dom', () => ({
@@ -65,7 +82,7 @@ let searchEntry: BibliographyEntry
 
 async function renderSearchForm(): Promise<void> {
   render(
-    <MemoryRouter>
+    <TestMemoryRouter>
       <SessionContext.Provider value={session}>
         <SearchForm
           fragmentService={fragmentService}
@@ -77,8 +94,9 @@ async function renderSearchForm(): Promise<void> {
           showAdvancedSearch={true}
         />
       </SessionContext.Provider>
-    </MemoryRouter>,
+    </TestMemoryRouter>,
   )
+  await screen.findByText('Genre')
 }
 
 async function expectNavigation(search: string): Promise<void> {

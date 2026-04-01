@@ -55,6 +55,10 @@ Detailed build-termination findings: `TASK-683-build-investigation.md`.
 - [x] Fix React Router future flag warnings (26 occurrences): add `future` prop to `BrowserRouter` in `src/index.tsx`
 - [x] Fix `controlId ignored on FormLabel/FormControl` warnings (306 occurrences): remove redundant `htmlFor`/`id` from `LemmaInput.tsx` where `controlId` on `Form.Group` handles binding
 - [x] Fix `validateDOMNesting` warnings (10 occurrences): fixed 3 structural HTML violations across `SignsSearch.tsx`, `fragmentarium.tsx`, `line-tokens.test.tsx`
+- [x] Restore weakened/semantic-risk test changes identified in `TASK-683-test-semantic-changes-audit.md`
+- [x] Re-fix warning sources in restored tests without weakening assertions (About/Bibliography/BibliographyEditor/WordExport/LemmaAnnotation/TransliterationForm)
+- [x] Actualize semantic audit to current state (`TASK-683-test-semantic-changes-audit.md`)
+- [x] Audit changes in tests in PR 661(`PR-661-test-changes-analysis.md`)
 - [ ] Fix `act(...)` warnings (173 occurrences): wrap shared test helpers (`changeValue`, `clickNth`) in `act()`, then audit individual test files
 
 ## Notes
