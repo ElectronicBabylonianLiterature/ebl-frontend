@@ -7,15 +7,6 @@ import { produce } from 'immer'
 
 global.ResizeObserver = ResizeObserver
 
-const originalConsoleError = console.error
-const originalConsoleWarn = console.warn
-const suppressedAnnotationWarnings = [
-  'A props object containing a "key" prop is being spread into JSX',
-  'uses the legacy contextTypes API which is no longer supported',
-  'componentWillMount has been renamed, and is not recommended for use',
-  'componentWillReceiveProps has been renamed, and is not recommended for use',
-]
-
 const fragmentWithoutReferences = produce(fragmentDto, (draft) => {
   draft.references = []
 })
@@ -23,45 +14,13 @@ const fragmentNumber = 'Test.Fragment'
 const photo = { blobParts: [''], options: { type: 'image/jpeg' }, size: 1 }
 let fakeApi: FakeApi
 let appDriver: AppDriver
-let consoleErrorSpy: jest.SpyInstance
-let consoleWarnSpy: jest.SpyInstance
 
 afterEach(() => {
-  consoleErrorSpy.mockRestore()
-  consoleWarnSpy.mockRestore()
   fakeApi.verifyExpectations()
 })
 
 describe('Display annotate view', () => {
   beforeEach(async () => {
-    consoleErrorSpy = jest
-      .spyOn(console, 'error')
-      .mockImplementation((message) => {
-        if (
-          typeof message === 'string' &&
-          suppressedAnnotationWarnings.some((warning) =>
-            message.includes(warning),
-          )
-        ) {
-          return
-        }
-
-        originalConsoleError(message)
-      })
-    consoleWarnSpy = jest
-      .spyOn(console, 'warn')
-      .mockImplementation((message) => {
-        if (
-          typeof message === 'string' &&
-          suppressedAnnotationWarnings.some((warning) =>
-            message.includes(warning),
-          )
-        ) {
-          return
-        }
-
-        originalConsoleWarn(message)
-      })
     ;(URL.createObjectURL as jest.Mock).mockReturnValueOnce('mock url')
     fakeApi = new FakeApi()
       .expectFragment(fragmentWithoutReferences)

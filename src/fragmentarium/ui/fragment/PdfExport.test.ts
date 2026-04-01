@@ -10,28 +10,11 @@ import { createDictionaryWord } from 'test-support/glossary'
 
 jest.mock('dictionary/application/WordService')
 
-const originalConsoleError = console.error
-const useLayoutEffectSsrWarning =
-  'Warning: useLayoutEffect does nothing on the server'
-
 let wordService: jest.Mocked<WordService>
 let fragment: Fragment
 let pdfDoc: jsPDF
-let consoleErrorSpy: jest.SpyInstance
 
 beforeEach(async () => {
-  consoleErrorSpy = jest
-    .spyOn(console, 'error')
-    .mockImplementation((message) => {
-      if (
-        typeof message === 'string' &&
-        message.includes(useLayoutEffectSsrWarning)
-      ) {
-        return
-      }
-
-      originalConsoleError(message)
-    })
   wordService = new (WordService as jest.Mock<jest.Mocked<WordService>>)()
   jest.spyOn(wordService, 'findAll').mockImplementation((ids) => {
     const words = [...new Set(ids)].map((id) => createDictionaryWord(id))
@@ -51,10 +34,6 @@ beforeEach(async () => {
       return doc
     },
   )
-})
-
-afterEach(() => {
-  consoleErrorSpy.mockRestore()
 })
 
 test('outputType', () => {

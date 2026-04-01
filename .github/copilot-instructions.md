@@ -43,8 +43,9 @@ Provide project context and coding guidelines that AI should follow when generat
 - Add / update tests for any new functionality or significant changes.
 - When writing tests, ensure they are isolated and do not depend on external state (Jest + React Testing Library conventions).
 - Ensure that coverage is 100% after changes in affected code.
-- Tests must run without any console errors, warnings, or other noise unless that noise is explicitly and intentionally produced by the test itself (for example asserting on error boundary output). Any `console.error`, `console.warn`, or unhandled-rejection output that is not deliberately produced by design is a defect.
-- Treat console-clean runs as a hard gate: do not stop after changes until a full test run produces no unexpected console output.
+- Tests must run without any console errors, warnings, or other noise. Any `console.error`, `console.warn`, or unhandled-rejection output is a defect that must be fixed at its root cause.
+- Suppressing console output (e.g. mocking `console.error`/`console.warn` to silence warnings or similar) is **never** an acceptable solution. Fix the source of the warning instead.
+- Treat console-clean runs as a hard gate: do not stop after changes until a full test run produces zero console output.
 - Never remove, disable, skip, or comment out existing tests without explicit user confirmation.
 - Only propose removing a test when the underlying code path was removed or changed such that the assertion is no longer meaningful.
 - If test removal is proposed, provide detailed justification first and wait for explicit user approval before making that change.
@@ -61,7 +62,7 @@ Provide project context and coding guidelines that AI should follow when generat
 
 - Keep review comments short, specific, and actionable.
 - Prioritize correctness, regressions, security, and test coverage in every review.
-- All instances of unexpected console errors, warnings, or unhandled rejections found in the test output must be noted as findings in the review. They are not acceptable noise. Resolving every such finding is a hard gate: a PR may not be approved while any unresolved console-noise finding remains.
+- All instances of console errors, warnings, or unhandled rejections found in the test output must be noted as findings in the review. They are never acceptable noise — every such instance must be fixed at its root cause. Resolving every such finding is a hard gate: a PR may not be approved while any console-noise finding remains.
 - Verify changed behavior locally while running the modified application before finalizing review conclusions.
 - Export every detailed review to a `.md` file using the same convention: `TASK-<id>-review.md`.
 - Use a consistent review template with these sections: `Summary`, `Findings`, `Severity`, `Reproduction Steps`, and `Recommendation`.
