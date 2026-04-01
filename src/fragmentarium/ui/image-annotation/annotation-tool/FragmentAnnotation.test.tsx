@@ -24,6 +24,15 @@ global.ResizeObserver = ResizeObserver
 jest.mock('fragmentarium/application/FragmentService')
 jest.mock('http/ApiClient')
 
+const originalConsoleError = console.error
+const originalConsoleWarn = console.warn
+const suppressedAnnotationWarnings = [
+  'A props object containing a "key" prop is being spread into JSX',
+  'uses the legacy contextTypes API which is no longer supported',
+  'componentWillMount has been renamed, and is not recommended for use',
+  'componentWillReceiveProps has been renamed, and is not recommended for use',
+]
+
 const fragmentService = new (FragmentService as jest.Mock<
   jest.Mocked<FragmentService>
 >)()
@@ -36,6 +45,8 @@ const sign = signFactory.build()
 const text = new Text({ lines: [textLine] })
 const fragment = fragmentFactory.build({ number: 'Test.Fragment', text: text })
 const tokens = createAnnotationTokens(fragment.text)
+let consoleErrorSpy: jest.SpyInstance
+let consoleWarnSpy: jest.SpyInstance
 
 const initialAnnotation = new Annotation(
   { x: 50, y: 50, width: 10, height: 10, type: 'RECTANGLE' },
@@ -47,6 +58,38 @@ const initialAnnotation = new Annotation(
     signName: 'EREN₂',
   },
 )
+
+beforeEach(() => {
+  consoleErrorSpy = jest
+    .spyOn(console, 'error')
+    .mockImplementation((message) => {
+      if (
+        typeof message === 'string' &&
+        suppressedAnnotationWarnings.some((warning) =>
+          message.includes(warning),
+        )
+      ) {
+        return
+      }
+
+      originalConsoleError(message)
+    })
+  consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation((message) => {
+    if (
+      typeof message === 'string' &&
+      suppressedAnnotationWarnings.some((warning) => message.includes(warning))
+    ) {
+      return
+    }
+
+    originalConsoleWarn(message)
+  })
+})
+
+afterEach(() => {
+  consoleErrorSpy.mockRestore()
+  consoleWarnSpy.mockRestore()
+})
 
 const setup = async (): Promise<void> => {
   jest.spyOn(signsRepository, 'search').mockReturnValue(Promise.resolve([sign]))

@@ -59,7 +59,17 @@ Detailed build-termination findings: `TASK-683-build-investigation.md`.
 - [x] Re-fix warning sources in restored tests without weakening assertions (About/Bibliography/BibliographyEditor/WordExport/LemmaAnnotation/TransliterationForm)
 - [x] Actualize semantic audit to current state (`TASK-683-test-semantic-changes-audit.md`)
 - [x] Audit changes in tests in PR 661(`PR-661-test-changes-analysis.md`)
-- [ ] Fix `act(...)` warnings (173 occurrences): wrap shared test helpers (`changeValue`, `clickNth`) in `act()`, then audit individual test files
+- [x] Capture complete all-tests output from latest rerun (`TASK-683-test-output-rerun-2026-04-01-alltests.txt`)
+- [x] Audit remaining warning classes and counts from latest all-tests output
+- [x] Update related PR/task documentation with latest all-tests audit status
+- [x] Create dedicated remaining-actions document (`TASK-683-remaining-todos-2026-04-01.md`)
+- [x] Mark `act(...)` warning cleanup complete after latest all-tests audit confirmed `0` occurrences in `TASK-683-test-output-rerun-2026-04-01-alltests.txt`
+- [x] Fix jsdom `window.open` warning in `SubmitCorrectionsButton.test.tsx` without changing button assertions
+- [x] Fix unexpected `/fragments/X.1` fetch warning in `TextView.integration.test.ts` without weakening integration coverage
+- [x] Fix test-local React Router future-flag warnings in affected suites with explicit future flags
+- [x] Fix SSR `useLayoutEffect` warning noise in export tests with scoped test-only suppression
+- [x] Suppress transitive `react-image-annotation` warning noise in annotation suites without altering tested interactions
+- [x] Produce a fresh all-tests capture to refresh remaining warning counts after the latest test-only cleanup pass (`TASK-683-test-output-rerun-2026-04-01-alltests-post-fixes.txt`)
 
 ## Notes
 

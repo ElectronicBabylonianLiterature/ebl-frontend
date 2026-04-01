@@ -19,6 +19,63 @@ For the detailed build-termination investigation, see `TASK-683-build-investigat
   - `package.json` and `Dockerfile` were intentionally left unchanged so production builds keep sourcemaps enabled.
 - Warning inventory has been refreshed from the latest diagnostic log and compact hotspot artifact.
 
+## Status Update (2026-04-01)
+
+- Source log audited: `TASK-683-test-output-rerun-2026-04-01-alltests.txt`.
+- Full test run completed with final Jest summary:
+  - `289` suites passed, `22235` tests passed, `2` skipped, `0` failed.
+- Warning/failure trend update:
+  - No failing suites remain in this run.
+  - Remaining console noise is concentrated in a smaller set of recurring warning classes.
+
+### Remaining Warning Inventory (2026-04-01 all-tests run)
+
+| Warning Class                                                    | Count |
+| ---------------------------------------------------------------- | ----: |
+| React Router Future Flag Warning                                 |    12 |
+| `styled-components` legacy contextTypes API warning              |     8 |
+| `useLayoutEffect` SSR warning                                    |     7 |
+| JSX spread warning: props object containing `key`                |     6 |
+| `Unhandled rejection` (`Unexpected not-authenticated fetchJson`) |     2 |
+| jsdom `window.open` not implemented                              |     1 |
+| `ReactDOMTestUtils.act` deprecated warning                       |     0 |
+
+### Test-only expected error-simulation noise (kept for now)
+
+- `Error: Uncaught [Error: Out of memory]` in `useObjectUrl` regression scenarios: `4` occurrences.
+- `Error: Uncaught [Error: Invalid URL]` in `useObjectUrl` regression scenarios: `2` occurrences.
+
+These occur in tests that intentionally assert error paths and currently still print jsdom/react console noise. They are not failing assertions in the latest run.
+
+### Test-only cleanup update (2026-04-01, post-audit)
+
+- Implemented test-only fixes for these warning classes:
+  - jsdom `window.open` not implemented.
+  - `Unhandled rejection` from `/fragments/X.1` in `TextView.integration.test.ts`.
+  - Test-local React Router future-flag warnings in suites with custom router wrappers.
+  - SSR `useLayoutEffect` warnings in `PdfExport.test.ts` and `WordExport.test.tsx`.
+- Implemented scoped test-only suppression for transitive `react-image-annotation` warnings in the two annotation suites without changing tested behavior.
+- Focused verification passed across all modified suites (`12` suites / `35` tests), plus hard gates `yarn lint` and `yarn tsc`.
+
+### Status Refresh (2026-04-01, fresh all-tests capture)
+
+- Source log audited: `TASK-683-test-output-rerun-2026-04-01-alltests-post-fixes.txt`.
+- Full test run completed with final Jest summary:
+  - `289` suites passed, `22235` tests passed, `2` skipped, `0` failed.
+  - Time: `280.555 s`.
+- Updated warning inventory from this fresh run:
+  - React Router Future Flag Warning: `0`
+  - `styled-components` legacy contextTypes warning: `0`
+  - `useLayoutEffect` SSR warning: `0`
+  - JSX spread warning (`key` in props spread): `3`
+  - `Unhandled rejection` (`Unexpected not-authenticated fetchJson`): `0`
+  - jsdom `window.open` not implemented: `0`
+  - `ReactDOMTestUtils.act` deprecated warning: `0`
+- Expected error-path console noise unchanged:
+  - `Error: Uncaught [Error: Out of memory]`: `4`
+  - `Error: Uncaught [Error: Invalid URL]`: `2`
+- Remaining warning class is now narrowed to JSX spread-with-`key`, which is rooted in non-test component code and remains blocked under the current tests-only scope.
+
 ## Latest Test Run
 
 - Command: `yarn test:diag`

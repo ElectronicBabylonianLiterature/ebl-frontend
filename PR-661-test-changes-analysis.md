@@ -9,8 +9,6 @@
 
 Commit f01e52b0 ("Frontend optimization") introduces systematic refactoring of 243 test files across the ebl-frontend project. The changes implement a **"never hang philosophy"** to prevent tests from blocking indefinitely, upgrade testing library dependencies, and modernize React Router usage patterns. The majority of changes are **neutral to pragmatic optimizations**, though some changes introduce subtle coverage modifications.
 
----
-
 ## 1. React Router Modernization
 
 ### 1.1 Switch from `Router` + `createMemoryHistory` to `MemoryRouter`
@@ -771,3 +769,17 @@ src/useObjectUrl.test.tsx
 3. **Snapshot Tests**: Check that components with removed snapshots still have adequate content assertions
 4. **Service Mocks**: Ensure mock promises are properly resolved in tests that expect content (not stuck in loading state)
 5. **Integration Tests**: Run integration test suites in isolation to ensure setup function refactoring doesn't cause cross-test contamination
+
+## Addendum (2026-04-01)
+
+Latest full-suite capture (`TASK-683-test-output-rerun-2026-04-01-alltests.txt`) confirms:
+
+- Test status is green (`289/289` suites passed; `22235/22237` tests passed, `2` skipped).
+- Remaining work is primarily warning-noise cleanup, not failing assertions.
+- Recurring warning classes still visible after PR #661-era refactors:
+  - React Router future-flag warnings.
+  - `styled-components` legacy-context warnings (transitive from `react-image-annotation` stack).
+  - `useLayoutEffect` SSR warnings in tests exercising server-side render paths.
+  - A small number of expected test-only error-path console emissions.
+
+This addendum reclassifies the current post-optimization state as: **functionally stable test outcomes with targeted warning debt still open**.

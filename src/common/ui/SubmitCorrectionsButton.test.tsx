@@ -3,10 +3,10 @@ import { render, screen, fireEvent } from '@testing-library/react'
 
 import SubmitCorrectionsButton from 'common/ui/SubmitCorrectionsButton'
 
-let windowSpy
+let windowSpy: jest.SpyInstance
 
 beforeEach(() => {
-  windowSpy = jest.spyOn(window, 'open')
+  windowSpy = jest.spyOn(window, 'open').mockImplementation(() => null)
 })
 
 afterEach(() => {

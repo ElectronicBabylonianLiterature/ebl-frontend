@@ -16,6 +16,10 @@ jest.mock('corpus/application/TextService')
 jest.mock('corpus/ui/RowsContext')
 jest.mock('corpus/ui/TranslationContext')
 
+const originalConsoleError = console.error
+const useLayoutEffectSsrWarning =
+  'Warning: useLayoutEffect does nothing on the server'
+
 let wordService: jest.Mocked<WordService>
 let textService: jest.Mocked<TextService>
 let rowsContext: jest.Mocked<RowsContextService>
@@ -23,8 +27,21 @@ let translationContext: jest.Mocked<TranslationContextService>
 
 let chapter: ChapterDisplay
 let wordBlob: Document
+let consoleErrorSpy: jest.SpyInstance
 
 beforeEach(async () => {
+  consoleErrorSpy = jest
+    .spyOn(console, 'error')
+    .mockImplementation((message) => {
+      if (
+        typeof message === 'string' &&
+        message.includes(useLayoutEffectSsrWarning)
+      ) {
+        return
+      }
+
+      originalConsoleError(message)
+    })
   chapter = chapterDisplayFactory.build()
   wordService = new (WordService as jest.Mock<jest.Mocked<WordService>>)()
   wordService.find.mockReturnValue(Bluebird.resolve(wordDto))
@@ -59,6 +76,10 @@ beforeEach(async () => {
       $('#jQueryContainer'),
     )
   })
+})
+
+afterEach(() => {
+  consoleErrorSpy.mockRestore()
 })
 
 test('outputType', () => {

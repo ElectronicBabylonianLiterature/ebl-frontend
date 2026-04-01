@@ -54,3 +54,38 @@
 
 - This report is intentionally compact for trend comparison across runs.
 - For deeper triage, compare this file with future `TASK-683-test-diag-hotspots-YYYY-MM-DD.md` artifacts.
+
+## Addendum: 2026-04-01 All-Tests Capture
+
+### Source
+
+- Input log: `TASK-683-test-output-rerun-2026-04-01-alltests.txt`
+- Command used by user capture: `yarn test` with `--watch=false` and in-band execution path
+
+### Run Summary
+
+- Test Suites: `289 passed, 289 total`
+- Tests: `2 skipped, 22235 passed, 22237 total`
+- Snapshots: `18 passed, 18 total`
+- Time: `299.124 s`
+- Early-exit marker (`process exited too early`): `not present`
+
+### Remaining Warning Counts
+
+| Warning Class                                              | Count |
+| ---------------------------------------------------------- | ----: |
+| React Router Future Flag Warning                           |    12 |
+| `styled-components` legacy contextTypes API warning        |     8 |
+| `useLayoutEffect` SSR warning                              |     7 |
+| JSX spread warning (`key` in spread props)                 |     6 |
+| `Unhandled rejection` (`Unexpected not-authenticated ...`) |     2 |
+| jsdom `window.open` not implemented                        |     1 |
+
+### Suites Emitting Console Hotspots (sample)
+
+- `src/fragmentarium/ui/image-annotation/AnnotationsView.integration.test.ts`
+- `src/fragmentarium/ui/fragment/PdfExport.test.ts`
+- `src/corpus/ui/TextView.integration.test.ts`
+- `src/common/hooks/useObjectUrl.regression.test.tsx`
+- `src/common/ui/SubmitCorrectionsButton.test.tsx`
+- `src/auth/react-auth0-spa.security.test.tsx`

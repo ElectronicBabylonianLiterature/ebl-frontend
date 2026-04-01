@@ -1,4 +1,6 @@
 import Chance from 'chance'
+import Promise from 'bluebird'
+import { produce } from 'immer'
 import { ChapterId } from 'transliteration/domain/chapter-id'
 import { ManuscriptTypes } from 'corpus/domain/manuscript'
 import { PeriodModifiers, Periods } from 'common/utils/period'
@@ -7,6 +9,7 @@ import AppDriver from 'test-support/AppDriver'
 import { referenceDtoFactory } from 'test-support/bibliography-fixtures'
 import FakeApi from 'test-support/FakeApi'
 import { textDto } from 'test-support/test-corpus-text'
+import { fragmentDto } from 'test-support/test-fragment'
 import { testJoinsDto } from 'test-support/test-joins'
 
 const chance = new Chance('text view integration test')
@@ -37,6 +40,14 @@ const manuscriptsDto = [
 let fakeApi: FakeApi
 let appDriver: AppDriver
 
+const uncertainFragmentDto = produce(fragmentDto, (draft) => {
+  draft.museumNumber = {
+    prefix: 'X',
+    number: '1',
+    suffix: '',
+  }
+})
+
 afterEach(() => {
   fakeApi.verifyExpectations()
 })
@@ -44,6 +55,17 @@ afterEach(() => {
 beforeEach(() => {
   fakeApi = new FakeApi()
   fakeApi.expectText(textDto)
+  const fetchJsonImplementation =
+    fakeApi.client.fetchJson.getMockImplementation()
+  fakeApi.client.fetchJson.mockImplementation((path, authenticate) => {
+    if (path === '/fragments/X.1') {
+      return Promise.resolve(uncertainFragmentDto)
+    }
+
+    return fetchJsonImplementation
+      ? fetchJsonImplementation(path, authenticate)
+      : Promise.reject(new Error(`Unexpected fetchJson: ${path}`))
+  })
   appDriver = new AppDriver(fakeApi.client).withPath(
     `/corpus/${textDto.genre}/${textDto.category}/${textDto.index}`,
   )

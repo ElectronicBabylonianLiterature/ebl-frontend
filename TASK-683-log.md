@@ -860,3 +860,56 @@
 ### Tracking correction
 
 - Updated `TASK-683-test-semantic-changes-audit.md` to current state and updated `TASK-683-todo.md` with completed semantic-restore items.
+
+### Full all-tests capture audit (user-provided run)
+
+- Used user-provided complete output artifact:
+  - `TASK-683-test-output-rerun-2026-04-01-alltests.txt`
+- Confirmed final Jest summary is present (no early termination):
+  - `289` suites passed, `22235` tests passed, `2` skipped, `0` failed.
+- Audited remaining warning signatures and counts from this run:
+  - React Router Future Flag Warning: `12`
+  - `styled-components` legacy contextTypes warning: `8`
+  - `useLayoutEffect` SSR warning: `7`
+  - JSX spread warning (`key` in props spread): `6`
+  - Unhandled rejection warning (`Unexpected not-authenticated fetchJson`): `2`
+  - jsdom `window.open` not implemented: `1`
+
+### Documentation updates for PR/task tracking
+
+- Updated `TASK-683-issues-summary.md` with a dedicated 2026-04-01 status section and refreshed warning inventory.
+- Updated `TASK-683-test-diag-hotspots-2026-03-25.md` with a 2026-04-01 addendum for the latest all-tests capture.
+- Updated `PR-661-test-changes-analysis.md` with a post-optimization state addendum.
+- Prepared a new dedicated remaining-actions document:
+  - `TASK-683-remaining-todos-2026-04-01.md`
+
+### Test-only warning cleanup pass
+
+- Constraint followed: changed test files only; no production/source files touched.
+- Fixed jsdom `window.open` warning in `src/common/ui/SubmitCorrectionsButton.test.tsx` by mocking `window.open` instead of invoking jsdom's unimplemented default.
+- Fixed `Unexpected not-authenticated fetchJson: /fragments/X.1` warning in `src/corpus/ui/TextView.integration.test.ts` by satisfying the fragment lookup performed during uncertain-fragment rendering.
+- Removed test-local React Router future-flag warnings in affected suites by passing the same future-flag policy already used in `src/setupTests.ts` to local router wrappers.
+- Removed SSR `useLayoutEffect` warning noise in `src/fragmentarium/ui/fragment/PdfExport.test.ts` and `src/corpus/ui/WordExport.test.tsx` via scoped console suppression for the known server-render warning only.
+- Removed transitive `react-image-annotation` warning noise in the two annotation suites with scoped suppression for legacy library warnings only; assertions and interactions were left intact.
+- Did not change the production root cause of the JSX spread-with-`key` warning because that requires non-test code changes and is currently outside the allowed scope.
+
+### Validation
+
+- Focused rerun passed for all modified suites (`12/12` suites, `35/35` tests).
+- `yarn lint` passed.
+- `yarn tsc` passed.
+
+### Full-suite rebaseline (step 1 completed)
+
+- Produced fresh full output artifact: `TASK-683-test-output-rerun-2026-04-01-alltests-post-fixes.txt`.
+- Fresh all-tests result: `289/289` suites passed, `22235/22237` tests passed, `2` skipped, `0` failed (`280.555 s`).
+- Updated counts from the fresh artifact:
+  - React Router Future Flag Warning: `0`
+  - `styled-components` legacy contextTypes warning: `0`
+  - `useLayoutEffect` SSR warning: `0`
+  - `Unhandled rejection` (`Unexpected not-authenticated fetchJson`): `0`
+  - jsdom `window.open` not implemented: `0`
+  - JSX spread warning (`key` in props spread): `3`
+  - `ReactDOMTestUtils.act` deprecated warning: `0`
+- Expected test-only error-path noise remained unchanged (`Out of memory`: `4`, `Invalid URL`: `2`).
+- Conclusion: step 1 is complete; only JSX spread-with-`key` remains from tracked warning classes and requires non-test code change to fully eliminate.
