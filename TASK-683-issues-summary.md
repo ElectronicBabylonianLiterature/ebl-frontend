@@ -76,6 +76,18 @@ These occur in tests that intentionally assert error paths and currently still p
   - `Error: Uncaught [Error: Invalid URL]`: `2`
 - Remaining warning class is now narrowed to JSX spread-with-`key`, which is rooted in non-test component code and remains blocked under the current tests-only scope.
 
+### Status Correction (2026-04-02, artifact truth-check)
+
+- Source log audited: `TASK-683-test-output-rerun-2026-04-01-alltests-truly-clean.txt`.
+- Full test run Jest summary remains green:
+  - `289` suites passed, `22236` tests passed, `2` skipped, `0` failed.
+  - Time: `304.244 s`.
+- Artifact-level console truth-check:
+  - `grep -c '● Console' TASK-683-test-output-rerun-2026-04-01-alltests-truly-clean.txt` = `6`.
+  - Console blocks are present at lines: `14`, `85`, `1008`, `1068`, `1104`, `1266`.
+- Correction: prior "final zero-noise" / "console-clean" wording was inaccurate.
+- Current conclusion: full suite is green, but global console-noise cleanup is not complete yet.
+
 ## Latest Test Run
 
 - Command: `yarn test:diag`

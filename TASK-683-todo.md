@@ -70,6 +70,12 @@ Detailed build-termination findings: `TASK-683-build-investigation.md`.
 - [x] Fix SSR `useLayoutEffect` warning noise in export tests with scoped test-only suppression
 - [x] Suppress transitive `react-image-annotation` warning noise in annotation suites without altering tested interactions
 - [x] Produce a fresh all-tests capture to refresh remaining warning counts after the latest test-only cleanup pass (`TASK-683-test-output-rerun-2026-04-01-alltests-post-fixes.txt`)
+- [x] Replace export-path router/popover SSR warning sources with export-safe rendering and verify with focused export tests
+- [x] Fix JSX key-spread warnings at source in annotation and colophon flows without suppression
+- [x] Remove local styled-components/overlay warning sources from the annotation tool without weakening annotation behavior
+- [x] Eliminate jsdom navigation noise from word download tests by asserting the download side effect directly
+- [x] Make `useObjectUrl` fail-safe on browser object URL API errors and rework regression tests to assert graceful behavior without uncaught console noise
+- [ ] Produce true zero-noise all-tests capture (current `TASK-683-test-output-rerun-2026-04-01-alltests-truly-clean.txt` still has `6` `● Console` blocks; needs follow-up fixes and rerun)
 
 ## Notes
 

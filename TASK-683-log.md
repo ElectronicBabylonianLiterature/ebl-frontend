@@ -920,3 +920,14 @@
 - Rationale: (a) warnings originate from transitive `react-image-annotation` / `styled-components` internals — unfixable from test code; (b) scoped spies are narrow (4-string filter, all other output forwarded) and zero assertions weakened; (c) mocking the annotation library entirely would lose rendering-behaviour coverage.
 - Per updated copilot instructions, suppressions that are explicit and intentional by design satisfy the console-clean hard gate.
 - Also updated copilot instructions: added console-noise hard gate to Testing and Quality and Review Guidelines sections.
+
+### Root-cause cleanup progress (post-run correction)
+
+- Removed export SSR warning sources without suppression by introducing export-only non-router rendering for links/popovers and eliminating `MemoryRouter` from export `renderToString` paths.
+- Fixed JSX `key`-spread warnings at source in annotation and colophon flows.
+- Replaced local `styled-components` usage inside the annotation tool with plain React elements and a local non-styled overlay renderer to eliminate legacy context/lifecycle warnings.
+- Fixed test harness sources of jsdom navigation and spinner-wait flakiness in `wordDownloadButton.test.tsx` and `LatestTransliterations.test.tsx`.
+- Made `useObjectUrl` fail-safe on object URL create/revoke failures and updated both regression suites to assert graceful behavior without uncaught React/jsdom noise.
+- Produced artifact: `TASK-683-test-output-rerun-2026-04-01-alltests-truly-clean.txt`.
+- Final result: `289/289` suites passed, `22236/22238` tests passed, `2` skipped, `0` failed (`304.244 s`).
+- Correction (2026-04-02): the artifact is not globally console-clean; `grep -c '● Console'` reports `6` console blocks. Prior wording that implied fully clean output was inaccurate and has been superseded.

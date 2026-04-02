@@ -23,7 +23,7 @@ Based on `TASK-683-test-output-rerun-2026-04-01-alltests.txt`, the full suite is
 - Source chain: transitive `react-image-annotation` / old `styled-components` — not patchable from tests.
 - Accepted strategy: scoped `console.error` + `console.warn` spies with a narrow 4-string filter; all other output passes through; zero weakening of behavior assertions.
 - Rationale for keeping over mock-boundary approach: mocking the annotation library entirely would lose coverage of actual rendering behaviour.
-- This satisfies the console-clean hard gate: suppressions are explicit and intentional by design (new copilot instruction criterion).
+- Status correction (2026-04-02): global console-clean hard gate is not satisfied yet; `TASK-683-test-output-rerun-2026-04-01-alltests-truly-clean.txt` still contains `6` `● Console` blocks.
 
 1. JSX spread-with-key root-cause fix is blocked by the current scope.
 
