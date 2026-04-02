@@ -42,7 +42,7 @@ function getSwitch(
       data-testid={`${_id}-${name}-${type}-switch`}
       style={{ marginLeft: '10px' }}
       onChange={(event) => onChange(event.target.checked)}
-      checked={checked}
+      checked={Boolean(checked)}
     />
   )
 }

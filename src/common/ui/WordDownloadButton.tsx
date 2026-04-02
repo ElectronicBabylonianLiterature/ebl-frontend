@@ -25,7 +25,9 @@ export default function WordDownloadButton({
   const [isLoading, setIsLoading] = useState(false)
   const [setPromise, cancelPromise] = usePromiseEffect()
 
-  const handleClick = (event) => {
+  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+    event.preventDefault()
+
     const jQueryRef = $('#jQueryContainer')
     setIsLoading(true)
     cancelPromise()
@@ -43,7 +45,7 @@ export default function WordDownloadButton({
 
   return (
     <>
-      <Dropdown.Item onClick={handleClick}>
+      <Dropdown.Item as="button" onClick={handleClick}>
         {isLoading ? <Spinner /> : children}
       </Dropdown.Item>
       <div id="jQueryContainer" style={{ display: 'none' }}></div>

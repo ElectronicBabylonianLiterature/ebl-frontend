@@ -4,8 +4,10 @@ import WordDownloadButton from 'common/ui/WordDownloadButton'
 import { CorpusWordExportContext } from 'corpus/ui/Download'
 import { waitForSpinnerToBeRemoved } from 'test-support/waitForSpinnerToBeRemoved'
 import { Document } from 'docx'
+import { saveAs } from 'file-saver'
 
 jest.mock('corpus/ui/Download')
+jest.mock('file-saver', () => ({ saveAs: jest.fn() }))
 
 const contextMocked = CorpusWordExportContext as jest.Mock<
   jest.Mocked<CorpusWordExportContext>
@@ -37,4 +39,9 @@ it('Shows children', async () => {
 it('Calls get method', async () => {
   await setup()
   expect(getWordDoc).toHaveBeenCalled()
+})
+
+it('Saves the generated document', async () => {
+  await setup()
+  expect(saveAs).toHaveBeenCalledTimes(1)
 })

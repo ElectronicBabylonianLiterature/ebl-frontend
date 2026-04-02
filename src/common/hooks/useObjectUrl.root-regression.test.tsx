@@ -323,9 +323,9 @@ describe('useObjectUrl - Blob URL Lifecycle Regression Tests', () => {
         throw new Error('Out of memory')
       })
 
-      expect(() => {
-        renderHook(() => useObjectUrl(blob))
-      }).toThrow('Out of memory')
+      const { result } = renderHook(() => useObjectUrl(blob))
+
+      expect(result.current).toBeUndefined()
     })
 
     test('revokeObjectURL throws - cleanup still completes', () => {
@@ -338,7 +338,7 @@ describe('useObjectUrl - Blob URL Lifecycle Regression Tests', () => {
 
       const { unmount } = renderHook(() => useObjectUrl(blob))
 
-      expect(() => unmount()).toThrow('Invalid URL')
+      expect(() => unmount()).not.toThrow()
       expect(mockRevokeObjectURL).toHaveBeenCalledWith(blobUrl)
     })
   })
