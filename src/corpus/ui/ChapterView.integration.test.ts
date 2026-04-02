@@ -53,6 +53,7 @@ describe('Display chapter', () => {
   })
 
   test('Snapshot', () => {
+    expect(appDriver.getView().container).toMatchSnapshot()
     expect(
       appDriver
         .getView()
@@ -163,15 +164,18 @@ describe('Display chapter', () => {
     })
     appDriver.clickByRole('button', 'Show score', 0)
     await appDriver.waitForText(/single ruling/)
+    expect(appDriver.getView().container).toMatchSnapshot()
     expect(appDriver.getView().getByText(/single ruling/)).toBeVisible()
   })
 
   test('Show notes', () => {
     appDriver.clickByRole('button', 'Show notes', 0)
+    expect(appDriver.getView().container).toMatchSnapshot()
   })
 
   test('Show parallels', () => {
     appDriver.clickByRole('button', 'Show parallels', 0)
+    expect(appDriver.getView().container).toMatchSnapshot()
   })
 
   test('Sidebar', async () => {
@@ -214,6 +218,7 @@ describe('Display chapter', () => {
     appDriver.click('Deutsch')
     appDriver.click('Close')
     await appDriver.waitForTextToDisappear('Close')
+    expect(appDriver.getView().container).toMatchSnapshot()
     expect(appDriver.getView().queryByText('Score')).not.toBeInTheDocument()
   })
 
@@ -222,6 +227,7 @@ describe('Display chapter', () => {
     const bibtexButton = await appDriver
       .getView()
       .findByRole('button', { name: /BibTeX/i })
+    expect(appDriver.getView().container).toMatchSnapshot()
     expect(bibtexButton).toBeVisible()
   })
 })

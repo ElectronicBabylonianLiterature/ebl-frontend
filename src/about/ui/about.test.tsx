@@ -52,6 +52,18 @@ describe('About component', () => {
     )
   })
 
+  test('Snapshot', async () => {
+    const { container } = render(
+      <MemoryRouter>
+        <About markupService={markupServiceMock} activeTab="corpus" />
+      </MemoryRouter>,
+    )
+    await waitFor(() => {
+      expect(screen.queryAllByLabelText('Spinner')).toHaveLength(0)
+    })
+    expect(container.outerHTML).toMatchSnapshot()
+  })
+
   test('renders corpus tab content', async () => {
     render(
       <MemoryRouter>

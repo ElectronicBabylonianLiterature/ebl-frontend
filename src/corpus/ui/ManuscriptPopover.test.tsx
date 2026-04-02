@@ -45,6 +45,7 @@ test('Show manuscript line details', async () => {
   await waitFor(() => expect(screen.getByRole('tooltip')).toBeVisible())
 
   const heading = screen.getByRole('heading', { level: 3 })
+  expect(heading).toMatchSnapshot()
   expect(heading).toHaveTextContent(oldSiglum.siglum)
 
   const number = manuscript.joins[0][0].museumNumber

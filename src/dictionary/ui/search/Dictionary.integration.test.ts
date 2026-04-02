@@ -27,6 +27,7 @@ beforeEach(async () => {
 })
 
 test('renders dictionary search page', () => {
+  expect(appDriver.getView().container).toMatchSnapshot()
   expect(
     appDriver.getView().getByRole('heading', { name: 'Dictionary' }),
   ).toBeInTheDocument()
@@ -44,6 +45,7 @@ test.each([
   appDriver.changeValueByLabel(label, query[attribute])
   appDriver.click('Query', 0)
   await appDriver.waitForText(words[0].lemma.join(' '))
+  expect(appDriver.getView().container).toMatchSnapshot()
   expect(appDriver.getView().getByText(words[0].lemma.join(' '))).toBeVisible()
 })
 
@@ -55,5 +57,6 @@ test('Vowel class', async () => {
   appDriver.clickByRole('checkbox', /a\/a/)
   appDriver.click('Query', 0)
   await appDriver.waitForText(words[0].lemma.join(' '))
+  expect(appDriver.getView().container).toMatchSnapshot()
   expect(appDriver.getView().getByText(words[0].lemma.join(' '))).toBeVisible()
 })

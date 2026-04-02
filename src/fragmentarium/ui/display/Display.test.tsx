@@ -20,7 +20,7 @@ let wordService: WordService
 let fragment: Fragment
 
 async function renderFragment(fragment: Fragment) {
-  render(
+  const view = render(
     <MemoryRouter>
       <DictionaryContext.Provider value={wordService}>
         <Display fragment={fragment} wordService={wordService} activeLine="" />
@@ -31,6 +31,8 @@ async function renderFragment(fragment: Fragment) {
   await waitFor(() =>
     expect(screen.queryByText('Loading...')).not.toBeInTheDocument(),
   )
+
+  return view
 }
 
 beforeEach(async () => {
@@ -57,7 +59,8 @@ it('correctly displays simple fragments', async () => {
     },
     { associations: { text: complexText } },
   )
-  await renderFragment(fragment)
+  const view = await renderFragment(fragment)
+  expect(view.container).toMatchSnapshot()
   expect(screen.getByText(/lorem ipsum quia/i)).toBeInTheDocument()
   expect(screen.getByText(/eBL Notes/i)).toBeInTheDocument()
   expect(screen.getByText(/dolor sit amet/i)).toBeInTheDocument()
