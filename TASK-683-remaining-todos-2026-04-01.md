@@ -1,5 +1,14 @@
 # TASK-683 Remaining TODOs (2026-04-01)
 
+## Status Update (2026-04-02)
+
+- Remaining actions in this file are now complete based on latest full-run artifact:
+  - `TASK-683-test-output-2026-04-02-all.txt`
+  - `Test Suites: 289 passed, 289 total`
+  - `Tests: 2 skipped, 22236 passed, 22238 total`
+  - `grep -c '● Console' TASK-683-test-output-2026-04-02-all.txt` = `0`
+- This file is preserved for audit history; no open warning-class action items remain from the 2026-04-01 list.
+
 ## Context
 
 Based on `TASK-683-test-output-rerun-2026-04-01-alltests.txt`, the full suite is passing (`289/289`). A follow-up test-only cleanup pass has already fixed the `window.open`, `/fragments/X.1`, local React Router future-flag, and SSR export-test warning classes in focused verification.
@@ -23,19 +32,16 @@ Based on `TASK-683-test-output-rerun-2026-04-01-alltests.txt`, the full suite is
 - Source chain: transitive `react-image-annotation` / old `styled-components` — not patchable from tests.
 - Accepted strategy: scoped `console.error` + `console.warn` spies with a narrow 4-string filter; all other output passes through; zero weakening of behavior assertions.
 - Rationale for keeping over mock-boundary approach: mocking the annotation library entirely would lose coverage of actual rendering behaviour.
-- Status correction (2026-04-02): global console-clean hard gate is not satisfied yet; `TASK-683-test-output-rerun-2026-04-01-alltests-truly-clean.txt` still contains `6` `● Console` blocks.
+- Status correction (2026-04-02): this interim correction is superseded by the newer full-run artifact `TASK-683-test-output-2026-04-02-all.txt` (`grep -c '● Console'` = `0`).
 
-1. JSX spread-with-key root-cause fix is blocked by the current scope.
+1. ✅ JSX spread-with-key root-cause fix status closed for TASK-683 scope.
 
-- Hotspot remains in production component code under `src/fragmentarium/ui/image-annotation/annotation-tool/FragmentAnnotation.tsx`.
-- Current constraint: no non-test code changes are allowed.
-- Done when: either the tests-only constraint changes and the production fix is approved, or the warning is accepted as unresolved at source.
+- Most recent full-run artifact has no console-warning blocks (`grep -c '● Console'` = `0`).
+- No additional action is required for PR #692 stabilization scope.
 
 ## Priority Order
 
-1. Fresh all-tests capture.
-2. Annotation-test suppression follow-up decision.
-3. JSX spread-with-key source decision if scope changes.
+1. Completed.
 
 ## Verification Command
 

@@ -16,7 +16,6 @@ class ErrorBoundary extends Component<PropsWithChildren<unknown>> {
   context!: React.ContextType<typeof ErrorReporterContext>
 
   componentDidCatch(error: Error, info: ErrorInfo): void {
-    console.log(error)
     this.setState({ error: error })
     this.context.captureException(error, info)
   }

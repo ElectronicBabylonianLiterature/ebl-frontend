@@ -15,6 +15,7 @@
 
 - In this detailed warning set, `T1`, `T2`, `T3`, and `T4` are now **resolved** in focused rechecks on current branch.
 - Some other TASK-683 items are solved in separate documents (for example structure/placement cleanups), but those are not part of this warning table.
+- Final status refresh (2026-04-02): latest full-run artifact `TASK-683-test-output-2026-04-02-all.txt` reports `289/289` passing suites and `grep -c '● Console'` = `0`.
 
 ## Focused Recheck (2026-03-10)
 

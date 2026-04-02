@@ -75,7 +75,7 @@ Detailed build-termination findings: `TASK-683-build-investigation.md`.
 - [x] Remove local styled-components/overlay warning sources from the annotation tool without weakening annotation behavior
 - [x] Eliminate jsdom navigation noise from word download tests by asserting the download side effect directly
 - [x] Make `useObjectUrl` fail-safe on browser object URL API errors and rework regression tests to assert graceful behavior without uncaught console noise
-- [ ] Produce true zero-noise all-tests capture (current `TASK-683-test-output-rerun-2026-04-01-alltests-truly-clean.txt` still has `6` `● Console` blocks; needs follow-up fixes and rerun)
+- [x] Produce true zero-noise all-tests capture (`TASK-683-test-output-2026-04-02-all.txt`: `289/289` suites passed, `grep -c '● Console'` = `0`)
 
 ## Notes
 

@@ -4,6 +4,7 @@ import { Auth0Provider } from 'auth/react-auth0-spa'
 import React from 'react'
 import { guestSession } from 'auth/Session'
 import Folio from 'fragmentarium/domain/Folio'
+import { silenceConsoleErrors } from 'setupTests'
 
 import { createAuth0Client } from '@auth0/auth0-spa-js'
 
@@ -31,6 +32,7 @@ const mockCreateAuth0Client = createAuth0Client as jest.MockedFunction<
 
 describe('Security: Authentication & Session Management', () => {
   beforeEach(() => {
+    silenceConsoleErrors()
     jest.clearAllMocks()
     localStorage.clear()
   })

@@ -10,6 +10,7 @@ import FragmentService from 'fragmentarium/application/FragmentService'
 import FragmentSearchService from 'fragmentarium/application/FragmentSearchService'
 import WordService from 'dictionary/application/WordService'
 import { FindspotService } from 'fragmentarium/application/FindspotService'
+import { DictionaryContext } from 'dictionary/ui/dictionary-context'
 
 jest.mock('fragmentarium/application/FragmentService')
 jest.mock('fragmentarium/application/FragmentSearchService')
@@ -48,11 +49,19 @@ describe('Security: Fragment View Tabs', () => {
     isColumnVisible: true,
   }
 
+  beforeEach(() => {
+    ;(mockWordService.findAll as jest.Mock).mockReturnValue(
+      new Promise(() => undefined),
+    )
+  })
+
   it('should only show display tab for guest users', () => {
     render(
       <MemoryRouter>
         <SessionContext.Provider value={guestSession}>
-          <EditorTabs {...mockProps} />
+          <DictionaryContext.Provider value={mockWordService}>
+            <EditorTabs {...mockProps} />
+          </DictionaryContext.Provider>
         </SessionContext.Provider>
       </MemoryRouter>,
     )
@@ -99,7 +108,9 @@ describe('Security: Fragment View Tabs', () => {
     render(
       <MemoryRouter>
         <SessionContext.Provider value={authenticatedSession}>
-          <EditorTabs {...mockProps} />
+          <DictionaryContext.Provider value={mockWordService}>
+            <EditorTabs {...mockProps} />
+          </DictionaryContext.Provider>
         </SessionContext.Provider>
       </MemoryRouter>,
     )
@@ -133,7 +144,9 @@ describe('Security: Fragment View Tabs', () => {
     render(
       <MemoryRouter>
         <SessionContext.Provider value={readOnlySession}>
-          <EditorTabs {...mockProps} />
+          <DictionaryContext.Provider value={mockWordService}>
+            <EditorTabs {...mockProps} />
+          </DictionaryContext.Provider>
         </SessionContext.Provider>
       </MemoryRouter>,
     )

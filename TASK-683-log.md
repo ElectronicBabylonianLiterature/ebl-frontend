@@ -132,6 +132,29 @@
   - Result: `5` suites passed, `58` tests passed.
 - Ran `yarn lint` after changes; passed.
 
+## 2026-04-02
+
+### ProperNounCreationPanel regression follow-up
+
+- Diagnosed failing test `src/fragmentarium/ui/fragment/lemma-annotation/ProperNounCreationPanel.test.tsx` in case `re-enables button after error`.
+- Root cause: test still expected a hard-coded legacy string instead of asserting the alert text rendered from the rejected error object.
+- Updated the test to assert the alert role content via `error.message`, matching current `ProperNounCreationPanel.tsx` behavior.
+
+### Final console-noise cleanup verification
+
+- Confirmed `src/auth/react-auth0-spa.security.test.tsx` no longer prints expected failure-path `console.error` noise during tests (suite passes cleanly in isolation).
+- Re-ran all tests and captured the latest artifact:
+  - `TASK-683-test-output-2026-04-02-all.txt`
+  - Command used: `yarn test --watchAll 2>&1 | tee TASK-683-test-output-2026-04-02-all.txt`
+- Final run result from artifact:
+  - `Test Suites: 289 passed, 289 total`
+  - `Tests: 2 skipped, 22236 passed, 22238 total`
+  - `Snapshots: 18 passed, 18 total`
+  - `Time: 301.476 s`
+- Console-noise truth-check on the same artifact:
+  - `grep -c '● Console' TASK-683-test-output-2026-04-02-all.txt` -> `0`
+- Outcome: TASK-683 test-noise cleanup objective is now satisfied for the latest full run artifact.
+
 ### Src recent-comments audit
 
 - Scanned `src/` for comment-syntax lines and resolved per-line blame metadata.

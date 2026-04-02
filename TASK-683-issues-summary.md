@@ -88,6 +88,17 @@ These occur in tests that intentionally assert error paths and currently still p
 - Correction: prior "final zero-noise" / "console-clean" wording was inaccurate.
 - Current conclusion: full suite is green, but global console-noise cleanup is not complete yet.
 
+### Status Refresh (2026-04-02, final all-tests rerun)
+
+- Source log audited: `TASK-683-test-output-2026-04-02-all.txt`.
+- Full test run completed with final Jest summary:
+  - `289` suites passed, `22236` tests passed, `2` skipped, `0` failed.
+  - Time: `301.476 s`.
+- Artifact-level console truth-check:
+  - `grep -c '● Console' TASK-683-test-output-2026-04-02-all.txt` = `0`.
+- Update: this supersedes the earlier correction section tied to `TASK-683-test-output-rerun-2026-04-01-alltests-truly-clean.txt`.
+- Current conclusion: full suite is green and console-noise cleanup is complete for the latest full-run artifact.
+
 ## Latest Test Run
 
 - Command: `yarn test:diag`
