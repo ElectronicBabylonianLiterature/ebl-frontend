@@ -22,7 +22,8 @@
   "scripts": {
     "start": "craco start",
     "start:fast": "FAST_DEV=true DISABLE_ESLINT_PLUGIN=true craco start",
-    "build": "DISABLE_ESLINT_PLUGIN=true NODE_OPTIONS=--max_old_space_size=1536 craco build",
+    "build": "NODE_OPTIONS=--max_old_space_size=1536 craco build",
+    "build:ci-stable": "GENERATE_SOURCEMAP=false DISABLE_ESLINT_PLUGIN=true NODE_OPTIONS=--max_old_space_size=1536 craco build",
     "test": "NODE_OPTIONS=--max_old_space_size=1536 craco test --runInBand",
     "test:fast": "craco test --maxWorkers=50% --bail --no-coverage",
     "test:diag": "CI=true NODE_OPTIONS=--max_old_space_size=1536 craco test --runInBand --coverage --forceExit --detectOpenHandles --watch=false --logHeapUsage",

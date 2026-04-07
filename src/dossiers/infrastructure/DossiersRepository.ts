@@ -8,7 +8,6 @@ import { stringify } from 'query-string'
 
 export default class DossiersRepository {
   private readonly apiClient: ApiClient
-  private readonly shouldLogWarnings = process.env.NODE_ENV !== 'test'
 
   constructor(apiClient: ApiClient) {
     this.apiClient = apiClient
@@ -27,9 +26,7 @@ export default class DossiersRepository {
           : []
       })
       .catch((error) => {
-        if (this.shouldLogWarnings) {
-          console.warn('Failed to fetch dossiers:', error.message)
-        }
+        console.warn('Failed to fetch dossiers:', error.message)
         return []
       })
   }
@@ -99,9 +96,7 @@ export default class DossiersRepository {
           : []
       })
       .catch((error) => {
-        if (this.shouldLogWarnings) {
-          console.warn('Failed to fetch filtered dossiers:', error.message)
-        }
+        console.warn('Failed to fetch filtered dossiers:', error.message)
         return this.fetchAllDossiers()
       })
   }

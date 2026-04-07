@@ -155,6 +155,64 @@
   - `grep -c '● Console' TASK-683-test-output-2026-04-02-all.txt` -> `0`
 - Outcome: TASK-683 test-noise cleanup objective is now satisfied for the latest full run artifact.
 
+## 2026-04-07
+
+### PR #692 review follow-up: F1-F3 remediation
+
+- Removed blanket `beforeEach` console suppression from `src/common/errors/ErrorBoundary.comprehensive.test.tsx`.
+- Added a local helper that scopes `console.error` spying to each test render/rerender that intentionally throws and asserts the expected error activity before restoring the spy.
+- Removed test-environment branching from `src/dossiers/infrastructure/DossiersRepository.ts`; warning paths now log consistently in both production and tests.
+- Updated `src/dossiers/infrastructure/DossiersRepository.test.ts` to assert the expected `console.warn` calls for fetch fallback/error scenarios instead of silently swallowing them.
+- Converted the remaining suppression-only spies in `src/auth/react-auth0-spa.test.tsx` and `src/auth/react-auth0-spa.security.test.tsx` into asserting spies that verify the exact fallback/error logging behavior.
+- Removed `DISABLE_ESLINT_PLUGIN=true` from the default `package.json` `build` script. CI and Docker still set the env var explicitly in `.github/workflows/main.yml` and `Dockerfile`, so the mitigation remains in those environments without weakening local `yarn build` lint feedback.
+- Focused verification completed:
+  - `CI=true yarn test --watch=false --runTestsByPath src/common/errors/ErrorBoundary.comprehensive.test.tsx src/dossiers/infrastructure/DossiersRepository.test.ts src/auth/react-auth0-spa.test.tsx src/auth/react-auth0-spa.security.test.tsx`
+  - Result: `4/4` suites passed, `98/98` tests passed, no console sections.
+- Hard gates completed:
+  - `yarn lint` → passed.
+  - `yarn tsc` → passed.
+- Full rerun completed:
+  - `CI=true yarn test --watch=false 2>&1 | tee TASK-683-test-output-2026-04-07-review-fixes.txt`
+  - Result: `289/289` suites passed, `22239/22241` tests passed, `2` skipped, `49` snapshots passed.
+  - Console-noise truth-check: `grep -c '● Console' TASK-683-test-output-2026-04-07-review-fixes.txt` -> `0`.
+- Build-script follow-up verification:
+  - `GENERATE_SOURCEMAP=false DISABLE_ESLINT_PLUGIN=true NODE_OPTIONS=--max_old_space_size=1536 yarn build` → build succeeded after the `package.json` script change, confirming CI/Docker can continue to provide the env override externally.
+  - Plain `yarn build` still reproduces the previously known local early-exit failure in this environment; that pre-existing build-stability issue is separate from the `DISABLE_ESLINT_PLUGIN` script divergence fixed here.
+- F5 remains intentionally pending until final merge-prep: the repository instructions require active task TODO/log files during the task, so artifact deletion should happen only after review completion in a dedicated cleanup step.
+
+### 2026-04-07 additional local-build investigation (option 2 follow-up)
+
+- Reproduced plain local build failure repeatedly:
+  - `yarn build`
+  - `NODE_OPTIONS=--max_old_space_size=3072 yarn build`
+  - `GENERATE_SOURCEMAP=false yarn build`
+  - `DISABLE_ESLINT_PLUGIN=true yarn build`
+  - `CI=true GENERATE_SOURCEMAP=false DISABLE_ESLINT_PLUGIN=true yarn build`
+  - `GENERATE_SOURCEMAP=false DISABLE_ESLINT_PLUGIN=true TERSER_PARALLEL=false yarn build`
+  - Result for all above in this session: same CRA early-exit message (`process exited too early`).
+- Environment/resource checks during investigation:
+  - `free -h`: ~2.4 GiB free RAM, no swap.
+  - cgroup memory: `memory.max=max` (no hard cgroup cap), `memory.current` around 3.0 GiB.
+  - disk/ulimits: no obvious blocking limits.
+  - kernel logs unavailable in container (`dmesg` permission denied), so no direct OOM-kill confirmation from kernel ring buffer.
+- Build-plugin introspection:
+  - CRA production config reports minimizers `TerserPlugin` + `CssMinimizerPlugin` with `parallel: true`.
+  - Temporary CRACO experiment to force minifier `parallel: false` was attempted and then reverted because it did not improve stability.
+- Current conclusion:
+  - In this Codespace session, local production build termination remains nondeterministic/external to the targeted flags and persists despite heap increases and minifier-parallel tuning attempts.
+  - The review-fix changes are not the root cause; this is a pre-existing environment-sensitive build stability issue.
+  - Practical operational path remains: rely on CI/Docker build verification for release gating and treat local `yarn build` in this Codespace as unreliable until environment/process-kill source is identified.
+
+### 2026-04-07 stable build command addition
+
+- Added `build:ci-stable` script to `package.json`:
+  - `GENERATE_SOURCEMAP=false DISABLE_ESLINT_PLUGIN=true NODE_OPTIONS=--max_old_space_size=1536 craco build`
+- Intent: provide one explicit deterministic command for CI-like release verification without changing the default `build` script semantics.
+- Verification after addition:
+  - `yarn lint` → passed.
+  - `yarn tsc` → passed.
+  - `yarn build:ci-stable` → passed in current session (`Compiled successfully`).
+
 ### Src recent-comments audit
 
 - Scanned `src/` for comment-syntax lines and resolved per-line blame metadata.

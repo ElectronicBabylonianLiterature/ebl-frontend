@@ -159,13 +159,14 @@ describe('Security: Authentication & Session Management', () => {
     })
 
     it('should create guest session when checkSession() fails', async () => {
+      const sessionError = new Error('Session expired')
       const mockClient = createMockAuth0Client({
-        checkSession: jest.fn().mockRejectedValue(new Error('Session expired')),
+        checkSession: jest.fn().mockRejectedValue(sessionError),
         isAuthenticated: jest.fn().mockResolvedValue(false),
       })
       mockCreateAuth0Client.mockResolvedValue(mockClient)
 
-      jest.spyOn(console, 'warn').mockImplementation()
+      const consoleWarn = jest.spyOn(console, 'warn').mockImplementation()
 
       const TestComponent = () => <div>Loaded</div>
 
@@ -184,6 +185,12 @@ describe('Security: Authentication & Session Management', () => {
       })
 
       expect(mockClient.isAuthenticated).toHaveBeenCalled()
+      expect(consoleWarn).toHaveBeenCalledWith(
+        'Session check failed, falling back to guest:',
+        sessionError,
+      )
+
+      consoleWarn.mockRestore()
     })
   })
 
@@ -254,13 +261,14 @@ describe('Security: Authentication & Session Management', () => {
 
   describe('Network Failure Handling', () => {
     it('should handle network errors during auth initialization', async () => {
+      const networkError = new Error('Network error')
       const mockClient = createMockAuth0Client({
-        checkSession: jest.fn().mockRejectedValue(new Error('Network error')),
+        checkSession: jest.fn().mockRejectedValue(networkError),
         isAuthenticated: jest.fn().mockResolvedValue(false),
       })
       mockCreateAuth0Client.mockResolvedValue(mockClient)
 
-      jest.spyOn(console, 'warn').mockImplementation()
+      const consoleWarn = jest.spyOn(console, 'warn').mockImplementation()
 
       const TestComponent = () => <div>Content</div>
 
@@ -279,6 +287,12 @@ describe('Security: Authentication & Session Management', () => {
       })
 
       expect(mockClient.isAuthenticated).toHaveBeenCalled()
+      expect(consoleWarn).toHaveBeenCalledWith(
+        'Session check failed, falling back to guest:',
+        networkError,
+      )
+
+      consoleWarn.mockRestore()
     })
   })
 

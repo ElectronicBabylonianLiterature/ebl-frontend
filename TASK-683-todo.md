@@ -77,6 +77,22 @@ Detailed build-termination findings: `TASK-683-build-investigation.md`.
 - [x] Make `useObjectUrl` fail-safe on browser object URL API errors and rework regression tests to assert graceful behavior without uncaught console noise
 - [x] Produce true zero-noise all-tests capture (`TASK-683-test-output-2026-04-02-all.txt`: `289/289` suites passed, `grep -c '● Console'` = `0`)
 
+## 2026-04-07 Review Follow-up
+
+- [x] Fix F1 from `TASK-683-review.md`: remove global console suppression from `src/common/errors/ErrorBoundary.comprehensive.test.tsx` and replace it with per-test targeted `console.error` assertions
+- [x] Fix F2 from `TASK-683-review.md`: remove `NODE_ENV !== 'test'` warning suppression from `src/dossiers/infrastructure/DossiersRepository.ts`
+- [x] Fix F2 test coverage: assert dossier warning paths in `src/dossiers/infrastructure/DossiersRepository.test.ts`
+- [x] Fix F3 from `TASK-683-review.md`: convert suppression-only Auth0 warning/error spies into asserting spies in `src/auth/react-auth0-spa.test.tsx` and `src/auth/react-auth0-spa.security.test.tsx`
+- [x] Fix F4 from `TASK-683-review.md`: remove permanent `DISABLE_ESLINT_PLUGIN=true` from the default `build` script while keeping CI/Docker-specific env overrides in their own call sites
+- [x] Run focused tests for ErrorBoundary, DossiersRepository, and Auth0 suites
+- [x] Run `yarn lint`
+- [x] Run `yarn tsc`
+- [x] Run full test suite and confirm console-clean output remains `0`
+- [ ] F5 pre-merge cleanup: remove `TASK-683-*`, `PR-661-test-changes-analysis.md`, and related task artifacts only in the final merge-prep cleanup once active task documentation is no longer needed
+- [x] Investigate persistent local `yarn build` early-exit after review fixes and capture actionable findings in task log
+- [x] Add dedicated stable build command (`yarn build:ci-stable`) for deterministic CI-like production builds
+- [x] Verify `yarn build:ci-stable` succeeds on current workspace state
+
 ## Notes
 
 - Use `yarn` only.
