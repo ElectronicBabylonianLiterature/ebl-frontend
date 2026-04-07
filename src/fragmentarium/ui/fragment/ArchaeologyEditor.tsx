@@ -3,27 +3,26 @@ import _ from 'lodash'
 import { Form, Col, Button, Row } from 'react-bootstrap'
 import Select from 'react-select'
 import type { SingleValue } from 'react-select'
-import {
-  Archaeology,
-  Findspot,
-  SiteKey,
-  excavationSites,
-} from 'fragmentarium/domain/archaeology'
+import Bluebird from 'bluebird'
+import { Archaeology, Findspot } from 'fragmentarium/domain/archaeology'
 import { ArchaeologyDto } from 'fragmentarium/domain/archaeologyDtos'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import withData from 'http/withData'
 import { FindspotService } from 'fragmentarium/application/FindspotService'
+import FragmentService from 'fragmentarium/application/FragmentService'
+import { ProvenanceRecord } from 'fragmentarium/domain/Provenance'
 
 interface Props {
   archaeology: Archaeology | null
   updateArchaeology: (archaeology: ArchaeologyDto) => Promise<Fragment>
   findspots: readonly Findspot[]
+  provenances: readonly ProvenanceRecord[]
   disabled?: boolean
 }
 
 interface State {
   excavationNumber: string
-  site: SiteKey
+  site: string
   isRegularExcavation: boolean
   isFindspotUncertain: boolean
   findspotId: number | null
@@ -31,18 +30,7 @@ interface State {
   error: Error | null
 }
 
-type SiteOption = { value: SiteKey; label: string }
-
-const siteOptions: SiteOption[] = [
-  {
-    value: '' as SiteKey,
-    label: '-',
-  },
-  ..._.values(_.omit(excavationSites, '')).map((site) => ({
-    value: site.name as SiteKey,
-    label: site.name,
-  })),
-]
+type SiteOption = { value: string; label: string }
 
 interface FindspotOption {
   value: number | null
@@ -62,7 +50,7 @@ class ArchaeologyEditor extends Component<Props, State> {
 
     this.state = {
       excavationNumber: archaeology.excavationNumber || '',
-      site: (archaeology.site?.name || '') as SiteKey,
+      site: archaeology.site?.name || '',
       isRegularExcavation: archaeology.isRegularExcavation ?? false,
       isFindspotUncertain: archaeology.isFindspotUncertain ?? false,
       error: null,
@@ -88,6 +76,15 @@ class ArchaeologyEditor extends Component<Props, State> {
           }))
           .sort((a, b) => a.label.localeCompare(b.label))
       : []
+  }
+
+  get siteOptions(): SiteOption[] {
+    const options = this.props.provenances.map((provenance) => ({
+      value: provenance.longName,
+      label: provenance.longName,
+    }))
+
+    return [{ value: '', label: '-' }, ...options]
   }
 
   updateState =
@@ -119,7 +116,7 @@ class ArchaeologyEditor extends Component<Props, State> {
   updateSite = (event: SingleValue<SiteOption>): void => {
     const updatedState: State = {
       ...this.state,
-      site: event?.value || ('' as SiteKey),
+      site: event?.value || '',
       findspotId: null,
       findspot: null,
     }
@@ -185,11 +182,15 @@ class ArchaeologyEditor extends Component<Props, State> {
       <Form.Label>Excavation site</Form.Label>
       <Select<SiteOption, false>
         aria-label="select-site"
-        options={siteOptions}
-        value={{
-          value: this.state.site,
-          label: this.state.site,
-        }}
+        options={this.siteOptions}
+        value={
+          this.siteOptions.find(
+            (option) => option.value === this.state.site,
+          ) || {
+            value: this.state.site,
+            label: this.state.site,
+          }
+        }
         onChange={this.updateSite}
         isSearchable={true}
         isClearable
@@ -263,18 +264,23 @@ export default withData<
     updateArchaeology: (archaeology: ArchaeologyDto) => Promise<Fragment>
     disabled?: boolean
   },
-  { findspotService: FindspotService },
-  readonly Findspot[]
+  { findspotService: FindspotService; fragmentService: FragmentService },
+  { findspots: readonly Findspot[]; provenances: readonly ProvenanceRecord[] }
 >(
-  ({ archaeology, updateArchaeology, disabled, data: findspots }) => {
+  ({ archaeology, updateArchaeology, disabled, data }) => {
     return (
       <ArchaeologyEditor
         archaeology={archaeology}
         updateArchaeology={updateArchaeology}
-        findspots={findspots}
+        findspots={data.findspots}
+        provenances={data.provenances}
         disabled={disabled}
       />
     )
   },
-  (props) => props.findspotService.fetchFindspots(),
+  (props) =>
+    Bluebird.all([
+      props.findspotService.fetchFindspots(),
+      props.fragmentService.fetchProvenances(),
+    ]).then(([findspots, provenances]) => ({ findspots, provenances })),
 )

@@ -60,6 +60,7 @@ export default function ChapterEditor({
             onChange={onChange}
             onSave={onSaveManuscripts}
             disabled={disabled}
+            fragmentService={fragmentService}
           />
         </Tab>
         <Tab eventKey="import" title="Import" disabled={dirty}>

@@ -64,6 +64,7 @@ const setup = async (): Promise<void> => {
       </DictionaryContext.Provider>
     </MemoryRouter>,
   ).container
+  await screen.findByText('Latest additions:')
   await screen.findByText(fragments[0].number)
   await screen.findByText(fragments[1].number)
 }
