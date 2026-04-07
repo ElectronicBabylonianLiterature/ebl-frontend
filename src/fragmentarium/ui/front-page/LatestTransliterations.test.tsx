@@ -67,6 +67,8 @@ const setup = async (): Promise<void> => {
   ).container
   await screen.findByText('Latest additions:')
   await waitForSpinnerToBeRemoved(screen)
+  await screen.findByText(fragments[0].number)
+  await screen.findByText(fragments[1].number)
 }
 
 test('Snapshot', async () => {

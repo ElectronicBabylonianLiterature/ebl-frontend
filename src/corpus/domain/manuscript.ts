@@ -31,14 +31,15 @@ export const ManuscriptTypes = {
     name: 'Quotation',
     abbreviation: 'Quo',
     displayName: null,
-    order: 4,
+    order: 5,
   },
-  Excerpt: { name: 'Excerpt', abbreviation: 'Ex', displayName: null, order: 3 },
+  Amulet: { name: 'Amulet', abbreviation: 'Amu', displayName: null, order: 3 },
+  Excerpt: { name: 'Excerpt', abbreviation: 'Ex', displayName: null, order: 4 },
   Parallel: {
     name: 'Parallel',
     abbreviation: 'Par',
     displayName: null,
-    order: 5,
+    order: 6,
   },
 } as const
 
@@ -51,6 +52,7 @@ export const types = [
   ManuscriptTypes.Varia,
   ManuscriptTypes.Commentary,
   ManuscriptTypes.Quotation,
+  ManuscriptTypes.Amulet,
   ManuscriptTypes.Excerpt,
   ManuscriptTypes.Parallel,
 ] as const

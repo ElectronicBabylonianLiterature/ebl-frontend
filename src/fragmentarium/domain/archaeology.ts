@@ -171,4 +171,5 @@ export interface Archaeology {
   readonly date?: DateRange | null
   readonly findspotId?: number | null
   readonly findspot?: Findspot | null
+  readonly isFindspotUncertain?: boolean | null
 }

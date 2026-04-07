@@ -25,6 +25,7 @@ interface State {
   excavationNumber: string
   site: SiteKey
   isRegularExcavation: boolean
+  isFindspotUncertain: boolean
   findspotId: number | null
   findspot: Findspot | null
   error: Error | null
@@ -63,6 +64,7 @@ class ArchaeologyEditor extends Component<Props, State> {
       excavationNumber: archaeology.excavationNumber || '',
       site: (archaeology.site?.name || '') as SiteKey,
       isRegularExcavation: archaeology.isRegularExcavation ?? false,
+      isFindspotUncertain: archaeology.isFindspotUncertain ?? false,
       error: null,
       findspotId: archaeology.findspotId || null,
       findspot: archaeology.findspot || null,
@@ -127,6 +129,9 @@ class ArchaeologyEditor extends Component<Props, State> {
 
   updateIsRegularExcavation = (event: ChangeEvent<HTMLInputElement>): void =>
     this.updateState('isRegularExcavation')(event.target.checked)
+
+  updateIsFindspotUncertain = (event: ChangeEvent<HTMLInputElement>): void =>
+    this.updateState('isFindspotUncertain')(event.target.checked)
 
   updateFindspot = (event: SingleValue<FindspotOption>): void => {
     if (!event || !event.value) {
@@ -219,6 +224,18 @@ class ArchaeologyEditor extends Component<Props, State> {
       />
     </Form.Group>
   )
+  renderIsFindspotUncertainForm = (): JSX.Element => (
+    <Form.Group as={Col} controlId={_.uniqueId('isFindspotUncertain-')}>
+      <Form.Check
+        type="checkbox"
+        id={_.uniqueId('isFindspotUncertain-')}
+        label="Findspot uncertain"
+        aria-label="findspot-uncertain"
+        checked={this.state.isFindspotUncertain}
+        onChange={this.updateIsFindspotUncertain}
+      />
+    </Form.Group>
+  )
 
   render(): JSX.Element {
     return (
@@ -227,6 +244,7 @@ class ArchaeologyEditor extends Component<Props, State> {
         <Row>{this.renderExcavationSiteForm()}</Row>
         <Row>{this.renderIsRegularExcavationForm()}</Row>
         <Row>{this.renderFindspotForm()}</Row>
+        <Row>{this.renderIsFindspotUncertainForm()}</Row>
         <Button
           variant="primary"
           type="submit"

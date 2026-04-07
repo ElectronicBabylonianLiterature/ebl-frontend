@@ -203,6 +203,10 @@ function Details({
   dossiersService,
 }: DetailsProps): JSX.Element {
   const findspotString = fragment.archaeology?.findspot?.toString()
+  const isFindspotUncertain = fragment.archaeology?.isFindspotUncertain
+  const findspotDisplay = findspotString
+    ? `${findspotString}${isFindspotUncertain ? ' (?)' : ''}`
+    : null
   return (
     <ul className="Details">
       <li className="Details__item">
@@ -232,7 +236,7 @@ function Details({
             <ExcavationDate fragment={fragment} />
           </li>
         )}
-        <li>{`Findspot: ${findspotString || '-'}`}</li>
+        <li>{`Findspot: ${findspotDisplay || '-'}`}</li>
       </ul>
       <li className="Details__item">
         <FragmentDossierRecordsDisplay
