@@ -14,6 +14,10 @@ type EditorMockProps = {
   disabled?: boolean
 }
 
+type TemplateFormMockProps = {
+  onSubmit: (templateValue: string) => void
+}
+
 jest.mock('editor/SpecialCharactersHelp', () => {
   return function SpecialCharactersHelpMock() {
     return null
@@ -21,7 +25,9 @@ jest.mock('editor/SpecialCharactersHelp', () => {
 })
 
 jest.mock('./TemplateForm', () => {
-  return function TemplateFormMock({ onSubmit }): JSX.Element {
+  return function TemplateFormMock({
+    onSubmit,
+  }: TemplateFormMockProps): JSX.Element {
     return (
       <button onClick={() => onSubmit('template value')} type="button">
         Apply template
