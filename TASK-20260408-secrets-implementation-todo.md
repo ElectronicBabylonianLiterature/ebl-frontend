@@ -15,3 +15,5 @@
 - [completed] Remove devcontainer `GITGUARDIAN_API_KEY` passthrough that caused empty-variable auth failures in new terminals.
 - [completed] Make all synthetic secret test payloads dynamically generated at runtime.
 - [completed] Document `GITGUARDIAN_API_KEY` creation and setup steps in README.
+- [completed] Merge consecutive Docker `RUN` instructions flagged by radar lint.
+- [completed] Pin GitHub Actions to commit SHAs and disable checkout credential persistence in secret scan workflow.

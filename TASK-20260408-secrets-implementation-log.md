@@ -37,3 +37,5 @@
 - 2026-04-08: Re-ran validation after updates: `yarn lint`, `yarn tsc`, and `yarn test:secrets` all passed.
 - 2026-04-08: Undid the previous commit with `git reset --soft HEAD~1` to keep all changes in the working tree for further fixes.
 - 2026-04-08: Added README instructions for creating `GITGUARDIAN_API_KEY`, including GitGuardian token creation steps and GitHub Actions secret setup guidance.
+- 2026-04-08: Merged consecutive `RUN` instructions in `.devcontainer/Dockerfile` to satisfy `radarlint-iac:docker:S7031`.
+- 2026-04-08: Hardened `.github/workflows/secret-scan.yml` by pinning actions to immutable commit SHAs and setting `actions/checkout` `persist-credentials: false` to address zizmor findings.
