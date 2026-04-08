@@ -17,3 +17,6 @@
 - [completed] Document `GITGUARDIAN_API_KEY` creation and setup steps in README.
 - [completed] Merge consecutive Docker `RUN` instructions flagged by radar lint.
 - [completed] Pin GitHub Actions to commit SHAs and disable checkout credential persistence in secret scan workflow.
+- [completed] Fix CI workflow branch conditions so `docker` and `docker-test` run on pushes to `main` and are not skipped.
+- [completed] Correct CI scope to `master` only so docker checks are required on `master` pushes and skipped on other branches.
+- [completed] Stabilize dynamic `AUTH0_PEM` mock generation in secret regression tests to avoid flaky non-detections.

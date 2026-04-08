@@ -39,3 +39,6 @@
 - 2026-04-08: Added README instructions for creating `GITGUARDIAN_API_KEY`, including GitGuardian token creation steps and GitHub Actions secret setup guidance.
 - 2026-04-08: Merged consecutive `RUN` instructions in `.devcontainer/Dockerfile` to satisfy `radarlint-iac:docker:S7031`.
 - 2026-04-08: Hardened `.github/workflows/secret-scan.yml` by pinning actions to immutable commit SHAs and setting `actions/checkout` `persist-credentials: false` to address zizmor findings.
+- 2026-04-08: Updated `.github/workflows/main.yml` to run CI on both `main` and `master`, and changed `docker`/`docker-test` job conditions so they execute on pushes to either branch instead of being skipped on `main`.
+- 2026-04-08: Corrected CI branch targeting to `master` only after clarification; restored `.github/workflows/main.yml` push/PR branches and `docker`/`docker-test` conditions to `master` so non-master branch pushes can remain skipped.
+- 2026-04-08: Stabilized `scripts/test-secret-scanning.sh` by making `AUTH0_PEM` mock generation retry dynamically until `ggshield` confirms detection, preventing flaky failures.

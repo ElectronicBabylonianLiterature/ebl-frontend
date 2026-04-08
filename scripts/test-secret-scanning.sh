@@ -32,6 +32,22 @@ generate_alnum() {
 	tr -dc 'A-Za-z0-9' </dev/urandom | head -c "$length"
 }
 
+generate_detected_auth0_pem() {
+	attempt=1
+	while [ "$attempt" -le 12 ]; do
+		candidate="$(head -c 96 /dev/urandom | base64 | tr -d '\n')"
+		probe_path="$tmp_dir/auth0-pem-probe-$attempt.env"
+		printf 'AUTH0_PEM=%s\n' "$candidate" > "$probe_path"
+		if ! run_ggshield secret scan path "$probe_path" >/dev/null 2>&1; then
+			printf '%s' "$candidate"
+			return 0
+		fi
+		attempt=$((attempt + 1))
+	done
+	printf >&2 'FAIL unable to generate auth0 pem payload detected by ggshield after 12 attempts\n'
+	exit 1
+}
+
 assert_passes() {
 	name="$1"
 	payload="$2"
@@ -91,7 +107,7 @@ SENTRY_ENVIRONMENT=development
 EOF
 )
 
-MOCK_PEM=$(head -c 48 /dev/urandom | base64 | tr -d '\n')
+MOCK_PEM="$(generate_detected_auth0_pem)"
 MOCK_GITGUARDIAN_PAT="gg_pat_$(generate_alnum 47)"
 GENERIC_KEY="$(generate_alnum 38)"
 
