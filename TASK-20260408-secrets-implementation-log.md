@@ -1,0 +1,39 @@
+# TASK 20260408 secrets implementation log
+
+- 2026-04-08: Started implementation task.
+- 2026-04-08: Scope set to implement pre-commit secret detection first, plus CI enforcement and documentation.
+- 2026-04-08: Added `.pre-commit-config.yaml` with pinned Gitleaks hook and redacted output.
+- 2026-04-08: Added `.gitleaks.toml` extending defaults with narrow allowlists for generated and vendored artifacts.
+- 2026-04-08: Updated `.husky/pre-commit` to run `pre-commit` after `yarn lint-staged`.
+- 2026-04-08: Added `.github/workflows/secret-scan.yml` for dedicated CI secret scanning.
+- 2026-04-08: Updated `README.md` with local setup and false-positive handling guidance for secret scanning.
+- 2026-04-08: Fixed accidental insertion of `.gitleaks.toml` content into `.pre-commit-config.yaml` and created `.gitleaks.toml` as a separate file.
+- 2026-04-08: Ran `yarn lint` successfully.
+- 2026-04-08: Ran `yarn tsc` successfully.
+- 2026-04-08: Updated `secret-scan.yml` triggers to run on push and pull requests for all branches.
+- 2026-04-08: Switched local hook enforcement from `pre-commit` to direct `gitleaks protect --staged` in Husky.
+- 2026-04-08: Added `.devcontainer/Dockerfile` and changed `devcontainer.json` to build from it.
+- 2026-04-08: Configured devcontainer image build to install Gitleaks automatically.
+- 2026-04-08: Updated README to remove pre-commit setup and document direct Gitleaks usage.
+- 2026-04-08: Replaced deprecated `gitleaks protect --staged` with non-deprecated staged diff scanning via `gitleaks stdin`.
+- 2026-04-08: Validated scanner behavior with synthetic test-only strings (no real secrets used).
+- 2026-04-08: Confirmed non-deprecated `gitleaks stdin` flow returns non-zero on synthetic leak-like input and zero on benign input.
+- 2026-04-08: Added custom API-focused rules in `.gitleaks.toml` for `AUTH0_PEM`, `SENTRY_DSN`, MongoDB URI credentials, and sensitive env token/key assignments.
+- 2026-04-08: Added targeted allowlists so `.env.example` placeholders remain valid.
+- 2026-04-08: Verified behavior: placeholder `.env.example` sample passes, while generated mock PEM, synthetic Sentry DSN, and MongoDB URI with credentials are blocked.
+- 2026-04-08: Added `scripts/test-secret-scanning.sh` and `yarn test:secrets` for repeatable synthetic regression checks.
+- 2026-04-08: Extended Sentry DSN detection to cover this repo's `REACT_APP_SENTRY_DSN` env variable name.
+- 2026-04-08: Extended the synthetic regression script to assert that current `.env.test` placeholder values pass and that a synthetic `REACT_APP_SENTRY_DSN` is blocked.
+- 2026-04-08: Switched local secret scanning from Gitleaks to GitGuardian `ggshield secret scan pre-commit`.
+- 2026-04-08: Switched the GitHub Actions secret scan workflow to `GitGuardian/ggshield/actions/secret@v1.48.0`.
+- 2026-04-08: Switched devcontainer installation from Gitleaks to `ggshield` and added automatic `GITGUARDIAN_API_KEY` passthrough from the host environment.
+- 2026-04-08: Updated the synthetic regression script to use `ggshield secret scan path` and escaped generated secret-like payloads so GitGuardian does not flag the script source itself.
+- 2026-04-08: Current container does not yet have `ggshield` or `GITGUARDIAN_API_KEY`; end-to-end GitGuardian execution requires rebuilding the devcontainer and providing the API key.
+- 2026-04-08: Diagnosed `ggshield` auth failures in new terminals: an empty `GITGUARDIAN_API_KEY` environment variable was overriding the valid token created by `ggshield auth login`.
+- 2026-04-08: Updated `.husky/pre-commit` and `scripts/test-secret-scanning.sh` to run `ggshield` via a wrapper that unsets `GITGUARDIAN_API_KEY` only when it is defined-but-empty.
+- 2026-04-08: Removed `GITGUARDIAN_API_KEY` passthrough from `.devcontainer/devcontainer.json` to prevent empty host values from being injected into all container terminals.
+- 2026-04-08: Updated `README.md` guidance to recommend `ggshield auth login` inside the devcontainer.
+- 2026-04-08: Updated `scripts/test-secret-scanning.sh` so all mock secrets are generated dynamically at runtime (`MOCK_PEM`, `MOCK_GITGUARDIAN_PAT`, and `GENERIC_KEY`).
+- 2026-04-08: Re-ran validation after updates: `yarn lint`, `yarn tsc`, and `yarn test:secrets` all passed.
+- 2026-04-08: Undid the previous commit with `git reset --soft HEAD~1` to keep all changes in the working tree for further fixes.
+- 2026-04-08: Added README instructions for creating `GITGUARDIAN_API_KEY`, including GitGuardian token creation steps and GitHub Actions secret setup guidance.
