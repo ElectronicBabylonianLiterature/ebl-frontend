@@ -489,6 +489,10 @@ const testData: TestData<TextService>[] = [
   ),
 ]
 
+beforeEach(() => {
+  fragmentServiceMock.fetchProvenances.mockReturnValue(Bluebird.resolve([]))
+})
+
 describe('TextService', () => testDelegation(testService, testData))
 
 test('findSuggestions', async () => {
@@ -609,9 +613,10 @@ describe('findManuscripts provenance preload', () => {
       .spyOn(console, 'error')
       .mockImplementation(() => undefined)
 
-    apiClient.fetchJson
-      .mockRejectedValueOnce(provenanceError)
-      .mockResolvedValueOnce(chapterDto.manuscripts)
+    fragmentServiceMock.fetchProvenances.mockReturnValueOnce(
+      Bluebird.reject(provenanceError),
+    )
+    apiClient.fetchJson.mockResolvedValueOnce(chapterDto.manuscripts)
 
     await expect(service.findManuscripts(chapterId)).resolves.toEqual(
       chapter.manuscripts,
@@ -621,7 +626,7 @@ describe('findManuscripts provenance preload', () => {
       'Failed to preload provenances',
       provenanceError,
     )
-    expect(apiClient.fetchJson).toHaveBeenCalledWith('/provenances', false)
+    expect(fragmentServiceMock.fetchProvenances).toHaveBeenCalled()
     expect(apiClient.fetchJson).toHaveBeenCalledWith(
       `${chapterUrl}/manuscripts`,
       false,
@@ -639,11 +644,15 @@ describe('findManuscripts provenance preload', () => {
 
     jest.spyOn(console, 'error').mockImplementation(() => undefined)
 
-    apiClient.fetchJson
-      .mockRejectedValueOnce(provenanceError)
-      .mockResolvedValueOnce(chapterDto.manuscripts)
-      .mockResolvedValueOnce([])
-      .mockResolvedValueOnce(chapterDto.manuscripts)
+    fragmentServiceMock.fetchProvenances.mockReturnValueOnce(
+      Bluebird.reject(provenanceError),
+    )
+    apiClient.fetchJson.mockResolvedValueOnce(chapterDto.manuscripts)
+
+    fragmentServiceMock.fetchProvenances.mockReturnValueOnce(
+      Bluebird.resolve([]),
+    )
+    apiClient.fetchJson.mockResolvedValueOnce(chapterDto.manuscripts)
 
     await expect(service.findManuscripts(chapterId)).resolves.toEqual(
       chapter.manuscripts,
@@ -652,9 +661,6 @@ describe('findManuscripts provenance preload', () => {
       chapter.manuscripts,
     )
 
-    const provenanceCalls = apiClient.fetchJson.mock.calls.filter(
-      ([path]) => path === '/provenances',
-    )
-    expect(provenanceCalls).toHaveLength(2)
+    expect(fragmentServiceMock.fetchProvenances).toHaveBeenCalledTimes(2)
   })
 })

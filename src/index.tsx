@@ -95,6 +95,7 @@ function InjectedApp(): JSX.Element {
   const afoRegisterService = new AfoRegisterService(afoRegisterRepository)
   const dossiersService = new DossiersService(dossiersRepository)
   const findspotService = new FindspotService(findspotRepository)
+  fragmentService.fetchProvenances().catch(() => {})
   return (
     <App
       wordService={wordService}

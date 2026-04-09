@@ -20,7 +20,7 @@ import {
 import { Line, LineVariant, ManuscriptLine } from 'corpus/domain/line'
 import { LineDetails } from 'corpus/domain/line-details'
 import { Manuscript } from 'corpus/domain/manuscript'
-import { setProvenanceRecords } from 'corpus/domain/provenance'
+
 import SiglumAndTransliteration from 'corpus/domain/SiglumAndTransliteration'
 import { Text } from 'corpus/domain/text'
 import { TextId } from 'transliteration/domain/text-id'
@@ -56,7 +56,6 @@ import { ParallelLine } from 'transliteration/domain/parallel-line'
 import { CorpusQuery } from 'query/CorpusQuery'
 import { CorpusQueryResult } from 'query/QueryResult'
 import { ChapterSlugs, TextSlugs } from 'router/sitemap'
-import { ProvenanceRecord } from 'fragmentarium/domain/Provenance'
 
 class CorpusLemmatizationFactory extends AbstractLemmatizationFactory<
   Chapter,
@@ -142,7 +141,6 @@ export function createChapterUrl({
 
 export default class TextService {
   private readonly referenceInjector: ReferenceInjector
-  private provenancePreload: Bluebird<void> | null = null
 
   constructor(
     private readonly apiClient: ApiClient,
@@ -179,9 +177,13 @@ export default class TextService {
   }
 
   findChapter(id: ChapterId): Bluebird<Chapter> {
-    return this.apiClient
-      .fetchJson<Record<string, unknown>>(createChapterUrl(id), false)
-      .then(fromChapterDto)
+    return Bluebird.all([
+      this.loadProvenances(),
+      this.apiClient.fetchJson<Record<string, unknown>>(
+        createChapterUrl(id),
+        false,
+      ),
+    ]).then(([, dto]) => fromChapterDto(dto))
   }
 
   findChapterDisplay(
@@ -192,61 +194,62 @@ export default class TextService {
     const lineParams = _.isEmpty(lines)
       ? ''
       : `?${stringify({ lines, variants })}`
-    return this.apiClient
-      .fetchJson<ChapterDisplayDto>(
+    return Bluebird.all([
+      this.loadProvenances(),
+      this.apiClient.fetchJson<ChapterDisplayDto>(
         `${createChapterUrl(id)}/display${lineParams}`,
         false,
-      )
-      .then((chapter: ChapterDisplayDto) =>
-        Bluebird.all(
-          chapter.lines.map((line) =>
-            Bluebird.all([
-              Bluebird.all(
-                line.translation.map((translation) =>
-                  this.referenceInjector
-                    .injectReferencesToMarkup(translation.parts)
-                    .then(
-                      (parts) =>
-                        new TranslationLine({
-                          ...castDraft(translation),
-                          parts,
-                        }),
-                    ),
-                ),
-              ),
-              Bluebird.all(
-                line.variants.map((variant, index) =>
-                  this.findLineVariant(variant, index === 0),
-                ),
-              ),
-              Bluebird.all(
-                line.oldLineNumbers.map((oldLineNumberDto) =>
-                  this.referenceInjector.injectReferenceToOldLineNumber(
-                    oldLineNumberDto,
+      ),
+    ]).then(([, chapter]) =>
+      Bluebird.all(
+        chapter.lines.map((line) =>
+          Bluebird.all([
+            Bluebird.all(
+              line.translation.map((translation) =>
+                this.referenceInjector
+                  .injectReferencesToMarkup(translation.parts)
+                  .then(
+                    (parts) =>
+                      new TranslationLine({
+                        ...castDraft(translation),
+                        parts,
+                      }),
                   ),
+              ),
+            ),
+            Bluebird.all(
+              line.variants.map((variant, index) =>
+                this.findLineVariant(variant, index === 0),
+              ),
+            ),
+            Bluebird.all(
+              line.oldLineNumbers.map((oldLineNumberDto) =>
+                this.referenceInjector.injectReferenceToOldLineNumber(
+                  oldLineNumberDto,
                 ),
               ),
-            ]).then(([translation, variants, oldLineNumbers]) => ({
-              ...line,
-              translation,
-              variants,
-              oldLineNumbers,
-            })),
-          ),
-        ).then(
-          (lines) =>
-            new ChapterDisplay(
-              chapter.id,
-              chapter.textHasDoi,
-              chapter.textName,
-              chapter.isSingleStage,
-              chapter.title,
-              lines,
-              chapter.record,
-              chapter.atf,
             ),
+          ]).then(([translation, variants, oldLineNumbers]) => ({
+            ...line,
+            translation,
+            variants,
+            oldLineNumbers,
+          })),
         ),
-      )
+      ).then(
+        (lines) =>
+          new ChapterDisplay(
+            chapter.id,
+            chapter.textHasDoi,
+            chapter.textName,
+            chapter.isSingleStage,
+            chapter.title,
+            lines,
+            chapter.record,
+            chapter.atf,
+          ),
+      ),
+    )
   }
 
   findLineVariant(
@@ -286,9 +289,14 @@ export default class TextService {
     number: number,
     variantNumber: number,
   ): Bluebird<LineDetails> {
-    return this.apiClient
-      .fetchJson(`${createChapterUrl(id)}/lines/${number}`, false)
-      .then((json) => fromLineDetailsDto(json, variantNumber))
+    return Bluebird.all([
+      this.loadProvenances(),
+      this.apiClient.fetchJson(
+        `${createChapterUrl(id)}/lines/${number}`,
+        false,
+      ),
+    ])
+      .then(([, json]) => fromLineDetailsDto(json, variantNumber))
       .then((line) =>
         Bluebird.all(
           line.variants.map((variant) =>
@@ -364,32 +372,21 @@ export default class TextService {
   }
 
   findManuscripts(id: ChapterId): Bluebird<Manuscript[]> {
-    return this.loadProvenances()
-      .then(() =>
-        this.apiClient.fetchJson<unknown[]>(
-          `${createChapterUrl(id)}/manuscripts`,
-          false,
-        ),
-      )
-      .then((manuscripts) => manuscripts.map(fromManuscriptDto))
+    return Bluebird.all([
+      this.loadProvenances(),
+      this.apiClient.fetchJson<unknown[]>(
+        `${createChapterUrl(id)}/manuscripts`,
+        false,
+      ),
+    ]).then(([, manuscripts]) => manuscripts.map(fromManuscriptDto))
   }
 
   private loadProvenances(): Bluebird<void> {
-    if (this.provenancePreload) {
-      return this.provenancePreload
-    }
-
-    this.provenancePreload = this.apiClient
-      .fetchJson<readonly ProvenanceRecord[]>('/provenances', false)
-      .then((provenances) => {
-        setProvenanceRecords(provenances)
-      })
+    return Bluebird.resolve(this.fragmentService.fetchProvenances())
+      .then(() => undefined)
       .catch((error) => {
         console.error('Failed to preload provenances', error)
-        this.provenancePreload = null
       })
-
-    return this.provenancePreload
   }
 
   list(): Bluebird<Text[]> {
@@ -424,21 +421,26 @@ export default class TextService {
     id: ChapterId,
     alignment: ChapterAlignment,
   ): Bluebird<Chapter> {
-    return this.apiClient
-      .postJson(`${createChapterUrl(id)}/alignment`, toAlignmentDto(alignment))
-      .then(fromChapterDto)
+    return Bluebird.all([
+      this.loadProvenances(),
+      this.apiClient.postJson(
+        `${createChapterUrl(id)}/alignment`,
+        toAlignmentDto(alignment),
+      ),
+    ]).then(([, dto]) => fromChapterDto(dto))
   }
 
   updateLemmatization(
     id: ChapterId,
     lemmatization: ChapterLemmatization,
   ): Bluebird<Chapter> {
-    return this.apiClient
-      .postJson(
+    return Bluebird.all([
+      this.loadProvenances(),
+      this.apiClient.postJson(
         `${createChapterUrl(id)}/lemmatization`,
         toLemmatizationDto(lemmatization),
-      )
-      .then(fromChapterDto)
+      ),
+    ]).then(([, dto]) => fromChapterDto(dto))
   }
 
   updateManuscripts(
@@ -446,24 +448,30 @@ export default class TextService {
     manuscripts: readonly Manuscript[],
     uncertainChapters: readonly string[],
   ): Bluebird<Chapter> {
-    return this.apiClient
-      .postJson(
+    return Bluebird.all([
+      this.loadProvenances(),
+      this.apiClient.postJson(
         `${createChapterUrl(id)}/manuscripts`,
         toManuscriptsDto(manuscripts, uncertainChapters),
-      )
-      .then(fromChapterDto)
+      ),
+    ]).then(([, dto]) => fromChapterDto(dto))
   }
 
   updateLines(id: ChapterId, lines: readonly Line[]): Bluebird<Chapter> {
-    return this.apiClient
-      .postJson(`${createChapterUrl(id)}/lines`, toLinesDto(lines))
-      .then(fromChapterDto)
+    return Bluebird.all([
+      this.loadProvenances(),
+      this.apiClient.postJson(
+        `${createChapterUrl(id)}/lines`,
+        toLinesDto(lines),
+      ),
+    ]).then(([, dto]) => fromChapterDto(dto))
   }
 
   importChapter(id: ChapterId, atf: string): Bluebird<Chapter> {
-    return this.apiClient
-      .postJson(`${createChapterUrl(id)}/import`, { atf })
-      .then(fromChapterDto)
+    return Bluebird.all([
+      this.loadProvenances(),
+      this.apiClient.postJson(`${createChapterUrl(id)}/import`, { atf }),
+    ]).then(([, dto]) => fromChapterDto(dto))
   }
 
   findSuggestions(chapter: Chapter): Bluebird<ChapterLemmatization> {
