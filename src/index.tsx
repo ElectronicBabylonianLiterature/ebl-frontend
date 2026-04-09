@@ -104,7 +104,7 @@ function InjectedApp(): JSX.Element {
     fragmentService.fetchProvenances().catch((error) => {
       errorReporter.captureException(error)
     })
-  }, [])
+  }, [fragmentService])
   return (
     <App
       wordService={wordService}
