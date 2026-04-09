@@ -66,45 +66,106 @@ export type JsonApiClient = {
 
 function InjectedApp(): JSX.Element {
   const authenticationService = useAuthentication()
-  const apiClient = new ApiClient(authenticationService, errorReporter)
-  const wordRepository = new WordRepository(apiClient)
-  const signsRepository = new SignRepository(apiClient)
-  const fragmentRepository = new FragmentRepository(apiClient)
-  const imageRepository = new ApiImageRepository(apiClient)
-  const bibliographyRepository = new BibliographyRepository(apiClient)
-  const afoRegisterRepository = new AfoRegisterRepository(apiClient)
-  const findspotRepository = new ApiFindspotRepository(apiClient)
-  const dossiersRepository = new DossiersRepository(apiClient)
+  const apiClient = useMemo(
+    () => new ApiClient(authenticationService, errorReporter),
+    [authenticationService],
+  )
+  const wordRepository = useMemo(
+    () => new WordRepository(apiClient),
+    [apiClient],
+  )
+  const signsRepository = useMemo(
+    () => new SignRepository(apiClient),
+    [apiClient],
+  )
+  const fragmentRepository = useMemo(
+    () => new FragmentRepository(apiClient),
+    [apiClient],
+  )
+  const imageRepository = useMemo(
+    () => new ApiImageRepository(apiClient),
+    [apiClient],
+  )
+  const bibliographyRepository = useMemo(
+    () => new BibliographyRepository(apiClient),
+    [apiClient],
+  )
+  const afoRegisterRepository = useMemo(
+    () => new AfoRegisterRepository(apiClient),
+    [apiClient],
+  )
+  const findspotRepository = useMemo(
+    () => new ApiFindspotRepository(apiClient),
+    [apiClient],
+  )
+  const dossiersRepository = useMemo(
+    () => new DossiersRepository(apiClient),
+    [apiClient],
+  )
 
-  const bibliographyService = new BibliographyService(bibliographyRepository)
-  const fragmentService = new FragmentService(
-    fragmentRepository,
-    imageRepository,
-    wordRepository,
-    bibliographyService,
+  const bibliographyService = useMemo(
+    () => new BibliographyService(bibliographyRepository),
+    [bibliographyRepository],
   )
-  const fragmentSearchService = new FragmentSearchService(fragmentRepository)
-  const wordService = new WordService(wordRepository)
-  const textService = new TextService(
-    apiClient,
-    fragmentService,
-    wordService,
-    bibliographyService,
+  const fragmentService = useMemo(
+    () =>
+      new FragmentService(
+        fragmentRepository,
+        imageRepository,
+        wordRepository,
+        bibliographyService,
+      ),
+    [fragmentRepository, imageRepository, wordRepository, bibliographyService],
   )
-  const signService = new SignService(signsRepository)
-  const markupService = new MarkupService(apiClient, bibliographyService)
-  const cachedMarkupService = new CachedMarkupService(
-    apiClient,
-    bibliographyService,
+  const fragmentSearchService = useMemo(
+    () => new FragmentSearchService(fragmentRepository),
+    [fragmentRepository],
   )
-  const afoRegisterService = new AfoRegisterService(afoRegisterRepository)
-  const dossiersService = new DossiersService(dossiersRepository)
-  const findspotService = new FindspotService(findspotRepository)
+  const wordService = useMemo(
+    () => new WordService(wordRepository),
+    [wordRepository],
+  )
+  const textService = useMemo(
+    () =>
+      new TextService(
+        apiClient,
+        fragmentService,
+        wordService,
+        bibliographyService,
+      ),
+    [apiClient, fragmentService, wordService, bibliographyService],
+  )
+  const signService = useMemo(
+    () => new SignService(signsRepository),
+    [signsRepository],
+  )
+  const markupService = useMemo(
+    () => new MarkupService(apiClient, bibliographyService),
+    [apiClient, bibliographyService],
+  )
+  const cachedMarkupService = useMemo(
+    () => new CachedMarkupService(apiClient, bibliographyService),
+    [apiClient, bibliographyService],
+  )
+  const afoRegisterService = useMemo(
+    () => new AfoRegisterService(afoRegisterRepository),
+    [afoRegisterRepository],
+  )
+  const dossiersService = useMemo(
+    () => new DossiersService(dossiersRepository),
+    [dossiersRepository],
+  )
+  const findspotService = useMemo(
+    () => new FindspotService(findspotRepository),
+    [findspotRepository],
+  )
   useEffect(() => {
     fragmentService.fetchProvenances().catch((error) => {
       errorReporter.captureException(error)
     })
-  }, [fragmentService])
+    textService.list().catch(() => {})
+    fragmentService.fetchGenres().catch(() => {})
+  }, [fragmentService, textService])
   return (
     <App
       wordService={wordService}

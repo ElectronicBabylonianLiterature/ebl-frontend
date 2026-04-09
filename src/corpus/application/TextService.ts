@@ -142,6 +142,8 @@ export function createChapterUrl({
 export default class TextService {
   private readonly referenceInjector: ReferenceInjector
 
+  private cachedTexts: Bluebird<Text[]> | null = null
+
   constructor(
     private readonly apiClient: ApiClient,
     private readonly fragmentService: FragmentService,
@@ -390,9 +392,16 @@ export default class TextService {
   }
 
   list(): Bluebird<Text[]> {
-    return this.apiClient
-      .fetchJson<unknown[]>('/texts', false)
-      .then((dtos) => dtos.map(fromDto))
+    if (!this.cachedTexts) {
+      this.cachedTexts = this.apiClient
+        .fetchJson<unknown[]>('/texts', false)
+        .then((dtos) => dtos.map(fromDto))
+        .catch((error) => {
+          this.cachedTexts = null
+          throw error
+        })
+    }
+    return this.cachedTexts
   }
 
   searchLemma(
