@@ -1,4 +1,9 @@
-import React, { PropsWithChildren, useCallback, useMemo } from 'react'
+import React, {
+  PropsWithChildren,
+  useCallback,
+  useEffect,
+  useMemo,
+} from 'react'
 import { createRoot } from 'react-dom/client'
 import { BrowserRouter as Router } from 'react-router-dom'
 import { useHistory } from 'router/compat'
@@ -95,7 +100,11 @@ function InjectedApp(): JSX.Element {
   const afoRegisterService = new AfoRegisterService(afoRegisterRepository)
   const dossiersService = new DossiersService(dossiersRepository)
   const findspotService = new FindspotService(findspotRepository)
-  fragmentService.fetchProvenances().catch(() => {})
+  useEffect(() => {
+    fragmentService.fetchProvenances().catch((error) => {
+      errorReporter.captureException(error)
+    })
+  }, [])
   return (
     <App
       wordService={wordService}
