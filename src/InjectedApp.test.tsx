@@ -110,27 +110,29 @@ describe('InjectedApp', () => {
     })
   })
 
-  test('handles text list prefetch error gracefully', async () => {
+  test('reports text list prefetch error to errorReporter', async () => {
+    const error = new Error('list error')
     TextService.prototype.list = jest
       .fn()
-      .mockReturnValue(Bluebird.reject(new Error('list error')))
+      .mockReturnValue(Bluebird.reject(error))
 
     renderInjectedApp()
 
     await waitFor(() => {
-      expect(screen.getByTestId('app')).toBeInTheDocument()
+      expect(mockErrorReporter.captureException).toHaveBeenCalledWith(error)
     })
   })
 
-  test('handles genres prefetch error gracefully', async () => {
+  test('reports genres prefetch error to errorReporter', async () => {
+    const error = new Error('genres error')
     FragmentService.prototype.fetchGenres = jest
       .fn()
-      .mockReturnValue(Bluebird.reject(new Error('genres error')))
+      .mockReturnValue(Bluebird.reject(error))
 
     renderInjectedApp()
 
     await waitFor(() => {
-      expect(screen.getByTestId('app')).toBeInTheDocument()
+      expect(mockErrorReporter.captureException).toHaveBeenCalledWith(error)
     })
   })
 })

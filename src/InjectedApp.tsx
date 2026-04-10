@@ -128,8 +128,12 @@ export default function InjectedApp({
     fragmentService.fetchProvenances().catch((error) => {
       errorReporter.captureException(error)
     })
-    textService.list().catch(() => {})
-    fragmentService.fetchGenres().catch(() => {})
+    textService.list().catch((error) => {
+      errorReporter.captureException(error)
+    })
+    fragmentService.fetchGenres().catch((error) => {
+      errorReporter.captureException(error)
+    })
   }, [fragmentService, textService, errorReporter])
   return (
     <App
