@@ -367,15 +367,66 @@ describe('methods returning fragment', () => {
   })
 
   describe('fetch genres', () => {
-    beforeEach(async () => {
+    test('returns genres', async () => {
+      const service = new FragmentService(
+        fragmentRepository,
+        imageRepository,
+        wordRepository,
+        bibliographyService,
+      )
       fragmentRepository.fetchGenres.mockReturnValue(
         Promise.resolve(genreOptions),
       )
-      genreResult = await fragmentService.fetchGenres()
+      genreResult = await service.fetchGenres()
+      expect(genreResult).toEqual(genreOptions)
     })
-    test('returns genres', () => expect(genreResult).toEqual(genreOptions))
-    test('calls repository with correct parameters', () =>
-      expect(fragmentRepository.fetchGenres).toHaveBeenCalled())
+    test('calls repository with correct parameters', async () => {
+      const service = new FragmentService(
+        fragmentRepository,
+        imageRepository,
+        wordRepository,
+        bibliographyService,
+      )
+      fragmentRepository.fetchGenres.mockReturnValue(
+        Promise.resolve(genreOptions),
+      )
+      await service.fetchGenres()
+      expect(fragmentRepository.fetchGenres).toHaveBeenCalled()
+    })
+
+    test('uses cached genre list', async () => {
+      const service = new FragmentService(
+        fragmentRepository,
+        imageRepository,
+        wordRepository,
+        bibliographyService,
+      )
+      fragmentRepository.fetchGenres.mockReturnValue(
+        Promise.resolve(genreOptions),
+      )
+      await service.fetchGenres()
+      await service.fetchGenres()
+      expect(fragmentRepository.fetchGenres).toHaveBeenCalledTimes(1)
+    })
+
+    test('clears cache on error and allows retry', async () => {
+      const service = new FragmentService(
+        fragmentRepository,
+        imageRepository,
+        wordRepository,
+        bibliographyService,
+      )
+      fragmentRepository.fetchGenres.mockReturnValueOnce(
+        Promise.reject(new Error('network error')),
+      )
+      await expect(service.fetchGenres()).rejects.toThrow('network error')
+
+      fragmentRepository.fetchGenres.mockReturnValueOnce(
+        Promise.resolve(genreOptions),
+      )
+      await expect(service.fetchGenres()).resolves.toEqual(genreOptions)
+      expect(fragmentRepository.fetchGenres).toHaveBeenCalledTimes(2)
+    })
   })
 
   describe('fetch provenances', () => {

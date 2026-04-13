@@ -170,6 +170,8 @@ export class FragmentService {
     string,
     Bluebird<readonly ProvenanceRecord[]>
   >()
+  private cachedGenres: string[][] | null = null
+  private cachedGenresRequest: Bluebird<string[][]> | null = null
 
   constructor(
     private readonly fragmentRepository: FragmentRepository &
@@ -246,7 +248,28 @@ export class FragmentService {
   }
 
   fetchGenres(): Bluebird<string[][]> {
-    return this.fragmentRepository.fetchGenres()
+    if (this.cachedGenres) {
+      return Bluebird.resolve(this.cachedGenres)
+    }
+    if (this.cachedGenresRequest) {
+      return this.cachedGenresRequest
+    }
+
+    this.cachedGenresRequest = this.fragmentRepository
+      .fetchGenres()
+      .then((genres) => {
+        this.cachedGenres = genres
+        return genres
+      })
+      .catch((error) => {
+        this.cachedGenres = null
+        throw error
+      })
+      .finally(() => {
+        this.cachedGenresRequest = null
+      })
+
+    return this.cachedGenresRequest
   }
 
   fetchProvenances(): Bluebird<readonly ProvenanceRecord[]> {
