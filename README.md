@@ -48,6 +48,8 @@ If you prefer to develop locally without using Codespaces, follow these steps:
 - Install [Node 20](https://nodejs.org/)
 - Install [yarn](https://yarnpkg.com/getting-started/install)
 - Install [Git LFS](https://git-lfs.github.com/) (required for the Git hooks)
+- Install [ggshield](https://docs.gitguardian.com/ggshield-docs/getting-started) (required for secret-scanning hook)
+- Set `GITGUARDIAN_API_KEY` in your shell environment (required for secret-scanning hook)
 - Install Chrome (required for Lighthouse)
 
 **Setup:**
@@ -65,11 +67,11 @@ If you prefer to develop locally without using Codespaces, follow these steps:
    yarn install
    ```
 
-   This will automatically patch [history](https://github.com/remix-run/history) in node_modules which is an indirect dependency for [react-router](https://github.com/remix-run/react-router) version 5 because of [https://github.com/remix-run/history/issues/505](https://github.com/remix-run/history/issues/505) (updating react-router to version 6 would fix this issue too).
+This will automatically patch [history](https://github.com/remix-run/history) in node_modules which is an indirect dependency for [react-router](https://github.com/remix-run/react-router) version 5 because of [https://github.com/remix-run/history/issues/505](https://github.com/remix-run/history/issues/505) (updating react-router to version 6 would fix this issue too).
 
-3. Configure environment variables in `.env.local` (see [Running the application](#running-the-application) section)
+1. Configure environment variables in `.env.local` (see [Running the application](#running-the-application) section)
 
-4. Start the development server:
+2. Start the development server:
 
 ```sh
 yarn start
@@ -86,6 +88,44 @@ yarn test
 ### Running test coverage check
 
 `yarn test --coverage --watchAll`
+
+## Secret scanning
+
+This repository blocks commits that introduce detected secrets.
+
+- Local pre-commit scanning is run through Husky + GitGuardian `ggshield`.
+- CI also runs GitGuardian in `.github/workflows/secret-scan.yml`.
+
+In dev containers and Codespaces, `ggshield` is installed automatically as part of the devcontainer image build.
+Authenticate with `ggshield auth login` in the container before running scan commands.
+
+Create a `GITGUARDIAN_API_KEY` (for CI secrets and optional local auth):
+
+1. Sign in to GitGuardian at <https://dashboard.gitguardian.com>.
+2. Open your user settings and go to API keys / Personal access tokens.
+3. Create a new token with at least `scan` scope.
+4. Copy the token immediately (it is shown once).
+5. Add it to `.env.local`.
+
+Manual commands:
+
+```sh
+ggshield secret scan pre-commit
+ggshield secret scan path --recursive --use-gitignore .
+
+```
+
+Run the synthetic regression checks:
+
+```sh
+yarn test:secrets
+```
+
+If you hit a positive:
+
+1. Investigate the finding in GitGuardian.
+2. Replace real secrets immediately; do not commit them.
+3. For test payloads, prefer generating values dynamically in scripts instead of storing raw secret-like strings in the repository.
 
 ## Configuring services
 
