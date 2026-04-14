@@ -51,6 +51,11 @@ describe('Fragmentarium', () => {
   let session: Session
   let container: HTMLElement
 
+  beforeAll(async () => {
+    await import('./LatestTransliterations')
+    await import('./NeedsRevision')
+  })
+
   const renderFragmentarium = async (): Promise<void> => {
     const { container: renderedContainer } = render(
       <MemoryRouter initialEntries={['/library']}>
@@ -178,6 +183,35 @@ describe('Fragmentarium', () => {
       session = new MemorySession(['read:fragments'])
       await renderFragmentarium()
       expect(screen.queryByText('Needs Revision')).not.toBeInTheDocument()
+    })
+  })
+
+  describe('Lazy loading', () => {
+    it('renders LatestTransliterations lazily when user can read fragments', async () => {
+      const latest = fragmentFactory.build()
+      session = new MemorySession(['read:fragments'])
+      fragmentService.queryLatest.mockReturnValue(
+        Bluebird.resolve({
+          items: [queryItemOf(latest)],
+          matchCountTotal: 0,
+        }),
+      )
+      fragmentService.find.mockReturnValue(Bluebird.resolve(latest))
+      await renderFragmentarium()
+      expect(await screen.findByText('Latest additions:')).toBeInTheDocument()
+    })
+
+    it('renders NeedsRevision lazily when user can transliterate', async () => {
+      session = new MemorySession(['read:fragments', 'transliterate:fragments'])
+      const needsRevision = fragmentInfoFactory.build()
+      fragmentService.queryLatest.mockReturnValue(
+        Bluebird.resolve({ items: [], matchCountTotal: 0 }),
+      )
+      fragmentSearchService.fetchNeedsRevision.mockReturnValue(
+        Bluebird.resolve([needsRevision]),
+      )
+      await renderFragmentarium()
+      expect(await screen.findByText('Needs revision:')).toBeInTheDocument()
     })
   })
 })

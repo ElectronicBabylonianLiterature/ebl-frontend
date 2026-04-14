@@ -774,4 +774,36 @@ describe('SearchFormDossier', () => {
       expect(mockSearchSuggestions).toHaveBeenCalledWith('', undefined)
     })
   })
+
+  it('preserves selected value when filters change', async () => {
+    const filters1 = { genre: 'Incantation' }
+    const filters2 = { genre: 'Prayer' }
+    mockSearchSuggestions.mockResolvedValue([
+      new DossierRecordSuggestion(mockSuggestionDto),
+    ])
+
+    const { rerender } = render(
+      <SearchFormDossier
+        ariaLabel="Dossier Search"
+        value="D001"
+        searchSuggestions={mockSearchSuggestions}
+        onChange={mockOnChange}
+        filters={filters1}
+      />,
+    )
+
+    expect(screen.getByText(/D001/)).toBeInTheDocument()
+
+    rerender(
+      <SearchFormDossier
+        ariaLabel="Dossier Search"
+        value="D001"
+        searchSuggestions={mockSearchSuggestions}
+        onChange={mockOnChange}
+        filters={filters2}
+      />,
+    )
+
+    expect(screen.getByText(/D001/)).toBeInTheDocument()
+  })
 })

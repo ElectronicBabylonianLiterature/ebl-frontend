@@ -1,15 +1,19 @@
-import React from 'react'
+import React, { Suspense } from 'react'
 import { Container, Row, Col } from 'react-bootstrap'
 import AppContent from 'common/AppContent'
 import Statistics from './Statistics'
 import ApiImage from 'common/ApiImage'
 import SessionContext from 'auth/SessionContext'
 import SearchForm, { SearchFormProps } from 'fragmentarium/ui/SearchForm'
-import LatestTransliterations from './LatestTransliterations'
-import NeedsRevision from './NeedsRevision'
+import Spinner from 'common/Spinner'
 import 'fragmentarium/ui/front-page/Fragmentarium.css'
 import { Session } from 'auth/Session'
 import { SectionCrumb } from 'common/Breadcrumbs'
+
+const LatestTransliterations = React.lazy(
+  () => import('./LatestTransliterations'),
+)
+const NeedsRevision = React.lazy(() => import('./NeedsRevision'))
 
 function Fragmentarium({
   fragmentService,
@@ -52,23 +56,27 @@ function Fragmentarium({
               }
             </Row>
             {session.isAllowedToReadFragments() && (
-              <Row>
-                <Col>
-                  <LatestTransliterations
-                    fragmentService={fragmentService}
-                    dossiersService={dossiersService}
-                  />
-                </Col>
-              </Row>
+              <Suspense fallback={<Spinner />}>
+                <Row>
+                  <Col>
+                    <LatestTransliterations
+                      fragmentService={fragmentService}
+                      dossiersService={dossiersService}
+                    />
+                  </Col>
+                </Row>
+              </Suspense>
             )}
             {session.isAllowedToTransliterateFragments() && (
-              <Row>
-                <Col>
-                  <NeedsRevision
-                    fragmentSearchService={fragmentSearchService}
-                  />
-                </Col>
-              </Row>
+              <Suspense fallback={<Spinner />}>
+                <Row>
+                  <Col>
+                    <NeedsRevision
+                      fragmentSearchService={fragmentSearchService}
+                    />
+                  </Col>
+                </Row>
+              </Suspense>
             )}
           </Container>
         )}

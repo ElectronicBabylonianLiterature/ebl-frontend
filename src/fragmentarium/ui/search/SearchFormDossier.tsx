@@ -44,6 +44,16 @@ interface Props {
 
 const collator = new Intl.Collator([], { numeric: true })
 
+function toOptions(
+  entries: readonly DossierRecordSuggestion[],
+): SelectedOption[] {
+  const options = entries
+    .map(createOption)
+    .filter((o): o is SelectedOption => o !== null)
+  options.sort((a, b) => collator.compare(a.label, b.label))
+  return options
+}
+
 export default function SearchFormDossier({
   ariaLabel,
   value,
@@ -55,13 +65,25 @@ export default function SearchFormDossier({
   const [selectedOption, setSelectedOption] = useState<SelectedOption | null>(
     value ? { value, label: value } : null,
   )
+  const [defaultOptions, setDefaultOptions] = useState<SelectedOption[]>([])
   const prevValue = usePrevious(value)
+  const filtersJson = JSON.stringify(filters)
 
   useEffect(() => {
     if (value !== prevValue) {
       setSelectedOption(value ? { value, label: value } : null)
     }
   }, [value, prevValue])
+
+  useEffect(() => {
+    const result = searchSuggestions('', filters)
+    if (result && typeof result.then === 'function') {
+      result
+        .then((entries) => setDefaultOptions(toOptions(entries)))
+        .catch(() => setDefaultOptions([]))
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [filtersJson])
 
   const loadOptions = (
     inputValue: string,
@@ -73,13 +95,7 @@ export default function SearchFormDossier({
       return
     }
     result
-      .then((entries) => {
-        const options = entries
-          .map(createOption)
-          .filter((o): o is SelectedOption => o !== null)
-        options.sort((a, b) => collator.compare(a.label, b.label))
-        callback(options)
-      })
+      .then((entries) => callback(toOptions(entries)))
       .catch(() => callback([]))
   }
 
@@ -98,12 +114,10 @@ export default function SearchFormDossier({
       <HelpCol overlay={DossierSearchHelp()} />
       <Col sm={12 - helpColSize}>
         <AsyncSelect
-          key={JSON.stringify(filters)}
           isClearable={isClearable}
           aria-label={ariaLabel}
           placeholder="Dossiers"
-          cacheOptions
-          defaultOptions
+          defaultOptions={defaultOptions}
           loadOptions={loadOptions}
           onChange={handleChange}
           value={selectedOption}
