@@ -489,6 +489,10 @@ const testData: TestData<TextService>[] = [
   ),
 ]
 
+beforeEach(() => {
+  fragmentServiceMock.fetchProvenances.mockReturnValue(Bluebird.resolve([]))
+})
+
 describe('TextService', () => testDelegation(testService, testData))
 
 test('findSuggestions', async () => {
@@ -609,9 +613,10 @@ describe('findManuscripts provenance preload', () => {
       .spyOn(console, 'error')
       .mockImplementation(() => undefined)
 
-    apiClient.fetchJson
-      .mockRejectedValueOnce(provenanceError)
-      .mockResolvedValueOnce(chapterDto.manuscripts)
+    fragmentServiceMock.fetchProvenances.mockReturnValueOnce(
+      Bluebird.reject(provenanceError),
+    )
+    apiClient.fetchJson.mockResolvedValueOnce(chapterDto.manuscripts)
 
     await expect(service.findManuscripts(chapterId)).resolves.toEqual(
       chapter.manuscripts,
@@ -621,7 +626,7 @@ describe('findManuscripts provenance preload', () => {
       'Failed to preload provenances',
       provenanceError,
     )
-    expect(apiClient.fetchJson).toHaveBeenCalledWith('/provenances', false)
+    expect(fragmentServiceMock.fetchProvenances).toHaveBeenCalled()
     expect(apiClient.fetchJson).toHaveBeenCalledWith(
       `${chapterUrl}/manuscripts`,
       false,
@@ -639,11 +644,15 @@ describe('findManuscripts provenance preload', () => {
 
     jest.spyOn(console, 'error').mockImplementation(() => undefined)
 
-    apiClient.fetchJson
-      .mockRejectedValueOnce(provenanceError)
-      .mockResolvedValueOnce(chapterDto.manuscripts)
-      .mockResolvedValueOnce([])
-      .mockResolvedValueOnce(chapterDto.manuscripts)
+    fragmentServiceMock.fetchProvenances.mockReturnValueOnce(
+      Bluebird.reject(provenanceError),
+    )
+    apiClient.fetchJson.mockResolvedValueOnce(chapterDto.manuscripts)
+
+    fragmentServiceMock.fetchProvenances.mockReturnValueOnce(
+      Bluebird.resolve([]),
+    )
+    apiClient.fetchJson.mockResolvedValueOnce(chapterDto.manuscripts)
 
     await expect(service.findManuscripts(chapterId)).resolves.toEqual(
       chapter.manuscripts,
@@ -652,9 +661,54 @@ describe('findManuscripts provenance preload', () => {
       chapter.manuscripts,
     )
 
-    const provenanceCalls = apiClient.fetchJson.mock.calls.filter(
-      ([path]) => path === '/provenances',
+    expect(fragmentServiceMock.fetchProvenances).toHaveBeenCalledTimes(2)
+  })
+})
+
+describe('list caching', () => {
+  let service: TextService
+
+  beforeEach(() => {
+    service = new TextService(
+      apiClient,
+      fragmentServiceMock,
+      wordServiceMock,
+      bibliographyServiceMock,
     )
-    expect(provenanceCalls).toHaveLength(2)
+  })
+
+  test('returns cached result on second call', async () => {
+    apiClient.fetchJson.mockReturnValue(Bluebird.resolve(textsDto))
+
+    const first = await service.list()
+    const second = await service.list()
+
+    expect(first).toEqual([text])
+    expect(second).toEqual([text])
+    expect(apiClient.fetchJson).toHaveBeenCalledTimes(1)
+  })
+
+  test('clears cache on error and allows retry', async () => {
+    const error = new Error('network error')
+
+    apiClient.fetchJson.mockReturnValueOnce(Bluebird.reject(error))
+
+    await expect(service.list()).rejects.toThrow('network error')
+
+    apiClient.fetchJson.mockReturnValueOnce(Bluebird.resolve(textsDto))
+
+    await expect(service.list()).resolves.toEqual([text])
+    expect(apiClient.fetchJson).toHaveBeenCalledTimes(2)
+  })
+})
+
+describe('loadProvenances delegation', () => {
+  test('delegates to fragmentService.fetchProvenances', async () => {
+    fragmentServiceMock.fetchProvenances.mockReturnValue(Bluebird.resolve([]))
+    apiClient.fetchJson.mockReturnValue(Bluebird.resolve(chapterDto))
+
+    await testService.findChapter(chapterId)
+
+    expect(fragmentServiceMock.fetchProvenances).toHaveBeenCalled()
   })
 })
