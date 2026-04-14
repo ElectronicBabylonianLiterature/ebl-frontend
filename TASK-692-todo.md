@@ -30,3 +30,11 @@
 - [x] Add missing module declarations for style imports.
 - [x] Re-validate with `yarn lint`.
 - [x] Re-validate with `yarn tsc`.
+
+## Follow-up: ChapterView snapshot regressions
+
+- [x] Reproduce failing snapshots in `src/corpus/ui/ChapterView.integration.test.ts`.
+- [x] Add test-local provenance seeding for abbreviations required by affected snapshots.
+- [x] Restore provenance state after each test to prevent global leakage.
+- [x] Re-validate with `yarn lint`.
+- [x] Re-validate with `yarn tsc`.

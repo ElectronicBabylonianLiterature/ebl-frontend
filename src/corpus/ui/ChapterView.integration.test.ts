@@ -15,6 +15,11 @@ import { oldSiglumDtoFactory } from 'test-support/old-siglum-fixtures'
 import { referenceDtoFactory } from 'test-support/bibliography-fixtures'
 import { joinDtoFactory } from 'test-support/join-fixtures'
 import { stageToAbbreviation } from 'common/utils/period'
+import {
+  restoreProvenanceState,
+  snapshotProvenanceState,
+  upsertProvenanceRecords,
+} from 'test-support/provenance-state'
 
 const chance = new Chance('chapter-view-integration-test')
 
@@ -32,6 +37,7 @@ const chapter = chapterDisplayFactory.published().build(
 
 let fakeApi: FakeApi
 let appDriver: AppDriver
+let provenanceSnapshot = snapshotProvenanceState()
 
 afterEach(() => {
   fakeApi.verifyExpectations()
@@ -39,8 +45,29 @@ afterEach(() => {
 
 describe('Display chapter', () => {
   beforeEach(async () => {
+    provenanceSnapshot = snapshotProvenanceState()
+    upsertProvenanceRecords([
+      {
+        id: 'standard-text',
+        longName: 'Standard Text',
+        abbreviation: 'Std',
+        parent: null,
+        sortKey: 1,
+      },
+      {
+        id: 'nippur',
+        longName: 'Nippur',
+        abbreviation: 'Nip',
+        parent: null,
+        sortKey: 2,
+      },
+    ])
     ;(URL.createObjectURL as jest.Mock).mockReturnValue('mock url')
     await setup(chapter)
+  })
+
+  afterEach(() => {
+    restoreProvenanceState(provenanceSnapshot)
   })
 
   test('Breadcrumbs', () => {

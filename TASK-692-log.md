@@ -80,3 +80,14 @@ The hardcoded map was **removed** in this session.
   - `yarn lint` passed.
   - `yarn tsc` passed.
 - Confirmed no remaining diagnostics in `src/index.tsx`.
+
+## 2026-04-14 (ChapterView snapshot regression follow-up)
+
+- Reproduced failing snapshots in `src/corpus/ui/ChapterView.integration.test.ts`:
+  - `Display chapter Show manuscripts 1`
+  - `Display chapter Sidebar 1`
+- Root cause: missing provenance abbreviations (`Standard Text`, `Nippur`) in this suite's runtime state, causing sigla to render without provenance prefixes.
+- Applied test-only fix in `src/corpus/ui/ChapterView.integration.test.ts`:
+  - Added suite-local provenance seeding with `upsertProvenanceRecords(...)` in `beforeEach`.
+  - Added provenance state restore via `restoreProvenanceState(...)` in `afterEach`.
+- Re-ran target suite: all ChapterView tests and snapshots now pass.
