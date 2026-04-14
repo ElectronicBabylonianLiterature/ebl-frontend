@@ -1,6 +1,6 @@
 import React from 'react'
-import AppContent from 'common/AppContent'
-import { SectionCrumb, TextCrumb } from 'common/Breadcrumbs'
+import AppContent from 'common/ui/AppContent'
+import { SectionCrumb, TextCrumb } from 'common/ui/Breadcrumbs'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import FragmentCrumb from 'fragmentarium/ui/FragmentCrumb'

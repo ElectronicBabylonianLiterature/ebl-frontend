@@ -8,7 +8,7 @@ import {
   UniqueLemma,
 } from 'transliteration/domain/Lemmatization'
 import FragmentService from 'fragmentarium/application/FragmentService'
-import ModalButton from 'common/ModalButton'
+import ModalButton from 'common/ui/ModalButton'
 
 interface Props {
   fragmentService: FragmentService

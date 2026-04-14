@@ -1,14 +1,44 @@
 import React from 'react'
 import { render, screen, waitFor } from '@testing-library/react'
-import ManuscriptPopOver from './ManuscriptPopover'
+import ManuscriptPopOver from 'corpus/ui/ManuscriptPopover'
 import { manuscriptLineDisplayFactory } from 'test-support/line-details-fixtures'
 import userEvent from '@testing-library/user-event'
 import { MemoryRouter } from 'react-router-dom'
 import { Provenances } from 'corpus/domain/provenance'
-import { Periods } from 'common/period'
+import { Periods } from 'common/utils/period'
 import Chance from 'chance'
+import {
+  restoreProvenanceState,
+  snapshotProvenanceState,
+  upsertProvenanceRecords,
+} from 'test-support/provenance-state'
 
 const chance = new Chance('manuscript-popover-test')
+let provenanceSnapshot = snapshotProvenanceState()
+
+beforeEach(() => {
+  provenanceSnapshot = snapshotProvenanceState()
+  upsertProvenanceRecords([
+    {
+      id: 'babylon',
+      longName: 'Babylon',
+      abbreviation: 'Bab',
+      parent: 'Babylonia',
+      sortKey: 1,
+    },
+    {
+      id: 'babylonia',
+      longName: 'Babylonia',
+      abbreviation: 'Bab',
+      parent: null,
+      sortKey: 2,
+    },
+  ])
+})
+
+afterEach(() => {
+  restoreProvenanceState(provenanceSnapshot)
+})
 
 const manuscript = manuscriptLineDisplayFactory.build(
   {},
@@ -45,6 +75,7 @@ test('Show manuscript line details', async () => {
   await waitFor(() => expect(screen.getByRole('tooltip')).toBeVisible())
 
   const heading = screen.getByRole('heading', { level: 3 })
+  expect(heading).toMatchSnapshot()
   expect(heading).toHaveTextContent(oldSiglum.siglum)
 
   const number = manuscript.joins[0][0].museumNumber

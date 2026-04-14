@@ -29,6 +29,11 @@ test('Shows all notes', () => {
   expect(lines.length).toEqual(3)
 })
 
+test('Snapshot', () => {
+  const { view } = setup()
+  expect(view.container).toMatchSnapshot()
+})
+
 describe.each([
   [1, 0],
   [2, 2],

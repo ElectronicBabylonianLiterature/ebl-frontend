@@ -1,11 +1,22 @@
-/* eslint-disable react/prop-types */
 import React from 'react'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { submitFormByTestId } from 'test-support/utils'
 import { Promise } from 'bluebird'
 
 import TransliterationForm from './TransliterationForm'
+import { act } from 'react'
 import userEvent from '@testing-library/user-event'
+
+type EditorMockProps = {
+  name: string
+  value: string
+  onChange: (value: string) => void
+  disabled?: boolean
+}
+
+type TemplateFormMockProps = {
+  onSubmit: (templateValue: string) => void
+}
 
 jest.mock('editor/SpecialCharactersHelp', () => {
   return function SpecialCharactersHelpMock() {
@@ -14,7 +25,9 @@ jest.mock('editor/SpecialCharactersHelp', () => {
 })
 
 jest.mock('./TemplateForm', () => {
-  return function TemplateFormMock({ onSubmit }) {
+  return function TemplateFormMock({
+    onSubmit,
+  }: TemplateFormMockProps): JSX.Element {
     return (
       <button onClick={() => onSubmit('template value')} type="button">
         Apply template
@@ -24,7 +37,13 @@ jest.mock('./TemplateForm', () => {
 })
 
 jest.mock('editor/Editor', () => {
-  return function EditorMock({ name, value, onChange, disabled, ...rest }) {
+  return function EditorMock({
+    name,
+    value,
+    onChange,
+    disabled,
+    ...rest
+  }: EditorMockProps & Record<string, unknown>): JSX.Element {
     if (name === 'transliteration') {
       editorError = rest.error ?? null
     }
@@ -33,7 +52,9 @@ jest.mock('editor/Editor', () => {
         aria-label={name}
         value={value}
         disabled={disabled}
-        onChange={(event) => onChange(event.target.value)}
+        onChange={(event: React.ChangeEvent<HTMLTextAreaElement>) =>
+          onChange(event.target.value)
+        }
         {...rest}
       />
     )
@@ -83,7 +104,10 @@ it('Updates transliteration on change', async () => {
 
 it('calls updateEdition when submitting the form', async () => {
   setup()
-  submitFormByTestId(screen, 'transliteration-form')
+  await act(async () => {
+    submitFormByTestId(screen, 'transliteration-form')
+    await Promise.resolve()
+  })
   expect(updateEdition).toHaveBeenCalledWith({})
 })
 

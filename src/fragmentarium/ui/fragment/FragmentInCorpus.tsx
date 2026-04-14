@@ -1,7 +1,7 @@
 import React from 'react'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import { ManuscriptAttestation } from 'corpus/domain/manuscriptAttestation'
-import Breadcrumbs, { TextCrumb } from 'common/Breadcrumbs'
+import Breadcrumbs, { TextCrumb } from 'common/ui/Breadcrumbs'
 import GenreCrumb from 'corpus/ui/GenreCrumb'
 import CorpusTextCrumb from 'corpus/ui/CorpusTextCrumb'
 import ChapterCrumb from 'corpus/ui/ChapterCrumb'

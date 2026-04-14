@@ -2,7 +2,12 @@ import Reference from 'bibliography/domain/Reference'
 import { Joins } from 'fragmentarium/domain/join'
 import { immerable } from 'immer'
 import _ from 'lodash'
-import { Period, PeriodModifier, PeriodModifiers, Periods } from 'common/period'
+import {
+  Period,
+  PeriodModifier,
+  PeriodModifiers,
+  Periods,
+} from 'common/utils/period'
 import {
   compareAssyriaAndBabylonia,
   compareName,

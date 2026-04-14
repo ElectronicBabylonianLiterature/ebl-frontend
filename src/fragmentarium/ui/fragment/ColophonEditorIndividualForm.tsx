@@ -6,8 +6,8 @@ import {
   IndividualType,
 } from 'fragmentarium/domain/Colophon'
 import _ from 'lodash'
-import ListForm from 'common/List'
-import { BrokenAndUncertainSwitches } from 'common/BrokenAndUncertain'
+import ListForm from 'common/ui/List'
+import { BrokenAndUncertainSwitches } from 'common/ui/BrokenAndUncertain'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import { getSelectField } from './ColophonEditorIndividualInputs'
 import Bluebird from 'bluebird'

@@ -66,6 +66,7 @@ describe('Show Library entries', () => {
     renderFragmentLemmaLines()
 
     expect(fragmentService.query).toBeCalledWith({ lemmas: word._id })
+    await screen.findByText(fragmentWithLemma.number)
   }
 
   it('shows the fragment number', async () => {

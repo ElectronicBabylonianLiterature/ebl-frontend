@@ -17,8 +17,8 @@ import {
   measuresFactory,
 } from 'test-support/fragment-data-fixtures'
 import { joinFactory } from 'test-support/join-fixtures'
+import { Periods } from 'common/utils/period'
 import { excavationSites, PartialDate } from 'fragmentarium/domain/archaeology'
-import { Periods } from 'common/period'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import DossiersService from 'dossiers/application/DossiersService'
 

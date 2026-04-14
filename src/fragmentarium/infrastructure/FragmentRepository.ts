@@ -48,7 +48,7 @@ import { ManuscriptAttestation } from 'corpus/domain/manuscriptAttestation'
 import FragmentDto, {
   MesopotamianDateDto,
 } from 'fragmentarium/domain/FragmentDtos'
-import { PeriodModifiers, Periods } from 'common/period'
+import { PeriodModifiers, Periods } from 'common/utils/period'
 import { FragmentQuery } from 'query/FragmentQuery'
 import {
   QueryItem,

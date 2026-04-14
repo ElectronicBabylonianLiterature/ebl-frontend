@@ -5,7 +5,7 @@ import { CorpusQuery } from 'query/CorpusQuery'
 import { CorpusQueryItem, CorpusQueryResult } from 'query/QueryResult'
 import { Col, Row } from 'react-bootstrap'
 import _ from 'lodash'
-import { ResultPageButtons } from 'common/ResultPageButtons'
+import { ResultPageButtons } from 'common/ui/ResultPageButtons'
 import { ChapterId, chapterIdToString } from 'transliteration/domain/chapter-id'
 import { ChapterDisplay } from 'corpus/domain/chapter'
 import { ChapterViewTable } from '../ChapterView'
@@ -13,7 +13,7 @@ import RowsContext, { useRowsContext } from '../RowsContext'
 import TranslationContext, {
   useTranslationContext,
 } from '../TranslationContext'
-import { Markdown } from 'common/Markdown'
+import { Markdown } from 'common/ui/Markdown'
 import { genreFromAbbr } from '../Corpus'
 
 function GenreInfoRow({

@@ -1,7 +1,7 @@
 import React from 'react'
 import { FormGroup } from 'react-bootstrap'
 
-import List from 'common/List'
+import List from 'common/ui/List'
 import TextInput from './TextInput'
 import { OraccWord } from 'dictionary/domain/Word'
 

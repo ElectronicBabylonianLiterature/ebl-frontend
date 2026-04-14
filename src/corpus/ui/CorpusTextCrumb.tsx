@@ -1,6 +1,6 @@
 import React from 'react'
-import { Crumb } from 'common/Breadcrumbs'
-import InlineMarkdown from 'common/InlineMarkdown'
+import { Crumb } from 'common/ui/Breadcrumbs'
+import InlineMarkdown from 'common/ui/InlineMarkdown'
 import { Text } from 'corpus/domain/text'
 import { TextId, textIdToString } from 'transliteration/domain/text-id'
 import { ChapterDisplay } from 'corpus/domain/chapter'

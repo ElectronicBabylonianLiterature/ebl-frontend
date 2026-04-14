@@ -2,7 +2,7 @@ import React from 'react'
 import './ImageButtonGroup.css'
 import { Button, ButtonGroup, OverlayTrigger, Tooltip } from 'react-bootstrap'
 import { useCallback } from 'react'
-import useObjectUrl from 'common/useObjectUrl'
+import useObjectUrl from 'common/hooks/useObjectUrl'
 
 export const getImageActions = ({
   zoomIn,

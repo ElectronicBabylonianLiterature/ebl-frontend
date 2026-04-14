@@ -174,7 +174,6 @@ describe('Auth0AuthenticationService', () => {
         testSession,
       )
 
-      // Non-Error objects should be re-thrown as-is
       await expect(authService.getAccessToken()).rejects.toBe(stringError)
     })
 
@@ -185,7 +184,7 @@ describe('Auth0AuthenticationService', () => {
       authService = new Auth0AuthenticationService(
         mockAuth0Client,
         returnTo,
-        false, // not authenticated
+        false,
         {},
         guestSession,
       )

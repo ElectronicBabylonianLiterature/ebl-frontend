@@ -1,5 +1,7 @@
-import { ProvenanceRecord } from 'fragmentarium/domain/Provenance'
-import { sortProvenances } from 'fragmentarium/domain/Provenance'
+import {
+  ProvenanceRecord,
+  sortProvenances,
+} from 'fragmentarium/domain/Provenance'
 
 export interface Provenance {
   readonly id?: string

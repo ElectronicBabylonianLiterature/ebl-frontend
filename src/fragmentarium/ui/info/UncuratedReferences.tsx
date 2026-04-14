@@ -2,7 +2,7 @@ import React from 'react'
 
 import { Popover, OverlayTrigger, Button } from 'react-bootstrap'
 import _ from 'lodash'
-import HelpTrigger from 'common/HelpTrigger'
+import HelpTrigger from 'common/ui/HelpTrigger'
 import { UncuratedReference } from 'fragmentarium/domain/fragment'
 import UncuratedReferencesList from './UncuratedReferencesList'
 import './UncuratedReferences.css'

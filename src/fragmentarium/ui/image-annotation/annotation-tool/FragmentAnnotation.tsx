@@ -17,14 +17,30 @@ import { uuid4 } from '@sentry/utils'
 import Highlight from 'fragmentarium/ui/image-annotation/annotation-tool/Highlight'
 import withData from 'http/withData'
 import { Button, ButtonGroup } from 'react-bootstrap'
-import useObjectUrl from 'common/useObjectUrl'
+import useObjectUrl from 'common/hooks/useObjectUrl'
 import automaticAlignment from 'fragmentarium/ui/image-annotation/annotation-tool/automatic-alignment'
-import HelpTrigger from 'common/HelpTrigger'
+import HelpTrigger from 'common/ui/HelpTrigger'
 import Help from 'fragmentarium/ui/image-annotation/annotation-tool/Help'
-import Spinner from 'common/Spinner'
+import Spinner from 'common/ui/Spinner'
 import Bluebird from 'bluebird'
-import ErrorAlert from 'common/ErrorAlert'
+import ErrorAlert from 'common/errors/ErrorAlert'
 import { createAnnotationTokens } from 'fragmentarium/ui/image-annotation/annotation-tool/mapTokensToAnnotationTokens'
+
+const annotationOverlayStyle: React.CSSProperties = {
+  background: 'rgba(0, 0, 0, 0.4)',
+  borderRadius: '5px',
+  bottom: '4px',
+  color: 'white',
+  fontSize: '12px',
+  fontWeight: 'bold',
+  opacity: 0,
+  padding: '10px',
+  pointerEvents: 'none',
+  position: 'absolute',
+  right: '4px',
+  transition: 'opacity 0.21s ease-in-out',
+  userSelect: 'none',
+}
 
 interface Props {
   tokens: ReadonlyArray<ReadonlyArray<AnnotationToken>>
@@ -371,23 +387,44 @@ function FragmentAnnotation({
           />
         )}
         renderHighlight={(props: {
+          key?: React.Key
           annotation: RawAnnotation
           active: boolean
-        }) => (
-          <Highlight
-            {...props}
-            scale={contentScale}
-            isToggled={_.isEqual(toggled, props.annotation)}
-          />
-        )}
-        renderContent={(props) => (
-          <Content
-            {...props}
-            displayCards={displayCards}
-            setHovering={setHovering}
-            contentScale={contentScale}
-            onDelete={onDelete}
-          />
+        }) => {
+          const { key, ...highlightProps } = props
+
+          return (
+            <Highlight
+              key={key}
+              {...highlightProps}
+              scale={contentScale}
+              isToggled={_.isEqual(toggled, props.annotation)}
+            />
+          )
+        }}
+        renderContent={(props) => {
+          const { key, ...contentProps } = props as {
+            key?: React.Key
+            annotation: Annotation
+          }
+
+          return (
+            <Content
+              key={key}
+              {...contentProps}
+              displayCards={displayCards}
+              setHovering={setHovering}
+              contentScale={contentScale}
+              onDelete={onDelete}
+            />
+          )
+        }}
+        renderOverlay={({ type }) => (
+          <div style={annotationOverlayStyle}>
+            {type === 'POINT'
+              ? 'Click to Annotate'
+              : 'Click and Drag to Annotate'}
+          </div>
         )}
         onClick={onClick}
       />

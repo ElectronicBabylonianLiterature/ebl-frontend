@@ -2,8 +2,8 @@ import React, { Component } from 'react'
 import Promise from 'bluebird'
 
 import BibliographyEntryForm from './BibliographyEntryForm'
-import Spinner from 'common/Spinner'
-import ErrorAlert from 'common/ErrorAlert'
+import Spinner from 'common/ui/Spinner'
+import ErrorAlert from 'common/errors/ErrorAlert'
 import SessionContext from 'auth/SessionContext'
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 

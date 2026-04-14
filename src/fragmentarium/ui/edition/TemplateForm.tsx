@@ -2,7 +2,7 @@ import React, { ChangeEvent, Component, FormEvent } from 'react'
 import { Form } from 'react-bootstrap'
 import Template from './Template'
 
-import HelpTrigger from 'common/HelpTrigger'
+import HelpTrigger from 'common/ui/HelpTrigger'
 import TemplateHelp from './TemplateHelp'
 
 class TemplateForm extends Component<

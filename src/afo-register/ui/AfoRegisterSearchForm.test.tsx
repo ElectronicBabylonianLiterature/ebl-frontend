@@ -15,11 +15,16 @@ jest.mock('react-router-dom', () => ({
   useNavigate: () => mockNavigate,
 }))
 
+const routerFuture = Object.fromEntries([
+  ['v7_startTransition', true],
+  ['v7_relativeSplatPath', true],
+])
+
 async function renderWithRouter(
   children: JSX.Element,
   path?: string,
 ): Promise<void> {
-  render(<MemoryRouter>{children}</MemoryRouter>)
+  render(<MemoryRouter future={routerFuture}>{children}</MemoryRouter>)
 }
 
 describe('AfoRegisterSearch Component Tests', () => {

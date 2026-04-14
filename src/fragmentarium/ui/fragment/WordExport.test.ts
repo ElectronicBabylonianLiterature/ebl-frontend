@@ -7,8 +7,24 @@ import Bluebird from 'bluebird'
 import { fragmentFactory } from 'test-support/fragment-fixtures'
 import { Document } from 'docx'
 import { createDictionaryWord } from 'test-support/glossary'
+import type { ReactNode } from 'react'
 
 jest.mock('dictionary/application/WordService')
+jest.mock('react-bootstrap', () => {
+  const actual = jest.requireActual('react-bootstrap')
+  return {
+    ...actual,
+    OverlayTrigger: ({ children }: { children: ReactNode }) => children,
+  }
+})
+jest.mock('react-router-dom', () => {
+  const actual = jest.requireActual('react-router-dom')
+  return {
+    ...actual,
+    MemoryRouter: ({ children }: { children: ReactNode }) => children,
+    Link: ({ children }: { children: ReactNode }) => children,
+  }
+})
 
 let wordService: jest.Mocked<WordService>
 let fragment: Fragment

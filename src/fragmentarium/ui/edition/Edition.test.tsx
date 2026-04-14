@@ -40,8 +40,9 @@ const setup = () => {
   ).container
 }
 
-it('Renders header', () => {
+it('Renders header', async () => {
   setup()
+  await screen.findByText(`(Publication: ${fragment.publication || '- '})`)
   expect(container).toHaveTextContent(fragment.publication)
 })
 
@@ -53,8 +54,10 @@ xit('Renders notes field', () => {
   expect(screen.getByLabelText('Notes')).toEqual(fragment.notes)
 })
 
-it('Calls updateEdition on save', () => {
+it('Calls updateEdition on save', async () => {
   setup()
+  updateEdition.mockReturnValueOnce(new Promise(() => undefined))
+  await screen.findByText(`(Publication: ${fragment.publication || '- '})`)
   submitFormByTestId(screen, 'transliteration-form')
   expect(updateEdition).toHaveBeenCalled()
 })

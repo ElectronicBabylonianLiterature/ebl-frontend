@@ -2,7 +2,7 @@ import { produce, castDraft, Draft } from 'immer'
 import _ from 'lodash'
 import React from 'react'
 import { Button, Card, Col, Form, ListGroup, Row } from 'react-bootstrap'
-import ListForm from 'common/List'
+import ListForm from 'common/ui/List'
 import { createDefaultLineFactory } from 'corpus/application/line-factory'
 import {
   createVariant,

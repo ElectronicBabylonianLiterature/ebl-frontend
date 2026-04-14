@@ -10,13 +10,13 @@ import {
   PeriodModifiers,
   periodModifiers,
   Periods,
-} from 'common/period'
+} from 'common/utils/period'
 import { Button, Overlay, Popover } from 'react-bootstrap'
 import Bluebird from 'bluebird'
-import usePromiseEffect from 'common/usePromiseEffect'
-import Spinner from 'common/Spinner'
+import usePromiseEffect from 'common/hooks/usePromiseEffect'
+import Spinner from 'common/ui/Spinner'
 import { MetaEditButton } from 'fragmentarium/ui/info/MetaEditButton'
-import ExternalLink from 'common/ExternalLink'
+import ExternalLink from 'common/ui/ExternalLink'
 
 type Props = {
   fragment: Fragment

@@ -1,7 +1,7 @@
 import React from 'react'
 import { Dropdown, DropdownButton, DropdownButtonProps } from 'react-bootstrap'
 import { ChapterListing, Text } from 'corpus/domain/text'
-import { stageToAbbreviation } from 'common/period'
+import { stageToAbbreviation } from 'common/utils/period'
 
 function GotoItem({
   text,

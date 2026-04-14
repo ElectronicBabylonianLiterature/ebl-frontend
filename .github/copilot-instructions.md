@@ -18,6 +18,7 @@ Provide project context and coding guidelines that AI should follow when generat
 ## Coding Standards
 
 - Follow the existing coding style and conventions used in the project.
+- Always use full import paths (for example `common/useObjectUrl`) instead of local relative paths like `./useObjectUrl` whenever module aliases are available.
 - Always use full variable and function names for clarity.
 - Ensure that all functions and methods in TypeScript have appropriate type annotations. Avoid using `any` or `unknown` unless very necessary.
 - Functions should be small and focused on a single task.
@@ -27,12 +28,24 @@ Provide project context and coding guidelines that AI should follow when generat
 ## Commands and Tooling
 
 - When running shell commands for project tasks, always use `yarn` instead of `npm`.
+- After any code change, always run `yarn lint` before finalizing work.
+- Treat lint as a hard gate: do not stop after changes until `yarn lint` reports no lint errors.
+- After any code change, always run `yarn tsc` before finalizing work.
+- Treat TypeScript compilation as a hard gate: do not stop after changes until `yarn tsc` reports no errors.
+
+## File Restore Rules
+
+- When asked to restore a file to its previous state, always restore it from the `master` branch reference.
+- After restoring, always verify the file exactly matches `master` (for example via a direct git diff check) and report the confirmation.
 
 ## Testing and Quality
 
 - Add / update tests for any new functionality or significant changes.
 - When writing tests, ensure they are isolated and do not depend on external state (Jest + React Testing Library conventions).
 - Ensure that coverage is 100% after changes in affected code.
+- Tests must run without any console errors, warnings, or other noise. Any `console.error`, `console.warn`, or unhandled-rejection output is a defect that must be fixed at its root cause.
+- Suppressing console output (e.g. mocking `console.error`/`console.warn` to silence warnings or similar) is **never** an acceptable solution. Fix the source of the warning instead.
+- Treat console-clean runs as a hard gate: do not stop after changes until a full test run produces zero console output.
 - Never remove, disable, skip, or comment out existing tests without explicit user confirmation.
 - Only propose removing a test when the underlying code path was removed or changed such that the assertion is no longer meaningful.
 - If test removal is proposed, provide detailed justification first and wait for explicit user approval before making that change.
@@ -49,6 +62,7 @@ Provide project context and coding guidelines that AI should follow when generat
 
 - Keep review comments short, specific, and actionable.
 - Prioritize correctness, regressions, security, and test coverage in every review.
+- All instances of console errors, warnings, or unhandled rejections found in the test output must be noted as findings in the review. They are never acceptable noise — every such instance must be fixed at its root cause. Resolving every such finding is a hard gate: a PR may not be approved while any console-noise finding remains.
 - Verify changed behavior locally while running the modified application before finalizing review conclusions.
 - Export every detailed review to a `.md` file using the same convention: `TASK-<id>-review.md`.
 - Use a consistent review template with these sections: `Summary`, `Findings`, `Severity`, `Reproduction Steps`, and `Recommendation`.

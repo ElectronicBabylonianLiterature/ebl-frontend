@@ -12,7 +12,8 @@ module.exports = {
 
       if (isFastDev && Array.isArray(webpackConfig.plugins)) {
         webpackConfig.plugins = webpackConfig.plugins.filter(
-          (plugin) => plugin?.constructor?.name !== 'ForkTsCheckerWebpackPlugin',
+          (plugin) =>
+            plugin?.constructor?.name !== 'ForkTsCheckerWebpackPlugin',
         )
       }
 

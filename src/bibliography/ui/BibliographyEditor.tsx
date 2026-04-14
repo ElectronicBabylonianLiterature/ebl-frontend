@@ -1,11 +1,11 @@
 import React from 'react'
-import AppContent from 'common/AppContent'
+import AppContent from 'common/ui/AppContent'
 import withData, { WithoutData } from 'http/withData'
 import BibliographyEntryFormController from 'bibliography/ui/BibliographyEntryFormController'
 import BibliographyEntry, {
   template,
 } from 'bibliography/domain/BibliographyEntry'
-import { Crumb, SectionCrumb, TextCrumb } from 'common/Breadcrumbs'
+import { Crumb, SectionCrumb, TextCrumb } from 'common/ui/Breadcrumbs'
 import Promise from 'bluebird'
 import { Button } from 'react-bootstrap'
 import { useNavigate } from 'react-router-dom'

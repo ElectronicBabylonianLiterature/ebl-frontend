@@ -1,7 +1,6 @@
 import React from 'react'
 import { render, screen, waitFor } from '@testing-library/react'
 import '@testing-library/jest-dom'
-import selectEvent from 'react-select-event'
 import userEvent from '@testing-library/user-event'
 import {
   DateOptionsInput,
@@ -13,7 +12,7 @@ import { Ur3Calendar } from 'chronology/domain/DateBase'
 import { EponymField } from 'chronology/ui/DateEditor/Eponyms'
 
 describe('Date options input', () => {
-  it('Renders and handels the date type radios', () => {
+  it('Renders and handels the date type radios', async () => {
     const setIsSeleucidEra = jest.fn()
     const setIsAssyrianDate = jest.fn()
     render(
@@ -39,14 +38,14 @@ describe('Date options input', () => {
     const assyrianRadioElem = screen.getByLabelText('Assyrian')
     expect(seleucidRadioElem).toBeInTheDocument()
     expect(assyrianRadioElem).toBeInTheDocument()
-    seleucidRadioElem.click()
+    await userEvent.click(seleucidRadioElem)
     expect(setIsSeleucidEra).toHaveBeenCalledWith(true)
-    assyrianRadioElem.click()
+    await userEvent.click(assyrianRadioElem)
     expect(setIsAssyrianDate).toHaveBeenCalledWith(true)
   })
 })
 
-it('Renders and handels the Assyrian phase radios', () => {
+it('Renders and handels the Assyrian phase radios', async () => {
   const setAssyrianPhase = jest.fn()
   const assyrianPhase = 'NA'
   render(
@@ -63,9 +62,9 @@ it('Renders and handels the Assyrian phase radios', () => {
   expect(middleAssyrianRadioElem).toBeInTheDocument()
   expect(oldAssyrianRadioElem).toBeInTheDocument()
 
-  middleAssyrianRadioElem.click()
+  await userEvent.click(middleAssyrianRadioElem)
   expect(setAssyrianPhase).toHaveBeenCalledWith('MA')
-  oldAssyrianRadioElem.click()
+  await userEvent.click(oldAssyrianRadioElem)
   expect(setAssyrianPhase).toHaveBeenCalledWith('OA')
 })
 
@@ -99,7 +98,12 @@ describe('Ur3 Calendar Field', () => {
     expect(option).toBeInTheDocument()
 
     await userEvent.type(screen.getByLabelText('select-calendar'), 'Umma')
-    await selectEvent.select(screen.getByLabelText('select-calendar'), 'Umma')
+    const ummaOption = await screen.findByText(
+      (text, element) =>
+        text === 'Umma' &&
+        (element?.getAttribute('class') ?? '').includes('option'),
+    )
+    await userEvent.click(ummaOption)
     await waitFor(() => expect(setUr3Calendar).toHaveBeenCalledWith('Umma'))
   })
 })
@@ -187,7 +191,7 @@ describe('Date Input Groups', () => {
 })
 
 describe('Date options input with Eponyms', () => {
-  it('Renders and handles the Eponym selection', () => {
+  it('Renders and handles the Eponym selection', async () => {
     render(
       <DateOptionsInput
         king={undefined}
@@ -207,7 +211,7 @@ describe('Date options input with Eponyms', () => {
         setEponymUncertain={jest.fn()}
       />,
     )
-    const eponymSelectElem = screen.getByLabelText('select-eponym')
+    const eponymSelectElem = await screen.findByLabelText('select-eponym')
     expect(eponymSelectElem).toBeInTheDocument()
   })
 })
@@ -220,7 +224,13 @@ describe('EponymField Component', () => {
     expect(eponymSelectElem).toBeInTheDocument()
 
     await userEvent.type(eponymSelectElem, 'Adad-nērārī (II) (910)')
-    await selectEvent.select(eponymSelectElem, 'Adad-nērārī (II) (910)')
+
+    const eponymOption = await screen.findByText(
+      (text, element) =>
+        text === 'Adad-nērārī (II) (910)' &&
+        (element?.getAttribute('class') ?? '').includes('option'),
+    )
+    await userEvent.click(eponymOption)
     await waitFor(() =>
       expect(setEponym).toHaveBeenCalledWith({
         date: '910',

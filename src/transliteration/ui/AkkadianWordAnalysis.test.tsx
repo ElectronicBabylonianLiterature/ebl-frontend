@@ -1,6 +1,7 @@
 import React from 'react'
 import { render, screen } from '@testing-library/react'
 import AkkadianWordAnalysis from 'akkadian/ui/akkadianWordAnalysis'
+import * as phoneticSegments from 'akkadian/application/phonetics/segments'
 import { AkkadianWord } from 'transliteration/domain/token'
 
 const heavyWeight = '\uF700'
@@ -34,6 +35,10 @@ const word: AkkadianWord = {
 }
 
 describe('AkkadianWordAnalysis', () => {
+  afterEach(() => {
+    jest.restoreAllMocks()
+  })
+
   it('displays meter', () => {
     render(<AkkadianWordAnalysis word={word} showMeter={true} showIpa={true} />)
     expect(
@@ -43,5 +48,20 @@ describe('AkkadianWordAnalysis', () => {
   it('displays IPA', () => {
     render(<AkkadianWordAnalysis word={word} showMeter={true} showIpa={true} />)
     expect(screen.getByText('ˈan.ʃar')).toBeInTheDocument()
+  })
+
+  it('renders empty output when phonetic conversion fails', () => {
+    jest
+      .spyOn(phoneticSegments, 'tokenToPhoneticSegments')
+      .mockImplementation(() => {
+        throw new Error('boom')
+      })
+
+    render(<AkkadianWordAnalysis word={word} showMeter={true} showIpa={true} />)
+
+    expect(screen.queryByText('ˈan.ʃar')).not.toBeInTheDocument()
+    expect(
+      screen.queryByText(`${stressedHeavyWeight} ${heavyWeight}`),
+    ).not.toBeInTheDocument()
   })
 })

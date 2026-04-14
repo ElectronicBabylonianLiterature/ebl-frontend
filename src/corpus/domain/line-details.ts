@@ -2,8 +2,8 @@ import { immerable } from 'immer'
 import { LineNumber, LineNumberRange } from 'transliteration/domain/line-number'
 import { EmptyLine } from 'transliteration/domain/line'
 import { TextLine } from 'transliteration/domain/text-line'
-import { Provenance } from './provenance'
-import { Period, PeriodModifier } from 'common/period'
+import { Provenance } from 'corpus/domain/provenance'
+import { Period, PeriodModifier } from 'common/utils/period'
 import {
   compareManuscripts,
   ManuscriptType,

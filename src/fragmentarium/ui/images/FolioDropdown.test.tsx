@@ -1,5 +1,6 @@
 import React from 'react'
 import { render, screen, fireEvent } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import FolioDropdown from './FolioDropdown'
 import Folio from 'fragmentarium/domain/Folio'
 import { TabController } from 'fragmentarium/ui/images/Images'
@@ -28,15 +29,15 @@ describe('FolioDropdown', () => {
 
   it('renders dropdown items for each folio', async () => {
     setup()
-    fireEvent.click(screen.getByText('Folios'))
+    await userEvent.click(screen.getByText('Folios'))
 
     expect(screen.getByText('Smith Folio 1')).toBeInTheDocument()
     expect(screen.getByText('Reiner Folio 2')).toBeInTheDocument()
   })
 
-  it('calls controller.openTab when a dropdown item is clicked', () => {
+  it('calls controller.openTab when a dropdown item is clicked', async () => {
     setup()
-    fireEvent.click(screen.getByText('Folios'))
+    await userEvent.click(screen.getByText('Folios'))
 
     fireEvent.click(screen.getByText('Smith Folio 1'))
 

@@ -7,7 +7,7 @@ import {
   ManuscriptType,
   ManuscriptTypes,
 } from 'corpus/domain/manuscript'
-import { PeriodModifiers, Periods } from 'common/period'
+import { PeriodModifiers, Periods } from 'common/utils/period'
 import { Provenance, Provenances } from 'corpus/domain/provenance'
 import {
   cslDataFactory,
