@@ -317,13 +317,10 @@ describe('methods returning fragment', () => {
   })
 
   describe('find', () => {
-    beforeEach(async () => {
+    test('returns fragment and calls repository', async () => {
       fragmentRepository.find.mockReturnValue(Promise.resolve(fragment))
       result = await fragmentService.find(number)
-    })
-
-    test('Returns fragment', () => expect(result).toEqual(fragment))
-    test('Finds correct fragment', () => {
+      expect(result).toEqual(fragment)
       expect(fragmentRepository.find).toHaveBeenCalledWith(
         number,
         undefined,
@@ -340,6 +337,87 @@ describe('methods returning fragment', () => {
       expect(fragmentRepository.find('X.1')).rejects.toThrowError(
         "You don't have permissions to view this fragment.",
       )
+    })
+  })
+
+  describe('find caching', () => {
+    let service: FragmentService
+
+    beforeEach(() => {
+      service = new FragmentService(
+        fragmentRepository,
+        imageRepository,
+        wordRepository,
+        bibliographyService,
+      )
+      fragmentRepository.find.mockReturnValue(Promise.resolve(fragment))
+    })
+
+    test('returns cached fragment on second call with same args', async () => {
+      await service.find(number, [1, 2], false)
+      await service.find(number, [1, 2], false)
+      expect(fragmentRepository.find).toHaveBeenCalledTimes(1)
+    })
+
+    test('fetches separately for different lines', async () => {
+      await service.find(number, [1])
+      await service.find(number, [2])
+      expect(fragmentRepository.find).toHaveBeenCalledTimes(2)
+    })
+
+    test('deduplicates concurrent requests for the same key', async () => {
+      const first = service.find(number)
+      const second = service.find(number)
+      const [r1, r2] = await Promise.all([first, second])
+      expect(r1).toEqual(r2)
+      expect(fragmentRepository.find).toHaveBeenCalledTimes(1)
+    })
+
+    test('clears cache on error and allows retry', async () => {
+      fragmentRepository.find.mockReturnValueOnce(
+        Promise.reject(new Error('403 Forbidden')),
+      )
+      await expect(service.find(number)).rejects.toThrow()
+
+      fragmentRepository.find.mockReturnValueOnce(Promise.resolve(fragment))
+      await expect(service.find(number)).resolves.toEqual(fragment)
+      expect(fragmentRepository.find).toHaveBeenCalledTimes(2)
+    })
+
+    test('evicts oldest entry when cache exceeds max size', async () => {
+      for (let i = 0; i < 101; i++) {
+        fragmentRepository.find.mockReturnValueOnce(Promise.resolve(fragment))
+        await service.find(`X.${i}`)
+      }
+
+      fragmentRepository.find.mockReturnValueOnce(Promise.resolve(fragment))
+      await service.find('X.0')
+      const callsForX0 = (
+        fragmentRepository.find as jest.Mock
+      ).mock.calls.filter((args: string[]) => args[0] === 'X.0')
+      expect(callsForX0).toHaveLength(2)
+    })
+
+    test('invalidates cache on updateGenres', async () => {
+      await service.find(number)
+      fragmentRepository.updateGenres.mockReturnValue(Promise.resolve(fragment))
+      await service.updateGenres(number, genres)
+      await service.find(number)
+      expect(fragmentRepository.find).toHaveBeenCalledTimes(2)
+    })
+
+    test('invalidates cache on updateEdition', async () => {
+      await service.find(number)
+      fragmentRepository.updateEdition.mockReturnValue(
+        Promise.resolve(fragment),
+      )
+      await service.updateEdition(number, {
+        transliteration: '1. kur',
+        notes: 'notes',
+        introduction: 'intro',
+      })
+      await service.find(number)
+      expect(fragmentRepository.find).toHaveBeenCalledTimes(2)
     })
   })
 

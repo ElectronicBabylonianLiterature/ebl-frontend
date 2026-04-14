@@ -172,6 +172,9 @@ export class FragmentService {
   >()
   private cachedGenres: string[][] | null = null
   private cachedGenresRequest: Bluebird<string[][]> | null = null
+  private readonly fragmentCacheMaxSize = 100
+  private readonly fragmentCache = new Map<string, Fragment>()
+  private readonly fragmentCacheInFlight = new Map<string, Bluebird<Fragment>>()
 
   constructor(
     private readonly fragmentRepository: FragmentRepository &
@@ -195,15 +198,69 @@ export class FragmentService {
     return this.fragmentRepository.lineToVecRanking(number)
   }
 
+  private fragmentCacheKey(
+    number: string,
+    lines?: readonly number[],
+    excludeLines?: boolean,
+  ): string {
+    return `${number}|${lines?.join(',') ?? ''}|${excludeLines ?? ''}`
+  }
+
+  private evictFragmentCacheByNumber(number: string): void {
+    for (const key of this.fragmentCache.keys()) {
+      if (key.startsWith(`${number}|`)) {
+        this.fragmentCache.delete(key)
+      }
+    }
+    for (const key of this.fragmentCacheInFlight.keys()) {
+      if (key.startsWith(`${number}|`)) {
+        this.fragmentCacheInFlight.delete(key)
+      }
+    }
+  }
+
   find(
     number: string,
     lines?: readonly number[],
     excludeLines?: boolean,
   ): Bluebird<Fragment> {
-    return this.fragmentRepository
+    const key = this.fragmentCacheKey(number, lines, excludeLines)
+
+    const cached = this.fragmentCache.get(key)
+    if (cached) {
+      this.fragmentCache.delete(key)
+      this.fragmentCache.set(key, cached)
+      return Bluebird.resolve(cached)
+    }
+
+    const inFlight = this.fragmentCacheInFlight.get(key)
+    if (inFlight) {
+      return inFlight
+    }
+
+    const request = this.fragmentRepository
       .find(number, lines, excludeLines)
       .then((fragment: Fragment) => this.injectReferences(fragment))
-      .catch(onError)
+      .then((fragment: Fragment) => {
+        if (this.fragmentCache.size >= this.fragmentCacheMaxSize) {
+          const oldest = this.fragmentCache.keys().next().value
+          if (oldest !== undefined) {
+            this.fragmentCache.delete(oldest)
+          }
+        }
+        this.fragmentCache.set(key, fragment)
+        return fragment
+      })
+      .catch((error) => {
+        this.fragmentCache.delete(key)
+        return onError(error)
+      })
+      .finally(() => {
+        this.fragmentCacheInFlight.delete(key)
+      }) as Bluebird<Fragment>
+
+    this.fragmentCacheInFlight.set(key, request)
+    return request
   }
 
   isInFragmentarium(number: string): boolean {
@@ -216,23 +273,27 @@ export class FragmentService {
   }
 
   updateGenres(number: string, genres: Genres): Bluebird<Fragment> {
+    this.evictFragmentCacheByNumber(number)
     return this.fragmentRepository
       .updateGenres(number, genres)
       .then((fragment: Fragment) => this.injectReferences(fragment))
   }
 
   updateScript(number: string, script: Script): Bluebird<Fragment> {
+    this.evictFragmentCacheByNumber(number)
     return this.fragmentRepository
       .updateScript(number, script)
       .then((fragment: Fragment) => this.injectReferences(fragment))
   }
   updateScopes(number: string, scopes: string[]): Bluebird<Fragment> {
+    this.evictFragmentCacheByNumber(number)
     return this.fragmentRepository
       .updateScopes(number, scopes)
       .then((fragment: Fragment) => this.injectReferences(fragment))
   }
 
   updateDate(number: string, date: MesopotamianDateDto): Bluebird<Fragment> {
+    this.evictFragmentCacheByNumber(number)
     return this.fragmentRepository
       .updateDate(number, date)
       .then((fragment: Fragment) => this.injectReferences(fragment))
@@ -242,6 +303,7 @@ export class FragmentService {
     number: string,
     datesInText: MesopotamianDateDto[],
   ): Bluebird<Fragment> {
+    this.evictFragmentCacheByNumber(number)
     return this.fragmentRepository
       .updateDatesInText(number, datesInText)
       .then((fragment: Fragment) => this.injectReferences(fragment))
@@ -374,6 +436,7 @@ export class FragmentService {
   }
 
   updateEdition(number: string, updates: EditionFields): Bluebird<Fragment> {
+    this.evictFragmentCacheByNumber(number)
     return this.fragmentRepository
       .updateEdition(number, updates)
       .then((fragment: Fragment) => this.injectReferences(fragment))
@@ -383,6 +446,7 @@ export class FragmentService {
     number: string,
     lemmatization: LemmatizationDto,
   ): Bluebird<Fragment> {
+    this.evictFragmentCacheByNumber(number)
     return this.fragmentRepository
       .updateLemmatization(number, lemmatization)
       .then((fragment: Fragment) => this.injectReferences(fragment))
@@ -392,6 +456,7 @@ export class FragmentService {
     number: string,
     annotations: LineLemmaAnnotations,
   ): Bluebird<Fragment> {
+    this.evictFragmentCacheByNumber(number)
     return this.fragmentRepository
       .updateLemmaAnnotation(number, annotations)
       .then((fragment: Fragment) => this.injectReferences(fragment))
@@ -401,6 +466,7 @@ export class FragmentService {
     number: string,
     references: ReadonlyArray<Reference>,
   ): Bluebird<Fragment> {
+    this.evictFragmentCacheByNumber(number)
     return this.fragmentRepository
       .updateReferences(number, references)
       .then((fragment: Fragment) => this.injectReferences(fragment))
@@ -410,12 +476,14 @@ export class FragmentService {
     number: string,
     archaeology: ArchaeologyDto,
   ): Bluebird<Fragment> {
+    this.evictFragmentCacheByNumber(number)
     return this.fragmentRepository
       .updateArchaeology(number, archaeology)
       .then((fragment: Fragment) => this.injectReferences(fragment))
   }
 
   updateColophon(number: string, colophon: Colophon): Bluebird<Fragment> {
+    this.evictFragmentCacheByNumber(number)
     return this.fragmentRepository
       .updateColophon(number, colophon)
       .then((fragment: Fragment) => this.injectReferences(fragment))
@@ -555,6 +623,7 @@ export class FragmentService {
     number: string,
     annotations: readonly ApiEntityAnnotationSpan[],
   ): Bluebird<Fragment> {
+    this.evictFragmentCacheByNumber(number)
     return this.fragmentRepository
       .updateNamedEntityAnnotations(number, annotations)
       .then((fragment: Fragment) => this.injectReferences(fragment))

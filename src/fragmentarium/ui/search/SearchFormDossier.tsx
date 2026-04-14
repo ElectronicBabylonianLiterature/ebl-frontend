@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { Form, Row, Col } from 'react-bootstrap'
 import AsyncSelect from 'react-select/async'
 import { usePrevious } from 'common/usePrevious'
@@ -69,6 +69,12 @@ export default function SearchFormDossier({
   const prevValue = usePrevious(value)
   const filtersJson = JSON.stringify(filters)
 
+  const searchSuggestionsRef = useRef(searchSuggestions)
+  searchSuggestionsRef.current = searchSuggestions
+
+  const filtersRef = useRef(filters)
+  filtersRef.current = filters
+
   useEffect(() => {
     if (value !== prevValue) {
       setSelectedOption(value ? { value, label: value } : null)
@@ -76,13 +82,12 @@ export default function SearchFormDossier({
   }, [value, prevValue])
 
   useEffect(() => {
-    const result = searchSuggestions('', filters)
+    const result = searchSuggestionsRef.current('', filtersRef.current)
     if (result && typeof result.then === 'function') {
       result
         .then((entries) => setDefaultOptions(toOptions(entries)))
         .catch(() => setDefaultOptions([]))
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filtersJson])
 
   const loadOptions = (
