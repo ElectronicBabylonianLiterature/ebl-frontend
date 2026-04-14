@@ -104,3 +104,86 @@ The hardcoded map was **removed** in this session.
 - Re-ran quality gates:
   - `yarn lint` passed.
   - `yarn tsc` passed.
+
+## 2026-04-14 (Workflow/stylelint/boolean-logic findings follow-up)
+
+- Investigated reported findings:
+  - `zizmor:zizmor/excessive-permissions` in `.github/workflows/main.yml`
+  - `stylelint:CssSyntaxError` in `src/common/ui/AppContent.sass`
+  - `qlty:boolean-logic` in `src/common/utils/HtmlToWord.tsx`
+- Applied workflow hardening by adding minimal top-level permissions:
+  - `permissions: { contents: read }`
+- Resolved style parser finding by migrating AppContent stylesheet from indented Sass to SCSS:
+  - Updated import in `src/common/ui/AppContent.tsx` to `./AppContent.scss`
+  - Added `src/common/ui/AppContent.scss`
+  - Removed `src/common/ui/AppContent.sass`
+- Refactored `getTransliterationText(...)` in `src/common/utils/HtmlToWord.tsx` to named predicates and reduced boolean complexity while preserving behavior.
+
+## 2026-04-14 (Correction: prefer .sass + parser config)
+
+- Reverted prior `.sass` -> `.scss` workaround for `AppContent` because project convention uses `.sass`.
+- Restored `src/common/ui/AppContent.sass` and updated `src/common/ui/AppContent.tsx` import back to `.sass`.
+- Added stylelint override in `.stylelintrc.json` to parse indented Sass via `postcss-sass` for `**/*.sass`.
+- Installed `postcss-sass` as a dev dependency so parser behavior is explicit and portable across CI/local tooling.
+- Kept local `lint` script on the project's existing stable scope (`src/**/*.css`) after observing stylelint runtime errors when expanding local lint to all `.sass` files under current rule set.
+- While validating the Sass path, detected and fixed accidental duplication/corruption in `src/common/ui/AppContent.sass` (`top: 0.main` sequence).
+- Normalized `AppContent.sass` declarations to satisfy stylelint for that file (quoted URL value, short hex color, compact padding shorthand).
+- Confirmed direct lint of `src/common/ui/AppContent.sass` now passes.
+- Enabled `.sass` linting in project gate by updating `package.json` lint script to `stylelint 'src/**/*.{css,sass}'`.
+- Investigated parser crashes in:
+  - `src/fragmentarium/ui/search/FragmentariumSearchResult.sass`
+  - `src/fragmentarium/ui/text-annotation/TextAnnotation.sass`
+- Root cause: stylelint selector-parser interactions with the standard selector rule set on indented Sass syntax (`postcss-sass`) for these files.
+- Fixed by removing file-level ignores and adding Sass-specific rule overrides that disable selector-parser-sensitive rules while preserving Sass lint execution as a gate.
+- Confirmed no parser crashes remain:
+  - `yarn stylelint 'src/**/*.{css,sass}'` passed.
+- Confirmed full gates pass with Sass lint included:
+  - `yarn lint` passed
+  - `yarn tsc` passed
+
+## 2026-04-14 (Sass semantic audit)
+
+- Audited all modified `.sass` files via full git diff.
+- Found unintended semantic drift introduced during earlier bulk stylelint fix attempts (e.g., removed mixin imports/usages, altered selectors/value forms).
+- Reverted all `.sass` file changes to eliminate semantic drift; verified no staged or unstaged `.sass` diffs remain.
+- Kept Sass lint as a gate and adjusted Sass-specific stylelint override rules for stylistic-only checks, avoiding forced non-semantic rewrites.
+- Revalidated successfully:
+  - `yarn stylelint 'src/**/*.{css,sass}'`
+  - `yarn lint`
+  - `yarn tsc`
+
+## 2026-04-14 (Sass lint tightening)
+
+- Tightened Sass lint override in `.stylelintrc.json` by explicitly enforcing baseline correctness rules for `**/*.sass`:
+  - `no-empty-source`
+  - `block-no-empty`
+  - `comment-no-empty`
+  - `color-no-invalid-hex`
+  - `declaration-block-no-shorthand-property-overrides`
+  - `declaration-block-no-duplicate-custom-properties`
+  - `unit-no-unknown`
+  - `property-no-unknown`
+- Kept parser-stability and legacy-style compatibility null-overrides to avoid stylelint crashes and avoid forcing broad non-semantic rewrites.
+- Validation after tightening:
+  - `yarn stylelint 'src/**/*.{css,sass}'` passed
+  - `yarn lint` passed
+  - `yarn tsc` passed
+
+## 2026-04-14 (Additional Sass rule tightening - auto-fix friendly)
+
+- Further tightened Sass override by re-enabling auto-fix-friendly baseline style rules inherited from `stylelint-config-standard` (kept parser/manual-refactor-sensitive rules disabled).
+- Verified lint gate behavior on all Sass files with non-destructive run:
+  - `yarn stylelint 'src/**/*.{css,sass}' --formatter verbose` passed, `.sass` files actively checked.
+- Noted toolchain caveat: running `stylelint --fix` on all Sass files can incorrectly empty two files in this environment (`src/_fonts.sass`, `src/fragmentarium/ui/text-annotation/NamedEntities.sass`), so global Sass autofix is avoided; linting remains enforced and crash-free.
+- Revalidated full gates:
+  - `yarn lint` passed
+  - `yarn tsc` passed
+
+## 2026-04-14 (User-requested full Sass rollback)
+
+- Reverted all `.sass` file modifications (staged and unstaged) to preserve existing Sass semantics.
+- Verified no `.sass` files remain modified.
+- Since reverted legacy Sass patterns conflict with some stricter Sass style rules, updated only `.stylelintrc.json` Sass override to relax those style-only rules while keeping `.sass` linting in gate.
+- Revalidated:
+  - `yarn lint` passed
+  - `yarn tsc` passed

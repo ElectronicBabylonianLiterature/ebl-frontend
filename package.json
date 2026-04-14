@@ -29,7 +29,7 @@
     "test:diag": "CI=true NODE_OPTIONS=--max_old_space_size=1536 craco test --runInBand --coverage --forceExit --detectOpenHandles --watch=false --logHeapUsage",
     "eject": "react-scripts eject",
     "lighthouse": "node scripts/lighthouse.js",
-    "lint": "eslint 'src/**/*.{ts,tsx}' && stylelint 'src/**/*.css'",
+    "lint": "eslint 'src/**/*.{ts,tsx}' && stylelint 'src/**/*.{css,sass}'",
     "prepare": "husky install",
     "postinstall": "patch-package"
   },
@@ -153,6 +153,7 @@
     "jest-fetch-mock": "^3.0.1",
     "lighthouse": "^11.0.0",
     "lint-staged": "^15.2.0",
+    "postcss-sass": "^0.5.0",
     "react-select-event": "^5.0.0",
     "stylelint": "^14.16.0",
     "stylelint-config-prettier": "^9.0.5"

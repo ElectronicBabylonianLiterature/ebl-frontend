@@ -1,5 +1,57 @@
 {
   "extends": ["stylelint-config-standard", "stylelint-config-prettier"],
+  "overrides": [
+    {
+      "files": ["**/*.sass"],
+      "customSyntax": "postcss-sass",
+      "rules": {
+        "no-empty-source": true,
+        "block-no-empty": true,
+        "comment-no-empty": true,
+        "color-no-invalid-hex": true,
+        "declaration-block-no-shorthand-property-overrides": true,
+        "declaration-block-no-duplicate-custom-properties": true,
+        "unit-no-unknown": true,
+        "property-no-unknown": true,
+        "declaration-block-no-redundant-longhand-properties": null,
+        "length-zero-no-unit": null,
+        "color-function-notation": null,
+        "alpha-value-notation": null,
+        "function-name-case": null,
+        "font-family-name-quotes": null,
+        "value-keyword-case": null,
+        "color-hex-length": null,
+        "shorthand-property-no-redundant-values": null,
+        "no-descending-specificity": null,
+        "no-duplicate-selectors": null,
+        "rule-empty-line-before": null,
+        "declaration-empty-line-before": null,
+        "function-no-unknown": null,
+        "selector-pseudo-class-no-unknown": null,
+        "keyframe-selector-notation": null,
+        "selector-attribute-brackets-space-inside": null,
+        "selector-attribute-operator-space-after": null,
+        "selector-attribute-operator-space-before": null,
+        "selector-attribute-quotes": null,
+        "selector-combinator-space-after": null,
+        "selector-combinator-space-before": null,
+        "selector-descendant-combinator-no-non-space": null,
+        "selector-id-pattern": null,
+        "selector-list-comma-newline-after": null,
+        "selector-list-comma-space-before": null,
+        "selector-max-empty-lines": null,
+        "selector-no-vendor-prefix": null,
+        "selector-not-notation": null,
+        "selector-pseudo-class-case": null,
+        "selector-pseudo-class-parentheses-space-inside": null,
+        "selector-pseudo-element-case": null,
+        "selector-pseudo-element-colon-notation": null,
+        "selector-type-case": null,
+        "selector-type-no-unknown": null,
+        "property-no-vendor-prefix": null
+      }
+    }
+  ],
   "rules": {
     "selector-class-pattern": null
   }

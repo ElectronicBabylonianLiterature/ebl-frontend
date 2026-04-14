@@ -45,3 +45,62 @@
 - [x] Resolve conflict in `src/index.tsx` preserving valid imports and `InjectedApp` integration.
 - [x] Re-validate with `yarn lint`.
 - [x] Re-validate with `yarn tsc`.
+
+## Follow-up: workflow/stylelint/boolean-logic findings
+
+- [x] Restrict GitHub Actions workflow permissions in `.github/workflows/main.yml`.
+- [x] Resolve `stylelint:CssSyntaxError` finding for `src/common/ui/AppContent.sass`.
+- [x] Simplify complex boolean expression in `src/common/utils/HtmlToWord.tsx`.
+- [x] Re-validate with `yarn lint`.
+- [x] Re-validate with `yarn tsc`.
+
+## Correction: keep .sass convention
+
+- [x] Revert temporary `.scss` workaround and restore `AppContent.sass`.
+- [x] Configure stylelint with `postcss-sass` for `**/*.sass`.
+- [x] Evaluate `.sass` lint-glob expansion and retain current stable lint scope.
+- [x] Add explicit `postcss-sass` dev dependency.
+- [x] Repair accidental `AppContent.sass` corruption and revalidate file-level Sass lint.
+- [x] Re-validate with `yarn lint`.
+- [x] Re-validate with `yarn tsc`.
+
+## Follow-up: make Sass lint a gate
+
+- [x] Include `.sass` in `yarn lint` stylelint glob.
+- [x] Stabilize stylelint Sass parsing with targeted parser configuration.
+- [x] Remove temporary ignore entries by fixing parser-crash configuration.
+- [x] Re-validate with `yarn lint`.
+- [x] Re-validate with `yarn tsc`.
+
+## Follow-up: audit Sass semantic changes
+
+- [x] Audit all modified `.sass` files for semantic drift.
+- [x] Revert unintended semantic changes in `.sass` files.
+- [x] Verify no `.sass` diffs remain in working tree/index.
+- [x] Re-validate with `yarn stylelint 'src/**/*.{css,sass}'`.
+- [x] Re-validate with `yarn lint`.
+- [x] Re-validate with `yarn tsc`.
+
+## Follow-up: tighten Sass lint baseline
+
+- [x] Enforce baseline Sass correctness rules (`no-empty-source`, `block-no-empty`, `comment-no-empty`, `color-no-invalid-hex`, `declaration-block-no-shorthand-property-overrides`, `declaration-block-no-duplicate-custom-properties`, `unit-no-unknown`, `property-no-unknown`).
+- [x] Keep parser-stability overrides for known selector-parser edge cases.
+- [x] Re-validate with `yarn stylelint 'src/**/*.{css,sass}'`.
+- [x] Re-validate with `yarn lint`.
+- [x] Re-validate with `yarn tsc`.
+
+## Follow-up: add more auto-fix-friendly Sass rules
+
+- [x] Re-enable additional auto-fix-friendly Sass rules where safe.
+- [x] Keep parser-sensitive/manual-refactor-heavy Sass rules disabled.
+- [x] Validate that `.sass` files are actively linted (verbose stylelint run).
+- [x] Re-validate with `yarn lint`.
+- [x] Re-validate with `yarn tsc`.
+
+## Follow-up: revert all Sass changes
+
+- [x] Revert all `.sass` file changes (index + working tree).
+- [x] Verify no `.sass` files remain modified.
+- [x] Align Sass lint override with reverted legacy Sass patterns.
+- [x] Re-validate with `yarn lint`.
+- [x] Re-validate with `yarn tsc`.

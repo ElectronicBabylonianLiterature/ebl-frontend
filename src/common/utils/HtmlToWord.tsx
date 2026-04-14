@@ -126,13 +126,15 @@ function getCredit(records: JQuery) {
 }
 
 export function getTransliterationText(el: JQuery, runs: TextRun[]): void {
-  if (
-    (el.children().length === 0 &&
-      el.text().trim().length &&
-      el.parent().css('display') !== 'none' &&
-      el.parent().parent().css('display') !== 'none') ||
-    el.hasClass('Transliteration__wordSeparator')
-  ) {
+  const hasNoChildren = el.children().length === 0
+  const hasText = el.text().trim().length > 0
+  const parentVisible = el.parent().css('display') !== 'none'
+  const grandParentVisible = el.parent().parent().css('display') !== 'none'
+  const isVisibleTextLeaf =
+    hasNoChildren && hasText && parentVisible && grandParentVisible
+  const isWordSeparator = el.hasClass('Transliteration__wordSeparator')
+
+  if (isVisibleTextLeaf || isWordSeparator) {
     runs.push(getTextRun($(el)))
   }
 }
