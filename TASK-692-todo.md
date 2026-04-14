@@ -23,3 +23,10 @@
 - [ ] **Provenance initialization:** Refactor test setup to seed complete provenance data in `provenance.test.ts` instead of relying on partial/global state
 - [ ] **Test flakes under concurrent load:** Some tests (e.g., `TextAnnotation`) use flaky async patterns that fail under parallel execution; consider `--runInBand` for full suite or restructure async waits
 - [ ] **Process termination under worker parallelism:** `--maxWorkers=50%` still occasionally hits early-exit; may require environment/container resource changes beyond code
+
+## Follow-up: index.tsx TypeScript diagnostics
+
+- [x] Reproduce TypeScript diagnostics in `src/index.tsx` for side-effect style imports.
+- [x] Add missing module declarations for style imports.
+- [x] Re-validate with `yarn lint`.
+- [x] Re-validate with `yarn tsc`.

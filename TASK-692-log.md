@@ -66,3 +66,17 @@
 4. Remove the fallback map (removed in this log update)
 
 The hardcoded map was **removed** in this session.
+
+## 2026-04-14 (index.tsx TypeScript diagnostics follow-up)
+
+- Investigated TypeScript diagnostics in `src/index.tsx` for side-effect imports:
+  - `bootstrap/dist/css/bootstrap.min.css`
+  - `./index.sass`
+- Root cause: missing ambient module declarations for style imports in `src/declarations.d.ts`.
+- Applied fix in `src/declarations.d.ts`:
+  - `declare module '*.css'`
+  - `declare module '*.sass'`
+- Re-ran validation gates:
+  - `yarn lint` passed.
+  - `yarn tsc` passed.
+- Confirmed no remaining diagnostics in `src/index.tsx`.
