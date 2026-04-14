@@ -2,13 +2,13 @@ import React from 'react'
 import { parse } from 'query-string'
 import { useLocation } from 'react-router-dom'
 
-import AppContent from 'common/AppContent'
+import AppContent from 'common/ui/AppContent'
 import WordSearchForm from './WordSearchForm'
 import WordSearch from './WordSearch'
 import SessionContext from 'auth/SessionContext'
 
 import './Dictionary.css'
-import { SectionCrumb } from 'common/Breadcrumbs'
+import { SectionCrumb } from 'common/ui/Breadcrumbs'
 import { Session } from 'auth/Session'
 import WordService from 'dictionary/application/WordService'
 

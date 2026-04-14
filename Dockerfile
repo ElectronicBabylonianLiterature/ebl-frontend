@@ -45,6 +45,8 @@ ARG REACT_APP_GA_TRACKING_ID
 
 ENV NODE_ENV=production
 ENV BABEL_ENV=production
+ENV DISABLE_ESLINT_PLUGIN=true
+ENV NODE_OPTIONS=--max_old_space_size=1536
 RUN yarn build
 
 

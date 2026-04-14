@@ -1,5 +1,5 @@
 import React from 'react'
-import ExternalLink from 'common/ExternalLink'
+import ExternalLink from 'common/ui/ExternalLink'
 import ProjectHome, { ProjectHomeProps } from '../Home'
 
 export default function AluGenevaHome(

@@ -1,6 +1,6 @@
 import React from 'react'
-import AppContent from 'common/AppContent'
-import { SectionCrumb } from 'common/Breadcrumbs'
+import AppContent from 'common/ui/AppContent'
+import { SectionCrumb } from 'common/ui/Breadcrumbs'
 import { ResearchProject, ResearchProjects } from './researchProject'
 import { Link } from 'react-router-dom'
 import ListGroup from 'react-bootstrap/ListGroup'

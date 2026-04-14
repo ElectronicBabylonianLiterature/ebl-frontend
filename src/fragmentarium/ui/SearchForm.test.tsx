@@ -2,7 +2,7 @@ import React from 'react'
 import { render, screen, waitFor, fireEvent } from '@testing-library/react'
 import { bibliographyEntryFactory } from 'test-support/bibliography-fixtures'
 import { FragmentQuery } from 'query/FragmentQuery'
-import { Periods } from 'common/period'
+import { Periods } from 'common/utils/period'
 import { MemoryRouter } from 'react-router-dom'
 import { wordFactory } from 'test-support/word-fixtures'
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
@@ -17,6 +17,30 @@ import SessionContext from 'auth/SessionContext'
 import userEvent from '@testing-library/user-event'
 import Word from 'dictionary/domain/Word'
 import WordService from 'dictionary/application/WordService'
+
+function TestMemoryRouter({
+  children,
+  ...props
+}: React.PropsWithChildren<Record<string, unknown>>): JSX.Element {
+  return (
+    <MemoryRouter
+      {...props}
+      future={Object.fromEntries([
+        ['v7_startTransition', true],
+        ['v7_relativeSplatPath', true],
+      ])}
+    >
+      {children}
+    </MemoryRouter>
+  )
+}
+
+const mockNavigate = jest.fn()
+
+jest.mock('react-router-dom', () => ({
+  ...jest.requireActual('react-router-dom'),
+  useNavigate: () => mockNavigate,
+}))
 
 jest.mock('fragmentarium/application/FragmentService')
 jest.mock('fragmentarium/application/FragmentSearchService')
@@ -82,7 +106,7 @@ let searchEntry: BibliographyEntry
 
 async function renderSearchForm(): Promise<void> {
   render(
-    <MemoryRouter>
+    <TestMemoryRouter>
       <SessionContext.Provider value={session}>
         <SearchForm
           fragmentService={fragmentService}
@@ -94,16 +118,20 @@ async function renderSearchForm(): Promise<void> {
           showAdvancedSearch={true}
         />
       </SessionContext.Provider>
-    </MemoryRouter>,
+    </TestMemoryRouter>,
   )
+  await screen.findByText('Genre')
 }
 
 async function expectNavigation(search: string): Promise<void> {
-  // expect(history.push).toHaveBeenCalledWith({
-  //   pathname: '/library/search/',
-  //   search,
-  // })
-  await waitFor(() => expect(true).toBe(true))
+  await waitFor(() =>
+    expect(mockNavigate).toHaveBeenCalledWith(
+      expect.objectContaining({
+        pathname: expect.stringContaining('/search/'),
+        search,
+      }),
+    ),
+  )
 }
 
 async function testInputDisplay(
@@ -147,6 +175,7 @@ async function selectOptionAndSearch(
 }
 
 beforeEach(async () => {
+  mockNavigate.mockClear()
   fragmentService = new (FragmentService as jest.Mock<
     jest.Mocked<FragmentService>
   >)()

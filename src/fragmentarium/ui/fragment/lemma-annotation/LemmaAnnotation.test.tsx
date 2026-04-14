@@ -1,6 +1,7 @@
 import React from 'react'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import { act } from 'react'
 import { Text } from 'transliteration/domain/text'
 import LemmaAnnotation, {
   LemmaAnnotatorProps,
@@ -94,19 +95,25 @@ describe('LemmaAnnotation', () => {
       setText: setTextMock,
       updateAnnotation: updateAnnotationMock,
     }
+    wordServiceMock.searchLemma.mockImplementation(
+      () => new Promise(() => undefined),
+    )
   })
-  it('renders the lemmatizer component', () => {
+  it('renders the lemmatizer component', async () => {
     container = render(<LemmaAnnotation {...props} />).container
+    await screen.findByLabelText('edit-token-lemmas')
     expect(container).toMatchSnapshot()
   })
   describe('Token Selection', () => {
-    it('selects the first token by default', () => {
+    it('selects the first token by default', async () => {
       container = render(<LemmaAnnotation {...props} />).container
+      await screen.findByLabelText('edit-token-lemmas')
       expect(getTokenMarkable(/ra/)).toHaveClass('selected')
       expect(getTokenMarkable(/kur/)).not.toHaveClass('selected')
     })
     it('sets the active token on click', async () => {
       container = render(<LemmaAnnotation {...props} />).container
+      await screen.findByLabelText('edit-token-lemmas')
       await userEvent.click(screen.getByText('kur'))
 
       expect(raUnselectSpy).toHaveBeenCalled()
@@ -117,6 +124,7 @@ describe('LemmaAnnotation', () => {
     })
     it('unsets the active token on click', async () => {
       container = render(<LemmaAnnotation {...props} />).container
+      await screen.findByLabelText('edit-token-lemmas')
       await userEvent.click(screen.getByText('kur'))
       expect(getTokenMarkable(/kur/)).toHaveClass('selected')
 
@@ -125,12 +133,14 @@ describe('LemmaAnnotation', () => {
     })
     it('selects the next token on Tab', async () => {
       container = render(<LemmaAnnotation {...props} />).container
+      await screen.findByLabelText('edit-token-lemmas')
       const input = screen.getByLabelText('edit-token-lemmas')
       fireEvent.keyDown(input, { key: 'Tab', code: 'Tab' })
       expect(getTokenMarkable(/kur/)).toHaveClass('selected')
     })
     it('selects the previous token on Shift+Tab', async () => {
       container = render(<LemmaAnnotation {...props} />).container
+      await screen.findByLabelText('edit-token-lemmas')
       await userEvent.click(screen.getByText('kur'))
       expect(getTokenMarkable(/kur/)).toHaveClass('selected')
       const input = screen.getByLabelText('edit-token-lemmas')
@@ -139,17 +149,17 @@ describe('LemmaAnnotation', () => {
     })
   })
   describe('Token Editing', () => {
-    beforeEach(() => {
-      wordServiceMock.searchLemma.mockReturnValue(Promise.resolve([mockWord]))
-    })
     it('searches for lemmas on user input', async () => {
       container = render(<LemmaAnnotation {...props} />).container
+      await screen.findByLabelText('edit-token-lemmas')
       const input = screen.getByLabelText('edit-token-lemmas')
       fireEvent.change(input, { target: { value: 'mock' } })
       expect(wordServiceMock.searchLemma).toHaveBeenCalledWith('mock')
     })
     it('applies the suggestion on confirmation', async () => {
+      wordServiceMock.searchLemma.mockResolvedValue([mockWord])
       container = render(<LemmaAnnotation {...props} />).container
+      await screen.findByLabelText('edit-token-lemmas')
       const input = screen.getByLabelText('edit-token-lemmas')
 
       fireEvent.change(input, { target: { value: 'mock' } })
@@ -168,7 +178,9 @@ describe('LemmaAnnotation', () => {
       ).toBeInTheDocument()
     })
     it('saves the changes on clicking Save', async () => {
+      wordServiceMock.searchLemma.mockResolvedValue([mockWord])
       container = render(<LemmaAnnotation {...props} />).container
+      await screen.findByLabelText('edit-token-lemmas')
       const input = screen.getByLabelText('edit-token-lemmas')
       updateAnnotationMock.mockResolvedValue({ text })
 
@@ -187,6 +199,7 @@ describe('LemmaAnnotation', () => {
   describe('Autofill Lemmas', () => {
     it('calls collectLemmaSuggestions', async () => {
       container = render(<LemmaAnnotation {...props} />).container
+      await screen.findByLabelText('edit-token-lemmas')
       fragmentServiceMock.collectLemmaSuggestions.mockResolvedValue(
         new Map([['kur', [suggestion]]]),
       )
@@ -197,6 +210,7 @@ describe('LemmaAnnotation', () => {
     })
     it('applies the suggestions to relevant tokens', async () => {
       container = render(<LemmaAnnotation {...props} />).container
+      await screen.findByLabelText('edit-token-lemmas')
       fragmentServiceMock.collectLemmaSuggestions.mockResolvedValue(
         new Map([['kur', [suggestion]]]),
       )
@@ -212,9 +226,14 @@ describe('LemmaAnnotation', () => {
         lemma: ['Shamash'],
       })
       updateAnnotationMock.mockResolvedValue({ text })
-      const annotation = new LemmaAnnotation(props)
+      const annotationRef = React.createRef<LemmaAnnotation>()
+      render(<LemmaAnnotation {...props} ref={annotationRef} />)
+      await screen.findByLabelText('edit-token-lemmas')
 
-      annotation.onCreateProperNoun(createdWord)
+      await act(async () => {
+        annotationRef.current?.onCreateProperNoun(createdWord)
+        await Promise.resolve()
+      })
 
       await waitFor(() => {
         expect(updateAnnotationMock).toHaveBeenCalledWith({

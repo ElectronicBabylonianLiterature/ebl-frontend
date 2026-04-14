@@ -1,5 +1,6 @@
 import React from 'react'
 import { render, screen, waitFor } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import complexText from 'test-support/complexTestText'
 import WordService from 'dictionary/application/WordService'
@@ -19,7 +20,7 @@ let wordService: WordService
 let fragment: Fragment
 
 async function renderFragment(fragment: Fragment) {
-  render(
+  const view = render(
     <MemoryRouter>
       <DictionaryContext.Provider value={wordService}>
         <Display fragment={fragment} wordService={wordService} activeLine="" />
@@ -30,6 +31,8 @@ async function renderFragment(fragment: Fragment) {
   await waitFor(() =>
     expect(screen.queryByText('Loading...')).not.toBeInTheDocument(),
   )
+
+  return view
 }
 
 beforeEach(async () => {
@@ -56,7 +59,8 @@ it('correctly displays simple fragments', async () => {
     },
     { associations: { text: complexText } },
   )
-  await renderFragment(fragment)
+  const view = await renderFragment(fragment)
+  expect(view.container).toMatchSnapshot()
   expect(screen.getByText(/lorem ipsum quia/i)).toBeInTheDocument()
   expect(screen.getByText(/eBL Notes/i)).toBeInTheDocument()
   expect(screen.getByText(/dolor sit amet/i)).toBeInTheDocument()
@@ -73,7 +77,7 @@ describe('Translation display layouts', () => {
       'TranslationColumn',
     )
 
-    screen.getByLabelText('toggle-layout').click()
+    await userEvent.click(screen.getByLabelText('toggle-layout'))
 
     await waitFor(() => {
       expect(screen.getByText(/en\s*:/)).toBeInTheDocument()
@@ -84,7 +88,7 @@ describe('Translation display layouts', () => {
   })
   it('switches the language', async () => {
     await renderFragment(translatedFragment)
-    screen.getByLabelText('switch-language').click()
+    await userEvent.click(screen.getByLabelText('switch-language'))
     await waitFor(() => {
       expect(screen.queryByText('English translation')).not.toBeInTheDocument()
     })

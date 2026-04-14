@@ -1,7 +1,7 @@
 import { Popover } from 'react-bootstrap'
 import _ from 'lodash'
-import MarkdownAndHtmlToHtml from 'common/MarkdownAndHtmlToHtml'
-import ExternalLink from 'common/ExternalLink'
+import MarkdownAndHtmlToHtml from 'common/utils/MarkdownAndHtmlToHtml'
+import ExternalLink from 'common/ui/ExternalLink'
 import React from 'react'
 
 export default function LogogramInfo(schrammLogogram: string): JSX.Element {

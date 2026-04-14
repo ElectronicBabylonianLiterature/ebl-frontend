@@ -1,7 +1,7 @@
 import React from 'react'
 import { Popover } from 'react-bootstrap'
 import _ from 'lodash'
-import HelpTrigger from 'common/HelpTrigger'
+import HelpTrigger from 'common/ui/HelpTrigger'
 
 export function HelpEntry(definition: JSX.Element | string): JSX.Element {
   const SearchHelp = (

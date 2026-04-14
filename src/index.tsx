@@ -3,11 +3,11 @@ import { createRoot } from 'react-dom/client'
 import { BrowserRouter as Router } from 'react-router-dom'
 import { useHistory } from 'router/compat'
 import Promise from 'bluebird'
-import ErrorBoundary from 'common/ErrorBoundary'
+import ErrorBoundary from 'common/errors/ErrorBoundary'
 import * as serviceWorker from './serviceWorker'
 
 import ErrorReporterContext from './ErrorReporterContext'
-import SentryErrorReporter from 'common/SentryErrorReporter'
+import SentryErrorReporter from 'common/errors/SentryErrorReporter'
 import createAuth0Config from 'auth/createAuth0Config'
 import { Auth0Provider } from 'auth/react-auth0-spa'
 import { scopeString } from 'auth/Auth'
@@ -82,7 +82,8 @@ const root = createRoot(container)
 root.render(
   <ErrorReporterContext.Provider value={errorReporter}>
     <ErrorBoundary>
-      <Router>
+      {/* eslint-disable-next-line camelcase */}
+      <Router future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
         <div className="mh-100">
           <div>
             <InjectedAuth0Provider>

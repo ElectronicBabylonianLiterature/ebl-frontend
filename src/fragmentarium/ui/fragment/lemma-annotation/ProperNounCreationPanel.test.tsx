@@ -710,11 +710,8 @@ describe('ProperNounCreationPanel', () => {
 
       fireEvent.click(createButton)
 
-      await waitFor(() => {
-        expect(
-          screen.getByText('Failed to create proper noun'),
-        ).toBeInTheDocument()
-      })
+      const alert = await screen.findByRole('alert')
+      expect(alert).toHaveTextContent(error.message)
 
       expect(createButton).toBeEnabled()
     })

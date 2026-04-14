@@ -2,10 +2,10 @@ import React from 'react'
 import { parse } from 'query-string'
 import { useLocation } from 'react-router-dom'
 
-import AppContent from 'common/AppContent'
+import AppContent from 'common/ui/AppContent'
 import SessionContext from 'auth/SessionContext'
 
-import { SectionCrumb } from 'common/Breadcrumbs'
+import { SectionCrumb } from 'common/ui/Breadcrumbs'
 import { Session } from 'auth/Session'
 import SignsSearchForm from 'signs/ui/search/SignsSearchForm'
 import SignsSearch from 'signs/ui/search/SignsSearch'

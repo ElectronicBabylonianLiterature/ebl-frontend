@@ -7,7 +7,7 @@ import {
 import decode from 'jwt-decode'
 import MemorySession, { Session } from 'auth/Session'
 import applicationScopes from 'auth/applicationScopes.json'
-import Spinner from 'common/Spinner'
+import Spinner from 'common/ui/Spinner'
 import { AuthenticationContext, AuthenticationService } from 'auth/Auth'
 import Auth0AuthenticationService from 'auth/Auth0AuthenticationService'
 import 'auth/AuthenticationSpinner.css'

@@ -92,14 +92,29 @@ export function RecordList({
   )
 }
 
-function LinkToRecord({ number }: { number: string }): JSX.Element {
+function LinkToRecord({
+  number,
+  useRouterLinks,
+}: {
+  number: string
+  useRouterLinks: boolean
+}): JSX.Element {
+  const recordPath = `/library/${number}/record`
   return (
     <li key={'full-record-link'}>
-      <Link to={`/library/${number}/record`}>
-        <span>View full record</span>
-        &nbsp;
-        <i className={'fas fa-external-link'}></i>
-      </Link>
+      {useRouterLinks ? (
+        <Link to={recordPath}>
+          <span>View full record</span>
+          &nbsp;
+          <i className={'fas fa-external-link'}></i>
+        </Link>
+      ) : (
+        <a href={recordPath}>
+          <span>View full record</span>
+          &nbsp;
+          <i className={'fas fa-external-link'}></i>
+        </a>
+      )}
     </li>
   )
 }
@@ -136,10 +151,12 @@ export function TruncatedRecord({
   record,
   className,
   number,
+  useRouterLinks = true,
 }: {
   record: readonly RecordEntry[]
   className?: string
   number: string
+  useRouterLinks?: boolean
 }): JSX.Element {
   return (
     <section>
@@ -149,7 +166,7 @@ export function TruncatedRecord({
           <InitialEntry record={record} />
           <li key={'ellipsis'}>[…]</li>
           <LatestEntries record={record} />
-          <LinkToRecord number={number} />
+          <LinkToRecord number={number} useRouterLinks={useRouterLinks} />
         </ol>
       ) : (
         <RecordList record={record} className={className} />

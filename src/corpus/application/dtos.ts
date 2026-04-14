@@ -26,7 +26,7 @@ import {
   OldSiglum,
 } from 'corpus/domain/manuscript'
 import { ReferenceDto } from 'bibliography/domain/referenceDto'
-import { PeriodModifiers, Periods } from 'common/period'
+import { PeriodModifiers, Periods } from 'common/utils/period'
 import { getProvenanceByName } from 'corpus/domain/provenance'
 import SiglumAndTransliteration from 'corpus/domain/SiglumAndTransliteration'
 import {

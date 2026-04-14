@@ -1,6 +1,6 @@
 import React from 'react'
 import ResizeObserver from 'resize-observer-polyfill'
-import { MemoryRouter } from 'react-router'
+import { MemoryRouter } from 'react-router-dom'
 import {
   render,
   screen,
@@ -10,6 +10,10 @@ import Promise from 'bluebird'
 import Images, { FragmentPhoto, TabController } from './Images'
 import Folio from 'fragmentarium/domain/Folio'
 import { Fragment } from 'fragmentarium/domain/fragment'
+import {
+  createFragmentUrlWithFolio,
+  createFragmentUrlWithTab,
+} from 'fragmentarium/ui/FragmentLink'
 import { fragmentFactory } from 'test-support/fragment-fixtures'
 import {
   folioFactory,
@@ -82,6 +86,7 @@ it('Displays selected folio', async () => {
   const selected = folios[0]
   const selectedTitle = `${selected.humanizedName} Folio ${selected.number}`
   renderImages(selected)
+  await waitForElementToBeRemoved(() => screen.queryAllByLabelText('Spinner'))
   expect(await screen.findByText(selectedTitle)).toHaveAttribute(
     'aria-selected',
     'true',
@@ -98,6 +103,7 @@ it('Displays photo if no folio specified', async () => {
     { associations: { folios: folios } },
   )
   renderImages()
+  await waitForElementToBeRemoved(() => screen.queryAllByLabelText('Spinner'))
   expect(
     await screen.findByAltText(`Fragment ${fragment.number}`),
   ).toBeVisible()
@@ -113,6 +119,7 @@ it('Displays CDLI photo if no photo and no folio specified', async () => {
     { associations: { folios: folios } },
   )
   renderImages()
+  await waitForElementToBeRemoved(() => screen.queryAllByLabelText('Spinner'))
   expect(await screen.findByAltText('CDLI Photo')).toBeVisible()
 })
 
@@ -122,6 +129,7 @@ test('No photo, folios, CDLI photo', async () => {
     { associations: { folios: [] } },
   )
   renderImages()
+  await waitForElementToBeRemoved(() => screen.queryAllByLabelText('Spinner'))
   expect(screen.queryByText('CDLI')).not.toBeInTheDocument()
 })
 
@@ -173,17 +181,17 @@ describe('TabController', () => {
   it('Opens the correct tab for a folio', () => {
     const controller = new TabController(fragment, null, activeFolio, navigate)
     controller.openTab('1')
-    // expect(history.push).toHaveBeenCalledWith(
-    //   createFragmentUrlWithFolio(fragment.number, activeFolio)
-    // )
+    expect(navigate).toHaveBeenCalledWith(
+      createFragmentUrlWithFolio(fragment.number, activeFolio),
+    )
   })
 
   it('Opens the correct tab for a photo', () => {
     const controller = new TabController(fragment, null, null, navigate)
     controller.openTab('photo')
-    // expect(history.push).toHaveBeenCalledWith(
-    //   createFragmentUrlWithTab(fragment.number, 'photo')
-    // )
+    expect(navigate).toHaveBeenCalledWith(
+      createFragmentUrlWithTab(fragment.number, 'photo'),
+    )
   })
 })
 

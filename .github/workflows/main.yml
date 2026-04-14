@@ -8,6 +8,9 @@ on:
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
+permissions:
+  contents: read
+
 env:
   SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
 
@@ -43,7 +46,11 @@ jobs:
       - name: Unit Tests
         id: unit_tests
         if: success() || steps.install.outcome == 'success'
-        run: yarn test --coverage --forceExit --detectOpenHandles
+        run: NODE_OPTIONS=--max_old_space_size=1536 yarn test --coverage --forceExit --detectOpenHandles --watch=false
+
+      - name: Build
+        if: success() || steps.install.outcome == 'success'
+        run: GENERATE_SOURCEMAP=false DISABLE_ESLINT_PLUGIN=true NODE_OPTIONS=--max_old_space_size=1536 yarn build
 
       - uses: qltysh/qlty-action/coverage@v1
         with:

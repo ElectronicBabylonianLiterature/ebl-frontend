@@ -14,7 +14,7 @@ import {
   InputGroupProps,
   RadioButton,
 } from 'chronology/ui/DateEditor/DateSelectionInputBase'
-import { BrokenAndUncertainSwitches } from 'common/BrokenAndUncertain'
+import { BrokenAndUncertainSwitches } from 'common/ui/BrokenAndUncertain'
 
 type InputGroupsProps = {
   yearValue: string

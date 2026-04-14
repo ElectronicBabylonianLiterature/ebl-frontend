@@ -28,6 +28,11 @@ beforeEach(async () => {
   mockNavigate.mockReset()
 })
 
+const routerFuture = Object.fromEntries([
+  ['v7_startTransition', true],
+  ['v7_relativeSplatPath', true],
+])
+
 it('Redirects to interesting when clicked', async () => {
   renderPioneersButton(true)
   const fragment = fragmentFactory.build()
@@ -47,7 +52,7 @@ it('Hides button if user does not have transliteration rights', async () => {
 function renderPioneersButton(isAllowedTo) {
   session.isAllowedToTransliterateFragments.mockReturnValue(isAllowedTo)
   element = render(
-    <MemoryRouter>
+    <MemoryRouter future={routerFuture}>
       <SessionContext.Provider value={session}>
         <PioneersButton fragmentSearchService={fragmentSearchService} />
       </SessionContext.Provider>

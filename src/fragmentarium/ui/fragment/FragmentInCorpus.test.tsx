@@ -13,7 +13,7 @@ import {
 import { ManuscriptAttestation } from 'corpus/domain/manuscriptAttestation'
 import { UncertainFragmentAttestation } from 'corpus/domain/uncertainFragmentAttestation'
 import { textIdToString } from 'transliteration/domain/text-id'
-import { stageToAbbreviation } from 'common/period'
+import { stageToAbbreviation } from 'common/utils/period'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import { waitForSpinnerToBeRemoved } from 'test-support/waitForSpinnerToBeRemoved'
 

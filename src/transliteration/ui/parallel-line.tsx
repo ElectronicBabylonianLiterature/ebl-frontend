@@ -1,5 +1,5 @@
 import React from 'react'
-import { stageToAbbreviation } from 'common/period'
+import { stageToAbbreviation } from 'common/utils/period'
 import { museumNumberToString } from 'fragmentarium/domain/MuseumNumber'
 import FragmentLink from 'fragmentarium/ui/FragmentLink'
 import { labelsAbbreviation } from 'transliteration/domain/labels'

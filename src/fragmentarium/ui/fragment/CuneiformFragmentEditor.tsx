@@ -14,7 +14,7 @@ import WordService from 'dictionary/application/WordService'
 import FragmentService, {
   EditionFields,
 } from 'fragmentarium/application/FragmentService'
-import ErrorBoundary from 'common/ErrorBoundary'
+import ErrorBoundary from 'common/errors/ErrorBoundary'
 import ArchaeologyEditor from 'fragmentarium/ui/fragment/ArchaeologyEditor'
 import { ArchaeologyDto } from 'fragmentarium/domain/archaeologyDtos'
 import { FindspotService } from 'fragmentarium/application/FindspotService'

@@ -32,7 +32,13 @@ test('LineTokens', () => {
 test('LineColumns', () => {
   const container = render(
     <DictionaryContext.Provider value={wordServiceMock}>
-      <LineColumns columns={textLine.columns} maxColumns={1} />
+      <table>
+        <tbody>
+          <tr>
+            <LineColumns columns={textLine.columns} maxColumns={1} />
+          </tr>
+        </tbody>
+      </table>
     </DictionaryContext.Provider>,
   ).container
 

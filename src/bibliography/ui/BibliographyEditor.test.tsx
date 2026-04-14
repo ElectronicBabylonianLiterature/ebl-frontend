@@ -4,6 +4,7 @@ import { matchPath } from 'react-router-dom'
 import { render, Matcher, screen } from '@testing-library/react'
 import { Promise } from 'bluebird'
 import _ from 'lodash'
+import { act } from 'react'
 import SessionContext from 'auth/SessionContext'
 import { submitForm } from 'test-support/utils'
 import BibliographyEditor from './BibliographyEditor'
@@ -18,6 +19,19 @@ const resultId = 'RN1000'
 let result
 let bibliographyService
 let session
+
+function TestMemoryRouter({ children }: React.PropsWithChildren): JSX.Element {
+  return (
+    <MemoryRouter
+      future={Object.fromEntries([
+        ['v7_startTransition', true],
+        ['v7_relativeSplatPath', true],
+      ])}
+    >
+      {children}
+    </MemoryRouter>
+  )
+}
 
 beforeEach(async () => {
   result = bibliographyEntryFactory.build({}, { transient: { id: resultId } })
@@ -61,8 +75,10 @@ describe('Editing', () => {
 
   test('View button redirects to view page', async () => {
     await renderWithRouter(true, false, resultId)
-    screen.getByText('View').click()
-    // View button navigates to view page
+    await act(async () => {
+      screen.getByText('View').click()
+      await Promise.resolve()
+    })
   })
 
   commonTests(false, resultId)
@@ -141,7 +157,7 @@ async function renderWithRouter(
   session.isAllowedToWriteBibliography.mockReturnValue(isAllowedTo)
 
   const view = render(
-    <MemoryRouter>
+    <TestMemoryRouter>
       <SessionContext.Provider value={session}>
         <BibliographyEditor
           match={{ params: { id: matchedPath.params.id ?? '' } }}
@@ -149,7 +165,7 @@ async function renderWithRouter(
           create={create}
         />
       </SessionContext.Provider>
-    </MemoryRouter>,
+    </TestMemoryRouter>,
   )
   await screen.findAllByText(waitFor)
   return view

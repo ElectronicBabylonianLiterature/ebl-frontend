@@ -11,6 +11,11 @@ jest.mock('react-router-dom', () => ({
   useNavigate: () => mockNavigate,
 }))
 
+const routerFuture = Object.fromEntries([
+  ['v7_startTransition', true],
+  ['v7_relativeSplatPath', true],
+])
+
 it('Adds lemma to query string on submit', async () => {
   renderSignsSearchForm()
   await userEvent.type(screen.getByPlaceholderText('Sign or Reading'), 'ba')
@@ -31,7 +36,7 @@ function renderSignsSearchForm() {
     isComposite: undefined,
   }
   return render(
-    <MemoryRouter>
+    <MemoryRouter future={routerFuture}>
       <SignsSearchForm sign={undefined} signQuery={signQueryDefault} />
     </MemoryRouter>,
   )

@@ -3,10 +3,10 @@ import { pdfExport } from './PdfExport'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import WordService from 'dictionary/application/WordService'
 import { Dropdown } from 'react-bootstrap'
-import Spinner from 'common/Spinner'
+import Spinner from 'common/ui/Spinner'
 import $ from 'jquery'
 import Promise from 'bluebird'
-import usePromiseEffect from 'common/usePromiseEffect'
+import usePromiseEffect from 'common/hooks/usePromiseEffect'
 import { jsPDF } from 'jspdf'
 
 type Props = {

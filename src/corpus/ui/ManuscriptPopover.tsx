@@ -7,7 +7,7 @@ import { OldSiglum } from 'corpus/domain/manuscript'
 import ManuscriptJoins from './ManuscriptJoins'
 import ManuscriptReferences from './ManuscriptReferences'
 import Citation from 'bibliography/ui/Citation'
-import { Markdown } from 'common/Markdown'
+import { Markdown } from 'common/ui/Markdown'
 
 function OldSiglumList({
   siglumList,

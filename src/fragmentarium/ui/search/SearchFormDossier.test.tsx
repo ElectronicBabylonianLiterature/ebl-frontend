@@ -21,7 +21,7 @@ describe('SearchFormDossier', () => {
     mockOnChange.mockClear()
   })
 
-  it('renders AsyncSelect with correct placeholder', () => {
+  it('renders AsyncSelect with correct placeholder', async () => {
     render(
       <SearchFormDossier
         ariaLabel="Dossier Search"
@@ -31,11 +31,11 @@ describe('SearchFormDossier', () => {
       />,
     )
 
-    expect(screen.getByLabelText('Dossier Search')).toBeInTheDocument()
+    expect(await screen.findByLabelText('Dossier Search')).toBeInTheDocument()
     expect(screen.getByText('Dossiers')).toBeInTheDocument()
   })
 
-  it('displays selected dossier value', () => {
+  it('displays selected dossier value', async () => {
     render(
       <SearchFormDossier
         ariaLabel="Dossier Search"
@@ -45,7 +45,7 @@ describe('SearchFormDossier', () => {
       />,
     )
 
-    expect(screen.getByText(/D001/)).toBeInTheDocument()
+    expect(await screen.findByText(/D001/)).toBeInTheDocument()
   })
 
   it('calls searchSuggestions when user types', async () => {
@@ -150,7 +150,6 @@ describe('SearchFormDossier', () => {
     })
 
     await selectEvent.clearFirst(screen.getByLabelText('Dossier Search'))
-
     await waitFor(() => {
       expect(mockOnChange).toHaveBeenCalledWith(null)
     })
@@ -219,7 +218,7 @@ describe('SearchFormDossier', () => {
     })
   })
 
-  it('syncs with external value prop changes', () => {
+  it('syncs with external value prop changes', async () => {
     const { rerender } = render(
       <SearchFormDossier
         ariaLabel="Dossier Search"
@@ -229,7 +228,7 @@ describe('SearchFormDossier', () => {
       />,
     )
 
-    expect(screen.getByText(/D001/)).toBeInTheDocument()
+    expect(await screen.findByText(/D001/)).toBeInTheDocument()
 
     rerender(
       <SearchFormDossier
@@ -243,7 +242,7 @@ describe('SearchFormDossier', () => {
     expect(screen.getByText(/D002/)).toBeInTheDocument()
   })
 
-  it('renders Form.Group with correct structure', () => {
+  it('renders Form.Group with correct structure', async () => {
     render(
       <SearchFormDossier
         ariaLabel="Dossier Search"
@@ -253,11 +252,11 @@ describe('SearchFormDossier', () => {
       />,
     )
 
-    const formGroup = screen.getByTestId('dossier-form-group')
+    const formGroup = await screen.findByTestId('dossier-form-group')
     expect(formGroup).toBeInTheDocument()
   })
 
-  it('renders help column for accessibility', () => {
+  it('renders help column for accessibility', async () => {
     render(
       <SearchFormDossier
         ariaLabel="Dossier Search"
@@ -267,7 +266,7 @@ describe('SearchFormDossier', () => {
       />,
     )
 
-    const helpCol = screen.getByTestId('search-form-help-col')
+    const helpCol = await screen.findByTestId('search-form-help-col')
     expect(helpCol).toBeInTheDocument()
   })
 
@@ -340,7 +339,7 @@ describe('SearchFormDossier', () => {
     })
   })
 
-  it('respects isClearable prop', () => {
+  it('respects isClearable prop', async () => {
     const { rerender } = render(
       <SearchFormDossier
         ariaLabel="Dossier Search"
@@ -351,7 +350,7 @@ describe('SearchFormDossier', () => {
       />,
     )
 
-    expect(screen.getByLabelText('Dossier Search')).toBeInTheDocument()
+    expect(await screen.findByLabelText('Dossier Search')).toBeInTheDocument()
 
     rerender(
       <SearchFormDossier
@@ -619,7 +618,7 @@ describe('SearchFormDossier', () => {
       />,
     )
 
-    expect(screen.getByText(/D001/)).toBeInTheDocument()
+    expect(await screen.findByText(/D001/)).toBeInTheDocument()
 
     rerender(
       <SearchFormDossier
@@ -644,7 +643,7 @@ describe('SearchFormDossier', () => {
     expect(screen.getByText(/D003/)).toBeInTheDocument()
   })
 
-  it('handles changing from value to null', () => {
+  it('handles changing from value to null', async () => {
     const { rerender } = render(
       <SearchFormDossier
         ariaLabel="Dossier Search"
@@ -654,7 +653,7 @@ describe('SearchFormDossier', () => {
       />,
     )
 
-    expect(screen.getByText(/D001/)).toBeInTheDocument()
+    expect(await screen.findByText(/D001/)).toBeInTheDocument()
 
     rerender(
       <SearchFormDossier

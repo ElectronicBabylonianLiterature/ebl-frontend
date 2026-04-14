@@ -81,6 +81,7 @@ const setup = async () => {
 
 it('calls updateArchaeology on submit', async () => {
   await setup()
+  updateArchaeology.mockReturnValueOnce(new Promise(() => undefined))
   submitFormByTestId(screen, 'archaeology-form')
   expect(updateArchaeology).toHaveBeenCalledWith(
     _.omit(archaeologyDto, 'findspot'),

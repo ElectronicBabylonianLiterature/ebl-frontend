@@ -8,7 +8,7 @@ import {
 import { RecordEntry } from 'fragmentarium/domain/RecordEntry'
 import Folio from 'fragmentarium/domain/Folio'
 import { referenceFactory } from './bibliography-fixtures'
-import { periodModifiers, periods } from 'common/period'
+import { periodModifiers, periods } from 'common/utils/period'
 import { ExternalNumbers } from 'fragmentarium/domain/FragmentDtos'
 import {
   Archaeology,

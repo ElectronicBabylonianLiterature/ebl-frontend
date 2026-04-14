@@ -1,5 +1,5 @@
-import AppContent from 'common/AppContent'
-import { TextCrumb } from 'common/Breadcrumbs'
+import AppContent from 'common/ui/AppContent'
+import { TextCrumb } from 'common/ui/Breadcrumbs'
 import React, { useEffect } from 'react'
 
 export default function Impressum({

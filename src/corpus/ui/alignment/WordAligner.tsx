@@ -7,7 +7,7 @@ import './WordAligner.css'
 
 import { Token } from 'transliteration/domain/token'
 import { AlignmentToken } from 'corpus/domain/alignment'
-import ModalButton from 'common/ModalButton'
+import ModalButton from 'common/ui/ModalButton'
 import { isAnyWord } from 'transliteration/domain/type-guards'
 
 interface AlignerProps {

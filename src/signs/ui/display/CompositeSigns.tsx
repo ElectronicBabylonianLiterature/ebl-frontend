@@ -4,10 +4,10 @@ import withData, { WithoutData } from 'http/withData'
 import React from 'react'
 import 'signs/ui/display/CompositeSigns.css'
 
-import HelpTrigger from 'common/HelpTrigger'
+import HelpTrigger from 'common/ui/HelpTrigger'
 import { Col, Popover, Row } from 'react-bootstrap'
 import _ from 'lodash'
-import ExternalLink from 'common/ExternalLink'
+import ExternalLink from 'common/ui/ExternalLink'
 
 function CompositeSign({
   signComposites,

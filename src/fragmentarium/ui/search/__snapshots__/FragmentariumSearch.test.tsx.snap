@@ -1,0 +1,1114 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Search Shows suggestion when entering wrong number format 1`] = `
+<div>
+  <main
+    class="main"
+  >
+    <div
+      class="main__content"
+    >
+      <header
+        class="main__header"
+      >
+        <nav
+          aria-label="breadcrumb"
+          class="main__breadcrumbs"
+        >
+          <ol
+            class="breadcrumb"
+          >
+            <li
+              class="breadcrumb-item"
+            >
+              <a
+                href="/"
+              >
+                eBL
+              </a>
+            </li>
+            <li
+              class="breadcrumb-item"
+            >
+              <a
+                href="/library"
+              >
+                Library
+              </a>
+            </li>
+            <li
+              aria-current="page"
+              class="breadcrumb-item active"
+            >
+              Search
+            </li>
+          </ol>
+        </nav>
+        <h2
+          class="main__heading"
+        >
+          Search
+        </h2>
+        <div
+          class="main__toolbar btn-toolbar"
+          role="toolbar"
+        />
+      </header>
+      <section
+        class="Library-search"
+      >
+        <header
+          class="Library-search__header"
+        >
+          <div
+            class="row"
+          >
+            <div
+              class="mx-auto col"
+            >
+              <form
+                class="SearchForm SearchForm__wrapper"
+              >
+                <div
+                  class="row"
+                >
+                  <div
+                    class="col"
+                  >
+                    <div
+                      class="row"
+                    >
+                      <div
+                        class="SearchForm__help-col col-sm-1"
+                        data-testid="search-form-help-col"
+                      >
+                        <i
+                          class="fas fa-info-circle"
+                        />
+                      </div>
+                      <div
+                        class="col-sm-11"
+                      >
+                        <input
+                          aria-label="Number"
+                          class="form-control"
+                          id="number"
+                          name="number"
+                          placeholder="Museum, accession, CDLI, or excavation number"
+                          type="text"
+                          value="K 2"
+                        />
+                        <div
+                          class="invalid-feedback"
+                        >
+                          At least one of prefix, number or suffix must be specified.
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      class="align-items-center row"
+                    >
+                      <div
+                        class="SearchForm__help-col col-sm-1"
+                        data-testid="search-form-help-col"
+                      >
+                        <i
+                          class="fas fa-info-circle"
+                        />
+                      </div>
+                      <div
+                        class="col-sm-11"
+                      >
+                        <div
+                          class="align-items-center g-0 row"
+                        >
+                          <div
+                            class="col-sm-8"
+                          >
+                            <div
+                              class="SearchForm__select css-b62m3t-container"
+                            >
+                              <span
+                                class="css-1f43avz-a11yText-A11yText"
+                                id="react-select-20-live-region"
+                              />
+                              <span
+                                aria-atomic="false"
+                                aria-live="polite"
+                                aria-relevant="additions text"
+                                class="css-1f43avz-a11yText-A11yText"
+                                role="log"
+                              />
+                              <div
+                                class="search-form-select__control css-13cymwt-control"
+                              >
+                                <div
+                                  class="search-form-select__value-container css-hlgwow"
+                                >
+                                  <div
+                                    class="search-form-select__placeholder css-1jqq78o-placeholder"
+                                    id="react-select-20-placeholder"
+                                  >
+                                    Name Year Title
+                                  </div>
+                                  <div
+                                    class="search-form-select__input-container css-19bb58m"
+                                    data-value=""
+                                  >
+                                    <input
+                                      aria-activedescendant=""
+                                      aria-autocomplete="list"
+                                      aria-describedby="react-select-20-placeholder"
+                                      aria-expanded="false"
+                                      aria-haspopup="true"
+                                      aria-label="Select bibliography reference"
+                                      autocapitalize="none"
+                                      autocomplete="off"
+                                      autocorrect="off"
+                                      class="search-form-select__input"
+                                      id="react-select-20-input"
+                                      role="combobox"
+                                      spellcheck="false"
+                                      style="opacity: 1; width: 100%; grid-area: 1 / 2; min-width: 2px; border: 0px; margin: 0px; outline: 0; padding: 0px;"
+                                      tabindex="0"
+                                      type="text"
+                                      value=""
+                                    />
+                                  </div>
+                                </div>
+                                <div
+                                  class="search-form-select__indicators css-1wy0on6"
+                                >
+                                  <span
+                                    class="search-form-select__indicator-separator css-1u9des2-indicatorSeparator"
+                                  />
+                                  <div
+                                    aria-hidden="true"
+                                    class="search-form-select__indicator search-form-select__dropdown-indicator css-1xc3v61-indicatorContainer"
+                                  >
+                                    <svg
+                                      aria-hidden="true"
+                                      class="css-tj5bde-Svg"
+                                      focusable="false"
+                                      height="20"
+                                      viewBox="0 0 20 20"
+                                      width="20"
+                                    >
+                                      <path
+                                        d="M4.516 7.548c0.436-0.446 1.043-0.481 1.576 0l3.908 3.747 3.908-3.747c0.533-0.481 1.141-0.446 1.574 0 0.436 0.445 0.408 1.197 0 1.615-0.406 0.418-4.695 4.502-4.695 4.502-0.217 0.223-0.502 0.335-0.787 0.335s-0.57-0.112-0.789-0.335c0 0-4.287-4.084-4.695-4.502s-0.436-1.17 0-1.615z"
+                                      />
+                                    </svg>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div
+                            class="col-sm-4"
+                          >
+                            <input
+                              aria-label="Pages"
+                              class="form-control"
+                              id="reference"
+                              name="pages"
+                              placeholder="Page"
+                              type="text"
+                              value=""
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      class="align-items-center row"
+                    >
+                      <div
+                        class="SearchForm__help-col col-sm-1"
+                        data-testid="search-form-help-col"
+                      >
+                        <i
+                          class="fas fa-info-circle"
+                        />
+                      </div>
+                      <div
+                        class="col-sm-11"
+                      >
+                        <div
+                          class="g-0 align-items-center row"
+                        >
+                          <div
+                            class="col-sm-8"
+                          >
+                            <div
+                              class="SearchForm__select css-b62m3t-container"
+                            >
+                              <span
+                                class="css-1f43avz-a11yText-A11yText"
+                                id="react-select-23-live-region"
+                              />
+                              <span
+                                aria-atomic="false"
+                                aria-live="polite"
+                                aria-relevant="additions text"
+                                class="css-1f43avz-a11yText-A11yText"
+                                role="log"
+                              />
+                              <div
+                                class="search-form-select__control css-13cymwt-control"
+                              >
+                                <div
+                                  class="search-form-select__value-container search-form-select__value-container--is-multi css-hlgwow"
+                                >
+                                  <div
+                                    class="search-form-select__placeholder css-1jqq78o-placeholder"
+                                    id="react-select-23-placeholder"
+                                  >
+                                    Lemmata
+                                  </div>
+                                  <div
+                                    class="search-form-select__input-container css-19bb58m"
+                                    data-value=""
+                                  >
+                                    <input
+                                      aria-activedescendant=""
+                                      aria-autocomplete="list"
+                                      aria-describedby="react-select-23-placeholder"
+                                      aria-expanded="false"
+                                      aria-haspopup="true"
+                                      aria-label="Select lemmata"
+                                      autocapitalize="none"
+                                      autocomplete="off"
+                                      autocorrect="off"
+                                      class="search-form-select__input"
+                                      id="react-select-23-input"
+                                      role="combobox"
+                                      spellcheck="false"
+                                      style="opacity: 1; width: 100%; grid-area: 1 / 2; min-width: 2px; border: 0px; margin: 0px; outline: 0; padding: 0px;"
+                                      tabindex="0"
+                                      type="text"
+                                      value=""
+                                    />
+                                  </div>
+                                </div>
+                                <div
+                                  class="search-form-select__indicators css-1wy0on6"
+                                >
+                                  <span
+                                    class="search-form-select__indicator-separator css-1u9des2-indicatorSeparator"
+                                  />
+                                  <div
+                                    aria-hidden="true"
+                                    class="search-form-select__indicator search-form-select__dropdown-indicator css-1xc3v61-indicatorContainer"
+                                  >
+                                    <svg
+                                      aria-hidden="true"
+                                      class="css-tj5bde-Svg"
+                                      focusable="false"
+                                      height="20"
+                                      viewBox="0 0 20 20"
+                                      width="20"
+                                    >
+                                      <path
+                                        d="M4.516 7.548c0.436-0.446 1.043-0.481 1.576 0l3.908 3.747 3.908-3.747c0.533-0.481 1.141-0.446 1.574 0 0.436 0.445 0.408 1.197 0 1.615-0.406 0.418-4.695 4.502-4.695 4.502-0.217 0.223-0.502 0.335-0.787 0.335s-0.57-0.112-0.789-0.335c0 0-4.287-4.084-4.695-4.502s-0.436-1.17 0-1.615z"
+                                      />
+                                    </svg>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div
+                            class="col-sm-4"
+                          >
+                            <div
+                              class="SearchForm__select script-selection__selection css-b62m3t-container"
+                            >
+                              <span
+                                class="css-1f43avz-a11yText-A11yText"
+                                id="react-select-24-live-region"
+                              />
+                              <span
+                                aria-atomic="false"
+                                aria-live="polite"
+                                aria-relevant="additions text"
+                                class="css-1f43avz-a11yText-A11yText"
+                                role="log"
+                              />
+                              <div
+                                class="search-form-select__control css-13cymwt-control"
+                              >
+                                <div
+                                  class="search-form-select__value-container search-form-select__value-container--has-value css-hlgwow"
+                                >
+                                  <div
+                                    class="search-form-select__single-value css-1dimb5e-singleValue"
+                                  >
+                                    Same line
+                                  </div>
+                                  <div
+                                    class="search-form-select__input-container css-19bb58m"
+                                    data-value=""
+                                  >
+                                    <input
+                                      aria-activedescendant=""
+                                      aria-autocomplete="list"
+                                      aria-expanded="false"
+                                      aria-haspopup="true"
+                                      aria-label="Select lemma query type"
+                                      autocapitalize="none"
+                                      autocomplete="off"
+                                      autocorrect="off"
+                                      class="search-form-select__input"
+                                      id="react-select-24-input"
+                                      role="combobox"
+                                      spellcheck="false"
+                                      style="opacity: 1; width: 100%; grid-area: 1 / 2; min-width: 2px; border: 0px; margin: 0px; outline: 0; padding: 0px;"
+                                      tabindex="0"
+                                      type="text"
+                                      value=""
+                                    />
+                                  </div>
+                                </div>
+                                <div
+                                  class="search-form-select__indicators css-1wy0on6"
+                                >
+                                  <span
+                                    class="search-form-select__indicator-separator css-1u9des2-indicatorSeparator"
+                                  />
+                                  <div
+                                    aria-hidden="true"
+                                    class="search-form-select__indicator search-form-select__dropdown-indicator css-1xc3v61-indicatorContainer"
+                                  >
+                                    <svg
+                                      aria-hidden="true"
+                                      class="css-tj5bde-Svg"
+                                      focusable="false"
+                                      height="20"
+                                      viewBox="0 0 20 20"
+                                      width="20"
+                                    >
+                                      <path
+                                        d="M4.516 7.548c0.436-0.446 1.043-0.481 1.576 0l3.908 3.747 3.908-3.747c0.533-0.481 1.141-0.446 1.574 0 0.436 0.445 0.408 1.197 0 1.615-0.406 0.418-4.695 4.502-4.695 4.502-0.217 0.223-0.502 0.335-0.787 0.335s-0.57-0.112-0.789-0.335c0 0-4.287-4.084-4.695-4.502s-0.436-1.17 0-1.615z"
+                                      />
+                                    </svg>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      class="transliteration-search-form row"
+                    >
+                      <div
+                        class="SearchForm__help-col col-sm-1"
+                        data-testid="search-form-help-col"
+                      >
+                        <i
+                          class="fas fa-info-circle"
+                        />
+                      </div>
+                      <div
+                        class="col-sm-11"
+                      >
+                        <textarea
+                          aria-label="Transliteration"
+                          class="form-control"
+                          id="transliteration"
+                          name="transliteration"
+                          placeholder="Transliterations"
+                          rows="3"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class="col-md-6"
+                  >
+                    <div
+                      class="row"
+                    >
+                      <div
+                        class="SearchForm__help-col col-sm-1"
+                        data-testid="search-form-help-col"
+                      >
+                        <i
+                          class="fas fa-info-circle"
+                        />
+                      </div>
+                      <div
+                        class="col-sm-11"
+                      >
+                        <div
+                          class="css-b62m3t-container"
+                        >
+                          <span
+                            class="css-1f43avz-a11yText-A11yText"
+                            id="react-select-25-live-region"
+                          />
+                          <span
+                            aria-atomic="false"
+                            aria-live="polite"
+                            aria-relevant="additions text"
+                            class="css-1f43avz-a11yText-A11yText"
+                            role="log"
+                          />
+                          <div
+                            class="genre-selector__control css-13cymwt-control"
+                          >
+                            <div
+                              class="genre-selector__value-container css-hlgwow"
+                            >
+                              <div
+                                class="genre-selector__placeholder css-1jqq78o-placeholder"
+                                id="react-select-25-placeholder"
+                              >
+                                Genre
+                              </div>
+                              <div
+                                class="genre-selector__input-container css-19bb58m"
+                                data-value=""
+                              >
+                                <input
+                                  aria-activedescendant=""
+                                  aria-autocomplete="list"
+                                  aria-describedby="react-select-25-placeholder"
+                                  aria-expanded="false"
+                                  aria-haspopup="true"
+                                  aria-label="select-genre"
+                                  autocapitalize="none"
+                                  autocomplete="off"
+                                  autocorrect="off"
+                                  class="genre-selector__input"
+                                  id="react-select-25-input"
+                                  role="combobox"
+                                  spellcheck="false"
+                                  style="opacity: 1; width: 100%; grid-area: 1 / 2; min-width: 2px; border: 0px; margin: 0px; outline: 0; padding: 0px;"
+                                  tabindex="0"
+                                  type="text"
+                                  value=""
+                                />
+                              </div>
+                            </div>
+                            <div
+                              class="genre-selector__indicators css-1wy0on6"
+                            >
+                              <span
+                                class="genre-selector__indicator-separator css-1u9des2-indicatorSeparator"
+                              />
+                              <div
+                                aria-hidden="true"
+                                class="genre-selector__indicator genre-selector__dropdown-indicator css-1xc3v61-indicatorContainer"
+                              >
+                                <svg
+                                  aria-hidden="true"
+                                  class="css-tj5bde-Svg"
+                                  focusable="false"
+                                  height="20"
+                                  viewBox="0 0 20 20"
+                                  width="20"
+                                >
+                                  <path
+                                    d="M4.516 7.548c0.436-0.446 1.043-0.481 1.576 0l3.908 3.747 3.908-3.747c0.533-0.481 1.141-0.446 1.574 0 0.436 0.445 0.408 1.197 0 1.615-0.406 0.418-4.695 4.502-4.695 4.502-0.217 0.223-0.502 0.335-0.787 0.335s-0.57-0.112-0.789-0.335c0 0-4.287-4.084-4.695-4.502s-0.436-1.17 0-1.615z"
+                                  />
+                                </svg>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      class="row"
+                    >
+                      <div
+                        class="SearchForm__help-col col-sm-1"
+                        data-testid="search-form-help-col"
+                      >
+                        <i
+                          class="fas fa-info-circle"
+                        />
+                      </div>
+                      <div
+                        class="col-sm-11"
+                      >
+                        <div
+                          class="css-b62m3t-container"
+                        >
+                          <span
+                            class="css-1f43avz-a11yText-A11yText"
+                            id="react-select-21-live-region"
+                          />
+                          <span
+                            aria-atomic="false"
+                            aria-live="polite"
+                            aria-relevant="additions text"
+                            class="css-1f43avz-a11yText-A11yText"
+                            role="log"
+                          />
+                          <div
+                            class="museum-selector__control css-13cymwt-control"
+                          >
+                            <div
+                              class="museum-selector__value-container css-hlgwow"
+                            >
+                              <div
+                                class="museum-selector__placeholder css-1jqq78o-placeholder"
+                                id="react-select-21-placeholder"
+                              >
+                                Museum
+                              </div>
+                              <div
+                                class="museum-selector__input-container css-19bb58m"
+                                data-value=""
+                              >
+                                <input
+                                  aria-activedescendant=""
+                                  aria-autocomplete="list"
+                                  aria-describedby="react-select-21-placeholder"
+                                  aria-expanded="false"
+                                  aria-haspopup="true"
+                                  aria-label="select-museum"
+                                  autocapitalize="none"
+                                  autocomplete="off"
+                                  autocorrect="off"
+                                  class="museum-selector__input"
+                                  id="react-select-21-input"
+                                  role="combobox"
+                                  spellcheck="false"
+                                  style="opacity: 1; width: 100%; grid-area: 1 / 2; min-width: 2px; border: 0px; margin: 0px; outline: 0; padding: 0px;"
+                                  tabindex="0"
+                                  type="text"
+                                  value=""
+                                />
+                              </div>
+                            </div>
+                            <div
+                              class="museum-selector__indicators css-1wy0on6"
+                            >
+                              <span
+                                class="museum-selector__indicator-separator css-1u9des2-indicatorSeparator"
+                              />
+                              <div
+                                aria-hidden="true"
+                                class="museum-selector__indicator museum-selector__dropdown-indicator css-1xc3v61-indicatorContainer"
+                              >
+                                <svg
+                                  aria-hidden="true"
+                                  class="css-tj5bde-Svg"
+                                  focusable="false"
+                                  height="20"
+                                  viewBox="0 0 20 20"
+                                  width="20"
+                                >
+                                  <path
+                                    d="M4.516 7.548c0.436-0.446 1.043-0.481 1.576 0l3.908 3.747 3.908-3.747c0.533-0.481 1.141-0.446 1.574 0 0.436 0.445 0.408 1.197 0 1.615-0.406 0.418-4.695 4.502-4.695 4.502-0.217 0.223-0.502 0.335-0.787 0.335s-0.57-0.112-0.789-0.335c0 0-4.287-4.084-4.695-4.502s-0.436-1.17 0-1.615z"
+                                  />
+                                </svg>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      class="row"
+                    >
+                      <div
+                        class="SearchForm__help-col col-sm-1"
+                        data-testid="search-form-help-col"
+                      >
+                        <i
+                          class="fas fa-info-circle"
+                        />
+                      </div>
+                      <div
+                        class="col-sm-11"
+                      >
+                        <div
+                          class="g-0 row"
+                        >
+                          <div
+                            class="col-sm-8"
+                          >
+                            <div
+                              class="SearchForm__select css-b62m3t-container"
+                            >
+                              <span
+                                class="css-1f43avz-a11yText-A11yText"
+                                id="react-select-26-live-region"
+                              />
+                              <span
+                                aria-atomic="false"
+                                aria-live="polite"
+                                aria-relevant="additions text"
+                                class="css-1f43avz-a11yText-A11yText"
+                                role="log"
+                              />
+                              <div
+                                class="search-form-select__control css-13cymwt-control"
+                              >
+                                <div
+                                  class="search-form-select__value-container css-hlgwow"
+                                >
+                                  <div
+                                    class="search-form-select__placeholder css-1jqq78o-placeholder"
+                                    id="react-select-26-placeholder"
+                                  >
+                                    Period
+                                  </div>
+                                  <div
+                                    class="search-form-select__input-container css-19bb58m"
+                                    data-value=""
+                                  >
+                                    <input
+                                      aria-activedescendant=""
+                                      aria-autocomplete="list"
+                                      aria-describedby="react-select-26-placeholder"
+                                      aria-expanded="false"
+                                      aria-haspopup="true"
+                                      aria-label="select-period"
+                                      autocapitalize="none"
+                                      autocomplete="off"
+                                      autocorrect="off"
+                                      class="search-form-select__input"
+                                      id="react-select-26-input"
+                                      role="combobox"
+                                      spellcheck="false"
+                                      style="opacity: 1; width: 100%; grid-area: 1 / 2; min-width: 2px; border: 0px; margin: 0px; outline: 0; padding: 0px;"
+                                      tabindex="0"
+                                      type="text"
+                                      value=""
+                                    />
+                                  </div>
+                                </div>
+                                <div
+                                  class="search-form-select__indicators css-1wy0on6"
+                                >
+                                  <span
+                                    class="search-form-select__indicator-separator css-1u9des2-indicatorSeparator"
+                                  />
+                                  <div
+                                    aria-hidden="true"
+                                    class="search-form-select__indicator search-form-select__dropdown-indicator css-1xc3v61-indicatorContainer"
+                                  >
+                                    <svg
+                                      aria-hidden="true"
+                                      class="css-tj5bde-Svg"
+                                      focusable="false"
+                                      height="20"
+                                      viewBox="0 0 20 20"
+                                      width="20"
+                                    >
+                                      <path
+                                        d="M4.516 7.548c0.436-0.446 1.043-0.481 1.576 0l3.908 3.747 3.908-3.747c0.533-0.481 1.141-0.446 1.574 0 0.436 0.445 0.408 1.197 0 1.615-0.406 0.418-4.695 4.502-4.695 4.502-0.217 0.223-0.502 0.335-0.787 0.335s-0.57-0.112-0.789-0.335c0 0-4.287-4.084-4.695-4.502s-0.436-1.17 0-1.615z"
+                                      />
+                                    </svg>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div
+                            class="col-sm-4"
+                          >
+                            <div
+                              class="SearchForm__select css-b62m3t-container"
+                            >
+                              <span
+                                class="css-1f43avz-a11yText-A11yText"
+                                id="react-select-27-live-region"
+                              />
+                              <span
+                                aria-atomic="false"
+                                aria-live="polite"
+                                aria-relevant="additions text"
+                                class="css-1f43avz-a11yText-A11yText"
+                                role="log"
+                              />
+                              <div
+                                class="search-form-select__control css-13cymwt-control"
+                              >
+                                <div
+                                  class="search-form-select__value-container css-hlgwow"
+                                >
+                                  <div
+                                    class="search-form-select__placeholder css-1jqq78o-placeholder"
+                                    id="react-select-27-placeholder"
+                                  >
+                                    Modifier
+                                  </div>
+                                  <div
+                                    class="search-form-select__input-container css-19bb58m"
+                                    data-value=""
+                                  >
+                                    <input
+                                      aria-activedescendant=""
+                                      aria-autocomplete="list"
+                                      aria-describedby="react-select-27-placeholder"
+                                      aria-expanded="false"
+                                      aria-haspopup="true"
+                                      aria-label="select-period-modifier"
+                                      autocapitalize="none"
+                                      autocomplete="off"
+                                      autocorrect="off"
+                                      class="search-form-select__input"
+                                      id="react-select-27-input"
+                                      role="combobox"
+                                      spellcheck="false"
+                                      style="opacity: 1; width: 100%; grid-area: 1 / 2; min-width: 2px; border: 0px; margin: 0px; outline: 0; padding: 0px;"
+                                      tabindex="0"
+                                      type="text"
+                                      value=""
+                                    />
+                                  </div>
+                                </div>
+                                <div
+                                  class="search-form-select__indicators css-1wy0on6"
+                                >
+                                  <span
+                                    class="search-form-select__indicator-separator css-1u9des2-indicatorSeparator"
+                                  />
+                                  <div
+                                    aria-hidden="true"
+                                    class="search-form-select__indicator search-form-select__dropdown-indicator css-1xc3v61-indicatorContainer"
+                                  >
+                                    <svg
+                                      aria-hidden="true"
+                                      class="css-tj5bde-Svg"
+                                      focusable="false"
+                                      height="20"
+                                      viewBox="0 0 20 20"
+                                      width="20"
+                                    >
+                                      <path
+                                        d="M4.516 7.548c0.436-0.446 1.043-0.481 1.576 0l3.908 3.747 3.908-3.747c0.533-0.481 1.141-0.446 1.574 0 0.436 0.445 0.408 1.197 0 1.615-0.406 0.418-4.695 4.502-4.695 4.502-0.217 0.223-0.502 0.335-0.787 0.335s-0.57-0.112-0.789-0.335c0 0-4.287-4.084-4.695-4.502s-0.436-1.17 0-1.615z"
+                                      />
+                                    </svg>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      class="row"
+                    >
+                      <div
+                        class="SearchForm__help-col col-sm-1"
+                        data-testid="search-form-help-col"
+                      >
+                        <i
+                          class="fas fa-info-circle"
+                        />
+                      </div>
+                      <div
+                        class="col-sm-11"
+                      >
+                        <div
+                          class="css-b62m3t-container"
+                        >
+                          <span
+                            class="css-1f43avz-a11yText-A11yText"
+                            id="react-select-28-live-region"
+                          />
+                          <span
+                            aria-atomic="false"
+                            aria-live="polite"
+                            aria-relevant="additions text"
+                            class="css-1f43avz-a11yText-A11yText"
+                            role="log"
+                          />
+                          <div
+                            class="provenance-selector__control css-13cymwt-control"
+                          >
+                            <div
+                              class="provenance-selector__value-container css-hlgwow"
+                            >
+                              <div
+                                class="provenance-selector__placeholder css-1jqq78o-placeholder"
+                                id="react-select-28-placeholder"
+                              >
+                                Provenance
+                              </div>
+                              <div
+                                class="provenance-selector__input-container css-19bb58m"
+                                data-value=""
+                              >
+                                <input
+                                  aria-activedescendant=""
+                                  aria-autocomplete="list"
+                                  aria-describedby="react-select-28-placeholder"
+                                  aria-expanded="false"
+                                  aria-haspopup="true"
+                                  aria-label="select-site"
+                                  autocapitalize="none"
+                                  autocomplete="off"
+                                  autocorrect="off"
+                                  class="provenance-selector__input"
+                                  id="react-select-28-input"
+                                  role="combobox"
+                                  spellcheck="false"
+                                  style="opacity: 1; width: 100%; grid-area: 1 / 2; min-width: 2px; border: 0px; margin: 0px; outline: 0; padding: 0px;"
+                                  tabindex="0"
+                                  type="text"
+                                  value=""
+                                />
+                              </div>
+                            </div>
+                            <div
+                              class="provenance-selector__indicators css-1wy0on6"
+                            >
+                              <span
+                                class="provenance-selector__indicator-separator css-1u9des2-indicatorSeparator"
+                              />
+                              <div
+                                aria-hidden="true"
+                                class="provenance-selector__indicator provenance-selector__dropdown-indicator css-1xc3v61-indicatorContainer"
+                              >
+                                <svg
+                                  aria-hidden="true"
+                                  class="css-tj5bde-Svg"
+                                  focusable="false"
+                                  height="20"
+                                  viewBox="0 0 20 20"
+                                  width="20"
+                                >
+                                  <path
+                                    d="M4.516 7.548c0.436-0.446 1.043-0.481 1.576 0l3.908 3.747 3.908-3.747c0.533-0.481 1.141-0.446 1.574 0 0.436 0.445 0.408 1.197 0 1.615-0.406 0.418-4.695 4.502-4.695 4.502-0.217 0.223-0.502 0.335-0.787 0.335s-0.57-0.112-0.789-0.335c0 0-4.287-4.084-4.695-4.502s-0.436-1.17 0-1.615z"
+                                  />
+                                </svg>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      class="row"
+                      data-testid="dossier-form-group"
+                    >
+                      <div
+                        class="SearchForm__help-col col-sm-1"
+                        data-testid="search-form-help-col"
+                      >
+                        <i
+                          class="fas fa-info-circle"
+                        />
+                      </div>
+                      <div
+                        class="col-sm-11"
+                      >
+                        <div
+                          class="css-b62m3t-container"
+                        >
+                          <span
+                            class="css-1f43avz-a11yText-A11yText"
+                            id="react-select-22-live-region"
+                          />
+                          <span
+                            aria-atomic="false"
+                            aria-live="polite"
+                            aria-relevant="additions text"
+                            class="css-1f43avz-a11yText-A11yText"
+                            role="log"
+                          />
+                          <div
+                            class="css-13cymwt-control"
+                          >
+                            <div
+                              class="css-hlgwow"
+                            >
+                              <div
+                                class="css-1jqq78o-placeholder"
+                                id="react-select-22-placeholder"
+                              >
+                                Dossiers
+                              </div>
+                              <div
+                                class="css-19bb58m"
+                                data-value=""
+                              >
+                                <input
+                                  aria-activedescendant=""
+                                  aria-autocomplete="list"
+                                  aria-describedby="react-select-22-placeholder"
+                                  aria-expanded="false"
+                                  aria-haspopup="true"
+                                  aria-label="Dossier"
+                                  autocapitalize="none"
+                                  autocomplete="off"
+                                  autocorrect="off"
+                                  class=""
+                                  id="react-select-22-input"
+                                  role="combobox"
+                                  spellcheck="false"
+                                  style="opacity: 1; width: 100%; grid-area: 1 / 2; min-width: 2px; border: 0px; margin: 0px; outline: 0; padding: 0px;"
+                                  tabindex="0"
+                                  type="text"
+                                  value=""
+                                />
+                              </div>
+                            </div>
+                            <div
+                              class="css-1wy0on6"
+                            >
+                              <span
+                                class="css-1u9des2-indicatorSeparator"
+                              />
+                              <div
+                                aria-hidden="true"
+                                class="css-1xc3v61-indicatorContainer"
+                              >
+                                <svg
+                                  aria-hidden="true"
+                                  class="css-tj5bde-Svg"
+                                  focusable="false"
+                                  height="20"
+                                  viewBox="0 0 20 20"
+                                  width="20"
+                                >
+                                  <path
+                                    d="M4.516 7.548c0.436-0.446 1.043-0.481 1.576 0l3.908 3.747 3.908-3.747c0.533-0.481 1.141-0.446 1.574 0 0.436 0.445 0.408 1.197 0 1.615-0.406 0.418-4.695 4.502-4.695 4.502-0.217 0.223-0.502 0.335-0.787 0.335s-0.57-0.112-0.789-0.335c0 0-4.287-4.084-4.695-4.502s-0.436-1.17 0-1.615z"
+                                  />
+                                </svg>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="row"
+                >
+                  <div
+                    class="col"
+                  >
+                    <div
+                      class="row"
+                    >
+                      <div
+                        class="SearchForm__help-col col-sm-1"
+                      />
+                      <div
+                        class="col"
+                      >
+                        <div
+                          class="btn-toolbar"
+                          role="toolbar"
+                        >
+                          <button
+                            class="w-25 m-1 btn btn-primary"
+                            type="button"
+                          >
+                            Search
+                          </button>
+                          <button
+                            class="m-1 btn btn-primary"
+                            type="button"
+                          >
+                            I'm feeling lucky
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </header>
+        <ul
+          class="nav nav-tabs nav-justified"
+          role="tablist"
+        >
+          <li
+            class="nav-item"
+            role="presentation"
+          >
+            <button
+              aria-controls="react-aria-:r2:-tabpane-library"
+              aria-selected="true"
+              class="nav-link active"
+              data-rr-ui-event-key="library"
+              id="react-aria-:r2:-tab-library"
+              role="tab"
+              type="button"
+            >
+              Library
+            </button>
+          </li>
+          <li
+            class="nav-item"
+            role="presentation"
+          >
+            <button
+              aria-controls="react-aria-:r2:-tabpane-corpus"
+              aria-selected="false"
+              class="nav-link"
+              data-rr-ui-event-key="corpus"
+              id="react-aria-:r2:-tab-corpus"
+              role="tab"
+              tabindex="-1"
+              type="button"
+            >
+              Corpus
+            </button>
+          </li>
+        </ul>
+        <div
+          class="tab-content"
+        >
+          <div
+            aria-labelledby="react-aria-:r2:-tab-library"
+            class="fade tab-pane active show"
+            id="react-aria-:r2:-tabpane-library"
+            role="tabpanel"
+          >
+            <div
+              class="row"
+            >
+              <div
+                class="justify-content-center fragment-result__match-info col"
+              >
+                Found 
+                0 documents
+                . Did you mean
+                 
+                <a
+                  href="/library/search?number=K.2"
+                >
+                  K.2
+                </a>
+                ?
+              </div>
+            </div>
+          </div>
+          <div
+            aria-labelledby="react-aria-:r2:-tab-corpus"
+            class="fade tab-pane"
+            id="react-aria-:r2:-tabpane-corpus"
+            role="tabpanel"
+          >
+            <div
+              class="row"
+            >
+              <div
+                class="justify-content-center fragment-result__match-info col"
+              >
+                Found 0 lines in 0 chapters
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+</div>
+`;

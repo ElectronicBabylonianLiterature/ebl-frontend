@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import _ from 'lodash'
 import { Link } from 'react-router-dom'
 import DisplayToken from 'transliteration/ui/DisplayToken'
@@ -12,15 +12,25 @@ import {
   LineLemmasContext,
 } from './LineLemmasContext'
 import { LemmaPopover } from 'transliteration/ui/WordInfo'
+import RouterLinkModeContext from 'common/ui/RouterLinkModeContext'
 
 export default function GlossaryLine({
   tokens,
+  useRouterLinks,
 }: {
   tokens: readonly GlossaryToken[]
+  useRouterLinks?: boolean
 }): JSX.Element {
+  const useRouterLinksFromContext = useContext(RouterLinkModeContext)
+  const shouldUseRouterLinks =
+    useRouterLinks === undefined ? useRouterLinksFromContext : useRouterLinks
+
   return (
     <div>
-      <GlossaryLemma word={tokens[0].dictionaryWord as DictionaryWord} />
+      <GlossaryLemma
+        word={tokens[0].dictionaryWord as DictionaryWord}
+        useRouterLinks={shouldUseRouterLinks}
+      />
       {', '}
       <GlossaryGuideword word={tokens[0].dictionaryWord as DictionaryWord} />
       {': '}
@@ -38,14 +48,32 @@ export default function GlossaryLine({
   )
 }
 
-function GlossaryLemma({ word }: { word: DictionaryWord }): JSX.Element {
+function GlossaryLemma({
+  word,
+  useRouterLinks,
+}: {
+  word: DictionaryWord
+  useRouterLinks: boolean
+}): JSX.Element {
+  const dictionaryPath = `/dictionary/${word._id}`
   return (
-    <Link to={`/dictionary/${word._id}`}>
-      <span className="Glossary__lemma">{word.lemma.join(' ')}</span>
-      {word.homonym !== 'I' && (
-        <span className="Glossary__homonym"> {word.homonym}</span>
+    <>
+      {useRouterLinks ? (
+        <Link to={dictionaryPath}>
+          <span className="Glossary__lemma">{word.lemma.join(' ')}</span>
+          {word.homonym !== 'I' && (
+            <span className="Glossary__homonym"> {word.homonym}</span>
+          )}
+        </Link>
+      ) : (
+        <a href={dictionaryPath}>
+          <span className="Glossary__lemma">{word.lemma.join(' ')}</span>
+          {word.homonym !== 'I' && (
+            <span className="Glossary__homonym"> {word.homonym}</span>
+          )}
+        </a>
       )}
-    </Link>
+    </>
   )
 }
 

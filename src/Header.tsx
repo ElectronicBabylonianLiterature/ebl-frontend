@@ -8,7 +8,7 @@ import User from './auth/User'
 import './Header.sass'
 import lmuLogo from './LMU_Logo.svg'
 import badwLogo from './BAdW_Logo.svg'
-import ExternalLink from 'common/ExternalLink'
+import ExternalLink from 'common/ui/ExternalLink'
 
 function EblLogo(): JSX.Element {
   return (

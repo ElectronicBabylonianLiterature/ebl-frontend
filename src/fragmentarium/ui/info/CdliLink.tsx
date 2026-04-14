@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react'
-import ExternalLink from 'common/ExternalLink'
+import ExternalLink from 'common/ui/ExternalLink'
 
 interface Props {
   cdliNumber: string

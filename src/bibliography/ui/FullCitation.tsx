@@ -1,7 +1,7 @@
 import React from 'react'
 import { Parser } from 'html-to-react'
-import MarkdownAndHtmlToHtml from 'common/MarkdownAndHtmlToHtml'
-import ExternalLink from 'common/ExternalLink'
+import MarkdownAndHtmlToHtml from 'common/utils/MarkdownAndHtmlToHtml'
+import ExternalLink from 'common/ui/ExternalLink'
 import Reference from 'bibliography/domain/Reference'
 
 import './FullCitation.css'

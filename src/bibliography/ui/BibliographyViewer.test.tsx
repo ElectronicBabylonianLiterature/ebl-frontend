@@ -1,9 +1,9 @@
 import React from 'react'
 import Promise from 'bluebird'
-import { render, screen, fireEvent } from '@testing-library/react'
+import { render, screen, fireEvent, waitFor } from '@testing-library/react'
 import BibliographyViewer from './BibliographyViewer'
 import { matchPath } from 'react-router-dom'
-import { MemoryRouter } from 'react-router'
+import { MemoryRouter } from 'react-router-dom'
 import { createMemoryHistory } from 'history'
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 import Citation from 'bibliography/domain/Citation'
@@ -38,8 +38,6 @@ beforeEach(() => {
   }
   session.isAllowedToWriteBibliography.mockReturnValue(true)
   session.isAllowedToReadBibliography.mockReturnValue(true)
-
-  // // jest.spyOn(history, "push")
 })
 
 describe('BibliographyViewer', () => {
@@ -67,9 +65,11 @@ describe('BibliographyViewer', () => {
   test('navigates to edit page on Edit button click', async () => {
     await renderViewer()
     fireEvent.click(await screen.findByText('Edit'))
-    // expect(history.push).toHaveBeenCalledWith(
-    //   `/bibliography/references/${entryId}/edit`
-    // )
+    await waitFor(() =>
+      expect(history.location.pathname).toBe(
+        `/bibliography/references/${entryId}/edit`,
+      ),
+    )
   })
 
   test('displays download buttons', async () => {

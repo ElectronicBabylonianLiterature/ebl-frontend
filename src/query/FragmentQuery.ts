@@ -1,4 +1,4 @@
-import { Periods, PeriodModifiers } from 'common/period'
+import { Periods, PeriodModifiers } from 'common/utils/period'
 import { ResearchProjects } from 'research-projects/researchProject'
 import { MuseumKey } from 'fragmentarium/domain/museum'
 

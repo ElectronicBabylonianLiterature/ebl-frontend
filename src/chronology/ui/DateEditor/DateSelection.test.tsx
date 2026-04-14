@@ -1,5 +1,6 @@
 import React from 'react'
-import { render, fireEvent, screen, waitFor } from '@testing-library/react'
+import { render, screen, waitFor } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import DateSelection from '../../application/DateSelection'
 import { fragment as mockFragment } from 'test-support/test-fragment'
 import SessionContext from 'auth/SessionContext'
@@ -40,7 +41,7 @@ describe('DateSelection', () => {
     )
 
     const editButton = screen.getByLabelText('Edit date button')
-    fireEvent.click(editButton)
+    await userEvent.click(editButton)
 
     const popover = await screen.findByRole('tooltip')
 
@@ -58,10 +59,10 @@ describe('DateSelection', () => {
     )
 
     const editButton = screen.getByLabelText('Edit date button')
-    fireEvent.click(editButton)
+    await userEvent.click(editButton)
 
     const saveButton = screen.getByText('Save')
-    fireEvent.click(saveButton)
+    await userEvent.click(saveButton)
 
     const popover = screen.queryByTestId('popover-select-date')
     expect(popover).not.toBeInTheDocument()
@@ -77,15 +78,18 @@ describe('DateSelection', () => {
       </SessionContext.Provider>,
     )
     const editButton = screen.getByLabelText('Edit date button')
-    fireEvent.click(editButton)
+    await userEvent.click(editButton)
     const yearInput = screen.getByPlaceholderText('Year')
     const monthInput = screen.getByPlaceholderText('Month')
     const dayInput = screen.getByPlaceholderText('Day')
     const saveButton = screen.getByText('Save')
-    fireEvent.change(yearInput, { target: { value: '2022' } })
-    fireEvent.change(monthInput, { target: { value: '3' } })
-    fireEvent.change(dayInput, { target: { value: '15' } })
-    fireEvent.click(saveButton)
+    await userEvent.clear(yearInput)
+    await userEvent.type(yearInput, '2022')
+    await userEvent.clear(monthInput)
+    await userEvent.type(monthInput, '3')
+    await userEvent.clear(dayInput)
+    await userEvent.type(dayInput, '15')
+    await userEvent.click(saveButton)
     expect(mockUpdateDate).toHaveBeenCalledTimes(1)
     expect(mockUpdateDate.mock.calls[0][0]).toMatchObject({
       day: { isBroken: false, isUncertain: false, value: '15' },
@@ -103,6 +107,7 @@ describe('DateSelection', () => {
   })
 
   test('displays the loading spinner when saving', async () => {
+    mockUpdateDate.mockReturnValueOnce(new Promise(() => undefined))
     render(
       <SessionContext.Provider value={session}>
         <DateSelection
@@ -112,14 +117,15 @@ describe('DateSelection', () => {
       </SessionContext.Provider>,
     )
     const editButton = screen.getByLabelText('Edit date button')
-    fireEvent.click(editButton)
+    await userEvent.click(editButton)
     await waitFor(() => {
       expect(screen.getByPlaceholderText('Year')).toBeInTheDocument()
     })
     const yearInput = screen.getByPlaceholderText('Year')
-    fireEvent.change(yearInput, { target: { value: '189' } })
+    await userEvent.clear(yearInput)
+    await userEvent.type(yearInput, '189')
     const saveButton = screen.getByText('Save')
-    fireEvent.click(saveButton)
+    await userEvent.click(saveButton)
     await waitFor(() => {
       expect(screen.getByText('Saving...')).toBeInTheDocument()
     })

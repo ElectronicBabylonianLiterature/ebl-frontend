@@ -2,7 +2,7 @@ import React, { Component, ReactNode } from 'react'
 import { FormGroup } from 'react-bootstrap'
 
 import TextInput from './TextInput'
-import List from 'common/List'
+import List from 'common/ui/List'
 
 class ListInput extends Component<{ value; onChange; children?: ReactNode }> {
   render(): JSX.Element {
