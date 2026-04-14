@@ -13,7 +13,6 @@ import SessionContext from 'auth/SessionContext'
 import MemorySession, { Session } from 'auth/Session'
 import { queryItemOf } from 'test-support/utils'
 import DossiersService from 'dossiers/application/DossiersService'
-import { waitForSpinnerToBeRemoved } from 'test-support/waitForSpinnerToBeRemoved'
 
 jest.mock('fragmentarium/application/FragmentService')
 jest.mock('dictionary/application/WordService')
@@ -66,7 +65,6 @@ const setup = async (): Promise<void> => {
     </MemoryRouter>,
   ).container
   await screen.findByText('Latest additions:')
-  await waitForSpinnerToBeRemoved(screen)
   await screen.findByText(fragments[0].number)
   await screen.findByText(fragments[1].number)
 }

@@ -591,3 +591,70 @@ test('listAllChapters', async () => {
     false,
   )
 })
+
+describe('findManuscripts provenance preload', () => {
+  afterEach(() => {
+    jest.restoreAllMocks()
+  })
+
+  test('logs provenance preload errors and still returns manuscripts', async () => {
+    const service = new TextService(
+      apiClient,
+      fragmentServiceMock,
+      wordServiceMock,
+      bibliographyServiceMock,
+    )
+    const provenanceError = new Error('provenance request failed')
+    const consoleErrorSpy = jest
+      .spyOn(console, 'error')
+      .mockImplementation(() => undefined)
+
+    apiClient.fetchJson
+      .mockRejectedValueOnce(provenanceError)
+      .mockResolvedValueOnce(chapterDto.manuscripts)
+
+    await expect(service.findManuscripts(chapterId)).resolves.toEqual(
+      chapter.manuscripts,
+    )
+
+    expect(consoleErrorSpy).toHaveBeenCalledWith(
+      'Failed to preload provenances',
+      provenanceError,
+    )
+    expect(apiClient.fetchJson).toHaveBeenCalledWith('/provenances', false)
+    expect(apiClient.fetchJson).toHaveBeenCalledWith(
+      `${chapterUrl}/manuscripts`,
+      false,
+    )
+  })
+
+  test('retries provenance preload after a failed first attempt', async () => {
+    const service = new TextService(
+      apiClient,
+      fragmentServiceMock,
+      wordServiceMock,
+      bibliographyServiceMock,
+    )
+    const provenanceError = new Error('temporary provenance failure')
+
+    jest.spyOn(console, 'error').mockImplementation(() => undefined)
+
+    apiClient.fetchJson
+      .mockRejectedValueOnce(provenanceError)
+      .mockResolvedValueOnce(chapterDto.manuscripts)
+      .mockResolvedValueOnce([])
+      .mockResolvedValueOnce(chapterDto.manuscripts)
+
+    await expect(service.findManuscripts(chapterId)).resolves.toEqual(
+      chapter.manuscripts,
+    )
+    await expect(service.findManuscripts(chapterId)).resolves.toEqual(
+      chapter.manuscripts,
+    )
+
+    const provenanceCalls = apiClient.fetchJson.mock.calls.filter(
+      ([path]) => path === '/provenances',
+    )
+    expect(provenanceCalls).toHaveLength(2)
+  })
+})

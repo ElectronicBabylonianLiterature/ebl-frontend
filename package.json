@@ -25,7 +25,7 @@
     "build": "NODE_OPTIONS=--max_old_space_size=1536 craco build",
     "build:ci-stable": "GENERATE_SOURCEMAP=false DISABLE_ESLINT_PLUGIN=true NODE_OPTIONS=--max_old_space_size=1536 craco build",
     "test": "NODE_OPTIONS=--max_old_space_size=1536 craco test --runInBand",
-    "test:fast": "craco test --maxWorkers=50% --bail --no-coverage",
+    "test:fast": "NODE_OPTIONS=--max_old_space_size=1536 craco test --maxWorkers=1 --workerIdleMemoryLimit=512MB --bail --no-coverage --watch=false",
     "test:diag": "CI=true NODE_OPTIONS=--max_old_space_size=1536 craco test --runInBand --coverage --forceExit --detectOpenHandles --watch=false --logHeapUsage",
     "eject": "react-scripts eject",
     "lighthouse": "node scripts/lighthouse.js",

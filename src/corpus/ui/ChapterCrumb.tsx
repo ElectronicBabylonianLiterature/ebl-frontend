@@ -20,8 +20,16 @@ export default class ChapterCrumb implements Crumb {
   }
 
   get link(): string {
-    return `/corpus/${this.id.textId.genre}/${this.id.textId.category}/${
-      this.id.textId.index
-    }/${stageToAbbreviation(this.id.stage)}/${this.id.name}`
+    const stage = this.id.stage ? stageToAbbreviation(this.id.stage) : ''
+    const parts = [
+      'corpus',
+      this.id.textId.genre,
+      String(this.id.textId.category),
+      String(this.id.textId.index),
+      stage,
+      this.id.name,
+    ].filter((part) => part !== '')
+
+    return `/${parts.join('/')}`
   }
 }

@@ -6,6 +6,19 @@ import { Archaeology, excavationSites, SiteKey } from './archaeology'
 
 import MuseumNumber, { museumNumberToString } from './MuseumNumber'
 
+function getExcavationSite(site?: SiteKey | string) {
+  if (!site) {
+    return excavationSites['']
+  }
+  return (
+    excavationSites[site as SiteKey] || {
+      name: site,
+      abbreviation: '',
+      parent: null,
+    }
+  )
+}
+
 export function createArchaeology(
   dto: Omit<ArchaeologyDto, 'excavationNumber'> & {
     excavationNumber?: MuseumNumber
@@ -16,7 +29,7 @@ export function createArchaeology(
     excavationNumber: dto.excavationNumber
       ? museumNumberToString(dto.excavationNumber)
       : undefined,
-    site: excavationSites[dto.site || ''],
+    site: getExcavationSite(dto.site),
     findspot: dto.findspot ? fromFindspotDto(dto.findspot) : null,
   }
 }
@@ -98,7 +111,7 @@ function fromDateRangeDto(dto: DateRangeDto): DateRange {
 export function fromFindspotDto(dto: FindspotDto): Findspot {
   return new Findspot(
     dto._id,
-    excavationSites[dto.site || ''],
+    getExcavationSite(dto.site),
     dto.sector,
     dto.area,
     dto.building,
@@ -117,7 +130,7 @@ export function toFindspotDto(findspot: Findspot): FindspotDto {
   return {
     ..._.omit(findspot, 'id'),
     _id: findspot.id,
-    site: findspot.site.name as SiteKey,
+    site: (findspot.site?.name || '') as SiteKey,
     plans: findspot.plans.map(toPlanDto),
   }
 }

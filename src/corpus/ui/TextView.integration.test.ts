@@ -54,6 +54,15 @@ afterEach(() => {
 
 beforeEach(() => {
   fakeApi = new FakeApi()
+  fakeApi.allowProvenances([
+    {
+      id: 'assyria',
+      longName: 'Assyria',
+      abbreviation: 'Assa',
+      parent: null,
+      sortKey: 1,
+    },
+  ])
   fakeApi.expectText(textDto)
   const fetchJsonImplementation =
     fakeApi.client.fetchJson.getMockImplementation()
