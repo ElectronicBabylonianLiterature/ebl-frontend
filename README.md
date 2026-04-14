@@ -217,6 +217,16 @@ Manual update is possible if automation fails.
 - Stick to the [good parts](https://smile.amazon.de/JavaScript-Parts-Working-Shallow-Grain/dp/0596517742).
 - Avoid [Common mistakes with React Testing Library](https://kentcdodds.com/blog/common-mistakes-with-react-testing-library).
 
+### Git Blame And Line Endings
+
+The repository keeps historical blame-ignore revisions in `.git-blame-ignore-revs` and enforces LF line endings with `.gitattributes` and `.editorconfig`.
+
+To enable the ignore list in local Git and GitLens, run:
+
+```sh
+git config blame.ignoreRevsFile .git-blame-ignore-revs
+```
+
 ### HTML/CSS
 
 - Try to use semantic HTML.
