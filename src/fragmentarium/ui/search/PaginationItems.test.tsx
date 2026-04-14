@@ -111,9 +111,6 @@ describe('Click through Pagination Component Beginning', () => {
         screen.getByRole('button', { name: page.toString() }),
       )
       expect(await screen.findByText(page.toString())).toBeInTheDocument()
-      // expect(history.push).toHaveBeenCalledWith({
-      //   search: `paginationIndex=${page - 1}`,
-      // })
       await screen.findByRole('button', { name: (page + 3).toString() })
     }
     await screen.findByRole('button', { name: '9' })
@@ -129,9 +126,6 @@ describe('Click through Pagination Component End', () => {
       await userEvent.click(
         screen.getByRole('button', { name: page.toString() }),
       )
-      // expect(history.push).toHaveBeenCalledWith({
-      //   search: `paginationIndex=${page - 1}`,
-      // })
       expect(await screen.findByText(page.toString())).toBeInTheDocument()
       await screen.findByRole('button', {
         name: Math.min(page + 3, 100).toString(),

@@ -75,10 +75,6 @@ async function renderSearchForm(): Promise<void> {
 }
 
 async function expectNavigation(search: string): Promise<void> {
-  // expect(history.push).toHaveBeenCalledWith({
-  //   pathname: '/library/search/',
-  //   search,
-  // })
   await waitFor(() => expect(true).toBe(true))
 }
 

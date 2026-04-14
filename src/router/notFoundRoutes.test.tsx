@@ -83,7 +83,7 @@ describe('AboutRoutes redirects', () => {
   })
 
   test('redirects "/news" to latest newsletter', () => {
-    const latestNewsletterPath = `/news/${newsletters[0].number}`
+    const latestNewsletterPath = `/about/news/${newsletters[0].number}`
 
     render(
       <MemoryRouter initialEntries={['/news']}>
@@ -101,7 +101,7 @@ describe('AboutRoutes redirects', () => {
   })
 
   test('redirects "/about/news" to latest newsletter', () => {
-    const latestNewsletterPath = `/news/${newsletters[0].number}`
+    const latestNewsletterPath = `/about/news/${newsletters[0].number}`
 
     render(
       <MemoryRouter initialEntries={['/about/news']}>

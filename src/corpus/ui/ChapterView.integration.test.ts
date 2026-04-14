@@ -168,12 +168,10 @@ describe('Display chapter', () => {
 
   test('Show notes', () => {
     appDriver.clickByRole('button', 'Show notes', 0)
-    // Notes are shown
   })
 
   test('Show parallels', () => {
     appDriver.clickByRole('button', 'Show parallels', 0)
-    // Parallels are shown
   })
 
   test('Sidebar', async () => {

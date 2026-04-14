@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import ReactMarkdown from 'react-markdown'
 import { Container } from 'react-bootstrap'
-import AppContent from 'common/AppContent'
-import { TextCrumb } from 'common/Breadcrumbs'
 import NewsletterTimeline from 'about/ui/NewsletterTimeline'
 import { useHistory } from 'router/compat'
 import './news.sass'
@@ -67,7 +65,7 @@ If you would like to attend, please register at the
 [link](https://lmu-munich.zoom-x.de/meeting/register/J08aK6HvSTSoZ5gKJqZZ4A).
 `
 
-const newsUrl = '/news/'
+const newsUrl = '/about/news/'
 
 const onHistoryChange = ({
   activeNewsletter,
@@ -127,7 +125,7 @@ export default function AboutNews({
   }
 
   return (
-    <AppContent crumbs={[new TextCrumb('News')]}>
+    <>
       <div className="border border-dark m-3 p-2">
         <ReactMarkdown>{message}</ReactMarkdown>
       </div>
@@ -161,6 +159,6 @@ export default function AboutNews({
           </main>
         </div>
       </Container>
-    </AppContent>
+    </>
   )
 }

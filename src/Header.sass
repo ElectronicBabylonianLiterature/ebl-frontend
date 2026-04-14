@@ -1,9 +1,9 @@
 @import src/fonts
 
 .Header
-  background: linear-gradient(160deg, #0d1b2e 0%, #0f2240 60%, #0d1b2e 100%)
-  border-bottom: 1px solid rgba(255, 255, 255, 0.07)
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3)
+  background: #ffffff
+  border-bottom: 1px solid #dee2e6
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08)
   position: sticky
   top: 0
   z-index: 1000
@@ -12,51 +12,35 @@
     padding: 0.85rem 0
 
   &__toggle
-    border-color: rgba(255, 255, 255, 0.2)
+    border-color: rgba(0, 0, 0, 0.15)
     padding: 0.35rem 0.55rem
-
-    .navbar-toggler-icon
-      filter: invert(1) opacity(0.8)
 
   &__title
     font-size: 1em
     display: flex
-    flex-direction: row
     align-items: center
-    gap: 0.65rem
-    margin: 0
-    line-height: 1
-
-    &-abbreviation
-      color: #ffffff
-      font-size: 2.5em
-      padding: 0.1em 0.22em
-      background: linear-gradient(145deg, #2196f3 0%, #0d5fbc 100%)
-      border-radius: 10px
-      letter-spacing: -0.01em
-      flex-shrink: 0
-      font-weight: 700
-
-      &__caps
-        font-variant-caps: all-small-caps
 
     &-main
-      display: flex
-      flex-direction: column
-      gap: 0
-      text-align: left
-
-      &__line
-        display: block
-        color: rgba(200, 220, 245, 0.85)
-        font-size: 0.72rem
-        font-weight: 400
-        letter-spacing: 0.04em
-        line-height: 1.45
-        white-space: nowrap
+      display: inline-block
+      margin-right: 0.5em
+      text-align: right
+      vertical-align: middle
 
       &__caps
         font-variant-caps: all-small-caps
+        font-size: 1em
+
+    &-abbreviation
+      color: white
+      font-size: 3em
+      padding: 0 0.1em
+      background-color: #0077be
+      vertical-align: middle
+      margin-right: 0.2em
+
+      &__caps
+        font-variant-caps: all-small-caps
+        font-size: 1em
 
   &__nav
     display: flex
@@ -67,9 +51,9 @@
 
     .nav-item
       .nav-link
-        color: rgba(190, 215, 245, 0.72) !important
+        color: rgba(0, 0, 0, 0.55) !important
         font-weight: 500
-        font-size: 0.875rem
+        font-size: 1.0em
         letter-spacing: 0.04em
         padding: 0.45rem 1rem
         border-radius: 6px
@@ -86,21 +70,21 @@
           transform: translateX(-50%) scaleX(0)
           width: 40%
           height: 2px
-          background: linear-gradient(90deg, #42aaff, #1976d2)
+          background: linear-gradient(90deg, #0077be, #005a8f)
           border-radius: 2px
           transition: transform 0.2s ease
 
         &:hover
-          color: rgba(255, 255, 255, 0.95) !important
-          background-color: rgba(66, 170, 255, 0.1)
+          color: rgba(0, 0, 0, 0.85) !important
+          background-color: rgba(0, 119, 190, 0.06)
           text-decoration: none
 
           &::after
             transform: translateX(-50%) scaleX(1)
 
         &.active
-          color: #64b5f6 !important
-          background-color: rgba(66, 170, 255, 0.12)
+          color: #0077be !important
+          background-color: rgba(0, 119, 190, 0.08)
 
           &::after
             transform: translateX(-50%) scaleX(1)
@@ -116,10 +100,9 @@
     align-items: center
     gap: 0.7rem
     padding: 0.45rem 1rem
-    background: rgba(255, 255, 255, 0.07)
-    border: 1px solid rgba(255, 255, 255, 0.12)
+    background: rgba(0, 0, 0, 0.03)
+    border: 1px solid rgba(0, 0, 0, 0.08)
     border-radius: 10px
-    backdrop-filter: blur(6px)
 
   &__partner-logo-link
     display: flex
@@ -136,18 +119,16 @@
   &__lmu-logo
     height: 1.75rem
     width: auto
-    filter: brightness(0) invert(1)
 
   &__badw-logo
     height: 1.75rem
     width: auto
-    filter: brightness(0) invert(1)
 
   &__logo-divider
     display: inline-block
     width: 1px
     height: 1.5rem
-    background: rgba(255, 255, 255, 0.2)
+    background: rgba(0, 0, 0, 0.15)
     flex-shrink: 0
 
   &__user
@@ -178,7 +159,7 @@
       flex-wrap: wrap
       padding: 0.75rem 0
       gap: 0.75rem
-      border-top: 1px solid rgba(255, 255, 255, 0.07)
+      border-top: 1px solid rgba(0, 0, 0, 0.08)
       width: 100%
 
 @media (max-width: 575px)

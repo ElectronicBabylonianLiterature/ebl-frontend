@@ -62,7 +62,6 @@ describe('Editing', () => {
   test('View button redirects to view page', async () => {
     await renderWithRouter(true, false, resultId)
     screen.getByText('View').click()
-    // View button navigates to view page
   })
 
   commonTests(false, resultId)

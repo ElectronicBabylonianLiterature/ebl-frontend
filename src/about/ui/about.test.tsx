@@ -115,6 +115,7 @@ describe('About component', () => {
       'Signs',
       'Dictionary',
       'Bibliography',
+      'News',
     ]
 
     expectedTabs.forEach((tabText) => {

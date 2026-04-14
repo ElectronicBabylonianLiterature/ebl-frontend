@@ -64,8 +64,8 @@ function FragmentariumSearch({
   return (
     <AppContent crumbs={[new SectionCrumb('Library'), new TextCrumb('Search')]}>
       <InfoBanner
-        title="About the Library"
-        description="The eBL Library (formerly Fragmentarium) addresses the fragmentariness of Babylonian literature by providing searchable transliterations of thousands of fragments. Over 1,200 joins have been discovered by the eBL team, helping to reunite texts scattered across museum collections."
+        title="Library"
+        description="Searchable transliterations of thousands of cuneiform fragments, with over 1,200 joins discovered by the eBL team."
         learnMorePath="/about/fragmentarium"
       />
       <SessionContext.Consumer>

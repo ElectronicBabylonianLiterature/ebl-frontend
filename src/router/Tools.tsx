@@ -14,7 +14,8 @@ import MarkupService from 'markup/application/MarkupService'
 import SignService from 'signs/application/SignService'
 import Signs from 'signs/ui/search/Signs'
 import Dictionary from 'dictionary/ui/search/Dictionary'
-import Bibliography from 'bibliography/ui/Bibliography'
+import BibliographyReferencesContent from 'bibliography/ui/BibliographyReferencesContent'
+import AfoRegisterSearchPage from 'afo-register/ui/AfoRegisterSearchPage'
 import WordService from 'dictionary/application/WordService'
 import BibliographyService from 'bibliography/application/BibliographyService'
 import AfoRegisterService from 'afo-register/application/AfoRegisterService'
@@ -24,7 +25,8 @@ import { useHistory } from 'router/compat'
 export const tabIds = [
   'signs',
   'dictionary',
-  'bibliography',
+  'references',
+  'afo-register',
   'date-converter',
   'list-of-kings',
   'cuneiform-converter',
@@ -51,7 +53,8 @@ type ContentMatch = {
 const tabConfig = [
   { id: 'signs', title: 'Signs', icon: '𒀀' },
   { id: 'dictionary', title: 'Dictionary', icon: 'Ꞌ' },
-  { id: 'bibliography', title: 'Bibliography', icon: '※' },
+  { id: 'references', title: 'References', icon: '※' },
+  { id: 'afo-register', title: 'AfO-Register', icon: '⊞' },
   { id: 'date-converter', title: 'Date Converter', icon: '⇌' },
   { id: 'list-of-kings', title: 'List of Kings', icon: '♔' },
   { id: 'cuneiform-converter', title: 'Cuneiform Converter', icon: '𒐕' },
@@ -141,13 +144,15 @@ function getContent({
   const contentByTab: Partial<Record<TabId, React.ReactElement>> = {
     signs: <Signs {...routeProps} signService={signService} />,
     dictionary: <Dictionary wordService={wordService} {...routeProps} />,
-    bibliography: (
-      <Bibliography
+    references: (
+      <BibliographyReferencesContent
         bibliographyService={bibliographyService}
+      />
+    ),
+    'afo-register': (
+      <AfoRegisterSearchPage
         afoRegisterService={afoRegisterService}
         fragmentService={fragmentService}
-        activeTab="references"
-        {...routeProps}
       />
     ),
     'date-converter': (

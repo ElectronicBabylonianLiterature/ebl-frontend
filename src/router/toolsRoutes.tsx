@@ -36,6 +36,12 @@ export default function ToolsRoutes({
       to="/tools/introduction"
       key="tools-root-redirect"
     />,
+    <Redirect
+      exact
+      from="/tools/bibliography"
+      to="/tools/references"
+      key="tools-bibliography-redirect"
+    />,
     <Route
       key="tools-introduction"
       path="/tools/introduction"

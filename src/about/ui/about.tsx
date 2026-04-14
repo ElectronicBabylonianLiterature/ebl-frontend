@@ -10,6 +10,7 @@ import AboutCorpus from 'about/ui/corpus'
 import AboutSigns from 'about/ui/signs'
 import AboutDictionary from 'about/ui/dictionary'
 import AboutBibliography from 'about/ui/bibliography'
+import AboutNews from 'about/ui/news'
 import _ from 'lodash'
 import Breadcrumbs from 'common/Breadcrumbs'
 import { useHistory } from 'router/compat'
@@ -21,6 +22,7 @@ export const tabIds = [
   'signs',
   'dictionary',
   'bibliography',
+  'news',
 ] as const
 export type TabId = (typeof tabIds)[number]
 
@@ -37,10 +39,11 @@ const tabConfig: TabConfig[] = [
   { id: 'signs', title: 'Signs', icon: '𒀀' },
   { id: 'dictionary', title: 'Dictionary', icon: 'Ꞌ' },
   { id: 'bibliography', title: 'Bibliography', icon: '※' },
+  { id: 'news', title: 'News', icon: '✉' },
 ]
 
 const tabContent: Record<
-  TabId,
+  Exclude<TabId, 'news'>,
   (markupService: MarkupService) => React.ReactElement
 > = {
   project: AboutProject,
@@ -54,10 +57,21 @@ const tabContent: Record<
 function getContent({
   markupService,
   activeTab,
+  activeSection,
 }: {
   markupService: MarkupService
   activeTab: TabId
+  activeSection?: string
 }): React.ReactElement {
+  if (activeTab === 'news') {
+    return (
+      <AboutNews
+        activeNewsletterNumber={
+          activeSection ? parseInt(activeSection) : undefined
+        }
+      />
+    )
+  }
   const contentResolver = tabContent[activeTab] ?? tabContent.project
   return contentResolver(markupService)
 }
@@ -85,9 +99,11 @@ function AboutNavItem({
 export default function About({
   markupService,
   activeTab,
+  activeSection,
 }: {
   markupService: MarkupService
   activeTab: TabId
+  activeSection?: string
 }): JSX.Element {
   const history = useHistory()
   const location = useLocation()
@@ -99,6 +115,7 @@ export default function About({
     }
     history.push(`/about/${newTab}`)
     setSelectedTab(newTab)
+    window.scrollTo(0, 0)
   }
 
   useEffect(() => {
@@ -156,7 +173,11 @@ export default function About({
               <h2 className="about-content__title">{currentTab?.title}</h2>
             </div>
             <div className="about-content__body">
-              {getContent({ markupService, activeTab: selectedTab })}
+              {getContent({
+                markupService,
+                activeTab: selectedTab,
+                activeSection,
+              })}
             </div>
           </Col>
         </Row>

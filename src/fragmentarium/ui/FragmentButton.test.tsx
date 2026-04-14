@@ -54,9 +54,7 @@ describe('On failed request', () => {
     await screen.findByText(message)
   })
 
-  it('Does not redirect', async () => {
-    // expect(history.push).not.toHaveBeenCalled()
-  })
+  it('Does not redirect', async () => {})
 })
 
 describe('When unmounting', () => {

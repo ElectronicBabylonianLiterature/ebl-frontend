@@ -39,8 +39,8 @@ export default function Signs({ signService }: Props): JSX.Element {
   return (
     <AppContent crumbs={[new SectionCrumb('Signs')]}>
       <InfoBanner
-        title="About the Signs Interface"
-        description="The eBL sign interface provides a comprehensive, reliable reference tool for cuneiform script, drawing on both digital and traditional publications on cuneiform palaeography. It includes the Oracc Global Sign List, custom fonts by S. Vanserveren, and Borger's Mesopotamisches Zeichenlexikon."
+        title="Signs"
+        description="A comprehensive reference tool for cuneiform script with palaeographic resources."
         learnMorePath="/about/signs"
       />
       <SessionContext.Consumer>

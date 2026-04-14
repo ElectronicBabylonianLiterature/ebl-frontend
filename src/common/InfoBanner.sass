@@ -1,56 +1,49 @@
 .info-banner
-  background: linear-gradient(135deg, rgba(13, 27, 46, 0.04) 0%, rgba(15, 34, 64, 0.07) 100%)
-  border-left: 3px solid #2196f3
-  border-radius: 0 0.375rem 0.375rem 0
-  margin-bottom: 2rem
-  padding: 1.25rem 1.5rem
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06)
-  transition: box-shadow 0.2s ease
-  border-right: none
-  border-top: none
-  border-bottom: none
-
-  &:hover
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1)
+  background: #f8fafc
+  border: 1px solid #dce2ea
+  border-left: 4px solid #1a5fa8
+  border-radius: 10px
+  margin-bottom: 1rem
+  padding: 0.95rem 1.1rem
+  box-shadow: none
+  color: #2d3748
+  line-height: 1.6
 
   &__content
     margin: 0
+    display: flex
+    align-items: baseline
+    gap: 0.5rem
+    flex-wrap: wrap
 
   &__title
-    font-size: 1rem
+    font-size: 0.95rem
     font-weight: 700
-    color: #0f2240
-    margin-bottom: 0.4rem
-    margin-top: 0
-    letter-spacing: 0.01em
+    color: #1a3a6b
+    margin: 0
 
   &__description
     font-size: 0.9rem
-    line-height: 1.65
-    color: #435570
-    margin-bottom: 0.6rem
+    color: #4a5568
+    margin: 0
 
   &__link
     color: #1976d2
     text-decoration: none
     font-weight: 600
     font-size: 0.875rem
-    display: inline-flex
-    align-items: center
-    transition: color 0.2s ease
+    margin-left: auto
+    white-space: nowrap
 
     &:hover
       color: #0d5fbc
-      text-decoration: none
 
 [data-theme="dark"]
   .info-banner
-    background: linear-gradient(135deg, rgba(33, 150, 243, 0.06) 0%, rgba(25, 118, 210, 0.1) 100%)
+    background: rgba(33, 150, 243, 0.06)
+    border-color: #404040
     border-left-color: #42aaff
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3)
-
-    &:hover
-      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4)
+    color: #e8e8e8
 
     &__title
       color: #90caf9

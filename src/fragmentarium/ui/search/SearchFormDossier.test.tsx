@@ -144,7 +144,6 @@ describe('SearchFormDossier', () => {
       />,
     )
 
-    // Wait for component to be fully rendered
     await waitFor(() => {
       expect(screen.getByText(/D001/)).toBeInTheDocument()
     })

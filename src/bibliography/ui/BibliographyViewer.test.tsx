@@ -38,8 +38,6 @@ beforeEach(() => {
   }
   session.isAllowedToWriteBibliography.mockReturnValue(true)
   session.isAllowedToReadBibliography.mockReturnValue(true)
-
-  // // jest.spyOn(history, "push")
 })
 
 describe('BibliographyViewer', () => {
@@ -67,9 +65,6 @@ describe('BibliographyViewer', () => {
   test('navigates to edit page on Edit button click', async () => {
     await renderViewer()
     fireEvent.click(await screen.findByText('Edit'))
-    // expect(history.push).toHaveBeenCalledWith(
-    //   `/bibliography/references/${entryId}/edit`
-    // )
   })
 
   test('displays download buttons', async () => {

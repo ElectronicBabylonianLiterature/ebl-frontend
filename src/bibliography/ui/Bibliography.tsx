@@ -62,8 +62,8 @@ function BibliographyReferences({
   return (
     <>
       <InfoBanner
-        title="About the Bibliography"
-        description="The eBL platform provides a complete and constantly updated bibliography of publications on cuneiform tablets. The collection consists of almost 11,497 entries with over 337,000 references in the Library, including the digitized AfO-Register (Archiv für Orientforschung)."
+        title="Bibliography"
+        description="A complete and constantly updated bibliography of cuneiform publications with over 11,497 entries."
         learnMorePath="/about/bibliography"
       />
       <BibliographyReferencesIntroduction />

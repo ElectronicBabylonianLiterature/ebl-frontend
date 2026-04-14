@@ -14,7 +14,6 @@ import fetchMock from 'jest-fetch-mock'
 
 fetchMock.enableMocks()
 
-// Polyfill for TextEncoder/TextDecoder required by some dependencies
 global.TextEncoder = TextEncoder
 global.TextDecoder = TextDecoder as typeof global.TextDecoder
 

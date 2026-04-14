@@ -27,8 +27,8 @@ export default function Dictionary({
   return (
     <AppContent crumbs={[new SectionCrumb('Dictionary')]}>
       <InfoBanner
-        title="About the Dictionary"
-        description="The eBL dictionary provides a flexible and dependable reference for Akkadian vocabulary, integrating several resources digitized specifically for the eBL project. It includes the full CDA (A Concise Dictionary of Akkadian) with guide words for quick lemma identification."
+        title="Dictionary"
+        description="A flexible reference for Akkadian vocabulary with CDA and guide words."
         learnMorePath="/about/dictionary"
       />
       <SessionContext.Consumer>

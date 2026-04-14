@@ -1,4 +1,5 @@
 import React from 'react'
+import ReactMarkdown from 'react-markdown'
 import { Link } from 'react-router-dom'
 import { Container, Card, Row, Col } from 'react-bootstrap'
 import AppContent from 'common/AppContent'
@@ -123,7 +124,7 @@ function NewsSection(): JSX.Element {
     const contentLines = lines
       .slice(4)
       .filter((line) => line.trim() && !line.startsWith('#'))
-    return contentLines.slice(0, 3).join(' ').substring(0, 280) + '...'
+    return contentLines.slice(0, 3).join('\n').substring(0, 280) + '...'
   }
 
   return (
@@ -136,7 +137,7 @@ function NewsSection(): JSX.Element {
               Stay updated with new features, improvements, and announcements
             </p>
           </div>
-          <Link to="/news" className="introduction-news__view-all-btn">
+          <Link to="/about/news" className="introduction-news__view-all-btn">
             View all updates
             <span className="introduction-news__view-all-arrow">→</span>
           </Link>
@@ -144,7 +145,7 @@ function NewsSection(): JSX.Element {
 
         <div className="introduction-news__featured">
           <Link
-            to={`/news/${latestNewsletter.number}`}
+            to={`/about/news/${latestNewsletter.number}`}
             className="introduction-news__featured-card"
           >
             <div className="introduction-news__featured-badge">
@@ -179,9 +180,11 @@ function NewsSection(): JSX.Element {
               <h3 className="introduction-news__featured-title">
                 Newsletter #{latestNewsletter.number}
               </h3>
-              <p className="introduction-news__featured-preview">
-                {getNewsletterPreview(latestNewsletter.content)}
-              </p>
+              <div className="introduction-news__featured-preview">
+                <ReactMarkdown>
+                  {getNewsletterPreview(latestNewsletter.content)}
+                </ReactMarkdown>
+              </div>
               <div className="introduction-news__featured-cta">
                 Read full newsletter
                 <svg
@@ -203,7 +206,7 @@ function NewsSection(): JSX.Element {
             {olderNewsletters.map((newsletter) => (
               <Link
                 key={newsletter.number}
-                to={`/news/${newsletter.number}`}
+                to={`/about/news/${newsletter.number}`}
                 className="introduction-news__recent-item"
               >
                 <div className="introduction-news__recent-badge">

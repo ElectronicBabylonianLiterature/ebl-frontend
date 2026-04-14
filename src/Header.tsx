@@ -13,18 +13,16 @@ import ExternalLink from 'common/ExternalLink'
 function EblLogo(): JSX.Element {
   return (
     <h1 className="Header__title">
-      <span className="Header__title-abbreviation">
-        e<span className="Header__title-abbreviation__caps">bl</span>
-      </span>
       <span className="Header__title-main">
-        <span className="Header__title-main__line">electronic</span>
-        <span className="Header__title-main__line">
-          <span className="Header__title-main__caps">B</span>abylonian
-        </span>
-        <span className="Header__title-main__line">
-          <span className="Header__title-main__caps">L</span>ibrary
-        </span>
+        electronic
+        <br />
+        <span className="Header__title-main__caps">B</span>abylonian
+        <br />
+        <span className="Header__title-main__caps">L</span>ibrary
       </span>
+      <small className="Header__title-abbreviation">
+        e<small className="Header__title-abbreviation__caps">bl</small>
+      </small>
     </h1>
   )
 }
@@ -85,7 +83,7 @@ export default function Header(): JSX.Element {
   }, [location.pathname])
   return (
     <header className="Header">
-      <Navbar variant="dark" expand="lg">
+      <Navbar variant="light" expand="lg">
         <Container>
           <Navbar.Brand
             as={Link}

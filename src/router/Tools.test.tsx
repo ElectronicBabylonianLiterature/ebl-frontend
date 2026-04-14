@@ -31,11 +31,14 @@ jest.mock('dictionary/ui/search/Dictionary', () => ({
   default: () => <div>Dictionary Mock</div>,
 }))
 
-jest.mock('bibliography/ui/Bibliography', () => ({
+jest.mock('bibliography/ui/BibliographyReferencesContent', () => ({
   __esModule: true,
-  default: ({ activeTab }: { activeTab: string }) => (
-    <div>Bibliography Mock {activeTab}</div>
-  ),
+  default: () => <div>Bibliography References Mock</div>,
+}))
+
+jest.mock('afo-register/ui/AfoRegisterSearchPage', () => ({
+  __esModule: true,
+  default: () => <div>AfO-Register Mock</div>,
 }))
 
 jest.mock('chronology/ui/DateConverter/DateConverterForm', () => ({
@@ -87,9 +90,14 @@ describe('Tools', () => {
     expect(screen.getByText('Signs Mock')).toBeInTheDocument()
   })
 
-  it('renders bibliography references content', () => {
-    renderTools('bibliography')
-    expect(screen.getByText('Bibliography Mock references')).toBeInTheDocument()
+  it('renders references content', () => {
+    renderTools('references')
+    expect(screen.getByText('Bibliography References Mock')).toBeInTheDocument()
+  })
+
+  it('renders afo-register content', () => {
+    renderTools('afo-register')
+    expect(screen.getByText('AfO-Register Mock')).toBeInTheDocument()
   })
 
   it('renders date converter content', () => {

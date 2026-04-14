@@ -166,8 +166,8 @@ function Corpus({
   return (
     <AppContent crumbs={[new SectionCrumb('Corpus')]}>
       <InfoBanner
-        title="About the Corpus"
-        description="The eBL corpus presents the best text reconstructions available, incorporating all previous scholarship and new manuscripts identified by the eBL team. Editions are constantly updated with new discoveries and include comprehensive translations and manuscript references."
+        title="Corpus"
+        description="The best available text reconstructions, constantly updated with new discoveries and comprehensive translations."
         learnMorePath="/about/corpus"
       />
       <Container fluid className="Corpus">

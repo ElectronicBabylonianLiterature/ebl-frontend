@@ -11,6 +11,32 @@ import {
   getKingsByDynasty,
 } from 'chronology/ui/Kings/Kings'
 
+function getDynastyId(dynastyName: string): string {
+  return `dynasty-${dynastyName.replace(/\s+/g, '-').toLowerCase()}`
+}
+
+function DynastyIndex(): JSX.Element {
+  return (
+    <nav className="kings-tool__index-nav">
+      {brinkmanDynasties.map((dynastyName, index) => (
+        <a
+          key={dynastyName}
+          href={`#${getDynastyId(dynastyName)}`}
+          className="kings-tool__index-link"
+          onClick={(event) => {
+            event.preventDefault()
+            document
+              .getElementById(getDynastyId(dynastyName))
+              ?.scrollIntoView({ behavior: 'smooth' })
+          }}
+        >
+          {index + 1}. {dynastyName}
+        </a>
+      ))}
+    </nav>
+  )
+}
+
 export default function ListOfKings(): JSX.Element {
   return (
     <section className="kings-tool">
@@ -28,6 +54,7 @@ export default function ListOfKings(): JSX.Element {
               reflects research current in January 2023."
         />
       </div>
+      <DynastyIndex />
       <BrinkmanKingsTable />
     </section>
   )
@@ -70,7 +97,7 @@ function getDynasty(
   const kingsTags = _kings.map((king) => getKing(king, groups))
   return (
     <Fragment key={dynastyName}>
-      <tr key={dynastyName}>
+      <tr key={dynastyName} id={getDynastyId(dynastyName)}>
         <td
           key={`${dynastyName}_title`}
           className="chronology-display__section kings-tool__dynasty"
