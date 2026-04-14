@@ -12,7 +12,7 @@ RUN apk add --no-cache \
 	make=4.4.1-r3 \
 	pango-dev=1.56.4-r0 \
 	pixman-dev=0.46.4-r0 \
-	python3=3.12.12-r0 \
+	python3=3.12.13-r0 \
 	&& ln -sf /usr/bin/python3 /usr/bin/python
 ENV PYTHON=/usr/bin/python3
 

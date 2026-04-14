@@ -91,3 +91,16 @@ The hardcoded map was **removed** in this session.
   - Added suite-local provenance seeding with `upsertProvenanceRecords(...)` in `beforeEach`.
   - Added provenance state restore via `restoreProvenanceState(...)` in `afterEach`.
 - Re-ran target suite: all ChapterView tests and snapshots now pass.
+
+## 2026-04-14 (Merge conflict follow-up: src/index.tsx)
+
+- After fetching latest `origin/master`, reproduced merge conflict reported by GitHub in `src/index.tsx`.
+- Conflict was between import paths introduced on master (`common/ErrorBoundary`, `common/SentryErrorReporter`) and branch paths (`common/errors/...`) plus stale imports no longer needed after `InjectedApp` extraction.
+- Resolved by keeping valid existing imports:
+  - `common/errors/ErrorBoundary`
+  - `common/errors/SentryErrorReporter`
+- Removed conflict markers and obsolete imports from the conflicting hunk.
+- Marked file as resolved with `git add src/index.tsx`.
+- Re-ran quality gates:
+  - `yarn lint` passed.
+  - `yarn tsc` passed.

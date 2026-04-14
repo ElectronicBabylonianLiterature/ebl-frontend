@@ -38,3 +38,10 @@
 - [x] Restore provenance state after each test to prevent global leakage.
 - [x] Re-validate with `yarn lint`.
 - [x] Re-validate with `yarn tsc`.
+
+## Follow-up: master merge conflict (index.tsx)
+
+- [x] Reproduce and inspect merge conflict after fetching latest `origin/master`.
+- [x] Resolve conflict in `src/index.tsx` preserving valid imports and `InjectedApp` integration.
+- [x] Re-validate with `yarn lint`.
+- [x] Re-validate with `yarn tsc`.

@@ -3,38 +3,17 @@ import { createRoot } from 'react-dom/client'
 import { BrowserRouter as Router } from 'react-router-dom'
 import { useHistory } from 'router/compat'
 import Promise from 'bluebird'
-import App from './App'
 import ErrorBoundary from 'common/errors/ErrorBoundary'
 import * as serviceWorker from './serviceWorker'
 
-import ApiClient from 'http/ApiClient'
-import WordRepository from 'dictionary/infrastructure/WordRepository'
-import FragmentRepository from 'fragmentarium/infrastructure/FragmentRepository'
-import ApiImageRepository from 'fragmentarium/infrastructure/ImageRepository'
-import BibliographyRepository from 'bibliography/infrastructure/BibliographyRepository'
-import FragmentService from 'fragmentarium/application/FragmentService'
-import WordService from 'dictionary/application/WordService'
 import ErrorReporterContext from './ErrorReporterContext'
 import SentryErrorReporter from 'common/errors/SentryErrorReporter'
-import BibliographyService from 'bibliography/application/BibliographyService'
-import TextService from 'corpus/application/TextService'
 import createAuth0Config from 'auth/createAuth0Config'
-import FragmentSearchService from 'fragmentarium/application/FragmentSearchService'
 import { Auth0Provider } from 'auth/react-auth0-spa'
-import { scopeString, useAuthentication } from 'auth/Auth'
-import SignService from 'signs/application/SignService'
-import SignRepository from 'signs/infrastructure/SignRepository'
-import AfoRegisterRepository from 'afo-register/infrastructure/AfoRegisterRepository'
-import MarkupService, {
-  CachedMarkupService,
-} from 'markup/application/MarkupService'
-import AfoRegisterService from 'afo-register/application/AfoRegisterService'
+import { scopeString } from 'auth/Auth'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import './index.sass'
-import { FindspotService } from 'fragmentarium/application/FindspotService'
-import { ApiFindspotRepository } from 'fragmentarium/infrastructure/FindspotRepository'
-import DossiersService from 'dossiers/application/DossiersService'
-import DossiersRepository from 'dossiers/infrastructure/DossiersRepository'
+import InjectedApp from './InjectedApp'
 
 if (process.env.REACT_APP_SENTRY_DSN && process.env.NODE_ENV) {
   SentryErrorReporter.init(
@@ -57,59 +36,6 @@ export type JsonApiClient = {
     body: Record<string, unknown>,
     authorize?: boolean,
   ) => Promise<T>
-}
-
-function InjectedApp(): JSX.Element {
-  const authenticationService = useAuthentication()
-  const apiClient = new ApiClient(authenticationService, errorReporter)
-  const wordRepository = new WordRepository(apiClient)
-  const signsRepository = new SignRepository(apiClient)
-  const fragmentRepository = new FragmentRepository(apiClient)
-  const imageRepository = new ApiImageRepository(apiClient)
-  const bibliographyRepository = new BibliographyRepository(apiClient)
-  const afoRegisterRepository = new AfoRegisterRepository(apiClient)
-  const findspotRepository = new ApiFindspotRepository(apiClient)
-  const dossiersRepository = new DossiersRepository(apiClient)
-
-  const bibliographyService = new BibliographyService(bibliographyRepository)
-  const fragmentService = new FragmentService(
-    fragmentRepository,
-    imageRepository,
-    wordRepository,
-    bibliographyService,
-  )
-  const fragmentSearchService = new FragmentSearchService(fragmentRepository)
-  const wordService = new WordService(wordRepository)
-  const textService = new TextService(
-    apiClient,
-    fragmentService,
-    wordService,
-    bibliographyService,
-  )
-  const signService = new SignService(signsRepository)
-  const markupService = new MarkupService(apiClient, bibliographyService)
-  const cachedMarkupService = new CachedMarkupService(
-    apiClient,
-    bibliographyService,
-  )
-  const afoRegisterService = new AfoRegisterService(afoRegisterRepository)
-  const dossiersService = new DossiersService(dossiersRepository)
-  const findspotService = new FindspotService(findspotRepository)
-  return (
-    <App
-      wordService={wordService}
-      signService={signService}
-      fragmentService={fragmentService}
-      fragmentSearchService={fragmentSearchService}
-      bibliographyService={bibliographyService}
-      textService={textService}
-      markupService={markupService}
-      cachedMarkupService={cachedMarkupService}
-      afoRegisterService={afoRegisterService}
-      dossiersService={dossiersService}
-      findspotService={findspotService}
-    />
-  )
 }
 
 function InjectedAuth0Provider({
@@ -161,7 +87,7 @@ root.render(
         <div className="mh-100">
           <div>
             <InjectedAuth0Provider>
-              <InjectedApp />
+              <InjectedApp errorReporter={errorReporter} />
             </InjectedAuth0Provider>
           </div>
         </div>
