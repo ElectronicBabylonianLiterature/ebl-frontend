@@ -17,9 +17,9 @@ Trello card: "Fixes to date converter" (reported by Zsombor Földi / ilya.o.khai
 
 ### BUG-2 · `isBroken` / `isUncertain` flags not shown on king names
 
-- [ ] Confirm root cause: `MesopotamianDate.fromJson()` discards `isBroken`/`isUncertain` from DTO when merging king from `findKingByOrderGlobal()`
-- [ ] Fix `fromJson()` to preserve `isBroken`/`isUncertain` from the DTO king field
-- [ ] Add / update tests
+- [x] Confirm root cause: `MesopotamianDate.fromJson()` discards `isBroken`/`isUncertain` from DTO when merging king from `findKingByOrderGlobal()`
+- [x] Fix `fromJson()` to preserve `isBroken`/`isUncertain` from the DTO king field
+- [x] Add / update tests
 
 ### BUG-3 · `< >` in year value breaks calendar calculation
 

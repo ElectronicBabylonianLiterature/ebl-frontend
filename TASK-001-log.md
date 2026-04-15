@@ -232,3 +232,19 @@ Correct behaviour: Year 0 of Nabonidus is the accession year, which is the same 
     - `src/chronology/ui/DateEditor/DateSelection.test.tsx`
     - `src/chronology/ui/DateEditor/DateSelectionInput.test.tsx`
     - `src/fragmentarium/ui/fragment/CuneiformFragment.test.tsx`
+
+---
+
+## 2026-04-15 — BUG-2 implementation completed (`isBroken`/`isUncertain` on king)
+
+- Implemented fix in `src/chronology/domain/Date.ts` inside `MesopotamianDate.fromJson(...)`:
+  - Continue resolving king metadata via `findKingByOrderGlobal(orderGlobal)`.
+  - Preserve DTO-specific king flags by merging `isBroken` and `isUncertain` from `dateJson.king` into the resolved king object.
+  - Keep explicit `orderGlobal` assignment on the merged king object to satisfy strict typing (`KingDateField`).
+- Added regression coverage in `src/chronology/domain/Date.test.ts`:
+  - New test: `preserves king broken and uncertain flags from JSON`.
+  - Verifies that `MesopotamianDate.fromJson(...)` retains `king.isBroken` and `king.isUncertain` while still resolving king name by `orderGlobal`.
+- Validation completed:
+  - `yarn tsc` passed.
+  - `yarn lint` passed.
+  - `yarn test src/chronology/domain/Date.test.ts --no-coverage` passed (`28` tests).

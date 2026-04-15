@@ -64,6 +64,25 @@ describe('MesopotamianDate', () => {
       expect(date.isSeleucidEra).toBe(true)
       expect(date.ur3Calendar).toBe(Ur3Calendar.UR)
     })
+
+    it('preserves king broken and uncertain flags from JSON', () => {
+      const json = {
+        year: { value: '2023' },
+        month: { value: '5' },
+        day: { value: '12' },
+        king: {
+          orderGlobal: 1,
+          isBroken: true,
+          isUncertain: true,
+        },
+      }
+
+      const date = MesopotamianDate.fromJson(json)
+
+      expect(date.king?.name).toBe('Sargon')
+      expect(date.king?.isBroken).toBe(true)
+      expect(date.king?.isUncertain).toBe(true)
+    })
   })
 
   describe('converts from json with missing properties', () => {
