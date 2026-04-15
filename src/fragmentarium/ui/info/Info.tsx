@@ -41,8 +41,8 @@ export default function Info({
     onSave(fragmentService.updateGenres(fragment.number, genres))
   const updateScript = (script: Script) =>
     fragmentService.updateScript(fragment.number, script)
-  const updateDate = (date) =>
-    fragmentService.updateDate(fragment.number, date.toDto())
+  const updateDate = (date?: MesopotamianDate): Bluebird<Fragment> =>
+    fragmentService.updateDate(fragment.number, date?.toDto())
   const updateDatesInText = (
     datesInText: readonly MesopotamianDate[],
   ): Bluebird<Fragment> =>

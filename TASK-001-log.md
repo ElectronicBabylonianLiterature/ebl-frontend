@@ -190,3 +190,45 @@ Correct behaviour: Year 0 of Nabonidus is the accession year, which is the same 
 - Finalized the initial investigation package for TASK-001.
 - Captured root-cause analysis, blame history, confirmed reproduction examples, and product decisions.
 - Prepared the task documentation for a standalone documentation commit before implementation starts.
+
+---
+
+## 2026-04-15 — BUG-1 implementation started
+
+- Implemented the delete-date fix at the failure boundary in `src/fragmentarium/ui/info/Info.tsx` by changing the callback to pass `date?.toDto()` instead of unconditionally calling `.toDto()`.
+- Propagated the deletion contract through `FragmentService` and `ApiFragmentRepository` so `updateDate(number, undefined)` is a typed, supported path.
+- Added a fragment-level regression test in `src/fragmentarium/ui/fragment/CuneiformFragment.test.tsx` to verify that clicking `Delete` calls `fragmentService.updateDate(fragment.number, undefined)`.
+- Added a service-level regression test in `src/fragmentarium/application/FragmentService.test.ts` to verify the repository receives `undefined` on deletion.
+- Validation completed:
+  - `yarn lint` passed.
+  - `yarn tsc` passed.
+  - Targeted regression tests passed (`FragmentService.test.ts`, `CuneiformFragment.test.tsx`).
+  - Full suite passed (`292` suites, `2885` passed tests, `49` passed snapshots).
+
+### Additional gate-related stabilization (non-BUG-1 logic)
+
+- Full-suite console-noise gate initially reported provenance preload errors in integration tests that did not provide a `/provenances` API response.
+- Updated test setup only (no production logic change):
+  - `src/corpus/ui/ChapterView.integration.test.ts` now allows provenance preload via `FakeApi.allowProvenances([...provenanceSnapshot])`.
+  - `src/App.test.ts` now allows provenance preload via `FakeApi.allowProvenances([])`.
+- Re-baselined two affected snapshots in `src/corpus/ui/__snapshots__/ChapterView.integration.test.ts.snap` caused by deterministic provenance data being available during render.
+- Follow-up typing fix: converted provenance snapshot records to plain DTO-shaped objects before passing them to `FakeApi.allowProvenances(...)` in `src/corpus/ui/ChapterView.integration.test.ts` to satisfy strict TypeScript assignability.
+
+---
+
+## 2026-04-15 — BUG-1 follow-up regression fix (date editor auto-scroll)
+
+- Reported issue: clicking `Edit date` in library view scrolled the page to the bottom before/while opening the date editor popover.
+- Root cause: multiple `react-select` fields rendered inside the date editor popover used `autoFocus={true}`. On open, browser focus moved into those controls and forced viewport scrolling.
+- Implemented fix:
+  - `src/chronology/ui/DateEditor/DateSelectionInput.tsx`: set Ur3 calendar select `autoFocus={false}`.
+  - `src/chronology/ui/DateEditor/Eponyms.tsx`: set eponym select `autoFocus={false}`.
+  - `src/chronology/ui/Kings/Kings.tsx`: set king select `autoFocus={false}`.
+  - `src/chronology/application/DateSelection.tsx`: keep edit button click handler explicit with `event.preventDefault()` and ensure save/delete buttons are `type="button"`.
+- Validation completed:
+  - `yarn tsc` passed.
+  - `yarn lint` passed.
+  - Targeted tests passed:
+    - `src/chronology/ui/DateEditor/DateSelection.test.tsx`
+    - `src/chronology/ui/DateEditor/DateSelectionInput.test.tsx`
+    - `src/fragmentarium/ui/fragment/CuneiformFragment.test.tsx`

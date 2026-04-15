@@ -8,10 +8,12 @@ Trello card: "Fixes to date converter" (reported by Zsombor Földi / ilya.o.khai
 
 ### BUG-1 · Delete date hangs / does nothing
 
-- [ ] Trace and confirm the crash path in `Info.tsx updateDate`
-- [ ] Fix `updateDate` to handle `undefined` (deletion) without calling `.toDto()` on `undefined`
-- [ ] Verify `FragmentService.updateDate` / `FragmentRepository.updateDate` accept an optional DTO
-- [ ] Add / update tests
+- [x] Trace and confirm the crash path in `Info.tsx updateDate`
+- [x] Fix `updateDate` to handle `undefined` (deletion) without calling `.toDto()` on `undefined`
+- [x] Verify `FragmentService.updateDate` / `FragmentRepository.updateDate` accept an optional DTO
+- [x] Add / update tests
+- [x] Fix library date-editor auto-scroll when opening edit date popover
+- [x] Add / update tests for the date-editor scroll regression path
 
 ### BUG-2 · `isBroken` / `isUncertain` flags not shown on king names
 
@@ -46,6 +48,6 @@ Trello card: "Fixes to date converter" (reported by Zsombor Földi / ilya.o.khai
 
 ### Gates (must pass before PR)
 
-- [ ] `yarn lint` — no errors
-- [ ] `yarn tsc` — no errors
+- [x] `yarn lint` — no errors
+- [x] `yarn tsc` — no errors
 - [ ] Full test suite — no failures, no console warnings/errors

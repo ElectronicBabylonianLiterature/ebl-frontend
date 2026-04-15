@@ -81,6 +81,7 @@ export function DateEditor({
       className="m-1"
       variant="danger"
       disabled={false}
+      type="button"
       onClick={() => state.saveDate(undefined, index)}
     >
       Delete
@@ -96,6 +97,7 @@ export function DateEditor({
     <Button
       className="m-1"
       disabled={!isSelectedDateValid}
+      type="button"
       onClick={() => state.saveDate(state.getDate(), index)}
       aria-label="Save date button"
     >
@@ -167,6 +169,11 @@ export default function DateSelection({
   const [date, setDate] = useState<MesopotamianDate | undefined>(dateProp)
   const [isSaving, setIsSaving] = useState(false)
 
+  const handleEditClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault()
+    setIsDisplayed(true)
+  }
+
   const dateEditor = (
     <DateEditor
       updateDate={updateDate}
@@ -189,7 +196,7 @@ export default function DateSelection({
           <DateDisplay date={date} />
           <MetaEditButton
             buttonRef={target}
-            onClick={() => setIsDisplayed(true)}
+            onClick={handleEditClick}
             aria-label="Edit date button"
           />
         </div>
@@ -201,7 +208,7 @@ export default function DateSelection({
       {`Date:${date ? '' : ' -'}`}
       <MetaEditButton
         buttonRef={target}
-        onClick={() => setIsDisplayed(true)}
+        onClick={handleEditClick}
         aria-label="Edit date button"
       />
       {date && <DateDisplay date={date} />}

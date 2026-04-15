@@ -161,7 +161,7 @@ function getUr3CalendarField({
         setUr3Calendar(Ur3Calendar[option?.value as keyof typeof Ur3Calendar])
       }}
       isSearchable={true}
-      autoFocus={true}
+      autoFocus={false}
       placeholder="Calendar"
       value={value}
     />

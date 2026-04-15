@@ -53,7 +53,7 @@ export function EponymField({
         setEponym(option?.value)
       }}
       isSearchable={true}
-      autoFocus={true}
+      autoFocus={false}
       placeholder="Eponym"
       value={
         eponym && eponym.phase === assyrianPhase

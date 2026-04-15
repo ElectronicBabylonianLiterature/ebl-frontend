@@ -35,7 +35,9 @@ test.each([
   '/datenschutz',
 ])('%s renders without crashing', async (route) => {
   window.scrollTo = jest.fn()
-  const fakeApi = new FakeApi().allowStatistics(statisticsFactory.build())
+  const fakeApi = new FakeApi()
+    .allowStatistics(statisticsFactory.build())
+    .allowProvenances([])
   const appDriver = new AppDriver(fakeApi.client).withPath(route).render()
   await appDriver.waitForTextToDisappear('Loading...')
 })

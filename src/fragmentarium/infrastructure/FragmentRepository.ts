@@ -307,7 +307,10 @@ class ApiFragmentRepository
       .then(createFragment)
   }
 
-  updateDate(number: string, date: MesopotamianDateDto): Promise<Fragment> {
+  updateDate(
+    number: string,
+    date: MesopotamianDateDto | undefined,
+  ): Promise<Fragment> {
     const path = createFragmentPath(number, 'date')
     return this.apiClient
       .postJson<FragmentDto>(path, { date })
