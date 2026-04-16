@@ -5,12 +5,20 @@ import { findKingByOrderGlobal } from 'chronology/ui/Kings/Kings'
 export class MesopotamianDate extends MesopotamianDateString {
   static fromJson(dateJson: MesopotamianDateDto): MesopotamianDate {
     const kingOrderGlobal = dateJson?.king?.orderGlobal
-    const king = kingOrderGlobal
-      ? findKingByOrderGlobal(kingOrderGlobal)
-      : undefined
+    let king
+    if (kingOrderGlobal !== undefined) {
+      const kingFromOrderGlobal = findKingByOrderGlobal(kingOrderGlobal)
+      if (kingFromOrderGlobal) {
+        king = {
+          ...kingFromOrderGlobal,
+          orderGlobal: kingOrderGlobal,
+          isBroken: dateJson?.king?.isBroken,
+          isUncertain: dateJson?.king?.isUncertain,
+        }
+      }
+    }
     return new MesopotamianDate({ ...dateJson, ...{ king: king ?? undefined } })
   }
-  ˆ
 
   toDto(): MesopotamianDateDto {
     let king

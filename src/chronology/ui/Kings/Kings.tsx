@@ -57,7 +57,7 @@ export function KingField({
         onKingFieldChange(option, setKing, setIsCalenderFieldDisplayed)
       }
       isSearchable={true}
-      autoFocus={true}
+      autoFocus={false}
       placeholder="King"
       value={king ? getCurrentKingOption(king) : undefined}
     />

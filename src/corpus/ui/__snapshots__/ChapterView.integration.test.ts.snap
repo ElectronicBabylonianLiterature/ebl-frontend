@@ -1280,7 +1280,7 @@ exports[`Display chapter Show manuscripts 1`] = `
                             <span
                               class="reference-popover__citation"
                             >
-                              Std1
+                              1
                             </span>
                           </span>
                         </td>
@@ -1369,7 +1369,7 @@ exports[`Display chapter Show manuscripts 1`] = `
                             <span
                               class="reference-popover__citation"
                             >
-                              NipUr3Sch1
+                              Ur3Sch1
                             </span>
                           </span>
                         </td>
@@ -1400,7 +1400,7 @@ exports[`Display chapter Show manuscripts 1`] = `
                             <span
                               class="reference-popover__citation"
                             >
-                              NipUr3Sch1
+                              Ur3Sch1
                             </span>
                           </span>
                         </td>
@@ -1432,7 +1432,7 @@ exports[`Display chapter Show manuscripts 1`] = `
                             <span
                               class="reference-popover__citation"
                             >
-                              NipUr3Par1
+                              Ur3Par1
                             </span>
                           </span>
                         </td>
@@ -3732,9 +3732,7 @@ exports[`Display chapter Sidebar 1`] = `
                           >
                             <span
                               class="reference-popover__citation"
-                            >
-                              Std
-                            </span>
+                            />
                           </span>
                         </td>
                         <td>
@@ -3975,9 +3973,7 @@ exports[`Display chapter Sidebar 1`] = `
                           >
                             <span
                               class="reference-popover__citation"
-                            >
-                              Std
-                            </span>
+                            />
                           </span>
                         </td>
                         <td>
