@@ -1,15 +1,15 @@
 import React from 'react'
 import { Container, Row, Col } from 'react-bootstrap'
-import AppContent from 'common/AppContent'
+import AppContent from 'common/ui/AppContent'
 import Statistics from './Statistics'
-import ApiImage from 'common/ApiImage'
+import ApiImage from 'common/ui/ApiImage'
 import SessionContext from 'auth/SessionContext'
 import SearchForm, { SearchFormProps } from 'fragmentarium/ui/SearchForm'
 import LatestTransliterations from './LatestTransliterations'
 import NeedsRevision from './NeedsRevision'
 import 'fragmentarium/ui/front-page/Fragmentarium.css'
 import { Session } from 'auth/Session'
-import { SectionCrumb } from 'common/Breadcrumbs'
+import { SectionCrumb } from 'common/ui/Breadcrumbs'
 
 function Fragmentarium({
   fragmentService,

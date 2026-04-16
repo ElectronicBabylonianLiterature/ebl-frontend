@@ -1,19 +1,19 @@
 import React, { useEffect, useState } from 'react'
 import { Container, Row, Col, Nav } from 'react-bootstrap'
 import { useLocation } from 'react-router-dom'
-import { TextCrumb } from 'common/Breadcrumbs'
+import { useHistory } from 'router/compat'
+import { TextCrumb } from 'common/ui/Breadcrumbs'
 import MarkupService from 'markup/application/MarkupService'
 import 'about/ui/about.sass'
 import AboutProject from 'about/ui/project'
-import AboutLibrary from 'about/ui/library'
+import AboutFragmentarium from 'about/ui/fragmentarium'
 import AboutCorpus from 'about/ui/corpus'
 import AboutSigns from 'about/ui/signs'
 import AboutDictionary from 'about/ui/dictionary'
 import AboutBibliography from 'about/ui/bibliography'
 import AboutNews from 'about/ui/news'
 import _ from 'lodash'
-import Breadcrumbs from 'common/Breadcrumbs'
-import { useHistory } from 'router/compat'
+import Breadcrumbs from 'common/ui/Breadcrumbs'
 
 export const tabIds = [
   'project',
@@ -47,7 +47,7 @@ const tabContent: Record<
   (markupService: MarkupService) => React.ReactElement
 > = {
   project: AboutProject,
-  library: AboutLibrary,
+  library: AboutFragmentarium,
   corpus: AboutCorpus,
   signs: AboutSigns,
   dictionary: AboutDictionary,

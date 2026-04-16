@@ -2,11 +2,11 @@ import React, { Fragment } from 'react'
 import Bluebird from 'bluebird'
 import { Col, Row } from 'react-bootstrap'
 import SignService from 'signs/application/SignService'
-import MarkdownAndHtmlToHtml from 'common/MarkdownAndHtmlToHtml'
+import MarkdownAndHtmlToHtml from 'common/utils/MarkdownAndHtmlToHtml'
 import withData from 'http/withData'
 import Sign from 'signs/domain/Sign'
 import { flatten } from 'lodash'
-import { LiteratureRedirectBox } from 'common/LiteratureRedirectBox'
+import { LiteratureRedirectBox } from 'common/ui/LiteratureRedirectBox'
 import { EmptySection } from 'dictionary/ui/display/EmptySection'
 
 function filterLogogramsData(

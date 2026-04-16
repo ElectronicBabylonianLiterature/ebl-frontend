@@ -3,10 +3,7 @@ import { render, RenderResult, screen } from '@testing-library/react'
 import Promise from 'bluebird'
 import _ from 'lodash'
 import withData, { Config, WithData } from './withData'
-import ErrorReporterContext, {
-  ErrorReporter,
-  ConsoleErrorReporter,
-} from 'ErrorReporterContext'
+import ErrorReporterContext, { ErrorReporter } from 'ErrorReporterContext'
 import { silenceConsoleErrors } from 'setupTests'
 
 interface Props {
@@ -26,7 +23,7 @@ let getter: jest.Mock<Promise<string>, [Props]>
 let ComponentWithData: React.ComponentType<Props>
 let InnerComponent: jest.Mock<JSX.Element, [WithData<Props, string>]>
 
-const errorReportingService: ErrorReporter = new ConsoleErrorReporter()
+let errorReportingService: ErrorReporter
 
 function renderWithData(): RenderResult {
   return render(
@@ -57,6 +54,12 @@ beforeEach(async () => {
     getter,
     config,
   )
+  errorReportingService = {
+    captureException: jest.fn(),
+    showReportDialog: jest.fn(),
+    setUser: jest.fn(),
+    clearScope: jest.fn(),
+  }
 })
 
 describe('On successful get', () => {

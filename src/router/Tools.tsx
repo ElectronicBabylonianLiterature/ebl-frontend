@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { Container, Row, Col, Nav } from 'react-bootstrap'
 import { useLocation } from 'react-router-dom'
-import { TextCrumb } from 'common/Breadcrumbs'
+import { TextCrumb } from 'common/ui/Breadcrumbs'
 import _ from 'lodash'
-import Breadcrumbs from 'common/Breadcrumbs'
+import Breadcrumbs from 'common/ui/Breadcrumbs'
 import './tools.sass'
 import DateConverterForm, {
   AboutDateConverter,

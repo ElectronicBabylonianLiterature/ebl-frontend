@@ -1,7 +1,7 @@
 import React from 'react'
 import _ from 'lodash'
 import { Popover, Col } from 'react-bootstrap'
-import HelpTrigger from 'common/HelpTrigger'
+import HelpTrigger from 'common/ui/HelpTrigger'
 import { helpColSize } from './SearchForm'
 
 interface HelpPopoverProps {

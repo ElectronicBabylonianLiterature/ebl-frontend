@@ -1,6 +1,6 @@
 import { Col, Row } from 'react-bootstrap'
 import React from 'react'
-import ExternalLink from 'common/ExternalLink'
+import ExternalLink from 'common/ui/ExternalLink'
 import 'signs/ui/display/SignHeading.css'
 
 export default function SignHeading({

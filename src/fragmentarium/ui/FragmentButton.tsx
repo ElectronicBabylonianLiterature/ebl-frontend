@@ -2,10 +2,10 @@ import React, { useState } from 'react'
 import { Button } from 'react-bootstrap'
 import { useNavigate } from 'react-router-dom'
 import Promise from 'bluebird'
-import ErrorAlert from 'common/ErrorAlert'
-import Spinner from 'common/Spinner'
+import ErrorAlert from 'common/errors/ErrorAlert'
+import Spinner from 'common/ui/Spinner'
 import { createFragmentUrl } from './FragmentLink'
-import usePromiseEffect from 'common/usePromiseEffect'
+import usePromiseEffect from 'common/hooks/usePromiseEffect'
 import { FragmentInfo } from 'fragmentarium/domain/fragment'
 
 type Props = {

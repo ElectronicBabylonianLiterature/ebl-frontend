@@ -13,7 +13,7 @@ import { referenceDtoFactory } from 'test-support/bibliography-fixtures'
 import userEvent from '@testing-library/user-event'
 import Citation from 'bibliography/domain/Citation'
 
-jest.mock('common/MarkdownAndHtmlToHtml', () => ({
+jest.mock('common/utils/MarkdownAndHtmlToHtml', () => ({
   __esModule: true,
   default: ({ markdownAndHtml }: { markdownAndHtml: string }) => (
     <div>{markdownAndHtml}</div>

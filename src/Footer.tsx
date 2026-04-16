@@ -1,7 +1,7 @@
 import React from 'react'
 import { Container, Row, Col } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
-import ExternalLink from 'common/ExternalLink'
+import ExternalLink from 'common/ui/ExternalLink'
 import './Footer.sass'
 
 type FooterLink = {

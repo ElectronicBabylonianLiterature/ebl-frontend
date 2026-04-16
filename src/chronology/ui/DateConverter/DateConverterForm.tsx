@@ -3,7 +3,7 @@ import { Form, Row, Col } from 'react-bootstrap'
 import DateConverter from 'chronology/domain/DateConverter'
 import { sections } from 'chronology/application/DateConverterFormFieldData'
 import './DateConverterForm.sass'
-import { Markdown } from 'common/Markdown'
+import { Markdown } from 'common/ui/Markdown'
 import MarkupService from 'markup/application/MarkupService'
 import Markup from 'markup/ui/markup'
 import {

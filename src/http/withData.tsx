@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import Promise from 'bluebird'
-import Spinner from 'common/Spinner'
-import ErrorAlert from 'common/ErrorAlert'
-import ErrorBoundary from 'common/ErrorBoundary'
+import Spinner from 'common/ui/Spinner'
+import ErrorAlert from 'common/errors/ErrorAlert'
+import ErrorBoundary from 'common/errors/ErrorBoundary'
 
 export type WithoutData<T> = Omit<T, 'data'>
 

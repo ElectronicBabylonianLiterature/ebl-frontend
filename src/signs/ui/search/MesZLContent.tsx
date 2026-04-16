@@ -1,8 +1,8 @@
 import React from 'react'
 import './Signs.sass'
 import { Link } from 'react-router-dom'
-import MarkdownAndHtmlToHtml from 'common/MarkdownAndHtmlToHtml'
-import { LiteratureRedirectBox } from 'common/LiteratureRedirectBox'
+import MarkdownAndHtmlToHtml from 'common/utils/MarkdownAndHtmlToHtml'
+import { LiteratureRedirectBox } from 'common/ui/LiteratureRedirectBox'
 
 function splitMesZl(
   mesZl: string,

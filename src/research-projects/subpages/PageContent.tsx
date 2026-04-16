@@ -1,6 +1,6 @@
 import React, { PropsWithChildren } from 'react'
-import AppContent from 'common/AppContent'
-import { ProjectCrumb, SectionCrumb, TextCrumb } from 'common/Breadcrumbs'
+import AppContent from 'common/ui/AppContent'
+import { ProjectCrumb, SectionCrumb, TextCrumb } from 'common/ui/Breadcrumbs'
 import { Container, Row, Col, Nav } from 'react-bootstrap'
 import { ResearchProject } from 'research-projects/researchProject'
 import TocLink from 'research-projects/subpages/TocLink'

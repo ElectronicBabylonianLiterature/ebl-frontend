@@ -1,10 +1,10 @@
 import React, { Fragment } from 'react'
-import { Markdown } from 'common/Markdown'
+import { Markdown } from 'common/ui/Markdown'
 import Table from 'react-bootstrap/Table'
 import _ from 'lodash'
 import 'chronology/ui/Kings/Kings.sass'
 import { Popover } from 'react-bootstrap'
-import HelpTrigger from 'common/HelpTrigger'
+import HelpTrigger from 'common/ui/HelpTrigger'
 import {
   King,
   brinkmanDynasties,

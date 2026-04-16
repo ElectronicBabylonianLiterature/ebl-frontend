@@ -11,7 +11,7 @@ import {
   ParallelFragment,
   ParallelText,
 } from 'transliteration/domain/parallel-line'
-import { stageToAbbreviation } from 'common/period'
+import { stageToAbbreviation } from 'common/utils/period'
 
 test.each([
   [parallel.fragment, 'F X.1 1′', "1'"],

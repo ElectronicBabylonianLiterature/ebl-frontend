@@ -53,7 +53,13 @@ describe('Fragmentarium', () => {
 
   const renderFragmentarium = async (): Promise<void> => {
     const { container: renderedContainer } = render(
-      <MemoryRouter initialEntries={['/library']}>
+      <MemoryRouter
+        future={Object.fromEntries([
+          ['v7_startTransition', true],
+          ['v7_relativeSplatPath', true],
+        ])}
+        initialEntries={['/library']}
+      >
         <SessionContext.Provider value={session}>
           <DictionaryContext.Provider value={wordService}>
             <Fragmentarium

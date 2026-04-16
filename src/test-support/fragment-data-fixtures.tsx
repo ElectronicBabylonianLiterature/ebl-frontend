@@ -8,7 +8,7 @@ import {
 import { RecordEntry } from 'fragmentarium/domain/RecordEntry'
 import Folio from 'fragmentarium/domain/Folio'
 import { referenceFactory } from './bibliography-fixtures'
-import { periodModifiers, periods } from 'common/period'
+import { periodModifiers, periods } from 'common/utils/period'
 import { ExternalNumbers } from 'fragmentarium/domain/FragmentDtos'
 import {
   Archaeology,
@@ -16,7 +16,7 @@ import {
   ExcavationPlan,
   Findspot,
   PartialDate,
-  excavationSites,
+  ExcavationSite,
 } from 'fragmentarium/domain/archaeology'
 import { FolioPagerData, FragmentAndFolio } from 'fragmentarium/domain/pager'
 
@@ -74,6 +74,13 @@ const collection = [
   'Lagash',
   'Assur',
   'Huzirina',
+]
+
+const testExcavationSites: readonly ExcavationSite[] = [
+  { name: 'Babylon', abbreviation: 'Bab', parent: 'Babylonia' },
+  { name: 'Periphery', abbreviation: '', parent: null },
+  { name: 'Assyria', abbreviation: 'Assa', parent: null },
+  { name: '‘Anah', abbreviation: 'Anh', parent: 'Periphery' },
 ]
 
 export function fragmentCollection(
@@ -235,7 +242,7 @@ export const findspotFactory = Factory.define<Findspot>(
 
     return new Findspot(
       sequence,
-      chance.pickone(Object.values(excavationSites)),
+      chance.pickone(testExcavationSites),
       chance.word(),
       chance.word(),
       chance.word(),
@@ -256,8 +263,9 @@ export const archaeologyFactory = Factory.define<Archaeology>(
     const chance = transientParams.chance ?? defaultChance
     return {
       excavationNumber: `${chance.word()}.${sequence}`,
-      site: chance.pickone(Object.values(excavationSites)),
+      site: chance.pickone(testExcavationSites),
       isRegularExcavation: chance.bool(),
+      isFindspotUncertain: chance.bool(),
       findspot: associations.findspot,
       findspotId: associations.findspot?.id,
     }

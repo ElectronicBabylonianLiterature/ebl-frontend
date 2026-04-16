@@ -18,15 +18,14 @@ import {
   generateWordDocument,
   getFormatedTableCell,
   HtmlToWordParagraph,
-} from 'common/HtmlToWord'
-import { getHeading, getHyperLinkParagraph } from 'common/HtmlToWordUtils'
+} from 'common/utils/HtmlToWord'
+import { getHeading, getHyperLinkParagraph } from 'common/utils/HtmlToWordUtils'
 
-import { fixHtmlParseOrder } from 'common/HtmlParsing'
-import { getLineTypeByHtml } from 'common/HtmlLineType'
+import { fixHtmlParseOrder } from 'common/utils/HtmlParsing'
+import { getLineTypeByHtml } from 'common/utils/HtmlLineType'
 
 import { renderToString } from 'react-dom/server'
 import $ from 'jquery'
-import { MemoryRouter } from 'react-router-dom'
 import RowsContext, { RowsContextService } from 'corpus/ui/RowsContext'
 import TranslationContext, {
   TranslationContextService,
@@ -36,6 +35,7 @@ import { ChapterViewTable } from 'corpus/ui/ChapterView'
 import { HowToCite } from 'corpus/ui/HowToCite'
 import { defaultName } from 'transliteration/domain/chapter-id'
 import Markup from 'transliteration/ui/markup'
+import RouterLinkModeContext from 'common/ui/RouterLinkModeContext'
 
 type contextServices = {
   wordService: WordService
@@ -80,7 +80,7 @@ function WordExportContext(
   children: JSX.Element,
 ): JSX.Element {
   return (
-    <MemoryRouter>
+    <RouterLinkModeContext.Provider value={false}>
       <DictionaryContext.Provider value={context.wordService}>
         <RowsContext.Provider value={context.rowsContext}>
           <TranslationContext.Provider value={context.translationContext}>
@@ -88,7 +88,7 @@ function WordExportContext(
           </TranslationContext.Provider>
         </RowsContext.Provider>
       </DictionaryContext.Provider>
-    </MemoryRouter>
+    </RouterLinkModeContext.Provider>
   )
 }
 

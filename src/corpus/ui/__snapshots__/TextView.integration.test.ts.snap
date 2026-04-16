@@ -1,0 +1,1994 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Chapter Show chapter 1`] = `
+<div>
+  <div
+    class="main-body"
+  >
+    <header
+      class="Header"
+    >
+      <nav
+        class="navbar navbar-expand-lg navbar-light"
+      >
+        <div
+          class="container"
+        >
+          <a
+            class="navbar-brand"
+            href="/"
+            title="electronic Babylonian Library (eBL)"
+          >
+            <span
+              class="visually-hidden"
+            >
+              electronic Babylonian Library (eBL)
+            </span>
+            <h1
+              class="Header__title"
+            >
+              <span
+                class="Header__title-main"
+              >
+                electronic
+                <br />
+                <span
+                  class="Header__title-main__caps"
+                >
+                  B
+                </span>
+                abylonian
+                <br />
+                <span
+                  class="Header__title-main__caps"
+                >
+                  L
+                </span>
+                ibrary
+              </span>
+              <small
+                class="Header__title-abbreviation"
+              >
+                e
+                <small
+                  class="Header__title-abbreviation__caps"
+                >
+                  bl
+                </small>
+              </small>
+            </h1>
+          </a>
+          <button
+            aria-controls="Header-8"
+            aria-label="Toggle navigation"
+            class="Header__toggle navbar-toggler collapsed"
+            type="button"
+          >
+            <span
+              class="navbar-toggler-icon"
+            />
+          </button>
+          <div
+            class="navbar-collapse collapse"
+            id="Header-8"
+          >
+            <div
+              class="Header__nav mx-auto navbar-nav"
+            >
+              <div
+                class="nav-item"
+              >
+                <a
+                  class="nav-link"
+                  data-rr-ui-event-key="/library"
+                  href="/library"
+                >
+                  Library
+                </a>
+              </div>
+              <div
+                class="nav-item"
+              >
+                <a
+                  class="nav-link"
+                  data-rr-ui-event-key="/corpus"
+                  href="/corpus"
+                >
+                  Corpus
+                </a>
+              </div>
+              <div
+                class="nav-item"
+              >
+                <a
+                  class="nav-link"
+                  data-rr-ui-event-key="/about"
+                  href="/about"
+                >
+                  About
+                </a>
+              </div>
+              <div
+                class="nav-item"
+              >
+                <a
+                  class="nav-link"
+                  data-rr-ui-event-key="/tools"
+                  href="/tools"
+                >
+                  Tools
+                </a>
+              </div>
+              <div
+                class="nav-item"
+              >
+                <a
+                  class="nav-link"
+                  data-rr-ui-event-key="/projects"
+                  href="/projects"
+                >
+                  Projects
+                </a>
+              </div>
+            </div>
+            <div
+              class="Header__right"
+            >
+              <div
+                class="Header__partner-logos"
+              >
+                <a
+                  class="Header__partner-logo-link"
+                  href="https://www.lmu.de"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  <img
+                    alt="Ludwig-Maximilians-Universitat Munchen"
+                    class="Header__lmu-logo"
+                    src="LMU_Logo.svg"
+                  />
+                </a>
+                <span
+                  aria-hidden="true"
+                  class="Header__logo-divider"
+                />
+                <a
+                  class="Header__partner-logo-link"
+                  href="https://badw.de/"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  <img
+                    alt="Bayerische Akademie der Wissenschaften"
+                    class="Header__badw-logo"
+                    src="BAdW_Logo.svg"
+                  />
+                </a>
+              </div>
+              <div
+                class="Header__user"
+              >
+                <button
+                  class="btn btn-outline-secondary btn-sm"
+                  type="button"
+                >
+                  Logout 
+                  Test
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+    <main
+      class="main"
+    >
+      <div
+        class="main__content"
+      >
+        <header
+          class="main__header"
+        >
+          <nav
+            aria-label="breadcrumb"
+            class="main__breadcrumbs"
+          >
+            <ol
+              class="breadcrumb"
+            >
+              <li
+                class="breadcrumb-item"
+              >
+                <a
+                  href="/"
+                >
+                  eBL
+                </a>
+              </li>
+              <li
+                class="breadcrumb-item"
+              >
+                <a
+                  href="/corpus"
+                >
+                  Corpus
+                </a>
+              </li>
+              <li
+                class="breadcrumb-item"
+              >
+                <a
+                  href="/corpus/L"
+                >
+                  L
+                </a>
+              </li>
+              <li
+                aria-current="page"
+                class="breadcrumb-item active"
+              >
+                I.1 Palm and Vine
+              </li>
+            </ol>
+          </nav>
+          <h2
+            class="main__heading"
+          >
+            I.1 Palm and Vine
+          </h2>
+          <div
+            class="main__toolbar btn-toolbar"
+            role="toolbar"
+          />
+        </header>
+        <div
+          class="text-view"
+        >
+          <section
+            class="text-view__section"
+          >
+            <h3
+              class="text-view__section-heading"
+            >
+              Introduction
+            </h3>
+            <div
+              class="text-view__markdown"
+            >
+              <p>
+                This is a 
+                <em>
+                  test text
+                </em>
+                .
+              </p>
+            </div>
+            <section
+              class="text-view__projects"
+            >
+              <ul
+                class="ResultList"
+              >
+                <li>
+                  <a
+                    aria-label="Link to Cuneiform Artefacts of Iraq in Context project"
+                    href="https://caic.badw.de/"
+                    rel="noopener noreferrer"
+                    target="_blank"
+                    title="Cuneiform Artefacts of Iraq in Context"
+                  >
+                    <img
+                      alt="Cuneiform Artefacts of Iraq in Context"
+                      class="ExternalResources__image"
+                      src="CAIC Briefkopf 2023.png"
+                    />
+                  </a>
+                </li>
+              </ul>
+            </section>
+          </section>
+          <section
+            class="text-view__section"
+          >
+            <h3
+              aria-controls="collapse-13"
+              class="text-view__section-heading collapsible_section__heading"
+            >
+              Chapters
+               
+              <i
+                aria-expanded="false"
+                class="collapsible_section__collapse-indicator fas fa-caret-right"
+              />
+            </h3>
+            <div
+              class="collapsing"
+              id="collapse-13"
+            >
+              <section>
+                <h4>
+                  <a
+                    href="/corpus/L/1/1/OB/The Only Chapter"
+                  >
+                    The Only Chapter
+                     
+                    <span />
+                  </a>
+                </h4>
+                <section
+                  class="text-view__section"
+                >
+                  <h5
+                    aria-controls="collapse-10"
+                    class="text-view__section-heading collapsible_section__heading"
+                  >
+                    List of Manuscripts
+                     
+                    <i
+                      aria-expanded="false"
+                      class="collapsible_section__collapse-indicator fas fa-caret-right"
+                    />
+                  </h5>
+                </section>
+              </section>
+            </div>
+          </section>
+          <section
+            class="text-view__section"
+          >
+            <h3
+              aria-controls="collapse-11"
+              class="text-view__section-heading collapsible_section__heading"
+            >
+              Colophons
+               
+              <i
+                aria-expanded="false"
+                class="collapsible_section__collapse-indicator fas fa-caret-right"
+              />
+            </h3>
+          </section>
+          <section
+            class="text-view__section"
+          >
+            <h3
+              aria-controls="collapse-12"
+              class="text-view__section-heading collapsible_section__heading"
+            >
+              Unplaced Lines
+               
+              <i
+                aria-expanded="false"
+                class="collapsible_section__collapse-indicator fas fa-caret-right"
+              />
+            </h3>
+          </section>
+        </div>
+      </div>
+    </main>
+    <footer
+      class="main-footer"
+    >
+      <div
+        class="container"
+      >
+        <div
+          class="main-footer__content row"
+        >
+          <div
+            class="main-footer__section col-md-3"
+          >
+            <h6
+              class="main-footer__title"
+            >
+              About eBL
+            </h6>
+            <ul
+              class="main-footer__links"
+            >
+              <li>
+                <a
+                  href="/about"
+                >
+                  About
+                </a>
+              </li>
+              <li>
+                <a
+                  href="/projects"
+                >
+                  Research Projects
+                </a>
+              </li>
+              <li>
+                <a
+                  href="https://caic.badw.de"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  CAIC
+                </a>
+              </li>
+            </ul>
+          </div>
+          <div
+            class="main-footer__section col-md-3"
+          >
+            <h6
+              class="main-footer__title"
+            >
+              Resources
+            </h6>
+            <ul
+              class="main-footer__links"
+            >
+              <li>
+                <a
+                  href="/reference-library/signs"
+                >
+                  Signs
+                </a>
+              </li>
+              <li>
+                <a
+                  href="/reference-library/dictionary"
+                >
+                  Dictionary
+                </a>
+              </li>
+              <li>
+                <a
+                  href="/reference-library/bibliography"
+                >
+                  Bibliography
+                </a>
+              </li>
+            </ul>
+          </div>
+          <div
+            class="main-footer__section col-md-3"
+          >
+            <h6
+              class="main-footer__title"
+            >
+              Legal
+            </h6>
+            <ul
+              class="main-footer__links"
+            >
+              <li>
+                <a
+                  href="/impressum"
+                >
+                  Impressum
+                </a>
+              </li>
+              <li>
+                <a
+                  href="/datenschutz"
+                >
+                  Datenschutz
+                </a>
+              </li>
+            </ul>
+          </div>
+          <div
+            class="main-footer__section col-md-3"
+          >
+            <h6
+              class="main-footer__title"
+            >
+              Connect
+            </h6>
+            <div
+              class="main-footer__social"
+            >
+              <a
+                class="main-footer__social-link"
+                href="https://twitter.com/ebl_info"
+                rel="noopener noreferrer"
+                target="_blank"
+                title="eBL on X (Twitter)"
+              >
+                <svg
+                  height="20"
+                  viewBox="0 0 24 24"
+                  width="20"
+                >
+                  <path
+                    d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"
+                    fill="currentColor"
+                  />
+                </svg>
+              </a>
+              <a
+                class="main-footer__social-link"
+                href="https://www.facebook.com/profile.php?id=61556323986355"
+                rel="noopener noreferrer"
+                target="_blank"
+                title="CAIC on Facebook"
+              >
+                <svg
+                  height="20"
+                  viewBox="0 0 24 24"
+                  width="20"
+                >
+                  <path
+                    d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"
+                    fill="currentColor"
+                  />
+                </svg>
+              </a>
+            </div>
+          </div>
+        </div>
+        <div
+          class="main-footer__bottom row"
+        >
+          <div
+            class="col"
+          >
+            <div
+              class="main-footer__partners"
+            >
+              <a
+                class="main-footer__partner-link"
+                href="https://badw.de/"
+                rel="noopener noreferrer"
+                target="_blank"
+                title="Bayerische Akademie der Wissenschaften"
+              >
+                BAdW
+              </a>
+              <span
+                class="main-footer__separator"
+              >
+                ·
+              </span>
+              <a
+                class="main-footer__partner-link"
+                href="https://www.lmu.de/"
+                rel="noopener noreferrer"
+                target="_blank"
+                title="Ludwig-Maximilians-Universität München"
+              >
+                LMU
+              </a>
+              <span
+                class="main-footer__separator"
+              >
+                ·
+              </span>
+              <a
+                class="main-footer__partner-link"
+                href="https://www.lrz.de/"
+                rel="noopener noreferrer"
+                target="_blank"
+                title="Leibniz-Rechenzentrum"
+              >
+                LRZ
+              </a>
+              <span
+                class="main-footer__separator"
+              >
+                ·
+              </span>
+              <a
+                class="main-footer__partner-link"
+                href="https://www.humboldt-foundation.de/"
+                rel="noopener noreferrer"
+                target="_blank"
+                title="Alexander von Humboldt Stiftung"
+              >
+                AvH
+              </a>
+            </div>
+          </div>
+        </div>
+        <div
+          class="main-footer__copyright row"
+        >
+          <div
+            class="col"
+          >
+            <p>
+              © 
+              2026
+               electronic Babylonian Library
+            </p>
+          </div>
+        </div>
+      </div>
+    </footer>
+  </div>
+</div>
+`;
+
+exports[`Chapter Show list of manuscripts 1`] = `
+<div>
+  <div
+    class="main-body"
+  >
+    <header
+      class="Header"
+    >
+      <nav
+        class="navbar navbar-expand-lg navbar-light"
+      >
+        <div
+          class="container"
+        >
+          <a
+            class="navbar-brand"
+            href="/"
+            title="electronic Babylonian Library (eBL)"
+          >
+            <span
+              class="visually-hidden"
+            >
+              electronic Babylonian Library (eBL)
+            </span>
+            <h1
+              class="Header__title"
+            >
+              <span
+                class="Header__title-main"
+              >
+                electronic
+                <br />
+                <span
+                  class="Header__title-main__caps"
+                >
+                  B
+                </span>
+                abylonian
+                <br />
+                <span
+                  class="Header__title-main__caps"
+                >
+                  L
+                </span>
+                ibrary
+              </span>
+              <small
+                class="Header__title-abbreviation"
+              >
+                e
+                <small
+                  class="Header__title-abbreviation__caps"
+                >
+                  bl
+                </small>
+              </small>
+            </h1>
+          </a>
+          <button
+            aria-controls="Header-15"
+            aria-label="Toggle navigation"
+            class="Header__toggle navbar-toggler collapsed"
+            type="button"
+          >
+            <span
+              class="navbar-toggler-icon"
+            />
+          </button>
+          <div
+            class="navbar-collapse collapse"
+            id="Header-15"
+          >
+            <div
+              class="Header__nav mx-auto navbar-nav"
+            >
+              <div
+                class="nav-item"
+              >
+                <a
+                  class="nav-link"
+                  data-rr-ui-event-key="/library"
+                  href="/library"
+                >
+                  Library
+                </a>
+              </div>
+              <div
+                class="nav-item"
+              >
+                <a
+                  class="nav-link"
+                  data-rr-ui-event-key="/corpus"
+                  href="/corpus"
+                >
+                  Corpus
+                </a>
+              </div>
+              <div
+                class="nav-item"
+              >
+                <a
+                  class="nav-link"
+                  data-rr-ui-event-key="/about"
+                  href="/about"
+                >
+                  About
+                </a>
+              </div>
+              <div
+                class="nav-item"
+              >
+                <a
+                  class="nav-link"
+                  data-rr-ui-event-key="/tools"
+                  href="/tools"
+                >
+                  Tools
+                </a>
+              </div>
+              <div
+                class="nav-item"
+              >
+                <a
+                  class="nav-link"
+                  data-rr-ui-event-key="/projects"
+                  href="/projects"
+                >
+                  Projects
+                </a>
+              </div>
+            </div>
+            <div
+              class="Header__right"
+            >
+              <div
+                class="Header__partner-logos"
+              >
+                <a
+                  class="Header__partner-logo-link"
+                  href="https://www.lmu.de"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  <img
+                    alt="Ludwig-Maximilians-Universitat Munchen"
+                    class="Header__lmu-logo"
+                    src="LMU_Logo.svg"
+                  />
+                </a>
+                <span
+                  aria-hidden="true"
+                  class="Header__logo-divider"
+                />
+                <a
+                  class="Header__partner-logo-link"
+                  href="https://badw.de/"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  <img
+                    alt="Bayerische Akademie der Wissenschaften"
+                    class="Header__badw-logo"
+                    src="BAdW_Logo.svg"
+                  />
+                </a>
+              </div>
+              <div
+                class="Header__user"
+              >
+                <button
+                  class="btn btn-outline-secondary btn-sm"
+                  type="button"
+                >
+                  Logout 
+                  Test
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+    <main
+      class="main"
+    >
+      <div
+        class="main__content"
+      >
+        <header
+          class="main__header"
+        >
+          <nav
+            aria-label="breadcrumb"
+            class="main__breadcrumbs"
+          >
+            <ol
+              class="breadcrumb"
+            >
+              <li
+                class="breadcrumb-item"
+              >
+                <a
+                  href="/"
+                >
+                  eBL
+                </a>
+              </li>
+              <li
+                class="breadcrumb-item"
+              >
+                <a
+                  href="/corpus"
+                >
+                  Corpus
+                </a>
+              </li>
+              <li
+                class="breadcrumb-item"
+              >
+                <a
+                  href="/corpus/L"
+                >
+                  L
+                </a>
+              </li>
+              <li
+                aria-current="page"
+                class="breadcrumb-item active"
+              >
+                I.1 Palm and Vine
+              </li>
+            </ol>
+          </nav>
+          <h2
+            class="main__heading"
+          >
+            I.1 Palm and Vine
+          </h2>
+          <div
+            class="main__toolbar btn-toolbar"
+            role="toolbar"
+          />
+        </header>
+        <div
+          class="text-view"
+        >
+          <section
+            class="text-view__section"
+          >
+            <h3
+              class="text-view__section-heading"
+            >
+              Introduction
+            </h3>
+            <div
+              class="text-view__markdown"
+            >
+              <p>
+                This is a 
+                <em>
+                  test text
+                </em>
+                .
+              </p>
+            </div>
+            <section
+              class="text-view__projects"
+            >
+              <ul
+                class="ResultList"
+              >
+                <li>
+                  <a
+                    aria-label="Link to Cuneiform Artefacts of Iraq in Context project"
+                    href="https://caic.badw.de/"
+                    rel="noopener noreferrer"
+                    target="_blank"
+                    title="Cuneiform Artefacts of Iraq in Context"
+                  >
+                    <img
+                      alt="Cuneiform Artefacts of Iraq in Context"
+                      class="ExternalResources__image"
+                      src="CAIC Briefkopf 2023.png"
+                    />
+                  </a>
+                </li>
+              </ul>
+            </section>
+          </section>
+          <section
+            class="text-view__section"
+          >
+            <h3
+              aria-controls="collapse-20"
+              class="text-view__section-heading collapsible_section__heading"
+            >
+              Chapters
+               
+              <i
+                aria-expanded="false"
+                class="collapsible_section__collapse-indicator fas fa-caret-right"
+              />
+            </h3>
+            <div
+              class="collapse"
+              id="collapse-20"
+            >
+              <section>
+                <h4>
+                  <a
+                    href="/corpus/L/1/1/OB/The Only Chapter"
+                  >
+                    The Only Chapter
+                     
+                    <span />
+                  </a>
+                </h4>
+                <section
+                  class="text-view__section"
+                >
+                  <h5
+                    aria-controls="collapse-21"
+                    class="text-view__section-heading collapsible_section__heading"
+                  >
+                    List of Manuscripts
+                     
+                    <i
+                      aria-expanded="true"
+                      class="collapsible_section__collapse-indicator fas fa-caret-down"
+                    />
+                  </h5>
+                  <div
+                    class="collapse show"
+                    id="collapse-21"
+                    style=""
+                  >
+                    <table>
+                      <colgroup
+                        span="3"
+                      />
+                      <thead>
+                        <tr
+                          class="list-of-manuscripts__header"
+                        >
+                          <th
+                            class="list-of-manuscripts__column-heading"
+                            id="siglum-31"
+                            scope="col"
+                          >
+                            Siglum
+                          </th>
+                          <th
+                            class="list-of-manuscripts__column-heading"
+                            id="museumNumber-32"
+                            scope="col"
+                          >
+                            Museum Number
+                            <span
+                              class="references-help list-of-manuscripts__help"
+                            >
+                              <i
+                                class="fas fa-info-circle"
+                              />
+                            </span>
+                          </th>
+                          <th
+                            class="list-of-manuscripts__column-heading"
+                            id="extantLines-34"
+                            scope="col"
+                          >
+                            Extant Lines
+                            <span
+                              class="list-of-manuscripts__help"
+                            >
+                              <i
+                                class="fas fa-info-circle"
+                              />
+                            </span>
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <th
+                            class="list-of-manuscripts__provenance-heading"
+                            colspan="3"
+                            id="provenace-36"
+                            scope="colgroup"
+                          >
+                            Assyria
+                          </th>
+                        </tr>
+                        <tr>
+                          <th
+                            class="list-of-manuscripts__siglum-heading"
+                            headers="provenace-36 siglum-31"
+                            id="row-37"
+                            scope="row"
+                          >
+                            AssaOBSch1
+                          </th>
+                          <td
+                            class="list-of-manuscripts__museum-numbers"
+                            headers="provenace-36 row-37 museumNumber-32"
+                          >
+                            <a
+                              href="/library/X.1"
+                            >
+                              X.1
+                            </a>
+                             +
+                            <sup>
+                              ?
+                            </sup>
+                             
+                            X.2
+                             (+
+                            ) 
+                            <a
+                              href="/library/X.3"
+                            >
+                              X.3
+                            </a>
+                             +
+                             
+                            X.4
+                            <span
+                              class="manuscript-popover__references"
+                            >
+                              <ul
+                                class="list-of-manuscripts__references"
+                              >
+                                <li>
+                                  <span
+                                    class="reference-popover__citation"
+                                  >
+                                    <span
+                                      class="reference-popover__interactive"
+                                    >
+                                      , : 3106269388865536-2803041484931072 [l. 4'.2., 2.]
+                                      <span
+                                        class="type-abbreviation"
+                                      >
+                                         (E)
+                                      </span>
+                                    </span>
+                                  </span>
+                                </li>
+                              </ul>
+                            </span>
+                          </td>
+                          <td
+                            class="list-of-manuscripts__extant-lines"
+                            headers="extantLines-34 row-37 museumNumber-32"
+                          >
+                            <ol
+                              class="extant-lines"
+                            >
+                              <li>
+                                o iii
+                                :
+                                 
+                                <span
+                                  class="extant-lines__line-number extant-lines__line-number--boundary"
+                                >
+                                  1
+                                </span>
+                                –
+                                <span
+                                  class="extant-lines__line-number"
+                                >
+                                  2
+                                </span>
+                              </li>
+                            </ol>
+                          </td>
+                        </tr>
+                        <tr>
+                          <th
+                            class="list-of-manuscripts__provenance-heading"
+                            colspan="3"
+                            id="uncertainFragmets-33"
+                            scope="colgroup"
+                          >
+                            Uncertain Fragments
+                          </th>
+                        </tr>
+                        <tr>
+                          <td />
+                          <td>
+                            <ul
+                              class="list-of-manuscripts__uncertain-fragments"
+                            >
+                              <li>
+                                <a
+                                  href="/library/X.1"
+                                >
+                                  X.1
+                                </a>
+                              </li>
+                            </ul>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </section>
+              </section>
+            </div>
+          </section>
+          <section
+            class="text-view__section"
+          >
+            <h3
+              aria-controls="collapse-18"
+              class="text-view__section-heading collapsible_section__heading"
+            >
+              Colophons
+               
+              <i
+                aria-expanded="false"
+                class="collapsible_section__collapse-indicator fas fa-caret-right"
+              />
+            </h3>
+          </section>
+          <section
+            class="text-view__section"
+          >
+            <h3
+              aria-controls="collapse-19"
+              class="text-view__section-heading collapsible_section__heading"
+            >
+              Unplaced Lines
+               
+              <i
+                aria-expanded="false"
+                class="collapsible_section__collapse-indicator fas fa-caret-right"
+              />
+            </h3>
+          </section>
+        </div>
+      </div>
+    </main>
+    <footer
+      class="main-footer"
+    >
+      <div
+        class="container"
+      >
+        <div
+          class="main-footer__content row"
+        >
+          <div
+            class="main-footer__section col-md-3"
+          >
+            <h6
+              class="main-footer__title"
+            >
+              About eBL
+            </h6>
+            <ul
+              class="main-footer__links"
+            >
+              <li>
+                <a
+                  href="/about"
+                >
+                  About
+                </a>
+              </li>
+              <li>
+                <a
+                  href="/projects"
+                >
+                  Research Projects
+                </a>
+              </li>
+              <li>
+                <a
+                  href="https://caic.badw.de"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  CAIC
+                </a>
+              </li>
+            </ul>
+          </div>
+          <div
+            class="main-footer__section col-md-3"
+          >
+            <h6
+              class="main-footer__title"
+            >
+              Resources
+            </h6>
+            <ul
+              class="main-footer__links"
+            >
+              <li>
+                <a
+                  href="/reference-library/signs"
+                >
+                  Signs
+                </a>
+              </li>
+              <li>
+                <a
+                  href="/reference-library/dictionary"
+                >
+                  Dictionary
+                </a>
+              </li>
+              <li>
+                <a
+                  href="/reference-library/bibliography"
+                >
+                  Bibliography
+                </a>
+              </li>
+            </ul>
+          </div>
+          <div
+            class="main-footer__section col-md-3"
+          >
+            <h6
+              class="main-footer__title"
+            >
+              Legal
+            </h6>
+            <ul
+              class="main-footer__links"
+            >
+              <li>
+                <a
+                  href="/impressum"
+                >
+                  Impressum
+                </a>
+              </li>
+              <li>
+                <a
+                  href="/datenschutz"
+                >
+                  Datenschutz
+                </a>
+              </li>
+            </ul>
+          </div>
+          <div
+            class="main-footer__section col-md-3"
+          >
+            <h6
+              class="main-footer__title"
+            >
+              Connect
+            </h6>
+            <div
+              class="main-footer__social"
+            >
+              <a
+                class="main-footer__social-link"
+                href="https://twitter.com/ebl_info"
+                rel="noopener noreferrer"
+                target="_blank"
+                title="eBL on X (Twitter)"
+              >
+                <svg
+                  height="20"
+                  viewBox="0 0 24 24"
+                  width="20"
+                >
+                  <path
+                    d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"
+                    fill="currentColor"
+                  />
+                </svg>
+              </a>
+              <a
+                class="main-footer__social-link"
+                href="https://www.facebook.com/profile.php?id=61556323986355"
+                rel="noopener noreferrer"
+                target="_blank"
+                title="CAIC on Facebook"
+              >
+                <svg
+                  height="20"
+                  viewBox="0 0 24 24"
+                  width="20"
+                >
+                  <path
+                    d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"
+                    fill="currentColor"
+                  />
+                </svg>
+              </a>
+            </div>
+          </div>
+        </div>
+        <div
+          class="main-footer__bottom row"
+        >
+          <div
+            class="col"
+          >
+            <div
+              class="main-footer__partners"
+            >
+              <a
+                class="main-footer__partner-link"
+                href="https://badw.de/"
+                rel="noopener noreferrer"
+                target="_blank"
+                title="Bayerische Akademie der Wissenschaften"
+              >
+                BAdW
+              </a>
+              <span
+                class="main-footer__separator"
+              >
+                ·
+              </span>
+              <a
+                class="main-footer__partner-link"
+                href="https://www.lmu.de/"
+                rel="noopener noreferrer"
+                target="_blank"
+                title="Ludwig-Maximilians-Universität München"
+              >
+                LMU
+              </a>
+              <span
+                class="main-footer__separator"
+              >
+                ·
+              </span>
+              <a
+                class="main-footer__partner-link"
+                href="https://www.lrz.de/"
+                rel="noopener noreferrer"
+                target="_blank"
+                title="Leibniz-Rechenzentrum"
+              >
+                LRZ
+              </a>
+              <span
+                class="main-footer__separator"
+              >
+                ·
+              </span>
+              <a
+                class="main-footer__partner-link"
+                href="https://www.humboldt-foundation.de/"
+                rel="noopener noreferrer"
+                target="_blank"
+                title="Alexander von Humboldt Stiftung"
+              >
+                AvH
+              </a>
+            </div>
+          </div>
+        </div>
+        <div
+          class="main-footer__copyright row"
+        >
+          <div
+            class="col"
+          >
+            <p>
+              © 
+              2026
+               electronic Babylonian Library
+            </p>
+          </div>
+        </div>
+      </div>
+    </footer>
+  </div>
+</div>
+`;
+
+exports[`With session 1`] = `
+<div>
+  <div
+    class="main-body"
+  >
+    <header
+      class="Header"
+    >
+      <nav
+        class="navbar navbar-expand-lg navbar-light"
+      >
+        <div
+          class="container"
+        >
+          <a
+            class="navbar-brand"
+            href="/"
+            title="electronic Babylonian Library (eBL)"
+          >
+            <span
+              class="visually-hidden"
+            >
+              electronic Babylonian Library (eBL)
+            </span>
+            <h1
+              class="Header__title"
+            >
+              <span
+                class="Header__title-main"
+              >
+                electronic
+                <br />
+                <span
+                  class="Header__title-main__caps"
+                >
+                  B
+                </span>
+                abylonian
+                <br />
+                <span
+                  class="Header__title-main__caps"
+                >
+                  L
+                </span>
+                ibrary
+              </span>
+              <small
+                class="Header__title-abbreviation"
+              >
+                e
+                <small
+                  class="Header__title-abbreviation__caps"
+                >
+                  bl
+                </small>
+              </small>
+            </h1>
+          </a>
+          <button
+            aria-controls="Header-2"
+            aria-label="Toggle navigation"
+            class="Header__toggle navbar-toggler collapsed"
+            type="button"
+          >
+            <span
+              class="navbar-toggler-icon"
+            />
+          </button>
+          <div
+            class="navbar-collapse collapse"
+            id="Header-2"
+          >
+            <div
+              class="Header__nav mx-auto navbar-nav"
+            >
+              <div
+                class="nav-item"
+              >
+                <a
+                  class="nav-link"
+                  data-rr-ui-event-key="/library"
+                  href="/library"
+                >
+                  Library
+                </a>
+              </div>
+              <div
+                class="nav-item"
+              >
+                <a
+                  class="nav-link"
+                  data-rr-ui-event-key="/corpus"
+                  href="/corpus"
+                >
+                  Corpus
+                </a>
+              </div>
+              <div
+                class="nav-item"
+              >
+                <a
+                  class="nav-link"
+                  data-rr-ui-event-key="/about"
+                  href="/about"
+                >
+                  About
+                </a>
+              </div>
+              <div
+                class="nav-item"
+              >
+                <a
+                  class="nav-link"
+                  data-rr-ui-event-key="/tools"
+                  href="/tools"
+                >
+                  Tools
+                </a>
+              </div>
+              <div
+                class="nav-item"
+              >
+                <a
+                  class="nav-link"
+                  data-rr-ui-event-key="/projects"
+                  href="/projects"
+                >
+                  Projects
+                </a>
+              </div>
+            </div>
+            <div
+              class="Header__right"
+            >
+              <div
+                class="Header__partner-logos"
+              >
+                <a
+                  class="Header__partner-logo-link"
+                  href="https://www.lmu.de"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  <img
+                    alt="Ludwig-Maximilians-Universitat Munchen"
+                    class="Header__lmu-logo"
+                    src="LMU_Logo.svg"
+                  />
+                </a>
+                <span
+                  aria-hidden="true"
+                  class="Header__logo-divider"
+                />
+                <a
+                  class="Header__partner-logo-link"
+                  href="https://badw.de/"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  <img
+                    alt="Bayerische Akademie der Wissenschaften"
+                    class="Header__badw-logo"
+                    src="BAdW_Logo.svg"
+                  />
+                </a>
+              </div>
+              <div
+                class="Header__user"
+              >
+                <button
+                  class="btn btn-outline-secondary btn-sm"
+                  type="button"
+                >
+                  Logout 
+                  Test
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+    <main
+      class="main"
+    >
+      <div
+        class="main__content"
+      >
+        <header
+          class="main__header"
+        >
+          <nav
+            aria-label="breadcrumb"
+            class="main__breadcrumbs"
+          >
+            <ol
+              class="breadcrumb"
+            >
+              <li
+                class="breadcrumb-item"
+              >
+                <a
+                  href="/"
+                >
+                  eBL
+                </a>
+              </li>
+              <li
+                class="breadcrumb-item"
+              >
+                <a
+                  href="/corpus"
+                >
+                  Corpus
+                </a>
+              </li>
+              <li
+                class="breadcrumb-item"
+              >
+                <a
+                  href="/corpus/L"
+                >
+                  L
+                </a>
+              </li>
+              <li
+                aria-current="page"
+                class="breadcrumb-item active"
+              >
+                I.1 Palm and Vine
+              </li>
+            </ol>
+          </nav>
+          <h2
+            class="main__heading"
+          >
+            I.1 Palm and Vine
+          </h2>
+          <div
+            class="main__toolbar btn-toolbar"
+            role="toolbar"
+          />
+        </header>
+        <div
+          class="text-view"
+        >
+          <section
+            class="text-view__section"
+          >
+            <h3
+              class="text-view__section-heading"
+            >
+              Introduction
+            </h3>
+            <div
+              class="text-view__markdown"
+            >
+              <p>
+                This is a 
+                <em>
+                  test text
+                </em>
+                .
+              </p>
+            </div>
+            <section
+              class="text-view__projects"
+            >
+              <ul
+                class="ResultList"
+              >
+                <li>
+                  <a
+                    aria-label="Link to Cuneiform Artefacts of Iraq in Context project"
+                    href="https://caic.badw.de/"
+                    rel="noopener noreferrer"
+                    target="_blank"
+                    title="Cuneiform Artefacts of Iraq in Context"
+                  >
+                    <img
+                      alt="Cuneiform Artefacts of Iraq in Context"
+                      class="ExternalResources__image"
+                      src="CAIC Briefkopf 2023.png"
+                    />
+                  </a>
+                </li>
+              </ul>
+            </section>
+          </section>
+          <section
+            class="text-view__section"
+          >
+            <h3
+              aria-controls="collapse-3"
+              class="text-view__section-heading collapsible_section__heading"
+            >
+              Chapters
+               
+              <i
+                aria-expanded="true"
+                class="collapsible_section__collapse-indicator fas fa-caret-down"
+              />
+            </h3>
+            <div
+              class="collapse show"
+              id="collapse-3"
+            >
+              <section>
+                <h4>
+                  <a
+                    href="/corpus/L/1/1/OB/The Only Chapter"
+                  >
+                    The Only Chapter
+                     
+                    <span />
+                  </a>
+                </h4>
+                <section
+                  class="text-view__section"
+                >
+                  <h5
+                    aria-controls="collapse-4"
+                    class="text-view__section-heading collapsible_section__heading"
+                  >
+                    List of Manuscripts
+                     
+                    <i
+                      aria-expanded="false"
+                      class="collapsible_section__collapse-indicator fas fa-caret-right"
+                    />
+                  </h5>
+                </section>
+              </section>
+            </div>
+          </section>
+          <section
+            class="text-view__section"
+          >
+            <h3
+              aria-controls="collapse-5"
+              class="text-view__section-heading collapsible_section__heading"
+            >
+              Colophons
+               
+              <i
+                aria-expanded="false"
+                class="collapsible_section__collapse-indicator fas fa-caret-right"
+              />
+            </h3>
+          </section>
+          <section
+            class="text-view__section"
+          >
+            <h3
+              aria-controls="collapse-6"
+              class="text-view__section-heading collapsible_section__heading"
+            >
+              Unplaced Lines
+               
+              <i
+                aria-expanded="false"
+                class="collapsible_section__collapse-indicator fas fa-caret-right"
+              />
+            </h3>
+          </section>
+        </div>
+      </div>
+    </main>
+    <footer
+      class="main-footer"
+    >
+      <div
+        class="container"
+      >
+        <div
+          class="main-footer__content row"
+        >
+          <div
+            class="main-footer__section col-md-3"
+          >
+            <h6
+              class="main-footer__title"
+            >
+              About eBL
+            </h6>
+            <ul
+              class="main-footer__links"
+            >
+              <li>
+                <a
+                  href="/about"
+                >
+                  About
+                </a>
+              </li>
+              <li>
+                <a
+                  href="/projects"
+                >
+                  Research Projects
+                </a>
+              </li>
+              <li>
+                <a
+                  href="https://caic.badw.de"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  CAIC
+                </a>
+              </li>
+            </ul>
+          </div>
+          <div
+            class="main-footer__section col-md-3"
+          >
+            <h6
+              class="main-footer__title"
+            >
+              Resources
+            </h6>
+            <ul
+              class="main-footer__links"
+            >
+              <li>
+                <a
+                  href="/reference-library/signs"
+                >
+                  Signs
+                </a>
+              </li>
+              <li>
+                <a
+                  href="/reference-library/dictionary"
+                >
+                  Dictionary
+                </a>
+              </li>
+              <li>
+                <a
+                  href="/reference-library/bibliography"
+                >
+                  Bibliography
+                </a>
+              </li>
+            </ul>
+          </div>
+          <div
+            class="main-footer__section col-md-3"
+          >
+            <h6
+              class="main-footer__title"
+            >
+              Legal
+            </h6>
+            <ul
+              class="main-footer__links"
+            >
+              <li>
+                <a
+                  href="/impressum"
+                >
+                  Impressum
+                </a>
+              </li>
+              <li>
+                <a
+                  href="/datenschutz"
+                >
+                  Datenschutz
+                </a>
+              </li>
+            </ul>
+          </div>
+          <div
+            class="main-footer__section col-md-3"
+          >
+            <h6
+              class="main-footer__title"
+            >
+              Connect
+            </h6>
+            <div
+              class="main-footer__social"
+            >
+              <a
+                class="main-footer__social-link"
+                href="https://twitter.com/ebl_info"
+                rel="noopener noreferrer"
+                target="_blank"
+                title="eBL on X (Twitter)"
+              >
+                <svg
+                  height="20"
+                  viewBox="0 0 24 24"
+                  width="20"
+                >
+                  <path
+                    d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"
+                    fill="currentColor"
+                  />
+                </svg>
+              </a>
+              <a
+                class="main-footer__social-link"
+                href="https://www.facebook.com/profile.php?id=61556323986355"
+                rel="noopener noreferrer"
+                target="_blank"
+                title="CAIC on Facebook"
+              >
+                <svg
+                  height="20"
+                  viewBox="0 0 24 24"
+                  width="20"
+                >
+                  <path
+                    d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"
+                    fill="currentColor"
+                  />
+                </svg>
+              </a>
+            </div>
+          </div>
+        </div>
+        <div
+          class="main-footer__bottom row"
+        >
+          <div
+            class="col"
+          >
+            <div
+              class="main-footer__partners"
+            >
+              <a
+                class="main-footer__partner-link"
+                href="https://badw.de/"
+                rel="noopener noreferrer"
+                target="_blank"
+                title="Bayerische Akademie der Wissenschaften"
+              >
+                BAdW
+              </a>
+              <span
+                class="main-footer__separator"
+              >
+                ·
+              </span>
+              <a
+                class="main-footer__partner-link"
+                href="https://www.lmu.de/"
+                rel="noopener noreferrer"
+                target="_blank"
+                title="Ludwig-Maximilians-Universität München"
+              >
+                LMU
+              </a>
+              <span
+                class="main-footer__separator"
+              >
+                ·
+              </span>
+              <a
+                class="main-footer__partner-link"
+                href="https://www.lrz.de/"
+                rel="noopener noreferrer"
+                target="_blank"
+                title="Leibniz-Rechenzentrum"
+              >
+                LRZ
+              </a>
+              <span
+                class="main-footer__separator"
+              >
+                ·
+              </span>
+              <a
+                class="main-footer__partner-link"
+                href="https://www.humboldt-foundation.de/"
+                rel="noopener noreferrer"
+                target="_blank"
+                title="Alexander von Humboldt Stiftung"
+              >
+                AvH
+              </a>
+            </div>
+          </div>
+        </div>
+        <div
+          class="main-footer__copyright row"
+        >
+          <div
+            class="col"
+          >
+            <p>
+              © 
+              2026
+               electronic Babylonian Library
+            </p>
+          </div>
+        </div>
+      </div>
+    </footer>
+  </div>
+</div>
+`;

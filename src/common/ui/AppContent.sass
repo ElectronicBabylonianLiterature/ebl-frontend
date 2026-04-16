@@ -1,0 +1,100 @@
+.main
+  align-items: stretch
+  display: flex
+  margin-left: auto
+  margin-right: auto
+  max-width: 1200px
+  padding-top: 1em
+  padding-bottom: 1em
+  padding-left: 1.5em
+  padding-right: 1.5em
+  min-height: 90vh
+
+  &--wide
+    max-width: initial
+
+  &__header
+    display: flex
+    flex-flow: wrap
+    margin-bottom: 1em
+
+  &__breadcrumbs
+    flex: 0 0 100%
+    background-color: #f4f6f9
+    padding: 0.45rem 1.5rem
+    margin: -1em -1.5em 1.75em -1.5em
+    border-bottom: 1px solid #dce2ea
+
+    .breadcrumb
+      margin: 0
+      background-color: transparent
+      padding: 0
+      align-items: center
+      flex-wrap: nowrap
+
+      .breadcrumb-item
+        font-size: 0.8rem
+        font-weight: 500
+        display: flex
+        align-items: center
+        white-space: nowrap
+
+        &:first-child a
+          display: inline-flex
+          align-items: center
+          gap: 0.3rem
+
+          &::before
+            content: '⌂'
+            font-size: 0.9rem
+
+        a
+          color: #1a5fa8
+          text-decoration: none
+          padding: 0.2rem 0.45rem
+          border-radius: 4px
+          transition: background-color 0.15s ease, color 0.15s ease
+
+          &:hover
+            color: #0d3f72
+            background-color: rgba(26, 95, 168, 0.08)
+            text-decoration: none
+
+        &.active
+          color: #1a1a2e
+          font-weight: 600
+
+        + .breadcrumb-item
+          &::before
+            content: '›'
+            color: #9aabb8
+            font-size: 1.1rem
+            font-weight: 300
+            padding: 0 0.1rem
+
+  &__heading
+    flex: auto
+
+  &__toolbar
+    align-content: flex-start
+
+  &__content
+    flex: auto
+
+  &__sidebar
+    border-radius: 0.5rem
+    background: linear-gradient(160deg, #0d1b2e 0%, #0f2240 60%, #0d1b2e 100%)
+    background-blend-mode: multiply
+    background-image: url(https://www.ebl.lmu.de/api/images/Babel_Project_01_cropped.svg)
+    background-position: right -12em bottom
+    background-repeat: no-repeat
+    background-size: 20em
+    border: 1px solid rgba(255, 255, 255, 0.07)
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.4)
+    color: rgba(200, 220, 245, 0.9)
+    flex: 1 0 content
+    margin-left: 1em
+    max-height: 100vh
+    padding: 1em 1em 23em 1em
+    position: sticky
+    top: 0

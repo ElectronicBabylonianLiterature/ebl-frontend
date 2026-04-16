@@ -14,7 +14,12 @@ import { waitFor } from '@testing-library/react'
 import { oldSiglumDtoFactory } from 'test-support/old-siglum-fixtures'
 import { referenceDtoFactory } from 'test-support/bibliography-fixtures'
 import { joinDtoFactory } from 'test-support/join-fixtures'
-import { stageToAbbreviation } from 'common/period'
+import { stageToAbbreviation } from 'common/utils/period'
+import {
+  restoreProvenanceState,
+  snapshotProvenanceState,
+  upsertProvenanceRecords,
+} from 'test-support/provenance-state'
 
 const chance = new Chance('chapter-view-integration-test')
 
@@ -32,6 +37,7 @@ const chapter = chapterDisplayFactory.published().build(
 
 let fakeApi: FakeApi
 let appDriver: AppDriver
+let provenanceSnapshot = snapshotProvenanceState()
 
 afterEach(() => {
   fakeApi.verifyExpectations()
@@ -39,8 +45,29 @@ afterEach(() => {
 
 describe('Display chapter', () => {
   beforeEach(async () => {
+    provenanceSnapshot = snapshotProvenanceState()
+    upsertProvenanceRecords([
+      {
+        id: 'standard-text',
+        longName: 'Standard Text',
+        abbreviation: 'Std',
+        parent: null,
+        sortKey: 1,
+      },
+      {
+        id: 'nippur',
+        longName: 'Nippur',
+        abbreviation: 'Nip',
+        parent: null,
+        sortKey: 2,
+      },
+    ])
     ;(URL.createObjectURL as jest.Mock).mockReturnValue('mock url')
     await setup(chapter)
+  })
+
+  afterEach(() => {
+    restoreProvenanceState(provenanceSnapshot)
   })
 
   test('Breadcrumbs', () => {
@@ -53,6 +80,7 @@ describe('Display chapter', () => {
   })
 
   test('Snapshot', () => {
+    expect(appDriver.getView().container).toMatchSnapshot()
     expect(
       appDriver
         .getView()
@@ -163,15 +191,18 @@ describe('Display chapter', () => {
     })
     appDriver.clickByRole('button', 'Show score', 0)
     await appDriver.waitForText(/single ruling/)
+    expect(appDriver.getView().container).toMatchSnapshot()
     expect(appDriver.getView().getByText(/single ruling/)).toBeVisible()
   })
 
   test('Show notes', () => {
     appDriver.clickByRole('button', 'Show notes', 0)
+    expect(appDriver.getView().container).toMatchSnapshot()
   })
 
   test('Show parallels', () => {
     appDriver.clickByRole('button', 'Show parallels', 0)
+    expect(appDriver.getView().container).toMatchSnapshot()
   })
 
   test('Sidebar', async () => {
@@ -214,6 +245,7 @@ describe('Display chapter', () => {
     appDriver.click('Deutsch')
     appDriver.click('Close')
     await appDriver.waitForTextToDisappear('Close')
+    expect(appDriver.getView().container).toMatchSnapshot()
     expect(appDriver.getView().queryByText('Score')).not.toBeInTheDocument()
   })
 
@@ -222,12 +254,16 @@ describe('Display chapter', () => {
     const bibtexButton = await appDriver
       .getView()
       .findByRole('button', { name: /BibTeX/i })
+    expect(appDriver.getView().container).toMatchSnapshot()
     expect(bibtexButton).toBeVisible()
   })
 })
 
 async function setup(chapter: ChapterDisplay) {
-  fakeApi = new FakeApi().expectChapterDisplay(chapter).expectText(textDto)
+  fakeApi = new FakeApi()
+    .expectChapterDisplay(chapter)
+    .expectText(textDto)
+    .allowProvenances([])
   appDriver = new AppDriver(fakeApi.client)
     .withSession()
     .withPath(

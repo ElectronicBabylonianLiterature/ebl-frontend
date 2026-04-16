@@ -2,8 +2,8 @@ import { immerable } from 'immer'
 import { LineNumber, LineNumberRange } from 'transliteration/domain/line-number'
 import { EmptyLine } from 'transliteration/domain/line'
 import { TextLine } from 'transliteration/domain/text-line'
-import { Provenance, Provenances } from './provenance'
-import { Period, PeriodModifier } from 'common/period'
+import { Provenance } from 'corpus/domain/provenance'
+import { Period, PeriodModifier } from 'common/utils/period'
 import {
   compareManuscripts,
   ManuscriptType,
@@ -57,7 +57,7 @@ export class ManuscriptLineDisplay {
   }
 
   get isStandardText(): boolean {
-    return this.provenance === Provenances['Standard Text']
+    return this.provenance.name === 'Standard Text'
   }
 
   get isParallelText(): boolean {

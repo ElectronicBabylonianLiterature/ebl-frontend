@@ -31,7 +31,7 @@ import { LineDetails, ManuscriptLineDisplay } from 'corpus/domain/line-details'
 import { TextLine } from 'transliteration/domain/text-line'
 import { ManuscriptTypes, OldSiglum } from 'corpus/domain/manuscript'
 
-import { PeriodModifiers, Periods } from 'common/period'
+import { PeriodModifiers, Periods } from 'common/utils/period'
 import { Provenances } from 'corpus/domain/provenance'
 import TranslationLine from 'transliteration/domain/translation-line'
 import type { Draft } from 'immer'
@@ -489,6 +489,10 @@ const testData: TestData<TextService>[] = [
   ),
 ]
 
+beforeEach(() => {
+  fragmentServiceMock.fetchProvenances.mockReturnValue(Bluebird.resolve([]))
+})
+
 describe('TextService', () => testDelegation(testService, testData))
 
 test('findSuggestions', async () => {
@@ -590,4 +594,121 @@ test('listAllChapters', async () => {
     '/corpus/chapters/all',
     false,
   )
+})
+
+describe('findManuscripts provenance preload', () => {
+  afterEach(() => {
+    jest.restoreAllMocks()
+  })
+
+  test('logs provenance preload errors and still returns manuscripts', async () => {
+    const service = new TextService(
+      apiClient,
+      fragmentServiceMock,
+      wordServiceMock,
+      bibliographyServiceMock,
+    )
+    const provenanceError = new Error('provenance request failed')
+    const consoleErrorSpy = jest
+      .spyOn(console, 'error')
+      .mockImplementation(() => undefined)
+
+    fragmentServiceMock.fetchProvenances.mockReturnValueOnce(
+      Bluebird.reject(provenanceError),
+    )
+    apiClient.fetchJson.mockResolvedValueOnce(chapterDto.manuscripts)
+
+    await expect(service.findManuscripts(chapterId)).resolves.toEqual(
+      chapter.manuscripts,
+    )
+
+    expect(consoleErrorSpy).toHaveBeenCalledWith(
+      'Failed to preload provenances',
+      provenanceError,
+    )
+    expect(fragmentServiceMock.fetchProvenances).toHaveBeenCalled()
+    expect(apiClient.fetchJson).toHaveBeenCalledWith(
+      `${chapterUrl}/manuscripts`,
+      false,
+    )
+  })
+
+  test('retries provenance preload after a failed first attempt', async () => {
+    const service = new TextService(
+      apiClient,
+      fragmentServiceMock,
+      wordServiceMock,
+      bibliographyServiceMock,
+    )
+    const provenanceError = new Error('temporary provenance failure')
+
+    jest.spyOn(console, 'error').mockImplementation(() => undefined)
+
+    fragmentServiceMock.fetchProvenances.mockReturnValueOnce(
+      Bluebird.reject(provenanceError),
+    )
+    apiClient.fetchJson.mockResolvedValueOnce(chapterDto.manuscripts)
+
+    fragmentServiceMock.fetchProvenances.mockReturnValueOnce(
+      Bluebird.resolve([]),
+    )
+    apiClient.fetchJson.mockResolvedValueOnce(chapterDto.manuscripts)
+
+    await expect(service.findManuscripts(chapterId)).resolves.toEqual(
+      chapter.manuscripts,
+    )
+    await expect(service.findManuscripts(chapterId)).resolves.toEqual(
+      chapter.manuscripts,
+    )
+
+    expect(fragmentServiceMock.fetchProvenances).toHaveBeenCalledTimes(2)
+  })
+})
+
+describe('list caching', () => {
+  let service: TextService
+
+  beforeEach(() => {
+    service = new TextService(
+      apiClient,
+      fragmentServiceMock,
+      wordServiceMock,
+      bibliographyServiceMock,
+    )
+  })
+
+  test('returns cached result on second call', async () => {
+    apiClient.fetchJson.mockReturnValue(Bluebird.resolve(textsDto))
+
+    const first = await service.list()
+    const second = await service.list()
+
+    expect(first).toEqual([text])
+    expect(second).toEqual([text])
+    expect(apiClient.fetchJson).toHaveBeenCalledTimes(1)
+  })
+
+  test('clears cache on error and allows retry', async () => {
+    const error = new Error('network error')
+
+    apiClient.fetchJson.mockReturnValueOnce(Bluebird.reject(error))
+
+    await expect(service.list()).rejects.toThrow('network error')
+
+    apiClient.fetchJson.mockReturnValueOnce(Bluebird.resolve(textsDto))
+
+    await expect(service.list()).resolves.toEqual([text])
+    expect(apiClient.fetchJson).toHaveBeenCalledTimes(2)
+  })
+})
+
+describe('loadProvenances delegation', () => {
+  test('delegates to fragmentService.fetchProvenances', async () => {
+    fragmentServiceMock.fetchProvenances.mockReturnValue(Bluebird.resolve([]))
+    apiClient.fetchJson.mockReturnValue(Bluebird.resolve(chapterDto))
+
+    await testService.findChapter(chapterId)
+
+    expect(fragmentServiceMock.fetchProvenances).toHaveBeenCalled()
+  })
 })

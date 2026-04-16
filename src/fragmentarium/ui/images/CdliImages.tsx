@@ -4,7 +4,7 @@ import _ from 'lodash'
 import Bluebird from 'bluebird'
 
 import withData from 'http/withData'
-import LinkedImage from 'common/LinkedImage'
+import LinkedImage from 'common/ui/LinkedImage'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import { cdliImageUrl } from 'common/iiif'
 

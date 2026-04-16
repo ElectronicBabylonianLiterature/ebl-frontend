@@ -36,6 +36,7 @@ async function renderMarkable(selection: string[] = []): Promise<void> {
       <DisplayToken token={word} />
     </Markable>,
   )
+  await screen.findByText('kur')
 }
 
 describe('Markable', () => {

@@ -23,15 +23,14 @@ import {
   getFormatedTableCell,
   getTextRun,
   HtmlToWordParagraph,
-} from 'common/HtmlToWord'
+} from 'common/utils/HtmlToWord'
 import {
   getHeading,
   getHyperLinkParagraph,
   isNoteCell,
-} from 'common/HtmlToWordUtils'
-import { getLineTypeByHtml } from 'common/HtmlLineType'
-import { fixHtmlParseOrder } from 'common/HtmlParsing'
-import { ReactElement } from 'react'
+} from 'common/utils/HtmlToWordUtils'
+import { getLineTypeByHtml } from 'common/utils/HtmlLineType'
+import { fixHtmlParseOrder } from 'common/utils/HtmlParsing'
 import TransliterationLines from 'transliteration/ui/TransliterationLines'
 import TransliterationNotes from 'transliteration/ui/TransliterationNotes'
 import { Glossary } from 'transliteration/ui/Glossary'
@@ -39,10 +38,10 @@ import { renderToString } from 'react-dom/server'
 import $ from 'jquery'
 import WordService from 'dictionary/application/WordService'
 import GlossaryFactory from 'transliteration/application/GlossaryFactory'
-import { MemoryRouter } from 'react-router-dom'
 import { DictionaryContext } from 'dictionary/ui/dictionary-context'
 import Markup from 'transliteration/ui/markup'
 import { createParagraphs } from 'markup/ui/markup'
+import RouterLinkModeContext from 'common/ui/RouterLinkModeContext'
 
 export async function wordExport(
   fragment: Fragment,
@@ -51,11 +50,11 @@ export async function wordExport(
 ): Promise<Document> {
   const tableHtml: JQuery = $(
     renderToString(
-      <MemoryRouter>
+      <RouterLinkModeContext.Provider value={false}>
         <DictionaryContext.Provider value={wordService}>
           <TransliterationLines text={fragment.text} />
         </DictionaryContext.Provider>
-      </MemoryRouter>,
+      </RouterLinkModeContext.Provider>,
     ),
   )
   const notesHtml: JQuery = $(
@@ -86,10 +85,6 @@ export async function wordExport(
     ],
     getHyperLink(fragment),
   )
-}
-
-function wrapWithMemoryRouter(component: JSX.Element): ReactElement {
-  return <MemoryRouter>{component}</MemoryRouter>
 }
 
 function getMainTableWithFootnotes(
@@ -189,9 +184,7 @@ function getIntroduction(fragment: Fragment): Paragraph[] {
       return HtmlToWordParagraph(
         $(
           renderToString(
-            wrapWithMemoryRouter(
-              <Markup parts={paragraphParts} key={index} container={'p'} />,
-            ),
+            <Markup parts={paragraphParts} key={index} container={'p'} />,
           ),
         ),
       )
@@ -209,15 +202,15 @@ async function getGlossaryOrEmpty(
   const glossaryJsx: JSX.Element = await glossaryFactory
     .createGlossary(fragment.text)
     .then((glossaryData) => {
-      return Glossary({ data: glossaryData })
+      return Glossary({ data: glossaryData, useRouterLinks: false })
     })
   const glossaryHtml: JQuery = $(
     renderToString(
-      wrapWithMemoryRouter(
+      <RouterLinkModeContext.Provider value={false}>
         <DictionaryContext.Provider value={wordService}>
           {glossaryJsx}
-        </DictionaryContext.Provider>,
-      ),
+        </DictionaryContext.Provider>
+      </RouterLinkModeContext.Provider>,
     ),
   )
   return glossaryHtml.children().length > 1

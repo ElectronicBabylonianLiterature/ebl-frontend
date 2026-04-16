@@ -8,7 +8,7 @@ import SessionContext from 'auth/SessionContext'
 import InfoBanner from 'common/InfoBanner'
 import { Session } from 'auth/Session'
 import BibliographyService from 'bibliography/application/BibliographyService'
-import { Markdown } from 'common/Markdown'
+import { Markdown } from 'common/ui/Markdown'
 
 function getReferencesQueryFromLocation(search: string): string {
   const rawQuery = parse(search).query || ''

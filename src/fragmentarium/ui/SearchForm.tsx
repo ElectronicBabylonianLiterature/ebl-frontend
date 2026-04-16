@@ -172,7 +172,7 @@ class SearchForm extends Component<SearchFormProps, State> {
           : '',
         scriptPeriod: state.scriptPeriod,
         genre: state.genre,
-        site: state.site ? state.site.split(/\[|\]/)[0] : '',
+        site: state.site ?? '',
         project: state.project,
         museum: state.museum,
         dossier: state.dossier,

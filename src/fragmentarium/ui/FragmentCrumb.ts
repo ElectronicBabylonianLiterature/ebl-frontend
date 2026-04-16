@@ -1,4 +1,4 @@
-import { Crumb } from 'common/Breadcrumbs'
+import { Crumb } from 'common/ui/Breadcrumbs'
 import { createFragmentUrl } from 'fragmentarium/ui/FragmentLink'
 
 export default class FragmentCrumb implements Crumb {

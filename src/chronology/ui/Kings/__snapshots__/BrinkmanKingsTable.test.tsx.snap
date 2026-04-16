@@ -1,0 +1,8618 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Snapshot 1`] = `
+<div>
+  <section
+    class="kings-tool"
+  >
+    <div
+      class="kings-tool__intro"
+    >
+      <span>
+        The list of kings presented here has been prepared by John A. Brinkman. It is the eighth edition of the chronology first published as an appendix to A. L. Oppenheim’s 
+        <em>
+          Ancient Mesopotamia
+        </em>
+         (1964). The principal new feature of this edition is the recalculation of late-second-millennium dates deriving from the Middle Assyrian lunar calendar and the corresponding recalibration of synchronistic Babylonian dates, which were based on a lunar-solar calendar, including their relationship with a set of known intercalary months from the fourteenth and thirteenth centuries. This presentation reflects research current in January 2023.
+      </span>
+    </div>
+    <nav
+      class="kings-tool__index-nav"
+    >
+      <a
+        class="kings-tool__index-link"
+        href="#dynasty-dynasty-of-akkad"
+      >
+        1
+        . 
+        Dynasty of Akkad
+      </a>
+      <a
+        class="kings-tool__index-link"
+        href="#dynasty-third-dynasty-of-ur"
+      >
+        2
+        . 
+        Third Dynasty of Ur
+      </a>
+      <a
+        class="kings-tool__index-link"
+        href="#dynasty-first-dynasty-of-isin"
+      >
+        3
+        . 
+        First Dynasty of Isin
+      </a>
+      <a
+        class="kings-tool__index-link"
+        href="#dynasty-larsa-dynasty"
+      >
+        4
+        . 
+        Larsa Dynasty
+      </a>
+      <a
+        class="kings-tool__index-link"
+        href="#dynasty-first-dynasty-of-babylon-(hammurapi-dynasty)"
+      >
+        5
+        . 
+        First Dynasty of Babylon (Hammurapi Dynasty)
+      </a>
+      <a
+        class="kings-tool__index-link"
+        href="#dynasty-first-dynasty-of-the-sealand"
+      >
+        6
+        . 
+        First Dynasty of the Sealand
+      </a>
+      <a
+        class="kings-tool__index-link"
+        href="#dynasty-kassite-dynasty"
+      >
+        7
+        . 
+        Kassite Dynasty
+      </a>
+      <a
+        class="kings-tool__index-link"
+        href="#dynasty-second-dynasty-of-isin"
+      >
+        8
+        . 
+        Second Dynasty of Isin
+      </a>
+      <a
+        class="kings-tool__index-link"
+        href="#dynasty-second-dynasty-of-the-sealand"
+      >
+        9
+        . 
+        Second Dynasty of the Sealand
+      </a>
+      <a
+        class="kings-tool__index-link"
+        href="#dynasty-bazi-dynasty"
+      >
+        10
+        . 
+        Bazi Dynasty
+      </a>
+      <a
+        class="kings-tool__index-link"
+        href="#dynasty-elamite-dynasty"
+      >
+        11
+        . 
+        Elamite Dynasty
+      </a>
+      <a
+        class="kings-tool__index-link"
+        href="#dynasty-miscellaneous-dynasties"
+      >
+        12
+        . 
+        Miscellaneous Dynasties
+      </a>
+      <a
+        class="kings-tool__index-link"
+        href="#dynasty-neo-babylonian-dynasty"
+      >
+        13
+        . 
+        Neo-Babylonian Dynasty
+      </a>
+      <a
+        class="kings-tool__index-link"
+        href="#dynasty-persian-rulers"
+      >
+        14
+        . 
+        Persian Rulers
+      </a>
+      <a
+        class="kings-tool__index-link"
+        href="#dynasty-macedonian-rulers"
+      >
+        15
+        . 
+        Macedonian Rulers
+      </a>
+      <a
+        class="kings-tool__index-link"
+        href="#dynasty-seleucid-rulers"
+      >
+        16
+        . 
+        Seleucid Rulers
+      </a>
+      <a
+        class="kings-tool__index-link"
+        href="#dynasty-parthian-or-arsacid-rulers"
+      >
+        17
+        . 
+        Parthian or Arsacid Rulers
+      </a>
+      <a
+        class="kings-tool__index-link"
+        href="#dynasty-rulers-of-assyria"
+      >
+        18
+        . 
+        Rulers of Assyria
+      </a>
+    </nav>
+    <table
+      class="table-borderless chronology-display kings-tool__table table"
+    >
+      <thead>
+        <tr>
+          <th
+            class="kings-tool__column-header"
+            scope="col"
+          >
+            No.
+          </th>
+          <th
+            class="kings-tool__column-header"
+            scope="col"
+          >
+            King
+          </th>
+          <th
+            class="kings-tool__column-header"
+            scope="col"
+          >
+            Dates and Notes
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          id="dynasty-dynasty-of-akkad"
+        >
+          <td
+            class="chronology-display__section kings-tool__dynasty"
+            colspan="3"
+          >
+            <h3
+              class="kings-tool__dynasty-title"
+            >
+              1. Dynasty of Akkad
+            </h3>
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            1
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Sargon
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            2334–2279
+             
+            (56?)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            2
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Rimuš
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            2278–2270
+             
+            (9?)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            3
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Maništušu
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            2269–2255
+             
+            (15?)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            4
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Naram-Sin
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            2254–2218
+             
+            (37?)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            5
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Šar-kali-šarri
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            2217–2193
+             
+            (25)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            6
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Igigi
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="4"
+          >
+            2192–2190
+             
+            (3)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            7
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Naniyum
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            8
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Imi
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            9
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Elulu
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            10
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Dudu
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            2189–2169
+             
+            (21)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            11
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Šu-Durul
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            2168–2154
+             
+            (15)
+             
+          </td>
+        </tr>
+        <tr
+          id="dynasty-third-dynasty-of-ur"
+        >
+          <td
+            class="chronology-display__section kings-tool__dynasty"
+            colspan="3"
+          >
+            <h3
+              class="kings-tool__dynasty-title"
+            >
+              2. Third Dynasty of Ur
+            </h3>
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            1
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Ur-Namma
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            2110–2093
+             
+            (18)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            2
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Šulgi
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            2092–2045
+             
+            (48)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            3
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Amar-Suen
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            2044–2036
+             
+            (9)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            4
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Šu-Sin
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            2035–2027
+             
+            (9)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            5
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Ibbi-Sin
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            2026–2003
+             
+            (24)
+             
+          </td>
+        </tr>
+        <tr
+          id="dynasty-first-dynasty-of-isin"
+        >
+          <td
+            class="chronology-display__section kings-tool__dynasty"
+            colspan="3"
+          >
+            <h3
+              class="kings-tool__dynasty-title"
+            >
+              3. First Dynasty of Isin
+            </h3>
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            1
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Išbi-Erra
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            2019–1987
+             
+            (33)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            2
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Šu-ilišu
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            1986–1977
+             
+            (10)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            3
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Iddin-Dagan
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            1976–1956
+             
+            (21)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            4
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Išme-Dagan
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            1955–1937
+             
+            (19)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            5
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Lipit-Eštar
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            1936–1926
+             
+            (11)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            6
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Ur-Ninurta
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            1925–1898
+             
+            (28)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            7
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Bur-Sin
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            1897–1876
+             
+            (22)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            8
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Lipit-Enlil
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            1875–1871
+             
+            (5)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            9
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Erra-imitti
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            1870–1863
+             
+            (8)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            10
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Enlil-bani
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            1862–1839
+             
+            (24)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            11
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Zambiya
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            1838–1836
+             
+            (3)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            12
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Iter-piša
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            1835–1832
+             
+            (4)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            13
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Urdukuga
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            1831–1828
+             
+            (4)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            14
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Sin-magir
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            1827–1817
+             
+            (11)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            15
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Damiq-ilišu
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            1816–1794
+             
+            (23)
+             
+          </td>
+        </tr>
+        <tr
+          id="dynasty-larsa-dynasty"
+        >
+          <td
+            class="chronology-display__section kings-tool__dynasty"
+            colspan="3"
+          >
+            <h3
+              class="kings-tool__dynasty-title"
+            >
+              4. Larsa Dynasty
+            </h3>
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            1
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Naplanum
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            2025–2005
+             
+            (21)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            2
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Emiṣum
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            2004–1977
+             
+            (28)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            3
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Samium
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            1976–1942
+             
+            (35)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            4
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Zabaya
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            1941–1933
+             
+            (9)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            5
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Gungunum
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            1932–1906
+             
+            (27)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            6
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Abisare
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            1905–1895
+             
+            (11)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            7
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Sumuel
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            1894–1866
+             
+            (29)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            8
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Nur-Adad
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            1865–1850
+             
+            (16)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            9
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Sin-iddinam
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            1849–1843
+             
+            (7)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            10
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Sin-iribam
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            1842–1841
+             
+            (2)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            11
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Sin-iqišam
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            1840–1836
+             
+            (5)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            12
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Ṣilli-Adad
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            1835
+             
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            13
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Warad-Sin
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            1834–1823
+             
+            (12)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            14
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Rim-Sin I
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            1822–1763
+             
+            (60)
+             
+          </td>
+        </tr>
+        <tr
+          id="dynasty-first-dynasty-of-babylon-(hammurapi-dynasty)"
+        >
+          <td
+            class="chronology-display__section kings-tool__dynasty"
+            colspan="3"
+          >
+            <h3
+              class="kings-tool__dynasty-title"
+            >
+              5. First Dynasty of Babylon (Hammurapi Dynasty)
+            </h3>
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            1
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Sumuabum
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            1894–1881
+             
+            (14)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            2
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Sumulael
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            1880–1845
+             
+            (36)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            3
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Sabium
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            1844–1831
+             
+            (14)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            4
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Apil-Sin
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            1830–1813
+             
+            (18)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            5
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Sin-muballiṭ
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            1812–1793
+             
+            (20)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            6
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Hammurapi
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            1792–1750
+             
+            (43)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            7
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Samsuiluna
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            1749–1712
+             
+            (38)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            8
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Abi-ešuh
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            1711–1684
+             
+            (28)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            9
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Ammiditana
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            1683–1647
+             
+            (37)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            10
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Ammiṣaduqa
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            1646–1626
+             
+            (21)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            11
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Samsuditana
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            1625–1595
+             
+            (31)
+             
+          </td>
+        </tr>
+        <tr
+          id="dynasty-first-dynasty-of-the-sealand"
+        >
+          <td
+            class="chronology-display__section kings-tool__dynasty"
+            colspan="3"
+          >
+            <h3
+              class="kings-tool__dynasty-title"
+            >
+              6. First Dynasty of the Sealand
+            </h3>
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            1
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Ilima-ilum
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+             
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            2
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Itti-ili-nibi
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+             
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            3
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Damqi-ilišu
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+             
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            4
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Iškibal
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+             
+            (15)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            5
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Šušši
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+             
+            (24)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            6
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Gulkišar
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+             
+            (55)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            6a
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            ᴵDIŠ+U-EN
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+             
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            7
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Pešgaldarameš
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+             
+            (50)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            8
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Ayadarakalama
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+             
+            (28)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            9
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Akurduana
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+             
+            (26)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            10
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Melamkurkura
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+             
+            (7)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            11
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Ea-gamil
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+             
+            (9)
+             
+          </td>
+        </tr>
+        <tr
+          id="dynasty-kassite-dynasty"
+        >
+          <td
+            class="chronology-display__section kings-tool__dynasty"
+            colspan="3"
+          >
+            <h3
+              class="kings-tool__dynasty-title"
+            >
+              7. Kassite Dynasty
+            </h3>
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            1
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Gandaš
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+             
+            (26)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            2
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Agum I
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+             
+            (22)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            3
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Kaštiliašu I
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+             
+            (22)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            4–5
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            (uncertain)
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+             
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            6
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Urzigurumaš
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+             
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            7
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Harba-x
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+             
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          />
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            (…)
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+             
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          />
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Agum II
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+             
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          />
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            (…)
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+             
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            10
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Burna-Buriaš I
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+             
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          />
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            (…)
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+             
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          />
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Kaštiliašu III
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+             
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          />
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            (…)
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+             
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          />
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Agum III
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+             
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          />
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            (…)
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+             
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            15
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Karaindaš
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+             
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            16
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Kadašman-Harbe I
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+             
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            17
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Kurigalzu I
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+             
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            18
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Kadašman-Enlil I
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            (1373)-1359
+             
+            (15)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            19
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Burna-Buriaš II
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            1358–1331
+             
+            (28)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            20
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Kara-hardaš
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            1331
+             
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            21
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Nazi-Bugaš
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            1331
+             
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            22
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Kurigalzu II
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            1330–1306
+             
+            (25)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            23
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Nazi-Maruttaš
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            1305–1280
+             
+            (26)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            24
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Kadašman-Turgu
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            1279–1262
+             
+            (18)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            25
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Kadašman-Enlil II
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            1261–1253
+             
+            (9)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            26
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Kudur-Enlil
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            1252–1244
+             
+            (9)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            27
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Šagarakti-Šuriaš
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            1243–1231
+             
+            (13)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            28
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Kaštiliašu (IV)
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            1230–1223
+             
+            (8)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            28a
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Tukulti-Ninurta (I)
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            1223?
+             
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            29
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Enlil-nadin-šumi
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            1222
+             
+            (1)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            30
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Kadašman-Harbe II
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            1221
+             
+            (1)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            31
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Adad-šuma-iddina
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            1220–1215
+             
+            (6)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            32
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Adad-šuma-uṣur
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            1214–1185
+             
+            (30)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            33
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Meli-Šipak
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            1184–1170
+             
+            (15)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            34
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Marduk-apla-iddina I
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            1169–1157
+             
+            (13)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            35
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Zababa-šuma-iddina
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            1156
+             
+            (1)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            36
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Enlil-nadin-ahi
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            1155–1153
+             
+            (3)
+             
+          </td>
+        </tr>
+        <tr
+          id="dynasty-second-dynasty-of-isin"
+        >
+          <td
+            class="chronology-display__section kings-tool__dynasty"
+            colspan="3"
+          >
+            <h3
+              class="kings-tool__dynasty-title"
+            >
+              8. Second Dynasty of Isin
+            </h3>
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            1
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Marduk-kabit-ahhešu
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            1157–1140
+             
+            (18)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            2
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Itti-Marduk-balaṭu
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            1139–1132
+             
+            (8)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            3
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Ninurta-nadin-šumi
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            1131–1126
+             
+            (6)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            4
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Nebuchadnezzar I
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            1125–1104
+             
+            (22)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            5
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Enlil-nadin-apli
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            1103–1100
+             
+            (4)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            6
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Marduk-nadin-ahhe
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            1099–1082
+             
+            (18)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            7
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Marduk-šapik-zeri
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            1081–1069
+             
+            (13)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            8
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Adad-apla-iddina
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            1068–1047
+             
+            (22)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            9
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Marduk-ahhe-eriba
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            1046
+             
+            (1)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            10
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Marduk-zer-x
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            1045–1034
+             
+            (12)
+             
+            <i
+              class="fas fa-info-circle"
+            />
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            11
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Nabu-šumu-libur
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            1033–1026
+             
+            (8)
+             
+          </td>
+        </tr>
+        <tr
+          id="dynasty-second-dynasty-of-the-sealand"
+        >
+          <td
+            class="chronology-display__section kings-tool__dynasty"
+            colspan="3"
+          >
+            <h3
+              class="kings-tool__dynasty-title"
+            >
+              9. Second Dynasty of the Sealand
+            </h3>
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            1
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Simbar-Šipak
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            1025–1008
+             
+            (18)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            2
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Ea-mukin-zeri
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            1008
+             
+            (5 months)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            3
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Kaššu-nadin-ahhe
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            1007–1005
+             
+            (3)
+             
+          </td>
+        </tr>
+        <tr
+          id="dynasty-bazi-dynasty"
+        >
+          <td
+            class="chronology-display__section kings-tool__dynasty"
+            colspan="3"
+          >
+            <h3
+              class="kings-tool__dynasty-title"
+            >
+              10. Bazi Dynasty
+            </h3>
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            1
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Eulmaš-šakin-šumi
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            1004–988
+             
+            (17)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            2
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Ninurta-kudurri-uṣur I
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            987–985
+             
+            (3)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            3
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Širikti-Šuqamuna
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            985
+             
+            (3 months)
+             
+          </td>
+        </tr>
+        <tr
+          id="dynasty-elamite-dynasty"
+        >
+          <td
+            class="chronology-display__section kings-tool__dynasty"
+            colspan="3"
+          >
+            <h3
+              class="kings-tool__dynasty-title"
+            >
+              11. Elamite Dynasty
+            </h3>
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            1
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Mar-biti-apla-uṣur
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            984–979
+             
+            (6)
+             
+          </td>
+        </tr>
+        <tr
+          id="dynasty-miscellaneous-dynasties"
+        >
+          <td
+            class="chronology-display__section kings-tool__dynasty"
+            colspan="3"
+          >
+            <h3
+              class="kings-tool__dynasty-title"
+            >
+              12. Miscellaneous Dynasties
+            </h3>
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            1
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Nabu-mukin-apli
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            978–943
+             
+            (36)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            2
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Ninurta-kudurri-uṣur II
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            943
+             
+            (8 months)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            3
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Mar-biti-ahhe-iddina
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            942-?
+             
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            4
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Šamaš-mudammiq
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            ?-c. 900
+             
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            5
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Nabu-šuma-ukin I
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            c. 899-c. 888
+             
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            6
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Nabu-apla-iddina
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            c. 887–851
+             
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            7
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Marduk-zakir-šumi I
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            850-c. 819
+             
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            8
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Marduk-balassu-iqbi
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            c. 818-c. 813
+             
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            9
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Baba-aha-iddina
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            c. 812
+             
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          />
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            (interregnum)
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+             
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            10
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Ninurta-apl?-[x]
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+             
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            11
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Marduk-bel-zeri
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+             
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            12
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Marduk-apla-uṣur
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+             
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            13
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Eriba-Marduk
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+             
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            14
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Nabu-šuma-iškun
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            (760)-748
+             
+            (13)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            15
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Nabu-naṣir
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            747–734
+             
+            (14)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            16
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Nabu-nadin-zeri
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            733–732
+             
+            (2)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            17
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Nabu-šuma-ukin II
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            732
+             
+            (1 month)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            18
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Nabu-mukin-zeri
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            731–729
+             
+            (3)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            19
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Tiglath-pileser / Pulu
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            728–727
+             
+            (2)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            20
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Shalmaneser / Ululayu
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            726–722
+             
+            (5)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            21
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Merodach-Baladan (II)
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            721–710
+             
+            (12)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            22
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Sargon II
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            709–705
+             
+            (5)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            23
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Sennacherib
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            704–703
+             
+            (2)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            24
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Marduk-zakir-šumi II
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            703
+             
+            (1 month)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            25
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Merodach-Baladan (II)
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            703
+             
+            (9 months)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            26
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Bel-ibni
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            702–700
+             
+            (3)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            27
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Aššur-nadin-šumi
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            699–694
+             
+            (6)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            28
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Nergal-ušezib
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            693
+             
+            (1)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            29
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Mušezib-Marduk
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            692–689
+             
+            (4)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            30
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Sennacherib
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            688–681
+             
+            (8)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            31
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Esarhaddon
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            680–669
+             
+            (12)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            31a
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Ashurbanipal
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            668
+             
+            (1)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            32
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Šamaš-šum-ukin
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            667–648
+             
+            (20)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            33
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Kandalanu
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            647–627
+             
+            (21)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          />
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            (interregnum)
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            626
+             
+            (1)
+             
+          </td>
+        </tr>
+        <tr
+          id="dynasty-neo-babylonian-dynasty"
+        >
+          <td
+            class="chronology-display__section kings-tool__dynasty"
+            colspan="3"
+          >
+            <h3
+              class="kings-tool__dynasty-title"
+            >
+              13. Neo-Babylonian Dynasty
+            </h3>
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            1
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Nabopolassar
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            625–605
+             
+            (21)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            2
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Nebuchadnezzar II
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            604–562
+             
+            (43)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            3
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Evil-Merodach
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            561–560
+             
+            (2)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            4
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Neriglissar
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            559–556
+             
+            (4)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            5
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Labaši-Marduk
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            556
+             
+            (3 months)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            6
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Nabonidus
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            555–539
+             
+            (17)
+             
+          </td>
+        </tr>
+        <tr
+          id="dynasty-persian-rulers"
+        >
+          <td
+            class="chronology-display__section kings-tool__dynasty"
+            colspan="3"
+          >
+            <h3
+              class="kings-tool__dynasty-title"
+            >
+              14. Persian Rulers
+            </h3>
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            1
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Cyrus
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            538–530
+             
+            (9)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            2
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Cambyses
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            529–522
+             
+            (8)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            2a
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Bardiya
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            522
+             
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            2b
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Nebuchadnezzar III
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            522
+             
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            2c
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Nebuchadnezzar IV
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            521
+             
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            3
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Darius I
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            521–486
+             
+            (36)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            4
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Xerxes (I)
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            485–465
+             
+            (21)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            4a
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Bel-šimanni
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            484
+             
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            4b
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Šamaš-eriba
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            484
+             
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            5
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Artaxerxes I
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            464–424
+             
+            (41)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            6
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Darius II
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            423–405
+             
+            (19)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            7
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Artaxerxes II Mnemon
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            404–359
+             
+            (46)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            8
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Artaxerxes III Ochus
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            358–338
+             
+            (21)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            9
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Artaxerxes IV Arses
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            337–336
+             
+            (2)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            10
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Darius III
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            335–331
+             
+            (5)
+             
+          </td>
+        </tr>
+        <tr
+          id="dynasty-macedonian-rulers"
+        >
+          <td
+            class="chronology-display__section kings-tool__dynasty"
+            colspan="3"
+          >
+            <h3
+              class="kings-tool__dynasty-title"
+            >
+              15. Macedonian Rulers
+            </h3>
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            1
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Alexander (III)
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            330–323
+             
+            (8)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            2
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Philip Arrhidaeus
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            323–316
+             
+            (7)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            3
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Antigonus
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            315–311
+             
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            4
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Alexander (IV)
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            311–306
+             
+            (4)
+             
+          </td>
+        </tr>
+        <tr
+          id="dynasty-seleucid-rulers"
+        >
+          <td
+            class="chronology-display__section kings-tool__dynasty"
+            colspan="3"
+          >
+            <h3
+              class="kings-tool__dynasty-title"
+            >
+              16. Seleucid Rulers
+            </h3>
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            1
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Seleucus I Nicator
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            305–281
+             
+            (30)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            2
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Antiochus I Soter
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            281–261
+             
+            (20)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            3
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Antiochus II Theos
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            261–246
+             
+            (15)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            4
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Seleucus II Callinicus
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            246–225
+             
+            (21)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            5
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Seleucus III Soter
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            225–223
+             
+            (3)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            6
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Antiochus III (the Great)
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            222–187
+             
+            (35)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            7
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Seleucus IV Philopator
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            187–175
+             
+            (12)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            8
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Antiochus IV Epiphanes
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            175–164
+             
+            (11)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            9
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Antiochus V Eupator
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            164–162
+             
+            (2)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            10
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Demetrius I Soter
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            162–150
+             
+            (12)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            11
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Alexander I Balas
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            150–145
+             
+            (6)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            12
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Demetrius II Nicator
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            145–138
+             
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            13
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Antiochus VI Epiphanes
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            145–142
+             
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            14
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Antiochus VII Sidetes
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            138–129
+             
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            15
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Demetrius II Nicator
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            129–125
+             
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            16
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Alexander II Zabinas
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            128–123
+             
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            17
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Antiochus VIII Grypus
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            125–96
+             
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            18
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Seleucus V Philometor
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            125
+             
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            19
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Antiochus IX Cyzicenus
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            116–96
+             
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            20
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Demetrius III
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            96–87
+             
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            21
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Seleucus VI Epiphanes Nicator
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            96–94
+             
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            22
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Antiochus X Eusebes
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            95–88?
+             
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            23
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Antiochus XI Epiphanes Philadelphus
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            93?
+             
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            24
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Philip I
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            94–83
+             
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            25
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Antiochus XII Dionysus
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            87–83
+             
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            26
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Antiochus XIII Asiaticus
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            69–64
+             
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            27
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Philip II
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            65–64
+             
+             
+          </td>
+        </tr>
+        <tr
+          id="dynasty-parthian-or-arsacid-rulers"
+        >
+          <td
+            class="chronology-display__section kings-tool__dynasty"
+            colspan="3"
+          >
+            <h3
+              class="kings-tool__dynasty-title"
+            >
+              17. Parthian or Arsacid Rulers
+            </h3>
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            1
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Arsaces I
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            247–211?
+             
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            2
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Arsaces II
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            211?-191
+             
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            3
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Phriapatius
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            191–176
+             
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            4
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Phraates I
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            176–171
+             
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            5
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Mithradates I
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            171–138
+             
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            6
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Phraates II
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            138–128
+             
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            7
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Artabanus I
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            127–124
+             
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            8
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Mithradates II
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            124–88
+             
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            9
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Gotarzes I
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            91–80
+             
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            10
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Orodes I
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            80–75
+             
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            11
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Sinatruces
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            77–70
+             
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            12
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Phraates III
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            70–57
+             
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            13
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Orodes II
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            57–37
+             
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            14
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Phraates IV
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            37–2
+             
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            15
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Phraates V
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            2 BCE - 4 CE
+             
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            16
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Orodes III
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            4–6
+             
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            17
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Vonones
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            8–12
+             
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            18
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Artabanus II
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            10–38
+             
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            19
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Vardanes
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            40–47
+             
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            20
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Gotarzes II
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            38–51
+             
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            21
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Vologases I
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            51–78
+             
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            22
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Vologases II
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            77–80
+             
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            23
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Pacorus (II)
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            78–105
+             
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            24
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Artabanus III
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            79–81
+             
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            25
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Vologases III
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            111–146
+             
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            26
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Osroes
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            109–129
+             
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            27
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Vologases IV
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            147–191
+             
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            28
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Vologases V
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            191–208
+             
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            29
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Vologases VI
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            207–226
+             
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            30
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Artabanus IV
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            216–224
+             
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            31
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Tiridates
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            226–228?
+             
+             
+          </td>
+        </tr>
+        <tr
+          id="dynasty-rulers-of-assyria"
+        >
+          <td
+            class="chronology-display__section kings-tool__dynasty"
+            colspan="3"
+          >
+            <h3
+              class="kings-tool__dynasty-title"
+            >
+              18. Rulers of Assyria
+            </h3>
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            1
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Ṭudiya
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+             
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            2
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Adamu
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+             
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            3
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Yanqi
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+             
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            4
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Sahlamu
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+             
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            5
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Harharu
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+             
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            6
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Mandaru
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+             
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            7
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Imṣu
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+             
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            8
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            HARṣu
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+             
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            9
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Didanu
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+             
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            10
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Hanu
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+             
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            11
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Zuabu
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+             
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            12
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Nuabu
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+             
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            13
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Abazu
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+             
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            14
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Belu
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+             
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            15
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Azarah
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+             
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            16
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Ušpiya
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+             
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            17
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Apiašal
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+             
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            18
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Hale
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+             
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            19
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Samanu
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+             
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            20
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Hayanu
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+             
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            21
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Ilu-Mer
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+             
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            22
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Yakmesi
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+             
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            23
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Yakmeni
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+             
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            24
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Yazkur-ilu
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+             
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            25
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Ila-kabkabi
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+             
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            26
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Aminu
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+             
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            27
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Sulili
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+             
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            28
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Kikkiya
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+             
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            29
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Akiya
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+             
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            30
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Puzur-Aššur I
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+             
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            31
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Šalim-ahum
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+             
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            32
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Ilušuma
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+             
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            33
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Erišum I
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            1972–1933
+             
+            (40)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            34
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Ikunum
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            1932–1918
+             
+            (15)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            35
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Sargon I
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            1917–1878
+             
+            (40)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            36
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Puzur-Aššur II
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            1877–1870
+             
+            (8)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            37
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Naram-Sin
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            1869-(1836)
+             
+            (34)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            37a
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Naram-Sin and Erišum II
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            1835–1816
+             
+            (20)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            38
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Erišum II
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            (1815)-1809
+             
+            (7)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            39
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Šamši-Adad I
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            1808–1776?
+             
+            (33?)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            40
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Išme-Dagan I
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            1775?-
+             
+            (40)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            40a
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Mut-Aškur
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+             
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            40b
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Rimu-x
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+             
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            40c
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Puzur-Sin
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+             
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            41
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Aššur-dugul
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+             
+            (6)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            42
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Aššur-apla-idi
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+             
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            43
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Naṣir-Sin
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+             
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            44
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Sin-namir
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+             
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            45
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Ipqi-Ištar
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+             
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            46
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Adad-ṣalulu
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+             
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            47
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Adasi
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+             
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            48
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Belu-bani
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+             
+            (10)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            49
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Libaya
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+             
+            (17)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            50
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Šarma-Adad I
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+             
+            (12)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            51
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            IB.TAR-Sin
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+             
+            (12)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            52
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Bazaya
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+             
+            (28)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            53
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Lullaya
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+             
+            (6)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            54
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Kidin-Ninua
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+             
+            (14)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            55
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Šarma-Adad II
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+             
+            (3)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            56
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Erišum III
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+             
+            (13)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            57
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Šamši-Adad II
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+             
+            (6)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            58
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Išme-Dagan II
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+             
+            (16)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            59
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Šamši-Adad III
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+             
+            (16)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            60
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Aššur-nirari I
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+             
+            (26)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            61
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Puzur-Aššur III
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+             
+            (24?)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            62
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Enlil-naṣir I
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+             
+            (13)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            63
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Nur-ili
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+             
+            (12)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            64
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Aššur-šaduni
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+             
+            (1 month)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            65
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Aššur-rabi I
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+             
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            66
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Aššur-nadin-ahhe I
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+             
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            67
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Enlil-naṣir II
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            1421–1416
+             
+            (6)
+             
+            <i
+              class="fas fa-info-circle"
+            />
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            68
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Aššur-nirari II
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            1415–1409
+             
+            (7)
+             
+            <i
+              class="fas fa-info-circle"
+            />
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            69
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Aššur-bel-nišešu
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            1408–1401
+             
+            (9)
+             
+            <i
+              class="fas fa-info-circle"
+            />
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            70
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Aššur-rem-nišešu
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            1400–1393
+             
+            (8)
+             
+            <i
+              class="fas fa-info-circle"
+            />
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            71
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Aššur-nadin-ahhe II
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            1392–1383
+             
+            (10)
+             
+            <i
+              class="fas fa-info-circle"
+            />
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            72
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Eriba-Adad I
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            1382–1357
+             
+            (27)
+             
+            <i
+              class="fas fa-info-circle"
+            />
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            73
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Aššur-uballiṭ I
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            1356–1322
+             
+            (36)
+             
+            <i
+              class="fas fa-info-circle"
+            />
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            74
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Enlil-nirari
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            1321–1313
+             
+            (10)
+             
+            <i
+              class="fas fa-info-circle"
+            />
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            75
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Arik-den-ili
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            1312–1301
+             
+            (12)
+             
+            <i
+              class="fas fa-info-circle"
+            />
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            76
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Adad-nirari I
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            1300–1270
+             
+            (32)
+             
+            <i
+              class="fas fa-info-circle"
+            />
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            77
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Shalmaneser I
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            1269–1241
+             
+            (30)
+             
+            <i
+              class="fas fa-info-circle"
+            />
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            78
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Tukulti-Ninurta I
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            1240–1205
+             
+            (37)
+             
+            <i
+              class="fas fa-info-circle"
+            />
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            79
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Aššur-nadin-apli
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            1204–1201
+             
+            (4)
+             
+            <i
+              class="fas fa-info-circle"
+            />
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            80
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Aššur-nirari III
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            1200–1195
+             
+            (6)
+             
+            <i
+              class="fas fa-info-circle"
+            />
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            81
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Enlil-kudurri-uṣur
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            1194–1190
+             
+            (5)
+             
+            <i
+              class="fas fa-info-circle"
+            />
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            82
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Ninurta-apil-Ekur
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            1189–1178
+             
+            (13)
+             
+            <i
+              class="fas fa-info-circle"
+            />
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            83
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Aššur-dan I
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            1177–1133
+             
+            (46)
+             
+            <i
+              class="fas fa-info-circle"
+            />
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            84
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Ninurta-tukulti-Aššur
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            1132
+             
+            (1)
+             
+            <i
+              class="fas fa-info-circle"
+            />
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            85
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Mutakkil-Nusku
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            1131
+             
+            (1)
+             
+            <i
+              class="fas fa-info-circle"
+            />
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            86
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Aššur-reš-iši I
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            1130–1114
+             
+            (18)
+             
+            <i
+              class="fas fa-info-circle"
+            />
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            87
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Tiglath-pileser I
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            1113–1076
+             
+            (39)
+             
+            <i
+              class="fas fa-info-circle"
+            />
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            88
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Ašared-apil-Ekur
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            1075–1074
+             
+            (2)
+             
+            <i
+              class="fas fa-info-circle"
+            />
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            89
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Aššur-bel-kala
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            1073–1056
+             
+            (18)
+             
+            <i
+              class="fas fa-info-circle"
+            />
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            90
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Eriba-Adad II
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            1055–1054
+             
+            (2)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            91
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Šamši-Adad IV
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            1053–1050
+             
+            (4)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            92
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Aššurnaṣirpal I
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            1049–1031
+             
+            (19)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            93
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Shalmaneser II
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            1030–1019
+             
+            (12)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            94
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Aššur-nirari IV
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            1018–1013
+             
+            (6)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            95
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Aššur-rabi II
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            1012–972
+             
+            (41)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            96
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Aššur-reš-iši II
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            971–967
+             
+            (5)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            97
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Tiglath-pileser II
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            966–935
+             
+            (32)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            98
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Aššur-dan II
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            934–912
+             
+            (23)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            99
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Adad-nirari II
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            911–891
+             
+            (21)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            100
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Tukulti-Ninurta II
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            890–884
+             
+            (7)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            101
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Aššurnaṣirpal II
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            883–859
+             
+            (25)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            102
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Shalmaneser III
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            858–824
+             
+            (35)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            103
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Šamši-Adad V
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            823–811
+             
+            (13)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            104
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Adad-nirari III
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            810–783
+             
+            (28)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            105
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Shalmaneser IV
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            782–773
+             
+            (10)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            106
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Aššur-dan III
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            772–755
+             
+            (18)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            107
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Aššur-nirari V
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            754–745
+             
+            (10)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            108
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Tiglath-pileser III
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            744–727
+             
+            (18)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            109
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Shalmaneser V
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            726–722
+             
+            (5)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            110
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Sargon II
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            721–705
+             
+            (17)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            111
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Sennacherib
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            704–681
+             
+            (24)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            112
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Esarhaddon
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            680–669
+             
+            (12)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            113
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Ashurbanipal
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            668–631
+             
+            (38?)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            114
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Aššur-etel-ilani
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            630–627
+             
+            (4)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            114a
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Sin-šumu-lišir
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            627?
+             
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            115
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Sin-šar-iškun
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            626–612
+             
+            (15?)
+             
+          </td>
+        </tr>
+        <tr
+          class="kings"
+        >
+          <td
+            class="chronology-display kings-tool__index"
+          >
+            116
+          </td>
+          <td
+            class="chronology-display kings-tool__name"
+          >
+            Aššur-uballiṭ II
+          </td>
+          <td
+            class="chronology-display kings-tool__date"
+            rowspan="1"
+          >
+            611–609
+             
+            (3)
+             
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+</div>
+`;

@@ -71,14 +71,17 @@ describe('Searching bibliography and AfO-Register', () => {
   })
 
   it('fills in search form query', async () => {
-    renderBibliography('/bibliography/references?query=Borger', 'references')
+    await renderBibliography(
+      '/bibliography/references?query=Borger',
+      'references',
+    )
 
     const queryInput = await screen.findByLabelText('Bibliography-Query')
     expect(queryInput).toHaveValue('Borger')
   })
 
   it('displays empty search if no query', async () => {
-    renderBibliography('/bibliography/references', 'references')
+    await renderBibliography('/bibliography/references', 'references')
 
     const queryInput = await screen.findByLabelText('Bibliography-Query')
     expect(queryInput).toHaveValue('')
@@ -86,32 +89,36 @@ describe('Searching bibliography and AfO-Register', () => {
 
   it('displays a message if user is not logged in', async () => {
     session.isAllowedToReadBibliography.mockReturnValueOnce(false)
-    renderBibliography('/bibliography/references', 'references')
+    await renderBibliography('/bibliography/references', 'references', false)
     expect(
       screen.getByText('Please log in to browse the Bibliography.'),
     ).toBeInTheDocument()
   })
 
-  it('renders content based on session state', () => {
+  it('renders content based on session state', async () => {
     session.isAllowedToReadBibliography.mockReturnValue(false)
-    renderBibliography('/bibliography/references', 'references')
+    await renderBibliography('/bibliography/references', 'references', false)
 
     expect(
-      screen.getByText('Please log in to browse the Bibliography.'),
+      await screen.findByText('Please log in to browse the Bibliography.'),
     ).toBeInTheDocument()
   })
 
-  it('handles URL queries correctly', () => {
-    renderBibliography('/bibliography/references?query=TestQuery', 'references')
-    const queryInput = screen.getByLabelText('Bibliography-Query')
+  it('handles URL queries correctly', async () => {
+    await renderBibliography(
+      '/bibliography/references?query=TestQuery',
+      'references',
+    )
+    const queryInput = await screen.findByLabelText('Bibliography-Query')
     expect(queryInput).toHaveValue('TestQuery')
   })
 })
 
-function renderBibliography(
+async function renderBibliography(
   path: string,
   activeTab: 'references' | 'afo-register',
-): void {
+  waitForQuery = true,
+): Promise<void> {
   render(
     <MemoryRouter initialEntries={[path]}>
       <SessionContext.Provider value={session}>
@@ -124,4 +131,10 @@ function renderBibliography(
       </SessionContext.Provider>
     </MemoryRouter>,
   )
+  if (waitForQuery) {
+    await screen.findByLabelText('Bibliography-Query')
+    await waitFor(() => {
+      expect(screen.queryAllByLabelText('Spinner')).toHaveLength(0)
+    })
+  }
 }

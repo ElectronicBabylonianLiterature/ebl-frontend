@@ -2,7 +2,7 @@ import React from 'react'
 import { FormGroup } from 'react-bootstrap'
 
 import ArrayWithNotes from './ArrayWithNotes'
-import List from 'common/List'
+import List from 'common/ui/List'
 
 export default function ArrayWithNotesList({
   value,

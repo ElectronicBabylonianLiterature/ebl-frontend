@@ -80,8 +80,14 @@ test('Omit word', async () => {
   )
 
   const omittedWordsInput = await screen.findByLabelText('Omitted words')
-  await userEvent.click(omittedWordsInput)
-  await userEvent.type(omittedWordsInput, 'kur-kur{enter}')
+  await userEvent.type(omittedWordsInput, 'kur')
+  await userEvent.click(
+    await screen.findByText(
+      (text, element) =>
+        text === 'kur-kur' &&
+        (element?.getAttribute('class') ?? '').includes('option'),
+    ),
+  )
   await whenClicked(screen, 'Save alignment')
     .expect(onSave)
     .toHaveBeenCalledWith(expected)

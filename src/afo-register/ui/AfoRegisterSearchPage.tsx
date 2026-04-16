@@ -7,7 +7,7 @@ import AfoRegisterSearchForm, {
 } from 'afo-register/ui/AfoRegisterSearchForm'
 import AfoRegisterService from 'afo-register/application/AfoRegisterService'
 import FragmentService from 'fragmentarium/application/FragmentService'
-import { Markdown } from 'common/Markdown'
+import { Markdown } from 'common/ui/Markdown'
 
 function getAfoRegisterQueryFromLocation(search: string): AfoRegisterQuery {
   const query = parse(search) as AfoRegisterQuery

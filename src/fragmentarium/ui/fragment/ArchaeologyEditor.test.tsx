@@ -17,6 +17,7 @@ import { ArchaeologyDto } from 'fragmentarium/domain/archaeologyDtos'
 import { toArchaeologyDto } from 'fragmentarium/domain/archaeologyDtos'
 import _ from 'lodash'
 import { FindspotService } from 'fragmentarium/application/FindspotService'
+import FragmentService from 'fragmentarium/application/FragmentService'
 import userEvent from '@testing-library/user-event'
 
 let updateArchaeology
@@ -26,11 +27,16 @@ let archaeologyDto: ArchaeologyDto
 let findspots: Findspot[]
 
 jest.mock('fragmentarium/application/FindspotService')
+jest.mock('fragmentarium/application/FragmentService')
 
 const MockFindspotService = FindspotService as jest.Mock<
   jest.Mocked<FindspotService>
 >
 const findspotServiceMock = new MockFindspotService()
+const MockFragmentService = FragmentService as jest.Mock<
+  jest.Mocked<FragmentService>
+>
+const fragmentServiceMock = new MockFragmentService()
 const defaultSite = 'Babylon'
 
 const setup = async () => {
@@ -49,12 +55,24 @@ const setup = async () => {
   findspotServiceMock.fetchFindspots.mockReturnValue(
     Bluebird.resolve(findspots),
   )
+  fragmentServiceMock.fetchProvenances.mockReturnValue(
+    Bluebird.resolve([
+      {
+        id: 'babylon',
+        longName: 'Babylon',
+        abbreviation: 'Bab',
+        parent: 'Babylonia',
+        sortKey: 1,
+      },
+    ]),
+  )
 
   render(
     <ArchaeologyEditor
       archaeology={archaeology}
       updateArchaeology={updateArchaeology}
       findspotService={findspotServiceMock}
+      fragmentService={fragmentServiceMock}
     />,
   )
 
@@ -63,6 +81,7 @@ const setup = async () => {
 
 it('calls updateArchaeology on submit', async () => {
   await setup()
+  updateArchaeology.mockReturnValueOnce(new Promise(() => undefined))
   submitFormByTestId(screen, 'archaeology-form')
   expect(updateArchaeology).toHaveBeenCalledWith(
     _.omit(archaeologyDto, 'findspot'),
@@ -91,4 +110,26 @@ it('shows findspot choices', async () => {
     .forEach((findspot) =>
       expect(screen.getByText(findspot.toString())).toBeVisible(),
     )
+})
+
+it('shows findspot-uncertain checkbox with stored value', async () => {
+  await setup()
+  const checkbox = screen.getByLabelText('findspot-uncertain')
+  expect(checkbox).toBeInTheDocument()
+  if (archaeology.isFindspotUncertain) {
+    expect(checkbox).toBeChecked()
+  } else {
+    expect(checkbox).not.toBeChecked()
+  }
+})
+
+it('updates isFindspotUncertain on change', async () => {
+  await setup()
+  const checkbox = screen.getByLabelText('findspot-uncertain')
+  await userEvent.click(checkbox)
+  if (archaeology.isFindspotUncertain) {
+    expect(checkbox).not.toBeChecked()
+  } else {
+    expect(checkbox).toBeChecked()
+  }
 })

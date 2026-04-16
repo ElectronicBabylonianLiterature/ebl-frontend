@@ -1,6 +1,9 @@
 {
   "name": "EBL Frontend",
-  "image": "mcr.microsoft.com/devcontainers/javascript-node:20",
+  "build": {
+    "dockerfile": "Dockerfile",
+    "context": ".."
+  },
 
   "features": {
     "ghcr.io/devcontainers/features/git-lfs:1": {}

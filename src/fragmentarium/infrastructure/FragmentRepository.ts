@@ -48,7 +48,7 @@ import { ManuscriptAttestation } from 'corpus/domain/manuscriptAttestation'
 import FragmentDto, {
   MesopotamianDateDto,
 } from 'fragmentarium/domain/FragmentDtos'
-import { PeriodModifiers, Periods } from 'common/period'
+import { PeriodModifiers, Periods } from 'common/utils/period'
 import { FragmentQuery } from 'query/FragmentQuery'
 import {
   QueryItem,
@@ -69,6 +69,7 @@ import {
 import { LemmaOption } from 'fragmentarium/ui/lemmatization/LemmaSelectionForm'
 import { UncertainFragmentAttestation } from 'corpus/domain/uncertainFragmentAttestation'
 import { ApiEntityAnnotationSpan } from 'fragmentarium/ui/text-annotation/EntityType'
+import { ProvenanceRecord } from 'fragmentarium/domain/Provenance'
 
 export function createScript(dto: ScriptDto): Script {
   return {
@@ -244,8 +245,25 @@ class ApiFragmentRepository
     return this.apiClient.fetchJson<string[][]>('/genres', false)
   }
 
-  fetchProvenances(): Promise<string[][]> {
-    return this.apiClient.fetchJson<string[][]>('/provenances', false)
+  fetchProvenances(): Promise<readonly ProvenanceRecord[]> {
+    return this.apiClient.fetchJson<readonly ProvenanceRecord[]>(
+      '/provenances',
+      false,
+    )
+  }
+
+  fetchProvenance(id: string): Promise<ProvenanceRecord> {
+    return this.apiClient.fetchJson<ProvenanceRecord>(
+      `/provenances/${encodeURIComponent(id)}`,
+      false,
+    )
+  }
+
+  fetchProvenanceChildren(id: string): Promise<readonly ProvenanceRecord[]> {
+    return this.apiClient.fetchJson<readonly ProvenanceRecord[]>(
+      `/provenances/${encodeURIComponent(id)}/children`,
+      false,
+    )
   }
 
   fetchColophonNames(query: string): Promise<string[]> {

@@ -1,13 +1,13 @@
 import React from 'react'
 import _ from 'lodash'
-import AppContent from 'common/AppContent'
+import AppContent from 'common/ui/AppContent'
 import InfoBanner from 'common/InfoBanner'
 import SessionContext from 'auth/SessionContext'
 import SearchForm, {
   SearchFormProps,
   isValidNumber,
 } from 'fragmentarium/ui/SearchForm'
-import { SectionCrumb, TextCrumb } from 'common/Breadcrumbs'
+import { SectionCrumb, TextCrumb } from 'common/ui/Breadcrumbs'
 import { Session } from 'auth/Session'
 import 'fragmentarium/ui/search/FragmentariumSearch.css'
 import { FragmentQuery } from 'query/FragmentQuery'

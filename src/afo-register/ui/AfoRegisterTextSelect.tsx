@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { AfoRegisterRecordSuggestion } from 'afo-register/domain/Record'
-import { usePrevious } from 'common/usePrevious'
+import { usePrevious } from 'common/hooks/usePrevious'
 import type { SingleValue } from 'react-select'
 import AsyncSelect from 'react-select/async'
-import { Markdown } from 'common/Markdown'
+import { Markdown } from 'common/ui/Markdown'
 
 interface SelectProps {
   ariaLabel: string

@@ -1,0 +1,120 @@
+#!/bin/sh
+set -eu
+
+cd "$(dirname "$0")/.."
+
+if ! command -v ggshield >/dev/null 2>&1; then
+	printf >&2 "ggshield is required to run secret scanning tests.\n"
+	exit 1
+fi
+
+run_ggshield() {
+	if [ "${GITGUARDIAN_API_KEY+x}" = x ] && [ -z "${GITGUARDIAN_API_KEY}" ]; then
+		env -u GITGUARDIAN_API_KEY ggshield "$@"
+	else
+		ggshield "$@"
+	fi
+}
+
+if ! run_ggshield api-status >/dev/null 2>&1; then
+	printf >&2 "ggshield authentication is required to run secret scanning tests.\n"
+	printf >&2 "Authenticate using one of these methods:\n"
+	printf >&2 "  1. Run: ggshield auth login\n"
+	printf >&2 "  2. Export: GITGUARDIAN_API_KEY=<your-key>\n"
+	exit 1
+fi
+
+tmp_dir="$(mktemp -d)"
+trap 'rm -rf "$tmp_dir"' EXIT HUP INT TERM
+
+generate_alnum() {
+	length="$1"
+	tr -dc 'A-Za-z0-9' </dev/urandom | head -c "$length"
+}
+
+generate_detected_auth0_pem() {
+	attempt=1
+	while [ "$attempt" -le 12 ]; do
+		candidate="$(head -c 96 /dev/urandom | base64 | tr -d '\n')"
+		probe_path="$tmp_dir/auth0-pem-probe-$attempt.env"
+		printf 'AUTH0_PEM=%s\n' "$candidate" > "$probe_path"
+		if ! run_ggshield secret scan path "$probe_path" >/dev/null 2>&1; then
+			printf '%s' "$candidate"
+			return 0
+		fi
+		attempt=$((attempt + 1))
+	done
+	printf >&2 'FAIL unable to generate auth0 pem payload detected by ggshield after 12 attempts\n'
+	exit 1
+}
+
+assert_passes() {
+	name="$1"
+	payload="$2"
+	path="$tmp_dir/$name.env"
+	printf '%s\n' "$payload" > "$path"
+
+	if run_ggshield secret scan path "$path" >/dev/null 2>&1; then
+		printf 'PASS %s\n' "$name"
+	else
+		printf >&2 'FAIL %s unexpectedly triggered detection\n' "$name"
+		exit 1
+	fi
+}
+
+assert_fails() {
+	name="$1"
+	payload="$2"
+	path="$tmp_dir/$name.env"
+	printf '%s\n' "$payload" > "$path"
+
+	if run_ggshield secret scan path "$path" >/dev/null 2>&1; then
+		printf >&2 'FAIL %s unexpectedly passed\n' "$name"
+		exit 1
+	else
+		printf 'PASS %s\n' "$name"
+	fi
+}
+
+FRONTEND_ENV_TEST_PAYLOAD=$(cat <<'EOF'
+REACT_APP_AUTH0_DOMAIN=example.com
+REACT_APP_AUTH0_CLIENT_ID=swVhmUd1O4jYT4bBCczGhSLCIAOlH4Rb
+REACT_APP_AUTH0_AUDIENCE=dictionary-api
+REACT_APP_DICTIONARY_API_URL=http://example.com
+REACT_APP_SENTRY_DSN=http://example.com/sentry
+REACT_APP_CORRECTIONS_EMAIL=corrections@example.com
+REACT_APP_INFO_EMAIL=info@example.com
+REACT_APP_GA_TRACKING_ID=G-XXXXXXXXXX
+EOF
+)
+
+API_ENV_EXAMPLE_PAYLOAD=$(cat <<'EOF'
+# Auth0 Configuration
+AUTH0_AUDIENCE=your-api-identifier
+AUTH0_ISSUER=https://your-domain.auth0.com/
+AUTH0_PEM=your-base64-encoded-certificate
+
+# AI API Configuration
+EBL_AI_API=http://localhost:8001
+
+# MongoDB Configuration
+MONGODB_DB=ebldev
+MONGODB_URI=mongodb://localhost:27017/ebldev
+
+# Sentry Configuration
+SENTRY_DSN=https://your-sentry-dsn@sentry.io/project-id
+SENTRY_ENVIRONMENT=development
+EOF
+)
+
+MOCK_PEM="$(generate_detected_auth0_pem)"
+MOCK_GITGUARDIAN_PAT="gg_pat_$(generate_alnum 47)"
+GENERIC_KEY="$(generate_alnum 38)"
+
+assert_passes "frontend-env-test-placeholders" "$FRONTEND_ENV_TEST_PAYLOAD"
+assert_passes "env-example-placeholders" "$API_ENV_EXAMPLE_PAYLOAD"
+assert_fails "auth0-pem-mock-data" "AUTH0_PEM=$MOCK_PEM"
+assert_fails "gitguardian-api-key" "GITGUARDIAN_API_KEY=${MOCK_GITGUARDIAN_PAT}"
+assert_fails "generic-api-key" "api_key=\"${GENERIC_KEY}\""
+
+printf 'Secret scanning regression checks passed.\n'

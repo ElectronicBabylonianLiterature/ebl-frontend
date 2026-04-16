@@ -4,7 +4,7 @@ import _ from 'lodash'
 import { MemoryRouter } from 'react-router-dom'
 import { createText, Text } from 'corpus/domain/text'
 import { ChapterTitle, ChapterTitleLink } from './chapter-title'
-import { stageToAbbreviation } from 'common/period'
+import { stageToAbbreviation } from 'common/utils/period'
 
 const stage = 'Old Babylonian'
 const name = 'I'

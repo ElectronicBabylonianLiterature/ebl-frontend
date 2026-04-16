@@ -33,6 +33,17 @@ import {
 import { MesopotamianDateDto } from 'fragmentarium/domain/FragmentDtos'
 import { UncertainFragmentAttestation } from 'corpus/domain/uncertainFragmentAttestation'
 import { ApiEntityAnnotationSpan } from 'fragmentarium/ui/text-annotation/EntityType'
+import {
+  ProvenanceRecord,
+  sanitizeProvenanceRecord,
+  sortProvenances,
+} from 'fragmentarium/domain/Provenance'
+import {
+  setProvenanceRecords,
+  upsertProvenanceRecord,
+} from 'corpus/domain/provenance'
+
+const FIND_CACHE_TTL_MS = 60_000
 
 export type ThumbnailSize = 'small' | 'medium' | 'large'
 
@@ -81,7 +92,9 @@ export interface FragmentRepository {
     uncertainFragmentAttestations: ReadonlyArray<UncertainFragmentAttestation>
   }>
   fetchGenres(): Bluebird<string[][]>
-  fetchProvenances(): Bluebird<string[][]>
+  fetchProvenances(): Bluebird<readonly ProvenanceRecord[]>
+  fetchProvenance(id: string): Bluebird<ProvenanceRecord>
+  fetchProvenanceChildren(id: string): Bluebird<readonly ProvenanceRecord[]>
   fetchPeriods(): Bluebird<string[]>
   fetchColophonNames(query: string): Bluebird<string[]>
   updateGenres(number: string, genres: Genres): Bluebird<Fragment>
@@ -142,6 +155,28 @@ export interface AnnotationRepository {
 }
 export class FragmentService {
   private readonly referenceInjector: ReferenceInjector
+  private cachedProvenances: readonly ProvenanceRecord[] | null = null
+  private cachedProvenancesRequest: Bluebird<
+    readonly ProvenanceRecord[]
+  > | null = null
+  private readonly cachedProvenanceById = new Map<string, ProvenanceRecord>()
+  private readonly cachedProvenanceByIdRequest = new Map<
+    string,
+    Bluebird<ProvenanceRecord>
+  >()
+  private readonly cachedProvenanceChildrenById = new Map<
+    string,
+    readonly ProvenanceRecord[]
+  >()
+  private readonly cachedProvenanceChildrenByIdRequest = new Map<
+    string,
+    Bluebird<readonly ProvenanceRecord[]>
+  >()
+  private readonly findCache = new Map<
+    string,
+    { data: Fragment; expires: number }
+  >()
+  private readonly findCacheRequests = new Map<string, Bluebird<Fragment>>()
 
   constructor(
     private readonly fragmentRepository: FragmentRepository &
@@ -170,10 +205,35 @@ export class FragmentService {
     lines?: readonly number[],
     excludeLines?: boolean,
   ): Bluebird<Fragment> {
-    return this.fragmentRepository
+    const cacheKey = this.findCacheKey(number, lines, excludeLines)
+
+    const cached = this.findCache.get(cacheKey)
+    if (cached && cached.expires > Date.now()) {
+      return Bluebird.resolve(cached.data)
+    }
+
+    const inFlight = this.findCacheRequests.get(cacheKey)
+    if (inFlight) {
+      return inFlight
+    }
+
+    const request = this.fragmentRepository
       .find(number, lines, excludeLines)
       .then((fragment: Fragment) => this.injectReferences(fragment))
+      .then((fragment: Fragment) => {
+        this.findCache.set(cacheKey, {
+          data: fragment,
+          expires: Date.now() + FIND_CACHE_TTL_MS,
+        })
+        return fragment
+      })
       .catch(onError)
+      .finally(() => {
+        this.findCacheRequests.delete(cacheKey)
+      })
+
+    this.findCacheRequests.set(cacheKey, request)
+    return request
   }
 
   isInFragmentarium(number: string): boolean {
@@ -186,23 +246,27 @@ export class FragmentService {
   }
 
   updateGenres(number: string, genres: Genres): Bluebird<Fragment> {
+    this.invalidateFindCache(number)
     return this.fragmentRepository
       .updateGenres(number, genres)
       .then((fragment: Fragment) => this.injectReferences(fragment))
   }
 
   updateScript(number: string, script: Script): Bluebird<Fragment> {
+    this.invalidateFindCache(number)
     return this.fragmentRepository
       .updateScript(number, script)
       .then((fragment: Fragment) => this.injectReferences(fragment))
   }
   updateScopes(number: string, scopes: string[]): Bluebird<Fragment> {
+    this.invalidateFindCache(number)
     return this.fragmentRepository
       .updateScopes(number, scopes)
       .then((fragment: Fragment) => this.injectReferences(fragment))
   }
 
   updateDate(number: string, date: MesopotamianDateDto): Bluebird<Fragment> {
+    this.invalidateFindCache(number)
     return this.fragmentRepository
       .updateDate(number, date)
       .then((fragment: Fragment) => this.injectReferences(fragment))
@@ -212,6 +276,7 @@ export class FragmentService {
     number: string,
     datesInText: MesopotamianDateDto[],
   ): Bluebird<Fragment> {
+    this.invalidateFindCache(number)
     return this.fragmentRepository
       .updateDatesInText(number, datesInText)
       .then((fragment: Fragment) => this.injectReferences(fragment))
@@ -221,8 +286,93 @@ export class FragmentService {
     return this.fragmentRepository.fetchGenres()
   }
 
-  fetchProvenances(): Bluebird<string[][]> {
-    return this.fragmentRepository.fetchProvenances()
+  fetchProvenances(): Bluebird<readonly ProvenanceRecord[]> {
+    if (this.cachedProvenances) {
+      return Bluebird.resolve(this.cachedProvenances)
+    }
+    if (this.cachedProvenancesRequest) {
+      return this.cachedProvenancesRequest
+    }
+
+    this.cachedProvenancesRequest = this.fragmentRepository
+      .fetchProvenances()
+      .then((provenances) => {
+        const sanitized = provenances.map(sanitizeProvenanceRecord)
+        setProvenanceRecords(sanitized)
+        this.cachedProvenances = sanitized
+        sanitized.forEach((provenance) => {
+          this.cachedProvenanceById.set(provenance.id, provenance)
+        })
+        return sanitized
+      })
+      .catch((error) => {
+        this.cachedProvenances = null
+        this.cachedProvenanceById.clear()
+        throw error
+      })
+      .finally(() => {
+        this.cachedProvenancesRequest = null
+      })
+
+    return this.cachedProvenancesRequest
+  }
+
+  fetchProvenance(id: string): Bluebird<ProvenanceRecord> {
+    const cachedProvenance = this.cachedProvenanceById.get(id)
+    if (cachedProvenance) {
+      return Bluebird.resolve(cachedProvenance)
+    }
+
+    const cachedRequest = this.cachedProvenanceByIdRequest.get(id)
+    if (cachedRequest) {
+      return cachedRequest
+    }
+
+    const request = this.fragmentRepository
+      .fetchProvenance(id)
+      .then((provenance) => {
+        const sanitized = sanitizeProvenanceRecord(provenance)
+        upsertProvenanceRecord(sanitized)
+        this.cachedProvenanceById.set(id, sanitized)
+        return sanitized
+      })
+      .finally(() => {
+        this.cachedProvenanceByIdRequest.delete(id)
+      })
+
+    this.cachedProvenanceByIdRequest.set(id, request)
+    return request
+  }
+
+  fetchProvenanceChildren(id: string): Bluebird<readonly ProvenanceRecord[]> {
+    const cachedChildren = this.cachedProvenanceChildrenById.get(id)
+    if (cachedChildren) {
+      return Bluebird.resolve(cachedChildren)
+    }
+
+    const cachedRequest = this.cachedProvenanceChildrenByIdRequest.get(id)
+    if (cachedRequest) {
+      return cachedRequest
+    }
+
+    const request = this.fragmentRepository
+      .fetchProvenanceChildren(id)
+      .then((children) => {
+        const sanitized = children.map(sanitizeProvenanceRecord)
+        const sorted = sortProvenances(sanitized)
+        this.cachedProvenanceChildrenById.set(id, sorted)
+        sorted.forEach((provenance) => {
+          upsertProvenanceRecord(provenance)
+          this.cachedProvenanceById.set(provenance.id, provenance)
+        })
+        return sorted
+      })
+      .finally(() => {
+        this.cachedProvenanceChildrenByIdRequest.delete(id)
+      })
+
+    this.cachedProvenanceChildrenByIdRequest.set(id, request)
+    return request
   }
 
   fetchPeriods(): Bluebird<string[]> {
@@ -238,6 +388,7 @@ export class FragmentService {
   }
 
   updateEdition(number: string, updates: EditionFields): Bluebird<Fragment> {
+    this.invalidateFindCache(number)
     return this.fragmentRepository
       .updateEdition(number, updates)
       .then((fragment: Fragment) => this.injectReferences(fragment))
@@ -247,6 +398,7 @@ export class FragmentService {
     number: string,
     lemmatization: LemmatizationDto,
   ): Bluebird<Fragment> {
+    this.invalidateFindCache(number)
     return this.fragmentRepository
       .updateLemmatization(number, lemmatization)
       .then((fragment: Fragment) => this.injectReferences(fragment))
@@ -256,6 +408,7 @@ export class FragmentService {
     number: string,
     annotations: LineLemmaAnnotations,
   ): Bluebird<Fragment> {
+    this.invalidateFindCache(number)
     return this.fragmentRepository
       .updateLemmaAnnotation(number, annotations)
       .then((fragment: Fragment) => this.injectReferences(fragment))
@@ -265,6 +418,7 @@ export class FragmentService {
     number: string,
     references: ReadonlyArray<Reference>,
   ): Bluebird<Fragment> {
+    this.invalidateFindCache(number)
     return this.fragmentRepository
       .updateReferences(number, references)
       .then((fragment: Fragment) => this.injectReferences(fragment))
@@ -274,12 +428,14 @@ export class FragmentService {
     number: string,
     archaeology: ArchaeologyDto,
   ): Bluebird<Fragment> {
+    this.invalidateFindCache(number)
     return this.fragmentRepository
       .updateArchaeology(number, archaeology)
       .then((fragment: Fragment) => this.injectReferences(fragment))
   }
 
   updateColophon(number: string, colophon: Colophon): Bluebird<Fragment> {
+    this.invalidateFindCache(number)
     return this.fragmentRepository
       .updateColophon(number, colophon)
       .then((fragment: Fragment) => this.injectReferences(fragment))
@@ -419,9 +575,29 @@ export class FragmentService {
     number: string,
     annotations: readonly ApiEntityAnnotationSpan[],
   ): Bluebird<Fragment> {
+    this.invalidateFindCache(number)
     return this.fragmentRepository
       .updateNamedEntityAnnotations(number, annotations)
       .then((fragment: Fragment) => this.injectReferences(fragment))
+  }
+
+  private findCacheKey(
+    number: string,
+    lines?: readonly number[],
+    excludeLines?: boolean,
+  ): string {
+    const linesPart = lines ? lines.join(',') : ''
+    const excludePart = excludeLines === undefined ? '' : String(excludeLines)
+    return `${number}|${linesPart}|${excludePart}`
+  }
+
+  private invalidateFindCache(number: string): void {
+    const prefix = `${number}|`
+    for (const key of this.findCache.keys()) {
+      if (key.startsWith(prefix)) {
+        this.findCache.delete(key)
+      }
+    }
   }
 }
 

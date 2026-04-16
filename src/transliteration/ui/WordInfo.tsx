@@ -13,6 +13,7 @@ import { isAkkadianWord, isAnyWord } from 'transliteration/domain/type-guards'
 import { TokenActionWrapperProps } from 'transliteration/ui/LineAccumulator'
 import AkkadianWordAnalysis from 'akkadian/ui/akkadianWordAnalysis'
 import { LineLemmasContext, useLineLemmasContext } from './LineLemmasContext'
+import RouterLinkModeContext from 'common/ui/RouterLinkModeContext'
 
 function VariantAlignmentIndicator({
   children,
@@ -132,6 +133,16 @@ export function AlignmentPopover({
   showMeter?: boolean
   showIpa?: boolean
 }): JSX.Element {
+  const useRouterLinks = React.useContext(RouterLinkModeContext)
+
+  if (!useRouterLinks) {
+    return (
+      <VariantAlignmentIndicator token={token}>
+        {children}
+      </VariantAlignmentIndicator>
+    )
+  }
+
   return hasLemma(token) ? (
     <AlignmentInfoPopover
       token={token}
@@ -202,6 +213,16 @@ export function LemmaPopover({
 }: TokenActionWrapperProps & {
   lineGroup?: LineGroup
 }): JSX.Element {
+  const useRouterLinks = React.useContext(RouterLinkModeContext)
+
+  if (!useRouterLinks) {
+    return (
+      <VariantAlignmentIndicator token={token}>
+        {children}
+      </VariantAlignmentIndicator>
+    )
+  }
+
   return hasLemma(token) ? (
     <LemmaInfoPopover token={token} lineGroup={lineGroup}>
       {children}

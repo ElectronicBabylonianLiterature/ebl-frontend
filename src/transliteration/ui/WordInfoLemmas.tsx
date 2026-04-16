@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react'
+import React, { useContext, useMemo } from 'react'
 import Bluebird from 'bluebird'
 import WordService from 'dictionary/application/WordService'
 import Word from 'dictionary/domain/Word'
@@ -14,8 +14,11 @@ import {
 } from './LineLemmasContext'
 import DictionaryWord from 'dictionary/domain/Word'
 import { isLemma } from 'transliteration/domain/type-guards'
+import RouterLinkModeContext from 'common/ui/RouterLinkModeContext'
 
 function WordItem({ word }: { word: Word }): JSX.Element {
+  const useRouterLinks = useContext(RouterLinkModeContext)
+  const dictionaryPath = `/dictionary/${word._id}`
   return (
     <li className="word-info__word">
       <span className="word-info__lemma">{word.lemma.join(' ')}</span>{' '}
@@ -25,13 +28,24 @@ function WordItem({ word }: { word: Word }): JSX.Element {
           &ldquo;{word.guideWord}&rdquo;
         </span>
       )}{' '}
-      <Link
-        to={`/dictionary/${word._id}`}
-        target="_blank"
-        aria-label="Open the word in the Dictionary."
-      >
-        <i className="fas fa-external-link-alt" />
-      </Link>
+      {useRouterLinks ? (
+        <Link
+          to={dictionaryPath}
+          target="_blank"
+          aria-label="Open the word in the Dictionary."
+        >
+          <i className="fas fa-external-link-alt" />
+        </Link>
+      ) : (
+        <a
+          href={dictionaryPath}
+          target="_blank"
+          aria-label="Open the word in the Dictionary."
+          rel="noreferrer"
+        >
+          <i className="fas fa-external-link-alt" />
+        </a>
+      )}
     </li>
   )
 }

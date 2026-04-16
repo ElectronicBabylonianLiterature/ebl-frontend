@@ -4,7 +4,7 @@ import {
   Ur3Calendar,
   KingDateField,
 } from 'chronology/domain/DateParameters'
-import usePromiseEffect from 'common/usePromiseEffect'
+import usePromiseEffect from 'common/hooks/usePromiseEffect'
 import { useState } from 'react'
 import Bluebird from 'bluebird'
 import { Fragment } from 'fragmentarium/domain/fragment'

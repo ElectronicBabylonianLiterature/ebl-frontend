@@ -265,7 +265,7 @@ describe('Fetch word', () => {
       Bluebird.resolve({ items: [], matchCountTotal: 42 }),
     )
 
-    renderWordInformationDisplay()
+    const view = renderWordInformationDisplay()
     await screen.findByText(word.meaning)
 
     await waitFor(() => expect(wordService.find).toBeCalledWith('id'))
@@ -282,9 +282,12 @@ describe('Fetch word', () => {
     await waitFor(() =>
       expect(textService.searchLemma).toBeCalledWith(word._id, undefined),
     )
+
+    return view
   }
   it('correctly displays word parts', async () => {
-    await setup()
+    const view = await setup()
+    expect(view.container).toMatchSnapshot()
     await screen.findAllByText(new RegExp(word.guideWord))
     expect(screen.getByText(word.meaning)).toBeInTheDocument()
     expect(screen.getAllByText(word.guideWord).length).toBeGreaterThan(0)
@@ -299,7 +302,7 @@ describe('Fetch word', () => {
 })
 
 function renderWordInformationDisplay() {
-  render(
+  return render(
     <HelmetProvider context={helmetContext}>
       <MemoryRouter initialEntries={['/dictionary/id']}>
         <SessionContext.Provider value={session}>

@@ -22,6 +22,7 @@ beforeEach(async () => {
 })
 
 test('renders editor', () => {
+  expect(appDriver.getView().container).toMatchSnapshot()
   expect(appDriver.getView().getByLabelText('Legacy Lemma')).toBeVisible()
 })
 
@@ -31,6 +32,7 @@ test('Edit', async () => {
   appDriver.changeValueByLabel('Legacy Lemma', newLegacyLemma)
   await submitForm(appDriver.getView().container)
   await appDriver.waitForTextToDisappear('Saving...')
+  expect(appDriver.getView().container).toMatchSnapshot()
   expect(appDriver.getView().getByLabelText('Legacy Lemma')).toHaveValue(
     newLegacyLemma,
   )

@@ -1,48 +1,67 @@
 import React from 'react'
-import AppContent from 'common/AppContent'
-import { SectionCrumb } from 'common/Breadcrumbs'
+import AppContent from 'common/ui/AppContent'
+import { SectionCrumb } from 'common/ui/Breadcrumbs'
 import { ResearchProject, ResearchProjects } from './researchProject'
 import { Link } from 'react-router-dom'
-import ListGroup from 'react-bootstrap/ListGroup'
-import 'research-projects/ResearchProjects.sass'
-import { Container } from 'react-bootstrap'
+import { Container, Row, Col, Card } from 'react-bootstrap'
+import './projects.sass'
 
-function ResearchProjectLink({
-  project,
-}: {
+interface ProjectCardProps {
   project: ResearchProject
-}): JSX.Element {
+}
+
+function ProjectCard({ project }: ProjectCardProps): JSX.Element {
   return (
-    <ListGroup.Item
-      as={Link}
-      to={`/projects/${project.abbreviation}`}
-      className="d-flex align-items-center"
-    >
-      <img
-        className="project-list__image me-3"
-        src={project.logo}
-        alt={project.name}
-      />
-      <span className="project-name">
-        {project.displayName || project.name}
-      </span>
-    </ListGroup.Item>
+    <Col xs={12} md={6} lg={6} className="mb-4">
+      <Link
+        to={`/projects/${project.abbreviation}`}
+        className="project-card-link"
+      >
+        <Card className="project-card h-100">
+          <Card.Body className="d-flex flex-column">
+            <div className="project-card__logo-container mb-3">
+              <img
+                src={project.logo}
+                alt={project.name}
+                className="project-card__logo"
+              />
+            </div>
+            <Card.Title className="project-card__title">
+              {project.displayName || project.abbreviation}
+            </Card.Title>
+            <Card.Text className="project-card__description flex-grow-1">
+              {project.name}
+            </Card.Text>
+            <div className="project-card__footer">
+              <span className="project-card__link-text">
+                Learn more <span className="project-card__arrow">→</span>
+              </span>
+            </div>
+          </Card.Body>
+        </Card>
+      </Link>
+    </Col>
   )
 }
 
 export default function ResearchProjectsOverview(): JSX.Element {
   return (
     <AppContent
-      title={'Research Projects in eBL'}
+      title="Research Projects"
       crumbs={[new SectionCrumb('Projects')]}
     >
-      <Container>
-        <ListGroup variant="flush" className="research-projects">
-          <ResearchProjectLink project={ResearchProjects.CAIC} />
-          <ResearchProjectLink project={ResearchProjects.aluGeneva} />
-          <ResearchProjectLink project={ResearchProjects.AMPS} />
-          <ResearchProjectLink project={ResearchProjects.RECC} />
-        </ListGroup>
+      <Container className="projects-overview">
+        <p className="projects-overview__intro">
+          The electronic Babylonian Library (eBL) serves as a platform for
+          collaborative research projects dedicated to the study of cuneiform
+          texts. Explore our active research initiatives:
+        </p>
+        <Row>
+          <ProjectCard project={ResearchProjects.CAIC} />
+          <ProjectCard project={ResearchProjects.aluGeneva} />
+          <ProjectCard project={ResearchProjects.AMPS} />
+          <ProjectCard project={ResearchProjects.RECC} />
+        </Row>
       </Container>
     </AppContent>
   )

@@ -2,14 +2,14 @@ import React, { Component } from 'react'
 import ReactMarkdown from 'react-markdown'
 import Promise from 'bluebird'
 
-import AppContent from 'common/AppContent'
+import AppContent from 'common/ui/AppContent'
 import WordForm from './WordForm'
-import Spinner from 'common/Spinner'
-import ErrorAlert from 'common/ErrorAlert'
+import Spinner from 'common/ui/Spinner'
+import ErrorAlert from 'common/errors/ErrorAlert'
 import withData, { WithoutData } from 'http/withData'
 import SessionContext from 'auth/SessionContext'
 import Word from 'dictionary/domain/Word'
-import { SectionCrumb, TextCrumb } from 'common/Breadcrumbs'
+import { SectionCrumb, TextCrumb } from 'common/ui/Breadcrumbs'
 
 type Props = {
   data: Word

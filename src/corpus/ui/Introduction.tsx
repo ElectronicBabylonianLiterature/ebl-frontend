@@ -3,7 +3,7 @@ import _ from 'lodash'
 import { Text } from 'corpus/domain/text'
 import Reference, { groupReferences } from 'bibliography/domain/Reference'
 import referencePopover from 'bibliography/ui/referencePopover'
-import InlineMarkdown from 'common/InlineMarkdown'
+import InlineMarkdown from 'common/ui/InlineMarkdown'
 import Citation from 'bibliography/domain/Citation'
 import { ProjectList } from 'fragmentarium/ui/info/ResearchProjects'
 

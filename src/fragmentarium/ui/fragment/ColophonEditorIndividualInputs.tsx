@@ -48,40 +48,54 @@ const getNameSearchForm = (
   props,
   { index, individual }: IndividualProps,
   key: string,
-): JSX.Element => (
-  <AsyncCreatableSelect
-    allowCreateWhileLoading
-    cacheOptions={true}
-    aria-label={`select-colophon-individual-${key}`}
-    {...{
-      ...props,
-      onChange: (option: { value: string; label: string }) => {
-        const _individual = individual.setNameField(
-          key as 'name' | 'sonOf' | 'grandsonOf' | 'family',
-          { ...individual[key], value: option?.value ?? undefined },
-        )
-        props.onChange(_individual, index)
-      },
-    }}
-  />
-)
+): JSX.Element => {
+  const { key: _key, ...selectProps } = props as {
+    key?: React.Key
+    onChange: (individual: unknown, index: number) => void
+  }
+
+  return (
+    <AsyncCreatableSelect
+      allowCreateWhileLoading
+      cacheOptions={true}
+      aria-label={`select-colophon-individual-${key}`}
+      {...{
+        ...selectProps,
+        onChange: (option: SingleValue<{ value: string; label: string }>) => {
+          const _individual = individual.setNameField(
+            key as 'name' | 'sonOf' | 'grandsonOf' | 'family',
+            { ...individual[key], value: option?.value ?? undefined },
+          )
+          selectProps.onChange(_individual, index)
+        },
+      }}
+    />
+  )
+}
 
 const getSelectForm = (
   props,
   { index, individual }: IndividualProps,
   key: string,
-): JSX.Element => (
-  <Select
-    aria-label={`select-colophon-individual-${key}`}
-    {...{
-      ...props,
-      onChange: (option: SingleValue<{ value: string; label: string }>) => {
-        const _individual = individual.setTypeField({
-          ...individual.type,
-          value: option?.value ? IndividualType[option?.value] : undefined,
-        })
-        props.onChange(_individual, index)
-      },
-    }}
-  />
-)
+): JSX.Element => {
+  const { key: _key, ...selectProps } = props as {
+    key?: React.Key
+    onChange: (individual: unknown, index: number) => void
+  }
+
+  return (
+    <Select
+      aria-label={`select-colophon-individual-${key}`}
+      {...{
+        ...selectProps,
+        onChange: (option: SingleValue<{ value: string; label: string }>) => {
+          const _individual = individual.setTypeField({
+            ...individual.type,
+            value: option?.value ? IndividualType[option?.value] : undefined,
+          })
+          selectProps.onChange(_individual, index)
+        },
+      }}
+    />
+  )
+}

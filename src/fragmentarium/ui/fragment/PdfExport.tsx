@@ -2,7 +2,6 @@ import React from 'react'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import Record from 'fragmentarium/ui/info/Record'
 
-import { ReactElement } from 'react'
 import TransliterationLines from 'transliteration/ui/TransliterationLines'
 import TransliterationNotes from 'transliteration/ui/TransliterationNotes'
 import { Glossary } from 'transliteration/ui/Glossary'
@@ -11,15 +10,15 @@ import $ from 'jquery'
 import rgbHex from 'rgb-hex'
 import WordService from 'dictionary/application/WordService'
 import GlossaryFactory from 'transliteration/application/GlossaryFactory'
-import { MemoryRouter } from 'react-router-dom'
 import getJunicodeRegular from './pdf-fonts/Junicode'
 import getJunicodeBold from './pdf-fonts/JunicodeBold'
 import getJunicodeItalic from './pdf-fonts/JunicodeItalic'
 
 import { jsPDF } from 'jspdf'
 import { DictionaryContext } from 'dictionary/ui/dictionary-context'
-import { fixHtmlParseOrder } from 'common/HtmlParsing'
-import { getLineTypeByHtml } from 'common/HtmlLineType'
+import { fixHtmlParseOrder } from 'common/utils/HtmlParsing'
+import { getLineTypeByHtml } from 'common/utils/HtmlLineType'
+import RouterLinkModeContext from 'common/ui/RouterLinkModeContext'
 
 export async function pdfExport(
   fragment: Fragment,
@@ -28,11 +27,11 @@ export async function pdfExport(
 ): Promise<jsPDF> {
   const tableHtml: JQuery = $(
     renderToString(
-      <MemoryRouter>
+      <RouterLinkModeContext.Provider value={false}>
         <DictionaryContext.Provider value={wordService}>
           <TransliterationLines text={fragment.text} />
         </DictionaryContext.Provider>
-      </MemoryRouter>,
+      </RouterLinkModeContext.Provider>,
     ),
   )
   const notesHtml: JQuery = $(
@@ -104,16 +103,16 @@ async function getGlossaryHtml(
   const glossaryJsx: JSX.Element = await glossaryFactory
     .createGlossary(fragment.text)
     .then((glossaryData) => {
-      return Glossary({ data: glossaryData })
+      return Glossary({ data: glossaryData, useRouterLinks: false })
     })
 
   const glossaryHtml: JQuery = $(
     renderToString(
-      wrapWithMemoryRouter(
+      <RouterLinkModeContext.Provider value={false}>
         <DictionaryContext.Provider value={wordService}>
           {glossaryJsx}
-        </DictionaryContext.Provider>,
-      ),
+        </DictionaryContext.Provider>
+      </RouterLinkModeContext.Provider>,
     ),
   )
 
@@ -187,10 +186,6 @@ function getPdfHeadline(fragment: Fragment): [string, string, string] {
   return [fragment.number, credit, link]
 }
 
-function wrapWithMemoryRouter(component: JSX.Element): ReactElement {
-  return <MemoryRouter>{component}</MemoryRouter>
-}
-
 function addMainTableWithFootnotes(
   table: JQuery,
   notes: JQuery,
@@ -198,8 +193,6 @@ function addMainTableWithFootnotes(
   yPos: number,
   doc: jsPDF,
 ): number {
-  // table.hide()
-
   jQueryRef.append(table)
 
   const tablelines: JQuery = table.find('tr')
@@ -304,8 +297,7 @@ function addMainTableWithFootnotes(
                 if (xPos > maxXPos) maxXPos = xPos
               }
             })
-        } //textLine
-        else if (lineType === 'rulingDollarLine') {
+        } else if (lineType === 'rulingDollarLine') {
           const num = $(el)
             .parent()
             .find('.Transliteration__RulingDollarLine')
@@ -336,7 +328,7 @@ function addMainTableWithFootnotes(
           yPos = maxYPos.coords
           if (newPageStarted) doc.setPage(maxYPos.page)
         }
-      }) //td
+      })
 
     if (nextLineType === 'rulingDollarLine') {
       yPos += getLineHeight(doc) / 2
@@ -348,7 +340,7 @@ function addMainTableWithFootnotes(
         yPos = 15
       }
     }
-  }) //tr
+  })
 
   table.remove()
 
@@ -622,12 +614,7 @@ function dealWithFootNotesHtml(
         }
       })
     wordLength = subWordLength - xPos
-  }
-  // else if ($(el)[0].nodeType === 3){
-  //   setDocStyle($(el).parent(),doc)
-  //  wordLength = addText(text,xPos,yPos,doc)
-  // }
-  else if ($(el).is('sup')) {
+  } else if ($(el).is('sup')) {
     setDocStyle($(el) as JQuery<HTMLElement>, doc)
     wordLength = addText(text, xPos, yPos - getTextHeight(doc, text) / 2, doc)
   }

@@ -16,6 +16,7 @@
     "jsx": "react-jsx",
     "baseUrl": "src",
     "downlevelIteration": true,
+    "ignoreDeprecations": "5.0",
     "noImplicitAny": false,
     "noFallthroughCasesInSwitch": true,
     "sourceMap": true

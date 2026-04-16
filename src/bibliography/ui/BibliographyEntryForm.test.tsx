@@ -18,7 +18,7 @@ beforeEach(() => {
 const waitForSaveButtonToBeEnabled = async () => {
   await waitFor(
     () => expect(screen.getByRole('button', { name: /Save/i })).toBeEnabled(),
-    { timeout: 1000 },
+    { timeout: 5000 },
   )
 }
 

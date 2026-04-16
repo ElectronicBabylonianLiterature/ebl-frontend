@@ -1,6 +1,6 @@
 import React from 'react'
 import AfoRegisterRecord from 'afo-register/domain/Record'
-import MarkdownAndHtmlToHtml from 'common/MarkdownAndHtmlToHtml'
+import MarkdownAndHtmlToHtml from 'common/utils/MarkdownAndHtmlToHtml'
 
 export function AfoRegisterRecordDisplay({
   record,

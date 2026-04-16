@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Form, Row, Col } from 'react-bootstrap'
 import AsyncSelect from 'react-select/async'
-import { usePrevious } from 'common/usePrevious'
+import { usePrevious } from 'common/hooks/usePrevious'
 import { DossierRecordSuggestion } from 'dossiers/domain/DossierRecord'
 import { HelpCol, DossierSearchHelp } from 'fragmentarium/ui/SearchHelp'
 import { helpColSize } from 'fragmentarium/ui/SearchForm'

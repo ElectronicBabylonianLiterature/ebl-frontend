@@ -4,12 +4,7 @@ import Bluebird from 'bluebird'
 import '@testing-library/jest-dom'
 import MarkupService from 'markup/application/MarkupService'
 import { markupDtoSerialized } from 'test-support/markup-fixtures'
-import {
-  render,
-  screen,
-  fireEvent,
-  waitForElementToBeRemoved,
-} from '@testing-library/react'
+import { render, screen, fireEvent, waitFor } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 
 jest.mock('markup/application/MarkupService')
@@ -40,12 +35,9 @@ const renderAbout = async (
     </MemoryRouter>,
   )
 
-  if (activeTab === 'project') {
-    await waitForElementToBeRemoved(() => {
-      const loadingIndicators = screen.queryAllByText(/Loading\.\.\./)
-      return loadingIndicators.length > 0 ? loadingIndicators : null
-    })
-  }
+  await waitFor(() => {
+    expect(screen.queryAllByLabelText('Spinner')).toHaveLength(0)
+  })
 }
 
 describe('About component', () => {
@@ -54,6 +46,18 @@ describe('About component', () => {
     markupServiceMock.fromString.mockReturnValue(
       Bluebird.resolve(markupDtoSerialized),
     )
+  })
+
+  test('Snapshot', async () => {
+    const { container } = render(
+      <MemoryRouter>
+        <About markupService={markupServiceMock} activeTab="corpus" />
+      </MemoryRouter>,
+    )
+    await waitFor(() => {
+      expect(screen.queryAllByLabelText('Spinner')).toHaveLength(0)
+    })
+    expect(container.outerHTML).toMatchSnapshot()
   })
 
   test('renders corpus tab content', async () => {
@@ -86,9 +90,8 @@ describe('About component', () => {
       </MemoryRouter>,
     )
 
-    await waitForElementToBeRemoved(() => {
-      const loadingIndicators = screen.queryAllByText(/Loading\.\.\./)
-      return loadingIndicators.length > 0 ? loadingIndicators : null
+    await waitFor(() => {
+      expect(screen.queryAllByLabelText('Spinner')).toHaveLength(0)
     })
 
     expect(screen.getByRole('button', { name: '⚙ eBL Project' })).toHaveClass(

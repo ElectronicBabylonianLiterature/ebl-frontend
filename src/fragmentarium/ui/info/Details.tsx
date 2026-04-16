@@ -2,7 +2,7 @@ import React from 'react'
 import _ from 'lodash'
 import { Fragment, Script } from 'fragmentarium/domain/fragment'
 import FragmentLink from 'fragmentarium/ui/FragmentLink'
-import ExternalLink from 'common/ExternalLink'
+import ExternalLink from 'common/ui/ExternalLink'
 import './Details.sass'
 import GenreSelection from 'fragmentarium/ui/info/GenreEditor'
 import { Genres } from 'fragmentarium/domain/Genres'
@@ -203,6 +203,10 @@ function Details({
   dossiersService,
 }: DetailsProps): JSX.Element {
   const findspotString = fragment.archaeology?.findspot?.toString()
+  const isFindspotUncertain = fragment.archaeology?.isFindspotUncertain
+  const findspotDisplay = findspotString
+    ? `${findspotString}${isFindspotUncertain ? ' (?)' : ''}`
+    : null
   return (
     <ul className="Details">
       <li className="Details__item">
@@ -232,7 +236,7 @@ function Details({
             <ExcavationDate fragment={fragment} />
           </li>
         )}
-        <li>{`Findspot: ${findspotString || '-'}`}</li>
+        <li>{`Findspot: ${findspotDisplay || '-'}`}</li>
       </ul>
       <li className="Details__item">
         <FragmentDossierRecordsDisplay
