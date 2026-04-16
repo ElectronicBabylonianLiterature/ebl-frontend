@@ -161,4 +161,14 @@ describe('DateConverter', () => {
       '3 April 211 BCE PJC',
     )
   })
+
+  test('keeps intercalary XII when the Seleucid year has month 14', () => {
+    mesopotamianDate.setToSeBabylonianDate(1, 14, 16)
+    expect(mesopotamianDate.calendar.mesopotamianMonth).toEqual(14)
+  })
+
+  test('falls back intercalary XII to XII when Seleucid year has no month 14', () => {
+    mesopotamianDate.setToSeBabylonianDate(2, 14, 16)
+    expect(mesopotamianDate.calendar.mesopotamianMonth).toEqual(12)
+  })
 })

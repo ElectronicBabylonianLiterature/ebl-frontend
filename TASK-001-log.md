@@ -302,3 +302,62 @@ Correct behaviour: Year 0 of Nabonidus is the accession year, which is the same 
   - If raw `?` is typed, show warning to use `isUncertain`.
   - If field value falls outside known patterns (roman numerals in non-month fields, long textual annotations, mixed punctuation), keep value but warn that conversion reliability is reduced and conversion may be skipped.
 - This keeps editor flexibility while nudging users toward structured metadata and cleaner converter-compatible values.
+
+---
+
+## 2026-04-16 — BUG-4 implementation completed (intercalary month conversion)
+
+- Reproduced with the reported shape (`16.VI².3 Cambyses`) and traced conversion flow through chronology domain conversion.
+- Root cause refined:
+  - `isIntercalary` metadata was used for display in `DateString` (`²`) but ignored in calculation paths.
+  - `MesopotamianDateBase.getDateProps()` parsed month from `month.value` only, so `VI²` behaved as month `6` instead of intercalary month `13`.
+  - Partial-date range logic in `DateRange` also parsed month values without accounting for `isIntercalary`.
+- Implemented fix in conversion layer:
+  - `src/chronology/domain/DateBase.ts`
+    - Added month normalization for calculations: `6 -> 13` and `12 -> 14` when `month.isIntercalary === true`.
+    - Applied normalization in `getDateProps()` before calling converter methods.
+  - `src/chronology/domain/DateRange.ts`
+    - Added the same normalization helper and applied it when deriving default/month end values for range calculations.
+    - Ensures partial date conversion remains consistent for intercalary months.
+- Added regression coverage:
+  - `src/chronology/domain/Date.test.ts`
+    - New test: `uses intercalary month metadata for Nabonassar-era conversion`.
+    - Verifies a date with month `6` + `isIntercalary: true` is converted equivalently to explicit month `13` in `DateConverter`.
+- Validation completed:
+  - `yarn test src/chronology/domain/Date.test.ts --no-coverage` passed (`29` tests).
+  - `yarn tsc` passed.
+  - `yarn lint` passed.
+
+### 2026-04-16 — BUG-4 follow-up (intercalary XII via Seleucid path)
+
+- Follow-up report: intercalary handling still failed for XII in some flows.
+- Root cause refined:
+  - Intercalary normalization in `DateBase`/`DateRange` converted `12` + intercalary to month `14`.
+  - But `DateConverter.setToSeBabylonianDate()` had no intercalary-year validation/fallback, unlike king-date flow.
+  - For Seleucid years without month `14`, this path attempted invalid year-month pairs.
+- Implemented converter fix:
+  - `src/chronology/domain/DateConverter.ts`
+    - Added shared year-based intercalary fallback for both conversion entry points:
+      - `setToSeBabylonianDate(seYear, month, day)`
+      - `setToMesopotamianDate(ruler, regnalYear, month, day)`
+    - If incoming month is `13`/`14` but not present in that year, it now falls back to `6`/`12` respectively.
+- Added regression coverage:
+  - `src/chronology/domain/DateConverter.test.ts`
+    - Keeps month `14` when the year supports it (`seYear=1`).
+    - Falls back month `14 -> 12` when the year does not (`seYear=2`).
+  - `src/chronology/domain/Date.test.ts`
+    - Added explicit intercalary XII conversion checks for Nabonassar-era and Seleucid-era date objects.
+- Validation completed:
+  - `yarn test src/chronology/domain/DateConverter.test.ts src/chronology/domain/Date.test.ts --no-coverage` passed (`40` tests).
+  - `yarn tsc` passed.
+  - `yarn lint` passed.
+
+### 2026-04-16 — BUG-4 follow-up (DRY normalization cleanup)
+
+- Refactored duplicated `normalizeMesopotamianMonth` logic into a single shared helper:
+  - `src/chronology/domain/normalizeMesopotamianMonth.ts`
+- Replaced duplicate implementations in:
+  - `src/chronology/domain/DateBase.ts`
+  - `src/chronology/domain/DateRange.ts`
+- Added project gate in `.github/copilot-instructions.md`:
+  - DRY is now explicit hard gate for repeated domain logic/mappings.

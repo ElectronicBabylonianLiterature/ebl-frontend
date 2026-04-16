@@ -13,6 +13,7 @@ import {
   Ur3Calendar,
   YearMonthDay,
 } from 'chronology/domain/DateParameters'
+import normalizeMesopotamianMonth from 'chronology/domain/normalizeMesopotamianMonth'
 import getPreviousKingAndYearIfYearZero from './ZeroYearKingFinder'
 
 const calendarToAbbreviation = (calendar: ModernCalendar): string =>
@@ -145,7 +146,10 @@ export class MesopotamianDateBase {
   } {
     return {
       year: parseInt(this.year.value) ?? -1,
-      month: parseInt(this.month.value) ?? 1,
+      month: normalizeMesopotamianMonth(
+        parseInt(this.month.value) ?? 1,
+        this.month.isIntercalary,
+      ),
       day: parseInt(this.day.value) ?? 1,
       isApproximate: this.isApproximate(),
       calendar,

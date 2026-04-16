@@ -1,6 +1,7 @@
 import { Eponym } from 'chronology/ui/DateEditor/Eponyms'
 import { MesopotamianDate } from 'chronology/domain/Date'
 import { Ur3Calendar } from 'chronology/domain/DateParameters'
+import DateConverter from 'chronology/domain/DateConverter'
 
 const king = {
   orderGlobal: 1,
@@ -40,6 +41,17 @@ const nabonassarEraKing = {
   name: 'Darius I',
   date: '521–486',
   totalOfYears: '36',
+  notes: '',
+}
+
+const cambysesKing = {
+  orderGlobal: 168,
+  dynastyNumber: '14',
+  dynastyName: 'Persian Rulers',
+  orderInDynasty: '2',
+  name: 'Cambyses',
+  date: '529–522',
+  totalOfYears: '8',
   notes: '',
 }
 
@@ -250,6 +262,48 @@ describe('MesopotamianDate', () => {
     expect(date.toString()).toBe(
       'Darius I (ca. 14 April 521 - 5 April 485 BCE PJC | ca. 8 April 521 - 31 March 485 BCE PGC)',
     )
+  })
+
+  it('uses intercalary month metadata for Nabonassar-era conversion', () => {
+    const date = new MesopotamianDate({
+      year: { value: '3' },
+      month: { value: '6', isIntercalary: true },
+      day: { value: '16' },
+      king: cambysesKing,
+    })
+
+    const converter = new DateConverter()
+    converter.setToMesopotamianDate('Cambyses', 3, 13, 16)
+
+    expect(date.toModernDate()).toBe(converter.toDateString('Julian'))
+  })
+
+  it('uses intercalary XII month metadata for Nabonassar-era conversion', () => {
+    const date = new MesopotamianDate({
+      year: { value: '5' },
+      month: { value: '12', isIntercalary: true },
+      day: { value: '16' },
+      king: cambysesKing,
+    })
+
+    const converter = new DateConverter()
+    converter.setToMesopotamianDate('Cambyses', 5, 14, 16)
+
+    expect(date.toModernDate()).toBe(converter.toDateString('Julian'))
+  })
+
+  it('uses intercalary XII month metadata for Seleucid-era conversion', () => {
+    const date = new MesopotamianDate({
+      year: { value: '1' },
+      month: { value: '12', isIntercalary: true },
+      day: { value: '16' },
+      isSeleucidEra: true,
+    })
+
+    const converter = new DateConverter()
+    converter.setToSeBabylonianDate(1, 14, 16)
+
+    expect(date.toModernDate()).toBe(converter.toDateString('Julian'))
   })
 
   it('returns the correct string representation (Ur III)', () => {

@@ -41,11 +41,11 @@ Trello card: "Fixes to date converter" (reported by Zsombor Földi / ilya.o.khai
 
 ### BUG-4 · Intercalary months not taken into account in conversion
 
-- [ ] Reproduce with `MNB.1129` (`Date: 16.VI².3 Cambyses (31 August 527 BCE PJC)`)
-- [ ] Trace through `setToMesopotamianDate` / `shiftMesopotamianMonthIfNoMatchFound` for the failing date
-- [ ] Identify which code path skips intercalary handling (SE-era path, king-date path, or data gap)
-- [ ] Fix the conversion to respect intercalary months correctly
-- [ ] Add / update tests
+- [x] Reproduce with `MNB.1129` (`Date: 16.VI².3 Cambyses (31 August 527 BCE PJC)`)
+- [x] Trace through `setToMesopotamianDate` / `shiftMesopotamianMonthIfNoMatchFound` for the failing date
+- [x] Identify which code path skips intercalary handling (SE-era path, king-date path, or data gap)
+- [x] Fix the conversion to respect intercalary months correctly
+- [x] Add / update tests
 
 ### BUG-5 · Year 0 of a king converted incorrectly (e.g. VAT.8439 Nabonidus+0 → Labaši-Marduk+3 months)
 

@@ -130,6 +130,10 @@ export default class DateConverter extends DateConverterBase {
     mesopotamianMonth: number,
     mesopotamianDay: number,
   ): void {
+    mesopotamianMonth = this.shiftIntercalaryMonthIfNoMatchFound(
+      seBabylonianYear,
+      mesopotamianMonth,
+    )
     const params = { seBabylonianYear, mesopotamianMonth, mesopotamianDay }
     if (this.setToEdgeIfOutsideRange(params)) {
       return
@@ -152,14 +156,13 @@ export default class DateConverter extends DateConverterBase {
     mesopotamianMonth: number,
     mesopotamianDay: number,
   ): void {
-    mesopotamianMonth = this.shiftMesopotamianMonthIfNoMatchFound(
-      ruler,
-      regnalYear,
-      mesopotamianMonth,
-    )
     const rulerIndex = data.rulerName.indexOf(ruler)
     if (rulerIndex === -1) throw new Error('Invalid ruler name.')
     const seBabylonianYear = data.rulerSeYears[rulerIndex] + regnalYear - 1
+    mesopotamianMonth = this.shiftIntercalaryMonthIfNoMatchFound(
+      seBabylonianYear,
+      mesopotamianMonth,
+    )
     this.setToSeBabylonianDate(
       seBabylonianYear,
       mesopotamianMonth,
@@ -173,17 +176,16 @@ export default class DateConverter extends DateConverterBase {
     this.updateBabylonianDate(cjdn)
   }
 
-  private shiftMesopotamianMonthIfNoMatchFound(
-    ruler: string,
-    regnalYear: number,
+  private shiftIntercalaryMonthIfNoMatchFound(
+    seBabylonianYear: number,
     mesopotamianMonth: number,
   ): number {
     if ([13, 14].includes(mesopotamianMonth)) {
-      this.setToMesopotamianDate(ruler, regnalYear, 1, 1)
+      const mesopotamianMonthsInYear =
+        this.getMesopotamianMonthsOfSeYear(seBabylonianYear)
       if (
-        !this.checks.isIncomingDateHasCorrespondingIntercalary(
-          mesopotamianMonth,
-          this,
+        !mesopotamianMonthsInYear.find(
+          (month) => month.value === mesopotamianMonth,
         )
       ) {
         mesopotamianMonth =
