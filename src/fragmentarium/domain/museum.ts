@@ -325,6 +325,13 @@ export const Museums = {
     country: 'IQ',
     url: 'https://slemanimuseum.org/',
   },
+  SPURLOCK_MUSEUM: {
+    key: 'SPURLOCK_MUSEUM',
+    name: 'Spurlock Museum, University of Illinois',
+    city: 'Urbana-Champaign',
+    country: 'US',
+    url: 'https://www.spurlock.illinois.edu/',
+  },
   THE_BRITISH_MUSEUM: {
     key: 'THE_BRITISH_MUSEUM',
     name: 'The British Museum',

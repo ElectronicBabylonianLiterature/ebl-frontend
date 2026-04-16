@@ -37,11 +37,11 @@ exports[`Snapshot 1`] = `
               </p>
               <p>
                 Excavation no.: 
-                ifogimud.3
+                ruos.3
               </p>
               <p>
                 Provenance: 
-                Assyria
+                ‘Anah
               </p>
             </small>
           </div>
@@ -5586,11 +5586,11 @@ exports[`Snapshot 1`] = `
             class="fragment-result__fragment-number"
           >
             <a
-              href="/library/jif.4"
+              href="/library/fa.4"
             >
-              jif.4
+              fa.4
             </a>
-             (Aram)
+             (Hel)
           </h4>
           <div
             class="fragment-result__archaeology-info"
@@ -5598,11 +5598,11 @@ exports[`Snapshot 1`] = `
             <small>
               <p>
                 Accession no.: 
-                nusfoh.4
+                imfapud.4
               </p>
               <p>
                 Excavation no.: 
-                jeoli.4
+                cicaz.4
               </p>
               <p>
                 Provenance: 
@@ -5680,11 +5680,11 @@ exports[`Snapshot 1`] = `
                   <span
                     class="reference-popover__interactive"
                   >
-                    Hutchinson & Casey, 2031: 7964012618711040-4779925315780608 [l. 4'.2., 2.]
+                    Moss & Mannini, 2118: 4387013211979776-647965045686272 [l. 1., 2.]
                     <span
                       class="type-abbreviation"
                     >
-                       (D)
+                       (E)
                     </span>
                   </span>
                 </span>
@@ -5700,11 +5700,11 @@ exports[`Snapshot 1`] = `
                   <span
                     class="reference-popover__interactive"
                   >
-                    Savage & Romiti, 2037: 6031937502183424-6660892001304576 [l. 1., 2.]
+                    Walsh & Crescioli, 2082: 3030959131721728-4288997352275968 [l. 3'., 2.]
                     <span
                       class="type-abbreviation"
                     >
-                       (Ac)
+                       (S)
                     </span>
                   </span>
                 </span>
