@@ -248,3 +248,57 @@ Correct behaviour: Year 0 of Nabonidus is the accession year, which is the same 
   - `yarn tsc` passed.
   - `yarn lint` passed.
   - `yarn test src/chronology/domain/Date.test.ts --no-coverage` passed (`28` tests).
+
+---
+
+## 2026-04-15 — Status: Work Session Checkpoint
+
+**Completed bugs (committed):**
+
+- BUG-1 (delete-date hang) ✓
+- BUG-2 (king flags persistence) ✓
+
+**Deferred bugs (scope review needed):**
+
+- BUG-3 (non-numeric date spellings) — Scope expanded; implementation approach revised.
+- BUG-4 (intercalary months) — Not started.
+- BUG-5 (year 0 conversion) — Not started.
+
+---
+
+## 2026-04-16 — BUG-3 scope revision and analysis intake
+
+- Confirmed BUG-3 is broader than the original `<>` parsing report.
+- Added three analysis artifacts to the repository for traceability:
+  - `TASK-001-non_numeric_date_spellings_ebl.json`
+  - `TASK-001-non_numeric_date_spellings_ebl.classified.json`
+  - `TASK-001-non_numeric_date_spellings_ebl.classification_report.md`
+- Analysis summary captured from the attached report:
+  - `4011` source records
+  - `4403` attested non-numeric year/month/day values
+  - Largest classes are `plus_qualified_number` (`1527`), `placeholder` (`1329`), `editorial_brackets` (`508`), and `textual_annotation` (`476`)
+  - Year field is the most affected (`2186` values), followed by day (`1428`) and month (`789`)
+- Product direction updated from a narrow parser workaround to a compromise approach:
+  - Add year-only structured metadata for reconstructed (`<>`) and emended (`!`) values
+  - Keep free-text date fields for flexibility
+  - Add warnings for non-standard inputs so users are guided away from misusing raw symbols such as `?`
+  - Clean existing `< >`, `!`, and `?` data after the new model is live
+- The earlier uncommitted prototype that stripped angle brackets in calculation code was intentionally reverted and is no longer the planned implementation path.
+
+### Check specification captured from discussion (`n` = number)
+
+- Allowed input spellings remain flexible, but warnings should validate against known patterns:
+  - `n`
+  - `x`
+  - `n+`
+  - `x+n`
+  - `n-n`
+  - `n/n`
+  - `n[a-z]` (number with letter, e.g. `12a`, `12b`; also allows year variants like `a`/`b` series)
+- Warning checks requested in discussion:
+  - If raw `<...>` is typed for year, show warning to use `isReconstructed`.
+  - If raw `[...]` is typed, show warning to use `isBroken`.
+  - If raw `!` is typed for year, show warning to use `isEmended`.
+  - If raw `?` is typed, show warning to use `isUncertain`.
+  - If field value falls outside known patterns (roman numerals in non-month fields, long textual annotations, mixed punctuation), keep value but warn that conversion reliability is reduced and conversion may be skipped.
+- This keeps editor flexibility while nudging users toward structured metadata and cleaner converter-compatible values.
