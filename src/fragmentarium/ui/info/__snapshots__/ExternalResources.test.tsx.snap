@@ -329,6 +329,18 @@ exports[`external resources Snapshot 1`] = `
       </a>
       )
     </li>
+    <li>
+      Spurlock Museum (
+      <a
+        aria-label="Spurlock Museum text S123"
+        href="https://www.spurlock.illinois.edu/collections/search-collection/details.php?a=S123"
+        rel="noopener noreferrer"
+        target="_blank"
+      >
+        S123
+      </a>
+      )
+    </li>
   </ul>
 </div>
 `;

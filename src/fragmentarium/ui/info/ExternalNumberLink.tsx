@@ -301,6 +301,17 @@ export function PhiladelphiaLink({ number }: { number: string }): JSX.Element {
     />
   )
 }
+export function spurlockLink({ number }: { number: string }): JSX.Element {
+  return (
+    <ExternalNumberLink
+      number={number}
+      baseUrl={
+        'https://www.spurlock.illinois.edu/collections/search-collection/details.php?a='
+      }
+      label={'Spurlock Museum'}
+    />
+  )
+}
 function OraccLink({
   project,
   cdliNumber,
