@@ -39,6 +39,7 @@ const externalNumbers = {
   alalahHpmNumber: '123',
   australianinstituteofarchaeologyNumber: '123',
   philadelphiaNumber: '123',
+  spurlockNumber: '123',
 }
 
 export const lines: readonly TextLineDto[] = [

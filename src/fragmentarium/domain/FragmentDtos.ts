@@ -100,6 +100,7 @@ export const ExternalNumberTypes = [
   'australianinstituteofarchaeologyNumber',
   'philadelphiaNumber',
   'yalePeabodyNumber',
+  'spurlockNumber',
 ] as const
 export type ExternalNumber = (typeof ExternalNumberTypes)[number]
 

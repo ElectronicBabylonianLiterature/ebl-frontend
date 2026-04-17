@@ -149,6 +149,7 @@ const config: Parameters<(typeof Fragment)['create']>[0] = {
     alalahHpmNumber: '123',
     australianinstituteofarchaeologyNumber: '123',
     philadelphiaNumber: '123',
+    spurlockNumber: '123',
   },
   projects: [],
   authorizedScopes: ['CAIC'],
