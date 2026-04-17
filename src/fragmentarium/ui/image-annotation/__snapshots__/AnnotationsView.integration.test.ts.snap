@@ -9,7 +9,7 @@ exports[`Display annotate view Snapshot 1`] = `
       class="Header"
     >
       <nav
-        class="navbar navbar-expand-md navbar-light"
+        class="navbar navbar-expand-lg navbar-light"
       >
         <div
           class="container"
@@ -58,40 +58,10 @@ exports[`Display annotate view Snapshot 1`] = `
               </small>
             </h1>
           </a>
-          <span
-            class="Header__logo-brand navbar-brand"
-          >
-            <div
-              class="Header__logo-container container"
-            >
-              <a
-                href="https://www.lmu.de"
-                rel="noopener noreferrer"
-                target="_blank"
-              >
-                <img
-                  alt="Ludwig-Maximilians-Universitat Munchen"
-                  class="Header__lmu-logo"
-                  src="LMU_Logo.svg"
-                />
-              </a>
-              <a
-                href="https://badw.de/"
-                rel="noopener noreferrer"
-                target="_blank"
-              >
-                <img
-                  alt="Bayerische Akademie der Wissenschaften"
-                  class="Header__badw-logo"
-                  src="BAdW_Logo.svg"
-                />
-              </a>
-            </div>
-          </span>
           <button
             aria-controls="Header-8"
             aria-label="Toggle navigation"
-            class="navbar-toggler collapsed"
+            class="Header__toggle navbar-toggler collapsed"
             type="button"
           >
             <span
@@ -103,113 +73,101 @@ exports[`Display annotate view Snapshot 1`] = `
             id="Header-8"
           >
             <div
-              class="d-flex justify-content-between"
-              id="navbar-container"
+              class="Header__nav mx-auto navbar-nav"
             >
               <div
-                class="Header__nav"
-                id="menu-lines"
+                class="nav-item"
               >
-                <div
-                  class="mx-auto Header__nav-row navbar-nav"
+                <a
+                  class="nav-link"
+                  data-rr-ui-event-key="/library"
+                  href="/library"
                 >
-                  <div
-                    class="nav-item"
-                  >
-                    <a
-                      class="nav-link"
-                      data-rr-ui-event-key="/signs"
-                      href="/signs"
-                    >
-                      Signs
-                    </a>
-                  </div>
-                  <div
-                    class="nav-item"
-                  >
-                    <a
-                      class="nav-link"
-                      data-rr-ui-event-key="/dictionary"
-                      href="/dictionary"
-                    >
-                      Dictionary
-                    </a>
-                  </div>
-                  <div
-                    class="nav-item"
-                  >
-                    <a
-                      class="nav-link"
-                      data-rr-ui-event-key="/corpus"
-                      href="/corpus"
-                    >
-                      Corpus
-                    </a>
-                  </div>
-                  <div
-                    class="nav-item"
-                  >
-                    <a
-                      class="nav-link"
-                      data-rr-ui-event-key="/library"
-                      href="/library"
-                    >
-                      Library
-                    </a>
-                  </div>
-                </div>
-                <div
-                  class="mx-auto Header__nav-row navbar-nav"
-                >
-                  <div
-                    class="nav-item"
-                  >
-                    <a
-                      class="nav-link"
-                      data-rr-ui-event-key="/about"
-                      href="/about"
-                    >
-                      About
-                    </a>
-                  </div>
-                  <div
-                    class="nav-item"
-                  >
-                    <a
-                      class="nav-link"
-                      data-rr-ui-event-key="/bibliography"
-                      href="/bibliography"
-                    >
-                      Bibliography
-                    </a>
-                  </div>
-                  <div
-                    class="nav-item"
-                  >
-                    <a
-                      class="nav-link"
-                      data-rr-ui-event-key="/tools"
-                      href="/tools"
-                    >
-                      Tools
-                    </a>
-                  </div>
-                  <div
-                    class="nav-item"
-                  >
-                    <a
-                      class="nav-link"
-                      data-rr-ui-event-key="/projects"
-                      href="/projects"
-                    >
-                      Projects
-                    </a>
-                  </div>
-                </div>
+                  Library
+                </a>
               </div>
-              <span
-                class="navbar-text"
-                id="user"
+              <div
+                class="nav-item"
+              >
+                <a
+                  class="nav-link"
+                  data-rr-ui-event-key="/corpus"
+                  href="/corpus"
+                >
+                  Corpus
+                </a>
+              </div>
+              <div
+                class="nav-item"
+              >
+                <a
+                  class="nav-link"
+                  data-rr-ui-event-key="/about"
+                  href="/about"
+                >
+                  About
+                </a>
+              </div>
+              <div
+                class="nav-item"
+              >
+                <a
+                  class="nav-link"
+                  data-rr-ui-event-key="/tools"
+                  href="/tools"
+                >
+                  Tools
+                </a>
+              </div>
+              <div
+                class="nav-item"
+              >
+                <a
+                  class="nav-link"
+                  data-rr-ui-event-key="/projects"
+                  href="/projects"
+                >
+                  Projects
+                </a>
+              </div>
+            </div>
+            <div
+              class="Header__right"
+            >
+              <div
+                class="Header__partner-logos"
+              >
+                <a
+                  class="Header__partner-logo-link"
+                  href="https://www.lmu.de"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  <img
+                    alt="Ludwig-Maximilians-Universitat Munchen"
+                    class="Header__lmu-logo"
+                    src="LMU_Logo.svg"
+                  />
+                </a>
+                <span
+                  aria-hidden="true"
+                  class="Header__logo-divider"
+                />
+                <a
+                  class="Header__partner-logo-link"
+                  href="https://badw.de/"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  <img
+                    alt="Bayerische Akademie der Wissenschaften"
+                    class="Header__badw-logo"
+                    src="BAdW_Logo.svg"
+                  />
+                </a>
+              </div>
+              <div
+                class="Header__user"
               >
                 <button
                   class="btn btn-outline-secondary btn-sm"
@@ -218,7 +176,7 @@ exports[`Display annotate view Snapshot 1`] = `
                   Logout 
                   Test
                 </button>
-              </span>
+              </div>
             </div>
           </div>
         </div>
@@ -545,30 +503,236 @@ exports[`Display annotate view Snapshot 1`] = `
     <footer
       class="main-footer"
     >
-      <ol
-        class="breadcrumb"
+      <div
+        class="container"
       >
-        <li
-          class="nav-item"
+        <div
+          class="main-footer__content row"
         >
-          <a
-            class="nav-link"
-            href="/impressum"
+          <div
+            class="main-footer__section col-md-3"
           >
-            Impressum
-          </a>
-        </li>
-        <li
-          class="nav-item"
+            <h6
+              class="main-footer__title"
+            >
+              About eBL
+            </h6>
+            <ul
+              class="main-footer__links"
+            >
+              <li>
+                <a
+                  href="/about"
+                >
+                  About
+                </a>
+              </li>
+              <li>
+                <a
+                  href="/projects"
+                >
+                  Research Projects
+                </a>
+              </li>
+              <li>
+                <a
+                  href="https://caic.badw.de"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  CAIC
+                </a>
+              </li>
+            </ul>
+          </div>
+          <div
+            class="main-footer__section col-md-3"
+          >
+            <h6
+              class="main-footer__title"
+            >
+              Resources
+            </h6>
+            <ul
+              class="main-footer__links"
+            >
+              <li>
+                <a
+                  href="/reference-library/signs"
+                >
+                  Signs
+                </a>
+              </li>
+              <li>
+                <a
+                  href="/reference-library/dictionary"
+                >
+                  Dictionary
+                </a>
+              </li>
+              <li>
+                <a
+                  href="/reference-library/bibliography"
+                >
+                  Bibliography
+                </a>
+              </li>
+            </ul>
+          </div>
+          <div
+            class="main-footer__section col-md-3"
+          >
+            <h6
+              class="main-footer__title"
+            >
+              Legal
+            </h6>
+            <ul
+              class="main-footer__links"
+            >
+              <li>
+                <a
+                  href="/impressum"
+                >
+                  Impressum
+                </a>
+              </li>
+              <li>
+                <a
+                  href="/datenschutz"
+                >
+                  Datenschutz
+                </a>
+              </li>
+            </ul>
+          </div>
+          <div
+            class="main-footer__section col-md-3"
+          >
+            <h6
+              class="main-footer__title"
+            >
+              Connect
+            </h6>
+            <div
+              class="main-footer__social"
+            >
+              <a
+                class="main-footer__social-link"
+                href="https://twitter.com/ebl_info"
+                rel="noopener noreferrer"
+                target="_blank"
+                title="eBL on X (Twitter)"
+              >
+                <svg
+                  height="20"
+                  viewBox="0 0 24 24"
+                  width="20"
+                >
+                  <path
+                    d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"
+                    fill="currentColor"
+                  />
+                </svg>
+              </a>
+              <a
+                class="main-footer__social-link"
+                href="https://www.facebook.com/profile.php?id=61556323986355"
+                rel="noopener noreferrer"
+                target="_blank"
+                title="CAIC on Facebook"
+              >
+                <svg
+                  height="20"
+                  viewBox="0 0 24 24"
+                  width="20"
+                >
+                  <path
+                    d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"
+                    fill="currentColor"
+                  />
+                </svg>
+              </a>
+            </div>
+          </div>
+        </div>
+        <div
+          class="main-footer__bottom row"
         >
-          <a
-            class="nav-link"
-            href="/datenschutz"
+          <div
+            class="col"
           >
-            Datenschutz
-          </a>
-        </li>
-      </ol>
+            <div
+              class="main-footer__partners"
+            >
+              <a
+                class="main-footer__partner-link"
+                href="https://badw.de/"
+                rel="noopener noreferrer"
+                target="_blank"
+                title="Bayerische Akademie der Wissenschaften"
+              >
+                BAdW
+              </a>
+              <span
+                class="main-footer__separator"
+              >
+                ·
+              </span>
+              <a
+                class="main-footer__partner-link"
+                href="https://www.lmu.de/"
+                rel="noopener noreferrer"
+                target="_blank"
+                title="Ludwig-Maximilians-Universität München"
+              >
+                LMU
+              </a>
+              <span
+                class="main-footer__separator"
+              >
+                ·
+              </span>
+              <a
+                class="main-footer__partner-link"
+                href="https://www.lrz.de/"
+                rel="noopener noreferrer"
+                target="_blank"
+                title="Leibniz-Rechenzentrum"
+              >
+                LRZ
+              </a>
+              <span
+                class="main-footer__separator"
+              >
+                ·
+              </span>
+              <a
+                class="main-footer__partner-link"
+                href="https://www.humboldt-foundation.de/"
+                rel="noopener noreferrer"
+                target="_blank"
+                title="Alexander von Humboldt Stiftung"
+              >
+                AvH
+              </a>
+            </div>
+          </div>
+        </div>
+        <div
+          class="main-footer__copyright row"
+        >
+          <div
+            class="col"
+          >
+            <p>
+              © 
+              2026
+               electronic Babylonian Library
+            </p>
+          </div>
+        </div>
+      </div>
     </footer>
   </div>
 </div>

@@ -6,6 +6,7 @@ import AppContent from 'common/ui/AppContent'
 import BibliographySearchForm from './BibliographySearchForm'
 import BibliographySearch from './BibliographySearch'
 import SessionContext from 'auth/SessionContext'
+import InfoBanner from 'common/InfoBanner'
 import './Bibliography.css'
 import { TextCrumb } from 'common/ui/Breadcrumbs'
 import { Session } from 'auth/Session'
@@ -60,6 +61,11 @@ function BibliographyReferences({
   const query = getReferencesQueryFromLocation(location.search)
   return (
     <>
+      <InfoBanner
+        title="Bibliography"
+        description="A complete and constantly updated bibliography of cuneiform publications with over 11,497 entries."
+        learnMorePath="/about/bibliography"
+      />
       <BibliographyReferencesIntroduction />
       <div className="Bibliography__search">
         <BibliographySearchForm query={query} />

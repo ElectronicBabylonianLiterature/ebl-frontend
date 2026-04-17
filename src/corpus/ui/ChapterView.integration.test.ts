@@ -260,7 +260,10 @@ describe('Display chapter', () => {
 })
 
 async function setup(chapter: ChapterDisplay) {
-  fakeApi = new FakeApi().expectChapterDisplay(chapter).expectText(textDto)
+  fakeApi = new FakeApi()
+    .expectChapterDisplay(chapter)
+    .expectText(textDto)
+    .allowProvenances([])
   appDriver = new AppDriver(fakeApi.client)
     .withSession()
     .withPath(

@@ -16,6 +16,7 @@ import { sitemapDefaults, ChapterSlugs, TextSlugs } from 'router/sitemap'
 import MarkupService from 'markup/application/MarkupService'
 import { HeadTagsService } from 'router/head'
 import NotFoundPage from 'NotFoundPage'
+
 function parseChapterId(params): ChapterId {
   return {
     textId: parseTextId(params),

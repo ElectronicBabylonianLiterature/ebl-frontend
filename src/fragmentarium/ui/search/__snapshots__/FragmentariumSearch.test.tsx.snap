@@ -54,6 +54,32 @@ exports[`Search Shows suggestion when entering wrong number format 1`] = `
           role="toolbar"
         />
       </header>
+      <div
+        aria-label="Library"
+        class="alert alert-info info-banner"
+        role="region"
+      >
+        <div
+          class="info-banner__content"
+        >
+          <h5
+            class="info-banner__title"
+          >
+            Library
+          </h5>
+          <p
+            class="info-banner__description"
+          >
+            Searchable transliterations of thousands of cuneiform fragments, with over 1,200 joins discovered by the eBL team.
+          </p>
+          <a
+            class="info-banner__link"
+            href="/about/fragmentarium"
+          >
+            Learn more →
+          </a>
+        </div>
+      </div>
       <section
         class="Library-search"
       >

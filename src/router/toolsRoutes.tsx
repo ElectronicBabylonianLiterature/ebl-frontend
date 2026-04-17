@@ -1,83 +1,68 @@
-import React, { ReactNode, useState } from 'react'
-import { Redirect, Route, useHistory } from 'router/compat'
+import React, { ReactNode } from 'react'
+import { Route, Redirect } from 'router/compat'
 import MarkupService from 'markup/application/MarkupService'
 import { sitemapDefaults } from 'router/sitemap'
 import { HeadTagsService } from 'router/head'
-import AppContent from 'common/ui/AppContent'
-import { TextCrumb } from 'common/ui/Breadcrumbs'
-import { Tab, Tabs } from 'react-bootstrap'
-import DateConverterForm, {
-  AboutDateConverter,
-} from 'chronology/ui/DateConverter/DateConverterForm'
-import ListOfKings from 'chronology/ui/Kings/BrinkmanKingsTable'
-import _ from 'lodash'
-import 'about/ui/about.sass'
 import NotFoundPage from 'NotFoundPage'
-import CuneiformConverterForm from 'signs/ui/CuneiformConverter/CuneiformConverterForm'
 import SignService from 'signs/application/SignService'
-
-const tabIds = [
-  'date-converter',
-  'list-of-kings',
-  'cuneiform-converter',
-] as const
-type TabId = (typeof tabIds)[number]
-
-const Tools = ({
-  markupService,
-  signService,
-  activeTab,
-}: {
-  markupService: MarkupService
-  signService: SignService
-  activeTab: TabId
-}): JSX.Element => {
-  const history = useHistory()
-  const [selectedTab, setSelectedTab] = useState(activeTab)
-  const handleSelect = (selectedTab: TabId) => {
-    history.push(`/tools/${selectedTab}`)
-    setSelectedTab(selectedTab)
-  }
-  return (
-    <AppContent
-      title="Tools"
-      crumbs={[
-        new TextCrumb('Tools'),
-        new TextCrumb(_.capitalize(selectedTab).replaceAll('-', ' ')),
-      ]}
-    >
-      <Tabs
-        id="tools"
-        defaultActiveKey={selectedTab}
-        onSelect={(selectedTab) => handleSelect(selectedTab as TabId)}
-        mountOnEnter
-        unmountOnExit
-      >
-        <Tab eventKey="date-converter" title="Date converter">
-          {AboutDateConverter(markupService)}
-          <DateConverterForm />
-        </Tab>
-        <Tab eventKey="list-of-kings" title="List of kings">
-          {ListOfKings()}
-        </Tab>
-        <Tab eventKey="cuneiform-converter" title="Cuneiform converter">
-          <CuneiformConverterForm signService={signService} />
-        </Tab>
-      </Tabs>
-    </AppContent>
-  )
-}
+import WordService from 'dictionary/application/WordService'
+import BibliographyService from 'bibliography/application/BibliographyService'
+import AfoRegisterService from 'afo-register/application/AfoRegisterService'
+import FragmentService from 'fragmentarium/application/FragmentService'
+import Tools, { tabIds } from 'router/Tools'
+import _ from 'lodash'
 
 export default function ToolsRoutes({
   sitemap,
   signService,
   markupService,
+  wordService,
+  bibliographyService,
+  afoRegisterService,
+  fragmentService,
 }: {
   sitemap: boolean
   signService: SignService
   markupService: MarkupService
+  wordService: WordService
+  bibliographyService: BibliographyService
+  afoRegisterService: AfoRegisterService
+  fragmentService: FragmentService
 }): JSX.Element[] {
   return [
+    <Redirect
+      exact
+      from="/tools"
+      to="/tools/introduction"
+      key="tools-root-redirect"
+    />,
+    <Redirect
+      exact
+      from="/tools/bibliography"
+      to="/tools/references"
+      key="tools-bibliography-redirect"
+    />,
+    <Route
+      key="tools-introduction"
+      path="/tools/introduction"
+      exact
+      render={(): ReactNode => (
+        <HeadTagsService
+          title="Tools - eBL"
+          description="Research tools for cuneiform studies including signs search, dictionary, bibliography, date converters, king lists, and cuneiform converters."
+        >
+          <Tools
+            markupService={markupService}
+            signService={signService}
+            wordService={wordService}
+            bibliographyService={bibliographyService}
+            afoRegisterService={afoRegisterService}
+            fragmentService={fragmentService}
+          />
+        </HeadTagsService>
+      )}
+      {...(sitemap && sitemapDefaults)}
+    />,
     ...tabIds.map((tabId) => (
       <Route
         key={`tools-${tabId}`}
@@ -91,6 +76,10 @@ export default function ToolsRoutes({
             <Tools
               markupService={markupService}
               signService={signService}
+              wordService={wordService}
+              bibliographyService={bibliographyService}
+              afoRegisterService={afoRegisterService}
+              fragmentService={fragmentService}
               activeTab={tabId}
             />
           </HeadTagsService>
@@ -98,11 +87,6 @@ export default function ToolsRoutes({
         {...(sitemap && sitemapDefaults)}
       />
     )),
-    <Redirect
-      from="/tools"
-      to="/tools/date-converter"
-      key="tools-root-redirect"
-    />,
     <Route
       key="ToolsNotFound"
       path="/tools/*"

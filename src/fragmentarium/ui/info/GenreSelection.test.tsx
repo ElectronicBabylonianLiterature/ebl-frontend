@@ -58,6 +58,13 @@ async function setup(): Promise<void> {
   await renderGenreSelection()
   await userEvent.click(screen.getByLabelText('edit-genre'))
 }
+
+async function selectGenreOption(optionLabel: string): Promise<void> {
+  const input = screen.getByLabelText('select-genre')
+  await userEvent.click(input)
+  await userEvent.type(input, `${optionLabel}{enter}`)
+}
+
 describe('Genre Editor', () => {
   it('shows the editor when the user clicks the edit button', async () => {
     await setup()
@@ -73,8 +80,7 @@ describe('Genre Editor', () => {
   })
   it('updates the genre when the user selects an option', async () => {
     await setup()
-    await userEvent.click(screen.getByLabelText('select-genre'))
-    await userEvent.click(await screen.findByText('ARCHIVAL ➝ Administrative'))
+    await selectGenreOption('Administrative')
     await userEvent.click(screen.getByLabelText('add-genre'))
     await waitFor(() => expect(updateGenres).toHaveBeenCalled())
     expect(screen.getByText('ARCHIVAL ➝ Administrative')).toBeVisible()
@@ -82,16 +88,14 @@ describe('Genre Editor', () => {
   it('sets uncertain=true', async () => {
     await setup()
     await userEvent.click(screen.getByLabelText('toggle-uncertain'))
-    await userEvent.click(screen.getByLabelText('select-genre'))
-    await userEvent.click(await screen.findByText('CANONICAL (?)'))
+    await selectGenreOption('CANONICAL')
     await userEvent.click(screen.getByLabelText('add-genre'))
     await waitFor(() => expect(updateGenres).toHaveBeenCalled())
     expect(screen.getByText('CANONICAL (?)')).toBeVisible()
   })
   it('deletes the genre when the user clicks the delete button', async () => {
     await setup()
-    await userEvent.click(screen.getByLabelText('select-genre'))
-    await userEvent.click(await screen.findByText('ARCHIVAL'))
+    await selectGenreOption('ARCHIVAL')
     await userEvent.click(screen.getByLabelText('add-genre'))
     await waitFor(() => expect(updateGenres).toHaveBeenCalled())
 

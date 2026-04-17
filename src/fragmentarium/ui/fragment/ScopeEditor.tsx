@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import MemorySession, { Session } from 'auth/Session'
-import { Button } from 'react-bootstrap'
+import { Button, Form } from 'react-bootstrap'
 interface ScopeEditorProps {
   fragment: Fragment
   session: Session
@@ -57,25 +57,31 @@ const ScopeEditor: React.FC<ScopeEditorProps> = ({
     return scope.replace('read:', '').replace('-fragments', '')
   }
   return (
-    <div>
-      <h3>Permissions</h3>
-      <p>
+    <div className="ScopeEditor">
+      <p className="ScopeEditor__description">
         Records with added permissions are visible only to users who have those
         permissions.
       </p>
-      {fragmentScopes.map((scope) => (
-        <div key={scope}>
-          <label>
-            <input
-              type="checkbox"
-              checked={selectedScopes.includes(scope)}
-              onChange={() => handleScopeChange(scope)}
-            />
-            Restrict it to users with {getDisplayScope(scope)} permissions
-          </label>
-        </div>
-      ))}
-      <Button onClick={handleSubmit}>Update Permissions</Button>
+      <Form>
+        {fragmentScopes.map((scope) => (
+          <Form.Check
+            key={scope}
+            type="checkbox"
+            id={`scope-${scope}`}
+            className="ScopeEditor__check"
+            label={getDisplayScope(scope)}
+            checked={selectedScopes.includes(scope)}
+            onChange={() => handleScopeChange(scope)}
+          />
+        ))}
+      </Form>
+      <Button
+        variant="primary"
+        className="ScopeEditor__submit"
+        onClick={handleSubmit}
+      >
+        Update Permissions
+      </Button>
     </div>
   )
 }

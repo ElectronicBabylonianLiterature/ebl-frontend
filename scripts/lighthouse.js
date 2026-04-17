@@ -8,8 +8,8 @@ function launchChromeAndRunLighthouse(url, flags, config = null) {
     .launch({ chromeFlags: flags.chromeFlags })
     .then((chrome) =>
       lighthouse(url, { ...flags, port: chrome.port }, config).then((results) =>
-        chrome.kill().then(() => results.lhr),
-      ),
+        chrome.kill().then(() => results.lhr)
+      )
     )
 }
 

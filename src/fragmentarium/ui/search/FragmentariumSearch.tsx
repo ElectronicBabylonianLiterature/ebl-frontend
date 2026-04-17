@@ -1,6 +1,7 @@
 import React from 'react'
 import _ from 'lodash'
 import AppContent from 'common/ui/AppContent'
+import InfoBanner from 'common/InfoBanner'
 import SessionContext from 'auth/SessionContext'
 import SearchForm, {
   SearchFormProps,
@@ -62,6 +63,11 @@ function FragmentariumSearch({
 
   return (
     <AppContent crumbs={[new SectionCrumb('Library'), new TextCrumb('Search')]}>
+      <InfoBanner
+        title="Library"
+        description="Searchable transliterations of thousands of cuneiform fragments, with over 1,200 joins discovered by the eBL team."
+        learnMorePath="/about/fragmentarium"
+      />
       <SessionContext.Consumer>
         {(session: Session): JSX.Element =>
           session.isAllowedToReadFragments() ? (

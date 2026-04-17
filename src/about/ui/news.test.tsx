@@ -12,7 +12,7 @@ test('renders AboutNews component with default newsletter', () => {
     </MemoryRouter>,
   )
   expect(
-    screen.getByText(new RegExp(`eBL Newsletter ${newsletters[0].number}`)),
+    screen.getByText(new RegExp(`Newsletter #${newsletters[0].number}`)),
   ).toBeInTheDocument()
 })
 
@@ -24,7 +24,7 @@ test('renders AboutNews component with complete menu', () => {
   )
   newsletters.forEach((newsletter) => {
     expect(
-      screen.getByText(new RegExp(`^Nr. ${newsletter.number}$`)),
+      screen.getByText(new RegExp(`^#\\s*${newsletter.number}$`)),
     ).toBeInTheDocument()
   })
 })
@@ -36,10 +36,10 @@ test('updates active newsletter on link click', () => {
     </MemoryRouter>,
   )
   const secondNewsletterLink = screen.getByText(
-    new RegExp(`Nr. ${newsletters[1].number}`),
+    new RegExp(`^#\\s*${newsletters[1].number}$`),
   )
   fireEvent.click(secondNewsletterLink)
   expect(
-    screen.getByText(new RegExp(`eBL Newsletter ${newsletters[1].number}`)),
+    screen.getByText(new RegExp(`Newsletter #${newsletters[1].number}`)),
   ).toBeInTheDocument()
 })

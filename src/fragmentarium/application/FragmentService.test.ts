@@ -317,9 +317,18 @@ describe('methods returning fragment', () => {
   })
 
   describe('find', () => {
+    let findService: FragmentService
+
     beforeEach(async () => {
+      findService = new FragmentService(
+        fragmentRepository,
+        imageRepository,
+        wordRepository,
+        bibliographyService,
+      )
+      fragmentRepository.find.mockClear()
       fragmentRepository.find.mockReturnValue(Promise.resolve(fragment))
-      result = await fragmentService.find(number)
+      result = await findService.find(number)
     })
 
     test('Returns fragment', () => expect(result).toEqual(fragment))
@@ -329,6 +338,36 @@ describe('methods returning fragment', () => {
         undefined,
         undefined,
       )
+    })
+
+    test('uses cached find result', async () => {
+      await findService.find(number)
+      expect(fragmentRepository.find).toHaveBeenCalledTimes(1)
+    })
+
+    test('invalidates cache on update', async () => {
+      fragmentRepository.updateGenres.mockReturnValue(Promise.resolve(fragment))
+      await findService.updateGenres(number, fragment.genres)
+      await findService.find(number)
+      expect(fragmentRepository.find).toHaveBeenCalledTimes(2)
+    })
+
+    test('evicts expired cache entries', async () => {
+      jest.useFakeTimers()
+      const freshService = new FragmentService(
+        fragmentRepository,
+        imageRepository,
+        wordRepository,
+        bibliographyService,
+      )
+      fragmentRepository.find.mockClear()
+      fragmentRepository.find.mockReturnValue(Promise.resolve(fragment))
+      await freshService.find(number)
+      expect(fragmentRepository.find).toHaveBeenCalledTimes(1)
+      jest.advanceTimersByTime(61_000)
+      await freshService.find(number)
+      expect(fragmentRepository.find).toHaveBeenCalledTimes(2)
+      jest.useRealTimers()
     })
   })
 

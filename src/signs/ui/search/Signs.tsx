@@ -1,15 +1,16 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import { parse } from 'query-string'
 import { useLocation } from 'react-router-dom'
 
 import AppContent from 'common/ui/AppContent'
 import SessionContext from 'auth/SessionContext'
+import InfoBanner from 'common/InfoBanner'
+import _ from 'lodash'
 
 import { SectionCrumb } from 'common/ui/Breadcrumbs'
 import { Session } from 'auth/Session'
 import SignsSearchForm from 'signs/ui/search/SignsSearchForm'
 import SignsSearch from 'signs/ui/search/SignsSearch'
-import _ from 'lodash'
 import SignService from 'signs/application/SignService'
 
 type Props = {
@@ -18,13 +19,30 @@ type Props = {
 
 export default function Signs({ signService }: Props): JSX.Element {
   const location = useLocation()
-  const query = parse(location.search, {
-    parseBooleans: true,
-    parseNumbers: true,
-  })
+  const query = useMemo(
+    () =>
+      parse(location.search, {
+        parseBooleans: true,
+        parseNumbers: true,
+      }),
+    [location.search],
+  )
+  const signQuery = useMemo(
+    () =>
+      _.pickBy(
+        { ...query, sign: null },
+        (property) => _.identity(property) || property === '',
+      ),
+    [query],
+  )
 
   return (
     <AppContent crumbs={[new SectionCrumb('Signs')]}>
+      <InfoBanner
+        title="Signs"
+        description="A comprehensive reference tool for cuneiform script with palaeographic resources."
+        learnMorePath="/about/signs"
+      />
       <SessionContext.Consumer>
         {(session: Session): JSX.Element =>
           session.isAllowedToReadWords() ? (
@@ -32,15 +50,9 @@ export default function Signs({ signService }: Props): JSX.Element {
               <SignsSearchForm
                 sign={(query.sign as string) || undefined}
                 signQuery={query}
-                key={`${_.uniqueId('signs')}-${query.value}`}
+                key={location.search}
               />
-              <SignsSearch
-                signQuery={_.pickBy(
-                  { ...query, sign: null },
-                  (property) => _.identity(property) || property === '',
-                )}
-                signService={signService}
-              />
+              <SignsSearch signQuery={signQuery} signService={signService} />
             </>
           ) : (
             <p>Please log in to search for Signs.</p>

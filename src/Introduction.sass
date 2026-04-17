@@ -1,42 +1,569 @@
-.Introduction__chart
-  max-width: 1429px
-  width: 80%
+.hero
+  background-color: #0077be
+  color: white
+  padding: 6rem 0
+  margin-bottom: 4rem
+  position: relative
+  overflow: hidden
 
-.Introduction__footer
-  margin: 1em 10%
-  text-align: center
+  &::before
+    content: '𒀀'
+    position: absolute
+    font-size: 25rem
+    opacity: 0.08
+    top: 50%
+    left: 50%
+    transform: translate(-50%, -50%)
+    pointer-events: none
 
-.BAdWIcon__image
-  width: 350px
+  &__content
+    text-align: center
+    max-width: 700px
+    margin: 0 auto
+    position: relative
+    z-index: 1
 
-.LMUIcon__image
-  text-align: right
-  width: 200px
+  &__badge
+    display: inline-block
+    padding: 0.5rem 1.25rem
+    background-color: rgba(255, 255, 255, 0.15)
+    border-radius: 50px
+    font-size: 0.875rem
+    font-weight: 600
+    letter-spacing: 2px
+    margin-bottom: 2rem
 
-.HumboldtIcon__image
-  width: 200px
-  padding-bottom: 1em
+  &__title
+    font-size: 3.5rem
+    font-weight: 300
+    margin-bottom: 1.5rem
+    line-height: 1.2
+    letter-spacing: -1px
 
-.HumboldtIcon::after
-  content: '\a'
-  white-space: pre
+  &__subtitle
+    font-size: 1.125rem
+    margin-bottom: 3rem
+    opacity: 0.9
+    font-weight: 300
+    letter-spacing: 0.5px
 
-.Auth0Badge,
-.Auth0Badge__image
-  height: 50px
-  width: 150px
+  &__links
+    display: flex
+    gap: 0.75rem
+    justify-content: center
+    align-items: center
+    flex-wrap: wrap
+    padding: 0 1rem
 
-.icon
-  &__large
-    font-size: 2.5em
-    margin-right: .2rem
-  &__twitter
-    vertical-align: middle
-    color: #212529
+  &__link
+    color: white
+    text-decoration: none
+    font-size: 1rem
+    font-weight: 600
+    padding: 0.625rem 1.25rem
+    background-color: rgba(255, 255, 255, 0.2)
+    border-radius: 50px
+    transition: all 0.3s ease
+    position: relative
 
     &:hover
-      color: #212529
+      background-color: rgba(255, 255, 255, 0.3)
+      transform: translateY(-2px)
 
-.eblInfo
-  vertical-align: middle
-  padding-right: 1em
+  &__divider
+    color: rgba(255, 255, 255, 0.5)
+    font-size: 1rem
+    font-weight: 300
+
+@media (max-width: 768px)
+  .hero
+    padding: 4rem 0
+
+    &::before
+      font-size: 15rem
+
+    &__badge
+      font-size: 0.75rem
+      padding: 0.375rem 1rem
+      margin-bottom: 1.5rem
+
+    &__title
+      font-size: 2.25rem
+
+    &__subtitle
+      font-size: 1rem
+      margin-bottom: 2rem
+
+    &__links
+      gap: 0.5rem
+      padding: 0 0.5rem
+
+    &__link
+      font-size: 0.875rem
+      padding: 0.5rem 1rem
+
+    &__divider
+      display: none
+
+.introduction-text
+  padding: 3rem 0 2rem
+
+  p
+    font-size: 1.05rem
+    line-height: 1.75
+    color: var(--text-primary)
+    margin-bottom: 1.5rem
+
+    &:last-child
+      margin-bottom: 0
+
+    a
+      color: #0077be
+      text-decoration: none
+      font-weight: 500
+
+      &:hover
+        text-decoration: underline
+
+@media (max-width: 768px)
+  .introduction-text
+    padding: 2rem 0 1.5rem
+
+    p
+      font-size: 1rem
+      line-height: 1.6
+
+.introduction-content
+  padding: 2rem 0 4rem
+
+  &__heading
+    color: #0077be
+    font-size: 2rem
+    font-weight: 700
+    margin-bottom: 1.5rem
+    text-align: center
+
+  &__text
+    font-size: 1.1rem
+    line-height: 1.8
+    color: var(--text-primary)
+
+    a
+      color: #0077be
+      text-decoration: none
+      font-weight: 500
+
+      &:hover
+        text-decoration: underline
+
+.feature-card
+  border: 2px solid #e9ecef
+  border-radius: 8px
+  height: 100%
+  transition: all 0.3s ease
+  background-color: white
+
+  &:hover
+    border-color: #0077be
+    transform: translateY(-4px)
+    box-shadow: 0 8px 24px rgba(0, 119, 190, 0.12)
+
+  .card-body
+    padding: 2rem
+
+  &__icon
+    font-size: 3rem
+    color: #0077be
+    margin-bottom: 1rem
+    font-weight: 600
+
+  &__title
+    color: #0077be
+    font-size: 1.5rem
+    font-weight: 700
+    margin-bottom: 0.875rem
+
+  &__text
+    color: var(--text-secondary)
+    font-size: 0.95rem
+    line-height: 1.6
+    margin-bottom: 1.25rem
+
+  &__link
+    color: #0077be
+    text-decoration: none
+    font-weight: 600
+    font-size: 0.95rem
+    transition: color 0.2s ease
+
+    &:hover
+      color: #005a8f
+
+@media (max-width: 768px)
+  .introduction-content
+    padding: 1.5rem 0 3rem
+
+    &__heading
+      font-size: 1.5rem
+
+  .feature-card
+    margin-bottom: 1.5rem
+
+    &__icon
+      font-size: 2.5rem
+
+    .card-body
+      padding: 1.5rem
+
+\:root[data-theme="dark"]
+  .hero
+    background-color: #1a5a7a
+
+    &__badge
+      background-color: rgba(255, 255, 255, 0.1)
+
+    &__link
+      background-color: rgba(255, 255, 255, 0.15)
+
+      &:hover
+        background-color: rgba(255, 255, 255, 0.25)
+
+  .introduction-content
+    &__heading
+      color: #3399cc
+
+    &__text a
+      color: #3399cc
+
+      &:hover
+        color: #5cb3e6
+
+  .feature-card
+    background-color: var(--bg-secondary)
+    border-color: var(--border-primary)
+
+    &__icon
+      color: #3399cc
+
+    &__title
+      color: #3399cc
+
+    &__link
+      color: #3399cc
+
+      &:hover
+        color: #5cb3e6
+
+    &:hover
+      border-color: #3399cc
+      box-shadow: 0 8px 24px rgba(51, 153, 204, 0.2)
+
+.introduction-news
+  margin: 4rem 0
+  padding: 0
+
+  &__header
+    display: flex
+    justify-content: space-between
+    align-items: flex-start
+    margin-bottom: 2.5rem
+    gap: 2rem
+
+  &__header-content
+    flex: 1
+
+  &__title
+    color: #0077be
+    font-size: 2.5rem
+    font-weight: 700
+    margin: 0 0 0.5rem 0
+    letter-spacing: -0.5px
+
+  &__subtitle
+    color: #6c757d
+    font-size: 1.05rem
+    margin: 0
+    font-weight: 400
+
+  &__view-all-btn
+    display: inline-flex
+    align-items: center
+    gap: 0.5rem
+    padding: 0.75rem 1.5rem
+    background-color: transparent
+    color: #0077be
+    text-decoration: none
+    font-weight: 600
+    border: 2px solid #0077be
+    border-radius: 50px
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1)
+    white-space: nowrap
+
+    &:hover
+      background-color: #0077be
+      color: white
+      transform: translateY(-2px)
+      box-shadow: 0 4px 12px rgba(0, 119, 190, 0.2)
+
+  &__view-all-arrow
+    transition: transform 0.3s ease
+
+  &__view-all-btn:hover &__view-all-arrow
+    transform: translateX(4px)
+
+  &__featured
+    display: grid
+    grid-template-columns: 1fr 360px
+    gap: 1.5rem
+
+  &__featured-card
+    position: relative
+    background: linear-gradient(135deg, #0077be 0%, #005a8f 100%)
+    border-radius: 16px
+    padding: 2.5rem
+    text-decoration: none
+    overflow: hidden
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1)
+    box-shadow: 0 8px 30px rgba(0, 119, 190, 0.15)
+
+    &::before
+      content: '𒀀'
+      position: absolute
+      font-size: 20rem
+      opacity: 0.05
+      top: -3rem
+      right: -3rem
+      pointer-events: none
+      transition: all 0.4s ease
+
+    &:hover
+      transform: translateY(-8px)
+      box-shadow: 0 16px 48px rgba(0, 119, 190, 0.25)
+
+      &::before
+        transform: rotate(15deg) scale(1.1)
+
+      .introduction-news__featured-cta
+        gap: 0.75rem
+
+  &__featured-badge
+    display: inline-flex
+    align-items: center
+    gap: 0.75rem
+    padding: 0.5rem 1rem
+    background-color: rgba(255, 255, 255, 0.2)
+    backdrop-filter: blur(10px)
+    border-radius: 50px
+    margin-bottom: 1.5rem
+    position: relative
+    z-index: 1
+
+  &__featured-badge-label
+    color: white
+    font-size: 0.75rem
+    font-weight: 700
+    text-transform: uppercase
+    letter-spacing: 1px
+
+  &__featured-badge-number
+    color: white
+    font-weight: 700
+    font-size: 0.875rem
+
+  &__featured-content
+    position: relative
+    z-index: 1
+
+  &__featured-date
+    display: flex
+    align-items: center
+    gap: 0.5rem
+    color: rgba(255, 255, 255, 0.9)
+    font-size: 0.9rem
+    margin-bottom: 1rem
+
+    svg
+      opacity: 0.8
+
+  &__featured-title
+    color: white
+    font-size: 2rem
+    font-weight: 700
+    margin: 0 0 1.25rem 0
+    letter-spacing: -0.5px
+
+  &__featured-preview
+    color: rgba(255, 255, 255, 0.95)
+    font-size: 1.05rem
+    line-height: 1.7
+    margin: 0 0 2rem 0
+
+  &__featured-cta
+    display: inline-flex
+    align-items: center
+    gap: 0.5rem
+    color: white
+    font-weight: 600
+    font-size: 1rem
+    padding: 0.875rem 1.5rem
+    background-color: rgba(255, 255, 255, 0.2)
+    backdrop-filter: blur(10px)
+    border-radius: 50px
+    transition: all 0.3s ease
+
+  &__recent-list
+    display: flex
+    flex-direction: column
+    gap: 1rem
+
+  &__recent-item
+    display: flex
+    align-items: center
+    gap: 1rem
+    padding: 1.25rem
+    background-color: #f8f9fa
+    border: 2px solid transparent
+    border-radius: 12px
+    text-decoration: none
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1)
+
+    &:hover
+      background-color: white
+      border-color: #0077be
+      transform: translateX(4px)
+      box-shadow: 0 4px 16px rgba(0, 119, 190, 0.1)
+
+      .introduction-news__recent-arrow
+        opacity: 1
+        transform: translateX(4px)
+
+  &__recent-badge
+    flex-shrink: 0
+    width: 44px
+    height: 44px
+    display: flex
+    align-items: center
+    justify-content: center
+    background: linear-gradient(135deg, #0077be, #005a8f)
+    color: white
+    border-radius: 12px
+    font-weight: 700
+    font-size: 0.875rem
+    box-shadow: 0 2px 8px rgba(0, 119, 190, 0.2)
+
+  &__recent-content
+    flex: 1
+    min-width: 0
+
+  &__recent-date
+    color: #6c757d
+    font-size: 0.8rem
+    margin-bottom: 0.25rem
+    font-weight: 500
+
+  &__recent-title
+    color: #212529
+    font-weight: 600
+    font-size: 0.95rem
+
+  &__recent-arrow
+    flex-shrink: 0
+    color: #0077be
+    font-size: 1.25rem
+    font-weight: 600
+    opacity: 0
+    transform: translateX(-4px)
+    transition: all 0.3s ease
+
+@media (max-width: 992px)
+  .introduction-news
+    &__featured
+      grid-template-columns: 1fr
+      gap: 1.5rem
+
+    &__recent-list
+      grid-template-columns: 1fr
+
+@media (max-width: 768px)
+  .introduction-news
+    margin: 3rem 0
+
+    &__header
+      flex-direction: column
+      align-items: flex-start
+      gap: 1.5rem
+      margin-bottom: 2rem
+
+    &__title
+      font-size: 2rem
+
+    &__subtitle
+      font-size: 0.95rem
+
+    &__view-all-btn
+      width: 100%
+      justify-content: center
+      padding: 0.875rem 1.5rem
+
+    &__featured-card
+      padding: 2rem
+
+      &::before
+        font-size: 12rem
+        right: -2rem
+
+    &__featured-title
+      font-size: 1.5rem
+
+    &__featured-preview
+      font-size: 1rem
+
+    &__recent-item
+      padding: 1rem
+
+    &__recent-badge
+      width: 40px
+      height: 40px
+      font-size: 0.8rem
+
+    &__recent-title
+      font-size: 0.9rem
+
+\:root[data-theme="dark"]
+  .introduction-news
+    &__title
+      color: #3399cc
+
+    &__subtitle
+      color: var(--text-secondary)
+
+    &__view-all-btn
+      border-color: #3399cc
+      color: #3399cc
+
+      &:hover
+        background-color: #3399cc
+        border-color: #3399cc
+        color: white
+
+    &__featured-card
+      background: linear-gradient(135deg, #1a5a7a 0%, #144a62 100%)
+
+    &__recent-item
+      background-color: var(--bg-secondary)
+      border-color: transparent
+
+      &:hover
+        background-color: var(--bg-primary)
+        border-color: #3399cc
+        box-shadow: 0 4px 16px rgba(51, 153, 204, 0.15)
+
+    &__recent-badge
+      background: linear-gradient(135deg, #3399cc, #2980b9)
+
+    &__recent-title
+      color: var(--text-primary)
+
+    &__recent-arrow
+      color: #3399cc
+

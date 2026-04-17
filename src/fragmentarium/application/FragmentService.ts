@@ -43,6 +43,8 @@ import {
   upsertProvenanceRecord,
 } from 'corpus/domain/provenance'
 
+const FIND_CACHE_TTL_MS = 60_000
+
 export type ThumbnailSize = 'small' | 'medium' | 'large'
 
 export const onError = (error) => {
@@ -170,6 +172,11 @@ export class FragmentService {
     string,
     Bluebird<readonly ProvenanceRecord[]>
   >()
+  private readonly findCache = new Map<
+    string,
+    { data: Fragment; expires: number }
+  >()
+  private readonly findCacheRequests = new Map<string, Bluebird<Fragment>>()
 
   constructor(
     private readonly fragmentRepository: FragmentRepository &
@@ -198,10 +205,39 @@ export class FragmentService {
     lines?: readonly number[],
     excludeLines?: boolean,
   ): Bluebird<Fragment> {
-    return this.fragmentRepository
+    const cacheKey = this.findCacheKey(number, lines, excludeLines)
+
+    const cached = this.findCache.get(cacheKey)
+    if (cached) {
+      if (cached.expires > Date.now()) {
+        return Bluebird.resolve(cached.data)
+      }
+      this.findCache.delete(cacheKey)
+    }
+
+    const inFlight = this.findCacheRequests.get(cacheKey)
+    if (inFlight) {
+      return inFlight
+    }
+
+    const request = this.fragmentRepository
       .find(number, lines, excludeLines)
       .then((fragment: Fragment) => this.injectReferences(fragment))
+      .then((fragment: Fragment) => {
+        this.pruneExpiredFindCache()
+        this.findCache.set(cacheKey, {
+          data: fragment,
+          expires: Date.now() + FIND_CACHE_TTL_MS,
+        })
+        return fragment
+      })
       .catch(onError)
+      .finally(() => {
+        this.findCacheRequests.delete(cacheKey)
+      })
+
+    this.findCacheRequests.set(cacheKey, request)
+    return request
   }
 
   isInFragmentarium(number: string): boolean {
@@ -214,23 +250,27 @@ export class FragmentService {
   }
 
   updateGenres(number: string, genres: Genres): Bluebird<Fragment> {
+    this.invalidateFindCache(number)
     return this.fragmentRepository
       .updateGenres(number, genres)
       .then((fragment: Fragment) => this.injectReferences(fragment))
   }
 
   updateScript(number: string, script: Script): Bluebird<Fragment> {
+    this.invalidateFindCache(number)
     return this.fragmentRepository
       .updateScript(number, script)
       .then((fragment: Fragment) => this.injectReferences(fragment))
   }
   updateScopes(number: string, scopes: string[]): Bluebird<Fragment> {
+    this.invalidateFindCache(number)
     return this.fragmentRepository
       .updateScopes(number, scopes)
       .then((fragment: Fragment) => this.injectReferences(fragment))
   }
 
   updateDate(number: string, date: MesopotamianDateDto): Bluebird<Fragment> {
+    this.invalidateFindCache(number)
     return this.fragmentRepository
       .updateDate(number, date)
       .then((fragment: Fragment) => this.injectReferences(fragment))
@@ -240,6 +280,7 @@ export class FragmentService {
     number: string,
     datesInText: MesopotamianDateDto[],
   ): Bluebird<Fragment> {
+    this.invalidateFindCache(number)
     return this.fragmentRepository
       .updateDatesInText(number, datesInText)
       .then((fragment: Fragment) => this.injectReferences(fragment))
@@ -351,6 +392,7 @@ export class FragmentService {
   }
 
   updateEdition(number: string, updates: EditionFields): Bluebird<Fragment> {
+    this.invalidateFindCache(number)
     return this.fragmentRepository
       .updateEdition(number, updates)
       .then((fragment: Fragment) => this.injectReferences(fragment))
@@ -360,6 +402,7 @@ export class FragmentService {
     number: string,
     lemmatization: LemmatizationDto,
   ): Bluebird<Fragment> {
+    this.invalidateFindCache(number)
     return this.fragmentRepository
       .updateLemmatization(number, lemmatization)
       .then((fragment: Fragment) => this.injectReferences(fragment))
@@ -369,6 +412,7 @@ export class FragmentService {
     number: string,
     annotations: LineLemmaAnnotations,
   ): Bluebird<Fragment> {
+    this.invalidateFindCache(number)
     return this.fragmentRepository
       .updateLemmaAnnotation(number, annotations)
       .then((fragment: Fragment) => this.injectReferences(fragment))
@@ -378,6 +422,7 @@ export class FragmentService {
     number: string,
     references: ReadonlyArray<Reference>,
   ): Bluebird<Fragment> {
+    this.invalidateFindCache(number)
     return this.fragmentRepository
       .updateReferences(number, references)
       .then((fragment: Fragment) => this.injectReferences(fragment))
@@ -387,12 +432,14 @@ export class FragmentService {
     number: string,
     archaeology: ArchaeologyDto,
   ): Bluebird<Fragment> {
+    this.invalidateFindCache(number)
     return this.fragmentRepository
       .updateArchaeology(number, archaeology)
       .then((fragment: Fragment) => this.injectReferences(fragment))
   }
 
   updateColophon(number: string, colophon: Colophon): Bluebird<Fragment> {
+    this.invalidateFindCache(number)
     return this.fragmentRepository
       .updateColophon(number, colophon)
       .then((fragment: Fragment) => this.injectReferences(fragment))
@@ -532,9 +579,38 @@ export class FragmentService {
     number: string,
     annotations: readonly ApiEntityAnnotationSpan[],
   ): Bluebird<Fragment> {
+    this.invalidateFindCache(number)
     return this.fragmentRepository
       .updateNamedEntityAnnotations(number, annotations)
       .then((fragment: Fragment) => this.injectReferences(fragment))
+  }
+
+  private findCacheKey(
+    number: string,
+    lines?: readonly number[],
+    excludeLines?: boolean,
+  ): string {
+    const linesPart = lines ? lines.join(',') : ''
+    const excludePart = excludeLines === undefined ? '' : String(excludeLines)
+    return `${number}|${linesPart}|${excludePart}`
+  }
+
+  private invalidateFindCache(number: string): void {
+    const prefix = `${number}|`
+    for (const key of this.findCache.keys()) {
+      if (key.startsWith(prefix)) {
+        this.findCache.delete(key)
+      }
+    }
+  }
+
+  private pruneExpiredFindCache(): void {
+    const now = Date.now()
+    for (const [key, entry] of this.findCache) {
+      if (entry.expires <= now) {
+        this.findCache.delete(key)
+      }
+    }
   }
 }
 

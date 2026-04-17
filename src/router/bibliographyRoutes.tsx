@@ -25,6 +25,51 @@ export default function BibliographyRoutes({
 }): JSX.Element[] {
   return [
     <Route
+      key="BibliographyReferencesSearch"
+      path="/bibliography/references"
+      exact
+      render={(props): ReactNode => (
+        <HeadTagsService
+          title="Bibliography References: eBL"
+          description="Bibliography references search in the electronic Babylonian Library (eBL)."
+        >
+          <Bibliography
+            bibliographyService={bibliographyService}
+            afoRegisterService={afoRegisterService}
+            fragmentService={fragmentService}
+            {...props}
+            activeTab={'references'}
+          />
+        </HeadTagsService>
+      )}
+      {...(sitemap && sitemapDefaults)}
+    />,
+    <Route
+      key="BibliographyAfoRegisterSearch"
+      path="/bibliography/afo-register"
+      exact
+      render={(props): ReactNode => (
+        <HeadTagsService
+          title="Bibliography AfO-Register: eBL"
+          description="AfO-Register search in the electronic Babylonian Library (eBL)."
+        >
+          <Bibliography
+            bibliographyService={bibliographyService}
+            afoRegisterService={afoRegisterService}
+            fragmentService={fragmentService}
+            {...props}
+            activeTab={'afo-register'}
+          />
+        </HeadTagsService>
+      )}
+      {...(sitemap && sitemapDefaults)}
+    />,
+    <Redirect
+      from="/bibliography"
+      to="/bibliography/afo-register"
+      key="bibliography-root-redirect"
+    />,
+    <Route
       key="BibliographyEditorNew"
       path="/bibliography/references/new-reference"
       exact
@@ -75,51 +120,6 @@ export default function BibliographyRoutes({
           />
         </HeadTagsService>
       )}
-    />,
-    <Route
-      key="BibliographyReferencesSearch"
-      path="/bibliography/references"
-      exact
-      render={(props): ReactNode => (
-        <HeadTagsService
-          title="Bibliography References: eBL"
-          description="Bibliography references search in the electronic Babylonian Library (eBL)."
-        >
-          <Bibliography
-            bibliographyService={bibliographyService}
-            afoRegisterService={afoRegisterService}
-            fragmentService={fragmentService}
-            {...props}
-            activeTab={'references'}
-          />
-        </HeadTagsService>
-      )}
-      {...(sitemap && sitemapDefaults)}
-    />,
-    <Route
-      key="BibliographyAfoRegisterSearch"
-      path="/bibliography/afo-register"
-      exact
-      render={(props): ReactNode => (
-        <HeadTagsService
-          title="Bibliography AfO-Register: eBL"
-          description="AfO-Register search in the electronic Babylonian Library (eBL)."
-        >
-          <Bibliography
-            bibliographyService={bibliographyService}
-            afoRegisterService={afoRegisterService}
-            fragmentService={fragmentService}
-            {...props}
-            activeTab={'afo-register'}
-          />
-        </HeadTagsService>
-      )}
-      {...(sitemap && sitemapDefaults)}
-    />,
-    <Redirect
-      from="/bibliography"
-      to="/bibliography/afo-register"
-      key="bibliography-root-redirect"
     />,
     <Route
       key="BibliographyNotFound"

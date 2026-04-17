@@ -1,4 +1,9 @@
 .Edition__navigation {
-  margin: 1em;
-  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  margin-top: 1.25rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid #edf0f5;
 }

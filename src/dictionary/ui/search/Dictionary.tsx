@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import { parse } from 'query-string'
 import { useLocation } from 'react-router-dom'
 
@@ -6,6 +6,7 @@ import AppContent from 'common/ui/AppContent'
 import WordSearchForm from './WordSearchForm'
 import WordSearch from './WordSearch'
 import SessionContext from 'auth/SessionContext'
+import InfoBanner from 'common/InfoBanner'
 
 import './Dictionary.css'
 import { SectionCrumb } from 'common/ui/Breadcrumbs'
@@ -18,10 +19,18 @@ export default function Dictionary({
   wordService: WordService
 }): JSX.Element {
   const location = useLocation()
-  const query = parse(location.search, { arrayFormat: 'none' })
+  const query = useMemo(
+    () => parse(location.search, { arrayFormat: 'none' }),
+    [location.search],
+  )
 
   return (
     <AppContent crumbs={[new SectionCrumb('Dictionary')]}>
+      <InfoBanner
+        title="Dictionary"
+        description="A flexible reference for Akkadian vocabulary with CDA and guide words."
+        learnMorePath="/about/dictionary"
+      />
       <SessionContext.Consumer>
         {(session: Session): JSX.Element =>
           session.isAllowedToReadWords() ? (

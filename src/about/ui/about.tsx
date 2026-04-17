@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react'
-import { Tabs, Tab } from 'react-bootstrap'
+import { Container, Row, Col, Nav } from 'react-bootstrap'
 import { useLocation } from 'react-router-dom'
 import { useHistory } from 'router/compat'
-import AppContent from 'common/ui/AppContent'
 import { TextCrumb } from 'common/ui/Breadcrumbs'
 import MarkupService from 'markup/application/MarkupService'
 import 'about/ui/about.sass'
@@ -10,10 +9,11 @@ import AboutProject from 'about/ui/project'
 import AboutFragmentarium from 'about/ui/fragmentarium'
 import AboutCorpus from 'about/ui/corpus'
 import AboutSigns from 'about/ui/signs'
-import AboutNews from 'about/ui/news'
 import AboutDictionary from 'about/ui/dictionary'
 import AboutBibliography from 'about/ui/bibliography'
+import AboutNews from 'about/ui/news'
 import _ from 'lodash'
+import Breadcrumbs from 'common/ui/Breadcrumbs'
 
 export const tabIds = [
   'project',
@@ -26,40 +26,74 @@ export const tabIds = [
 ] as const
 export type TabId = (typeof tabIds)[number]
 
-function getTabs({
+type TabConfig = {
+  id: TabId
+  title: string
+  icon: string
+}
+
+const tabConfig: TabConfig[] = [
+  { id: 'project', title: 'eBL Project', icon: '⚙' },
+  { id: 'library', title: 'Library', icon: '⌂' },
+  { id: 'corpus', title: 'Corpus', icon: '⊞' },
+  { id: 'signs', title: 'Signs', icon: '𒀀' },
+  { id: 'dictionary', title: 'Dictionary', icon: 'Ꞌ' },
+  { id: 'bibliography', title: 'Bibliography', icon: '※' },
+  { id: 'news', title: 'News', icon: '✉' },
+]
+
+const tabContent: Record<
+  Exclude<TabId, 'news'>,
+  (markupService: MarkupService) => React.ReactElement
+> = {
+  project: AboutProject,
+  library: AboutFragmentarium,
+  corpus: AboutCorpus,
+  signs: AboutSigns,
+  dictionary: AboutDictionary,
+  bibliography: AboutBibliography,
+}
+
+function getContent({
   markupService,
+  activeTab,
   activeSection,
 }: {
   markupService: MarkupService
+  activeTab: TabId
   activeSection?: string
-}): React.ReactElement[] {
-  return [
-    <Tab key="project" eventKey="project" title="eBL Project">
-      {AboutProject(markupService)}
-    </Tab>,
-    <Tab key="library" eventKey="library" title="Library">
-      {AboutFragmentarium(markupService)}
-    </Tab>,
-    <Tab key="corpus" eventKey="corpus" title="Corpus">
-      {AboutCorpus(markupService)}
-    </Tab>,
-    <Tab key="signs" eventKey="signs" title="Signs">
-      {AboutSigns(markupService)}
-    </Tab>,
-    <Tab key="dictionary" eventKey="dictionary" title="Dictionary">
-      {AboutDictionary(markupService)}
-    </Tab>,
-    <Tab key="bibliography" eventKey="bibliography" title="Bibliography">
-      {AboutBibliography(markupService)}
-    </Tab>,
-    <Tab key="news" eventKey="news" title="News">
-      {AboutNews({
-        activeNewsletterNumber: activeSection
-          ? parseInt(activeSection)
-          : undefined,
-      })}
-    </Tab>,
-  ]
+}): React.ReactElement {
+  if (activeTab === 'news') {
+    return (
+      <AboutNews
+        activeNewsletterNumber={
+          activeSection ? parseInt(activeSection) : undefined
+        }
+      />
+    )
+  }
+  const contentResolver = tabContent[activeTab] ?? tabContent.project
+  return contentResolver(markupService)
+}
+
+function AboutNavItem({
+  tab,
+  isActive,
+  onSelect,
+}: {
+  tab: TabConfig
+  isActive: boolean
+  onSelect: (tabId: TabId) => void
+}): JSX.Element {
+  return (
+    <Nav.Link
+      className={`about-nav__item ${isActive ? 'active' : ''}`}
+      onClick={() => onSelect(tab.id)}
+    >
+      <span className="about-nav__icon">{tab.icon}</span>
+      <span className="about-nav__title">{tab.title}</span>
+    </Nav.Link>
+  )
 }
 
 export default function About({
@@ -76,19 +110,17 @@ export default function About({
   const [selectedTab, setSelectedTab] = useState(activeTab)
 
   const handleSelect = (newTab: TabId) => {
-    if (newTab === activeTab) {
+    if (newTab === selectedTab) {
       return
     }
     history.push(`/about/${newTab}`)
     setSelectedTab(newTab)
+    window.scrollTo(0, 0)
   }
 
   useEffect(() => {
-    if (activeTab === selectedTab) {
-      return
-    }
     setSelectedTab(activeTab)
-  }, [selectedTab, activeTab])
+  }, [activeTab])
 
   useEffect(() => {
     const hash = location.hash
@@ -103,27 +135,53 @@ export default function About({
     }
   }, [location])
 
+  const currentTab = tabConfig.find((tab) => tab.id === selectedTab)
+
   return (
-    <AppContent
-      title="About"
-      crumbs={[
-        new TextCrumb('About'),
-        new TextCrumb(_.capitalize(selectedTab)),
-        ...(selectedTab === 'news'
-          ? [new TextCrumb(`Nr. ${activeSection}`)]
-          : []),
-      ]}
-    >
-      <Tabs
-        id="about"
-        defaultActiveKey={selectedTab}
-        activeKey={selectedTab}
-        onSelect={(newTab) => handleSelect(newTab as TabId)}
-        mountOnEnter
-        unmountOnExit
-      >
-        {getTabs({ activeSection, markupService })}
-      </Tabs>
-    </AppContent>
+    <>
+      <div className="about-header">
+        <Container>
+          <Breadcrumbs
+            className="about-header__breadcrumbs"
+            crumbs={[
+              new TextCrumb('About'),
+              new TextCrumb(_.capitalize(selectedTab)),
+            ]}
+          />
+          <h1 className="about-header__title">About</h1>
+        </Container>
+      </div>
+
+      <Container className="about-container">
+        <Row>
+          <Col md={3} className="about-sidebar">
+            <Nav className="flex-column about-nav">
+              {tabConfig.map((tab) => (
+                <AboutNavItem
+                  key={tab.id}
+                  tab={tab}
+                  isActive={selectedTab === tab.id}
+                  onSelect={handleSelect}
+                />
+              ))}
+            </Nav>
+          </Col>
+
+          <Col md={9} className="about-content">
+            <div className="about-content__header">
+              <span className="about-content__icon">{currentTab?.icon}</span>
+              <h2 className="about-content__title">{currentTab?.title}</h2>
+            </div>
+            <div className="about-content__body">
+              {getContent({
+                markupService,
+                activeTab: selectedTab,
+                activeSection,
+              })}
+            </div>
+          </Col>
+        </Row>
+      </Container>
+    </>
   )
 }

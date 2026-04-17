@@ -3,15 +3,27 @@
 .manuscript-popover
     &__popover
         @include ebl-font
+        border: 1px solid #dce2ea
+        border-radius: 8px
+        box-shadow: 0 6px 18px rgba(17, 35, 64, 0.16)
     &__header
         font-weight: bold
+        color: #1a3a6b
+        font-size: 0.8rem
+        text-transform: uppercase
+        letter-spacing: 0.05em
     &__old-sigla
         font-weight: normal
+        color: #6b7a90
         .type-abbreviation
             display: none
     &__body p
         margin-bottom: .5rem
+        color: #2d3748
+        line-height: 1.45
     &__provenance
         font-variant: small-caps
+        color: #1a5fa8
     &__references
         font-size: 80%
+        color: #5a6a7e

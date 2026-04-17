@@ -26,7 +26,6 @@ describe('ScopeEditor', () => {
       />,
     )
 
-    expect(screen.getByText('Permissions')).toBeInTheDocument()
     expect(
       screen.getByText(
         'Records with added permissions are visible only to users who have those permissions.',
