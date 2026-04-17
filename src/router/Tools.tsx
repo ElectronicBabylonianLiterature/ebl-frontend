@@ -211,12 +211,14 @@ export default function Tools({
     const hash = location.hash
     if (hash) {
       const id = hash.replace('#', '')
-      setTimeout(() => {
-        const element = document.getElementById(id)
-        if (element) {
-          element.scrollIntoView({ behavior: 'smooth' })
-        }
-      }, 400)
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          const element = document.getElementById(id)
+          if (element) {
+            element.scrollIntoView({ behavior: 'smooth' })
+          }
+        })
+      })
     }
   }, [location])
 

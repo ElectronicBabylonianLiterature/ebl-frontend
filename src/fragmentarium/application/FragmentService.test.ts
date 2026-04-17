@@ -351,6 +351,24 @@ describe('methods returning fragment', () => {
       await findService.find(number)
       expect(fragmentRepository.find).toHaveBeenCalledTimes(2)
     })
+
+    test('evicts expired cache entries', async () => {
+      jest.useFakeTimers()
+      const freshService = new FragmentService(
+        fragmentRepository,
+        imageRepository,
+        wordRepository,
+        bibliographyService,
+      )
+      fragmentRepository.find.mockClear()
+      fragmentRepository.find.mockReturnValue(Promise.resolve(fragment))
+      await freshService.find(number)
+      expect(fragmentRepository.find).toHaveBeenCalledTimes(1)
+      jest.advanceTimersByTime(61_000)
+      await freshService.find(number)
+      expect(fragmentRepository.find).toHaveBeenCalledTimes(2)
+      jest.useRealTimers()
+    })
   })
 
   describe('Reject with permission denied', () => {

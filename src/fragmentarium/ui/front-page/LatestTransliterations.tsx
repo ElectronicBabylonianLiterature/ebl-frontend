@@ -15,6 +15,7 @@ import { RenderFragmentLines } from 'dictionary/ui/search/FragmentLemmaLines'
 import './LatestTransliterations.css'
 
 const LATEST_COUNT = 5
+const LIBRARY_MAX_ITEMS = 20
 
 type LatestTransliterationsMode = 'homepage' | 'library'
 
@@ -177,7 +178,9 @@ function LatestAdditions({
   mode: LatestTransliterationsMode
 }): JSX.Element {
   const isHomepageMode = mode === 'homepage'
-  const items = isHomepageMode ? data.items.slice(0, LATEST_COUNT) : data.items
+  const items = isHomepageMode
+    ? data.items.slice(0, LATEST_COUNT)
+    : data.items.slice(0, LIBRARY_MAX_ITEMS)
   return (
     <section className="latest-additions">
       <div className="latest-additions__header">

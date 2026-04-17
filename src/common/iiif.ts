@@ -29,7 +29,7 @@ function thumbnailWidth(size: ThumbnailSize): number {
 }
 
 export function staticImagePath(fileName: string): string {
-  const legacyPath = `/images/${fileName}`
+  const legacyPath = `/images/${encodeURIComponent(fileName)}`
   const template = process.env.REACT_APP_IIIF_STATIC_IMAGE_PATH_TEMPLATE
   if (!iiifEnabled || !template || !rasterImage(fileName)) {
     return legacyPath

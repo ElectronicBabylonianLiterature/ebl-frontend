@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import './Timeline.sass'
 
 export interface TimelineItem {
@@ -16,6 +16,18 @@ interface TimelineProps {
 export default function Timeline({ items }: TimelineProps): JSX.Element {
   const [visibleItems, setVisibleItems] = useState<Set<string>>(new Set())
   const observerRef = useRef<IntersectionObserver | null>(null)
+  const itemRefs = useRef<Map<string, HTMLDivElement>>(new Map())
+
+  const setItemRef = useCallback(
+    (id: string) => (element: HTMLDivElement | null) => {
+      if (element) {
+        itemRefs.current.set(id, element)
+      } else {
+        itemRefs.current.delete(id)
+      }
+    },
+    [],
+  )
 
   useEffect(() => {
     observerRef.current = new IntersectionObserver(
@@ -32,11 +44,8 @@ export default function Timeline({ items }: TimelineProps): JSX.Element {
       },
     )
 
-    const items = document.querySelectorAll('.timeline-item')
-    items.forEach((item) => {
-      if (observerRef.current) {
-        observerRef.current.observe(item)
-      }
+    itemRefs.current.forEach((element) => {
+      observerRef.current?.observe(element)
     })
 
     return () => {
@@ -61,6 +70,7 @@ export default function Timeline({ items }: TimelineProps): JSX.Element {
           <div
             key={item.id}
             id={item.id}
+            ref={setItemRef(item.id)}
             className={`timeline-item ${positionClass} ${visibilityClass}`}
           >
             <div className="timeline-marker">

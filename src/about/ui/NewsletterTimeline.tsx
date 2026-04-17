@@ -18,7 +18,7 @@ export default function NewsletterTimeline({
   activeNewsletter,
   onSelectNewsletter,
 }: NewsletterTimelineProps): JSX.Element {
-  const activeRef = useRef<HTMLDivElement>(null)
+  const activeRef = useRef<HTMLButtonElement>(null)
 
   useEffect(() => {
     if (activeRef.current) {
@@ -43,12 +43,13 @@ export default function NewsletterTimeline({
         {newsletters.map((newsletter) => {
           const isActive = newsletter.number === activeNewsletter.number
           return (
-            <div
+            <button
               key={newsletter.number}
               ref={isActive ? activeRef : null}
               className={`newsletter-tree-item ${
                 isActive ? 'newsletter-tree-item--active' : ''
               }`}
+              aria-current={isActive ? 'true' : undefined}
               onClick={() => onSelectNewsletter(newsletter)}
             >
               <div className="newsletter-tree-item__branch">
@@ -65,7 +66,7 @@ export default function NewsletterTimeline({
                   })}
                 </div>
               </div>
-            </div>
+            </button>
           )
         })}
       </div>

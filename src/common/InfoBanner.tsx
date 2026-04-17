@@ -1,6 +1,5 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { Alert } from 'react-bootstrap'
 import './InfoBanner.sass'
 
 interface InfoBannerProps {
@@ -15,7 +14,11 @@ export default function InfoBanner({
   learnMorePath,
 }: InfoBannerProps): JSX.Element {
   return (
-    <Alert variant="info" className="info-banner">
+    <div
+      role="region"
+      aria-label={title}
+      className="alert alert-info info-banner"
+    >
       <div className="info-banner__content">
         <h5 className="info-banner__title">{title}</h5>
         <p className="info-banner__description">{description}</p>
@@ -23,6 +26,6 @@ export default function InfoBanner({
           Learn more →
         </Link>
       </div>
-    </Alert>
+    </div>
   )
 }

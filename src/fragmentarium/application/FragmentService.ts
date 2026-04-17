@@ -208,8 +208,11 @@ export class FragmentService {
     const cacheKey = this.findCacheKey(number, lines, excludeLines)
 
     const cached = this.findCache.get(cacheKey)
-    if (cached && cached.expires > Date.now()) {
-      return Bluebird.resolve(cached.data)
+    if (cached) {
+      if (cached.expires > Date.now()) {
+        return Bluebird.resolve(cached.data)
+      }
+      this.findCache.delete(cacheKey)
     }
 
     const inFlight = this.findCacheRequests.get(cacheKey)
@@ -221,6 +224,7 @@ export class FragmentService {
       .find(number, lines, excludeLines)
       .then((fragment: Fragment) => this.injectReferences(fragment))
       .then((fragment: Fragment) => {
+        this.pruneExpiredFindCache()
         this.findCache.set(cacheKey, {
           data: fragment,
           expires: Date.now() + FIND_CACHE_TTL_MS,
@@ -595,6 +599,15 @@ export class FragmentService {
     const prefix = `${number}|`
     for (const key of this.findCache.keys()) {
       if (key.startsWith(prefix)) {
+        this.findCache.delete(key)
+      }
+    }
+  }
+
+  private pruneExpiredFindCache(): void {
+    const now = Date.now()
+    for (const [key, entry] of this.findCache) {
+      if (entry.expires <= now) {
         this.findCache.delete(key)
       }
     }
