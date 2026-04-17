@@ -133,5 +133,84 @@ describe('About component', () => {
 
     const projectTab = screen.getByRole('button', { name: '⚙ eBL Project' })
     fireEvent.click(projectTab)
+
+    expect(screen.getByRole('button', { name: '⚙ eBL Project' })).toHaveClass(
+      'active',
+    )
+  })
+
+  test('navigates to different tab when clicking inactive tab', async () => {
+    await renderAbout(['/about/project'], 'project')
+
+    const corpusTab = screen.getByRole('button', { name: '⊞ Corpus' })
+    fireEvent.click(corpusTab)
+
+    expect(screen.getByRole('button', { name: '⊞ Corpus' })).toHaveClass(
+      'active',
+    )
+  })
+
+  test('scrolls to hash target when URL contains hash', async () => {
+    const scrollIntoView = jest.fn()
+    const element = document.createElement('div')
+    element.id = 'test-section'
+    element.scrollIntoView = scrollIntoView
+    document.body.appendChild(element)
+
+    jest.useFakeTimers()
+
+    render(
+      <MemoryRouter initialEntries={['/about/project#test-section']}>
+        <About markupService={markupServiceMock} activeTab="project" />
+      </MemoryRouter>,
+    )
+
+    jest.advanceTimersByTime(400)
+
+    expect(scrollIntoView).toHaveBeenCalledWith({ behavior: 'smooth' })
+
+    document.body.removeChild(element)
+    jest.useRealTimers()
+  })
+
+  test('renders news tab with activeSection', async () => {
+    render(
+      <MemoryRouter initialEntries={['/about/news/1']}>
+        <About
+          markupService={markupServiceMock}
+          activeTab="news"
+          activeSection="1"
+        />
+      </MemoryRouter>,
+    )
+
+    await waitFor(() => {
+      expect(screen.getByRole('button', { name: /News/ })).toHaveClass('active')
+    })
+  })
+
+  test('renders news tab without activeSection', async () => {
+    render(
+      <MemoryRouter initialEntries={['/about/news']}>
+        <About markupService={markupServiceMock} activeTab="news" />
+      </MemoryRouter>,
+    )
+
+    await waitFor(() => {
+      expect(screen.getByRole('button', { name: /News/ })).toHaveClass('active')
+    })
+  })
+
+  test('does not scroll when hash target element is missing', async () => {
+    jest.useFakeTimers()
+
+    render(
+      <MemoryRouter initialEntries={['/about/project#nonexistent']}>
+        <About markupService={markupServiceMock} activeTab="project" />
+      </MemoryRouter>,
+    )
+
+    jest.advanceTimersByTime(400)
+    jest.useRealTimers()
   })
 })

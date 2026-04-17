@@ -1,5 +1,11 @@
 import React from 'react'
-import { render, screen, waitFor, within } from '@testing-library/react'
+import {
+  fireEvent,
+  render,
+  screen,
+  waitFor,
+  within,
+} from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 import Promise from 'bluebird'
 import SessionContext from 'auth/SessionContext'
@@ -111,6 +117,34 @@ describe('Searching bibliography and AfO-Register', () => {
     )
     const queryInput = await screen.findByLabelText('Bibliography-Query')
     expect(queryInput).toHaveValue('TestQuery')
+  })
+
+  it('renders afo-register tab', async () => {
+    afoRegisterService.search.mockReturnValue(Promise.resolve([]))
+    await renderBibliography(
+      '/bibliography/afo-register',
+      'afo-register',
+      false,
+    )
+    const tabs = screen.getAllByRole('tab')
+    const afoTab = tabs.find((tab) => tab.textContent === 'AfO-Register')
+    expect(afoTab).toHaveAttribute('aria-selected', 'true')
+  })
+
+  it('renders create button when user has write access', async () => {
+    session.isAllowedToWriteBibliography = (): boolean => true
+    await renderBibliography('/bibliography/references', 'references')
+    const createLink = screen.getByRole('link', { name: /Create/ })
+    expect(createLink).toHaveAttribute(
+      'href',
+      '/bibliography/references/new-reference',
+    )
+  })
+
+  it('switches tab when clicking a different tab', async () => {
+    await renderBibliography('/bibliography/references', 'references')
+    const afoTab = screen.getByRole('tab', { name: 'AfO-Register' })
+    fireEvent.click(afoTab)
   })
 })
 
