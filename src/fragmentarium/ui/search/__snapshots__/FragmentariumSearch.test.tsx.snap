@@ -55,8 +55,9 @@ exports[`Search Shows suggestion when entering wrong number format 1`] = `
         />
       </header>
       <div
-        class="fade info-banner alert alert-info show"
-        role="alert"
+        aria-label="Library"
+        class="alert alert-info info-banner"
+        role="region"
       >
         <div
           class="info-banner__content"

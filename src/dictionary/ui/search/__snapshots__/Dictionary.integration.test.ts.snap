@@ -422,8 +422,9 @@ exports[`Meaning 1`] = `
                   />
                 </header>
                 <div
-                  class="fade info-banner alert alert-info show"
-                  role="alert"
+                  aria-label="Dictionary"
+                  class="alert alert-info info-banner"
+                  role="region"
                 >
                   <div
                     class="info-banner__content"
@@ -1560,8 +1561,9 @@ exports[`Root 1`] = `
                   />
                 </header>
                 <div
-                  class="fade info-banner alert alert-info show"
-                  role="alert"
+                  aria-label="Dictionary"
+                  class="alert alert-info info-banner"
+                  role="region"
                 >
                   <div
                     class="info-banner__content"
@@ -2698,8 +2700,9 @@ exports[`Vowel class 1`] = `
                   />
                 </header>
                 <div
-                  class="fade info-banner alert alert-info show"
-                  role="alert"
+                  aria-label="Dictionary"
+                  class="alert alert-info info-banner"
+                  role="region"
                 >
                   <div
                     class="info-banner__content"
@@ -3836,8 +3839,9 @@ exports[`Word 1`] = `
                   />
                 </header>
                 <div
-                  class="fade info-banner alert alert-info show"
-                  role="alert"
+                  aria-label="Dictionary"
+                  class="alert alert-info info-banner"
+                  role="region"
                 >
                   <div
                     class="info-banner__content"
@@ -4974,8 +4978,9 @@ exports[`renders dictionary search page 1`] = `
                   />
                 </header>
                 <div
-                  class="fade info-banner alert alert-info show"
-                  role="alert"
+                  aria-label="Dictionary"
+                  class="alert alert-info info-banner"
+                  role="region"
                 >
                   <div
                     class="info-banner__content"

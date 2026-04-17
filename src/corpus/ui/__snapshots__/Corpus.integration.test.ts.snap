@@ -226,8 +226,9 @@ exports[`With session 1`] = `
           />
         </header>
         <div
-          class="fade info-banner alert alert-info show"
-          role="alert"
+          aria-label="Corpus"
+          class="alert alert-info info-banner"
+          role="region"
         >
           <div
             class="info-banner__content"
@@ -1104,8 +1105,9 @@ exports[`Without session 1`] = `
           />
         </header>
         <div
-          class="fade info-banner alert alert-info show"
-          role="alert"
+          aria-label="Corpus"
+          class="alert alert-info info-banner"
+          role="region"
         >
           <div
             class="info-banner__content"
