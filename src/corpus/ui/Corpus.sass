@@ -1,4 +1,12 @@
 .Corpus
+  &__tabs-header
+    display: flex
+    justify-content: flex-end
+    margin-bottom: 0.5rem
+
+  &__about-link
+    margin-top: 0.1rem
+
   &__layout
     gap: 0.75rem
 
@@ -118,6 +126,27 @@ hr
 
 @media (max-width: 767px)
   .Corpus
+    &__layout
+      flex-wrap: nowrap
+
+      > .col-md-7
+        flex: 0 0 64%
+        max-width: 64%
+
+      > .col-md-5
+        flex: 0 0 36%
+        max-width: 36%
+
+      > [class*='col-']
+        min-width: 0
+
+    &__image-col
+      display: flex
+      align-items: flex-start
+
+      img
+        min-width: 100%
+
     &__tabs
       padding: 0.75rem 0.65rem 0.15rem
 

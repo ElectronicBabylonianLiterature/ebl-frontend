@@ -1,5 +1,5 @@
 import React from 'react'
-import { render, screen } from '@testing-library/react'
+import { render, screen, waitFor } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 import Promise from 'bluebird'
 import SessionContext from 'auth/SessionContext'
@@ -47,7 +47,8 @@ describe('Searching for word', () => {
       </MemoryRouter>,
     )
 
-    await screen.findAllByText('Signs')
+    await screen.findByLabelText('Query')
+    await waitForSignsRequestsToSettle()
     const callsAfterInitialRender = signService.search.mock.calls.length
 
     view.rerender(
@@ -64,11 +65,11 @@ describe('Searching for word', () => {
 
 it('Displays a message if user is not logged in', async () => {
   session = new MemorySession([])
-  await renderSigns('/signs')
+  await renderSigns('/signs', false)
   expect(screen.getByText('Please log in to search for Signs.')).toBeVisible()
 })
 
-async function renderSigns(path: string): Promise<void> {
+async function renderSigns(path: string, hasAccess = true): Promise<void> {
   render(
     <MemoryRouter initialEntries={[path]}>
       <SessionContext.Provider value={session}>
@@ -76,5 +77,14 @@ async function renderSigns(path: string): Promise<void> {
       </SessionContext.Provider>
     </MemoryRouter>,
   )
-  await screen.findAllByText('Signs')
+  if (hasAccess) {
+    await screen.findByLabelText('Query')
+    await waitForSignsRequestsToSettle()
+  }
+}
+
+async function waitForSignsRequestsToSettle(): Promise<void> {
+  await waitFor(() => {
+    expect(screen.queryAllByText(/loading\.\.\./i)).toHaveLength(0)
+  })
 }

@@ -78,13 +78,13 @@ describe('Searching for word', () => {
 
 it('Displays a message if user is not logged in', async () => {
   session = new MemorySession([])
-  await renderDictionary('/dictionary')
+  await renderDictionary('/dictionary', false)
   expect(
     screen.getByText('Please log in to browse the Dictionary.'),
   ).toBeVisible()
 })
 
-async function renderDictionary(path: string): Promise<void> {
+async function renderDictionary(path: string, hasAccess = true): Promise<void> {
   render(
     <MemoryRouter initialEntries={[path]}>
       <SessionContext.Provider value={session}>
@@ -92,5 +92,7 @@ async function renderDictionary(path: string): Promise<void> {
       </SessionContext.Provider>
     </MemoryRouter>,
   )
-  await screen.findAllByText('Dictionary')
+  if (hasAccess) {
+    await screen.findByLabelText('Word')
+  }
 }

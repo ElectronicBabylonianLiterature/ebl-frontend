@@ -10,6 +10,21 @@
   padding-bottom: 1.5em;
 }
 
+.Library-search__search-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+
+.Library-search__search-header .SearchForm {
+  flex: 1;
+  min-width: 0;
+}
+
+.Library-search__about-link {
+  margin-top: 0.35rem;
+}
+
 .Library-search .nav-tabs {
   border-bottom: 2px solid #dce2ea;
   margin-bottom: 1.25rem;

@@ -9,6 +9,8 @@ import WordService from 'dictionary/application/WordService'
 import BibliographyService from 'bibliography/application/BibliographyService'
 import AfoRegisterService from 'afo-register/application/AfoRegisterService'
 import FragmentService from 'fragmentarium/application/FragmentService'
+import BibliographyViewer from 'bibliography/ui/BibliographyViewer'
+import BibliographyEditor from 'bibliography/ui/BibliographyEditor'
 import Tools, { tabIds } from 'router/Tools'
 import _ from 'lodash'
 
@@ -87,6 +89,59 @@ export default function ToolsRoutes({
         {...(sitemap && sitemapDefaults)}
       />
     )),
+    <Route
+      key="tools-bibliography-editor-new"
+      path="/tools/references/new-reference"
+      exact
+      render={(props): ReactNode => (
+        <HeadTagsService
+          title="Create Bibliography entry: eBL"
+          description="Create bibliography entry in the electronic Babylonian Library (eBL)."
+        >
+          <BibliographyEditor
+            bibliographyService={bibliographyService}
+            {...props}
+            create={true}
+            match={{
+              ...props.match,
+              params: { id: '' },
+            }}
+          />
+        </HeadTagsService>
+      )}
+    />,
+    <Route
+      key="tools-bibliography-viewer"
+      path="/tools/references/:id"
+      exact
+      render={(props): ReactNode => (
+        <HeadTagsService
+          title="Bibliography entry: eBL"
+          description="Bibliography entry at the electronic Library (eBL)."
+        >
+          <BibliographyViewer
+            bibliographyService={bibliographyService}
+            {...props}
+          />
+        </HeadTagsService>
+      )}
+    />,
+    <Route
+      key="tools-bibliography-editor"
+      path="/tools/references/:id/edit"
+      exact
+      render={(props): ReactNode => (
+        <HeadTagsService
+          title="Edit Bibliography entry: eBL"
+          description="Edit bibliography entry at the electronic Library (eBL)."
+        >
+          <BibliographyEditor
+            bibliographyService={bibliographyService}
+            {...props}
+          />
+        </HeadTagsService>
+      )}
+    />,
     <Route
       key="ToolsNotFound"
       path="/tools/*"

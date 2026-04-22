@@ -5,7 +5,6 @@ import { Container, Row, Col, Tab, Tabs } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import ApiImage from 'common/ui/ApiImage'
 import AppContent from 'common/ui/AppContent'
-import InfoBanner from 'common/InfoBanner'
 import withData from 'http/withData'
 import SessionContext from 'auth/SessionContext'
 import InlineMarkdown from 'common/ui/InlineMarkdown'
@@ -14,6 +13,7 @@ import { SectionCrumb } from 'common/ui/Breadcrumbs'
 import Promise from 'bluebird'
 import createGenreLink from './createGenreLink'
 import { useHistory } from 'router/compat'
+import AboutInlineLink from 'common/ui/AboutInlineLink'
 import './Corpus.sass'
 
 type SelectCallback = (eventKey: string | null) => void
@@ -165,15 +165,17 @@ function Corpus({
 
   return (
     <AppContent crumbs={[new SectionCrumb('Corpus')]}>
-      <InfoBanner
-        title="Corpus"
-        description="The best available text reconstructions, constantly updated with new discoveries and comprehensive translations."
-        learnMorePath="/about/corpus"
-      />
       <Container fluid className="Corpus">
         <Row className="Corpus__layout">
           <Col md={7}>
             <div className="Corpus__tabs">
+              <div className="Corpus__tabs-header">
+                <AboutInlineLink
+                  to="/about/corpus"
+                  label="Corpus"
+                  className="Corpus__about-link"
+                />
+              </div>
               <Tabs activeKey={genre} onSelect={openTab} id="CorpusTab">
                 {genres.map(({ genre, name, categories }) => (
                   <Tab eventKey={genre} title={name} key={genre}>

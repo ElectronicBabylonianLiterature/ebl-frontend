@@ -2,16 +2,20 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import { DateTime } from 'luxon'
 import withData from 'http/withData'
-import FragmentService from 'fragmentarium/application/FragmentService'
+import FragmentService, {
+  ThumbnailBlob,
+} from 'fragmentarium/application/FragmentService'
 import DossiersService from 'dossiers/application/DossiersService'
 import { QueryResult, QueryItem } from 'query/QueryResult'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import { RecordEntry } from 'fragmentarium/domain/RecordEntry'
-import FragmentLink from 'fragmentarium/ui/FragmentLink'
+import FragmentLink, { createFragmentUrl } from 'fragmentarium/ui/FragmentLink'
 import DateDisplay from 'chronology/ui/DateDisplay'
 import ReferenceList from 'bibliography/ui/ReferenceList'
 import FragmentDossierRecordsDisplay from 'dossiers/ui/DossiersDisplay'
 import { RenderFragmentLines } from 'dictionary/ui/search/FragmentLemmaLines'
+import { ThumbnailImage } from 'common/ui/BlobImage'
+import { ProjectList } from 'fragmentarium/ui/info/ResearchProjects'
 import './LatestTransliterations.css'
 
 const LATEST_COUNT = 5
@@ -34,15 +38,37 @@ function formatRecordDate(entry: RecordEntry): string {
   }
 }
 
+const FragmentThumbnail = withData<
+  { fragment: Fragment },
+  { fragmentService: FragmentService },
+  ThumbnailBlob
+>(
+  ({ data, fragment }) => {
+    return data.blob ? (
+      <ThumbnailImage
+        photo={data.blob}
+        alt={`Preview of ${fragment.number}`}
+        url={createFragmentUrl(fragment.number)}
+      />
+    ) : (
+      <></>
+    )
+  },
+  ({ fragment, fragmentService }) =>
+    fragmentService.findThumbnail(fragment, 'small'),
+)
+
 function FragmentCard({
   fragment,
   queryItem,
   mode,
+  fragmentService,
   dossiersService,
 }: {
   fragment: Fragment
   queryItem: QueryItem
   mode: LatestTransliterationsMode
+  fragmentService: FragmentService
   dossiersService: DossiersService
 }): JSX.Element {
   const period = fragment.script?.period?.name
@@ -64,6 +90,23 @@ function FragmentCard({
         <p className="latest-card__collection">{fragment.collection}</p>
       )}
       {description && <p className="latest-card__description">{description}</p>}
+      {isLibraryMode && (fragment.hasPhoto || fragment.projects.length > 0) && (
+        <div className="latest-card__media">
+          {fragment.hasPhoto && (
+            <div className="latest-card__thumbnail">
+              <FragmentThumbnail
+                fragment={fragment}
+                fragmentService={fragmentService}
+              />
+            </div>
+          )}
+          {fragment.projects.length > 0 && (
+            <div className="latest-card__projects">
+              <ProjectList projects={fragment.projects} />
+            </div>
+          )}
+        </div>
+      )}
       {isLibraryMode && queryItem.matchingLines.length > 0 && (
         <div className="latest-card__lines">
           <RenderFragmentLines
@@ -150,11 +193,12 @@ const FragmentCardLoader = withData<
   },
   Fragment
 >(
-  ({ data: fragment, mode, dossiersService, queryItem }) => (
+  ({ data: fragment, mode, dossiersService, queryItem, fragmentService }) => (
     <FragmentCard
       fragment={fragment}
       queryItem={queryItem}
       mode={mode}
+      fragmentService={fragmentService}
       dossiersService={dossiersService}
     />
   ),

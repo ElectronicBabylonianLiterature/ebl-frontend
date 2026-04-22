@@ -141,6 +141,43 @@
   overflow: hidden;
 }
 
+.latest-card__media {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid #edf0f5;
+}
+
+.latest-card__thumbnail {
+  flex-shrink: 0;
+}
+
+.latest-card__projects {
+  flex: 1;
+  min-width: 0;
+}
+
+.latest-card__projects .ResultList {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 0.35rem;
+  margin: 0;
+}
+
+.latest-card__projects .ResultList li {
+  padding: 0;
+}
+
+.latest-card__projects .ExternalResources__image {
+  max-height: 1.9rem;
+  width: auto;
+  display: block;
+}
+
 .latest-card__lines {
   margin-top: 0.5rem;
   padding-top: 0.5rem;
@@ -193,7 +230,7 @@
   list-style: none;
 }
 
-.latest-card__genres li {
+.latest-card .latest-card__genres li {
   font-size: 0.69rem;
   color: #2d5a9e;
   background: #eef3fb;

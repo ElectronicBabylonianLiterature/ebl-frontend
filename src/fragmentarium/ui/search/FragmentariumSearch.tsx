@@ -1,7 +1,7 @@
 import React from 'react'
 import _ from 'lodash'
 import AppContent from 'common/ui/AppContent'
-import InfoBanner from 'common/InfoBanner'
+import AboutInlineLink from 'common/ui/AboutInlineLink'
 import SessionContext from 'auth/SessionContext'
 import SearchForm, {
   SearchFormProps,
@@ -63,11 +63,6 @@ function FragmentariumSearch({
 
   return (
     <AppContent crumbs={[new SectionCrumb('Library'), new TextCrumb('Search')]}>
-      <InfoBanner
-        title="Library"
-        description="Searchable transliterations of thousands of cuneiform fragments, with over 1,200 joins discovered by the eBL team."
-        learnMorePath="/about/fragmentarium"
-      />
       <SessionContext.Consumer>
         {(session: Session): JSX.Element =>
           session.isAllowedToReadFragments() ? (
@@ -75,15 +70,22 @@ function FragmentariumSearch({
               <header className="Library-search__header">
                 <Row>
                   <Col className="mx-auto">
-                    <SearchForm
-                      fragmentSearchService={fragmentSearchService}
-                      fragmentService={fragmentService}
-                      dossiersService={dossiersService}
-                      fragmentQuery={fragmentQuery}
-                      wordService={wordService}
-                      bibliographyService={bibliographyService}
-                      showAdvancedSearch={true}
-                    />
+                    <div className="Library-search__search-header">
+                      <SearchForm
+                        fragmentSearchService={fragmentSearchService}
+                        fragmentService={fragmentService}
+                        dossiersService={dossiersService}
+                        fragmentQuery={fragmentQuery}
+                        wordService={wordService}
+                        bibliographyService={bibliographyService}
+                        showAdvancedSearch={true}
+                      />
+                      <AboutInlineLink
+                        to="/about/fragmentarium"
+                        label="Library"
+                        className="Library-search__about-link"
+                      />
+                    </div>
                   </Col>
                 </Row>
               </header>

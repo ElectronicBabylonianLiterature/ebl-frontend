@@ -4,14 +4,14 @@ import { useLocation } from 'react-router-dom'
 
 import AppContent from 'common/ui/AppContent'
 import SessionContext from 'auth/SessionContext'
-import InfoBanner from 'common/InfoBanner'
+import AboutInlineLink from 'common/ui/AboutInlineLink'
 import _ from 'lodash'
 
-import { SectionCrumb } from 'common/ui/Breadcrumbs'
 import { Session } from 'auth/Session'
 import SignsSearchForm from 'signs/ui/search/SignsSearchForm'
 import SignsSearch from 'signs/ui/search/SignsSearch'
 import SignService from 'signs/application/SignService'
+import 'signs/ui/search/Signs.sass'
 
 type Props = {
   signService: SignService
@@ -37,21 +37,25 @@ export default function Signs({ signService }: Props): JSX.Element {
   )
 
   return (
-    <AppContent crumbs={[new SectionCrumb('Signs')]}>
-      <InfoBanner
-        title="Signs"
-        description="A comprehensive reference tool for cuneiform script with palaeographic resources."
-        learnMorePath="/about/signs"
-      />
+    <AppContent>
       <SessionContext.Consumer>
         {(session: Session): JSX.Element =>
           session.isAllowedToReadWords() ? (
             <>
-              <SignsSearchForm
-                sign={(query.sign as string) || undefined}
-                signQuery={query}
-                key={location.search}
-              />
+              <div className="signs__search-header">
+                <div className="signs__search-header-form">
+                  <SignsSearchForm
+                    sign={(query.sign as string) || undefined}
+                    signQuery={query}
+                    key={location.search}
+                  />
+                </div>
+                <AboutInlineLink
+                  to="/about/signs"
+                  label="Signs"
+                  className="signs__about-link"
+                />
+              </div>
               <SignsSearch signQuery={signQuery} signService={signService} />
             </>
           ) : (

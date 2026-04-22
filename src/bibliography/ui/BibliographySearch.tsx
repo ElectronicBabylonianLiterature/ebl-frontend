@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import { Parser } from 'html-to-react'
 import _ from 'lodash'
 import { Row, Col } from 'react-bootstrap'
@@ -10,8 +10,10 @@ import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 import BibliographyService from 'bibliography/application/BibliographyService'
 import Citation from 'bibliography/domain/Citation'
 import Reference from 'bibliography/domain/Reference'
+import { referencesEntryRoute } from 'bibliography/ui/referencesRouteContext'
 
 function BibliographySearch({ data }: { data: readonly BibliographyEntry[] }) {
+  const location = useLocation()
   const parser = Parser()
 
   return (
@@ -25,9 +27,7 @@ function BibliographySearch({ data }: { data: readonly BibliographyEntry[] }) {
             <Row className="BibliographySearch__row">
               <Col md={2} className="BibliographySearch__citation-col">
                 <Link
-                  to={`/bibliography/references/${encodeURIComponent(
-                    entry.id,
-                  )}`}
+                  to={referencesEntryRoute(location.pathname, entry.id)}
                   className="BibliographySearch__citation"
                 >
                   <InlineMarkdown source={citation.getMarkdown()} />

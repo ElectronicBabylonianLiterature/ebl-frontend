@@ -28,6 +28,10 @@ const dossiersService = new (DossiersService as jest.Mock<
 >)()
 const wordService = new (WordService as jest.Mock<jest.Mocked<WordService>>)()
 
+beforeEach(() => {
+  fragmentService.findThumbnail.mockReturnValue(Promise.resolve({ blob: null }))
+})
+
 const setup = async (
   mode: 'homepage' | 'library' = 'library',
   numberOfFragments = 2,
@@ -129,6 +133,7 @@ test('loads matching lines like master in library mode', async () => {
     }),
   )
   fragmentService.find.mockResolvedValueOnce(fragment)
+  fragmentService.findThumbnail.mockReturnValue(Promise.resolve({ blob: null }))
 
   render(
     <MemoryRouter>

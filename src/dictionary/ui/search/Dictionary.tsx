@@ -6,10 +6,9 @@ import AppContent from 'common/ui/AppContent'
 import WordSearchForm from './WordSearchForm'
 import WordSearch from './WordSearch'
 import SessionContext from 'auth/SessionContext'
-import InfoBanner from 'common/InfoBanner'
+import AboutInlineLink from 'common/ui/AboutInlineLink'
 
 import './Dictionary.css'
-import { SectionCrumb } from 'common/ui/Breadcrumbs'
 import { Session } from 'auth/Session'
 import WordService from 'dictionary/application/WordService'
 
@@ -25,18 +24,20 @@ export default function Dictionary({
   )
 
   return (
-    <AppContent crumbs={[new SectionCrumb('Dictionary')]}>
-      <InfoBanner
-        title="Dictionary"
-        description="A flexible reference for Akkadian vocabulary with CDA and guide words."
-        learnMorePath="/about/dictionary"
-      />
+    <AppContent>
       <SessionContext.Consumer>
         {(session: Session): JSX.Element =>
           session.isAllowedToReadWords() ? (
             <>
-              <div className="Dictionary-search">
-                <WordSearchForm query={query} />
+              <div className="Dictionary-search-header">
+                <div className="Dictionary-search">
+                  <WordSearchForm query={query} />
+                </div>
+                <AboutInlineLink
+                  to="/about/dictionary"
+                  label="Dictionary"
+                  className="Dictionary-search-header__about"
+                />
               </div>
               <WordSearch query={query} wordService={wordService} />
             </>

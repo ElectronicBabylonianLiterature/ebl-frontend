@@ -3,6 +3,22 @@
   max-width: 32em;
 }
 
+.Bibliography__search-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.Bibliography__search-header .Bibliography__search {
+  flex: 1;
+  min-width: 0;
+}
+
+.Bibliography__about-link {
+  margin-top: 0.15rem;
+}
+
 .AfoRegister__search {
   margin: 0 auto 2em;
   max-width: 38em;

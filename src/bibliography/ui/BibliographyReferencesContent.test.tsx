@@ -44,12 +44,14 @@ function renderContent(path = '/tools/references'): void {
 }
 
 describe('BibliographyReferencesContent', () => {
-  it('renders info banner, introduction, and search when user has access', () => {
+  it('renders introduction, inline about link, and search when user has access', () => {
     session.isAllowedToReadBibliography.mockReturnValue(true)
     renderContent()
 
-    expect(screen.getByText(/Bibliography/)).toBeInTheDocument()
     expect(screen.getByText(/comprehensive collection of/i)).toBeInTheDocument()
+    expect(
+      screen.getByRole('link', { name: 'Learn more about Bibliography' }),
+    ).toHaveAttribute('href', '/about/bibliography')
     expect(screen.getByTestId('search-form')).toBeInTheDocument()
     expect(screen.getByTestId('search-results')).toBeInTheDocument()
   })

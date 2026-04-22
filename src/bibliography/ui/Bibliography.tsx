@@ -6,7 +6,7 @@ import AppContent from 'common/ui/AppContent'
 import BibliographySearchForm from './BibliographySearchForm'
 import BibliographySearch from './BibliographySearch'
 import SessionContext from 'auth/SessionContext'
-import InfoBanner from 'common/InfoBanner'
+import AboutInlineLink from 'common/ui/AboutInlineLink'
 import './Bibliography.css'
 import { TextCrumb } from 'common/ui/Breadcrumbs'
 import { Session } from 'auth/Session'
@@ -17,13 +17,17 @@ import AfoRegisterService from 'afo-register/application/AfoRegisterService'
 import AfoRegisterSearchPage from 'afo-register/ui/AfoRegisterSearchPage'
 import { Markdown } from 'common/ui/Markdown'
 import FragmentService from 'fragmentarium/application/FragmentService'
+import { referencesNewRoute } from 'bibliography/ui/referencesRouteContext'
 
-function CreateButton({ session }: { session: Session }): JSX.Element {
+function CreateButton({
+  session,
+  pathname,
+}: {
+  session: Session
+  pathname: string
+}): JSX.Element {
   return session.isAllowedToWriteBibliography() ? (
-    <Link
-      to="/bibliography/references/new-reference"
-      className="btn btn-outline-primary"
-    >
+    <Link to={referencesNewRoute(pathname)} className="btn btn-outline-primary">
       <i className="fas fa-plus-circle" /> Create
     </Link>
   ) : (
@@ -61,14 +65,16 @@ function BibliographyReferences({
   const query = getReferencesQueryFromLocation(location.search)
   return (
     <>
-      <InfoBanner
-        title="Bibliography"
-        description="A complete and constantly updated bibliography of cuneiform publications with over 11,497 entries."
-        learnMorePath="/about/bibliography"
-      />
       <BibliographyReferencesIntroduction />
-      <div className="Bibliography__search">
-        <BibliographySearchForm query={query} />
+      <div className="Bibliography__search-header">
+        <div className="Bibliography__search">
+          <BibliographySearchForm query={query} />
+        </div>
+        <AboutInlineLink
+          to="/about/bibliography"
+          label="Bibliography"
+          className="Bibliography__about-link"
+        />
       </div>
       <BibliographySearch
         query={query}
@@ -91,6 +97,7 @@ export default function Bibliography({
   activeTab: 'references' | 'afo-register'
 }): JSX.Element {
   const history = useHistory()
+  const location = useLocation()
   return (
     <SessionContext.Consumer>
       {(session: Session): JSX.Element => (
@@ -104,7 +111,9 @@ export default function Bibliography({
             ),
           ]}
           actions={
-            activeTab === 'references' && <CreateButton session={session} />
+            activeTab === 'references' && (
+              <CreateButton session={session} pathname={location.pathname} />
+            )
           }
         >
           {session.isAllowedToReadBibliography() ? (

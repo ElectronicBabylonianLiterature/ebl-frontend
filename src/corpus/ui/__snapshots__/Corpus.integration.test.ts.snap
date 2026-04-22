@@ -226,32 +226,6 @@ exports[`With session 1`] = `
           />
         </header>
         <div
-          aria-label="Corpus"
-          class="alert alert-info info-banner"
-          role="region"
-        >
-          <div
-            class="info-banner__content"
-          >
-            <h5
-              class="info-banner__title"
-            >
-              Corpus
-            </h5>
-            <p
-              class="info-banner__description"
-            >
-              The best available text reconstructions, constantly updated with new discoveries and comprehensive translations.
-            </p>
-            <a
-              class="info-banner__link"
-              href="/about/corpus"
-            >
-              Learn more →
-            </a>
-          </div>
-        </div>
-        <div
           class="Corpus container-fluid"
         >
           <div
@@ -263,6 +237,26 @@ exports[`With session 1`] = `
               <div
                 class="Corpus__tabs"
               >
+                <div
+                  class="Corpus__tabs-header"
+                >
+                  <a
+                    aria-label="Learn more about Corpus"
+                    class="AboutInlineLink Corpus__about-link"
+                    href="/about/corpus"
+                    title="Learn more about Corpus"
+                  >
+                    <i
+                      aria-hidden="true"
+                      class="fas fa-info-circle"
+                    />
+                    <span
+                      class="visually-hidden"
+                    >
+                      Learn more about Corpus
+                    </span>
+                  </a>
+                </div>
                 <ul
                   class="nav nav-tabs"
                   id="CorpusTab"
@@ -1105,32 +1099,6 @@ exports[`Without session 1`] = `
           />
         </header>
         <div
-          aria-label="Corpus"
-          class="alert alert-info info-banner"
-          role="region"
-        >
-          <div
-            class="info-banner__content"
-          >
-            <h5
-              class="info-banner__title"
-            >
-              Corpus
-            </h5>
-            <p
-              class="info-banner__description"
-            >
-              The best available text reconstructions, constantly updated with new discoveries and comprehensive translations.
-            </p>
-            <a
-              class="info-banner__link"
-              href="/about/corpus"
-            >
-              Learn more →
-            </a>
-          </div>
-        </div>
-        <div
           class="Corpus container-fluid"
         >
           <div
@@ -1142,6 +1110,26 @@ exports[`Without session 1`] = `
               <div
                 class="Corpus__tabs"
               >
+                <div
+                  class="Corpus__tabs-header"
+                >
+                  <a
+                    aria-label="Learn more about Corpus"
+                    class="AboutInlineLink Corpus__about-link"
+                    href="/about/corpus"
+                    title="Learn more about Corpus"
+                  >
+                    <i
+                      aria-hidden="true"
+                      class="fas fa-info-circle"
+                    />
+                    <span
+                      class="visually-hidden"
+                    >
+                      Learn more about Corpus
+                    </span>
+                  </a>
+                </div>
                 <ul
                   class="nav nav-tabs"
                   id="CorpusTab"

@@ -5,7 +5,7 @@ import _ from 'lodash'
 import BibliographySearchForm from './BibliographySearchForm'
 import BibliographySearch from './BibliographySearch'
 import SessionContext from 'auth/SessionContext'
-import InfoBanner from 'common/InfoBanner'
+import AboutInlineLink from 'common/ui/AboutInlineLink'
 import { Session } from 'auth/Session'
 import BibliographyService from 'bibliography/application/BibliographyService'
 import { Markdown } from 'common/ui/Markdown'
@@ -41,14 +41,16 @@ export default function BibliographyReferencesContent({
       {(session: Session): JSX.Element =>
         session.isAllowedToReadBibliography() ? (
           <>
-            <InfoBanner
-              title="Bibliography"
-              description="A complete and constantly updated bibliography of cuneiform publications with over 11,497 entries."
-              learnMorePath="/about/bibliography"
-            />
             <BibliographyReferencesIntroduction />
-            <div className="Bibliography__search">
-              <BibliographySearchForm query={query} />
+            <div className="Bibliography__search-header">
+              <div className="Bibliography__search">
+                <BibliographySearchForm query={query} />
+              </div>
+              <AboutInlineLink
+                to="/about/bibliography"
+                label="Bibliography"
+                className="Bibliography__about-link"
+              />
             </div>
             <BibliographySearch
               query={query}
