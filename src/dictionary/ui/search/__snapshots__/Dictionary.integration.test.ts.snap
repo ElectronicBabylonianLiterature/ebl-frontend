@@ -384,401 +384,358 @@ exports[`Meaning 1`] = `
               <div
                 class="main__content"
               >
-                <header
-                  class="main__header"
-                >
-                  <nav
-                    aria-label="breadcrumb"
-                    class="main__breadcrumbs"
-                  >
-                    <ol
-                      class="breadcrumb"
-                    >
-                      <li
-                        class="breadcrumb-item"
-                      >
-                        <a
-                          href="/"
-                        >
-                          eBL
-                        </a>
-                      </li>
-                      <li
-                        aria-current="page"
-                        class="breadcrumb-item active"
-                      >
-                        Dictionary
-                      </li>
-                    </ol>
-                  </nav>
-                  <h2
-                    class="main__heading"
-                  >
-                    Dictionary
-                  </h2>
-                  <div
-                    class="main__toolbar btn-toolbar"
-                    role="toolbar"
-                  />
-                </header>
                 <div
-                  aria-label="Dictionary"
-                  class="alert alert-info info-banner"
-                  role="region"
+                  class="Dictionary-search-header"
                 >
                   <div
-                    class="info-banner__content"
+                    class="Dictionary-search"
                   >
-                    <h5
-                      class="info-banner__title"
+                    <form
+                      class=""
                     >
-                      Dictionary
-                    </h5>
-                    <p
-                      class="info-banner__description"
-                    >
-                      A flexible reference for Akkadian vocabulary with CDA and guide words.
-                    </p>
-                    <a
-                      class="info-banner__link"
-                      href="/about/dictionary"
-                    >
-                      Learn more →
-                    </a>
-                  </div>
-                </div>
-                <div
-                  class="Dictionary-search"
-                >
-                  <form
-                    class=""
-                  >
-                    <div
-                      class="row"
-                    >
-                      <label
-                        class="form-label col-form-label col-sm-3"
-                        for="word"
-                      >
-                        Word
-                      </label>
                       <div
-                        class="col-sm-1"
+                        class="row"
                       >
-                        <i
-                          class="fas fa-info-circle"
-                        />
-                      </div>
-                      <div
-                        class="col-sm-6"
-                      >
-                        <input
-                          class="form-control"
-                          id="word"
-                          placeholder="word"
-                          type="text"
-                          value=""
-                        />
-                      </div>
-                      <div
-                        class="col-sm-2"
-                      >
-                        <button
-                          class="btn btn-primary"
-                          type="submit"
+                        <label
+                          class="form-label col-form-label col-sm-3"
+                          for="word"
                         >
-                          Query
-                        </button>
-                      </div>
-                    </div>
-                    <div
-                      class="row"
-                    >
-                      <label
-                        class="form-label col-form-label col-sm-3"
-                        for="meaning"
-                      >
-                        Meaning
-                      </label>
-                      <div
-                        class="col-sm-1"
-                      >
-                        <i
-                          class="fas fa-info-circle"
-                        />
-                      </div>
-                      <div
-                        class="col-sm-6"
-                      >
-                        <input
-                          class="form-control"
-                          id="meaning"
-                          placeholder="meaning"
-                          type="text"
-                          value="some meaning"
-                        />
-                      </div>
-                    </div>
-                    <div
-                      class="row"
-                    >
-                      <label
-                        class="form-label col-form-label col-sm-3"
-                        for="root"
-                      >
-                        Root
-                      </label>
-                      <div
-                        class="col-sm-1"
-                      >
-                        <i
-                          class="fas fa-info-circle"
-                        />
-                      </div>
-                      <div
-                        class="col-sm-6"
-                      >
-                        <input
-                          class="form-control"
-                          id="root"
-                          placeholder="root"
-                          type="text"
-                          value=""
-                        />
-                      </div>
-                    </div>
-                    <div
-                      class="row"
-                    >
-                      <label
-                        class="form-label col-form-label col-sm-3"
-                        for="vowelClass"
-                      >
-                        Vowel class
-                      </label>
-                      <div
-                        class="col-sm-1"
-                      >
-                        <i
-                          class="fas fa-info-circle"
-                        />
-                      </div>
-                      <div
-                        class="col-sm-6"
-                      >
-                        <div>
-                          <div
-                            style="margin-bottom: 0.5rem;"
+                          Word
+                        </label>
+                        <div
+                          class="col-sm-1"
+                        >
+                          <i
+                            class="fas fa-info-circle"
+                          />
+                        </div>
+                        <div
+                          class="col-sm-6"
+                        >
+                          <input
+                            class="form-control"
+                            id="word"
+                            placeholder="word"
+                            type="text"
+                            value=""
+                          />
+                        </div>
+                        <div
+                          class="col-sm-2"
+                        >
+                          <button
+                            class="btn btn-primary"
+                            type="submit"
                           >
-                            <div
-                              class="form-check form-check-inline"
-                            >
-                              <input
-                                class="form-check-input"
-                                id="vowel-a/a"
-                                type="checkbox"
-                              />
-                              <label
-                                class="form-check-label"
-                                for="vowel-a/a"
-                                title=""
-                              >
-                                a/a
-                              </label>
-                            </div>
-                            <div
-                              class="form-check form-check-inline"
-                            >
-                              <input
-                                class="form-check-input"
-                                id="vowel-a/i"
-                                type="checkbox"
-                              />
-                              <label
-                                class="form-check-label"
-                                for="vowel-a/i"
-                                title=""
-                              >
-                                a/i
-                              </label>
-                            </div>
-                            <div
-                              class="form-check form-check-inline"
-                            >
-                              <input
-                                class="form-check-input"
-                                id="vowel-a/u"
-                                type="checkbox"
-                              />
-                              <label
-                                class="form-check-label"
-                                for="vowel-a/u"
-                                title=""
-                              >
-                                a/u
-                              </label>
-                            </div>
-                            <div
-                              class="form-check form-check-inline"
-                            >
-                              <input
-                                class="form-check-input"
-                                id="vowel-e/e"
-                                type="checkbox"
-                              />
-                              <label
-                                class="form-check-label"
-                                for="vowel-e/e"
-                                title=""
-                              >
-                                e/e
-                              </label>
-                            </div>
-                          </div>
+                            Query
+                          </button>
+                        </div>
+                      </div>
+                      <div
+                        class="row"
+                      >
+                        <label
+                          class="form-label col-form-label col-sm-3"
+                          for="meaning"
+                        >
+                          Meaning
+                        </label>
+                        <div
+                          class="col-sm-1"
+                        >
+                          <i
+                            class="fas fa-info-circle"
+                          />
+                        </div>
+                        <div
+                          class="col-sm-6"
+                        >
+                          <input
+                            class="form-control"
+                            id="meaning"
+                            placeholder="meaning"
+                            type="text"
+                            value="some meaning"
+                          />
+                        </div>
+                      </div>
+                      <div
+                        class="row"
+                      >
+                        <label
+                          class="form-label col-form-label col-sm-3"
+                          for="root"
+                        >
+                          Root
+                        </label>
+                        <div
+                          class="col-sm-1"
+                        >
+                          <i
+                            class="fas fa-info-circle"
+                          />
+                        </div>
+                        <div
+                          class="col-sm-6"
+                        >
+                          <input
+                            class="form-control"
+                            id="root"
+                            placeholder="root"
+                            type="text"
+                            value=""
+                          />
+                        </div>
+                      </div>
+                      <div
+                        class="row"
+                      >
+                        <label
+                          class="form-label col-form-label col-sm-3"
+                          for="vowelClass"
+                        >
+                          Vowel class
+                        </label>
+                        <div
+                          class="col-sm-1"
+                        >
+                          <i
+                            class="fas fa-info-circle"
+                          />
+                        </div>
+                        <div
+                          class="col-sm-6"
+                        >
                           <div>
                             <div
-                              class="form-check form-check-inline"
+                              style="margin-bottom: 0.5rem;"
+                            >
+                              <div
+                                class="form-check form-check-inline"
+                              >
+                                <input
+                                  class="form-check-input"
+                                  id="vowel-a/a"
+                                  type="checkbox"
+                                />
+                                <label
+                                  class="form-check-label"
+                                  for="vowel-a/a"
+                                  title=""
+                                >
+                                  a/a
+                                </label>
+                              </div>
+                              <div
+                                class="form-check form-check-inline"
+                              >
+                                <input
+                                  class="form-check-input"
+                                  id="vowel-a/i"
+                                  type="checkbox"
+                                />
+                                <label
+                                  class="form-check-label"
+                                  for="vowel-a/i"
+                                  title=""
+                                >
+                                  a/i
+                                </label>
+                              </div>
+                              <div
+                                class="form-check form-check-inline"
+                              >
+                                <input
+                                  class="form-check-input"
+                                  id="vowel-a/u"
+                                  type="checkbox"
+                                />
+                                <label
+                                  class="form-check-label"
+                                  for="vowel-a/u"
+                                  title=""
+                                >
+                                  a/u
+                                </label>
+                              </div>
+                              <div
+                                class="form-check form-check-inline"
+                              >
+                                <input
+                                  class="form-check-input"
+                                  id="vowel-e/e"
+                                  type="checkbox"
+                                />
+                                <label
+                                  class="form-check-label"
+                                  for="vowel-e/e"
+                                  title=""
+                                >
+                                  e/e
+                                </label>
+                              </div>
+                            </div>
+                            <div>
+                              <div
+                                class="form-check form-check-inline"
+                              >
+                                <input
+                                  class="form-check-input"
+                                  id="vowel-e/u"
+                                  type="checkbox"
+                                />
+                                <label
+                                  class="form-check-label"
+                                  for="vowel-e/u"
+                                  title=""
+                                >
+                                  e/u
+                                </label>
+                              </div>
+                              <div
+                                class="form-check form-check-inline"
+                              >
+                                <input
+                                  class="form-check-input"
+                                  id="vowel-i/i"
+                                  type="checkbox"
+                                />
+                                <label
+                                  class="form-check-label"
+                                  for="vowel-i/i"
+                                  title=""
+                                >
+                                  i/i
+                                </label>
+                              </div>
+                              <div
+                                class="form-check form-check-inline"
+                              >
+                                <input
+                                  class="form-check-input"
+                                  id="vowel-u/u"
+                                  type="checkbox"
+                                />
+                                <label
+                                  class="form-check-label"
+                                  for="vowel-u/u"
+                                  title=""
+                                >
+                                  u/u
+                                </label>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <hr />
+                      <div
+                        class="row"
+                      >
+                        <label
+                          class="form-label col-form-label col-sm-3"
+                          for="origin"
+                        >
+                          Dictionary source
+                        </label>
+                        <div
+                          class="col-sm-1"
+                        >
+                          <i
+                            class="fas fa-info-circle"
+                          />
+                        </div>
+                        <div
+                          class="col-sm-8"
+                        >
+                          <div>
+                            <div
+                              class="form-check form-switch"
+                              style="font-weight: bold; margin-right: 1rem;"
                             >
                               <input
                                 class="form-check-input"
-                                id="vowel-e/u"
+                                id="origin-all"
                                 type="checkbox"
                               />
                               <label
                                 class="form-check-label"
-                                for="vowel-e/u"
+                                for="origin-all"
                                 title=""
                               >
-                                e/u
+                                All sources
                               </label>
                             </div>
                             <div
-                              class="form-check form-check-inline"
+                              class="form-check form-check-inline form-switch"
                             >
                               <input
+                                checked=""
                                 class="form-check-input"
-                                id="vowel-i/i"
+                                id="origin-CDA"
                                 type="checkbox"
                               />
                               <label
                                 class="form-check-label"
-                                for="vowel-i/i"
+                                for="origin-CDA"
                                 title=""
                               >
-                                i/i
+                                Concise Dictionary of Akkadian
                               </label>
                             </div>
                             <div
-                              class="form-check form-check-inline"
+                              class="form-check form-check-inline form-switch"
                             >
                               <input
                                 class="form-check-input"
-                                id="vowel-u/u"
+                                id="origin-AFO_REGISTER"
                                 type="checkbox"
                               />
                               <label
                                 class="form-check-label"
-                                for="vowel-u/u"
+                                for="origin-AFO_REGISTER"
                                 title=""
                               >
-                                u/u
+                                AfO Register
+                              </label>
+                            </div>
+                            <div
+                              class="form-check form-check-inline form-switch"
+                            >
+                              <input
+                                class="form-check-input"
+                                id="origin-SAD"
+                                type="checkbox"
+                              />
+                              <label
+                                class="form-check-label"
+                                for="origin-SAD"
+                                title=""
+                              >
+                                Supplements to the Akkadian Dictionaries
                               </label>
                             </div>
                           </div>
                         </div>
                       </div>
-                    </div>
-                    <hr />
-                    <div
-                      class="row"
+                    </form>
+                  </div>
+                  <a
+                    aria-label="Learn more about Dictionary"
+                    class="AboutInlineLink Dictionary-search-header__about"
+                    href="/about/dictionary"
+                    title="Learn more about Dictionary"
+                  >
+                    <i
+                      aria-hidden="true"
+                      class="fas fa-info-circle"
+                    />
+                    <span
+                      class="visually-hidden"
                     >
-                      <label
-                        class="form-label col-form-label col-sm-3"
-                        for="origin"
-                      >
-                        Dictionary source
-                      </label>
-                      <div
-                        class="col-sm-1"
-                      >
-                        <i
-                          class="fas fa-info-circle"
-                        />
-                      </div>
-                      <div
-                        class="col-sm-8"
-                      >
-                        <div>
-                          <div
-                            class="form-check form-switch"
-                            style="font-weight: bold; margin-right: 1rem;"
-                          >
-                            <input
-                              class="form-check-input"
-                              id="origin-all"
-                              type="checkbox"
-                            />
-                            <label
-                              class="form-check-label"
-                              for="origin-all"
-                              title=""
-                            >
-                              All sources
-                            </label>
-                          </div>
-                          <div
-                            class="form-check form-check-inline form-switch"
-                          >
-                            <input
-                              checked=""
-                              class="form-check-input"
-                              id="origin-CDA"
-                              type="checkbox"
-                            />
-                            <label
-                              class="form-check-label"
-                              for="origin-CDA"
-                              title=""
-                            >
-                              Concise Dictionary of Akkadian
-                            </label>
-                          </div>
-                          <div
-                            class="form-check form-check-inline form-switch"
-                          >
-                            <input
-                              class="form-check-input"
-                              id="origin-AFO_REGISTER"
-                              type="checkbox"
-                            />
-                            <label
-                              class="form-check-label"
-                              for="origin-AFO_REGISTER"
-                              title=""
-                            >
-                              AfO Register
-                            </label>
-                          </div>
-                          <div
-                            class="form-check form-check-inline form-switch"
-                          >
-                            <input
-                              class="form-check-input"
-                              id="origin-SAD"
-                              type="checkbox"
-                            />
-                            <label
-                              class="form-check-label"
-                              for="origin-SAD"
-                              title=""
-                            >
-                              Supplements to the Akkadian Dictionaries
-                            </label>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </form>
+                      Learn more about Dictionary
+                    </span>
+                  </a>
                 </div>
                 <ul
                   class="WordSearch-results"
@@ -1523,401 +1480,358 @@ exports[`Root 1`] = `
               <div
                 class="main__content"
               >
-                <header
-                  class="main__header"
-                >
-                  <nav
-                    aria-label="breadcrumb"
-                    class="main__breadcrumbs"
-                  >
-                    <ol
-                      class="breadcrumb"
-                    >
-                      <li
-                        class="breadcrumb-item"
-                      >
-                        <a
-                          href="/"
-                        >
-                          eBL
-                        </a>
-                      </li>
-                      <li
-                        aria-current="page"
-                        class="breadcrumb-item active"
-                      >
-                        Dictionary
-                      </li>
-                    </ol>
-                  </nav>
-                  <h2
-                    class="main__heading"
-                  >
-                    Dictionary
-                  </h2>
-                  <div
-                    class="main__toolbar btn-toolbar"
-                    role="toolbar"
-                  />
-                </header>
                 <div
-                  aria-label="Dictionary"
-                  class="alert alert-info info-banner"
-                  role="region"
+                  class="Dictionary-search-header"
                 >
                   <div
-                    class="info-banner__content"
+                    class="Dictionary-search"
                   >
-                    <h5
-                      class="info-banner__title"
+                    <form
+                      class=""
                     >
-                      Dictionary
-                    </h5>
-                    <p
-                      class="info-banner__description"
-                    >
-                      A flexible reference for Akkadian vocabulary with CDA and guide words.
-                    </p>
-                    <a
-                      class="info-banner__link"
-                      href="/about/dictionary"
-                    >
-                      Learn more →
-                    </a>
-                  </div>
-                </div>
-                <div
-                  class="Dictionary-search"
-                >
-                  <form
-                    class=""
-                  >
-                    <div
-                      class="row"
-                    >
-                      <label
-                        class="form-label col-form-label col-sm-3"
-                        for="word"
-                      >
-                        Word
-                      </label>
                       <div
-                        class="col-sm-1"
+                        class="row"
                       >
-                        <i
-                          class="fas fa-info-circle"
-                        />
-                      </div>
-                      <div
-                        class="col-sm-6"
-                      >
-                        <input
-                          class="form-control"
-                          id="word"
-                          placeholder="word"
-                          type="text"
-                          value=""
-                        />
-                      </div>
-                      <div
-                        class="col-sm-2"
-                      >
-                        <button
-                          class="btn btn-primary"
-                          type="submit"
+                        <label
+                          class="form-label col-form-label col-sm-3"
+                          for="word"
                         >
-                          Query
-                        </button>
-                      </div>
-                    </div>
-                    <div
-                      class="row"
-                    >
-                      <label
-                        class="form-label col-form-label col-sm-3"
-                        for="meaning"
-                      >
-                        Meaning
-                      </label>
-                      <div
-                        class="col-sm-1"
-                      >
-                        <i
-                          class="fas fa-info-circle"
-                        />
-                      </div>
-                      <div
-                        class="col-sm-6"
-                      >
-                        <input
-                          class="form-control"
-                          id="meaning"
-                          placeholder="meaning"
-                          type="text"
-                          value=""
-                        />
-                      </div>
-                    </div>
-                    <div
-                      class="row"
-                    >
-                      <label
-                        class="form-label col-form-label col-sm-3"
-                        for="root"
-                      >
-                        Root
-                      </label>
-                      <div
-                        class="col-sm-1"
-                      >
-                        <i
-                          class="fas fa-info-circle"
-                        />
-                      </div>
-                      <div
-                        class="col-sm-6"
-                      >
-                        <input
-                          class="form-control"
-                          id="root"
-                          placeholder="root"
-                          type="text"
-                          value="lmm"
-                        />
-                      </div>
-                    </div>
-                    <div
-                      class="row"
-                    >
-                      <label
-                        class="form-label col-form-label col-sm-3"
-                        for="vowelClass"
-                      >
-                        Vowel class
-                      </label>
-                      <div
-                        class="col-sm-1"
-                      >
-                        <i
-                          class="fas fa-info-circle"
-                        />
-                      </div>
-                      <div
-                        class="col-sm-6"
-                      >
-                        <div>
-                          <div
-                            style="margin-bottom: 0.5rem;"
+                          Word
+                        </label>
+                        <div
+                          class="col-sm-1"
+                        >
+                          <i
+                            class="fas fa-info-circle"
+                          />
+                        </div>
+                        <div
+                          class="col-sm-6"
+                        >
+                          <input
+                            class="form-control"
+                            id="word"
+                            placeholder="word"
+                            type="text"
+                            value=""
+                          />
+                        </div>
+                        <div
+                          class="col-sm-2"
+                        >
+                          <button
+                            class="btn btn-primary"
+                            type="submit"
                           >
-                            <div
-                              class="form-check form-check-inline"
-                            >
-                              <input
-                                class="form-check-input"
-                                id="vowel-a/a"
-                                type="checkbox"
-                              />
-                              <label
-                                class="form-check-label"
-                                for="vowel-a/a"
-                                title=""
-                              >
-                                a/a
-                              </label>
-                            </div>
-                            <div
-                              class="form-check form-check-inline"
-                            >
-                              <input
-                                class="form-check-input"
-                                id="vowel-a/i"
-                                type="checkbox"
-                              />
-                              <label
-                                class="form-check-label"
-                                for="vowel-a/i"
-                                title=""
-                              >
-                                a/i
-                              </label>
-                            </div>
-                            <div
-                              class="form-check form-check-inline"
-                            >
-                              <input
-                                class="form-check-input"
-                                id="vowel-a/u"
-                                type="checkbox"
-                              />
-                              <label
-                                class="form-check-label"
-                                for="vowel-a/u"
-                                title=""
-                              >
-                                a/u
-                              </label>
-                            </div>
-                            <div
-                              class="form-check form-check-inline"
-                            >
-                              <input
-                                class="form-check-input"
-                                id="vowel-e/e"
-                                type="checkbox"
-                              />
-                              <label
-                                class="form-check-label"
-                                for="vowel-e/e"
-                                title=""
-                              >
-                                e/e
-                              </label>
-                            </div>
-                          </div>
+                            Query
+                          </button>
+                        </div>
+                      </div>
+                      <div
+                        class="row"
+                      >
+                        <label
+                          class="form-label col-form-label col-sm-3"
+                          for="meaning"
+                        >
+                          Meaning
+                        </label>
+                        <div
+                          class="col-sm-1"
+                        >
+                          <i
+                            class="fas fa-info-circle"
+                          />
+                        </div>
+                        <div
+                          class="col-sm-6"
+                        >
+                          <input
+                            class="form-control"
+                            id="meaning"
+                            placeholder="meaning"
+                            type="text"
+                            value=""
+                          />
+                        </div>
+                      </div>
+                      <div
+                        class="row"
+                      >
+                        <label
+                          class="form-label col-form-label col-sm-3"
+                          for="root"
+                        >
+                          Root
+                        </label>
+                        <div
+                          class="col-sm-1"
+                        >
+                          <i
+                            class="fas fa-info-circle"
+                          />
+                        </div>
+                        <div
+                          class="col-sm-6"
+                        >
+                          <input
+                            class="form-control"
+                            id="root"
+                            placeholder="root"
+                            type="text"
+                            value="lmm"
+                          />
+                        </div>
+                      </div>
+                      <div
+                        class="row"
+                      >
+                        <label
+                          class="form-label col-form-label col-sm-3"
+                          for="vowelClass"
+                        >
+                          Vowel class
+                        </label>
+                        <div
+                          class="col-sm-1"
+                        >
+                          <i
+                            class="fas fa-info-circle"
+                          />
+                        </div>
+                        <div
+                          class="col-sm-6"
+                        >
                           <div>
                             <div
-                              class="form-check form-check-inline"
+                              style="margin-bottom: 0.5rem;"
+                            >
+                              <div
+                                class="form-check form-check-inline"
+                              >
+                                <input
+                                  class="form-check-input"
+                                  id="vowel-a/a"
+                                  type="checkbox"
+                                />
+                                <label
+                                  class="form-check-label"
+                                  for="vowel-a/a"
+                                  title=""
+                                >
+                                  a/a
+                                </label>
+                              </div>
+                              <div
+                                class="form-check form-check-inline"
+                              >
+                                <input
+                                  class="form-check-input"
+                                  id="vowel-a/i"
+                                  type="checkbox"
+                                />
+                                <label
+                                  class="form-check-label"
+                                  for="vowel-a/i"
+                                  title=""
+                                >
+                                  a/i
+                                </label>
+                              </div>
+                              <div
+                                class="form-check form-check-inline"
+                              >
+                                <input
+                                  class="form-check-input"
+                                  id="vowel-a/u"
+                                  type="checkbox"
+                                />
+                                <label
+                                  class="form-check-label"
+                                  for="vowel-a/u"
+                                  title=""
+                                >
+                                  a/u
+                                </label>
+                              </div>
+                              <div
+                                class="form-check form-check-inline"
+                              >
+                                <input
+                                  class="form-check-input"
+                                  id="vowel-e/e"
+                                  type="checkbox"
+                                />
+                                <label
+                                  class="form-check-label"
+                                  for="vowel-e/e"
+                                  title=""
+                                >
+                                  e/e
+                                </label>
+                              </div>
+                            </div>
+                            <div>
+                              <div
+                                class="form-check form-check-inline"
+                              >
+                                <input
+                                  class="form-check-input"
+                                  id="vowel-e/u"
+                                  type="checkbox"
+                                />
+                                <label
+                                  class="form-check-label"
+                                  for="vowel-e/u"
+                                  title=""
+                                >
+                                  e/u
+                                </label>
+                              </div>
+                              <div
+                                class="form-check form-check-inline"
+                              >
+                                <input
+                                  class="form-check-input"
+                                  id="vowel-i/i"
+                                  type="checkbox"
+                                />
+                                <label
+                                  class="form-check-label"
+                                  for="vowel-i/i"
+                                  title=""
+                                >
+                                  i/i
+                                </label>
+                              </div>
+                              <div
+                                class="form-check form-check-inline"
+                              >
+                                <input
+                                  class="form-check-input"
+                                  id="vowel-u/u"
+                                  type="checkbox"
+                                />
+                                <label
+                                  class="form-check-label"
+                                  for="vowel-u/u"
+                                  title=""
+                                >
+                                  u/u
+                                </label>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <hr />
+                      <div
+                        class="row"
+                      >
+                        <label
+                          class="form-label col-form-label col-sm-3"
+                          for="origin"
+                        >
+                          Dictionary source
+                        </label>
+                        <div
+                          class="col-sm-1"
+                        >
+                          <i
+                            class="fas fa-info-circle"
+                          />
+                        </div>
+                        <div
+                          class="col-sm-8"
+                        >
+                          <div>
+                            <div
+                              class="form-check form-switch"
+                              style="font-weight: bold; margin-right: 1rem;"
                             >
                               <input
                                 class="form-check-input"
-                                id="vowel-e/u"
+                                id="origin-all"
                                 type="checkbox"
                               />
                               <label
                                 class="form-check-label"
-                                for="vowel-e/u"
+                                for="origin-all"
                                 title=""
                               >
-                                e/u
+                                All sources
                               </label>
                             </div>
                             <div
-                              class="form-check form-check-inline"
+                              class="form-check form-check-inline form-switch"
                             >
                               <input
+                                checked=""
                                 class="form-check-input"
-                                id="vowel-i/i"
+                                id="origin-CDA"
                                 type="checkbox"
                               />
                               <label
                                 class="form-check-label"
-                                for="vowel-i/i"
+                                for="origin-CDA"
                                 title=""
                               >
-                                i/i
+                                Concise Dictionary of Akkadian
                               </label>
                             </div>
                             <div
-                              class="form-check form-check-inline"
+                              class="form-check form-check-inline form-switch"
                             >
                               <input
                                 class="form-check-input"
-                                id="vowel-u/u"
+                                id="origin-AFO_REGISTER"
                                 type="checkbox"
                               />
                               <label
                                 class="form-check-label"
-                                for="vowel-u/u"
+                                for="origin-AFO_REGISTER"
                                 title=""
                               >
-                                u/u
+                                AfO Register
+                              </label>
+                            </div>
+                            <div
+                              class="form-check form-check-inline form-switch"
+                            >
+                              <input
+                                class="form-check-input"
+                                id="origin-SAD"
+                                type="checkbox"
+                              />
+                              <label
+                                class="form-check-label"
+                                for="origin-SAD"
+                                title=""
+                              >
+                                Supplements to the Akkadian Dictionaries
                               </label>
                             </div>
                           </div>
                         </div>
                       </div>
-                    </div>
-                    <hr />
-                    <div
-                      class="row"
+                    </form>
+                  </div>
+                  <a
+                    aria-label="Learn more about Dictionary"
+                    class="AboutInlineLink Dictionary-search-header__about"
+                    href="/about/dictionary"
+                    title="Learn more about Dictionary"
+                  >
+                    <i
+                      aria-hidden="true"
+                      class="fas fa-info-circle"
+                    />
+                    <span
+                      class="visually-hidden"
                     >
-                      <label
-                        class="form-label col-form-label col-sm-3"
-                        for="origin"
-                      >
-                        Dictionary source
-                      </label>
-                      <div
-                        class="col-sm-1"
-                      >
-                        <i
-                          class="fas fa-info-circle"
-                        />
-                      </div>
-                      <div
-                        class="col-sm-8"
-                      >
-                        <div>
-                          <div
-                            class="form-check form-switch"
-                            style="font-weight: bold; margin-right: 1rem;"
-                          >
-                            <input
-                              class="form-check-input"
-                              id="origin-all"
-                              type="checkbox"
-                            />
-                            <label
-                              class="form-check-label"
-                              for="origin-all"
-                              title=""
-                            >
-                              All sources
-                            </label>
-                          </div>
-                          <div
-                            class="form-check form-check-inline form-switch"
-                          >
-                            <input
-                              checked=""
-                              class="form-check-input"
-                              id="origin-CDA"
-                              type="checkbox"
-                            />
-                            <label
-                              class="form-check-label"
-                              for="origin-CDA"
-                              title=""
-                            >
-                              Concise Dictionary of Akkadian
-                            </label>
-                          </div>
-                          <div
-                            class="form-check form-check-inline form-switch"
-                          >
-                            <input
-                              class="form-check-input"
-                              id="origin-AFO_REGISTER"
-                              type="checkbox"
-                            />
-                            <label
-                              class="form-check-label"
-                              for="origin-AFO_REGISTER"
-                              title=""
-                            >
-                              AfO Register
-                            </label>
-                          </div>
-                          <div
-                            class="form-check form-check-inline form-switch"
-                          >
-                            <input
-                              class="form-check-input"
-                              id="origin-SAD"
-                              type="checkbox"
-                            />
-                            <label
-                              class="form-check-label"
-                              for="origin-SAD"
-                              title=""
-                            >
-                              Supplements to the Akkadian Dictionaries
-                            </label>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </form>
+                      Learn more about Dictionary
+                    </span>
+                  </a>
                 </div>
                 <ul
                   class="WordSearch-results"
@@ -2662,401 +2576,358 @@ exports[`Vowel class 1`] = `
               <div
                 class="main__content"
               >
-                <header
-                  class="main__header"
-                >
-                  <nav
-                    aria-label="breadcrumb"
-                    class="main__breadcrumbs"
-                  >
-                    <ol
-                      class="breadcrumb"
-                    >
-                      <li
-                        class="breadcrumb-item"
-                      >
-                        <a
-                          href="/"
-                        >
-                          eBL
-                        </a>
-                      </li>
-                      <li
-                        aria-current="page"
-                        class="breadcrumb-item active"
-                      >
-                        Dictionary
-                      </li>
-                    </ol>
-                  </nav>
-                  <h2
-                    class="main__heading"
-                  >
-                    Dictionary
-                  </h2>
-                  <div
-                    class="main__toolbar btn-toolbar"
-                    role="toolbar"
-                  />
-                </header>
                 <div
-                  aria-label="Dictionary"
-                  class="alert alert-info info-banner"
-                  role="region"
+                  class="Dictionary-search-header"
                 >
                   <div
-                    class="info-banner__content"
+                    class="Dictionary-search"
                   >
-                    <h5
-                      class="info-banner__title"
+                    <form
+                      class=""
                     >
-                      Dictionary
-                    </h5>
-                    <p
-                      class="info-banner__description"
-                    >
-                      A flexible reference for Akkadian vocabulary with CDA and guide words.
-                    </p>
-                    <a
-                      class="info-banner__link"
-                      href="/about/dictionary"
-                    >
-                      Learn more →
-                    </a>
-                  </div>
-                </div>
-                <div
-                  class="Dictionary-search"
-                >
-                  <form
-                    class=""
-                  >
-                    <div
-                      class="row"
-                    >
-                      <label
-                        class="form-label col-form-label col-sm-3"
-                        for="word"
-                      >
-                        Word
-                      </label>
                       <div
-                        class="col-sm-1"
+                        class="row"
                       >
-                        <i
-                          class="fas fa-info-circle"
-                        />
-                      </div>
-                      <div
-                        class="col-sm-6"
-                      >
-                        <input
-                          class="form-control"
-                          id="word"
-                          placeholder="word"
-                          type="text"
-                          value=""
-                        />
-                      </div>
-                      <div
-                        class="col-sm-2"
-                      >
-                        <button
-                          class="btn btn-primary"
-                          type="submit"
+                        <label
+                          class="form-label col-form-label col-sm-3"
+                          for="word"
                         >
-                          Query
-                        </button>
-                      </div>
-                    </div>
-                    <div
-                      class="row"
-                    >
-                      <label
-                        class="form-label col-form-label col-sm-3"
-                        for="meaning"
-                      >
-                        Meaning
-                      </label>
-                      <div
-                        class="col-sm-1"
-                      >
-                        <i
-                          class="fas fa-info-circle"
-                        />
-                      </div>
-                      <div
-                        class="col-sm-6"
-                      >
-                        <input
-                          class="form-control"
-                          id="meaning"
-                          placeholder="meaning"
-                          type="text"
-                          value=""
-                        />
-                      </div>
-                    </div>
-                    <div
-                      class="row"
-                    >
-                      <label
-                        class="form-label col-form-label col-sm-3"
-                        for="root"
-                      >
-                        Root
-                      </label>
-                      <div
-                        class="col-sm-1"
-                      >
-                        <i
-                          class="fas fa-info-circle"
-                        />
-                      </div>
-                      <div
-                        class="col-sm-6"
-                      >
-                        <input
-                          class="form-control"
-                          id="root"
-                          placeholder="root"
-                          type="text"
-                          value=""
-                        />
-                      </div>
-                    </div>
-                    <div
-                      class="row"
-                    >
-                      <label
-                        class="form-label col-form-label col-sm-3"
-                        for="vowelClass"
-                      >
-                        Vowel class
-                      </label>
-                      <div
-                        class="col-sm-1"
-                      >
-                        <i
-                          class="fas fa-info-circle"
-                        />
-                      </div>
-                      <div
-                        class="col-sm-6"
-                      >
-                        <div>
-                          <div
-                            style="margin-bottom: 0.5rem;"
+                          Word
+                        </label>
+                        <div
+                          class="col-sm-1"
+                        >
+                          <i
+                            class="fas fa-info-circle"
+                          />
+                        </div>
+                        <div
+                          class="col-sm-6"
+                        >
+                          <input
+                            class="form-control"
+                            id="word"
+                            placeholder="word"
+                            type="text"
+                            value=""
+                          />
+                        </div>
+                        <div
+                          class="col-sm-2"
+                        >
+                          <button
+                            class="btn btn-primary"
+                            type="submit"
                           >
-                            <div
-                              class="form-check form-check-inline"
-                            >
-                              <input
-                                class="form-check-input"
-                                id="vowel-a/a"
-                                type="checkbox"
-                              />
-                              <label
-                                class="form-check-label"
-                                for="vowel-a/a"
-                                title=""
-                              >
-                                a/a
-                              </label>
-                            </div>
-                            <div
-                              class="form-check form-check-inline"
-                            >
-                              <input
-                                class="form-check-input"
-                                id="vowel-a/i"
-                                type="checkbox"
-                              />
-                              <label
-                                class="form-check-label"
-                                for="vowel-a/i"
-                                title=""
-                              >
-                                a/i
-                              </label>
-                            </div>
-                            <div
-                              class="form-check form-check-inline"
-                            >
-                              <input
-                                class="form-check-input"
-                                id="vowel-a/u"
-                                type="checkbox"
-                              />
-                              <label
-                                class="form-check-label"
-                                for="vowel-a/u"
-                                title=""
-                              >
-                                a/u
-                              </label>
-                            </div>
-                            <div
-                              class="form-check form-check-inline"
-                            >
-                              <input
-                                class="form-check-input"
-                                id="vowel-e/e"
-                                type="checkbox"
-                              />
-                              <label
-                                class="form-check-label"
-                                for="vowel-e/e"
-                                title=""
-                              >
-                                e/e
-                              </label>
-                            </div>
-                          </div>
+                            Query
+                          </button>
+                        </div>
+                      </div>
+                      <div
+                        class="row"
+                      >
+                        <label
+                          class="form-label col-form-label col-sm-3"
+                          for="meaning"
+                        >
+                          Meaning
+                        </label>
+                        <div
+                          class="col-sm-1"
+                        >
+                          <i
+                            class="fas fa-info-circle"
+                          />
+                        </div>
+                        <div
+                          class="col-sm-6"
+                        >
+                          <input
+                            class="form-control"
+                            id="meaning"
+                            placeholder="meaning"
+                            type="text"
+                            value=""
+                          />
+                        </div>
+                      </div>
+                      <div
+                        class="row"
+                      >
+                        <label
+                          class="form-label col-form-label col-sm-3"
+                          for="root"
+                        >
+                          Root
+                        </label>
+                        <div
+                          class="col-sm-1"
+                        >
+                          <i
+                            class="fas fa-info-circle"
+                          />
+                        </div>
+                        <div
+                          class="col-sm-6"
+                        >
+                          <input
+                            class="form-control"
+                            id="root"
+                            placeholder="root"
+                            type="text"
+                            value=""
+                          />
+                        </div>
+                      </div>
+                      <div
+                        class="row"
+                      >
+                        <label
+                          class="form-label col-form-label col-sm-3"
+                          for="vowelClass"
+                        >
+                          Vowel class
+                        </label>
+                        <div
+                          class="col-sm-1"
+                        >
+                          <i
+                            class="fas fa-info-circle"
+                          />
+                        </div>
+                        <div
+                          class="col-sm-6"
+                        >
                           <div>
                             <div
-                              class="form-check form-check-inline"
+                              style="margin-bottom: 0.5rem;"
+                            >
+                              <div
+                                class="form-check form-check-inline"
+                              >
+                                <input
+                                  class="form-check-input"
+                                  id="vowel-a/a"
+                                  type="checkbox"
+                                />
+                                <label
+                                  class="form-check-label"
+                                  for="vowel-a/a"
+                                  title=""
+                                >
+                                  a/a
+                                </label>
+                              </div>
+                              <div
+                                class="form-check form-check-inline"
+                              >
+                                <input
+                                  class="form-check-input"
+                                  id="vowel-a/i"
+                                  type="checkbox"
+                                />
+                                <label
+                                  class="form-check-label"
+                                  for="vowel-a/i"
+                                  title=""
+                                >
+                                  a/i
+                                </label>
+                              </div>
+                              <div
+                                class="form-check form-check-inline"
+                              >
+                                <input
+                                  class="form-check-input"
+                                  id="vowel-a/u"
+                                  type="checkbox"
+                                />
+                                <label
+                                  class="form-check-label"
+                                  for="vowel-a/u"
+                                  title=""
+                                >
+                                  a/u
+                                </label>
+                              </div>
+                              <div
+                                class="form-check form-check-inline"
+                              >
+                                <input
+                                  class="form-check-input"
+                                  id="vowel-e/e"
+                                  type="checkbox"
+                                />
+                                <label
+                                  class="form-check-label"
+                                  for="vowel-e/e"
+                                  title=""
+                                >
+                                  e/e
+                                </label>
+                              </div>
+                            </div>
+                            <div>
+                              <div
+                                class="form-check form-check-inline"
+                              >
+                                <input
+                                  class="form-check-input"
+                                  id="vowel-e/u"
+                                  type="checkbox"
+                                />
+                                <label
+                                  class="form-check-label"
+                                  for="vowel-e/u"
+                                  title=""
+                                >
+                                  e/u
+                                </label>
+                              </div>
+                              <div
+                                class="form-check form-check-inline"
+                              >
+                                <input
+                                  class="form-check-input"
+                                  id="vowel-i/i"
+                                  type="checkbox"
+                                />
+                                <label
+                                  class="form-check-label"
+                                  for="vowel-i/i"
+                                  title=""
+                                >
+                                  i/i
+                                </label>
+                              </div>
+                              <div
+                                class="form-check form-check-inline"
+                              >
+                                <input
+                                  class="form-check-input"
+                                  id="vowel-u/u"
+                                  type="checkbox"
+                                />
+                                <label
+                                  class="form-check-label"
+                                  for="vowel-u/u"
+                                  title=""
+                                >
+                                  u/u
+                                </label>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <hr />
+                      <div
+                        class="row"
+                      >
+                        <label
+                          class="form-label col-form-label col-sm-3"
+                          for="origin"
+                        >
+                          Dictionary source
+                        </label>
+                        <div
+                          class="col-sm-1"
+                        >
+                          <i
+                            class="fas fa-info-circle"
+                          />
+                        </div>
+                        <div
+                          class="col-sm-8"
+                        >
+                          <div>
+                            <div
+                              class="form-check form-switch"
+                              style="font-weight: bold; margin-right: 1rem;"
                             >
                               <input
                                 class="form-check-input"
-                                id="vowel-e/u"
+                                id="origin-all"
                                 type="checkbox"
                               />
                               <label
                                 class="form-check-label"
-                                for="vowel-e/u"
+                                for="origin-all"
                                 title=""
                               >
-                                e/u
+                                All sources
                               </label>
                             </div>
                             <div
-                              class="form-check form-check-inline"
+                              class="form-check form-check-inline form-switch"
                             >
                               <input
+                                checked=""
                                 class="form-check-input"
-                                id="vowel-i/i"
+                                id="origin-CDA"
                                 type="checkbox"
                               />
                               <label
                                 class="form-check-label"
-                                for="vowel-i/i"
+                                for="origin-CDA"
                                 title=""
                               >
-                                i/i
+                                Concise Dictionary of Akkadian
                               </label>
                             </div>
                             <div
-                              class="form-check form-check-inline"
+                              class="form-check form-check-inline form-switch"
                             >
                               <input
                                 class="form-check-input"
-                                id="vowel-u/u"
+                                id="origin-AFO_REGISTER"
                                 type="checkbox"
                               />
                               <label
                                 class="form-check-label"
-                                for="vowel-u/u"
+                                for="origin-AFO_REGISTER"
                                 title=""
                               >
-                                u/u
+                                AfO Register
+                              </label>
+                            </div>
+                            <div
+                              class="form-check form-check-inline form-switch"
+                            >
+                              <input
+                                class="form-check-input"
+                                id="origin-SAD"
+                                type="checkbox"
+                              />
+                              <label
+                                class="form-check-label"
+                                for="origin-SAD"
+                                title=""
+                              >
+                                Supplements to the Akkadian Dictionaries
                               </label>
                             </div>
                           </div>
                         </div>
                       </div>
-                    </div>
-                    <hr />
-                    <div
-                      class="row"
+                    </form>
+                  </div>
+                  <a
+                    aria-label="Learn more about Dictionary"
+                    class="AboutInlineLink Dictionary-search-header__about"
+                    href="/about/dictionary"
+                    title="Learn more about Dictionary"
+                  >
+                    <i
+                      aria-hidden="true"
+                      class="fas fa-info-circle"
+                    />
+                    <span
+                      class="visually-hidden"
                     >
-                      <label
-                        class="form-label col-form-label col-sm-3"
-                        for="origin"
-                      >
-                        Dictionary source
-                      </label>
-                      <div
-                        class="col-sm-1"
-                      >
-                        <i
-                          class="fas fa-info-circle"
-                        />
-                      </div>
-                      <div
-                        class="col-sm-8"
-                      >
-                        <div>
-                          <div
-                            class="form-check form-switch"
-                            style="font-weight: bold; margin-right: 1rem;"
-                          >
-                            <input
-                              class="form-check-input"
-                              id="origin-all"
-                              type="checkbox"
-                            />
-                            <label
-                              class="form-check-label"
-                              for="origin-all"
-                              title=""
-                            >
-                              All sources
-                            </label>
-                          </div>
-                          <div
-                            class="form-check form-check-inline form-switch"
-                          >
-                            <input
-                              checked=""
-                              class="form-check-input"
-                              id="origin-CDA"
-                              type="checkbox"
-                            />
-                            <label
-                              class="form-check-label"
-                              for="origin-CDA"
-                              title=""
-                            >
-                              Concise Dictionary of Akkadian
-                            </label>
-                          </div>
-                          <div
-                            class="form-check form-check-inline form-switch"
-                          >
-                            <input
-                              class="form-check-input"
-                              id="origin-AFO_REGISTER"
-                              type="checkbox"
-                            />
-                            <label
-                              class="form-check-label"
-                              for="origin-AFO_REGISTER"
-                              title=""
-                            >
-                              AfO Register
-                            </label>
-                          </div>
-                          <div
-                            class="form-check form-check-inline form-switch"
-                          >
-                            <input
-                              class="form-check-input"
-                              id="origin-SAD"
-                              type="checkbox"
-                            />
-                            <label
-                              class="form-check-label"
-                              for="origin-SAD"
-                              title=""
-                            >
-                              Supplements to the Akkadian Dictionaries
-                            </label>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </form>
+                      Learn more about Dictionary
+                    </span>
+                  </a>
                 </div>
                 <ul
                   class="WordSearch-results"
@@ -3801,401 +3672,358 @@ exports[`Word 1`] = `
               <div
                 class="main__content"
               >
-                <header
-                  class="main__header"
-                >
-                  <nav
-                    aria-label="breadcrumb"
-                    class="main__breadcrumbs"
-                  >
-                    <ol
-                      class="breadcrumb"
-                    >
-                      <li
-                        class="breadcrumb-item"
-                      >
-                        <a
-                          href="/"
-                        >
-                          eBL
-                        </a>
-                      </li>
-                      <li
-                        aria-current="page"
-                        class="breadcrumb-item active"
-                      >
-                        Dictionary
-                      </li>
-                    </ol>
-                  </nav>
-                  <h2
-                    class="main__heading"
-                  >
-                    Dictionary
-                  </h2>
-                  <div
-                    class="main__toolbar btn-toolbar"
-                    role="toolbar"
-                  />
-                </header>
                 <div
-                  aria-label="Dictionary"
-                  class="alert alert-info info-banner"
-                  role="region"
+                  class="Dictionary-search-header"
                 >
                   <div
-                    class="info-banner__content"
+                    class="Dictionary-search"
                   >
-                    <h5
-                      class="info-banner__title"
+                    <form
+                      class=""
                     >
-                      Dictionary
-                    </h5>
-                    <p
-                      class="info-banner__description"
-                    >
-                      A flexible reference for Akkadian vocabulary with CDA and guide words.
-                    </p>
-                    <a
-                      class="info-banner__link"
-                      href="/about/dictionary"
-                    >
-                      Learn more →
-                    </a>
-                  </div>
-                </div>
-                <div
-                  class="Dictionary-search"
-                >
-                  <form
-                    class=""
-                  >
-                    <div
-                      class="row"
-                    >
-                      <label
-                        class="form-label col-form-label col-sm-3"
-                        for="word"
-                      >
-                        Word
-                      </label>
                       <div
-                        class="col-sm-1"
+                        class="row"
                       >
-                        <i
-                          class="fas fa-info-circle"
-                        />
-                      </div>
-                      <div
-                        class="col-sm-6"
-                      >
-                        <input
-                          class="form-control"
-                          id="word"
-                          placeholder="word"
-                          type="text"
-                          value="lem[ma?]"
-                        />
-                      </div>
-                      <div
-                        class="col-sm-2"
-                      >
-                        <button
-                          class="btn btn-primary"
-                          type="submit"
+                        <label
+                          class="form-label col-form-label col-sm-3"
+                          for="word"
                         >
-                          Query
-                        </button>
-                      </div>
-                    </div>
-                    <div
-                      class="row"
-                    >
-                      <label
-                        class="form-label col-form-label col-sm-3"
-                        for="meaning"
-                      >
-                        Meaning
-                      </label>
-                      <div
-                        class="col-sm-1"
-                      >
-                        <i
-                          class="fas fa-info-circle"
-                        />
-                      </div>
-                      <div
-                        class="col-sm-6"
-                      >
-                        <input
-                          class="form-control"
-                          id="meaning"
-                          placeholder="meaning"
-                          type="text"
-                          value=""
-                        />
-                      </div>
-                    </div>
-                    <div
-                      class="row"
-                    >
-                      <label
-                        class="form-label col-form-label col-sm-3"
-                        for="root"
-                      >
-                        Root
-                      </label>
-                      <div
-                        class="col-sm-1"
-                      >
-                        <i
-                          class="fas fa-info-circle"
-                        />
-                      </div>
-                      <div
-                        class="col-sm-6"
-                      >
-                        <input
-                          class="form-control"
-                          id="root"
-                          placeholder="root"
-                          type="text"
-                          value=""
-                        />
-                      </div>
-                    </div>
-                    <div
-                      class="row"
-                    >
-                      <label
-                        class="form-label col-form-label col-sm-3"
-                        for="vowelClass"
-                      >
-                        Vowel class
-                      </label>
-                      <div
-                        class="col-sm-1"
-                      >
-                        <i
-                          class="fas fa-info-circle"
-                        />
-                      </div>
-                      <div
-                        class="col-sm-6"
-                      >
-                        <div>
-                          <div
-                            style="margin-bottom: 0.5rem;"
+                          Word
+                        </label>
+                        <div
+                          class="col-sm-1"
+                        >
+                          <i
+                            class="fas fa-info-circle"
+                          />
+                        </div>
+                        <div
+                          class="col-sm-6"
+                        >
+                          <input
+                            class="form-control"
+                            id="word"
+                            placeholder="word"
+                            type="text"
+                            value="lem[ma?]"
+                          />
+                        </div>
+                        <div
+                          class="col-sm-2"
+                        >
+                          <button
+                            class="btn btn-primary"
+                            type="submit"
                           >
-                            <div
-                              class="form-check form-check-inline"
-                            >
-                              <input
-                                class="form-check-input"
-                                id="vowel-a/a"
-                                type="checkbox"
-                              />
-                              <label
-                                class="form-check-label"
-                                for="vowel-a/a"
-                                title=""
-                              >
-                                a/a
-                              </label>
-                            </div>
-                            <div
-                              class="form-check form-check-inline"
-                            >
-                              <input
-                                class="form-check-input"
-                                id="vowel-a/i"
-                                type="checkbox"
-                              />
-                              <label
-                                class="form-check-label"
-                                for="vowel-a/i"
-                                title=""
-                              >
-                                a/i
-                              </label>
-                            </div>
-                            <div
-                              class="form-check form-check-inline"
-                            >
-                              <input
-                                class="form-check-input"
-                                id="vowel-a/u"
-                                type="checkbox"
-                              />
-                              <label
-                                class="form-check-label"
-                                for="vowel-a/u"
-                                title=""
-                              >
-                                a/u
-                              </label>
-                            </div>
-                            <div
-                              class="form-check form-check-inline"
-                            >
-                              <input
-                                class="form-check-input"
-                                id="vowel-e/e"
-                                type="checkbox"
-                              />
-                              <label
-                                class="form-check-label"
-                                for="vowel-e/e"
-                                title=""
-                              >
-                                e/e
-                              </label>
-                            </div>
-                          </div>
+                            Query
+                          </button>
+                        </div>
+                      </div>
+                      <div
+                        class="row"
+                      >
+                        <label
+                          class="form-label col-form-label col-sm-3"
+                          for="meaning"
+                        >
+                          Meaning
+                        </label>
+                        <div
+                          class="col-sm-1"
+                        >
+                          <i
+                            class="fas fa-info-circle"
+                          />
+                        </div>
+                        <div
+                          class="col-sm-6"
+                        >
+                          <input
+                            class="form-control"
+                            id="meaning"
+                            placeholder="meaning"
+                            type="text"
+                            value=""
+                          />
+                        </div>
+                      </div>
+                      <div
+                        class="row"
+                      >
+                        <label
+                          class="form-label col-form-label col-sm-3"
+                          for="root"
+                        >
+                          Root
+                        </label>
+                        <div
+                          class="col-sm-1"
+                        >
+                          <i
+                            class="fas fa-info-circle"
+                          />
+                        </div>
+                        <div
+                          class="col-sm-6"
+                        >
+                          <input
+                            class="form-control"
+                            id="root"
+                            placeholder="root"
+                            type="text"
+                            value=""
+                          />
+                        </div>
+                      </div>
+                      <div
+                        class="row"
+                      >
+                        <label
+                          class="form-label col-form-label col-sm-3"
+                          for="vowelClass"
+                        >
+                          Vowel class
+                        </label>
+                        <div
+                          class="col-sm-1"
+                        >
+                          <i
+                            class="fas fa-info-circle"
+                          />
+                        </div>
+                        <div
+                          class="col-sm-6"
+                        >
                           <div>
                             <div
-                              class="form-check form-check-inline"
+                              style="margin-bottom: 0.5rem;"
+                            >
+                              <div
+                                class="form-check form-check-inline"
+                              >
+                                <input
+                                  class="form-check-input"
+                                  id="vowel-a/a"
+                                  type="checkbox"
+                                />
+                                <label
+                                  class="form-check-label"
+                                  for="vowel-a/a"
+                                  title=""
+                                >
+                                  a/a
+                                </label>
+                              </div>
+                              <div
+                                class="form-check form-check-inline"
+                              >
+                                <input
+                                  class="form-check-input"
+                                  id="vowel-a/i"
+                                  type="checkbox"
+                                />
+                                <label
+                                  class="form-check-label"
+                                  for="vowel-a/i"
+                                  title=""
+                                >
+                                  a/i
+                                </label>
+                              </div>
+                              <div
+                                class="form-check form-check-inline"
+                              >
+                                <input
+                                  class="form-check-input"
+                                  id="vowel-a/u"
+                                  type="checkbox"
+                                />
+                                <label
+                                  class="form-check-label"
+                                  for="vowel-a/u"
+                                  title=""
+                                >
+                                  a/u
+                                </label>
+                              </div>
+                              <div
+                                class="form-check form-check-inline"
+                              >
+                                <input
+                                  class="form-check-input"
+                                  id="vowel-e/e"
+                                  type="checkbox"
+                                />
+                                <label
+                                  class="form-check-label"
+                                  for="vowel-e/e"
+                                  title=""
+                                >
+                                  e/e
+                                </label>
+                              </div>
+                            </div>
+                            <div>
+                              <div
+                                class="form-check form-check-inline"
+                              >
+                                <input
+                                  class="form-check-input"
+                                  id="vowel-e/u"
+                                  type="checkbox"
+                                />
+                                <label
+                                  class="form-check-label"
+                                  for="vowel-e/u"
+                                  title=""
+                                >
+                                  e/u
+                                </label>
+                              </div>
+                              <div
+                                class="form-check form-check-inline"
+                              >
+                                <input
+                                  class="form-check-input"
+                                  id="vowel-i/i"
+                                  type="checkbox"
+                                />
+                                <label
+                                  class="form-check-label"
+                                  for="vowel-i/i"
+                                  title=""
+                                >
+                                  i/i
+                                </label>
+                              </div>
+                              <div
+                                class="form-check form-check-inline"
+                              >
+                                <input
+                                  class="form-check-input"
+                                  id="vowel-u/u"
+                                  type="checkbox"
+                                />
+                                <label
+                                  class="form-check-label"
+                                  for="vowel-u/u"
+                                  title=""
+                                >
+                                  u/u
+                                </label>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <hr />
+                      <div
+                        class="row"
+                      >
+                        <label
+                          class="form-label col-form-label col-sm-3"
+                          for="origin"
+                        >
+                          Dictionary source
+                        </label>
+                        <div
+                          class="col-sm-1"
+                        >
+                          <i
+                            class="fas fa-info-circle"
+                          />
+                        </div>
+                        <div
+                          class="col-sm-8"
+                        >
+                          <div>
+                            <div
+                              class="form-check form-switch"
+                              style="font-weight: bold; margin-right: 1rem;"
                             >
                               <input
                                 class="form-check-input"
-                                id="vowel-e/u"
+                                id="origin-all"
                                 type="checkbox"
                               />
                               <label
                                 class="form-check-label"
-                                for="vowel-e/u"
+                                for="origin-all"
                                 title=""
                               >
-                                e/u
+                                All sources
                               </label>
                             </div>
                             <div
-                              class="form-check form-check-inline"
+                              class="form-check form-check-inline form-switch"
                             >
                               <input
+                                checked=""
                                 class="form-check-input"
-                                id="vowel-i/i"
+                                id="origin-CDA"
                                 type="checkbox"
                               />
                               <label
                                 class="form-check-label"
-                                for="vowel-i/i"
+                                for="origin-CDA"
                                 title=""
                               >
-                                i/i
+                                Concise Dictionary of Akkadian
                               </label>
                             </div>
                             <div
-                              class="form-check form-check-inline"
+                              class="form-check form-check-inline form-switch"
                             >
                               <input
                                 class="form-check-input"
-                                id="vowel-u/u"
+                                id="origin-AFO_REGISTER"
                                 type="checkbox"
                               />
                               <label
                                 class="form-check-label"
-                                for="vowel-u/u"
+                                for="origin-AFO_REGISTER"
                                 title=""
                               >
-                                u/u
+                                AfO Register
+                              </label>
+                            </div>
+                            <div
+                              class="form-check form-check-inline form-switch"
+                            >
+                              <input
+                                class="form-check-input"
+                                id="origin-SAD"
+                                type="checkbox"
+                              />
+                              <label
+                                class="form-check-label"
+                                for="origin-SAD"
+                                title=""
+                              >
+                                Supplements to the Akkadian Dictionaries
                               </label>
                             </div>
                           </div>
                         </div>
                       </div>
-                    </div>
-                    <hr />
-                    <div
-                      class="row"
+                    </form>
+                  </div>
+                  <a
+                    aria-label="Learn more about Dictionary"
+                    class="AboutInlineLink Dictionary-search-header__about"
+                    href="/about/dictionary"
+                    title="Learn more about Dictionary"
+                  >
+                    <i
+                      aria-hidden="true"
+                      class="fas fa-info-circle"
+                    />
+                    <span
+                      class="visually-hidden"
                     >
-                      <label
-                        class="form-label col-form-label col-sm-3"
-                        for="origin"
-                      >
-                        Dictionary source
-                      </label>
-                      <div
-                        class="col-sm-1"
-                      >
-                        <i
-                          class="fas fa-info-circle"
-                        />
-                      </div>
-                      <div
-                        class="col-sm-8"
-                      >
-                        <div>
-                          <div
-                            class="form-check form-switch"
-                            style="font-weight: bold; margin-right: 1rem;"
-                          >
-                            <input
-                              class="form-check-input"
-                              id="origin-all"
-                              type="checkbox"
-                            />
-                            <label
-                              class="form-check-label"
-                              for="origin-all"
-                              title=""
-                            >
-                              All sources
-                            </label>
-                          </div>
-                          <div
-                            class="form-check form-check-inline form-switch"
-                          >
-                            <input
-                              checked=""
-                              class="form-check-input"
-                              id="origin-CDA"
-                              type="checkbox"
-                            />
-                            <label
-                              class="form-check-label"
-                              for="origin-CDA"
-                              title=""
-                            >
-                              Concise Dictionary of Akkadian
-                            </label>
-                          </div>
-                          <div
-                            class="form-check form-check-inline form-switch"
-                          >
-                            <input
-                              class="form-check-input"
-                              id="origin-AFO_REGISTER"
-                              type="checkbox"
-                            />
-                            <label
-                              class="form-check-label"
-                              for="origin-AFO_REGISTER"
-                              title=""
-                            >
-                              AfO Register
-                            </label>
-                          </div>
-                          <div
-                            class="form-check form-check-inline form-switch"
-                          >
-                            <input
-                              class="form-check-input"
-                              id="origin-SAD"
-                              type="checkbox"
-                            />
-                            <label
-                              class="form-check-label"
-                              for="origin-SAD"
-                              title=""
-                            >
-                              Supplements to the Akkadian Dictionaries
-                            </label>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </form>
+                      Learn more about Dictionary
+                    </span>
+                  </a>
                 </div>
                 <ul
                   class="WordSearch-results"
@@ -4940,402 +4768,359 @@ exports[`renders dictionary search page 1`] = `
               <div
                 class="main__content"
               >
-                <header
-                  class="main__header"
-                >
-                  <nav
-                    aria-label="breadcrumb"
-                    class="main__breadcrumbs"
-                  >
-                    <ol
-                      class="breadcrumb"
-                    >
-                      <li
-                        class="breadcrumb-item"
-                      >
-                        <a
-                          href="/"
-                        >
-                          eBL
-                        </a>
-                      </li>
-                      <li
-                        aria-current="page"
-                        class="breadcrumb-item active"
-                      >
-                        Dictionary
-                      </li>
-                    </ol>
-                  </nav>
-                  <h2
-                    class="main__heading"
-                  >
-                    Dictionary
-                  </h2>
-                  <div
-                    class="main__toolbar btn-toolbar"
-                    role="toolbar"
-                  />
-                </header>
                 <div
-                  aria-label="Dictionary"
-                  class="alert alert-info info-banner"
-                  role="region"
+                  class="Dictionary-search-header"
                 >
                   <div
-                    class="info-banner__content"
+                    class="Dictionary-search"
                   >
-                    <h5
-                      class="info-banner__title"
+                    <form
+                      class=""
                     >
-                      Dictionary
-                    </h5>
-                    <p
-                      class="info-banner__description"
-                    >
-                      A flexible reference for Akkadian vocabulary with CDA and guide words.
-                    </p>
-                    <a
-                      class="info-banner__link"
-                      href="/about/dictionary"
-                    >
-                      Learn more →
-                    </a>
-                  </div>
-                </div>
-                <div
-                  class="Dictionary-search"
-                >
-                  <form
-                    class=""
-                  >
-                    <div
-                      class="row"
-                    >
-                      <label
-                        class="form-label col-form-label col-sm-3"
-                        for="word"
-                      >
-                        Word
-                      </label>
                       <div
-                        class="col-sm-1"
+                        class="row"
                       >
-                        <i
-                          class="fas fa-info-circle"
-                        />
-                      </div>
-                      <div
-                        class="col-sm-6"
-                      >
-                        <input
-                          class="form-control"
-                          id="word"
-                          placeholder="word"
-                          type="text"
-                          value=""
-                        />
-                      </div>
-                      <div
-                        class="col-sm-2"
-                      >
-                        <button
-                          class="btn btn-primary"
-                          disabled=""
-                          type="submit"
+                        <label
+                          class="form-label col-form-label col-sm-3"
+                          for="word"
                         >
-                          Query
-                        </button>
-                      </div>
-                    </div>
-                    <div
-                      class="row"
-                    >
-                      <label
-                        class="form-label col-form-label col-sm-3"
-                        for="meaning"
-                      >
-                        Meaning
-                      </label>
-                      <div
-                        class="col-sm-1"
-                      >
-                        <i
-                          class="fas fa-info-circle"
-                        />
-                      </div>
-                      <div
-                        class="col-sm-6"
-                      >
-                        <input
-                          class="form-control"
-                          id="meaning"
-                          placeholder="meaning"
-                          type="text"
-                          value=""
-                        />
-                      </div>
-                    </div>
-                    <div
-                      class="row"
-                    >
-                      <label
-                        class="form-label col-form-label col-sm-3"
-                        for="root"
-                      >
-                        Root
-                      </label>
-                      <div
-                        class="col-sm-1"
-                      >
-                        <i
-                          class="fas fa-info-circle"
-                        />
-                      </div>
-                      <div
-                        class="col-sm-6"
-                      >
-                        <input
-                          class="form-control"
-                          id="root"
-                          placeholder="root"
-                          type="text"
-                          value=""
-                        />
-                      </div>
-                    </div>
-                    <div
-                      class="row"
-                    >
-                      <label
-                        class="form-label col-form-label col-sm-3"
-                        for="vowelClass"
-                      >
-                        Vowel class
-                      </label>
-                      <div
-                        class="col-sm-1"
-                      >
-                        <i
-                          class="fas fa-info-circle"
-                        />
-                      </div>
-                      <div
-                        class="col-sm-6"
-                      >
-                        <div>
-                          <div
-                            style="margin-bottom: 0.5rem;"
+                          Word
+                        </label>
+                        <div
+                          class="col-sm-1"
+                        >
+                          <i
+                            class="fas fa-info-circle"
+                          />
+                        </div>
+                        <div
+                          class="col-sm-6"
+                        >
+                          <input
+                            class="form-control"
+                            id="word"
+                            placeholder="word"
+                            type="text"
+                            value=""
+                          />
+                        </div>
+                        <div
+                          class="col-sm-2"
+                        >
+                          <button
+                            class="btn btn-primary"
+                            disabled=""
+                            type="submit"
                           >
-                            <div
-                              class="form-check form-check-inline"
-                            >
-                              <input
-                                class="form-check-input"
-                                id="vowel-a/a"
-                                type="checkbox"
-                              />
-                              <label
-                                class="form-check-label"
-                                for="vowel-a/a"
-                                title=""
-                              >
-                                a/a
-                              </label>
-                            </div>
-                            <div
-                              class="form-check form-check-inline"
-                            >
-                              <input
-                                class="form-check-input"
-                                id="vowel-a/i"
-                                type="checkbox"
-                              />
-                              <label
-                                class="form-check-label"
-                                for="vowel-a/i"
-                                title=""
-                              >
-                                a/i
-                              </label>
-                            </div>
-                            <div
-                              class="form-check form-check-inline"
-                            >
-                              <input
-                                class="form-check-input"
-                                id="vowel-a/u"
-                                type="checkbox"
-                              />
-                              <label
-                                class="form-check-label"
-                                for="vowel-a/u"
-                                title=""
-                              >
-                                a/u
-                              </label>
-                            </div>
-                            <div
-                              class="form-check form-check-inline"
-                            >
-                              <input
-                                class="form-check-input"
-                                id="vowel-e/e"
-                                type="checkbox"
-                              />
-                              <label
-                                class="form-check-label"
-                                for="vowel-e/e"
-                                title=""
-                              >
-                                e/e
-                              </label>
-                            </div>
-                          </div>
+                            Query
+                          </button>
+                        </div>
+                      </div>
+                      <div
+                        class="row"
+                      >
+                        <label
+                          class="form-label col-form-label col-sm-3"
+                          for="meaning"
+                        >
+                          Meaning
+                        </label>
+                        <div
+                          class="col-sm-1"
+                        >
+                          <i
+                            class="fas fa-info-circle"
+                          />
+                        </div>
+                        <div
+                          class="col-sm-6"
+                        >
+                          <input
+                            class="form-control"
+                            id="meaning"
+                            placeholder="meaning"
+                            type="text"
+                            value=""
+                          />
+                        </div>
+                      </div>
+                      <div
+                        class="row"
+                      >
+                        <label
+                          class="form-label col-form-label col-sm-3"
+                          for="root"
+                        >
+                          Root
+                        </label>
+                        <div
+                          class="col-sm-1"
+                        >
+                          <i
+                            class="fas fa-info-circle"
+                          />
+                        </div>
+                        <div
+                          class="col-sm-6"
+                        >
+                          <input
+                            class="form-control"
+                            id="root"
+                            placeholder="root"
+                            type="text"
+                            value=""
+                          />
+                        </div>
+                      </div>
+                      <div
+                        class="row"
+                      >
+                        <label
+                          class="form-label col-form-label col-sm-3"
+                          for="vowelClass"
+                        >
+                          Vowel class
+                        </label>
+                        <div
+                          class="col-sm-1"
+                        >
+                          <i
+                            class="fas fa-info-circle"
+                          />
+                        </div>
+                        <div
+                          class="col-sm-6"
+                        >
                           <div>
                             <div
-                              class="form-check form-check-inline"
+                              style="margin-bottom: 0.5rem;"
+                            >
+                              <div
+                                class="form-check form-check-inline"
+                              >
+                                <input
+                                  class="form-check-input"
+                                  id="vowel-a/a"
+                                  type="checkbox"
+                                />
+                                <label
+                                  class="form-check-label"
+                                  for="vowel-a/a"
+                                  title=""
+                                >
+                                  a/a
+                                </label>
+                              </div>
+                              <div
+                                class="form-check form-check-inline"
+                              >
+                                <input
+                                  class="form-check-input"
+                                  id="vowel-a/i"
+                                  type="checkbox"
+                                />
+                                <label
+                                  class="form-check-label"
+                                  for="vowel-a/i"
+                                  title=""
+                                >
+                                  a/i
+                                </label>
+                              </div>
+                              <div
+                                class="form-check form-check-inline"
+                              >
+                                <input
+                                  class="form-check-input"
+                                  id="vowel-a/u"
+                                  type="checkbox"
+                                />
+                                <label
+                                  class="form-check-label"
+                                  for="vowel-a/u"
+                                  title=""
+                                >
+                                  a/u
+                                </label>
+                              </div>
+                              <div
+                                class="form-check form-check-inline"
+                              >
+                                <input
+                                  class="form-check-input"
+                                  id="vowel-e/e"
+                                  type="checkbox"
+                                />
+                                <label
+                                  class="form-check-label"
+                                  for="vowel-e/e"
+                                  title=""
+                                >
+                                  e/e
+                                </label>
+                              </div>
+                            </div>
+                            <div>
+                              <div
+                                class="form-check form-check-inline"
+                              >
+                                <input
+                                  class="form-check-input"
+                                  id="vowel-e/u"
+                                  type="checkbox"
+                                />
+                                <label
+                                  class="form-check-label"
+                                  for="vowel-e/u"
+                                  title=""
+                                >
+                                  e/u
+                                </label>
+                              </div>
+                              <div
+                                class="form-check form-check-inline"
+                              >
+                                <input
+                                  class="form-check-input"
+                                  id="vowel-i/i"
+                                  type="checkbox"
+                                />
+                                <label
+                                  class="form-check-label"
+                                  for="vowel-i/i"
+                                  title=""
+                                >
+                                  i/i
+                                </label>
+                              </div>
+                              <div
+                                class="form-check form-check-inline"
+                              >
+                                <input
+                                  class="form-check-input"
+                                  id="vowel-u/u"
+                                  type="checkbox"
+                                />
+                                <label
+                                  class="form-check-label"
+                                  for="vowel-u/u"
+                                  title=""
+                                >
+                                  u/u
+                                </label>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <hr />
+                      <div
+                        class="row"
+                      >
+                        <label
+                          class="form-label col-form-label col-sm-3"
+                          for="origin"
+                        >
+                          Dictionary source
+                        </label>
+                        <div
+                          class="col-sm-1"
+                        >
+                          <i
+                            class="fas fa-info-circle"
+                          />
+                        </div>
+                        <div
+                          class="col-sm-8"
+                        >
+                          <div>
+                            <div
+                              class="form-check form-switch"
+                              style="font-weight: bold; margin-right: 1rem;"
                             >
                               <input
                                 class="form-check-input"
-                                id="vowel-e/u"
+                                id="origin-all"
                                 type="checkbox"
                               />
                               <label
                                 class="form-check-label"
-                                for="vowel-e/u"
+                                for="origin-all"
                                 title=""
                               >
-                                e/u
+                                All sources
                               </label>
                             </div>
                             <div
-                              class="form-check form-check-inline"
+                              class="form-check form-check-inline form-switch"
                             >
                               <input
+                                checked=""
                                 class="form-check-input"
-                                id="vowel-i/i"
+                                id="origin-CDA"
                                 type="checkbox"
                               />
                               <label
                                 class="form-check-label"
-                                for="vowel-i/i"
+                                for="origin-CDA"
                                 title=""
                               >
-                                i/i
+                                Concise Dictionary of Akkadian
                               </label>
                             </div>
                             <div
-                              class="form-check form-check-inline"
+                              class="form-check form-check-inline form-switch"
                             >
                               <input
                                 class="form-check-input"
-                                id="vowel-u/u"
+                                id="origin-AFO_REGISTER"
                                 type="checkbox"
                               />
                               <label
                                 class="form-check-label"
-                                for="vowel-u/u"
+                                for="origin-AFO_REGISTER"
                                 title=""
                               >
-                                u/u
+                                AfO Register
+                              </label>
+                            </div>
+                            <div
+                              class="form-check form-check-inline form-switch"
+                            >
+                              <input
+                                class="form-check-input"
+                                id="origin-SAD"
+                                type="checkbox"
+                              />
+                              <label
+                                class="form-check-label"
+                                for="origin-SAD"
+                                title=""
+                              >
+                                Supplements to the Akkadian Dictionaries
                               </label>
                             </div>
                           </div>
                         </div>
                       </div>
-                    </div>
-                    <hr />
-                    <div
-                      class="row"
+                    </form>
+                  </div>
+                  <a
+                    aria-label="Learn more about Dictionary"
+                    class="AboutInlineLink Dictionary-search-header__about"
+                    href="/about/dictionary"
+                    title="Learn more about Dictionary"
+                  >
+                    <i
+                      aria-hidden="true"
+                      class="fas fa-info-circle"
+                    />
+                    <span
+                      class="visually-hidden"
                     >
-                      <label
-                        class="form-label col-form-label col-sm-3"
-                        for="origin"
-                      >
-                        Dictionary source
-                      </label>
-                      <div
-                        class="col-sm-1"
-                      >
-                        <i
-                          class="fas fa-info-circle"
-                        />
-                      </div>
-                      <div
-                        class="col-sm-8"
-                      >
-                        <div>
-                          <div
-                            class="form-check form-switch"
-                            style="font-weight: bold; margin-right: 1rem;"
-                          >
-                            <input
-                              class="form-check-input"
-                              id="origin-all"
-                              type="checkbox"
-                            />
-                            <label
-                              class="form-check-label"
-                              for="origin-all"
-                              title=""
-                            >
-                              All sources
-                            </label>
-                          </div>
-                          <div
-                            class="form-check form-check-inline form-switch"
-                          >
-                            <input
-                              checked=""
-                              class="form-check-input"
-                              id="origin-CDA"
-                              type="checkbox"
-                            />
-                            <label
-                              class="form-check-label"
-                              for="origin-CDA"
-                              title=""
-                            >
-                              Concise Dictionary of Akkadian
-                            </label>
-                          </div>
-                          <div
-                            class="form-check form-check-inline form-switch"
-                          >
-                            <input
-                              class="form-check-input"
-                              id="origin-AFO_REGISTER"
-                              type="checkbox"
-                            />
-                            <label
-                              class="form-check-label"
-                              for="origin-AFO_REGISTER"
-                              title=""
-                            >
-                              AfO Register
-                            </label>
-                          </div>
-                          <div
-                            class="form-check form-check-inline form-switch"
-                          >
-                            <input
-                              class="form-check-input"
-                              id="origin-SAD"
-                              type="checkbox"
-                            />
-                            <label
-                              class="form-check-label"
-                              for="origin-SAD"
-                              title=""
-                            >
-                              Supplements to the Akkadian Dictionaries
-                            </label>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </form>
+                      Learn more about Dictionary
+                    </span>
+                  </a>
                 </div>
                 <ul
                   class="WordSearch-results"

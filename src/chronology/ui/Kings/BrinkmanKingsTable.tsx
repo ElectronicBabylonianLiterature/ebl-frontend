@@ -11,28 +11,65 @@ import {
   getKingsByDynasty,
 } from 'chronology/ui/Kings/Kings'
 
-function getDynastyId(dynastyName: string): string {
-  return `dynasty-${dynastyName.replace(/\s+/g, '-').toLowerCase()}`
+type DynastyAnchor = {
+  dynastyId: string
+  dynastyIndex: number
+  dynastyName: string
 }
+
+function getDynastySlug(dynastyName: string): string {
+  const normalizedDynastyName: string = _.deburr(dynastyName).toLowerCase()
+  const slug: string = normalizedDynastyName
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/-+/g, '-')
+    .replace(/^-+|-+$/g, '')
+  return slug || 'dynasty'
+}
+
+function getDynastyAnchors(dynastyNames: readonly string[]): DynastyAnchor[] {
+  const usedDynastyIds: Set<string> = new Set()
+  return dynastyNames.map((dynastyName, dynastyIndex) => {
+    const dynastySlug: string = getDynastySlug(dynastyName)
+    const baseDynastyId: string = `dynasty-${dynastySlug}`
+    let dynastyId: string = baseDynastyId
+    let duplicateCount = 2
+
+    while (usedDynastyIds.has(dynastyId)) {
+      dynastyId = `${baseDynastyId}-${duplicateCount}`
+      duplicateCount += 1
+    }
+
+    usedDynastyIds.add(dynastyId)
+    return {
+      dynastyId,
+      dynastyIndex,
+      dynastyName,
+    }
+  })
+}
+
+const dynastyAnchors: DynastyAnchor[] = getDynastyAnchors(brinkmanDynasties)
 
 function DynastyIndex(): JSX.Element {
   return (
     <nav className="kings-tool__index-nav">
-      {brinkmanDynasties.map((dynastyName, index) => (
-        <a
-          key={dynastyName}
-          href={`#${getDynastyId(dynastyName)}`}
-          className="kings-tool__index-link"
-          onClick={(event) => {
-            event.preventDefault()
-            document
-              .getElementById(getDynastyId(dynastyName))
-              ?.scrollIntoView({ behavior: 'smooth' })
-          }}
-        >
-          {index + 1}. {dynastyName}
-        </a>
-      ))}
+      {dynastyAnchors.map(({ dynastyId, dynastyIndex, dynastyName }) => {
+        return (
+          <a
+            key={dynastyId}
+            href={`#${dynastyId}`}
+            className="kings-tool__index-link"
+            onClick={(event) => {
+              event.preventDefault()
+              document
+                .getElementById(dynastyId)
+                ?.scrollIntoView({ behavior: 'smooth' })
+            }}
+          >
+            {dynastyIndex + 1}. {dynastyName}
+          </a>
+        )
+      })}
     </nav>
   )
 }
@@ -77,29 +114,27 @@ function BrinkmanKingsTable(): JSX.Element {
         </tr>
       </thead>
       <tbody>
-        {brinkmanDynasties.map((dynastyName, index) =>
-          getDynasty(dynastyName, index, true),
-        )}
+        {dynastyAnchors.map((dynastyAnchor) => getDynasty(dynastyAnchor, true))}
       </tbody>
     </Table>
   )
 }
 
 function getDynasty(
-  dynastyName: string,
-  dynastyIndex: number,
+  dynastyAnchor: DynastyAnchor,
   brinkmanOnly = false,
 ): JSX.Element {
+  const { dynastyId, dynastyIndex, dynastyName } = dynastyAnchor
   const _kings = getKingsByDynasty(dynastyName).filter((king) =>
     brinkmanOnly ? !king.isNotInBrinkman : true,
   )
   const groups = _.countBy(_kings, 'groupWith')
   const kingsTags = _kings.map((king) => getKing(king, groups))
   return (
-    <Fragment key={dynastyName}>
-      <tr key={dynastyName} id={getDynastyId(dynastyName)}>
+    <Fragment key={dynastyId}>
+      <tr key={dynastyId} id={dynastyId}>
         <td
-          key={`${dynastyName}_title`}
+          key={`${dynastyId}_title`}
           className="chronology-display__section kings-tool__dynasty"
           colSpan={3}
         >

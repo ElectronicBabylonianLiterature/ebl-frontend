@@ -53,7 +53,7 @@ exports[`Snapshot 1`] = `
       </a>
       <a
         class="kings-tool__index-link"
-        href="#dynasty-first-dynasty-of-babylon-(hammurapi-dynasty)"
+        href="#dynasty-first-dynasty-of-babylon-hammurapi-dynasty"
       >
         5
         . 
@@ -1254,7 +1254,7 @@ exports[`Snapshot 1`] = `
           </td>
         </tr>
         <tr
-          id="dynasty-first-dynasty-of-babylon-(hammurapi-dynasty)"
+          id="dynasty-first-dynasty-of-babylon-hammurapi-dynasty"
         >
           <td
             class="chronology-display__section kings-tool__dynasty"

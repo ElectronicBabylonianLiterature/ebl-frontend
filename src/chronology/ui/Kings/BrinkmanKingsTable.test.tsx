@@ -46,6 +46,20 @@ test('dynasty index links contain dynasty names', () => {
   })
 })
 
+test('dynasty index links have sanitized and unique anchors', () => {
+  render(<ListOfKings />)
+  const nav = screen.getByRole('navigation')
+  const links = within(nav).getAllByRole('link')
+  const hrefs = links
+    .map((link) => link.getAttribute('href'))
+    .filter((href): href is string => href !== null)
+
+  expect(new Set(hrefs).size).toBe(hrefs.length)
+  hrefs.forEach((href) => {
+    expect(href).toMatch(/^#dynasty-[a-z0-9]+(?:-[a-z0-9]+)*$/)
+  })
+})
+
 test('clicking dynasty index link scrolls to dynasty', () => {
   const scrollIntoView = jest.fn()
   window.HTMLElement.prototype.scrollIntoView = scrollIntoView
