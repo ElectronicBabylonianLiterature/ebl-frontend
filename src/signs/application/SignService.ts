@@ -16,6 +16,18 @@ export default class SignService {
     return this.signsRepository.getImages(signName)
   }
 
+  getCentroidImages(signName: string): Bluebird<CroppedAnnotation[]> {
+    return this.signsRepository.getCentroidImages(signName)
+  }
+
+  getClusterVariants(
+    signName: string,
+    clusterId: string,
+    script: string,
+  ): Bluebird<CroppedAnnotation[]> {
+    return this.signsRepository.getClusterVariants(signName, clusterId, script)
+  }
+
   associateSigns(
     tokens: ReadonlyArray<ReadonlyArray<AnnotationToken>>,
   ): Bluebird<ReadonlyArray<ReadonlyArray<AnnotationToken>>> {
@@ -33,12 +45,14 @@ export default class SignService {
   listAllSigns(): Bluebird<string[]> {
     return this.signsRepository.listAllSigns()
   }
+
   findSignsByOrder(
     signName: string,
     sortEra: string,
   ): Bluebird<[OrderedSign[]]> {
     return this.signsRepository.findSignsByOrder(signName, sortEra)
   }
+
   getUnicodeFromAtf(text: string): Bluebird<UnicodeAtf[]> {
     return this.signsRepository.getUnicodeFromAtf(text)
   }

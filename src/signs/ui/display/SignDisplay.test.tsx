@@ -76,6 +76,7 @@ const croppedAnnotation: CroppedAnnotation = {
   fragmentNumber: '',
   script: 'MA',
   label: "i stone wig 1'",
+  annotationId: 'annotation-1',
 }
 
 function renderSignDisplay(signName: string) {

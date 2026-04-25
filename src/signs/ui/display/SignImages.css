@@ -11,3 +11,47 @@
 .figure-caption .provenance {
   color: black;
 }
+
+.sign-images__variant-group {
+  margin-bottom: 28px;
+  border-top: 1px solid #999;
+  padding-top: 10px;
+}
+
+.sign-images__variant-header {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.sign-images__variant-layout {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  column-gap: 24px;
+  align-items: start;
+}
+
+.sign-images__variant-representative {
+  min-width: 180px;
+}
+
+.sign-images__variant-examples {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 12px;
+}
+
+.sign-images__variant-example-item {
+  min-width: 0;
+}
+
+.sign-images__centroid {
+  padding: 8px;
+  border: 1px solid #999;
+  border-radius: 0;
+  background-color: transparent;
+}
+
+.sign-images__centroid-col {
+  margin-bottom: 0;
+}

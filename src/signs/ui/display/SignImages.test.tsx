@@ -21,12 +21,14 @@ const croppedAnnotations: CroppedAnnotation[] = [
     script: '',
     provenance: 'ASSUR',
     label: 'label-1',
+    annotationId: 'annotation-1',
   },
   {
     fragmentNumber: 'K.6401',
     image: imageString,
     script: 'MA',
     label: 'label-2',
+    annotationId: 'annotation-2',
   },
 ]
 
@@ -40,11 +42,14 @@ function renderSignImages() {
 
 describe('Sign Images', () => {
   async function setup(): Promise<void> {
-    signService.getImages.mockReturnValue(Bluebird.resolve(croppedAnnotations))
+    signService.getCentroidImages.mockReturnValue(
+      Bluebird.resolve(croppedAnnotations),
+    )
     renderSignImages()
     await waitForSpinnerToBeRemoved(screen)
-    expect(signService.getImages).toBeCalledWith(signName)
+    expect(signService.getCentroidImages).toBeCalledWith(signName)
   }
+
   it('Check Images', async () => {
     await setup()
     await userEvent.click(screen.getByRole('button', { name: 'Unclassified' }))
@@ -63,11 +68,12 @@ describe('Sign Images', () => {
 
 describe('Sign Images Empty', () => {
   async function setup(): Promise<void> {
-    signService.getImages.mockReturnValue(Bluebird.resolve([]))
+    signService.getCentroidImages.mockReturnValue(Bluebird.resolve([]))
     renderSignImages()
     await waitForSpinnerToBeRemoved(screen)
-    expect(signService.getImages).toBeCalledWith(signName)
+    expect(signService.getCentroidImages).toBeCalledWith(signName)
   }
+
   it('Check there are no Images', async () => {
     await setup()
     croppedAnnotations.forEach((croppedAnnotation) => {
