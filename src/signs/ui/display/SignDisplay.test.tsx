@@ -77,6 +77,14 @@ const croppedAnnotation: CroppedAnnotation = {
   script: 'MA',
   label: "i stone wig 1'",
   annotationId: 'annotation-1',
+  pcaClustering: {
+    clusterId: 'test-cluster-id',
+    clusterRank: 0,
+    form: 'canonical1',
+    isCentroid: true,
+    clusterSize: 1,
+    isMain: true,
+  },
 }
 
 function renderSignDisplay(signName: string) {
@@ -103,7 +111,9 @@ function renderSignDisplay(signName: string) {
 describe('Sign Display', () => {
   const setup = async (): Promise<void> => {
     signService.search.mockReturnValue(Bluebird.resolve([]))
-    signService.getImages.mockReturnValue(Bluebird.resolve([croppedAnnotation]))
+    signService.getCentroidImages.mockReturnValue(
+      Bluebird.resolve([croppedAnnotation]),
+    )
     signService.find.mockReturnValue(Bluebird.resolve(sign))
     wordService.find.mockReturnValue(Bluebird.resolve(word))
     renderSignDisplay(sign.name)
