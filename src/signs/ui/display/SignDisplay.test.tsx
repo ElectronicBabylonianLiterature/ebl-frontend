@@ -17,9 +17,11 @@ import { helmetContext } from 'router/head'
 
 jest.mock('signs/application/SignService')
 jest.mock('dictionary/application/WordService')
+
 const signService = new (SignService as jest.Mock<jest.Mocked<SignService>>)()
 const wordService = new (WordService as jest.Mock<jest.Mocked<WordService>>)()
 const session = new MemorySession(['read:words'])
+
 const sign = new Sign({
   lists: [],
   logograms: [],
@@ -116,13 +118,18 @@ describe('Sign Display', () => {
     )
     signService.find.mockReturnValue(Bluebird.resolve(sign))
     wordService.find.mockReturnValue(Bluebird.resolve(word))
+
     renderSignDisplay(sign.name)
+
     await screen.findAllByText(sign.name)
     expect(signService.find).toBeCalledWith(sign.name)
   }
+
   it('Sign Display Snapshot', async () => {
     await setup()
+
     expect(screen.getAllByText(sign.name).length).toBeGreaterThan(0)
     expect(screen.getAllByRole('img').length).toBeGreaterThan(0)
+    expect(screen.getByText('Canonical 1:')).toBeInTheDocument()
   })
 })
