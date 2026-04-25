@@ -2,7 +2,7 @@ import React from 'react'
 import { Col, Row } from 'react-bootstrap'
 import { HashLink } from 'react-router-hash-link'
 import './wordInformationDisplay.sass'
-import { Markdown } from 'common/Markdown'
+import { Markdown } from 'common/ui/Markdown'
 import { AmplifiedMeaning, Form, Derived } from 'dictionary/domain/Word'
 
 export function OtherForm({ attested, lemma, notes }: Form): JSX.Element {

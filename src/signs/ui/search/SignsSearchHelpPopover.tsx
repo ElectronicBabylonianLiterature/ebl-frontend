@@ -2,7 +2,7 @@ import { Popover } from 'react-bootstrap'
 import _ from 'lodash'
 import React from 'react'
 import signSearchHelpList from './signSearchHelpList.json'
-import InlineMarkdown from 'common/InlineMarkdown'
+import InlineMarkdown from 'common/ui/InlineMarkdown'
 
 export default function SignsSearchHelp(): JSX.Element {
   const Section = ({ label, text }: { label: string; text: string }) => (

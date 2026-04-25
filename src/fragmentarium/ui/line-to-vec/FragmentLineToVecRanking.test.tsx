@@ -8,7 +8,7 @@ import { LineToVecRanking } from 'fragmentarium/domain/lineToVecRanking'
 import SessionContext from 'auth/SessionContext'
 import { Session } from 'auth/Session'
 import { scriptFactory } from 'test-support/fragment-data-fixtures'
-import { Periods } from 'common/period'
+import { Periods } from 'common/utils/period'
 import { HelmetProvider } from 'react-helmet-async'
 import { helmetContext } from 'router/head'
 

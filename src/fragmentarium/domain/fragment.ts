@@ -9,7 +9,7 @@ import { Genres } from 'fragmentarium/domain/Genres'
 import { Joins } from './join'
 import { Acquisition } from './Acquisition'
 import { MarkupPart } from 'transliteration/domain/markup'
-import { Period, PeriodModifier } from 'common/period'
+import { Period, PeriodModifier } from 'common/utils/period'
 import { Session } from 'auth/Session'
 import FragmentDto, {
   ExternalNumber,

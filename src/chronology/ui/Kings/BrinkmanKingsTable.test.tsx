@@ -11,6 +11,10 @@ test('renders intro and table', () => {
   expect(screen.getByRole('table')).toBeInTheDocument()
 })
 
+test('Snapshot', () => {
+  expect(render(<ListOfKings />).container).toMatchSnapshot()
+})
+
 test('Displays only kings from Brinkman in table', () => {
   render(<ListOfKings />)
   expect(

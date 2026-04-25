@@ -10,7 +10,7 @@ import SignService from 'signs/application/SignService'
 import Bluebird from 'bluebird'
 import { sign } from 'signs/domain/Sign.test'
 
-jest.mock('common/MarkdownAndHtmlToHtml', () => ({
+jest.mock('common/utils/MarkdownAndHtmlToHtml', () => ({
   __esModule: true,
   default: ({
     markdownAndHtml,

@@ -6,14 +6,14 @@ import { DossiersGroupedDisplay } from './DossiersGroupedDisplay'
 import DossierRecord from 'dossiers/domain/DossierRecord'
 import { referenceDtoFactory } from 'test-support/bibliography-fixtures'
 
-jest.mock('common/MarkdownAndHtmlToHtml', () => ({
+jest.mock('common/utils/MarkdownAndHtmlToHtml', () => ({
   __esModule: true,
   default: ({ markdownAndHtml }: { markdownAndHtml: string }) => (
     <div>{markdownAndHtml}</div>
   ),
 }))
 
-jest.mock('common/InlineMarkdown', () => ({
+jest.mock('common/ui/InlineMarkdown', () => ({
   __esModule: true,
   default: ({ source }: { source: string }) => <span>{source}</span>,
 }))
@@ -91,13 +91,11 @@ describe('DossiersGroupedDisplay', () => {
     ]
     render(<DossiersGroupedDisplay records={records} />)
 
-    // Check group headers
     expect(
       screen.getByText(/Neo-Babylonian \(Late\) — Nippur/),
     ).toBeInTheDocument()
     expect(screen.getByText(/Old Babylonian — Ur/)).toBeInTheDocument()
 
-    // Check dossiers appear
     expect(screen.getByText('D001')).toBeInTheDocument()
     expect(screen.getByText('D002')).toBeInTheDocument()
     expect(screen.getByText('D003')).toBeInTheDocument()
@@ -126,10 +124,8 @@ describe('DossiersGroupedDisplay', () => {
     ]
     render(<DossiersGroupedDisplay records={records} />)
 
-    // Both dossiers should be visible
     expect(screen.getByText('D001')).toBeInTheDocument()
     expect(screen.getByText('D002')).toBeInTheDocument()
-    // Check they're in same group
     expect(
       screen.getByText(/Neo-Babylonian \(Late\) — Nippur/),
     ).toBeInTheDocument()
@@ -141,7 +137,6 @@ describe('DossiersGroupedDisplay', () => {
     )
     render(<DossiersGroupedDisplay records={[record]} />)
 
-    // Should show period without modifier
     expect(screen.getByText(/Old Babylonian — Ur/)).toBeInTheDocument()
     expect(screen.queryByText(/\(\)/)).not.toBeInTheDocument()
   })
@@ -181,7 +176,6 @@ describe('DossiersGroupedDisplay', () => {
       expect(screen.getByRole('tooltip')).toBeInTheDocument()
     })
 
-    // Click outside
     await userEvent.click(container)
 
     await waitFor(() => {
@@ -212,17 +206,14 @@ describe('DossiersGroupedDisplay', () => {
     ]
     render(<DossiersGroupedDisplay records={records} />)
 
-    // Click first dossier
     await userEvent.click(screen.getByText('D001'))
 
     await waitFor(() => {
       expect(screen.getByRole('tooltip')).toBeInTheDocument()
     })
 
-    // Click second dossier
     await userEvent.click(screen.getByText('D002'))
 
-    // Should have closed first and opened second, verify we have a tooltip
     await waitFor(() => {
       const tooltips = screen.queryAllByRole('tooltip')
       expect(tooltips.length).toBeLessThanOrEqual(1)
@@ -242,7 +233,6 @@ describe('DossiersGroupedDisplay', () => {
     const record = new DossierRecord(recordDto)
     render(<DossiersGroupedDisplay records={[record]} />)
 
-    // Should show defaults
     expect(
       screen.getByText(/Unknown Period — Unknown Provenance/),
     ).toBeInTheDocument()
@@ -254,7 +244,6 @@ describe('DossiersGroupedDisplay', () => {
     )
     render(<DossiersGroupedDisplay records={[record]} />)
 
-    // Verify elements are rendered with semantic content
     expect(
       screen.getByText(/Neo-Babylonian \(Late\) — Nippur/),
     ).toBeInTheDocument()
@@ -282,7 +271,6 @@ describe('DossiersGroupedDisplay', () => {
     ]
     render(<DossiersGroupedDisplay records={records} />)
 
-    // Should have 3 different groups
     expect(
       screen.getByText(/Neo-Babylonian \(Late\) — Nippur/),
     ).toBeInTheDocument()

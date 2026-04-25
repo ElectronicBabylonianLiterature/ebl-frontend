@@ -27,7 +27,7 @@ import { LooseDollarLine } from 'transliteration/domain/dollar-lines'
 import { Genres } from 'fragmentarium/domain/Genres'
 import Reference from 'bibliography/domain/Reference'
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
-import { PeriodModifiers, Periods } from 'common/period'
+import { PeriodModifiers, Periods } from 'common/utils/period'
 
 const config: Parameters<(typeof Fragment)['create']>[0] = {
   number: 'K.1',
@@ -149,6 +149,7 @@ const config: Parameters<(typeof Fragment)['create']>[0] = {
     alalahHpmNumber: '123',
     australianinstituteofarchaeologyNumber: '123',
     philadelphiaNumber: '123',
+    spurlockNumber: '123',
   },
   projects: [],
   authorizedScopes: ['CAIC'],

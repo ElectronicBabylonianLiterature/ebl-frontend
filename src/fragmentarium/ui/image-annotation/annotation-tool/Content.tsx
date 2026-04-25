@@ -5,7 +5,7 @@ import Bluebird from 'bluebird'
 
 export type ContentProps = {
   annotation: Annotation
-  onDelete: (annotation: Annotation) => Bluebird<readonly Annotation[]>
+  onDelete: (annotation: Annotation) => Bluebird<void>
   contentScale: number
   setHovering: (annotation: Annotation | null) => void
   displayCards: boolean

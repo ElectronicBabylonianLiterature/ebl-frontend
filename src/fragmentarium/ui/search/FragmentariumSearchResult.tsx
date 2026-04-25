@@ -8,7 +8,7 @@ import { FragmentQuery } from 'query/FragmentQuery'
 import { linesToShow } from './FragmentariumSearch'
 import './FragmentariumSearchResult.sass'
 import { stringify } from 'query-string'
-import { ResultPageButtons } from 'common/ResultPageButtons'
+import { ResultPageButtons } from 'common/ui/ResultPageButtons'
 import { FragmentLines } from './FragmentariumSearchResultComponents'
 import DossiersService from 'dossiers/application/DossiersService'
 

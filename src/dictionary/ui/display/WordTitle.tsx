@@ -1,6 +1,6 @@
 import React from 'react'
 import Word from 'dictionary/domain/Word'
-import { Markdown } from 'common/Markdown'
+import { Markdown } from 'common/ui/Markdown'
 import { Col, Row } from 'react-bootstrap'
 import transcriptionsToPhoneticSegments from 'akkadian/application/phonetics/segments'
 import { Ipa } from 'akkadian/ui/akkadianWordAnalysis'

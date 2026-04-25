@@ -1,11 +1,11 @@
 import React, { ReactNode } from 'react'
 
-import AppContent from 'common/AppContent'
+import AppContent from 'common/ui/AppContent'
 import SessionContext from 'auth/SessionContext'
 import Annotator from 'fragmentarium/ui/image-annotation/Annotator'
 import { Session } from 'auth/Session'
 import FragmentService from 'fragmentarium/application/FragmentService'
-import { SectionCrumb, TextCrumb } from 'common/Breadcrumbs'
+import { SectionCrumb, TextCrumb } from 'common/ui/Breadcrumbs'
 import FragmentCrumb from 'fragmentarium/ui/FragmentCrumb'
 import SignService from 'signs/application/SignService'
 

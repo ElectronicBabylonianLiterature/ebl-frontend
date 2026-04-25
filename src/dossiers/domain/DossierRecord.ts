@@ -1,11 +1,11 @@
 import { immerable } from 'immer'
-import { Provenance, Provenances } from 'corpus/domain/provenance'
+import { Provenance, getProvenanceByName } from 'corpus/domain/provenance'
 import { Script, ScriptDto } from 'fragmentarium/domain/fragment'
 import Citation from 'bibliography/domain/Citation'
 import Reference from 'bibliography/domain/Reference'
 import { ReferenceDto } from 'bibliography/domain/referenceDto'
 import createReference from 'bibliography/application/createReference'
-import { PeriodModifiers, Periods } from 'common/period'
+import { PeriodModifiers, Periods } from 'common/utils/period'
 import { createScript } from 'fragmentarium/infrastructure/FragmentRepository'
 import _kings from 'chronology/domain/Kings.json'
 import { King } from 'chronology/ui/Kings/Kings'
@@ -70,7 +70,7 @@ export default class DossierRecord {
     this.yearRangeFrom = yearRangeFrom
     this.yearRangeTo = yearRangeTo
     this.relatedKings = relatedKings
-    this.provenance = provenance ? Provenances[provenance] : null
+    this.provenance = provenance ? getProvenanceByName(provenance) : undefined
     this.script = script && createScript(script)
     this.references = references.map((referenceDto) =>
       createReference(referenceDto),

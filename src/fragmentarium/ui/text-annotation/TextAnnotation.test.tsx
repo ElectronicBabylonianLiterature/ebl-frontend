@@ -166,13 +166,8 @@ describe('Named Entity Annotation', () => {
   it('calls updateNamedEntityAnnotations on save', async () => {
     await setup()
     const saveButton = screen.getByLabelText('save-annotations')
-    await waitFor(async () => {
-      await userEvent.click(screen.getByTestId('Word-2__Entity-1'))
-
-      expect(
-        screen.getByLabelText('delete-name-annotation'),
-      ).toBeInTheDocument()
-    })
+    await userEvent.click(screen.getByTestId('Word-2__Entity-1'))
+    await screen.findByLabelText('delete-name-annotation')
     await userEvent.click(screen.getByLabelText('delete-name-annotation'))
 
     await userEvent.click(saveButton)

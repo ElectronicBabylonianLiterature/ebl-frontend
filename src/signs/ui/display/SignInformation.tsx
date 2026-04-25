@@ -1,15 +1,15 @@
 import Sign, { SignListRecord } from 'signs/domain/Sign'
 import WordService from 'dictionary/application/WordService'
 import { Col, Row } from 'react-bootstrap'
-import HelpTrigger from 'common/HelpTrigger'
+import HelpTrigger from 'common/ui/HelpTrigger'
 import _ from 'lodash'
 import React from 'react'
 import CompositeSigns from 'signs/ui/display/CompositeSigns'
 import SignService from 'signs/application/SignService'
 import replaceTransliteration from 'fragmentarium/domain/replaceTransliteration'
-import InlineMarkdown from 'common/InlineMarkdown'
+import InlineMarkdown from 'common/ui/InlineMarkdown'
 import SignsSearchHelpPopover from 'signs/ui/search/SignsSearchHelpPopover'
-import ExternalLink from 'common/ExternalLink'
+import ExternalLink from 'common/ui/ExternalLink'
 import SignLogograms from 'signs/ui/display/SignLogogram/SignLogogram'
 
 export default function SignInformation({

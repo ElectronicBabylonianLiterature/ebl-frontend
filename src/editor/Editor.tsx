@@ -11,7 +11,7 @@ import specialCharacters from './SpecialCharacters.json'
 import atSnippets from './atSnippets.json'
 import hashSnippets from './hashSnippets.json'
 import AtfMode from './AtfMode'
-import ErrorBoundary from 'common/ErrorBoundary'
+import ErrorBoundary from 'common/errors/ErrorBoundary'
 import { setCompleters } from 'ace-builds/src-noconflict/ext-language_tools'
 
 function createAnnotations(compositeError): IAnnotation[] {

@@ -65,6 +65,8 @@ const setup = async (): Promise<void> => {
     </MemoryRouter>,
   ).container
   await screen.findByText('Latest additions:')
+  await screen.findByText(fragments[0].number)
+  await screen.findByText(fragments[1].number)
 }
 
 test('Snapshot', async () => {

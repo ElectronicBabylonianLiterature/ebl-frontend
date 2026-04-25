@@ -10,40 +10,58 @@ The above copyright notice and this permission notice shall be included in all c
  */
 import React, { Component } from 'react'
 import T from 'prop-types'
-import styled from 'styled-components'
 import compose from 'react-image-annotation/lib/utils/compose'
 import isMouseHovering from 'react-image-annotation/lib/utils/isMouseHovering'
 import withRelativeMousePos from 'react-image-annotation/lib/utils/withRelativeMousePos'
 
 import defaultProps from 'react-image-annotation/lib/components/defaultProps'
-import Overlay from 'react-image-annotation/lib/components/Overlay'
 import { Button, ButtonGroup, Col, Row } from 'react-bootstrap'
 import { TransformComponent, TransformWrapper } from 'react-zoom-pan-pinch'
 
 export { defaultProps }
 
-const Container = styled.div`
-  clear: both;
-  position: relative;
-  width: 100%;
-  &:hover ${Overlay} {
-    opacity: 1;
-  }
-  touch-action: ${(props) => (props.allowTouch ? 'pinch-zoom' : 'auto')};
-`
+function Container({ innerRef, allowTouch, style, ...props }) {
+  return (
+    <div
+      {...props}
+      ref={innerRef}
+      style={{
+        clear: 'both',
+        position: 'relative',
+        width: '100%',
+        touchAction: allowTouch ? 'pinch-zoom' : 'auto',
+        ...style,
+      }}
+    />
+  )
+}
 
-const Img = styled.img`
-  display: block;
-  width: 100%;
-`
+function Img({ innerRef, style, ...props }) {
+  return (
+    <img
+      {...props}
+      ref={innerRef}
+      style={{ display: 'block', width: '100%', ...style }}
+    />
+  )
+}
 
-const Items = styled.div`
-  position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
-`
+function Items({ innerRef, style, ...props }) {
+  return (
+    <div
+      {...props}
+      ref={innerRef}
+      style={{
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        bottom: 0,
+        right: 0,
+        ...style,
+      }}
+    />
+  )
+}
 
 const Target = Items
 

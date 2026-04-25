@@ -5,7 +5,7 @@ import withData from 'http/withData'
 
 import AfoRegisterRecord from 'afo-register/domain/Record'
 import AfoRegisterService from 'afo-register/application/AfoRegisterService'
-import { LiteratureRedirectBox } from 'common/LiteratureRedirectBox'
+import { LiteratureRedirectBox } from 'common/ui/LiteratureRedirectBox'
 import { AfoRegisterQuery } from './AfoRegisterSearchForm'
 import { stringify } from 'query-string'
 import { AfoRegisterRecordsListDisplay } from './AfoRegisterDisplay'

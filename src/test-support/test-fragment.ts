@@ -8,7 +8,7 @@ import { Genres } from 'fragmentarium/domain/Genres'
 import Reference from 'bibliography/domain/Reference'
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 import FragmentDto from 'fragmentarium/domain/FragmentDtos'
-import { PeriodModifiers, Periods } from 'common/period'
+import { PeriodModifiers, Periods } from 'common/utils/period'
 import { MesopotamianDate } from 'chronology/domain/Date'
 import { Acquisition } from 'fragmentarium/domain/Acquisition'
 
@@ -39,6 +39,7 @@ const externalNumbers = {
   alalahHpmNumber: '123',
   australianinstituteofarchaeologyNumber: '123',
   philadelphiaNumber: '123',
+  spurlockNumber: '123',
 }
 
 export const lines: readonly TextLineDto[] = [

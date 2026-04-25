@@ -5,7 +5,6 @@ import { ColophonStatus, ColophonType } from 'fragmentarium/domain/Colophon'
 import { fragmentFactory } from 'test-support/fragment-fixtures'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import { Promise } from 'bluebird'
-import {} from 'react-dom/test-utils'
 import userEvent from '@testing-library/user-event'
 import { Fragment } from 'fragmentarium/domain/fragment'
 
@@ -14,10 +13,34 @@ const fragmentServiceMock = new (FragmentService as jest.Mock<
   jest.Mocked<FragmentService>
 >)()
 const provenances = [
-  ['Standard Text'],
-  ['Assyria'],
-  ['Aššur'],
-  ['Dūr-Katlimmu'],
+  {
+    id: 'standard-text',
+    longName: 'Standard Text',
+    abbreviation: 'Std',
+    parent: null,
+    sortKey: 1,
+  },
+  {
+    id: 'assyria',
+    longName: 'Assyria',
+    abbreviation: 'Assa',
+    parent: null,
+    sortKey: 2,
+  },
+  {
+    id: 'assur',
+    longName: 'Aššur',
+    abbreviation: 'Ašš',
+    parent: 'Assyria',
+    sortKey: 3,
+  },
+  {
+    id: 'dur-katlimmu',
+    longName: 'Dūr-Katlimmu',
+    abbreviation: 'Dka',
+    parent: 'Assyria',
+    sortKey: 4,
+  },
 ]
 const names = ['Humbaba', 'Zababa', 'Enkidu']
 
@@ -46,6 +69,7 @@ const renderColophonEditor = async function (
       fragmentService={fragmentServiceMock}
     />,
   )
+  await screen.findByLabelText('save-colophon')
 }
 
 describe('ColophonEditor', () => {

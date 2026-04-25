@@ -2,13 +2,18 @@ import Reference from 'bibliography/domain/Reference'
 import { Joins } from 'fragmentarium/domain/join'
 import { immerable } from 'immer'
 import _ from 'lodash'
-import { Period, PeriodModifier, PeriodModifiers, Periods } from 'common/period'
+import {
+  Period,
+  PeriodModifier,
+  PeriodModifiers,
+  Periods,
+} from 'common/utils/period'
 import {
   compareAssyriaAndBabylonia,
   compareName,
   compareStandardText,
+  getProvenanceByName,
   Provenance,
-  Provenances,
 } from './provenance'
 
 export const ManuscriptTypes = {
@@ -26,14 +31,15 @@ export const ManuscriptTypes = {
     name: 'Quotation',
     abbreviation: 'Quo',
     displayName: null,
-    order: 4,
+    order: 5,
   },
-  Excerpt: { name: 'Excerpt', abbreviation: 'Ex', displayName: null, order: 3 },
+  Amulet: { name: 'Amulet', abbreviation: 'Amu', displayName: null, order: 3 },
+  Excerpt: { name: 'Excerpt', abbreviation: 'Ex', displayName: null, order: 4 },
   Parallel: {
     name: 'Parallel',
     abbreviation: 'Par',
     displayName: null,
-    order: 5,
+    order: 6,
   },
 } as const
 
@@ -46,6 +52,7 @@ export const types = [
   ManuscriptTypes.Varia,
   ManuscriptTypes.Commentary,
   ManuscriptTypes.Quotation,
+  ManuscriptTypes.Amulet,
   ManuscriptTypes.Excerpt,
   ManuscriptTypes.Parallel,
 ] as const
@@ -85,7 +92,7 @@ export class Manuscript {
     readonly accession: string = '',
     readonly periodModifier: PeriodModifier = PeriodModifiers.None,
     readonly period: Period = Periods['Neo-Assyrian'],
-    readonly provenance: Provenance = Provenances.Nineveh,
+    readonly provenance: Provenance = getProvenanceByName('Nineveh'),
     readonly type: ManuscriptType = ManuscriptTypes.Library,
     readonly notes: string = '',
     readonly colophon: string = '',

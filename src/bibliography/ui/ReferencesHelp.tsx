@@ -2,7 +2,7 @@ import React from 'react'
 import _ from 'lodash'
 import classnames from 'classnames'
 import { Popover } from 'react-bootstrap'
-import HelpTrigger from 'common/HelpTrigger'
+import HelpTrigger from 'common/ui/HelpTrigger'
 
 import './ReferencesHelp.sass'
 

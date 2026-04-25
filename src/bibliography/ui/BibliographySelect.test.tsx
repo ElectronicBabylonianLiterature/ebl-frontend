@@ -3,7 +3,6 @@ import { render, screen, waitFor } from '@testing-library/react'
 import { Promise } from 'bluebird'
 
 import BibliographySelect from 'bibliography/ui/BibliographySelect'
-import selectEvent from 'react-select-event'
 import userEvent from '@testing-library/user-event'
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 
@@ -24,15 +23,21 @@ describe('no container short, no collection number', () => {
     renderBibliographySelect()
   }
 
-  it('Displays the entry label', () => {
+  it('Displays the entry label', async () => {
     setup()
-    expect(screen.getByText(entry.label)).toBeVisible()
+    expect(await screen.findByText(entry.label)).toBeVisible()
   })
 
   it('Calls onChange when selecting an entry', async () => {
     setup()
     await userEvent.type(screen.getByLabelText('label'), entry.label)
-    await selectEvent.select(screen.getByLabelText('label'), entry.label)
+    await userEvent.click(
+      await screen.findByText(
+        (text, element) =>
+          text === entry.label &&
+          (element?.getAttribute('class') ?? '').includes('option'),
+      ),
+    )
     await waitFor(() => expect(onChange).toHaveBeenCalledWith(entry))
   })
 })
@@ -43,9 +48,9 @@ describe('container short, no collection number', () => {
     entry = bibliographyEntryFactory.build({}, { transient: cslData })
     renderBibliographySelect()
   }
-  it('Displays the entry label', () => {
+  it('Displays the entry label', async () => {
     setup()
-    expect(screen.getByText(entry.label)).toBeVisible()
+    expect(await screen.findByText(entry.label)).toBeVisible()
   })
 })
 
@@ -58,9 +63,9 @@ describe('container short, collection number', () => {
     renderBibliographySelect()
   }
 
-  it('Displays the entry label', () => {
+  it('Displays the entry label', async () => {
     setup()
-    expect(screen.getByText(entry.label)).toBeVisible()
+    expect(await screen.findByText(entry.label)).toBeVisible()
   })
 })
 describe('no container short, collection number', () => {
@@ -71,9 +76,9 @@ describe('no container short, collection number', () => {
     entry = bibliographyEntryFactory.build({}, { transient: cslData })
     renderBibliographySelect()
   }
-  it('Displays the entry label', () => {
+  it('Displays the entry label', async () => {
     setup()
-    expect(screen.getByText(entry.label)).toBeVisible()
+    expect(await screen.findByText(entry.label)).toBeVisible()
   })
 })
 

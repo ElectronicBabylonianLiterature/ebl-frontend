@@ -2,7 +2,7 @@ import React from 'react'
 import { render, screen } from '@testing-library/react'
 import { ReferencesHelp } from './ReferencesHelp'
 
-jest.mock('common/HelpTrigger', () => {
+jest.mock('common/ui/HelpTrigger', () => {
   const MockedHelpTrigger = (props: { overlay: React.ReactNode }) => (
     <div data-testid="help-trigger">{props.overlay}</div>
   )

@@ -1,5 +1,6 @@
 import React from 'react'
-import { render, screen, fireEvent, RenderResult } from '@testing-library/react'
+import { render, screen, RenderResult } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import Download from 'corpus/ui/Download'
 import { ChapterDisplay } from 'corpus/domain/chapter'
 import { chapterDisplayFactory } from 'test-support/chapter-fixtures'
@@ -31,7 +32,7 @@ async function setup() {
       textService={textServiceMock}
     />,
   )
-  fireEvent.click(screen.getByRole('button'))
+  await userEvent.click(screen.getByRole('button'))
 }
 
 describe.each([

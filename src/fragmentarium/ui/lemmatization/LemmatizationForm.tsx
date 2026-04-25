@@ -6,7 +6,7 @@ import Lemma from 'transliteration/domain/Lemma'
 import { LemmatizationToken } from 'transliteration/domain/Lemmatization'
 import Promise from 'bluebird'
 import Word from 'dictionary/domain/Word'
-import InlineMarkdown from 'common/InlineMarkdown'
+import InlineMarkdown from 'common/ui/InlineMarkdown'
 import { components } from 'react-select'
 import type {
   OptionProps,

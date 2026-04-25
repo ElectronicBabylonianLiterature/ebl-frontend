@@ -33,6 +33,7 @@ const alalahHpmNumber = 'L123'
 const australianinstituteofarchaeologyNumber = 'L123'
 const philadelphiaNumber = 'P123'
 const yalePeabodyNumber = 'y123'
+const spurlockNumber = 'S123'
 let fragment: Fragment
 let container: HTMLElement
 
@@ -70,6 +71,7 @@ describe('external resources', () => {
             australianinstituteofarchaeologyNumber,
             philadelphiaNumber,
             yalePeabodyNumber,
+            spurlockNumber,
           }),
         },
       },
@@ -173,6 +175,11 @@ describe('external resources', () => {
       'https://collections.peabody.yale.edu/search/Record/YPM-',
       yalePeabodyNumber,
     ],
+    [
+      'Spurlock Museum',
+      'https://www.spurlock.illinois.edu/collections/search-collection/details.php?a=',
+      spurlockNumber,
+    ],
   ])('%s number is shown', async (label, link, number) => {
     setup()
     expect(screen.getByLabelText(`${label} text ${number}`)).toHaveAttribute(
@@ -227,6 +234,7 @@ describe('missing external resources', () => {
     'Australian Institute of Archaeology',
     'Penn Museum',
     'Yale Babylonian Collection',
+    'Spurlock Museum',
   ])('Mising %s number is not shown', async (label) => {
     setup()
     expect(screen.queryByText(label)).not.toBeInTheDocument()

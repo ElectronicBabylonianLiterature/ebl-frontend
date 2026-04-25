@@ -1,10 +1,10 @@
-import ListForm from 'common/List'
+import ListForm from 'common/ui/List'
 import { Manuscript } from 'corpus/domain/manuscript'
 import React from 'react'
 import { castDraft, produce } from 'immer'
 import { Col, Form, Row } from 'react-bootstrap'
 import _ from 'lodash'
-import ArrayInput from 'common/ArrayInput'
+import ArrayInput from 'common/ui/ArrayInput'
 import Editor from 'editor/Editor'
 import { createManuscriptLine, ManuscriptLine } from 'corpus/domain/line'
 

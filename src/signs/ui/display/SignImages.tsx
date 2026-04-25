@@ -8,7 +8,7 @@ import _ from 'lodash'
 import { Link } from 'react-router-dom'
 import { CroppedAnnotation } from 'signs/domain/CroppedAnnotation'
 import './SignImages.css'
-import { periodFromAbbreviation, periods } from 'common/period'
+import { periodFromAbbreviation, periods } from 'common/utils/period'
 import DateDisplay from 'chronology/ui/DateDisplay'
 
 type Props = {

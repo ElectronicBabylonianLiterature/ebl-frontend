@@ -2,13 +2,13 @@ import React, { Component, Fragment, ReactNode } from 'react'
 import { Link } from 'react-router-dom'
 import _ from 'lodash'
 import './Word.css'
-import InlineMarkdown from 'common/InlineMarkdown'
+import InlineMarkdown from 'common/ui/InlineMarkdown'
 import Word, {
   Form as WordForm,
   Derived as WordDerived,
   AmplifiedMeaning,
 } from 'dictionary/domain/Word'
-import ErrorBoundary from 'common/ErrorBoundary'
+import ErrorBoundary from 'common/errors/ErrorBoundary'
 
 export function Lemma({
   container = 'em',

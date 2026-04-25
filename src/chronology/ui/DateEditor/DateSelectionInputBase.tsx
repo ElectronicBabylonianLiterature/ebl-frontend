@@ -1,4 +1,4 @@
-import { BrokenUncertainProps } from 'common/BrokenAndUncertain'
+import { BrokenUncertainProps } from 'common/ui/BrokenAndUncertain'
 import React from 'react'
 import { Form } from 'react-bootstrap'
 

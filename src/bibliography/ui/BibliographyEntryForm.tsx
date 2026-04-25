@@ -5,8 +5,8 @@ import _ from 'lodash'
 import Promise from 'bluebird'
 import { Parser } from 'html-to-react'
 
-import ExternalLink from 'common/ExternalLink'
-import Spinner from 'common/Spinner'
+import ExternalLink from 'common/ui/ExternalLink'
+import Spinner from 'common/ui/Spinner'
 import BibliographyEntry, {
   CslData,
 } from 'bibliography/domain/BibliographyEntry'

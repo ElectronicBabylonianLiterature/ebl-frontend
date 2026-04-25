@@ -2,7 +2,7 @@ import React, { ReactNode } from 'react'
 import { FormGroup } from 'react-bootstrap'
 
 import FormList from './FormList'
-import List from 'common/List'
+import List from 'common/ui/List'
 import { Derived } from 'dictionary/domain/Word'
 
 export default function DerivedList({

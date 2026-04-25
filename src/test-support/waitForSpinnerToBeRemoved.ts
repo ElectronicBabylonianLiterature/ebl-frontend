@@ -1,5 +1,7 @@
-import { waitForElementToBeRemoved } from '@testing-library/react'
+import { waitFor } from '@testing-library/react'
 
 export async function waitForSpinnerToBeRemoved(screen): Promise<void> {
-  await waitForElementToBeRemoved(() => screen.queryAllByLabelText('Spinner'))
+  await waitFor(() => {
+    expect(screen.queryAllByLabelText('Spinner')).toHaveLength(0)
+  })
 }

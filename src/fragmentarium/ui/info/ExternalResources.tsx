@@ -29,6 +29,7 @@ import {
   PhiladelphiaLink,
   BmIdLink,
   YalePeabodyLink,
+  spurlockLink,
   OraccLinks,
   SealLinks,
 } from './ExternalNumberLink'
@@ -86,6 +87,7 @@ export default function ExternalResources({
     ],
     [fragment.getExternalNumber('philadelphiaNumber'), PhiladelphiaLink],
     [fragment.getExternalNumber('yalePeabodyNumber'), YalePeabodyLink],
+    [fragment.getExternalNumber('spurlockNumber'), spurlockLink],
   ]
 
   return (

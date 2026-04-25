@@ -146,6 +146,7 @@ describe('Search', () => {
       number: 'K 2',
     })
 
+    expect(container).toMatchSnapshot()
     expect(container).toHaveTextContent('Did you mean K.2?')
   })
 })

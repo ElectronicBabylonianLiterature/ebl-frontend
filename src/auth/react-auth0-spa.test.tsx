@@ -517,11 +517,10 @@ describe('Auth0Provider', () => {
     })
 
     test('provides guest access when session validation throws error', async () => {
-      jest.spyOn(console, 'warn').mockImplementation()
+      const consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation()
+      const checkSessionError = new Error('Session check failed')
       const auth0ClientMock = createDefaultAuth0ClientMock({
-        checkSession: jest
-          .fn()
-          .mockRejectedValue(new Error('Session check failed')),
+        checkSession: jest.fn().mockRejectedValue(checkSessionError),
       })
       ;(createAuth0Client as jest.Mock).mockResolvedValue(auth0ClientMock)
 
@@ -533,7 +532,12 @@ describe('Auth0Provider', () => {
 
       await screen.findByText('child')
       expect(screen.getByText('child')).toBeInTheDocument()
-      ;(console.warn as jest.Mock).mockRestore()
+      expect(consoleWarnSpy).toHaveBeenCalledWith(
+        'Session check failed, falling back to guest:',
+        checkSessionError,
+      )
+
+      consoleWarnSpy.mockRestore()
     })
   })
 
@@ -593,11 +597,12 @@ describe('Auth0Provider', () => {
     })
 
     test('remains functional despite authentication session errors', async () => {
-      jest.spyOn(console, 'error').mockImplementation()
+      const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation()
+      const authError = new Error('Auth error')
       const auth0ClientMock = createDefaultAuth0ClientMock({
         isAuthenticated: jest.fn().mockResolvedValue(true),
         getUser: jest.fn().mockResolvedValue({ name: 'Test' }),
-        getTokenSilently: jest.fn().mockRejectedValue(new Error('Auth error')),
+        getTokenSilently: jest.fn().mockRejectedValue(authError),
       })
       ;(createAuth0Client as jest.Mock).mockResolvedValue(auth0ClientMock)
 
@@ -610,7 +615,12 @@ describe('Auth0Provider', () => {
       await waitFor(() => {
         expect(screen.getByTestId('protected-content')).toBeInTheDocument()
       })
-      ;(console.error as jest.Mock).mockRestore()
+      expect(consoleErrorSpy).toHaveBeenCalledWith(
+        'Failed to create authenticated session:',
+        authError,
+      )
+
+      consoleErrorSpy.mockRestore()
     })
   })
 

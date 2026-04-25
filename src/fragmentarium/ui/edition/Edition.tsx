@@ -13,8 +13,8 @@ type Props = {
   fragment: Fragment
   updateEdition: (fields: EditionFields) => Bluebird<Fragment>
   fragmentSearchService: FragmentSearchService
-  disabled: boolean
-  onToggle
+  disabled?: boolean
+  onToggle: () => void
   isColumnVisible: boolean
 }
 
@@ -22,7 +22,7 @@ function Edition({
   fragment,
   fragmentSearchService,
   updateEdition,
-  disabled,
+  disabled = false,
   onToggle,
   isColumnVisible,
 }: Props): JSX.Element {
@@ -45,10 +45,6 @@ function Edition({
       </p>
     </>
   )
-}
-
-Edition.defaultProps = {
-  disabled: false,
 }
 
 export default Edition

@@ -10,7 +10,7 @@ import {
   MetaDeleteButton,
 } from 'fragmentarium/ui/info/MetaEditButton'
 import FragmentService from 'fragmentarium/application/FragmentService'
-import ExternalLink from 'common/ExternalLink'
+import ExternalLink from 'common/ui/ExternalLink'
 
 type Props = {
   fragment: Fragment

@@ -1,6 +1,6 @@
 import React from 'react'
 import _ from 'lodash'
-import InlineMarkdown from 'common/InlineMarkdown'
+import InlineMarkdown from 'common/ui/InlineMarkdown'
 import Reference from 'bibliography/domain/Reference'
 import Citation from 'bibliography/domain/Citation'
 import referencePopover from './referencePopover'

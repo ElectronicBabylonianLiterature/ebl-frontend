@@ -58,9 +58,18 @@ describe('DossiersRepository - fetchAllDossiers', () => {
   })
 
   it('handles API errors gracefully', async () => {
+    const consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation()
     apiClient.fetchJson.mockRejectedValueOnce(new Error('API Error'))
+
     const response = await dossiersRepository.fetchAllDossiers()
+
     expect(response).toEqual([])
+    expect(consoleWarnSpy).toHaveBeenCalledWith(
+      'Failed to fetch dossiers:',
+      'API Error',
+    )
+
+    consoleWarnSpy.mockRestore()
   })
 })
 
@@ -354,6 +363,7 @@ describe('Dossiers Repository - fetchFilteredDossiers', () => {
   })
 
   it('falls back to fetchAllDossiers when filter endpoint fails', async () => {
+    const consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation()
     apiClient.fetchJson
       .mockRejectedValueOnce(new Error('Filter endpoint not found'))
       .mockResolvedValueOnce([resultStub])
@@ -370,6 +380,12 @@ describe('Dossiers Repository - fetchFilteredDossiers', () => {
       false,
     )
     expect(apiClient.fetchJson).toHaveBeenNthCalledWith(2, '/dossiers', false)
+    expect(consoleWarnSpy).toHaveBeenCalledWith(
+      'Failed to fetch filtered dossiers:',
+      'Filter endpoint not found',
+    )
+
+    consoleWarnSpy.mockRestore()
   })
 
   it('handles empty results', async () => {

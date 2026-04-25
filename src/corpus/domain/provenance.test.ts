@@ -2,24 +2,94 @@ import {
   compareAssyriaAndBabylonia,
   compareName,
   compareStandardText,
-  Provenance,
   provenances,
   Provenances,
-} from './provenance'
-import { testContainsAllValues } from 'test-support/test-values-complete'
+  setProvenanceRecords,
+} from 'corpus/domain/provenance'
+import {
+  restoreProvenanceState,
+  snapshotProvenanceState,
+} from 'test-support/provenance-state'
 
-const cities = Object.values(Provenances).filter(
-  (provenance) =>
-    !(
-      [
-        Provenances['Standard Text'],
-        Provenances.Assyria,
-        Provenances.Babylonia,
-      ] as Provenance[]
-    ).includes(provenance),
-)
+let provenanceSnapshot = snapshotProvenanceState()
 
-testContainsAllValues(Provenances, provenances, 'provenances')
+beforeAll(() => {
+  provenanceSnapshot = snapshotProvenanceState()
+  setProvenanceRecords([
+    {
+      id: 'standard-text',
+      longName: 'Standard Text',
+      abbreviation: 'ST',
+      parent: null,
+      sortKey: 1,
+    },
+    {
+      id: 'assyria',
+      longName: 'Assyria',
+      abbreviation: 'Ass',
+      parent: null,
+      sortKey: 2,
+    },
+    {
+      id: 'babylonia',
+      longName: 'Babylonia',
+      abbreviation: 'Bab',
+      parent: null,
+      sortKey: 3,
+    },
+    {
+      id: 'babylon',
+      longName: 'Babylon',
+      abbreviation: 'Bbl',
+      parent: 'Babylonia',
+      sortKey: 4,
+    },
+    {
+      id: 'cutha',
+      longName: 'Cutha',
+      abbreviation: 'Cut',
+      parent: 'Babylonia',
+      sortKey: 5,
+    },
+    {
+      id: 'larsa',
+      longName: 'Larsa',
+      abbreviation: 'Lar',
+      parent: 'Babylonia',
+      sortKey: 6,
+    },
+    {
+      id: 'mari',
+      longName: 'Mari',
+      abbreviation: 'Mar',
+      parent: 'Babylonia',
+      sortKey: 7,
+    },
+  ])
+})
+
+afterAll(() => {
+  restoreProvenanceState(provenanceSnapshot)
+})
+
+const cities = [
+  Provenances.Babylon,
+  Provenances.Cutha,
+  Provenances.Larsa,
+  Provenances.Mari,
+]
+
+test('provenances contains expected values', () => {
+  expect(provenances).toEqual([
+    Provenances['Standard Text'],
+    Provenances.Assyria,
+    Provenances.Babylonia,
+    Provenances.Babylon,
+    Provenances.Cutha,
+    Provenances.Larsa,
+    Provenances.Mari,
+  ])
+})
 
 function makePairs<T>(values: T[]): [T, T][] {
   return values.flatMap((first, index) =>
@@ -35,9 +105,14 @@ describe('compareStandardText', () => {
     },
   )
 
-  const realProvenances = Object.values(Provenances).filter(
-    (provenance) => provenance !== Provenances['Standard Text'],
-  )
+  const realProvenances = [
+    Provenances.Assyria,
+    Provenances.Babylonia,
+    Provenances.Babylon,
+    Provenances.Cutha,
+    Provenances.Larsa,
+    Provenances.Mari,
+  ]
 
   test.each(realProvenances)('Standard Text and %s', (provenance) => {
     expect(

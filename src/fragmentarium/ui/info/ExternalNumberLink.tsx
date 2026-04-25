@@ -1,4 +1,4 @@
-import ExternalLink from 'common/ExternalLink'
+import ExternalLink from 'common/ui/ExternalLink'
 import React, { Fragment } from 'react'
 
 interface Props {
@@ -298,6 +298,17 @@ export function PhiladelphiaLink({ number }: { number: string }): JSX.Element {
       number={number}
       baseUrl={'https://www.penn.museum/collections/object/'}
       label={'Penn Museum'}
+    />
+  )
+}
+export function spurlockLink({ number }: { number: string }): JSX.Element {
+  return (
+    <ExternalNumberLink
+      number={number}
+      baseUrl={
+        'https://www.spurlock.illinois.edu/collections/search-collection/details.php?a='
+      }
+      label={'Spurlock Museum'}
     />
   )
 }
