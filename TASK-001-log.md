@@ -258,6 +258,50 @@ Correct behaviour: Year 0 of Nabonidus is the accession year, which is the same 
 - BUG-1 (delete-date hang) ✓
 - BUG-2 (king flags persistence) ✓
 
+---
+
+## 2026-04-23 — BUG-5 implementation in progress (year 0 + non-numeric previous reign)
+
+- Implemented BUG-5 fix in `src/chronology/domain/ZeroYearKingFinder.ts`:
+  - Reworked year-0 predecessor selection to walk back through dynasty kings until the nearest previous king with numeric `totalOfYears` is found.
+  - Added strict numeric parsing of `totalOfYears` (`?` suffix tolerated, non-numeric values like `"3 months"` ignored for calculation).
+  - Updated `getLastYearField(...)` to derive the calculation year from numeric-only `totalOfYears`.
+- Preserved existing display semantics:
+  - Year-0 display still uses original selected king and year via `zeroYearKing` / `yearZero`.
+  - Calculation path uses prior numeric king/year only.
+- Added regression coverage:
+  - New file `src/chronology/domain/ZeroYearKingFinder.test.ts` verifies:
+    - Nabonidus predecessor in dynasty data is Labaši-Marduk with `totalOfYears: "3 months"` (non-numeric).
+    - Year-0 fallback walks back to Neriglissar with year `4`.
+  - Extended `src/chronology/domain/Date.test.ts` with a BUG-5 regression ensuring:
+    - UI string keeps `12.V.0 Nabonidus`.
+    - Conversion no longer surfaces `Labaši-Marduk` for this case.
+    - Computed modern date resolves deterministically (`18 August 556 BCE PJC`).
+- Lint follow-up:
+  - Fixed `eslint(no-loop-func)` by removing callback closure inside loop and replacing with explicit loop iteration.
+
+## 2026-04-23 — BUG-5 comprehensive conversion-path check completed
+
+- Expanded year-0 coverage to validate conversion behavior across multiple paths, not only the Nabonidus/Labaši-Marduk case.
+- Added comprehensive regressions in `src/chronology/domain/ZeroYearKingFinder.test.ts`:
+  - no-op when year is not `0`
+  - no-op for first king in dynasty
+  - walkback over non-numeric `totalOfYears`
+  - uncertain propagation from `?` in previous king `totalOfYears`
+  - fallback behavior when no numeric predecessor exists
+- Added/expanded conversion-level regressions in `src/chronology/domain/Date.test.ts`:
+  - confirmed Nabonassar-era year-0 display/calculation split remains correct
+  - added king-date path year-0 regression (`Rimuš` -> calculation via `Sargon` year `56?`)
+  - added no-numeric-predecessor conversion case preserving original king/year data
+- Full conversion-path confidence check done by running:
+  - `yarn lint` (pass)
+  - `yarn tsc` (pass)
+  - focused tests for BUG-5 files (pass)
+  - full suite `CI=1 yarn test --no-coverage --watch=false` (pass: `293` suites, `2900` passed tests, `2` skipped, no failing tests)
+- During full-suite gate, an unrelated failing interaction test surfaced in `src/chronology/ui/Kings/Kings.test.tsx`.
+  - Stabilized the test by selecting the option via explicit click on option text instead of keyboard navigation that depended on focus behavior.
+  - Re-ran gates after this adjustment; all remained green.
+
 **Deferred bugs (scope review needed):**
 
 - BUG-3 (non-numeric date spellings) — Scope expanded; implementation approach revised.
@@ -361,3 +405,122 @@ Correct behaviour: Year 0 of Nabonidus is the accession year, which is the same 
   - `src/chronology/domain/DateRange.ts`
 - Added project gate in `.github/copilot-instructions.md`:
   - DRY is now explicit hard gate for repeated domain logic/mappings.
+
+---
+
+## 2026-04-27 — BUG-5 editor initialization bug found and fixed
+
+### Symptom (reported by user)
+
+After saving and refreshing with Nabonidus year 0, the saved/display date shows "1.I.0 Nabonidus" correctly. But when opening the date editor, the king dropdown shows "Neriglissar" and the year field shows "4" — the calculation-converted values — instead of the original user-entered Nabonidus / 0.
+
+### Root cause (confirmed)
+
+`useDateSelectionState` in `src/chronology/application/DateSelectionState.ts` initializes editor field state from `date?.year.value` and `date?.king` — which are the calculation-converted values set by the constructor. The original user-entered values are stored in `date?.yearZero` and `date?.zeroYearKing` but were not consulted during editor initialization.
+
+Three hooks were affected:
+
+- `useYearState`: read `date?.year.value/.isBroken/.isUncertain` — should prefer `date?.yearZero`
+- `useKingAndEponymBrokenUncertain`: read `date?.king?.isBroken/.isUncertain` — should prefer `date?.zeroYearKing`
+- `useKingAndEponymDateParams`: initialized `king` state from `date?.king` — should prefer `date?.zeroYearKing`
+
+### Fix applied
+
+`src/chronology/application/DateSelectionState.ts`:
+
+- `useYearState`: `originalYear = date?.yearZero ?? date?.year`; uses `originalYear` for value/broken/uncertain
+- `useKingAndEponymBrokenUncertain`: `originalKing = date?.zeroYearKing ?? date?.king`; uses `originalKing` for broken/uncertain
+- `useKingAndEponymDateParams`: initializes king state with `date?.zeroYearKing ?? date?.king`
+
+### Test added
+
+`src/chronology/ui/DateEditor/DateSelectionInput.test.tsx` — added `useDateSelectionState` suite with regression:
+
+- Creates Nabonidus year 0 date, passes it to `useDateSelectionState`
+- Asserts `result.current.yearValue === '0'` and `result.current.king?.name === 'Nabonidus'`
+
+### Gate results
+
+- `yarn lint` — passed
+- `yarn tsc` — passed
+- Full suite — 293 suites, 2902 passed, 0 failures
+
+### Symptom (reported by user)
+
+Changing to Nabonidus 0.1.1, saving, then refreshing the page displays "1.I.4 Neriglissar" instead of "1.I.0 Nabonidus".
+
+### Root cause (confirmed)
+
+`toDto()` in `src/chronology/domain/Date.ts` serialized the **calculation-converted** internal state, not the original user-entered state:
+
+- The constructor rewrites `this.king = Neriglissar` and `this.year = {value: '4'}` for calendar calculation
+- It stores the originals as `this.zeroYearKing = Nabonidus` and `this.yearZero = {value: '0'}` for display only
+- `toDto()` spreads `...this` (which includes converted `this.year = '4'`) and explicitly reads `this.king.orderGlobal` (Neriglissar = 164)
+- The backend therefore receives and stores `{king: {orderGlobal: 164}, year: {value: '4'}}` — Neriglissar year 4
+- On page reload, `fromJson()` reconstructs Neriglissar year 4 with no year-0 trigger, displaying "1.I.4 Neriglissar"
+
+### Fix applied
+
+`src/chronology/domain/Date.ts` — updated `toDto()` to use `this.zeroYearKing ?? this.king` for the king field and `this.yearZero ?? this.year` for the year field:
+
+```ts
+toDto(): MesopotamianDateDto {
+  const originalKing = this.zeroYearKing ?? this.king
+  let king
+  if (originalKing?.orderGlobal) {
+    king = {
+      orderGlobal: originalKing.orderGlobal,
+      isBroken: originalKing.isBroken,
+      isUncertain: originalKing.isUncertain,
+    }
+  }
+  return {
+    ...this,
+    year: this.yearZero ?? this.year,
+    king,
+  }
+}
+```
+
+### Test added
+
+`src/chronology/domain/Date.test.ts` — added `'round-trips year-0 date: toDto preserves original king and year-0 so fromJson restores them'`:
+
+- Creates `MesopotamianDate` with Nabonidus king, year 0
+- Asserts `toDto()` produces `king.orderGlobal === 166` (Nabonidus) and `year.value === '0'`
+- Reconstructs via `fromJson(dto)` and asserts display shows "1.I.0 Nabonidus" with same modern date
+
+### Gate results
+
+- `yarn lint` — passed
+- `yarn tsc` — passed
+- Full suite — 293 suites, 2901 passed, 0 failures
+
+---
+
+## 2026-04-27 — BUG-4 comprehensive conversion-path check completed
+
+Completed the remaining BUG-4 checklist item by validating intercalary handling across all conversion entry points and partial-date range paths.
+
+### Additional tests added
+
+- `src/chronology/domain/DateConverter.test.ts`
+  - `falls back intercalary VI to VI when Seleucid year has no month 13`
+  - `keeps intercalary VI when king-date year has month 13`
+  - `falls back intercalary VI to VI when king-date year has no month 13`
+  - `keeps intercalary XII when king-date year has month 14`
+  - `falls back intercalary XII to XII when king-date year has no month 14`
+- `src/chronology/domain/Date.test.ts`
+  - `falls back intercalary VI metadata for Seleucid-era conversion when month 13 is unavailable`
+  - `falls back intercalary XII metadata for Nabonassar-era conversion when month 14 is unavailable`
+  - `falls back intercalary XII metadata for partial Seleucid range when month 14 is unavailable`
+  - `falls back intercalary XII metadata for partial Nabonassar range when month 14 is unavailable`
+
+### Validation
+
+- Targeted chronology tests passed:
+  - `CI=1 yarn test src/chronology/domain/DateConverter.test.ts src/chronology/domain/Date.test.ts --no-coverage --watch=false`
+- Full gates passed:
+  - `yarn lint`
+  - `yarn tsc`
+  - `CI=1 yarn test --no-coverage --watch=false` (293 suites, 2911 passed, 2 skipped, 0 failures)

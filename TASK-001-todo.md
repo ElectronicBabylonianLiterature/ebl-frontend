@@ -45,19 +45,23 @@ Trello card: "Fixes to date converter" (reported by Zsombor Földi / ilya.o.khai
 - [x] Trace through `setToMesopotamianDate` / `shiftMesopotamianMonthIfNoMatchFound` for the failing date
 - [x] Identify which code path skips intercalary handling (SE-era path, king-date path, or data gap)
 - [x] Fix the conversion to respect intercalary months correctly
+- [x] Comprehensive check of all conversion paths for different intercalary months handling
 - [x] Add / update tests
 
 ### BUG-5 · Year 0 of a king converted incorrectly (e.g. VAT.8439 Nabonidus+0 → Labaši-Marduk+3 months)
 
-- [ ] Confirm that `ZeroYearKingFinder` returns Labaši-Marduk as previous king of Nabonidus
-- [ ] Confirm `totalOfYears` for Labaši-Marduk is "3 months" and is non-numeric
-- [ ] Preserve original selected king name and displayed year `0` in the UI
-- [ ] Walk back past kings with non-numeric `totalOfYears` for calculation only
-- [ ] Fix `getPreviousKingAndYearIfYearZero` / `getLastYearField` accordingly
-- [ ] Add / update tests
+- [x] Confirm that `ZeroYearKingFinder` returns Labaši-Marduk as previous king of Nabonidus
+- [x] Confirm `totalOfYears` for Labaši-Marduk is "3 months" and is non-numeric
+- [x] Preserve original selected king name and displayed year `0` in the UI
+- [x] Walk back past kings with non-numeric `totalOfYears` for calculation only
+- [x] Fix `getPreviousKingAndYearIfYearZero` / `getLastYearField` accordingly
+- [x] Comprehensive check of all conversion paths for different year 0 king-date handling
+- [x] Fix `toDto()` to serialize the original king/year-0 (not the calculation-converted values) for correct round-trip persistence
+- [x] Fix editor initialization to populate king and year from original user-entered values (not calculation-converted values)
+- [x] Add / update tests
 
 ### Gates (must pass before PR)
 
 - [x] `yarn lint` — no errors
 - [x] `yarn tsc` — no errors
-- [ ] Full test suite — no failures, no console warnings/errors
+- [x] Full test suite — no failures, no console warnings/errors

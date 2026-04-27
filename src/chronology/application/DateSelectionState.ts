@@ -103,10 +103,11 @@ export interface DateSelectionState extends DateSelectionStateParams {
 }
 
 function useYearState(date?: MesopotamianDate): YearStateParams {
-  const [yearValue, setYearValue] = useState(date?.year.value ?? '')
-  const [yearBroken, setYearBroken] = useState(date?.year.isBroken ?? false)
+  const originalYear = date?.yearZero ?? date?.year
+  const [yearValue, setYearValue] = useState(originalYear?.value ?? '')
+  const [yearBroken, setYearBroken] = useState(originalYear?.isBroken ?? false)
   const [yearUncertain, setYearUncertain] = useState(
-    date?.year.isUncertain ?? false,
+    originalYear?.isUncertain ?? false,
   )
   return {
     yearValue,
@@ -179,15 +180,16 @@ function useDateConditionParams(date?: MesopotamianDate): DateConditionParams {
 function useKingAndEponymBrokenUncertain(
   date?: MesopotamianDate,
 ): KingAndEponymBrokenUncertainParams {
-  const [kingBroken, setKingBroken] = useState(date?.king?.isBroken ?? false)
+  const originalKing = date?.zeroYearKing ?? date?.king
+  const [kingBroken, setKingBroken] = useState(originalKing?.isBroken ?? false)
   const [kingUncertain, setKingUncertain] = useState(
-    date?.king?.isUncertain ?? false,
+    originalKing?.isUncertain ?? false,
   )
   const [eponymBroken, setEponymBroken] = useState(
-    date?.king?.isBroken ?? false,
+    originalKing?.isBroken ?? false,
   )
   const [eponymUncertain, setEponymUncertain] = useState(
-    date?.king?.isUncertain ?? false,
+    originalKing?.isUncertain ?? false,
   )
   return {
     kingBroken,
@@ -204,7 +206,9 @@ function useKingAndEponymBrokenUncertain(
 function useKingAndEponymDateParams(
   date?: MesopotamianDate,
 ): KingAndEponymDateParams {
-  const [king, setKing] = useState<KingDateField | undefined>(date?.king)
+  const [king, setKing] = useState<KingDateField | undefined>(
+    date?.zeroYearKing ?? date?.king,
+  )
   const [eponym, setEponym] = useState<EponymDateField | undefined>(
     date?.eponym,
   )

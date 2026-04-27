@@ -21,16 +21,18 @@ export class MesopotamianDate extends MesopotamianDateString {
   }
 
   toDto(): MesopotamianDateDto {
+    const originalKing = this.zeroYearKing ?? this.king
     let king
-    if (this?.king?.orderGlobal) {
+    if (originalKing?.orderGlobal) {
       king = {
-        orderGlobal: this?.king?.orderGlobal,
-        isBroken: this?.king?.isBroken,
-        isUncertain: this?.king?.isUncertain,
+        orderGlobal: originalKing.orderGlobal,
+        isBroken: originalKing.isBroken,
+        isUncertain: originalKing.isUncertain,
       }
     }
     return {
       ...this,
+      year: this.yearZero ?? this.year,
       king,
     }
   }

@@ -167,8 +167,33 @@ describe('DateConverter', () => {
     expect(mesopotamianDate.calendar.mesopotamianMonth).toEqual(14)
   })
 
+  test('falls back intercalary VI to VI when Seleucid year has no month 13', () => {
+    mesopotamianDate.setToSeBabylonianDate(2, 13, 16)
+    expect(mesopotamianDate.calendar.mesopotamianMonth).toEqual(6)
+  })
+
   test('falls back intercalary XII to XII when Seleucid year has no month 14', () => {
     mesopotamianDate.setToSeBabylonianDate(2, 14, 16)
+    expect(mesopotamianDate.calendar.mesopotamianMonth).toEqual(12)
+  })
+
+  test('keeps intercalary VI when king-date year has month 13', () => {
+    mesopotamianDate.setToMesopotamianDate('Nebuchadnezzar II', 21, 13, 16)
+    expect(mesopotamianDate.calendar.mesopotamianMonth).toEqual(13)
+  })
+
+  test('falls back intercalary VI to VI when king-date year has no month 13', () => {
+    mesopotamianDate.setToMesopotamianDate('Nebuchadnezzar II', 22, 13, 16)
+    expect(mesopotamianDate.calendar.mesopotamianMonth).toEqual(6)
+  })
+
+  test('keeps intercalary XII when king-date year has month 14', () => {
+    mesopotamianDate.setToMesopotamianDate('Nebuchadnezzar II', 23, 14, 16)
+    expect(mesopotamianDate.calendar.mesopotamianMonth).toEqual(14)
+  })
+
+  test('falls back intercalary XII to XII when king-date year has no month 14', () => {
+    mesopotamianDate.setToMesopotamianDate('Nebuchadnezzar II', 24, 14, 16)
     expect(mesopotamianDate.calendar.mesopotamianMonth).toEqual(12)
   })
 })

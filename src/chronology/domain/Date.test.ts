@@ -55,6 +55,28 @@ const cambysesKing = {
   notes: '',
 }
 
+const nabonidusKing = {
+  orderGlobal: 166,
+  dynastyNumber: '13',
+  dynastyName: 'Neo-Babylonian Dynasty',
+  orderInDynasty: '6',
+  name: 'Nabonidus',
+  date: '555–539',
+  totalOfYears: '17',
+  notes: '',
+}
+
+const rimushKing = {
+  orderGlobal: 2,
+  dynastyNumber: '1',
+  dynastyName: 'Dynasty of Akkad',
+  orderInDynasty: '2',
+  name: 'Rimuš',
+  date: '2278–2270',
+  totalOfYears: '9?',
+  notes: '',
+}
+
 describe('MesopotamianDate', () => {
   describe('converts from json', () => {
     it('initializes from JSON', () => {
@@ -94,6 +116,30 @@ describe('MesopotamianDate', () => {
       expect(date.king?.name).toBe('Sargon')
       expect(date.king?.isBroken).toBe(true)
       expect(date.king?.isUncertain).toBe(true)
+    })
+
+    it('round-trips year-0 date: toDto preserves original king and year-0 so fromJson restores them', () => {
+      const original = new MesopotamianDate({
+        year: { value: '0' },
+        month: { value: '1' },
+        day: { value: '1' },
+        king: nabonidusKing,
+        isSeleucidEra: false,
+      })
+
+      const dto = original.toDto()
+
+      expect(dto.king?.orderGlobal).toBe(166)
+      expect(dto.year.value).toBe('0')
+
+      const restored = MesopotamianDate.fromJson(dto)
+
+      expect(restored.zeroYearKing?.name).toBe('Nabonidus')
+      expect(restored.yearZero?.value).toBe('0')
+      expect(restored.king?.name).toBe('Neriglissar')
+      expect(restored.year.value).toBe('4')
+      expect(restored.toString()).toContain('1.I.0 Nabonidus')
+      expect(restored.toModernDate()).toBe(original.toModernDate())
     })
   })
 
@@ -212,6 +258,67 @@ describe('MesopotamianDate', () => {
     )
   })
 
+  it('preserves zero-year display for Nabonidus and converts using last numeric predecessor year', () => {
+    const date = new MesopotamianDate({
+      year: { value: '0' },
+      month: { value: '5' },
+      day: { value: '12' },
+      king: nabonidusKing,
+      isSeleucidEra: false,
+    })
+
+    expect(date.zeroYearKing?.name).toBe('Nabonidus')
+    expect(date.yearZero?.value).toBe('0')
+    expect(date.king?.name).toBe('Neriglissar')
+    expect(date.year.value).toBe('4')
+    expect(date.toString()).toContain('12.V.0 Nabonidus')
+    expect(date.toString()).not.toContain('Labaši-Marduk')
+    expect(date.toModernDate()).toBe('18 August 556 BCE PJC')
+  })
+
+  it('handles year 0 in king-date conversion path and uses previous king year for calculation', () => {
+    const date = new MesopotamianDate({
+      year: { value: '0' },
+      month: { value: '1' },
+      day: { value: '1' },
+      king: rimushKing,
+    })
+
+    expect(date.dateType).toBe('kingDate')
+    expect(date.zeroYearKing?.name).toBe('Rimuš')
+    expect(date.yearZero?.value).toBe('0')
+    expect(date.king?.name).toBe('Sargon')
+    expect(date.year.value).toBe('56')
+    expect(date.year.isUncertain).toBe(true)
+    expect(date.toString()).toContain('1.I.0 Rimuš')
+    expect(date.toModernDate()).toBe('ca. 2279 BCE PJC')
+  })
+
+  it('keeps original king when year 0 has no numeric predecessor for calculation', () => {
+    const yamsiElKing = {
+      orderGlobal: 72,
+      dynastyNumber: '5',
+      dynastyName: 'Marad Dynasty',
+      orderInDynasty: '4',
+      name: 'Yamsi-El',
+      date: '',
+      totalOfYears: '',
+      notes: '',
+    }
+
+    const date = new MesopotamianDate({
+      year: { value: '0' },
+      month: { value: '1' },
+      day: { value: '1' },
+      king: yamsiElKing,
+    })
+
+    expect(date.zeroYearKing).toBeUndefined()
+    expect(date.yearZero).toBeUndefined()
+    expect(date.king?.name).toBe('Yamsi-El')
+    expect(date.year.value).toBe('0')
+  })
+
   it('returns the correct string representation (Nabonassar era, no year)', () => {
     const date = new MesopotamianDate({
       year: { value: '10' },
@@ -304,6 +411,70 @@ describe('MesopotamianDate', () => {
     converter.setToSeBabylonianDate(1, 14, 16)
 
     expect(date.toModernDate()).toBe(converter.toDateString('Julian'))
+  })
+
+  it('falls back intercalary VI metadata for Seleucid-era conversion when month 13 is unavailable', () => {
+    const date = new MesopotamianDate({
+      year: { value: '2' },
+      month: { value: '6', isIntercalary: true },
+      day: { value: '16' },
+      isSeleucidEra: true,
+    })
+
+    const converter = new DateConverter()
+    converter.setToSeBabylonianDate(2, 6, 16)
+
+    expect(date.toModernDate()).toBe(converter.toDateString('Julian'))
+  })
+
+  it('falls back intercalary XII metadata for Nabonassar-era conversion when month 14 is unavailable', () => {
+    const date = new MesopotamianDate({
+      year: { value: '1' },
+      month: { value: '12', isIntercalary: true },
+      day: { value: '16' },
+      king: cambysesKing,
+    })
+
+    const converter = new DateConverter()
+    converter.setToMesopotamianDate('Cambyses', 1, 12, 16)
+
+    expect(date.toModernDate()).toBe(converter.toDateString('Julian'))
+  })
+
+  it('falls back intercalary XII metadata for partial Seleucid range when month 14 is unavailable', () => {
+    const intercalaryDate = new MesopotamianDate({
+      year: { value: '2' },
+      month: { value: '12', isIntercalary: true },
+      day: { value: '' },
+      isSeleucidEra: true,
+    })
+
+    const regularDate = new MesopotamianDate({
+      year: { value: '2' },
+      month: { value: '12' },
+      day: { value: '' },
+      isSeleucidEra: true,
+    })
+
+    expect(intercalaryDate.toModernDate()).toBe(regularDate.toModernDate())
+  })
+
+  it('falls back intercalary XII metadata for partial Nabonassar range when month 14 is unavailable', () => {
+    const intercalaryDate = new MesopotamianDate({
+      year: { value: '1' },
+      month: { value: '12', isIntercalary: true },
+      day: { value: '' },
+      king: cambysesKing,
+    })
+
+    const regularDate = new MesopotamianDate({
+      year: { value: '1' },
+      month: { value: '12' },
+      day: { value: '' },
+      king: cambysesKing,
+    })
+
+    expect(intercalaryDate.toModernDate()).toBe(regularDate.toModernDate())
   })
 
   it('returns the correct string representation (Ur III)', () => {
