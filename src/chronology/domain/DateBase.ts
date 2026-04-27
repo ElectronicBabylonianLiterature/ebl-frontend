@@ -14,6 +14,7 @@ import {
   YearMonthDay,
 } from 'chronology/domain/DateParameters'
 import normalizeMesopotamianMonth from 'chronology/domain/normalizeMesopotamianMonth'
+import parseDateFieldNumber from 'chronology/domain/parseDateFieldNumber'
 import getPreviousKingAndYearIfYearZero from './ZeroYearKingFinder'
 
 const calendarToAbbreviation = (calendar: ModernCalendar): string =>
@@ -77,7 +78,7 @@ export class MesopotamianDateBase {
   }
 
   private isSeleucidEraApplicable(year?: number | string): boolean {
-    year = typeof year === 'number' ? year : parseInt(year ?? '')
+    year = typeof year === 'number' ? year : parseDateFieldNumber(year ?? '')
     return !!this.isSeleucidEra && !isNaN(year) && year > 0
   }
 
@@ -145,12 +146,12 @@ export class MesopotamianDateBase {
     calendar: ModernCalendar
   } {
     return {
-      year: parseInt(this.year.value) ?? -1,
+      year: parseDateFieldNumber(this.year.value) ?? -1,
       month: normalizeMesopotamianMonth(
-        parseInt(this.month.value) ?? 1,
+        parseDateFieldNumber(this.month.value) ?? 1,
         this.month.isIntercalary,
       ),
-      day: parseInt(this.day.value) ?? 1,
+      day: parseDateFieldNumber(this.day.value) ?? 1,
       isApproximate: this.isApproximate(),
       calendar,
     }
@@ -160,7 +161,7 @@ export class MesopotamianDateBase {
     const fields: Array<YearMonthDay> = ['year', 'month', 'day']
     return fields
       .map((field) => {
-        if (isNaN(parseInt(this[field].value))) {
+        if (isNaN(parseDateFieldNumber(this[field].value))) {
           return field
         }
         return null
@@ -172,9 +173,9 @@ export class MesopotamianDateBase {
     return [
       _.some(
         [
-          parseInt(this.year.value),
-          parseInt(this.month.value),
-          parseInt(this.day.value),
+          parseDateFieldNumber(this.year.value),
+          parseDateFieldNumber(this.month.value),
+          parseDateFieldNumber(this.day.value),
         ],
         _.isNaN,
       ),

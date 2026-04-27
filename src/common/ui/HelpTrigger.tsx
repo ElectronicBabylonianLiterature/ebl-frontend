@@ -13,7 +13,10 @@ function HelpTrigger({
 }: Props): JSX.Element {
   return (
     <OverlayTrigger placement={placement} {...props}>
-      <i className={classNames(className, 'fas', 'fa-info-circle')} />
+      <i
+        className={classNames(className, 'fas', 'fa-info-circle')}
+        data-testid="help-icon"
+      />
     </OverlayTrigger>
   )
 }

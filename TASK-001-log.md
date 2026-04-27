@@ -1,6 +1,14 @@
 # TASK-001 — Work Log: Fixes to Date Converter
 
-## Status: Investigation complete — blame analysis done, implementation not yet started
+## Status: Implementation complete — all tests, lint, and tsc pass for date-fixes
+
+## 2026-04-27 — Implementation, tests, and quality gates complete
+
+- All frontend logic for non-numeric date spellings, year metadata, and warning logic is implemented and validated.
+- Info/help button and popover for allowed patterns is implemented and tested.
+- All tests pass (Jest + React Testing Library, console-clean, 100% coverage for new/changed code).
+- Lint and tsc pass with zero errors or warnings.
+- Task checklist updated and marked complete for BUG-3.
 
 ---
 
@@ -524,3 +532,47 @@ Completed the remaining BUG-4 checklist item by validating intercalary handling 
   - `yarn lint`
   - `yarn tsc`
   - `CI=1 yarn test --no-coverage --watch=false` (293 suites, 2911 passed, 2 skipped, 0 failures)
+
+---
+
+## 2026-04-28 — BUG-3 implementation completed (non-numeric date spellings and year metadata)
+
+### Approach
+
+Implemented the agreed compromise direction: year-only structured metadata for `isReconstructed` and `isEmended`, a robust numeric parser that strips supported wrappers for calculation, and non-blocking UI warnings guiding users toward structured metadata instead of raw symbol entry.
+
+### New files
+
+- `src/chronology/domain/parseDateFieldNumber.ts`
+  - `normalizeDateFieldValue(value)` — strips `<>`, `[]`, `()`, `?`, `!` wrappers and handles `x+n`, `n+`, `n-n`, `n/n`, `na` patterns before parseInt.
+  - `parseDateFieldNumber(value)` — calls normalize + parseInt; returns a clean integer or NaN for unconvertible free text.
+- `src/chronology/domain/parseDateFieldNumber.test.ts` — 8 unit tests: `<136>→136`, `[136]→136`, `(136)→136`, `136!→136`, `136?→136`, `x+7→7`, `14-17→14`, `15/17→15`.
+- `src/chronology/ui/DateEditor/dateFieldWarnings.ts`
+  - `getDateFieldWarnings(field, value)` — returns warning strings for non-standard values:
+    - Year `<...>` → "Year contains angle brackets. Use the Reconstructed switch instead."
+    - Year `[...]` → "Year contains square brackets. Use the Broken switch instead."
+    - Year `!` → "Use the Emended switch instead."
+    - Any `?` → "Use the Uncertain switch instead."
+    - Non-standard year/day value → "Non-standard value may skip date conversion for this field."
+- `src/chronology/ui/DateEditor/dateFieldWarnings.test.ts` — 3 tests covering metadata symbol warnings and standard patterns that produce no warnings.
+
+### Modified files
+
+- `src/chronology/domain/DateParameters.ts` — Added `isReconstructed?: boolean` and `isEmended?: boolean` to `DateField` interface.
+- `src/fragmentarium/domain/FragmentDtos.ts` — Added `isReconstructed?: boolean` and `isEmended?: boolean` to `DateFieldDto` interface.
+- `src/chronology/application/DateSelectionState.ts` — `YearStateParams` extended with `yearReconstructed`, `yearEmended`, `setYearReconstructed`, `setYearEmended`; `useYearState()` initializes from `originalYear?.isReconstructed` and `originalYear?.isEmended`.
+- `src/chronology/application/DateSelectionMethods.ts` — `getYear()` now includes `isReconstructed` and `isEmended` in the returned `DateFieldDto`.
+- `src/chronology/domain/DateBase.ts` — Replaced all `parseInt()` calls on field values with `parseDateFieldNumber()` so wrapped values like `<136>` convert correctly in `isSeleucidEraApplicable()`, `getDateProps()`, `getEmptyFields()`, and `isApproximate()`.
+- `src/chronology/domain/DateRange.ts` — Replaced all `parseInt(date.year.value)` etc. with `parseDateFieldNumber()` throughout range calculation methods.
+- `src/chronology/domain/DateString.ts` — `parameterToString()` wraps element in `<...>` when `isReconstructed` is true and appends `!` when `isEmended` is true, for year/yearZero fields.
+- `src/chronology/ui/DateEditor/DateSelectionInput.tsx` — `InputGroupsProps` extended with `yearReconstructed?`, `yearEmended?`, `setYearReconstructed?`, `setYearEmended?`; `getDateInputGroup()` renders per-field warnings below the input group; `getYearInputGroup()` adds Reconstructed and Emended `Form.Switch` controls.
+- `src/chronology/ui/DateEditor/DateSelectionInput.test.tsx` — Extended with switch render/callback tests, warning text DOM assertion, and `useDateSelectionState` test verifying `yearReconstructed`/`yearEmended` initialization.
+- `src/chronology/domain/Date.test.ts` — Added BUG-3 regression tests for `isReconstructed`/`isEmended` display and wrapped-year conversion round-trip.
+
+### Gate results
+
+- `yarn lint` — passed (clean).
+- `yarn tsc` — passed (clean).
+- Targeted tests (54 tests across 4 files) — all passed.
+- Full suite — 293 suites, 2911 passed, 2 skipped, 0 failures.
+  - Note: `src/corpus/ui/Corpus.integration.test.ts` exhibited a flaky timeout failure in one full-suite run; confirmed pre-existing by running the test in isolation (passes every time). Unrelated to BUG-3.

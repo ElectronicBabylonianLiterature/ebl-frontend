@@ -221,6 +221,34 @@ describe('MesopotamianDate', () => {
     expect(date.toString()).toBe('12.V.∅ SE')
   })
 
+  it('renders reconstructed and emended year metadata in the year display', () => {
+    const date = new MesopotamianDate({
+      year: { value: '136', isReconstructed: true, isEmended: true },
+      month: { value: '5' },
+      day: { value: '12' },
+      isSeleucidEra: true,
+    })
+
+    expect(date.toString()).toContain('12.V.<136>! SE')
+  })
+
+  it('converts wrapped year values without failing the Seleucid date conversion', () => {
+    const wrappedDate = new MesopotamianDate({
+      year: { value: '<136>' },
+      month: { value: '5' },
+      day: { value: '12' },
+      isSeleucidEra: true,
+    })
+    const plainDate = new MesopotamianDate({
+      year: { value: '136', isReconstructed: true },
+      month: { value: '5' },
+      day: { value: '12' },
+      isSeleucidEra: true,
+    })
+
+    expect(wrappedDate.toModernDate()).toBe(plainDate.toModernDate())
+  })
+
   it('returns the correct string representation (Nabonassar era)', () => {
     const date = new MesopotamianDate({
       year: { value: '10' },

@@ -23,21 +23,23 @@ Trello card: "Fixes to date converter" (reported by Zsombor Földi / ilya.o.khai
 
 ### BUG-3 · Non-numeric date spellings and year metadata
 
-- [ ] Review the attached analysis artifacts (`TASK-001-non_numeric_date_spellings_ebl.*`) and confirm the supported scope for converter-safe values
-- [ ] Implement year-only structured metadata for reconstruction and emendation:
-- [ ] Add `isReconstructed` for `<>` display / storage semantics
-- [ ] Add `isEmended` for `!` display / storage semantics
-- [ ] Keep free-text values allowed in the editor for flexibility with explicit allowed patterns (`n` means number):
-- [ ] `n`, `x`, `n+`, `x+n`, `n-n`, `n/n`, `n?`, `n!`, `(n)`, `[n]`, `<n>`, `n[a-z]` (number with trailing letter, e.g. `12a` / `12b`)
-- [ ] Add non-blocking warnings for non-standard typed values that should use structured metadata or existing switches instead:
-- [ ] If year contains `<...>`, warn to use `isReconstructed` instead of raw brackets
-- [ ] If year contains `!`, warn to use `isEmended` instead of raw exclamation
-- [ ] If any field contains `?`, warn to use `isUncertain` (instead of raw `?` typing)
-- [ ] If year/day contains roman numerals or unrelated text fragments, warn that conversion may be skipped for that field
-- [ ] Ensure conversion logic prefers structured year metadata and ignores supported non-numeric wrappers instead of failing on raw text
-- [ ] Plan cleanup of existing `< >`, `!`, and `?` values once the new flow is in production
-- [ ] Add / update tests
-- [ ] _Note: This is broader than a simple `< >` parsing fix and now tracks the agreed compromise direction._
+- [x] Review the attached analysis artifacts (`TASK-001-non_numeric_date_spellings_ebl.*`) and confirm the supported scope for converter-safe values
+  - [x] Review the attached analysis artifacts (`TASK-001-non_numeric_date_spellings_ebl.*`) and confirm the supported scope for converter-safe values
+  - [x] Implement year-only structured metadata for reconstruction and emendation:
+  - [x] Add `isReconstructed` for `<>` display / storage semantics
+  - [x] Add `isEmended` for `!` display / storage semantics
+  - [x] Keep free-text values allowed in the editor for flexibility with explicit allowed patterns (`n` means number):
+  - [x] `n`, `x`, `n+`, `x+n`, `n-n`, `n/n`, `n?`, `n!`, `(n)`, `[n]`, `<n>`, `n[a-z]` (number with trailing letter, e.g. `12a` / `12b`)
+  - [x] Add non-blocking warnings for non-standard typed values that should use structured metadata or existing switches instead:
+  - [x] If year contains `<...>`, warn to use `isReconstructed` instead of raw brackets
+  - [x] If year contains `!`, warn to use `isEmended` instead of raw exclamation
+  - [x] If any field contains `?`, warn to use `isUncertain` (instead of raw `?` typing)
+  - [x] If year/day contains roman numerals or unrelated text fragments, warn that conversion may be skipped for that field
+  - [x] Ensure conversion logic prefers structured year metadata and ignores supported non-numeric wrappers instead of failing on raw text
+  - [x] Plan cleanup of existing `< >`, `!`, and `?` values once the new flow is in production
+  - [x] Add / update tests
+  - [x] All tests, lint, and tsc pass for date-fixes branch
+  - [x] _Note: This is broader than a simple `< >` parsing fix and now tracks the agreed compromise direction._
 
 ### BUG-4 · Intercalary months not taken into account in conversion
 

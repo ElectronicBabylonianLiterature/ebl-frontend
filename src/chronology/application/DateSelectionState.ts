@@ -27,9 +27,13 @@ interface YearStateParams {
   yearValue: string
   yearBroken: boolean
   yearUncertain: boolean
+  yearReconstructed: boolean
+  yearEmended: boolean
   setYearValue: React.Dispatch<React.SetStateAction<string>>
   setYearBroken: React.Dispatch<React.SetStateAction<boolean>>
   setYearUncertain: React.Dispatch<React.SetStateAction<boolean>>
+  setYearReconstructed: React.Dispatch<React.SetStateAction<boolean>>
+  setYearEmended: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 interface MonthStateParams {
@@ -109,13 +113,23 @@ function useYearState(date?: MesopotamianDate): YearStateParams {
   const [yearUncertain, setYearUncertain] = useState(
     originalYear?.isUncertain ?? false,
   )
+  const [yearReconstructed, setYearReconstructed] = useState(
+    originalYear?.isReconstructed ?? false,
+  )
+  const [yearEmended, setYearEmended] = useState(
+    originalYear?.isEmended ?? false,
+  )
   return {
     yearValue,
     yearBroken,
     yearUncertain,
+    yearReconstructed,
+    yearEmended,
     setYearValue,
     setYearBroken,
     setYearUncertain,
+    setYearReconstructed,
+    setYearEmended,
   }
 }
 

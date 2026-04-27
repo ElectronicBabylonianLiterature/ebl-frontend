@@ -40,10 +40,23 @@ function getDateDisplayParams(
 }
 
 const formatDateString = (dateString: string): ReactElement[] => {
-  return dateString.split('?').map((part, index, array) => (
-    <Fragment key={index}>
-      {part}
-      {index < array.length - 1 && <sup>?</sup>}
+  const parts: Array<{ text: string; marker: string | null }> = []
+  let buffer = ''
+  for (let i = 0; i < dateString.length; ++i) {
+    if (dateString[i] === '?' || dateString[i] === '!') {
+      parts.push({ text: buffer, marker: dateString[i] })
+      buffer = ''
+    } else {
+      buffer += dateString[i]
+    }
+  }
+  if (buffer.length > 0) {
+    parts.push({ text: buffer, marker: null })
+  }
+  return parts.map((part, idx) => (
+    <Fragment key={idx}>
+      {part.text}
+      {part.marker && <sup>{part.marker}</sup>}
     </Fragment>
   ))
 }
