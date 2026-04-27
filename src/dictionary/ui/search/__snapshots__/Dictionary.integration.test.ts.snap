@@ -218,12 +218,16 @@ exports[`Meaning 1`] = `
             </li>
           </ol>
         </nav>
-        <h1
-          class="tools-header__title"
-        >
-          Tools
-        </h1>
       </div>
+    </div>
+    <div
+      class="container"
+    >
+      <h1
+        class="tools-header__title"
+      >
+        Tools
+      </h1>
     </div>
     <div
       class="tools-container container"
@@ -232,7 +236,7 @@ exports[`Meaning 1`] = `
         class="row"
       >
         <div
-          class="tools-sidebar col-md-3"
+          class="tools-sidebar col-md-3 col-12"
         >
           <div
             class="flex-column tools-nav nav"
@@ -359,7 +363,7 @@ exports[`Meaning 1`] = `
           </div>
         </div>
         <div
-          class="tools-content col-md-9"
+          class="tools-content col-md-9 col-12"
         >
           <div
             class="tools-content__header"
@@ -976,6 +980,7 @@ exports[`Meaning 1`] = `
               class="main-footer__social"
             >
               <a
+                aria-label="eBL on X"
                 class="main-footer__social-link"
                 href="https://twitter.com/ebl_info"
                 rel="noopener noreferrer"
@@ -994,6 +999,7 @@ exports[`Meaning 1`] = `
                 </svg>
               </a>
               <a
+                aria-label="CAIC on Facebook"
                 class="main-footer__social-link"
                 href="https://www.facebook.com/profile.php?id=61556323986355"
                 rel="noopener noreferrer"
@@ -1314,12 +1320,16 @@ exports[`Root 1`] = `
             </li>
           </ol>
         </nav>
-        <h1
-          class="tools-header__title"
-        >
-          Tools
-        </h1>
       </div>
+    </div>
+    <div
+      class="container"
+    >
+      <h1
+        class="tools-header__title"
+      >
+        Tools
+      </h1>
     </div>
     <div
       class="tools-container container"
@@ -1328,7 +1338,7 @@ exports[`Root 1`] = `
         class="row"
       >
         <div
-          class="tools-sidebar col-md-3"
+          class="tools-sidebar col-md-3 col-12"
         >
           <div
             class="flex-column tools-nav nav"
@@ -1455,7 +1465,7 @@ exports[`Root 1`] = `
           </div>
         </div>
         <div
-          class="tools-content col-md-9"
+          class="tools-content col-md-9 col-12"
         >
           <div
             class="tools-content__header"
@@ -2072,6 +2082,7 @@ exports[`Root 1`] = `
               class="main-footer__social"
             >
               <a
+                aria-label="eBL on X"
                 class="main-footer__social-link"
                 href="https://twitter.com/ebl_info"
                 rel="noopener noreferrer"
@@ -2090,6 +2101,7 @@ exports[`Root 1`] = `
                 </svg>
               </a>
               <a
+                aria-label="CAIC on Facebook"
                 class="main-footer__social-link"
                 href="https://www.facebook.com/profile.php?id=61556323986355"
                 rel="noopener noreferrer"
@@ -2410,12 +2422,16 @@ exports[`Vowel class 1`] = `
             </li>
           </ol>
         </nav>
-        <h1
-          class="tools-header__title"
-        >
-          Tools
-        </h1>
       </div>
+    </div>
+    <div
+      class="container"
+    >
+      <h1
+        class="tools-header__title"
+      >
+        Tools
+      </h1>
     </div>
     <div
       class="tools-container container"
@@ -2424,7 +2440,7 @@ exports[`Vowel class 1`] = `
         class="row"
       >
         <div
-          class="tools-sidebar col-md-3"
+          class="tools-sidebar col-md-3 col-12"
         >
           <div
             class="flex-column tools-nav nav"
@@ -2551,7 +2567,7 @@ exports[`Vowel class 1`] = `
           </div>
         </div>
         <div
-          class="tools-content col-md-9"
+          class="tools-content col-md-9 col-12"
         >
           <div
             class="tools-content__header"
@@ -3168,6 +3184,7 @@ exports[`Vowel class 1`] = `
               class="main-footer__social"
             >
               <a
+                aria-label="eBL on X"
                 class="main-footer__social-link"
                 href="https://twitter.com/ebl_info"
                 rel="noopener noreferrer"
@@ -3186,6 +3203,7 @@ exports[`Vowel class 1`] = `
                 </svg>
               </a>
               <a
+                aria-label="CAIC on Facebook"
                 class="main-footer__social-link"
                 href="https://www.facebook.com/profile.php?id=61556323986355"
                 rel="noopener noreferrer"
@@ -3506,12 +3524,16 @@ exports[`Word 1`] = `
             </li>
           </ol>
         </nav>
-        <h1
-          class="tools-header__title"
-        >
-          Tools
-        </h1>
       </div>
+    </div>
+    <div
+      class="container"
+    >
+      <h1
+        class="tools-header__title"
+      >
+        Tools
+      </h1>
     </div>
     <div
       class="tools-container container"
@@ -3520,7 +3542,7 @@ exports[`Word 1`] = `
         class="row"
       >
         <div
-          class="tools-sidebar col-md-3"
+          class="tools-sidebar col-md-3 col-12"
         >
           <div
             class="flex-column tools-nav nav"
@@ -3647,7 +3669,7 @@ exports[`Word 1`] = `
           </div>
         </div>
         <div
-          class="tools-content col-md-9"
+          class="tools-content col-md-9 col-12"
         >
           <div
             class="tools-content__header"
@@ -4264,6 +4286,7 @@ exports[`Word 1`] = `
               class="main-footer__social"
             >
               <a
+                aria-label="eBL on X"
                 class="main-footer__social-link"
                 href="https://twitter.com/ebl_info"
                 rel="noopener noreferrer"
@@ -4282,6 +4305,7 @@ exports[`Word 1`] = `
                 </svg>
               </a>
               <a
+                aria-label="CAIC on Facebook"
                 class="main-footer__social-link"
                 href="https://www.facebook.com/profile.php?id=61556323986355"
                 rel="noopener noreferrer"
@@ -4602,12 +4626,16 @@ exports[`renders dictionary search page 1`] = `
             </li>
           </ol>
         </nav>
-        <h1
-          class="tools-header__title"
-        >
-          Tools
-        </h1>
       </div>
+    </div>
+    <div
+      class="container"
+    >
+      <h1
+        class="tools-header__title"
+      >
+        Tools
+      </h1>
     </div>
     <div
       class="tools-container container"
@@ -4616,7 +4644,7 @@ exports[`renders dictionary search page 1`] = `
         class="row"
       >
         <div
-          class="tools-sidebar col-md-3"
+          class="tools-sidebar col-md-3 col-12"
         >
           <div
             class="flex-column tools-nav nav"
@@ -4743,7 +4771,7 @@ exports[`renders dictionary search page 1`] = `
           </div>
         </div>
         <div
-          class="tools-content col-md-9"
+          class="tools-content col-md-9 col-12"
         >
           <div
             class="tools-content__header"
@@ -5249,6 +5277,7 @@ exports[`renders dictionary search page 1`] = `
               class="main-footer__social"
             >
               <a
+                aria-label="eBL on X"
                 class="main-footer__social-link"
                 href="https://twitter.com/ebl_info"
                 rel="noopener noreferrer"
@@ -5267,6 +5296,7 @@ exports[`renders dictionary search page 1`] = `
                 </svg>
               </a>
               <a
+                aria-label="CAIC on Facebook"
                 class="main-footer__social-link"
                 href="https://www.facebook.com/profile.php?id=61556323986355"
                 rel="noopener noreferrer"

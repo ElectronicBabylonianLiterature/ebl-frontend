@@ -1913,6 +1913,7 @@ exports[`Edit 1`] = `
               class="main-footer__social"
             >
               <a
+                aria-label="eBL on X"
                 class="main-footer__social-link"
                 href="https://twitter.com/ebl_info"
                 rel="noopener noreferrer"
@@ -1931,6 +1932,7 @@ exports[`Edit 1`] = `
                 </svg>
               </a>
               <a
+                aria-label="CAIC on Facebook"
                 class="main-footer__social-link"
                 href="https://www.facebook.com/profile.php?id=61556323986355"
                 rel="noopener noreferrer"
@@ -3946,6 +3948,7 @@ exports[`renders editor 1`] = `
               class="main-footer__social"
             >
               <a
+                aria-label="eBL on X"
                 class="main-footer__social-link"
                 href="https://twitter.com/ebl_info"
                 rel="noopener noreferrer"
@@ -3964,6 +3967,7 @@ exports[`renders editor 1`] = `
                 </svg>
               </a>
               <a
+                aria-label="CAIC on Facebook"
                 class="main-footer__social-link"
                 href="https://www.facebook.com/profile.php?id=61556323986355"
                 rel="noopener noreferrer"
