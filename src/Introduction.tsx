@@ -254,7 +254,6 @@ export default function Introduction({
                 <LatestTransliterations
                   fragmentService={fragmentService}
                   dossiersService={dossiersService}
-                  mode="homepage"
                 />
               </Container>
             ) : null

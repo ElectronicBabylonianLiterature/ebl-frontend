@@ -11,8 +11,9 @@
 }
 
 .Dictionary-search-header .Dictionary-search {
-  flex: 1;
-  min-width: 0;
+  margin: 0;
+  width: 32em;
+  max-width: 100%;
 }
 
 .Dictionary-search-header__about {

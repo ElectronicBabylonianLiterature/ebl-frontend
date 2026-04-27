@@ -6,7 +6,6 @@ import Bluebird from 'bluebird'
 import withData from 'http/withData'
 import LinkedImage from 'common/ui/LinkedImage'
 import { Fragment } from 'fragmentarium/domain/fragment'
-import { cdliImageUrl } from 'common/iiif'
 
 import './CdliImages.css'
 
@@ -58,7 +57,7 @@ function CdliImages({ cdliImages }: CdliImagesProps): JSX.Element {
 
   cdliImages.forEach((url) => {
     const type = getImageType(url)
-    imageUrls[type] = cdliImageUrl(url)
+    imageUrls[type] = `https://cdli.earth/${url}`
   })
 
   return (

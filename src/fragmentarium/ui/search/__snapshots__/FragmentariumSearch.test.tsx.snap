@@ -1027,7 +1027,7 @@ exports[`Search Shows suggestion when entering wrong number format 1`] = `
                 <a
                   aria-label="Learn more about Library"
                   class="AboutInlineLink Library-search__about-link"
-                  href="/about/fragmentarium"
+                  href="/about/library"
                   title="Learn more about Library"
                 >
                   <i

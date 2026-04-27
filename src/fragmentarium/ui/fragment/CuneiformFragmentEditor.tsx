@@ -157,13 +157,6 @@ function isTabDisabled({
   )
 }
 
-function shouldShowTab(name: TabName, session: Session): boolean {
-  if (session.isGuestSession()) {
-    return name !== 'display'
-  }
-  return true
-}
-
 export const EditorTabs: FunctionComponent<TabsProps> = ({
   disabled = false,
   ...props
@@ -172,9 +165,13 @@ export const EditorTabs: FunctionComponent<TabsProps> = ({
   return (
     <SessionContext.Consumer>
       {(session) => {
-        const visibleTabs = tabNames.filter((name) =>
-          shouldShowTab(name, session),
-        )
+        if (session.isGuestSession()) {
+          return (
+            <ContentSection>
+              {DisplayContents({ disabled, ...props })}
+            </ContentSection>
+          )
+        }
         return (
           <Tabs
             id={tabsId}
@@ -185,7 +182,7 @@ export const EditorTabs: FunctionComponent<TabsProps> = ({
             }
             mountOnEnter={true}
           >
-            {visibleTabs.map((name) => {
+            {tabNames.map((name) => {
               const children = TabContentsMatcher({
                 name,
                 props: { disabled, ...props },

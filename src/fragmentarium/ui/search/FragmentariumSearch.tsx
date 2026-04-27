@@ -81,7 +81,7 @@ function FragmentariumSearch({
                         showAdvancedSearch={true}
                       />
                       <AboutInlineLink
-                        to="/about/fragmentarium"
+                        to="/about/library"
                         label="Library"
                         className="Library-search__about-link"
                       />

@@ -104,7 +104,7 @@ export const FragmentLines = withData<
       ? ` (${fragment.script.period.abbreviation})`
       : ''
     return (
-      <Container className="fragment-result__card">
+      <Container>
         <Row className={'fragment-result__header'}>
           <ResponsiveCol>
             <h4 className={'fragment-result__fragment-number'}>

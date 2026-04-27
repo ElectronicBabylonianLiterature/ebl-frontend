@@ -1,7 +1,6 @@
 import React from 'react'
 import { Image } from 'react-bootstrap'
 import { apiUrl } from 'http/ApiClient'
-import { staticImagePath } from 'common/iiif'
 
 export default function ApiImage({
   fileName,
@@ -12,7 +11,7 @@ export default function ApiImage({
 }): JSX.Element {
   return (
     <Image
-      src={apiUrl(staticImagePath(fileName))}
+      src={apiUrl(`/images/${fileName}`)}
       alt={fileName}
       className={className}
       fluid

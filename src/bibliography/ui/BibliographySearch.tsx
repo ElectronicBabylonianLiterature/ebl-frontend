@@ -25,7 +25,7 @@ function BibliographySearch({ data }: { data: readonly BibliographyEntry[] }) {
         return (
           <li key={entry.id} className="BibliographySearch__entry">
             <Row className="BibliographySearch__row">
-              <Col md={2} className="BibliographySearch__citation-col">
+              <Col xs={12} md={2} className="BibliographySearch__citation-col">
                 <Link
                   to={referencesEntryRoute(location.pathname, entry.id)}
                   className="BibliographySearch__citation"
@@ -33,7 +33,11 @@ function BibliographySearch({ data }: { data: readonly BibliographyEntry[] }) {
                   <InlineMarkdown source={citation.getMarkdown()} />
                 </Link>
               </Col>
-              <Col md={10} className="BibliographySearch__full-reference-col">
+              <Col
+                xs={12}
+                md={10}
+                className="BibliographySearch__full-reference-col"
+              >
                 <div>{parser.parse(entry.toHtml())}</div>
               </Col>
             </Row>

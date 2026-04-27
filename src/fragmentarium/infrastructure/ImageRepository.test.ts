@@ -4,7 +4,6 @@ import Folio from 'fragmentarium/domain/Folio'
 import { folioFactory } from 'test-support/fragment-data-fixtures'
 import { ThumbnailSize } from 'fragmentarium/application/FragmentService'
 import { ApiError } from 'http/ApiClient'
-import { staticImagePath } from 'common/iiif'
 
 const image = new Blob([''], { type: 'image/jpeg' })
 
@@ -30,7 +29,10 @@ describe('find', () => {
   })
 
   it('Queries the file', () => {
-    expect(apiClient.fetchBlob).toBeCalledWith(staticImagePath(fileName), false)
+    expect(apiClient.fetchBlob).toBeCalledWith(
+      `/images/${encodeURIComponent(fileName)}`,
+      false,
+    )
   })
 
   it('Resolves to blob', async () => {

@@ -11,8 +11,9 @@
 }
 
 .Bibliography__search-header .Bibliography__search {
-  flex: 1;
-  min-width: 0;
+  margin: 0;
+  width: 32em;
+  max-width: 100%;
 }
 
 .Bibliography__about-link {
@@ -30,4 +31,13 @@
   text-align: justify;
   padding: 0 4em;
   padding-bottom: 20px;
+}
+
+@media (max-width: 767px) {
+  .BibliographyReferences__introduction,
+  .AfoRegister__introduction,
+  .AfoRegister__search_results {
+    padding: 0 1rem;
+    padding-bottom: 20px;
+  }
 }

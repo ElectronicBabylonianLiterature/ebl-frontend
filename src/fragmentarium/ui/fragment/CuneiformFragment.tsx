@@ -62,7 +62,7 @@ const CuneiformFragment: FunctionComponent<CuneiformFragmentProps> = ({
   return (
     <Container fluid>
       <Row>
-        <Col md={2} className={'CuneiformFragment__info'}>
+        <Col xs={12} md={2} className={'CuneiformFragment__info'}>
           {withErrorBoundary(
             <Info
               fragment={fragment}
@@ -73,7 +73,7 @@ const CuneiformFragment: FunctionComponent<CuneiformFragmentProps> = ({
             />,
           )}
         </Col>
-        <Col md={isColumnVisible ? 5 : 10}>
+        <Col xs={12} md={isColumnVisible ? 5 : 10}>
           {withErrorBoundary(
             <>
               <FragmentInCorpus
@@ -98,7 +98,7 @@ const CuneiformFragment: FunctionComponent<CuneiformFragmentProps> = ({
           )}
         </Col>
         {isColumnVisible && (
-          <Col md={5}>
+          <Col xs={12} md={5}>
             {withErrorBoundary(
               <Images
                 fragment={fragment}

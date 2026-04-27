@@ -148,13 +148,15 @@ export default function About({
               new TextCrumb(_.capitalize(selectedTab)),
             ]}
           />
-          <h1 className="about-header__title">About</h1>
         </Container>
       </div>
+      <Container>
+        <h1 className="about-header__title">About</h1>
+      </Container>
 
       <Container className="about-container">
         <Row>
-          <Col md={3} className="about-sidebar">
+          <Col xs={12} md={3} className="about-sidebar">
             <Nav className="flex-column about-nav">
               {tabConfig.map((tab) => (
                 <AboutNavItem
@@ -167,7 +169,7 @@ export default function About({
             </Nav>
           </Col>
 
-          <Col md={9} className="about-content">
+          <Col xs={12} md={9} className="about-content">
             <div className="about-content__header">
               <span className="about-content__icon">{currentTab?.icon}</span>
               <h2 className="about-content__title">{currentTab?.title}</h2>

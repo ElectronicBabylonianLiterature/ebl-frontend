@@ -1,9 +1,5 @@
 .newsletter-timeline-sidebar
-  position: sticky
-  top: 100px
   height: fit-content
-  max-height: calc(100vh - 120px)
-  overflow-y: auto
   background: var(--card-bg, white)
   border-radius: 16px
   padding: 1.5rem
@@ -11,6 +7,12 @@
   border: 1px solid rgba(0, 119, 190, 0.1)
   scrollbar-width: thin
   scrollbar-color: rgba(0, 119, 190, 0.3) transparent
+
+  @media (min-width: 768px)
+    position: sticky
+    top: 100px
+    max-height: calc(100vh - 120px)
+    overflow-y: auto
 
   &::-webkit-scrollbar
     width: 6px
@@ -125,7 +127,9 @@
     width: 16px
     height: 16px
     background: var(--card-bg, white)
-    border: 3px solid #0077be
+    border-width: 3px
+    border-style: solid
+    border-color: #0077be
     border-radius: 50%
     position: relative
     z-index: 2

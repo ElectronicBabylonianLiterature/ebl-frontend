@@ -1,7 +1,7 @@
 import React from 'react'
 import { useLocation } from 'react-router-dom'
 import { Container, Row, Col } from 'react-bootstrap'
-import LibrarySidebar from './LibrarySidebar'
+import LibrarySidebar from 'library/ui/LibrarySidebar'
 import './Library.sass'
 
 interface LibraryProps {
@@ -25,10 +25,10 @@ export default function Library({ children }: LibraryProps): JSX.Element {
   return (
     <Container fluid className="Library">
       <Row>
-        <Col md={2} className="Library__sidebar">
+        <Col xs={12} md={2} className="Library__sidebar">
           <LibrarySidebar activeSection={getActiveSection()} />
         </Col>
-        <Col md={10} className="Library__content">
+        <Col xs={12} md={10} className="Library__content">
           {children}
         </Col>
       </Row>

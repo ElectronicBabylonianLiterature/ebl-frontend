@@ -2,7 +2,6 @@ import React from 'react'
 import { Image } from 'react-bootstrap'
 import ExternalLink from 'common/ui/ExternalLink'
 import useObjectUrl from 'common/hooks/useObjectUrl'
-import './BlobImage.css'
 
 export default function BlobImage({
   data,
@@ -32,17 +31,6 @@ export function ThumbnailImage({
   url?: string
   alt?: string
 }): JSX.Element {
-  const thumbnailUrl = useObjectUrl(photo)
-  const image = (
-    <img
-      src={thumbnailUrl}
-      alt={alt}
-      className="BlobImage__thumbnail"
-      loading="lazy"
-      decoding="async"
-      width={72}
-      height={48}
-    />
-  )
+  const image = <Image src={useObjectUrl(photo)} alt={alt} fluid />
   return url ? <ExternalLink href={url}>{image}</ExternalLink> : image
 }

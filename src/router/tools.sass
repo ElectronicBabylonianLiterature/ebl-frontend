@@ -1,8 +1,7 @@
 .tools-header
   background-color: #f4f6f9
   border-bottom: 1px solid #dce2ea
-  padding: 1.5rem 0 1.25rem
-  margin-bottom: 2rem
+  padding: 0.5rem 0
 
   &__breadcrumbs
     background-color: transparent
@@ -44,15 +43,17 @@
     color: #1a1a2e
     font-size: 2.5rem
     font-weight: 700
-    margin: 0
+    margin: 1.25rem 0 0
 
 .tools-container
   padding: 2rem 0 4rem
 
 .tools-sidebar
-  position: sticky
-  top: 100px
   align-self: flex-start
+
+  @media (min-width: 768px)
+    position: sticky
+    top: 100px
 
 .tools-nav
   &__item
@@ -157,7 +158,9 @@
         text-decoration: underline
 
     blockquote
-      border-left: 4px solid #0077be
+      border-left-width: 4px
+      border-left-style: solid
+      border-left-color: #0077be
       padding-left: 1.5rem
       margin: 1.5rem 0
       font-style: italic

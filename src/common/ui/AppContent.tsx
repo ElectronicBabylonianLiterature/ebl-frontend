@@ -23,7 +23,7 @@ export default function AppContent({
   sidebar,
   wide = false,
 }: PropsWithChildren<Props>): JSX.Element {
-  const showHeader = crumbs.length > 0 || title || actions
+  const showHeader = crumbs.length > 0 || Boolean(title) || Boolean(actions)
 
   return (
     <main

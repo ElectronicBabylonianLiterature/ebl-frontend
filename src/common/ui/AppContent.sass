@@ -30,14 +30,13 @@
       background-color: transparent
       padding: 0
       align-items: center
-      flex-wrap: nowrap
+      flex-wrap: wrap
 
       .breadcrumb-item
         font-size: 0.8rem
         font-weight: 500
         display: flex
         align-items: center
-        white-space: nowrap
 
         &:first-child a
           display: inline-flex
@@ -98,3 +97,18 @@
     padding: 1em 1em 23em 1em
     position: sticky
     top: 0
+
+@media (max-width: 767px)
+  .main
+    flex-direction: column
+    padding-left: 0.75em
+    padding-right: 0.75em
+
+    &__sidebar
+      margin-left: 0
+      margin-top: 1em
+      max-height: none
+      padding: 1em
+      position: static
+      background-position: right -6em bottom
+      background-size: 12em

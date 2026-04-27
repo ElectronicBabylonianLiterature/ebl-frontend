@@ -60,7 +60,6 @@ function Fragmentarium({
                   <LatestTransliterations
                     fragmentService={fragmentService}
                     dossiersService={dossiersService}
-                    mode="library"
                   />
                 </Col>
               </Row>

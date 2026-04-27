@@ -93,6 +93,7 @@ export default function Footer(): JSX.Element {
                 href="https://twitter.com/ebl_info"
                 className="main-footer__social-link"
                 title="eBL on X (Twitter)"
+                aria-label="eBL on X"
               >
                 <svg viewBox="0 0 24 24" width="20" height="20">
                   <path
@@ -105,6 +106,7 @@ export default function Footer(): JSX.Element {
                 href="https://www.facebook.com/profile.php?id=61556323986355"
                 className="main-footer__social-link"
                 title="CAIC on Facebook"
+                aria-label="CAIC on Facebook"
               >
                 <svg viewBox="0 0 24 24" width="20" height="20">
                   <path

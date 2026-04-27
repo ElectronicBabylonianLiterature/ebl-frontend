@@ -233,13 +233,15 @@ export default function Tools({
             className="tools-header__breadcrumbs"
             crumbs={getToolsBreadcrumbs(displayTitle, selectedTab)}
           />
-          <h1 className="tools-header__title">Tools</h1>
         </Container>
       </div>
+      <Container>
+        <h1 className="tools-header__title">Tools</h1>
+      </Container>
 
       <Container className="tools-container">
         <Row>
-          <Col md={3} className="tools-sidebar">
+          <Col xs={12} md={3} className="tools-sidebar">
             <Nav className="flex-column tools-nav">
               {tabConfig.map((tab) => (
                 <Nav.Link
@@ -256,7 +258,7 @@ export default function Tools({
             </Nav>
           </Col>
 
-          <Col md={9} className="tools-content">
+          <Col xs={12} md={9} className="tools-content">
             {selectedTab && currentTab && (
               <div className="tools-content__header">
                 <span className="tools-content__icon">{currentTab.icon}</span>

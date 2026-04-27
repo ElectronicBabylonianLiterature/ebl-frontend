@@ -11,7 +11,7 @@
         "color-no-invalid-hex": true,
         "declaration-block-no-shorthand-property-overrides": true,
         "declaration-block-no-duplicate-custom-properties": true,
-        "unit-no-unknown": [true, { "ignoreUnits": ["be", "a5fa8", "b4f7a"] }],
+        "unit-no-unknown": true,
         "property-no-unknown": true,
         "declaration-block-no-redundant-longhand-properties": null,
         "length-zero-no-unit": null,

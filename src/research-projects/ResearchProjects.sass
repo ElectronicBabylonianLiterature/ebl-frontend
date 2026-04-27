@@ -25,7 +25,9 @@
     margin-bottom: 2rem
     font-size: 2rem
     padding-bottom: 1rem
-    border-bottom: 3px solid #0077be
+    border-bottom-width: 3px
+    border-bottom-style: solid
+    border-bottom-color: #0077be
     position: relative
 
     &::after
@@ -44,7 +46,9 @@
     margin-bottom: 2rem
     padding: 2rem
     background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%)
-    border-left: 4px solid #0077be
+    border-left-width: 4px
+    border-left-style: solid
+    border-left-color: #0077be
     border-radius: 8px
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05)
 
@@ -68,7 +72,9 @@
       margin-bottom: 1.5rem
       font-size: 1.5rem
       padding-bottom: 0.75rem
-      border-bottom: 3px solid #0077be
+      border-bottom-width: 3px
+      border-bottom-style: solid
+      border-bottom-color: #0077be
       position: relative
 
       &::after
@@ -81,13 +87,15 @@
         background: linear-gradient(90deg, #0077be 0%, #005a8f 100%)
 
   &__sidebar
-    position: sticky
-    top: 20px
     padding: 1.5rem
     background: white
     border-radius: 12px
     box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08)
     border: 1px solid #e0e0e0
+
+    @media (min-width: 768px)
+      position: sticky
+      top: 20px
 
     .nav-link
       color: #555
