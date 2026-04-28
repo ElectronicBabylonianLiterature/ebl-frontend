@@ -13,6 +13,7 @@ import WordService from 'dictionary/application/WordService'
 import BibliographyService from 'bibliography/application/BibliographyService'
 import AfoRegisterService from 'afo-register/application/AfoRegisterService'
 import FragmentService from 'fragmentarium/application/FragmentService'
+import DossiersService from 'dossiers/application/DossiersService'
 
 const mockPush = jest.fn()
 
@@ -41,6 +42,16 @@ jest.mock('afo-register/ui/AfoRegisterSearchPage', () => ({
   default: () => <div>AfO-Register Mock</div>,
 }))
 
+jest.mock('dossiers/ui/DossiersSearchPage', () => ({
+  __esModule: true,
+  default: () => <div>Dossiers Mock</div>,
+}))
+
+jest.mock('fragmentarium/ui/GenresPage', () => ({
+  __esModule: true,
+  default: () => <div>Genres Mock</div>,
+}))
+
 jest.mock('chronology/ui/DateConverter/DateConverterForm', () => ({
   __esModule: true,
   default: () => <div>Date Converter Form Mock</div>,
@@ -64,6 +75,7 @@ function renderTools(activeTab?: Parameters<typeof Tools>[0]['activeTab']) {
     wordService: {} as WordService,
     bibliographyService: {} as BibliographyService,
     afoRegisterService: {} as AfoRegisterService,
+    dossiersService: {} as DossiersService,
     fragmentService: {} as FragmentService,
     activeTab,
   }
@@ -100,6 +112,16 @@ describe('Tools', () => {
     expect(screen.getByText('AfO-Register Mock')).toBeInTheDocument()
   })
 
+  it('renders dossiers content', () => {
+    renderTools('dossiers')
+    expect(screen.getByText('Dossiers Mock')).toBeInTheDocument()
+  })
+
+  it('renders genres content', () => {
+    renderTools('genres')
+    expect(screen.getByText('Genres Mock')).toBeInTheDocument()
+  })
+
   it('renders date converter content', () => {
     renderTools('date-converter')
     expect(screen.getByText('About Date Converter Mock')).toBeInTheDocument()
@@ -124,14 +146,18 @@ describe('Tools', () => {
   it('updates selected tab and pushes route when nav item is clicked', async () => {
     renderTools()
     mockPush.mockReset()
-    await userEvent.click(screen.getByRole('button', { name: /Dictionary/ }))
+    await userEvent.click(
+      screen.getByRole('button', { name: /Akkadian Dictionary/ }),
+    )
     expect(mockPush).toHaveBeenCalledTimes(1)
     expect(mockPush).toHaveBeenCalledWith('/tools/dictionary')
   })
 
   it('does not push route when clicking the already active tab', async () => {
     renderTools('dictionary')
-    await userEvent.click(screen.getByRole('button', { name: /Dictionary/ }))
+    await userEvent.click(
+      screen.getByRole('button', { name: /Akkadian Dictionary/ }),
+    )
     expect(mockPush).not.toHaveBeenCalled()
   })
 
@@ -142,6 +168,7 @@ describe('Tools', () => {
       wordService: {} as WordService,
       bibliographyService: {} as BibliographyService,
       afoRegisterService: {} as AfoRegisterService,
+      dossiersService: {} as DossiersService,
       fragmentService: {} as FragmentService,
       activeTab: 'signs' as Parameters<typeof Tools>[0]['activeTab'],
     }
@@ -180,6 +207,7 @@ describe('Tools', () => {
           wordService={{} as WordService}
           bibliographyService={{} as BibliographyService}
           afoRegisterService={{} as AfoRegisterService}
+          dossiersService={{} as DossiersService}
           fragmentService={{} as FragmentService}
         />
       </MemoryRouter>,
@@ -207,6 +235,7 @@ describe('Tools', () => {
           wordService={{} as WordService}
           bibliographyService={{} as BibliographyService}
           afoRegisterService={{} as AfoRegisterService}
+          dossiersService={{} as DossiersService}
           fragmentService={{} as FragmentService}
         />
       </MemoryRouter>,
@@ -220,7 +249,7 @@ describe('Tools', () => {
   })
 
   it('resolves tab metadata and fallback display title', () => {
-    expect(getCurrentTab('dictionary')?.title).toEqual('Dictionary')
+    expect(getCurrentTab('dictionary')?.title).toEqual('Akkadian Dictionary')
     expect(getCurrentTab(undefined)).toBeUndefined()
     expect(getDisplayTitle(undefined)).toEqual('Tools')
     expect(
@@ -229,10 +258,17 @@ describe('Tools', () => {
       ),
     ).toEqual('Tools')
     expect(getDisplayTitle('signs')).toEqual('Signs')
+    expect(getDisplayTitle('dictionary')).toEqual('Akkadian Dictionary')
+    expect(getDisplayTitle('dossiers')).toEqual('Dossiers')
+    expect(getDisplayTitle('genres')).toEqual('Genres')
   })
 
   it('builds breadcrumbs for selected and unselected states', () => {
     expect(getToolsBreadcrumbs('Tools')).toHaveLength(1)
-    expect(getToolsBreadcrumbs('Dictionary', 'dictionary')).toHaveLength(2)
+    expect(
+      getToolsBreadcrumbs('Akkadian Dictionary', 'dictionary'),
+    ).toHaveLength(2)
+    expect(getToolsBreadcrumbs('Dossiers', 'dossiers')).toHaveLength(2)
+    expect(getToolsBreadcrumbs('Genres', 'genres')).toHaveLength(2)
   })
 })

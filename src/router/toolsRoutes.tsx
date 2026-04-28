@@ -9,10 +9,10 @@ import WordService from 'dictionary/application/WordService'
 import BibliographyService from 'bibliography/application/BibliographyService'
 import AfoRegisterService from 'afo-register/application/AfoRegisterService'
 import FragmentService from 'fragmentarium/application/FragmentService'
+import DossiersService from 'dossiers/application/DossiersService'
 import BibliographyViewer from 'bibliography/ui/BibliographyViewer'
 import BibliographyEditor from 'bibliography/ui/BibliographyEditor'
-import Tools, { tabIds } from 'router/Tools'
-import _ from 'lodash'
+import Tools, { tabIds, getDisplayTitle } from 'router/Tools'
 
 export default function ToolsRoutes({
   sitemap,
@@ -21,6 +21,7 @@ export default function ToolsRoutes({
   wordService,
   bibliographyService,
   afoRegisterService,
+  dossiersService,
   fragmentService,
 }: {
   sitemap: boolean
@@ -29,6 +30,7 @@ export default function ToolsRoutes({
   wordService: WordService
   bibliographyService: BibliographyService
   afoRegisterService: AfoRegisterService
+  dossiersService: DossiersService
   fragmentService: FragmentService
 }): JSX.Element[] {
   return [
@@ -59,6 +61,7 @@ export default function ToolsRoutes({
             wordService={wordService}
             bibliographyService={bibliographyService}
             afoRegisterService={afoRegisterService}
+            dossiersService={dossiersService}
             fragmentService={fragmentService}
           />
         </HeadTagsService>
@@ -72,7 +75,7 @@ export default function ToolsRoutes({
         exact
         render={(): ReactNode => (
           <HeadTagsService
-            title={`Tools: ${_.capitalize(tabId).replaceAll('-', ' ')} - eBL`}
+            title={`Tools: ${getDisplayTitle(tabId)} - eBL`}
             description="This section contains the electronic Babylonian Library (eBL) tools."
           >
             <Tools
@@ -81,6 +84,7 @@ export default function ToolsRoutes({
               wordService={wordService}
               bibliographyService={bibliographyService}
               afoRegisterService={afoRegisterService}
+              dossiersService={dossiersService}
               fragmentService={fragmentService}
               activeTab={tabId}
             />

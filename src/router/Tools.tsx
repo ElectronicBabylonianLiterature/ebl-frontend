@@ -20,6 +20,9 @@ import WordService from 'dictionary/application/WordService'
 import BibliographyService from 'bibliography/application/BibliographyService'
 import AfoRegisterService from 'afo-register/application/AfoRegisterService'
 import FragmentService from 'fragmentarium/application/FragmentService'
+import DossiersService from 'dossiers/application/DossiersService'
+import DossiersSearchPage from 'dossiers/ui/DossiersSearchPage'
+import GenresPage from 'fragmentarium/ui/GenresPage'
 import { useHistory } from 'router/compat'
 
 export const tabIds = [
@@ -27,6 +30,8 @@ export const tabIds = [
   'dictionary',
   'references',
   'afo-register',
+  'dossiers',
+  'genres',
   'date-converter',
   'list-of-kings',
   'cuneiform-converter',
@@ -52,9 +57,11 @@ type ContentMatch = {
 
 const tabConfig = [
   { id: 'signs', title: 'Signs', icon: '𒀀' },
-  { id: 'dictionary', title: 'Dictionary', icon: 'Ꞌ' },
+  { id: 'dictionary', title: 'Akkadian Dictionary', icon: 'Ꞌ' },
   { id: 'references', title: 'References', icon: '※' },
   { id: 'afo-register', title: 'AfO-Register', icon: '⊞' },
+  { id: 'dossiers', title: 'Dossiers', icon: '🗂️' },
+  { id: 'genres', title: 'Genres', icon: '📚' },
   { id: 'date-converter', title: 'Date Converter', icon: '⇌' },
   { id: 'list-of-kings', title: 'List of Kings', icon: '♔' },
   { id: 'cuneiform-converter', title: 'Cuneiform Converter', icon: '𒐕' },
@@ -123,6 +130,7 @@ function getContent({
   wordService,
   bibliographyService,
   afoRegisterService,
+  dossiersService,
   fragmentService,
   history,
   location,
@@ -134,6 +142,7 @@ function getContent({
   wordService: WordService
   bibliographyService: BibliographyService
   afoRegisterService: AfoRegisterService
+  dossiersService: DossiersService
   fragmentService: FragmentService
   history: ContentHistory
   location: ContentLocation
@@ -155,6 +164,8 @@ function getContent({
         fragmentService={fragmentService}
       />
     ),
+    dossiers: <DossiersSearchPage dossiersService={dossiersService} />,
+    genres: <GenresPage fragmentService={fragmentService} />,
     'date-converter': (
       <>
         {AboutDateConverter(markupService)}
@@ -180,6 +191,7 @@ export default function Tools({
   wordService,
   bibliographyService,
   afoRegisterService,
+  dossiersService,
   fragmentService,
   activeTab,
 }: {
@@ -188,6 +200,7 @@ export default function Tools({
   wordService: WordService
   bibliographyService: BibliographyService
   afoRegisterService: AfoRegisterService
+  dossiersService: DossiersService
   fragmentService: FragmentService
   activeTab?: TabId
 }): JSX.Element {
@@ -273,6 +286,7 @@ export default function Tools({
                 wordService,
                 bibliographyService,
                 afoRegisterService,
+                dossiersService,
                 fragmentService,
                 history,
                 location,
