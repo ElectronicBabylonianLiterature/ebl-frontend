@@ -78,6 +78,12 @@ Trello card: "Fixes to date converter" (reported by Zsombor Földi / ilya.o.khai
 - [x] F8: expand `DateFieldPatternsHelp.test.tsx` to assert each allowed pattern row, switch to alias import path
 - [x] F10: rename `yearAndDayBasePattern` → `STANDARD_DATE_FIELD_PATTERN`, drop bare block scope in `dateFieldWarnings.ts`
 - [x] BUG-2 regression tests: cover `fromJson` (all flag combinations + omitted), `toDto` (king flags forwarded), and full `toDto → fromJson` round-trip in `Date.test.ts`
+- [x] Fix: non-pattern characters (e.g. `21%$`) not triggering non-standard warning — make `STANDARD_DATE_FIELD_PATTERN` a true whitelist; remove redundant `ROMAN_NUMERAL_PATTERN` and `normalizeDateFieldValue` import from `dateFieldWarnings.ts`; add `it.each` test for special-character inputs
 - [x] Re-run gates after follow-ups: `yarn lint`, `yarn tsc`, full suite (1 isolated flaky test, passes alone)
+
+### Open / pending items
+
 - [ ] F2: populate PR description on GitHub (requires push permission — pending user approval)
-- [ ] F1: remove `TASK-001-*` files before merge
+- [ ] F1: remove all `TASK-001-*` files from the branch before merge (blocking per project rules)
+- [x] `parseDateFieldNumber`: add `"ca."` qualifier to converted modern date for approximate patterns `n+`, `x+n`, `n/n`, `n-n` — added `isApproximateDateFieldValue` helper in `parseDateFieldNumber.ts`; wired into `isApproximate()` in `DateBase.ts`; added `isApproximateDateFieldValue` unit tests and SE/Nabonassar-era integration tests in `Date.test.ts`
+- [x] `parseDateFieldNumber`: `n-n` range logic verified — `parseDateFieldNumber('14-17')` correctly returns `14` (lower bound used for conversion); the range is now properly marked approximate via `isApproximateDateFieldValue`

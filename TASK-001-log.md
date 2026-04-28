@@ -652,3 +652,49 @@ produced no warning.
   still holds.
 
 **Gates:** lint clean, tsc clean, 14/14 tests pass.
+
+## 2026-04-28 — `ca.` qualifier: `isApproximateDateFieldValue` and integration with `isApproximate()`
+
+### Feature
+
+Added support for the `ca.` ("circa") prefix on approximate date field patterns: `n+`, `x+n`, `n/n`, and `n-n`. Dates using these patterns in any of their year/month/day fields are now detected as approximate and will display a `ca.` prefix.
+
+### New code
+
+**[src/chronology/domain/parseDateFieldNumber.ts](src/chronology/domain/parseDateFieldNumber.ts)**
+
+- Added `APPROXIMATE_PATTERNS` array (four regexes: `/^\d+\+$/`, `/^x\+\d+$/i`, `/^\d+\/\d+$/`, `/^\d+-\d+$/`).
+- Exported `isApproximateDateFieldValue(value: string): boolean` — returns `true` if the trimmed value matches any of the four patterns.
+- Prettier auto-fix applied after inline comments were removed per project policy.
+
+**[src/chronology/domain/DateBase.ts](src/chronology/domain/DateBase.ts)**
+
+- Import updated to include `isApproximateDateFieldValue`.
+- `isApproximate()` extended with a third OR condition: checks whether any of `year.value`, `month.value`, or `day.value` matches `isApproximateDateFieldValue`.
+
+### Tests added
+
+**[src/chronology/domain/parseDateFieldNumber.test.ts](src/chronology/domain/parseDateFieldNumber.test.ts)**
+
+- 18 new tests in a dedicated `describe('isApproximateDateFieldValue')` block:
+  - 8 approximate-true cases: `14+`, `x+7`, `x+0`, `14/17`, `14-17`, `  14+  ` (whitespace), `14/14`, `x+14`.
+  - 10 approximate-false cases: `14`, `x`, `7`, `XIV`, `14a`, `14?`, `<14>`, `[14]`, `14!`, `''`.
+
+**[src/chronology/domain/Date.test.ts](src/chronology/domain/Date.test.ts)**
+
+- New `describe('adds ca. prefix for approximate date field patterns')` block with 5 integration tests:
+  - `n+` day on Nabonassar-era date produces `ca.` prefix.
+  - Exact day on Nabonassar-era date produces no `ca.` prefix.
+  - `n-n` day range on Nabonassar-era date produces `ca.` prefix.
+  - `x+n` day on Seleucid-era date produces `ca.` prefix.
+  - `n/n` month on Seleucid-era date produces `ca.` prefix.
+
+### Comment removal and code audit
+
+All inline comments that had been added to `APPROXIMATE_PATTERNS` were removed (project policy: no in-code comments). Prettier reformatted the file accordingly. All other changed files were also verified to contain no inline comments in new/modified lines.
+
+### Gate results
+
+- `yarn lint` — clean.
+- `yarn tsc` — clean.
+- `CI=1 yarn test src/chronology/domain/parseDateFieldNumber.test.ts src/chronology/domain/Date.test.ts --no-coverage --watch=false` — 72/72 pass.

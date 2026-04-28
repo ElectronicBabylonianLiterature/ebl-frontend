@@ -1,3 +1,9 @@
+const APPROXIMATE_PATTERNS = [/^\d+\+$/, /^x\+\d+$/i, /^\d+\/\d+$/, /^\d+-\d+$/]
+
+export function isApproximateDateFieldValue(value: string): boolean {
+  return APPROXIMATE_PATTERNS.some((pattern) => pattern.test(value.trim()))
+}
+
 export function normalizeDateFieldValue(value: string): string {
   let normalized = value.trim()
 

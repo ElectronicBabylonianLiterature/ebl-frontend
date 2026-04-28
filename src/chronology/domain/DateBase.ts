@@ -14,7 +14,9 @@ import {
   YearMonthDay,
 } from 'chronology/domain/DateParameters'
 import normalizeMesopotamianMonth from 'chronology/domain/normalizeMesopotamianMonth'
-import parseDateFieldNumber from 'chronology/domain/parseDateFieldNumber'
+import parseDateFieldNumber, {
+  isApproximateDateFieldValue,
+} from 'chronology/domain/parseDateFieldNumber'
 import getPreviousKingAndYearIfYearZero from './ZeroYearKingFinder'
 
 const calendarToAbbreviation = (calendar: ModernCalendar): string =>
@@ -187,6 +189,9 @@ export class MesopotamianDateBase {
         this.month.isUncertain,
         this.day.isUncertain,
       ].includes(true),
+      [this.year.value, this.month.value, this.day.value].some(
+        isApproximateDateFieldValue,
+      ),
     ].includes(true)
   }
 
