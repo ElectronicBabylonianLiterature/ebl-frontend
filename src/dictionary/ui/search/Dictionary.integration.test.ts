@@ -29,7 +29,9 @@ beforeEach(async () => {
 test('renders dictionary search page', () => {
   expect(appDriver.getView().container).toMatchSnapshot()
   expect(
-    appDriver.getView().getAllByRole('heading', { name: 'Dictionary' }),
+    appDriver
+      .getView()
+      .getAllByRole('heading', { name: 'Akkadian Dictionary' }),
   ).not.toHaveLength(0)
 })
 

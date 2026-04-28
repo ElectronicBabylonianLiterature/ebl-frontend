@@ -1,5 +1,6 @@
 import React, { ReactNode } from 'react'
 import { Redirect, Route } from 'router/compat'
+import NotFoundPage from 'NotFoundPage'
 import BibliographyService from 'bibliography/application/BibliographyService'
 import { BibliographySlugs } from 'router/sitemap'
 import AfoRegisterService from 'afo-register/application/AfoRegisterService'
@@ -54,9 +55,15 @@ export default function BibliographyRoutes({
       key="bibliography-afo-register-redirect"
     />,
     <Redirect
+      exact
       from="/bibliography"
       to="/tools/references"
       key="bibliography-root-redirect"
+    />,
+    <Route
+      key="bibliography-not-found"
+      path="/bibliography/*"
+      render={(): ReactNode => <NotFoundPage />}
     />,
   ]
 }

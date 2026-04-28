@@ -214,7 +214,7 @@ exports[`Meaning 1`] = `
               aria-current="page"
               class="breadcrumb-item active"
             >
-              Dictionary
+              Akkadian dictionary
             </li>
           </ol>
         </nav>
@@ -272,7 +272,7 @@ exports[`Meaning 1`] = `
               <span
                 class="tools-nav__title"
               >
-                Dictionary
+                Akkadian Dictionary
               </span>
             </a>
             <a
@@ -307,6 +307,40 @@ exports[`Meaning 1`] = `
                 class="tools-nav__title"
               >
                 AfO-Register
+              </span>
+            </a>
+            <a
+              class="tools-nav__item  nav-link"
+              href="#"
+              role="button"
+              tabindex="0"
+            >
+              <span
+                class="tools-nav__icon"
+              >
+                🗂️
+              </span>
+              <span
+                class="tools-nav__title"
+              >
+                Dossiers
+              </span>
+            </a>
+            <a
+              class="tools-nav__item  nav-link"
+              href="#"
+              role="button"
+              tabindex="0"
+            >
+              <span
+                class="tools-nav__icon"
+              >
+                📚
+              </span>
+              <span
+                class="tools-nav__title"
+              >
+                Genres
               </span>
             </a>
             <a
@@ -376,7 +410,7 @@ exports[`Meaning 1`] = `
             <h2
               class="tools-content__title"
             >
-              Dictionary
+              Akkadian Dictionary
             </h2>
           </div>
           <div
@@ -1316,7 +1350,7 @@ exports[`Root 1`] = `
               aria-current="page"
               class="breadcrumb-item active"
             >
-              Dictionary
+              Akkadian dictionary
             </li>
           </ol>
         </nav>
@@ -1374,7 +1408,7 @@ exports[`Root 1`] = `
               <span
                 class="tools-nav__title"
               >
-                Dictionary
+                Akkadian Dictionary
               </span>
             </a>
             <a
@@ -1409,6 +1443,40 @@ exports[`Root 1`] = `
                 class="tools-nav__title"
               >
                 AfO-Register
+              </span>
+            </a>
+            <a
+              class="tools-nav__item  nav-link"
+              href="#"
+              role="button"
+              tabindex="0"
+            >
+              <span
+                class="tools-nav__icon"
+              >
+                🗂️
+              </span>
+              <span
+                class="tools-nav__title"
+              >
+                Dossiers
+              </span>
+            </a>
+            <a
+              class="tools-nav__item  nav-link"
+              href="#"
+              role="button"
+              tabindex="0"
+            >
+              <span
+                class="tools-nav__icon"
+              >
+                📚
+              </span>
+              <span
+                class="tools-nav__title"
+              >
+                Genres
               </span>
             </a>
             <a
@@ -1478,7 +1546,7 @@ exports[`Root 1`] = `
             <h2
               class="tools-content__title"
             >
-              Dictionary
+              Akkadian Dictionary
             </h2>
           </div>
           <div
@@ -2418,7 +2486,7 @@ exports[`Vowel class 1`] = `
               aria-current="page"
               class="breadcrumb-item active"
             >
-              Dictionary
+              Akkadian dictionary
             </li>
           </ol>
         </nav>
@@ -2476,7 +2544,7 @@ exports[`Vowel class 1`] = `
               <span
                 class="tools-nav__title"
               >
-                Dictionary
+                Akkadian Dictionary
               </span>
             </a>
             <a
@@ -2511,6 +2579,40 @@ exports[`Vowel class 1`] = `
                 class="tools-nav__title"
               >
                 AfO-Register
+              </span>
+            </a>
+            <a
+              class="tools-nav__item  nav-link"
+              href="#"
+              role="button"
+              tabindex="0"
+            >
+              <span
+                class="tools-nav__icon"
+              >
+                🗂️
+              </span>
+              <span
+                class="tools-nav__title"
+              >
+                Dossiers
+              </span>
+            </a>
+            <a
+              class="tools-nav__item  nav-link"
+              href="#"
+              role="button"
+              tabindex="0"
+            >
+              <span
+                class="tools-nav__icon"
+              >
+                📚
+              </span>
+              <span
+                class="tools-nav__title"
+              >
+                Genres
               </span>
             </a>
             <a
@@ -2580,7 +2682,7 @@ exports[`Vowel class 1`] = `
             <h2
               class="tools-content__title"
             >
-              Dictionary
+              Akkadian Dictionary
             </h2>
           </div>
           <div
@@ -3520,7 +3622,7 @@ exports[`Word 1`] = `
               aria-current="page"
               class="breadcrumb-item active"
             >
-              Dictionary
+              Akkadian dictionary
             </li>
           </ol>
         </nav>
@@ -3578,7 +3680,7 @@ exports[`Word 1`] = `
               <span
                 class="tools-nav__title"
               >
-                Dictionary
+                Akkadian Dictionary
               </span>
             </a>
             <a
@@ -3613,6 +3715,40 @@ exports[`Word 1`] = `
                 class="tools-nav__title"
               >
                 AfO-Register
+              </span>
+            </a>
+            <a
+              class="tools-nav__item  nav-link"
+              href="#"
+              role="button"
+              tabindex="0"
+            >
+              <span
+                class="tools-nav__icon"
+              >
+                🗂️
+              </span>
+              <span
+                class="tools-nav__title"
+              >
+                Dossiers
+              </span>
+            </a>
+            <a
+              class="tools-nav__item  nav-link"
+              href="#"
+              role="button"
+              tabindex="0"
+            >
+              <span
+                class="tools-nav__icon"
+              >
+                📚
+              </span>
+              <span
+                class="tools-nav__title"
+              >
+                Genres
               </span>
             </a>
             <a
@@ -3682,7 +3818,7 @@ exports[`Word 1`] = `
             <h2
               class="tools-content__title"
             >
-              Dictionary
+              Akkadian Dictionary
             </h2>
           </div>
           <div
@@ -4622,7 +4758,7 @@ exports[`renders dictionary search page 1`] = `
               aria-current="page"
               class="breadcrumb-item active"
             >
-              Dictionary
+              Akkadian dictionary
             </li>
           </ol>
         </nav>
@@ -4680,7 +4816,7 @@ exports[`renders dictionary search page 1`] = `
               <span
                 class="tools-nav__title"
               >
-                Dictionary
+                Akkadian Dictionary
               </span>
             </a>
             <a
@@ -4715,6 +4851,40 @@ exports[`renders dictionary search page 1`] = `
                 class="tools-nav__title"
               >
                 AfO-Register
+              </span>
+            </a>
+            <a
+              class="tools-nav__item  nav-link"
+              href="#"
+              role="button"
+              tabindex="0"
+            >
+              <span
+                class="tools-nav__icon"
+              >
+                🗂️
+              </span>
+              <span
+                class="tools-nav__title"
+              >
+                Dossiers
+              </span>
+            </a>
+            <a
+              class="tools-nav__item  nav-link"
+              href="#"
+              role="button"
+              tabindex="0"
+            >
+              <span
+                class="tools-nav__icon"
+              >
+                📚
+              </span>
+              <span
+                class="tools-nav__title"
+              >
+                Genres
               </span>
             </a>
             <a
@@ -4784,7 +4954,7 @@ exports[`renders dictionary search page 1`] = `
             <h2
               class="tools-content__title"
             >
-              Dictionary
+              Akkadian Dictionary
             </h2>
           </div>
           <div

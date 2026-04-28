@@ -143,12 +143,12 @@ describe('NotFoundPage rendering in BibliographyRoutes', () => {
 })
 
 describe('BibliographyRoutes redirects', () => {
-  test('redirects "/bibliography" to "/bibliography/afo-register"', () => {
+  test('redirects "/bibliography" to "/tools/references"', () => {
     render(
       <MemoryRouter initialEntries={['/bibliography']}>
         <Switch>
           <Route
-            path="/bibliography/afo-register"
+            path="/tools/references"
             render={() => <div>Bibliography Redirect Target</div>}
           />
           {[...BibliographyRoutes({ ...getServices(), sitemap: false })]}
