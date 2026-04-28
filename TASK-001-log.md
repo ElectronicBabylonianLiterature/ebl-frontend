@@ -629,3 +629,26 @@ to [src/chronology/domain/Date.test.ts](src/chronology/domain/Date.test.ts):
 - `yarn tsc` — clean.
 - `CI=1 yarn test src/chronology/domain/Date.test.ts --no-coverage --watch=false` —
   47/47 tests pass (7 new tests, all focused on the BUG-2 contract).
+
+## 2026-04-28 — Fix: non-pattern characters (e.g. "21%$") not triggering non-standard warning
+
+**Bug:** `isNonStandardValue` only warned when the non-matching value also contained
+Roman numerals or other letters. Purely non-alpha junk like `21%$`, `12@`, `5#3`
+produced no warning.
+
+**Fix in [src/chronology/ui/DateEditor/dateFieldWarnings.ts](src/chronology/ui/DateEditor/dateFieldWarnings.ts):**
+
+- `STANDARD_DATE_FIELD_PATTERN` is now a true whitelist: any value that fails to
+  match triggers the non-standard warning.
+- Removed the second-pass Roman-numeral / letter check and the now-unused
+  `ROMAN_NUMERAL_PATTERN` constant.
+- Removed the `normalizeDateFieldValue` import (no longer needed in this file).
+
+**Tests updated in [src/chronology/ui/DateEditor/dateFieldWarnings.test.ts](src/chronology/ui/DateEditor/dateFieldWarnings.test.ts):**
+
+- `it.each` over `['21%$', '12@', '5#3', '!@#', '12.5', '1 2']` asserts the
+  non-standard warning fires for year and day fields.
+- Month-exclusion test extended with `'21%$'` to confirm the scope-restriction
+  still holds.
+
+**Gates:** lint clean, tsc clean, 14/14 tests pass.

@@ -33,11 +33,26 @@ it('warns for non-standard values', () => {
   )
 })
 
+it.each(['21%$', '12@', '5#3', '!@#', '12.5', '1 2'])(
+  'warns for value with non-pattern characters: %s',
+  (value) => {
+    expect(getDateFieldWarnings('year', value)).toContain(
+      'Non-standard value may skip date conversion for this field.',
+    )
+    expect(getDateFieldWarnings('day', value)).toContain(
+      'Non-standard value may skip date conversion for this field.',
+    )
+  },
+)
+
 it('does not warn for non-standard values in month field', () => {
   expect(getDateFieldWarnings('month', 'XIV')).not.toContain(
     'Non-standard value may skip date conversion for this field.',
   )
   expect(getDateFieldWarnings('month', '12abc')).not.toContain(
+    'Non-standard value may skip date conversion for this field.',
+  )
+  expect(getDateFieldWarnings('month', '21%$')).not.toContain(
     'Non-standard value may skip date conversion for this field.',
   )
 })

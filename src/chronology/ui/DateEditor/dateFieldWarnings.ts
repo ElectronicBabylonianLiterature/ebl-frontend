@@ -1,11 +1,7 @@
-import { normalizeDateFieldValue } from 'chronology/domain/parseDateFieldNumber'
-
 type FieldName = 'year' | 'month' | 'day'
 
 const STANDARD_DATE_FIELD_PATTERN =
   /^(\d+|x|\d+\+|x\+\d+|\d+-\d+|\d+\/\d+|\d+[a-z]?|\(\d+\)|\[\d+\]|<\d+>|\d+[?!])$/i
-
-const ROMAN_NUMERAL_PATTERN = /\b[ivxlcdm]+\b/i
 
 export default function getDateFieldWarnings(
   field: FieldName,
@@ -46,9 +42,5 @@ export default function getDateFieldWarnings(
 }
 
 function isNonStandardValue(trimmed: string): boolean {
-  if (STANDARD_DATE_FIELD_PATTERN.test(trimmed)) {
-    return false
-  }
-  const normalized = normalizeDateFieldValue(trimmed)
-  return ROMAN_NUMERAL_PATTERN.test(normalized) || /[a-z]/i.test(normalized)
+  return !STANDARD_DATE_FIELD_PATTERN.test(trimmed)
 }

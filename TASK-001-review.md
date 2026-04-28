@@ -1,6 +1,6 @@
 # TASK-001 — PR Review: Fix date issues (#714)
 
-- **PR:** https://github.com/ElectronicBabylonianLiterature/ebl-frontend/pull/714
+- **PR:** <https://github.com/ElectronicBabylonianLiterature/ebl-frontend/pull/714>
 - **Branch:** `date-fixes` → `master`
 - **Author:** @khoidt
 - **Head SHA at review time:** `b23a296c16438528f786e26b0c36434cb55a7963`
