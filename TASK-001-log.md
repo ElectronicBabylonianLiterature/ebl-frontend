@@ -576,3 +576,56 @@ Implemented the agreed compromise direction: year-only structured metadata for `
 - Targeted tests (54 tests across 4 files) — all passed.
 - Full suite — 293 suites, 2911 passed, 2 skipped, 0 failures.
   - Note: `src/corpus/ui/Corpus.integration.test.ts` exhibited a flaky timeout failure in one full-suite run; confirmed pre-existing by running the test in isolation (passes every time). Unrelated to BUG-3.
+
+---
+
+## 2026-04-28 — PR #714 review follow-ups (F3, F4, F5, F6, F7, F8, F10)
+
+Addressed all code blockers and recommended cleanups from the review (`TASK-001-review.md`). F1 (task-artifact removal) and F2 (PR description) deliberately deferred per user direction.
+
+### Code changes
+
+- **F5** [src/chronology/domain/parseDateFieldNumber.ts](src/chronology/domain/parseDateFieldNumber.ts) — `parseInt(normalized)` → `parseInt(normalized, 10)`.
+- **F4** [src/chronology/ui/DateEditor/DateSelectionInput.tsx](src/chronology/ui/DateEditor/DateSelectionInput.tsx) — extracted local `DateFieldWarnings` component; both `getDateInputGroup` and `getYearInputGroup` now render warnings via `<DateFieldWarnings field={…} value={…} />` instead of duplicating the `getDateFieldWarnings(...).map(...)` JSX block.
+- **F3 / F7** [src/chronology/ui/DateEditor/DateFieldPatternsHelp.tsx](src/chronology/ui/DateEditor/DateFieldPatternsHelp.tsx) — rewrote the popover content with `react-bootstrap` `Table` (semantic two-column layout, no inline floats). Popover JSX is now a top-level constant (computed once, no per-render allocation). Stale `_` import dropped.
+- **F8** [src/chronology/ui/DateEditor/DateFieldPatternsHelp.test.tsx](src/chronology/ui/DateEditor/DateFieldPatternsHelp.test.tsx) — switched to alias import (`chronology/ui/DateEditor/DateFieldPatternsHelp`); added a `.each` suite asserting all seven allowed-pattern rows render in the popover after hover.
+- **F6 / F10** [src/chronology/ui/DateEditor/dateFieldWarnings.ts](src/chronology/ui/DateEditor/dateFieldWarnings.ts) — renamed `yearAndDayBasePattern` → `STANDARD_DATE_FIELD_PATTERN`, dropped the bare-block scope, extracted `isNonStandardValue(...)`, and scoped the "Non-standard value" warning to `field !== 'month'` to match the BUG-3 spec. Also fixed a latent false-positive: standalone `x` (placeholder for unclear number) no longer triggers the non-standard warning. Tests in [src/chronology/ui/DateEditor/dateFieldWarnings.test.ts](src/chronology/ui/DateEditor/dateFieldWarnings.test.ts) updated accordingly (added "does not warn for non-standard values in month field" case).
+- [src/chronology/ui/DateEditor/DateSelectionInput.test.tsx](src/chronology/ui/DateEditor/DateSelectionInput.test.tsx) — updated `non-blocking year warnings` assertion (year `<136!?>` is now bracket-strippable so it no longer fires the non-standard warning; total non-standard occurrences = 1, only from `dayValue: 'XIV'`).
+
+### Reverted
+
+- **`HelpTrigger` global `data-testid="help-icon"`** — running the full suite revealed 14 unrelated snapshot regressions (Dictionary integration, etc.) caused by the global testid added to every `HelpTrigger` instance. Reverted [src/common/ui/HelpTrigger.tsx](src/common/ui/HelpTrigger.tsx) to its master version. The `DateFieldPatternsHelp` test now finds the icon via `container.querySelector('.fa-info-circle')`.
+
+### Gate results
+
+- `yarn lint` — passed (clean).
+- `yarn tsc` — passed (clean).
+- Targeted tests (`DateFieldPatternsHelp.test.tsx`, `DateSelectionInput.test.tsx`, `dateFieldWarnings.test.ts`, `parseDateFieldNumber.test.ts`) — 26/26 pass.
+- Full suite — 296 suites, 2931 passed, 2 skipped, 49/49 snapshots pass.
+  - One isolated flake observed in `src/bibliography/ui/BibliographyEntryForm.test.tsx` ("Form updates and submits entry with correct data"); reproduces clean (6/6) when run in isolation. Unrelated to this PR (pre-existing flake).
+
+### Review file
+
+- Updated [TASK-001-review.md](TASK-001-review.md) findings F3, F4, F5, F6, F7, F8, F10 marked resolved. F1 and F2 remain open blockers (deferred by user).
+
+## 2026-04-28 — BUG-2 regression coverage added
+
+User flagged the BUG-2 fix (king `isBroken`/`isUncertain` flags lost on load) and asked
+for explicit tests to guarantee the behaviour. Verified that the production fix in
+[src/chronology/domain/Date.ts](src/chronology/domain/Date.ts) is correct (DTO flags are
+merged onto the resolved `findKingByOrderGlobal` result in `fromJson`, and `toDto`
+forwards `isBroken`/`isUncertain` on the king DTO field) and added the following tests
+to [src/chronology/domain/Date.test.ts](src/chronology/domain/Date.test.ts):
+
+- `it.each` table covering all `{isBroken, isUncertain}` combinations on `fromJson`.
+- `fromJson` leaves king flags `undefined` when the DTO omits them.
+- `toDto` writes `isBroken`/`isUncertain` onto the king DTO field.
+- Full round-trip: `new MesopotamianDate(...) → toDto() → fromJson()` preserves both
+  flags together with the resolved king name.
+
+### Gate results
+
+- `yarn lint` — clean.
+- `yarn tsc` — clean.
+- `CI=1 yarn test src/chronology/domain/Date.test.ts --no-coverage --watch=false` —
+  47/47 tests pass (7 new tests, all focused on the BUG-2 contract).

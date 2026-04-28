@@ -15,5 +15,5 @@ export function normalizeDateFieldValue(value: string): string {
 
 export default function parseDateFieldNumber(value: string): number {
   const normalized = normalizeDateFieldValue(value)
-  return parseInt(normalized)
+  return parseInt(normalized, 10)
 }

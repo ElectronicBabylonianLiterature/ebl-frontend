@@ -18,6 +18,30 @@ import {
 import { BrokenAndUncertainSwitches } from 'common/ui/BrokenAndUncertain'
 import getDateFieldWarnings from 'chronology/ui/DateEditor/dateFieldWarnings'
 
+type DateFieldName = 'year' | 'month' | 'day'
+
+function DateFieldWarnings({
+  field,
+  value,
+}: {
+  field: DateFieldName
+  value: string
+}): JSX.Element {
+  return (
+    <>
+      {getDateFieldWarnings(field, value).map((warning, index) => (
+        <Form.Text
+          key={`${field}-warning-${index}`}
+          data-testid={`${field}-warning-${index}`}
+          style={{ color: '#8a6d3b' }}
+        >
+          {warning}
+        </Form.Text>
+      ))}
+    </>
+  )
+}
+
 type InputGroupsProps = {
   yearValue: string
   yearBroken: boolean
@@ -185,7 +209,6 @@ function getDateInputGroup({
   isIntercalary = false,
   setIntercalary = (): void => {},
 }: InputGroupProps): JSX.Element {
-  const warnings = getDateFieldWarnings(name as 'year' | 'month' | 'day', value)
   return (
     <>
       <InputGroup size="sm">
@@ -216,17 +239,8 @@ function getDateInputGroup({
             setUncertain,
           }}
         />
-        {/* Only render reconstructed/emended switches in getYearInputGroup */}
       </InputGroup>
-      {warnings.map((warning, index) => (
-        <Form.Text
-          key={`${name}-warning-${index}`}
-          data-testid={`${name}-warning-${index}`}
-          style={{ color: '#8a6d3b' }}
-        >
-          {warning}
-        </Form.Text>
-      ))}
+      <DateFieldWarnings field={name as DateFieldName} value={value} />
     </>
   )
 }
@@ -269,15 +283,7 @@ function getYearInputGroup(props: InputGroupsProps): JSX.Element {
           checked={Boolean(props.yearEmended)}
         />
       </InputGroup>
-      {getDateFieldWarnings('year', props.yearValue).map((warning, index) => (
-        <Form.Text
-          key={`year-warning-${index}`}
-          data-testid={`year-warning-${index}`}
-          style={{ color: '#8a6d3b' }}
-        >
-          {warning}
-        </Form.Text>
-      ))}
+      <DateFieldWarnings field="year" value={props.yearValue} />
     </>
   )
 }

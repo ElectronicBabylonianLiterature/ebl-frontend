@@ -1,8 +1,8 @@
 import React from 'react'
-import { Popover } from 'react-bootstrap'
-import HelpTrigger from 'common/ui/HelpTrigger'
+import classNames from 'classnames'
+import { OverlayTrigger, Popover, Table } from 'react-bootstrap'
 
-const patterns = [
+const patterns: ReadonlyArray<{ pattern: string; explanation: string }> = [
   { pattern: 'n', explanation: 'a number (e.g. 12)' },
   { pattern: 'x', explanation: 'unclear number' },
   { pattern: 'n+', explanation: 'number with plus (e.g. 12+)' },
@@ -15,38 +15,47 @@ const patterns = [
   },
 ]
 
-function DateFieldPatternsHelpPopover(): JSX.Element {
-  return (
-    <Popover id="date-field-patterns-help" title="Allowed Patterns">
-      <Popover.Body>
-        <dl style={{ margin: 0 }}>
+const popover = (
+  <Popover id="date-field-patterns-help" title="Allowed Patterns">
+    <Popover.Body>
+      <Table size="sm" borderless className="mb-0">
+        <tbody>
           {patterns.map(({ pattern, explanation }) => (
-            <React.Fragment key={pattern}>
-              <dt style={{ float: 'left', width: '30%', fontWeight: 'bold' }}>
+            <tr key={pattern}>
+              <th scope="row">
                 <code>{pattern}</code>
-              </dt>
-              <dd style={{ float: 'left', width: '70%', marginLeft: 0 }}>
-                {explanation}
-              </dd>
-            </React.Fragment>
+              </th>
+              <td>{explanation}</td>
+            </tr>
           ))}
-        </dl>
-        <div style={{ clear: 'both' }} />
-      </Popover.Body>
-    </Popover>
-  )
-}
+        </tbody>
+      </Table>
+    </Popover.Body>
+  </Popover>
+)
 
 export default function DateFieldPatternsHelp({
   className,
 }: {
   className?: string
-}) {
+}): JSX.Element {
   return (
-    <HelpTrigger
-      overlay={<DateFieldPatternsHelpPopover />}
-      className={className}
-      data-testid="patterns-help-icon"
-    />
+    <OverlayTrigger placement="right" overlay={popover}>
+      <button
+        type="button"
+        aria-label="Allowed date field patterns"
+        className={classNames(
+          className,
+          'btn',
+          'btn-link',
+          'p-0',
+          'border-0',
+          'align-baseline',
+        )}
+        style={{ lineHeight: 1 }}
+      >
+        <i className="fas fa-info-circle" aria-hidden="true" />
+      </button>
+    </OverlayTrigger>
   )
 }

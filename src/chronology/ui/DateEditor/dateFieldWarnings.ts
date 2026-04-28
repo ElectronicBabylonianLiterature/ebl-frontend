@@ -2,8 +2,10 @@ import { normalizeDateFieldValue } from 'chronology/domain/parseDateFieldNumber'
 
 type FieldName = 'year' | 'month' | 'day'
 
-const yearAndDayBasePattern =
+const STANDARD_DATE_FIELD_PATTERN =
   /^(\d+|x|\d+\+|x\+\d+|\d+-\d+|\d+\/\d+|\d+[a-z]?|\(\d+\)|\[\d+\]|<\d+>|\d+[?!])$/i
+
+const ROMAN_NUMERAL_PATTERN = /\b[ivxlcdm]+\b/i
 
 export default function getDateFieldWarnings(
   field: FieldName,
@@ -36,19 +38,17 @@ export default function getDateFieldWarnings(
     warnings.push('Value contains ?. Use the Uncertain switch instead.')
   }
 
-  {
-    const normalized = normalizeDateFieldValue(trimmed)
-    const hasRomanNumeral = /\b[ivxlcdm]+\b/i.test(normalized)
-    const isStandardPattern = yearAndDayBasePattern.test(trimmed)
-    const hasTextualFragment =
-      /[a-z]/i.test(normalized) && !/^\d+[a-z]?$/i.test(normalized)
-
-    if (hasRomanNumeral || hasTextualFragment || !isStandardPattern) {
-      warnings.push(
-        'Non-standard value may skip date conversion for this field.',
-      )
-    }
+  if (field !== 'month' && isNonStandardValue(trimmed)) {
+    warnings.push('Non-standard value may skip date conversion for this field.')
   }
 
   return [...new Set(warnings)]
+}
+
+function isNonStandardValue(trimmed: string): boolean {
+  if (STANDARD_DATE_FIELD_PATTERN.test(trimmed)) {
+    return false
+  }
+  const normalized = normalizeDateFieldValue(trimmed)
+  return ROMAN_NUMERAL_PATTERN.test(normalized) || /[a-z]/i.test(normalized)
 }

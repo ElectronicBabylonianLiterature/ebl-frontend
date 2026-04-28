@@ -67,3 +67,17 @@ Trello card: "Fixes to date converter" (reported by Zsombor Földi / ilya.o.khai
 - [x] `yarn lint` — no errors
 - [x] `yarn tsc` — no errors
 - [x] Full test suite — no failures, no console warnings/errors
+
+### PR review follow-ups (PR #714)
+
+- [x] F5: add radix `10` to `parseInt` in `parseDateFieldNumber`
+- [x] F4: extract shared `<DateFieldWarnings>` component to remove duplicated warning render in `getDateInputGroup` / `getYearInputGroup`
+- [x] F3: resolve `qltysh[bot]` similar-code finding on `DateFieldPatternsHelp.tsx` (rewrote popover with `Table`; reverted unrelated global `data-testid` on `HelpTrigger` to avoid 14 cross-suite snapshot regressions)
+- [x] F6: scope "non-standard value" warning away from `month` (numeric only)
+- [x] F7: drop inline `float: 'left'` layout in patterns help popover
+- [x] F8: expand `DateFieldPatternsHelp.test.tsx` to assert each allowed pattern row, switch to alias import path
+- [x] F10: rename `yearAndDayBasePattern` → `STANDARD_DATE_FIELD_PATTERN`, drop bare block scope in `dateFieldWarnings.ts`
+- [x] BUG-2 regression tests: cover `fromJson` (all flag combinations + omitted), `toDto` (king flags forwarded), and full `toDto → fromJson` round-trip in `Date.test.ts`
+- [x] Re-run gates after follow-ups: `yarn lint`, `yarn tsc`, full suite (1 isolated flaky test, passes alone)
+- [ ] F2: populate PR description on GitHub (requires push permission — pending user approval)
+- [ ] F1: remove `TASK-001-*` files before merge

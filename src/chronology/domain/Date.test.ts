@@ -118,6 +118,69 @@ describe('MesopotamianDate', () => {
       expect(date.king?.isUncertain).toBe(true)
     })
 
+    it.each([
+      [{ isBroken: true, isUncertain: false }],
+      [{ isBroken: false, isUncertain: true }],
+      [{ isBroken: false, isUncertain: false }],
+    ])('preserves king flags %p from JSON', (flags) => {
+      const json = {
+        year: { value: '2023' },
+        month: { value: '5' },
+        day: { value: '12' },
+        king: { orderGlobal: 1, ...flags },
+      }
+
+      const date = MesopotamianDate.fromJson(json)
+
+      expect(date.king?.isBroken).toBe(flags.isBroken)
+      expect(date.king?.isUncertain).toBe(flags.isUncertain)
+    })
+
+    it('leaves king flags undefined when JSON omits them', () => {
+      const json = {
+        year: { value: '2023' },
+        month: { value: '5' },
+        day: { value: '12' },
+        king: { orderGlobal: 1 },
+      }
+
+      const date = MesopotamianDate.fromJson(json)
+
+      expect(date.king?.name).toBe('Sargon')
+      expect(date.king?.isBroken).toBeUndefined()
+      expect(date.king?.isUncertain).toBeUndefined()
+    })
+
+    it('preserves king broken and uncertain flags through toDto', () => {
+      const date = new MesopotamianDate({
+        year: { value: '2023' },
+        month: { value: '5' },
+        day: { value: '12' },
+        king: { ...king, isBroken: true, isUncertain: true },
+      })
+
+      const dto = date.toDto()
+
+      expect(dto.king?.orderGlobal).toBe(1)
+      expect(dto.king?.isBroken).toBe(true)
+      expect(dto.king?.isUncertain).toBe(true)
+    })
+
+    it('round-trips king broken and uncertain flags through toDto and fromJson', () => {
+      const original = new MesopotamianDate({
+        year: { value: '2023' },
+        month: { value: '5' },
+        day: { value: '12' },
+        king: { ...king, isBroken: true, isUncertain: true },
+      })
+
+      const restored = MesopotamianDate.fromJson(original.toDto())
+
+      expect(restored.king?.name).toBe('Sargon')
+      expect(restored.king?.isBroken).toBe(true)
+      expect(restored.king?.isUncertain).toBe(true)
+    })
+
     it('round-trips year-0 date: toDto preserves original king and year-0 so fromJson restores them', () => {
       const original = new MesopotamianDate({
         year: { value: '0' },

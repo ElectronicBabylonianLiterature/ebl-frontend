@@ -248,7 +248,7 @@ describe('Date Input Groups', () => {
       screen.getAllByText(
         'Non-standard value may skip date conversion for this field.',
       ),
-    ).toHaveLength(2)
+    ).toHaveLength(1)
   })
 })
 
