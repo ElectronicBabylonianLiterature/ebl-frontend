@@ -89,7 +89,7 @@
         animation: ring-expand 2s ease-out forwards
 
   &-content
-    background: var(--card-bg, white)
+    background: white
     padding: 2rem
     border-radius: 12px
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08)
@@ -119,12 +119,12 @@
     &__title
       font-size: 1.3rem
       font-weight: 700
-      color: var(--text-primary, #333)
+      color: #333
       margin: 0
       line-height: 1.4
 
     &__body
-      color: var(--text-secondary, #555)
+      color: #555
       line-height: 1.8
 
       p
@@ -145,7 +145,7 @@
         figcaption
           margin-top: 0.5rem
           font-size: 0.85rem
-          color: var(--text-muted, #777)
+          color: #777
           font-style: italic
 
 @keyframes pulse
@@ -164,13 +164,3 @@
     height: 80px
     opacity: 0
 
-[data-theme="dark"]
-  .timeline
-    &-line
-      background: linear-gradient(180deg, transparent, #3399cc, transparent)
-
-    &-content
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3)
-
-      &:hover
-        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5)

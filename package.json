@@ -166,7 +166,6 @@
   "resolutions": {
     "eslint": "8.57.1",
     "@xmldom/xmldom": "^0.8.10",
-    "xmldom": "^0.6.0",
     "node-forge": "^1.3.2",
     "form-data": "^4.0.0",
     "ws": "^8.17.1",

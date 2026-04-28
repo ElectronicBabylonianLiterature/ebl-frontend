@@ -111,7 +111,7 @@
   p
     font-size: 1.05rem
     line-height: 1.75
-    color: var(--text-primary)
+    color: #212529
     margin-bottom: 1.5rem
 
     &:last-child
@@ -146,7 +146,7 @@
   &__text
     font-size: 1.1rem
     line-height: 1.8
-    color: var(--text-primary)
+    color: #212529
 
     a
       color: #0077be
@@ -184,7 +184,7 @@
     margin-bottom: 0.875rem
 
   &__text
-    color: var(--text-secondary)
+    color: #6c757d
     font-size: 0.95rem
     line-height: 1.6
     margin-bottom: 1.25rem
@@ -215,48 +215,154 @@
     .card-body
       padding: 1.5rem
 
-\:root[data-theme="dark"]
-  .hero
-    background-color: #1a5a7a
+.latest-additions-preview
+  padding: 2rem 0 4rem
 
-    &__badge
-      background-color: rgba(255, 255, 255, 0.1)
+  &__header
+    display: flex
+    justify-content: space-between
+    align-items: center
+    margin-bottom: 1.75rem
+    gap: 1rem
 
-    &__link
-      background-color: rgba(255, 255, 255, 0.15)
+  &__title
+    color: #0077be
+    font-size: 2rem
+    font-weight: 700
+    margin: 0
 
-      &:hover
-        background-color: rgba(255, 255, 255, 0.25)
-
-  .introduction-content
-    &__heading
-      color: #3399cc
-
-    &__text a
-      color: #3399cc
-
-      &:hover
-        color: #5cb3e6
-
-  .feature-card
-    background-color: var(--bg-secondary)
-    border-color: var(--border-primary)
-
-    &__icon
-      color: #3399cc
-
-    &__title
-      color: #3399cc
-
-    &__link
-      color: #3399cc
-
-      &:hover
-        color: #5cb3e6
+  &__view-all-btn
+    display: inline-flex
+    align-items: center
+    gap: 0.625rem
+    padding: 0.625rem 1.25rem
+    color: #0077be
+    text-decoration: none
+    font-weight: 600
+    font-size: 0.95rem
+    border-width: 2px
+    border-style: solid
+    border-color: #0077be
+    border-radius: 50px
+    flex-shrink: 0
+    white-space: nowrap
+    transition: all 0.3s ease
 
     &:hover
-      border-color: #3399cc
-      box-shadow: 0 8px 24px rgba(51, 153, 204, 0.2)
+      background-color: #0077be
+      color: white
+      transform: translateY(-2px)
+      box-shadow: 0 4px 12px rgba(0, 119, 190, 0.2)
+      text-decoration: none
+
+  &__list
+    display: flex
+    flex-direction: column
+    gap: 0.625rem
+
+.latest-addition-card
+  display: flex
+  align-items: center
+  gap: 1rem
+  padding: 1rem 1.25rem
+  background-color: #f8f9fa
+  border: 2px solid transparent
+  border-radius: 10px
+  text-decoration: none
+  color: inherit
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1)
+
+  &:hover
+    background-color: white
+    border-color: #0077be
+    transform: translateX(4px)
+    box-shadow: 0 4px 16px rgba(0, 119, 190, 0.1)
+    text-decoration: none
+    color: inherit
+
+    .latest-addition-card__arrow
+      opacity: 1
+      transform: translateX(4px)
+
+  &__body
+    flex: 1
+    min-width: 0
+    display: flex
+    flex-direction: column
+    gap: 0.375rem
+
+  &__header
+    display: flex
+    align-items: center
+    gap: 1rem
+
+  &__number
+    flex: 1
+    font-weight: 600
+    font-size: 1rem
+    color: #0077be
+    min-width: 0
+
+  &__period
+    font-weight: 400
+    color: #6c757d
+    font-size: 0.9rem
+
+  &__date
+    flex-shrink: 0
+    font-size: 0.875rem
+    color: #6c757d
+    font-weight: 500
+
+  &__description
+    font-size: 0.85rem
+    color: #6c757d
+    overflow: hidden
+    white-space: nowrap
+    text-overflow: ellipsis
+
+  &__projects
+    display: flex
+    flex-direction: row
+    flex-wrap: wrap
+    gap: 0.375rem
+    align-items: center
+
+  &__project-logo
+    height: 22px
+    width: auto
+    max-width: 90px
+    object-fit: contain
+
+  &__arrow
+    flex-shrink: 0
+    color: #0077be
+    font-size: 1.1rem
+    font-weight: 600
+    opacity: 0
+    transform: translateX(-4px)
+    transition: all 0.3s ease
+
+@media (max-width: 768px)
+  .latest-additions-preview
+    padding: 1.5rem 0 3rem
+
+    &__header
+      flex-direction: column
+      align-items: flex-start
+      gap: 0.875rem
+
+    &__title
+      font-size: 1.5rem
+
+    &__view-all-btn
+      width: 100%
+      justify-content: center
+
+  .latest-addition-card
+
+    &__date
+      display: none
 
 .introduction-news
   margin: 4rem 0
@@ -530,42 +636,4 @@
 
     &__recent-title
       font-size: 0.9rem
-
-\:root[data-theme="dark"]
-  .introduction-news
-    &__title
-      color: #3399cc
-
-    &__subtitle
-      color: var(--text-secondary)
-
-    &__view-all-btn
-      border-color: #3399cc
-      color: #3399cc
-
-      &:hover
-        background-color: #3399cc
-        border-color: #3399cc
-        color: white
-
-    &__featured-card
-      background: linear-gradient(135deg, #1a5a7a 0%, #144a62 100%)
-
-    &__recent-item
-      background-color: var(--bg-secondary)
-      border-color: transparent
-
-      &:hover
-        background-color: var(--bg-primary)
-        border-color: #3399cc
-        box-shadow: 0 4px 16px rgba(51, 153, 204, 0.15)
-
-    &__recent-badge
-      background: linear-gradient(135deg, #3399cc, #2980b9)
-
-    &__recent-title
-      color: var(--text-primary)
-
-    &__recent-arrow
-      color: #3399cc
 

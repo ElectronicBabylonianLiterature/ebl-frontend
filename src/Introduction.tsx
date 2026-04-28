@@ -250,12 +250,11 @@ export default function Introduction({
         <SessionContext.Consumer>
           {(session: Session) =>
             session.isAllowedToReadFragments() ? (
-              <Container>
-                <LatestTransliterations
-                  fragmentService={fragmentService}
-                  dossiersService={dossiersService}
-                />
-              </Container>
+              <LatestTransliterations
+                fragmentService={fragmentService}
+                dossiersService={dossiersService}
+                preview={true}
+              />
             ) : null
           }
         </SessionContext.Consumer>
