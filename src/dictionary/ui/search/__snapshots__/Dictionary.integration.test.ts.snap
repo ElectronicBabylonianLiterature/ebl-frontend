@@ -318,7 +318,7 @@ exports[`Meaning 1`] = `
               <span
                 class="tools-nav__icon"
               >
-                🗂️
+                ⊟
               </span>
               <span
                 class="tools-nav__title"
@@ -335,7 +335,7 @@ exports[`Meaning 1`] = `
               <span
                 class="tools-nav__icon"
               >
-                📚
+                ⊕
               </span>
               <span
                 class="tools-nav__title"
@@ -1454,7 +1454,7 @@ exports[`Root 1`] = `
               <span
                 class="tools-nav__icon"
               >
-                🗂️
+                ⊟
               </span>
               <span
                 class="tools-nav__title"
@@ -1471,7 +1471,7 @@ exports[`Root 1`] = `
               <span
                 class="tools-nav__icon"
               >
-                📚
+                ⊕
               </span>
               <span
                 class="tools-nav__title"
@@ -2590,7 +2590,7 @@ exports[`Vowel class 1`] = `
               <span
                 class="tools-nav__icon"
               >
-                🗂️
+                ⊟
               </span>
               <span
                 class="tools-nav__title"
@@ -2607,7 +2607,7 @@ exports[`Vowel class 1`] = `
               <span
                 class="tools-nav__icon"
               >
-                📚
+                ⊕
               </span>
               <span
                 class="tools-nav__title"
@@ -3726,7 +3726,7 @@ exports[`Word 1`] = `
               <span
                 class="tools-nav__icon"
               >
-                🗂️
+                ⊟
               </span>
               <span
                 class="tools-nav__title"
@@ -3743,7 +3743,7 @@ exports[`Word 1`] = `
               <span
                 class="tools-nav__icon"
               >
-                📚
+                ⊕
               </span>
               <span
                 class="tools-nav__title"
@@ -4862,7 +4862,7 @@ exports[`renders dictionary search page 1`] = `
               <span
                 class="tools-nav__icon"
               >
-                🗂️
+                ⊟
               </span>
               <span
                 class="tools-nav__title"
@@ -4879,7 +4879,7 @@ exports[`renders dictionary search page 1`] = `
               <span
                 class="tools-nav__icon"
               >
-                📚
+                ⊕
               </span>
               <span
                 class="tools-nav__title"

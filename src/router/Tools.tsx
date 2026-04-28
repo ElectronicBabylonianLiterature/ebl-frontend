@@ -180,6 +180,7 @@ export default function Tools({
     if (newTab === selectedTab) {
       return
     }
+    window.scrollTo({ top: 0 })
     history.push(`/tools/${newTab}`)
     setSelectedTab(newTab)
   }
