@@ -214,7 +214,7 @@ exports[`Meaning 1`] = `
               aria-current="page"
               class="breadcrumb-item active"
             >
-              Akkadian dictionary
+              Akkadian Dictionary
             </li>
           </ol>
         </nav>
@@ -1350,7 +1350,7 @@ exports[`Root 1`] = `
               aria-current="page"
               class="breadcrumb-item active"
             >
-              Akkadian dictionary
+              Akkadian Dictionary
             </li>
           </ol>
         </nav>
@@ -2486,7 +2486,7 @@ exports[`Vowel class 1`] = `
               aria-current="page"
               class="breadcrumb-item active"
             >
-              Akkadian dictionary
+              Akkadian Dictionary
             </li>
           </ol>
         </nav>
@@ -3622,7 +3622,7 @@ exports[`Word 1`] = `
               aria-current="page"
               class="breadcrumb-item active"
             >
-              Akkadian dictionary
+              Akkadian Dictionary
             </li>
           </ol>
         </nav>
@@ -4758,7 +4758,7 @@ exports[`renders dictionary search page 1`] = `
               aria-current="page"
               class="breadcrumb-item active"
             >
-              Akkadian dictionary
+              Akkadian Dictionary
             </li>
           </ol>
         </nav>
