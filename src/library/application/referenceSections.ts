@@ -58,21 +58,21 @@ export function getIntroductionFeatureCards(): readonly IntroductionFeatureCard[
       ...sectionByKey.signs,
       description:
         'Comprehensive reference tool for cuneiform script with palaeographic resources',
-      to: '/signs',
+      to: '/tools/signs',
       linkText: 'Explore Signs →',
     },
     {
       ...sectionByKey.dictionary,
       description:
         'Flexible reference for Akkadian vocabulary with CDA and guide words',
-      to: '/dictionary',
+      to: '/tools/dictionary',
       linkText: 'Browse Dictionary →',
     },
     {
       ...sectionByKey.bibliography,
       description:
         'Complete bibliography of cuneiform publications with 11,497+ entries',
-      to: '/bibliography/references',
+      to: '/tools/references',
       linkText: 'View Bibliography →',
     },
   ]

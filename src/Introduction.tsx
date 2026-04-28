@@ -115,18 +115,17 @@ function FeatureCards(): JSX.Element {
   )
 }
 
+function getNewsletterPreview(content: string): string {
+  const lines = content.split('\n')
+  const contentLines = lines
+    .slice(4)
+    .filter((line) => line.trim() && !line.startsWith('#'))
+  return contentLines.slice(0, 3).join('\n').substring(0, 280) + '...'
+}
+
 function NewsSection(): JSX.Element {
   const latestNewsletter = newsletters[0]
   const olderNewsletters = newsletters.slice(1, 4)
-
-  const getNewsletterPreview = (content: string): string => {
-    const lines = content.split('\n')
-    const contentLines = lines
-      .slice(4)
-      .filter((line) => line.trim() && !line.startsWith('#'))
-    return contentLines.slice(0, 3).join('\n').substring(0, 280) + '...'
-  }
-
   return (
     <section className="introduction-news">
       <Container>

@@ -56,9 +56,9 @@ const CompactFragmentCard = withData<
           )}
           {fragment.projects.length > 0 && (
             <div className="latest-addition-card__projects">
-              {fragment.projects.map((project, index) => (
+              {fragment.projects.map((project) => (
                 <img
-                  key={index}
+                  key={project.name}
                   className="latest-addition-card__project-logo"
                   src={project.logo}
                   alt={project.name}
@@ -111,9 +111,9 @@ function LatestTransliterationsPreview({
           </Link>
         </div>
         <div className="latest-additions-preview__list">
-          {previewItems.map((queryItem, index) => (
+          {previewItems.map((queryItem) => (
             <CompactFragmentCard
-              key={index}
+              key={queryItem.museumNumber}
               queryItem={queryItem}
               fragmentService={fragmentService}
             />

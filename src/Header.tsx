@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Nav, Navbar, Container } from 'react-bootstrap'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import _ from 'lodash'
-import { useLocation } from 'react-router-dom'
 
 import User from './auth/User'
 import './Header.sass'

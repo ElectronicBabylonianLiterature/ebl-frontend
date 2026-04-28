@@ -11,22 +11,19 @@ interface LibraryProps {
 export default function Library({ children }: LibraryProps): JSX.Element {
   const location = useLocation()
 
-  const getActiveSection = (): string => {
-    if (location.pathname.includes('/reference-library/signs')) {
-      return 'signs'
-    } else if (location.pathname.includes('/reference-library/dictionary')) {
-      return 'dictionary'
-    } else if (location.pathname.includes('/reference-library/bibliography')) {
-      return 'bibliography'
-    }
-    return ''
-  }
+  const activeSection = location.pathname.includes('/reference-library/signs')
+    ? 'signs'
+    : location.pathname.includes('/reference-library/dictionary')
+      ? 'dictionary'
+      : location.pathname.includes('/reference-library/bibliography')
+        ? 'bibliography'
+        : ''
 
   return (
     <Container fluid className="Library">
       <Row>
         <Col xs={12} md={2} className="Library__sidebar">
-          <LibrarySidebar activeSection={getActiveSection()} />
+          <LibrarySidebar activeSection={activeSection} />
         </Col>
         <Col xs={12} md={10} className="Library__content">
           {children}

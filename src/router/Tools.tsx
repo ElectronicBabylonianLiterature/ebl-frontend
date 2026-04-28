@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react'
 import { Container, Row, Col, Nav } from 'react-bootstrap'
 import { useLocation } from 'react-router-dom'
 import { TextCrumb } from 'common/ui/Breadcrumbs'
-import _ from 'lodash'
 import Breadcrumbs from 'common/ui/Breadcrumbs'
 import './tools.sass'
 import DateConverterForm, {
@@ -38,23 +37,6 @@ export const tabIds = [
 ] as const
 export type TabId = (typeof tabIds)[number]
 
-type ContentLocation = {
-  hash: string
-  pathname: string
-  search: string
-}
-
-type ContentHistory = {
-  push: (to: string) => void
-}
-
-type ContentMatch = {
-  params: Record<string, string>
-  isExact: boolean
-  path: string
-  url: string
-}
-
 const tabConfig = [
   { id: 'signs', title: 'Signs', icon: '𒀀' },
   { id: 'dictionary', title: 'Akkadian Dictionary', icon: 'Ꞌ' },
@@ -67,7 +49,9 @@ const tabConfig = [
   { id: 'cuneiform-converter', title: 'Cuneiform Converter', icon: '𒐕' },
 ]
 
-export function getCurrentTab(selectedTab?: TabId) {
+export function getCurrentTab(
+  selectedTab?: TabId,
+): (typeof tabConfig)[number] | undefined {
   return tabConfig.find((tab) => tab.id === selectedTab)
 }
 
@@ -87,16 +71,10 @@ export function getToolsBreadcrumbs(
     return [new TextCrumb('Tools')]
   }
 
-  return [new TextCrumb('Tools'), new TextCrumb(_.capitalize(displayTitle))]
+  return [new TextCrumb('Tools'), new TextCrumb(displayTitle)]
 }
 
-interface ToolsIntroductionProps {
-  markupService: MarkupService
-}
-
-function ToolsIntroduction({
-  markupService,
-}: ToolsIntroductionProps): JSX.Element {
+function ToolsIntroduction(): JSX.Element {
   return (
     <div className="tools-introduction">
       <h3>Welcome to eBL Tools</h3>
@@ -132,9 +110,6 @@ function getContent({
   afoRegisterService,
   dossiersService,
   fragmentService,
-  history,
-  location,
-  match,
 }: {
   activeTab?: TabId
   markupService: MarkupService
@@ -144,15 +119,10 @@ function getContent({
   afoRegisterService: AfoRegisterService
   dossiersService: DossiersService
   fragmentService: FragmentService
-  history: ContentHistory
-  location: ContentLocation
-  match: ContentMatch
 }): React.ReactElement {
-  const routeProps = { location, match, history }
-
   const contentByTab: Partial<Record<TabId, React.ReactElement>> = {
-    signs: <Signs {...routeProps} signService={signService} />,
-    dictionary: <Dictionary wordService={wordService} {...routeProps} />,
+    signs: <Signs signService={signService} />,
+    dictionary: <Dictionary wordService={wordService} />,
     references: (
       <BibliographyReferencesContent
         bibliographyService={bibliographyService}
@@ -177,11 +147,9 @@ function getContent({
   }
 
   return activeTab ? (
-    (contentByTab[activeTab] ?? (
-      <ToolsIntroduction markupService={markupService} />
-    ))
+    (contentByTab[activeTab] ?? <ToolsIntroduction />)
   ) : (
-    <ToolsIntroduction markupService={markupService} />
+    <ToolsIntroduction />
   )
 }
 
@@ -288,9 +256,6 @@ export default function Tools({
                 afoRegisterService,
                 dossiersService,
                 fragmentService,
-                history,
-                location,
-                match: { params: {}, isExact: true, path: '', url: '' },
               })}
             </div>
           </Col>

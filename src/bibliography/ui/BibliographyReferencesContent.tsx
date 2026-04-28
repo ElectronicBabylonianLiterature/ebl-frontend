@@ -15,7 +15,7 @@ function getReferencesQueryFromLocation(search: string): string {
   return _.isArray(rawQuery) ? rawQuery.join('') : rawQuery
 }
 
-function BibliographyReferencesIntroduction(): JSX.Element {
+export function BibliographyReferencesIntroduction(): JSX.Element {
   return (
     <Markdown
       className="BibliographyReferences__introduction"
