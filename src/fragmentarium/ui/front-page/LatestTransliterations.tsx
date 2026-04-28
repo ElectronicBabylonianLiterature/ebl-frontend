@@ -136,16 +136,15 @@ function LatestTransliterationsAll({
   return (
     <section>
       <h3 className="SubsectionHeading--indented">Latest additions:</h3>
-      {data.items.map((fragment, index) => (
-        <React.Fragment key={index}>
-          <FragmentLines
-            fragmentService={fragmentService}
-            dossiersService={dossiersService}
-            queryItem={fragment}
-            linesToShow={3}
-            includeLatestRecord={true}
-          />
-        </React.Fragment>
+      {data.items.map((fragment) => (
+        <FragmentLines
+          key={fragment.museumNumber}
+          fragmentService={fragmentService}
+          dossiersService={dossiersService}
+          queryItem={fragment}
+          linesToShow={3}
+          includeLatestRecord={true}
+        />
       ))}
     </section>
   )
