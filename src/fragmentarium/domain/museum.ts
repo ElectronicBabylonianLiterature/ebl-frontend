@@ -6,8 +6,8 @@ export const Museums = {
     country: 'AU',
     url: 'https://abbeymuseum.com.au',
   },
-  ADANA_ARKEOLOJI_MUSEUM: {
-    key: 'ADANA_ARKEOLOJI_MUSEUM',
+  ADANA_ARKEOLOJI_MUZESI: {
+    key: 'ADANA_ARKEOLOJI_MUZESI',
     name: 'Adana Arkeoloji Müzesi',
     city: 'Adana',
     country: 'TR',
