@@ -81,6 +81,22 @@ Trello card: "Fixes to date converter" (reported by Zsombor Földi / ilya.o.khai
 - [x] Fix: non-pattern characters (e.g. `21%$`) not triggering non-standard warning — make `STANDARD_DATE_FIELD_PATTERN` a true whitelist; remove redundant `ROMAN_NUMERAL_PATTERN` and `normalizeDateFieldValue` import from `dateFieldWarnings.ts`; add `it.each` test for special-character inputs
 - [x] Re-run gates after follow-ups: `yarn lint`, `yarn tsc`, full suite (1 isolated flaky test, passes alone)
 
+### Refactor: split `Date.test.ts` into ≤250-line files
+
+- [x] Read the full original `Date.test.ts` to understand structure and group tests
+- [x] Identify all shared fixtures used across groups
+- [x] Create `src/chronology/domain/Date.fromJson.test.ts` — fromJson, toDto, round-trip serialization (BUG-2 regression)
+- [x] Create `src/chronology/domain/Date.toString.test.ts` — all `toString()` representation tests
+- [x] Create `src/chronology/domain/Date.zeroYear.test.ts` — BUG-5 zero-year conversion/behaviour tests, `toJulianDate` branching, king edge cases
+- [x] Create `src/chronology/domain/Date.intercalary.test.ts` — BUG-4 intercalary conversion tests, `ca.` approximate prefix tests, BUG-3 wrapped-year conversion test
+- [x] Delete original `src/chronology/domain/Date.test.ts`
+- [x] Move fixtures into `src/test-support/date-fixtures.ts` and update all imports
+- [x] Fix false-positive `isNonStandardValue` for `<136!?>` in `dateFieldWarnings.ts`
+- [x] Fix pre-existing flaky `Corpus.integration.test.ts` (unawaited promise + broken `waitForText` navigation)
+- [x] `yarn lint` — no errors
+- [x] `yarn tsc` — no errors
+- [x] Full test suite — 299/299 suites, 0 failures
+
 ### Open / pending items
 
 - [ ] F2: populate PR description on GitHub (requires push permission — pending user approval)

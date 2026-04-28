@@ -42,5 +42,6 @@ export default function getDateFieldWarnings(
 }
 
 function isNonStandardValue(trimmed: string): boolean {
-  return !STANDARD_DATE_FIELD_PATTERN.test(trimmed)
+  const stripped = trimmed.replace(/[<>[\]()!?]/g, '')
+  return !STANDARD_DATE_FIELD_PATTERN.test(stripped)
 }

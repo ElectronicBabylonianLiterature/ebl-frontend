@@ -1,6 +1,7 @@
 import React from 'react'
 import { render, screen, waitFor, fireEvent } from '@testing-library/react'
 import DatesInTextSelection from 'chronology/ui/DateEditor/DatesInTextSelection'
+import { MesopotamianDate } from 'chronology/domain/Date'
 import { mesopotamianDateFactory } from 'test-support/date-fixtures'
 import { fragment as mockFragment } from 'test-support/test-fragment'
 import SessionContext from 'auth/SessionContext'
@@ -10,9 +11,15 @@ let session
 
 describe('DatesInTextSelection', () => {
   const mockUpdateDatesInText = jest.fn()
-  const datesInText = Array.from({ length: 2 }, () =>
+  const datesInText = [
+    MesopotamianDate.fromJson({
+      year: { value: '5' },
+      month: { value: '5' },
+      day: { value: '5' },
+      isSeleucidEra: true,
+    }),
     mesopotamianDateFactory.build(),
-  )
+  ]
   const defaultProps = {
     datesInText: datesInText,
     updateDatesInText: mockUpdateDatesInText,
