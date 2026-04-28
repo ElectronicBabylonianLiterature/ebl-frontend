@@ -6,6 +6,13 @@ export const Museums = {
     country: 'AU',
     url: 'https://abbeymuseum.com.au',
   },
+  ADANA_ARKEOLOJI_MUZESI: {
+    key: 'ADANA_ARKEOLOJI_MUZESI',
+    name: 'Adana Arkeoloji Müzesi',
+    city: 'Adana',
+    country: 'TR',
+    url: 'https://muze.gov.tr/muze-detay?SectionId=AAR01&DistId=MRK',
+  },
   ANCIENT_CULTURES_CHICAGO: {
     key: 'ANCIENT_CULTURES_CHICAGO',
     name: 'Institute for the Study of Ancient Cultures, West Asia & North Africa',
