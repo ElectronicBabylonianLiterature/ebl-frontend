@@ -101,5 +101,6 @@ Trello card: "Fixes to date converter" (reported by Zsombor Földi / ilya.o.khai
 
 - [ ] F2: populate PR description on GitHub (requires push permission — pending user approval)
 - [ ] F1: remove all `TASK-001-*` files from the branch before merge (blocking per project rules)
+- [ ] Manual QA: run `TASK-001-manual-qa.md` against a live backend before merge
 - [x] `parseDateFieldNumber`: add `"ca."` qualifier to converted modern date for approximate patterns `n+`, `x+n`, `n/n`, `n-n` — added `isApproximateDateFieldValue` helper in `parseDateFieldNumber.ts`; wired into `isApproximate()` in `DateBase.ts`; added `isApproximateDateFieldValue` unit tests and SE/Nabonassar-era integration tests in `Date.test.ts`
 - [x] `parseDateFieldNumber`: `n-n` range logic verified — `parseDateFieldNumber('14-17')` correctly returns `14` (lower bound used for conversion); the range is now properly marked approximate via `isApproximateDateFieldValue`
