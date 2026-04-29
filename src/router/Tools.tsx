@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react'
 import { Container, Row, Col, Nav } from 'react-bootstrap'
 import { useLocation } from 'react-router-dom'
 import { TextCrumb } from 'common/ui/Breadcrumbs'
-import _ from 'lodash'
 import Breadcrumbs from 'common/ui/Breadcrumbs'
 import './tools.sass'
 import DateConverterForm, {
@@ -60,8 +59,8 @@ const tabConfig = [
   { id: 'dictionary', title: 'Akkadian Dictionary', icon: 'Ꞌ' },
   { id: 'references', title: 'References', icon: '※' },
   { id: 'afo-register', title: 'AfO-Register', icon: '⊞' },
-  { id: 'dossiers', title: 'Dossiers', icon: '🗂️' },
-  { id: 'genres', title: 'Genres', icon: '📚' },
+  { id: 'dossiers', title: 'Dossiers', icon: '⊟' },
+  { id: 'genres', title: 'Genres', icon: '⊕' },
   { id: 'date-converter', title: 'Date Converter', icon: '⇌' },
   { id: 'list-of-kings', title: 'List of Kings', icon: '♔' },
   { id: 'cuneiform-converter', title: 'Cuneiform Converter', icon: '𒐕' },
@@ -87,7 +86,7 @@ export function getToolsBreadcrumbs(
     return [new TextCrumb('Tools')]
   }
 
-  return [new TextCrumb('Tools'), new TextCrumb(_.capitalize(displayTitle))]
+  return [new TextCrumb('Tools'), new TextCrumb(displayTitle)]
 }
 
 interface ToolsIntroductionProps {
