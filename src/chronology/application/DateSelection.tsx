@@ -13,6 +13,7 @@ import useDateSelectionState, {
   DateEditorStateProps,
   DateSelectionState,
 } from 'chronology/application/DateSelectionState'
+import 'chronology/application/DateSelection.sass'
 import { MetaEditButton } from 'fragmentarium/ui/info/MetaEditButton'
 
 type Props = {
@@ -124,11 +125,7 @@ export function DateEditor({
     )
 
   const popover = (
-    <Popover
-      style={{ maxWidth: '600px' }}
-      id="popover-select-date"
-      className={'w-100'}
-    >
+    <Popover id="popover-select-date" className={'w-100 popover-select-date'}>
       <Popover.Body>
         {dateOptionsInput}
         {dateInputGroups}

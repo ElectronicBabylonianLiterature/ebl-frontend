@@ -21,8 +21,46 @@ it('warns for ? in any field', () => {
   )
 })
 
+it('warns for ! in year field', () => {
+  expect(getDateFieldWarnings('year', '1!')).toContain(
+    'Year contains !. Use the Emended switch instead.',
+  )
+})
+
+it('1! is allowed in month and day; no warning', () => {
+  expect(getDateFieldWarnings('month', '1!')).toHaveLength(0)
+  expect(getDateFieldWarnings('day', '1!')).toHaveLength(0)
+})
+
+it('warns for multiple ! as both emended and non-standard', () => {
+  expect(getDateFieldWarnings('year', '1!!!!!')).toContain(
+    'Year contains !. Use the Emended switch instead.',
+  )
+  expect(getDateFieldWarnings('year', '1!!!!!')).toContain(
+    'Non-standard value may skip date conversion for this field.',
+  )
+  expect(getDateFieldWarnings('month', '1!!!!!')).not.toContain(
+    'Value contains !. Use the Emended switch instead.',
+  )
+  expect(getDateFieldWarnings('month', '1!!!!!')).toContain(
+    'Non-standard value may skip date conversion for this field.',
+  )
+  expect(getDateFieldWarnings('day', '1!!!!!')).not.toContain(
+    'Value contains !. Use the Emended switch instead.',
+  )
+  expect(getDateFieldWarnings('day', '1!!!!!')).toContain(
+    'Non-standard value may skip date conversion for this field.',
+  )
+})
+
 it('warns for non-standard values', () => {
   expect(getDateFieldWarnings('year', 'foo')).toContain(
+    'Non-standard value may skip date conversion for this field.',
+  )
+  expect(getDateFieldWarnings('month', 'XIV')).toContain(
+    'Non-standard value may skip date conversion for this field.',
+  )
+  expect(getDateFieldWarnings('month', '21%$')).toContain(
     'Non-standard value may skip date conversion for this field.',
   )
   expect(getDateFieldWarnings('day', '12abc')).toContain(
@@ -39,23 +77,14 @@ it.each(['21%$', '12@', '5#3', '!@#', '12.5', '1 2'])(
     expect(getDateFieldWarnings('year', value)).toContain(
       'Non-standard value may skip date conversion for this field.',
     )
+    expect(getDateFieldWarnings('month', value)).toContain(
+      'Non-standard value may skip date conversion for this field.',
+    )
     expect(getDateFieldWarnings('day', value)).toContain(
       'Non-standard value may skip date conversion for this field.',
     )
   },
 )
-
-it('does not warn for non-standard values in month field', () => {
-  expect(getDateFieldWarnings('month', 'XIV')).not.toContain(
-    'Non-standard value may skip date conversion for this field.',
-  )
-  expect(getDateFieldWarnings('month', '12abc')).not.toContain(
-    'Non-standard value may skip date conversion for this field.',
-  )
-  expect(getDateFieldWarnings('month', '21%$')).not.toContain(
-    'Non-standard value may skip date conversion for this field.',
-  )
-})
 
 it('returns no warnings for allowed patterns', () => {
   const allowed = ['12', '1-10', '0', '1/2', '12+', 'x', 'x+5', '12a']
@@ -78,6 +107,16 @@ describe('getDateFieldWarnings', () => {
     )
     expect(warnings).toContain(
       'Value contains ?. Use the Uncertain switch instead.',
+    )
+  })
+
+  it('single ! is standard pattern; no non-standard warning for year', () => {
+    const warnings = getDateFieldWarnings('year', '1!')
+    expect(warnings).toContain(
+      'Year contains !. Use the Emended switch instead.',
+    )
+    expect(warnings).not.toContain(
+      'Non-standard value may skip date conversion for this field.',
     )
   })
 

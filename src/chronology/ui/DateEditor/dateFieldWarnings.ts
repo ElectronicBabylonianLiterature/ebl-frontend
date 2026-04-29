@@ -34,7 +34,7 @@ export default function getDateFieldWarnings(
     warnings.push('Value contains ?. Use the Uncertain switch instead.')
   }
 
-  if (field !== 'month' && isNonStandardValue(trimmed)) {
+  if (isNonStandardValue(trimmed)) {
     warnings.push('Non-standard value may skip date conversion for this field.')
   }
 
@@ -42,6 +42,6 @@ export default function getDateFieldWarnings(
 }
 
 function isNonStandardValue(trimmed: string): boolean {
-  const stripped = trimmed.replace(/[<>[\]()!?]/g, '')
+  const stripped = trimmed.replace(/[<>[\]()]/g, '')
   return !STANDARD_DATE_FIELD_PATTERN.test(stripped)
 }

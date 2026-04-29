@@ -2,6 +2,7 @@ import React, { useState, ReactElement, Fragment } from 'react'
 import { MesopotamianDate } from 'chronology/domain/Date'
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger'
 import Tooltip from 'react-bootstrap/Tooltip'
+import 'chronology/ui/DateDisplay.sass'
 
 interface Props {
   date: MesopotamianDate
@@ -85,11 +86,7 @@ const getSwitchableDate = ({
         onClick={toggleCalendar}
         role="button"
         tabIndex={0}
-        style={{
-          textDecoration: 'underline',
-          textDecorationStyle: 'dotted',
-          cursor: 'pointer',
-        }}
+        className="mesopotamian-date-display__calendar-toggle"
       >
         {modernCalendar}
       </span>

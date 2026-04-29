@@ -9,7 +9,7 @@ This covers all five bugs and the UI enhancements introduced in the PR. Each sec
 
 ---
 
-## BUG-1 — Delete date hangs / does nothing
+## BUG-1 — Delete date hangs / does nothing ✅
 
 ### Delete a fragment's date ✅
 
@@ -73,11 +73,14 @@ Open the editor and type each of the following into the **Year** field. After ea
 
 For **Month** and **Day** fields:
 
-| Input | Field | Expected                                                         |
-| ----- | ----- | ---------------------------------------------------------------- |
-| `5?`  | Day   | "Use the Uncertain switch instead."                              |
-| `XIV` | Day   | "Non-standard value may skip date conversion for this field."    |
-| `XIV` | Month | **No** non-standard warning — month is excluded from that check. |
+| Input    | Field | Expected warning(s)                                                                                                           |
+| -------- | ----- | ----------------------------------------------------------------------------------------------------------------------------- |
+| `[5]`    | Both  | "Value contains square brackets. Use the Broken switch instead."                                                              |
+| `5?`     | Both  | "Value contains ?. Use the Uncertain switch instead."                                                                         |
+| `1!`     | Both  | No warning — `n!` is a valid allowed pattern for month and day fields.                                                        |
+| `1!!!!!` | Both  | "Non-standard value may skip date conversion for this field." (no emended warning — there is no Emended switch for month/day) |
+| `XIV`    | Both  | "Non-standard value may skip date conversion for this field."                                                                 |
+| `21%$`   | Both  | "Non-standard value may skip date conversion for this field."                                                                 |
 
 ### 3d. Allowed patterns do NOT trigger non-standard warning
 

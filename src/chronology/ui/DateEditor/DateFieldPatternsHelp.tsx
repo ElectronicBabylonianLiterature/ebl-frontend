@@ -1,6 +1,7 @@
 import React from 'react'
 import classNames from 'classnames'
 import { OverlayTrigger, Popover, Table } from 'react-bootstrap'
+import 'chronology/ui/DateEditor/DateSelectionInput.sass'
 
 const patterns: ReadonlyArray<{ pattern: string; explanation: string }> = [
   { pattern: 'n', explanation: 'a number (e.g. 12)' },
@@ -51,8 +52,8 @@ export default function DateFieldPatternsHelp({
           'p-0',
           'border-0',
           'align-baseline',
+          'date-field-patterns-help__button',
         )}
-        style={{ lineHeight: 1 }}
       >
         <i className="fas fa-info-circle" aria-hidden="true" />
       </button>

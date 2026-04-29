@@ -17,6 +17,7 @@ import {
 } from 'chronology/ui/DateEditor/DateSelectionInputBase'
 import { BrokenAndUncertainSwitches } from 'common/ui/BrokenAndUncertain'
 import getDateFieldWarnings from 'chronology/ui/DateEditor/dateFieldWarnings'
+import 'chronology/ui/DateEditor/DateSelectionInput.sass'
 
 type DateFieldName = 'year' | 'month' | 'day'
 
@@ -33,7 +34,7 @@ function DateFieldWarnings({
         <Form.Text
           key={`${field}-warning-${index}`}
           data-testid={`${field}-warning-${index}`}
-          style={{ color: '#8a6d3b' }}
+          className="date-field-warning"
         >
           {warning}
         </Form.Text>
@@ -217,15 +218,13 @@ function getDateInputGroup({
           aria-label={_.startCase(name)}
           onChange={(event) => setValue(event.target.value)}
           value={value}
+          className="date-field-input"
         />
-        <span style={{ marginLeft: 6, marginRight: 2, alignSelf: 'center' }}>
-          <DateFieldPatternsHelp />
-        </span>
         {name === 'month' && (
           <Form.Check
             label="Intercalary"
             id={`${name}_intercalary`}
-            style={{ marginLeft: '10px' }}
+            className="date-field-switch"
             onChange={(event) => setIntercalary(event.target.checked)}
             checked={isIntercalary}
           />
@@ -254,6 +253,7 @@ function getYearInputGroup(props: InputGroupsProps): JSX.Element {
           aria-label={_.startCase('year')}
           onChange={(event) => props.setYearValue(event.target.value)}
           value={props.yearValue}
+          className="date-field-input"
         />
         <BrokenAndUncertainSwitches
           name="year"
@@ -267,7 +267,7 @@ function getYearInputGroup(props: InputGroupsProps): JSX.Element {
           id="year_reconstructed"
           aria-label="0-year-reconstructed-switch"
           data-testid="0-year-reconstructed-switch"
-          style={{ marginLeft: '10px' }}
+          className="date-field-switch"
           onChange={(event) =>
             props.setYearReconstructed?.(event.target.checked)
           }
@@ -278,7 +278,7 @@ function getYearInputGroup(props: InputGroupsProps): JSX.Element {
           id="year_emended"
           aria-label="0-year-emended-switch"
           data-testid="0-year-emended-switch"
-          style={{ marginLeft: '10px' }}
+          className="date-field-switch"
           onChange={(event) => props.setYearEmended?.(event.target.checked)}
           checked={Boolean(props.yearEmended)}
         />
@@ -317,6 +317,9 @@ function getDayInputGroup(props: InputGroupsProps): JSX.Element {
 export function DateInputGroups(props: InputGroupsProps): JSX.Element {
   return (
     <>
+      <div className="date-field-patterns-help">
+        <DateFieldPatternsHelp />
+      </div>
       {!props.isAssyrianDate && getYearInputGroup(props)}
       {getMonthInputGroup(props)}
       {getDayInputGroup(props)}

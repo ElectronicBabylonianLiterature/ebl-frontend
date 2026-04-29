@@ -806,3 +806,108 @@ File changed: [src/chronology/ui/DateEditor/DatesInTextSelection.test.tsx](src/c
 - All 5 `DatesInTextSelection` tests pass.
 - `yarn lint` — clean.
 - `yarn tsc` — clean.
+
+---
+
+## 2026-04-29 — Fix: non-standard value warning not applied to Month field
+
+### Root cause
+
+`getDateFieldWarnings` in `dateFieldWarnings.ts` guarded the "Non-standard value" warning with `field !== 'month'`, so values like `XIV` and `21%$` in the Month input produced no warning.
+
+### Fix
+
+Removed the `field !== 'month'` guard — the non-standard value warning now applies to all three fields (year, month, day).
+
+File changed: [src/chronology/ui/DateEditor/dateFieldWarnings.ts](src/chronology/ui/DateEditor/dateFieldWarnings.ts)
+
+### Tests updated
+
+[src/chronology/ui/DateEditor/dateFieldWarnings.test.ts](src/chronology/ui/DateEditor/dateFieldWarnings.test.ts):
+
+- Removed the `'does not warn for non-standard values in month field'` test (expectation inverted by the fix).
+- Added `XIV` and `21%$` assertions for Month to `'warns for non-standard values'`.
+- Added Month to the `it.each` table for non-pattern characters (`21%$`, `12@`, etc.).
+
+### QA checklist updated
+
+[TASK-001-manual-qa.md](TASK-001-manual-qa.md) — Month/Day table updated to list all four inputs (`[5]`, `5?`, `XIV`, `21%$`) with correct messages for both fields.
+
+### Gate results
+
+- `dateFieldWarnings.test.ts` + `DateSelectionInput.test.tsx`: 21/21 pass.
+- `yarn lint` — clean.
+- `yarn tsc` — clean.
+
+---
+
+## 2026-04-29 — Fix: `1!!!!!` produces no warning in any field; `!` warning missing from month/day
+
+### Root cause
+
+Two independent issues in `dateFieldWarnings.ts`:
+
+1. The `!` warning was only emitted inside `if (field === 'year')`, so `1!` or `1!!!!!` in Month or Day silently produced no emended warning.
+2. `isNonStandardValue` stripped all `!?` characters before pattern-testing, so `1!!!!!` → stripped to `1` → matched `\d+` → no non-standard warning. The function was masking genuinely malformed input.
+
+### Fix
+
+- Extended the `!` check to an `else` branch covering all non-year fields: emits "Value contains !. Use the Emended switch instead."
+- Changed `stripped = trimmed.replace(/[<>[\]()!?]/g, '')` to only strip grouping symbols (`<>[]()`) — `!?` are now preserved during pattern testing, so `1!!!!!` does not match any allowed pattern and correctly triggers the non-standard warning.
+
+File changed: [src/chronology/ui/DateEditor/dateFieldWarnings.ts](src/chronology/ui/DateEditor/dateFieldWarnings.ts)
+
+### Tests updated
+
+[src/chronology/ui/DateEditor/dateFieldWarnings.test.ts](src/chronology/ui/DateEditor/dateFieldWarnings.test.ts):
+
+- Added `it('warns for ! in any field')` — year gets "Year contains !...", month/day get "Value contains !...".
+- Added `it('warns for multiple ! as both emended and non-standard')` — `1!!!!!` triggers both warnings.
+- Added `'single ! is standard pattern; no non-standard warning for year'` regression test — `1!` is valid, so only the emended warning fires, no non-standard warning.
+
+[src/chronology/ui/DateEditor/DateSelectionInput.test.tsx](src/chronology/ui/DateEditor/DateSelectionInput.test.tsx):
+
+- Updated `toHaveLength(1)` to `toHaveLength(2)` for the "shows non-blocking year warnings" test — `<136!?>` now correctly also triggers the non-standard warning (since `136!?` no longer matches `\d+[?!]` after the stripping change).
+
+[TASK-001-manual-qa.md](TASK-001-manual-qa.md):
+
+- Month/Day table extended with `1!` (emended-only, no non-standard) and `1!!!!!` (both emended and non-standard) rows.
+
+### Gate results
+
+- `dateFieldWarnings.test.ts` + `DateSelectionInput.test.tsx`: 24/24 pass, zero console output.
+- Full suite: 299/299 suites, 2969 tests pass, zero console output.
+- `yarn lint` — clean.
+- `yarn tsc` — clean.
+
+---
+
+## 2026-04-29 — Corrections after manual QA feedback
+
+### Issues reported
+
+1. The previous fix incorrectly emitted "Value contains !. Use the Emended switch instead." for `1!` and `1!!!!!` in Month and Day. The Emended switch only exists on Year, so this message is not actionable for month/day. `1!` is also a valid allowed pattern (`\d+[?!]`) that should produce no warning at all.
+2. Warning messages for the same field were rendered inline, producing concatenated text like `Value contains !. Use the Emended switch instead.Non-standard value may skip date conversion for this field.` with no whitespace.
+3. The day-field warning visually merged with the following "Saved date" header.
+
+### Fix
+
+- [src/chronology/ui/DateEditor/dateFieldWarnings.ts](src/chronology/ui/DateEditor/dateFieldWarnings.ts) — removed the `else` branch that emitted "Value contains !..." for non-year fields. `!` warnings are now Year-only. `1!` in month/day produces no warning (matches the `\d+[?!]` allowed pattern); `1!!!!!` in any field still triggers the non-standard warning via `isNonStandardValue` because `!?` are no longer stripped before pattern matching.
+- [src/chronology/ui/DateEditor/DateSelectionInput.tsx](src/chronology/ui/DateEditor/DateSelectionInput.tsx) — added `display: 'block'` to the warning `Form.Text` style so each warning renders on its own line and does not merge with the next field's header.
+
+### Tests updated
+
+[src/chronology/ui/DateEditor/dateFieldWarnings.test.ts](src/chronology/ui/DateEditor/dateFieldWarnings.test.ts):
+
+- Renamed `'warns for ! in any field'` → `'warns for ! in year field'` and removed month/day assertions.
+- Added `'1! is allowed in month and day; no warning'` regression test.
+- Updated `'warns for multiple ! as both emended and non-standard'` so month/day expect only the non-standard warning and explicitly `not.toContain` the emended message.
+
+[TASK-001-manual-qa.md](TASK-001-manual-qa.md) — Month/Day table updated: `1!` now expects no warning; `1!!!!!` expects only the non-standard warning.
+
+### Gate results
+
+- `dateFieldWarnings.test.ts` + `DateSelectionInput.test.tsx`: 25/25 pass.
+- Full suite: 299/299 suites, 2970 tests pass, zero console output.
+- `yarn lint` — clean.
+- `yarn tsc` — clean.
