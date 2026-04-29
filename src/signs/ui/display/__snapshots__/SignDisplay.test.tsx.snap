@@ -31,7 +31,7 @@ exports[`Sign Display Sign Display Snapshot 1`] = `
               class="breadcrumb-item"
             >
               <a
-                href="/signs"
+                href="/tools/signs"
               >
                 Signs
               </a>

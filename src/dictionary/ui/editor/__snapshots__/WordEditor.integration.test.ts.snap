@@ -211,7 +211,7 @@ exports[`Edit 1`] = `
                 class="breadcrumb-item"
               >
                 <a
-                  href="/dictionary"
+                  href="/tools/dictionary"
                 >
                   Dictionary
                 </a>
@@ -2246,7 +2246,7 @@ exports[`renders editor 1`] = `
                 class="breadcrumb-item"
               >
                 <a
-                  href="/dictionary"
+                  href="/tools/dictionary"
                 >
                   Dictionary
                 </a>

@@ -31,7 +31,7 @@ exports[`Fetch word correctly displays word parts 1`] = `
               class="breadcrumb-item"
             >
               <a
-                href="/dictionary"
+                href="/tools/dictionary"
               >
                 Dictionary
               </a>
