@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Container, Row, Col, Nav } from 'react-bootstrap'
-import { useLocation } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import { TextCrumb } from 'common/ui/Breadcrumbs'
 import Breadcrumbs from 'common/ui/Breadcrumbs'
 import './tools.sass'
@@ -258,6 +258,8 @@ export default function Tools({
               {tabConfig.map((tab) => (
                 <Nav.Link
                   key={tab.id}
+                  as={Link}
+                  to={`/tools/${tab.id}`}
                   className={`tools-nav__item ${
                     selectedTab === tab.id ? 'active' : ''
                   }`}

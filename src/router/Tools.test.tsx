@@ -147,7 +147,7 @@ describe('Tools', () => {
     renderTools()
     mockPush.mockReset()
     await userEvent.click(
-      screen.getByRole('button', { name: /Akkadian Dictionary/ }),
+      screen.getByRole('link', { name: /Akkadian Dictionary/ }),
     )
     expect(mockPush).toHaveBeenCalledTimes(1)
     expect(mockPush).toHaveBeenCalledWith('/tools/dictionary')
@@ -156,7 +156,7 @@ describe('Tools', () => {
   it('does not push route when clicking the already active tab', async () => {
     renderTools('dictionary')
     await userEvent.click(
-      screen.getByRole('button', { name: /Akkadian Dictionary/ }),
+      screen.getByRole('link', { name: /Akkadian Dictionary/ }),
     )
     expect(mockPush).not.toHaveBeenCalled()
   })

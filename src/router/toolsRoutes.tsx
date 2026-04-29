@@ -12,7 +12,27 @@ import FragmentService from 'fragmentarium/application/FragmentService'
 import DossiersService from 'dossiers/application/DossiersService'
 import BibliographyViewer from 'bibliography/ui/BibliographyViewer'
 import BibliographyEditor from 'bibliography/ui/BibliographyEditor'
-import Tools, { tabIds, getDisplayTitle } from 'router/Tools'
+import Tools, { tabIds, TabId, getDisplayTitle } from 'router/Tools'
+
+const tabDescriptions: Record<TabId, string> = {
+  signs:
+    'Search and explore cuneiform signs with palaeographic details at the eBL.',
+  dictionary:
+    'Browse the Akkadian dictionary with CDA guide words and references at the eBL.',
+  references:
+    'Search the comprehensive bibliography of cuneiform publications at the eBL.',
+  'afo-register':
+    'Search the AfO-Register for Assyriology bibliographic references at the eBL.',
+  dossiers:
+    'Browse cuneiform fragment dossiers grouped by provenance and period at the eBL.',
+  genres: 'Explore the genre classification of cuneiform fragments at the eBL.',
+  'date-converter':
+    'Convert between Babylonian and Julian/Gregorian calendar dates at the eBL.',
+  'list-of-kings':
+    'Reference list of Babylonian and Assyrian kings and dynasties at the eBL.',
+  'cuneiform-converter':
+    'Convert text to cuneiform script representations at the eBL.',
+}
 
 export default function ToolsRoutes({
   sitemap,
@@ -76,7 +96,7 @@ export default function ToolsRoutes({
         render={(): ReactNode => (
           <HeadTagsService
             title={`Tools: ${getDisplayTitle(tabId)} - eBL`}
-            description="This section contains the electronic Babylonian Library (eBL) tools."
+            description={tabDescriptions[tabId]}
           >
             <Tools
               markupService={markupService}

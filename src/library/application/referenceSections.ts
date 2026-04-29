@@ -19,7 +19,7 @@ export type IntroductionFeatureCard = ReferenceSection & {
 
 const referenceSections: readonly ReferenceSection[] = [
   { key: 'signs', title: 'Signs', icon: '𒀀' },
-  { key: 'dictionary', title: 'Dictionary', icon: 'Aa' },
+  { key: 'dictionary', title: 'Dictionary', icon: 'Ꞌ' },
   { key: 'bibliography', title: 'Bibliography', icon: '⊞' },
 ]
 
@@ -58,21 +58,21 @@ export function getIntroductionFeatureCards(): readonly IntroductionFeatureCard[
       ...sectionByKey.signs,
       description:
         'Comprehensive reference tool for cuneiform script with palaeographic resources',
-      to: '/tools/signs',
+      to: '/reference-library/signs',
       linkText: 'Explore Signs →',
     },
     {
       ...sectionByKey.dictionary,
       description:
         'Flexible reference for Akkadian vocabulary with CDA and guide words',
-      to: '/tools/dictionary',
+      to: '/reference-library/dictionary',
       linkText: 'Browse Dictionary →',
     },
     {
       ...sectionByKey.bibliography,
       description:
-        'Complete bibliography of cuneiform publications with 11,497+ entries',
-      to: '/tools/references',
+        'Complete bibliography of cuneiform publications and references',
+      to: '/reference-library/bibliography',
       linkText: 'View Bibliography →',
     },
   ]

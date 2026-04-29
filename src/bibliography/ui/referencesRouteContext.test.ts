@@ -17,9 +17,9 @@ describe('referencesRouteContext', () => {
       '/reference-library/bibliography/references/ABC',
       '/reference-library/bibliography/references',
     ],
-    ['/bibliography/references', '/bibliography/references'],
-    ['/bibliography/references/ABC', '/bibliography/references'],
-    ['/unknown/path', '/bibliography/references'],
+    ['/bibliography/references', '/tools/references'],
+    ['/bibliography/references/ABC', '/tools/references'],
+    ['/unknown/path', '/tools/references'],
   ])('resolves route root for %s', (pathname, expectedRoot) => {
     expect(getReferencesRouteRoot(pathname)).toEqual(expectedRoot)
   })
@@ -36,9 +36,9 @@ describe('referencesRouteContext', () => {
     )
   })
 
-  test('builds bibliography routes by default', () => {
+  test('defaults to tools references routes', () => {
     expect(referencesNewRoute('/unknown/path')).toEqual(
-      '/bibliography/references/new-reference',
+      '/tools/references/new-reference',
     )
   })
 })

@@ -1,5 +1,4 @@
 const TOOLS_REFERENCES_ROOT = '/tools/references'
-const BIBLIOGRAPHY_REFERENCES_ROOT = '/bibliography/references'
 const REFERENCE_LIBRARY_REFERENCES_ROOT =
   '/reference-library/bibliography/references'
 
@@ -8,13 +7,10 @@ function startsWithPath(pathname: string, root: string): boolean {
 }
 
 export function getReferencesRouteRoot(pathname: string): string {
-  if (startsWithPath(pathname, TOOLS_REFERENCES_ROOT)) {
-    return TOOLS_REFERENCES_ROOT
-  }
   if (startsWithPath(pathname, REFERENCE_LIBRARY_REFERENCES_ROOT)) {
     return REFERENCE_LIBRARY_REFERENCES_ROOT
   }
-  return BIBLIOGRAPHY_REFERENCES_ROOT
+  return TOOLS_REFERENCES_ROOT
 }
 
 export function referencesNewRoute(pathname: string): string {

@@ -176,7 +176,11 @@ function Corpus({
                   className="Corpus__about-link"
                 />
               </div>
-              <Tabs activeKey={genre} onSelect={openTab} id="CorpusTab">
+              <Tabs
+                activeKey={genre}
+                onSelect={openTab}
+                id={_.uniqueId('CorpusTab-')}
+              >
                 {genres.map(({ genre, name, categories }) => (
                   <Tab eventKey={genre} title={name} key={genre}>
                     <Texts

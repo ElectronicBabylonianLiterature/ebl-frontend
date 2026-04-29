@@ -25,6 +25,12 @@ const markupServiceMock = new (MarkupService as jest.Mock<
   jest.Mocked<MarkupService>
 >)()
 
+const waitForSpinnersToDisappear = async () => {
+  await waitFor(() => {
+    expect(screen.queryAllByLabelText('Spinner')).toHaveLength(0)
+  })
+}
+
 const renderAbout = async (
   initialEntries: string[] = ['/about/project'],
   activeTab: TabId = 'project',
@@ -34,10 +40,7 @@ const renderAbout = async (
       <About markupService={markupServiceMock} activeTab={activeTab} />
     </MemoryRouter>,
   )
-
-  await waitFor(() => {
-    expect(screen.queryAllByLabelText('Spinner')).toHaveLength(0)
-  })
+  await waitForSpinnersToDisappear()
 }
 
 describe('About component', () => {
@@ -54,17 +57,13 @@ describe('About component', () => {
         <About markupService={markupServiceMock} activeTab="corpus" />
       </MemoryRouter>,
     )
-    await waitFor(() => {
-      expect(screen.queryAllByLabelText('Spinner')).toHaveLength(0)
-    })
+    await waitForSpinnersToDisappear()
     expect(container.outerHTML).toMatchSnapshot()
   })
 
   test('renders corpus tab content', async () => {
     await renderAbout(['/about/corpus'], 'corpus')
-    expect(screen.getByRole('button', { name: '⊞ Corpus' })).toHaveClass(
-      'active',
-    )
+    expect(screen.getByRole('link', { name: '⊞ Corpus' })).toHaveClass('active')
     expect(
       screen.getByRole('heading', { name: /I\. Corpus/i }),
     ).toBeInTheDocument()
@@ -73,13 +72,13 @@ describe('About component', () => {
   test('renders with default tab content', async () => {
     await renderAbout(['/about/project'], 'project')
     expect(
-      screen.getByRole('button', { name: '⚙ eBL Project' }),
+      screen.getByRole('link', { name: '⚙ eBL Project' }),
     ).toBeInTheDocument()
-    expect(screen.getByRole('button', { name: '⚙ eBL Project' })).toHaveClass(
+    expect(screen.getByRole('link', { name: '⚙ eBL Project' })).toHaveClass(
       'active',
     )
     expect(
-      screen.getByRole('button', { name: '⚙ eBL Project' }),
+      screen.getByRole('link', { name: '⚙ eBL Project' }),
     ).toHaveTextContent('eBL Project')
   })
 
@@ -89,12 +88,9 @@ describe('About component', () => {
         <About markupService={markupServiceMock} activeTab="project" />
       </MemoryRouter>,
     )
+    await waitForSpinnersToDisappear()
 
-    await waitFor(() => {
-      expect(screen.queryAllByLabelText('Spinner')).toHaveLength(0)
-    })
-
-    expect(screen.getByRole('button', { name: '⚙ eBL Project' })).toHaveClass(
+    expect(screen.getByRole('link', { name: '⚙ eBL Project' })).toHaveClass(
       'active',
     )
 
@@ -103,10 +99,9 @@ describe('About component', () => {
         <About markupService={markupServiceMock} activeTab="signs" />
       </MemoryRouter>,
     )
+    await waitForSpinnersToDisappear()
 
-    expect(screen.getByRole('button', { name: '𒀀 Signs' })).toHaveClass(
-      'active',
-    )
+    expect(screen.getByRole('link', { name: '𒀀 Signs' })).toHaveClass('active')
   })
 
   test('renders all tabs', async () => {
@@ -123,7 +118,7 @@ describe('About component', () => {
 
     expectedTabs.forEach((tabText) => {
       expect(
-        screen.getByRole('button', { name: new RegExp(tabText) }),
+        screen.getByRole('link', { name: new RegExp(tabText) }),
       ).toBeInTheDocument()
     })
   })
@@ -131,10 +126,10 @@ describe('About component', () => {
   test('does not change tab when clicking active tab', async () => {
     await renderAbout(['/about/project'], 'project')
 
-    const projectTab = screen.getByRole('button', { name: '⚙ eBL Project' })
+    const projectTab = screen.getByRole('link', { name: '⚙ eBL Project' })
     fireEvent.click(projectTab)
 
-    expect(screen.getByRole('button', { name: '⚙ eBL Project' })).toHaveClass(
+    expect(screen.getByRole('link', { name: '⚙ eBL Project' })).toHaveClass(
       'active',
     )
   })
@@ -142,12 +137,10 @@ describe('About component', () => {
   test('navigates to different tab when clicking inactive tab', async () => {
     await renderAbout(['/about/project'], 'project')
 
-    const corpusTab = screen.getByRole('button', { name: '⊞ Corpus' })
-    fireEvent.click(corpusTab)
+    fireEvent.click(screen.getByRole('link', { name: '⊞ Corpus' }))
+    await waitForSpinnersToDisappear()
 
-    expect(screen.getByRole('button', { name: '⊞ Corpus' })).toHaveClass(
-      'active',
-    )
+    expect(screen.getByRole('link', { name: '⊞ Corpus' })).toHaveClass('active')
   })
 
   test('scrolls to hash target when URL contains hash', async () => {
@@ -157,20 +150,17 @@ describe('About component', () => {
     element.scrollIntoView = scrollIntoView
     document.body.appendChild(element)
 
-    jest.useFakeTimers()
-
     render(
       <MemoryRouter initialEntries={['/about/project#test-section']}>
         <About markupService={markupServiceMock} activeTab="project" />
       </MemoryRouter>,
     )
 
-    jest.advanceTimersByTime(400)
-
-    expect(scrollIntoView).toHaveBeenCalledWith({ behavior: 'smooth' })
+    await waitFor(() => {
+      expect(scrollIntoView).toHaveBeenCalledWith({ behavior: 'smooth' })
+    })
 
     document.body.removeChild(element)
-    jest.useRealTimers()
   })
 
   test('renders news tab with activeSection', async () => {
@@ -183,10 +173,9 @@ describe('About component', () => {
         />
       </MemoryRouter>,
     )
+    await waitForSpinnersToDisappear()
 
-    await waitFor(() => {
-      expect(screen.getByRole('button', { name: /News/ })).toHaveClass('active')
-    })
+    expect(screen.getByRole('link', { name: /News/ })).toHaveClass('active')
   })
 
   test('renders news tab without activeSection', async () => {
@@ -195,22 +184,21 @@ describe('About component', () => {
         <About markupService={markupServiceMock} activeTab="news" />
       </MemoryRouter>,
     )
+    await waitForSpinnersToDisappear()
 
-    await waitFor(() => {
-      expect(screen.getByRole('button', { name: /News/ })).toHaveClass('active')
-    })
+    expect(screen.getByRole('link', { name: /News/ })).toHaveClass('active')
   })
 
   test('does not scroll when hash target element is missing', async () => {
-    jest.useFakeTimers()
-
     render(
       <MemoryRouter initialEntries={['/about/project#nonexistent']}>
         <About markupService={markupServiceMock} activeTab="project" />
       </MemoryRouter>,
     )
+    await waitForSpinnersToDisappear()
 
-    jest.advanceTimersByTime(400)
-    jest.useRealTimers()
+    expect(
+      screen.getByRole('link', { name: /eBL Project/ }),
+    ).toBeInTheDocument()
   })
 })

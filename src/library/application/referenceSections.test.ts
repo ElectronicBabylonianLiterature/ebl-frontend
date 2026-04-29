@@ -16,7 +16,7 @@ describe('referenceSections', () => {
       {
         key: 'dictionary',
         title: 'Dictionary',
-        icon: 'Aa',
+        icon: 'Ꞌ',
         path: '/reference-library/dictionary',
         description: 'Akkadian & Sumerian words',
       },
@@ -38,16 +38,16 @@ describe('referenceSections', () => {
         icon: '𒀀',
         description:
           'Comprehensive reference tool for cuneiform script with palaeographic resources',
-        to: '/tools/signs',
+        to: '/reference-library/signs',
         linkText: 'Explore Signs →',
       },
       {
         key: 'dictionary',
         title: 'Dictionary',
-        icon: 'Aa',
+        icon: 'Ꞌ',
         description:
           'Flexible reference for Akkadian vocabulary with CDA and guide words',
-        to: '/tools/dictionary',
+        to: '/reference-library/dictionary',
         linkText: 'Browse Dictionary →',
       },
       {
@@ -55,8 +55,8 @@ describe('referenceSections', () => {
         title: 'Bibliography',
         icon: '⊞',
         description:
-          'Complete bibliography of cuneiform publications with 11,497+ entries',
-        to: '/tools/references',
+          'Complete bibliography of cuneiform publications and references',
+        to: '/reference-library/bibliography',
         linkText: 'View Bibliography →',
       },
     ])

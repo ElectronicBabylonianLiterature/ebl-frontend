@@ -11,11 +11,11 @@ interface LibraryProps {
 export default function Library({ children }: LibraryProps): JSX.Element {
   const location = useLocation()
 
-  const activeSection = location.pathname.includes('/reference-library/signs')
+  const activeSection = location.pathname.startsWith('/reference-library/signs')
     ? 'signs'
-    : location.pathname.includes('/reference-library/dictionary')
+    : location.pathname.startsWith('/reference-library/dictionary')
       ? 'dictionary'
-      : location.pathname.includes('/reference-library/bibliography')
+      : location.pathname.startsWith('/reference-library/bibliography')
         ? 'bibliography'
         : ''
 

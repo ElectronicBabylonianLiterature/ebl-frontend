@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Container, Row, Col, Nav } from 'react-bootstrap'
-import { useLocation } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import { useHistory } from 'router/compat'
 import { TextCrumb } from 'common/ui/Breadcrumbs'
 import MarkupService from 'markup/application/MarkupService'
@@ -87,6 +87,8 @@ function AboutNavItem({
 }): JSX.Element {
   return (
     <Nav.Link
+      as={Link}
+      to={`/about/${tab.id}`}
       className={`about-nav__item ${isActive ? 'active' : ''}`}
       onClick={() => onSelect(tab.id)}
     >
@@ -126,12 +128,14 @@ export default function About({
     const hash = location.hash
     if (hash) {
       const id = hash.replace('#', '')
-      setTimeout(() => {
-        const element = document.getElementById(id)
-        if (element) {
-          element.scrollIntoView({ behavior: 'smooth' })
-        }
-      }, 400)
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          const element = document.getElementById(id)
+          if (element) {
+            element.scrollIntoView({ behavior: 'smooth' })
+          }
+        })
+      })
     }
   }, [location])
 
@@ -145,7 +149,7 @@ export default function About({
             className="about-header__breadcrumbs"
             crumbs={[
               new TextCrumb('About'),
-              new TextCrumb(_.capitalize(selectedTab)),
+              new TextCrumb(currentTab?.title ?? _.capitalize(selectedTab)),
             ]}
           />
         </Container>

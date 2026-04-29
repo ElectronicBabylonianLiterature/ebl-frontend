@@ -37,7 +37,7 @@ function Hero(): JSX.Element {
             Corpus
           </Link>
           <span className="hero__divider">|</span>
-          <Link to="/dictionary" className="hero__link">
+          <Link to="/tools/dictionary" className="hero__link">
             Dictionary
           </Link>
         </div>
@@ -115,12 +115,21 @@ function FeatureCards(): JSX.Element {
   )
 }
 
+const NEWSLETTER_FRONTMATTER_LINES = 4
+const NEWSLETTER_PREVIEW_LINES = 3
+const NEWSLETTER_PREVIEW_CHAR_LIMIT = 280
+
 function getNewsletterPreview(content: string): string {
   const lines = content.split('\n')
   const contentLines = lines
-    .slice(4)
+    .slice(NEWSLETTER_FRONTMATTER_LINES)
     .filter((line) => line.trim() && !line.startsWith('#'))
-  return contentLines.slice(0, 3).join('\n').substring(0, 280) + '...'
+  return (
+    contentLines
+      .slice(0, NEWSLETTER_PREVIEW_LINES)
+      .join('\n')
+      .substring(0, NEWSLETTER_PREVIEW_CHAR_LIMIT) + '...'
+  )
 }
 
 function NewsSection(): JSX.Element {
