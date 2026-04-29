@@ -147,6 +147,13 @@ export const Museums = {
     country: 'US',
     url: 'https://katz.sas.upenn.edu/',
   },
+  KAYSERI_ARKEOLOJI_MUZESI: {
+    key: 'KAYSERI_ARKEOLOJI_MUZESI',
+    name: 'Kayseri Arkeoloji Müzesi',
+    city: 'Kayseri',
+    country: 'TR',
+    url: 'https://www.turkishmuseums.com/museum/detail/2111-kayseri-arkeoloji-muzesi/2111/1',
+  },
   KELSEY_MUSEUM: {
     key: 'KELSEY_MUSEUM',
     name: 'Kelsey Museum of Archaeology',
