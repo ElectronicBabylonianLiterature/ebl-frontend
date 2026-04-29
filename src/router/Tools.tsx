@@ -89,13 +89,7 @@ export function getToolsBreadcrumbs(
   return [new TextCrumb('Tools'), new TextCrumb(displayTitle)]
 }
 
-interface ToolsIntroductionProps {
-  markupService: MarkupService
-}
-
-function ToolsIntroduction({
-  markupService,
-}: ToolsIntroductionProps): JSX.Element {
+function ToolsIntroduction(): JSX.Element {
   return (
     <div className="tools-introduction">
       <h3>Welcome to eBL Tools</h3>
@@ -176,11 +170,9 @@ function getContent({
   }
 
   return activeTab ? (
-    (contentByTab[activeTab] ?? (
-      <ToolsIntroduction markupService={markupService} />
-    ))
+    (contentByTab[activeTab] ?? <ToolsIntroduction />)
   ) : (
-    <ToolsIntroduction markupService={markupService} />
+    <ToolsIntroduction />
   )
 }
 
@@ -211,7 +203,6 @@ export default function Tools({
     if (newTab === selectedTab) {
       return
     }
-    history.push(`/tools/${newTab}`)
     setSelectedTab(newTab)
   }
 

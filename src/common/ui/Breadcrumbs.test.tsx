@@ -23,7 +23,7 @@ describe('Three crumbs', () => {
     renderBreadcrumbs()
     expect(screen.getByText('Dictionary')).toHaveAttribute(
       'href',
-      `/dictionary`,
+      `/tools/dictionary`,
     )
   })
 
@@ -60,7 +60,7 @@ describe('Two crumbs', () => {
     renderBreadcrumbs()
     expect(screen.getByText('Dictionary')).toHaveAttribute(
       'href',
-      `/dictionary`,
+      `/tools/dictionary`,
     )
   })
 

@@ -59,10 +59,7 @@ describe('Searching bibliography and AfO-Register', () => {
   })
 
   it('displays result on successful query', async () => {
-    await renderBibliography(
-      '/bibliography/references?query=Borger',
-      'references',
-    )
+    await renderBibliography('/tools/references?query=Borger', 'references')
     const resultsList = await waitFor(() => {
       const lists = screen.getAllByRole('list')
       const list = lists.find(
@@ -77,17 +74,14 @@ describe('Searching bibliography and AfO-Register', () => {
   })
 
   it('fills in search form query', async () => {
-    await renderBibliography(
-      '/bibliography/references?query=Borger',
-      'references',
-    )
+    await renderBibliography('/tools/references?query=Borger', 'references')
 
     const queryInput = await screen.findByLabelText('Bibliography-Query')
     expect(queryInput).toHaveValue('Borger')
   })
 
   it('displays empty search if no query', async () => {
-    await renderBibliography('/bibliography/references', 'references')
+    await renderBibliography('/tools/references', 'references')
 
     const queryInput = await screen.findByLabelText('Bibliography-Query')
     expect(queryInput).toHaveValue('')
@@ -95,7 +89,7 @@ describe('Searching bibliography and AfO-Register', () => {
 
   it('displays a message if user is not logged in', async () => {
     session.isAllowedToReadBibliography.mockReturnValueOnce(false)
-    await renderBibliography('/bibliography/references', 'references', false)
+    await renderBibliography('/tools/references', 'references', false)
     expect(
       screen.getByText('Please log in to browse the Bibliography.'),
     ).toBeInTheDocument()
@@ -103,7 +97,7 @@ describe('Searching bibliography and AfO-Register', () => {
 
   it('renders content based on session state', async () => {
     session.isAllowedToReadBibliography.mockReturnValue(false)
-    await renderBibliography('/bibliography/references', 'references', false)
+    await renderBibliography('/tools/references', 'references', false)
 
     expect(
       await screen.findByText('Please log in to browse the Bibliography.'),
@@ -111,21 +105,14 @@ describe('Searching bibliography and AfO-Register', () => {
   })
 
   it('handles URL queries correctly', async () => {
-    await renderBibliography(
-      '/bibliography/references?query=TestQuery',
-      'references',
-    )
+    await renderBibliography('/tools/references?query=TestQuery', 'references')
     const queryInput = await screen.findByLabelText('Bibliography-Query')
     expect(queryInput).toHaveValue('TestQuery')
   })
 
   it('renders afo-register tab', async () => {
     afoRegisterService.search.mockReturnValue(Promise.resolve([]))
-    await renderBibliography(
-      '/bibliography/afo-register',
-      'afo-register',
-      false,
-    )
+    await renderBibliography('/tools/afo-register', 'afo-register', false)
     const tabs = screen.getAllByRole('tab')
     const afoTab = tabs.find((tab) => tab.textContent === 'AfO-Register')
     expect(afoTab).toHaveAttribute('aria-selected', 'true')
@@ -133,16 +120,16 @@ describe('Searching bibliography and AfO-Register', () => {
 
   it('renders create button when user has write access', async () => {
     session.isAllowedToWriteBibliography = (): boolean => true
-    await renderBibliography('/bibliography/references', 'references')
+    await renderBibliography('/tools/references', 'references')
     const createLink = screen.getByRole('link', { name: /Create/ })
     expect(createLink).toHaveAttribute(
       'href',
-      '/bibliography/references/new-reference',
+      '/tools/references/new-reference',
     )
   })
 
   it('switches tab when clicking a different tab', async () => {
-    await renderBibliography('/bibliography/references', 'references')
+    await renderBibliography('/tools/references', 'references')
     const afoTab = screen.getByRole('tab', { name: 'AfO-Register' })
     fireEvent.click(afoTab)
   })

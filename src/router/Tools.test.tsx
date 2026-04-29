@@ -15,11 +15,9 @@ import AfoRegisterService from 'afo-register/application/AfoRegisterService'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import DossiersService from 'dossiers/application/DossiersService'
 
-const mockPush = jest.fn()
-
 jest.mock('router/compat', () => ({
   ...jest.requireActual('router/compat'),
-  useHistory: () => ({ push: mockPush }),
+  useHistory: () => ({ push: jest.fn() }),
 }))
 
 jest.mock('signs/ui/search/Signs', () => ({
@@ -88,10 +86,6 @@ function renderTools(activeTab?: Parameters<typeof Tools>[0]['activeTab']) {
 }
 
 describe('Tools', () => {
-  beforeEach(() => {
-    mockPush.mockReset()
-  })
-
   it('renders tools introduction when no tab is selected', () => {
     renderTools()
     expect(screen.getByText('Welcome to eBL Tools')).toBeInTheDocument()
@@ -143,22 +137,40 @@ describe('Tools', () => {
     expect(screen.getByText('Welcome to eBL Tools')).toBeInTheDocument()
   })
 
-  it('updates selected tab and pushes route when nav item is clicked', async () => {
+  it('updates selected tab when nav item is clicked', async () => {
     renderTools()
-    mockPush.mockReset()
-    await userEvent.click(
-      screen.getByRole('link', { name: /Akkadian Dictionary/ }),
-    )
-    expect(mockPush).toHaveBeenCalledTimes(1)
-    expect(mockPush).toHaveBeenCalledWith('/tools/dictionary')
+    const dictionaryLink = screen.getByRole('link', {
+      name: /Akkadian Dictionary/,
+    })
+
+    await userEvent.click(dictionaryLink)
+
+    expect(dictionaryLink).toHaveAttribute('href', '/tools/dictionary')
+    expect(screen.getByText('Dictionary Mock')).toBeInTheDocument()
   })
 
-  it('does not push route when clicking the already active tab', async () => {
+  it('keeps current tab active when clicking the already active tab', async () => {
     renderTools('dictionary')
-    await userEvent.click(
+    const dictionaryLink = screen.getByRole('link', {
+      name: /Akkadian Dictionary/,
+    })
+
+    await userEvent.click(dictionaryLink)
+
+    expect(dictionaryLink).toHaveClass('active')
+    expect(screen.getByText('Dictionary Mock')).toBeInTheDocument()
+  })
+
+  it('renders nav links to tools routes', () => {
+    renderTools('dictionary')
+
+    expect(
       screen.getByRole('link', { name: /Akkadian Dictionary/ }),
+    ).toHaveAttribute('href', '/tools/dictionary')
+    expect(screen.getByRole('link', { name: /References/ })).toHaveAttribute(
+      'href',
+      '/tools/references',
     )
-    expect(mockPush).not.toHaveBeenCalled()
   })
 
   it('syncs selected tab when activeTab prop changes', () => {

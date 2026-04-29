@@ -9,6 +9,7 @@ import AboutInlineLink from 'common/ui/AboutInlineLink'
 import { Session } from 'auth/Session'
 import BibliographyService from 'bibliography/application/BibliographyService'
 import { Markdown } from 'common/ui/Markdown'
+import './Bibliography.css'
 
 function getReferencesQueryFromLocation(search: string): string {
   const rawQuery = parse(search).query || ''

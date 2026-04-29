@@ -2,6 +2,7 @@ import AppDriver from 'test-support/AppDriver'
 import FakeApi from 'test-support/FakeApi'
 import { statisticsFactory } from 'test-support/fragment-data-fixtures'
 import { tabIds as aboutTabIds } from 'about/ui/about'
+import { tabIds as toolsTabIds } from 'router/Tools'
 
 test.each([
   '/',
@@ -28,14 +29,19 @@ test.each([
   '/projects/CAIC/search',
   ...aboutTabIds.map((tabId) => '/about/' + tabId),
   '/tools',
-  ...['date-converter', 'list-of-kings'].map((tabId) => '/about/' + tabId),
+  '/tools/introduction',
+  ...toolsTabIds.map((tabId) => '/tools/' + tabId),
   '/signs',
   '/signs/sign_id',
   '/impressum',
   '/datenschutz',
 ])('%s renders without crashing', async (route) => {
   window.scrollTo = jest.fn()
-  const fakeApi = new FakeApi().allowStatistics(statisticsFactory.build())
+  const fakeApi = new FakeApi()
+    .allowStatistics(statisticsFactory.build())
+    .allowProvenances([])
+    .allowDossiers([])
+    .allowGenres([])
   const appDriver = new AppDriver(fakeApi.client).withPath(route).render()
   await appDriver.waitForTextToDisappear('Loading...')
 })

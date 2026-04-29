@@ -14,9 +14,7 @@ const query = 'Börger'
 let bibliographyEntries: BibliographyEntry[]
 let bibliographyServiceMock
 
-async function renderBibliographySearchComponent(
-  path = '/bibliography/references',
-) {
+async function renderBibliographySearchComponent(path = '/tools/references') {
   bibliographyEntries = bibliographyEntryFactory.buildList(2)
   bibliographyServiceMock = {
     search: jest.fn(),
