@@ -8,8 +8,8 @@ function GenresIntroduction(): JSX.Element {
   return (
     <Markdown
       className="genres-page__introduction"
-      text="The following genres are used in the electronic Babylonian Library to classify 
-      cuneiform fragments by their content and function. Genres are organized hierarchically 
+      text="The following genres are used in the electronic Babylonian Library to classify
+      cuneiform fragments by their content and function. Genres are organized hierarchically
       from broad categories to more specific sub-types."
     />
   )

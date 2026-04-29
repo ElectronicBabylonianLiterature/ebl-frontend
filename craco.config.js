@@ -4,13 +4,6 @@ module.exports = {
   ...(isFastDev ? { eslint: { enable: false } } : {}),
   webpack: {
     configure: (webpackConfig) => {
-      webpackConfig.cache = {
-        type: 'filesystem',
-        buildDependencies: {
-          config: [__filename],
-        },
-      }
-
       webpackConfig.resolve = webpackConfig.resolve || {}
       webpackConfig.resolve.fallback = {
         ...(webpackConfig.resolve.fallback || {}),

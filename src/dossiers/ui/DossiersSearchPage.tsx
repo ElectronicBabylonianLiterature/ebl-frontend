@@ -11,8 +11,8 @@ function DossiersIntroduction(): JSX.Element {
   return (
     <Markdown
       className="dossiers-search-page__introduction"
-      text="Dossiers group cuneiform fragments by their historical and textual context, 
-      associating them with known archival collections, provenances, and script periods. 
+      text="Dossiers group cuneiform fragments by their historical and textual context,
+      associating them with known archival collections, provenances, and script periods.
       Use the filters below to browse dossiers by period or provenance."
     />
   )

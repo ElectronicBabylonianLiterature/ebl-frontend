@@ -19,11 +19,11 @@ export function BibliographyReferencesIntroduction(): JSX.Element {
   return (
     <Markdown
       className="BibliographyReferences__introduction"
-      text="The electronic Babylonian Library (eBL) features a comprehensive collection of 
-        bibliography references related to Babylonian literature and cuneiform studies in general. 
-        These references have been meticulously gathered and are readily accessible 
-        through a dedicated search function on the eBL platform. 
-        This robust bibliographic repository serves as a valuable resource for researchers, scholars, 
+      text="The electronic Babylonian Library (eBL) features a comprehensive collection of
+        bibliography references related to Babylonian literature and cuneiform studies in general.
+        These references have been meticulously gathered and are readily accessible
+        through a dedicated search function on the eBL platform.
+        This robust bibliographic repository serves as a valuable resource for researchers, scholars,
         and anyone interested in the study of ancient Mesopotamian texts."
     />
   )

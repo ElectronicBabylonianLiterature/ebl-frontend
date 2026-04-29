@@ -103,3 +103,13 @@ test('alternates left and right positioning', () => {
   expect(getObservedElement(0)).toHaveClass('timeline-item--left')
   expect(getObservedElement(1)).toHaveClass('timeline-item--right')
 })
+
+test('shows all items when IntersectionObserver is unavailable', () => {
+  delete (window as unknown as Record<string, unknown>).IntersectionObserver
+
+  render(<Timeline items={items} />)
+
+  expect(mockObserve).not.toHaveBeenCalled()
+  expect(screen.getByText('First')).toBeInTheDocument()
+  expect(screen.getByText('Second')).toBeInTheDocument()
+})

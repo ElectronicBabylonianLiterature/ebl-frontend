@@ -30,7 +30,15 @@ export default function Timeline({ items }: TimelineProps): JSX.Element {
   )
 
   useEffect(() => {
-    observerRef.current = new IntersectionObserver(
+    if (
+      typeof window === 'undefined' ||
+      typeof window.IntersectionObserver !== 'function'
+    ) {
+      setVisibleItems(new Set(items.map((item) => item.id)))
+      return
+    }
+
+    observerRef.current = new window.IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
@@ -51,6 +59,7 @@ export default function Timeline({ items }: TimelineProps): JSX.Element {
     return () => {
       if (observerRef.current) {
         observerRef.current.disconnect()
+        observerRef.current = null
       }
     }
   }, [items])
