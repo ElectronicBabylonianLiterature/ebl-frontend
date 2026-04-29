@@ -27,8 +27,11 @@ function GenreTree({ genres }: { genres: string[][] }): JSX.Element {
             <h4 className="genres-page__category-title">{topLevel}</h4>
             {subItems.length > 0 && (
               <ul className="genres-page__subcategory-list">
-                {subItems.map((genre, index) => (
-                  <li key={index} className="genres-page__subcategory-item">
+                {subItems.map((genre) => (
+                  <li
+                    key={genre.join(' ')}
+                    className="genres-page__subcategory-item"
+                  >
                     {genre.slice(1).join(' \u279d ')}
                   </li>
                 ))}
