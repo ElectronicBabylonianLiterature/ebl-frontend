@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Container, Row, Col, Nav } from 'react-bootstrap'
 import { useLocation } from 'react-router-dom'
 import { TextCrumb } from 'common/ui/Breadcrumbs'
+import _ from 'lodash'
 import Breadcrumbs from 'common/ui/Breadcrumbs'
 import './tools.sass'
 import DateConverterForm, {
@@ -37,21 +38,36 @@ export const tabIds = [
 ] as const
 export type TabId = (typeof tabIds)[number]
 
+type ContentLocation = {
+  hash: string
+  pathname: string
+  search: string
+}
+
+type ContentHistory = {
+  push: (to: string) => void
+}
+
+type ContentMatch = {
+  params: Record<string, string>
+  isExact: boolean
+  path: string
+  url: string
+}
+
 const tabConfig = [
   { id: 'signs', title: 'Signs', icon: '𒀀' },
   { id: 'dictionary', title: 'Akkadian Dictionary', icon: 'Ꞌ' },
   { id: 'references', title: 'References', icon: '※' },
   { id: 'afo-register', title: 'AfO-Register', icon: '⊞' },
-  { id: 'dossiers', title: 'Dossiers', icon: '⊟' },
-  { id: 'genres', title: 'Genres', icon: '⊕' },
+  { id: 'dossiers', title: 'Dossiers', icon: '🗂️' },
+  { id: 'genres', title: 'Genres', icon: '📚' },
   { id: 'date-converter', title: 'Date Converter', icon: '⇌' },
   { id: 'list-of-kings', title: 'List of Kings', icon: '♔' },
   { id: 'cuneiform-converter', title: 'Cuneiform Converter', icon: '𒐕' },
 ]
 
-export function getCurrentTab(
-  selectedTab?: TabId,
-): (typeof tabConfig)[number] | undefined {
+export function getCurrentTab(selectedTab?: TabId) {
   return tabConfig.find((tab) => tab.id === selectedTab)
 }
 
@@ -71,10 +87,16 @@ export function getToolsBreadcrumbs(
     return [new TextCrumb('Tools')]
   }
 
-  return [new TextCrumb('Tools'), new TextCrumb(displayTitle)]
+  return [new TextCrumb('Tools'), new TextCrumb(_.capitalize(displayTitle))]
 }
 
-function ToolsIntroduction(): JSX.Element {
+interface ToolsIntroductionProps {
+  markupService: MarkupService
+}
+
+function ToolsIntroduction({
+  markupService,
+}: ToolsIntroductionProps): JSX.Element {
   return (
     <div className="tools-introduction">
       <h3>Welcome to eBL Tools</h3>
@@ -110,6 +132,9 @@ function getContent({
   afoRegisterService,
   dossiersService,
   fragmentService,
+  history,
+  location,
+  match,
 }: {
   activeTab?: TabId
   markupService: MarkupService
@@ -119,10 +144,15 @@ function getContent({
   afoRegisterService: AfoRegisterService
   dossiersService: DossiersService
   fragmentService: FragmentService
+  history: ContentHistory
+  location: ContentLocation
+  match: ContentMatch
 }): React.ReactElement {
+  const routeProps = { location, match, history }
+
   const contentByTab: Partial<Record<TabId, React.ReactElement>> = {
-    signs: <Signs signService={signService} />,
-    dictionary: <Dictionary wordService={wordService} />,
+    signs: <Signs {...routeProps} signService={signService} />,
+    dictionary: <Dictionary wordService={wordService} {...routeProps} />,
     references: (
       <BibliographyReferencesContent
         bibliographyService={bibliographyService}
@@ -147,9 +177,11 @@ function getContent({
   }
 
   return activeTab ? (
-    (contentByTab[activeTab] ?? <ToolsIntroduction />)
+    (contentByTab[activeTab] ?? (
+      <ToolsIntroduction markupService={markupService} />
+    ))
   ) : (
-    <ToolsIntroduction />
+    <ToolsIntroduction markupService={markupService} />
   )
 }
 
@@ -180,7 +212,6 @@ export default function Tools({
     if (newTab === selectedTab) {
       return
     }
-    window.scrollTo({ top: 0 })
     history.push(`/tools/${newTab}`)
     setSelectedTab(newTab)
   }
@@ -257,6 +288,9 @@ export default function Tools({
                 afoRegisterService,
                 dossiersService,
                 fragmentService,
+                history,
+                location,
+                match: { params: {}, isExact: true, path: '', url: '' },
               })}
             </div>
           </Col>

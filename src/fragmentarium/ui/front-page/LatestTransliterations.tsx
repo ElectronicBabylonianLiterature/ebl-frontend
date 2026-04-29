@@ -134,18 +134,21 @@ function LatestTransliterationsAll({
   dossiersService: DossiersService
 }): JSX.Element {
   return (
-    <section>
-      <h3 className="SubsectionHeading--indented">Latest additions:</h3>
-      {data.items.map((fragment) => (
-        <FragmentLines
-          key={fragment.museumNumber}
-          fragmentService={fragmentService}
-          dossiersService={dossiersService}
-          queryItem={fragment}
-          linesToShow={3}
-          includeLatestRecord={true}
-        />
-      ))}
+    <section className="library-latest">
+      <h2 className="library-latest__title">Latest Additions</h2>
+      <div className="library-latest__list">
+        {data.items.map((fragment) => (
+          <div key={fragment.museumNumber} className="library-fragment-card">
+            <FragmentLines
+              fragmentService={fragmentService}
+              dossiersService={dossiersService}
+              queryItem={fragment}
+              linesToShow={3}
+              includeLatestRecord={true}
+            />
+          </div>
+        ))}
+      </div>
     </section>
   )
 }
