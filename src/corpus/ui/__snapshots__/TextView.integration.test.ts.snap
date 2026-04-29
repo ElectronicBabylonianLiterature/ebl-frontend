@@ -426,21 +426,21 @@ exports[`Chapter Show chapter 1`] = `
             >
               <li>
                 <a
-                  href="/reference-library/signs"
+                  href="/tools/signs"
                 >
                   Signs
                 </a>
               </li>
               <li>
                 <a
-                  href="/reference-library/dictionary"
+                  href="/tools/dictionary"
                 >
                   Dictionary
                 </a>
               </li>
               <li>
                 <a
-                  href="/reference-library/bibliography"
+                  href="/tools/references"
                 >
                   Bibliography
                 </a>
@@ -1209,21 +1209,21 @@ exports[`Chapter Show list of manuscripts 1`] = `
             >
               <li>
                 <a
-                  href="/reference-library/signs"
+                  href="/tools/signs"
                 >
                   Signs
                 </a>
               </li>
               <li>
                 <a
-                  href="/reference-library/dictionary"
+                  href="/tools/dictionary"
                 >
                   Dictionary
                 </a>
               </li>
               <li>
                 <a
-                  href="/reference-library/bibliography"
+                  href="/tools/references"
                 >
                   Bibliography
                 </a>
@@ -1817,21 +1817,21 @@ exports[`With session 1`] = `
             >
               <li>
                 <a
-                  href="/reference-library/signs"
+                  href="/tools/signs"
                 >
                   Signs
                 </a>
               </li>
               <li>
                 <a
-                  href="/reference-library/dictionary"
+                  href="/tools/dictionary"
                 >
                   Dictionary
                 </a>
               </li>
               <li>
                 <a
-                  href="/reference-library/bibliography"
+                  href="/tools/references"
                 >
                   Bibliography
                 </a>

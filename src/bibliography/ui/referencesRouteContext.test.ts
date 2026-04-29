@@ -9,14 +9,6 @@ describe('referencesRouteContext', () => {
   test.each([
     ['/tools/references', '/tools/references'],
     ['/tools/references/ABC', '/tools/references'],
-    [
-      '/reference-library/bibliography/references',
-      '/reference-library/bibliography/references',
-    ],
-    [
-      '/reference-library/bibliography/references/ABC',
-      '/reference-library/bibliography/references',
-    ],
     ['/bibliography/references', '/tools/references'],
     ['/bibliography/references/ABC', '/tools/references'],
     ['/unknown/path', '/tools/references'],

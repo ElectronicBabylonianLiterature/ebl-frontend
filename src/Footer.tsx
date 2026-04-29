@@ -27,9 +27,9 @@ const footerSections: FooterSection[] = [
   {
     title: 'Resources',
     links: [
-      { label: 'Signs', href: '/reference-library/signs' },
-      { label: 'Dictionary', href: '/reference-library/dictionary' },
-      { label: 'Bibliography', href: '/reference-library/bibliography' },
+      { label: 'Signs', href: '/tools/signs' },
+      { label: 'Dictionary', href: '/tools/dictionary' },
+      { label: 'Bibliography', href: '/tools/references' },
     ],
   },
   {

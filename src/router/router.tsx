@@ -6,7 +6,6 @@ import CorpusRoutes from 'router/corpusRoutes'
 import FragmentariumRoutes from 'router/fragmentariumRoutes'
 import DictionaryRoutes from 'router/dictionaryRoutes'
 import SignRoutes from 'router/signRoutes'
-import LibraryRoutes from 'router/libraryRoutes'
 import AboutRoutes from 'router/aboutRoutes'
 import ToolsRoutes from 'router/toolsRoutes'
 import ResearchProjectRoutes from 'router/researchProjectRoutes'
@@ -57,7 +56,6 @@ export function WebsiteRoutes(
     </Route>,
     ...AboutRoutes({ sitemap, ...services }),
     ...ToolsRoutes({ sitemap, ...services }),
-    ...LibraryRoutes({ sitemap, ...services, ...slugs }),
     ...SignRoutes({ sitemap, ...services, ...slugs }),
     ...BibliographyRoutes({ sitemap, ...services, ...slugs }),
     ...DictionaryRoutes({ sitemap, ...services, ...slugs }),

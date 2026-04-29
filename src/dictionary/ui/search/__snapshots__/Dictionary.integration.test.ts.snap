@@ -243,9 +243,7 @@ exports[`Meaning 1`] = `
           >
             <a
               class="tools-nav__item  nav-link"
-              href="#"
-              role="button"
-              tabindex="0"
+              href="/tools/signs"
             >
               <span
                 class="tools-nav__icon"
@@ -260,9 +258,7 @@ exports[`Meaning 1`] = `
             </a>
             <a
               class="tools-nav__item active nav-link"
-              href="#"
-              role="button"
-              tabindex="0"
+              href="/tools/dictionary"
             >
               <span
                 class="tools-nav__icon"
@@ -277,9 +273,7 @@ exports[`Meaning 1`] = `
             </a>
             <a
               class="tools-nav__item  nav-link"
-              href="#"
-              role="button"
-              tabindex="0"
+              href="/tools/references"
             >
               <span
                 class="tools-nav__icon"
@@ -294,9 +288,7 @@ exports[`Meaning 1`] = `
             </a>
             <a
               class="tools-nav__item  nav-link"
-              href="#"
-              role="button"
-              tabindex="0"
+              href="/tools/afo-register"
             >
               <span
                 class="tools-nav__icon"
@@ -311,9 +303,7 @@ exports[`Meaning 1`] = `
             </a>
             <a
               class="tools-nav__item  nav-link"
-              href="#"
-              role="button"
-              tabindex="0"
+              href="/tools/dossiers"
             >
               <span
                 class="tools-nav__icon"
@@ -328,9 +318,7 @@ exports[`Meaning 1`] = `
             </a>
             <a
               class="tools-nav__item  nav-link"
-              href="#"
-              role="button"
-              tabindex="0"
+              href="/tools/genres"
             >
               <span
                 class="tools-nav__icon"
@@ -345,9 +333,7 @@ exports[`Meaning 1`] = `
             </a>
             <a
               class="tools-nav__item  nav-link"
-              href="#"
-              role="button"
-              tabindex="0"
+              href="/tools/date-converter"
             >
               <span
                 class="tools-nav__icon"
@@ -362,9 +348,7 @@ exports[`Meaning 1`] = `
             </a>
             <a
               class="tools-nav__item  nav-link"
-              href="#"
-              role="button"
-              tabindex="0"
+              href="/tools/list-of-kings"
             >
               <span
                 class="tools-nav__icon"
@@ -379,9 +363,7 @@ exports[`Meaning 1`] = `
             </a>
             <a
               class="tools-nav__item  nav-link"
-              href="#"
-              role="button"
-              tabindex="0"
+              href="/tools/cuneiform-converter"
             >
               <span
                 class="tools-nav__icon"
@@ -954,21 +936,21 @@ exports[`Meaning 1`] = `
             >
               <li>
                 <a
-                  href="/reference-library/signs"
+                  href="/tools/signs"
                 >
                   Signs
                 </a>
               </li>
               <li>
                 <a
-                  href="/reference-library/dictionary"
+                  href="/tools/dictionary"
                 >
                   Dictionary
                 </a>
               </li>
               <li>
                 <a
-                  href="/reference-library/bibliography"
+                  href="/tools/references"
                 >
                   Bibliography
                 </a>
@@ -1379,9 +1361,7 @@ exports[`Root 1`] = `
           >
             <a
               class="tools-nav__item  nav-link"
-              href="#"
-              role="button"
-              tabindex="0"
+              href="/tools/signs"
             >
               <span
                 class="tools-nav__icon"
@@ -1396,9 +1376,7 @@ exports[`Root 1`] = `
             </a>
             <a
               class="tools-nav__item active nav-link"
-              href="#"
-              role="button"
-              tabindex="0"
+              href="/tools/dictionary"
             >
               <span
                 class="tools-nav__icon"
@@ -1413,9 +1391,7 @@ exports[`Root 1`] = `
             </a>
             <a
               class="tools-nav__item  nav-link"
-              href="#"
-              role="button"
-              tabindex="0"
+              href="/tools/references"
             >
               <span
                 class="tools-nav__icon"
@@ -1430,9 +1406,7 @@ exports[`Root 1`] = `
             </a>
             <a
               class="tools-nav__item  nav-link"
-              href="#"
-              role="button"
-              tabindex="0"
+              href="/tools/afo-register"
             >
               <span
                 class="tools-nav__icon"
@@ -1447,9 +1421,7 @@ exports[`Root 1`] = `
             </a>
             <a
               class="tools-nav__item  nav-link"
-              href="#"
-              role="button"
-              tabindex="0"
+              href="/tools/dossiers"
             >
               <span
                 class="tools-nav__icon"
@@ -1464,9 +1436,7 @@ exports[`Root 1`] = `
             </a>
             <a
               class="tools-nav__item  nav-link"
-              href="#"
-              role="button"
-              tabindex="0"
+              href="/tools/genres"
             >
               <span
                 class="tools-nav__icon"
@@ -1481,9 +1451,7 @@ exports[`Root 1`] = `
             </a>
             <a
               class="tools-nav__item  nav-link"
-              href="#"
-              role="button"
-              tabindex="0"
+              href="/tools/date-converter"
             >
               <span
                 class="tools-nav__icon"
@@ -1498,9 +1466,7 @@ exports[`Root 1`] = `
             </a>
             <a
               class="tools-nav__item  nav-link"
-              href="#"
-              role="button"
-              tabindex="0"
+              href="/tools/list-of-kings"
             >
               <span
                 class="tools-nav__icon"
@@ -1515,9 +1481,7 @@ exports[`Root 1`] = `
             </a>
             <a
               class="tools-nav__item  nav-link"
-              href="#"
-              role="button"
-              tabindex="0"
+              href="/tools/cuneiform-converter"
             >
               <span
                 class="tools-nav__icon"
@@ -2090,21 +2054,21 @@ exports[`Root 1`] = `
             >
               <li>
                 <a
-                  href="/reference-library/signs"
+                  href="/tools/signs"
                 >
                   Signs
                 </a>
               </li>
               <li>
                 <a
-                  href="/reference-library/dictionary"
+                  href="/tools/dictionary"
                 >
                   Dictionary
                 </a>
               </li>
               <li>
                 <a
-                  href="/reference-library/bibliography"
+                  href="/tools/references"
                 >
                   Bibliography
                 </a>
@@ -2515,9 +2479,7 @@ exports[`Vowel class 1`] = `
           >
             <a
               class="tools-nav__item  nav-link"
-              href="#"
-              role="button"
-              tabindex="0"
+              href="/tools/signs"
             >
               <span
                 class="tools-nav__icon"
@@ -2532,9 +2494,7 @@ exports[`Vowel class 1`] = `
             </a>
             <a
               class="tools-nav__item active nav-link"
-              href="#"
-              role="button"
-              tabindex="0"
+              href="/tools/dictionary"
             >
               <span
                 class="tools-nav__icon"
@@ -2549,9 +2509,7 @@ exports[`Vowel class 1`] = `
             </a>
             <a
               class="tools-nav__item  nav-link"
-              href="#"
-              role="button"
-              tabindex="0"
+              href="/tools/references"
             >
               <span
                 class="tools-nav__icon"
@@ -2566,9 +2524,7 @@ exports[`Vowel class 1`] = `
             </a>
             <a
               class="tools-nav__item  nav-link"
-              href="#"
-              role="button"
-              tabindex="0"
+              href="/tools/afo-register"
             >
               <span
                 class="tools-nav__icon"
@@ -2583,9 +2539,7 @@ exports[`Vowel class 1`] = `
             </a>
             <a
               class="tools-nav__item  nav-link"
-              href="#"
-              role="button"
-              tabindex="0"
+              href="/tools/dossiers"
             >
               <span
                 class="tools-nav__icon"
@@ -2600,9 +2554,7 @@ exports[`Vowel class 1`] = `
             </a>
             <a
               class="tools-nav__item  nav-link"
-              href="#"
-              role="button"
-              tabindex="0"
+              href="/tools/genres"
             >
               <span
                 class="tools-nav__icon"
@@ -2617,9 +2569,7 @@ exports[`Vowel class 1`] = `
             </a>
             <a
               class="tools-nav__item  nav-link"
-              href="#"
-              role="button"
-              tabindex="0"
+              href="/tools/date-converter"
             >
               <span
                 class="tools-nav__icon"
@@ -2634,9 +2584,7 @@ exports[`Vowel class 1`] = `
             </a>
             <a
               class="tools-nav__item  nav-link"
-              href="#"
-              role="button"
-              tabindex="0"
+              href="/tools/list-of-kings"
             >
               <span
                 class="tools-nav__icon"
@@ -2651,9 +2599,7 @@ exports[`Vowel class 1`] = `
             </a>
             <a
               class="tools-nav__item  nav-link"
-              href="#"
-              role="button"
-              tabindex="0"
+              href="/tools/cuneiform-converter"
             >
               <span
                 class="tools-nav__icon"
@@ -3226,21 +3172,21 @@ exports[`Vowel class 1`] = `
             >
               <li>
                 <a
-                  href="/reference-library/signs"
+                  href="/tools/signs"
                 >
                   Signs
                 </a>
               </li>
               <li>
                 <a
-                  href="/reference-library/dictionary"
+                  href="/tools/dictionary"
                 >
                   Dictionary
                 </a>
               </li>
               <li>
                 <a
-                  href="/reference-library/bibliography"
+                  href="/tools/references"
                 >
                   Bibliography
                 </a>
@@ -3651,9 +3597,7 @@ exports[`Word 1`] = `
           >
             <a
               class="tools-nav__item  nav-link"
-              href="#"
-              role="button"
-              tabindex="0"
+              href="/tools/signs"
             >
               <span
                 class="tools-nav__icon"
@@ -3668,9 +3612,7 @@ exports[`Word 1`] = `
             </a>
             <a
               class="tools-nav__item active nav-link"
-              href="#"
-              role="button"
-              tabindex="0"
+              href="/tools/dictionary"
             >
               <span
                 class="tools-nav__icon"
@@ -3685,9 +3627,7 @@ exports[`Word 1`] = `
             </a>
             <a
               class="tools-nav__item  nav-link"
-              href="#"
-              role="button"
-              tabindex="0"
+              href="/tools/references"
             >
               <span
                 class="tools-nav__icon"
@@ -3702,9 +3642,7 @@ exports[`Word 1`] = `
             </a>
             <a
               class="tools-nav__item  nav-link"
-              href="#"
-              role="button"
-              tabindex="0"
+              href="/tools/afo-register"
             >
               <span
                 class="tools-nav__icon"
@@ -3719,9 +3657,7 @@ exports[`Word 1`] = `
             </a>
             <a
               class="tools-nav__item  nav-link"
-              href="#"
-              role="button"
-              tabindex="0"
+              href="/tools/dossiers"
             >
               <span
                 class="tools-nav__icon"
@@ -3736,9 +3672,7 @@ exports[`Word 1`] = `
             </a>
             <a
               class="tools-nav__item  nav-link"
-              href="#"
-              role="button"
-              tabindex="0"
+              href="/tools/genres"
             >
               <span
                 class="tools-nav__icon"
@@ -3753,9 +3687,7 @@ exports[`Word 1`] = `
             </a>
             <a
               class="tools-nav__item  nav-link"
-              href="#"
-              role="button"
-              tabindex="0"
+              href="/tools/date-converter"
             >
               <span
                 class="tools-nav__icon"
@@ -3770,9 +3702,7 @@ exports[`Word 1`] = `
             </a>
             <a
               class="tools-nav__item  nav-link"
-              href="#"
-              role="button"
-              tabindex="0"
+              href="/tools/list-of-kings"
             >
               <span
                 class="tools-nav__icon"
@@ -3787,9 +3717,7 @@ exports[`Word 1`] = `
             </a>
             <a
               class="tools-nav__item  nav-link"
-              href="#"
-              role="button"
-              tabindex="0"
+              href="/tools/cuneiform-converter"
             >
               <span
                 class="tools-nav__icon"
@@ -4362,21 +4290,21 @@ exports[`Word 1`] = `
             >
               <li>
                 <a
-                  href="/reference-library/signs"
+                  href="/tools/signs"
                 >
                   Signs
                 </a>
               </li>
               <li>
                 <a
-                  href="/reference-library/dictionary"
+                  href="/tools/dictionary"
                 >
                   Dictionary
                 </a>
               </li>
               <li>
                 <a
-                  href="/reference-library/bibliography"
+                  href="/tools/references"
                 >
                   Bibliography
                 </a>
@@ -4787,9 +4715,7 @@ exports[`renders dictionary search page 1`] = `
           >
             <a
               class="tools-nav__item  nav-link"
-              href="#"
-              role="button"
-              tabindex="0"
+              href="/tools/signs"
             >
               <span
                 class="tools-nav__icon"
@@ -4804,9 +4730,7 @@ exports[`renders dictionary search page 1`] = `
             </a>
             <a
               class="tools-nav__item active nav-link"
-              href="#"
-              role="button"
-              tabindex="0"
+              href="/tools/dictionary"
             >
               <span
                 class="tools-nav__icon"
@@ -4821,9 +4745,7 @@ exports[`renders dictionary search page 1`] = `
             </a>
             <a
               class="tools-nav__item  nav-link"
-              href="#"
-              role="button"
-              tabindex="0"
+              href="/tools/references"
             >
               <span
                 class="tools-nav__icon"
@@ -4838,9 +4760,7 @@ exports[`renders dictionary search page 1`] = `
             </a>
             <a
               class="tools-nav__item  nav-link"
-              href="#"
-              role="button"
-              tabindex="0"
+              href="/tools/afo-register"
             >
               <span
                 class="tools-nav__icon"
@@ -4855,9 +4775,7 @@ exports[`renders dictionary search page 1`] = `
             </a>
             <a
               class="tools-nav__item  nav-link"
-              href="#"
-              role="button"
-              tabindex="0"
+              href="/tools/dossiers"
             >
               <span
                 class="tools-nav__icon"
@@ -4872,9 +4790,7 @@ exports[`renders dictionary search page 1`] = `
             </a>
             <a
               class="tools-nav__item  nav-link"
-              href="#"
-              role="button"
-              tabindex="0"
+              href="/tools/genres"
             >
               <span
                 class="tools-nav__icon"
@@ -4889,9 +4805,7 @@ exports[`renders dictionary search page 1`] = `
             </a>
             <a
               class="tools-nav__item  nav-link"
-              href="#"
-              role="button"
-              tabindex="0"
+              href="/tools/date-converter"
             >
               <span
                 class="tools-nav__icon"
@@ -4906,9 +4820,7 @@ exports[`renders dictionary search page 1`] = `
             </a>
             <a
               class="tools-nav__item  nav-link"
-              href="#"
-              role="button"
-              tabindex="0"
+              href="/tools/list-of-kings"
             >
               <span
                 class="tools-nav__icon"
@@ -4923,9 +4835,7 @@ exports[`renders dictionary search page 1`] = `
             </a>
             <a
               class="tools-nav__item  nav-link"
-              href="#"
-              role="button"
-              tabindex="0"
+              href="/tools/cuneiform-converter"
             >
               <span
                 class="tools-nav__icon"
@@ -5387,21 +5297,21 @@ exports[`renders dictionary search page 1`] = `
             >
               <li>
                 <a
-                  href="/reference-library/signs"
+                  href="/tools/signs"
                 >
                   Signs
                 </a>
               </li>
               <li>
                 <a
-                  href="/reference-library/dictionary"
+                  href="/tools/dictionary"
                 >
                   Dictionary
                 </a>
               </li>
               <li>
                 <a
-                  href="/reference-library/bibliography"
+                  href="/tools/references"
                 >
                   Bibliography
                 </a>

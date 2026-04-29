@@ -699,21 +699,21 @@ exports[`Display chapter How to cite 1`] = `
             >
               <li>
                 <a
-                  href="/reference-library/signs"
+                  href="/tools/signs"
                 >
                   Signs
                 </a>
               </li>
               <li>
                 <a
-                  href="/reference-library/dictionary"
+                  href="/tools/dictionary"
                 >
                   Dictionary
                 </a>
               </li>
               <li>
                 <a
-                  href="/reference-library/bibliography"
+                  href="/tools/references"
                 >
                   Bibliography
                 </a>
@@ -1834,21 +1834,21 @@ exports[`Display chapter Show manuscripts 1`] = `
             >
               <li>
                 <a
-                  href="/reference-library/signs"
+                  href="/tools/signs"
                 >
                   Signs
                 </a>
               </li>
               <li>
                 <a
-                  href="/reference-library/dictionary"
+                  href="/tools/dictionary"
                 >
                   Dictionary
                 </a>
               </li>
               <li>
                 <a
-                  href="/reference-library/bibliography"
+                  href="/tools/references"
                 >
                   Bibliography
                 </a>
@@ -2732,21 +2732,21 @@ exports[`Display chapter Show notes 1`] = `
             >
               <li>
                 <a
-                  href="/reference-library/signs"
+                  href="/tools/signs"
                 >
                   Signs
                 </a>
               </li>
               <li>
                 <a
-                  href="/reference-library/dictionary"
+                  href="/tools/dictionary"
                 >
                   Dictionary
                 </a>
               </li>
               <li>
                 <a
-                  href="/reference-library/bibliography"
+                  href="/tools/references"
                 >
                   Bibliography
                 </a>
@@ -3635,21 +3635,21 @@ exports[`Display chapter Show parallels 1`] = `
             >
               <li>
                 <a
-                  href="/reference-library/signs"
+                  href="/tools/signs"
                 >
                   Signs
                 </a>
               </li>
               <li>
                 <a
-                  href="/reference-library/dictionary"
+                  href="/tools/dictionary"
                 >
                   Dictionary
                 </a>
               </li>
               <li>
                 <a
-                  href="/reference-library/bibliography"
+                  href="/tools/references"
                 >
                   Bibliography
                 </a>
@@ -4764,21 +4764,21 @@ exports[`Display chapter Sidebar 1`] = `
             >
               <li>
                 <a
-                  href="/reference-library/signs"
+                  href="/tools/signs"
                 >
                   Signs
                 </a>
               </li>
               <li>
                 <a
-                  href="/reference-library/dictionary"
+                  href="/tools/dictionary"
                 >
                   Dictionary
                 </a>
               </li>
               <li>
                 <a
-                  href="/reference-library/bibliography"
+                  href="/tools/references"
                 >
                   Bibliography
                 </a>
@@ -5645,21 +5645,21 @@ exports[`Display chapter Snapshot 1`] = `
             >
               <li>
                 <a
-                  href="/reference-library/signs"
+                  href="/tools/signs"
                 >
                   Signs
                 </a>
               </li>
               <li>
                 <a
-                  href="/reference-library/dictionary"
+                  href="/tools/dictionary"
                 >
                   Dictionary
                 </a>
               </li>
               <li>
                 <a
-                  href="/reference-library/bibliography"
+                  href="/tools/references"
                 >
                   Bibliography
                 </a>

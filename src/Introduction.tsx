@@ -1,7 +1,7 @@
 import React from 'react'
 import ReactMarkdown from 'react-markdown'
 import { Link } from 'react-router-dom'
-import { Container, Card, Row, Col } from 'react-bootstrap'
+import { Container } from 'react-bootstrap'
 import AppContent from 'common/ui/AppContent'
 import './Introduction.sass'
 import { HeadTags } from 'router/head'
@@ -11,9 +11,6 @@ import { Session } from 'auth/Session'
 import LatestTransliterations from 'fragmentarium/ui/front-page/LatestTransliterations'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import DossiersService from 'dossiers/application/DossiersService'
-import { getIntroductionFeatureCards } from 'library/application/referenceSections'
-
-const featureCards = getIntroductionFeatureCards()
 
 function Hero(): JSX.Element {
   return (
@@ -83,33 +80,6 @@ function IntroText(): JSX.Element {
           </a>{' '}
           project (CAIC, BAdW, 2022–2046).
         </p>
-      </Container>
-    </section>
-  )
-}
-
-function FeatureCards(): JSX.Element {
-  return (
-    <section className="introduction-content">
-      <Container>
-        <Row>
-          {featureCards.map((featureCard) => (
-            <Col key={featureCard.title} md={4} className="mb-4">
-              <Card className="feature-card">
-                <Card.Body>
-                  <div className="feature-card__icon">{featureCard.icon}</div>
-                  <h3 className="feature-card__title">{featureCard.title}</h3>
-                  <p className="feature-card__text">
-                    {featureCard.description}
-                  </p>
-                  <Link to={featureCard.to} className="feature-card__link">
-                    {featureCard.linkText}
-                  </Link>
-                </Card.Body>
-              </Card>
-            </Col>
-          ))}
-        </Row>
       </Container>
     </section>
   )
@@ -254,7 +224,6 @@ export default function Introduction({
       <Hero />
       <AppContent crumbs={[]}>
         <IntroText />
-        <FeatureCards />
         <SessionContext.Consumer>
           {(session: Session) =>
             session.isAllowedToReadFragments() ? (
