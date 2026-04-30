@@ -22,7 +22,7 @@ let bibliographyService
 beforeEach(() => {
   session = {
     isAllowedToReadBibliography: jest.fn(),
-    isAllowedToWriteBibliography: (): boolean => false,
+    isAllowedToWriteBibliography: jest.fn(() => false),
   }
   bibliographyService = {
     search: jest.fn().mockReturnValue(Promise.resolve([])),
@@ -78,5 +78,16 @@ describe('BibliographyReferencesContent', () => {
     renderContent('/tools/references')
 
     expect(screen.getByTestId('search-form')).toHaveTextContent('')
+  })
+
+  it('links to the new reference route when user has write access', () => {
+    session.isAllowedToReadBibliography.mockReturnValue(true)
+    session.isAllowedToWriteBibliography.mockReturnValue(true)
+    renderContent('/tools/references')
+
+    expect(screen.getByRole('link', { name: /Create/ })).toHaveAttribute(
+      'href',
+      '/tools/references/new-reference',
+    )
   })
 })

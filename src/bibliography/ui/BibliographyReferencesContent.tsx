@@ -1,6 +1,7 @@
 import React from 'react'
 import { parse } from 'query-string'
-import { useLocation } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
+import { Button } from 'react-bootstrap'
 import _ from 'lodash'
 import BibliographySearchForm from './BibliographySearchForm'
 import BibliographySearch from './BibliographySearch'
@@ -9,6 +10,7 @@ import AboutInlineLink from 'common/ui/AboutInlineLink'
 import { Session } from 'auth/Session'
 import BibliographyService from 'bibliography/application/BibliographyService'
 import { Markdown } from 'common/ui/Markdown'
+import { referencesNewRoute } from 'bibliography/ui/referencesRouteContext'
 import './Bibliography.css'
 
 function getReferencesQueryFromLocation(search: string): string {
@@ -30,6 +32,31 @@ export function BibliographyReferencesIntroduction(): JSX.Element {
   )
 }
 
+function CreateReferenceButton({
+  session,
+  pathname,
+}: {
+  session: Session
+  pathname: string
+}): JSX.Element {
+  return session.isAllowedToWriteBibliography() ? (
+    <Link
+      to={referencesNewRoute(pathname)}
+      className="btn btn-outline-primary Bibliography__create-link"
+    >
+      <i className="fas fa-plus-circle" aria-hidden="true" /> Create
+    </Link>
+  ) : (
+    <Button
+      variant="outline-primary"
+      className="Bibliography__create-link"
+      disabled
+    >
+      <i className="fas fa-plus-circle" aria-hidden="true" /> Create
+    </Button>
+  )
+}
+
 export default function BibliographyReferencesContent({
   bibliographyService,
 }: {
@@ -47,6 +74,10 @@ export default function BibliographyReferencesContent({
               <div className="Bibliography__search">
                 <BibliographySearchForm query={query} />
               </div>
+              <CreateReferenceButton
+                session={session}
+                pathname={location.pathname}
+              />
               <AboutInlineLink
                 to="/about/bibliography"
                 label="Bibliography"

@@ -55,19 +55,23 @@ function DossierItem({
   activeDossier: string | null
   setActiveDossier: React.Dispatch<React.SetStateAction<string | null>>
 }): JSX.Element {
-  const target = useRef(null)
+  const target = useRef<HTMLButtonElement>(null)
   const dossierKey = `${groupIndex}-${index}`
   const isActive = activeDossier === dossierKey
+  const popoverId = `DossierPopover-${dossierKey}`
 
   return (
     <>
-      <span
+      <button
         ref={target}
+        type="button"
         className={`dossier-records__item${isActive ? '__active' : ''}`}
         onClick={() => setActiveDossier(isActive ? null : dossierKey)}
+        aria-expanded={isActive}
+        aria-controls={popoverId}
       >
         {record.id}
-      </span>
+      </button>
 
       <Overlay
         target={target.current}
@@ -77,10 +81,7 @@ function DossierItem({
         rootClose={true}
         rootCloseEvent="click"
       >
-        <Popover
-          id={`DossierPopover-${dossierKey}`}
-          className="reference-popover__popover"
-        >
+        <Popover id={popoverId} className="reference-popover__popover">
           <Popover.Header as="h3">{record.id}</Popover.Header>
           <Popover.Body>
             <DossierRecordDisplay record={record} index={index} />

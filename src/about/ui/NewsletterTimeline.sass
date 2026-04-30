@@ -71,7 +71,7 @@
   font: inherit
   color: inherit
 
-  &:hover
+  &:hover, &:focus-visible
     .newsletter-tree-item__node
       transform: scale(1.3)
       box-shadow: 0 0 0 6px rgba(0, 119, 190, 0.1)
@@ -82,6 +82,10 @@
     .newsletter-tree-item__number
       background: linear-gradient(135deg, #0077be, #005a8f)
       color: white
+
+  &:focus-visible
+    outline: 3px solid rgba(0, 119, 190, 0.45)
+    outline-offset: 4px
 
   &--active
     .newsletter-tree-item__branch

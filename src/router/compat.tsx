@@ -101,6 +101,17 @@ type RedirectProps = {
   computedMatch?: ReturnType<typeof matchPath> | null
 }
 
+function getRedirectTarget(
+  to: string,
+  location: ReturnType<typeof useLocation>,
+): string {
+  const [pathAndSearch, targetHash] = to.split('#')
+  const hasSearch = pathAndSearch.includes('?')
+  const hash = targetHash === undefined ? location.hash : `#${targetHash}`
+
+  return `${pathAndSearch}${hasSearch ? '' : location.search}${hash}`
+}
+
 export function Redirect({
   to,
   from,
@@ -116,7 +127,7 @@ export function Redirect({
       : { params: {} })
 
   if (!match) return null
-  return <Navigate to={to} replace={!push} />
+  return <Navigate to={getRedirectTarget(to, location)} replace={!push} />
 }
 
 type HistoryLocation = ReturnType<typeof useLocation>

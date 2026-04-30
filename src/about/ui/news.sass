@@ -19,7 +19,7 @@
   overflow: hidden
   transition: box-shadow 0.3s ease
 
-  &:hover
+  &:hover, &:focus-within
     box-shadow: 0 4px 28px rgba(0, 0, 0, 0.1)
 
   &__header
@@ -79,7 +79,7 @@
 
     p
       margin-bottom: 1.25rem
-      text-align: justify
+      text-align: left
 
     strong
       font-weight: 700
@@ -96,9 +96,15 @@
       transition: border-color 0.2s ease, color 0.2s ease
       padding-bottom: 1px
 
-      &:hover
+      &:hover, &:focus-visible
         border-bottom-color: #0077be
         color: #005a8f
+
+      &:focus-visible
+        outline-color: #005a8f
+        outline-style: solid
+        outline-width: 2px
+        outline-offset: 3px
 
     ul, ol
       margin-bottom: 1.5rem

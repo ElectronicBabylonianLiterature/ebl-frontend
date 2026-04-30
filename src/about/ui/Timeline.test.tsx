@@ -49,6 +49,13 @@ test('renders all timeline items', () => {
   expect(screen.getByText('Second')).toBeInTheDocument()
 })
 
+test('renders titles as headings and dates as time elements', () => {
+  render(<Timeline items={items} />)
+
+  expect(screen.getByRole('heading', { name: 'First' })).toBeInTheDocument()
+  expect(screen.getByText('2024').tagName).toBe('TIME')
+})
+
 test('observes all timeline items', () => {
   render(<Timeline items={items} />)
   expect(mockObserve).toHaveBeenCalledTimes(2)

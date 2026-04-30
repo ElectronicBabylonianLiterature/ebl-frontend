@@ -153,9 +153,33 @@ describe('DossiersGroupedDisplay', () => {
     )
     render(<DossiersGroupedDisplay records={[record]} />)
 
-    const dossierLink = screen.getByText('D001')
+    const dossierLink = screen.getByRole('button', { name: 'D001' })
 
     await userEvent.click(dossierLink)
+
+    await waitFor(() => {
+      expect(screen.getByRole('tooltip')).toBeInTheDocument()
+    })
+  })
+
+  it('opens popover when dossier is activated from the keyboard', async () => {
+    const record = new DossierRecord(
+      createMockRecordDto(
+        'D001',
+        'Test description',
+        'Neo-Babylonian',
+        'Late',
+        'Nippur',
+      ),
+    )
+    const user = userEvent.setup()
+    render(<DossiersGroupedDisplay records={[record]} />)
+
+    const dossierButton = screen.getByRole('button', { name: 'D001' })
+
+    await user.tab()
+    expect(dossierButton).toHaveFocus()
+    await user.keyboard('{Enter}')
 
     await waitFor(() => {
       expect(screen.getByRole('tooltip')).toBeInTheDocument()
@@ -168,7 +192,7 @@ describe('DossiersGroupedDisplay', () => {
     )
     const { container } = render(<DossiersGroupedDisplay records={[record]} />)
 
-    const dossierLink = screen.getByText('D001')
+    const dossierLink = screen.getByRole('button', { name: 'D001' })
 
     await userEvent.click(dossierLink)
 
@@ -206,13 +230,13 @@ describe('DossiersGroupedDisplay', () => {
     ]
     render(<DossiersGroupedDisplay records={records} />)
 
-    await userEvent.click(screen.getByText('D001'))
+    await userEvent.click(screen.getByRole('button', { name: 'D001' }))
 
     await waitFor(() => {
       expect(screen.getByRole('tooltip')).toBeInTheDocument()
     })
 
-    await userEvent.click(screen.getByText('D002'))
+    await userEvent.click(screen.getByRole('button', { name: 'D002' }))
 
     await waitFor(() => {
       const tooltips = screen.queryAllByRole('tooltip')

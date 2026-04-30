@@ -2,9 +2,24 @@
     margin-right: 8px
 
 .dossier-records__item .dossier-name, .dossier-records__item__active .dossier-name
+    background: none
+    border: 0
+    color: inherit
     cursor: pointer
+    font: inherit
+    padding: 0
     text-decoration: underline
     text-decoration-style: dotted
+
+    &:hover, &:focus-visible
+        color: #0056b3
+        text-decoration-style: solid
+
+    &:focus-visible
+        outline-color: #0056b3
+        outline-style: solid
+        outline-width: 2px
+        outline-offset: 2px
 
 .reference-popover__popover
     opacity: 0
@@ -40,11 +55,21 @@
         margin-right: 4px
 
     .dossier-records__item, .dossier-records__item__active
+        background: none
+        border: 0
         cursor: pointer
+        font: inherit
+        padding: 0
         color: #007bff
         text-decoration: underline
         text-decoration-style: dotted
         
-        &:hover
+        &:hover, &:focus-visible
             color: #0056b3
             text-decoration-style: solid
+
+        &:focus-visible
+            outline-color: #0056b3
+            outline-style: solid
+            outline-width: 2px
+            outline-offset: 2px

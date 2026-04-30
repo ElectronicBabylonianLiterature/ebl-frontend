@@ -88,8 +88,10 @@ export default function Timeline({ items }: TimelineProps): JSX.Element {
             </div>
             <div className="timeline-content">
               <div className="timeline-content__header">
-                <h3 className="timeline-content__date">{item.date}</h3>
-                <h4 className="timeline-content__title">{item.title}</h4>
+                <time className="timeline-content__date" dateTime={item.date}>
+                  {item.date}
+                </time>
+                <h3 className="timeline-content__title">{item.title}</h3>
               </div>
               <div className="timeline-content__body">{item.content}</div>
             </div>

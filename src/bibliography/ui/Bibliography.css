@@ -20,6 +20,11 @@
   margin-top: 0.15rem;
 }
 
+.Bibliography__create-link {
+  margin-top: 0.15rem;
+  white-space: nowrap;
+}
+
 .AfoRegister__search {
   margin: 0 auto 2em;
   max-width: 38em;
