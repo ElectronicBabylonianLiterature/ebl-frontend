@@ -243,6 +243,66 @@ exports[`Meaning 1`] = `
           >
             <a
               class="tools-nav__item  nav-link"
+              href="/tools/date-converter"
+            >
+              <span
+                class="tools-nav__icon"
+              >
+                ⇌
+              </span>
+              <span
+                class="tools-nav__title"
+              >
+                Date Converter
+              </span>
+            </a>
+            <a
+              class="tools-nav__item  nav-link"
+              href="/tools/list-of-kings"
+            >
+              <span
+                class="tools-nav__icon"
+              >
+                ♔
+              </span>
+              <span
+                class="tools-nav__title"
+              >
+                List of Kings
+              </span>
+            </a>
+            <a
+              class="tools-nav__item  nav-link"
+              href="/tools/genres"
+            >
+              <span
+                class="tools-nav__icon"
+              >
+                ⊕
+              </span>
+              <span
+                class="tools-nav__title"
+              >
+                Genres
+              </span>
+            </a>
+            <a
+              class="tools-nav__item  nav-link"
+              href="/tools/dossiers"
+            >
+              <span
+                class="tools-nav__icon"
+              >
+                ⊟
+              </span>
+              <span
+                class="tools-nav__title"
+              >
+                Dossiers
+              </span>
+            </a>
+            <a
+              class="tools-nav__item  nav-link"
               href="/tools/signs"
             >
               <span
@@ -299,66 +359,6 @@ exports[`Meaning 1`] = `
                 class="tools-nav__title"
               >
                 AfO-Register
-              </span>
-            </a>
-            <a
-              class="tools-nav__item  nav-link"
-              href="/tools/dossiers"
-            >
-              <span
-                class="tools-nav__icon"
-              >
-                ⊟
-              </span>
-              <span
-                class="tools-nav__title"
-              >
-                Dossiers
-              </span>
-            </a>
-            <a
-              class="tools-nav__item  nav-link"
-              href="/tools/genres"
-            >
-              <span
-                class="tools-nav__icon"
-              >
-                ⊕
-              </span>
-              <span
-                class="tools-nav__title"
-              >
-                Genres
-              </span>
-            </a>
-            <a
-              class="tools-nav__item  nav-link"
-              href="/tools/date-converter"
-            >
-              <span
-                class="tools-nav__icon"
-              >
-                ⇌
-              </span>
-              <span
-                class="tools-nav__title"
-              >
-                Date Converter
-              </span>
-            </a>
-            <a
-              class="tools-nav__item  nav-link"
-              href="/tools/list-of-kings"
-            >
-              <span
-                class="tools-nav__icon"
-              >
-                ♔
-              </span>
-              <span
-                class="tools-nav__title"
-              >
-                List of Kings
               </span>
             </a>
             <a
@@ -741,10 +741,10 @@ exports[`Meaning 1`] = `
                     </form>
                   </div>
                   <a
-                    aria-label="Learn more about Dictionary"
+                    aria-label="Learn more about Akkadian Dictionary"
                     class="AboutInlineLink Dictionary-search-header__about"
-                    href="/about/dictionary"
-                    title="Learn more about Dictionary"
+                    href="/about/akkadian-dictionary"
+                    title="Learn more about Akkadian Dictionary"
                   >
                     <i
                       aria-hidden="true"
@@ -753,7 +753,7 @@ exports[`Meaning 1`] = `
                     <span
                       class="visually-hidden"
                     >
-                      Learn more about Dictionary
+                      Learn more about Akkadian Dictionary
                     </span>
                   </a>
                 </div>
@@ -1116,7 +1116,7 @@ exports[`Meaning 1`] = `
     </footer>
   </div>
 </div>
-`;
+`
 
 exports[`Root 1`] = `
 <div>
@@ -1361,6 +1361,66 @@ exports[`Root 1`] = `
           >
             <a
               class="tools-nav__item  nav-link"
+              href="/tools/date-converter"
+            >
+              <span
+                class="tools-nav__icon"
+              >
+                ⇌
+              </span>
+              <span
+                class="tools-nav__title"
+              >
+                Date Converter
+              </span>
+            </a>
+            <a
+              class="tools-nav__item  nav-link"
+              href="/tools/list-of-kings"
+            >
+              <span
+                class="tools-nav__icon"
+              >
+                ♔
+              </span>
+              <span
+                class="tools-nav__title"
+              >
+                List of Kings
+              </span>
+            </a>
+            <a
+              class="tools-nav__item  nav-link"
+              href="/tools/genres"
+            >
+              <span
+                class="tools-nav__icon"
+              >
+                ⊕
+              </span>
+              <span
+                class="tools-nav__title"
+              >
+                Genres
+              </span>
+            </a>
+            <a
+              class="tools-nav__item  nav-link"
+              href="/tools/dossiers"
+            >
+              <span
+                class="tools-nav__icon"
+              >
+                ⊟
+              </span>
+              <span
+                class="tools-nav__title"
+              >
+                Dossiers
+              </span>
+            </a>
+            <a
+              class="tools-nav__item  nav-link"
               href="/tools/signs"
             >
               <span
@@ -1417,66 +1477,6 @@ exports[`Root 1`] = `
                 class="tools-nav__title"
               >
                 AfO-Register
-              </span>
-            </a>
-            <a
-              class="tools-nav__item  nav-link"
-              href="/tools/dossiers"
-            >
-              <span
-                class="tools-nav__icon"
-              >
-                ⊟
-              </span>
-              <span
-                class="tools-nav__title"
-              >
-                Dossiers
-              </span>
-            </a>
-            <a
-              class="tools-nav__item  nav-link"
-              href="/tools/genres"
-            >
-              <span
-                class="tools-nav__icon"
-              >
-                ⊕
-              </span>
-              <span
-                class="tools-nav__title"
-              >
-                Genres
-              </span>
-            </a>
-            <a
-              class="tools-nav__item  nav-link"
-              href="/tools/date-converter"
-            >
-              <span
-                class="tools-nav__icon"
-              >
-                ⇌
-              </span>
-              <span
-                class="tools-nav__title"
-              >
-                Date Converter
-              </span>
-            </a>
-            <a
-              class="tools-nav__item  nav-link"
-              href="/tools/list-of-kings"
-            >
-              <span
-                class="tools-nav__icon"
-              >
-                ♔
-              </span>
-              <span
-                class="tools-nav__title"
-              >
-                List of Kings
               </span>
             </a>
             <a
@@ -1859,10 +1859,10 @@ exports[`Root 1`] = `
                     </form>
                   </div>
                   <a
-                    aria-label="Learn more about Dictionary"
+                    aria-label="Learn more about Akkadian Dictionary"
                     class="AboutInlineLink Dictionary-search-header__about"
-                    href="/about/dictionary"
-                    title="Learn more about Dictionary"
+                    href="/about/akkadian-dictionary"
+                    title="Learn more about Akkadian Dictionary"
                   >
                     <i
                       aria-hidden="true"
@@ -1871,7 +1871,7 @@ exports[`Root 1`] = `
                     <span
                       class="visually-hidden"
                     >
-                      Learn more about Dictionary
+                      Learn more about Akkadian Dictionary
                     </span>
                   </a>
                 </div>
@@ -2234,7 +2234,7 @@ exports[`Root 1`] = `
     </footer>
   </div>
 </div>
-`;
+`
 
 exports[`Vowel class 1`] = `
 <div>
@@ -2479,6 +2479,66 @@ exports[`Vowel class 1`] = `
           >
             <a
               class="tools-nav__item  nav-link"
+              href="/tools/date-converter"
+            >
+              <span
+                class="tools-nav__icon"
+              >
+                ⇌
+              </span>
+              <span
+                class="tools-nav__title"
+              >
+                Date Converter
+              </span>
+            </a>
+            <a
+              class="tools-nav__item  nav-link"
+              href="/tools/list-of-kings"
+            >
+              <span
+                class="tools-nav__icon"
+              >
+                ♔
+              </span>
+              <span
+                class="tools-nav__title"
+              >
+                List of Kings
+              </span>
+            </a>
+            <a
+              class="tools-nav__item  nav-link"
+              href="/tools/genres"
+            >
+              <span
+                class="tools-nav__icon"
+              >
+                ⊕
+              </span>
+              <span
+                class="tools-nav__title"
+              >
+                Genres
+              </span>
+            </a>
+            <a
+              class="tools-nav__item  nav-link"
+              href="/tools/dossiers"
+            >
+              <span
+                class="tools-nav__icon"
+              >
+                ⊟
+              </span>
+              <span
+                class="tools-nav__title"
+              >
+                Dossiers
+              </span>
+            </a>
+            <a
+              class="tools-nav__item  nav-link"
               href="/tools/signs"
             >
               <span
@@ -2535,66 +2595,6 @@ exports[`Vowel class 1`] = `
                 class="tools-nav__title"
               >
                 AfO-Register
-              </span>
-            </a>
-            <a
-              class="tools-nav__item  nav-link"
-              href="/tools/dossiers"
-            >
-              <span
-                class="tools-nav__icon"
-              >
-                ⊟
-              </span>
-              <span
-                class="tools-nav__title"
-              >
-                Dossiers
-              </span>
-            </a>
-            <a
-              class="tools-nav__item  nav-link"
-              href="/tools/genres"
-            >
-              <span
-                class="tools-nav__icon"
-              >
-                ⊕
-              </span>
-              <span
-                class="tools-nav__title"
-              >
-                Genres
-              </span>
-            </a>
-            <a
-              class="tools-nav__item  nav-link"
-              href="/tools/date-converter"
-            >
-              <span
-                class="tools-nav__icon"
-              >
-                ⇌
-              </span>
-              <span
-                class="tools-nav__title"
-              >
-                Date Converter
-              </span>
-            </a>
-            <a
-              class="tools-nav__item  nav-link"
-              href="/tools/list-of-kings"
-            >
-              <span
-                class="tools-nav__icon"
-              >
-                ♔
-              </span>
-              <span
-                class="tools-nav__title"
-              >
-                List of Kings
               </span>
             </a>
             <a
@@ -2977,10 +2977,10 @@ exports[`Vowel class 1`] = `
                     </form>
                   </div>
                   <a
-                    aria-label="Learn more about Dictionary"
+                    aria-label="Learn more about Akkadian Dictionary"
                     class="AboutInlineLink Dictionary-search-header__about"
-                    href="/about/dictionary"
-                    title="Learn more about Dictionary"
+                    href="/about/akkadian-dictionary"
+                    title="Learn more about Akkadian Dictionary"
                   >
                     <i
                       aria-hidden="true"
@@ -2989,7 +2989,7 @@ exports[`Vowel class 1`] = `
                     <span
                       class="visually-hidden"
                     >
-                      Learn more about Dictionary
+                      Learn more about Akkadian Dictionary
                     </span>
                   </a>
                 </div>
@@ -3352,7 +3352,7 @@ exports[`Vowel class 1`] = `
     </footer>
   </div>
 </div>
-`;
+`
 
 exports[`Word 1`] = `
 <div>
@@ -3597,6 +3597,66 @@ exports[`Word 1`] = `
           >
             <a
               class="tools-nav__item  nav-link"
+              href="/tools/date-converter"
+            >
+              <span
+                class="tools-nav__icon"
+              >
+                ⇌
+              </span>
+              <span
+                class="tools-nav__title"
+              >
+                Date Converter
+              </span>
+            </a>
+            <a
+              class="tools-nav__item  nav-link"
+              href="/tools/list-of-kings"
+            >
+              <span
+                class="tools-nav__icon"
+              >
+                ♔
+              </span>
+              <span
+                class="tools-nav__title"
+              >
+                List of Kings
+              </span>
+            </a>
+            <a
+              class="tools-nav__item  nav-link"
+              href="/tools/genres"
+            >
+              <span
+                class="tools-nav__icon"
+              >
+                ⊕
+              </span>
+              <span
+                class="tools-nav__title"
+              >
+                Genres
+              </span>
+            </a>
+            <a
+              class="tools-nav__item  nav-link"
+              href="/tools/dossiers"
+            >
+              <span
+                class="tools-nav__icon"
+              >
+                ⊟
+              </span>
+              <span
+                class="tools-nav__title"
+              >
+                Dossiers
+              </span>
+            </a>
+            <a
+              class="tools-nav__item  nav-link"
               href="/tools/signs"
             >
               <span
@@ -3653,66 +3713,6 @@ exports[`Word 1`] = `
                 class="tools-nav__title"
               >
                 AfO-Register
-              </span>
-            </a>
-            <a
-              class="tools-nav__item  nav-link"
-              href="/tools/dossiers"
-            >
-              <span
-                class="tools-nav__icon"
-              >
-                ⊟
-              </span>
-              <span
-                class="tools-nav__title"
-              >
-                Dossiers
-              </span>
-            </a>
-            <a
-              class="tools-nav__item  nav-link"
-              href="/tools/genres"
-            >
-              <span
-                class="tools-nav__icon"
-              >
-                ⊕
-              </span>
-              <span
-                class="tools-nav__title"
-              >
-                Genres
-              </span>
-            </a>
-            <a
-              class="tools-nav__item  nav-link"
-              href="/tools/date-converter"
-            >
-              <span
-                class="tools-nav__icon"
-              >
-                ⇌
-              </span>
-              <span
-                class="tools-nav__title"
-              >
-                Date Converter
-              </span>
-            </a>
-            <a
-              class="tools-nav__item  nav-link"
-              href="/tools/list-of-kings"
-            >
-              <span
-                class="tools-nav__icon"
-              >
-                ♔
-              </span>
-              <span
-                class="tools-nav__title"
-              >
-                List of Kings
               </span>
             </a>
             <a
@@ -4095,10 +4095,10 @@ exports[`Word 1`] = `
                     </form>
                   </div>
                   <a
-                    aria-label="Learn more about Dictionary"
+                    aria-label="Learn more about Akkadian Dictionary"
                     class="AboutInlineLink Dictionary-search-header__about"
-                    href="/about/dictionary"
-                    title="Learn more about Dictionary"
+                    href="/about/akkadian-dictionary"
+                    title="Learn more about Akkadian Dictionary"
                   >
                     <i
                       aria-hidden="true"
@@ -4107,7 +4107,7 @@ exports[`Word 1`] = `
                     <span
                       class="visually-hidden"
                     >
-                      Learn more about Dictionary
+                      Learn more about Akkadian Dictionary
                     </span>
                   </a>
                 </div>
@@ -4470,7 +4470,7 @@ exports[`Word 1`] = `
     </footer>
   </div>
 </div>
-`;
+`
 
 exports[`renders dictionary search page 1`] = `
 <div>
@@ -4715,6 +4715,66 @@ exports[`renders dictionary search page 1`] = `
           >
             <a
               class="tools-nav__item  nav-link"
+              href="/tools/date-converter"
+            >
+              <span
+                class="tools-nav__icon"
+              >
+                ⇌
+              </span>
+              <span
+                class="tools-nav__title"
+              >
+                Date Converter
+              </span>
+            </a>
+            <a
+              class="tools-nav__item  nav-link"
+              href="/tools/list-of-kings"
+            >
+              <span
+                class="tools-nav__icon"
+              >
+                ♔
+              </span>
+              <span
+                class="tools-nav__title"
+              >
+                List of Kings
+              </span>
+            </a>
+            <a
+              class="tools-nav__item  nav-link"
+              href="/tools/genres"
+            >
+              <span
+                class="tools-nav__icon"
+              >
+                ⊕
+              </span>
+              <span
+                class="tools-nav__title"
+              >
+                Genres
+              </span>
+            </a>
+            <a
+              class="tools-nav__item  nav-link"
+              href="/tools/dossiers"
+            >
+              <span
+                class="tools-nav__icon"
+              >
+                ⊟
+              </span>
+              <span
+                class="tools-nav__title"
+              >
+                Dossiers
+              </span>
+            </a>
+            <a
+              class="tools-nav__item  nav-link"
               href="/tools/signs"
             >
               <span
@@ -4771,66 +4831,6 @@ exports[`renders dictionary search page 1`] = `
                 class="tools-nav__title"
               >
                 AfO-Register
-              </span>
-            </a>
-            <a
-              class="tools-nav__item  nav-link"
-              href="/tools/dossiers"
-            >
-              <span
-                class="tools-nav__icon"
-              >
-                ⊟
-              </span>
-              <span
-                class="tools-nav__title"
-              >
-                Dossiers
-              </span>
-            </a>
-            <a
-              class="tools-nav__item  nav-link"
-              href="/tools/genres"
-            >
-              <span
-                class="tools-nav__icon"
-              >
-                ⊕
-              </span>
-              <span
-                class="tools-nav__title"
-              >
-                Genres
-              </span>
-            </a>
-            <a
-              class="tools-nav__item  nav-link"
-              href="/tools/date-converter"
-            >
-              <span
-                class="tools-nav__icon"
-              >
-                ⇌
-              </span>
-              <span
-                class="tools-nav__title"
-              >
-                Date Converter
-              </span>
-            </a>
-            <a
-              class="tools-nav__item  nav-link"
-              href="/tools/list-of-kings"
-            >
-              <span
-                class="tools-nav__icon"
-              >
-                ♔
-              </span>
-              <span
-                class="tools-nav__title"
-              >
-                List of Kings
               </span>
             </a>
             <a
@@ -5214,10 +5214,10 @@ exports[`renders dictionary search page 1`] = `
                     </form>
                   </div>
                   <a
-                    aria-label="Learn more about Dictionary"
+                    aria-label="Learn more about Akkadian Dictionary"
                     class="AboutInlineLink Dictionary-search-header__about"
-                    href="/about/dictionary"
-                    title="Learn more about Dictionary"
+                    href="/about/akkadian-dictionary"
+                    title="Learn more about Akkadian Dictionary"
                   >
                     <i
                       aria-hidden="true"
@@ -5226,7 +5226,7 @@ exports[`renders dictionary search page 1`] = `
                     <span
                       class="visually-hidden"
                     >
-                      Learn more about Dictionary
+                      Learn more about Akkadian Dictionary
                     </span>
                   </a>
                 </div>
@@ -5477,4 +5477,4 @@ exports[`renders dictionary search page 1`] = `
     </footer>
   </div>
 </div>
-`;
+`

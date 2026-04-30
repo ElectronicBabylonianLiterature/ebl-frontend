@@ -23,6 +23,12 @@ export default function AboutRoutes({
     />,
     <Redirect
       exact
+      from="/about/dictionary"
+      to="/about/akkadian-dictionary"
+      key="about-dictionary-redirect"
+    />,
+    <Redirect
+      exact
       from="/news"
       to={`/about/news/${newsletters[0].number}`}
       key="news-root-redirect"

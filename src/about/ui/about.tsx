@@ -19,7 +19,7 @@ export const tabIds = [
   'library',
   'corpus',
   'signs',
-  'dictionary',
+  'akkadian-dictionary',
   'bibliography',
   'news',
 ] as const
@@ -36,7 +36,7 @@ const tabConfig: TabConfig[] = [
   { id: 'library', title: 'Library', icon: '⌂' },
   { id: 'corpus', title: 'Corpus', icon: '⊞' },
   { id: 'signs', title: 'Signs', icon: '𒀀' },
-  { id: 'dictionary', title: 'Dictionary', icon: 'Ꞌ' },
+  { id: 'akkadian-dictionary', title: 'Akkadian Dictionary', icon: 'Ꞌ' },
   { id: 'bibliography', title: 'Bibliography', icon: '※' },
   { id: 'news', title: 'News', icon: '✉' },
 ]
@@ -49,7 +49,7 @@ const tabContent: Record<
   library: AboutFragmentarium,
   corpus: AboutCorpus,
   signs: AboutSigns,
-  dictionary: AboutDictionary,
+  'akkadian-dictionary': AboutDictionary,
   bibliography: AboutBibliography,
 }
 

@@ -117,6 +117,24 @@ describe('AboutRoutes redirects', () => {
 
     expect(screen.getByText('About News Redirect Target')).toBeInTheDocument()
   })
+
+  test('redirects "/about/dictionary" to "/about/akkadian-dictionary"', () => {
+    render(
+      <MemoryRouter initialEntries={['/about/dictionary']}>
+        <Switch>
+          <Route
+            path="/about/akkadian-dictionary"
+            render={() => <div>Akkadian Dictionary Redirect Target</div>}
+          />
+          {[...AboutRoutes({ ...getServices(), sitemap: false })]}
+        </Switch>
+      </MemoryRouter>,
+    )
+
+    expect(
+      screen.getByText('Akkadian Dictionary Redirect Target'),
+    ).toBeInTheDocument()
+  })
 })
 
 describe('NotFoundPage rendering in BibliographyRoutes', () => {

@@ -111,7 +111,7 @@ describe('About component', () => {
       'Library',
       'Corpus',
       'Signs',
-      'Dictionary',
+      'Akkadian Dictionary',
       'Bibliography',
       'News',
     ]

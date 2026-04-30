@@ -34,8 +34,8 @@ export default function Dictionary({
                   <WordSearchForm query={query} />
                 </div>
                 <AboutInlineLink
-                  to="/about/dictionary"
-                  label="Dictionary"
+                  to="/about/akkadian-dictionary"
+                  label="Akkadian Dictionary"
                   className="Dictionary-search-header__about"
                 />
               </div>
