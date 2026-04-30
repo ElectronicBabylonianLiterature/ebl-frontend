@@ -99,9 +99,13 @@ Trello card: "Fixes to date converter" (reported by Zsombor Földi / ilya.o.khai
 
 ### Open / pending items
 
-- [ ] F2: populate PR description on GitHub (requires push permission — pending user approval)
+- [x] F2: populate PR description on GitHub — applied via API on 2026-04-30 (Summary, Bug fixes, Review follow-ups, Testing, Pre-existing flakes, Notes for reviewers)
 - [ ] F1: remove all `TASK-001-*` files from the branch before merge (blocking per project rules)
-- [ ] Manual QA: run `TASK-001-manual-qa.md` against a live backend before merge
+- [ ] F12: open follow-up issue for pre-existing flakes (`Corpus.integration.test.ts`, occasional `CuneiformFragment.test.tsx` spinner-wait) — pending user approval. Detailed analysis and fix suggestions captured in [TASK-001-F12-flakes.md](TASK-001-F12-flakes.md).
+- [x] Manual QA: run `TASK-001-manual-qa.md` against a live backend before merge
+- [x] F13: reconcile qlty stylelint plugin so `*.sass` files no longer report `CssSyntaxError` — added minimal `.qlty/qlty.toml` excluding stylelint on `**/*.sass` (sass files remain linted locally and in CI by `yarn lint`, which honors the `customSyntax: postcss-sass` override)
+- [x] F9: `Date.ts toDto()` — change `if (originalKing?.orderGlobal)` to `!= null` so `orderGlobal === 0` survives serialization
+- [x] F11: extract `findKingAtOrderInDynasty(kings, orderInDynasty)` helper in `ZeroYearKingFinder.ts` and use `Array.find` instead of nested `for` loop
 - [x] `parseDateFieldNumber`: add `"ca."` qualifier to converted modern date for approximate patterns `n+`, `x+n`, `n/n`, `n-n` — added `isApproximateDateFieldValue` helper in `parseDateFieldNumber.ts`; wired into `isApproximate()` in `DateBase.ts`; added `isApproximateDateFieldValue` unit tests and SE/Nabonassar-era integration tests in `Date.test.ts`
 - [x] `parseDateFieldNumber`: `n-n` range logic verified — `parseDateFieldNumber('14-17')` correctly returns `14` (lower bound used for conversion); the range is now properly marked approximate via `isApproximateDateFieldValue`
 

@@ -23,7 +23,7 @@ export class MesopotamianDate extends MesopotamianDateString {
   toDto(): MesopotamianDateDto {
     const originalKing = this.zeroYearKing ?? this.king
     let king
-    if (originalKing?.orderGlobal) {
+    if (originalKing?.orderGlobal != null) {
       king = {
         orderGlobal: originalKing.orderGlobal,
         isBroken: originalKing.isBroken,

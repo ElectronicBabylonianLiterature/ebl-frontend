@@ -1,0 +1,15 @@
+config_version = "0"
+
+[[source]]
+name = "default"
+default = true
+
+# qlty's stylelint plugin runs from its own install directory and cannot
+# resolve `postcss-sass` from the project's node_modules. Project .sass
+# files are already linted locally and in CI by `yarn lint`, which honors
+# the `customSyntax: postcss-sass` override in `.stylelintrc.json`.
+# This exclude prevents spurious `CssSyntaxError` reports from qlty's
+# cloud-side stylelint while keeping CSS/SCSS coverage intact.
+[[exclude]]
+plugins = ["stylelint"]
+file_patterns = ["**/*.sass"]

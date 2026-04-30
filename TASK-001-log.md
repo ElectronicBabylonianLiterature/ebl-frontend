@@ -932,3 +932,55 @@ File changed: [src/chronology/ui/DateEditor/dateFieldWarnings.ts](src/chronology
 - Full suite: 299/299 suites, 2970 tests pass, zero console output.
 - `yarn lint` — clean.
 - `yarn tsc` — clean.
+
+---
+
+## 2026-04-30 — PR review F13 (qlty stylelint), F9 and F11 follow-ups
+
+### Context
+
+Review file [TASK-001-review.md](TASK-001-review.md) was rebased onto head `0151328c`. The qltysh[bot] review on `0151328c` raised three new `stylelint:CssSyntaxError` comments on the indented-syntax `.sass` files added in that commit (`DateSelection.sass`, `DateDisplay.sass`, `DateSelectionInput.sass`). Local `yarn stylelint` is clean — the failure is qlty's cloud-side stylelint not honoring the per-file-glob `customSyntax: "postcss-sass"` override in `.stylelintrc.json` (it cannot resolve `postcss-sass` from the project's `node_modules` because qlty's stylelint runs from its own install directory).
+
+### F13 — qlty stylelint reconciliation
+
+Approach selected by user: minimal `.qlty/qlty.toml` exclude (Option A in F13 recommendation).
+
+[.qlty/qlty.toml](.qlty/qlty.toml) — new file:
+
+```toml
+config_version = "0"
+
+[[source]]
+name = "default"
+default = true
+
+[[exclude]]
+plugins = ["stylelint"]
+file_patterns = ["**/*.sass"]
+```
+
+Rationale: project `.sass` files are still linted locally and in CI by `yarn lint` (which uses the project-installed `stylelint@14` with `postcss-sass`). Excluding them from qlty's cloud stylelint plugin removes the false positives without silencing real issues.
+
+### F9 — `Date.ts toDto()` falsy-check on `orderGlobal`
+
+[src/chronology/domain/Date.ts](src/chronology/domain/Date.ts) — changed `if (originalKing?.orderGlobal)` to `if (originalKing?.orderGlobal != null)` so a king with `orderGlobal === 0` is preserved through serialization. Symmetric with the existing `kingOrderGlobal !== undefined` guard in `fromJson`.
+
+### F11 — `ZeroYearKingFinder` extracted helper
+
+[src/chronology/domain/ZeroYearKingFinder.ts](src/chronology/domain/ZeroYearKingFinder.ts) — replaced the inner `for (const candidateKing of kings)` loop with an `Array.find` call inside a top-level `findKingAtOrderInDynasty(kings, orderInDynasty)` helper. The helper is module-scoped (not nested), so `eslint(no-loop-func)` does not fire.
+
+### Gate results
+
+- `yarn lint` — clean.
+- `yarn tsc` — clean.
+- `src/chronology` suite — 16 suites / 155 tests pass, zero console output.
+- Full suite (first run) — 1 flake in `CuneiformFragment.test.tsx` ("Calls `updateDate` with undefined on Date delete") via `waitForSpinnerToBeRemoved`, passes when run in isolation (matches F12 pattern, not introduced by these changes).
+- Full suite (rerun) — 299/299 suites, 2970 tests pass, 2 skipped, zero failures, zero console output.
+
+### F12 — Pre-existing flake follow-up document (2026-04-30)
+
+Per user direction ("Skip GitHub issue — I'll handle the flake tracking elsewhere"), captured detailed flake analysis + fix suggestions in [TASK-001-F12-flakes.md](TASK-001-F12-flakes.md). Covers FL1 `Corpus.integration.test.ts`, FL2 `CuneiformFragment.test.tsx` spinner-wait race, and FL3 one-off `BibliographyEntryForm.test.tsx`. Includes prioritized fix suggestions, acceptance criteria, and cross-cutting recommendations (replace `waitForSpinnerToBeRemoved` with `waitForElementToBeRemoved`, audit `bluebird` in test plumbing). No code changes; documentation only.
+
+### F2 — PR #714 description populated (2026-04-30)
+
+Updated the PR body on GitHub via the REST API (PATCH `/repos/.../pulls/714`). Sections: Summary, Bug fixes (BUG-1..BUG-5 + king flag persistence + approximate-pattern `ca.` qualifier), Review follow-ups (F3..F13 with explicit notes for F9, F11, F13), New / refactored files, Testing (lint/tsc/full suite results), Pre-existing flakes (links to FL1..FL3 in `TASK-001-F12-flakes.md`), Notes for reviewers (TASK-001-\* artifacts must be removed before merge; `.qlty/qlty.toml` ships with the PR). Body length: 3816 characters.

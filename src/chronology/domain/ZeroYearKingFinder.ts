@@ -49,6 +49,14 @@ function getLastYearField(
   }
 }
 
+function findKingAtOrderInDynasty(
+  kings: readonly King[],
+  orderInDynasty: number,
+): King | undefined {
+  const orderAsString = orderInDynasty.toString()
+  return kings.find((candidate) => candidate.orderInDynasty === orderAsString)
+}
+
 function getPreviousKingWithNumericTotalOfYears(
   king: KingDateField,
 ): King | undefined {
@@ -58,16 +66,10 @@ function getPreviousKingWithNumericTotalOfYears(
     previousKingOrderInDynasty > 0;
     previousKingOrderInDynasty--
   ) {
-    let previousKing: King | undefined
-
-    for (const candidateKing of kings) {
-      if (
-        candidateKing.orderInDynasty === previousKingOrderInDynasty.toString()
-      ) {
-        previousKing = candidateKing
-        break
-      }
-    }
+    const previousKing = findKingAtOrderInDynasty(
+      kings,
+      previousKingOrderInDynasty,
+    )
 
     if (!previousKing) {
       return undefined

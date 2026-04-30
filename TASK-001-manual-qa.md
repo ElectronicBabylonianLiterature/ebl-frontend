@@ -42,9 +42,9 @@ This covers all five bugs and the UI enhancements introduced in the PR. Each sec
 
 ---
 
-## BUG-3 — Non-numeric date spellings and year metadata
+## BUG-3 — Non-numeric date spellings and year metadata ✅
 
-### 3a. Reconstructed year toggle +/- (Backend not yet implemented)
+### 3a. Reconstructed year toggle ✅
 
 1. Open a fragment with any date, click the pencil icon.
 2. In the **Year** row, tick the **Reconstructed** switch.
@@ -52,13 +52,13 @@ This covers all five bugs and the UI enhancements introduced in the PR. Each sec
 4. Click **Save**. The date display should show `<5>.III.12 Sargon` with `<5>` rendered literally.
 5. Reload and re-open the editor: the **Reconstructed** switch must still be ticked.
 
-### 3b. Emended year toggle +/- (Backend not yet implemented)
+### 3b. Emended year toggle ✅
 
 1. Open the editor, tick the **Emended** switch.
 2. The preview should show the year followed by `!`, e.g. `5!.III.12 Sargon`.
 3. Save, reload, re-open: **Emended** switch still ticked.
 
-### 3c. Non-blocking warnings for raw symbol entry
+### 3c. Non-blocking warnings for raw symbol entry ✅
 
 Open the editor and type each of the following into the **Year** field. After each entry, look for a warning message below the input (amber text). Do **not** click Save — just observe warnings:
 
@@ -82,26 +82,26 @@ For **Month** and **Day** fields:
 | `XIV`    | Both  | "Non-standard value may skip date conversion for this field."                                                                 |
 | `21%$`   | Both  | "Non-standard value may skip date conversion for this field."                                                                 |
 
-### 3d. Allowed patterns do NOT trigger non-standard warning
+### 3d. Allowed patterns do NOT trigger non-standard warning ✅
 
 Type the following values into the **Year** or **Day** field and verify that **no** non-standard warning appears:
 
 `12`, `x`, `12+`, `x+5`, `12-14`, `12/14`, `12a`, `12b`
 
-### 3e. Patterns help icon
+### 3e. Patterns help icon ✅
 
 1. In the date editor, look for a small info circle icon (ⓘ) next to the Year, Month, and Day inputs.
 2. Hover over the icon.
 3. **Expected:** a popover opens showing a two-column table of allowed patterns (`n`, `x`, `n+`, `x+n`, `n-n`, `n/n`, `n[a-z]`) with a short explanation for each row.
 
-### 3f. Conversion works with wrapped year values
+### 3f. Conversion works with wrapped year values ✅
 
 1. Enter `<136>` in the Year field of an SE date.
 2. **Expected:** the **Selected date** preview still shows a valid modern date — conversion is not skipped because `136` is extracted from the brackets before parsing.
 
 ---
 
-## BUG-4 — Intercalary months not taken into account in conversion
+## BUG-4 — Intercalary months not taken into account in conversion ✅
 
 **Reference fragment:** `MNB.1129` — date is `16.VI².3 Cambyses`.
 
@@ -113,7 +113,7 @@ Type the following values into the **Year** or **Day** field and verify that **n
 
 ---
 
-## BUG-5 — Year 0 of a king converted incorrectly
+## BUG-5 — Year 0 of a king converted incorrectly ✅
 
 **Reference fragment:** `VAT.8439` — date is `1.I.0 Nabonidus`.
 
@@ -123,19 +123,19 @@ Type the following values into the **Year** or **Day** field and verify that **n
 2. **Expected display:** `1.I.0 Nabonidus` — the original entered king and year 0, not the calculation intermediary "Neriglissar year 4".
 3. The modern date shown should be `18 August 556 BCE PJC` (calculation uses Neriglissar's final year internally but the label shows Nabonidus year 0).
 
-### 5b. Editor initialization check
+### 5b. Editor initialization check ✅
 
 1. Click the pencil icon to open the date editor for a year-0 Nabonidus date.
 2. **Expected:** the **King** dropdown shows **Nabonidus** and the **Year** field shows **0**.
 3. Before this fix the editor incorrectly pre-populated "Neriglissar" and "4" — this must not happen.
 
-### 5c. Round-trip persistence check
+### 5c. Round-trip persistence check ✅
 
 1. With the editor open showing Nabonidus / year 0, click **Save** without changing anything.
 2. Reload the page.
 3. **Expected:** the date still shows `1.I.0 Nabonidus` — the year-0 values, not the calculation intermediary, are persisted to the backend.
 
-### 5d. Non-numeric predecessor edge case
+### 5d. Non-numeric predecessor edge case ✅
 
 Year 0 of **Nabonidus** requires walking back past Labaši-Marduk (whose `totalOfYears = "3 months"` is non-numeric) to Neriglissar. The result in 5a confirms this worked. For additional confidence, check a king whose immediate predecessor has a normal numeric reign (e.g. Rimush year 0 → uses Sargon's 56 years) and verify the conversion is also correct.
 
@@ -143,9 +143,9 @@ Year 0 of **Nabonidus** requires walking back past Labaši-Marduk (whose `totalO
 
 ## General UI smoke tests
 
-1. **Add a new date** to a fragment that has none: click the `+` button in the dates-in-text area, fill in year/month/day, click **Save**. Verify the date appears in the list.
-2. **Edit a date in the list:** click the pencil icon on a date in the dates-in-text list, change day and month, click **Save**. Verify the updated date is reflected.
-3. **Delete a date from the list:** click the pencil icon, click **Delete**. Verify the date is removed from the list.
-4. **SE date toggle:** open the editor, tick **Seleucid Era**, enter year/month/day. Verify conversion produces an SE-era modern date.
-5. **Assyrian date toggle:** tick **Assyrian date**, pick an eponym. Verify the editor hides year/month/day fields and the save flow works.
-6. **Broken / Uncertain switches** on year, month, day: tick each, verify the `[`, `]`, `?` superscripts appear correctly in the preview and in the saved display.
+1. **Add a new date** to a fragment that has none: click the `+` button in the dates-in-text area, fill in year/month/day, click **Save**. Verify the date appears in the list. ✅
+2. **Edit a date in the list:** click the pencil icon on a date in the dates-in-text list, change day and month, click **Save**. Verify the updated date is reflected. ✅
+3. **Delete a date from the list:** click the pencil icon, click **Delete**. Verify the date is removed from the list. ✅
+4. **SE date toggle:** open the editor, tick **Seleucid Era**, enter year/month/day. Verify conversion produces an SE-era modern date. ✅
+5. **Assyrian date toggle:** tick **Assyrian date**, pick an eponym. Verify the editor hides year/month/day fields and the save flow works. ✅
+6. **Broken / Uncertain switches** on year, month, day: tick each, verify the `[`, `]`, `?` superscripts appear correctly in the preview and in the saved display. ✅
