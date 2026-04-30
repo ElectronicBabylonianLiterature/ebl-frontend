@@ -25,14 +25,14 @@ import GenresPage from 'fragmentarium/ui/GenresPage'
 import { useHistory } from 'router/compat'
 
 export const tabIds = [
+  'date-converter',
+  'list-of-kings',
+  'genres',
+  'dossiers',
   'signs',
   'dictionary',
   'references',
   'afo-register',
-  'dossiers',
-  'genres',
-  'date-converter',
-  'list-of-kings',
   'cuneiform-converter',
 ] as const
 export type TabId = (typeof tabIds)[number]
@@ -55,14 +55,14 @@ type ContentMatch = {
 }
 
 const tabConfig = [
+  { id: 'date-converter', title: 'Date Converter', icon: '⇌' },
+  { id: 'list-of-kings', title: 'List of Kings', icon: '♔' },
+  { id: 'genres', title: 'Genres', icon: '⊕' },
+  { id: 'dossiers', title: 'Dossiers', icon: '⊟' },
   { id: 'signs', title: 'Signs', icon: '𒀀' },
   { id: 'dictionary', title: 'Akkadian Dictionary', icon: 'Ꞌ' },
   { id: 'references', title: 'References', icon: '※' },
   { id: 'afo-register', title: 'AfO-Register', icon: '⊞' },
-  { id: 'dossiers', title: 'Dossiers', icon: '⊟' },
-  { id: 'genres', title: 'Genres', icon: '⊕' },
-  { id: 'date-converter', title: 'Date Converter', icon: '⇌' },
-  { id: 'list-of-kings', title: 'List of Kings', icon: '♔' },
   { id: 'cuneiform-converter', title: 'Cuneiform Converter', icon: '𒐕' },
 ]
 

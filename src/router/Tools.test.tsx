@@ -173,6 +173,27 @@ describe('Tools', () => {
     )
   })
 
+  it('renders nav links in the requested order', () => {
+    renderTools()
+
+    const sidebarTitles = screen
+      .getAllByRole('link')
+      .filter((link) => link.classList.contains('tools-nav__item'))
+      .map((link) => link.textContent)
+
+    expect(sidebarTitles).toEqual([
+      '⇌Date Converter',
+      '♔List of Kings',
+      '⊕Genres',
+      '⊟Dossiers',
+      '𒀀Signs',
+      'ꞋAkkadian Dictionary',
+      '※References',
+      '⊞AfO-Register',
+      '𒐕Cuneiform Converter',
+    ])
+  })
+
   it('syncs selected tab when activeTab prop changes', () => {
     const props = {
       markupService: {} as MarkupService,
