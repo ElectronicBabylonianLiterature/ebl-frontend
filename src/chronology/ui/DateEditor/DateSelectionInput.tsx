@@ -187,6 +187,8 @@ function getUr3CalendarField({
   return (
     <Select
       aria-label="select-calendar"
+      inputId="date-field-ur3-calendar"
+      name="date-field-ur3-calendar"
       options={options}
       onChange={(option): void => {
         setUr3Calendar(Ur3Calendar[option?.value as keyof typeof Ur3Calendar])
@@ -212,13 +214,24 @@ function getDateInputGroup({
 }: InputGroupProps): JSX.Element {
   return (
     <>
-      <InputGroup size="sm">
+      <InputGroup size="sm" className="date-field-input-group">
         <Form.Control
           placeholder={_.startCase(name)}
           aria-label={_.startCase(name)}
+          id={`date-field-${name}`}
+          name={`date-field-${name}`}
           onChange={(event) => setValue(event.target.value)}
           value={value}
           className="date-field-input"
+        />
+        <BrokenAndUncertainSwitches
+          {...{
+            name,
+            isBroken,
+            isUncertain,
+            setBroken,
+            setUncertain,
+          }}
         />
         {name === 'month' && (
           <Form.Check
@@ -229,15 +242,6 @@ function getDateInputGroup({
             checked={isIntercalary}
           />
         )}
-        <BrokenAndUncertainSwitches
-          {...{
-            name,
-            isBroken,
-            isUncertain,
-            setBroken,
-            setUncertain,
-          }}
-        />
       </InputGroup>
       <DateFieldWarnings field={name as DateFieldName} value={value} />
     </>
@@ -247,10 +251,15 @@ function getDateInputGroup({
 function getYearInputGroup(props: InputGroupsProps): JSX.Element {
   return (
     <>
-      <InputGroup size="sm">
+      <InputGroup
+        size="sm"
+        className="date-field-input-group date-field-input-group--year"
+      >
         <Form.Control
           placeholder={_.startCase('year')}
           aria-label={_.startCase('year')}
+          id="date-field-year"
+          name="date-field-year"
           onChange={(event) => props.setYearValue(event.target.value)}
           value={props.yearValue}
           className="date-field-input"
@@ -262,6 +271,8 @@ function getYearInputGroup(props: InputGroupsProps): JSX.Element {
           setBroken={props.setYearBroken}
           setUncertain={props.setYearUncertain}
         />
+        <div className="date-field-row-break" aria-hidden="true" />
+        <div className="date-field-row-spacer" aria-hidden="true" />
         <Form.Switch
           label="Reconstructed"
           id="year_reconstructed"

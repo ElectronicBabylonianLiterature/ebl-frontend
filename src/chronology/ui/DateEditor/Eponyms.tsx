@@ -46,6 +46,8 @@ export function EponymField({
   return (
     <Select
       aria-label="select-eponym"
+      inputId="date-field-eponym"
+      name="date-field-eponym"
       options={eponymOptions.filter(
         (option) => option.value.phase === assyrianPhase,
       )}

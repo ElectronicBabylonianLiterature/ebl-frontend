@@ -3,7 +3,10 @@ import classNames from 'classnames'
 import { OverlayTrigger, Popover, Table } from 'react-bootstrap'
 import 'chronology/ui/DateEditor/DateSelectionInput.sass'
 
-const patterns: ReadonlyArray<{ pattern: string; explanation: string }> = [
+export const dateFieldPatterns: ReadonlyArray<{
+  pattern: string
+  explanation: string
+}> = [
   { pattern: 'n', explanation: 'a number (e.g. 12)' },
   { pattern: 'x', explanation: 'unclear number' },
   { pattern: 'n+', explanation: 'number with plus (e.g. 12+)' },
@@ -21,9 +24,9 @@ const popover = (
     <Popover.Body>
       <Table size="sm" borderless className="mb-0">
         <tbody>
-          {patterns.map(({ pattern, explanation }) => (
+          {dateFieldPatterns.map(({ pattern, explanation }) => (
             <tr key={pattern}>
-              <th scope="row">
+              <th scope="row" className="date-field-patterns-help__pattern">
                 <code>{pattern}</code>
               </th>
               <td>{explanation}</td>

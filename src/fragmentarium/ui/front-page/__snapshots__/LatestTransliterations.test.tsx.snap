@@ -98,8 +98,8 @@ exports[`Snapshot 1`] = `
             3 April 311 BCE
              
             <span
+              class="mesopotamian-date-display__calendar-toggle"
               role="button"
-              style="text-decoration: underline; text-decoration-style: dotted; cursor: pointer;"
               tabindex="0"
             >
               PJC
@@ -5653,8 +5653,8 @@ exports[`Snapshot 1`] = `
             3 April 311 BCE
              
             <span
+              class="mesopotamian-date-display__calendar-toggle"
               role="button"
-              style="text-decoration: underline; text-decoration-style: dotted; cursor: pointer;"
               tabindex="0"
             >
               PJC

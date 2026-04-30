@@ -52,6 +52,8 @@ export function KingField({
   return (
     <Select
       aria-label="select-king"
+      inputId="date-field-king"
+      name="date-field-king"
       options={kingOptions}
       onChange={(option) =>
         onKingFieldChange(option, setKing, setIsCalenderFieldDisplayed)

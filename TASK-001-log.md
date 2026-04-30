@@ -1,6 +1,6 @@
 # TASK-001 — Work Log: Fixes to Date Converter
 
-## Status: Implementation complete — all tests, lint, and tsc pass for date-fixes
+## Status: Implementation complete — all tests, lint, and tsc pass for date-fixes (updated 2026-04-30)
 
 ## 2026-04-27 — Implementation, tests, and quality gates complete
 
@@ -627,6 +627,27 @@ to [src/chronology/domain/Date.test.ts](src/chronology/domain/Date.test.ts):
 
 - `yarn lint` — clean.
 - `yarn tsc` — clean.
+
+## 2026-04-30 — Manual QA follow-ups committed (5a927b88) + additional fixes
+
+### Committed in 5a927b88 (fix(date-editor): address QA feedback on warnings, layout, and inline CSS)
+
+- `dateFieldWarnings.ts`: `!` warning is year-only; month/day `1!` → no warning; `1!!!!!` → non-standard only.
+- `DateSelectionInput.tsx`: single info icon above all date input groups; equal-width inputs (`flex: 0 0 8em`).
+- `DateSelectionInput.sass` (new), `DateDisplay.sass` (new), `DateSelection.sass` (new): all inline `style={{…}}` moved to sass.
+- `DateFieldPatternsHelp.tsx`, `DateSelectionInput.tsx`, `DateSelection.tsx`, `DateDisplay.tsx`: inline styles fully removed.
+- Gates: lint ✓, tsc ✓, 299 suites / 2970 tests ✓.
+
+### Post-commit fixes (uncommitted)
+
+- `DateSelectionInput.tsx` / `.sass`: year row fixed — `InputGroup` uses `date-field-input-group--year` (flex-wrap + row-break + spacer); Reconstructed/Emended on second line, aligned under Broken/Uncertain; input width uniform.
+- `DateSelectionInput.tsx`, `Kings.tsx`, `Eponyms.tsx`: added `id`/`name` (and `inputId` for react-select) to all chronology form fields (browser autofill warning fix).
+- `DateSelection.sass`, `DateDisplay.sass`, `DateSelectionInput.sass`: fixed 4-space → 2-space indentation to match project convention (resolves QLTY CssSyntaxError).
+- `DateSelectionInput.sass`: added `.date-field-patterns-help__pattern { white-space: nowrap }` to prevent `n[a-z]` cell from line-wrapping in popover.
+- `DateFieldPatternsHelp.tsx`: exported `dateFieldPatterns` const (was module-private); added `className="date-field-patterns-help__pattern"` to `<th>`.
+- `DateFieldPatternsHelp.test.tsx`: replaced hardcoded pattern/explanation tuples with imported `dateFieldPatterns` (resolves QLTY similar-code finding).
+- `LatestTransliterations.test.tsx` snapshot: updated to reflect `className` replacing inline `style` on calendar-toggle span.
+- Gates: lint ✓, tsc ✓, 17 chronology + snapshot suites / 156 tests ✓.
 - `CI=1 yarn test src/chronology/domain/Date.test.ts --no-coverage --watch=false` —
   47/47 tests pass (7 new tests, all focused on the BUG-2 contract).
 

@@ -104,3 +104,20 @@ Trello card: "Fixes to date converter" (reported by Zsombor Földi / ilya.o.khai
 - [ ] Manual QA: run `TASK-001-manual-qa.md` against a live backend before merge
 - [x] `parseDateFieldNumber`: add `"ca."` qualifier to converted modern date for approximate patterns `n+`, `x+n`, `n/n`, `n-n` — added `isApproximateDateFieldValue` helper in `parseDateFieldNumber.ts`; wired into `isApproximate()` in `DateBase.ts`; added `isApproximateDateFieldValue` unit tests and SE/Nabonassar-era integration tests in `Date.test.ts`
 - [x] `parseDateFieldNumber`: `n-n` range logic verified — `parseDateFieldNumber('14-17')` correctly returns `14` (lower bound used for conversion); the range is now properly marked approximate via `isApproximateDateFieldValue`
+
+### Manual QA follow-ups (post-commit 5a927b88)
+
+- [x] Fix: `1!` allowed in month/day; `1!!!!!` → non-standard warning only (year emended warning removed for month/day)
+- [x] Fix: single info icon above date input groups, not one per field
+- [x] Fix: equal-width year/month/day inputs (`flex: 0 0 8em`)
+- [x] Move all inline `style={{…}}` in `src/chronology/**/*.tsx` to per-component `.sass` files
+  - [x] `DateSelectionInput.sass` (new) — field input, switch, patterns help, input-group layout
+  - [x] `DateDisplay.sass` (new) — calendar toggle underline/dotted/cursor
+  - [x] `DateSelection.sass` (new) — popover max-width
+- [x] Fix: year row deformed — Reconstructed/Emended moved to second line, aligned under Broken/Uncertain; input same width as month/day
+- [x] Fix: form fields missing `id`/`name` — added to all `Form.Control` and `react-select` (`inputId`/`name`) in chronology
+- [x] Fix: sass 4-space indentation → 2-space to match project convention (resolves QLTY CssSyntaxError)
+- [x] Fix: `n[a-z]` popover cell wrapping — `white-space: nowrap` via `.date-field-patterns-help__pattern`
+- [x] Fix: QLTY similar-code — exported `dateFieldPatterns` from `DateFieldPatternsHelp.tsx`; test imports it instead of duplicating
+- [x] Fix: snapshot regression in `LatestTransliterations.test.tsx` — updated to reflect `className` replacing inline `style`
+- [x] Gates: lint ✓, tsc ✓, 17 suites / 156 tests ✓
