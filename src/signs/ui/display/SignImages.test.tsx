@@ -6,7 +6,6 @@ import Bluebird from 'bluebird'
 import SignImages from 'signs/ui/display/SignImages'
 import { MemoryRouter } from 'react-router-dom'
 import { CroppedAnnotation } from 'signs/domain/CroppedAnnotation'
-import userEvent from '@testing-library/user-event'
 
 jest.mock('signs/application/SignService')
 
@@ -14,6 +13,7 @@ const signService = new (SignService as jest.Mock<jest.Mocked<SignService>>)()
 const signName = 'signName'
 const imageString =
   'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVQYV2NgYAAAAAMAAWgmWQ0AAAAASUVORK5CYII='
+
 const croppedAnnotations: CroppedAnnotation[] = [
   {
     fragmentNumber: 'K.6400',
@@ -22,6 +22,14 @@ const croppedAnnotations: CroppedAnnotation[] = [
     provenance: 'ASSUR',
     label: 'label-1',
     annotationId: 'annotation-1',
+    pcaClustering: {
+      clusterId: 'cluster-1',
+      clusterRank: 0,
+      form: 'canonical1',
+      isCentroid: true,
+      clusterSize: 2,
+      isMain: true,
+    },
   },
   {
     fragmentNumber: 'K.6401',
@@ -29,6 +37,14 @@ const croppedAnnotations: CroppedAnnotation[] = [
     script: 'MA',
     label: 'label-2',
     annotationId: 'annotation-2',
+    pcaClustering: {
+      clusterId: 'cluster-2',
+      clusterRank: 1,
+      form: 'variant1',
+      isCentroid: true,
+      clusterSize: 1,
+      isMain: true,
+    },
   },
 ]
 
@@ -50,19 +66,29 @@ describe('Sign Images', () => {
     expect(signService.getCentroidImages).toBeCalledWith(signName)
   }
 
-  it('Check Images', async () => {
+  it('Displays centroid preview labels while accordions are closed', async () => {
     await setup()
-    await userEvent.click(screen.getByRole('button', { name: 'Unclassified' }))
-    expect(screen.getByText(croppedAnnotations[0].fragmentNumber)).toBeVisible()
+
+    expect(screen.getByTitle('Canonical 1')).toBeInTheDocument()
+    expect(screen.getByTitle('Variant 1')).toBeInTheDocument()
   })
 
-  it('Provenance is displayed', async () => {
+  it('Displays preview image for unclassified sign', async () => {
     await setup()
-    await userEvent.click(screen.getByRole('button', { name: 'Unclassified' }))
-    const provenanceSpan = screen.getByText('ASSUR', {
-      selector: '.provenance',
-    })
-    expect(provenanceSpan).toBeInTheDocument()
+
+    expect(screen.getByTitle('Canonical 1')).toHaveAttribute(
+      'src',
+      `data:image/png;base64, ${croppedAnnotations[0].image}`,
+    )
+  })
+
+  it('Displays preview image for classified sign', async () => {
+    await setup()
+
+    expect(screen.getByTitle('Variant 1')).toHaveAttribute(
+      'src',
+      `data:image/png;base64, ${croppedAnnotations[1].image}`,
+    )
   })
 })
 
