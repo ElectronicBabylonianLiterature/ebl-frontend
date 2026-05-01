@@ -11,6 +11,8 @@ beforeEach(() => {
   auth = {
     isAuthenticated: jest.fn(),
     getUser: (): User => ({ name: 'Test User' }),
+    login: jest.fn(),
+    logout: jest.fn().mockResolvedValue(undefined),
   }
 })
 
@@ -21,7 +23,13 @@ describe('Logged out', () => {
 
   test('Login button', async () => {
     await renderLoggedOut()
-    expect(screen.getByText('Login')).toBeVisible()
+    const loginButton = screen.getByRole('button', { name: 'Login' })
+
+    expect(loginButton).toBeVisible()
+    expect(loginButton).toHaveClass('AuthButton--guest')
+    expect(screen.queryByText('Login')).not.toBeInTheDocument()
+    fireEvent.click(loginButton)
+    expect(auth.login).toHaveBeenCalledTimes(1)
   })
 })
 
@@ -32,7 +40,15 @@ describe('Logged in', () => {
 
   test('Logout button', async () => {
     await renderLoggedIn()
-    expect(screen.getByText('Logout Test User')).toBeVisible()
+    const logoutButton = screen.getByRole('button', {
+      name: 'Logout Test User',
+    })
+
+    expect(logoutButton).toBeVisible()
+    expect(logoutButton).toHaveClass('AuthButton--authenticated')
+    expect(screen.queryByText('Logout Test User')).not.toBeInTheDocument()
+    fireEvent.click(logoutButton)
+    expect(auth.logout).toHaveBeenCalledTimes(1)
   })
 })
 

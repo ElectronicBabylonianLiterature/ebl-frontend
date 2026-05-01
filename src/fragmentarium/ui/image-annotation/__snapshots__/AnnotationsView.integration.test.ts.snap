@@ -170,11 +170,29 @@ exports[`Display annotate view Snapshot 1`] = `
                 class="Header__user"
               >
                 <button
-                  class="btn btn-outline-secondary btn-sm"
+                  aria-label="Logout Test"
+                  class="AuthButton AuthButton--authenticated btn btn-outline-secondary btn-sm"
+                  title="Logout Test"
                   type="button"
                 >
-                  Logout 
-                  Test
+                  <svg
+                    aria-hidden="true"
+                    class="AuthButton__icon"
+                    focusable="false"
+                    viewBox="0 0 24 24"
+                  >
+                    <circle
+                      cx="9"
+                      cy="7"
+                      r="4"
+                    />
+                    <path
+                      d="M3 21a6 6 0 0 1 12 0"
+                    />
+                    <path
+                      d="M16 11l2 2 4-4"
+                    />
+                  </svg>
                 </button>
               </div>
             </div>
@@ -738,4 +756,4 @@ exports[`Display annotate view Snapshot 1`] = `
     </footer>
   </div>
 </div>
-`;
+`
