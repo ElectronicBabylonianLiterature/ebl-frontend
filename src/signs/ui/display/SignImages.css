@@ -55,3 +55,30 @@
 .sign-images__centroid-col {
   margin-bottom: 0;
 }
+
+.sign-images__period-title {
+  margin-right: 16px;
+  white-space: nowrap;
+}
+
+.sign-images__period-preview {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  margin-left: 12px;
+}
+
+.sign-images__period-preview-item {
+  display: inline-flex;
+  align-items: center;
+}
+
+.sign-images__period-preview-image {
+  width: 60px;
+  height: 60px;
+  object-fit: contain;
+  border: 1px solid #ccc;
+  background-color: #fff;
+  padding: 2px;
+}

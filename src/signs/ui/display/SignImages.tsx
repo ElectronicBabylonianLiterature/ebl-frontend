@@ -73,6 +73,20 @@ function sortVariants(annotations: CroppedAnnotation[]): CroppedAnnotation[] {
   ])
 }
 
+function sortGroupsByClusterRank(
+  annotations: CroppedAnnotation[],
+): [string, CroppedAnnotation[]][] {
+  return _.sortBy(
+    Object.entries(
+      _.groupBy(
+        annotations,
+        (annotation) => annotation.pcaClustering?.clusterId || 'no-cluster',
+      ),
+    ),
+    ([, group]) => group[0].pcaClustering?.clusterRank ?? 999,
+  )
+}
+
 function formatFormLabel(form: string): string {
   if (form.startsWith('canonical')) {
     const number = form.replace('canonical', '')
@@ -117,6 +131,36 @@ function VariantGroup({
           )}
         </div>
       </div>
+    </div>
+  )
+}
+
+function PeriodPreview({
+  annotations,
+}: {
+  annotations: CroppedAnnotation[]
+}): JSX.Element {
+  const previewGroups = sortGroupsByClusterRank(annotations)
+
+  return (
+    <div className="sign-images__period-preview">
+      {previewGroups.map(([clusterId, group]) => {
+        const centroid =
+          group.find((annotation) => annotation.pcaClustering?.isCentroid) ??
+          group[0]
+
+        return (
+          <div key={clusterId} className="sign-images__period-preview-item">
+            <Figure.Image
+              className="sign-images__period-preview-image"
+              src={`data:image/png;base64, ${centroid.image}`}
+              title={formatFormLabel(
+                centroid.pcaClustering?.form || 'Unknown form',
+              )}
+            />
+          </div>
+        )
+      })}
     </div>
   )
 }
@@ -234,23 +278,16 @@ function PeriodAccordion({
   }
 
   const annotationsToRender = loadedAnnotations ?? croppedAnnotations
-
-  const grouped = Object.entries(
-    _.groupBy(
-      annotationsToRender,
-      (annotation) => annotation.pcaClustering?.clusterId || 'no-cluster',
-    ),
-  )
-
-  const sortedGroups = _.sortBy(
-    grouped,
-    ([, group]) => group[0].pcaClustering?.clusterRank ?? 999,
-  )
+  const sortedGroups = sortGroupsByClusterRank(annotationsToRender)
 
   return (
     <Accordion defaultActiveKey={undefined}>
       <Accordion.Item eventKey="0">
-        <Accordion.Header onClick={handleEnter}>{script}</Accordion.Header>
+        <Accordion.Header onClick={handleEnter}>
+          <span className="sign-images__period-title">{script}</span>
+          <PeriodPreview annotations={croppedAnnotations} />
+        </Accordion.Header>
+
         <Accordion.Body>
           {isLoading ? (
             <div>Loading...</div>
