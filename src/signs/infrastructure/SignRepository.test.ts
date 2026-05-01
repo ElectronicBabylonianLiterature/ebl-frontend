@@ -62,7 +62,10 @@ const testData: TestData<SignRepository>[] = [
     [signName],
     apiClient.fetchJson,
     [getImagesResult],
-    [`/signs/${encodeURIComponent(signName)}/images?centroids_only=true`, false],
+    [
+      `/signs/${encodeURIComponent(signName)}/images?centroids_only=true`,
+      false,
+    ],
     Promise.resolve([getImagesResult]),
   ),
   new TestData(

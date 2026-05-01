@@ -22,9 +22,12 @@ const testData: TestData<SignService>[] = [
   new TestData('getImages', ['signName'], signRepository.getImages, [
     resultStub,
   ]),
-  new TestData('getCentroidImages', ['signName'], signRepository.getCentroidImages, [
-    resultStub,
-  ]),
+  new TestData(
+    'getCentroidImages',
+    ['signName'],
+    signRepository.getCentroidImages,
+    [resultStub],
+  ),
   new TestData(
     'getClusterVariants',
     ['signName', 'cluster-id', 'NA'],
