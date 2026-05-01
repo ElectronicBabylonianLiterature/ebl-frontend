@@ -6,6 +6,7 @@ import Bluebird from 'bluebird'
 import SignImages from 'signs/ui/display/SignImages'
 import { MemoryRouter } from 'react-router-dom'
 import { CroppedAnnotation } from 'signs/domain/CroppedAnnotation'
+import userEvent from '@testing-library/user-event'
 
 jest.mock('signs/application/SignService')
 
@@ -89,6 +90,42 @@ describe('Sign Images', () => {
       'src',
       `data:image/png;base64, ${croppedAnnotations[1].image}`,
     )
+  })
+
+  it('Fetches cluster variants when a period accordion is opened', async () => {
+    signService.getClusterVariants.mockReturnValue(
+      Bluebird.resolve([
+        {
+          ...croppedAnnotations[1],
+          annotationId: 'variant-annotation',
+          fragmentNumber: 'K.6402',
+          pcaClustering: {
+            clusterId: 'cluster-2',
+            clusterRank: 1,
+            form: 'variant1',
+            isCentroid: false,
+            clusterSize: 2,
+            isMain: true,
+          },
+        },
+      ]),
+    )
+
+    await setup()
+
+    await userEvent.click(
+      screen.getByRole('button', {
+        name: /Middle Assyrian/,
+      }),
+    )
+
+    expect(signService.getClusterVariants).toHaveBeenCalledWith(
+      signName,
+      'cluster-2',
+      'MA',
+    )
+
+    expect(await screen.findByText('K.6402')).toBeInTheDocument()
   })
 })
 
