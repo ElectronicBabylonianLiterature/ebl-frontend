@@ -130,6 +130,10 @@ describe('Sign Display', () => {
 
     expect(screen.getAllByText(sign.name).length).toBeGreaterThan(0)
     expect(screen.getAllByRole('img').length).toBeGreaterThan(0)
-    expect(screen.getByText('Canonical 1:')).toBeInTheDocument()
+
+    await screen.findByText('Ⅲ. Palaeography')
+    expect(
+      await screen.findByText((content) => content.includes('Canonical 1')),
+    ).toBeInTheDocument()
   })
 })
