@@ -19,9 +19,8 @@ function GuestIcon(): JSX.Element {
       aria-hidden="true"
       focusable="false"
     >
-      <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4" />
-      <path d="M10 17l5-5-5-5" />
-      <path d="M15 12H3" />
+      <circle cx="12" cy="8" r="4" />
+      <path d="M4 20a8 8 0 0 1 16 0" />
     </svg>
   )
 }
