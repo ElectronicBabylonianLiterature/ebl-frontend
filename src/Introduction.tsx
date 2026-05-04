@@ -18,6 +18,12 @@ import DossiersService from 'dossiers/application/DossiersService'
 function Hero(): JSX.Element {
   return (
     <div className="hero">
+      <img
+        className="hero__background-image"
+        src="/hero_section_img.svg"
+        alt=""
+        aria-hidden="true"
+      />
       <div className="hero__content">
         <div className="hero__badge">EXPLORE ANCIENT MESOPOTAMIA</div>
         <h1 className="hero__title">

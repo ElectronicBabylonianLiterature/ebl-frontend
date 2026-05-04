@@ -6,15 +6,17 @@
   position: relative
   overflow: hidden
 
-  &::before
-    content: '𒀀'
+  &__background-image
     position: absolute
-    font-size: 25rem
-    opacity: 0.08
+    width: 31rem
+    height: 31rem
+    opacity: 0.14
     top: 50%
     left: 50%
     transform: translate(-50%, -50%)
     pointer-events: none
+    object-fit: contain
+    z-index: 0
 
   &__content
     text-align: center
@@ -115,8 +117,9 @@
   .hero
     padding: 4rem 0
 
-    &::before
-      font-size: 15rem
+    &__background-image
+      width: 18.5rem
+      height: 18.5rem
 
     &__badge
       font-size: 0.75rem
