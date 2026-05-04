@@ -31,6 +31,8 @@ test.each([
   '/tools',
   '/tools/introduction',
   ...toolsTabIds.map((tabId) => '/tools/' + tabId),
+  '/tools/dictionary/object_id',
+  '/tools/signs/sign_id',
   '/signs',
   '/signs/sign_id',
   '/impressum',

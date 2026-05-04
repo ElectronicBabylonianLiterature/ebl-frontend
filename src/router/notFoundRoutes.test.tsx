@@ -239,6 +239,42 @@ describe('DictionaryRoutes redirects', () => {
 
     expect(screen.getByText('Dictionary Redirect Target')).toBeInTheDocument()
   })
+
+  test('redirects "/dictionary/:id" to tools dictionary detail', () => {
+    render(
+      <MemoryRouter initialEntries={['/dictionary/Dictionary.12345']}>
+        <Switch>
+          {[...DictionaryRoutes({ ...getServices(), sitemap: false })]}
+          <Route
+            path="/tools/dictionary/:id"
+            render={() => <div>Dictionary Detail Redirect Target</div>}
+          />
+        </Switch>
+      </MemoryRouter>,
+    )
+
+    expect(
+      screen.getByText('Dictionary Detail Redirect Target'),
+    ).toBeInTheDocument()
+  })
+
+  test('redirects "/dictionary/:id/edit" to tools dictionary editor', () => {
+    render(
+      <MemoryRouter initialEntries={['/dictionary/Dictionary.12345/edit']}>
+        <Switch>
+          {[...DictionaryRoutes({ ...getServices(), sitemap: false })]}
+          <Route
+            path="/tools/dictionary/:id/edit"
+            render={() => <div>Dictionary Edit Redirect Target</div>}
+          />
+        </Switch>
+      </MemoryRouter>,
+    )
+
+    expect(
+      screen.getByText('Dictionary Edit Redirect Target'),
+    ).toBeInTheDocument()
+  })
 })
 
 describe('NotFoundPage rendering in SignRoutes', () => {
@@ -279,6 +315,22 @@ describe('SignRoutes redirects', () => {
     )
 
     expect(screen.getByText('Signs Redirect Target')).toBeInTheDocument()
+  })
+
+  test('redirects "/signs/:id" to tools signs detail', () => {
+    render(
+      <MemoryRouter initialEntries={['/signs/Signs.12345']}>
+        <Switch>
+          {[...SignRoutes({ ...getServices(), sitemap: false })]}
+          <Route
+            path="/tools/signs/:id"
+            render={() => <div>Signs Detail Redirect Target</div>}
+          />
+        </Switch>
+      </MemoryRouter>,
+    )
+
+    expect(screen.getByText('Signs Detail Redirect Target')).toBeInTheDocument()
   })
 })
 

@@ -2,6 +2,9 @@ import React from 'react'
 import ReactMarkdown from 'react-markdown'
 import { Link } from 'react-router-dom'
 import { Container } from 'react-bootstrap'
+import AvHLogo from 'AvH_Logo.svg'
+import ERCLogo from 'ERC_Logo.png'
+import LRZLogoBlue from 'lrz_wortbild_d_blau-230.png'
 import AppContent from 'common/ui/AppContent'
 import './Introduction.sass'
 import { HeadTags } from 'router/head'
@@ -25,18 +28,43 @@ function Hero(): JSX.Element {
           Advancing the publication and reconstruction of cuneiform tablets
           worldwide
         </p>
-        <div className="hero__links">
-          <Link to="/library/search" className="hero__link">
-            Library
-          </Link>
-          <span className="hero__divider">|</span>
-          <Link to="/corpus" className="hero__link">
-            Corpus
-          </Link>
-          <span className="hero__divider">|</span>
-          <Link to="/tools/dictionary" className="hero__link">
-            Dictionary
-          </Link>
+        <div className="hero__partners" aria-label="Project supporters">
+          <p className="hero__partners-label">Supported by</p>
+          <div className="hero__logos">
+            <a
+              href="https://www.lrz.de/index.html"
+              className="hero__logo-link"
+              title="Leibniz-Rechenzentrum"
+            >
+              <img
+                className="hero__logo hero__logo--lrz"
+                src={LRZLogoBlue}
+                alt="Leibniz-Rechenzentrum"
+              />
+            </a>
+            <a
+              href="https://www.humboldt-foundation.de/"
+              className="hero__logo-link"
+              title="Humboldt Foundation"
+            >
+              <img
+                className="hero__logo hero__logo--humboldt"
+                src={AvHLogo}
+                alt="Alexander von Humboldt Stiftung"
+              />
+            </a>
+            <a
+              href="https://erc.europa.eu/homepage"
+              className="hero__logo-link"
+              title="European Research Council"
+            >
+              <img
+                className="hero__logo hero__logo--erc"
+                src={ERCLogo}
+                alt="European Research Council"
+              />
+            </a>
+          </div>
         </div>
       </div>
     </div>

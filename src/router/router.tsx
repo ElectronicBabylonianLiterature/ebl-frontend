@@ -55,7 +55,7 @@ export function WebsiteRoutes(
       />
     </Route>,
     ...AboutRoutes({ sitemap, ...services }),
-    ...ToolsRoutes({ sitemap, ...services }),
+    ...ToolsRoutes({ sitemap, ...services, ...slugs }),
     ...SignRoutes({ sitemap, ...services, ...slugs }),
     ...BibliographyRoutes({ sitemap, ...services, ...slugs }),
     ...DictionaryRoutes({ sitemap, ...services, ...slugs }),

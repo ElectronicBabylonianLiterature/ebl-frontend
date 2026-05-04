@@ -1,7 +1,7 @@
 import React, { ReactNode } from 'react'
 import { Route, Redirect } from 'router/compat'
 import MarkupService from 'markup/application/MarkupService'
-import { sitemapDefaults } from 'router/sitemap'
+import { DictionarySlugs, SignSlugs, sitemapDefaults } from 'router/sitemap'
 import { HeadTagsService } from 'router/head'
 import NotFoundPage from 'NotFoundPage'
 import SignService from 'signs/application/SignService'
@@ -9,9 +9,13 @@ import WordService from 'dictionary/application/WordService'
 import BibliographyService from 'bibliography/application/BibliographyService'
 import AfoRegisterService from 'afo-register/application/AfoRegisterService'
 import FragmentService from 'fragmentarium/application/FragmentService'
+import TextService from 'corpus/application/TextService'
 import DossiersService from 'dossiers/application/DossiersService'
 import BibliographyViewer from 'bibliography/ui/BibliographyViewer'
 import BibliographyEditor from 'bibliography/ui/BibliographyEditor'
+import SignDisplay from 'signs/ui/display/SignDisplay'
+import WordEditor from 'dictionary/ui/editor/WordEditor'
+import WordDisplay from 'dictionary/ui/display/WordDisplay'
 import Tools, { tabIds, TabId, getDisplayTitle } from 'router/Tools'
 
 const tabDescriptions: Record<TabId, string> = {
@@ -39,19 +43,25 @@ export default function ToolsRoutes({
   signService,
   markupService,
   wordService,
+  textService,
   bibliographyService,
   afoRegisterService,
   dossiersService,
   fragmentService,
+  signSlugs,
+  dictionarySlugs,
 }: {
   sitemap: boolean
   signService: SignService
   markupService: MarkupService
   wordService: WordService
+  textService: TextService
   bibliographyService: BibliographyService
   afoRegisterService: AfoRegisterService
   dossiersService: DossiersService
   fragmentService: FragmentService
+  signSlugs?: SignSlugs
+  dictionarySlugs?: DictionarySlugs
 }): JSX.Element[] {
   return [
     <Redirect
@@ -113,6 +123,61 @@ export default function ToolsRoutes({
         {...(sitemap && sitemapDefaults)}
       />
     )),
+    <Route
+      key="tools-sign-display"
+      path="/tools/signs/:id"
+      exact
+      render={({ match }): ReactNode => (
+        <HeadTagsService
+          title="Cuneiform sign display: eBL"
+          description="Detailed cuneiform sign information at the electronic Babylonian Library (eBL)."
+        >
+          <SignDisplay
+            signService={signService}
+            wordService={wordService}
+            id={decodeURIComponent(match.params.id ?? '')}
+          />
+        </HeadTagsService>
+      )}
+      {...(sitemap && {
+        ...sitemapDefaults,
+        slugs: signSlugs,
+      })}
+    />,
+    <Route
+      key="tools-dictionary-editor"
+      path="/tools/dictionary/:id/edit"
+      exact
+      render={({ match }): ReactNode => (
+        <WordEditor
+          wordService={wordService}
+          id={decodeURIComponent(match.params.id ?? '')}
+        />
+      )}
+    />,
+    <Route
+      key="tools-dictionary-display"
+      path="/tools/dictionary/:id"
+      exact
+      render={({ match }): ReactNode => (
+        <HeadTagsService
+          title="Dictionary entry: eBL"
+          description="electronic Babylonian Library (eBL) dictionary entry display"
+        >
+          <WordDisplay
+            textService={textService}
+            wordService={wordService}
+            fragmentService={fragmentService}
+            signService={signService}
+            wordId={decodeURIComponent(match.params.id ?? '')}
+          />
+        </HeadTagsService>
+      )}
+      {...(sitemap && {
+        ...sitemapDefaults,
+        slugs: dictionarySlugs,
+      })}
+    />,
     <Route
       key="tools-bibliography-editor-new"
       path="/tools/references/new-reference"
