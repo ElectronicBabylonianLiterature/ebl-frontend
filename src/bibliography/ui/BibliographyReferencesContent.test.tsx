@@ -2,16 +2,16 @@ import React from 'react'
 import { render, screen } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 import SessionContext from 'auth/SessionContext'
-import BibliographyReferencesContent from './BibliographyReferencesContent'
+import BibliographyReferencesContent from 'bibliography/ui/BibliographyReferencesContent'
 import BibliographyService from 'bibliography/application/BibliographyService'
 import Promise from 'bluebird'
 
-jest.mock('./BibliographySearchForm', () => ({
+jest.mock('bibliography/ui/BibliographySearchForm', () => ({
   __esModule: true,
   default: (props) => <div data-testid="search-form">{props.query}</div>,
 }))
 
-jest.mock('./BibliographySearch', () => ({
+jest.mock('bibliography/ui/BibliographySearch', () => ({
   __esModule: true,
   default: () => <div data-testid="search-results">Search Results</div>,
 }))

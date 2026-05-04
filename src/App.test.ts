@@ -44,6 +44,15 @@ test.each([
     .allowProvenances([])
     .allowDossiers([])
     .allowGenres([])
+    .allowLatestFragments({ items: [], matchCountTotal: 0 })
   const appDriver = new AppDriver(fakeApi.client).withPath(route).render()
   await appDriver.waitForTextToDisappear('Loading...')
+  if (route === '/') {
+    await appDriver.waitForText('Latest Additions')
+    expect(appDriver.getView().queryAllByRole('alert')).toHaveLength(0)
+    expect(fakeApi.client.fetchJson).toHaveBeenCalledWith(
+      '/fragments/latest',
+      false,
+    )
+  }
 })

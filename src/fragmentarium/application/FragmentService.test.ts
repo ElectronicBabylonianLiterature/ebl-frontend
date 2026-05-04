@@ -887,6 +887,74 @@ describe('FragmentService cache', () => {
     expect(fragmentRepository.query).toHaveBeenCalledTimes(2)
     expect(fragmentRepository.queryLatest).toHaveBeenCalledTimes(2)
   })
+
+  test('does not cache stale fragment reads that resolve after update', async () => {
+    let resolveStaleRead: (value: Fragment) => void = () => undefined
+    const staleRead = new Promise<Fragment>((resolve) => {
+      resolveStaleRead = resolve
+    })
+    const staleFragment = fragmentFactory.build({ number: number })
+    fragmentRepository.find.mockReturnValue(staleRead)
+    fragmentRepository.updateEdition.mockReturnValue(
+      Promise.resolve(updatedFragment),
+    )
+
+    const inFlightRead = service.find(number)
+    await expect(service.updateEdition(number, edition)).resolves.toEqual(
+      updatedFragment,
+    )
+    resolveStaleRead(staleFragment)
+
+    await expect(inFlightRead).resolves.toEqual(staleFragment)
+    await expect(service.find(number)).resolves.toEqual(updatedFragment)
+    expect(fragmentRepository.find).toHaveBeenCalledTimes(1)
+  })
+
+  test('does not cache stale query results that resolve after update', async () => {
+    let resolveStaleQuery: (value: QueryResult) => void = () => undefined
+    const staleQuery = new Promise<QueryResult>((resolve) => {
+      resolveStaleQuery = resolve
+    })
+    fragmentRepository.query
+      .mockReturnValueOnce(staleQuery)
+      .mockReturnValueOnce(Promise.resolve(updatedQueryResult))
+    fragmentRepository.updateEdition.mockReturnValue(
+      Promise.resolve(updatedFragment),
+    )
+
+    const inFlightQuery = service.query(query)
+    await expect(service.updateEdition(number, edition)).resolves.toEqual(
+      updatedFragment,
+    )
+    resolveStaleQuery(queryResult)
+
+    await expect(inFlightQuery).resolves.toEqual(queryResult)
+    await expect(service.query(query)).resolves.toEqual(updatedQueryResult)
+    expect(fragmentRepository.query).toHaveBeenCalledTimes(2)
+  })
+
+  test('does not cache stale latest query results that resolve after update', async () => {
+    let resolveStaleLatestQuery: (value: QueryResult) => void = () => undefined
+    const staleLatestQuery = new Promise<QueryResult>((resolve) => {
+      resolveStaleLatestQuery = resolve
+    })
+    fragmentRepository.queryLatest
+      .mockReturnValueOnce(staleLatestQuery)
+      .mockReturnValueOnce(Promise.resolve(updatedQueryResult))
+    fragmentRepository.updateEdition.mockReturnValue(
+      Promise.resolve(updatedFragment),
+    )
+
+    const inFlightLatestQuery = service.queryLatest()
+    await expect(service.updateEdition(number, edition)).resolves.toEqual(
+      updatedFragment,
+    )
+    resolveStaleLatestQuery(queryResult)
+
+    await expect(inFlightLatestQuery).resolves.toEqual(queryResult)
+    await expect(service.queryLatest()).resolves.toEqual(updatedQueryResult)
+    expect(fragmentRepository.queryLatest).toHaveBeenCalledTimes(2)
+  })
 })
 
 describe('Query by traditional references', () => {

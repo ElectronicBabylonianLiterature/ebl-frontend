@@ -455,6 +455,18 @@ export default class FakeApi {
     return this
   }
 
+  allowLatestFragments(queryResult: Dto): FakeApi {
+    this.expectations.push(
+      new Expectation({
+        method: 'GET',
+        path: '/fragments/latest',
+        authenticate: false,
+        response: queryResult,
+      }),
+    )
+    return this
+  }
+
   allowImage(file: string): FakeApi {
     this.expectations.push(
       new Expectation({

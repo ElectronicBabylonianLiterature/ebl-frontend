@@ -632,12 +632,20 @@ export class FragmentService {
       return cachedRequest.then((value) => value)
     }
 
+    const requestReference: { current?: Bluebird<CacheValue> } = {}
     const request = fetchValue()
-      .then((value) => this.setCachedValue(cache, key, value, maximumCacheSize))
+      .then((value) =>
+        requests.get(key) === requestReference.current
+          ? this.setCachedValue(cache, key, value, maximumCacheSize)
+          : value,
+      )
       .finally(() => {
-        requests.delete(key)
+        if (requests.get(key) === requestReference.current) {
+          requests.delete(key)
+        }
       })
 
+    requestReference.current = request
     requests.set(key, request)
     return request.then((value) => value)
   }

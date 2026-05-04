@@ -1,4 +1,4 @@
-import { groupTextsByCategory, groupTextsByGenre } from './Corpus'
+import { groupTextsByCategory, groupTextsByGenre } from 'corpus/ui/Corpus'
 import { TextInfo } from 'corpus/domain/text'
 
 describe('groupTextsByCategory', () => {
