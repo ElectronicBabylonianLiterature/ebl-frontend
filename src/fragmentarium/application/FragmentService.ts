@@ -42,6 +42,18 @@ import {
   setProvenanceRecords,
   upsertProvenanceRecord,
 } from 'corpus/domain/provenance'
+import { stringify } from 'query-string'
+
+const cacheEntryLifetimeInMilliseconds = 5 * 60 * 1000
+const maximumCachedFragments = 250
+const maximumCachedQueryResults = 50
+const maximumCachedThumbnails = 250
+const latestQueryCacheKey = 'latest:'
+
+type CacheEntry<CacheValue> = {
+  readonly expiresAt: number
+  readonly value: CacheValue
+}
 
 export type ThumbnailSize = 'small' | 'medium' | 'large'
 
@@ -170,6 +182,27 @@ export class FragmentService {
     string,
     Bluebird<readonly ProvenanceRecord[]>
   >()
+  private readonly cachedFragments = new Map<string, CacheEntry<Fragment>>()
+  private readonly cachedFragmentRequests = new Map<
+    string,
+    Bluebird<Fragment>
+  >()
+  private readonly cachedQueryResults = new Map<
+    string,
+    CacheEntry<QueryResult>
+  >()
+  private readonly cachedQueryResultRequests = new Map<
+    string,
+    Bluebird<QueryResult>
+  >()
+  private readonly cachedThumbnails = new Map<
+    string,
+    CacheEntry<ThumbnailBlob>
+  >()
+  private readonly cachedThumbnailRequests = new Map<
+    string,
+    Bluebird<ThumbnailBlob>
+  >()
 
   constructor(
     private readonly fragmentRepository: FragmentRepository &
@@ -198,10 +231,18 @@ export class FragmentService {
     lines?: readonly number[],
     excludeLines?: boolean,
   ): Bluebird<Fragment> {
-    return this.fragmentRepository
-      .find(number, lines, excludeLines)
-      .then((fragment: Fragment) => this.injectReferences(fragment))
-      .catch(onError)
+    const cacheKey = this.createFragmentCacheKey(number, lines, excludeLines)
+    return this.getOrFetchCachedValue(
+      this.cachedFragments,
+      this.cachedFragmentRequests,
+      cacheKey,
+      maximumCachedFragments,
+      () =>
+        this.fragmentRepository
+          .find(number, lines, excludeLines)
+          .then((fragment: Fragment) => this.injectReferences(fragment))
+          .catch(onError),
+    )
   }
 
   isInFragmentarium(number: string): boolean {
@@ -217,23 +258,27 @@ export class FragmentService {
     return this.fragmentRepository
       .updateGenres(number, genres)
       .then((fragment: Fragment) => this.injectReferences(fragment))
+      .then((fragment: Fragment) => this.cacheUpdatedFragment(fragment))
   }
 
   updateScript(number: string, script: Script): Bluebird<Fragment> {
     return this.fragmentRepository
       .updateScript(number, script)
       .then((fragment: Fragment) => this.injectReferences(fragment))
+      .then((fragment: Fragment) => this.cacheUpdatedFragment(fragment))
   }
   updateScopes(number: string, scopes: string[]): Bluebird<Fragment> {
     return this.fragmentRepository
       .updateScopes(number, scopes)
       .then((fragment: Fragment) => this.injectReferences(fragment))
+      .then((fragment: Fragment) => this.cacheUpdatedFragment(fragment))
   }
 
   updateDate(number: string, date: MesopotamianDateDto): Bluebird<Fragment> {
     return this.fragmentRepository
       .updateDate(number, date)
       .then((fragment: Fragment) => this.injectReferences(fragment))
+      .then((fragment: Fragment) => this.cacheUpdatedFragment(fragment))
   }
 
   updateDatesInText(
@@ -243,6 +288,7 @@ export class FragmentService {
     return this.fragmentRepository
       .updateDatesInText(number, datesInText)
       .then((fragment: Fragment) => this.injectReferences(fragment))
+      .then((fragment: Fragment) => this.cacheUpdatedFragment(fragment))
   }
 
   fetchGenres(): Bluebird<string[][]> {
@@ -354,6 +400,7 @@ export class FragmentService {
     return this.fragmentRepository
       .updateEdition(number, updates)
       .then((fragment: Fragment) => this.injectReferences(fragment))
+      .then((fragment: Fragment) => this.cacheUpdatedFragment(fragment))
   }
 
   updateLemmatization(
@@ -363,6 +410,7 @@ export class FragmentService {
     return this.fragmentRepository
       .updateLemmatization(number, lemmatization)
       .then((fragment: Fragment) => this.injectReferences(fragment))
+      .then((fragment: Fragment) => this.cacheUpdatedFragment(fragment))
   }
 
   updateLemmaAnnotation(
@@ -372,6 +420,7 @@ export class FragmentService {
     return this.fragmentRepository
       .updateLemmaAnnotation(number, annotations)
       .then((fragment: Fragment) => this.injectReferences(fragment))
+      .then((fragment: Fragment) => this.cacheUpdatedFragment(fragment))
   }
 
   updateReferences(
@@ -381,6 +430,7 @@ export class FragmentService {
     return this.fragmentRepository
       .updateReferences(number, references)
       .then((fragment: Fragment) => this.injectReferences(fragment))
+      .then((fragment: Fragment) => this.cacheUpdatedFragment(fragment))
   }
 
   updateArchaeology(
@@ -390,12 +440,14 @@ export class FragmentService {
     return this.fragmentRepository
       .updateArchaeology(number, archaeology)
       .then((fragment: Fragment) => this.injectReferences(fragment))
+      .then((fragment: Fragment) => this.cacheUpdatedFragment(fragment))
   }
 
   updateColophon(number: string, colophon: Colophon): Bluebird<Fragment> {
     return this.fragmentRepository
       .updateColophon(number, colophon)
       .then((fragment: Fragment) => this.injectReferences(fragment))
+      .then((fragment: Fragment) => this.cacheUpdatedFragment(fragment))
   }
 
   findInCorpus(number: string): Promise<{
@@ -425,7 +477,14 @@ export class FragmentService {
     fragment: Fragment,
     size: ThumbnailSize,
   ): Bluebird<ThumbnailBlob> {
-    return this.imageRepository.findThumbnail(fragment.number, size)
+    const cacheKey = this.createThumbnailCacheKey(fragment.number, size)
+    return this.getOrFetchCachedValue(
+      this.cachedThumbnails,
+      this.cachedThumbnailRequests,
+      cacheKey,
+      maximumCachedThumbnails,
+      () => this.imageRepository.findThumbnail(fragment.number, size),
+    )
   }
 
   folioPager(folio: Folio, fragmentNumber: string): Bluebird<FolioPagerData> {
@@ -457,7 +516,12 @@ export class FragmentService {
     number: string,
     annotations: readonly Annotation[],
   ): Bluebird<readonly Annotation[]> {
-    return this.fragmentRepository.updateAnnotations(number, annotations)
+    return this.fragmentRepository
+      .updateAnnotations(number, annotations)
+      .then((updatedAnnotations) => {
+        this.clearCachedFragments(number)
+        return updatedAnnotations
+      })
   }
 
   createLemmatization(text: Text): Bluebird<Lemmatization> {
@@ -481,11 +545,24 @@ export class FragmentService {
   }
 
   query(fragmentQuery: FragmentQuery): Bluebird<QueryResult> {
-    return this.fragmentRepository.query(fragmentQuery)
+    const cacheKey = this.createQueryCacheKey(fragmentQuery)
+    return this.getOrFetchCachedValue(
+      this.cachedQueryResults,
+      this.cachedQueryResultRequests,
+      cacheKey,
+      maximumCachedQueryResults,
+      () => this.fragmentRepository.query(fragmentQuery),
+    )
   }
 
   queryLatest(): Bluebird<QueryResult> {
-    return this.fragmentRepository.queryLatest()
+    return this.getOrFetchCachedValue(
+      this.cachedQueryResults,
+      this.cachedQueryResultRequests,
+      latestQueryCacheKey,
+      maximumCachedQueryResults,
+      () => this.fragmentRepository.queryLatest(),
+    )
   }
 
   queryByTraditionalReferences(
@@ -535,6 +612,132 @@ export class FragmentService {
     return this.fragmentRepository
       .updateNamedEntityAnnotations(number, annotations)
       .then((fragment: Fragment) => this.injectReferences(fragment))
+      .then((fragment: Fragment) => this.cacheUpdatedFragment(fragment))
+  }
+
+  private getOrFetchCachedValue<CacheKey, CacheValue>(
+    cache: Map<CacheKey, CacheEntry<CacheValue>>,
+    requests: Map<CacheKey, Bluebird<CacheValue>>,
+    key: CacheKey,
+    maximumCacheSize: number,
+    fetchValue: () => Bluebird<CacheValue>,
+  ): Bluebird<CacheValue> {
+    const cachedValue = this.getCachedValue(cache, key)
+    if (cachedValue) {
+      return Bluebird.resolve(cachedValue)
+    }
+
+    const cachedRequest = requests.get(key)
+    if (cachedRequest) {
+      return cachedRequest.then((value) => value)
+    }
+
+    const request = fetchValue()
+      .then((value) => this.setCachedValue(cache, key, value, maximumCacheSize))
+      .finally(() => {
+        requests.delete(key)
+      })
+
+    requests.set(key, request)
+    return request.then((value) => value)
+  }
+
+  private getCachedValue<CacheKey, CacheValue>(
+    cache: Map<CacheKey, CacheEntry<CacheValue>>,
+    key: CacheKey,
+  ): CacheValue | null {
+    const entry = cache.get(key)
+    if (!entry) {
+      return null
+    }
+    if (entry.expiresAt <= Date.now()) {
+      cache.delete(key)
+      return null
+    }
+    cache.delete(key)
+    cache.set(key, entry)
+    return entry.value
+  }
+
+  private setCachedValue<CacheKey, CacheValue>(
+    cache: Map<CacheKey, CacheEntry<CacheValue>>,
+    key: CacheKey,
+    value: CacheValue,
+    maximumCacheSize: number,
+  ): CacheValue {
+    cache.delete(key)
+    cache.set(key, {
+      expiresAt: Date.now() + cacheEntryLifetimeInMilliseconds,
+      value: value,
+    })
+    this.trimCache(cache, maximumCacheSize)
+    return value
+  }
+
+  private trimCache<CacheKey, CacheValue>(
+    cache: Map<CacheKey, CacheEntry<CacheValue>>,
+    maximumCacheSize: number,
+  ): void {
+    while (cache.size > maximumCacheSize) {
+      const oldestKey = cache.keys().next().value
+      if (oldestKey === undefined) {
+        return
+      }
+      cache.delete(oldestKey)
+    }
+  }
+
+  private cacheUpdatedFragment(fragment: Fragment): Fragment {
+    this.clearCachedFragments(fragment.number)
+    this.clearCachedQueryResults()
+    this.setCachedValue(
+      this.cachedFragments,
+      this.createFragmentCacheKey(fragment.number),
+      fragment,
+      maximumCachedFragments,
+    )
+    return fragment
+  }
+
+  private clearCachedFragments(number: string): void {
+    const cacheKeyPrefix = this.createFragmentCacheKeyPrefix(number)
+    for (const cacheKey of this.cachedFragments.keys()) {
+      if (cacheKey.startsWith(cacheKeyPrefix)) {
+        this.cachedFragments.delete(cacheKey)
+      }
+    }
+    for (const cacheKey of this.cachedFragmentRequests.keys()) {
+      if (cacheKey.startsWith(cacheKeyPrefix)) {
+        this.cachedFragmentRequests.delete(cacheKey)
+      }
+    }
+  }
+
+  private clearCachedQueryResults(): void {
+    this.cachedQueryResults.clear()
+    this.cachedQueryResultRequests.clear()
+  }
+
+  private createFragmentCacheKey(
+    number: string,
+    lines?: readonly number[],
+    excludeLines?: boolean,
+  ): string {
+    return `${this.createFragmentCacheKeyPrefix(number)}${(lines ?? []).join(
+      ',',
+    )}:${excludeLines === true}`
+  }
+
+  private createFragmentCacheKeyPrefix(number: string): string {
+    return `${number.length}:${number}:`
+  }
+
+  private createQueryCacheKey(fragmentQuery: FragmentQuery): string {
+    return `query:${stringify(fragmentQuery)}`
+  }
+
+  private createThumbnailCacheKey(number: string, size: ThumbnailSize): string {
+    return `${number.length}:${number}:${size}`
   }
 }
 
