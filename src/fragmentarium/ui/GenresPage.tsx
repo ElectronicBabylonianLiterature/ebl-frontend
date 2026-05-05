@@ -8,9 +8,12 @@ function GenresIntroduction(): JSX.Element {
   return (
     <Markdown
       className="genres-page__introduction"
-      text="The following genres are used in the electronic Babylonian Library to classify
-      cuneiform fragments by their content and function. Genres are organized hierarchically
-      from broad categories to more specific sub-types."
+      text="The eBL genre taxonomy was initially developed by B. Schnitzlein,
+      building on a pre-existing collection compiled by J. Taylor. First released in 2021
+      as part of the project “Reading the Library of Ashurbanipal: A Multi-sectional Analysis
+      of Assyriology's Foundational Corpus” (DFG/AHRC, 2019–2026), it was subsequently reviewed
+      by W. Sallaberger, E. Jiménez, and the eBL team. It now underpins the classification of
+      all Library manuscripts and has been refined through years of iterative use."
     />
   )
 }

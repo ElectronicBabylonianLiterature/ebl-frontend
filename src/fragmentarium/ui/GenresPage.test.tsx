@@ -30,7 +30,7 @@ describe('GenresPage', () => {
     const fragmentService = makeFragmentService()
     render(<GenresPage fragmentService={fragmentService} />)
     expect(
-      await screen.findByText(/used in the electronic Babylonian Library/),
+      await screen.findByText(/genre taxonomy was initially developed/),
     ).toBeInTheDocument()
   })
 
@@ -74,7 +74,7 @@ describe('GenresPage', () => {
     const fragmentService = makeFragmentService([])
     render(<GenresPage fragmentService={fragmentService} />)
     expect(
-      await screen.findByText(/used in the electronic Babylonian Library/),
+      await screen.findByText(/genre taxonomy was initially developed/),
     ).toBeInTheDocument()
     expect(screen.queryByRole('heading', { level: 4 })).not.toBeInTheDocument()
   })

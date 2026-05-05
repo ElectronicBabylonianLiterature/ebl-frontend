@@ -1,9 +1,11 @@
-import React from 'react'
+import React, { useRef, useState } from 'react'
 import DossierRecord from 'dossiers/domain/DossierRecord'
 import _ from 'lodash'
 import InlineMarkdown from 'common/ui/InlineMarkdown'
 import { stringify } from 'query-string'
 import { PeriodModifiers, periods } from 'common/utils/period'
+import { Overlay, Popover } from 'react-bootstrap'
+import { DossierRecordDisplay } from 'dossiers/ui/DossiersDisplay'
 import './DossiersDisplay.sass'
 
 interface GroupedDossiers {
@@ -84,6 +86,10 @@ function createDossierSearchPath(recordId: string): string {
   return `/library/search/?${stringify({ dossier: recordId })}`
 }
 
+function createDossierSearchLabel(recordId: string): string {
+  return `Open fragment search results for dossier ${recordId}`
+}
+
 function createGroupKey(record: DossierRecord): string {
   return `${getScriptDescription(record)} — ${getProvenanceName(record)}`
 }
@@ -106,24 +112,76 @@ function groupDossiersByScriptAndProvenance(
   return _.groupBy(sortDossierRecords(records), createGroupKey)
 }
 
-function DossierItem({ record }: { record: DossierRecord }): JSX.Element {
+function DossierItem({
+  record,
+  index,
+  groupIndex,
+  activeDossier,
+  setActiveDossier,
+}: {
+  record: DossierRecord
+  index: number
+  groupIndex: number
+  activeDossier: string | null
+  setActiveDossier: React.Dispatch<React.SetStateAction<string | null>>
+}): JSX.Element {
+  const target = useRef<HTMLButtonElement>(null)
+  const dossierKey = `${groupIndex}-${index}`
+  const isActive = activeDossier === dossierKey
+  const popoverId = `DossierPopover-${dossierKey}`
+
   return (
-    <a
-      className="dossier-records__item"
-      href={createDossierSearchPath(record.id)}
-    >
-      {record.id}
-    </a>
+    <span className={`dossier-records__item${isActive ? '__active' : ''}`}>
+      <button
+        ref={target}
+        type="button"
+        className="dossier-name"
+        onClick={() => setActiveDossier(isActive ? null : dossierKey)}
+        aria-expanded={isActive}
+        aria-controls={popoverId}
+      >
+        {record.id}
+      </button>
+      <a
+        className="dossier-search-link"
+        href={createDossierSearchPath(record.id)}
+        aria-label={createDossierSearchLabel(record.id)}
+        title={createDossierSearchLabel(record.id)}
+      >
+        ⌕
+      </a>
+      <Overlay
+        target={target.current}
+        placement="right"
+        show={isActive}
+        onHide={() => setActiveDossier(null)}
+        rootClose={true}
+        rootCloseEvent="click"
+      >
+        <Popover id={popoverId} className="reference-popover__popover">
+          <Popover.Header as="h3">{record.id}</Popover.Header>
+          <Popover.Body>
+            <DossierRecordDisplay record={record} index={index} />
+          </Popover.Body>
+        </Popover>
+      </Overlay>
+    </span>
   )
 }
 
 function DossierGroup({
   groupKey,
   records,
+  groupIndex,
+  activeDossier,
+  setActiveDossier,
   showProvenance,
 }: {
   groupKey: string
   records: DossierRecord[]
+  groupIndex: number
+  activeDossier: string | null
+  setActiveDossier: React.Dispatch<React.SetStateAction<string | null>>
   showProvenance: boolean
 }): JSX.Element {
   const displayKey = createDisplayKey(records[0], showProvenance)
@@ -136,8 +194,14 @@ function DossierGroup({
         <span className="dossier-prefix">Dossiers: </span>
         {records.map((record, index) => (
           <React.Fragment key={`${record.id}-${index}`}>
-            {index > 0 && ', '}
-            <DossierItem record={record} />
+            <DossierItem
+              record={record}
+              index={index}
+              groupIndex={groupIndex}
+              activeDossier={activeDossier}
+              setActiveDossier={setActiveDossier}
+            />
+            {index < records.length - 1 && ', '}
           </React.Fragment>
         ))}
       </div>
@@ -152,6 +216,8 @@ export function DossiersGroupedDisplay({
   records: readonly DossierRecord[]
   showProvenance?: boolean
 }): JSX.Element {
+  const [activeDossier, setActiveDossier] = useState<string | null>(null)
+
   if (records.length === 0) {
     return <></>
   }
@@ -161,11 +227,14 @@ export function DossiersGroupedDisplay({
 
   return (
     <div className="dossiers-grouped-display">
-      {groups.map(([groupKey, groupRecords]) => (
+      {groups.map(([groupKey, groupRecords], groupIndex) => (
         <DossierGroup
           key={groupKey}
           groupKey={groupKey}
           records={groupRecords}
+          groupIndex={groupIndex}
+          activeDossier={activeDossier}
+          setActiveDossier={setActiveDossier}
           showProvenance={showProvenance}
         />
       ))}

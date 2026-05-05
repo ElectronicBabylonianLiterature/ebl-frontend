@@ -2,87 +2,81 @@
   &__index-nav
     display: flex
     flex-wrap: wrap
-    gap: 0.4rem
-    margin-bottom: 1.5rem
-    padding: 0.75rem 1rem
-    background: #f4f6f9
-    border: 1px solid #dce2ea
-    border-radius: 10px
+    gap: 0.5rem
+    margin-bottom: 1rem
+    padding: 0
 
   &__index-link
-    font-size: 0.8rem
-    color: #1a5fa8
-    text-decoration: none
-    padding: 0.25rem 0.6rem
-    border-radius: 6px
+    font-size: 0.9rem
+    color: #0077be
+    text-decoration: underline
+    text-decoration-style: dotted
     white-space: nowrap
-    transition: background-color 0.15s ease
+    transition: color 0.15s ease
 
     &:hover
-      background: rgba(26, 95, 168, 0.1)
-      color: #1a3a6b
-      text-decoration: none
+      color: #0056b3
+      text-decoration-style: solid
 
   &__intro
-    background: #f8fafc
-    border: 1px solid #dce2ea
-    border-left-width: 4px
-    border-left-style: solid
-    border-left-color: #1a5fa8
-    border-radius: 10px
-    padding: 0.95rem 1.1rem
+    background: transparent
+    border: 0
+    border-radius: 0
+    padding: 0
     margin-bottom: 1rem
-    color: #2d3748
-    line-height: 1.6
+    color: #212529
+    line-height: 1.8
 
   &__table
     margin-bottom: 0
 
   &__column-header
-    font-size: 0.72rem
-    text-transform: uppercase
-    letter-spacing: 0.07em
+    font-size: 0.78rem
+    text-transform: none
+    letter-spacing: normal
     font-weight: 700
-    color: #6b7a90
-    background: #f4f6f9
-    border-bottom: 2px solid #dce2ea
-    padding: 0.6rem 0.85rem
+    color: #212529
+    background: transparent
+    border-bottom: 1px solid #e9ecef
+    padding: 0.55rem 0.75rem
 
   &__dynasty
-    background: linear-gradient(90deg, rgba(26, 95, 168, 0.12) 0%, #ffffff 100%)
-    border-top: 1px solid #dce2ea
-    border-bottom: 1px solid #edf0f5
-    padding: 0.7rem 0.85rem
+    background: transparent
+    border-top: 1px solid #e9ecef
+    border-bottom: 1px solid #e9ecef
+    padding: 0.6rem 0.75rem
 
   &__dynasty-title
     margin: 0
-    font-size: 0.95rem
+    padding-bottom: 0
+    border-bottom: 0
+    font-size: 1rem
     font-weight: 700
-    color: #1a3a6b
+    color: #212529
 
   &__index
     width: 3.5rem
-    color: #6b7a90
+    color: #495057
     font-weight: 700
     text-align: right
     vertical-align: top
 
   &__name
-    color: #1a3a6b
-    font-weight: 600
+    color: #212529
+    font-weight: 500
     vertical-align: top
 
   &__date
-    color: #4a5568
+    color: #495057
     font-size: 0.88rem
     vertical-align: top
 
 .chronology-display
-  background: #ffffff
-  border: 1px solid #dce2ea
-  border-radius: 10px
-  overflow: hidden
-  box-shadow: 0 2px 10px rgba(17, 35, 64, 0.06)
+  background: transparent
+  border: 0
+  border-radius: 0
+  overflow: visible
+  box-shadow: none
 
   thead th
     border-top: none
@@ -92,27 +86,24 @@
 
 td.chronology-display
   vertical-align: middle
-  padding: 0.65rem 0.85rem
-  border-bottom: 1px solid #edf0f5
+  padding: 0.55rem 0.75rem
+  border-bottom: 1px solid #e9ecef
 
   &__section
     padding-bottom: 0
 
 tr.kings
   &:hover
-    background: rgba(26, 95, 168, 0.05)
+    background: rgba(0, 119, 190, 0.03)
 
   td
-    border-bottom: 1px solid #edf0f5
+    border-bottom: 1px solid #e9ecef
 
 tr:not(:first-child) td.chronology-display__section
   padding-top: 1rem
 
 @media (max-width: 767px)
   .kings-tool
-    &__intro
-      padding: 0.75rem 0.8rem
-
     &__column-header
       font-size: 0.66rem
       padding: 0.45rem 0.55rem
