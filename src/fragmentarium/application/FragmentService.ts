@@ -48,7 +48,11 @@ const cacheEntryLifetimeInMilliseconds = 5 * 60 * 1000
 const maximumCachedFragments = 250
 const maximumCachedQueryResults = 50
 const maximumCachedThumbnails = 250
+const maximumCachedProvenanceRecords = 250
+const maximumCachedProvenanceChildren = 250
 const latestQueryCacheKey = 'latest:'
+const provenanceCacheKey = 'provenance:'
+const defaultCacheScope = 'default'
 
 type CacheEntry<CacheValue> = {
   readonly expiresAt: number
@@ -165,18 +169,26 @@ export interface AnnotationRepository {
 }
 export class FragmentService {
   private readonly referenceInjector: ReferenceInjector
-  private cachedProvenances: readonly ProvenanceRecord[] | null = null
-  private cachedProvenancesRequest: Bluebird<
-    readonly ProvenanceRecord[]
-  > | null = null
-  private readonly cachedProvenanceById = new Map<string, ProvenanceRecord>()
+  private cacheScope: string | null = null
+  private readonly cachedProvenances = new Map<
+    string,
+    CacheEntry<readonly ProvenanceRecord[]>
+  >()
+  private readonly cachedProvenanceRequests = new Map<
+    string,
+    Bluebird<readonly ProvenanceRecord[]>
+  >()
+  private readonly cachedProvenanceById = new Map<
+    string,
+    CacheEntry<ProvenanceRecord>
+  >()
   private readonly cachedProvenanceByIdRequest = new Map<
     string,
     Bluebird<ProvenanceRecord>
   >()
   private readonly cachedProvenanceChildrenById = new Map<
     string,
-    readonly ProvenanceRecord[]
+    CacheEntry<readonly ProvenanceRecord[]>
   >()
   private readonly cachedProvenanceChildrenByIdRequest = new Map<
     string,
@@ -210,6 +222,7 @@ export class FragmentService {
     private readonly imageRepository: ImageRepository,
     private readonly wordRepository: WordRepository,
     private readonly bibliographyService: BibliographyService,
+    private readonly getCacheScope: () => string = () => defaultCacheScope,
   ) {
     this.referenceInjector = new ReferenceInjector(bibliographyService)
   }
@@ -296,92 +309,65 @@ export class FragmentService {
   }
 
   fetchProvenances(): Bluebird<readonly ProvenanceRecord[]> {
-    if (this.cachedProvenances) {
-      return Bluebird.resolve(this.cachedProvenances)
-    }
-    if (this.cachedProvenancesRequest) {
-      return this.cachedProvenancesRequest
-    }
-
-    this.cachedProvenancesRequest = this.fragmentRepository
-      .fetchProvenances()
-      .then((provenances) => {
-        const sanitized = provenances.map(sanitizeProvenanceRecord)
-        setProvenanceRecords(sanitized)
-        this.cachedProvenances = sanitized
-        sanitized.forEach((provenance) => {
-          this.cachedProvenanceById.set(provenance.id, provenance)
-        })
-        return sanitized
-      })
-      .catch((error) => {
-        this.cachedProvenances = null
-        this.cachedProvenanceById.clear()
-        throw error
-      })
-      .finally(() => {
-        this.cachedProvenancesRequest = null
-      })
-
-    return this.cachedProvenancesRequest
+    return this.getOrFetchCachedValue(
+      this.cachedProvenances,
+      this.cachedProvenanceRequests,
+      provenanceCacheKey,
+      1,
+      () =>
+        this.fragmentRepository.fetchProvenances().then((provenances) => {
+          const sanitized = provenances.map(sanitizeProvenanceRecord)
+          setProvenanceRecords(sanitized)
+          sanitized.forEach((provenance) => {
+            this.setCachedValue(
+              this.cachedProvenanceById,
+              provenance.id,
+              provenance,
+              maximumCachedProvenanceRecords,
+            )
+          })
+          return sanitized
+        }),
+    )
   }
 
   fetchProvenance(id: string): Bluebird<ProvenanceRecord> {
-    const cachedProvenance = this.cachedProvenanceById.get(id)
-    if (cachedProvenance) {
-      return Bluebird.resolve(cachedProvenance)
-    }
-
-    const cachedRequest = this.cachedProvenanceByIdRequest.get(id)
-    if (cachedRequest) {
-      return cachedRequest
-    }
-
-    const request = this.fragmentRepository
-      .fetchProvenance(id)
-      .then((provenance) => {
-        const sanitized = sanitizeProvenanceRecord(provenance)
-        upsertProvenanceRecord(sanitized)
-        this.cachedProvenanceById.set(id, sanitized)
-        return sanitized
-      })
-      .finally(() => {
-        this.cachedProvenanceByIdRequest.delete(id)
-      })
-
-    this.cachedProvenanceByIdRequest.set(id, request)
-    return request
+    return this.getOrFetchCachedValue(
+      this.cachedProvenanceById,
+      this.cachedProvenanceByIdRequest,
+      id,
+      maximumCachedProvenanceRecords,
+      () =>
+        this.fragmentRepository.fetchProvenance(id).then((provenance) => {
+          const sanitized = sanitizeProvenanceRecord(provenance)
+          upsertProvenanceRecord(sanitized)
+          return sanitized
+        }),
+    )
   }
 
   fetchProvenanceChildren(id: string): Bluebird<readonly ProvenanceRecord[]> {
-    const cachedChildren = this.cachedProvenanceChildrenById.get(id)
-    if (cachedChildren) {
-      return Bluebird.resolve(cachedChildren)
-    }
-
-    const cachedRequest = this.cachedProvenanceChildrenByIdRequest.get(id)
-    if (cachedRequest) {
-      return cachedRequest
-    }
-
-    const request = this.fragmentRepository
-      .fetchProvenanceChildren(id)
-      .then((children) => {
-        const sanitized = children.map(sanitizeProvenanceRecord)
-        const sorted = sortProvenances(sanitized)
-        this.cachedProvenanceChildrenById.set(id, sorted)
-        sorted.forEach((provenance) => {
-          upsertProvenanceRecord(provenance)
-          this.cachedProvenanceById.set(provenance.id, provenance)
-        })
-        return sorted
-      })
-      .finally(() => {
-        this.cachedProvenanceChildrenByIdRequest.delete(id)
-      })
-
-    this.cachedProvenanceChildrenByIdRequest.set(id, request)
-    return request
+    return this.getOrFetchCachedValue(
+      this.cachedProvenanceChildrenById,
+      this.cachedProvenanceChildrenByIdRequest,
+      id,
+      maximumCachedProvenanceChildren,
+      () =>
+        this.fragmentRepository.fetchProvenanceChildren(id).then((children) => {
+          const sanitized = children.map(sanitizeProvenanceRecord)
+          const sorted = sortProvenances(sanitized)
+          sorted.forEach((provenance) => {
+            upsertProvenanceRecord(provenance)
+            this.setCachedValue(
+              this.cachedProvenanceById,
+              provenance.id,
+              provenance,
+              maximumCachedProvenanceRecords,
+            )
+          })
+          return sorted
+        }),
+    )
   }
 
   fetchPeriods(): Bluebird<string[]> {
@@ -622,6 +608,8 @@ export class FragmentService {
     maximumCacheSize: number,
     fetchValue: () => Bluebird<CacheValue>,
   ): Bluebird<CacheValue> {
+    this.clearCachesWhenScopeChanges()
+
     const cachedValue = this.getCachedValue(cache, key)
     if (cachedValue) {
       return Bluebird.resolve(cachedValue)
@@ -696,6 +684,7 @@ export class FragmentService {
   }
 
   private cacheUpdatedFragment(fragment: Fragment): Fragment {
+    this.clearCachesWhenScopeChanges()
     this.clearCachedFragments(fragment.number)
     this.clearCachedQueryResults()
     this.setCachedValue(
@@ -724,6 +713,41 @@ export class FragmentService {
   private clearCachedQueryResults(): void {
     this.cachedQueryResults.clear()
     this.cachedQueryResultRequests.clear()
+  }
+
+  private clearAllCaches(): void {
+    this.cachedProvenances.clear()
+    this.cachedProvenanceRequests.clear()
+    this.cachedProvenanceById.clear()
+    this.cachedProvenanceByIdRequest.clear()
+    this.cachedProvenanceChildrenById.clear()
+    this.cachedProvenanceChildrenByIdRequest.clear()
+    this.cachedFragments.clear()
+    this.cachedFragmentRequests.clear()
+    this.cachedQueryResults.clear()
+    this.cachedQueryResultRequests.clear()
+    this.cachedThumbnails.clear()
+    this.cachedThumbnailRequests.clear()
+  }
+
+  private clearCachesWhenScopeChanges(): void {
+    const nextScope = this.resolveCacheScope()
+    if (this.cacheScope === null) {
+      this.cacheScope = nextScope
+      return
+    }
+    if (this.cacheScope !== nextScope) {
+      this.cacheScope = nextScope
+      this.clearAllCaches()
+    }
+  }
+
+  private resolveCacheScope(): string {
+    try {
+      return this.getCacheScope()
+    } catch {
+      return defaultCacheScope
+    }
   }
 
   private createFragmentCacheKey(

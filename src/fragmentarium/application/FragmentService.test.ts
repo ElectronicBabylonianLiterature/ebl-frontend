@@ -808,6 +808,37 @@ describe('FragmentService cache', () => {
     expect(fragmentRepository.find).toHaveBeenCalledTimes(2)
   })
 
+  test('refreshes expired fragment reads', async () => {
+    let currentTime = 0
+    const dateNow = jest
+      .spyOn(Date, 'now')
+      .mockImplementation(() => currentTime)
+    fragmentRepository.find
+      .mockReturnValueOnce(Promise.resolve(cachedFragment))
+      .mockReturnValueOnce(Promise.resolve(updatedFragment))
+
+    await expect(service.find(number)).resolves.toEqual(cachedFragment)
+    currentTime = 5 * 60 * 1000 + 1
+    await expect(service.find(number)).resolves.toEqual(updatedFragment)
+
+    expect(fragmentRepository.find).toHaveBeenCalledTimes(2)
+    dateNow.mockRestore()
+  })
+
+  test('evicts oldest fragment cache entry when max size is exceeded', async () => {
+    fragmentRepository.find.mockImplementation((fragmentNumber: string) =>
+      Promise.resolve(fragmentFactory.build({ number: fragmentNumber })),
+    )
+
+    for (let index = 0; index <= 250; index += 1) {
+      await service.find(`K.${index}`)
+    }
+
+    await service.find('K.0')
+
+    expect(fragmentRepository.find).toHaveBeenCalledTimes(252)
+  })
+
   test('caches latest query results', async () => {
     fragmentRepository.queryLatest.mockReturnValue(Promise.resolve(queryResult))
 
@@ -856,6 +887,71 @@ describe('FragmentService cache', () => {
 
     expect(imageRepository.findThumbnail).toHaveBeenCalledTimes(1)
     expect(imageRepository.findThumbnail).toHaveBeenCalledWith(number, 'small')
+  })
+
+  test('refreshes expired thumbnails', async () => {
+    let currentTime = 0
+    const dateNow = jest
+      .spyOn(Date, 'now')
+      .mockImplementation(() => currentTime)
+    const thumbnail = { blob: null }
+    const refreshedThumbnail = { blob: new Blob(['refreshed']) }
+    imageRepository.findThumbnail
+      .mockReturnValueOnce(Promise.resolve(thumbnail))
+      .mockReturnValueOnce(Promise.resolve(refreshedThumbnail))
+
+    await expect(service.findThumbnail(cachedFragment, 'small')).resolves.toBe(
+      thumbnail,
+    )
+    currentTime = 5 * 60 * 1000 + 1
+    await expect(service.findThumbnail(cachedFragment, 'small')).resolves.toBe(
+      refreshedThumbnail,
+    )
+
+    expect(imageRepository.findThumbnail).toHaveBeenCalledTimes(2)
+    dateNow.mockRestore()
+  })
+
+  test('evicts oldest thumbnail cache entry when max size is exceeded', async () => {
+    imageRepository.findThumbnail.mockImplementation((fragmentNumber: string) =>
+      Promise.resolve({ blob: new Blob([fragmentNumber]) }),
+    )
+
+    for (let index = 0; index <= 250; index += 1) {
+      await service.findThumbnail(
+        fragmentFactory.build({ number: `K.${index}` }),
+        'small',
+      )
+    }
+
+    await service.findThumbnail(
+      fragmentFactory.build({ number: 'K.0' }),
+      'small',
+    )
+
+    expect(imageRepository.findThumbnail).toHaveBeenCalledTimes(252)
+  })
+
+  test('clears cached values when cache scope changes', async () => {
+    let cacheScope = 'guest'
+    const scopedService = new FragmentService(
+      fragmentRepository,
+      imageRepository,
+      wordRepository,
+      bibliographyService,
+      () => cacheScope,
+    )
+    fragmentRepository.find
+      .mockReturnValueOnce(Promise.resolve(cachedFragment))
+      .mockReturnValueOnce(Promise.resolve(updatedFragment))
+
+    await expect(scopedService.find(number)).resolves.toEqual(cachedFragment)
+    await expect(scopedService.find(number)).resolves.toEqual(cachedFragment)
+
+    cacheScope = 'authenticated:user'
+    await expect(scopedService.find(number)).resolves.toEqual(updatedFragment)
+
+    expect(fragmentRepository.find).toHaveBeenCalledTimes(2)
   })
 
   test('invalidates fragment and query caches after update', async () => {
@@ -933,6 +1029,30 @@ describe('FragmentService cache', () => {
     expect(fragmentRepository.query).toHaveBeenCalledTimes(2)
   })
 
+  test('evicts oldest query cache entry when max size is exceeded', async () => {
+    fragmentRepository.query.mockImplementation(
+      (fragmentQuery: FragmentQuery) =>
+        Promise.resolve({
+          items: [
+            {
+              museumNumber: fragmentQuery.number ?? '',
+              matchingLines: [],
+              matchCount: 1,
+            },
+          ],
+          matchCountTotal: 1,
+        }),
+    )
+
+    for (let index = 0; index <= 50; index += 1) {
+      await service.query({ number: `Q.${index}` })
+    }
+
+    await service.query({ number: 'Q.0' })
+
+    expect(fragmentRepository.query).toHaveBeenCalledTimes(52)
+  })
+
   test('does not cache stale latest query results that resolve after update', async () => {
     let resolveStaleLatestQuery: (value: QueryResult) => void = () => undefined
     const staleLatestQuery = new Promise<QueryResult>((resolve) => {
@@ -954,6 +1074,51 @@ describe('FragmentService cache', () => {
     await expect(inFlightLatestQuery).resolves.toEqual(queryResult)
     await expect(service.queryLatest()).resolves.toEqual(updatedQueryResult)
     expect(fragmentRepository.queryLatest).toHaveBeenCalledTimes(2)
+  })
+
+  test('evicts oldest provenance by id cache entry when max size is exceeded', async () => {
+    fragmentRepository.fetchProvenance.mockImplementation((id: string) =>
+      Promise.resolve({
+        id: id,
+        longName: id,
+        abbreviation: id,
+        parent: 'parent',
+        sortKey: 1,
+      }),
+    )
+
+    for (let index = 0; index <= 250; index += 1) {
+      await service.fetchProvenance(`P.${index}`)
+    }
+
+    await service.fetchProvenance('P.0')
+
+    expect(fragmentRepository.fetchProvenance).toHaveBeenCalledTimes(252)
+  })
+
+  test('evicts oldest provenance children cache entry when max size is exceeded', async () => {
+    fragmentRepository.fetchProvenanceChildren.mockImplementation(
+      (id: string) =>
+        Promise.resolve([
+          {
+            id: `${id}.child`,
+            longName: `${id}.child`,
+            abbreviation: `${id}.child`,
+            parent: id,
+            sortKey: 1,
+          },
+        ]),
+    )
+
+    for (let index = 0; index <= 250; index += 1) {
+      await service.fetchProvenanceChildren(`PC.${index}`)
+    }
+
+    await service.fetchProvenanceChildren('PC.0')
+
+    expect(fragmentRepository.fetchProvenanceChildren).toHaveBeenCalledTimes(
+      252,
+    )
   })
 })
 
