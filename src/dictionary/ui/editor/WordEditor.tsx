@@ -58,7 +58,10 @@ class WordEditor extends Component<
   render(): JSX.Element {
     return (
       <AppContent
-        crumbs={[new SectionCrumb('Dictionary'), new TextCrumb(this.props.id)]}
+        crumbs={[
+          new SectionCrumb('Akkadian Dictionary'),
+          new TextCrumb(this.props.id),
+        ]}
         title={
           <>
             Edit{' '}

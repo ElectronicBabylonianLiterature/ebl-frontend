@@ -29,6 +29,7 @@ export class SectionCrumb implements Crumb {
     ['Bibliography', '/tools/references'],
     ['Corpus', '/corpus'],
     ['Dictionary', '/tools/dictionary'],
+    ['Akkadian Dictionary', '/tools/dictionary'],
     ['Library', '/library'],
     ['Signs', '/tools/signs'],
     ['About', '/about'],

@@ -89,6 +89,26 @@ describe('One crumb', () => {
   commonTests(renderBreadcrumbs)
 })
 
+describe('Akkadian Dictionary crumb', () => {
+  test('Links to tools dictionary route', () => {
+    render(
+      <MemoryRouter>
+        <Breadcrumbs
+          crumbs={[
+            new SectionCrumb('Akkadian Dictionary'),
+            new SectionCrumb('Active'),
+          ]}
+        />
+      </MemoryRouter>,
+    )
+
+    expect(screen.getByText('Akkadian Dictionary')).toHaveAttribute(
+      'href',
+      `/tools/dictionary`,
+    )
+  })
+})
+
 describe('Component crumb', () => {
   function renderBreadcrumbs(): void {
     render(
