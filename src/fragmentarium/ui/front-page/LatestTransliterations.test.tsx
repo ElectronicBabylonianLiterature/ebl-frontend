@@ -178,7 +178,7 @@ describe('preview mode', () => {
   test('shows thumbnails when thumbnail endpoint returns a blob', async () => {
     session = new MemorySession(['read:fragments'])
     const fragmentWithPhoto = fragmentFactory.build(
-      { hasPhoto: false },
+      { hasPhoto: true },
       { transient: { chance } },
     )
     const queryItem = {

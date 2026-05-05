@@ -58,12 +58,14 @@ const CompactFragmentCard = withData<
         to={createFragmentUrl(fragment.number)}
         className="latest-addition-card"
       >
-        <ErrorBoundary>
-          <LatestAdditionThumbnail
-            fragmentService={fragmentService}
-            fragment={fragment}
-          />
-        </ErrorBoundary>
+        {fragment.hasPhoto && (
+          <ErrorBoundary>
+            <LatestAdditionThumbnail
+              fragmentService={fragmentService}
+              fragment={fragment}
+            />
+          </ErrorBoundary>
+        )}
         <div className="latest-addition-card__body">
           <div className="latest-addition-card__header">
             <div className="latest-addition-card__number">
