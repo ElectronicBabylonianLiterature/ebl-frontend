@@ -4,21 +4,45 @@ import { Link } from 'react-router-dom'
 import { DateTime } from 'luxon'
 import { Container } from 'react-bootstrap'
 import withData from 'http/withData'
-import FragmentService from 'fragmentarium/application/FragmentService'
+import FragmentService, {
+  ThumbnailBlob,
+} from 'fragmentarium/application/FragmentService'
 import DossiersService from 'dossiers/application/DossiersService'
 import { QueryItem, QueryResult } from 'query/QueryResult'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import { FragmentLines } from 'fragmentarium/ui/search/FragmentariumSearchResultComponents'
 import { createFragmentUrl } from 'fragmentarium/ui/FragmentLink'
+import ErrorBoundary from 'common/errors/ErrorBoundary'
+import { ThumbnailImage } from 'common/ui/BlobImage'
 
 export const LATEST_PREVIEW_COUNT = 5
 
+const LatestAdditionThumbnail = withData<
+  { fragment: Fragment; fragmentService: FragmentService },
+  unknown,
+  ThumbnailBlob
+>(
+  ({ data, fragment }): JSX.Element =>
+    data.blob ? (
+      <div className="latest-addition-card__thumbnail">
+        <ThumbnailImage
+          photo={data.blob}
+          alt={`Preview of ${fragment.number}`}
+        />
+      </div>
+    ) : (
+      <></>
+    ),
+  ({ fragment, fragmentService }) =>
+    fragmentService.findThumbnail(fragment, 'small'),
+)
+
 const CompactFragmentCard = withData<
-  { queryItem: QueryItem },
-  { fragmentService: FragmentService },
+  { queryItem: QueryItem; fragmentService: FragmentService },
+  unknown,
   Fragment
 >(
-  ({ data: fragment }): JSX.Element => {
+  ({ data: fragment, fragmentService }): JSX.Element => {
     const periodAbbr = fragment.script.period.abbreviation
     const latestRecord = _(fragment.uniqueRecord)
       .filter(
@@ -34,6 +58,12 @@ const CompactFragmentCard = withData<
         to={createFragmentUrl(fragment.number)}
         className="latest-addition-card"
       >
+        <ErrorBoundary>
+          <LatestAdditionThumbnail
+            fragmentService={fragmentService}
+            fragment={fragment}
+          />
+        </ErrorBoundary>
         <div className="latest-addition-card__body">
           <div className="latest-addition-card__header">
             <div className="latest-addition-card__number">
@@ -74,8 +104,14 @@ const CompactFragmentCard = withData<
       </Link>
     )
   },
-  ({ fragmentService, queryItem }) =>
-    fragmentService.find(queryItem.museumNumber, [], true),
+  ({ fragmentService, queryItem }) => {
+    const excludeLines = _.isEmpty(queryItem.matchingLines)
+    return fragmentService.find(
+      queryItem.museumNumber,
+      _.take(queryItem.matchingLines, 3),
+      excludeLines,
+    )
+  },
 )
 
 function LatestTransliterationsPreview({

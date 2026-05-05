@@ -97,6 +97,7 @@ describe('preview mode', () => {
       .forEach((fragment) =>
         fragmentService.find.mockReturnValueOnce(Promise.resolve(fragment)),
       )
+    fragmentService.findThumbnail.mockResolvedValue({ blob: null })
     dossiersService.queryByIds.mockResolvedValue([])
     render(
       <MemoryRouter>
@@ -156,6 +157,7 @@ describe('preview mode', () => {
     fragmentService.find.mockReturnValueOnce(
       Promise.resolve(fragmentWithProject),
     )
+    fragmentService.findThumbnail.mockResolvedValue({ blob: null })
     dossiersService.queryByIds.mockResolvedValue([])
     render(
       <MemoryRouter>
@@ -171,5 +173,56 @@ describe('preview mode', () => {
       </MemoryRouter>,
     )
     await screen.findByAltText(ResearchProjects.CAIC.name)
+  })
+
+  test('shows thumbnails when thumbnail endpoint returns a blob', async () => {
+    session = new MemorySession(['read:fragments'])
+    const fragmentWithPhoto = fragmentFactory.build(
+      { hasPhoto: false },
+      { transient: { chance } },
+    )
+    const queryItem = {
+      museumNumber: fragmentWithPhoto.number,
+      matchingLines: [1, 2, 3, 4],
+      matchCount: 4,
+    }
+    const thumbnailBlob = new Blob(['thumbnail'], { type: 'image/jpeg' })
+    ;(URL.createObjectURL as jest.Mock).mockReturnValueOnce('blob:thumbnail')
+    fragmentService.queryLatest.mockReturnValueOnce(
+      Promise.resolve({
+        items: [queryItem],
+        matchCountTotal: 0,
+      }),
+    )
+    fragmentService.find.mockReturnValueOnce(Promise.resolve(fragmentWithPhoto))
+    fragmentService.findThumbnail.mockResolvedValueOnce({ blob: thumbnailBlob })
+    dossiersService.queryByIds.mockResolvedValue([])
+    render(
+      <MemoryRouter>
+        <DictionaryContext.Provider value={wordService}>
+          <SessionContext.Provider value={session}>
+            <LatestTransliterations
+              fragmentService={fragmentService}
+              dossiersService={dossiersService}
+              preview={true}
+            />
+          </SessionContext.Provider>
+        </DictionaryContext.Provider>
+      </MemoryRouter>,
+    )
+
+    const thumbnail = await screen.findByAltText(
+      `Preview of ${fragmentWithPhoto.number}`,
+    )
+    expect(thumbnail).toHaveAttribute('src', 'blob:thumbnail')
+    expect(fragmentService.find).toHaveBeenCalledWith(
+      fragmentWithPhoto.number,
+      [1, 2, 3],
+      false,
+    )
+    expect(fragmentService.findThumbnail).toHaveBeenCalledWith(
+      fragmentWithPhoto,
+      'small',
+    )
   })
 })

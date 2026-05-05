@@ -259,6 +259,23 @@
       opacity: 1
       transform: translateX(4px)
 
+  &__thumbnail
+    flex: 0 0 72px
+    width: 72px
+    height: 72px
+    display: flex
+    align-items: center
+    justify-content: center
+    overflow: hidden
+    background-color: white
+    border: 1px solid #e9ecef
+    border-radius: 8px
+
+    img
+      width: 100%
+      height: 100%
+      object-fit: contain
+
   &__body
     flex: 1
     min-width: 0
@@ -335,6 +352,11 @@
       justify-content: center
 
   .latest-addition-card
+
+    &__thumbnail
+      flex-basis: 56px
+      width: 56px
+      height: 56px
 
     &__date
       display: none
