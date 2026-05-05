@@ -33,7 +33,7 @@ exports[`Fetch word correctly displays word parts 1`] = `
               <a
                 href="/tools/dictionary"
               >
-                Dictionary
+                Akkadian Dictionary
               </a>
             </li>
             <li

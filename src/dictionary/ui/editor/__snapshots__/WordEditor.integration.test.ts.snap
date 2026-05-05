@@ -231,7 +231,7 @@ exports[`Edit 1`] = `
                 <a
                   href="/tools/dictionary"
                 >
-                  Dictionary
+                  Akkadian Dictionary
                 </a>
               </li>
               <li
@@ -2284,7 +2284,7 @@ exports[`renders editor 1`] = `
                 <a
                   href="/tools/dictionary"
                 >
-                  Dictionary
+                  Akkadian Dictionary
                 </a>
               </li>
               <li
@@ -2296,7 +2296,7 @@ exports[`renders editor 1`] = `
             </ol>
           </nav>
           <h2
-            class="main__heading"
+                  Akkadian Dictionary
           >
             Edit
              
@@ -2305,7 +2305,7 @@ exports[`renders editor 1`] = `
             </strong>
              
             I
-          </h2>
+                  Akkadian Dictionary
           <div
             class="main__toolbar btn-toolbar"
             role="toolbar"
