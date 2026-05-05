@@ -2296,7 +2296,7 @@ exports[`renders editor 1`] = `
             </ol>
           </nav>
           <h2
-                  Akkadian Dictionary
+            class="main__heading"
           >
             Edit
              
@@ -2305,7 +2305,7 @@ exports[`renders editor 1`] = `
             </strong>
              
             I
-                  Akkadian Dictionary
+          </h2>
           <div
             class="main__toolbar btn-toolbar"
             role="toolbar"
