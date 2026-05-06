@@ -21,15 +21,39 @@ import FragmentariumRoutes from 'router/fragmentariumRoutes'
 import ResearchProjectRoutes from 'router/researchProjectRoutes'
 import FooterRoutes from 'router/footerRoutes'
 import { sitemapDefaults, Slugs } from 'router/sitemapConfig'
+import {
+  websiteRouteGroups,
+  type RouteModule,
+  type RouteModuleProps,
+  type WebsiteRouteGroup,
+} from 'router/websiteRouteGroups'
 
 const DOMAIN = 'www.ebl.lmu.de'
 type SlugsArray = readonly { [key: string]: string }[]
+
+const websiteRouteModules: Record<WebsiteRouteGroup, RouteModule> = {
+  about: AboutRoutes,
+  tools: ToolsRoutes,
+  signs: SignRoutes,
+  bibliography: BibliographyRoutes,
+  dictionary: DictionaryRoutes,
+  corpus: CorpusRoutes,
+  fragmentarium: FragmentariumRoutes,
+  researchProjects: ResearchProjectRoutes,
+  footer: FooterRoutes,
+}
 
 function WebsiteRoutes(
   services: Services,
   sitemap: boolean,
   slugs?: Slugs,
 ): JSX.Element[] {
+  const routeModuleProps: RouteModuleProps = {
+    sitemap,
+    ...services,
+    ...slugs,
+  }
+
   return [
     <Route
       key="Introduction"
@@ -38,15 +62,9 @@ function WebsiteRoutes(
       path="/"
       {...(sitemap && sitemapDefaults)}
     />,
-    ...AboutRoutes({ sitemap, ...services }),
-    ...ToolsRoutes({ sitemap, ...services }),
-    ...SignRoutes({ sitemap, ...services, ...slugs }),
-    ...BibliographyRoutes({ sitemap, ...services, ...slugs }),
-    ...DictionaryRoutes({ sitemap, ...services, ...slugs }),
-    ...CorpusRoutes({ sitemap, ...services, ...slugs }),
-    ...FragmentariumRoutes({ sitemap, ...services, ...slugs }),
-    ...ResearchProjectRoutes({ sitemap, ...services, ...slugs }),
-    ...FooterRoutes({ sitemap, ...services, ...slugs }),
+    ...websiteRouteGroups.flatMap((routeGroup) =>
+      websiteRouteModules[routeGroup](routeModuleProps),
+    ),
   ]
 }
 

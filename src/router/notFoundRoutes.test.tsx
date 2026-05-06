@@ -11,6 +11,7 @@ import CorpusRoutes from './corpusRoutes'
 import DictionaryRoutes from './dictionaryRoutes'
 import SignRoutes from './signRoutes'
 import ToolsRoutes from './toolsRoutes'
+import ResearchProjectRoutes from './researchProjectRoutes'
 
 describe('NotFoundPage rendering in FragmentariumRoutes', () => {
   const nonExistentRoutes = [
@@ -160,6 +161,28 @@ describe('NotFoundPage rendering in ToolsRoutes', () => {
         <MemoryRouter initialEntries={[path]}>
           <Switch>
             {[...ToolsRoutes({ ...getServices(), sitemap: false })]}
+          </Switch>
+        </MemoryRouter>,
+      )
+      expect(
+        screen.getByText(/The page you are looking for does not exist./i),
+      ).toBeInTheDocument()
+    })
+  })
+})
+
+describe('NotFoundPage rendering in ResearchProjectRoutes', () => {
+  const nonExistentResearchProjectRoutes = [
+    '/projects/unknown-project',
+    '/projects/CAIC/unknown-path',
+    '/projects/RECC/unknown-path/deeper',
+  ]
+  nonExistentResearchProjectRoutes.forEach((path) => {
+    test(`renders NotFoundPage for "${path}"`, () => {
+      render(
+        <MemoryRouter initialEntries={[path]}>
+          <Switch>
+            {[...ResearchProjectRoutes({ ...getServices(), sitemap: false })]}
           </Switch>
         </MemoryRouter>,
       )

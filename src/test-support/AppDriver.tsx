@@ -138,6 +138,7 @@ const breadcrumbs = {
 
 export default class AppDriver {
   readonly breadcrumbs = breadcrumbs
+  private readonly waitTimeout = 10000
 
   private initialEntries: string[] = []
   private view: RenderResult | null = null
@@ -195,13 +196,23 @@ export default class AppDriver {
   }
 
   async waitForText(text: Matcher): Promise<void> {
-    await this.getView().findAllByText(text)
+    await this.waitForTextToDisappear('Route loading...')
+    await this.getView().findAllByText(text, {}, { timeout: this.waitTimeout })
   }
 
-  async waitForTextToDisappear(text: Matcher): Promise<void> {
-    await waitFor(() => {
-      this.expectNotInContent(text)
-    })
+  async waitForTextToDisappear(
+    text: Matcher,
+    options: Parameters<typeof waitFor>[1] = {},
+  ): Promise<void> {
+    await waitFor(
+      () => {
+        this.expectNotInContent(text)
+      },
+      {
+        timeout: this.waitTimeout,
+        ...options,
+      },
+    )
   }
 
   expectTextContent(text: string | RegExp): void {

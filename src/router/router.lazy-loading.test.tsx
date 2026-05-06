@@ -75,6 +75,16 @@ jest.mock('router/fragmentariumRoutes', () => ({
   default: jest.fn(),
 }))
 
+jest.mock('router/researchProjectRoutes', () => ({
+  __esModule: true,
+  default: jest.fn(),
+}))
+
+jest.mock('router/footerRoutes', () => ({
+  __esModule: true,
+  default: jest.fn(),
+}))
+
 jest.mock('router/sitemap', () => ({
   __esModule: true,
   default: jest.fn(),
@@ -113,6 +123,27 @@ describe('Router lazy loading', () => {
         key="FragmentariumRoute"
         path="/library/*"
         text="Fragmentarium route loaded"
+      />,
+    ])
+
+    getDefaultMock('router/researchProjectRoutes').mockImplementation(() => [
+      <MockSwitchRoute
+        key="ResearchProjectsNotFound"
+        path="/projects/*"
+        text="Projects route not found"
+      />,
+    ])
+
+    getDefaultMock('router/footerRoutes').mockImplementation(() => [
+      <MockSwitchRoute
+        key="ImpressumRoute"
+        path="/impressum"
+        text="Impressum route loaded"
+      />,
+      <MockSwitchRoute
+        key="DatenschutzRoute"
+        path="/datenschutz"
+        text="Datenschutz route loaded"
       />,
     ])
 
@@ -177,5 +208,22 @@ describe('Router lazy loading', () => {
 
     expect(getDefaultMock('router/sitemap')).toHaveBeenCalled()
     expect(getDefaultMock('router/toolsRoutes')).not.toHaveBeenCalled()
+  })
+
+  test('renders projects not-found view for unknown project path', async () => {
+    renderRouter('/projects/unknown-project')
+
+    await waitFor(() => {
+      expect(screen.getByText('Projects route not found')).toBeInTheDocument()
+    })
+
+    expect(getDefaultMock('router/researchProjectRoutes')).toHaveBeenCalled()
+  })
+
+  test('renders global not-found for unknown legal subpaths without loading footer module', () => {
+    renderRouter('/impressum/unknown-path')
+
+    expect(screen.getByText('Global not found')).toBeInTheDocument()
+    expect(getDefaultMock('router/footerRoutes')).not.toHaveBeenCalled()
   })
 })

@@ -24,6 +24,7 @@ beforeEach(async () => {
     .withSession()
     .withPath(`/dictionary`)
     .render()
+  await appDriver.waitForText('Dictionary')
 })
 
 test('renders dictionary search page', () => {

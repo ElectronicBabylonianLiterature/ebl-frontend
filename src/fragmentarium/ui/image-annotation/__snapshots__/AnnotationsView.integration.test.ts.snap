@@ -89,7 +89,7 @@ exports[`Display annotate view Snapshot 1`] = `
             </div>
           </span>
           <button
-            aria-controls="Header-8"
+            aria-controls="Header-7"
             aria-label="Toggle navigation"
             class="navbar-toggler collapsed"
             type="button"
@@ -100,7 +100,7 @@ exports[`Display annotate view Snapshot 1`] = `
           </button>
           <div
             class="navbar-collapse collapse"
-            id="Header-8"
+            id="Header-7"
           >
             <div
               class="d-flex justify-content-between"
