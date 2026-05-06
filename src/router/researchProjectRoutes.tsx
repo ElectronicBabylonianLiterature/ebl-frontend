@@ -1,7 +1,7 @@
 import React, { ReactNode } from 'react'
 import { parse } from 'query-string'
 import { Route } from 'router/compat'
-import { sitemapDefaults } from 'router/sitemap'
+import { sitemapDefaults } from 'router/sitemapConfig'
 import { HeadTagsService } from 'router/head'
 import { ResearchProjects } from 'research-projects/researchProject'
 import BibliographyService from 'bibliography/application/BibliographyService'

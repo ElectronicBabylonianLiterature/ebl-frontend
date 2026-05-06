@@ -7,7 +7,7 @@ import TextService from 'corpus/application/TextService'
 import WordService from 'dictionary/application/WordService'
 import { Route } from 'router/compat'
 import SignService from 'signs/application/SignService'
-import { DictionarySlugs, sitemapDefaults } from 'router/sitemap'
+import { DictionarySlugs, sitemapDefaults } from 'router/sitemapConfig'
 import { HeadTagsService } from 'router/head'
 import NotFoundPage from 'NotFoundPage'
 
