@@ -58,7 +58,10 @@ test('No props', () => {
       <AppContent />
     </MemoryRouter>,
   )
-  expect(screen.getByText('eBL')).toBeVisible()
+  expect(
+    screen.queryByRole('navigation', { name: 'breadcrumb' }),
+  ).not.toBeInTheDocument()
+  expect(screen.queryByRole('heading')).not.toBeInTheDocument()
 })
 
 test('Children', () => {

@@ -11,6 +11,8 @@ beforeEach(() => {
   auth = {
     isAuthenticated: jest.fn(),
     getUser: (): User => ({ name: 'Test User' }),
+    login: jest.fn(),
+    logout: jest.fn().mockResolvedValue(undefined),
   }
 })
 
@@ -21,7 +23,13 @@ describe('Logged out', () => {
 
   test('Login button', async () => {
     await renderLoggedOut()
-    expect(screen.getByText('Login')).toBeVisible()
+    const loginButton = screen.getByRole('button', { name: 'Login' })
+
+    expect(loginButton).toBeVisible()
+    expect(loginButton).toHaveClass('AuthButton--guest')
+    expect(screen.queryByText('Login')).not.toBeInTheDocument()
+    fireEvent.click(loginButton)
+    expect(auth.login).toHaveBeenCalledTimes(1)
   })
 })
 
@@ -32,7 +40,15 @@ describe('Logged in', () => {
 
   test('Logout button', async () => {
     await renderLoggedIn()
-    expect(screen.getByText('Logout Test User')).toBeVisible()
+    const logoutButton = screen.getByRole('button', {
+      name: 'Logout Test User',
+    })
+
+    expect(logoutButton).toBeVisible()
+    expect(logoutButton).toHaveClass('AuthButton--authenticated')
+    expect(screen.queryByText('Logout Test User')).not.toBeInTheDocument()
+    fireEvent.click(logoutButton)
+    expect(auth.logout).toHaveBeenCalledTimes(1)
   })
 })
 
@@ -45,13 +61,11 @@ function commonTests(renderHeader: () => Promise<void>): void {
   })
 
   test.each([
-    ['Signs', '/signs'],
-    ['Dictionary', '/dictionary'],
     ['Library', '/library'],
-    ['Bibliography', '/bibliography'],
     ['Corpus', '/corpus'],
     ['About', '/about'],
     ['Tools', '/tools'],
+    ['Projects', '/projects'],
   ])('%s links to %s', async (title, href) => {
     await renderHeader()
     expect(screen.getByText(title)).toHaveAttribute('href', href)
@@ -67,28 +81,20 @@ describe('Unfocus Header Labels on clicking ebl Logo', () => {
 })
 describe('Correct element is active based on the route', () => {
   test('Logout button', async () => {
-    await renderHeader(true, 'bibliography')
-    expect(screen.getByText('Bibliography')).toHaveClass('active')
-    expectHeaderLabelNotActive('Bibliography')
-  })
-  test('correct element becomes active when clicking link on the header after redirect', async () => {
-    await renderHeader(true, 'bibliography')
-    fireEvent.click(screen.getByText('Library'))
+    await renderHeader(true, 'library')
     expect(screen.getByText('Library')).toHaveClass('active')
     expectHeaderLabelNotActive('Library')
+  })
+  test('correct element becomes active when clicking link on the header after redirect', async () => {
+    await renderHeader(true, 'library')
+    fireEvent.click(screen.getByText('About'))
+    expect(screen.getByText('About')).toHaveClass('active')
+    expectHeaderLabelNotActive('About')
   })
 })
 
 function expectHeaderLabelNotActive(activeLabel: string): void {
-  const allHeaderLabels = [
-    'Signs',
-    'Library',
-    'Bibliography',
-    'Dictionary',
-    'Corpus',
-    'About',
-    'Tools',
-  ]
+  const allHeaderLabels = ['Library', 'Corpus', 'About', 'Tools', 'Projects']
   allHeaderLabels
     .filter((label) => label !== activeLabel)
     .map((label) => expect(screen.getByText(label)).not.toHaveClass('active'))

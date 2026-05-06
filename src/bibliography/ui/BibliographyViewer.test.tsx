@@ -28,7 +28,7 @@ beforeEach(() => {
   })
   bibliographyService = { find: jest.fn() }
   history = createMemoryHistory({
-    initialEntries: [`/bibliography/references/${entryId}`],
+    initialEntries: [`/tools/references/${entryId}`],
   })
   bibliographyService.find.mockReturnValue(Promise.resolve(entry))
 
@@ -67,7 +67,7 @@ describe('BibliographyViewer', () => {
     fireEvent.click(await screen.findByText('Edit'))
     await waitFor(() =>
       expect(history.location.pathname).toBe(
-        `/bibliography/references/${entryId}/edit`,
+        `/tools/references/${entryId}/edit`,
       ),
     )
   })
@@ -119,12 +119,12 @@ describe('BibliographyViewer', () => {
 
   async function renderViewer() {
     const matchedPath = matchPath(
-      '/bibliography/references/:id',
-      `/bibliography/references/${entryId}`,
+      '/tools/references/:id',
+      `/tools/references/${entryId}`,
     )
     if (!matchedPath) throw new Error('Path did not match')
     render(
-      <MemoryRouter initialEntries={[`/bibliography/references/${entryId}`]}>
+      <MemoryRouter initialEntries={[`/tools/references/${entryId}`]}>
         <SessionContext.Provider value={session}>
           <BibliographyViewer
             match={{ params: { id: matchedPath.params.id ?? '' } }}

@@ -29,8 +29,10 @@ beforeEach(async () => {
 test('renders dictionary search page', () => {
   expect(appDriver.getView().container).toMatchSnapshot()
   expect(
-    appDriver.getView().getByRole('heading', { name: 'Dictionary' }),
-  ).toBeInTheDocument()
+    appDriver
+      .getView()
+      .getAllByRole('heading', { name: 'Akkadian Dictionary' }),
+  ).not.toHaveLength(0)
 })
 
 test.each([

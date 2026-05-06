@@ -68,6 +68,28 @@ const tabNames: TabName[] = [
   'permissions',
 ]
 
+const tabIcons: Record<TabName, string> = {
+  display: '𒀭',
+  edition: '✏',
+  lemmatization: 'Ꞌ',
+  'named entities': '⊛',
+  references: '§',
+  archaeology: '⛏',
+  colophon: '⊕',
+  permissions: '⊗',
+}
+
+function TabTitle({ name }: { name: TabName }): JSX.Element {
+  return (
+    <span className="CuneiformFragment__tab-title">
+      <span className="CuneiformFragment__tab-icon" aria-hidden="true">
+        {tabIcons[name]}
+      </span>
+      <span className="CuneiformFragment__tab-label">{_.startCase(name)}</span>
+    </span>
+  )
+}
+
 function EditorTab({
   children,
   name,
@@ -81,7 +103,7 @@ function EditorTab({
     <Tab
       key={name}
       eventKey={name}
-      title={_.startCase(name)}
+      title={<TabTitle name={name} />}
       disabled={disabled}
     >
       <ContentSection>{children}</ContentSection>
@@ -135,13 +157,6 @@ function isTabDisabled({
   )
 }
 
-function shouldShowTab(name: TabName, session: Session): boolean {
-  if (session.isGuestSession()) {
-    return name === 'display'
-  }
-  return true
-}
-
 export const EditorTabs: FunctionComponent<TabsProps> = ({
   disabled = false,
   ...props
@@ -150,9 +165,13 @@ export const EditorTabs: FunctionComponent<TabsProps> = ({
   return (
     <SessionContext.Consumer>
       {(session) => {
-        const visibleTabs = tabNames.filter((name) =>
-          shouldShowTab(name, session),
-        )
+        if (session.isGuestSession()) {
+          return (
+            <ContentSection>
+              {DisplayContents({ disabled, ...props })}
+            </ContentSection>
+          )
+        }
         return (
           <Tabs
             id={tabsId}
@@ -163,7 +182,7 @@ export const EditorTabs: FunctionComponent<TabsProps> = ({
             }
             mountOnEnter={true}
           >
-            {visibleTabs.map((name) => {
+            {tabNames.map((name) => {
               const children = TabContentsMatcher({
                 name,
                 props: { disabled, ...props },

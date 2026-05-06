@@ -158,7 +158,10 @@ function WordDisplay({
   )
   return (
     <AppContent
-      crumbs={[new SectionCrumb('Dictionary'), new TextCrumb(word._id)]}
+      crumbs={[
+        new SectionCrumb('Akkadian Dictionary'),
+        new TextCrumb(word._id),
+      ]}
       title={WordTitle({ word })}
     >
       <HeadTags

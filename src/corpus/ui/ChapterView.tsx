@@ -196,11 +196,13 @@ function ChapterView({
             chapter={chapter}
             markupService={markupService}
           />
-          {chapter.isPublished && <HowToCite chapter={chapter} />}
-          <section>
-            <h3>Edition</h3>
-            {chapterViewTable}
-          </section>
+          <div className="chapter-view">
+            {chapter.isPublished && <HowToCite chapter={chapter} />}
+            <section className="chapter-view__edition-section">
+              <h3 className="chapter-view__edition-heading">Edition</h3>
+              {chapterViewTable}
+            </section>
+          </div>
         </AppContent>
       </TranslationContext.Provider>
     </RowsContext.Provider>

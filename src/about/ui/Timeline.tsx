@@ -1,0 +1,103 @@
+import React, { useCallback, useEffect, useRef, useState } from 'react'
+import './Timeline.sass'
+
+export interface TimelineItem {
+  id: string
+  date: string
+  title: string
+  content: React.ReactElement
+  image?: string
+}
+
+interface TimelineProps {
+  items: TimelineItem[]
+}
+
+export default function Timeline({ items }: TimelineProps): JSX.Element {
+  const [visibleItems, setVisibleItems] = useState<Set<string>>(new Set())
+  const observerRef = useRef<IntersectionObserver | null>(null)
+  const itemRefs = useRef<Map<string, HTMLDivElement>>(new Map())
+
+  const setItemRef = useCallback(
+    (id: string) => (element: HTMLDivElement | null) => {
+      if (element) {
+        itemRefs.current.set(id, element)
+      } else {
+        itemRefs.current.delete(id)
+      }
+    },
+    [],
+  )
+
+  useEffect(() => {
+    if (
+      typeof window === 'undefined' ||
+      typeof window.IntersectionObserver !== 'function'
+    ) {
+      setVisibleItems(new Set(items.map((item) => item.id)))
+      return
+    }
+
+    observerRef.current = new window.IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setVisibleItems((prev) => new Set(prev).add(entry.target.id))
+          }
+        })
+      },
+      {
+        threshold: 0.1,
+        rootMargin: '0px 0px -100px 0px',
+      },
+    )
+
+    itemRefs.current.forEach((element) => {
+      observerRef.current?.observe(element)
+    })
+
+    return () => {
+      if (observerRef.current) {
+        observerRef.current.disconnect()
+        observerRef.current = null
+      }
+    }
+  }, [items])
+
+  return (
+    <div className="timeline">
+      <div className="timeline-line"></div>
+      {items.map((item, index) => {
+        const isLeft = index % 2 === 0
+        const isVisible = visibleItems.has(item.id)
+        const positionClass = isLeft
+          ? 'timeline-item--left'
+          : 'timeline-item--right'
+        const visibilityClass = isVisible ? 'timeline-item--visible' : ''
+
+        return (
+          <div
+            key={item.id}
+            id={item.id}
+            ref={setItemRef(item.id)}
+            className={`timeline-item ${positionClass} ${visibilityClass}`}
+          >
+            <div className="timeline-marker">
+              <div className="timeline-marker__dot"></div>
+              <div className="timeline-marker__ring"></div>
+            </div>
+            <div className="timeline-content">
+              <div className="timeline-content__header">
+                <time className="timeline-content__date" dateTime={item.date}>
+                  {item.date}
+                </time>
+                <h3 className="timeline-content__title">{item.title}</h3>
+              </div>
+              <div className="timeline-content__body">{item.content}</div>
+            </div>
+          </div>
+        )
+      })}
+    </div>
+  )
+}

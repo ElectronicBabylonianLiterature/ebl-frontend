@@ -1,11 +1,11 @@
 @mixin highlight-token
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)
-  transform: scale(1.15)
+  box-shadow: 0 2px 6px rgba(26, 95, 168, 0.25)
+  transform: scale(1.08)
   span[class^="Transliteration__"]
     color: black !important
 
-$info-blue: lightblue
-$confirm-green: rgb(40, 167, 69)
+$info-blue: #bdd7f5
+$confirm-green: #248a4c
 
 @mixin fade-to-blue
   animation: fadeBackground 1.75s ease-out forwards
@@ -30,7 +30,7 @@ $confirm-green: rgb(40, 167, 69)
 .lemmatizer
   &__text-col
     max-width: fit-content
-    min-width: 22em
+    min-width: min(22em, 100%)
 
   &__anno-tool
     margin-left: 0
@@ -50,22 +50,20 @@ $confirm-green: rgb(40, 167, 69)
   &__editor
     display: block
     position: relative
-    min-width: 22em
+    min-width: min(22em, 100%)
     overflow: visible
 
     &__col
       padding: 0
     &__row
-      display: flex
+      padding: 0 .5rem
       flex-wrap: nowrap
-      align-items: center
-      gap: 0.5rem
-      padding: 0 0.5rem
+      justify-content: space-between
     &__lemma-select
-      flex: 1
-      min-width: 0
+      flex-grow: 1
+      margin-right: 0.5rem
     &__action-button
-      flex-shrink: 0
+      align-items: flex-start
 
     &__footer
       justify-content: space-between

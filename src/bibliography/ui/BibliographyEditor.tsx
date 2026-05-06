@@ -8,7 +8,8 @@ import BibliographyEntry, {
 import { Crumb, SectionCrumb, TextCrumb } from 'common/ui/Breadcrumbs'
 import Promise from 'bluebird'
 import { Button } from 'react-bootstrap'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
+import { referencesEntryRoute } from 'bibliography/ui/referencesRouteContext'
 
 type Props = {
   data: BibliographyEntry
@@ -30,6 +31,7 @@ function BibliographyEditor({
   match,
 }: Props): JSX.Element {
   const navigate = useNavigate()
+  const location = useLocation()
   const entryId = match.params.id ?? ''
   const push = (path: string): void => {
     if (history) {
@@ -42,9 +44,7 @@ function BibliographyEditor({
   function createEntry(entry: BibliographyEntry): Promise<void> {
     return bibliographyService
       .create(entry)
-      .then(() =>
-        push(`/bibliography/references/${encodeURIComponent(entry.id)}`),
-      )
+      .then(() => push(referencesEntryRoute(location.pathname, entry.id)))
   }
 
   function updateEntry(entry: BibliographyEntry): Promise<BibliographyEntry> {
@@ -66,7 +66,9 @@ function BibliographyEditor({
         !create && (
           <Button
             variant="outline-primary"
-            onClick={() => push(`/bibliography/references/${entryId}`)}
+            onClick={() =>
+              push(referencesEntryRoute(location.pathname, entryId))
+            }
           >
             View
           </Button>

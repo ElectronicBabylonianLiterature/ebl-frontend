@@ -1,13 +1,119 @@
+.kings-tool
+  &__index-nav
+    display: flex
+    flex-wrap: wrap
+    gap: 0.5rem
+    margin-bottom: 1rem
+    padding: 0
+
+  &__index-link
+    font-size: 0.9rem
+    color: #0077be
+    text-decoration: underline
+    text-decoration-style: dotted
+    white-space: nowrap
+    transition: color 0.15s ease
+
+    &:hover
+      color: #0056b3
+      text-decoration-style: solid
+
+  &__intro
+    background: transparent
+    border: 0
+    border-radius: 0
+    padding: 0
+    margin-bottom: 1rem
+    color: #212529
+    line-height: 1.8
+
+  &__table
+    margin-bottom: 0
+
+  &__column-header
+    font-size: 0.78rem
+    text-transform: none
+    letter-spacing: normal
+    font-weight: 700
+    color: #212529
+    background: transparent
+    border-bottom: 1px solid #e9ecef
+    padding: 0.55rem 0.75rem
+
+  &__dynasty
+    background: transparent
+    border-top: 1px solid #e9ecef
+    border-bottom: 1px solid #e9ecef
+    padding: 0.6rem 0.75rem
+
+  &__dynasty-title
+    margin: 0
+    padding-bottom: 0
+    border-bottom: 0
+    font-size: 1rem
+    font-weight: 700
+    color: #212529
+
+  &__index
+    width: 3.5rem
+    color: #495057
+    font-weight: 700
+    text-align: right
+    vertical-align: top
+
+  &__name
+    color: #212529
+    font-weight: 500
+    vertical-align: top
+
+  &__date
+    color: #495057
+    font-size: 0.88rem
+    vertical-align: top
+
+.chronology-display
+  background: transparent
+  border: 0
+  border-radius: 0
+  overflow: visible
+  box-shadow: none
+
+  thead th
+    border-top: none
+
+  tbody tr
+    transition: background-color 0.18s ease
+
 td.chronology-display
-    vertical-align: middle
-    padding: 0px
+  vertical-align: middle
+  padding: 0.55rem 0.75rem
+  border-bottom: 1px solid #e9ecef
 
-    &__section
-        padding-bottom: 0px
+  &__section
+    padding-bottom: 0
 
-tr.kings:hover
-    background-color: lightgrey
+tr.kings
+  &:hover
+    background: rgba(0, 119, 190, 0.03)
+
+  td
+    border-bottom: 1px solid #e9ecef
 
 tr:not(:first-child) td.chronology-display__section
-    padding-top: 30px
+  padding-top: 1rem
+
+@media (max-width: 767px)
+  .kings-tool
+    &__column-header
+      font-size: 0.66rem
+      padding: 0.45rem 0.55rem
+
+    &__dynasty-title
+      font-size: 0.86rem
+
+    &__date
+      font-size: 0.8rem
+
+  td.chronology-display
+    padding: 0.48rem 0.55rem
 

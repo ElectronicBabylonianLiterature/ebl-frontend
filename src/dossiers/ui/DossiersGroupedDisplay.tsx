@@ -1,37 +1,107 @@
-import React, { useState, useRef } from 'react'
+import React, { useRef, useState } from 'react'
 import DossierRecord from 'dossiers/domain/DossierRecord'
 import _ from 'lodash'
-import { Overlay, Popover } from 'react-bootstrap'
-import { DossierRecordDisplay } from './DossiersDisplay'
 import InlineMarkdown from 'common/ui/InlineMarkdown'
+import { stringify } from 'query-string'
+import { PeriodModifiers, periods } from 'common/utils/period'
+import { Overlay, Popover } from 'react-bootstrap'
+import { DossierRecordDisplay } from 'dossiers/ui/DossiersDisplay'
 import './DossiersDisplay.sass'
 
 interface GroupedDossiers {
   [key: string]: DossierRecord[]
 }
 
+const collator = new Intl.Collator([], { numeric: true, sensitivity: 'base' })
+const scriptPeriodOrder: ReadonlyMap<string, number> = new Map(
+  periods.map((period, index) => [period.name, index]),
+)
+const unknownScriptPeriodOrder = periods.length
+
+function getPeriodName(record: DossierRecord): string {
+  return record.script?.period?.name || 'Unknown Period'
+}
+
+function getPeriodModifierName(record: DossierRecord): string | null {
+  const periodModifier = record.script?.periodModifier
+  if (!periodModifier || periodModifier.name === PeriodModifiers.None.name) {
+    return null
+  }
+  return periodModifier.name
+}
+
+function getProvenanceName(record: DossierRecord): string {
+  return record.provenance?.name || 'Unknown Provenance'
+}
+
+function getScriptDescription(record: DossierRecord): string {
+  const period = getPeriodName(record)
+  const modifier = getPeriodModifierName(record)
+  return modifier ? `${period} (${modifier})` : period
+}
+
+function getScriptPeriodOrder(record: DossierRecord): number {
+  const periodName = record.script?.period?.name
+  return !periodName
+    ? unknownScriptPeriodOrder
+    : (scriptPeriodOrder.get(periodName) ?? unknownScriptPeriodOrder)
+}
+
+function compareDossierRecords(
+  firstRecord: DossierRecord,
+  secondRecord: DossierRecord,
+): number {
+  const periodComparison =
+    getScriptPeriodOrder(firstRecord) - getScriptPeriodOrder(secondRecord)
+  if (periodComparison !== 0) {
+    return periodComparison
+  }
+
+  const provenanceComparison = collator.compare(
+    getProvenanceName(firstRecord),
+    getProvenanceName(secondRecord),
+  )
+  if (provenanceComparison !== 0) {
+    return provenanceComparison
+  }
+
+  const scriptComparison = collator.compare(
+    getScriptDescription(firstRecord),
+    getScriptDescription(secondRecord),
+  )
+  if (scriptComparison !== 0) {
+    return scriptComparison
+  }
+
+  return collator.compare(firstRecord.id, secondRecord.id)
+}
+
+function sortDossierRecords(
+  records: readonly DossierRecord[],
+): DossierRecord[] {
+  return [...records].sort(compareDossierRecords)
+}
+
+function createDossierSearchPath(recordId: string): string {
+  return `/library/search/?${stringify({ dossier: recordId })}`
+}
+
+function createDossierSearchLabel(recordId: string): string {
+  return `Open fragment search results for dossier ${recordId}`
+}
+
 function createGroupKey(record: DossierRecord): string {
-  const period = record.script?.period?.name || 'Unknown Period'
-  const modifier = record.script?.periodModifier?.name || ''
-  const provenance = record.provenance?.name || 'Unknown Provenance'
-
-  const scriptDescription = modifier ? `${period} (${modifier})` : period
-
-  return `${scriptDescription} — ${provenance}`
+  return `${getScriptDescription(record)} — ${getProvenanceName(record)}`
 }
 
 function createDisplayKey(
   record: DossierRecord,
   showProvenance: boolean,
 ): string {
-  const period = record.script?.period?.name || 'Unknown Period'
-  const modifier = record.script?.periodModifier?.name || ''
-  const provenance = record.provenance?.name || 'Unknown Provenance'
-
-  const scriptDescription = modifier ? `${period} (${modifier})` : period
+  const scriptDescription = getScriptDescription(record)
 
   if (showProvenance) {
-    return `${scriptDescription} — ${provenance}`
+    return `${scriptDescription} — ${getProvenanceName(record)}`
   }
   return scriptDescription
 }
@@ -39,7 +109,7 @@ function createDisplayKey(
 function groupDossiersByScriptAndProvenance(
   records: readonly DossierRecord[],
 ): GroupedDossiers {
-  return _.groupBy(records, createGroupKey)
+  return _.groupBy(sortDossierRecords(records), createGroupKey)
 }
 
 function DossierItem({
@@ -55,20 +125,31 @@ function DossierItem({
   activeDossier: string | null
   setActiveDossier: React.Dispatch<React.SetStateAction<string | null>>
 }): JSX.Element {
-  const target = useRef(null)
+  const target = useRef<HTMLButtonElement>(null)
   const dossierKey = `${groupIndex}-${index}`
   const isActive = activeDossier === dossierKey
+  const popoverId = `DossierPopover-${dossierKey}`
 
   return (
-    <>
-      <span
+    <span className={`dossier-records__item${isActive ? '__active' : ''}`}>
+      <button
         ref={target}
-        className={`dossier-records__item${isActive ? '__active' : ''}`}
+        type="button"
+        className="dossier-name"
         onClick={() => setActiveDossier(isActive ? null : dossierKey)}
+        aria-expanded={isActive}
+        aria-controls={popoverId}
       >
         {record.id}
-      </span>
-
+      </button>
+      <a
+        className="dossier-search-link"
+        href={createDossierSearchPath(record.id)}
+        aria-label={createDossierSearchLabel(record.id)}
+        title={createDossierSearchLabel(record.id)}
+      >
+        ⌕
+      </a>
       <Overlay
         target={target.current}
         placement="right"
@@ -77,17 +158,14 @@ function DossierItem({
         rootClose={true}
         rootCloseEvent="click"
       >
-        <Popover
-          id={`DossierPopover-${dossierKey}`}
-          className="reference-popover__popover"
-        >
+        <Popover id={popoverId} className="reference-popover__popover">
           <Popover.Header as="h3">{record.id}</Popover.Header>
           <Popover.Body>
             <DossierRecordDisplay record={record} index={index} />
           </Popover.Body>
         </Popover>
       </Overlay>
-    </>
+    </span>
   )
 }
 
@@ -115,8 +193,7 @@ function DossierGroup({
       <div className="dossier-group__items">
         <span className="dossier-prefix">Dossiers: </span>
         {records.map((record, index) => (
-          <React.Fragment key={`${groupIndex}-${index}`}>
-            {index > 0 && ', '}
+          <React.Fragment key={`${record.id}-${index}`}>
             <DossierItem
               record={record}
               index={index}
@@ -124,6 +201,7 @@ function DossierGroup({
               activeDossier={activeDossier}
               setActiveDossier={setActiveDossier}
             />
+            {index < records.length - 1 && ', '}
           </React.Fragment>
         ))}
       </div>

@@ -80,12 +80,10 @@ describe('DossierRecordsListDisplay', () => {
     ]
     render(<DossierRecordsListDisplay data={{ records }} />)
 
-    const dossierSpan = screen.getByText('test')
-    await userEvent.click(dossierSpan)
+    const dossierButton = screen.getByRole('button', { name: 'test' })
+    await userEvent.click(dossierButton)
 
-    expect(screen.getAllByText(/test/, { selector: 'span' })).toHaveLength(
-      records.length,
-    )
+    expect(screen.getAllByRole('button')).toHaveLength(records.length)
     expect(screen.getByText(/ca. 500 BCE - 470 BCE/)).toBeInTheDocument()
     const firstReferenceMarkdown = Citation.for(
       mockRecord.references[0],
@@ -100,6 +98,20 @@ describe('DossierRecordsListDisplay', () => {
     expect(
       screen.getByText(new RegExp(mockRecord.references[0].notes)),
     ).toBeInTheDocument()
+  })
+
+  it('opens dossier popups from the keyboard', async () => {
+    const records = [mockRecord]
+    const user = userEvent.setup()
+    render(<DossierRecordsListDisplay data={{ records }} />)
+
+    const dossierButton = screen.getByRole('button', { name: 'test' })
+
+    await user.tab()
+    expect(dossierButton).toHaveFocus()
+    await user.keyboard('{Enter}')
+
+    expect(await screen.findByRole('tooltip')).toBeInTheDocument()
   })
 })
 
@@ -118,8 +130,8 @@ describe('withData HOC integration', () => {
         fragment={mockFragment as Fragment}
       />,
     )
-    const dossierSpan = await screen.findByText(/test/)
-    await userEvent.click(dossierSpan)
+    const dossierButton = await screen.findByRole('button', { name: /test/ })
+    await userEvent.click(dossierButton)
     await screen.findByText(/Test description/)
     expect(mockDossiersService.queryByIds).toHaveBeenCalledWith(['test'])
   })

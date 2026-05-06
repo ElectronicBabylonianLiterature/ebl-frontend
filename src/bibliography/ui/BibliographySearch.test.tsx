@@ -14,7 +14,7 @@ const query = 'Börger'
 let bibliographyEntries: BibliographyEntry[]
 let bibliographyServiceMock
 
-async function renderBibliographySearchComponent() {
+async function renderBibliographySearchComponent(path = '/tools/references') {
   bibliographyEntries = bibliographyEntryFactory.buildList(2)
   bibliographyServiceMock = {
     search: jest.fn(),
@@ -23,7 +23,7 @@ async function renderBibliographySearchComponent() {
     Promise.resolve(bibliographyEntries),
   )
   render(
-    <MemoryRouter>
+    <MemoryRouter initialEntries={[path]}>
       <BibliographySearch
         query={query}
         bibliographyService={bibliographyServiceMock}
@@ -47,6 +47,21 @@ test('Display search results correctly', async () => {
     expectCitationToBeDisplayed(citation)
     expectAuthorToBeDisplayed(entry)
   })
+})
+
+test('uses tools references routes when rendered in tools context', async () => {
+  await renderBibliographySearchComponent('/tools/references')
+
+  const firstEntry = bibliographyEntries[0]
+  const citation = Citation.for(
+    createReferenceForEntry(firstEntry),
+  ).getMarkdown()
+  const citationLink = screen.getByRole('link', { name: citation })
+
+  expect(citationLink).toHaveAttribute(
+    'href',
+    `/tools/references/${encodeURIComponent(firstEntry.id)}`,
+  )
 })
 
 function createReferenceForEntry(entry: BibliographyEntry): Reference {

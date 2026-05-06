@@ -61,7 +61,7 @@ const renderSignColumn = (
           {label === 'center' ? (
             displayUnicode(item.unicode)
           ) : (
-            <a href={`/signs?listsName=MZL&listsNumber=${item.mzl}`}>
+            <a href={`/tools/signs?listsName=MZL&listsNumber=${item.mzl}`}>
               {displayUnicode(item.unicode)}
             </a>
           )}

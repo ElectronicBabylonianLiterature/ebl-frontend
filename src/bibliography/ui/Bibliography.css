@@ -3,6 +3,28 @@
   max-width: 32em;
 }
 
+.Bibliography__search-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.Bibliography__search-header .Bibliography__search {
+  margin: 0;
+  width: 32em;
+  max-width: 100%;
+}
+
+.Bibliography__about-link {
+  margin-top: 0.15rem;
+}
+
+.Bibliography__create-link {
+  margin-top: 0.15rem;
+  white-space: nowrap;
+}
+
 .AfoRegister__search {
   margin: 0 auto 2em;
   max-width: 38em;
@@ -14,4 +36,13 @@
   text-align: justify;
   padding: 0 4em;
   padding-bottom: 20px;
+}
+
+@media (max-width: 767px) {
+  .BibliographyReferences__introduction,
+  .AfoRegister__introduction,
+  .AfoRegister__search_results {
+    padding: 0 1rem;
+    padding-bottom: 20px;
+  }
 }

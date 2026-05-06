@@ -9,7 +9,7 @@ exports[`Edit 1`] = `
       class="Header"
     >
       <nav
-        class="navbar navbar-expand-md navbar-light"
+        class="navbar navbar-expand-lg navbar-light"
       >
         <div
           class="container"
@@ -58,40 +58,10 @@ exports[`Edit 1`] = `
               </small>
             </h1>
           </a>
-          <span
-            class="Header__logo-brand navbar-brand"
-          >
-            <div
-              class="Header__logo-container container"
-            >
-              <a
-                href="https://www.lmu.de"
-                rel="noopener noreferrer"
-                target="_blank"
-              >
-                <img
-                  alt="Ludwig-Maximilians-Universitat Munchen"
-                  class="Header__lmu-logo"
-                  src="LMU_Logo.svg"
-                />
-              </a>
-              <a
-                href="https://badw.de/"
-                rel="noopener noreferrer"
-                target="_blank"
-              >
-                <img
-                  alt="Bayerische Akademie der Wissenschaften"
-                  class="Header__badw-logo"
-                  src="BAdW_Logo.svg"
-                />
-              </a>
-            </div>
-          </span>
           <button
-            aria-controls="Header-51"
+            aria-controls="Header-55"
             aria-label="Toggle navigation"
-            class="navbar-toggler collapsed"
+            class="Header__toggle navbar-toggler collapsed"
             type="button"
           >
             <span
@@ -100,125 +70,131 @@ exports[`Edit 1`] = `
           </button>
           <div
             class="navbar-collapse collapse"
-            id="Header-51"
+            id="Header-55"
           >
             <div
-              class="d-flex justify-content-between"
-              id="navbar-container"
+              class="Header__nav mx-auto navbar-nav"
             >
               <div
-                class="Header__nav"
-                id="menu-lines"
+                class="nav-item"
               >
-                <div
-                  class="mx-auto Header__nav-row navbar-nav"
+                <a
+                  class="nav-link"
+                  data-rr-ui-event-key="/library"
+                  href="/library"
                 >
-                  <div
-                    class="nav-item"
-                  >
-                    <a
-                      class="nav-link"
-                      data-rr-ui-event-key="/signs"
-                      href="/signs"
-                    >
-                      Signs
-                    </a>
-                  </div>
-                  <div
-                    class="nav-item"
-                  >
-                    <a
-                      class="nav-link"
-                      data-rr-ui-event-key="/dictionary"
-                      href="/dictionary"
-                    >
-                      Dictionary
-                    </a>
-                  </div>
-                  <div
-                    class="nav-item"
-                  >
-                    <a
-                      class="nav-link"
-                      data-rr-ui-event-key="/corpus"
-                      href="/corpus"
-                    >
-                      Corpus
-                    </a>
-                  </div>
-                  <div
-                    class="nav-item"
-                  >
-                    <a
-                      class="nav-link"
-                      data-rr-ui-event-key="/library"
-                      href="/library"
-                    >
-                      Library
-                    </a>
-                  </div>
-                </div>
-                <div
-                  class="mx-auto Header__nav-row navbar-nav"
-                >
-                  <div
-                    class="nav-item"
-                  >
-                    <a
-                      class="nav-link"
-                      data-rr-ui-event-key="/about"
-                      href="/about"
-                    >
-                      About
-                    </a>
-                  </div>
-                  <div
-                    class="nav-item"
-                  >
-                    <a
-                      class="nav-link"
-                      data-rr-ui-event-key="/bibliography"
-                      href="/bibliography"
-                    >
-                      Bibliography
-                    </a>
-                  </div>
-                  <div
-                    class="nav-item"
-                  >
-                    <a
-                      class="nav-link"
-                      data-rr-ui-event-key="/tools"
-                      href="/tools"
-                    >
-                      Tools
-                    </a>
-                  </div>
-                  <div
-                    class="nav-item"
-                  >
-                    <a
-                      class="nav-link"
-                      data-rr-ui-event-key="/projects"
-                      href="/projects"
-                    >
-                      Projects
-                    </a>
-                  </div>
-                </div>
+                  Library
+                </a>
               </div>
-              <span
-                class="navbar-text"
-                id="user"
+              <div
+                class="nav-item"
+              >
+                <a
+                  class="nav-link"
+                  data-rr-ui-event-key="/corpus"
+                  href="/corpus"
+                >
+                  Corpus
+                </a>
+              </div>
+              <div
+                class="nav-item"
+              >
+                <a
+                  class="nav-link"
+                  data-rr-ui-event-key="/about"
+                  href="/about"
+                >
+                  About
+                </a>
+              </div>
+              <div
+                class="nav-item"
+              >
+                <a
+                  class="nav-link"
+                  data-rr-ui-event-key="/tools"
+                  href="/tools"
+                >
+                  Tools
+                </a>
+              </div>
+              <div
+                class="nav-item"
+              >
+                <a
+                  class="nav-link"
+                  data-rr-ui-event-key="/projects"
+                  href="/projects"
+                >
+                  Projects
+                </a>
+              </div>
+            </div>
+            <div
+              class="Header__right"
+            >
+              <div
+                class="Header__partner-logos"
+              >
+                <a
+                  class="Header__partner-logo-link"
+                  href="https://www.lmu.de"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  <img
+                    alt="Ludwig-Maximilians-Universitat Munchen"
+                    class="Header__lmu-logo"
+                    src="LMU_Logo.svg"
+                  />
+                </a>
+                <span
+                  aria-hidden="true"
+                  class="Header__logo-divider"
+                />
+                <a
+                  class="Header__partner-logo-link"
+                  href="https://badw.de/"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  <img
+                    alt="Bayerische Akademie der Wissenschaften"
+                    class="Header__badw-logo"
+                    src="BAdW_Logo.svg"
+                  />
+                </a>
+              </div>
+              <div
+                class="Header__user"
               >
                 <button
-                  class="btn btn-outline-secondary btn-sm"
+                  aria-label="Logout Test"
+                  class="AuthButton AuthButton--authenticated btn btn-outline-secondary btn-sm"
+                  title="Logout Test"
                   type="button"
                 >
-                  Logout 
-                  Test
+                  <svg
+                    aria-hidden="true"
+                    class="AuthButton__icon"
+                    focusable="false"
+                    viewBox="0 0 24 24"
+                  >
+                    <circle
+                      cx="9"
+                      cy="7"
+                      r="4"
+                    />
+                    <path
+                      d="M3 21a6 6 0 0 1 12 0"
+                    />
+                    <path
+                      d="M16 11l2 2 4-4"
+                    />
+                  </svg>
                 </button>
-              </span>
+              </div>
             </div>
           </div>
         </div>
@@ -253,9 +229,9 @@ exports[`Edit 1`] = `
                 class="breadcrumb-item"
               >
                 <a
-                  href="/dictionary"
+                  href="/tools/dictionary"
                 >
-                  Dictionary
+                  Akkadian Dictionary
                 </a>
               </li>
               <li
@@ -298,7 +274,7 @@ exports[`Edit 1`] = `
             <div>
               <label
                 class="form-label"
-                for="LemmaInput-52"
+                for="LemmaInput-56"
               >
                 Lemma
               </label>
@@ -315,14 +291,14 @@ exports[`Edit 1`] = `
                       aria-label="attested"
                       checked=""
                       class="form-check-input"
-                      id="LemmaInput-attested-53"
+                      id="LemmaInput-attested-57"
                       type="checkbox"
                     />
                   </div>
                 </span>
                 <input
                   class="form-control"
-                  id="LemmaInput-52"
+                  id="LemmaInput-56"
                   type="text"
                   value="test"
                 />
@@ -331,13 +307,13 @@ exports[`Edit 1`] = `
             <div>
               <label
                 class="form-label"
-                for="TextInput-133"
+                for="TextInput-137"
               >
                 Legacy Lemma
               </label>
               <input
                 class="form-control"
-                id="TextInput-133"
+                id="TextInput-137"
                 type="text"
                 value="new lemma"
               />
@@ -345,13 +321,13 @@ exports[`Edit 1`] = `
             <div>
               <label
                 class="form-label"
-                for="TextInput-134"
+                for="TextInput-138"
               >
                 Homonym
               </label>
               <input
                 class="form-control"
-                id="TextInput-134"
+                id="TextInput-138"
                 type="text"
                 value="I"
               />
@@ -360,13 +336,13 @@ exports[`Edit 1`] = `
               <div>
                 <label
                   class="form-label"
-                  for="PosInput-135"
+                  for="PosInput-139"
                 >
                   Position of speech
                 </label>
                 <select
                   class="form-control"
-                  id="PosInput-135"
+                  id="PosInput-139"
                   multiple=""
                 >
                   <option
@@ -552,7 +528,7 @@ exports[`Edit 1`] = `
                       class="card-header"
                     >
                       <span
-                        aria-controls="List-collapse-57"
+                        aria-controls="List-collapse-61"
                         aria-expanded="true"
                         class="List__toggle"
                       >
@@ -572,7 +548,7 @@ exports[`Edit 1`] = `
                     </div>
                     <div
                       class="collapse show"
-                      id="List-collapse-57"
+                      id="List-collapse-61"
                     >
                       <ul
                         class="list-group list-group-flush"
@@ -583,7 +559,7 @@ exports[`Edit 1`] = `
                           <div>
                             <input
                               class="form-control"
-                              id="TextInput-136"
+                              id="TextInput-140"
                               type="text"
                               value="wb'"
                             />
@@ -601,7 +577,7 @@ exports[`Edit 1`] = `
                           <div>
                             <input
                               class="form-control"
-                              id="TextInput-137"
+                              id="TextInput-141"
                               type="text"
                               value="'b'"
                             />
@@ -632,13 +608,13 @@ exports[`Edit 1`] = `
             <div>
               <label
                 class="form-label"
-                for="TextInput-138"
+                for="TextInput-142"
               >
                 Meaning
               </label>
               <input
                 class="form-control"
-                id="TextInput-138"
+                id="TextInput-142"
                 type="text"
                 value="\\\\~ \\"to weed\\" O/jB"
               />
@@ -655,7 +631,7 @@ exports[`Edit 1`] = `
                     class="card-header"
                   >
                     <span
-                      aria-controls="List-collapse-61"
+                      aria-controls="List-collapse-65"
                       aria-expanded="true"
                       class="List__toggle"
                     >
@@ -675,126 +651,11 @@ exports[`Edit 1`] = `
                   </div>
                   <div
                     class="collapse show"
-                    id="List-collapse-61"
+                    id="List-collapse-65"
                   >
                     <ul
                       class="list-group list-group-flush"
                     >
-                      <li
-                        class="list-group-item"
-                      >
-                        <div>
-                          <div>
-                            <label
-                              class="form-label"
-                              for="LemmaInput-62"
-                            >
-                              Lemma
-                            </label>
-                            <div
-                              class="input-group"
-                            >
-                              <span
-                                class="input-group-text"
-                              >
-                                <div
-                                  class=""
-                                >
-                                  <input
-                                    aria-label="attested"
-                                    checked=""
-                                    class="form-check-input"
-                                    id="LemmaInput-attested-63"
-                                    type="checkbox"
-                                  />
-                                </div>
-                              </span>
-                              <input
-                                class="form-control"
-                                id="LemmaInput-62"
-                                type="text"
-                                value=""
-                              />
-                            </div>
-                          </div>
-                          <div>
-                            <div
-                              class="List"
-                            >
-                              <div
-                                class="card border-light"
-                              >
-                                <div
-                                  class="card-header"
-                                >
-                                  <span
-                                    aria-controls="List-collapse-64"
-                                    aria-expanded="true"
-                                    class="List__toggle"
-                                  >
-                                    Notes
-                                     
-                                    <span
-                                      class="badge rounded-pill bg-light"
-                                    >
-                                      1
-                                    </span>
-                                     
-                                    <i
-                                      class="fas fa-angle-up"
-                                      data-testid="CollapseIndicator"
-                                    />
-                                  </span>
-                                </div>
-                                <div
-                                  class="collapse show"
-                                  id="List-collapse-64"
-                                >
-                                  <ul
-                                    class="list-group list-group-flush"
-                                  >
-                                    <li
-                                      class="list-group-item"
-                                    >
-                                      <div>
-                                        <input
-                                          class="form-control"
-                                          id="TextInput-139"
-                                          type="text"
-                                          value="dsdsds"
-                                        />
-                                      </div>
-                                      <button
-                                        class="btn btn-outline-secondary btn-sm"
-                                        type="button"
-                                      >
-                                        Delete
-                                      </button>
-                                    </li>
-                                  </ul>
-                                  <div
-                                    class="card-body"
-                                  >
-                                    <button
-                                      class="btn btn-outline-secondary btn-sm"
-                                      type="button"
-                                    >
-                                      Add
-                                    </button>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                        <button
-                          class="btn btn-outline-secondary btn-sm"
-                          type="button"
-                        >
-                          Delete
-                           form
-                        </button>
-                      </li>
                       <li
                         class="list-group-item"
                       >
@@ -828,7 +689,7 @@ exports[`Edit 1`] = `
                                 class="form-control"
                                 id="LemmaInput-66"
                                 type="text"
-                                value="abā'um"
+                                value=""
                               />
                             </div>
                           </div>
@@ -874,7 +735,122 @@ exports[`Edit 1`] = `
                                       <div>
                                         <input
                                           class="form-control"
-                                          id="TextInput-140"
+                                          id="TextInput-143"
+                                          type="text"
+                                          value="dsdsds"
+                                        />
+                                      </div>
+                                      <button
+                                        class="btn btn-outline-secondary btn-sm"
+                                        type="button"
+                                      >
+                                        Delete
+                                      </button>
+                                    </li>
+                                  </ul>
+                                  <div
+                                    class="card-body"
+                                  >
+                                    <button
+                                      class="btn btn-outline-secondary btn-sm"
+                                      type="button"
+                                    >
+                                      Add
+                                    </button>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <button
+                          class="btn btn-outline-secondary btn-sm"
+                          type="button"
+                        >
+                          Delete
+                           form
+                        </button>
+                      </li>
+                      <li
+                        class="list-group-item"
+                      >
+                        <div>
+                          <div>
+                            <label
+                              class="form-label"
+                              for="LemmaInput-70"
+                            >
+                              Lemma
+                            </label>
+                            <div
+                              class="input-group"
+                            >
+                              <span
+                                class="input-group-text"
+                              >
+                                <div
+                                  class=""
+                                >
+                                  <input
+                                    aria-label="attested"
+                                    checked=""
+                                    class="form-check-input"
+                                    id="LemmaInput-attested-71"
+                                    type="checkbox"
+                                  />
+                                </div>
+                              </span>
+                              <input
+                                class="form-control"
+                                id="LemmaInput-70"
+                                type="text"
+                                value="abā'um"
+                              />
+                            </div>
+                          </div>
+                          <div>
+                            <div
+                              class="List"
+                            >
+                              <div
+                                class="card border-light"
+                              >
+                                <div
+                                  class="card-header"
+                                >
+                                  <span
+                                    aria-controls="List-collapse-72"
+                                    aria-expanded="true"
+                                    class="List__toggle"
+                                  >
+                                    Notes
+                                     
+                                    <span
+                                      class="badge rounded-pill bg-light"
+                                    >
+                                      1
+                                    </span>
+                                     
+                                    <i
+                                      class="fas fa-angle-up"
+                                      data-testid="CollapseIndicator"
+                                    />
+                                  </span>
+                                </div>
+                                <div
+                                  class="collapse show"
+                                  id="List-collapse-72"
+                                >
+                                  <ul
+                                    class="list-group list-group-flush"
+                                  >
+                                    <li
+                                      class="list-group-item"
+                                    >
+                                      <div>
+                                        <input
+                                          class="form-control"
+                                          id="TextInput-144"
                                           type="text"
                                           value="**BOLD**"
                                         />
@@ -938,7 +914,7 @@ exports[`Edit 1`] = `
                     class="card-header"
                   >
                     <span
-                      aria-controls="List-collapse-70"
+                      aria-controls="List-collapse-74"
                       aria-expanded="true"
                       class="List__toggle"
                     >
@@ -958,7 +934,7 @@ exports[`Edit 1`] = `
                   </div>
                   <div
                     class="collapse show"
-                    id="List-collapse-70"
+                    id="List-collapse-74"
                   >
                     <ul
                       class="list-group list-group-flush"
@@ -969,13 +945,13 @@ exports[`Edit 1`] = `
                         <div>
                           <label
                             class="form-label"
-                            for="TextInput-141"
+                            for="TextInput-145"
                           >
                             Conjugation/Function
                           </label>
                           <input
                             class="form-control"
-                            id="TextInput-141"
+                            id="TextInput-145"
                             type="text"
                             value="G"
                           />
@@ -983,13 +959,13 @@ exports[`Edit 1`] = `
                         <div>
                           <label
                             class="form-label"
-                            for="TextInput-142"
+                            for="TextInput-146"
                           >
                             Meaning
                           </label>
                           <input
                             class="form-control"
-                            id="TextInput-142"
+                            id="TextInput-146"
                             type="text"
                             value="(*i/i*) field"
                           />
@@ -1003,7 +979,7 @@ exports[`Edit 1`] = `
                             >
                               <div
                                 class="collapse show"
-                                id="List-collapse-73"
+                                id="List-collapse-77"
                               >
                                 <ul
                                   class="list-group list-group-flush"
@@ -1014,13 +990,13 @@ exports[`Edit 1`] = `
                                     <div>
                                       <label
                                         class="form-label"
-                                        for="ArrayInput-74"
+                                        for="ArrayInput-78"
                                       >
                                         Vowels
                                       </label>
                                       <input
                                         class="form-control"
-                                        id="ArrayInput-74"
+                                        id="ArrayInput-78"
                                         type="text"
                                         value="i/i"
                                       />
@@ -1036,7 +1012,7 @@ exports[`Edit 1`] = `
                                             class="card-header"
                                           >
                                             <span
-                                              aria-controls="List-collapse-75"
+                                              aria-controls="List-collapse-79"
                                               aria-expanded="true"
                                               class="List__toggle"
                                             >
@@ -1056,7 +1032,7 @@ exports[`Edit 1`] = `
                                           </div>
                                           <div
                                             class="collapse show"
-                                            id="List-collapse-75"
+                                            id="List-collapse-79"
                                           >
                                             <ul
                                               class="list-group list-group-flush"
@@ -1067,7 +1043,7 @@ exports[`Edit 1`] = `
                                                 <div>
                                                   <input
                                                     class="form-control"
-                                                    id="TextInput-143"
+                                                    id="TextInput-147"
                                                     type="text"
                                                     value="dsdsds"
                                                   />
@@ -1129,7 +1105,7 @@ exports[`Edit 1`] = `
                                 class="card-header"
                               >
                                 <span
-                                  aria-controls="List-collapse-77"
+                                  aria-controls="List-collapse-81"
                                   aria-expanded="true"
                                   class="List__toggle"
                                 >
@@ -1149,7 +1125,7 @@ exports[`Edit 1`] = `
                               </div>
                               <div
                                 class="collapse show"
-                                id="List-collapse-77"
+                                id="List-collapse-81"
                               >
                                 <ol
                                   class="list-group list-group-flush"
@@ -1160,13 +1136,13 @@ exports[`Edit 1`] = `
                                     <div>
                                       <label
                                         class="form-label"
-                                        for="TextInput-144"
+                                        for="TextInput-148"
                                       >
                                         Meaning
                                       </label>
                                       <input
                                         class="form-control"
-                                        id="TextInput-144"
+                                        id="TextInput-148"
                                         type="text"
                                         value="mmkkk"
                                       />
@@ -1180,7 +1156,7 @@ exports[`Edit 1`] = `
                                         >
                                           <div
                                             class="collapse show"
-                                            id="List-collapse-79"
+                                            id="List-collapse-83"
                                           >
                                             <ul
                                               class="list-group list-group-flush"
@@ -1191,13 +1167,13 @@ exports[`Edit 1`] = `
                                                 <div>
                                                   <label
                                                     class="form-label"
-                                                    for="ArrayInput-80"
+                                                    for="ArrayInput-84"
                                                   >
                                                     Vowels
                                                   </label>
                                                   <input
                                                     class="form-control"
-                                                    id="ArrayInput-80"
+                                                    id="ArrayInput-84"
                                                     type="text"
                                                     value=""
                                                   />
@@ -1213,7 +1189,7 @@ exports[`Edit 1`] = `
                                                         class="card-header"
                                                       >
                                                         <span
-                                                          aria-controls="List-collapse-81"
+                                                          aria-controls="List-collapse-85"
                                                           aria-expanded="true"
                                                           class="List__toggle"
                                                         >
@@ -1228,7 +1204,7 @@ exports[`Edit 1`] = `
                                                       </div>
                                                       <div
                                                         class="collapse show"
-                                                        id="List-collapse-81"
+                                                        id="List-collapse-85"
                                                       >
                                                         <ul
                                                           class="list-group list-group-flush"
@@ -1329,7 +1305,7 @@ exports[`Edit 1`] = `
                 >
                   <div
                     class="collapse show"
-                    id="List-collapse-82"
+                    id="List-collapse-86"
                   >
                     <ul
                       class="list-group list-group-flush"
@@ -1340,13 +1316,13 @@ exports[`Edit 1`] = `
                         <div>
                           <label
                             class="form-label"
-                            for="ArrayInput-83"
+                            for="ArrayInput-87"
                           >
                             Logogram
                           </label>
                           <input
                             class="form-control"
-                            id="ArrayInput-83"
+                            id="ArrayInput-87"
                             type="text"
                             value=""
                           />
@@ -1362,7 +1338,7 @@ exports[`Edit 1`] = `
                                 class="card-header"
                               >
                                 <span
-                                  aria-controls="List-collapse-84"
+                                  aria-controls="List-collapse-88"
                                   aria-expanded="true"
                                   class="List__toggle"
                                 >
@@ -1382,7 +1358,7 @@ exports[`Edit 1`] = `
                               </div>
                               <div
                                 class="collapse show"
-                                id="List-collapse-84"
+                                id="List-collapse-88"
                               >
                                 <ul
                                   class="list-group list-group-flush"
@@ -1393,7 +1369,7 @@ exports[`Edit 1`] = `
                                     <div>
                                       <input
                                         class="form-control"
-                                        id="TextInput-145"
+                                        id="TextInput-149"
                                         type="text"
                                         value="dsadas"
                                       />
@@ -1456,7 +1432,7 @@ exports[`Edit 1`] = `
                     class="card-header"
                   >
                     <span
-                      aria-controls="List-collapse-86"
+                      aria-controls="List-collapse-90"
                       aria-expanded="true"
                       class="List__toggle"
                     >
@@ -1476,7 +1452,7 @@ exports[`Edit 1`] = `
                   </div>
                   <div
                     class="collapse show"
-                    id="List-collapse-86"
+                    id="List-collapse-90"
                   >
                     <ul
                       class="list-group list-group-flush"
@@ -1495,7 +1471,7 @@ exports[`Edit 1`] = `
                                 class="card-header"
                               >
                                 <span
-                                  aria-controls="List-collapse-87"
+                                  aria-controls="List-collapse-91"
                                   aria-expanded="true"
                                   class="List__toggle"
                                 >
@@ -1516,7 +1492,7 @@ exports[`Edit 1`] = `
                               </div>
                               <div
                                 class="collapse show"
-                                id="List-collapse-87"
+                                id="List-collapse-91"
                               >
                                 <ul
                                   class="list-group list-group-flush"
@@ -1528,13 +1504,13 @@ exports[`Edit 1`] = `
                                       <div>
                                         <label
                                           class="form-label"
-                                          for="LemmaInput-88"
+                                          for="LemmaInput-92"
                                         >
                                           Lemma
                                         </label>
                                         <input
                                           class="form-control"
-                                          id="LemmaInput-88"
+                                          id="LemmaInput-92"
                                           type="text"
                                           value="wabûtu"
                                         />
@@ -1542,13 +1518,13 @@ exports[`Edit 1`] = `
                                       <div>
                                         <label
                                           class="form-label"
-                                          for="TextInput-146"
+                                          for="TextInput-150"
                                         >
                                           Homonym
                                         </label>
                                         <input
                                           class="form-control"
-                                          id="TextInput-146"
+                                          id="TextInput-150"
                                           type="text"
                                           value="I"
                                         />
@@ -1564,7 +1540,7 @@ exports[`Edit 1`] = `
                                               class="card-header"
                                             >
                                               <span
-                                                aria-controls="List-collapse-91"
+                                                aria-controls="List-collapse-95"
                                                 aria-expanded="true"
                                                 class="List__toggle"
                                               >
@@ -1579,7 +1555,7 @@ exports[`Edit 1`] = `
                                             </div>
                                             <div
                                               class="collapse show"
-                                              id="List-collapse-91"
+                                              id="List-collapse-95"
                                             >
                                               <ul
                                                 class="list-group list-group-flush"
@@ -1663,13 +1639,13 @@ exports[`Edit 1`] = `
                   <div>
                     <label
                       class="form-label"
-                      for="LemmaInput-92"
+                      for="LemmaInput-96"
                     >
                       Lemma
                     </label>
                     <input
                       class="form-control"
-                      id="LemmaInput-92"
+                      id="LemmaInput-96"
                       type="text"
                       value="sadasd"
                     />
@@ -1677,13 +1653,13 @@ exports[`Edit 1`] = `
                   <div>
                     <label
                       class="form-label"
-                      for="TextInput-147"
+                      for="TextInput-151"
                     >
                       Homonym
                     </label>
                     <input
                       class="form-control"
-                      id="TextInput-147"
+                      id="TextInput-151"
                       type="text"
                       value=""
                     />
@@ -1699,7 +1675,7 @@ exports[`Edit 1`] = `
                           class="card-header"
                         >
                           <span
-                            aria-controls="List-collapse-95"
+                            aria-controls="List-collapse-99"
                             aria-expanded="true"
                             class="List__toggle"
                           >
@@ -1719,7 +1695,7 @@ exports[`Edit 1`] = `
                         </div>
                         <div
                           class="collapse show"
-                          id="List-collapse-95"
+                          id="List-collapse-99"
                         >
                           <ul
                             class="list-group list-group-flush"
@@ -1730,7 +1706,7 @@ exports[`Edit 1`] = `
                               <div>
                                 <input
                                   class="form-control"
-                                  id="TextInput-148"
+                                  id="TextInput-152"
                                   type="text"
                                   value=""
                                 />
@@ -1770,13 +1746,13 @@ exports[`Edit 1`] = `
             <div>
               <label
                 class="form-label"
-                for="TextInput-149"
+                for="TextInput-153"
               >
                 Guide Word
               </label>
               <input
                 class="form-control"
-                id="TextInput-149"
+                id="TextInput-153"
                 type="text"
                 value="weed"
               />
@@ -1792,7 +1768,7 @@ exports[`Edit 1`] = `
                     class="card-header"
                   >
                     <span
-                      aria-controls="List-collapse-98"
+                      aria-controls="List-collapse-102"
                       aria-expanded="true"
                       class="List__toggle"
                     >
@@ -1807,7 +1783,7 @@ exports[`Edit 1`] = `
                   </div>
                   <div
                     class="collapse show"
-                    id="List-collapse-98"
+                    id="List-collapse-102"
                   >
                     <ul
                       class="list-group list-group-flush"
@@ -1840,30 +1816,238 @@ exports[`Edit 1`] = `
     <footer
       class="main-footer"
     >
-      <ol
-        class="breadcrumb"
+      <div
+        class="container"
       >
-        <li
-          class="nav-item"
+        <div
+          class="main-footer__content row"
         >
-          <a
-            class="nav-link"
-            href="/impressum"
+          <div
+            class="main-footer__section col-md-3"
           >
-            Impressum
-          </a>
-        </li>
-        <li
-          class="nav-item"
+            <h6
+              class="main-footer__title"
+            >
+              About eBL
+            </h6>
+            <ul
+              class="main-footer__links"
+            >
+              <li>
+                <a
+                  href="/about"
+                >
+                  About
+                </a>
+              </li>
+              <li>
+                <a
+                  href="/projects"
+                >
+                  Research Projects
+                </a>
+              </li>
+              <li>
+                <a
+                  href="https://caic.badw.de"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  CAIC
+                </a>
+              </li>
+            </ul>
+          </div>
+          <div
+            class="main-footer__section col-md-3"
+          >
+            <h6
+              class="main-footer__title"
+            >
+              Resources
+            </h6>
+            <ul
+              class="main-footer__links"
+            >
+              <li>
+                <a
+                  href="/tools/signs"
+                >
+                  Signs
+                </a>
+              </li>
+              <li>
+                <a
+                  href="/tools/dictionary"
+                >
+                  Dictionary
+                </a>
+              </li>
+              <li>
+                <a
+                  href="/tools/references"
+                >
+                  Bibliography
+                </a>
+              </li>
+            </ul>
+          </div>
+          <div
+            class="main-footer__section col-md-3"
+          >
+            <h6
+              class="main-footer__title"
+            >
+              Legal
+            </h6>
+            <ul
+              class="main-footer__links"
+            >
+              <li>
+                <a
+                  href="/impressum"
+                >
+                  Impressum
+                </a>
+              </li>
+              <li>
+                <a
+                  href="/datenschutz"
+                >
+                  Datenschutz
+                </a>
+              </li>
+            </ul>
+          </div>
+          <div
+            class="main-footer__section col-md-3"
+          >
+            <h6
+              class="main-footer__title"
+            >
+              Connect
+            </h6>
+            <div
+              class="main-footer__social"
+            >
+              <a
+                aria-label="eBL on X"
+                class="main-footer__social-link"
+                href="https://twitter.com/ebl_info"
+                rel="noopener noreferrer"
+                target="_blank"
+                title="eBL on X (Twitter)"
+              >
+                <svg
+                  height="20"
+                  viewBox="0 0 24 24"
+                  width="20"
+                >
+                  <path
+                    d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"
+                    fill="currentColor"
+                  />
+                </svg>
+              </a>
+              <a
+                aria-label="CAIC on Facebook"
+                class="main-footer__social-link"
+                href="https://www.facebook.com/profile.php?id=61556323986355"
+                rel="noopener noreferrer"
+                target="_blank"
+                title="CAIC on Facebook"
+              >
+                <svg
+                  height="20"
+                  viewBox="0 0 24 24"
+                  width="20"
+                >
+                  <path
+                    d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"
+                    fill="currentColor"
+                  />
+                </svg>
+              </a>
+            </div>
+          </div>
+        </div>
+        <div
+          class="main-footer__bottom row"
         >
-          <a
-            class="nav-link"
-            href="/datenschutz"
+          <div
+            class="col"
           >
-            Datenschutz
-          </a>
-        </li>
-      </ol>
+            <div
+              class="main-footer__partners"
+            >
+              <a
+                class="main-footer__partner-link"
+                href="https://badw.de/"
+                rel="noopener noreferrer"
+                target="_blank"
+                title="Bayerische Akademie der Wissenschaften"
+              >
+                BAdW
+              </a>
+              <span
+                class="main-footer__separator"
+              >
+                ·
+              </span>
+              <a
+                class="main-footer__partner-link"
+                href="https://www.lmu.de/"
+                rel="noopener noreferrer"
+                target="_blank"
+                title="Ludwig-Maximilians-Universität München"
+              >
+                LMU
+              </a>
+              <span
+                class="main-footer__separator"
+              >
+                ·
+              </span>
+              <a
+                class="main-footer__partner-link"
+                href="https://www.lrz.de/"
+                rel="noopener noreferrer"
+                target="_blank"
+                title="Leibniz-Rechenzentrum"
+              >
+                LRZ
+              </a>
+              <span
+                class="main-footer__separator"
+              >
+                ·
+              </span>
+              <a
+                class="main-footer__partner-link"
+                href="https://www.humboldt-foundation.de/"
+                rel="noopener noreferrer"
+                target="_blank"
+                title="Alexander von Humboldt Stiftung"
+              >
+                AvH
+              </a>
+            </div>
+          </div>
+        </div>
+        <div
+          class="main-footer__copyright row"
+        >
+          <div
+            class="col"
+          >
+            <p>
+              © 
+              2026
+               electronic Babylonian Library
+            </p>
+          </div>
+        </div>
+      </div>
     </footer>
   </div>
 </div>
@@ -1878,7 +2062,7 @@ exports[`renders editor 1`] = `
       class="Header"
     >
       <nav
-        class="navbar navbar-expand-md navbar-light"
+        class="navbar navbar-expand-lg navbar-light"
       >
         <div
           class="container"
@@ -1927,40 +2111,10 @@ exports[`renders editor 1`] = `
               </small>
             </h1>
           </a>
-          <span
-            class="Header__logo-brand navbar-brand"
-          >
-            <div
-              class="Header__logo-container container"
-            >
-              <a
-                href="https://www.lmu.de"
-                rel="noopener noreferrer"
-                target="_blank"
-              >
-                <img
-                  alt="Ludwig-Maximilians-Universitat Munchen"
-                  class="Header__lmu-logo"
-                  src="LMU_Logo.svg"
-                />
-              </a>
-              <a
-                href="https://badw.de/"
-                rel="noopener noreferrer"
-                target="_blank"
-              >
-                <img
-                  alt="Bayerische Akademie der Wissenschaften"
-                  class="Header__badw-logo"
-                  src="BAdW_Logo.svg"
-                />
-              </a>
-            </div>
-          </span>
           <button
-            aria-controls="Header-2"
+            aria-controls="Header-4"
             aria-label="Toggle navigation"
-            class="navbar-toggler collapsed"
+            class="Header__toggle navbar-toggler collapsed"
             type="button"
           >
             <span
@@ -1969,125 +2123,131 @@ exports[`renders editor 1`] = `
           </button>
           <div
             class="navbar-collapse collapse"
-            id="Header-2"
+            id="Header-4"
           >
             <div
-              class="d-flex justify-content-between"
-              id="navbar-container"
+              class="Header__nav mx-auto navbar-nav"
             >
               <div
-                class="Header__nav"
-                id="menu-lines"
+                class="nav-item"
               >
-                <div
-                  class="mx-auto Header__nav-row navbar-nav"
+                <a
+                  class="nav-link"
+                  data-rr-ui-event-key="/library"
+                  href="/library"
                 >
-                  <div
-                    class="nav-item"
-                  >
-                    <a
-                      class="nav-link"
-                      data-rr-ui-event-key="/signs"
-                      href="/signs"
-                    >
-                      Signs
-                    </a>
-                  </div>
-                  <div
-                    class="nav-item"
-                  >
-                    <a
-                      class="nav-link"
-                      data-rr-ui-event-key="/dictionary"
-                      href="/dictionary"
-                    >
-                      Dictionary
-                    </a>
-                  </div>
-                  <div
-                    class="nav-item"
-                  >
-                    <a
-                      class="nav-link"
-                      data-rr-ui-event-key="/corpus"
-                      href="/corpus"
-                    >
-                      Corpus
-                    </a>
-                  </div>
-                  <div
-                    class="nav-item"
-                  >
-                    <a
-                      class="nav-link"
-                      data-rr-ui-event-key="/library"
-                      href="/library"
-                    >
-                      Library
-                    </a>
-                  </div>
-                </div>
-                <div
-                  class="mx-auto Header__nav-row navbar-nav"
-                >
-                  <div
-                    class="nav-item"
-                  >
-                    <a
-                      class="nav-link"
-                      data-rr-ui-event-key="/about"
-                      href="/about"
-                    >
-                      About
-                    </a>
-                  </div>
-                  <div
-                    class="nav-item"
-                  >
-                    <a
-                      class="nav-link"
-                      data-rr-ui-event-key="/bibliography"
-                      href="/bibliography"
-                    >
-                      Bibliography
-                    </a>
-                  </div>
-                  <div
-                    class="nav-item"
-                  >
-                    <a
-                      class="nav-link"
-                      data-rr-ui-event-key="/tools"
-                      href="/tools"
-                    >
-                      Tools
-                    </a>
-                  </div>
-                  <div
-                    class="nav-item"
-                  >
-                    <a
-                      class="nav-link"
-                      data-rr-ui-event-key="/projects"
-                      href="/projects"
-                    >
-                      Projects
-                    </a>
-                  </div>
-                </div>
+                  Library
+                </a>
               </div>
-              <span
-                class="navbar-text"
-                id="user"
+              <div
+                class="nav-item"
+              >
+                <a
+                  class="nav-link"
+                  data-rr-ui-event-key="/corpus"
+                  href="/corpus"
+                >
+                  Corpus
+                </a>
+              </div>
+              <div
+                class="nav-item"
+              >
+                <a
+                  class="nav-link"
+                  data-rr-ui-event-key="/about"
+                  href="/about"
+                >
+                  About
+                </a>
+              </div>
+              <div
+                class="nav-item"
+              >
+                <a
+                  class="nav-link"
+                  data-rr-ui-event-key="/tools"
+                  href="/tools"
+                >
+                  Tools
+                </a>
+              </div>
+              <div
+                class="nav-item"
+              >
+                <a
+                  class="nav-link"
+                  data-rr-ui-event-key="/projects"
+                  href="/projects"
+                >
+                  Projects
+                </a>
+              </div>
+            </div>
+            <div
+              class="Header__right"
+            >
+              <div
+                class="Header__partner-logos"
+              >
+                <a
+                  class="Header__partner-logo-link"
+                  href="https://www.lmu.de"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  <img
+                    alt="Ludwig-Maximilians-Universitat Munchen"
+                    class="Header__lmu-logo"
+                    src="LMU_Logo.svg"
+                  />
+                </a>
+                <span
+                  aria-hidden="true"
+                  class="Header__logo-divider"
+                />
+                <a
+                  class="Header__partner-logo-link"
+                  href="https://badw.de/"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  <img
+                    alt="Bayerische Akademie der Wissenschaften"
+                    class="Header__badw-logo"
+                    src="BAdW_Logo.svg"
+                  />
+                </a>
+              </div>
+              <div
+                class="Header__user"
               >
                 <button
-                  class="btn btn-outline-secondary btn-sm"
+                  aria-label="Logout Test"
+                  class="AuthButton AuthButton--authenticated btn btn-outline-secondary btn-sm"
+                  title="Logout Test"
                   type="button"
                 >
-                  Logout 
-                  Test
+                  <svg
+                    aria-hidden="true"
+                    class="AuthButton__icon"
+                    focusable="false"
+                    viewBox="0 0 24 24"
+                  >
+                    <circle
+                      cx="9"
+                      cy="7"
+                      r="4"
+                    />
+                    <path
+                      d="M3 21a6 6 0 0 1 12 0"
+                    />
+                    <path
+                      d="M16 11l2 2 4-4"
+                    />
+                  </svg>
                 </button>
-              </span>
+              </div>
             </div>
           </div>
         </div>
@@ -2122,9 +2282,9 @@ exports[`renders editor 1`] = `
                 class="breadcrumb-item"
               >
                 <a
-                  href="/dictionary"
+                  href="/tools/dictionary"
                 >
-                  Dictionary
+                  Akkadian Dictionary
                 </a>
               </li>
               <li
@@ -2167,7 +2327,7 @@ exports[`renders editor 1`] = `
             <div>
               <label
                 class="form-label"
-                for="LemmaInput-3"
+                for="LemmaInput-5"
               >
                 Lemma
               </label>
@@ -2184,14 +2344,14 @@ exports[`renders editor 1`] = `
                       aria-label="attested"
                       checked=""
                       class="form-check-input"
-                      id="LemmaInput-attested-4"
+                      id="LemmaInput-attested-6"
                       type="checkbox"
                     />
                   </div>
                 </span>
                 <input
                   class="form-control"
-                  id="LemmaInput-3"
+                  id="LemmaInput-5"
                   type="text"
                   value="test"
                 />
@@ -2200,13 +2360,13 @@ exports[`renders editor 1`] = `
             <div>
               <label
                 class="form-label"
-                for="TextInput-5"
+                for="TextInput-7"
               >
                 Legacy Lemma
               </label>
               <input
                 class="form-control"
-                id="TextInput-5"
+                id="TextInput-7"
                 type="text"
                 value="test"
               />
@@ -2214,13 +2374,13 @@ exports[`renders editor 1`] = `
             <div>
               <label
                 class="form-label"
-                for="TextInput-6"
+                for="TextInput-8"
               >
                 Homonym
               </label>
               <input
                 class="form-control"
-                id="TextInput-6"
+                id="TextInput-8"
                 type="text"
                 value="I"
               />
@@ -2229,13 +2389,13 @@ exports[`renders editor 1`] = `
               <div>
                 <label
                   class="form-label"
-                  for="PosInput-7"
+                  for="PosInput-9"
                 >
                   Position of speech
                 </label>
                 <select
                   class="form-control"
-                  id="PosInput-7"
+                  id="PosInput-9"
                   multiple=""
                 >
                   <option
@@ -2421,7 +2581,7 @@ exports[`renders editor 1`] = `
                       class="card-header"
                     >
                       <span
-                        aria-controls="List-collapse-8"
+                        aria-controls="List-collapse-10"
                         aria-expanded="true"
                         class="List__toggle"
                       >
@@ -2441,7 +2601,7 @@ exports[`renders editor 1`] = `
                     </div>
                     <div
                       class="collapse show"
-                      id="List-collapse-8"
+                      id="List-collapse-10"
                     >
                       <ul
                         class="list-group list-group-flush"
@@ -2452,7 +2612,7 @@ exports[`renders editor 1`] = `
                           <div>
                             <input
                               class="form-control"
-                              id="TextInput-9"
+                              id="TextInput-11"
                               type="text"
                               value="wb'"
                             />
@@ -2470,7 +2630,7 @@ exports[`renders editor 1`] = `
                           <div>
                             <input
                               class="form-control"
-                              id="TextInput-10"
+                              id="TextInput-12"
                               type="text"
                               value="'b'"
                             />
@@ -2501,13 +2661,13 @@ exports[`renders editor 1`] = `
             <div>
               <label
                 class="form-label"
-                for="TextInput-11"
+                for="TextInput-13"
               >
                 Meaning
               </label>
               <input
                 class="form-control"
-                id="TextInput-11"
+                id="TextInput-13"
                 type="text"
                 value="\\\\~ \\"to weed\\" O/jB"
               />
@@ -2524,7 +2684,7 @@ exports[`renders editor 1`] = `
                     class="card-header"
                   >
                     <span
-                      aria-controls="List-collapse-12"
+                      aria-controls="List-collapse-14"
                       aria-expanded="true"
                       class="List__toggle"
                     >
@@ -2544,7 +2704,7 @@ exports[`renders editor 1`] = `
                   </div>
                   <div
                     class="collapse show"
-                    id="List-collapse-12"
+                    id="List-collapse-14"
                   >
                     <ul
                       class="list-group list-group-flush"
@@ -2556,7 +2716,7 @@ exports[`renders editor 1`] = `
                           <div>
                             <label
                               class="form-label"
-                              for="LemmaInput-13"
+                              for="LemmaInput-15"
                             >
                               Lemma
                             </label>
@@ -2573,14 +2733,14 @@ exports[`renders editor 1`] = `
                                     aria-label="attested"
                                     checked=""
                                     class="form-check-input"
-                                    id="LemmaInput-attested-14"
+                                    id="LemmaInput-attested-16"
                                     type="checkbox"
                                   />
                                 </div>
                               </span>
                               <input
                                 class="form-control"
-                                id="LemmaInput-13"
+                                id="LemmaInput-15"
                                 type="text"
                                 value=""
                               />
@@ -2597,7 +2757,7 @@ exports[`renders editor 1`] = `
                                   class="card-header"
                                 >
                                   <span
-                                    aria-controls="List-collapse-15"
+                                    aria-controls="List-collapse-17"
                                     aria-expanded="true"
                                     class="List__toggle"
                                   >
@@ -2617,7 +2777,7 @@ exports[`renders editor 1`] = `
                                 </div>
                                 <div
                                   class="collapse show"
-                                  id="List-collapse-15"
+                                  id="List-collapse-17"
                                 >
                                   <ul
                                     class="list-group list-group-flush"
@@ -2628,7 +2788,7 @@ exports[`renders editor 1`] = `
                                       <div>
                                         <input
                                           class="form-control"
-                                          id="TextInput-16"
+                                          id="TextInput-18"
                                           type="text"
                                           value="dsdsds"
                                         />
@@ -2671,7 +2831,7 @@ exports[`renders editor 1`] = `
                           <div>
                             <label
                               class="form-label"
-                              for="LemmaInput-17"
+                              for="LemmaInput-19"
                             >
                               Lemma
                             </label>
@@ -2688,14 +2848,14 @@ exports[`renders editor 1`] = `
                                     aria-label="attested"
                                     checked=""
                                     class="form-check-input"
-                                    id="LemmaInput-attested-18"
+                                    id="LemmaInput-attested-20"
                                     type="checkbox"
                                   />
                                 </div>
                               </span>
                               <input
                                 class="form-control"
-                                id="LemmaInput-17"
+                                id="LemmaInput-19"
                                 type="text"
                                 value="abā'um"
                               />
@@ -2712,7 +2872,7 @@ exports[`renders editor 1`] = `
                                   class="card-header"
                                 >
                                   <span
-                                    aria-controls="List-collapse-19"
+                                    aria-controls="List-collapse-21"
                                     aria-expanded="true"
                                     class="List__toggle"
                                   >
@@ -2732,7 +2892,7 @@ exports[`renders editor 1`] = `
                                 </div>
                                 <div
                                   class="collapse show"
-                                  id="List-collapse-19"
+                                  id="List-collapse-21"
                                 >
                                   <ul
                                     class="list-group list-group-flush"
@@ -2743,7 +2903,7 @@ exports[`renders editor 1`] = `
                                       <div>
                                         <input
                                           class="form-control"
-                                          id="TextInput-20"
+                                          id="TextInput-22"
                                           type="text"
                                           value="**BOLD**"
                                         />
@@ -2807,7 +2967,7 @@ exports[`renders editor 1`] = `
                     class="card-header"
                   >
                     <span
-                      aria-controls="List-collapse-21"
+                      aria-controls="List-collapse-23"
                       aria-expanded="true"
                       class="List__toggle"
                     >
@@ -2827,7 +2987,7 @@ exports[`renders editor 1`] = `
                   </div>
                   <div
                     class="collapse show"
-                    id="List-collapse-21"
+                    id="List-collapse-23"
                   >
                     <ul
                       class="list-group list-group-flush"
@@ -2838,13 +2998,13 @@ exports[`renders editor 1`] = `
                         <div>
                           <label
                             class="form-label"
-                            for="TextInput-22"
+                            for="TextInput-24"
                           >
                             Conjugation/Function
                           </label>
                           <input
                             class="form-control"
-                            id="TextInput-22"
+                            id="TextInput-24"
                             type="text"
                             value="G"
                           />
@@ -2852,13 +3012,13 @@ exports[`renders editor 1`] = `
                         <div>
                           <label
                             class="form-label"
-                            for="TextInput-23"
+                            for="TextInput-25"
                           >
                             Meaning
                           </label>
                           <input
                             class="form-control"
-                            id="TextInput-23"
+                            id="TextInput-25"
                             type="text"
                             value="(*i/i*) field"
                           />
@@ -2872,7 +3032,7 @@ exports[`renders editor 1`] = `
                             >
                               <div
                                 class="collapse show"
-                                id="List-collapse-24"
+                                id="List-collapse-26"
                               >
                                 <ul
                                   class="list-group list-group-flush"
@@ -2883,13 +3043,13 @@ exports[`renders editor 1`] = `
                                     <div>
                                       <label
                                         class="form-label"
-                                        for="ArrayInput-25"
+                                        for="ArrayInput-27"
                                       >
                                         Vowels
                                       </label>
                                       <input
                                         class="form-control"
-                                        id="ArrayInput-25"
+                                        id="ArrayInput-27"
                                         type="text"
                                         value="i/i"
                                       />
@@ -2905,7 +3065,7 @@ exports[`renders editor 1`] = `
                                             class="card-header"
                                           >
                                             <span
-                                              aria-controls="List-collapse-26"
+                                              aria-controls="List-collapse-28"
                                               aria-expanded="true"
                                               class="List__toggle"
                                             >
@@ -2925,7 +3085,7 @@ exports[`renders editor 1`] = `
                                           </div>
                                           <div
                                             class="collapse show"
-                                            id="List-collapse-26"
+                                            id="List-collapse-28"
                                           >
                                             <ul
                                               class="list-group list-group-flush"
@@ -2936,7 +3096,7 @@ exports[`renders editor 1`] = `
                                                 <div>
                                                   <input
                                                     class="form-control"
-                                                    id="TextInput-27"
+                                                    id="TextInput-29"
                                                     type="text"
                                                     value="dsdsds"
                                                   />
@@ -2998,7 +3158,7 @@ exports[`renders editor 1`] = `
                                 class="card-header"
                               >
                                 <span
-                                  aria-controls="List-collapse-28"
+                                  aria-controls="List-collapse-30"
                                   aria-expanded="true"
                                   class="List__toggle"
                                 >
@@ -3018,7 +3178,7 @@ exports[`renders editor 1`] = `
                               </div>
                               <div
                                 class="collapse show"
-                                id="List-collapse-28"
+                                id="List-collapse-30"
                               >
                                 <ol
                                   class="list-group list-group-flush"
@@ -3029,13 +3189,13 @@ exports[`renders editor 1`] = `
                                     <div>
                                       <label
                                         class="form-label"
-                                        for="TextInput-29"
+                                        for="TextInput-31"
                                       >
                                         Meaning
                                       </label>
                                       <input
                                         class="form-control"
-                                        id="TextInput-29"
+                                        id="TextInput-31"
                                         type="text"
                                         value="mmkkk"
                                       />
@@ -3049,7 +3209,7 @@ exports[`renders editor 1`] = `
                                         >
                                           <div
                                             class="collapse show"
-                                            id="List-collapse-30"
+                                            id="List-collapse-32"
                                           >
                                             <ul
                                               class="list-group list-group-flush"
@@ -3060,13 +3220,13 @@ exports[`renders editor 1`] = `
                                                 <div>
                                                   <label
                                                     class="form-label"
-                                                    for="ArrayInput-31"
+                                                    for="ArrayInput-33"
                                                   >
                                                     Vowels
                                                   </label>
                                                   <input
                                                     class="form-control"
-                                                    id="ArrayInput-31"
+                                                    id="ArrayInput-33"
                                                     type="text"
                                                     value=""
                                                   />
@@ -3082,7 +3242,7 @@ exports[`renders editor 1`] = `
                                                         class="card-header"
                                                       >
                                                         <span
-                                                          aria-controls="List-collapse-32"
+                                                          aria-controls="List-collapse-34"
                                                           aria-expanded="true"
                                                           class="List__toggle"
                                                         >
@@ -3097,7 +3257,7 @@ exports[`renders editor 1`] = `
                                                       </div>
                                                       <div
                                                         class="collapse show"
-                                                        id="List-collapse-32"
+                                                        id="List-collapse-34"
                                                       >
                                                         <ul
                                                           class="list-group list-group-flush"
@@ -3198,7 +3358,7 @@ exports[`renders editor 1`] = `
                 >
                   <div
                     class="collapse show"
-                    id="List-collapse-33"
+                    id="List-collapse-35"
                   >
                     <ul
                       class="list-group list-group-flush"
@@ -3209,13 +3369,13 @@ exports[`renders editor 1`] = `
                         <div>
                           <label
                             class="form-label"
-                            for="ArrayInput-34"
+                            for="ArrayInput-36"
                           >
                             Logogram
                           </label>
                           <input
                             class="form-control"
-                            id="ArrayInput-34"
+                            id="ArrayInput-36"
                             type="text"
                             value=""
                           />
@@ -3231,7 +3391,7 @@ exports[`renders editor 1`] = `
                                 class="card-header"
                               >
                                 <span
-                                  aria-controls="List-collapse-35"
+                                  aria-controls="List-collapse-37"
                                   aria-expanded="true"
                                   class="List__toggle"
                                 >
@@ -3251,7 +3411,7 @@ exports[`renders editor 1`] = `
                               </div>
                               <div
                                 class="collapse show"
-                                id="List-collapse-35"
+                                id="List-collapse-37"
                               >
                                 <ul
                                   class="list-group list-group-flush"
@@ -3262,7 +3422,7 @@ exports[`renders editor 1`] = `
                                     <div>
                                       <input
                                         class="form-control"
-                                        id="TextInput-36"
+                                        id="TextInput-38"
                                         type="text"
                                         value="dsadas"
                                       />
@@ -3325,7 +3485,7 @@ exports[`renders editor 1`] = `
                     class="card-header"
                   >
                     <span
-                      aria-controls="List-collapse-37"
+                      aria-controls="List-collapse-39"
                       aria-expanded="true"
                       class="List__toggle"
                     >
@@ -3345,7 +3505,7 @@ exports[`renders editor 1`] = `
                   </div>
                   <div
                     class="collapse show"
-                    id="List-collapse-37"
+                    id="List-collapse-39"
                   >
                     <ul
                       class="list-group list-group-flush"
@@ -3364,7 +3524,7 @@ exports[`renders editor 1`] = `
                                 class="card-header"
                               >
                                 <span
-                                  aria-controls="List-collapse-38"
+                                  aria-controls="List-collapse-40"
                                   aria-expanded="true"
                                   class="List__toggle"
                                 >
@@ -3385,7 +3545,7 @@ exports[`renders editor 1`] = `
                               </div>
                               <div
                                 class="collapse show"
-                                id="List-collapse-38"
+                                id="List-collapse-40"
                               >
                                 <ul
                                   class="list-group list-group-flush"
@@ -3397,13 +3557,13 @@ exports[`renders editor 1`] = `
                                       <div>
                                         <label
                                           class="form-label"
-                                          for="LemmaInput-39"
+                                          for="LemmaInput-41"
                                         >
                                           Lemma
                                         </label>
                                         <input
                                           class="form-control"
-                                          id="LemmaInput-39"
+                                          id="LemmaInput-41"
                                           type="text"
                                           value="wabûtu"
                                         />
@@ -3411,13 +3571,13 @@ exports[`renders editor 1`] = `
                                       <div>
                                         <label
                                           class="form-label"
-                                          for="TextInput-41"
+                                          for="TextInput-43"
                                         >
                                           Homonym
                                         </label>
                                         <input
                                           class="form-control"
-                                          id="TextInput-41"
+                                          id="TextInput-43"
                                           type="text"
                                           value="I"
                                         />
@@ -3433,7 +3593,7 @@ exports[`renders editor 1`] = `
                                               class="card-header"
                                             >
                                               <span
-                                                aria-controls="List-collapse-42"
+                                                aria-controls="List-collapse-44"
                                                 aria-expanded="true"
                                                 class="List__toggle"
                                               >
@@ -3448,7 +3608,7 @@ exports[`renders editor 1`] = `
                                             </div>
                                             <div
                                               class="collapse show"
-                                              id="List-collapse-42"
+                                              id="List-collapse-44"
                                             >
                                               <ul
                                                 class="list-group list-group-flush"
@@ -3532,13 +3692,13 @@ exports[`renders editor 1`] = `
                   <div>
                     <label
                       class="form-label"
-                      for="LemmaInput-43"
+                      for="LemmaInput-45"
                     >
                       Lemma
                     </label>
                     <input
                       class="form-control"
-                      id="LemmaInput-43"
+                      id="LemmaInput-45"
                       type="text"
                       value="sadasd"
                     />
@@ -3546,13 +3706,13 @@ exports[`renders editor 1`] = `
                   <div>
                     <label
                       class="form-label"
-                      for="TextInput-45"
+                      for="TextInput-47"
                     >
                       Homonym
                     </label>
                     <input
                       class="form-control"
-                      id="TextInput-45"
+                      id="TextInput-47"
                       type="text"
                       value=""
                     />
@@ -3568,7 +3728,7 @@ exports[`renders editor 1`] = `
                           class="card-header"
                         >
                           <span
-                            aria-controls="List-collapse-46"
+                            aria-controls="List-collapse-48"
                             aria-expanded="true"
                             class="List__toggle"
                           >
@@ -3588,7 +3748,7 @@ exports[`renders editor 1`] = `
                         </div>
                         <div
                           class="collapse show"
-                          id="List-collapse-46"
+                          id="List-collapse-48"
                         >
                           <ul
                             class="list-group list-group-flush"
@@ -3599,7 +3759,7 @@ exports[`renders editor 1`] = `
                               <div>
                                 <input
                                   class="form-control"
-                                  id="TextInput-47"
+                                  id="TextInput-49"
                                   type="text"
                                   value=""
                                 />
@@ -3639,13 +3799,13 @@ exports[`renders editor 1`] = `
             <div>
               <label
                 class="form-label"
-                for="TextInput-48"
+                for="TextInput-50"
               >
                 Guide Word
               </label>
               <input
                 class="form-control"
-                id="TextInput-48"
+                id="TextInput-50"
                 type="text"
                 value="weed"
               />
@@ -3661,7 +3821,7 @@ exports[`renders editor 1`] = `
                     class="card-header"
                   >
                     <span
-                      aria-controls="List-collapse-49"
+                      aria-controls="List-collapse-51"
                       aria-expanded="true"
                       class="List__toggle"
                     >
@@ -3676,7 +3836,7 @@ exports[`renders editor 1`] = `
                   </div>
                   <div
                     class="collapse show"
-                    id="List-collapse-49"
+                    id="List-collapse-51"
                   >
                     <ul
                       class="list-group list-group-flush"
@@ -3709,30 +3869,238 @@ exports[`renders editor 1`] = `
     <footer
       class="main-footer"
     >
-      <ol
-        class="breadcrumb"
+      <div
+        class="container"
       >
-        <li
-          class="nav-item"
+        <div
+          class="main-footer__content row"
         >
-          <a
-            class="nav-link"
-            href="/impressum"
+          <div
+            class="main-footer__section col-md-3"
           >
-            Impressum
-          </a>
-        </li>
-        <li
-          class="nav-item"
+            <h6
+              class="main-footer__title"
+            >
+              About eBL
+            </h6>
+            <ul
+              class="main-footer__links"
+            >
+              <li>
+                <a
+                  href="/about"
+                >
+                  About
+                </a>
+              </li>
+              <li>
+                <a
+                  href="/projects"
+                >
+                  Research Projects
+                </a>
+              </li>
+              <li>
+                <a
+                  href="https://caic.badw.de"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  CAIC
+                </a>
+              </li>
+            </ul>
+          </div>
+          <div
+            class="main-footer__section col-md-3"
+          >
+            <h6
+              class="main-footer__title"
+            >
+              Resources
+            </h6>
+            <ul
+              class="main-footer__links"
+            >
+              <li>
+                <a
+                  href="/tools/signs"
+                >
+                  Signs
+                </a>
+              </li>
+              <li>
+                <a
+                  href="/tools/dictionary"
+                >
+                  Dictionary
+                </a>
+              </li>
+              <li>
+                <a
+                  href="/tools/references"
+                >
+                  Bibliography
+                </a>
+              </li>
+            </ul>
+          </div>
+          <div
+            class="main-footer__section col-md-3"
+          >
+            <h6
+              class="main-footer__title"
+            >
+              Legal
+            </h6>
+            <ul
+              class="main-footer__links"
+            >
+              <li>
+                <a
+                  href="/impressum"
+                >
+                  Impressum
+                </a>
+              </li>
+              <li>
+                <a
+                  href="/datenschutz"
+                >
+                  Datenschutz
+                </a>
+              </li>
+            </ul>
+          </div>
+          <div
+            class="main-footer__section col-md-3"
+          >
+            <h6
+              class="main-footer__title"
+            >
+              Connect
+            </h6>
+            <div
+              class="main-footer__social"
+            >
+              <a
+                aria-label="eBL on X"
+                class="main-footer__social-link"
+                href="https://twitter.com/ebl_info"
+                rel="noopener noreferrer"
+                target="_blank"
+                title="eBL on X (Twitter)"
+              >
+                <svg
+                  height="20"
+                  viewBox="0 0 24 24"
+                  width="20"
+                >
+                  <path
+                    d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"
+                    fill="currentColor"
+                  />
+                </svg>
+              </a>
+              <a
+                aria-label="CAIC on Facebook"
+                class="main-footer__social-link"
+                href="https://www.facebook.com/profile.php?id=61556323986355"
+                rel="noopener noreferrer"
+                target="_blank"
+                title="CAIC on Facebook"
+              >
+                <svg
+                  height="20"
+                  viewBox="0 0 24 24"
+                  width="20"
+                >
+                  <path
+                    d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"
+                    fill="currentColor"
+                  />
+                </svg>
+              </a>
+            </div>
+          </div>
+        </div>
+        <div
+          class="main-footer__bottom row"
         >
-          <a
-            class="nav-link"
-            href="/datenschutz"
+          <div
+            class="col"
           >
-            Datenschutz
-          </a>
-        </li>
-      </ol>
+            <div
+              class="main-footer__partners"
+            >
+              <a
+                class="main-footer__partner-link"
+                href="https://badw.de/"
+                rel="noopener noreferrer"
+                target="_blank"
+                title="Bayerische Akademie der Wissenschaften"
+              >
+                BAdW
+              </a>
+              <span
+                class="main-footer__separator"
+              >
+                ·
+              </span>
+              <a
+                class="main-footer__partner-link"
+                href="https://www.lmu.de/"
+                rel="noopener noreferrer"
+                target="_blank"
+                title="Ludwig-Maximilians-Universität München"
+              >
+                LMU
+              </a>
+              <span
+                class="main-footer__separator"
+              >
+                ·
+              </span>
+              <a
+                class="main-footer__partner-link"
+                href="https://www.lrz.de/"
+                rel="noopener noreferrer"
+                target="_blank"
+                title="Leibniz-Rechenzentrum"
+              >
+                LRZ
+              </a>
+              <span
+                class="main-footer__separator"
+              >
+                ·
+              </span>
+              <a
+                class="main-footer__partner-link"
+                href="https://www.humboldt-foundation.de/"
+                rel="noopener noreferrer"
+                target="_blank"
+                title="Alexander von Humboldt Stiftung"
+              >
+                AvH
+              </a>
+            </div>
+          </div>
+        </div>
+        <div
+          class="main-footer__copyright row"
+        >
+          <div
+            class="col"
+          >
+            <p>
+              © 
+              2026
+               electronic Babylonian Library
+            </p>
+          </div>
+        </div>
+      </div>
     </footer>
   </div>
 </div>

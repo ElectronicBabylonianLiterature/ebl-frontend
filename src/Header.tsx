@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react'
-import { Image, Nav, Navbar, Container } from 'react-bootstrap'
-import { Link } from 'react-router-dom'
+import { Nav, Navbar, Container } from 'react-bootstrap'
+import { Link, useLocation } from 'react-router-dom'
 import _ from 'lodash'
-import { useLocation } from 'react-router-dom'
 
 import User from './auth/User'
 import './Header.sass'
@@ -45,41 +44,31 @@ export function NavItem({
   )
 }
 
-function LogoLink(props: {
-  href: string
-  className: string
-  src: string
-  alt: string
-}): JSX.Element {
+function PartnerLogos(): JSX.Element {
   return (
-    <ExternalLink href={props.href}>
-      <Image className={props.className} src={props.src} alt={props.alt} />
-    </ExternalLink>
-  )
-}
-
-function LogoContainer(): JSX.Element {
-  const logos = [
-    {
-      href: 'https://www.lmu.de',
-      className: 'Header__lmu-logo',
-      src: lmuLogo,
-      alt: 'Ludwig-Maximilians-Universitat Munchen',
-    },
-    {
-      href: 'https://badw.de/',
-      className: 'Header__badw-logo',
-      src: badwLogo,
-      alt: 'Bayerische Akademie der Wissenschaften',
-    },
-  ]
-
-  return (
-    <Container className="Header__logo-container">
-      {logos.map((logo) => (
-        <LogoLink key={logo.href} {...logo} />
-      ))}
-    </Container>
+    <div className="Header__partner-logos">
+      <ExternalLink
+        href="https://www.lmu.de"
+        className="Header__partner-logo-link"
+      >
+        <img
+          className="Header__lmu-logo"
+          src={lmuLogo}
+          alt="Ludwig-Maximilians-Universitat Munchen"
+        />
+      </ExternalLink>
+      <span className="Header__logo-divider" aria-hidden="true" />
+      <ExternalLink
+        href="https://badw.de/"
+        className="Header__partner-logo-link"
+      >
+        <img
+          className="Header__badw-logo"
+          src={badwLogo}
+          alt="Bayerische Akademie der Wissenschaften"
+        />
+      </ExternalLink>
+    </div>
   )
 }
 
@@ -93,7 +82,7 @@ export default function Header(): JSX.Element {
   }, [location.pathname])
   return (
     <header className="Header">
-      <Navbar variant="light" expand="md">
+      <Navbar variant="light" expand="lg">
         <Container>
           <Navbar.Brand
             as={Link}
@@ -106,40 +95,24 @@ export default function Header(): JSX.Element {
             </span>
             <EblLogo />
           </Navbar.Brand>
-          <Navbar.Brand className="Header__logo-brand">
-            <LogoContainer />
-          </Navbar.Brand>
-          <Navbar.Toggle aria-controls={id} />
+          <Navbar.Toggle aria-controls={id} className="Header__toggle" />
           <Navbar.Collapse id={id}>
-            <div
-              id="navbar-container"
-              className="d-flex justify-content-between"
+            <Nav
+              activeKey={activeKey}
+              onSelect={(key) => setActiveKey(key ?? undefined)}
+              className="Header__nav mx-auto"
             >
-              <div id="menu-lines" className="Header__nav">
-                <Nav
-                  activeKey={activeKey}
-                  onSelect={(key) => setActiveKey(key ?? undefined)}
-                  className="mx-auto Header__nav-row"
-                >
-                  <NavItem href="/signs" title="Signs" />
-                  <NavItem href="/dictionary" title="Dictionary" />
-                  <NavItem href="/corpus" title="Corpus" />
-                  <NavItem href="/library" title="Library" />
-                </Nav>
-                <Nav
-                  activeKey={activeKey}
-                  onSelect={(key) => setActiveKey(key ?? undefined)}
-                  className="mx-auto Header__nav-row"
-                >
-                  <NavItem href="/about" title="About" />
-                  <NavItem href="/bibliography" title="Bibliography" />
-                  <NavItem href="/tools" title="Tools" />
-                  <NavItem href="/projects" title="Projects" />
-                </Nav>
-              </div>
-              <Navbar.Text id="user">
+              <NavItem href="/library" title="Library" />
+              <NavItem href="/corpus" title="Corpus" />
+              <NavItem href="/about" title="About" />
+              <NavItem href="/tools" title="Tools" />
+              <NavItem href="/projects" title="Projects" />
+            </Nav>
+            <div className="Header__right">
+              <PartnerLogos />
+              <div className="Header__user">
                 <User />
-              </Navbar.Text>
+              </div>
             </div>
           </Navbar.Collapse>
         </Container>

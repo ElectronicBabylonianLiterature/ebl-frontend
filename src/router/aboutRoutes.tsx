@@ -21,6 +21,26 @@ export default function AboutRoutes({
       to={`/about/news/${newsletters[0].number}`}
       key="about-news-root-redirect"
     />,
+    <Redirect
+      exact
+      from="/about/dictionary"
+      to="/about/akkadian-dictionary"
+      key="about-dictionary-redirect"
+    />,
+    <Redirect
+      exact
+      from="/news"
+      to={`/about/news/${newsletters[0].number}`}
+      key="news-root-redirect"
+    />,
+    ...newsletters.map((newsletter) => (
+      <Redirect
+        exact
+        from={`/news/${newsletter.number}`}
+        to={`/about/news/${newsletter.number}`}
+        key={`news-redirect-${newsletter.number}`}
+      />
+    )),
     ...newsletters.map((newsletter) => (
       <Route
         key={`about-news-${newsletter.number}`}
@@ -28,7 +48,7 @@ export default function AboutRoutes({
         path={`/about/news/${newsletter.number}`}
         render={(): ReactNode => (
           <HeadTagsService
-            title={`News: ${newsletter.number} - eBL`}
+            title={`Newsletter #${newsletter.number} - eBL`}
             description={
               'Latest news and updates about the electronic Babylonian Library (eBL).'
             }
@@ -43,26 +63,24 @@ export default function AboutRoutes({
         {...(sitemap && sitemapDefaults)}
       />
     )),
-    ...tabIds.map((tabId) => (
-      <Route
-        key={`about-${tabId}`}
-        exact
-        path={`/about/${tabId}`}
-        render={(): ReactNode => (
-          <HeadTagsService
-            title="About: eBL"
-            description="This section provides detailed information about the electronic Babylonian Library (eBL) and the materials and tools available."
-          >
-            <About
-              markupService={cachedMarkupService}
-              activeTab={tabId}
-              activeSection={undefined}
-            />
-          </HeadTagsService>
-        )}
-        {...(sitemap && sitemapDefaults)}
-      />
-    )),
+    ...tabIds
+      .filter((tabId) => tabId !== 'news')
+      .map((tabId) => (
+        <Route
+          key={`about-${tabId}`}
+          exact
+          path={`/about/${tabId}`}
+          render={(): ReactNode => (
+            <HeadTagsService
+              title="About: eBL"
+              description="This section provides detailed information about the electronic Babylonian Library (eBL) and the materials and tools available."
+            >
+              <About markupService={cachedMarkupService} activeTab={tabId} />
+            </HeadTagsService>
+          )}
+          {...(sitemap && sitemapDefaults)}
+        />
+      )),
     <Redirect from="/about" to="/about/library" key="about-root-redirect" />,
     <Route
       key="AboutNotFound"

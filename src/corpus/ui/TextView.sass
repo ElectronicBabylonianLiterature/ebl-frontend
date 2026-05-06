@@ -1,35 +1,71 @@
+.text-view
+  &__section
+    background: #ffffff
+    border: 1px solid #dce2ea
+    border-radius: 10px
+    padding: 1rem 1.25rem
+    margin-bottom: 1rem
+    box-shadow: 0 2px 8px rgba(17, 35, 64, 0.05)
+
 .text-view__section
-  padding-left: 2rem
-  margin-bottom: 2rem
+  padding-left: 1.25rem
+  margin-bottom: 1rem
 
 .text-view__section-heading
-  text-indent: -2rem
+  text-indent: 0
+  font-size: 0.8rem
+  text-transform: uppercase
+  letter-spacing: 0.08em
+  color: #6b7a90
+  font-weight: 700
+  margin-bottom: 0.85rem
 
 .text-view__references
   margin-top: .5rem
+  border-top: 1px solid #edf0f5
+  padding-top: 0.75rem
+
+  h4
+    font-size: 0.78rem
+    text-transform: uppercase
+    letter-spacing: 0.07em
+    color: #6b7a90
+    margin-bottom: 0.45rem
 
 .text-view__reference-group
-  margin-bottom: .5em
+  margin-bottom: .45em
+  color: #2d3748
+  font-size: 0.9rem
 
 .text-view__reference-group-title
   font-weight: bold
+  color: #1a3a6b
 
 .text-view__colophon-chapter
-  border-top: 1px solid black
+  border-top: 1px solid #edf0f5
   margin-top: 1em
   padding-top: 1em
+  background: #f8fafc
+  border-radius: 8px
+  padding-left: 0.85rem
+  padding-right: 0.85rem
 
 .text-view__colophon-chapter-heading
   font-size: 1rem
   font-weight: bold
+  color: #1a3a6b
 
 .text-view__colophon-siglum
-  font-size: 1rem
+  font-size: 0.95rem
   font-weight: normal
+  color: #4a5f7c
 
 .text-view__markdown
   text-align: justify
-  padding-right: 3em
+  padding-right: 0
+  font-size: 0.94rem
+  color: #2d3748
+  line-height: 1.65
   br
     display: block
     content: ''
@@ -38,7 +74,15 @@
 .text-view__projects
   display: flex
   align-items: flex-start
-  justify-content: center
+  justify-content: flex-start
+  border-top: 1px solid #edf0f5
+  margin-top: 0.75rem
+  padding-top: 0.75rem
 
   .ExternalResources__image
-    max-height: 5em
+    max-height: 4.3em
+
+@media (max-width: 767px)
+  .text-view
+    &__section
+      padding: 0.8rem 0.85rem

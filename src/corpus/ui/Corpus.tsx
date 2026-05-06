@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useMemo } from 'react'
 import _ from 'lodash'
 import { History } from 'history'
 import { Container, Row, Col, Tab, Tabs } from 'react-bootstrap'
@@ -13,6 +13,8 @@ import { SectionCrumb } from 'common/ui/Breadcrumbs'
 import Promise from 'bluebird'
 import createGenreLink from './createGenreLink'
 import { useHistory } from 'router/compat'
+import AboutInlineLink from 'common/ui/AboutInlineLink'
+import './Corpus.sass'
 
 type SelectCallback = (eventKey: string | null) => void
 
@@ -45,6 +47,21 @@ function TextLine({ text }: { text: TextInfo }): JSX.Element {
   )
 }
 
+export function groupTextsByCategory(
+  texts: readonly TextInfo[],
+): Record<number, readonly TextInfo[]> {
+  return _(texts)
+    .groupBy((text) => text.category)
+    .mapValues((groupedTexts) => _.sortBy(groupedTexts, (text) => text.index))
+    .value()
+}
+
+export function groupTextsByGenre(
+  texts: readonly TextInfo[],
+): Record<string, readonly TextInfo[]> {
+  return _.groupBy(texts, (text) => text.genre)
+}
+
 function Texts({
   texts,
   categories,
@@ -52,19 +69,22 @@ function Texts({
   texts: readonly TextInfo[]
   categories: readonly string[]
 }): JSX.Element {
+  const textsByCategory = useMemo(() => groupTextsByCategory(texts), [texts])
+
   return (
     <>
       {categories.map((title, category) => (
-        <section key={category}>
+        <section key={category} className="Corpus__category">
           <h3>
             <InlineMarkdown source={title} />
           </h3>
-          <Container fluid as="ol">
-            {_(texts)
-              .filter((text) => text.category === category)
-              .sortBy((text) => text.index)
-              .map((text, index) => <TextLine key={index} text={text} />)
-              .value()}
+          <Container fluid as="ol" className="Corpus__text-list">
+            {(textsByCategory[category] ?? []).map((text) => (
+              <TextLine
+                key={`${text.genre}-${text.category}-${text.index}`}
+                text={text}
+              />
+            ))}
           </Container>
         </section>
       ))}
@@ -132,8 +152,10 @@ function Corpus({
   genre?: string
   history?: History
 }): JSX.Element {
+  const textsByGenre = useMemo(() => groupTextsByGenre(texts), [texts])
   const routerHistory = useHistory()
   const activeHistory = history ?? routerHistory
+
   const openTab: SelectCallback = (eventKey: string | null): void => {
     if (eventKey !== null) {
       const url = createGenreLink(eventKey)
@@ -143,25 +165,34 @@ function Corpus({
 
   return (
     <AppContent crumbs={[new SectionCrumb('Corpus')]}>
-      <Container fluid>
-        <Row>
-          <Col md={6}>
-            <Tabs
-              activeKey={genre}
-              onSelect={openTab}
-              id={_.uniqueId('CorpusTab-')}
-            >
-              {genres.map(({ genre, name, categories }) => (
-                <Tab eventKey={genre} title={name} key={genre}>
-                  <Texts
-                    texts={texts.filter((text) => text.genre === genre)}
-                    categories={categories}
-                  />
-                </Tab>
-              ))}
-            </Tabs>
+      <Container fluid className="Corpus">
+        <Row className="Corpus__layout">
+          <Col md={7}>
+            <div className="Corpus__tabs">
+              <div className="Corpus__tabs-header">
+                <AboutInlineLink
+                  to="/about/corpus"
+                  label="Corpus"
+                  className="Corpus__about-link"
+                />
+              </div>
+              <Tabs
+                activeKey={genre}
+                onSelect={openTab}
+                id={_.uniqueId('CorpusTab-')}
+              >
+                {genres.map(({ genre, name, categories }) => (
+                  <Tab eventKey={genre} title={name} key={genre}>
+                    <Texts
+                      texts={textsByGenre[genre] ?? []}
+                      categories={categories}
+                    />
+                  </Tab>
+                ))}
+              </Tabs>
+            </div>
           </Col>
-          <Col md={6}>
+          <Col md={5} className="Corpus__image-col">
             <ApiImage fileName="LibraryCropped.svg" />
           </Col>
         </Row>

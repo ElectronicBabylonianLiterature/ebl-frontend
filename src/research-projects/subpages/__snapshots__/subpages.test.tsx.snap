@@ -72,39 +72,45 @@ exports[`Project pages displays AMPS page 1`] = `
           <div
             class="col"
           >
-            <h3>
+            <h2
+              class="project-page__title"
+            >
               Introduction
-            </h3>
+            </h2>
           </div>
         </div>
         <div
           class="row"
         >
           <div
-            class="col"
+            class="col-lg-10 col-md-9"
           >
-            <p>
-              The scholarly texts of ancient Mesopotamia in the first millennium BCE, specifically commentaries written in Akkadian on cuneiform tablets, were the work of priests who also performed cultic activities in the temple. The proposed project seeks to demonstrate how these scholarly and cultic activities were interrelated and how they shaped the self-identity of the priestly-scholarly community that was in charge of both. The project thus aims to bridge the gap between the study of intellectual history and the study of priesthood in ancient Mesopotamia, which are treated as two separate fields in Assyriology.
-            </p>
-            <p>
-              The project innovatively treats Mesopotamian scholarship and Mesopotamian priesthood as complementary aspects of one phenomenon: “scholasticism.” This concept, which originally referred to the scholarly activities of Catholic priests in the Middle Ages, has recently been applied to the study of non-European communities of priestly scholars with great success. Using the scholastic model to study the priestly-scholarly community of ancient Mesopotamia will reveal the intricate connections between the ritual and textual activities of this community and illuminate the holistic and systematic worldview of its members.
-            </p>
-            <p>
-              Combining traditional philology and the comparative approach, the project investigates how, like other scholastic communities, the scholar-priests of ancient Mesopotamia “internalized” the liturgical texts they studied and performed, how they attributed authority to these texts, and how their study of the liturgical corpus generated new exegetical texts. Key points of comparison between the scholar-priests of ancient Mesopotamia and various ancient and contemporary scholastic communities include their interest in language, textual authority, commentaries, and rituals. By applying the comparative method to the study of cuneiform tablets, the project aims to reconstruct the social, religious, and intellectual reality in which they were written.
-            </p>
-            <p>
-              Search for AMPS texts below or
-               
-              <a
-                href="https://amps.huji.ac.il/"
-                rel="noopener noreferrer"
-                target="_blank"
-              >
-                click here
-              </a>
-               
-              to learn more about the project.
-            </p>
+            <div
+              class="project-page__intro"
+            >
+              <p>
+                The scholarly texts of ancient Mesopotamia in the first millennium BCE, specifically commentaries written in Akkadian on cuneiform tablets, were the work of priests who also performed cultic activities in the temple. The proposed project seeks to demonstrate how these scholarly and cultic activities were interrelated and how they shaped the self-identity of the priestly-scholarly community that was in charge of both. The project thus aims to bridge the gap between the study of intellectual history and the study of priesthood in ancient Mesopotamia, which are treated as two separate fields in Assyriology.
+              </p>
+              <p>
+                The project innovatively treats Mesopotamian scholarship and Mesopotamian priesthood as complementary aspects of one phenomenon: “scholasticism.” This concept, which originally referred to the scholarly activities of Catholic priests in the Middle Ages, has recently been applied to the study of non-European communities of priestly scholars with great success. Using the scholastic model to study the priestly-scholarly community of ancient Mesopotamia will reveal the intricate connections between the ritual and textual activities of this community and illuminate the holistic and systematic worldview of its members.
+              </p>
+              <p>
+                Combining traditional philology and the comparative approach, the project investigates how, like other scholastic communities, the scholar-priests of ancient Mesopotamia “internalized” the liturgical texts they studied and performed, how they attributed authority to these texts, and how their study of the liturgical corpus generated new exegetical texts. Key points of comparison between the scholar-priests of ancient Mesopotamia and various ancient and contemporary scholastic communities include their interest in language, textual authority, commentaries, and rituals. By applying the comparative method to the study of cuneiform tablets, the project aims to reconstruct the social, religious, and intellectual reality in which they were written.
+              </p>
+              <p>
+                Search for AMPS texts below or
+                 
+                <a
+                  href="https://amps.huji.ac.il/"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  click here
+                </a>
+                 
+                to learn more about the project.
+              </p>
+            </div>
             <div
               class="project-page__search"
             >
@@ -529,7 +535,7 @@ exports[`Project pages displays AMPS page 1`] = `
             </div>
           </div>
           <div
-            class="col-sm-2"
+            class="col-lg-2 col-md-3"
           >
             <div
               class="project-page__sidebar nav"
@@ -635,33 +641,39 @@ exports[`Project pages displays CAIC page 1`] = `
           <div
             class="col"
           >
-            <h3>
+            <h2
+              class="project-page__title"
+            >
               Introduction
-            </h3>
+            </h2>
           </div>
         </div>
         <div
           class="row"
         >
           <div
-            class="col"
+            class="col-lg-10 col-md-9"
           >
-            <p>
-              The cuneiform artifacts of the Iraq Museum in Baghdad are a central part of the cultural heritage of Mesopotamia, which is of great importance to all of humanity. As an interdisciplinary academic project, the aim of CAIC is to document, edit, and analyze approximately 17,000 cuneiform tablets both from historical and linguistic perspectives. With the help of the latest digital approaches it will also make them available online to the general public and experts from various disciplines.
-            </p>
-            <p>
-              Search for CAIC texts below or
-               
-              <a
-                href="https://caic.badw.de/"
-                rel="noopener noreferrer"
-                target="_blank"
-              >
-                click here
-              </a>
-               
-              to learn more about the project.
-            </p>
+            <div
+              class="project-page__intro"
+            >
+              <p>
+                The cuneiform artifacts of the Iraq Museum in Baghdad are a central part of the cultural heritage of Mesopotamia, which is of great importance to all of humanity. As an interdisciplinary academic project, the aim of CAIC is to document, edit, and analyze approximately 17,000 cuneiform tablets both from historical and linguistic perspectives. With the help of the latest digital approaches it will also make them available online to the general public and experts from various disciplines.
+              </p>
+              <p>
+                Search for CAIC texts below or
+                 
+                <a
+                  href="https://caic.badw.de/"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  click here
+                </a>
+                 
+                to learn more about the project.
+              </p>
+            </div>
             <div
               class="project-page__search"
             >
@@ -1086,7 +1098,7 @@ exports[`Project pages displays CAIC page 1`] = `
             </div>
           </div>
           <div
-            class="col-sm-2"
+            class="col-lg-2 col-md-3"
           >
             <div
               class="project-page__sidebar nav"
@@ -1192,39 +1204,45 @@ exports[`Project pages displays RECC page 1`] = `
           <div
             class="col"
           >
-            <h3>
+            <h2
+              class="project-page__title"
+            >
               Introduction
-            </h3>
+            </h2>
           </div>
         </div>
         <div
           class="row"
         >
           <div
-            class="col"
+            class="col-lg-10 col-md-9"
           >
-            <p>
-              Cuneiform script, one of the world’s oldest writing systems, endured into the first century CE, mainly for recording Mesopotamian astronomy. However, many surviving non-astronomical texts remain undated and understudied, leaving gaps in our understanding of late Mesopotamian literary culture. The ERC-funded RECC project aims to uncover why cuneiform writing persisted in a region absorbed into expanding empires. The project suggests that the script’s survival reflected a cultural response to political change. RECC will investigate the production of late cuneiform texts and the networks of scribal families who sustained the tradition. It will use CuneiDate, a new machine learning tool that will enable the dating of undated tablets, potentially transforming how we understand the final centuries of cuneiform writing.
-            </p>
-            <p>
-              In the prevailing view, cuneiform script survived until the first century CE because it was the only way to write the most enduring Mesopotamian science, astronomy. This view, however, is skewed by the nature of the data: while astronomical texts are easy to date, the vast majority of non-astronomical tablets cannot be dated and are overlooked in histories of the period. Yet, the vitality of cuneiform in its terminal phase suggests that a wealth of late literary and scholarly tablets awaits the development of new dating methods.
-            </p>
-            <p>
-              The aim of the Rewriting the End of Cuneiform Culture (RECC) project is to explain why cuneiform survived long after the great Mesopotamian centers had lost their prominence and become provinces within vast empires. The hypothesis posits that the survival and flourishing of cuneiform is a reaction to these changes, an attempt to defend the native tradition against cosmopolitan cultures. With their labored writings, Babylonian scholars endeavored to show that their legacy still had the power to speak to their own world.
-            </p>
-            <p>
-              Search for RECC texts below or
-               
-              <a
-                href="https://cordis.europa.eu/project/id/101171038"
-                rel="noopener noreferrer"
-                target="_blank"
-              >
-                click here
-              </a>
-               
-              to learn more about the project.
-            </p>
+            <div
+              class="project-page__intro"
+            >
+              <p>
+                Cuneiform script, one of the world’s oldest writing systems, endured into the first century CE, mainly for recording Mesopotamian astronomy. However, many surviving non-astronomical texts remain undated and understudied, leaving gaps in our understanding of late Mesopotamian literary culture. The ERC-funded RECC project aims to uncover why cuneiform writing persisted in a region absorbed into expanding empires. The project suggests that the script’s survival reflected a cultural response to political change. RECC will investigate the production of late cuneiform texts and the networks of scribal families who sustained the tradition. It will use CuneiDate, a new machine learning tool that will enable the dating of undated tablets, potentially transforming how we understand the final centuries of cuneiform writing.
+              </p>
+              <p>
+                In the prevailing view, cuneiform script survived until the first century CE because it was the only way to write the most enduring Mesopotamian science, astronomy. This view, however, is skewed by the nature of the data: while astronomical texts are easy to date, the vast majority of non-astronomical tablets cannot be dated and are overlooked in histories of the period. Yet, the vitality of cuneiform in its terminal phase suggests that a wealth of late literary and scholarly tablets awaits the development of new dating methods.
+              </p>
+              <p>
+                The aim of the Rewriting the End of Cuneiform Culture (RECC) project is to explain why cuneiform survived long after the great Mesopotamian centers had lost their prominence and become provinces within vast empires. The hypothesis posits that the survival and flourishing of cuneiform is a reaction to these changes, an attempt to defend the native tradition against cosmopolitan cultures. With their labored writings, Babylonian scholars endeavored to show that their legacy still had the power to speak to their own world.
+              </p>
+              <p>
+                Search for RECC texts below or
+                 
+                <a
+                  href="https://cordis.europa.eu/project/id/101171038"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  click here
+                </a>
+                 
+                to learn more about the project.
+              </p>
+            </div>
             <div
               class="project-page__search"
             >
@@ -1649,7 +1667,7 @@ exports[`Project pages displays RECC page 1`] = `
             </div>
           </div>
           <div
-            class="col-sm-2"
+            class="col-lg-2 col-md-3"
           >
             <div
               class="project-page__sidebar nav"
@@ -1755,89 +1773,95 @@ exports[`Project pages displays aluGeneva page 1`] = `
           <div
             class="col"
           >
-            <h3>
+            <h2
+              class="project-page__title"
+            >
               Introduction
-            </h3>
+            </h2>
           </div>
         </div>
         <div
           class="row"
         >
           <div
-            class="col"
+            class="col-lg-10 col-md-9"
           >
-            <p>
-              The editions of 
-              <em>
-                Šumma ālu
-              </em>
-               presented here were prepared in the context of the projects “Edition of the Omen Series 
-              <em>
-                Šumma ālu
-              </em>
-              ” (2017–2021;
-               
-              <a
-                href="http://p3.snf.ch/project-175970"
-                rel="noopener noreferrer"
-                target="_blank"
-              >
-                http://p3.snf.ch/project-175970
-              </a>
-               
-              ), “Typology and potential of the excerpt tablets of 
-              <em>
-                Šumma ālu
-              </em>
-              ” (2022–2023;
-               
-              <a
-                href="http://p3.snf.ch/project-205122"
-                rel="noopener noreferrer"
-                target="_blank"
-              >
-                http://p3.snf.ch/project-205122
-              </a>
-               
-              ), and “Edition of Nabû-zuqup-kēnu’s 
-              <em>
-                Šumma ālu
-              </em>
-               series” (2024–2028;
-               
-              <a
-                href="https://data.snf.ch/grants/grant/10000955"
-                rel="noopener noreferrer"
-                target="_blank"
-              >
-                https://data.snf.ch/grants/grant/10000955
-              </a>
-               
-              ), directed by Prof. Catherine Mittermayer at the University of Geneva and funded by the Swiss National Science Foundation. The complete score editions can be downloaded (PDF) at the “Archive ouverte” of the University of Geneva (
-               
-              <a
-                href="https://archive-ouverte.unige.ch/"
-                rel="noopener noreferrer"
-                target="_blank"
-              >
-                https://archive-ouverte.unige.ch/
-              </a>
-               
-              ; search for “Shumma alu”).
-            </p>
-            <p>
-              Search for Ālu Geneva texts below or
-               
-              <a
-                href="https://www.unige.ch/lettres/antic/unites/mesopotamie/projets/projet-fns-10000955-edition-de-la-version-nabu-zuqup-kenu-de-summa-alu"
-                rel="noopener noreferrer"
-                target="_blank"
-              >
-                click here
-              </a>
-               
-              to learn more about the project.
-            </p>
+            <div
+              class="project-page__intro"
+            >
+              <p>
+                The editions of 
+                <em>
+                  Šumma ālu
+                </em>
+                 presented here were prepared in the context of the projects “Edition of the Omen Series 
+                <em>
+                  Šumma ālu
+                </em>
+                ” (2017–2021;
+                 
+                <a
+                  href="http://p3.snf.ch/project-175970"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  http://p3.snf.ch/project-175970
+                </a>
+                 
+                ), “Typology and potential of the excerpt tablets of 
+                <em>
+                  Šumma ālu
+                </em>
+                ” (2022–2023;
+                 
+                <a
+                  href="http://p3.snf.ch/project-205122"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  http://p3.snf.ch/project-205122
+                </a>
+                 
+                ), and “Edition of Nabû-zuqup-kēnu’s 
+                <em>
+                  Šumma ālu
+                </em>
+                 series” (2024–2028;
+                 
+                <a
+                  href="https://data.snf.ch/grants/grant/10000955"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  https://data.snf.ch/grants/grant/10000955
+                </a>
+                 
+                ), directed by Prof. Catherine Mittermayer at the University of Geneva and funded by the Swiss National Science Foundation. The complete score editions can be downloaded (PDF) at the “Archive ouverte” of the University of Geneva (
+                 
+                <a
+                  href="https://archive-ouverte.unige.ch/"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  https://archive-ouverte.unige.ch/
+                </a>
+                 
+                ; search for “Shumma alu”).
+              </p>
+              <p>
+                Search for Ālu Geneva texts below or
+                 
+                <a
+                  href="https://www.unige.ch/lettres/antic/unites/mesopotamie/projets/projet-fns-10000955-edition-de-la-version-nabu-zuqup-kenu-de-summa-alu"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  click here
+                </a>
+                 
+                to learn more about the project.
+              </p>
+            </div>
             <div
               class="project-page__search"
             >
@@ -2262,7 +2286,7 @@ exports[`Project pages displays aluGeneva page 1`] = `
             </div>
           </div>
           <div
-            class="col-sm-2"
+            class="col-lg-2 col-md-3"
           >
             <div
               class="project-page__sidebar nav"

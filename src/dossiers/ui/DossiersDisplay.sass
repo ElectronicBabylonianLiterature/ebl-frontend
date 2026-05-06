@@ -1,31 +1,55 @@
-.dossier-records__item
-    margin-right: 8px
+.dossier-records__item, .dossier-records__item__active
+    display: inline-flex
+    align-items: baseline
+    gap: 4px
 
 .dossier-records__item .dossier-name, .dossier-records__item__active .dossier-name
+    background: none
+    border: 0
+    color: inherit
     cursor: pointer
+    font: inherit
+    padding: 0
     text-decoration: underline
     text-decoration-style: dotted
 
-@import src/fonts
+    &:hover, &:focus-visible
+        color: #0056b3
+        text-decoration-style: solid
+
+    &:focus-visible
+        outline-color: #0056b3
+        outline-style: solid
+        outline-width: 2px
+        outline-offset: 2px
+
+.dossier-search-link
+    color: #6c757d
+    font-size: 1.02em
+    font-weight: 700
+    text-decoration: none
+
+    &:hover, &:focus-visible
+        color: #0056b3
+        text-decoration: none
+
+    &:focus-visible
+        outline-color: #0056b3
+        outline-style: solid
+        outline-width: 2px
+        outline-offset: 2px
 
 .reference-popover__popover
-    min-width: 600px
     opacity: 0
     transition: opacity 0.4s linear
 
     &.show
         transition: opacity 0.4s linear
         opacity: 1
-    
-    .popover-body
-        @include ebl-font
-        font-size: small
-        text-align: justify
 
 .dossier-record p
     margin-block-end: 0
 
-// Grouped dossiers display styles
 .dossiers-grouped-display
     margin-top: 8px
     margin-bottom: 8px
@@ -47,13 +71,3 @@
     .dossier-prefix
         font-weight: 500
         margin-right: 4px
-
-    .dossier-records__item, .dossier-records__item__active
-        cursor: pointer
-        color: #007bff
-        text-decoration: underline
-        text-decoration-style: dotted
-        
-        &:hover
-            color: #0056b3
-            text-decoration-style: solid

@@ -1,39 +1,16 @@
 @import src/fonts
 
 .Header
-  &__badw-logo
-    height: 1.1em
-    width: auto
-    display: block
+  background: #ffffff
+  border-bottom: 1px solid #dee2e6
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08)
 
-  &__lmu-logo
-    height: 2.3em
-    width: auto
-    margin-bottom: 0
-    display: block
+  .navbar
+    padding: 0.85rem 0
 
-  &__logo-container
-    display: flex
-    flex-direction: row
-    align-items: center
-    gap: 0.9em
-    text-align: center
-    min-width: 200px
-    height: auto
-    line-height: 1
-    padding: 0 0.25em
-    background-color: transparent
-
-  &__logo-container a
-    display: flex
-    align-items: center
-
-  &__logo-container a + a
-    border-left: 1px solid #dadada
-    padding-left: 0.75em
-
-  &__logo-brand
-    margin-left: 0.5rem
+  &__toggle
+    border-color: rgba(0, 0, 0, 0.15)
+    padding: 0.35rem 0.55rem
 
   &__title
     font-size: 1em
@@ -45,11 +22,11 @@
       margin-right: 0.5em
       text-align: right
       vertical-align: middle
-      
+
       &__caps
         font-variant-caps: all-small-caps
         font-size: 1em
-      
+
     &-abbreviation
       color: white
       font-size: 3em
@@ -57,35 +34,136 @@
       background-color: #0077be
       vertical-align: middle
       margin-right: 0.2em
-      
+
       &__caps
         font-variant-caps: all-small-caps
         font-size: 1em
 
-#navbar-container
-  width: 100%
+  &__nav
+    display: flex
+    flex-direction: row
+    flex-wrap: nowrap
+    align-items: center
+    gap: 0.1rem
 
-#menu-lines
-  padding: 0 24px
+    .nav-item
+      .nav-link
+        color: rgba(0, 0, 0, 0.55) !important
+        font-weight: 500
+        font-size: 1.0em
+        letter-spacing: 0.04em
+        padding: 0.45rem 1rem
+        border-radius: 6px
+        transition: color 0.2s ease, background-color 0.2s ease
+        position: relative
+        white-space: nowrap
+        text-decoration: none
 
-.Header__nav
-  display: flex
-  flex-direction: column
-  align-items: center
-  justify-content: center
-  gap: 0.35rem
+        &::after
+          content: ''
+          position: absolute
+          bottom: 3px
+          left: 50%
+          transform: translateX(-50%) scaleX(0)
+          width: 40%
+          height: 2px
+          background: linear-gradient(90deg, #0077be, #005a8f)
+          border-radius: 2px
+          transition: transform 0.2s ease
 
-.Header__nav-row
-  display: flex
-  flex-wrap: nowrap
-  justify-content: center
-  column-gap: 0.4rem
-  row-gap: 0.2rem
+        &:hover
+          color: rgba(0, 0, 0, 0.85) !important
+          background-color: rgba(0, 119, 190, 0.06)
+          text-decoration: none
 
-.Header__nav-row .nav-link
-  @include ebl-font
-  padding: 0.25rem 0.6rem
-  font-size: 0.95em
+          &::after
+            transform: translateX(-50%) scaleX(1)
+
+        &.active
+          color: #0077be !important
+          background-color: rgba(0, 119, 190, 0.08)
+
+          &::after
+            transform: translateX(-50%) scaleX(1)
+
+  &__right
+    display: flex
+    align-items: center
+    gap: 1rem
+    flex-shrink: 0
+
+  &__partner-logos
+    display: flex
+    align-items: center
+    gap: 0.7rem
+    padding: 0.45rem 1rem
+    background: rgba(0, 0, 0, 0.03)
+    border: 1px solid rgba(0, 0, 0, 0.08)
+    border-radius: 10px
+
+  &__partner-logo-link
+    display: flex
+    align-items: center
+    opacity: 0.8
+    transition: opacity 0.2s ease, transform 0.2s ease
+    text-decoration: none
+
+    &:hover
+      opacity: 1
+      transform: translateY(-1px)
+      text-decoration: none
+
+  &__lmu-logo
+    height: 1.75rem
+    width: auto
+
+  &__badw-logo
+    height: 1.75rem
+    width: auto
+
+  &__logo-divider
+    display: inline-block
+    width: 1px
+    height: 1.5rem
+    background: rgba(0, 0, 0, 0.15)
+    flex-shrink: 0
+
+  &__user
+    display: flex
+    align-items: center
+
+@media (max-width: 991px)
+  .Header
+    &__nav
+      flex-direction: column
+      align-items: flex-start
+      padding: 0.5rem 0
+      gap: 0.15rem
+
+      .nav-item
+        width: 100%
+
+        .nav-link
+          padding: 0.55rem 0.75rem
+          font-size: 0.9rem
+          border-radius: 6px
+
+          &::after
+            display: none
+
+    &__right
+      flex-direction: row
+      flex-wrap: wrap
+      padding: 0.75rem 0
+      gap: 0.75rem
+      border-top: 1px solid rgba(0, 0, 0, 0.08)
+      width: 100%
+
+@media (max-width: 575px)
+  .Header
+    &__partner-logos
+      flex: 1
+      justify-content: center
 
 .Header__info-banner
   padding-left: 0
