@@ -3,7 +3,6 @@ import ReactMarkdown from 'react-markdown'
 import { Link } from 'react-router-dom'
 import { Container } from 'react-bootstrap'
 import AvHLogo from 'AvH_Logo.svg'
-import ERCLogo from 'ERC_Logo.png'
 import LRZLogoBlue from 'lrz_wortbild_d_blau-230.png'
 import AppContent from 'common/ui/AppContent'
 import './Introduction.sass'
@@ -66,7 +65,7 @@ function Hero(): JSX.Element {
             >
               <img
                 className="hero__logo hero__logo--erc"
-                src={ERCLogo}
+                src="/LOGO_ERC-FLAG_EU TRANSPARENT.png"
                 alt="European Research Council"
               />
             </a>
