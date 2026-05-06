@@ -261,6 +261,36 @@ exports[`Meaning 1`] = `
           >
             <a
               class="tools-nav__item  nav-link"
+              href="/tools/signs"
+            >
+              <span
+                class="tools-nav__icon"
+              >
+                𒀀
+              </span>
+              <span
+                class="tools-nav__title"
+              >
+                Signs
+              </span>
+            </a>
+            <a
+              class="tools-nav__item active nav-link"
+              href="/tools/dictionary"
+            >
+              <span
+                class="tools-nav__icon"
+              >
+                Ꞌ
+              </span>
+              <span
+                class="tools-nav__title"
+              >
+                Akkadian Dictionary
+              </span>
+            </a>
+            <a
+              class="tools-nav__item  nav-link"
               href="/tools/date-converter"
             >
               <span
@@ -317,36 +347,6 @@ exports[`Meaning 1`] = `
                 class="tools-nav__title"
               >
                 Dossiers
-              </span>
-            </a>
-            <a
-              class="tools-nav__item  nav-link"
-              href="/tools/signs"
-            >
-              <span
-                class="tools-nav__icon"
-              >
-                𒀀
-              </span>
-              <span
-                class="tools-nav__title"
-              >
-                Signs
-              </span>
-            </a>
-            <a
-              class="tools-nav__item active nav-link"
-              href="/tools/dictionary"
-            >
-              <span
-                class="tools-nav__icon"
-              >
-                Ꞌ
-              </span>
-              <span
-                class="tools-nav__title"
-              >
-                Akkadian Dictionary
               </span>
             </a>
             <a
@@ -1134,7 +1134,7 @@ exports[`Meaning 1`] = `
     </footer>
   </div>
 </div>
-`
+`;
 
 exports[`Root 1`] = `
 <div>
@@ -1397,6 +1397,36 @@ exports[`Root 1`] = `
           >
             <a
               class="tools-nav__item  nav-link"
+              href="/tools/signs"
+            >
+              <span
+                class="tools-nav__icon"
+              >
+                𒀀
+              </span>
+              <span
+                class="tools-nav__title"
+              >
+                Signs
+              </span>
+            </a>
+            <a
+              class="tools-nav__item active nav-link"
+              href="/tools/dictionary"
+            >
+              <span
+                class="tools-nav__icon"
+              >
+                Ꞌ
+              </span>
+              <span
+                class="tools-nav__title"
+              >
+                Akkadian Dictionary
+              </span>
+            </a>
+            <a
+              class="tools-nav__item  nav-link"
               href="/tools/date-converter"
             >
               <span
@@ -1453,36 +1483,6 @@ exports[`Root 1`] = `
                 class="tools-nav__title"
               >
                 Dossiers
-              </span>
-            </a>
-            <a
-              class="tools-nav__item  nav-link"
-              href="/tools/signs"
-            >
-              <span
-                class="tools-nav__icon"
-              >
-                𒀀
-              </span>
-              <span
-                class="tools-nav__title"
-              >
-                Signs
-              </span>
-            </a>
-            <a
-              class="tools-nav__item active nav-link"
-              href="/tools/dictionary"
-            >
-              <span
-                class="tools-nav__icon"
-              >
-                Ꞌ
-              </span>
-              <span
-                class="tools-nav__title"
-              >
-                Akkadian Dictionary
               </span>
             </a>
             <a
@@ -2270,7 +2270,7 @@ exports[`Root 1`] = `
     </footer>
   </div>
 </div>
-`
+`;
 
 exports[`Vowel class 1`] = `
 <div>
@@ -2533,6 +2533,36 @@ exports[`Vowel class 1`] = `
           >
             <a
               class="tools-nav__item  nav-link"
+              href="/tools/signs"
+            >
+              <span
+                class="tools-nav__icon"
+              >
+                𒀀
+              </span>
+              <span
+                class="tools-nav__title"
+              >
+                Signs
+              </span>
+            </a>
+            <a
+              class="tools-nav__item active nav-link"
+              href="/tools/dictionary"
+            >
+              <span
+                class="tools-nav__icon"
+              >
+                Ꞌ
+              </span>
+              <span
+                class="tools-nav__title"
+              >
+                Akkadian Dictionary
+              </span>
+            </a>
+            <a
+              class="tools-nav__item  nav-link"
               href="/tools/date-converter"
             >
               <span
@@ -2589,36 +2619,6 @@ exports[`Vowel class 1`] = `
                 class="tools-nav__title"
               >
                 Dossiers
-              </span>
-            </a>
-            <a
-              class="tools-nav__item  nav-link"
-              href="/tools/signs"
-            >
-              <span
-                class="tools-nav__icon"
-              >
-                𒀀
-              </span>
-              <span
-                class="tools-nav__title"
-              >
-                Signs
-              </span>
-            </a>
-            <a
-              class="tools-nav__item active nav-link"
-              href="/tools/dictionary"
-            >
-              <span
-                class="tools-nav__icon"
-              >
-                Ꞌ
-              </span>
-              <span
-                class="tools-nav__title"
-              >
-                Akkadian Dictionary
               </span>
             </a>
             <a
@@ -3406,7 +3406,7 @@ exports[`Vowel class 1`] = `
     </footer>
   </div>
 </div>
-`
+`;
 
 exports[`Word 1`] = `
 <div>
@@ -3669,6 +3669,36 @@ exports[`Word 1`] = `
           >
             <a
               class="tools-nav__item  nav-link"
+              href="/tools/signs"
+            >
+              <span
+                class="tools-nav__icon"
+              >
+                𒀀
+              </span>
+              <span
+                class="tools-nav__title"
+              >
+                Signs
+              </span>
+            </a>
+            <a
+              class="tools-nav__item active nav-link"
+              href="/tools/dictionary"
+            >
+              <span
+                class="tools-nav__icon"
+              >
+                Ꞌ
+              </span>
+              <span
+                class="tools-nav__title"
+              >
+                Akkadian Dictionary
+              </span>
+            </a>
+            <a
+              class="tools-nav__item  nav-link"
               href="/tools/date-converter"
             >
               <span
@@ -3725,36 +3755,6 @@ exports[`Word 1`] = `
                 class="tools-nav__title"
               >
                 Dossiers
-              </span>
-            </a>
-            <a
-              class="tools-nav__item  nav-link"
-              href="/tools/signs"
-            >
-              <span
-                class="tools-nav__icon"
-              >
-                𒀀
-              </span>
-              <span
-                class="tools-nav__title"
-              >
-                Signs
-              </span>
-            </a>
-            <a
-              class="tools-nav__item active nav-link"
-              href="/tools/dictionary"
-            >
-              <span
-                class="tools-nav__icon"
-              >
-                Ꞌ
-              </span>
-              <span
-                class="tools-nav__title"
-              >
-                Akkadian Dictionary
               </span>
             </a>
             <a
@@ -4542,7 +4542,7 @@ exports[`Word 1`] = `
     </footer>
   </div>
 </div>
-`
+`;
 
 exports[`renders dictionary search page 1`] = `
 <div>
@@ -4805,6 +4805,36 @@ exports[`renders dictionary search page 1`] = `
           >
             <a
               class="tools-nav__item  nav-link"
+              href="/tools/signs"
+            >
+              <span
+                class="tools-nav__icon"
+              >
+                𒀀
+              </span>
+              <span
+                class="tools-nav__title"
+              >
+                Signs
+              </span>
+            </a>
+            <a
+              class="tools-nav__item active nav-link"
+              href="/tools/dictionary"
+            >
+              <span
+                class="tools-nav__icon"
+              >
+                Ꞌ
+              </span>
+              <span
+                class="tools-nav__title"
+              >
+                Akkadian Dictionary
+              </span>
+            </a>
+            <a
+              class="tools-nav__item  nav-link"
               href="/tools/date-converter"
             >
               <span
@@ -4861,36 +4891,6 @@ exports[`renders dictionary search page 1`] = `
                 class="tools-nav__title"
               >
                 Dossiers
-              </span>
-            </a>
-            <a
-              class="tools-nav__item  nav-link"
-              href="/tools/signs"
-            >
-              <span
-                class="tools-nav__icon"
-              >
-                𒀀
-              </span>
-              <span
-                class="tools-nav__title"
-              >
-                Signs
-              </span>
-            </a>
-            <a
-              class="tools-nav__item active nav-link"
-              href="/tools/dictionary"
-            >
-              <span
-                class="tools-nav__icon"
-              >
-                Ꞌ
-              </span>
-              <span
-                class="tools-nav__title"
-              >
-                Akkadian Dictionary
               </span>
             </a>
             <a
@@ -5567,4 +5567,4 @@ exports[`renders dictionary search page 1`] = `
     </footer>
   </div>
 </div>
-`
+`;
