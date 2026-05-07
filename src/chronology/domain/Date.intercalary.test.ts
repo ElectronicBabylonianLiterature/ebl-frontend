@@ -127,82 +127,119 @@ describe('MesopotamianDate', () => {
   })
 
   describe('adds ca. prefix for approximate date field patterns', () => {
-    it('adds ca. for n+ day pattern (Nabonassar era)', () => {
-      const converter = new DateConverter()
-      converter.setToMesopotamianDate('Cambyses', 3, 6, 16)
+    type ApproxCase = {
+      label: string
+      year: string
+      month: string
+      day: string
+      isSeleucidEra: boolean
+      converterArgs:
+        | {
+            type: 'mesopotamian'
+            king: string
+            y: number
+            m: number
+            d: number
+          }
+        | { type: 'seleucid'; y: number; m: number; d: number }
+      expectsCa: boolean
+    }
 
-      const date = new MesopotamianDate({
-        year: { value: '3' },
-        month: { value: '6' },
-        day: { value: '16+' },
-        king: cambysesKing,
-      })
-
-      expect(date.toModernDate()).toBe(
-        `ca. ${converter.toDateString('Julian')}`,
-      )
-    })
-
-    it('does not add ca. for exact day pattern (Nabonassar era)', () => {
-      const converter = new DateConverter()
-      converter.setToMesopotamianDate('Cambyses', 3, 6, 16)
-
-      const date = new MesopotamianDate({
-        year: { value: '3' },
-        month: { value: '6' },
-        day: { value: '16' },
-        king: cambysesKing,
-      })
-
-      expect(date.toModernDate()).toBe(converter.toDateString('Julian'))
-    })
-
-    it('adds ca. for n-n day range pattern (Nabonassar era)', () => {
-      const converter = new DateConverter()
-      converter.setToMesopotamianDate('Cambyses', 3, 6, 16)
-
-      const date = new MesopotamianDate({
-        year: { value: '3' },
-        month: { value: '6' },
-        day: { value: '16-17' },
-        king: cambysesKing,
-      })
-
-      expect(date.toModernDate()).toBe(
-        `ca. ${converter.toDateString('Julian')}`,
-      )
-    })
-
-    it('adds ca. for x+n day pattern (Seleucid era)', () => {
-      const converter = new DateConverter()
-      converter.setToSeBabylonianDate(1, 5, 3)
-
-      const date = new MesopotamianDate({
-        year: { value: '1' },
-        month: { value: '5' },
-        day: { value: 'x+3' },
+    const cases: ApproxCase[] = [
+      {
+        label: 'n+ day pattern (Nabonassar era)',
+        year: '3',
+        month: '6',
+        day: '16+',
+        isSeleucidEra: false,
+        converterArgs: {
+          type: 'mesopotamian',
+          king: 'Cambyses',
+          y: 3,
+          m: 6,
+          d: 16,
+        },
+        expectsCa: true,
+      },
+      {
+        label: 'exact day pattern (Nabonassar era)',
+        year: '3',
+        month: '6',
+        day: '16',
+        isSeleucidEra: false,
+        converterArgs: {
+          type: 'mesopotamian',
+          king: 'Cambyses',
+          y: 3,
+          m: 6,
+          d: 16,
+        },
+        expectsCa: false,
+      },
+      {
+        label: 'n-n day range pattern (Nabonassar era)',
+        year: '3',
+        month: '6',
+        day: '16-17',
+        isSeleucidEra: false,
+        converterArgs: {
+          type: 'mesopotamian',
+          king: 'Cambyses',
+          y: 3,
+          m: 6,
+          d: 16,
+        },
+        expectsCa: true,
+      },
+      {
+        label: 'x+n day pattern (Seleucid era)',
+        year: '1',
+        month: '5',
+        day: 'x+3',
         isSeleucidEra: true,
-      })
-
-      expect(date.toModernDate()).toBe(
-        `ca. ${converter.toDateString('Julian')}`,
-      )
-    })
-
-    it('adds ca. for n/n month pattern (Seleucid era)', () => {
-      const converter = new DateConverter()
-      converter.setToSeBabylonianDate(1, 5, 16)
-
-      const date = new MesopotamianDate({
-        year: { value: '1' },
-        month: { value: '5/6' },
-        day: { value: '16' },
+        converterArgs: { type: 'seleucid', y: 1, m: 5, d: 3 },
+        expectsCa: true,
+      },
+      {
+        label: 'n/n month pattern (Seleucid era)',
+        year: '1',
+        month: '5/6',
+        day: '16',
         isSeleucidEra: true,
-      })
+        converterArgs: { type: 'seleucid', y: 1, m: 5, d: 16 },
+        expectsCa: true,
+      },
+    ]
 
-      expect(date.toModernDate()).toBe(
-        `ca. ${converter.toDateString('Julian')}`,
-      )
-    })
+    it.each(cases)(
+      '$expectsCa ? adds : does not add ca. for $label',
+      ({ year, month, day, isSeleucidEra, converterArgs, expectsCa }) => {
+        const converter = new DateConverter()
+        if (converterArgs.type === 'mesopotamian') {
+          converter.setToMesopotamianDate(
+            converterArgs.king,
+            converterArgs.y,
+            converterArgs.m,
+            converterArgs.d,
+          )
+        } else {
+          converter.setToSeBabylonianDate(
+            converterArgs.y,
+            converterArgs.m,
+            converterArgs.d,
+          )
+        }
+
+        const date = new MesopotamianDate({
+          year: { value: year },
+          month: { value: month },
+          day: { value: day },
+          ...(isSeleucidEra ? { isSeleucidEra: true } : { king: cambysesKing }),
+        })
+
+        const julian = converter.toDateString('Julian')
+        expect(date.toModernDate()).toBe(expectsCa ? `ca. ${julian}` : julian)
+      },
+    )
   })
 })

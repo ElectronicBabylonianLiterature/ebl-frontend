@@ -94,9 +94,8 @@ test('With session', async () => {
   await appDriver.waitForText(RegExp(_.escapeRegExp('Narrative Poetry')))
   expect(appDriver.getView().container).toMatchSnapshot()
   expect(appDriver.getView().getByText(/Narrative Poetry/)).toBeVisible()
-  expect(appDriver.getView().container).toHaveTextContent(
-    'Divination Third Category',
-  )
+  appDriver.click('Divination')
+  await appDriver.waitForText(/Divination Third Category/)
 })
 
 test('Without session', async () => {
