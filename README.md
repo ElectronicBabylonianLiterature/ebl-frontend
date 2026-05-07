@@ -89,6 +89,29 @@ yarn test
 
 `yarn test --coverage --watchAll`
 
+## Bundle size tracking
+
+Run the bundle-size CI flow locally:
+
+```sh
+yarn bundle-size:ci
+```
+
+Record a new baseline from the current build when a deliberate baseline change is approved:
+
+```sh
+yarn build:bundle-size
+yarn bundle-size:record-baseline
+```
+
+Bundle-size artifacts are written to:
+
+- `build/bundle-size/source-map-explorer.json`
+- `build/bundle-size/bundle-budget-report.json`
+- `scripts/bundle-size/bundle-size-baseline.json`
+
+On pull requests, CI compares bundle growth against the baseline from `master`.
+
 ## Secret scanning
 
 This repository blocks commits that introduce detected secrets.

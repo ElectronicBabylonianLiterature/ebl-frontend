@@ -5,3 +5,4 @@ declare module '*.md' {
 
 declare module '*.css'
 declare module '*.sass'
+declare module '*.mjs'
