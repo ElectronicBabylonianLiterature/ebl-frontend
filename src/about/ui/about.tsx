@@ -13,6 +13,7 @@ import AboutSigns from 'about/ui/signs'
 import AboutNews from 'about/ui/news'
 import AboutDictionary from 'about/ui/dictionary'
 import AboutBibliography from 'about/ui/bibliography'
+import AboutArchaeology from 'about/ui/archaeology'
 import _ from 'lodash'
 
 export const tabIds = [
@@ -23,6 +24,7 @@ export const tabIds = [
   'dictionary',
   'bibliography',
   'news',
+  'archaeology',
 ] as const
 export type TabId = (typeof tabIds)[number]
 
@@ -58,6 +60,9 @@ function getTabs({
           ? parseInt(activeSection)
           : undefined,
       })}
+    </Tab>,
+    <Tab key="archaeology" eventKey="archaeology" title="Archaeology">
+      {AboutArchaeology(markupService)}
     </Tab>,
   ]
 }
