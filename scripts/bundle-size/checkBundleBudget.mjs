@@ -11,24 +11,55 @@ const reportFilePath = path.resolve(
   reportDirectoryPath,
   'bundle-budget-report.json',
 )
+const allowedBaselineSources = new Set(['repository', 'master', 'bootstrap'])
+
+function getArgumentValue(argumentName, argv = process.argv.slice(2)) {
+  const argumentIndex = argv.indexOf(argumentName)
+
+  if (argumentIndex === -1) {
+    return undefined
+  }
+
+  const argumentValue = argv[argumentIndex + 1]
+
+  if (!argumentValue || argumentValue.startsWith('--')) {
+    throw new Error(`Missing value for ${argumentName}`)
+  }
+
+  return argumentValue
+}
 
 function getBaselinePath(argv = process.argv.slice(2)) {
-  const baselineArgumentIndex = argv.indexOf('--baseline')
+  const baselinePath = getArgumentValue('--baseline', argv)
 
-  if (baselineArgumentIndex === -1) {
+  if (!baselinePath) {
     return path.resolve(
       process.cwd(),
       'scripts/bundle-size/bundle-size-baseline.json',
     )
   }
 
-  const baselinePath = argv[baselineArgumentIndex + 1]
+  return path.resolve(process.cwd(), baselinePath)
+}
 
-  if (!baselinePath) {
-    throw new Error('Missing value for --baseline')
+function getBaselineSource(argv = process.argv.slice(2)) {
+  const baselineSource = getArgumentValue('--baseline-source', argv)
+
+  if (!baselineSource) {
+    return 'repository'
   }
 
-  return path.resolve(process.cwd(), baselinePath)
+  if (!allowedBaselineSources.has(baselineSource)) {
+    throw new Error(
+      'Invalid value for --baseline-source. Expected one of: repository, master, bootstrap',
+    )
+  }
+
+  return baselineSource
+}
+
+function shouldAllowBudgetExceed(argv = process.argv.slice(2)) {
+  return argv.includes('--allow-budget-exceed')
 }
 
 function validateBaseline(baseline) {
@@ -84,7 +115,14 @@ function getTopAsyncJavaScriptAssets(asyncAssetSizeByPath) {
     .slice(0, 10)
 }
 
-function createBundleBudgetReport(baseline, buildMetrics) {
+function createBundleBudgetReport(
+  baseline,
+  buildMetrics,
+  {
+    baselineSource = 'repository',
+    enforcementMode = 'strict',
+  } = {},
+) {
   const allowedInitialJavaScriptBytes = Math.round(
     baseline.initialJavaScriptBytes * (1 + baseline.thresholdPercent / 100),
   )
@@ -93,8 +131,13 @@ function createBundleBudgetReport(baseline, buildMetrics) {
   const initialJavaScriptGzipBytesDelta =
     buildMetrics.initialJavaScriptGzipBytes -
     baseline.initialJavaScriptGzipBytes
+  const budgetExceeded =
+    buildMetrics.initialJavaScriptBytes > allowedInitialJavaScriptBytes
 
   return {
+    baselineSource,
+    enforcementMode,
+    budgetExceeded,
     baseline: {
       initialJavaScriptBytes: baseline.initialJavaScriptBytes,
       initialJavaScriptGzipBytes: baseline.initialJavaScriptGzipBytes,
@@ -122,10 +165,7 @@ function createBundleBudgetReport(baseline, buildMetrics) {
 }
 
 function hasExceededBudget(bundleBudgetReport) {
-  return (
-    bundleBudgetReport.current.initialJavaScriptBytes >
-    bundleBudgetReport.threshold.allowedInitialJavaScriptBytes
-  )
+  return bundleBudgetReport.budgetExceeded
 }
 
 function writeBundleBudgetReport(bundleBudgetReport) {
@@ -138,6 +178,8 @@ function writeBundleBudgetReport(bundleBudgetReport) {
 
 function logBundleBudgetReport(bundleBudgetReport) {
   console.log('Bundle size check')
+  console.log(`Baseline source: ${bundleBudgetReport.baselineSource}`)
+  console.log(`Enforcement mode: ${bundleBudgetReport.enforcementMode}`)
   console.log(
     `Baseline initial JavaScript: ${bundleBudgetReport.baseline.initialJavaScriptBytes} B (${bundleBudgetReport.baseline.initialJavaScriptGzipBytes} B gzip)`,
   )
@@ -158,21 +200,35 @@ function logBundleBudgetReport(bundleBudgetReport) {
 
 function runBundleBudgetCheck(argv = process.argv.slice(2)) {
   const baselinePath = getBaselinePath(argv)
+  const baselineSource = getBaselineSource(argv)
+  const allowBudgetExceed = shouldAllowBudgetExceed(argv)
   const baseline = validateBaseline(readJsonFile(baselinePath))
   const buildMetrics = getBuildMetrics()
-  const bundleBudgetReport = createBundleBudgetReport(baseline, buildMetrics)
+  const bundleBudgetReport = createBundleBudgetReport(baseline, buildMetrics, {
+    baselineSource,
+    enforcementMode: allowBudgetExceed ? 'bootstrap' : 'strict',
+  })
 
   writeBundleBudgetReport(bundleBudgetReport)
   logBundleBudgetReport(bundleBudgetReport)
 
   if (hasExceededBudget(bundleBudgetReport)) {
-    console.error('Bundle size budget exceeded')
+    const message = `Bundle size budget exceeded (baseline source: ${baselineSource})`
+
+    if (allowBudgetExceed) {
+      console.warn(message)
+      return
+    }
+
+    console.error(message)
     process.exit(1)
   }
 }
 
 export {
   getBaselinePath,
+  getBaselineSource,
+  shouldAllowBudgetExceed,
   validateBaseline,
   createBundleBudgetReport,
   runBundleBudgetCheck,

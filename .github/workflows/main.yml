@@ -69,35 +69,51 @@ jobs:
           node-version: '20'
 
       - name: Install
-        id: install
         run: |
-          for i in 1 2 3; do
-            yarn install --dev --frozen-lockfile && break || {
-              echo "Install attempt $i failed, retrying in 10 seconds..."
-              sleep 10
-            }
+          attempt=1
+          max_attempts=3
+
+          while ! yarn install --dev --frozen-lockfile; do
+            if [ "$attempt" -ge "$max_attempts" ]; then
+              echo "Install failed after $max_attempts attempts."
+              exit 1
+            fi
+
+            echo "Install attempt $attempt failed, retrying in 10 seconds..."
+            attempt=$((attempt + 1))
+            sleep 10
           done
 
       - name: Build For Bundle Size
-        if: success() || steps.install.outcome == 'success'
         run: yarn build:bundle-size
 
       - name: Run Source Map Explorer
-        if: success() || steps.install.outcome == 'success'
         run: yarn bundle-size:analyze
 
-      - name: Prepare Master Baseline
-        if: (success() || steps.install.outcome == 'success') && github.event_name == 'pull_request'
+      - name: Prepare PR Baseline
+        if: github.event_name == 'pull_request'
         run: |
           mkdir -p build/bundle-size
           git fetch origin master --depth=1
-          git show origin/master:scripts/bundle-size/bundle-size-baseline.json > build/bundle-size/master-bundle-size-baseline.json
+
+          if git cat-file -e origin/master:scripts/bundle-size/bundle-size-baseline.json 2>/dev/null; then
+            git show origin/master:scripts/bundle-size/bundle-size-baseline.json > build/bundle-size/master-bundle-size-baseline.json
+            echo "BUNDLE_BUDGET_BASELINE_PATH=build/bundle-size/master-bundle-size-baseline.json" >> "$GITHUB_ENV"
+            echo "BUNDLE_BUDGET_BASELINE_SOURCE=master" >> "$GITHUB_ENV"
+          else
+            cp scripts/bundle-size/bundle-size-baseline.json build/bundle-size/bootstrap-bundle-size-baseline.json
+            echo "BUNDLE_BUDGET_BASELINE_PATH=build/bundle-size/bootstrap-bundle-size-baseline.json" >> "$GITHUB_ENV"
+            echo "BUNDLE_BUDGET_BASELINE_SOURCE=bootstrap" >> "$GITHUB_ENV"
+          fi
 
       - name: Enforce Bundle Budget
-        if: success() || steps.install.outcome == 'success'
         run: |
           if [ "${{ github.event_name }}" = "pull_request" ]; then
-            node scripts/bundle-size/checkBundleBudgetCli.mjs --baseline build/bundle-size/master-bundle-size-baseline.json
+            if [ "$BUNDLE_BUDGET_BASELINE_SOURCE" = "master" ]; then
+              node scripts/bundle-size/checkBundleBudgetCli.mjs --baseline "$BUNDLE_BUDGET_BASELINE_PATH" --baseline-source "$BUNDLE_BUDGET_BASELINE_SOURCE"
+            else
+              node scripts/bundle-size/checkBundleBudgetCli.mjs --baseline "$BUNDLE_BUDGET_BASELINE_PATH" --baseline-source "$BUNDLE_BUDGET_BASELINE_SOURCE" --allow-budget-exceed
+            fi
           else
             yarn bundle-size:check
           fi

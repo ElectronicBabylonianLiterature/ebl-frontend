@@ -2,6 +2,8 @@ import path from 'path'
 import {
   createBundleBudgetReport,
   getBaselinePath,
+  getBaselineSource,
+  shouldAllowBudgetExceed,
   validateBaseline,
 } from '../../../scripts/bundle-size/checkBundleBudget.mjs'
 
@@ -25,12 +27,18 @@ describe('checkBundleBudget', () => {
       ],
     }
 
-    const report = createBundleBudgetReport(baseline, buildMetrics)
+    const report = createBundleBudgetReport(baseline, buildMetrics, {
+      baselineSource: 'master',
+      enforcementMode: 'strict',
+    })
 
     expect(report.threshold.allowedInitialJavaScriptBytes).toBe(1100)
     expect(report.delta.initialJavaScriptBytes).toBe(80)
     expect(report.delta.initialJavaScriptGzipBytes).toBe(60)
     expect(report.delta.initialJavaScriptBytesPercent).toBeCloseTo(8, 5)
+    expect(report.baselineSource).toBe('master')
+    expect(report.enforcementMode).toBe('strict')
+    expect(report.budgetExceeded).toBe(false)
     expect(report.topAsyncJavaScriptAssets[0].assetPath).toBe(
       'static/js/chunk-b.js',
     )
@@ -48,6 +56,28 @@ describe('checkBundleBudget', () => {
     expect(() => getBaselinePath(['--baseline'])).toThrow(
       'Missing value for --baseline',
     )
+  })
+
+  test('getBaselineSource resolves custom source', () => {
+    expect(getBaselineSource(['--baseline-source', 'bootstrap'])).toBe(
+      'bootstrap',
+    )
+  })
+
+  test('getBaselineSource throws for invalid source', () => {
+    expect(() =>
+      getBaselineSource(['--baseline-source', 'invalid-source']),
+    ).toThrow(
+      'Invalid value for --baseline-source. Expected one of: repository, master, bootstrap',
+    )
+  })
+
+  test('shouldAllowBudgetExceed returns true when flag is present', () => {
+    expect(shouldAllowBudgetExceed(['--allow-budget-exceed'])).toBe(true)
+  })
+
+  test('shouldAllowBudgetExceed returns false when flag is not present', () => {
+    expect(shouldAllowBudgetExceed([])).toBe(false)
   })
 
   test('validateBaseline throws for non-positive values', () => {
