@@ -91,10 +91,20 @@ yarn test
 
 ## Bundle size tracking
 
-Run the bundle-size CI flow locally:
+Local bundle-size check (uses the repository baseline in `scripts/bundle-size/bundle-size-baseline.json`):
 
 ```sh
 yarn bundle-size:ci
+```
+
+PR-equivalent check against the `master` baseline:
+
+```sh
+git fetch origin master --depth=1
+mkdir -p build/bundle-size
+git show origin/master:scripts/bundle-size/bundle-size-baseline.json > build/bundle-size/master-bundle-size-baseline.json
+yarn build:bundle-size && yarn bundle-size:analyze
+node scripts/bundle-size/checkBundleBudgetCli.mjs --baseline build/bundle-size/master-bundle-size-baseline.json --baseline-source master
 ```
 
 Record a new baseline from the current build when a deliberate baseline change is approved:
