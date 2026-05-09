@@ -90,7 +90,7 @@ const croppedAnnotation: CroppedAnnotation = {
 }
 
 function renderSignDisplay(signName: string) {
-  render(
+  return render(
     <HelmetProvider context={helmetContext}>
       <MemoryRouter initialEntries={[`/signs/${signName}`]}>
         <SessionContext.Provider value={session}>
@@ -111,7 +111,7 @@ function renderSignDisplay(signName: string) {
 }
 
 describe('Sign Display', () => {
-  const setup = async (): Promise<void> => {
+  const setup = async () => {
     signService.search.mockReturnValue(Bluebird.resolve([]))
     signService.getCentroidImages.mockReturnValue(
       Bluebird.resolve([croppedAnnotation]),
@@ -119,14 +119,16 @@ describe('Sign Display', () => {
     signService.find.mockReturnValue(Bluebird.resolve(sign))
     wordService.find.mockReturnValue(Bluebird.resolve(word))
 
-    renderSignDisplay(sign.name)
+    const view = renderSignDisplay(sign.name)
 
     await screen.findAllByText(sign.name)
     expect(signService.find).toBeCalledWith(sign.name)
+
+    return view
   }
 
   it('Sign Display Snapshot', async () => {
-    await setup()
+    const { container } = await setup()
 
     expect(screen.getAllByText(sign.name).length).toBeGreaterThan(0)
     expect(screen.getAllByRole('img').length).toBeGreaterThan(0)
@@ -135,5 +137,7 @@ describe('Sign Display', () => {
     expect(
       await screen.findByText((content) => content.includes('Canonical 1')),
     ).toBeInTheDocument()
+
+    expect(container).toMatchSnapshot()
   })
 })
