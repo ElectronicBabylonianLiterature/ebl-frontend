@@ -260,6 +260,73 @@ async function runWithConcurrencyLimit<T, R>(
   return results
 }
 
+async function loadClusterAnnotations({
+  croppedAnnotations,
+  signService,
+  signName,
+  scriptAbbr,
+}: {
+  croppedAnnotations: CroppedAnnotation[]
+  signService: SignService
+  signName: string
+  scriptAbbr: string
+}): Promise<{
+  annotations: CroppedAnnotation[]
+  hasFailures: boolean
+}> {
+  const clusterIds = _.uniq(
+    croppedAnnotations
+      .map((annotation) => annotation.pcaClustering?.clusterId)
+      .filter((clusterId): clusterId is string => Boolean(clusterId)),
+  )
+
+  if (!clusterIds.length) {
+    return {
+      annotations: croppedAnnotations,
+      hasFailures: false,
+    }
+  }
+
+  const results = await runWithConcurrencyLimit(clusterIds, 4, (clusterId) =>
+    signService.getClusterVariants(signName, clusterId, scriptAbbr),
+  )
+
+  const failedClusterIds = results
+    .map((result, index) =>
+      result.status === 'rejected' ? clusterIds[index] : null,
+    )
+    .filter((clusterId): clusterId is string => Boolean(clusterId))
+
+  const successfulAnnotations = results
+    .filter(
+      (result): result is PromiseFulfilledResult<CroppedAnnotation[]> =>
+        result.status === 'fulfilled',
+    )
+    .flatMap((result) => result.value)
+
+  const fallbackAnnotations = croppedAnnotations.filter((annotation) =>
+    failedClusterIds.includes(annotation.pcaClustering?.clusterId || ''),
+  )
+
+  const nonPcaAnnotations = croppedAnnotations.filter(
+    (annotation) => !annotation.pcaClustering?.clusterId,
+  )
+
+  return {
+    annotations:
+      successfulAnnotations.length ||
+      fallbackAnnotations.length ||
+      nonPcaAnnotations.length
+        ? [
+            ...successfulAnnotations,
+            ...fallbackAnnotations,
+            ...nonPcaAnnotations,
+          ]
+        : croppedAnnotations,
+    hasFailures: failedClusterIds.length > 0,
+  }
+}
+
 function PeriodAccordion({
   eventKey,
   activePeriod,
@@ -277,10 +344,6 @@ function PeriodAccordion({
   signService: SignService
   signName: string
 }) {
-  const nonPcaAnnotations = croppedAnnotations.filter(
-    (annotation) => !annotation.pcaClustering?.clusterId,
-  )
-
   const [loadedAnnotations, setLoadedAnnotations] = useState<
     CroppedAnnotation[] | null
   >(null)
@@ -298,55 +361,18 @@ function PeriodAccordion({
       return
     }
 
-    const clusterIds = _.uniq(
-      croppedAnnotations
-        .map((annotation) => annotation.pcaClustering?.clusterId)
-        .filter((clusterId): clusterId is string => Boolean(clusterId)),
-    )
-
-    if (!clusterIds.length) {
-      setLoadedAnnotations(croppedAnnotations)
-      return
-    }
-
     setIsLoading(true)
     setHasLoadFailures(false)
 
-    const results = await runWithConcurrencyLimit(clusterIds, 4, (clusterId) =>
-      signService.getClusterVariants(signName, clusterId, scriptAbbr),
-    )
+    const { annotations, hasFailures } = await loadClusterAnnotations({
+      croppedAnnotations,
+      signService,
+      signName,
+      scriptAbbr,
+    })
 
-    const failedClusterIds = results
-      .map((result, index) =>
-        result.status === 'rejected' ? clusterIds[index] : null,
-      )
-      .filter((clusterId): clusterId is string => Boolean(clusterId))
-
-    const successfulAnnotations = results
-      .filter(
-        (result): result is PromiseFulfilledResult<CroppedAnnotation[]> =>
-          result.status === 'fulfilled',
-      )
-      .flatMap((result) => result.value)
-
-    const fallbackAnnotations = croppedAnnotations.filter((annotation) =>
-      failedClusterIds.includes(annotation.pcaClustering?.clusterId || ''),
-    )
-
-    setHasLoadFailures(failedClusterIds.length > 0)
-
-    setLoadedAnnotations(
-      successfulAnnotations.length ||
-        fallbackAnnotations.length ||
-        nonPcaAnnotations.length
-        ? [
-            ...successfulAnnotations,
-            ...fallbackAnnotations,
-            ...nonPcaAnnotations,
-          ]
-        : croppedAnnotations,
-    )
-
+    setLoadedAnnotations(annotations)
+    setHasLoadFailures(hasFailures)
     setIsLoading(false)
   }
 
