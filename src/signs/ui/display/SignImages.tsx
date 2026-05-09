@@ -218,6 +218,40 @@ function SignImagePagination({
   )
 }
 
+async function runWithConcurrencyLimit<T, R>(
+  items: T[],
+  limit: number,
+  task: (item: T) => Promise<R>,
+): Promise<PromiseSettledResult<R>[]> {
+  const results: PromiseSettledResult<R>[] = []
+  let index = 0
+
+  async function worker() {
+    while (index < items.length) {
+      const currentIndex = index
+      index += 1
+
+      try {
+        results[currentIndex] = {
+          status: 'fulfilled',
+          value: await task(items[currentIndex]),
+        }
+      } catch (reason) {
+        results[currentIndex] = {
+          status: 'rejected',
+          reason,
+        }
+      }
+    }
+  }
+
+  await Promise.all(
+    Array.from({ length: Math.min(limit, items.length) }, () => worker()),
+  )
+
+  return results
+}
+
 function PeriodAccordion({
   scriptAbbr,
   croppedAnnotations,
@@ -233,6 +267,7 @@ function PeriodAccordion({
     CroppedAnnotation[] | null
   >(null)
   const [isLoading, setIsLoading] = useState(false)
+  const [hasLoadFailures, setHasLoadFailures] = useState(false)
 
   let script = 'Unclassified'
   if (scriptAbbr !== '') {
@@ -257,12 +292,17 @@ function PeriodAccordion({
     }
 
     setIsLoading(true)
+    setHasLoadFailures(false)
 
-    const results = await globalThis.Promise.allSettled(
-      clusterIds.map((clusterId) =>
-        signService.getClusterVariants(signName, clusterId, scriptAbbr),
-      ),
+    const results = await runWithConcurrencyLimit(clusterIds, 4, (clusterId) =>
+      signService.getClusterVariants(signName, clusterId, scriptAbbr),
     )
+
+    const failedClusterIds = results
+      .map((result, index) =>
+        result.status === 'rejected' ? clusterIds[index] : null,
+      )
+      .filter((clusterId): clusterId is string => Boolean(clusterId))
 
     const successfulAnnotations = results
       .filter(
@@ -271,9 +311,18 @@ function PeriodAccordion({
       )
       .flatMap((result) => result.value)
 
-    setLoadedAnnotations(
-      successfulAnnotations.length ? successfulAnnotations : croppedAnnotations,
+    const fallbackAnnotations = croppedAnnotations.filter((annotation) =>
+      failedClusterIds.includes(annotation.pcaClustering?.clusterId || ''),
     )
+
+    setHasLoadFailures(failedClusterIds.length > 0)
+
+    setLoadedAnnotations(
+      successfulAnnotations.length || fallbackAnnotations.length
+        ? [...successfulAnnotations, ...fallbackAnnotations]
+        : croppedAnnotations,
+    )
+
     setIsLoading(false)
   }
 
@@ -293,6 +342,13 @@ function PeriodAccordion({
             <div>Loading...</div>
           ) : (
             <>
+              {hasLoadFailures && (
+                <div className="text-warning mb-3">
+                  Some variants could not be loaded. Showing available centroid
+                  data for the affected clusters.
+                </div>
+              )}
+
               {sortedGroups.map(([clusterId, group]) => {
                 const centroid = group.find(
                   (annotation) => annotation.pcaClustering?.isCentroid,

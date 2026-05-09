@@ -65,12 +65,6 @@ class SignRepository {
     return Promise.all(tokensWithSigns.map((token) => Promise.all(token)))
   }
 
-  getImages(signName: string): Promise<CroppedAnnotation[]> {
-    return this.apiClient
-      .fetchJson(`/signs/${encodeURIComponent(signName)}/images`, false)
-      .then(this.processCroppedAnnotations)
-  }
-
   getCentroidImages(signName: string): Promise<CroppedAnnotation[]> {
     return this.apiClient
       .fetchJson(

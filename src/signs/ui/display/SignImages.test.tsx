@@ -33,6 +33,21 @@ const croppedAnnotations: CroppedAnnotation[] = [
     },
   },
   {
+    fragmentNumber: 'K.6404',
+    image: imageString,
+    script: '',
+    label: 'label-3',
+    annotationId: 'annotation-3',
+    pcaClustering: {
+      clusterId: 'cluster-3',
+      clusterRank: 1,
+      form: 'variant2',
+      isCentroid: true,
+      clusterSize: 1,
+      isMain: true,
+    },
+  },
+  {
     fragmentNumber: 'K.6401',
     image: imageString,
     script: 'MA',
@@ -71,6 +86,7 @@ describe('Sign Images', () => {
     await setup()
 
     expect(screen.getByTitle('Canonical 1')).toBeInTheDocument()
+    expect(screen.getByTitle('Variant 2')).toBeInTheDocument()
     expect(screen.getByTitle('Variant 1')).toBeInTheDocument()
   })
 
@@ -88,7 +104,7 @@ describe('Sign Images', () => {
 
     expect(screen.getByTitle('Variant 1')).toHaveAttribute(
       'src',
-      `data:image/png;base64, ${croppedAnnotations[1].image}`,
+      `data:image/png;base64, ${croppedAnnotations[2].image}`,
     )
   })
 
@@ -96,7 +112,7 @@ describe('Sign Images', () => {
     signService.getClusterVariants.mockReturnValue(
       Bluebird.resolve([
         {
-          ...croppedAnnotations[1],
+          ...croppedAnnotations[2],
           annotationId: 'variant-annotation',
           fragmentNumber: 'K.6402',
           pcaClustering: {
@@ -126,6 +142,45 @@ describe('Sign Images', () => {
     )
 
     expect(await screen.findByText('K.6402')).toBeInTheDocument()
+  })
+
+  it('Shows a warning and keeps centroid fallback when some cluster variants fail', async () => {
+    signService.getClusterVariants
+      .mockReturnValueOnce(
+        Bluebird.resolve([
+          {
+            ...croppedAnnotations[0],
+            annotationId: 'loaded-variant-annotation',
+            fragmentNumber: 'K.6403',
+            pcaClustering: {
+              clusterId: 'cluster-1',
+              clusterRank: 0,
+              form: 'canonical1',
+              isCentroid: false,
+              clusterSize: 2,
+              isMain: true,
+            },
+          },
+        ]),
+      )
+      .mockReturnValueOnce(Bluebird.reject(new Error('Failed to load cluster')))
+
+    await setup()
+
+    await userEvent.click(
+      screen.getByRole('button', {
+        name: /Unclassified/,
+      }),
+    )
+
+    expect(
+      await screen.findByText(
+        /Some variants could not be loaded. Showing available centroid data/,
+      ),
+    ).toBeInTheDocument()
+
+    expect(screen.getByText('K.6403')).toBeInTheDocument()
+    expect(screen.getByText('K.6404')).toBeInTheDocument()
   })
 })
 

@@ -12,10 +12,6 @@ export default class SignService {
     this.signsRepository = signsRepository
   }
 
-  getImages(signName: string): Bluebird<CroppedAnnotation[]> {
-    return this.signsRepository.getImages(signName)
-  }
-
   getCentroidImages(signName: string): Bluebird<CroppedAnnotation[]> {
     return this.signsRepository.getCentroidImages(signName)
   }

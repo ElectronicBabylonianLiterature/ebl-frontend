@@ -19,9 +19,6 @@ const testData: TestData<SignService>[] = [
     signRepository.search,
     resultStub,
   ),
-  new TestData('getImages', ['signName'], signRepository.getImages, [
-    resultStub,
-  ]),
   new TestData(
     'getCentroidImages',
     ['signName'],
