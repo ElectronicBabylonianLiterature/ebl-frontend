@@ -83,7 +83,10 @@ function sortGroupsByClusterRank(
         (annotation) => annotation.pcaClustering?.clusterId || 'no-cluster',
       ),
     ),
-    ([, group]) => group[0].pcaClustering?.clusterRank ?? 999,
+    [
+      ([clusterId]) => (clusterId === 'no-cluster' ? 1 : 0),
+      ([, group]) => group[0].pcaClustering?.clusterRank ?? 999,
+    ],
   )
 }
 
@@ -180,6 +183,8 @@ function SignImagePagination({
   )
   const periodsAbbr = [...periods.map((period) => period.abbreviation), '']
 
+  const [activePeriod, setActivePeriod] = useState<string | null>(null)
+
   const scriptsSorted = _.sortBy(Object.entries(scripts), (elem) => {
     const index = periodsAbbr.indexOf(elem[0])
     if (index === -1) {
@@ -203,7 +208,10 @@ function SignImagePagination({
 
             return (
               <PeriodAccordion
-                key={index}
+                key={scriptAbbr || 'unclassified'}
+                eventKey={scriptAbbr || 'unclassified'}
+                activePeriod={activePeriod}
+                setActivePeriod={setActivePeriod}
                 scriptAbbr={scriptAbbr}
                 croppedAnnotations={croppedAnnotationsForScript}
                 signService={signService}
@@ -253,16 +261,26 @@ async function runWithConcurrencyLimit<T, R>(
 }
 
 function PeriodAccordion({
+  eventKey,
+  activePeriod,
+  setActivePeriod,
   scriptAbbr,
   croppedAnnotations,
   signService,
   signName,
 }: {
+  eventKey: string
+  activePeriod: string | null
+  setActivePeriod: React.Dispatch<React.SetStateAction<string | null>>
   scriptAbbr: string
   croppedAnnotations: CroppedAnnotation[]
   signService: SignService
   signName: string
 }) {
+  const nonPcaAnnotations = croppedAnnotations.filter(
+    (annotation) => !annotation.pcaClustering?.clusterId,
+  )
+
   const [loadedAnnotations, setLoadedAnnotations] = useState<
     CroppedAnnotation[] | null
   >(null)
@@ -318,8 +336,14 @@ function PeriodAccordion({
     setHasLoadFailures(failedClusterIds.length > 0)
 
     setLoadedAnnotations(
-      successfulAnnotations.length || fallbackAnnotations.length
-        ? [...successfulAnnotations, ...fallbackAnnotations]
+      successfulAnnotations.length ||
+        fallbackAnnotations.length ||
+        nonPcaAnnotations.length
+        ? [
+            ...successfulAnnotations,
+            ...fallbackAnnotations,
+            ...nonPcaAnnotations,
+          ]
         : croppedAnnotations,
     )
 
@@ -330,9 +354,16 @@ function PeriodAccordion({
   const sortedGroups = sortGroupsByClusterRank(annotationsToRender)
 
   return (
-    <Accordion defaultActiveKey={undefined}>
-      <Accordion.Item eventKey="0">
-        <Accordion.Header onClick={handleEnter}>
+    <Accordion activeKey={activePeriod}>
+      <Accordion.Item eventKey={eventKey}>
+        <Accordion.Header
+          onClick={() => {
+            setActivePeriod((current) =>
+              current === eventKey ? null : eventKey,
+            )
+            handleEnter()
+          }}
+        >
           <span className="sign-images__period-title">{script}</span>
           <PeriodPreview annotations={croppedAnnotations} />
         </Accordion.Header>
@@ -362,7 +393,11 @@ function PeriodAccordion({
                 return (
                   <VariantGroup
                     key={clusterId}
-                    form={group[0].pcaClustering?.form || 'Unknown form'}
+                    form={
+                      clusterId === 'no-cluster'
+                        ? 'Without PCA clustering'
+                        : group[0].pcaClustering?.form || 'Unknown form'
+                    }
                     centroid={centroid}
                     variants={variants}
                   />
