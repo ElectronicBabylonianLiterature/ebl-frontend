@@ -3,7 +3,6 @@ import DynamicSitemap from 'react-dynamic-sitemap'
 import { renderToString } from 'react-dom/server'
 import $ from 'jquery'
 import { Route } from 'router/compat'
-import { WebsiteRoutes } from 'router/router'
 import Services from 'router/Services'
 import withData from 'http/withData'
 import Bluebird from 'bluebird'
@@ -11,40 +10,62 @@ import convert from 'xml-js'
 import _ from 'lodash'
 import pako from 'pako'
 import { saveAs } from 'file-saver'
+import Introduction from 'Introduction'
+import AboutRoutes from 'router/aboutRoutes'
+import ToolsRoutes from 'router/toolsRoutes'
+import SignRoutes from 'router/signRoutes'
+import BibliographyRoutes from 'router/bibliographyRoutes'
+import DictionaryRoutes from 'router/dictionaryRoutes'
+import CorpusRoutes from 'router/corpusRoutes'
+import FragmentariumRoutes from 'router/fragmentariumRoutes'
+import ResearchProjectRoutes from 'router/researchProjectRoutes'
+import FooterRoutes from 'router/footerRoutes'
+import { sitemapDefaults, Slugs } from 'router/sitemapConfig'
+import {
+  websiteRouteGroups,
+  type RouteModule,
+  type RouteModuleProps,
+  type WebsiteRouteGroup,
+} from 'router/websiteRouteGroups'
 
 const DOMAIN = 'www.ebl.lmu.de'
-
 type SlugsArray = readonly { [key: string]: string }[]
-export type SignSlugs = SlugsArray
-export type DictionarySlugs = SlugsArray
-export type BibliographySlugs = SlugsArray
-export type FragmentSlugs = SlugsArray
-export type TextSlugs = {
-  index: number
-  category: number
-  genre: string
-}[]
-export type ChapterSlugs = {
-  chapter: string
-  stage: string
-  index: number
-  category: number
-  genre: string
-}[]
 
-export interface Slugs {
-  readonly signSlugs?: SignSlugs
-  readonly dictionarySlugs?: DictionarySlugs
-  readonly bibliographySlugs?: BibliographySlugs
-  readonly fragmentSlugs?: FragmentSlugs
-  readonly textSlugs?: TextSlugs
-  readonly chapterSlugs?: ChapterSlugs
+const websiteRouteModules: Record<WebsiteRouteGroup, RouteModule> = {
+  about: AboutRoutes,
+  tools: ToolsRoutes,
+  signs: SignRoutes,
+  bibliography: BibliographyRoutes,
+  dictionary: DictionaryRoutes,
+  corpus: CorpusRoutes,
+  fragmentarium: FragmentariumRoutes,
+  researchProjects: ResearchProjectRoutes,
+  footer: FooterRoutes,
 }
 
-export const sitemapDefaults = {
-  sitemapIndex: true,
-  priority: 0,
-  changefreq: 'weekly',
+function WebsiteRoutes(
+  services: Services,
+  sitemap: boolean,
+  slugs?: Slugs,
+): JSX.Element[] {
+  const routeModuleProps: RouteModuleProps = {
+    sitemap,
+    ...services,
+    ...slugs,
+  }
+
+  return [
+    <Route
+      key="Introduction"
+      component={Introduction}
+      exact
+      path="/"
+      {...(sitemap && sitemapDefaults)}
+    />,
+    ...websiteRouteGroups.flatMap((routeGroup) =>
+      websiteRouteModules[routeGroup](routeModuleProps),
+    ),
+  ]
 }
 
 function Sitemap(services: Services, slugs?: Slugs): JSX.Element {

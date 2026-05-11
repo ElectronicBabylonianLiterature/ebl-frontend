@@ -55,7 +55,7 @@ import { fromTransliterationLineDto } from 'transliteration/application/dtos'
 import { ParallelLine } from 'transliteration/domain/parallel-line'
 import { CorpusQuery } from 'query/CorpusQuery'
 import { CorpusQueryResult } from 'query/QueryResult'
-import { ChapterSlugs, TextSlugs } from 'router/sitemap'
+import { ChapterSlugs, TextSlugs } from 'router/sitemapConfig'
 
 class CorpusLemmatizationFactory extends AbstractLemmatizationFactory<
   Chapter,
