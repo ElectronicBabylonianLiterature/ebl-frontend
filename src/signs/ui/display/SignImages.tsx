@@ -421,7 +421,7 @@ function PeriodAccordion({
                     key={clusterId}
                     form={
                       clusterId === 'no-cluster'
-                        ? 'Without PCA clustering'
+                        ? 'Ungrouped instances'
                         : group[0].pcaClustering?.form || 'Unknown form'
                     }
                     centroid={centroid}
