@@ -14,6 +14,7 @@ const signService = new (SignService as jest.Mock<jest.Mocked<SignService>>)()
 const signName = 'signName'
 const imageString =
   'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVQYV2NgYAAAAAMAAWgmWQ0AAAAASUVORK5CYII='
+
 const croppedAnnotations: CroppedAnnotation[] = [
   {
     fragmentNumber: 'K.6400',
@@ -21,12 +22,45 @@ const croppedAnnotations: CroppedAnnotation[] = [
     script: '',
     provenance: 'ASSUR',
     label: 'label-1',
+    annotationId: 'annotation-1',
+    pcaClustering: {
+      clusterId: 'cluster-1',
+      clusterRank: 0,
+      form: 'canonical1',
+      isCentroid: true,
+      clusterSize: 2,
+      isMain: true,
+    },
+  },
+  {
+    fragmentNumber: 'K.6404',
+    image: imageString,
+    script: '',
+    label: 'label-3',
+    annotationId: 'annotation-3',
+    pcaClustering: {
+      clusterId: 'cluster-3',
+      clusterRank: 1,
+      form: 'variant2',
+      isCentroid: true,
+      clusterSize: 1,
+      isMain: true,
+    },
   },
   {
     fragmentNumber: 'K.6401',
     image: imageString,
     script: 'MA',
     label: 'label-2',
+    annotationId: 'annotation-2',
+    pcaClustering: {
+      clusterId: 'cluster-2',
+      clusterRank: 1,
+      form: 'variant1',
+      isCentroid: true,
+      clusterSize: 1,
+      isMain: true,
+    },
   },
 ]
 
@@ -40,34 +74,124 @@ function renderSignImages() {
 
 describe('Sign Images', () => {
   async function setup(): Promise<void> {
-    signService.getImages.mockReturnValue(Bluebird.resolve(croppedAnnotations))
+    signService.getCentroidImages.mockReturnValue(
+      Bluebird.resolve(croppedAnnotations),
+    )
     renderSignImages()
     await waitForSpinnerToBeRemoved(screen)
-    expect(signService.getImages).toBeCalledWith(signName)
+    expect(signService.getCentroidImages).toBeCalledWith(signName)
   }
-  it('Check Images', async () => {
+
+  it('Displays centroid preview labels while accordions are closed', async () => {
     await setup()
-    await userEvent.click(screen.getByRole('button', { name: 'Unclassified' }))
-    expect(screen.getByText(croppedAnnotations[0].fragmentNumber)).toBeVisible()
+
+    expect(screen.getByTitle('Canonical 1')).toBeInTheDocument()
+    expect(screen.getByTitle('Variant 2')).toBeInTheDocument()
+    expect(screen.getByTitle('Variant 1')).toBeInTheDocument()
   })
 
-  it('Provenance is displayed', async () => {
+  it('Displays preview image for unclassified sign', async () => {
     await setup()
-    await userEvent.click(screen.getByRole('button', { name: 'Unclassified' }))
-    const provenanceSpan = screen.getByText('ASSUR', {
-      selector: '.provenance',
-    })
-    expect(provenanceSpan).toBeInTheDocument()
+
+    expect(screen.getByTitle('Canonical 1')).toHaveAttribute(
+      'src',
+      `data:image/png;base64, ${croppedAnnotations[0].image}`,
+    )
+  })
+
+  it('Displays preview image for classified sign', async () => {
+    await setup()
+
+    expect(screen.getByTitle('Variant 1')).toHaveAttribute(
+      'src',
+      `data:image/png;base64, ${croppedAnnotations[2].image}`,
+    )
+  })
+
+  it('Fetches cluster variants when a period accordion is opened', async () => {
+    signService.getClusterVariants.mockReturnValue(
+      Bluebird.resolve([
+        {
+          ...croppedAnnotations[2],
+          annotationId: 'variant-annotation',
+          fragmentNumber: 'K.6402',
+          pcaClustering: {
+            clusterId: 'cluster-2',
+            clusterRank: 1,
+            form: 'variant1',
+            isCentroid: false,
+            clusterSize: 2,
+            isMain: true,
+          },
+        },
+      ]),
+    )
+
+    await setup()
+
+    await userEvent.click(
+      screen.getByRole('button', {
+        name: /Middle Assyrian/,
+      }),
+    )
+
+    expect(signService.getClusterVariants).toHaveBeenCalledWith(
+      signName,
+      'cluster-2',
+      'MA',
+    )
+
+    expect(await screen.findByText('K.6402')).toBeInTheDocument()
+  })
+
+  it('Shows a warning and keeps centroid fallback when some cluster variants fail', async () => {
+    signService.getClusterVariants
+      .mockReturnValueOnce(
+        Bluebird.resolve([
+          {
+            ...croppedAnnotations[0],
+            annotationId: 'loaded-variant-annotation',
+            fragmentNumber: 'K.6403',
+            pcaClustering: {
+              clusterId: 'cluster-1',
+              clusterRank: 0,
+              form: 'canonical1',
+              isCentroid: false,
+              clusterSize: 2,
+              isMain: true,
+            },
+          },
+        ]),
+      )
+      .mockReturnValueOnce(Bluebird.reject(new Error('Failed to load cluster')))
+
+    await setup()
+
+    await userEvent.click(
+      screen.getByRole('button', {
+        name: /Unclassified/,
+      }),
+    )
+
+    expect(
+      await screen.findByText(
+        /Some variants could not be loaded. Showing available centroid data/,
+      ),
+    ).toBeInTheDocument()
+
+    expect(screen.getByText('K.6403')).toBeInTheDocument()
+    expect(screen.getByText('K.6404')).toBeInTheDocument()
   })
 })
 
 describe('Sign Images Empty', () => {
   async function setup(): Promise<void> {
-    signService.getImages.mockReturnValue(Bluebird.resolve([]))
+    signService.getCentroidImages.mockReturnValue(Bluebird.resolve([]))
     renderSignImages()
     await waitForSpinnerToBeRemoved(screen)
-    expect(signService.getImages).toBeCalledWith(signName)
+    expect(signService.getCentroidImages).toBeCalledWith(signName)
   }
+
   it('Check there are no Images', async () => {
     await setup()
     croppedAnnotations.forEach((croppedAnnotation) => {

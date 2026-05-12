@@ -17,9 +17,11 @@ import { helmetContext } from 'router/head'
 
 jest.mock('signs/application/SignService')
 jest.mock('dictionary/application/WordService')
+
 const signService = new (SignService as jest.Mock<jest.Mocked<SignService>>)()
 const wordService = new (WordService as jest.Mock<jest.Mocked<WordService>>)()
 const session = new MemorySession(['read:words'])
+
 const sign = new Sign({
   lists: [],
   logograms: [],
@@ -76,6 +78,15 @@ const croppedAnnotation: CroppedAnnotation = {
   fragmentNumber: '',
   script: 'MA',
   label: "i stone wig 1'",
+  annotationId: 'annotation-1',
+  pcaClustering: {
+    clusterId: 'test-cluster-id',
+    clusterRank: 0,
+    form: 'canonical1',
+    isCentroid: true,
+    clusterSize: 1,
+    isMain: true,
+  },
 }
 
 function renderSignDisplay(signName: string) {
@@ -102,18 +113,31 @@ function renderSignDisplay(signName: string) {
 describe('Sign Display', () => {
   const setup = async () => {
     signService.search.mockReturnValue(Bluebird.resolve([]))
-    signService.getImages.mockReturnValue(Bluebird.resolve([croppedAnnotation]))
+    signService.getCentroidImages.mockReturnValue(
+      Bluebird.resolve([croppedAnnotation]),
+    )
     signService.find.mockReturnValue(Bluebird.resolve(sign))
     wordService.find.mockReturnValue(Bluebird.resolve(word))
+
     const view = renderSignDisplay(sign.name)
+
     await screen.findAllByText(sign.name)
     expect(signService.find).toBeCalledWith(sign.name)
+
     return view
   }
+
   it('Sign Display Snapshot', async () => {
-    const view = await setup()
-    expect(view.container).toMatchSnapshot()
+    const { container } = await setup()
+
     expect(screen.getAllByText(sign.name).length).toBeGreaterThan(0)
     expect(screen.getAllByRole('img').length).toBeGreaterThan(0)
+
+    await screen.findByText('Ⅲ. Palaeography')
+    expect(
+      await screen.findByText((content) => content.includes('Canonical 1')),
+    ).toBeInTheDocument()
+
+    expect(container).toMatchSnapshot()
   })
 })

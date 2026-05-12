@@ -41,6 +41,21 @@ class SignRepository {
     return token
   }
 
+  private processCroppedAnnotations = (
+    croppedAnnotations: CroppedAnnotation[],
+  ): CroppedAnnotation[] => {
+    return croppedAnnotations.map((croppedAnnotation) => {
+      if (!_.isEmpty(croppedAnnotation.date)) {
+        croppedAnnotation.date = MesopotamianDate.fromJson(
+          croppedAnnotation.date,
+        )
+      } else {
+        croppedAnnotation.date = undefined
+      }
+      return croppedAnnotation
+    })
+  }
+
   associateSigns(
     tokens: ReadonlyArray<ReadonlyArray<AnnotationToken>>,
   ): Promise<ReadonlyArray<ReadonlyArray<AnnotationToken>>> {
@@ -50,21 +65,30 @@ class SignRepository {
     return Promise.all(tokensWithSigns.map((token) => Promise.all(token)))
   }
 
-  getImages(signName: string): Promise<CroppedAnnotation[]> {
+  getCentroidImages(signName: string): Promise<CroppedAnnotation[]> {
     return this.apiClient
-      .fetchJson(`/signs/${encodeURIComponent(signName)}/images`, false)
-      .then((croppedAnnotations) => {
-        return croppedAnnotations.map((croppedAnnotation) => {
-          if (!_.isEmpty(croppedAnnotation.date)) {
-            croppedAnnotation.date = MesopotamianDate.fromJson(
-              croppedAnnotation.date,
-            )
-          } else {
-            croppedAnnotation.date = undefined
-          }
-          return croppedAnnotation
-        })
-      })
+      .fetchJson(
+        `/signs/${encodeURIComponent(signName)}/images?centroids_only=true`,
+        false,
+      )
+      .then(this.processCroppedAnnotations)
+  }
+
+  getClusterVariants(
+    signName: string,
+    clusterId: string,
+    script: string,
+  ): Promise<CroppedAnnotation[]> {
+    return this.apiClient
+      .fetchJson(
+        `/signs/${encodeURIComponent(
+          signName,
+        )}/images/cluster/${encodeURIComponent(clusterId)}?script=${encodeURIComponent(
+          script,
+        )}`,
+        false,
+      )
+      .then(this.processCroppedAnnotations)
   }
 
   search(signQuery: SignQuery): Promise<Sign[]> {
@@ -72,14 +96,17 @@ class SignRepository {
       .fetchJson(`/signs?${stringify(signQuery)}`, false)
       .then((signDtos) => signDtos.map((signDto) => Sign.fromDto(signDto)))
   }
+
   find(signName: string): Promise<Sign> {
     return this.apiClient
       .fetchJson(`/signs/${encodeURIComponent(signName)}`, false)
       .then(Sign.fromDto)
   }
+
   listAllSigns(): Promise<string[]> {
     return this.apiClient.fetchJson(`/signs/all`, false)
   }
+
   findSignsByOrder(
     signName: string,
     sortEra: string,
@@ -89,6 +116,7 @@ class SignRepository {
       false,
     )
   }
+
   getUnicodeFromAtf(text: string): Promise<UnicodeAtf[]> {
     return this.apiClient.fetchJson(
       `/signs/transliteration/${encodeURIComponent(text)}`,

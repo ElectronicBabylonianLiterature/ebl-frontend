@@ -50,11 +50,27 @@ const testData: TestData<SignRepository>[] = [
     Promise.resolve([resultStub]),
   ),
   new TestData(
-    'getImages',
+    'getCentroidImages',
     [signName],
     apiClient.fetchJson,
     [getImagesResult],
-    [`/signs/${encodeURIComponent(signName)}/images`, false],
+    [
+      `/signs/${encodeURIComponent(signName)}/images?centroids_only=true`,
+      false,
+    ],
+    Promise.resolve([getImagesResult]),
+  ),
+  new TestData(
+    'getClusterVariants',
+    [signName, 'cluster-id', 'NA'],
+    apiClient.fetchJson,
+    [getImagesResult],
+    [
+      `/signs/${encodeURIComponent(
+        signName,
+      )}/images/cluster/cluster-id?script=NA`,
+      false,
+    ],
     Promise.resolve([getImagesResult]),
   ),
   new TestData(
@@ -66,6 +82,7 @@ const testData: TestData<SignRepository>[] = [
     Promise.resolve([]),
   ),
 ]
+
 describe('test word repository', () => {
   testDelegation(signsRepository, testData)
 })

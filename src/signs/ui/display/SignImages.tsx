@@ -1,5 +1,5 @@
 import SignService from 'signs/application/SignService'
-import React from 'react'
+import React, { useState } from 'react'
 import withData, { WithoutData } from 'http/withData'
 import { Col, Container, Figure, Row } from 'react-bootstrap'
 import Accordion from 'react-bootstrap/Accordion'
@@ -22,19 +22,29 @@ export default withData<
   { signName: string; signService: SignService },
   CroppedAnnotation[]
 >(
-  ({ data }) =>
-    data.length ? <SignImagePagination croppedAnnotations={data} /> : null,
-  (props) => props.signService.getImages(props.signName),
+  ({ data, signService, signName }) =>
+    data.length ? (
+      <SignImagePagination
+        croppedAnnotations={data}
+        signService={signService}
+        signName={signName}
+      />
+    ) : null,
+  (props) => props.signService.getCentroidImages(props.signName),
 )
+
 function SignImage({
   croppedAnnotation,
+  isCentroid = false,
 }: {
   croppedAnnotation: CroppedAnnotation
+  isCentroid?: boolean
 }): JSX.Element {
   const label = croppedAnnotation.label ? `${croppedAnnotation.label} ` : ''
+
   return (
-    <Col>
-      <Figure>
+    <div className={isCentroid ? 'sign-images__centroid-col' : undefined}>
+      <Figure className={isCentroid ? 'sign-images__centroid' : undefined}>
         <Figure.Image
           className={'sign-images__sign-image'}
           src={`data:image/png;base64, ${croppedAnnotation.image}`}
@@ -52,19 +62,128 @@ function SignImage({
           )}
         </Figure.Caption>
       </Figure>
-    </Col>
+    </div>
   )
 }
+
+function sortVariants(annotations: CroppedAnnotation[]): CroppedAnnotation[] {
+  return _.sortBy(annotations, [
+    (annotation) => (annotation.date ? 0 : 1),
+    (annotation) => annotation.fragmentNumber,
+  ])
+}
+
+function sortGroupsByClusterRank(
+  annotations: CroppedAnnotation[],
+): [string, CroppedAnnotation[]][] {
+  return _.sortBy(
+    Object.entries(
+      _.groupBy(
+        annotations,
+        (annotation) => annotation.pcaClustering?.clusterId || 'no-cluster',
+      ),
+    ),
+    [
+      ([clusterId]) => (clusterId === 'no-cluster' ? 1 : 0),
+      ([, group]) => group[0].pcaClustering?.clusterRank ?? 999,
+    ],
+  )
+}
+
+function formatFormLabel(form: string): string {
+  if (form.startsWith('canonical')) {
+    const number = form.replace('canonical', '')
+    return number ? `Canonical ${number}` : 'Canonical'
+  }
+  if (form.startsWith('variant')) {
+    const number = form.replace('variant', '')
+    return number ? `Variant ${number}` : 'Variant'
+  }
+  return form
+}
+
+function VariantGroup({
+  form,
+  centroid,
+  variants,
+}: {
+  form: string
+  centroid?: CroppedAnnotation
+  variants: CroppedAnnotation[]
+}) {
+  return (
+    <div className="sign-images__variant-group">
+      <div className="sign-images__variant-header">
+        {formatFormLabel(form)}:
+      </div>
+
+      <div className="sign-images__variant-layout">
+        <div className="sign-images__variant-representative">
+          {centroid && <SignImage croppedAnnotation={centroid} isCentroid />}
+        </div>
+
+        <div className="sign-images__variant-examples">
+          {variants.length === 0 ? (
+            <div className="text-muted">No additional variants</div>
+          ) : (
+            variants.map((annotation, index) => (
+              <div key={index} className="sign-images__variant-example-item">
+                <SignImage croppedAnnotation={annotation} />
+              </div>
+            ))
+          )}
+        </div>
+      </div>
+    </div>
+  )
+}
+
+function PeriodPreview({
+  annotations,
+}: {
+  annotations: CroppedAnnotation[]
+}): JSX.Element {
+  const previewGroups = sortGroupsByClusterRank(annotations)
+
+  return (
+    <div className="sign-images__period-preview">
+      {previewGroups.map(([clusterId, group]) => {
+        const centroid =
+          group.find((annotation) => annotation.pcaClustering?.isCentroid) ??
+          group[0]
+
+        return (
+          <div key={clusterId} className="sign-images__period-preview-item">
+            <Figure.Image
+              className="sign-images__period-preview-image"
+              src={`data:image/png;base64, ${centroid.image}`}
+              title={formatFormLabel(
+                centroid.pcaClustering?.form || 'Unknown form',
+              )}
+            />
+          </div>
+        )
+      })}
+    </div>
+  )
+}
+
 function SignImagePagination({
   croppedAnnotations,
+  signService,
+  signName,
 }: {
   croppedAnnotations: CroppedAnnotation[]
+  signService: SignService
+  signName: string
 }) {
   const scripts = _.groupBy(
     croppedAnnotations,
     (croppedAnnotation) => croppedAnnotation.script,
   )
   const periodsAbbr = [...periods.map((period) => period.abbreviation), '']
+
+  const [activePeriod, setActivePeriod] = useState<string | null>(null)
 
   const scriptsSorted = _.sortBy(Object.entries(scripts), (elem) => {
     const index = periodsAbbr.indexOf(elem[0])
@@ -85,40 +204,235 @@ function SignImagePagination({
       <Row>
         <Col className={'mb-5'}>
           {scriptsSorted.map((elem, index) => {
-            const [scriptAbbr, croppedAnnotation] = elem
-            let script = 'Unclassified'
-            if (scriptAbbr !== '') {
-              const stage = periodFromAbbreviation(scriptAbbr)
-              script = `${stage.name} ${stage.description}`
-            }
+            const [scriptAbbr, croppedAnnotationsForScript] = elem
 
             return (
-              <Accordion
-                defaultActiveKey={index === 0 ? '0' : undefined}
-                key={index}
-              >
-                <Accordion.Item eventKey={index.toString()}>
-                  <Accordion.Header>{script}</Accordion.Header>
-                  <Accordion.Body>
-                    <Row>
-                      {_.sortBy(
-                        croppedAnnotation,
-                        (elem) => elem.fragmentNumber,
-                      ).map((croppedAnnotation, index) => (
-                        <SignImage
-                          key={index}
-                          croppedAnnotation={croppedAnnotation}
-                        />
-                      ))}
-                    </Row>
-                  </Accordion.Body>
-                </Accordion.Item>
-              </Accordion>
+              <PeriodAccordion
+                key={scriptAbbr || 'unclassified'}
+                eventKey={scriptAbbr || 'unclassified'}
+                activePeriod={activePeriod}
+                setActivePeriod={setActivePeriod}
+                scriptAbbr={scriptAbbr}
+                croppedAnnotations={croppedAnnotationsForScript}
+                signService={signService}
+                signName={signName}
+              />
             )
           })}
           <div className={'border-top'} />
         </Col>
       </Row>
     </Container>
+  )
+}
+
+async function runWithConcurrencyLimit<T, R>(
+  items: T[],
+  limit: number,
+  task: (item: T) => Promise<R>,
+): Promise<PromiseSettledResult<R>[]> {
+  const results: PromiseSettledResult<R>[] = []
+  let index = 0
+
+  async function worker() {
+    while (index < items.length) {
+      const currentIndex = index
+      index += 1
+
+      try {
+        results[currentIndex] = {
+          status: 'fulfilled',
+          value: await task(items[currentIndex]),
+        }
+      } catch (reason) {
+        results[currentIndex] = {
+          status: 'rejected',
+          reason,
+        }
+      }
+    }
+  }
+
+  await Promise.all(
+    Array.from({ length: Math.min(limit, items.length) }, () => worker()),
+  )
+
+  return results
+}
+
+async function loadClusterAnnotations({
+  croppedAnnotations,
+  signService,
+  signName,
+  scriptAbbr,
+}: {
+  croppedAnnotations: CroppedAnnotation[]
+  signService: SignService
+  signName: string
+  scriptAbbr: string
+}): Promise<{
+  annotations: CroppedAnnotation[]
+  hasFailures: boolean
+}> {
+  const clusterIds = _.uniq(
+    croppedAnnotations
+      .map((annotation) => annotation.pcaClustering?.clusterId)
+      .filter((clusterId): clusterId is string => Boolean(clusterId)),
+  )
+
+  if (!clusterIds.length) {
+    return {
+      annotations: croppedAnnotations,
+      hasFailures: false,
+    }
+  }
+
+  const results = await runWithConcurrencyLimit(clusterIds, 4, (clusterId) =>
+    signService.getClusterVariants(signName, clusterId, scriptAbbr),
+  )
+
+  const failedClusterIds = results
+    .map((result, index) =>
+      result.status === 'rejected' ? clusterIds[index] : null,
+    )
+    .filter((clusterId): clusterId is string => Boolean(clusterId))
+
+  const successfulAnnotations = results
+    .filter(
+      (result): result is PromiseFulfilledResult<CroppedAnnotation[]> =>
+        result.status === 'fulfilled',
+    )
+    .flatMap((result) => result.value)
+
+  const fallbackAnnotations = croppedAnnotations.filter((annotation) =>
+    failedClusterIds.includes(annotation.pcaClustering?.clusterId || ''),
+  )
+
+  const nonPcaAnnotations = croppedAnnotations.filter(
+    (annotation) => !annotation.pcaClustering?.clusterId,
+  )
+
+  return {
+    annotations:
+      successfulAnnotations.length ||
+      fallbackAnnotations.length ||
+      nonPcaAnnotations.length
+        ? [
+            ...successfulAnnotations,
+            ...fallbackAnnotations,
+            ...nonPcaAnnotations,
+          ]
+        : croppedAnnotations,
+    hasFailures: failedClusterIds.length > 0,
+  }
+}
+
+function PeriodAccordion({
+  eventKey,
+  activePeriod,
+  setActivePeriod,
+  scriptAbbr,
+  croppedAnnotations,
+  signService,
+  signName,
+}: {
+  eventKey: string
+  activePeriod: string | null
+  setActivePeriod: React.Dispatch<React.SetStateAction<string | null>>
+  scriptAbbr: string
+  croppedAnnotations: CroppedAnnotation[]
+  signService: SignService
+  signName: string
+}) {
+  const [loadedAnnotations, setLoadedAnnotations] = useState<
+    CroppedAnnotation[] | null
+  >(null)
+  const [isLoading, setIsLoading] = useState(false)
+  const [hasLoadFailures, setHasLoadFailures] = useState(false)
+
+  let script = 'Unclassified'
+  if (scriptAbbr !== '') {
+    const stage = periodFromAbbreviation(scriptAbbr)
+    script = `${stage.name} ${stage.description}`
+  }
+
+  async function handleEnter() {
+    if (loadedAnnotations || isLoading) {
+      return
+    }
+
+    setIsLoading(true)
+    setHasLoadFailures(false)
+
+    const { annotations, hasFailures } = await loadClusterAnnotations({
+      croppedAnnotations,
+      signService,
+      signName,
+      scriptAbbr,
+    })
+
+    setLoadedAnnotations(annotations)
+    setHasLoadFailures(hasFailures)
+    setIsLoading(false)
+  }
+
+  const annotationsToRender = loadedAnnotations ?? croppedAnnotations
+  const sortedGroups = sortGroupsByClusterRank(annotationsToRender)
+
+  return (
+    <Accordion activeKey={activePeriod}>
+      <Accordion.Item eventKey={eventKey}>
+        <Accordion.Header
+          onClick={() => {
+            setActivePeriod((current) =>
+              current === eventKey ? null : eventKey,
+            )
+            handleEnter()
+          }}
+        >
+          <span className="sign-images__period-title">{script}</span>
+          <PeriodPreview annotations={croppedAnnotations} />
+        </Accordion.Header>
+
+        <Accordion.Body>
+          {isLoading ? (
+            <div>Loading...</div>
+          ) : (
+            <>
+              {hasLoadFailures && (
+                <div className="text-warning mb-3">
+                  Some variants could not be loaded. Showing available centroid
+                  data for the affected clusters.
+                </div>
+              )}
+
+              {sortedGroups.map(([clusterId, group]) => {
+                const centroid = group.find(
+                  (annotation) => annotation.pcaClustering?.isCentroid,
+                )
+                const variants = sortVariants(
+                  group.filter(
+                    (annotation) => !annotation.pcaClustering?.isCentroid,
+                  ),
+                )
+
+                return (
+                  <VariantGroup
+                    key={clusterId}
+                    form={
+                      clusterId === 'no-cluster'
+                        ? 'Ungrouped instances'
+                        : group[0].pcaClustering?.form || 'Unknown form'
+                    }
+                    centroid={centroid}
+                    variants={variants}
+                  />
+                )
+              })}
+            </>
+          )}
+        </Accordion.Body>
+      </Accordion.Item>
+    </Accordion>
   )
 }
