@@ -89,6 +89,54 @@ yarn test
 
 `yarn test --coverage --watchAll`
 
+## Bundle size tracking
+
+Local bundle-size check (uses the repository baseline in `scripts/bundle-size/bundle-size-baseline.json`):
+
+```sh
+yarn bundle-size:ci
+```
+
+PR-equivalent check (CI-equivalent):
+
+```sh
+git fetch origin master --depth=1
+mkdir -p build/bundle-size
+yarn build:bundle-size && yarn bundle-size:analyze
+
+BASELINE_PATH=build/bundle-size/master-bundle-size-baseline.json
+BASELINE_SOURCE=master
+ALLOW_BUDGET_EXCEED=
+
+if git cat-file -e origin/master:scripts/bundle-size/bundle-size-baseline.json 2>/dev/null; then
+  git show origin/master:scripts/bundle-size/bundle-size-baseline.json > "$BASELINE_PATH"
+else
+  BASELINE_PATH=build/bundle-size/bootstrap-bundle-size-baseline.json
+  BASELINE_SOURCE=bootstrap
+  ALLOW_BUDGET_EXCEED=--allow-budget-exceed
+  cp scripts/bundle-size/bundle-size-baseline.json "$BASELINE_PATH"
+fi
+
+node scripts/bundle-size/checkBundleBudgetCli.mjs --baseline "$BASELINE_PATH" --baseline-source "$BASELINE_SOURCE" $ALLOW_BUDGET_EXCEED
+```
+
+Bootstrap mode is only for first rollout (or when `master` does not yet have a committed baseline). Once `master` has a baseline, the check runs in strict mode.
+
+Record a new baseline from the current build when a deliberate baseline change is approved:
+
+```sh
+yarn build:bundle-size
+yarn bundle-size:record-baseline
+```
+
+Bundle-size artifacts are written to:
+
+- `build/bundle-size/source-map-explorer.json`
+- `build/bundle-size/bundle-budget-report.json`
+- `scripts/bundle-size/bundle-size-baseline.json`
+
+On pull requests, CI compares bundle growth against the baseline from `master` when available, and otherwise uses bootstrap mode.
+
 ## Secret scanning
 
 This repository blocks commits that introduce detected secrets.

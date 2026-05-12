@@ -57,9 +57,80 @@ jobs:
         with:
           token: ${{ secrets.QLTY_COVERAGE_TOKEN }}
           files: coverage/lcov.info
+
+  bundle-size:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install
+        run: |
+          attempt=1
+          max_attempts=3
+
+          while ! yarn install --dev --frozen-lockfile; do
+            if [ "$attempt" -ge "$max_attempts" ]; then
+              echo "Install failed after $max_attempts attempts."
+              exit 1
+            fi
+
+            echo "Install attempt $attempt failed, retrying in 10 seconds..."
+            attempt=$((attempt + 1))
+            sleep 10
+          done
+
+      - name: Build For Bundle Size
+        run: yarn build:bundle-size
+
+      - name: Run Source Map Explorer
+        run: yarn bundle-size:analyze
+
+      - name: Prepare PR Baseline
+        if: github.event_name == 'pull_request'
+        run: |
+          mkdir -p build/bundle-size
+          git fetch origin master --depth=1
+
+          if git cat-file -e origin/master:scripts/bundle-size/bundle-size-baseline.json 2>/dev/null; then
+            git show origin/master:scripts/bundle-size/bundle-size-baseline.json > build/bundle-size/master-bundle-size-baseline.json
+            echo "BUNDLE_BUDGET_BASELINE_PATH=build/bundle-size/master-bundle-size-baseline.json" >> "$GITHUB_ENV"
+            echo "BUNDLE_BUDGET_BASELINE_SOURCE=master" >> "$GITHUB_ENV"
+          else
+            cp scripts/bundle-size/bundle-size-baseline.json build/bundle-size/bootstrap-bundle-size-baseline.json
+            echo "BUNDLE_BUDGET_BASELINE_PATH=build/bundle-size/bootstrap-bundle-size-baseline.json" >> "$GITHUB_ENV"
+            echo "BUNDLE_BUDGET_BASELINE_SOURCE=bootstrap" >> "$GITHUB_ENV"
+          fi
+
+      - name: Enforce Bundle Budget
+        run: |
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            if [ "$BUNDLE_BUDGET_BASELINE_SOURCE" = "master" ]; then
+              node scripts/bundle-size/checkBundleBudgetCli.mjs --baseline "$BUNDLE_BUDGET_BASELINE_PATH" --baseline-source "$BUNDLE_BUDGET_BASELINE_SOURCE"
+            else
+              node scripts/bundle-size/checkBundleBudgetCli.mjs --baseline "$BUNDLE_BUDGET_BASELINE_PATH" --baseline-source "$BUNDLE_BUDGET_BASELINE_SOURCE" --allow-budget-exceed
+            fi
+          else
+            yarn bundle-size:check
+          fi
+
+      - name: Upload Bundle Size Reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: bundle-size-report
+          path: |
+            build/bundle-size/source-map-explorer.json
+            build/bundle-size/bundle-budget-report.json
+            build/asset-manifest.json
+
   docker:
     if: github.event_name == 'push' && github.ref == 'refs/heads/master'
-    needs: [test]
+    needs: [test, bundle-size]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -93,6 +164,7 @@ jobs:
 
   docker-test:
     if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+    needs: [test, bundle-size]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4

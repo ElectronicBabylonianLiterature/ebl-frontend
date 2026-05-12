@@ -1,7 +1,7 @@
 import React, { ReactNode, useState } from 'react'
 import { Redirect, Route, useHistory } from 'router/compat'
 import MarkupService from 'markup/application/MarkupService'
-import { sitemapDefaults } from 'router/sitemap'
+import { sitemapDefaults } from 'router/sitemapConfig'
 import { HeadTagsService } from 'router/head'
 import AppContent from 'common/ui/AppContent'
 import { TextCrumb } from 'common/ui/Breadcrumbs'

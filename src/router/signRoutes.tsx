@@ -4,7 +4,7 @@ import { Route } from 'router/compat'
 import SignService from 'signs/application/SignService'
 import SignDisplay from 'signs/ui/display/SignDisplay'
 import Signs from 'signs/ui/search/Signs'
-import { SignSlugs, sitemapDefaults } from 'router/sitemap'
+import { SignSlugs, sitemapDefaults } from 'router/sitemapConfig'
 import { HeadTagsService } from 'router/head'
 import NotFoundPage from 'NotFoundPage'
 

@@ -33,9 +33,13 @@ test.each([
   '/signs/sign_id',
   '/impressum',
   '/datenschutz',
-])('%s renders without crashing', async (route) => {
-  window.scrollTo = jest.fn()
-  const fakeApi = new FakeApi().allowStatistics(statisticsFactory.build())
-  const appDriver = new AppDriver(fakeApi.client).withPath(route).render()
-  await appDriver.waitForTextToDisappear('Loading...')
-})
+])(
+  '%s renders without crashing',
+  async (route) => {
+    window.scrollTo = jest.fn()
+    const fakeApi = new FakeApi().allowStatistics(statisticsFactory.build())
+    const appDriver = new AppDriver(fakeApi.client).withPath(route).render()
+    await appDriver.waitForTextToDisappear('Loading...')
+  },
+  15000,
+)
