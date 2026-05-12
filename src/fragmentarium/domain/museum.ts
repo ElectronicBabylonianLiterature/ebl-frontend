@@ -41,6 +41,13 @@ export const Museums = {
     country: 'BE',
     url: 'https://www.nbb.be/',
   },
+  BRYN_MAWR_COLLEGE: {
+    key: 'BRYN_MAWR_COLLEGE',
+    name: 'Bryn Mawr College Special Collections',
+    city: 'Bryn Mawr',
+    country: 'US',
+    url: 'https://www.brynmawr.edu/about-college/special-collections',
+  },
   CHESTER_BEATTY_LIBRARY: {
     key: 'CHESTER_BEATTY_LIBRARY',
     name: 'Chester Beatty Library',
