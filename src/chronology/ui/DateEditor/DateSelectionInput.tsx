@@ -1,3 +1,4 @@
+import DateFieldPatternsHelp from 'chronology/ui/DateEditor/DateFieldPatternsHelp'
 import React, { useState } from 'react'
 import _ from 'lodash'
 import { InputGroup, Form } from 'react-bootstrap'
@@ -15,11 +16,39 @@ import {
   RadioButton,
 } from 'chronology/ui/DateEditor/DateSelectionInputBase'
 import { BrokenAndUncertainSwitches } from 'common/ui/BrokenAndUncertain'
+import getDateFieldWarnings from 'chronology/ui/DateEditor/dateFieldWarnings'
+import 'chronology/ui/DateEditor/DateSelectionInput.sass'
+
+type DateFieldName = 'year' | 'month' | 'day'
+
+function DateFieldWarnings({
+  field,
+  value,
+}: {
+  field: DateFieldName
+  value: string
+}): JSX.Element {
+  return (
+    <>
+      {getDateFieldWarnings(field, value).map((warning, index) => (
+        <Form.Text
+          key={`${field}-warning-${index}`}
+          data-testid={`${field}-warning-${index}`}
+          className="date-field-warning"
+        >
+          {warning}
+        </Form.Text>
+      ))}
+    </>
+  )
+}
 
 type InputGroupsProps = {
   yearValue: string
   yearBroken: boolean
   yearUncertain: boolean
+  yearReconstructed?: boolean
+  yearEmended?: boolean
   monthValue: string
   monthBroken: boolean
   monthUncertain: boolean
@@ -31,6 +60,8 @@ type InputGroupsProps = {
   setYearValue: React.Dispatch<React.SetStateAction<string>>
   setYearBroken: React.Dispatch<React.SetStateAction<boolean>>
   setYearUncertain: React.Dispatch<React.SetStateAction<boolean>>
+  setYearReconstructed?: React.Dispatch<React.SetStateAction<boolean>>
+  setYearEmended?: React.Dispatch<React.SetStateAction<boolean>>
   setMonthValue: React.Dispatch<React.SetStateAction<string>>
   setMonthBroken: React.Dispatch<React.SetStateAction<boolean>>
   setMonthUncertain: React.Dispatch<React.SetStateAction<boolean>>
@@ -156,12 +187,14 @@ function getUr3CalendarField({
   return (
     <Select
       aria-label="select-calendar"
+      inputId="date-field-ur3-calendar"
+      name="date-field-ur3-calendar"
       options={options}
       onChange={(option): void => {
         setUr3Calendar(Ur3Calendar[option?.value as keyof typeof Ur3Calendar])
       }}
       isSearchable={true}
-      autoFocus={true}
+      autoFocus={false}
       placeholder="Calendar"
       value={value}
     />
@@ -180,45 +213,90 @@ function getDateInputGroup({
   setIntercalary = (): void => {},
 }: InputGroupProps): JSX.Element {
   return (
-    <InputGroup size="sm">
-      <Form.Control
-        placeholder={_.startCase(name)}
-        aria-label={_.startCase(name)}
-        onChange={(event) => setValue(event.target.value)}
-        value={value}
-      />
-      {name === 'month' && (
-        <Form.Check
-          label="Intercalary"
-          id={`${name}_intercalary`}
-          style={{ marginLeft: '10px' }}
-          onChange={(event) => setIntercalary(event.target.checked)}
-          checked={isIntercalary}
+    <>
+      <InputGroup size="sm" className="date-field-input-group">
+        <Form.Control
+          placeholder={_.startCase(name)}
+          aria-label={_.startCase(name)}
+          id={`date-field-${name}`}
+          name={`date-field-${name}`}
+          onChange={(event) => setValue(event.target.value)}
+          value={value}
+          className="date-field-input"
         />
-      )}
-      <BrokenAndUncertainSwitches
-        {...{
-          name,
-          isBroken,
-          isUncertain,
-          setBroken,
-          setUncertain,
-        }}
-      />
-    </InputGroup>
+        <BrokenAndUncertainSwitches
+          {...{
+            name,
+            isBroken,
+            isUncertain,
+            setBroken,
+            setUncertain,
+          }}
+        />
+        {name === 'month' && (
+          <Form.Check
+            label="Intercalary"
+            id={`${name}_intercalary`}
+            className="date-field-switch"
+            onChange={(event) => setIntercalary(event.target.checked)}
+            checked={isIntercalary}
+          />
+        )}
+      </InputGroup>
+      <DateFieldWarnings field={name as DateFieldName} value={value} />
+    </>
   )
 }
 
 function getYearInputGroup(props: InputGroupsProps): JSX.Element {
-  return getDateInputGroup({
-    name: 'year',
-    value: props.yearValue,
-    isBroken: props.yearBroken,
-    isUncertain: props.yearUncertain,
-    setValue: props.setYearValue,
-    setBroken: props.setYearBroken,
-    setUncertain: props.setYearUncertain,
-  })
+  return (
+    <>
+      <InputGroup
+        size="sm"
+        className="date-field-input-group date-field-input-group--year"
+      >
+        <Form.Control
+          placeholder={_.startCase('year')}
+          aria-label={_.startCase('year')}
+          id="date-field-year"
+          name="date-field-year"
+          onChange={(event) => props.setYearValue(event.target.value)}
+          value={props.yearValue}
+          className="date-field-input"
+        />
+        <BrokenAndUncertainSwitches
+          name="year"
+          isBroken={props.yearBroken}
+          isUncertain={props.yearUncertain}
+          setBroken={props.setYearBroken}
+          setUncertain={props.setYearUncertain}
+        />
+        <div className="date-field-row-break" aria-hidden="true" />
+        <div className="date-field-row-spacer" aria-hidden="true" />
+        <Form.Switch
+          label="Reconstructed"
+          id="year_reconstructed"
+          aria-label="0-year-reconstructed-switch"
+          data-testid="0-year-reconstructed-switch"
+          className="date-field-switch"
+          onChange={(event) =>
+            props.setYearReconstructed?.(event.target.checked)
+          }
+          checked={Boolean(props.yearReconstructed)}
+        />
+        <Form.Switch
+          label="Emended"
+          id="year_emended"
+          aria-label="0-year-emended-switch"
+          data-testid="0-year-emended-switch"
+          className="date-field-switch"
+          onChange={(event) => props.setYearEmended?.(event.target.checked)}
+          checked={Boolean(props.yearEmended)}
+        />
+      </InputGroup>
+      <DateFieldWarnings field="year" value={props.yearValue} />
+    </>
+  )
 }
 
 function getMonthInputGroup(props: InputGroupsProps): JSX.Element {
@@ -250,6 +328,9 @@ function getDayInputGroup(props: InputGroupsProps): JSX.Element {
 export function DateInputGroups(props: InputGroupsProps): JSX.Element {
   return (
     <>
+      <div className="date-field-patterns-help">
+        <DateFieldPatternsHelp />
+      </div>
       {!props.isAssyrianDate && getYearInputGroup(props)}
       {getMonthInputGroup(props)}
       {getDayInputGroup(props)}
@@ -257,4 +338,8 @@ export function DateInputGroups(props: InputGroupsProps): JSX.Element {
   )
 }
 
-export const exportedForTesting = { getUr3CalendarField, getAssyrianDateSwitch }
+export const exportedForTesting = {
+  getUr3CalendarField,
+  getAssyrianDateSwitch,
+  getDateFieldWarnings,
+}

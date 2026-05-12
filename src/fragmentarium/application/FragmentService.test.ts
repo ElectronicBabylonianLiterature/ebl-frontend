@@ -542,6 +542,27 @@ describe('methods returning fragment', () => {
       ))
   })
 
+  describe('delete date', () => {
+    let expectedFragment: Fragment
+
+    beforeEach(async () => {
+      expectedFragment = produce(fragment, (draft: Draft<Fragment>) => {
+        draft.date = undefined
+      })
+      fragmentRepository.updateDate.mockReturnValue(
+        Promise.resolve(expectedFragment),
+      )
+      result = await fragmentService.updateDate(fragment.number, undefined)
+    })
+    test('returns updated fragment', () =>
+      expect(result).toEqual(expectedFragment))
+    test('calls repository with correct parameters', () =>
+      expect(fragmentRepository.updateDate).toHaveBeenCalledWith(
+        fragment.number,
+        undefined,
+      ))
+  })
+
   describe('update dates in text', () => {
     let expectedFragment: Fragment
 

@@ -98,7 +98,10 @@ export interface FragmentRepository {
   updateGenres(number: string, genres: Genres): Bluebird<Fragment>
   updateScopes(number: string, scopes: string[]): Bluebird<Fragment>
   updateScript(number: string, script: Script): Bluebird<Fragment>
-  updateDate(number: string, date: MesopotamianDateDto): Bluebird<Fragment>
+  updateDate(
+    number: string,
+    date: MesopotamianDateDto | undefined,
+  ): Bluebird<Fragment>
   updateDatesInText(
     number: string,
     date: MesopotamianDateDto[],
@@ -230,7 +233,10 @@ export class FragmentService {
       .then((fragment: Fragment) => this.injectReferences(fragment))
   }
 
-  updateDate(number: string, date: MesopotamianDateDto): Bluebird<Fragment> {
+  updateDate(
+    number: string,
+    date: MesopotamianDateDto | undefined,
+  ): Bluebird<Fragment> {
     return this.fragmentRepository
       .updateDate(number, date)
       .then((fragment: Fragment) => this.injectReferences(fragment))

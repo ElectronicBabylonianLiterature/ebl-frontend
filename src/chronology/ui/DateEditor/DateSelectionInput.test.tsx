@@ -10,6 +10,10 @@ import {
 import { mesopotamianDateFactory } from 'test-support/date-fixtures'
 import { Ur3Calendar } from 'chronology/domain/DateBase'
 import { EponymField } from 'chronology/ui/DateEditor/Eponyms'
+import { renderHook } from '@testing-library/react'
+import useDateSelectionState from 'chronology/application/DateSelectionState'
+import { MesopotamianDate } from 'chronology/domain/Date'
+import Kings from 'chronology/domain/Kings.json'
 
 describe('Date options input', () => {
   it('Renders and handels the date type radios', async () => {
@@ -112,6 +116,8 @@ describe('Date Input Groups', () => {
   const setYearValue = jest.fn()
   const setYearBroken = jest.fn()
   const setYearUncertain = jest.fn()
+  const setYearReconstructed = jest.fn()
+  const setYearEmended = jest.fn()
   const setMonthValue = jest.fn()
   const setMonthBroken = jest.fn()
   const setMonthUncertain = jest.fn()
@@ -135,6 +141,8 @@ describe('Date Input Groups', () => {
         setYearValue,
         setYearBroken,
         setYearUncertain,
+        setYearReconstructed,
+        setYearEmended,
         setMonthValue,
         setIntercalary,
         setMonthBroken,
@@ -147,6 +155,10 @@ describe('Date Input Groups', () => {
     const yearInput = screen.getByLabelText('Year')
     const yearBrokenSwitch = screen.getByTestId('0-year-broken-switch')
     const yearUncertainSwitch = screen.getByTestId('0-year-uncertain-switch')
+    const yearReconstructedSwitch = screen.getByTestId(
+      '0-year-reconstructed-switch',
+    )
+    const yearEmendedSwitch = screen.getByTestId('0-year-emended-switch')
     const monthInput = screen.getByLabelText('Month')
     const monthIntercalaryCheckbox = screen.getByLabelText('Intercalary')
     const monthBrokenSwitch = screen.getByTestId('0-month-broken-switch')
@@ -158,6 +170,8 @@ describe('Date Input Groups', () => {
     expect(yearInput).toBeInTheDocument()
     expect(yearBrokenSwitch).toBeInTheDocument()
     expect(yearUncertainSwitch).toBeInTheDocument()
+    expect(yearReconstructedSwitch).toBeInTheDocument()
+    expect(yearEmendedSwitch).toBeInTheDocument()
     expect(monthInput).toBeInTheDocument()
     expect(monthIntercalaryCheckbox).toBeInTheDocument()
     expect(monthBrokenSwitch).toBeInTheDocument()
@@ -169,6 +183,8 @@ describe('Date Input Groups', () => {
     await userEvent.type(yearInput, '1')
     await userEvent.click(yearBrokenSwitch)
     await userEvent.click(yearUncertainSwitch)
+    await userEvent.click(yearReconstructedSwitch)
+    await userEvent.click(yearEmendedSwitch)
     await userEvent.type(monthInput, '1')
     await userEvent.click(monthIntercalaryCheckbox)
     await userEvent.click(monthBrokenSwitch)
@@ -180,6 +196,8 @@ describe('Date Input Groups', () => {
     expect(setYearValue).toHaveBeenCalledWith('1')
     expect(setYearBroken).toHaveBeenCalledWith(true)
     expect(setYearUncertain).toHaveBeenCalledWith(true)
+    expect(setYearReconstructed).toHaveBeenCalledWith(true)
+    expect(setYearEmended).toHaveBeenCalledWith(true)
     expect(setMonthValue).toHaveBeenCalledWith('1')
     expect(setIntercalary).toHaveBeenCalledWith(true)
     expect(setMonthBroken).toHaveBeenCalledWith(true)
@@ -187,6 +205,50 @@ describe('Date Input Groups', () => {
     expect(setDayValue).toHaveBeenCalledWith('1')
     expect(setDayBroken).toHaveBeenCalledWith(true)
     expect(setDayUncertain).toHaveBeenCalledWith(true)
+  })
+
+  it('shows non-blocking year warnings for metadata symbols and non-standard values', () => {
+    render(
+      DateInputGroups({
+        yearValue: '<136!?>',
+        yearBroken: false,
+        yearUncertain: false,
+        yearReconstructed: false,
+        yearEmended: false,
+        monthValue: '',
+        monthBroken: false,
+        monthUncertain: false,
+        dayValue: 'XIV',
+        dayBroken: false,
+        dayUncertain: false,
+        setYearValue,
+        setYearBroken,
+        setYearUncertain,
+        setYearReconstructed,
+        setYearEmended,
+        setMonthValue,
+        setIntercalary,
+        setMonthBroken,
+        setMonthUncertain,
+        setDayValue,
+        setDayBroken,
+        setDayUncertain,
+      }),
+    )
+
+    expect(
+      screen.getByText(
+        'Year contains angle brackets. Use the Reconstructed switch instead.',
+      ),
+    ).toBeInTheDocument()
+    expect(
+      screen.getByText('Year contains !. Use the Emended switch instead.'),
+    ).toBeInTheDocument()
+    expect(
+      screen.getAllByText(
+        'Non-standard value may skip date conversion for this field.',
+      ),
+    ).toHaveLength(2)
   })
 })
 
@@ -240,5 +302,33 @@ describe('EponymField Component', () => {
         title: 'king',
       }),
     )
+  })
+})
+
+describe('useDateSelectionState', () => {
+  it('initializes with the original king and year-0 when a year-0 date is passed', () => {
+    const nabonidusKing = Kings.find((k) => k.name === 'Nabonidus')!
+    const yearZeroDate = new MesopotamianDate({
+      year: { value: '0', isReconstructed: true, isEmended: true },
+      month: { value: '1' },
+      day: { value: '1' },
+      king: nabonidusKing,
+      isSeleucidEra: false,
+    })
+
+    const { result } = renderHook(() =>
+      useDateSelectionState({
+        date: yearZeroDate,
+        updateDate: jest.fn(),
+        setDate: jest.fn(),
+        setIsDisplayed: jest.fn(),
+        setIsSaving: jest.fn(),
+      }),
+    )
+
+    expect(result.current.yearValue).toBe('0')
+    expect(result.current.yearReconstructed).toBe(true)
+    expect(result.current.yearEmended).toBe(true)
+    expect(result.current.king?.name).toBe('Nabonidus')
   })
 })

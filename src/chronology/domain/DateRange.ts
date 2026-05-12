@@ -1,5 +1,7 @@
 import { MesopotamianDateBase } from 'chronology/domain/DateBase'
 import { DateType } from 'chronology/domain/DateParameters'
+import normalizeMesopotamianMonth from 'chronology/domain/normalizeMesopotamianMonth'
+import parseDateFieldNumber from 'chronology/domain/parseDateFieldNumber'
 import DateConverter from './DateConverter'
 import { CalendarProps } from './DateConverterBase'
 
@@ -66,10 +68,14 @@ export default class DateRange {
     month: number
     day: number
   } {
-    const parseValue = (value: { value: string }) => parseInt(value.value)
+    const parseValue = (value: { value: string }) =>
+      parseDateFieldNumber(value.value)
     return {
       year: parseValue(date.year),
-      month: parseValue(date.month),
+      month: normalizeMesopotamianMonth(
+        parseValue(date.month),
+        date.month.isIntercalary,
+      ),
       day: parseValue(date.day),
     }
   }
@@ -86,7 +92,7 @@ export default class DateRange {
         [field]:
           type === 'start'
             ? 1
-            : parseInt(this.getEndValueForPartialDate(date, field)),
+            : parseDateFieldNumber(this.getEndValueForPartialDate(date, field)),
       }),
       defaultValues,
     )
@@ -142,14 +148,17 @@ export default class DateRange {
   private getSeleucidRangeEndYear(date: MesopotamianDateBase): number {
     return date.getEmptyFields().includes('year')
       ? this.seleucidRangeEndYear
-      : parseInt(date.year.value)
+      : parseDateFieldNumber(date.year.value)
   }
 
   private getSeleucidDateEndMonth(date: MesopotamianDateBase): number {
     const year = this.getSeleucidRangeEndYear(date)
     return date.getEmptyFields().includes('month')
       ? this._converter.getMesopotamianMonthsOfSeYear(year).slice(-1)[0].value
-      : (parseInt(date.month.value) ?? 12)
+      : normalizeMesopotamianMonth(
+          parseDateFieldNumber(date.month.value) ?? 12,
+          date.month.isIntercalary,
+        )
   }
 
   private getSeleucidDateEndDay(date: MesopotamianDateBase): number {
@@ -161,7 +170,7 @@ export default class DateRange {
 
   private getNabonassarRangeEndYear(date: MesopotamianDateBase): number {
     if (!date.getEmptyFields().includes('year')) {
-      return parseInt(date.year.value)
+      return parseDateFieldNumber(date.year.value)
     }
     this._converter.setToMesopotamianDate(date.kingName as string, 1, 1, 1)
     return this._converter.calendar.regnalYears ?? 1
@@ -172,7 +181,10 @@ export default class DateRange {
     this._converter.setToMesopotamianDate(date.kingName as string, year, 1, 1)
     return date.getEmptyFields().includes('month')
       ? this._converter.getMesopotamianMonthsOfSeYear(year).slice(-1)[0].value
-      : parseInt(date.month.value)
+      : normalizeMesopotamianMonth(
+          parseDateFieldNumber(date.month.value),
+          date.month.isIntercalary,
+        )
   }
 
   private getNabonassarDateEndDay(date: MesopotamianDateBase): number {

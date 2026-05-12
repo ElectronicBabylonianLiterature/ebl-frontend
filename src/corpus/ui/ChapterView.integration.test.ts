@@ -260,7 +260,13 @@ describe('Display chapter', () => {
 })
 
 async function setup(chapter: ChapterDisplay) {
-  fakeApi = new FakeApi().expectChapterDisplay(chapter).expectText(textDto)
+  const provenanceSnapshotDtos = provenanceSnapshot.map((record) =>
+    Object.fromEntries(Object.entries(record)),
+  )
+  fakeApi = new FakeApi()
+    .allowProvenances(provenanceSnapshotDtos)
+    .expectChapterDisplay(chapter)
+    .expectText(textDto)
   appDriver = new AppDriver(fakeApi.client)
     .withSession()
     .withPath(
