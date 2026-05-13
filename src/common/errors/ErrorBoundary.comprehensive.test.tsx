@@ -1,7 +1,10 @@
 import React, { useState } from 'react'
 import { render, screen } from '@testing-library/react'
 import ErrorBoundary from './ErrorBoundary'
-import ErrorReporterContext, { ErrorReporter } from 'ErrorReporterContext'
+import ErrorReporterContext, {
+  ConsoleErrorReporter,
+  ErrorReporter,
+} from 'ErrorReporterContext'
 
 function renderExpectingReactError(
   renderUi: () => void,
@@ -424,6 +427,40 @@ describe('ErrorBoundary - Comprehensive Error Handling', () => {
           componentStack: expect.any(String),
         }),
       )
+    })
+
+    test('Error logged to console', () => {
+      const consoleSpy = jest
+        .spyOn(console, 'error')
+        .mockImplementation(() => undefined)
+      const CrashingComponent = () => {
+        throw new Error('Console log test')
+      }
+
+      render(
+        <ErrorReporterContext.Provider value={new ConsoleErrorReporter()}>
+          <ErrorBoundary>
+            <CrashingComponent />
+          </ErrorBoundary>
+        </ErrorReporterContext.Provider>,
+      )
+
+      expect(consoleSpy).toHaveBeenCalledWith(
+        'captureException',
+        expect.objectContaining({ message: 'Console log test' }),
+        expect.objectContaining({ componentStack: expect.any(String) }),
+      )
+      expect(
+        consoleSpy.mock.calls.some((call) =>
+          call.some(
+            (argument) =>
+              argument instanceof Error &&
+              argument.message === 'Console log test',
+          ),
+        ),
+      ).toBe(true)
+
+      consoleSpy.mockRestore()
     })
 
     test('Error reporter context is used', () => {
