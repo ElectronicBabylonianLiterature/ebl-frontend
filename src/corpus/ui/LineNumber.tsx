@@ -8,6 +8,14 @@ import classnames from 'classnames'
 import { LineDisplay } from 'corpus/domain/chapter'
 import _ from 'lodash'
 
+function prefersReducedMotion(): boolean {
+  return (
+    typeof window !== 'undefined' &&
+    typeof window.matchMedia === 'function' &&
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  )
+}
+
 const OldLineNumberCitation = referencePopover(({ reference }) => (
   <sup>{reference.authors.join('/')}</sup>
 ))
@@ -82,7 +90,8 @@ export default function LineNumber({
           onClick={(event) => {
             event.preventDefault()
             window.history.replaceState(null, '', hash)
-            ref.current?.scrollIntoView({ behavior: 'smooth' })
+            const behavior = prefersReducedMotion() ? 'auto' : 'smooth'
+            ref.current?.scrollIntoView({ behavior })
           }}
         >
           {lineNumberToString(line.number)}

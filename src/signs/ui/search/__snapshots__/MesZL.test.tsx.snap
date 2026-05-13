@@ -65,12 +65,14 @@ exports[`MesZl MesZl Content 1`] = `
     </strong>
     <br />
     <a
+      aria-label="Open external source for Mesopotamisches Zeichenlexikon. Zweite, revidierte und aktualisierte Auflage"
       class="text-dark "
       href="https://ugarit-verlag.com/en/products/0e8e7ca5d1f5493aa351e3ebc42fb514"
       rel="noopener noreferrer"
       target="_blank"
     >
       <i
+        aria-hidden="true"
         class="pointer__hover my-2 fas fa-shopping-cart fa-2x"
       />
     </a>

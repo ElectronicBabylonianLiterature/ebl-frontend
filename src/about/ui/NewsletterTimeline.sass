@@ -193,3 +193,27 @@
     top: 0
     max-height: 400px
     margin-bottom: 2rem
+
+@media (prefers-reduced-motion: reduce)
+  .newsletter-tree-item,
+  .newsletter-tree-item__branch::before,
+  .newsletter-tree-item__node,
+  .newsletter-tree-item__node::after,
+  .newsletter-tree-item__content,
+  .newsletter-tree-item__number
+    transition: none
+
+  .newsletter-tree-item:hover .newsletter-tree-item__node,
+  .newsletter-tree-item:focus-visible .newsletter-tree-item__node,
+  .newsletter-tree-item--active .newsletter-tree-item__node
+    transform: none
+
+  .newsletter-tree-item:hover .newsletter-tree-item__content,
+  .newsletter-tree-item:focus-visible .newsletter-tree-item__content
+    transform: none
+
+  .newsletter-tree-item--active .newsletter-tree-item__number
+    transform: none
+
+  .newsletter-tree-item--active .newsletter-tree-item__node::after
+    animation: none

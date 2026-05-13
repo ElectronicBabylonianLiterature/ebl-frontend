@@ -34,7 +34,7 @@ function WordItem({ word }: { word: Word }): JSX.Element {
           target="_blank"
           aria-label="Open the word in the Dictionary."
         >
-          <i className="fas fa-external-link-alt" />
+          <i className="fas fa-external-link-alt" aria-hidden="true" />
         </Link>
       ) : (
         <a
@@ -43,7 +43,7 @@ function WordItem({ word }: { word: Word }): JSX.Element {
           aria-label="Open the word in the Dictionary."
           rel="noreferrer"
         >
-          <i className="fas fa-external-link-alt" />
+          <i className="fas fa-external-link-alt" aria-hidden="true" />
         </a>
       )}
     </li>

@@ -72,3 +72,39 @@ test('clicking dynasty index link scrolls to dynasty', () => {
 
   expect(scrollIntoView).toHaveBeenCalledWith({ behavior: 'smooth' })
 })
+
+test('clicking dynasty index link uses non-animated scroll when reduced motion is enabled', () => {
+  const originalMatchMedia = window.matchMedia
+  Object.defineProperty(window, 'matchMedia', {
+    writable: true,
+    configurable: true,
+    value: (query: string): MediaQueryList =>
+      ({
+        matches: query === '(prefers-reduced-motion: reduce)',
+        media: query,
+        onchange: null,
+        addListener: jest.fn(),
+        removeListener: jest.fn(),
+        addEventListener: jest.fn(),
+        removeEventListener: jest.fn(),
+        dispatchEvent: jest.fn(),
+      }) as MediaQueryList,
+  })
+
+  const scrollIntoView = jest.fn()
+  window.HTMLElement.prototype.scrollIntoView = scrollIntoView
+  render(<ListOfKings />)
+
+  const firstDynasty = brinkmanDynasties[0]
+  const nav = screen.getByRole('navigation')
+  const link = within(nav).getByText(`1. ${firstDynasty}`)
+  fireEvent.click(link)
+
+  expect(scrollIntoView).toHaveBeenCalledWith({ behavior: 'auto' })
+
+  Object.defineProperty(window, 'matchMedia', {
+    writable: true,
+    configurable: true,
+    value: originalMatchMedia,
+  })
+})

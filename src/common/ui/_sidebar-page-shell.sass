@@ -32,6 +32,12 @@
               background-color: $ebl-color-brand-soft
               text-decoration: none
 
+            &:focus-visible
+              outline-color: $ebl-color-brand-primary-dark
+              outline-style: solid
+              outline-width: 2px
+              outline-offset: 2px
+
           &.active
             color: $ebl-color-text-heading
             font-weight: 600
@@ -75,6 +81,13 @@
       &:hover
         background-color: $ebl-color-brand-soft-subtle
         border-color: transparent
+        text-decoration: none
+
+      &:focus-visible
+        outline-color: $ebl-color-brand-primary-dark
+        outline-style: solid
+        outline-width: 2px
+        outline-offset: 2px
         text-decoration: none
 
       &.active
@@ -160,6 +173,13 @@
         &:hover
           text-decoration: underline
 
+        &:focus-visible
+          outline-color: $ebl-color-brand-primary-dark
+          outline-style: solid
+          outline-width: 2px
+          outline-offset: 3px
+          text-decoration: underline
+
       blockquote
         border-left-width: 4px
         border-left-style: solid
@@ -196,3 +216,10 @@
 
       &__title
         font-size: 1.5rem
+
+  @media (prefers-reduced-motion: reduce)
+    .#{$prefix}-nav__item
+      transition: none
+
+    .#{$prefix}-header__breadcrumbs .breadcrumb-item a
+      transition: none

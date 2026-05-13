@@ -57,12 +57,14 @@ Göttingen, ²2010
     </a>
     <br />
     <a
+      aria-label="Open external source for Akkadische Logogramme"
       class="text-dark "
       href="https://univerlag.uni-goettingen.de/handle/3/isbn-978-3-941875-65-4"
       rel="noopener noreferrer"
       target="_blank"
     >
       <i
+        aria-hidden="true"
         class="pointer__hover my-2 fas fa-external-link-square-alt"
       />
     </a>

@@ -210,6 +210,22 @@ describe('Tools', () => {
     ])
   })
 
+  it('marks decorative icons as hidden from assistive technologies', () => {
+    renderTools('dictionary')
+
+    const navIcons = ['𒀀', 'Ꞌ', '⇌', '♔', '⊕', '⊟', '※', '⊞', '𒐕']
+
+    navIcons.forEach((icon) => {
+      expect(
+        screen.getByText(icon, { selector: '.tools-nav__icon' }),
+      ).toHaveAttribute('aria-hidden', 'true')
+    })
+
+    expect(
+      screen.getByText('Ꞌ', { selector: '.tools-content__icon' }),
+    ).toHaveAttribute('aria-hidden', 'true')
+  })
+
   it('syncs selected tab when activeTab prop changes', () => {
     const props = {
       markupService: {} as MarkupService,
@@ -294,6 +310,62 @@ describe('Tools', () => {
     expect(getElementByIdSpy).toHaveBeenCalledWith('missing-section')
 
     getElementByIdSpy.mockRestore()
+    jest.useRealTimers()
+  })
+
+  it('uses non-animated hash scrolling when reduced motion is enabled', () => {
+    jest.useFakeTimers()
+    const originalMatchMedia = window.matchMedia
+    const reducedMotionMatchMedia = jest.fn(
+      (query: string): MediaQueryList =>
+        ({
+          matches: query === '(prefers-reduced-motion: reduce)',
+          media: query,
+          onchange: null,
+          addListener: jest.fn(),
+          removeListener: jest.fn(),
+          addEventListener: jest.fn(),
+          removeEventListener: jest.fn(),
+          dispatchEvent: jest.fn(),
+        }) as MediaQueryList,
+    )
+
+    Object.defineProperty(window, 'matchMedia', {
+      writable: true,
+      configurable: true,
+      value: reducedMotionMatchMedia,
+    })
+
+    const scrollIntoView = jest.fn()
+    const getElementByIdSpy = jest
+      .spyOn(document, 'getElementById')
+      .mockReturnValue({
+        scrollIntoView,
+      } as unknown as HTMLElement)
+
+    render(
+      <MemoryRouter initialEntries={['/tools#target-section']}>
+        <Tools
+          markupService={{} as MarkupService}
+          signService={{} as SignService}
+          wordService={{} as WordService}
+          bibliographyService={{} as BibliographyService}
+          afoRegisterService={{} as AfoRegisterService}
+          dossiersService={{} as DossiersService}
+          fragmentService={{} as FragmentService}
+        />
+      </MemoryRouter>,
+    )
+
+    jest.runAllTimers()
+    expect(scrollIntoView).toHaveBeenCalledWith({ behavior: 'auto' })
+
+    getElementByIdSpy.mockRestore()
+    Object.defineProperty(window, 'matchMedia', {
+      writable: true,
+      configurable: true,
+      value: originalMatchMedia,
+    })
     jest.useRealTimers()
   })
 

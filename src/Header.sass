@@ -59,6 +59,15 @@
     white-space: nowrap
     text-decoration: none
 
+    &:focus-visible
+      color: $ebl-color-text-strong
+      background-color: $ebl-color-brand-soft-hover
+      outline: 2px solid $ebl-color-brand-primary
+      outline-offset: 2px
+
+      &::after
+        transform: translateX(-50%) scaleX(1)
+
     &::after
       content: ''
       position: absolute
@@ -112,6 +121,12 @@
       opacity: 1
       transform: translateY(-1px)
       text-decoration: none
+
+    &:focus-visible
+      opacity: 1
+      text-decoration: none
+      outline: 2px solid $ebl-color-brand-primary
+      outline-offset: 2px
 
   &__lmu-logo
     height: 1.75rem
@@ -169,3 +184,13 @@
   padding-left: 0
   padding-right: 0
   max-width: 1200px
+
+@media (prefers-reduced-motion: reduce)
+  .Header .navbar-light .Header__nav .nav-item .nav-link,
+  .Header .navbar-light .Header__nav .nav-item .nav-link::after,
+  .Header__partner-logo-link
+    transition: none
+
+  .Header__partner-logo-link:hover,
+  .Header__partner-logo-link:focus-visible
+    transform: none

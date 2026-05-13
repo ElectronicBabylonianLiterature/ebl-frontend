@@ -53,6 +53,14 @@ const tabContent: Record<
   bibliography: AboutBibliography,
 }
 
+function prefersReducedMotion(): boolean {
+  return (
+    typeof window !== 'undefined' &&
+    typeof window.matchMedia === 'function' &&
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  )
+}
+
 function getContent({
   markupService,
   activeTab,
@@ -91,7 +99,9 @@ function AboutNavItem({
       className={`about-nav__item ${isActive ? 'active' : ''}`}
       onClick={() => onSelect(tab.id)}
     >
-      <span className="about-nav__icon">{tab.icon}</span>
+      <span className="about-nav__icon" aria-hidden="true">
+        {tab.icon}
+      </span>
       <span className="about-nav__title">{tab.title}</span>
     </Nav.Link>
   )
@@ -125,11 +135,12 @@ export default function About({
     const hash = location.hash
     if (hash) {
       const id = hash.replace('#', '')
+      const behavior = prefersReducedMotion() ? 'auto' : 'smooth'
       requestAnimationFrame(() => {
         requestAnimationFrame(() => {
           const element = document.getElementById(id)
           if (element) {
-            element.scrollIntoView({ behavior: 'smooth' })
+            element.scrollIntoView({ behavior })
           }
         })
       })
@@ -172,7 +183,9 @@ export default function About({
 
           <Col xs={12} md={9} className="about-content">
             <div className="about-content__header">
-              <span className="about-content__icon">{currentTab?.icon}</span>
+              <span className="about-content__icon" aria-hidden="true">
+                {currentTab?.icon}
+              </span>
               <h2 className="about-content__title">{currentTab?.title}</h2>
             </div>
             <div className="about-content__body">

@@ -24,7 +24,8 @@ exports[`Meaning 1`] = `
             >
               electronic Babylonian Library (eBL)
             </span>
-            <h1
+            <div
+              aria-hidden="true"
               class="Header__title"
             >
               <span
@@ -56,7 +57,7 @@ exports[`Meaning 1`] = `
                   bl
                 </small>
               </small>
-            </h1>
+            </div>
           </a>
           <button
             aria-controls="Header-44"
@@ -264,6 +265,7 @@ exports[`Meaning 1`] = `
               href="/tools/signs"
             >
               <span
+                aria-hidden="true"
                 class="tools-nav__icon"
               >
                 𒀀
@@ -279,6 +281,7 @@ exports[`Meaning 1`] = `
               href="/tools/dictionary"
             >
               <span
+                aria-hidden="true"
                 class="tools-nav__icon"
               >
                 Ꞌ
@@ -294,6 +297,7 @@ exports[`Meaning 1`] = `
               href="/tools/date-converter"
             >
               <span
+                aria-hidden="true"
                 class="tools-nav__icon"
               >
                 ⇌
@@ -309,6 +313,7 @@ exports[`Meaning 1`] = `
               href="/tools/list-of-kings"
             >
               <span
+                aria-hidden="true"
                 class="tools-nav__icon"
               >
                 ♔
@@ -324,6 +329,7 @@ exports[`Meaning 1`] = `
               href="/tools/genres"
             >
               <span
+                aria-hidden="true"
                 class="tools-nav__icon"
               >
                 ⊕
@@ -339,6 +345,7 @@ exports[`Meaning 1`] = `
               href="/tools/dossiers"
             >
               <span
+                aria-hidden="true"
                 class="tools-nav__icon"
               >
                 ⊟
@@ -354,6 +361,7 @@ exports[`Meaning 1`] = `
               href="/tools/references"
             >
               <span
+                aria-hidden="true"
                 class="tools-nav__icon"
               >
                 ※
@@ -369,6 +377,7 @@ exports[`Meaning 1`] = `
               href="/tools/afo-register"
             >
               <span
+                aria-hidden="true"
                 class="tools-nav__icon"
               >
                 ⊞
@@ -384,6 +393,7 @@ exports[`Meaning 1`] = `
               href="/tools/cuneiform-converter"
             >
               <span
+                aria-hidden="true"
                 class="tools-nav__icon"
               >
                 𒐕
@@ -403,6 +413,7 @@ exports[`Meaning 1`] = `
             class="tools-content__header"
           >
             <span
+              aria-hidden="true"
               class="tools-content__icon"
             >
               Ꞌ
@@ -444,6 +455,7 @@ exports[`Meaning 1`] = `
                           class="col-sm-1"
                         >
                           <i
+                            aria-hidden="true"
                             class="fas fa-info-circle"
                           />
                         </div>
@@ -482,6 +494,7 @@ exports[`Meaning 1`] = `
                           class="col-sm-1"
                         >
                           <i
+                            aria-hidden="true"
                             class="fas fa-info-circle"
                           />
                         </div>
@@ -510,6 +523,7 @@ exports[`Meaning 1`] = `
                           class="col-sm-1"
                         >
                           <i
+                            aria-hidden="true"
                             class="fas fa-info-circle"
                           />
                         </div>
@@ -538,6 +552,7 @@ exports[`Meaning 1`] = `
                           class="col-sm-1"
                         >
                           <i
+                            aria-hidden="true"
                             class="fas fa-info-circle"
                           />
                         </div>
@@ -680,6 +695,7 @@ exports[`Meaning 1`] = `
                           class="col-sm-1"
                         >
                           <i
+                            aria-hidden="true"
                             class="fas fa-info-circle"
                           />
                         </div>
@@ -785,10 +801,12 @@ exports[`Meaning 1`] = `
                       class="Word"
                     >
                       <a
+                        aria-label="Edit test I"
                         class="BibliographySearch__edit"
                         href="/dictionary/test I/edit"
                       >
                         <i
+                          aria-hidden="true"
                           class="fas fa-edit"
                         />
                       </a>
@@ -1160,7 +1178,8 @@ exports[`Root 1`] = `
             >
               electronic Babylonian Library (eBL)
             </span>
-            <h1
+            <div
+              aria-hidden="true"
               class="Header__title"
             >
               <span
@@ -1192,7 +1211,7 @@ exports[`Root 1`] = `
                   bl
                 </small>
               </small>
-            </h1>
+            </div>
           </a>
           <button
             aria-controls="Header-64"
@@ -1400,6 +1419,7 @@ exports[`Root 1`] = `
               href="/tools/signs"
             >
               <span
+                aria-hidden="true"
                 class="tools-nav__icon"
               >
                 𒀀
@@ -1415,6 +1435,7 @@ exports[`Root 1`] = `
               href="/tools/dictionary"
             >
               <span
+                aria-hidden="true"
                 class="tools-nav__icon"
               >
                 Ꞌ
@@ -1430,6 +1451,7 @@ exports[`Root 1`] = `
               href="/tools/date-converter"
             >
               <span
+                aria-hidden="true"
                 class="tools-nav__icon"
               >
                 ⇌
@@ -1445,6 +1467,7 @@ exports[`Root 1`] = `
               href="/tools/list-of-kings"
             >
               <span
+                aria-hidden="true"
                 class="tools-nav__icon"
               >
                 ♔
@@ -1460,6 +1483,7 @@ exports[`Root 1`] = `
               href="/tools/genres"
             >
               <span
+                aria-hidden="true"
                 class="tools-nav__icon"
               >
                 ⊕
@@ -1475,6 +1499,7 @@ exports[`Root 1`] = `
               href="/tools/dossiers"
             >
               <span
+                aria-hidden="true"
                 class="tools-nav__icon"
               >
                 ⊟
@@ -1490,6 +1515,7 @@ exports[`Root 1`] = `
               href="/tools/references"
             >
               <span
+                aria-hidden="true"
                 class="tools-nav__icon"
               >
                 ※
@@ -1505,6 +1531,7 @@ exports[`Root 1`] = `
               href="/tools/afo-register"
             >
               <span
+                aria-hidden="true"
                 class="tools-nav__icon"
               >
                 ⊞
@@ -1520,6 +1547,7 @@ exports[`Root 1`] = `
               href="/tools/cuneiform-converter"
             >
               <span
+                aria-hidden="true"
                 class="tools-nav__icon"
               >
                 𒐕
@@ -1539,6 +1567,7 @@ exports[`Root 1`] = `
             class="tools-content__header"
           >
             <span
+              aria-hidden="true"
               class="tools-content__icon"
             >
               Ꞌ
@@ -1580,6 +1609,7 @@ exports[`Root 1`] = `
                           class="col-sm-1"
                         >
                           <i
+                            aria-hidden="true"
                             class="fas fa-info-circle"
                           />
                         </div>
@@ -1618,6 +1648,7 @@ exports[`Root 1`] = `
                           class="col-sm-1"
                         >
                           <i
+                            aria-hidden="true"
                             class="fas fa-info-circle"
                           />
                         </div>
@@ -1646,6 +1677,7 @@ exports[`Root 1`] = `
                           class="col-sm-1"
                         >
                           <i
+                            aria-hidden="true"
                             class="fas fa-info-circle"
                           />
                         </div>
@@ -1674,6 +1706,7 @@ exports[`Root 1`] = `
                           class="col-sm-1"
                         >
                           <i
+                            aria-hidden="true"
                             class="fas fa-info-circle"
                           />
                         </div>
@@ -1816,6 +1849,7 @@ exports[`Root 1`] = `
                           class="col-sm-1"
                         >
                           <i
+                            aria-hidden="true"
                             class="fas fa-info-circle"
                           />
                         </div>
@@ -1921,10 +1955,12 @@ exports[`Root 1`] = `
                       class="Word"
                     >
                       <a
+                        aria-label="Edit test I"
                         class="BibliographySearch__edit"
                         href="/dictionary/test I/edit"
                       >
                         <i
+                          aria-hidden="true"
                           class="fas fa-edit"
                         />
                       </a>
@@ -2296,7 +2332,8 @@ exports[`Vowel class 1`] = `
             >
               electronic Babylonian Library (eBL)
             </span>
-            <h1
+            <div
+              aria-hidden="true"
               class="Header__title"
             >
               <span
@@ -2328,7 +2365,7 @@ exports[`Vowel class 1`] = `
                   bl
                 </small>
               </small>
-            </h1>
+            </div>
           </a>
           <button
             aria-controls="Header-84"
@@ -2536,6 +2573,7 @@ exports[`Vowel class 1`] = `
               href="/tools/signs"
             >
               <span
+                aria-hidden="true"
                 class="tools-nav__icon"
               >
                 𒀀
@@ -2551,6 +2589,7 @@ exports[`Vowel class 1`] = `
               href="/tools/dictionary"
             >
               <span
+                aria-hidden="true"
                 class="tools-nav__icon"
               >
                 Ꞌ
@@ -2566,6 +2605,7 @@ exports[`Vowel class 1`] = `
               href="/tools/date-converter"
             >
               <span
+                aria-hidden="true"
                 class="tools-nav__icon"
               >
                 ⇌
@@ -2581,6 +2621,7 @@ exports[`Vowel class 1`] = `
               href="/tools/list-of-kings"
             >
               <span
+                aria-hidden="true"
                 class="tools-nav__icon"
               >
                 ♔
@@ -2596,6 +2637,7 @@ exports[`Vowel class 1`] = `
               href="/tools/genres"
             >
               <span
+                aria-hidden="true"
                 class="tools-nav__icon"
               >
                 ⊕
@@ -2611,6 +2653,7 @@ exports[`Vowel class 1`] = `
               href="/tools/dossiers"
             >
               <span
+                aria-hidden="true"
                 class="tools-nav__icon"
               >
                 ⊟
@@ -2626,6 +2669,7 @@ exports[`Vowel class 1`] = `
               href="/tools/references"
             >
               <span
+                aria-hidden="true"
                 class="tools-nav__icon"
               >
                 ※
@@ -2641,6 +2685,7 @@ exports[`Vowel class 1`] = `
               href="/tools/afo-register"
             >
               <span
+                aria-hidden="true"
                 class="tools-nav__icon"
               >
                 ⊞
@@ -2656,6 +2701,7 @@ exports[`Vowel class 1`] = `
               href="/tools/cuneiform-converter"
             >
               <span
+                aria-hidden="true"
                 class="tools-nav__icon"
               >
                 𒐕
@@ -2675,6 +2721,7 @@ exports[`Vowel class 1`] = `
             class="tools-content__header"
           >
             <span
+              aria-hidden="true"
               class="tools-content__icon"
             >
               Ꞌ
@@ -2716,6 +2763,7 @@ exports[`Vowel class 1`] = `
                           class="col-sm-1"
                         >
                           <i
+                            aria-hidden="true"
                             class="fas fa-info-circle"
                           />
                         </div>
@@ -2754,6 +2802,7 @@ exports[`Vowel class 1`] = `
                           class="col-sm-1"
                         >
                           <i
+                            aria-hidden="true"
                             class="fas fa-info-circle"
                           />
                         </div>
@@ -2782,6 +2831,7 @@ exports[`Vowel class 1`] = `
                           class="col-sm-1"
                         >
                           <i
+                            aria-hidden="true"
                             class="fas fa-info-circle"
                           />
                         </div>
@@ -2810,6 +2860,7 @@ exports[`Vowel class 1`] = `
                           class="col-sm-1"
                         >
                           <i
+                            aria-hidden="true"
                             class="fas fa-info-circle"
                           />
                         </div>
@@ -2952,6 +3003,7 @@ exports[`Vowel class 1`] = `
                           class="col-sm-1"
                         >
                           <i
+                            aria-hidden="true"
                             class="fas fa-info-circle"
                           />
                         </div>
@@ -3057,10 +3109,12 @@ exports[`Vowel class 1`] = `
                       class="Word"
                     >
                       <a
+                        aria-label="Edit test I"
                         class="BibliographySearch__edit"
                         href="/dictionary/test I/edit"
                       >
                         <i
+                          aria-hidden="true"
                           class="fas fa-edit"
                         />
                       </a>
@@ -3432,7 +3486,8 @@ exports[`Word 1`] = `
             >
               electronic Babylonian Library (eBL)
             </span>
-            <h1
+            <div
+              aria-hidden="true"
               class="Header__title"
             >
               <span
@@ -3464,7 +3519,7 @@ exports[`Word 1`] = `
                   bl
                 </small>
               </small>
-            </h1>
+            </div>
           </a>
           <button
             aria-controls="Header-24"
@@ -3672,6 +3727,7 @@ exports[`Word 1`] = `
               href="/tools/signs"
             >
               <span
+                aria-hidden="true"
                 class="tools-nav__icon"
               >
                 𒀀
@@ -3687,6 +3743,7 @@ exports[`Word 1`] = `
               href="/tools/dictionary"
             >
               <span
+                aria-hidden="true"
                 class="tools-nav__icon"
               >
                 Ꞌ
@@ -3702,6 +3759,7 @@ exports[`Word 1`] = `
               href="/tools/date-converter"
             >
               <span
+                aria-hidden="true"
                 class="tools-nav__icon"
               >
                 ⇌
@@ -3717,6 +3775,7 @@ exports[`Word 1`] = `
               href="/tools/list-of-kings"
             >
               <span
+                aria-hidden="true"
                 class="tools-nav__icon"
               >
                 ♔
@@ -3732,6 +3791,7 @@ exports[`Word 1`] = `
               href="/tools/genres"
             >
               <span
+                aria-hidden="true"
                 class="tools-nav__icon"
               >
                 ⊕
@@ -3747,6 +3807,7 @@ exports[`Word 1`] = `
               href="/tools/dossiers"
             >
               <span
+                aria-hidden="true"
                 class="tools-nav__icon"
               >
                 ⊟
@@ -3762,6 +3823,7 @@ exports[`Word 1`] = `
               href="/tools/references"
             >
               <span
+                aria-hidden="true"
                 class="tools-nav__icon"
               >
                 ※
@@ -3777,6 +3839,7 @@ exports[`Word 1`] = `
               href="/tools/afo-register"
             >
               <span
+                aria-hidden="true"
                 class="tools-nav__icon"
               >
                 ⊞
@@ -3792,6 +3855,7 @@ exports[`Word 1`] = `
               href="/tools/cuneiform-converter"
             >
               <span
+                aria-hidden="true"
                 class="tools-nav__icon"
               >
                 𒐕
@@ -3811,6 +3875,7 @@ exports[`Word 1`] = `
             class="tools-content__header"
           >
             <span
+              aria-hidden="true"
               class="tools-content__icon"
             >
               Ꞌ
@@ -3852,6 +3917,7 @@ exports[`Word 1`] = `
                           class="col-sm-1"
                         >
                           <i
+                            aria-hidden="true"
                             class="fas fa-info-circle"
                           />
                         </div>
@@ -3890,6 +3956,7 @@ exports[`Word 1`] = `
                           class="col-sm-1"
                         >
                           <i
+                            aria-hidden="true"
                             class="fas fa-info-circle"
                           />
                         </div>
@@ -3918,6 +3985,7 @@ exports[`Word 1`] = `
                           class="col-sm-1"
                         >
                           <i
+                            aria-hidden="true"
                             class="fas fa-info-circle"
                           />
                         </div>
@@ -3946,6 +4014,7 @@ exports[`Word 1`] = `
                           class="col-sm-1"
                         >
                           <i
+                            aria-hidden="true"
                             class="fas fa-info-circle"
                           />
                         </div>
@@ -4088,6 +4157,7 @@ exports[`Word 1`] = `
                           class="col-sm-1"
                         >
                           <i
+                            aria-hidden="true"
                             class="fas fa-info-circle"
                           />
                         </div>
@@ -4193,10 +4263,12 @@ exports[`Word 1`] = `
                       class="Word"
                     >
                       <a
+                        aria-label="Edit test I"
                         class="BibliographySearch__edit"
                         href="/dictionary/test I/edit"
                       >
                         <i
+                          aria-hidden="true"
                           class="fas fa-edit"
                         />
                       </a>
@@ -4568,7 +4640,8 @@ exports[`renders dictionary search page 1`] = `
             >
               electronic Babylonian Library (eBL)
             </span>
-            <h1
+            <div
+              aria-hidden="true"
               class="Header__title"
             >
               <span
@@ -4600,7 +4673,7 @@ exports[`renders dictionary search page 1`] = `
                   bl
                 </small>
               </small>
-            </h1>
+            </div>
           </a>
           <button
             aria-controls="Header-9"
@@ -4808,6 +4881,7 @@ exports[`renders dictionary search page 1`] = `
               href="/tools/signs"
             >
               <span
+                aria-hidden="true"
                 class="tools-nav__icon"
               >
                 𒀀
@@ -4823,6 +4897,7 @@ exports[`renders dictionary search page 1`] = `
               href="/tools/dictionary"
             >
               <span
+                aria-hidden="true"
                 class="tools-nav__icon"
               >
                 Ꞌ
@@ -4838,6 +4913,7 @@ exports[`renders dictionary search page 1`] = `
               href="/tools/date-converter"
             >
               <span
+                aria-hidden="true"
                 class="tools-nav__icon"
               >
                 ⇌
@@ -4853,6 +4929,7 @@ exports[`renders dictionary search page 1`] = `
               href="/tools/list-of-kings"
             >
               <span
+                aria-hidden="true"
                 class="tools-nav__icon"
               >
                 ♔
@@ -4868,6 +4945,7 @@ exports[`renders dictionary search page 1`] = `
               href="/tools/genres"
             >
               <span
+                aria-hidden="true"
                 class="tools-nav__icon"
               >
                 ⊕
@@ -4883,6 +4961,7 @@ exports[`renders dictionary search page 1`] = `
               href="/tools/dossiers"
             >
               <span
+                aria-hidden="true"
                 class="tools-nav__icon"
               >
                 ⊟
@@ -4898,6 +4977,7 @@ exports[`renders dictionary search page 1`] = `
               href="/tools/references"
             >
               <span
+                aria-hidden="true"
                 class="tools-nav__icon"
               >
                 ※
@@ -4913,6 +4993,7 @@ exports[`renders dictionary search page 1`] = `
               href="/tools/afo-register"
             >
               <span
+                aria-hidden="true"
                 class="tools-nav__icon"
               >
                 ⊞
@@ -4928,6 +5009,7 @@ exports[`renders dictionary search page 1`] = `
               href="/tools/cuneiform-converter"
             >
               <span
+                aria-hidden="true"
                 class="tools-nav__icon"
               >
                 𒐕
@@ -4947,6 +5029,7 @@ exports[`renders dictionary search page 1`] = `
             class="tools-content__header"
           >
             <span
+              aria-hidden="true"
               class="tools-content__icon"
             >
               Ꞌ
@@ -4988,6 +5071,7 @@ exports[`renders dictionary search page 1`] = `
                           class="col-sm-1"
                         >
                           <i
+                            aria-hidden="true"
                             class="fas fa-info-circle"
                           />
                         </div>
@@ -5027,6 +5111,7 @@ exports[`renders dictionary search page 1`] = `
                           class="col-sm-1"
                         >
                           <i
+                            aria-hidden="true"
                             class="fas fa-info-circle"
                           />
                         </div>
@@ -5055,6 +5140,7 @@ exports[`renders dictionary search page 1`] = `
                           class="col-sm-1"
                         >
                           <i
+                            aria-hidden="true"
                             class="fas fa-info-circle"
                           />
                         </div>
@@ -5083,6 +5169,7 @@ exports[`renders dictionary search page 1`] = `
                           class="col-sm-1"
                         >
                           <i
+                            aria-hidden="true"
                             class="fas fa-info-circle"
                           />
                         </div>
@@ -5225,6 +5312,7 @@ exports[`renders dictionary search page 1`] = `
                           class="col-sm-1"
                         >
                           <i
+                            aria-hidden="true"
                             class="fas fa-info-circle"
                           />
                         </div>

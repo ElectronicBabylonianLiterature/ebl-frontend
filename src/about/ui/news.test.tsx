@@ -43,3 +43,13 @@ test('updates active newsletter on link click', () => {
     screen.getByText(new RegExp(`Newsletter #${newsletters[1].number}`)),
   ).toBeInTheDocument()
 })
+
+test('does not render level-one headings from newsletter markdown', () => {
+  render(
+    <MemoryRouter>
+      <AboutNews />
+    </MemoryRouter>,
+  )
+
+  expect(screen.queryByRole('heading', { level: 1 })).not.toBeInTheDocument()
+})

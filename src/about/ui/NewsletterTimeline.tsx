@@ -13,6 +13,14 @@ interface NewsletterTimelineProps {
   onSelectNewsletter: (newsletter: Newsletter) => void
 }
 
+function prefersReducedMotion(): boolean {
+  return (
+    typeof window !== 'undefined' &&
+    typeof window.matchMedia === 'function' &&
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  )
+}
+
 export default function NewsletterTimeline({
   newsletters,
   activeNewsletter,
@@ -22,8 +30,9 @@ export default function NewsletterTimeline({
 
   useEffect(() => {
     if (activeRef.current) {
+      const behavior = prefersReducedMotion() ? 'auto' : 'smooth'
       activeRef.current.scrollIntoView({
-        behavior: 'smooth',
+        behavior,
         block: 'nearest',
       })
     }

@@ -17,6 +17,14 @@ type DynastyAnchor = {
   dynastyName: string
 }
 
+function prefersReducedMotion(): boolean {
+  return (
+    typeof window !== 'undefined' &&
+    typeof window.matchMedia === 'function' &&
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  )
+}
+
 function getDynastySlug(dynastyName: string): string {
   const normalizedDynastyName: string = _.deburr(dynastyName).toLowerCase()
   const slug: string = normalizedDynastyName
@@ -61,9 +69,8 @@ function DynastyIndex(): JSX.Element {
             className="kings-tool__index-link"
             onClick={(event) => {
               event.preventDefault()
-              document
-                .getElementById(dynastyId)
-                ?.scrollIntoView({ behavior: 'smooth' })
+              const behavior = prefersReducedMotion() ? 'auto' : 'smooth'
+              document.getElementById(dynastyId)?.scrollIntoView({ behavior })
             }}
           >
             {dynastyIndex + 1}. {dynastyName}

@@ -24,12 +24,13 @@ export default function SubmitCorrectionsButton({
     >
       <Button
         variant="outline-primary"
+        aria-label="Submit corrections"
         onClick={(e) => {
           window.open(`mailto:${email}?subject=${subject}&body=${body}`)
           e.preventDefault()
         }}
       >
-        <i className="fas fa-envelope" />
+        <i className="fas fa-envelope" aria-hidden="true" />
       </Button>
     </OverlayTrigger>
   )

@@ -207,6 +207,11 @@
       &:hover
         text-decoration: underline
 
+      &:focus-visible
+        text-decoration: underline
+        outline: 2px solid $ebl-color-brand-primary
+        outline-offset: 2px
+
 @media (max-width: $ebl-breakpoint-lg-max)
   .project-hero
     padding: 2rem
@@ -245,3 +250,12 @@
       position: static
       background: rgba(0, 119, 190, 0.9)
       padding: 1rem
+
+@media (prefers-reduced-motion: reduce)
+  .team-section__card,
+  .team-photos__item img
+    transition: none
+
+  .team-section__card:hover,
+  .team-photos__item:hover img
+    transform: none

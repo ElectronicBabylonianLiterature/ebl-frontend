@@ -235,23 +235,27 @@ exports[`Sign Display Sign Display Snapshot 1`] = `
             >
               Cuneiform fonts by C. Ziegeler (Old Babylonian Literature)
               <a
+                aria-label="Open Cuneiform fonts publication by C. Ziegeler"
                 class="text-dark"
                 href="http://dx.doi.org/10.17169/refubium-44983"
                 rel="noopener noreferrer"
                 target="_blank"
               >
                 <i
+                  aria-hidden="true"
                   class="fas fa-external-link-square-alt px-2"
                 />
               </a>
               and S. Vanseveren (rest)
               <a
+                aria-label="Open cuneiform font resource by S. Vanseveren"
                 class="text-dark"
                 href="https://www.hethport.uni-wuerzburg.de/cuneifont/"
                 rel="noopener noreferrer"
                 target="_blank"
               >
                 <i
+                  aria-hidden="true"
                   class="fas fa-external-link-square-alt px-2"
                 />
               </a>
@@ -288,6 +292,7 @@ exports[`Sign Display Sign Display Snapshot 1`] = `
                    
                 </div>
                 <i
+                  aria-hidden="true"
                   class="fas fa-info-circle"
                 />
               </div>
@@ -315,12 +320,14 @@ exports[`Sign Display Sign Display Snapshot 1`] = `
                     123
                   </span>
                   <a
+                    aria-label="Open LaBaSi entry 123"
                     class="text-dark "
                     href="https://labasi.acdh.oeaw.ac.at/tablets/sign/detail/123"
                     rel="noopener noreferrer"
                     target="_blank"
                   >
                     <i
+                      aria-hidden="true"
                       class="fas fa-external-link-square-alt fa-1x"
                     />
                   </a>
@@ -435,12 +442,14 @@ exports[`Sign Display Sign Display Snapshot 1`] = `
                   </strong>
                   <br />
                   <a
+                    aria-label="Open external source for Mesopotamisches Zeichenlexikon. Zweite, revidierte und aktualisierte Auflage"
                     class="text-dark "
                     href="https://ugarit-verlag.com/en/products/0e8e7ca5d1f5493aa351e3ebc42fb514"
                     rel="noopener noreferrer"
                     target="_blank"
                   >
                     <i
+                      aria-hidden="true"
                       class="pointer__hover my-2 fas fa-shopping-cart fa-2x"
                     />
                   </a>
@@ -542,12 +551,14 @@ exports[`Sign Display Sign Display Snapshot 1`] = `
             </strong>
             <br />
             <a
+              aria-label="Open external source for Manuel d’assyriologie, Tome deuxième: Evolution des cunéiformes"
               class="text-dark "
               href="https://www.europeana.eu/en/rights/public-domain-charter"
               rel="noopener noreferrer"
               target="_blank"
             >
               <i
+                aria-hidden="true"
                 class="pointer__hover my-2 fas fa-external-link-square-alt"
               />
             </a>

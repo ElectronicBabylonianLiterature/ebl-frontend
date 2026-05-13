@@ -22,7 +22,10 @@ function DisplayLemmaEntry({
           {isSuggestion ? (
             <Badge bg="warning">
               New
-              <i className={'fas fa-wand-magic-sparkles'}></i>
+              <i
+                className={'fas fa-wand-magic-sparkles'}
+                aria-hidden="true"
+              ></i>
             </Badge>
           ) : (
             <Badge bg="success">New</Badge>

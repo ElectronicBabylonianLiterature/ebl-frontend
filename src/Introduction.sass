@@ -1,7 +1,5 @@
-@import src/design-tokens
-
 .hero
-  background-color: $ebl-color-brand-primary
+  background-color: #0077be
   color: white
   padding: 6rem 0
   margin-bottom: 4rem
@@ -47,7 +45,7 @@
   &__subtitle
     font-size: 1.125rem
     margin-bottom: 2.25rem
-    opacity: 0.9
+    opacity: 1
     font-weight: 300
     letter-spacing: 0.5px
 
@@ -63,7 +61,7 @@
     font-weight: 600
     letter-spacing: 2.2px
     text-transform: uppercase
-    opacity: 0.78
+    opacity: 1
 
   &__logos
     display: flex
@@ -115,7 +113,7 @@
     &--erc
       max-width: 9.4rem
 
-@media (max-width: $ebl-breakpoint-md-max)
+@media (max-width: 768px)
   .hero
     padding: 4rem 0
 
@@ -170,21 +168,21 @@
   p
     font-size: 1.05rem
     line-height: 1.75
-    color: $ebl-color-text-primary
+    color: #212529
     margin-bottom: 1.5rem
 
     &:last-child
       margin-bottom: 0
 
     a
-      color: $ebl-color-brand-primary
+      color: #0077be
       text-decoration: none
       font-weight: 500
 
       &:hover
         text-decoration: underline
 
-@media (max-width: $ebl-breakpoint-md-max)
+@media (max-width: 768px)
   .introduction-text
     padding: 2rem 0 1.5rem
 
@@ -203,7 +201,7 @@
     gap: 1rem
 
   &__title
-    color: $ebl-color-brand-primary
+    color: #0077be
     font-size: 2rem
     font-weight: 700
     margin: 0
@@ -213,23 +211,28 @@
     align-items: center
     gap: 0.625rem
     padding: 0.625rem 1.25rem
-    color: $ebl-color-brand-primary
+    color: #0077be
     text-decoration: none
     font-weight: 600
     font-size: 0.95rem
     border-width: 2px
     border-style: solid
-    border-color: $ebl-color-brand-primary
+    border-color: #0077be
     border-radius: 50px
     flex-shrink: 0
     white-space: nowrap
     transition: all 0.3s ease
 
     &:hover
-      background-color: $ebl-color-brand-primary
+      background-color: #0077be
       color: white
       transform: translateY(-2px)
       box-shadow: 0 4px 12px rgba(0, 119, 190, 0.2)
+      text-decoration: none
+
+    &:focus-visible
+      outline: 3px solid rgba(0, 119, 190, 0.4)
+      outline-offset: 3px
       text-decoration: none
 
   &__list
@@ -242,7 +245,7 @@
   align-items: center
   gap: 1rem
   padding: 1rem 1.25rem
-  background-color: $ebl-color-surface-muted
+  background-color: #f8f9fa
   border: 2px solid transparent
   border-radius: 10px
   text-decoration: none
@@ -251,11 +254,25 @@
 
   &:hover
     background-color: white
-    border-color: $ebl-color-brand-primary
+    border-color: #0077be
     transform: translateX(4px)
     box-shadow: 0 4px 16px rgba(0, 119, 190, 0.1)
     text-decoration: none
     color: inherit
+
+    .latest-addition-card__arrow
+      opacity: 1
+      transform: translateX(4px)
+
+  &:focus-visible
+    background-color: white
+    border-color: #0077be
+    transform: translateX(4px)
+    box-shadow: 0 4px 16px rgba(0, 119, 190, 0.1)
+    text-decoration: none
+    color: inherit
+    outline: 3px solid rgba(0, 119, 190, 0.35)
+    outline-offset: 3px
 
     .latest-addition-card__arrow
       opacity: 1
@@ -270,7 +287,7 @@
     justify-content: center
     overflow: hidden
     background-color: white
-    border: 1px solid $ebl-color-border-light
+    border: 1px solid #e9ecef
     border-radius: 8px
 
     img
@@ -294,23 +311,23 @@
     flex: 1
     font-weight: 600
     font-size: 1rem
-    color: $ebl-color-brand-primary
+    color: #0077be
     min-width: 0
 
   &__period
     font-weight: 400
-    color: $ebl-color-text-secondary
+    color: #6c757d
     font-size: 0.9rem
 
   &__date
     flex-shrink: 0
     font-size: 0.875rem
-    color: $ebl-color-text-secondary
+    color: #6c757d
     font-weight: 500
 
   &__description
     font-size: 0.85rem
-    color: $ebl-color-text-secondary
+    color: #6c757d
     overflow: hidden
     white-space: nowrap
     text-overflow: ellipsis
@@ -330,14 +347,14 @@
 
   &__arrow
     flex-shrink: 0
-    color: $ebl-color-brand-primary
+    color: #0077be
     font-size: 1.1rem
     font-weight: 600
     opacity: 0
     transform: translateX(-4px)
     transition: all 0.3s ease
 
-@media (max-width: $ebl-breakpoint-md-max)
+@media (max-width: 768px)
   .latest-additions-preview
     padding: 1.5rem 0 3rem
 
@@ -378,14 +395,14 @@
     flex: 1
 
   &__title
-    color: $ebl-color-brand-primary
+    color: #0077be
     font-size: 2.5rem
     font-weight: 700
     margin: 0 0 0.5rem 0
     letter-spacing: -0.5px
 
   &__subtitle
-    color: $ebl-color-text-secondary
+    color: #6c757d
     font-size: 1.05rem
     margin: 0
     font-weight: 400
@@ -396,21 +413,30 @@
     gap: 0.5rem
     padding: 0.75rem 1.5rem
     background-color: transparent
-    color: $ebl-color-brand-primary
+    color: #0077be
     text-decoration: none
     font-weight: 600
     border-width: 2px
     border-style: solid
-    border-color: $ebl-color-brand-primary
+    border-color: #0077be
     border-radius: 50px
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1)
     white-space: nowrap
 
     &:hover
-      background-color: $ebl-color-brand-primary
+      background-color: #0077be
       color: white
       transform: translateY(-2px)
       box-shadow: 0 4px 12px rgba(0, 119, 190, 0.2)
+
+    &:focus-visible
+      background-color: #0077be
+      color: white
+      transform: translateY(-2px)
+      box-shadow: 0 4px 12px rgba(0, 119, 190, 0.2)
+      outline: 3px solid rgba(0, 119, 190, 0.4)
+      outline-offset: 3px
+      text-decoration: none
 
   &__view-all-arrow
     transition: transform 0.3s ease
@@ -425,7 +451,7 @@
 
   &__featured-card
     position: relative
-    background: linear-gradient(135deg, $ebl-color-brand-primary 0%, $ebl-color-brand-primary-dark 100%)
+    background: linear-gradient(135deg, #0077be 0%, #005a8f 100%)
     border-radius: 16px
     padding: 2.5rem
     text-decoration: none
@@ -446,6 +472,19 @@
     &:hover
       transform: translateY(-8px)
       box-shadow: 0 16px 48px rgba(0, 119, 190, 0.25)
+
+      &::before
+        transform: rotate(15deg) scale(1.1)
+
+      .introduction-news__featured-cta
+        gap: 0.75rem
+
+    &:focus-visible
+      transform: translateY(-8px)
+      box-shadow: 0 16px 48px rgba(0, 119, 190, 0.25)
+      outline: 3px solid rgba(255, 255, 255, 0.75)
+      outline-offset: 4px
+      text-decoration: none
 
       &::before
         transform: rotate(15deg) scale(1.1)
@@ -500,7 +539,7 @@
     letter-spacing: -0.5px
 
   &__featured-preview
-    color: rgba(255, 255, 255, 0.95)
+    color: white
     font-size: 1.05rem
     line-height: 1.7
     margin: 0 0 2rem 0
@@ -528,7 +567,7 @@
     align-items: center
     gap: 1rem
     padding: 1.25rem
-    background-color: $ebl-color-surface-muted
+    background-color: #f8f9fa
     border: 2px solid transparent
     border-radius: 12px
     text-decoration: none
@@ -536,9 +575,21 @@
 
     &:hover
       background-color: white
-      border-color: $ebl-color-brand-primary
+      border-color: #0077be
       transform: translateX(4px)
       box-shadow: 0 4px 16px rgba(0, 119, 190, 0.1)
+
+      .introduction-news__recent-arrow
+        opacity: 1
+        transform: translateX(4px)
+
+    &:focus-visible
+      background-color: white
+      border-color: #0077be
+      transform: translateX(4px)
+      box-shadow: 0 4px 16px rgba(0, 119, 190, 0.1)
+      outline: 3px solid rgba(0, 119, 190, 0.35)
+      outline-offset: 3px
 
       .introduction-news__recent-arrow
         opacity: 1
@@ -551,7 +602,7 @@
     display: flex
     align-items: center
     justify-content: center
-    background: linear-gradient(135deg, $ebl-color-brand-primary, $ebl-color-brand-primary-dark)
+    background: linear-gradient(135deg, #0077be, #005a8f)
     color: white
     border-radius: 12px
     font-weight: 700
@@ -563,26 +614,26 @@
     min-width: 0
 
   &__recent-date
-    color: $ebl-color-text-secondary
+    color: #6c757d
     font-size: 0.8rem
     margin-bottom: 0.25rem
     font-weight: 500
 
   &__recent-title
-    color: $ebl-color-text-primary
+    color: #212529
     font-weight: 600
     font-size: 0.95rem
 
   &__recent-arrow
     flex-shrink: 0
-    color: $ebl-color-brand-primary
+    color: #0077be
     font-size: 1.25rem
     font-weight: 600
     opacity: 0
     transform: translateX(-4px)
     transition: all 0.3s ease
 
-@media (max-width: $ebl-breakpoint-lg-max)
+@media (max-width: 992px)
   .introduction-news
     &__featured
       grid-template-columns: 1fr
@@ -591,7 +642,7 @@
     &__recent-list
       grid-template-columns: 1fr
 
-@media (max-width: $ebl-breakpoint-md-max)
+@media (max-width: 768px)
   .introduction-news
     margin: 3rem 0
 
@@ -635,4 +686,36 @@
 
     &__recent-title
       font-size: 0.9rem
+
+@media (prefers-reduced-motion: reduce)
+  .hero__logo-link,
+  .latest-additions-preview__view-all-btn,
+  .latest-addition-card,
+  .latest-addition-card__arrow,
+  .introduction-news__view-all-btn,
+  .introduction-news__view-all-arrow,
+  .introduction-news__featured-card,
+  .introduction-news__featured-card::before,
+  .introduction-news__featured-cta,
+  .introduction-news__recent-item,
+  .introduction-news__recent-arrow
+    transition: none
+
+  .latest-addition-card:hover,
+  .latest-addition-card:focus-visible,
+  .introduction-news__view-all-btn:hover,
+  .introduction-news__view-all-btn:focus-visible,
+  .introduction-news__featured-card:hover,
+  .introduction-news__featured-card:focus-visible,
+  .introduction-news__recent-item:hover,
+  .introduction-news__recent-item:focus-visible
+    transform: none
+
+  .latest-addition-card:hover .latest-addition-card__arrow,
+  .latest-addition-card:focus-visible .latest-addition-card__arrow,
+  .introduction-news__view-all-btn:hover .introduction-news__view-all-arrow,
+  .introduction-news__view-all-btn:focus-visible .introduction-news__view-all-arrow,
+  .introduction-news__recent-item:hover .introduction-news__recent-arrow,
+  .introduction-news__recent-item:focus-visible .introduction-news__recent-arrow
+    transform: none
 

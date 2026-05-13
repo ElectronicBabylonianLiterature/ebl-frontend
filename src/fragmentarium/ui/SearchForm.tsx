@@ -290,7 +290,11 @@ class SearchForm extends Component<SearchFormProps, State> {
                   ></Col>
                   <Col>
                     <Button variant="link" onClick={this.search}>
-                      Advanced Search <i className={'fas fa-external-link'}></i>
+                      Advanced Search{' '}
+                      <i
+                        className={'fas fa-external-link'}
+                        aria-hidden="true"
+                      ></i>
                     </Button>
                   </Col>
                 </Row>

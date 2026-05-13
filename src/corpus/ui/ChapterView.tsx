@@ -68,13 +68,13 @@ function EditChapterButton({ chapter }: Props): JSX.Element {
   if (!session.isAllowedToWriteTexts()) {
     return (
       <Button variant="outline-primary" disabled>
-        <i className="fas fa-edit"></i> Edit
+        <i className="fas fa-edit" aria-hidden="true"></i> Edit
       </Button>
     )
   }
   return (
     <Link to={editUrl} className="btn btn-outline-primary">
-      <i className="fas fa-edit"></i> Edit
+      <i className="fas fa-edit" aria-hidden="true"></i> Edit
     </Link>
   )
 }

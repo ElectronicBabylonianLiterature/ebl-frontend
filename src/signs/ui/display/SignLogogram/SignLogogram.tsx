@@ -131,8 +131,12 @@ function SignLogogramInfo(schrammLogogram: string): JSX.Element {
             <ExternalLink
               className="text-dark "
               href="https://doi.org/10.17875/gup2010-511"
+              aria-label="Open Akkadische Logogramme DOI link"
             >
-              <i className="fas fa-external-link-square-alt fa-2x" />
+              <i
+                className="fas fa-external-link-square-alt fa-2x"
+                aria-hidden="true"
+              />
             </ExternalLink>
           </small>
         </div>

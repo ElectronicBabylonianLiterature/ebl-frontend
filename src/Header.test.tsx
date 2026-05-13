@@ -60,6 +60,11 @@ function commonTests(renderHeader: () => Promise<void>): void {
     ).toHaveAttribute('href', '/')
   })
 
+  test('Header does not render a level-one heading', async () => {
+    await renderHeader()
+    expect(screen.queryByRole('heading', { level: 1 })).not.toBeInTheDocument()
+  })
+
   test.each([
     ['Library', '/library'],
     ['Corpus', '/corpus'],

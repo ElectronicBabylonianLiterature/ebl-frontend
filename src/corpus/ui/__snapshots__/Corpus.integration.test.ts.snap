@@ -24,7 +24,8 @@ exports[`With session 1`] = `
             >
               electronic Babylonian Library (eBL)
             </span>
-            <h1
+            <div
+              aria-hidden="true"
               class="Header__title"
             >
               <span
@@ -56,7 +57,7 @@ exports[`With session 1`] = `
                   bl
                 </small>
               </small>
-            </h1>
+            </div>
           </a>
           <button
             aria-controls="Header-2"
@@ -892,7 +893,7 @@ exports[`With session 1`] = `
     </footer>
   </div>
 </div>
-`
+`;
 
 exports[`Without session 1`] = `
 <div>
@@ -918,7 +919,8 @@ exports[`Without session 1`] = `
             >
               electronic Babylonian Library (eBL)
             </span>
-            <h1
+            <div
+              aria-hidden="true"
               class="Header__title"
             >
               <span
@@ -950,7 +952,7 @@ exports[`Without session 1`] = `
                   bl
                 </small>
               </small>
-            </h1>
+            </div>
           </a>
           <button
             aria-controls="Header-7"
@@ -1783,4 +1785,4 @@ exports[`Without session 1`] = `
     </footer>
   </div>
 </div>
-`
+`;

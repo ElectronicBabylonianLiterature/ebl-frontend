@@ -54,6 +54,14 @@ type ContentMatch = {
   url: string
 }
 
+function prefersReducedMotion(): boolean {
+  return (
+    typeof window !== 'undefined' &&
+    typeof window.matchMedia === 'function' &&
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  )
+}
+
 const tabConfig = [
   { id: 'signs', title: 'Signs', icon: '𒀀' },
   { id: 'dictionary', title: 'Akkadian Dictionary', icon: 'Ꞌ' },
@@ -216,11 +224,12 @@ export default function Tools({
     const hash = location.hash
     if (hash) {
       const id = hash.replace('#', '')
+      const behavior = prefersReducedMotion() ? 'auto' : 'smooth'
       requestAnimationFrame(() => {
         requestAnimationFrame(() => {
           const element = document.getElementById(id)
           if (element) {
-            element.scrollIntoView({ behavior: 'smooth' })
+            element.scrollIntoView({ behavior })
           }
         })
       })
@@ -258,7 +267,9 @@ export default function Tools({
                   }`}
                   onClick={() => handleSelect(tab.id as TabId)}
                 >
-                  <span className="tools-nav__icon">{tab.icon}</span>
+                  <span className="tools-nav__icon" aria-hidden="true">
+                    {tab.icon}
+                  </span>
                   <span className="tools-nav__title">{tab.title}</span>
                 </Nav.Link>
               ))}
@@ -268,7 +279,9 @@ export default function Tools({
           <Col xs={12} md={9} className="tools-content">
             {selectedTab && currentTab && (
               <div className="tools-content__header">
-                <span className="tools-content__icon">{currentTab.icon}</span>
+                <span className="tools-content__icon" aria-hidden="true">
+                  {currentTab.icon}
+                </span>
                 <h2 className="tools-content__title">{currentTab.title}</h2>
               </div>
             )}

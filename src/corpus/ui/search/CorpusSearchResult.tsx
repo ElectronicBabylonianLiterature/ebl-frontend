@@ -39,7 +39,7 @@ function GenreInfoRow({
             )}
             {' > '}
             {`${chapterIdToString(chapterId)} `}
-            <i className="fas fa-external-link-alt" />
+            <i className="fas fa-external-link-alt" aria-hidden="true" />
           </small>
         </a>
       </Col>

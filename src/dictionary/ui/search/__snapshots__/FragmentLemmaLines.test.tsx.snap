@@ -12,6 +12,7 @@ exports[`Show Library entries shows the matching Library line 1`] = `
       title="View in fragmentarium search"
     >
       <i
+        aria-hidden="true"
         class="pointer__hover my-2 fas fa-external-link-square-alt"
       />
     </a>
@@ -98,6 +99,7 @@ exports[`Show Library entries shows the matching Library line 1`] = `
     1
      matches in Library search 
     <i
+      aria-hidden="true"
       class="pointer__hover my-2 fas fa-external-link-square-alt"
     />
   </a>

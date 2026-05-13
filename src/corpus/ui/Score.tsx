@@ -97,7 +97,10 @@ function Manuscript({
             trigger={['click']}
             placement="top"
           >
-            <i className="fas fa-book chapter-display__manuscript-info-toggle"></i>
+            <i
+              className="fas fa-book chapter-display__manuscript-info-toggle"
+              aria-hidden="true"
+            ></i>
           </OverlayTrigger>
         )}
       </td>

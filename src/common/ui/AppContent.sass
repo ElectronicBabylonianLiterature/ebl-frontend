@@ -61,6 +61,13 @@
             background-color: rgba(26, 95, 168, 0.08)
             text-decoration: none
 
+          &:focus-visible
+            color: $ebl-color-brand-primary-dark
+            background-color: rgba(26, 95, 168, 0.08)
+            text-decoration: none
+            outline: 2px solid $ebl-color-brand-primary
+            outline-offset: 2px
+
         &.active
           color: $ebl-color-text-heading
           font-weight: 600
@@ -114,3 +121,7 @@
       position: static
       background-position: right -6em bottom
       background-size: 12em
+
+@media (prefers-reduced-motion: reduce)
+  .main__breadcrumbs .breadcrumb .breadcrumb-item a
+    transition: none

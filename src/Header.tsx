@@ -11,7 +11,7 @@ import ExternalLink from 'common/ui/ExternalLink'
 
 function EblLogo(): JSX.Element {
   return (
-    <h1 className="Header__title">
+    <div className="Header__title" aria-hidden="true">
       <span className="Header__title-main">
         electronic
         <br />
@@ -22,7 +22,7 @@ function EblLogo(): JSX.Element {
       <small className="Header__title-abbreviation">
         e<small className="Header__title-abbreviation__caps">bl</small>
       </small>
-    </h1>
+    </div>
   )
 }
 

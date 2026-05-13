@@ -27,8 +27,12 @@ export default function LogogramInfo(schrammLogogram: string): JSX.Element {
             <ExternalLink
               className="text-dark "
               href="https://ugarit-verlag.com/en/products/0e8e7ca5d1f5493aa351e3ebc42fb514"
+              aria-label="Open Akkadische Logogramme publication page"
             >
-              <i className="fas fa-external-link-square-alt fa-2x" />
+              <i
+                className="fas fa-external-link-square-alt fa-2x"
+                aria-hidden="true"
+              />
             </ExternalLink>
           </small>
         </div>

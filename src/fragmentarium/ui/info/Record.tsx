@@ -106,13 +106,13 @@ function LinkToRecord({
         <Link to={recordPath}>
           <span>View full record</span>
           &nbsp;
-          <i className={'fas fa-external-link'}></i>
+          <i className={'fas fa-external-link'} aria-hidden="true"></i>
         </Link>
       ) : (
         <a href={recordPath}>
           <span>View full record</span>
           &nbsp;
-          <i className={'fas fa-external-link'}></i>
+          <i className={'fas fa-external-link'} aria-hidden="true"></i>
         </a>
       )}
     </li>

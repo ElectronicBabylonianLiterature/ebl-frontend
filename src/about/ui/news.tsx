@@ -26,6 +26,12 @@ import newsletter3 from 'about/ui/newsletter/003.md'
 import newsletter2 from 'about/ui/newsletter/002.md'
 import newsletter1 from 'about/ui/newsletter/001.md'
 
+const markdownComponents: React.ComponentProps<
+  typeof ReactMarkdown
+>['components'] = {
+  h1: 'h2',
+}
+
 interface Newsletter {
   readonly content: string
   readonly date: Date
@@ -127,7 +133,7 @@ export default function AboutNews({
   return (
     <>
       <div className="border border-dark m-3 p-2">
-        <ReactMarkdown>{message}</ReactMarkdown>
+        <ReactMarkdown components={markdownComponents}>{message}</ReactMarkdown>
       </div>
       <Container>
         <div className="news-layout">
@@ -153,7 +159,9 @@ export default function AboutNews({
                 </time>
               </header>
               <div className="newsletter-article__body">
-                <ReactMarkdown>{newsletterMarkdown}</ReactMarkdown>
+                <ReactMarkdown components={markdownComponents}>
+                  {newsletterMarkdown}
+                </ReactMarkdown>
               </div>
             </article>
           </main>

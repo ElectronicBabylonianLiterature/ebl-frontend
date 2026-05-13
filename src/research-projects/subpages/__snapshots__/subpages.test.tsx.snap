@@ -138,6 +138,7 @@ exports[`Project pages displays AMPS page 1`] = `
                           data-testid="search-form-help-col"
                         >
                           <i
+                            aria-hidden="true"
                             class="fas fa-info-circle"
                           />
                         </div>
@@ -168,6 +169,7 @@ exports[`Project pages displays AMPS page 1`] = `
                           data-testid="search-form-help-col"
                         >
                           <i
+                            aria-hidden="true"
                             class="fas fa-info-circle"
                           />
                         </div>
@@ -282,6 +284,7 @@ exports[`Project pages displays AMPS page 1`] = `
                           data-testid="search-form-help-col"
                         >
                           <i
+                            aria-hidden="true"
                             class="fas fa-info-circle"
                           />
                         </div>
@@ -462,6 +465,7 @@ exports[`Project pages displays AMPS page 1`] = `
                           data-testid="search-form-help-col"
                         >
                           <i
+                            aria-hidden="true"
                             class="fas fa-info-circle"
                           />
                         </div>
@@ -491,8 +495,10 @@ exports[`Project pages displays AMPS page 1`] = `
                             class="btn btn-link"
                             type="button"
                           >
-                            Advanced Search 
+                            Advanced Search
+                             
                             <i
+                              aria-hidden="true"
                               class="fas fa-external-link"
                             />
                           </button>
@@ -701,6 +707,7 @@ exports[`Project pages displays CAIC page 1`] = `
                           data-testid="search-form-help-col"
                         >
                           <i
+                            aria-hidden="true"
                             class="fas fa-info-circle"
                           />
                         </div>
@@ -731,6 +738,7 @@ exports[`Project pages displays CAIC page 1`] = `
                           data-testid="search-form-help-col"
                         >
                           <i
+                            aria-hidden="true"
                             class="fas fa-info-circle"
                           />
                         </div>
@@ -845,6 +853,7 @@ exports[`Project pages displays CAIC page 1`] = `
                           data-testid="search-form-help-col"
                         >
                           <i
+                            aria-hidden="true"
                             class="fas fa-info-circle"
                           />
                         </div>
@@ -1025,6 +1034,7 @@ exports[`Project pages displays CAIC page 1`] = `
                           data-testid="search-form-help-col"
                         >
                           <i
+                            aria-hidden="true"
                             class="fas fa-info-circle"
                           />
                         </div>
@@ -1054,8 +1064,10 @@ exports[`Project pages displays CAIC page 1`] = `
                             class="btn btn-link"
                             type="button"
                           >
-                            Advanced Search 
+                            Advanced Search
+                             
                             <i
+                              aria-hidden="true"
                               class="fas fa-external-link"
                             />
                           </button>
@@ -1270,6 +1282,7 @@ exports[`Project pages displays RECC page 1`] = `
                           data-testid="search-form-help-col"
                         >
                           <i
+                            aria-hidden="true"
                             class="fas fa-info-circle"
                           />
                         </div>
@@ -1300,6 +1313,7 @@ exports[`Project pages displays RECC page 1`] = `
                           data-testid="search-form-help-col"
                         >
                           <i
+                            aria-hidden="true"
                             class="fas fa-info-circle"
                           />
                         </div>
@@ -1414,6 +1428,7 @@ exports[`Project pages displays RECC page 1`] = `
                           data-testid="search-form-help-col"
                         >
                           <i
+                            aria-hidden="true"
                             class="fas fa-info-circle"
                           />
                         </div>
@@ -1594,6 +1609,7 @@ exports[`Project pages displays RECC page 1`] = `
                           data-testid="search-form-help-col"
                         >
                           <i
+                            aria-hidden="true"
                             class="fas fa-info-circle"
                           />
                         </div>
@@ -1623,8 +1639,10 @@ exports[`Project pages displays RECC page 1`] = `
                             class="btn btn-link"
                             type="button"
                           >
-                            Advanced Search 
+                            Advanced Search
+                             
                             <i
+                              aria-hidden="true"
                               class="fas fa-external-link"
                             />
                           </button>
@@ -1889,6 +1907,7 @@ exports[`Project pages displays aluGeneva page 1`] = `
                           data-testid="search-form-help-col"
                         >
                           <i
+                            aria-hidden="true"
                             class="fas fa-info-circle"
                           />
                         </div>
@@ -1919,6 +1938,7 @@ exports[`Project pages displays aluGeneva page 1`] = `
                           data-testid="search-form-help-col"
                         >
                           <i
+                            aria-hidden="true"
                             class="fas fa-info-circle"
                           />
                         </div>
@@ -2033,6 +2053,7 @@ exports[`Project pages displays aluGeneva page 1`] = `
                           data-testid="search-form-help-col"
                         >
                           <i
+                            aria-hidden="true"
                             class="fas fa-info-circle"
                           />
                         </div>
@@ -2213,6 +2234,7 @@ exports[`Project pages displays aluGeneva page 1`] = `
                           data-testid="search-form-help-col"
                         >
                           <i
+                            aria-hidden="true"
                             class="fas fa-info-circle"
                           />
                         </div>
@@ -2242,8 +2264,10 @@ exports[`Project pages displays aluGeneva page 1`] = `
                             class="btn btn-link"
                             type="button"
                           >
-                            Advanced Search 
+                            Advanced Search
+                             
                             <i
+                              aria-hidden="true"
                               class="fas fa-external-link"
                             />
                           </button>

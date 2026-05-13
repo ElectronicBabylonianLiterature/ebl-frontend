@@ -25,6 +25,14 @@ const lineDisplay = lineDisplayFactory.build(
 )
 const lineNumberString = lineNumberToString(lineDisplay.number)
 
+beforeEach(() => {
+  ;(
+    window.HTMLElement.prototype.scrollIntoView as jest.MockedFunction<
+      HTMLElement['scrollIntoView']
+    >
+  ).mockClear()
+})
+
 function renderLineNumber(url = ''): void {
   render(
     <table>
@@ -57,6 +65,39 @@ test('Clicking on line number scrolls to line', async () => {
   await userEvent.click(screen.getByText(lineNumberString))
   expect(window.HTMLElement.prototype.scrollIntoView).toHaveBeenCalled()
 })
+
+test('Clicking on line number uses non-animated scrolling when reduced motion is enabled', async () => {
+  const originalMatchMedia = window.matchMedia
+  Object.defineProperty(window, 'matchMedia', {
+    writable: true,
+    configurable: true,
+    value: (query: string): MediaQueryList =>
+      ({
+        matches: query === '(prefers-reduced-motion: reduce)',
+        media: query,
+        onchange: null,
+        addListener: jest.fn(),
+        removeListener: jest.fn(),
+        addEventListener: jest.fn(),
+        removeEventListener: jest.fn(),
+        dispatchEvent: jest.fn(),
+      }) as MediaQueryList,
+  })
+
+  renderLineNumber()
+  await userEvent.click(screen.getByText(lineNumberString))
+
+  expect(window.HTMLElement.prototype.scrollIntoView).toHaveBeenCalledWith({
+    behavior: 'auto',
+  })
+
+  Object.defineProperty(window, 'matchMedia', {
+    writable: true,
+    configurable: true,
+    value: originalMatchMedia,
+  })
+})
+
 test('Line number with url points to link', () => {
   const externalUrl = 'https://ebl.lmu.de/an-external-link'
   renderLineNumber(externalUrl)

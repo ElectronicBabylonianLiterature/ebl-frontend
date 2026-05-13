@@ -40,7 +40,7 @@ export default function LemmaActionButton({
         disabled={!token.isDirty}
         aria-label="reset-current-token"
       >
-        <i className={'fas fa-rotate-left'}></i>
+        <i className={'fas fa-rotate-left'} aria-hidden="true"></i>
       </Button>
 
       <Dropdown.Toggle
@@ -48,8 +48,9 @@ export default function LemmaActionButton({
         variant="secondary"
         size="sm"
         id="dropdown-split-basic"
+        aria-label="Open token actions"
       >
-        <i className={'fas fa-caret-down'}></i>
+        <i className={'fas fa-caret-down'} aria-hidden="true"></i>
       </Dropdown.Toggle>
 
       <Dropdown.Menu>

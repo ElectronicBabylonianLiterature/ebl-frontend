@@ -15,6 +15,21 @@ const newsletters = [
   { content: 'Content 1', date: new Date('2024-01-01'), number: 1 },
 ] as const
 
+function createMatchMedia(preferReducedMotion: boolean) {
+  return (query: string): MediaQueryList =>
+    ({
+      matches:
+        preferReducedMotion && query === '(prefers-reduced-motion: reduce)',
+      media: query,
+      onchange: null,
+      addListener: jest.fn(),
+      removeListener: jest.fn(),
+      addEventListener: jest.fn(),
+      removeEventListener: jest.fn(),
+      dispatchEvent: jest.fn(),
+    }) as MediaQueryList
+}
+
 test('renders all newsletter items', () => {
   render(
     <NewsletterTimeline
@@ -112,6 +127,34 @@ test('scrolls into view when active newsletter changes', () => {
   expect(mockScrollIntoView).toHaveBeenCalledWith({
     behavior: 'smooth',
     block: 'nearest',
+  })
+})
+
+test('uses non-animated scroll when reduced motion is enabled', () => {
+  const originalMatchMedia = window.matchMedia
+  Object.defineProperty(window, 'matchMedia', {
+    writable: true,
+    configurable: true,
+    value: createMatchMedia(true),
+  })
+
+  render(
+    <NewsletterTimeline
+      newsletters={newsletters}
+      activeNewsletter={newsletters[0]}
+      onSelectNewsletter={jest.fn()}
+    />,
+  )
+
+  expect(mockScrollIntoView).toHaveBeenCalledWith({
+    behavior: 'auto',
+    block: 'nearest',
+  })
+
+  Object.defineProperty(window, 'matchMedia', {
+    writable: true,
+    configurable: true,
+    value: originalMatchMedia,
   })
 })
 

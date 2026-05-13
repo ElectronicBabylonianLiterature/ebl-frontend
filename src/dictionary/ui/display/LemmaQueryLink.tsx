@@ -18,7 +18,10 @@ export default function LemmaQueryLink({
       title={`View in fragmentarium search`}
     >
       {children}
-      <i className={'pointer__hover my-2 fas fa-external-link-square-alt'} />
+      <i
+        className={'pointer__hover my-2 fas fa-external-link-square-alt'}
+        aria-hidden="true"
+      />
     </ExternalLink>
   )
 }

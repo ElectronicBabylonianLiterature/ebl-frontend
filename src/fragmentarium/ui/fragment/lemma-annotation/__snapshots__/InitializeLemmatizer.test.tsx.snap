@@ -33,8 +33,10 @@ exports[`displays the annotation tool 1`] = `
                   rel="noopener noreferrer"
                   target="_blank"
                 >
-                  How to Use 
+                  How to Use
+                   
                   <i
+                    aria-hidden="true"
                     class="fas fa-external-link-square-alt"
                   />
                 </a>
@@ -160,16 +162,19 @@ exports[`displays the annotation tool 1`] = `
                         type="button"
                       >
                         <i
+                          aria-hidden="true"
                           class="fas fa-rotate-left"
                         />
                       </button>
                       <button
                         aria-expanded="false"
+                        aria-label="Open token actions"
                         class="dropdown-toggle dropdown-toggle-split btn btn-secondary btn-sm"
                         id="dropdown-split-basic"
                         type="button"
                       >
                         <i
+                          aria-hidden="true"
                           class="fas fa-caret-down"
                         />
                       </button>
@@ -186,6 +191,7 @@ exports[`displays the annotation tool 1`] = `
                   type="button"
                 >
                   <i
+                    aria-hidden="true"
                     class="fas fa-wand-magic-sparkles"
                   />
                    

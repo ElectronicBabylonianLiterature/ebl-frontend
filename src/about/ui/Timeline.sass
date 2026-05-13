@@ -167,3 +167,23 @@
     height: 80px
     opacity: 0
 
+@media (prefers-reduced-motion: reduce)
+  .timeline-item
+    opacity: 1
+    transform: none
+    transition: none
+
+  .timeline-marker__dot
+    transition: none
+    animation: none
+
+  .timeline-marker__ring
+    transition: none
+    animation: none
+
+  .timeline-content
+    transition: none
+
+    &:hover
+      transform: none
+

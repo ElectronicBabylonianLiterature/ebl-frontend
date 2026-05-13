@@ -534,12 +534,14 @@ exports[`Fetch word correctly displays word parts 1`] = `
         </strong>
         <br />
         <a
+          aria-label="Open external source for A Concise Dictionary of Akkadian"
           class="text-dark "
           href="https://www.harrassowitz-verlag.de/isbn_978-3-447-04264-2.ahtml"
           rel="noopener noreferrer"
           target="_blank"
         >
           <i
+            aria-hidden="true"
             class="pointer__hover my-2 fas fa-shopping-cart fa-2x"
           />
         </a>
@@ -593,12 +595,14 @@ exports[`Fetch word correctly displays word parts 1`] = `
         </strong>
         <br />
         <a
+          aria-label="Open external source for A Concise Dictionary of Akkadian (Justifications, Addenda and Corrigenda)"
           class="text-dark "
           href="https://www.soas.ac.uk/cda-archive/"
           rel="noopener noreferrer"
           target="_blank"
         >
           <i
+            aria-hidden="true"
             class="pointer__hover my-2 fas fa-external-link-square-alt"
           />
         </a>
@@ -757,12 +761,14 @@ exports[`Fetch word correctly displays word parts 1`] = `
         </strong>
         <br />
         <a
+          aria-label="Open external source for Archiv für Orientforschung (Register Assyriologie)"
           class="text-dark "
           href="https://orientalistik.univie.ac.at/publikationen/afo/register/"
           rel="noopener noreferrer"
           target="_blank"
         >
           <i
+            aria-hidden="true"
             class="pointer__hover my-2 fas fa-external-link-square-alt"
           />
         </a>
@@ -796,12 +802,14 @@ exports[`Fetch word correctly displays word parts 1`] = `
         </a>
         <br />
         <a
+          aria-label="Open external source for Akkadische Glossare und Indizes"
           class="text-dark "
           href="https://www.uni-marburg.de/cnms/forschung/dnms/apps/agi"
           rel="noopener noreferrer"
           target="_blank"
         >
           <i
+            aria-hidden="true"
             class="pointer__hover my-2 fas fa-external-link-square-alt"
           />
         </a>
@@ -862,12 +870,14 @@ exports[`Fetch word correctly displays word parts 1`] = `
         </a>
         <br />
         <a
+          aria-label="Open external source for Supplement to the Akkadian Dictionaries"
           class="text-dark "
           href="https://altorient.gko.uni-leipzig.de/etymd.html"
           rel="noopener noreferrer"
           target="_blank"
         >
           <i
+            aria-hidden="true"
             class="pointer__hover my-2 fas fa-external-link-square-alt"
           />
         </a>
@@ -898,6 +908,7 @@ exports[`Fetch word correctly displays word parts 1`] = `
           title="View in fragmentarium search"
         >
           <i
+            aria-hidden="true"
             class="pointer__hover my-2 fas fa-external-link-square-alt"
           />
         </a>
@@ -1061,6 +1072,7 @@ exports[`Fetch word correctly displays word parts 1`] = `
         2
          matches in Library search 
         <i
+          aria-hidden="true"
           class="pointer__hover my-2 fas fa-external-link-square-alt"
         />
       </a>
@@ -1090,6 +1102,7 @@ exports[`Fetch word correctly displays word parts 1`] = `
           title="View in fragmentarium search"
         >
           <i
+            aria-hidden="true"
             class="pointer__hover my-2 fas fa-external-link-square-alt"
           />
         </a>
@@ -2145,6 +2158,7 @@ exports[`Fetch word correctly displays word parts 1`] = `
           42
            matches in Corpus search 
           <i
+            aria-hidden="true"
             class="pointer__hover my-2 fas fa-external-link-square-alt"
           />
         </a>

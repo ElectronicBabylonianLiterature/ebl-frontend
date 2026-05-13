@@ -58,6 +58,7 @@ export default function FolioTooltip({
         <i
           className="fas fa-external-link-square-alt"
           data-testid="external-link-icon"
+          aria-hidden="true"
         />
       </a>
     </Tooltip>
@@ -71,7 +72,11 @@ export default function FolioTooltip({
         onMouseEnter={handleMouseEnterTrigger}
         onMouseLeave={handleMouseLeaveTrigger}
       >
-        <i className="fas fa-info-circle fa-1x" data-testid="info-icon" />
+        <i
+          className="fas fa-info-circle fa-1x"
+          data-testid="info-icon"
+          aria-hidden="true"
+        />
       </span>
       <Overlay target={target} show={show} placement="top">
         {renderTooltip}

@@ -63,7 +63,7 @@ describe('About component', () => {
 
   test('renders corpus tab content', async () => {
     await renderAbout(['/about/corpus'], 'corpus')
-    expect(screen.getByRole('link', { name: '⊞ Corpus' })).toHaveClass('active')
+    expect(screen.getByRole('link', { name: 'Corpus' })).toHaveClass('active')
     expect(
       screen.getByRole('heading', { name: /I\. Corpus/i }),
     ).toBeInTheDocument()
@@ -72,14 +72,14 @@ describe('About component', () => {
   test('renders with default tab content', async () => {
     await renderAbout(['/about/project'], 'project')
     expect(
-      screen.getByRole('link', { name: '⚙ eBL Project' }),
+      screen.getByRole('link', { name: 'eBL Project' }),
     ).toBeInTheDocument()
-    expect(screen.getByRole('link', { name: '⚙ eBL Project' })).toHaveClass(
+    expect(screen.getByRole('link', { name: 'eBL Project' })).toHaveClass(
       'active',
     )
-    expect(
-      screen.getByRole('link', { name: '⚙ eBL Project' }),
-    ).toHaveTextContent('eBL Project')
+    expect(screen.getByRole('link', { name: 'eBL Project' })).toHaveTextContent(
+      'eBL Project',
+    )
   })
 
   test('updates tab when activeTab prop changes', async () => {
@@ -90,7 +90,7 @@ describe('About component', () => {
     )
     await waitForSpinnersToDisappear()
 
-    expect(screen.getByRole('link', { name: '⚙ eBL Project' })).toHaveClass(
+    expect(screen.getByRole('link', { name: 'eBL Project' })).toHaveClass(
       'active',
     )
 
@@ -101,7 +101,7 @@ describe('About component', () => {
     )
     await waitForSpinnersToDisappear()
 
-    expect(screen.getByRole('link', { name: '𒀀 Signs' })).toHaveClass('active')
+    expect(screen.getByRole('link', { name: 'Signs' })).toHaveClass('active')
   })
 
   test('renders all tabs', async () => {
@@ -126,10 +126,10 @@ describe('About component', () => {
   test('does not change tab when clicking active tab', async () => {
     await renderAbout(['/about/project'], 'project')
 
-    const projectTab = screen.getByRole('link', { name: '⚙ eBL Project' })
+    const projectTab = screen.getByRole('link', { name: 'eBL Project' })
     fireEvent.click(projectTab)
 
-    expect(screen.getByRole('link', { name: '⚙ eBL Project' })).toHaveClass(
+    expect(screen.getByRole('link', { name: 'eBL Project' })).toHaveClass(
       'active',
     )
   })
@@ -137,10 +137,26 @@ describe('About component', () => {
   test('navigates to different tab when clicking inactive tab', async () => {
     await renderAbout(['/about/project'], 'project')
 
-    fireEvent.click(screen.getByRole('link', { name: '⊞ Corpus' }))
+    fireEvent.click(screen.getByRole('link', { name: 'Corpus' }))
     await waitForSpinnersToDisappear()
 
-    expect(screen.getByRole('link', { name: '⊞ Corpus' })).toHaveClass('active')
+    expect(screen.getByRole('link', { name: 'Corpus' })).toHaveClass('active')
+  })
+
+  test('marks decorative icons as hidden from assistive technologies', async () => {
+    await renderAbout(['/about/project'], 'project')
+
+    const navIcons = ['⚙', '⌂', '⊞', '𒀀', 'Ꞌ', '※', '✉']
+
+    navIcons.forEach((icon) => {
+      expect(
+        screen.getByText(icon, { selector: '.about-nav__icon' }),
+      ).toHaveAttribute('aria-hidden', 'true')
+    })
+
+    expect(
+      screen.getByText('⚙', { selector: '.about-content__icon' }),
+    ).toHaveAttribute('aria-hidden', 'true')
   })
 
   test('scrolls to hash target when URL contains hash', async () => {
@@ -200,5 +216,52 @@ describe('About component', () => {
     expect(
       screen.getByRole('link', { name: /eBL Project/ }),
     ).toBeInTheDocument()
+  })
+
+  test('uses non-animated hash scrolling when reduced motion is enabled', async () => {
+    const originalMatchMedia = window.matchMedia
+    const reducedMotionMatchMedia = jest.fn(
+      (query: string): MediaQueryList =>
+        ({
+          matches: query === '(prefers-reduced-motion: reduce)',
+          media: query,
+          onchange: null,
+          addListener: jest.fn(),
+          removeListener: jest.fn(),
+          addEventListener: jest.fn(),
+          removeEventListener: jest.fn(),
+          dispatchEvent: jest.fn(),
+        }) as MediaQueryList,
+    )
+
+    Object.defineProperty(window, 'matchMedia', {
+      writable: true,
+      configurable: true,
+      value: reducedMotionMatchMedia,
+    })
+
+    const scrollIntoView = jest.fn()
+    const element = document.createElement('div')
+    element.id = 'reduced-motion-target'
+    element.scrollIntoView = scrollIntoView
+    document.body.appendChild(element)
+
+    render(
+      <MemoryRouter initialEntries={['/about/project#reduced-motion-target']}>
+        <About markupService={markupServiceMock} activeTab="project" />
+      </MemoryRouter>,
+    )
+    await waitForSpinnersToDisappear()
+
+    await waitFor(() => {
+      expect(scrollIntoView).toHaveBeenCalledWith({ behavior: 'auto' })
+    })
+
+    document.body.removeChild(element)
+    Object.defineProperty(window, 'matchMedia', {
+      writable: true,
+      configurable: true,
+      value: originalMatchMedia,
+    })
   })
 })
