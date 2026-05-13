@@ -1,3 +1,5 @@
+@import src/design-tokens
+
 .timeline
   position: relative
   max-width: 1200px
@@ -10,10 +12,10 @@
     transform: translateX(-50%)
     width: 4px
     height: 100%
-    background: linear-gradient(180deg, transparent, #0077be, transparent)
+    background: linear-gradient(180deg, transparent, $ebl-color-brand-primary, transparent)
     z-index: 0
 
-    @media (max-width: 768px)
+    @media (max-width: $ebl-breakpoint-md-max)
       left: 30px
 
   &-item
@@ -35,7 +37,7 @@
         margin-right: 0
         margin-left: auto
 
-      @media (max-width: 768px)
+      @media (max-width: $ebl-breakpoint-md-max)
         padding-right: 0
         padding-left: 70px
         text-align: left
@@ -48,7 +50,7 @@
         margin-left: 0
         margin-right: auto
 
-      @media (max-width: 768px)
+      @media (max-width: $ebl-breakpoint-md-max)
         padding-left: 70px
 
   &-marker
@@ -58,14 +60,14 @@
     transform: translateX(-50%)
     z-index: 10
 
-    @media (max-width: 768px)
+    @media (max-width: $ebl-breakpoint-md-max)
       left: 30px
 
     &__dot
       width: 20px
       height: 20px
-      background: #0077be
-      border: 4px solid white
+      background: $ebl-color-brand-primary
+      border: 4px solid $ebl-color-surface-primary
       border-radius: 50%
       box-shadow: 0 0 0 4px rgba(0, 119, 190, 0.2)
       transition: all 0.3s ease
@@ -100,7 +102,7 @@
       box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12)
       transform: translateY(-4px)
 
-    @media (max-width: 768px)
+    @media (max-width: $ebl-breakpoint-md-max)
       max-width: 100%
 
     &__header
@@ -110,7 +112,7 @@
 
     &__date
       display: block
-      color: #0077be
+      color: $ebl-color-brand-primary
       font-size: 0.9rem
       font-weight: 600
       text-transform: uppercase
@@ -120,12 +122,12 @@
     &__title
       font-size: 1.3rem
       font-weight: 700
-      color: #333
+      color: $ebl-color-text-emphasis
       margin: 0
       line-height: 1.4
 
     &__body
-      color: #555
+      color: $ebl-color-text-muted-body
       line-height: 1.8
 
       p
@@ -146,7 +148,7 @@
         figcaption
           margin-top: 0.5rem
           font-size: 0.85rem
-          color: #777
+          color: $ebl-color-text-faint
           font-style: italic
 
 @keyframes pulse

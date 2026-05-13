@@ -1,3 +1,5 @@
+@import src/design-tokens
+
 .AuthButton
   &.btn
     width: 2.25rem
@@ -8,32 +10,32 @@
     padding: 0
     border-radius: 50%
     border-color: rgba(0, 119, 190, 0.35)
-    color: #0077be
+    color: $ebl-color-brand-primary
     background-color: rgba(0, 119, 190, 0.06)
     transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease
 
     &:hover,
     &:focus
-      border-color: #0077be
-      color: #005a8f
+      border-color: $ebl-color-brand-primary
+      color: $ebl-color-brand-primary-dark
       background-color: rgba(0, 119, 190, 0.12)
       box-shadow: 0 0 0 0.16rem rgba(0, 119, 190, 0.14)
 
     &:active
-      color: #ffffff
-      background-color: #005a8f
-      border-color: #005a8f
+      color: $ebl-color-surface-primary
+      background-color: $ebl-color-brand-primary-dark
+      border-color: $ebl-color-brand-primary-dark
 
   &--authenticated.btn
-    color: #ffffff
-    border-color: #0077be
-    background-color: #0077be
+    color: $ebl-color-surface-primary
+    border-color: $ebl-color-brand-primary
+    background-color: $ebl-color-brand-primary
 
     &:hover,
     &:focus
-      color: #ffffff
-      border-color: #005a8f
-      background-color: #005a8f
+      color: $ebl-color-surface-primary
+      border-color: $ebl-color-brand-primary-dark
+      background-color: $ebl-color-brand-primary-dark
 
   &__icon
     width: 1.15rem

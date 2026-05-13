@@ -1,6 +1,8 @@
+@import src/design-tokens
+
 .main-footer
-  background: linear-gradient(135deg, #0077be 0%, #005a8f 100%)
-  color: #ffffff
+  background: linear-gradient(135deg, $ebl-color-brand-primary 0%, $ebl-color-brand-primary-dark 100%)
+  color: $ebl-color-surface-primary
   padding: 3rem 0 1rem
   margin-top: 4rem
 
@@ -12,7 +14,7 @@
     margin-bottom: 1.5rem
 
   &__title
-    color: #ffffff
+    color: $ebl-color-surface-primary
     font-size: 0.875rem
     font-weight: 600
     text-transform: uppercase
@@ -34,7 +36,7 @@
       transition: color 0.2s ease
 
       &:hover
-        color: #ffffff
+        color: $ebl-color-surface-primary
         text-decoration: underline
 
   &__social
@@ -49,7 +51,7 @@
     height: 40px
     border-radius: 50%
     background-color: rgba(255, 255, 255, 0.1)
-    color: #ffffff
+    color: $ebl-color-surface-primary
     transition: all 0.2s ease
 
     &:hover
@@ -77,7 +79,7 @@
     transition: color 0.2s ease
 
     &:hover
-      color: #ffffff
+      color: $ebl-color-surface-primary
 
   &__separator
     color: rgba(255, 255, 255, 0.4)
@@ -92,7 +94,7 @@
       font-size: 0.875rem
       color: rgba(255, 255, 255, 0.7)
 
-@media (max-width: 768px)
+@media (max-width: $ebl-breakpoint-md-max)
   .main-footer
     &__section
       margin-bottom: 2rem

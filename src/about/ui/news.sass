@@ -1,3 +1,5 @@
+@import src/design-tokens
+
 .news-layout
   display: grid
   grid-template-columns: 300px 1fr
@@ -12,7 +14,7 @@
     min-width: 0
 
 .newsletter-article
-  background: white
+  background: $ebl-color-surface-primary
   border-radius: 16px
   padding: 0
   box-shadow: 0 2px 20px rgba(0, 0, 0, 0.06)
@@ -23,7 +25,7 @@
     box-shadow: 0 4px 28px rgba(0, 0, 0, 0.1)
 
   &__header
-    background: linear-gradient(135deg, rgba(0, 119, 190, 0.05), rgba(0, 119, 190, 0.02))
+    background: linear-gradient(135deg, $ebl-color-brand-soft-subtle, rgba(0, 119, 190, 0.02))
     padding: 2rem 2.5rem
     border-bottom: 1px solid rgba(0, 119, 190, 0.1)
     display: flex
@@ -35,44 +37,44 @@
   &__badge
     font-size: 1.5rem
     font-weight: 700
-    color: #0077be
-    background: white
+    color: $ebl-color-brand-primary
+    background: $ebl-color-surface-primary
     padding: 0.5rem 1.25rem
     border-radius: 24px
     box-shadow: 0 2px 8px rgba(0, 119, 190, 0.15)
 
   &__date
     font-size: 1rem
-    color: #6c757d
+    color: $ebl-color-text-secondary
     font-weight: 500
 
   &__body
     padding: 2.5rem
-    color: #333
+    color: $ebl-color-text-emphasis
     line-height: 1.9
     font-size: 1.05rem
 
     h1, h2, h3, h4, h5, h6
       margin-top: 2rem
       margin-bottom: 1rem
-      color: #212529
+      color: $ebl-color-text-primary
       font-weight: 700
       line-height: 1.3
 
     h1
       font-size: 2.25rem
-      color: #0077be
+      color: $ebl-color-brand-primary
       margin-top: 0
       padding-bottom: 0.75rem
       border-bottom: 3px solid rgba(0, 119, 190, 0.1)
 
     h2
       font-size: 1.85rem
-      color: #0077be
+      color: $ebl-color-brand-primary
 
     h3
       font-size: 1.5rem
-      color: #005a8f
+      color: $ebl-color-brand-primary-dark
 
     h4
       font-size: 1.25rem
@@ -83,13 +85,13 @@
 
     strong
       font-weight: 700
-      color: #212529
+      color: $ebl-color-text-primary
 
     em
       font-style: italic
 
     a
-      color: #0077be
+      color: $ebl-color-brand-primary
       text-decoration: none
       font-weight: 600
       border-bottom: 2px solid transparent
@@ -97,11 +99,11 @@
       padding-bottom: 1px
 
       &:hover, &:focus-visible
-        border-bottom-color: #0077be
-        color: #005a8f
+        border-bottom-color: $ebl-color-brand-primary
+        color: $ebl-color-brand-primary-dark
 
       &:focus-visible
-        outline-color: #005a8f
+        outline-color: $ebl-color-brand-primary-dark
         outline-style: solid
         outline-width: 2px
         outline-offset: 3px
@@ -118,7 +120,7 @@
       padding-left: 0.5rem
 
       &::marker
-        color: #0077be
+        color: $ebl-color-brand-primary
 
     blockquote
       margin: 1.5rem 0
@@ -126,10 +128,10 @@
       background: rgba(0, 119, 190, 0.04)
       border-left-width: 4px
       border-left-style: solid
-      border-left-color: #0077be
+      border-left-color: $ebl-color-brand-primary
       border-radius: 0 8px 8px 0
       font-style: italic
-      color: #555
+      color: $ebl-color-text-muted-body
 
     code
       background: rgba(0, 119, 190, 0.08)
@@ -137,10 +139,10 @@
       border-radius: 4px
       font-size: 0.92em
       font-family: 'Courier New', monospace
-      color: #005a8f
+      color: $ebl-color-brand-primary-dark
 
     pre
-      background: #f8f9fa
+      background: $ebl-color-surface-muted
       padding: 1.25rem
       border-radius: 8px
       overflow-x: auto
@@ -165,7 +167,7 @@
       border: none
       border-top: 2px solid rgba(0, 119, 190, 0.1)
 
-@media (max-width: 1024px)
+@media (max-width: $ebl-breakpoint-lg-max)
   .news-layout
     grid-template-columns: 1fr
     gap: 1.5rem
@@ -176,7 +178,7 @@
     &__content
       order: 2
 
-@media (max-width: 768px)
+@media (max-width: $ebl-breakpoint-md-max)
   .newsletter-article
     &__header
       padding: 1.5rem

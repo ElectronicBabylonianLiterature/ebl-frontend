@@ -1,8 +1,9 @@
 @import src/fonts
+@import src/design-tokens
 
 .Header
-  background: #ffffff
-  border-bottom: 1px solid #dee2e6
+  background: $ebl-color-surface-primary
+  border-bottom: 1px solid $ebl-color-border-default
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08)
 
   .navbar
@@ -28,10 +29,10 @@
         font-size: 1em
 
     &-abbreviation
-      color: white
+      color: $ebl-color-surface-primary
       font-size: 3em
       padding: 0 0.1em
-      background-color: #0077be
+      background-color: $ebl-color-brand-primary
       vertical-align: middle
       margin-right: 0.2em
 
@@ -46,45 +47,44 @@
     align-items: center
     gap: 0.1rem
 
-    .nav-item
-      .nav-link
-        color: rgba(0, 0, 0, 0.55) !important
-        font-weight: 500
-        font-size: 1.0em
-        letter-spacing: 0.04em
-        padding: 0.45rem 1rem
-        border-radius: 6px
-        transition: color 0.2s ease, background-color 0.2s ease
-        position: relative
-        white-space: nowrap
-        text-decoration: none
+  .navbar-light .Header__nav .nav-item .nav-link
+    color: $ebl-color-text-muted
+    font-weight: 500
+    font-size: 1.0em
+    letter-spacing: 0.04em
+    padding: 0.45rem 1rem
+    border-radius: 6px
+    transition: color 0.2s ease, background-color 0.2s ease
+    position: relative
+    white-space: nowrap
+    text-decoration: none
 
-        &::after
-          content: ''
-          position: absolute
-          bottom: 3px
-          left: 50%
-          transform: translateX(-50%) scaleX(0)
-          width: 40%
-          height: 2px
-          background: linear-gradient(90deg, #0077be, #005a8f)
-          border-radius: 2px
-          transition: transform 0.2s ease
+    &::after
+      content: ''
+      position: absolute
+      bottom: 3px
+      left: 50%
+      transform: translateX(-50%) scaleX(0)
+      width: 40%
+      height: 2px
+      background: linear-gradient(90deg, $ebl-color-brand-primary, $ebl-color-brand-primary-dark)
+      border-radius: 2px
+      transition: transform 0.2s ease
 
-        &:hover
-          color: rgba(0, 0, 0, 0.85) !important
-          background-color: rgba(0, 119, 190, 0.06)
-          text-decoration: none
+  .navbar-light .Header__nav .nav-item .nav-link:hover
+    color: $ebl-color-text-strong
+    background-color: $ebl-color-brand-soft-hover
+    text-decoration: none
 
-          &::after
-            transform: translateX(-50%) scaleX(1)
+    &::after
+      transform: translateX(-50%) scaleX(1)
 
-        &.active
-          color: #0077be !important
-          background-color: rgba(0, 119, 190, 0.08)
+  .navbar-light .Header__nav .nav-item .nav-link.active
+    color: $ebl-color-brand-primary
+    background-color: $ebl-color-brand-soft
 
-          &::after
-            transform: translateX(-50%) scaleX(1)
+    &::after
+      transform: translateX(-50%) scaleX(1)
 
   &__right
     display: flex
@@ -132,7 +132,7 @@
     display: flex
     align-items: center
 
-@media (max-width: 991px)
+@media (max-width: $ebl-breakpoint-lg-max)
   .Header
     &__nav
       flex-direction: column
@@ -159,7 +159,7 @@
       border-top: 1px solid rgba(0, 0, 0, 0.08)
       width: 100%
 
-@media (max-width: 575px)
+@media (max-width: $ebl-breakpoint-sm-max)
   .Header
     &__partner-logos
       flex: 1

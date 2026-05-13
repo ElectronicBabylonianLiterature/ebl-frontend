@@ -1,3 +1,5 @@
+@import src/design-tokens
+
 .Corpus
   &__tabs-header
     display: flex
@@ -15,25 +17,25 @@
     img
       width: 100%
       border-radius: 10px
-      border: 1px solid #dce2ea
-      background: #ffffff
+      border: 1px solid $ebl-color-border-subtle
+      background: $ebl-color-surface-primary
       box-shadow: 0 2px 10px rgba(17, 35, 64, 0.08)
 
   &__tabs
-    background: #ffffff
-    border: 1px solid #dce2ea
+    background: $ebl-color-surface-primary
+    border: 1px solid $ebl-color-border-subtle
     border-radius: 10px
     padding: 1rem 1rem 0.35rem
     box-shadow: 0 2px 10px rgba(17, 35, 64, 0.05)
 
     .nav-tabs
-      border-bottom: 2px solid #dce2ea
+      border-bottom: 2px solid $ebl-color-border-subtle
       gap: 0.25rem
       margin-bottom: 1rem
 
       .nav-item
         .nav-link
-          color: #4a5f7c
+          color: $ebl-color-text-corpus-medium
           font-weight: 600
           font-size: 0.875rem
           letter-spacing: 0.03em
@@ -45,16 +47,16 @@
           background-color: transparent
 
           &:hover
-            color: #133765
+            color: $ebl-color-text-corpus-strong
             background-color: rgba(26, 95, 168, 0.08)
             border-color: rgba(26, 95, 168, 0.2)
 
           &.active
-            color: #133765
-            background: #ffffff
-            border-color: #dce2ea
-            border-bottom-color: #ffffff
-            box-shadow: 0 -2px 0 0 #1a5fa8
+            color: $ebl-color-text-corpus-strong
+            background: $ebl-color-surface-primary
+            border-color: $ebl-color-border-subtle
+            border-bottom-color: $ebl-color-surface-primary
+            box-shadow: 0 -2px 0 0 $ebl-color-brand-primary
 
   &__category
     margin-bottom: 1rem
@@ -66,63 +68,63 @@
 
     li
       padding: 0.48rem 0.25rem
-      border-bottom: 1px solid #edf0f5
+      border-bottom: 1px solid $ebl-color-border-corpus-soft
       font-size: 0.91rem
       line-height: 1.45
 
       a
-        color: #1a5fa8
+        color: $ebl-color-brand-primary
         text-decoration: none
         transition: color 0.15s ease
         font-weight: 600
 
         &:hover
-          color: #0d3f72
+          color: $ebl-color-brand-primary-dark
           text-decoration: underline
 
   h3
     font-size: 0.92rem
     font-weight: 700
-    color: #1a3a6b
+    color: $ebl-color-text-corpus-primary
     margin: 1.1rem 0 0.55rem
     padding-bottom: 0.3rem
-    border-bottom: 1px solid #e4ebf4
+    border-bottom: 1px solid $ebl-color-border-corpus-subtle
     letter-spacing: 0.02em
 
 .corpus-search-result
   &__count
     font-size: 0.85rem
-    color: #6b7a90
+    color: $ebl-color-text-corpus-muted
     padding: 0.5rem 0 1.25rem
     text-align: center
 
   &__chapter
-    border: 1px solid #dce2ea
+    border: 1px solid $ebl-color-border-subtle
     border-radius: 10px
     padding: 1.25rem 1.5rem
     margin-bottom: 1.25rem
-    background: #ffffff
+    background: $ebl-color-surface-primary
     box-shadow: 0 2px 10px rgba(17, 35, 64, 0.06)
     transition: box-shadow 0.2s ease, border-color 0.2s ease
 
     &:hover
       box-shadow: 0 6px 18px rgba(17, 35, 64, 0.12)
-      border-color: #c8d7ea
+      border-color: $ebl-color-border-corpus-hover
 
   &__genre-link
     font-size: 0.8rem
-    color: #1a5fa8
+    color: $ebl-color-brand-primary
     text-decoration: none
     font-weight: 500
 
     &:hover
-      color: #0d3f72
+      color: $ebl-color-brand-primary-dark
 
 hr
-  border-color: #edf0f5
+  border-color: $ebl-color-border-corpus-soft
   margin: 1.5rem 0
 
-@media (max-width: 767px)
+@media (max-width: $ebl-breakpoint-md-max)
   .Corpus
     &__layout
       flex-wrap: nowrap

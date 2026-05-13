@@ -1,23 +1,25 @@
+@import src/design-tokens
+
 .settings
   margin-top: 1.25rem
-  background: #ffffff
+  background: $ebl-color-surface-primary
   border-radius: 10px
   padding: 1rem 1.1rem
-  border: 1px solid #dce2ea
+  border: 1px solid $ebl-color-border-subtle
   box-shadow: 0 2px 10px rgba(17, 35, 64, 0.06)
-  color: #2d3748
+  color: $ebl-color-text-corpus-body
 
   &__heading,
   &__footer
     text-align: right
     font-size: 0.9rem
     cursor: pointer
-    color: #1a5fa8
+    color: $ebl-color-brand-primary
     font-weight: 600
     letter-spacing: 0.03em
 
     &:hover
-      color: #0d3f72
+      color: $ebl-color-brand-primary-dark
 
   &__section
     margin-bottom: 1.2rem
@@ -29,22 +31,22 @@
     font-weight: 700
     text-transform: uppercase
     letter-spacing: 0.06em
-    color: #6b7a90
+    color: $ebl-color-text-corpus-muted
     margin-bottom: 0.5rem
 
   &__switch
     margin-left: 0.1em
 
     .form-check-input
-      border-color: #b8c8de
+      border-color: $ebl-color-border-corpus-accent
 
       &:checked
-        background-color: #1a5fa8
-        border-color: #1a5fa8
+        background-color: $ebl-color-brand-primary
+        border-color: $ebl-color-brand-primary
 
     .form-check-label
       font-size: 0.88rem
-      color: #2d3748
+      color: $ebl-color-text-corpus-body
 
   &__languages
     list-style: none
@@ -57,18 +59,18 @@
   &__language
     cursor: pointer
     margin-left: 0.1em
-    color: #4a5f7c
+    color: $ebl-color-text-corpus-medium
     font-size: 0.875rem
     transition: color 0.15s ease
 
     &:hover
-      color: #0d3f72
+      color: $ebl-color-brand-primary-dark
 
     &--active
       text-decoration: none
-      color: #1a5fa8
+      color: $ebl-color-brand-primary
       font-weight: 600
 
   &__translators
     font-size: 80%
-    color: #6b7a90
+    color: $ebl-color-text-corpus-muted

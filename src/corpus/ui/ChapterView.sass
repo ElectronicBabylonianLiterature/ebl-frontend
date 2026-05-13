@@ -1,9 +1,11 @@
+@import src/design-tokens
+
 .chapter-display
     width: 100%
     border-collapse: separate
     border-spacing: 0
-    background: #ffffff
-    border: 1px solid #dce2ea
+    background: $ebl-color-surface-primary
+    border: 1px solid $ebl-color-border-subtle
     border-radius: 10px
     box-shadow: 0 2px 10px rgba(17, 35, 64, 0.06)
 
@@ -16,7 +18,7 @@
         padding-right: 0.9em
         font-size: 0.72rem
         white-space: nowrap
-        color: #6b7a90
+        color: $ebl-color-text-corpus-muted
         font-weight: 600
 
         & ~ &
@@ -38,12 +40,12 @@
         color: inherit
 
     &__intertext
-        color: #6b7a90
+        color: $ebl-color-text-corpus-muted
         font-size: 0.8rem
         padding: 0.65rem 0
         text-align: center
-        border-top: 1px dashed #dce2ea
-        border-bottom: 1px dashed #dce2ea
+        border-top: 1px dashed $ebl-color-border-subtle
+        border-bottom: 1px dashed $ebl-color-border-subtle
 
         .type-abbreviation
             display: none
@@ -61,7 +63,7 @@
 
     &__toggle
         width: 1.5em
-        color: #1a5fa8
+        color: $ebl-color-brand-primary
         cursor: pointer
         text-align: center
 
@@ -74,13 +76,13 @@
         font-size: 90%
         margin: 0.5em 1.1em 1em
         text-align: justify
-        color: #2d3748
+        color: $ebl-color-text-corpus-body
 
         .type-abbreviation
             display: none
 
     &__parallels
-        color: #6b7a90
+        color: $ebl-color-text-corpus-muted
         font-size: 90%
         list-style: none
         margin: 0.5em 1.1em 1em
@@ -101,12 +103,12 @@
 
     &__manuscript-paratext
         font-size: 80%
-        color: #6b7a90
+        color: $ebl-color-text-corpus-muted
         padding-left: 1em
 
     &__manuscript-info-toggle
         cursor: pointer
-        color: #1a5fa8
+        color: $ebl-color-brand-primary
 
     &__manuscript-notes
         list-style: none
@@ -122,7 +124,7 @@
         font-size: 0.82rem
         text-transform: uppercase
         letter-spacing: 0.08em
-        color: #6b7a90
+        color: $ebl-color-text-corpus-muted
         margin-bottom: 0.6rem
 
     .chapter-view__section
@@ -133,4 +135,4 @@
 
     .chapter-view__section .collapsible_section__heading + div
         font-size: 0.9rem
-        color: #2d3748
+        color: $ebl-color-text-corpus-body

@@ -1,3 +1,5 @@
+@import src/design-tokens
+
 .kings-tool
   &__index-nav
     display: flex
@@ -8,14 +10,14 @@
 
   &__index-link
     font-size: 0.9rem
-    color: #0077be
+    color: $ebl-color-brand-primary
     text-decoration: underline
     text-decoration-style: dotted
     white-space: nowrap
     transition: color 0.15s ease
 
     &:hover
-      color: #0056b3
+      color: $ebl-color-brand-primary-hover
       text-decoration-style: solid
 
   &__intro
@@ -24,7 +26,7 @@
     border-radius: 0
     padding: 0
     margin-bottom: 1rem
-    color: #212529
+    color: $ebl-color-text-primary
     line-height: 1.8
 
   &__table
@@ -35,15 +37,15 @@
     text-transform: none
     letter-spacing: normal
     font-weight: 700
-    color: #212529
+    color: $ebl-color-text-primary
     background: transparent
-    border-bottom: 1px solid #e9ecef
+    border-bottom: 1px solid $ebl-color-border-light
     padding: 0.55rem 0.75rem
 
   &__dynasty
     background: transparent
-    border-top: 1px solid #e9ecef
-    border-bottom: 1px solid #e9ecef
+    border-top: 1px solid $ebl-color-border-light
+    border-bottom: 1px solid $ebl-color-border-light
     padding: 0.6rem 0.75rem
 
   &__dynasty-title
@@ -52,22 +54,22 @@
     border-bottom: 0
     font-size: 1rem
     font-weight: 700
-    color: #212529
+    color: $ebl-color-text-primary
 
   &__index
     width: 3.5rem
-    color: #495057
+    color: $ebl-color-text-neutral
     font-weight: 700
     text-align: right
     vertical-align: top
 
   &__name
-    color: #212529
+    color: $ebl-color-text-primary
     font-weight: 500
     vertical-align: top
 
   &__date
-    color: #495057
+    color: $ebl-color-text-neutral
     font-size: 0.88rem
     vertical-align: top
 
@@ -87,7 +89,7 @@
 td.chronology-display
   vertical-align: middle
   padding: 0.55rem 0.75rem
-  border-bottom: 1px solid #e9ecef
+  border-bottom: 1px solid $ebl-color-border-light
 
   &__section
     padding-bottom: 0
@@ -97,12 +99,12 @@ tr.kings
     background: rgba(0, 119, 190, 0.03)
 
   td
-    border-bottom: 1px solid #e9ecef
+    border-bottom: 1px solid $ebl-color-border-light
 
 tr:not(:first-child) td.chronology-display__section
   padding-top: 1rem
 
-@media (max-width: 767px)
+@media (max-width: $ebl-breakpoint-md-max)
   .kings-tool
     &__column-header
       font-size: 0.66rem

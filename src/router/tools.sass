@@ -1,183 +1,20 @@
-.tools-header
-  background-color: #f4f6f9
-  border-bottom: 1px solid #dce2ea
-  padding: 0.5rem 0
+@import src/design-tokens
+@import src/common/ui/sidebar-page-shell
 
-  &__breadcrumbs
-    background-color: transparent
-    padding: 0
-    margin-bottom: 0.75rem
-
-    .breadcrumb
-      background-color: transparent
-      padding: 0
-      margin: 0
-
-      .breadcrumb-item
-        font-size: 0.8rem
-        font-weight: 500
-
-        a
-          color: #1a5fa8
-          text-decoration: none
-          padding: 0.2rem 0.45rem
-          border-radius: 4px
-          transition: background-color 0.15s ease, color 0.15s ease
-
-          &:hover
-            color: #0d3f72
-            background-color: rgba(26, 95, 168, 0.08)
-            text-decoration: none
-
-        &.active
-          color: #1a1a2e
-          font-weight: 600
-
-        + .breadcrumb-item::before
-          content: '›'
-          color: #9aabb8
-          font-size: 1.1rem
-          font-weight: 300
-
-  &__title
-    color: #1a1a2e
-    font-size: 2.5rem
-    font-weight: 700
-    margin: 1.25rem 0 0
-
-.tools-container
-  padding: 2rem 0 4rem
-
-.tools-sidebar
-  align-self: flex-start
-
-  @media (min-width: 768px)
-    position: sticky
-    top: 100px
-
-.tools-nav
-  &__item
-    display: flex
-    align-items: center
-    gap: 0.875rem
-    padding: 0.875rem 1rem
-    margin-bottom: 0.5rem
-    border-radius: 8px
-    border: 2px solid transparent
-    transition: all 0.2s ease
-    cursor: pointer
-    background-color: transparent
-    color: #212529
-
-    &:hover
-      background-color: rgba(0, 119, 190, 0.05)
-      border-color: transparent
-      text-decoration: none
-
-    &.active
-      background-color: #0077be
-      color: white
-      border-color: #0077be
-
-      .tools-nav__icon
-        color: white
-
-      .tools-nav__title
-        color: white
-
-  &__icon
-    font-size: 1.5rem
-    min-width: 28px
-    text-align: center
-    color: #0077be
-    font-weight: 600
-
-  &__title
-    font-size: 1rem
-    font-weight: 500
-    color: inherit
-
-.tools-content
-  &__header
-    display: flex
-    align-items: center
-    gap: 1rem
-    margin-bottom: 2rem
-    padding-bottom: 1.5rem
-    border-bottom: 2px solid #e9ecef
-
-  &__icon
-    font-size: 2.5rem
-    color: #0077be
-    font-weight: 600
-
-  &__title
-    color: #0077be
-    font-size: 2rem
-    font-weight: 700
-    margin: 0
-
-  &__body
-    h3
-      color: #0077be
-      font-size: 1.75rem
-      font-weight: 600
-      margin-top: 2.5rem
-      margin-bottom: 1.25rem
-      padding-bottom: 0.5rem
-      border-bottom: 1px solid #e9ecef
-
-    h4
-      color: #212529
-      font-size: 1.35rem
-      font-weight: 600
-      margin-top: 2rem
-      margin-bottom: 1rem
-
-    p
-      font-size: 1.05rem
-      line-height: 1.8
-      color: #212529
-      margin-bottom: 1.25rem
-
-    ul, ol
-      font-size: 1.05rem
-      line-height: 1.8
-      color: #212529
-      padding-left: 1.5rem
-
-      li
-        margin-bottom: 0.5rem
-
-    a
-      color: #0077be
-      text-decoration: none
-      font-weight: 500
-
-      &:hover
-        text-decoration: underline
-
-    blockquote
-      border-left-width: 4px
-      border-left-style: solid
-      border-left-color: #0077be
-      padding-left: 1.5rem
-      margin: 1.5rem 0
-      font-style: italic
-      color: #6c757d
++ebl-sidebar-page-shell('tools')
 
 .tools-introduction
   h3
-    color: #0077be
+    color: $ebl-color-brand-primary
     font-size: 1.75rem
     font-weight: 600
     margin-top: 0
     margin-bottom: 1.25rem
     padding-bottom: 0.5rem
-    border-bottom: 1px solid #e9ecef
+    border-bottom: 1px solid $ebl-color-border-light
 
   h4
-    color: #212529
+    color: $ebl-color-text-primary
     font-size: 1.35rem
     font-weight: 600
     margin-top: 2rem
@@ -186,33 +23,5 @@
   p
     font-size: 1.05rem
     line-height: 1.8
-    color: #212529
+    color: $ebl-color-text-primary
     margin-bottom: 1.25rem
-
-@media (max-width: 768px)
-  .tools-header
-    padding: 1.5rem 0 1rem
-
-    &__title
-      font-size: 2rem
-
-  .tools-sidebar
-    position: static
-    margin-bottom: 2rem
-
-  .tools-nav
-    display: flex
-    overflow-x: auto
-
-    &__item
-      flex-shrink: 0
-
-  .tools-content
-    &__header
-      margin-bottom: 1.5rem
-
-    &__icon
-      font-size: 2rem
-
-    &__title
-      font-size: 1.5rem

@@ -1,3 +1,5 @@
+@import src/design-tokens
+
 .SearchForm
   .row
     --bs-gutter-x: 0.75rem
@@ -35,7 +37,7 @@
     .transliteration-search-form
       margin-bottom: .5rem
 
-  @media (max-width: 767px)
+  @media (max-width: $ebl-breakpoint-md-max)
     &__wrapper
       .form-group,
       .mb-3

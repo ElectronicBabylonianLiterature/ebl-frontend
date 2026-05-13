@@ -1,0 +1,198 @@
+@import src/design-tokens
+
+@mixin ebl-sidebar-page-shell($prefix)
+  .#{$prefix}-header
+    background-color: $ebl-color-surface-subtle
+    border-bottom: 1px solid $ebl-color-border-subtle
+    padding: 0.5rem 0
+
+    &__breadcrumbs
+      background-color: transparent
+      padding: 0
+      margin-bottom: 0.75rem
+
+      .breadcrumb
+        background-color: transparent
+        padding: 0
+        margin: 0
+
+        .breadcrumb-item
+          font-size: 0.8rem
+          font-weight: 500
+
+          a
+            color: $ebl-color-brand-primary
+            text-decoration: none
+            padding: 0.2rem 0.45rem
+            border-radius: 4px
+            transition: background-color 0.15s ease, color 0.15s ease
+
+            &:hover
+              color: $ebl-color-brand-primary-dark
+              background-color: $ebl-color-brand-soft
+              text-decoration: none
+
+          &.active
+            color: $ebl-color-text-heading
+            font-weight: 600
+
+          + .breadcrumb-item::before
+            content: '>'
+            color: $ebl-color-divider
+            font-size: 1.1rem
+            font-weight: 300
+
+    &__title
+      color: $ebl-color-text-heading
+      font-size: 2.5rem
+      font-weight: 700
+      margin: 1.25rem 0 0
+
+  .#{$prefix}-container
+    padding: 2rem 0 4rem
+
+  .#{$prefix}-sidebar
+    align-self: flex-start
+
+    @media (min-width: $ebl-breakpoint-md)
+      position: sticky
+      top: 100px
+
+  .#{$prefix}-nav
+    &__item
+      display: flex
+      align-items: center
+      gap: 0.875rem
+      padding: 0.875rem 1rem
+      margin-bottom: 0.5rem
+      border-radius: 8px
+      border: 2px solid transparent
+      transition: all 0.2s ease
+      cursor: pointer
+      background-color: transparent
+      color: $ebl-color-text-primary
+
+      &:hover
+        background-color: $ebl-color-brand-soft-subtle
+        border-color: transparent
+        text-decoration: none
+
+      &.active
+        background-color: $ebl-color-brand-primary
+        color: $ebl-color-surface-primary
+        border-color: $ebl-color-brand-primary
+
+        .#{$prefix}-nav__icon
+          color: $ebl-color-surface-primary
+
+        .#{$prefix}-nav__title
+          color: $ebl-color-surface-primary
+
+    &__icon
+      font-size: 1.5rem
+      min-width: 28px
+      text-align: center
+      color: $ebl-color-brand-primary
+      font-weight: 600
+
+    &__title
+      font-size: 1rem
+      font-weight: 500
+      color: inherit
+
+  .#{$prefix}-content
+    &__header
+      display: flex
+      align-items: center
+      gap: 1rem
+      margin-bottom: 2rem
+      padding-bottom: 1.5rem
+      border-bottom: 2px solid $ebl-color-border-light
+
+    &__icon
+      font-size: 2.5rem
+      color: $ebl-color-brand-primary
+      font-weight: 600
+
+    &__title
+      color: $ebl-color-brand-primary
+      font-size: 2rem
+      font-weight: 700
+      margin: 0
+
+    &__body
+      h3
+        color: $ebl-color-brand-primary
+        font-size: 1.75rem
+        font-weight: 600
+        margin-top: 2.5rem
+        margin-bottom: 1.25rem
+        padding-bottom: 0.5rem
+        border-bottom: 1px solid $ebl-color-border-light
+
+      h4
+        color: $ebl-color-text-primary
+        font-size: 1.35rem
+        font-weight: 600
+        margin-top: 2rem
+        margin-bottom: 1rem
+
+      p
+        font-size: 1.05rem
+        line-height: 1.8
+        color: $ebl-color-text-primary
+        margin-bottom: 1.25rem
+
+      ul, ol
+        font-size: 1.05rem
+        line-height: 1.8
+        color: $ebl-color-text-primary
+        padding-left: 1.5rem
+
+        li
+          margin-bottom: 0.5rem
+
+      a
+        color: $ebl-color-brand-primary
+        text-decoration: none
+        font-weight: 500
+
+        &:hover
+          text-decoration: underline
+
+      blockquote
+        border-left-width: 4px
+        border-left-style: solid
+        border-left-color: $ebl-color-brand-primary
+        padding-left: 1.5rem
+        margin: 1.5rem 0
+        font-style: italic
+        color: $ebl-color-text-secondary
+
+  @media (max-width: $ebl-breakpoint-md-max)
+    .#{$prefix}-header
+      padding: 1.5rem 0 1rem
+
+      &__title
+        font-size: 2rem
+
+    .#{$prefix}-sidebar
+      position: static
+      margin-bottom: 2rem
+
+    .#{$prefix}-nav
+      display: flex
+      overflow-x: auto
+
+      &__item
+        flex-shrink: 0
+
+    .#{$prefix}-content
+      &__header
+        margin-bottom: 1.5rem
+
+      &__icon
+        font-size: 2rem
+
+      &__title
+        font-size: 1.5rem

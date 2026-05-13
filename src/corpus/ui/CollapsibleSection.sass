@@ -1,14 +1,16 @@
+@import src/design-tokens
+
 .collapsible_section__heading
   cursor: pointer
   display: flex
   align-items: center
   justify-content: space-between
   gap: 0.5rem
-  background: #f4f6f9
-  border: 1px solid #dce2ea
+  background: $ebl-color-surface-subtle
+  border: 1px solid $ebl-color-border-subtle
   border-radius: 8px
   padding: 0.55rem 0.8rem
-  color: #1a3a6b
+  color: $ebl-color-text-corpus-primary
   font-size: 0.84rem
   letter-spacing: 0.04em
   text-transform: uppercase
@@ -16,15 +18,15 @@
   margin-bottom: 0.65rem
 
   &:hover
-    background: #edf2f8
+    background: $ebl-color-surface-corpus-soft
 
 .collapsible_section__collapse-indicator
   font-size: 1rem
   text-indent: 0
-  color: #1a5fa8
+  color: $ebl-color-brand-primary
 
 .collapsible_section__heading + div
-  background: #ffffff
-  border: 1px solid #dce2ea
+  background: $ebl-color-surface-primary
+  border: 1px solid $ebl-color-border-subtle
   border-radius: 8px
   padding: 0.75rem 0.9rem

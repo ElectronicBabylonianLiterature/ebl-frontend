@@ -1,3 +1,5 @@
+@import src/design-tokens
+
 .project-page
   max-width: 1200px
   margin: 0 auto
@@ -7,14 +9,14 @@
     font-size: 1.75rem
     font-weight: 500
     margin: 0
-    color: #0b4f7a
+    color: $ebl-color-project-heading
 
   h4
     font-size: 1.2rem
     font-weight: 600
     margin-top: 0
     margin-bottom: 0.75rem
-    color: #35536b
+    color: $ebl-color-project-subheading
 
 .project-hero
   background: linear-gradient(135deg, rgba(0, 119, 190, 0.08), rgba(51, 153, 204, 0.02))
@@ -27,18 +29,18 @@
     text-transform: uppercase
     letter-spacing: 0.12em
     font-size: 0.8rem
-    color: #56768f
+    color: $ebl-color-project-eyebrow
     margin-bottom: 0.75rem
 
   &__title
     font-size: 2.25rem
     margin: 0 0 0.75rem
-    color: #0b4f7a
+    color: $ebl-color-project-heading
 
   &__lead
     font-size: 1.1rem
     line-height: 1.7
-    color: #3e5567
+    color: $ebl-color-project-lead
     max-width: 70ch
 
 .project-section
@@ -51,7 +53,7 @@
 
   &__subtitle
     margin: 0
-    color: #5b6c7b
+    color: $ebl-color-project-subtitle
     font-size: 1rem
     line-height: 1.6
 
@@ -67,11 +69,11 @@
       clear: both
 
 .gilgamesh-quote
-  background: white
+  background: $ebl-color-surface-primary
   border: 1px solid rgba(11, 79, 122, 0.15)
   border-left-width: 4px
   border-left-style: solid
-  border-left-color: #0b4f7a
+  border-left-color: $ebl-color-project-heading
   padding: 2rem
   border-radius: 8px
   font-style: italic
@@ -83,11 +85,11 @@
   box-shadow: 0 6px 16px rgba(11, 79, 122, 0.08)
 
   &__fragmentary
-    color: #999
+    color: $ebl-color-text-faded
     font-size: 0.95rem
 
   &__restored
-    color: #333
+    color: $ebl-color-text-emphasis
     font-weight: 500
     margin-top: 1.5rem
     display: block
@@ -99,12 +101,12 @@
   &__parallel
     display: block
     margin-left: 2rem
-    color: #666
+    color: $ebl-color-text-subtle
 
 .project-description
   font-size: 1.05rem
   line-height: 1.8
-  color: #444
+  color: $ebl-color-text-body
 
   p
     margin-bottom: 1.5rem
@@ -119,7 +121,7 @@
     margin-bottom: 3rem
 
   &__card
-    background: white
+    background: $ebl-color-surface-primary
     border-radius: 12px
     padding: 2rem
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08)
@@ -131,7 +133,7 @@
 
     h4
       margin-top: 0
-      color: #0077be
+      color: $ebl-color-brand-primary
       font-size: 1.2rem
 
     ul
@@ -140,8 +142,8 @@
 
       li
         padding: 0.5rem 0
-        border-bottom: 1px solid #f0f0f0
-        color: #555
+        border-bottom: 1px solid $ebl-color-border-soft
+        color: $ebl-color-text-muted-body
 
         &:last-child
           border-bottom: none
@@ -180,7 +182,7 @@
 
 .institutions
   margin-top: 2rem
-  background: #f8f9fa
+  background: $ebl-color-surface-muted
   padding: 2rem
   border-radius: 12px
 
@@ -190,7 +192,7 @@
 
   li
     padding: 1.5rem 0
-    border-bottom: 1px solid #e0e0e0
+    border-bottom: 1px solid $ebl-color-border-muted
     font-size: 1.05rem
     line-height: 1.7
 
@@ -198,14 +200,14 @@
       border-bottom: none
 
     a
-      color: #0077be
+      color: $ebl-color-brand-primary
       text-decoration: none
       font-weight: 600
 
       &:hover
         text-decoration: underline
 
-@media (max-width: 992px)
+@media (max-width: $ebl-breakpoint-lg-max)
   .project-hero
     padding: 2rem
 
@@ -220,7 +222,7 @@
     &:hover
       box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4)
 
-@media (max-width: 768px)
+@media (max-width: $ebl-breakpoint-md-max)
   .project-intro
     grid-template-columns: 1fr
     gap: 2rem

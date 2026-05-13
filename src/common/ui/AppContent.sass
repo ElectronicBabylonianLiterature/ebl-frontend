@@ -1,3 +1,5 @@
+@import src/design-tokens
+
 .main
   align-items: stretch
   display: flex
@@ -20,10 +22,10 @@
 
   &__breadcrumbs
     flex: 0 0 100%
-    background-color: #f4f6f9
+    background-color: $ebl-color-surface-subtle
     padding: 0.45rem 1.5rem
     margin: -1em -1.5em 1.75em -1.5em
-    border-bottom: 1px solid #dce2ea
+    border-bottom: 1px solid $ebl-color-border-subtle
 
     .breadcrumb
       margin: 0
@@ -48,25 +50,25 @@
             font-size: 0.9rem
 
         a
-          color: #1a5fa8
+          color: $ebl-color-brand-primary
           text-decoration: none
           padding: 0.2rem 0.45rem
           border-radius: 4px
           transition: background-color 0.15s ease, color 0.15s ease
 
           &:hover
-            color: #0d3f72
+            color: $ebl-color-brand-primary-dark
             background-color: rgba(26, 95, 168, 0.08)
             text-decoration: none
 
         &.active
-          color: #1a1a2e
+          color: $ebl-color-text-heading
           font-weight: 600
 
         + .breadcrumb-item
           &::before
             content: '›'
-            color: #9aabb8
+            color: $ebl-color-divider
             font-size: 1.1rem
             font-weight: 300
             padding: 0 0.1rem
@@ -82,7 +84,7 @@
 
   &__sidebar
     border-radius: 0.5rem
-    background: linear-gradient(160deg, #0d1b2e 0%, #0f2240 60%, #0d1b2e 100%)
+    background: linear-gradient(160deg, $ebl-color-surface-sidebar-gradient-start 0%, $ebl-color-surface-sidebar-gradient-mid 60%, $ebl-color-surface-sidebar-gradient-start 100%)
     background-blend-mode: multiply
     background-image: url(https://www.ebl.lmu.de/api/images/Babel_Project_01_cropped.svg)
     background-position: right -12em bottom
@@ -98,7 +100,7 @@
     position: sticky
     top: 0
 
-@media (max-width: 767px)
+@media (max-width: $ebl-breakpoint-md-max)
   .main
     flex-direction: column
     padding-left: 0.75em
