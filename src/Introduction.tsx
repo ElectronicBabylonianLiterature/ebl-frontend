@@ -40,6 +40,8 @@ function Hero(): JSX.Element {
               href="https://www.lrz.de/index.html"
               className="hero__logo-link"
               title="Leibniz-Rechenzentrum"
+              target="_blank"
+              rel="noopener noreferrer"
             >
               <img
                 className="hero__logo hero__logo--lrz"
@@ -51,6 +53,8 @@ function Hero(): JSX.Element {
               href="https://www.humboldt-foundation.de/"
               className="hero__logo-link"
               title="Humboldt Foundation"
+              target="_blank"
+              rel="noopener noreferrer"
             >
               <img
                 className="hero__logo hero__logo--humboldt"
@@ -62,6 +66,8 @@ function Hero(): JSX.Element {
               href="https://erc.europa.eu/homepage"
               className="hero__logo-link"
               title="European Research Council"
+              target="_blank"
+              rel="noopener noreferrer"
             >
               <img
                 className="hero__logo hero__logo--erc"
