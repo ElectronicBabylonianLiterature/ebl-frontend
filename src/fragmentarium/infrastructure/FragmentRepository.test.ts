@@ -354,6 +354,14 @@ const testData: TestData<FragmentRepository>[] = [
     Promise.resolve(fragmentDto),
   ),
   new TestData(
+    'updateDate',
+    [fragmentId, undefined],
+    apiClient.postJson,
+    fragment,
+    [`/fragments/${encodeURIComponent(fragmentId)}/date`, { date: undefined }],
+    Promise.resolve(fragmentDto),
+  ),
+  new TestData(
     'updateDatesInText',
     [fragmentId, [mesopotamianDate.toDto()]],
     apiClient.postJson,

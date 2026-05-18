@@ -238,6 +238,25 @@ it('Calls `updateDate` on Date save', async () => {
   )
 })
 
+it('Calls `updateDate` with undefined on Date delete', async () => {
+  await setup()
+  fragmentService.updateDate.mockReturnValueOnce(Promise.resolve(fragment))
+
+  const editButton = screen.getAllByLabelText('Edit date button')[0]
+  fireEvent.click(editButton)
+
+  const deleteButton = await screen.findByText('Delete')
+  fireEvent.click(deleteButton)
+
+  expect(screen.getByText('Saving...')).toBeInTheDocument()
+  await waitFor(() =>
+    expect(fragmentService.updateDate).toHaveBeenCalledWith(
+      fragment.number,
+      undefined,
+    ),
+  )
+})
+
 it('Calls `updateDatesInText` on Dates in text save', async () => {
   await setup()
   fragmentService.updateDatesInText.mockReturnValueOnce(

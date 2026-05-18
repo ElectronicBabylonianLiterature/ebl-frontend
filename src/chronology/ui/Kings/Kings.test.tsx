@@ -41,9 +41,12 @@ describe('KingField Component', () => {
     const setKing = jest.fn()
     render(<KingField setKing={setKing} />)
     const selectInput = screen.getByLabelText(/select-king/i)
-    await userEvent.type(selectInput, 'Sargon', { skipClick: true })
-    await userEvent.keyboard('{arrowdown}')
-    await userEvent.keyboard('{enter}')
+
+    await userEvent.click(selectInput)
+    await userEvent.type(selectInput, 'Sargon II')
+    await userEvent.click(
+      screen.getByText('Sargon II (709–705), Miscellaneous Dynasties'),
+    )
 
     expect(setKing).toHaveBeenCalledWith(
       expect.objectContaining({

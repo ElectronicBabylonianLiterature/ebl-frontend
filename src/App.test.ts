@@ -46,6 +46,7 @@ test.each([
     .allowGenres([])
     .allowLatestFragments({ items: [], matchCountTotal: 0 })
   const appDriver = new AppDriver(fakeApi.client).withPath(route).render()
+
   await appDriver.waitForTextToDisappear('Loading...')
   if (route === '/') {
     await appDriver.waitForText('Latest Additions')

@@ -49,6 +49,17 @@ export class MesopotamianDateString extends MesopotamianDateBase {
         : !_.isEmpty(parameter.value)
           ? parameter.value
           : '∅'
+
+    if (
+      (field === 'year' || field === 'yearZero') &&
+      parameter.isReconstructed
+    ) {
+      element = `<${element}>`
+    }
+    if ((field === 'year' || field === 'yearZero') && parameter.isEmended) {
+      element = `${element}!`
+    }
+
     return this.brokenAndUncertainToString(field, element)
   }
 

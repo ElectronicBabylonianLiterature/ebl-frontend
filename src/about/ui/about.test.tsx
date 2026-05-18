@@ -4,7 +4,13 @@ import Bluebird from 'bluebird'
 import '@testing-library/jest-dom'
 import MarkupService from 'markup/application/MarkupService'
 import { markupDtoSerialized } from 'test-support/markup-fixtures'
-import { render, screen, fireEvent, waitFor } from '@testing-library/react'
+import {
+  render,
+  screen,
+  fireEvent,
+  waitFor,
+  within,
+} from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 
 jest.mock('markup/application/MarkupService')
@@ -106,6 +112,10 @@ describe('About component', () => {
 
   test('renders all tabs', async () => {
     await renderAbout()
+    const sidebarNavigation = screen.getByRole('navigation', {
+      name: 'About sections',
+    })
+
     const expectedTabs = [
       'eBL Project',
       'Library',
@@ -114,11 +124,12 @@ describe('About component', () => {
       'Akkadian Dictionary',
       'Bibliography',
       'News',
+      'Archaeology',
     ]
 
     expectedTabs.forEach((tabText) => {
       expect(
-        screen.getByRole('link', { name: new RegExp(tabText) }),
+        within(sidebarNavigation).getByRole('link', { name: tabText }),
       ).toBeInTheDocument()
     })
   })
@@ -146,7 +157,7 @@ describe('About component', () => {
   test('marks decorative icons as hidden from assistive technologies', async () => {
     await renderAbout(['/about/project'], 'project')
 
-    const navIcons = ['⚙', '⌂', '⊞', '𒀀', 'Ꞌ', '※', '✉']
+    const navIcons = ['⚙', '⌂', '⊞', '𒀀', 'Ꞌ', '※', '✉', '⛏']
 
     navIcons.forEach((icon) => {
       expect(

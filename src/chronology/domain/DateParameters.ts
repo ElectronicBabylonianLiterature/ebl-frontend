@@ -5,6 +5,8 @@ export interface DateField {
   value: string
   isBroken?: boolean
   isUncertain?: boolean
+  isReconstructed?: boolean
+  isEmended?: boolean
 }
 
 export interface MonthField extends DateField {

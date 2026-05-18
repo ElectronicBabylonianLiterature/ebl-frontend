@@ -6,6 +6,13 @@ export const Museums = {
     country: 'AU',
     url: 'https://abbeymuseum.com.au',
   },
+  ADANA_ARKEOLOJI_MUZESI: {
+    key: 'ADANA_ARKEOLOJI_MUZESI',
+    name: 'Adana Arkeoloji Müzesi',
+    city: 'Adana',
+    country: 'TR',
+    url: 'https://muze.gov.tr/muze-detay?SectionId=AAR01&DistId=MRK',
+  },
   ANCIENT_CULTURES_CHICAGO: {
     key: 'ANCIENT_CULTURES_CHICAGO',
     name: 'Institute for the Study of Ancient Cultures, West Asia & North Africa',
@@ -33,6 +40,13 @@ export const Museums = {
     city: 'Brussels',
     country: 'BE',
     url: 'https://www.nbb.be/',
+  },
+  BRYN_MAWR_COLLEGE: {
+    key: 'BRYN_MAWR_COLLEGE',
+    name: 'Bryn Mawr College Special Collections',
+    city: 'Bryn Mawr',
+    country: 'US',
+    url: 'https://www.brynmawr.edu/about-college/special-collections',
   },
   CHESTER_BEATTY_LIBRARY: {
     key: 'CHESTER_BEATTY_LIBRARY',
@@ -139,6 +153,13 @@ export const Museums = {
     city: 'Philadelphia',
     country: 'US',
     url: 'https://katz.sas.upenn.edu/',
+  },
+  KAYSERI_ARKEOLOJI_MUZESI: {
+    key: 'KAYSERI_ARKEOLOJI_MUZESI',
+    name: 'Kayseri Arkeoloji Müzesi',
+    city: 'Kayseri',
+    country: 'TR',
+    url: 'https://www.turkishmuseums.com/museum/detail/2111-kayseri-arkeoloji-muzesi/2111/1',
   },
   KELSEY_MUSEUM: {
     key: 'KELSEY_MUSEUM',

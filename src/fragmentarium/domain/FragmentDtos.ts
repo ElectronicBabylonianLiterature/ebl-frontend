@@ -29,6 +29,8 @@ export interface DateFieldDto {
   value: string
   isBroken?: boolean
   isUncertain?: boolean
+  isReconstructed?: boolean
+  isEmended?: boolean
 }
 
 export interface MonthFieldDto extends DateFieldDto {

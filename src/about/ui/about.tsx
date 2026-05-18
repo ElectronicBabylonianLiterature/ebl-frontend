@@ -11,6 +11,7 @@ import AboutSigns from 'about/ui/signs'
 import AboutDictionary from 'about/ui/dictionary'
 import AboutBibliography from 'about/ui/bibliography'
 import AboutNews from 'about/ui/news'
+import AboutArchaeology from 'about/ui/archaeology'
 import _ from 'lodash'
 import Breadcrumbs from 'common/ui/Breadcrumbs'
 
@@ -22,6 +23,7 @@ export const tabIds = [
   'akkadian-dictionary',
   'bibliography',
   'news',
+  'archaeology',
 ] as const
 export type TabId = (typeof tabIds)[number]
 
@@ -39,6 +41,7 @@ const tabConfig: TabConfig[] = [
   { id: 'akkadian-dictionary', title: 'Akkadian Dictionary', icon: 'Ꞌ' },
   { id: 'bibliography', title: 'Bibliography', icon: '※' },
   { id: 'news', title: 'News', icon: '✉' },
+  { id: 'archaeology', title: 'Archaeology', icon: '⛏' },
 ]
 
 const tabContent: Record<
@@ -51,6 +54,7 @@ const tabContent: Record<
   signs: AboutSigns,
   'akkadian-dictionary': AboutDictionary,
   bibliography: AboutBibliography,
+  archaeology: AboutArchaeology,
 }
 
 function prefersReducedMotion(): boolean {
@@ -169,7 +173,11 @@ export default function About({
       <Container className="about-container">
         <Row>
           <Col xs={12} md={3} className="about-sidebar">
-            <Nav className="flex-column about-nav">
+            <Nav
+              as="nav"
+              aria-label="About sections"
+              className="flex-column about-nav"
+            >
               {tabConfig.map((tab) => (
                 <AboutNavItem
                   key={tab.id}

@@ -46,6 +46,8 @@ export function EponymField({
   return (
     <Select
       aria-label="select-eponym"
+      inputId="date-field-eponym"
+      name="date-field-eponym"
       options={eponymOptions.filter(
         (option) => option.value.phase === assyrianPhase,
       )}
@@ -53,7 +55,7 @@ export function EponymField({
         setEponym(option?.value)
       }}
       isSearchable={true}
-      autoFocus={true}
+      autoFocus={false}
       placeholder="Eponym"
       value={
         eponym && eponym.phase === assyrianPhase
