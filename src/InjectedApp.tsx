@@ -11,11 +11,7 @@ import WordService from 'dictionary/application/WordService'
 import BibliographyService from 'bibliography/application/BibliographyService'
 import TextService from 'corpus/application/TextService'
 import FragmentSearchService from 'fragmentarium/application/FragmentSearchService'
-import {
-  AuthenticationService,
-  eblNameProperty,
-  useAuthentication,
-} from 'auth/Auth'
+import { useAuthentication } from 'auth/Auth'
 import SignService from 'signs/application/SignService'
 import SignRepository from 'signs/infrastructure/SignRepository'
 import AfoRegisterRepository from 'afo-register/infrastructure/AfoRegisterRepository'
@@ -28,21 +24,6 @@ import { ApiFindspotRepository } from 'fragmentarium/infrastructure/FindspotRepo
 import DossiersService from 'dossiers/application/DossiersService'
 import DossiersRepository from 'dossiers/infrastructure/DossiersRepository'
 import { ErrorReporter } from 'ErrorReporterContext'
-
-function getFragmentCacheScope(
-  authenticationService: AuthenticationService,
-): string {
-  if (!authenticationService.isAuthenticated()) {
-    return 'guest'
-  }
-  try {
-    const user = authenticationService.getUser()
-    const identity = user[eblNameProperty] ?? user.name ?? ''
-    return `authenticated:${identity}`
-  } catch {
-    return 'authenticated'
-  }
-}
 
 export default function InjectedApp({
   errorReporter,
@@ -98,15 +79,8 @@ export default function InjectedApp({
         imageRepository,
         wordRepository,
         bibliographyService,
-        () => getFragmentCacheScope(authenticationService),
       ),
-    [
-      fragmentRepository,
-      imageRepository,
-      wordRepository,
-      bibliographyService,
-      authenticationService,
-    ],
+    [fragmentRepository, imageRepository, wordRepository, bibliographyService],
   )
   const fragmentSearchService = useMemo(
     () => new FragmentSearchService(fragmentRepository),
