@@ -67,6 +67,21 @@ describe('ApiClient - Edge Cases and Error Handling', () => {
       })
     })
 
+    test('ignored error statuses are not reported', async () => {
+      fetchMock.mockResponseOnce('Page not found', {
+        status: 404,
+        statusText: 'Not Found',
+      })
+
+      await expect(apiClient.fetchBlob(path, false, [404])).rejects.toEqual(
+        expect.objectContaining({
+          name: 'ApiError',
+          status: 404,
+        }),
+      )
+      expect(errorReporter.captureException).not.toHaveBeenCalled()
+    })
+
     test('500 Internal Server Error - captures stack trace', async () => {
       fetchMock.mockResponseOnce('', {
         status: 500,

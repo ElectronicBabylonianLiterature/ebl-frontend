@@ -102,6 +102,7 @@ describe('findThumbnail', () => {
     expect(apiClient.fetchBlob).toBeCalledWith(
       `/fragments/${encodeURIComponent(number)}/thumbnail/${size}`,
       false,
+      [404],
     )
   })
 
@@ -119,6 +120,13 @@ describe('findThumbnail', () => {
     jest
       .spyOn(apiClient, 'fetchBlob')
       .mockRejectedValueOnce(new ApiError(errorMsg, { title: '404 Not Found' }))
+    promise = imageRepository.findThumbnail(number, size)
+    await expect(promise).resolves.toEqual({ blob: null })
+  })
+  it('Returns empty if no thumbnail is found with an empty 404 response', async () => {
+    jest
+      .spyOn(apiClient, 'fetchBlob')
+      .mockRejectedValueOnce(new ApiError('Not Found', {}, 404))
     promise = imageRepository.findThumbnail(number, size)
     await expect(promise).resolves.toEqual({ blob: null })
   })
