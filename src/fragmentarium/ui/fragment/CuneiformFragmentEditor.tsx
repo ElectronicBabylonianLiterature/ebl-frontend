@@ -159,7 +159,7 @@ function isTabDisabled({
 
 function shouldShowTab(name: TabName, session: Session): boolean {
   if (session.isGuestSession()) {
-    return name === 'display'
+    return name !== 'display'
   }
   return true
 }
