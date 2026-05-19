@@ -5,33 +5,12 @@ import {
   ThumbnailSize,
   ThumbnailBlob,
 } from 'fragmentarium/application/FragmentService'
-import { ApiError } from 'http/ApiClient'
-
-function hasNotFoundTitle(data: unknown): data is { title: string } {
-  return (
-    typeof data === 'object' &&
-    data !== null &&
-    'title' in data &&
-    data.title === '404 Not Found'
-  )
-}
-
-function isThumbnailNotFound(error: unknown): boolean {
-  return (
-    error instanceof ApiError &&
-    (error.status === 404 || hasNotFoundTitle(error.data))
-  )
-}
 
 class ApiImageRepository implements ImageRepository {
   private readonly apiClient
 
   constructor(apiClient: {
-    fetchBlob: (
-      url: string,
-      authorize: boolean,
-      ignoredErrorStatuses?: readonly number[],
-    ) => Promise<Blob>
+    fetchBlob: (url: string, authorize: boolean) => Promise<Blob>
   }) {
     this.apiClient = apiClient
   }
@@ -61,11 +40,10 @@ class ApiImageRepository implements ImageRepository {
       .fetchBlob(
         `/fragments/${encodeURIComponent(number)}/thumbnail/${size}`,
         false,
-        [404],
       )
       .then((data) => ({ blob: data }))
-      .catch((error: unknown) => {
-        if (isThumbnailNotFound(error)) {
+      .catch((error) => {
+        if (error.data.title === '404 Not Found') {
           return { blob: null }
         } else {
           throw error
