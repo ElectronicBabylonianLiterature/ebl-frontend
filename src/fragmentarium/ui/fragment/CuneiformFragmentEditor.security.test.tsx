@@ -55,7 +55,7 @@ describe('Security: Fragment View Tabs', () => {
     )
   })
 
-  it('should show display content without tabs for guest users', () => {
+  it('should hide display tab for guest users', () => {
     render(
       <MemoryRouter>
         <SessionContext.Provider value={guestSession}>
@@ -66,7 +66,25 @@ describe('Security: Fragment View Tabs', () => {
       </MemoryRouter>,
     )
 
-    expect(screen.queryByRole('tab')).not.toBeInTheDocument()
+    expect(
+      screen.queryByRole('tab', { name: /display/i }),
+    ).not.toBeInTheDocument()
+
+    expect(screen.getByRole('tab', { name: /edition/i })).toBeInTheDocument()
+    expect(
+      screen.getByRole('tab', { name: /lemmatization/i }),
+    ).toBeInTheDocument()
+    expect(
+      screen.getByRole('tab', { name: /named entities/i }),
+    ).toBeInTheDocument()
+    expect(screen.getByRole('tab', { name: /references/i })).toBeInTheDocument()
+    expect(
+      screen.getByRole('tab', { name: /archaeology/i }),
+    ).toBeInTheDocument()
+    expect(screen.getByRole('tab', { name: /colophon/i })).toBeInTheDocument()
+    expect(
+      screen.getByRole('tab', { name: /permissions/i }),
+    ).toBeInTheDocument()
   })
 
   it('should show all tabs for authenticated users', () => {
