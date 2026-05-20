@@ -14,6 +14,7 @@ import BibliographyService from 'bibliography/application/BibliographyService'
 import AfoRegisterService from 'afo-register/application/AfoRegisterService'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import DossiersService from 'dossiers/application/DossiersService'
+import { setReducedMotionMatchMedia } from 'test-support/matchMedia'
 
 jest.mock('router/compat', () => ({
   ...jest.requireActual('router/compat'),
@@ -315,26 +316,7 @@ describe('Tools', () => {
 
   it('uses non-animated hash scrolling when reduced motion is enabled', () => {
     jest.useFakeTimers()
-    const originalMatchMedia = window.matchMedia
-    const reducedMotionMatchMedia = jest.fn(
-      (query: string): MediaQueryList =>
-        ({
-          matches: query === '(prefers-reduced-motion: reduce)',
-          media: query,
-          onchange: null,
-          addListener: jest.fn(),
-          removeListener: jest.fn(),
-          addEventListener: jest.fn(),
-          removeEventListener: jest.fn(),
-          dispatchEvent: jest.fn(),
-        }) as MediaQueryList,
-    )
-
-    Object.defineProperty(window, 'matchMedia', {
-      writable: true,
-      configurable: true,
-      value: reducedMotionMatchMedia,
-    })
+    const restoreMatchMedia = setReducedMotionMatchMedia(true)
 
     const scrollIntoView = jest.fn()
     const getElementByIdSpy = jest
@@ -361,11 +343,7 @@ describe('Tools', () => {
     expect(scrollIntoView).toHaveBeenCalledWith({ behavior: 'auto' })
 
     getElementByIdSpy.mockRestore()
-    Object.defineProperty(window, 'matchMedia', {
-      writable: true,
-      configurable: true,
-      value: originalMatchMedia,
-    })
+    restoreMatchMedia()
     jest.useRealTimers()
   })
 

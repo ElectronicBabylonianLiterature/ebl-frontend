@@ -14,6 +14,7 @@ import AboutNews from 'about/ui/news'
 import AboutArchaeology from 'about/ui/archaeology'
 import _ from 'lodash'
 import Breadcrumbs from 'common/ui/Breadcrumbs'
+import useScrollToHash from 'common/hooks/useScrollToHash'
 
 export const tabIds = [
   'project',
@@ -55,14 +56,6 @@ const tabContent: Record<
   'akkadian-dictionary': AboutDictionary,
   bibliography: AboutBibliography,
   archaeology: AboutArchaeology,
-}
-
-function prefersReducedMotion(): boolean {
-  return (
-    typeof window !== 'undefined' &&
-    typeof window.matchMedia === 'function' &&
-    window.matchMedia('(prefers-reduced-motion: reduce)').matches
-  )
 }
 
 function getContent({
@@ -135,21 +128,7 @@ export default function About({
     setSelectedTab(activeTab)
   }, [activeTab])
 
-  useEffect(() => {
-    const hash = location.hash
-    if (hash) {
-      const id = hash.replace('#', '')
-      const behavior = prefersReducedMotion() ? 'auto' : 'smooth'
-      requestAnimationFrame(() => {
-        requestAnimationFrame(() => {
-          const element = document.getElementById(id)
-          if (element) {
-            element.scrollIntoView({ behavior })
-          }
-        })
-      })
-    }
-  }, [location])
+  useScrollToHash(location.hash)
 
   const currentTab = tabConfig.find((tab) => tab.id === selectedTab)
 

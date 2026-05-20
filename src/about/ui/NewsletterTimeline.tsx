@@ -1,5 +1,6 @@
 import React, { useRef, useEffect } from 'react'
 import './NewsletterTimeline.sass'
+import prefersReducedMotion from 'common/utils/prefersReducedMotion'
 
 interface Newsletter {
   readonly content: string
@@ -11,14 +12,6 @@ interface NewsletterTimelineProps {
   newsletters: readonly Newsletter[]
   activeNewsletter: Newsletter
   onSelectNewsletter: (newsletter: Newsletter) => void
-}
-
-function prefersReducedMotion(): boolean {
-  return (
-    typeof window !== 'undefined' &&
-    typeof window.matchMedia === 'function' &&
-    window.matchMedia('(prefers-reduced-motion: reduce)').matches
-  )
 }
 
 export default function NewsletterTimeline({

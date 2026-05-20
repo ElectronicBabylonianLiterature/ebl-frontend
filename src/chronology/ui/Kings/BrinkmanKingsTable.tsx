@@ -10,19 +10,12 @@ import {
   brinkmanDynasties,
   getKingsByDynasty,
 } from 'chronology/ui/Kings/Kings'
+import prefersReducedMotion from 'common/utils/prefersReducedMotion'
 
 type DynastyAnchor = {
   dynastyId: string
   dynastyIndex: number
   dynastyName: string
-}
-
-function prefersReducedMotion(): boolean {
-  return (
-    typeof window !== 'undefined' &&
-    typeof window.matchMedia === 'function' &&
-    window.matchMedia('(prefers-reduced-motion: reduce)').matches
-  )
 }
 
 function getDynastySlug(dynastyName: string): string {

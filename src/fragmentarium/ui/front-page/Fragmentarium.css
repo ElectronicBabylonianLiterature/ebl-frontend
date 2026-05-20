@@ -8,11 +8,11 @@
 }
 
 .library-latest__title {
-  color: #0077be;
+  color: var(--ebl-color-brand-primary);
   font-size: 1.75rem;
   font-weight: 700;
   padding-bottom: 0.75rem;
-  border-bottom: 2px solid #e9ecef;
+  border-bottom: 2px solid var(--ebl-color-border-light);
   margin-bottom: 1.5rem;
   margin-top: 0;
 }
@@ -25,7 +25,7 @@
 
 .library-fragment-card {
   background-color: white;
-  border: 1px solid #e9ecef;
+  border: 1px solid var(--ebl-color-border-light);
   border-radius: 10px;
   padding: 1.25rem 1.5rem;
   transition:
@@ -34,7 +34,7 @@
 }
 
 .library-fragment-card:hover {
-  border-color: #b8c8de;
+  border-color: var(--ebl-color-border-corpus-accent);
   box-shadow: 0 3px 12px rgb(0 119 190 / 8%);
 }
 
