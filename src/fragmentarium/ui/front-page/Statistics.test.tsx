@@ -30,21 +30,24 @@ const setup = async (): Promise<void> => {
 
 it('Shows the number of tablets indexed', async () => {
   await setup()
-  expect(screen.getByText(/tablets indexed$/)).toHaveTextContent(
-    statistics.totalFragments.toLocaleString(),
-  )
+  expect(screen.getByText(/tablets indexed$/)).toBeInTheDocument()
+  expect(
+    screen.getByText(statistics.totalFragments.toLocaleString()),
+  ).toBeInTheDocument()
 })
 
 it('Shows the number of transliterated tablets', async () => {
   await setup()
-  expect(screen.getByText(/tablets transliterated$/)).toHaveTextContent(
-    statistics.transliteratedFragments.toLocaleString(),
-  )
+  expect(screen.getByText(/tablets transliterated$/)).toBeInTheDocument()
+  expect(
+    screen.getByText(statistics.transliteratedFragments.toLocaleString()),
+  ).toBeInTheDocument()
 })
 
 it('Shows the number of transliterated lines', async () => {
   await setup()
-  expect(screen.getByText(/lines of text$/)).toHaveTextContent(
-    statistics.lines.toLocaleString(),
-  )
+  expect(screen.getByText(/lines of text$/)).toBeInTheDocument()
+  expect(
+    screen.getByText(statistics.lines.toLocaleString()),
+  ).toBeInTheDocument()
 })

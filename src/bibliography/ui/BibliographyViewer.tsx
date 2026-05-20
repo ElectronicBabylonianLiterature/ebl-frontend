@@ -15,6 +15,8 @@ import InlineMarkdown from 'common/ui/InlineMarkdown'
 import Reference from 'bibliography/domain/Reference'
 import SessionContext from 'auth/SessionContext'
 import withData from 'http/withData'
+import { useLocation } from 'react-router-dom'
+import { referencesEditRoute } from 'bibliography/ui/referencesRouteContext'
 
 type Props = {
   data: BibliographyEntry
@@ -31,6 +33,7 @@ function replaceRisDateWithPublicationYear(risData: string): string {
 
 function BibliographyViewer({ data, match, history }: Props): JSX.Element {
   const routerHistory = useHistory()
+  const location = useLocation()
   const activeHistory = history ?? routerHistory
   const session = useContext(SessionContext)
   const entryId = match.params.id ?? ''
@@ -76,11 +79,11 @@ function BibliographyViewer({ data, match, history }: Props): JSX.Element {
         <Button
           variant="outline-primary"
           onClick={() =>
-            activeHistory.push(`/bibliography/references/${entryId}/edit`)
+            activeHistory.push(referencesEditRoute(location.pathname, entryId))
           }
           disabled={!session.isAllowedToWriteBibliography()}
         >
-          <i className="fas fa-edit"></i> Edit
+          <i className="fas fa-edit" aria-hidden="true"></i> Edit
         </Button>
       }
     >
@@ -92,9 +95,10 @@ function BibliographyViewer({ data, match, history }: Props): JSX.Element {
               className="FullCitation__link"
               href={reference.link}
               title="Open in a new window."
+              aria-label="Open in a new window."
               style={{ marginLeft: '1em' }}
             >
-              <i className="fas fa-external-link-alt" />
+              <i className="fas fa-external-link-alt" aria-hidden="true" />
             </ExternalLink>
           )}
         </div>

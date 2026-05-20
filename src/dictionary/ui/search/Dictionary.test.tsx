@@ -50,17 +50,41 @@ describe('Searching for word', () => {
     expect(screen.getByLabelText('Root')).toHaveValue('')
     expect(screen.getByRole('checkbox', { name: 'a/a' })).not.toBeChecked()
   })
+
+  it('does not refetch on rerender when query is unchanged', async () => {
+    const path = `/dictionary?${stringify(query)}`
+    const view = render(
+      <MemoryRouter initialEntries={[path]}>
+        <SessionContext.Provider value={session}>
+          <Dictionary wordService={wordService} />
+        </SessionContext.Provider>
+      </MemoryRouter>,
+    )
+
+    await screen.findByText(words[1].meaning)
+    const callsAfterInitialRender = wordService.search.mock.calls.length
+
+    view.rerender(
+      <MemoryRouter initialEntries={[path]}>
+        <SessionContext.Provider value={session}>
+          <Dictionary wordService={wordService} />
+        </SessionContext.Provider>
+      </MemoryRouter>,
+    )
+
+    expect(wordService.search.mock.calls.length).toBe(callsAfterInitialRender)
+  })
 })
 
 it('Displays a message if user is not logged in', async () => {
   session = new MemorySession([])
-  await renderDictionary('/dictionary')
+  await renderDictionary('/dictionary', false)
   expect(
     screen.getByText('Please log in to browse the Dictionary.'),
   ).toBeVisible()
 })
 
-async function renderDictionary(path: string): Promise<void> {
+async function renderDictionary(path: string, hasAccess = true): Promise<void> {
   render(
     <MemoryRouter initialEntries={[path]}>
       <SessionContext.Provider value={session}>
@@ -68,5 +92,7 @@ async function renderDictionary(path: string): Promise<void> {
       </SessionContext.Provider>
     </MemoryRouter>,
   )
-  await screen.findAllByText('Dictionary')
+  if (hasAccess) {
+    await screen.findByLabelText('Word')
+  }
 }

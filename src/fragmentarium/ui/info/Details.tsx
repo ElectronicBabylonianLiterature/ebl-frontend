@@ -38,8 +38,12 @@ function MuseumName({ fragment: { museum } }: Props): JSX.Element {
       <ExternalLink
         href={museum.url}
         className={'Details__museum-link subtle-link'}
+        aria-label={`Open external museum page for ${museum.name}`}
       >
-        <i className={'fa-solid fa-arrow-up-right-from-square'}></i>
+        <i
+          className={'fa-solid fa-arrow-up-right-from-square'}
+          aria-hidden="true"
+        ></i>
       </ExternalLink>
     </>
   ) : (

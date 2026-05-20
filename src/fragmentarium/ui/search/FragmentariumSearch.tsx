@@ -1,6 +1,7 @@
 import React from 'react'
 import _ from 'lodash'
 import AppContent from 'common/ui/AppContent'
+import AboutInlineLink from 'common/ui/AboutInlineLink'
 import SessionContext from 'auth/SessionContext'
 import SearchForm, {
   SearchFormProps,
@@ -69,15 +70,22 @@ function FragmentariumSearch({
               <header className="Library-search__header">
                 <Row>
                   <Col className="mx-auto">
-                    <SearchForm
-                      fragmentSearchService={fragmentSearchService}
-                      fragmentService={fragmentService}
-                      dossiersService={dossiersService}
-                      fragmentQuery={fragmentQuery}
-                      wordService={wordService}
-                      bibliographyService={bibliographyService}
-                      showAdvancedSearch={true}
-                    />
+                    <div className="Library-search__search-header">
+                      <SearchForm
+                        fragmentSearchService={fragmentSearchService}
+                        fragmentService={fragmentService}
+                        dossiersService={dossiersService}
+                        fragmentQuery={fragmentQuery}
+                        wordService={wordService}
+                        bibliographyService={bibliographyService}
+                        showAdvancedSearch={true}
+                      />
+                      <AboutInlineLink
+                        to="/about/library"
+                        label="Library"
+                        className="Library-search__about-link"
+                      />
+                    </div>
                   </Col>
                 </Row>
               </header>

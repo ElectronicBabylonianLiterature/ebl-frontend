@@ -5,6 +5,7 @@ import lineNumberToString from 'transliteration/domain/lineNumberToString'
 import LineNumber from './LineNumber'
 import { oldLineNumberFactory } from 'test-support/linenumber-factory'
 import userEvent from '@testing-library/user-event'
+import { setReducedMotionMatchMedia } from 'test-support/matchMedia'
 
 window.HTMLElement.prototype.scrollIntoView = jest.fn()
 
@@ -24,6 +25,14 @@ const lineDisplay = lineDisplayFactory.build(
   },
 )
 const lineNumberString = lineNumberToString(lineDisplay.number)
+
+beforeEach(() => {
+  ;(
+    window.HTMLElement.prototype.scrollIntoView as jest.MockedFunction<
+      HTMLElement['scrollIntoView']
+    >
+  ).mockClear()
+})
 
 function renderLineNumber(url = ''): void {
   render(
@@ -57,6 +66,20 @@ test('Clicking on line number scrolls to line', async () => {
   await userEvent.click(screen.getByText(lineNumberString))
   expect(window.HTMLElement.prototype.scrollIntoView).toHaveBeenCalled()
 })
+
+test('Clicking on line number uses non-animated scrolling when reduced motion is enabled', async () => {
+  const restoreMatchMedia = setReducedMotionMatchMedia(true)
+
+  renderLineNumber()
+  await userEvent.click(screen.getByText(lineNumberString))
+
+  expect(window.HTMLElement.prototype.scrollIntoView).toHaveBeenCalledWith({
+    behavior: 'auto',
+  })
+
+  restoreMatchMedia()
+})
+
 test('Line number with url points to link', () => {
   const externalUrl = 'https://ebl.lmu.de/an-external-link'
   renderLineNumber(externalUrl)

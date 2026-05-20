@@ -131,7 +131,7 @@ export function SideBar({ chapter }: { chapter: ChapterDisplay }): JSX.Element {
         aria-expanded={showSettings}
         aria-controls={settingsId}
       >
-        <i className="fas fa-cog"></i>&nbsp;Settings
+        <i className="fas fa-cog" aria-hidden="true"></i>&nbsp;Settings
       </h3>
       <Fade in={showSettings} mountOnEnter unmountOnExit>
         <div id={settingsId}>
@@ -152,7 +152,8 @@ export function SideBar({ chapter }: { chapter: ChapterDisplay }): JSX.Element {
               className="settings__close-button"
               onClick={() => setShowSettings(false)}
             >
-              <i className="far fa-times-circle"></i>&nbsp;Close
+              <i className="far fa-times-circle" aria-hidden="true"></i>
+              &nbsp;Close
             </span>
           </footer>
         </div>

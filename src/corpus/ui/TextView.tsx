@@ -27,7 +27,7 @@ function TextView({
   fragmentService
 }): JSX.Element {
   return (
-    <>
+    <div className="text-view">
       <Introduction text={text} />
       <CollapsibleSection classNameBlock="text-view" heading="Chapters" open>
         <Chapters
@@ -56,7 +56,7 @@ function TextView({
           />
         ))}
       </CollapsibleSection>
-    </>
+    </div>
   )
 }
 

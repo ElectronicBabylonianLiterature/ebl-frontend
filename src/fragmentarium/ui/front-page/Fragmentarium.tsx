@@ -47,7 +47,10 @@ function Fragmentarium({
               </Col>
               {
                 <Col md={6}>
-                  <ApiImage fileName="Babel_Project_01_cropped.svg" />
+                  <ApiImage
+                    fileName="Babel_Project_01_cropped.svg"
+                    className="Fragmentarium__hero-image"
+                  />
                 </Col>
               }
             </Row>

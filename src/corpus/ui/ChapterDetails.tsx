@@ -9,23 +9,45 @@ export default function ChapterDetails({
   chapter: Chapter
 }): JSX.Element {
   return (
-    <Form>
-      <Row>
+    <Form className="chapter-details">
+      <Row className="chapter-details__row">
         <Form.Group as={Col} controlId={_.uniqueId('ChapterView-')}>
-          <Form.Label>Classification</Form.Label>
-          <Form.Control plaintext readOnly value={chapter.classification} />
+          <Form.Label className="chapter-details__label">
+            Classification
+          </Form.Label>
+          <Form.Control
+            plaintext
+            readOnly
+            value={chapter.classification}
+            className="chapter-details__value"
+          />
         </Form.Group>
         <Form.Group as={Col} controlId={_.uniqueId('ChapterView-')}>
-          <Form.Label>Stage</Form.Label>
-          <Form.Control plaintext readOnly value={chapter.stage} />
+          <Form.Label className="chapter-details__label">Stage</Form.Label>
+          <Form.Control
+            plaintext
+            readOnly
+            value={chapter.stage}
+            className="chapter-details__value"
+          />
         </Form.Group>
         <Form.Group as={Col} controlId={_.uniqueId('ChapterView-')}>
-          <Form.Label>Version</Form.Label>
-          <Form.Control plaintext readOnly value={chapter.version} />
+          <Form.Label className="chapter-details__label">Version</Form.Label>
+          <Form.Control
+            plaintext
+            readOnly
+            value={chapter.version}
+            className="chapter-details__value"
+          />
         </Form.Group>
         <Form.Group as={Col} controlId={_.uniqueId('ChapterView-')}>
-          <Form.Label>Name</Form.Label>
-          <Form.Control plaintext readOnly value={chapter.name} />
+          <Form.Label className="chapter-details__label">Name</Form.Label>
+          <Form.Control
+            plaintext
+            readOnly
+            value={chapter.name}
+            className="chapter-details__value"
+          />
         </Form.Group>
       </Row>
     </Form>

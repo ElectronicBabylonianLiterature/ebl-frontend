@@ -1,39 +1,40 @@
+@import src/design-tokens
 @import './TextAnnotation.sass'
 
 .named-entity
 
   &__BUILDING_NAME
-    @include indicator-label(BN, #D2B48C)
+    @include indicator-label(BN, $ebl-color-entity-building)
 
   &__CELESTIAL_NAME
-    @include indicator-label(CN, #87CEEB)
+    @include indicator-label(CN, $ebl-color-entity-celestial)
 
   &__DIVINE_NAME
-    @include indicator-label(DN, #F0E68C)
+    @include indicator-label(DN, $ebl-color-entity-divine)
 
   &__ETHNOS_NAME
-    @include indicator-label(EN, #DEB887)
+    @include indicator-label(EN, $ebl-color-entity-ethnos)
 
   &__PERSONAL_NAME
-    @include indicator-label(PN, #F4A460)
+    @include indicator-label(PN, $ebl-color-entity-personal)
 
   &__ROYAL_NAME
-    @include indicator-label(RN, #DA70D6)
+    @include indicator-label(RN, $ebl-color-entity-royal)
 
   &__FIELD_NAME
-    @include indicator-label(FN, #ADFF2F)
+    @include indicator-label(FN, $ebl-color-entity-field)
 
   &__GEOGRAPHICAL_NAME
-    @include indicator-label(GN, #CD853F)
+    @include indicator-label(GN, $ebl-color-entity-geographical)
 
   &__WATERCOURSE_NAME
-    @include indicator-label(WN, #87CEEB)
+    @include indicator-label(WN, $ebl-color-entity-celestial)
 
   &__MONTH_NAME
-    @include indicator-label(MN, #F5DEB3)
+    @include indicator-label(MN, $ebl-color-entity-month)
 
   &__YEAR_NAME
-    @include indicator-label(YN, #C0C0C0)
+    @include indicator-label(YN, $ebl-color-entity-year)
 
   &__OBJECT_NAME
-    @include indicator-label(ON, #A9A9A9)
+    @include indicator-label(ON, $ebl-color-entity-object)

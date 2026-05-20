@@ -52,19 +52,21 @@ export default function Info({
     )
 
   return (
-    <>
-      <Details
-        fragment={fragment}
-        updateGenres={updateGenres}
-        updateScript={updateScript}
-        updateDate={updateDate}
-        updateDatesInText={updateDatesInText}
-        fragmentService={fragmentService}
-        dossiersService={dossiersService}
-      />
-      <section>
-        <div className="info__header">
-          <h3>References</h3>
+    <div className="info">
+      <div className="info__section">
+        <Details
+          fragment={fragment}
+          updateGenres={updateGenres}
+          updateScript={updateScript}
+          updateDate={updateDate}
+          updateDatesInText={updateDatesInText}
+          fragmentService={fragmentService}
+          dossiersService={dossiersService}
+        />
+      </div>
+      <div className="info__section">
+        <div className="info__section-header">
+          <h3 className="info__section-title">References</h3>
           <ReferencesHelp className="info__help" />
         </div>
         <ReferenceList references={fragment.references} />
@@ -75,36 +77,46 @@ export default function Info({
             }
           />
         )}
-      </section>
+      </div>
       {!_.isEmpty(fragment.colophon) && (
-        <section>
-          <h3>Colophon</h3>
+        <div className="info__section">
+          <div className="info__section-header">
+            <h3 className="info__section-title">Colophon</h3>
+          </div>
           <ColophonInfo fragment={fragment} />
-        </section>
+        </div>
       )}
-      <section>
-        <h3>AfO-Register</h3>
+      <div className="info__section">
+        <div className="info__section-header">
+          <h3 className="info__section-title">AfO-Register</h3>
+        </div>
         <AfoRegisterFragmentRecords
           afoRegisterService={afoRegisterService}
           fragment={fragment}
         />
-      </section>
+      </div>
       {!_.isEmpty(fragment.projects) && (
-        <section>
-          <h3>Projects</h3>
+        <div className="info__section">
+          <div className="info__section-header">
+            <h3 className="info__section-title">Projects</h3>
+          </div>
           <ProjectList projects={fragment.projects} />
-        </section>
+        </div>
       )}
       {fragment.hasExternalResources && (
-        <section>
-          <h3>Resources</h3>
+        <div className="info__section">
+          <div className="info__section-header">
+            <h3 className="info__section-title">Resources</h3>
+          </div>
           <ExternalResources fragment={fragment} />
-        </section>
+        </div>
       )}
-      <TruncatedRecord
-        record={fragment.uniqueRecord}
-        number={fragment.number}
-      />
-    </>
+      <div className="info__section info__section--muted">
+        <TruncatedRecord
+          record={fragment.uniqueRecord}
+          number={fragment.number}
+        />
+      </div>
+    </div>
   )
 }

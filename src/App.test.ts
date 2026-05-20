@@ -2,6 +2,7 @@ import AppDriver from 'test-support/AppDriver'
 import FakeApi from 'test-support/FakeApi'
 import { statisticsFactory } from 'test-support/fragment-data-fixtures'
 import { tabIds as aboutTabIds } from 'about/ui/about'
+import { tabIds as toolsTabIds } from 'router/Tools'
 
 test.each([
   '/',
@@ -28,7 +29,10 @@ test.each([
   '/projects/CAIC/search',
   ...aboutTabIds.map((tabId) => '/about/' + tabId),
   '/tools',
-  ...['date-converter', 'list-of-kings'].map((tabId) => '/about/' + tabId),
+  '/tools/introduction',
+  ...toolsTabIds.map((tabId) => '/tools/' + tabId),
+  '/tools/dictionary/object_id',
+  '/tools/signs/sign_id',
   '/signs',
   '/signs/sign_id',
   '/impressum',
@@ -38,6 +42,53 @@ test.each([
   const fakeApi = new FakeApi()
     .allowStatistics(statisticsFactory.build())
     .allowProvenances([])
+    .allowDossiers([])
+    .allowGenres([])
+    .allowLatestFragments({ items: [], matchCountTotal: 0 })
   const appDriver = new AppDriver(fakeApi.client).withPath(route).render()
+
   await appDriver.waitForTextToDisappear('Loading...')
+  if (route === '/') {
+    await appDriver.waitForText('Latest Additions')
+    expect(appDriver.getView().queryAllByRole('alert')).toHaveLength(0)
+    expect(fakeApi.client.fetchJson).toHaveBeenCalledWith(
+      '/fragments/latest',
+      false,
+    )
+  }
+})
+
+test('home supporter links open safely in a new tab', async () => {
+  window.scrollTo = jest.fn()
+  const fakeApi = new FakeApi()
+    .allowStatistics(statisticsFactory.build())
+    .allowProvenances([])
+    .allowDossiers([])
+    .allowGenres([])
+    .allowLatestFragments({ items: [], matchCountTotal: 0 })
+  const appDriver = new AppDriver(fakeApi.client).withPath('/').render()
+
+  await appDriver.waitForTextToDisappear('Loading...')
+  await appDriver.waitForText('Latest Additions')
+
+  const heroLinks = Array.from(
+    appDriver.getView().container.querySelectorAll('.hero__logo-link'),
+  )
+  const supporterTitles = [
+    'Leibniz-Rechenzentrum',
+    'Humboldt Foundation',
+    'European Research Council',
+  ]
+
+  expect(heroLinks).toHaveLength(3)
+
+  supporterTitles.forEach((title) => {
+    const link = heroLinks.find(
+      (element) => element.getAttribute('title') === title,
+    )
+
+    expect(link).toBeDefined()
+    expect(link).toHaveAttribute('target', '_blank')
+    expect(link).toHaveAttribute('rel', 'noopener noreferrer')
+  })
 })

@@ -2,3 +2,20 @@
   margin: 0 auto 2em;
   max-width: 32em;
 }
+
+.Dictionary-search-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.Dictionary-search-header .Dictionary-search {
+  margin: 0;
+  width: 32em;
+  max-width: 100%;
+}
+
+.Dictionary-search-header__about {
+  margin-top: 0.35rem;
+}

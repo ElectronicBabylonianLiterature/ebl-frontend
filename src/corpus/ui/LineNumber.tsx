@@ -7,6 +7,7 @@ import referencePopover from 'bibliography/ui/referencePopover'
 import classnames from 'classnames'
 import { LineDisplay } from 'corpus/domain/chapter'
 import _ from 'lodash'
+import prefersReducedMotion from 'common/utils/prefersReducedMotion'
 
 const OldLineNumberCitation = referencePopover(({ reference }) => (
   <sup>{reference.authors.join('/')}</sup>
@@ -82,7 +83,8 @@ export default function LineNumber({
           onClick={(event) => {
             event.preventDefault()
             window.history.replaceState(null, '', hash)
-            ref.current?.scrollIntoView({ behavior: 'smooth' })
+            const behavior = prefersReducedMotion() ? 'auto' : 'smooth'
+            ref.current?.scrollIntoView({ behavior })
           }}
         >
           {lineNumberToString(line.number)}

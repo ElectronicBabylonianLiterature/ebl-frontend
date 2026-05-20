@@ -4,32 +4,51 @@ import withData from 'http/withData'
 
 import './Statistics.css'
 
-function StatRow({ value, label }: { value: string; label: string }) {
+const statConfig = [
+  { key: 'totalFragments', label: 'tablets indexed', icon: '𒀭' },
+  {
+    key: 'transliteratedFragments',
+    label: 'tablets transliterated',
+    icon: '𒁹',
+  },
+  { key: 'lines', label: 'lines of text', icon: '≡' },
+]
+
+function StatCard({
+  value,
+  label,
+  icon,
+}: {
+  value: string
+  label: string
+  icon: string
+}) {
   return (
-    <p className="Statistics__row">
-      <span className="Statistics__value"> {value} </span> {label}
-    </p>
+    <div className="Statistics__card">
+      <span className="Statistics__icon" aria-hidden="true">
+        {icon}
+      </span>
+      <span className="Statistics__value">{value}</span>
+      <span className="Statistics__label">{label}</span>
+    </div>
   )
 }
 
 function Statistics({ data }: { data: { readonly [key: string]: number } }) {
-  const localizedStatistics = _.mapValues(data, (value) =>
-    value.toLocaleString(),
-  )
+  const localized = _.mapValues(data, (v) => v.toLocaleString())
   return (
     <section className="Statistics">
-      <h3 className="SubsectionHeading--indented">
-        Current size of the Library:
-      </h3>
-      <StatRow
-        value={localizedStatistics.totalFragments}
-        label="tablets indexed"
-      />
-      <StatRow
-        value={localizedStatistics.transliteratedFragments}
-        label="tablets transliterated"
-      />
-      <StatRow value={localizedStatistics.lines} label="lines of text" />
+      <h3 className="Statistics__heading">Current size of the Library</h3>
+      <div className="Statistics__cards">
+        {statConfig.map(({ key, label, icon }) => (
+          <StatCard
+            key={key}
+            value={localized[key]}
+            label={label}
+            icon={icon}
+          />
+        ))}
+      </div>
     </section>
   )
 }

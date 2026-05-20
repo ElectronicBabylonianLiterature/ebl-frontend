@@ -54,9 +54,13 @@ function CompositeSignsInfo(): JSX.Element {
     >
       <Popover.Body>
         From Oracc Global Sign List &nbsp;&nbsp;
-        <ExternalLink href={'http://oracc.org/ogsl/'} className={'text-dark'}>
+        <ExternalLink
+          href={'http://oracc.org/ogsl/'}
+          className={'text-dark'}
+          aria-label="Open Oracc Global Sign List"
+        >
           {' '}
-          <i className="fas fa-external-link-square-alt" />
+          <i className="fas fa-external-link-square-alt" aria-hidden="true" />
         </ExternalLink>
       </Popover.Body>
     </Popover>
