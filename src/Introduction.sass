@@ -1,5 +1,7 @@
+@import src/design-tokens
+
 .hero
-  background-color: #0077be
+  background-color: $ebl-color-brand-primary
   color: white
   padding: 6rem 0
   margin-bottom: 4rem
@@ -113,7 +115,7 @@
     &--erc
       max-width: 9.4rem
 
-@media (max-width: 768px)
+@media (max-width: $ebl-breakpoint-md-max)
   .hero
     padding: 4rem 0
 
@@ -175,14 +177,14 @@
       margin-bottom: 0
 
     a
-      color: #0077be
+      color: $ebl-color-brand-primary
       text-decoration: none
       font-weight: 500
 
       &:hover
         text-decoration: underline
 
-@media (max-width: 768px)
+@media (max-width: $ebl-breakpoint-md-max)
   .introduction-text
     padding: 2rem 0 1.5rem
 
@@ -201,7 +203,7 @@
     gap: 1rem
 
   &__title
-    color: #0077be
+    color: $ebl-color-brand-primary
     font-size: 2rem
     font-weight: 700
     margin: 0
@@ -211,20 +213,20 @@
     align-items: center
     gap: 0.625rem
     padding: 0.625rem 1.25rem
-    color: #0077be
+    color: $ebl-color-brand-primary
     text-decoration: none
     font-weight: 600
     font-size: 0.95rem
     border-width: 2px
     border-style: solid
-    border-color: #0077be
+    border-color: $ebl-color-brand-primary
     border-radius: 50px
     flex-shrink: 0
     white-space: nowrap
     transition: all 0.3s ease
 
     &:hover
-      background-color: #0077be
+      background-color: $ebl-color-brand-primary
       color: white
       transform: translateY(-2px)
       box-shadow: 0 4px 12px rgba(0, 119, 190, 0.2)
@@ -254,7 +256,7 @@
 
   &:hover
     background-color: white
-    border-color: #0077be
+    border-color: $ebl-color-brand-primary
     transform: translateX(4px)
     box-shadow: 0 4px 16px rgba(0, 119, 190, 0.1)
     text-decoration: none
@@ -266,7 +268,7 @@
 
   &:focus-visible
     background-color: white
-    border-color: #0077be
+    border-color: $ebl-color-brand-primary
     transform: translateX(4px)
     box-shadow: 0 4px 16px rgba(0, 119, 190, 0.1)
     text-decoration: none
@@ -311,7 +313,7 @@
     flex: 1
     font-weight: 600
     font-size: 1rem
-    color: #0077be
+    color: $ebl-color-brand-primary
     min-width: 0
 
   &__period
@@ -347,14 +349,14 @@
 
   &__arrow
     flex-shrink: 0
-    color: #0077be
+    color: $ebl-color-brand-primary
     font-size: 1.1rem
     font-weight: 600
     opacity: 0
     transform: translateX(-4px)
     transition: all 0.3s ease
 
-@media (max-width: 768px)
+@media (max-width: $ebl-breakpoint-md-max)
   .latest-additions-preview
     padding: 1.5rem 0 3rem
 
@@ -399,7 +401,7 @@
     flex: 1
 
   &__title
-    color: #0077be
+    color: $ebl-color-brand-primary
     font-size: 2.5rem
     font-weight: 700
     margin: 0 0 0.5rem 0
@@ -417,24 +419,24 @@
     gap: 0.5rem
     padding: 0.75rem 1.5rem
     background-color: transparent
-    color: #0077be
+    color: $ebl-color-brand-primary
     text-decoration: none
     font-weight: 600
     border-width: 2px
     border-style: solid
-    border-color: #0077be
+    border-color: $ebl-color-brand-primary
     border-radius: 50px
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1)
     white-space: nowrap
 
     &:hover
-      background-color: #0077be
+      background-color: $ebl-color-brand-primary
       color: white
       transform: translateY(-2px)
       box-shadow: 0 4px 12px rgba(0, 119, 190, 0.2)
 
     &:focus-visible
-      background-color: #0077be
+      background-color: $ebl-color-brand-primary
       color: white
       transform: translateY(-2px)
       box-shadow: 0 4px 12px rgba(0, 119, 190, 0.2)
@@ -455,7 +457,7 @@
 
   &__featured-card
     position: relative
-    background: linear-gradient(135deg, #0077be 0%, #005a8f 100%)
+    background: linear-gradient(135deg, $ebl-color-brand-primary 0%, $ebl-color-brand-primary-dark 100%)
     border-radius: 16px
     padding: 2.5rem
     text-decoration: none
@@ -579,7 +581,7 @@
 
     &:hover
       background-color: white
-      border-color: #0077be
+      border-color: $ebl-color-brand-primary
       transform: translateX(4px)
       box-shadow: 0 4px 16px rgba(0, 119, 190, 0.1)
 
@@ -589,7 +591,7 @@
 
     &:focus-visible
       background-color: white
-      border-color: #0077be
+      border-color: $ebl-color-brand-primary
       transform: translateX(4px)
       box-shadow: 0 4px 16px rgba(0, 119, 190, 0.1)
       outline: 3px solid rgba(0, 119, 190, 0.35)
@@ -606,7 +608,7 @@
     display: flex
     align-items: center
     justify-content: center
-    background: linear-gradient(135deg, #0077be, #005a8f)
+    background: linear-gradient(135deg, $ebl-color-brand-primary, $ebl-color-brand-primary-dark)
     color: white
     border-radius: 12px
     font-weight: 700
@@ -630,14 +632,14 @@
 
   &__recent-arrow
     flex-shrink: 0
-    color: #0077be
+    color: $ebl-color-brand-primary
     font-size: 1.25rem
     font-weight: 600
     opacity: 0
     transform: translateX(-4px)
     transition: all 0.3s ease
 
-@media (max-width: 992px)
+@media (max-width: $ebl-breakpoint-lg-max)
   .introduction-news
     &__featured
       grid-template-columns: 1fr
@@ -646,7 +648,7 @@
     &__recent-list
       grid-template-columns: 1fr
 
-@media (max-width: 768px)
+@media (max-width: $ebl-breakpoint-md-max)
   .introduction-news
     margin: 3rem 0
 

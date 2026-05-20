@@ -1,3 +1,5 @@
+@import src/design-tokens
+
 .date_converter
   padding: 2rem 0
 
@@ -22,21 +24,21 @@
       margin-bottom: -2px
 
       &:hover
-        color: #0077be
-        background: rgba(0, 119, 190, 0.05)
-        border-bottom-color: rgba(0, 119, 190, 0.3)
+        color: $ebl-color-brand-primary
+        background: $ebl-color-brand-soft-subtle
+        border-bottom-color: rgba($ebl-color-brand-primary, 0.3)
 
       &.active
-        color: #0077be
+        color: $ebl-color-brand-primary
         background: white
-        border-bottom-color: #0077be
+        border-bottom-color: $ebl-color-brand-primary
         font-weight: 600
 
       &:focus-visible
-        color: #0077be
-        background: rgba(0, 119, 190, 0.05)
-        border-bottom-color: #0077be
-        outline: 2px solid rgb(0, 119, 190)
+        color: $ebl-color-brand-primary
+        background: $ebl-color-brand-soft-subtle
+        border-bottom-color: $ebl-color-brand-primary
+        outline: 2px solid $ebl-color-brand-primary
         outline-offset: 2px
 
   .markdown-text
@@ -49,7 +51,7 @@
       margin-bottom: 1rem
 
     strong
-      color: #0077be
+      color: $ebl-color-brand-primary
       font-weight: 600
 
 .section-row
@@ -59,7 +61,7 @@
   transition: background 0.2s ease
 
   &:hover
-    background: rgba(0, 119, 190, 0.02)
+    background: rgba($ebl-color-brand-primary, 0.02)
 
   &:last-child
     border-bottom: none
@@ -72,7 +74,7 @@
   font-size: 0.85rem
   letter-spacing: 1px
   font-weight: 600
-  color: #0077be
+  color: $ebl-color-brand-primary
   min-width: 40px
 
 .section-fields
@@ -88,15 +90,15 @@
     transition: all 0.2s ease
 
     &:focus
-      border-color: #0077be
-      box-shadow: 0 0 0 3px rgba(0, 119, 190, 0.1)
+      border-color: $ebl-color-brand-primary
+      box-shadow: 0 0 0 3px rgba($ebl-color-brand-primary, 0.1)
 
     &.active-field
       font-weight: 500
 
 .active-field
   background-color: #f9ffcf
-  border-color: #0077be !important
+  border-color: $ebl-color-brand-primary !important
 
 .copy-button
   border-radius: 8px
@@ -122,7 +124,7 @@
     outline-offset: 2px
 
 .copy-button-container
-  background: linear-gradient(135deg, #0077be 0%, #005a8f 100%)
+  background: linear-gradient(135deg, $ebl-color-brand-primary 0%, $ebl-color-brand-primary-dark 100%)
   border-radius: 12px
   padding: 1.5rem
   color: white

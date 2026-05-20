@@ -1,3 +1,5 @@
+@import src/design-tokens
+
 .Corpus
   &__tabs-header
     display: flex
@@ -46,14 +48,14 @@
 
           &:hover
             color: #133765
-            background-color: rgba(26, 95, 168, 0.08)
-            border-color: rgba(26, 95, 168, 0.2)
+            background-color: rgba($ebl-color-brand-primary, 0.08)
+            border-color: rgba($ebl-color-brand-primary, 0.2)
 
           &:focus-visible
             color: #133765
-            background-color: rgba(26, 95, 168, 0.08)
-            border-color: rgba(26, 95, 168, 0.2)
-            outline: 2px solid rgb(26, 95, 168)
+            background-color: rgba($ebl-color-brand-primary, 0.08)
+            border-color: rgba($ebl-color-brand-primary, 0.2)
+            outline: 2px solid $ebl-color-brand-primary
             outline-offset: 2px
 
           &.active
@@ -61,7 +63,7 @@
             background: #ffffff
             border-color: #dce2ea
             border-bottom-color: #ffffff
-            box-shadow: 0 -2px 0 0 #1a5fa8
+            box-shadow: 0 -2px 0 0 $ebl-color-brand-primary
 
   &__category
     margin-bottom: 1rem
@@ -78,19 +80,19 @@
       line-height: 1.45
 
       a
-        color: #1a5fa8
+        color: $ebl-color-brand-primary
         text-decoration: none
         transition: color 0.15s ease
         font-weight: 600
 
         &:hover
-          color: #0d3f72
+          color: $ebl-color-brand-primary-dark
           text-decoration: underline
 
         &:focus-visible
-          color: #0d3f72
+          color: $ebl-color-brand-primary-dark
           text-decoration: underline
-          outline: 2px solid rgb(26, 95, 168)
+          outline: 2px solid $ebl-color-brand-primary
           outline-offset: 2px
 
   h3
@@ -124,23 +126,23 @@
 
   &__genre-link
     font-size: 0.8rem
-    color: #1a5fa8
+    color: $ebl-color-brand-primary
     text-decoration: none
     font-weight: 500
 
     &:hover
-      color: #0d3f72
+      color: $ebl-color-brand-primary-dark
 
     &:focus-visible
-      color: #0d3f72
-      outline: 2px solid rgb(26, 95, 168)
+      color: $ebl-color-brand-primary-dark
+      outline: 2px solid $ebl-color-brand-primary
       outline-offset: 2px
 
 hr
   border-color: #edf0f5
   margin: 1.5rem 0
 
-@media (max-width: 768px)
+@media (max-width: $ebl-breakpoint-md-max)
   .Corpus
     &__layout
       flex-wrap: nowrap
