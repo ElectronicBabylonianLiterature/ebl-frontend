@@ -746,6 +746,8 @@ describe('Query FragmentService', () =>
   testDelegation(fragmentService, queryTestData))
 
 describe('FragmentService cache', () => {
+  const cacheTtlMilliseconds = 5 * 60 * 1000
+
   const number = 'K.1'
   const query: FragmentQuery = { lemmas: 'ina I', number: number }
   const reorderedQuery: FragmentQuery = { number: number, lemmas: 'ina I' }
@@ -760,6 +762,24 @@ describe('FragmentService cache', () => {
   let updatedFragment: Fragment
   let queryResult: QueryResult
   let updatedQueryResult: QueryResult
+
+  const withExpiredCacheTimestamp = async (
+    runTest: (expireCache: () => void) => PromiseLike<void> | void,
+  ): globalThis.Promise<void> => {
+    let currentTime = 0
+    const dateNow = jest
+      .spyOn(Date, 'now')
+      .mockImplementation(() => currentTime)
+    const expireCache = (): void => {
+      currentTime = cacheTtlMilliseconds + 1
+    }
+
+    try {
+      await runTest(expireCache)
+    } finally {
+      dateNow.mockRestore()
+    }
+  }
 
   beforeEach(() => {
     jest.clearAllMocks()
@@ -830,20 +850,17 @@ describe('FragmentService cache', () => {
   })
 
   test('refreshes expired fragment reads', async () => {
-    let currentTime = 0
-    const dateNow = jest
-      .spyOn(Date, 'now')
-      .mockImplementation(() => currentTime)
     fragmentRepository.find
       .mockReturnValueOnce(Promise.resolve(cachedFragment))
       .mockReturnValueOnce(Promise.resolve(updatedFragment))
 
-    await expect(service.find(number)).resolves.toEqual(cachedFragment)
-    currentTime = 5 * 60 * 1000 + 1
-    await expect(service.find(number)).resolves.toEqual(updatedFragment)
+    await withExpiredCacheTimestamp(async (expireCache) => {
+      await expect(service.find(number)).resolves.toEqual(cachedFragment)
+      expireCache()
+      await expect(service.find(number)).resolves.toEqual(updatedFragment)
+    })
 
     expect(fragmentRepository.find).toHaveBeenCalledTimes(2)
-    dateNow.mockRestore()
   })
 
   test('evicts oldest fragment cache entry when max size is exceeded', async () => {
@@ -891,20 +908,17 @@ describe('FragmentService cache', () => {
   })
 
   test('refreshes expired query results', async () => {
-    let currentTime = 0
-    const dateNow = jest
-      .spyOn(Date, 'now')
-      .mockImplementation(() => currentTime)
     fragmentRepository.query
       .mockReturnValueOnce(Promise.resolve(queryResult))
       .mockReturnValueOnce(Promise.resolve(updatedQueryResult))
 
-    await expect(service.query(query)).resolves.toEqual(queryResult)
-    currentTime = 5 * 60 * 1000 + 1
-    await expect(service.query(query)).resolves.toEqual(updatedQueryResult)
+    await withExpiredCacheTimestamp(async (expireCache) => {
+      await expect(service.query(query)).resolves.toEqual(queryResult)
+      expireCache()
+      await expect(service.query(query)).resolves.toEqual(updatedQueryResult)
+    })
 
     expect(fragmentRepository.query).toHaveBeenCalledTimes(2)
-    dateNow.mockRestore()
   })
 
   test('caches thumbnails by fragment number and size', async () => {
@@ -923,26 +937,23 @@ describe('FragmentService cache', () => {
   })
 
   test('refreshes expired thumbnails', async () => {
-    let currentTime = 0
-    const dateNow = jest
-      .spyOn(Date, 'now')
-      .mockImplementation(() => currentTime)
     const thumbnail = { blob: null }
     const refreshedThumbnail = { blob: new Blob(['refreshed']) }
     imageRepository.findThumbnail
       .mockReturnValueOnce(Promise.resolve(thumbnail))
       .mockReturnValueOnce(Promise.resolve(refreshedThumbnail))
 
-    await expect(service.findThumbnail(cachedFragment, 'small')).resolves.toBe(
-      thumbnail,
-    )
-    currentTime = 5 * 60 * 1000 + 1
-    await expect(service.findThumbnail(cachedFragment, 'small')).resolves.toBe(
-      refreshedThumbnail,
-    )
+    await withExpiredCacheTimestamp(async (expireCache) => {
+      await expect(
+        service.findThumbnail(cachedFragment, 'small'),
+      ).resolves.toBe(thumbnail)
+      expireCache()
+      await expect(
+        service.findThumbnail(cachedFragment, 'small'),
+      ).resolves.toBe(refreshedThumbnail)
+    })
 
     expect(imageRepository.findThumbnail).toHaveBeenCalledTimes(2)
-    dateNow.mockRestore()
   })
 
   test('evicts oldest thumbnail cache entry when max size is exceeded', async () => {
@@ -972,8 +983,13 @@ describe('FragmentService cache', () => {
       imageRepository,
       wordRepository,
       bibliographyService,
-      () => cacheScope,
     )
+    jest
+      .spyOn(
+        scopedService as unknown as { getCacheScope: () => string },
+        'getCacheScope',
+      )
+      .mockImplementation(() => cacheScope)
     fragmentRepository.find
       .mockReturnValueOnce(Promise.resolve(cachedFragment))
       .mockReturnValueOnce(Promise.resolve(updatedFragment))
