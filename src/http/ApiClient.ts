@@ -150,7 +150,6 @@ export default class ApiClient {
     path: string,
     authenticate: boolean,
     options: Options,
-    ignoredErrorStatuses: readonly number[] = [],
   ): Bluebird<Response> {
     return new Bluebird<Headers>((resolve, reject) => {
       this.createHeaders(authenticate, options.headers ?? {}, path)
@@ -172,11 +171,7 @@ export default class ApiClient {
       })
       .catch((error) => {
         const capturedError = error as Error & { __captured?: boolean }
-        const isIgnoredApiError =
-          error instanceof ApiError &&
-          error.status !== undefined &&
-          ignoredErrorStatuses.includes(error.status)
-        if (!isIgnoredApiError && !capturedError.__captured) {
+        if (!capturedError.__captured) {
           const errorInfo: Record<string, unknown> = {
             endpoint: path,
             method: options.method ?? 'GET',
@@ -199,13 +194,9 @@ export default class ApiClient {
     ) as Bluebird<T>
   }
 
-  fetchBlob(
-    path: string,
-    authenticate: boolean,
-    ignoredErrorStatuses: readonly number[] = [],
-  ): Bluebird<Blob> {
-    return this.fetch(path, authenticate, {}, ignoredErrorStatuses).then(
-      (response) => response.blob(),
+  fetchBlob(path: string, authenticate: boolean): Bluebird<Blob> {
+    return this.fetch(path, authenticate, {}).then((response) =>
+      response.blob(),
     )
   }
 
