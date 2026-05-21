@@ -2,6 +2,7 @@ import React from 'react'
 import { render, screen, fireEvent, within } from '@testing-library/react'
 import { Kings, brinkmanDynasties } from 'chronology/ui/Kings/Kings'
 import ListOfKings from './BrinkmanKingsTable'
+import { setReducedMotionMatchMedia } from 'test-support/matchMedia'
 
 test('renders intro and table', () => {
   render(<ListOfKings />)
@@ -74,22 +75,7 @@ test('clicking dynasty index link scrolls to dynasty', () => {
 })
 
 test('clicking dynasty index link uses non-animated scroll when reduced motion is enabled', () => {
-  const originalMatchMedia = window.matchMedia
-  Object.defineProperty(window, 'matchMedia', {
-    writable: true,
-    configurable: true,
-    value: (query: string): MediaQueryList =>
-      ({
-        matches: query === '(prefers-reduced-motion: reduce)',
-        media: query,
-        onchange: null,
-        addListener: jest.fn(),
-        removeListener: jest.fn(),
-        addEventListener: jest.fn(),
-        removeEventListener: jest.fn(),
-        dispatchEvent: jest.fn(),
-      }) as MediaQueryList,
-  })
+  const restoreMatchMedia = setReducedMotionMatchMedia(true)
 
   const scrollIntoView = jest.fn()
   window.HTMLElement.prototype.scrollIntoView = scrollIntoView
@@ -102,9 +88,5 @@ test('clicking dynasty index link uses non-animated scroll when reduced motion i
 
   expect(scrollIntoView).toHaveBeenCalledWith({ behavior: 'auto' })
 
-  Object.defineProperty(window, 'matchMedia', {
-    writable: true,
-    configurable: true,
-    value: originalMatchMedia,
-  })
+  restoreMatchMedia()
 })

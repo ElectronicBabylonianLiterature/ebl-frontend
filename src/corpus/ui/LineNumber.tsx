@@ -7,14 +7,7 @@ import referencePopover from 'bibliography/ui/referencePopover'
 import classnames from 'classnames'
 import { LineDisplay } from 'corpus/domain/chapter'
 import _ from 'lodash'
-
-function prefersReducedMotion(): boolean {
-  return (
-    typeof window !== 'undefined' &&
-    typeof window.matchMedia === 'function' &&
-    window.matchMedia('(prefers-reduced-motion: reduce)').matches
-  )
-}
+import prefersReducedMotion from 'common/utils/prefersReducedMotion'
 
 const OldLineNumberCitation = referencePopover(({ reference }) => (
   <sup>{reference.authors.join('/')}</sup>

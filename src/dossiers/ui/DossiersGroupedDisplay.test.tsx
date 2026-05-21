@@ -2,21 +2,10 @@ import React from 'react'
 import { render, screen, waitFor } from '@testing-library/react'
 import '@testing-library/jest-dom'
 import userEvent from '@testing-library/user-event'
+import 'test-support/mockMarkdownRenderers'
 import { DossiersGroupedDisplay } from './DossiersGroupedDisplay'
 import DossierRecord from 'dossiers/domain/DossierRecord'
 import { referenceDtoFactory } from 'test-support/bibliography-fixtures'
-
-jest.mock('common/utils/MarkdownAndHtmlToHtml', () => ({
-  __esModule: true,
-  default: ({ markdownAndHtml }: { markdownAndHtml: string }) => (
-    <div>{markdownAndHtml}</div>
-  ),
-}))
-
-jest.mock('common/ui/InlineMarkdown', () => ({
-  __esModule: true,
-  default: ({ source }: { source: string }) => <span>{source}</span>,
-}))
 
 const createMockRecordDto = (
   id: string,

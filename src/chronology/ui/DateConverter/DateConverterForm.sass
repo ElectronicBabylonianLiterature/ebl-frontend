@@ -1,3 +1,5 @@
+@import src/design-tokens
+
 .date_converter
   padding: 2rem 0
 
@@ -6,14 +8,14 @@
     background: white
     border-radius: 12px
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08)
-    border: 1px solid #e0e0e0
+    border: 1px solid $ebl-color-border-muted
     margin-top: 2rem
 
   .nav-tabs
-    border-bottom: 2px solid #e0e0e0
+    border-bottom: 2px solid $ebl-color-border-muted
 
     .nav-link
-      color: #666
+      color: $ebl-color-text-subtle
       border: none
       border-bottom: 3px solid transparent
       padding: 1rem 1.5rem
@@ -22,44 +24,44 @@
       margin-bottom: -2px
 
       &:hover
-        color: #0077be
-        background: rgba(0, 119, 190, 0.05)
-        border-bottom-color: rgba(0, 119, 190, 0.3)
+        color: $ebl-color-brand-primary
+        background: $ebl-color-brand-soft-subtle
+        border-bottom-color: rgba($ebl-color-brand-primary, 0.3)
 
       &.active
-        color: #0077be
+        color: $ebl-color-brand-primary
         background: white
-        border-bottom-color: #0077be
+        border-bottom-color: $ebl-color-brand-primary
         font-weight: 600
 
       &:focus-visible
-        color: #0077be
-        background: rgba(0, 119, 190, 0.05)
-        border-bottom-color: #0077be
-        outline: 2px solid rgb(0, 119, 190)
+        color: $ebl-color-brand-primary
+        background: $ebl-color-brand-soft-subtle
+        border-bottom-color: $ebl-color-brand-primary
+        outline: 2px solid $ebl-color-brand-primary
         outline-offset: 2px
 
   .markdown-text
     font-size: 1.05rem
     line-height: 1.8
-    color: #444
+    color: $ebl-color-text-body
     margin-bottom: 2rem
 
     p
       margin-bottom: 1rem
 
     strong
-      color: #0077be
+      color: $ebl-color-brand-primary
       font-weight: 600
 
 .section-row
   align-items: stretch
-  border-bottom: 1px solid #e9ecef
+  border-bottom: 1px solid $ebl-color-border-light
   padding: 1.5rem 0
   transition: background 0.2s ease
 
   &:hover
-    background: rgba(0, 119, 190, 0.02)
+    background: rgba($ebl-color-brand-primary, 0.02)
 
   &:last-child
     border-bottom: none
@@ -72,7 +74,7 @@
   font-size: 0.85rem
   letter-spacing: 1px
   font-weight: 600
-  color: #0077be
+  color: $ebl-color-brand-primary
   min-width: 40px
 
 .section-fields
@@ -80,7 +82,7 @@
 
   .form-control
     border-radius: 8px
-    border: 1px solid #d0d0d0
+    border: 1px solid $ebl-color-border-input
     padding: 0.45rem 0.75rem
     line-height: 1.5
     min-height: calc(1.5em + 0.9rem + 2px)
@@ -88,15 +90,15 @@
     transition: all 0.2s ease
 
     &:focus
-      border-color: #0077be
-      box-shadow: 0 0 0 3px rgba(0, 119, 190, 0.1)
+      border-color: $ebl-color-brand-primary
+      box-shadow: 0 0 0 3px rgba($ebl-color-brand-primary, 0.1)
 
     &.active-field
       font-weight: 500
 
 .active-field
-  background-color: #f9ffcf
-  border-color: #0077be !important
+  background-color: $ebl-color-highlight-active
+  border-color: $ebl-color-brand-primary !important
 
 .copy-button
   border-radius: 8px
@@ -122,7 +124,7 @@
     outline-offset: 2px
 
 .copy-button-container
-  background: linear-gradient(135deg, #0077be 0%, #005a8f 100%)
+  background: linear-gradient(135deg, $ebl-color-brand-primary 0%, $ebl-color-brand-primary-dark 100%)
   border-radius: 12px
   padding: 1.5rem
   color: white

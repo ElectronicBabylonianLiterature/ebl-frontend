@@ -1,3 +1,5 @@
+@import src/design-tokens
+
 .cuneiform-converter-form
   padding: 2rem
 
@@ -6,25 +8,25 @@
 
     label
       font-weight: 600
-      color: #2c3e50
+      color: $ebl-color-project-title
       margin-bottom: 0.75rem
       font-size: 1.05rem
 
   .form-control
     border-radius: 8px
-    border: 1px solid #d0d0d0
+    border: 1px solid $ebl-color-border-input
     padding: 0.75rem 1rem
     transition: all 0.2s ease
 
     &:focus
-      border-color: #0077be
-      box-shadow: 0 0 0 3px rgba(0, 119, 190, 0.1)
+      border-color: $ebl-color-brand-primary
+      box-shadow: 0 0 0 3px rgba($ebl-color-brand-primary, 0.1)
 
   textarea.form-control
     font-size: 150%
     min-height: 150px
     line-height: 1.6
-    background: linear-gradient(135deg, #fafafa 0%, #ffffff 100%)
+    background: linear-gradient(135deg, $ebl-color-surface-soft 0%, $ebl-color-surface-primary 100%)
 
     &.assurbanipal
       font-family: Assurbanipal, Junicode, serif
@@ -45,7 +47,7 @@
       font-family: 'Hittite', Junicode, serif
 
   .btn-primary
-    background: linear-gradient(135deg, #0077be 0%, #005a8f 100%)
+    background: linear-gradient(135deg, $ebl-color-brand-primary 0%, $ebl-color-brand-primary-dark 100%)
     border: none
     padding: 0.75rem 2rem
     border-radius: 8px
@@ -54,10 +56,10 @@
 
     &:hover
       transform: translateY(-2px)
-      box-shadow: 0 4px 12px rgba(0, 119, 190, 0.3)
+      box-shadow: 0 4px 12px rgba($ebl-color-brand-primary, 0.3)
 
   .alert
     border-radius: 8px
     border-left-width: 4px
     border-left-style: solid
-    border-left-color: #0077be
+    border-left-color: $ebl-color-brand-primary

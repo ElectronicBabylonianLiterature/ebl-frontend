@@ -1,3 +1,5 @@
+@import src/design-tokens
+
 .dossier-records__item, .dossier-records__item__active
     display: inline-flex
     align-items: baseline
@@ -14,27 +16,27 @@
     text-decoration-style: dotted
 
     &:hover, &:focus-visible
-        color: #0056b3
+        color: $ebl-color-brand-primary-hover
         text-decoration-style: solid
 
     &:focus-visible
-        outline-color: #0056b3
+        outline-color: $ebl-color-brand-primary-hover
         outline-style: solid
         outline-width: 2px
         outline-offset: 2px
 
 .dossier-search-link
-    color: #6c757d
+    color: $ebl-color-text-secondary
     font-size: 1.02em
     font-weight: 700
     text-decoration: none
 
     &:hover, &:focus-visible
-        color: #0056b3
+        color: $ebl-color-brand-primary-hover
         text-decoration: none
 
     &:focus-visible
-        outline-color: #0056b3
+        outline-color: $ebl-color-brand-primary-hover
         outline-style: solid
         outline-width: 2px
         outline-offset: 2px
@@ -60,7 +62,7 @@
 
 .dossier-group__header
     font-weight: 600
-    color: #333
+    color: $ebl-color-text-emphasis
     margin-bottom: 4px
     font-size: 0.95em
 

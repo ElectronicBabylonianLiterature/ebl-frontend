@@ -1,45 +1,47 @@
+@import src/design-tokens
+
 .list-of-manuscripts
     width: 100%
     border-collapse: separate
     border-spacing: 0
 
     &__header
-        border-top: 1px solid #dce2ea
-        border-bottom: 1px solid #dce2ea
-        background: #f4f6f9
+        border-top: 1px solid $ebl-color-border-subtle
+        border-bottom: 1px solid $ebl-color-border-subtle
+        background: $ebl-color-surface-subtle
 
     &__column-heading
         font-style: normal
         font-weight: bold
-        color: #1a3a6b
+        color: $ebl-color-text-corpus-primary
         padding: 0.55rem 0.6rem
         font-size: 0.8rem
         text-transform: uppercase
         letter-spacing: 0.06em
 
     &__provenance-heading
-        border-top: 1px solid #dce2ea
+        border-top: 1px solid $ebl-color-border-subtle
         font-weight: bold
         padding-top: 0.8em
-        color: #1a3a6b
-        background: #fbfcfe
+        color: $ebl-color-text-corpus-primary
+        background: $ebl-color-surface-corpus-highlight
         padding-bottom: 0.35rem
 
     &__siglum-heading
         font-weight: normal
         padding-right: 1em
         vertical-align: top
-        color: #1a3a6b
+        color: $ebl-color-text-corpus-primary
         padding-top: 0.6rem
 
     &__extant-lines,
     &__museum-numbers
         vertical-align: top
         padding-top: 0.6rem
-        color: #2d3748
+        color: $ebl-color-text-corpus-body
 
     tbody tr
-        border-bottom: 1px solid #edf0f5
+        border-bottom: 1px solid $ebl-color-border-corpus-soft
 
     &__references,
     &__uncertain-fragments

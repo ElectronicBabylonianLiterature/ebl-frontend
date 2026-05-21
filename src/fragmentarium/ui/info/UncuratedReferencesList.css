@@ -1,7 +1,7 @@
 .UncuratedReferencesList__searchTerm {
   font-family: monospace;
-  background-color: #f4f6f9;
-  border: 1px solid #dce2ea;
+  background-color: var(--ebl-color-surface-subtle);
+  border: 1px solid var(--ebl-color-border-subtle);
   font-size: 0.82em;
-  color: #1a5fa8;
+  color: var(--ebl-color-brand-primary);
 }
