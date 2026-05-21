@@ -25,7 +25,7 @@ export default function AboutBibliography(
         5,432 (as of February 2026). A complete list of the ca. 1100 books and articles
         that have been fully and systematically indexed by the project staff is given below:"
       />
-      <h3>II. AfO-Register</h3>
+      <h3 id="afo-register">II. AfO-Register</h3>
       <MarkdownParagraph
         text="The field of Assyriology is fortunate to have a bibliographical repertoire that
         has been published continuously since the 1970s. The

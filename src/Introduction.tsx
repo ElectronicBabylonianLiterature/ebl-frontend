@@ -117,7 +117,12 @@ function IntroText(): JSX.Element {
           <a href="https://caic.badw.de">
             <i>Cuneiform Artefacts of Iraq in Context</i>
           </a>{' '}
-          project (CAIC, BAdW, 2022–2046).
+          project (CAIC, BAdW, 2022–2046). From 2025 to 2030, the project
+          receives additional support from an ERC Consolidator Grant (
+          <a href="https://doi.org/10.3030/101171038">
+            <i>Rewriting the End of Cuneiform Culture</i>
+          </a>
+          , Grant agreement ID: 101171038).
         </p>
       </Container>
     </section>

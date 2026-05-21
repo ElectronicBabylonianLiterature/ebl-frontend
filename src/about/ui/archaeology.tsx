@@ -19,7 +19,7 @@ export default function AboutArchaeology(
               libraries in the individual polities of ancient Mesopotamia. Archaeological
               information for each tablet is recorded in the `archaeology` property of its
               record in the Library; a technical description of the data model is available
-              [here](https://github.com/ElectronicBabylonianLiterature/generic-documentation/blob/master/guides/archaeology.md)."
+              [here](https://github.com/ElectronicBabylonianLiterature/generic-documentation/blob/master/backend-docs/02-data-model.md#archaeology-on-a-fragment)."
       />
       <h3>I. Nineveh</h3>
       <MarkdownParagraph
