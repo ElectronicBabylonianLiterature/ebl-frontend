@@ -68,7 +68,9 @@ class SignRepository {
   getCentroidImages(signName: string): Promise<CroppedAnnotation[]> {
     return this.apiClient
       .fetchJson(
-        `/signs/${encodeURIComponent(signName)}/images?centroids_only=true`,
+        `/signs/${encodeURIComponent(
+          signName,
+        )}/images?centroids_only=true&include_unclustered=true`,
         false,
       )
       .then(this.processCroppedAnnotations)
