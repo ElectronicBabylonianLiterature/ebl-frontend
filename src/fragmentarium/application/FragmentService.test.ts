@@ -860,11 +860,23 @@ describe('FragmentService cache', () => {
     expect(fragmentRepository.find).toHaveBeenCalledTimes(252)
   })
 
-  test('caches latest query results', async () => {
+  test('does not cache latest query results', async () => {
     fragmentRepository.queryLatest.mockReturnValue(Promise.resolve(queryResult))
 
     await expect(service.queryLatest()).resolves.toEqual(queryResult)
     await expect(service.queryLatest()).resolves.toEqual(queryResult)
+
+    expect(fragmentRepository.queryLatest).toHaveBeenCalledTimes(2)
+  })
+
+  test('shares in-flight latest query requests', async () => {
+    fragmentRepository.queryLatest.mockReturnValue(Promise.resolve(queryResult))
+
+    const firstResult = service.queryLatest()
+    const secondResult = service.queryLatest()
+
+    await expect(firstResult).resolves.toEqual(queryResult)
+    await expect(secondResult).resolves.toEqual(queryResult)
 
     expect(fragmentRepository.queryLatest).toHaveBeenCalledTimes(1)
   })
@@ -883,15 +895,15 @@ describe('FragmentService cache', () => {
     const dateNow = jest
       .spyOn(Date, 'now')
       .mockImplementation(() => currentTime)
-    fragmentRepository.queryLatest
+    fragmentRepository.query
       .mockReturnValueOnce(Promise.resolve(queryResult))
       .mockReturnValueOnce(Promise.resolve(updatedQueryResult))
 
-    await expect(service.queryLatest()).resolves.toEqual(queryResult)
+    await expect(service.query(query)).resolves.toEqual(queryResult)
     currentTime = 5 * 60 * 1000 + 1
-    await expect(service.queryLatest()).resolves.toEqual(updatedQueryResult)
+    await expect(service.query(query)).resolves.toEqual(updatedQueryResult)
 
-    expect(fragmentRepository.queryLatest).toHaveBeenCalledTimes(2)
+    expect(fragmentRepository.query).toHaveBeenCalledTimes(2)
     dateNow.mockRestore()
   })
 

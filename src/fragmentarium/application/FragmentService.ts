@@ -548,11 +548,9 @@ export class FragmentService {
   }
 
   queryLatest(): Bluebird<QueryResult> {
-    return this.getOrFetchCachedValue(
-      this.cachedQueryResults,
+    return this.getOrFetchInFlightRequest(
       this.cachedQueryResultRequests,
       latestQueryCacheKey,
-      maximumCachedQueryResults,
       () => this.fragmentRepository.queryLatest(),
     )
   }
@@ -638,6 +636,30 @@ export class FragmentService {
           requests.delete(key)
         }
       })
+
+    requestReference.current = request
+    requests.set(key, request)
+    return request.then((value) => value)
+  }
+
+  private getOrFetchInFlightRequest<CacheKey, CacheValue>(
+    requests: Map<CacheKey, Bluebird<CacheValue>>,
+    key: CacheKey,
+    fetchValue: () => Bluebird<CacheValue>,
+  ): Bluebird<CacheValue> {
+    this.clearCachesWhenScopeChanges()
+
+    const cachedRequest = requests.get(key)
+    if (cachedRequest) {
+      return cachedRequest.then((value) => value)
+    }
+
+    const requestReference: { current?: Bluebird<CacheValue> } = {}
+    const request = fetchValue().finally(() => {
+      if (requests.get(key) === requestReference.current) {
+        requests.delete(key)
+      }
+    })
 
     requestReference.current = request
     requests.set(key, request)
