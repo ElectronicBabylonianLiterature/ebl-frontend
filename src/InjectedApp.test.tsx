@@ -160,7 +160,7 @@ describe('InjectedApp', () => {
     expect(getCacheScope()).toBe('guest')
   })
 
-  test('uses ebl name cache scope for authenticated users', () => {
+  test('uses subject cache scope as primary identity for authenticated users', () => {
     ;(mockAuthService.isAuthenticated as jest.Mock).mockReturnValue(true)
     ;(mockAuthService.getUser as jest.Mock).mockReturnValue({
       [eblNameProperty]: '  user-a  ',
@@ -172,7 +172,7 @@ describe('InjectedApp', () => {
 
     const getCacheScope = getCacheScopeResolverFromFragmentServiceConstructor()
 
-    expect(getCacheScope()).toBe('authenticated:user-a')
+    expect(getCacheScope()).toBe('authenticated:auth0|subject-a')
   })
 
   test('uses subject cache scope when profile names are empty', () => {
@@ -190,7 +190,7 @@ describe('InjectedApp', () => {
     expect(getCacheScope()).toBe('authenticated:auth0|subject-b')
   })
 
-  test('uses authenticated cache scope when no identifier is available', () => {
+  test('uses uncacheable authenticated scope when no identifier is available', () => {
     ;(mockAuthService.isAuthenticated as jest.Mock).mockReturnValue(true)
     ;(mockAuthService.getUser as jest.Mock).mockReturnValue({
       [eblNameProperty]: ' ',
@@ -202,6 +202,47 @@ describe('InjectedApp', () => {
 
     const getCacheScope = getCacheScopeResolverFromFragmentServiceConstructor()
 
-    expect(getCacheScope()).toBe('authenticated')
+    const firstScope = getCacheScope()
+    const secondScope = getCacheScope()
+
+    expect(firstScope).toMatch(/^authenticated:uncacheable-session:/)
+    expect(secondScope).toMatch(/^authenticated:uncacheable-session:/)
+    expect(firstScope).not.toEqual(secondScope)
+  })
+
+  test('uses uncacheable authenticated scope when user lookup throws', () => {
+    ;(mockAuthService.isAuthenticated as jest.Mock).mockReturnValue(true)
+    ;(mockAuthService.getUser as jest.Mock).mockImplementation(() => {
+      throw new Error('lookup failed')
+    })
+
+    renderInjectedApp()
+
+    const getCacheScope = getCacheScopeResolverFromFragmentServiceConstructor()
+
+    const firstScope = getCacheScope()
+    const secondScope = getCacheScope()
+
+    expect(firstScope).toMatch(/^authenticated:uncacheable-session:/)
+    expect(secondScope).toMatch(/^authenticated:uncacheable-session:/)
+    expect(firstScope).not.toEqual(secondScope)
+  })
+
+  test('isolates cache scope when authenticated user changes', () => {
+    ;(mockAuthService.isAuthenticated as jest.Mock).mockReturnValue(true)
+    ;(mockAuthService.getUser as jest.Mock).mockReturnValue({
+      sub: 'auth0|subject-a',
+    })
+
+    renderInjectedApp()
+
+    const getCacheScope = getCacheScopeResolverFromFragmentServiceConstructor()
+
+    expect(getCacheScope()).toBe('authenticated:auth0|subject-a')
+    ;(mockAuthService.getUser as jest.Mock).mockReturnValue({
+      sub: 'auth0|subject-b',
+    })
+
+    expect(getCacheScope()).toBe('authenticated:auth0|subject-b')
   })
 })

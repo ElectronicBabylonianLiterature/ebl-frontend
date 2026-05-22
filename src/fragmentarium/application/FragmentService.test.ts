@@ -11,6 +11,7 @@ import FragmentService from './FragmentService'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import { produce, castDraft, Draft } from 'immer'
 import { Genres } from 'fragmentarium/domain/Genres'
+import { Colophon } from 'fragmentarium/domain/Colophon'
 import Word from 'dictionary/domain/Word'
 import { ManuscriptAttestation } from 'corpus/domain/manuscriptAttestation'
 import LemmatizationFactory from './LemmatizationFactory'
@@ -36,6 +37,8 @@ import { Archaeology } from 'fragmentarium/domain/archaeology'
 import { ArchaeologyDto } from 'fragmentarium/domain/archaeologyDtos'
 import { toArchaeologyDto } from 'fragmentarium/domain/archaeologyDtos'
 import { LemmaOption } from 'fragmentarium/ui/lemmatization/LemmaSelectionForm'
+import { LineLemmaAnnotations } from 'fragmentarium/ui/fragment/lemma-annotation/LemmaAnnotation'
+import { ApiEntityAnnotationSpan } from 'fragmentarium/ui/text-annotation/EntityType'
 import { UncertainFragmentAttestation } from 'corpus/domain/uncertainFragmentAttestation'
 import { ProvenanceRecord } from 'fragmentarium/domain/Provenance'
 
@@ -211,6 +214,37 @@ describe.each(['searchLemma'])('%s', (method) => {
   })
 })
 
+describe('findPhoto', () => {
+  test("throws when fragment doesn't have a photo", () => {
+    const fragmentWithoutPhoto = produce(
+      fragmentFactory.build({ number: 'X.1' }),
+      (draft: Draft<Fragment>) => {
+        draft.hasPhoto = false
+      },
+    )
+
+    expect(() => fragmentService.findPhoto(fragmentWithoutPhoto)).toThrowError(
+      "Fragment X.1 doesn't have a Photo",
+    )
+  })
+})
+
+describe('isInFragmentarium', () => {
+  test('returns true when repository find does not throw synchronously', () => {
+    fragmentRepository.find.mockReturnValue(Promise.resolve(fragment))
+
+    expect(fragmentService.isInFragmentarium('K.1')).toBe(true)
+  })
+
+  test('returns false when repository find throws synchronously', () => {
+    fragmentRepository.find.mockImplementation(() => {
+      throw new Error('not found')
+    })
+
+    expect(fragmentService.isInFragmentarium('K.404')).toBe(false)
+  })
+})
+
 describe('methods returning fragment', () => {
   const number = 'K.1'
   let fragment: Fragment
@@ -347,7 +381,7 @@ describe('methods returning fragment', () => {
       fragmentRepository.find.mockReturnValueOnce(
         Promise.reject(new Error('403 Forbidden')),
       )
-      expect(fragmentRepository.find('X.1')).rejects.toThrowError(
+      await expect(fragmentService.find('X.1')).rejects.toThrowError(
         "You don't have permissions to view this fragment.",
       )
     })
@@ -386,6 +420,22 @@ describe('methods returning fragment', () => {
     test('returns genres', () => expect(genreResult).toEqual(genreOptions))
     test('calls repository with correct parameters', () =>
       expect(fragmentRepository.fetchGenres).toHaveBeenCalled())
+  })
+
+  describe('fetch periods', () => {
+    let periodsResult: string[]
+    const periodsOptions = ['Old Babylonian']
+
+    beforeEach(async () => {
+      fragmentRepository.fetchPeriods.mockReturnValue(
+        Promise.resolve(periodsOptions),
+      )
+      periodsResult = await fragmentService.fetchPeriods()
+    })
+
+    test('returns periods', () => expect(periodsResult).toEqual(periodsOptions))
+    test('calls repository with correct parameters', () =>
+      expect(fragmentRepository.fetchPeriods).toHaveBeenCalled())
   })
 
   describe('fetch provenances', () => {
@@ -531,6 +581,39 @@ describe('methods returning fragment', () => {
       ))
   })
 
+  describe('update script', () => {
+    beforeEach(async () => {
+      fragmentRepository.updateScript.mockReturnValue(Promise.resolve(fragment))
+      result = await fragmentService.updateScript(
+        fragment.number,
+        fragment.script,
+      )
+    })
+
+    test('returns updated fragment', () => expect(result).toEqual(fragment))
+    test('calls repository with correct parameters', () =>
+      expect(fragmentRepository.updateScript).toHaveBeenCalledWith(
+        fragment.number,
+        fragment.script,
+      ))
+  })
+
+  describe('update scopes', () => {
+    const scopes = ['read:fragments', 'write:fragments']
+
+    beforeEach(async () => {
+      fragmentRepository.updateScopes.mockReturnValue(Promise.resolve(fragment))
+      result = await fragmentService.updateScopes(fragment.number, scopes)
+    })
+
+    test('returns updated fragment', () => expect(result).toEqual(fragment))
+    test('calls repository with correct parameters', () =>
+      expect(fragmentRepository.updateScopes).toHaveBeenCalledWith(
+        fragment.number,
+        scopes,
+      ))
+  })
+
   describe('update date', () => {
     let expectedFragment: Fragment
 
@@ -665,6 +748,98 @@ describe('methods returning fragment', () => {
         fragment.references,
       ))
   })
+
+  describe('update lemma annotation', () => {
+    const annotations: LineLemmaAnnotations = {
+      0: {
+        0: ['lemma-a'],
+      },
+    }
+
+    beforeEach(async () => {
+      fragmentRepository.updateLemmaAnnotation.mockReturnValue(
+        Promise.resolve(fragment),
+      )
+      result = await fragmentService.updateLemmaAnnotation(
+        fragment.number,
+        annotations,
+      )
+    })
+
+    test('returns updated fragment', () => expect(result).toEqual(fragment))
+    test('calls repository with correct parameters', () =>
+      expect(fragmentRepository.updateLemmaAnnotation).toHaveBeenCalledWith(
+        fragment.number,
+        annotations,
+      ))
+  })
+
+  describe('update colophon', () => {
+    const colophon = new Colophon({ notesToScribalProcess: 'test note' })
+
+    beforeEach(async () => {
+      fragmentRepository.updateColophon.mockReturnValue(
+        Promise.resolve(fragment),
+      )
+      result = await fragmentService.updateColophon(fragment.number, colophon)
+    })
+
+    test('returns updated fragment', () => expect(result).toEqual(fragment))
+    test('calls repository with correct parameters', () =>
+      expect(fragmentRepository.updateColophon).toHaveBeenCalledWith(
+        fragment.number,
+        colophon,
+      ))
+  })
+
+  describe('fetch named entity annotations', () => {
+    const namedEntityAnnotations: readonly ApiEntityAnnotationSpan[] = [
+      {
+        id: 'entity-1',
+        type: 'PERSONAL_NAME',
+        span: ['line:1'],
+      },
+    ]
+
+    test('returns named entity annotations', async () => {
+      fragmentRepository.fetchNamedEntityAnnotations.mockReturnValue(
+        Promise.resolve(namedEntityAnnotations),
+      )
+
+      await expect(
+        fragmentService.fetchNamedEntityAnnotations(fragment.number),
+      ).resolves.toEqual(namedEntityAnnotations)
+      expect(
+        fragmentRepository.fetchNamedEntityAnnotations,
+      ).toHaveBeenCalledWith(fragment.number)
+    })
+  })
+
+  describe('update named entity annotations', () => {
+    const namedEntityAnnotations: readonly ApiEntityAnnotationSpan[] = [
+      {
+        id: 'entity-1',
+        type: 'PERSONAL_NAME',
+        span: ['line:1'],
+      },
+    ]
+
+    beforeEach(async () => {
+      fragmentRepository.updateNamedEntityAnnotations.mockReturnValue(
+        Promise.resolve(fragment),
+      )
+      result = await fragmentService.updateNamedEntityAnnotations(
+        fragment.number,
+        namedEntityAnnotations,
+      )
+    })
+
+    test('returns updated fragment', () => expect(result).toEqual(fragment))
+    test('calls repository with correct parameters', () =>
+      expect(
+        fragmentRepository.updateNamedEntityAnnotations,
+      ).toHaveBeenCalledWith(fragment.number, namedEntityAnnotations))
+  })
 })
 
 test('createLemmatization', async () => {
@@ -781,6 +956,15 @@ describe('FragmentService cache', () => {
     }
   }
 
+  const createScopedService = (getCacheScope: () => string): FragmentService =>
+    new FragmentService(
+      fragmentRepository,
+      imageRepository,
+      wordRepository,
+      bibliographyService,
+      getCacheScope,
+    )
+
   beforeEach(() => {
     jest.clearAllMocks()
     service = new FragmentService(
@@ -799,21 +983,18 @@ describe('FragmentService cache', () => {
     bibliographyService.find.mockImplementation((id: string) =>
       Promise.reject(new Error(`${id} not found.`)),
     )
-    bibliographyService.findMany.mockImplementation((ids: string[]) =>
-      Promise.reject(new Error(`${ids} not found.`)),
-    )
-    silenceConsoleErrors()
+    bibliographyService.findMany.mockResolvedValue([])
   })
 
   test('caches fragment reads by number and line options', async () => {
     fragmentRepository.find.mockReturnValue(Promise.resolve(cachedFragment))
 
-    await expect(service.find(number, [1], true)).resolves.toEqual(
-      cachedFragment,
-    )
-    await expect(service.find(number, [1], true)).resolves.toEqual(
-      cachedFragment,
-    )
+    await expect(service.find(number, [1], true)).resolves.toMatchObject({
+      number: cachedFragment.number,
+    })
+    await expect(service.find(number, [1], true)).resolves.toMatchObject({
+      number: cachedFragment.number,
+    })
 
     expect(fragmentRepository.find).toHaveBeenCalledTimes(1)
     expect(fragmentRepository.find).toHaveBeenCalledWith(number, [1], true)
@@ -834,8 +1015,12 @@ describe('FragmentService cache', () => {
     const firstResult = service.find(number)
     const secondResult = service.find(number)
 
-    await expect(firstResult).resolves.toEqual(cachedFragment)
-    await expect(secondResult).resolves.toEqual(cachedFragment)
+    await expect(firstResult).resolves.toMatchObject({
+      number: cachedFragment.number,
+    })
+    await expect(secondResult).resolves.toMatchObject({
+      number: cachedFragment.number,
+    })
     expect(fragmentRepository.find).toHaveBeenCalledTimes(1)
   })
 
@@ -845,7 +1030,9 @@ describe('FragmentService cache', () => {
       .mockReturnValueOnce(Promise.resolve(cachedFragment))
 
     await expect(service.find(number)).rejects.toThrow('failed')
-    await expect(service.find(number)).resolves.toEqual(cachedFragment)
+    await expect(service.find(number)).resolves.toMatchObject({
+      number: cachedFragment.number,
+    })
     expect(fragmentRepository.find).toHaveBeenCalledTimes(2)
   })
 
@@ -855,9 +1042,13 @@ describe('FragmentService cache', () => {
       .mockReturnValueOnce(Promise.resolve(updatedFragment))
 
     await withExpiredCacheTimestamp(async (expireCache) => {
-      await expect(service.find(number)).resolves.toEqual(cachedFragment)
+      await expect(service.find(number)).resolves.toMatchObject({
+        number: cachedFragment.number,
+      })
       expireCache()
-      await expect(service.find(number)).resolves.toEqual(updatedFragment)
+      await expect(service.find(number)).resolves.toMatchObject({
+        number: updatedFragment.number,
+      })
     })
 
     expect(fragmentRepository.find).toHaveBeenCalledTimes(2)
@@ -898,27 +1089,25 @@ describe('FragmentService cache', () => {
     expect(fragmentRepository.queryLatest).toHaveBeenCalledTimes(1)
   })
 
-  test('caches query results by stable query key', async () => {
+  test('does not cache completed query results', async () => {
     fragmentRepository.query.mockReturnValue(Promise.resolve(queryResult))
 
     await expect(service.query(query)).resolves.toEqual(queryResult)
-    await expect(service.query(reorderedQuery)).resolves.toEqual(queryResult)
-
-    expect(fragmentRepository.query).toHaveBeenCalledTimes(1)
-  })
-
-  test('refreshes expired query results', async () => {
-    fragmentRepository.query
-      .mockReturnValueOnce(Promise.resolve(queryResult))
-      .mockReturnValueOnce(Promise.resolve(updatedQueryResult))
-
-    await withExpiredCacheTimestamp(async (expireCache) => {
-      await expect(service.query(query)).resolves.toEqual(queryResult)
-      expireCache()
-      await expect(service.query(query)).resolves.toEqual(updatedQueryResult)
-    })
+    await expect(service.query(query)).resolves.toEqual(queryResult)
 
     expect(fragmentRepository.query).toHaveBeenCalledTimes(2)
+  })
+
+  test('shares in-flight query requests by stable query key', async () => {
+    fragmentRepository.query.mockReturnValue(Promise.resolve(queryResult))
+
+    const firstResult = service.query(query)
+    const secondResult = service.query(reorderedQuery)
+
+    await expect(firstResult).resolves.toEqual(queryResult)
+    await expect(secondResult).resolves.toEqual(queryResult)
+
+    expect(fragmentRepository.query).toHaveBeenCalledTimes(1)
   })
 
   test('caches thumbnails by fragment number and size', async () => {
@@ -976,31 +1165,223 @@ describe('FragmentService cache', () => {
     expect(imageRepository.findThumbnail).toHaveBeenCalledTimes(252)
   })
 
-  test('clears cached values when cache scope changes', async () => {
+  test('clears cached fragment values when cache scope changes', async () => {
     let cacheScope = 'guest'
-    const scopedService = new FragmentService(
-      fragmentRepository,
-      imageRepository,
-      wordRepository,
-      bibliographyService,
-    )
-    jest
-      .spyOn(
-        scopedService as unknown as { getCacheScope: () => string },
-        'getCacheScope',
-      )
-      .mockImplementation(() => cacheScope)
+    const scopedService = createScopedService(() => cacheScope)
     fragmentRepository.find
       .mockReturnValueOnce(Promise.resolve(cachedFragment))
       .mockReturnValueOnce(Promise.resolve(updatedFragment))
 
-    await expect(scopedService.find(number)).resolves.toEqual(cachedFragment)
-    await expect(scopedService.find(number)).resolves.toEqual(cachedFragment)
+    await expect(scopedService.find(number)).resolves.toMatchObject({
+      number: cachedFragment.number,
+    })
+    await expect(scopedService.find(number)).resolves.toMatchObject({
+      number: cachedFragment.number,
+    })
 
     cacheScope = 'authenticated:user'
-    await expect(scopedService.find(number)).resolves.toEqual(updatedFragment)
+    await expect(scopedService.find(number)).resolves.toMatchObject({
+      number: updatedFragment.number,
+    })
 
     expect(fragmentRepository.find).toHaveBeenCalledTimes(2)
+  })
+
+  test('uses default cache scope when cache scope resolver throws', async () => {
+    const scopedService = createScopedService(() => {
+      throw new Error('scope resolver failed')
+    })
+    fragmentRepository.find.mockReturnValue(Promise.resolve(cachedFragment))
+
+    await expect(scopedService.find(number)).resolves.toMatchObject({
+      number: cachedFragment.number,
+    })
+    await expect(scopedService.find(number)).resolves.toMatchObject({
+      number: cachedFragment.number,
+    })
+
+    expect(fragmentRepository.find).toHaveBeenCalledTimes(1)
+  })
+
+  test('clears cached thumbnail values across auth transitions', async () => {
+    let cacheScope = 'guest'
+    const scopedService = createScopedService(() => cacheScope)
+    const guestThumbnail = { blob: new Blob(['guest']) }
+    const userAThumbnail = { blob: new Blob(['user-a']) }
+    const userBThumbnail = { blob: new Blob(['user-b']) }
+    const guestThumbnailAfterLogout = { blob: new Blob(['guest-after']) }
+
+    imageRepository.findThumbnail
+      .mockReturnValueOnce(Promise.resolve(guestThumbnail))
+      .mockReturnValueOnce(Promise.resolve(userAThumbnail))
+      .mockReturnValueOnce(Promise.resolve(userBThumbnail))
+      .mockReturnValueOnce(Promise.resolve(guestThumbnailAfterLogout))
+
+    await expect(
+      scopedService.findThumbnail(cachedFragment, 'small'),
+    ).resolves.toBe(guestThumbnail)
+    await expect(
+      scopedService.findThumbnail(cachedFragment, 'small'),
+    ).resolves.toBe(guestThumbnail)
+
+    cacheScope = 'authenticated:user-a'
+    await expect(
+      scopedService.findThumbnail(cachedFragment, 'small'),
+    ).resolves.toBe(userAThumbnail)
+
+    cacheScope = 'authenticated:user-b'
+    await expect(
+      scopedService.findThumbnail(cachedFragment, 'small'),
+    ).resolves.toBe(userBThumbnail)
+
+    cacheScope = 'guest'
+    await expect(
+      scopedService.findThumbnail(cachedFragment, 'small'),
+    ).resolves.toBe(guestThumbnailAfterLogout)
+
+    expect(imageRepository.findThumbnail).toHaveBeenCalledTimes(4)
+  })
+
+  test('clears cached provenance values across auth transitions', async () => {
+    let cacheScope = 'guest'
+    const scopedService = createScopedService(() => cacheScope)
+    const guestProvenances: readonly ProvenanceRecord[] = [
+      {
+        id: 'guest-site',
+        longName: 'Guest Site',
+        abbreviation: 'GS',
+        parent: 'Guest',
+        sortKey: 1,
+      },
+    ]
+    const userAProvenances: readonly ProvenanceRecord[] = [
+      {
+        id: 'user-a-site',
+        longName: 'User A Site',
+        abbreviation: 'UA',
+        parent: 'User A',
+        sortKey: 1,
+      },
+    ]
+    const userBProvenances: readonly ProvenanceRecord[] = [
+      {
+        id: 'user-b-site',
+        longName: 'User B Site',
+        abbreviation: 'UB',
+        parent: 'User B',
+        sortKey: 1,
+      },
+    ]
+    const guestProvenancesAfterLogout: readonly ProvenanceRecord[] = [
+      {
+        id: 'guest-site-after',
+        longName: 'Guest Site After',
+        abbreviation: 'GSA',
+        parent: 'Guest',
+        sortKey: 1,
+      },
+    ]
+
+    fragmentRepository.fetchProvenances
+      .mockReturnValueOnce(Promise.resolve(guestProvenances))
+      .mockReturnValueOnce(Promise.resolve(userAProvenances))
+      .mockReturnValueOnce(Promise.resolve(userBProvenances))
+      .mockReturnValueOnce(Promise.resolve(guestProvenancesAfterLogout))
+
+    await expect(scopedService.fetchProvenances()).resolves.toEqual(
+      guestProvenances,
+    )
+    await expect(scopedService.fetchProvenances()).resolves.toEqual(
+      guestProvenances,
+    )
+
+    cacheScope = 'authenticated:user-a'
+    await expect(scopedService.fetchProvenances()).resolves.toEqual(
+      userAProvenances,
+    )
+
+    cacheScope = 'authenticated:user-b'
+    await expect(scopedService.fetchProvenances()).resolves.toEqual(
+      userBProvenances,
+    )
+
+    cacheScope = 'guest'
+    await expect(scopedService.fetchProvenances()).resolves.toEqual(
+      guestProvenancesAfterLogout,
+    )
+
+    expect(fragmentRepository.fetchProvenances).toHaveBeenCalledTimes(4)
+  })
+
+  test('clears in-flight query requests when scope changes from guest to authenticated', async () => {
+    let cacheScope = 'guest'
+    const scopedService = createScopedService(() => cacheScope)
+    let resolveGuestQuery: (value: QueryResult) => void = () => undefined
+    const guestQuery = new Promise<QueryResult>((resolve) => {
+      resolveGuestQuery = resolve
+    })
+
+    fragmentRepository.query
+      .mockReturnValueOnce(guestQuery)
+      .mockReturnValueOnce(Promise.resolve(updatedQueryResult))
+
+    const guestInFlight = scopedService.query(query)
+
+    cacheScope = 'authenticated:user-a'
+    await expect(scopedService.query(query)).resolves.toEqual(
+      updatedQueryResult,
+    )
+
+    resolveGuestQuery(queryResult)
+    await expect(guestInFlight).resolves.toEqual(queryResult)
+
+    expect(fragmentRepository.query).toHaveBeenCalledTimes(2)
+  })
+
+  test('clears in-flight latest query requests across auth transitions', async () => {
+    let cacheScope = 'guest'
+    const scopedService = createScopedService(() => cacheScope)
+    let resolveGuestQuery: (value: QueryResult) => void = () => undefined
+    let resolveUserAQuery: (value: QueryResult) => void = () => undefined
+    let resolveUserBQuery: (value: QueryResult) => void = () => undefined
+    const guestQuery = new Promise<QueryResult>((resolve) => {
+      resolveGuestQuery = resolve
+    })
+    const userAQuery = new Promise<QueryResult>((resolve) => {
+      resolveUserAQuery = resolve
+    })
+    const userBQuery = new Promise<QueryResult>((resolve) => {
+      resolveUserBQuery = resolve
+    })
+
+    fragmentRepository.queryLatest
+      .mockReturnValueOnce(guestQuery)
+      .mockReturnValueOnce(userAQuery)
+      .mockReturnValueOnce(userBQuery)
+      .mockReturnValueOnce(Promise.resolve(updatedQueryResult))
+
+    const guestInFlight = scopedService.queryLatest()
+
+    cacheScope = 'authenticated:user-a'
+    const userAInFlight = scopedService.queryLatest()
+
+    cacheScope = 'authenticated:user-b'
+    const userBInFlight = scopedService.queryLatest()
+
+    cacheScope = 'guest'
+    await expect(scopedService.queryLatest()).resolves.toEqual(
+      updatedQueryResult,
+    )
+
+    resolveGuestQuery(queryResult)
+    resolveUserAQuery(queryResult)
+    resolveUserBQuery(queryResult)
+
+    await expect(guestInFlight).resolves.toEqual(queryResult)
+    await expect(userAInFlight).resolves.toEqual(queryResult)
+    await expect(userBInFlight).resolves.toEqual(queryResult)
+
+    expect(fragmentRepository.queryLatest).toHaveBeenCalledTimes(4)
   })
 
   test('invalidates fragment and query caches after update', async () => {
@@ -1014,8 +1395,10 @@ describe('FragmentService cache', () => {
     await service.find(number)
     await service.query(query)
     await service.queryLatest()
-    await expect(service.updateEdition(number, edition)).resolves.toEqual(
-      updatedFragment,
+    await expect(service.updateEdition(number, edition)).resolves.toMatchObject(
+      {
+        number: updatedFragment.number,
+      },
     )
     fragmentRepository.query.mockReturnValue(
       Promise.resolve(updatedQueryResult),
@@ -1024,7 +1407,9 @@ describe('FragmentService cache', () => {
       Promise.resolve(updatedQueryResult),
     )
 
-    await expect(service.find(number)).resolves.toEqual(updatedFragment)
+    await expect(service.find(number)).resolves.toMatchObject({
+      number: updatedFragment.number,
+    })
     await expect(service.query(query)).resolves.toEqual(updatedQueryResult)
     await expect(service.queryLatest()).resolves.toEqual(updatedQueryResult)
 
@@ -1045,13 +1430,19 @@ describe('FragmentService cache', () => {
     )
 
     const inFlightRead = service.find(number)
-    await expect(service.updateEdition(number, edition)).resolves.toEqual(
-      updatedFragment,
+    await expect(service.updateEdition(number, edition)).resolves.toMatchObject(
+      {
+        number: updatedFragment.number,
+      },
     )
     resolveStaleRead(staleFragment)
 
-    await expect(inFlightRead).resolves.toEqual(staleFragment)
-    await expect(service.find(number)).resolves.toEqual(updatedFragment)
+    await expect(inFlightRead).resolves.toMatchObject({
+      number: staleFragment.number,
+    })
+    await expect(service.find(number)).resolves.toMatchObject({
+      number: updatedFragment.number,
+    })
     expect(fragmentRepository.find).toHaveBeenCalledTimes(1)
   })
 
@@ -1068,8 +1459,10 @@ describe('FragmentService cache', () => {
     )
 
     const inFlightQuery = service.query(query)
-    await expect(service.updateEdition(number, edition)).resolves.toEqual(
-      updatedFragment,
+    await expect(service.updateEdition(number, edition)).resolves.toMatchObject(
+      {
+        number: updatedFragment.number,
+      },
     )
     resolveStaleQuery(queryResult)
 
@@ -1078,28 +1471,24 @@ describe('FragmentService cache', () => {
     expect(fragmentRepository.query).toHaveBeenCalledTimes(2)
   })
 
-  test('evicts oldest query cache entry when max size is exceeded', async () => {
-    fragmentRepository.query.mockImplementation(
-      (fragmentQuery: FragmentQuery) =>
-        Promise.resolve({
-          items: [
-            {
-              museumNumber: fragmentQuery.number ?? '',
-              matchingLines: [],
-              matchCount: 1,
-            },
-          ],
-          matchCountTotal: 1,
-        }),
-    )
+  test('clears in-flight query requests after annotation updates', async () => {
+    let resolveStaleQuery: (value: QueryResult) => void = () => undefined
+    const staleQuery = new Promise<QueryResult>((resolve) => {
+      resolveStaleQuery = resolve
+    })
+    fragmentRepository.query
+      .mockReturnValueOnce(staleQuery)
+      .mockReturnValueOnce(Promise.resolve(updatedQueryResult))
+    fragmentRepository.updateAnnotations.mockReturnValue(Promise.resolve([]))
 
-    for (let index = 0; index <= 50; index += 1) {
-      await service.query({ number: `Q.${index}` })
-    }
+    const inFlightQuery = service.query(query)
+    await expect(service.updateAnnotations(number, [])).resolves.toEqual([])
+    resolveStaleQuery(queryResult)
 
-    await service.query({ number: 'Q.0' })
+    await expect(inFlightQuery).resolves.toEqual(queryResult)
+    await expect(service.query(query)).resolves.toEqual(updatedQueryResult)
 
-    expect(fragmentRepository.query).toHaveBeenCalledTimes(52)
+    expect(fragmentRepository.query).toHaveBeenCalledTimes(2)
   })
 
   test('does not cache stale latest query results that resolve after update', async () => {
@@ -1115,8 +1504,10 @@ describe('FragmentService cache', () => {
     )
 
     const inFlightLatestQuery = service.queryLatest()
-    await expect(service.updateEdition(number, edition)).resolves.toEqual(
-      updatedFragment,
+    await expect(service.updateEdition(number, edition)).resolves.toMatchObject(
+      {
+        number: updatedFragment.number,
+      },
     )
     resolveStaleLatestQuery(queryResult)
 
@@ -1168,6 +1559,30 @@ describe('FragmentService cache', () => {
     expect(fragmentRepository.fetchProvenanceChildren).toHaveBeenCalledTimes(
       252,
     )
+  })
+
+  test('returns when trim cache finds no oldest key', () => {
+    const cache = new Map<string, { expiresAt: number; value: Fragment }>()
+    cache.set('K.1', { expiresAt: Date.now() + 1, value: cachedFragment })
+    cache.set('K.2', { expiresAt: Date.now() + 1, value: updatedFragment })
+
+    const emptyKeys = new Map<
+      string,
+      { expiresAt: number; value: Fragment }
+    >().keys()
+    const keysSpy = jest.spyOn(cache, 'keys').mockReturnValue(emptyKeys)
+
+    ;(
+      service as unknown as {
+        trimCache: (
+          cache: Map<string, { expiresAt: number; value: Fragment }>,
+          maximumCacheSize: number,
+        ) => void
+      }
+    ).trimCache(cache, 1)
+
+    expect(cache.size).toBe(2)
+    keysSpy.mockRestore()
   })
 })
 

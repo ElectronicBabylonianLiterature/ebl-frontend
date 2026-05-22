@@ -46,7 +46,6 @@ import { stringify } from 'query-string'
 
 const cacheEntryLifetimeInMilliseconds = 5 * 60 * 1000
 const maximumCachedFragments = 250
-const maximumCachedQueryResults = 50
 const maximumCachedThumbnails = 250
 const maximumCachedProvenanceRecords = 250
 const maximumCachedProvenanceChildren = 250
@@ -201,10 +200,6 @@ export class FragmentService {
   private readonly cachedFragmentRequests = new Map<
     string,
     Bluebird<Fragment>
-  >()
-  private readonly cachedQueryResults = new Map<
-    string,
-    CacheEntry<QueryResult>
   >()
   private readonly cachedQueryResultRequests = new Map<
     string,
@@ -512,6 +507,7 @@ export class FragmentService {
       .updateAnnotations(number, annotations)
       .then((updatedAnnotations) => {
         this.clearCachedFragments(number)
+        this.clearCachedQueryResults()
         return updatedAnnotations
       })
   }
@@ -538,11 +534,9 @@ export class FragmentService {
 
   query(fragmentQuery: FragmentQuery): Bluebird<QueryResult> {
     const cacheKey = this.createQueryCacheKey(fragmentQuery)
-    return this.getOrFetchCachedValue(
-      this.cachedQueryResults,
+    return this.getOrFetchInFlightRequest(
       this.cachedQueryResultRequests,
       cacheKey,
-      maximumCachedQueryResults,
       () => this.fragmentRepository.query(fragmentQuery),
     )
   }
@@ -739,7 +733,6 @@ export class FragmentService {
   }
 
   private clearCachedQueryResults(): void {
-    this.cachedQueryResults.clear()
     this.cachedQueryResultRequests.clear()
   }
 
@@ -752,7 +745,6 @@ export class FragmentService {
     this.cachedProvenanceChildrenByIdRequest.clear()
     this.cachedFragments.clear()
     this.cachedFragmentRequests.clear()
-    this.cachedQueryResults.clear()
     this.cachedQueryResultRequests.clear()
     this.cachedThumbnails.clear()
     this.cachedThumbnailRequests.clear()

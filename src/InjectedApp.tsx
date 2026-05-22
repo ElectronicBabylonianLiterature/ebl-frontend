@@ -29,21 +29,42 @@ import DossiersService from 'dossiers/application/DossiersService'
 import DossiersRepository from 'dossiers/infrastructure/DossiersRepository'
 import { ErrorReporter } from 'ErrorReporterContext'
 
+const unauthenticatedCacheScope = 'guest'
+const authenticatedCacheScopePrefix = 'authenticated:'
+const uncacheableAuthenticatedScopePrefix = 'authenticated:uncacheable-session:'
+let uncacheableAuthenticatedScopeCounter = 0
+
+function resolveAuthenticatedIdentity(
+  authenticationService: AuthenticationService,
+): string | null {
+  try {
+    const user = authenticationService.getUser()
+    const identity = [user.sub, user[eblNameProperty], user.name]
+      .map((value) => String(value ?? '').trim())
+      .find((value) => value.length > 0)
+    return identity ?? null
+  } catch {
+    return null
+  }
+}
+
+function createUncacheableAuthenticatedScope(): string {
+  uncacheableAuthenticatedScopeCounter += 1
+  return `${uncacheableAuthenticatedScopePrefix}${uncacheableAuthenticatedScopeCounter}`
+}
+
 function getFragmentCacheScope(
   authenticationService: AuthenticationService,
 ): string {
   if (!authenticationService.isAuthenticated()) {
-    return 'guest'
+    return unauthenticatedCacheScope
   }
-  try {
-    const user = authenticationService.getUser()
-    const identity = [user[eblNameProperty], user.name, user.sub]
-      .map((value) => String(value ?? '').trim())
-      .find((value) => value.length > 0)
-    return identity ? `authenticated:${identity}` : 'authenticated'
-  } catch {
-    return 'authenticated'
-  }
+  const authenticatedIdentity = resolveAuthenticatedIdentity(
+    authenticationService,
+  )
+  return authenticatedIdentity
+    ? `${authenticatedCacheScopePrefix}${authenticatedIdentity}`
+    : createUncacheableAuthenticatedScope()
 }
 
 export default function InjectedApp({
