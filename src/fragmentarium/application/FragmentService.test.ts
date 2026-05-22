@@ -581,36 +581,34 @@ describe('methods returning fragment', () => {
       ))
   })
 
-  describe('update script', () => {
+  const scopes = ['read:fragments', 'write:fragments']
+
+  describe.each([
+    {
+      description: 'update script',
+      repositoryMethod: fragmentRepository.updateScript,
+      expectedValue: () => fragment.script,
+      serviceCall: (number: string) =>
+        fragmentService.updateScript(number, fragment.script),
+    },
+    {
+      description: 'update scopes',
+      repositoryMethod: fragmentRepository.updateScopes,
+      expectedValue: () => scopes,
+      serviceCall: (number: string) =>
+        fragmentService.updateScopes(number, scopes),
+    },
+  ])('$description', ({ repositoryMethod, expectedValue, serviceCall }) => {
     beforeEach(async () => {
-      fragmentRepository.updateScript.mockReturnValue(Promise.resolve(fragment))
-      result = await fragmentService.updateScript(
-        fragment.number,
-        fragment.script,
-      )
+      repositoryMethod.mockReturnValue(Promise.resolve(fragment))
+      result = await serviceCall(fragment.number)
     })
 
     test('returns updated fragment', () => expect(result).toEqual(fragment))
     test('calls repository with correct parameters', () =>
-      expect(fragmentRepository.updateScript).toHaveBeenCalledWith(
+      expect(repositoryMethod).toHaveBeenCalledWith(
         fragment.number,
-        fragment.script,
-      ))
-  })
-
-  describe('update scopes', () => {
-    const scopes = ['read:fragments', 'write:fragments']
-
-    beforeEach(async () => {
-      fragmentRepository.updateScopes.mockReturnValue(Promise.resolve(fragment))
-      result = await fragmentService.updateScopes(fragment.number, scopes)
-    })
-
-    test('returns updated fragment', () => expect(result).toEqual(fragment))
-    test('calls repository with correct parameters', () =>
-      expect(fragmentRepository.updateScopes).toHaveBeenCalledWith(
-        fragment.number,
-        scopes,
+        expectedValue(),
       ))
   })
 
