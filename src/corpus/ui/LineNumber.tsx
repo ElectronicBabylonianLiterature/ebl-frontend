@@ -7,6 +7,7 @@ import referencePopover from 'bibliography/ui/referencePopover'
 import classnames from 'classnames'
 import { LineDisplay } from 'corpus/domain/chapter'
 import _ from 'lodash'
+import prefersReducedMotion from 'common/utils/prefersReducedMotion'
 
 function prefersReducedMotion(): boolean {
   return (

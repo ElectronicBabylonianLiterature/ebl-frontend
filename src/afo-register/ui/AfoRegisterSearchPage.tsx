@@ -8,6 +8,7 @@ import AfoRegisterSearchForm, {
 import AfoRegisterService from 'afo-register/application/AfoRegisterService'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import { Markdown } from 'common/ui/Markdown'
+import AboutInlineLink from 'common/ui/AboutInlineLink'
 
 function getAfoRegisterQueryFromLocation(search: string): AfoRegisterQuery {
   const query = parse(search) as AfoRegisterQuery
@@ -44,10 +45,17 @@ export default function AfoRegisterSearchPage({
   return (
     <>
       <AfoRegisterIntroduction />
-      <div className="AfoRegister__search">
-        <AfoRegisterSearchForm
-          queryProp={query}
-          afoRegisterService={afoRegisterService}
+      <div className="AfoRegister__search-header">
+        <div className="AfoRegister__search">
+          <AfoRegisterSearchForm
+            queryProp={query}
+            afoRegisterService={afoRegisterService}
+          />
+        </div>
+        <AboutInlineLink
+          to="/about/bibliography#afo-register"
+          label="AfO-Register"
+          className="AfoRegister__about-link"
         />
       </div>
       <div className="AfoRegister__search_results">

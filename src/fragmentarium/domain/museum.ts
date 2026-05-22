@@ -231,6 +231,13 @@ export const Museums = {
     country: 'DK',
     url: 'https://en.natmus.dk/',
   },
+  NATIONAL_MUSEUM_OF_WORLD_WRITING_SYSTEMS: {
+    key: 'NATIONAL_MUSEUM_OF_WORLD_WRITING_SYSTEMS',
+    name: 'National Museum of World Writing Systems',
+    city: 'Incheon',
+    country: 'KR',
+    url: 'https://mow.or.kr/',
+  },
   OAKLAND_MUSEUM: {
     key: 'OAKLAND_MUSEUM',
     name: 'Oakland Museum of California',
