@@ -122,6 +122,7 @@ describe('findThumbnail', () => {
     promise = imageRepository.findThumbnail(number, size)
     await expect(promise).resolves.toEqual({ blob: null })
   })
+
   it('Throws error if another problem occurs', async () => {
     jest
       .spyOn(apiClient, 'fetchBlob')
