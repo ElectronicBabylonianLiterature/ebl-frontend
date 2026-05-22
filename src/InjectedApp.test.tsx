@@ -1,7 +1,7 @@
 import React from 'react'
 import { render, screen, waitFor } from '@testing-library/react'
 import Bluebird from 'bluebird'
-import { AuthenticationContext } from 'auth/Auth'
+import { AuthenticationContext, eblNameProperty } from 'auth/Auth'
 import type { AuthenticationService } from 'auth/Auth'
 import { guestSession } from 'auth/Session'
 import FragmentService from 'fragmentarium/application/FragmentService'
@@ -59,8 +59,22 @@ function renderInjectedApp() {
   )
 }
 
+function getCacheScopeResolverFromFragmentServiceConstructor(): () => string {
+  const fragmentServiceMock = FragmentService as jest.MockedClass<
+    typeof FragmentService
+  >
+  const constructorCalls = fragmentServiceMock.mock.calls
+  const lastConstructorCall = constructorCalls[constructorCalls.length - 1]
+  expect(lastConstructorCall).toBeDefined()
+  const getCacheScope = lastConstructorCall[4]
+  expect(getCacheScope).toBeDefined()
+  return getCacheScope as () => string
+}
+
 beforeEach(() => {
   jest.clearAllMocks()
+  ;(mockAuthService.isAuthenticated as jest.Mock).mockReturnValue(false)
+  ;(mockAuthService.getUser as jest.Mock).mockReturnValue({})
   FragmentService.prototype.fetchProvenances = jest
     .fn()
     .mockReturnValue(Bluebird.resolve([]))
@@ -134,5 +148,60 @@ describe('InjectedApp', () => {
     await waitFor(() => {
       expect(mockErrorReporter.captureException).toHaveBeenCalledWith(error)
     })
+  })
+
+  test('uses guest cache scope when user is not authenticated', () => {
+    ;(mockAuthService.isAuthenticated as jest.Mock).mockReturnValue(false)
+
+    renderInjectedApp()
+
+    const getCacheScope = getCacheScopeResolverFromFragmentServiceConstructor()
+
+    expect(getCacheScope()).toBe('guest')
+  })
+
+  test('uses ebl name cache scope for authenticated users', () => {
+    ;(mockAuthService.isAuthenticated as jest.Mock).mockReturnValue(true)
+    ;(mockAuthService.getUser as jest.Mock).mockReturnValue({
+      [eblNameProperty]: '  user-a  ',
+      name: 'name-a',
+      sub: 'auth0|subject-a',
+    })
+
+    renderInjectedApp()
+
+    const getCacheScope = getCacheScopeResolverFromFragmentServiceConstructor()
+
+    expect(getCacheScope()).toBe('authenticated:user-a')
+  })
+
+  test('uses subject cache scope when profile names are empty', () => {
+    ;(mockAuthService.isAuthenticated as jest.Mock).mockReturnValue(true)
+    ;(mockAuthService.getUser as jest.Mock).mockReturnValue({
+      [eblNameProperty]: '  ',
+      name: ' ',
+      sub: 'auth0|subject-b',
+    })
+
+    renderInjectedApp()
+
+    const getCacheScope = getCacheScopeResolverFromFragmentServiceConstructor()
+
+    expect(getCacheScope()).toBe('authenticated:auth0|subject-b')
+  })
+
+  test('uses authenticated cache scope when no identifier is available', () => {
+    ;(mockAuthService.isAuthenticated as jest.Mock).mockReturnValue(true)
+    ;(mockAuthService.getUser as jest.Mock).mockReturnValue({
+      [eblNameProperty]: ' ',
+      name: '',
+      sub: ' ',
+    })
+
+    renderInjectedApp()
+
+    const getCacheScope = getCacheScopeResolverFromFragmentServiceConstructor()
+
+    expect(getCacheScope()).toBe('authenticated')
   })
 })

@@ -37,8 +37,10 @@ function getFragmentCacheScope(
   }
   try {
     const user = authenticationService.getUser()
-    const identity = user[eblNameProperty] ?? user.name ?? ''
-    return `authenticated:${identity}`
+    const identity = [user[eblNameProperty], user.name, user.sub]
+      .map((value) => String(value ?? '').trim())
+      .find((value) => value.length > 0)
+    return identity ? `authenticated:${identity}` : 'authenticated'
   } catch {
     return 'authenticated'
   }
