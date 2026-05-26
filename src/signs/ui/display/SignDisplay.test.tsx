@@ -44,7 +44,7 @@ const sign = new Sign({
   name: 'BU',
   unicode: [74127],
   values: [new Value('gabu'), new Value('dul', 10), new Value('du', 1)],
-  mesZl: `123	**ALSK13**	𒁇𒍴
+  mesZl: `123**ALSK13**𒁇𒍴
 Lorem ipsum dolor *sit* amet, consetetur <span style="color: #00610F;">*sadipscing*(*l*)*ubasd*</span>sadipscing elitr, sed diam *nonumy*
 eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet c
 lita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam

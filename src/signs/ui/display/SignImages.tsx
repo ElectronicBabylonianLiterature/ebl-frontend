@@ -40,7 +40,7 @@ function SignImage({
   croppedAnnotation: CroppedAnnotation
   isCentroid?: boolean
 }): JSX.Element {
-  const label = croppedAnnotation.label ? `${croppedAnnotation.label} ` : ''
+  const label = croppedAnnotation.label ?? ''
 
   return (
     <div className={isCentroid ? 'sign-images__centroid-col' : undefined}>
