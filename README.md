@@ -35,7 +35,12 @@ This project is configured to work with [GitHub Codespaces](https://github.com/f
 3. Create a new codespace or open an existing one
 4. **Important:** For dev containers to work properly, open the codespace in the **desktop version of VS Code** rather than the browser. When the codespace starts, VS Code will prompt you to open it in the desktop application.
 5. Once opened in VS Code desktop, the dev container will automatically set up the development environment
-6. Configure the required environment variables in `.env.local` (see [Running the application](#running-the-application) section)
+6. `.env.local` is created automatically from `.env.test` before the container
+   builds. If you have configured [Codespaces secrets](https://docs.github.com/en/codespaces/managing-your-codespaces/managing-secrets-for-your-codespaces)
+   with the same names as the keys in `.env.test`, they are injected into
+   `.env.local` automatically and the app will be fully configured on first start.
+   Otherwise, open `.env.local` inside the container and fill in your credentials
+   (see [Running the application](#running-the-application) section).
 7. Dependencies are installed automatically via the `postCreateCommand` in the dev container configuration (you can manually run `yarn install` if needed)
 8. You're ready to develop!
 
@@ -154,6 +159,7 @@ REACT_APP_SENTRY_DSN=<Sentry DSN>
 REACT_APP_CORRECTIONS_EMAIL=<Email for submitting corrections>
 REACT_APP_INFO_EMAIL=<Email for general questions and contact>
 REACT_APP_GA_TRACKING_ID=<Google Analytics 4 tracking (measurement) Id>
+GITGUARDIAN_API_KEY=<GitGuardian API key for pre-commit secret scanning>
 ```
 
 In production environments [INLINE_RUNTIME_CHUNK](https://create-react-app.dev/docs/advanced-configuration) must be set to `false` due to Content Security Policy.
