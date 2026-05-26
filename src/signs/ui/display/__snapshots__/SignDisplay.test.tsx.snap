@@ -55,7 +55,7 @@ exports[`Sign Display Sign Display Snapshot 1`] = `
         />
       </header>
       <div
-        class="container"
+        class="ebl-consistent-links container"
       >
         <div
           class="row"

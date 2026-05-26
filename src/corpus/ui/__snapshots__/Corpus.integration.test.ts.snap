@@ -202,7 +202,7 @@ exports[`With session 1`] = `
       </nav>
     </header>
     <main
-      class="main"
+      class="main main--breadcrumbs-contained"
     >
       <div
         class="main__content"
@@ -245,7 +245,7 @@ exports[`With session 1`] = `
           />
         </header>
         <div
-          class="Corpus container-fluid"
+          class="Corpus ebl-consistent-links container-fluid"
         >
           <div
             class="Corpus__layout row"
@@ -1094,7 +1094,7 @@ exports[`Without session 1`] = `
       </nav>
     </header>
     <main
-      class="main"
+      class="main main--breadcrumbs-contained"
     >
       <div
         class="main__content"
@@ -1137,7 +1137,7 @@ exports[`Without session 1`] = `
           />
         </header>
         <div
-          class="Corpus container-fluid"
+          class="Corpus ebl-consistent-links container-fluid"
         >
           <div
             class="Corpus__layout row"

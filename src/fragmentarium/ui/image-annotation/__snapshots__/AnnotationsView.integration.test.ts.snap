@@ -202,7 +202,7 @@ exports[`Display annotate view Snapshot 1`] = `
       </nav>
     </header>
     <main
-      class="main main--wide"
+      class="main main--wide main--breadcrumbs-contained"
     >
       <div
         class="main__content"
