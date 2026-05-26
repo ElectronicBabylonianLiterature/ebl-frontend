@@ -326,7 +326,7 @@ async function loadClusterAnnotations({
             ...nonPcaAnnotations,
           ]
         : croppedAnnotations,
-    hasFailures: results.some((result) => result.status === 'rejected'),
+    hasFailures: fallbackClusterIds.length > 0,
   }
 }
 
