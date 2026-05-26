@@ -131,19 +131,13 @@ function IntroText(): JSX.Element {
 
 const NEWSLETTER_FRONTMATTER_LINES = 4
 const NEWSLETTER_PREVIEW_LINES = 3
-const NEWSLETTER_PREVIEW_CHAR_LIMIT = 280
 
-function getNewsletterPreview(content: string): string {
+export function getNewsletterPreview(content: string): string {
   const lines = content.split('\n')
   const contentLines = lines
     .slice(NEWSLETTER_FRONTMATTER_LINES)
     .filter((line) => line.trim() && !line.startsWith('#'))
-  return (
-    contentLines
-      .slice(0, NEWSLETTER_PREVIEW_LINES)
-      .join('\n')
-      .substring(0, NEWSLETTER_PREVIEW_CHAR_LIMIT) + '...'
-  )
+  return contentLines.slice(0, NEWSLETTER_PREVIEW_LINES).join('\n')
 }
 
 function NewsSection(): JSX.Element {

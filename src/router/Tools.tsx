@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { Container, Row, Col, Nav } from 'react-bootstrap'
 import { Link, useLocation } from 'react-router-dom'
-import { TextCrumb } from 'common/ui/Breadcrumbs'
-import Breadcrumbs from 'common/ui/Breadcrumbs'
+import AppContent from 'common/ui/AppContent'
+import { Crumb, SectionCrumb, TextCrumb } from 'common/ui/Breadcrumbs'
 import './tools.sass'
 import DateConverterForm, {
   AboutDateConverter,
@@ -82,12 +82,12 @@ export function getDisplayTitle(selectedTab?: TabId): string {
 export function getToolsBreadcrumbs(
   displayTitle: string,
   selectedTab?: TabId,
-): TextCrumb[] {
+): Crumb[] {
   if (!selectedTab) {
-    return [new TextCrumb('Tools')]
+    return [new SectionCrumb('Tools')]
   }
 
-  return [new TextCrumb('Tools'), new TextCrumb(displayTitle)]
+  return [new SectionCrumb('Tools'), new TextCrumb(displayTitle)]
 }
 
 function ToolsIntroduction(): JSX.Element {
@@ -219,19 +219,10 @@ export default function Tools({
   const displayTitle = getDisplayTitle(selectedTab)
 
   return (
-    <>
-      <div className="tools-header">
-        <Container>
-          <Breadcrumbs
-            className="tools-header__breadcrumbs"
-            crumbs={getToolsBreadcrumbs(displayTitle, selectedTab)}
-          />
-        </Container>
-      </div>
-      <Container>
-        <h1 className="tools-header__title">Tools</h1>
-      </Container>
-
+    <AppContent
+      crumbs={getToolsBreadcrumbs(displayTitle, selectedTab)}
+      title="Tools"
+    >
       <Container className="tools-container">
         <Row>
           <Col xs={12} md={3} className="tools-sidebar">
@@ -282,6 +273,6 @@ export default function Tools({
           </Col>
         </Row>
       </Container>
-    </>
+    </AppContent>
   )
 }

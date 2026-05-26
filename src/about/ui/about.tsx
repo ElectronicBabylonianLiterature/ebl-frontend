@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { Container, Row, Col, Nav } from 'react-bootstrap'
 import { Link, useLocation } from 'react-router-dom'
-import { TextCrumb } from 'common/ui/Breadcrumbs'
+import AppContent from 'common/ui/AppContent'
+import { SectionCrumb, TextCrumb } from 'common/ui/Breadcrumbs'
 import MarkupService from 'markup/application/MarkupService'
 import 'about/ui/about.sass'
 import AboutProject from 'about/ui/project'
@@ -13,7 +14,6 @@ import AboutBibliography from 'about/ui/bibliography'
 import AboutNews from 'about/ui/news'
 import AboutArchaeology from 'about/ui/archaeology'
 import _ from 'lodash'
-import Breadcrumbs from 'common/ui/Breadcrumbs'
 import useScrollToHash from 'common/hooks/useScrollToHash'
 
 export const tabIds = [
@@ -133,22 +133,13 @@ export default function About({
   const currentTab = tabConfig.find((tab) => tab.id === selectedTab)
 
   return (
-    <>
-      <div className="about-header">
-        <Container>
-          <Breadcrumbs
-            className="about-header__breadcrumbs"
-            crumbs={[
-              new TextCrumb('About'),
-              new TextCrumb(currentTab?.title ?? _.capitalize(selectedTab)),
-            ]}
-          />
-        </Container>
-      </div>
-      <Container>
-        <h1 className="about-header__title">About</h1>
-      </Container>
-
+    <AppContent
+      crumbs={[
+        new SectionCrumb('About'),
+        new TextCrumb(currentTab?.title ?? _.capitalize(selectedTab)),
+      ]}
+      title="About"
+    >
       <Container className="about-container">
         <Row>
           <Col xs={12} md={3} className="about-sidebar">
@@ -185,6 +176,6 @@ export default function About({
           </Col>
         </Row>
       </Container>
-    </>
+    </AppContent>
   )
 }

@@ -19,13 +19,15 @@ function ProjectCard({ project }: ProjectCardProps): JSX.Element {
       >
         <Card className="project-card h-100">
           <Card.Body className="d-flex flex-column">
-            <div className="project-card__logo-container mb-3">
-              <img
-                src={project.logo}
-                alt={project.name}
-                className="project-card__logo"
-              />
-            </div>
+            {project.logo && (
+              <div className="project-card__logo-container mb-3">
+                <img
+                  src={project.logo}
+                  alt={project.name}
+                  className="project-card__logo"
+                />
+              </div>
+            )}
             <Card.Title className="project-card__title">
               {project.displayName || project.abbreviation}
             </Card.Title>

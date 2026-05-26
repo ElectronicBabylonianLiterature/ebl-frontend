@@ -13,6 +13,9 @@ export default function BlobImage({
   alt?: string
 }): JSX.Element {
   const objectUrl = useObjectUrl(data)
+  if (!objectUrl) {
+    return <></>
+  }
 
   const image = <Image src={objectUrl} alt={alt} fluid />
   return hasLink ? (
@@ -31,6 +34,10 @@ export function ThumbnailImage({
   url?: string
   alt?: string
 }): JSX.Element {
-  const image = <Image src={useObjectUrl(photo)} alt={alt} fluid />
+  const objectUrl = useObjectUrl(photo)
+  if (!objectUrl) {
+    return <></>
+  }
+  const image = <Image src={objectUrl} alt={alt} fluid />
   return url ? <ExternalLink href={url}>{image}</ExternalLink> : image
 }

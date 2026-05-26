@@ -88,15 +88,17 @@ const CompactFragmentCard = withData<
           )}
           {fragment.projects.length > 0 && (
             <div className="latest-addition-card__projects">
-              {fragment.projects.map((project) => (
-                <img
-                  key={project.name}
-                  className="latest-addition-card__project-logo"
-                  src={project.logo}
-                  alt={project.name}
-                  title={project.name}
-                />
-              ))}
+              {fragment.projects.map((project) =>
+                project.logo ? (
+                  <img
+                    key={project.name}
+                    className="latest-addition-card__project-logo"
+                    src={project.logo}
+                    alt={project.name}
+                    title={project.name}
+                  />
+                ) : null,
+              )}
             </div>
           )}
         </div>

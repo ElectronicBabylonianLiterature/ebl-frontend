@@ -13,6 +13,7 @@ interface Props {
   actions?: React.ReactNode
   sidebar?: React.ReactNode
   wide?: boolean
+  breadcrumbsFullWidth?: boolean
 }
 
 export default function AppContent({
@@ -22,6 +23,7 @@ export default function AppContent({
   actions,
   sidebar,
   wide = false,
+  breadcrumbsFullWidth = true,
 }: PropsWithChildren<Props>): JSX.Element {
   const showHeader = crumbs.length > 0 || Boolean(title) || Boolean(actions)
 
@@ -30,6 +32,7 @@ export default function AppContent({
       className={classNames({
         main: true,
         'main--wide': wide,
+        'main--breadcrumbs-contained': !breadcrumbsFullWidth,
       })}
     >
       <div className="main__content">

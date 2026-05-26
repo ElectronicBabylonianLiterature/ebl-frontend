@@ -85,6 +85,7 @@ function FragmentView({
   return (
     <AppContent
       crumbs={[new SectionCrumb('Library'), new TextCrumb(number)]}
+      breadcrumbsFullWidth={false}
       title={
         <FragmentPager
           fragmentNumber={number}

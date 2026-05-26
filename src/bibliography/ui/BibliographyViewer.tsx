@@ -15,7 +15,6 @@ import InlineMarkdown from 'common/ui/InlineMarkdown'
 import Reference from 'bibliography/domain/Reference'
 import SessionContext from 'auth/SessionContext'
 import withData from 'http/withData'
-import { useLocation } from 'react-router-dom'
 import { referencesEditRoute } from 'bibliography/ui/referencesRouteContext'
 
 type Props = {
@@ -33,7 +32,6 @@ function replaceRisDateWithPublicationYear(risData: string): string {
 
 function BibliographyViewer({ data, match, history }: Props): JSX.Element {
   const routerHistory = useHistory()
-  const location = useLocation()
   const activeHistory = history ?? routerHistory
   const session = useContext(SessionContext)
   const entryId = match.params.id ?? ''
@@ -78,9 +76,7 @@ function BibliographyViewer({ data, match, history }: Props): JSX.Element {
       actions={
         <Button
           variant="outline-primary"
-          onClick={() =>
-            activeHistory.push(referencesEditRoute(location.pathname, entryId))
-          }
+          onClick={() => activeHistory.push(referencesEditRoute(entryId))}
           disabled={!session.isAllowedToWriteBibliography()}
         >
           <i className="fas fa-edit" aria-hidden="true"></i> Edit

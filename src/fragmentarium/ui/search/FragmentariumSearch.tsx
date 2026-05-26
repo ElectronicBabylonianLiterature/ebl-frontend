@@ -62,7 +62,10 @@ function FragmentariumSearch({
     hasNonDefaultValues(corpusQuery)
 
   return (
-    <AppContent crumbs={[new SectionCrumb('Library'), new TextCrumb('Search')]}>
+    <AppContent
+      crumbs={[new SectionCrumb('Library'), new TextCrumb('Search')]}
+      breadcrumbsFullWidth={false}
+    >
       <SessionContext.Consumer>
         {(session: Session): JSX.Element =>
           session.isAllowedToReadFragments() ? (

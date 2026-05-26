@@ -164,8 +164,11 @@ function Corpus({
   }
 
   return (
-    <AppContent crumbs={[new SectionCrumb('Corpus')]}>
-      <Container fluid className="Corpus">
+    <AppContent
+      crumbs={[new SectionCrumb('Corpus')]}
+      breadcrumbsFullWidth={false}
+    >
+      <Container fluid className="Corpus ebl-consistent-links">
         <Row className="Corpus__layout">
           <Col md={7}>
             <div className="Corpus__tabs">

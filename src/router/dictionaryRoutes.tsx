@@ -7,6 +7,14 @@ import SignService from 'signs/application/SignService'
 import { DictionarySlugs } from 'router/sitemap'
 import NotFoundPage from 'NotFoundPage'
 
+function withSearchAndHash(
+  pathname: string,
+  search: string,
+  hash: string,
+): string {
+  return `${pathname}${search}${hash}`
+}
+
 export default function DictionaryRoutes({
   sitemap: _sitemap,
   fragmentService: _fragmentService,
@@ -27,23 +35,43 @@ export default function DictionaryRoutes({
       key="dictionary-editor-redirect"
       path="/dictionary/:id/edit"
       exact
-      render={({ match }): ReactNode => (
-        <Redirect to={`/tools/dictionary/${match.params.id}/edit`} />
+      render={({ match, location }): ReactNode => (
+        <Redirect
+          to={withSearchAndHash(
+            `/tools/dictionary/${match.params.id}/edit`,
+            location.search,
+            location.hash,
+          )}
+        />
       )}
     />,
     <Route
       key="dictionary-display-redirect"
       path="/dictionary/:id"
       exact
-      render={({ match }): ReactNode => (
-        <Redirect to={`/tools/dictionary/${match.params.id}`} />
+      render={({ match, location }): ReactNode => (
+        <Redirect
+          to={withSearchAndHash(
+            `/tools/dictionary/${match.params.id}`,
+            location.search,
+            location.hash,
+          )}
+        />
       )}
     />,
-    <Redirect
-      exact
-      from="/dictionary"
-      to="/tools/dictionary"
+    <Route
       key="dictionary-redirect"
+      path="/dictionary"
+      exact
+      render={({ location }): ReactNode => (
+        <Redirect
+          to={withSearchAndHash(
+            '/tools/dictionary',
+            location.search,
+            location.hash,
+          )}
+        />
+      )}
     />,
     <Route
       key="DictionaryNotFound"
