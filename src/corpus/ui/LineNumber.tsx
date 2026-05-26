@@ -9,14 +9,6 @@ import { LineDisplay } from 'corpus/domain/chapter'
 import _ from 'lodash'
 import prefersReducedMotion from 'common/utils/prefersReducedMotion'
 
-function prefersReducedMotion(): boolean {
-  return (
-    typeof window !== 'undefined' &&
-    typeof window.matchMedia === 'function' &&
-    window.matchMedia('(prefers-reduced-motion: reduce)').matches
-  )
-}
-
 const OldLineNumberCitation = referencePopover(({ reference }) => (
   <sup>{reference.authors.join('/')}</sup>
 ))

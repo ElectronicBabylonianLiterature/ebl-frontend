@@ -5,6 +5,7 @@ import lineNumberToString from 'transliteration/domain/lineNumberToString'
 import LineNumber from './LineNumber'
 import { oldLineNumberFactory } from 'test-support/linenumber-factory'
 import userEvent from '@testing-library/user-event'
+import { setReducedMotionMatchMedia } from 'test-support/matchMedia'
 
 window.HTMLElement.prototype.scrollIntoView = jest.fn()
 
@@ -67,22 +68,7 @@ test('Clicking on line number scrolls to line', async () => {
 })
 
 test('Clicking on line number uses non-animated scrolling when reduced motion is enabled', async () => {
-  const originalMatchMedia = window.matchMedia
-  Object.defineProperty(window, 'matchMedia', {
-    writable: true,
-    configurable: true,
-    value: (query: string): MediaQueryList =>
-      ({
-        matches: query === '(prefers-reduced-motion: reduce)',
-        media: query,
-        onchange: null,
-        addListener: jest.fn(),
-        removeListener: jest.fn(),
-        addEventListener: jest.fn(),
-        removeEventListener: jest.fn(),
-        dispatchEvent: jest.fn(),
-      }) as MediaQueryList,
-  })
+  const restoreMatchMedia = setReducedMotionMatchMedia(true)
 
   renderLineNumber()
   await userEvent.click(screen.getByText(lineNumberString))
@@ -91,11 +77,7 @@ test('Clicking on line number uses non-animated scrolling when reduced motion is
     behavior: 'auto',
   })
 
-  Object.defineProperty(window, 'matchMedia', {
-    writable: true,
-    configurable: true,
-    value: originalMatchMedia,
-  })
+  restoreMatchMedia()
 })
 
 test('Line number with url points to link', () => {

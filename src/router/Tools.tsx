@@ -23,6 +23,7 @@ import DossiersService from 'dossiers/application/DossiersService'
 import DossiersSearchPage from 'dossiers/ui/DossiersSearchPage'
 import GenresPage from 'fragmentarium/ui/GenresPage'
 import { useHistory } from 'router/compat'
+import useScrollToHash from 'common/hooks/useScrollToHash'
 
 export const tabIds = [
   'date-converter',
@@ -52,14 +53,6 @@ type ContentMatch = {
   isExact: boolean
   path: string
   url: string
-}
-
-function prefersReducedMotion(): boolean {
-  return (
-    typeof window !== 'undefined' &&
-    typeof window.matchMedia === 'function' &&
-    window.matchMedia('(prefers-reduced-motion: reduce)').matches
-  )
 }
 
 const tabConfig = [
@@ -220,21 +213,7 @@ export default function Tools({
     setSelectedTab(activeTab)
   }, [activeTab])
 
-  useEffect(() => {
-    const hash = location.hash
-    if (hash) {
-      const id = hash.replace('#', '')
-      const behavior = prefersReducedMotion() ? 'auto' : 'smooth'
-      requestAnimationFrame(() => {
-        requestAnimationFrame(() => {
-          const element = document.getElementById(id)
-          if (element) {
-            element.scrollIntoView({ behavior })
-          }
-        })
-      })
-    }
-  }, [location])
+  useScrollToHash(location.hash)
 
   const currentTab = getCurrentTab(selectedTab)
   const displayTitle = getDisplayTitle(selectedTab)
