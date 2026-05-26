@@ -30,6 +30,23 @@
   max-width: 38em;
 }
 
+.AfoRegister__search-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.AfoRegister__search-header .AfoRegister__search {
+  margin: 0;
+  width: 38em;
+  max-width: 100%;
+}
+
+.AfoRegister__about-link {
+  margin-top: 0.15rem;
+}
+
 .BibliographyReferences__introduction,
 .AfoRegister__introduction,
 .AfoRegister__search_results {
@@ -38,7 +55,7 @@
   padding-bottom: 20px;
 }
 
-@media (max-width: 767px) {
+@media (max-width: 767.98px) {
   .BibliographyReferences__introduction,
   .AfoRegister__introduction,
   .AfoRegister__search_results {
