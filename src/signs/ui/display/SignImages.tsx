@@ -203,7 +203,7 @@ function SignImagePagination({
       </Row>
       <Row>
         <Col className={'mb-5'}>
-          {scriptsSorted.map((elem, index) => {
+          {scriptsSorted.map((elem) => {
             const [scriptAbbr, croppedAnnotationsForScript] = elem
 
             return (
@@ -291,21 +291,24 @@ async function loadClusterAnnotations({
     signService.getClusterVariants(signName, clusterId, scriptAbbr),
   )
 
-  const failedClusterIds = results
+  const fallbackClusterIds = results
     .map((result, index) =>
-      result.status === 'rejected' ? clusterIds[index] : null,
+      result.status === 'rejected' ||
+      (result.status === 'fulfilled' && result.value.length === 0)
+        ? clusterIds[index]
+        : null,
     )
     .filter((clusterId): clusterId is string => Boolean(clusterId))
 
   const successfulAnnotations = results
     .filter(
       (result): result is PromiseFulfilledResult<CroppedAnnotation[]> =>
-        result.status === 'fulfilled',
+        result.status === 'fulfilled' && result.value.length > 0,
     )
     .flatMap((result) => result.value)
 
   const fallbackAnnotations = croppedAnnotations.filter((annotation) =>
-    failedClusterIds.includes(annotation.pcaClustering?.clusterId || ''),
+    fallbackClusterIds.includes(annotation.pcaClustering?.clusterId || ''),
   )
 
   const nonPcaAnnotations = croppedAnnotations.filter(
@@ -323,7 +326,7 @@ async function loadClusterAnnotations({
             ...nonPcaAnnotations,
           ]
         : croppedAnnotations,
-    hasFailures: failedClusterIds.length > 0,
+    hasFailures: results.some((result) => result.status === 'rejected'),
   }
 }
 
