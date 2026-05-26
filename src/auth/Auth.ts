@@ -14,6 +14,7 @@ export const scopeString = defaultScopes
 export interface User {
   [eblNameProperty]?: string
   name?: string
+  sub?: string
 }
 
 export interface AuthenticationService {

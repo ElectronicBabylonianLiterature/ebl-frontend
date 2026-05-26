@@ -67,6 +67,7 @@ describe('Security: Fragment View Tabs', () => {
     )
 
     expect(screen.queryByRole('tab')).not.toBeInTheDocument()
+    expect(screen.getByRole('table')).toBeInTheDocument()
   })
 
   it('should show all tabs for authenticated users', () => {
