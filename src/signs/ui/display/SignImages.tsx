@@ -357,7 +357,7 @@ function PeriodAccordion({
   }
 
   async function handleEnter() {
-    if (loadedAnnotations || isLoading) {
+    if ((loadedAnnotations && !hasLoadFailures) || isLoading) {
       return
     }
 
