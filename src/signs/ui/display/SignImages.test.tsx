@@ -182,6 +182,57 @@ describe('Sign Images', () => {
     expect(screen.getByText('K.6403')).toBeInTheDocument()
     expect(screen.getByText('K.6404')).toBeInTheDocument()
   })
+
+  it('Retries loading variants after a failed cluster request', async () => {
+    signService.getClusterVariants
+      .mockReturnValueOnce(Bluebird.reject(new Error('Failed to load cluster')))
+      .mockReturnValueOnce(Bluebird.resolve([]))
+
+    await setup()
+
+    await userEvent.click(
+      screen.getByRole('button', {
+        name: /Middle Assyrian/,
+      }),
+    )
+
+    expect(
+      await screen.findByText(
+        /Some variants could not be loaded. Showing available centroid data/,
+      ),
+    ).toBeInTheDocument()
+
+    await userEvent.click(
+      screen.getByRole('button', {
+        name: /Middle Assyrian/,
+      }),
+    )
+
+    expect(signService.getClusterVariants).toHaveBeenCalledTimes(2)
+  })
+
+  it('Shows warning and keeps centroid fallback when cluster variants response is empty', async () => {
+    signService.getClusterVariants.mockReturnValueOnce(Bluebird.resolve([]))
+
+    await setup()
+
+    await userEvent.click(
+      screen.getByRole('button', {
+        name: /Middle Assyrian/,
+      }),
+    )
+
+    expect(
+      await screen.findByText(
+        /Some variants could not be loaded. Showing available centroid data/,
+      ),
+    ).toBeInTheDocument()
+
+    expect(screen.getByText('K.6401')).toBeInTheDocument()
+    expect(
+      screen.getAllByText('No additional variants').length,
+    ).toBeGreaterThan(0)
+  })
 })
 
 describe('Sign Images Empty', () => {
