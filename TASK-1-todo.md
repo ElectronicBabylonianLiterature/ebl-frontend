@@ -9,4 +9,4 @@
 - [x] Create `.devcontainer/README.md`
 - [x] Manual: Register `.env.local` values as Codespaces secrets — run `bash scripts/register-codespaces-secrets.sh` (user action)
 - [ ] Manual: Smoke-test in a fresh Codespace (user action)
-- [ ] Remove `TASK-1-plan.md`, `TASK-1-todo.md`, `TASK-1-log.md` before merging PR
+- [ ] **BLOCKER:** Remove `TASK-1-plan.md`, `TASK-1-todo.md`, `TASK-1-log.md` before merging PR

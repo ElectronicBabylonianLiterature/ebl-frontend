@@ -27,3 +27,13 @@
 - Register `.env.local` values as Codespaces secrets via `gh secret set`
 - Smoke-test in a fresh Codespace on the branch
 - Remove `TASK-1-plan.md`, `TASK-1-todo.md`, `TASK-1-log.md` before merging PR
+
+### PR Audit (TASK-1-review.md)
+
+- Quality gates: ✓ Lint passed, ✓ TypeScript passed, ✓ 136 tests passed (clean console)
+- Code correctness: ✓ Bash script logic sound, Python injection safe, devcontainer.json syntax correct
+- Security: ✓ No exposed secrets, credential file gitignored, regex escaping prevents injection
+- Documentation: ✓ Clear, actionable, with proper links and fallbacks
+- Pre-existing comments: None (PR just opened)
+- **Blocker found:** Task docs (TASK-1-\*.md) must be removed before merge (per copilot-instructions.md)
+- Full audit exported to TASK-1-review.md
