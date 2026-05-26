@@ -15,17 +15,19 @@ function Switch({
   target: keyof RowState
   label?: string
 }): JSX.Element {
-  const [, dispatchRows] = useContext(RowsContext)
-  const [isExpanded, setExpanded] = useState(false)
+  const [rows, dispatchRows] = useContext(RowsContext)
+  const hasRows = Object.keys(rows).length > 0
+  const isExpanded = hasRows && Object.values(rows).every((row) => row[target])
+
   return (
     <Form.Switch
       className="settings__switch"
       label={label || _.capitalize(target)}
       id={_.uniqueId('sidebar-text-toggle-')}
-      onClick={() => {
-        dispatchRows({ target: target, type: isExpanded ? 'close' : 'expand' })
-        setExpanded(!isExpanded)
-      }}
+      checked={isExpanded}
+      onChange={() =>
+        dispatchRows({ target, type: isExpanded ? 'close' : 'expand' })
+      }
     />
   )
 }

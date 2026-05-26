@@ -30,10 +30,10 @@ const croppedAnnotations: CroppedAnnotation[] = [
   },
 ]
 
-function renderSignImages() {
+function renderSignImages(activeSignName: string = signName) {
   render(
     <MemoryRouter>
-      <SignImages signName={signName} signService={signService} />
+      <SignImages signName={activeSignName} signService={signService} />
     </MemoryRouter>,
   )
 }
@@ -58,6 +58,57 @@ describe('Sign Images', () => {
       selector: '.provenance',
     })
     expect(provenanceSpan).toBeInTheDocument()
+  })
+})
+
+describe('Sign Images fallback behavior', () => {
+  it('falls back to normalized sign name when first lookup is empty', async () => {
+    signService.getImages.mockReturnValueOnce(Bluebird.resolve([]))
+    signService.getImages.mockReturnValueOnce(
+      Bluebird.resolve(croppedAnnotations),
+    )
+
+    renderSignImages('|AN|')
+    await waitForSpinnerToBeRemoved(screen)
+
+    expect(signService.getImages).toHaveBeenNthCalledWith(1, '|AN|')
+    expect(signService.getImages).toHaveBeenNthCalledWith(2, 'AN')
+
+    await userEvent.click(screen.getByRole('button', { name: 'Unclassified' }))
+    expect(screen.getByText(croppedAnnotations[0].fragmentNumber)).toBeVisible()
+  })
+
+  it('renders unknown script groups without throwing', async () => {
+    signService.getImages.mockReturnValue(
+      Bluebird.resolve([
+        {
+          ...croppedAnnotations[0],
+          script: 'CUSTOM',
+        },
+      ]),
+    )
+
+    renderSignImages()
+    await waitForSpinnerToBeRemoved(screen)
+
+    expect(screen.getByRole('button', { name: 'CUSTOM' })).toBeInTheDocument()
+    expect(screen.getByText(croppedAnnotations[0].fragmentNumber)).toBeVisible()
+  })
+
+  it('skips rendering entries with missing image payload', async () => {
+    signService.getImages.mockReturnValue(
+      Bluebird.resolve([
+        {
+          ...croppedAnnotations[0],
+          image: '',
+        },
+      ]),
+    )
+
+    renderSignImages()
+    await waitForSpinnerToBeRemoved(screen)
+
+    expect(screen.queryByRole('img')).not.toBeInTheDocument()
   })
 })
 

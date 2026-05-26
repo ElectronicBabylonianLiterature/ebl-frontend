@@ -8,7 +8,7 @@
 
   &__content
     padding-bottom: 2rem
-    border-bottom: 1px solid rgba(255, 255, 255, 0.15)
+    border-bottom: 1px solid $ebl-color-white-alpha-15
 
   &__section
     margin-bottom: 1.5rem
@@ -42,7 +42,7 @@
       &:focus-visible
         color: $ebl-color-surface-primary
         text-decoration: underline
-        outline: 2px solid rgba(255, 255, 255, 0.9)
+        outline: 2px solid $ebl-color-white-alpha-90
         outline-offset: 2px
 
   &__social
@@ -56,17 +56,17 @@
     width: 40px
     height: 40px
     border-radius: 50%
-    background-color: rgba(255, 255, 255, 0.1)
+    background-color: $ebl-color-white-alpha-10
     color: $ebl-color-surface-primary
-    transition: all 0.2s ease
+    transition: background-color $ebl-motion-duration-fast ease, transform $ebl-motion-duration-fast ease
 
     &:hover
-      background-color: rgba(255, 255, 255, 0.2)
+      background-color: $ebl-color-white-alpha-20
       transform: translateY(-2px)
 
     &:focus-visible
-      background-color: rgba(255, 255, 255, 0.2)
-      outline: 2px solid rgba(255, 255, 255, 0.9)
+      background-color: $ebl-color-white-alpha-20
+      outline: 2px solid $ebl-color-white-alpha-90
       outline-offset: 2px
 
     svg
@@ -94,11 +94,11 @@
 
     &:focus-visible
       color: $ebl-color-surface-primary
-      outline: 2px solid rgba(255, 255, 255, 0.9)
+      outline: 2px solid $ebl-color-white-alpha-90
       outline-offset: 2px
 
   &__separator
-    color: rgba(255, 255, 255, 0.4)
+    color: $ebl-color-white-alpha-40
     margin: 0 0.25rem
 
   &__copyright

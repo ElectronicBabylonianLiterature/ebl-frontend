@@ -16,7 +16,7 @@
     border-radius: 8px
     border: 1px solid $ebl-color-border-input
     padding: 0.75rem 1rem
-    transition: all 0.2s ease
+    transition: border-color $ebl-motion-duration-fast ease, box-shadow $ebl-motion-duration-fast ease
 
     &:focus
       border-color: $ebl-color-brand-primary
@@ -52,7 +52,7 @@
     padding: 0.75rem 2rem
     border-radius: 8px
     font-weight: 600
-    transition: all 0.3s ease
+    transition: transform $ebl-motion-duration-base ease, box-shadow $ebl-motion-duration-base ease
 
     &:hover
       transform: translateY(-2px)

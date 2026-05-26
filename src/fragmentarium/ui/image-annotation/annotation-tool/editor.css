@@ -6,4 +6,10 @@ input[type='range'][orient='vertical'] {
   height: 175px;
   padding: 0 5px;
 }
+
+.react-transform-wrapper,
+.react-transform-component {
+  width: 100%;
+  max-width: 100%;
+}
 /* stylelint-enable property-no-vendor-prefix */

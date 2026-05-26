@@ -26,8 +26,8 @@
 .project-card
   border: 1px solid $ebl-color-border-muted
   border-radius: 12px
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1)
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08)
+  transition: transform $ebl-motion-duration-base $ebl-motion-ease-standard, box-shadow $ebl-motion-duration-base $ebl-motion-ease-standard, border-color $ebl-motion-duration-base $ebl-motion-ease-standard
+  box-shadow: 0 2px 8px $ebl-color-black-alpha-08
   overflow: hidden
   position: relative
   background: white
@@ -47,7 +47,7 @@
 
   &:hover
     transform: translateY(-8px)
-    box-shadow: 0 12px 24px rgba(0, 119, 190, 0.2)
+    box-shadow: 0 12px 24px $ebl-color-brand-alpha-20
     border-color: $ebl-color-brand-primary
 
     &::before

@@ -62,7 +62,7 @@
 
     @media (min-width: $ebl-breakpoint-md)
       position: sticky
-      top: 100px
+      top: $ebl-layout-sticky-offset-main
 
   .#{$prefix}-nav
     &__item
@@ -73,7 +73,7 @@
       margin-bottom: 0.5rem
       border-radius: 8px
       border: 2px solid transparent
-      transition: all 0.2s ease
+      transition: background-color $ebl-motion-duration-fast ease, border-color $ebl-motion-duration-fast ease, color $ebl-motion-duration-fast ease
       cursor: pointer
       background-color: transparent
       color: $ebl-color-text-primary

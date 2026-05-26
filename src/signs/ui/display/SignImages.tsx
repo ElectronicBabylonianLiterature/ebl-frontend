@@ -5,10 +5,11 @@ import { Col, Container, Figure, Row } from 'react-bootstrap'
 import Accordion from 'react-bootstrap/Accordion'
 
 import _ from 'lodash'
+import Bluebird from 'bluebird'
 import { Link } from 'react-router-dom'
 import { CroppedAnnotation } from 'signs/domain/CroppedAnnotation'
 import './SignImages.css'
-import { periodFromAbbreviation, periods } from 'common/utils/period'
+import { periods } from 'common/utils/period'
 import DateDisplay from 'chronology/ui/DateDisplay'
 
 type Props = {
@@ -24,13 +25,49 @@ export default withData<
 >(
   ({ data }) =>
     data.length ? <SignImagePagination croppedAnnotations={data} /> : null,
-  (props) => props.signService.getImages(props.signName),
+  ({ signName, signService }) => findImagesForSign(signService, signName),
 )
+
+function findImagesForSign(
+  signService: SignService,
+  signName: string,
+): Bluebird<CroppedAnnotation[]> {
+  const normalizedSignName = signName.replace(/\|/g, '')
+  const candidates = _.uniq([
+    signName,
+    normalizedSignName,
+    signName.toUpperCase(),
+    signName.toLowerCase(),
+    normalizedSignName.toUpperCase(),
+    normalizedSignName.toLowerCase(),
+  ]).filter(Boolean)
+
+  const lookupImages = (
+    candidateIndex: number,
+  ): Bluebird<CroppedAnnotation[]> => {
+    if (candidateIndex >= candidates.length) {
+      return Bluebird.resolve([])
+    }
+
+    return signService
+      .getImages(candidates[candidateIndex])
+      .then((images) =>
+        images.length > 0 ? images : lookupImages(candidateIndex + 1),
+      )
+  }
+
+  return lookupImages(0)
+}
+
 function SignImage({
   croppedAnnotation,
 }: {
   croppedAnnotation: CroppedAnnotation
 }): JSX.Element {
+  if (!croppedAnnotation.image) {
+    return <></>
+  }
+
   const label = croppedAnnotation.label ? `${croppedAnnotation.label} ` : ''
   return (
     <Col>
@@ -55,6 +92,25 @@ function SignImage({
     </Col>
   )
 }
+
+function getScriptLabel(scriptAbbr: string): string {
+  if (scriptAbbr === '') {
+    return 'Unclassified'
+  }
+
+  const stage = periods.find((period) => period.abbreviation === scriptAbbr)
+
+  return stage ? `${stage.name} ${stage.description}`.trim() : scriptAbbr
+}
+
+function getScriptSortOrder(scriptAbbr: string): number {
+  const scriptIndex = periods.findIndex(
+    (period) => period.abbreviation === scriptAbbr,
+  )
+
+  return scriptIndex === -1 ? periods.length : scriptIndex
+}
+
 function SignImagePagination({
   croppedAnnotations,
 }: {
@@ -64,16 +120,10 @@ function SignImagePagination({
     croppedAnnotations,
     (croppedAnnotation) => croppedAnnotation.script,
   )
-  const periodsAbbr = [...periods.map((period) => period.abbreviation), '']
 
-  const scriptsSorted = _.sortBy(Object.entries(scripts), (elem) => {
-    const index = periodsAbbr.indexOf(elem[0])
-    if (index === -1) {
-      throw new Error(`${elem[0]} has to be one of ${periodsAbbr}`)
-    } else {
-      return index
-    }
-  })
+  const scriptsSorted = _.sortBy(Object.entries(scripts), ([scriptAbbr]) =>
+    getScriptSortOrder(scriptAbbr),
+  )
 
   return (
     <Container>
@@ -86,11 +136,7 @@ function SignImagePagination({
         <Col className={'mb-5'}>
           {scriptsSorted.map((elem, index) => {
             const [scriptAbbr, croppedAnnotation] = elem
-            let script = 'Unclassified'
-            if (scriptAbbr !== '') {
-              const stage = periodFromAbbreviation(scriptAbbr)
-              script = `${stage.name} ${stage.description}`
-            }
+            const script = getScriptLabel(scriptAbbr)
 
             return (
               <Accordion
