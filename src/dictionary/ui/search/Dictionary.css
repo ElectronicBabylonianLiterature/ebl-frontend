@@ -19,3 +19,12 @@
 .Dictionary-search-header__about {
   margin-top: 0.35rem;
 }
+
+.Dictionary-search-header + .WordSearch-results {
+  margin: 0;
+  padding-left: 0;
+}
+
+.Dictionary-search-header + .WordSearch-results > .WordSearch-results__result {
+  clear: left;
+}
