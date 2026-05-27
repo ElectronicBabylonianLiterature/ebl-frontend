@@ -20,6 +20,34 @@ jest.mock('router/head', () => ({
   ),
 }))
 
+function expectRedirectWithLocationPreserved({
+  initialEntry,
+  targetPath,
+  expectedLocation,
+  routes,
+}: {
+  initialEntry: string
+  targetPath: string
+  expectedLocation: string
+  routes: JSX.Element[]
+}): void {
+  render(
+    <MemoryRouter initialEntries={[initialEntry]}>
+      <Switch>
+        {routes}
+        <Route
+          path={targetPath}
+          render={({ location }) => (
+            <div>{`${location.pathname}${location.search}${location.hash}`}</div>
+          )}
+        />
+      </Switch>
+    </MemoryRouter>,
+  )
+
+  expect(screen.getByText(expectedLocation)).toBeInTheDocument()
+}
+
 describe('NotFoundPage rendering in FragmentariumRoutes', () => {
   const nonExistentRoutes = [
     '/library/search/non-existent',
@@ -178,27 +206,12 @@ describe('BibliographyRoutes redirects', () => {
   })
 
   test('preserves query and hash for "/bibliography/afo-register" redirect', () => {
-    render(
-      <MemoryRouter
-        initialEntries={[
-          '/bibliography/afo-register?text=EN&textNumber=1#results',
-        ]}
-      >
-        <Switch>
-          {[...BibliographyRoutes({ ...getServices(), sitemap: false })]}
-          <Route
-            path="/tools/afo-register"
-            render={({ location }) => (
-              <div>{`${location.pathname}${location.search}${location.hash}`}</div>
-            )}
-          />
-        </Switch>
-      </MemoryRouter>,
-    )
-
-    expect(
-      screen.getByText('/tools/afo-register?text=EN&textNumber=1#results'),
-    ).toBeInTheDocument()
+    expectRedirectWithLocationPreserved({
+      initialEntry: '/bibliography/afo-register?text=EN&textNumber=1#results',
+      targetPath: '/tools/afo-register',
+      expectedLocation: '/tools/afo-register?text=EN&textNumber=1#results',
+      routes: [...BibliographyRoutes({ ...getServices(), sitemap: false })],
+    })
   })
 })
 
@@ -301,25 +314,12 @@ describe('DictionaryRoutes redirects', () => {
   })
 
   test('preserves query and hash for "/dictionary/:id" redirect', () => {
-    render(
-      <MemoryRouter
-        initialEntries={['/dictionary/Dictionary.12345?tab=forms#entry']}
-      >
-        <Switch>
-          {[...DictionaryRoutes({ ...getServices(), sitemap: false })]}
-          <Route
-            path="/tools/dictionary/:id"
-            render={({ location }) => (
-              <div>{`${location.pathname}${location.search}${location.hash}`}</div>
-            )}
-          />
-        </Switch>
-      </MemoryRouter>,
-    )
-
-    expect(
-      screen.getByText('/tools/dictionary/Dictionary.12345?tab=forms#entry'),
-    ).toBeInTheDocument()
+    expectRedirectWithLocationPreserved({
+      initialEntry: '/dictionary/Dictionary.12345?tab=forms#entry',
+      targetPath: '/tools/dictionary/:id',
+      expectedLocation: '/tools/dictionary/Dictionary.12345?tab=forms#entry',
+      routes: [...DictionaryRoutes({ ...getServices(), sitemap: false })],
+    })
   })
 })
 
@@ -380,23 +380,12 @@ describe('SignRoutes redirects', () => {
   })
 
   test('preserves query and hash for "/signs/:id" redirect', () => {
-    render(
-      <MemoryRouter initialEntries={['/signs/Signs.12345?view=variants#glyph']}>
-        <Switch>
-          {[...SignRoutes({ ...getServices(), sitemap: false })]}
-          <Route
-            path="/tools/signs/:id"
-            render={({ location }) => (
-              <div>{`${location.pathname}${location.search}${location.hash}`}</div>
-            )}
-          />
-        </Switch>
-      </MemoryRouter>,
-    )
-
-    expect(
-      screen.getByText('/tools/signs/Signs.12345?view=variants#glyph'),
-    ).toBeInTheDocument()
+    expectRedirectWithLocationPreserved({
+      initialEntry: '/signs/Signs.12345?view=variants#glyph',
+      targetPath: '/tools/signs/:id',
+      expectedLocation: '/tools/signs/Signs.12345?view=variants#glyph',
+      routes: [...SignRoutes({ ...getServices(), sitemap: false })],
+    })
   })
 })
 
