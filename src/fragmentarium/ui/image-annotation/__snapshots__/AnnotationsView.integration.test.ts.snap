@@ -320,7 +320,7 @@ exports[`Display annotate view Snapshot 1`] = `
           ← Please read this!
         </span>
         <div
-          class="row"
+          class="annotation-tool row"
         >
           <div
             class="col-5"

@@ -12,6 +12,7 @@ import {
   within,
 } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
+import { setReducedMotionMatchMedia } from 'test-support/matchMedia'
 
 jest.mock('markup/application/MarkupService')
 
@@ -230,26 +231,7 @@ describe('About component', () => {
   })
 
   test('uses non-animated hash scrolling when reduced motion is enabled', async () => {
-    const originalMatchMedia = window.matchMedia
-    const reducedMotionMatchMedia = jest.fn(
-      (query: string): MediaQueryList =>
-        ({
-          matches: query === '(prefers-reduced-motion: reduce)',
-          media: query,
-          onchange: null,
-          addListener: jest.fn(),
-          removeListener: jest.fn(),
-          addEventListener: jest.fn(),
-          removeEventListener: jest.fn(),
-          dispatchEvent: jest.fn(),
-        }) as MediaQueryList,
-    )
-
-    Object.defineProperty(window, 'matchMedia', {
-      writable: true,
-      configurable: true,
-      value: reducedMotionMatchMedia,
-    })
+    const restoreMatchMedia = setReducedMotionMatchMedia(true)
 
     const scrollIntoView = jest.fn()
     const element = document.createElement('div')
@@ -257,22 +239,20 @@ describe('About component', () => {
     element.scrollIntoView = scrollIntoView
     document.body.appendChild(element)
 
-    render(
-      <MemoryRouter initialEntries={['/about/project#reduced-motion-target']}>
-        <About markupService={markupServiceMock} activeTab="project" />
-      </MemoryRouter>,
-    )
-    await waitForSpinnersToDisappear()
+    try {
+      render(
+        <MemoryRouter initialEntries={['/about/project#reduced-motion-target']}>
+          <About markupService={markupServiceMock} activeTab="project" />
+        </MemoryRouter>,
+      )
+      await waitForSpinnersToDisappear()
 
-    await waitFor(() => {
-      expect(scrollIntoView).toHaveBeenCalledWith({ behavior: 'auto' })
-    })
-
-    document.body.removeChild(element)
-    Object.defineProperty(window, 'matchMedia', {
-      writable: true,
-      configurable: true,
-      value: originalMatchMedia,
-    })
+      await waitFor(() => {
+        expect(scrollIntoView).toHaveBeenCalledWith({ behavior: 'auto' })
+      })
+    } finally {
+      document.body.removeChild(element)
+      restoreMatchMedia()
+    }
   })
 })

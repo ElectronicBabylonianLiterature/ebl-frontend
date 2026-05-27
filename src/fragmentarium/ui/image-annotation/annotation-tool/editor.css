@@ -7,8 +7,8 @@ input[type='range'][orient='vertical'] {
   padding: 0 5px;
 }
 
-.react-transform-wrapper,
-.react-transform-component {
+.annotation-tool .react-transform-wrapper,
+.annotation-tool .react-transform-component {
   width: 100%;
   max-width: 100%;
 }

@@ -1,6 +1,7 @@
 import React from 'react'
 import { render, screen, fireEvent } from '@testing-library/react'
 import NewsletterTimeline from 'about/ui/NewsletterTimeline'
+import { setReducedMotionMatchMedia } from 'test-support/matchMedia'
 
 const mockScrollIntoView = jest.fn()
 
@@ -14,21 +15,6 @@ const newsletters = [
   { content: 'Content 2', date: new Date('2024-06-01'), number: 2 },
   { content: 'Content 1', date: new Date('2024-01-01'), number: 1 },
 ] as const
-
-function createMatchMedia(preferReducedMotion: boolean) {
-  return (query: string): MediaQueryList =>
-    ({
-      matches:
-        preferReducedMotion && query === '(prefers-reduced-motion: reduce)',
-      media: query,
-      onchange: null,
-      addListener: jest.fn(),
-      removeListener: jest.fn(),
-      addEventListener: jest.fn(),
-      removeEventListener: jest.fn(),
-      dispatchEvent: jest.fn(),
-    }) as MediaQueryList
-}
 
 test('renders all newsletter items', () => {
   render(
@@ -131,31 +117,24 @@ test('scrolls into view when active newsletter changes', () => {
 })
 
 test('uses non-animated scroll when reduced motion is enabled', () => {
-  const originalMatchMedia = window.matchMedia
-  Object.defineProperty(window, 'matchMedia', {
-    writable: true,
-    configurable: true,
-    value: createMatchMedia(true),
-  })
+  const restoreMatchMedia = setReducedMotionMatchMedia(true)
 
-  render(
-    <NewsletterTimeline
-      newsletters={newsletters}
-      activeNewsletter={newsletters[0]}
-      onSelectNewsletter={jest.fn()}
-    />,
-  )
+  try {
+    render(
+      <NewsletterTimeline
+        newsletters={newsletters}
+        activeNewsletter={newsletters[0]}
+        onSelectNewsletter={jest.fn()}
+      />,
+    )
 
-  expect(mockScrollIntoView).toHaveBeenCalledWith({
-    behavior: 'auto',
-    block: 'nearest',
-  })
-
-  Object.defineProperty(window, 'matchMedia', {
-    writable: true,
-    configurable: true,
-    value: originalMatchMedia,
-  })
+    expect(mockScrollIntoView).toHaveBeenCalledWith({
+      behavior: 'auto',
+      block: 'nearest',
+    })
+  } finally {
+    restoreMatchMedia()
+  }
 })
 
 test('formats dates correctly', () => {

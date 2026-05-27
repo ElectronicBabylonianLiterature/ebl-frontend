@@ -14,6 +14,7 @@ import BibliographyService from 'bibliography/application/BibliographyService'
 import AfoRegisterService from 'afo-register/application/AfoRegisterService'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import DossiersService from 'dossiers/application/DossiersService'
+import { setReducedMotionMatchMedia } from 'test-support/matchMedia'
 
 jest.mock('router/compat', () => ({
   ...jest.requireActual('router/compat'),
@@ -315,26 +316,7 @@ describe('Tools', () => {
 
   it('uses non-animated hash scrolling when reduced motion is enabled', () => {
     jest.useFakeTimers()
-    const originalMatchMedia = window.matchMedia
-    const reducedMotionMatchMedia = jest.fn(
-      (query: string): MediaQueryList =>
-        ({
-          matches: query === '(prefers-reduced-motion: reduce)',
-          media: query,
-          onchange: null,
-          addListener: jest.fn(),
-          removeListener: jest.fn(),
-          addEventListener: jest.fn(),
-          removeEventListener: jest.fn(),
-          dispatchEvent: jest.fn(),
-        }) as MediaQueryList,
-    )
-
-    Object.defineProperty(window, 'matchMedia', {
-      writable: true,
-      configurable: true,
-      value: reducedMotionMatchMedia,
-    })
+    const restoreMatchMedia = setReducedMotionMatchMedia(true)
 
     const scrollIntoView = jest.fn()
     const getElementByIdSpy = jest
@@ -343,30 +325,28 @@ describe('Tools', () => {
         scrollIntoView,
       } as unknown as HTMLElement)
 
-    render(
-      <MemoryRouter initialEntries={['/tools#target-section']}>
-        <Tools
-          markupService={{} as MarkupService}
-          signService={{} as SignService}
-          wordService={{} as WordService}
-          bibliographyService={{} as BibliographyService}
-          afoRegisterService={{} as AfoRegisterService}
-          dossiersService={{} as DossiersService}
-          fragmentService={{} as FragmentService}
-        />
-      </MemoryRouter>,
-    )
+    try {
+      render(
+        <MemoryRouter initialEntries={['/tools#target-section']}>
+          <Tools
+            markupService={{} as MarkupService}
+            signService={{} as SignService}
+            wordService={{} as WordService}
+            bibliographyService={{} as BibliographyService}
+            afoRegisterService={{} as AfoRegisterService}
+            dossiersService={{} as DossiersService}
+            fragmentService={{} as FragmentService}
+          />
+        </MemoryRouter>,
+      )
 
-    jest.runAllTimers()
-    expect(scrollIntoView).toHaveBeenCalledWith({ behavior: 'auto' })
-
-    getElementByIdSpy.mockRestore()
-    Object.defineProperty(window, 'matchMedia', {
-      writable: true,
-      configurable: true,
-      value: originalMatchMedia,
-    })
-    jest.useRealTimers()
+      jest.runAllTimers()
+      expect(scrollIntoView).toHaveBeenCalledWith({ behavior: 'auto' })
+    } finally {
+      getElementByIdSpy.mockRestore()
+      restoreMatchMedia()
+      jest.useRealTimers()
+    }
   })
 
   it('resolves tab metadata and fallback display title', () => {

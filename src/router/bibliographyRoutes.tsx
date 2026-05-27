@@ -5,14 +5,7 @@ import { BibliographySlugs } from 'router/sitemap'
 import AfoRegisterService from 'afo-register/application/AfoRegisterService'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import NotFoundPage from 'NotFoundPage'
-
-function withSearchAndHash(
-  pathname: string,
-  search: string,
-  hash: string,
-): string {
-  return `${pathname}${search}${hash}`
-}
+import withSearchAndHash from 'router/withSearchAndHash'
 
 export default function BibliographyRoutes({
   bibliographyService: _bibliographyService,

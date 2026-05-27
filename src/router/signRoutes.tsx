@@ -4,14 +4,7 @@ import { Route, Redirect } from 'router/compat'
 import SignService from 'signs/application/SignService'
 import { SignSlugs } from 'router/sitemap'
 import NotFoundPage from 'NotFoundPage'
-
-function withSearchAndHash(
-  pathname: string,
-  search: string,
-  hash: string,
-): string {
-  return `${pathname}${search}${hash}`
-}
+import withSearchAndHash from 'router/withSearchAndHash'
 
 export default function SignRoutes({
   sitemap: _sitemap,
