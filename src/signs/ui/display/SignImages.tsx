@@ -54,6 +54,13 @@ function findImagesForSign(
       .then((images) =>
         images.length > 0 ? images : lookupImages(candidateIndex + 1),
       )
+      .catch((error) => {
+        if (candidateIndex < candidates.length - 1) {
+          return lookupImages(candidateIndex + 1)
+        }
+
+        throw error
+      })
   }
 
   return lookupImages(0)

@@ -11,11 +11,22 @@ import { Session } from 'auth/Session'
 import SignsSearchForm from 'signs/ui/search/SignsSearchForm'
 import SignsSearch from 'signs/ui/search/SignsSearch'
 import SignService from 'signs/application/SignService'
+import { SignQuery } from 'signs/domain/Sign'
 import 'signs/ui/search/Signs.sass'
 
 type Props = {
   signService: SignService
 }
+
+const signQueryKeys: Array<keyof SignQuery> = [
+  'value',
+  'subIndex',
+  'listsName',
+  'listsNumber',
+  'isIncludeHomophones',
+  'isComposite',
+  'wordId',
+]
 
 export default function Signs({ signService }: Props): JSX.Element {
   const location = useLocation()
@@ -30,9 +41,9 @@ export default function Signs({ signService }: Props): JSX.Element {
   const signQuery = useMemo(
     () =>
       _.pickBy(
-        { ...query, sign: null },
+        _.pick({ ...query, sign: null }, signQueryKeys),
         (property) => _.identity(property) || property === '',
-      ),
+      ) as SignQuery,
     [query],
   )
 
@@ -46,7 +57,7 @@ export default function Signs({ signService }: Props): JSX.Element {
                 <div className="signs__search-header-form">
                   <SignsSearchForm
                     sign={(query.sign as string) || undefined}
-                    signQuery={query}
+                    signQuery={signQuery}
                     key={location.search}
                   />
                 </div>

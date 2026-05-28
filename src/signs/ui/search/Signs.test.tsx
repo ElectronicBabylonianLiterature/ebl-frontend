@@ -61,6 +61,27 @@ describe('Searching for word', () => {
 
     expect(signService.search.mock.calls.length).toBe(callsAfterInitialRender)
   })
+
+  it('filters non-sign query params before calling sign search', async () => {
+    const value = signs[1].values[0]
+    await renderSigns(
+      `/signs?sign=${value.value}&subIndex=1&value=${value.value}&word=aklu&origin=CDA`,
+    )
+
+    expect(signService.search).toHaveBeenCalled()
+    const signSearchCalls = signService.search.mock.calls
+    const signQuery = signSearchCalls[signSearchCalls.length - 1][0] as Record<
+      string,
+      unknown
+    >
+
+    expect(signQuery).toMatchObject({
+      value: value.value,
+      subIndex: 1,
+    })
+    expect(signQuery).not.toHaveProperty('word')
+    expect(signQuery).not.toHaveProperty('origin')
+  })
 })
 
 it('Displays a message if user is not logged in', async () => {

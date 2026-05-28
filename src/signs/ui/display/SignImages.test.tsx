@@ -82,6 +82,24 @@ describe('Sign Images fallback behavior', () => {
     expect(screen.getByText(croppedAnnotations[0].fragmentNumber)).toBeVisible()
   })
 
+  it('falls back to normalized sign name when first lookup fails', async () => {
+    signService.getImages.mockReturnValueOnce(
+      Bluebird.reject(new Error('Lookup failed')),
+    )
+    signService.getImages.mockReturnValueOnce(
+      Bluebird.resolve(croppedAnnotations),
+    )
+
+    renderSignImages('|AN|')
+    await waitForSpinnerToBeRemoved(screen)
+
+    expect(signService.getImages).toHaveBeenNthCalledWith(1, '|AN|')
+    expect(signService.getImages).toHaveBeenNthCalledWith(2, 'AN')
+
+    await userEvent.click(screen.getByRole('button', { name: 'Unclassified' }))
+    expect(screen.getByText(croppedAnnotations[0].fragmentNumber)).toBeVisible()
+  })
+
   it('renders unknown script groups without throwing', async () => {
     signService.getImages.mockReturnValue(
       Bluebird.resolve([
