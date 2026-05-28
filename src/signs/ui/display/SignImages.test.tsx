@@ -38,6 +38,10 @@ function renderSignImages(activeSignName: string = signName) {
   )
 }
 
+beforeEach(() => {
+  jest.clearAllMocks()
+})
+
 describe('Sign Images', () => {
   async function setup(): Promise<void> {
     signService.getImages.mockReturnValue(Bluebird.resolve(croppedAnnotations))

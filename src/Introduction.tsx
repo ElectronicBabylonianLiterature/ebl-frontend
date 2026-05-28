@@ -132,6 +132,12 @@ function IntroText(): JSX.Element {
 const NEWSLETTER_FRONTMATTER_LINES = 4
 const NEWSLETTER_PREVIEW_LINES = 3
 
+const newsletterPreviewMarkdownComponents: React.ComponentProps<
+  typeof ReactMarkdown
+>['components'] = {
+  a: ({ children }) => <>{children}</>,
+}
+
 export function getNewsletterPreview(content: string): string {
   const lines = content.split('\n')
   const contentLines = lines
@@ -199,7 +205,7 @@ function NewsSection(): JSX.Element {
                 Newsletter #{latestNewsletter.number}
               </h3>
               <div className="introduction-news__featured-preview">
-                <ReactMarkdown>
+                <ReactMarkdown components={newsletterPreviewMarkdownComponents}>
                   {getNewsletterPreview(latestNewsletter.content)}
                 </ReactMarkdown>
               </div>
