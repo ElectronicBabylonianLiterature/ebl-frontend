@@ -36,11 +36,12 @@ function Container({ innerRef, allowTouch, style, ...props }) {
   )
 }
 
-function Img({ innerRef, style, ...props }) {
+function Img({ innerRef, style, alt = '', ...props }) {
   return (
     <img
       {...props}
       ref={innerRef}
+      alt={alt}
       style={{ display: 'block', width: '100%', ...style }}
     />
   )
