@@ -134,6 +134,14 @@ export default function AboutSigns(markupService: MarkupService): JSX.Element {
         Furthermore, a system for automatically labeling photographs has been
         implemented and is undergoing refinement.
       </p>
+      <p>
+        The displayed sign groups are generated using machine-learning-based
+        visual embeddings extracted from cropped sign images. Similar signs are
+        clustered in feature space, allowing representative centroid examples
+        and visual variants to be grouped together automatically. This approach
+        helps reveal palaeographic variation and supports comparison of
+        canonical and non-canonical sign forms across historical script periods.
+      </p>
       <h3>V. Sign Order</h3>
       <Markup
         markupService={markupService}
