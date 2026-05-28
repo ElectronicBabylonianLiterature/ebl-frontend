@@ -141,6 +141,8 @@ export default function AboutSigns(markupService: MarkupService): JSX.Element {
         and visual variants to be grouped together automatically. This approach
         helps reveal palaeographic variation and supports comparison of
         canonical and non-canonical sign forms across historical script periods.
+        A publication describing the underlying methods and evaluation is
+        currently in preparation.
       </p>
       <h3>V. Sign Order</h3>
       <Markup
