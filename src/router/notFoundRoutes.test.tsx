@@ -213,6 +213,35 @@ describe('BibliographyRoutes redirects', () => {
       routes: [...BibliographyRoutes({ ...getServices(), sitemap: false })],
     })
   })
+
+  test('preserves query and hash for bibliography new reference redirect', () => {
+    expectRedirectWithLocationPreserved({
+      initialEntry: '/bibliography/references/new-reference?mode=quick#create',
+      targetPath: '/tools/references/new-reference',
+      expectedLocation: '/tools/references/new-reference?mode=quick#create',
+      routes: [...BibliographyRoutes({ ...getServices(), sitemap: false })],
+    })
+  })
+
+  test('preserves query and hash for bibliography reference detail redirect', () => {
+    expectRedirectWithLocationPreserved({
+      initialEntry: '/bibliography/references/Reference.123?tab=meta#entry',
+      targetPath: '/tools/references/:id',
+      expectedLocation: '/tools/references/Reference.123?tab=meta#entry',
+      routes: [...BibliographyRoutes({ ...getServices(), sitemap: false })],
+    })
+  })
+
+  test('preserves query and hash for bibliography reference edit redirect', () => {
+    expectRedirectWithLocationPreserved({
+      initialEntry:
+        '/bibliography/references/Reference.123/edit?tab=history#editor',
+      targetPath: '/tools/references/:id/edit',
+      expectedLocation:
+        '/tools/references/Reference.123/edit?tab=history#editor',
+      routes: [...BibliographyRoutes({ ...getServices(), sitemap: false })],
+    })
+  })
 })
 
 describe('NotFoundPage rendering in CorpusRoutes', () => {
