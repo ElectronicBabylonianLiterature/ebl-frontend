@@ -3,7 +3,6 @@ import SignService from 'signs/application/SignService'
 import { TestData, testDelegation } from 'test-support/utils'
 
 jest.mock('signs/infrastructure/SignRepository')
-
 const resultStub = {}
 const signRepository = new (SignRepository as jest.Mock<
   jest.Mocked<SignRepository>
@@ -19,18 +18,9 @@ const testData: TestData<SignService>[] = [
     signRepository.search,
     resultStub,
   ),
-  new TestData(
-    'getCentroidImages',
-    ['signName'],
-    signRepository.getCentroidImages,
-    [resultStub],
-  ),
-  new TestData(
-    'getClusterVariants',
-    ['signName', 'cluster-id', 'NA'],
-    signRepository.getClusterVariants,
-    [resultStub],
-  ),
+  new TestData('getImages', ['signName'], signRepository.getImages, [
+    resultStub,
+  ]),
   new TestData('listAllSigns', [], signRepository.listAllSigns, []),
   new TestData(
     'findSignsByOrder',
@@ -39,7 +29,6 @@ const testData: TestData<SignService>[] = [
     resultStub,
   ),
 ]
-
-describe('test sign Service', () => {
+describe('test word Service', () => {
   testDelegation(signService, testData)
 })
