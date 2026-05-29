@@ -1,7 +1,12 @@
 #!/bin/bash
 set -e
 
+ensure_env_local_permissions() {
+    chmod u+rw,go+r .env.local 2>/dev/null || sudo chmod u+rw,go+r .env.local
+}
+
 test -f .env.local || cp .env.test .env.local
+ensure_env_local_permissions
 
 injected_keys=()
 
@@ -45,6 +50,7 @@ while IFS= read -r template_line || [ -n "$template_line" ]; do
                 }
             ' .env.local > "$tmp_file"
             mv "$tmp_file" .env.local
+            ensure_env_local_permissions
             injected_keys+=("$key")
             ;;
     esac
