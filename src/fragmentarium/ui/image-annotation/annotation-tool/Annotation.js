@@ -293,7 +293,7 @@ export default compose(
         this.props.relativeMousePos.y,
       )
       return (
-        <Row className="annotation-tool">
+        <Row>
           <Col xs={5}>
             {!props.disableEditor &&
               renderEditor({
