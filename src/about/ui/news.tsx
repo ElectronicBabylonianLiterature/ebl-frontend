@@ -4,6 +4,7 @@ import { Container } from 'react-bootstrap'
 import NewsletterTimeline from 'about/ui/NewsletterTimeline'
 import { useHistory } from 'router/compat'
 import './news.sass'
+import newsletter22 from 'about/ui/newsletter/022.md'
 import newsletter21 from 'about/ui/newsletter/021.md'
 import newsletter20 from 'about/ui/newsletter/020.md'
 import newsletter19 from 'about/ui/newsletter/019.md'
@@ -39,6 +40,7 @@ interface Newsletter {
 }
 
 export const newsletters: readonly Newsletter[] = [
+  { content: newsletter22, date: new Date('05/28/2026'), number: 22 },
   { content: newsletter21, date: new Date('02/10/2026'), number: 21 },
   { content: newsletter20, date: new Date('09/10/2025'), number: 20 },
   { content: newsletter19, date: new Date('04/04/2025'), number: 19 },
@@ -66,9 +68,6 @@ const message = `**Get the most out of eBL!**
 We will be hosting regular Zoom sessions to showcase its features and tools. 
 These sessions will include a Q&A – please feel free to submit questions in 
 advance per [e-mail](mailto:${process.env.REACT_APP_INFO_EMAIL}).
-The third session is scheduled for March 13th at 5:00 PM CET.
-If you would like to attend, please register at the
-[link](https://lmu-munich.zoom-x.de/meeting/register/J08aK6HvSTSoZ5gKJqZZ4A).
 `
 
 const newsUrl = '/about/news/'
