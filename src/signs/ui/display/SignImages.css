@@ -75,8 +75,7 @@
 }
 
 .sign-images__period-preview-image {
-  width: 60px;
-  height: 60px;
+  max-height: 150px;
   object-fit: contain;
   border: 1px solid #ccc;
   background-color: #fff;
