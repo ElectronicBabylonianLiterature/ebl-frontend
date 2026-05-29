@@ -43,7 +43,7 @@ export default function AfoRegisterSearchPage({
   const location = useLocation()
   const query = getAfoRegisterQueryFromLocation(location.search)
   return (
-    <>
+    <div className="ebl-consistent-links">
       <AfoRegisterIntroduction />
       <div className="AfoRegister__search-header">
         <div className="AfoRegister__search">
@@ -67,6 +67,6 @@ export default function AfoRegisterSearchPage({
           />
         )}
       </div>
-    </>
+    </div>
   )
 }

@@ -122,9 +122,10 @@ function ChapterEditView({
         new ChapterCrumb(chapter.id),
         new TextCrumb('Edit'),
       ]}
+      breadcrumbsFullWidth={false}
       title={<EditChapterTitle text={text} chapter={chapter} />}
     >
-      <div className="chapter-edit-view">
+      <div className="chapter-edit-view ebl-consistent-links">
         <ChapterNavigation text={text} />
         <ChapterEditor
           chapter={currentChapter}

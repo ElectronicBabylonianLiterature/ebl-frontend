@@ -239,18 +239,20 @@ describe('About component', () => {
     element.scrollIntoView = scrollIntoView
     document.body.appendChild(element)
 
-    render(
-      <MemoryRouter initialEntries={['/about/project#reduced-motion-target']}>
-        <About markupService={markupServiceMock} activeTab="project" />
-      </MemoryRouter>,
-    )
-    await waitForSpinnersToDisappear()
+    try {
+      render(
+        <MemoryRouter initialEntries={['/about/project#reduced-motion-target']}>
+          <About markupService={markupServiceMock} activeTab="project" />
+        </MemoryRouter>,
+      )
+      await waitForSpinnersToDisappear()
 
-    await waitFor(() => {
-      expect(scrollIntoView).toHaveBeenCalledWith({ behavior: 'auto' })
-    })
-
-    document.body.removeChild(element)
-    restoreMatchMedia()
+      await waitFor(() => {
+        expect(scrollIntoView).toHaveBeenCalledWith({ behavior: 'auto' })
+      })
+    } finally {
+      document.body.removeChild(element)
+      restoreMatchMedia()
+    }
   })
 })

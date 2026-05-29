@@ -325,26 +325,28 @@ describe('Tools', () => {
         scrollIntoView,
       } as unknown as HTMLElement)
 
-    render(
-      <MemoryRouter initialEntries={['/tools#target-section']}>
-        <Tools
-          markupService={{} as MarkupService}
-          signService={{} as SignService}
-          wordService={{} as WordService}
-          bibliographyService={{} as BibliographyService}
-          afoRegisterService={{} as AfoRegisterService}
-          dossiersService={{} as DossiersService}
-          fragmentService={{} as FragmentService}
-        />
-      </MemoryRouter>,
-    )
+    try {
+      render(
+        <MemoryRouter initialEntries={['/tools#target-section']}>
+          <Tools
+            markupService={{} as MarkupService}
+            signService={{} as SignService}
+            wordService={{} as WordService}
+            bibliographyService={{} as BibliographyService}
+            afoRegisterService={{} as AfoRegisterService}
+            dossiersService={{} as DossiersService}
+            fragmentService={{} as FragmentService}
+          />
+        </MemoryRouter>,
+      )
 
-    jest.runAllTimers()
-    expect(scrollIntoView).toHaveBeenCalledWith({ behavior: 'auto' })
-
-    getElementByIdSpy.mockRestore()
-    restoreMatchMedia()
-    jest.useRealTimers()
+      jest.runAllTimers()
+      expect(scrollIntoView).toHaveBeenCalledWith({ behavior: 'auto' })
+    } finally {
+      getElementByIdSpy.mockRestore()
+      restoreMatchMedia()
+      jest.useRealTimers()
+    }
   })
 
   it('resolves tab metadata and fallback display title', () => {

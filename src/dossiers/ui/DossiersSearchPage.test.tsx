@@ -2,7 +2,6 @@ import React from 'react'
 import { render, screen } from '@testing-library/react'
 import '@testing-library/jest-dom'
 import userEvent from '@testing-library/user-event'
-import 'test-support/mockMarkdownRenderers'
 import DossiersSearchPage from 'dossiers/ui/DossiersSearchPage'
 import DossierRecord from 'dossiers/domain/DossierRecord'
 import DossiersService from 'dossiers/application/DossiersService'
@@ -12,6 +11,18 @@ import Bluebird from 'bluebird'
 jest.mock('common/ui/Markdown', () => ({
   __esModule: true,
   Markdown: ({ text }: { text: string }) => <div>{text}</div>,
+}))
+
+jest.mock('common/utils/MarkdownAndHtmlToHtml', () => ({
+  __esModule: true,
+  default: ({ markdownAndHtml }: { markdownAndHtml: string }) => (
+    <div>{markdownAndHtml}</div>
+  ),
+}))
+
+jest.mock('common/ui/InlineMarkdown', () => ({
+  __esModule: true,
+  default: ({ source }: { source: string }) => <span>{source}</span>,
 }))
 
 function makeDossierDto(

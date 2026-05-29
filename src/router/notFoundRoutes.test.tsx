@@ -20,6 +20,34 @@ jest.mock('router/head', () => ({
   ),
 }))
 
+function expectRedirectWithLocationPreserved({
+  initialEntry,
+  targetPath,
+  expectedLocation,
+  routes,
+}: {
+  initialEntry: string
+  targetPath: string
+  expectedLocation: string
+  routes: JSX.Element[]
+}): void {
+  render(
+    <MemoryRouter initialEntries={[initialEntry]}>
+      <Switch>
+        {routes}
+        <Route
+          path={targetPath}
+          render={({ location }) => (
+            <div>{`${location.pathname}${location.search}${location.hash}`}</div>
+          )}
+        />
+      </Switch>
+    </MemoryRouter>,
+  )
+
+  expect(screen.getByText(expectedLocation)).toBeInTheDocument()
+}
+
 describe('NotFoundPage rendering in FragmentariumRoutes', () => {
   const nonExistentRoutes = [
     '/library/search/non-existent',
@@ -176,6 +204,44 @@ describe('BibliographyRoutes redirects', () => {
 
     expect(screen.getByText('Bibliography Redirect Target')).toBeInTheDocument()
   })
+
+  test('preserves query and hash for "/bibliography/afo-register" redirect', () => {
+    expectRedirectWithLocationPreserved({
+      initialEntry: '/bibliography/afo-register?text=EN&textNumber=1#results',
+      targetPath: '/tools/afo-register',
+      expectedLocation: '/tools/afo-register?text=EN&textNumber=1#results',
+      routes: [...BibliographyRoutes({ ...getServices(), sitemap: false })],
+    })
+  })
+
+  test('preserves query and hash for bibliography new reference redirect', () => {
+    expectRedirectWithLocationPreserved({
+      initialEntry: '/bibliography/references/new-reference?mode=quick#create',
+      targetPath: '/tools/references/new-reference',
+      expectedLocation: '/tools/references/new-reference?mode=quick#create',
+      routes: [...BibliographyRoutes({ ...getServices(), sitemap: false })],
+    })
+  })
+
+  test('preserves query and hash for bibliography reference detail redirect', () => {
+    expectRedirectWithLocationPreserved({
+      initialEntry: '/bibliography/references/Reference.123?tab=meta#entry',
+      targetPath: '/tools/references/:id',
+      expectedLocation: '/tools/references/Reference.123?tab=meta#entry',
+      routes: [...BibliographyRoutes({ ...getServices(), sitemap: false })],
+    })
+  })
+
+  test('preserves query and hash for bibliography reference edit redirect', () => {
+    expectRedirectWithLocationPreserved({
+      initialEntry:
+        '/bibliography/references/Reference.123/edit?tab=history#editor',
+      targetPath: '/tools/references/:id/edit',
+      expectedLocation:
+        '/tools/references/Reference.123/edit?tab=history#editor',
+      routes: [...BibliographyRoutes({ ...getServices(), sitemap: false })],
+    })
+  })
 })
 
 describe('NotFoundPage rendering in CorpusRoutes', () => {
@@ -275,6 +341,15 @@ describe('DictionaryRoutes redirects', () => {
       screen.getByText('Dictionary Edit Redirect Target'),
     ).toBeInTheDocument()
   })
+
+  test('preserves query and hash for "/dictionary/:id" redirect', () => {
+    expectRedirectWithLocationPreserved({
+      initialEntry: '/dictionary/Dictionary.12345?tab=forms#entry',
+      targetPath: '/tools/dictionary/:id',
+      expectedLocation: '/tools/dictionary/Dictionary.12345?tab=forms#entry',
+      routes: [...DictionaryRoutes({ ...getServices(), sitemap: false })],
+    })
+  })
 })
 
 describe('NotFoundPage rendering in SignRoutes', () => {
@@ -331,6 +406,15 @@ describe('SignRoutes redirects', () => {
     )
 
     expect(screen.getByText('Signs Detail Redirect Target')).toBeInTheDocument()
+  })
+
+  test('preserves query and hash for "/signs/:id" redirect', () => {
+    expectRedirectWithLocationPreserved({
+      initialEntry: '/signs/Signs.12345?view=variants#glyph',
+      targetPath: '/tools/signs/:id',
+      expectedLocation: '/tools/signs/Signs.12345?view=variants#glyph',
+      routes: [...SignRoutes({ ...getServices(), sitemap: false })],
+    })
   })
 })
 

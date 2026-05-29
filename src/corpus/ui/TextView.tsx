@@ -27,7 +27,7 @@ function TextView({
   fragmentService
 }): JSX.Element {
   return (
-    <div className="text-view">
+    <div className="text-view ebl-consistent-links">
       <Introduction text={text} />
       <CollapsibleSection classNameBlock="text-view" heading="Chapters" open>
         <Chapters
@@ -76,6 +76,7 @@ function TextViewWrapper({
         new GenreCrumb(text.genre),
         CorpusTextCrumb.ofText(text),
       ]}
+      breadcrumbsFullWidth={false}
     >
       <HeadTags
         title={`${text.name}: Text edition in the electronic Babylonian Library`}

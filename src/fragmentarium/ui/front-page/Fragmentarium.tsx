@@ -26,7 +26,10 @@ function Fragmentarium({
   | 'wordService'
 >): JSX.Element {
   return (
-    <AppContent crumbs={[new SectionCrumb('Library')]}>
+    <AppContent
+      crumbs={[new SectionCrumb('Library')]}
+      breadcrumbsFullWidth={false}
+    >
       <SessionContext.Consumer>
         {(session: Session): JSX.Element => (
           <Container fluid>

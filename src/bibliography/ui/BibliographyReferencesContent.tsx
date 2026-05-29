@@ -32,16 +32,10 @@ export function BibliographyReferencesIntroduction(): JSX.Element {
   )
 }
 
-function CreateReferenceButton({
-  session,
-  pathname,
-}: {
-  session: Session
-  pathname: string
-}): JSX.Element {
+function CreateReferenceButton({ session }: { session: Session }): JSX.Element {
   return session.isAllowedToWriteBibliography() ? (
     <Link
-      to={referencesNewRoute(pathname)}
+      to={referencesNewRoute()}
       className="btn btn-outline-primary Bibliography__create-link"
     >
       <i className="fas fa-plus-circle" aria-hidden="true" /> Create
@@ -74,10 +68,7 @@ export default function BibliographyReferencesContent({
               <div className="Bibliography__search">
                 <BibliographySearchForm query={query} />
               </div>
-              <CreateReferenceButton
-                session={session}
-                pathname={location.pathname}
-              />
+              <CreateReferenceButton session={session} />
               <AboutInlineLink
                 to="/about/bibliography"
                 label="Bibliography"

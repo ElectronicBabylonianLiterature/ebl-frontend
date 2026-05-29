@@ -1,10 +1,10 @@
 @import src/design-tokens
 
 @mixin highlight-token
-  box-shadow: 0 2px 6px rgba(26, 95, 168, 0.25)
+  box-shadow: 0 2px 6px $ebl-color-brand-alpha-25
   transform: scale(1.08)
   span[class^="Transliteration__"]
-    color: black !important
+    color: $ebl-color-text-primary
 
 $info-blue: $ebl-color-status-info-soft
 $confirm-green: $ebl-color-status-success
@@ -27,11 +27,11 @@ $confirm-green: $ebl-color-status-success
       background-color: $confirm-green
 
     100%
-      background-color: none
+      background-color: transparent
 
 .lemmatizer
   &__text-col
-    max-width: fit-content
+    max-width: 100%
     min-width: min(22em, 100%)
 
   &__anno-tool
@@ -85,16 +85,16 @@ $confirm-green: $ebl-color-status-success
       flex-direction: column
       padding: .2rem
     .badge
-      max-width: fit-content
+      max-width: 100%
 
     > span
       display: block
 
     &:hover
       @include highlight-token
-      border: 1px solid lightgrey
+      border: 1px solid $ebl-color-border-muted
       cursor: pointer
-      background-color: lightgrey
+      background-color: $ebl-color-surface-subtle
 
     &.selected
       @include highlight-token
@@ -106,8 +106,8 @@ $confirm-green: $ebl-color-status-success
 
     &.pending
       @include highlight-token
-      border: 1px solid yellow
-      background-color: yellow
+      border: 1px solid $ebl-color-highlight-active
+      background-color: $ebl-color-highlight-active
 
     &.glowing
       @include fade-to-none
@@ -115,7 +115,7 @@ $confirm-green: $ebl-color-status-success
   &__lemma-preview
     font-size: small
     font-style: italic
-    display: flex !important
+    display: flex
     align-items: start
     .badge
       font-style: normal

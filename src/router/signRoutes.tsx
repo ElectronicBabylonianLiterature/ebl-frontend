@@ -4,6 +4,7 @@ import { Route, Redirect } from 'router/compat'
 import SignService from 'signs/application/SignService'
 import { SignSlugs } from 'router/sitemap'
 import NotFoundPage from 'NotFoundPage'
+import withSearchAndHash from 'router/withSearchAndHash'
 
 export default function SignRoutes({
   sitemap: _sitemap,
@@ -21,11 +22,26 @@ export default function SignRoutes({
       key="sign-display-redirect"
       path="/signs/:id"
       exact
-      render={({ match }): ReactNode => (
-        <Redirect to={`/tools/signs/${match.params.id}`} />
+      render={({ match, location }): ReactNode => (
+        <Redirect
+          to={withSearchAndHash(
+            `/tools/signs/${match.params.id}`,
+            location.search,
+            location.hash,
+          )}
+        />
       )}
     />,
-    <Redirect exact from="/signs" to="/tools/signs" key="signs-redirect" />,
+    <Route
+      key="signs-redirect"
+      path="/signs"
+      exact
+      render={({ location }): ReactNode => (
+        <Redirect
+          to={withSearchAndHash('/tools/signs', location.search, location.hash)}
+        />
+      )}
+    />,
     <Route
       key="SignsNotFound"
       path="/signs/*"

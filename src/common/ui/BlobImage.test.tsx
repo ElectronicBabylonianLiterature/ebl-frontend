@@ -44,3 +44,15 @@ describe('Does not have a link to the image', () => {
     expect(screen.queryByRole('link')).not.toBeInTheDocument()
   })
 })
+
+test('Does not render image when object URL is unavailable', () => {
+  ;(URL.createObjectURL as jest.Mock).mockImplementationOnce(() => {
+    throw new Error('failed')
+  })
+  data = new Blob(['Babel_Project_01_cropped'], { type: 'image/jpeg' })
+
+  render(<BlobImage data={data} hasLink={true} />)
+
+  expect(screen.queryByRole('img')).not.toBeInTheDocument()
+  expect(screen.queryByRole('link')).not.toBeInTheDocument()
+})

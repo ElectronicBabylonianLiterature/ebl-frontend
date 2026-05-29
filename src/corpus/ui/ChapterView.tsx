@@ -170,6 +170,7 @@ function ChapterView({
             CorpusTextCrumb.ofChapterDisplay(chapter),
             new ChapterCrumb(chapter.id),
           ]}
+          breadcrumbsFullWidth={false}
           title={<Title chapter={chapter} />}
           actions={
             <ButtonGroup>
@@ -196,7 +197,7 @@ function ChapterView({
             chapter={chapter}
             markupService={markupService}
           />
-          <div className="chapter-view">
+          <div className="chapter-view ebl-consistent-links">
             {chapter.isPublished && <HowToCite chapter={chapter} />}
             <section className="chapter-view__edition-section">
               <h3 className="chapter-view__edition-heading">Edition</h3>

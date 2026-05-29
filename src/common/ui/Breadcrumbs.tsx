@@ -33,6 +33,7 @@ export class SectionCrumb implements Crumb {
     ['Library', '/library'],
     ['Signs', '/tools/signs'],
     ['About', '/about'],
+    ['Tools', '/tools'],
     ['Projects', '/projects'],
     ['CAIC', '/projects/CAIC'],
     ['AMPS', '/projects/AMPS'],

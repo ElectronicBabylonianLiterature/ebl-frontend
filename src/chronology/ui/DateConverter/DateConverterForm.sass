@@ -5,9 +5,9 @@
 
   .tab-content
     padding: 2rem
-    background: white
+    background: $ebl-color-surface-primary
     border-radius: 12px
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08)
+    box-shadow: 0 4px 16px $ebl-color-black-alpha-08
     border: 1px solid $ebl-color-border-muted
     margin-top: 2rem
 
@@ -20,17 +20,17 @@
       border-bottom: 3px solid transparent
       padding: 1rem 1.5rem
       font-weight: 500
-      transition: all 0.2s ease
+      transition: color $ebl-motion-duration-fast ease, background-color $ebl-motion-duration-fast ease, border-bottom-color $ebl-motion-duration-fast ease
       margin-bottom: -2px
 
       &:hover
         color: $ebl-color-brand-primary
         background: $ebl-color-brand-soft-subtle
-        border-bottom-color: rgba($ebl-color-brand-primary, 0.3)
+        border-bottom-color: $ebl-color-brand-alpha-30
 
       &.active
         color: $ebl-color-brand-primary
-        background: white
+        background: $ebl-color-surface-primary
         border-bottom-color: $ebl-color-brand-primary
         font-weight: 600
 
@@ -61,7 +61,7 @@
   transition: background 0.2s ease
 
   &:hover
-    background: rgba($ebl-color-brand-primary, 0.02)
+    background: $ebl-color-brand-alpha-02
 
   &:last-child
     border-bottom: none
@@ -87,63 +87,65 @@
     line-height: 1.5
     min-height: calc(1.5em + 0.9rem + 2px)
     height: auto
-    transition: all 0.2s ease
+    transition: border-color $ebl-motion-duration-fast ease, box-shadow $ebl-motion-duration-fast ease
 
     &:focus
       border-color: $ebl-color-brand-primary
-      box-shadow: 0 0 0 3px rgba($ebl-color-brand-primary, 0.1)
+      box-shadow: 0 0 0 3px $ebl-color-brand-alpha-10
 
     &.active-field
       font-weight: 500
 
 .active-field
   background-color: $ebl-color-highlight-active
-  border-color: $ebl-color-brand-primary !important
+
+.section-fields .form-control.active-field
+  border-color: $ebl-color-brand-primary
 
 .copy-button
   border-radius: 8px
   display: inline-flex
   align-items: center
   justify-content: center
-  background: rgba(255, 255, 255, 0.2)
-  border: 1px solid rgba(255, 255, 255, 0.3)
-  color: white
+  background: $ebl-color-white-alpha-20
+  border: 1px solid $ebl-color-white-alpha-30
+  color: $ebl-color-surface-primary
   padding: 0.5rem 1.25rem
   font-weight: 600
   margin-top: 1rem
-  transition: all 0.3s ease
+  transition: background-color $ebl-motion-duration-base ease, color $ebl-motion-duration-base ease, transform $ebl-motion-duration-base ease, box-shadow $ebl-motion-duration-base ease
 
   &:hover
-    background: rgba(255, 255, 255, 0.3)
-    color: white
+    background: $ebl-color-white-alpha-30
+    color: $ebl-color-surface-primary
 
   &:focus-visible
-    background: rgba(255, 255, 255, 0.3)
-    color: white
-    outline: 2px solid rgba(255, 255, 255, 0.9)
+    background: $ebl-color-white-alpha-30
+    color: $ebl-color-surface-primary
+    outline: 2px solid $ebl-color-white-alpha-90
     outline-offset: 2px
 
 .copy-button-container
   background: linear-gradient(135deg, $ebl-color-brand-primary 0%, $ebl-color-brand-primary-dark 100%)
   border-radius: 12px
   padding: 1.5rem
-  color: white
+  color: $ebl-color-surface-primary
   position: sticky
-  top: 6rem
+  top: $ebl-layout-sticky-offset-content
 
   h4
-    color: white
+    color: $ebl-color-surface-primary
     margin-bottom: 1rem
 
   .form-check
-    color: white
+    color: $ebl-color-surface-primary
 
     .form-check-input:checked
-      background-color: rgba(255, 255, 255, 0.3)
-      border-color: rgba(255, 255, 255, 0.5)
+      background-color: $ebl-color-white-alpha-30
+      border-color: $ebl-color-white-alpha-50
 
-.dropdown-toggle::after
-  display: none !important
+.date_converter .dropdown-toggle::after
+  display: none
 
 @media (prefers-reduced-motion: reduce)
   .date_converter .nav-tabs .nav-link,

@@ -3,7 +3,7 @@
 exports[`Search Shows suggestion when entering wrong number format 1`] = `
 <div>
   <main
-    class="main"
+    class="main main--breadcrumbs-contained"
   >
     <div
       class="main__content"

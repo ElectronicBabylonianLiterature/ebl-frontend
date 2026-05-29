@@ -69,6 +69,7 @@ function FragmentLineToVecRanking({
         new FragmentCrumb(number),
         new TextCrumb('Ranking LineToVec Matches'),
       ]}
+      breadcrumbsFullWidth={false}
       title={`LineToVec Ranking for ${number}`}
     >
       <SessionContext.Consumer>

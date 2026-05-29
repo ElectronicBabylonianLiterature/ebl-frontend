@@ -202,7 +202,7 @@ exports[`Chapter Show chapter 1`] = `
       </nav>
     </header>
     <main
-      class="main"
+      class="main main--breadcrumbs-contained"
     >
       <div
         class="main__content"
@@ -263,7 +263,7 @@ exports[`Chapter Show chapter 1`] = `
           />
         </header>
         <div
-          class="text-view"
+          class="text-view ebl-consistent-links"
         >
           <section
             class="text-view__section"
@@ -829,7 +829,7 @@ exports[`Chapter Show list of manuscripts 1`] = `
       </nav>
     </header>
     <main
-      class="main"
+      class="main main--breadcrumbs-contained"
     >
       <div
         class="main__content"
@@ -890,7 +890,7 @@ exports[`Chapter Show list of manuscripts 1`] = `
           />
         </header>
         <div
-          class="text-view"
+          class="text-view ebl-consistent-links"
         >
           <section
             class="text-view__section"
@@ -1633,7 +1633,7 @@ exports[`With session 1`] = `
       </nav>
     </header>
     <main
-      class="main"
+      class="main main--breadcrumbs-contained"
     >
       <div
         class="main__content"
@@ -1694,7 +1694,7 @@ exports[`With session 1`] = `
           />
         </header>
         <div
-          class="text-view"
+          class="text-view ebl-consistent-links"
         >
           <section
             class="text-view__section"

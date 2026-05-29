@@ -609,7 +609,7 @@ export class FragmentService {
     this.clearCachesWhenScopeChanges()
 
     const cachedValue = this.getCachedValue(cache, key)
-    if (cachedValue) {
+    if (cachedValue !== null) {
       return Bluebird.resolve(cachedValue)
     }
 

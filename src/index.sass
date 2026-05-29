@@ -17,3 +17,23 @@ body
   font-size: initial
   margin: 0
   padding: 0
+
+.ebl-consistent-links
+  a:not(.btn):not(.nav-link):not(.page-link)
+    color: var(--ebl-color-brand-primary)
+    text-decoration: none
+    transition: color 0.15s ease, text-decoration-color 0.15s ease
+
+    &:hover
+      color: var(--ebl-color-brand-primary-dark)
+      text-decoration: underline
+
+    &:focus-visible
+      color: var(--ebl-color-brand-primary-dark)
+      text-decoration: underline
+      outline: 2px solid var(--ebl-color-brand-primary)
+      outline-offset: 2px
+
+@media (prefers-reduced-motion: reduce)
+  .ebl-consistent-links a:not(.btn):not(.nav-link):not(.page-link)
+    transition: none

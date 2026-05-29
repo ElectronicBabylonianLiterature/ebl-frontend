@@ -6,8 +6,8 @@
     border-radius: 5px
     overflow: hidden
 
-  .list-group-item
-    border: 1px solid $ebl-color-border-muted !important
+  .list-group > .list-group-item
+    border: 1px solid $ebl-color-border-muted
     margin-bottom: 10px
     border-radius: 0
 
@@ -52,7 +52,7 @@
     border-left-style: solid
     border-left-color: $ebl-color-brand-primary
     border-radius: 8px
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05)
+    box-shadow: 0 2px 8px $ebl-color-black-alpha-05
 
     p
       margin-bottom: 1rem
@@ -65,7 +65,7 @@
     padding: 2.5rem
     background: white
     border-radius: 12px
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08)
+    box-shadow: 0 4px 16px $ebl-color-black-alpha-08
     border: 1px solid $ebl-color-border-muted
 
     h3
@@ -92,19 +92,19 @@
     padding: 1.5rem
     background: white
     border-radius: 12px
-    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08)
+    box-shadow: 0 2px 12px $ebl-color-black-alpha-08
     border: 1px solid $ebl-color-border-muted
 
     @media (min-width: $ebl-breakpoint-md)
       position: sticky
-      top: 20px
+      top: $ebl-layout-sticky-offset-compact
 
     .nav-link
       color: $ebl-color-text-muted-body
       padding: 0.75rem 1rem
       margin-bottom: 0.5rem
       border-radius: 8px
-      transition: all 0.2s ease
+      transition: background-color $ebl-motion-duration-fast ease, border-left-color $ebl-motion-duration-fast ease, color $ebl-motion-duration-fast ease, transform $ebl-motion-duration-fast ease
       font-weight: 500
       border-left: 3px solid transparent
 
@@ -115,7 +115,7 @@
         transform: translateX(4px)
 
       &.active
-        background: linear-gradient(90deg, rgba(0, 119, 190, 0.1) 0%, rgba(0, 119, 190, 0.05) 100%)
+        background: linear-gradient(90deg, $ebl-color-brand-alpha-10 0%, $ebl-color-brand-soft-subtle 100%)
         color: $ebl-color-brand-primary
         border-left-color: $ebl-color-brand-primary
         font-weight: 600

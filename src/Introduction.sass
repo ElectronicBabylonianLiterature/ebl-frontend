@@ -30,7 +30,7 @@
   &__badge
     display: inline-block
     padding: 0.5rem 1.25rem
-    background-color: rgba(255, 255, 255, 0.15)
+    background-color: $ebl-color-white-alpha-15
     border-radius: 50px
     font-size: 0.875rem
     font-weight: 600
@@ -73,8 +73,8 @@
     flex-wrap: wrap
     padding: 0.5rem
     border-radius: 16px
-    border: 1px solid rgba(255, 255, 255, 0.28)
-    background-color: rgba(255, 255, 255, 0.12)
+    border: 1px solid $ebl-color-white-alpha-28
+    background-color: $ebl-color-white-alpha-12
     backdrop-filter: blur(4px)
 
   &__logo-link
@@ -91,11 +91,11 @@
 
     &:hover
       opacity: 1
-      background-color: rgba(255, 255, 255, 0.14)
+      background-color: $ebl-color-white-alpha-14
       transform: translateY(-1px)
 
     &:focus-visible
-      outline: 2px solid rgba(255, 255, 255, 0.88)
+      outline: 2px solid $ebl-color-white-alpha-88
       outline-offset: 2px
 
   &__logo
@@ -223,17 +223,17 @@
     border-radius: 50px
     flex-shrink: 0
     white-space: nowrap
-    transition: all 0.3s ease
+    transition: color $ebl-motion-duration-base ease, background-color $ebl-motion-duration-base ease, transform $ebl-motion-duration-base ease, box-shadow $ebl-motion-duration-base ease
 
     &:hover
       background-color: $ebl-color-brand-primary
       color: white
       transform: translateY(-2px)
-      box-shadow: 0 4px 12px rgba(0, 119, 190, 0.2)
+      box-shadow: 0 4px 12px $ebl-color-brand-alpha-20
       text-decoration: none
 
     &:focus-visible
-      outline: 3px solid rgba(0, 119, 190, 0.4)
+      outline: 3px solid $ebl-color-brand-alpha-40
       outline-offset: 3px
       text-decoration: none
 
@@ -252,13 +252,13 @@
   border-radius: 10px
   text-decoration: none
   color: inherit
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1)
+  transition: background-color $ebl-motion-duration-base $ebl-motion-ease-standard, border-color $ebl-motion-duration-base $ebl-motion-ease-standard, transform $ebl-motion-duration-base $ebl-motion-ease-standard, box-shadow $ebl-motion-duration-base $ebl-motion-ease-standard
 
   &:hover
     background-color: white
     border-color: $ebl-color-brand-primary
     transform: translateX(4px)
-    box-shadow: 0 4px 16px rgba(0, 119, 190, 0.1)
+    box-shadow: 0 4px 16px $ebl-color-brand-alpha-10
     text-decoration: none
     color: inherit
 
@@ -270,10 +270,10 @@
     background-color: white
     border-color: $ebl-color-brand-primary
     transform: translateX(4px)
-    box-shadow: 0 4px 16px rgba(0, 119, 190, 0.1)
+    box-shadow: 0 4px 16px $ebl-color-brand-alpha-10
     text-decoration: none
     color: inherit
-    outline: 3px solid rgba(0, 119, 190, 0.35)
+    outline: 3px solid $ebl-color-brand-alpha-35
     outline-offset: 3px
 
     .latest-addition-card__arrow
@@ -354,7 +354,7 @@
     font-weight: 600
     opacity: 0
     transform: translateX(-4px)
-    transition: all 0.3s ease
+    transition: opacity $ebl-motion-duration-base ease, transform $ebl-motion-duration-base ease
 
 @media (max-width: $ebl-breakpoint-md-max)
   .latest-additions-preview
@@ -426,21 +426,21 @@
     border-style: solid
     border-color: $ebl-color-brand-primary
     border-radius: 50px
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1)
+    transition: color $ebl-motion-duration-base $ebl-motion-ease-standard, background-color $ebl-motion-duration-base $ebl-motion-ease-standard, transform $ebl-motion-duration-base $ebl-motion-ease-standard, box-shadow $ebl-motion-duration-base $ebl-motion-ease-standard
     white-space: nowrap
 
     &:hover
       background-color: $ebl-color-brand-primary
       color: white
       transform: translateY(-2px)
-      box-shadow: 0 4px 12px rgba(0, 119, 190, 0.2)
+      box-shadow: 0 4px 12px $ebl-color-brand-alpha-20
 
     &:focus-visible
       background-color: $ebl-color-brand-primary
       color: white
       transform: translateY(-2px)
-      box-shadow: 0 4px 12px rgba(0, 119, 190, 0.2)
-      outline: 3px solid rgba(0, 119, 190, 0.4)
+      box-shadow: 0 4px 12px $ebl-color-brand-alpha-20
+      outline: 3px solid $ebl-color-brand-alpha-40
       outline-offset: 3px
       text-decoration: none
 
@@ -462,8 +462,8 @@
     padding: 2.5rem
     text-decoration: none
     overflow: hidden
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1)
-    box-shadow: 0 8px 30px rgba(0, 119, 190, 0.15)
+    transition: transform $ebl-motion-duration-slow $ebl-motion-ease-standard, box-shadow $ebl-motion-duration-slow $ebl-motion-ease-standard
+    box-shadow: 0 8px 30px $ebl-color-brand-alpha-15
 
     &::before
       content: '𒀀'
@@ -473,11 +473,11 @@
       top: -3rem
       right: -3rem
       pointer-events: none
-      transition: all 0.4s ease
+      transition: transform $ebl-motion-duration-slow ease
 
     &:hover
       transform: translateY(-8px)
-      box-shadow: 0 16px 48px rgba(0, 119, 190, 0.25)
+      box-shadow: 0 16px 48px $ebl-color-brand-alpha-25
 
       &::before
         transform: rotate(15deg) scale(1.1)
@@ -487,8 +487,8 @@
 
     &:focus-visible
       transform: translateY(-8px)
-      box-shadow: 0 16px 48px rgba(0, 119, 190, 0.25)
-      outline: 3px solid rgba(255, 255, 255, 0.75)
+      box-shadow: 0 16px 48px $ebl-color-brand-alpha-25
+      outline: 3px solid $ebl-color-white-alpha-75
       outline-offset: 4px
       text-decoration: none
 
@@ -503,7 +503,7 @@
     align-items: center
     gap: 0.75rem
     padding: 0.5rem 1rem
-    background-color: rgba(255, 255, 255, 0.2)
+    background-color: $ebl-color-white-alpha-20
     backdrop-filter: blur(10px)
     border-radius: 50px
     margin-bottom: 1.5rem
@@ -530,7 +530,7 @@
     display: flex
     align-items: center
     gap: 0.5rem
-    color: rgba(255, 255, 255, 0.9)
+    color: $ebl-color-white-alpha-90
     font-size: 0.9rem
     margin-bottom: 1rem
 
@@ -558,10 +558,10 @@
     font-weight: 600
     font-size: 1rem
     padding: 0.875rem 1.5rem
-    background-color: rgba(255, 255, 255, 0.2)
+    background-color: $ebl-color-white-alpha-20
     backdrop-filter: blur(10px)
     border-radius: 50px
-    transition: all 0.3s ease
+    transition: gap $ebl-motion-duration-base ease
 
   &__recent-list
     display: flex
@@ -577,13 +577,13 @@
     border: 2px solid transparent
     border-radius: 12px
     text-decoration: none
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1)
+    transition: background-color $ebl-motion-duration-base $ebl-motion-ease-standard, border-color $ebl-motion-duration-base $ebl-motion-ease-standard, transform $ebl-motion-duration-base $ebl-motion-ease-standard, box-shadow $ebl-motion-duration-base $ebl-motion-ease-standard
 
     &:hover
       background-color: white
       border-color: $ebl-color-brand-primary
       transform: translateX(4px)
-      box-shadow: 0 4px 16px rgba(0, 119, 190, 0.1)
+      box-shadow: 0 4px 16px $ebl-color-brand-alpha-10
 
       .introduction-news__recent-arrow
         opacity: 1
@@ -593,8 +593,8 @@
       background-color: white
       border-color: $ebl-color-brand-primary
       transform: translateX(4px)
-      box-shadow: 0 4px 16px rgba(0, 119, 190, 0.1)
-      outline: 3px solid rgba(0, 119, 190, 0.35)
+      box-shadow: 0 4px 16px $ebl-color-brand-alpha-10
+      outline: 3px solid $ebl-color-brand-alpha-35
       outline-offset: 3px
 
       .introduction-news__recent-arrow
@@ -613,7 +613,7 @@
     border-radius: 12px
     font-weight: 700
     font-size: 0.875rem
-    box-shadow: 0 2px 8px rgba(0, 119, 190, 0.2)
+    box-shadow: 0 2px 8px $ebl-color-brand-alpha-20
 
   &__recent-content
     flex: 1
@@ -637,7 +637,7 @@
     font-weight: 600
     opacity: 0
     transform: translateX(-4px)
-    transition: all 0.3s ease
+    transition: opacity $ebl-motion-duration-base ease, transform $ebl-motion-duration-base ease
 
 @media (max-width: $ebl-breakpoint-lg-max)
   .introduction-news

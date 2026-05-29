@@ -1,6 +1,6 @@
 import React, { useRef, useEffect } from 'react'
-import './NewsletterTimeline.sass'
 import prefersReducedMotion from 'common/utils/prefersReducedMotion'
+import './NewsletterTimeline.sass'
 
 interface Newsletter {
   readonly content: string

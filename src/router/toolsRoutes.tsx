@@ -1,7 +1,12 @@
 import React, { ReactNode } from 'react'
 import { Route, Redirect } from 'router/compat'
 import MarkupService from 'markup/application/MarkupService'
-import { DictionarySlugs, SignSlugs, sitemapDefaults } from 'router/sitemap'
+import {
+  BibliographySlugs,
+  DictionarySlugs,
+  SignSlugs,
+  sitemapDefaults,
+} from 'router/sitemap'
 import { HeadTagsService } from 'router/head'
 import NotFoundPage from 'NotFoundPage'
 import SignService from 'signs/application/SignService'
@@ -50,6 +55,7 @@ export default function ToolsRoutes({
   fragmentService,
   signSlugs,
   dictionarySlugs,
+  bibliographySlugs,
 }: {
   sitemap: boolean
   signService: SignService
@@ -62,6 +68,7 @@ export default function ToolsRoutes({
   fragmentService: FragmentService
   signSlugs?: SignSlugs
   dictionarySlugs?: DictionarySlugs
+  bibliographySlugs?: BibliographySlugs
 }): JSX.Element[] {
   return [
     <Redirect
@@ -214,6 +221,10 @@ export default function ToolsRoutes({
           />
         </HeadTagsService>
       )}
+      {...(sitemap && {
+        ...sitemapDefaults,
+        slugs: bibliographySlugs,
+      })}
     />,
     <Route
       key="tools-bibliography-editor"

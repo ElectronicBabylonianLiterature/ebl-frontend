@@ -5,6 +5,7 @@ import { BibliographySlugs } from 'router/sitemap'
 import AfoRegisterService from 'afo-register/application/AfoRegisterService'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import NotFoundPage from 'NotFoundPage'
+import withSearchAndHash from 'router/withSearchAndHash'
 
 export default function BibliographyRoutes({
   bibliographyService: _bibliographyService,
@@ -20,45 +21,89 @@ export default function BibliographyRoutes({
   bibliographySlugs?: BibliographySlugs
 }): JSX.Element[] {
   return [
-    <Redirect
-      exact
-      from="/bibliography/references/new-reference"
-      to="/tools/references/new-reference"
+    <Route
       key="bibliography-references-new-redirect"
+      path="/bibliography/references/new-reference"
+      exact
+      render={({ location }): ReactNode => (
+        <Redirect
+          to={withSearchAndHash(
+            '/tools/references/new-reference',
+            location.search,
+            location.hash,
+          )}
+        />
+      )}
     />,
     <Route
       key="bibliography-references-edit-redirect"
       path="/bibliography/references/:id/edit"
       exact
-      render={({ match }): ReactNode => (
-        <Redirect to={`/tools/references/${match.params.id}/edit`} />
+      render={({ match, location }): ReactNode => (
+        <Redirect
+          to={withSearchAndHash(
+            `/tools/references/${match.params.id}/edit`,
+            location.search,
+            location.hash,
+          )}
+        />
       )}
     />,
     <Route
       key="bibliography-references-id-redirect"
       path="/bibliography/references/:id"
       exact
-      render={({ match }): ReactNode => (
-        <Redirect to={`/tools/references/${match.params.id}`} />
+      render={({ match, location }): ReactNode => (
+        <Redirect
+          to={withSearchAndHash(
+            `/tools/references/${match.params.id}`,
+            location.search,
+            location.hash,
+          )}
+        />
       )}
     />,
-    <Redirect
-      exact
-      from="/bibliography/references"
-      to="/tools/references"
+    <Route
       key="bibliography-references-redirect"
-    />,
-    <Redirect
+      path="/bibliography/references"
       exact
-      from="/bibliography/afo-register"
-      to="/tools/afo-register"
+      render={({ location }): ReactNode => (
+        <Redirect
+          to={withSearchAndHash(
+            '/tools/references',
+            location.search,
+            location.hash,
+          )}
+        />
+      )}
+    />,
+    <Route
       key="bibliography-afo-register-redirect"
-    />,
-    <Redirect
+      path="/bibliography/afo-register"
       exact
-      from="/bibliography"
-      to="/tools/references"
+      render={({ location }): ReactNode => (
+        <Redirect
+          to={withSearchAndHash(
+            '/tools/afo-register',
+            location.search,
+            location.hash,
+          )}
+        />
+      )}
+    />,
+    <Route
       key="bibliography-root-redirect"
+      path="/bibliography"
+      exact
+      render={({ location }): ReactNode => (
+        <Redirect
+          to={withSearchAndHash(
+            '/tools/references',
+            location.search,
+            location.hash,
+          )}
+        />
+      )}
     />,
     <Route
       key="BibliographyNotFound"

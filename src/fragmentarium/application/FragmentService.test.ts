@@ -1163,6 +1163,33 @@ describe('FragmentService cache', () => {
     expect(imageRepository.findThumbnail).toHaveBeenCalledTimes(252)
   })
 
+  test('caches empty provenance list results', async () => {
+    fragmentRepository.fetchProvenances.mockReturnValue(Promise.resolve([]))
+
+    await expect(service.fetchProvenances()).resolves.toEqual([])
+    await expect(service.fetchProvenances()).resolves.toEqual([])
+
+    expect(fragmentRepository.fetchProvenances).toHaveBeenCalledTimes(1)
+  })
+
+  test('caches empty provenance children results', async () => {
+    fragmentRepository.fetchProvenanceChildren.mockReturnValue(
+      Promise.resolve([]),
+    )
+
+    await expect(service.fetchProvenanceChildren('P.empty')).resolves.toEqual(
+      [],
+    )
+    await expect(service.fetchProvenanceChildren('P.empty')).resolves.toEqual(
+      [],
+    )
+
+    expect(fragmentRepository.fetchProvenanceChildren).toHaveBeenCalledTimes(1)
+    expect(fragmentRepository.fetchProvenanceChildren).toHaveBeenCalledWith(
+      'P.empty',
+    )
+  })
+
   test('clears cached fragment values when cache scope changes', async () => {
     let cacheScope = 'guest'
     const scopedService = createScopedService(() => cacheScope)

@@ -60,7 +60,7 @@ exports[`Display chapter How to cite 1`] = `
             </div>
           </a>
           <button
-            aria-controls="Header-204"
+            aria-controls="Header-252"
             aria-label="Toggle navigation"
             class="Header__toggle navbar-toggler collapsed"
             type="button"
@@ -71,7 +71,7 @@ exports[`Display chapter How to cite 1`] = `
           </button>
           <div
             class="navbar-collapse collapse"
-            id="Header-204"
+            id="Header-252"
           >
             <div
               class="Header__nav mx-auto navbar-nav"
@@ -202,7 +202,7 @@ exports[`Display chapter How to cite 1`] = `
       </nav>
     </header>
     <main
-      class="main"
+      class="main main--breadcrumbs-contained"
     >
       <div
         class="main__content"
@@ -294,7 +294,7 @@ exports[`Display chapter How to cite 1`] = `
                 <button
                   aria-expanded="false"
                   class="dropdown-toggle btn btn-outline-primary"
-                  id="file-download-214"
+                  id="file-download-262"
                   type="button"
                 >
                   <i
@@ -339,13 +339,13 @@ exports[`Display chapter How to cite 1`] = `
           </div>
         </header>
         <div
-          class="chapter-view"
+          class="chapter-view ebl-consistent-links"
         >
           <section
             class="chapter-view__section"
           >
             <h3
-              aria-controls="collapse-215"
+              aria-controls="collapse-263"
               class="chapter-view__section-heading collapsible_section__heading"
             >
               How to cite
@@ -357,7 +357,7 @@ exports[`Display chapter How to cite 1`] = `
             </h3>
             <div
               class="collapsing"
-              id="collapse-215"
+              id="collapse-263"
             >
               <span>
                 Test, A. (2020). Vu siscedeh ir lino oveagfes bohhi watil te zulreziv weemwin fodiric ipagiiki. Chapter The Only Chapter.
@@ -460,7 +460,7 @@ exports[`Display chapter How to cite 1`] = `
                     class="chapter-display__toggle"
                   >
                     <i
-                      aria-controls="score-207"
+                      aria-controls="score-255"
                       aria-expanded="false"
                       aria-label="Show score"
                       class="fas fa-caret-right"
@@ -506,7 +506,7 @@ exports[`Display chapter How to cite 1`] = `
                     class="chapter-display__toggle"
                   >
                     <i
-                      aria-controls="note-208"
+                      aria-controls="note-256"
                       aria-expanded="false"
                       aria-label="Show notes"
                       class="fas fa-book"
@@ -517,7 +517,7 @@ exports[`Display chapter How to cite 1`] = `
                     class="chapter-display__toggle"
                   >
                     <i
-                      aria-controls="parallels-209"
+                      aria-controls="parallels-257"
                       aria-expanded="false"
                       aria-label="Show parallels"
                       class="fas fa-quote-right"
@@ -560,7 +560,7 @@ exports[`Display chapter How to cite 1`] = `
                     class="chapter-display__toggle"
                   >
                     <i
-                      aria-controls="score-210"
+                      aria-controls="score-258"
                       aria-expanded="false"
                       aria-label="Show score"
                       class="fas fa-caret-right"
@@ -606,7 +606,7 @@ exports[`Display chapter How to cite 1`] = `
                     class="chapter-display__toggle"
                   >
                     <i
-                      aria-controls="note-211"
+                      aria-controls="note-259"
                       aria-expanded="false"
                       aria-label="Show notes"
                       class="fas fa-book"
@@ -617,7 +617,7 @@ exports[`Display chapter How to cite 1`] = `
                     class="chapter-display__toggle"
                   >
                     <i
-                      aria-controls="parallels-212"
+                      aria-controls="parallels-260"
                       aria-expanded="false"
                       aria-label="Show parallels"
                       class="fas fa-quote-right"
@@ -651,7 +651,7 @@ exports[`Display chapter How to cite 1`] = `
           class="settings"
         >
           <h3
-            aria-controls="settings-213"
+            aria-controls="settings-261"
             aria-expanded="false"
             class="settings__heading"
             role="button"
@@ -1107,7 +1107,7 @@ exports[`Display chapter Show manuscripts 1`] = `
       </nav>
     </header>
     <main
-      class="main"
+      class="main main--breadcrumbs-contained"
     >
       <div
         class="main__content"
@@ -1244,7 +1244,7 @@ exports[`Display chapter Show manuscripts 1`] = `
           </div>
         </header>
         <div
-          class="chapter-view"
+          class="chapter-view ebl-consistent-links"
         >
           <section
             class="chapter-view__section"
@@ -2266,7 +2266,7 @@ exports[`Display chapter Show notes 1`] = `
       </nav>
     </header>
     <main
-      class="main"
+      class="main main--breadcrumbs-contained"
     >
       <div
         class="main__content"
@@ -2403,7 +2403,7 @@ exports[`Display chapter Show notes 1`] = `
           </div>
         </header>
         <div
-          class="chapter-view"
+          class="chapter-view ebl-consistent-links"
         >
           <section
             class="chapter-view__section"
@@ -3188,7 +3188,7 @@ exports[`Display chapter Show parallels 1`] = `
       </nav>
     </header>
     <main
-      class="main"
+      class="main main--breadcrumbs-contained"
     >
       <div
         class="main__content"
@@ -3325,7 +3325,7 @@ exports[`Display chapter Show parallels 1`] = `
           </div>
         </header>
         <div
-          class="chapter-view"
+          class="chapter-view ebl-consistent-links"
         >
           <section
             class="chapter-view__section"
@@ -4115,7 +4115,7 @@ exports[`Display chapter Sidebar 1`] = `
       </nav>
     </header>
     <main
-      class="main"
+      class="main main--breadcrumbs-contained"
     >
       <div
         class="main__content"
@@ -4207,7 +4207,7 @@ exports[`Display chapter Sidebar 1`] = `
                 <button
                   aria-expanded="false"
                   class="dropdown-toggle btn btn-outline-primary"
-                  id="file-download-179"
+                  id="file-download-227"
                   type="button"
                 >
                   <i
@@ -4252,13 +4252,13 @@ exports[`Display chapter Sidebar 1`] = `
           </div>
         </header>
         <div
-          class="chapter-view"
+          class="chapter-view ebl-consistent-links"
         >
           <section
             class="chapter-view__section"
           >
             <h3
-              aria-controls="collapse-180"
+              aria-controls="collapse-228"
               class="chapter-view__section-heading collapsible_section__heading"
             >
               How to cite
@@ -4270,7 +4270,7 @@ exports[`Display chapter Sidebar 1`] = `
             </h3>
             <div
               class="collapse show"
-              id="collapse-180"
+              id="collapse-228"
             >
               <span>
                 Test, A. (2020). Vu siscedeh ir lino oveagfes bohhi watil te zulreziv weemwin fodiric ipagiiki. Chapter The Only Chapter.
@@ -4373,7 +4373,7 @@ exports[`Display chapter Sidebar 1`] = `
                     class="chapter-display__toggle"
                   >
                     <i
-                      aria-controls="score-181"
+                      aria-controls="score-229"
                       aria-expanded="true"
                       aria-label="Show score"
                       class="fas fa-caret-down"
@@ -4419,7 +4419,7 @@ exports[`Display chapter Sidebar 1`] = `
                     class="chapter-display__toggle"
                   >
                     <i
-                      aria-controls="note-182"
+                      aria-controls="note-230"
                       aria-expanded="true"
                       aria-label="Show notes"
                       class="fas fa-book-open"
@@ -4430,7 +4430,7 @@ exports[`Display chapter Sidebar 1`] = `
                     class="chapter-display__toggle"
                   >
                     <i
-                      aria-controls="parallels-183"
+                      aria-controls="parallels-231"
                       aria-expanded="true"
                       aria-label="Show parallels"
                       class="fas fa-quote-right"
@@ -4454,7 +4454,7 @@ exports[`Display chapter Sidebar 1`] = `
                 </tr>
                 <tr
                   class="collapse show"
-                  id="note-182"
+                  id="note-230"
                   style=""
                 >
                   <td
@@ -4471,7 +4471,7 @@ exports[`Display chapter Sidebar 1`] = `
                 </tr>
                 <tr
                   class="collapse show"
-                  id="parallels-183"
+                  id="parallels-231"
                   style=""
                 >
                   <td
@@ -4493,7 +4493,7 @@ exports[`Display chapter Sidebar 1`] = `
                 </tr>
                 <tr
                   class="collapse show"
-                  id="score-181"
+                  id="score-229"
                   style=""
                 >
                   <td
@@ -4614,7 +4614,7 @@ exports[`Display chapter Sidebar 1`] = `
                     class="chapter-display__toggle"
                   >
                     <i
-                      aria-controls="score-185"
+                      aria-controls="score-233"
                       aria-expanded="true"
                       aria-label="Show score"
                       class="fas fa-caret-down"
@@ -4660,7 +4660,7 @@ exports[`Display chapter Sidebar 1`] = `
                     class="chapter-display__toggle"
                   >
                     <i
-                      aria-controls="note-186"
+                      aria-controls="note-234"
                       aria-expanded="true"
                       aria-label="Show notes"
                       class="fas fa-book-open"
@@ -4671,7 +4671,7 @@ exports[`Display chapter Sidebar 1`] = `
                     class="chapter-display__toggle"
                   >
                     <i
-                      aria-controls="parallels-187"
+                      aria-controls="parallels-235"
                       aria-expanded="true"
                       aria-label="Show parallels"
                       class="fas fa-quote-right"
@@ -4695,7 +4695,7 @@ exports[`Display chapter Sidebar 1`] = `
                 </tr>
                 <tr
                   class="collapse show"
-                  id="note-186"
+                  id="note-234"
                   style=""
                 >
                   <td
@@ -4712,7 +4712,7 @@ exports[`Display chapter Sidebar 1`] = `
                 </tr>
                 <tr
                   class="collapse show"
-                  id="parallels-187"
+                  id="parallels-235"
                   style=""
                 >
                   <td
@@ -4734,7 +4734,7 @@ exports[`Display chapter Sidebar 1`] = `
                 </tr>
                 <tr
                   class="collapse show"
-                  id="score-185"
+                  id="score-233"
                   style=""
                 >
                   <td
@@ -4812,7 +4812,7 @@ exports[`Display chapter Sidebar 1`] = `
           class="settings"
         >
           <h3
-            aria-controls="settings-196"
+            aria-controls="settings-244"
             aria-expanded="false"
             class="settings__heading"
             role="button"
@@ -5268,7 +5268,7 @@ exports[`Display chapter Snapshot 1`] = `
       </nav>
     </header>
     <main
-      class="main"
+      class="main main--breadcrumbs-contained"
     >
       <div
         class="main__content"
@@ -5405,7 +5405,7 @@ exports[`Display chapter Snapshot 1`] = `
           </div>
         </header>
         <div
-          class="chapter-view"
+          class="chapter-view ebl-consistent-links"
         >
           <section
             class="chapter-view__section"

@@ -58,12 +58,12 @@
 
           &:hover
             color: $ebl-color-brand-primary-dark
-            background-color: rgba(26, 95, 168, 0.08)
+            background-color: $ebl-color-brand-soft
             text-decoration: none
 
           &:focus-visible
             color: $ebl-color-brand-primary-dark
-            background-color: rgba(26, 95, 168, 0.08)
+            background-color: $ebl-color-brand-soft
             text-decoration: none
             outline: 2px solid $ebl-color-brand-primary
             outline-offset: 2px
@@ -94,12 +94,12 @@
     background: linear-gradient(160deg, $ebl-color-surface-sidebar-gradient-start 0%, $ebl-color-surface-sidebar-gradient-mid 60%, $ebl-color-surface-sidebar-gradient-start 100%)
     background-blend-mode: multiply
     background-image: url(https://www.ebl.lmu.de/api/images/Babel_Project_01_cropped.svg)
-    background-position: right -12em bottom
+    background-position: center bottom
     background-repeat: no-repeat
     background-size: 20em
-    border: 1px solid rgba(255, 255, 255, 0.07)
-    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.4)
-    color: rgba(200, 220, 245, 0.9)
+    border: 1px solid $ebl-color-white-alpha-07
+    box-shadow: 0 4px 24px $ebl-color-black-alpha-40
+    color: $ebl-color-text-sidebar
     flex: 1 0 content
     margin-left: 1em
     max-height: 100vh
@@ -119,8 +119,14 @@
       max-height: none
       padding: 1em
       position: static
-      background-position: right -6em bottom
+      background-position: center bottom
       background-size: 12em
+
+@media (min-width: $ebl-breakpoint-lg)
+  .main--breadcrumbs-contained
+    .main__breadcrumbs
+      margin-left: 0
+      margin-right: 0
 
 @media (prefers-reduced-motion: reduce)
   .main__breadcrumbs .breadcrumb .breadcrumb-item a
