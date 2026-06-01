@@ -177,6 +177,7 @@ export interface AnnotationRepository {
 export class FragmentService {
   private readonly referenceInjector: ReferenceInjector
   private cacheScope: string | null = null
+  private cacheGeneration = 0
   private readonly cachedProvenances = new Map<
     string,
     CacheEntry<readonly ProvenanceRecord[]>
@@ -550,6 +551,8 @@ export class FragmentService {
   }
 
   queryLatest(): Bluebird<QueryResult> {
+    const queryGeneration = this.cacheGeneration
+
     return this.getOrFetchCachedValue(
       this.cachedQueryResults,
       this.cachedQueryResultRequests,
@@ -557,7 +560,9 @@ export class FragmentService {
       maximumCachedQueryResults,
       () => this.fragmentRepository.queryLatest(),
     ).then((queryResult) => {
-      this.storePrefetchedLatestFragments(queryResult)
+      if (queryGeneration === this.cacheGeneration) {
+        this.storePrefetchedLatestFragments(queryResult)
+      }
       return queryResult
     })
   }
@@ -583,7 +588,7 @@ export class FragmentService {
     const prefetchedFragment = this.takePrefetchedLatestFragment(cacheKey)
 
     if (prefetchedFragment) {
-      return this.injectReferences(prefetchedFragment)
+      return this.injectReferences(prefetchedFragment).catch(onError)
     }
 
     return this.fragmentRepository
@@ -815,6 +820,7 @@ export class FragmentService {
     this.cachedQueryResults.clear()
     this.cachedQueryResultRequests.clear()
     this.prefetchedLatestFragments.clear()
+    this.cacheGeneration += 1
   }
 
   private clearAllCaches(): void {
@@ -831,6 +837,7 @@ export class FragmentService {
     this.prefetchedLatestFragments.clear()
     this.cachedThumbnails.clear()
     this.cachedThumbnailRequests.clear()
+    this.cacheGeneration += 1
   }
 
   private clearCachesWhenScopeChanges(): void {

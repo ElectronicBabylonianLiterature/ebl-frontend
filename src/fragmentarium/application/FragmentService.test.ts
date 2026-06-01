@@ -1168,6 +1168,41 @@ describe('FragmentService cache', () => {
     )
   })
 
+  test('normalizes prefetched fragment errors using onError', async () => {
+    const queryResultWithPrefetchedFragment: QueryResult = {
+      items: [
+        {
+          museumNumber: number,
+          matchingLines: [1, 2, 3, 4],
+          matchCount: 1,
+          fragment: cachedFragment,
+        } as QueryResult['items'][number],
+      ],
+      matchCountTotal: 1,
+    }
+    const injectReferencesMock = jest
+      .spyOn(
+        service as unknown as {
+          injectReferences: (fragment: Fragment) => Promise<Fragment>
+        },
+        'injectReferences',
+      )
+      .mockReturnValue(Promise.reject(new Error('403 Forbidden')))
+    fragmentRepository.queryLatest.mockReturnValue(
+      Promise.resolve(queryResultWithPrefetchedFragment),
+    )
+
+    await expect(service.queryLatest()).resolves.toEqual(
+      queryResultWithPrefetchedFragment,
+    )
+    await expect(service.find(number, [1, 2, 3], false)).rejects.toThrow(
+      "You don't have permissions to view this fragment.",
+    )
+
+    expect(fragmentRepository.find).toHaveBeenCalledTimes(0)
+    injectReferencesMock.mockRestore()
+  })
+
   test('caches completed query results', async () => {
     fragmentRepository.query.mockReturnValue(Promise.resolve(queryResult))
 
@@ -1658,6 +1693,55 @@ describe('FragmentService cache', () => {
     await expect(inFlightLatestQuery).resolves.toEqual(queryResult)
     await expect(service.queryLatest()).resolves.toEqual(updatedQueryResult)
     expect(fragmentRepository.queryLatest).toHaveBeenCalledTimes(2)
+  })
+
+  test('does not repopulate prefetched latest fragments from stale latest query after update', async () => {
+    let resolveStaleLatestQuery: (value: QueryResult) => void = () => undefined
+    const staleLatestQuery = new Promise<QueryResult>((resolve) => {
+      resolveStaleLatestQuery = resolve
+    })
+    const staleLatestQueryResult: QueryResult = {
+      items: [
+        {
+          museumNumber: number,
+          matchingLines: [1, 2, 3, 4],
+          matchCount: 1,
+          fragment: cachedFragment,
+        } as QueryResult['items'][number],
+      ],
+      matchCountTotal: 1,
+    }
+
+    fragmentRepository.queryLatest
+      .mockReturnValueOnce(staleLatestQuery)
+      .mockReturnValueOnce(Promise.resolve(updatedQueryResult))
+    fragmentRepository.find.mockReturnValue(Promise.resolve(updatedFragment))
+    fragmentRepository.updateEdition.mockReturnValue(
+      Promise.resolve(updatedFragment),
+    )
+
+    const inFlightLatestQuery = service.queryLatest()
+    await expect(service.updateEdition(number, edition)).resolves.toMatchObject(
+      {
+        number: updatedFragment.number,
+      },
+    )
+    await expect(service.queryLatest()).resolves.toEqual(updatedQueryResult)
+
+    resolveStaleLatestQuery(staleLatestQueryResult)
+
+    await expect(inFlightLatestQuery).resolves.toEqual(staleLatestQueryResult)
+    await expect(service.find(number, [1, 2, 3], false)).resolves.toMatchObject(
+      {
+        number: updatedFragment.number,
+      },
+    )
+    expect(fragmentRepository.find).toHaveBeenCalledTimes(1)
+    expect(fragmentRepository.find).toHaveBeenCalledWith(
+      number,
+      [1, 2, 3],
+      false,
+    )
   })
 
   test('evicts oldest provenance by id cache entry when max size is exceeded', async () => {
