@@ -111,8 +111,11 @@ export default function InjectedApp({
   )
 
   const bibliographyService = useMemo(
-    () => new BibliographyService(bibliographyRepository),
-    [bibliographyRepository],
+    () =>
+      new BibliographyService(bibliographyRepository, () =>
+        getFragmentCacheScope(authenticationService),
+      ),
+    [bibliographyRepository, authenticationService],
   )
   const fragmentService = useMemo(
     () =>
@@ -146,8 +149,15 @@ export default function InjectedApp({
         fragmentService,
         wordService,
         bibliographyService,
+        () => getFragmentCacheScope(authenticationService),
       ),
-    [apiClient, fragmentService, wordService, bibliographyService],
+    [
+      apiClient,
+      fragmentService,
+      wordService,
+      bibliographyService,
+      authenticationService,
+    ],
   )
   const signService = useMemo(
     () => new SignService(signsRepository),

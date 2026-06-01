@@ -57,6 +57,21 @@ import { CorpusQuery } from 'query/CorpusQuery'
 import { CorpusQueryResult } from 'query/QueryResult'
 import { ChapterSlugs, TextSlugs } from 'router/sitemap'
 
+const chapterDisplayCacheEntryLifetimeInMilliseconds = 2 * 60 * 1000
+const maximumCachedChapterDisplays = 250
+const chapterDisplayConcurrencyLimit = 4
+const defaultCacheScope = 'default'
+
+type CacheEntry<CacheValue> = {
+  readonly expiresAt: number
+  readonly value: CacheValue
+}
+
+type QueueState = {
+  activeCount: number
+  waitingResolvers: Array<() => void>
+}
+
 class CorpusLemmatizationFactory extends AbstractLemmatizationFactory<
   Chapter,
   ChapterLemmatization
@@ -142,13 +157,31 @@ export function createChapterUrl({
 export default class TextService {
   private readonly referenceInjector: ReferenceInjector
 
+  private cacheScope: string | null = null
+
   private cachedTexts: Bluebird<Text[]> | null = null
+
+  private readonly cachedChapterDisplays = new Map<
+    string,
+    CacheEntry<ChapterDisplay>
+  >()
+
+  private readonly cachedChapterDisplayRequests = new Map<
+    string,
+    Bluebird<ChapterDisplay>
+  >()
+
+  private readonly chapterDisplayQueueState: QueueState = {
+    activeCount: 0,
+    waitingResolvers: [],
+  }
 
   constructor(
     private readonly apiClient: ApiClient,
     private readonly fragmentService: FragmentService,
     private readonly wordService: WordService,
     bibliographyService: BibliographyService,
+    private readonly getCacheScope: () => string = () => defaultCacheScope,
   ) {
     this.referenceInjector = new ReferenceInjector(bibliographyService)
   }
@@ -193,6 +226,26 @@ export default class TextService {
     lines: readonly number[] = [],
     variants: readonly number[] = [],
   ): Bluebird<ChapterDisplay> {
+    const cacheKey = this.createChapterDisplayCacheKey(id, lines, variants)
+    return this.getOrFetchCachedValue(
+      this.cachedChapterDisplays,
+      this.cachedChapterDisplayRequests,
+      cacheKey,
+      maximumCachedChapterDisplays,
+      () =>
+        this.runWithConcurrencyLimit(
+          this.chapterDisplayQueueState,
+          chapterDisplayConcurrencyLimit,
+          () => this.fetchChapterDisplay(id, lines, variants),
+        ),
+    )
+  }
+
+  private fetchChapterDisplay(
+    id: ChapterId,
+    lines: readonly number[] = [],
+    variants: readonly number[] = [],
+  ): Bluebird<ChapterDisplay> {
     const lineParams = _.isEmpty(lines)
       ? ''
       : `?${stringify({ lines, variants })}`
@@ -231,22 +284,22 @@ export default class TextService {
                 ),
               ),
             ),
-          ]).then(([translation, variants, oldLineNumbers]) => ({
+          ]).then(([translation, lineVariants, oldLineNumbers]) => ({
             ...line,
             translation,
-            variants,
+            variants: lineVariants,
             oldLineNumbers,
           })),
         ),
       ).then(
-        (lines) =>
+        (chapterLines) =>
           new ChapterDisplay(
             chapter.id,
             chapter.textHasDoi,
             chapter.textName,
             chapter.isSingleStage,
             chapter.title,
-            lines,
+            chapterLines,
             chapter.record,
             chapter.atf,
           ),
@@ -392,6 +445,8 @@ export default class TextService {
   }
 
   list(): Bluebird<Text[]> {
+    this.clearCachesWhenScopeChanges()
+
     if (!this.cachedTexts) {
       this.cachedTexts = this.apiClient
         .fetchJson<unknown[]>('/texts', false)
@@ -420,6 +475,7 @@ export default class TextService {
   }
 
   query(query: CorpusQuery): Bluebird<CorpusQueryResult> {
+    this.clearCachesWhenScopeChanges()
     return this.apiClient.fetchJson<CorpusQueryResult>(
       `/corpus/query?${stringify(query)}`,
       false,
@@ -496,5 +552,167 @@ export default class TextService {
 
   listAllChapters(): Bluebird<ChapterSlugs> {
     return this.apiClient.fetchJson<ChapterSlugs>('/corpus/chapters/all', false)
+  }
+
+  private getOrFetchCachedValue<CacheKey, CacheValue>(
+    cache: Map<CacheKey, CacheEntry<CacheValue>>,
+    requests: Map<CacheKey, Bluebird<CacheValue>>,
+    key: CacheKey,
+    maximumCacheSize: number,
+    fetchValue: () => Bluebird<CacheValue>,
+  ): Bluebird<CacheValue> {
+    this.clearCachesWhenScopeChanges()
+
+    const cachedValue = this.getCachedValue(cache, key)
+    if (cachedValue !== null) {
+      return Bluebird.resolve(cachedValue)
+    }
+
+    const cachedRequest = requests.get(key)
+    if (cachedRequest) {
+      return cachedRequest.then((value) => value)
+    }
+
+    const requestReference: { current?: Bluebird<CacheValue> } = {}
+    const request = fetchValue()
+      .then((value) =>
+        requests.get(key) === requestReference.current
+          ? this.setCachedValue(cache, key, value, maximumCacheSize)
+          : value,
+      )
+      .finally(() => {
+        if (requests.get(key) === requestReference.current) {
+          requests.delete(key)
+        }
+      })
+
+    requestReference.current = request
+    requests.set(key, request)
+
+    return request.then((value) => value)
+  }
+
+  private getCachedValue<CacheKey, CacheValue>(
+    cache: Map<CacheKey, CacheEntry<CacheValue>>,
+    key: CacheKey,
+  ): CacheValue | null {
+    const entry = cache.get(key)
+    if (!entry) {
+      return null
+    }
+
+    if (entry.expiresAt <= Date.now()) {
+      cache.delete(key)
+      return null
+    }
+
+    cache.delete(key)
+    cache.set(key, entry)
+    return entry.value
+  }
+
+  private setCachedValue<CacheKey, CacheValue>(
+    cache: Map<CacheKey, CacheEntry<CacheValue>>,
+    key: CacheKey,
+    value: CacheValue,
+    maximumCacheSize: number,
+  ): CacheValue {
+    cache.delete(key)
+    cache.set(key, {
+      expiresAt: Date.now() + chapterDisplayCacheEntryLifetimeInMilliseconds,
+      value,
+    })
+    this.trimCache(cache, maximumCacheSize)
+    return value
+  }
+
+  private trimCache<CacheKey, CacheValue>(
+    cache: Map<CacheKey, CacheEntry<CacheValue>>,
+    maximumCacheSize: number,
+  ): void {
+    while (cache.size > maximumCacheSize) {
+      const oldestKey = cache.keys().next().value
+      if (oldestKey === undefined) {
+        return
+      }
+
+      cache.delete(oldestKey)
+    }
+  }
+
+  private clearAllCaches(): void {
+    this.cachedTexts = null
+    this.cachedChapterDisplays.clear()
+    this.cachedChapterDisplayRequests.clear()
+  }
+
+  private clearCachesWhenScopeChanges(): void {
+    const nextScope = this.resolveCacheScope()
+
+    if (this.cacheScope === null) {
+      this.cacheScope = nextScope
+      return
+    }
+
+    if (this.cacheScope !== nextScope) {
+      this.cacheScope = nextScope
+      this.clearAllCaches()
+    }
+  }
+
+  private resolveCacheScope(): string {
+    try {
+      return this.getCacheScope()
+    } catch {
+      return defaultCacheScope
+    }
+  }
+
+  private createChapterDisplayCacheKey(
+    id: ChapterId,
+    lines: readonly number[] = [],
+    variants: readonly number[] = [],
+  ): string {
+    return `${createChapterUrl(id)}?${stringify({ lines, variants })}`
+  }
+
+  private runWithConcurrencyLimit<ReturnValue>(
+    queueState: QueueState,
+    maximumConcurrency: number,
+    operation: () => Bluebird<ReturnValue>,
+  ): Bluebird<ReturnValue> {
+    return this.acquireConcurrencySlot(queueState, maximumConcurrency).then(
+      (releaseSlot) =>
+        operation().finally(() => {
+          releaseSlot()
+        }),
+    )
+  }
+
+  private acquireConcurrencySlot(
+    queueState: QueueState,
+    maximumConcurrency: number,
+  ): Bluebird<() => void> {
+    return new Bluebird((resolve) => {
+      const tryAcquireSlot = () => {
+        if (queueState.activeCount < maximumConcurrency) {
+          queueState.activeCount += 1
+          resolve(() => this.releaseConcurrencySlot(queueState))
+          return
+        }
+
+        queueState.waitingResolvers.push(tryAcquireSlot)
+      }
+
+      tryAcquireSlot()
+    })
+  }
+
+  private releaseConcurrencySlot(queueState: QueueState): void {
+    queueState.activeCount = Math.max(0, queueState.activeCount - 1)
+    const next = queueState.waitingResolvers.shift()
+    if (next) {
+      next()
+    }
   }
 }

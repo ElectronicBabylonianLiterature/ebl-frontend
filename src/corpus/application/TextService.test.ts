@@ -504,6 +504,13 @@ test('findSuggestions', async () => {
 })
 
 test('inject ChapterDisplay', async () => {
+  const service = new TextService(
+    apiClient,
+    fragmentServiceMock,
+    wordServiceMock,
+    bibliographyServiceMock,
+  )
+
   function createInjectedPart(reference: Reference): Draft<BibliographyPart> {
     return {
       reference: {
@@ -568,7 +575,7 @@ test('inject ChapterDisplay', async () => {
   bibliographyServiceMock.findMany.mockReturnValueOnce(
     Bluebird.resolve([intertextReference.document]),
   )
-  await expect(testService.findChapterDisplay(chapterId)).resolves.toEqual(
+  await expect(service.findChapterDisplay(chapterId)).resolves.toEqual(
     injectedChapter,
   )
   expect(apiClient.fetchJson).toHaveBeenCalledWith(
@@ -698,6 +705,62 @@ describe('list caching', () => {
     apiClient.fetchJson.mockReturnValueOnce(Bluebird.resolve(textsDto))
 
     await expect(service.list()).resolves.toEqual([text])
+    expect(apiClient.fetchJson).toHaveBeenCalledTimes(2)
+  })
+})
+
+describe('findChapterDisplay caching', () => {
+  test('deduplicates in-flight chapter display requests', async () => {
+    const service = new TextService(
+      apiClient,
+      fragmentServiceMock,
+      wordServiceMock,
+      bibliographyServiceMock,
+    )
+    fragmentServiceMock.fetchProvenances.mockReturnValue(Bluebird.resolve([]))
+
+    apiClient.fetchJson.mockResolvedValue(chapterDisplayDto)
+
+    const [firstRequest, secondRequest] = await Promise.all([
+      service.findChapterDisplay(chapterId),
+      service.findChapterDisplay(chapterId),
+    ])
+
+    expect(firstRequest).toMatchObject({
+      id: chapterDisplay.id,
+    })
+    expect(secondRequest).toMatchObject({
+      id: chapterDisplay.id,
+    })
+    expect(apiClient.fetchJson).toHaveBeenCalledTimes(1)
+  })
+
+  test('clears chapter display cache when scope changes', async () => {
+    const scope = { current: 'guest' }
+    const service = new TextService(
+      apiClient,
+      fragmentServiceMock,
+      wordServiceMock,
+      bibliographyServiceMock,
+      () => scope.current,
+    )
+
+    fragmentServiceMock.fetchProvenances.mockReturnValue(Bluebird.resolve([]))
+    apiClient.fetchJson.mockResolvedValue(chapterDisplayDto)
+
+    await expect(service.findChapterDisplay(chapterId)).resolves.toMatchObject({
+      id: chapterDisplay.id,
+    })
+    await expect(service.findChapterDisplay(chapterId)).resolves.toMatchObject({
+      id: chapterDisplay.id,
+    })
+
+    scope.current = 'authenticated:user-a'
+
+    await expect(service.findChapterDisplay(chapterId)).resolves.toMatchObject({
+      id: chapterDisplay.id,
+    })
+
     expect(apiClient.fetchJson).toHaveBeenCalledTimes(2)
   })
 })

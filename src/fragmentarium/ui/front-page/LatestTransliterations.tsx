@@ -14,6 +14,7 @@ import { FragmentLines } from 'fragmentarium/ui/search/FragmentariumSearchResult
 import { createFragmentUrl } from 'fragmentarium/ui/FragmentLink'
 import ErrorBoundary from 'common/errors/ErrorBoundary'
 import { ThumbnailImage } from 'common/ui/BlobImage'
+import useNearViewport from 'common/hooks/useNearViewport'
 
 export const LATEST_PREVIEW_COUNT = 5
 
@@ -43,6 +44,8 @@ const CompactFragmentCard = withData<
   Fragment
 >(
   ({ data: fragment, fragmentService }): JSX.Element => {
+    const { containerRef: thumbnailContainerRef, isNearViewport } =
+      useNearViewport()
     const periodAbbr = fragment.script.period.abbreviation
     const latestRecord = _(fragment.uniqueRecord)
       .filter(
@@ -58,14 +61,16 @@ const CompactFragmentCard = withData<
         to={createFragmentUrl(fragment.number)}
         className="latest-addition-card"
       >
-        {fragment.hasPhoto && (
-          <ErrorBoundary>
-            <LatestAdditionThumbnail
-              fragmentService={fragmentService}
-              fragment={fragment}
-            />
-          </ErrorBoundary>
-        )}
+        <div ref={thumbnailContainerRef}>
+          {fragment.hasPhoto && isNearViewport && (
+            <ErrorBoundary>
+              <LatestAdditionThumbnail
+                fragmentService={fragmentService}
+                fragment={fragment}
+              />
+            </ErrorBoundary>
+          )}
+        </div>
         <div className="latest-addition-card__body">
           <div className="latest-addition-card__header">
             <div className="latest-addition-card__number">
@@ -96,6 +101,8 @@ const CompactFragmentCard = withData<
                     src={project.logo}
                     alt={project.name}
                     title={project.name}
+                    loading="lazy"
+                    decoding="async"
                   />
                 ) : null,
               )}

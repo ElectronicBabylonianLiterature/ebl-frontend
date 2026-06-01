@@ -5577,7 +5577,9 @@ exports[`Snapshot 1`] = `
             </div>
             <div
               class="fragment-result__preview col-sm-4 col-12"
-            />
+            >
+              <div />
+            </div>
           </div>
           <hr />
         </div>
@@ -11140,7 +11142,9 @@ exports[`Snapshot 1`] = `
             </div>
             <div
               class="fragment-result__preview col-sm-4 col-12"
-            />
+            >
+              <div />
+            </div>
           </div>
           <hr />
         </div>

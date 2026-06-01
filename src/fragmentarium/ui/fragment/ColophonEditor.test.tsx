@@ -7,6 +7,7 @@ import FragmentService from 'fragmentarium/application/FragmentService'
 import { Promise } from 'bluebird'
 import userEvent from '@testing-library/user-event'
 import { Fragment } from 'fragmentarium/domain/fragment'
+import { act } from '@testing-library/react'
 
 jest.mock('fragmentarium/application/FragmentService')
 const fragmentServiceMock = new (FragmentService as jest.Mock<
@@ -157,5 +158,37 @@ describe('ColophonEditor', () => {
         ]),
       }),
     )
+  })
+
+  it('Does not request name suggestions below minimum length', async () => {
+    jest.useFakeTimers()
+    const user = userEvent.setup({
+      advanceTimers: (delay) => jest.advanceTimersByTime(delay),
+    })
+
+    try {
+      const initialFragment = fragmentFactory.build({
+        colophon: {},
+      })
+      await renderColophonEditor(
+        initialFragment,
+        mockUpdateColophon,
+        fragmentServiceMock,
+      )
+
+      await user.click(screen.getByText('Add Individual'))
+      await user.click(screen.getByText('Individual 1.'))
+
+      const nameInput = screen.getByLabelText('select-colophon-individual-name')
+      await user.type(nameInput, 'a')
+
+      act(() => {
+        jest.advanceTimersByTime(300)
+      })
+
+      expect(fragmentServiceMock.fetchColophonNames).not.toHaveBeenCalled()
+    } finally {
+      jest.useRealTimers()
+    }
   })
 })

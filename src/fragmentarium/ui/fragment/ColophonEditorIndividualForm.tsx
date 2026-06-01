@@ -12,6 +12,9 @@ import FragmentService from 'fragmentarium/application/FragmentService'
 import { getSelectField } from './ColophonEditorIndividualInputs'
 import Bluebird from 'bluebird'
 
+const colophonSuggestionDebounceMilliseconds = 250
+const colophonSuggestionMinimumLength = 2
+
 export interface IndividualProps {
   fragmentService: FragmentService
   individual: IndividualAttestation
@@ -192,16 +195,59 @@ const getValueAndOptionsByKey = (
   }
 }
 
-export const getLoadOptionsMethod =
-  (fragmentService: FragmentService) =>
-  (
+export const getLoadOptionsMethod = (fragmentService: FragmentService) => {
+  let requestSequence = 0
+  let pendingTimeout: ReturnType<typeof setTimeout> | null = null
+  let pendingResolve: (() => void) | null = null
+
+  return (
     inputValue: string,
     callback: (options: { value: string; label: string }[]) => void,
-  ): Bluebird<void> =>
-    fragmentService.fetchColophonNames(inputValue).then((entries) => {
-      const options = entries.map((value) => ({
-        value,
-        label: value,
-      }))
-      callback(options)
+  ): Bluebird<void> => {
+    const normalizedInput = inputValue.trim()
+    const requestId = requestSequence + 1
+    requestSequence = requestId
+
+    if (pendingTimeout) {
+      clearTimeout(pendingTimeout)
+      pendingTimeout = null
+    }
+    if (pendingResolve) {
+      pendingResolve()
+      pendingResolve = null
+    }
+
+    if (normalizedInput.length < colophonSuggestionMinimumLength) {
+      callback([])
+      return Bluebird.resolve()
+    }
+
+    return new Bluebird<void>((resolve) => {
+      pendingResolve = resolve
+      pendingTimeout = setTimeout(() => {
+        pendingTimeout = null
+        pendingResolve = null
+
+        fragmentService
+          .fetchColophonNames(normalizedInput)
+          .then((entries) => {
+            if (requestSequence !== requestId) {
+              return
+            }
+
+            const options = entries.map((value) => ({
+              value,
+              label: value,
+            }))
+            callback(options)
+          })
+          .catch(() => {
+            if (requestSequence === requestId) {
+              callback([])
+            }
+          })
+          .finally(resolve)
+      }, colophonSuggestionDebounceMilliseconds)
     })
+  }
+}

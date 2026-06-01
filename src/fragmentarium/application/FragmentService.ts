@@ -50,6 +50,8 @@ const maximumCachedThumbnails = 250
 const maximumCachedProvenanceRecords = 250
 const maximumCachedProvenanceChildren = 250
 const maximumCachedQueryResults = 250
+const fragmentFetchConcurrencyLimit = 6
+const thumbnailFetchConcurrencyLimit = 8
 const latestQueryCacheKey = 'latest:'
 const provenanceCacheKey = 'provenance:'
 const defaultCacheScope = 'default'
@@ -57,6 +59,11 @@ const defaultCacheScope = 'default'
 type CacheEntry<CacheValue> = {
   readonly expiresAt: number
   readonly value: CacheValue
+}
+
+type QueueState = {
+  activeCount: number
+  waitingResolvers: Array<() => void>
 }
 
 type QueryItemWithPrefetchedFragment = QueryResult['items'][number] & {
@@ -216,6 +223,14 @@ export class FragmentService {
     Bluebird<QueryResult>
   >()
   private readonly prefetchedLatestFragments = new Map<string, Fragment>()
+  private readonly fragmentFetchQueueState: QueueState = {
+    activeCount: 0,
+    waitingResolvers: [],
+  }
+  private readonly thumbnailFetchQueueState: QueueState = {
+    activeCount: 0,
+    waitingResolvers: [],
+  }
   private readonly cachedThumbnails = new Map<
     string,
     CacheEntry<ThumbnailBlob>
@@ -259,7 +274,13 @@ export class FragmentService {
       this.cachedFragmentRequests,
       cacheKey,
       maximumCachedFragments,
-      () => this.findAndInjectFragment(number, lines, excludeLines, cacheKey),
+      () =>
+        this.runWithConcurrencyLimit(
+          this.fragmentFetchQueueState,
+          fragmentFetchConcurrencyLimit,
+          () =>
+            this.findAndInjectFragment(number, lines, excludeLines, cacheKey),
+        ),
     )
   }
 
@@ -477,7 +498,12 @@ export class FragmentService {
       this.cachedThumbnailRequests,
       cacheKey,
       maximumCachedThumbnails,
-      () => this.imageRepository.findThumbnail(fragment.number, size),
+      () =>
+        this.runWithConcurrencyLimit(
+          this.thumbnailFetchQueueState,
+          thumbnailFetchConcurrencyLimit,
+          () => this.imageRepository.findThumbnail(fragment.number, size),
+        ),
     )
   }
 
@@ -541,13 +567,21 @@ export class FragmentService {
 
   query(fragmentQuery: FragmentQuery): Bluebird<QueryResult> {
     const cacheKey = this.createQueryCacheKey(fragmentQuery)
-    return this.getOrFetchCachedValue(
+    const queryResultRequest = this.getOrFetchCachedValue(
       this.cachedQueryResults,
       this.cachedQueryResultRequests,
       cacheKey,
       maximumCachedQueryResults,
       () => this.fragmentRepository.query(fragmentQuery),
     )
+    const queryGeneration = this.cacheGeneration
+
+    return queryResultRequest.then((queryResult) => {
+      if (queryGeneration === this.cacheGeneration) {
+        this.storePrefetchedFragments(queryResult)
+      }
+      return queryResult
+    })
   }
 
   queryLatest(): Bluebird<QueryResult> {
@@ -562,7 +596,7 @@ export class FragmentService {
 
     return queryResultRequest.then((queryResult) => {
       if (queryGeneration === this.cacheGeneration) {
-        this.storePrefetchedLatestFragments(queryResult)
+        this.storePrefetchedFragments(queryResult)
       }
       return queryResult
     })
@@ -598,11 +632,11 @@ export class FragmentService {
       .catch(onError)
   }
 
-  private storePrefetchedLatestFragments(queryResult: QueryResult): void {
+  private storePrefetchedFragments(queryResult: QueryResult): void {
     this.prefetchedLatestFragments.clear()
 
     queryResult.items.forEach((queryItem) => {
-      const prefetchedFragment = this.readPrefetchedLatestFragment(queryItem)
+      const prefetchedFragment = this.readPrefetchedFragment(queryItem)
 
       if (!prefetchedFragment) {
         return
@@ -626,7 +660,7 @@ export class FragmentService {
     })
   }
 
-  private readPrefetchedLatestFragment(
+  private readPrefetchedFragment(
     queryItem: QueryResult['items'][number],
   ): Fragment | null {
     const prefetchedFragment = (queryItem as QueryItemWithPrefetchedFragment)
@@ -881,6 +915,46 @@ export class FragmentService {
 
   private createThumbnailCacheKey(number: string, size: ThumbnailSize): string {
     return `${number.length}:${number}:${size}`
+  }
+
+  private runWithConcurrencyLimit<ReturnValue>(
+    queueState: QueueState,
+    maximumConcurrency: number,
+    operation: () => Bluebird<ReturnValue>,
+  ): Bluebird<ReturnValue> {
+    return this.acquireConcurrencySlot(queueState, maximumConcurrency).then(
+      (releaseSlot) =>
+        operation().finally(() => {
+          releaseSlot()
+        }),
+    )
+  }
+
+  private acquireConcurrencySlot(
+    queueState: QueueState,
+    maximumConcurrency: number,
+  ): Bluebird<() => void> {
+    return new Bluebird((resolve) => {
+      const tryAcquireSlot = () => {
+        if (queueState.activeCount < maximumConcurrency) {
+          queueState.activeCount += 1
+          resolve(() => this.releaseConcurrencySlot(queueState))
+          return
+        }
+
+        queueState.waitingResolvers.push(tryAcquireSlot)
+      }
+
+      tryAcquireSlot()
+    })
+  }
+
+  private releaseConcurrencySlot(queueState: QueueState): void {
+    queueState.activeCount = Math.max(0, queueState.activeCount - 1)
+    const next = queueState.waitingResolvers.shift()
+    if (next) {
+      next()
+    }
   }
 }
 
