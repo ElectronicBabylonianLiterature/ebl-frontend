@@ -336,13 +336,13 @@ export class FragmentService {
           const sanitized = provenances.map(sanitizeProvenanceRecord)
           setProvenanceRecords(sanitized)
           sanitized.forEach((provenance) => {
-            setCachedValue(
-              this.cachedProvenanceById,
-              provenance.id,
-              provenance,
-              maximumCachedProvenanceRecords,
+            setCachedValue({
+              cache: this.cachedProvenanceById,
+              key: provenance.id,
+              value: provenance,
+              maximumCacheSize: maximumCachedProvenanceRecords,
               cacheEntryLifetimeInMilliseconds,
-            )
+            })
           })
           return sanitized
         }),
@@ -376,13 +376,13 @@ export class FragmentService {
           const sorted = sortProvenances(sanitized)
           sorted.forEach((provenance) => {
             upsertProvenanceRecord(provenance)
-            setCachedValue(
-              this.cachedProvenanceById,
-              provenance.id,
-              provenance,
-              maximumCachedProvenanceRecords,
+            setCachedValue({
+              cache: this.cachedProvenanceById,
+              key: provenance.id,
+              value: provenance,
+              maximumCacheSize: maximumCachedProvenanceRecords,
               cacheEntryLifetimeInMilliseconds,
-            )
+            })
           })
           return sorted
         }),
@@ -735,13 +735,13 @@ export class FragmentService {
     this.clearCachesWhenScopeChanges()
     this.clearCachedFragments(fragment.number)
     this.clearCachedQueryResults()
-    setCachedValue(
-      this.cachedFragments,
-      this.createFragmentCacheKey(fragment.number),
-      fragment,
-      maximumCachedFragments,
+    setCachedValue({
+      cache: this.cachedFragments,
+      key: this.createFragmentCacheKey(fragment.number),
+      value: fragment,
+      maximumCacheSize: maximumCachedFragments,
       cacheEntryLifetimeInMilliseconds,
-    )
+    })
     return fragment
   }
 

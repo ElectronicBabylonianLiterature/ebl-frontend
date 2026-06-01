@@ -63,13 +63,13 @@ export default class BibliographyService implements BibliographySearch {
       .find(id)
       .then((entry) =>
         this.cachedFindRequests.get(id) === requestReference.current
-          ? setCachedValue(
-              this.cachedEntries,
-              id,
-              entry,
-              maximumCachedEntries,
+          ? setCachedValue({
+              cache: this.cachedEntries,
+              key: id,
+              value: entry,
+              maximumCacheSize: maximumCachedEntries,
               cacheEntryLifetimeInMilliseconds,
-            )
+            })
           : entry,
       )
       .finally(() => {
@@ -171,13 +171,13 @@ export default class BibliographyService implements BibliographySearch {
       .findMany(sortedUniqueIds)
       .then((entries) => {
         entries.forEach((entry) => {
-          setCachedValue(
-            this.cachedEntries,
-            entry.id,
-            entry,
-            maximumCachedEntries,
+          setCachedValue({
+            cache: this.cachedEntries,
+            key: entry.id,
+            value: entry,
+            maximumCacheSize: maximumCachedEntries,
             cacheEntryLifetimeInMilliseconds,
-          )
+          })
         })
 
         const entriesById = _.keyBy(entries, 'id')
@@ -186,17 +186,15 @@ export default class BibliographyService implements BibliographySearch {
             const entry = entriesById[id]
             return entry
               ? entry
-              : this.bibliographyRepository
-                  .find(id)
-                  .then((resolvedEntry) =>
-                    setCachedValue(
-                      this.cachedEntries,
-                      resolvedEntry.id,
-                      resolvedEntry,
-                      maximumCachedEntries,
-                      cacheEntryLifetimeInMilliseconds,
-                    ),
-                  )
+              : this.bibliographyRepository.find(id).then((resolvedEntry) =>
+                  setCachedValue({
+                    cache: this.cachedEntries,
+                    key: resolvedEntry.id,
+                    value: resolvedEntry,
+                    maximumCacheSize: maximumCachedEntries,
+                    cacheEntryLifetimeInMilliseconds,
+                  }),
+                )
           }),
         )
       })
@@ -223,17 +221,15 @@ export default class BibliographyService implements BibliographySearch {
           const entry = entries.find((currentEntry) => currentEntry.id === id)
           return entry
             ? entry
-            : this.bibliographyRepository
-                .find(id)
-                .then((resolvedEntry) =>
-                  setCachedValue(
-                    this.cachedEntries,
-                    resolvedEntry.id,
-                    resolvedEntry,
-                    maximumCachedEntries,
-                    cacheEntryLifetimeInMilliseconds,
-                  ),
-                )
+            : this.bibliographyRepository.find(id).then((resolvedEntry) =>
+                setCachedValue({
+                  cache: this.cachedEntries,
+                  key: resolvedEntry.id,
+                  value: resolvedEntry,
+                  maximumCacheSize: maximumCachedEntries,
+                  cacheEntryLifetimeInMilliseconds,
+                }),
+              )
         })
         .finally(() => {
           if (this.cachedFindRequests.get(id) === idRequestReference.current) {
@@ -251,13 +247,13 @@ export default class BibliographyService implements BibliographySearch {
   private cacheUpdatedEntry(entry: BibliographyEntry): BibliographyEntry {
     this.clearCachesWhenScopeChanges()
     this.cachedFindManyRequests.clear()
-    setCachedValue(
-      this.cachedEntries,
-      entry.id,
-      entry,
-      maximumCachedEntries,
+    setCachedValue({
+      cache: this.cachedEntries,
+      key: entry.id,
+      value: entry,
+      maximumCacheSize: maximumCachedEntries,
       cacheEntryLifetimeInMilliseconds,
-    )
+    })
     return entry
   }
 

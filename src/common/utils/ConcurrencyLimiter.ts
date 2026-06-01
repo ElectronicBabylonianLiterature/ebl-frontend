@@ -17,9 +17,7 @@ export default class ConcurrencyLimiter {
     operation: () => Bluebird<ReturnValue>,
   ): Bluebird<ReturnValue> {
     return this.acquireSlot().then((releaseSlot) =>
-      operation().finally(() => {
-        releaseSlot()
-      }),
+      Bluebird.try(operation).finally(releaseSlot),
     )
   }
 

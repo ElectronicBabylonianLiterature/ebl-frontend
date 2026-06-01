@@ -36,14 +36,14 @@ export default function getOrFetchCachedValue<CacheKey, CacheValue>({
   const request = fetchValue()
     .then((value) =>
       requests.get(key) === requestReference.current
-        ? setCachedValue(
+        ? setCachedValue({
             cache,
             key,
             value,
             maximumCacheSize,
             cacheEntryLifetimeInMilliseconds,
             getCurrentTime,
-          )
+          })
         : value,
     )
     .finally(() => {
