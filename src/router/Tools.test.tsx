@@ -12,6 +12,7 @@ import SignService from 'signs/application/SignService'
 import WordService from 'dictionary/application/WordService'
 import BibliographyService from 'bibliography/application/BibliographyService'
 import AfoRegisterService from 'afo-register/application/AfoRegisterService'
+import RealiaService from 'realia/application/RealiaService'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import DossiersService from 'dossiers/application/DossiersService'
 import { setReducedMotionMatchMedia } from 'test-support/matchMedia'
@@ -39,6 +40,11 @@ jest.mock('bibliography/ui/BibliographyReferencesContent', () => ({
 jest.mock('afo-register/ui/AfoRegisterSearchPage', () => ({
   __esModule: true,
   default: () => <div>AfO-Register Mock</div>,
+}))
+
+jest.mock('realia/ui/RealiaSearchPage', () => ({
+  __esModule: true,
+  default: () => <div>Realia Mock</div>,
 }))
 
 jest.mock('dossiers/ui/DossiersSearchPage', () => ({
@@ -74,6 +80,7 @@ function renderTools(activeTab?: Parameters<typeof Tools>[0]['activeTab']) {
     wordService: {} as WordService,
     bibliographyService: {} as BibliographyService,
     afoRegisterService: {} as AfoRegisterService,
+    realiaService: {} as RealiaService,
     dossiersService: {} as DossiersService,
     fragmentService: {} as FragmentService,
     activeTab,
@@ -105,6 +112,11 @@ describe('Tools', () => {
   it('renders afo-register content', () => {
     renderTools('afo-register')
     expect(screen.getByText('AfO-Register Mock')).toBeInTheDocument()
+  })
+
+  it('renders realia content', () => {
+    renderTools('realia')
+    expect(screen.getByText('Realia Mock')).toBeInTheDocument()
   })
 
   it('renders dossiers content', () => {
@@ -207,6 +219,7 @@ describe('Tools', () => {
       '⊟Dossiers',
       '※References',
       '⊞AfO-Register',
+      '⊡Realia',
       '𒐕Cuneiform Converter',
     ])
   })
@@ -214,7 +227,7 @@ describe('Tools', () => {
   it('marks decorative icons as hidden from assistive technologies', () => {
     renderTools('dictionary')
 
-    const navIcons = ['𒀀', 'Ꞌ', '⇌', '♔', '⊕', '⊟', '※', '⊞', '𒐕']
+    const navIcons = ['𒀀', 'Ꞌ', '⇌', '♔', '⊕', '⊟', '※', '⊞', '⊡', '𒐕']
 
     navIcons.forEach((icon) => {
       expect(
@@ -234,6 +247,7 @@ describe('Tools', () => {
       wordService: {} as WordService,
       bibliographyService: {} as BibliographyService,
       afoRegisterService: {} as AfoRegisterService,
+      realiaService: {} as RealiaService,
       dossiersService: {} as DossiersService,
       fragmentService: {} as FragmentService,
       activeTab: 'signs' as Parameters<typeof Tools>[0]['activeTab'],
@@ -273,6 +287,7 @@ describe('Tools', () => {
           wordService={{} as WordService}
           bibliographyService={{} as BibliographyService}
           afoRegisterService={{} as AfoRegisterService}
+          realiaService={{} as RealiaService}
           dossiersService={{} as DossiersService}
           fragmentService={{} as FragmentService}
         />
@@ -301,6 +316,7 @@ describe('Tools', () => {
           wordService={{} as WordService}
           bibliographyService={{} as BibliographyService}
           afoRegisterService={{} as AfoRegisterService}
+          realiaService={{} as RealiaService}
           dossiersService={{} as DossiersService}
           fragmentService={{} as FragmentService}
         />
@@ -334,6 +350,7 @@ describe('Tools', () => {
             wordService={{} as WordService}
             bibliographyService={{} as BibliographyService}
             afoRegisterService={{} as AfoRegisterService}
+            realiaService={{} as RealiaService}
             dossiersService={{} as DossiersService}
             fragmentService={{} as FragmentService}
           />

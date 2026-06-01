@@ -8,6 +8,7 @@ import MarkupService, {
 } from 'markup/application/MarkupService'
 import SignService from 'signs/application/SignService'
 import AfoRegisterService from 'afo-register/application/AfoRegisterService'
+import RealiaService from 'realia/application/RealiaService'
 
 import { FindspotService } from 'fragmentarium/application/FindspotService'
 import './router.sass'
@@ -23,6 +24,7 @@ export default interface Services {
   markupService: MarkupService
   cachedMarkupService: CachedMarkupService
   afoRegisterService: AfoRegisterService
+  realiaService: RealiaService
   dossiersService: DossiersService
   findspotService: FindspotService
 }

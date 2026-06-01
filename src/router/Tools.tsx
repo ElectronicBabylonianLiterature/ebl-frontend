@@ -15,9 +15,11 @@ import Signs from 'signs/ui/search/Signs'
 import Dictionary from 'dictionary/ui/search/Dictionary'
 import BibliographyReferencesContent from 'bibliography/ui/BibliographyReferencesContent'
 import AfoRegisterSearchPage from 'afo-register/ui/AfoRegisterSearchPage'
+import RealiaSearchPage from 'realia/ui/RealiaSearchPage'
 import WordService from 'dictionary/application/WordService'
 import BibliographyService from 'bibliography/application/BibliographyService'
 import AfoRegisterService from 'afo-register/application/AfoRegisterService'
+import RealiaService from 'realia/application/RealiaService'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import DossiersService from 'dossiers/application/DossiersService'
 import DossiersSearchPage from 'dossiers/ui/DossiersSearchPage'
@@ -34,6 +36,7 @@ export const tabIds = [
   'dictionary',
   'references',
   'afo-register',
+  'realia',
   'cuneiform-converter',
 ] as const
 export type TabId = (typeof tabIds)[number]
@@ -64,6 +67,7 @@ const tabConfig = [
   { id: 'dossiers', title: 'Dossiers', icon: '⊟' },
   { id: 'references', title: 'References', icon: '※' },
   { id: 'afo-register', title: 'AfO-Register', icon: '⊞' },
+  { id: 'realia', title: 'Realia', icon: '⊡' },
   { id: 'cuneiform-converter', title: 'Cuneiform Converter', icon: '𒐕' },
 ]
 
@@ -124,6 +128,7 @@ function getContent({
   wordService,
   bibliographyService,
   afoRegisterService,
+  realiaService,
   dossiersService,
   fragmentService,
   history,
@@ -136,6 +141,7 @@ function getContent({
   wordService: WordService
   bibliographyService: BibliographyService
   afoRegisterService: AfoRegisterService
+  realiaService: RealiaService
   dossiersService: DossiersService
   fragmentService: FragmentService
   history: ContentHistory
@@ -158,6 +164,7 @@ function getContent({
         fragmentService={fragmentService}
       />
     ),
+    realia: <RealiaSearchPage realiaService={realiaService} />,
     dossiers: <DossiersSearchPage dossiersService={dossiersService} />,
     genres: <GenresPage fragmentService={fragmentService} />,
     'date-converter': (
@@ -183,6 +190,7 @@ export default function Tools({
   wordService,
   bibliographyService,
   afoRegisterService,
+  realiaService,
   dossiersService,
   fragmentService,
   activeTab,
@@ -192,6 +200,7 @@ export default function Tools({
   wordService: WordService
   bibliographyService: BibliographyService
   afoRegisterService: AfoRegisterService
+  realiaService: RealiaService
   dossiersService: DossiersService
   fragmentService: FragmentService
   activeTab?: TabId
@@ -263,6 +272,7 @@ export default function Tools({
                 wordService,
                 bibliographyService,
                 afoRegisterService,
+                realiaService,
                 dossiersService,
                 fragmentService,
                 history,

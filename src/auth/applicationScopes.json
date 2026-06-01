@@ -41,5 +41,6 @@
   "readSipparLibraryFragments": "read:SIPPARLIBRARY-fragments",
   "readUrukLBUFragments": "read:URUKLBU-fragments",
   "readSipparIstanbulFragments": "read:SIPPARISTANBUL-fragments",
-  "readCopenhagenFragments": "read:COPENHAGEN-fragments"
+  "readCopenhagenFragments": "read:COPENHAGEN-fragments",
+  "readRealia": "read:realia"
 }

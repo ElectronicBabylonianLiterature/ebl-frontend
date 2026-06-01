@@ -32,6 +32,8 @@ import MarkupService, {
 } from 'markup/application/MarkupService'
 import AfoRegisterRepository from 'afo-register/infrastructure/AfoRegisterRepository'
 import AfoRegisterService from 'afo-register/application/AfoRegisterService'
+import RealiaRepository from 'realia/infrastructure/RealiaRepository'
+import RealiaService from 'realia/application/RealiaService'
 import { FindspotService } from 'fragmentarium/application/FindspotService'
 import { ApiFindspotRepository } from 'fragmentarium/infrastructure/FindspotRepository'
 import FakeApi from 'test-support/FakeApi'
@@ -59,6 +61,7 @@ export function getServices(api: JsonApiClient = new FakeApi().client): {
   markupService: MarkupService
   cachedMarkupService: CachedMarkupService
   afoRegisterService: AfoRegisterService
+  realiaService: RealiaService
   dossiersService: DossiersService
   findspotService: FindspotService
 } {
@@ -86,6 +89,7 @@ export function getServices(api: JsonApiClient = new FakeApi().client): {
   )
   const signsRepository = new SignRepository(apiClient)
   const afoRegisterRepository = new AfoRegisterRepository(apiClient)
+  const realiaRepository = new RealiaRepository(apiClient)
   const dossiersRepository = new DossiersRepository(apiClient)
   const signService = new SignService(signsRepository)
   const markupService = new MarkupService(apiClient, bibliographyService)
@@ -94,6 +98,7 @@ export function getServices(api: JsonApiClient = new FakeApi().client): {
     bibliographyService,
   )
   const afoRegisterService = new AfoRegisterService(afoRegisterRepository)
+  const realiaService = new RealiaService(realiaRepository)
   const dossiersService = new DossiersService(dossiersRepository)
   const findspotService = new FindspotService(findspotRepository)
   return {
@@ -106,6 +111,7 @@ export function getServices(api: JsonApiClient = new FakeApi().client): {
     markupService,
     cachedMarkupService,
     afoRegisterService,
+    realiaService,
     dossiersService,
     findspotService,
   }

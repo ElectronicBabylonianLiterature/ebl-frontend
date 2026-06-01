@@ -13,6 +13,8 @@ import SignService from 'signs/application/SignService'
 import WordService from 'dictionary/application/WordService'
 import BibliographyService from 'bibliography/application/BibliographyService'
 import AfoRegisterService from 'afo-register/application/AfoRegisterService'
+import RealiaService from 'realia/application/RealiaService'
+import RealiaDisplay from 'realia/ui/RealiaDisplay'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import TextService from 'corpus/application/TextService'
 import DossiersService from 'dossiers/application/DossiersService'
@@ -32,6 +34,8 @@ const tabDescriptions: Record<TabId, string> = {
     'Search the comprehensive bibliography of cuneiform publications at the eBL.',
   'afo-register':
     'Search the AfO-Register for Assyriology bibliographic references at the eBL.',
+  realia:
+    'Search the Dictionary of Realia for material culture and historical geography at the eBL.',
   dossiers:
     'Browse cuneiform fragment dossiers grouped by provenance and period at the eBL.',
   genres: 'Explore the genre classification of cuneiform fragments at the eBL.',
@@ -51,6 +55,7 @@ export default function ToolsRoutes({
   textService,
   bibliographyService,
   afoRegisterService,
+  realiaService,
   dossiersService,
   fragmentService,
   signSlugs,
@@ -64,6 +69,7 @@ export default function ToolsRoutes({
   textService: TextService
   bibliographyService: BibliographyService
   afoRegisterService: AfoRegisterService
+  realiaService: RealiaService
   dossiersService: DossiersService
   fragmentService: FragmentService
   signSlugs?: SignSlugs
@@ -98,6 +104,7 @@ export default function ToolsRoutes({
             wordService={wordService}
             bibliographyService={bibliographyService}
             afoRegisterService={afoRegisterService}
+            realiaService={realiaService}
             dossiersService={dossiersService}
             fragmentService={fragmentService}
           />
@@ -121,6 +128,7 @@ export default function ToolsRoutes({
               wordService={wordService}
               bibliographyService={bibliographyService}
               afoRegisterService={afoRegisterService}
+              realiaService={realiaService}
               dossiersService={dossiersService}
               fragmentService={fragmentService}
               activeTab={tabId}
@@ -130,6 +138,22 @@ export default function ToolsRoutes({
         {...(sitemap && sitemapDefaults)}
       />
     )),
+    <Route
+      key="tools-realia-display"
+      path="/tools/realia/:id"
+      exact
+      render={({ match }): ReactNode => (
+        <HeadTagsService
+          title="Realia entry: eBL"
+          description="Dictionary of Realia entry at the electronic Babylonian Library (eBL)."
+        >
+          <RealiaDisplay
+            realiaService={realiaService}
+            id={decodeURIComponent(match.params.id ?? '')}
+          />
+        </HeadTagsService>
+      )}
+    />,
     <Route
       key="tools-sign-display"
       path="/tools/signs/:id"
