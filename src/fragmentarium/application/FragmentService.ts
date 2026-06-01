@@ -49,6 +49,7 @@ const maximumCachedFragments = 250
 const maximumCachedThumbnails = 250
 const maximumCachedProvenanceRecords = 250
 const maximumCachedProvenanceChildren = 250
+const maximumCachedQueryResults = 250
 const latestQueryCacheKey = 'latest:'
 const provenanceCacheKey = 'provenance:'
 const defaultCacheScope = 'default'
@@ -56,6 +57,10 @@ const defaultCacheScope = 'default'
 type CacheEntry<CacheValue> = {
   readonly expiresAt: number
   readonly value: CacheValue
+}
+
+type QueryItemWithPrefetchedFragment = QueryResult['items'][number] & {
+  readonly fragment?: Fragment
 }
 
 export type ThumbnailSize = 'small' | 'medium' | 'large'
@@ -172,6 +177,7 @@ export interface AnnotationRepository {
 export class FragmentService {
   private readonly referenceInjector: ReferenceInjector
   private cacheScope: string | null = null
+  private cacheGeneration = 0
   private readonly cachedProvenances = new Map<
     string,
     CacheEntry<readonly ProvenanceRecord[]>
@@ -201,10 +207,15 @@ export class FragmentService {
     string,
     Bluebird<Fragment>
   >()
+  private readonly cachedQueryResults = new Map<
+    string,
+    CacheEntry<QueryResult>
+  >()
   private readonly cachedQueryResultRequests = new Map<
     string,
     Bluebird<QueryResult>
   >()
+  private readonly prefetchedLatestFragments = new Map<string, Fragment>()
   private readonly cachedThumbnails = new Map<
     string,
     CacheEntry<ThumbnailBlob>
@@ -248,11 +259,7 @@ export class FragmentService {
       this.cachedFragmentRequests,
       cacheKey,
       maximumCachedFragments,
-      () =>
-        this.fragmentRepository
-          .find(number, lines, excludeLines)
-          .then((fragment: Fragment) => this.injectReferences(fragment))
-          .catch(onError),
+      () => this.findAndInjectFragment(number, lines, excludeLines, cacheKey),
     )
   }
 
@@ -534,19 +541,31 @@ export class FragmentService {
 
   query(fragmentQuery: FragmentQuery): Bluebird<QueryResult> {
     const cacheKey = this.createQueryCacheKey(fragmentQuery)
-    return this.getOrFetchInFlightRequest(
+    return this.getOrFetchCachedValue(
+      this.cachedQueryResults,
       this.cachedQueryResultRequests,
       cacheKey,
+      maximumCachedQueryResults,
       () => this.fragmentRepository.query(fragmentQuery),
     )
   }
 
   queryLatest(): Bluebird<QueryResult> {
-    return this.getOrFetchInFlightRequest(
+    const queryResultRequest = this.getOrFetchCachedValue(
+      this.cachedQueryResults,
       this.cachedQueryResultRequests,
       latestQueryCacheKey,
+      maximumCachedQueryResults,
       () => this.fragmentRepository.queryLatest(),
     )
+    const queryGeneration = this.cacheGeneration
+
+    return queryResultRequest.then((queryResult) => {
+      if (queryGeneration === this.cacheGeneration) {
+        this.storePrefetchedLatestFragments(queryResult)
+      }
+      return queryResult
+    })
   }
 
   queryByTraditionalReferences(
@@ -559,6 +578,72 @@ export class FragmentService {
 
   collectLemmaSuggestions(number: string): Bluebird<LemmaSuggestions> {
     return this.fragmentRepository.collectLemmaSuggestions(number)
+  }
+
+  private findAndInjectFragment(
+    number: string,
+    lines: readonly number[] | undefined,
+    excludeLines: boolean | undefined,
+    cacheKey: string,
+  ): Bluebird<Fragment> {
+    const prefetchedFragment = this.takePrefetchedLatestFragment(cacheKey)
+
+    if (prefetchedFragment) {
+      return this.injectReferences(prefetchedFragment).catch(onError)
+    }
+
+    return this.fragmentRepository
+      .find(number, lines, excludeLines)
+      .then((fragment: Fragment) => this.injectReferences(fragment))
+      .catch(onError)
+  }
+
+  private storePrefetchedLatestFragments(queryResult: QueryResult): void {
+    this.prefetchedLatestFragments.clear()
+
+    queryResult.items.forEach((queryItem) => {
+      const prefetchedFragment = this.readPrefetchedLatestFragment(queryItem)
+
+      if (!prefetchedFragment) {
+        return
+      }
+
+      const lines = _.take(queryItem.matchingLines, 3)
+      const excludeLines = _.isEmpty(queryItem.matchingLines)
+
+      this.prefetchedLatestFragments.set(
+        this.createFragmentCacheKey(
+          queryItem.museumNumber,
+          lines,
+          excludeLines,
+        ),
+        prefetchedFragment,
+      )
+      this.prefetchedLatestFragments.set(
+        this.createFragmentCacheKey(queryItem.museumNumber),
+        prefetchedFragment,
+      )
+    })
+  }
+
+  private readPrefetchedLatestFragment(
+    queryItem: QueryResult['items'][number],
+  ): Fragment | null {
+    const prefetchedFragment = (queryItem as QueryItemWithPrefetchedFragment)
+      .fragment
+
+    return prefetchedFragment ?? null
+  }
+
+  private takePrefetchedLatestFragment(cacheKey: string): Fragment | null {
+    const prefetchedFragment = this.prefetchedLatestFragments.get(cacheKey)
+
+    if (!prefetchedFragment) {
+      return null
+    }
+
+    this.prefetchedLatestFragments.delete(cacheKey)
+    return prefetchedFragment
   }
 
   private injectReferences(fragment: Fragment): Bluebird<Fragment> {
@@ -733,7 +818,10 @@ export class FragmentService {
   }
 
   private clearCachedQueryResults(): void {
+    this.cachedQueryResults.clear()
     this.cachedQueryResultRequests.clear()
+    this.prefetchedLatestFragments.clear()
+    this.cacheGeneration += 1
   }
 
   private clearAllCaches(): void {
@@ -745,9 +833,12 @@ export class FragmentService {
     this.cachedProvenanceChildrenByIdRequest.clear()
     this.cachedFragments.clear()
     this.cachedFragmentRequests.clear()
+    this.cachedQueryResults.clear()
     this.cachedQueryResultRequests.clear()
+    this.prefetchedLatestFragments.clear()
     this.cachedThumbnails.clear()
     this.cachedThumbnailRequests.clear()
+    this.cacheGeneration += 1
   }
 
   private clearCachesWhenScopeChanges(): void {

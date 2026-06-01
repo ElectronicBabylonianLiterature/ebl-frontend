@@ -157,17 +157,66 @@ function createFragmentPath(number: string, ...subResources: string[]): string {
   return ['/fragments', encodeURIComponent(number), ...subResources].join('/')
 }
 
-function createQueryItem(dto): QueryItem {
+type QueryItemDto = {
+  museumNumber: {
+    prefix: string
+    number: string
+    suffix: string
+  }
+  matchingLines: readonly number[]
+  matchCount: number
+}
+
+type LatestQueryItemDto = QueryItemDto & {
+  fragment?: FragmentDto
+}
+
+type LatestQueryResultDto = {
+  items: readonly LatestQueryItemDto[]
+  matchCountTotal: number
+  fragments?: readonly FragmentDto[]
+}
+
+type QueryResultDto = {
+  items: readonly QueryItemDto[]
+  matchCountTotal: number
+}
+
+function createQueryItem(dto: QueryItemDto): QueryItem {
   return {
-    ...dto,
     museumNumber: museumNumberToString(dto.museumNumber),
+    matchingLines: dto.matchingLines,
+    matchCount: dto.matchCount,
   }
 }
 
-function createQueryResult(dto): QueryResult {
+function createQueryResult(dto: QueryResultDto): QueryResult {
   return {
     matchCountTotal: dto.matchCountTotal,
     items: dto.items.map(createQueryItem),
+  }
+}
+
+function createLatestQueryResult(dto: LatestQueryResultDto): QueryResult {
+  const fragmentsByMuseumNumber = new Map<string, Fragment>(
+    (dto.fragments ?? []).map((fragmentDto) => {
+      const fragment = createFragment(fragmentDto)
+      return [fragment.number, fragment]
+    }),
+  )
+
+  return {
+    matchCountTotal: dto.matchCountTotal,
+    items: dto.items.map((itemDto) => {
+      const queryItem = createQueryItem(itemDto)
+      const prefetchedFragment = itemDto.fragment
+        ? createFragment(itemDto.fragment)
+        : fragmentsByMuseumNumber.get(queryItem.museumNumber)
+
+      return prefetchedFragment
+        ? { ...queryItem, fragment: prefetchedFragment }
+        : queryItem
+    }),
   }
 }
 
@@ -483,7 +532,7 @@ class ApiFragmentRepository
 
   query(fragmentQuery: FragmentQuery): Promise<QueryResult> {
     return this.apiClient
-      .fetchJson<QueryResult>(
+      .fetchJson<QueryResultDto>(
         `/fragments/query?${stringify(fragmentQuery)}`,
         false,
       )
@@ -492,8 +541,8 @@ class ApiFragmentRepository
 
   queryLatest(): Promise<QueryResult> {
     return this.apiClient
-      .fetchJson<QueryResult>('/fragments/latest', false)
-      .then(createQueryResult)
+      .fetchJson<LatestQueryResultDto>('/fragments/latest', false)
+      .then(createLatestQueryResult)
   }
 
   queryByTraditionalReferences(
