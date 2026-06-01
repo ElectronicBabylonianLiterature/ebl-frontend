@@ -165,11 +165,10 @@ type QueryItemDto = {
   }
   matchingLines: readonly number[]
   matchCount: number
-}
-
-type LatestQueryItemDto = QueryItemDto & {
   fragment?: FragmentDto
 }
+
+type LatestQueryItemDto = QueryItemDto
 
 type LatestQueryResultDto = {
   items: readonly LatestQueryItemDto[]
@@ -182,12 +181,18 @@ type QueryResultDto = {
   matchCountTotal: number
 }
 
-function createQueryItem(dto: QueryItemDto): QueryItem {
-  return {
+function createQueryItem(
+  dto: QueryItemDto,
+): QueryItem | (QueryItem & { fragment: Fragment }) {
+  const queryItem = {
     museumNumber: museumNumberToString(dto.museumNumber),
     matchingLines: dto.matchingLines,
     matchCount: dto.matchCount,
   }
+  const prefetchedFragment = dto.fragment && createFragment(dto.fragment)
+  return prefetchedFragment
+    ? { ...queryItem, fragment: prefetchedFragment }
+    : queryItem
 }
 
 function createQueryResult(dto: QueryResultDto): QueryResult {
@@ -209,9 +214,9 @@ function createLatestQueryResult(dto: LatestQueryResultDto): QueryResult {
     matchCountTotal: dto.matchCountTotal,
     items: dto.items.map((itemDto) => {
       const queryItem = createQueryItem(itemDto)
-      const prefetchedFragment = itemDto.fragment
-        ? createFragment(itemDto.fragment)
-        : fragmentsByMuseumNumber.get(queryItem.museumNumber)
+      const prefetchedFragment =
+        (queryItem as QueryItem & { fragment?: Fragment }).fragment ??
+        fragmentsByMuseumNumber.get(queryItem.museumNumber)
 
       return prefetchedFragment
         ? { ...queryItem, fragment: prefetchedFragment }

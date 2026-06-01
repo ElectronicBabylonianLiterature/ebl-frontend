@@ -1,5 +1,5 @@
 import React from 'react'
-import { render, RenderResult, screen } from '@testing-library/react'
+import { render, RenderResult, screen, waitFor } from '@testing-library/react'
 import Promise from 'bluebird'
 import _ from 'lodash'
 import withData, { Config, WithData } from './withData'
@@ -114,6 +114,44 @@ describe('On successful get', () => {
 
     expect(getter).toBeCalledWith({ prop: newPropValue })
     expect(screen.getByText(`${newPropValue} ${newData}`)).toBeInTheDocument()
+  })
+
+  it('Ignores stale response when watched prop changes rapidly', async () => {
+    let resolveFirst:
+      | ((value: string | PromiseLike<string>) => void)
+      | undefined
+    let resolveSecond:
+      | ((value: string | PromiseLike<string>) => void)
+      | undefined
+
+    getter
+      .mockImplementationOnce(
+        () =>
+          new globalThis.Promise<string>((resolve) => {
+            resolveFirst = resolve
+          }) as unknown as Promise<string>,
+      )
+      .mockImplementationOnce(
+        () =>
+          new globalThis.Promise<string>((resolve) => {
+            resolveSecond = resolve
+          }) as unknown as Promise<string>,
+      )
+
+    const { rerender } = renderWithData()
+    rerenderView(rerender, newPropValue)
+
+    resolveSecond?.(newData)
+    await screen.findByText(`${newPropValue} ${newData}`)
+
+    resolveFirst?.(data)
+
+    await waitFor(() => {
+      expect(screen.getByText(`${newPropValue} ${newData}`)).toBeInTheDocument()
+    })
+    expect(
+      screen.queryByText(`${newPropValue} ${data}`),
+    ).not.toBeInTheDocument()
   })
 
   it('Does not query the API when prop did not update', async () => {

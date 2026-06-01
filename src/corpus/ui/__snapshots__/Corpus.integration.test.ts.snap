@@ -648,6 +648,8 @@ exports[`With session 1`] = `
               <img
                 alt="LibraryCropped.svg"
                 class="img-fluid"
+                decoding="async"
+                loading="lazy"
                 src="http://example.com/images/LibraryCropped.svg"
               />
             </div>
@@ -1540,6 +1542,8 @@ exports[`Without session 1`] = `
               <img
                 alt="LibraryCropped.svg"
                 class="img-fluid"
+                decoding="async"
+                loading="lazy"
                 src="http://example.com/images/LibraryCropped.svg"
               />
             </div>

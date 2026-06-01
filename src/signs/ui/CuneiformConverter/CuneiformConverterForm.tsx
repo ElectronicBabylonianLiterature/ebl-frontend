@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 import { Form, Button } from 'react-bootstrap'
 import Bluebird from 'bluebird'
 import SignService from 'signs/application/SignService'
@@ -6,6 +6,13 @@ import replaceTransliteration from 'fragmentarium/domain/replaceTransliteration'
 import { displayUnicode } from 'signs/ui/search/SignsSearch'
 import './CuneiformConverterForm.sass'
 import 'signs/ui/display/SignDisplay.css'
+
+const conversionConcurrencyLimit = 4
+
+type ConvertedLine = {
+  index: number
+  value: string
+}
 
 function CuneiformConverterForm({
   signService,
@@ -15,31 +22,50 @@ function CuneiformConverterForm({
   const [content, setContent] = useState('')
   const [convertedContent, setConvertedContent] = useState('')
   const [selectedFont, setSelectedFont] = useState('Assurbanipal')
+  const conversionRequestSequence = useRef(0)
 
-  const handleChange = (event) => {
+  const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     setContent(event.target.value)
   }
 
   const handleConvert = () => {
-    const lines = content.split('\n')
-    const replacedLines = lines.map((line) =>
-      replaceTransliteration(line.toLowerCase()),
-    )
+    const conversionRequestId = conversionRequestSequence.current + 1
+    conversionRequestSequence.current = conversionRequestId
+    const replacedLines = content
+      .split('\n')
+      .map((line) => replaceTransliteration(line.toLowerCase()))
+    const nonEmptyLines = replacedLines
+      .map((line, index) => ({ index, line }))
+      .filter(({ line }) => line.trim() !== '')
 
-    Promise.all(
-      replacedLines
-        .filter((line) => line.trim() !== '')
-        .map((line) => query(line)),
-    )
-      .then((results) => {
-        const convertedText = results
-          .map((result) =>
-            result
+    Bluebird.map(
+      nonEmptyLines,
+      ({ index, line }): Bluebird<ConvertedLine> =>
+        query(line)
+          .then((result) => ({
+            index,
+            value: result
               .map((entry) =>
                 entry.unicode[0] === 9999 ? ' ' : displayUnicode(entry.unicode),
               )
               .join(''),
-          )
+          }))
+          .catch((error) => {
+            console.error('Query Error:', error)
+            return { index, value: '' }
+          }),
+      { concurrency: conversionConcurrencyLimit },
+    )
+      .then((convertedLines) => {
+        if (conversionRequestSequence.current !== conversionRequestId) {
+          return
+        }
+
+        const convertedByIndex = new Map<number, string>(
+          convertedLines.map(({ index, value }) => [index, value]),
+        )
+        const convertedText = replacedLines
+          .map((_, index) => convertedByIndex.get(index) ?? '')
           .join('\n')
 
         setConvertedContent(convertedText)
@@ -49,11 +75,11 @@ function CuneiformConverterForm({
       })
   }
 
-  const query = (content) => {
+  const query = (content: string) => {
     return Bluebird.resolve(signService.getUnicodeFromAtf(content))
   }
 
-  const handleKeyDown = (event) => {
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (event.key === 'Enter' && event.shiftKey) {
       event.preventDefault()
       handleConvert()
@@ -67,7 +93,7 @@ function CuneiformConverterForm({
     }
   }
 
-  const handleFontChange = (event) => {
+  const handleFontChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedFont(event.target.value)
   }
 
