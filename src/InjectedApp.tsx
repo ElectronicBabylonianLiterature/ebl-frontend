@@ -166,8 +166,11 @@ export default function InjectedApp({
     [afoRegisterRepository],
   )
   const dossiersService = useMemo(
-    () => new DossiersService(dossiersRepository),
-    [dossiersRepository],
+    () =>
+      new DossiersService(dossiersRepository, () =>
+        getFragmentCacheScope(authenticationService),
+      ),
+    [dossiersRepository, authenticationService],
   )
   const findspotService = useMemo(
     () => new FindspotService(findspotRepository),

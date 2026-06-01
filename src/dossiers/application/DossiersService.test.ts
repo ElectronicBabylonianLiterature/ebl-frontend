@@ -3,14 +3,21 @@ import DossierRecord, {
   DossierRecordSuggestion,
 } from 'dossiers/domain/DossierRecord'
 import DossiersService from 'dossiers/application/DossiersService'
+import Bluebird from 'bluebird'
 
 jest.mock('dossiers/infrastructure/DossiersRepository')
 
 const dossiersRepository =
   new (DossiersRepository as jest.Mock)() as jest.Mocked<DossiersRepository>
+const cacheEntryLifetimeInMilliseconds = 5 * 60 * 1000
 
-const createRecord = (id: string): DossierRecord =>
-  new DossierRecord({ _id: id })
+const createRecord = (id: string, description?: string): DossierRecord =>
+  new DossierRecord({ _id: id, description })
+
+const flushMicrotasks = () =>
+  new Promise<void>((resolve) => {
+    queueMicrotask(resolve)
+  })
 
 const suggestion = new DossierRecordSuggestion({
   id: 'D001',
@@ -19,10 +26,18 @@ const suggestion = new DossierRecordSuggestion({
 
 describe('DossiersService', () => {
   let dossiersService: DossiersService
+  let cacheScope: string
+  let currentTime: number
 
   beforeEach(() => {
     jest.clearAllMocks()
-    dossiersService = new DossiersService(dossiersRepository)
+    cacheScope = 'guest'
+    currentTime = 0
+    dossiersService = new DossiersService(
+      dossiersRepository,
+      () => cacheScope,
+      () => currentTime,
+    )
   })
 
   it('batches concurrent queryByIds requests', async () => {
@@ -40,6 +55,29 @@ describe('DossiersService', () => {
     expect(dossiersRepository.queryByIds).toHaveBeenCalledWith(['A', 'B', 'C'])
   })
 
+  it('reuses in-flight result for duplicate ids requested while fetching', async () => {
+    const recordA = createRecord('A')
+    let resolveFirstRequest: ((records: DossierRecord[]) => void) | undefined
+    dossiersRepository.queryByIds.mockImplementationOnce(
+      () =>
+        new Bluebird<DossierRecord[]>((resolve) => {
+          resolveFirstRequest = resolve
+        }),
+    )
+
+    const firstRequest = dossiersService.queryByIds(['A'])
+    await flushMicrotasks()
+    const secondRequest = dossiersService.queryByIds(['A'])
+
+    expect(dossiersRepository.queryByIds).toHaveBeenCalledTimes(1)
+
+    resolveFirstRequest?.([recordA])
+
+    await expect(firstRequest).resolves.toEqual([recordA])
+    await expect(secondRequest).resolves.toEqual([recordA])
+    expect(dossiersRepository.queryByIds).toHaveBeenCalledTimes(1)
+  })
+
   it('returns cached dossiers without calling repository', async () => {
     const recordA = createRecord('A')
     dossiersRepository.queryByIds.mockResolvedValueOnce([recordA])
@@ -49,6 +87,94 @@ describe('DossiersService', () => {
 
     await expect(dossiersService.queryByIds(['A'])).resolves.toEqual([recordA])
     expect(dossiersRepository.queryByIds).not.toHaveBeenCalled()
+  })
+
+  it('clears cached dossiers when auth scope changes', async () => {
+    const guestRecord = createRecord('A', 'guest')
+    const authenticatedRecord = createRecord('A', 'authenticated')
+    dossiersRepository.queryByIds
+      .mockResolvedValueOnce([guestRecord])
+      .mockResolvedValueOnce([authenticatedRecord])
+
+    await expect(dossiersService.queryByIds(['A'])).resolves.toEqual([
+      guestRecord,
+    ])
+
+    cacheScope = 'authenticated:user'
+
+    await expect(dossiersService.queryByIds(['A'])).resolves.toEqual([
+      authenticatedRecord,
+    ])
+    expect(dossiersRepository.queryByIds).toHaveBeenNthCalledWith(1, ['A'])
+    expect(dossiersRepository.queryByIds).toHaveBeenNthCalledWith(2, ['A'])
+
+    dossiersRepository.queryByIds.mockClear()
+
+    await expect(dossiersService.queryByIds(['A'])).resolves.toEqual([
+      authenticatedRecord,
+    ])
+    expect(dossiersRepository.queryByIds).not.toHaveBeenCalled()
+  })
+
+  it('does not leak in-flight query results into a new auth scope cache', async () => {
+    const guestRecord = createRecord('A', 'guest')
+    const authenticatedRecord = createRecord('A', 'authenticated')
+    let resolveGuestRequest: ((records: DossierRecord[]) => void) | undefined
+    dossiersRepository.queryByIds
+      .mockImplementationOnce(
+        () =>
+          new Bluebird<DossierRecord[]>((resolve) => {
+            resolveGuestRequest = resolve
+          }),
+      )
+      .mockResolvedValueOnce([authenticatedRecord])
+
+    const guestRequest = dossiersService.queryByIds(['A'])
+
+    await flushMicrotasks()
+
+    cacheScope = 'authenticated:user'
+
+    const authenticatedRequest = dossiersService.queryByIds(['A'])
+
+    resolveGuestRequest?.([guestRecord])
+
+    await expect(guestRequest).resolves.toEqual([guestRecord])
+    await expect(authenticatedRequest).resolves.toEqual([authenticatedRecord])
+
+    dossiersRepository.queryByIds.mockClear()
+
+    await expect(dossiersService.queryByIds(['A'])).resolves.toEqual([
+      authenticatedRecord,
+    ])
+    expect(dossiersRepository.queryByIds).not.toHaveBeenCalled()
+  })
+
+  it('refetches dossier ids after cache entry expires', async () => {
+    const firstRecord = createRecord('A', 'first')
+    const refreshedRecord = createRecord('A', 'refreshed')
+    dossiersRepository.queryByIds.mockResolvedValueOnce([firstRecord])
+
+    await expect(dossiersService.queryByIds(['A'])).resolves.toEqual([
+      firstRecord,
+    ])
+
+    dossiersRepository.queryByIds.mockClear()
+    currentTime = cacheEntryLifetimeInMilliseconds - 1
+
+    await expect(dossiersService.queryByIds(['A'])).resolves.toEqual([
+      firstRecord,
+    ])
+    expect(dossiersRepository.queryByIds).not.toHaveBeenCalled()
+
+    dossiersRepository.queryByIds.mockResolvedValueOnce([refreshedRecord])
+    currentTime = cacheEntryLifetimeInMilliseconds
+
+    await expect(dossiersService.queryByIds(['A'])).resolves.toEqual([
+      refreshedRecord,
+    ])
+    expect(dossiersRepository.queryByIds).toHaveBeenCalledTimes(1)
+    expect(dossiersRepository.queryByIds).toHaveBeenCalledWith(['A'])
   })
 
   it('queries only missing dossier ids when partial cache exists', async () => {
