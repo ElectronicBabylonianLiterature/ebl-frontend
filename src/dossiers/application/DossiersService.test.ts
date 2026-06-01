@@ -6,9 +6,8 @@ import DossiersService from 'dossiers/application/DossiersService'
 
 jest.mock('dossiers/infrastructure/DossiersRepository')
 
-const dossiersRepository = new (DossiersRepository as jest.Mock<
-  jest.Mocked<DossiersRepository>
->)()
+const dossiersRepository =
+  new (DossiersRepository as jest.Mock)() as jest.Mocked<DossiersRepository>
 
 const createRecord = (id: string): DossierRecord =>
   new DossierRecord({ _id: id })

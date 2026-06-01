@@ -38,8 +38,8 @@ export default class DossiersService implements DossiersSearch {
   private readonly cachedDossiersById = new Map<string, DossierRecord>()
   private pendingQueryByIdsBatch: PendingQueryByIdsBatch | null = null
 
-  constructor(afoRegisterRepository: DossiersRepository) {
-    this.dossiersRepository = afoRegisterRepository
+  constructor(dossiersRepository: DossiersRepository) {
+    this.dossiersRepository = dossiersRepository
   }
 
   queryByIds(query: string[]): Bluebird<readonly DossierRecord[]> {
