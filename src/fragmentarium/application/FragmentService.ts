@@ -49,6 +49,7 @@ const maximumCachedFragments = 250
 const maximumCachedThumbnails = 250
 const maximumCachedProvenanceRecords = 250
 const maximumCachedProvenanceChildren = 250
+const maximumCachedQueryResults = 250
 const latestQueryCacheKey = 'latest:'
 const provenanceCacheKey = 'provenance:'
 const defaultCacheScope = 'default'
@@ -204,6 +205,10 @@ export class FragmentService {
   private readonly cachedFragmentRequests = new Map<
     string,
     Bluebird<Fragment>
+  >()
+  private readonly cachedQueryResults = new Map<
+    string,
+    CacheEntry<QueryResult>
   >()
   private readonly cachedQueryResultRequests = new Map<
     string,
@@ -535,23 +540,26 @@ export class FragmentService {
 
   query(fragmentQuery: FragmentQuery): Bluebird<QueryResult> {
     const cacheKey = this.createQueryCacheKey(fragmentQuery)
-    return this.getOrFetchInFlightRequest(
+    return this.getOrFetchCachedValue(
+      this.cachedQueryResults,
       this.cachedQueryResultRequests,
       cacheKey,
+      maximumCachedQueryResults,
       () => this.fragmentRepository.query(fragmentQuery),
     )
   }
 
   queryLatest(): Bluebird<QueryResult> {
-    return this.getOrFetchInFlightRequest(
+    return this.getOrFetchCachedValue(
+      this.cachedQueryResults,
       this.cachedQueryResultRequests,
       latestQueryCacheKey,
-      () =>
-        this.fragmentRepository.queryLatest().then((queryResult) => {
-          this.storePrefetchedLatestFragments(queryResult)
-          return queryResult
-        }),
-    )
+      maximumCachedQueryResults,
+      () => this.fragmentRepository.queryLatest(),
+    ).then((queryResult) => {
+      this.storePrefetchedLatestFragments(queryResult)
+      return queryResult
+    })
   }
 
   queryByTraditionalReferences(
@@ -804,6 +812,7 @@ export class FragmentService {
   }
 
   private clearCachedQueryResults(): void {
+    this.cachedQueryResults.clear()
     this.cachedQueryResultRequests.clear()
     this.prefetchedLatestFragments.clear()
   }
@@ -817,6 +826,7 @@ export class FragmentService {
     this.cachedProvenanceChildrenByIdRequest.clear()
     this.cachedFragments.clear()
     this.cachedFragmentRequests.clear()
+    this.cachedQueryResults.clear()
     this.cachedQueryResultRequests.clear()
     this.prefetchedLatestFragments.clear()
     this.cachedThumbnails.clear()
