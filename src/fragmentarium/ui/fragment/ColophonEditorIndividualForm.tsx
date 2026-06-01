@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useMemo, useState } from 'react'
 import { Accordion, Form, Row } from 'react-bootstrap'
 import {
   Colophon,
@@ -76,7 +76,31 @@ export const ColophonIndividualsInput = ({
   )
 }
 
-type IndividualFieldName = 'type' | 'name' | 'sonOf' | 'grandsonOf' | 'family'
+type IndividualFieldName =
+  | 'type'
+  | 'name'
+  | 'sonOf'
+  | 'grandsonOf'
+  | 'family'
+  | 'nativeOf'
+
+type ColophonAutocompleteFieldName = 'name' | 'sonOf' | 'grandsonOf' | 'family'
+
+type ColophonLoadOptionsMethod = (
+  inputValue: string,
+  callback: (options: ColophonNameOption[]) => void,
+) => Bluebird<void>
+
+type ColophonLoadOptionsByField = Record<
+  ColophonAutocompleteFieldName,
+  ColophonLoadOptionsMethod
+>
+
+function isColophonAutocompleteFieldName(
+  key: IndividualFieldName,
+): key is ColophonAutocompleteFieldName {
+  return ['name', 'sonOf', 'grandsonOf', 'family'].includes(key)
+}
 
 const setBrokenOrUncertain = (
   checked: boolean,
@@ -100,15 +124,17 @@ const setBrokenOrUncertain = (
 const getIndividualField = ({
   individualProps,
   key,
+  loadOptionsByField,
 }: {
   individualProps: IndividualProps
-  key: string
+  key: IndividualFieldName
+  loadOptionsByField: ColophonLoadOptionsByField
 }): JSX.Element => {
-  const { individual, fragmentService, onChange, index } = individualProps
+  const { individual, onChange, index } = individualProps
   const fieldProps = getValueAndOptionsByKey(
-    key as IndividualFieldName,
+    key,
     individual,
-    fragmentService,
+    loadOptionsByField,
   )
   const props = {
     onChange,
@@ -149,7 +175,19 @@ const getIndividualField = ({
 }
 
 const IndividualForm = (individualProps: IndividualProps): JSX.Element => {
-  const individualFieldNames = [
+  const { fragmentService } = individualProps
+
+  const loadOptionsByField = useMemo<ColophonLoadOptionsByField>(
+    () => ({
+      name: getLoadOptionsMethod(fragmentService),
+      sonOf: getLoadOptionsMethod(fragmentService),
+      grandsonOf: getLoadOptionsMethod(fragmentService),
+      family: getLoadOptionsMethod(fragmentService),
+    }),
+    [fragmentService],
+  )
+
+  const individualFieldNames: readonly IndividualFieldName[] = [
     'name',
     'sonOf',
     'grandsonOf',
@@ -160,7 +198,7 @@ const IndividualForm = (individualProps: IndividualProps): JSX.Element => {
   return (
     <>
       {individualFieldNames.map((key) =>
-        getIndividualField({ individualProps, key }),
+        getIndividualField({ individualProps, key, loadOptionsByField }),
       )}
     </>
   )
@@ -169,7 +207,7 @@ const IndividualForm = (individualProps: IndividualProps): JSX.Element => {
 const getValueAndOptionsByKey = (
   key: IndividualFieldName,
   individual: IndividualAttestation,
-  fragmentService: FragmentService,
+  loadOptionsByField: ColophonLoadOptionsByField,
 ): {
   value?: { value: string; label: string }
   options?: readonly { value: string; label: string }[]
@@ -189,13 +227,15 @@ const getValueAndOptionsByKey = (
         label: type,
       })),
     }),
-    ...(key !== 'type' && {
-      loadOptions: getLoadOptionsMethod(fragmentService),
+    ...(isColophonAutocompleteFieldName(key) && {
+      loadOptions: loadOptionsByField[key],
     }),
   }
 }
 
-export const getLoadOptionsMethod = (fragmentService: FragmentService) => {
+export const getLoadOptionsMethod = (
+  fragmentService: FragmentService,
+): ColophonLoadOptionsMethod => {
   const loadState = createColophonLoadState()
 
   return (

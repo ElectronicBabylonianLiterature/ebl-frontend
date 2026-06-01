@@ -156,7 +156,7 @@ function ResultPages({
         }
         return (
           <ChapterResult
-            key={`${chapterIdToString(chapterId)}:${chapter.lines.join(',')}`}
+            key={`${chapterIdToString(chapterId)}:${chapter.lines.join(',')}:${chapter.variants.join(',')}`}
             textService={textService}
             chapterId={chapterId}
             active={active}

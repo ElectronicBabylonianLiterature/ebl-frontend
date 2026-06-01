@@ -89,17 +89,13 @@ export default function SearchFormDossier({
     }
   }, [clearPendingLoad])
 
-  const loadOptions = (
-    inputValue: string,
-    callback: (options: SelectedOption[]) => void,
-  ): Promise<SelectedOption[]> => {
+  const loadOptions = (inputValue: string): Promise<SelectedOption[]> => {
     const normalizedInput = inputValue.trim()
     const requestId = requestSequence.current + 1
     requestSequence.current = requestId
     clearPendingLoad()
 
     if (normalizedInput.length < dossierSuggestionMinimumLength) {
-      callback([])
       return Promise.resolve([])
     }
 
@@ -120,13 +116,9 @@ export default function SearchFormDossier({
               .map(createOption)
               .filter((o): o is SelectedOption => o !== null)
             options.sort((a, b) => collator.compare(a.label, b.label))
-            callback(options)
             resolve(options)
           })
           .catch(() => {
-            if (requestSequence.current === requestId) {
-              callback([])
-            }
             resolve([])
           })
       }, dossierSuggestionDebounceMilliseconds)
