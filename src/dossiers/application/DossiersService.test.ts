@@ -177,6 +177,37 @@ describe('DossiersService', () => {
     expect(dossiersRepository.queryByIds).toHaveBeenCalledWith(['A'])
   })
 
+  it('evicts least recently used dossiers when cache limit is reached', async () => {
+    const recordA = createRecord('A', 'A')
+    const recordB = createRecord('B', 'B')
+    const recordC = createRecord('C', 'C')
+    const maximumCachedDossiers = 2
+    dossiersService = new DossiersService(
+      dossiersRepository,
+      () => cacheScope,
+      () => currentTime,
+      maximumCachedDossiers,
+    )
+
+    dossiersRepository.queryByIds
+      .mockResolvedValueOnce([recordA])
+      .mockResolvedValueOnce([recordB])
+      .mockResolvedValueOnce([recordC])
+
+    await expect(dossiersService.queryByIds(['A'])).resolves.toEqual([recordA])
+    await expect(dossiersService.queryByIds(['B'])).resolves.toEqual([recordB])
+    await expect(dossiersService.queryByIds(['A'])).resolves.toEqual([recordA])
+    await expect(dossiersService.queryByIds(['C'])).resolves.toEqual([recordC])
+
+    dossiersRepository.queryByIds.mockClear()
+    dossiersRepository.queryByIds.mockResolvedValueOnce([recordB])
+
+    await expect(dossiersService.queryByIds(['A'])).resolves.toEqual([recordA])
+    await expect(dossiersService.queryByIds(['B'])).resolves.toEqual([recordB])
+    expect(dossiersRepository.queryByIds).toHaveBeenCalledTimes(1)
+    expect(dossiersRepository.queryByIds).toHaveBeenCalledWith(['B'])
+  })
+
   it('queries only missing dossier ids when partial cache exists', async () => {
     const recordA = createRecord('A')
     const recordB = createRecord('B')

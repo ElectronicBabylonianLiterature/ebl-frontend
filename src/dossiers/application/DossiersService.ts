@@ -5,6 +5,7 @@ import DossierRecord, {
 import Bluebird from 'bluebird'
 
 const cacheEntryLifetimeInMilliseconds = 5 * 60 * 1000
+const defaultMaximumCachedDossiers = 250
 const defaultCacheScope = 'default'
 
 export interface DossiersSearch {
@@ -57,6 +58,7 @@ export default class DossiersService implements DossiersSearch {
     dossiersRepository: DossiersRepository,
     private readonly getCacheScope: () => string = () => defaultCacheScope,
     private readonly getCurrentTime: () => number = () => Date.now(),
+    private readonly maximumCachedDossiers: number = defaultMaximumCachedDossiers,
   ) {
     this.dossiersRepository = dossiersRepository
   }
@@ -144,12 +146,9 @@ export default class DossiersService implements DossiersSearch {
     }
 
     const requestGeneration = this.cacheGeneration
-    const recordsRequest =
-      idsToFetch.length === 0
-        ? Bluebird.resolve<readonly DossierRecord[]>([])
-        : this.dossiersRepository.queryByIds(idsToFetch)
-
-    pendingBatch.inFlightRequest = Bluebird.resolve(recordsRequest)
+    pendingBatch.inFlightRequest = Bluebird.resolve(
+      this.dossiersRepository.queryByIds(idsToFetch),
+    )
 
     pendingBatch.inFlightRequest
       .then((records) => {
@@ -216,10 +215,12 @@ export default class DossiersService implements DossiersSearch {
   }
 
   private setCachedDossier(record: DossierRecord): void {
+    this.cachedDossiersById.delete(record.id)
     this.cachedDossiersById.set(record.id, {
       value: record,
       expiresAt: this.getCurrentTime() + cacheEntryLifetimeInMilliseconds,
     })
+    this.trimCachedDossiers()
   }
 
   private hasFreshCachedDossier(id: string): boolean {
@@ -238,7 +239,22 @@ export default class DossiersService implements DossiersSearch {
       return null
     }
 
+    this.cachedDossiersById.delete(id)
+    this.cachedDossiersById.set(id, cacheEntry)
+
     return cacheEntry.value
+  }
+
+  private trimCachedDossiers(): void {
+    while (this.cachedDossiersById.size > this.maximumCachedDossiers) {
+      const oldestId = this.cachedDossiersById.keys().next().value
+
+      if (oldestId === undefined) {
+        return
+      }
+
+      this.cachedDossiersById.delete(oldestId)
+    }
   }
 
   private schedulePendingQueryByIdsFlush(
