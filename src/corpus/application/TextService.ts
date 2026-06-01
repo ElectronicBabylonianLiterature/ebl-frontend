@@ -56,21 +56,14 @@ import { ParallelLine } from 'transliteration/domain/parallel-line'
 import { CorpusQuery } from 'query/CorpusQuery'
 import { CorpusQueryResult } from 'query/QueryResult'
 import { ChapterSlugs, TextSlugs } from 'router/sitemap'
+import ConcurrencyLimiter from 'common/utils/ConcurrencyLimiter'
+import { CacheEntry } from 'common/utils/cache'
+import getOrFetchCachedValue from 'common/utils/getOrFetchCachedValue'
 
 const chapterDisplayCacheEntryLifetimeInMilliseconds = 2 * 60 * 1000
 const maximumCachedChapterDisplays = 250
 const chapterDisplayConcurrencyLimit = 4
 const defaultCacheScope = 'default'
-
-type CacheEntry<CacheValue> = {
-  readonly expiresAt: number
-  readonly value: CacheValue
-}
-
-type QueueState = {
-  activeCount: number
-  waitingResolvers: Array<() => void>
-}
 
 class CorpusLemmatizationFactory extends AbstractLemmatizationFactory<
   Chapter,
@@ -171,10 +164,9 @@ export default class TextService {
     Bluebird<ChapterDisplay>
   >()
 
-  private readonly chapterDisplayQueueState: QueueState = {
-    activeCount: 0,
-    waitingResolvers: [],
-  }
+  private readonly chapterDisplayFetchLimiter = new ConcurrencyLimiter(
+    chapterDisplayConcurrencyLimit,
+  )
 
   constructor(
     private readonly apiClient: ApiClient,
@@ -226,19 +218,22 @@ export default class TextService {
     lines: readonly number[] = [],
     variants: readonly number[] = [],
   ): Bluebird<ChapterDisplay> {
+    this.clearCachesWhenScopeChanges()
+
     const cacheKey = this.createChapterDisplayCacheKey(id, lines, variants)
-    return this.getOrFetchCachedValue(
-      this.cachedChapterDisplays,
-      this.cachedChapterDisplayRequests,
-      cacheKey,
-      maximumCachedChapterDisplays,
-      () =>
-        this.runWithConcurrencyLimit(
-          this.chapterDisplayQueueState,
-          chapterDisplayConcurrencyLimit,
-          () => this.fetchChapterDisplay(id, lines, variants),
+
+    return getOrFetchCachedValue({
+      cache: this.cachedChapterDisplays,
+      requests: this.cachedChapterDisplayRequests,
+      key: cacheKey,
+      maximumCacheSize: maximumCachedChapterDisplays,
+      cacheEntryLifetimeInMilliseconds:
+        chapterDisplayCacheEntryLifetimeInMilliseconds,
+      fetchValue: () =>
+        this.chapterDisplayFetchLimiter.run(() =>
+          this.fetchChapterDisplay(id, lines, variants),
         ),
-    )
+    })
   }
 
   private fetchChapterDisplay(
@@ -554,92 +549,6 @@ export default class TextService {
     return this.apiClient.fetchJson<ChapterSlugs>('/corpus/chapters/all', false)
   }
 
-  private getOrFetchCachedValue<CacheKey, CacheValue>(
-    cache: Map<CacheKey, CacheEntry<CacheValue>>,
-    requests: Map<CacheKey, Bluebird<CacheValue>>,
-    key: CacheKey,
-    maximumCacheSize: number,
-    fetchValue: () => Bluebird<CacheValue>,
-  ): Bluebird<CacheValue> {
-    this.clearCachesWhenScopeChanges()
-
-    const cachedValue = this.getCachedValue(cache, key)
-    if (cachedValue !== null) {
-      return Bluebird.resolve(cachedValue)
-    }
-
-    const cachedRequest = requests.get(key)
-    if (cachedRequest) {
-      return cachedRequest.then((value) => value)
-    }
-
-    const requestReference: { current?: Bluebird<CacheValue> } = {}
-    const request = fetchValue()
-      .then((value) =>
-        requests.get(key) === requestReference.current
-          ? this.setCachedValue(cache, key, value, maximumCacheSize)
-          : value,
-      )
-      .finally(() => {
-        if (requests.get(key) === requestReference.current) {
-          requests.delete(key)
-        }
-      })
-
-    requestReference.current = request
-    requests.set(key, request)
-
-    return request.then((value) => value)
-  }
-
-  private getCachedValue<CacheKey, CacheValue>(
-    cache: Map<CacheKey, CacheEntry<CacheValue>>,
-    key: CacheKey,
-  ): CacheValue | null {
-    const entry = cache.get(key)
-    if (!entry) {
-      return null
-    }
-
-    if (entry.expiresAt <= Date.now()) {
-      cache.delete(key)
-      return null
-    }
-
-    cache.delete(key)
-    cache.set(key, entry)
-    return entry.value
-  }
-
-  private setCachedValue<CacheKey, CacheValue>(
-    cache: Map<CacheKey, CacheEntry<CacheValue>>,
-    key: CacheKey,
-    value: CacheValue,
-    maximumCacheSize: number,
-  ): CacheValue {
-    cache.delete(key)
-    cache.set(key, {
-      expiresAt: Date.now() + chapterDisplayCacheEntryLifetimeInMilliseconds,
-      value,
-    })
-    this.trimCache(cache, maximumCacheSize)
-    return value
-  }
-
-  private trimCache<CacheKey, CacheValue>(
-    cache: Map<CacheKey, CacheEntry<CacheValue>>,
-    maximumCacheSize: number,
-  ): void {
-    while (cache.size > maximumCacheSize) {
-      const oldestKey = cache.keys().next().value
-      if (oldestKey === undefined) {
-        return
-      }
-
-      cache.delete(oldestKey)
-    }
-  }
-
   private clearAllCaches(): void {
     this.cachedTexts = null
     this.cachedChapterDisplays.clear()
@@ -674,45 +583,5 @@ export default class TextService {
     variants: readonly number[] = [],
   ): string {
     return `${createChapterUrl(id)}?${stringify({ lines, variants })}`
-  }
-
-  private runWithConcurrencyLimit<ReturnValue>(
-    queueState: QueueState,
-    maximumConcurrency: number,
-    operation: () => Bluebird<ReturnValue>,
-  ): Bluebird<ReturnValue> {
-    return this.acquireConcurrencySlot(queueState, maximumConcurrency).then(
-      (releaseSlot) =>
-        operation().finally(() => {
-          releaseSlot()
-        }),
-    )
-  }
-
-  private acquireConcurrencySlot(
-    queueState: QueueState,
-    maximumConcurrency: number,
-  ): Bluebird<() => void> {
-    return new Bluebird((resolve) => {
-      const tryAcquireSlot = () => {
-        if (queueState.activeCount < maximumConcurrency) {
-          queueState.activeCount += 1
-          resolve(() => this.releaseConcurrencySlot(queueState))
-          return
-        }
-
-        queueState.waitingResolvers.push(tryAcquireSlot)
-      }
-
-      tryAcquireSlot()
-    })
-  }
-
-  private releaseConcurrencySlot(queueState: QueueState): void {
-    queueState.activeCount = Math.max(0, queueState.activeCount - 1)
-    const next = queueState.waitingResolvers.shift()
-    if (next) {
-      next()
-    }
   }
 }

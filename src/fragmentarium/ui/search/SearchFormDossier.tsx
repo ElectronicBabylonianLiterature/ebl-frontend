@@ -112,6 +112,7 @@ export default function SearchFormDossier({
         searchSuggestions(normalizedInput, filters)
           .then((entries) => {
             if (requestSequence.current !== requestId) {
+              resolve([])
               return
             }
 

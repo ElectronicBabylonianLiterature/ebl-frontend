@@ -196,58 +196,100 @@ const getValueAndOptionsByKey = (
 }
 
 export const getLoadOptionsMethod = (fragmentService: FragmentService) => {
-  let requestSequence = 0
-  let pendingTimeout: ReturnType<typeof setTimeout> | null = null
-  let pendingResolve: (() => void) | null = null
+  const loadState = createColophonLoadState()
 
   return (
     inputValue: string,
-    callback: (options: { value: string; label: string }[]) => void,
+    callback: (options: ColophonNameOption[]) => void,
   ): Bluebird<void> => {
     const normalizedInput = inputValue.trim()
-    const requestId = requestSequence + 1
-    requestSequence = requestId
-
-    if (pendingTimeout) {
-      clearTimeout(pendingTimeout)
-      pendingTimeout = null
-    }
-    if (pendingResolve) {
-      pendingResolve()
-      pendingResolve = null
-    }
+    const requestId = loadState.requestSequence + 1
+    loadState.requestSequence = requestId
+    clearPendingColophonLoad(loadState)
 
     if (normalizedInput.length < colophonSuggestionMinimumLength) {
       callback([])
       return Bluebird.resolve()
     }
 
-    return new Bluebird<void>((resolve) => {
-      pendingResolve = resolve
-      pendingTimeout = setTimeout(() => {
-        pendingTimeout = null
-        pendingResolve = null
-
-        fragmentService
-          .fetchColophonNames(normalizedInput)
-          .then((entries) => {
-            if (requestSequence !== requestId) {
-              return
-            }
-
-            const options = entries.map((value) => ({
-              value,
-              label: value,
-            }))
-            callback(options)
-          })
-          .catch(() => {
-            if (requestSequence === requestId) {
-              callback([])
-            }
-          })
-          .finally(resolve)
-      }, colophonSuggestionDebounceMilliseconds)
-    })
+    return scheduleColophonLoad(
+      fragmentService,
+      loadState,
+      normalizedInput,
+      requestId,
+      callback,
+    )
   }
+}
+
+type ColophonNameOption = {
+  value: string
+  label: string
+}
+
+type ColophonLoadState = {
+  requestSequence: number
+  pendingTimeout: ReturnType<typeof setTimeout> | null
+  pendingResolve: (() => void) | null
+}
+
+function createColophonLoadState(): ColophonLoadState {
+  return {
+    requestSequence: 0,
+    pendingTimeout: null,
+    pendingResolve: null,
+  }
+}
+
+function clearPendingColophonLoad(loadState: ColophonLoadState): void {
+  if (loadState.pendingTimeout) {
+    clearTimeout(loadState.pendingTimeout)
+    loadState.pendingTimeout = null
+  }
+
+  if (loadState.pendingResolve) {
+    loadState.pendingResolve()
+    loadState.pendingResolve = null
+  }
+}
+
+function createColophonNameOptions(
+  entries: readonly string[],
+): ColophonNameOption[] {
+  return entries.map((value) => ({
+    value,
+    label: value,
+  }))
+}
+
+function scheduleColophonLoad(
+  fragmentService: FragmentService,
+  loadState: ColophonLoadState,
+  normalizedInput: string,
+  requestId: number,
+  callback: (options: ColophonNameOption[]) => void,
+): Bluebird<void> {
+  return new Bluebird<void>((resolve) => {
+    loadState.pendingResolve = resolve
+    loadState.pendingTimeout = setTimeout(() => {
+      loadState.pendingTimeout = null
+      loadState.pendingResolve = null
+
+      fragmentService
+        .fetchColophonNames(normalizedInput)
+        .then((entries) => {
+          if (loadState.requestSequence !== requestId) {
+            return
+          }
+
+          callback(createColophonNameOptions(entries))
+        })
+        .catch(() => {
+          if (loadState.requestSequence === requestId) {
+            callback([])
+          }
+        })
+        .finally(resolve)
+    }, colophonSuggestionDebounceMilliseconds)
+  })
 }

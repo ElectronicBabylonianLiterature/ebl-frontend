@@ -2,15 +2,11 @@ import Promise from 'bluebird'
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 import BibliographyRepository from 'bibliography/infrastructure/BibliographyRepository'
 import _ from 'lodash'
+import { CacheEntry, getCachedValue, setCachedValue } from 'common/utils/cache'
 
 const cacheEntryLifetimeInMilliseconds = 5 * 60 * 1000
 const maximumCachedEntries = 500
 const defaultCacheScope = 'default'
-
-type CacheEntry<CacheValue> = {
-  readonly expiresAt: number
-  readonly value: CacheValue
-}
 
 export interface BibliographySearch {
   search(query: string): Promise<readonly BibliographyEntry[]>
@@ -52,7 +48,7 @@ export default class BibliographyService implements BibliographySearch {
   find(id: string): Promise<BibliographyEntry> {
     this.clearCachesWhenScopeChanges()
 
-    const cachedEntry = this.getCachedValue(this.cachedEntries, id)
+    const cachedEntry = getCachedValue(this.cachedEntries, id)
     if (cachedEntry) {
       return Promise.resolve(cachedEntry)
     }
@@ -67,7 +63,13 @@ export default class BibliographyService implements BibliographySearch {
       .find(id)
       .then((entry) =>
         this.cachedFindRequests.get(id) === requestReference.current
-          ? this.setCachedValue(this.cachedEntries, id, entry)
+          ? setCachedValue(
+              this.cachedEntries,
+              id,
+              entry,
+              maximumCachedEntries,
+              cacheEntryLifetimeInMilliseconds,
+            )
           : entry,
       )
       .finally(() => {
@@ -118,7 +120,7 @@ export default class BibliographyService implements BibliographySearch {
     const inFlightRequests: Array<Promise<void>> = []
 
     ids.forEach((id) => {
-      const cachedEntry = this.getCachedValue(this.cachedEntries, id)
+      const cachedEntry = getCachedValue(this.cachedEntries, id)
       if (cachedEntry) {
         entriesById.set(id, cachedEntry)
         return
@@ -169,7 +171,13 @@ export default class BibliographyService implements BibliographySearch {
       .findMany(sortedUniqueIds)
       .then((entries) => {
         entries.forEach((entry) => {
-          this.setCachedValue(this.cachedEntries, entry.id, entry)
+          setCachedValue(
+            this.cachedEntries,
+            entry.id,
+            entry,
+            maximumCachedEntries,
+            cacheEntryLifetimeInMilliseconds,
+          )
         })
 
         const entriesById = _.keyBy(entries, 'id')
@@ -181,10 +189,12 @@ export default class BibliographyService implements BibliographySearch {
               : this.bibliographyRepository
                   .find(id)
                   .then((resolvedEntry) =>
-                    this.setCachedValue(
+                    setCachedValue(
                       this.cachedEntries,
                       resolvedEntry.id,
                       resolvedEntry,
+                      maximumCachedEntries,
+                      cacheEntryLifetimeInMilliseconds,
                     ),
                   )
           }),
@@ -216,10 +226,12 @@ export default class BibliographyService implements BibliographySearch {
             : this.bibliographyRepository
                 .find(id)
                 .then((resolvedEntry) =>
-                  this.setCachedValue(
+                  setCachedValue(
                     this.cachedEntries,
                     resolvedEntry.id,
                     resolvedEntry,
+                    maximumCachedEntries,
+                    cacheEntryLifetimeInMilliseconds,
                   ),
                 )
         })
@@ -239,55 +251,14 @@ export default class BibliographyService implements BibliographySearch {
   private cacheUpdatedEntry(entry: BibliographyEntry): BibliographyEntry {
     this.clearCachesWhenScopeChanges()
     this.cachedFindManyRequests.clear()
-    this.setCachedValue(this.cachedEntries, entry.id, entry)
+    setCachedValue(
+      this.cachedEntries,
+      entry.id,
+      entry,
+      maximumCachedEntries,
+      cacheEntryLifetimeInMilliseconds,
+    )
     return entry
-  }
-
-  private getCachedValue<CacheKey, CacheValue>(
-    cache: Map<CacheKey, CacheEntry<CacheValue>>,
-    key: CacheKey,
-  ): CacheValue | null {
-    const entry = cache.get(key)
-    if (!entry) {
-      return null
-    }
-
-    if (entry.expiresAt <= Date.now()) {
-      cache.delete(key)
-      return null
-    }
-
-    cache.delete(key)
-    cache.set(key, entry)
-    return entry.value
-  }
-
-  private setCachedValue<CacheKey, CacheValue>(
-    cache: Map<CacheKey, CacheEntry<CacheValue>>,
-    key: CacheKey,
-    value: CacheValue,
-  ): CacheValue {
-    cache.delete(key)
-    cache.set(key, {
-      expiresAt: Date.now() + cacheEntryLifetimeInMilliseconds,
-      value,
-    })
-    this.trimCache(cache, maximumCachedEntries)
-    return value
-  }
-
-  private trimCache<CacheKey, CacheValue>(
-    cache: Map<CacheKey, CacheEntry<CacheValue>>,
-    maximumCacheSize: number,
-  ): void {
-    while (cache.size > maximumCacheSize) {
-      const oldestKey = cache.keys().next().value
-      if (oldestKey === undefined) {
-        return
-      }
-
-      cache.delete(oldestKey)
-    }
   }
 
   private clearAllCaches(): void {
