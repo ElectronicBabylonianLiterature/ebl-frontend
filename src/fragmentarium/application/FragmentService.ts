@@ -58,6 +58,10 @@ type CacheEntry<CacheValue> = {
   readonly value: CacheValue
 }
 
+type QueryItemWithPrefetchedFragment = QueryResult['items'][number] & {
+  readonly fragment?: Fragment
+}
+
 export type ThumbnailSize = 'small' | 'medium' | 'large'
 
 export const onError = (error) => {
@@ -205,6 +209,7 @@ export class FragmentService {
     string,
     Bluebird<QueryResult>
   >()
+  private readonly prefetchedLatestFragments = new Map<string, Fragment>()
   private readonly cachedThumbnails = new Map<
     string,
     CacheEntry<ThumbnailBlob>
@@ -248,11 +253,7 @@ export class FragmentService {
       this.cachedFragmentRequests,
       cacheKey,
       maximumCachedFragments,
-      () =>
-        this.fragmentRepository
-          .find(number, lines, excludeLines)
-          .then((fragment: Fragment) => this.injectReferences(fragment))
-          .catch(onError),
+      () => this.findAndInjectFragment(number, lines, excludeLines, cacheKey),
     )
   }
 
@@ -545,7 +546,11 @@ export class FragmentService {
     return this.getOrFetchInFlightRequest(
       this.cachedQueryResultRequests,
       latestQueryCacheKey,
-      () => this.fragmentRepository.queryLatest(),
+      () =>
+        this.fragmentRepository.queryLatest().then((queryResult) => {
+          this.storePrefetchedLatestFragments(queryResult)
+          return queryResult
+        }),
     )
   }
 
@@ -559,6 +564,72 @@ export class FragmentService {
 
   collectLemmaSuggestions(number: string): Bluebird<LemmaSuggestions> {
     return this.fragmentRepository.collectLemmaSuggestions(number)
+  }
+
+  private findAndInjectFragment(
+    number: string,
+    lines: readonly number[] | undefined,
+    excludeLines: boolean | undefined,
+    cacheKey: string,
+  ): Bluebird<Fragment> {
+    const prefetchedFragment = this.takePrefetchedLatestFragment(cacheKey)
+
+    if (prefetchedFragment) {
+      return this.injectReferences(prefetchedFragment)
+    }
+
+    return this.fragmentRepository
+      .find(number, lines, excludeLines)
+      .then((fragment: Fragment) => this.injectReferences(fragment))
+      .catch(onError)
+  }
+
+  private storePrefetchedLatestFragments(queryResult: QueryResult): void {
+    this.prefetchedLatestFragments.clear()
+
+    queryResult.items.forEach((queryItem) => {
+      const prefetchedFragment = this.readPrefetchedLatestFragment(queryItem)
+
+      if (!prefetchedFragment) {
+        return
+      }
+
+      const lines = _.take(queryItem.matchingLines, 3)
+      const excludeLines = _.isEmpty(queryItem.matchingLines)
+
+      this.prefetchedLatestFragments.set(
+        this.createFragmentCacheKey(
+          queryItem.museumNumber,
+          lines,
+          excludeLines,
+        ),
+        prefetchedFragment,
+      )
+      this.prefetchedLatestFragments.set(
+        this.createFragmentCacheKey(queryItem.museumNumber),
+        prefetchedFragment,
+      )
+    })
+  }
+
+  private readPrefetchedLatestFragment(
+    queryItem: QueryResult['items'][number],
+  ): Fragment | null {
+    const prefetchedFragment = (queryItem as QueryItemWithPrefetchedFragment)
+      .fragment
+
+    return prefetchedFragment ?? null
+  }
+
+  private takePrefetchedLatestFragment(cacheKey: string): Fragment | null {
+    const prefetchedFragment = this.prefetchedLatestFragments.get(cacheKey)
+
+    if (!prefetchedFragment) {
+      return null
+    }
+
+    this.prefetchedLatestFragments.delete(cacheKey)
+    return prefetchedFragment
   }
 
   private injectReferences(fragment: Fragment): Bluebird<Fragment> {
@@ -734,6 +805,7 @@ export class FragmentService {
 
   private clearCachedQueryResults(): void {
     this.cachedQueryResultRequests.clear()
+    this.prefetchedLatestFragments.clear()
   }
 
   private clearAllCaches(): void {
@@ -746,6 +818,7 @@ export class FragmentService {
     this.cachedFragments.clear()
     this.cachedFragmentRequests.clear()
     this.cachedQueryResultRequests.clear()
+    this.prefetchedLatestFragments.clear()
     this.cachedThumbnails.clear()
     this.cachedThumbnailRequests.clear()
   }

@@ -1087,6 +1087,73 @@ describe('FragmentService cache', () => {
     expect(fragmentRepository.queryLatest).toHaveBeenCalledTimes(1)
   })
 
+  test('serves prefetched latest fragments without repository reads', async () => {
+    const queryResultWithPrefetchedFragment: QueryResult = {
+      items: [
+        {
+          museumNumber: number,
+          matchingLines: [1, 2, 3, 4],
+          matchCount: 1,
+          fragment: cachedFragment,
+        } as QueryResult['items'][number],
+      ],
+      matchCountTotal: 1,
+    }
+    fragmentRepository.queryLatest.mockReturnValue(
+      Promise.resolve(queryResultWithPrefetchedFragment),
+    )
+
+    await expect(service.queryLatest()).resolves.toEqual(
+      queryResultWithPrefetchedFragment,
+    )
+    await expect(service.find(number, [1, 2, 3], false)).resolves.toMatchObject(
+      {
+        number: cachedFragment.number,
+      },
+    )
+    await expect(service.find(number, [1, 2, 3], false)).resolves.toMatchObject(
+      {
+        number: cachedFragment.number,
+      },
+    )
+
+    expect(fragmentRepository.find).toHaveBeenCalledTimes(0)
+  })
+
+  test('falls back to repository reads when prefetched latest key does not match', async () => {
+    const queryResultWithPrefetchedFragment: QueryResult = {
+      items: [
+        {
+          museumNumber: number,
+          matchingLines: [8, 9],
+          matchCount: 1,
+          fragment: cachedFragment,
+        } as QueryResult['items'][number],
+      ],
+      matchCountTotal: 1,
+    }
+    fragmentRepository.queryLatest.mockReturnValue(
+      Promise.resolve(queryResultWithPrefetchedFragment),
+    )
+    fragmentRepository.find.mockReturnValue(Promise.resolve(updatedFragment))
+
+    await expect(service.queryLatest()).resolves.toEqual(
+      queryResultWithPrefetchedFragment,
+    )
+    await expect(service.find(number, [1, 2, 3], false)).resolves.toMatchObject(
+      {
+        number: updatedFragment.number,
+      },
+    )
+
+    expect(fragmentRepository.find).toHaveBeenCalledTimes(1)
+    expect(fragmentRepository.find).toHaveBeenCalledWith(
+      number,
+      [1, 2, 3],
+      false,
+    )
+  })
+
   test('does not cache completed query results', async () => {
     fragmentRepository.query.mockReturnValue(Promise.resolve(queryResult))
 
