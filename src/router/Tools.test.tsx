@@ -213,13 +213,13 @@ describe('Tools', () => {
     expect(sidebarTitles).toEqual([
       '𒀀Signs',
       'ꞋAkkadian Dictionary',
+      '⚘Realia',
       '⇌Date Converter',
       '♔List of Kings',
       '⊕Genres',
       '⊟Dossiers',
       '※References',
       '⊞AfO-Register',
-      '⊡Realia',
       '𒐕Cuneiform Converter',
     ])
   })
@@ -227,7 +227,7 @@ describe('Tools', () => {
   it('marks decorative icons as hidden from assistive technologies', () => {
     renderTools('dictionary')
 
-    const navIcons = ['𒀀', 'Ꞌ', '⇌', '♔', '⊕', '⊟', '※', '⊞', '⊡', '𒐕']
+    const navIcons = ['𒀀', 'Ꞌ', '⚘', '⇌', '♔', '⊕', '⊟', '※', '⊞', '𒐕']
 
     navIcons.forEach((icon) => {
       expect(

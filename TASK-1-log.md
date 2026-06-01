@@ -211,3 +211,6 @@ withData<PROPS, GETTER_PROPS, DATA>(Component, getter, {
 |            | All tests green               | ✅     | 34 realia tests pass; 100% coverage (stmts/branches/funcs/lines); 0 console noise                   |
 |            | Add RealiaSearchForm.test.tsx | ✅     | Full coverage of form submit, navigate, encoding                                                    |
 |            | Add missing coverage tests    | ✅     | References section, reallexikon with null/non-null reference branches                               |
+|            | Rename menu entry             | ✅     | 'Dictionary of Realia' → 'Realia' in tabConfig                                                      |
+|            | Intro text → markdown         | ✅     | RealiaSearchPage uses MarkdownParagraph; test mocks it                                              |
+|            | Realia icon + position        | ✅     | Icon ⊡ → 🌴; moved directly below 'Akkadian Dictionary' in tabConfig; tests updated                 |

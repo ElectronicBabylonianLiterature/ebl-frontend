@@ -61,13 +61,13 @@ type ContentMatch = {
 const tabConfig = [
   { id: 'signs', title: 'Signs', icon: '𒀀' },
   { id: 'dictionary', title: 'Akkadian Dictionary', icon: 'Ꞌ' },
+  { id: 'realia', title: 'Realia', icon: '⚘' },
   { id: 'date-converter', title: 'Date Converter', icon: '⇌' },
   { id: 'list-of-kings', title: 'List of Kings', icon: '♔' },
   { id: 'genres', title: 'Genres', icon: '⊕' },
   { id: 'dossiers', title: 'Dossiers', icon: '⊟' },
   { id: 'references', title: 'References', icon: '※' },
   { id: 'afo-register', title: 'AfO-Register', icon: '⊞' },
-  { id: 'realia', title: 'Realia', icon: '⊡' },
   { id: 'cuneiform-converter', title: 'Cuneiform Converter', icon: '𒐕' },
 ]
 
