@@ -275,8 +275,16 @@ export default class DossiersService implements DossiersSearch {
 
   private clearAllCaches(): void {
     this.cachedDossiersById.clear()
+    const previousBatch = this.pendingQueryByIdsBatch
     this.pendingQueryByIdsBatch = this.createPendingQueryByIdsBatch()
     this.cacheGeneration += 1
+
+    if (previousBatch.requests.length > 0) {
+      const error = new Error(
+        'DossiersService cache scope changed; pending queryByIds requests cancelled.',
+      )
+      previousBatch.requests.forEach(({ reject }) => reject(error))
+    }
   }
 
   private createPendingQueryByIdsBatch(): PendingQueryByIdsBatch {

@@ -551,15 +551,16 @@ export class FragmentService {
   }
 
   queryLatest(): Bluebird<QueryResult> {
-    const queryGeneration = this.cacheGeneration
-
-    return this.getOrFetchCachedValue(
+    const queryResultRequest = this.getOrFetchCachedValue(
       this.cachedQueryResults,
       this.cachedQueryResultRequests,
       latestQueryCacheKey,
       maximumCachedQueryResults,
       () => this.fragmentRepository.queryLatest(),
-    ).then((queryResult) => {
+    )
+    const queryGeneration = this.cacheGeneration
+
+    return queryResultRequest.then((queryResult) => {
       if (queryGeneration === this.cacheGeneration) {
         this.storePrefetchedLatestFragments(queryResult)
       }

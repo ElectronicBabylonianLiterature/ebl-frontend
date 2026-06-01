@@ -116,6 +116,24 @@ describe('DossiersService', () => {
     expect(dossiersRepository.queryByIds).not.toHaveBeenCalled()
   })
 
+  it('rejects pending queryByIds requests when auth scope changes before flush', async () => {
+    const authenticatedRecord = createRecord('A', 'authenticated')
+    dossiersRepository.queryByIds.mockResolvedValueOnce([authenticatedRecord])
+
+    const guestPendingRequest = dossiersService.queryByIds(['A'])
+
+    cacheScope = 'authenticated:user'
+
+    const authenticatedRequest = dossiersService.queryByIds(['A'])
+
+    await expect(guestPendingRequest).rejects.toThrow(
+      'DossiersService cache scope changed; pending queryByIds requests cancelled.',
+    )
+    await expect(authenticatedRequest).resolves.toEqual([authenticatedRecord])
+    expect(dossiersRepository.queryByIds).toHaveBeenCalledTimes(1)
+    expect(dossiersRepository.queryByIds).toHaveBeenCalledWith(['A'])
+  })
+
   it('does not leak in-flight query results into a new auth scope cache', async () => {
     const guestRecord = createRecord('A', 'guest')
     const authenticatedRecord = createRecord('A', 'authenticated')

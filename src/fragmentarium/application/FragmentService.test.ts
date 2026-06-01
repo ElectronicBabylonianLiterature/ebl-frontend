@@ -1134,6 +1134,43 @@ describe('FragmentService cache', () => {
     expect(fragmentRepository.find).toHaveBeenCalledTimes(0)
   })
 
+  test('stores prefetched latest fragments after cache scope changes', async () => {
+    let cacheScope = 'guest'
+    const scopedService = createScopedService(() => cacheScope)
+    const queryResultWithPrefetchedFragment: QueryResult = {
+      items: [
+        {
+          museumNumber: number,
+          matchingLines: [1, 2, 3, 4],
+          matchCount: 1,
+          fragment: updatedFragment,
+        } as QueryResult['items'][number],
+      ],
+      matchCountTotal: 1,
+    }
+    fragmentRepository.find.mockReturnValue(Promise.resolve(cachedFragment))
+    fragmentRepository.queryLatest.mockReturnValue(
+      Promise.resolve(queryResultWithPrefetchedFragment),
+    )
+
+    await expect(scopedService.find(number)).resolves.toMatchObject({
+      number: cachedFragment.number,
+    })
+
+    cacheScope = 'authenticated:user'
+
+    await expect(scopedService.queryLatest()).resolves.toEqual(
+      queryResultWithPrefetchedFragment,
+    )
+    await expect(
+      scopedService.find(number, [1, 2, 3], false),
+    ).resolves.toMatchObject({
+      number: updatedFragment.number,
+    })
+
+    expect(fragmentRepository.find).toHaveBeenCalledTimes(1)
+  })
+
   test('falls back to repository reads when prefetched latest key does not match', async () => {
     const queryResultWithPrefetchedFragment: QueryResult = {
       items: [
