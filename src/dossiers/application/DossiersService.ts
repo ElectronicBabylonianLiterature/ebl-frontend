@@ -78,11 +78,9 @@ export default class DossiersService implements DossiersSearch {
       return Bluebird.resolve(this.selectCachedDossiers(ids))
     }
 
-    return Bluebird.resolve(
-      new Promise<readonly DossierRecord[]>((resolve, reject) => {
-        this.addToPendingQueryByIdsBatch(ids, missingIds, resolve, reject)
-      }),
-    )
+    return new Bluebird<readonly DossierRecord[]>((resolve, reject) => {
+      this.addToPendingQueryByIdsBatch(ids, missingIds, resolve, reject)
+    })
   }
 
   searchSuggestions(
@@ -265,7 +263,7 @@ export default class DossiersService implements DossiersSearch {
     }
 
     pendingBatch.flushScheduled = true
-    queueMicrotask(() => {
+    Promise.resolve().then(() => {
       if (this.pendingQueryByIdsBatch !== pendingBatch) {
         return
       }
