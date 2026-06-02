@@ -19,14 +19,17 @@ function parseValue(sign: string): { value: string; subIndex: number } {
     : ''
   const explicitSubIndex = match && match[2] ? parseInt(match[2]) : null
   const subscriptMatch = convertedValue.match(/^([\s\S]*?)([\u2080-\u2089]+)$/)
-  if (subscriptMatch !== null && explicitSubIndex === null) {
-    const subIndex = parseInt(
+  if (subscriptMatch !== null) {
+    const accentSubIndex = parseInt(
       subscriptMatch[2]
         .split('')
         .map((c) => String(c.charCodeAt(0) - 0x2080))
         .join(''),
     )
-    return { value: subscriptMatch[1], subIndex }
+    return {
+      value: subscriptMatch[1],
+      subIndex: explicitSubIndex ?? accentSubIndex,
+    }
   }
   return {
     value: convertedValue,
