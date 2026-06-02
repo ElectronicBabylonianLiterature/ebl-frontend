@@ -49,6 +49,40 @@ function expectRedirectWithLocationPreserved({
   expect(screen.getByText(expectedLocation)).toBeInTheDocument()
 }
 
+const notFoundPagePattern = /The page you are looking for does not exist./i
+
+function renderRoutesAtPath({
+  initialEntry,
+  routes,
+}: {
+  initialEntry: string
+  routes: JSX.Element[]
+}): void {
+  render(
+    <MemoryRouter initialEntries={[initialEntry]}>
+      <Switch>{routes}</Switch>
+    </MemoryRouter>,
+  )
+}
+
+function expectNotFoundPageForPaths({
+  paths,
+  getRoutes,
+}: {
+  paths: readonly string[]
+  getRoutes: () => JSX.Element[]
+}): void {
+  paths.forEach((path) => {
+    test(`renders NotFoundPage for "${path}"`, () => {
+      renderRoutesAtPath({
+        initialEntry: path,
+        routes: getRoutes(),
+      })
+      expect(screen.getByText(notFoundPagePattern)).toBeInTheDocument()
+    })
+  })
+}
+
 describe('NotFoundPage rendering in FragmentariumRoutes', () => {
   const nonExistentRoutes = [
     '/library/search/non-existent',
@@ -56,19 +90,11 @@ describe('NotFoundPage rendering in FragmentariumRoutes', () => {
     '/library/Fragment.12345/annotate/non-existent',
     '/library/Fragment.12345/non-existent',
   ]
-  nonExistentRoutes.forEach((path) => {
-    test(`renders NotFoundPage for "${path}"`, () => {
-      render(
-        <MemoryRouter initialEntries={[path]}>
-          <Switch>
-            {[...FragmentariumRoutes({ ...getServices(), sitemap: false })]}
-          </Switch>
-        </MemoryRouter>,
-      )
-      expect(
-        screen.getByText(/The page you are looking for does not exist./i),
-      ).toBeInTheDocument()
-    })
+  expectNotFoundPageForPaths({
+    paths: nonExistentRoutes,
+    getRoutes: () => [
+      ...FragmentariumRoutes({ ...getServices(), sitemap: false }),
+    ],
   })
 })
 
@@ -78,19 +104,9 @@ describe('NotFoundPage rendering in AboutRoutes', () => {
     '/about/invalid-section',
     '/about/undefined-route',
   ]
-  nonExistentAboutRoutes.forEach((path) => {
-    test(`renders NotFoundPage for "${path}"`, () => {
-      render(
-        <MemoryRouter initialEntries={[path]}>
-          <Switch>
-            {[...AboutRoutes({ ...getServices(), sitemap: false })]}
-          </Switch>
-        </MemoryRouter>,
-      )
-      expect(
-        screen.getByText(/The page you are looking for does not exist./i),
-      ).toBeInTheDocument()
-    })
+  expectNotFoundPageForPaths({
+    paths: nonExistentAboutRoutes,
+    getRoutes: () => [...AboutRoutes({ ...getServices(), sitemap: false })],
   })
 })
 
@@ -173,19 +189,11 @@ describe('NotFoundPage rendering in BibliographyRoutes', () => {
     '/bibliography/afo-register/invalid-section',
     '/bibliography/afo-register/undefined-route',
   ]
-  nonExistentAboutRoutes.forEach((path) => {
-    test(`renders NotFoundPage for "${path}"`, () => {
-      render(
-        <MemoryRouter initialEntries={[path]}>
-          <Switch>
-            {[...BibliographyRoutes({ ...getServices(), sitemap: false })]}
-          </Switch>
-        </MemoryRouter>,
-      )
-      expect(
-        screen.getByText(/The page you are looking for does not exist./i),
-      ).toBeInTheDocument()
-    })
+  expectNotFoundPageForPaths({
+    paths: nonExistentAboutRoutes,
+    getRoutes: () => [
+      ...BibliographyRoutes({ ...getServices(), sitemap: false }),
+    ],
   })
 })
 
@@ -251,19 +259,9 @@ describe('NotFoundPage rendering in CorpusRoutes', () => {
     '/corpus/Corpus.12345/invalid-section',
     '/corpus/Corpus.12345/undefined-route',
   ]
-  nonExistentAboutRoutes.forEach((path) => {
-    test(`renders NotFoundPage for "${path}"`, () => {
-      render(
-        <MemoryRouter initialEntries={[path]}>
-          <Switch>
-            {[...CorpusRoutes({ ...getServices(), sitemap: false })]}
-          </Switch>
-        </MemoryRouter>,
-      )
-      expect(
-        screen.getByText(/The page you are looking for does not exist./i),
-      ).toBeInTheDocument()
-    })
+  expectNotFoundPageForPaths({
+    paths: nonExistentAboutRoutes,
+    getRoutes: () => [...CorpusRoutes({ ...getServices(), sitemap: false })],
   })
 })
 
@@ -274,19 +272,11 @@ describe('NotFoundPage rendering in DictionaryRoutes', () => {
     '/dictionary/Dictionary.12345/invalid-section',
     '/dictionary/Dictionary.12345/undefined-route',
   ]
-  nonExistentAboutRoutes.forEach((path) => {
-    test(`renders NotFoundPage for "${path}"`, () => {
-      render(
-        <MemoryRouter initialEntries={[path]}>
-          <Switch>
-            {[...DictionaryRoutes({ ...getServices(), sitemap: false })]}
-          </Switch>
-        </MemoryRouter>,
-      )
-      expect(
-        screen.getByText(/The page you are looking for does not exist./i),
-      ).toBeInTheDocument()
-    })
+  expectNotFoundPageForPaths({
+    paths: nonExistentAboutRoutes,
+    getRoutes: () => [
+      ...DictionaryRoutes({ ...getServices(), sitemap: false }),
+    ],
   })
 })
 
@@ -360,19 +350,9 @@ describe('NotFoundPage rendering in SignRoutes', () => {
     '/signs/Signs.12345/invalid-section',
     '/signs/Signs.12345/undefined-route',
   ]
-  nonExistentAboutRoutes.forEach((path) => {
-    test(`renders NotFoundPage for "${path}"`, () => {
-      render(
-        <MemoryRouter initialEntries={[path]}>
-          <Switch>
-            {[...SignRoutes({ ...getServices(), sitemap: false })]}
-          </Switch>
-        </MemoryRouter>,
-      )
-      expect(
-        screen.getByText(/The page you are looking for does not exist./i),
-      ).toBeInTheDocument()
-    })
+  expectNotFoundPageForPaths({
+    paths: nonExistentAboutRoutes,
+    getRoutes: () => [...SignRoutes({ ...getServices(), sitemap: false })],
   })
 })
 
@@ -425,19 +405,9 @@ describe('NotFoundPage rendering in ToolsRoutes', () => {
     '/tools/date-converter/invalid-section',
     '/tools/date-converter/undefined-route',
   ]
-  nonExistentAboutRoutes.forEach((path) => {
-    test(`renders NotFoundPage for "${path}"`, () => {
-      render(
-        <MemoryRouter initialEntries={[path]}>
-          <Switch>
-            {[...ToolsRoutes({ ...getServices(), sitemap: false })]}
-          </Switch>
-        </MemoryRouter>,
-      )
-      expect(
-        screen.getByText(/The page you are looking for does not exist./i),
-      ).toBeInTheDocument()
-    })
+  expectNotFoundPageForPaths({
+    paths: nonExistentAboutRoutes,
+    getRoutes: () => [...ToolsRoutes({ ...getServices(), sitemap: false })],
   })
 })
 
@@ -465,18 +435,10 @@ describe('NotFoundPage rendering in ResearchProjectRoutes', () => {
     '/projects/CAIC/unknown-path',
     '/projects/RECC/unknown-path/deeper',
   ]
-  nonExistentResearchProjectRoutes.forEach((path) => {
-    test(`renders NotFoundPage for "${path}"`, () => {
-      render(
-        <MemoryRouter initialEntries={[path]}>
-          <Switch>
-            {[...ResearchProjectRoutes({ ...getServices(), sitemap: false })]}
-          </Switch>
-        </MemoryRouter>,
-      )
-      expect(
-        screen.getByText(/The page you are looking for does not exist./i),
-      ).toBeInTheDocument()
-    })
+  expectNotFoundPageForPaths({
+    paths: nonExistentResearchProjectRoutes,
+    getRoutes: () => [
+      ...ResearchProjectRoutes({ ...getServices(), sitemap: false }),
+    ],
   })
 })
