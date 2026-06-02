@@ -11,11 +11,26 @@ interface Props {
   signQuery: Partial<SignQuery>
   sign: string | undefined
 }
+
 function parseValue(sign: string): { value: string; subIndex: number } {
   const match = sign.match(/^([^\d]+)(\d*)$/)
+  const convertedValue = match
+    ? replaceTransliteration(match[1].toLowerCase())
+    : ''
+  const explicitSubIndex = match && match[2] ? parseInt(match[2]) : null
+  const subscriptMatch = convertedValue.match(/^([\s\S]*?)([\u2080-\u2089]+)$/)
+  if (subscriptMatch !== null && explicitSubIndex === null) {
+    const subIndex = parseInt(
+      subscriptMatch[2]
+        .split('')
+        .map((c) => String(c.charCodeAt(0) - 0x2080))
+        .join(''),
+    )
+    return { value: subscriptMatch[1], subIndex }
+  }
   return {
-    value: match ? replaceTransliteration(match[1].toLowerCase()) : '',
-    subIndex: match && match[2] ? parseInt(match[2]) : 1,
+    value: convertedValue,
+    subIndex: explicitSubIndex ?? 1,
   }
 }
 

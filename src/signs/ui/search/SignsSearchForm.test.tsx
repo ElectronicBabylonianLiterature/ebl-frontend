@@ -26,6 +26,16 @@ it('Adds lemma to query string on submit', async () => {
   )
 })
 
+it('Extracts subIndex from accent-encoded sign on submit', async () => {
+  renderSignsSearchForm()
+  await userEvent.type(screen.getByPlaceholderText('Sign or Reading'), 'šá')
+  await userEvent.click(screen.getAllByRole('button')[0])
+
+  expect(mockNavigate).toHaveBeenCalledWith(
+    '?listsName&listsNumber&sign=%C5%A1a%E2%82%82&subIndex=2&value=%C5%A1a',
+  )
+})
+
 function renderSignsSearchForm() {
   const signQueryDefault = {
     value: undefined,
