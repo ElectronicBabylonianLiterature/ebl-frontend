@@ -35,11 +35,10 @@ This project is configured to work with [GitHub Codespaces](https://github.com/f
 3. Create a new codespace or open an existing one
 4. **Important:** For dev containers to work properly, open the codespace in the **desktop version of VS Code** rather than the browser. When the codespace starts, VS Code will prompt you to open it in the desktop application.
 5. Once opened in VS Code desktop, the dev container will automatically set up the development environment
-6. `.env.local` is created automatically from `.env.test` before the container
-   builds. If you have configured [Codespaces secrets](https://docs.github.com/en/codespaces/managing-your-codespaces/managing-secrets-for-your-codespaces)
-   with the same names as the keys in `.env.test`, they are injected into
-   `.env.local` automatically and the app will be fully configured on first start.
-   Otherwise, open `.env.local` inside the container and fill in your credentials
+6. `.env.local` is created from `.env.test` before the container builds. After
+   the container starts, Codespaces secrets matching the keys in `.env.test` are
+   automatically injected into `.env.local`. If no secrets are configured, open
+   `.env.local` inside the container and fill in your credentials
    (see [Running the application](#running-the-application) section).
 7. Dependencies are installed automatically via the `postCreateCommand` in the dev container configuration (you can manually run `yarn install` if needed)
 8. You're ready to develop!

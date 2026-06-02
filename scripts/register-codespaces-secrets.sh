@@ -27,12 +27,28 @@ if [ ! -f "$ENV_FILE" ]; then
   exit 1
 fi
 
+FILTERED_FILE=$(mktemp)
+trap 'rm -f "$FILTERED_FILE"' EXIT
+
+while IFS= read -r line || [ -n "$line" ]; do
+  case "$line" in
+    ''|\#*) continue ;;
+    *=*)
+      key="${line%%=*}"
+      value_line=$(grep -m1 "^${key}=" "$ENV_FILE" || true)
+      if [ -n "$value_line" ]; then
+        echo "$value_line" >> "$FILTERED_FILE"
+      fi
+      ;;
+  esac
+done < .env.test
+
 echo "Registering Codespaces secrets from $ENV_FILE for $REPO ..."
 
 gh secret set \
   --app codespaces \
   --user \
-  --env-file "$ENV_FILE" \
+  --env-file "$FILTERED_FILE" \
   --repos "$REPO"
 
 echo "Done. To verify:"

@@ -6,7 +6,7 @@ This directory contains the development container configuration for the EBL Fron
 
 - `devcontainer.json` – Main dev container configuration
 - `Dockerfile` – Container image definition (Node 20 + ggshield)
-- `init.sh` – Initialization script that runs on the Codespaces host before the container builds
+- `inject-secrets.sh` – Post-create script that runs inside the container to inject Codespaces secrets and sync missing keys
 - `README.md` – This file
 
 ## Environment Variables
@@ -16,12 +16,11 @@ gitignored (Create React App convention) and must not be committed.
 
 ### Setup
 
-1. **Automatic Setup**: Before the container is created, `initializeCommand` runs
-   `init.sh` on the host. This script:
-   - Creates `.env.local` from `.env.test` if `.env.local` does not already exist.
-   - For each key defined in `.env.test`, if a [Codespaces secret](https://docs.github.com/en/codespaces/managing-your-codespaces/managing-secrets-for-your-codespaces)
-     with the same name is available in the host environment, its value is written into
-     `.env.local`, replacing the placeholder.
+1. **Automatic Setup**: Environment configuration happens in two phases:
+   - **Before container build** (`initializeCommand`): Creates `.env.local` from `.env.test` if it does not already exist. This step is shell-agnostic and works on all host platforms.
+   - **After container build** (`postCreateCommand`): Runs `inject-secrets.sh` inside the container. This script:
+     - Injects any [Codespaces secrets](https://docs.github.com/en/codespaces/managing-your-codespaces/managing-secrets-for-your-codespaces) whose names match keys in `.env.test`, but only if the current `.env.local` value still matches the placeholder.
+     - Appends any keys present in `.env.test` but missing from `.env.local`, ensuring your environment stays in sync when new variables are introduced.
 
 2. **Update Values**: Edit `.env.local` with your actual credentials for:
    - Auth0 configuration (domain, client ID, audience)

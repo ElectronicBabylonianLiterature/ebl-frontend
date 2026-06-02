@@ -1,14 +1,18 @@
 #!/bin/bash
+# Runs inside the dev container (postCreateCommand).
+# Injects Codespaces secrets into .env.local and appends any keys present in
+# .env.test that are missing from .env.local.
 set -e
 
 ensure_env_local_permissions() {
-    chmod u+rw,go+r .env.local 2>/dev/null || sudo chmod u+rw,go+r .env.local
+    chmod 600 .env.local 2>/dev/null || \
+        echo "Warning: could not set 600 permissions on .env.local (owned by another user). Continuing." >&2
 }
 
-test -f .env.local || cp .env.test .env.local
 ensure_env_local_permissions
 
 injected_keys=()
+missing_keys=()
 
 while IFS= read -r template_line || [ -n "$template_line" ]; do
     case "$template_line" in
@@ -18,14 +22,16 @@ while IFS= read -r template_line || [ -n "$template_line" ]; do
         *=*)
             key=${template_line%%=*}
             template_value=${template_line#*=}
-            secret_value=$(printenv "$key" || true)
-
-            if [ -z "$secret_value" ]; then
-                continue
-            fi
 
             current_line=$(grep -m1 "^${key}=" .env.local || true)
             if [ -z "$current_line" ]; then
+                echo "${template_line}" >> .env.local
+                missing_keys+=("$key")
+                current_line="${template_line}"
+            fi
+
+            secret_value=$(printenv "$key" || true)
+            if [ -z "$secret_value" ]; then
                 continue
             fi
 
@@ -56,8 +62,14 @@ while IFS= read -r template_line || [ -n "$template_line" ]; do
     esac
 done < .env.test
 
+if [ ${#missing_keys[@]} -gt 0 ]; then
+    printf 'Added missing keys to .env.local from .env.test: %s\n' \
+        "$(IFS=', '; echo "${missing_keys[*]}")"
+fi
+
 if [ ${#injected_keys[@]} -gt 0 ]; then
-    printf 'Injected Codespaces secrets into .env.local: %s\n' "$(IFS=', '; echo "${injected_keys[*]}")"
+    printf 'Injected Codespaces secrets into .env.local: %s\n' \
+        "$(IFS=', '; echo "${injected_keys[*]}")"
 else
     echo 'No Codespaces secrets found — .env.local uses placeholder values from .env.test'
 fi

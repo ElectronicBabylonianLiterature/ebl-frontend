@@ -20,8 +20,8 @@
     }
   },
 
-  "initializeCommand": "bash .devcontainer/init.sh",
-  "postCreateCommand": "git config --global core.autocrlf input && git config --global core.eol lf && git config --global core.safecrlf true && yarn install",
+  "initializeCommand": ["sh", "-c", "test -f .env.local || cp .env.test .env.local"],
+  "postCreateCommand": "git config --global core.autocrlf input && git config --global core.eol lf && git config --global core.safecrlf true && yarn install && bash .devcontainer/inject-secrets.sh",
 
   "forwardPorts": [3000],
 
