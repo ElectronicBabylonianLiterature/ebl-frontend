@@ -214,3 +214,4 @@ withData<PROPS, GETTER_PROPS, DATA>(Component, getter, {
 |            | Rename menu entry             | ✅     | 'Dictionary of Realia' → 'Realia' in tabConfig                                                      |
 |            | Intro text → markdown         | ✅     | RealiaSearchPage uses MarkdownParagraph; test mocks it                                              |
 |            | Realia icon + position        | ✅     | Icon ⊡ → 🌴; moved directly below 'Akkadian Dictionary' in tabConfig; tests updated                 |
+| 2026-06-02 | Security audit (round 1)      | ✅     | TASK-1-review.md created; 3 findings: S-01 (HIGH), S-02 (MEDIUM), Q-01 (LOW) — all open             |

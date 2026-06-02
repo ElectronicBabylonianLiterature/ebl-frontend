@@ -122,3 +122,10 @@
 - [ ] Zero console errors/warnings in any test run
 - [ ] All code style consistent with instructions and existing codebase patterns
 - [ ] QLTY clean
+
+## Audit Findings (2026-06-02)
+
+- [ ] **[S-01 HIGH]** Fix `RealiaRepository.search` — missing `encodeURIComponent(query)` in URL
+- [ ] **[S-01 HIGH]** Add test for `search` with special characters (e.g. `'pig & boar'`) in `RealiaRepository.test.ts`
+- [ ] **[S-02 MEDIUM]** Move auth gate so `RealiaDisplay` does not trigger API call for unauthorized users
+- [ ] **[Q-01 LOW]** Replace `key={index}` with a stable composite key for `afoRegister` entries
