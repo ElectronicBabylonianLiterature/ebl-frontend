@@ -67,15 +67,23 @@ export default function SignHeading({
           <ExternalLink
             href={'http://dx.doi.org/10.17169/refubium-44983'}
             className={'text-dark'}
+            aria-label="Open Cuneiform fonts publication by C. Ziegeler"
           >
-            <i className="fas fa-external-link-square-alt px-2" />
+            <i
+              className="fas fa-external-link-square-alt px-2"
+              aria-hidden="true"
+            />
           </ExternalLink>
           and S. Vanseveren (rest)
           <ExternalLink
             href={'https://www.hethport.uni-wuerzburg.de/cuneifont/'}
             className={'text-dark'}
+            aria-label="Open cuneiform font resource by S. Vanseveren"
           >
-            <i className="fas fa-external-link-square-alt px-2" />
+            <i
+              className="fas fa-external-link-square-alt px-2"
+              aria-hidden="true"
+            />
           </ExternalLink>
         </Row>
       </Col>

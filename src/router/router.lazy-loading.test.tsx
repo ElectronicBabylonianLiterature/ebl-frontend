@@ -4,6 +4,26 @@ import { MemoryRouter } from 'react-router-dom'
 import Router from 'router/router'
 import { getServices } from 'test-support/AppDriver'
 
+const lazyRouteModulePaths = [
+  'router/toolsRoutes',
+  'router/signRoutes',
+  'router/bibliographyRoutes',
+  'router/dictionaryRoutes',
+  'router/corpusRoutes',
+  'router/fragmentariumRoutes',
+  'router/researchProjectRoutes',
+  'router/footerRoutes',
+] as const
+
+type LazyRouteModulePath = (typeof lazyRouteModulePaths)[number]
+
+type LazyRouteTestCase = {
+  name: string
+  path: string
+  modulePath: LazyRouteModulePath
+  expectedText: string
+}
+
 type MockSwitchRouteProps = {
   text: string
   path?: string
@@ -25,6 +45,24 @@ function renderRouter(path: string): void {
       <Router {...getServices()} />
     </MemoryRouter>,
   )
+}
+
+function expectNoLazyRouteModulesLoaded(): void {
+  lazyRouteModulePaths.forEach((modulePath) => {
+    expect(getDefaultMock(modulePath)).not.toHaveBeenCalled()
+  })
+}
+
+function expectOnlyLazyRouteModuleLoaded(
+  expectedModulePath: LazyRouteModulePath,
+): void {
+  lazyRouteModulePaths.forEach((modulePath) => {
+    if (modulePath === expectedModulePath) {
+      expect(getDefaultMock(modulePath)).toHaveBeenCalled()
+    } else {
+      expect(getDefaultMock(modulePath)).not.toHaveBeenCalled()
+    }
+  })
 }
 
 jest.mock('Header', () => {
@@ -70,6 +108,26 @@ jest.mock('router/toolsRoutes', () => ({
   default: jest.fn(),
 }))
 
+jest.mock('router/signRoutes', () => ({
+  __esModule: true,
+  default: jest.fn(),
+}))
+
+jest.mock('router/bibliographyRoutes', () => ({
+  __esModule: true,
+  default: jest.fn(),
+}))
+
+jest.mock('router/dictionaryRoutes', () => ({
+  __esModule: true,
+  default: jest.fn(),
+}))
+
+jest.mock('router/corpusRoutes', () => ({
+  __esModule: true,
+  default: jest.fn(),
+}))
+
 jest.mock('router/fragmentariumRoutes', () => ({
   __esModule: true,
   default: jest.fn(),
@@ -91,6 +149,63 @@ jest.mock('router/sitemap', () => ({
 }))
 
 describe('Router lazy loading', () => {
+  const lazyRouteTestCases: readonly LazyRouteTestCase[] = [
+    {
+      name: 'tools',
+      path: '/tools/date-converter',
+      modulePath: 'router/toolsRoutes',
+      expectedText: 'Tools route loaded',
+    },
+    {
+      name: 'signs',
+      path: '/signs/Signs.12345',
+      modulePath: 'router/signRoutes',
+      expectedText: 'Signs route loaded',
+    },
+    {
+      name: 'bibliography',
+      path: '/bibliography/references',
+      modulePath: 'router/bibliographyRoutes',
+      expectedText: 'Bibliography route loaded',
+    },
+    {
+      name: 'dictionary',
+      path: '/dictionary/Dictionary.12345',
+      modulePath: 'router/dictionaryRoutes',
+      expectedText: 'Dictionary route loaded',
+    },
+    {
+      name: 'corpus',
+      path: '/corpus/L/1/1',
+      modulePath: 'router/corpusRoutes',
+      expectedText: 'Corpus route loaded',
+    },
+    {
+      name: 'library',
+      path: '/library/search',
+      modulePath: 'router/fragmentariumRoutes',
+      expectedText: 'Fragmentarium route loaded',
+    },
+    {
+      name: 'projects',
+      path: '/projects/unknown-project',
+      modulePath: 'router/researchProjectRoutes',
+      expectedText: 'Projects route not found',
+    },
+    {
+      name: 'impressum',
+      path: '/impressum',
+      modulePath: 'router/footerRoutes',
+      expectedText: 'Impressum route loaded',
+    },
+    {
+      name: 'datenschutz',
+      path: '/datenschutz',
+      modulePath: 'router/footerRoutes',
+      expectedText: 'Datenschutz route loaded',
+    },
+  ]
+
   beforeEach(() => {
     jest.clearAllMocks()
 
@@ -115,6 +230,38 @@ describe('Router lazy loading', () => {
         key="ToolsNotFound"
         path="/tools/*"
         text="Tools route not found"
+      />,
+    ])
+
+    getDefaultMock('router/signRoutes').mockImplementation(() => [
+      <MockSwitchRoute
+        key="SignRoute"
+        path="/signs/*"
+        text="Signs route loaded"
+      />,
+    ])
+
+    getDefaultMock('router/bibliographyRoutes').mockImplementation(() => [
+      <MockSwitchRoute
+        key="BibliographyRoute"
+        path="/bibliography/*"
+        text="Bibliography route loaded"
+      />,
+    ])
+
+    getDefaultMock('router/dictionaryRoutes').mockImplementation(() => [
+      <MockSwitchRoute
+        key="DictionaryRoute"
+        path="/dictionary/*"
+        text="Dictionary route loaded"
+      />,
+    ])
+
+    getDefaultMock('router/corpusRoutes').mockImplementation(() => [
+      <MockSwitchRoute
+        key="CorpusRoute"
+        path="/corpus/*"
+        text="Corpus route loaded"
       />,
     ])
 
@@ -156,8 +303,7 @@ describe('Router lazy loading', () => {
     renderRouter('/')
 
     expect(screen.getByText('Introduction route')).toBeInTheDocument()
-    expect(getDefaultMock('router/toolsRoutes')).not.toHaveBeenCalled()
-    expect(getDefaultMock('router/fragmentariumRoutes')).not.toHaveBeenCalled()
+    expectNoLazyRouteModulesLoaded()
     expect(getDefaultMock('router/sitemap')).not.toHaveBeenCalled()
   })
 
@@ -166,20 +312,22 @@ describe('Router lazy loading', () => {
 
     expect(screen.getByText('About eager route')).toBeInTheDocument()
     expect(getDefaultMock('router/aboutRoutes')).toHaveBeenCalled()
-    expect(getDefaultMock('router/toolsRoutes')).not.toHaveBeenCalled()
-    expect(getDefaultMock('router/fragmentariumRoutes')).not.toHaveBeenCalled()
+    expectNoLazyRouteModulesLoaded()
   })
 
-  test('loads tools route module only for tools path', async () => {
-    renderRouter('/tools/date-converter')
+  test.each(lazyRouteTestCases)(
+    'loads only the $name lazy route module for $path',
+    async ({ path, modulePath, expectedText }) => {
+      renderRouter(path)
 
-    await waitFor(() => {
-      expect(screen.getByText('Tools route loaded')).toBeInTheDocument()
-    })
+      await waitFor(() => {
+        expect(screen.getByText(expectedText)).toBeInTheDocument()
+      })
 
-    expect(getDefaultMock('router/toolsRoutes')).toHaveBeenCalled()
-    expect(getDefaultMock('router/fragmentariumRoutes')).not.toHaveBeenCalled()
-  })
+      expectOnlyLazyRouteModuleLoaded(modulePath)
+      expect(getDefaultMock('router/sitemap')).not.toHaveBeenCalled()
+    },
+  )
 
   test('renders tools module not-found route for unknown tools path', async () => {
     renderRouter('/tools/unknown-path')
@@ -188,15 +336,14 @@ describe('Router lazy loading', () => {
       expect(screen.getByText('Tools route not found')).toBeInTheDocument()
     })
 
-    expect(getDefaultMock('router/toolsRoutes')).toHaveBeenCalled()
+    expectOnlyLazyRouteModuleLoaded('router/toolsRoutes')
   })
 
   test('renders global not-found without loading lazy route modules for unrelated paths', () => {
     renderRouter('/unknown-path')
 
     expect(screen.getByText('Global not found')).toBeInTheDocument()
-    expect(getDefaultMock('router/toolsRoutes')).not.toHaveBeenCalled()
-    expect(getDefaultMock('router/fragmentariumRoutes')).not.toHaveBeenCalled()
+    expectNoLazyRouteModulesLoaded()
   })
 
   test('loads sitemap lazily only for sitemap path', async () => {
@@ -207,23 +354,13 @@ describe('Router lazy loading', () => {
     })
 
     expect(getDefaultMock('router/sitemap')).toHaveBeenCalled()
-    expect(getDefaultMock('router/toolsRoutes')).not.toHaveBeenCalled()
-  })
-
-  test('renders projects not-found view for unknown project path', async () => {
-    renderRouter('/projects/unknown-project')
-
-    await waitFor(() => {
-      expect(screen.getByText('Projects route not found')).toBeInTheDocument()
-    })
-
-    expect(getDefaultMock('router/researchProjectRoutes')).toHaveBeenCalled()
+    expectNoLazyRouteModulesLoaded()
   })
 
   test('renders global not-found for unknown legal subpaths without loading footer module', () => {
     renderRouter('/impressum/unknown-path')
 
     expect(screen.getByText('Global not found')).toBeInTheDocument()
-    expect(getDefaultMock('router/footerRoutes')).not.toHaveBeenCalled()
+    expectNoLazyRouteModulesLoaded()
   })
 })

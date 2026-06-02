@@ -10,6 +10,7 @@ import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 import BibliographyService from 'bibliography/application/BibliographyService'
 import Citation from 'bibliography/domain/Citation'
 import Reference from 'bibliography/domain/Reference'
+import { referencesEntryRoute } from 'bibliography/ui/referencesRouteContext'
 
 function BibliographySearch({ data }: { data: readonly BibliographyEntry[] }) {
   const parser = Parser()
@@ -23,17 +24,19 @@ function BibliographySearch({ data }: { data: readonly BibliographyEntry[] }) {
         return (
           <li key={entry.id} className="BibliographySearch__entry">
             <Row className="BibliographySearch__row">
-              <Col md={2} className="BibliographySearch__citation-col">
+              <Col xs={12} md={2} className="BibliographySearch__citation-col">
                 <Link
-                  to={`/bibliography/references/${encodeURIComponent(
-                    entry.id,
-                  )}`}
+                  to={referencesEntryRoute(entry.id)}
                   className="BibliographySearch__citation"
                 >
                   <InlineMarkdown source={citation.getMarkdown()} />
                 </Link>
               </Col>
-              <Col md={10} className="BibliographySearch__full-reference-col">
+              <Col
+                xs={12}
+                md={10}
+                className="BibliographySearch__full-reference-col"
+              >
                 <div>{parser.parse(entry.toHtml())}</div>
               </Col>
             </Row>

@@ -157,17 +157,71 @@ function createFragmentPath(number: string, ...subResources: string[]): string {
   return ['/fragments', encodeURIComponent(number), ...subResources].join('/')
 }
 
-function createQueryItem(dto): QueryItem {
-  return {
-    ...dto,
-    museumNumber: museumNumberToString(dto.museumNumber),
+type QueryItemDto = {
+  museumNumber: {
+    prefix: string
+    number: string
+    suffix: string
   }
+  matchingLines: readonly number[]
+  matchCount: number
+  fragment?: FragmentDto
 }
 
-function createQueryResult(dto): QueryResult {
+type LatestQueryItemDto = QueryItemDto
+
+type LatestQueryResultDto = {
+  items: readonly LatestQueryItemDto[]
+  matchCountTotal: number
+  fragments?: readonly FragmentDto[]
+}
+
+type QueryResultDto = {
+  items: readonly QueryItemDto[]
+  matchCountTotal: number
+}
+
+function createQueryItem(
+  dto: QueryItemDto,
+): QueryItem | (QueryItem & { fragment: Fragment }) {
+  const queryItem = {
+    museumNumber: museumNumberToString(dto.museumNumber),
+    matchingLines: dto.matchingLines,
+    matchCount: dto.matchCount,
+  }
+  const prefetchedFragment = dto.fragment && createFragment(dto.fragment)
+  return prefetchedFragment
+    ? { ...queryItem, fragment: prefetchedFragment }
+    : queryItem
+}
+
+function createQueryResult(dto: QueryResultDto): QueryResult {
   return {
     matchCountTotal: dto.matchCountTotal,
     items: dto.items.map(createQueryItem),
+  }
+}
+
+function createLatestQueryResult(dto: LatestQueryResultDto): QueryResult {
+  const fragmentsByMuseumNumber = new Map<string, Fragment>(
+    (dto.fragments ?? []).map((fragmentDto) => {
+      const fragment = createFragment(fragmentDto)
+      return [fragment.number, fragment]
+    }),
+  )
+
+  return {
+    matchCountTotal: dto.matchCountTotal,
+    items: dto.items.map((itemDto) => {
+      const queryItem = createQueryItem(itemDto)
+      const prefetchedFragment =
+        (queryItem as QueryItem & { fragment?: Fragment }).fragment ??
+        fragmentsByMuseumNumber.get(queryItem.museumNumber)
+
+      return prefetchedFragment
+        ? { ...queryItem, fragment: prefetchedFragment }
+        : queryItem
+    }),
   }
 }
 
@@ -307,7 +361,10 @@ class ApiFragmentRepository
       .then(createFragment)
   }
 
-  updateDate(number: string, date: MesopotamianDateDto): Promise<Fragment> {
+  updateDate(
+    number: string,
+    date: MesopotamianDateDto | undefined,
+  ): Promise<Fragment> {
     const path = createFragmentPath(number, 'date')
     return this.apiClient
       .postJson<FragmentDto>(path, { date })
@@ -480,7 +537,7 @@ class ApiFragmentRepository
 
   query(fragmentQuery: FragmentQuery): Promise<QueryResult> {
     return this.apiClient
-      .fetchJson<QueryResult>(
+      .fetchJson<QueryResultDto>(
         `/fragments/query?${stringify(fragmentQuery)}`,
         false,
       )
@@ -489,8 +546,8 @@ class ApiFragmentRepository
 
   queryLatest(): Promise<QueryResult> {
     return this.apiClient
-      .fetchJson<QueryResult>('/fragments/latest', false)
-      .then(createQueryResult)
+      .fetchJson<LatestQueryResultDto>('/fragments/latest', false)
+      .then(createLatestQueryResult)
   }
 
   queryByTraditionalReferences(

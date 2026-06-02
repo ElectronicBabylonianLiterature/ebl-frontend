@@ -1,0 +1,52 @@
+@import src/design-tokens
+
+.AuthButton
+  &.btn
+    width: 2.25rem
+    height: 2.25rem
+    display: inline-flex
+    align-items: center
+    justify-content: center
+    padding: 0
+    border-radius: 50%
+    border-color: rgba($ebl-color-brand-primary, 0.35)
+    color: $ebl-color-brand-primary
+    background-color: $ebl-color-brand-soft-hover
+    transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease
+
+    &:hover,
+    &:focus-visible
+      border-color: $ebl-color-brand-primary
+      color: $ebl-color-brand-primary-dark
+      background-color: rgba($ebl-color-brand-primary, 0.12)
+      box-shadow: 0 0 0 0.16rem rgba($ebl-color-brand-primary, 0.14)
+
+    &:active
+      color: $ebl-color-surface-primary
+      background-color: $ebl-color-brand-primary-dark
+      border-color: $ebl-color-brand-primary-dark
+
+  &--authenticated.btn
+    color: $ebl-color-surface-primary
+    border-color: $ebl-color-brand-primary
+    background-color: $ebl-color-brand-primary
+
+    &:hover,
+    &:focus-visible
+      color: $ebl-color-surface-primary
+      border-color: $ebl-color-brand-primary-dark
+      background-color: $ebl-color-brand-primary-dark
+
+  &__icon
+    width: 1.15rem
+    height: 1.15rem
+    fill: none
+    stroke: currentColor
+    stroke-width: 2
+    stroke-linecap: round
+    stroke-linejoin: round
+    flex-shrink: 0
+
+@media (prefers-reduced-motion: reduce)
+  .AuthButton.btn
+    transition: none

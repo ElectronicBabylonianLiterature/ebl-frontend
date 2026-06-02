@@ -1,13 +1,132 @@
+@import src/design-tokens
+
+.kings-tool
+  &__index-nav
+    display: flex
+    flex-wrap: wrap
+    gap: 0.5rem
+    margin-bottom: 1rem
+    padding: 0
+
+  &__index-link
+    font-size: 0.9rem
+    color: $ebl-color-brand-primary
+    text-decoration: underline
+    text-decoration-style: dotted
+    white-space: nowrap
+    transition: color 0.15s ease
+
+    &:hover
+      color: $ebl-color-brand-primary-hover
+      text-decoration-style: solid
+
+    &:focus-visible
+      color: $ebl-color-brand-primary-hover
+      text-decoration-style: solid
+      outline: 2px solid $ebl-color-brand-primary
+      outline-offset: 2px
+
+  &__intro
+    background: transparent
+    border: 0
+    border-radius: 0
+    padding: 0
+    margin-bottom: 1rem
+    color: $ebl-color-text-primary
+    line-height: 1.8
+
+  &__table
+    margin-bottom: 0
+
+  &__column-header
+    font-size: 0.78rem
+    text-transform: none
+    letter-spacing: normal
+    font-weight: 700
+    color: $ebl-color-text-primary
+    background: transparent
+    border-bottom: 1px solid $ebl-color-border-light
+    padding: 0.55rem 0.75rem
+
+  &__dynasty
+    background: transparent
+    border-top: 1px solid $ebl-color-border-light
+    border-bottom: 1px solid $ebl-color-border-light
+    padding: 0.6rem 0.75rem
+
+  &__dynasty-title
+    margin: 0
+    padding-bottom: 0
+    border-bottom: 0
+    font-size: 1rem
+    font-weight: 700
+    color: $ebl-color-text-primary
+
+  &__index
+    width: 3.5rem
+    color: $ebl-color-text-neutral
+    font-weight: 700
+    text-align: right
+    vertical-align: top
+
+  &__name
+    color: $ebl-color-text-primary
+    font-weight: 500
+    vertical-align: top
+
+  &__date
+    color: $ebl-color-text-neutral
+    font-size: 0.88rem
+    vertical-align: top
+
+.chronology-display
+  background: transparent
+  border: 0
+  border-radius: 0
+  overflow: visible
+  box-shadow: none
+
+  thead th
+    border-top: none
+
+  tbody tr
+    transition: background-color 0.18s ease
+
 td.chronology-display
-    vertical-align: middle
-    padding: 0px
+  vertical-align: middle
+  padding: 0.55rem 0.75rem
+  border-bottom: 1px solid $ebl-color-border-light
 
-    &__section
-        padding-bottom: 0px
+  &__section
+    padding-bottom: 0
 
-tr.kings:hover
-    background-color: lightgrey
+tr.kings
+  &:hover
+    background: rgba($ebl-color-brand-primary, 0.03)
+
+  td
+    border-bottom: 1px solid $ebl-color-border-light
 
 tr:not(:first-child) td.chronology-display__section
-    padding-top: 30px
+  padding-top: 1rem
+
+@media (max-width: $ebl-breakpoint-md-max)
+  .kings-tool
+    &__column-header
+      font-size: 0.66rem
+      padding: 0.45rem 0.55rem
+
+    &__dynasty-title
+      font-size: 0.86rem
+
+    &__date
+      font-size: 0.8rem
+
+  td.chronology-display
+    padding: 0.48rem 0.55rem
+
+@media (prefers-reduced-motion: reduce)
+  .kings-tool__index-link,
+  .chronology-display tbody tr
+    transition: none
 

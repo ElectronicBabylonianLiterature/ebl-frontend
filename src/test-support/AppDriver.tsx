@@ -196,8 +196,13 @@ export default class AppDriver {
   }
 
   async waitForText(text: Matcher): Promise<void> {
-    await this.waitForTextToDisappear('Route loading...')
     await this.getView().findAllByText(text, {}, { timeout: this.waitTimeout })
+  }
+
+  async waitForRouteLoadingToDisappear(
+    options: Parameters<typeof waitFor>[1] = {},
+  ): Promise<void> {
+    await this.waitForTextToDisappear('Route loading...', options)
   }
 
   async waitForTextToDisappear(

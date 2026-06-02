@@ -21,8 +21,9 @@ export default function FullCitation({
           className="FullCitation__link"
           href={reference.link}
           title="Open in a new window."
+          aria-label="Open in a new window."
         >
-          <i className="fas fa-external-link-alt" />
+          <i className="fas fa-external-link-alt" aria-hidden="true" />
         </ExternalLink>
       )}
       {parsed}

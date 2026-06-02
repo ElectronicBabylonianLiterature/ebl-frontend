@@ -1,0 +1,60 @@
+# TASK-722 Work Log
+
+## 2026-06-02
+
+- Confirmed current branch is map_phase1.1 (not master/main).
+- Observed local untracked file: .devcontainer/devcontainer-lock.json.
+- Fetched latest origin/master.
+- Merged origin/master into current branch.
+- Resolved merge conflicts in:
+  - src/router/router.tsx
+  - src/router/toolsRoutes.tsx
+  - src/router/signRoutes.tsx
+  - src/router/dictionaryRoutes.tsx
+  - src/router/bibliographyRoutes.tsx
+  - src/router/researchProjectRoutes.tsx
+  - src/router/notFoundRoutes.test.tsx
+  - src/App.test.ts
+  - src/corpus/application/TextService.ts
+  - src/fragmentarium/ui/image-annotation/AnnotationsView.integration.test.ts
+  - src/corpus/ui/**snapshots**/TextView.integration.test.ts.snap
+  - src/dictionary/ui/search/**snapshots**/Dictionary.integration.test.ts.snap
+- Verified there are no remaining conflict markers in src.
+- Identified review concerns to address next:
+  - route-group duplication and consistency enforcement
+  - missing lazy-isolation tests for signs/bibliography/dictionary/corpus
+  - AppDriver.waitForText global semantic change
+- Refactored route-group architecture in src/router/websiteRouteGroups.ts:
+  - Added single lazy route-group definition registry with runtime route patterns and lazy loaders.
+  - Added shared composeWebsiteRoutes helper to align runtime and sitemap composition.
+  - Added runtimeLazyRouteConfigsByGroup and loadLazyRouteGroupModule utilities.
+- Updated runtime router (src/router/router.tsx):
+  - Removed duplicated per-group lazy module map.
+  - Built lazy modules from centralized route-group definitions.
+  - Switched RuntimeWebsiteRoutes to shared composeWebsiteRoutes helper.
+  - Restored required Introduction props (fragmentService, dossiersService).
+- Updated sitemap route composition (src/router/sitemap.tsx):
+  - Switched to shared composeWebsiteRoutes helper.
+  - Kept sitemap route-module map lazy-group-focused and type-enforced.
+  - Fixed Introduction route typing via render prop and required services.
+- Reduced runtime import burden:
+  - Converted service/slug imports to type-only imports in route modules:
+    - src/router/toolsRoutes.tsx
+    - src/router/signRoutes.tsx
+    - src/router/dictionaryRoutes.tsx
+    - src/router/bibliographyRoutes.tsx
+    - src/router/researchProjectRoutes.tsx
+    - src/router/router.tsx
+- Expanded lazy-isolation tests in src/router/router.lazy-loading.test.tsx:
+  - Added explicit lazy coverage for signs, bibliography, dictionary, corpus, library, projects, impressum, datenschutz, plus sitemap isolation.
+  - Added assertions that only the expected lazy route module is loaded for each matching path.
+- Adjusted shared test helper semantics in src/test-support/AppDriver.tsx:
+  - Restored waitForText to legacy behavior (no implicit route-loading spinner wait).
+  - Added waitForRouteLoadingToDisappear helper for targeted suspense waits.
+- Stabilized App route matrix test timeout in src/App.test.ts (15s per parameterized case).
+- Validation run results:
+  - CI=true yarn test --watch=false src/router/router.lazy-loading.test.tsx: PASS
+  - CI=true yarn test --watch=false src/router/sitemap.test.tsx src/router/notFoundRoutes.test.tsx src/App.test.ts src/fragmentarium/ui/image-annotation/AnnotationsView.integration.test.ts: PASS
+  - CI=true yarn test --watch=false src/router/sitemap.test.tsx src/router/router.lazy-loading.test.tsx: PASS
+  - yarn lint: PASS
+  - yarn tsc: PASS

@@ -31,13 +31,13 @@ beforeEach(() => {
 
 it('Calls Auth0 logout if user is logged in', () => {
   renderUser(true)
-  fireEvent.click(screen.getByText('Logout Test User'))
+  fireEvent.click(screen.getByRole('button', { name: 'Logout Test User' }))
   expect(auth.logout).toHaveBeenCalled()
 })
 
 it('Calls Auth0 login if user is logged out', () => {
   renderUser(false)
-  fireEvent.click(screen.getByText('Login'))
+  fireEvent.click(screen.getByRole('button', { name: 'Login' }))
   expect(auth.login).toHaveBeenCalled()
 })
 

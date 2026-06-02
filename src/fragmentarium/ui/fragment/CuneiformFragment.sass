@@ -1,3 +1,5 @@
+@import src/design-tokens
+
 .CuneiformFragment
   &__content
     padding-bottom: 1em
@@ -9,14 +11,186 @@
     section
       padding-bottom: 1rem
 
+    .form-label
+      font-size: 0.72rem
+      font-weight: 700
+      letter-spacing: 0.06em
+      text-transform: uppercase
+      color: $ebl-color-text-corpus-muted
+      margin-bottom: 0.3rem
+
+    .form-control,
+    .form-select
+      border-color: $ebl-color-border-subtle
+      border-radius: 6px
+      font-size: 0.88rem
+      color: $ebl-color-text-corpus-primary
+
+      &:focus
+        border-color: $ebl-color-brand-primary
+        box-shadow: 0 0 0 0.2rem rgba(26, 95, 168, 0.15)
+
+    .form-check-input
+      border-color: $ebl-color-border-corpus-accent
+
+      &:checked
+        background-color: $ebl-color-brand-primary
+        border-color: $ebl-color-brand-primary
+
+      &:focus
+        box-shadow: 0 0 0 0.2rem rgba(26, 95, 168, 0.15)
+
+    .form-check-label
+      font-size: 0.88rem
+      color: $ebl-color-text-corpus-body
+
   &__markup-section
     text-align: justify
 
     .type-abbreviation
       display: none
 
+    h4
+      font-size: 0.72rem
+      font-weight: 700
+      letter-spacing: 0.06em
+      text-transform: uppercase
+      color: $ebl-color-text-corpus-muted
+      margin-bottom: 0.75rem
+      padding-bottom: 0.4rem
+      border-bottom: 1px solid $ebl-color-border-corpus-soft
+
   &__info section
     margin-bottom: 1rem
 
   &__tabs-hidden
     display: none
+
+  &__tab-title
+    display: flex
+    flex-direction: column
+    align-items: center
+    gap: 0.2rem
+    padding: 0.1rem 0.15rem
+
+  &__tab-icon
+    font-size: 1rem
+    line-height: 1
+
+  &__tab-label
+    font-size: 0.68rem
+    font-weight: 600
+    letter-spacing: 0.04em
+    text-transform: uppercase
+    white-space: nowrap
+    line-height: 1
+
+.CuneiformFragment .nav-tabs
+  border-bottom: 2px solid $ebl-color-border-subtle
+  gap: 0.15rem
+  flex-wrap: nowrap
+  overflow-x: auto
+  overflow-y: hidden
+  padding-bottom: 0
+  scrollbar-width: none
+
+  &::-webkit-scrollbar
+    display: none
+
+  .nav-item .nav-link
+    color: $ebl-color-text-corpus-subtle
+    border: 1px solid transparent
+    border-bottom: 2px solid transparent
+    border-radius: 6px 6px 0 0
+    margin-bottom: -2px
+    padding: 0.5rem 0.7rem
+    transition: color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease
+
+    &:hover:not(.disabled)
+      color: $ebl-color-brand-primary
+      background-color: rgba(26, 95, 168, 0.05)
+      border-color: $ebl-color-border-subtle $ebl-color-border-subtle transparent
+
+    &.active
+      color: $ebl-color-text-corpus-primary
+      background-color: $ebl-color-surface-primary
+      border-color: $ebl-color-border-subtle $ebl-color-border-subtle $ebl-color-surface-primary
+      font-weight: 600
+
+    &.disabled
+      color: $ebl-color-text-disabled
+      opacity: 0.6
+
+.CuneiformFragment .tab-content
+  background: $ebl-color-surface-primary
+  border: 1px solid $ebl-color-border-subtle
+  border-top: none
+  border-radius: 0 0 8px 8px
+  padding: 1rem
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04)
+
+  .btn-primary
+    background-color: $ebl-color-brand-primary
+    border-color: $ebl-color-brand-primary
+    font-size: 0.82rem
+    padding: 0.4rem 1.25rem
+    border-radius: 6px
+    font-weight: 600
+
+    &:hover:not(:disabled)
+      background-color: $ebl-color-text-corpus-primary
+      border-color: $ebl-color-text-corpus-primary
+
+    &:focus
+      box-shadow: 0 0 0 0.2rem rgba(26, 95, 168, 0.25)
+
+    &:disabled
+      background-color: $ebl-color-border-disabled
+      border-color: $ebl-color-border-disabled
+      opacity: 1
+
+  .btn-secondary
+    background-color: $ebl-color-surface-subtle
+    border-color: $ebl-color-border-subtle
+    color: $ebl-color-text-corpus-subtle
+    font-size: 0.82rem
+    padding: 0.35rem 0.85rem
+    border-radius: 6px
+
+    &:hover:not(:disabled)
+      background-color: $ebl-color-border-subtle
+      border-color: $ebl-color-border-corpus-accent
+      color: $ebl-color-text-corpus-primary
+
+    &:focus
+      box-shadow: 0 0 0 0.2rem rgba(26, 95, 168, 0.15)
+
+  .btn-outline-info
+    color: $ebl-color-brand-primary
+    border-color: $ebl-color-brand-primary
+    font-size: 0.78rem
+    border-radius: 6px
+
+    &:hover:not(:disabled)
+      background-color: $ebl-color-brand-primary
+      border-color: $ebl-color-brand-primary
+      color: $ebl-color-surface-primary
+
+.ScopeEditor
+  &__description
+    font-size: 0.82rem
+    color: $ebl-color-text-corpus-subtle
+    margin-bottom: 1.25rem
+    padding: 0.65rem 0.9rem
+    background: $ebl-color-surface-subtle
+    border-left-width: 3px
+    border-left-style: solid
+    border-left-color: $ebl-color-brand-primary
+    border-radius: 0 4px 4px 0
+    line-height: 1.5
+
+  &__check
+    margin-bottom: 0.6rem
+
+  &__submit
+    margin-top: 1.25rem

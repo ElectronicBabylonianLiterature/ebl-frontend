@@ -354,6 +354,14 @@ const testData: TestData<FragmentRepository>[] = [
     Promise.resolve(fragmentDto),
   ),
   new TestData(
+    'updateDate',
+    [fragmentId, undefined],
+    apiClient.postJson,
+    fragment,
+    [`/fragments/${encodeURIComponent(fragmentId)}/date`, { date: undefined }],
+    Promise.resolve(fragmentDto),
+  ),
+  new TestData(
     'updateDatesInText',
     [fragmentId, [mesopotamianDate.toDto()]],
     apiClient.postJson,
@@ -415,6 +423,65 @@ const queryTestData: TestData<FragmentRepository>[] = queryTestCases.map(
 
 describe('Query FragmentRepository', () =>
   testDelegation(fragmentRepository, queryTestData))
+
+describe('FragmentRepository queryLatest', () => {
+  beforeEach(() => {
+    jest.clearAllMocks()
+  })
+
+  it('maps latest query result', async () => {
+    apiClient.fetchJson.mockResolvedValueOnce(queryResultDto)
+
+    await expect(fragmentRepository.queryLatest()).resolves.toEqual(queryResult)
+    expect(apiClient.fetchJson).toHaveBeenCalledWith('/fragments/latest', false)
+  })
+
+  it('maps prefetched fragment from query item payload', async () => {
+    apiClient.fetchJson.mockResolvedValueOnce({
+      matchCountTotal: 1,
+      items: [
+        {
+          museumNumber: fragmentDto.museumNumber,
+          matchingLines: [],
+          matchCount: 0,
+          fragment: fragmentDto,
+        },
+      ],
+    })
+
+    const latestQueryResult = await fragmentRepository.queryLatest()
+    const latestQueryItem = latestQueryResult.items[0] as {
+      museumNumber: string
+      fragment?: { number: string }
+    }
+
+    expect(latestQueryItem.museumNumber).toEqual(fragment.number)
+    expect(latestQueryItem.fragment?.number).toEqual(fragment.number)
+  })
+
+  it('maps prefetched fragment from top-level fragments payload', async () => {
+    apiClient.fetchJson.mockResolvedValueOnce({
+      matchCountTotal: 1,
+      items: [
+        {
+          museumNumber: fragmentDto.museumNumber,
+          matchingLines: [],
+          matchCount: 0,
+        },
+      ],
+      fragments: [fragmentDto],
+    })
+
+    const latestQueryResult = await fragmentRepository.queryLatest()
+    const latestQueryItem = latestQueryResult.items[0] as {
+      museumNumber: string
+      fragment?: { number: string }
+    }
+
+    expect(latestQueryItem.museumNumber).toEqual(fragment.number)
+    expect(latestQueryItem.fragment?.number).toEqual(fragment.number)
+  })
+})
 
 const queryByTraditionalReferencesTestData: TestData<FragmentRepository>[] = [
   new TestData(

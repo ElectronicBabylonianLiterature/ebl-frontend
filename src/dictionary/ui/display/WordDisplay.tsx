@@ -158,31 +158,36 @@ function WordDisplay({
   )
   return (
     <AppContent
-      crumbs={[new SectionCrumb('Dictionary'), new TextCrumb(word._id)]}
+      crumbs={[
+        new SectionCrumb('Akkadian Dictionary'),
+        new TextCrumb(word._id),
+      ]}
       title={WordTitle({ word })}
     >
       <HeadTags
         title={`${word._id}: eBL`}
         description={`Information about the word ${word._id} in the electronic Babylonian Library (eBL).`}
       />
-      {[
-        cda,
-        cdaAddenda,
-        akkadischeLogogramme,
-        akkadischeGlossareUndIndices,
-        supplementsAkkadianDictionaries,
-        fragmentarium,
-        corpus,
-      ].map((sectionDisplay, i) => (
-        <Fragment key={`WordDisplay_${i}`}>
-          <Heading
-            number={Sections[i].number}
-            title={Sections[i].title}
-            key={`WordDisplayHeading_${i}`}
-          />
-          {sectionDisplay}
-        </Fragment>
-      ))}
+      <div className="ebl-consistent-links">
+        {[
+          cda,
+          cdaAddenda,
+          akkadischeLogogramme,
+          akkadischeGlossareUndIndices,
+          supplementsAkkadianDictionaries,
+          fragmentarium,
+          corpus,
+        ].map((sectionDisplay, i) => (
+          <Fragment key={`WordDisplay_${i}`}>
+            <Heading
+              number={Sections[i].number}
+              title={Sections[i].title}
+              key={`WordDisplayHeading_${i}`}
+            />
+            {sectionDisplay}
+          </Fragment>
+        ))}
+      </div>
     </AppContent>
   )
 }

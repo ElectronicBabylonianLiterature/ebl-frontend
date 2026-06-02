@@ -1,24 +1,134 @@
-.main-footer
-  background-color: #f1f1f1
-  max-width: 1200px
-  padding-bottom: 0.5em
-  padding-left: 1.5em
-  padding-right: 1.5em
-  padding-top: 0.5em
-  margin-left: auto
-  margin-right: auto
+@import src/design-tokens
 
-  ol.breadcrumb
-    background-color: #f1f1f1
-    margin-bottom: 0
+.main-footer
+  background: linear-gradient(135deg, $ebl-color-brand-primary 0%, $ebl-color-brand-primary-dark 100%)
+  color: $ebl-color-surface-primary
+  padding: 3rem 0 1rem
+  margin-top: 4rem
+
+  &__content
+    padding-bottom: 2rem
+    border-bottom: 1px solid $ebl-color-white-alpha-15
+
+  &__section
+    margin-bottom: 1.5rem
+
+  &__title
+    color: $ebl-color-surface-primary
+    font-size: 0.875rem
+    font-weight: 600
+    text-transform: uppercase
+    letter-spacing: 0.5px
+    margin-bottom: 1rem
+
+  &__links
+    list-style: none
     padding: 0
-    & li a
-      padding: 0
-      display: inline
-    & li+li
-      padding-left: .5rem
-      &::before
-        display: inline-block
-        padding-right: .5rem
-        color: #6c757d
-        content: "|"
+    margin: 0
+
+    li
+      margin-bottom: 0.5rem
+
+    a
+      color: $ebl-color-surface-primary
+      text-decoration: none
+      font-size: 0.9rem
+      transition: color 0.2s ease
+
+      &:hover
+        color: $ebl-color-surface-primary
+        text-decoration: underline
+
+      &:focus-visible
+        color: $ebl-color-surface-primary
+        text-decoration: underline
+        outline: 2px solid $ebl-color-white-alpha-90
+        outline-offset: 2px
+
+  &__social
+    display: flex
+    gap: 1rem
+
+  &__social-link
+    display: inline-flex
+    align-items: center
+    justify-content: center
+    width: 40px
+    height: 40px
+    border-radius: 50%
+    background-color: $ebl-color-white-alpha-10
+    color: $ebl-color-surface-primary
+    transition: background-color $ebl-motion-duration-fast ease, transform $ebl-motion-duration-fast ease
+
+    &:hover
+      background-color: $ebl-color-white-alpha-20
+      transform: translateY(-2px)
+
+    &:focus-visible
+      background-color: $ebl-color-white-alpha-20
+      outline: 2px solid $ebl-color-white-alpha-90
+      outline-offset: 2px
+
+    svg
+      display: block
+
+  &__bottom
+    padding: 1.5rem 0 1rem
+
+  &__partners
+    display: flex
+    align-items: center
+    justify-content: center
+    flex-wrap: wrap
+    gap: 0.5rem
+    font-size: 0.875rem
+
+  &__partner-link
+    color: $ebl-color-surface-primary
+    text-decoration: none
+    font-weight: 500
+    transition: color 0.2s ease
+
+    &:hover
+      color: $ebl-color-surface-primary
+
+    &:focus-visible
+      color: $ebl-color-surface-primary
+      outline: 2px solid $ebl-color-white-alpha-90
+      outline-offset: 2px
+
+  &__separator
+    color: $ebl-color-white-alpha-40
+    margin: 0 0.25rem
+
+  &__copyright
+    text-align: center
+    padding-top: 1rem
+
+    p
+      margin: 0
+      font-size: 0.875rem
+      color: $ebl-color-surface-primary
+
+@media (prefers-reduced-motion: reduce)
+  .main-footer
+    &__links a,
+    &__social-link,
+    &__partner-link
+      transition: none
+
+    &__social-link:hover,
+    &__social-link:focus-visible
+      transform: none
+
+@media (max-width: $ebl-breakpoint-md-max)
+  .main-footer
+    &__section
+      margin-bottom: 2rem
+
+    &__partners
+      flex-direction: column
+      gap: 0.75rem
+
+    &__separator
+      display: none

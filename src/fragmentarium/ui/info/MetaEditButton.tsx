@@ -26,7 +26,7 @@ function MetaButton({
             ])}
             ref={buttonRef}
           >
-            <i className={iconClassName}></i>
+            <i className={iconClassName} aria-hidden="true"></i>
           </Button>
         ) : null
       }

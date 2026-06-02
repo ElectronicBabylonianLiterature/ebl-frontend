@@ -17,11 +17,13 @@ export function ProjectList({
             aria-label={`Link to ${project.name} project`}
             title={project.name}
           >
-            <img
-              className="ExternalResources__image"
-              src={project.logo}
-              alt={project.name}
-            />
+            {project.logo && (
+              <img
+                className="ExternalResources__image"
+                src={project.logo}
+                alt={project.name}
+              />
+            )}
           </ExternalLink>
         </li>
       ))}

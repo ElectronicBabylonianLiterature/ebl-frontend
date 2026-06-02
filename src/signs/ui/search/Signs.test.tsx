@@ -1,5 +1,5 @@
 import React from 'react'
-import { render, screen } from '@testing-library/react'
+import { render, screen, waitFor } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 import Promise from 'bluebird'
 import SessionContext from 'auth/SessionContext'
@@ -35,15 +35,41 @@ describe('Searching for word', () => {
     await renderSigns('/signs')
     expect(screen.getByLabelText('Query')).toHaveValue('')
   })
+
+  it('does not refetch on rerender when query is unchanged', async () => {
+    const value = signs[1].values[0]
+    const path = `/signs?sign=${value.value}&subIndex=1&value=${value.value}`
+    const view = render(
+      <MemoryRouter initialEntries={[path]}>
+        <SessionContext.Provider value={session}>
+          <Signs signService={signService} />
+        </SessionContext.Provider>
+      </MemoryRouter>,
+    )
+
+    await screen.findByLabelText('Query')
+    await waitForSignsRequestsToSettle()
+    const callsAfterInitialRender = signService.search.mock.calls.length
+
+    view.rerender(
+      <MemoryRouter initialEntries={[path]}>
+        <SessionContext.Provider value={session}>
+          <Signs signService={signService} />
+        </SessionContext.Provider>
+      </MemoryRouter>,
+    )
+
+    expect(signService.search.mock.calls.length).toBe(callsAfterInitialRender)
+  })
 })
 
 it('Displays a message if user is not logged in', async () => {
   session = new MemorySession([])
-  await renderSigns('/signs')
+  await renderSigns('/signs', false)
   expect(screen.getByText('Please log in to search for Signs.')).toBeVisible()
 })
 
-async function renderSigns(path: string): Promise<void> {
+async function renderSigns(path: string, hasAccess = true): Promise<void> {
   render(
     <MemoryRouter initialEntries={[path]}>
       <SessionContext.Provider value={session}>
@@ -51,5 +77,14 @@ async function renderSigns(path: string): Promise<void> {
       </SessionContext.Provider>
     </MemoryRouter>,
   )
-  await screen.findAllByText('Signs')
+  if (hasAccess) {
+    await screen.findByLabelText('Query')
+    await waitForSignsRequestsToSettle()
+  }
+}
+
+async function waitForSignsRequestsToSettle(): Promise<void> {
+  await waitFor(() => {
+    expect(screen.queryAllByText(/loading\.\.\./i)).toHaveLength(0)
+  })
 }

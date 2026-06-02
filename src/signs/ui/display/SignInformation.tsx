@@ -98,8 +98,12 @@ const Labasi = ({ LaBaSi }: { LaBaSi: string }): JSX.Element => (
         href={`https://labasi.acdh.oeaw.ac.at/tablets/sign/detail/${encodeURIComponent(
           LaBaSi,
         )}`}
+        aria-label={`Open LaBaSi entry ${LaBaSi}`}
       >
-        <i className="fas fa-external-link-square-alt fa-1x" />
+        <i
+          className="fas fa-external-link-square-alt fa-1x"
+          aria-hidden="true"
+        />
       </ExternalLink>
     </Col>
   </Row>

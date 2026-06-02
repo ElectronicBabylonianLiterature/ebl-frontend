@@ -1,11 +1,13 @@
-@mixin highlight-token
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)
-  transform: scale(1.15)
-  span[class^="Transliteration__"]
-    color: black !important
+@import src/design-tokens
 
-$info-blue: lightblue
-$confirm-green: rgb(40, 167, 69)
+@mixin highlight-token
+  box-shadow: 0 2px 6px $ebl-color-brand-alpha-25
+  transform: scale(1.08)
+  span[class^="Transliteration__"]
+    color: $ebl-color-text-primary
+
+$info-blue: $ebl-color-status-info-soft
+$confirm-green: $ebl-color-status-success
 
 @mixin fade-to-blue
   animation: fadeBackground 1.75s ease-out forwards
@@ -25,12 +27,12 @@ $confirm-green: rgb(40, 167, 69)
       background-color: $confirm-green
 
     100%
-      background-color: none
+      background-color: transparent
 
 .lemmatizer
   &__text-col
-    max-width: fit-content
-    min-width: 22em
+    max-width: 100%
+    min-width: min(22em, 100%)
 
   &__anno-tool
     margin-left: 0
@@ -50,22 +52,20 @@ $confirm-green: rgb(40, 167, 69)
   &__editor
     display: block
     position: relative
-    min-width: 22em
+    min-width: min(22em, 100%)
     overflow: visible
 
     &__col
       padding: 0
     &__row
-      display: flex
+      padding: 0 .5rem
       flex-wrap: nowrap
-      align-items: center
-      gap: 0.5rem
-      padding: 0 0.5rem
+      justify-content: space-between
     &__lemma-select
-      flex: 1
-      min-width: 0
+      flex-grow: 1
+      margin-right: 0.5rem
     &__action-button
-      flex-shrink: 0
+      align-items: flex-start
 
     &__footer
       justify-content: space-between
@@ -85,16 +85,16 @@ $confirm-green: rgb(40, 167, 69)
       flex-direction: column
       padding: .2rem
     .badge
-      max-width: fit-content
+      max-width: 100%
 
     > span
       display: block
 
     &:hover
       @include highlight-token
-      border: 1px solid lightgrey
+      border: 1px solid $ebl-color-border-muted
       cursor: pointer
-      background-color: lightgrey
+      background-color: $ebl-color-surface-subtle
 
     &.selected
       @include highlight-token
@@ -106,8 +106,8 @@ $confirm-green: rgb(40, 167, 69)
 
     &.pending
       @include highlight-token
-      border: 1px solid yellow
-      background-color: yellow
+      border: 1px solid $ebl-color-highlight-active
+      background-color: $ebl-color-highlight-active
 
     &.glowing
       @include fade-to-none
@@ -115,7 +115,7 @@ $confirm-green: rgb(40, 167, 69)
   &__lemma-preview
     font-size: small
     font-style: italic
-    display: flex !important
+    display: flex
     align-items: start
     .badge
       font-style: normal

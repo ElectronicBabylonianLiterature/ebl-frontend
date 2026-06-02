@@ -15,6 +15,7 @@ import InlineMarkdown from 'common/ui/InlineMarkdown'
 import Reference from 'bibliography/domain/Reference'
 import SessionContext from 'auth/SessionContext'
 import withData from 'http/withData'
+import { referencesEditRoute } from 'bibliography/ui/referencesRouteContext'
 
 type Props = {
   data: BibliographyEntry
@@ -75,12 +76,10 @@ function BibliographyViewer({ data, match, history }: Props): JSX.Element {
       actions={
         <Button
           variant="outline-primary"
-          onClick={() =>
-            activeHistory.push(`/bibliography/references/${entryId}/edit`)
-          }
+          onClick={() => activeHistory.push(referencesEditRoute(entryId))}
           disabled={!session.isAllowedToWriteBibliography()}
         >
-          <i className="fas fa-edit"></i> Edit
+          <i className="fas fa-edit" aria-hidden="true"></i> Edit
         </Button>
       }
     >
@@ -92,9 +91,10 @@ function BibliographyViewer({ data, match, history }: Props): JSX.Element {
               className="FullCitation__link"
               href={reference.link}
               title="Open in a new window."
+              aria-label="Open in a new window."
               style={{ marginLeft: '1em' }}
             >
-              <i className="fas fa-external-link-alt" />
+              <i className="fas fa-external-link-alt" aria-hidden="true" />
             </ExternalLink>
           )}
         </div>

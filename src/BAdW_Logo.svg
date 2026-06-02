@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!-- Generator: Adobe Illustrator 22.0.1, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
 
 <svg
    version="1.1"
@@ -7,13 +6,9 @@
    x="0px"
    y="0px"
    viewBox="0 0 257.99999 89.000002"
-   xml:space="preserve"
    width="258"
    height="89"
-   xmlns:xlink="http://www.w3.org/1999/xlink"
-   xmlns="http://www.w3.org/2000/svg"
-   >
-<defs
+   xmlns="http://www.w3.org/2000/svg"><defs
    id="defs41" />
 <style
    type="text/css"
@@ -36,7 +31,7 @@
 	<clipPath
    id="SVGID_2_">
 		<use
-   xlink:href="#SVGID_1_"
+   href="#SVGID_1_"
    style="overflow:visible"
    id="use7" />
 	</clipPath>

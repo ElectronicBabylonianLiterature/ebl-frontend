@@ -22,6 +22,7 @@ import { ChapterAlignment } from 'corpus/domain/alignment'
 import CorpusTextCrumb from './CorpusTextCrumb'
 import GenreCrumb from './GenreCrumb'
 import ChapterCrumb from './ChapterCrumb'
+import './ChapterEditView.sass'
 
 function EditChapterTitle({
   text,
@@ -121,29 +122,32 @@ function ChapterEditView({
         new ChapterCrumb(chapter.id),
         new TextCrumb('Edit'),
       ]}
+      breadcrumbsFullWidth={false}
       title={<EditChapterTitle text={text} chapter={chapter} />}
     >
-      <ChapterNavigation text={text} />
-      <ChapterEditor
-        chapter={currentChapter}
-        disabled={isSaving}
-        dirty={isDirty}
-        searchBibliography={(
-          query: string,
-        ): Promise<readonly BibliographyEntry[]> =>
-          bibliographyService.search(query)
-        }
-        fragmentService={fragmentService}
-        textService={textService}
-        onChange={handleChange}
-        onSaveLines={updateLines}
-        onSaveManuscripts={updateManuscripts}
-        onSaveAlignment={updateAlignment}
-        onSaveLemmatization={updateLemmatization}
-        onImport={importChapter}
-      />
-      <Spinner loading={isSaving}>Saving...</Spinner>
-      <ErrorAlert error={error} />
+      <div className="chapter-edit-view ebl-consistent-links">
+        <ChapterNavigation text={text} />
+        <ChapterEditor
+          chapter={currentChapter}
+          disabled={isSaving}
+          dirty={isDirty}
+          searchBibliography={(
+            query: string,
+          ): Promise<readonly BibliographyEntry[]> =>
+            bibliographyService.search(query)
+          }
+          fragmentService={fragmentService}
+          textService={textService}
+          onChange={handleChange}
+          onSaveLines={updateLines}
+          onSaveManuscripts={updateManuscripts}
+          onSaveAlignment={updateAlignment}
+          onSaveLemmatization={updateLemmatization}
+          onImport={importChapter}
+        />
+        <Spinner loading={isSaving}>Saving...</Spinner>
+        <ErrorAlert error={error} />
+      </div>
     </AppContent>
   )
 }

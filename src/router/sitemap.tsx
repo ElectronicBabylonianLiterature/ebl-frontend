@@ -1,9 +1,9 @@
-import React from 'react'
+import React, { ReactNode } from 'react'
 import DynamicSitemap from 'react-dynamic-sitemap'
 import { renderToString } from 'react-dom/server'
 import $ from 'jquery'
 import { Route } from 'router/compat'
-import Services from 'router/Services'
+import type Services from 'router/Services'
 import withData from 'http/withData'
 import Bluebird from 'bluebird'
 import convert from 'xml-js'
@@ -20,19 +20,18 @@ import CorpusRoutes from 'router/corpusRoutes'
 import FragmentariumRoutes from 'router/fragmentariumRoutes'
 import ResearchProjectRoutes from 'router/researchProjectRoutes'
 import FooterRoutes from 'router/footerRoutes'
-import { sitemapDefaults, Slugs } from 'router/sitemapConfig'
+import { sitemapDefaults, type Slugs } from 'router/sitemapConfig'
 import {
-  websiteRouteGroups,
+  composeWebsiteRoutes,
+  type LazyWebsiteRouteGroup,
   type RouteModule,
   type RouteModuleProps,
-  type WebsiteRouteGroup,
 } from 'router/websiteRouteGroups'
 
 const DOMAIN = 'www.ebl.lmu.de'
 type SlugsArray = readonly { [key: string]: string }[]
 
-const websiteRouteModules: Record<WebsiteRouteGroup, RouteModule> = {
-  about: AboutRoutes,
+const lazyWebsiteRouteModules: Record<LazyWebsiteRouteGroup, RouteModule> = {
   tools: ToolsRoutes,
   signs: SignRoutes,
   bibliography: BibliographyRoutes,
@@ -54,18 +53,25 @@ function WebsiteRoutes(
     ...slugs,
   }
 
-  return [
-    <Route
-      key="Introduction"
-      component={Introduction}
-      exact
-      path="/"
-      {...(sitemap && sitemapDefaults)}
-    />,
-    ...websiteRouteGroups.flatMap((routeGroup) =>
-      websiteRouteModules[routeGroup](routeModuleProps),
+  return composeWebsiteRoutes({
+    introductionRoute: (
+      <Route
+        key="Introduction"
+        exact
+        path="/"
+        render={(): ReactNode => (
+          <Introduction
+            fragmentService={services.fragmentService}
+            dossiersService={services.dossiersService}
+          />
+        )}
+        {...(sitemap && sitemapDefaults)}
+      />
     ),
-  ]
+    aboutRoutes: AboutRoutes(routeModuleProps),
+    getRoutesForLazyGroup: (routeGroup) =>
+      lazyWebsiteRouteModules[routeGroup](routeModuleProps),
+  })
 }
 
 function Sitemap(services: Services, slugs?: Slugs): JSX.Element {

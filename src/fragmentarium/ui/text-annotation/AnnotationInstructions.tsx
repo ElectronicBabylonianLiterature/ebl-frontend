@@ -52,8 +52,12 @@ export default function AnnotationInstructions(): JSX.Element {
   const [show, setShow] = React.useState(false)
   return (
     <div className={'text-annotation__instruction-trigger'}>
-      <Button variant="link" onClick={() => setShow(true)}>
-        <i className="fas fa-info-circle" aria-label="How to Use" />
+      <Button
+        variant="link"
+        onClick={() => setShow(true)}
+        aria-label="How to Use"
+      >
+        <i className="fas fa-info-circle" aria-hidden="true" />
       </Button>
       <AnnotationInfo show={show} onHide={() => setShow(false)} />
     </div>

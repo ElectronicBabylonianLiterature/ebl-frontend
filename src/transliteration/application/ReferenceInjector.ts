@@ -77,9 +77,9 @@ export default class ReferenceInjector {
   injectReferencesToMarkup(
     parts: readonly MarkupPart[],
   ): Promise<MarkupPart[]> {
-    const ids = parts
-      .filter(isBibliographyPart)
-      .map((part) => part.reference.id)
+    const ids = _.uniq(
+      parts.filter(isBibliographyPart).map((part) => part.reference.id),
+    )
 
     return _.isEmpty(ids)
       ? Promise.resolve(parts as MarkupPart[])

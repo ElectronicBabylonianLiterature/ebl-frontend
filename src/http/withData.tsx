@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import Promise from 'bluebird'
 import Spinner from 'common/ui/Spinner'
 import ErrorAlert from 'common/errors/ErrorAlert'
@@ -30,19 +30,44 @@ export default function withData<PROPS, GETTER_PROPS, DATA>(
   return function ComponentWithData(props: PROPS & GETTER_PROPS): JSX.Element {
     const [data, setData] = useState<DATA | null>(null)
     const [error, setError] = useState<Error | null>(null)
+    const requestSequence = useRef(0)
 
     useEffect(
       () => {
-        let fetchPromise: Promise<void>
+        const requestId = requestSequence.current + 1
+        requestSequence.current = requestId
+        let fetchPromise: Promise<DATA> | undefined
         setError(null)
         if (fullConfig.filter(props)) {
           setData(null)
-          fetchPromise = getter(props).then(setData).catch(setError)
+          fetchPromise = getter(props)
+          fetchPromise
+            .then((resolvedData) => {
+              if (requestSequence.current === requestId) {
+                setData(resolvedData)
+              }
+            })
+            .catch((resolvedError) => {
+              const isCancellationError =
+                (resolvedError as { name?: string })?.name ===
+                  'CancellationError' ||
+                (typeof fetchPromise?.isCancelled === 'function' &&
+                  fetchPromise.isCancelled())
+
+              if (
+                requestSequence.current === requestId &&
+                !isCancellationError
+              ) {
+                setError(resolvedError as Error)
+              }
+            })
         } else {
           setData(fullConfig.defaultData(props))
         }
         return (): void => {
-          fetchPromise && fetchPromise.cancel && fetchPromise.cancel()
+          if (fetchPromise?.cancel) {
+            fetchPromise.cancel()
+          }
         }
       },
       // eslint-disable-next-line react-hooks/exhaustive-deps

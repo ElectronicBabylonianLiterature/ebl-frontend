@@ -50,7 +50,8 @@ export default function LemmaEditorModal({
           'https://syncandshare.lrz.de/getlink/fiXLc2zR58m7STmn9cYTps/How%20to_%20Annotate%20Lemmas.pdf'
         }
       >
-        How to Use <i className="fas fa-external-link-square-alt"></i>
+        How to Use{' '}
+        <i className="fas fa-external-link-square-alt" aria-hidden="true"></i>
       </ExternalLink>
     </div>
   )
@@ -104,7 +105,7 @@ export default function LemmaEditorModal({
       aria-label="autofill-lemmas"
     >
       <>
-        <i className={'fas fa-wand-magic-sparkles'}></i>
+        <i className={'fas fa-wand-magic-sparkles'} aria-hidden="true"></i>
         &nbsp;
         {process === 'loadingLemmas' ? (
           <Spinner

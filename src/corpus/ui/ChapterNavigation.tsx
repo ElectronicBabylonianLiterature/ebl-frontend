@@ -11,7 +11,7 @@ export default function ChapterNavigation({
   text: Text
 }): JSX.Element {
   return (
-    <Nav variant="tabs">
+    <Nav variant="tabs" className="chapter-navigation">
       {_(text.chapters)
         .map((chapter, index) => (
           <Nav.Item key={index}>

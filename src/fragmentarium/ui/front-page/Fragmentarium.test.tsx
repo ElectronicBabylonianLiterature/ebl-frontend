@@ -74,7 +74,7 @@ describe('Fragmentarium', () => {
       </MemoryRouter>,
     )
     container = renderedContainer
-    await screen.findByText('Current size of the Library:')
+    await screen.findByText('Current size of the Library')
   }
 
   const mockAllServiceMethods = (): void => {

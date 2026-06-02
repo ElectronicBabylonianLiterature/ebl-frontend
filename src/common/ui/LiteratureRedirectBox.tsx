@@ -31,8 +31,12 @@ export const LiteratureRedirectBox = ({
       </>
     )) || <strong>{note}</strong>}
     <br />
-    <ExternalLink className="text-dark " href={link}>
-      <i className={icon} />
+    <ExternalLink
+      className="text-dark "
+      href={link}
+      aria-label={`Open external source for ${book}`}
+    >
+      <i className={icon} aria-hidden="true" />
     </ExternalLink>
   </div>
 )

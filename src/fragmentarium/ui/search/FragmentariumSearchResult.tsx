@@ -36,8 +36,10 @@ function ResultPages({
   return (
     <>
       {pageButtons}
-      {pages[active].map((fragment, index) => (
-        <React.Fragment key={index}>
+      {pages[active].map((fragment) => (
+        <React.Fragment
+          key={`${fragment.museumNumber}:${fragment.matchingLines.join(',')}`}
+        >
           <FragmentLines
             fragmentService={fragmentService}
             dossiersService={dossiersService}

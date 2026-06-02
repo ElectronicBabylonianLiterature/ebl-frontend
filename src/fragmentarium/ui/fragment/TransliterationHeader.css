@@ -1,6 +1,6 @@
 .TransliterationHeader__description,
 .TransliterationHeader__publication {
-  color: gray;
-  font-size: 80%;
+  color: var(--ebl-color-text-corpus-muted);
+  font-size: 0.82rem;
   text-align: center;
 }

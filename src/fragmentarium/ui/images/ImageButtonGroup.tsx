@@ -75,7 +75,7 @@ const ButtonWithTooltip: React.FC<ButtonWithTooltipProps> = ({
     overlay={<Tooltip id={tooltipId}>{label}</Tooltip>}
   >
     <Button variant="light" onClick={onClick} aria-label={label}>
-      <i className={iconClass} />
+      <i className={iconClass} aria-hidden="true" />
     </Button>
   </OverlayTrigger>
 )

@@ -144,7 +144,6 @@ describe('SearchFormDossier', () => {
       />,
     )
 
-    // Wait for component to be fully rendered
     await waitFor(() => {
       expect(screen.getByText(/D001/)).toBeInTheDocument()
     })
@@ -168,7 +167,7 @@ describe('SearchFormDossier', () => {
     )
 
     await waitFor(() => {
-      expect(mockSearchSuggestions).toHaveBeenCalledWith('', undefined)
+      expect(mockSearchSuggestions).not.toHaveBeenCalled()
     })
   })
 
@@ -536,7 +535,7 @@ describe('SearchFormDossier', () => {
     })
   })
 
-  it('loads options on initial focus with defaultOptions', async () => {
+  it('does not load options until user enters a query', async () => {
     mockSearchSuggestions.mockResolvedValue([
       new DossierRecordSuggestion(mockSuggestionDto),
     ])
@@ -551,7 +550,7 @@ describe('SearchFormDossier', () => {
     )
 
     await waitFor(() => {
-      expect(mockSearchSuggestions).toHaveBeenCalledWith('', undefined)
+      expect(mockSearchSuggestions).not.toHaveBeenCalled()
     })
   })
 
@@ -687,8 +686,11 @@ describe('SearchFormDossier', () => {
       />,
     )
 
+    const input = screen.getByLabelText('Dossier Search')
+    await userEvent.type(input, 'D001')
+
     await waitFor(() => {
-      expect(mockSearchSuggestions).toHaveBeenCalledWith('', filters)
+      expect(mockSearchSuggestions).toHaveBeenCalledWith('D001', filters)
     })
   })
 
@@ -709,8 +711,11 @@ describe('SearchFormDossier', () => {
       />,
     )
 
+    const input = screen.getByLabelText('Dossier Search')
+    await userEvent.type(input, 'D001')
+
     await waitFor(() => {
-      expect(mockSearchSuggestions).toHaveBeenCalledWith('', filters1)
+      expect(mockSearchSuggestions).toHaveBeenCalledWith('D001', filters1)
     })
 
     mockSearchSuggestions.mockClear()
@@ -725,8 +730,10 @@ describe('SearchFormDossier', () => {
       />,
     )
 
+    await userEvent.type(screen.getByLabelText('Dossier Search'), 'D002')
+
     await waitFor(() => {
-      expect(mockSearchSuggestions).toHaveBeenCalledWith('', filters2)
+      expect(mockSearchSuggestions).toHaveBeenCalledWith('D002', filters2)
     })
   })
 
@@ -769,8 +776,11 @@ describe('SearchFormDossier', () => {
       />,
     )
 
+    const input = screen.getByLabelText('Dossier Search')
+    await userEvent.type(input, 'D001')
+
     await waitFor(() => {
-      expect(mockSearchSuggestions).toHaveBeenCalledWith('', undefined)
+      expect(mockSearchSuggestions).toHaveBeenCalledWith('D001', undefined)
     })
   })
 })

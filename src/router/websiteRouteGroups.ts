@@ -1,85 +1,155 @@
+import type Services from 'router/Services'
 import type { Slugs } from 'router/sitemapConfig'
-import Services from 'router/Services'
 
 export type RouteModuleProps = Services & Slugs & { sitemap: boolean }
 export type RouteModule = (props: RouteModuleProps) => JSX.Element[]
 
-export const websiteRouteGroups = [
-  'about',
-  'tools',
-  'signs',
-  'bibliography',
-  'dictionary',
-  'corpus',
-  'fragmentarium',
-  'researchProjects',
-  'footer',
-] as const
-
-export type WebsiteRouteGroup = (typeof websiteRouteGroups)[number]
-
-export type LazyWebsiteRouteGroup = Exclude<WebsiteRouteGroup, 'about'>
-
-export type RuntimeLazyRouteConfig = {
+type RuntimeRouteConfig = {
   key: string
-  group: LazyWebsiteRouteGroup
   path: string
   exact: boolean
 }
 
-export const runtimeLazyRouteConfigs: readonly RuntimeLazyRouteConfig[] = [
-  {
-    key: 'ToolsRoutes',
-    group: 'tools',
-    path: '/tools/*',
-    exact: false,
+type LazyRouteGroupDefinition = {
+  runtimeRoutes: readonly RuntimeRouteConfig[]
+  loadModule: () => Promise<{ default: RouteModule }>
+}
+
+export const lazyRouteGroupDefinitions = {
+  tools: {
+    runtimeRoutes: [
+      {
+        key: 'ToolsRoutes',
+        path: '/tools/*',
+        exact: false,
+      },
+    ],
+    loadModule: () => import('router/toolsRoutes'),
   },
-  {
-    key: 'SignRoutes',
-    group: 'signs',
-    path: '/signs/*',
-    exact: false,
+  signs: {
+    runtimeRoutes: [
+      {
+        key: 'SignRoutes',
+        path: '/signs/*',
+        exact: false,
+      },
+    ],
+    loadModule: () => import('router/signRoutes'),
   },
-  {
-    key: 'BibliographyRoutes',
-    group: 'bibliography',
-    path: '/bibliography/*',
-    exact: false,
+  bibliography: {
+    runtimeRoutes: [
+      {
+        key: 'BibliographyRoutes',
+        path: '/bibliography/*',
+        exact: false,
+      },
+    ],
+    loadModule: () => import('router/bibliographyRoutes'),
   },
-  {
-    key: 'DictionaryRoutes',
-    group: 'dictionary',
-    path: '/dictionary/*',
-    exact: false,
+  dictionary: {
+    runtimeRoutes: [
+      {
+        key: 'DictionaryRoutes',
+        path: '/dictionary/*',
+        exact: false,
+      },
+    ],
+    loadModule: () => import('router/dictionaryRoutes'),
   },
-  {
-    key: 'CorpusRoutes',
-    group: 'corpus',
-    path: '/corpus/*',
-    exact: false,
+  corpus: {
+    runtimeRoutes: [
+      {
+        key: 'CorpusRoutes',
+        path: '/corpus/*',
+        exact: false,
+      },
+    ],
+    loadModule: () => import('router/corpusRoutes'),
   },
-  {
-    key: 'FragmentariumRoutes',
-    group: 'fragmentarium',
-    path: '/library/*',
-    exact: false,
+  fragmentarium: {
+    runtimeRoutes: [
+      {
+        key: 'FragmentariumRoutes',
+        path: '/library/*',
+        exact: false,
+      },
+    ],
+    loadModule: () => import('router/fragmentariumRoutes'),
   },
-  {
-    key: 'ResearchProjectRoutes',
-    group: 'researchProjects',
-    path: '/projects/*',
-    exact: false,
+  researchProjects: {
+    runtimeRoutes: [
+      {
+        key: 'ResearchProjectRoutes',
+        path: '/projects/*',
+        exact: false,
+      },
+    ],
+    loadModule: () => import('router/researchProjectRoutes'),
   },
-  {
-    key: 'FooterRoutesImpressum',
-    group: 'footer',
-    path: '/impressum',
-    exact: true,
+  footer: {
+    runtimeRoutes: [
+      {
+        key: 'FooterRoutesImpressum',
+        path: '/impressum',
+        exact: true,
+      },
+      {
+        key: 'FooterRoutesDatenschutz',
+        path: '/datenschutz',
+        exact: true,
+      },
+    ],
+    loadModule: () => import('router/footerRoutes'),
   },
-  {
-    key: 'FooterRoutesDatenschutz',
-    group: 'footer',
-    path: '/datenschutz',
-    exact: true,
-  },
-]
+} as const satisfies Record<string, LazyRouteGroupDefinition>
+
+export type LazyWebsiteRouteGroup = keyof typeof lazyRouteGroupDefinitions
+export type WebsiteRouteGroup = 'about' | LazyWebsiteRouteGroup
+
+export type RuntimeLazyRouteConfig = RuntimeRouteConfig & {
+  group: LazyWebsiteRouteGroup
+}
+
+export const lazyWebsiteRouteGroups = Object.keys(
+  lazyRouteGroupDefinitions,
+) as LazyWebsiteRouteGroup[]
+
+export const runtimeLazyRouteConfigsByGroup: Readonly<
+  Record<LazyWebsiteRouteGroup, readonly RuntimeRouteConfig[]>
+> = lazyWebsiteRouteGroups.reduce(
+  (configByGroup, group) => ({
+    ...configByGroup,
+    [group]: lazyRouteGroupDefinitions[group].runtimeRoutes,
+  }),
+  {} as Record<LazyWebsiteRouteGroup, readonly RuntimeRouteConfig[]>,
+)
+
+export const runtimeLazyRouteConfigs: readonly RuntimeLazyRouteConfig[] =
+  lazyWebsiteRouteGroups.flatMap((group) =>
+    runtimeLazyRouteConfigsByGroup[group].map((route) => ({
+      ...route,
+      group,
+    })),
+  )
+
+export function loadLazyRouteGroupModule(
+  group: LazyWebsiteRouteGroup,
+): Promise<{ default: RouteModule }> {
+  return lazyRouteGroupDefinitions[group].loadModule()
+}
+
+export function composeWebsiteRoutes({
+  introductionRoute,
+  aboutRoutes,
+  getRoutesForLazyGroup,
+}: {
+  introductionRoute: JSX.Element
+  aboutRoutes: JSX.Element[]
+  getRoutesForLazyGroup: (group: LazyWebsiteRouteGroup) => JSX.Element[]
+}): JSX.Element[] {
+  return [
+    introductionRoute,
+    ...aboutRoutes,
+    ...lazyWebsiteRouteGroups.flatMap((group) => getRoutesForLazyGroup(group)),
+  ]
+}

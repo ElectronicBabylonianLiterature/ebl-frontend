@@ -26,12 +26,14 @@ export class ProjectCrumb implements Crumb {
 export class SectionCrumb implements Crumb {
   static readonly SECTIONS: ReadonlyMap<string, string> = new Map([
     ['eBL', '/'],
-    ['Bibliography', '/bibliography'],
+    ['Bibliography', '/tools/references'],
     ['Corpus', '/corpus'],
-    ['Dictionary', '/dictionary'],
+    ['Dictionary', '/tools/dictionary'],
+    ['Akkadian Dictionary', '/tools/dictionary'],
     ['Library', '/library'],
-    ['Signs', '/signs'],
+    ['Signs', '/tools/signs'],
     ['About', '/about'],
+    ['Tools', '/tools'],
     ['Projects', '/projects'],
     ['CAIC', '/projects/CAIC'],
     ['AMPS', '/projects/AMPS'],

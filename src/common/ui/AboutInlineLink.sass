@@ -1,0 +1,26 @@
+@import src/design-tokens
+
+.AboutInlineLink
+  display: inline-flex
+  align-items: center
+  justify-content: center
+  width: 1.7rem
+  height: 1.7rem
+  border-radius: 999px
+  background: $ebl-color-surface-inline-link
+  border: 1px solid $ebl-color-border-inline-link
+  color: $ebl-color-brand-primary
+  text-decoration: none
+  transition: color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease
+
+  &:hover
+    color: $ebl-color-brand-primary-dark
+    background: $ebl-color-surface-inline-link-hover
+    border-color: $ebl-color-border-inline-link-hover
+    text-decoration: none
+
+  &:focus-visible
+    outline-width: 2px
+    outline-style: solid
+    outline-color: $ebl-color-brand-primary
+    outline-offset: 2px

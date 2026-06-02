@@ -1,18 +1,16 @@
 import React, { ReactNode } from 'react'
-import WordService from 'dictionary/application/WordService'
-import { Route } from 'router/compat'
-import SignService from 'signs/application/SignService'
-import SignDisplay from 'signs/ui/display/SignDisplay'
-import Signs from 'signs/ui/search/Signs'
-import { SignSlugs, sitemapDefaults } from 'router/sitemapConfig'
-import { HeadTagsService } from 'router/head'
+import type WordService from 'dictionary/application/WordService'
+import { Route, Redirect } from 'router/compat'
+import type SignService from 'signs/application/SignService'
+import type { SignSlugs } from 'router/sitemapConfig'
 import NotFoundPage from 'NotFoundPage'
+import withSearchAndHash from 'router/withSearchAndHash'
 
 export default function SignRoutes({
-  sitemap,
-  wordService,
-  signService,
-  signSlugs,
+  sitemap: _sitemap,
+  wordService: _wordService,
+  signService: _signService,
+  signSlugs: _signSlugs,
 }: {
   sitemap: boolean
   wordService: WordService
@@ -21,39 +19,28 @@ export default function SignRoutes({
 }): JSX.Element[] {
   return [
     <Route
-      key="signDisplay"
+      key="sign-display-redirect"
       path="/signs/:id"
       exact
-      render={({ match }): ReactNode => (
-        <HeadTagsService
-          title="Cuneiform sign display: eBL"
-          description="Detailed cuneiform sign information at the electronic Babylonian Library (eBL)."
-        >
-          <SignDisplay
-            signService={signService}
-            wordService={wordService}
-            id={decodeURIComponent(match.params.id ?? '')}
-          />
-        </HeadTagsService>
+      render={({ match, location }): ReactNode => (
+        <Redirect
+          to={withSearchAndHash(
+            `/tools/signs/${match.params.id}`,
+            location.search,
+            location.hash,
+          )}
+        />
       )}
-      {...(sitemap && {
-        ...sitemapDefaults,
-        slugs: signSlugs,
-      })}
     />,
     <Route
-      key="signs"
+      key="signs-redirect"
       path="/signs"
       exact
-      render={(props): ReactNode => (
-        <HeadTagsService
-          title="Cuneiform sign search: eBL"
-          description="Cuneiform signs search at the electronic Babylonian Library (eBL)."
-        >
-          <Signs {...props} signService={signService} />
-        </HeadTagsService>
+      render={({ location }): ReactNode => (
+        <Redirect
+          to={withSearchAndHash('/tools/signs', location.search, location.hash)}
+        />
       )}
-      {...(sitemap && sitemapDefaults)}
     />,
     <Route
       key="SignsNotFound"
