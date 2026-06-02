@@ -35,8 +35,14 @@ while IFS= read -r line || [ -n "$line" ]; do
     ''|\#*) continue ;;
     *=*)
       key="${line%%=*}"
+      template_value="${line#*=}"
       value_line=$(grep -m1 "^${key}=" "$ENV_FILE" || true)
       if [ -n "$value_line" ]; then
+        actual_value="${value_line#*=}"
+        if [ "$actual_value" = "$template_value" ]; then
+          echo "Warning: $key still has its placeholder value — skipping." >&2
+          continue
+        fi
         echo "$value_line" >> "$FILTERED_FILE"
       fi
       ;;

@@ -4,6 +4,10 @@
 # .env.test that are missing from .env.local.
 set -e
 
+# A-03: single variable + EXIT trap so the temp file is always cleaned up
+_tmp_file=""
+trap 'rm -f "$_tmp_file"' EXIT
+
 ensure_env_local_permissions() {
     chmod 600 .env.local 2>/dev/null || \
         echo "Warning: could not set 600 permissions on .env.local (owned by another user). Continuing." >&2
@@ -25,7 +29,9 @@ while IFS= read -r template_line || [ -n "$template_line" ]; do
 
             current_line=$(grep -m1 "^${key}=" .env.local || true)
             if [ -z "$current_line" ]; then
-                echo "${template_line}" >> .env.local
+                # A-02: printf guarantees a leading newline so the new key is never
+                # fused with the last line of a file that has no trailing newline
+                printf '\n%s\n' "${template_line}" >> .env.local
                 missing_keys+=("$key")
                 current_line="${template_line}"
             fi
@@ -40,22 +46,24 @@ while IFS= read -r template_line || [ -n "$template_line" ]; do
                 continue
             fi
 
-            tmp_file=$(mktemp)
-            awk -v key="$key" -v old="$template_value" -v new="$secret_value" '
-                BEGIN { replaced = 0 }
+            # A-01: pass the secret via ENVIRON so awk never interprets backslashes
+            _tmp_file=$(mktemp)
+            AWK_SECRET="$secret_value" awk -v key="$key" -v old="$template_value" '
+                BEGIN { replaced = 0; new_val = ENVIRON["AWK_SECRET"] }
                 {
                     if (!replaced && index($0, key "=") == 1) {
                         line_value = substr($0, length(key) + 2)
                         if (line_value == old) {
-                            print key "=" new
+                            print key "=" new_val
                             replaced = 1
                             next
                         }
                     }
                     print
                 }
-            ' .env.local > "$tmp_file"
-            mv "$tmp_file" .env.local
+            ' .env.local > "$_tmp_file"
+            mv "$_tmp_file" .env.local
+            _tmp_file=""
             ensure_env_local_permissions
             injected_keys+=("$key")
             ;;
@@ -73,3 +81,4 @@ if [ ${#injected_keys[@]} -gt 0 ]; then
 else
     echo 'No Codespaces secrets found — .env.local uses placeholder values from .env.test'
 fi
+
