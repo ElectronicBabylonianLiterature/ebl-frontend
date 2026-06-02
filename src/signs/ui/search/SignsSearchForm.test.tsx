@@ -46,6 +46,16 @@ it('Prefers explicit subIndex over accent-encoded subIndex on submit', async () 
   )
 })
 
+it('Uses explicit subIndex without accent on submit', async () => {
+  renderSignsSearchForm()
+  await userEvent.type(screen.getByPlaceholderText('Sign or Reading'), 'ba2')
+  await userEvent.click(screen.getAllByRole('button')[0])
+
+  expect(mockNavigate).toHaveBeenCalledWith(
+    '?listsName&listsNumber&sign=ba%E2%82%82&subIndex=2&value=ba',
+  )
+})
+
 function renderSignsSearchForm() {
   const signQueryDefault = {
     value: undefined,
