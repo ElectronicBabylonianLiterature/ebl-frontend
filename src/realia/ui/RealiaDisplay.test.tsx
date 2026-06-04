@@ -157,6 +157,15 @@ describe('RealiaDisplay', () => {
     expect(screen.queryByText(/See also:/)).not.toBeInTheDocument()
   })
 
+  it('does not render an AppContent-generated h2 heading', async () => {
+    const entry = realiaEntryFactory.build()
+    renderDisplay(entry)
+    await waitForSpinnerToBeRemoved(screen)
+    expect(
+      screen.queryByRole('heading', { level: 2, name: entry.id }),
+    ).not.toBeInTheDocument()
+  })
+
   it('shows login message when session lacks readRealia scope', async () => {
     const entry = realiaEntryFactory.build()
     renderDisplay(entry, new MemorySession([]))

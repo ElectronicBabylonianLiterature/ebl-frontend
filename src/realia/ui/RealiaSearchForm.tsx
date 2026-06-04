@@ -20,7 +20,7 @@ export default function RealiaSearchForm({
       <Row className="align-items-end">
         <Col>
           <Form.Group controlId="realia-search-query">
-            <Form.Label>Search realia</Form.Label>
+            <Form.Label className="fw-bold">Search realia</Form.Label>
             <Form.Control
               value={value}
               onChange={(event) => setValue(event.target.value)}

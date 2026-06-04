@@ -107,7 +107,10 @@ function RealiaEntryDisplay({
   data: RealiaEntry
 }): JSX.Element {
   return (
-    <AppContent crumbs={[new SectionCrumb('Realia'), new TextCrumb(entry.id)]}>
+    <AppContent
+      crumbs={[new SectionCrumb('Realia'), new TextCrumb(entry.id)]}
+      hideHeading
+    >
       <SessionContext.Consumer>
         {(session: Session): JSX.Element =>
           session.isAllowedToReadRealia() ? (
