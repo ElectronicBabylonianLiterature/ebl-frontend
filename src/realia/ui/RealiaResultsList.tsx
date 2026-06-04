@@ -1,6 +1,15 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { RealiaEntry } from 'realia/domain/RealiaEntry'
+import { RealiaEntry, REALIA_TYPE_LABELS } from 'realia/domain/RealiaEntry'
+
+function entrySubtitle(entry: RealiaEntry): string {
+  const typeLabels = entry.type.map((t) => REALIA_TYPE_LABELS[t]).join(', ')
+  const terms = entry.relatedTerms.join(', ')
+  if (typeLabels && terms) {
+    return `${typeLabels} — ${terms}`
+  }
+  return typeLabels || terms
+}
 
 export default function RealiaResultsList({
   entries,
@@ -11,14 +20,23 @@ export default function RealiaResultsList({
     return <p>No results found.</p>
   }
   return (
-    <ul>
-      {entries.map((entry) => (
-        <li key={entry.id}>
-          <Link to={'/tools/realia/' + encodeURIComponent(entry.id)}>
-            {entry.id}
-          </Link>
-        </li>
-      ))}
+    <ul className="realia-results-list">
+      {entries.map((entry) => {
+        const subtitle = entrySubtitle(entry)
+        return (
+          <li key={entry.id} className="realia-results-list__item">
+            <Link to={'/tools/realia/' + encodeURIComponent(entry.id)}>
+              {entry.id}
+            </Link>
+            {subtitle && (
+              <span className="realia-results-list__subtitle">
+                {' '}
+                — {subtitle}
+              </span>
+            )}
+          </li>
+        )
+      })}
     </ul>
   )
 }

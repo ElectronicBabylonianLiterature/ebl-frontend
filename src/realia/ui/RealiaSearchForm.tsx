@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Form, Button } from 'react-bootstrap'
+import { Form, Button, Row, Col } from 'react-bootstrap'
 import { useNavigate } from 'react-router-dom'
 
 export default function RealiaSearchForm({
@@ -17,16 +17,23 @@ export default function RealiaSearchForm({
 
   return (
     <Form onSubmit={handleSubmit}>
-      <Form.Group>
-        <Form.Control
-          value={value}
-          onChange={(event) => setValue(event.target.value)}
-          placeholder="Search"
-        />
-      </Form.Group>
-      <Button type="submit" variant="primary" className="mt-2">
-        Search
-      </Button>
+      <Row className="align-items-end">
+        <Col>
+          <Form.Group controlId="realia-search-query">
+            <Form.Label>Search realia</Form.Label>
+            <Form.Control
+              value={value}
+              onChange={(event) => setValue(event.target.value)}
+              placeholder="Enter a term…"
+            />
+          </Form.Group>
+        </Col>
+        <Col xs="auto">
+          <Button type="submit" variant="primary">
+            Search
+          </Button>
+        </Col>
+      </Row>
     </Form>
   )
 }

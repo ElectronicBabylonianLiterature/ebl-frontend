@@ -48,9 +48,9 @@ describe('RealiaSearchPage', () => {
     expect(screen.getByTestId('search-results')).toBeInTheDocument()
   })
 
-  it('renders search results without query (withData filters internally)', () => {
+  it('does not render search results when there is no query', () => {
     renderPage('/tools/realia')
-    expect(screen.getByTestId('search-results')).toBeInTheDocument()
+    expect(screen.queryByTestId('search-results')).not.toBeInTheDocument()
   })
 
   it('shows login message and no form when session lacks readRealia scope', () => {

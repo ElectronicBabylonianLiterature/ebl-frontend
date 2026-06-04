@@ -28,6 +28,7 @@ export default function RealiaSearchPage({
         session.isAllowedToReadRealia() ? (
           <>
             <MarkdownParagraph
+              className="realia-search-page__introduction"
               text={`The Dictionary of Realia is a reference tool for the material culture, religion, flora and fauna, and other
 realia of the ancient Near East, from prehistory to the end of the cuneiform cultures around the turn of
 the Common Era. Its lemma list is drawn primarily from two foundational resources: the *Reallexikon der
@@ -37,8 +38,12 @@ starting with Volume 25 (1974-1977). In addition, the cuneiform editions in the 
 annotated according to this list of realia, allowing users to move seamlessly between dictionary entries and
 the primary textual sources in which these realia appear.`}
             />
-            <RealiaSearchForm query={query} />
-            <RealiaSearch query={query} realiaService={realiaService} />
+            <div className="realia-search-page__search-header">
+              <RealiaSearchForm query={query} />
+            </div>
+            {query.trim().length > 0 && (
+              <RealiaSearch query={query} realiaService={realiaService} />
+            )}
           </>
         ) : (
           <p>Please log in to browse the Dictionary of Realia.</p>

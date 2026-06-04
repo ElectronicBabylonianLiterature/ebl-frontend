@@ -33,14 +33,19 @@ describe('RealiaSearchForm', () => {
     expect(screen.getByDisplayValue('pig')).toBeInTheDocument()
   })
 
+  it('renders a visible label for the search input', () => {
+    renderForm()
+    expect(screen.getByLabelText('Search realia')).toBeInTheDocument()
+  })
+
   it('renders placeholder when query is empty', () => {
     renderForm()
-    expect(screen.getByPlaceholderText('Search')).toBeInTheDocument()
+    expect(screen.getByPlaceholderText('Enter a term…')).toBeInTheDocument()
   })
 
   it('updates input value on change', () => {
     renderForm()
-    fireEvent.change(screen.getByPlaceholderText('Search'), {
+    fireEvent.change(screen.getByPlaceholderText('Enter a term…'), {
       target: { value: 'new value' },
     })
     expect(screen.getByDisplayValue('new value')).toBeInTheDocument()
@@ -48,7 +53,7 @@ describe('RealiaSearchForm', () => {
 
   it('navigates to search results on submit', () => {
     renderForm()
-    fireEvent.change(screen.getByPlaceholderText('Search'), {
+    fireEvent.change(screen.getByPlaceholderText('Enter a term…'), {
       target: { value: 'pig' },
     })
     fireEvent.click(screen.getByRole('button', { name: /search/i }))
@@ -57,7 +62,7 @@ describe('RealiaSearchForm', () => {
 
   it('encodes special characters in query on submit', () => {
     renderForm()
-    fireEvent.change(screen.getByPlaceholderText('Search'), {
+    fireEvent.change(screen.getByPlaceholderText('Enter a term…'), {
       target: { value: 'pig & boar' },
     })
     fireEvent.click(screen.getByRole('button', { name: /search/i }))

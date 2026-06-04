@@ -142,17 +142,17 @@ export default function ToolsRoutes({
       key="tools-realia-display"
       path="/tools/realia/:id"
       exact
-      render={({ match }): ReactNode => (
-        <HeadTagsService
-          title="Realia entry: eBL"
-          description="Dictionary of Realia entry at the electronic Babylonian Library (eBL)."
-        >
-          <RealiaDisplay
-            realiaService={realiaService}
-            id={decodeURIComponent(match.params.id ?? '')}
-          />
-        </HeadTagsService>
-      )}
+      render={({ match }): ReactNode => {
+        const entryId = decodeURIComponent(match.params.id ?? '')
+        return (
+          <HeadTagsService
+            title={`Realia: ${entryId} - eBL`}
+            description="Dictionary of Realia entry at the electronic Babylonian Library (eBL)."
+          >
+            <RealiaDisplay realiaService={realiaService} id={entryId} />
+          </HeadTagsService>
+        )
+      }}
     />,
     <Route
       key="tools-sign-display"

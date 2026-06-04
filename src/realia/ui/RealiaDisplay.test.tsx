@@ -51,6 +51,16 @@ describe('RealiaDisplay', () => {
     expect(screen.getByText(/II\. AfO-Register/)).toBeInTheDocument()
   })
 
+  it('renders breadcrumbs with Realia section and entry id', async () => {
+    const entry = realiaEntryFactory.build()
+    renderDisplay(entry)
+    await waitForSpinnerToBeRemoved(screen)
+    expect(screen.getByText('Realia')).toBeInTheDocument()
+    expect(
+      screen.getByText(entry.id, { selector: '.breadcrumb-item' }),
+    ).toBeInTheDocument()
+  })
+
   it('renders Wikidata ExternalLink with correct href', async () => {
     const entry = realiaEntryFactory.build({ wikidataId: ['Q787'] })
     renderDisplay(entry)
@@ -112,6 +122,39 @@ describe('RealiaDisplay', () => {
     renderDisplay(entry)
     await waitForSpinnerToBeRemoved(screen)
     expect(screen.getByText(/III\. References/)).toBeInTheDocument()
+  })
+
+  it('renders "Related terms:" label when relatedTerms present', async () => {
+    const entry = realiaEntryFactory.build({ relatedTerms: ['pig', 'swine'] })
+    renderDisplay(entry)
+    await waitForSpinnerToBeRemoved(screen)
+    expect(screen.getByText('Related terms:')).toBeInTheDocument()
+  })
+
+  it('renders "Type:" label with human-readable type value', async () => {
+    const entry = realiaEntryFactory.build({ type: ['OBJECT_NAME'] })
+    renderDisplay(entry)
+    await waitForSpinnerToBeRemoved(screen)
+    expect(screen.getByText('Type:')).toBeInTheDocument()
+    expect(screen.getByText('Object Name')).toBeInTheDocument()
+  })
+
+  it('renders crossReference when present', async () => {
+    const afoEntry = afoRegisterEntryFactory.build({
+      crossReference: 'See Piglet',
+    })
+    const entry = realiaEntryFactory.build({ afoRegister: [afoEntry] })
+    renderDisplay(entry)
+    await waitForSpinnerToBeRemoved(screen)
+    expect(screen.getByText('See also: See Piglet')).toBeInTheDocument()
+  })
+
+  it('does not render crossReference paragraph when crossReference is empty', async () => {
+    const afoEntry = afoRegisterEntryFactory.build({ crossReference: '' })
+    const entry = realiaEntryFactory.build({ afoRegister: [afoEntry] })
+    renderDisplay(entry)
+    await waitForSpinnerToBeRemoved(screen)
+    expect(screen.queryByText(/See also:/)).not.toBeInTheDocument()
   })
 
   it('shows login message when session lacks readRealia scope', async () => {
