@@ -299,6 +299,22 @@ exports[`Meaning 1`] = `
                 </a>
                 <a
                   class="tools-nav__item  nav-link"
+                  href="/tools/realia"
+                >
+                  <span
+                    aria-hidden="true"
+                    class="tools-nav__icon"
+                  >
+                    ⚘
+                  </span>
+                  <span
+                    class="tools-nav__title"
+                  >
+                    Realia
+                  </span>
+                </a>
+                <a
+                  class="tools-nav__item  nav-link"
                   href="/tools/date-converter"
                 >
                   <span
@@ -1456,6 +1472,22 @@ exports[`Root 1`] = `
                     class="tools-nav__title"
                   >
                     Akkadian Dictionary
+                  </span>
+                </a>
+                <a
+                  class="tools-nav__item  nav-link"
+                  href="/tools/realia"
+                >
+                  <span
+                    aria-hidden="true"
+                    class="tools-nav__icon"
+                  >
+                    ⚘
+                  </span>
+                  <span
+                    class="tools-nav__title"
+                  >
+                    Realia
                   </span>
                 </a>
                 <a
@@ -2621,6 +2653,22 @@ exports[`Vowel class 1`] = `
                 </a>
                 <a
                   class="tools-nav__item  nav-link"
+                  href="/tools/realia"
+                >
+                  <span
+                    aria-hidden="true"
+                    class="tools-nav__icon"
+                  >
+                    ⚘
+                  </span>
+                  <span
+                    class="tools-nav__title"
+                  >
+                    Realia
+                  </span>
+                </a>
+                <a
+                  class="tools-nav__item  nav-link"
                   href="/tools/date-converter"
                 >
                   <span
@@ -3782,6 +3830,22 @@ exports[`Word 1`] = `
                 </a>
                 <a
                   class="tools-nav__item  nav-link"
+                  href="/tools/realia"
+                >
+                  <span
+                    aria-hidden="true"
+                    class="tools-nav__icon"
+                  >
+                    ⚘
+                  </span>
+                  <span
+                    class="tools-nav__title"
+                  >
+                    Realia
+                  </span>
+                </a>
+                <a
+                  class="tools-nav__item  nav-link"
                   href="/tools/date-converter"
                 >
                   <span
@@ -4939,6 +5003,22 @@ exports[`renders dictionary search page 1`] = `
                     class="tools-nav__title"
                   >
                     Akkadian Dictionary
+                  </span>
+                </a>
+                <a
+                  class="tools-nav__item  nav-link"
+                  href="/tools/realia"
+                >
+                  <span
+                    aria-hidden="true"
+                    class="tools-nav__icon"
+                  >
+                    ⚘
+                  </span>
+                  <span
+                    class="tools-nav__title"
+                  >
+                    Realia
                   </span>
                 </a>
                 <a
