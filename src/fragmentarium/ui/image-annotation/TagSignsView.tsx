@@ -25,6 +25,7 @@ export default function TagSignsView({
         new FragmentCrumb(number),
         new TextCrumb('Tag Signs'),
       ]}
+      breadcrumbsFullWidth={false}
       wide
     >
       <SessionContext.Consumer>

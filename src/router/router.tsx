@@ -1,6 +1,5 @@
 import React, { ReactNode, Suspense } from 'react'
 import { Route, Switch } from 'router/compat'
-import Introduction from 'Introduction'
 import AboutRoutes from 'router/aboutRoutes'
 import Header from 'Header'
 import NotFoundPage from 'NotFoundPage'
@@ -11,6 +10,10 @@ import './router.sass'
 import Services from 'router/Services'
 import FullPageRoutes from 'router/FullPageRoutes'
 import Spinner from 'common/ui/Spinner'
+import {
+  createRouteModuleProps,
+  renderIntroductionRoute,
+} from 'router/websiteRoutes'
 import {
   runtimeLazyRouteConfigs,
   type LazyWebsiteRouteGroup,
@@ -88,12 +91,13 @@ export default function Router(services: Services): JSX.Element {
 }
 
 function RuntimeWebsiteRoutes(services: Services): JSX.Element[] {
-  const routeModuleProps: RouteModuleProps = {
-    sitemap: false,
-    ...services,
-  }
+  const routeModuleProps: RouteModuleProps = createRouteModuleProps(
+    services,
+    false,
+  )
+
   return [
-    <Route key="Introduction" component={Introduction} exact path="/" />,
+    renderIntroductionRoute(services, false),
     ...AboutRoutes(routeModuleProps),
     ...runtimeLazyRouteConfigs.map((routeConfig) => {
       const LazyRouteModule = lazyRouteModules[routeConfig.group]

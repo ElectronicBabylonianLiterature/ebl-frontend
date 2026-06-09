@@ -41,6 +41,13 @@ export const Museums = {
     country: 'BE',
     url: 'https://www.nbb.be/',
   },
+  BRYN_MAWR_COLLEGE: {
+    key: 'BRYN_MAWR_COLLEGE',
+    name: 'Bryn Mawr College Special Collections',
+    city: 'Bryn Mawr',
+    country: 'US',
+    url: 'https://www.brynmawr.edu/about-college/special-collections',
+  },
   CHESTER_BEATTY_LIBRARY: {
     key: 'CHESTER_BEATTY_LIBRARY',
     name: 'Chester Beatty Library',
@@ -223,6 +230,13 @@ export const Museums = {
     city: 'Copenhagen',
     country: 'DK',
     url: 'https://en.natmus.dk/',
+  },
+  NATIONAL_MUSEUM_OF_WORLD_WRITING_SYSTEMS: {
+    key: 'NATIONAL_MUSEUM_OF_WORLD_WRITING_SYSTEMS',
+    name: 'National Museum of World Writing Systems',
+    city: 'Incheon',
+    country: 'KR',
+    url: 'https://mow.or.kr/',
   },
   OAKLAND_MUSEUM: {
     key: 'OAKLAND_MUSEUM',

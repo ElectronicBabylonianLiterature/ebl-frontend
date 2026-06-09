@@ -159,10 +159,10 @@ class LemmatizationForm extends Component<Props, State> {
     return (
       <Form className="WordLemmatizer__form">
         <Row>
-          <Col md={9}>
+          <Col xs={12} md={9}>
             <this.Select label={label} />
           </Col>
-          <Col md={3}>
+          <Col xs={12} md={3}>
             <this.Checkbox />
           </Col>
         </Row>

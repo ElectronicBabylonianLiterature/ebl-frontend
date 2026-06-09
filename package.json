@@ -17,6 +17,14 @@
     ],
     "src/**/*.css": [
       "prettier --write"
+    ],
+    "scripts/**/*.mjs": [
+      "prettier --write",
+      "eslint --fix"
+    ],
+    "scripts/**/*.ts": [
+      "prettier --write",
+      "eslint --fix"
     ]
   },
   "scripts": {
@@ -35,7 +43,7 @@
     "test:secrets": "bash scripts/test-secret-scanning.sh",
     "eject": "react-scripts eject",
     "lighthouse": "node scripts/lighthouse.js",
-    "lint": "eslint 'src/**/*.{ts,tsx}' && stylelint 'src/**/*.{css,sass}'",
+    "lint": "eslint 'src/**/*.{ts,tsx}' 'scripts/**/*.{mjs,ts}' && stylelint 'src/**/*.{css,sass}'",
     "prepare": "husky install",
     "postinstall": "patch-package"
   },

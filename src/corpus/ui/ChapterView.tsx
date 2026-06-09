@@ -68,13 +68,13 @@ function EditChapterButton({ chapter }: Props): JSX.Element {
   if (!session.isAllowedToWriteTexts()) {
     return (
       <Button variant="outline-primary" disabled>
-        <i className="fas fa-edit"></i> Edit
+        <i className="fas fa-edit" aria-hidden="true"></i> Edit
       </Button>
     )
   }
   return (
     <Link to={editUrl} className="btn btn-outline-primary">
-      <i className="fas fa-edit"></i> Edit
+      <i className="fas fa-edit" aria-hidden="true"></i> Edit
     </Link>
   )
 }
@@ -170,6 +170,7 @@ function ChapterView({
             CorpusTextCrumb.ofChapterDisplay(chapter),
             new ChapterCrumb(chapter.id),
           ]}
+          breadcrumbsFullWidth={false}
           title={<Title chapter={chapter} />}
           actions={
             <ButtonGroup>
@@ -196,11 +197,13 @@ function ChapterView({
             chapter={chapter}
             markupService={markupService}
           />
-          {chapter.isPublished && <HowToCite chapter={chapter} />}
-          <section>
-            <h3>Edition</h3>
-            {chapterViewTable}
-          </section>
+          <div className="chapter-view ebl-consistent-links">
+            {chapter.isPublished && <HowToCite chapter={chapter} />}
+            <section className="chapter-view__edition-section">
+              <h3 className="chapter-view__edition-heading">Edition</h3>
+              {chapterViewTable}
+            </section>
+          </div>
         </AppContent>
       </TranslationContext.Provider>
     </RowsContext.Provider>

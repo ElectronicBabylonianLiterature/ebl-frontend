@@ -1,21 +1,18 @@
 import React, { ReactNode } from 'react'
 import { Redirect, Route } from 'router/compat'
-import Bibliography from 'bibliography/ui/Bibliography'
-import BibliographyEditor from 'bibliography/ui/BibliographyEditor'
-import BibliographyViewer from 'bibliography/ui/BibliographyViewer'
 import BibliographyService from 'bibliography/application/BibliographyService'
-import { BibliographySlugs, sitemapDefaults } from 'router/sitemapConfig'
-import { HeadTagsService } from 'router/head'
+import { BibliographySlugs } from 'router/sitemapConfig'
 import AfoRegisterService from 'afo-register/application/AfoRegisterService'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import NotFoundPage from 'NotFoundPage'
+import withSearchAndHash from 'router/withSearchAndHash'
 
 export default function BibliographyRoutes({
-  sitemap,
-  bibliographyService,
-  afoRegisterService,
-  fragmentService,
-  bibliographySlugs,
+  bibliographyService: _bibliographyService,
+  afoRegisterService: _afoRegisterService,
+  fragmentService: _fragmentService,
+  bibliographySlugs: _bibliographySlugs,
+  sitemap: _sitemap,
 }: {
   sitemap: boolean
   bibliographyService: BibliographyService
@@ -25,101 +22,88 @@ export default function BibliographyRoutes({
 }): JSX.Element[] {
   return [
     <Route
-      key="BibliographyEditorNew"
+      key="bibliography-references-new-redirect"
       path="/bibliography/references/new-reference"
       exact
-      render={(props): ReactNode => (
-        <BibliographyEditor
-          bibliographyService={bibliographyService}
-          {...props}
-          create={true}
-          match={{
-            ...props.match,
-            params: { id: '' },
-          }}
+      render={({ location }): ReactNode => (
+        <Redirect
+          to={withSearchAndHash(
+            '/tools/references/new-reference',
+            location.search,
+            location.hash,
+          )}
         />
       )}
     />,
     <Route
-      key="BibliographyViewer"
-      path="/bibliography/references/:id"
-      exact
-      render={(props): ReactNode => (
-        <HeadTagsService
-          title="Bibliography entry: eBL"
-          description="Bibliography entry at the electronic Library (eBL)."
-        >
-          <BibliographyViewer
-            bibliographyService={bibliographyService}
-            {...props}
-          />
-        </HeadTagsService>
-      )}
-      {...(sitemap && {
-        ...sitemapDefaults,
-        slugs: bibliographySlugs,
-      })}
-    />,
-    <Route
-      key="BibliographyEditor"
+      key="bibliography-references-edit-redirect"
       path="/bibliography/references/:id/edit"
       exact
-      render={(props): ReactNode => (
-        <HeadTagsService
-          title="Edit Bibliography entry: eBL"
-          description="Edit bibliography entry at the electronic Library (eBL)."
-        >
-          <BibliographyEditor
-            bibliographyService={bibliographyService}
-            {...props}
-          />
-        </HeadTagsService>
+      render={({ match, location }): ReactNode => (
+        <Redirect
+          to={withSearchAndHash(
+            `/tools/references/${match.params.id}/edit`,
+            location.search,
+            location.hash,
+          )}
+        />
       )}
     />,
     <Route
-      key="BibliographyReferencesSearch"
+      key="bibliography-references-id-redirect"
+      path="/bibliography/references/:id"
+      exact
+      render={({ match, location }): ReactNode => (
+        <Redirect
+          to={withSearchAndHash(
+            `/tools/references/${match.params.id}`,
+            location.search,
+            location.hash,
+          )}
+        />
+      )}
+    />,
+    <Route
+      key="bibliography-references-redirect"
       path="/bibliography/references"
       exact
-      render={(props): ReactNode => (
-        <HeadTagsService
-          title="Bibliography References: eBL"
-          description="Bibliography references search in the electronic Babylonian Library (eBL)."
-        >
-          <Bibliography
-            bibliographyService={bibliographyService}
-            afoRegisterService={afoRegisterService}
-            fragmentService={fragmentService}
-            {...props}
-            activeTab={'references'}
-          />
-        </HeadTagsService>
+      render={({ location }): ReactNode => (
+        <Redirect
+          to={withSearchAndHash(
+            '/tools/references',
+            location.search,
+            location.hash,
+          )}
+        />
       )}
-      {...(sitemap && sitemapDefaults)}
     />,
     <Route
-      key="BibliographyAfoRegisterSearch"
+      key="bibliography-afo-register-redirect"
       path="/bibliography/afo-register"
       exact
-      render={(props): ReactNode => (
-        <HeadTagsService
-          title="Bibliography AfO-Register: eBL"
-          description="AfO-Register search in the electronic Babylonian Library (eBL)."
-        >
-          <Bibliography
-            bibliographyService={bibliographyService}
-            afoRegisterService={afoRegisterService}
-            fragmentService={fragmentService}
-            {...props}
-            activeTab={'afo-register'}
-          />
-        </HeadTagsService>
+      render={({ location }): ReactNode => (
+        <Redirect
+          to={withSearchAndHash(
+            '/tools/afo-register',
+            location.search,
+            location.hash,
+          )}
+        />
       )}
-      {...(sitemap && sitemapDefaults)}
     />,
-    <Redirect
-      from="/bibliography"
-      to="/bibliography/afo-register"
+    <Route
       key="bibliography-root-redirect"
+      path="/bibliography"
+      exact
+      render={({ location }): ReactNode => (
+        <Redirect
+          to={withSearchAndHash(
+            '/tools/references',
+            location.search,
+            location.hash,
+          )}
+        />
+      )}
     />,
     <Route
       key="BibliographyNotFound"

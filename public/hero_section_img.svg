@@ -1,0 +1,408 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="14.232141mm"
+   height="4.3607807mm"
+   viewBox="0 0 14.232141 4.3607807"
+   version="1.1"
+   id="svg1"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs1">
+    <marker
+       style="overflow:visible"
+       id="Dot"
+       refX="0"
+       refY="0"
+       orient="auto"
+       markerWidth="0.2"
+       markerHeight="0.2"
+       viewBox="0 0 1 1"
+       preserveAspectRatio="xMidYMid">
+      <path
+         transform="scale(0.5)"
+         style="fill:context-stroke;fill-rule:evenodd;stroke:none"
+         d="M 5,0 C 5,2.76 2.76,5 0,5 -2.76,5 -5,2.76 -5,0 c 0,-2.76 2.3,-5 5,-5 2.76,0 5,2.24 5,5 z"
+         id="path35" />
+    </marker>
+  </defs>
+  <path
+     fill="#ffffff"
+     stroke="#000000"
+     stroke-width="0.1"
+     d="m 12.340772,0.63374537 c 0.201906,0.87207003 0.136682,1.33642003 -0.323424,2.32435003 0.460106,-0.98793 0.744102,-1.22094 1.41469,-1.16495 -0.670588,-0.056 -0.889411,-0.28997 -1.091266,-1.15940003 z"
+     id="path1"
+     style="stroke:#000000;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#Dot);marker-mid:url(#Dot);marker-end:url(#Dot)" />
+  <line
+     fill="#ffffff"
+     stroke="#000000"
+     stroke-width="0.1"
+     x1="13.432035"
+     y1="1.7931558"
+     x2="14.182135"
+     y2="1.8555642"
+     id="line1"
+     style="stroke:#000000;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#Dot);marker-mid:url(#Dot);marker-end:url(#Dot)" />
+  <path
+     fill="#ffffff"
+     stroke="#000000"
+     stroke-width="0.1"
+     d="m 12.017298,2.9554554 c -0.122074,0.25902 -0.195705,0.42185 -0.195705,0.42185"
+     id="path2"
+     style="stroke:#000000;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#Dot);marker-mid:url(#Dot);marker-end:url(#Dot)" />
+  <path
+     fill="#ffffff"
+     stroke="#000000"
+     stroke-width="0.1"
+     d="m 10.79395,1.1158254 c 0.415202,0.53985 0.732172,0.64759 1.587395,0.53333 -0.852578,0.1142 -1.062807,0.32993 -1.048502,1.07856 -0.01436,-0.75128 -0.121046,-1.07209 -0.538893,-1.61189 z"
+     id="path3"
+     style="stroke:#000000;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#Dot);marker-mid:url(#Dot);marker-end:url(#Dot)" />
+  <line
+     fill="#ffffff"
+     stroke="#000000"
+     stroke-width="0.1"
+     x1="11.332792"
+     y1="2.7250712"
+     x2="11.358267"
+     y2="4.0583229"
+     id="line3"
+     style="stroke:#000000;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#Dot);marker-mid:url(#Dot);marker-end:url(#Dot)" />
+  <path
+     fill="#ffffff"
+     stroke="#000000"
+     stroke-width="0.1"
+     d="m 10.257146,1.9676054 c -0.3017393,-0.28003 -0.5280093,-0.34981 -0.9856043,-0.33842 0.518388,-0.0152 0.8012043,-0.17144 1.4140333,-0.78386003 C 10.150692,1.3821554 10.036554,1.6410354 10.264829,1.9542254"
+     id="path4"
+     style="stroke:#000000;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#Dot);marker-mid:url(#Dot);marker-end:url(#Dot)" />
+  <line
+     fill="#ffffff"
+     stroke="#000000"
+     stroke-width="0.1"
+     x1="10.459486"
+     y1="2.1701548"
+     x2="10.799726"
+     y2="2.5262034"
+     id="line4"
+     style="stroke:#000000;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#Dot);marker-mid:url(#Dot);marker-end:url(#Dot)" />
+  <path
+     fill="#ffffff"
+     stroke="#000000"
+     stroke-width="0.1"
+     d="m 10.685575,0.84532537 c 0.410231,-0.41273 0.664724,-0.66635 0.664724,-0.66635"
+     id="path5"
+     style="stroke:#000000;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#Dot);marker-mid:url(#Dot);marker-end:url(#Dot)" />
+  <path
+     fill="#ffffff"
+     stroke="#000000"
+     stroke-width="0.1"
+     d="m 8.7604327,2.0253154 c 0.426458,0.021 0.626241,-0.049 0.99627,-0.34982 -0.370029,0.30081 -0.407131,0.43648 -0.185562,0.67571 -0.221569,-0.23923 -0.38425,-0.30493 -0.810708,-0.32589 z"
+     id="path6"
+     style="stroke:#000000;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#Dot);marker-mid:url(#Dot);marker-end:url(#Dot)" />
+  <line
+     fill="#ffffff"
+     stroke="#000000"
+     stroke-width="0.1"
+     x1="9.5711422"
+     y1="2.3512003"
+     x2="9.7224636"
+     y2="2.515034"
+     id="line6"
+     style="stroke:#000000;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#Dot);marker-mid:url(#Dot);marker-end:url(#Dot)" />
+  <path
+     fill="#ffffff"
+     stroke="#000000"
+     stroke-width="0.1"
+     d="m 7.9237447,2.4170854 c 0.643628,0.03 0.893825,-0.033 1.245538,-0.32284 -0.351713,0.28988 -0.377981,0.43857 -0.118164,0.74058 -0.257172,-0.30206 -0.483746,-0.3877 -1.127374,-0.41774 z"
+     id="path7"
+     style="stroke:#000000;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#Dot);marker-mid:url(#Dot);marker-end:url(#Dot)" />
+  <line
+     fill="#ffffff"
+     stroke="#000000"
+     stroke-width="0.1"
+     x1="9.051115"
+     y1="2.8348277"
+     x2="9.0971508"
+     y2="2.8895152"
+     id="line7"
+     style="stroke:#000000;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#Dot);marker-mid:url(#Dot);marker-end:url(#Dot)" />
+  <path
+     fill="#ffffff"
+     stroke="#000000"
+     stroke-width="0.1"
+     d="m 7.9237447,2.4170854 c -0.01058,2e-4 -0.01587,3e-4 -0.01587,3e-4"
+     id="path8"
+     style="stroke:#000000;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#Dot);marker-mid:url(#Dot);marker-end:url(#Dot)" />
+  <path
+     fill="#ffffff"
+     stroke="#000000"
+     stroke-width="0.1"
+     d="m 8.1445887,3.1723554 c 0.994365,-0.17249 1.439374,-0.4271 2.2277393,-1.27046 -0.7857203,0.84331 -0.8586103,1.18343 -0.367148,1.69801 -0.4941073,-0.51453 -0.8662263,-0.60004 -1.8605913,-0.42755 z"
+     id="path9"
+     style="stroke:#000000;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#Dot);marker-mid:url(#Dot);marker-end:url(#Dot)" />
+  <line
+     fill="#ffffff"
+     stroke="#000000"
+     stroke-width="0.1"
+     x1="10.005178"
+     y1="3.5999033"
+     x2="10.680212"
+     y2="4.3041573"
+     id="line9"
+     style="stroke:#000000;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#Dot);marker-mid:url(#Dot);marker-end:url(#Dot)" />
+  <path
+     fill="#ffffff"
+     stroke="#000000"
+     stroke-width="0.1"
+     d="m 10.369683,1.9019454 c 0.140068,-0.14822 0.225596,-0.24248 0.225596,-0.24248"
+     id="path10"
+     style="stroke:#000000;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#Dot);marker-mid:url(#Dot);marker-end:url(#Dot)" />
+  <path
+     fill="#ffffff"
+     stroke="#000000"
+     stroke-width="0.1"
+     d="m 7.1854727,2.1427354 c 0.342025,0.31103 0.570991,0.3834 1.152614,0.35376 -0.581623,0.0296 -0.725196,0.13294 -0.717766,0.52181 -0.0048,-0.38892 -0.09282,-0.56454 -0.434848,-0.87557 z"
+     id="path11"
+     style="stroke:#000000;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#Dot);marker-mid:url(#Dot);marker-end:url(#Dot)" />
+  <line
+     fill="#ffffff"
+     stroke="#000000"
+     stroke-width="0.1"
+     x1="7.6229692"
+     y1="3.0182536"
+     x2="7.6441941"
+     y2="4.1292915"
+     id="line11"
+     style="stroke:#000000;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#Dot);marker-mid:url(#Dot);marker-end:url(#Dot)" />
+  <path
+     fill="#ffffff"
+     stroke="#000000"
+     stroke-width="0.1"
+     d="m 7.3099557,1.7328254 c 0.367417,0.25497 0.598624,0.30612 1.158832,0.26366 -0.560208,0.0425 -0.698592,0.14037 -0.69197,0.48692 -0.0066,-0.34655 -0.09945,-0.49561 -0.466862,-0.75058 z"
+     id="path12"
+     style="stroke:#000000;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#Dot);marker-mid:url(#Dot);marker-end:url(#Dot)" />
+  <path
+     fill="#ffffff"
+     stroke="#000000"
+     stroke-width="0.1"
+     d="m 8.4687877,1.9964854 c 0.118889,-0.0102 0.190263,-0.0142 0.190263,-0.0142"
+     id="path13"
+     style="stroke:#000000;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#Dot);marker-mid:url(#Dot);marker-end:url(#Dot)" />
+  <path
+     fill="#ffffff"
+     stroke="#000000"
+     stroke-width="0.1"
+     d="m 7.5555187,0.45790537 c 0.171054,0.64243003 0.152351,0.91007003 -0.09087,1.33813003 0.24322,-0.42806 0.40521,-0.53701 0.817885,-0.5449 -0.410029,0.008 -0.555962,-0.1508 -0.727015,-0.79323003 z"
+     id="path14"
+     style="stroke:#000000;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#Dot);marker-mid:url(#Dot);marker-end:url(#Dot)" />
+  <line
+     fill="#ffffff"
+     stroke="#000000"
+     stroke-width="0.1"
+     x1="8.2825375"
+     y1="1.2511331"
+     x2="10.356489"
+     y2="1.211506"
+     id="line14"
+     style="stroke:#000000;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#Dot);marker-mid:url(#Dot);marker-end:url(#Dot)" />
+  <path
+     fill="#ffffff"
+     stroke="#000000"
+     stroke-width="0.1"
+     d="m 7.5555187,0.45790537 c -0.01134,-0.0395 -0.01714,-0.0658 -0.01714,-0.0658"
+     id="path15"
+     style="stroke:#000000;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#Dot);marker-mid:url(#Dot);marker-end:url(#Dot)" />
+  <path
+     fill="#ffffff"
+     stroke="#000000"
+     stroke-width="0.1"
+     d="m 6.5602597,1.6915854 c 0.121332,0.8101 0.01068,1.2515 -0.558489,2.20976 0.566526,-0.95821 0.882115,-1.19976 1.569906,-1.2129 -0.687791,0.0131 -0.890085,-0.18676 -1.011417,-0.99686 z"
+     id="path16"
+     style="stroke:#000000;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#Dot);marker-mid:url(#Dot);marker-end:url(#Dot)" />
+  <path
+     fill="#ffffff"
+     stroke="#000000"
+     stroke-width="0.1"
+     d="m 6.0044157,3.9012954 c -0.148678,0.25159 -0.240929,0.40949 -0.240929,0.40949"
+     id="path17"
+     style="stroke:#000000;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#Dot);marker-mid:url(#Dot);marker-end:url(#Dot)" />
+  <path
+     fill="#ffffff"
+     stroke="#000000"
+     stroke-width="0.1"
+     d="m 4.9377837,0.98426537 c 0.570587,0.36222003 0.947339,0.41324003 1.886405,0.25505003 -0.936421,0.15814 -1.168369,0.34517 -1.157147,0.93244 -0.01387,-0.58722 -0.158671,-0.82527 -0.729258,-1.18749003 z"
+     id="path18"
+     style="stroke:#000000;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#Dot);marker-mid:url(#Dot);marker-end:url(#Dot)" />
+  <line
+     fill="#ffffff"
+     stroke="#000000"
+     stroke-width="0.1"
+     x1="5.6643968"
+     y1="2.1718028"
+     x2="5.6974015"
+     y2="3.8992198"
+     id="line18"
+     style="stroke:#000000;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#Dot);marker-mid:url(#Dot);marker-end:url(#Dot)" />
+  <path
+     fill="#ffffff"
+     stroke="#000000"
+     stroke-width="0.1"
+     d="m 6.8241887,1.2393154 c 0.247955,-0.0418 0.40093,-0.0685 0.40093,-0.0685"
+     id="path19"
+     style="stroke:#000000;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#Dot);marker-mid:url(#Dot);marker-end:url(#Dot)" />
+  <path
+     fill="#ffffff"
+     stroke="#000000"
+     stroke-width="0.1"
+     d="m 3.6618487,0.68579537 c 0.701203,0.55026003 1.050423,0.68385003 1.745999,0.66262003 -0.695626,0.0186 -0.86754,0.16212 -0.857026,0.71235 -0.01051,-0.55023 -0.18777,-0.82471 -0.888973,-1.37497003 z"
+     id="path20"
+     style="stroke:#000000;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#Dot);marker-mid:url(#Dot);marker-end:url(#Dot)" />
+  <line
+     fill="#ffffff"
+     stroke="#000000"
+     stroke-width="0.1"
+     x1="4.550818"
+     y1="2.0607646"
+     x2="4.5914598"
+     y2="4.1876259"
+     id="line20"
+     style="stroke:#000000;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#Dot);marker-mid:url(#Dot);marker-end:url(#Dot)" />
+  <path
+     fill="#ffffff"
+     stroke="#000000"
+     stroke-width="0.1"
+     d="m 3.6618487,0.68579537 c -0.04029,-0.031 -0.0645,-0.0517 -0.0645,-0.0517"
+     id="path21"
+     style="stroke:#000000;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#Dot);marker-mid:url(#Dot);marker-end:url(#Dot)" />
+  <path
+     fill="#ffffff"
+     stroke="#000000"
+     stroke-width="0.1"
+     d="m 3.2129817,1.2924354 c 0.108695,0.97971 -0.01458,1.45311 -0.613957,2.35372 0.599332,-0.90326 0.915375,-1.121 1.585609,-1.08353 -0.670183,-0.0348 -0.862906,-0.28784 -0.971652,-1.27019 z"
+     id="path22"
+     style="stroke:#000000;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#Dot);marker-mid:url(#Dot);marker-end:url(#Dot)" />
+  <line
+     fill="#ffffff"
+     stroke="#000000"
+     stroke-width="0.1"
+     x1="4.8919511"
+     y1="2.6020396"
+     x2="5.6310716"
+     y2="2.6434824"
+     id="line22"
+     style="stroke:#000000;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#Dot);marker-mid:url(#Dot);marker-end:url(#Dot)" />
+  <line
+     fill="#ffffff"
+     stroke="#000000"
+     stroke-width="0.1"
+     x1="4.1846833"
+     y1="2.5652659"
+     x2="4.5263886"
+     y2="2.5825541"
+     id="line23"
+     style="stroke:#000000;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#Dot);marker-mid:url(#Dot);marker-end:url(#Dot)" />
+  <path
+     fill="#ffffff"
+     stroke="#000000"
+     stroke-width="0.1"
+     d="m 2.5990747,3.6488054 c -0.0026,0.003 -0.0025,0.005 -0.0025,0.005"
+     id="path23"
+     style="stroke:#000000;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#Dot);marker-mid:url(#Dot);marker-end:url(#Dot)" />
+  <path
+     fill="#ffffff"
+     stroke="#000000"
+     stroke-width="0.1"
+     d="m 0.56894566,3.4891254 c 1.04336304,-0.23958 1.48842204,-0.49155 2.23053604,-1.26258 -0.742114,0.77103 -0.80508,1.07656 -0.322767,1.5278 -0.482313,-0.45124 -0.864406,-0.5048 -1.90776904,-0.26522 z"
+     id="path24"
+     style="stroke:#000000;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#Dot);marker-mid:url(#Dot);marker-end:url(#Dot)" />
+  <line
+     fill="#ffffff"
+     stroke="#000000"
+     stroke-width="0.1"
+     x1="2.4767134"
+     y1="3.7543528"
+     x2="2.8566878"
+     y2="4.112278"
+     id="line24"
+     style="stroke:#000000;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#Dot);marker-mid:url(#Dot);marker-end:url(#Dot)" />
+  <path
+     fill="#ffffff"
+     stroke="#000000"
+     stroke-width="0.1"
+     d="m 0.56894566,3.4891254 c -0.07906,0.0174 -0.126471,0.0289 -0.126471,0.0289"
+     id="path25"
+     style="stroke:#000000;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#Dot);marker-mid:url(#Dot);marker-end:url(#Dot)" />
+  <path
+     fill="#ffffff"
+     stroke="#000000"
+     stroke-width="0.1"
+     d="m 2.7994817,2.2265454 c 0.0726,-0.0781 0.215368,-0.22376 0.215368,-0.22376"
+     id="path26"
+     style="stroke:#000000;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#Dot);marker-mid:url(#Dot);marker-end:url(#Dot)" />
+  <path
+     fill="#ffffff"
+     stroke="#000000"
+     stroke-width="0.1"
+     d="m 1.7836497,1.5526254 c 0.40789,0.0187 0.651127,-0.13153 1.216289,-0.74569003 -0.565162,0.61416003 -0.600495,0.84242003 -0.184551,1.14409003 -0.415944,-0.30167 -0.623899,-0.38238 -1.031738,-0.3984 z"
+     id="path27"
+     style="stroke:#000000;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#Dot);marker-mid:url(#Dot);marker-end:url(#Dot)" />
+  <line
+     fill="#ffffff"
+     stroke="#000000"
+     stroke-width="0.1"
+     x1="2.8153899"
+     y1="1.9510232"
+     x2="2.9495757"
+     y2="2.0490305"
+     id="line27"
+     style="stroke:#000000;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#Dot);marker-mid:url(#Dot);marker-end:url(#Dot)" />
+  <path
+     fill="#ffffff"
+     stroke="#000000"
+     stroke-width="0.1"
+     d="m 2.9999387,0.80693537 c 0.430333,-0.46868 0.697395,-0.75694 0.697395,-0.75694"
+     id="path28"
+     style="stroke:#000000;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#Dot);marker-mid:url(#Dot);marker-end:url(#Dot)" />
+  <path
+     fill="#ffffff"
+     stroke="#000000"
+     stroke-width="0.1"
+     d="m 1.1643687,2.1043054 c 0.470872,-0.009 0.659467,-0.11051 0.937785,-0.50219 -0.278318,0.39168 -0.256666,0.55533 0.105511,0.81305 -0.362177,-0.25772 -0.572424,-0.31986 -1.043296,-0.31086 z"
+     id="path29"
+     style="stroke:#000000;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#Dot);marker-mid:url(#Dot);marker-end:url(#Dot)" />
+  <line
+     fill="#ffffff"
+     stroke="#000000"
+     stroke-width="0.1"
+     x1="2.2076628"
+     y1="2.4151652"
+     x2="2.4195769"
+     y2="2.5645945"
+     id="line29"
+     style="stroke:#000000;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#Dot);marker-mid:url(#Dot);marker-end:url(#Dot)" />
+  <path
+     fill="#ffffff"
+     stroke="#000000"
+     stroke-width="0.1"
+     d="m 0.29820966,2.6157154 c 0.72081604,-0.0852 0.97564604,-0.18271 1.27684504,-0.48485 -0.301148,0.30478 -0.282648,0.44204 0.09001,0.69426 -0.372708,-0.25487 -0.646039,-0.29463 -1.36685504,-0.20941 z"
+     id="path30"
+     style="stroke:#000000;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#Dot);marker-mid:url(#Dot);marker-end:url(#Dot)" />
+  <line
+     fill="#ffffff"
+     stroke="#000000"
+     stroke-width="0.1"
+     x1="1.6650145"
+     y1="2.8224833"
+     x2="1.8875105"
+     y2="2.9717143"
+     id="line30"
+     style="stroke:#000000;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#Dot);marker-mid:url(#Dot);marker-end:url(#Dot)" />
+  <path
+     fill="#ffffff"
+     stroke="#000000"
+     stroke-width="0.1"
+     d="m 0.29820966,2.6157154 c -0.153177,0.0162 -0.248208,0.0286 -0.248208,0.0286"
+     id="path31"
+     style="stroke:#000000;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#Dot);marker-mid:url(#Dot);marker-end:url(#Dot)" />
+</svg>

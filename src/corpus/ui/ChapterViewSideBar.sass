@@ -1,33 +1,76 @@
+@import src/design-tokens
+
 .settings
-    margin-top: 6em
+  margin-top: 1.25rem
+  background: $ebl-color-surface-primary
+  border-radius: 10px
+  padding: 1rem 1.1rem
+  border: 1px solid $ebl-color-border-subtle
+  box-shadow: 0 2px 10px rgba(17, 35, 64, 0.06)
+  color: $ebl-color-text-corpus-body
 
-    &__heading,
-    &__footer
-        text-align: right
-        font-size: 1.1em
-        cursor: pointer
-    
-    &__section
-        margin-bottom: 2.5em
-        padding-left: 2.5em
+  &__heading,
+  &__footer
+    text-align: right
+    font-size: 0.9rem
+    cursor: pointer
+    color: $ebl-color-brand-primary
+    font-weight: 600
+    letter-spacing: 0.03em
 
-    &__subheading
-        font-size: 1.2em
+    &:hover
+      color: $ebl-color-brand-primary-dark
 
-    &__switch
-        margin-left: 1em
+  &__section
+    margin-bottom: 1.2rem
+    padding-left: 0.95rem
+    border-left: 2px solid rgba(26, 95, 168, 0.25)
 
-    &__languages
-        list-style: none
-        margin: 0
-        padding: 0
+  &__subheading
+    font-size: 0.72rem
+    font-weight: 700
+    text-transform: uppercase
+    letter-spacing: 0.06em
+    color: $ebl-color-text-corpus-muted
+    margin-bottom: 0.5rem
 
-    &__language
-        &--active
-            text-decoration: underline
+  &__switch
+    margin-left: 0.1em
 
-        cursor: pointer
-        margin-left: 1em
+    .form-check-input
+      border-color: $ebl-color-border-corpus-accent
 
-    &__translators
-        font-size: 80%
+      &:checked
+        background-color: $ebl-color-brand-primary
+        border-color: $ebl-color-brand-primary
+
+    .form-check-label
+      font-size: 0.88rem
+      color: $ebl-color-text-corpus-body
+
+  &__languages
+    list-style: none
+    margin: 0
+    padding: 0
+
+    li
+      margin-bottom: 0.35rem
+
+  &__language
+    cursor: pointer
+    margin-left: 0.1em
+    color: $ebl-color-text-corpus-medium
+    font-size: 0.875rem
+    transition: color 0.15s ease
+
+    &:hover
+      color: $ebl-color-brand-primary-dark
+
+    &--active
+      text-decoration: none
+      color: $ebl-color-brand-primary
+      font-weight: 600
+
+  &__translators
+    font-size: 80%
+    color: $ebl-color-text-corpus-muted

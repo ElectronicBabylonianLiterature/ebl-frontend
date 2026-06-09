@@ -1,5 +1,5 @@
 .folio-tooltip-link {
-  color: #fff;
+  color: var(--ebl-color-surface-primary);
   text-decoration: underline;
 }
 

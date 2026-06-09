@@ -5,6 +5,7 @@ import { CorpusQuery } from 'query/CorpusQuery'
 import { CorpusQueryItem, CorpusQueryResult } from 'query/QueryResult'
 import { Col, Row } from 'react-bootstrap'
 import _ from 'lodash'
+import Bluebird from 'bluebird'
 import { ResultPageButtons } from 'common/ui/ResultPageButtons'
 import { ChapterId, chapterIdToString } from 'transliteration/domain/chapter-id'
 import { ChapterDisplay } from 'corpus/domain/chapter'
@@ -15,6 +16,10 @@ import TranslationContext, {
 } from '../TranslationContext'
 import { Markdown } from 'common/ui/Markdown'
 import { genreFromAbbr } from '../Corpus'
+
+type CorpusQueryItemWithChapterDisplay = CorpusQueryItem & {
+  readonly chapterDisplay?: ChapterDisplay
+}
 
 function GenreInfoRow({
   chapterId,
@@ -39,7 +44,7 @@ function GenreInfoRow({
             )}
             {' > '}
             {`${chapterIdToString(chapterId)} `}
-            <i className="fas fa-external-link-alt" />
+            <i className="fas fa-external-link-alt" aria-hidden="true" />
           </small>
         </a>
       </Col>
@@ -55,6 +60,7 @@ const ChapterResult = withData<
     lines: readonly number[]
     variants: readonly number[]
     variantsToShow: number
+    queryItem: CorpusQueryItem
   },
   {
     textService: TextService
@@ -103,12 +109,18 @@ const ChapterResult = withData<
       </>
     )
   },
-  ({ textService, chapterId, lines, variants, variantsToShow }) =>
-    textService.findChapterDisplay(
-      chapterId,
-      _.take(lines, variantsToShow),
-      _.take(variants, variantsToShow),
-    ),
+  ({ textService, chapterId, lines, variants, variantsToShow, queryItem }) => {
+    const prefetchedChapterDisplay =
+      (queryItem as CorpusQueryItemWithChapterDisplay).chapterDisplay ?? null
+
+    return prefetchedChapterDisplay
+      ? Bluebird.resolve(prefetchedChapterDisplay)
+      : textService.findChapterDisplay(
+          chapterId,
+          _.take(lines, variantsToShow),
+          _.take(variants, variantsToShow),
+        )
+  },
   {
     watch: ({ active }) => [active],
   },
@@ -136,7 +148,7 @@ function ResultPages({
     <>
       {pageButtons}
 
-      {pages[active].map((chapter, index) => {
+      {pages[active].map((chapter) => {
         const chapterId = {
           textId: chapter.textId,
           name: chapter.name,
@@ -144,7 +156,7 @@ function ResultPages({
         }
         return (
           <ChapterResult
-            key={index}
+            key={`${chapterIdToString(chapterId)}:${chapter.lines.join(',')}:${chapter.variants.join(',')}`}
             textService={textService}
             chapterId={chapterId}
             active={active}
@@ -152,6 +164,7 @@ function ResultPages({
             lines={chapter.lines}
             variants={chapter.variants}
             variantsToShow={variantsToShow}
+            queryItem={chapter}
           />
         )
       })}

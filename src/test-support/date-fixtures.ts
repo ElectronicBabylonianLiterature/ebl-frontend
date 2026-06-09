@@ -3,7 +3,81 @@ import { MesopotamianDate } from 'chronology/domain/Date'
 import { Ur3Calendar } from 'chronology/domain/DateBase'
 import Chance from 'chance'
 import Kings from 'chronology/domain/Kings.json'
-import { eponymsNeoAssyrian } from 'chronology/ui/DateEditor/Eponyms'
+import { Eponym, eponymsNeoAssyrian } from 'chronology/ui/DateEditor/Eponyms'
+
+export const king = {
+  orderGlobal: 1,
+  dynastyNumber: '1',
+  dynastyName: 'Dynasty of Akkad',
+  orderInDynasty: '1',
+  name: 'Sargon',
+  date: '2334–2279',
+  totalOfYears: '56?',
+  notes: '',
+}
+
+export const kingUr3 = {
+  orderGlobal: 14,
+  dynastyNumber: '2',
+  dynastyName: 'Third Dynasty of Ur',
+  orderInDynasty: '3',
+  name: 'Amar-Suen',
+  date: '2044–2036',
+  totalOfYears: '9',
+  notes: '',
+}
+
+export const eponym = {
+  date: '910',
+  name: 'Adad-nērārī (II)',
+  title: 'king',
+  isKing: true,
+  phase: 'NA',
+} as Eponym
+
+export const nabonassarEraKing = {
+  orderGlobal: 172,
+  dynastyNumber: '14',
+  dynastyName: 'Persian Rulers',
+  orderInDynasty: '3',
+  name: 'Darius I',
+  date: '521–486',
+  totalOfYears: '36',
+  notes: '',
+}
+
+export const cambysesKing = {
+  orderGlobal: 168,
+  dynastyNumber: '14',
+  dynastyName: 'Persian Rulers',
+  orderInDynasty: '2',
+  name: 'Cambyses',
+  date: '529–522',
+  totalOfYears: '8',
+  notes: '',
+}
+
+export const nabonidusKing = {
+  orderGlobal: 166,
+  dynastyNumber: '13',
+  dynastyName: 'Neo-Babylonian Dynasty',
+  orderInDynasty: '6',
+  name: 'Nabonidus',
+  date: '555–539',
+  totalOfYears: '17',
+  notes: '',
+}
+
+export const rimushKing = {
+  orderGlobal: 2,
+  dynastyNumber: '1',
+  dynastyName: 'Dynasty of Akkad',
+  orderInDynasty: '2',
+  name: 'Rimuš',
+  date: '2278–2270',
+  totalOfYears: '9?',
+  notes: '',
+}
 
 const chance = new Chance()
 

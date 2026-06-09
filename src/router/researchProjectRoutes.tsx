@@ -55,78 +55,55 @@ export default function ResearchProjectRoutes({
     },
   ]
 
-  const routes = projectRoutes.flatMap(({ key, project, HomeComponent }) => [
-    <Route
-      key={`${key}-home`}
-      exact
-      path={`/projects/${project.abbreviation}`}
-      render={(): ReactNode => (
-        <HeadTagsService
-          title={`${project.abbreviation} in eBL`}
-          description={project.name}
-        >
-          <HomeComponent
-            fragmentService={fragmentService}
-            fragmentSearchService={fragmentSearchService}
-            wordService={wordService}
-            bibliographyService={bibliographyService}
-            dossiersService={dossiersService}
-            project={project}
-          />
-        </HeadTagsService>
-      )}
-      {...(sitemap && sitemapDefaults)}
-    />,
-    <Route
-      key={`${key}-home-alias`}
-      exact
-      path={`/projects/${project.abbreviation}/home`}
-      render={(): ReactNode => (
-        <HeadTagsService
-          title={`${project.abbreviation} in eBL`}
-          description={project.name}
-        >
-          <HomeComponent
-            fragmentService={fragmentService}
-            fragmentSearchService={fragmentSearchService}
-            wordService={wordService}
-            bibliographyService={bibliographyService}
-            dossiersService={dossiersService}
-            project={project}
-          />
-        </HeadTagsService>
-      )}
-      {...(sitemap && sitemapDefaults)}
-    />,
-    <Route
-      key={`${key}-search`}
-      exact
-      path={`/projects/${project.abbreviation}/search`}
-      render={({ location }): ReactNode => (
-        <HeadTagsService
-          title={`${project.abbreviation} in eBL`}
-          description={project.name}
-        >
-          <ResearchProjectSearch
-            fragmentService={fragmentService}
-            fragmentSearchService={fragmentSearchService}
-            wordService={wordService}
-            bibliographyService={bibliographyService}
-            dossiersService={dossiersService}
-            fragmentQuery={{
-              ...parse(location.search),
-              project: project.abbreviation as keyof typeof ResearchProjects,
-            }}
-            project={project}
-          />
-        </HeadTagsService>
-      )}
-      {...(sitemap && sitemapDefaults)}
-    />,
-  ])
-
   return [
-    ...routes,
+    ...projectRoutes.flatMap(({ key, project, HomeComponent }) => [
+      <Route
+        key={`${key}-home`}
+        exact
+        path={`/projects/${project.abbreviation}`}
+        render={(): ReactNode => (
+          <HeadTagsService
+            title={`${project.abbreviation} in eBL`}
+            description={project.name}
+          >
+            <HomeComponent
+              fragmentService={fragmentService}
+              fragmentSearchService={fragmentSearchService}
+              wordService={wordService}
+              bibliographyService={bibliographyService}
+              dossiersService={dossiersService}
+              project={project}
+            />
+          </HeadTagsService>
+        )}
+        {...(sitemap && sitemapDefaults)}
+      />,
+      <Route
+        key={`${key}-search`}
+        exact
+        path={`/projects/${project.abbreviation}/search`}
+        render={({ location }): ReactNode => (
+          <HeadTagsService
+            title={`${project.abbreviation} in eBL`}
+            description={project.name}
+          >
+            <ResearchProjectSearch
+              fragmentService={fragmentService}
+              fragmentSearchService={fragmentSearchService}
+              wordService={wordService}
+              bibliographyService={bibliographyService}
+              dossiersService={dossiersService}
+              fragmentQuery={{
+                ...parse(location.search),
+                project: project.abbreviation as keyof typeof ResearchProjects,
+              }}
+              project={project}
+            />
+          </HeadTagsService>
+        )}
+        {...(sitemap && sitemapDefaults)}
+      />,
+    ]),
     <Route
       key="projects-overview"
       exact

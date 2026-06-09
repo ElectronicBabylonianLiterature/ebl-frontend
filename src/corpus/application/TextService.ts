@@ -56,6 +56,14 @@ import { ParallelLine } from 'transliteration/domain/parallel-line'
 import { CorpusQuery } from 'query/CorpusQuery'
 import { CorpusQueryResult } from 'query/QueryResult'
 import { ChapterSlugs, TextSlugs } from 'router/sitemapConfig'
+import ConcurrencyLimiter from 'common/utils/ConcurrencyLimiter'
+import { CacheEntry } from 'common/utils/cache'
+import getOrFetchCachedValue from 'common/utils/getOrFetchCachedValue'
+
+const chapterDisplayCacheEntryLifetimeInMilliseconds = 2 * 60 * 1000
+const maximumCachedChapterDisplays = 250
+const chapterDisplayConcurrencyLimit = 4
+const defaultCacheScope = 'default'
 
 class CorpusLemmatizationFactory extends AbstractLemmatizationFactory<
   Chapter,
@@ -142,13 +150,30 @@ export function createChapterUrl({
 export default class TextService {
   private readonly referenceInjector: ReferenceInjector
 
+  private cacheScope: string | null = null
+
   private cachedTexts: Bluebird<Text[]> | null = null
+
+  private readonly cachedChapterDisplays = new Map<
+    string,
+    CacheEntry<ChapterDisplay>
+  >()
+
+  private readonly cachedChapterDisplayRequests = new Map<
+    string,
+    Bluebird<ChapterDisplay>
+  >()
+
+  private readonly chapterDisplayFetchLimiter = new ConcurrencyLimiter(
+    chapterDisplayConcurrencyLimit,
+  )
 
   constructor(
     private readonly apiClient: ApiClient,
     private readonly fragmentService: FragmentService,
     private readonly wordService: WordService,
     bibliographyService: BibliographyService,
+    private readonly getCacheScope: () => string = () => defaultCacheScope,
   ) {
     this.referenceInjector = new ReferenceInjector(bibliographyService)
   }
@@ -193,6 +218,29 @@ export default class TextService {
     lines: readonly number[] = [],
     variants: readonly number[] = [],
   ): Bluebird<ChapterDisplay> {
+    this.clearCachesWhenScopeChanges()
+
+    const cacheKey = this.createChapterDisplayCacheKey(id, lines, variants)
+
+    return getOrFetchCachedValue({
+      cache: this.cachedChapterDisplays,
+      requests: this.cachedChapterDisplayRequests,
+      key: cacheKey,
+      maximumCacheSize: maximumCachedChapterDisplays,
+      cacheEntryLifetimeInMilliseconds:
+        chapterDisplayCacheEntryLifetimeInMilliseconds,
+      fetchValue: () =>
+        this.chapterDisplayFetchLimiter.run(() =>
+          this.fetchChapterDisplay(id, lines, variants),
+        ),
+    })
+  }
+
+  private fetchChapterDisplay(
+    id: ChapterId,
+    lines: readonly number[] = [],
+    variants: readonly number[] = [],
+  ): Bluebird<ChapterDisplay> {
     const lineParams = _.isEmpty(lines)
       ? ''
       : `?${stringify({ lines, variants })}`
@@ -231,22 +279,22 @@ export default class TextService {
                 ),
               ),
             ),
-          ]).then(([translation, variants, oldLineNumbers]) => ({
+          ]).then(([translation, lineVariants, oldLineNumbers]) => ({
             ...line,
             translation,
-            variants,
+            variants: lineVariants,
             oldLineNumbers,
           })),
         ),
       ).then(
-        (lines) =>
+        (chapterLines) =>
           new ChapterDisplay(
             chapter.id,
             chapter.textHasDoi,
             chapter.textName,
             chapter.isSingleStage,
             chapter.title,
-            lines,
+            chapterLines,
             chapter.record,
             chapter.atf,
           ),
@@ -392,6 +440,8 @@ export default class TextService {
   }
 
   list(): Bluebird<Text[]> {
+    this.clearCachesWhenScopeChanges()
+
     if (!this.cachedTexts) {
       this.cachedTexts = this.apiClient
         .fetchJson<unknown[]>('/texts', false)
@@ -420,6 +470,7 @@ export default class TextService {
   }
 
   query(query: CorpusQuery): Bluebird<CorpusQueryResult> {
+    this.clearCachesWhenScopeChanges()
     return this.apiClient.fetchJson<CorpusQueryResult>(
       `/corpus/query?${stringify(query)}`,
       false,
@@ -496,5 +547,41 @@ export default class TextService {
 
   listAllChapters(): Bluebird<ChapterSlugs> {
     return this.apiClient.fetchJson<ChapterSlugs>('/corpus/chapters/all', false)
+  }
+
+  private clearAllCaches(): void {
+    this.cachedTexts = null
+    this.cachedChapterDisplays.clear()
+    this.cachedChapterDisplayRequests.clear()
+  }
+
+  private clearCachesWhenScopeChanges(): void {
+    const nextScope = this.resolveCacheScope()
+
+    if (this.cacheScope === null) {
+      this.cacheScope = nextScope
+      return
+    }
+
+    if (this.cacheScope !== nextScope) {
+      this.cacheScope = nextScope
+      this.clearAllCaches()
+    }
+  }
+
+  private resolveCacheScope(): string {
+    try {
+      return this.getCacheScope()
+    } catch {
+      return defaultCacheScope
+    }
+  }
+
+  private createChapterDisplayCacheKey(
+    id: ChapterId,
+    lines: readonly number[] = [],
+    variants: readonly number[] = [],
+  ): string {
+    return `${createChapterUrl(id)}?${stringify({ lines, variants })}`
   }
 }

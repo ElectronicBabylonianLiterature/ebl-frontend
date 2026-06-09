@@ -431,6 +431,42 @@ export default class FakeApi {
     return this
   }
 
+  allowDossiers(dossiers: Dto[]): FakeApi {
+    this.expectations.push(
+      new Expectation({
+        method: 'GET',
+        path: '/dossiers',
+        authenticate: false,
+        response: dossiers,
+      }),
+    )
+    return this
+  }
+
+  allowGenres(genres: string[][]): FakeApi {
+    this.expectations.push(
+      new Expectation({
+        method: 'GET',
+        path: '/genres',
+        authenticate: false,
+        response: genres,
+      }),
+    )
+    return this
+  }
+
+  allowLatestFragments(queryResult: Dto): FakeApi {
+    this.expectations.push(
+      new Expectation({
+        method: 'GET',
+        path: '/fragments/latest',
+        authenticate: false,
+        response: queryResult,
+      }),
+    )
+    return this
+  }
+
   allowImage(file: string): FakeApi {
     this.expectations.push(
       new Expectation({

@@ -24,14 +24,14 @@ beforeEach(async () => {
     .withSession()
     .withPath(`/dictionary`)
     .render()
-  await appDriver.waitForText('Dictionary')
+  await appDriver.waitForText('Akkadian Dictionary')
 })
 
 test('renders dictionary search page', () => {
   expect(appDriver.getView().container).toMatchSnapshot()
   expect(
-    appDriver.getView().getByRole('heading', { name: 'Dictionary' }),
-  ).toBeInTheDocument()
+    appDriver.getView().getByRole('heading', { name: 'Akkadian Dictionary' }),
+  ).toBeVisible()
 })
 
 test.each([

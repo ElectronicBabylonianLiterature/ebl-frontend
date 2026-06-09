@@ -69,6 +69,10 @@ function getYear(params: DateSelectionStateParams): DateFieldDto {
     value: params.isAssyrianDate ? '1' : params.yearValue,
     isBroken: params.isAssyrianDate ? undefined : params.yearBroken,
     isUncertain: params.isAssyrianDate ? undefined : params.yearUncertain,
+    isReconstructed: params.isAssyrianDate
+      ? undefined
+      : params.yearReconstructed,
+    isEmended: params.isAssyrianDate ? undefined : params.yearEmended,
   }
 }
 

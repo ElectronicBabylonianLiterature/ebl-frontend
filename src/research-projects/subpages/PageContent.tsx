@@ -27,13 +27,15 @@ export default function PageContent({
       <Container fluid>
         <Row>
           <Col>
-            <h3>{title}</h3>
+            <h2 className="project-page__title">{title}</h2>
           </Col>
         </Row>
         <Row>
-          <Col>{children}</Col>
-          <Col sm={2}>
-            <Nav className={'project-page__sidebar'}>
+          <Col lg={10} md={9}>
+            {children}
+          </Col>
+          <Col lg={2} md={3}>
+            <Nav className="project-page__sidebar">
               <TocLink project={project} path={''}>
                 Home
               </TocLink>

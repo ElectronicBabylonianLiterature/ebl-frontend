@@ -1,23 +1,20 @@
 import React, { ReactNode } from 'react'
-import Dictionary from 'dictionary/ui/search/Dictionary'
-import WordEditor from 'dictionary/ui/editor/WordEditor'
-import WordDisplay from 'dictionary/ui/display/WordDisplay'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import TextService from 'corpus/application/TextService'
 import WordService from 'dictionary/application/WordService'
-import { Route } from 'router/compat'
+import { Route, Redirect } from 'router/compat'
 import SignService from 'signs/application/SignService'
-import { DictionarySlugs, sitemapDefaults } from 'router/sitemapConfig'
-import { HeadTagsService } from 'router/head'
+import { DictionarySlugs } from 'router/sitemapConfig'
 import NotFoundPage from 'NotFoundPage'
+import withSearchAndHash from 'router/withSearchAndHash'
 
 export default function DictionaryRoutes({
-  sitemap,
-  fragmentService,
-  textService,
-  wordService,
-  signService,
-  dictionarySlugs,
+  sitemap: _sitemap,
+  fragmentService: _fragmentService,
+  textService: _textService,
+  wordService: _wordService,
+  signService: _signService,
+  dictionarySlugs: _dictionarySlugs,
 }: {
   sitemap: boolean
   fragmentService: FragmentService
@@ -28,52 +25,46 @@ export default function DictionaryRoutes({
 }): JSX.Element[] {
   return [
     <Route
-      key="WordEditor"
+      key="dictionary-editor-redirect"
       path="/dictionary/:id/edit"
       exact
-      render={({ match }): ReactNode => (
-        <WordEditor
-          wordService={wordService}
-          id={decodeURIComponent(match.params.id ?? '')}
+      render={({ match, location }): ReactNode => (
+        <Redirect
+          to={withSearchAndHash(
+            `/tools/dictionary/${match.params.id}/edit`,
+            location.search,
+            location.hash,
+          )}
         />
       )}
     />,
     <Route
-      key="WordDisplay"
+      key="dictionary-display-redirect"
       path="/dictionary/:id"
       exact
-      render={({ match }): ReactNode => (
-        <HeadTagsService
-          title="Dictionary entry: eBL"
-          description="electronic Babylonian Library (eBL) dictionary entry display"
-        >
-          <WordDisplay
-            textService={textService}
-            wordService={wordService}
-            fragmentService={fragmentService}
-            signService={signService}
-            wordId={decodeURIComponent(match.params.id ?? '')}
-          />
-        </HeadTagsService>
+      render={({ match, location }): ReactNode => (
+        <Redirect
+          to={withSearchAndHash(
+            `/tools/dictionary/${match.params.id}`,
+            location.search,
+            location.hash,
+          )}
+        />
       )}
-      {...(sitemap && {
-        ...sitemapDefaults,
-        slugs: dictionarySlugs,
-      })}
     />,
     <Route
-      key="Dictionary"
+      key="dictionary-redirect"
       path="/dictionary"
       exact
-      render={(props): ReactNode => (
-        <HeadTagsService
-          title="Search dictionary: eBL"
-          description="Search the electronic Babylonian Library (eBL) dictionary"
-        >
-          <Dictionary wordService={wordService} {...props} />
-        </HeadTagsService>
+      render={({ location }): ReactNode => (
+        <Redirect
+          to={withSearchAndHash(
+            '/tools/dictionary',
+            location.search,
+            location.hash,
+          )}
+        />
       )}
-      {...(sitemap && sitemapDefaults)}
     />,
     <Route
       key="DictionaryNotFound"

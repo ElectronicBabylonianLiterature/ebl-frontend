@@ -1,12 +1,40 @@
+@import src/design-tokens
+
 .info
-      &__help
-            margin-left: 0.5rem
-      &__header
-            display: flex
-            align-items: baseline
+  &__section
+    background: $ebl-color-surface-primary
+    border: 1px solid $ebl-color-border-subtle
+    border-radius: 8px
+    padding: 0.85rem 1rem
+    margin-bottom: 0.65rem
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04)
+
+    &--muted
+      background: $ebl-color-surface-corpus-muted
+      box-shadow: none
+
+  &__section-header
+    display: flex
+    align-items: center
+    justify-content: space-between
+    margin-bottom: 0.5rem
+    padding-bottom: 0.4rem
+    border-bottom: 1px solid $ebl-color-border-corpus-soft
+
+  &__section-title
+    font-size: 0.7rem
+    font-weight: 700
+    letter-spacing: 0.08em
+    text-transform: uppercase
+    color: $ebl-color-text-corpus-muted
+    margin: 0
+
+  &__help
+    margin-left: 0.5rem
+    color: $ebl-color-divider
 
 ol.AfORegisterRecordsInFragment
-      padding-left: 15px
+  padding-left: 15px
 
-      li small.text-black-50.ml-3
-            display: none
+  li small.text-black-50.ml-3
+    display: none

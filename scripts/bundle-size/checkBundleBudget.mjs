@@ -1,17 +1,24 @@
 import * as fs from 'node:fs'
 import * as path from 'node:path'
-import {
-  buildDirectory,
-  getBuildMetrics,
-  readJsonFile,
-} from './bundleSizeMetrics.mjs'
+import * as bundleSizeMetrics from './bundleSizeMetrics.mjs'
 
-const reportDirectoryPath = path.resolve(buildDirectory, 'bundle-size')
-const reportFilePath = path.resolve(
-  reportDirectoryPath,
-  'bundle-budget-report.json',
-)
+const defaultThresholdPercent = 10
 const allowedBaselineSources = new Set(['repository', 'master', 'bootstrap'])
+
+function getReportPaths() {
+  const reportDirectoryPath = path.resolve(
+    bundleSizeMetrics.buildDirectory,
+    'bundle-size',
+  )
+
+  return {
+    reportDirectoryPath,
+    reportFilePath: path.resolve(
+      reportDirectoryPath,
+      'bundle-budget-report.json',
+    ),
+  }
+}
 
 function getArgumentValue(argumentName, argv = process.argv.slice(2)) {
   const argumentIndex = argv.indexOf(argumentName)
@@ -62,51 +69,40 @@ function shouldAllowBudgetExceed(argv = process.argv.slice(2)) {
   return argv.includes('--allow-budget-exceed')
 }
 
+function validatePositiveNumber(value, fieldName) {
+  if (typeof value !== 'number') {
+    throw new Error(`bundle-size-baseline.json ${fieldName} must be a number`)
+  }
+
+  if (value <= 0) {
+    throw new Error(
+      `bundle-size-baseline.json ${fieldName} must be greater than 0`,
+    )
+  }
+}
+
+function applyDefaultThresholdPercent(baseline) {
+  return {
+    thresholdPercent: defaultThresholdPercent,
+    ...baseline,
+  }
+}
+
 function validateBaseline(baseline) {
-  if (typeof baseline.initialJavaScriptBytes !== 'number') {
-    throw new Error(
-      'bundle-size-baseline.json initialJavaScriptBytes must be a number',
-    )
-  }
+  validatePositiveNumber(
+    baseline.initialJavaScriptBytes,
+    'initialJavaScriptBytes',
+  )
+  validatePositiveNumber(
+    baseline.initialJavaScriptGzipBytes,
+    'initialJavaScriptGzipBytes',
+  )
 
-  if (baseline.initialJavaScriptBytes <= 0) {
-    throw new Error(
-      'bundle-size-baseline.json initialJavaScriptBytes must be greater than 0',
-    )
-  }
+  const validatedBaseline = applyDefaultThresholdPercent(baseline)
 
-  if (typeof baseline.initialJavaScriptGzipBytes !== 'number') {
-    throw new Error(
-      'bundle-size-baseline.json initialJavaScriptGzipBytes must be a number',
-    )
-  }
+  validatePositiveNumber(validatedBaseline.thresholdPercent, 'thresholdPercent')
 
-  if (baseline.initialJavaScriptGzipBytes <= 0) {
-    throw new Error(
-      'bundle-size-baseline.json initialJavaScriptGzipBytes must be greater than 0',
-    )
-  }
-
-  if (baseline.thresholdPercent == null) {
-    return {
-      ...baseline,
-      thresholdPercent: 10,
-    }
-  }
-
-  if (typeof baseline.thresholdPercent !== 'number') {
-    throw new Error(
-      'bundle-size-baseline.json thresholdPercent must be a number',
-    )
-  }
-
-  if (baseline.thresholdPercent <= 0) {
-    throw new Error(
-      'bundle-size-baseline.json thresholdPercent must be greater than 0',
-    )
-  }
-
-  return baseline
+  return validatedBaseline
 }
 
 function getTopAsyncJavaScriptAssets(asyncAssetSizeByPath) {
@@ -115,29 +111,43 @@ function getTopAsyncJavaScriptAssets(asyncAssetSizeByPath) {
     .slice(0, 10)
 }
 
+function createBundleBudgetThreshold(baseline) {
+  return {
+    allowedInitialJavaScriptBytes: Math.round(
+      baseline.initialJavaScriptBytes * (1 + baseline.thresholdPercent / 100),
+    ),
+  }
+}
+
+function createBundleBudgetDelta(baseline, buildMetrics) {
+  const initialJavaScriptBytes =
+    buildMetrics.initialJavaScriptBytes - baseline.initialJavaScriptBytes
+  const initialJavaScriptGzipBytes =
+    buildMetrics.initialJavaScriptGzipBytes -
+    baseline.initialJavaScriptGzipBytes
+
+  return {
+    initialJavaScriptBytes,
+    initialJavaScriptGzipBytes,
+    initialJavaScriptBytesPercent:
+      (initialJavaScriptBytes / baseline.initialJavaScriptBytes) * 100,
+  }
+}
+
 function createBundleBudgetReport(
   baseline,
   buildMetrics,
-  {
-    baselineSource = 'repository',
-    enforcementMode = 'strict',
-  } = {},
+  { baselineSource = 'repository', enforcementMode = 'strict' } = {},
 ) {
-  const allowedInitialJavaScriptBytes = Math.round(
-    baseline.initialJavaScriptBytes * (1 + baseline.thresholdPercent / 100),
-  )
-  const initialJavaScriptBytesDelta =
-    buildMetrics.initialJavaScriptBytes - baseline.initialJavaScriptBytes
-  const initialJavaScriptGzipBytesDelta =
-    buildMetrics.initialJavaScriptGzipBytes -
-    baseline.initialJavaScriptGzipBytes
-  const budgetExceeded =
-    buildMetrics.initialJavaScriptBytes > allowedInitialJavaScriptBytes
+  const threshold = createBundleBudgetThreshold(baseline)
+  const delta = createBundleBudgetDelta(baseline, buildMetrics)
 
   return {
     baselineSource,
     enforcementMode,
-    budgetExceeded,
+    budgetExceeded:
+      buildMetrics.initialJavaScriptBytes >
+      threshold.allowedInitialJavaScriptBytes,
     baseline: {
       initialJavaScriptBytes: baseline.initialJavaScriptBytes,
       initialJavaScriptGzipBytes: baseline.initialJavaScriptGzipBytes,
@@ -147,15 +157,8 @@ function createBundleBudgetReport(
       initialJavaScriptBytes: buildMetrics.initialJavaScriptBytes,
       initialJavaScriptGzipBytes: buildMetrics.initialJavaScriptGzipBytes,
     },
-    threshold: {
-      allowedInitialJavaScriptBytes,
-    },
-    delta: {
-      initialJavaScriptBytes: initialJavaScriptBytesDelta,
-      initialJavaScriptGzipBytes: initialJavaScriptGzipBytesDelta,
-      initialJavaScriptBytesPercent:
-        (initialJavaScriptBytesDelta / baseline.initialJavaScriptBytes) * 100,
-    },
+    threshold,
+    delta,
     entrypointJavaScriptAssets: buildMetrics.entrypointAssetSizeByPath,
     topAsyncJavaScriptAssets: getTopAsyncJavaScriptAssets(
       buildMetrics.asyncAssetSizeByPath,
@@ -169,6 +172,8 @@ function hasExceededBudget(bundleBudgetReport) {
 }
 
 function writeBundleBudgetReport(bundleBudgetReport) {
+  const { reportDirectoryPath, reportFilePath } = getReportPaths()
+
   fs.mkdirSync(reportDirectoryPath, { recursive: true })
   fs.writeFileSync(
     reportFilePath,
@@ -177,6 +182,8 @@ function writeBundleBudgetReport(bundleBudgetReport) {
 }
 
 function logBundleBudgetReport(bundleBudgetReport) {
+  const { reportFilePath } = getReportPaths()
+
   console.log('Bundle size check')
   console.log(`Baseline source: ${bundleBudgetReport.baselineSource}`)
   console.log(`Enforcement mode: ${bundleBudgetReport.enforcementMode}`)
@@ -202,8 +209,10 @@ function runBundleBudgetCheck(argv = process.argv.slice(2)) {
   const baselinePath = getBaselinePath(argv)
   const baselineSource = getBaselineSource(argv)
   const allowBudgetExceed = shouldAllowBudgetExceed(argv)
-  const baseline = validateBaseline(readJsonFile(baselinePath))
-  const buildMetrics = getBuildMetrics()
+  const baseline = validateBaseline(
+    bundleSizeMetrics.readJsonFile(baselinePath),
+  )
+  const buildMetrics = bundleSizeMetrics.getBuildMetrics()
   const bundleBudgetReport = createBundleBudgetReport(baseline, buildMetrics, {
     baselineSource,
     enforcementMode: allowBudgetExceed ? 'bootstrap' : 'strict',
@@ -212,24 +221,29 @@ function runBundleBudgetCheck(argv = process.argv.slice(2)) {
   writeBundleBudgetReport(bundleBudgetReport)
   logBundleBudgetReport(bundleBudgetReport)
 
-  if (hasExceededBudget(bundleBudgetReport)) {
-    const message = `Bundle size budget exceeded (baseline source: ${baselineSource})`
-
-    if (allowBudgetExceed) {
-      console.warn(message)
-      return
-    }
-
-    console.error(message)
-    process.exit(1)
+  if (!hasExceededBudget(bundleBudgetReport)) {
+    return
   }
+
+  const message = `Bundle size budget exceeded (baseline source: ${baselineSource})`
+
+  if (allowBudgetExceed) {
+    console.warn(message)
+    return
+  }
+
+  console.error(message)
+  process.exit(1)
 }
 
 export {
+  createBundleBudgetReport,
   getBaselinePath,
   getBaselineSource,
+  getReportPaths,
+  logBundleBudgetReport,
+  runBundleBudgetCheck,
   shouldAllowBudgetExceed,
   validateBaseline,
-  createBundleBudgetReport,
-  runBundleBudgetCheck,
+  writeBundleBudgetReport,
 }

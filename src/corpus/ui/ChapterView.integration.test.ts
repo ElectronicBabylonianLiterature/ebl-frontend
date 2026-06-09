@@ -245,6 +245,20 @@ describe('Display chapter', () => {
     appDriver.click('Deutsch')
     appDriver.click('Close')
     await appDriver.waitForTextToDisappear('Close')
+
+    appDriver.click('Settings')
+    await appDriver.waitForText('Score')
+    appDriver.expectChecked('Score')
+    appDriver.expectChecked('Meter')
+    appDriver.expectChecked('Parallels')
+    appDriver.expectChecked('Notes')
+    appDriver.click('Meter')
+    appDriver.expectNotChecked('Meter')
+    appDriver.click('Meter')
+    appDriver.expectChecked('Meter')
+    appDriver.click('Close')
+    await appDriver.waitForTextToDisappear('Close')
+
     expect(appDriver.getView().container).toMatchSnapshot()
     expect(appDriver.getView().queryByText('Score')).not.toBeInTheDocument()
   })
@@ -260,7 +274,13 @@ describe('Display chapter', () => {
 })
 
 async function setup(chapter: ChapterDisplay) {
-  fakeApi = new FakeApi().expectChapterDisplay(chapter).expectText(textDto)
+  const provenanceSnapshotDtos = provenanceSnapshot.map((record) =>
+    Object.fromEntries(Object.entries(record)),
+  )
+  fakeApi = new FakeApi()
+    .allowProvenances(provenanceSnapshotDtos)
+    .expectChapterDisplay(chapter)
+    .expectText(textDto)
   appDriver = new AppDriver(fakeApi.client)
     .withSession()
     .withPath(

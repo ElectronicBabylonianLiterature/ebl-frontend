@@ -1,3 +1,5 @@
+@import src/design-tokens
+
 .fragment-result
   &__match-info
     display: flex
@@ -42,5 +44,5 @@
       max-width: 40%
 
   &__record, &__preview
-    @media (min-width: 576px)
+    @media (min-width: $ebl-breakpoint-sm)
       padding-left: 10vw

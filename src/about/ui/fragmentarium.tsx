@@ -2,6 +2,7 @@ import React from 'react'
 import { Markdown, MarkdownParagraph } from 'common/ui/Markdown'
 import Markup from 'markup/ui/markup'
 import MarkupService from 'markup/application/MarkupService'
+import Timeline from 'about/ui/Timeline'
 
 import creativecommonslicense from 'about/ui/static/creativecommonslicense.png'
 import fragmentstorevise from 'about/ui/static/fragmentstorevise.jpg'
@@ -97,14 +98,7 @@ export default function AboutFragmentarium(
               @bib{maul2011rykle@167}), but which was never finished. The version published
               in the Library was kindly made available by J. Taylor."
       />
-      <MarkupParagraph
-        text="The catalog of the finds of the first three post-war Nippur campaigns
-        (@bib{nippur_catalogue}), prepared by the excavators, was part of Erle Leichty’s
-        Nachlass (see below). This catalog was partially digitized between 2020 and 2022 by Marion
-        Scheiblecker and Luis Sáenz, as members of the eBL team, and then between 2023 and 2024
-        by Kameron Kashani and Claudia González, who worked on a voluntary basis. We extend
-        our sincerest thanks to all of them."
-      />
+
       <p>
         The list of joins has been compiled on the basis of the catalogue of the
         British Museum, kindly made available by J. Taylor. This catalogue has
@@ -225,14 +219,19 @@ export default function AboutFragmentarium(
         database of transliterations. It is a pleasure to acknowledge our
         gratitude to the following scholars:
       </p>
-      {folios.map((folio, index) => (
-        <React.Fragment key={folio.initials}>
-          <h4 id={folio.initials}>
-            V.{index + 1}. {folio.title}
-          </h4>
-          {folio.content(markupService)}
-        </React.Fragment>
-      ))}
+      <Timeline
+        items={folios.map((folio, index) => {
+          const dateMatch = folio.title.match(/\(([^)]+)\)/)
+          const dateRange = dateMatch ? dateMatch[1] : ''
+
+          return {
+            id: folio.initials,
+            date: dateRange,
+            title: folio.title.replace(/\s*\([^)]+\)\s*$/, ''),
+            content: folio.content(markupService),
+          }
+        })}
+      />
     </>
   )
 }

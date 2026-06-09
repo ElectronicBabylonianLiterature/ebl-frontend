@@ -1,12 +1,12 @@
 import * as fs from 'node:fs'
 import * as path from 'node:path'
 import { spawnSync } from 'node:child_process'
+import { createRequire } from 'node:module'
 import { buildDirectory, projectRoot } from './bundleSizeMetrics.mjs'
 
-const sourceMapExplorerCliPath = path.resolve(
-  projectRoot,
-  'node_modules/source-map-explorer/bin/cli.js',
-)
+const require = createRequire(import.meta.url)
+const sourceMapExplorerCliPath =
+  require.resolve('source-map-explorer/bin/cli.js')
 const reportDirectory = path.resolve(buildDirectory, 'bundle-size')
 const reportPath = path.resolve(reportDirectory, 'source-map-explorer.json')
 

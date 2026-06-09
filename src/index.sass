@@ -1,4 +1,16 @@
+@import src/design-tokens
 @import src/fonts
+
+:root
+  --ebl-color-brand-primary: #{$ebl-color-brand-primary}
+  --ebl-color-brand-primary-dark: #{$ebl-color-brand-primary-dark}
+  --ebl-color-surface-primary: #{$ebl-color-surface-primary}
+  --ebl-color-surface-subtle: #{$ebl-color-surface-subtle}
+  --ebl-color-border-subtle: #{$ebl-color-border-subtle}
+  --ebl-color-border-light: #{$ebl-color-border-light}
+  --ebl-color-border-corpus-soft: #{$ebl-color-border-corpus-soft}
+  --ebl-color-border-corpus-accent: #{$ebl-color-border-corpus-accent}
+  --ebl-color-text-corpus-muted: #{$ebl-color-text-corpus-muted}
 
 body
   @include ebl-font
@@ -6,9 +18,22 @@ body
   margin: 0
   padding: 0
 
-a
-  text-decoration: none
+.ebl-consistent-links
+  a:not(.btn):not(.nav-link):not(.page-link)
+    color: var(--ebl-color-brand-primary)
+    text-decoration: none
+    transition: color 0.15s ease, text-decoration-color 0.15s ease
 
-a:hover,
-a:focus
-  text-decoration: none
+    &:hover
+      color: var(--ebl-color-brand-primary-dark)
+      text-decoration: underline
+
+    &:focus-visible
+      color: var(--ebl-color-brand-primary-dark)
+      text-decoration: underline
+      outline: 2px solid var(--ebl-color-brand-primary)
+      outline-offset: 2px
+
+@media (prefers-reduced-motion: reduce)
+  .ebl-consistent-links a:not(.btn):not(.nav-link):not(.page-link)
+    transition: none

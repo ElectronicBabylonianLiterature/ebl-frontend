@@ -4,69 +4,17 @@ import { renderToString } from 'react-dom/server'
 import $ from 'jquery'
 import { Route } from 'router/compat'
 import Services from 'router/Services'
+import { WebsiteRoutes } from 'router/websiteRoutes'
 import withData from 'http/withData'
 import Bluebird from 'bluebird'
 import convert from 'xml-js'
 import _ from 'lodash'
 import pako from 'pako'
 import { saveAs } from 'file-saver'
-import Introduction from 'Introduction'
-import AboutRoutes from 'router/aboutRoutes'
-import ToolsRoutes from 'router/toolsRoutes'
-import SignRoutes from 'router/signRoutes'
-import BibliographyRoutes from 'router/bibliographyRoutes'
-import DictionaryRoutes from 'router/dictionaryRoutes'
-import CorpusRoutes from 'router/corpusRoutes'
-import FragmentariumRoutes from 'router/fragmentariumRoutes'
-import ResearchProjectRoutes from 'router/researchProjectRoutes'
-import FooterRoutes from 'router/footerRoutes'
 import { sitemapDefaults, Slugs } from 'router/sitemapConfig'
-import {
-  websiteRouteGroups,
-  type RouteModule,
-  type RouteModuleProps,
-  type WebsiteRouteGroup,
-} from 'router/websiteRouteGroups'
 
 const DOMAIN = 'www.ebl.lmu.de'
 type SlugsArray = readonly { [key: string]: string }[]
-
-const websiteRouteModules: Record<WebsiteRouteGroup, RouteModule> = {
-  about: AboutRoutes,
-  tools: ToolsRoutes,
-  signs: SignRoutes,
-  bibliography: BibliographyRoutes,
-  dictionary: DictionaryRoutes,
-  corpus: CorpusRoutes,
-  fragmentarium: FragmentariumRoutes,
-  researchProjects: ResearchProjectRoutes,
-  footer: FooterRoutes,
-}
-
-function WebsiteRoutes(
-  services: Services,
-  sitemap: boolean,
-  slugs?: Slugs,
-): JSX.Element[] {
-  const routeModuleProps: RouteModuleProps = {
-    sitemap,
-    ...services,
-    ...slugs,
-  }
-
-  return [
-    <Route
-      key="Introduction"
-      component={Introduction}
-      exact
-      path="/"
-      {...(sitemap && sitemapDefaults)}
-    />,
-    ...websiteRouteGroups.flatMap((routeGroup) =>
-      websiteRouteModules[routeGroup](routeModuleProps),
-    ),
-  ]
-}
 
 function Sitemap(services: Services, slugs?: Slugs): JSX.Element {
   return (
@@ -171,6 +119,8 @@ export async function getAllSlugs(services: Services): Bluebird<Slugs> {
     chapterSlugs: await services.textService.listAllChapters(),
   }
 }
+
+export { sitemapDefaults }
 
 export default withData<{ services: Services }, { services: Services }, Slugs>(
   ({ data, services }) => {

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useMemo, useState } from 'react'
 import { Accordion, Form, Row } from 'react-bootstrap'
 import {
   Colophon,
@@ -11,6 +11,9 @@ import { BrokenAndUncertainSwitches } from 'common/ui/BrokenAndUncertain'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import { getSelectField } from './ColophonEditorIndividualInputs'
 import Bluebird from 'bluebird'
+
+const colophonSuggestionDebounceMilliseconds = 250
+const colophonSuggestionMinimumLength = 2
 
 export interface IndividualProps {
   fragmentService: FragmentService
@@ -73,7 +76,31 @@ export const ColophonIndividualsInput = ({
   )
 }
 
-type IndividualFieldName = 'type' | 'name' | 'sonOf' | 'grandsonOf' | 'family'
+type IndividualFieldName =
+  | 'type'
+  | 'name'
+  | 'sonOf'
+  | 'grandsonOf'
+  | 'family'
+  | 'nativeOf'
+
+type ColophonAutocompleteFieldName = 'name' | 'sonOf' | 'grandsonOf' | 'family'
+
+type ColophonLoadOptionsMethod = (
+  inputValue: string,
+  callback: (options: ColophonNameOption[]) => void,
+) => Bluebird<void>
+
+type ColophonLoadOptionsByField = Record<
+  ColophonAutocompleteFieldName,
+  ColophonLoadOptionsMethod
+>
+
+function isColophonAutocompleteFieldName(
+  key: IndividualFieldName,
+): key is ColophonAutocompleteFieldName {
+  return ['name', 'sonOf', 'grandsonOf', 'family'].includes(key)
+}
 
 const setBrokenOrUncertain = (
   checked: boolean,
@@ -97,15 +124,17 @@ const setBrokenOrUncertain = (
 const getIndividualField = ({
   individualProps,
   key,
+  loadOptionsByField,
 }: {
   individualProps: IndividualProps
-  key: string
+  key: IndividualFieldName
+  loadOptionsByField: ColophonLoadOptionsByField
 }): JSX.Element => {
-  const { individual, fragmentService, onChange, index } = individualProps
+  const { individual, onChange, index } = individualProps
   const fieldProps = getValueAndOptionsByKey(
-    key as IndividualFieldName,
+    key,
     individual,
-    fragmentService,
+    loadOptionsByField,
   )
   const props = {
     onChange,
@@ -146,7 +175,19 @@ const getIndividualField = ({
 }
 
 const IndividualForm = (individualProps: IndividualProps): JSX.Element => {
-  const individualFieldNames = [
+  const { fragmentService } = individualProps
+
+  const loadOptionsByField = useMemo<ColophonLoadOptionsByField>(
+    () => ({
+      name: getLoadOptionsMethod(fragmentService),
+      sonOf: getLoadOptionsMethod(fragmentService),
+      grandsonOf: getLoadOptionsMethod(fragmentService),
+      family: getLoadOptionsMethod(fragmentService),
+    }),
+    [fragmentService],
+  )
+
+  const individualFieldNames: readonly IndividualFieldName[] = [
     'name',
     'sonOf',
     'grandsonOf',
@@ -157,7 +198,7 @@ const IndividualForm = (individualProps: IndividualProps): JSX.Element => {
   return (
     <>
       {individualFieldNames.map((key) =>
-        getIndividualField({ individualProps, key }),
+        getIndividualField({ individualProps, key, loadOptionsByField }),
       )}
     </>
   )
@@ -166,7 +207,7 @@ const IndividualForm = (individualProps: IndividualProps): JSX.Element => {
 const getValueAndOptionsByKey = (
   key: IndividualFieldName,
   individual: IndividualAttestation,
-  fragmentService: FragmentService,
+  loadOptionsByField: ColophonLoadOptionsByField,
 ): {
   value?: { value: string; label: string }
   options?: readonly { value: string; label: string }[]
@@ -186,22 +227,109 @@ const getValueAndOptionsByKey = (
         label: type,
       })),
     }),
-    ...(key !== 'type' && {
-      loadOptions: getLoadOptionsMethod(fragmentService),
+    ...(isColophonAutocompleteFieldName(key) && {
+      loadOptions: loadOptionsByField[key],
     }),
   }
 }
 
-export const getLoadOptionsMethod =
-  (fragmentService: FragmentService) =>
-  (
+export const getLoadOptionsMethod = (
+  fragmentService: FragmentService,
+): ColophonLoadOptionsMethod => {
+  const loadState = createColophonLoadState()
+
+  return (
     inputValue: string,
-    callback: (options: { value: string; label: string }[]) => void,
-  ): Bluebird<void> =>
-    fragmentService.fetchColophonNames(inputValue).then((entries) => {
-      const options = entries.map((value) => ({
-        value,
-        label: value,
-      }))
-      callback(options)
-    })
+    callback: (options: ColophonNameOption[]) => void,
+  ): Bluebird<void> => {
+    const normalizedInput = inputValue.trim()
+    const requestId = loadState.requestSequence + 1
+    loadState.requestSequence = requestId
+    clearPendingColophonLoad(loadState)
+
+    if (normalizedInput.length < colophonSuggestionMinimumLength) {
+      callback([])
+      return Bluebird.resolve()
+    }
+
+    return scheduleColophonLoad(
+      fragmentService,
+      loadState,
+      normalizedInput,
+      requestId,
+      callback,
+    )
+  }
+}
+
+type ColophonNameOption = {
+  value: string
+  label: string
+}
+
+type ColophonLoadState = {
+  requestSequence: number
+  pendingTimeout: ReturnType<typeof setTimeout> | null
+  pendingResolve: (() => void) | null
+}
+
+function createColophonLoadState(): ColophonLoadState {
+  return {
+    requestSequence: 0,
+    pendingTimeout: null,
+    pendingResolve: null,
+  }
+}
+
+function clearPendingColophonLoad(loadState: ColophonLoadState): void {
+  if (loadState.pendingTimeout) {
+    clearTimeout(loadState.pendingTimeout)
+    loadState.pendingTimeout = null
+  }
+
+  if (loadState.pendingResolve) {
+    loadState.pendingResolve()
+    loadState.pendingResolve = null
+  }
+}
+
+function createColophonNameOptions(
+  entries: readonly string[],
+): ColophonNameOption[] {
+  return entries.map((value) => ({
+    value,
+    label: value,
+  }))
+}
+
+function scheduleColophonLoad(
+  fragmentService: FragmentService,
+  loadState: ColophonLoadState,
+  normalizedInput: string,
+  requestId: number,
+  callback: (options: ColophonNameOption[]) => void,
+): Bluebird<void> {
+  return new Bluebird<void>((resolve) => {
+    loadState.pendingResolve = resolve
+    loadState.pendingTimeout = setTimeout(() => {
+      loadState.pendingTimeout = null
+      loadState.pendingResolve = null
+
+      fragmentService
+        .fetchColophonNames(normalizedInput)
+        .then((entries) => {
+          if (loadState.requestSequence !== requestId) {
+            return
+          }
+
+          callback(createColophonNameOptions(entries))
+        })
+        .catch(() => {
+          if (loadState.requestSequence === requestId) {
+            callback([])
+          }
+        })
+        .finally(resolve)
+    }, colophonSuggestionDebounceMilliseconds)
+  })
+}

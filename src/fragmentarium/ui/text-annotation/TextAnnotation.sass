@@ -1,4 +1,6 @@
-$highlight-color: lightsteelblue
+@import src/design-tokens
+
+$highlight-color: $ebl-color-status-info-soft
 $space-width: .25rem
 $initial-offset: 0.5rem
 $tier-gap: 0.9rem
@@ -28,21 +30,21 @@ $indicator-width: 3px
 
 @mixin ensure-black-font
   span[class^="Transliteration__"]
-    color: black !important
+    color: $ebl-color-text-primary
 
 .entity-span
   @include ensure-black-font
 
 .text-annotation
   &__line-number::selection
-    background-color: transparent !important
+    background-color: transparent
     color: inherit
   &__span-editor
     .btn-group
       display: flex
       justify-content: flex-end
   &__text-wrapper
-    width: fit-content
+    width: 100%
   &__button-wrapper
     display: flex
     justify-content: center
@@ -52,9 +54,9 @@ $indicator-width: 3px
     td
       transition: padding 0.5s ease
   &__editor-popover
-    min-width: 18em
+    min-width: min(18em, 100vw)
   &__instruction-trigger i
-    color: black !important
+    color: $ebl-color-text-primary
 
 .markable
   position: relative

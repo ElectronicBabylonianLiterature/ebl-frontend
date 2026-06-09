@@ -16,6 +16,7 @@ function RecordView({ fragment }: { fragment: Fragment }): JSX.Element {
         new FragmentCrumb(fragment.number),
         new TextCrumb('Record'),
       ]}
+      breadcrumbsFullWidth={false}
       title={`Record of ${fragment.number}`}
     >
       <section className={'FullRecord'}>

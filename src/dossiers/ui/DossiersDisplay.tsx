@@ -65,23 +65,28 @@ function DossierInfoSpan({
   index: number
   isActive: boolean
   setActiveDossier: React.Dispatch<React.SetStateAction<number | null>>
-  targetRef: React.RefObject<HTMLElement>
+  targetRef: React.RefObject<HTMLButtonElement>
   recordId: string
 }): JSX.Element {
+  const popoverId = `DossierReferencePopOver-${index}`
+
   return (
     <span
       key={`dossier-span-${index}`}
       className={`dossier-records__item${isActive ? '__active' : ''}`}
-      ref={targetRef}
     >
       {index === 0 && <span className="dossier-prefix">Dossier: </span>}
       {index > 0 && '| '}
-      <span
+      <button
+        ref={targetRef}
+        type="button"
         className="dossier-name"
         onClick={() => setActiveDossier(isActive ? null : index)}
+        aria-expanded={isActive}
+        aria-controls={popoverId}
       >
         {recordId}
-      </span>
+      </button>
     </span>
   )
 }
@@ -95,7 +100,7 @@ function DossierPopover({
 }: {
   index: number
   isActive: boolean
-  targetRef: React.RefObject<HTMLElement>
+  targetRef: React.RefObject<HTMLButtonElement>
   setActiveDossier: React.Dispatch<React.SetStateAction<number | null>>
   record: DossierRecord
 }): JSX.Element {
@@ -130,7 +135,7 @@ function DossierRecordItem(props: {
   setActiveDossier: React.Dispatch<React.SetStateAction<number | null>>
 }): JSX.Element {
   const { record, index, activeDossier, setActiveDossier } = props
-  const target = useRef(null)
+  const target = useRef<HTMLButtonElement>(null)
   const isActive = activeDossier === index
 
   return (

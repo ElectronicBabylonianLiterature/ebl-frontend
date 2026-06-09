@@ -1,5 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import ReactMarkdown from 'react-markdown'
+import { Container } from 'react-bootstrap'
+import NewsletterTimeline from 'about/ui/NewsletterTimeline'
+import { useHistory } from 'router/compat'
+import './news.sass'
+import newsletter22 from 'about/ui/newsletter/022.md'
 import newsletter21 from 'about/ui/newsletter/021.md'
 import newsletter20 from 'about/ui/newsletter/020.md'
 import newsletter19 from 'about/ui/newsletter/019.md'
@@ -21,8 +26,12 @@ import newsletter4 from 'about/ui/newsletter/004.md'
 import newsletter3 from 'about/ui/newsletter/003.md'
 import newsletter2 from 'about/ui/newsletter/002.md'
 import newsletter1 from 'about/ui/newsletter/001.md'
-import { Nav, Container, Row, Col } from 'react-bootstrap'
-import { useHistory } from 'router/compat'
+
+const markdownComponents: React.ComponentProps<
+  typeof ReactMarkdown
+>['components'] = {
+  h1: 'h2',
+}
 
 interface Newsletter {
   readonly content: string
@@ -31,6 +40,7 @@ interface Newsletter {
 }
 
 export const newsletters: readonly Newsletter[] = [
+  { content: newsletter22, date: new Date('05/28/2026'), number: 22 },
   { content: newsletter21, date: new Date('02/10/2026'), number: 21 },
   { content: newsletter20, date: new Date('09/10/2025'), number: 20 },
   { content: newsletter19, date: new Date('04/04/2025'), number: 19 },
@@ -58,51 +68,9 @@ const message = `**Get the most out of eBL!**
 We will be hosting regular Zoom sessions to showcase its features and tools. 
 These sessions will include a Q&A – please feel free to submit questions in 
 advance per [e-mail](mailto:${process.env.REACT_APP_INFO_EMAIL}).
-The third session is scheduled for March 13th at 5:00 PM CET.
-If you would like to attend, please register at the
-[link](https://lmu-munich.zoom-x.de/meeting/register/J08aK6HvSTSoZ5gKJqZZ4A).
 `
 
 const newsUrl = '/about/news/'
-
-function NewsletterMenu({
-  activeNewsletterNumber,
-  setActiveNewsletter,
-}: {
-  activeNewsletterNumber: number
-  setActiveNewsletter: React.Dispatch<React.SetStateAction<Newsletter>>
-}): JSX.Element {
-  const history = useHistory()
-  return (
-    <Nav defaultActiveKey={activeNewsletterNumber} className="flex-column">
-      {newsletters.map((newsletter) => {
-        const { number } = newsletter
-        return (
-          <Nav.Link
-            onClick={(event) => {
-              event.preventDefault()
-              history.push(`${newsUrl}${newsletter.number}`)
-              setActiveNewsletter(newsletter)
-            }}
-            href={`${number}`}
-            key={number}
-            disabled={activeNewsletterNumber === number}
-          >
-            Nr. {number}
-            <br />
-            <span style={{ fontSize: '10pt' }}>
-              {newsletter.date.toLocaleDateString('en-US', {
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric',
-              })}
-            </span>
-          </Nav.Link>
-        )
-      })}
-    </Nav>
-  )
-}
 
 const onHistoryChange = ({
   activeNewsletter,
@@ -139,10 +107,15 @@ export default function AboutNews({
     getActiveNewsletter(activeNewsletterNumber),
   )
   const history = useHistory()
-  useEffect(
-    () => setNewsletterMarkdown(activeNewsletter.content),
-    [activeNewsletter],
-  )
+
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [])
+
+  useEffect(() => {
+    setNewsletterMarkdown(activeNewsletter.content)
+  }, [activeNewsletter])
+
   useEffect(() => {
     onHistoryChange({
       activeNewsletter,
@@ -151,25 +124,47 @@ export default function AboutNews({
     })
   }, [activeNewsletter, history.location.pathname, setActiveNewsletter])
 
+  const handleSelectNewsletter = (newsletter: Newsletter) => {
+    history.push(`${newsUrl}${newsletter.number}`)
+    setActiveNewsletter(newsletter)
+  }
+
   return (
     <>
       <div className="border border-dark m-3 p-2">
-        <ReactMarkdown>{message}</ReactMarkdown>
+        <ReactMarkdown components={markdownComponents}>{message}</ReactMarkdown>
       </div>
       <Container>
-        <Row>
-          <Col>
-            <div className="flex-column">
-              <ReactMarkdown>{newsletterMarkdown}</ReactMarkdown>
-            </div>
-          </Col>
-          <Col sm={2}>
-            <NewsletterMenu
-              activeNewsletterNumber={activeNewsletter.number}
-              setActiveNewsletter={setActiveNewsletter}
+        <div className="news-layout">
+          <aside className="news-layout__sidebar">
+            <NewsletterTimeline
+              newsletters={newsletters}
+              activeNewsletter={activeNewsletter}
+              onSelectNewsletter={handleSelectNewsletter}
             />
-          </Col>
-        </Row>
+          </aside>
+          <main className="news-layout__content">
+            <article className="newsletter-article">
+              <header className="newsletter-article__header">
+                <div className="newsletter-article__badge">
+                  Newsletter #{activeNewsletter.number}
+                </div>
+                <time className="newsletter-article__date">
+                  {activeNewsletter.date.toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                  })}
+                </time>
+              </header>
+              <div className="newsletter-article__body">
+                <ReactMarkdown components={markdownComponents}>
+                  {newsletterMarkdown}
+                </ReactMarkdown>
+              </div>
+            </article>
+          </main>
+        </div>
       </Container>
     </>
   )
