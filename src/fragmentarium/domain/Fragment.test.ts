@@ -141,6 +141,7 @@ const config: Parameters<(typeof Fragment)['create']>[0] = {
     ontarioNumber: '123',
     kelseyNumber: '123',
     harvardHamNumber: '123',
+    etcsriNumber: '123',
     sketchfabNumber: '123',
     arkNumber: '123',
     dublinTcdNumber: '123',

@@ -214,6 +214,15 @@ export function harvardHamLink({ number }: { number: string }): JSX.Element {
     />
   )
 }
+export function etcsriLink({ number }: { number: string }): JSX.Element {
+  return (
+    <ExternalNumberLink
+      number={number}
+      baseUrl={'https://oracc.museum.upenn.edu/etcsri/'}
+      label={'ETCSRI'}
+    />
+  )
+}
 export function sketchfabLink({ number }: { number: string }): JSX.Element {
   return (
     <ExternalNumberLink
