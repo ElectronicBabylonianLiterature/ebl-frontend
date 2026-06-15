@@ -237,7 +237,6 @@ function getDateInputGroup({
           <Form.Check
             label="Intercalary"
             id={`${name}_intercalary`}
-            className="date-field-switch"
             onChange={(event) => setIntercalary(event.target.checked)}
             checked={isIntercalary}
           />
@@ -272,13 +271,16 @@ function getYearInputGroup(props: InputGroupsProps): JSX.Element {
           setUncertain={props.setYearUncertain}
         />
         <div className="date-field-row-break" aria-hidden="true" />
-        <div className="date-field-row-spacer" aria-hidden="true" />
+        <div
+          id="date-field-year-spacer"
+          className="date-field-row-spacer"
+          aria-hidden="true"
+        />
         <Form.Switch
           label="Reconstructed"
           id="year_reconstructed"
           aria-label="0-year-reconstructed-switch"
           data-testid="0-year-reconstructed-switch"
-          className="date-field-switch"
           onChange={(event) =>
             props.setYearReconstructed?.(event.target.checked)
           }
@@ -289,7 +291,6 @@ function getYearInputGroup(props: InputGroupsProps): JSX.Element {
           id="year_emended"
           aria-label="0-year-emended-switch"
           data-testid="0-year-emended-switch"
-          className="date-field-switch"
           onChange={(event) => props.setYearEmended?.(event.target.checked)}
           checked={Boolean(props.yearEmended)}
         />
