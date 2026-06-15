@@ -1,5 +1,5 @@
 import React from 'react'
-import { render, screen } from '@testing-library/react'
+import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import Chance from 'chance'
 import { MemoryRouter } from 'react-router-dom'
 import Promise from 'bluebird'
@@ -223,6 +223,105 @@ describe('preview mode', () => {
     expect(fragmentService.findThumbnail).toHaveBeenCalledWith(
       fragmentWithPhoto,
       'small',
+    )
+  })
+
+  test('uses prefetched summary fragments and thumbnail paths without extra fetches', async () => {
+    session = new MemorySession(['read:fragments'])
+    const fragmentWithPhoto = fragmentFactory.build(
+      { hasPhoto: true },
+      { transient: { chance } },
+    )
+    const thumbnailPath = '/images/summary-thumbnail.jpg'
+
+    fragmentService.queryLatest.mockReturnValueOnce(
+      Promise.resolve({
+        items: [
+          {
+            museumNumber: fragmentWithPhoto.number,
+            matchingLines: [1, 2, 3, 4],
+            matchCount: 4,
+            fragment: fragmentWithPhoto,
+            thumbnailPath,
+          },
+        ],
+        matchCountTotal: 4,
+      }),
+    )
+    dossiersService.queryByIds.mockResolvedValue([])
+
+    render(
+      <MemoryRouter>
+        <DictionaryContext.Provider value={wordService}>
+          <SessionContext.Provider value={session}>
+            <LatestTransliterations
+              fragmentService={fragmentService}
+              dossiersService={dossiersService}
+            />
+          </SessionContext.Provider>
+        </DictionaryContext.Provider>
+      </MemoryRouter>,
+    )
+
+    const thumbnail = await screen.findByAltText(
+      `Preview of ${fragmentWithPhoto.number}`,
+    )
+
+    expect(thumbnail).toHaveAttribute('src', thumbnailPath)
+    expect(
+      screen.getByRole('link', {
+        name: `Preview of ${fragmentWithPhoto.number}`,
+      }),
+    ).toHaveAttribute('href', `/library/${fragmentWithPhoto.number}`)
+    expect(fragmentService.find).not.toHaveBeenCalled()
+    expect(fragmentService.findThumbnail).not.toHaveBeenCalled()
+  })
+
+  test('removes broken summary thumbnails after an image error', async () => {
+    session = new MemorySession(['read:fragments'])
+    const fragmentWithPhoto = fragmentFactory.build(
+      { hasPhoto: true },
+      { transient: { chance } },
+    )
+
+    fragmentService.queryLatest.mockReturnValueOnce(
+      Promise.resolve({
+        items: [
+          {
+            museumNumber: fragmentWithPhoto.number,
+            matchingLines: [1, 2, 3, 4],
+            matchCount: 4,
+            fragment: fragmentWithPhoto,
+            thumbnailPath: '/images/broken-thumbnail.jpg',
+          },
+        ],
+        matchCountTotal: 4,
+      }),
+    )
+    dossiersService.queryByIds.mockResolvedValue([])
+
+    render(
+      <MemoryRouter>
+        <DictionaryContext.Provider value={wordService}>
+          <SessionContext.Provider value={session}>
+            <LatestTransliterations
+              fragmentService={fragmentService}
+              dossiersService={dossiersService}
+            />
+          </SessionContext.Provider>
+        </DictionaryContext.Provider>
+      </MemoryRouter>,
+    )
+
+    const thumbnail = await screen.findByAltText(
+      `Preview of ${fragmentWithPhoto.number}`,
+    )
+    fireEvent.error(thumbnail)
+
+    await waitFor(() =>
+      expect(
+        screen.queryByAltText(`Preview of ${fragmentWithPhoto.number}`),
+      ).not.toBeInTheDocument(),
     )
   })
 })

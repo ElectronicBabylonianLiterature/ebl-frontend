@@ -424,6 +424,91 @@ const queryTestData: TestData<FragmentRepository>[] = queryTestCases.map(
 describe('Query FragmentRepository', () =>
   testDelegation(fragmentRepository, queryTestData))
 
+describe('FragmentRepository query summary items', () => {
+  beforeEach(() => {
+    jest.clearAllMocks()
+  })
+
+  it('maps summary items into prefetched fragments and thumbnail paths', async () => {
+    const thumbnailPath = '/images/Test.Fragment.jpg'
+    apiClient.fetchJson.mockResolvedValueOnce({
+      matchCountTotal: 1,
+      items: [
+        {
+          museumNumber: fragmentDto.museumNumber,
+          accession: fragmentDto.accession,
+          description: fragmentDto.description,
+          script: fragmentDto.script,
+          date: fragmentDto.date ?? null,
+          genres: fragmentDto.genres,
+          archaeology: {
+            excavationNumber: fragmentDto.museumNumber,
+            site: { name: 'Sippar' },
+          },
+          references: fragmentDto.references,
+          projects: fragmentDto.projects,
+          dossiers: fragmentDto.dossiers,
+          matchingLines: [1, 2],
+          matchingLinePreview: fragmentDto.text,
+          matchCount: 2,
+          hasPhoto: true,
+          thumbnailPath,
+        },
+      ],
+    })
+
+    const result = await fragmentRepository.query({ transliteration: 'šim' })
+    const item = result.items[0]
+
+    expect(item.museumNumber).toEqual(fragment.number)
+    expect(item.thumbnailPath).toEqual(thumbnailPath)
+    expect(item.fragment?.number).toEqual(fragment.number)
+    expect(item.fragment?.accession).toEqual(fragment.accession)
+    expect(item.fragment?.description).toEqual(fragment.description)
+    expect(item.fragment?.hasPhoto).toBe(true)
+    expect(item.fragment?.archaeology?.excavationNumber).toEqual(
+      fragment.number,
+    )
+    expect(item.fragment?.archaeology?.site?.name).toEqual('Sippar')
+    expect(item.fragment?.text.lines).toHaveLength(fragment.text.lines.length)
+  })
+
+  it('maps summary items when optional fields are omitted', async () => {
+    apiClient.fetchJson.mockResolvedValueOnce({
+      matchCountTotal: 1,
+      items: [
+        {
+          museumNumber: fragmentDto.museumNumber,
+          accession: null,
+          description: fragmentDto.description,
+          script: fragmentDto.script,
+          date: null,
+          genres: [],
+          archaeology: null,
+          references: [],
+          projects: [],
+          dossiers: [],
+          matchingLines: [],
+          matchingLinePreview: fragmentDto.text,
+          matchCount: 0,
+          hasPhoto: false,
+          thumbnailPath: null,
+        },
+      ],
+    })
+
+    const result = await fragmentRepository.query({ number: fragment.number })
+    const item = result.items[0]
+
+    expect(item.thumbnailPath).toBeNull()
+    expect(item.fragment?.accession).toEqual('')
+    expect(item.fragment?.date).toBeUndefined()
+    expect(item.fragment?.archaeology).toBeUndefined()
+    expect(item.fragment?.projects).toEqual([])
+    expect(item.fragment?.dossiers).toEqual([])
+  })
+})
+
 describe('FragmentRepository queryLatest', () => {
   beforeEach(() => {
     jest.clearAllMocks()
