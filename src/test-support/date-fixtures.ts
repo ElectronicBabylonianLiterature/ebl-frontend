@@ -57,6 +57,17 @@ export const cambysesKing = {
   notes: '',
 }
 
+export const bardiyaKing = {
+  orderGlobal: 169,
+  dynastyNumber: '14',
+  dynastyName: 'Persian Rulers',
+  orderInDynasty: '2a',
+  name: 'Bardiya',
+  date: '522',
+  totalOfYears: '',
+  notes: '',
+}
+
 export const nabonidusKing = {
   orderGlobal: 166,
   dynastyNumber: '13',

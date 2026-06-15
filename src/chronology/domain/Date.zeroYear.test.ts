@@ -1,5 +1,6 @@
 import { MesopotamianDate } from 'chronology/domain/Date'
 import {
+  bardiyaKing,
   king,
   nabonassarEraKing,
   nabonidusKing,
@@ -47,6 +48,22 @@ describe('MesopotamianDate', () => {
     expect(date.toString()).toContain('12.V.0 Nabonidus')
     expect(date.toString()).not.toContain('Labaši-Marduk')
     expect(date.toModernDate()).toBe('18 August 556 BCE PJC')
+  })
+
+  it('converts year 0 of a letter-suffixed sub-ruler using the immediately preceding king', () => {
+    const date = new MesopotamianDate({
+      year: { value: '0' },
+      month: { value: '1' },
+      day: { value: '1' },
+      king: bardiyaKing,
+    })
+
+    expect(date.zeroYearKing?.name).toBe('Bardiya')
+    expect(date.yearZero?.value).toBe('0')
+    expect(date.king?.name).toBe('Cambyses')
+    expect(date.year.value).toBe('8')
+    expect(date.toString()).toContain('1.I.0 Bardiya')
+    expect(date.toModernDate()).toContain('522 BCE')
   })
 
   it('handles year 0 in king-date conversion path and uses previous king year for calculation', () => {
