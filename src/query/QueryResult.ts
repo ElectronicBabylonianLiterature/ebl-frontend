@@ -1,14 +1,17 @@
+import { Fragment } from 'fragmentarium/domain/fragment'
 import { TextId } from 'transliteration/domain/text-id'
 
 export interface QueryItem {
-  museumNumber: string
-  matchingLines: readonly number[]
-  matchCount: number
+  readonly museumNumber: string
+  readonly matchingLines: readonly number[]
+  readonly matchCount: number
+  readonly fragment?: Fragment
+  readonly thumbnailPath?: string | null
 }
 
 export interface QueryResult {
-  items: readonly QueryItem[]
-  matchCountTotal: number
+  readonly items: readonly QueryItem[]
+  readonly matchCountTotal: number
 }
 
 export interface CorpusQueryItem {
