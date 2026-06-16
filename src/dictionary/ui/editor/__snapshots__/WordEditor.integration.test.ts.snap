@@ -60,7 +60,7 @@ exports[`Edit 1`] = `
             </div>
           </a>
           <button
-            aria-controls="Header-55"
+            aria-controls="Header-56"
             aria-label="Toggle navigation"
             class="Header__toggle navbar-toggler collapsed"
             type="button"
@@ -71,7 +71,7 @@ exports[`Edit 1`] = `
           </button>
           <div
             class="navbar-collapse collapse"
-            id="Header-55"
+            id="Header-56"
           >
             <div
               class="Header__nav mx-auto navbar-nav"
@@ -275,7 +275,7 @@ exports[`Edit 1`] = `
             <div>
               <label
                 class="form-label"
-                for="LemmaInput-56"
+                for="LemmaInput-57"
               >
                 Lemma
               </label>
@@ -292,14 +292,14 @@ exports[`Edit 1`] = `
                       aria-label="attested"
                       checked=""
                       class="form-check-input"
-                      id="LemmaInput-attested-57"
+                      id="LemmaInput-attested-58"
                       type="checkbox"
                     />
                   </div>
                 </span>
                 <input
                   class="form-control"
-                  id="LemmaInput-56"
+                  id="LemmaInput-57"
                   type="text"
                   value="test"
                 />
@@ -308,13 +308,13 @@ exports[`Edit 1`] = `
             <div>
               <label
                 class="form-label"
-                for="TextInput-137"
+                for="TextInput-138"
               >
                 Legacy Lemma
               </label>
               <input
                 class="form-control"
-                id="TextInput-137"
+                id="TextInput-138"
                 type="text"
                 value="new lemma"
               />
@@ -322,13 +322,13 @@ exports[`Edit 1`] = `
             <div>
               <label
                 class="form-label"
-                for="TextInput-138"
+                for="TextInput-139"
               >
                 Homonym
               </label>
               <input
                 class="form-control"
-                id="TextInput-138"
+                id="TextInput-139"
                 type="text"
                 value="I"
               />
@@ -337,13 +337,13 @@ exports[`Edit 1`] = `
               <div>
                 <label
                   class="form-label"
-                  for="PosInput-139"
+                  for="PosInput-140"
                 >
                   Position of speech
                 </label>
                 <select
                   class="form-control"
-                  id="PosInput-139"
+                  id="PosInput-140"
                   multiple=""
                 >
                   <option
@@ -529,7 +529,7 @@ exports[`Edit 1`] = `
                       class="card-header"
                     >
                       <span
-                        aria-controls="List-collapse-61"
+                        aria-controls="List-collapse-62"
                         aria-expanded="true"
                         class="List__toggle"
                       >
@@ -549,7 +549,7 @@ exports[`Edit 1`] = `
                     </div>
                     <div
                       class="collapse show"
-                      id="List-collapse-61"
+                      id="List-collapse-62"
                     >
                       <ul
                         class="list-group list-group-flush"
@@ -560,7 +560,7 @@ exports[`Edit 1`] = `
                           <div>
                             <input
                               class="form-control"
-                              id="TextInput-140"
+                              id="TextInput-141"
                               type="text"
                               value="wb'"
                             />
@@ -578,7 +578,7 @@ exports[`Edit 1`] = `
                           <div>
                             <input
                               class="form-control"
-                              id="TextInput-141"
+                              id="TextInput-142"
                               type="text"
                               value="'b'"
                             />
@@ -609,13 +609,13 @@ exports[`Edit 1`] = `
             <div>
               <label
                 class="form-label"
-                for="TextInput-142"
+                for="TextInput-143"
               >
                 Meaning
               </label>
               <input
                 class="form-control"
-                id="TextInput-142"
+                id="TextInput-143"
                 type="text"
                 value="\\\\~ \\"to weed\\" O/jB"
               />
@@ -632,7 +632,7 @@ exports[`Edit 1`] = `
                     class="card-header"
                   >
                     <span
-                      aria-controls="List-collapse-65"
+                      aria-controls="List-collapse-66"
                       aria-expanded="true"
                       class="List__toggle"
                     >
@@ -652,7 +652,7 @@ exports[`Edit 1`] = `
                   </div>
                   <div
                     class="collapse show"
-                    id="List-collapse-65"
+                    id="List-collapse-66"
                   >
                     <ul
                       class="list-group list-group-flush"
@@ -664,7 +664,7 @@ exports[`Edit 1`] = `
                           <div>
                             <label
                               class="form-label"
-                              for="LemmaInput-66"
+                              for="LemmaInput-67"
                             >
                               Lemma
                             </label>
@@ -681,14 +681,14 @@ exports[`Edit 1`] = `
                                     aria-label="attested"
                                     checked=""
                                     class="form-check-input"
-                                    id="LemmaInput-attested-67"
+                                    id="LemmaInput-attested-68"
                                     type="checkbox"
                                   />
                                 </div>
                               </span>
                               <input
                                 class="form-control"
-                                id="LemmaInput-66"
+                                id="LemmaInput-67"
                                 type="text"
                                 value=""
                               />
@@ -705,7 +705,7 @@ exports[`Edit 1`] = `
                                   class="card-header"
                                 >
                                   <span
-                                    aria-controls="List-collapse-68"
+                                    aria-controls="List-collapse-69"
                                     aria-expanded="true"
                                     class="List__toggle"
                                   >
@@ -725,7 +725,7 @@ exports[`Edit 1`] = `
                                 </div>
                                 <div
                                   class="collapse show"
-                                  id="List-collapse-68"
+                                  id="List-collapse-69"
                                 >
                                   <ul
                                     class="list-group list-group-flush"
@@ -736,7 +736,7 @@ exports[`Edit 1`] = `
                                       <div>
                                         <input
                                           class="form-control"
-                                          id="TextInput-143"
+                                          id="TextInput-144"
                                           type="text"
                                           value="dsdsds"
                                         />
@@ -779,7 +779,7 @@ exports[`Edit 1`] = `
                           <div>
                             <label
                               class="form-label"
-                              for="LemmaInput-70"
+                              for="LemmaInput-71"
                             >
                               Lemma
                             </label>
@@ -796,14 +796,14 @@ exports[`Edit 1`] = `
                                     aria-label="attested"
                                     checked=""
                                     class="form-check-input"
-                                    id="LemmaInput-attested-71"
+                                    id="LemmaInput-attested-72"
                                     type="checkbox"
                                   />
                                 </div>
                               </span>
                               <input
                                 class="form-control"
-                                id="LemmaInput-70"
+                                id="LemmaInput-71"
                                 type="text"
                                 value="abā'um"
                               />
@@ -820,7 +820,7 @@ exports[`Edit 1`] = `
                                   class="card-header"
                                 >
                                   <span
-                                    aria-controls="List-collapse-72"
+                                    aria-controls="List-collapse-73"
                                     aria-expanded="true"
                                     class="List__toggle"
                                   >
@@ -840,7 +840,7 @@ exports[`Edit 1`] = `
                                 </div>
                                 <div
                                   class="collapse show"
-                                  id="List-collapse-72"
+                                  id="List-collapse-73"
                                 >
                                   <ul
                                     class="list-group list-group-flush"
@@ -851,7 +851,7 @@ exports[`Edit 1`] = `
                                       <div>
                                         <input
                                           class="form-control"
-                                          id="TextInput-144"
+                                          id="TextInput-145"
                                           type="text"
                                           value="**BOLD**"
                                         />
@@ -915,7 +915,7 @@ exports[`Edit 1`] = `
                     class="card-header"
                   >
                     <span
-                      aria-controls="List-collapse-74"
+                      aria-controls="List-collapse-75"
                       aria-expanded="true"
                       class="List__toggle"
                     >
@@ -935,7 +935,7 @@ exports[`Edit 1`] = `
                   </div>
                   <div
                     class="collapse show"
-                    id="List-collapse-74"
+                    id="List-collapse-75"
                   >
                     <ul
                       class="list-group list-group-flush"
@@ -946,13 +946,13 @@ exports[`Edit 1`] = `
                         <div>
                           <label
                             class="form-label"
-                            for="TextInput-145"
+                            for="TextInput-146"
                           >
                             Conjugation/Function
                           </label>
                           <input
                             class="form-control"
-                            id="TextInput-145"
+                            id="TextInput-146"
                             type="text"
                             value="G"
                           />
@@ -960,13 +960,13 @@ exports[`Edit 1`] = `
                         <div>
                           <label
                             class="form-label"
-                            for="TextInput-146"
+                            for="TextInput-147"
                           >
                             Meaning
                           </label>
                           <input
                             class="form-control"
-                            id="TextInput-146"
+                            id="TextInput-147"
                             type="text"
                             value="(*i/i*) field"
                           />
@@ -980,7 +980,7 @@ exports[`Edit 1`] = `
                             >
                               <div
                                 class="collapse show"
-                                id="List-collapse-77"
+                                id="List-collapse-78"
                               >
                                 <ul
                                   class="list-group list-group-flush"
@@ -991,13 +991,13 @@ exports[`Edit 1`] = `
                                     <div>
                                       <label
                                         class="form-label"
-                                        for="ArrayInput-78"
+                                        for="ArrayInput-79"
                                       >
                                         Vowels
                                       </label>
                                       <input
                                         class="form-control"
-                                        id="ArrayInput-78"
+                                        id="ArrayInput-79"
                                         type="text"
                                         value="i/i"
                                       />
@@ -1013,7 +1013,7 @@ exports[`Edit 1`] = `
                                             class="card-header"
                                           >
                                             <span
-                                              aria-controls="List-collapse-79"
+                                              aria-controls="List-collapse-80"
                                               aria-expanded="true"
                                               class="List__toggle"
                                             >
@@ -1033,7 +1033,7 @@ exports[`Edit 1`] = `
                                           </div>
                                           <div
                                             class="collapse show"
-                                            id="List-collapse-79"
+                                            id="List-collapse-80"
                                           >
                                             <ul
                                               class="list-group list-group-flush"
@@ -1044,7 +1044,7 @@ exports[`Edit 1`] = `
                                                 <div>
                                                   <input
                                                     class="form-control"
-                                                    id="TextInput-147"
+                                                    id="TextInput-148"
                                                     type="text"
                                                     value="dsdsds"
                                                   />
@@ -1106,7 +1106,7 @@ exports[`Edit 1`] = `
                                 class="card-header"
                               >
                                 <span
-                                  aria-controls="List-collapse-81"
+                                  aria-controls="List-collapse-82"
                                   aria-expanded="true"
                                   class="List__toggle"
                                 >
@@ -1126,7 +1126,7 @@ exports[`Edit 1`] = `
                               </div>
                               <div
                                 class="collapse show"
-                                id="List-collapse-81"
+                                id="List-collapse-82"
                               >
                                 <ol
                                   class="list-group list-group-flush"
@@ -1137,13 +1137,13 @@ exports[`Edit 1`] = `
                                     <div>
                                       <label
                                         class="form-label"
-                                        for="TextInput-148"
+                                        for="TextInput-149"
                                       >
                                         Meaning
                                       </label>
                                       <input
                                         class="form-control"
-                                        id="TextInput-148"
+                                        id="TextInput-149"
                                         type="text"
                                         value="mmkkk"
                                       />
@@ -1157,7 +1157,7 @@ exports[`Edit 1`] = `
                                         >
                                           <div
                                             class="collapse show"
-                                            id="List-collapse-83"
+                                            id="List-collapse-84"
                                           >
                                             <ul
                                               class="list-group list-group-flush"
@@ -1168,13 +1168,13 @@ exports[`Edit 1`] = `
                                                 <div>
                                                   <label
                                                     class="form-label"
-                                                    for="ArrayInput-84"
+                                                    for="ArrayInput-85"
                                                   >
                                                     Vowels
                                                   </label>
                                                   <input
                                                     class="form-control"
-                                                    id="ArrayInput-84"
+                                                    id="ArrayInput-85"
                                                     type="text"
                                                     value=""
                                                   />
@@ -1190,7 +1190,7 @@ exports[`Edit 1`] = `
                                                         class="card-header"
                                                       >
                                                         <span
-                                                          aria-controls="List-collapse-85"
+                                                          aria-controls="List-collapse-86"
                                                           aria-expanded="true"
                                                           class="List__toggle"
                                                         >
@@ -1205,7 +1205,7 @@ exports[`Edit 1`] = `
                                                       </div>
                                                       <div
                                                         class="collapse show"
-                                                        id="List-collapse-85"
+                                                        id="List-collapse-86"
                                                       >
                                                         <ul
                                                           class="list-group list-group-flush"
@@ -1306,7 +1306,7 @@ exports[`Edit 1`] = `
                 >
                   <div
                     class="collapse show"
-                    id="List-collapse-86"
+                    id="List-collapse-87"
                   >
                     <ul
                       class="list-group list-group-flush"
@@ -1317,13 +1317,13 @@ exports[`Edit 1`] = `
                         <div>
                           <label
                             class="form-label"
-                            for="ArrayInput-87"
+                            for="ArrayInput-88"
                           >
                             Logogram
                           </label>
                           <input
                             class="form-control"
-                            id="ArrayInput-87"
+                            id="ArrayInput-88"
                             type="text"
                             value=""
                           />
@@ -1339,7 +1339,7 @@ exports[`Edit 1`] = `
                                 class="card-header"
                               >
                                 <span
-                                  aria-controls="List-collapse-88"
+                                  aria-controls="List-collapse-89"
                                   aria-expanded="true"
                                   class="List__toggle"
                                 >
@@ -1359,7 +1359,7 @@ exports[`Edit 1`] = `
                               </div>
                               <div
                                 class="collapse show"
-                                id="List-collapse-88"
+                                id="List-collapse-89"
                               >
                                 <ul
                                   class="list-group list-group-flush"
@@ -1370,7 +1370,7 @@ exports[`Edit 1`] = `
                                     <div>
                                       <input
                                         class="form-control"
-                                        id="TextInput-149"
+                                        id="TextInput-150"
                                         type="text"
                                         value="dsadas"
                                       />
@@ -1433,7 +1433,7 @@ exports[`Edit 1`] = `
                     class="card-header"
                   >
                     <span
-                      aria-controls="List-collapse-90"
+                      aria-controls="List-collapse-91"
                       aria-expanded="true"
                       class="List__toggle"
                     >
@@ -1453,7 +1453,7 @@ exports[`Edit 1`] = `
                   </div>
                   <div
                     class="collapse show"
-                    id="List-collapse-90"
+                    id="List-collapse-91"
                   >
                     <ul
                       class="list-group list-group-flush"
@@ -1472,7 +1472,7 @@ exports[`Edit 1`] = `
                                 class="card-header"
                               >
                                 <span
-                                  aria-controls="List-collapse-91"
+                                  aria-controls="List-collapse-92"
                                   aria-expanded="true"
                                   class="List__toggle"
                                 >
@@ -1493,7 +1493,7 @@ exports[`Edit 1`] = `
                               </div>
                               <div
                                 class="collapse show"
-                                id="List-collapse-91"
+                                id="List-collapse-92"
                               >
                                 <ul
                                   class="list-group list-group-flush"
@@ -1505,13 +1505,13 @@ exports[`Edit 1`] = `
                                       <div>
                                         <label
                                           class="form-label"
-                                          for="LemmaInput-92"
+                                          for="LemmaInput-93"
                                         >
                                           Lemma
                                         </label>
                                         <input
                                           class="form-control"
-                                          id="LemmaInput-92"
+                                          id="LemmaInput-93"
                                           type="text"
                                           value="wabûtu"
                                         />
@@ -1519,13 +1519,13 @@ exports[`Edit 1`] = `
                                       <div>
                                         <label
                                           class="form-label"
-                                          for="TextInput-150"
+                                          for="TextInput-151"
                                         >
                                           Homonym
                                         </label>
                                         <input
                                           class="form-control"
-                                          id="TextInput-150"
+                                          id="TextInput-151"
                                           type="text"
                                           value="I"
                                         />
@@ -1541,7 +1541,7 @@ exports[`Edit 1`] = `
                                               class="card-header"
                                             >
                                               <span
-                                                aria-controls="List-collapse-95"
+                                                aria-controls="List-collapse-96"
                                                 aria-expanded="true"
                                                 class="List__toggle"
                                               >
@@ -1556,7 +1556,7 @@ exports[`Edit 1`] = `
                                             </div>
                                             <div
                                               class="collapse show"
-                                              id="List-collapse-95"
+                                              id="List-collapse-96"
                                             >
                                               <ul
                                                 class="list-group list-group-flush"
@@ -1640,13 +1640,13 @@ exports[`Edit 1`] = `
                   <div>
                     <label
                       class="form-label"
-                      for="LemmaInput-96"
+                      for="LemmaInput-97"
                     >
                       Lemma
                     </label>
                     <input
                       class="form-control"
-                      id="LemmaInput-96"
+                      id="LemmaInput-97"
                       type="text"
                       value="sadasd"
                     />
@@ -1654,13 +1654,13 @@ exports[`Edit 1`] = `
                   <div>
                     <label
                       class="form-label"
-                      for="TextInput-151"
+                      for="TextInput-152"
                     >
                       Homonym
                     </label>
                     <input
                       class="form-control"
-                      id="TextInput-151"
+                      id="TextInput-152"
                       type="text"
                       value=""
                     />
@@ -1676,7 +1676,7 @@ exports[`Edit 1`] = `
                           class="card-header"
                         >
                           <span
-                            aria-controls="List-collapse-99"
+                            aria-controls="List-collapse-100"
                             aria-expanded="true"
                             class="List__toggle"
                           >
@@ -1696,7 +1696,7 @@ exports[`Edit 1`] = `
                         </div>
                         <div
                           class="collapse show"
-                          id="List-collapse-99"
+                          id="List-collapse-100"
                         >
                           <ul
                             class="list-group list-group-flush"
@@ -1707,7 +1707,7 @@ exports[`Edit 1`] = `
                               <div>
                                 <input
                                   class="form-control"
-                                  id="TextInput-152"
+                                  id="TextInput-153"
                                   type="text"
                                   value=""
                                 />
@@ -1747,13 +1747,13 @@ exports[`Edit 1`] = `
             <div>
               <label
                 class="form-label"
-                for="TextInput-153"
+                for="TextInput-154"
               >
                 Guide Word
               </label>
               <input
                 class="form-control"
-                id="TextInput-153"
+                id="TextInput-154"
                 type="text"
                 value="weed"
               />
@@ -1769,7 +1769,7 @@ exports[`Edit 1`] = `
                     class="card-header"
                   >
                     <span
-                      aria-controls="List-collapse-102"
+                      aria-controls="List-collapse-103"
                       aria-expanded="true"
                       class="List__toggle"
                     >
@@ -1784,7 +1784,7 @@ exports[`Edit 1`] = `
                   </div>
                   <div
                     class="collapse show"
-                    id="List-collapse-102"
+                    id="List-collapse-103"
                   >
                     <ul
                       class="list-group list-group-flush"
@@ -2114,7 +2114,7 @@ exports[`renders editor 1`] = `
             </div>
           </a>
           <button
-            aria-controls="Header-4"
+            aria-controls="Header-5"
             aria-label="Toggle navigation"
             class="Header__toggle navbar-toggler collapsed"
             type="button"
@@ -2125,7 +2125,7 @@ exports[`renders editor 1`] = `
           </button>
           <div
             class="navbar-collapse collapse"
-            id="Header-4"
+            id="Header-5"
           >
             <div
               class="Header__nav mx-auto navbar-nav"
@@ -2329,7 +2329,7 @@ exports[`renders editor 1`] = `
             <div>
               <label
                 class="form-label"
-                for="LemmaInput-5"
+                for="LemmaInput-6"
               >
                 Lemma
               </label>
@@ -2346,14 +2346,14 @@ exports[`renders editor 1`] = `
                       aria-label="attested"
                       checked=""
                       class="form-check-input"
-                      id="LemmaInput-attested-6"
+                      id="LemmaInput-attested-7"
                       type="checkbox"
                     />
                   </div>
                 </span>
                 <input
                   class="form-control"
-                  id="LemmaInput-5"
+                  id="LemmaInput-6"
                   type="text"
                   value="test"
                 />
@@ -2362,13 +2362,13 @@ exports[`renders editor 1`] = `
             <div>
               <label
                 class="form-label"
-                for="TextInput-7"
+                for="TextInput-8"
               >
                 Legacy Lemma
               </label>
               <input
                 class="form-control"
-                id="TextInput-7"
+                id="TextInput-8"
                 type="text"
                 value="test"
               />
@@ -2376,13 +2376,13 @@ exports[`renders editor 1`] = `
             <div>
               <label
                 class="form-label"
-                for="TextInput-8"
+                for="TextInput-9"
               >
                 Homonym
               </label>
               <input
                 class="form-control"
-                id="TextInput-8"
+                id="TextInput-9"
                 type="text"
                 value="I"
               />
@@ -2391,13 +2391,13 @@ exports[`renders editor 1`] = `
               <div>
                 <label
                   class="form-label"
-                  for="PosInput-9"
+                  for="PosInput-10"
                 >
                   Position of speech
                 </label>
                 <select
                   class="form-control"
-                  id="PosInput-9"
+                  id="PosInput-10"
                   multiple=""
                 >
                   <option
@@ -2583,7 +2583,7 @@ exports[`renders editor 1`] = `
                       class="card-header"
                     >
                       <span
-                        aria-controls="List-collapse-10"
+                        aria-controls="List-collapse-11"
                         aria-expanded="true"
                         class="List__toggle"
                       >
@@ -2603,7 +2603,7 @@ exports[`renders editor 1`] = `
                     </div>
                     <div
                       class="collapse show"
-                      id="List-collapse-10"
+                      id="List-collapse-11"
                     >
                       <ul
                         class="list-group list-group-flush"
@@ -2614,7 +2614,7 @@ exports[`renders editor 1`] = `
                           <div>
                             <input
                               class="form-control"
-                              id="TextInput-11"
+                              id="TextInput-12"
                               type="text"
                               value="wb'"
                             />
@@ -2632,7 +2632,7 @@ exports[`renders editor 1`] = `
                           <div>
                             <input
                               class="form-control"
-                              id="TextInput-12"
+                              id="TextInput-13"
                               type="text"
                               value="'b'"
                             />
@@ -2663,13 +2663,13 @@ exports[`renders editor 1`] = `
             <div>
               <label
                 class="form-label"
-                for="TextInput-13"
+                for="TextInput-14"
               >
                 Meaning
               </label>
               <input
                 class="form-control"
-                id="TextInput-13"
+                id="TextInput-14"
                 type="text"
                 value="\\\\~ \\"to weed\\" O/jB"
               />
@@ -2686,7 +2686,7 @@ exports[`renders editor 1`] = `
                     class="card-header"
                   >
                     <span
-                      aria-controls="List-collapse-14"
+                      aria-controls="List-collapse-15"
                       aria-expanded="true"
                       class="List__toggle"
                     >
@@ -2706,7 +2706,7 @@ exports[`renders editor 1`] = `
                   </div>
                   <div
                     class="collapse show"
-                    id="List-collapse-14"
+                    id="List-collapse-15"
                   >
                     <ul
                       class="list-group list-group-flush"
@@ -2718,7 +2718,7 @@ exports[`renders editor 1`] = `
                           <div>
                             <label
                               class="form-label"
-                              for="LemmaInput-15"
+                              for="LemmaInput-16"
                             >
                               Lemma
                             </label>
@@ -2735,14 +2735,14 @@ exports[`renders editor 1`] = `
                                     aria-label="attested"
                                     checked=""
                                     class="form-check-input"
-                                    id="LemmaInput-attested-16"
+                                    id="LemmaInput-attested-17"
                                     type="checkbox"
                                   />
                                 </div>
                               </span>
                               <input
                                 class="form-control"
-                                id="LemmaInput-15"
+                                id="LemmaInput-16"
                                 type="text"
                                 value=""
                               />
@@ -2759,7 +2759,7 @@ exports[`renders editor 1`] = `
                                   class="card-header"
                                 >
                                   <span
-                                    aria-controls="List-collapse-17"
+                                    aria-controls="List-collapse-18"
                                     aria-expanded="true"
                                     class="List__toggle"
                                   >
@@ -2779,7 +2779,7 @@ exports[`renders editor 1`] = `
                                 </div>
                                 <div
                                   class="collapse show"
-                                  id="List-collapse-17"
+                                  id="List-collapse-18"
                                 >
                                   <ul
                                     class="list-group list-group-flush"
@@ -2790,7 +2790,7 @@ exports[`renders editor 1`] = `
                                       <div>
                                         <input
                                           class="form-control"
-                                          id="TextInput-18"
+                                          id="TextInput-19"
                                           type="text"
                                           value="dsdsds"
                                         />
@@ -2833,7 +2833,7 @@ exports[`renders editor 1`] = `
                           <div>
                             <label
                               class="form-label"
-                              for="LemmaInput-19"
+                              for="LemmaInput-20"
                             >
                               Lemma
                             </label>
@@ -2850,14 +2850,14 @@ exports[`renders editor 1`] = `
                                     aria-label="attested"
                                     checked=""
                                     class="form-check-input"
-                                    id="LemmaInput-attested-20"
+                                    id="LemmaInput-attested-21"
                                     type="checkbox"
                                   />
                                 </div>
                               </span>
                               <input
                                 class="form-control"
-                                id="LemmaInput-19"
+                                id="LemmaInput-20"
                                 type="text"
                                 value="abā'um"
                               />
@@ -2874,7 +2874,7 @@ exports[`renders editor 1`] = `
                                   class="card-header"
                                 >
                                   <span
-                                    aria-controls="List-collapse-21"
+                                    aria-controls="List-collapse-22"
                                     aria-expanded="true"
                                     class="List__toggle"
                                   >
@@ -2894,7 +2894,7 @@ exports[`renders editor 1`] = `
                                 </div>
                                 <div
                                   class="collapse show"
-                                  id="List-collapse-21"
+                                  id="List-collapse-22"
                                 >
                                   <ul
                                     class="list-group list-group-flush"
@@ -2905,7 +2905,7 @@ exports[`renders editor 1`] = `
                                       <div>
                                         <input
                                           class="form-control"
-                                          id="TextInput-22"
+                                          id="TextInput-23"
                                           type="text"
                                           value="**BOLD**"
                                         />
@@ -2969,7 +2969,7 @@ exports[`renders editor 1`] = `
                     class="card-header"
                   >
                     <span
-                      aria-controls="List-collapse-23"
+                      aria-controls="List-collapse-24"
                       aria-expanded="true"
                       class="List__toggle"
                     >
@@ -2989,7 +2989,7 @@ exports[`renders editor 1`] = `
                   </div>
                   <div
                     class="collapse show"
-                    id="List-collapse-23"
+                    id="List-collapse-24"
                   >
                     <ul
                       class="list-group list-group-flush"
@@ -3000,13 +3000,13 @@ exports[`renders editor 1`] = `
                         <div>
                           <label
                             class="form-label"
-                            for="TextInput-24"
+                            for="TextInput-25"
                           >
                             Conjugation/Function
                           </label>
                           <input
                             class="form-control"
-                            id="TextInput-24"
+                            id="TextInput-25"
                             type="text"
                             value="G"
                           />
@@ -3014,13 +3014,13 @@ exports[`renders editor 1`] = `
                         <div>
                           <label
                             class="form-label"
-                            for="TextInput-25"
+                            for="TextInput-26"
                           >
                             Meaning
                           </label>
                           <input
                             class="form-control"
-                            id="TextInput-25"
+                            id="TextInput-26"
                             type="text"
                             value="(*i/i*) field"
                           />
@@ -3034,7 +3034,7 @@ exports[`renders editor 1`] = `
                             >
                               <div
                                 class="collapse show"
-                                id="List-collapse-26"
+                                id="List-collapse-27"
                               >
                                 <ul
                                   class="list-group list-group-flush"
@@ -3045,13 +3045,13 @@ exports[`renders editor 1`] = `
                                     <div>
                                       <label
                                         class="form-label"
-                                        for="ArrayInput-27"
+                                        for="ArrayInput-28"
                                       >
                                         Vowels
                                       </label>
                                       <input
                                         class="form-control"
-                                        id="ArrayInput-27"
+                                        id="ArrayInput-28"
                                         type="text"
                                         value="i/i"
                                       />
@@ -3067,7 +3067,7 @@ exports[`renders editor 1`] = `
                                             class="card-header"
                                           >
                                             <span
-                                              aria-controls="List-collapse-28"
+                                              aria-controls="List-collapse-29"
                                               aria-expanded="true"
                                               class="List__toggle"
                                             >
@@ -3087,7 +3087,7 @@ exports[`renders editor 1`] = `
                                           </div>
                                           <div
                                             class="collapse show"
-                                            id="List-collapse-28"
+                                            id="List-collapse-29"
                                           >
                                             <ul
                                               class="list-group list-group-flush"
@@ -3098,7 +3098,7 @@ exports[`renders editor 1`] = `
                                                 <div>
                                                   <input
                                                     class="form-control"
-                                                    id="TextInput-29"
+                                                    id="TextInput-30"
                                                     type="text"
                                                     value="dsdsds"
                                                   />
@@ -3160,7 +3160,7 @@ exports[`renders editor 1`] = `
                                 class="card-header"
                               >
                                 <span
-                                  aria-controls="List-collapse-30"
+                                  aria-controls="List-collapse-31"
                                   aria-expanded="true"
                                   class="List__toggle"
                                 >
@@ -3180,7 +3180,7 @@ exports[`renders editor 1`] = `
                               </div>
                               <div
                                 class="collapse show"
-                                id="List-collapse-30"
+                                id="List-collapse-31"
                               >
                                 <ol
                                   class="list-group list-group-flush"
@@ -3191,13 +3191,13 @@ exports[`renders editor 1`] = `
                                     <div>
                                       <label
                                         class="form-label"
-                                        for="TextInput-31"
+                                        for="TextInput-32"
                                       >
                                         Meaning
                                       </label>
                                       <input
                                         class="form-control"
-                                        id="TextInput-31"
+                                        id="TextInput-32"
                                         type="text"
                                         value="mmkkk"
                                       />
@@ -3211,7 +3211,7 @@ exports[`renders editor 1`] = `
                                         >
                                           <div
                                             class="collapse show"
-                                            id="List-collapse-32"
+                                            id="List-collapse-33"
                                           >
                                             <ul
                                               class="list-group list-group-flush"
@@ -3222,13 +3222,13 @@ exports[`renders editor 1`] = `
                                                 <div>
                                                   <label
                                                     class="form-label"
-                                                    for="ArrayInput-33"
+                                                    for="ArrayInput-34"
                                                   >
                                                     Vowels
                                                   </label>
                                                   <input
                                                     class="form-control"
-                                                    id="ArrayInput-33"
+                                                    id="ArrayInput-34"
                                                     type="text"
                                                     value=""
                                                   />
@@ -3244,7 +3244,7 @@ exports[`renders editor 1`] = `
                                                         class="card-header"
                                                       >
                                                         <span
-                                                          aria-controls="List-collapse-34"
+                                                          aria-controls="List-collapse-35"
                                                           aria-expanded="true"
                                                           class="List__toggle"
                                                         >
@@ -3259,7 +3259,7 @@ exports[`renders editor 1`] = `
                                                       </div>
                                                       <div
                                                         class="collapse show"
-                                                        id="List-collapse-34"
+                                                        id="List-collapse-35"
                                                       >
                                                         <ul
                                                           class="list-group list-group-flush"
@@ -3360,7 +3360,7 @@ exports[`renders editor 1`] = `
                 >
                   <div
                     class="collapse show"
-                    id="List-collapse-35"
+                    id="List-collapse-36"
                   >
                     <ul
                       class="list-group list-group-flush"
@@ -3371,13 +3371,13 @@ exports[`renders editor 1`] = `
                         <div>
                           <label
                             class="form-label"
-                            for="ArrayInput-36"
+                            for="ArrayInput-37"
                           >
                             Logogram
                           </label>
                           <input
                             class="form-control"
-                            id="ArrayInput-36"
+                            id="ArrayInput-37"
                             type="text"
                             value=""
                           />
@@ -3393,7 +3393,7 @@ exports[`renders editor 1`] = `
                                 class="card-header"
                               >
                                 <span
-                                  aria-controls="List-collapse-37"
+                                  aria-controls="List-collapse-38"
                                   aria-expanded="true"
                                   class="List__toggle"
                                 >
@@ -3413,7 +3413,7 @@ exports[`renders editor 1`] = `
                               </div>
                               <div
                                 class="collapse show"
-                                id="List-collapse-37"
+                                id="List-collapse-38"
                               >
                                 <ul
                                   class="list-group list-group-flush"
@@ -3424,7 +3424,7 @@ exports[`renders editor 1`] = `
                                     <div>
                                       <input
                                         class="form-control"
-                                        id="TextInput-38"
+                                        id="TextInput-39"
                                         type="text"
                                         value="dsadas"
                                       />
@@ -3487,7 +3487,7 @@ exports[`renders editor 1`] = `
                     class="card-header"
                   >
                     <span
-                      aria-controls="List-collapse-39"
+                      aria-controls="List-collapse-40"
                       aria-expanded="true"
                       class="List__toggle"
                     >
@@ -3507,7 +3507,7 @@ exports[`renders editor 1`] = `
                   </div>
                   <div
                     class="collapse show"
-                    id="List-collapse-39"
+                    id="List-collapse-40"
                   >
                     <ul
                       class="list-group list-group-flush"
@@ -3526,7 +3526,7 @@ exports[`renders editor 1`] = `
                                 class="card-header"
                               >
                                 <span
-                                  aria-controls="List-collapse-40"
+                                  aria-controls="List-collapse-41"
                                   aria-expanded="true"
                                   class="List__toggle"
                                 >
@@ -3547,7 +3547,7 @@ exports[`renders editor 1`] = `
                               </div>
                               <div
                                 class="collapse show"
-                                id="List-collapse-40"
+                                id="List-collapse-41"
                               >
                                 <ul
                                   class="list-group list-group-flush"
@@ -3559,13 +3559,13 @@ exports[`renders editor 1`] = `
                                       <div>
                                         <label
                                           class="form-label"
-                                          for="LemmaInput-41"
+                                          for="LemmaInput-42"
                                         >
                                           Lemma
                                         </label>
                                         <input
                                           class="form-control"
-                                          id="LemmaInput-41"
+                                          id="LemmaInput-42"
                                           type="text"
                                           value="wabûtu"
                                         />
@@ -3573,13 +3573,13 @@ exports[`renders editor 1`] = `
                                       <div>
                                         <label
                                           class="form-label"
-                                          for="TextInput-43"
+                                          for="TextInput-44"
                                         >
                                           Homonym
                                         </label>
                                         <input
                                           class="form-control"
-                                          id="TextInput-43"
+                                          id="TextInput-44"
                                           type="text"
                                           value="I"
                                         />
@@ -3595,7 +3595,7 @@ exports[`renders editor 1`] = `
                                               class="card-header"
                                             >
                                               <span
-                                                aria-controls="List-collapse-44"
+                                                aria-controls="List-collapse-45"
                                                 aria-expanded="true"
                                                 class="List__toggle"
                                               >
@@ -3610,7 +3610,7 @@ exports[`renders editor 1`] = `
                                             </div>
                                             <div
                                               class="collapse show"
-                                              id="List-collapse-44"
+                                              id="List-collapse-45"
                                             >
                                               <ul
                                                 class="list-group list-group-flush"
@@ -3694,13 +3694,13 @@ exports[`renders editor 1`] = `
                   <div>
                     <label
                       class="form-label"
-                      for="LemmaInput-45"
+                      for="LemmaInput-46"
                     >
                       Lemma
                     </label>
                     <input
                       class="form-control"
-                      id="LemmaInput-45"
+                      id="LemmaInput-46"
                       type="text"
                       value="sadasd"
                     />
@@ -3708,13 +3708,13 @@ exports[`renders editor 1`] = `
                   <div>
                     <label
                       class="form-label"
-                      for="TextInput-47"
+                      for="TextInput-48"
                     >
                       Homonym
                     </label>
                     <input
                       class="form-control"
-                      id="TextInput-47"
+                      id="TextInput-48"
                       type="text"
                       value=""
                     />
@@ -3730,7 +3730,7 @@ exports[`renders editor 1`] = `
                           class="card-header"
                         >
                           <span
-                            aria-controls="List-collapse-48"
+                            aria-controls="List-collapse-49"
                             aria-expanded="true"
                             class="List__toggle"
                           >
@@ -3750,7 +3750,7 @@ exports[`renders editor 1`] = `
                         </div>
                         <div
                           class="collapse show"
-                          id="List-collapse-48"
+                          id="List-collapse-49"
                         >
                           <ul
                             class="list-group list-group-flush"
@@ -3761,7 +3761,7 @@ exports[`renders editor 1`] = `
                               <div>
                                 <input
                                   class="form-control"
-                                  id="TextInput-49"
+                                  id="TextInput-50"
                                   type="text"
                                   value=""
                                 />
@@ -3801,13 +3801,13 @@ exports[`renders editor 1`] = `
             <div>
               <label
                 class="form-label"
-                for="TextInput-50"
+                for="TextInput-51"
               >
                 Guide Word
               </label>
               <input
                 class="form-control"
-                id="TextInput-50"
+                id="TextInput-51"
                 type="text"
                 value="weed"
               />
@@ -3823,7 +3823,7 @@ exports[`renders editor 1`] = `
                     class="card-header"
                   >
                     <span
-                      aria-controls="List-collapse-51"
+                      aria-controls="List-collapse-52"
                       aria-expanded="true"
                       class="List__toggle"
                     >
@@ -3838,7 +3838,7 @@ exports[`renders editor 1`] = `
                   </div>
                   <div
                     class="collapse show"
-                    id="List-collapse-51"
+                    id="List-collapse-52"
                   >
                     <ul
                       class="list-group list-group-flush"
