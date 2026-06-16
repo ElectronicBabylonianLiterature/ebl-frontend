@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { ReactNode } from 'react'
 import { render, screen, waitFor } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 import { Route } from 'router/compat'
@@ -42,6 +42,13 @@ const lazyModulePaths = [
   'router/footerRoutes',
 ] as const
 
+function mockRouteModule(modulePath: string): void {
+  jest.mock(modulePath, () => ({
+    __esModule: true,
+    default: jest.fn(),
+  }))
+}
+
 jest.mock('Header', () => {
   function HeaderMock(): JSX.Element {
     return <div>Header</div>
@@ -75,167 +82,119 @@ jest.mock('router/FullPageRoutes', () => ({
   default: jest.fn(),
 }))
 
-jest.mock('router/aboutRoutes', () => ({
-  __esModule: true,
-  default: jest.fn(),
-}))
-
-jest.mock('router/toolsRoutes', () => ({
-  __esModule: true,
-  default: jest.fn(),
-}))
-
-jest.mock('router/signRoutes', () => ({
-  __esModule: true,
-  default: jest.fn(),
-}))
-
-jest.mock('router/bibliographyRoutes', () => ({
-  __esModule: true,
-  default: jest.fn(),
-}))
-
-jest.mock('router/dictionaryRoutes', () => ({
-  __esModule: true,
-  default: jest.fn(),
-}))
-
-jest.mock('router/corpusRoutes', () => ({
-  __esModule: true,
-  default: jest.fn(),
-}))
-
-jest.mock('router/fragmentariumRoutes', () => ({
-  __esModule: true,
-  default: jest.fn(),
-}))
-
-jest.mock('router/researchProjectRoutes', () => ({
-  __esModule: true,
-  default: jest.fn(),
-}))
-
-jest.mock('router/footerRoutes', () => ({
-  __esModule: true,
-  default: jest.fn(),
-}))
-
 jest.mock('router/sitemap', () => ({
   __esModule: true,
   default: jest.fn(),
 }))
 
+mockRouteModule('router/aboutRoutes')
+lazyModulePaths.forEach(mockRouteModule)
+
+const routeMockConfigs: Record<string, () => ReactNode[]> = {
+  'router/aboutRoutes': () => [
+    <MockSwitchRoute
+      key="AboutLibrary"
+      exact
+      path="/about/library"
+      text="About eager route"
+    />,
+    <MockSwitchRoute
+      key="AboutRoot"
+      exact
+      path="/about"
+      text="About root route"
+    />,
+  ],
+  'router/toolsRoutes': () => [
+    <MockSwitchRoute
+      key="ToolsRoute"
+      exact
+      path="/tools/date-converter"
+      text="Tools route loaded"
+    />,
+    <MockSwitchRoute
+      key="ToolsNotFound"
+      path="/tools/*"
+      text="Tools route not found"
+    />,
+  ],
+  'router/signRoutes': () => [
+    <MockSwitchRoute
+      key="SignsRoute"
+      exact
+      path="/signs/sign-id"
+      text="Signs route loaded"
+    />,
+  ],
+  'router/bibliographyRoutes': () => [
+    <MockSwitchRoute
+      key="BibliographyRoute"
+      exact
+      path="/bibliography"
+      text="Bibliography route loaded"
+    />,
+  ],
+  'router/dictionaryRoutes': () => [
+    <MockSwitchRoute
+      key="DictionaryRoute"
+      exact
+      path="/dictionary/object-id"
+      text="Dictionary route loaded"
+    />,
+  ],
+  'router/corpusRoutes': () => [
+    <MockSwitchRoute
+      key="CorpusRoute"
+      exact
+      path="/corpus/L/1/1"
+      text="Corpus route loaded"
+    />,
+  ],
+  'router/fragmentariumRoutes': () => [
+    <MockSwitchRoute
+      key="FragmentariumRoute"
+      exact
+      path="/library/fragment-id"
+      text="Fragmentarium route loaded"
+    />,
+  ],
+  'router/researchProjectRoutes': () => [
+    <MockSwitchRoute
+      key="ResearchProjectsNotFound"
+      path="/projects/*"
+      text="Projects route not found"
+    />,
+  ],
+  'router/footerRoutes': () => [
+    <MockSwitchRoute
+      key="ImpressumRoute"
+      exact
+      path="/impressum"
+      text="Impressum route loaded"
+    />,
+    <MockSwitchRoute
+      key="DatenschutzRoute"
+      exact
+      path="/datenschutz"
+      text="Datenschutz route loaded"
+    />,
+  ],
+  'router/sitemap': () => [<div key="sitemap">Sitemap route loaded</div>],
+}
+
 describe('Router lazy loading', () => {
   beforeEach(() => {
     jest.clearAllMocks()
-
     getDefaultMock('router/FullPageRoutes').mockReturnValue([])
-
-    getDefaultMock('router/aboutRoutes').mockImplementation(() => [
-      <MockSwitchRoute
-        key="AboutLibrary"
-        exact
-        path="/about/library"
-        text="About eager route"
-      />,
-      <MockSwitchRoute
-        key="AboutRoot"
-        exact
-        path="/about"
-        text="About root route"
-      />,
-    ])
-
-    getDefaultMock('router/toolsRoutes').mockImplementation(() => [
-      <MockSwitchRoute
-        key="ToolsRoute"
-        exact
-        path="/tools/date-converter"
-        text="Tools route loaded"
-      />,
-      <MockSwitchRoute
-        key="ToolsNotFound"
-        path="/tools/*"
-        text="Tools route not found"
-      />,
-    ])
-
-    getDefaultMock('router/signRoutes').mockImplementation(() => [
-      <MockSwitchRoute
-        key="SignsRoute"
-        exact
-        path="/signs/sign-id"
-        text="Signs route loaded"
-      />,
-    ])
-
-    getDefaultMock('router/bibliographyRoutes').mockImplementation(() => [
-      <MockSwitchRoute
-        key="BibliographyRoute"
-        exact
-        path="/bibliography"
-        text="Bibliography route loaded"
-      />,
-    ])
-
-    getDefaultMock('router/dictionaryRoutes').mockImplementation(() => [
-      <MockSwitchRoute
-        key="DictionaryRoute"
-        exact
-        path="/dictionary/object-id"
-        text="Dictionary route loaded"
-      />,
-    ])
-
-    getDefaultMock('router/corpusRoutes').mockImplementation(() => [
-      <MockSwitchRoute
-        key="CorpusRoute"
-        exact
-        path="/corpus/L/1/1"
-        text="Corpus route loaded"
-      />,
-    ])
-
-    getDefaultMock('router/fragmentariumRoutes').mockImplementation(() => [
-      <MockSwitchRoute
-        key="FragmentariumRoute"
-        exact
-        path="/library/fragment-id"
-        text="Fragmentarium route loaded"
-      />,
-    ])
-
-    getDefaultMock('router/researchProjectRoutes').mockImplementation(() => [
-      <MockSwitchRoute
-        key="ResearchProjectsNotFound"
-        path="/projects/*"
-        text="Projects route not found"
-      />,
-    ])
-
-    getDefaultMock('router/footerRoutes').mockImplementation(() => [
-      <MockSwitchRoute
-        key="ImpressumRoute"
-        exact
-        path="/impressum"
-        text="Impressum route loaded"
-      />,
-      <MockSwitchRoute
-        key="DatenschutzRoute"
-        exact
-        path="/datenschutz"
-        text="Datenschutz route loaded"
-      />,
-    ])
-
-    getDefaultMock('router/sitemap').mockImplementation(() => (
-      <div>Sitemap route loaded</div>
-    ))
+    for (const [modulePath, createRoutes] of Object.entries(routeMockConfigs)) {
+      getDefaultMock(modulePath).mockImplementation(
+        modulePath === 'router/sitemap' ? () => createRoutes() : createRoutes,
+      )
+    }
   })
 
   test('renders home route eagerly without loading lazy route modules', () => {
     renderRouter('/')
-
     expect(screen.getByText('Introduction route')).toBeInTheDocument()
     lazyModulePaths.forEach((modulePath) => {
       expect(getDefaultMock(modulePath)).not.toHaveBeenCalled()
@@ -245,7 +204,6 @@ describe('Router lazy loading', () => {
 
   test('renders about routes eagerly without loading lazy route modules', () => {
     renderRouter('/about/library')
-
     expect(screen.getByText('About eager route')).toBeInTheDocument()
     expect(getDefaultMock('router/aboutRoutes')).toHaveBeenCalled()
     lazyModulePaths.forEach((modulePath) => {
@@ -298,11 +256,9 @@ describe('Router lazy loading', () => {
     'loads only the matching lazy route module for $path',
     async ({ path, modulePath, text }) => {
       renderRouter(path)
-
       await waitFor(() => {
         expect(screen.getByText(text)).toBeInTheDocument()
       })
-
       lazyModulePaths.forEach((candidateModulePath) => {
         if (candidateModulePath === modulePath) {
           expect(getDefaultMock(candidateModulePath)).toHaveBeenCalled()
@@ -315,17 +271,14 @@ describe('Router lazy loading', () => {
 
   test('renders tools module not-found route for unknown tools path', async () => {
     renderRouter('/tools/unknown-path')
-
     await waitFor(() => {
       expect(screen.getByText('Tools route not found')).toBeInTheDocument()
     })
-
     expect(getDefaultMock('router/toolsRoutes')).toHaveBeenCalled()
   })
 
   test('renders global not-found without loading lazy route modules for unrelated paths', () => {
     renderRouter('/unknown-path')
-
     expect(screen.getByText('Global not found')).toBeInTheDocument()
     lazyModulePaths.forEach((modulePath) => {
       expect(getDefaultMock(modulePath)).not.toHaveBeenCalled()
@@ -334,11 +287,9 @@ describe('Router lazy loading', () => {
 
   test('loads sitemap lazily only for sitemap path', async () => {
     renderRouter('/sitemap')
-
     await waitFor(() => {
       expect(screen.getByText('Sitemap route loaded')).toBeInTheDocument()
     })
-
     expect(getDefaultMock('router/sitemap')).toHaveBeenCalled()
     lazyModulePaths.forEach((modulePath) => {
       expect(getDefaultMock(modulePath)).not.toHaveBeenCalled()
@@ -347,7 +298,6 @@ describe('Router lazy loading', () => {
 
   test('renders global not-found for unknown legal subpaths without loading footer module', () => {
     renderRouter('/impressum/unknown-path')
-
     expect(screen.getByText('Global not found')).toBeInTheDocument()
     expect(getDefaultMock('router/footerRoutes')).not.toHaveBeenCalled()
   })
