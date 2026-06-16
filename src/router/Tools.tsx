@@ -22,6 +22,7 @@ import FragmentService from 'fragmentarium/application/FragmentService'
 import DossiersService from 'dossiers/application/DossiersService'
 import DossiersSearchPage from 'dossiers/ui/DossiersSearchPage'
 import GenresPage from 'fragmentarium/ui/GenresPage'
+import MapTab from 'map/MapTab'
 import { useHistory } from 'router/compat'
 import useScrollToHash from 'common/hooks/useScrollToHash'
 
@@ -35,6 +36,7 @@ export const tabIds = [
   'references',
   'afo-register',
   'cuneiform-converter',
+  'map',
 ] as const
 export type TabId = (typeof tabIds)[number]
 
@@ -65,6 +67,7 @@ const tabConfig = [
   { id: 'references', title: 'References', icon: '※' },
   { id: 'afo-register', title: 'AfO-Register', icon: '⊞' },
   { id: 'cuneiform-converter', title: 'Cuneiform Converter', icon: '𒐕' },
+  { id: 'map', title: 'Findspot Map', icon: '◈' },
 ]
 
 export function getCurrentTab(selectedTab?: TabId) {
@@ -168,6 +171,7 @@ function getContent({
     ),
     'list-of-kings': ListOfKings(),
     'cuneiform-converter': <CuneiformConverterForm signService={signService} />,
+    map: <MapTab fragmentService={fragmentService} />,
   }
 
   return activeTab ? (

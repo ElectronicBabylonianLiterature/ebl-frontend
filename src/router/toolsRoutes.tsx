@@ -41,6 +41,7 @@ const tabDescriptions: Record<TabId, string> = {
     'Reference list of Babylonian and Assyrian kings and dynasties at the eBL.',
   'cuneiform-converter':
     'Convert text to cuneiform script representations at the eBL.',
+  map: 'Explore a map of cuneiform findspots and their associated fragments at the eBL.',
 }
 
 export default function ToolsRoutes({
