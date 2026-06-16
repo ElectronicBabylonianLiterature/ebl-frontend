@@ -222,6 +222,18 @@ exports[`external resources Snapshot 1`] = `
       )
     </li>
     <li>
+      ETCSRI (
+      <a
+        aria-label="ETCSRI text L123"
+        href="https://oracc.museum.upenn.edu/etcsri/L123"
+        rel="noopener noreferrer"
+        target="_blank"
+      >
+        L123
+      </a>
+      )
+    </li>
+    <li>
       SketchFab (
       <a
         aria-label="SketchFab text L123"
