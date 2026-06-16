@@ -216,7 +216,11 @@ jest.mock('router/sitemap', () => ({
   default: jest.fn(),
 }))
 
-mockRouteModule('router/aboutRoutes')
+jest.mock('router/aboutRoutes', () => ({
+  __esModule: true,
+  default: jest.fn(),
+}))
+
 lazyModulePaths.forEach(mockRouteModule)
 
 const routeMockConfigs: Record<string, () => ReactNode[]> = Object.assign(
