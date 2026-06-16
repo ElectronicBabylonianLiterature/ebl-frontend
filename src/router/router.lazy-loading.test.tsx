@@ -31,23 +31,152 @@ function renderRouter(path: string): void {
   )
 }
 
-const lazyModulePaths = [
-  'router/toolsRoutes',
-  'router/signRoutes',
-  'router/bibliographyRoutes',
-  'router/dictionaryRoutes',
-  'router/corpusRoutes',
-  'router/fragmentariumRoutes',
-  'router/researchProjectRoutes',
-  'router/footerRoutes',
-] as const
-
 function mockRouteModule(modulePath: string): void {
   jest.mock(modulePath, () => ({
     __esModule: true,
     default: jest.fn(),
   }))
 }
+
+interface RouteDef {
+  key: string
+  path: string
+  text: string
+  exact?: boolean
+}
+
+interface RouteMockEntry {
+  modulePath: string
+  routes: RouteDef[]
+}
+
+const routeMockEntries: RouteMockEntry[] = [
+  {
+    modulePath: 'router/aboutRoutes',
+    routes: [
+      {
+        key: 'AboutLibrary',
+        exact: true,
+        path: '/about/library',
+        text: 'About eager route',
+      },
+      {
+        key: 'AboutRoot',
+        exact: true,
+        path: '/about',
+        text: 'About root route',
+      },
+    ],
+  },
+  {
+    modulePath: 'router/toolsRoutes',
+    routes: [
+      {
+        key: 'ToolsRoute',
+        exact: true,
+        path: '/tools/date-converter',
+        text: 'Tools route loaded',
+      },
+      {
+        key: 'ToolsNotFound',
+        path: '/tools/*',
+        text: 'Tools route not found',
+      },
+    ],
+  },
+  {
+    modulePath: 'router/signRoutes',
+    routes: [
+      {
+        key: 'SignsRoute',
+        exact: true,
+        path: '/signs/sign-id',
+        text: 'Signs route loaded',
+      },
+    ],
+  },
+  {
+    modulePath: 'router/bibliographyRoutes',
+    routes: [
+      {
+        key: 'BibliographyRoute',
+        exact: true,
+        path: '/bibliography',
+        text: 'Bibliography route loaded',
+      },
+    ],
+  },
+  {
+    modulePath: 'router/dictionaryRoutes',
+    routes: [
+      {
+        key: 'DictionaryRoute',
+        exact: true,
+        path: '/dictionary/object-id',
+        text: 'Dictionary route loaded',
+      },
+    ],
+  },
+  {
+    modulePath: 'router/corpusRoutes',
+    routes: [
+      {
+        key: 'CorpusRoute',
+        exact: true,
+        path: '/corpus/L/1/1',
+        text: 'Corpus route loaded',
+      },
+    ],
+  },
+  {
+    modulePath: 'router/fragmentariumRoutes',
+    routes: [
+      {
+        key: 'FragmentariumRoute',
+        exact: true,
+        path: '/library/fragment-id',
+        text: 'Fragmentarium route loaded',
+      },
+    ],
+  },
+  {
+    modulePath: 'router/researchProjectRoutes',
+    routes: [
+      {
+        key: 'ResearchProjectsNotFound',
+        path: '/projects/*',
+        text: 'Projects route not found',
+      },
+    ],
+  },
+  {
+    modulePath: 'router/footerRoutes',
+    routes: [
+      {
+        key: 'ImpressumRoute',
+        exact: true,
+        path: '/impressum',
+        text: 'Impressum route loaded',
+      },
+      {
+        key: 'DatenschutzRoute',
+        exact: true,
+        path: '/datenschutz',
+        text: 'Datenschutz route loaded',
+      },
+    ],
+  },
+]
+
+function createRouteElements(routes: RouteDef[]): ReactNode[] {
+  return routes.map(({ key, exact, path, text }) => (
+    <MockSwitchRoute key={key} exact={exact} path={path} text={text} />
+  ))
+}
+
+const lazyModulePaths = routeMockEntries
+  .filter(({ modulePath }) => modulePath !== 'router/aboutRoutes')
+  .map(({ modulePath }) => modulePath)
 
 jest.mock('Header', () => {
   function HeaderMock(): JSX.Element {
@@ -90,97 +219,25 @@ jest.mock('router/sitemap', () => ({
 mockRouteModule('router/aboutRoutes')
 lazyModulePaths.forEach(mockRouteModule)
 
-const routeMockConfigs: Record<string, () => ReactNode[]> = {
-  'router/aboutRoutes': () => [
-    <MockSwitchRoute
-      key="AboutLibrary"
-      exact
-      path="/about/library"
-      text="About eager route"
-    />,
-    <MockSwitchRoute
-      key="AboutRoot"
-      exact
-      path="/about"
-      text="About root route"
-    />,
-  ],
-  'router/toolsRoutes': () => [
-    <MockSwitchRoute
-      key="ToolsRoute"
-      exact
-      path="/tools/date-converter"
-      text="Tools route loaded"
-    />,
-    <MockSwitchRoute
-      key="ToolsNotFound"
-      path="/tools/*"
-      text="Tools route not found"
-    />,
-  ],
-  'router/signRoutes': () => [
-    <MockSwitchRoute
-      key="SignsRoute"
-      exact
-      path="/signs/sign-id"
-      text="Signs route loaded"
-    />,
-  ],
-  'router/bibliographyRoutes': () => [
-    <MockSwitchRoute
-      key="BibliographyRoute"
-      exact
-      path="/bibliography"
-      text="Bibliography route loaded"
-    />,
-  ],
-  'router/dictionaryRoutes': () => [
-    <MockSwitchRoute
-      key="DictionaryRoute"
-      exact
-      path="/dictionary/object-id"
-      text="Dictionary route loaded"
-    />,
-  ],
-  'router/corpusRoutes': () => [
-    <MockSwitchRoute
-      key="CorpusRoute"
-      exact
-      path="/corpus/L/1/1"
-      text="Corpus route loaded"
-    />,
-  ],
-  'router/fragmentariumRoutes': () => [
-    <MockSwitchRoute
-      key="FragmentariumRoute"
-      exact
-      path="/library/fragment-id"
-      text="Fragmentarium route loaded"
-    />,
-  ],
-  'router/researchProjectRoutes': () => [
-    <MockSwitchRoute
-      key="ResearchProjectsNotFound"
-      path="/projects/*"
-      text="Projects route not found"
-    />,
-  ],
-  'router/footerRoutes': () => [
-    <MockSwitchRoute
-      key="ImpressumRoute"
-      exact
-      path="/impressum"
-      text="Impressum route loaded"
-    />,
-    <MockSwitchRoute
-      key="DatenschutzRoute"
-      exact
-      path="/datenschutz"
-      text="Datenschutz route loaded"
-    />,
-  ],
-  'router/sitemap': () => [<div key="sitemap">Sitemap route loaded</div>],
-}
+const routeMockConfigs: Record<string, () => ReactNode[]> = Object.assign(
+  Object.fromEntries(
+    routeMockEntries.map(({ modulePath, routes }) => [
+      modulePath,
+      () => createRouteElements(routes),
+    ]),
+  ),
+  {
+    'router/sitemap': () => [<div key="sitemap">Sitemap route loaded</div>],
+  },
+)
+
+const lazyRouteTestCases = routeMockEntries
+  .filter(({ modulePath }) => modulePath !== 'router/aboutRoutes')
+  .map(({ modulePath, routes }) => ({
+    path: routes[0].path,
+    modulePath,
+    text: routes[0].text,
+  }))
 
 describe('Router lazy loading', () => {
   beforeEach(() => {
@@ -211,48 +268,7 @@ describe('Router lazy loading', () => {
     })
   })
 
-  test.each([
-    {
-      path: '/tools/date-converter',
-      modulePath: 'router/toolsRoutes',
-      text: 'Tools route loaded',
-    },
-    {
-      path: '/signs/sign-id',
-      modulePath: 'router/signRoutes',
-      text: 'Signs route loaded',
-    },
-    {
-      path: '/bibliography',
-      modulePath: 'router/bibliographyRoutes',
-      text: 'Bibliography route loaded',
-    },
-    {
-      path: '/dictionary/object-id',
-      modulePath: 'router/dictionaryRoutes',
-      text: 'Dictionary route loaded',
-    },
-    {
-      path: '/corpus/L/1/1',
-      modulePath: 'router/corpusRoutes',
-      text: 'Corpus route loaded',
-    },
-    {
-      path: '/library/fragment-id',
-      modulePath: 'router/fragmentariumRoutes',
-      text: 'Fragmentarium route loaded',
-    },
-    {
-      path: '/projects/unknown-project',
-      modulePath: 'router/researchProjectRoutes',
-      text: 'Projects route not found',
-    },
-    {
-      path: '/impressum',
-      modulePath: 'router/footerRoutes',
-      text: 'Impressum route loaded',
-    },
-  ])(
+  test.each(lazyRouteTestCases)(
     'loads only the matching lazy route module for $path',
     async ({ path, modulePath, text }) => {
       renderRouter(path)
