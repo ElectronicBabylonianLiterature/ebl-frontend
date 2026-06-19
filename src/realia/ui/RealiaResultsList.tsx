@@ -1,14 +1,70 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { RealiaEntry, REALIA_TYPE_LABELS } from 'realia/domain/RealiaEntry'
+import { RealiaEntry, getRealiaTypeLabels } from 'realia/domain/RealiaEntry'
+import 'realia/ui/Realia.sass'
 
-function entrySubtitle(entry: RealiaEntry): string {
-  const typeLabels = entry.type.map((t) => REALIA_TYPE_LABELS[t]).join(', ')
-  const terms = entry.relatedTerms.join(', ')
-  if (typeLabels && terms) {
-    return `${typeLabels} — ${terms}`
+interface SourceBadge {
+  readonly label: string
+  readonly count?: number
+}
+
+function getSourceBadges(entry: RealiaEntry): readonly SourceBadge[] {
+  const badges: SourceBadge[] = []
+  if (entry.reallexikon.length > 0) {
+    badges.push({ label: 'RlA', count: entry.reallexikon.length })
   }
-  return typeLabels || terms
+  if (entry.afoRegister.length > 0) {
+    badges.push({ label: 'AfO', count: entry.afoRegister.length })
+  }
+  if (entry.references.length > 0) {
+    badges.push({ label: 'References', count: entry.references.length })
+  }
+  if (entry.wikidataId.length > 0) {
+    badges.push({ label: 'Wikidata' })
+  }
+  return badges
+}
+
+function RealiaResultItem({ entry }: { entry: RealiaEntry }): JSX.Element {
+  const typeLabels = getRealiaTypeLabels(entry.type)
+  const sourceBadges = getSourceBadges(entry)
+  return (
+    <li className="realia-results-list__item">
+      <div className="realia-results-list__header">
+        <Link
+          className="realia-results-list__title"
+          to={'/tools/realia/' + encodeURIComponent(entry.id)}
+        >
+          {entry.id}
+        </Link>
+        {typeLabels.map((label) => (
+          <span key={label} className="realia-results-list__type">
+            {label}
+          </span>
+        ))}
+      </div>
+      {entry.relatedTerms.length > 0 && (
+        <div className="realia-results-list__terms">
+          <span className="realia-results-list__terms-label">also</span>{' '}
+          {entry.relatedTerms.join(', ')}
+        </div>
+      )}
+      {sourceBadges.length > 0 && (
+        <div className="realia-results-list__sources">
+          {sourceBadges.map((badge) => (
+            <span key={badge.label} className="realia-results-list__source">
+              {badge.label}
+              {badge.count !== undefined && (
+                <span className="realia-results-list__source-count">
+                  {badge.count}
+                </span>
+              )}
+            </span>
+          ))}
+        </div>
+      )}
+    </li>
+  )
 }
 
 export default function RealiaResultsList({
@@ -21,22 +77,9 @@ export default function RealiaResultsList({
   }
   return (
     <ul className="realia-results-list">
-      {entries.map((entry) => {
-        const subtitle = entrySubtitle(entry)
-        return (
-          <li key={entry.id} className="realia-results-list__item">
-            <Link to={'/tools/realia/' + encodeURIComponent(entry.id)}>
-              {entry.id}
-            </Link>
-            {subtitle && (
-              <span className="realia-results-list__subtitle">
-                {' '}
-                — {subtitle}
-              </span>
-            )}
-          </li>
-        )
-      })}
+      {entries.map((entry) => (
+        <RealiaResultItem key={entry.id} entry={entry} />
+      ))}
     </ul>
   )
 }

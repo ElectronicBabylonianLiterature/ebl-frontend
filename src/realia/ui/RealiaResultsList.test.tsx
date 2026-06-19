@@ -1,8 +1,13 @@
 import React from 'react'
-import { render, screen } from '@testing-library/react'
+import { render, screen, within } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 import RealiaResultsList from 'realia/ui/RealiaResultsList'
-import { realiaEntryFactory } from 'test-support/realia-fixtures'
+import {
+  realiaEntryFactory,
+  reallexikonEntryFactory,
+  afoRegisterEntryFactory,
+} from 'test-support/realia-fixtures'
+import { referenceFactory } from 'test-support/bibliography-fixtures'
 
 function renderList(
   entries: Parameters<typeof RealiaResultsList>[0]['entries'],
@@ -42,38 +47,69 @@ describe('RealiaResultsList', () => {
     )
   })
 
-  it('renders subtitle with type label when type is present', () => {
+  it('renders a type chip with the human-readable label for each type', () => {
     const entry = realiaEntryFactory.build({
-      type: ['OBJECT_NAME'],
-      relatedTerms: [],
+      type: ['DIVINE_NAME', 'ROYAL_NAME'],
     })
     renderList([entry])
-    expect(screen.getByText(/— Object Name/)).toHaveClass(
-      'realia-results-list__subtitle',
+    expect(screen.getByText('Divine Name')).toHaveClass(
+      'realia-results-list__type',
+    )
+    expect(screen.getByText('Royal Name')).toHaveClass(
+      'realia-results-list__type',
     )
   })
 
-  it('renders subtitle with relatedTerms when type is empty', () => {
-    const entry = realiaEntryFactory.build({
-      type: [],
-      relatedTerms: ['pig', 'swine'],
-    })
+  it('renders the related terms line when related terms are present', () => {
+    const entry = realiaEntryFactory.build({ relatedTerms: ['pig', 'swine'] })
     renderList([entry])
-    expect(screen.getByText(/— pig, swine/)).toBeInTheDocument()
+    expect(screen.getByText('pig, swine')).toBeInTheDocument()
+    expect(screen.getByText('also')).toHaveClass(
+      'realia-results-list__terms-label',
+    )
   })
 
-  it('renders combined subtitle when both type and relatedTerms are present', () => {
-    const entry = realiaEntryFactory.build({
-      type: ['OBJECT_NAME'],
-      relatedTerms: ['pig'],
-    })
+  it('omits the related terms line when there are no related terms', () => {
+    const entry = realiaEntryFactory.build({ relatedTerms: [] })
     renderList([entry])
-    expect(screen.getByText(/— Object Name — pig/)).toBeInTheDocument()
+    expect(screen.queryByText('also')).not.toBeInTheDocument()
   })
 
-  it('renders no subtitle when type is empty and relatedTerms is empty', () => {
-    const entry = realiaEntryFactory.build({ type: [], relatedTerms: [] })
+  it('renders source badges with counts for RlA, AfO and References', () => {
+    const entry = realiaEntryFactory.build({
+      reallexikon: reallexikonEntryFactory.buildList(2),
+      afoRegister: afoRegisterEntryFactory.buildList(3),
+      references: referenceFactory.buildList(1),
+      wikidataId: [],
+    })
     renderList([entry])
-    expect(screen.queryByText(/—/)).not.toBeInTheDocument()
+    const item = screen.getByRole('listitem')
+    expect(within(item).getByText('RlA')).toBeInTheDocument()
+    expect(within(item).getByText('AfO')).toBeInTheDocument()
+    expect(within(item).getByText('References')).toBeInTheDocument()
+    const counts = within(item)
+      .getAllByText(/^\d+$/)
+      .map((node) => node.textContent)
+    expect(counts).toEqual(['2', '3', '1'])
+  })
+
+  it('renders a Wikidata badge without a count when a wikidata id is present', () => {
+    const entry = realiaEntryFactory.build({ wikidataId: ['Q787'] })
+    renderList([entry])
+    const badge = screen.getByText('Wikidata')
+    expect(badge).toHaveClass('realia-results-list__source')
+    expect(badge).toHaveTextContent(/^Wikidata$/)
+  })
+
+  it('omits the source row when an entry has no sources', () => {
+    const entry = realiaEntryFactory.build({
+      reallexikon: [],
+      afoRegister: [],
+      references: [],
+      wikidataId: [],
+    })
+    renderList([entry])
+    expect(screen.queryByText('RlA')).not.toBeInTheDocument()
+    expect(screen.queryByText('Wikidata')).not.toBeInTheDocument()
   })
 })

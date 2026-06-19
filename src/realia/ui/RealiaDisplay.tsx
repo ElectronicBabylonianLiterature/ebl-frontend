@@ -5,7 +5,7 @@ import {
   AfoRegisterEntry,
   ReallexikonEntry,
   RealiaEntry,
-  REALIA_TYPE_LABELS,
+  getRealiaTypeLabels,
 } from 'realia/domain/RealiaEntry'
 import ExternalLink from 'common/ui/ExternalLink'
 import { CollapsibleCard } from 'common/ui/CollabsibleCard'
@@ -17,8 +17,7 @@ import { SectionCrumb, TextCrumb } from 'common/ui/Breadcrumbs'
 import 'realia/ui/Realia.sass'
 
 function RealiaMetadata({ entry }: { entry: RealiaEntry }): JSX.Element {
-  const typeLabels =
-    entry.type.map((t) => REALIA_TYPE_LABELS[t]).join(', ') || '—'
+  const typeLabels = getRealiaTypeLabels(entry.type).join(', ') || '—'
   return (
     <div className="Realia__metadata">
       {entry.wikidataId.map((wikidataId) => (

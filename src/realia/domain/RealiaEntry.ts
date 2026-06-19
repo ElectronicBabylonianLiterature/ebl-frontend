@@ -29,6 +29,12 @@ export const REALIA_TYPE_LABELS: Record<RealiaType, string> = {
   YEAR_NAME: 'Year Name',
 }
 
+export function getRealiaTypeLabels(
+  types: readonly RealiaType[],
+): readonly string[] {
+  return types.map((type) => REALIA_TYPE_LABELS[type])
+}
+
 export interface AfoRegisterEntry {
   readonly mainWord: string
   readonly note: string
