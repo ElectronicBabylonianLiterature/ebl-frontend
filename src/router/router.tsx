@@ -19,6 +19,7 @@ import Footer from 'Footer'
 import './router.sass'
 import Services from 'router/Services'
 import FullPageRoutes from 'router/FullPageRoutes'
+import ScrollToTop from 'router/ScrollToTop'
 
 export default function Router(services: Services): JSX.Element {
   return (
@@ -26,6 +27,7 @@ export default function Router(services: Services): JSX.Element {
       {FullPageRoutes(services)}
       <HelmetProvider context={helmetContext}>
         <div className="main-body">
+          <ScrollToTop />
           <Header key="Header" />
           <Switch>
             <Route exact path="/sitemap">

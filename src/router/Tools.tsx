@@ -214,7 +214,6 @@ export default function Tools({
       return
     }
 
-    window.scrollTo(0, 0)
     setSelectedTab(newTab)
   }
 

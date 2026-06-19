@@ -109,10 +109,6 @@ export default function AboutNews({
   const history = useHistory()
 
   useEffect(() => {
-    window.scrollTo(0, 0)
-  }, [])
-
-  useEffect(() => {
     setNewsletterMarkdown(activeNewsletter.content)
   }, [activeNewsletter])
 

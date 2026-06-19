@@ -162,22 +162,6 @@ describe('Tools', () => {
     expect(screen.getByText('Dictionary Mock')).toBeInTheDocument()
   })
 
-  it('scrolls viewport to top when switching tabs', async () => {
-    const scrollToSpy = jest
-      .spyOn(window, 'scrollTo')
-      .mockImplementation(() => undefined)
-
-    renderTools('signs')
-    const dictionaryLink = screen.getByRole('link', {
-      name: /Akkadian Dictionary/,
-    })
-
-    await userEvent.click(dictionaryLink)
-
-    expect(scrollToSpy).toHaveBeenCalledWith(0, 0)
-    scrollToSpy.mockRestore()
-  })
-
   it('keeps current tab active when clicking the already active tab', async () => {
     renderTools('dictionary')
     const dictionaryLink = screen.getByRole('link', {

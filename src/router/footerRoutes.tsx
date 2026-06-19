@@ -15,9 +15,9 @@ export default function FooterRoutes({
       key="impressum"
       path="/impressum"
       exact
-      render={({ location }): ReactNode => (
+      render={(): ReactNode => (
         <HeadTagsService title="Impressum" description="Impressum">
-          <Impressum pathname={location.pathname} />
+          <Impressum />
         </HeadTagsService>
       )}
       {...(sitemap && sitemapDefaults)}
@@ -26,9 +26,9 @@ export default function FooterRoutes({
       key="datenschutz"
       path="/datenschutz"
       exact
-      render={({ location }): ReactNode => (
+      render={(): ReactNode => (
         <HeadTagsService title="Datenschutz" description="Datenschutz">
-          <Datenschutz pathname={location.pathname} />
+          <Datenschutz />
         </HeadTagsService>
       )}
       {...(sitemap && sitemapDefaults)}
