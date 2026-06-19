@@ -3,7 +3,19 @@ import {
   buildReferenceWithManyAuthors,
   referenceFactory,
 } from 'test-support/bibliography-fixtures'
+import Reference from 'bibliography/domain/Reference'
+import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 import Citation, { CompactCitation, ContainerCitation } from './Citation'
+
+function buildReferenceWithoutAuthor(pages: string): Reference {
+  return new Reference(
+    'DISCUSSION',
+    pages,
+    '',
+    [],
+    new BibliographyEntry({ issued: { 'date-parts': [[1993], [1995]] } }),
+  )
+}
 
 test.each([
   [referenceFactory.build(), CompactCitation],
@@ -50,6 +62,16 @@ test('CompactCitation with empty properties', () => {
   expect(citation.getMarkdown()).toEqual(
     `${reference.authors.join(' & ')}, ${reference.year}`,
   )
+})
+
+test('CompactCitation without an author omits the leading comma', () => {
+  const citation = new CompactCitation(buildReferenceWithoutAuthor('207'))
+  expect(citation.getMarkdown()).toEqual('1993–1995: 207')
+})
+
+test('CompactCitation without an author or pages shows only the year', () => {
+  const citation = new CompactCitation(buildReferenceWithoutAuthor(''))
+  expect(citation.getMarkdown()).toEqual('1993–1995')
 })
 
 test('CompactCitation with more than 3 authors', () => {
