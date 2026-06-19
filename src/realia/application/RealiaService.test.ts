@@ -15,7 +15,7 @@ const entry: RealiaEntry = {
   type: ['OBJECT_NAME'],
   wikidataId: [],
   afoRegister: [],
-  reallexikon: [],
+  reallexikon: null,
   references: [],
 }
 

@@ -76,8 +76,8 @@ describe('RealiaDisplay', () => {
     expect(screen.getByText('—')).toBeInTheDocument()
   })
 
-  it('omits Reallexikon section when reallexikon is empty', async () => {
-    const entry = realiaEntryFactory.build({ reallexikon: [] })
+  it('omits Reallexikon section when reallexikon is null', async () => {
+    const entry = realiaEntryFactory.build({ reallexikon: null })
     renderDisplay(entry)
     await waitForSpinnerToBeRemoved(screen)
     expect(screen.queryByText(/I\. Reallexikon/)).not.toBeInTheDocument()
@@ -101,11 +101,22 @@ describe('RealiaDisplay', () => {
     const reference = referenceFactory.build()
     const reallexikonEntry = reallexikonEntryFactory.build({ reference })
     const entry = realiaEntryFactory.build({
-      reallexikon: [reallexikonEntry],
+      reallexikon: reallexikonEntry,
     })
     renderDisplay(entry)
     await waitForSpinnerToBeRemoved(screen)
     expect(screen.getByText(/I\. Reallexikon/)).toBeInTheDocument()
+  })
+
+  it('renders reallexikon label without parentheses when content is empty', async () => {
+    const reallexikonEntry = reallexikonEntryFactory.build({
+      title: 'Ab(a)kûia',
+      content: '',
+    })
+    const entry = realiaEntryFactory.build({ reallexikon: reallexikonEntry })
+    renderDisplay(entry)
+    await waitForSpinnerToBeRemoved(screen)
+    expect(screen.getByText('Ab(a)kûia')).toBeInTheDocument()
   })
 
   it('renders afo entry without note', async () => {

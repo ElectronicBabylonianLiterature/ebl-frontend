@@ -10,8 +10,8 @@ interface SourceBadge {
 
 function getSourceBadges(entry: RealiaEntry): readonly SourceBadge[] {
   const badges: SourceBadge[] = []
-  if (entry.reallexikon.length > 0) {
-    badges.push({ label: 'RlA', count: entry.reallexikon.length })
+  if (entry.reallexikon) {
+    badges.push({ label: 'RlA' })
   }
   if (entry.afoRegister.length > 0) {
     badges.push({ label: 'AfO', count: entry.afoRegister.length })

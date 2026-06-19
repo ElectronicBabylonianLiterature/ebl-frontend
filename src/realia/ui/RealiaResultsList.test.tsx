@@ -75,22 +75,22 @@ describe('RealiaResultsList', () => {
     expect(screen.queryByText('also')).not.toBeInTheDocument()
   })
 
-  it('renders source badges with counts for RlA, AfO and References', () => {
+  it('renders an RlA presence badge and AfO/References counts', () => {
     const entry = realiaEntryFactory.build({
-      reallexikon: reallexikonEntryFactory.buildList(2),
+      reallexikon: reallexikonEntryFactory.build(),
       afoRegister: afoRegisterEntryFactory.buildList(3),
       references: referenceFactory.buildList(1),
       wikidataId: [],
     })
     renderList([entry])
     const item = screen.getByRole('listitem')
-    expect(within(item).getByText('RlA')).toBeInTheDocument()
+    expect(within(item).getByText('RlA')).toHaveTextContent(/^RlA$/)
     expect(within(item).getByText('AfO')).toBeInTheDocument()
     expect(within(item).getByText('References')).toBeInTheDocument()
     const counts = within(item)
       .getAllByText(/^\d+$/)
       .map((node) => node.textContent)
-    expect(counts).toEqual(['2', '3', '1'])
+    expect(counts).toEqual(['3', '1'])
   })
 
   it('renders a Wikidata badge without a count when a wikidata id is present', () => {
@@ -103,7 +103,7 @@ describe('RealiaResultsList', () => {
 
   it('omits the source row when an entry has no sources', () => {
     const entry = realiaEntryFactory.build({
-      reallexikon: [],
+      reallexikon: null,
       afoRegister: [],
       references: [],
       wikidataId: [],

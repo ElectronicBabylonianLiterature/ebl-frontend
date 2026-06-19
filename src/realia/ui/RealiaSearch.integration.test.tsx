@@ -25,7 +25,7 @@ const richEntry: RealiaEntry = realiaEntryFactory.build({
   id: 'Enlil, Ellil',
   type: ['DIVINE_NAME', 'CELESTIAL_NAME'],
   relatedTerms: ['Elil', 'Illil'],
-  reallexikon: reallexikonEntryFactory.buildList(3),
+  reallexikon: reallexikonEntryFactory.build(),
   afoRegister: afoRegisterEntryFactory.buildList(2),
   references: referenceFactory.buildList(5),
   wikidataId: ['Q79064'],
@@ -69,7 +69,7 @@ describe('Realia search page (read:realia scope)', () => {
       within(item)
         .getAllByText(/^\d+$/)
         .map((node) => node.textContent),
-    ).toEqual(['3', '2', '5'])
+    ).toEqual(['2', '5'])
   })
 
   it('matches the rendered rich-preview markup', async () => {

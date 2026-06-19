@@ -42,24 +42,21 @@ function RealiaMetadata({ entry }: { entry: RealiaEntry }): JSX.Element {
 }
 
 function ReallexikonSection({
-  entries,
+  entry,
 }: {
-  entries: readonly ReallexikonEntry[]
+  entry: ReallexikonEntry
 }): JSX.Element {
   return (
     <div className="Realia__section">
       <h2>I. Reallexikon der Assyriologie und Vorderasiatischen Archäologie</h2>
-      {entries.map((reallexikonEntry) => (
-        <CollapsibleCard
-          key={reallexikonEntry.id}
-          label={`${reallexikonEntry.title} (${reallexikonEntry.content})`}
-          collapsed={true}
-        >
-          {reallexikonEntry.reference && (
-            <ReferenceList references={[reallexikonEntry.reference]} />
-          )}
-        </CollapsibleCard>
-      ))}
+      <CollapsibleCard
+        label={
+          entry.content ? `${entry.title} (${entry.content})` : entry.title
+        }
+        collapsed={true}
+      >
+        {entry.reference && <ReferenceList references={[entry.reference]} />}
+      </CollapsibleCard>
     </div>
   )
 }
@@ -116,8 +113,8 @@ function RealiaEntryDisplay({
             <>
               <h1>{entry.id}</h1>
               <RealiaMetadata entry={entry} />
-              {entry.reallexikon.length > 0 && (
-                <ReallexikonSection entries={entry.reallexikon} />
+              {entry.reallexikon && (
+                <ReallexikonSection entry={entry.reallexikon} />
               )}
               {entry.afoRegister.length > 0 && (
                 <AfoRegisterSection entries={entry.afoRegister} />

@@ -29,6 +29,6 @@ export const realiaEntryFactory = Factory.define<RealiaEntry>(() => ({
   type: ['OBJECT_NAME'],
   wikidataId: [],
   afoRegister: afoRegisterEntryFactory.buildList(1),
-  reallexikon: reallexikonEntryFactory.buildList(1),
+  reallexikon: reallexikonEntryFactory.build(),
   references: [],
 }))

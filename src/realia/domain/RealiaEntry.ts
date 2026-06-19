@@ -56,6 +56,6 @@ export interface RealiaEntry {
   readonly type: readonly RealiaType[]
   readonly wikidataId: readonly string[]
   readonly afoRegister: readonly AfoRegisterEntry[]
-  readonly reallexikon: readonly ReallexikonEntry[]
+  readonly reallexikon: ReallexikonEntry | null
   readonly references: readonly Reference[]
 }

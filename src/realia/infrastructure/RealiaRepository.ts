@@ -13,7 +13,7 @@ interface ReallexikonEntryDto {
   readonly id: string
   readonly title: string
   readonly content: string
-  readonly reference: ReferenceDto | null
+  readonly reference: string | null
 }
 
 interface AfoRegisterEntryDto {
@@ -30,16 +30,22 @@ interface RealiaEntryDto {
   readonly type: readonly RealiaType[]
   readonly wikidataId: readonly string[]
   readonly afoRegister: readonly AfoRegisterEntryDto[]
-  readonly reallexikon: readonly ReallexikonEntryDto[]
+  readonly reallexikon: ReallexikonEntryDto | null
   readonly references: readonly ReferenceDto[]
 }
 
-function mapReallexikonEntry(dto: ReallexikonEntryDto): ReallexikonEntry {
+function mapReallexikonEntry(
+  dto: ReallexikonEntryDto,
+  references: readonly ReferenceDto[],
+): ReallexikonEntry {
+  const referenceDto = dto.reference
+    ? references.find((reference) => reference.id === dto.reference)
+    : undefined
   return {
     id: dto.id,
     title: dto.title,
     content: dto.content,
-    reference: dto.reference ? createReference(dto.reference) : null,
+    reference: referenceDto ? createReference(referenceDto) : null,
   }
 }
 
@@ -54,14 +60,19 @@ function mapAfoRegisterEntry(dto: AfoRegisterEntryDto): AfoRegisterEntry {
 }
 
 function mapRealiaEntry(dto: RealiaEntryDto): RealiaEntry {
+  const reallexikonReferenceId = dto.reallexikon?.reference ?? null
   return {
     id: dto._id,
     relatedTerms: dto.relatedTerms,
     type: dto.type,
     wikidataId: dto.wikidataId,
     afoRegister: dto.afoRegister.map(mapAfoRegisterEntry),
-    reallexikon: dto.reallexikon.map(mapReallexikonEntry),
-    references: dto.references.map(createReference),
+    reallexikon: dto.reallexikon
+      ? mapReallexikonEntry(dto.reallexikon, dto.references)
+      : null,
+    references: dto.references
+      .filter((reference) => reference.id !== reallexikonReferenceId)
+      .map(createReference),
   }
 }
 
