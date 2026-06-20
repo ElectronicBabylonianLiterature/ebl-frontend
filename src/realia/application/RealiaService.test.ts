@@ -12,10 +12,12 @@ const realiaService = new RealiaService(realiaRepository)
 const entry: RealiaEntry = {
   id: 'Pig',
   relatedTerms: ['Schwein'],
-  type: ['OBJECT_NAME'],
+  type: ['Objects'],
   wikidataId: [],
   afoRegister: [],
-  reallexikon: null,
+  reallexikon: [],
+  crossReferences: [],
+  afoCrossReferences: [],
   references: [],
 }
 

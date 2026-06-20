@@ -6,7 +6,7 @@ import {
   RealiaEntry,
   ReallexikonEntry,
   AfoRegisterEntry,
-  RealiaType,
+  RealiaCrossReference,
 } from 'realia/domain/RealiaEntry'
 
 interface ReallexikonEntryDto {
@@ -24,14 +24,30 @@ interface AfoRegisterEntryDto {
   readonly crossReference: string
 }
 
+interface RealiaCrossReferenceDto {
+  readonly id: string
+  readonly lemma: string
+}
+
+type Nullable<T> = readonly T[] | T | null | undefined
+
 interface RealiaEntryDto {
   readonly _id: string
-  readonly relatedTerms: readonly string[]
-  readonly type: readonly RealiaType[]
-  readonly wikidataId: readonly string[]
-  readonly afoRegister: readonly AfoRegisterEntryDto[]
-  readonly reallexikon: ReallexikonEntryDto | null
-  readonly references: readonly ReferenceDto[]
+  readonly relatedTerms: Nullable<string>
+  readonly type: Nullable<string>
+  readonly wikidataId: Nullable<string>
+  readonly afoRegister: Nullable<AfoRegisterEntryDto>
+  readonly reallexikon: Nullable<ReallexikonEntryDto>
+  readonly crossReferences: Nullable<RealiaCrossReferenceDto>
+  readonly afoCrossReferences: Nullable<RealiaCrossReferenceDto>
+  readonly references: Nullable<ReferenceDto>
+}
+
+function toArray<T>(value: Nullable<T>): readonly T[] {
+  if (value === null || value === undefined) {
+    return []
+  }
+  return Array.isArray(value) ? value : [value as T]
 }
 
 function mapReallexikonEntry(
@@ -59,19 +75,31 @@ function mapAfoRegisterEntry(dto: AfoRegisterEntryDto): AfoRegisterEntry {
   }
 }
 
+function mapCrossReference(dto: RealiaCrossReferenceDto): RealiaCrossReference {
+  return { id: dto.id, lemma: dto.lemma }
+}
+
 function mapRealiaEntry(dto: RealiaEntryDto): RealiaEntry {
-  const reallexikonReferenceId = dto.reallexikon?.reference ?? null
+  const reallexikon = toArray(dto.reallexikon)
+  const references = toArray(dto.references)
+  const reallexikonReferenceIds = new Set(
+    reallexikon
+      .map((entry) => entry.reference)
+      .filter((reference): reference is string => reference != null),
+  )
   return {
     id: dto._id,
-    relatedTerms: dto.relatedTerms,
-    type: dto.type,
-    wikidataId: dto.wikidataId,
-    afoRegister: dto.afoRegister.map(mapAfoRegisterEntry),
-    reallexikon: dto.reallexikon
-      ? mapReallexikonEntry(dto.reallexikon, dto.references)
-      : null,
-    references: dto.references
-      .filter((reference) => reference.id !== reallexikonReferenceId)
+    relatedTerms: toArray(dto.relatedTerms),
+    type: toArray(dto.type),
+    wikidataId: toArray(dto.wikidataId),
+    afoRegister: toArray(dto.afoRegister).map(mapAfoRegisterEntry),
+    reallexikon: reallexikon.map((entry) =>
+      mapReallexikonEntry(entry, references),
+    ),
+    crossReferences: toArray(dto.crossReferences).map(mapCrossReference),
+    afoCrossReferences: toArray(dto.afoCrossReferences).map(mapCrossReference),
+    references: references
+      .filter((reference) => !reallexikonReferenceIds.has(reference.id))
       .map(createReference),
   }
 }

@@ -47,15 +47,15 @@ describe('RealiaResultsList', () => {
     )
   })
 
-  it('renders a type chip with the human-readable label for each type', () => {
+  it('renders a type chip with the backend label for each type', () => {
     const entry = realiaEntryFactory.build({
-      type: ['DIVINE_NAME', 'ROYAL_NAME'],
+      type: ['Divine names', 'Royal names'],
     })
     renderList([entry])
-    expect(screen.getByText('Divine Name')).toHaveClass(
+    expect(screen.getByText('Divine names')).toHaveClass(
       'realia-results-list__type',
     )
-    expect(screen.getByText('Royal Name')).toHaveClass(
+    expect(screen.getByText('Royal names')).toHaveClass(
       'realia-results-list__type',
     )
   })
@@ -77,7 +77,7 @@ describe('RealiaResultsList', () => {
 
   it('renders an RlA presence badge and AfO/References counts', () => {
     const entry = realiaEntryFactory.build({
-      reallexikon: reallexikonEntryFactory.build(),
+      reallexikon: reallexikonEntryFactory.buildList(1),
       afoRegister: afoRegisterEntryFactory.buildList(3),
       references: referenceFactory.buildList(1),
       wikidataId: [],
@@ -103,7 +103,7 @@ describe('RealiaResultsList', () => {
 
   it('omits the source row when an entry has no sources', () => {
     const entry = realiaEntryFactory.build({
-      reallexikon: null,
+      reallexikon: [],
       afoRegister: [],
       references: [],
       wikidataId: [],

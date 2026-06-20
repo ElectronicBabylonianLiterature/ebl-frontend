@@ -4,6 +4,7 @@ import {
   RealiaEntry,
   AfoRegisterEntry,
   ReallexikonEntry,
+  RealiaCrossReference,
 } from 'realia/domain/RealiaEntry'
 
 const chance = new Chance()
@@ -23,12 +24,21 @@ export const reallexikonEntryFactory = Factory.define<ReallexikonEntry>(() => ({
   reference: null,
 }))
 
+export const realiaCrossReferenceFactory = Factory.define<RealiaCrossReference>(
+  () => ({
+    id: `realia_${chance.integer({ min: 100000, max: 999999 })}`,
+    lemma: chance.word(),
+  }),
+)
+
 export const realiaEntryFactory = Factory.define<RealiaEntry>(() => ({
   id: chance.word(),
   relatedTerms: [chance.word(), chance.word()],
-  type: ['OBJECT_NAME'],
+  type: ['Divine names'],
   wikidataId: [],
   afoRegister: afoRegisterEntryFactory.buildList(1),
-  reallexikon: reallexikonEntryFactory.build(),
+  reallexikon: reallexikonEntryFactory.buildList(1),
+  crossReferences: [],
+  afoCrossReferences: [],
   references: [],
 }))

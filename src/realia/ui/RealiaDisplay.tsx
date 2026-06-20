@@ -1,11 +1,13 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 import withData, { WithoutData } from 'http/withData'
 import RealiaService from 'realia/application/RealiaService'
 import {
   AfoRegisterEntry,
   ReallexikonEntry,
+  RealiaCrossReference,
   RealiaEntry,
-  getRealiaTypeLabels,
+  getRealiaCrossReferences,
 } from 'realia/domain/RealiaEntry'
 import ExternalLink from 'common/ui/ExternalLink'
 import { CollapsibleCard } from 'common/ui/CollabsibleCard'
@@ -17,7 +19,7 @@ import { SectionCrumb, TextCrumb } from 'common/ui/Breadcrumbs'
 import 'realia/ui/Realia.sass'
 
 function RealiaMetadata({ entry }: { entry: RealiaEntry }): JSX.Element {
-  const typeLabels = getRealiaTypeLabels(entry.type).join(', ') || '—'
+  const typeLabels = entry.type.join(', ') || '—'
   return (
     <div className="Realia__metadata">
       {entry.wikidataId.map((wikidataId) => (
@@ -42,21 +44,24 @@ function RealiaMetadata({ entry }: { entry: RealiaEntry }): JSX.Element {
 }
 
 function ReallexikonSection({
-  entry,
+  entries,
 }: {
-  entry: ReallexikonEntry
+  entries: readonly ReallexikonEntry[]
 }): JSX.Element {
   return (
     <div className="Realia__section">
       <h2>I. Reallexikon der Assyriologie und Vorderasiatischen Archäologie</h2>
-      <CollapsibleCard
-        label={
-          entry.content ? `${entry.title} (${entry.content})` : entry.title
-        }
-        collapsed={true}
-      >
-        {entry.reference && <ReferenceList references={[entry.reference]} />}
-      </CollapsibleCard>
+      {entries.map((entry) => (
+        <CollapsibleCard
+          key={entry.id}
+          label={
+            entry.content ? `${entry.title} (${entry.content})` : entry.title
+          }
+          collapsed={true}
+        >
+          {entry.reference && <ReferenceList references={[entry.reference]} />}
+        </CollapsibleCard>
+      ))}
     </div>
   )
 }
@@ -73,11 +78,6 @@ function AfoRegisterItem({
       <span className="Realia__afo-citation">
         [AfO {afoEntry.AfO} {afoEntry.reference}]
       </span>
-      {afoEntry.crossReference && (
-        <p className="Realia__afo-citation">
-          See also: {afoEntry.crossReference}
-        </p>
-      )}
     </div>
   )
 }
@@ -97,11 +97,35 @@ function AfoRegisterSection({
   )
 }
 
+function SeeAlsoSection({
+  crossReferences,
+}: {
+  crossReferences: readonly RealiaCrossReference[]
+}): JSX.Element {
+  return (
+    <div className="Realia__section">
+      <h2>IV. See Also</h2>
+      <ul className="Realia__see-also">
+        {crossReferences.map((crossReference) => (
+          <li key={crossReference.id}>
+            <Link
+              to={`/tools/realia/${encodeURIComponent(crossReference.lemma)}`}
+            >
+              {crossReference.lemma}
+            </Link>
+          </li>
+        ))}
+      </ul>
+    </div>
+  )
+}
+
 function RealiaEntryDisplay({
   data: entry,
 }: {
   data: RealiaEntry
 }): JSX.Element {
+  const crossReferences = getRealiaCrossReferences(entry)
   return (
     <AppContent
       crumbs={[new SectionCrumb('Realia'), new TextCrumb(entry.id)]}
@@ -113,8 +137,8 @@ function RealiaEntryDisplay({
             <>
               <h1>{entry.id}</h1>
               <RealiaMetadata entry={entry} />
-              {entry.reallexikon && (
-                <ReallexikonSection entry={entry.reallexikon} />
+              {entry.reallexikon.length > 0 && (
+                <ReallexikonSection entries={entry.reallexikon} />
               )}
               {entry.afoRegister.length > 0 && (
                 <AfoRegisterSection entries={entry.afoRegister} />
@@ -124,6 +148,9 @@ function RealiaEntryDisplay({
                   <h2>III. References</h2>
                   <ReferenceList references={entry.references} />
                 </div>
+              )}
+              {crossReferences.length > 0 && (
+                <SeeAlsoSection crossReferences={crossReferences} />
               )}
             </>
           ) : (

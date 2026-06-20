@@ -19,12 +19,12 @@ exports[`Realia search page (read:realia scope) matches the rendered rich-previe
       <span
         class="realia-results-list__type"
       >
-        Divine Name
+        Divine names
       </span>
       <span
         class="realia-results-list__type"
       >
-        Celestial Name
+        Celestial names
       </span>
     </div>
     <div

@@ -1,38 +1,9 @@
+import _ from 'lodash'
 import Reference from 'bibliography/domain/Reference'
 
-export type RealiaType =
-  | 'BUILDING_NAME'
-  | 'CELESTIAL_NAME'
-  | 'DIVINE_NAME'
-  | 'ETHNOS_NAME'
-  | 'FIELD_NAME'
-  | 'GEOGRAPHICAL_NAME'
-  | 'MONTH_NAME'
-  | 'OBJECT_NAME'
-  | 'PERSONAL_NAME'
-  | 'ROYAL_NAME'
-  | 'WATERCOURSE_NAME'
-  | 'YEAR_NAME'
-
-export const REALIA_TYPE_LABELS: Record<RealiaType, string> = {
-  BUILDING_NAME: 'Building Name',
-  CELESTIAL_NAME: 'Celestial Name',
-  DIVINE_NAME: 'Divine Name',
-  ETHNOS_NAME: 'Ethnos Name',
-  FIELD_NAME: 'Field Name',
-  GEOGRAPHICAL_NAME: 'Geographical Name',
-  MONTH_NAME: 'Month Name',
-  OBJECT_NAME: 'Object Name',
-  PERSONAL_NAME: 'Personal Name',
-  ROYAL_NAME: 'Royal Name',
-  WATERCOURSE_NAME: 'Watercourse Name',
-  YEAR_NAME: 'Year Name',
-}
-
-export function getRealiaTypeLabels(
-  types: readonly RealiaType[],
-): readonly string[] {
-  return types.map((type) => REALIA_TYPE_LABELS[type])
+export interface RealiaCrossReference {
+  readonly id: string
+  readonly lemma: string
 }
 
 export interface AfoRegisterEntry {
@@ -53,9 +24,20 @@ export interface ReallexikonEntry {
 export interface RealiaEntry {
   readonly id: string
   readonly relatedTerms: readonly string[]
-  readonly type: readonly RealiaType[]
+  readonly type: readonly string[]
   readonly wikidataId: readonly string[]
   readonly afoRegister: readonly AfoRegisterEntry[]
-  readonly reallexikon: ReallexikonEntry | null
+  readonly reallexikon: readonly ReallexikonEntry[]
+  readonly crossReferences: readonly RealiaCrossReference[]
+  readonly afoCrossReferences: readonly RealiaCrossReference[]
   readonly references: readonly Reference[]
+}
+
+export function getRealiaCrossReferences(
+  entry: RealiaEntry,
+): readonly RealiaCrossReference[] {
+  return _.uniqBy(
+    [...entry.crossReferences, ...entry.afoCrossReferences],
+    (crossReference) => crossReference.id,
+  )
 }

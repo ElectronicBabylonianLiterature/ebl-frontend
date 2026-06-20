@@ -11,6 +11,7 @@ import {
   realiaEntryFactory,
   reallexikonEntryFactory,
   afoRegisterEntryFactory,
+  realiaCrossReferenceFactory,
 } from 'test-support/realia-fixtures'
 import { RealiaEntry } from 'realia/domain/RealiaEntry'
 import { referenceFactory } from 'test-support/bibliography-fixtures'
@@ -76,8 +77,8 @@ describe('RealiaDisplay', () => {
     expect(screen.getByText('—')).toBeInTheDocument()
   })
 
-  it('omits Reallexikon section when reallexikon is null', async () => {
-    const entry = realiaEntryFactory.build({ reallexikon: null })
+  it('omits Reallexikon section when reallexikon is empty', async () => {
+    const entry = realiaEntryFactory.build({ reallexikon: [] })
     renderDisplay(entry)
     await waitForSpinnerToBeRemoved(screen)
     expect(screen.queryByText(/I\. Reallexikon/)).not.toBeInTheDocument()
@@ -101,7 +102,7 @@ describe('RealiaDisplay', () => {
     const reference = referenceFactory.build()
     const reallexikonEntry = reallexikonEntryFactory.build({ reference })
     const entry = realiaEntryFactory.build({
-      reallexikon: reallexikonEntry,
+      reallexikon: [reallexikonEntry],
     })
     renderDisplay(entry)
     await waitForSpinnerToBeRemoved(screen)
@@ -113,7 +114,7 @@ describe('RealiaDisplay', () => {
       title: 'Ab(a)kûia',
       content: '',
     })
-    const entry = realiaEntryFactory.build({ reallexikon: reallexikonEntry })
+    const entry = realiaEntryFactory.build({ reallexikon: [reallexikonEntry] })
     renderDisplay(entry)
     await waitForSpinnerToBeRemoved(screen)
     expect(screen.getByText('Ab(a)kûia')).toBeInTheDocument()
@@ -142,30 +143,57 @@ describe('RealiaDisplay', () => {
     expect(screen.getByText('Related terms:')).toBeInTheDocument()
   })
 
-  it('renders "Type:" label with human-readable type value', async () => {
-    const entry = realiaEntryFactory.build({ type: ['OBJECT_NAME'] })
+  it('renders "Type:" label with the backend type value verbatim', async () => {
+    const entry = realiaEntryFactory.build({ type: ['Divine names'] })
     renderDisplay(entry)
     await waitForSpinnerToBeRemoved(screen)
     expect(screen.getByText('Type:')).toBeInTheDocument()
-    expect(screen.getByText('Object Name')).toBeInTheDocument()
+    expect(screen.getByText('Divine names')).toBeInTheDocument()
   })
 
-  it('renders crossReference when present', async () => {
-    const afoEntry = afoRegisterEntryFactory.build({
-      crossReference: 'See Piglet',
+  it('moves the RlA reference into the Reallexikon section and hides References', async () => {
+    const reference = referenceFactory.build()
+    const reallexikonEntry = reallexikonEntryFactory.build({ reference })
+    const entry = realiaEntryFactory.build({
+      reallexikon: [reallexikonEntry],
+      references: [],
     })
-    const entry = realiaEntryFactory.build({ afoRegister: [afoEntry] })
     renderDisplay(entry)
     await waitForSpinnerToBeRemoved(screen)
-    expect(screen.getByText('See also: See Piglet')).toBeInTheDocument()
+    expect(screen.getByText(/I\. Reallexikon/)).toBeInTheDocument()
+    expect(screen.queryByText(/III\. References/)).not.toBeInTheDocument()
   })
 
-  it('does not render crossReference paragraph when crossReference is empty', async () => {
-    const afoEntry = afoRegisterEntryFactory.build({ crossReference: '' })
-    const entry = realiaEntryFactory.build({ afoRegister: [afoEntry] })
+  it('renders the See Also section with links for cross-references', async () => {
+    const entry = realiaEntryFactory.build({
+      crossReferences: [
+        realiaCrossReferenceFactory.build({ id: 'realia_1', lemma: 'Anu' }),
+      ],
+      afoCrossReferences: [
+        realiaCrossReferenceFactory.build({ id: 'realia_2', lemma: 'Enlil' }),
+      ],
+    })
     renderDisplay(entry)
     await waitForSpinnerToBeRemoved(screen)
-    expect(screen.queryByText(/See also:/)).not.toBeInTheDocument()
+    expect(screen.getByText('IV. See Also')).toBeInTheDocument()
+    expect(screen.getByRole('link', { name: 'Anu' })).toHaveAttribute(
+      'href',
+      '/tools/realia/Anu',
+    )
+    expect(screen.getByRole('link', { name: 'Enlil' })).toHaveAttribute(
+      'href',
+      '/tools/realia/Enlil',
+    )
+  })
+
+  it('omits the See Also section when there are no cross-references', async () => {
+    const entry = realiaEntryFactory.build({
+      crossReferences: [],
+      afoCrossReferences: [],
+    })
+    renderDisplay(entry)
+    await waitForSpinnerToBeRemoved(screen)
+    expect(screen.queryByText(/IV\. See Also/)).not.toBeInTheDocument()
   })
 
   it('does not render an AppContent-generated h2 heading', async () => {

@@ -1,5 +1,3 @@
-# TASK-REALIA-PREVIEW — work log
-
 ## Investigation
 
 - `RealiaService.search` returns full `RealiaEntry[]` (same shape as `find`), so

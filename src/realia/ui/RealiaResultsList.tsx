@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { RealiaEntry, getRealiaTypeLabels } from 'realia/domain/RealiaEntry'
+import { RealiaEntry } from 'realia/domain/RealiaEntry'
 import 'realia/ui/Realia.sass'
 
 interface SourceBadge {
@@ -10,7 +10,7 @@ interface SourceBadge {
 
 function getSourceBadges(entry: RealiaEntry): readonly SourceBadge[] {
   const badges: SourceBadge[] = []
-  if (entry.reallexikon) {
+  if (entry.reallexikon.length > 0) {
     badges.push({ label: 'RlA' })
   }
   if (entry.afoRegister.length > 0) {
@@ -26,7 +26,6 @@ function getSourceBadges(entry: RealiaEntry): readonly SourceBadge[] {
 }
 
 function RealiaResultItem({ entry }: { entry: RealiaEntry }): JSX.Element {
-  const typeLabels = getRealiaTypeLabels(entry.type)
   const sourceBadges = getSourceBadges(entry)
   return (
     <li className="realia-results-list__item">
@@ -37,7 +36,7 @@ function RealiaResultItem({ entry }: { entry: RealiaEntry }): JSX.Element {
         >
           {entry.id}
         </Link>
-        {typeLabels.map((label) => (
+        {entry.type.map((label) => (
           <span key={label} className="realia-results-list__type">
             {label}
           </span>

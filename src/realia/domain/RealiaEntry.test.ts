@@ -1,28 +1,46 @@
-import { REALIA_TYPE_LABELS, RealiaType } from 'realia/domain/RealiaEntry'
+import { getRealiaCrossReferences } from 'realia/domain/RealiaEntry'
+import {
+  realiaEntryFactory,
+  realiaCrossReferenceFactory,
+} from 'test-support/realia-fixtures'
 
-describe('REALIA_TYPE_LABELS', () => {
-  const expectedTypes: RealiaType[] = [
-    'BUILDING_NAME',
-    'CELESTIAL_NAME',
-    'DIVINE_NAME',
-    'ETHNOS_NAME',
-    'FIELD_NAME',
-    'GEOGRAPHICAL_NAME',
-    'MONTH_NAME',
-    'OBJECT_NAME',
-    'PERSONAL_NAME',
-    'ROYAL_NAME',
-    'WATERCOURSE_NAME',
-    'YEAR_NAME',
-  ]
-
-  it('contains all 12 RealiaType values', () => {
-    expectedTypes.forEach((type) => {
-      expect(REALIA_TYPE_LABELS).toHaveProperty(type)
+describe('getRealiaCrossReferences', () => {
+  it('returns an empty list when there are no cross-references', () => {
+    const entry = realiaEntryFactory.build({
+      crossReferences: [],
+      afoCrossReferences: [],
     })
+    expect(getRealiaCrossReferences(entry)).toEqual([])
   })
 
-  it('has exactly 12 keys with no extras', () => {
-    expect(Object.keys(REALIA_TYPE_LABELS)).toHaveLength(expectedTypes.length)
+  it('merges Reallexikon and AfO cross-references', () => {
+    const rlaCrossReference = realiaCrossReferenceFactory.build({
+      id: 'realia_1',
+      lemma: 'Anu',
+    })
+    const afoCrossReference = realiaCrossReferenceFactory.build({
+      id: 'realia_2',
+      lemma: 'Enlil',
+    })
+    const entry = realiaEntryFactory.build({
+      crossReferences: [rlaCrossReference],
+      afoCrossReferences: [afoCrossReference],
+    })
+    expect(getRealiaCrossReferences(entry)).toEqual([
+      rlaCrossReference,
+      afoCrossReference,
+    ])
+  })
+
+  it('de-duplicates cross-references that share an id', () => {
+    const shared = realiaCrossReferenceFactory.build({
+      id: 'realia_1',
+      lemma: 'Anu',
+    })
+    const entry = realiaEntryFactory.build({
+      crossReferences: [shared],
+      afoCrossReferences: [{ ...shared }],
+    })
+    expect(getRealiaCrossReferences(entry)).toEqual([shared])
   })
 })

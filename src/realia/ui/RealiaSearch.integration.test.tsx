@@ -23,9 +23,9 @@ const realiaService = new (RealiaService as jest.Mock<
 
 const richEntry: RealiaEntry = realiaEntryFactory.build({
   id: 'Enlil, Ellil',
-  type: ['DIVINE_NAME', 'CELESTIAL_NAME'],
+  type: ['Divine names', 'Celestial names'],
   relatedTerms: ['Elil', 'Illil'],
-  reallexikon: reallexikonEntryFactory.build(),
+  reallexikon: reallexikonEntryFactory.buildList(1),
   afoRegister: afoRegisterEntryFactory.buildList(2),
   references: referenceFactory.buildList(5),
   wikidataId: ['Q79064'],
@@ -58,8 +58,8 @@ describe('Realia search page (read:realia scope)', () => {
     expect(
       within(item).getByRole('link', { name: 'Enlil, Ellil' }),
     ).toHaveAttribute('href', '/tools/realia/Enlil%2C%20Ellil')
-    expect(within(item).getByText('Divine Name')).toBeInTheDocument()
-    expect(within(item).getByText('Celestial Name')).toBeInTheDocument()
+    expect(within(item).getByText('Divine names')).toBeInTheDocument()
+    expect(within(item).getByText('Celestial names')).toBeInTheDocument()
     expect(within(item).getByText('Elil, Illil')).toBeInTheDocument()
     expect(within(item).getByText('RlA')).toBeInTheDocument()
     expect(within(item).getByText('AfO')).toBeInTheDocument()
