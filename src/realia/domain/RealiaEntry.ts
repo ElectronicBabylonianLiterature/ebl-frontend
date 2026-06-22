@@ -18,7 +18,7 @@ export interface ReallexikonEntry {
   readonly id: string
   readonly title: string
   readonly content: string
-  readonly reference: Reference | null
+  readonly references: readonly Reference[]
 }
 
 export interface RealiaEntry {
@@ -40,4 +40,54 @@ export function getRealiaCrossReferences(
     [...entry.crossReferences, ...entry.afoCrossReferences],
     (crossReference) => crossReference.id,
   )
+}
+
+export interface AfoRegisterVolumeEntry extends AfoRegisterEntry {
+  readonly page: string
+}
+
+export interface AfoRegisterVolumeGroup {
+  readonly volume: string
+  readonly entries: readonly AfoRegisterVolumeEntry[]
+}
+
+export function formatAfoVolume(afo: string): string {
+  const trimmed = afo.trim()
+  return /^AfO\b/i.test(trimmed) ? trimmed : `AfO ${trimmed}`
+}
+
+function parseAfoCitation(afo: string): { volume: string; page: string } {
+  const normalized = formatAfoVolume(afo)
+  const parenthesizedVolume = normalized.match(/^(.*\))\s*,?\s*(.*)$/)
+  if (parenthesizedVolume) {
+    return {
+      volume: parenthesizedVolume[1].trim(),
+      page: parenthesizedVolume[2].trim(),
+    }
+  }
+  const lastComma = normalized.lastIndexOf(',')
+  if (lastComma !== -1) {
+    return {
+      volume: normalized.slice(0, lastComma).trim(),
+      page: normalized.slice(lastComma + 1).trim(),
+    }
+  }
+  return { volume: normalized, page: '' }
+}
+
+export function groupAfoRegisterByVolume(
+  entries: readonly AfoRegisterEntry[],
+): readonly AfoRegisterVolumeGroup[] {
+  const groups: AfoRegisterVolumeGroup[] = []
+  const groupIndexByVolume = new Map<string, number>()
+  entries.forEach((entry) => {
+    const { volume, page } = parseAfoCitation(entry.AfO)
+    if (!groupIndexByVolume.has(volume)) {
+      groupIndexByVolume.set(volume, groups.length)
+      groups.push({ volume, entries: [] })
+    }
+    const group = groups[groupIndexByVolume.get(volume) as number]
+    ;(group.entries as AfoRegisterVolumeEntry[]).push({ ...entry, page })
+  })
+  return groups
 }

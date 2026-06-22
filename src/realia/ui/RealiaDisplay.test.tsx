@@ -98,9 +98,11 @@ describe('RealiaDisplay', () => {
     expect(screen.queryByText(/III\. References/)).not.toBeInTheDocument()
   })
 
-  it('renders reallexikon entry with non-null reference', async () => {
+  it('renders reallexikon entry with a reference', async () => {
     const reference = referenceFactory.build()
-    const reallexikonEntry = reallexikonEntryFactory.build({ reference })
+    const reallexikonEntry = reallexikonEntryFactory.build({
+      references: [reference],
+    })
     const entry = realiaEntryFactory.build({
       reallexikon: [reallexikonEntry],
     })
@@ -128,6 +130,75 @@ describe('RealiaDisplay', () => {
     expect(screen.getByText(/II\. AfO-Register/)).toBeInTheDocument()
   })
 
+  it('groups afo entries that share a volume into one collapsible card', async () => {
+    const entry = realiaEntryFactory.build({
+      reallexikon: [],
+      afoRegister: [
+        afoRegisterEntryFactory.build({
+          mainWord: 'Tiamat',
+          AfO: 'AfO 25 (1974-1977), 370',
+        }),
+        afoRegisterEntryFactory.build({
+          mainWord: 'Apsû',
+          AfO: 'AfO 25 (1974-1977), 372',
+        }),
+      ],
+    })
+    renderDisplay(entry)
+    await waitForSpinnerToBeRemoved(screen)
+    expect(screen.getByText('AfO 25 (1974-1977)')).toBeInTheDocument()
+    expect(screen.getAllByTestId('CollapseIndicator')).toHaveLength(1)
+    expect(screen.getByText('Tiamat')).toBeInTheDocument()
+    expect(screen.getByText('Apsû')).toBeInTheDocument()
+  })
+
+  it('renders a separate collapsible card per distinct volume', async () => {
+    const entry = realiaEntryFactory.build({
+      reallexikon: [],
+      afoRegister: [
+        afoRegisterEntryFactory.build({ AfO: 'AfO 25 (1974-1977), 370' }),
+        afoRegisterEntryFactory.build({ AfO: 'AfO 26 (1978-1979), 12' }),
+      ],
+    })
+    renderDisplay(entry)
+    await waitForSpinnerToBeRemoved(screen)
+    expect(screen.getByText('AfO 25 (1974-1977)')).toBeInTheDocument()
+    expect(screen.getByText('AfO 26 (1978-1979)')).toBeInTheDocument()
+    expect(screen.getAllByTestId('CollapseIndicator')).toHaveLength(2)
+  })
+
+  it('renders each volume card collapsed by default', async () => {
+    const afoEntry = afoRegisterEntryFactory.build({
+      AfO: 'AfO 25 (1974-1977), 370',
+    })
+    const entry = realiaEntryFactory.build({
+      reallexikon: [],
+      afoRegister: [afoEntry],
+    })
+    renderDisplay(entry)
+    await waitForSpinnerToBeRemoved(screen)
+    expect(screen.getByTestId('CollapseIndicator')).toHaveClass('fa-angle-down')
+  })
+
+  it('does not duplicate the "AfO" prefix in the volume header', async () => {
+    const afoEntry = afoRegisterEntryFactory.build({
+      AfO: 'AfO 25 (1974-1977), 370',
+    })
+    const entry = realiaEntryFactory.build({ afoRegister: [afoEntry] })
+    renderDisplay(entry)
+    await waitForSpinnerToBeRemoved(screen)
+    expect(screen.getByText('AfO 25 (1974-1977)')).toBeInTheDocument()
+    expect(screen.queryByText(/AfO AfO/)).not.toBeInTheDocument()
+  })
+
+  it('adds the "AfO" prefix to the volume header when the backend value omits it', async () => {
+    const afoEntry = afoRegisterEntryFactory.build({ AfO: '99 (2000), 5' })
+    const entry = realiaEntryFactory.build({ afoRegister: [afoEntry] })
+    renderDisplay(entry)
+    await waitForSpinnerToBeRemoved(screen)
+    expect(screen.getByText('AfO 99 (2000)')).toBeInTheDocument()
+  })
+
   it('renders References section when references are present', async () => {
     const reference = referenceFactory.build()
     const entry = realiaEntryFactory.build({ references: [reference] })
@@ -153,7 +224,9 @@ describe('RealiaDisplay', () => {
 
   it('moves the RlA reference into the Reallexikon section and hides References', async () => {
     const reference = referenceFactory.build()
-    const reallexikonEntry = reallexikonEntryFactory.build({ reference })
+    const reallexikonEntry = reallexikonEntryFactory.build({
+      references: [reference],
+    })
     const entry = realiaEntryFactory.build({
       reallexikon: [reallexikonEntry],
       references: [],

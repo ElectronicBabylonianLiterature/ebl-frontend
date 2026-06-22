@@ -4,10 +4,13 @@ import withData, { WithoutData } from 'http/withData'
 import RealiaService from 'realia/application/RealiaService'
 import {
   AfoRegisterEntry,
+  AfoRegisterVolumeEntry,
+  AfoRegisterVolumeGroup,
   ReallexikonEntry,
   RealiaCrossReference,
   RealiaEntry,
   getRealiaCrossReferences,
+  groupAfoRegisterByVolume,
 } from 'realia/domain/RealiaEntry'
 import ExternalLink from 'common/ui/ExternalLink'
 import { CollapsibleCard } from 'common/ui/CollabsibleCard'
@@ -59,26 +62,47 @@ function ReallexikonSection({
           }
           collapsed={true}
         >
-          {entry.reference && <ReferenceList references={[entry.reference]} />}
+          {entry.references.length > 0 && (
+            <ReferenceList references={entry.references} />
+          )}
         </CollapsibleCard>
       ))}
     </div>
   )
 }
 
-function AfoRegisterItem({
+function AfoRegisterEntryItem({
   afoEntry,
 }: {
-  afoEntry: AfoRegisterEntry
+  afoEntry: AfoRegisterVolumeEntry
 }): JSX.Element {
   return (
-    <div>
-      <strong>{afoEntry.mainWord}</strong>
-      {afoEntry.note && <p>{afoEntry.note}</p>}
-      <span className="Realia__afo-citation">
-        [AfO {afoEntry.AfO} {afoEntry.reference}]
-      </span>
-    </div>
+    <li className="Realia__afo-entry">
+      <span className="Realia__afo-mainword">{afoEntry.mainWord}</span>
+      {afoEntry.page && (
+        <span className="Realia__afo-citation">{afoEntry.page}</span>
+      )}
+      {afoEntry.note && <p className="Realia__afo-note">{afoEntry.note}</p>}
+      {afoEntry.reference && (
+        <p className="Realia__afo-reference">{afoEntry.reference}</p>
+      )}
+    </li>
+  )
+}
+
+function AfoRegisterVolumeCard({
+  group,
+}: {
+  group: AfoRegisterVolumeGroup
+}): JSX.Element {
+  return (
+    <CollapsibleCard label={group.volume} collapsed={true}>
+      <ul className="Realia__afo-entries">
+        {group.entries.map((afoEntry, index) => (
+          <AfoRegisterEntryItem key={index} afoEntry={afoEntry} />
+        ))}
+      </ul>
+    </CollapsibleCard>
   )
 }
 
@@ -87,11 +111,12 @@ function AfoRegisterSection({
 }: {
   entries: readonly AfoRegisterEntry[]
 }): JSX.Element {
+  const volumeGroups = groupAfoRegisterByVolume(entries)
   return (
     <div className="Realia__section">
       <h2>II. AfO-Register Realien</h2>
-      {entries.map((afoEntry, index) => (
-        <AfoRegisterItem key={index} afoEntry={afoEntry} />
+      {volumeGroups.map((group) => (
+        <AfoRegisterVolumeCard key={group.volume} group={group} />
       ))}
     </div>
   )

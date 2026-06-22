@@ -9,9 +9,35 @@
     font-weight: 600
     color: $ebl-color-text-primary
 
+.Realia__afo-entries
+    list-style: none
+    margin: 0
+    padding: 0
+    display: flex
+    flex-direction: column
+    gap: 0.75rem
+
+.Realia__afo-entry
+    display: flex
+    flex-direction: column
+    gap: 0.25rem
+
+    & + &
+        padding-top: 0.75rem
+        border-top: 1px solid $ebl-color-border-light
+
+.Realia__afo-mainword
+    font-weight: 600
+
+.Realia__afo-note
+    margin: 0
+
+.Realia__afo-reference
+    margin: 0
+
 .Realia__afo-citation
     color: $ebl-color-text-secondary
-    font-size: 0.9rem
+    font-size: 0.85rem
 
 .realia-search-page__search-header
     margin-bottom: 2rem

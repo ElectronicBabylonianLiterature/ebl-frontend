@@ -1,6 +1,7 @@
 import Promise from 'bluebird'
 import ApiClient from 'http/ApiClient'
 import createReference from 'bibliography/application/createReference'
+import Reference from 'bibliography/domain/Reference'
 import { ReferenceDto } from 'bibliography/domain/referenceDto'
 import {
   RealiaEntry,
@@ -50,6 +51,18 @@ function toArray<T>(value: Nullable<T>): readonly T[] {
   return Array.isArray(value) ? value : [value as T]
 }
 
+const REALLEXIKON_REFERENCE_ID_PREFIX = 'rla_'
+
+function isReallexikonReference(
+  reference: ReferenceDto,
+  linkedReferenceIds: ReadonlySet<string>,
+): boolean {
+  return (
+    linkedReferenceIds.has(reference.id) ||
+    reference.id.startsWith(REALLEXIKON_REFERENCE_ID_PREFIX)
+  )
+}
+
 function mapReallexikonEntry(
   dto: ReallexikonEntryDto,
   references: readonly ReferenceDto[],
@@ -61,7 +74,7 @@ function mapReallexikonEntry(
     id: dto.id,
     title: dto.title,
     content: dto.content,
-    reference: referenceDto ? createReference(referenceDto) : null,
+    references: referenceDto ? [createReference(referenceDto)] : [],
   }
 }
 
@@ -79,27 +92,62 @@ function mapCrossReference(dto: RealiaCrossReferenceDto): RealiaCrossReference {
   return { id: dto.id, lemma: dto.lemma }
 }
 
+function attachUnlinkedReallexikonReferences(
+  reallexikon: readonly ReallexikonEntry[],
+  unlinkedReferences: readonly Reference[],
+  fallbackId: string,
+): readonly ReallexikonEntry[] {
+  if (unlinkedReferences.length === 0) {
+    return reallexikon
+  }
+  if (reallexikon.length === 0) {
+    return [
+      {
+        id: fallbackId,
+        title: fallbackId,
+        content: '',
+        references: unlinkedReferences,
+      },
+    ]
+  }
+  return reallexikon.map((entry, index) =>
+    index === 0
+      ? { ...entry, references: [...entry.references, ...unlinkedReferences] }
+      : entry,
+  )
+}
+
 function mapRealiaEntry(dto: RealiaEntryDto): RealiaEntry {
   const reallexikon = toArray(dto.reallexikon)
   const references = toArray(dto.references)
-  const reallexikonReferenceIds = new Set(
+  const linkedReferenceIds = new Set(
     reallexikon
       .map((entry) => entry.reference)
       .filter((reference): reference is string => reference != null),
   )
+  const isReallexikon = (reference: ReferenceDto): boolean =>
+    isReallexikonReference(reference, linkedReferenceIds)
+  const unlinkedReallexikonReferences = references
+    .filter(
+      (reference) =>
+        isReallexikon(reference) && !linkedReferenceIds.has(reference.id),
+    )
+    .map(createReference)
   return {
     id: dto._id,
     relatedTerms: toArray(dto.relatedTerms),
     type: toArray(dto.type),
     wikidataId: toArray(dto.wikidataId),
     afoRegister: toArray(dto.afoRegister).map(mapAfoRegisterEntry),
-    reallexikon: reallexikon.map((entry) =>
-      mapReallexikonEntry(entry, references),
+    reallexikon: attachUnlinkedReallexikonReferences(
+      reallexikon.map((entry) => mapReallexikonEntry(entry, references)),
+      unlinkedReallexikonReferences,
+      dto._id,
     ),
     crossReferences: toArray(dto.crossReferences).map(mapCrossReference),
     afoCrossReferences: toArray(dto.afoCrossReferences).map(mapCrossReference),
     references: references
-      .filter((reference) => !reallexikonReferenceIds.has(reference.id))
+      .filter((reference) => !isReallexikon(reference))
       .map(createReference),
   }
 }
