@@ -38,6 +38,7 @@ const folioTypes: {
   VAM: { name: 'Vorderasiatisches Museum', hasImage: true, isOpen: true },
   WGL: { name: 'Lambert', hasImage: true, isOpen: true },
   WRM: { name: 'Mayer', hasImage: true, isOpen: false },
+  WS: { name: 'Sommerfeld', hasImage: true, isOpen: true },
 }
 
 const FOLIO_MAPPING: Record<string, string> = {
