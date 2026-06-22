@@ -73,10 +73,19 @@ import { ApiEntityAnnotationSpan } from 'fragmentarium/ui/text-annotation/Entity
 import { ProvenanceRecord } from 'fragmentarium/domain/Provenance'
 
 export function createScript(dto: ScriptDto): Script {
+  const period =
+    Periods[dto && typeof dto.period === 'string' ? dto.period : ''] ??
+    Periods.Uncertain
+  const periodModifier =
+    PeriodModifiers[
+      dto && typeof dto.periodModifier === 'string'
+        ? dto.periodModifier
+        : 'None'
+    ] ?? PeriodModifiers.None
   return {
-    ...dto,
-    period: Periods[dto.period],
-    periodModifier: PeriodModifiers[dto.periodModifier],
+    uncertain: dto?.uncertain ?? false,
+    period,
+    periodModifier,
   }
 }
 
@@ -131,7 +140,7 @@ function createFragment(dto: FragmentDto): Fragment {
     uncuratedReferences: dto.uncuratedReferences ?? null,
     cdliImages: dto.cdliImages,
     traditionalReferences: dto.traditionalReferences,
-    genres: Genres.fromJson(dto.genres),
+    genres: Genres.fromJson(dto.genres ?? []),
     script: createScript(dto.script),
     projects: (dto.projects ?? []).map(createResearchProject),
     dossiers: dto.dossiers ?? [],
@@ -178,20 +187,20 @@ type QuerySummaryArchaeologyDto = {
 
 type QuerySummaryItemDto = {
   museumNumber: QueryMuseumNumberDto
-  accession: QueryMuseumNumberDto | null
+  accession?: QueryMuseumNumberDto | null
   description: string
   script: ScriptDto
-  date: MesopotamianDateDto | null
-  genres: FragmentDto['genres']
-  archaeology: QuerySummaryArchaeologyDto
-  references: FragmentDto['references']
-  projects: FragmentDto['projects']
-  dossiers: FragmentDto['dossiers']
+  date?: MesopotamianDateDto | null
+  genres?: FragmentDto['genres']
+  archaeology?: QuerySummaryArchaeologyDto
+  references?: FragmentDto['references']
+  projects?: FragmentDto['projects']
+  dossiers?: FragmentDto['dossiers']
   matchingLines: readonly number[]
-  matchingLinePreview: TextDto
+  matchingLinePreview?: TextDto | null
   matchCount: number
   hasPhoto: boolean
-  thumbnailPath: string | null
+  thumbnailPath?: string | null
 }
 
 type QueryResultItemDto = QueryItemDto | QuerySummaryItemDto
@@ -209,10 +218,12 @@ type QueryResultDto = {
   matchCountTotal: number
 }
 
+const emptyMatchingLinePreview: TextDto = { lines: [], numberOfLines: 0 }
+
 function isQuerySummaryItemDto(
   dto: QueryResultItemDto,
 ): dto is QuerySummaryItemDto {
-  return 'matchingLinePreview' in dto
+  return 'description' in dto && 'script' in dto && 'hasPhoto' in dto
 }
 
 function createQuerySummaryFragment(dto: QuerySummaryItemDto): Fragment {
@@ -236,7 +247,9 @@ function createQuerySummaryFragment(dto: QuerySummaryItemDto): Fragment {
     cdliImages: [],
     folios: [],
     record: [],
-    text: createTransliteration(dto.matchingLinePreview),
+    text: createTransliteration(
+      dto.matchingLinePreview ?? emptyMatchingLinePreview,
+    ),
     notes: { text: '', parts: [] },
     museum: Museums.HYPERURANION,
     references: (dto.references ?? []).map(createReference),
@@ -244,7 +257,7 @@ function createQuerySummaryFragment(dto: QuerySummaryItemDto): Fragment {
     traditionalReferences: [],
     atf: '',
     hasPhoto: dto.hasPhoto,
-    genres: Genres.fromJson(dto.genres),
+    genres: Genres.fromJson(dto.genres ?? []),
     introduction: { text: '', parts: [] },
     script: createScript(dto.script),
     externalNumbers: {},
@@ -280,7 +293,7 @@ function createQueryItem(dto: QueryResultItemDto): QueryItem {
     return {
       ...queryItem,
       fragment: createQuerySummaryFragment(dto),
-      thumbnailPath: dto.thumbnailPath,
+      thumbnailPath: dto.thumbnailPath ?? null,
     }
   }
 

@@ -15,7 +15,12 @@ import { archaeologyFactory } from 'test-support/fragment-data-fixtures'
 import { referenceDtoFactory } from 'test-support/bibliography-fixtures'
 import { textLineDto } from 'test-support/lines/text-line'
 import { lineNumberFactory } from 'test-support/linenumber-factory'
-import { FragmentInfo, FragmentInfoDto } from 'fragmentarium/domain/fragment'
+import {
+  FragmentInfo,
+  FragmentInfoDto,
+  ScriptDto,
+} from 'fragmentarium/domain/fragment'
+import { PeriodModifiers, Periods } from 'common/utils/period'
 
 const apiClient = {
   fetchJson: jest.fn(),
@@ -427,6 +432,46 @@ const queryTestData: TestData<FragmentRepository>[] = queryTestCases.map(
 describe('Query FragmentRepository', () =>
   testDelegation(fragmentRepository, queryTestData))
 
+const emptyMatchingLinePreview = {
+  lines: [],
+  numberOfLines: 0,
+  // eslint-disable-next-line camelcase
+  parser_version: 'backend',
+}
+
+function createSummaryItemDto(
+  overrides: Record<string, unknown> = {},
+): Record<string, unknown> {
+  return {
+    museumNumber: fragmentDto.museumNumber,
+    accession: fragmentDto.accession,
+    description: fragmentDto.description,
+    script: fragmentDto.script,
+    date: fragmentDto.date ?? null,
+    genres: fragmentDto.genres,
+    archaeology: {
+      excavationNumber: fragmentDto.museumNumber,
+      site: { name: 'Sippar' },
+    },
+    references: fragmentDto.references,
+    projects: fragmentDto.projects,
+    dossiers: fragmentDto.dossiers,
+    matchingLines: [1, 2],
+    matchingLinePreview: fragmentDto.text,
+    matchCount: 2,
+    hasPhoto: true,
+    thumbnailPath: null,
+    ...overrides,
+  }
+}
+
+function mockQueryItems(items: readonly Record<string, unknown>[]): void {
+  apiClient.fetchJson.mockResolvedValueOnce({
+    matchCountTotal: items.length,
+    items,
+  })
+}
+
 describe('FragmentRepository query summary items', () => {
   beforeEach(() => {
     jest.clearAllMocks()
@@ -434,31 +479,7 @@ describe('FragmentRepository query summary items', () => {
 
   it('maps summary items into prefetched fragments and thumbnail paths', async () => {
     const thumbnailPath = '/images/Test.Fragment.jpg'
-    apiClient.fetchJson.mockResolvedValueOnce({
-      matchCountTotal: 1,
-      items: [
-        {
-          museumNumber: fragmentDto.museumNumber,
-          accession: fragmentDto.accession,
-          description: fragmentDto.description,
-          script: fragmentDto.script,
-          date: fragmentDto.date ?? null,
-          genres: fragmentDto.genres,
-          archaeology: {
-            excavationNumber: fragmentDto.museumNumber,
-            site: { name: 'Sippar' },
-          },
-          references: fragmentDto.references,
-          projects: fragmentDto.projects,
-          dossiers: fragmentDto.dossiers,
-          matchingLines: [1, 2],
-          matchingLinePreview: fragmentDto.text,
-          matchCount: 2,
-          hasPhoto: true,
-          thumbnailPath,
-        },
-      ],
-    })
+    mockQueryItems([createSummaryItemDto({ thumbnailPath })])
 
     const result = await fragmentRepository.query({ transliteration: 'šim' })
     const item = result.items[0]
@@ -476,29 +497,90 @@ describe('FragmentRepository query summary items', () => {
     expect(item.fragment?.text.lines).toHaveLength(fragment.text.lines.length)
   })
 
-  it('maps summary items when optional fields are omitted', async () => {
-    apiClient.fetchJson.mockResolvedValueOnce({
-      matchCountTotal: 1,
-      items: [
-        {
-          museumNumber: fragmentDto.museumNumber,
-          accession: null,
-          description: fragmentDto.description,
-          script: fragmentDto.script,
-          date: null,
-          genres: [],
-          archaeology: null,
-          references: [],
-          projects: [],
-          dossiers: [],
-          matchingLines: [],
-          matchingLinePreview: fragmentDto.text,
-          matchCount: 0,
-          hasPhoto: false,
-          thumbnailPath: null,
-        },
-      ],
+  it('maps summary items with empty matching lines and an empty preview', async () => {
+    mockQueryItems([
+      createSummaryItemDto({
+        matchingLines: [],
+        matchingLinePreview: emptyMatchingLinePreview,
+        matchCount: 0,
+      }),
+    ])
+
+    const result = await fragmentRepository.query({ number: fragment.number })
+    const item = result.items[0]
+
+    expect(item.matchingLines).toEqual([])
+    expect(item.matchCount).toEqual(0)
+    expect(item.thumbnailPath).toBeNull()
+    expect(item.fragment?.number).toEqual(fragment.number)
+    expect(item.fragment?.text.lines).toHaveLength(0)
+  })
+
+  it('keeps old-shape items without summary metadata on the hydration path', async () => {
+    mockQueryItems([
+      {
+        museumNumber: fragmentDto.museumNumber,
+        matchingLines: [],
+        matchCount: 0,
+      },
+    ])
+
+    const result = await fragmentRepository.query({ number: fragment.number })
+    const item = result.items[0]
+
+    expect(item.thumbnailPath).toBeUndefined()
+    expect(item.fragment).toBeUndefined()
+  })
+
+  it('maps summary metadata without matchingLinePreview using an empty preview', async () => {
+    const itemDto = createSummaryItemDto({
+      matchingLines: [],
+      matchCount: 0,
     })
+    delete itemDto.matchingLinePreview
+    delete itemDto.thumbnailPath
+    mockQueryItems([itemDto])
+
+    const result = await fragmentRepository.query({ number: fragment.number })
+    const item = result.items[0]
+
+    expect(item.thumbnailPath).toBeNull()
+    expect(item.fragment?.number).toEqual(fragment.number)
+    expect(item.fragment?.text.lines).toHaveLength(0)
+  })
+
+  it('maps summary metadata with null matchingLinePreview using an empty preview', async () => {
+    mockQueryItems([
+      createSummaryItemDto({
+        matchingLines: [],
+        matchingLinePreview: null,
+        matchCount: 0,
+      }),
+    ])
+
+    const result = await fragmentRepository.query({ number: fragment.number })
+    const item = result.items[0]
+
+    expect(item.fragment?.number).toEqual(fragment.number)
+    expect(item.fragment?.text.lines).toHaveLength(0)
+  })
+
+  it('maps summary items when optional fields are omitted', async () => {
+    mockQueryItems([
+      createSummaryItemDto({
+        accession: null,
+        date: null,
+        genres: [],
+        archaeology: null,
+        references: [],
+        projects: [],
+        dossiers: [],
+        matchingLines: [],
+        matchCount: 0,
+        hasPhoto: false,
+        thumbnailPath: null,
+      }),
+    ])
 
     const result = await fragmentRepository.query({ number: fragment.number })
     const item = result.items[0]
@@ -510,6 +592,29 @@ describe('FragmentRepository query summary items', () => {
     expect(item.fragment?.projects).toEqual([])
     expect(item.fragment?.dossiers).toEqual([])
   })
+
+  it.each<FragmentQuery>([
+    { number: fragment.number },
+    { project: 'CAIC' },
+    { site: 'Sippar' },
+    { genre: 'ARCHIVE' },
+  ])(
+    'maps summary-capable filter rows without matchingLinePreview for %#',
+    async (query) => {
+      const itemDto = createSummaryItemDto({
+        matchingLines: [],
+        matchCount: 0,
+      })
+      delete itemDto.matchingLinePreview
+      mockQueryItems([itemDto])
+
+      const result = await fragmentRepository.query(query)
+      const item = result.items[0]
+
+      expect(item.fragment?.number).toEqual(fragment.number)
+      expect(item.fragment?.text.lines).toHaveLength(0)
+    },
+  )
 })
 
 describe('FragmentRepository raw summary items', () => {
@@ -599,6 +704,112 @@ describe('FragmentRepository raw summary items', () => {
     expect(item.fragment?.text.lines).toHaveLength(2)
     expect(item.fragment?.references).toHaveLength(1)
     expect(item.fragment?.references[0].id).toEqual('RAW-REF-1')
+  })
+})
+
+describe('createScript fallback behavior', () => {
+  it('maps a known period string to its Period object', () => {
+    const dto: ScriptDto = {
+      period: 'Old Babylonian',
+      periodModifier: 'None',
+      uncertain: false,
+    }
+    const result = createScript(dto)
+    expect(result.period).toBe(Periods['Old Babylonian'])
+    expect(result.period.abbreviation).toBe('OB')
+    expect(result.periodModifier).toBe(PeriodModifiers.None)
+  })
+
+  it('falls back to Periods.Uncertain for unrecognized period strings', () => {
+    const dto: ScriptDto = {
+      period: 'ED IIIb' as unknown as string,
+      periodModifier: 'None',
+      uncertain: false,
+    }
+    const result = createScript(dto)
+    expect(result.period).toBe(Periods.Uncertain)
+    expect(result.period.abbreviation).toBe('Unc')
+  })
+
+  it('falls back to Periods.Uncertain when period is not a string', () => {
+    const dto = {
+      period: null,
+      periodModifier: 'None',
+      uncertain: false,
+    } as unknown as ScriptDto
+    const result = createScript(dto)
+    expect(result.period).toBe(Periods.Uncertain)
+    expect(result.period.abbreviation).toBe('Unc')
+  })
+
+  it('falls back to PeriodModifiers.None for unrecognized periodModifier strings', () => {
+    const dto: ScriptDto = {
+      period: 'Old Babylonian',
+      periodModifier: 'VeryLate' as unknown as string,
+      uncertain: false,
+    }
+    const result = createScript(dto)
+    expect(result.periodModifier).toBe(PeriodModifiers.None)
+  })
+
+  it('falls back to PeriodModifiers.None when periodModifier is not a string', () => {
+    const dto = {
+      period: 'Old Babylonian',
+      periodModifier: null,
+      uncertain: false,
+    } as unknown as ScriptDto
+    const result = createScript(dto)
+    expect(result.periodModifier).toBe(PeriodModifiers.None)
+  })
+})
+
+describe('FragmentRepository query summary with unrecognized script', () => {
+  beforeEach(() => {
+    jest.clearAllMocks()
+  })
+
+  it('produces a render-safe fragment when period is unrecognized', async () => {
+    apiClient.fetchJson.mockResolvedValueOnce({
+      matchCountTotal: 1,
+      items: [
+        createSummaryItemDto({
+          script: {
+            period: 'ED IIIb',
+            periodModifier: 'None',
+            uncertain: false,
+          },
+        } as Record<string, unknown>),
+      ],
+    })
+
+    const result = await fragmentRepository.query({ transliteration: 'kur₂' })
+    const item = result.items[0]
+
+    expect(item.fragment?.script.period.abbreviation).toBeDefined()
+    expect(item.fragment?.script.period.abbreviation).toBe('Unc')
+    expect(item.fragment?.number).toEqual(fragment.number)
+    expect(item.fragment?.script.periodModifier).toBe(PeriodModifiers.None)
+  })
+
+  it('produces a render-safe fragment when period is null', async () => {
+    apiClient.fetchJson.mockResolvedValueOnce({
+      matchCountTotal: 1,
+      items: [
+        createSummaryItemDto({
+          script: {
+            period: null,
+            periodModifier: 'None',
+            uncertain: false,
+          },
+        } as Record<string, unknown>),
+      ],
+    })
+
+    const result = await fragmentRepository.query({ transliteration: 'kur₂' })
+    const item = result.items[0]
+
+    expect(item.fragment?.script.period.abbreviation).toBeDefined()
+    expect(item.fragment?.script.period.abbreviation).toBe('Unc')
   })
 })
 

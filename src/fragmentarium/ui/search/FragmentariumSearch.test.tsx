@@ -221,6 +221,104 @@ describe('Search', () => {
     })
   })
 
+  it('Does not refetch on equivalent query with new object reference', async () => {
+    const transliteration = 'LI₂₃ ši₂-ṣa-pel₃-ṭa₃'
+    const fragments = fragmentFactory.buildList(
+      2,
+      {},
+      { transient: { chance } },
+    )
+    const result: QueryResult = {
+      items: fragments.map(queryItemOf),
+      matchCountTotal: 2,
+    }
+
+    fragmentService.query.mockResolvedValue(result)
+    fragmentService.find.mockResolvedValue(fragments[0])
+    wordService.findAll.mockReturnValue(Promise.resolve([]))
+    textService.query.mockReturnValue(
+      Promise.resolve({ items: [], matchCountTotal: 0 }),
+    )
+
+    const { rerender } = render(
+      <MemoryRouter>
+        <DictionaryContext.Provider value={wordService}>
+          <SessionContext.Provider value={session}>
+            <FragmentariumSearch
+              fragmentSearchService={fragmentSearchService}
+              fragmentService={fragmentService}
+              bibliographyService={bibliographyService}
+              dossiersService={dossiersService}
+              fragmentQuery={{ transliteration }}
+              wordService={wordService}
+              textService={textService}
+              activeTab="library"
+            />
+          </SessionContext.Provider>
+        </DictionaryContext.Provider>
+      </MemoryRouter>,
+    )
+
+    await screen.findByText('Found 2 lines in 2 documents')
+    expect(fragmentService.query).toHaveBeenCalledTimes(1)
+
+    rerender(
+      <MemoryRouter>
+        <DictionaryContext.Provider value={wordService}>
+          <SessionContext.Provider value={session}>
+            <FragmentariumSearch
+              fragmentSearchService={fragmentSearchService}
+              fragmentService={fragmentService}
+              bibliographyService={bibliographyService}
+              dossiersService={dossiersService}
+              fragmentQuery={{ transliteration }}
+              wordService={wordService}
+              textService={textService}
+              activeTab="library"
+            />
+          </SessionContext.Provider>
+        </DictionaryContext.Provider>
+      </MemoryRouter>,
+    )
+
+    expect(fragmentService.query).toHaveBeenCalledTimes(1)
+    expect(screen.getByText('Found 2 lines in 2 documents')).toBeVisible()
+
+    const differentResult: QueryResult = {
+      items: [
+        {
+          museumNumber: fragments[0].number,
+          matchingLines: [],
+          matchCount: 0,
+        },
+      ],
+      matchCountTotal: 5,
+    }
+    fragmentService.query.mockResolvedValue(differentResult)
+
+    rerender(
+      <MemoryRouter>
+        <DictionaryContext.Provider value={wordService}>
+          <SessionContext.Provider value={session}>
+            <FragmentariumSearch
+              fragmentSearchService={fragmentSearchService}
+              fragmentService={fragmentService}
+              bibliographyService={bibliographyService}
+              dossiersService={dossiersService}
+              fragmentQuery={{ transliteration: 'different text' }}
+              wordService={wordService}
+              textService={textService}
+              activeTab="library"
+            />
+          </SessionContext.Provider>
+        </DictionaryContext.Provider>
+      </MemoryRouter>,
+    )
+
+    await screen.findByText('Found 5 lines in 1 document')
+    expect(fragmentService.query).toHaveBeenCalledTimes(2)
+  })
+
   it('Shows suggestion when entering wrong number format', async () => {
     fragmentService.query.mockReturnValueOnce(
       Promise.resolve({
@@ -366,6 +464,7 @@ describe('Searching fragments from summary-backed results', () => {
     })
 
     expect(fragmentService.find).not.toHaveBeenCalled()
+    expect(screen.queryByLabelText('Spinner')).not.toBeInTheDocument()
     expect(screen.getByText('Found 7 lines in 1 document')).toBeVisible()
     expect(
       screen.getByRole('heading', {

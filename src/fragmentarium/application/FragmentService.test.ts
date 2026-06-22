@@ -1328,6 +1328,24 @@ describe('FragmentService cache', () => {
     expect(fragmentRepository.query).toHaveBeenCalledTimes(1)
   })
 
+  test('does not return cancelled in-flight query when re-requested', async () => {
+    const deferredQuery = new Promise<QueryResult>(() => {})
+
+    fragmentRepository.query
+      .mockReturnValueOnce(deferredQuery)
+      .mockReturnValueOnce(Promise.resolve(updatedQueryResult))
+
+    const firstQuery = service.query(query)
+
+    firstQuery.cancel()
+
+    const secondQuery = service.query(query)
+
+    await expect(secondQuery).resolves.toEqual(updatedQueryResult)
+
+    expect(fragmentRepository.query).toHaveBeenCalledTimes(2)
+  })
+
   test('caches thumbnails by fragment number and size', async () => {
     const thumbnail = { blob: null }
     imageRepository.findThumbnail.mockReturnValue(Promise.resolve(thumbnail))

@@ -200,7 +200,9 @@ const FragmentDossierRecordsDisplay = withData<
     )
   },
   {
-    watch: (props) => [...props.fragment.dossiers],
+    watch: (props) => [
+      props.fragment.dossiers.map((dossier) => dossier.dossierId).join('|'),
+    ],
     filter: (props) => !_.isEmpty(props.fragment.dossiers),
     defaultData: () => ({ records: [] }),
   },
