@@ -9,6 +9,13 @@ Provide project context and coding guidelines that AI should follow when generat
 - This is a frontend React + TypeScript project. Use frontend-appropriate patterns and tooling.
 - Do not make any changes to the codebase unless explicitly requested.
 
+## Pre-existing Issues
+
+- Always fix all pre-existing issues immediately upon detection as part of the same task. This applies to any failing test, lint error, type error, console noise, broken build, or other defect surfaced while working — regardless of whether the current task introduced it.
+- Do not defer, set aside, or merely report a pre-existing failure for later. Treat it as part of the current task's hard gates and resolve it at its root cause before finalizing.
+- Identify the root cause first. If a failure stems from external state (for example a leaked environment variable, machine-specific config, or non-deterministic ordering), fix it so the affected code or tests are isolated and deterministic, rather than masking the symptom.
+- Briefly note in the task log which pre-existing issues were found, their root cause, and how they were fixed.
+
 ## API Schema Alignment
 
 - The backend API schema is the source of truth for request and response field names.
