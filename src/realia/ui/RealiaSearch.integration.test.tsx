@@ -67,9 +67,9 @@ describe('Realia search page (read:realia scope)', () => {
     expect(within(item).getByText('Wikidata')).toBeInTheDocument()
     expect(
       within(item)
-        .getAllByText(/^\d+$/)
+        .getAllByText(/^\(\d+\)$/)
         .map((node) => node.textContent),
-    ).toEqual(['2', '5'])
+    ).toEqual(['(2)', '(5)'])
   })
 
   it('matches the rendered rich-preview markup', async () => {

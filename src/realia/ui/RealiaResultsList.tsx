@@ -44,7 +44,6 @@ function RealiaResultItem({ entry }: { entry: RealiaEntry }): JSX.Element {
       </div>
       {entry.relatedTerms.length > 0 && (
         <div className="realia-results-list__terms">
-          <span className="realia-results-list__terms-label">also</span>{' '}
           {entry.relatedTerms.join(', ')}
         </div>
       )}
@@ -55,7 +54,7 @@ function RealiaResultItem({ entry }: { entry: RealiaEntry }): JSX.Element {
               {badge.label}
               {badge.count !== undefined && (
                 <span className="realia-results-list__source-count">
-                  {badge.count}
+                  ({badge.count})
                 </span>
               )}
             </span>

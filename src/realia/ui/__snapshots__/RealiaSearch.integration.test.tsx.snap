@@ -30,12 +30,6 @@ exports[`Realia search page (read:realia scope) matches the rendered rich-previe
     <div
       class="realia-results-list__terms"
     >
-      <span
-        class="realia-results-list__terms-label"
-      >
-        also
-      </span>
-       
       Elil, Illil
     </div>
     <div
@@ -53,7 +47,9 @@ exports[`Realia search page (read:realia scope) matches the rendered rich-previe
         <span
           class="realia-results-list__source-count"
         >
+          (
           2
+          )
         </span>
       </span>
       <span
@@ -63,7 +59,9 @@ exports[`Realia search page (read:realia scope) matches the rendered rich-previe
         <span
           class="realia-results-list__source-count"
         >
+          (
           5
+          )
         </span>
       </span>
       <span

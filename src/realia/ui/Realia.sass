@@ -10,19 +10,18 @@
     color: $ebl-color-text-primary
 
 .Realia__afo-entries
-    list-style: none
+    list-style: disc
     margin: 0
-    padding: 0
-    display: flex
-    flex-direction: column
-    gap: 0.75rem
+    padding: 30px
 
 .Realia__afo-entry
-    display: flex
-    flex-direction: column
-    gap: 0.25rem
+    display: list-item
+
+    & > * + *
+        margin-top: 0.25rem
 
     & + &
+        margin-top: 0.75rem
         padding-top: 0.75rem
         border-top: 1px solid $ebl-color-border-light
 
@@ -31,9 +30,17 @@
 
 .Realia__afo-note
     margin: 0
+    padding-left: 0.6rem
+    border-left: 2px solid $ebl-color-brand-alpha-30
+    color: $ebl-color-text-primary
+    line-height: 1.4
 
 .Realia__afo-reference
     margin: 0
+    padding-left: 0.6rem
+    font-size: 0.85rem
+    font-style: italic
+    color: $ebl-color-text-secondary
 
 .Realia__afo-citation
     color: $ebl-color-text-secondary
@@ -96,13 +103,6 @@
     margin-top: 0.25rem
     font-size: 0.9rem
     color: $ebl-color-text-secondary
-
-.realia-results-list__terms-label
-    margin-right: 0.15rem
-    font-size: 0.7rem
-    text-transform: uppercase
-    letter-spacing: 0.03em
-    color: $ebl-color-text-faded
 
 .realia-results-list__sources
     display: flex

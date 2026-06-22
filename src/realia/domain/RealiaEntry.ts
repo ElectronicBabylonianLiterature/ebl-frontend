@@ -48,6 +48,10 @@ export interface AfoRegisterVolumeEntry extends AfoRegisterEntry {
 
 export interface AfoRegisterVolumeGroup {
   readonly volume: string
+  readonly mainWords: readonly string[]
+  readonly pageRange: string
+  readonly hasDistinctMainWords: boolean
+  readonly hasDistinctPages: boolean
   readonly entries: readonly AfoRegisterVolumeEntry[]
 }
 
@@ -75,19 +79,65 @@ function parseAfoCitation(afo: string): { volume: string; page: string } {
   return { volume: normalized, page: '' }
 }
 
+function formatPageRange(pages: readonly string[]): string {
+  const distinctPages = _.uniq(pages.filter((page) => page !== ''))
+  if (distinctPages.length <= 1) {
+    return distinctPages[0] ?? ''
+  }
+  const allNumeric = distinctPages.every((page) => /^\d+$/.test(page))
+  const ordered = allNumeric
+    ? [...distinctPages].sort((first, second) => Number(first) - Number(second))
+    : distinctPages
+  return `${ordered[0]}-${ordered[ordered.length - 1]}`
+}
+
+function buildVolumeGroup(
+  volume: string,
+  entries: readonly AfoRegisterVolumeEntry[],
+): AfoRegisterVolumeGroup {
+  const mainWords = _.uniq(entries.map((entry) => entry.mainWord))
+  const distinctPages = _.uniq(
+    entries.map((entry) => entry.page).filter((page) => page !== ''),
+  )
+  return {
+    volume,
+    mainWords,
+    pageRange: formatPageRange(entries.map((entry) => entry.page)),
+    hasDistinctMainWords: mainWords.length > 1,
+    hasDistinctPages: distinctPages.length > 1,
+    entries,
+  }
+}
+
 export function groupAfoRegisterByVolume(
   entries: readonly AfoRegisterEntry[],
 ): readonly AfoRegisterVolumeGroup[] {
-  const groups: AfoRegisterVolumeGroup[] = []
-  const groupIndexByVolume = new Map<string, number>()
+  const entriesByVolume = new Map<string, AfoRegisterVolumeEntry[]>()
   entries.forEach((entry) => {
     const { volume, page } = parseAfoCitation(entry.AfO)
-    if (!groupIndexByVolume.has(volume)) {
-      groupIndexByVolume.set(volume, groups.length)
-      groups.push({ volume, entries: [] })
+    if (!entriesByVolume.has(volume)) {
+      entriesByVolume.set(volume, [])
     }
-    const group = groups[groupIndexByVolume.get(volume) as number]
-    ;(group.entries as AfoRegisterVolumeEntry[]).push({ ...entry, page })
+    entriesByVolume.get(volume)?.push({ ...entry, page })
   })
-  return groups
+  return [...entriesByVolume].map(([volume, volumeEntries]) =>
+    buildVolumeGroup(volume, volumeEntries),
+  )
+}
+
+export interface AfoRegisterVolumeTitle {
+  readonly mainWord: string
+  readonly details: string
+}
+
+export function formatAfoRegisterVolumeTitle(
+  entryId: string,
+  group: AfoRegisterVolumeGroup,
+): AfoRegisterVolumeTitle {
+  const mainWords = group.mainWords.filter((mainWord) => mainWord !== '')
+  const mainWord = mainWords.length > 0 ? mainWords.join(', ') : entryId
+  const details = [group.volume, group.pageRange]
+    .filter((part) => part !== '')
+    .join(', ')
+  return { mainWord, details }
 }

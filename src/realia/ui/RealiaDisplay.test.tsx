@@ -1,5 +1,5 @@
 import React from 'react'
-import { render, screen } from '@testing-library/react'
+import { render, screen, within } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 import RealiaDisplay from 'realia/ui/RealiaDisplay'
 import RealiaService from 'realia/application/RealiaService'
@@ -132,6 +132,7 @@ describe('RealiaDisplay', () => {
 
   it('groups afo entries that share a volume into one collapsible card', async () => {
     const entry = realiaEntryFactory.build({
+      id: 'Tiamat',
       reallexikon: [],
       afoRegister: [
         afoRegisterEntryFactory.build({
@@ -146,10 +147,23 @@ describe('RealiaDisplay', () => {
     })
     renderDisplay(entry)
     await waitForSpinnerToBeRemoved(screen)
-    expect(screen.getByText('AfO 25 (1974-1977)')).toBeInTheDocument()
+    expect(
+      screen.getByText('Tiamat, Apsû', {
+        selector: '.Realia__afo-volume-mainword',
+      }),
+    ).toBeInTheDocument()
+    expect(
+      screen.getByText('AfO 25 (1974-1977), 370-372', {
+        selector: '.Realia__afo-volume-details',
+      }),
+    ).toBeInTheDocument()
     expect(screen.getAllByTestId('CollapseIndicator')).toHaveLength(1)
-    expect(screen.getByText('Tiamat')).toBeInTheDocument()
-    expect(screen.getByText('Apsû')).toBeInTheDocument()
+    expect(
+      screen.getByText('Tiamat', { selector: '.Realia__afo-mainword' }),
+    ).toBeInTheDocument()
+    expect(
+      screen.getByText('Apsû', { selector: '.Realia__afo-mainword' }),
+    ).toBeInTheDocument()
   })
 
   it('renders a separate collapsible card per distinct volume', async () => {
@@ -162,9 +176,105 @@ describe('RealiaDisplay', () => {
     })
     renderDisplay(entry)
     await waitForSpinnerToBeRemoved(screen)
-    expect(screen.getByText('AfO 25 (1974-1977)')).toBeInTheDocument()
-    expect(screen.getByText('AfO 26 (1978-1979)')).toBeInTheDocument()
+    expect(screen.getByText(/AfO 25 \(1974-1977\)/)).toBeInTheDocument()
+    expect(screen.getByText(/AfO 26 \(1978-1979\)/)).toBeInTheDocument()
     expect(screen.getAllByTestId('CollapseIndicator')).toHaveLength(2)
+  })
+
+  it('shows the main word and page in the volume title and hides them on the entries when they are constant', async () => {
+    const entry = realiaEntryFactory.build({
+      id: 'Adad',
+      reallexikon: [],
+      afoRegister: [
+        afoRegisterEntryFactory.build({
+          mainWord: 'Adad',
+          AfO: 'AfO 44-45 (1997-1998), 615',
+          note: 'first note',
+        }),
+        afoRegisterEntryFactory.build({
+          mainWord: 'Adad',
+          AfO: 'AfO 44-45 (1997-1998), 615',
+          note: 'second note',
+        }),
+      ],
+    })
+    renderDisplay(entry)
+    await waitForSpinnerToBeRemoved(screen)
+    expect(
+      screen.getByText('Adad', { selector: '.Realia__afo-volume-mainword' }),
+    ).toBeInTheDocument()
+    expect(
+      screen.getByText('AfO 44-45 (1997-1998), 615', {
+        selector: '.Realia__afo-volume-details',
+      }),
+    ).toBeInTheDocument()
+    expect(
+      screen.queryByText('Adad', { selector: '.Realia__afo-mainword' }),
+    ).not.toBeInTheDocument()
+    expect(
+      screen.queryByText('615', { selector: '.Realia__afo-citation' }),
+    ).not.toBeInTheDocument()
+    expect(screen.getByText('first note')).toBeInTheDocument()
+    expect(screen.getByText('second note')).toBeInTheDocument()
+  })
+
+  it('shows the per-entry page when pages differ within a volume', async () => {
+    const entry = realiaEntryFactory.build({
+      id: 'Akkad',
+      reallexikon: [],
+      afoRegister: [
+        afoRegisterEntryFactory.build({
+          mainWord: 'Akkad',
+          AfO: 'AfO 44-45 (1997-1998), 615',
+        }),
+        afoRegisterEntryFactory.build({
+          mainWord: 'Akkad',
+          AfO: 'AfO 44-45 (1997-1998), 616',
+        }),
+      ],
+    })
+    renderDisplay(entry)
+    await waitForSpinnerToBeRemoved(screen)
+    expect(
+      screen.getByText('Akkad', { selector: '.Realia__afo-volume-mainword' }),
+    ).toBeInTheDocument()
+    expect(
+      screen.getByText('AfO 44-45 (1997-1998), 615-616', {
+        selector: '.Realia__afo-volume-details',
+      }),
+    ).toBeInTheDocument()
+    expect(
+      screen.getByText('615', { selector: '.Realia__afo-citation' }),
+    ).toBeInTheDocument()
+    expect(
+      screen.getByText('616', { selector: '.Realia__afo-citation' }),
+    ).toBeInTheDocument()
+  })
+
+  it('drops entries that have no visible content once the main word and page are hidden', async () => {
+    const entry = realiaEntryFactory.build({
+      id: 'Adad',
+      reallexikon: [],
+      afoRegister: [
+        afoRegisterEntryFactory.build({
+          mainWord: 'Adad',
+          AfO: 'AfO 44-45 (1997-1998), 615',
+          note: '',
+          reference: '',
+        }),
+        afoRegisterEntryFactory.build({
+          mainWord: 'Adad',
+          AfO: 'AfO 44-45 (1997-1998), 615',
+          note: 'kept note',
+          reference: '',
+        }),
+      ],
+    })
+    renderDisplay(entry)
+    await waitForSpinnerToBeRemoved(screen)
+    const afoList = screen.getByRole('list', { name: 'AfO 44-45 (1997-1998)' })
+    expect(screen.getByText('kept note')).toBeInTheDocument()
+    expect(within(afoList).getAllByRole('listitem')).toHaveLength(1)
   })
 
   it('renders each volume card collapsed by default', async () => {
@@ -187,7 +297,7 @@ describe('RealiaDisplay', () => {
     const entry = realiaEntryFactory.build({ afoRegister: [afoEntry] })
     renderDisplay(entry)
     await waitForSpinnerToBeRemoved(screen)
-    expect(screen.getByText('AfO 25 (1974-1977)')).toBeInTheDocument()
+    expect(screen.getByText(/AfO 25 \(1974-1977\)/)).toBeInTheDocument()
     expect(screen.queryByText(/AfO AfO/)).not.toBeInTheDocument()
   })
 
@@ -196,7 +306,7 @@ describe('RealiaDisplay', () => {
     const entry = realiaEntryFactory.build({ afoRegister: [afoEntry] })
     renderDisplay(entry)
     await waitForSpinnerToBeRemoved(screen)
-    expect(screen.getByText('AfO 99 (2000)')).toBeInTheDocument()
+    expect(screen.getByText(/AfO 99 \(2000\)/)).toBeInTheDocument()
   })
 
   it('renders References section when references are present', async () => {

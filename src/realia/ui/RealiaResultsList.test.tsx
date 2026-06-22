@@ -60,19 +60,30 @@ describe('RealiaResultsList', () => {
     )
   })
 
-  it('renders the related terms line when related terms are present', () => {
+  it('renders the related terms line without an "also" label', () => {
     const entry = realiaEntryFactory.build({ relatedTerms: ['pig', 'swine'] })
     renderList([entry])
-    expect(screen.getByText('pig, swine')).toBeInTheDocument()
-    expect(screen.getByText('also')).toHaveClass(
-      'realia-results-list__terms-label',
+    expect(screen.getByText('pig, swine')).toHaveClass(
+      'realia-results-list__terms',
     )
+    expect(screen.queryByText('also')).not.toBeInTheDocument()
   })
 
   it('omits the related terms line when there are no related terms', () => {
-    const entry = realiaEntryFactory.build({ relatedTerms: [] })
+    const entry = realiaEntryFactory.build({
+      relatedTerms: [],
+      reallexikon: [],
+      afoRegister: [],
+      references: [],
+      wikidataId: [],
+    })
     renderList([entry])
-    expect(screen.queryByText('also')).not.toBeInTheDocument()
+    expect(
+      screen.queryByText(
+        (_, element) =>
+          element?.classList.contains('realia-results-list__terms') ?? false,
+      ),
+    ).not.toBeInTheDocument()
   })
 
   it('renders an RlA presence badge and AfO/References counts', () => {
@@ -88,9 +99,9 @@ describe('RealiaResultsList', () => {
     expect(within(item).getByText('AfO')).toBeInTheDocument()
     expect(within(item).getByText('References')).toBeInTheDocument()
     const counts = within(item)
-      .getAllByText(/^\d+$/)
+      .getAllByText(/^\(\d+\)$/)
       .map((node) => node.textContent)
-    expect(counts).toEqual(['3', '1'])
+    expect(counts).toEqual(['(3)', '(1)'])
   })
 
   it('renders a Wikidata badge without a count when a wikidata id is present', () => {
