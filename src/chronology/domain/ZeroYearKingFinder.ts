@@ -57,12 +57,19 @@ function findKingAtOrderInDynasty(
   return kings.find((candidate) => candidate.orderInDynasty === orderAsString)
 }
 
+const subRulerOrderPattern = /^\d+[a-z]+$/
+
+function getWalkBackStartOrder(orderInDynasty: string): number {
+  const baseOrder = parseInt(orderInDynasty)
+  return subRulerOrderPattern.test(orderInDynasty) ? baseOrder : baseOrder - 1
+}
+
 function getPreviousKingWithNumericTotalOfYears(
   king: KingDateField,
 ): King | undefined {
   const kings = getKingsByDynasty(king.dynastyName)
   for (
-    let previousKingOrderInDynasty = parseInt(king.orderInDynasty) - 1;
+    let previousKingOrderInDynasty = getWalkBackStartOrder(king.orderInDynasty);
     previousKingOrderInDynasty > 0;
     previousKingOrderInDynasty--
   ) {
