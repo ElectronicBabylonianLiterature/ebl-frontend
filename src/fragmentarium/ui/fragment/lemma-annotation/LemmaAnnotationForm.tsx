@@ -1,4 +1,6 @@
 import WordService from 'dictionary/application/WordService'
+import Word from 'dictionary/domain/Word'
+import { PROPER_NOUN_POS_VALUES } from 'dictionary/domain/partOfSpeech'
 import EditableToken from 'fragmentarium/ui/fragment/linguistic-annotation/EditableToken'
 import React from 'react'
 import _ from 'lodash'
@@ -13,6 +15,21 @@ import {
   Option,
   MultiValueLabel,
 } from 'fragmentarium/ui/lemmatization/LemmaSelectionForm'
+
+function isSumerianOrEmesal(language: string | undefined): boolean {
+  return language === 'SUMERIAN' || language === 'EMESAL'
+}
+
+function isProperNoun(word: Word): boolean {
+  return word.pos.some((pos) => PROPER_NOUN_POS_VALUES.includes(pos))
+}
+
+function filterWordsForTokenLanguage(
+  words: readonly Word[],
+  language: string | undefined,
+): readonly Word[] {
+  return isSumerianOrEmesal(language) ? words.filter(isProperNoun) : words
+}
 
 type Props = {
   token: EditableToken | null
@@ -46,8 +63,11 @@ export default class LemmaAnnotationForm extends React.Component<Props, State> {
     inputValue: string,
     callback: (lemmas: LemmaOption[]) => void,
   ): void => {
+    const language = this.props.token?.token.language
+
     this.props.wordService
       .searchLemma(inputValue)
+      .then((words) => filterWordsForTokenLanguage(words, language))
       .then((words) => words.map((word) => new LemmaOption(word)))
       .then(callback)
   }

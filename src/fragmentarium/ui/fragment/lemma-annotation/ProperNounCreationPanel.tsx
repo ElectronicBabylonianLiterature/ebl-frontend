@@ -2,25 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Button, Form, Modal, Alert } from 'react-bootstrap'
 import WordService from 'dictionary/application/WordService'
 import Word from 'dictionary/domain/Word'
-
-const NOUN_POS_TAGS = {
-  'Agricultural (locus) Name': 'AN',
-  'Celestial Name': 'CN',
-  'Divine Name': 'DN',
-  'Ethnos Name': 'EN',
-  'Field Name': 'FN',
-  'Geographical Name': 'GN',
-  'Line Name (ancestral clan)': 'LN',
-  'Month Name': 'MN',
-  'Object Name': 'ON',
-  'Personal Name': 'PN',
-  'Quarter Name (city area)': 'QN',
-  'Royal Name': 'RN',
-  'Settlement Name': 'SN',
-  'Temple Name': 'TN',
-  'Watercourse Name': 'WN',
-  'Year Name': 'YN',
-}
+import { NOUN_POS_TAGS } from 'dictionary/domain/partOfSpeech'
 
 interface ProperNounCreationPanelProps {
   wordService: WordService
