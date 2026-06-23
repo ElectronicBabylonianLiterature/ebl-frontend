@@ -36,6 +36,7 @@ const secondProperNounWord: Word = wordFactory.build({
   homonym: 'I',
   pos: ['GN', 'N'],
 })
+const mixedWords = [nounWord, properNounWord, secondProperNounWord]
 
 const onTab = jest.fn()
 const onShiftTab = jest.fn()
@@ -73,6 +74,12 @@ async function searchForLemma(inputValue = 'lem') {
   )
 }
 
+async function expectOnlyProperNounResults() {
+  expect(await screen.findByText('marduk')).toBeInTheDocument()
+  expect(await screen.findByText('babylon')).toBeInTheDocument()
+  expect(screen.queryByText('common')).not.toBeInTheDocument()
+}
+
 describe('LemmaAnnotationForm', () => {
   beforeEach(() => {
     jest.clearAllMocks()
@@ -92,11 +99,7 @@ describe('LemmaAnnotationForm', () => {
   })
 
   it('keeps all lemma results for Akkadian tokens', async () => {
-    wordServiceMock.searchLemma.mockResolvedValue([
-      nounWord,
-      properNounWord,
-      secondProperNounWord,
-    ])
+    wordServiceMock.searchLemma.mockResolvedValue(mixedWords)
 
     renderLemmaAnnotationForm()
     await searchForLemma()
@@ -108,34 +111,22 @@ describe('LemmaAnnotationForm', () => {
 
   it('only shows proper noun lemma results for Sumerian tokens', async () => {
     token = createToken('SUMERIAN')
-    wordServiceMock.searchLemma.mockResolvedValue([
-      nounWord,
-      properNounWord,
-      secondProperNounWord,
-    ])
+    wordServiceMock.searchLemma.mockResolvedValue(mixedWords)
 
     renderLemmaAnnotationForm()
     await searchForLemma()
 
-    expect(await screen.findByText('marduk')).toBeInTheDocument()
-    expect(await screen.findByText('babylon')).toBeInTheDocument()
-    expect(screen.queryByText('common')).not.toBeInTheDocument()
+    await expectOnlyProperNounResults()
   })
 
   it('only shows proper noun lemma results for Emesal tokens', async () => {
     token = createToken('EMESAL')
-    wordServiceMock.searchLemma.mockResolvedValue([
-      nounWord,
-      properNounWord,
-      secondProperNounWord,
-    ])
+    wordServiceMock.searchLemma.mockResolvedValue(mixedWords)
 
     renderLemmaAnnotationForm()
     await searchForLemma()
 
-    expect(await screen.findByText('marduk')).toBeInTheDocument()
-    expect(await screen.findByText('babylon')).toBeInTheDocument()
-    expect(screen.queryByText('common')).not.toBeInTheDocument()
+    await expectOnlyProperNounResults()
   })
 
   it('shows no options for Sumerian tokens without proper noun matches', async () => {

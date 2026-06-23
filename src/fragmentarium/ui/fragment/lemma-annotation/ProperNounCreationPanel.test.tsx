@@ -2,6 +2,7 @@ import React from 'react'
 import { render, screen, fireEvent, waitFor } from '@testing-library/react'
 import ProperNounCreationPanel from './ProperNounCreationPanel'
 import WordService from 'dictionary/application/WordService'
+import { NOUN_POS_TAGS } from 'dictionary/domain/partOfSpeech'
 import { wordFactory } from 'test-support/word-fixtures'
 import Word from 'dictionary/domain/Word'
 import Promise from 'bluebird'
@@ -307,29 +308,11 @@ describe('ProperNounCreationPanel', () => {
       const select = screen.getByLabelText(
         'properNoun-pos-select',
       ) as HTMLSelectElement
-      const expectedOptions = [
-        ['Agricultural (locus) Name', 'AN'],
-        ['Celestial Name', 'CN'],
-        ['Divine Name', 'DN'],
-        ['Ethnos Name', 'EN'],
-        ['Field Name', 'FN'],
-        ['Geographical Name', 'GN'],
-        ['Line Name (ancestral clan)', 'LN'],
-        ['Month Name', 'MN'],
-        ['Object Name', 'ON'],
-        ['Personal Name', 'PN'],
-        ['Quarter Name (city area)', 'QN'],
-        ['Royal Name', 'RN'],
-        ['Settlement Name', 'SN'],
-        ['Temple Name', 'TN'],
-        ['Watercourse Name', 'WN'],
-        ['Year Name', 'YN'],
-      ]
       const renderedOptions = Array.from(select.options)
         .slice(1)
         .map((option) => [option.text, option.value])
 
-      expect(renderedOptions).toEqual(expectedOptions)
+      expect(renderedOptions).toEqual(Object.entries(NOUN_POS_TAGS))
     })
 
     it('updates POS tag value when option is selected', () => {

@@ -5,6 +5,7 @@ import EditableToken from 'fragmentarium/ui/fragment/linguistic-annotation/Edita
 import React from 'react'
 import _ from 'lodash'
 import AsyncSelect from 'react-select/async'
+import { Token } from 'transliteration/domain/token'
 import type {
   ActionMeta,
   MultiValueGenericProps,
@@ -29,6 +30,10 @@ function filterWordsForTokenLanguage(
   language: string | undefined,
 ): readonly Word[] {
   return isSumerianOrEmesal(language) ? words.filter(isProperNoun) : words
+}
+
+function getTokenLanguage(token: Token | undefined): string | undefined {
+  return token && 'language' in token ? token.language : undefined
 }
 
 type Props = {
@@ -63,7 +68,7 @@ export default class LemmaAnnotationForm extends React.Component<Props, State> {
     inputValue: string,
     callback: (lemmas: LemmaOption[]) => void,
   ): void => {
-    const language = this.props.token?.token.language
+    const language = getTokenLanguage(this.props.token?.token)
 
     this.props.wordService
       .searchLemma(inputValue)
