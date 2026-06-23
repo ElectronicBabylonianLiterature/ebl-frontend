@@ -14,7 +14,7 @@ import {
   formatAfoRegisterVolumeTitle,
 } from 'realia/domain/RealiaEntry'
 import ExternalLink from 'common/ui/ExternalLink'
-import { CollapsibleCard } from 'common/ui/CollabsibleCard'
+import CollapsibleSection from 'corpus/ui/CollapsibleSection'
 import ReferenceList from 'bibliography/ui/ReferenceList'
 import SessionContext from 'auth/SessionContext'
 import { Session } from 'auth/Session'
@@ -56,17 +56,18 @@ function ReallexikonSection({
     <div className="Realia__section">
       <h2>I. Reallexikon der Assyriologie und Vorderasiatischen Archäologie</h2>
       {entries.map((entry) => (
-        <CollapsibleCard
+        <CollapsibleSection
           key={entry.id}
-          label={
+          classNameBlock="realia-collapsible"
+          mountOnEnter={false}
+          heading={
             entry.content ? `${entry.title} (${entry.content})` : entry.title
           }
-          collapsed={true}
         >
           {entry.references.length > 0 && (
             <ReferenceList references={entry.references} />
           )}
-        </CollapsibleCard>
+        </CollapsibleSection>
       ))}
     </div>
   )
@@ -119,8 +120,10 @@ function AfoRegisterVolumeCard({
 }): JSX.Element {
   const title = formatAfoRegisterVolumeTitle(entryId, group)
   return (
-    <CollapsibleCard
-      label={
+    <CollapsibleSection
+      classNameBlock="realia-collapsible"
+      mountOnEnter={false}
+      heading={
         <>
           <strong className="Realia__afo-volume-mainword">
             {title.mainWord}
@@ -129,7 +132,6 @@ function AfoRegisterVolumeCard({
           <span className="Realia__afo-volume-details">{title.details}</span>
         </>
       }
-      collapsed={true}
     >
       <ul className="Realia__afo-entries" aria-label={group.volume}>
         {group.entries
@@ -149,7 +151,7 @@ function AfoRegisterVolumeCard({
             />
           ))}
       </ul>
-    </CollapsibleCard>
+    </CollapsibleSection>
   )
 }
 

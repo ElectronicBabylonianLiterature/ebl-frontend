@@ -287,7 +287,9 @@ describe('RealiaDisplay', () => {
     })
     renderDisplay(entry)
     await waitForSpinnerToBeRemoved(screen)
-    expect(screen.getByTestId('CollapseIndicator')).toHaveClass('fa-angle-down')
+    expect(screen.getByTestId('CollapseIndicator')).toHaveClass(
+      'fa-caret-right',
+    )
   })
 
   it('does not duplicate the "AfO" prefix in the volume header', async () => {
