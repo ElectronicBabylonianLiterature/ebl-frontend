@@ -15,6 +15,8 @@ import AfoRegisterService from 'afo-register/application/AfoRegisterService'
 import RealiaService from 'realia/application/RealiaService'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import DossiersService from 'dossiers/application/DossiersService'
+import SessionContext from 'auth/SessionContext'
+import MemorySession, { Session, guestSession } from 'auth/Session'
 import { setReducedMotionMatchMedia } from 'test-support/matchMedia'
 
 jest.mock('router/compat', () => ({
@@ -73,7 +75,10 @@ jest.mock('signs/ui/CuneiformConverter/CuneiformConverterForm', () => ({
   default: () => <div>Cuneiform Converter Mock</div>,
 }))
 
-function renderTools(activeTab?: Parameters<typeof Tools>[0]['activeTab']) {
+function renderTools(
+  activeTab?: Parameters<typeof Tools>[0]['activeTab'],
+  session: Session = new MemorySession(['read:realia']),
+) {
   const props = {
     markupService: {} as MarkupService,
     signService: {} as SignService,
@@ -88,7 +93,9 @@ function renderTools(activeTab?: Parameters<typeof Tools>[0]['activeTab']) {
 
   render(
     <MemoryRouter>
-      <Tools {...props} />
+      <SessionContext.Provider value={session}>
+        <Tools {...props} />
+      </SessionContext.Provider>
     </MemoryRouter>,
   )
 }
@@ -117,6 +124,18 @@ describe('Tools', () => {
   it('renders realia content', () => {
     renderTools('realia')
     expect(screen.getByText('Realia Mock')).toBeInTheDocument()
+  })
+
+  it('shows the Realia nav item when the session has the readRealia scope', () => {
+    renderTools(undefined, new MemorySession(['read:realia']))
+    expect(screen.getByRole('link', { name: 'Realia' })).toBeInTheDocument()
+  })
+
+  it('hides the Realia nav item when the session lacks the readRealia scope', () => {
+    renderTools(undefined, guestSession)
+    expect(
+      screen.queryByRole('link', { name: 'Realia' }),
+    ).not.toBeInTheDocument()
   })
 
   it('renders dossiers content', () => {

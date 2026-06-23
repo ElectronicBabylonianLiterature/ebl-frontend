@@ -1,6 +1,8 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Container, Row, Col, Nav } from 'react-bootstrap'
 import { Link, useLocation } from 'react-router-dom'
+import SessionContext from 'auth/SessionContext'
+import { Session } from 'auth/Session'
 import AppContent from 'common/ui/AppContent'
 import { Crumb, SectionCrumb, TextCrumb } from 'common/ui/Breadcrumbs'
 import './tools.sass'
@@ -70,6 +72,13 @@ const tabConfig = [
   { id: 'afo-register', title: 'AfO-Register', icon: '⊞' },
   { id: 'cuneiform-converter', title: 'Cuneiform Converter', icon: '𒐕' },
 ]
+
+function isTabVisible(tabId: string, session: Session): boolean {
+  if (tabId === 'realia') {
+    return session.isAllowedToReadRealia()
+  }
+  return true
+}
 
 export function getCurrentTab(selectedTab?: TabId) {
   return tabConfig.find((tab) => tab.id === selectedTab)
@@ -205,6 +214,7 @@ export default function Tools({
   fragmentService: FragmentService
   activeTab?: TabId
 }): JSX.Element {
+  const session = useContext(SessionContext)
   const history = useHistory()
   const location = useLocation()
   const [selectedTab, setSelectedTab] = useState(activeTab)
@@ -235,22 +245,24 @@ export default function Tools({
         <Row>
           <Col xs={12} md={3} className="tools-sidebar">
             <Nav className="flex-column tools-nav">
-              {tabConfig.map((tab) => (
-                <Nav.Link
-                  key={tab.id}
-                  as={Link}
-                  to={`/tools/${tab.id}`}
-                  className={`tools-nav__item ${
-                    selectedTab === tab.id ? 'active' : ''
-                  }`}
-                  onClick={() => handleSelect(tab.id as TabId)}
-                >
-                  <span className="tools-nav__icon" aria-hidden="true">
-                    {tab.icon}
-                  </span>
-                  <span className="tools-nav__title">{tab.title}</span>
-                </Nav.Link>
-              ))}
+              {tabConfig
+                .filter((tab) => isTabVisible(tab.id, session))
+                .map((tab) => (
+                  <Nav.Link
+                    key={tab.id}
+                    as={Link}
+                    to={`/tools/${tab.id}`}
+                    className={`tools-nav__item ${
+                      selectedTab === tab.id ? 'active' : ''
+                    }`}
+                    onClick={() => handleSelect(tab.id as TabId)}
+                  >
+                    <span className="tools-nav__icon" aria-hidden="true">
+                      {tab.icon}
+                    </span>
+                    <span className="tools-nav__title">{tab.title}</span>
+                  </Nav.Link>
+                ))}
             </Nav>
           </Col>
 
