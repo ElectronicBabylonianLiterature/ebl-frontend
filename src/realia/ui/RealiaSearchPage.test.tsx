@@ -39,7 +39,9 @@ function renderPage(
 describe('RealiaSearchPage', () => {
   it('renders intro text and search form', () => {
     renderPage()
-    expect(screen.getByText(/Dictionary of Realia/i)).toBeInTheDocument()
+    expect(
+      screen.getByText(/reference tool for the material culture/i),
+    ).toBeInTheDocument()
     expect(screen.getByTestId('search-form')).toBeInTheDocument()
   })
 
@@ -53,11 +55,21 @@ describe('RealiaSearchPage', () => {
     expect(screen.queryByTestId('search-results')).not.toBeInTheDocument()
   })
 
+  it('shows the development notice for an authorized session', () => {
+    renderPage()
+    expect(
+      screen.getByText(/still under active development/i),
+    ).toBeInTheDocument()
+  })
+
   it('shows login message and no form when session lacks readRealia scope', () => {
     renderPage('/tools/realia', new MemorySession([]))
     expect(
       screen.getByText('Please log in to browse the Dictionary of Realia.'),
     ).toBeInTheDocument()
     expect(screen.queryByTestId('search-form')).not.toBeInTheDocument()
+    expect(
+      screen.queryByText(/still under active development/i),
+    ).not.toBeInTheDocument()
   })
 })

@@ -6,6 +6,7 @@ import { Session } from 'auth/Session'
 import { MarkdownParagraph } from 'common/ui/Markdown'
 import RealiaSearchForm from 'realia/ui/RealiaSearchForm'
 import RealiaSearch from 'realia/ui/RealiaSearch'
+import RealiaDevelopmentNotice from 'realia/ui/RealiaDevelopmentNotice'
 import RealiaService from 'realia/application/RealiaService'
 
 function getQueryFromLocation(search: string): string {
@@ -27,6 +28,7 @@ export default function RealiaSearchPage({
       {(session: Session): JSX.Element =>
         session.isAllowedToReadRealia() ? (
           <>
+            <RealiaDevelopmentNotice />
             <MarkdownParagraph
               className="realia-search-page__introduction"
               text={`The Dictionary of Realia is a reference tool for the material culture, religion, flora and fauna, and other

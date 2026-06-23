@@ -15,6 +15,7 @@ import {
 } from 'realia/domain/RealiaEntry'
 import ExternalLink from 'common/ui/ExternalLink'
 import CollapsibleSection from 'corpus/ui/CollapsibleSection'
+import RealiaDevelopmentNotice from 'realia/ui/RealiaDevelopmentNotice'
 import ReferenceList from 'bibliography/ui/ReferenceList'
 import SessionContext from 'auth/SessionContext'
 import { Session } from 'auth/Session'
@@ -82,7 +83,8 @@ function afoEntryHasVisibleContent(
     (showMainWord && afoEntry.mainWord) ||
     (showPage && afoEntry.page) ||
     afoEntry.note ||
-    afoEntry.reference,
+    afoEntry.reference ||
+    afoEntry.crossReference,
   )
 }
 
@@ -107,11 +109,21 @@ function AfoRegisterEntryItem({
       {afoEntry.reference && (
         <p className="Realia__afo-reference">{afoEntry.reference}</p>
       )}
+      {afoEntry.crossReference && (
+        <p className="Realia__afo-cross-reference">
+          <i className="fas fa-arrow-right" aria-hidden="true" />
+          <Link
+            to={`/tools/realia/${encodeURIComponent(afoEntry.crossReference)}`}
+          >
+            {afoEntry.crossReference}
+          </Link>
+        </p>
+      )}
     </li>
   )
 }
 
-function AfoRegisterVolumeCard({
+function AfoRegisterVolume({
   entryId,
   group,
 }: {
@@ -120,19 +132,14 @@ function AfoRegisterVolumeCard({
 }): JSX.Element {
   const title = formatAfoRegisterVolumeTitle(entryId, group)
   return (
-    <CollapsibleSection
-      classNameBlock="realia-collapsible"
-      mountOnEnter={false}
-      heading={
-        <>
-          <strong className="Realia__afo-volume-mainword">
-            {title.mainWord}
-          </strong>
-          {': '}
-          <span className="Realia__afo-volume-details">{title.details}</span>
-        </>
-      }
-    >
+    <div className="Realia__afo-volume">
+      <h3 className="Realia__afo-volume-title">
+        <strong className="Realia__afo-volume-mainword">
+          {title.mainWord}
+        </strong>
+        {': '}
+        <span className="Realia__afo-volume-details">{title.details}</span>
+      </h3>
       <ul className="Realia__afo-entries" aria-label={group.volume}>
         {group.entries
           .filter((afoEntry) =>
@@ -151,7 +158,7 @@ function AfoRegisterVolumeCard({
             />
           ))}
       </ul>
-    </CollapsibleSection>
+    </div>
   )
 }
 
@@ -162,17 +169,23 @@ function AfoRegisterSection({
   entryId: string
   entries: readonly AfoRegisterEntry[]
 }): JSX.Element {
-  const volumeGroups = groupAfoRegisterByVolume(entries)
+  const volumeGroups = [...groupAfoRegisterByVolume(entries)].reverse()
   return (
     <div className="Realia__section">
-      <h2>II. AfO-Register Realien</h2>
-      {volumeGroups.map((group) => (
-        <AfoRegisterVolumeCard
-          key={group.volume}
-          entryId={entryId}
-          group={group}
-        />
-      ))}
+      <CollapsibleSection
+        classNameBlock="realia-collapsible"
+        element="h2"
+        mountOnEnter={false}
+        heading="II. AfO-Register Realien"
+      >
+        {volumeGroups.map((group) => (
+          <AfoRegisterVolume
+            key={group.volume}
+            entryId={entryId}
+            group={group}
+          />
+        ))}
+      </CollapsibleSection>
     </div>
   )
 }
@@ -215,6 +228,7 @@ function RealiaEntryDisplay({
         {(session: Session): JSX.Element =>
           session.isAllowedToReadRealia() ? (
             <>
+              <RealiaDevelopmentNotice />
               <h1>{entry.id}</h1>
               <RealiaMetadata entry={entry} />
               {entry.reallexikon.length > 0 && (
@@ -249,4 +263,6 @@ export default withData<
   WithoutData<{ data: RealiaEntry }>,
   { realiaService: RealiaService; id: string },
   RealiaEntry
->(RealiaEntryDisplay, (props) => props.realiaService.find(props.id))
+>(RealiaEntryDisplay, (props) => props.realiaService.find(props.id), {
+  watch: (props) => [props.id],
+})

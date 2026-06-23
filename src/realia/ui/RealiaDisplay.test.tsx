@@ -166,7 +166,7 @@ describe('RealiaDisplay', () => {
     ).toBeInTheDocument()
   })
 
-  it('renders a separate collapsible card per distinct volume', async () => {
+  it('renders all AfO volumes inside a single collapsible, newest first', async () => {
     const entry = realiaEntryFactory.build({
       reallexikon: [],
       afoRegister: [
@@ -176,9 +176,14 @@ describe('RealiaDisplay', () => {
     })
     renderDisplay(entry)
     await waitForSpinnerToBeRemoved(screen)
-    expect(screen.getByText(/AfO 25 \(1974-1977\)/)).toBeInTheDocument()
-    expect(screen.getByText(/AfO 26 \(1978-1979\)/)).toBeInTheDocument()
-    expect(screen.getAllByTestId('CollapseIndicator')).toHaveLength(2)
+    expect(screen.getAllByTestId('CollapseIndicator')).toHaveLength(1)
+    const volumes = screen
+      .getAllByText(/AfO 2\d/, { selector: '.Realia__afo-volume-details' })
+      .map((element) => element.textContent)
+    expect(volumes).toEqual([
+      'AfO 26 (1978-1979), 12',
+      'AfO 25 (1974-1977), 370',
+    ])
   })
 
   it('shows the main word and page in the volume title and hides them on the entries when they are constant', async () => {
@@ -277,7 +282,54 @@ describe('RealiaDisplay', () => {
     expect(within(afoList).getAllByRole('listitem')).toHaveLength(1)
   })
 
-  it('renders each volume card collapsed by default', async () => {
+  it('renders the AfO cross-reference as a link to the Realia entry', async () => {
+    const afoEntry = afoRegisterEntryFactory.build({
+      crossReference: 'Anu',
+    })
+    const entry = realiaEntryFactory.build({
+      reallexikon: [],
+      afoRegister: [afoEntry],
+    })
+    renderDisplay(entry)
+    await waitForSpinnerToBeRemoved(screen)
+    expect(screen.getByRole('link', { name: 'Anu' })).toHaveAttribute(
+      'href',
+      '/tools/realia/Anu',
+    )
+  })
+
+  it('keeps an AfO entry whose only content is a cross-reference', async () => {
+    const entry = realiaEntryFactory.build({
+      id: 'Adad',
+      reallexikon: [],
+      afoRegister: [
+        afoRegisterEntryFactory.build({
+          mainWord: 'Adad',
+          AfO: 'AfO 44-45 (1997-1998), 615',
+          note: '',
+          reference: '',
+          crossReference: 'Iškur',
+        }),
+        afoRegisterEntryFactory.build({
+          mainWord: 'Adad',
+          AfO: 'AfO 44-45 (1997-1998), 615',
+          note: 'kept note',
+          reference: '',
+          crossReference: '',
+        }),
+      ],
+    })
+    renderDisplay(entry)
+    await waitForSpinnerToBeRemoved(screen)
+    const afoList = screen.getByRole('list', { name: 'AfO 44-45 (1997-1998)' })
+    expect(within(afoList).getAllByRole('listitem')).toHaveLength(2)
+    expect(screen.getByRole('link', { name: 'Iškur' })).toHaveAttribute(
+      'href',
+      '/tools/realia/I%C5%A1kur',
+    )
+  })
+
+  it('renders the AfO-Register section collapsed by default', async () => {
     const afoEntry = afoRegisterEntryFactory.build({
       AfO: 'AfO 25 (1974-1977), 370',
     })
@@ -390,6 +442,48 @@ describe('RealiaDisplay', () => {
     ).not.toBeInTheDocument()
   })
 
+  it('re-fetches and renders the new entry when the id changes', async () => {
+    const first = realiaEntryFactory.build({ id: 'Pig' })
+    const second = realiaEntryFactory.build({ id: 'Anu' })
+    realiaService.find.mockImplementation((id: string) =>
+      Bluebird.resolve(id === 'Anu' ? second : first),
+    )
+    const session = new MemorySession(['read:realia'])
+    const { rerender } = render(
+      <MemoryRouter>
+        <SessionContext.Provider value={session}>
+          <RealiaDisplay id="Pig" realiaService={realiaService} />
+        </SessionContext.Provider>
+      </MemoryRouter>,
+    )
+    await waitForSpinnerToBeRemoved(screen)
+    expect(
+      screen.getByRole('heading', { level: 1, name: 'Pig' }),
+    ).toBeInTheDocument()
+
+    rerender(
+      <MemoryRouter>
+        <SessionContext.Provider value={session}>
+          <RealiaDisplay id="Anu" realiaService={realiaService} />
+        </SessionContext.Provider>
+      </MemoryRouter>,
+    )
+    await waitForSpinnerToBeRemoved(screen)
+    expect(
+      screen.getByRole('heading', { level: 1, name: 'Anu' }),
+    ).toBeInTheDocument()
+    expect(realiaService.find).toHaveBeenCalledWith('Anu')
+  })
+
+  it('shows the development notice for an authorized session', async () => {
+    const entry = realiaEntryFactory.build()
+    renderDisplay(entry)
+    await waitForSpinnerToBeRemoved(screen)
+    expect(
+      screen.getByText(/still under active development/i),
+    ).toBeInTheDocument()
+  })
+
   it('shows login message when session lacks readRealia scope', async () => {
     const entry = realiaEntryFactory.build()
     renderDisplay(entry, new MemorySession([]))
@@ -397,5 +491,8 @@ describe('RealiaDisplay', () => {
     expect(
       screen.getByText('Please log in to browse the Dictionary of Realia.'),
     ).toBeInTheDocument()
+    expect(
+      screen.queryByText(/still under active development/i),
+    ).not.toBeInTheDocument()
   })
 })
