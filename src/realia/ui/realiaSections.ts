@@ -27,6 +27,10 @@ export function afoVolumeId(index: number): string {
   return `realia-afo-volume-${index}`
 }
 
+export function rlaArticleId(index: number): string {
+  return `realia-rla-article-${index}`
+}
+
 export function buildRealiaNav({
   entry,
   volumeGroups,
@@ -41,7 +45,10 @@ export function buildRealiaNav({
     sections.push({
       id: realiaSectionIds.reallexikon,
       label: 'Reallexikon',
-      subsections: [],
+      subsections: entry.reallexikon.map((article, index) => ({
+        id: rlaArticleId(index),
+        label: article.title,
+      })),
     })
   }
   if (entry.afoRegister.length > 0) {

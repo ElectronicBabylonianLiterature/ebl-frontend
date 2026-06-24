@@ -138,9 +138,17 @@ describe('RealiaDisplay', () => {
     })
     renderDisplay(entry)
     await waitForSpinnerToBeRemoved(screen)
-    expect(screen.getByText('Aššur A. Stadt')).toBeInTheDocument()
-    expect(screen.getByText('Aššur B. Land')).toBeInTheDocument()
-    expect(screen.getByText('Aššur C. Hauptgott')).toBeInTheDocument()
+    expect(
+      screen.getByText('Aššur A. Stadt', { selector: '.Realia__rla-title' }),
+    ).toBeInTheDocument()
+    expect(
+      screen.getByText('Aššur B. Land', { selector: '.Realia__rla-title' }),
+    ).toBeInTheDocument()
+    expect(
+      screen.getByText('Aššur C. Hauptgott', {
+        selector: '.Realia__rla-title',
+      }),
+    ).toBeInTheDocument()
     expect(
       screen.getByRole('link', {
         name: 'Open Aššur A. Stadt on the online RlA',
@@ -173,8 +181,16 @@ describe('RealiaDisplay', () => {
     })
     renderDisplay(entry)
     await waitForSpinnerToBeRemoved(screen)
-    expect(screen.getByText('Sintflut A. Deutsch')).toBeInTheDocument()
-    expect(screen.getByText('Sintflut B. English')).toBeInTheDocument()
+    expect(
+      screen.getByText('Sintflut A. Deutsch', {
+        selector: '.Realia__rla-title',
+      }),
+    ).toBeInTheDocument()
+    expect(
+      screen.getByText('Sintflut B. English', {
+        selector: '.Realia__rla-title',
+      }),
+    ).toBeInTheDocument()
     expect(
       screen.getByRole('link', {
         name: 'Open Sintflut A. Deutsch on the online RlA',
@@ -201,7 +217,11 @@ describe('RealiaDisplay', () => {
     const entry = realiaEntryFactory.build({ reallexikon: [reallexikonEntry] })
     renderDisplay(entry)
     await waitForSpinnerToBeRemoved(screen)
-    expect(screen.getByText('Zababa-šuma-iddina')).toBeInTheDocument()
+    expect(
+      screen.getByText('Zababa-šuma-iddina', {
+        selector: '.Realia__rla-title',
+      }),
+    ).toBeInTheDocument()
     const link = screen.getByRole('link', {
       name: 'Open Zababa-šuma-iddina on the online RlA',
     })
@@ -706,6 +726,25 @@ describe('RealiaDisplay', () => {
     ).toBeInTheDocument()
   })
 
+  it('lists RlA articles as subsections in the navigation menu', async () => {
+    const entry = realiaEntryFactory.build({
+      reallexikon: [
+        reallexikonEntryFactory.build({ title: 'Aššur A. Stadt' }),
+        reallexikonEntryFactory.build({ title: 'Aššur C. Hauptgott' }),
+      ],
+      afoRegister: [],
+    })
+    renderDisplay(entry)
+    await waitForSpinnerToBeRemoved(screen)
+    const navMenu = screen.getByRole('navigation', { name: 'On this page' })
+    expect(
+      within(navMenu).getByRole('link', { name: 'Aššur A. Stadt' }),
+    ).toHaveAttribute('href', '#realia-rla-article-0')
+    expect(
+      within(navMenu).getByRole('link', { name: 'Aššur C. Hauptgott' }),
+    ).toHaveAttribute('href', '#realia-rla-article-1')
+  })
+
   it('lists AfO volumes as subsections in the navigation menu', async () => {
     const entry = realiaEntryFactory.build({
       reallexikon: [],
@@ -788,9 +827,9 @@ describe('RealiaDisplay', () => {
     scrollIntoView.mockRestore()
   })
 
-  it('highlights the active section and subsection from scroll position', async () => {
+  it('highlights the active subsection and its parent group from scroll position', async () => {
     const entry = realiaEntryFactory.build({
-      reallexikon: [reallexikonEntryFactory.build()],
+      reallexikon: [reallexikonEntryFactory.build({ title: 'Aššur A. Stadt' })],
       afoRegister: [
         afoRegisterEntryFactory.build({ AfO: 'AfO 25 (1974-1977), 370' }),
       ],
@@ -803,15 +842,15 @@ describe('RealiaDisplay', () => {
     const navMenu = screen.getByRole('navigation', { name: 'On this page' })
     act(() => {
       triggerIntersection([
-        { id: 'realia-section-reallexikon', isIntersecting: true },
+        { id: 'realia-rla-article-0', isIntersecting: true },
       ])
     })
     expect(
-      within(navMenu).getByRole('link', { name: 'Reallexikon' }),
+      within(navMenu).getByRole('link', { name: 'Aššur A. Stadt' }),
     ).toHaveClass('is-active')
     act(() => {
       triggerIntersection([
-        { id: 'realia-section-reallexikon', isIntersecting: false },
+        { id: 'realia-rla-article-0', isIntersecting: false },
         { id: 'realia-afo-volume-0', isIntersecting: true },
       ])
     })
@@ -840,7 +879,7 @@ describe('RealiaDisplay', () => {
     ).toHaveClass('is-active')
     act(() => {
       triggerIntersection([
-        { id: 'realia-section-reallexikon', isIntersecting: true },
+        { id: 'realia-rla-article-0', isIntersecting: true },
       ])
     })
     expect(

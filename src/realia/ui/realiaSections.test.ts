@@ -2,6 +2,7 @@ import {
   afoVolumeId,
   buildRealiaNav,
   realiaSectionIds,
+  rlaArticleId,
 } from 'realia/ui/realiaSections'
 import {
   getRealiaCrossReferences,
@@ -16,9 +17,12 @@ import {
 import { referenceFactory } from 'test-support/bibliography-fixtures'
 
 describe('buildRealiaNav', () => {
-  it('builds a section for each present part with AfO volume subsections', () => {
+  it('builds a section for each present part with RlA article and AfO volume subsections', () => {
     const entry = realiaEntryFactory.build({
-      reallexikon: [reallexikonEntryFactory.build()],
+      reallexikon: [
+        reallexikonEntryFactory.build({ title: 'Aššur A. Stadt' }),
+        reallexikonEntryFactory.build({ title: 'Aššur C. Hauptgott' }),
+      ],
       afoRegister: [
         afoRegisterEntryFactory.build({ AfO: 'AfO 25 (1974-1977), 370' }),
       ],
@@ -38,6 +42,13 @@ describe('buildRealiaNav', () => {
       realiaSectionIds.afoRegister,
       realiaSectionIds.references,
       realiaSectionIds.seeAlso,
+    ])
+    const reallexikonSection = sections.find(
+      (section) => section.id === realiaSectionIds.reallexikon,
+    )
+    expect(reallexikonSection?.subsections).toEqual([
+      { id: rlaArticleId(0), label: 'Aššur A. Stadt' },
+      { id: rlaArticleId(1), label: 'Aššur C. Hauptgott' },
     ])
     const afoSection = sections.find(
       (section) => section.id === realiaSectionIds.afoRegister,

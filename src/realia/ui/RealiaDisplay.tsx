@@ -22,6 +22,7 @@ import {
   afoVolumeId,
   buildRealiaNav,
   realiaSectionIds,
+  rlaArticleId,
 } from 'realia/ui/realiaSections'
 import ReferenceList from 'bibliography/ui/ReferenceList'
 import SessionContext from 'auth/SessionContext'
@@ -104,7 +105,11 @@ function ReallexikonEntries({
   return (
     <>
       {entries.map((entry, index) => (
-        <div key={`${entry.id}-${index}`} className="Realia__rla-article">
+        <div
+          key={`${entry.id}-${index}`}
+          id={rlaArticleId(index)}
+          className="Realia__rla-article"
+        >
           <h3 className="Realia__rla-title">
             {entry.title}
             <ExternalLink
