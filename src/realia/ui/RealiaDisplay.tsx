@@ -103,9 +103,9 @@ function ReallexikonEntries({
 }): JSX.Element {
   return (
     <>
-      {entries.map((entry) => (
+      {entries.map((entry, index) => (
         <CollapsibleSection
-          key={entry.id}
+          key={`${entry.id}-${index}`}
           classNameBlock="realia-collapsible"
           mountOnEnter={false}
           heading={
@@ -316,15 +316,16 @@ function AuthorizedRealiaEntry({ entry }: { entry: RealiaEntry }): JSX.Element {
   )
   const { openSections, toggleSection, openSection } =
     useRealiaSectionState(sectionIds)
-  const activeId = useActiveSection(anchorIds)
+  const { activeId, selectActiveSection } = useActiveSection(anchorIds)
   const typeLabel = entry.type.length > 0 ? entry.type.join(', ') : null
 
   const navigateToSection = useCallback(
     (id: string, sectionId: string): void => {
       openSection(sectionId)
+      selectActiveSection(id)
       scrollToSection(id)
     },
-    [openSection],
+    [openSection, selectActiveSection],
   )
 
   return (

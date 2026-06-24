@@ -1,9 +1,13 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 
-export default function useActiveSection(
-  ids: readonly string[],
-): string | null {
+const PROGRAMMATIC_SCROLL_LOCK_MS = 800
+
+export default function useActiveSection(ids: readonly string[]): {
+  activeId: string | null
+  selectActiveSection: (id: string) => void
+} {
   const [activeId, setActiveId] = useState<string | null>(null)
+  const lockedUntil = useRef(0)
 
   useEffect(() => {
     if (ids.length === 0) {
@@ -20,6 +24,9 @@ export default function useActiveSection(
             visibleIds.delete(entry.target.id)
           }
         })
+        if (performance.now() < lockedUntil.current) {
+          return
+        }
         const active = ids.find((id) => visibleIds.has(id))
         if (active) {
           setActiveId(active)
@@ -38,5 +45,10 @@ export default function useActiveSection(
     return (): void => observer.disconnect()
   }, [ids])
 
-  return activeId
+  const selectActiveSection = useCallback((id: string): void => {
+    lockedUntil.current = performance.now() + PROGRAMMATIC_SCROLL_LOCK_MS
+    setActiveId(id)
+  }, [])
+
+  return { activeId, selectActiveSection }
 }

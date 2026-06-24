@@ -143,6 +143,27 @@ describe('RealiaDisplay', () => {
     expect(screen.getByText('Aššur C. Hauptgott')).toBeInTheDocument()
   })
 
+  it('renders every RlA article even when they share an id', async () => {
+    const entry = realiaEntryFactory.build({
+      reallexikon: [
+        reallexikonEntryFactory.build({
+          id: 'Sintflut',
+          title: 'Sintflut A. Deutsch',
+          content: '',
+        }),
+        reallexikonEntryFactory.build({
+          id: 'Sintflut',
+          title: 'Sintflut B. English',
+          content: '',
+        }),
+      ],
+    })
+    renderDisplay(entry)
+    await waitForSpinnerToBeRemoved(screen)
+    expect(screen.getByText('Sintflut A. Deutsch')).toBeInTheDocument()
+    expect(screen.getByText('Sintflut B. English')).toBeInTheDocument()
+  })
+
   it('renders reallexikon label without parentheses when content is empty', async () => {
     const reallexikonEntry = reallexikonEntryFactory.build({
       title: 'Ab(a)kûia',
@@ -761,6 +782,34 @@ describe('RealiaDisplay', () => {
     ).toHaveClass('is-active')
     expect(
       within(navMenu).getByRole('link', { name: 'AfO-Register' }),
+    ).not.toHaveClass('is-active')
+  })
+
+  it('keeps the clicked menu item active and does not revert to the previous section', async () => {
+    const entry = realiaEntryFactory.build({
+      reallexikon: [reallexikonEntryFactory.build()],
+      afoRegister: [],
+      references: [referenceFactory.build()],
+      crossReferences: [],
+      afoCrossReferences: [],
+    })
+    renderDisplay(entry)
+    await waitForSpinnerToBeRemoved(screen)
+    const navMenu = screen.getByRole('navigation', { name: 'On this page' })
+    fireEvent.click(within(navMenu).getByRole('link', { name: 'References' }))
+    expect(
+      within(navMenu).getByRole('link', { name: 'References' }),
+    ).toHaveClass('is-active')
+    act(() => {
+      triggerIntersection([
+        { id: 'realia-section-reallexikon', isIntersecting: true },
+      ])
+    })
+    expect(
+      within(navMenu).getByRole('link', { name: 'References' }),
+    ).toHaveClass('is-active')
+    expect(
+      within(navMenu).getByRole('link', { name: 'Reallexikon' }),
     ).not.toHaveClass('is-active')
   })
 })

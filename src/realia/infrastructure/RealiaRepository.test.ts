@@ -133,6 +133,26 @@ describe('RealiaRepository reallexikon mapping', () => {
     expect(result.references[0].pages).toBe('247')
   })
 
+  it('keeps an RlA reference in its entry and out of the top-level references', async () => {
+    const dto = {
+      ...entryDto,
+      reallexikon: [
+        {
+          id: 'lex1',
+          title: 'Title',
+          content: 'content',
+          reference: rlaReferenceDto,
+        },
+      ],
+      references: [rlaReferenceDto, otherReferenceDto],
+    }
+    apiClient.fetchJson.mockReturnValueOnce(Promise.resolve(dto))
+    const result = await realiaRepository.find('Pig')
+    expect(result.reallexikon[0].reference?.pages).toBe('3')
+    expect(result.references).toHaveLength(1)
+    expect(result.references[0].pages).toBe('247')
+  })
+
   it('maps a reallexikon entry with a null reference', async () => {
     const dto = {
       ...entryDto,

@@ -14,7 +14,7 @@ describe('useActiveSection', () => {
 
   it('returns null and observes nothing when there are no ids', () => {
     const { result } = renderHook(() => useActiveSection([]))
-    expect(result.current).toBeNull()
+    expect(result.current.activeId).toBeNull()
     expect(MockIntersectionObserver.instances).toHaveLength(0)
   })
 
@@ -36,11 +36,11 @@ describe('useActiveSection', () => {
         { id: 'a', isIntersecting: true },
       ])
     })
-    expect(result.current).toBe('a')
+    expect(result.current.activeId).toBe('a')
     act(() => {
       triggerIntersection([{ id: 'a', isIntersecting: false }])
     })
-    expect(result.current).toBe('b')
+    expect(result.current.activeId).toBe('b')
   })
 
   it('stays null while nothing is intersecting', () => {
@@ -50,7 +50,32 @@ describe('useActiveSection', () => {
     act(() => {
       triggerIntersection([{ id: 'a', isIntersecting: false }])
     })
-    expect(result.current).toBeNull()
+    expect(result.current.activeId).toBeNull()
+  })
+
+  it('keeps a programmatically selected id while locked, then resumes', () => {
+    document.body.innerHTML = '<div id="a"></div><div id="b"></div>'
+    const ids = ['a', 'b']
+    const nowSpy = jest.spyOn(performance, 'now').mockReturnValue(1000)
+    const { result } = renderHook(() => useActiveSection(ids))
+
+    act(() => {
+      result.current.selectActiveSection('b')
+    })
+    expect(result.current.activeId).toBe('b')
+
+    act(() => {
+      triggerIntersection([{ id: 'a', isIntersecting: true }])
+    })
+    expect(result.current.activeId).toBe('b')
+
+    nowSpy.mockReturnValue(1000 + 5000)
+    act(() => {
+      triggerIntersection([{ id: 'a', isIntersecting: true }])
+    })
+    expect(result.current.activeId).toBe('a')
+
+    nowSpy.mockRestore()
   })
 
   it('disconnects the observer on unmount', () => {

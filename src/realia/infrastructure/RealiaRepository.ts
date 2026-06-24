@@ -74,16 +74,24 @@ function mapCrossReference(dto: RealiaCrossReferenceDto): RealiaCrossReference {
 }
 
 function mapRealiaEntry(dto: RealiaEntryDto): RealiaEntry {
+  const reallexikonDtos = toArray(dto.reallexikon)
+  const reallexikonReferenceIds = new Set(
+    reallexikonDtos
+      .map((entry) => entry.reference?.id)
+      .filter((id): id is string => id != null),
+  )
   return {
     id: dto._id,
     relatedTerms: toArray(dto.relatedTerms),
     type: toArray(dto.type),
     wikidataId: toArray(dto.wikidataId),
     afoRegister: toArray(dto.afoRegister).map(mapAfoRegisterEntry),
-    reallexikon: toArray(dto.reallexikon).map(mapReallexikonEntry),
+    reallexikon: reallexikonDtos.map(mapReallexikonEntry),
     crossReferences: toArray(dto.crossReferences).map(mapCrossReference),
     afoCrossReferences: toArray(dto.afoCrossReferences).map(mapCrossReference),
-    references: toArray(dto.references).map(createReference),
+    references: toArray(dto.references)
+      .filter((reference) => !reallexikonReferenceIds.has(reference.id))
+      .map(createReference),
   }
 }
 
