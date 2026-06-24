@@ -13,19 +13,26 @@ correct for every entry, so we link from `id` rather than the bibliography refer
 
 - `src/realia/domain/RealiaEntry.ts`: added `RLA_ONLINE_BASE` constant and
   `rlaArticleUrl(id)` helper (`${RLA_ONLINE_BASE}#${encodeURIComponent(id)}`).
-- `src/realia/ui/RealiaDisplay.tsx`: `ReallexikonEntries` now wraps each entry title
-  in the repo's `common/ui/ExternalLink` (which already applies
-  `target="_blank"` + `rel="noopener noreferrer"`), linking to
-  `rlaArticleUrl(entry.id)`. The existing `<ReferenceList>` rendering of the
-  bibliography reference is unchanged — the article link is added in addition to it.
+- `src/realia/ui/RealiaDisplay.tsx`: `ReallexikonEntries` renders each entry title as
+  plain text followed by an icon-only `common/ui/ExternalLink` (a trailing
+  `fas fa-external-link-alt` symbol) linking to `rlaArticleUrl(entry.id)`. The link
+  carries an `aria-label` (`Open <title> on the online RlA`) for accessibility, and
+  `ExternalLink` already applies `target="_blank"` + `rel="noopener noreferrer"`. The
+  existing `<ReferenceList>` rendering of the bibliography reference is unchanged.
+- `src/realia/ui/Realia.sass`: added `.Realia__rla-title-link` (left margin, brand
+  colour, smaller icon, hover) for the inline link symbol.
+
+  Follow-up: the title text was initially the link; per request it was changed to a
+  separate trailing external-link icon, leaving the title text plain.
 
 ## Tests
 
 - `src/realia/domain/RealiaEntry.test.ts`: `rlaArticleUrl` table test over the
   verified fixtures (1069, 1071, 6402, 12583) plus a fragment-encoding case.
-- `src/realia/ui/RealiaDisplay.test.tsx`: the multi-entry and shared-id tests now
-  assert each title is an anchor with the correct `href`; a new test asserts the
-  title link carries the right `href`, `target="_blank"`, and `rel="noopener noreferrer"`.
+- `src/realia/ui/RealiaDisplay.test.tsx`: the multi-entry and shared-id tests assert
+  the title text renders and that each title's external-link icon (matched by its
+  `aria-label`) has the correct `href`; a dedicated test asserts the link carries the
+  right `href`, `target="_blank"`, and `rel="noopener noreferrer"`.
 
 ## Notes
 

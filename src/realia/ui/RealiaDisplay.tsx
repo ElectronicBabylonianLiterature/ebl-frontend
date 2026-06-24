@@ -106,8 +106,13 @@ function ReallexikonEntries({
       {entries.map((entry, index) => (
         <div key={`${entry.id}-${index}`} className="Realia__rla-article">
           <h3 className="Realia__rla-title">
-            <ExternalLink href={rlaArticleUrl(entry.id)}>
-              {entry.title}
+            {entry.title}
+            <ExternalLink
+              href={rlaArticleUrl(entry.id)}
+              className="Realia__rla-title-link"
+              aria-label={`Open ${entry.title} on the online RlA`}
+            >
+              <i className="fas fa-external-link-alt" aria-hidden="true" />
             </ExternalLink>
           </h3>
           {entry.reference && (

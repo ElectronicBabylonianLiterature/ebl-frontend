@@ -138,15 +138,23 @@ describe('RealiaDisplay', () => {
     })
     renderDisplay(entry)
     await waitForSpinnerToBeRemoved(screen)
+    expect(screen.getByText('Aššur A. Stadt')).toBeInTheDocument()
+    expect(screen.getByText('Aššur B. Land')).toBeInTheDocument()
+    expect(screen.getByText('Aššur C. Hauptgott')).toBeInTheDocument()
     expect(
-      screen.getByRole('link', { name: 'Aššur A. Stadt' }),
+      screen.getByRole('link', {
+        name: 'Open Aššur A. Stadt on the online RlA',
+      }),
     ).toHaveAttribute('href', 'https://publikationen.badw.de/de/rla/index#1069')
-    expect(screen.getByRole('link', { name: 'Aššur B. Land' })).toHaveAttribute(
-      'href',
-      'https://publikationen.badw.de/de/rla/index#1070',
-    )
     expect(
-      screen.getByRole('link', { name: 'Aššur C. Hauptgott' }),
+      screen.getByRole('link', {
+        name: 'Open Aššur B. Land on the online RlA',
+      }),
+    ).toHaveAttribute('href', 'https://publikationen.badw.de/de/rla/index#1070')
+    expect(
+      screen.getByRole('link', {
+        name: 'Open Aššur C. Hauptgott on the online RlA',
+      }),
     ).toHaveAttribute('href', 'https://publikationen.badw.de/de/rla/index#1071')
   })
 
@@ -165,14 +173,20 @@ describe('RealiaDisplay', () => {
     })
     renderDisplay(entry)
     await waitForSpinnerToBeRemoved(screen)
+    expect(screen.getByText('Sintflut A. Deutsch')).toBeInTheDocument()
+    expect(screen.getByText('Sintflut B. English')).toBeInTheDocument()
     expect(
-      screen.getByRole('link', { name: 'Sintflut A. Deutsch' }),
+      screen.getByRole('link', {
+        name: 'Open Sintflut A. Deutsch on the online RlA',
+      }),
     ).toHaveAttribute(
       'href',
       'https://publikationen.badw.de/de/rla/index#Sintflut',
     )
     expect(
-      screen.getByRole('link', { name: 'Sintflut B. English' }),
+      screen.getByRole('link', {
+        name: 'Open Sintflut B. English on the online RlA',
+      }),
     ).toHaveAttribute(
       'href',
       'https://publikationen.badw.de/de/rla/index#Sintflut',
@@ -187,7 +201,10 @@ describe('RealiaDisplay', () => {
     const entry = realiaEntryFactory.build({ reallexikon: [reallexikonEntry] })
     renderDisplay(entry)
     await waitForSpinnerToBeRemoved(screen)
-    const link = screen.getByRole('link', { name: 'Zababa-šuma-iddina' })
+    expect(screen.getByText('Zababa-šuma-iddina')).toBeInTheDocument()
+    const link = screen.getByRole('link', {
+      name: 'Open Zababa-šuma-iddina on the online RlA',
+    })
     expect(link).toHaveAttribute(
       'href',
       'https://publikationen.badw.de/de/rla/index#12583',

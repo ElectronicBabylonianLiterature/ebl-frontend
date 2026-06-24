@@ -4,7 +4,8 @@ Link each Reallexikon entry title to its online RlA article on publikationen.bad
 
 - [x] Read current code + the repo's external-link convention (`common/ui/ExternalLink`)
 - [x] Add `RLA_ONLINE_BASE` + `rlaArticleUrl(id)` to `RealiaEntry.ts`
-- [x] Render each RlA title as an `ExternalLink` to `rlaArticleUrl(entry.id)`
+- [x] Render the RlA title with a trailing clickable external-link icon (the link),
+      keeping the title text itself plain (icon-only `ExternalLink` + `aria-label`)
 - [x] Keep `<ReferenceList references={[entry.reference]} />` unchanged
 - [x] Unit-test `rlaArticleUrl` (verified fixtures + encoding)
 - [x] Assert each RlA title is an anchor with correct href, target, rel
