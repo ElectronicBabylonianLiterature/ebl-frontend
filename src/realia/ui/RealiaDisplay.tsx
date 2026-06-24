@@ -108,9 +108,7 @@ function ReallexikonEntries({
           key={`${entry.id}-${index}`}
           classNameBlock="realia-collapsible"
           mountOnEnter={false}
-          heading={
-            entry.content ? `${entry.title} (${entry.content})` : entry.title
-          }
+          heading={entry.title}
         >
           {entry.reference && <ReferenceList references={[entry.reference]} />}
         </CollapsibleSection>

@@ -3,6 +3,7 @@ import RealiaRepository from 'realia/infrastructure/RealiaRepository'
 import ApiClient from 'http/ApiClient'
 import Promise from 'bluebird'
 import { RealiaEntry } from 'realia/domain/RealiaEntry'
+import { cslDataFactory } from 'test-support/bibliography-fixtures'
 
 jest.mock('http/ApiClient')
 const apiClient = new (ApiClient as jest.Mock<jest.Mocked<ApiClient>>)()
@@ -76,6 +77,7 @@ describe('RealiaRepository reallexikon mapping', () => {
     pages: '3',
     notes: '',
     linesCited: [],
+    document: cslDataFactory.build({}, { associations: { id: 'rla_1_3j' } }),
   }
   const otherReferenceDto = {
     id: 'De Zorzi 2016',
@@ -83,6 +85,10 @@ describe('RealiaRepository reallexikon mapping', () => {
     pages: '247',
     notes: '',
     linesCited: [],
+    document: cslDataFactory.build(
+      {},
+      { associations: { id: 'De Zorzi 2016' } },
+    ),
   }
 
   it('maps multiple reallexikon entries, each with its own embedded reference', async () => {
@@ -92,13 +98,11 @@ describe('RealiaRepository reallexikon mapping', () => {
         {
           id: 'lex1',
           title: 'Aššur A. Stadt',
-          content: 'Stadt',
           reference: rlaReferenceDto,
         },
         {
           id: 'lex2',
           title: 'Aššur B. Land',
-          content: 'Land',
           reference: null,
         },
       ],
@@ -120,7 +124,6 @@ describe('RealiaRepository reallexikon mapping', () => {
         {
           id: 'lex1',
           title: 'Title',
-          content: 'content',
           reference: rlaReferenceDto,
         },
       ],
@@ -140,7 +143,6 @@ describe('RealiaRepository reallexikon mapping', () => {
         {
           id: 'lex1',
           title: 'Title',
-          content: 'content',
           reference: rlaReferenceDto,
         },
       ],
@@ -160,7 +162,6 @@ describe('RealiaRepository reallexikon mapping', () => {
         {
           id: 'lex1',
           title: 'Title',
-          content: 'content',
           reference: null,
         },
       ],
@@ -192,7 +193,6 @@ describe('RealiaRepository reallexikon mapping', () => {
       reallexikon: {
         id: 'lex1',
         title: 'Title',
-        content: 'content',
         reference: rlaReferenceDto,
       },
     }

@@ -128,12 +128,9 @@ describe('RealiaDisplay', () => {
   it('renders multiple reallexikon (RlA) articles on the same page', async () => {
     const entry = realiaEntryFactory.build({
       reallexikon: [
-        reallexikonEntryFactory.build({ title: 'Aššur A. Stadt', content: '' }),
-        reallexikonEntryFactory.build({ title: 'Aššur B. Land', content: '' }),
-        reallexikonEntryFactory.build({
-          title: 'Aššur C. Hauptgott',
-          content: '',
-        }),
+        reallexikonEntryFactory.build({ title: 'Aššur A. Stadt' }),
+        reallexikonEntryFactory.build({ title: 'Aššur B. Land' }),
+        reallexikonEntryFactory.build({ title: 'Aššur C. Hauptgott' }),
       ],
     })
     renderDisplay(entry)
@@ -149,12 +146,10 @@ describe('RealiaDisplay', () => {
         reallexikonEntryFactory.build({
           id: 'Sintflut',
           title: 'Sintflut A. Deutsch',
-          content: '',
         }),
         reallexikonEntryFactory.build({
           id: 'Sintflut',
           title: 'Sintflut B. English',
-          content: '',
         }),
       ],
     })
@@ -164,10 +159,9 @@ describe('RealiaDisplay', () => {
     expect(screen.getByText('Sintflut B. English')).toBeInTheDocument()
   })
 
-  it('renders reallexikon label without parentheses when content is empty', async () => {
+  it('renders the reallexikon entry title as the section heading', async () => {
     const reallexikonEntry = reallexikonEntryFactory.build({
       title: 'Ab(a)kûia',
-      content: '',
     })
     const entry = realiaEntryFactory.build({ reallexikon: [reallexikonEntry] })
     renderDisplay(entry)

@@ -27,7 +27,6 @@ export const afoRegisterEntryFactory = Factory.define<AfoRegisterEntry>(() => ({
 export const reallexikonEntryFactory = Factory.define<ReallexikonEntry>(() => ({
   id: chance.guid(),
   title: chance.sentence({ words: 4 }),
-  content: chance.word(),
   reference: null,
 }))
 

@@ -12,7 +12,6 @@ import {
 interface ReallexikonEntryDto {
   readonly id: string
   readonly title: string
-  readonly content: string
   readonly reference: ReferenceDto | null
 }
 
@@ -54,7 +53,6 @@ function mapReallexikonEntry(dto: ReallexikonEntryDto): ReallexikonEntry {
   return {
     id: dto.id,
     title: dto.title,
-    content: dto.content,
     reference: dto.reference ? createReference(dto.reference) : null,
   }
 }

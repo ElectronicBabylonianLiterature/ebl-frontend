@@ -17,7 +17,6 @@ export interface AfoRegisterEntry {
 export interface ReallexikonEntry {
   readonly id: string
   readonly title: string
-  readonly content: string
   readonly reference: Reference | null
 }
 
