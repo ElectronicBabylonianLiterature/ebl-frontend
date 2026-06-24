@@ -1,5 +1,181 @@
 @import src/design-tokens
 
+%realia-link-pill
+    display: inline-flex
+    align-items: center
+    padding: 0.1rem 0.5rem
+    font-size: 0.85rem
+    color: $ebl-color-brand-primary-dark
+    background-color: $ebl-color-brand-soft
+    border: 1px solid $ebl-color-brand-primary
+    border-radius: 0.35rem
+    text-decoration: none
+
+    &:hover
+        background-color: $ebl-color-brand-soft-hover
+        text-decoration: none
+
+.Realia__layout
+    display: flex
+    align-items: flex-start
+    gap: 1.5rem
+
+    @media (max-width: $ebl-breakpoint-md-max)
+        flex-direction: column
+        gap: 1rem
+
+.Realia__content
+    flex: 1 1 auto
+    min-width: 0
+
+.Realia__top
+    scroll-margin-top: 1rem
+
+.Realia__section-heading
+    margin: 0 0 0.75rem 0
+
+.Realia__section-toggle
+    display: flex
+    align-items: center
+    gap: 0.5rem
+    width: 100%
+    padding: 0
+    border: none
+    background: none
+    text-align: left
+    color: inherit
+    font: inherit
+    cursor: pointer
+
+    &:hover .Realia__section-caret
+        color: $ebl-color-brand-primary
+
+    &:focus-visible
+        outline: 2px solid $ebl-color-brand-primary
+        outline-offset: 2px
+
+.Realia__section-caret
+    flex: 0 0 auto
+    color: $ebl-color-text-secondary
+    font-size: 0.85em
+
+.Realia__nav
+    flex: 0 0 15rem
+    position: sticky
+    top: 1rem
+    max-height: calc(100vh - 2rem)
+    overflow-y: auto
+    padding: 0.85rem
+    background-color: $ebl-color-surface-primary
+    border: 1px solid $ebl-color-border-light
+    border-radius: 0.5rem
+    box-shadow: 0 1px 4px $ebl-color-black-alpha-05
+    font-size: 0.875rem
+
+    @media (max-width: $ebl-breakpoint-md-max)
+        flex: 1 1 auto
+        position: static
+        max-height: none
+        width: 100%
+
+.Realia__nav-top
+    display: block
+    margin-bottom: 0.6rem
+    padding: 0.4rem 0.5rem
+    border-radius: 0.35rem
+    border-left: 2px solid transparent
+    text-decoration: none
+    color: $ebl-color-text-primary
+
+    &:hover
+        background-color: $ebl-color-brand-soft
+        text-decoration: none
+
+    &.is-active
+        background-color: $ebl-color-brand-soft
+        border-left-color: $ebl-color-brand-primary
+
+.Realia__nav-top-title
+    display: block
+    font-weight: 600
+    font-size: 0.95rem
+    line-height: 1.3
+    color: $ebl-color-text-heading
+
+.Realia__nav-top:hover .Realia__nav-top-title
+    color: $ebl-color-brand-primary-dark
+
+.Realia__nav-top-type
+    display: block
+    margin-top: 0.15rem
+    font-size: 0.78rem
+    color: $ebl-color-text-secondary
+
+.Realia__nav-list
+    list-style: none
+    margin: 0
+    padding: 0
+
+.Realia__nav-sublist
+    list-style: none
+    margin: 0.15rem 0 0.35rem 0
+    padding: 0 0 0 1.5rem
+
+.Realia__nav-row
+    display: flex
+    align-items: center
+    gap: 0.15rem
+
+.Realia__nav-toggle
+    flex: 0 0 auto
+    width: 1.3rem
+    height: 1.3rem
+    padding: 0
+    border: none
+    background: none
+    color: $ebl-color-text-secondary
+    cursor: pointer
+    border-radius: 0.25rem
+
+    &:hover
+        color: $ebl-color-brand-primary
+        background-color: $ebl-color-brand-soft
+
+    &:focus-visible
+        outline: 2px solid $ebl-color-brand-primary
+        outline-offset: 1px
+
+.Realia__nav-link,
+.Realia__nav-sublink
+    flex: 1 1 auto
+    display: block
+    padding: 0.25rem 0.5rem
+    border-radius: 0.3rem
+    color: $ebl-color-text-neutral
+    text-decoration: none
+    border-left: 2px solid transparent
+    transition: background-color 0.15s ease, color 0.15s ease
+
+    &:hover
+        color: $ebl-color-brand-primary-dark
+        background-color: $ebl-color-brand-soft
+        text-decoration: none
+
+    &.is-active
+        color: $ebl-color-brand-primary-dark
+        background-color: $ebl-color-brand-soft
+        border-left-color: $ebl-color-brand-primary
+        font-weight: 600
+
+.Realia__nav-link
+    font-weight: 500
+
+.Realia__nav-sublink
+    font-size: 0.82rem
+
+.Realia__nav-item.is-active-group > .Realia__nav-row > .Realia__nav-link
+    color: $ebl-color-brand-primary-dark
+
 .Realia__metadata
     font-size: 0.9rem
     color: $ebl-color-text-secondary
@@ -10,13 +186,23 @@
     color: $ebl-color-text-primary
 
 .Realia__afo-volume
+    scroll-margin-top: 1rem
+
     & + &
         margin-top: 1rem
 
 .Realia__afo-volume-title
+    position: sticky
+    top: 0
+    z-index: 2
     margin: 0
+    padding: 0.45rem 0.75rem
     font-size: 0.95rem
     font-weight: 400
+    background-color: $ebl-color-surface-subtle
+    border: 1px solid $ebl-color-brand-primary
+    border-radius: 0.35rem
+    box-shadow: 0 1px 4px $ebl-color-black-alpha-05
 
 .Realia__afo-volume-mainword
     font-weight: 600
@@ -66,6 +252,9 @@
         color: $ebl-color-brand-primary
         font-size: 0.75rem
 
+    a
+        @extend %realia-link-pill
+
 .Realia__afo-citation
     color: $ebl-color-text-secondary
     font-size: 0.85rem
@@ -75,6 +264,7 @@
 
 .Realia__section
     margin-bottom: 2rem
+    scroll-margin-top: 1rem
 
 .realia-collapsible__section-heading.collapsible_section__heading
     justify-content: flex-start
@@ -90,7 +280,10 @@
     padding: 0
     display: flex
     flex-wrap: wrap
-    gap: 0.5rem 1rem
+    gap: 0.5rem
+
+    a
+        @extend %realia-link-pill
 
 .realia-results-list
     list-style: none

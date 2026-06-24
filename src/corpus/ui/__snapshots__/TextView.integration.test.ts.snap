@@ -320,6 +320,7 @@ exports[`Chapter Show chapter 1`] = `
               <i
                 aria-expanded="false"
                 class="collapsible_section__collapse-indicator fas fa-caret-right"
+                data-testid="CollapseIndicator"
               />
             </h3>
             <div
@@ -348,6 +349,7 @@ exports[`Chapter Show chapter 1`] = `
                     <i
                       aria-expanded="false"
                       class="collapsible_section__collapse-indicator fas fa-caret-right"
+                      data-testid="CollapseIndicator"
                     />
                   </h5>
                 </section>
@@ -366,6 +368,7 @@ exports[`Chapter Show chapter 1`] = `
               <i
                 aria-expanded="false"
                 class="collapsible_section__collapse-indicator fas fa-caret-right"
+                data-testid="CollapseIndicator"
               />
             </h3>
           </section>
@@ -381,6 +384,7 @@ exports[`Chapter Show chapter 1`] = `
               <i
                 aria-expanded="false"
                 class="collapsible_section__collapse-indicator fas fa-caret-right"
+                data-testid="CollapseIndicator"
               />
             </h3>
           </section>
@@ -947,6 +951,7 @@ exports[`Chapter Show list of manuscripts 1`] = `
               <i
                 aria-expanded="false"
                 class="collapsible_section__collapse-indicator fas fa-caret-right"
+                data-testid="CollapseIndicator"
               />
             </h3>
             <div
@@ -975,6 +980,7 @@ exports[`Chapter Show list of manuscripts 1`] = `
                     <i
                       aria-expanded="true"
                       class="collapsible_section__collapse-indicator fas fa-caret-down"
+                      data-testid="CollapseIndicator"
                     />
                   </h5>
                   <div
@@ -1170,6 +1176,7 @@ exports[`Chapter Show list of manuscripts 1`] = `
               <i
                 aria-expanded="false"
                 class="collapsible_section__collapse-indicator fas fa-caret-right"
+                data-testid="CollapseIndicator"
               />
             </h3>
           </section>
@@ -1185,6 +1192,7 @@ exports[`Chapter Show list of manuscripts 1`] = `
               <i
                 aria-expanded="false"
                 class="collapsible_section__collapse-indicator fas fa-caret-right"
+                data-testid="CollapseIndicator"
               />
             </h3>
           </section>
@@ -1751,6 +1759,7 @@ exports[`With session 1`] = `
               <i
                 aria-expanded="true"
                 class="collapsible_section__collapse-indicator fas fa-caret-down"
+                data-testid="CollapseIndicator"
               />
             </h3>
             <div
@@ -1779,6 +1788,7 @@ exports[`With session 1`] = `
                     <i
                       aria-expanded="false"
                       class="collapsible_section__collapse-indicator fas fa-caret-right"
+                      data-testid="CollapseIndicator"
                     />
                   </h5>
                 </section>
@@ -1797,6 +1807,7 @@ exports[`With session 1`] = `
               <i
                 aria-expanded="false"
                 class="collapsible_section__collapse-indicator fas fa-caret-right"
+                data-testid="CollapseIndicator"
               />
             </h3>
           </section>
@@ -1812,6 +1823,7 @@ exports[`With session 1`] = `
               <i
                 aria-expanded="false"
                 class="collapsible_section__collapse-indicator fas fa-caret-right"
+                data-testid="CollapseIndicator"
               />
             </h3>
           </section>

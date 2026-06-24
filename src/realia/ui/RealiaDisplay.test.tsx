@@ -1,5 +1,12 @@
 import React from 'react'
-import { render, screen, within } from '@testing-library/react'
+import {
+  act,
+  fireEvent,
+  render,
+  screen,
+  waitFor,
+  within,
+} from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 import RealiaDisplay from 'realia/ui/RealiaDisplay'
 import RealiaService from 'realia/application/RealiaService'
@@ -15,8 +22,14 @@ import {
 } from 'test-support/realia-fixtures'
 import { RealiaEntry } from 'realia/domain/RealiaEntry'
 import { referenceFactory } from 'test-support/bibliography-fixtures'
+import {
+  installMockIntersectionObserver,
+  triggerIntersection,
+} from 'test-support/intersectionObserverMock'
+import prefersReducedMotion from 'common/utils/prefersReducedMotion'
 
 jest.mock('realia/application/RealiaService')
+jest.mock('common/utils/prefersReducedMotion')
 
 const realiaService = new (RealiaService as jest.Mock<
   jest.Mocked<RealiaService>
@@ -39,6 +52,7 @@ function renderDisplay(
 describe('RealiaDisplay', () => {
   beforeEach(() => {
     jest.clearAllMocks()
+    installMockIntersectionObserver()
   })
 
   it('renders all sections for a full entry', async () => {
@@ -157,7 +171,6 @@ describe('RealiaDisplay', () => {
         selector: '.Realia__afo-volume-details',
       }),
     ).toBeInTheDocument()
-    expect(screen.getAllByTestId('CollapseIndicator')).toHaveLength(1)
     expect(
       screen.getByText('Tiamat', { selector: '.Realia__afo-mainword' }),
     ).toBeInTheDocument()
@@ -166,7 +179,7 @@ describe('RealiaDisplay', () => {
     ).toBeInTheDocument()
   })
 
-  it('renders all AfO volumes inside a single collapsible, newest first', async () => {
+  it('renders all AfO volumes newest first', async () => {
     const entry = realiaEntryFactory.build({
       reallexikon: [],
       afoRegister: [
@@ -176,7 +189,6 @@ describe('RealiaDisplay', () => {
     })
     renderDisplay(entry)
     await waitForSpinnerToBeRemoved(screen)
-    expect(screen.getAllByTestId('CollapseIndicator')).toHaveLength(1)
     const volumes = screen
       .getAllByText(/AfO 2\d/, { selector: '.Realia__afo-volume-details' })
       .map((element) => element.textContent)
@@ -329,9 +341,10 @@ describe('RealiaDisplay', () => {
     )
   })
 
-  it('renders the AfO-Register section collapsed by default', async () => {
+  it('renders the AfO-Register section expanded by default', async () => {
     const afoEntry = afoRegisterEntryFactory.build({
       AfO: 'AfO 25 (1974-1977), 370',
+      mainWord: 'Tiamat',
     })
     const entry = realiaEntryFactory.build({
       reallexikon: [],
@@ -339,9 +352,9 @@ describe('RealiaDisplay', () => {
     })
     renderDisplay(entry)
     await waitForSpinnerToBeRemoved(screen)
-    expect(screen.getByTestId('CollapseIndicator')).toHaveClass(
-      'fa-caret-right',
-    )
+    expect(
+      screen.getByRole('list', { name: 'AfO 25 (1974-1977)' }),
+    ).toBeVisible()
   })
 
   it('does not duplicate the "AfO" prefix in the volume header', async () => {
@@ -351,7 +364,11 @@ describe('RealiaDisplay', () => {
     const entry = realiaEntryFactory.build({ afoRegister: [afoEntry] })
     renderDisplay(entry)
     await waitForSpinnerToBeRemoved(screen)
-    expect(screen.getByText(/AfO 25 \(1974-1977\)/)).toBeInTheDocument()
+    expect(
+      screen.getByText(/AfO 25 \(1974-1977\)/, {
+        selector: '.Realia__afo-volume-details',
+      }),
+    ).toBeInTheDocument()
     expect(screen.queryByText(/AfO AfO/)).not.toBeInTheDocument()
   })
 
@@ -360,7 +377,11 @@ describe('RealiaDisplay', () => {
     const entry = realiaEntryFactory.build({ afoRegister: [afoEntry] })
     renderDisplay(entry)
     await waitForSpinnerToBeRemoved(screen)
-    expect(screen.getByText(/AfO 99 \(2000\)/)).toBeInTheDocument()
+    expect(
+      screen.getByText(/AfO 99 \(2000\)/, {
+        selector: '.Realia__afo-volume-details',
+      }),
+    ).toBeInTheDocument()
   })
 
   it('renders References section when references are present', async () => {
@@ -383,7 +404,9 @@ describe('RealiaDisplay', () => {
     renderDisplay(entry)
     await waitForSpinnerToBeRemoved(screen)
     expect(screen.getByText('Type:')).toBeInTheDocument()
-    expect(screen.getByText('Divine names')).toBeInTheDocument()
+    expect(
+      screen.getByText('Divine names', { selector: '.Realia__metadata span' }),
+    ).toBeInTheDocument()
   })
 
   it('moves the RlA reference into the Reallexikon section and hides References', async () => {
@@ -494,5 +517,232 @@ describe('RealiaDisplay', () => {
     expect(
       screen.queryByText(/still under active development/i),
     ).not.toBeInTheDocument()
+  })
+
+  it('shows the entry title and type in the menu, linking to the top', async () => {
+    const entry = realiaEntryFactory.build({
+      id: 'Königsinschriften',
+      type: ['Royal inscriptions'],
+    })
+    renderDisplay(entry)
+    await waitForSpinnerToBeRemoved(screen)
+    const navMenu = screen.getByRole('navigation', { name: 'On this page' })
+    const topLink = within(navMenu).getByRole('link', {
+      name: 'Königsinschriften Royal inscriptions',
+    })
+    expect(topLink).toHaveAttribute('href', '#realia-top')
+    expect(
+      within(navMenu).getByText('Königsinschriften', {
+        selector: '.Realia__nav-top-title',
+      }),
+    ).toBeInTheDocument()
+    expect(
+      within(navMenu).getByText('Royal inscriptions', {
+        selector: '.Realia__nav-top-type',
+      }),
+    ).toBeInTheDocument()
+  })
+
+  it('omits the type from the menu when no type is given', async () => {
+    const entry = realiaEntryFactory.build({ id: 'Anu', type: [] })
+    renderDisplay(entry)
+    await waitForSpinnerToBeRemoved(screen)
+    const navMenu = screen.getByRole('navigation', { name: 'On this page' })
+    expect(
+      within(navMenu).getByText('Anu', { selector: '.Realia__nav-top-title' }),
+    ).toBeInTheDocument()
+    expect(
+      within(navMenu).queryByText(/\w/, {
+        selector: '.Realia__nav-top-type',
+      }),
+    ).not.toBeInTheDocument()
+  })
+
+  it('scrolls to the top section when the menu title is clicked', async () => {
+    const scrollIntoView = jest.spyOn(HTMLElement.prototype, 'scrollIntoView')
+    const entry = realiaEntryFactory.build({ id: 'Anu', type: [] })
+    renderDisplay(entry)
+    await waitForSpinnerToBeRemoved(screen)
+    const navMenu = screen.getByRole('navigation', { name: 'On this page' })
+    fireEvent.click(within(navMenu).getByRole('link', { name: 'Anu' }))
+    await waitFor(() => expect(scrollIntoView).toHaveBeenCalled())
+    scrollIntoView.mockRestore()
+  })
+
+  it('highlights the entry title when the top of the page is in view', async () => {
+    const entry = realiaEntryFactory.build({
+      id: 'Anu',
+      type: ['Divine names'],
+    })
+    renderDisplay(entry)
+    await waitForSpinnerToBeRemoved(screen)
+    const navMenu = screen.getByRole('navigation', { name: 'On this page' })
+    act(() => {
+      triggerIntersection([{ id: 'realia-top', isIntersecting: true, top: 0 }])
+    })
+    const topLink = within(navMenu).getByRole('link', {
+      name: 'Anu Divine names',
+    })
+    expect(topLink).toHaveClass('is-active')
+    expect(topLink).toHaveAttribute('aria-current', 'true')
+  })
+
+  it('collapses a section from its on-page heading and stays in sync with the menu', async () => {
+    const entry = realiaEntryFactory.build({
+      reallexikon: [],
+      afoRegister: [
+        afoRegisterEntryFactory.build({ AfO: 'AfO 25 (1974-1977), 370' }),
+      ],
+    })
+    renderDisplay(entry)
+    await waitForSpinnerToBeRemoved(screen)
+    const heading = screen.getByRole('button', {
+      name: 'II. AfO-Register Realien',
+    })
+    expect(heading).toHaveAttribute('aria-expanded', 'true')
+    fireEvent.click(heading)
+    expect(heading).toHaveAttribute('aria-expanded', 'false')
+    expect(
+      screen.getByRole('button', { name: 'Expand AfO-Register' }),
+    ).toBeInTheDocument()
+  })
+
+  it('renders a navigation menu with a link for each section', async () => {
+    const entry = realiaEntryFactory.build({
+      references: [referenceFactory.build()],
+      crossReferences: [realiaCrossReferenceFactory.build({ lemma: 'Anu' })],
+    })
+    renderDisplay(entry)
+    await waitForSpinnerToBeRemoved(screen)
+    const navMenu = screen.getByRole('navigation', { name: 'On this page' })
+    expect(
+      within(navMenu).getByRole('link', { name: 'Reallexikon' }),
+    ).toHaveAttribute('href', '#realia-section-reallexikon')
+    expect(
+      within(navMenu).getByRole('link', { name: 'AfO-Register' }),
+    ).toHaveAttribute('href', '#realia-section-afo-register')
+    expect(
+      within(navMenu).getByRole('link', { name: 'References' }),
+    ).toBeInTheDocument()
+    expect(
+      within(navMenu).getByRole('link', { name: 'See Also' }),
+    ).toBeInTheDocument()
+  })
+
+  it('lists AfO volumes as subsections in the navigation menu', async () => {
+    const entry = realiaEntryFactory.build({
+      reallexikon: [],
+      afoRegister: [
+        afoRegisterEntryFactory.build({ AfO: 'AfO 25 (1974-1977), 370' }),
+        afoRegisterEntryFactory.build({ AfO: 'AfO 26 (1978-1979), 12' }),
+      ],
+    })
+    renderDisplay(entry)
+    await waitForSpinnerToBeRemoved(screen)
+    const navMenu = screen.getByRole('navigation', { name: 'On this page' })
+    expect(
+      within(navMenu).getByRole('link', { name: 'AfO 26 (1978-1979)' }),
+    ).toHaveAttribute('href', '#realia-afo-volume-0')
+    expect(
+      within(navMenu).getByRole('link', { name: 'AfO 25 (1974-1977)' }),
+    ).toHaveAttribute('href', '#realia-afo-volume-1')
+  })
+
+  it('toggles the section collapse state from the menu', async () => {
+    const entry = realiaEntryFactory.build({
+      reallexikon: [],
+      afoRegister: [
+        afoRegisterEntryFactory.build({ AfO: 'AfO 25 (1974-1977), 370' }),
+      ],
+    })
+    renderDisplay(entry)
+    await waitForSpinnerToBeRemoved(screen)
+    expect(
+      screen.getByRole('button', { name: 'Collapse AfO-Register' }),
+    ).toHaveAttribute('aria-expanded', 'true')
+    fireEvent.click(
+      screen.getByRole('button', { name: 'Collapse AfO-Register' }),
+    )
+    const reExpand = screen.getByRole('button', { name: 'Expand AfO-Register' })
+    expect(reExpand).toHaveAttribute('aria-expanded', 'false')
+    fireEvent.click(reExpand)
+    expect(
+      screen.getByRole('button', { name: 'Collapse AfO-Register' }),
+    ).toHaveAttribute('aria-expanded', 'true')
+  })
+
+  it('re-opens a collapsed section and scrolls when its subsection link is clicked', async () => {
+    const scrollIntoView = jest.spyOn(HTMLElement.prototype, 'scrollIntoView')
+    const entry = realiaEntryFactory.build({
+      reallexikon: [],
+      afoRegister: [
+        afoRegisterEntryFactory.build({ AfO: 'AfO 25 (1974-1977), 370' }),
+      ],
+    })
+    renderDisplay(entry)
+    await waitForSpinnerToBeRemoved(screen)
+    fireEvent.click(
+      screen.getByRole('button', { name: 'Collapse AfO-Register' }),
+    )
+    const navMenu = screen.getByRole('navigation', { name: 'On this page' })
+    fireEvent.click(
+      within(navMenu).getByRole('link', { name: 'AfO 25 (1974-1977)' }),
+    )
+    expect(
+      screen.getByRole('button', { name: 'Collapse AfO-Register' }),
+    ).toHaveAttribute('aria-expanded', 'true')
+    await waitFor(() =>
+      expect(scrollIntoView).toHaveBeenCalledWith({ behavior: 'smooth' }),
+    )
+    scrollIntoView.mockRestore()
+  })
+
+  it('scrolls instantly when the user prefers reduced motion', async () => {
+    ;(prefersReducedMotion as jest.Mock).mockReturnValueOnce(true)
+    const scrollIntoView = jest.spyOn(HTMLElement.prototype, 'scrollIntoView')
+    const entry = realiaEntryFactory.build()
+    renderDisplay(entry)
+    await waitForSpinnerToBeRemoved(screen)
+    const navMenu = screen.getByRole('navigation', { name: 'On this page' })
+    fireEvent.click(within(navMenu).getByRole('link', { name: 'Reallexikon' }))
+    await waitFor(() =>
+      expect(scrollIntoView).toHaveBeenCalledWith({ behavior: 'auto' }),
+    )
+    scrollIntoView.mockRestore()
+  })
+
+  it('highlights the active section and subsection from scroll position', async () => {
+    const entry = realiaEntryFactory.build({
+      reallexikon: [reallexikonEntryFactory.build()],
+      afoRegister: [
+        afoRegisterEntryFactory.build({ AfO: 'AfO 25 (1974-1977), 370' }),
+      ],
+      references: [],
+      crossReferences: [],
+      afoCrossReferences: [],
+    })
+    renderDisplay(entry)
+    await waitForSpinnerToBeRemoved(screen)
+    const navMenu = screen.getByRole('navigation', { name: 'On this page' })
+    act(() => {
+      triggerIntersection([
+        { id: 'realia-section-reallexikon', isIntersecting: true },
+      ])
+    })
+    expect(
+      within(navMenu).getByRole('link', { name: 'Reallexikon' }),
+    ).toHaveClass('is-active')
+    act(() => {
+      triggerIntersection([
+        { id: 'realia-section-reallexikon', isIntersecting: false },
+        { id: 'realia-afo-volume-0', isIntersecting: true },
+      ])
+    })
+    expect(
+      within(navMenu).getByRole('link', { name: 'AfO 25 (1974-1977)' }),
+    ).toHaveClass('is-active')
+    expect(
+      within(navMenu).getByRole('link', { name: 'AfO-Register' }),
+    ).not.toHaveClass('is-active')
   })
 })
