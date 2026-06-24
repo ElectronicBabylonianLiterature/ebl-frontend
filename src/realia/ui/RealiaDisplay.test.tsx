@@ -115,7 +115,7 @@ describe('RealiaDisplay', () => {
   it('renders reallexikon entry with a reference', async () => {
     const reference = referenceFactory.build()
     const reallexikonEntry = reallexikonEntryFactory.build({
-      references: [reference],
+      reference,
     })
     const entry = realiaEntryFactory.build({
       reallexikon: [reallexikonEntry],
@@ -123,6 +123,24 @@ describe('RealiaDisplay', () => {
     renderDisplay(entry)
     await waitForSpinnerToBeRemoved(screen)
     expect(screen.getByText(/I\. Reallexikon/)).toBeInTheDocument()
+  })
+
+  it('renders multiple reallexikon (RlA) articles on the same page', async () => {
+    const entry = realiaEntryFactory.build({
+      reallexikon: [
+        reallexikonEntryFactory.build({ title: 'Aššur A. Stadt', content: '' }),
+        reallexikonEntryFactory.build({ title: 'Aššur B. Land', content: '' }),
+        reallexikonEntryFactory.build({
+          title: 'Aššur C. Hauptgott',
+          content: '',
+        }),
+      ],
+    })
+    renderDisplay(entry)
+    await waitForSpinnerToBeRemoved(screen)
+    expect(screen.getByText('Aššur A. Stadt')).toBeInTheDocument()
+    expect(screen.getByText('Aššur B. Land')).toBeInTheDocument()
+    expect(screen.getByText('Aššur C. Hauptgott')).toBeInTheDocument()
   })
 
   it('renders reallexikon label without parentheses when content is empty', async () => {
@@ -409,10 +427,10 @@ describe('RealiaDisplay', () => {
     ).toBeInTheDocument()
   })
 
-  it('moves the RlA reference into the Reallexikon section and hides References', async () => {
+  it('shows the Reallexikon section and hides References when there are none', async () => {
     const reference = referenceFactory.build()
     const reallexikonEntry = reallexikonEntryFactory.build({
-      references: [reference],
+      reference,
     })
     const entry = realiaEntryFactory.build({
       reallexikon: [reallexikonEntry],

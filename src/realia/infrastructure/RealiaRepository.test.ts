@@ -85,7 +85,35 @@ describe('RealiaRepository reallexikon mapping', () => {
     linesCited: [],
   }
 
-  it('resolves each reallexikon reference id and moves it out of references', async () => {
+  it('maps multiple reallexikon entries, each with its own embedded reference', async () => {
+    const dto = {
+      ...entryDto,
+      reallexikon: [
+        {
+          id: 'lex1',
+          title: 'Aššur A. Stadt',
+          content: 'Stadt',
+          reference: rlaReferenceDto,
+        },
+        {
+          id: 'lex2',
+          title: 'Aššur B. Land',
+          content: 'Land',
+          reference: null,
+        },
+      ],
+      references: [otherReferenceDto],
+    }
+    apiClient.fetchJson.mockReturnValueOnce(Promise.resolve(dto))
+    const result = await realiaRepository.find('Pig')
+    expect(result.reallexikon).toHaveLength(2)
+    expect(result.reallexikon[0].title).toBe('Aššur A. Stadt')
+    expect(result.reallexikon[0].reference?.pages).toBe('3')
+    expect(result.reallexikon[1].title).toBe('Aššur B. Land')
+    expect(result.reallexikon[1].reference).toBeNull()
+  })
+
+  it('keeps the top-level references separate from the reallexikon references', async () => {
     const dto = {
       ...entryDto,
       reallexikon: [
@@ -93,72 +121,19 @@ describe('RealiaRepository reallexikon mapping', () => {
           id: 'lex1',
           title: 'Title',
           content: 'content',
-          reference: 'rla_1_3j',
+          reference: rlaReferenceDto,
         },
       ],
-      references: [rlaReferenceDto, otherReferenceDto],
+      references: [otherReferenceDto],
     }
     apiClient.fetchJson.mockReturnValueOnce(Promise.resolve(dto))
     const result = await realiaRepository.find('Pig')
-    expect(result.reallexikon[0].references).toHaveLength(1)
-    expect(result.reallexikon[0].references[0].pages).toBe('3')
+    expect(result.reallexikon[0].reference?.pages).toBe('3')
     expect(result.references).toHaveLength(1)
     expect(result.references[0].pages).toBe('247')
   })
 
-  it('moves an unlinked "rla_" reference into the reallexikon entry and out of references', async () => {
-    const dto = {
-      ...entryDto,
-      reallexikon: [
-        {
-          id: 'lex1',
-          title: 'Enlil, Ellil',
-          content: '',
-          reference: null,
-        },
-      ],
-      references: [rlaReferenceDto, otherReferenceDto],
-    }
-    apiClient.fetchJson.mockReturnValueOnce(Promise.resolve(dto))
-    const result = await realiaRepository.find('Pig')
-    expect(result.reallexikon[0].references).toHaveLength(1)
-    expect(result.reallexikon[0].references[0].pages).toBe('3')
-    expect(result.references).toHaveLength(1)
-    expect(result.references[0].pages).toBe('247')
-  })
-
-  it('attaches an unlinked "rla_" reference to the first reallexikon entry only', async () => {
-    const dto = {
-      ...entryDto,
-      reallexikon: [
-        { id: 'lex1', title: 'First', content: '', reference: null },
-        { id: 'lex2', title: 'Second', content: '', reference: null },
-      ],
-      references: [rlaReferenceDto],
-    }
-    apiClient.fetchJson.mockReturnValueOnce(Promise.resolve(dto))
-    const result = await realiaRepository.find('Pig')
-    expect(result.reallexikon[0].references).toHaveLength(1)
-    expect(result.reallexikon[0].references[0].pages).toBe('3')
-    expect(result.reallexikon[1].references).toEqual([])
-    expect(result.references).toHaveLength(0)
-  })
-
-  it('renders an unlinked "rla_" reference even when there is no reallexikon entry', async () => {
-    const dto = {
-      ...entryDto,
-      reallexikon: [],
-      references: [rlaReferenceDto],
-    }
-    apiClient.fetchJson.mockReturnValueOnce(Promise.resolve(dto))
-    const result = await realiaRepository.find('Pig')
-    expect(result.reallexikon).toHaveLength(1)
-    expect(result.reallexikon[0].title).toBe('Pig')
-    expect(result.reallexikon[0].references[0].pages).toBe('3')
-    expect(result.references).toHaveLength(0)
-  })
-
-  it('maps reallexikon entry with null reference', async () => {
+  it('maps a reallexikon entry with a null reference', async () => {
     const dto = {
       ...entryDto,
       reallexikon: [
@@ -169,31 +144,10 @@ describe('RealiaRepository reallexikon mapping', () => {
           reference: null,
         },
       ],
-      references: [otherReferenceDto],
     }
     apiClient.fetchJson.mockReturnValueOnce(Promise.resolve(dto))
     const result = await realiaRepository.find('Pig')
-    expect(result.reallexikon[0].references).toEqual([])
-    expect(result.references).toHaveLength(1)
-  })
-
-  it('leaves a reallexikon entry without references when its reference id is not found', async () => {
-    const dto = {
-      ...entryDto,
-      reallexikon: [
-        {
-          id: 'lex1',
-          title: 'Title',
-          content: 'content',
-          reference: 'missing',
-        },
-      ],
-      references: [otherReferenceDto],
-    }
-    apiClient.fetchJson.mockReturnValueOnce(Promise.resolve(dto))
-    const result = await realiaRepository.find('Pig')
-    expect(result.reallexikon[0].references).toEqual([])
-    expect(result.references).toHaveLength(1)
+    expect(result.reallexikon[0].reference).toBeNull()
   })
 
   it('maps an empty reallexikon array', async () => {
@@ -219,16 +173,13 @@ describe('RealiaRepository reallexikon mapping', () => {
         id: 'lex1',
         title: 'Title',
         content: 'content',
-        reference: 'rla_1_3j',
+        reference: rlaReferenceDto,
       },
-      references: [rlaReferenceDto, otherReferenceDto],
     }
     apiClient.fetchJson.mockReturnValueOnce(Promise.resolve(dto))
     const result = await realiaRepository.find('Pig')
     expect(result.reallexikon).toHaveLength(1)
-    expect(result.reallexikon[0].references[0].pages).toBe('3')
-    expect(result.references).toHaveLength(1)
-    expect(result.references[0].pages).toBe('247')
+    expect(result.reallexikon[0].reference?.pages).toBe('3')
   })
 
   it('normalizes null collection fields to empty arrays', async () => {

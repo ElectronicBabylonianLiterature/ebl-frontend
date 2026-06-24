@@ -112,9 +112,7 @@ function ReallexikonEntries({
             entry.content ? `${entry.title} (${entry.content})` : entry.title
           }
         >
-          {entry.references.length > 0 && (
-            <ReferenceList references={entry.references} />
-          )}
+          {entry.reference && <ReferenceList references={[entry.reference]} />}
         </CollapsibleSection>
       ))}
     </>

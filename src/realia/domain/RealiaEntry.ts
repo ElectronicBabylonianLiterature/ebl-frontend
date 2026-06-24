@@ -18,7 +18,7 @@ export interface ReallexikonEntry {
   readonly id: string
   readonly title: string
   readonly content: string
-  readonly references: readonly Reference[]
+  readonly reference: Reference | null
 }
 
 export interface RealiaEntry {

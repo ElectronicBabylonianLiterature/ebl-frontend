@@ -28,7 +28,7 @@ export const reallexikonEntryFactory = Factory.define<ReallexikonEntry>(() => ({
   id: chance.guid(),
   title: chance.sentence({ words: 4 }),
   content: chance.word(),
-  references: [],
+  reference: null,
 }))
 
 export const realiaCrossReferenceFactory = Factory.define<RealiaCrossReference>(
