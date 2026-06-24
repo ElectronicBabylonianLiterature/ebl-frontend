@@ -128,16 +128,26 @@ describe('RealiaDisplay', () => {
   it('renders multiple reallexikon (RlA) articles on the same page', async () => {
     const entry = realiaEntryFactory.build({
       reallexikon: [
-        reallexikonEntryFactory.build({ title: 'Aššur A. Stadt' }),
-        reallexikonEntryFactory.build({ title: 'Aššur B. Land' }),
-        reallexikonEntryFactory.build({ title: 'Aššur C. Hauptgott' }),
+        reallexikonEntryFactory.build({ id: '1069', title: 'Aššur A. Stadt' }),
+        reallexikonEntryFactory.build({ id: '1070', title: 'Aššur B. Land' }),
+        reallexikonEntryFactory.build({
+          id: '1071',
+          title: 'Aššur C. Hauptgott',
+        }),
       ],
     })
     renderDisplay(entry)
     await waitForSpinnerToBeRemoved(screen)
-    expect(screen.getByText('Aššur A. Stadt')).toBeInTheDocument()
-    expect(screen.getByText('Aššur B. Land')).toBeInTheDocument()
-    expect(screen.getByText('Aššur C. Hauptgott')).toBeInTheDocument()
+    expect(
+      screen.getByRole('link', { name: 'Aššur A. Stadt' }),
+    ).toHaveAttribute('href', 'https://publikationen.badw.de/de/rla/index#1069')
+    expect(screen.getByRole('link', { name: 'Aššur B. Land' })).toHaveAttribute(
+      'href',
+      'https://publikationen.badw.de/de/rla/index#1070',
+    )
+    expect(
+      screen.getByRole('link', { name: 'Aššur C. Hauptgott' }),
+    ).toHaveAttribute('href', 'https://publikationen.badw.de/de/rla/index#1071')
   })
 
   it('renders every RlA article even when they share an id', async () => {
@@ -155,18 +165,35 @@ describe('RealiaDisplay', () => {
     })
     renderDisplay(entry)
     await waitForSpinnerToBeRemoved(screen)
-    expect(screen.getByText('Sintflut A. Deutsch')).toBeInTheDocument()
-    expect(screen.getByText('Sintflut B. English')).toBeInTheDocument()
+    expect(
+      screen.getByRole('link', { name: 'Sintflut A. Deutsch' }),
+    ).toHaveAttribute(
+      'href',
+      'https://publikationen.badw.de/de/rla/index#Sintflut',
+    )
+    expect(
+      screen.getByRole('link', { name: 'Sintflut B. English' }),
+    ).toHaveAttribute(
+      'href',
+      'https://publikationen.badw.de/de/rla/index#Sintflut',
+    )
   })
 
-  it('renders the reallexikon entry title as the section heading', async () => {
+  it('links each reallexikon title to its online RlA article in a new tab', async () => {
     const reallexikonEntry = reallexikonEntryFactory.build({
-      title: 'Ab(a)kûia',
+      id: '12583',
+      title: 'Zababa-šuma-iddina',
     })
     const entry = realiaEntryFactory.build({ reallexikon: [reallexikonEntry] })
     renderDisplay(entry)
     await waitForSpinnerToBeRemoved(screen)
-    expect(screen.getByText('Ab(a)kûia')).toBeInTheDocument()
+    const link = screen.getByRole('link', { name: 'Zababa-šuma-iddina' })
+    expect(link).toHaveAttribute(
+      'href',
+      'https://publikationen.badw.de/de/rla/index#12583',
+    )
+    expect(link).toHaveAttribute('target', '_blank')
+    expect(link).toHaveAttribute('rel', 'noopener noreferrer')
   })
 
   it('renders afo entry without note', async () => {

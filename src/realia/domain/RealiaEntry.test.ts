@@ -3,12 +3,30 @@ import {
   groupAfoRegisterByVolume,
   formatAfoVolume,
   formatAfoRegisterVolumeTitle,
+  rlaArticleUrl,
 } from 'realia/domain/RealiaEntry'
 import {
   realiaEntryFactory,
   realiaCrossReferenceFactory,
   afoRegisterEntryFactory,
 } from 'test-support/realia-fixtures'
+
+describe('rlaArticleUrl', () => {
+  it.each([
+    ['1069', 'https://publikationen.badw.de/de/rla/index#1069'],
+    ['1071', 'https://publikationen.badw.de/de/rla/index#1071'],
+    ['6402', 'https://publikationen.badw.de/de/rla/index#6402'],
+    ['12583', 'https://publikationen.badw.de/de/rla/index#12583'],
+  ])('builds the online RlA URL for id %s', (id, expected) => {
+    expect(rlaArticleUrl(id)).toBe(expected)
+  })
+
+  it('encodes characters that are unsafe in a URL fragment', () => {
+    expect(rlaArticleUrl('a b')).toBe(
+      'https://publikationen.badw.de/de/rla/index#a%20b',
+    )
+  })
+})
 
 describe('getRealiaCrossReferences', () => {
   it('returns an empty list when there are no cross-references', () => {

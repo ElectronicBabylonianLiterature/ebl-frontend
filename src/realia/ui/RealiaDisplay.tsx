@@ -13,6 +13,7 @@ import {
   getRealiaCrossReferences,
   groupAfoRegisterByVolume,
   formatAfoRegisterVolumeTitle,
+  rlaArticleUrl,
 } from 'realia/domain/RealiaEntry'
 import ExternalLink from 'common/ui/ExternalLink'
 import RealiaDevelopmentNotice from 'realia/ui/RealiaDevelopmentNotice'
@@ -104,7 +105,11 @@ function ReallexikonEntries({
     <>
       {entries.map((entry, index) => (
         <div key={`${entry.id}-${index}`} className="Realia__rla-article">
-          <h3 className="Realia__rla-title">{entry.title}</h3>
+          <h3 className="Realia__rla-title">
+            <ExternalLink href={rlaArticleUrl(entry.id)}>
+              {entry.title}
+            </ExternalLink>
+          </h3>
           {entry.reference && (
             <div className="Realia__rla-references">
               <ReferenceList references={[entry.reference]} />

@@ -20,6 +20,12 @@ export interface ReallexikonEntry {
   readonly reference: Reference | null
 }
 
+export const RLA_ONLINE_BASE = 'https://publikationen.badw.de/de/rla/index'
+
+export function rlaArticleUrl(id: string): string {
+  return `${RLA_ONLINE_BASE}#${encodeURIComponent(id)}`
+}
+
 export interface RealiaEntry {
   readonly id: string
   readonly relatedTerms: readonly string[]
