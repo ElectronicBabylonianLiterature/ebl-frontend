@@ -15,7 +15,6 @@ import {
   formatAfoRegisterVolumeTitle,
 } from 'realia/domain/RealiaEntry'
 import ExternalLink from 'common/ui/ExternalLink'
-import CollapsibleSection from 'corpus/ui/CollapsibleSection'
 import RealiaDevelopmentNotice from 'realia/ui/RealiaDevelopmentNotice'
 import RealiaNavMenu from 'realia/ui/RealiaNavMenu'
 import {
@@ -104,14 +103,14 @@ function ReallexikonEntries({
   return (
     <>
       {entries.map((entry, index) => (
-        <CollapsibleSection
-          key={`${entry.id}-${index}`}
-          classNameBlock="realia-collapsible"
-          mountOnEnter={false}
-          heading={entry.title}
-        >
-          {entry.reference && <ReferenceList references={[entry.reference]} />}
-        </CollapsibleSection>
+        <div key={`${entry.id}-${index}`} className="Realia__rla-article">
+          <h3 className="Realia__rla-title">{entry.title}</h3>
+          {entry.reference && (
+            <div className="Realia__rla-references">
+              <ReferenceList references={[entry.reference]} />
+            </div>
+          )}
+        </div>
       ))}
     </>
   )

@@ -185,13 +185,13 @@
     font-weight: 600
     color: $ebl-color-text-primary
 
-.Realia__afo-volume
+%realia-section-surface
     scroll-margin-top: 1rem
 
     & + &
         margin-top: 1rem
 
-.Realia__afo-volume-title
+%realia-section-title
     position: sticky
     top: 0
     z-index: 2
@@ -203,6 +203,12 @@
     border: 1px solid $ebl-color-brand-primary
     border-radius: 0.35rem
     box-shadow: 0 1px 4px $ebl-color-black-alpha-05
+
+.Realia__afo-volume
+    @extend %realia-section-surface
+
+.Realia__afo-volume-title
+    @extend %realia-section-title
 
 .Realia__afo-volume-mainword
     font-weight: 600
@@ -266,13 +272,14 @@
     margin-bottom: 2rem
     scroll-margin-top: 1rem
 
-.realia-collapsible__section-heading.collapsible_section__heading
-    justify-content: flex-start
-    text-transform: none
-    margin-top: 0.65rem
+.Realia__rla-article
+    @extend %realia-section-surface
 
-    .collapsible_section__collapse-indicator
-        margin-left: auto
+.Realia__rla-title
+    @extend %realia-section-title
+
+.Realia__rla-references
+    padding: 0.75rem
 
 .Realia__see-also
     list-style: none
