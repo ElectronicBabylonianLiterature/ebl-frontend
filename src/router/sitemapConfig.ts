@@ -4,7 +4,7 @@ export const sitemapDefaults = {
   changefreq: 'weekly',
 }
 
-type SlugsArray = readonly { [key: string]: string }[]
+export type SlugsArray = readonly { [key: string]: string }[]
 export type SignSlugs = SlugsArray
 export type DictionarySlugs = SlugsArray
 export type BibliographySlugs = SlugsArray

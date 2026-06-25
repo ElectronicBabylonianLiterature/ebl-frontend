@@ -127,7 +127,13 @@ it('does not include projects wildcard route in sitemap xml', async () => {
   getSitemapAsFile(services, slugs)
 
   const saveAsMock = saveAs as jest.MockedFunction<typeof saveAs>
-  const sitemapChunkArchive = saveAsMock.mock.calls[1][0] as Blob
+  const sitemapChunkCall = saveAsMock.mock.calls.find(
+    ([_blob, filename]) => filename === 'sitemap1.xml.gz',
+  )
+
+  expect(sitemapChunkCall).toBeDefined()
+
+  const sitemapChunkArchive = sitemapChunkCall?.[0] as Blob
   const sitemapChunkBuffer = await readBlobAsArrayBuffer(sitemapChunkArchive)
   const sitemapXml = pako.ungzip(new Uint8Array(sitemapChunkBuffer), {
     to: 'string',

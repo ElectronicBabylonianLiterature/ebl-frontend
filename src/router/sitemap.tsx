@@ -1,8 +1,8 @@
-import React, { ReactNode } from 'react'
+import React from 'react'
 import DynamicSitemap from 'react-dynamic-sitemap'
+import { Route } from 'router/compat'
 import { renderToString } from 'react-dom/server'
 import $ from 'jquery'
-import { Route } from 'router/compat'
 import type Services from 'router/Services'
 import withData from 'http/withData'
 import Bluebird from 'bluebird'
@@ -10,7 +10,6 @@ import convert from 'xml-js'
 import _ from 'lodash'
 import pako from 'pako'
 import { saveAs } from 'file-saver'
-import Introduction from 'Introduction'
 import AboutRoutes from 'router/aboutRoutes'
 import ToolsRoutes from 'router/toolsRoutes'
 import SignRoutes from 'router/signRoutes'
@@ -20,16 +19,16 @@ import CorpusRoutes from 'router/corpusRoutes'
 import FragmentariumRoutes from 'router/fragmentariumRoutes'
 import ResearchProjectRoutes from 'router/researchProjectRoutes'
 import FooterRoutes from 'router/footerRoutes'
-import { sitemapDefaults, type Slugs } from 'router/sitemapConfig'
+import { type Slugs, type SlugsArray } from 'router/sitemapConfig'
 import {
   composeWebsiteRoutes,
   type LazyWebsiteRouteGroup,
   type RouteModule,
   type RouteModuleProps,
 } from 'router/websiteRouteGroups'
+import IntroductionRoute from 'router/introductionRoute'
 
 const DOMAIN = 'www.ebl.lmu.de'
-type SlugsArray = readonly { [key: string]: string }[]
 
 const lazyWebsiteRouteModules: Record<LazyWebsiteRouteGroup, RouteModule> = {
   tools: ToolsRoutes,
@@ -54,20 +53,7 @@ function WebsiteRoutes(
   }
 
   return composeWebsiteRoutes({
-    introductionRoute: (
-      <Route
-        key="Introduction"
-        exact
-        path="/"
-        render={(): ReactNode => (
-          <Introduction
-            fragmentService={services.fragmentService}
-            dossiersService={services.dossiersService}
-          />
-        )}
-        {...(sitemap && sitemapDefaults)}
-      />
-    ),
+    introductionRoute: IntroductionRoute(services, sitemap),
     aboutRoutes: AboutRoutes(routeModuleProps),
     getRoutesForLazyGroup: (routeGroup) =>
       lazyWebsiteRouteModules[routeGroup](routeModuleProps),

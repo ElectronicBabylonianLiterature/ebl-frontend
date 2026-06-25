@@ -87,6 +87,7 @@ export const lazyRouteGroupDefinitions = {
     loadModule: () => import('router/researchProjectRoutes'),
   },
   footer: {
+    // Footer legal pages use exact paths so unknown subpaths fall through to the global not-found route.
     runtimeRoutes: [
       {
         key: 'FooterRoutesImpressum',
@@ -104,6 +105,7 @@ export const lazyRouteGroupDefinitions = {
 } as const satisfies Record<string, LazyRouteGroupDefinition>
 
 export type LazyWebsiteRouteGroup = keyof typeof lazyRouteGroupDefinitions
+// About stays eager so its many tab routes and redirects remain in the main bundle.
 export type WebsiteRouteGroup = 'about' | LazyWebsiteRouteGroup
 
 export type RuntimeLazyRouteConfig = RuntimeRouteConfig & {

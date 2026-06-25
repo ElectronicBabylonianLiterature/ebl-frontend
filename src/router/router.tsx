@@ -1,6 +1,5 @@
 import React, { ReactNode, Suspense } from 'react'
 import { Route, Switch } from 'router/compat'
-import Introduction from 'Introduction'
 import AboutRoutes from 'router/aboutRoutes'
 import Header from 'Header'
 import NotFoundPage from 'NotFoundPage'
@@ -20,6 +19,7 @@ import {
   type RouteModule,
   type RouteModuleProps,
 } from 'router/websiteRouteGroups'
+import IntroductionRoute from 'router/introductionRoute'
 
 function createLazyRouteModule(
   loadModule: () => Promise<{ default: RouteModule }>,
@@ -52,7 +52,7 @@ const lazyRouteModules: Record<
 
 function RouteLoading(): JSX.Element {
   return (
-    <div className="text-center my-5 withData-spinner">
+    <div className="text-center my-5 route-loading-spinner">
       <Spinner>Route loading...</Spinner>
     </div>
   )
@@ -90,19 +90,7 @@ function RuntimeWebsiteRoutes(services: Services): JSX.Element[] {
     ...services,
   }
   return composeWebsiteRoutes({
-    introductionRoute: (
-      <Route
-        key="Introduction"
-        exact
-        path="/"
-        render={(): ReactNode => (
-          <Introduction
-            fragmentService={services.fragmentService}
-            dossiersService={services.dossiersService}
-          />
-        )}
-      />
-    ),
+    introductionRoute: IntroductionRoute(services, false),
     aboutRoutes: AboutRoutes(routeModuleProps),
     getRoutesForLazyGroup: (routeGroup) =>
       runtimeLazyRouteConfigsByGroup[routeGroup].map((routeConfig) => {
