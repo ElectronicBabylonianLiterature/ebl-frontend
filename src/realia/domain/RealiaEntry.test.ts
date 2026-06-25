@@ -1,15 +1,17 @@
 import {
   getRealiaCrossReferences,
+  getRedirectTarget,
   groupAfoRegisterByVolume,
-  formatAfoVolume,
   formatAfoRegisterVolumeTitle,
   rlaArticleUrl,
 } from 'realia/domain/RealiaEntry'
 import {
   realiaEntryFactory,
   realiaCrossReferenceFactory,
+  reallexikonEntryFactory,
   afoRegisterEntryFactory,
 } from 'test-support/realia-fixtures'
+import { referenceFactory } from 'test-support/bibliography-fixtures'
 
 describe('rlaArticleUrl', () => {
   it.each([
@@ -69,37 +71,104 @@ describe('getRealiaCrossReferences', () => {
   })
 })
 
-describe('formatAfoVolume', () => {
-  it('keeps an existing "AfO" prefix', () => {
-    expect(formatAfoVolume('AfO 25 (1974-1977)')).toBe('AfO 25 (1974-1977)')
+describe('getRedirectTarget', () => {
+  const target = realiaCrossReferenceFactory.build({
+    id: 'realia_nusku',
+    lemma: 'Nusku',
   })
 
-  it('adds the "AfO" prefix when absent', () => {
-    expect(formatAfoVolume('25 (1974-1977)')).toBe('AfO 25 (1974-1977)')
+  function redirectEntry(
+    overrides = {},
+  ): ReturnType<typeof realiaEntryFactory.build> {
+    return realiaEntryFactory.build({
+      id: 'Abaralaḫ',
+      reallexikon: [],
+      afoRegister: [],
+      references: [],
+      crossReferences: [target],
+      afoCrossReferences: [],
+      ...overrides,
+    })
+  }
+
+  it('returns the single target for a redirect-shaped document', () => {
+    expect(getRedirectTarget(redirectEntry())).toEqual(target)
+  })
+
+  it('tolerates a single stub Reallexikon link without a reference', () => {
+    const entry = redirectEntry({
+      reallexikon: [reallexikonEntryFactory.build({ reference: null })],
+    })
+    expect(getRedirectTarget(entry)).toEqual(target)
+  })
+
+  it('is not a redirect when the entry has AfO register content', () => {
+    expect(
+      getRedirectTarget(
+        redirectEntry({ afoRegister: afoRegisterEntryFactory.buildList(1) }),
+      ),
+    ).toBeNull()
+  })
+
+  it('is not a redirect when the entry has references', () => {
+    expect(
+      getRedirectTarget(
+        redirectEntry({ references: [referenceFactory.build()] }),
+      ),
+    ).toBeNull()
+  })
+
+  it('is not a redirect when a Reallexikon link carries a real reference', () => {
+    const entry = redirectEntry({
+      reallexikon: [
+        reallexikonEntryFactory.build({ reference: referenceFactory.build() }),
+      ],
+    })
+    expect(getRedirectTarget(entry)).toBeNull()
+  })
+
+  it('is not a redirect when there is not exactly one cross-reference pointer', () => {
+    expect(getRedirectTarget(redirectEntry({ crossReferences: [] }))).toBeNull()
+    expect(
+      getRedirectTarget(
+        redirectEntry({
+          crossReferences: [
+            target,
+            realiaCrossReferenceFactory.build({ id: 'realia_other' }),
+          ],
+        }),
+      ),
+    ).toBeNull()
+  })
+
+  it('is not a redirect when an AfO cross-reference is present', () => {
+    const entry = redirectEntry({
+      afoCrossReferences: [realiaCrossReferenceFactory.build()],
+    })
+    expect(getRedirectTarget(entry)).toBeNull()
   })
 })
 
 describe('groupAfoRegisterByVolume', () => {
-  it('groups entries that share a volume and extracts the page', () => {
+  it('groups entries that share a volume and reads the page from the field', () => {
     const first = afoRegisterEntryFactory.build({
       mainWord: 'Tiamat',
-      AfO: 'AfO 25 (1974-1977), 370',
+      afoVolume: 'AfO 25',
+      page: '370',
     })
     const second = afoRegisterEntryFactory.build({
       mainWord: 'Apsû',
-      AfO: 'AfO 25 (1974-1977), 372',
+      afoVolume: 'AfO 25',
+      page: '372',
     })
     expect(groupAfoRegisterByVolume([first, second])).toEqual([
       {
-        volume: 'AfO 25 (1974-1977)',
+        volume: 'AfO 25',
         mainWords: ['Tiamat', 'Apsû'],
         pageRange: '370-372',
         hasDistinctMainWords: true,
         hasDistinctPages: true,
-        entries: [
-          { ...first, page: '370' },
-          { ...second, page: '372' },
-        ],
+        entries: [first, second],
       },
     ])
   })
@@ -108,11 +177,13 @@ describe('groupAfoRegisterByVolume', () => {
     const [group] = groupAfoRegisterByVolume([
       afoRegisterEntryFactory.build({
         mainWord: 'Adad',
-        AfO: 'AfO 44-45 (1997-1998), 615',
+        afoVolume: 'AfO 44/45',
+        page: '615',
       }),
       afoRegisterEntryFactory.build({
         mainWord: 'Adad',
-        AfO: 'AfO 44-45 (1997-1998), 615',
+        afoVolume: 'AfO 44/45',
+        page: '615',
       }),
     ])
     expect(group.mainWords).toEqual(['Adad'])
@@ -123,8 +194,8 @@ describe('groupAfoRegisterByVolume', () => {
 
   it('builds a numeric page range from the lowest to the highest page', () => {
     const [group] = groupAfoRegisterByVolume([
-      afoRegisterEntryFactory.build({ AfO: 'AfO 44-45 (1997-1998), 617' }),
-      afoRegisterEntryFactory.build({ AfO: 'AfO 44-45 (1997-1998), 615' }),
+      afoRegisterEntryFactory.build({ afoVolume: 'AfO 44/45', page: '617' }),
+      afoRegisterEntryFactory.build({ afoVolume: 'AfO 44/45', page: '615' }),
     ])
     expect(group.pageRange).toBe('615-617')
     expect(group.hasDistinctPages).toBe(true)
@@ -132,8 +203,8 @@ describe('groupAfoRegisterByVolume', () => {
 
   it('ignores empty pages when deriving the range and the distinct flag', () => {
     const [group] = groupAfoRegisterByVolume([
-      afoRegisterEntryFactory.build({ AfO: 'AfO 46-47 (1999-2000), 514' }),
-      afoRegisterEntryFactory.build({ AfO: 'AfO 46-47 (1999-2000)' }),
+      afoRegisterEntryFactory.build({ afoVolume: 'AfO 46/47', page: '514' }),
+      afoRegisterEntryFactory.build({ afoVolume: 'AfO 46/47', page: '' }),
     ])
     expect(group.pageRange).toBe('514')
     expect(group.hasDistinctPages).toBe(false)
@@ -141,42 +212,26 @@ describe('groupAfoRegisterByVolume', () => {
 
   it('joins non-numeric pages into a range in document order', () => {
     const [group] = groupAfoRegisterByVolume([
-      afoRegisterEntryFactory.build({ AfO: 'AfO 50 (2003-2004), 12a' }),
-      afoRegisterEntryFactory.build({ AfO: 'AfO 50 (2003-2004), 12b' }),
+      afoRegisterEntryFactory.build({ afoVolume: 'AfO 50', page: '12a' }),
+      afoRegisterEntryFactory.build({ afoVolume: 'AfO 50', page: '12b' }),
     ])
     expect(group.pageRange).toBe('12a-12b')
   })
 
   it('keeps distinct volumes separate in first-seen order', () => {
     const volumes = groupAfoRegisterByVolume([
-      afoRegisterEntryFactory.build({ AfO: 'AfO 26 (1978-1979), 12' }),
-      afoRegisterEntryFactory.build({ AfO: 'AfO 25 (1974-1977), 370' }),
+      afoRegisterEntryFactory.build({ afoVolume: 'AfO 26', page: '12' }),
+      afoRegisterEntryFactory.build({ afoVolume: 'AfO 25', page: '370' }),
     ]).map((group) => group.volume)
-    expect(volumes).toEqual(['AfO 26 (1978-1979)', 'AfO 25 (1974-1977)'])
+    expect(volumes).toEqual(['AfO 26', 'AfO 25'])
   })
 
-  it('normalizes a missing "AfO" prefix in the volume header', () => {
+  it('uses the afoVolume label verbatim, including the slash form', () => {
     const [group] = groupAfoRegisterByVolume([
-      afoRegisterEntryFactory.build({ AfO: '99 (2000), 5' }),
+      afoRegisterEntryFactory.build({ afoVolume: 'AfO 40/41', page: '420' }),
     ])
-    expect(group.volume).toBe('AfO 99 (2000)')
-    expect(group.entries[0].page).toBe('5')
-  })
-
-  it('falls back to the last comma when there is no parenthesized year', () => {
-    const [group] = groupAfoRegisterByVolume([
-      afoRegisterEntryFactory.build({ AfO: 'AfO 25, 370' }),
-    ])
-    expect(group.volume).toBe('AfO 25')
-    expect(group.entries[0].page).toBe('370')
-  })
-
-  it('falls back to the whole value with an empty page when there is no separator', () => {
-    const [group] = groupAfoRegisterByVolume([
-      afoRegisterEntryFactory.build({ AfO: 'AfO 25' }),
-    ])
-    expect(group.volume).toBe('AfO 25')
-    expect(group.entries[0].page).toBe('')
+    expect(group.volume).toBe('AfO 40/41')
+    expect(group.entries[0].page).toBe('420')
   })
 })
 
@@ -185,12 +240,13 @@ describe('formatAfoRegisterVolumeTitle', () => {
     const [group] = groupAfoRegisterByVolume([
       afoRegisterEntryFactory.build({
         mainWord: 'Adad',
-        AfO: 'AfO 44-45 (1997-1998), 615',
+        afoVolume: 'AfO 44/45',
+        page: '615',
       }),
     ])
     expect(formatAfoRegisterVolumeTitle('Adad', group)).toEqual({
       mainWord: 'Adad',
-      details: 'AfO 44-45 (1997-1998), 615',
+      details: 'AfO 44/45, 615',
     })
   })
 
@@ -198,12 +254,13 @@ describe('formatAfoRegisterVolumeTitle', () => {
     const [group] = groupAfoRegisterByVolume([
       afoRegisterEntryFactory.build({
         mainWord: 'Enlil',
-        AfO: 'AfO 25 (1974-1977), 370',
+        afoVolume: 'AfO 25',
+        page: '370',
       }),
     ])
     expect(formatAfoRegisterVolumeTitle('Enlil, Ellil', group)).toEqual({
       mainWord: 'Enlil',
-      details: 'AfO 25 (1974-1977), 370',
+      details: 'AfO 25, 370',
     })
   })
 
@@ -211,29 +268,18 @@ describe('formatAfoRegisterVolumeTitle', () => {
     const [group] = groupAfoRegisterByVolume([
       afoRegisterEntryFactory.build({
         mainWord: 'Akkad',
-        AfO: 'AfO 44-45 (1997-1998), 615',
+        afoVolume: 'AfO 44/45',
+        page: '615',
       }),
       afoRegisterEntryFactory.build({
         mainWord: 'Akkad',
-        AfO: 'AfO 44-45 (1997-1998), 617',
+        afoVolume: 'AfO 44/45',
+        page: '617',
       }),
     ])
     expect(formatAfoRegisterVolumeTitle('Akkad', group)).toEqual({
       mainWord: 'Akkad',
-      details: 'AfO 44-45 (1997-1998), 615-617',
-    })
-  })
-
-  it('uses the differing main word as the title', () => {
-    const [group] = groupAfoRegisterByVolume([
-      afoRegisterEntryFactory.build({
-        mainWord: 'Schwein',
-        AfO: 'AfO 52 (2018), 645',
-      }),
-    ])
-    expect(formatAfoRegisterVolumeTitle('Pig', group)).toEqual({
-      mainWord: 'Schwein',
-      details: 'AfO 52 (2018), 645',
+      details: 'AfO 44/45, 615-617',
     })
   })
 
@@ -241,22 +287,28 @@ describe('formatAfoRegisterVolumeTitle', () => {
     const [group] = groupAfoRegisterByVolume([
       afoRegisterEntryFactory.build({
         mainWord: 'adû',
-        AfO: 'AfO 50 (2003-2004), 545',
+        afoVolume: 'AfO 50',
+        page: '545',
       }),
       afoRegisterEntryFactory.build({
         mainWord: 'Ad(d)u',
-        AfO: 'AfO 50 (2003-2004), 545',
+        afoVolume: 'AfO 50',
+        page: '545',
       }),
     ])
     expect(formatAfoRegisterVolumeTitle('adû', group)).toEqual({
       mainWord: 'adû, Ad(d)u',
-      details: 'AfO 50 (2003-2004), 545',
+      details: 'AfO 50, 545',
     })
   })
 
   it('omits the page when no entry carries one', () => {
     const [group] = groupAfoRegisterByVolume([
-      afoRegisterEntryFactory.build({ mainWord: 'Adad', AfO: 'AfO 25' }),
+      afoRegisterEntryFactory.build({
+        mainWord: 'Adad',
+        afoVolume: 'AfO 25',
+        page: '',
+      }),
     ])
     expect(formatAfoRegisterVolumeTitle('Adad', group)).toEqual({
       mainWord: 'Adad',
@@ -268,12 +320,13 @@ describe('formatAfoRegisterVolumeTitle', () => {
     const [group] = groupAfoRegisterByVolume([
       afoRegisterEntryFactory.build({
         mainWord: '',
-        AfO: 'AfO 25 (1974-1977), 370',
+        afoVolume: 'AfO 25',
+        page: '370',
       }),
     ])
     expect(formatAfoRegisterVolumeTitle('Enlil, Ellil', group)).toEqual({
       mainWord: 'Enlil, Ellil',
-      details: 'AfO 25 (1974-1977), 370',
+      details: 'AfO 25, 370',
     })
   })
 })

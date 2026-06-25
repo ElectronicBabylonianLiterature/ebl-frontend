@@ -21,6 +21,7 @@ import {
   realiaCrossReferenceFactory,
 } from 'test-support/realia-fixtures'
 import { RealiaEntry } from 'realia/domain/RealiaEntry'
+import { afoVolumeId } from 'realia/ui/realiaSections'
 import { referenceFactory } from 'test-support/bibliography-fixtures'
 import {
   installMockIntersectionObserver,
@@ -248,11 +249,13 @@ describe('RealiaDisplay', () => {
       afoRegister: [
         afoRegisterEntryFactory.build({
           mainWord: 'Tiamat',
-          AfO: 'AfO 25 (1974-1977), 370',
+          afoVolume: 'AfO 25',
+          page: '370',
         }),
         afoRegisterEntryFactory.build({
           mainWord: 'Apsû',
-          AfO: 'AfO 25 (1974-1977), 372',
+          afoVolume: 'AfO 25',
+          page: '372',
         }),
       ],
     })
@@ -264,7 +267,7 @@ describe('RealiaDisplay', () => {
       }),
     ).toBeInTheDocument()
     expect(
-      screen.getByText('AfO 25 (1974-1977), 370-372', {
+      screen.getByText('AfO 25, 370-372', {
         selector: '.Realia__afo-volume-details',
       }),
     ).toBeInTheDocument()
@@ -280,8 +283,8 @@ describe('RealiaDisplay', () => {
     const entry = realiaEntryFactory.build({
       reallexikon: [],
       afoRegister: [
-        afoRegisterEntryFactory.build({ AfO: 'AfO 25 (1974-1977), 370' }),
-        afoRegisterEntryFactory.build({ AfO: 'AfO 26 (1978-1979), 12' }),
+        afoRegisterEntryFactory.build({ afoVolume: 'AfO 25', page: '370' }),
+        afoRegisterEntryFactory.build({ afoVolume: 'AfO 26', page: '12' }),
       ],
     })
     renderDisplay(entry)
@@ -289,10 +292,7 @@ describe('RealiaDisplay', () => {
     const volumes = screen
       .getAllByText(/AfO 2\d/, { selector: '.Realia__afo-volume-details' })
       .map((element) => element.textContent)
-    expect(volumes).toEqual([
-      'AfO 26 (1978-1979), 12',
-      'AfO 25 (1974-1977), 370',
-    ])
+    expect(volumes).toEqual(['AfO 26, 12', 'AfO 25, 370'])
   })
 
   it('shows the main word and page in the volume title and hides them on the entries when they are constant', async () => {
@@ -302,12 +302,14 @@ describe('RealiaDisplay', () => {
       afoRegister: [
         afoRegisterEntryFactory.build({
           mainWord: 'Adad',
-          AfO: 'AfO 44-45 (1997-1998), 615',
+          afoVolume: 'AfO 44/45',
+          page: '615',
           note: 'first note',
         }),
         afoRegisterEntryFactory.build({
           mainWord: 'Adad',
-          AfO: 'AfO 44-45 (1997-1998), 615',
+          afoVolume: 'AfO 44/45',
+          page: '615',
           note: 'second note',
         }),
       ],
@@ -318,7 +320,7 @@ describe('RealiaDisplay', () => {
       screen.getByText('Adad', { selector: '.Realia__afo-volume-mainword' }),
     ).toBeInTheDocument()
     expect(
-      screen.getByText('AfO 44-45 (1997-1998), 615', {
+      screen.getByText('AfO 44/45, 615', {
         selector: '.Realia__afo-volume-details',
       }),
     ).toBeInTheDocument()
@@ -332,18 +334,22 @@ describe('RealiaDisplay', () => {
     expect(screen.getByText('second note')).toBeInTheDocument()
   })
 
-  it('shows the per-entry page when pages differ within a volume', async () => {
+  it('shows the per-entry AfO caption with the year when pages differ within a volume', async () => {
     const entry = realiaEntryFactory.build({
       id: 'Akkad',
       reallexikon: [],
       afoRegister: [
         afoRegisterEntryFactory.build({
           mainWord: 'Akkad',
-          AfO: 'AfO 44-45 (1997-1998), 615',
+          afoVolume: 'AfO 44/45',
+          page: '615',
+          AfO: 'AfO 44/45 (1997/1998), 615',
         }),
         afoRegisterEntryFactory.build({
           mainWord: 'Akkad',
-          AfO: 'AfO 44-45 (1997-1998), 616',
+          afoVolume: 'AfO 44/45',
+          page: '616',
+          AfO: 'AfO 44/45 (1997/1998), 616',
         }),
       ],
     })
@@ -353,15 +359,19 @@ describe('RealiaDisplay', () => {
       screen.getByText('Akkad', { selector: '.Realia__afo-volume-mainword' }),
     ).toBeInTheDocument()
     expect(
-      screen.getByText('AfO 44-45 (1997-1998), 615-616', {
+      screen.getByText('AfO 44/45, 615-616', {
         selector: '.Realia__afo-volume-details',
       }),
     ).toBeInTheDocument()
     expect(
-      screen.getByText('615', { selector: '.Realia__afo-citation' }),
+      screen.getByText('AfO 44/45 (1997/1998), 615', {
+        selector: '.Realia__afo-citation',
+      }),
     ).toBeInTheDocument()
     expect(
-      screen.getByText('616', { selector: '.Realia__afo-citation' }),
+      screen.getByText('AfO 44/45 (1997/1998), 616', {
+        selector: '.Realia__afo-citation',
+      }),
     ).toBeInTheDocument()
   })
 
@@ -372,13 +382,15 @@ describe('RealiaDisplay', () => {
       afoRegister: [
         afoRegisterEntryFactory.build({
           mainWord: 'Adad',
-          AfO: 'AfO 44-45 (1997-1998), 615',
+          afoVolume: 'AfO 44/45',
+          page: '615',
           note: '',
           reference: '',
         }),
         afoRegisterEntryFactory.build({
           mainWord: 'Adad',
-          AfO: 'AfO 44-45 (1997-1998), 615',
+          afoVolume: 'AfO 44/45',
+          page: '615',
           note: 'kept note',
           reference: '',
         }),
@@ -386,14 +398,15 @@ describe('RealiaDisplay', () => {
     })
     renderDisplay(entry)
     await waitForSpinnerToBeRemoved(screen)
-    const afoList = screen.getByRole('list', { name: 'AfO 44-45 (1997-1998)' })
+    const afoList = screen.getByRole('list', { name: 'AfO 44/45' })
     expect(screen.getByText('kept note')).toBeInTheDocument()
     expect(within(afoList).getAllByRole('listitem')).toHaveLength(1)
   })
 
-  it('renders the AfO cross-reference as a link to the Realia entry', async () => {
+  it('links an inline AfO cross-reference by the resolved realiaId', async () => {
     const afoEntry = afoRegisterEntryFactory.build({
       crossReference: 'Anu',
+      crossReferences: [{ id: 'realia_anu', lemma: 'Anu' }],
     })
     const entry = realiaEntryFactory.build({
       reallexikon: [],
@@ -403,8 +416,29 @@ describe('RealiaDisplay', () => {
     await waitForSpinnerToBeRemoved(screen)
     expect(screen.getByRole('link', { name: 'Anu' })).toHaveAttribute(
       'href',
-      '/tools/realia/Anu',
+      '/tools/realia/realia_anu',
     )
+  })
+
+  it('renders an unresolved inline AfO cross-reference as plain text', async () => {
+    const afoEntry = afoRegisterEntryFactory.build({
+      crossReference: 'Abaralaḫ',
+      crossReferences: [],
+    })
+    const entry = realiaEntryFactory.build({
+      reallexikon: [],
+      afoRegister: [afoEntry],
+    })
+    renderDisplay(entry)
+    await waitForSpinnerToBeRemoved(screen)
+    expect(
+      screen.getByText('Abaralaḫ', {
+        selector: '.Realia__afo-cross-reference',
+      }),
+    ).toBeInTheDocument()
+    expect(
+      screen.queryByRole('link', { name: 'Abaralaḫ' }),
+    ).not.toBeInTheDocument()
   })
 
   it('keeps an AfO entry whose only content is a cross-reference', async () => {
@@ -414,33 +448,38 @@ describe('RealiaDisplay', () => {
       afoRegister: [
         afoRegisterEntryFactory.build({
           mainWord: 'Adad',
-          AfO: 'AfO 44-45 (1997-1998), 615',
+          afoVolume: 'AfO 44/45',
+          page: '615',
           note: '',
           reference: '',
           crossReference: 'Iškur',
+          crossReferences: [{ id: 'realia_iskur', lemma: 'Iškur' }],
         }),
         afoRegisterEntryFactory.build({
           mainWord: 'Adad',
-          AfO: 'AfO 44-45 (1997-1998), 615',
+          afoVolume: 'AfO 44/45',
+          page: '615',
           note: 'kept note',
           reference: '',
           crossReference: '',
+          crossReferences: [],
         }),
       ],
     })
     renderDisplay(entry)
     await waitForSpinnerToBeRemoved(screen)
-    const afoList = screen.getByRole('list', { name: 'AfO 44-45 (1997-1998)' })
+    const afoList = screen.getByRole('list', { name: 'AfO 44/45' })
     expect(within(afoList).getAllByRole('listitem')).toHaveLength(2)
     expect(screen.getByRole('link', { name: 'Iškur' })).toHaveAttribute(
       'href',
-      '/tools/realia/I%C5%A1kur',
+      '/tools/realia/realia_iskur',
     )
   })
 
   it('renders the AfO-Register section expanded by default', async () => {
     const afoEntry = afoRegisterEntryFactory.build({
-      AfO: 'AfO 25 (1974-1977), 370',
+      afoVolume: 'AfO 25',
+      page: '370',
       mainWord: 'Tiamat',
     })
     const entry = realiaEntryFactory.build({
@@ -449,36 +488,27 @@ describe('RealiaDisplay', () => {
     })
     renderDisplay(entry)
     await waitForSpinnerToBeRemoved(screen)
-    expect(
-      screen.getByRole('list', { name: 'AfO 25 (1974-1977)' }),
-    ).toBeVisible()
+    expect(screen.getByRole('list', { name: 'AfO 25' })).toBeVisible()
   })
 
-  it('does not duplicate the "AfO" prefix in the volume header', async () => {
+  it('uses the afoVolume label verbatim, including the slash form', async () => {
     const afoEntry = afoRegisterEntryFactory.build({
-      AfO: 'AfO 25 (1974-1977), 370',
+      afoVolume: 'AfO 40/41',
+      page: '420',
+      AfO: 'AfO 40/41 (1993/1994), 420',
     })
-    const entry = realiaEntryFactory.build({ afoRegister: [afoEntry] })
+    const entry = realiaEntryFactory.build({
+      reallexikon: [],
+      afoRegister: [afoEntry],
+    })
     renderDisplay(entry)
     await waitForSpinnerToBeRemoved(screen)
     expect(
-      screen.getByText(/AfO 25 \(1974-1977\)/, {
+      screen.getByText('AfO 40/41, 420', {
         selector: '.Realia__afo-volume-details',
       }),
     ).toBeInTheDocument()
     expect(screen.queryByText(/AfO AfO/)).not.toBeInTheDocument()
-  })
-
-  it('adds the "AfO" prefix to the volume header when the backend value omits it', async () => {
-    const afoEntry = afoRegisterEntryFactory.build({ AfO: '99 (2000), 5' })
-    const entry = realiaEntryFactory.build({ afoRegister: [afoEntry] })
-    renderDisplay(entry)
-    await waitForSpinnerToBeRemoved(screen)
-    expect(
-      screen.getByText(/AfO 99 \(2000\)/, {
-        selector: '.Realia__afo-volume-details',
-      }),
-    ).toBeInTheDocument()
   })
 
   it('renders References section when references are present', async () => {
@@ -535,11 +565,11 @@ describe('RealiaDisplay', () => {
     expect(screen.getByText('IV. See Also')).toBeInTheDocument()
     expect(screen.getByRole('link', { name: 'Anu' })).toHaveAttribute(
       'href',
-      '/tools/realia/Anu',
+      '/tools/realia/realia_1',
     )
     expect(screen.getByRole('link', { name: 'Enlil' })).toHaveAttribute(
       'href',
-      '/tools/realia/Enlil',
+      '/tools/realia/realia_2',
     )
   })
 
@@ -551,6 +581,38 @@ describe('RealiaDisplay', () => {
     renderDisplay(entry)
     await waitForSpinnerToBeRemoved(screen)
     expect(screen.queryByText(/IV\. See Also/)).not.toBeInTheDocument()
+  })
+
+  it('renders a redirect document as a pointer to its target by realiaId', async () => {
+    const entry = realiaEntryFactory.build({
+      id: 'Abaralaḫ',
+      reallexikon: [],
+      afoRegister: [],
+      references: [],
+      crossReferences: [
+        realiaCrossReferenceFactory.build({
+          id: 'realia_nusku',
+          lemma: 'Nusku',
+        }),
+      ],
+      afoCrossReferences: [],
+    })
+    renderDisplay(entry)
+    await waitForSpinnerToBeRemoved(screen)
+    expect(
+      screen.getByRole('heading', { level: 1, name: 'Abaralaḫ' }),
+    ).toBeInTheDocument()
+    expect(screen.getByRole('link', { name: 'Nusku' })).toHaveAttribute(
+      'href',
+      '/tools/realia/realia_nusku',
+    )
+    expect(screen.queryByText(/IV\. See Also/)).not.toBeInTheDocument()
+    expect(
+      screen.queryByRole('navigation', { name: 'On this page' }),
+    ).not.toBeInTheDocument()
+    expect(
+      screen.getByText(/still under active development/i),
+    ).toBeInTheDocument()
   })
 
   it('does not render an AppContent-generated h2 heading', async () => {
@@ -688,7 +750,7 @@ describe('RealiaDisplay', () => {
     const entry = realiaEntryFactory.build({
       reallexikon: [],
       afoRegister: [
-        afoRegisterEntryFactory.build({ AfO: 'AfO 25 (1974-1977), 370' }),
+        afoRegisterEntryFactory.build({ afoVolume: 'AfO 25', page: '370' }),
       ],
     })
     renderDisplay(entry)
@@ -747,28 +809,29 @@ describe('RealiaDisplay', () => {
 
   it('lists AfO volumes as subsections in the navigation menu', async () => {
     const entry = realiaEntryFactory.build({
+      realiaId: 'realia_1',
       reallexikon: [],
       afoRegister: [
-        afoRegisterEntryFactory.build({ AfO: 'AfO 25 (1974-1977), 370' }),
-        afoRegisterEntryFactory.build({ AfO: 'AfO 26 (1978-1979), 12' }),
+        afoRegisterEntryFactory.build({ afoVolume: 'AfO 25', page: '370' }),
+        afoRegisterEntryFactory.build({ afoVolume: 'AfO 26', page: '12' }),
       ],
     })
     renderDisplay(entry)
     await waitForSpinnerToBeRemoved(screen)
     const navMenu = screen.getByRole('navigation', { name: 'On this page' })
     expect(
-      within(navMenu).getByRole('link', { name: 'AfO 26 (1978-1979)' }),
-    ).toHaveAttribute('href', '#realia-afo-volume-0')
+      within(navMenu).getByRole('link', { name: 'AfO 26' }),
+    ).toHaveAttribute('href', `#${afoVolumeId('realia_1', 'AfO 26')}`)
     expect(
-      within(navMenu).getByRole('link', { name: 'AfO 25 (1974-1977)' }),
-    ).toHaveAttribute('href', '#realia-afo-volume-1')
+      within(navMenu).getByRole('link', { name: 'AfO 25' }),
+    ).toHaveAttribute('href', `#${afoVolumeId('realia_1', 'AfO 25')}`)
   })
 
   it('toggles the section collapse state from the menu', async () => {
     const entry = realiaEntryFactory.build({
       reallexikon: [],
       afoRegister: [
-        afoRegisterEntryFactory.build({ AfO: 'AfO 25 (1974-1977), 370' }),
+        afoRegisterEntryFactory.build({ afoVolume: 'AfO 25', page: '370' }),
       ],
     })
     renderDisplay(entry)
@@ -792,7 +855,7 @@ describe('RealiaDisplay', () => {
     const entry = realiaEntryFactory.build({
       reallexikon: [],
       afoRegister: [
-        afoRegisterEntryFactory.build({ AfO: 'AfO 25 (1974-1977), 370' }),
+        afoRegisterEntryFactory.build({ afoVolume: 'AfO 25', page: '370' }),
       ],
     })
     renderDisplay(entry)
@@ -801,9 +864,7 @@ describe('RealiaDisplay', () => {
       screen.getByRole('button', { name: 'Collapse AfO-Register' }),
     )
     const navMenu = screen.getByRole('navigation', { name: 'On this page' })
-    fireEvent.click(
-      within(navMenu).getByRole('link', { name: 'AfO 25 (1974-1977)' }),
-    )
+    fireEvent.click(within(navMenu).getByRole('link', { name: 'AfO 25' }))
     expect(
       screen.getByRole('button', { name: 'Collapse AfO-Register' }),
     ).toHaveAttribute('aria-expanded', 'true')
@@ -829,9 +890,10 @@ describe('RealiaDisplay', () => {
 
   it('highlights the active subsection and its parent group from scroll position', async () => {
     const entry = realiaEntryFactory.build({
+      realiaId: 'realia_1',
       reallexikon: [reallexikonEntryFactory.build({ title: 'Aššur A. Stadt' })],
       afoRegister: [
-        afoRegisterEntryFactory.build({ AfO: 'AfO 25 (1974-1977), 370' }),
+        afoRegisterEntryFactory.build({ afoVolume: 'AfO 25', page: '370' }),
       ],
       references: [],
       crossReferences: [],
@@ -851,12 +913,12 @@ describe('RealiaDisplay', () => {
     act(() => {
       triggerIntersection([
         { id: 'realia-rla-article-0', isIntersecting: false },
-        { id: 'realia-afo-volume-0', isIntersecting: true },
+        { id: afoVolumeId('realia_1', 'AfO 25'), isIntersecting: true },
       ])
     })
-    expect(
-      within(navMenu).getByRole('link', { name: 'AfO 25 (1974-1977)' }),
-    ).toHaveClass('is-active')
+    expect(within(navMenu).getByRole('link', { name: 'AfO 25' })).toHaveClass(
+      'is-active',
+    )
     expect(
       within(navMenu).getByRole('link', { name: 'AfO-Register' }),
     ).not.toHaveClass('is-active')

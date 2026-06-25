@@ -11,6 +11,7 @@ const realiaRepository = new RealiaRepository(apiClient)
 
 const entryDto = {
   _id: 'Pig',
+  realiaId: 'realia_pig',
   relatedTerms: ['Schwein'],
   type: ['Objects'],
   wikidataId: ['Q787'],
@@ -18,9 +19,12 @@ const entryDto = {
     {
       mainWord: 'Schwein',
       note: 'S.zucht',
-      AfO: '52',
+      afoVolume: 'AfO 52',
+      page: '645',
+      AfO: 'AfO 52 (2018), 645',
       reference: '(2018) 645',
       crossReference: '',
+      crossReferences: [],
     },
   ],
   reallexikon: [],
@@ -31,6 +35,7 @@ const entryDto = {
 
 const expectedEntry: RealiaEntry = {
   id: 'Pig',
+  realiaId: 'realia_pig',
   relatedTerms: ['Schwein'],
   type: ['Objects'],
   wikidataId: ['Q787'],
@@ -38,9 +43,12 @@ const expectedEntry: RealiaEntry = {
     {
       mainWord: 'Schwein',
       note: 'S.zucht',
-      AfO: '52',
+      afoVolume: 'AfO 52',
+      page: '645',
+      AfO: 'AfO 52 (2018), 645',
       reference: '(2018) 645',
       crossReference: '',
+      crossReferences: [],
     },
   ],
   reallexikon: [],
@@ -237,5 +245,46 @@ describe('RealiaRepository reallexikon mapping', () => {
     expect(result.afoCrossReferences).toEqual([
       { id: 'realia_2', lemma: 'Enlil' },
     ])
+  })
+
+  it('maps the stable realiaId verbatim', async () => {
+    apiClient.fetchJson.mockReturnValueOnce(Promise.resolve(entryDto))
+    const result = await realiaRepository.find('realia_pig')
+    expect(result.realiaId).toBe('realia_pig')
+  })
+
+  it('maps the structured AfO volume, page and resolved cross-references', async () => {
+    const dto = {
+      ...entryDto,
+      afoRegister: [
+        {
+          mainWord: 'Adad',
+          note: '',
+          afoVolume: 'AfO 40/41',
+          page: '420',
+          AfO: 'AfO 40/41 (1993/1994), 420',
+          reference: '',
+          crossReference: 'Iškur',
+          crossReferences: [{ id: 'realia_iskur', lemma: 'Iškur' }],
+        },
+      ],
+    }
+    apiClient.fetchJson.mockReturnValueOnce(Promise.resolve(dto))
+    const result = await realiaRepository.find('realia_pig')
+    expect(result.afoRegister[0].afoVolume).toBe('AfO 40/41')
+    expect(result.afoRegister[0].page).toBe('420')
+    expect(result.afoRegister[0].crossReferences).toEqual([
+      { id: 'realia_iskur', lemma: 'Iškur' },
+    ])
+  })
+
+  it('normalizes a missing entry crossReferences to an empty array', async () => {
+    const dto = {
+      ...entryDto,
+      afoRegister: [{ ...entryDto.afoRegister[0], crossReferences: null }],
+    }
+    apiClient.fetchJson.mockReturnValueOnce(Promise.resolve(dto))
+    const result = await realiaRepository.find('realia_pig')
+    expect(result.afoRegister[0].crossReferences).toEqual([])
   })
 })

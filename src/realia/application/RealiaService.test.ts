@@ -11,6 +11,7 @@ const realiaService = new RealiaService(realiaRepository)
 
 const entry: RealiaEntry = {
   id: 'Pig',
+  realiaId: 'realia_pig',
   relatedTerms: ['Schwein'],
   type: ['Objects'],
   wikidataId: [],

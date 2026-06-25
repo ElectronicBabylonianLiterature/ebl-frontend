@@ -15,23 +15,27 @@ interface ReallexikonEntryDto {
   readonly reference: ReferenceDto | null
 }
 
-interface AfoRegisterEntryDto {
-  readonly mainWord: string
-  readonly note: string
-  readonly AfO: string
-  readonly reference: string
-  readonly crossReference: string
-}
-
 interface RealiaCrossReferenceDto {
   readonly id: string
   readonly lemma: string
+}
+
+interface AfoRegisterEntryDto {
+  readonly mainWord: string
+  readonly note: string
+  readonly afoVolume: string
+  readonly page: string
+  readonly AfO: string
+  readonly reference: string
+  readonly crossReference: string
+  readonly crossReferences: Nullable<RealiaCrossReferenceDto>
 }
 
 type Nullable<T> = readonly T[] | T | null | undefined
 
 interface RealiaEntryDto {
   readonly _id: string
+  readonly realiaId: string
   readonly relatedTerms: Nullable<string>
   readonly type: Nullable<string>
   readonly wikidataId: Nullable<string>
@@ -57,18 +61,21 @@ function mapReallexikonEntry(dto: ReallexikonEntryDto): ReallexikonEntry {
   }
 }
 
+function mapCrossReference(dto: RealiaCrossReferenceDto): RealiaCrossReference {
+  return { id: dto.id, lemma: dto.lemma }
+}
+
 function mapAfoRegisterEntry(dto: AfoRegisterEntryDto): AfoRegisterEntry {
   return {
     mainWord: dto.mainWord,
     note: dto.note,
+    afoVolume: dto.afoVolume,
+    page: dto.page,
     AfO: dto.AfO,
     reference: dto.reference,
     crossReference: dto.crossReference,
+    crossReferences: toArray(dto.crossReferences).map(mapCrossReference),
   }
-}
-
-function mapCrossReference(dto: RealiaCrossReferenceDto): RealiaCrossReference {
-  return { id: dto.id, lemma: dto.lemma }
 }
 
 function mapRealiaEntry(dto: RealiaEntryDto): RealiaEntry {
@@ -80,6 +87,7 @@ function mapRealiaEntry(dto: RealiaEntryDto): RealiaEntry {
   )
   return {
     id: dto._id,
+    realiaId: dto.realiaId,
     relatedTerms: toArray(dto.relatedTerms),
     type: toArray(dto.type),
     wikidataId: toArray(dto.wikidataId),
@@ -100,9 +108,12 @@ export default class RealiaRepository {
     this.apiClient = apiClient
   }
 
-  find(id: string): Promise<RealiaEntry> {
+  find(realiaId: string): Promise<RealiaEntry> {
     return this.apiClient
-      .fetchJson<RealiaEntryDto>(`/realia/${encodeURIComponent(id)}`, false)
+      .fetchJson<RealiaEntryDto>(
+        `/realia/${encodeURIComponent(realiaId)}`,
+        false,
+      )
       .then(mapRealiaEntry)
   }
 

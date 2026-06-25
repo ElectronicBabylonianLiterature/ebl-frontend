@@ -23,8 +23,15 @@ export const realiaSectionIds = {
   seeAlso: 'realia-section-see-also',
 } as const
 
-export function afoVolumeId(index: number): string {
-  return `realia-afo-volume-${index}`
+function slugify(value: string): string {
+  return value
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/(^-+|-+$)/g, '')
+}
+
+export function afoVolumeId(realiaId: string, afoVolume: string): string {
+  return `realia-afo-volume-${slugify(realiaId)}-${slugify(afoVolume)}`
 }
 
 export function rlaArticleId(index: number): string {
@@ -55,8 +62,8 @@ export function buildRealiaNav({
     sections.push({
       id: realiaSectionIds.afoRegister,
       label: 'AfO-Register',
-      subsections: volumeGroups.map((group, index) => ({
-        id: afoVolumeId(index),
+      subsections: volumeGroups.map((group) => ({
+        id: afoVolumeId(entry.realiaId, group.volume),
         label: group.volume,
       })),
     })

@@ -32,7 +32,7 @@ function RealiaResultItem({ entry }: { entry: RealiaEntry }): JSX.Element {
       <div className="realia-results-list__header">
         <Link
           className="realia-results-list__title"
-          to={'/tools/realia/' + encodeURIComponent(entry.id)}
+          to={'/tools/realia/' + encodeURIComponent(entry.realiaId)}
         >
           {entry.id}
         </Link>
@@ -76,7 +76,7 @@ export default function RealiaResultsList({
   return (
     <ul className="realia-results-list">
       {entries.map((entry) => (
-        <RealiaResultItem key={entry.id} entry={entry} />
+        <RealiaResultItem key={entry.realiaId} entry={entry} />
       ))}
     </ul>
   )

@@ -19,12 +19,13 @@ import { referenceFactory } from 'test-support/bibliography-fixtures'
 describe('buildRealiaNav', () => {
   it('builds a section for each present part with RlA article and AfO volume subsections', () => {
     const entry = realiaEntryFactory.build({
+      realiaId: 'realia_1',
       reallexikon: [
         reallexikonEntryFactory.build({ title: 'Aššur A. Stadt' }),
         reallexikonEntryFactory.build({ title: 'Aššur C. Hauptgott' }),
       ],
       afoRegister: [
-        afoRegisterEntryFactory.build({ AfO: 'AfO 25 (1974-1977), 370' }),
+        afoRegisterEntryFactory.build({ afoVolume: 'AfO 25', page: '370' }),
       ],
       references: [referenceFactory.build()],
       crossReferences: [realiaCrossReferenceFactory.build()],
@@ -54,7 +55,7 @@ describe('buildRealiaNav', () => {
       (section) => section.id === realiaSectionIds.afoRegister,
     )
     expect(afoSection?.subsections).toEqual([
-      { id: afoVolumeId(0), label: 'AfO 25 (1974-1977)' },
+      { id: afoVolumeId(entry.realiaId, 'AfO 25'), label: 'AfO 25' },
     ])
   })
 

@@ -9,9 +9,12 @@ export interface RealiaCrossReference {
 export interface AfoRegisterEntry {
   readonly mainWord: string
   readonly note: string
+  readonly afoVolume: string
+  readonly page: string
   readonly AfO: string
   readonly reference: string
   readonly crossReference: string
+  readonly crossReferences: readonly RealiaCrossReference[]
 }
 
 export interface ReallexikonEntry {
@@ -28,6 +31,7 @@ export function rlaArticleUrl(id: string): string {
 
 export interface RealiaEntry {
   readonly id: string
+  readonly realiaId: string
   readonly relatedTerms: readonly string[]
   readonly type: readonly string[]
   readonly wikidataId: readonly string[]
@@ -47,8 +51,22 @@ export function getRealiaCrossReferences(
   )
 }
 
-export interface AfoRegisterVolumeEntry extends AfoRegisterEntry {
-  readonly page: string
+function isStubReallexikon(entries: readonly ReallexikonEntry[]): boolean {
+  return entries.every((entry) => entry.reference === null)
+}
+
+export function getRedirectTarget(
+  entry: RealiaEntry,
+): RealiaCrossReference | null {
+  const hasOwnContent =
+    entry.afoRegister.length > 0 ||
+    entry.references.length > 0 ||
+    entry.afoCrossReferences.length > 0 ||
+    entry.reallexikon.length > 1 ||
+    !isStubReallexikon(entry.reallexikon)
+  return !hasOwnContent && entry.crossReferences.length === 1
+    ? entry.crossReferences[0]
+    : null
 }
 
 export interface AfoRegisterVolumeGroup {
@@ -57,31 +75,7 @@ export interface AfoRegisterVolumeGroup {
   readonly pageRange: string
   readonly hasDistinctMainWords: boolean
   readonly hasDistinctPages: boolean
-  readonly entries: readonly AfoRegisterVolumeEntry[]
-}
-
-export function formatAfoVolume(afo: string): string {
-  const trimmed = afo.trim()
-  return /^AfO\b/i.test(trimmed) ? trimmed : `AfO ${trimmed}`
-}
-
-function parseAfoCitation(afo: string): { volume: string; page: string } {
-  const normalized = formatAfoVolume(afo)
-  const parenthesizedVolume = normalized.match(/^(.*\))\s*,?\s*(.*)$/)
-  if (parenthesizedVolume) {
-    return {
-      volume: parenthesizedVolume[1].trim(),
-      page: parenthesizedVolume[2].trim(),
-    }
-  }
-  const lastComma = normalized.lastIndexOf(',')
-  if (lastComma !== -1) {
-    return {
-      volume: normalized.slice(0, lastComma).trim(),
-      page: normalized.slice(lastComma + 1).trim(),
-    }
-  }
-  return { volume: normalized, page: '' }
+  readonly entries: readonly AfoRegisterEntry[]
 }
 
 function formatPageRange(pages: readonly string[]): string {
@@ -98,7 +92,7 @@ function formatPageRange(pages: readonly string[]): string {
 
 function buildVolumeGroup(
   volume: string,
-  entries: readonly AfoRegisterVolumeEntry[],
+  entries: readonly AfoRegisterEntry[],
 ): AfoRegisterVolumeGroup {
   const mainWords = _.uniq(entries.map((entry) => entry.mainWord))
   const distinctPages = _.uniq(
@@ -117,13 +111,12 @@ function buildVolumeGroup(
 export function groupAfoRegisterByVolume(
   entries: readonly AfoRegisterEntry[],
 ): readonly AfoRegisterVolumeGroup[] {
-  const entriesByVolume = new Map<string, AfoRegisterVolumeEntry[]>()
+  const entriesByVolume = new Map<string, AfoRegisterEntry[]>()
   entries.forEach((entry) => {
-    const { volume, page } = parseAfoCitation(entry.AfO)
-    if (!entriesByVolume.has(volume)) {
-      entriesByVolume.set(volume, [])
+    if (!entriesByVolume.has(entry.afoVolume)) {
+      entriesByVolume.set(entry.afoVolume, [])
     }
-    entriesByVolume.get(volume)?.push({ ...entry, page })
+    entriesByVolume.get(entry.afoVolume)?.push(entry)
   })
   return [...entriesByVolume].map(([volume, volumeEntries]) =>
     buildVolumeGroup(volume, volumeEntries),
