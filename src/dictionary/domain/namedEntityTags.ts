@@ -4,7 +4,7 @@ export const NAMED_ENTITY_TAGS: { readonly [code: string]: string } = {
   DN: 'Divine Name',
   EN: 'Ethnos Name',
   FN: 'Field Name',
-  GN: 'Geographical Name (lands and other geographical entities without their own tag)',
+  GN: 'Geographical Name',
   LN: 'Line Name (ancestral clan)',
   MN: 'Month Name',
   ON: 'Object Name',
