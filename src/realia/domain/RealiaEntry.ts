@@ -10,6 +10,7 @@ export interface AfoRegisterEntry {
   readonly mainWord: string
   readonly note: string
   readonly afoVolume: string
+  readonly year: string
   readonly page: string
   readonly AfO: string
   readonly reference: string
@@ -71,11 +72,21 @@ export function getRedirectTarget(
 
 export interface AfoRegisterVolumeGroup {
   readonly volume: string
+  readonly year: string
   readonly mainWords: readonly string[]
   readonly pageRange: string
   readonly hasDistinctMainWords: boolean
   readonly hasDistinctPages: boolean
   readonly entries: readonly AfoRegisterEntry[]
+}
+
+export function afoVolumeLabel(group: AfoRegisterVolumeGroup): string {
+  return group.year ? `${group.volume} (${group.year})` : group.volume
+}
+
+function afoVolumeSortKey(volume: string): number {
+  const match = volume.match(/\d+/)
+  return match ? Number(match[0]) : 0
 }
 
 function formatPageRange(pages: readonly string[]): string {
@@ -98,8 +109,10 @@ function buildVolumeGroup(
   const distinctPages = _.uniq(
     entries.map((entry) => entry.page).filter((page) => page !== ''),
   )
+  const year = entries.map((entry) => entry.year).find((value) => value !== '')
   return {
     volume,
+    year: year ?? '',
     mainWords,
     pageRange: formatPageRange(entries.map((entry) => entry.page)),
     hasDistinctMainWords: mainWords.length > 1,
@@ -118,9 +131,12 @@ export function groupAfoRegisterByVolume(
     }
     entriesByVolume.get(entry.afoVolume)?.push(entry)
   })
-  return [...entriesByVolume].map(([volume, volumeEntries]) =>
-    buildVolumeGroup(volume, volumeEntries),
-  )
+  return [...entriesByVolume]
+    .map(([volume, volumeEntries]) => buildVolumeGroup(volume, volumeEntries))
+    .sort(
+      (first, second) =>
+        afoVolumeSortKey(second.volume) - afoVolumeSortKey(first.volume),
+    )
 }
 
 export interface AfoRegisterVolumeTitle {
@@ -134,7 +150,7 @@ export function formatAfoRegisterVolumeTitle(
 ): AfoRegisterVolumeTitle {
   const mainWords = group.mainWords.filter((mainWord) => mainWord !== '')
   const mainWord = mainWords.length > 0 ? mainWords.join(', ') : entryId
-  const details = [group.volume, group.pageRange]
+  const details = [afoVolumeLabel(group), group.pageRange]
     .filter((part) => part !== '')
     .join(', ')
   return { mainWord, details }

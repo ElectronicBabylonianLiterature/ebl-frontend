@@ -25,7 +25,11 @@ describe('buildRealiaNav', () => {
         reallexikonEntryFactory.build({ title: 'Aššur C. Hauptgott' }),
       ],
       afoRegister: [
-        afoRegisterEntryFactory.build({ afoVolume: 'AfO 25', page: '370' }),
+        afoRegisterEntryFactory.build({
+          afoVolume: 'AfO 25',
+          year: '1977',
+          page: '370',
+        }),
       ],
       references: [referenceFactory.build()],
       crossReferences: [realiaCrossReferenceFactory.build()],
@@ -55,7 +59,7 @@ describe('buildRealiaNav', () => {
       (section) => section.id === realiaSectionIds.afoRegister,
     )
     expect(afoSection?.subsections).toEqual([
-      { id: afoVolumeId(entry.realiaId, 'AfO 25'), label: 'AfO 25' },
+      { id: afoVolumeId(entry.realiaId, 'AfO 25'), label: 'AfO 25 (1977)' },
     ])
   })
 

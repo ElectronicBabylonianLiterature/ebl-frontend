@@ -1,4 +1,5 @@
 import {
+  afoVolumeLabel,
   AfoRegisterVolumeGroup,
   RealiaCrossReference,
   RealiaEntry,
@@ -64,7 +65,7 @@ export function buildRealiaNav({
       label: 'AfO-Register',
       subsections: volumeGroups.map((group) => ({
         id: afoVolumeId(entry.realiaId, group.volume),
-        label: group.volume,
+        label: afoVolumeLabel(group),
       })),
     })
   }

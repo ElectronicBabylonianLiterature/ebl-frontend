@@ -195,7 +195,11 @@ function AfoRegisterEntryItem({
         afoEntry.crossReference && (
           <p className="Realia__afo-cross-reference">
             <i className="fas fa-arrow-right" aria-hidden="true" />
-            {afoEntry.crossReference}
+            <Link
+              to={`/tools/realia/${encodeURIComponent(afoEntry.crossReference)}`}
+            >
+              {afoEntry.crossReference}
+            </Link>
           </p>
         )
       )}
@@ -327,7 +331,7 @@ function AuthorizedRealiaEntry({ entry }: { entry: RealiaEntry }): JSX.Element {
     [entry],
   )
   const volumeGroups = useMemo(
-    () => [...groupAfoRegisterByVolume(entry.afoRegister)].reverse(),
+    () => groupAfoRegisterByVolume(entry.afoRegister),
     [entry.afoRegister],
   )
   const navSections = useMemo(

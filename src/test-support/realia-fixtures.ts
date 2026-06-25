@@ -17,6 +17,7 @@ export const afoRegisterEntryFactory = Factory.define<AfoRegisterEntry>(() => {
     mainWord: chance.word(),
     note: chance.sentence(),
     afoVolume: `AfO ${volumeNumber}`,
+    year: `${year}`,
     page,
     AfO: `AfO ${volumeNumber} (${year}), ${page}`,
     reference: `${chance.last()}, ${chance.word().toUpperCase()} ${chance.integer(

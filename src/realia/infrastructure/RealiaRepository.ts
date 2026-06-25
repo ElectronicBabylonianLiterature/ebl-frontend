@@ -23,8 +23,8 @@ interface RealiaCrossReferenceDto {
 interface AfoRegisterEntryDto {
   readonly mainWord: string
   readonly note: string
-  readonly afoVolume: string
-  readonly page: string
+  readonly afoVolume?: string
+  readonly page?: string
   readonly AfO: string
   readonly reference: string
   readonly crossReference: string
@@ -35,7 +35,7 @@ type Nullable<T> = readonly T[] | T | null | undefined
 
 interface RealiaEntryDto {
   readonly _id: string
-  readonly realiaId: string
+  readonly realiaId?: string
   readonly relatedTerms: Nullable<string>
   readonly type: Nullable<string>
   readonly wikidataId: Nullable<string>
@@ -65,12 +65,39 @@ function mapCrossReference(dto: RealiaCrossReferenceDto): RealiaCrossReference {
   return { id: dto.id, lemma: dto.lemma }
 }
 
+function parseAfoCitation(afo: string): {
+  afoVolume: string
+  year: string
+  page: string
+} {
+  const trimmed = afo.trim()
+  const withYear = trimmed.match(/^(.*?)\s*\(([^)]*)\)\s*,?\s*(.*)$/)
+  if (withYear) {
+    return {
+      afoVolume: withYear[1].trim(),
+      year: withYear[2].trim(),
+      page: withYear[3].trim(),
+    }
+  }
+  const lastComma = trimmed.lastIndexOf(',')
+  if (lastComma !== -1) {
+    return {
+      afoVolume: trimmed.slice(0, lastComma).trim(),
+      year: '',
+      page: trimmed.slice(lastComma + 1).trim(),
+    }
+  }
+  return { afoVolume: trimmed, year: '', page: '' }
+}
+
 function mapAfoRegisterEntry(dto: AfoRegisterEntryDto): AfoRegisterEntry {
+  const parsed = parseAfoCitation(dto.AfO)
   return {
     mainWord: dto.mainWord,
     note: dto.note,
-    afoVolume: dto.afoVolume,
-    page: dto.page,
+    afoVolume: dto.afoVolume ?? parsed.afoVolume,
+    year: parsed.year,
+    page: dto.page ?? parsed.page,
     AfO: dto.AfO,
     reference: dto.reference,
     crossReference: dto.crossReference,
@@ -87,7 +114,7 @@ function mapRealiaEntry(dto: RealiaEntryDto): RealiaEntry {
   )
   return {
     id: dto._id,
-    realiaId: dto.realiaId,
+    realiaId: dto.realiaId ?? dto._id,
     relatedTerms: toArray(dto.relatedTerms),
     type: toArray(dto.type),
     wikidataId: toArray(dto.wikidataId),

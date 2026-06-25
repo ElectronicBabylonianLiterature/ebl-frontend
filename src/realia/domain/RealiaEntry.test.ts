@@ -164,6 +164,7 @@ describe('groupAfoRegisterByVolume', () => {
     expect(groupAfoRegisterByVolume([first, second])).toEqual([
       {
         volume: 'AfO 25',
+        year: first.year,
         mainWords: ['Tiamat', 'Apsû'],
         pageRange: '370-372',
         hasDistinctMainWords: true,
@@ -218,12 +219,14 @@ describe('groupAfoRegisterByVolume', () => {
     expect(group.pageRange).toBe('12a-12b')
   })
 
-  it('keeps distinct volumes separate in first-seen order', () => {
+  it('orders volumes by descending volume number regardless of input order', () => {
     const volumes = groupAfoRegisterByVolume([
-      afoRegisterEntryFactory.build({ afoVolume: 'AfO 26', page: '12' }),
       afoRegisterEntryFactory.build({ afoVolume: 'AfO 25', page: '370' }),
+      afoRegisterEntryFactory.build({ afoVolume: 'AfO 52', page: '645' }),
+      afoRegisterEntryFactory.build({ afoVolume: 'AfO 40/41', page: '420' }),
+      afoRegisterEntryFactory.build({ afoVolume: 'AfO 48-49', page: '500' }),
     ]).map((group) => group.volume)
-    expect(volumes).toEqual(['AfO 26', 'AfO 25'])
+    expect(volumes).toEqual(['AfO 52', 'AfO 48-49', 'AfO 40/41', 'AfO 25'])
   })
 
   it('uses the afoVolume label verbatim, including the slash form', () => {
@@ -236,17 +239,18 @@ describe('groupAfoRegisterByVolume', () => {
 })
 
 describe('formatAfoRegisterVolumeTitle', () => {
-  it('uses the main word as the title and pairs the volume with the page', () => {
+  it('uses the main word as the title and pairs the volume with year and page', () => {
     const [group] = groupAfoRegisterByVolume([
       afoRegisterEntryFactory.build({
         mainWord: 'Adad',
         afoVolume: 'AfO 44/45',
+        year: '1993/1994',
         page: '615',
       }),
     ])
     expect(formatAfoRegisterVolumeTitle('Adad', group)).toEqual({
       mainWord: 'Adad',
-      details: 'AfO 44/45, 615',
+      details: 'AfO 44/45 (1993/1994), 615',
     })
   })
 
@@ -255,12 +259,13 @@ describe('formatAfoRegisterVolumeTitle', () => {
       afoRegisterEntryFactory.build({
         mainWord: 'Enlil',
         afoVolume: 'AfO 25',
+        year: '1977',
         page: '370',
       }),
     ])
     expect(formatAfoRegisterVolumeTitle('Enlil, Ellil', group)).toEqual({
       mainWord: 'Enlil',
-      details: 'AfO 25, 370',
+      details: 'AfO 25 (1977), 370',
     })
   })
 
@@ -269,17 +274,19 @@ describe('formatAfoRegisterVolumeTitle', () => {
       afoRegisterEntryFactory.build({
         mainWord: 'Akkad',
         afoVolume: 'AfO 44/45',
+        year: '1993/1994',
         page: '615',
       }),
       afoRegisterEntryFactory.build({
         mainWord: 'Akkad',
         afoVolume: 'AfO 44/45',
+        year: '1993/1994',
         page: '617',
       }),
     ])
     expect(formatAfoRegisterVolumeTitle('Akkad', group)).toEqual({
       mainWord: 'Akkad',
-      details: 'AfO 44/45, 615-617',
+      details: 'AfO 44/45 (1993/1994), 615-617',
     })
   })
 
@@ -288,17 +295,19 @@ describe('formatAfoRegisterVolumeTitle', () => {
       afoRegisterEntryFactory.build({
         mainWord: 'adû',
         afoVolume: 'AfO 50',
+        year: '2003',
         page: '545',
       }),
       afoRegisterEntryFactory.build({
         mainWord: 'Ad(d)u',
         afoVolume: 'AfO 50',
+        year: '2003',
         page: '545',
       }),
     ])
     expect(formatAfoRegisterVolumeTitle('adû', group)).toEqual({
       mainWord: 'adû, Ad(d)u',
-      details: 'AfO 50, 545',
+      details: 'AfO 50 (2003), 545',
     })
   })
 
@@ -307,12 +316,28 @@ describe('formatAfoRegisterVolumeTitle', () => {
       afoRegisterEntryFactory.build({
         mainWord: 'Adad',
         afoVolume: 'AfO 25',
+        year: '1977',
         page: '',
       }),
     ])
     expect(formatAfoRegisterVolumeTitle('Adad', group)).toEqual({
       mainWord: 'Adad',
-      details: 'AfO 25',
+      details: 'AfO 25 (1977)',
+    })
+  })
+
+  it('omits the year when no entry carries one', () => {
+    const [group] = groupAfoRegisterByVolume([
+      afoRegisterEntryFactory.build({
+        mainWord: 'Adad',
+        afoVolume: 'AfO 25',
+        year: '',
+        page: '370',
+      }),
+    ])
+    expect(formatAfoRegisterVolumeTitle('Adad', group)).toEqual({
+      mainWord: 'Adad',
+      details: 'AfO 25, 370',
     })
   })
 
@@ -321,12 +346,13 @@ describe('formatAfoRegisterVolumeTitle', () => {
       afoRegisterEntryFactory.build({
         mainWord: '',
         afoVolume: 'AfO 25',
+        year: '1977',
         page: '370',
       }),
     ])
     expect(formatAfoRegisterVolumeTitle('Enlil, Ellil', group)).toEqual({
       mainWord: 'Enlil, Ellil',
-      details: 'AfO 25, 370',
+      details: 'AfO 25 (1977), 370',
     })
   })
 })

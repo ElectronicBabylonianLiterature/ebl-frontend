@@ -44,6 +44,7 @@ const expectedEntry: RealiaEntry = {
       mainWord: 'Schwein',
       note: 'S.zucht',
       afoVolume: 'AfO 52',
+      year: '2018',
       page: '645',
       AfO: 'AfO 52 (2018), 645',
       reference: '(2018) 645',
@@ -286,5 +287,72 @@ describe('RealiaRepository reallexikon mapping', () => {
     apiClient.fetchJson.mockReturnValueOnce(Promise.resolve(dto))
     const result = await realiaRepository.find('realia_pig')
     expect(result.afoRegister[0].crossReferences).toEqual([])
+  })
+
+  it('falls back to the document id when realiaId is missing', async () => {
+    const dto = { ...entryDto, realiaId: undefined }
+    apiClient.fetchJson.mockReturnValueOnce(Promise.resolve(dto))
+    const result = await realiaRepository.find('Pig')
+    expect(result.realiaId).toBe('Pig')
+  })
+
+  it('derives afoVolume and page from the decorated AfO string when absent', async () => {
+    const dto = {
+      ...entryDto,
+      afoRegister: [
+        {
+          mainWord: 'Adad',
+          note: '',
+          AfO: 'AfO 40/41 (1993/1994), 420',
+          reference: '',
+          crossReference: '',
+        },
+      ],
+    }
+    apiClient.fetchJson.mockReturnValueOnce(Promise.resolve(dto))
+    const result = await realiaRepository.find('Pig')
+    expect(result.afoRegister[0].afoVolume).toBe('AfO 40/41')
+    expect(result.afoRegister[0].year).toBe('1993/1994')
+    expect(result.afoRegister[0].page).toBe('420')
+  })
+
+  it('derives the volume from an AfO string with a space-separated page', async () => {
+    const dto = {
+      ...entryDto,
+      afoRegister: [
+        {
+          mainWord: 'Schwein',
+          note: '',
+          AfO: 'AfO 52 (2018) 645',
+          reference: '',
+          crossReference: '',
+        },
+      ],
+    }
+    apiClient.fetchJson.mockReturnValueOnce(Promise.resolve(dto))
+    const result = await realiaRepository.find('Pig')
+    expect(result.afoRegister[0].afoVolume).toBe('AfO 52')
+    expect(result.afoRegister[0].year).toBe('2018')
+    expect(result.afoRegister[0].page).toBe('645')
+  })
+
+  it('derives an empty page from an AfO string that has none', async () => {
+    const dto = {
+      ...entryDto,
+      afoRegister: [
+        {
+          mainWord: 'Adad',
+          note: '',
+          AfO: 'AfO 25',
+          reference: '',
+          crossReference: '',
+        },
+      ],
+    }
+    apiClient.fetchJson.mockReturnValueOnce(Promise.resolve(dto))
+    const result = await realiaRepository.find('Pig')
+    expect(result.afoRegister[0].afoVolume).toBe('AfO 25')
+    expect(result.afoRegister[0].year).toBe('')
+    expect(result.afoRegister[0].page).toBe('')
   })
 })
