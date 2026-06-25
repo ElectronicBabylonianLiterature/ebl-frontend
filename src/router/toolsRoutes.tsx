@@ -1,27 +1,27 @@
 import React, { ReactNode } from 'react'
 import { Route, Redirect } from 'router/compat'
-import MarkupService from 'markup/application/MarkupService'
+import type MarkupService from 'markup/application/MarkupService'
 import {
-  BibliographySlugs,
-  DictionarySlugs,
-  SignSlugs,
   sitemapDefaults,
-} from 'router/sitemap'
+  type BibliographySlugs,
+  type DictionarySlugs,
+  type SignSlugs,
+} from 'router/sitemapConfig'
 import { HeadTagsService } from 'router/head'
 import NotFoundPage from 'NotFoundPage'
-import SignService from 'signs/application/SignService'
-import WordService from 'dictionary/application/WordService'
-import BibliographyService from 'bibliography/application/BibliographyService'
-import AfoRegisterService from 'afo-register/application/AfoRegisterService'
-import FragmentService from 'fragmentarium/application/FragmentService'
-import TextService from 'corpus/application/TextService'
-import DossiersService from 'dossiers/application/DossiersService'
+import type SignService from 'signs/application/SignService'
+import type WordService from 'dictionary/application/WordService'
+import type BibliographyService from 'bibliography/application/BibliographyService'
+import type AfoRegisterService from 'afo-register/application/AfoRegisterService'
+import type FragmentService from 'fragmentarium/application/FragmentService'
+import type TextService from 'corpus/application/TextService'
+import type DossiersService from 'dossiers/application/DossiersService'
 import BibliographyViewer from 'bibliography/ui/BibliographyViewer'
 import BibliographyEditor from 'bibliography/ui/BibliographyEditor'
 import SignDisplay from 'signs/ui/display/SignDisplay'
 import WordEditor from 'dictionary/ui/editor/WordEditor'
 import WordDisplay from 'dictionary/ui/display/WordDisplay'
-import Tools, { tabIds, TabId, getDisplayTitle } from 'router/Tools'
+import Tools, { tabIds, getDisplayTitle, type TabId } from 'router/Tools'
 
 const tabDescriptions: Record<TabId, string> = {
   signs:
