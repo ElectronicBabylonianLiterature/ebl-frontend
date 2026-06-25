@@ -1,7 +1,7 @@
 import React, { ReactNode } from 'react'
 import { Redirect, Route } from 'router/compat'
 import BibliographyService from 'bibliography/application/BibliographyService'
-import { BibliographySlugs } from 'router/sitemap'
+import { BibliographySlugs } from 'router/sitemapConfig'
 import AfoRegisterService from 'afo-register/application/AfoRegisterService'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import NotFoundPage from 'NotFoundPage'

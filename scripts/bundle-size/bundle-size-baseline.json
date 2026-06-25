@@ -1,0 +1,9 @@
+{
+  "initialJavaScriptBytes": 3838629,
+  "initialJavaScriptGzipBytes": 1010049,
+  "thresholdPercent": 10,
+  "generatedAt": "2026-05-07T07:40:21.668Z",
+  "entrypointJavaScriptAssets": [
+    "static/js/main.a90bc821.js"
+  ]
+}

@@ -323,7 +323,7 @@ exports[`Chapter Show chapter 1`] = `
               />
             </h3>
             <div
-              class="collapsing"
+              class="collapse"
               id="collapse-13"
             >
               <section>

@@ -6,7 +6,7 @@ import {
   DictionarySlugs,
   SignSlugs,
   sitemapDefaults,
-} from 'router/sitemap'
+} from 'router/sitemapConfig'
 import { HeadTagsService } from 'router/head'
 import NotFoundPage from 'NotFoundPage'
 import SignService from 'signs/application/SignService'
@@ -245,7 +245,6 @@ export default function ToolsRoutes({
     <Route
       key="ToolsNotFound"
       path="/tools/*"
-      exact
       render={(): ReactNode => <NotFoundPage />}
     />,
   ]

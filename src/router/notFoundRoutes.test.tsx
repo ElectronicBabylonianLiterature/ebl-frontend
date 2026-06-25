@@ -11,6 +11,7 @@ import CorpusRoutes from './corpusRoutes'
 import DictionaryRoutes from './dictionaryRoutes'
 import SignRoutes from './signRoutes'
 import ToolsRoutes from './toolsRoutes'
+import ResearchProjectRoutes from './researchProjectRoutes'
 import { newsletters } from 'about/ui/news'
 
 jest.mock('router/head', () => ({
@@ -44,165 +45,180 @@ function expectRedirectWithLocationPreserved({
       </Switch>
     </MemoryRouter>,
   )
-
   expect(screen.getByText(expectedLocation)).toBeInTheDocument()
 }
 
-describe('NotFoundPage rendering in FragmentariumRoutes', () => {
-  const nonExistentRoutes = [
-    '/library/search/non-existent',
-    '/library/Fragment.12345/match/non-existent',
-    '/library/Fragment.12345/annotate/non-existent',
-    '/library/Fragment.12345/non-existent',
-  ]
-  nonExistentRoutes.forEach((path) => {
-    test(`renders NotFoundPage for "${path}"`, () => {
-      render(
-        <MemoryRouter initialEntries={[path]}>
-          <Switch>
-            {[...FragmentariumRoutes({ ...getServices(), sitemap: false })]}
-          </Switch>
-        </MemoryRouter>,
-      )
-      expect(
-        screen.getByText(/The page you are looking for does not exist./i),
-      ).toBeInTheDocument()
-    })
-  })
-})
+function renderRedirect({
+  initialEntry,
+  routes,
+  target,
+}: {
+  initialEntry: string
+  routes: JSX.Element[]
+  target: { path: string; label: string }
+}): void {
+  render(
+    <MemoryRouter initialEntries={[initialEntry]}>
+      <Switch>
+        <Route path={target.path} render={() => <div>{target.label}</div>} />
+        {routes}
+      </Switch>
+    </MemoryRouter>,
+  )
+  expect(screen.getByText(target.label)).toBeInTheDocument()
+}
 
-describe('NotFoundPage rendering in AboutRoutes', () => {
-  const nonExistentAboutRoutes = [
-    '/about/non-existent-page',
-    '/about/invalid-section',
-    '/about/undefined-route',
-  ]
-  nonExistentAboutRoutes.forEach((path) => {
-    test(`renders NotFoundPage for "${path}"`, () => {
+function assertNotFoundRendered(): void {
+  expect(
+    screen.getByText(/The page you are looking for does not exist./i),
+  ).toBeInTheDocument()
+}
+
+const serviceProps = { ...getServices(), sitemap: false }
+type RouteFactory = (props: typeof serviceProps) => JSX.Element[]
+
+const notFoundCases: [string, RouteFactory, string[]][] = [
+  [
+    'FragmentariumRoutes',
+    FragmentariumRoutes,
+    [
+      '/library/search/non-existent',
+      '/library/Fragment.12345/match/non-existent',
+      '/library/Fragment.12345/annotate/non-existent',
+      '/library/Fragment.12345/non-existent',
+    ],
+  ],
+  [
+    'AboutRoutes',
+    AboutRoutes,
+    [
+      '/about/non-existent-page',
+      '/about/invalid-section',
+      '/about/undefined-route',
+    ],
+  ],
+  [
+    'BibliographyRoutes',
+    BibliographyRoutes,
+    [
+      '/bibliography/search/non-existent',
+      '/bibliography/afo-register/non-existent-page',
+      '/bibliography/afo-register/invalid-section',
+      '/bibliography/afo-register/undefined-route',
+    ],
+  ],
+  [
+    'CorpusRoutes',
+    CorpusRoutes,
+    [
+      '/corpus/Corpus.12345/non-existent-page',
+      '/corpus/Corpus.12345/invalid-section',
+      '/corpus/Corpus.12345/undefined-route',
+    ],
+  ],
+  [
+    'DictionaryRoutes',
+    DictionaryRoutes,
+    [
+      '/dictionary/search/non-existent',
+      '/dictionary/Dictionary.12345/non-existent-page',
+      '/dictionary/Dictionary.12345/invalid-section',
+      '/dictionary/Dictionary.12345/undefined-route',
+    ],
+  ],
+  [
+    'SignRoutes',
+    SignRoutes,
+    [
+      '/signs/search/non-existent',
+      '/signs/Signs.12345/non-existent-page',
+      '/signs/Signs.12345/invalid-section',
+      '/signs/Signs.12345/undefined-route',
+    ],
+  ],
+  [
+    'ToolsRoutes',
+    ToolsRoutes,
+    [
+      '/tools/date-converter/non-existent-page',
+      '/tools/date-converter/invalid-section',
+      '/tools/date-converter/undefined-route',
+    ],
+  ],
+  [
+    'ResearchProjectRoutes',
+    ResearchProjectRoutes,
+    [
+      '/projects/unknown-project',
+      '/projects/CAIC/unknown-path',
+      '/projects/RECC/unknown-path/deeper',
+    ],
+  ],
+]
+
+describe.each(notFoundCases)(
+  '%s NotFoundPage',
+  (_name, routeFactory, paths) => {
+    test.each(paths)('renders NotFoundPage for %s', (path) => {
       render(
         <MemoryRouter initialEntries={[path]}>
-          <Switch>
-            {[...AboutRoutes({ ...getServices(), sitemap: false })]}
-          </Switch>
+          <Switch>{[...routeFactory(serviceProps)]}</Switch>
         </MemoryRouter>,
       )
-      expect(
-        screen.getByText(/The page you are looking for does not exist./i),
-      ).toBeInTheDocument()
+      assertNotFoundRendered()
     })
-  })
-})
+  },
+)
 
 describe('AboutRoutes redirects', () => {
   test('redirects "/about" to "/about/library"', () => {
-    render(
-      <MemoryRouter initialEntries={['/about']}>
-        <Switch>
-          <Route
-            path="/about/library"
-            render={() => <div>About Redirect Target</div>}
-          />
-          {[...AboutRoutes({ ...getServices(), sitemap: false })]}
-        </Switch>
-      </MemoryRouter>,
-    )
-
-    expect(screen.getByText('About Redirect Target')).toBeInTheDocument()
+    renderRedirect({
+      initialEntry: '/about',
+      routes: [...AboutRoutes(serviceProps)],
+      target: { path: '/about/library', label: 'About Redirect Target' },
+    })
   })
 
   test('redirects "/news" to latest newsletter', () => {
-    const latestNewsletterPath = `/about/news/${newsletters[0].number}`
-
-    render(
-      <MemoryRouter initialEntries={['/news']}>
-        <Switch>
-          <Route
-            path={latestNewsletterPath}
-            render={() => <div>News Redirect Target</div>}
-          />
-          {[...AboutRoutes({ ...getServices(), sitemap: false })]}
-        </Switch>
-      </MemoryRouter>,
-    )
-
-    expect(screen.getByText('News Redirect Target')).toBeInTheDocument()
+    const path = `/about/news/${newsletters[0].number}`
+    renderRedirect({
+      initialEntry: '/news',
+      routes: [...AboutRoutes(serviceProps)],
+      target: { path, label: 'News Redirect Target' },
+    })
   })
 
   test('redirects "/about/news" to latest newsletter', () => {
-    const latestNewsletterPath = `/about/news/${newsletters[0].number}`
-
-    render(
-      <MemoryRouter initialEntries={['/about/news']}>
-        <Switch>
-          <Route
-            path={latestNewsletterPath}
-            render={() => <div>About News Redirect Target</div>}
-          />
-          {[...AboutRoutes({ ...getServices(), sitemap: false })]}
-        </Switch>
-      </MemoryRouter>,
-    )
-
-    expect(screen.getByText('About News Redirect Target')).toBeInTheDocument()
+    const path = `/about/news/${newsletters[0].number}`
+    renderRedirect({
+      initialEntry: '/about/news',
+      routes: [...AboutRoutes(serviceProps)],
+      target: { path, label: 'About News Redirect Target' },
+    })
   })
 
   test('redirects "/about/dictionary" to "/about/akkadian-dictionary"', () => {
-    render(
-      <MemoryRouter initialEntries={['/about/dictionary']}>
-        <Switch>
-          <Route
-            path="/about/akkadian-dictionary"
-            render={() => <div>Akkadian Dictionary Redirect Target</div>}
-          />
-          {[...AboutRoutes({ ...getServices(), sitemap: false })]}
-        </Switch>
-      </MemoryRouter>,
-    )
-
-    expect(
-      screen.getByText('Akkadian Dictionary Redirect Target'),
-    ).toBeInTheDocument()
-  })
-})
-
-describe('NotFoundPage rendering in BibliographyRoutes', () => {
-  const nonExistentAboutRoutes = [
-    '/bibliography/search/non-existent',
-    '/bibliography/afo-register/non-existent-page',
-    '/bibliography/afo-register/invalid-section',
-    '/bibliography/afo-register/undefined-route',
-  ]
-  nonExistentAboutRoutes.forEach((path) => {
-    test(`renders NotFoundPage for "${path}"`, () => {
-      render(
-        <MemoryRouter initialEntries={[path]}>
-          <Switch>
-            {[...BibliographyRoutes({ ...getServices(), sitemap: false })]}
-          </Switch>
-        </MemoryRouter>,
-      )
-      expect(
-        screen.getByText(/The page you are looking for does not exist./i),
-      ).toBeInTheDocument()
+    renderRedirect({
+      initialEntry: '/about/dictionary',
+      routes: [...AboutRoutes(serviceProps)],
+      target: {
+        path: '/about/akkadian-dictionary',
+        label: 'Akkadian Dictionary Redirect Target',
+      },
     })
   })
 })
 
 describe('BibliographyRoutes redirects', () => {
   test('redirects "/bibliography" to "/tools/references"', () => {
-    render(
-      <MemoryRouter initialEntries={['/bibliography']}>
-        <Switch>
-          <Route
-            path="/tools/references"
-            render={() => <div>Bibliography Redirect Target</div>}
-          />
-          {[...BibliographyRoutes({ ...getServices(), sitemap: false })]}
-        </Switch>
-      </MemoryRouter>,
-    )
-
-    expect(screen.getByText('Bibliography Redirect Target')).toBeInTheDocument()
+    renderRedirect({
+      initialEntry: '/bibliography',
+      routes: [...BibliographyRoutes(serviceProps)],
+      target: {
+        path: '/tools/references',
+        label: 'Bibliography Redirect Target',
+      },
+    })
   })
 
   test('preserves query and hash for "/bibliography/afo-register" redirect', () => {
@@ -210,7 +226,7 @@ describe('BibliographyRoutes redirects', () => {
       initialEntry: '/bibliography/afo-register?text=EN&textNumber=1#results',
       targetPath: '/tools/afo-register',
       expectedLocation: '/tools/afo-register?text=EN&textNumber=1#results',
-      routes: [...BibliographyRoutes({ ...getServices(), sitemap: false })],
+      routes: [...BibliographyRoutes(serviceProps)],
     })
   })
 
@@ -219,7 +235,7 @@ describe('BibliographyRoutes redirects', () => {
       initialEntry: '/bibliography/references/new-reference?mode=quick#create',
       targetPath: '/tools/references/new-reference',
       expectedLocation: '/tools/references/new-reference?mode=quick#create',
-      routes: [...BibliographyRoutes({ ...getServices(), sitemap: false })],
+      routes: [...BibliographyRoutes(serviceProps)],
     })
   })
 
@@ -228,7 +244,7 @@ describe('BibliographyRoutes redirects', () => {
       initialEntry: '/bibliography/references/Reference.123?tab=meta#entry',
       targetPath: '/tools/references/:id',
       expectedLocation: '/tools/references/Reference.123?tab=meta#entry',
-      routes: [...BibliographyRoutes({ ...getServices(), sitemap: false })],
+      routes: [...BibliographyRoutes(serviceProps)],
     })
   })
 
@@ -239,107 +255,43 @@ describe('BibliographyRoutes redirects', () => {
       targetPath: '/tools/references/:id/edit',
       expectedLocation:
         '/tools/references/Reference.123/edit?tab=history#editor',
-      routes: [...BibliographyRoutes({ ...getServices(), sitemap: false })],
-    })
-  })
-})
-
-describe('NotFoundPage rendering in CorpusRoutes', () => {
-  const nonExistentAboutRoutes = [
-    '/corpus/Corpus.12345/non-existent-page',
-    '/corpus/Corpus.12345/invalid-section',
-    '/corpus/Corpus.12345/undefined-route',
-  ]
-  nonExistentAboutRoutes.forEach((path) => {
-    test(`renders NotFoundPage for "${path}"`, () => {
-      render(
-        <MemoryRouter initialEntries={[path]}>
-          <Switch>
-            {[...CorpusRoutes({ ...getServices(), sitemap: false })]}
-          </Switch>
-        </MemoryRouter>,
-      )
-      expect(
-        screen.getByText(/The page you are looking for does not exist./i),
-      ).toBeInTheDocument()
-    })
-  })
-})
-
-describe('NotFoundPage rendering in DictionaryRoutes', () => {
-  const nonExistentAboutRoutes = [
-    '/dictionary/search/non-existent',
-    '/dictionary/Dictionary.12345/non-existent-page',
-    '/dictionary/Dictionary.12345/invalid-section',
-    '/dictionary/Dictionary.12345/undefined-route',
-  ]
-  nonExistentAboutRoutes.forEach((path) => {
-    test(`renders NotFoundPage for "${path}"`, () => {
-      render(
-        <MemoryRouter initialEntries={[path]}>
-          <Switch>
-            {[...DictionaryRoutes({ ...getServices(), sitemap: false })]}
-          </Switch>
-        </MemoryRouter>,
-      )
-      expect(
-        screen.getByText(/The page you are looking for does not exist./i),
-      ).toBeInTheDocument()
+      routes: [...BibliographyRoutes(serviceProps)],
     })
   })
 })
 
 describe('DictionaryRoutes redirects', () => {
   test('redirects "/dictionary" to tools dictionary', () => {
-    render(
-      <MemoryRouter initialEntries={['/dictionary']}>
-        <Switch>
-          {[...DictionaryRoutes({ ...getServices(), sitemap: false })]}
-          <Route
-            path="/tools/dictionary"
-            render={() => <div>Dictionary Redirect Target</div>}
-          />
-        </Switch>
-      </MemoryRouter>,
-    )
-
-    expect(screen.getByText('Dictionary Redirect Target')).toBeInTheDocument()
+    renderRedirect({
+      initialEntry: '/dictionary',
+      routes: [...DictionaryRoutes(serviceProps)],
+      target: {
+        path: '/tools/dictionary',
+        label: 'Dictionary Redirect Target',
+      },
+    })
   })
 
   test('redirects "/dictionary/:id" to tools dictionary detail', () => {
-    render(
-      <MemoryRouter initialEntries={['/dictionary/Dictionary.12345']}>
-        <Switch>
-          {[...DictionaryRoutes({ ...getServices(), sitemap: false })]}
-          <Route
-            path="/tools/dictionary/:id"
-            render={() => <div>Dictionary Detail Redirect Target</div>}
-          />
-        </Switch>
-      </MemoryRouter>,
-    )
-
-    expect(
-      screen.getByText('Dictionary Detail Redirect Target'),
-    ).toBeInTheDocument()
+    renderRedirect({
+      initialEntry: '/dictionary/Dictionary.12345',
+      routes: [...DictionaryRoutes(serviceProps)],
+      target: {
+        path: '/tools/dictionary/:id',
+        label: 'Dictionary Detail Redirect Target',
+      },
+    })
   })
 
   test('redirects "/dictionary/:id/edit" to tools dictionary editor', () => {
-    render(
-      <MemoryRouter initialEntries={['/dictionary/Dictionary.12345/edit']}>
-        <Switch>
-          {[...DictionaryRoutes({ ...getServices(), sitemap: false })]}
-          <Route
-            path="/tools/dictionary/:id/edit"
-            render={() => <div>Dictionary Edit Redirect Target</div>}
-          />
-        </Switch>
-      </MemoryRouter>,
-    )
-
-    expect(
-      screen.getByText('Dictionary Edit Redirect Target'),
-    ).toBeInTheDocument()
+    renderRedirect({
+      initialEntry: '/dictionary/Dictionary.12345/edit',
+      routes: [...DictionaryRoutes(serviceProps)],
+      target: {
+        path: '/tools/dictionary/:id/edit',
+        label: 'Dictionary Edit Redirect Target',
+      },
+    })
   })
 
   test('preserves query and hash for "/dictionary/:id" redirect', () => {
@@ -347,65 +299,29 @@ describe('DictionaryRoutes redirects', () => {
       initialEntry: '/dictionary/Dictionary.12345?tab=forms#entry',
       targetPath: '/tools/dictionary/:id',
       expectedLocation: '/tools/dictionary/Dictionary.12345?tab=forms#entry',
-      routes: [...DictionaryRoutes({ ...getServices(), sitemap: false })],
-    })
-  })
-})
-
-describe('NotFoundPage rendering in SignRoutes', () => {
-  const nonExistentAboutRoutes = [
-    '/signs/search/non-existent',
-    '/signs/Signs.12345/non-existent-page',
-    '/signs/Signs.12345/invalid-section',
-    '/signs/Signs.12345/undefined-route',
-  ]
-  nonExistentAboutRoutes.forEach((path) => {
-    test(`renders NotFoundPage for "${path}"`, () => {
-      render(
-        <MemoryRouter initialEntries={[path]}>
-          <Switch>
-            {[...SignRoutes({ ...getServices(), sitemap: false })]}
-          </Switch>
-        </MemoryRouter>,
-      )
-      expect(
-        screen.getByText(/The page you are looking for does not exist./i),
-      ).toBeInTheDocument()
+      routes: [...DictionaryRoutes(serviceProps)],
     })
   })
 })
 
 describe('SignRoutes redirects', () => {
   test('redirects "/signs" to tools signs', () => {
-    render(
-      <MemoryRouter initialEntries={['/signs']}>
-        <Switch>
-          {[...SignRoutes({ ...getServices(), sitemap: false })]}
-          <Route
-            path="/tools/signs"
-            render={() => <div>Signs Redirect Target</div>}
-          />
-        </Switch>
-      </MemoryRouter>,
-    )
-
-    expect(screen.getByText('Signs Redirect Target')).toBeInTheDocument()
+    renderRedirect({
+      initialEntry: '/signs',
+      routes: [...SignRoutes(serviceProps)],
+      target: { path: '/tools/signs', label: 'Signs Redirect Target' },
+    })
   })
 
   test('redirects "/signs/:id" to tools signs detail', () => {
-    render(
-      <MemoryRouter initialEntries={['/signs/Signs.12345']}>
-        <Switch>
-          {[...SignRoutes({ ...getServices(), sitemap: false })]}
-          <Route
-            path="/tools/signs/:id"
-            render={() => <div>Signs Detail Redirect Target</div>}
-          />
-        </Switch>
-      </MemoryRouter>,
-    )
-
-    expect(screen.getByText('Signs Detail Redirect Target')).toBeInTheDocument()
+    renderRedirect({
+      initialEntry: '/signs/Signs.12345',
+      routes: [...SignRoutes(serviceProps)],
+      target: {
+        path: '/tools/signs/:id',
+        label: 'Signs Detail Redirect Target',
+      },
+    })
   })
 
   test('preserves query and hash for "/signs/:id" redirect', () => {
@@ -413,47 +329,17 @@ describe('SignRoutes redirects', () => {
       initialEntry: '/signs/Signs.12345?view=variants#glyph',
       targetPath: '/tools/signs/:id',
       expectedLocation: '/tools/signs/Signs.12345?view=variants#glyph',
-      routes: [...SignRoutes({ ...getServices(), sitemap: false })],
-    })
-  })
-})
-
-describe('NotFoundPage rendering in ToolsRoutes', () => {
-  const nonExistentAboutRoutes = [
-    '/tools/date-converter/non-existent-page',
-    '/tools/date-converter/invalid-section',
-    '/tools/date-converter/undefined-route',
-  ]
-  nonExistentAboutRoutes.forEach((path) => {
-    test(`renders NotFoundPage for "${path}"`, () => {
-      render(
-        <MemoryRouter initialEntries={[path]}>
-          <Switch>
-            {[...ToolsRoutes({ ...getServices(), sitemap: false })]}
-          </Switch>
-        </MemoryRouter>,
-      )
-      expect(
-        screen.getByText(/The page you are looking for does not exist./i),
-      ).toBeInTheDocument()
+      routes: [...SignRoutes(serviceProps)],
     })
   })
 })
 
 describe('ToolsRoutes redirects', () => {
   test('redirects "/tools" to "/tools/introduction"', () => {
-    render(
-      <MemoryRouter initialEntries={['/tools']}>
-        <Switch>
-          <Route
-            path="/tools/introduction"
-            render={() => <div>Tools Redirect Target</div>}
-          />
-          {[...ToolsRoutes({ ...getServices(), sitemap: false })]}
-        </Switch>
-      </MemoryRouter>,
-    )
-
-    expect(screen.getByText('Tools Redirect Target')).toBeInTheDocument()
+    renderRedirect({
+      initialEntry: '/tools',
+      routes: [...ToolsRoutes(serviceProps)],
+      target: { path: '/tools/introduction', label: 'Tools Redirect Target' },
+    })
   })
 })

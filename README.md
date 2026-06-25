@@ -93,6 +93,43 @@ yarn test
 
 `yarn test --coverage --watchAll`
 
+## Bundle size tracking
+
+Run the full local bundle-size check against the committed repository baseline:
+
+```sh
+yarn bundle-size:ci
+```
+
+Record a new baseline from the current build when a deliberate budget change is approved:
+
+```sh
+yarn build:bundle-size
+yarn bundle-size:record-baseline
+```
+
+To mirror pull-request enforcement locally, build first and then point the checker at a baseline file:
+
+```sh
+yarn build:bundle-size
+yarn bundle-size:analyze
+node scripts/bundle-size/checkBundleBudgetCli.mjs --baseline path/to/baseline.json --baseline-source master
+```
+
+Bootstrap mode is only for first rollout, or whenever `master` does not yet have a committed baseline:
+
+```sh
+node scripts/bundle-size/checkBundleBudgetCli.mjs --baseline path/to/baseline.json --baseline-source bootstrap --allow-budget-exceed
+```
+
+Bundle-size artifacts are written to:
+
+- `build/bundle-size/source-map-explorer.json`
+- `build/bundle-size/bundle-budget-report.json`
+- `scripts/bundle-size/bundle-size-baseline.json`
+
+On pull requests, CI compares bundle growth against the baseline from `master` when available, and otherwise uses bootstrap mode.
+
 ## Secret scanning
 
 This repository blocks commits that introduce detected secrets.

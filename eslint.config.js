@@ -2,6 +2,7 @@
 const { FlatCompat } = require('@eslint/eslintrc')
 const js = require('@eslint/js')
 const compatPlugin = require('eslint-plugin-compat')
+const globals = require('globals')
 
 const compat = new FlatCompat({
   baseDirectory: __dirname,
@@ -94,6 +95,15 @@ module.exports = [
       SharedArrayBuffer: 'readonly',
     },
   }),
+  {
+    files: ['scripts/**/*.{mjs,ts}'],
+    languageOptions: {
+      globals: {
+        ...globals.node,
+        ...globals.jest,
+      },
+    },
+  },
   {
     files: ['src/serviceWorker.ts'],
     plugins: {

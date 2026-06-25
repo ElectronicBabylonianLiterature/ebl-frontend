@@ -310,7 +310,7 @@ export function PhiladelphiaLink({ number }: { number: string }): JSX.Element {
     />
   )
 }
-export function spurlockLink({ number }: { number: string }): JSX.Element {
+export function SpurlockLink({ number }: { number: string }): JSX.Element {
   return (
     <ExternalNumberLink
       number={number}

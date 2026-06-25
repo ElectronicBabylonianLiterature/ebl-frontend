@@ -4,7 +4,7 @@ import TextService from 'corpus/application/TextService'
 import WordService from 'dictionary/application/WordService'
 import { Route, Redirect } from 'router/compat'
 import SignService from 'signs/application/SignService'
-import { DictionarySlugs } from 'router/sitemap'
+import { DictionarySlugs } from 'router/sitemapConfig'
 import NotFoundPage from 'NotFoundPage'
 import withSearchAndHash from 'router/withSearchAndHash'
 
