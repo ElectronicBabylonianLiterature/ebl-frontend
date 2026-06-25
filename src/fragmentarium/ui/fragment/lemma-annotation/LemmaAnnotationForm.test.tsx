@@ -28,13 +28,15 @@ const properNounWord: Word = wordFactory.build({
   _id: 'marduk DN',
   lemma: ['marduk'],
   homonym: 'I',
-  pos: ['DN'],
+  pos: [],
+  namedEntityTags: ['DN'],
 })
 const secondProperNounWord: Word = wordFactory.build({
   _id: 'babylon GN',
   lemma: ['babylon'],
   homonym: 'I',
-  pos: ['GN', 'N'],
+  pos: ['N'],
+  namedEntityTags: ['GN'],
 })
 const mixedWords = [nounWord, properNounWord, secondProperNounWord]
 

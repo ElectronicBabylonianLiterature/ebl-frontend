@@ -1,7 +1,8 @@
-import Word from 'dictionary/domain/Word'
+import Word, { wordPosLabels } from 'dictionary/domain/Word'
 
 function createGuideWordAndPos(word: Word): string {
-  const pos = word.pos.length > 0 ? ` (${word.pos.join(', ')})` : ''
+  const posLabels = wordPosLabels(word)
+  const pos = posLabels.length > 0 ? ` (${posLabels.join(', ')})` : ''
   return `, ${word.guideWord}${pos}`
 }
 

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Button, Form, Modal, Alert } from 'react-bootstrap'
 import WordService from 'dictionary/application/WordService'
 import Word from 'dictionary/domain/Word'
-import { NOUN_POS_TAGS } from 'dictionary/domain/partOfSpeech'
+import { NAMED_ENTITY_TAGS } from 'dictionary/domain/namedEntityTags'
 
 interface ProperNounCreationPanelProps {
   wordService: WordService
@@ -43,12 +43,12 @@ function formatProperNounInput(input: string): string {
 function shouldDisableCreateButton({
   hasInputValue,
   hasExactMatch,
-  hasPosTag,
+  hasNamedEntityTag,
   loading,
 }: {
   hasInputValue: boolean
   hasExactMatch: boolean
-  hasPosTag: boolean
+  hasNamedEntityTag: boolean
   loading: boolean
 }): boolean {
   if (!hasInputValue) {
@@ -57,7 +57,7 @@ function shouldDisableCreateButton({
   if (hasExactMatch) {
     return true
   }
-  if (!hasPosTag) {
+  if (!hasNamedEntityTag) {
     return true
   }
   return loading
@@ -103,7 +103,7 @@ export default function ProperNounCreationPanel({
   onCreated,
 }: ProperNounCreationPanelProps): JSX.Element {
   const [properNounInputValue, setProperNounInputValue] = useState('')
-  const [properNounPosTag, setProperNounPosTag] = useState('')
+  const [namedEntityTag, setNamedEntityTag] = useState('')
   const [{ exactMatch, lengthMatch }, setMatchState] =
     useState<MatchState>(emptyMatchState)
   const [loading, setLoading] = useState(false)
@@ -148,7 +148,7 @@ export default function ProperNounCreationPanel({
     setLoading(true)
 
     wordService
-      .createProperNoun(properNounInputValue, properNounPosTag)
+      .createProperNoun(properNounInputValue, namedEntityTag)
       .then((createdWord) => validateCreatedWord(createdWord))
       .then((createdWord) => {
         onCreated(createdWord)
@@ -162,11 +162,11 @@ export default function ProperNounCreationPanel({
 
   const hasInputValue = Boolean(properNounInputValue.trim())
   const hasExactMatch = Boolean(exactMatch)
-  const hasPosTag = Boolean(properNounPosTag)
+  const hasNamedEntityTag = Boolean(namedEntityTag)
   const createDisabled = shouldDisableCreateButton({
     hasInputValue,
     hasExactMatch,
-    hasPosTag,
+    hasNamedEntityTag,
     loading,
   })
 
@@ -194,18 +194,20 @@ export default function ProperNounCreationPanel({
     </>
   )
 
-  const posTagSelect = (
+  const namedEntityTagSelect = (
     <>
-      <Form.Label className={'mt-3'}>Part of Speech</Form.Label>
+      <Form.Label className={'mt-3'}>
+        Named entity (proper noun) type
+      </Form.Label>
       <Form.Control
         as="select"
-        value={properNounPosTag}
-        onChange={(e) => setProperNounPosTag(e.target.value)}
-        aria-label="properNoun-pos-select"
+        value={namedEntityTag}
+        onChange={(e) => setNamedEntityTag(e.target.value)}
+        aria-label="properNoun-type-select"
       >
         <option value="">---</option>
-        {Object.entries(NOUN_POS_TAGS).map(([label, value]) => (
-          <option key={value} value={value}>
+        {Object.entries(NAMED_ENTITY_TAGS).map(([code, label]) => (
+          <option key={code} value={code}>
             {label}
           </option>
         ))}
@@ -240,7 +242,7 @@ export default function ProperNounCreationPanel({
         {error && <Alert variant="danger">{error.message}</Alert>}
         <Form.Group>
           {properNounInput}
-          {posTagSelect}
+          {namedEntityTagSelect}
         </Form.Group>
       </Modal.Body>
       <Modal.Footer className={'lemmatizer__editor__properNoun-footer'}>

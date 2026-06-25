@@ -3,6 +3,7 @@ import { FormGroup, FormLabel, FormControl } from 'react-bootstrap'
 import _ from 'lodash'
 
 import TextListInput from './TextListInput'
+import { NAMED_ENTITY_TAGS } from 'dictionary/domain/namedEntityTags'
 
 const verb = 'V'
 
@@ -27,32 +28,19 @@ const positionsOfSpeech: { [key: string]: string } = {
   SBJ: 'subjunction',
 }
 
-const properNouns: { [key: string]: string } = {
-  AN: 'Agricultural (locus) Name',
-  CN: 'Celestial Name',
-  DN: 'Divine Name',
-  EN: 'Ethnos Name',
-  FN: 'Field Name',
-  GN: 'Geographical Name (lands and other geographical entities without their own tag)',
-  LN: 'Line Name (ancestral clan)',
-  MN: 'Month Name',
-  ON: 'Object Name',
-  PN: 'Personal Name',
-  QN: 'Quarter Name (city area)',
-  RN: 'Royal Name',
-  SN: 'Settlement Name',
-  TN: 'Temple Name',
-  WN: 'Watercourse Name',
-  YN: 'Year Name',
-}
+const posOptions = _.map(positionsOfSpeech, (value, key) => ({
+  value: key,
+  label: value,
+}))
 
-const posOptions = _.map(
-  { ...positionsOfSpeech, ...properNouns },
-  (value, key) => ({
-    value: key,
-    label: value,
-  }),
-)
+const namedEntityOptions = _.map(NAMED_ENTITY_TAGS, (value, key) => ({
+  value: key,
+  label: value,
+}))
+
+function selectedValues(select: HTMLSelectElement): string[] {
+  return _(select.options).filter('selected').map('value').value()
+}
 
 class PosInput extends Component<{ value; onChange }> {
   updatePos = (
@@ -60,9 +48,18 @@ class PosInput extends Component<{ value; onChange }> {
       HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
     >,
   ): void => {
-    const select = event.currentTarget as HTMLSelectElement
     this.props.onChange({
-      pos: _(select.options).filter('selected').map('value').value(),
+      pos: selectedValues(event.currentTarget as HTMLSelectElement),
+    })
+  }
+
+  updateNamedEntityTags = (
+    event: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >,
+  ): void => {
+    this.props.onChange({
+      namedEntityTags: selectedValues(event.currentTarget as HTMLSelectElement),
     })
   }
 
@@ -82,6 +79,21 @@ class PosInput extends Component<{ value; onChange }> {
             multiple
           >
             {posOptions.map((option) => (
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+            ))}
+          </FormControl>
+        </FormGroup>
+        <FormGroup controlId={_.uniqueId('NamedEntityInput-')}>
+          <FormLabel>Named entity (proper noun) type</FormLabel>
+          <FormControl
+            as="select"
+            value={this.props.value.namedEntityTags}
+            onChange={this.updateNamedEntityTags}
+            multiple
+          >
+            {namedEntityOptions.map((option) => (
               <option key={option.value} value={option.value}>
                 {option.label}
               </option>

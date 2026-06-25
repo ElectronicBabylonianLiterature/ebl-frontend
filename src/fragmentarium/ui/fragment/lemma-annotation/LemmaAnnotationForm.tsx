@@ -1,6 +1,5 @@
 import WordService from 'dictionary/application/WordService'
 import Word from 'dictionary/domain/Word'
-import { PROPER_NOUN_POS_VALUES } from 'dictionary/domain/partOfSpeech'
 import EditableToken from 'fragmentarium/ui/fragment/linguistic-annotation/EditableToken'
 import React from 'react'
 import _ from 'lodash'
@@ -17,19 +16,21 @@ import {
   MultiValueLabel,
 } from 'fragmentarium/ui/lemmatization/LemmaSelectionForm'
 
-function isSumerianOrEmesal(language: string | undefined): boolean {
-  return language === 'SUMERIAN' || language === 'EMESAL'
+const NAMED_ENTITY_LANGUAGES: readonly string[] = ['SUMERIAN', 'EMESAL']
+
+function isNamedEntityLanguage(language: string | undefined): boolean {
+  return language !== undefined && NAMED_ENTITY_LANGUAGES.includes(language)
 }
 
-function isProperNoun(word: Word): boolean {
-  return word.pos.some((pos) => PROPER_NOUN_POS_VALUES.includes(pos))
+function isNamedEntity(word: Word): boolean {
+  return word.namedEntityTags.length > 0
 }
 
 function filterWordsForTokenLanguage(
   words: readonly Word[],
   language: string | undefined,
 ): readonly Word[] {
-  return isSumerianOrEmesal(language) ? words.filter(isProperNoun) : words
+  return isNamedEntityLanguage(language) ? words.filter(isNamedEntity) : words
 }
 
 function getTokenLanguage(token: Token | undefined): string | undefined {

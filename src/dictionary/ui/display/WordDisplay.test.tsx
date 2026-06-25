@@ -74,6 +74,7 @@ const word = {
   meaning:
     'Bo hafe jed egeragpo viwidih zutu we ijcegwoj opuziw agse wad eksorep edzu tuum za.',
   pos: ['MOD', 'PRP'],
+  namedEntityTags: [],
   source: '**source**',
   guideWord: 'fe',
   arabicGuideWord: 'fe',
