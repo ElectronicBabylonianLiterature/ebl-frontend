@@ -45,7 +45,7 @@ exports[`Snapshot 1`] = `
                   </p>
                   <p>
                     Excavation no.: 
-                    ruos.3
+                    jum.3
                   </p>
                   <p>
                     Provenance: 
@@ -5577,7 +5577,9 @@ exports[`Snapshot 1`] = `
             </div>
             <div
               class="fragment-result__preview col-sm-4 col-12"
-            />
+            >
+              <div />
+            </div>
           </div>
           <hr />
         </div>
@@ -5598,9 +5600,9 @@ exports[`Snapshot 1`] = `
                 class="fragment-result__fragment-number"
               >
                 <a
-                  href="/library/fa.4"
+                  href="/library/udre.4"
                 >
-                  fa.4
+                  udre.4
                 </a>
                  (Hel)
               </h4>
@@ -5610,11 +5612,11 @@ exports[`Snapshot 1`] = `
                 <small>
                   <p>
                     Accession no.: 
-                    imfapud.4
+                    uweobe.4
                   </p>
                   <p>
                     Excavation no.: 
-                    cicaz.4
+                    usuco.4
                   </p>
                   <p>
                     Provenance: 
@@ -11140,7 +11142,9 @@ exports[`Snapshot 1`] = `
             </div>
             <div
               class="fragment-result__preview col-sm-4 col-12"
-            />
+            >
+              <div />
+            </div>
           </div>
           <hr />
         </div>

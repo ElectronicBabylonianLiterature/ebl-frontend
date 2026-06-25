@@ -93,6 +93,7 @@ export const ExternalNumberTypes = [
   'ontarioNumber',
   'kelseyNumber',
   'harvardHamNumber',
+  'etcsriNumber',
   'sketchfabNumber',
   'arkNumber',
   'dublinTcdNumber',

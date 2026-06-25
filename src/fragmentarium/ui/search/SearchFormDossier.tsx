@@ -1,10 +1,13 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { Form, Row, Col } from 'react-bootstrap'
 import AsyncSelect from 'react-select/async'
 import { usePrevious } from 'common/hooks/usePrevious'
 import { DossierRecordSuggestion } from 'dossiers/domain/DossierRecord'
 import { HelpCol, DossierSearchHelp } from 'fragmentarium/ui/SearchHelp'
 import { helpColSize } from 'fragmentarium/ui/SearchForm'
+
+const dossierSuggestionDebounceMilliseconds = 250
+const dossierSuggestionMinimumLength = 1
 
 interface SelectedOption {
   value: string
@@ -56,6 +59,23 @@ export default function SearchFormDossier({
     value ? { value, label: value } : null,
   )
   const prevValue = usePrevious(value)
+  const requestSequence = useRef(0)
+  const pendingTimeout = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const pendingResolve = useRef<((options: SelectedOption[]) => void) | null>(
+    null,
+  )
+
+  const clearPendingLoad = useCallback(() => {
+    if (pendingTimeout.current) {
+      clearTimeout(pendingTimeout.current)
+      pendingTimeout.current = null
+    }
+
+    if (pendingResolve.current) {
+      pendingResolve.current([])
+      pendingResolve.current = null
+    }
+  }, [])
 
   useEffect(() => {
     if (value !== prevValue) {
@@ -63,24 +83,46 @@ export default function SearchFormDossier({
     }
   }, [value, prevValue])
 
-  const loadOptions = (
-    inputValue: string,
-    callback: (options: SelectedOption[]) => void,
-  ) => {
-    const result = searchSuggestions(inputValue || '', filters)
-    if (!result || typeof result.then !== 'function') {
-      callback([])
-      return
+  useEffect(() => {
+    return () => {
+      clearPendingLoad()
     }
-    result
-      .then((entries) => {
-        const options = entries
-          .map(createOption)
-          .filter((o): o is SelectedOption => o !== null)
-        options.sort((a, b) => collator.compare(a.label, b.label))
-        callback(options)
-      })
-      .catch(() => callback([]))
+  }, [clearPendingLoad])
+
+  const loadOptions = (inputValue: string): Promise<SelectedOption[]> => {
+    const normalizedInput = inputValue.trim()
+    const requestId = requestSequence.current + 1
+    requestSequence.current = requestId
+    clearPendingLoad()
+
+    if (normalizedInput.length < dossierSuggestionMinimumLength) {
+      return Promise.resolve([])
+    }
+
+    return new Promise((resolve) => {
+      pendingResolve.current = resolve
+      pendingTimeout.current = setTimeout(() => {
+        pendingTimeout.current = null
+        pendingResolve.current = null
+
+        searchSuggestions(normalizedInput, filters)
+          .then((entries) => {
+            if (requestSequence.current !== requestId) {
+              resolve([])
+              return
+            }
+
+            const options = entries
+              .map(createOption)
+              .filter((o): o is SelectedOption => o !== null)
+            options.sort((a, b) => collator.compare(a.label, b.label))
+            resolve(options)
+          })
+          .catch(() => {
+            resolve([])
+          })
+      }, dossierSuggestionDebounceMilliseconds)
+    })
   }
 
   const handleChange = (option: SelectedOption | null | undefined) => {
@@ -103,7 +145,7 @@ export default function SearchFormDossier({
           aria-label={ariaLabel}
           placeholder="Dossiers"
           cacheOptions
-          defaultOptions
+          defaultOptions={false}
           loadOptions={loadOptions}
           onChange={handleChange}
           value={selectedOption}

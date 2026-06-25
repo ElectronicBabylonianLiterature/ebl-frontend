@@ -24,6 +24,7 @@ const louvreNumber = 'L123'
 const ontarioNumber = 'L123'
 const kelseyNumber = 'L123'
 const harvardHamNumber = 'L123'
+const etcsriNumber = 'L123'
 const sketchfabNumber = 'L123'
 const arkNumber = 'L123'
 const dublinTcdNumber = 'L123'
@@ -62,6 +63,7 @@ describe('external resources', () => {
             ontarioNumber,
             kelseyNumber,
             harvardHamNumber,
+            etcsriNumber,
             sketchfabNumber,
             arkNumber,
             dublinTcdNumber,
@@ -138,6 +140,7 @@ describe('external resources', () => {
       'https://harvardartmuseums.org/collections/object/',
       harvardHamNumber,
     ],
+    ['ETCSRI', 'https://oracc.museum.upenn.edu/etcsri/', etcsriNumber],
     ['SketchFab', 'https://sketchfab.com/3d-models/', sketchfabNumber],
     ['ark', 'https://n2t.net/ark:/', arkNumber],
     [
@@ -225,6 +228,7 @@ describe('missing external resources', () => {
     'Royal Ontario Museum',
     'Kelsey Museum',
     'Harvard Art Museums',
+    'ETCSRI',
     'SketchFab',
     'ark',
     'Trinity College Dublin',

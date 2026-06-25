@@ -19,6 +19,7 @@ import { RecordEntry } from 'fragmentarium/domain/RecordEntry'
 import ErrorBoundary from 'common/errors/ErrorBoundary'
 import { ThumbnailImage } from 'common/ui/BlobImage'
 import DossiersService from 'dossiers/application/DossiersService'
+import useNearViewport from 'common/hooks/useNearViewport'
 import FragmentDossierRecordsDisplay from 'dossiers/ui/DossiersDisplay'
 
 function GenresDisplay({ genres }: { genres: Genres }): JSX.Element {
@@ -100,6 +101,8 @@ export const FragmentLines = withData<
     fragmentService,
     dossiersService,
   }): JSX.Element => {
+    const { containerRef: thumbnailContainerRef, isNearViewport } =
+      useNearViewport()
     const script = fragment.script.period.abbreviation
       ? ` (${fragment.script.period.abbreviation})`
       : ''
@@ -167,12 +170,14 @@ export const FragmentLines = withData<
           </ResponsiveCol>
           <ResponsiveCol className={'fragment-result__preview'}>
             <ErrorBoundary>
-              {fragment.hasPhoto && (
-                <FragmentThumbnail
-                  fragmentService={fragmentService}
-                  fragment={fragment}
-                />
-              )}
+              <div ref={thumbnailContainerRef}>
+                {fragment.hasPhoto && isNearViewport && (
+                  <FragmentThumbnail
+                    fragmentService={fragmentService}
+                    fragment={fragment}
+                  />
+                )}
+              </div>
             </ErrorBoundary>
           </ResponsiveCol>
         </Row>

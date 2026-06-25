@@ -43,19 +43,24 @@ import {
   upsertProvenanceRecord,
 } from 'corpus/domain/provenance'
 import { stringify } from 'query-string'
+import ConcurrencyLimiter from 'common/utils/ConcurrencyLimiter'
+import { CacheEntry, setCachedValue, trimCache } from 'common/utils/cache'
+import getOrFetchCachedValue from 'common/utils/getOrFetchCachedValue'
 
 const cacheEntryLifetimeInMilliseconds = 5 * 60 * 1000
 const maximumCachedFragments = 250
 const maximumCachedThumbnails = 250
 const maximumCachedProvenanceRecords = 250
 const maximumCachedProvenanceChildren = 250
+const maximumCachedQueryResults = 250
+const fragmentFetchConcurrencyLimit = 6
+const thumbnailFetchConcurrencyLimit = 8
 const latestQueryCacheKey = 'latest:'
 const provenanceCacheKey = 'provenance:'
 const defaultCacheScope = 'default'
 
-type CacheEntry<CacheValue> = {
-  readonly expiresAt: number
-  readonly value: CacheValue
+type QueryItemWithPrefetchedFragment = QueryResult['items'][number] & {
+  readonly fragment?: Fragment
 }
 
 export type ThumbnailSize = 'small' | 'medium' | 'large'
@@ -172,6 +177,7 @@ export interface AnnotationRepository {
 export class FragmentService {
   private readonly referenceInjector: ReferenceInjector
   private cacheScope: string | null = null
+  private cacheGeneration = 0
   private readonly cachedProvenances = new Map<
     string,
     CacheEntry<readonly ProvenanceRecord[]>
@@ -201,10 +207,21 @@ export class FragmentService {
     string,
     Bluebird<Fragment>
   >()
+  private readonly cachedQueryResults = new Map<
+    string,
+    CacheEntry<QueryResult>
+  >()
   private readonly cachedQueryResultRequests = new Map<
     string,
     Bluebird<QueryResult>
   >()
+  private readonly prefetchedFragmentsByCacheKey = new Map<string, Fragment>()
+  private readonly fragmentFetchLimiter = new ConcurrencyLimiter(
+    fragmentFetchConcurrencyLimit,
+  )
+  private readonly thumbnailFetchLimiter = new ConcurrencyLimiter(
+    thumbnailFetchConcurrencyLimit,
+  )
   private readonly cachedThumbnails = new Map<
     string,
     CacheEntry<ThumbnailBlob>
@@ -249,10 +266,9 @@ export class FragmentService {
       cacheKey,
       maximumCachedFragments,
       () =>
-        this.fragmentRepository
-          .find(number, lines, excludeLines)
-          .then((fragment: Fragment) => this.injectReferences(fragment))
-          .catch(onError),
+        this.fragmentFetchLimiter.run(() =>
+          this.findAndInjectFragment(number, lines, excludeLines, cacheKey),
+        ),
     )
   }
 
@@ -320,12 +336,13 @@ export class FragmentService {
           const sanitized = provenances.map(sanitizeProvenanceRecord)
           setProvenanceRecords(sanitized)
           sanitized.forEach((provenance) => {
-            this.setCachedValue(
-              this.cachedProvenanceById,
-              provenance.id,
-              provenance,
-              maximumCachedProvenanceRecords,
-            )
+            setCachedValue({
+              cache: this.cachedProvenanceById,
+              key: provenance.id,
+              value: provenance,
+              maximumCacheSize: maximumCachedProvenanceRecords,
+              cacheEntryLifetimeInMilliseconds,
+            })
           })
           return sanitized
         }),
@@ -359,12 +376,13 @@ export class FragmentService {
           const sorted = sortProvenances(sanitized)
           sorted.forEach((provenance) => {
             upsertProvenanceRecord(provenance)
-            this.setCachedValue(
-              this.cachedProvenanceById,
-              provenance.id,
-              provenance,
-              maximumCachedProvenanceRecords,
-            )
+            setCachedValue({
+              cache: this.cachedProvenanceById,
+              key: provenance.id,
+              value: provenance,
+              maximumCacheSize: maximumCachedProvenanceRecords,
+              cacheEntryLifetimeInMilliseconds,
+            })
           })
           return sorted
         }),
@@ -470,7 +488,10 @@ export class FragmentService {
       this.cachedThumbnailRequests,
       cacheKey,
       maximumCachedThumbnails,
-      () => this.imageRepository.findThumbnail(fragment.number, size),
+      () =>
+        this.thumbnailFetchLimiter.run(() =>
+          this.imageRepository.findThumbnail(fragment.number, size),
+        ),
     )
   }
 
@@ -534,19 +555,39 @@ export class FragmentService {
 
   query(fragmentQuery: FragmentQuery): Bluebird<QueryResult> {
     const cacheKey = this.createQueryCacheKey(fragmentQuery)
-    return this.getOrFetchInFlightRequest(
+    const queryResultRequest = this.getOrFetchCachedValue(
+      this.cachedQueryResults,
       this.cachedQueryResultRequests,
       cacheKey,
+      maximumCachedQueryResults,
       () => this.fragmentRepository.query(fragmentQuery),
     )
+    const queryGeneration = this.cacheGeneration
+
+    return queryResultRequest.then((queryResult) => {
+      if (queryGeneration === this.cacheGeneration) {
+        this.storePrefetchedFragments(queryResult)
+      }
+      return queryResult
+    })
   }
 
   queryLatest(): Bluebird<QueryResult> {
-    return this.getOrFetchInFlightRequest(
+    const queryResultRequest = this.getOrFetchCachedValue(
+      this.cachedQueryResults,
       this.cachedQueryResultRequests,
       latestQueryCacheKey,
+      maximumCachedQueryResults,
       () => this.fragmentRepository.queryLatest(),
     )
+    const queryGeneration = this.cacheGeneration
+
+    return queryResultRequest.then((queryResult) => {
+      if (queryGeneration === this.cacheGeneration) {
+        this.storePrefetchedFragments(queryResult)
+      }
+      return queryResult
+    })
   }
 
   queryByTraditionalReferences(
@@ -559,6 +600,72 @@ export class FragmentService {
 
   collectLemmaSuggestions(number: string): Bluebird<LemmaSuggestions> {
     return this.fragmentRepository.collectLemmaSuggestions(number)
+  }
+
+  private findAndInjectFragment(
+    number: string,
+    lines: readonly number[] | undefined,
+    excludeLines: boolean | undefined,
+    cacheKey: string,
+  ): Bluebird<Fragment> {
+    const prefetchedFragment = this.takePrefetchedFragment(cacheKey)
+
+    if (prefetchedFragment) {
+      return this.injectReferences(prefetchedFragment).catch(onError)
+    }
+
+    return this.fragmentRepository
+      .find(number, lines, excludeLines)
+      .then((fragment: Fragment) => this.injectReferences(fragment))
+      .catch(onError)
+  }
+
+  private storePrefetchedFragments(queryResult: QueryResult): void {
+    this.prefetchedFragmentsByCacheKey.clear()
+
+    queryResult.items.forEach((queryItem) => {
+      const prefetchedFragment = this.readPrefetchedFragment(queryItem)
+
+      if (!prefetchedFragment) {
+        return
+      }
+
+      const lines = _.take(queryItem.matchingLines, 3)
+      const excludeLines = _.isEmpty(queryItem.matchingLines)
+
+      this.prefetchedFragmentsByCacheKey.set(
+        this.createFragmentCacheKey(
+          queryItem.museumNumber,
+          lines,
+          excludeLines,
+        ),
+        prefetchedFragment,
+      )
+      this.prefetchedFragmentsByCacheKey.set(
+        this.createFragmentCacheKey(queryItem.museumNumber),
+        prefetchedFragment,
+      )
+    })
+  }
+
+  private readPrefetchedFragment(
+    queryItem: QueryResult['items'][number],
+  ): Fragment | null {
+    const prefetchedFragment = (queryItem as QueryItemWithPrefetchedFragment)
+      .fragment
+
+    return prefetchedFragment ?? null
+  }
+
+  private takePrefetchedFragment(cacheKey: string): Fragment | null {
+    const prefetchedFragment = this.prefetchedFragmentsByCacheKey.get(cacheKey)
+
+    if (!prefetchedFragment) {
+      return null
+    }
+
+    this.prefetchedFragmentsByCacheKey.delete(cacheKey)
+    return prefetchedFragment
   }
 
   private injectReferences(fragment: Fragment): Bluebird<Fragment> {
@@ -607,114 +714,34 @@ export class FragmentService {
     fetchValue: () => Bluebird<CacheValue>,
   ): Bluebird<CacheValue> {
     this.clearCachesWhenScopeChanges()
-
-    const cachedValue = this.getCachedValue(cache, key)
-    if (cachedValue !== null) {
-      return Bluebird.resolve(cachedValue)
-    }
-
-    const cachedRequest = requests.get(key)
-    if (cachedRequest) {
-      return cachedRequest.then((value) => value)
-    }
-
-    const requestReference: { current?: Bluebird<CacheValue> } = {}
-    const request = fetchValue()
-      .then((value) =>
-        requests.get(key) === requestReference.current
-          ? this.setCachedValue(cache, key, value, maximumCacheSize)
-          : value,
-      )
-      .finally(() => {
-        if (requests.get(key) === requestReference.current) {
-          requests.delete(key)
-        }
-      })
-
-    requestReference.current = request
-    requests.set(key, request)
-    return request.then((value) => value)
-  }
-
-  private getOrFetchInFlightRequest<CacheKey, CacheValue>(
-    requests: Map<CacheKey, Bluebird<CacheValue>>,
-    key: CacheKey,
-    fetchValue: () => Bluebird<CacheValue>,
-  ): Bluebird<CacheValue> {
-    this.clearCachesWhenScopeChanges()
-
-    const cachedRequest = requests.get(key)
-    if (cachedRequest) {
-      return cachedRequest.then((value) => value)
-    }
-
-    const requestReference: { current?: Bluebird<CacheValue> } = {}
-    const request = fetchValue().finally(() => {
-      if (requests.get(key) === requestReference.current) {
-        requests.delete(key)
-      }
+    return getOrFetchCachedValue({
+      cache,
+      requests,
+      key,
+      maximumCacheSize,
+      cacheEntryLifetimeInMilliseconds,
+      fetchValue,
     })
-
-    requestReference.current = request
-    requests.set(key, request)
-    return request.then((value) => value)
-  }
-
-  private getCachedValue<CacheKey, CacheValue>(
-    cache: Map<CacheKey, CacheEntry<CacheValue>>,
-    key: CacheKey,
-  ): CacheValue | null {
-    const entry = cache.get(key)
-    if (!entry) {
-      return null
-    }
-    if (entry.expiresAt <= Date.now()) {
-      cache.delete(key)
-      return null
-    }
-    cache.delete(key)
-    cache.set(key, entry)
-    return entry.value
-  }
-
-  private setCachedValue<CacheKey, CacheValue>(
-    cache: Map<CacheKey, CacheEntry<CacheValue>>,
-    key: CacheKey,
-    value: CacheValue,
-    maximumCacheSize: number,
-  ): CacheValue {
-    cache.delete(key)
-    cache.set(key, {
-      expiresAt: Date.now() + cacheEntryLifetimeInMilliseconds,
-      value: value,
-    })
-    this.trimCache(cache, maximumCacheSize)
-    return value
   }
 
   private trimCache<CacheKey, CacheValue>(
     cache: Map<CacheKey, CacheEntry<CacheValue>>,
     maximumCacheSize: number,
   ): void {
-    while (cache.size > maximumCacheSize) {
-      const oldestKey = cache.keys().next().value
-      if (oldestKey === undefined) {
-        return
-      }
-      cache.delete(oldestKey)
-    }
+    trimCache(cache, maximumCacheSize)
   }
 
   private cacheUpdatedFragment(fragment: Fragment): Fragment {
     this.clearCachesWhenScopeChanges()
     this.clearCachedFragments(fragment.number)
     this.clearCachedQueryResults()
-    this.setCachedValue(
-      this.cachedFragments,
-      this.createFragmentCacheKey(fragment.number),
-      fragment,
-      maximumCachedFragments,
-    )
+    setCachedValue({
+      cache: this.cachedFragments,
+      key: this.createFragmentCacheKey(fragment.number),
+      value: fragment,
+      maximumCacheSize: maximumCachedFragments,
+      cacheEntryLifetimeInMilliseconds,
+    })
     return fragment
   }
 
@@ -733,7 +760,10 @@ export class FragmentService {
   }
 
   private clearCachedQueryResults(): void {
+    this.cachedQueryResults.clear()
     this.cachedQueryResultRequests.clear()
+    this.prefetchedFragmentsByCacheKey.clear()
+    this.cacheGeneration += 1
   }
 
   private clearAllCaches(): void {
@@ -745,9 +775,12 @@ export class FragmentService {
     this.cachedProvenanceChildrenByIdRequest.clear()
     this.cachedFragments.clear()
     this.cachedFragmentRequests.clear()
+    this.cachedQueryResults.clear()
     this.cachedQueryResultRequests.clear()
+    this.prefetchedFragmentsByCacheKey.clear()
     this.cachedThumbnails.clear()
     this.cachedThumbnailRequests.clear()
+    this.cacheGeneration += 1
   }
 
   private clearCachesWhenScopeChanges(): void {
