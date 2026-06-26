@@ -1,8 +1,10 @@
 import WordService from 'dictionary/application/WordService'
+import Word from 'dictionary/domain/Word'
 import EditableToken from 'fragmentarium/ui/fragment/linguistic-annotation/EditableToken'
 import React from 'react'
 import _ from 'lodash'
 import AsyncSelect from 'react-select/async'
+import { Token } from 'transliteration/domain/token'
 import type {
   ActionMeta,
   MultiValueGenericProps,
@@ -13,6 +15,27 @@ import {
   Option,
   MultiValueLabel,
 } from 'fragmentarium/ui/lemmatization/LemmaSelectionForm'
+
+const NAMED_ENTITY_LANGUAGES: readonly string[] = ['SUMERIAN', 'EMESAL']
+
+function isNamedEntityLanguage(language: string | undefined): boolean {
+  return language !== undefined && NAMED_ENTITY_LANGUAGES.includes(language)
+}
+
+function isNamedEntity(word: Word): boolean {
+  return (word.namedEntityTags ?? []).length > 0
+}
+
+function filterWordsForTokenLanguage(
+  words: readonly Word[],
+  language: string | undefined,
+): readonly Word[] {
+  return isNamedEntityLanguage(language) ? words.filter(isNamedEntity) : words
+}
+
+function getTokenLanguage(token: Token | undefined): string | undefined {
+  return token && 'language' in token ? token.language : undefined
+}
 
 type Props = {
   token: EditableToken | null
@@ -46,8 +69,11 @@ export default class LemmaAnnotationForm extends React.Component<Props, State> {
     inputValue: string,
     callback: (lemmas: LemmaOption[]) => void,
   ): void => {
+    const language = getTokenLanguage(this.props.token?.token)
+
     this.props.wordService
       .searchLemma(inputValue)
+      .then((words) => filterWordsForTokenLanguage(words, language))
       .then((words) => words.map((word) => new LemmaOption(word)))
       .then(callback)
   }

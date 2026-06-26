@@ -3,6 +3,7 @@ import { FormGroup, FormLabel, FormControl } from 'react-bootstrap'
 import _ from 'lodash'
 
 import TextListInput from './TextListInput'
+import { NAMED_ENTITY_TAGS } from 'dictionary/domain/namedEntityTags'
 
 const verb = 'V'
 
@@ -27,32 +28,50 @@ const positionsOfSpeech: { [key: string]: string } = {
   SBJ: 'subjunction',
 }
 
-const properNouns: { [key: string]: string } = {
-  AN: 'Agricultural (locus) Name',
-  CN: 'Celestial Name',
-  DN: 'Divine Name',
-  EN: 'Ethnos Name',
-  FN: 'Field Name',
-  GN: 'Geographical Name (lands and other geographical entities without their own tag)',
-  LN: 'Line Name (ancestral clan)',
-  MN: 'Month Name',
-  ON: 'Object Name',
-  PN: 'Personal Name',
-  QN: 'Quarter Name (city area)',
-  RN: 'Royal Name',
-  SN: 'Settlement Name',
-  TN: 'Temple Name',
-  WN: 'Watercourse Name',
-  YN: 'Year Name',
+const posOptions = _.map(positionsOfSpeech, (value, key) => ({
+  value: key,
+  label: value,
+}))
+
+const namedEntityOptions = _.map(NAMED_ENTITY_TAGS, (value, key) => ({
+  value: key,
+  label: value,
+}))
+
+function selectedValues(select: HTMLSelectElement): string[] {
+  return _(select.options).filter('selected').map('value').value()
 }
 
-const posOptions = _.map(
-  { ...positionsOfSpeech, ...properNouns },
-  (value, key) => ({
-    value: key,
-    label: value,
-  }),
-)
+type SelectOption = { value: string; label: string }
+
+function MultiSelectFormGroup({
+  idPrefix,
+  label,
+  value,
+  options,
+  onChange,
+}: {
+  idPrefix: string
+  label: string
+  value: string[]
+  options: readonly SelectOption[]
+  onChange: React.ChangeEventHandler<
+    HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+  >
+}): JSX.Element {
+  return (
+    <FormGroup controlId={_.uniqueId(idPrefix)}>
+      <FormLabel>{label}</FormLabel>
+      <FormControl as="select" value={value} onChange={onChange} multiple>
+        {options.map((option) => (
+          <option key={option.value} value={option.value}>
+            {option.label}
+          </option>
+        ))}
+      </FormControl>
+    </FormGroup>
+  )
+}
 
 class PosInput extends Component<{ value; onChange }> {
   updatePos = (
@@ -60,9 +79,18 @@ class PosInput extends Component<{ value; onChange }> {
       HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
     >,
   ): void => {
-    const select = event.currentTarget as HTMLSelectElement
     this.props.onChange({
-      pos: _(select.options).filter('selected').map('value').value(),
+      pos: selectedValues(event.currentTarget as HTMLSelectElement),
+    })
+  }
+
+  updateNamedEntityTags = (
+    event: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >,
+  ): void => {
+    this.props.onChange({
+      namedEntityTags: selectedValues(event.currentTarget as HTMLSelectElement),
     })
   }
 
@@ -73,21 +101,20 @@ class PosInput extends Component<{ value; onChange }> {
   render(): JSX.Element {
     return (
       <FormGroup>
-        <FormGroup controlId={_.uniqueId('PosInput-')}>
-          <FormLabel>Position of speech</FormLabel>
-          <FormControl
-            as="select"
-            value={this.props.value.pos}
-            onChange={this.updatePos}
-            multiple
-          >
-            {posOptions.map((option) => (
-              <option key={option.value} value={option.value}>
-                {option.label}
-              </option>
-            ))}
-          </FormControl>
-        </FormGroup>
+        <MultiSelectFormGroup
+          idPrefix="PosInput-"
+          label="Position of speech"
+          value={this.props.value.pos}
+          options={posOptions}
+          onChange={this.updatePos}
+        />
+        <MultiSelectFormGroup
+          idPrefix="NamedEntityInput-"
+          label="Named entity (proper noun) type"
+          value={this.props.value.namedEntityTags ?? []}
+          options={namedEntityOptions}
+          onChange={this.updateNamedEntityTags}
+        />
         {this.props.value.pos.includes(verb) && (
           <TextListInput
             value={this.props.value.roots || []}

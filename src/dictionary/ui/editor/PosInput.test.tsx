@@ -6,6 +6,7 @@ import _ from 'lodash'
 import { whenChangedByValue, whenChangedByLabel } from 'test-support/utils'
 import Word from 'dictionary/domain/Word'
 import { wordFactory } from 'test-support/word-fixtures'
+import { NAMED_ENTITY_TAGS } from 'dictionary/domain/namedEntityTags'
 
 let value: Word
 let onChange
@@ -102,6 +103,45 @@ function commonTests(setup: () => void) {
       }))
   })
 }
+
+describe('Named entity tags', () => {
+  const namedEntityTags = ['DN', 'GN']
+
+  function setup(): void {
+    value = wordFactory.namedEntity(namedEntityTags).build()
+    renderPosInput()
+  }
+
+  it('Selected named entity tags are selected', () => {
+    setup()
+    for (const tag of namedEntityTags) {
+      expect(
+        (screen.getByText(NAMED_ENTITY_TAGS[tag]) as HTMLOptionElement)
+          .selected,
+      ).toBe(true)
+    }
+  })
+
+  it('Other named entity tags are not selected', () => {
+    setup()
+    for (const [tag, label] of Object.entries(NAMED_ENTITY_TAGS)) {
+      if (!namedEntityTags.includes(tag)) {
+        expect((screen.getByText(label) as HTMLOptionElement).selected).toBe(
+          false,
+        )
+      }
+    }
+  })
+
+  it('Calls onChange with updated value on named entity tag change', () => {
+    setup()
+    whenChangedByLabel(screen, 'Named entity (proper noun) type', 'PN')
+      .expect(onChange)
+      .toHaveBeenCalledWith((newValue) => ({
+        namedEntityTags: [newValue],
+      }))
+  })
+})
 
 function renderPosInput() {
   render(<PosInput value={value} onChange={onChange} />)

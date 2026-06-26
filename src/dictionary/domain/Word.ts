@@ -51,6 +51,7 @@ export default interface Word {
   readonly homonym: string
   readonly meaning: string
   readonly pos: readonly string[]
+  readonly namedEntityTags?: readonly string[]
   readonly forms: readonly Form[]
   readonly amplifiedMeanings: readonly AmplifiedMeaning[]
   readonly logograms: readonly Logogram[]
@@ -65,4 +66,10 @@ export default interface Word {
   readonly origin: string
   readonly oraccWords: readonly OraccWord[]
   readonly akkadischeGlossareUndIndices: readonly AkkadischeGlossareUndIndex[]
+}
+
+export function wordPosLabels(
+  word: Pick<Word, 'pos' | 'namedEntityTags'>,
+): readonly string[] {
+  return [...word.pos, ...(word.namedEntityTags ?? [])]
 }
