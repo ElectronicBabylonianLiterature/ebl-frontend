@@ -54,6 +54,44 @@ describe('ZeroYearKingFinder', () => {
     expect(result.year.isUncertain).toBe(true)
   })
 
+  it('uses the immediately preceding base king for a letter-suffixed sub-ruler', () => {
+    const kings = getKingsByDynasty('Persian Rulers')
+    const bardiya = kings.find((king) => king.name === 'Bardiya')
+
+    expect(bardiya?.orderInDynasty).toBe('2a')
+
+    const result = getPreviousKingAndYearIfYearZero(bardiya, { value: '0' })
+
+    expect(result.king?.name).toBe('Cambyses')
+    expect(result.year.value).toBe('8')
+  })
+
+  it('preserves an uncertain year flag through the conversion', () => {
+    const kings = getKingsByDynasty('Persian Rulers')
+    const bardiya = kings.find((king) => king.name === 'Bardiya')
+
+    const result = getPreviousKingAndYearIfYearZero(bardiya, {
+      value: '0',
+      isUncertain: true,
+    })
+
+    expect(result.king?.name).toBe('Cambyses')
+    expect(result.year.isUncertain).toBe(true)
+  })
+
+  it('keeps original king and year when the preceding dynasty order is missing', () => {
+    const kings = getKingsByDynasty('Kassite Dynasty')
+    const urzigurumaš = kings.find((king) => king.name === 'Urzigurumaš')
+
+    expect(urzigurumaš?.orderInDynasty).toBe('6')
+    expect(kings.some((king) => king.orderInDynasty === '5')).toBe(false)
+
+    const result = getPreviousKingAndYearIfYearZero(urzigurumaš, { value: '0' })
+
+    expect(result.king?.name).toBe('Urzigurumaš')
+    expect(result.year.value).toBe('0')
+  })
+
   it('keeps original king and year when no numeric previous totalOfYears exists', () => {
     const kings = getKingsByDynasty('Marad Dynasty')
     const yamsiEl = kings.find((king) => king.name === 'Yamsi-El')
