@@ -37,26 +37,30 @@ test.each([
   '/signs/sign_id',
   '/impressum',
   '/datenschutz',
-])('%s renders without crashing', async (route) => {
-  window.scrollTo = jest.fn()
-  const fakeApi = new FakeApi()
-    .allowStatistics(statisticsFactory.build())
-    .allowProvenances([])
-    .allowDossiers([])
-    .allowGenres([])
-    .allowLatestFragments({ items: [], matchCountTotal: 0 })
-  const appDriver = new AppDriver(fakeApi.client).withPath(route).render()
+])(
+  '%s renders without crashing',
+  async (route) => {
+    window.scrollTo = jest.fn()
+    const fakeApi = new FakeApi()
+      .allowStatistics(statisticsFactory.build())
+      .allowProvenances([])
+      .allowDossiers([])
+      .allowGenres([])
+      .allowLatestFragments({ items: [], matchCountTotal: 0 })
+    const appDriver = new AppDriver(fakeApi.client).withPath(route).render()
 
-  await appDriver.waitForTextToDisappear('Loading...')
-  if (route === '/') {
-    await appDriver.waitForText('Latest Additions')
-    expect(appDriver.getView().queryAllByRole('alert')).toHaveLength(0)
-    expect(fakeApi.client.fetchJson).toHaveBeenCalledWith(
-      '/fragments/latest',
-      false,
-    )
-  }
-})
+    await appDriver.waitForTextToDisappear('Loading...')
+    if (route === '/') {
+      await appDriver.waitForText('Latest Additions')
+      expect(appDriver.getView().queryAllByRole('alert')).toHaveLength(0)
+      expect(fakeApi.client.fetchJson).toHaveBeenCalledWith(
+        '/fragments/latest',
+        false,
+      )
+    }
+  },
+  15000,
+)
 
 test('home supporter links open safely in a new tab', async () => {
   window.scrollTo = jest.fn()

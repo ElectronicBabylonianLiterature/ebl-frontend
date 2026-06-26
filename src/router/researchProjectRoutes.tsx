@@ -1,20 +1,21 @@
 import React, { ReactNode } from 'react'
 import { parse } from 'query-string'
 import { Route, Redirect } from 'router/compat'
-import { sitemapDefaults } from 'router/sitemap'
+import { sitemapDefaults } from 'router/sitemapConfig'
 import { HeadTagsService } from 'router/head'
 import { ResearchProjects } from 'research-projects/researchProject'
-import BibliographyService from 'bibliography/application/BibliographyService'
-import WordService from 'dictionary/application/WordService'
-import FragmentSearchService from 'fragmentarium/application/FragmentSearchService'
-import FragmentService from 'fragmentarium/application/FragmentService'
+import type BibliographyService from 'bibliography/application/BibliographyService'
+import type WordService from 'dictionary/application/WordService'
+import type FragmentSearchService from 'fragmentarium/application/FragmentSearchService'
+import type FragmentService from 'fragmentarium/application/FragmentService'
 import ResearchProjectsOverview from 'research-projects/ResearchProjectsOverview'
 import CaicHome from 'research-projects/subpages/caic/Home'
-import DossiersService from 'dossiers/application/DossiersService'
+import type DossiersService from 'dossiers/application/DossiersService'
 import AmpsHome from 'research-projects/subpages/amps/Home'
 import ReccHome from 'research-projects/subpages/recc/Home'
 import AluGenevaHome from 'research-projects/subpages/aluGeneva/Home'
 import ResearchProjectSearch from 'research-projects/subpages/ResearchProjectSearch'
+import NotFoundPage from 'NotFoundPage'
 
 export default function ResearchProjectRoutes({
   sitemap,
@@ -124,6 +125,11 @@ export default function ResearchProjectRoutes({
         </HeadTagsService>
       )}
       {...(sitemap && sitemapDefaults)}
+    />,
+    <Route
+      key="ResearchProjectsNotFound"
+      path="/projects/*"
+      render={(): ReactNode => <NotFoundPage />}
     />,
   ]
 }
