@@ -23,7 +23,7 @@ function isNamedEntityLanguage(language: string | undefined): boolean {
 }
 
 function isNamedEntity(word: Word): boolean {
-  return word.namedEntityTags.length > 0
+  return (word.namedEntityTags ?? []).length > 0
 }
 
 function filterWordsForTokenLanguage(

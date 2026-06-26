@@ -89,7 +89,7 @@ class PosInput extends Component<{ value; onChange }> {
           <FormLabel>Named entity (proper noun) type</FormLabel>
           <FormControl
             as="select"
-            value={this.props.value.namedEntityTags}
+            value={this.props.value.namedEntityTags ?? []}
             onChange={this.updateNamedEntityTags}
             multiple
           >
