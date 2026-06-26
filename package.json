@@ -233,7 +233,9 @@
     "postcss-svgo/svgo": "^2.8.1",
     "cosmiconfig/yaml": "^1.10.3",
     "cssnano/yaml": "^1.10.3",
-    "fork-ts-checker-webpack-plugin/cosmiconfig/yaml": "^1.10.3"
+    "fork-ts-checker-webpack-plugin/cosmiconfig/yaml": "^1.10.3",
+    "eslint/js-yaml": "^4.2.0",
+    "@eslint/eslintrc/js-yaml": "^4.2.0"
   },
   "browserslist": [
     ">0.2%",
