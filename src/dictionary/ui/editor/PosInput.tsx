@@ -42,6 +42,37 @@ function selectedValues(select: HTMLSelectElement): string[] {
   return _(select.options).filter('selected').map('value').value()
 }
 
+type SelectOption = { value: string; label: string }
+
+function MultiSelectFormGroup({
+  idPrefix,
+  label,
+  value,
+  options,
+  onChange,
+}: {
+  idPrefix: string
+  label: string
+  value: string[]
+  options: readonly SelectOption[]
+  onChange: React.ChangeEventHandler<
+    HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+  >
+}): JSX.Element {
+  return (
+    <FormGroup controlId={_.uniqueId(idPrefix)}>
+      <FormLabel>{label}</FormLabel>
+      <FormControl as="select" value={value} onChange={onChange} multiple>
+        {options.map((option) => (
+          <option key={option.value} value={option.value}>
+            {option.label}
+          </option>
+        ))}
+      </FormControl>
+    </FormGroup>
+  )
+}
+
 class PosInput extends Component<{ value; onChange }> {
   updatePos = (
     event: React.ChangeEvent<
@@ -70,36 +101,20 @@ class PosInput extends Component<{ value; onChange }> {
   render(): JSX.Element {
     return (
       <FormGroup>
-        <FormGroup controlId={_.uniqueId('PosInput-')}>
-          <FormLabel>Position of speech</FormLabel>
-          <FormControl
-            as="select"
-            value={this.props.value.pos}
-            onChange={this.updatePos}
-            multiple
-          >
-            {posOptions.map((option) => (
-              <option key={option.value} value={option.value}>
-                {option.label}
-              </option>
-            ))}
-          </FormControl>
-        </FormGroup>
-        <FormGroup controlId={_.uniqueId('NamedEntityInput-')}>
-          <FormLabel>Named entity (proper noun) type</FormLabel>
-          <FormControl
-            as="select"
-            value={this.props.value.namedEntityTags ?? []}
-            onChange={this.updateNamedEntityTags}
-            multiple
-          >
-            {namedEntityOptions.map((option) => (
-              <option key={option.value} value={option.value}>
-                {option.label}
-              </option>
-            ))}
-          </FormControl>
-        </FormGroup>
+        <MultiSelectFormGroup
+          idPrefix="PosInput-"
+          label="Position of speech"
+          value={this.props.value.pos}
+          options={posOptions}
+          onChange={this.updatePos}
+        />
+        <MultiSelectFormGroup
+          idPrefix="NamedEntityInput-"
+          label="Named entity (proper noun) type"
+          value={this.props.value.namedEntityTags ?? []}
+          options={namedEntityOptions}
+          onChange={this.updateNamedEntityTags}
+        />
         {this.props.value.pos.includes(verb) && (
           <TextListInput
             value={this.props.value.roots || []}

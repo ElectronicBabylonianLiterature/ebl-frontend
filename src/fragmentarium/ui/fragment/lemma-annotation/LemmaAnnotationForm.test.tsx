@@ -1,4 +1,5 @@
 import React from 'react'
+import _ from 'lodash'
 import { render, screen, fireEvent, waitFor } from '@testing-library/react'
 import LemmaAnnotationForm from './LemmaAnnotationForm'
 import WordService from 'dictionary/application/WordService'
@@ -111,25 +112,18 @@ describe('LemmaAnnotationForm', () => {
     expect(await screen.findByText('babylon')).toBeInTheDocument()
   })
 
-  it('only shows proper noun lemma results for Sumerian tokens', async () => {
-    token = createToken('SUMERIAN')
-    wordServiceMock.searchLemma.mockResolvedValue(mixedWords)
+  it.each(['SUMERIAN', 'EMESAL'])(
+    'only shows proper noun lemma results for %s tokens',
+    async (language) => {
+      token = createToken(language)
+      wordServiceMock.searchLemma.mockResolvedValue(mixedWords)
 
-    renderLemmaAnnotationForm()
-    await searchForLemma()
+      renderLemmaAnnotationForm()
+      await searchForLemma()
 
-    await expectOnlyProperNounResults()
-  })
-
-  it('only shows proper noun lemma results for Emesal tokens', async () => {
-    token = createToken('EMESAL')
-    wordServiceMock.searchLemma.mockResolvedValue(mixedWords)
-
-    renderLemmaAnnotationForm()
-    await searchForLemma()
-
-    await expectOnlyProperNounResults()
-  })
+      await expectOnlyProperNounResults()
+    },
+  )
 
   it('shows no options for Sumerian tokens without proper noun matches', async () => {
     token = createToken('SUMERIAN')
@@ -140,6 +134,21 @@ describe('LemmaAnnotationForm', () => {
 
     expect(await screen.findByText('No options')).toBeInTheDocument()
     expect(screen.queryByText('common')).not.toBeInTheDocument()
+  })
+
+  it('treats words without namedEntityTags as non-proper-nouns (pre-migration data)', async () => {
+    token = createToken('SUMERIAN')
+    const legacyWord = _.omit(
+      wordFactory.build({ _id: 'legacy I', lemma: ['legacy'], pos: ['N'] }),
+      'namedEntityTags',
+    ) as Word
+    wordServiceMock.searchLemma.mockResolvedValue([legacyWord])
+
+    renderLemmaAnnotationForm()
+    await searchForLemma()
+
+    expect(await screen.findByText('No options')).toBeInTheDocument()
+    expect(screen.queryByText('legacy')).not.toBeInTheDocument()
   })
 
   it('keeps all lemma results for null tokens', async () => {
