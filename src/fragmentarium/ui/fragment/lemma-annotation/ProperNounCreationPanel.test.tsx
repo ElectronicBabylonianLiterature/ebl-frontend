@@ -405,14 +405,7 @@ describe('ProperNounCreationPanel', () => {
 
     it('create button is enabled when both input and named entity tag are provided', async () => {
       renderPanel()
-      const input = screen.getByLabelText('properNoun-input')
-      const select = screen.getByLabelText('properNoun-type-select')
-      const createButton = screen.getByLabelText('save-properNoun-creation')
-      fireEvent.change(input, { target: { value: 'marduk' } })
-      fireEvent.change(select, { target: { value: 'DN' } })
-      await waitFor(() => {
-        expect(createButton).toBeEnabled()
-      })
+      expect(await fillProperNounForm('marduk')).toBeEnabled()
     })
 
     it('create button is disabled when exact match exists', async () => {
@@ -439,27 +432,12 @@ describe('ProperNounCreationPanel', () => {
       })
       wordServiceMock.searchLemma.mockResolvedValue([lengthMatchWord])
       renderPanel()
-      const input = screen.getByLabelText('properNoun-input')
-      const select = screen.getByLabelText('properNoun-type-select')
-      const createButton = screen.getByLabelText('save-properNoun-creation')
-      fireEvent.change(input, { target: { value: 'enlilzu' } })
-      fireEvent.change(select, { target: { value: 'DN' } })
-      await waitFor(() => {
-        expect(createButton).toBeEnabled()
-      })
+      expect(await fillProperNounForm('enlilzu')).toBeEnabled()
     })
 
     it('create button calls onClose when clicked', async () => {
       renderPanel()
-      const input = screen.getByLabelText('properNoun-input')
-      const select = screen.getByLabelText('properNoun-type-select')
-      const createButton = screen.getByLabelText('save-properNoun-creation')
-      fireEvent.change(input, { target: { value: 'marduk' } })
-      fireEvent.change(select, { target: { value: 'DN' } })
-      await waitFor(() => {
-        expect(createButton).toBeEnabled()
-      })
-      fireEvent.click(createButton)
+      fireEvent.click(await fillProperNounForm('marduk'))
       await waitFor(() => {
         expect(onCloseMock).toHaveBeenCalledTimes(1)
       })
@@ -475,18 +453,7 @@ describe('ProperNounCreationPanel', () => {
   describe('Integration Tests', () => {
     it('allows complete workflow: input -> select named entity tag -> create', async () => {
       renderPanel()
-      const input = screen.getByLabelText('properNoun-input')
-      const select = screen.getByLabelText('properNoun-type-select')
-      const createButton = screen.getByLabelText('save-properNoun-creation')
-      fireEvent.change(input, { target: { value: 'shamash' } })
-      await waitFor(() => {
-        expect(input).toHaveValue('Shamash')
-      })
-      fireEvent.change(select, { target: { value: 'DN' } })
-      await waitFor(() => {
-        expect(createButton).toBeEnabled()
-      })
-      fireEvent.click(createButton)
+      fireEvent.click(await fillProperNounForm('shamash'))
       await waitFor(() => {
         expect(onCloseMock).toHaveBeenCalledTimes(1)
       })
@@ -494,15 +461,8 @@ describe('ProperNounCreationPanel', () => {
 
     it('workflow can be cancelled at any point', async () => {
       renderPanel()
-      const input = screen.getByLabelText('properNoun-input')
-      const select = screen.getByLabelText('properNoun-type-select')
-      const cancelButton = screen.getByLabelText('cancel-properNoun-creation')
-      fireEvent.change(input, { target: { value: 'shamash' } })
-      fireEvent.change(select, { target: { value: 'DN' } })
-      await waitFor(() => {
-        expect(input).toHaveValue('Shamash')
-      })
-      fireEvent.click(cancelButton)
+      await fillProperNounForm('shamash')
+      fireEvent.click(screen.getByLabelText('cancel-properNoun-creation'))
       expect(onCloseMock).toHaveBeenCalledTimes(1)
     })
   })
