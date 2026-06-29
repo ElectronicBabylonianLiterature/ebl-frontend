@@ -1,342 +1,36 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react'
-import classNames from 'classnames'
-import { Link, useLocation } from 'react-router-dom'
-import { Collapse } from 'react-bootstrap'
+import React, { useCallback, useEffect, useMemo } from 'react'
+import { useLocation } from 'react-router-dom'
+import { useHistory } from 'router/compat'
 import withData, { WithoutData } from 'http/withData'
 import RealiaService from 'realia/application/RealiaService'
 import {
-  AfoRegisterEntry,
-  AfoRegisterVolumeGroup,
-  ReallexikonEntry,
-  RealiaCrossReference,
   RealiaEntry,
-  afoCrossReferenceCitation,
   getRealiaCrossReferences,
   getRedirectTarget,
   groupAfoRegisterByVolume,
-  formatAfoRegisterVolumeTitle,
-  realiaCrossReferenceTarget,
-  rlaArticleUrl,
 } from 'realia/domain/RealiaEntry'
-import ExternalLink from 'common/ui/ExternalLink'
 import RealiaDevelopmentNotice from 'realia/ui/RealiaDevelopmentNotice'
 import RealiaNavMenu from 'realia/ui/RealiaNavMenu'
+import { AfoRegisterVolumes } from 'realia/ui/RealiaAfoRegister'
+import { ReallexikonEntries } from 'realia/ui/RealiaReallexikon'
 import {
-  afoVolumeId,
-  buildRealiaNav,
-  realiaSectionIds,
-  rlaArticleId,
-} from 'realia/ui/realiaSections'
+  RealiaMetadata,
+  RealiaSection,
+  SeeAlsoList,
+} from 'realia/ui/RealiaParts'
+import { RealiaRedirect } from 'realia/ui/RealiaRedirect'
+import {
+  scrollToSection,
+  useRealiaSectionState,
+} from 'realia/ui/useRealiaSectionState'
+import { buildRealiaNav, realiaSectionIds } from 'realia/ui/realiaSections'
 import ReferenceList from 'bibliography/ui/ReferenceList'
 import SessionContext from 'auth/SessionContext'
 import { Session } from 'auth/Session'
 import AppContent from 'common/ui/AppContent'
 import { SectionCrumb, TextCrumb } from 'common/ui/Breadcrumbs'
 import useActiveSection from 'common/hooks/useActiveSection'
-import prefersReducedMotion from 'common/utils/prefersReducedMotion'
 import 'realia/ui/Realia.sass'
-
-function RealiaMetadata({ entry }: { entry: RealiaEntry }): JSX.Element {
-  const typeLabels = entry.type.join(', ') || '—'
-  return (
-    <div className="Realia__metadata">
-      {entry.wikidataId.map((wikidataId) => (
-        <span key={wikidataId}>
-          <ExternalLink href={`https://www.wikidata.org/wiki/${wikidataId}`}>
-            Wikidata: {wikidataId}
-          </ExternalLink>{' '}
-        </span>
-      ))}
-      {entry.relatedTerms.length > 0 && (
-        <span>
-          <span className="Realia__metadata-label">Related terms: </span>
-          {entry.relatedTerms.join(', ')}{' '}
-        </span>
-      )}
-      <span>
-        <span className="Realia__metadata-label">Type: </span>
-        {typeLabels}
-      </span>
-    </div>
-  )
-}
-
-function RealiaSection({
-  id,
-  heading,
-  open,
-  onToggle,
-  children,
-}: {
-  id: string
-  heading: string
-  open: boolean
-  onToggle: (id: string) => void
-  children: React.ReactNode
-}): JSX.Element {
-  return (
-    <section id={id} className="Realia__section">
-      <h2 className="Realia__section-heading">
-        <button
-          type="button"
-          className="Realia__section-toggle"
-          aria-expanded={open}
-          onClick={(): void => onToggle(id)}
-        >
-          <i
-            className={classNames('fas', 'Realia__section-caret', {
-              'fa-caret-down': open,
-              'fa-caret-right': !open,
-            })}
-            aria-hidden="true"
-          />
-          {heading}
-        </button>
-      </h2>
-      <Collapse in={open}>
-        <div>{children}</div>
-      </Collapse>
-    </section>
-  )
-}
-
-function ReallexikonEntries({
-  entries,
-}: {
-  entries: readonly ReallexikonEntry[]
-}): JSX.Element {
-  return (
-    <>
-      {entries.map((entry, index) => (
-        <div
-          key={`${entry.id}-${index}`}
-          id={rlaArticleId(entry.title)}
-          className="Realia__rla-article"
-        >
-          <h3 className="Realia__rla-title">
-            {entry.title}
-            <ExternalLink
-              href={rlaArticleUrl(entry.id)}
-              className="Realia__rla-title-link"
-              aria-label={`Open ${entry.title} on the online RlA`}
-            >
-              <i className="fas fa-external-link-alt" aria-hidden="true" />
-            </ExternalLink>
-          </h3>
-          {entry.reference && (
-            <div className="Realia__rla-references">
-              <ReferenceList references={[entry.reference]} />
-            </div>
-          )}
-        </div>
-      ))}
-    </>
-  )
-}
-
-function afoEntryHasVisibleContent(
-  afoEntry: AfoRegisterEntry,
-  showMainWord: boolean,
-  showPage: boolean,
-): boolean {
-  return Boolean(
-    (showMainWord && afoEntry.mainWord) ||
-    (showPage && afoEntry.AfO) ||
-    afoEntry.note ||
-    afoEntry.reference ||
-    afoEntry.crossReferences.length > 0 ||
-    afoEntry.crossReference,
-  )
-}
-
-function AfoEntryCrossReference({
-  afoEntry,
-}: {
-  afoEntry: AfoRegisterEntry
-}): JSX.Element {
-  const citation = afoCrossReferenceCitation(afoEntry)
-  const volumeAnchor = afoEntry.afoVolume
-    ? `#${afoVolumeId(afoEntry.afoVolume)}`
-    : ''
-  return (
-    <p className="Realia__afo-cross-reference">
-      <i className="fas fa-arrow-right" aria-hidden="true" />
-      {afoEntry.crossReferences.map((crossReference, index) => (
-        <React.Fragment key={`${crossReference.id}-${index}`}>
-          {index > 0 && ', '}
-          <Link
-            to={`/tools/realia/${encodeURIComponent(
-              realiaCrossReferenceTarget(crossReference),
-            )}${volumeAnchor}`}
-          >
-            {crossReference.lemma}
-          </Link>
-        </React.Fragment>
-      ))}
-      {citation && (
-        <span className="Realia__afo-cross-reference-volume">{citation}</span>
-      )}
-    </p>
-  )
-}
-
-function AfoRegisterEntryItem({
-  afoEntry,
-  showMainWord,
-  showPage,
-}: {
-  afoEntry: AfoRegisterEntry
-  showMainWord: boolean
-  showPage: boolean
-}): JSX.Element {
-  const hasResolvedCrossReferences = afoEntry.crossReferences.length > 0
-  return (
-    <li className="Realia__afo-entry">
-      {showMainWord && afoEntry.mainWord && (
-        <span className="Realia__afo-mainword">{afoEntry.mainWord}</span>
-      )}
-      {showPage && afoEntry.AfO && (
-        <span className="Realia__afo-citation">{afoEntry.AfO}</span>
-      )}
-      {afoEntry.note && <p className="Realia__afo-note">{afoEntry.note}</p>}
-      {afoEntry.reference && (
-        <p className="Realia__afo-reference">{afoEntry.reference}</p>
-      )}
-      {hasResolvedCrossReferences ? (
-        <AfoEntryCrossReference afoEntry={afoEntry} />
-      ) : (
-        afoEntry.crossReference && (
-          <p className="Realia__afo-cross-reference">
-            <i className="fas fa-arrow-right" aria-hidden="true" />
-            <span className="Realia__afo-cross-reference-text">
-              {afoEntry.crossReference}
-            </span>
-          </p>
-        )
-      )}
-    </li>
-  )
-}
-
-function AfoRegisterVolume({
-  id,
-  entryId,
-  group,
-}: {
-  id: string
-  entryId: string
-  group: AfoRegisterVolumeGroup
-}): JSX.Element {
-  const title = formatAfoRegisterVolumeTitle(entryId, group)
-  return (
-    <div id={id} className="Realia__afo-volume">
-      <h3 className="Realia__afo-volume-title">
-        <strong className="Realia__afo-volume-mainword">
-          {title.mainWord}
-        </strong>
-        {': '}
-        <span className="Realia__afo-volume-details">{title.details}</span>
-      </h3>
-      <ul className="Realia__afo-entries" aria-label={group.volume}>
-        {group.entries
-          .filter((afoEntry) =>
-            afoEntryHasVisibleContent(
-              afoEntry,
-              group.hasDistinctMainWords,
-              group.hasDistinctPages,
-            ),
-          )
-          .map((afoEntry, index) => (
-            <AfoRegisterEntryItem
-              key={index}
-              afoEntry={afoEntry}
-              showMainWord={group.hasDistinctMainWords}
-              showPage={group.hasDistinctPages}
-            />
-          ))}
-      </ul>
-    </div>
-  )
-}
-
-function AfoRegisterVolumes({
-  entryId,
-  volumeGroups,
-}: {
-  entryId: string
-  volumeGroups: readonly AfoRegisterVolumeGroup[]
-}): JSX.Element {
-  return (
-    <>
-      {volumeGroups.map((group) => (
-        <AfoRegisterVolume
-          key={group.volume}
-          id={afoVolumeId(group.volume)}
-          entryId={entryId}
-          group={group}
-        />
-      ))}
-    </>
-  )
-}
-
-function SeeAlsoList({
-  crossReferences,
-}: {
-  crossReferences: readonly RealiaCrossReference[]
-}): JSX.Element {
-  return (
-    <ul className="Realia__see-also">
-      {crossReferences.map((crossReference) => (
-        <li key={crossReference.id}>
-          <Link
-            to={`/tools/realia/${encodeURIComponent(
-              realiaCrossReferenceTarget(crossReference),
-            )}`}
-          >
-            {crossReference.lemma}
-          </Link>
-        </li>
-      ))}
-    </ul>
-  )
-}
-
-function useRealiaSectionState(sectionIds: readonly string[]): {
-  openSections: Record<string, boolean>
-  toggleSection: (id: string) => void
-  openSection: (id: string) => void
-} {
-  const initialState = useMemo(
-    () => Object.fromEntries(sectionIds.map((id) => [id, true])),
-    [sectionIds],
-  )
-  const [openSections, setOpenSections] =
-    useState<Record<string, boolean>>(initialState)
-
-  useEffect(() => {
-    setOpenSections(initialState)
-  }, [initialState])
-
-  const toggleSection = useCallback((id: string): void => {
-    setOpenSections((previous) => ({ ...previous, [id]: !previous[id] }))
-  }, [])
-
-  const openSection = useCallback((id: string): void => {
-    setOpenSections((previous) => ({ ...previous, [id]: true }))
-  }, [])
-
-  return { openSections, toggleSection, openSection }
-}
-
-function scrollToSection(id: string): void {
-  const behavior = prefersReducedMotion() ? 'auto' : 'smooth'
-  requestAnimationFrame(() => {
-    requestAnimationFrame(() => {
-      document.getElementById(id)?.scrollIntoView({ behavior })
-    })
-  })
-}
 
 function AuthorizedRealiaEntry({ entry }: { entry: RealiaEntry }): JSX.Element {
   const crossReferences = useMemo(
@@ -379,29 +73,38 @@ function AuthorizedRealiaEntry({ entry }: { entry: RealiaEntry }): JSX.Element {
   const { openSections, toggleSection, openSection } =
     useRealiaSectionState(sectionIds)
   const { activeId, selectActiveSection } = useActiveSection(anchorIds)
+  const history = useHistory()
   const location = useLocation()
+  const selectedId = useMemo(() => {
+    const hashId = decodeURIComponent(location.hash.replace(/^#/, ''))
+    return hashId || null
+  }, [location.hash])
   const typeLabel = entry.type.length > 0 ? entry.type.join(', ') : null
 
+  // Reflect the section/subsection named in the URL hash: open its parent,
+  // highlight it as active, and scroll it into view. Runs on load (deep links,
+  // cross-references) and whenever a menu click pushes a new hash.
   useEffect(() => {
-    const targetId = decodeURIComponent(location.hash.replace(/^#/, ''))
-    if (!targetId) {
+    if (!selectedId) {
       return
     }
-    const sectionId = sectionByAnchor[targetId]
+    const sectionId = sectionByAnchor[selectedId]
     if (sectionId) {
       openSection(sectionId)
     }
-    selectActiveSection(targetId)
-    scrollToSection(targetId)
-  }, [location.hash, sectionByAnchor, openSection, selectActiveSection])
+    selectActiveSection(selectedId)
+    scrollToSection(selectedId)
+  }, [location, selectedId, sectionByAnchor, openSection, selectActiveSection])
 
   const navigateToSection = useCallback(
-    (id: string, sectionId: string): void => {
-      openSection(sectionId)
-      selectActiveSection(id)
-      scrollToSection(id)
+    (id: string): void => {
+      history.push({
+        pathname: location.pathname,
+        search: location.search,
+        hash: `#${id}`,
+      })
     },
-    [openSection, selectActiveSection],
+    [history, location.pathname, location.search],
   )
 
   return (
@@ -413,6 +116,7 @@ function AuthorizedRealiaEntry({ entry }: { entry: RealiaEntry }): JSX.Element {
         sections={navSections}
         openSections={openSections}
         activeId={activeId}
+        selectedId={selectedId}
         onToggleSection={toggleSection}
         onNavigate={navigateToSection}
       />
@@ -466,32 +170,6 @@ function AuthorizedRealiaEntry({ entry }: { entry: RealiaEntry }): JSX.Element {
           </RealiaSection>
         )}
       </div>
-    </div>
-  )
-}
-
-function RealiaRedirect({
-  entry,
-  target,
-}: {
-  entry: RealiaEntry
-  target: RealiaCrossReference
-}): JSX.Element {
-  return (
-    <div className="Realia__redirect">
-      <RealiaDevelopmentNotice />
-      <h1>{entry.id}</h1>
-      <p className="Realia__redirect-pointer">
-        <i className="fas fa-arrow-right" aria-hidden="true" />
-        {' see '}
-        <Link
-          to={`/tools/realia/${encodeURIComponent(
-            realiaCrossReferenceTarget(target),
-          )}`}
-        >
-          {target.lemma}
-        </Link>
-      </p>
     </div>
   )
 }

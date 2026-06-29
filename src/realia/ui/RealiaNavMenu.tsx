@@ -10,20 +10,23 @@ interface Props {
   sections: readonly RealiaNavSection[]
   openSections: Readonly<Record<string, boolean>>
   activeId: string | null
+  selectedId: string | null
   onToggleSection: (id: string) => void
-  onNavigate: (id: string, sectionId: string) => void
+  onNavigate: (id: string) => void
 }
 
 function NavSubsections({
   section,
   open,
   activeId,
+  selectedId,
   onNavigate,
 }: {
   section: RealiaNavSection
   open: boolean
   activeId: string | null
-  onNavigate: (id: string, sectionId: string) => void
+  selectedId: string | null
+  onNavigate: (id: string) => void
 }): JSX.Element {
   return (
     <Collapse in={open}>
@@ -34,11 +37,12 @@ function NavSubsections({
               href={`#${subsection.id}`}
               className={classNames('Realia__nav-sublink', {
                 'is-active': activeId === subsection.id,
+                'is-selected': selectedId === subsection.id,
               })}
               aria-current={activeId === subsection.id ? 'true' : undefined}
               onClick={(event): void => {
                 event.preventDefault()
-                onNavigate(subsection.id, section.id)
+                onNavigate(subsection.id)
               }}
             >
               {subsection.label}
@@ -57,6 +61,7 @@ export default function RealiaNavMenu({
   sections,
   openSections,
   activeId,
+  selectedId,
   onToggleSection,
   onNavigate,
 }: Props): JSX.Element {
@@ -66,11 +71,12 @@ export default function RealiaNavMenu({
         href={`#${topId}`}
         className={classNames('Realia__nav-top', {
           'is-active': activeId === topId,
+          'is-selected': selectedId === topId,
         })}
         aria-current={activeId === topId ? 'true' : undefined}
         onClick={(event): void => {
           event.preventDefault()
-          onNavigate(topId, topId)
+          onNavigate(topId)
         }}
       >
         <span className="Realia__nav-top-title">{title}</span>
@@ -111,11 +117,12 @@ export default function RealiaNavMenu({
                   href={`#${section.id}`}
                   className={classNames('Realia__nav-link', {
                     'is-active': activeId === section.id,
+                    'is-selected': selectedId === section.id,
                   })}
                   aria-current={activeId === section.id ? 'true' : undefined}
                   onClick={(event): void => {
                     event.preventDefault()
-                    onNavigate(section.id, section.id)
+                    onNavigate(section.id)
                   }}
                 >
                   {section.label}
@@ -126,6 +133,7 @@ export default function RealiaNavMenu({
                   section={section}
                   open={open}
                   activeId={activeId}
+                  selectedId={selectedId}
                   onNavigate={onNavigate}
                 />
               )}

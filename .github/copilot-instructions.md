@@ -30,6 +30,7 @@ Provide project context and coding guidelines that AI should follow when generat
 - Ensure that all functions and methods in TypeScript have appropriate type annotations. Avoid using `any` or `unknown` unless very necessary.
 - Functions should be small and focused on a single task.
 - Refactor long and complex code automatically.
+- Treat a 250-line ceiling per script file (`.ts`/`.tsx`, including tests) as a hard gate: no script file may exceed 250 lines. When a change would push a file over the limit, split it into focused modules (extract components, hooks, helpers, or group test suites into sibling files) before finalizing. Verify with a line count and keep behaviour identical.
 - Treat DRY as a hard gate: if the same domain logic or mapping appears in more than one place, extract and reuse a shared helper before finalizing.
 - Do not add comments to the code unless explicitly requested.
 
