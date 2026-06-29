@@ -28,10 +28,9 @@ function BibliographyEditor({
   bibliographyService,
   create = false,
   history,
-  match,
 }: Props): JSX.Element {
   const navigate = useNavigate()
-  const entryId = match.params.id ?? ''
+  const entryId = data.id
   const push = (path: string): void => {
     if (history) {
       history.push(path)
@@ -87,10 +86,14 @@ export default withData<
 >(
   BibliographyEditor,
   (props) => {
-    return props.bibliographyService.find(props.match.params['id'] ?? '')
+    const decodedId = decodeURIComponent(props.match.params['id'] ?? '')
+    return props.bibliographyService.find(decodedId)
   },
   {
-    watch: (props) => [props.create, props.match.params['id'] ?? ''],
+    watch: (props) => [
+      props.create,
+      decodeURIComponent(props.match.params['id'] ?? ''),
+    ],
     filter: (props) => !props.create,
     defaultData: () => template,
   },

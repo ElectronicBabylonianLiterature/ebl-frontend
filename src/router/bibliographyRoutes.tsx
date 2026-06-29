@@ -46,7 +46,7 @@ export default function BibliographyRoutes({
       render={({ match, location }): ReactNode => (
         <Redirect
           to={withSearchAndHash(
-            referencesEditRoute(match.params.id ?? ''),
+            referencesEditRoute(decodeURIComponent(match.params.id ?? '')),
             location.search,
             location.hash,
           )}
@@ -60,7 +60,7 @@ export default function BibliographyRoutes({
       render={({ match, location }): ReactNode => (
         <Redirect
           to={withSearchAndHash(
-            referencesEntryRoute(match.params.id ?? ''),
+            referencesEntryRoute(decodeURIComponent(match.params.id ?? '')),
             location.search,
             location.hash,
           )}

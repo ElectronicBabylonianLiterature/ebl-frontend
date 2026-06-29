@@ -74,6 +74,11 @@ describe('BibliographyViewer', () => {
 
   test('encodes a non-ASCII reference identifier in the Edit route', async () => {
     const specialEntryId = 'Young2023Ê'
+    entry = new BibliographyEntry({
+      ...entry.toCslData(),
+      id: specialEntryId,
+    })
+    bibliographyService.find.mockReturnValue(Promise.resolve(entry))
     await renderViewer(specialEntryId)
     fireEvent.click(await screen.findByText('Edit'))
     await waitFor(() =>
