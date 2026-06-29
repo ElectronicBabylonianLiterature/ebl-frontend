@@ -14,14 +14,14 @@ function afoEntryHasVisibleContent(
   showMainWord: boolean,
   showPage: boolean,
 ): boolean {
-  return Boolean(
-    (showMainWord && afoEntry.mainWord) ||
-    (showPage && afoEntry.AfO) ||
-    afoEntry.note ||
-    afoEntry.reference ||
-    afoEntry.crossReferences.length > 0 ||
+  return [
+    showMainWord && afoEntry.mainWord,
+    showPage && afoEntry.AfO,
+    afoEntry.note,
+    afoEntry.reference,
+    afoEntry.crossReferences.length > 0,
     afoEntry.crossReference,
-  )
+  ].some(Boolean)
 }
 
 function AfoEntryCrossReference({

@@ -71,16 +71,20 @@ function isStubReallexikon(entries: readonly ReallexikonEntry[]): boolean {
   return entries.every((entry) => entry.reference === null)
 }
 
+function hasOwnContent(entry: RealiaEntry): boolean {
+  return [
+    entry.afoRegister.length > 0,
+    entry.references.length > 0,
+    entry.afoCrossReferences.length > 0,
+    entry.reallexikon.length > 1,
+    !isStubReallexikon(entry.reallexikon),
+  ].some(Boolean)
+}
+
 export function getRedirectTarget(
   entry: RealiaEntry,
 ): RealiaCrossReference | null {
-  const hasOwnContent =
-    entry.afoRegister.length > 0 ||
-    entry.references.length > 0 ||
-    entry.afoCrossReferences.length > 0 ||
-    entry.reallexikon.length > 1 ||
-    !isStubReallexikon(entry.reallexikon)
-  return !hasOwnContent && entry.crossReferences.length === 1
+  return !hasOwnContent(entry) && entry.crossReferences.length === 1
     ? entry.crossReferences[0]
     : null
 }

@@ -6,8 +6,27 @@ import {
 } from 'test-support/realia-fixtures'
 import { installMockIntersectionObserver } from 'test-support/intersectionObserverMock'
 import { renderDisplay } from 'realia/ui/RealiaDisplay.testSupport'
+import { AfoRegisterEntry, RealiaEntry } from 'realia/domain/RealiaEntry'
 
 jest.mock('realia/application/RealiaService')
+
+function sharedAfoVolumeEntry(
+  mainWord: string,
+  entries: ReadonlyArray<Partial<AfoRegisterEntry>>,
+): RealiaEntry {
+  return realiaEntryFactory.build({
+    id: mainWord,
+    reallexikon: [],
+    afoRegister: entries.map((overrides) =>
+      afoRegisterEntryFactory.build({
+        mainWord,
+        afoVolume: 'AfO 44/45',
+        year: '1997/1998',
+        ...overrides,
+      }),
+    ),
+  })
+}
 
 describe('RealiaDisplay AfO-Register volumes', () => {
   beforeEach(() => {
@@ -87,26 +106,10 @@ describe('RealiaDisplay AfO-Register volumes', () => {
   })
 
   it('shows the main word and page in the volume title and hides them on the entries when they are constant', async () => {
-    const entry = realiaEntryFactory.build({
-      id: 'Adad',
-      reallexikon: [],
-      afoRegister: [
-        afoRegisterEntryFactory.build({
-          mainWord: 'Adad',
-          afoVolume: 'AfO 44/45',
-          year: '1997/1998',
-          page: '615',
-          note: 'first note',
-        }),
-        afoRegisterEntryFactory.build({
-          mainWord: 'Adad',
-          afoVolume: 'AfO 44/45',
-          year: '1997/1998',
-          page: '615',
-          note: 'second note',
-        }),
-      ],
-    })
+    const entry = sharedAfoVolumeEntry('Adad', [
+      { page: '615', note: 'first note' },
+      { page: '615', note: 'second note' },
+    ])
     renderDisplay(entry)
     await waitForSpinnerToBeRemoved(screen)
     expect(
@@ -128,26 +131,10 @@ describe('RealiaDisplay AfO-Register volumes', () => {
   })
 
   it('shows the per-entry AfO caption with the year when pages differ within a volume', async () => {
-    const entry = realiaEntryFactory.build({
-      id: 'Akkad',
-      reallexikon: [],
-      afoRegister: [
-        afoRegisterEntryFactory.build({
-          mainWord: 'Akkad',
-          afoVolume: 'AfO 44/45',
-          year: '1997/1998',
-          page: '615',
-          AfO: 'AfO 44/45 (1997/1998), 615',
-        }),
-        afoRegisterEntryFactory.build({
-          mainWord: 'Akkad',
-          afoVolume: 'AfO 44/45',
-          year: '1997/1998',
-          page: '616',
-          AfO: 'AfO 44/45 (1997/1998), 616',
-        }),
-      ],
-    })
+    const entry = sharedAfoVolumeEntry('Akkad', [
+      { page: '615', AfO: 'AfO 44/45 (1997/1998), 615' },
+      { page: '616', AfO: 'AfO 44/45 (1997/1998), 616' },
+    ])
     renderDisplay(entry)
     await waitForSpinnerToBeRemoved(screen)
     expect(
@@ -171,26 +158,10 @@ describe('RealiaDisplay AfO-Register volumes', () => {
   })
 
   it('drops entries that have no visible content once the main word and page are hidden', async () => {
-    const entry = realiaEntryFactory.build({
-      id: 'Adad',
-      reallexikon: [],
-      afoRegister: [
-        afoRegisterEntryFactory.build({
-          mainWord: 'Adad',
-          afoVolume: 'AfO 44/45',
-          page: '615',
-          note: '',
-          reference: '',
-        }),
-        afoRegisterEntryFactory.build({
-          mainWord: 'Adad',
-          afoVolume: 'AfO 44/45',
-          page: '615',
-          note: 'kept note',
-          reference: '',
-        }),
-      ],
-    })
+    const entry = sharedAfoVolumeEntry('Adad', [
+      { page: '615', note: '', reference: '' },
+      { page: '615', note: 'kept note', reference: '' },
+    ])
     renderDisplay(entry)
     await waitForSpinnerToBeRemoved(screen)
     const afoList = screen.getByRole('list', { name: 'AfO 44/45' })

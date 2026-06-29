@@ -25,4 +25,13 @@ per-entry `crossReferences`, and a `/realia/{realiaId}` lookup.
 - [x] Fix AfO volume ordering: sort groups by descending numeric volume.
 - [ ] User action: reload the app; cross-reference links / "See Also" still need the API
       to serve resolved `crossReferences {id, lemma}[]` (not in PR #715 yet).
+- [x] PR review: fetch ALL pre-existing GitHub reviews/comments (new hard gate) — 6 bot
+      reviews, 28 inline comments, 0 issue comments; 10 unresolved + current.
+- [x] Address all 10 unresolved `qltysh[bot]` findings at root cause (2 boolean-logic,
+      8 similar-code across RealiaEntry.ts, RealiaAfoRegister.tsx, RealiaNavMenu.tsx, and
+      3 test files).
+- [x] Add fetch-all + address-all hard gates to `.github/copilot-instructions.md`.
+- [x] Write `TASK-743-review.md` (Summary/Findings/Severity/Reproduction/Recommendation/
+      What Has To Be Done).
+- [ ] Push branch so the bot re-scans and the 10 threads auto-resolve.
 - [ ] Remove TASK-743-\*.md before merge.

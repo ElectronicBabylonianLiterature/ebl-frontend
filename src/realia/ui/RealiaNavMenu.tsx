@@ -15,6 +15,39 @@ interface Props {
   onNavigate: (id: string) => void
 }
 
+function NavAnchor({
+  id,
+  className,
+  activeId,
+  selectedId,
+  onNavigate,
+  children,
+}: {
+  id: string
+  className: string
+  activeId: string | null
+  selectedId: string | null
+  onNavigate: (id: string) => void
+  children: React.ReactNode
+}): JSX.Element {
+  return (
+    <a
+      href={`#${id}`}
+      className={classNames(className, {
+        'is-active': activeId === id,
+        'is-selected': selectedId === id,
+      })}
+      aria-current={activeId === id ? 'true' : undefined}
+      onClick={(event): void => {
+        event.preventDefault()
+        onNavigate(id)
+      }}
+    >
+      {children}
+    </a>
+  )
+}
+
 function NavSubsections({
   section,
   open,
@@ -33,20 +66,15 @@ function NavSubsections({
       <ul className="Realia__nav-sublist">
         {section.subsections.map((subsection) => (
           <li key={subsection.id} className="Realia__nav-subitem">
-            <a
-              href={`#${subsection.id}`}
-              className={classNames('Realia__nav-sublink', {
-                'is-active': activeId === subsection.id,
-                'is-selected': selectedId === subsection.id,
-              })}
-              aria-current={activeId === subsection.id ? 'true' : undefined}
-              onClick={(event): void => {
-                event.preventDefault()
-                onNavigate(subsection.id)
-              }}
+            <NavAnchor
+              id={subsection.id}
+              className="Realia__nav-sublink"
+              activeId={activeId}
+              selectedId={selectedId}
+              onNavigate={onNavigate}
             >
               {subsection.label}
-            </a>
+            </NavAnchor>
           </li>
         ))}
       </ul>
@@ -67,21 +95,16 @@ export default function RealiaNavMenu({
 }: Props): JSX.Element {
   return (
     <nav className="Realia__nav" aria-label="On this page">
-      <a
-        href={`#${topId}`}
-        className={classNames('Realia__nav-top', {
-          'is-active': activeId === topId,
-          'is-selected': selectedId === topId,
-        })}
-        aria-current={activeId === topId ? 'true' : undefined}
-        onClick={(event): void => {
-          event.preventDefault()
-          onNavigate(topId)
-        }}
+      <NavAnchor
+        id={topId}
+        className="Realia__nav-top"
+        activeId={activeId}
+        selectedId={selectedId}
+        onNavigate={onNavigate}
       >
         <span className="Realia__nav-top-title">{title}</span>
         {typeLabel && <span className="Realia__nav-top-type">{typeLabel}</span>}
-      </a>
+      </NavAnchor>
       <ul className="Realia__nav-list">
         {sections.map((section) => {
           const open = openSections[section.id]
@@ -113,20 +136,15 @@ export default function RealiaNavMenu({
                     aria-hidden="true"
                   />
                 </button>
-                <a
-                  href={`#${section.id}`}
-                  className={classNames('Realia__nav-link', {
-                    'is-active': activeId === section.id,
-                    'is-selected': selectedId === section.id,
-                  })}
-                  aria-current={activeId === section.id ? 'true' : undefined}
-                  onClick={(event): void => {
-                    event.preventDefault()
-                    onNavigate(section.id)
-                  }}
+                <NavAnchor
+                  id={section.id}
+                  className="Realia__nav-link"
+                  activeId={activeId}
+                  selectedId={selectedId}
+                  onNavigate={onNavigate}
                 >
                   {section.label}
-                </a>
+                </NavAnchor>
               </div>
               {section.subsections.length > 0 && (
                 <NavSubsections

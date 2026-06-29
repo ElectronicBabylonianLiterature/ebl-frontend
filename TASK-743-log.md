@@ -147,3 +147,33 @@ year-in-header path intentionally not taken — spec permits). Gates this turn: 
 clean, `yarn lint` clean, full `yarn test --watchAll=false` = 324 suites / 3336 passed,
 zero console noise. Live-entry verification remains blocked on ebl-api PR #715 (stale local
 API). No code changes required; nothing to commit.
+
+## 11. PR review — addressed all pre-existing GitHub bot findings (2026-06-29)
+
+Fetched all pre-existing GitHub review data first (new hard gate): 6 timeline
+review events (all `qltysh[bot]` `COMMENTED`, no human review), 28 inline
+comments (all `qltysh[bot]`), 0 issue comments. GraphQL thread status: 18
+resolved/outdated, **10 unresolved + current**.
+
+Addressed all 10 at root cause (behaviour-preserving):
+
+- `RealiaEntry.ts` — `hasOwnContent` 5-clause OR → named predicate with
+  `[...].some(Boolean)` (qlty:boolean-logic).
+- `RealiaAfoRegister.tsx` — `afoEntryHasVisibleContent` 6-clause `Boolean(||)`
+  → `[...].some(Boolean)` (qlty:boolean-logic).
+- `RealiaNavMenu.tsx` — extracted shared `NavAnchor`; top/section/subsection
+  links reuse it (qlty:similar-code on the duplicated anchors).
+- `RealiaEntry.afoVolume.test.ts` — `formatAfoRegisterVolumeTitle` suite → one
+  `it.each` table (qlty:similar-code).
+- `RealiaRepository.afo.test.ts` — 3 AfO-derivation tests → one `it.each` table
+  (qlty:similar-code).
+- `RealiaDisplay.afoRegister.test.tsx` — `sharedAfoVolumeEntry` builder reused
+  by the 3 two-entry tests (qlty:similar-code).
+
+Process: added two hard-gate bullets to `.github/copilot-instructions.md`
+Review Guidelines (fetch-all-reviews-first; address-every-finding-including-
+pre-existing). Wrote `TASK-743-review.md` per the mandated template.
+
+Gates: `yarn tsc` clean; `yarn lint` clean (after Prettier on the new tables);
+full `yarn test --watchAll=false` = 332 suites / 3354 passed, 2 pre-existing
+skips, zero console output. All touched files remain under the 250-line gate.

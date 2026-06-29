@@ -71,6 +71,8 @@ Provide project context and coding guidelines that AI should follow when generat
 
 ## Review Guidelines
 
+- Treat fetching all pre-existing GitHub reviews and comments as a hard gate before any review: never start a review without first gathering every existing review (timeline review events) and every comment (inline review comments and general/issue comments) from GitHub for the PR. Include their resolution status (resolved vs unresolved) and whether each is outdated against the current head.
+- Treat addressing every finding as a hard gate: resolve all findings surfaced in the review, including pre-existing ones and those raised by automated review bots, at their root cause before finalizing. Do not defer or merely report them.
 - Keep review comments short, specific, and actionable.
 - Prioritize correctness, regressions, security, and test coverage in every review.
 - All instances of console errors, warnings, or unhandled rejections found in the test output must be noted as findings in the review. They are never acceptable noise — every such instance must be fixed at its root cause. Resolving every such finding is a hard gate: a PR may not be approved while any console-noise finding remains.

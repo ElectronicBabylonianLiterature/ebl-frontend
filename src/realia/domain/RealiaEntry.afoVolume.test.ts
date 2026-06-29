@@ -1,6 +1,7 @@
 import {
   groupAfoRegisterByVolume,
   formatAfoRegisterVolumeTitle,
+  AfoRegisterEntry,
 } from 'realia/domain/RealiaEntry'
 import { afoRegisterEntryFactory } from 'test-support/realia-fixtures'
 
@@ -94,120 +95,94 @@ describe('groupAfoRegisterByVolume', () => {
 })
 
 describe('formatAfoRegisterVolumeTitle', () => {
-  it('uses the main word as the title and pairs the volume with year and page', () => {
-    const [group] = groupAfoRegisterByVolume([
-      afoRegisterEntryFactory.build({
-        mainWord: 'Adad',
-        afoVolume: 'AfO 44/45',
-        year: '1993/1994',
-        page: '615',
-      }),
-    ])
-    expect(formatAfoRegisterVolumeTitle('Adad', group)).toEqual({
-      mainWord: 'Adad',
-      details: 'AfO 44/45 (1993/1994), 615',
-    })
-  })
-
-  it('drops a main word that just repeats the entry id with extra qualifiers', () => {
-    const [group] = groupAfoRegisterByVolume([
-      afoRegisterEntryFactory.build({
-        mainWord: 'Enlil',
-        afoVolume: 'AfO 25',
-        year: '1977',
-        page: '370',
-      }),
-    ])
-    expect(formatAfoRegisterVolumeTitle('Enlil, Ellil', group)).toEqual({
-      mainWord: 'Enlil',
-      details: 'AfO 25 (1977), 370',
-    })
-  })
-
-  it('shows a page range when entries span several pages', () => {
-    const [group] = groupAfoRegisterByVolume([
-      afoRegisterEntryFactory.build({
+  const cases: ReadonlyArray<{
+    name: string
+    entries: ReadonlyArray<Partial<AfoRegisterEntry>>
+    entryId: string
+    expected: { mainWord: string; details: string }
+  }> = [
+    {
+      name: 'uses the main word as the title and pairs the volume with year and page',
+      entries: [
+        {
+          mainWord: 'Adad',
+          afoVolume: 'AfO 44/45',
+          year: '1993/1994',
+          page: '615',
+        },
+      ],
+      entryId: 'Adad',
+      expected: { mainWord: 'Adad', details: 'AfO 44/45 (1993/1994), 615' },
+    },
+    {
+      name: 'drops a main word that just repeats the entry id with extra qualifiers',
+      entries: [
+        { mainWord: 'Enlil', afoVolume: 'AfO 25', year: '1977', page: '370' },
+      ],
+      entryId: 'Enlil, Ellil',
+      expected: { mainWord: 'Enlil', details: 'AfO 25 (1977), 370' },
+    },
+    {
+      name: 'shows a page range when entries span several pages',
+      entries: [
+        {
+          mainWord: 'Akkad',
+          afoVolume: 'AfO 44/45',
+          year: '1993/1994',
+          page: '615',
+        },
+        {
+          mainWord: 'Akkad',
+          afoVolume: 'AfO 44/45',
+          year: '1993/1994',
+          page: '617',
+        },
+      ],
+      entryId: 'Akkad',
+      expected: {
         mainWord: 'Akkad',
-        afoVolume: 'AfO 44/45',
-        year: '1993/1994',
-        page: '615',
-      }),
-      afoRegisterEntryFactory.build({
-        mainWord: 'Akkad',
-        afoVolume: 'AfO 44/45',
-        year: '1993/1994',
-        page: '617',
-      }),
-    ])
-    expect(formatAfoRegisterVolumeTitle('Akkad', group)).toEqual({
-      mainWord: 'Akkad',
-      details: 'AfO 44/45 (1993/1994), 615-617',
-    })
-  })
+        details: 'AfO 44/45 (1993/1994), 615-617',
+      },
+    },
+    {
+      name: 'joins distinct main words within a volume',
+      entries: [
+        { mainWord: 'adû', afoVolume: 'AfO 50', year: '2003', page: '545' },
+        { mainWord: 'Ad(d)u', afoVolume: 'AfO 50', year: '2003', page: '545' },
+      ],
+      entryId: 'adû',
+      expected: { mainWord: 'adû, Ad(d)u', details: 'AfO 50 (2003), 545' },
+    },
+    {
+      name: 'omits the page when no entry carries one',
+      entries: [
+        { mainWord: 'Adad', afoVolume: 'AfO 25', year: '1977', page: '' },
+      ],
+      entryId: 'Adad',
+      expected: { mainWord: 'Adad', details: 'AfO 25 (1977)' },
+    },
+    {
+      name: 'omits the year when no entry carries one',
+      entries: [
+        { mainWord: 'Adad', afoVolume: 'AfO 25', year: '', page: '370' },
+      ],
+      entryId: 'Adad',
+      expected: { mainWord: 'Adad', details: 'AfO 25, 370' },
+    },
+    {
+      name: 'falls back to the entry id when no main word is present',
+      entries: [
+        { mainWord: '', afoVolume: 'AfO 25', year: '1977', page: '370' },
+      ],
+      entryId: 'Enlil, Ellil',
+      expected: { mainWord: 'Enlil, Ellil', details: 'AfO 25 (1977), 370' },
+    },
+  ]
 
-  it('joins distinct main words within a volume', () => {
-    const [group] = groupAfoRegisterByVolume([
-      afoRegisterEntryFactory.build({
-        mainWord: 'adû',
-        afoVolume: 'AfO 50',
-        year: '2003',
-        page: '545',
-      }),
-      afoRegisterEntryFactory.build({
-        mainWord: 'Ad(d)u',
-        afoVolume: 'AfO 50',
-        year: '2003',
-        page: '545',
-      }),
-    ])
-    expect(formatAfoRegisterVolumeTitle('adû', group)).toEqual({
-      mainWord: 'adû, Ad(d)u',
-      details: 'AfO 50 (2003), 545',
-    })
-  })
-
-  it('omits the page when no entry carries one', () => {
-    const [group] = groupAfoRegisterByVolume([
-      afoRegisterEntryFactory.build({
-        mainWord: 'Adad',
-        afoVolume: 'AfO 25',
-        year: '1977',
-        page: '',
-      }),
-    ])
-    expect(formatAfoRegisterVolumeTitle('Adad', group)).toEqual({
-      mainWord: 'Adad',
-      details: 'AfO 25 (1977)',
-    })
-  })
-
-  it('omits the year when no entry carries one', () => {
-    const [group] = groupAfoRegisterByVolume([
-      afoRegisterEntryFactory.build({
-        mainWord: 'Adad',
-        afoVolume: 'AfO 25',
-        year: '',
-        page: '370',
-      }),
-    ])
-    expect(formatAfoRegisterVolumeTitle('Adad', group)).toEqual({
-      mainWord: 'Adad',
-      details: 'AfO 25, 370',
-    })
-  })
-
-  it('falls back to the entry id when no main word is present', () => {
-    const [group] = groupAfoRegisterByVolume([
-      afoRegisterEntryFactory.build({
-        mainWord: '',
-        afoVolume: 'AfO 25',
-        year: '1977',
-        page: '370',
-      }),
-    ])
-    expect(formatAfoRegisterVolumeTitle('Enlil, Ellil', group)).toEqual({
-      mainWord: 'Enlil, Ellil',
-      details: 'AfO 25 (1977), 370',
-    })
+  it.each(cases)('$name', ({ entries, entryId, expected }) => {
+    const [group] = groupAfoRegisterByVolume(
+      entries.map((overrides) => afoRegisterEntryFactory.build(overrides)),
+    )
+    expect(formatAfoRegisterVolumeTitle(entryId, group)).toEqual(expected)
   })
 })
