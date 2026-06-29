@@ -39,12 +39,8 @@ export function Route({
   computedMatch,
 }: RouteProps): JSX.Element | null {
   const location = useLocation()
-  const matchPattern = useMatch('*')
-  const match =
-    computedMatch ??
-    (path
-      ? matchPath({ path, end: exact ?? true }, location.pathname)
-      : { params: {} })
+  const matchPattern = useMatch(path ? { path, end: exact ?? true } : '*')
+  const match = path ? matchPattern : (computedMatch ?? { params: {} })
 
   if (!match) return null
 

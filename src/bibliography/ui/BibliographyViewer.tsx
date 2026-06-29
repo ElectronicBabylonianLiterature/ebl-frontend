@@ -136,6 +136,7 @@ export default withData<
   { match: { params: Record<string, string | undefined> } },
   BibliographyEntry
 >(BibliographyViewer, (props) => {
-  const decodedId = decodeURIComponent(props.match.params.id ?? '')
-  return Bluebird.resolve(props.bibliographyService.find(decodedId))
+  return Bluebird.resolve(
+    props.bibliographyService.find(props.match.params.id ?? ''),
+  )
 })
