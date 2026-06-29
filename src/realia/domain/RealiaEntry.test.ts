@@ -1,8 +1,10 @@
 import {
+  afoCrossReferenceCitation,
   getRealiaCrossReferences,
   getRedirectTarget,
   groupAfoRegisterByVolume,
   formatAfoRegisterVolumeTitle,
+  realiaCrossReferenceTarget,
   rlaArticleUrl,
 } from 'realia/domain/RealiaEntry'
 import {
@@ -27,6 +29,49 @@ describe('rlaArticleUrl', () => {
     expect(rlaArticleUrl('a b')).toBe(
       'https://publikationen.badw.de/de/rla/index#a%20b',
     )
+  })
+})
+
+describe('realiaCrossReferenceTarget', () => {
+  it('navigates by the lemma, which is the route-resolvable key', () => {
+    expect(
+      realiaCrossReferenceTarget({
+        id: 'realia_elam',
+        lemma: 'Elam (Geschichte)',
+      }),
+    ).toBe('Elam (Geschichte)')
+  })
+
+  it('falls back to the realiaId only when the lemma is missing', () => {
+    expect(realiaCrossReferenceTarget({ id: 'realia_elam', lemma: '' })).toBe(
+      'realia_elam',
+    )
+  })
+})
+
+describe('afoCrossReferenceCitation', () => {
+  it('combines the AfO volume and page', () => {
+    expect(
+      afoCrossReferenceCitation(
+        afoRegisterEntryFactory.build({ afoVolume: 'AfO 48/49', page: '358' }),
+      ),
+    ).toBe('(AfO 48/49, 358)')
+  })
+
+  it('drops the page when it is empty', () => {
+    expect(
+      afoCrossReferenceCitation(
+        afoRegisterEntryFactory.build({ afoVolume: 'AfO 48/49', page: '' }),
+      ),
+    ).toBe('(AfO 48/49)')
+  })
+
+  it('returns an empty string when neither volume nor page is present', () => {
+    expect(
+      afoCrossReferenceCitation(
+        afoRegisterEntryFactory.build({ afoVolume: '', page: '' }),
+      ),
+    ).toBe('')
   })
 })
 

@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import classNames from 'classnames'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import { Collapse } from 'react-bootstrap'
 import withData, { WithoutData } from 'http/withData'
 import RealiaService from 'realia/application/RealiaService'
@@ -10,10 +10,12 @@ import {
   ReallexikonEntry,
   RealiaCrossReference,
   RealiaEntry,
+  afoCrossReferenceCitation,
   getRealiaCrossReferences,
   getRedirectTarget,
   groupAfoRegisterByVolume,
   formatAfoRegisterVolumeTitle,
+  realiaCrossReferenceTarget,
   rlaArticleUrl,
 } from 'realia/domain/RealiaEntry'
 import ExternalLink from 'common/ui/ExternalLink'
@@ -108,7 +110,7 @@ function ReallexikonEntries({
       {entries.map((entry, index) => (
         <div
           key={`${entry.id}-${index}`}
-          id={rlaArticleId(index)}
+          id={rlaArticleId(entry.title)}
           className="Realia__rla-article"
         >
           <h3 className="Realia__rla-title">
@@ -152,17 +154,28 @@ function AfoEntryCrossReference({
 }: {
   afoEntry: AfoRegisterEntry
 }): JSX.Element {
+  const citation = afoCrossReferenceCitation(afoEntry)
+  const volumeAnchor = afoEntry.afoVolume
+    ? `#${afoVolumeId(afoEntry.afoVolume)}`
+    : ''
   return (
     <p className="Realia__afo-cross-reference">
       <i className="fas fa-arrow-right" aria-hidden="true" />
       {afoEntry.crossReferences.map((crossReference, index) => (
-        <React.Fragment key={crossReference.id}>
+        <React.Fragment key={`${crossReference.id}-${index}`}>
           {index > 0 && ', '}
-          <Link to={`/tools/realia/${encodeURIComponent(crossReference.id)}`}>
+          <Link
+            to={`/tools/realia/${encodeURIComponent(
+              realiaCrossReferenceTarget(crossReference),
+            )}${volumeAnchor}`}
+          >
             {crossReference.lemma}
           </Link>
         </React.Fragment>
       ))}
+      {citation && (
+        <span className="Realia__afo-cross-reference-volume">{citation}</span>
+      )}
     </p>
   )
 }
@@ -195,11 +208,9 @@ function AfoRegisterEntryItem({
         afoEntry.crossReference && (
           <p className="Realia__afo-cross-reference">
             <i className="fas fa-arrow-right" aria-hidden="true" />
-            <Link
-              to={`/tools/realia/${encodeURIComponent(afoEntry.crossReference)}`}
-            >
+            <span className="Realia__afo-cross-reference-text">
               {afoEntry.crossReference}
-            </Link>
+            </span>
           </p>
         )
       )}
@@ -250,11 +261,9 @@ function AfoRegisterVolume({
 
 function AfoRegisterVolumes({
   entryId,
-  realiaId,
   volumeGroups,
 }: {
   entryId: string
-  realiaId: string
   volumeGroups: readonly AfoRegisterVolumeGroup[]
 }): JSX.Element {
   return (
@@ -262,7 +271,7 @@ function AfoRegisterVolumes({
       {volumeGroups.map((group) => (
         <AfoRegisterVolume
           key={group.volume}
-          id={afoVolumeId(realiaId, group.volume)}
+          id={afoVolumeId(group.volume)}
           entryId={entryId}
           group={group}
         />
@@ -280,7 +289,11 @@ function SeeAlsoList({
     <ul className="Realia__see-also">
       {crossReferences.map((crossReference) => (
         <li key={crossReference.id}>
-          <Link to={`/tools/realia/${encodeURIComponent(crossReference.id)}`}>
+          <Link
+            to={`/tools/realia/${encodeURIComponent(
+              realiaCrossReferenceTarget(crossReference),
+            )}`}
+          >
             {crossReference.lemma}
           </Link>
         </li>
@@ -353,10 +366,34 @@ function AuthorizedRealiaEntry({ entry }: { entry: RealiaEntry }): JSX.Element {
     ],
     [navSections],
   )
+  const sectionByAnchor = useMemo(() => {
+    const map: Record<string, string> = {}
+    navSections.forEach((section) => {
+      map[section.id] = section.id
+      section.subsections.forEach((subsection) => {
+        map[subsection.id] = section.id
+      })
+    })
+    return map
+  }, [navSections])
   const { openSections, toggleSection, openSection } =
     useRealiaSectionState(sectionIds)
   const { activeId, selectActiveSection } = useActiveSection(anchorIds)
+  const location = useLocation()
   const typeLabel = entry.type.length > 0 ? entry.type.join(', ') : null
+
+  useEffect(() => {
+    const targetId = decodeURIComponent(location.hash.replace(/^#/, ''))
+    if (!targetId) {
+      return
+    }
+    const sectionId = sectionByAnchor[targetId]
+    if (sectionId) {
+      openSection(sectionId)
+    }
+    selectActiveSection(targetId)
+    scrollToSection(targetId)
+  }, [location.hash, sectionByAnchor, openSection, selectActiveSection])
 
   const navigateToSection = useCallback(
     (id: string, sectionId: string): void => {
@@ -404,7 +441,6 @@ function AuthorizedRealiaEntry({ entry }: { entry: RealiaEntry }): JSX.Element {
           >
             <AfoRegisterVolumes
               entryId={entry.id}
-              realiaId={entry.realiaId}
               volumeGroups={volumeGroups}
             />
           </RealiaSection>
@@ -448,7 +484,11 @@ function RealiaRedirect({
       <p className="Realia__redirect-pointer">
         <i className="fas fa-arrow-right" aria-hidden="true" />
         {' see '}
-        <Link to={`/tools/realia/${encodeURIComponent(target.id)}`}>
+        <Link
+          to={`/tools/realia/${encodeURIComponent(
+            realiaCrossReferenceTarget(target),
+          )}`}
+        >
           {target.lemma}
         </Link>
       </p>

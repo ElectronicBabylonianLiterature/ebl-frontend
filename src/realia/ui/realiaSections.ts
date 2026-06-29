@@ -31,12 +31,12 @@ function slugify(value: string): string {
     .replace(/(^-+|-+$)/g, '')
 }
 
-export function afoVolumeId(realiaId: string, afoVolume: string): string {
-  return `realia-afo-volume-${slugify(realiaId)}-${slugify(afoVolume)}`
+export function afoVolumeId(afoVolume: string): string {
+  return slugify(afoVolume)
 }
 
-export function rlaArticleId(index: number): string {
-  return `realia-rla-article-${index}`
+export function rlaArticleId(title: string): string {
+  return `rla-${slugify(title)}`
 }
 
 export function buildRealiaNav({
@@ -53,8 +53,8 @@ export function buildRealiaNav({
     sections.push({
       id: realiaSectionIds.reallexikon,
       label: 'Reallexikon',
-      subsections: entry.reallexikon.map((article, index) => ({
-        id: rlaArticleId(index),
+      subsections: entry.reallexikon.map((article) => ({
+        id: rlaArticleId(article.title),
         label: article.title,
       })),
     })
@@ -64,7 +64,7 @@ export function buildRealiaNav({
       id: realiaSectionIds.afoRegister,
       label: 'AfO-Register',
       subsections: volumeGroups.map((group) => ({
-        id: afoVolumeId(entry.realiaId, group.volume),
+        id: afoVolumeId(group.volume),
         label: afoVolumeLabel(group),
       })),
     })

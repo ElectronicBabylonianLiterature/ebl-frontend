@@ -33,7 +33,7 @@ describe('RealiaResultsList', () => {
       expect(link).toBeInTheDocument()
       expect(link).toHaveAttribute(
         'href',
-        `/tools/realia/${encodeURIComponent(entry.realiaId)}`,
+        `/tools/realia/${encodeURIComponent(entry.id)}`,
       )
     })
   })

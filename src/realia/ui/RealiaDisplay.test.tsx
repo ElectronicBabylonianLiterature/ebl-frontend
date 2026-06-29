@@ -21,7 +21,7 @@ import {
   realiaCrossReferenceFactory,
 } from 'test-support/realia-fixtures'
 import { RealiaEntry } from 'realia/domain/RealiaEntry'
-import { afoVolumeId } from 'realia/ui/realiaSections'
+import { afoVolumeId, rlaArticleId } from 'realia/ui/realiaSections'
 import { referenceFactory } from 'test-support/bibliography-fixtures'
 import {
   installMockIntersectionObserver,
@@ -417,8 +417,9 @@ describe('RealiaDisplay', () => {
     expect(within(afoList).getAllByRole('listitem')).toHaveLength(1)
   })
 
-  it('links an inline AfO cross-reference by the resolved realiaId', async () => {
+  it('links an inline AfO cross-reference to the target lemma and its AfO volume', async () => {
     const afoEntry = afoRegisterEntryFactory.build({
+      afoVolume: 'AfO 25',
       crossReference: 'Anu',
       crossReferences: [{ id: 'realia_anu', lemma: 'Anu' }],
     })
@@ -430,13 +431,35 @@ describe('RealiaDisplay', () => {
     await waitForSpinnerToBeRemoved(screen)
     expect(screen.getByRole('link', { name: 'Anu' })).toHaveAttribute(
       'href',
-      '/tools/realia/realia_anu',
+      `/tools/realia/Anu#${afoVolumeId('AfO 25')}`,
     )
   })
 
-  it('links an inline AfO cross-reference by its lemma when unresolved', async () => {
+  it('encodes the target lemma, even with spaces and parentheses', async () => {
     const afoEntry = afoRegisterEntryFactory.build({
-      crossReference: 'Abaralaḫ',
+      afoVolume: 'AfO 50',
+      crossReference: 'Elam',
+      crossReferences: [{ id: 'realia_elam', lemma: 'Elam (Geschichte)' }],
+    })
+    const entry = realiaEntryFactory.build({
+      reallexikon: [],
+      afoRegister: [afoEntry],
+    })
+    renderDisplay(entry)
+    await waitForSpinnerToBeRemoved(screen)
+    expect(
+      screen.getByRole('link', { name: 'Elam (Geschichte)' }),
+    ).toHaveAttribute(
+      'href',
+      `/tools/realia/${encodeURIComponent('Elam (Geschichte)')}#${afoVolumeId(
+        'AfO 50',
+      )}`,
+    )
+  })
+
+  it('renders an unresolved inline AfO cross-reference as plain text', async () => {
+    const afoEntry = afoRegisterEntryFactory.build({
+      crossReference: 'Syntax',
       crossReferences: [],
     })
     const entry = realiaEntryFactory.build({
@@ -445,10 +468,34 @@ describe('RealiaDisplay', () => {
     })
     renderDisplay(entry)
     await waitForSpinnerToBeRemoved(screen)
-    expect(screen.getByRole('link', { name: 'Abaralaḫ' })).toHaveAttribute(
+    expect(screen.getByText('Syntax')).toBeInTheDocument()
+    expect(
+      screen.queryByRole('link', { name: 'Syntax' }),
+    ).not.toBeInTheDocument()
+  })
+
+  it('shows the AfO volume next to an inline AfO cross-reference link', async () => {
+    const afoEntry = afoRegisterEntryFactory.build({
+      afoVolume: 'AfO 48/49',
+      page: '358',
+      crossReference: 'Elam',
+      crossReferences: [{ id: 'realia_elam', lemma: 'Elam (Geschichte)' }],
+    })
+    const entry = realiaEntryFactory.build({
+      reallexikon: [],
+      afoRegister: [afoEntry],
+    })
+    renderDisplay(entry)
+    await waitForSpinnerToBeRemoved(screen)
+    expect(
+      screen.getByRole('link', { name: 'Elam (Geschichte)' }),
+    ).toHaveAttribute(
       'href',
-      `/tools/realia/${encodeURIComponent('Abaralaḫ')}`,
+      `/tools/realia/${encodeURIComponent('Elam (Geschichte)')}#${afoVolumeId(
+        'AfO 48/49',
+      )}`,
     )
+    expect(screen.getByText('(AfO 48/49, 358)')).toBeInTheDocument()
   })
 
   it('keeps an AfO entry whose only content is a cross-reference', async () => {
@@ -482,7 +529,7 @@ describe('RealiaDisplay', () => {
     expect(within(afoList).getAllByRole('listitem')).toHaveLength(2)
     expect(screen.getByRole('link', { name: 'Iškur' })).toHaveAttribute(
       'href',
-      '/tools/realia/realia_iskur',
+      `/tools/realia/${encodeURIComponent('Iškur')}#${afoVolumeId('AfO 44/45')}`,
     )
   })
 
@@ -576,11 +623,11 @@ describe('RealiaDisplay', () => {
     expect(screen.getByText('IV. See Also')).toBeInTheDocument()
     expect(screen.getByRole('link', { name: 'Anu' })).toHaveAttribute(
       'href',
-      '/tools/realia/realia_1',
+      '/tools/realia/Anu',
     )
     expect(screen.getByRole('link', { name: 'Enlil' })).toHaveAttribute(
       'href',
-      '/tools/realia/realia_2',
+      '/tools/realia/Enlil',
     )
   })
 
@@ -594,7 +641,7 @@ describe('RealiaDisplay', () => {
     expect(screen.queryByText(/IV\. See Also/)).not.toBeInTheDocument()
   })
 
-  it('renders a redirect document as a pointer to its target by realiaId', async () => {
+  it('renders a redirect document as a pointer to its target lemma', async () => {
     const entry = realiaEntryFactory.build({
       id: 'Abaralaḫ',
       reallexikon: [],
@@ -615,7 +662,7 @@ describe('RealiaDisplay', () => {
     ).toBeInTheDocument()
     expect(screen.getByRole('link', { name: 'Nusku' })).toHaveAttribute(
       'href',
-      '/tools/realia/realia_nusku',
+      '/tools/realia/Nusku',
     )
     expect(screen.queryByText(/IV\. See Also/)).not.toBeInTheDocument()
     expect(
@@ -812,15 +859,14 @@ describe('RealiaDisplay', () => {
     const navMenu = screen.getByRole('navigation', { name: 'On this page' })
     expect(
       within(navMenu).getByRole('link', { name: 'Aššur A. Stadt' }),
-    ).toHaveAttribute('href', '#realia-rla-article-0')
+    ).toHaveAttribute('href', `#${rlaArticleId('Aššur A. Stadt')}`)
     expect(
       within(navMenu).getByRole('link', { name: 'Aššur C. Hauptgott' }),
-    ).toHaveAttribute('href', '#realia-rla-article-1')
+    ).toHaveAttribute('href', `#${rlaArticleId('Aššur C. Hauptgott')}`)
   })
 
   it('lists AfO volumes as subsections in the navigation menu', async () => {
     const entry = realiaEntryFactory.build({
-      realiaId: 'realia_1',
       reallexikon: [],
       afoRegister: [
         afoRegisterEntryFactory.build({
@@ -840,10 +886,10 @@ describe('RealiaDisplay', () => {
     const navMenu = screen.getByRole('navigation', { name: 'On this page' })
     expect(
       within(navMenu).getByRole('link', { name: 'AfO 26' }),
-    ).toHaveAttribute('href', `#${afoVolumeId('realia_1', 'AfO 26')}`)
+    ).toHaveAttribute('href', `#${afoVolumeId('AfO 26')}`)
     expect(
       within(navMenu).getByRole('link', { name: 'AfO 25' }),
-    ).toHaveAttribute('href', `#${afoVolumeId('realia_1', 'AfO 25')}`)
+    ).toHaveAttribute('href', `#${afoVolumeId('AfO 25')}`)
   })
 
   it('toggles the section collapse state from the menu', async () => {
@@ -913,7 +959,6 @@ describe('RealiaDisplay', () => {
 
   it('highlights the active subsection and its parent group from scroll position', async () => {
     const entry = realiaEntryFactory.build({
-      realiaId: 'realia_1',
       reallexikon: [reallexikonEntryFactory.build({ title: 'Aššur A. Stadt' })],
       afoRegister: [
         afoRegisterEntryFactory.build({
@@ -931,7 +976,7 @@ describe('RealiaDisplay', () => {
     const navMenu = screen.getByRole('navigation', { name: 'On this page' })
     act(() => {
       triggerIntersection([
-        { id: 'realia-rla-article-0', isIntersecting: true },
+        { id: rlaArticleId('Aššur A. Stadt'), isIntersecting: true },
       ])
     })
     expect(
@@ -939,8 +984,8 @@ describe('RealiaDisplay', () => {
     ).toHaveClass('is-active')
     act(() => {
       triggerIntersection([
-        { id: 'realia-rla-article-0', isIntersecting: false },
-        { id: afoVolumeId('realia_1', 'AfO 25'), isIntersecting: true },
+        { id: rlaArticleId('Aššur A. Stadt'), isIntersecting: false },
+        { id: afoVolumeId('AfO 25'), isIntersecting: true },
       ])
     })
     expect(within(navMenu).getByRole('link', { name: 'AfO 25' })).toHaveClass(
@@ -951,9 +996,38 @@ describe('RealiaDisplay', () => {
     ).not.toHaveClass('is-active')
   })
 
+  it('scrolls to the AfO volume named in the URL hash on load', async () => {
+    const scrollIntoView = jest.spyOn(HTMLElement.prototype, 'scrollIntoView')
+    const entry = realiaEntryFactory.build({
+      reallexikon: [],
+      afoRegister: [
+        afoRegisterEntryFactory.build({
+          afoVolume: 'AfO 25',
+          year: '',
+          page: '370',
+        }),
+      ],
+    })
+    realiaService.find.mockReturnValue(Bluebird.resolve(entry))
+    render(
+      <MemoryRouter
+        initialEntries={[{ pathname: '/', hash: `#${afoVolumeId('AfO 25')}` }]}
+      >
+        <SessionContext.Provider value={new MemorySession(['read:realia'])}>
+          <RealiaDisplay id={entry.id} realiaService={realiaService} />
+        </SessionContext.Provider>
+      </MemoryRouter>,
+    )
+    await waitForSpinnerToBeRemoved(screen)
+    await waitFor(() => expect(scrollIntoView).toHaveBeenCalled())
+    const scrolled = scrollIntoView.mock.instances[0] as HTMLElement
+    expect(scrolled).toHaveAttribute('id', afoVolumeId('AfO 25'))
+    scrollIntoView.mockRestore()
+  })
+
   it('keeps the clicked menu item active and does not revert to the previous section', async () => {
     const entry = realiaEntryFactory.build({
-      reallexikon: [reallexikonEntryFactory.build()],
+      reallexikon: [reallexikonEntryFactory.build({ title: 'Aššur A. Stadt' })],
       afoRegister: [],
       references: [referenceFactory.build()],
       crossReferences: [],
@@ -968,7 +1042,7 @@ describe('RealiaDisplay', () => {
     ).toHaveClass('is-active')
     act(() => {
       triggerIntersection([
-        { id: 'realia-rla-article-0', isIntersecting: true },
+        { id: rlaArticleId('Aššur A. Stadt'), isIntersecting: true },
       ])
     })
     expect(

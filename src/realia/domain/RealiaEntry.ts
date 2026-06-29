@@ -18,6 +18,21 @@ export interface AfoRegisterEntry {
   readonly crossReferences: readonly RealiaCrossReference[]
 }
 
+export function realiaCrossReferenceTarget(
+  crossReference: RealiaCrossReference,
+): string {
+  // The route resolves entries by their `_id`, which equals the lemma; the
+  // realiaId is not a resolvable navigation key.
+  return crossReference.lemma || crossReference.id
+}
+
+export function afoCrossReferenceCitation(afoEntry: AfoRegisterEntry): string {
+  const parts = [afoEntry.afoVolume, afoEntry.page].filter(
+    (part) => part !== '',
+  )
+  return parts.length > 0 ? `(${parts.join(', ')})` : ''
+}
+
 export interface ReallexikonEntry {
   readonly id: string
   readonly title: string

@@ -58,7 +58,10 @@ describe('Realia search page (read:realia scope)', () => {
 
     expect(
       within(item).getByRole('link', { name: 'Enlil, Ellil' }),
-    ).toHaveAttribute('href', '/tools/realia/realia_enlil')
+    ).toHaveAttribute(
+      'href',
+      `/tools/realia/${encodeURIComponent('Enlil, Ellil')}`,
+    )
     expect(within(item).getByText('Divine names')).toBeInTheDocument()
     expect(within(item).getByText('Celestial names')).toBeInTheDocument()
     expect(within(item).getByText('Elil, Illil')).toBeInTheDocument()

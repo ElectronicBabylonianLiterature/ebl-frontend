@@ -19,7 +19,6 @@ import { referenceFactory } from 'test-support/bibliography-fixtures'
 describe('buildRealiaNav', () => {
   it('builds a section for each present part with RlA article and AfO volume subsections', () => {
     const entry = realiaEntryFactory.build({
-      realiaId: 'realia_1',
       reallexikon: [
         reallexikonEntryFactory.build({ title: 'Aššur A. Stadt' }),
         reallexikonEntryFactory.build({ title: 'Aššur C. Hauptgott' }),
@@ -52,14 +51,14 @@ describe('buildRealiaNav', () => {
       (section) => section.id === realiaSectionIds.reallexikon,
     )
     expect(reallexikonSection?.subsections).toEqual([
-      { id: rlaArticleId(0), label: 'Aššur A. Stadt' },
-      { id: rlaArticleId(1), label: 'Aššur C. Hauptgott' },
+      { id: rlaArticleId('Aššur A. Stadt'), label: 'Aššur A. Stadt' },
+      { id: rlaArticleId('Aššur C. Hauptgott'), label: 'Aššur C. Hauptgott' },
     ])
     const afoSection = sections.find(
       (section) => section.id === realiaSectionIds.afoRegister,
     )
     expect(afoSection?.subsections).toEqual([
-      { id: afoVolumeId(entry.realiaId, 'AfO 25'), label: 'AfO 25 (1977)' },
+      { id: afoVolumeId('AfO 25'), label: 'AfO 25 (1977)' },
     ])
   })
 
