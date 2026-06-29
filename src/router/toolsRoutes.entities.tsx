@@ -1,11 +1,11 @@
 import React, { ReactNode } from 'react'
 import { Route } from 'router/compat'
 import {
-  BibliographySlugs,
-  DictionarySlugs,
-  SignSlugs,
   sitemapDefaults,
-} from 'router/sitemap'
+  type BibliographySlugs,
+  type DictionarySlugs,
+  type SignSlugs,
+} from 'router/sitemapConfig'
 import { HeadTagsService } from 'router/head'
 import NotFoundPage from 'NotFoundPage'
 import SignService from 'signs/application/SignService'

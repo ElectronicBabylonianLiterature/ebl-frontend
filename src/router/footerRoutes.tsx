@@ -1,6 +1,6 @@
 import React, { ReactNode } from 'react'
 import { Route } from 'router/compat'
-import { sitemapDefaults } from 'router/sitemap'
+import { sitemapDefaults } from 'router/sitemapConfig'
 import { HeadTagsService } from 'router/head'
 import Impressum from 'footer/ui/Impressum'
 import Datenschutz from 'footer/ui/Datenschutz'

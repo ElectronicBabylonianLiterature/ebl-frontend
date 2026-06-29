@@ -1,25 +1,63 @@
-import React from 'react'
+import React, { ReactNode, Suspense } from 'react'
 import { Route, Switch } from 'router/compat'
-import Introduction from 'Introduction'
-import BibliographyRoutes from 'router/bibliographyRoutes'
-import CorpusRoutes from 'router/corpusRoutes'
-import FragmentariumRoutes from 'router/fragmentariumRoutes'
-import DictionaryRoutes from 'router/dictionaryRoutes'
-import SignRoutes from 'router/signRoutes'
 import AboutRoutes from 'router/aboutRoutes'
-import ToolsRoutes from 'router/toolsRoutes'
-import ResearchProjectRoutes from 'router/researchProjectRoutes'
-import FooterRoutes from 'router/footerRoutes'
-import Sitemap, { sitemapDefaults, Slugs } from 'router/sitemap'
 import Header from 'Header'
 import NotFoundPage from 'NotFoundPage'
 import { helmetContext } from 'router/head'
 import { HelmetProvider } from 'react-helmet-async'
 import Footer from 'Footer'
 import './router.sass'
-import Services from 'router/Services'
+import type Services from 'router/Services'
 import FullPageRoutes from 'router/FullPageRoutes'
 import ScrollToTop from 'router/ScrollToTop'
+import Spinner from 'common/ui/Spinner'
+import {
+  composeWebsiteRoutes,
+  lazyWebsiteRouteGroups,
+  loadLazyRouteGroupModule,
+  runtimeLazyRouteConfigsByGroup,
+  type LazyWebsiteRouteGroup,
+  type RouteModule,
+  type RouteModuleProps,
+} from 'router/websiteRouteGroups'
+import IntroductionRoute from 'router/introductionRoute'
+
+function createLazyRouteModule(
+  loadModule: () => Promise<{ default: RouteModule }>,
+): React.LazyExoticComponent<React.ComponentType<RouteModuleProps>> {
+  return React.lazy(async () => {
+    const module = await loadModule()
+    const LazyRouteModule = (props: RouteModuleProps): JSX.Element => (
+      <Switch>{module.default(props)}</Switch>
+    )
+    return {
+      default: LazyRouteModule,
+    }
+  })
+}
+
+const LazySitemap = React.lazy(() => import('router/sitemap'))
+const lazyRouteModules: Record<
+  LazyWebsiteRouteGroup,
+  React.LazyExoticComponent<React.ComponentType<RouteModuleProps>>
+> = lazyWebsiteRouteGroups.reduce(
+  (modules, group) => ({
+    ...modules,
+    [group]: createLazyRouteModule(() => loadLazyRouteGroupModule(group)),
+  }),
+  {} as Record<
+    LazyWebsiteRouteGroup,
+    React.LazyExoticComponent<React.ComponentType<RouteModuleProps>>
+  >,
+)
+
+function RouteLoading(): JSX.Element {
+  return (
+    <div className="text-center my-5 route-loading-spinner">
+      <Spinner>Route loading...</Spinner>
+    </div>
+  )
+}
 
 export default function Router(services: Services): JSX.Element {
   return (
@@ -29,14 +67,18 @@ export default function Router(services: Services): JSX.Element {
         <div className="main-body">
           <ScrollToTop />
           <Header key="Header" />
-          <Switch>
-            <Route exact path="/sitemap">
-              <Sitemap services={services} />
-            </Route>
-            <Route exact path="/sitemap/sitemap.xml" />
-            {WebsiteRoutes(services, false)}
-            <Route component={NotFoundPage} />
-          </Switch>
+          <Suspense fallback={<RouteLoading />}>
+            <Switch>
+              <Route
+                exact
+                path="/sitemap"
+                render={(): ReactNode => <LazySitemap services={services} />}
+              />
+              <Route exact path="/sitemap/sitemap.xml" />
+              {RuntimeWebsiteRoutes(services)}
+              <Route component={NotFoundPage} />
+            </Switch>
+          </Suspense>
           <Footer />
         </div>
       </HelmetProvider>
@@ -44,26 +86,25 @@ export default function Router(services: Services): JSX.Element {
   )
 }
 
-export function WebsiteRoutes(
-  services: Services,
-  sitemap: boolean,
-  slugs?: Slugs,
-): JSX.Element[] {
-  return [
-    <Route key="Introduction" exact path="/" {...(sitemap && sitemapDefaults)}>
-      <Introduction
-        fragmentService={services.fragmentService}
-        dossiersService={services.dossiersService}
-      />
-    </Route>,
-    ...AboutRoutes({ sitemap, ...services }),
-    ...ToolsRoutes({ sitemap, ...services, ...slugs }),
-    ...SignRoutes({ sitemap, ...services, ...slugs }),
-    ...BibliographyRoutes({ sitemap, ...services, ...slugs }),
-    ...DictionaryRoutes({ sitemap, ...services, ...slugs }),
-    ...CorpusRoutes({ sitemap, ...services, ...slugs }),
-    ...FragmentariumRoutes({ sitemap, ...services, ...slugs }),
-    ...ResearchProjectRoutes({ sitemap, ...services, ...slugs }),
-    ...FooterRoutes({ sitemap, ...services, ...slugs }),
-  ]
+function RuntimeWebsiteRoutes(services: Services): JSX.Element[] {
+  const routeModuleProps: RouteModuleProps = {
+    sitemap: false,
+    ...services,
+  }
+  return composeWebsiteRoutes({
+    introductionRoute: IntroductionRoute(services, false),
+    aboutRoutes: AboutRoutes(routeModuleProps),
+    getRoutesForLazyGroup: (routeGroup) =>
+      runtimeLazyRouteConfigsByGroup[routeGroup].map((routeConfig) => {
+        const LazyRouteModule = lazyRouteModules[routeGroup]
+        return (
+          <Route
+            key={routeConfig.key}
+            path={routeConfig.path}
+            exact={routeConfig.exact}
+            render={(): ReactNode => <LazyRouteModule {...routeModuleProps} />}
+          />
+        )
+      }),
+  })
 }

@@ -1,21 +1,21 @@
 import React, { ReactNode } from 'react'
 import { Route, Redirect } from 'router/compat'
-import MarkupService from 'markup/application/MarkupService'
+import type MarkupService from 'markup/application/MarkupService'
 import {
-  BibliographySlugs,
-  DictionarySlugs,
-  SignSlugs,
   sitemapDefaults,
-} from 'router/sitemap'
+  type BibliographySlugs,
+  type DictionarySlugs,
+  type SignSlugs,
+} from 'router/sitemapConfig'
 import { HeadTagsService } from 'router/head'
-import SignService from 'signs/application/SignService'
-import WordService from 'dictionary/application/WordService'
-import BibliographyService from 'bibliography/application/BibliographyService'
-import AfoRegisterService from 'afo-register/application/AfoRegisterService'
-import RealiaService from 'realia/application/RealiaService'
-import FragmentService from 'fragmentarium/application/FragmentService'
-import TextService from 'corpus/application/TextService'
-import DossiersService from 'dossiers/application/DossiersService'
+import type SignService from 'signs/application/SignService'
+import type WordService from 'dictionary/application/WordService'
+import type BibliographyService from 'bibliography/application/BibliographyService'
+import type AfoRegisterService from 'afo-register/application/AfoRegisterService'
+import type RealiaService from 'realia/application/RealiaService'
+import type FragmentService from 'fragmentarium/application/FragmentService'
+import type TextService from 'corpus/application/TextService'
+import type DossiersService from 'dossiers/application/DossiersService'
 import Tools, { tabIds, getDisplayTitle } from 'router/Tools'
 import { tabDescriptions, getEntityRoutes } from 'router/toolsRoutes.entities'
 

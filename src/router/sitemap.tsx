@@ -1,50 +1,63 @@
 import React from 'react'
 import DynamicSitemap from 'react-dynamic-sitemap'
+import { Route } from 'router/compat'
 import { renderToString } from 'react-dom/server'
 import $ from 'jquery'
-import { Route } from 'router/compat'
-import { WebsiteRoutes } from 'router/router'
-import Services from 'router/Services'
+import type Services from 'router/Services'
 import withData from 'http/withData'
 import Bluebird from 'bluebird'
 import convert from 'xml-js'
 import _ from 'lodash'
 import pako from 'pako'
 import { saveAs } from 'file-saver'
+import AboutRoutes from 'router/aboutRoutes'
+import ToolsRoutes from 'router/toolsRoutes'
+import SignRoutes from 'router/signRoutes'
+import BibliographyRoutes from 'router/bibliographyRoutes'
+import DictionaryRoutes from 'router/dictionaryRoutes'
+import CorpusRoutes from 'router/corpusRoutes'
+import FragmentariumRoutes from 'router/fragmentariumRoutes'
+import ResearchProjectRoutes from 'router/researchProjectRoutes'
+import FooterRoutes from 'router/footerRoutes'
+import { type Slugs, type SlugsArray } from 'router/sitemapConfig'
+import {
+  composeWebsiteRoutes,
+  type LazyWebsiteRouteGroup,
+  type RouteModule,
+  type RouteModuleProps,
+} from 'router/websiteRouteGroups'
+import IntroductionRoute from 'router/introductionRoute'
 
 const DOMAIN = 'www.ebl.lmu.de'
 
-type SlugsArray = readonly { [key: string]: string }[]
-export type SignSlugs = SlugsArray
-export type DictionarySlugs = SlugsArray
-export type BibliographySlugs = SlugsArray
-export type FragmentSlugs = SlugsArray
-export type TextSlugs = {
-  index: number
-  category: number
-  genre: string
-}[]
-export type ChapterSlugs = {
-  chapter: string
-  stage: string
-  index: number
-  category: number
-  genre: string
-}[]
-
-export interface Slugs {
-  readonly signSlugs?: SignSlugs
-  readonly dictionarySlugs?: DictionarySlugs
-  readonly bibliographySlugs?: BibliographySlugs
-  readonly fragmentSlugs?: FragmentSlugs
-  readonly textSlugs?: TextSlugs
-  readonly chapterSlugs?: ChapterSlugs
+const lazyWebsiteRouteModules: Record<LazyWebsiteRouteGroup, RouteModule> = {
+  tools: ToolsRoutes,
+  signs: SignRoutes,
+  bibliography: BibliographyRoutes,
+  dictionary: DictionaryRoutes,
+  corpus: CorpusRoutes,
+  fragmentarium: FragmentariumRoutes,
+  researchProjects: ResearchProjectRoutes,
+  footer: FooterRoutes,
 }
 
-export const sitemapDefaults = {
-  sitemapIndex: true,
-  priority: 0,
-  changefreq: 'weekly',
+function WebsiteRoutes(
+  services: Services,
+  sitemap: boolean,
+  slugs?: Slugs,
+): JSX.Element[] {
+  const routeModuleProps: RouteModuleProps = {
+    sitemap,
+    ...services,
+    ...slugs,
+  }
+
+  return composeWebsiteRoutes({
+    introductionRoute: IntroductionRoute(services, sitemap),
+    aboutRoutes: AboutRoutes(routeModuleProps),
+    getRoutesForLazyGroup: (routeGroup) =>
+      lazyWebsiteRouteModules[routeGroup](routeModuleProps),
+  })
 }
 
 function Sitemap(services: Services, slugs?: Slugs): JSX.Element {

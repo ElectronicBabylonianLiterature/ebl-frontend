@@ -17,6 +17,18 @@ module.exports = {
         )
       }
 
+      if (Array.isArray(webpackConfig.plugins)) {
+        webpackConfig.plugins = webpackConfig.plugins.map((plugin) => {
+          if (plugin?.constructor?.name === 'MiniCssExtractPlugin') {
+            plugin.options = {
+              ...(plugin.options || {}),
+              ignoreOrder: true,
+            }
+          }
+          return plugin
+        })
+      }
+
       if (webpackConfig.module?.rules) {
         webpackConfig.module.rules.forEach((rule) => {
           if (
