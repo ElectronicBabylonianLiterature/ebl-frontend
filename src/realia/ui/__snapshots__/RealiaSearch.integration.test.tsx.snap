@@ -39,6 +39,13 @@ exports[`Realia search page (read:realia scope) matches the rendered rich-previe
         class="realia-results-list__source"
       >
         RlA
+        <span
+          class="realia-results-list__source-count"
+        >
+          (
+          1
+          )
+        </span>
       </span>
       <span
         class="realia-results-list__source"

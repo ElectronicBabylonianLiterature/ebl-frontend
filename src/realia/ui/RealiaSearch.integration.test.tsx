@@ -70,7 +70,7 @@ describe('Realia search page (read:realia scope)', () => {
       within(item)
         .getAllByText(/^\(\d+\)$/)
         .map((node) => node.textContent),
-    ).toEqual(['(2)', '(5)'])
+    ).toEqual(['(1)', '(2)', '(5)'])
   })
 
   it('matches the rendered rich-preview markup', async () => {
