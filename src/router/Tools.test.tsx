@@ -138,9 +138,9 @@ describe('Tools', () => {
     expect(screen.getByText('Cuneiform Converter Mock')).toBeInTheDocument()
   })
 
-  it('renders map content', () => {
+  it('renders map content', async () => {
     renderTools('map')
-    expect(screen.getByText('Map Mock')).toBeInTheDocument()
+    expect(await screen.findByText('Map Mock')).toBeInTheDocument()
   })
 
   it('renders introduction for unknown activeTab', () => {

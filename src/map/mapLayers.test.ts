@@ -1,3 +1,4 @@
+import type { FeatureCollection } from 'geojson'
 import {
   SOURCE_ID,
   CLUSTER_RADIUS,
@@ -15,7 +16,7 @@ type LayerWithLayout = LayerWithSource & { layout: Record<string, unknown> }
 describe('mapLayers', () => {
   describe('createFindspotsSource', () => {
     it('creates a clustered GeoJSON source with the given data', () => {
-      const data: GeoJSON.FeatureCollection = {
+      const data: FeatureCollection = {
         type: 'FeatureCollection',
         features: [],
       }

@@ -1,3 +1,4 @@
+import type { Point } from 'geojson'
 import { ProvenanceRecord } from 'fragmentarium/domain/Provenance'
 import { provenanceToGeoJson } from './provenanceToGeoJson'
 
@@ -46,7 +47,7 @@ describe('provenanceToGeoJson', () => {
     const result = provenanceToGeoJson([record])
 
     expect(result.features).toHaveLength(1)
-    const coords = (result.features[0].geometry as GeoJSON.Point).coordinates
+    const coords = (result.features[0].geometry as Point).coordinates
     expect(coords[0]).toBeCloseTo(43.15, 5)
     expect(coords[1]).toBeCloseTo(36.35, 5)
     expect(result.features[0].properties.geometryType).toBe('polygon')

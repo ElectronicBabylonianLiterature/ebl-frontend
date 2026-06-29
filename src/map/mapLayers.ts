@@ -1,3 +1,4 @@
+import type { FeatureCollection } from 'geojson'
 import type { AddLayerObject, GeoJSONSourceSpecification } from 'maplibre-gl'
 
 export const SOURCE_ID = 'ebl-findspots'
@@ -5,7 +6,7 @@ export const CLUSTER_RADIUS = 50
 export const CLUSTER_MAX_ZOOM = 14
 
 export function createFindspotsSource(
-  data: GeoJSON.FeatureCollection,
+  data: FeatureCollection,
 ): GeoJSONSourceSpecification {
   return {
     type: 'geojson',

@@ -1,3 +1,4 @@
+import type { FeatureCollection, Point } from 'geojson'
 import {
   ProvenanceRecord,
   getRenderableProvenanceGeometry as getProvenanceGeometry,
@@ -27,7 +28,7 @@ export interface FindspotProperties {
 
 export function provenanceToGeoJson(
   provenances: readonly ProvenanceRecord[],
-): GeoJSON.FeatureCollection<GeoJSON.Point, FindspotProperties> {
+): FeatureCollection<Point, FindspotProperties> {
   const features = provenances
     .map((provenance) => {
       const provenanceGeometry = getProvenanceGeometry(provenance)

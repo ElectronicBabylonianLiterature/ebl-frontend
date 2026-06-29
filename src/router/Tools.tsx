@@ -3,6 +3,7 @@ import { Container, Row, Col, Nav } from 'react-bootstrap'
 import { Link, useLocation } from 'react-router-dom'
 import AppContent from 'common/ui/AppContent'
 import { Crumb, SectionCrumb, TextCrumb } from 'common/ui/Breadcrumbs'
+import Spinner from 'common/ui/Spinner'
 import './tools.sass'
 import DateConverterForm, {
   AboutDateConverter,
@@ -22,9 +23,10 @@ import FragmentService from 'fragmentarium/application/FragmentService'
 import DossiersService from 'dossiers/application/DossiersService'
 import DossiersSearchPage from 'dossiers/ui/DossiersSearchPage'
 import GenresPage from 'fragmentarium/ui/GenresPage'
-import MapTab from 'map/MapTab'
 import { useHistory } from 'router/compat'
 import useScrollToHash from 'common/hooks/useScrollToHash'
+
+const MapTab = React.lazy(() => import('map/MapTab'))
 
 export const tabIds = [
   'date-converter',
@@ -171,7 +173,11 @@ function getContent({
     ),
     'list-of-kings': ListOfKings(),
     'cuneiform-converter': <CuneiformConverterForm signService={signService} />,
-    map: <MapTab fragmentService={fragmentService} />,
+    map: (
+      <React.Suspense fallback={<Spinner>Loading map...</Spinner>}>
+        <MapTab fragmentService={fragmentService} />
+      </React.Suspense>
+    ),
   }
 
   return activeTab ? (
