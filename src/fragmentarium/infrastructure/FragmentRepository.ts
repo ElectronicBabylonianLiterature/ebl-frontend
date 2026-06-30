@@ -47,6 +47,7 @@ import { Joins } from 'fragmentarium/domain/join'
 import { ManuscriptAttestation } from 'corpus/domain/manuscriptAttestation'
 import FragmentDto, {
   MesopotamianDateDto,
+  TextDto,
 } from 'fragmentarium/domain/FragmentDtos'
 import { PeriodModifiers, Periods } from 'common/utils/period'
 import { FragmentQuery } from 'query/FragmentQuery'
@@ -72,10 +73,19 @@ import { ApiEntityAnnotationSpan } from 'fragmentarium/ui/text-annotation/Entity
 import { ProvenanceRecord } from 'fragmentarium/domain/Provenance'
 
 export function createScript(dto: ScriptDto): Script {
+  const period =
+    Periods[dto && typeof dto.period === 'string' ? dto.period : ''] ??
+    Periods.Uncertain
+  const periodModifier =
+    PeriodModifiers[
+      dto && typeof dto.periodModifier === 'string'
+        ? dto.periodModifier
+        : 'None'
+    ] ?? PeriodModifiers.None
   return {
-    ...dto,
-    period: Periods[dto.period],
-    periodModifier: PeriodModifiers[dto.periodModifier],
+    uncertain: dto?.uncertain ?? false,
+    period,
+    periodModifier,
   }
 }
 
@@ -130,7 +140,7 @@ function createFragment(dto: FragmentDto): Fragment {
     uncuratedReferences: dto.uncuratedReferences ?? null,
     cdliImages: dto.cdliImages,
     traditionalReferences: dto.traditionalReferences,
-    genres: Genres.fromJson(dto.genres),
+    genres: Genres.fromJson(dto.genres ?? []),
     script: createScript(dto.script),
     projects: (dto.projects ?? []).map(createResearchProject),
     dossiers: dto.dossiers ?? [],
@@ -157,18 +167,45 @@ function createFragmentPath(number: string, ...subResources: string[]): string {
   return ['/fragments', encodeURIComponent(number), ...subResources].join('/')
 }
 
+type QueryMuseumNumberDto = {
+  prefix: string
+  number: string
+  suffix: string
+}
+
 type QueryItemDto = {
-  museumNumber: {
-    prefix: string
-    number: string
-    suffix: string
-  }
+  museumNumber: QueryMuseumNumberDto
   matchingLines: readonly number[]
   matchCount: number
   fragment?: FragmentDto
 }
 
-type LatestQueryItemDto = QueryItemDto
+type QuerySummaryArchaeologyDto = {
+  excavationNumber: QueryMuseumNumberDto | null
+  site: { name: string } | null
+} | null
+
+type QuerySummaryItemDto = {
+  museumNumber: QueryMuseumNumberDto
+  accession?: QueryMuseumNumberDto | null
+  description: string
+  script: ScriptDto
+  date?: MesopotamianDateDto | null
+  genres?: FragmentDto['genres']
+  archaeology?: QuerySummaryArchaeologyDto
+  references?: FragmentDto['references']
+  projects?: FragmentDto['projects']
+  dossiers?: FragmentDto['dossiers']
+  matchingLines: readonly number[]
+  matchingLinePreview?: TextDto | null
+  matchCount: number
+  hasPhoto: boolean
+  thumbnailPath?: string | null
+}
+
+type QueryResultItemDto = QueryItemDto | QuerySummaryItemDto
+
+type LatestQueryItemDto = QueryResultItemDto
 
 type LatestQueryResultDto = {
   items: readonly LatestQueryItemDto[]
@@ -177,18 +214,89 @@ type LatestQueryResultDto = {
 }
 
 type QueryResultDto = {
-  items: readonly QueryItemDto[]
+  items: readonly QueryResultItemDto[]
   matchCountTotal: number
 }
 
-function createQueryItem(
-  dto: QueryItemDto,
-): QueryItem | (QueryItem & { fragment: Fragment }) {
+const emptyMatchingLinePreview: TextDto = { lines: [], numberOfLines: 0 }
+
+function isQuerySummaryItemDto(
+  dto: QueryResultItemDto,
+): dto is QuerySummaryItemDto {
+  return 'description' in dto && 'script' in dto && 'hasPhoto' in dto
+}
+
+function createQuerySummaryFragment(dto: QuerySummaryItemDto): Fragment {
+  return Fragment.create({
+    number: museumNumberToString(dto.museumNumber),
+    accession: dto.accession ? museumNumberToString(dto.accession) : '',
+    publication: '',
+    acquisition: null,
+    description: dto.description,
+    joins: [],
+    measures: {
+      length: null,
+      width: null,
+      thickness: null,
+      lengthNote: null,
+      widthNote: null,
+      thicknessNote: null,
+    },
+    collection: '',
+    legacyScript: '',
+    cdliImages: [],
+    folios: [],
+    record: [],
+    text: createTransliteration(
+      dto.matchingLinePreview ?? emptyMatchingLinePreview,
+    ),
+    notes: { text: '', parts: [] },
+    museum: Museums.HYPERURANION,
+    references: (dto.references ?? []).map(createReference),
+    uncuratedReferences: null,
+    traditionalReferences: [],
+    atf: '',
+    hasPhoto: dto.hasPhoto,
+    genres: Genres.fromJson(dto.genres ?? []),
+    introduction: { text: '', parts: [] },
+    script: createScript(dto.script),
+    externalNumbers: {},
+    projects: (dto.projects ?? []).map(createResearchProject),
+    dossiers: dto.dossiers ?? [],
+    date: dto.date ? MesopotamianDate.fromJson(dto.date) : undefined,
+    datesInText: [],
+    archaeology: dto.archaeology
+      ? {
+          excavationNumber: dto.archaeology.excavationNumber
+            ? museumNumberToString(dto.archaeology.excavationNumber)
+            : undefined,
+          site: dto.archaeology.site
+            ? {
+                name: dto.archaeology.site.name,
+                abbreviation: '',
+                parent: null,
+              }
+            : undefined,
+        }
+      : undefined,
+  })
+}
+
+function createQueryItem(dto: QueryResultItemDto): QueryItem {
   const queryItem = {
     museumNumber: museumNumberToString(dto.museumNumber),
     matchingLines: dto.matchingLines,
     matchCount: dto.matchCount,
   }
+
+  if (isQuerySummaryItemDto(dto)) {
+    return {
+      ...queryItem,
+      fragment: createQuerySummaryFragment(dto),
+      thumbnailPath: dto.thumbnailPath ?? null,
+    }
+  }
+
   const prefetchedFragment = dto.fragment && createFragment(dto.fragment)
   return prefetchedFragment
     ? { ...queryItem, fragment: prefetchedFragment }
@@ -215,7 +323,7 @@ function createLatestQueryResult(dto: LatestQueryResultDto): QueryResult {
     items: dto.items.map((itemDto) => {
       const queryItem = createQueryItem(itemDto)
       const prefetchedFragment =
-        (queryItem as QueryItem & { fragment?: Fragment }).fragment ??
+        queryItem.fragment ??
         fragmentsByMuseumNumber.get(queryItem.museumNumber)
 
       return prefetchedFragment

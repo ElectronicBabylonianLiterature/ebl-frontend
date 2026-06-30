@@ -117,6 +117,6 @@ export const SearchResult = withData<
   },
   ({ fragmentService, fragmentQuery }) => fragmentService.query(fragmentQuery),
   {
-    watch: ({ fragmentQuery }) => [fragmentQuery],
+    watch: ({ fragmentQuery }) => [stringify(fragmentQuery)],
   },
 )
