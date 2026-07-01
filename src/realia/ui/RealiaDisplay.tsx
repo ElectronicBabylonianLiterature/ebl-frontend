@@ -182,7 +182,11 @@ function RealiaEntryDisplay({
   const redirectTarget = getRedirectTarget(entry)
   return (
     <AppContent
-      crumbs={[new SectionCrumb('Realia'), new TextCrumb(entry.id)]}
+      crumbs={[
+        new SectionCrumb('Tools'),
+        new SectionCrumb('Realia'),
+        new TextCrumb(entry.id),
+      ]}
       hideHeading
     >
       <SessionContext.Consumer>

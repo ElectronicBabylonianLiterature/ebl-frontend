@@ -27,11 +27,16 @@ describe('RealiaDisplay sections and reallexikon', () => {
     expect(screen.getByText(/II\. AfO-Register/)).toBeInTheDocument()
   })
 
-  it('renders breadcrumbs with Realia section and entry id', async () => {
+  it('renders breadcrumbs with Tools, Realia section and entry id', async () => {
     const entry = realiaEntryFactory.build()
     renderDisplay(entry)
     await waitForSpinnerToBeRemoved(screen)
-    expect(screen.getByText('Realia')).toBeInTheDocument()
+    expect(
+      screen.getByText('Tools', { selector: '.breadcrumb-item a' }),
+    ).toHaveAttribute('href', '/tools')
+    expect(
+      screen.getByText('Realia', { selector: '.breadcrumb-item a' }),
+    ).toHaveAttribute('href', '/tools/realia')
     expect(
       screen.getByText(entry.id, { selector: '.breadcrumb-item' }),
     ).toBeInTheDocument()
