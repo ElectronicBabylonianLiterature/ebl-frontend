@@ -187,3 +187,19 @@ describe('RealiaRepository reallexikon mapping', () => {
     expect(result.references).toEqual([])
   })
 })
+
+describe('RealiaRepository search query encoding', () => {
+  it.each([
+    ['pig & cow', '/realia?query=pig%20%26%20cow'],
+    ['spaced query', '/realia?query=spaced%20query'],
+    ['Ninĝirsu', '/realia?query=Nin%C4%9Dirsu'],
+    ['?=#&/+', '/realia?query=%3F%3D%23%26%2F%2B'],
+  ])(
+    'sends the query %p url-encoded to preserve reserved characters',
+    async (query, expectedUrl) => {
+      apiClient.fetchJson.mockReturnValueOnce(Promise.resolve([]))
+      await realiaRepository.search(query)
+      expect(apiClient.fetchJson).toHaveBeenLastCalledWith(expectedUrl, false)
+    },
+  )
+})

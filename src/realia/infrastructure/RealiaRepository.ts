@@ -145,8 +145,9 @@ export default class RealiaRepository {
   }
 
   search(query: string): Promise<readonly RealiaEntry[]> {
+    const path = `/realia?query=${encodeURIComponent(query)}`
     return this.apiClient
-      .fetchJson<RealiaEntryDto[]>(`/realia?query=${query}`, false)
+      .fetchJson<RealiaEntryDto[]>(path, false)
       .then((result) => result.map(mapRealiaEntry))
   }
 }
