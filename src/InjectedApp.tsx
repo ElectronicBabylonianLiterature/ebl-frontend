@@ -19,10 +19,12 @@ import {
 import SignService from 'signs/application/SignService'
 import SignRepository from 'signs/infrastructure/SignRepository'
 import AfoRegisterRepository from 'afo-register/infrastructure/AfoRegisterRepository'
+import AfoRegisterService from 'afo-register/application/AfoRegisterService'
+import RealiaRepository from 'realia/infrastructure/RealiaRepository'
+import RealiaService from 'realia/application/RealiaService'
 import MarkupService, {
   CachedMarkupService,
 } from 'markup/application/MarkupService'
-import AfoRegisterService from 'afo-register/application/AfoRegisterService'
 import { FindspotService } from 'fragmentarium/application/FindspotService'
 import { ApiFindspotRepository } from 'fragmentarium/infrastructure/FindspotRepository'
 import DossiersService from 'dossiers/application/DossiersService'
@@ -101,6 +103,10 @@ export default function InjectedApp({
     () => new AfoRegisterRepository(apiClient),
     [apiClient],
   )
+  const realiaRepository = useMemo(
+    () => new RealiaRepository(apiClient),
+    [apiClient],
+  )
   const findspotRepository = useMemo(
     () => new ApiFindspotRepository(apiClient),
     [apiClient],
@@ -175,6 +181,10 @@ export default function InjectedApp({
     () => new AfoRegisterService(afoRegisterRepository),
     [afoRegisterRepository],
   )
+  const realiaService = useMemo(
+    () => new RealiaService(realiaRepository),
+    [realiaRepository],
+  )
   const dossiersService = useMemo(
     () =>
       new DossiersService(dossiersRepository, () =>
@@ -208,6 +218,7 @@ export default function InjectedApp({
       markupService={markupService}
       cachedMarkupService={cachedMarkupService}
       afoRegisterService={afoRegisterService}
+      realiaService={realiaService}
       dossiersService={dossiersService}
       findspotService={findspotService}
     />

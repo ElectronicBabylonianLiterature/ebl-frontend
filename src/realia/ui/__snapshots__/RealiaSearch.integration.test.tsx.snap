@@ -1,0 +1,82 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Realia search page (read:realia scope) matches the rendered rich-preview markup 1`] = `
+<ul
+  class="realia-results-list"
+>
+  <li
+    class="realia-results-list__item"
+  >
+    <div
+      class="realia-results-list__header"
+    >
+      <a
+        class="realia-results-list__title"
+        href="/tools/realia/Enlil%2C%20Ellil"
+      >
+        Enlil, Ellil
+      </a>
+      <span
+        class="realia-results-list__type"
+      >
+        Divine names
+      </span>
+      <span
+        class="realia-results-list__type"
+      >
+        Celestial names
+      </span>
+    </div>
+    <div
+      class="realia-results-list__terms"
+    >
+      Elil, Illil
+    </div>
+    <div
+      class="realia-results-list__sources"
+    >
+      <span
+        class="realia-results-list__source"
+      >
+        RlA
+        <span
+          class="realia-results-list__source-count"
+        >
+          (
+          1
+          )
+        </span>
+      </span>
+      <span
+        class="realia-results-list__source"
+      >
+        AfO
+        <span
+          class="realia-results-list__source-count"
+        >
+          (
+          2
+          )
+        </span>
+      </span>
+      <span
+        class="realia-results-list__source"
+      >
+        References
+        <span
+          class="realia-results-list__source-count"
+        >
+          (
+          5
+          )
+        </span>
+      </span>
+      <span
+        class="realia-results-list__source"
+      >
+        Wikidata
+      </span>
+    </div>
+  </li>
+</ul>
+`;

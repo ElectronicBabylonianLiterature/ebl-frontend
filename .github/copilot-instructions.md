@@ -9,6 +9,13 @@ Provide project context and coding guidelines that AI should follow when generat
 - This is a frontend React + TypeScript project. Use frontend-appropriate patterns and tooling.
 - Do not make any changes to the codebase unless explicitly requested.
 
+## Pre-existing Issues
+
+- Always fix all pre-existing issues immediately upon detection as part of the same task. This applies to any failing test, lint error, type error, console noise, broken build, or other defect surfaced while working — regardless of whether the current task introduced it.
+- Do not defer, set aside, or merely report a pre-existing failure for later. Treat it as part of the current task's hard gates and resolve it at its root cause before finalizing.
+- Identify the root cause first. If a failure stems from external state (for example a leaked environment variable, machine-specific config, or non-deterministic ordering), fix it so the affected code or tests are isolated and deterministic, rather than masking the symptom.
+- Briefly note in the task log which pre-existing issues were found, their root cause, and how they were fixed.
+
 ## API Schema Alignment
 
 - The backend API schema is the source of truth for request and response field names.
@@ -23,6 +30,7 @@ Provide project context and coding guidelines that AI should follow when generat
 - Ensure that all functions and methods in TypeScript have appropriate type annotations. Avoid using `any` or `unknown` unless very necessary.
 - Functions should be small and focused on a single task.
 - Refactor long and complex code automatically.
+- Treat a 250-line ceiling per script file (`.ts`/`.tsx`, including tests) as a hard gate: no script file may exceed 250 lines. When a change would push a file over the limit, split it into focused modules (extract components, hooks, helpers, or group test suites into sibling files) before finalizing. Verify with a line count and keep behaviour identical.
 - Treat DRY as a hard gate: if the same domain logic or mapping appears in more than one place, extract and reuse a shared helper before finalizing.
 - Do not add comments to the code unless explicitly requested.
 
@@ -47,6 +55,8 @@ Provide project context and coding guidelines that AI should follow when generat
 - Tests must run without any console errors, warnings, or other noise. Any `console.error`, `console.warn`, or unhandled-rejection output is a defect that must be fixed at its root cause.
 - Suppressing console output (e.g. mocking `console.error`/`console.warn` to silence warnings or similar) is **never** an acceptable solution. Fix the source of the warning instead.
 - Treat console-clean runs as a hard gate: do not stop after changes until a full test run produces zero console output.
+- After any code change, always run the full test suite (`yarn test --watchAll=false`) before finalizing work.
+- Treat the full test suite as a hard gate: do not stop after changes until `yarn test --watchAll=false` reports zero failures and zero console output. Snapshot failures caused by legitimate UI changes must be fixed by updating snapshots with `--updateSnapshot` on the affected test files; never update snapshots globally without inspecting the diff first.
 - Never remove, disable, skip, or comment out existing tests without explicit user confirmation.
 - Only propose removing a test when the underlying code path was removed or changed such that the assertion is no longer meaningful.
 - If test removal is proposed, provide detailed justification first and wait for explicit user approval before making that change.
@@ -61,6 +71,8 @@ Provide project context and coding guidelines that AI should follow when generat
 
 ## Review Guidelines
 
+- Treat fetching all pre-existing GitHub reviews and comments as a hard gate before any review: never start a review without first gathering every existing review (timeline review events) and every comment (inline review comments and general/issue comments) from GitHub for the PR. Include their resolution status (resolved vs unresolved) and whether each is outdated against the current head.
+- Treat addressing every finding as a hard gate: resolve all findings surfaced in the review, including pre-existing ones and those raised by automated review bots, at their root cause before finalizing. Do not defer or merely report them.
 - Keep review comments short, specific, and actionable.
 - Prioritize correctness, regressions, security, and test coverage in every review.
 - All instances of console errors, warnings, or unhandled rejections found in the test output must be noted as findings in the review. They are never acceptable noise — every such instance must be fixed at its root cause. Resolving every such finding is a hard gate: a PR may not be approved while any console-noise finding remains.

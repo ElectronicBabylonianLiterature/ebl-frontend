@@ -10,6 +10,7 @@ import MarkupService, {
   CachedMarkupService,
 } from 'markup/application/MarkupService'
 import AfoRegisterService from 'afo-register/application/AfoRegisterService'
+import RealiaService from 'realia/application/RealiaService'
 import Bluebird from 'bluebird'
 import { saveAs } from 'file-saver'
 import pako from 'pako'
@@ -28,6 +29,7 @@ jest.mock('corpus/application/TextService')
 jest.mock('fragmentarium/application/FragmentSearchService')
 jest.mock('markup/application/MarkupService')
 jest.mock('http/ApiClient')
+jest.mock('realia/application/RealiaService')
 
 let services: Services
 
@@ -67,6 +69,9 @@ beforeEach(() => {
   const afoRegisterService = new (AfoRegisterService as jest.Mock<
     jest.Mocked<AfoRegisterService>
   >)()
+  const realiaService = new (RealiaService as jest.Mock<
+    jest.Mocked<RealiaService>
+  >)()
   const dossiersService = new (DossiersService as jest.Mock<
     jest.Mocked<DossiersService>
   >)()
@@ -97,6 +102,7 @@ beforeEach(() => {
     markupService: markupService,
     cachedMarkupService: cachedMarkupService,
     afoRegisterService: afoRegisterService,
+    realiaService: realiaService,
     dossiersService: dossiersService,
   }
 })

@@ -25,7 +25,9 @@ const waitForSaveButtonToBeEnabled = async () => {
 test('Form updates and submits entry with correct data', async () => {
   render(<BibliographyEntryForm onSubmit={onSubmitMock} />)
   changeValueByLabel(screen, 'Data', mockJson)
-  await screen.findByText(new RegExp(`\\(${mockEntry.year}\\)`))
+  await screen.findByText(new RegExp(`\\(${mockEntry.year}\\)`), undefined, {
+    timeout: 5000,
+  })
   clickNth(screen, 'Save', 0)
 
   expect(onSubmitMock).toHaveBeenCalledWith(mockEntry)

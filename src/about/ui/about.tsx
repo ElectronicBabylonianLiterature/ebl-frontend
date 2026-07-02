@@ -121,7 +121,6 @@ export default function About({
       return
     }
     setSelectedTab(newTab)
-    window.scrollTo(0, 0)
   }
 
   useEffect(() => {

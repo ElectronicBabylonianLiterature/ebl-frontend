@@ -47,9 +47,9 @@ export class ContainerCitation extends Citation {
 export class CompactCitation extends Citation {
   getMarkdown(): string {
     const reference = this.reference
+    const author = this.getAuthor()
     return [
-      this.getAuthor(),
-      ', ',
+      author ? `${author}, ` : '',
       reference.year,
       reference.pages ? `: ${reference.pages}` : '',
       reference.hasLinesCited

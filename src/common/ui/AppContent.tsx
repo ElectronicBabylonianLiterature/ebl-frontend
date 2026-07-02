@@ -14,6 +14,7 @@ interface Props {
   sidebar?: React.ReactNode
   wide?: boolean
   breadcrumbsFullWidth?: boolean
+  hideHeading?: boolean
 }
 
 export default function AppContent({
@@ -24,6 +25,7 @@ export default function AppContent({
   sidebar,
   wide = false,
   breadcrumbsFullWidth = true,
+  hideHeading = false,
 }: PropsWithChildren<Props>): JSX.Element {
   const showHeader = crumbs.length > 0 || Boolean(title) || Boolean(actions)
 
@@ -39,7 +41,9 @@ export default function AppContent({
         {showHeader && (
           <header className="main__header">
             <Breadcrumbs className="main__breadcrumbs" crumbs={crumbs} />
-            <h2 className="main__heading">{title || _.last(crumbs)?.text}</h2>
+            {!hideHeading && (
+              <h2 className="main__heading">{title || _.last(crumbs)?.text}</h2>
+            )}
             <ButtonToolbar className="main__toolbar">{actions}</ButtonToolbar>
           </header>
         )}

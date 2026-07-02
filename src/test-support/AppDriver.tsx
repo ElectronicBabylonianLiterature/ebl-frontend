@@ -3,138 +3,23 @@ import {
   fireEvent,
   render,
   RenderResult,
-  screen,
   Matcher,
-  within,
   waitFor,
   ByRoleMatcher,
 } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { MemoryRouter } from 'react-router-dom'
 import _ from 'lodash'
-import App from 'App'
-import WordRepository from 'dictionary/infrastructure/WordRepository'
-import FragmentRepository from 'fragmentarium/infrastructure/FragmentRepository'
-import ApiImageRepository from 'fragmentarium/infrastructure/ImageRepository'
-import FragmentService from 'fragmentarium/application/FragmentService'
-import WordService from 'dictionary/application/WordService'
-import TextService from 'corpus/application/TextService'
 import MemorySession, { Session, guestSession } from 'auth/Session'
-import BibliographyRepository from 'bibliography/infrastructure/BibliographyRepository'
-import BibliographyService from 'bibliography/application/BibliographyService'
-import FragmentSearchService from 'fragmentarium/application/FragmentSearchService'
-import Promise from 'bluebird'
 import { eblNameProperty, AuthenticationContext } from 'auth/Auth'
-import SignRepository from 'signs/infrastructure/SignRepository'
-import SignService from 'signs/application/SignService'
-import MarkupService, {
-  CachedMarkupService,
-} from 'markup/application/MarkupService'
-import AfoRegisterRepository from 'afo-register/infrastructure/AfoRegisterRepository'
-import AfoRegisterService from 'afo-register/application/AfoRegisterService'
-import { FindspotService } from 'fragmentarium/application/FindspotService'
-import { ApiFindspotRepository } from 'fragmentarium/infrastructure/FindspotRepository'
-import FakeApi from 'test-support/FakeApi'
-import DossiersService from 'dossiers/application/DossiersService'
-import DossiersRepository from 'dossiers/infrastructure/DossiersRepository'
-import ApiClient from 'http/ApiClient'
+import Promise from 'bluebird'
+import {
+  breadcrumbs,
+  createApp,
+  getServices,
+} from 'test-support/appDriverHelpers'
 
-type JsonApiClient = {
-  fetchJson: <T = unknown>(url: string, authorize: boolean) => Promise<T>
-  postJson: <T = unknown>(
-    url: string,
-    body: Record<string, unknown>,
-    authorize?: boolean,
-  ) => Promise<T>
-  fetchBlob: (url: string, authorize: boolean) => Promise<Blob>
-}
-
-export function getServices(api: JsonApiClient = new FakeApi().client): {
-  signService: SignService
-  wordService: WordService
-  fragmentService: FragmentService
-  fragmentSearchService: FragmentSearchService
-  bibliographyService: BibliographyService
-  textService: TextService
-  markupService: MarkupService
-  cachedMarkupService: CachedMarkupService
-  afoRegisterService: AfoRegisterService
-  dossiersService: DossiersService
-  findspotService: FindspotService
-} {
-  const apiClient = api as unknown as ApiClient
-  const wordRepository = new WordRepository(apiClient)
-  const fragmentRepository = new FragmentRepository(api)
-  const imageRepository = new ApiImageRepository(api)
-  const bibliographyRepository = new BibliographyRepository(apiClient)
-  const findspotRepository = new ApiFindspotRepository(api)
-
-  const wordService = new WordService(wordRepository)
-  const bibliographyService = new BibliographyService(bibliographyRepository)
-  const fragmentService = new FragmentService(
-    fragmentRepository,
-    imageRepository,
-    wordRepository,
-    bibliographyService,
-  )
-  const fragmentSearchService = new FragmentSearchService(fragmentRepository)
-  const textService = new TextService(
-    apiClient,
-    fragmentService,
-    wordService,
-    bibliographyService,
-  )
-  const signsRepository = new SignRepository(apiClient)
-  const afoRegisterRepository = new AfoRegisterRepository(apiClient)
-  const dossiersRepository = new DossiersRepository(apiClient)
-  const signService = new SignService(signsRepository)
-  const markupService = new MarkupService(apiClient, bibliographyService)
-  const cachedMarkupService = new CachedMarkupService(
-    apiClient,
-    bibliographyService,
-  )
-  const afoRegisterService = new AfoRegisterService(afoRegisterRepository)
-  const dossiersService = new DossiersService(dossiersRepository)
-  const findspotService = new FindspotService(findspotRepository)
-  return {
-    signService,
-    wordService,
-    fragmentService,
-    fragmentSearchService,
-    bibliographyService,
-    textService,
-    markupService,
-    cachedMarkupService,
-    afoRegisterService,
-    dossiersService,
-    findspotService,
-  }
-}
-
-function createApp(api): JSX.Element {
-  return <App {...getServices(api)} />
-}
-
-const breadcrumbs = {
-  getBreadcrumbs(): HTMLElement {
-    return screen.getByRole('navigation', {
-      name: 'breadcrumb',
-    })
-  },
-
-  expectCrumbs(crumbs: readonly string[]): void {
-    const crumbsElement = this.getBreadcrumbs()
-    for (const crumb of crumbs) {
-      expect(within(crumbsElement).getByText(crumb)).toBeInTheDocument()
-    }
-  },
-
-  expectCrumb(crumb: string, link: string): void {
-    expect(
-      within(this.getBreadcrumbs()).getByRole('link', { name: crumb }),
-    ).toHaveAttribute('href', link)
-  },
-} as const
+export { getServices }
 
 export default class AppDriver {
   readonly breadcrumbs = breadcrumbs

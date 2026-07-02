@@ -52,3 +52,18 @@ describe('Closed', () => {
     expect(screen.getByText(heading)).toBeVisible()
   })
 })
+
+describe('Closed with mountOnEnter disabled', () => {
+  test('Content stays in the document', () => {
+    render(
+      <CollapsibleSection
+        classNameBlock="block"
+        heading={heading}
+        mountOnEnter={false}
+      >
+        {content}
+      </CollapsibleSection>,
+    )
+    expect(screen.getByText(content)).toBeInTheDocument()
+  })
+})

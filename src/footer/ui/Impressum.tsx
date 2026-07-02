@@ -1,15 +1,8 @@
 import AppContent from 'common/ui/AppContent'
 import { TextCrumb } from 'common/ui/Breadcrumbs'
-import React, { useEffect } from 'react'
+import React from 'react'
 
-export default function Impressum({
-  pathname,
-}: {
-  pathname: string
-}): JSX.Element {
-  useEffect(() => {
-    window.scrollTo(0, 0)
-  }, [pathname])
+export default function Impressum(): JSX.Element {
   return (
     <AppContent title="Impressum" crumbs={[new TextCrumb('Impressum')]}>
       <section>
