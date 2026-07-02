@@ -81,8 +81,12 @@ removed. Code findings F2–F4 are fixed in this pass; all hard gates green.
 3. **[done]** F4 — hide the toggle in the `unavailable` state.
 4. **[done]** Re-run hard gates after fixes: `yarn tsc`, `yarn lint`, full
    suite with zero console output, 100% coverage on affected files.
-5. **[blocker — user/GitHub]** Reply to Fabdulla1's thread pointing at
-   `563bd213`, resolve it, and re-request review to clear CHANGES_REQUESTED.
-6. **[pre-merge]** Remove all `TASK-*.md` tracking files (743, REVIEW-2,
+5. **[done]** F1 — replied to Fabdulla1's thread pointing at `563bd213`
+   (reply 3514469899), resolved the thread (0 unresolved threads remain), and
+   re-requested review from Fabdulla1. The `CHANGES_REQUESTED` decision stands
+   until Fabdulla1 re-reviews — that dismissal is theirs to make.
+6. **[done]** Pushed `add-realia` (`6836b3e2..520d18b2`) so `qltysh[bot]`
+   re-scans the new RlA-embed code; watch for fresh bot findings.
+7. **[pending — external]** Fabdulla1 re-review to clear CHANGES_REQUESTED.
+8. **[pre-merge]** Remove all `TASK-*.md` tracking files (743, REVIEW-2,
    QUERY-ENCODE, BREADCRUMB-TOOLS, REALIA-WIKIDATA, 404-LEMMAS, RLA-EMBED).
-7. **[pre-merge]** Push so `qltysh[bot]` re-scans the new RlA-embed code.
