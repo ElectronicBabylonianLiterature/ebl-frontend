@@ -9,7 +9,6 @@ import {
 
 type IndexRows = Parameters<typeof parseRlaPageIndex>[0]
 
-// badw separates "S." from the page number with a narrow no-break space.
 function row(id: number, path: string, page: string): IndexRows[number] {
   return {
     DT_RowId: id,

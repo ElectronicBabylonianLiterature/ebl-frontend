@@ -20,8 +20,6 @@ ebl-api PR #715 (`add-realia`), DB credentials in `.env.local` (not exposed).
 - [x] Rule out URL-encoding (Gudea/Tempel are ASCII and also 404).
 - [x] Conclusion: the documents are absent under those `_id`s in the DB the
       API queries → data-side change (re-import/re-key), not a code bug.
-- [ ] User-side check: run the API search / raw-Mongo one-liners to see what
-      `_id`s now exist (renamed? realiaId-keyed? dropped?).
-- [ ] Decide fix (data restore vs frontend/backend adaptation) once the new
-      key shape is known.
+- [x] User-side check completed; data-side issue confirmed and RESOLVED
+      (2026-07-02): the lemmas are served again. No frontend change was needed.
 - [ ] Remove `TASK-REALIA-404-LEMMAS-*.md` before merge.

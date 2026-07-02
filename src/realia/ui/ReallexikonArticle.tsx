@@ -12,9 +12,18 @@ import {
 
 type Status = 'idle' | 'loading' | 'error' | 'unavailable' | 'ready'
 
+function pagePosition(
+  info: RlaPageInfo,
+  scan: number,
+): { pageNumber: number; pageCount: number } {
+  return {
+    pageNumber: scan - info.startScan + 1,
+    pageCount: info.endScan - info.startScan + 1,
+  }
+}
+
 function pageCaption(info: RlaPageInfo, scan: number): string {
-  const pageNumber = scan - info.startScan + 1
-  const pageCount = info.endScan - info.startScan + 1
+  const { pageNumber, pageCount } = pagePosition(info, scan)
   const start = info.pageLabel
     ? `Seite ${info.pageLabel}`
     : `Volume ${info.volume}`
@@ -34,8 +43,7 @@ function RlaPage({
   onStep: (delta: number) => void
   onHide: () => void
 }): JSX.Element {
-  const pageNumber = scan - info.startScan + 1
-  const pageCount = info.endScan - info.startScan + 1
+  const { pageNumber, pageCount } = pagePosition(info, scan)
   return (
     <div className="Realia__rla-page">
       <div className="Realia__rla-page-controls">
@@ -120,7 +128,7 @@ export function ReallexikonArticle({
               <i className="fas fa-external-link-alt" aria-hidden="true" />
             </ExternalLink>
           </h3>
-          {!open && status !== 'loading' && (
+          {!open && status !== 'loading' && status !== 'unavailable' && (
             <Button
               variant="outline-secondary"
               size="sm"

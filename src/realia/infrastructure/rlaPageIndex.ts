@@ -68,8 +68,6 @@ export function parseRlaPageIndex(
     const sorted = [...articles].sort((a, b) => a.scan - b.scan)
     sorted.forEach((article, position) => {
       const next = sorted[position + 1]
-      // Consecutive RlA articles share a page: the next article begins on the
-      // last page of the current one, so include the next article's start scan.
       const boundary = next ? next.scan : article.scan
       index.set(article.id, {
         volume: article.volume,

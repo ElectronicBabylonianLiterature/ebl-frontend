@@ -51,3 +51,8 @@ work; also note PR #715 removed the dev seed on 2026-06-29).
 - `_id`s intentionally re-keyed (e.g. stable realiaId as `_id`, or qualified
   lemmas) → frontend navigation must adopt the new key (that decision belongs
   to the user; the realiaId/by-id route already exists in the API).
+
+## Resolution (2026-07-02)
+
+User confirms the 404s are resolved on the data side; the lemmas resolve again.
+No frontend change was required, matching the investigation's conclusion.

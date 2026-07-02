@@ -99,16 +99,24 @@ it('collapses the page and reopens it without refetching the index', async () =>
   expect(loadMock).toHaveBeenCalledTimes(1)
 })
 
-it('reports when no page image is available for the article', async () => {
+it('reports an unavailable page image and drops the pointless toggle', async () => {
   loadMock.mockResolvedValue(new Map())
   open()
   expect(
     await screen.findByText(/No RlA page image is available/),
   ).toBeInTheDocument()
+  expect(
+    screen.queryByRole('button', { name: 'Show RlA page' }),
+  ).not.toBeInTheDocument()
 })
 
-it('reports when the RlA index cannot be loaded', async () => {
+it('reports a load failure and keeps the toggle so the user can retry', async () => {
   loadMock.mockRejectedValue(new Error('network'))
   open()
   expect(await screen.findByText(/could not be loaded/)).toBeInTheDocument()
+  loadMock.mockResolvedValue(
+    indexWith({ volume: '6', startScan: 92, endScan: 92, pageLabel: '59' }),
+  )
+  fireEvent.click(screen.getByRole('button', { name: 'Show RlA page' }))
+  expect(await screen.findByRole('img')).toBeInTheDocument()
 })
