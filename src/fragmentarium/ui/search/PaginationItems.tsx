@@ -1,11 +1,43 @@
 import React from 'react'
 import { Pagination } from 'react-bootstrap'
-import { parse, stringify } from 'query-string'
 import { useLocation } from 'react-router-dom'
 import { useHistory } from 'router/compat'
 import _ from 'lodash'
 
 const NEIGHBOURING_PAGINATION_ITEMS = 3
+
+function updatePaginationSearchParam(
+  search: string,
+  paginationURLParam: string,
+  index: number,
+): string {
+  const params = search.replace(/^\?/, '').split('&').filter(Boolean)
+  const paginationParam = `${encodeURIComponent(
+    paginationURLParam,
+  )}=${encodeURIComponent(index.toString())}`
+  let updated = false
+
+  const nextParams = params.flatMap((param) => {
+    const [key] = param.split('=')
+
+    if (key !== encodeURIComponent(paginationURLParam)) {
+      return [param]
+    }
+
+    if (!updated) {
+      updated = true
+      return [paginationParam]
+    }
+
+    return []
+  })
+
+  if (!updated) {
+    nextParams.push(paginationParam)
+  }
+
+  return nextParams.join('&')
+}
 
 function PaginationItem({
   paginationURLParam,
@@ -25,13 +57,13 @@ function PaginationItem({
       active={active}
       onClick={(event) => {
         event.preventDefault()
-        const query = parse(location.search, {
-          parseNumbers: true,
-        })
         setActivePage(index)
-        query[paginationURLParam] = index
         history.push({
-          search: stringify({ ...query }),
+          search: updatePaginationSearchParam(
+            location.search,
+            paginationURLParam,
+            index,
+          ),
         })
       }}
     >

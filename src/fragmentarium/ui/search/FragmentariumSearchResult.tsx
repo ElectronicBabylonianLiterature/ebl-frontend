@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import _ from 'lodash'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import withData from 'http/withData'
@@ -7,10 +7,35 @@ import { Col, Row } from 'react-bootstrap'
 import { FragmentQuery } from 'query/FragmentQuery'
 import { linesToShow } from './FragmentariumSearch'
 import './FragmentariumSearchResult.sass'
-import { stringify } from 'query-string'
-import { ResultPageButtons } from 'common/ui/ResultPageButtons'
+import { parse, stringify } from 'query-string'
 import { FragmentLines } from './FragmentariumSearchResultComponents'
 import DossiersService from 'dossiers/application/DossiersService'
+import PaginationItems from './PaginationItems'
+import { useLocation } from 'react-router-dom'
+
+const paginationURLParam = 'paginationIndex'
+const RESULTS_PER_PAGE = 50
+
+export function getActivePageFromSearch(
+  search: string,
+  lastPage: number,
+): number {
+  const query = parse(search, {
+    parseNumbers: true,
+  })
+  const paginationIndex = _.isArray(query[paginationURLParam])
+    ? query[paginationURLParam][0]
+    : query[paginationURLParam]
+  const parsedPaginationIndex = _.isNumber(paginationIndex)
+    ? paginationIndex
+    : Number(paginationIndex)
+
+  if (!Number.isFinite(parsedPaginationIndex)) {
+    return 0
+  }
+
+  return _.clamp(Math.trunc(parsedPaginationIndex), 0, lastPage)
+}
 
 function ResultPages({
   fragments,
@@ -25,18 +50,34 @@ function ResultPages({
   linesToShow: number
   queryLemmas?: readonly string[]
 }): JSX.Element {
-  const [active, setActive] = useState(0)
-  const RESULTS_PER_PAGE = 50
+  const location = useLocation()
   const pages = _.chunk(fragments, RESULTS_PER_PAGE)
+  const lastPage = pages.length - 1
+  const initialActivePage = getActivePageFromSearch(location.search, lastPage)
+  const [active, setActive] = useState(initialActivePage)
+  const displayActive = _.clamp(active, 0, lastPage)
+
+  useEffect(() => {
+    setActive(initialActivePage)
+  }, [initialActivePage])
 
   const pageButtons = (
-    <ResultPageButtons pages={pages} active={active} setActive={setActive} />
+    <Row>
+      <Col className="d-flex justify-content-center">
+        <PaginationItems
+          activePage={displayActive}
+          lastPage={lastPage}
+          setActivePage={setActive}
+          paginationURLParam={paginationURLParam}
+        />
+      </Col>
+    </Row>
   )
 
   return (
     <>
       {pageButtons}
-      {pages[active].map((fragment) => (
+      {pages[displayActive].map((fragment) => (
         <React.Fragment
           key={`${fragment.museumNumber}:${fragment.matchingLines.join(',')}`}
         >
@@ -44,7 +85,7 @@ function ResultPages({
             fragmentService={fragmentService}
             dossiersService={dossiersService}
             queryItem={fragment}
-            active={active}
+            active={displayActive}
             queryLemmas={queryLemmas}
             linesToShow={linesToShow}
           />
@@ -117,6 +158,6 @@ export const SearchResult = withData<
   },
   ({ fragmentService, fragmentQuery }) => fragmentService.query(fragmentQuery),
   {
-    watch: ({ fragmentQuery }) => [fragmentQuery],
+    watch: ({ fragmentQuery }) => [stringify(fragmentQuery)],
   },
 )
