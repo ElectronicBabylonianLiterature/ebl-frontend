@@ -301,7 +301,21 @@
 
 .Realia__rla-title
     @extend %realia-section-title
+
+.Realia__rla-title-head
+    display: flex
+    align-items: flex-start
+    justify-content: space-between
+    gap: 0.75rem
+
+.Realia__rla-title-heading
+    margin: 0
+    font-size: 0.95rem
     font-weight: 700
+
+.Realia__rla-page-toggle
+    flex: 0 0 auto
+    white-space: nowrap
 
 .Realia__rla-title-link
     margin-left: 0.4rem
@@ -312,7 +326,55 @@
         color: $ebl-color-brand-primary-dark
 
 .Realia__rla-references
-    padding: 0.75rem
+    margin-top: 0.4rem
+    padding: 0 0.15rem
+    font-size: 0.85rem
+
+.Realia__rla-permission
+    font-size: 0.8rem
+    color: $ebl-color-text-secondary
+    background-color: $ebl-color-surface-subtle
+    border: 1px solid $ebl-color-border-light
+    border-radius: 0.5rem
+    padding: 0.5rem 0.75rem
+    margin-bottom: 1rem
+
+.Realia__rla-page-status
+    font-size: 0.85rem
+    color: $ebl-color-text-secondary
+    margin: 0.5rem 0
+
+.Realia__rla-page
+    position: relative
+    margin-top: 0.5rem
+
+.Realia__rla-page-image
+    display: block
+    max-width: 100%
+    height: auto
+    border: 1px solid $ebl-color-border-light
+
+.Realia__rla-page-controls
+    position: sticky
+    top: 4.25rem
+    z-index: 1
+    display: flex
+    align-items: center
+    gap: 0.4rem
+    width: fit-content
+    max-width: 100%
+    margin-left: auto
+    margin-bottom: 0.5rem
+    padding: 0.3rem 0.5rem
+    background-color: $ebl-color-surface-subtle
+    border: 1px solid $ebl-color-brand-primary
+    border-radius: 0.35rem
+    box-shadow: 0 1px 4px $ebl-color-black-alpha-05
+
+.Realia__rla-page-caption
+    font-size: 0.85rem
+    color: $ebl-color-text-secondary
+    white-space: nowrap
 
 .Realia__see-also
     list-style: none

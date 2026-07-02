@@ -105,14 +105,18 @@ describe('RealiaDisplay sections and reallexikon', () => {
     renderDisplay(entry)
     await waitForSpinnerToBeRemoved(screen)
     expect(
-      screen.getByText('Aššur A. Stadt', { selector: '.Realia__rla-title' }),
+      screen.getByText('Aššur A. Stadt', {
+        selector: '.Realia__rla-title-heading',
+      }),
     ).toBeInTheDocument()
     expect(
-      screen.getByText('Aššur B. Land', { selector: '.Realia__rla-title' }),
+      screen.getByText('Aššur B. Land', {
+        selector: '.Realia__rla-title-heading',
+      }),
     ).toBeInTheDocument()
     expect(
       screen.getByText('Aššur C. Hauptgott', {
-        selector: '.Realia__rla-title',
+        selector: '.Realia__rla-title-heading',
       }),
     ).toBeInTheDocument()
     expect(
@@ -149,12 +153,12 @@ describe('RealiaDisplay sections and reallexikon', () => {
     await waitForSpinnerToBeRemoved(screen)
     expect(
       screen.getByText('Sintflut A. Deutsch', {
-        selector: '.Realia__rla-title',
+        selector: '.Realia__rla-title-heading',
       }),
     ).toBeInTheDocument()
     expect(
       screen.getByText('Sintflut B. English', {
-        selector: '.Realia__rla-title',
+        selector: '.Realia__rla-title-heading',
       }),
     ).toBeInTheDocument()
     expect(
@@ -185,7 +189,7 @@ describe('RealiaDisplay sections and reallexikon', () => {
     await waitForSpinnerToBeRemoved(screen)
     expect(
       screen.getByText('Zababa-šuma-iddina', {
-        selector: '.Realia__rla-title',
+        selector: '.Realia__rla-title-heading',
       }),
     ).toBeInTheDocument()
     const link = screen.getByRole('link', {

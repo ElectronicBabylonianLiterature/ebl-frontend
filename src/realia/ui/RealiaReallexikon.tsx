@@ -1,8 +1,6 @@
 import React from 'react'
-import { ReallexikonEntry, rlaArticleUrl } from 'realia/domain/RealiaEntry'
-import ExternalLink from 'common/ui/ExternalLink'
-import ReferenceList from 'bibliography/ui/ReferenceList'
-import { rlaArticleId } from 'realia/ui/realiaSections'
+import { ReallexikonEntry } from 'realia/domain/RealiaEntry'
+import { ReallexikonArticle } from 'realia/ui/ReallexikonArticle'
 
 export function ReallexikonEntries({
   entries,
@@ -11,28 +9,14 @@ export function ReallexikonEntries({
 }): JSX.Element {
   return (
     <>
+      <p className="Realia__rla-permission">
+        The RlA page display is shown with the kind permission of the
+        Reallexikon der Assyriologie und Vorderasiatischen Archäologie project
+        (Bayerische Akademie der Wissenschaften) and the publisher Walter de
+        Gruyter.
+      </p>
       {entries.map((entry, index) => (
-        <div
-          key={`${entry.id}-${index}`}
-          id={rlaArticleId(entry.title)}
-          className="Realia__rla-article"
-        >
-          <h3 className="Realia__rla-title">
-            {entry.title}
-            <ExternalLink
-              href={rlaArticleUrl(entry.id)}
-              className="Realia__rla-title-link"
-              aria-label={`Open ${entry.title} on the online RlA`}
-            >
-              <i className="fas fa-external-link-alt" aria-hidden="true" />
-            </ExternalLink>
-          </h3>
-          {entry.reference && (
-            <div className="Realia__rla-references">
-              <ReferenceList references={[entry.reference]} />
-            </div>
-          )}
-        </div>
+        <ReallexikonArticle key={`${entry.id}-${index}`} entry={entry} />
       ))}
     </>
   )
