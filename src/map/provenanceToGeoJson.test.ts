@@ -31,12 +31,15 @@ describe('provenanceToGeoJson', () => {
     expect(feature.properties).toEqual({
       id: 'babylon',
       name: 'Babylon',
+      abbreviation: 'Bab',
+      parent: undefined,
       geometryType: 'point',
     })
   })
 
   it('converts a polygon provenance to a point using centroid', () => {
     const record = makeProvenance({
+      parent: 'Babylonia',
       polygonCoordinates: [
         { latitude: 36.3, longitude: 43.1 },
         { latitude: 36.4, longitude: 43.2 },
@@ -50,6 +53,8 @@ describe('provenanceToGeoJson', () => {
     const coords = (result.features[0].geometry as Point).coordinates
     expect(coords[0]).toBeCloseTo(43.15, 5)
     expect(coords[1]).toBeCloseTo(36.35, 5)
+    expect(result.features[0].properties.abbreviation).toBe('Bab')
+    expect(result.features[0].properties.parent).toBe('Babylonia')
     expect(result.features[0].properties.geometryType).toBe('polygon')
   })
 

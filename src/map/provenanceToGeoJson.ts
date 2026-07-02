@@ -23,6 +23,8 @@ function centroid(
 export interface FindspotProperties {
   id: string
   name: string
+  abbreviation: string
+  parent: string | undefined
   geometryType: 'point' | 'polygon'
 }
 
@@ -51,6 +53,8 @@ export function provenanceToGeoJson(
         properties: {
           id: provenance.id,
           name: provenance.longName,
+          abbreviation: provenance.abbreviation,
+          parent: provenance.parent ?? undefined,
           geometryType: provenanceGeometry.type,
         },
       }

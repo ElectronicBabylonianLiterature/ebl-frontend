@@ -9,7 +9,10 @@ import type {
   MapMouseEvent,
 } from 'maplibre-gl'
 import { ProvenanceRecord } from 'fragmentarium/domain/Provenance'
-import { createFindspotPopup } from './createFindspotPopup'
+import {
+  createFindspotPopup,
+  type FindspotPopupProperties,
+} from './createFindspotPopup'
 import {
   SOURCE_ID,
   clusterCountLayer,
@@ -17,6 +20,7 @@ import {
   createFindspotsSource,
   unclusteredLayer,
 } from './mapLayers'
+import type { FindspotProperties } from './provenanceToGeoJson'
 import { provenanceToGeoJson } from './provenanceToGeoJson'
 
 const MAP_STYLE_URL =
@@ -71,17 +75,72 @@ function expandCluster(map: MapLibreMap, cluster: MapGeoJSONFeature): void {
   })
 }
 
-function openFindspotPopup(map: MapLibreMap, feature: MapGeoJSONFeature): void {
-  const name = feature.properties?.name
-  if (typeof name !== 'string') return
+function isGeometryType(
+  value: unknown,
+): value is FindspotProperties['geometryType'] {
+  return value === 'point' || value === 'polygon'
+}
 
-  const coordinates = (feature.geometry as Point).coordinates.slice() as [
-    number,
-    number,
-  ]
+function getFeaturePointCoordinates(
+  feature: MapGeoJSONFeature,
+): [number, number] | null {
+  if (feature.geometry.type !== 'Point') return null
+
+  const coordinates = (feature.geometry as Point).coordinates
+  const longitude = coordinates[0]
+  const latitude = coordinates[1]
+
+  if (typeof longitude !== 'number' || !Number.isFinite(longitude)) {
+    return null
+  }
+
+  if (typeof latitude !== 'number' || !Number.isFinite(latitude)) {
+    return null
+  }
+
+  return [longitude, latitude]
+}
+
+function getPopupProperties(
+  feature: MapGeoJSONFeature,
+): FindspotPopupProperties | null {
+  const name = feature.properties?.name
+  const abbreviation = feature.properties?.abbreviation
+  const parent = feature.properties?.parent
+  const geometryType = feature.properties?.geometryType
+  const pointCoordinates = getFeaturePointCoordinates(feature)
+
+  if (typeof name !== 'string' || typeof abbreviation !== 'string') {
+    return null
+  }
+
+  if (parent !== undefined && parent !== null && typeof parent !== 'string') {
+    return null
+  }
+
+  if (!isGeometryType(geometryType)) {
+    return null
+  }
+
+  return {
+    name,
+    abbreviation,
+    parent: typeof parent === 'string' ? parent : undefined,
+    geometryType,
+    coordinates: pointCoordinates
+      ? { latitude: pointCoordinates[1], longitude: pointCoordinates[0] }
+      : undefined,
+  }
+}
+
+function openFindspotPopup(map: MapLibreMap, feature: MapGeoJSONFeature): void {
+  const popupProperties = getPopupProperties(feature)
+  const coordinates = getFeaturePointCoordinates(feature)
+  if (!popupProperties || !coordinates) return
+
   new maplibregl.Popup()
     .setLngLat(coordinates)
-    .setDOMContent(createFindspotPopup(name))
+    .setDOMContent(createFindspotPopup(popupProperties))
     .addTo(map)
 }
 

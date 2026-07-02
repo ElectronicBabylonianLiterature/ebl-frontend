@@ -320,9 +320,16 @@ describe('MapTab', () => {
 
   it('opens an unclustered findspot popup with DOM-safe content', async () => {
     const name = '<img src=x onerror=alert(1)>'
+    const parent = 'Babylonia<script>xss</script>'
+    const abbreviation = '<script>alert(1)</script>'
     const findspot = {
       type: 'Feature',
-      properties: { name },
+      properties: {
+        name,
+        parent,
+        abbreviation,
+        geometryType: 'point',
+      },
       geometry: { type: 'Point', coordinates: [44.42, 32.542] },
     }
     render(<MapTab fragmentService={makeFragmentService([makeProvenance()])} />)
@@ -345,10 +352,14 @@ describe('MapTab', () => {
 
     const content = mockSetDOMContent.mock.calls[0][0] as HTMLElement
     const popup = within(content)
-    expect(popup.queryAllByRole('img')).toHaveLength(0)
+    expect(content.innerHTML).not.toContain('<img')
+    expect(content.innerHTML).not.toContain('<script')
     expect(popup.getByText(name, { selector: 'strong' })).toHaveTextContent(
       name,
     )
+    expect(popup.getByText(`${parent} · ${abbreviation}`)).toBeInTheDocument()
+    expect(popup.getByText('32.54°N, 44.42°E')).toBeInTheDocument()
+    expect(popup.getByText('Single point')).toBeInTheDocument()
     const link = popup.getByRole('link', { name: 'View fragments' })
     expect(link).toHaveAttribute('href', buildFragmentSearchLink(name))
   })
