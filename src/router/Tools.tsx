@@ -3,6 +3,7 @@ import { Container, Row, Col, Nav } from 'react-bootstrap'
 import { Link, useLocation } from 'react-router-dom'
 import AppContent from 'common/ui/AppContent'
 import { Crumb, SectionCrumb, TextCrumb } from 'common/ui/Breadcrumbs'
+import Spinner from 'common/ui/Spinner'
 import './tools.sass'
 import DateConverterForm, {
   AboutDateConverter,
@@ -25,6 +26,8 @@ import GenresPage from 'fragmentarium/ui/GenresPage'
 import { useHistory } from 'router/compat'
 import useScrollToHash from 'common/hooks/useScrollToHash'
 
+const MapTab = React.lazy(() => import('map/MapTab'))
+
 export const tabIds = [
   'date-converter',
   'list-of-kings',
@@ -35,6 +38,7 @@ export const tabIds = [
   'references',
   'afo-register',
   'cuneiform-converter',
+  'map',
 ] as const
 export type TabId = (typeof tabIds)[number]
 
@@ -65,6 +69,7 @@ const tabConfig = [
   { id: 'references', title: 'References', icon: '※' },
   { id: 'afo-register', title: 'AfO-Register', icon: '⊞' },
   { id: 'cuneiform-converter', title: 'Cuneiform Converter', icon: '𒐕' },
+  { id: 'map', title: 'Findspot Map', icon: '◈' },
 ]
 
 export function getCurrentTab(selectedTab?: TabId) {
@@ -168,6 +173,11 @@ function getContent({
     ),
     'list-of-kings': ListOfKings(),
     'cuneiform-converter': <CuneiformConverterForm signService={signService} />,
+    map: (
+      <React.Suspense fallback={<Spinner>Loading map...</Spinner>}>
+        <MapTab fragmentService={fragmentService} />
+      </React.Suspense>
+    ),
   }
 
   return activeTab ? (

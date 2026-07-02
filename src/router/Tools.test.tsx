@@ -67,6 +67,11 @@ jest.mock('signs/ui/CuneiformConverter/CuneiformConverterForm', () => ({
   default: () => <div>Cuneiform Converter Mock</div>,
 }))
 
+jest.mock('map/MapTab', () => ({
+  __esModule: true,
+  default: () => <div>Map Mock</div>,
+}))
+
 function renderTools(activeTab?: Parameters<typeof Tools>[0]['activeTab']) {
   const props = {
     markupService: {} as MarkupService,
@@ -131,6 +136,11 @@ describe('Tools', () => {
   it('renders cuneiform converter content', () => {
     renderTools('cuneiform-converter')
     expect(screen.getByText('Cuneiform Converter Mock')).toBeInTheDocument()
+  })
+
+  it('renders map content', async () => {
+    renderTools('map')
+    expect(await screen.findByText('Map Mock')).toBeInTheDocument()
   })
 
   it('renders introduction for unknown activeTab', () => {
@@ -208,13 +218,14 @@ describe('Tools', () => {
       '※References',
       '⊞AfO-Register',
       '𒐕Cuneiform Converter',
+      '◈Findspot Map',
     ])
   })
 
   it('marks decorative icons as hidden from assistive technologies', () => {
     renderTools('dictionary')
 
-    const navIcons = ['𒀀', 'Ꞌ', '⇌', '♔', '⊕', '⊟', '※', '⊞', '𒐕']
+    const navIcons = ['𒀀', 'Ꞌ', '⇌', '♔', '⊕', '⊟', '※', '⊞', '𒐕', '◈']
 
     navIcons.forEach((icon) => {
       expect(
@@ -362,6 +373,7 @@ describe('Tools', () => {
     expect(getDisplayTitle('dictionary')).toEqual('Akkadian Dictionary')
     expect(getDisplayTitle('dossiers')).toEqual('Dossiers')
     expect(getDisplayTitle('genres')).toEqual('Genres')
+    expect(getDisplayTitle('map')).toEqual('Findspot Map')
   })
 
   it('builds breadcrumbs for selected and unselected states', () => {
@@ -371,5 +383,6 @@ describe('Tools', () => {
     ).toHaveLength(2)
     expect(getToolsBreadcrumbs('Dossiers', 'dossiers')).toHaveLength(2)
     expect(getToolsBreadcrumbs('Genres', 'genres')).toHaveLength(2)
+    expect(getToolsBreadcrumbs('Findspot Map', 'map')).toHaveLength(2)
   })
 })
