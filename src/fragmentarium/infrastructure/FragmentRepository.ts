@@ -227,6 +227,7 @@ function isQuerySummaryItemDto(
 }
 
 function createQuerySummaryFragment(dto: QuerySummaryItemDto): Fragment {
+  // Display-only lightweight fragment: fields absent from the query summary use placeholders.
   return Fragment.create({
     number: museumNumberToString(dto.museumNumber),
     accession: dto.accession ? museumNumberToString(dto.accession) : '',

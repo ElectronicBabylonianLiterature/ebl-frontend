@@ -61,29 +61,34 @@ let fragmentSearchService: jest.Mocked<FragmentSearchService>
 let session: Session
 let container: HTMLElement
 
+const createFragmentariumSearch = (
+  query: Partial<FragmentQuery> = {},
+  activeTab = 'library',
+): React.ReactElement => (
+  <MemoryRouter>
+    <DictionaryContext.Provider value={wordService}>
+      <SessionContext.Provider value={session}>
+        <FragmentariumSearch
+          fragmentSearchService={fragmentSearchService}
+          fragmentService={fragmentService}
+          bibliographyService={bibliographyService}
+          dossiersService={dossiersService}
+          fragmentQuery={query}
+          wordService={wordService}
+          textService={textService}
+          activeTab={activeTab}
+        />
+      </SessionContext.Provider>
+    </DictionaryContext.Provider>
+  </MemoryRouter>
+)
+
 const renderFragmentariumSearch = async (
   waitFor: string,
   query: Partial<FragmentQuery> = {},
   activeTab = 'library',
 ): Promise<void> => {
-  container = render(
-    <MemoryRouter>
-      <DictionaryContext.Provider value={wordService}>
-        <SessionContext.Provider value={session}>
-          <FragmentariumSearch
-            fragmentSearchService={fragmentSearchService}
-            fragmentService={fragmentService}
-            bibliographyService={bibliographyService}
-            dossiersService={dossiersService}
-            fragmentQuery={query}
-            wordService={wordService}
-            textService={textService}
-            activeTab={activeTab}
-          />
-        </SessionContext.Provider>
-      </DictionaryContext.Provider>
-    </MemoryRouter>,
-  ).container
+  container = render(createFragmentariumSearch(query, activeTab)).container
   await screen.findByText(waitFor)
 }
 
@@ -240,46 +245,12 @@ describe('Search', () => {
       Promise.resolve({ items: [], matchCountTotal: 0 }),
     )
 
-    const { rerender } = render(
-      <MemoryRouter>
-        <DictionaryContext.Provider value={wordService}>
-          <SessionContext.Provider value={session}>
-            <FragmentariumSearch
-              fragmentSearchService={fragmentSearchService}
-              fragmentService={fragmentService}
-              bibliographyService={bibliographyService}
-              dossiersService={dossiersService}
-              fragmentQuery={{ transliteration }}
-              wordService={wordService}
-              textService={textService}
-              activeTab="library"
-            />
-          </SessionContext.Provider>
-        </DictionaryContext.Provider>
-      </MemoryRouter>,
-    )
+    const { rerender } = render(createFragmentariumSearch({ transliteration }))
 
     await screen.findByText('Found 2 lines in 2 documents')
     expect(fragmentService.query).toHaveBeenCalledTimes(1)
 
-    rerender(
-      <MemoryRouter>
-        <DictionaryContext.Provider value={wordService}>
-          <SessionContext.Provider value={session}>
-            <FragmentariumSearch
-              fragmentSearchService={fragmentSearchService}
-              fragmentService={fragmentService}
-              bibliographyService={bibliographyService}
-              dossiersService={dossiersService}
-              fragmentQuery={{ transliteration }}
-              wordService={wordService}
-              textService={textService}
-              activeTab="library"
-            />
-          </SessionContext.Provider>
-        </DictionaryContext.Provider>
-      </MemoryRouter>,
-    )
+    rerender(createFragmentariumSearch({ transliteration }))
 
     expect(fragmentService.query).toHaveBeenCalledTimes(1)
     expect(screen.getByText('Found 2 lines in 2 documents')).toBeVisible()
@@ -296,24 +267,7 @@ describe('Search', () => {
     }
     fragmentService.query.mockResolvedValue(differentResult)
 
-    rerender(
-      <MemoryRouter>
-        <DictionaryContext.Provider value={wordService}>
-          <SessionContext.Provider value={session}>
-            <FragmentariumSearch
-              fragmentSearchService={fragmentSearchService}
-              fragmentService={fragmentService}
-              bibliographyService={bibliographyService}
-              dossiersService={dossiersService}
-              fragmentQuery={{ transliteration: 'different text' }}
-              wordService={wordService}
-              textService={textService}
-              activeTab="library"
-            />
-          </SessionContext.Provider>
-        </DictionaryContext.Provider>
-      </MemoryRouter>,
-    )
+    rerender(createFragmentariumSearch({ transliteration: 'different text' }))
 
     await screen.findByText('Found 5 lines in 1 document')
     expect(fragmentService.query).toHaveBeenCalledTimes(2)
