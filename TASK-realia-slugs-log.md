@@ -56,6 +56,22 @@ slugs: <x>Slugs })}` so the sitemap expands one URL per slug.
   `TASK-realia-slugs-api-prompt.md`. Frontend will 404 on sitemap generation until
   that endpoint exists.
 
+## Review follow-up (findings addressed)
+
+- F2 (Medium): `react-dynamic-sitemap` inserts slug values without URL-encoding,
+  so Realia lemmas with commas/spaces/parens (`Enlil, Ellil`) produced malformed
+  `<loc>`s. Added an opt-in `encode` flag to `getSlugs`/`mapStringsToSlugs` in
+  `router/sitemap.tsx`, enabled for Realia; added a test asserting the encoded
+  form and the absence of the raw form. Pre-existing entities left unchanged.
+- F1 (Low): redirect-stub Realia entries can't be filtered client-side at
+  sitemap-build time; updated `TASK-realia-slugs-api-prompt.md` to require
+  `/realia/all` to exclude pure cross-reference stubs (mirroring
+  `getRedirectTarget`/`hasOwnContent`), plus a stub-exclusion test.
+- F3: external API dependency, unchanged (tracked in the API prompt).
+- F4: measurement artifact, no action.
+- Gates re-run after changes: `yarn tsc` clean, `yarn lint` clean, affected suites
+  green (29 realia/sitemap tests), zero console noise.
+
 ## Notes / follow-up
 
 - Remove `TASK-realia-slugs-*.md` before merging this branch.

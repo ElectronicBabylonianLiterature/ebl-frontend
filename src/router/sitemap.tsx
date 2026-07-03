@@ -121,9 +121,13 @@ function getSitemapIndex(filenames: string[]): string {
   return convert.js2xml(convert.xml2js(sitemapString))
 }
 
-function mapStringsToSlugs(array: string[], key: string): SlugsArray {
+function mapStringsToSlugs(
+  array: string[],
+  key: string,
+  encode: boolean,
+): SlugsArray {
   return array.map((element) => {
-    return { [key]: element }
+    return { [key]: encode ? encodeURIComponent(element) : element }
   })
 }
 
@@ -132,9 +136,10 @@ async function getSlugs(
   service: string,
   getter: string,
   key: string,
+  encode = false,
 ): Bluebird<SlugsArray> {
   return services[service][getter]().then((array) =>
-    mapStringsToSlugs(array, key),
+    mapStringsToSlugs(array, key, encode),
   )
 }
 
@@ -158,6 +163,7 @@ export async function getAllSlugs(services: Services): Bluebird<Slugs> {
       'realiaService',
       'listAllRealia',
       'id',
+      true,
     ),
     fragmentSlugs: await getSlugs(
       services,

@@ -170,4 +170,34 @@ it('includes a URL for every Realia slug in sitemap xml', async () => {
   }) as string
 
   expect(sitemapXml).toContain('/tools/realia/Pig')
+  // the Realia search page itself (/tools/realia, no trailing slug)
+  expect(sitemapXml).toMatch(/\/tools\/realia</)
+})
+
+it('URL-encodes reserved characters in Realia slugs in sitemap xml', async () => {
+  ;(
+    services.realiaService.listAllRealia as jest.MockedFunction<
+      typeof services.realiaService.listAllRealia
+    >
+  ).mockReturnValue(Bluebird.resolve(['Enlil, Ellil']))
+  const slugs = await getAllSlugs(services)
+  getSitemapAsFile(services, slugs)
+
+  const saveAsMock = saveAs as jest.MockedFunction<typeof saveAs>
+  const sitemapChunkCall = saveAsMock.mock.calls.find(
+    ([_blob, filename]) => filename === 'sitemap1.xml.gz',
+  )
+
+  expect(sitemapChunkCall).toBeDefined()
+
+  const sitemapChunkArchive = sitemapChunkCall?.[0] as Blob
+  const sitemapChunkBuffer = await readBlobAsArrayBuffer(sitemapChunkArchive)
+  const sitemapXml = pako.ungzip(new Uint8Array(sitemapChunkBuffer), {
+    to: 'string',
+  }) as string
+
+  expect(sitemapXml).toContain(
+    `/tools/realia/${encodeURIComponent('Enlil, Ellil')}`,
+  )
+  expect(sitemapXml).not.toContain('/tools/realia/Enlil, Ellil')
 })
