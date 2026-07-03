@@ -39,6 +39,14 @@ const testData: TestData<RealiaService>[] = [
     ['pig'],
     Promise.resolve([entry]),
   ),
+  new TestData(
+    'listAllRealia',
+    [],
+    realiaRepository.listAllRealia,
+    ['Pig'],
+    [],
+    Promise.resolve(['Pig']),
+  ),
 ]
 
 describe('RealiaService', () => testDelegation(realiaService, testData))

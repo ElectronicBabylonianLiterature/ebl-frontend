@@ -81,6 +81,7 @@ beforeEach(() => {
     Bluebird.resolve(['ref1']),
   )
   wordService.listAllWords.mockReturnValue(Bluebird.resolve(['awīlum I']))
+  realiaService.listAllRealia.mockReturnValue(Bluebird.resolve(['Pig']))
   fragmentService.listAllFragments.mockReturnValue(Bluebird.resolve(['BM.42']))
   textService.listAllTexts.mockReturnValue(
     Bluebird.resolve([{ index: 1, category: 1, genre: 'L' }]),
@@ -112,6 +113,7 @@ it('get all slugs', async () => {
   expect(services.signService.listAllSigns).toHaveBeenCalled()
   expect(services.bibliographyService.listAllBibliography).toHaveBeenCalled()
   expect(services.wordService.listAllWords).toHaveBeenCalled()
+  expect(services.realiaService.listAllRealia).toHaveBeenCalled()
   expect(services.fragmentService.listAllFragments).toHaveBeenCalled()
   expect(services.textService.listAllTexts).toHaveBeenCalled()
   expect(services.textService.listAllChapters).toHaveBeenCalled()
@@ -148,4 +150,24 @@ it('does not include projects wildcard route in sitemap xml', async () => {
   expect(sitemapXml).toContain('/projects')
   expect(sitemapXml).toContain('/projects/CAIC')
   expect(sitemapXml).not.toContain('/projects/*')
+})
+
+it('includes a URL for every Realia slug in sitemap xml', async () => {
+  const slugs = await getAllSlugs(services)
+  getSitemapAsFile(services, slugs)
+
+  const saveAsMock = saveAs as jest.MockedFunction<typeof saveAs>
+  const sitemapChunkCall = saveAsMock.mock.calls.find(
+    ([_blob, filename]) => filename === 'sitemap1.xml.gz',
+  )
+
+  expect(sitemapChunkCall).toBeDefined()
+
+  const sitemapChunkArchive = sitemapChunkCall?.[0] as Blob
+  const sitemapChunkBuffer = await readBlobAsArrayBuffer(sitemapChunkArchive)
+  const sitemapXml = pako.ungzip(new Uint8Array(sitemapChunkBuffer), {
+    to: 'string',
+  }) as string
+
+  expect(sitemapXml).toContain('/tools/realia/Pig')
 })

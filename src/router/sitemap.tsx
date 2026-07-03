@@ -153,6 +153,12 @@ export async function getAllSlugs(services: Services): Bluebird<Slugs> {
       'listAllBibliography',
       'id',
     ),
+    realiaSlugs: await getSlugs(
+      services,
+      'realiaService',
+      'listAllRealia',
+      'id',
+    ),
     fragmentSlugs: await getSlugs(
       services,
       'fragmentService',
