@@ -100,6 +100,25 @@ describe('Show Library entries', () => {
     await screen.findByText('kur')
     expect(container).toMatchSnapshot()
   })
+
+  it('renders a document-count fallback when matchCountTotal is null', async () => {
+    const queryItem: QueryItem = {
+      museumNumber: 'Test.Fragment',
+      matchingLines: [0],
+      matchCount: 1,
+    }
+    fragmentService.query.mockReturnValue(
+      Bluebird.resolve({ items: [queryItem], matchCountTotal: null }),
+    )
+    fragmentService.find.mockReturnValue(Bluebird.resolve(fragmentWithLemma))
+
+    renderFragmentLemmaLines()
+
+    expect(
+      await screen.findByText('Matches found in 1 Library document'),
+    ).toBeVisible()
+    expect(screen.queryByText('0 matches')).not.toBeInTheDocument()
+  })
 })
 
 describe('RenderFragmentLines', () => {

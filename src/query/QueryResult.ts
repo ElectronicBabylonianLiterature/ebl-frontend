@@ -11,7 +11,9 @@ export interface QueryItem {
 
 export interface QueryResult {
   readonly items: readonly QueryItem[]
-  readonly matchCountTotal: number
+  readonly matchCountTotal: number | null
+  readonly isMatchCountTotalExact?: boolean
+  readonly hasNextPage?: boolean | null
 }
 
 export interface CorpusQueryItem {
@@ -25,7 +27,9 @@ export interface CorpusQueryItem {
 
 export interface CorpusQueryResult {
   items: readonly CorpusQueryItem[]
-  matchCountTotal: number
+  matchCountTotal: number | null
+  isMatchCountTotalExact?: boolean
+  hasNextPage?: boolean | null
 }
 
 export interface FragmentAfoRegisterQueryItem {

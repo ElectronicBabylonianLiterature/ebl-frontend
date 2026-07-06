@@ -136,13 +136,29 @@ export default withData<
   QueryResult
 >(
   ({ data: queryResult, fragmentService, lemmaId }): JSX.Element => {
-    const total = queryResult.matchCountTotal.toLocaleString()
-    const hasMatches = queryResult.matchCountTotal > 0
+    const hasMatchCount = typeof queryResult.matchCountTotal === 'number'
+    const total = hasMatchCount
+      ? queryResult.matchCountTotal.toLocaleString()
+      : null
+    const hasMatches = hasMatchCount
+      ? queryResult.matchCountTotal > 0
+      : queryResult.items.length > 0
 
     return (
       <>
         <p>
-          {total} matches&nbsp;
+          {hasMatchCount ? (
+            <>
+              {queryResult.isMatchCountTotalExact === false && 'About '}
+              {total} matches&nbsp;
+            </>
+          ) : (
+            <>
+              Matches found in {queryResult.items.length.toLocaleString()}{' '}
+              Library document{queryResult.items.length === 1 ? '' : 's'}
+              &nbsp;
+            </>
+          )}
           {hasMatches && <LemmaQueryLink lemmaId={lemmaId} />}
         </p>
         <FragmentLemmaLines
@@ -152,7 +168,11 @@ export default withData<
         />
         {hasMatches && (
           <LemmaQueryLink lemmaId={lemmaId}>
-            Show all {total} matches in Library search&nbsp;
+            {hasMatchCount && queryResult.isMatchCountTotalExact !== false ? (
+              <>Show all {total} matches in Library search&nbsp;</>
+            ) : (
+              <>Show matches in Library search&nbsp;</>
+            )}
           </LemmaQueryLink>
         )}
       </>

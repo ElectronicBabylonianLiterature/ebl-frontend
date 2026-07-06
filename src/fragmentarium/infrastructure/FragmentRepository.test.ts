@@ -477,6 +477,43 @@ describe('FragmentRepository query summary items', () => {
     jest.clearAllMocks()
   })
 
+  it('preserves nullable count and pagination metadata', async () => {
+    apiClient.fetchJson.mockResolvedValueOnce({
+      items: [],
+      matchCountTotal: null,
+      isMatchCountTotalExact: false,
+      hasNextPage: true,
+    })
+
+    await expect(
+      fragmentRepository.query({ transliteration: 'šim' }),
+    ).resolves.toMatchObject({
+      items: [],
+      matchCountTotal: null,
+      isMatchCountTotalExact: false,
+      hasNextPage: true,
+    })
+  })
+
+  it.each(['parser_version', 'parserVersion'] as const)(
+    'accepts matchingLinePreview.%s',
+    async (parserVersionField) => {
+      mockQueryItems([
+        createSummaryItemDto({
+          matchingLinePreview: {
+            lines: [textLineDto],
+            numberOfLines: 1,
+            [parserVersionField]: 'backend',
+          },
+        }),
+      ])
+
+      const result = await fragmentRepository.query({ lemmas: 'kur' })
+
+      expect(result.items[0].fragment?.text.lines).toHaveLength(1)
+    },
+  )
+
   it('maps summary items into prefetched fragments and thumbnail paths', async () => {
     const thumbnailPath = '/images/Test.Fragment.jpg'
     mockQueryItems([createSummaryItemDto({ thumbnailPath })])

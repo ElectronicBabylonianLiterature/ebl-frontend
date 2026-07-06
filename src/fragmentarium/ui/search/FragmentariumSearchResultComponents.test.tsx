@@ -83,6 +83,28 @@ describe('FragmentLines', () => {
     expect(screen.getByText(fragment.number)).toBeInTheDocument()
   })
 
+  it('uses summary thumbnail paths without fetching thumbnail blobs', async () => {
+    const fragment = fragmentFactory.build({
+      hasPhoto: true,
+      dossiers: [],
+    })
+    const thumbnailPath = '/images/summary-thumbnail.jpg'
+
+    renderFragmentLines({
+      museumNumber: fragment.number,
+      matchingLines: [1, 2, 3],
+      matchCount: 3,
+      fragment,
+      thumbnailPath,
+    })
+
+    expect(
+      await screen.findByAltText(`Preview of ${fragment.number}`),
+    ).toHaveAttribute('src', thumbnailPath)
+    expect(fragmentService.find).not.toHaveBeenCalled()
+    expect(fragmentService.findThumbnail).not.toHaveBeenCalled()
+  })
+
   it('shows the hydration spinner when the query item is not render-ready', async () => {
     fragmentService.find.mockReturnValueOnce(
       new Bluebird(() => undefined) as unknown as Bluebird<never>,

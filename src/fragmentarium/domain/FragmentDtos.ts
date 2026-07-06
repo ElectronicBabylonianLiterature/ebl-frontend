@@ -58,6 +58,7 @@ export interface TextDto {
   lines: readonly unknown[]
   numberOfLines?: number
   parser_version?: string
+  parserVersion?: string
 }
 
 interface UncuratedReferenceDto {

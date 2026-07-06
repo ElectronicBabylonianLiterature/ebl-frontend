@@ -209,16 +209,29 @@ type LatestQueryItemDto = QueryResultItemDto
 
 type LatestQueryResultDto = {
   items: readonly LatestQueryItemDto[]
-  matchCountTotal: number
+  matchCountTotal: number | null
+  isMatchCountTotalExact?: boolean
+  hasNextPage?: boolean | null
   fragments?: readonly FragmentDto[]
 }
 
 type QueryResultDto = {
   items: readonly QueryResultItemDto[]
-  matchCountTotal: number
+  matchCountTotal: number | null
+  isMatchCountTotalExact?: boolean
+  hasNextPage?: boolean | null
 }
 
 const emptyMatchingLinePreview: TextDto = { lines: [], numberOfLines: 0 }
+
+function normalizeMatchingLinePreview(dto?: TextDto | null): TextDto {
+  const { parserVersion, ...preview } = dto ?? emptyMatchingLinePreview
+  return {
+    ...preview,
+    // eslint-disable-next-line camelcase
+    parser_version: preview.parser_version ?? parserVersion,
+  }
+}
 
 function isQuerySummaryItemDto(
   dto: QueryResultItemDto,
@@ -249,7 +262,7 @@ function createQuerySummaryFragment(dto: QuerySummaryItemDto): Fragment {
     folios: [],
     record: [],
     text: createTransliteration(
-      dto.matchingLinePreview ?? emptyMatchingLinePreview,
+      normalizeMatchingLinePreview(dto.matchingLinePreview),
     ),
     notes: { text: '', parts: [] },
     museum: Museums.HYPERURANION,
@@ -307,6 +320,8 @@ function createQueryItem(dto: QueryResultItemDto): QueryItem {
 function createQueryResult(dto: QueryResultDto): QueryResult {
   return {
     matchCountTotal: dto.matchCountTotal,
+    isMatchCountTotalExact: dto.isMatchCountTotalExact,
+    hasNextPage: dto.hasNextPage,
     items: dto.items.map(createQueryItem),
   }
 }
@@ -321,6 +336,8 @@ function createLatestQueryResult(dto: LatestQueryResultDto): QueryResult {
 
   return {
     matchCountTotal: dto.matchCountTotal,
+    isMatchCountTotalExact: dto.isMatchCountTotalExact,
+    hasNextPage: dto.hasNextPage,
     items: dto.items.map((itemDto) => {
       const queryItem = createQueryItem(itemDto)
       const prefetchedFragment =
