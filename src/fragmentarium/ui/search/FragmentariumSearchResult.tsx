@@ -68,9 +68,12 @@ export const SearchResult = withData<
   ({ data, fragmentService, dossiersService, fragmentQuery }): JSX.Element => {
     const fragmentCount = data.items.length
     const isLineQuery = fragmentQuery.lemmas || fragmentQuery.transliteration
-    const lineCountInfo = `${data.matchCountTotal.toLocaleString()} line${
-      data.matchCountTotal === 1 ? '' : 's'
-    } in `
+    const hasLineCount = typeof data.matchCountTotal === 'number'
+    const lineCountInfo = hasLineCount
+      ? `${data.isMatchCountTotalExact === false ? 'about ' : ''}${data.matchCountTotal.toLocaleString()} line${
+          data.matchCountTotal === 1 ? '' : 's'
+        } in `
+      : ''
     const showNumberSuggestion =
       fragmentCount === 0 && fragmentQuery.number?.match(/^[^.]+\s+[^.]+$/)
     const fixedNumber = fragmentQuery.number?.split(/\s+/).join('.')
@@ -82,6 +85,7 @@ export const SearchResult = withData<
             {`${fragmentCount.toLocaleString()} document${
               fragmentCount === 1 ? '' : 's'
             }`}
+            {data.hasNextPage === true && '; more results are available'}
             {showNumberSuggestion && (
               <>
                 {'. Did you mean'}
@@ -117,6 +121,6 @@ export const SearchResult = withData<
   },
   ({ fragmentService, fragmentQuery }) => fragmentService.query(fragmentQuery),
   {
-    watch: ({ fragmentQuery }) => [fragmentQuery],
+    watch: ({ fragmentQuery }) => [stringify(fragmentQuery)],
   },
 )

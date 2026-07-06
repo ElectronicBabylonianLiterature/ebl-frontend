@@ -29,7 +29,11 @@ export default function getOrFetchCachedValue<CacheKey, CacheValue>({
   const inFlightRequest = requests.get(key)
 
   if (inFlightRequest) {
-    return inFlightRequest
+    if (inFlightRequest.isCancelled()) {
+      requests.delete(key)
+    } else {
+      return inFlightRequest
+    }
   }
 
   const requestReference: { current?: Bluebird<CacheValue> } = {}

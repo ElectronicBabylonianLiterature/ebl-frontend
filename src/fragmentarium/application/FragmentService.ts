@@ -59,9 +59,7 @@ const latestQueryCacheKey = 'latest:'
 const provenanceCacheKey = 'provenance:'
 const defaultCacheScope = 'default'
 
-type QueryItemWithPrefetchedFragment = QueryResult['items'][number] & {
-  readonly fragment?: Fragment
-}
+type QueryItemWithPrefetchedFragment = QueryResult['items'][number]
 
 export type ThumbnailSize = 'small' | 'medium' | 'large'
 
@@ -649,12 +647,9 @@ export class FragmentService {
   }
 
   private readPrefetchedFragment(
-    queryItem: QueryResult['items'][number],
+    queryItem: QueryItemWithPrefetchedFragment,
   ): Fragment | null {
-    const prefetchedFragment = (queryItem as QueryItemWithPrefetchedFragment)
-      .fragment
-
-    return prefetchedFragment ?? null
+    return queryItem.fragment ?? null
   }
 
   private takePrefetchedFragment(cacheKey: string): Fragment | null {
