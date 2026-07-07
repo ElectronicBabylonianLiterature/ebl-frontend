@@ -30,11 +30,11 @@ function replaceRisDateWithPublicationYear(risData: string): string {
   return risData.replace(/DA\s*-\s*(\d{4})\/\/\//g, 'PY  - $1')
 }
 
-function BibliographyViewer({ data, match, history }: Props): JSX.Element {
+function BibliographyViewer({ data, history }: Props): JSX.Element {
   const routerHistory = useHistory()
   const activeHistory = history ?? routerHistory
   const session = useContext(SessionContext)
-  const entryId = match.params.id ?? ''
+  const entryId = data.id
   const reference = new Reference('DISCUSSION', '', '', [], data)
   const citation = Citation.for(reference)
 

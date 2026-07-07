@@ -1,3 +1,6 @@
+import { readFileSync } from 'fs'
+import { resolve } from 'path'
+import { parse as parseEnv } from 'dotenv'
 import 'jest-date-mock'
 import '@testing-library/jest-dom'
 import Promise from 'bluebird'
@@ -11,6 +14,11 @@ import 'test-support/sign-fixtures'
 import 'jest-canvas-mock'
 
 import fetchMock from 'jest-fetch-mock'
+
+const testEnv = parseEnv(readFileSync(resolve(__dirname, '..', '.env.test')))
+Object.entries(testEnv).forEach(([key, value]) => {
+  process.env[key] = value
+})
 
 jest.mock('react-router-dom', () => {
   const mockReact = jest.requireActual('react')

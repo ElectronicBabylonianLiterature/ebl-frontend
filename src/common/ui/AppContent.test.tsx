@@ -73,6 +73,19 @@ test('Children', () => {
   expect(screen.getByText('Children')).toBeVisible()
 })
 
+test('hideHeading suppresses the h2 while keeping breadcrumbs', () => {
+  render(
+    <MemoryRouter>
+      <AppContent
+        crumbs={[new SectionCrumb('Dictionary'), new SectionCrumb('Active')]}
+        hideHeading
+      />
+    </MemoryRouter>,
+  )
+  expect(breadCrumbs().getByText('Active')).toBeVisible()
+  expect(screen.queryByRole('heading')).not.toBeInTheDocument()
+})
+
 test('Sidebar', () => {
   render(
     <MemoryRouter>

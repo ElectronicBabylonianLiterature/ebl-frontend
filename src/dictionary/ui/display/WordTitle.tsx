@@ -1,5 +1,5 @@
 import React from 'react'
-import Word from 'dictionary/domain/Word'
+import Word, { wordPosLabels } from 'dictionary/domain/Word'
 import { Markdown } from 'common/ui/Markdown'
 import { Col, Row } from 'react-bootstrap'
 import transcriptionsToPhoneticSegments from 'akkadian/application/phonetics/segments'
@@ -35,9 +35,11 @@ export default function WordTitle({ word }: { word: Word }): JSX.Element {
             </>
           )}
         </Col>
-        {word.pos.length > 0 && (
+        {wordPosLabels(word).length > 0 && (
           <Col>
-            <h5 className="text-secondary">({word.pos.join(', ')})</h5>
+            <h5 className="text-secondary">
+              ({wordPosLabels(word).join(', ')})
+            </h5>
           </Col>
         )}
         <Col xs="auto" className="ipaTranscription pr-5 mr-5">

@@ -1,11 +1,15 @@
 import React, { ReactNode } from 'react'
 import { Redirect, Route } from 'router/compat'
-import BibliographyService from 'bibliography/application/BibliographyService'
-import { BibliographySlugs } from 'router/sitemap'
-import AfoRegisterService from 'afo-register/application/AfoRegisterService'
-import FragmentService from 'fragmentarium/application/FragmentService'
+import type BibliographyService from 'bibliography/application/BibliographyService'
+import type { BibliographySlugs } from 'router/sitemapConfig'
+import type AfoRegisterService from 'afo-register/application/AfoRegisterService'
+import type FragmentService from 'fragmentarium/application/FragmentService'
 import NotFoundPage from 'NotFoundPage'
 import withSearchAndHash from 'router/withSearchAndHash'
+import {
+  referencesEditRoute,
+  referencesEntryRoute,
+} from 'bibliography/ui/referencesRouteContext'
 
 export default function BibliographyRoutes({
   bibliographyService: _bibliographyService,
@@ -42,7 +46,7 @@ export default function BibliographyRoutes({
       render={({ match, location }): ReactNode => (
         <Redirect
           to={withSearchAndHash(
-            `/tools/references/${match.params.id}/edit`,
+            referencesEditRoute(decodeURIComponent(match.params.id ?? '')),
             location.search,
             location.hash,
           )}
@@ -56,7 +60,7 @@ export default function BibliographyRoutes({
       render={({ match, location }): ReactNode => (
         <Redirect
           to={withSearchAndHash(
-            `/tools/references/${match.params.id}`,
+            referencesEntryRoute(decodeURIComponent(match.params.id ?? '')),
             location.search,
             location.hash,
           )}

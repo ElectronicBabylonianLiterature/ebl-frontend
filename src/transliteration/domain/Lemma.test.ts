@@ -1,3 +1,4 @@
+import _ from 'lodash'
 import Lemma from './Lemma'
 import Word from 'dictionary/domain/Word'
 import { wordFactory } from 'test-support/word-fixtures'
@@ -34,6 +35,32 @@ describe('Empty POS', () => {
 
   test('label', () => {
     expect(lemma.label).toEqual(expectedLabel())
+  })
+
+  commonTests()
+})
+
+describe('Word with named entity tags', () => {
+  beforeEach(() => {
+    word = wordFactory.build({ pos: ['N'], namedEntityTags: ['GN'] })
+    lemma = new Lemma(word)
+  })
+
+  test('label includes pos and named entity tags', () => {
+    expect(lemma.label).toEqual(`${expectedLabel()} (N, GN)`)
+  })
+
+  commonTests()
+})
+
+describe('Word without namedEntityTags (pre-migration data)', () => {
+  beforeEach(() => {
+    word = _.omit(wordFactory.build({ pos: ['N'] }), 'namedEntityTags') as Word
+    lemma = new Lemma(word)
+  })
+
+  test('label falls back to pos and does not throw', () => {
+    expect(lemma.label).toEqual(`${expectedLabel()} (N)`)
   })
 
   commonTests()

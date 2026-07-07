@@ -9,12 +9,14 @@ export default function CollapsibleSection({
   heading,
   element = 'h3',
   open = false,
+  mountOnEnter = true,
   classNameBlock,
   children,
 }: {
   heading: ReactNode
   element?: string
   open?: boolean
+  mountOnEnter?: boolean
   classNameBlock: string
   children: ReactNode
 }): JSX.Element {
@@ -35,6 +37,7 @@ export default function CollapsibleSection({
         <>
           {heading}{' '}
           <i
+            data-testid="CollapseIndicator"
             className={classNames({
               'collapsible_section__collapse-indicator': true,
               fas: true,
@@ -45,7 +48,7 @@ export default function CollapsibleSection({
           ></i>
         </>,
       )}
-      <Collapse in={isOpen} mountOnEnter={true}>
+      <Collapse in={isOpen} mountOnEnter={mountOnEnter}>
         <div id={id}>{children}</div>
       </Collapse>
     </section>

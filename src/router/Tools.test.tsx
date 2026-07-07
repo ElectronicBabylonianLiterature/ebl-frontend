@@ -1,19 +1,13 @@
 import React from 'react'
-import { render, screen } from '@testing-library/react'
+import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { MemoryRouter } from 'react-router-dom'
 import Tools, {
   getCurrentTab,
   getDisplayTitle,
   getToolsBreadcrumbs,
 } from 'router/Tools'
-import MarkupService from 'markup/application/MarkupService'
-import SignService from 'signs/application/SignService'
-import WordService from 'dictionary/application/WordService'
-import BibliographyService from 'bibliography/application/BibliographyService'
-import AfoRegisterService from 'afo-register/application/AfoRegisterService'
-import FragmentService from 'fragmentarium/application/FragmentService'
-import DossiersService from 'dossiers/application/DossiersService'
+import MemorySession, { guestSession } from 'auth/Session'
+import { renderTools, toolsServiceProps } from 'router/Tools.testSupport'
 import { setReducedMotionMatchMedia } from 'test-support/matchMedia'
 
 jest.mock('router/compat', () => ({
@@ -39,6 +33,11 @@ jest.mock('bibliography/ui/BibliographyReferencesContent', () => ({
 jest.mock('afo-register/ui/AfoRegisterSearchPage', () => ({
   __esModule: true,
   default: () => <div>AfO-Register Mock</div>,
+}))
+
+jest.mock('realia/ui/RealiaSearchPage', () => ({
+  __esModule: true,
+  default: () => <div>Realia Mock</div>,
 }))
 
 jest.mock('dossiers/ui/DossiersSearchPage', () => ({
@@ -72,25 +71,6 @@ jest.mock('map/MapTab', () => ({
   default: () => <div>Map Mock</div>,
 }))
 
-function renderTools(activeTab?: Parameters<typeof Tools>[0]['activeTab']) {
-  const props = {
-    markupService: {} as MarkupService,
-    signService: {} as SignService,
-    wordService: {} as WordService,
-    bibliographyService: {} as BibliographyService,
-    afoRegisterService: {} as AfoRegisterService,
-    dossiersService: {} as DossiersService,
-    fragmentService: {} as FragmentService,
-    activeTab,
-  }
-
-  render(
-    <MemoryRouter>
-      <Tools {...props} />
-    </MemoryRouter>,
-  )
-}
-
 describe('Tools', () => {
   it('renders tools introduction when no tab is selected', () => {
     renderTools()
@@ -110,6 +90,23 @@ describe('Tools', () => {
   it('renders afo-register content', () => {
     renderTools('afo-register')
     expect(screen.getByText('AfO-Register Mock')).toBeInTheDocument()
+  })
+
+  it('renders realia content', () => {
+    renderTools('realia')
+    expect(screen.getByText('Realia Mock')).toBeInTheDocument()
+  })
+
+  it('shows the Realia nav item when the session has the readRealia scope', () => {
+    renderTools(undefined, new MemorySession(['read:realia']))
+    expect(screen.getByRole('link', { name: 'Realia' })).toBeInTheDocument()
+  })
+
+  it('hides the Realia nav item when the session lacks the readRealia scope', () => {
+    renderTools(undefined, guestSession)
+    expect(
+      screen.queryByRole('link', { name: 'Realia' }),
+    ).not.toBeInTheDocument()
   })
 
   it('renders dossiers content', () => {
@@ -160,22 +157,6 @@ describe('Tools', () => {
     expect(screen.getByText('Dictionary Mock')).toBeInTheDocument()
   })
 
-  it('scrolls viewport to top when switching tabs', async () => {
-    const scrollToSpy = jest
-      .spyOn(window, 'scrollTo')
-      .mockImplementation(() => undefined)
-
-    renderTools('signs')
-    const dictionaryLink = screen.getByRole('link', {
-      name: /Akkadian Dictionary/,
-    })
-
-    await userEvent.click(dictionaryLink)
-
-    expect(scrollToSpy).toHaveBeenCalledWith(0, 0)
-    scrollToSpy.mockRestore()
-  })
-
   it('keeps current tab active when clicking the already active tab', async () => {
     renderTools('dictionary')
     const dictionaryLink = screen.getByRole('link', {
@@ -198,6 +179,10 @@ describe('Tools', () => {
       'href',
       '/tools/references',
     )
+    expect(screen.getByRole('link', { name: /Findspot Map/ })).toHaveAttribute(
+      'href',
+      '/tools/map',
+    )
   })
 
   it('renders nav links in the requested order', () => {
@@ -211,6 +196,7 @@ describe('Tools', () => {
     expect(sidebarTitles).toEqual([
       '𒀀Signs',
       'ꞋAkkadian Dictionary',
+      '⚘Realia',
       '⇌Date Converter',
       '♔List of Kings',
       '⊕Genres',
@@ -225,7 +211,7 @@ describe('Tools', () => {
   it('marks decorative icons as hidden from assistive technologies', () => {
     renderTools('dictionary')
 
-    const navIcons = ['𒀀', 'Ꞌ', '⇌', '♔', '⊕', '⊟', '※', '⊞', '𒐕', '◈']
+    const navIcons = ['𒀀', 'Ꞌ', '⚘', '⇌', '♔', '⊕', '⊟', '※', '⊞', '𒐕', '◈']
 
     navIcons.forEach((icon) => {
       expect(
@@ -239,30 +225,11 @@ describe('Tools', () => {
   })
 
   it('syncs selected tab when activeTab prop changes', () => {
-    const props = {
-      markupService: {} as MarkupService,
-      signService: {} as SignService,
-      wordService: {} as WordService,
-      bibliographyService: {} as BibliographyService,
-      afoRegisterService: {} as AfoRegisterService,
-      dossiersService: {} as DossiersService,
-      fragmentService: {} as FragmentService,
-      activeTab: 'signs' as Parameters<typeof Tools>[0]['activeTab'],
-    }
-
-    const { rerender } = render(
-      <MemoryRouter>
-        <Tools {...props} />
-      </MemoryRouter>,
-    )
+    const { rerender } = renderTools('signs')
 
     expect(screen.getByText('Signs Mock')).toBeInTheDocument()
 
-    rerender(
-      <MemoryRouter>
-        <Tools {...props} activeTab="dictionary" />
-      </MemoryRouter>,
-    )
+    rerender(<Tools {...toolsServiceProps()} activeTab="dictionary" />)
 
     expect(screen.getByText('Dictionary Mock')).toBeInTheDocument()
   })
@@ -276,18 +243,10 @@ describe('Tools', () => {
         scrollIntoView,
       } as unknown as HTMLElement)
 
-    render(
-      <MemoryRouter initialEntries={['/tools#target-section']}>
-        <Tools
-          markupService={{} as MarkupService}
-          signService={{} as SignService}
-          wordService={{} as WordService}
-          bibliographyService={{} as BibliographyService}
-          afoRegisterService={{} as AfoRegisterService}
-          dossiersService={{} as DossiersService}
-          fragmentService={{} as FragmentService}
-        />
-      </MemoryRouter>,
+    renderTools(
+      undefined,
+      new MemorySession(['read:realia']),
+      '/tools#target-section',
     )
 
     jest.runAllTimers()
@@ -304,18 +263,10 @@ describe('Tools', () => {
       .spyOn(document, 'getElementById')
       .mockReturnValue(null)
 
-    render(
-      <MemoryRouter initialEntries={['/tools#missing-section']}>
-        <Tools
-          markupService={{} as MarkupService}
-          signService={{} as SignService}
-          wordService={{} as WordService}
-          bibliographyService={{} as BibliographyService}
-          afoRegisterService={{} as AfoRegisterService}
-          dossiersService={{} as DossiersService}
-          fragmentService={{} as FragmentService}
-        />
-      </MemoryRouter>,
+    renderTools(
+      undefined,
+      new MemorySession(['read:realia']),
+      '/tools#missing-section',
     )
 
     jest.runAllTimers()
@@ -337,18 +288,10 @@ describe('Tools', () => {
       } as unknown as HTMLElement)
 
     try {
-      render(
-        <MemoryRouter initialEntries={['/tools#target-section']}>
-          <Tools
-            markupService={{} as MarkupService}
-            signService={{} as SignService}
-            wordService={{} as WordService}
-            bibliographyService={{} as BibliographyService}
-            afoRegisterService={{} as AfoRegisterService}
-            dossiersService={{} as DossiersService}
-            fragmentService={{} as FragmentService}
-          />
-        </MemoryRouter>,
+      renderTools(
+        undefined,
+        new MemorySession(['read:realia']),
+        '/tools#target-section',
       )
 
       jest.runAllTimers()

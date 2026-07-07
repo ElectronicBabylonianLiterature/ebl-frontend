@@ -1,8 +1,8 @@
 import React, { ReactNode } from 'react'
-import WordService from 'dictionary/application/WordService'
+import type WordService from 'dictionary/application/WordService'
 import { Route, Redirect } from 'router/compat'
-import SignService from 'signs/application/SignService'
-import { SignSlugs } from 'router/sitemap'
+import type SignService from 'signs/application/SignService'
+import type { SignSlugs } from 'router/sitemapConfig'
 import NotFoundPage from 'NotFoundPage'
 import withSearchAndHash from 'router/withSearchAndHash'
 

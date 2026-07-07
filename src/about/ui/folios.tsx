@@ -467,6 +467,36 @@ export const folios: {
     ),
   },
   {
+    initials: 'WS',
+    title: 'Walter Sommerfeld',
+    content: (_markupService) => (
+      <>
+        <p>
+          Walter Sommerfeld is the world&apos;s leading expert in Old Akkadian,
+          the earliest attested form of the Semitic languages. Professor of
+          Ancient Near Eastern Studies at the University of Marburg from 1989
+          until his retirement in 2017, and recipient of the 2019
+          Carsten-Niebuhr-Preis für internationalen Kulturaustausch of the
+          Deutsch-Arabischen Gesellschaft, Sommerfeld has devoted much of his
+          career to maintaining scholarly ties with Iraq and its academic
+          community.
+        </p>
+        <p>
+          During the years of the international embargo, when most European and
+          American scholars could not or would not travel to Iraq, Sommerfeld
+          continued his visits to Baghdad, working extensively at the Iraq
+          Museum and providing the scholarly community there with access to
+          Assyriological and other academic resources. In the course of this
+          long engagement, he pioneered several methods of tablet photography
+          and assembled a remarkable collection of some 30,000 photographs of
+          cuneiform tablets, which he is generously making available to the
+          community. The eBL project is grateful for his generous and
+          disinterested sharing of these materials.
+        </p>
+      </>
+    ),
+  },
+  {
     initials: 'ARG',
     title: 'Andrew R. George',
     content: (markupService) => (

@@ -135,4 +135,68 @@ describe('withData HOC integration', () => {
     await screen.findByText(/Test description/)
     expect(mockDossiersService.queryByIds).toHaveBeenCalledWith(['test'])
   })
+
+  it('does not refetch when dossier IDs are unchanged but object references change', async () => {
+    const queryByIds = jest.fn().mockResolvedValue([mockRecord])
+    const mockDossiersService = { queryByIds }
+    const fragmentA = fragmentFactory.build({
+      dossiers: [{ dossierId: 'test' }],
+    })
+
+    const { rerender } = render(
+      <FragmentDossierRecordsDisplay
+        dossiersService={mockDossiersService as unknown as DossiersService}
+        fragment={fragmentA as Fragment}
+      />,
+    )
+
+    await screen.findByRole('button', { name: /test/ })
+    expect(queryByIds).toHaveBeenCalledTimes(1)
+
+    const fragmentB = fragmentFactory.build({
+      dossiers: [{ dossierId: 'test' }],
+    })
+
+    rerender(
+      <FragmentDossierRecordsDisplay
+        dossiersService={mockDossiersService as unknown as DossiersService}
+        fragment={fragmentB as Fragment}
+      />,
+    )
+
+    expect(queryByIds).toHaveBeenCalledTimes(1)
+  })
+
+  it('refetches when dossier IDs change', async () => {
+    const queryByIds = jest.fn().mockResolvedValue([mockRecord])
+    const mockDossiersService = { queryByIds }
+    const fragmentA = fragmentFactory.build({
+      dossiers: [{ dossierId: 'test' }],
+    })
+
+    const { rerender } = render(
+      <FragmentDossierRecordsDisplay
+        dossiersService={mockDossiersService as unknown as DossiersService}
+        fragment={fragmentA as Fragment}
+      />,
+    )
+
+    await screen.findByRole('button', { name: /test/ })
+    expect(queryByIds).toHaveBeenCalledTimes(1)
+
+    const fragmentB = fragmentFactory.build({
+      dossiers: [{ dossierId: 'other' }],
+    })
+
+    rerender(
+      <FragmentDossierRecordsDisplay
+        dossiersService={mockDossiersService as unknown as DossiersService}
+        fragment={fragmentB as Fragment}
+      />,
+    )
+
+    await screen.findByRole('button', { name: /test/ })
+    expect(queryByIds).toHaveBeenCalledTimes(2)
+    expect(queryByIds).toHaveBeenCalledWith(['other'])
+  })
 })

@@ -109,6 +109,20 @@ describe('Akkadian Dictionary crumb', () => {
   })
 })
 
+describe('Realia crumb', () => {
+  test('Links to tools realia route', () => {
+    render(
+      <MemoryRouter>
+        <Breadcrumbs
+          crumbs={[new SectionCrumb('Realia'), new SectionCrumb('Active')]}
+        />
+      </MemoryRouter>,
+    )
+
+    expect(screen.getByText('Realia')).toHaveAttribute('href', '/tools/realia')
+  })
+})
+
 describe('Component crumb', () => {
   function renderBreadcrumbs(): void {
     render(

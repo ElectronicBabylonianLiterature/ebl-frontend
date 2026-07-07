@@ -353,6 +353,7 @@ exports[`Display chapter How to cite 1`] = `
               <i
                 aria-expanded="false"
                 class="collapsible_section__collapse-indicator fas fa-caret-right"
+                data-testid="CollapseIndicator"
               />
             </h3>
             <div
@@ -1258,6 +1259,7 @@ exports[`Display chapter Show manuscripts 1`] = `
               <i
                 aria-expanded="true"
                 class="collapsible_section__collapse-indicator fas fa-caret-down"
+                data-testid="CollapseIndicator"
               />
             </h3>
             <div
@@ -2417,6 +2419,7 @@ exports[`Display chapter Show notes 1`] = `
               <i
                 aria-expanded="true"
                 class="collapsible_section__collapse-indicator fas fa-caret-down"
+                data-testid="CollapseIndicator"
               />
             </h3>
             <div
@@ -3339,6 +3342,7 @@ exports[`Display chapter Show parallels 1`] = `
               <i
                 aria-expanded="true"
                 class="collapsible_section__collapse-indicator fas fa-caret-down"
+                data-testid="CollapseIndicator"
               />
             </h3>
             <div
@@ -4266,6 +4270,7 @@ exports[`Display chapter Sidebar 1`] = `
               <i
                 aria-expanded="true"
                 class="collapsible_section__collapse-indicator fas fa-caret-down"
+                data-testid="CollapseIndicator"
               />
             </h3>
             <div
@@ -5419,6 +5424,7 @@ exports[`Display chapter Snapshot 1`] = `
               <i
                 aria-expanded="true"
                 class="collapsible_section__collapse-indicator fas fa-caret-down"
+                data-testid="CollapseIndicator"
               />
             </h3>
             <div

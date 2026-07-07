@@ -181,15 +181,21 @@ export const CorpusSearchResult = withData<
 >(
   ({ data, textService, corpusQuery }): JSX.Element => {
     const chapterCount = data.items.length
+    const matchCountTotal = data.matchCountTotal
+    const hasLineCount = typeof matchCountTotal === 'number'
+    const lineCountInfo = hasLineCount
+      ? `${data.isMatchCountTotalExact === false ? 'about ' : ''}${matchCountTotal.toLocaleString()} line${
+          matchCountTotal === 1 ? '' : 's'
+        } in `
+      : ''
     return (
       <>
         <Row>
           <Col className="justify-content-center fragment-result__match-info">
-            {`Found ${data.matchCountTotal.toLocaleString()} line${
-              data.matchCountTotal === 1 ? '' : 's'
-            } in ${chapterCount.toLocaleString()} chapter${
+            {`Found ${lineCountInfo}${chapterCount.toLocaleString()} chapter${
               chapterCount === 1 ? '' : 's'
             }`}
+            {data.hasNextPage === true && '; more results are available'}
           </Col>
         </Row>
 

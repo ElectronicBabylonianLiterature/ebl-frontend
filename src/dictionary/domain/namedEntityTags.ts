@@ -1,0 +1,18 @@
+export const NAMED_ENTITY_TAGS: { readonly [code: string]: string } = {
+  AN: 'Agricultural (locus) Name',
+  CN: 'Celestial Name',
+  DN: 'Divine Name',
+  EN: 'Ethnos Name',
+  FN: 'Field Name',
+  GN: 'Geographical Name',
+  LN: 'Line Name (ancestral clan)',
+  MN: 'Month Name',
+  ON: 'Object Name',
+  PN: 'Personal Name',
+  QN: 'Quarter Name (city area)',
+  RN: 'Royal Name',
+  SN: 'Settlement Name',
+  TN: 'Temple Name',
+  WN: 'Watercourse Name',
+  YN: 'Year Name',
+}

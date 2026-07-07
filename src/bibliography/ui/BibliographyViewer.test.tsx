@@ -2,8 +2,8 @@ import React from 'react'
 import Promise from 'bluebird'
 import { render, screen, fireEvent, waitFor } from '@testing-library/react'
 import BibliographyViewer from './BibliographyViewer'
-import { matchPath } from 'react-router-dom'
 import { MemoryRouter } from 'react-router-dom'
+import { Route } from 'router/compat'
 import { createMemoryHistory } from 'history'
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 import Citation from 'bibliography/domain/Citation'
@@ -72,6 +72,22 @@ describe('BibliographyViewer', () => {
     )
   })
 
+  test('encodes a non-ASCII reference identifier in the Edit route', async () => {
+    const specialEntryId = 'Young2023Ê'
+    entry = new BibliographyEntry({
+      ...entry.toCslData(),
+      id: specialEntryId,
+    })
+    bibliographyService.find.mockReturnValue(Promise.resolve(entry))
+    await renderViewer(specialEntryId)
+    fireEvent.click(await screen.findByText('Edit'))
+    await waitFor(() =>
+      expect(history.location.pathname).toBe(
+        '/tools/references/Young2023%C3%8A/edit',
+      ),
+    )
+  })
+
   test('displays download buttons', async () => {
     await renderViewer()
     expect(screen.getByText('BibTeX')).toBeInTheDocument()
@@ -117,19 +133,23 @@ describe('BibliographyViewer', () => {
     await testDownloadButton('RIS')
   })
 
-  async function renderViewer() {
-    const matchedPath = matchPath(
-      '/tools/references/:id',
-      `/tools/references/${entryId}`,
-    )
-    if (!matchedPath) throw new Error('Path did not match')
+  async function renderViewer(referenceId = entryId) {
     render(
-      <MemoryRouter initialEntries={[`/tools/references/${entryId}`]}>
+      <MemoryRouter
+        initialEntries={[
+          `/tools/references/${encodeURIComponent(referenceId)}`,
+        ]}
+      >
         <SessionContext.Provider value={session}>
-          <BibliographyViewer
-            match={{ params: { id: matchedPath.params.id ?? '' } }}
-            bibliographyService={bibliographyService}
-            history={history}
+          <Route
+            path="/tools/references/:id"
+            render={({ match }) => (
+              <BibliographyViewer
+                match={match}
+                bibliographyService={bibliographyService}
+                history={history}
+              />
+            )}
           />
         </SessionContext.Provider>
       </MemoryRouter>,

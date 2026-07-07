@@ -209,6 +209,13 @@ export default function AboutFragmentarium(
         Annie Attia, Sona Eypper, and Henry Stadhouders (as external
         collaborators).
       </p>
+      <p>
+        Klaus Wagensonner (Yale University) has generously contributed almost
+        2,000 editions of cuneiform tablets from the Yale Babylonian Collection,
+        many of them previously unpublished, substantially expanding the
+        Library’s scope and contents in particular for the Old and
+        Neo-Babylonian periods.
+      </p>
       <h3>V. Folios</h3>
       <p>
         The electronic Babylonian Literature (eBL) project, and in particular

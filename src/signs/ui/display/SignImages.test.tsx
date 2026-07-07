@@ -163,7 +163,9 @@ describe('Sign Images', () => {
           },
         ]),
       )
-      .mockReturnValueOnce(Bluebird.reject(new Error('Failed to load cluster')))
+      .mockImplementationOnce(() =>
+        Bluebird.reject(new Error('Failed to load cluster')),
+      )
 
     await setup()
 
@@ -185,7 +187,9 @@ describe('Sign Images', () => {
 
   it('Retries loading variants after a failed cluster request', async () => {
     signService.getClusterVariants
-      .mockReturnValueOnce(Bluebird.reject(new Error('Failed to load cluster')))
+      .mockImplementationOnce(() =>
+        Bluebird.reject(new Error('Failed to load cluster')),
+      )
       .mockReturnValueOnce(Bluebird.resolve([]))
 
     await setup()

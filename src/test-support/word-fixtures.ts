@@ -125,6 +125,13 @@ class WordFactory extends Factory<Word> {
       roots: roots ?? ['rrr', 'ttt'],
     })
   }
+
+  namedEntity(namedEntityTags: readonly string[] = ['PN']) {
+    return this.params({
+      pos: [],
+      namedEntityTags,
+    })
+  }
 }
 
 export const wordFactory = WordFactory.define(() => ({
@@ -135,6 +142,7 @@ export const wordFactory = WordFactory.define(() => ({
   homonym: homonym(),
   meaning: defaultChance.sentence(),
   pos: defaultChance.pickset(nonVerbPos, 2),
+  namedEntityTags: [],
   forms: formFactory.buildList(2),
   amplifiedMeanings: amplifiedMeaningFactory.buildList(2),
   logograms: logogramFactory.buildList(2),

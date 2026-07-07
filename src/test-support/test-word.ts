@@ -65,6 +65,7 @@ export const wordDto: Word = {
   source: 'This is a test word!',
   roots: ["wb'", "'b'"],
   pos: ['V'],
+  namedEntityTags: [],
   guideWord: 'weed',
   arabicGuideWord: 'weed',
   origin: 'CDA',

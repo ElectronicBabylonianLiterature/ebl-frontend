@@ -24,6 +24,8 @@ beforeEach(async () => {
     .withSession()
     .withPath(`/dictionary`)
     .render()
+  await appDriver.waitForRouteLoadingToDisappear()
+  await appDriver.waitForText('Akkadian Dictionary')
 })
 
 test('renders dictionary search page', () => {

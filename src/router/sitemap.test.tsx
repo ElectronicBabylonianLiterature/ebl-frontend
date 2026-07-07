@@ -10,8 +10,10 @@ import MarkupService, {
   CachedMarkupService,
 } from 'markup/application/MarkupService'
 import AfoRegisterService from 'afo-register/application/AfoRegisterService'
+import RealiaService from 'realia/application/RealiaService'
 import Bluebird from 'bluebird'
 import { saveAs } from 'file-saver'
+import pako from 'pako'
 import { FindspotService } from 'fragmentarium/application/FindspotService'
 import DossiersService from 'dossiers/application/DossiersService'
 import Services from 'router/Services'
@@ -27,8 +29,18 @@ jest.mock('corpus/application/TextService')
 jest.mock('fragmentarium/application/FragmentSearchService')
 jest.mock('markup/application/MarkupService')
 jest.mock('http/ApiClient')
+jest.mock('realia/application/RealiaService')
 
 let services: Services
+
+function readBlobAsArrayBuffer(blob: Blob): Promise<ArrayBuffer> {
+  return new Promise((resolve, reject) => {
+    const fileReader = new FileReader()
+    fileReader.onload = () => resolve(fileReader.result as ArrayBuffer)
+    fileReader.onerror = () => reject(fileReader.error)
+    fileReader.readAsArrayBuffer(blob)
+  })
+}
 
 beforeEach(() => {
   const signService = new (SignService as jest.Mock<jest.Mocked<SignService>>)()
@@ -56,6 +68,9 @@ beforeEach(() => {
 
   const afoRegisterService = new (AfoRegisterService as jest.Mock<
     jest.Mocked<AfoRegisterService>
+  >)()
+  const realiaService = new (RealiaService as jest.Mock<
+    jest.Mocked<RealiaService>
   >)()
   const dossiersService = new (DossiersService as jest.Mock<
     jest.Mocked<DossiersService>
@@ -87,6 +102,7 @@ beforeEach(() => {
     markupService: markupService,
     cachedMarkupService: cachedMarkupService,
     afoRegisterService: afoRegisterService,
+    realiaService: realiaService,
     dossiersService: dossiersService,
   }
 })
@@ -110,4 +126,26 @@ it('get sitemap as file', async () => {
     expect.anything(),
     'sitemap1.xml.gz',
   )
+})
+
+it('does not include projects wildcard route in sitemap xml', async () => {
+  const slugs = await getAllSlugs(services)
+  getSitemapAsFile(services, slugs)
+
+  const saveAsMock = saveAs as jest.MockedFunction<typeof saveAs>
+  const sitemapChunkCall = saveAsMock.mock.calls.find(
+    ([_blob, filename]) => filename === 'sitemap1.xml.gz',
+  )
+
+  expect(sitemapChunkCall).toBeDefined()
+
+  const sitemapChunkArchive = sitemapChunkCall?.[0] as Blob
+  const sitemapChunkBuffer = await readBlobAsArrayBuffer(sitemapChunkArchive)
+  const sitemapXml = pako.ungzip(new Uint8Array(sitemapChunkBuffer), {
+    to: 'string',
+  }) as string
+
+  expect(sitemapXml).toContain('/projects')
+  expect(sitemapXml).toContain('/projects/CAIC')
+  expect(sitemapXml).not.toContain('/projects/*')
 })
