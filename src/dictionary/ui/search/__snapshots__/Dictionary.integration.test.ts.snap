@@ -409,6 +409,22 @@ exports[`Meaning 1`] = `
                     Cuneiform Converter
                   </span>
                 </a>
+                <a
+                  class="tools-nav__item  nav-link"
+                  href="/tools/map"
+                >
+                  <span
+                    aria-hidden="true"
+                    class="tools-nav__icon"
+                  >
+                    ◈
+                  </span>
+                  <span
+                    class="tools-nav__title"
+                  >
+                    Findspot Map
+                  </span>
+                </a>
               </div>
             </div>
             <div
@@ -1568,6 +1584,22 @@ exports[`Root 1`] = `
                     class="tools-nav__title"
                   >
                     Cuneiform Converter
+                  </span>
+                </a>
+                <a
+                  class="tools-nav__item  nav-link"
+                  href="/tools/map"
+                >
+                  <span
+                    aria-hidden="true"
+                    class="tools-nav__icon"
+                  >
+                    ◈
+                  </span>
+                  <span
+                    class="tools-nav__title"
+                  >
+                    Findspot Map
                   </span>
                 </a>
               </div>
@@ -2731,6 +2763,22 @@ exports[`Vowel class 1`] = `
                     Cuneiform Converter
                   </span>
                 </a>
+                <a
+                  class="tools-nav__item  nav-link"
+                  href="/tools/map"
+                >
+                  <span
+                    aria-hidden="true"
+                    class="tools-nav__icon"
+                  >
+                    ◈
+                  </span>
+                  <span
+                    class="tools-nav__title"
+                  >
+                    Findspot Map
+                  </span>
+                </a>
               </div>
             </div>
             <div
@@ -3892,6 +3940,22 @@ exports[`Word 1`] = `
                     Cuneiform Converter
                   </span>
                 </a>
+                <a
+                  class="tools-nav__item  nav-link"
+                  href="/tools/map"
+                >
+                  <span
+                    aria-hidden="true"
+                    class="tools-nav__icon"
+                  >
+                    ◈
+                  </span>
+                  <span
+                    class="tools-nav__title"
+                  >
+                    Findspot Map
+                  </span>
+                </a>
               </div>
             </div>
             <div
@@ -5051,6 +5115,22 @@ exports[`renders dictionary search page 1`] = `
                     class="tools-nav__title"
                   >
                     Cuneiform Converter
+                  </span>
+                </a>
+                <a
+                  class="tools-nav__item  nav-link"
+                  href="/tools/map"
+                >
+                  <span
+                    aria-hidden="true"
+                    class="tools-nav__icon"
+                  >
+                    ◈
+                  </span>
+                  <span
+                    class="tools-nav__title"
+                  >
+                    Findspot Map
                   </span>
                 </a>
               </div>

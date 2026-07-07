@@ -46,62 +46,66 @@ const mockMapInstance = {
   easeTo: mockEaseTo,
 }
 
-jest.mock('maplibre-gl', () => {
-  class MockMap {
-    constructor() {
-      return mockMapInstance
-    }
-  }
-
-  class MockLngLatBounds {
-    private sw: [number, number] | null = null
-    private ne: [number, number] | null = null
-
-    extend() {
-      this.sw = [0, 0]
-      this.ne = [1, 1]
-      return this
+jest.mock(
+  'maplibre-gl',
+  () => {
+    class MockMap {
+      constructor() {
+        return mockMapInstance
+      }
     }
 
-    isEmpty() {
-      return false
-    }
-  }
+    class MockLngLatBounds {
+      private sw: [number, number] | null = null
+      private ne: [number, number] | null = null
 
-  class MockPopup {
-    setLngLat(coordinates: [number, number]) {
-      mockSetLngLat(coordinates)
-      return this
-    }
+      extend() {
+        this.sw = [0, 0]
+        this.ne = [1, 1]
+        return this
+      }
 
-    setDOMContent(content: Node) {
-      mockSetDOMContent(content)
-      return this
-    }
-
-    setHTML(content: string) {
-      mockSetHTML(content)
-      return this
+      isEmpty() {
+        return false
+      }
     }
 
-    addTo(map: unknown) {
-      mockPopupAddTo(map)
-      return this
+    class MockPopup {
+      setLngLat(coordinates: [number, number]) {
+        mockSetLngLat(coordinates)
+        return this
+      }
+
+      setDOMContent(content: Node) {
+        mockSetDOMContent(content)
+        return this
+      }
+
+      setHTML(content: string) {
+        mockSetHTML(content)
+        return this
+      }
+
+      addTo(map: unknown) {
+        mockPopupAddTo(map)
+        return this
+      }
     }
-  }
 
-  return {
-    __esModule: true,
-    default: {
-      Map: MockMap,
-      NavigationControl: jest.fn(),
-      LngLatBounds: MockLngLatBounds,
-      Popup: MockPopup,
-    },
-  }
-})
+    return {
+      __esModule: true,
+      default: {
+        Map: MockMap,
+        NavigationControl: jest.fn(),
+        LngLatBounds: MockLngLatBounds,
+        Popup: MockPopup,
+      },
+    }
+  },
+  { virtual: true },
+)
 
-jest.mock('maplibre-gl/dist/maplibre-gl.css', () => ({}))
+jest.mock('maplibre-gl/dist/maplibre-gl.css', () => ({}), { virtual: true })
 jest.mock('./MapTab.sass', () => ({}))
 
 function makeProvenance(
@@ -351,6 +355,7 @@ describe('MapTab', () => {
     expect(mockPopupAddTo).toHaveBeenCalledWith(mockMapInstance)
 
     const content = mockSetDOMContent.mock.calls[0][0] as HTMLElement
+    document.body.append(content)
     const popup = within(content)
     expect(content.innerHTML).not.toContain('<img')
     expect(content.innerHTML).not.toContain('<script')

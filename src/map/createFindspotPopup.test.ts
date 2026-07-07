@@ -19,8 +19,13 @@ function makePopupProperties(
 }
 
 describe('createFindspotPopup', () => {
+  afterEach(() => {
+    document.body.innerHTML = ''
+  })
+
   it('renders point popup details and fragment link', () => {
     const content = createFindspotPopup(makePopupProperties())
+    document.body.append(content)
     const popup = within(content)
 
     expect(
@@ -43,6 +48,7 @@ describe('createFindspotPopup', () => {
         coordinates: { latitude: -12.34, longitude: -45.67 },
       }),
     )
+    document.body.append(content)
     const popup = within(content)
 
     expect(popup.getByText('URU')).toBeInTheDocument()
@@ -63,6 +69,7 @@ describe('createFindspotPopup', () => {
         parent,
       }),
     )
+    document.body.append(content)
     const popup = within(content)
 
     expect(content.innerHTML).not.toContain('<img')
