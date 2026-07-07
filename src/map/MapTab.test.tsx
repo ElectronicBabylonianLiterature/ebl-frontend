@@ -1,6 +1,13 @@
 import React from 'react'
 import type { FeatureCollection } from 'geojson'
-import { act, render, screen, waitFor, within } from '@testing-library/react'
+import {
+  act,
+  fireEvent,
+  render,
+  screen,
+  waitFor,
+  within,
+} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import Bluebird from 'bluebird'
 import FragmentService from 'fragmentarium/application/FragmentService'
@@ -27,7 +34,12 @@ const mockSetDOMContent = jest.fn()
 const mockSetHTML = jest.fn()
 const mockPopupAddTo = jest.fn()
 const mockSetLayoutProperty = jest.fn()
-const mockGetLayer = jest.fn((id: string) => ({ id }))
+const mockGetLayer = jest.fn((id: string): { id: string } | undefined => ({
+  id,
+}))
+const mockRemoveLayer = jest.fn()
+const mockRemoveSource = jest.fn()
+const mockSetPaintProperty = jest.fn()
 
 type MockMapEvent = {
   point: { x: number; y: number }
@@ -59,6 +71,9 @@ const mockMapInstance = {
   queryRenderedFeatures: mockQueryRenderedFeatures,
   easeTo: mockEaseTo,
   setLayoutProperty: mockSetLayoutProperty,
+  removeLayer: mockRemoveLayer,
+  removeSource: mockRemoveSource,
+  setPaintProperty: mockSetPaintProperty,
 }
 
 jest.mock(
@@ -123,6 +138,38 @@ jest.mock(
 jest.mock('maplibre-gl/dist/maplibre-gl.css', () => ({}), { virtual: true })
 jest.mock('./MapTab.sass', () => ({}))
 
+let mockValidatedOverlays: readonly {
+  id: string
+  title: string
+  shortTitle?: string
+  dateLabel?: string
+  cartographer?: string
+  institution?: string
+  description?: string
+  attribution: string
+  sourceUrl?: string
+  tiles: readonly string[]
+  bounds?: readonly [number, number, number, number]
+  minZoom?: number
+  maxZoom?: number
+  tileSize?: number
+  defaultOpacity: number
+  type: string
+}[] = []
+
+jest.mock('./historicalOverlays', () => {
+  const actual = jest.requireActual(
+    './historicalOverlays',
+  ) as typeof import('./historicalOverlays')
+  return {
+    __esModule: true,
+    ...actual,
+    get validatedHistoricalMapOverlays() {
+      return mockValidatedOverlays
+    },
+  }
+})
+
 function makeProvenance(
   overrides: Partial<ProvenanceRecord> = {},
 ): ProvenanceRecord {
@@ -151,9 +198,12 @@ function makeFailingFragmentService(message: string): FragmentService {
 }
 
 describe('MapTab', () => {
+  let rasterLayerExists = false
+
   beforeEach(() => {
     jest.clearAllMocks()
     mockSources.clear()
+    rasterLayerExists = false
     mockSources.set('ebl-findspots', {
       setData: mockSetData,
       getClusterExpansionZoom: mockGetClusterExpansionZoom,
@@ -168,7 +218,30 @@ describe('MapTab', () => {
     mockIsStyleLoaded.mockReturnValue(true)
     mockGetSource.mockImplementation((id: string) => mockSources.get(id))
     mockQueryRenderedFeatures.mockReturnValue([])
-    mockGetLayer.mockImplementation((id: string) => ({ id }))
+    mockGetLayer.mockImplementation((id: string) => {
+      if (id === 'ebl-historical-raster-layer' && !rasterLayerExists) {
+        return undefined
+      }
+      return { id }
+    })
+    mockAddSource.mockImplementation((id: string) => {
+      if (!mockSources.has(id)) {
+        mockSources.set(id, {})
+      }
+    })
+    mockAddLayer.mockImplementation((layer: { id: string }) => {
+      if (layer.id === 'ebl-historical-raster-layer') {
+        rasterLayerExists = true
+      }
+    })
+    mockRemoveLayer.mockImplementation((id: string) => {
+      if (id === 'ebl-historical-raster-layer') {
+        rasterLayerExists = false
+      }
+    })
+    mockRemoveSource.mockImplementation((id: string) => {
+      mockSources.delete(id)
+    })
     mockOn.mockImplementation((event: string, callback: unknown) => {
       const handler = callback as MockEventHandler
       mockEventHandlers[event] = handler
@@ -561,7 +634,7 @@ describe('MapTab', () => {
   })
 
   it('sets a pointer cursor for polygon hover and restores it elsewhere', async () => {
-    const canvas = { style: { cursor: '' } }
+    const canvas = document.createElement('canvas')
     mockGetCanvas.mockReturnValue(canvas)
 
     render(<MapTab fragmentService={makeFragmentService([makeProvenance()])} />)
@@ -632,5 +705,437 @@ describe('MapTab', () => {
     expect(
       mockAddSource.mock.calls[1][1].data.features[0].properties.name,
     ).toBe('Babylon')
+  })
+
+  describe('Historical map overlay', () => {
+    function makeOverlayFixture(overrides = {}) {
+      return {
+        id: 'babylon-map',
+        title: 'Babylon Historical Map',
+        shortTitle: 'Babylon',
+        dateLabel: 'c. 600 BCE',
+        cartographer: 'Unknown',
+        institution: 'British Museum',
+        description: 'A historical map',
+        attribution: 'British Museum, 1900',
+        sourceUrl: 'https://example.com/source',
+        type: 'raster-tiles',
+        tiles: ['https://example.com/{z}/{x}/{y}.png'],
+        bounds: [44, 32, 45, 33],
+        minZoom: 5,
+        maxZoom: 15,
+        tileSize: 256,
+        defaultOpacity: 0.8,
+        ...overrides,
+      }
+    }
+
+    function makeOverlayFixture2(overrides = {}) {
+      return {
+        id: 'nippur-map',
+        title: 'Nippur Historical Map',
+        shortTitle: 'Nippur',
+        dateLabel: 'c. 1500 BCE',
+        attribution: 'University of Pennsylvania, 1920',
+        sourceUrl: 'https://example.com/nippur',
+        type: 'raster-tiles',
+        tiles: ['https://example.com/nippur/{z}/{x}/{y}.png'],
+        defaultOpacity: 0.6,
+        ...overrides,
+      }
+    }
+
+    beforeEach(() => {
+      mockValidatedOverlays = [
+        makeOverlayFixture(),
+        makeOverlayFixture2(),
+      ] as unknown as typeof mockValidatedOverlays
+    })
+
+    afterEach(() => {
+      mockValidatedOverlays = []
+    })
+
+    it('shows empty state when production manifest is empty', async () => {
+      mockValidatedOverlays = []
+      render(
+        <MapTab fragmentService={makeFragmentService([makeProvenance()])} />,
+      )
+
+      const select = await screen.findByLabelText(
+        'Select historical map overlay',
+      )
+      expect(select).toBeDisabled()
+      expect(
+        screen.getByText('No historical maps available'),
+      ).toBeInTheDocument()
+    })
+
+    it('renders fixture entries in the selector', async () => {
+      render(
+        <MapTab fragmentService={makeFragmentService([makeProvenance()])} />,
+      )
+
+      const select: HTMLSelectElement = await screen.findByLabelText(
+        'Select historical map overlay',
+      )
+      expect(select).toBeEnabled()
+      expect(screen.getByText('No historical map')).toBeInTheDocument()
+      expect(screen.getByText('Babylon - c. 600 BCE')).toBeInTheDocument()
+      expect(screen.getByText('Nippur - c. 1500 BCE')).toBeInTheDocument()
+    })
+
+    it('renders optional date label in selector', async () => {
+      mockValidatedOverlays = [
+        makeOverlayFixture(),
+      ] as unknown as typeof mockValidatedOverlays
+      render(
+        <MapTab fragmentService={makeFragmentService([makeProvenance()])} />,
+      )
+
+      expect(
+        await screen.findByText('Babylon - c. 600 BCE'),
+      ).toBeInTheDocument()
+    })
+
+    it('defaults to None selection', async () => {
+      render(
+        <MapTab fragmentService={makeFragmentService([makeProvenance()])} />,
+      )
+
+      const select: HTMLSelectElement = await screen.findByLabelText(
+        'Select historical map overlay',
+      )
+      expect(select.value).toBe('')
+    })
+
+    it('adds raster source and layer when an overlay is selected', async () => {
+      render(
+        <MapTab fragmentService={makeFragmentService([makeProvenance()])} />,
+      )
+
+      const select = await screen.findByLabelText(
+        'Select historical map overlay',
+      )
+      await userEvent.selectOptions(select, 'babylon-map')
+
+      await waitFor(() => {
+        expect(mockAddSource).toHaveBeenCalledWith(
+          'ebl-historical-raster',
+          expect.objectContaining({ type: 'raster' }),
+        )
+      })
+      await waitFor(() => {
+        expect(mockAddLayer).toHaveBeenCalledWith(
+          expect.objectContaining({
+            id: 'ebl-historical-raster-layer',
+            type: 'raster',
+          }),
+          'ebl-findspot-polygon-fill',
+        )
+      })
+    })
+
+    it('inserts raster layer beneath polygon fill', async () => {
+      render(
+        <MapTab fragmentService={makeFragmentService([makeProvenance()])} />,
+      )
+
+      const select = await screen.findByLabelText(
+        'Select historical map overlay',
+      )
+      await userEvent.selectOptions(select, 'babylon-map')
+
+      await waitFor(() => {
+        const layerCalls = mockAddLayer.mock.calls.filter(
+          (call: unknown[]) =>
+            (call[0] as { id: string }).id === 'ebl-historical-raster-layer',
+        )
+        expect(layerCalls.length).toBeGreaterThan(0)
+      })
+      const layerCalls = mockAddLayer.mock.calls.filter(
+        (call: unknown[]) =>
+          (call[0] as { id: string }).id === 'ebl-historical-raster-layer',
+      )
+      expect(layerCalls[0][1]).toBe('ebl-findspot-polygon-fill')
+    })
+
+    it('shows opacity slider when overlay is selected', async () => {
+      render(
+        <MapTab fragmentService={makeFragmentService([makeProvenance()])} />,
+      )
+
+      const select = await screen.findByLabelText(
+        'Select historical map overlay',
+      )
+      await userEvent.selectOptions(select, 'babylon-map')
+
+      expect(
+        await screen.findByLabelText('Historical map opacity'),
+      ).toBeInTheDocument()
+    })
+
+    it('uses default opacity from overlay', async () => {
+      render(
+        <MapTab fragmentService={makeFragmentService([makeProvenance()])} />,
+      )
+
+      const select = await screen.findByLabelText(
+        'Select historical map overlay',
+      )
+      await userEvent.selectOptions(select, 'babylon-map')
+
+      await waitFor(() => {
+        expect(screen.getByText('80%')).toBeInTheDocument()
+      })
+    })
+
+    it('updates opacity via setPaintProperty without recreating source', async () => {
+      render(
+        <MapTab fragmentService={makeFragmentService([makeProvenance()])} />,
+      )
+
+      const select = await screen.findByLabelText(
+        'Select historical map overlay',
+      )
+      await userEvent.selectOptions(select, 'babylon-map')
+
+      await waitFor(() => {
+        expect(mockAddSource).toHaveBeenCalledWith(
+          'ebl-historical-raster',
+          expect.anything(),
+        )
+      })
+
+      mockAddSource.mockClear()
+      mockAddLayer.mockClear()
+
+      const slider = screen.getByLabelText('Historical map opacity')
+      fireEvent.change(slider, { target: { value: '0.5' } })
+
+      await waitFor(() => {
+        expect(mockSetPaintProperty).toHaveBeenCalledWith(
+          'ebl-historical-raster-layer',
+          'raster-opacity',
+          expect.any(Number),
+        )
+      })
+      expect(mockAddSource).not.toHaveBeenCalled()
+      expect(mockAddLayer).not.toHaveBeenCalled()
+    })
+
+    it('removes old layer and source when switching overlays', async () => {
+      render(
+        <MapTab fragmentService={makeFragmentService([makeProvenance()])} />,
+      )
+
+      const select = await screen.findByLabelText(
+        'Select historical map overlay',
+      )
+      await userEvent.selectOptions(select, 'babylon-map')
+
+      await waitFor(() => {
+        expect(mockAddSource).toHaveBeenCalledWith(
+          'ebl-historical-raster',
+          expect.anything(),
+        )
+      })
+
+      mockRemoveLayer.mockClear()
+      mockRemoveSource.mockClear()
+      mockAddSource.mockClear()
+
+      await userEvent.selectOptions(select, 'nippur-map')
+
+      await waitFor(() => {
+        expect(mockRemoveLayer).toHaveBeenCalledWith(
+          'ebl-historical-raster-layer',
+        )
+      })
+      await waitFor(() => {
+        expect(mockRemoveSource).toHaveBeenCalledWith('ebl-historical-raster')
+      })
+      await waitFor(() => {
+        expect(mockAddSource).toHaveBeenCalledWith(
+          'ebl-historical-raster',
+          expect.objectContaining({
+            tiles: ['https://example.com/nippur/{z}/{x}/{y}.png'],
+          }),
+        )
+      })
+    })
+
+    it('removes raster layer and source when clearing overlay', async () => {
+      render(
+        <MapTab fragmentService={makeFragmentService([makeProvenance()])} />,
+      )
+
+      const select = await screen.findByLabelText(
+        'Select historical map overlay',
+      )
+      await userEvent.selectOptions(select, 'babylon-map')
+
+      await waitFor(() => {
+        expect(screen.getByText('Remove')).toBeInTheDocument()
+      })
+
+      mockRemoveLayer.mockClear()
+      mockRemoveSource.mockClear()
+
+      await userEvent.click(screen.getByText('Remove'))
+
+      await waitFor(() => {
+        expect(mockRemoveLayer).toHaveBeenCalledWith(
+          'ebl-historical-raster-layer',
+        )
+      })
+      await waitFor(() => {
+        expect(mockRemoveSource).toHaveBeenCalledWith('ebl-historical-raster')
+      })
+    })
+
+    it('preserves boundaries when overlay is selected', async () => {
+      render(
+        <MapTab fragmentService={makeFragmentService([makeProvenance()])} />,
+      )
+
+      expect(
+        await screen.findByRole('checkbox', { name: 'Show site boundaries' }),
+      ).toBeChecked()
+
+      const select = screen.getByLabelText('Select historical map overlay')
+      await userEvent.selectOptions(select, 'babylon-map')
+
+      expect(
+        screen.getByRole('checkbox', { name: 'Show site boundaries' }),
+      ).toBeChecked()
+    })
+
+    it('preserves filter state when overlay is selected', async () => {
+      render(
+        <MapTab fragmentService={makeFragmentService([makeProvenance()])} />,
+      )
+
+      const filterInput = await screen.findByPlaceholderText(
+        'Filter by site name...',
+      )
+      await userEvent.type(filterInput, 'Babylon')
+
+      const select = screen.getByLabelText('Select historical map overlay')
+      await userEvent.selectOptions(select, 'babylon-map')
+
+      expect(filterInput).toHaveValue('Babylon')
+    })
+
+    it('keeps point and polygon sources intact after overlay selection', async () => {
+      render(
+        <MapTab fragmentService={makeFragmentService([makeProvenance()])} />,
+      )
+
+      await waitFor(() => {
+        expect(mockAddSource).toHaveBeenCalledWith(
+          'ebl-findspot-polygons',
+          expect.anything(),
+        )
+      })
+      await waitFor(() => {
+        expect(mockAddSource).toHaveBeenCalledWith(
+          'ebl-findspots',
+          expect.anything(),
+        )
+      })
+
+      mockAddSource.mockClear()
+
+      const select = screen.getByLabelText('Select historical map overlay')
+      await userEvent.selectOptions(select, 'babylon-map')
+
+      await waitFor(() => {
+        expect(mockAddSource).toHaveBeenCalledWith(
+          'ebl-historical-raster',
+          expect.anything(),
+        )
+      })
+
+      const nonRasterCalls = mockAddSource.mock.calls.filter(
+        (call: unknown[]) => call[0] !== 'ebl-historical-raster',
+      )
+      expect(nonRasterCalls).toHaveLength(0)
+    })
+
+    it('renders source link with secure attributes', async () => {
+      render(
+        <MapTab fragmentService={makeFragmentService([makeProvenance()])} />,
+      )
+
+      const select = await screen.findByLabelText(
+        'Select historical map overlay',
+      )
+      await userEvent.selectOptions(select, 'babylon-map')
+
+      const link: HTMLAnchorElement = await screen.findByText('Source')
+      expect(link).toHaveAttribute('target', '_blank')
+      expect(link).toHaveAttribute('rel', 'noopener noreferrer')
+      expect(link.href).toBe('https://example.com/source')
+    })
+
+    it('renders metadata as plain text without markup', async () => {
+      mockValidatedOverlays = [
+        makeOverlayFixture({
+          description: '<script>alert(1)</script>',
+        }),
+      ] as unknown as typeof mockValidatedOverlays
+
+      render(
+        <MapTab fragmentService={makeFragmentService([makeProvenance()])} />,
+      )
+
+      const select = await screen.findByLabelText(
+        'Select historical map overlay',
+      )
+      await userEvent.selectOptions(select, 'babylon-map')
+
+      const details = await screen.findByText('<script>alert(1)</script>')
+      expect(details).toBeInTheDocument()
+      expect(details.innerHTML).not.toContain('<script>')
+    })
+
+    it('renders attribution text', async () => {
+      render(
+        <MapTab fragmentService={makeFragmentService([makeProvenance()])} />,
+      )
+
+      const select = await screen.findByLabelText(
+        'Select historical map overlay',
+      )
+      await userEvent.selectOptions(select, 'babylon-map')
+
+      expect(
+        await screen.findByText('British Museum, 1900'),
+      ).toBeInTheDocument()
+    })
+
+    it('hides opacity when no overlay is selected', async () => {
+      render(
+        <MapTab fragmentService={makeFragmentService([makeProvenance()])} />,
+      )
+
+      await screen.findByLabelText('Select historical map overlay')
+
+      expect(
+        screen.queryByLabelText('Historical map opacity'),
+      ).not.toBeInTheDocument()
+    })
+
+    it('hides metadata and source link when no overlay is active', async () => {
+      render(
+        <MapTab fragmentService={makeFragmentService([makeProvenance()])} />,
+      )
+
+      await screen.findByLabelText('Select historical map overlay')
+
+      expect(screen.queryByText('Source')).not.toBeInTheDocument()
+      expect(screen.queryByText('British Museum, 1900')).not.toBeInTheDocument()
+    })
   })
 })

@@ -1,8 +1,15 @@
 import type { FeatureCollection } from 'geojson'
-import type { AddLayerObject, GeoJSONSourceSpecification } from 'maplibre-gl'
+import type {
+  AddLayerObject,
+  GeoJSONSourceSpecification,
+  RasterSourceSpecification,
+} from 'maplibre-gl'
+import type { HistoricalMapOverlay } from './historicalOverlays'
 
 export const SOURCE_ID = 'ebl-findspots'
 export const POLYGON_SOURCE_ID = 'ebl-findspot-polygons'
+export const HISTORICAL_RASTER_SOURCE_ID = 'ebl-historical-raster'
+export const HISTORICAL_RASTER_LAYER_ID = 'ebl-historical-raster-layer'
 export const CLUSTER_RADIUS = 50
 export const CLUSTER_MAX_ZOOM = 14
 
@@ -24,6 +31,33 @@ export function createFindspotPolygonsSource(
   return {
     type: 'geojson',
     data,
+  }
+}
+
+export function createHistoricalRasterSource(
+  overlay: HistoricalMapOverlay,
+): RasterSourceSpecification {
+  return {
+    type: 'raster',
+    tiles: [...overlay.tiles],
+    attribution: overlay.attribution,
+    ...(overlay.bounds
+      ? { bounds: [...overlay.bounds] as [number, number, number, number] }
+      : {}),
+    ...(overlay.minZoom !== undefined ? { minzoom: overlay.minZoom } : {}),
+    ...(overlay.maxZoom !== undefined ? { maxzoom: overlay.maxZoom } : {}),
+    ...(overlay.tileSize !== undefined ? { tileSize: overlay.tileSize } : {}),
+  }
+}
+
+export function createHistoricalRasterLayer(opacity: number): AddLayerObject {
+  return {
+    id: HISTORICAL_RASTER_LAYER_ID,
+    type: 'raster',
+    source: HISTORICAL_RASTER_SOURCE_ID,
+    paint: {
+      'raster-opacity': opacity,
+    },
   }
 }
 

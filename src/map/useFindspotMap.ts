@@ -9,15 +9,20 @@ import type {
   MapMouseEvent,
 } from 'maplibre-gl'
 import { ProvenanceRecord } from 'fragmentarium/domain/Provenance'
+import type { HistoricalMapOverlay } from './historicalOverlays'
 import {
   createFindspotPopup,
   type FindspotPopupProperties,
 } from './createFindspotPopup'
 import {
+  HISTORICAL_RASTER_LAYER_ID,
+  HISTORICAL_RASTER_SOURCE_ID,
   POLYGON_SOURCE_ID,
   SOURCE_ID,
   clusterCountLayer,
   clusterLayer,
+  createHistoricalRasterLayer,
+  createHistoricalRasterSource,
   createFindspotPolygonsSource,
   createFindspotsSource,
   polygonFillLayer,
@@ -54,6 +59,85 @@ export function fitMapToData(
 
   if (!bounds.isEmpty()) {
     map.fitBounds(bounds, { padding: 40, maxZoom: 12 })
+  }
+}
+
+function clampRasterOpacity(opacity: number): number {
+  if (!Number.isFinite(opacity)) {
+    return 1
+  }
+
+  return Math.min(Math.max(opacity, 0), 1)
+}
+
+function removeHistoricalOverlay(map: MapLibreMap): void {
+  if (map.getLayer(HISTORICAL_RASTER_LAYER_ID)) {
+    map.removeLayer(HISTORICAL_RASTER_LAYER_ID)
+  }
+
+  if (map.getSource(HISTORICAL_RASTER_SOURCE_ID)) {
+    map.removeSource(HISTORICAL_RASTER_SOURCE_ID)
+  }
+}
+
+function addHistoricalOverlay(
+  map: MapLibreMap,
+  overlay: HistoricalMapOverlay,
+  opacity: number,
+): void {
+  if (!map.getSource(HISTORICAL_RASTER_SOURCE_ID)) {
+    map.addSource(
+      HISTORICAL_RASTER_SOURCE_ID,
+      createHistoricalRasterSource(overlay),
+    )
+  }
+
+  if (!map.getLayer(HISTORICAL_RASTER_LAYER_ID)) {
+    const layer = createHistoricalRasterLayer(clampRasterOpacity(opacity))
+    const beforeLayerId = map.getLayer(polygonFillLayer.id)
+      ? polygonFillLayer.id
+      : undefined
+
+    if (beforeLayerId) {
+      map.addLayer(layer, beforeLayerId)
+    } else {
+      map.addLayer(layer)
+    }
+  }
+}
+
+function syncHistoricalOverlay(
+  map: MapLibreMap,
+  overlay: HistoricalMapOverlay | null,
+  opacity: number,
+  activeOverlayIdRef: MutableRefObject<string | null>,
+): void {
+  if (!overlay) {
+    removeHistoricalOverlay(map)
+    activeOverlayIdRef.current = null
+    return
+  }
+
+  if (activeOverlayIdRef.current !== overlay.id) {
+    removeHistoricalOverlay(map)
+    addHistoricalOverlay(map, overlay, opacity)
+    activeOverlayIdRef.current = overlay.id
+    return
+  }
+
+  if (
+    !map.getSource(HISTORICAL_RASTER_SOURCE_ID) ||
+    !map.getLayer(HISTORICAL_RASTER_LAYER_ID)
+  ) {
+    addHistoricalOverlay(map, overlay, opacity)
+  }
+
+  if (map.getLayer(HISTORICAL_RASTER_LAYER_ID)) {
+    map.setPaintProperty(
+      HISTORICAL_RASTER_LAYER_ID,
+      'raster-opacity',
+      clampRasterOpacity(opacity),
+    )
   }
 }
 
@@ -220,12 +304,19 @@ export default function useFindspotMap(
   containerRef: RefObject<HTMLDivElement>,
   provenances: readonly ProvenanceRecord[] | null,
   showBoundaries: boolean,
+  historicalOverlay: HistoricalMapOverlay | null,
+  historicalOverlayOpacity: number,
 ): MutableRefObject<MapLibreMap | null> {
   const mapRef = useRef<MapLibreMap | null>(null)
   const latestProvenancesRef = useRef(provenances)
   const latestShowBoundariesRef = useRef(showBoundaries)
+  const latestHistoricalOverlayRef = useRef(historicalOverlay)
+  const latestHistoricalOverlayOpacityRef = useRef(historicalOverlayOpacity)
+  const activeHistoricalOverlayIdRef = useRef<string | null>(null)
   latestProvenancesRef.current = provenances
   latestShowBoundariesRef.current = showBoundaries
+  latestHistoricalOverlayRef.current = historicalOverlay
+  latestHistoricalOverlayOpacityRef.current = historicalOverlayOpacity
   const isReady = provenances !== null
 
   useEffect(() => {
@@ -239,13 +330,19 @@ export default function useFindspotMap(
     })
     mapRef.current = map
     map.addControl(new maplibregl.NavigationControl(), 'top-right')
-    map.on('load', () =>
+    map.on('load', () => {
+      syncHistoricalOverlay(
+        map,
+        latestHistoricalOverlayRef.current,
+        latestHistoricalOverlayOpacityRef.current,
+        activeHistoricalOverlayIdRef,
+      )
       initializeFindspotSources(
         map,
         latestProvenancesRef.current ?? [],
         latestShowBoundariesRef.current,
-      ),
-    )
+      )
+    })
     map.on('click', (event) => handleMapClick(map, event))
     map.on('mousemove', (event) => setPointerCursor(map, event))
 
@@ -261,6 +358,18 @@ export default function useFindspotMap(
 
     setBoundaryVisibility(map, showBoundaries)
   }, [showBoundaries])
+
+  useEffect(() => {
+    const map = mapRef.current
+    if (!map || !map.isStyleLoaded()) return
+
+    syncHistoricalOverlay(
+      map,
+      historicalOverlay,
+      historicalOverlayOpacity,
+      activeHistoricalOverlayIdRef,
+    )
+  }, [historicalOverlay, historicalOverlayOpacity])
 
   return mapRef
 }

@@ -1,11 +1,16 @@
 import type { FeatureCollection } from 'geojson'
+import type { HistoricalMapOverlay } from './historicalOverlays'
 import {
   SOURCE_ID,
   POLYGON_SOURCE_ID,
+  HISTORICAL_RASTER_SOURCE_ID,
+  HISTORICAL_RASTER_LAYER_ID,
   CLUSTER_RADIUS,
   CLUSTER_MAX_ZOOM,
   createFindspotPolygonsSource,
   createFindspotsSource,
+  createHistoricalRasterSource,
+  createHistoricalRasterLayer,
   clusterLayer,
   clusterCountLayer,
   polygonFillLayer,
@@ -16,6 +21,12 @@ import {
 type LayerWithSource = { id: string; source: string; filter?: unknown[] }
 type LayerWithPaint = LayerWithSource & { paint: Record<string, unknown> }
 type LayerWithLayout = LayerWithSource & { layout: Record<string, unknown> }
+type RasterLayerLike = {
+  id: string
+  type: string
+  source: string
+  paint?: Record<string, unknown>
+}
 
 describe('mapLayers', () => {
   describe('createFindspotsSource', () => {
@@ -134,6 +145,139 @@ describe('mapLayers', () => {
       expect(polygonFillLayer.id).toBe('ebl-findspot-polygon-fill')
       expect(polygonOutlineLayer.id).toBe('ebl-findspot-polygon-outline')
       expect(polygonFillLayer.id).not.toBe(polygonOutlineLayer.id)
+    })
+
+    it('defines stable historical raster source ID', () => {
+      expect(HISTORICAL_RASTER_SOURCE_ID).toBe('ebl-historical-raster')
+      expect(HISTORICAL_RASTER_SOURCE_ID).not.toBe(SOURCE_ID)
+      expect(HISTORICAL_RASTER_SOURCE_ID).not.toBe(POLYGON_SOURCE_ID)
+    })
+
+    it('defines stable historical raster layer ID', () => {
+      expect(HISTORICAL_RASTER_LAYER_ID).toBe('ebl-historical-raster-layer')
+      expect(HISTORICAL_RASTER_LAYER_ID).not.toBe(polygonFillLayer.id)
+    })
+  })
+
+  describe('createHistoricalRasterSource', () => {
+    function makeOverlay(
+      overrides: Partial<HistoricalMapOverlay> = {},
+    ): HistoricalMapOverlay {
+      return {
+        id: 'test-map',
+        title: 'Test Map',
+        attribution: 'Test Attribution',
+        type: 'raster-tiles',
+        tiles: ['https://example.com/{z}/{x}/{y}.png'],
+        defaultOpacity: 0.8,
+        ...overrides,
+      }
+    }
+
+    it('creates a raster source with tiles and attribution', () => {
+      const source = createHistoricalRasterSource(makeOverlay())
+
+      expect(source.type).toBe('raster')
+      expect(source.tiles).toEqual(['https://example.com/{z}/{x}/{y}.png'])
+      expect(source.attribution).toBe('Test Attribution')
+    })
+
+    it('does not spread an undefined tileSize into the source', () => {
+      const source = createHistoricalRasterSource(makeOverlay())
+
+      expect(source).not.toHaveProperty('tileSize')
+    })
+
+    it('includes tileSize when overlay defines it', () => {
+      const source = createHistoricalRasterSource(
+        makeOverlay({ tileSize: 256 }),
+      )
+
+      expect(source.tileSize).toBe(256)
+    })
+
+    it('includes bounds when overlay defines them', () => {
+      const bounds: [number, number, number, number] = [44, 32, 45, 33]
+      const source = createHistoricalRasterSource(makeOverlay({ bounds }))
+
+      expect(source.bounds).toEqual([44, 32, 45, 33])
+    })
+
+    it('omits bounds when overlay does not define them', () => {
+      const overlay = makeOverlay()
+      delete (overlay as { bounds?: unknown }).bounds
+      const source = createHistoricalRasterSource(overlay)
+
+      expect(source).not.toHaveProperty('bounds')
+    })
+
+    it('includes minzoom when overlay defines it', () => {
+      const source = createHistoricalRasterSource(makeOverlay({ minZoom: 5 }))
+
+      expect(source.minzoom).toBe(5)
+    })
+
+    it('omits minzoom when overlay does not define it', () => {
+      const source = createHistoricalRasterSource(makeOverlay())
+
+      expect(source).not.toHaveProperty('minzoom')
+    })
+
+    it('includes maxzoom when overlay defines it', () => {
+      const source = createHistoricalRasterSource(makeOverlay({ maxZoom: 15 }))
+
+      expect(source.maxzoom).toBe(15)
+    })
+
+    it('omits maxzoom when overlay does not define it', () => {
+      const source = createHistoricalRasterSource(makeOverlay())
+
+      expect(source).not.toHaveProperty('maxzoom')
+    })
+
+    it('copies tiles array defensively', () => {
+      const tiles = ['https://example.com/{z}/{x}/{y}.png']
+      const source = createHistoricalRasterSource(makeOverlay({ tiles }))
+
+      expect(source.tiles).not.toBe(tiles)
+      expect(source.tiles).toEqual(tiles)
+    })
+
+    it('copies bounds array defensively', () => {
+      const bounds: [number, number, number, number] = [44, 32, 45, 33]
+      const source = createHistoricalRasterSource(makeOverlay({ bounds }))
+
+      expect(source.bounds).not.toBe(bounds)
+      expect(source.bounds).toEqual(bounds)
+    })
+  })
+
+  describe('createHistoricalRasterLayer', () => {
+    it('references the historical raster source', () => {
+      const layer = createHistoricalRasterLayer(0.8) as RasterLayerLike
+
+      expect(layer.id).toBe(HISTORICAL_RASTER_LAYER_ID)
+      expect(layer.type).toBe('raster')
+      expect(layer.source).toBe(HISTORICAL_RASTER_SOURCE_ID)
+    })
+
+    it('sets raster-opacity paint property', () => {
+      const layer = createHistoricalRasterLayer(0.5) as RasterLayerLike
+
+      expect(layer.paint).toBeDefined()
+      expect(layer.paint?.['raster-opacity']).toBe(0.5)
+    })
+
+    it('accepts full opacity', () => {
+      const layer = createHistoricalRasterLayer(1) as RasterLayerLike
+
+      expect(layer.paint?.['raster-opacity']).toBe(1)
+    })
+
+    it('accepts zero opacity', () => {
+      const layer = createHistoricalRasterLayer(0) as RasterLayerLike
+
+      expect(layer.paint?.['raster-opacity']).toBe(0)
     })
   })
 })
