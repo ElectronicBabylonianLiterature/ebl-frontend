@@ -2,6 +2,7 @@ import type { FeatureCollection } from 'geojson'
 import type { AddLayerObject, GeoJSONSourceSpecification } from 'maplibre-gl'
 
 export const SOURCE_ID = 'ebl-findspots'
+export const POLYGON_SOURCE_ID = 'ebl-findspot-polygons'
 export const CLUSTER_RADIUS = 50
 export const CLUSTER_MAX_ZOOM = 14
 
@@ -15,6 +16,42 @@ export function createFindspotsSource(
     clusterRadius: CLUSTER_RADIUS,
     clusterMaxZoom: CLUSTER_MAX_ZOOM,
   }
+}
+
+export function createFindspotPolygonsSource(
+  data: FeatureCollection,
+): GeoJSONSourceSpecification {
+  return {
+    type: 'geojson',
+    data,
+  }
+}
+
+export const polygonFillLayer: AddLayerObject = {
+  id: 'ebl-findspot-polygon-fill',
+  type: 'fill',
+  source: POLYGON_SOURCE_ID,
+  layout: {
+    visibility: 'visible',
+  },
+  paint: {
+    'fill-color': '#0077be',
+    'fill-opacity': 0.18,
+  },
+}
+
+export const polygonOutlineLayer: AddLayerObject = {
+  id: 'ebl-findspot-polygon-outline',
+  type: 'line',
+  source: POLYGON_SOURCE_ID,
+  layout: {
+    visibility: 'visible',
+  },
+  paint: {
+    'line-color': '#005b8f',
+    'line-width': 2,
+    'line-opacity': 0.8,
+  },
 }
 
 export const clusterLayer: AddLayerObject = {

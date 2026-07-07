@@ -1,15 +1,19 @@
 import type { FeatureCollection } from 'geojson'
 import {
   SOURCE_ID,
+  POLYGON_SOURCE_ID,
   CLUSTER_RADIUS,
   CLUSTER_MAX_ZOOM,
+  createFindspotPolygonsSource,
   createFindspotsSource,
   clusterLayer,
   clusterCountLayer,
+  polygonFillLayer,
+  polygonOutlineLayer,
   unclusteredLayer,
 } from './mapLayers'
 
-type LayerWithSource = { id: string; source: string; filter: unknown[] }
+type LayerWithSource = { id: string; source: string; filter?: unknown[] }
 type LayerWithPaint = LayerWithSource & { paint: Record<string, unknown> }
 type LayerWithLayout = LayerWithSource & { layout: Record<string, unknown> }
 
@@ -27,6 +31,40 @@ describe('mapLayers', () => {
       expect(source.cluster).toBe(true)
       expect(source.clusterRadius).toBe(CLUSTER_RADIUS)
       expect(source.clusterMaxZoom).toBe(CLUSTER_MAX_ZOOM)
+    })
+  })
+
+  describe('createFindspotPolygonsSource', () => {
+    it('creates a non-clustered GeoJSON source with the given data', () => {
+      const data: FeatureCollection = {
+        type: 'FeatureCollection',
+        features: [],
+      }
+      const source = createFindspotPolygonsSource(data)
+
+      expect(source.type).toBe('geojson')
+      expect(source.data).toBe(data)
+      expect(source.cluster).toBeUndefined()
+    })
+  })
+
+  describe('polygonFillLayer', () => {
+    it('references the polygon source and is visible by default', () => {
+      const layer = polygonFillLayer as LayerWithLayout
+
+      expect(layer.id).toBe('ebl-findspot-polygon-fill')
+      expect(layer.source).toBe(POLYGON_SOURCE_ID)
+      expect(layer.layout.visibility).toBe('visible')
+    })
+  })
+
+  describe('polygonOutlineLayer', () => {
+    it('references the polygon source and is visible by default', () => {
+      const layer = polygonOutlineLayer as LayerWithLayout
+
+      expect(layer.id).toBe('ebl-findspot-polygon-outline')
+      expect(layer.source).toBe(POLYGON_SOURCE_ID)
+      expect(layer.layout.visibility).toBe('visible')
     })
   })
 
@@ -82,13 +120,20 @@ describe('mapLayers', () => {
   })
 
   describe('constants', () => {
-    it('defines a unique source ID', () => {
+    it('defines unique source IDs', () => {
       expect(SOURCE_ID).toBe('ebl-findspots')
+      expect(POLYGON_SOURCE_ID).toBe('ebl-findspot-polygons')
     })
 
     it('defines sensible clustering defaults', () => {
       expect(CLUSTER_RADIUS).toBe(50)
       expect(CLUSTER_MAX_ZOOM).toBe(14)
+    })
+
+    it('keeps polygon layer ids stable and distinct', () => {
+      expect(polygonFillLayer.id).toBe('ebl-findspot-polygon-fill')
+      expect(polygonOutlineLayer.id).toBe('ebl-findspot-polygon-outline')
+      expect(polygonFillLayer.id).not.toBe(polygonOutlineLayer.id)
     })
   })
 })

@@ -33,12 +33,17 @@ export default function MapTab({ fragmentService }: Props): JSX.Element {
   >(null)
   const [error, setError] = useState<string | null>(null)
   const [filter, setFilter] = useState('')
+  const [showBoundaries, setShowBoundaries] = useState(true)
 
   const filteredProvenances = useMemo(
     () => filterProvenances(provenances, filter),
     [provenances, filter],
   )
-  const mapRef = useFindspotMap(mapContainer, filteredProvenances)
+  const mapRef = useFindspotMap(
+    mapContainer,
+    filteredProvenances,
+    showBoundaries,
+  )
   useMapSourceData(mapRef, filteredProvenances)
 
   useEffect(() => {
@@ -58,15 +63,28 @@ export default function MapTab({ fragmentService }: Props): JSX.Element {
 
   return (
     <div className="map-tab">
-      <Form.Group className="map-tab__search mb-3">
-        <Form.Control
-          type="text"
-          placeholder="Filter by site name..."
-          value={filter}
-          onChange={(event) => setFilter(event.target.value)}
-          aria-label="Filter findspots by name"
-        />
-      </Form.Group>
+      <div className="map-tab__controls">
+        <Form.Group className="map-tab__search">
+          <Form.Control
+            type="text"
+            placeholder="Filter by site name..."
+            value={filter}
+            onChange={(event) => setFilter(event.target.value)}
+            aria-label="Filter findspots by name"
+          />
+        </Form.Group>
+        <Form.Group
+          className="map-tab__toggle"
+          controlId="show-site-boundaries"
+        >
+          <Form.Check
+            type="checkbox"
+            label="Show site boundaries"
+            checked={showBoundaries}
+            onChange={(event) => setShowBoundaries(event.target.checked)}
+          />
+        </Form.Group>
+      </div>
       {filteredProvenances && filteredProvenances.length === 0 ? (
         <Alert variant="info">No findspots match &ldquo;{filter}&rdquo;.</Alert>
       ) : null}

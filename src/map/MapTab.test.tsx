@@ -18,6 +18,7 @@ const mockOn = jest.fn()
 const mockIsStyleLoaded = jest.fn(() => true)
 const mockFitBounds = jest.fn()
 const mockSetData = jest.fn()
+const mockSetPolygonData = jest.fn()
 const mockQueryRenderedFeatures = jest.fn<unknown[], unknown[]>(() => [])
 const mockEaseTo = jest.fn()
 const mockGetClusterExpansionZoom = jest.fn()
@@ -25,12 +26,24 @@ const mockSetLngLat = jest.fn()
 const mockSetDOMContent = jest.fn()
 const mockSetHTML = jest.fn()
 const mockPopupAddTo = jest.fn()
+const mockSetLayoutProperty = jest.fn()
+const mockGetLayer = jest.fn((id: string) => ({ id }))
 
-type MockMapEvent = { point: { x: number; y: number } }
+type MockMapEvent = {
+  point: { x: number; y: number }
+  lngLat: { lng: number; lat: number }
+}
 type MockEventHandler = (event?: MockMapEvent) => void
 
 const mockEventHandlers: Record<string, MockEventHandler> = {}
 let mockLoadImmediately = true
+const mockSources = new Map<
+  string,
+  {
+    setData?: typeof mockSetData
+    getClusterExpansionZoom?: typeof mockGetClusterExpansionZoom
+  }
+>()
 
 const mockMapInstance = {
   addSource: mockAddSource,
@@ -39,11 +52,13 @@ const mockMapInstance = {
   remove: mockRemove,
   getSource: mockGetSource,
   getCanvas: mockGetCanvas,
+  getLayer: mockGetLayer,
   on: mockOn,
   isStyleLoaded: mockIsStyleLoaded,
   fitBounds: mockFitBounds,
   queryRenderedFeatures: mockQueryRenderedFeatures,
   easeTo: mockEaseTo,
+  setLayoutProperty: mockSetLayoutProperty,
 }
 
 jest.mock(
@@ -138,13 +153,22 @@ function makeFailingFragmentService(message: string): FragmentService {
 describe('MapTab', () => {
   beforeEach(() => {
     jest.clearAllMocks()
+    mockSources.clear()
+    mockSources.set('ebl-findspots', {
+      setData: mockSetData,
+      getClusterExpansionZoom: mockGetClusterExpansionZoom,
+    })
+    mockSources.set('ebl-findspot-polygons', {
+      setData: mockSetPolygonData,
+    })
     Object.keys(mockEventHandlers).forEach(
       (event) => delete mockEventHandlers[event],
     )
     mockLoadImmediately = true
     mockIsStyleLoaded.mockReturnValue(true)
-    mockGetSource.mockReturnValue(undefined)
+    mockGetSource.mockImplementation((id: string) => mockSources.get(id))
     mockQueryRenderedFeatures.mockReturnValue([])
+    mockGetLayer.mockImplementation((id: string) => ({ id }))
     mockOn.mockImplementation((event: string, callback: unknown) => {
       const handler = callback as MockEventHandler
       mockEventHandlers[event] = handler
@@ -177,7 +201,7 @@ describe('MapTab', () => {
     })
   })
 
-  it('renders search input and map container after data loads', async () => {
+  it('renders search input, boundary toggle, and map container after data loads', async () => {
     const fragmentService = makeFragmentService([makeProvenance()])
 
     render(<MapTab fragmentService={fragmentService} />)
@@ -185,6 +209,9 @@ describe('MapTab', () => {
     expect(
       await screen.findByPlaceholderText('Filter by site name...'),
     ).toBeInTheDocument()
+    expect(
+      screen.getByRole('checkbox', { name: 'Show site boundaries' }),
+    ).toBeChecked()
     expect(screen.getByLabelText('Findspot map')).toBeInTheDocument()
   })
 
@@ -203,33 +230,42 @@ describe('MapTab', () => {
     ).toBeInTheDocument()
   })
 
-  it('passes source and layer configs to map on load', async () => {
+  it('adds polygon and point sources with layers in the correct order on load', async () => {
     const provenances = [
       makeProvenance(),
       makeProvenance({
-        id: 'uruk',
-        longName: 'Uruk',
-        coordinates: { latitude: 31.32, longitude: 45.64 },
+        id: 'nineveh',
+        longName: 'Nineveh',
+        polygonCoordinates: [
+          { latitude: 36.3, longitude: 43.1 },
+          { latitude: 36.4, longitude: 43.2 },
+          { latitude: 36.35, longitude: 43.15 },
+        ],
       }),
     ]
 
     render(<MapTab fragmentService={makeFragmentService(provenances)} />)
 
     await waitFor(() => {
-      expect(mockAddSource).toHaveBeenCalled()
+      expect(mockAddSource).toHaveBeenCalledTimes(2)
     })
 
-    const sourceCall = mockAddSource.mock.calls[0]
-    expect(sourceCall[0]).toBe('ebl-findspots')
-    expect(sourceCall[1].type).toBe('geojson')
-    expect(sourceCall[1].cluster).toBe(true)
-    expect(sourceCall[1].data.features).toHaveLength(2)
+    expect(mockAddSource.mock.calls[0][0]).toBe('ebl-findspot-polygons')
+    expect(mockAddSource.mock.calls[0][1].type).toBe('geojson')
+    expect(mockAddSource.mock.calls[0][1].cluster).toBeUndefined()
+    expect(mockAddSource.mock.calls[0][1].data.features).toHaveLength(1)
 
-    expect(mockAddLayer).toHaveBeenCalledTimes(3)
+    expect(mockAddSource.mock.calls[1][0]).toBe('ebl-findspots')
+    expect(mockAddSource.mock.calls[1][1].cluster).toBe(true)
+    expect(mockAddSource.mock.calls[1][1].data.features).toHaveLength(2)
+
+    expect(mockAddLayer).toHaveBeenCalledTimes(5)
     const layerIds = mockAddLayer.mock.calls.map(
       (call: unknown[]) => (call[0] as { id: string }).id,
     )
     expect(layerIds).toEqual([
+      'ebl-findspot-polygon-fill',
+      'ebl-findspot-polygon-outline',
       'ebl-clusters',
       'ebl-cluster-count',
       'ebl-unclustered-points',
@@ -244,33 +280,60 @@ describe('MapTab', () => {
     })
   })
 
-  it('filters provenances case-insensitively', async () => {
+  it('filters provenances case-insensitively across both sources', async () => {
     const provenances = [
       makeProvenance({ id: 'babylon', longName: 'Babylon' }),
-      makeProvenance({ id: 'nippur', longName: 'Nippur' }),
+      makeProvenance({
+        id: 'nippur',
+        longName: 'Nippur',
+        polygonCoordinates: [
+          { latitude: 32.1, longitude: 44.1 },
+          { latitude: 32.2, longitude: 44.2 },
+          { latitude: 32.3, longitude: 44.3 },
+        ],
+      }),
       makeProvenance({ id: 'uruk', longName: 'Uruk' }),
     ]
-    mockGetSource.mockReturnValue({ setData: mockSetData })
 
     render(<MapTab fragmentService={makeFragmentService(provenances)} />)
 
     const input = await screen.findByPlaceholderText('Filter by site name...')
-    await userEvent.type(input, 'bab')
+    await userEvent.type(input, 'nip')
 
     await waitFor(() => {
       expect(mockSetData).toHaveBeenCalled()
     })
-    const setDataCall = mockSetData.mock.calls[
+    expect(mockSetPolygonData).toHaveBeenCalled()
+
+    const pointSetDataCall = mockSetData.mock.calls[
       mockSetData.mock.calls.length - 1
     ][0] as FeatureCollection
-    expect(setDataCall.features).toHaveLength(1)
-    expect(setDataCall.features[0].properties?.name).toBe('Babylon')
+    const polygonSetDataCall = mockSetPolygonData.mock.calls[
+      mockSetPolygonData.mock.calls.length - 1
+    ][0] as FeatureCollection
+
+    expect(pointSetDataCall.features).toHaveLength(1)
+    expect(
+      (pointSetDataCall.features[0].properties as { name: string }).name,
+    ).toBe('Nippur')
+    expect(polygonSetDataCall.features).toHaveLength(1)
+    expect(
+      (polygonSetDataCall.features[0].properties as { name: string }).name,
+    ).toBe('Nippur')
   })
 
   it('uses the active filter when the style loads after filtering', async () => {
     const provenances = [
       makeProvenance({ id: 'babylon', longName: 'Babylon' }),
-      makeProvenance({ id: 'nippur', longName: 'Nippur' }),
+      makeProvenance({
+        id: 'nippur',
+        longName: 'Nippur',
+        polygonCoordinates: [
+          { latitude: 32.1, longitude: 44.1 },
+          { latitude: 32.2, longitude: 44.2 },
+          { latitude: 32.3, longitude: 44.3 },
+        ],
+      }),
     ]
     mockLoadImmediately = false
     mockIsStyleLoaded.mockReturnValue(false)
@@ -278,20 +341,67 @@ describe('MapTab', () => {
     render(<MapTab fragmentService={makeFragmentService(provenances)} />)
 
     const input = await screen.findByPlaceholderText('Filter by site name...')
-    await userEvent.type(input, 'bab')
+    await userEvent.type(input, 'nip')
     expect(mockAddSource).not.toHaveBeenCalled()
 
     act(() => {
+      mockIsStyleLoaded.mockReturnValue(true)
       mockEventHandlers.load()
     })
 
-    expect(mockAddSource).toHaveBeenCalledTimes(1)
-    const source = mockAddSource.mock.calls[0][1]
-    expect(source.data.features).toHaveLength(1)
-    expect(source.data.features[0].properties.name).toBe('Babylon')
+    expect(mockAddSource).toHaveBeenCalledTimes(2)
+    expect(mockAddSource.mock.calls[0][1].data.features).toHaveLength(1)
+    expect(
+      mockAddSource.mock.calls[0][1].data.features[0].properties.name,
+    ).toBe('Nippur')
+    expect(mockAddSource.mock.calls[1][1].data.features).toHaveLength(1)
+    expect(
+      mockAddSource.mock.calls[1][1].data.features[0].properties.name,
+    ).toBe('Nippur')
   })
 
-  it('expands a clicked cluster', async () => {
+  it('disables and re-enables boundary layers without hiding points or clusters', async () => {
+    render(<MapTab fragmentService={makeFragmentService([makeProvenance()])} />)
+
+    const checkbox = await screen.findByRole('checkbox', {
+      name: 'Show site boundaries',
+    })
+
+    mockSetLayoutProperty.mockClear()
+    await userEvent.click(checkbox)
+
+    expect(mockSetLayoutProperty).toHaveBeenCalledWith(
+      'ebl-findspot-polygon-fill',
+      'visibility',
+      'none',
+    )
+    expect(mockSetLayoutProperty).toHaveBeenCalledWith(
+      'ebl-findspot-polygon-outline',
+      'visibility',
+      'none',
+    )
+    expect(mockSetLayoutProperty).not.toHaveBeenCalledWith(
+      'ebl-unclustered-points',
+      'visibility',
+      expect.anything(),
+    )
+
+    mockSetLayoutProperty.mockClear()
+    await userEvent.click(checkbox)
+
+    expect(mockSetLayoutProperty).toHaveBeenCalledWith(
+      'ebl-findspot-polygon-fill',
+      'visibility',
+      'visible',
+    )
+    expect(mockSetLayoutProperty).toHaveBeenCalledWith(
+      'ebl-findspot-polygon-outline',
+      'visibility',
+      'visible',
+    )
+  })
+
+  it('expands a clicked cluster before checking points or polygons', async () => {
     const clusterIdProperty = 'cluster_id'
     const cluster = {
       type: 'Feature',
@@ -303,17 +413,18 @@ describe('MapTab', () => {
       expect(mockAddSource).toHaveBeenCalled()
     })
 
-    mockQueryRenderedFeatures.mockReturnValue([cluster])
+    mockQueryRenderedFeatures.mockReturnValueOnce([cluster])
     mockGetClusterExpansionZoom.mockResolvedValue(9)
-    mockGetSource.mockReturnValue({
-      getClusterExpansionZoom: mockGetClusterExpansionZoom,
-    })
 
     act(() => {
-      mockEventHandlers.click({ point: { x: 10, y: 20 } })
+      mockEventHandlers.click({
+        point: { x: 10, y: 20 },
+        lngLat: { lng: 40, lat: 30 },
+      })
     })
 
     expect(mockGetClusterExpansionZoom).toHaveBeenCalledWith(42)
+    expect(mockQueryRenderedFeatures).toHaveBeenCalledTimes(1)
     await waitFor(() => {
       expect(mockEaseTo).toHaveBeenCalledWith({
         center: [44.42, 32.542],
@@ -322,7 +433,7 @@ describe('MapTab', () => {
     })
   })
 
-  it('opens an unclustered findspot popup with DOM-safe content', async () => {
+  it('opens an unclustered point popup with DOM-safe content', async () => {
     const name = '<img src=x onerror=alert(1)>'
     const parent = 'Babylonia<script>xss</script>'
     const abbreviation = '<script>alert(1)</script>'
@@ -346,7 +457,10 @@ describe('MapTab', () => {
       .mockReturnValueOnce([findspot])
 
     act(() => {
-      mockEventHandlers.click({ point: { x: 10, y: 20 } })
+      mockEventHandlers.click({
+        point: { x: 10, y: 20 },
+        lngLat: { lng: 50, lat: 40 },
+      })
     })
 
     expect(mockSetLngLat).toHaveBeenCalledWith([44.42, 32.542])
@@ -367,6 +481,111 @@ describe('MapTab', () => {
     expect(popup.getByText('Single point')).toBeInTheDocument()
     const link = popup.getByRole('link', { name: 'View fragments' })
     expect(link).toHaveAttribute('href', buildFragmentSearchLink(name))
+  })
+
+  it('opens a polygon popup at the click coordinates', async () => {
+    const polygon = {
+      type: 'Feature',
+      properties: {
+        name: 'Nineveh',
+        parent: 'Assyria',
+        abbreviation: 'Nin',
+        geometryType: 'polygon',
+      },
+      geometry: {
+        type: 'Polygon',
+        coordinates: [
+          [
+            [43.1, 36.3],
+            [43.2, 36.4],
+            [43.15, 36.35],
+            [43.1, 36.3],
+          ],
+        ],
+      },
+    }
+    render(<MapTab fragmentService={makeFragmentService([makeProvenance()])} />)
+    await waitFor(() => {
+      expect(mockAddSource).toHaveBeenCalled()
+    })
+
+    mockQueryRenderedFeatures
+      .mockReturnValueOnce([])
+      .mockReturnValueOnce([])
+      .mockReturnValueOnce([polygon])
+
+    act(() => {
+      mockEventHandlers.click({
+        point: { x: 10, y: 20 },
+        lngLat: { lng: 45, lat: 35 },
+      })
+    })
+
+    expect(mockSetLngLat).toHaveBeenCalledWith([45, 35])
+    const content = mockSetDOMContent.mock.calls[0][0] as HTMLElement
+    document.body.append(content)
+    expect(
+      within(content).getByText('Area boundary available'),
+    ).toBeInTheDocument()
+  })
+
+  it('uses point clicks ahead of polygon clicks when both overlap', async () => {
+    const point = {
+      type: 'Feature',
+      properties: {
+        name: 'Babylon',
+        abbreviation: 'Bab',
+        geometryType: 'point',
+      },
+      geometry: { type: 'Point', coordinates: [44.42, 32.542] },
+    }
+
+    render(<MapTab fragmentService={makeFragmentService([makeProvenance()])} />)
+    await waitFor(() => {
+      expect(mockAddSource).toHaveBeenCalled()
+    })
+
+    mockQueryRenderedFeatures
+      .mockReturnValueOnce([])
+      .mockReturnValueOnce([point])
+
+    act(() => {
+      mockEventHandlers.click({
+        point: { x: 10, y: 20 },
+        lngLat: { lng: 45, lat: 35 },
+      })
+    })
+
+    expect(mockSetLngLat).toHaveBeenCalledWith([44.42, 32.542])
+    expect(mockQueryRenderedFeatures).toHaveBeenCalledTimes(2)
+  })
+
+  it('sets a pointer cursor for polygon hover and restores it elsewhere', async () => {
+    const canvas = { style: { cursor: '' } }
+    mockGetCanvas.mockReturnValue(canvas)
+
+    render(<MapTab fragmentService={makeFragmentService([makeProvenance()])} />)
+    await waitFor(() => {
+      expect(mockAddSource).toHaveBeenCalled()
+    })
+
+    mockQueryRenderedFeatures.mockReturnValueOnce([{ id: 'polygon' }])
+    act(() => {
+      mockEventHandlers.mousemove({
+        point: { x: 10, y: 20 },
+        lngLat: { lng: 45, lat: 35 },
+      })
+    })
+    expect(canvas).toHaveStyle({ cursor: 'pointer' })
+
+    mockQueryRenderedFeatures.mockReturnValueOnce([])
+    act(() => {
+      mockEventHandlers.mousemove({
+        point: { x: 11, y: 21 },
+        lngLat: { lng: 46, lat: 36 },
+      })
+    })
+    expect(canvas).toHaveStyle({ cursor: '' })
   })
 
   it('cleans up map on unmount', async () => {
@@ -408,8 +627,10 @@ describe('MapTab', () => {
       expect(mockAddSource).toHaveBeenCalled()
     })
 
-    const sourceCall = mockAddSource.mock.calls[0]
-    expect(sourceCall[1].data.features).toHaveLength(1)
-    expect(sourceCall[1].data.features[0].properties.name).toBe('Babylon')
+    expect(mockAddSource.mock.calls[0][1].data.features).toHaveLength(0)
+    expect(mockAddSource.mock.calls[1][1].data.features).toHaveLength(1)
+    expect(
+      mockAddSource.mock.calls[1][1].data.features[0].properties.name,
+    ).toBe('Babylon')
   })
 })

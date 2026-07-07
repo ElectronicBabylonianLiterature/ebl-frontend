@@ -1,6 +1,13 @@
 @import src/design-tokens
 
 .map-tab
+  &__controls
+    display: flex
+    flex-wrap: wrap
+    align-items: center
+    gap: 1rem
+    margin-bottom: 1rem
+
   &__container
     width: 100%
     height: 500px
@@ -9,6 +16,10 @@
 
   &__search
     max-width: 400px
+    margin-bottom: 0
+
+  &__toggle
+    margin-bottom: 0
 
 .maplibregl-popup-content
   a

@@ -14,20 +14,30 @@ import {
   type FindspotPopupProperties,
 } from './createFindspotPopup'
 import {
+  POLYGON_SOURCE_ID,
   SOURCE_ID,
   clusterCountLayer,
   clusterLayer,
+  createFindspotPolygonsSource,
   createFindspotsSource,
+  polygonFillLayer,
+  polygonOutlineLayer,
   unclusteredLayer,
 } from './mapLayers'
 import type { FindspotProperties } from './provenanceToGeoJson'
 import { provenanceToGeoJson } from './provenanceToGeoJson'
+import { provenancesToPolygonGeoJson } from './provenanceToPolygonGeoJson'
 
 const MAP_STYLE_URL =
   'https://basemaps.cartocdn.com/gl/positron-gl-style/style.json'
 
 const INITIAL_CENTER: [number, number] = [44.4, 33.0]
 const INITIAL_ZOOM = 5
+const INTERACTIVE_LAYER_IDS = [
+  clusterLayer.id,
+  unclusteredLayer.id,
+  polygonFillLayer.id,
+]
 
 export function fitMapToData(
   map: MapLibreMap,
@@ -47,16 +57,34 @@ export function fitMapToData(
   }
 }
 
-function initializeFindspotSource(
+function setBoundaryVisibility(map: MapLibreMap, isVisible: boolean): void {
+  const visibility = isVisible ? 'visible' : 'none'
+
+  for (const layerId of [polygonFillLayer.id, polygonOutlineLayer.id]) {
+    if (map.getLayer(layerId)) {
+      map.setLayoutProperty(layerId, 'visibility', visibility)
+    }
+  }
+}
+
+function initializeFindspotSources(
   map: MapLibreMap,
   provenances: readonly ProvenanceRecord[],
+  showBoundaries: boolean,
 ): void {
-  const geoJson = provenanceToGeoJson(provenances)
-  map.addSource(SOURCE_ID, createFindspotsSource(geoJson))
+  const pointGeoJson = provenanceToGeoJson(provenances)
+  const polygonGeoJson = provenancesToPolygonGeoJson(provenances)
+
+  map.addSource(POLYGON_SOURCE_ID, createFindspotPolygonsSource(polygonGeoJson))
+  map.addLayer(polygonFillLayer)
+  map.addLayer(polygonOutlineLayer)
+  setBoundaryVisibility(map, showBoundaries)
+
+  map.addSource(SOURCE_ID, createFindspotsSource(pointGeoJson))
   map.addLayer(clusterLayer)
   map.addLayer(clusterCountLayer)
   map.addLayer(unclusteredLayer)
-  fitMapToData(map, geoJson.features)
+  fitMapToData(map, pointGeoJson.features)
 }
 
 function expandCluster(map: MapLibreMap, cluster: MapGeoJSONFeature): void {
@@ -133,11 +161,11 @@ function getPopupProperties(
   }
 }
 
-function openFindspotPopup(map: MapLibreMap, feature: MapGeoJSONFeature): void {
-  const popupProperties = getPopupProperties(feature)
-  const coordinates = getFeaturePointCoordinates(feature)
-  if (!popupProperties || !coordinates) return
-
+function openFindspotPopup(
+  map: MapLibreMap,
+  popupProperties: FindspotPopupProperties,
+  coordinates: [number, number],
+): void {
   new maplibregl.Popup()
     .setLngLat(coordinates)
     .setDOMContent(createFindspotPopup(popupProperties))
@@ -157,25 +185,47 @@ function handleMapClick(map: MapLibreMap, event: MapMouseEvent): void {
     layers: [unclusteredLayer.id],
   })
   if (findspot) {
-    openFindspotPopup(map, findspot)
+    const popupProperties = getPopupProperties(findspot)
+    const coordinates = getFeaturePointCoordinates(findspot)
+
+    if (popupProperties && coordinates) {
+      openFindspotPopup(map, popupProperties, coordinates)
+    }
+    return
+  }
+
+  const [polygon] = map.queryRenderedFeatures(event.point, {
+    layers: [polygonFillLayer.id],
+  })
+  if (polygon) {
+    const popupProperties = getPopupProperties(polygon)
+    if (popupProperties) {
+      openFindspotPopup(map, popupProperties, [
+        event.lngLat.lng,
+        event.lngLat.lat,
+      ])
+    }
   }
 }
 
 function setPointerCursor(map: MapLibreMap, event: MapMouseEvent): void {
-  const isOverFindspot =
+  const isOverInteractiveLayer =
     map.queryRenderedFeatures(event.point, {
-      layers: [unclusteredLayer.id],
+      layers: INTERACTIVE_LAYER_IDS,
     }).length > 0
-  map.getCanvas().style.cursor = isOverFindspot ? 'pointer' : ''
+  map.getCanvas().style.cursor = isOverInteractiveLayer ? 'pointer' : ''
 }
 
 export default function useFindspotMap(
   containerRef: RefObject<HTMLDivElement>,
   provenances: readonly ProvenanceRecord[] | null,
+  showBoundaries: boolean,
 ): MutableRefObject<MapLibreMap | null> {
   const mapRef = useRef<MapLibreMap | null>(null)
   const latestProvenancesRef = useRef(provenances)
+  const latestShowBoundariesRef = useRef(showBoundaries)
   latestProvenancesRef.current = provenances
+  latestShowBoundariesRef.current = showBoundaries
   const isReady = provenances !== null
 
   useEffect(() => {
@@ -190,7 +240,11 @@ export default function useFindspotMap(
     mapRef.current = map
     map.addControl(new maplibregl.NavigationControl(), 'top-right')
     map.on('load', () =>
-      initializeFindspotSource(map, latestProvenancesRef.current ?? []),
+      initializeFindspotSources(
+        map,
+        latestProvenancesRef.current ?? [],
+        latestShowBoundariesRef.current,
+      ),
     )
     map.on('click', (event) => handleMapClick(map, event))
     map.on('mousemove', (event) => setPointerCursor(map, event))
@@ -200,6 +254,13 @@ export default function useFindspotMap(
       mapRef.current = null
     }
   }, [containerRef, isReady])
+
+  useEffect(() => {
+    const map = mapRef.current
+    if (!map || !map.isStyleLoaded()) return
+
+    setBoundaryVisibility(map, showBoundaries)
+  }, [showBoundaries])
 
   return mapRef
 }
