@@ -72,6 +72,16 @@ describe('media summary normalization', () => {
     })
   })
 
+  test('normalizes a legacy photo with an explicit null thumbnail path', () => {
+    expect(normalizeLegacyMediaSummary(true, null)).toEqual({
+      mediaSummary: {
+        count: 1,
+        types: ['PHOTO'],
+      },
+      legacyThumbnailPath: null,
+    })
+  })
+
   test('returns null for legacy no-photo input', () => {
     expect(normalizeLegacyMediaSummary(false)).toEqual({
       mediaSummary: null,

@@ -61,6 +61,18 @@ describe('media gallery helpers', () => {
     expect(selectInitialMedia(media)?.id).toBe('primary')
   })
 
+  test('selects the first primary item in sorted order without mutating input', () => {
+    const media = [
+      createMediaResource({ sortOrder: 2, isPrimary: true }, 'late-primary'),
+      createMediaResource({ sortOrder: 0 }, 'first'),
+      createMediaResource({ sortOrder: 1, isPrimary: true }, 'early-primary'),
+    ]
+    const inputOrder = media.map(({ id }) => id)
+
+    expect(selectInitialMedia(media)?.id).toBe('early-primary')
+    expect(media.map(({ id }) => id)).toEqual(inputOrder)
+  })
+
   test('falls back to the first ordered media item when no primary exists', () => {
     const media = [
       createMediaResource({ sortOrder: 1 }, 'second'),

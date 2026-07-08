@@ -158,5 +158,8 @@ Recommended later rollout sequence:
    integration work.
 5. Add raster preview handling for SVG copies and safe download-only behavior
    for original SVGs.
-6. Remove legacy compatibility paths only after backend responses and runtime
-   consumers fully migrate.
+6. Retire `legacyThumbnailPath` only after migrated records have real media
+   IDs, `mediaSummary` is populated for migrated list results, new thumbnail
+   loading has been deployed and verified, legacy-only responses are no longer
+   expected, backend and frontend remove the field in a coordinated change,
+   and rollback no longer depends on the legacy path.
