@@ -3,41 +3,9 @@ import { Pagination } from 'react-bootstrap'
 import { useLocation } from 'react-router-dom'
 import { useHistory } from 'router/compat'
 import _ from 'lodash'
+import { updatePaginationSearchParam } from './pagination'
 
 const NEIGHBOURING_PAGINATION_ITEMS = 3
-
-function updatePaginationSearchParam(
-  search: string,
-  paginationURLParam: string,
-  index: number,
-): string {
-  const params = search.replace(/^\?/, '').split('&').filter(Boolean)
-  const paginationParam = `${encodeURIComponent(
-    paginationURLParam,
-  )}=${encodeURIComponent(index.toString())}`
-  let updated = false
-
-  const nextParams = params.flatMap((param) => {
-    const [key] = param.split('=')
-
-    if (key !== encodeURIComponent(paginationURLParam)) {
-      return [param]
-    }
-
-    if (!updated) {
-      updated = true
-      return [paginationParam]
-    }
-
-    return []
-  })
-
-  if (!updated) {
-    nextParams.push(paginationParam)
-  }
-
-  return nextParams.join('&')
-}
 
 function PaginationItem({
   paginationURLParam,

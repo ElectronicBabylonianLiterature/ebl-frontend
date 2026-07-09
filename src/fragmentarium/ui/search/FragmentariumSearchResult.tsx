@@ -7,34 +7,31 @@ import { Col, Row } from 'react-bootstrap'
 import { FragmentQuery } from 'query/FragmentQuery'
 import { linesToShow } from './FragmentariumSearch'
 import './FragmentariumSearchResult.sass'
-import { parse, stringify } from 'query-string'
+import { stringify } from 'query-string'
 import { FragmentLines } from './FragmentariumSearchResultComponents'
 import DossiersService from 'dossiers/application/DossiersService'
 import PaginationItems from './PaginationItems'
 import { useLocation } from 'react-router-dom'
+import { useHistory } from 'router/compat'
+import {
+  getRequestedPaginationIndex,
+  paginationURLParam,
+  updatePaginationSearchParam,
+} from './pagination'
 
-const paginationURLParam = 'paginationIndex'
 const RESULTS_PER_PAGE = 50
 
 export function getActivePageFromSearch(
   search: string,
   lastPage: number,
 ): number {
-  const query = parse(search, {
-    parseNumbers: true,
-  })
-  const paginationIndex = _.isArray(query[paginationURLParam])
-    ? query[paginationURLParam][0]
-    : query[paginationURLParam]
-  const parsedPaginationIndex = _.isNumber(paginationIndex)
-    ? paginationIndex
-    : Number(paginationIndex)
+  const parsedPaginationIndex = getRequestedPaginationIndex(search)
 
   if (!Number.isFinite(parsedPaginationIndex)) {
     return 0
   }
 
-  return _.clamp(Math.trunc(parsedPaginationIndex), 0, lastPage)
+  return _.clamp(parsedPaginationIndex, 0, lastPage)
 }
 
 function ResultPages({
@@ -51,15 +48,32 @@ function ResultPages({
   queryLemmas?: readonly string[]
 }): JSX.Element {
   const location = useLocation()
+  const history = useHistory()
   const pages = _.chunk(fragments, RESULTS_PER_PAGE)
   const lastPage = pages.length - 1
   const initialActivePage = getActivePageFromSearch(location.search, lastPage)
+  const requestedPaginationIndex = getRequestedPaginationIndex(location.search)
   const [active, setActive] = useState(initialActivePage)
   const displayActive = _.clamp(active, 0, lastPage)
 
   useEffect(() => {
     setActive(initialActivePage)
   }, [initialActivePage])
+
+  useEffect(() => {
+    if (
+      Number.isFinite(requestedPaginationIndex) &&
+      requestedPaginationIndex > lastPage
+    ) {
+      history.replace({
+        search: updatePaginationSearchParam(
+          location.search,
+          paginationURLParam,
+          lastPage,
+        ),
+      })
+    }
+  }, [history, lastPage, location.search, requestedPaginationIndex])
 
   const pageButtons = (
     <Row>

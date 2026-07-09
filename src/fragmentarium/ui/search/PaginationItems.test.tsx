@@ -174,4 +174,19 @@ describe('Click through Pagination Component End', () => {
         'museum=BM&number=000123&genre=CANONICAL%3ATechnical%3AAstronomy%3AAstronomical%20Diaries&paginationIndex=1',
     })
   })
+
+  it('removes duplicate paginationIndex params when paginating', async () => {
+    renderPaginationItems(
+      4,
+      99,
+      '/library/search/?museum=BM&paginationIndex=4&genre=letters&paginationIndex=99',
+    )
+
+    await screen.findByText('5')
+    await userEvent.click(screen.getByRole('button', { name: '2' }))
+
+    expect(mockHistoryPush).toHaveBeenLastCalledWith({
+      search: 'museum=BM&paginationIndex=1&genre=letters',
+    })
+  })
 })

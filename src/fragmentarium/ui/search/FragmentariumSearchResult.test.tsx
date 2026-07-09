@@ -1,5 +1,5 @@
 import React from 'react'
-import { render, screen } from '@testing-library/react'
+import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { MemoryRouter, useLocation } from 'react-router-dom'
 import { SearchResult } from './FragmentariumSearchResult'
@@ -81,10 +81,22 @@ describe('FragmentariumSearchResult pagination', () => {
     },
   )
 
-  it('clamps out-of-range paginationIndex to the last page', async () => {
+  it('uses the first paginationIndex when the URL contains multiple values', async () => {
+    renderSearchResult('?paginationIndex=5&paginationIndex=1')
+
+    expect(await screen.findByText('K.251')).toBeInTheDocument()
+    expect(screen.queryByText('K.51')).not.toBeInTheDocument()
+  })
+
+  it('clamps out-of-range paginationIndex to the last page and normalizes the URL', async () => {
     renderSearchResult('?paginationIndex=9999')
 
     expect(await screen.findByText('K.451')).toBeInTheDocument()
     expect(screen.queryByText('K.1')).not.toBeInTheDocument()
+    await waitFor(() => {
+      expect(screen.getByTestId('location')).toHaveTextContent(
+        'paginationIndex=9',
+      )
+    })
   })
 })
