@@ -135,7 +135,7 @@ exports[`Search Shows suggestion when entering wrong number format 1`] = `
                               >
                                 <span
                                   class="css-1f43avz-a11yText-A11yText"
-                                  id="react-select-20-live-region"
+                                  id="react-select-29-live-region"
                                 />
                                 <span
                                   aria-atomic="false"
@@ -152,7 +152,7 @@ exports[`Search Shows suggestion when entering wrong number format 1`] = `
                                   >
                                     <div
                                       class="search-form-select__placeholder css-1jqq78o-placeholder"
-                                      id="react-select-20-placeholder"
+                                      id="react-select-29-placeholder"
                                     >
                                       Name Year Title
                                     </div>
@@ -163,7 +163,7 @@ exports[`Search Shows suggestion when entering wrong number format 1`] = `
                                       <input
                                         aria-activedescendant=""
                                         aria-autocomplete="list"
-                                        aria-describedby="react-select-20-placeholder"
+                                        aria-describedby="react-select-29-placeholder"
                                         aria-expanded="false"
                                         aria-haspopup="true"
                                         aria-label="Select bibliography reference"
@@ -171,7 +171,7 @@ exports[`Search Shows suggestion when entering wrong number format 1`] = `
                                         autocomplete="off"
                                         autocorrect="off"
                                         class="search-form-select__input"
-                                        id="react-select-20-input"
+                                        id="react-select-29-input"
                                         role="combobox"
                                         spellcheck="false"
                                         style="opacity: 1; width: 100%; grid-area: 1 / 2; min-width: 2px; border: 0px; margin: 0px; outline: 0; padding: 0px;"
@@ -250,7 +250,7 @@ exports[`Search Shows suggestion when entering wrong number format 1`] = `
                               >
                                 <span
                                   class="css-1f43avz-a11yText-A11yText"
-                                  id="react-select-23-live-region"
+                                  id="react-select-32-live-region"
                                 />
                                 <span
                                   aria-atomic="false"
@@ -267,7 +267,7 @@ exports[`Search Shows suggestion when entering wrong number format 1`] = `
                                   >
                                     <div
                                       class="search-form-select__placeholder css-1jqq78o-placeholder"
-                                      id="react-select-23-placeholder"
+                                      id="react-select-32-placeholder"
                                     >
                                       Lemmata
                                     </div>
@@ -278,7 +278,7 @@ exports[`Search Shows suggestion when entering wrong number format 1`] = `
                                       <input
                                         aria-activedescendant=""
                                         aria-autocomplete="list"
-                                        aria-describedby="react-select-23-placeholder"
+                                        aria-describedby="react-select-32-placeholder"
                                         aria-expanded="false"
                                         aria-haspopup="true"
                                         aria-label="Select lemmata"
@@ -286,7 +286,7 @@ exports[`Search Shows suggestion when entering wrong number format 1`] = `
                                         autocomplete="off"
                                         autocorrect="off"
                                         class="search-form-select__input"
-                                        id="react-select-23-input"
+                                        id="react-select-32-input"
                                         role="combobox"
                                         spellcheck="false"
                                         style="opacity: 1; width: 100%; grid-area: 1 / 2; min-width: 2px; border: 0px; margin: 0px; outline: 0; padding: 0px;"
@@ -331,7 +331,7 @@ exports[`Search Shows suggestion when entering wrong number format 1`] = `
                               >
                                 <span
                                   class="css-1f43avz-a11yText-A11yText"
-                                  id="react-select-24-live-region"
+                                  id="react-select-33-live-region"
                                 />
                                 <span
                                   aria-atomic="false"
@@ -365,7 +365,7 @@ exports[`Search Shows suggestion when entering wrong number format 1`] = `
                                         autocomplete="off"
                                         autocorrect="off"
                                         class="search-form-select__input"
-                                        id="react-select-24-input"
+                                        id="react-select-33-input"
                                         role="combobox"
                                         spellcheck="false"
                                         style="opacity: 1; width: 100%; grid-area: 1 / 2; min-width: 2px; border: 0px; margin: 0px; outline: 0; padding: 0px;"
@@ -454,7 +454,7 @@ exports[`Search Shows suggestion when entering wrong number format 1`] = `
                           >
                             <span
                               class="css-1f43avz-a11yText-A11yText"
-                              id="react-select-25-live-region"
+                              id="react-select-34-live-region"
                             />
                             <span
                               aria-atomic="false"
@@ -471,7 +471,7 @@ exports[`Search Shows suggestion when entering wrong number format 1`] = `
                               >
                                 <div
                                   class="genre-selector__placeholder css-1jqq78o-placeholder"
-                                  id="react-select-25-placeholder"
+                                  id="react-select-34-placeholder"
                                 >
                                   Genre
                                 </div>
@@ -482,7 +482,7 @@ exports[`Search Shows suggestion when entering wrong number format 1`] = `
                                   <input
                                     aria-activedescendant=""
                                     aria-autocomplete="list"
-                                    aria-describedby="react-select-25-placeholder"
+                                    aria-describedby="react-select-34-placeholder"
                                     aria-expanded="false"
                                     aria-haspopup="true"
                                     aria-label="select-genre"
@@ -490,7 +490,7 @@ exports[`Search Shows suggestion when entering wrong number format 1`] = `
                                     autocomplete="off"
                                     autocorrect="off"
                                     class="genre-selector__input"
-                                    id="react-select-25-input"
+                                    id="react-select-34-input"
                                     role="combobox"
                                     spellcheck="false"
                                     style="opacity: 1; width: 100%; grid-area: 1 / 2; min-width: 2px; border: 0px; margin: 0px; outline: 0; padding: 0px;"
@@ -548,7 +548,7 @@ exports[`Search Shows suggestion when entering wrong number format 1`] = `
                           >
                             <span
                               class="css-1f43avz-a11yText-A11yText"
-                              id="react-select-21-live-region"
+                              id="react-select-30-live-region"
                             />
                             <span
                               aria-atomic="false"
@@ -565,7 +565,7 @@ exports[`Search Shows suggestion when entering wrong number format 1`] = `
                               >
                                 <div
                                   class="museum-selector__placeholder css-1jqq78o-placeholder"
-                                  id="react-select-21-placeholder"
+                                  id="react-select-30-placeholder"
                                 >
                                   Museum
                                 </div>
@@ -576,7 +576,7 @@ exports[`Search Shows suggestion when entering wrong number format 1`] = `
                                   <input
                                     aria-activedescendant=""
                                     aria-autocomplete="list"
-                                    aria-describedby="react-select-21-placeholder"
+                                    aria-describedby="react-select-30-placeholder"
                                     aria-expanded="false"
                                     aria-haspopup="true"
                                     aria-label="select-museum"
@@ -584,7 +584,7 @@ exports[`Search Shows suggestion when entering wrong number format 1`] = `
                                     autocomplete="off"
                                     autocorrect="off"
                                     class="museum-selector__input"
-                                    id="react-select-21-input"
+                                    id="react-select-30-input"
                                     role="combobox"
                                     spellcheck="false"
                                     style="opacity: 1; width: 100%; grid-area: 1 / 2; min-width: 2px; border: 0px; margin: 0px; outline: 0; padding: 0px;"
@@ -648,7 +648,7 @@ exports[`Search Shows suggestion when entering wrong number format 1`] = `
                               >
                                 <span
                                   class="css-1f43avz-a11yText-A11yText"
-                                  id="react-select-26-live-region"
+                                  id="react-select-35-live-region"
                                 />
                                 <span
                                   aria-atomic="false"
@@ -665,7 +665,7 @@ exports[`Search Shows suggestion when entering wrong number format 1`] = `
                                   >
                                     <div
                                       class="search-form-select__placeholder css-1jqq78o-placeholder"
-                                      id="react-select-26-placeholder"
+                                      id="react-select-35-placeholder"
                                     >
                                       Period
                                     </div>
@@ -676,7 +676,7 @@ exports[`Search Shows suggestion when entering wrong number format 1`] = `
                                       <input
                                         aria-activedescendant=""
                                         aria-autocomplete="list"
-                                        aria-describedby="react-select-26-placeholder"
+                                        aria-describedby="react-select-35-placeholder"
                                         aria-expanded="false"
                                         aria-haspopup="true"
                                         aria-label="select-period"
@@ -684,7 +684,7 @@ exports[`Search Shows suggestion when entering wrong number format 1`] = `
                                         autocomplete="off"
                                         autocorrect="off"
                                         class="search-form-select__input"
-                                        id="react-select-26-input"
+                                        id="react-select-35-input"
                                         role="combobox"
                                         spellcheck="false"
                                         style="opacity: 1; width: 100%; grid-area: 1 / 2; min-width: 2px; border: 0px; margin: 0px; outline: 0; padding: 0px;"
@@ -729,7 +729,7 @@ exports[`Search Shows suggestion when entering wrong number format 1`] = `
                               >
                                 <span
                                   class="css-1f43avz-a11yText-A11yText"
-                                  id="react-select-27-live-region"
+                                  id="react-select-36-live-region"
                                 />
                                 <span
                                   aria-atomic="false"
@@ -746,7 +746,7 @@ exports[`Search Shows suggestion when entering wrong number format 1`] = `
                                   >
                                     <div
                                       class="search-form-select__placeholder css-1jqq78o-placeholder"
-                                      id="react-select-27-placeholder"
+                                      id="react-select-36-placeholder"
                                     >
                                       Modifier
                                     </div>
@@ -757,7 +757,7 @@ exports[`Search Shows suggestion when entering wrong number format 1`] = `
                                       <input
                                         aria-activedescendant=""
                                         aria-autocomplete="list"
-                                        aria-describedby="react-select-27-placeholder"
+                                        aria-describedby="react-select-36-placeholder"
                                         aria-expanded="false"
                                         aria-haspopup="true"
                                         aria-label="select-period-modifier"
@@ -765,7 +765,7 @@ exports[`Search Shows suggestion when entering wrong number format 1`] = `
                                         autocomplete="off"
                                         autocorrect="off"
                                         class="search-form-select__input"
-                                        id="react-select-27-input"
+                                        id="react-select-36-input"
                                         role="combobox"
                                         spellcheck="false"
                                         style="opacity: 1; width: 100%; grid-area: 1 / 2; min-width: 2px; border: 0px; margin: 0px; outline: 0; padding: 0px;"
@@ -825,7 +825,7 @@ exports[`Search Shows suggestion when entering wrong number format 1`] = `
                           >
                             <span
                               class="css-1f43avz-a11yText-A11yText"
-                              id="react-select-28-live-region"
+                              id="react-select-37-live-region"
                             />
                             <span
                               aria-atomic="false"
@@ -842,7 +842,7 @@ exports[`Search Shows suggestion when entering wrong number format 1`] = `
                               >
                                 <div
                                   class="provenance-selector__placeholder css-1jqq78o-placeholder"
-                                  id="react-select-28-placeholder"
+                                  id="react-select-37-placeholder"
                                 >
                                   Provenance
                                 </div>
@@ -853,7 +853,7 @@ exports[`Search Shows suggestion when entering wrong number format 1`] = `
                                   <input
                                     aria-activedescendant=""
                                     aria-autocomplete="list"
-                                    aria-describedby="react-select-28-placeholder"
+                                    aria-describedby="react-select-37-placeholder"
                                     aria-expanded="false"
                                     aria-haspopup="true"
                                     aria-label="select-site"
@@ -861,7 +861,7 @@ exports[`Search Shows suggestion when entering wrong number format 1`] = `
                                     autocomplete="off"
                                     autocorrect="off"
                                     class="provenance-selector__input"
-                                    id="react-select-28-input"
+                                    id="react-select-37-input"
                                     role="combobox"
                                     spellcheck="false"
                                     style="opacity: 1; width: 100%; grid-area: 1 / 2; min-width: 2px; border: 0px; margin: 0px; outline: 0; padding: 0px;"
@@ -920,7 +920,7 @@ exports[`Search Shows suggestion when entering wrong number format 1`] = `
                           >
                             <span
                               class="css-1f43avz-a11yText-A11yText"
-                              id="react-select-22-live-region"
+                              id="react-select-31-live-region"
                             />
                             <span
                               aria-atomic="false"
@@ -937,7 +937,7 @@ exports[`Search Shows suggestion when entering wrong number format 1`] = `
                               >
                                 <div
                                   class="css-1jqq78o-placeholder"
-                                  id="react-select-22-placeholder"
+                                  id="react-select-31-placeholder"
                                 >
                                   Dossiers
                                 </div>
@@ -948,7 +948,7 @@ exports[`Search Shows suggestion when entering wrong number format 1`] = `
                                   <input
                                     aria-activedescendant=""
                                     aria-autocomplete="list"
-                                    aria-describedby="react-select-22-placeholder"
+                                    aria-describedby="react-select-31-placeholder"
                                     aria-expanded="false"
                                     aria-haspopup="true"
                                     aria-label="Dossier"
@@ -956,7 +956,7 @@ exports[`Search Shows suggestion when entering wrong number format 1`] = `
                                     autocomplete="off"
                                     autocorrect="off"
                                     class=""
-                                    id="react-select-22-input"
+                                    id="react-select-31-input"
                                     role="combobox"
                                     spellcheck="false"
                                     style="opacity: 1; width: 100%; grid-area: 1 / 2; min-width: 2px; border: 0px; margin: 0px; outline: 0; padding: 0px;"
@@ -1062,11 +1062,11 @@ exports[`Search Shows suggestion when entering wrong number format 1`] = `
             role="presentation"
           >
             <button
-              aria-controls="react-aria-:r2:-tabpane-library"
+              aria-controls="react-aria-:r3:-tabpane-library"
               aria-selected="true"
               class="nav-link active"
               data-rr-ui-event-key="library"
-              id="react-aria-:r2:-tab-library"
+              id="react-aria-:r3:-tab-library"
               role="tab"
               type="button"
             >
@@ -1078,11 +1078,11 @@ exports[`Search Shows suggestion when entering wrong number format 1`] = `
             role="presentation"
           >
             <button
-              aria-controls="react-aria-:r2:-tabpane-corpus"
+              aria-controls="react-aria-:r3:-tabpane-corpus"
               aria-selected="false"
               class="nav-link"
               data-rr-ui-event-key="corpus"
-              id="react-aria-:r2:-tab-corpus"
+              id="react-aria-:r3:-tab-corpus"
               role="tab"
               tabindex="-1"
               type="button"
@@ -1095,9 +1095,9 @@ exports[`Search Shows suggestion when entering wrong number format 1`] = `
           class="tab-content"
         >
           <div
-            aria-labelledby="react-aria-:r2:-tab-library"
+            aria-labelledby="react-aria-:r3:-tab-library"
             class="fade tab-pane active show"
-            id="react-aria-:r2:-tabpane-library"
+            id="react-aria-:r3:-tabpane-library"
             role="tabpanel"
           >
             <div
@@ -1120,9 +1120,9 @@ exports[`Search Shows suggestion when entering wrong number format 1`] = `
             </div>
           </div>
           <div
-            aria-labelledby="react-aria-:r2:-tab-corpus"
+            aria-labelledby="react-aria-:r3:-tab-corpus"
             class="fade tab-pane"
-            id="react-aria-:r2:-tabpane-corpus"
+            id="react-aria-:r3:-tabpane-corpus"
             role="tabpanel"
           >
             <div

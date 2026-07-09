@@ -50,12 +50,26 @@ export default withData<
   CorpusQueryResult
 >(
   ({ data, textService, lemmaId }): JSX.Element => {
-    const total = data.matchCountTotal.toLocaleString()
-    const hasMatches = data.matchCountTotal > 0
+    const matchCountTotal = data.matchCountTotal
+    const hasMatchCount = typeof matchCountTotal === 'number'
+    const total = hasMatchCount ? matchCountTotal.toLocaleString() : null
+    const hasMatches = hasMatchCount
+      ? matchCountTotal > 0
+      : data.items.length > 0
     return (
       <>
         <p>
-          {total} matches&nbsp;
+          {hasMatchCount ? (
+            <>
+              {data.isMatchCountTotalExact === false && 'About '}
+              {total} matches&nbsp;
+            </>
+          ) : (
+            <>
+              Matches found in {data.items.length.toLocaleString()} Corpus
+              chapter{data.items.length === 1 ? '' : 's'}&nbsp;
+            </>
+          )}
           {hasMatches && (
             <LemmaQueryLink lemmaId={lemmaId} anchor={'#corpus'} />
           )}
@@ -64,7 +78,11 @@ export default withData<
         {hasMatches && (
           <p>
             <LemmaQueryLink lemmaId={lemmaId} anchor={'#corpus'}>
-              Show all {total} matches in Corpus search&nbsp;
+              {hasMatchCount && data.isMatchCountTotalExact !== false ? (
+                <>Show all {total} matches in Corpus search&nbsp;</>
+              ) : (
+                <>Show matches in Corpus search&nbsp;</>
+              )}
             </LemmaQueryLink>
           </p>
         )}
