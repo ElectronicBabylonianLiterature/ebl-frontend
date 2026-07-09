@@ -1,9 +1,9 @@
 import React from 'react'
 import { Pagination } from 'react-bootstrap'
-import { parse, stringify } from 'query-string'
 import { useLocation } from 'react-router-dom'
 import { useHistory } from 'router/compat'
 import _ from 'lodash'
+import { updatePaginationSearchParam } from './pagination'
 
 const NEIGHBOURING_PAGINATION_ITEMS = 3
 
@@ -25,13 +25,13 @@ function PaginationItem({
       active={active}
       onClick={(event) => {
         event.preventDefault()
-        const query = parse(location.search, {
-          parseNumbers: true,
-        })
         setActivePage(index)
-        query[paginationURLParam] = index
         history.push({
-          search: stringify({ ...query }),
+          search: updatePaginationSearchParam(
+            location.search,
+            paginationURLParam,
+            index,
+          ),
         })
       }}
     >

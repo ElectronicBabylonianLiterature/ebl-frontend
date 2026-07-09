@@ -22,6 +22,8 @@ import AfoRegisterService from 'afo-register/application/AfoRegisterService'
 import NotFoundPage from 'NotFoundPage'
 import DossiersService from 'dossiers/application/DossiersService'
 import RecordView from 'fragmentarium/ui/fragment/RecordView'
+import { FragmentQuery } from 'query/FragmentQuery'
+import { paginationURLParam } from 'fragmentarium/ui/search/pagination'
 
 function parseStringParam(location: Location, param: string): string | null {
   const value = parse(location.search)[param]
@@ -87,9 +89,14 @@ export default function FragmentariumRoutes({
           <FragmentariumSearch
             fragmentSearchService={fragmentSearchService}
             fragmentService={fragmentService}
-            fragmentQuery={parse(routeProps.location.search, {
-              decode: true,
-            })}
+            fragmentQuery={
+              _.omit(
+                parse(routeProps.location.search, {
+                  decode: true,
+                }),
+                paginationURLParam,
+              ) as FragmentQuery
+            }
             bibliographyService={bibliographyService}
             wordService={wordService}
             textService={textService}
