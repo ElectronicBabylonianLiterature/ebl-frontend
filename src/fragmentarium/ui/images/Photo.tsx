@@ -3,11 +3,7 @@ import { encode } from 'iconv-lite'
 import ReactMarkdown from 'react-markdown'
 import EXIF from 'exif-js'
 import { Fragment } from 'fragmentarium/domain/fragment'
-import { TransformComponent, TransformWrapper } from 'react-zoom-pan-pinch'
-import ImageButtonGroup, {
-  useImageActions,
-  getImageActions,
-} from './ImageButtonGroup'
+import ImageViewer from 'common/ui/ImageViewer'
 import './Photo.css'
 
 function fixEncoding(content: string): string {
@@ -34,44 +30,14 @@ const useExifData = (photo: Blob) => {
 
 export default function Photo({ photo, fragment }: Props): JSX.Element {
   const artist = useExifData(photo)
-  const { handleDownload, handleOpenInNewTab, imageUrl } = useImageActions(
-    photo,
-    fragment.number,
-  )
 
   return (
     <article>
-      <TransformWrapper
-        panning={{ activationKeys: [] }}
-        initialScale={1}
-        minScale={0.5}
-        maxScale={8}
-      >
-        {({ zoomIn, zoomOut, resetTransform }) => {
-          const imageActions = getImageActions({
-            zoomIn,
-            zoomOut,
-            resetTransform,
-            handleDownload,
-            handleOpenInNewTab,
-          })
-
-          return (
-            <div className="photo-container">
-              <ImageButtonGroup imageActions={imageActions} />
-              <TransformComponent>
-                <div className="image-wrapper">
-                  <img
-                    src={imageUrl}
-                    alt={`Fragment ${fragment.number}`}
-                    onClick={(e) => e.preventDefault()}
-                  />
-                </div>
-              </TransformComponent>
-            </div>
-          )
-        }}
-      </TransformWrapper>
+      <ImageViewer
+        image={photo}
+        alt={`Fragment ${fragment.number}`}
+        downloadFileName={fragment.number}
+      />
 
       <footer className="Photo__copyright">
         <small>

@@ -19,6 +19,7 @@ export interface MediaRepresentation {
 
 export interface MediaRepresentations {
   readonly original: MediaRepresentation
+  readonly display?: MediaRepresentation
   readonly thumbnails: Readonly<
     Partial<Record<ThumbnailSize, MediaRepresentation>>
   >

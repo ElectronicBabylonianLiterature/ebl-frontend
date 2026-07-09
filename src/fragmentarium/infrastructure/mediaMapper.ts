@@ -219,14 +219,18 @@ export function normalizeMediaRepresentations(
     return undefined
   }
 
-  const { original, thumbnails } = representations as MediaRepresentationsDto
+  const { original, display, thumbnails } =
+    representations as MediaRepresentationsDto
   const normalizedOriginal = normalizeMediaRepresentation(original)
   if (!normalizedOriginal) {
     return undefined
   }
 
+  const normalizedDisplay = normalizeMediaRepresentation(display)
+
   return {
     original: normalizedOriginal,
+    ...(normalizedDisplay ? { display: normalizedDisplay } : {}),
     thumbnails: normalizeThumbnailMap(thumbnails),
   }
 }

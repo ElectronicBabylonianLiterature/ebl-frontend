@@ -197,6 +197,12 @@ describe('media representation normalization', () => {
           url: '/original',
           mimeType: 'image/svg+xml',
         },
+        display: {
+          url: '/display',
+          mimeType: 'image/png',
+          width: 1600,
+          height: 1200,
+        },
         thumbnails: {
           small: {
             url: '/thumbnail/small',
@@ -215,6 +221,12 @@ describe('media representation normalization', () => {
         url: '/original',
         mimeType: 'image/svg+xml',
       },
+      display: {
+        url: '/display',
+        mimeType: 'image/png',
+        width: 1600,
+        height: 1200,
+      },
       thumbnails: {
         small: {
           url: '/thumbnail/small',
@@ -223,6 +235,27 @@ describe('media representation normalization', () => {
           height: 180,
         },
       },
+    })
+  })
+
+  test('drops invalid display representations without rejecting originals', () => {
+    expect(
+      normalizeMediaRepresentations({
+        original: {
+          url: '/original',
+          mimeType: 'image/jpeg',
+        },
+        display: {
+          url: '',
+          mimeType: 'image/jpeg',
+        },
+      }),
+    ).toEqual({
+      original: {
+        url: '/original',
+        mimeType: 'image/jpeg',
+      },
+      thumbnails: {},
     })
   })
 
@@ -254,6 +287,12 @@ describe('media resource normalization', () => {
             width: 4000,
             height: 3000,
           },
+          display: {
+            url: '/media/display',
+            mimeType: 'image/png',
+            width: 1600,
+            height: 1200,
+          },
           thumbnails: {
             small: {
               url: '/media/thumbnail/small',
@@ -278,6 +317,12 @@ describe('media resource normalization', () => {
           mimeType: 'image/svg+xml',
           width: 4000,
           height: 3000,
+        },
+        display: {
+          url: '/media/display',
+          mimeType: 'image/png',
+          width: 1600,
+          height: 1200,
         },
         thumbnails: {
           small: {

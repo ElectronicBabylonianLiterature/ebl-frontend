@@ -9,6 +9,7 @@ export interface MediaRepresentationDto {
 
 export interface MediaRepresentationsDto {
   readonly original?: unknown
+  readonly display?: unknown
   readonly thumbnails?: unknown
 }
 
