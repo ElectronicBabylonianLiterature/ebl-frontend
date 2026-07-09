@@ -27,7 +27,7 @@ export function getActivePageFromSearch(
 ): number {
   const parsedPaginationIndex = getRequestedPaginationIndex(search)
 
-  if (!Number.isFinite(parsedPaginationIndex)) {
+  if (parsedPaginationIndex === undefined) {
     return 0
   }
 
@@ -62,7 +62,7 @@ function ResultPages({
 
   useEffect(() => {
     if (
-      Number.isFinite(requestedPaginationIndex) &&
+      requestedPaginationIndex !== undefined &&
       requestedPaginationIndex > lastPage
     ) {
       history.replace({
