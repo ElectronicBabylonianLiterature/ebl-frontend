@@ -69,7 +69,7 @@ import {
 } from 'fragmentarium/ui/fragment/lemma-annotation/LemmaAnnotation'
 import { LemmaOption } from 'fragmentarium/ui/lemmatization/LemmaSelectionForm'
 import { UncertainFragmentAttestation } from 'corpus/domain/uncertainFragmentAttestation'
-import { ApiEntityAnnotationSpan } from 'fragmentarium/ui/text-annotation/EntityType'
+import { ApiAnnotationSpan } from 'fragmentarium/ui/text-annotation/annotationSpan'
 import { ProvenanceRecord } from 'fragmentarium/domain/Provenance'
 
 export function createScript(dto: ScriptDto): Script {
@@ -710,8 +710,8 @@ class ApiFragmentRepository
 
   fetchNamedEntityAnnotations(
     number: string,
-  ): Promise<readonly ApiEntityAnnotationSpan[]> {
-    return this.apiClient.fetchJson<readonly ApiEntityAnnotationSpan[]>(
+  ): Promise<readonly ApiAnnotationSpan[]> {
+    return this.apiClient.fetchJson<readonly ApiAnnotationSpan[]>(
       createFragmentPath(number, 'named-entities'),
       false,
     )
@@ -719,7 +719,7 @@ class ApiFragmentRepository
 
   updateNamedEntityAnnotations(
     number: string,
-    annotations: readonly ApiEntityAnnotationSpan[],
+    annotations: readonly ApiAnnotationSpan[],
   ): Promise<Fragment> {
     return this.apiClient
       .postJson<FragmentDto>(createFragmentPath(number, 'named-entities'), {

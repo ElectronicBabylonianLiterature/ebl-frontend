@@ -7,6 +7,20 @@ import { lineNumberToAtf } from 'transliteration/domain/lineNumberToString'
 import TransliterationTd from './TransliterationTd'
 import { Labels, labelsAbbreviation } from 'transliteration/domain/labels'
 import { LemmaPopover } from 'transliteration/ui/WordInfo'
+import { TokenActionWrapperProps } from 'transliteration/ui/LineAccumulator'
+import RealiaTokenLinks from 'transliteration/ui/RealiaTokenLinks'
+
+function LemmaPopoverWithRealiaLinks({
+  token,
+  children,
+}: TokenActionWrapperProps): JSX.Element {
+  return (
+    <>
+      <LemmaPopover token={token}>{children}</LemmaPopover>
+      <RealiaTokenLinks token={token} />
+    </>
+  )
+}
 
 function createId(labels: Labels | undefined, textLine: TextLine) {
   const label = labels ? `${labelsAbbreviation(labels)} ` : ''
@@ -39,7 +53,7 @@ export default function DisplayTextLine({
       <LineColumns
         columns={textLine.columns}
         maxColumns={columns}
-        TokenActionWrapper={LemmaPopover}
+        TokenActionWrapper={LemmaPopoverWithRealiaLinks}
       />
     </>
   )

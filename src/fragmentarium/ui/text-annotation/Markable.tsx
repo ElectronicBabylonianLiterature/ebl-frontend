@@ -1,17 +1,18 @@
-import React, { PropsWithChildren, useContext, useRef, memo } from 'react'
+import React, { PropsWithChildren, useContext, useRef } from 'react'
 import { AnyWord } from 'transliteration/domain/token'
 import './TextAnnotation.sass'
 import classNames from 'classnames'
 import _ from 'lodash'
-import { Overlay, Popover } from 'react-bootstrap'
 import SpanAnnotator, {
   EntityTypeOption,
   clearSelection,
 } from 'fragmentarium/ui/text-annotation/SpanAnnotator'
-import { EntityAnnotationSpan } from 'fragmentarium/ui/text-annotation/EntityType'
+import { AnnotationSpan } from 'fragmentarium/ui/text-annotation/annotationSpan'
 import AnnotationContext from 'fragmentarium/ui/text-annotation/TextAnnotationContext'
 import { SelectInstance } from 'react-select'
 import SpanEditor from 'fragmentarium/ui/text-annotation/SpanEditor'
+import SpanIndicator from 'fragmentarium/ui/text-annotation/SpanIndicator'
+import InlineEditor from 'fragmentarium/ui/text-annotation/InlineEditor'
 import { getSelectedTokens } from 'fragmentarium/ui/text-annotation/selectionUtils'
 
 const markableClass = 'markable'
@@ -28,7 +29,7 @@ function isSelected(token: AnyWord, selection: readonly string[]): boolean {
 }
 
 function hasActiveSpan(
-  activeSpan: EntityAnnotationSpan | null,
+  activeSpan: AnnotationSpan | null,
   tokenId?: string | null,
 ): boolean {
   return !!tokenId && !!activeSpan && activeSpan.span.includes(tokenId)
@@ -42,75 +43,6 @@ function mergeSelections(
     ? _.union(selection, newSelection)
     : _.difference(selection, newSelection)
 }
-
-function SpanIndicator({
-  tokenId,
-  entitySpan,
-  activeSpanId,
-  setActiveSpanId,
-}: {
-  tokenId?: string
-  entitySpan: EntityAnnotationSpan
-  activeSpanId: string | null
-  setActiveSpanId: React.Dispatch<React.SetStateAction<string | null>>
-}): JSX.Element {
-  const isInitial = tokenId === _.first(entitySpan.span)
-
-  return (
-    <span
-      title={entitySpan.name}
-      onMouseUp={() => {
-        setActiveSpanId(entitySpan.id)
-      }}
-      data-span-id={entitySpan.id}
-      data-testid={`${tokenId}__${entitySpan.id}`}
-      className={classNames(
-        'span-indicator',
-        `tier-depth--${entitySpan.tier}`,
-        `named-entity__${entitySpan.type}`,
-        {
-          highlight: entitySpan.id === activeSpanId,
-          initial: isInitial,
-          final: tokenId === _.last(entitySpan.span),
-        },
-      )}
-    />
-  )
-}
-
-const InlineEditor = memo(function InlineEditor({
-  target,
-  show,
-  onHide,
-  onEntered,
-  id,
-  title,
-  children,
-}: {
-  target: HTMLElement | null
-  show: boolean
-  onHide: () => void
-  onEntered: () => void
-  id: string
-  title: string
-  children: React.ReactNode
-}): JSX.Element {
-  return (
-    <Overlay
-      target={target}
-      show={show && !!target}
-      placement={'top'}
-      rootClose
-      onHide={onHide}
-      onEntered={onEntered}
-    >
-      <Popover id={id} className={'text-annotation__editor-popover'}>
-        <Popover.Header>{title}</Popover.Header>
-        <Popover.Body>{children}</Popover.Body>
-      </Popover>
-    </Overlay>
-  )
-})
 
 export default function Markable({
   token,
@@ -129,11 +61,11 @@ export default function Markable({
   selectionStartTokenIdRef?: React.MutableRefObject<string | null>
 }>): JSX.Element {
   const annotationContextValue = useContext(AnnotationContext)
-  const [{ entities, words }] = annotationContextValue
+  const [{ annotations, words }] = annotationContextValue
   const selectRef = useRef<SelectInstance<EntityTypeOption> | null>(null)
   const [target, setTarget] = React.useState<HTMLSpanElement | null>(null)
   const activeSpan =
-    _.find(entities, (entity) => entity.id === activeSpanId) || null
+    _.find(annotations, (annotation) => annotation.id === activeSpanId) || null
   const hasWords = words.length > 0
   const showEditorOverlay =
     hasWords && !!activeSpan && _.head(activeSpan.span) === token.id
@@ -227,12 +159,12 @@ export default function Markable({
       {annotator}
       {editor}
       <span onMouseUp={handleSelection}>{children}</span>
-      {entities.map((entity, index) => {
-        return token.id && entity.span.includes(token.id) ? (
+      {annotations.map((annotation, index) => {
+        return token.id && annotation.span.includes(token.id) ? (
           <SpanIndicator
             key={index}
             tokenId={token.id}
-            entitySpan={entity}
+            entitySpan={annotation}
             activeSpanId={activeSpanId}
             setActiveSpanId={setActiveSpanId}
           />

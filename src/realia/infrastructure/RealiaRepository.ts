@@ -135,13 +135,18 @@ export default class RealiaRepository {
     this.apiClient = apiClient
   }
 
-  find(realiaId: string): Promise<RealiaEntry> {
+  private fetchEntry(path: string): Promise<RealiaEntry> {
     return this.apiClient
-      .fetchJson<RealiaEntryDto>(
-        `/realia/${encodeURIComponent(realiaId)}`,
-        false,
-      )
+      .fetchJson<RealiaEntryDto>(path, false)
       .then(mapRealiaEntry)
+  }
+
+  find(lemma: string): Promise<RealiaEntry> {
+    return this.fetchEntry(`/realia/${encodeURIComponent(lemma)}`)
+  }
+
+  findByRealiaId(realiaId: string): Promise<RealiaEntry> {
+    return this.fetchEntry(`/realia/by-id/${encodeURIComponent(realiaId)}`)
   }
 
   search(query: string): Promise<readonly RealiaEntry[]> {

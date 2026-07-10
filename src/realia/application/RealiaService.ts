@@ -1,5 +1,5 @@
 import Promise from 'bluebird'
-import { RealiaEntry } from 'realia/domain/RealiaEntry'
+import { isRealiaId, RealiaEntry } from 'realia/domain/RealiaEntry'
 import RealiaRepository from 'realia/infrastructure/RealiaRepository'
 
 export default class RealiaService {
@@ -9,8 +9,10 @@ export default class RealiaService {
     this.realiaRepository = realiaRepository
   }
 
-  find(realiaId: string): Promise<RealiaEntry> {
-    return this.realiaRepository.find(realiaId)
+  find(id: string): Promise<RealiaEntry> {
+    return isRealiaId(id)
+      ? this.realiaRepository.findByRealiaId(id)
+      : this.realiaRepository.find(id)
   }
 
   search(query: string): Promise<readonly RealiaEntry[]> {

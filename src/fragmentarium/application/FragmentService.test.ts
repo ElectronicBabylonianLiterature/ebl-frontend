@@ -38,7 +38,7 @@ import { ArchaeologyDto } from 'fragmentarium/domain/archaeologyDtos'
 import { toArchaeologyDto } from 'fragmentarium/domain/archaeologyDtos'
 import { LemmaOption } from 'fragmentarium/ui/lemmatization/LemmaSelectionForm'
 import { LineLemmaAnnotations } from 'fragmentarium/ui/fragment/lemma-annotation/LemmaAnnotation'
-import { ApiEntityAnnotationSpan } from 'fragmentarium/ui/text-annotation/EntityType'
+import { ApiAnnotationSpan } from 'fragmentarium/ui/text-annotation/annotationSpan'
 import { UncertainFragmentAttestation } from 'corpus/domain/uncertainFragmentAttestation'
 import { ProvenanceRecord } from 'fragmentarium/domain/Provenance'
 
@@ -791,7 +791,7 @@ describe('methods returning fragment', () => {
   })
 
   describe('fetch named entity annotations', () => {
-    const namedEntityAnnotations: readonly ApiEntityAnnotationSpan[] = [
+    const namedEntityAnnotations: readonly ApiAnnotationSpan[] = [
       {
         id: 'entity-1',
         type: 'PERSONAL_NAME',
@@ -814,7 +814,7 @@ describe('methods returning fragment', () => {
   })
 
   describe('update named entity annotations', () => {
-    const namedEntityAnnotations: readonly ApiEntityAnnotationSpan[] = [
+    const namedEntityAnnotations: readonly ApiAnnotationSpan[] = [
       {
         id: 'entity-1',
         type: 'PERSONAL_NAME',

@@ -18,6 +18,12 @@ export interface AfoRegisterEntry {
   readonly crossReferences: readonly RealiaCrossReference[]
 }
 
+const REALIA_ID_PATTERN = /^realia_\d+$/
+
+export function isRealiaId(id: string): boolean {
+  return REALIA_ID_PATTERN.test(id)
+}
+
 export function realiaCrossReferenceTarget(
   crossReference: RealiaCrossReference,
 ): string {

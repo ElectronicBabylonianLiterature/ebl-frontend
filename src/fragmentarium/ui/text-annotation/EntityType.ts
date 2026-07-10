@@ -38,10 +38,9 @@ export type NamedEntity = {
   readonly type: EntityType
 }
 
-export interface ApiEntityAnnotationSpan extends NamedEntity {
-  span: readonly string[]
+export type RealiaNamedEntity = {
+  readonly id: string
+  readonly realiaId: string
 }
-export interface EntityAnnotationSpan extends ApiEntityAnnotationSpan {
-  tier: number
-  name: string
-}
+
+export type FragmentNamedEntity = NamedEntity | RealiaNamedEntity

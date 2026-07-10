@@ -22,7 +22,7 @@ import { MesopotamianDate } from 'chronology/domain/Date'
 import { Archaeology } from './archaeology'
 import { Colophon } from 'fragmentarium/domain/Colophon'
 import { DossierReference } from 'dossiers/domain/DossierReference'
-import { NamedEntity } from 'fragmentarium/ui/text-annotation/EntityType'
+import { FragmentNamedEntity } from 'fragmentarium/ui/text-annotation/EntityType'
 
 export interface FragmentInfo {
   readonly number: string
@@ -115,7 +115,7 @@ interface FragmentProps {
   colophon?: Colophon
   authorizedScopes?: string[]
   dossiers: ReadonlyArray<DossierReference>
-  namedEntities?: ReadonlyArray<NamedEntity>
+  namedEntities?: ReadonlyArray<FragmentNamedEntity>
 }
 
 export class Fragment {
@@ -153,7 +153,7 @@ export class Fragment {
     readonly archaeology?: Archaeology,
     readonly colophon?: Colophon,
     readonly authorizedScopes?: string[],
-    readonly namedEntities?: ReadonlyArray<NamedEntity>,
+    readonly namedEntities?: ReadonlyArray<FragmentNamedEntity>,
   ) {}
 
   static create(props: FragmentProps): Fragment {

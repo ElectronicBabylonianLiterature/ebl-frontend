@@ -1,44 +1,45 @@
 import {
-  ApiEntityAnnotationSpan,
-  EntityAnnotationSpan,
-  EntityTypes,
-} from 'fragmentarium/ui/text-annotation/EntityType'
+  AnnotationSpan,
+  ApiAnnotationSpan,
+  ApiAnnotationSpanBase,
+  annotationSpanName,
+} from 'fragmentarium/ui/text-annotation/annotationSpan'
 import _ from 'lodash'
 import React, { Dispatch, useReducer } from 'react'
 
 type State = {
-  entities: readonly EntityAnnotationSpan[]
+  annotations: readonly AnnotationSpan[]
   words: readonly string[]
 }
 export type AnnotationContextService = [State, Dispatch<Action>]
 
 type AddAction = {
   type: 'add'
-  entity: ApiEntityAnnotationSpan
+  annotation: ApiAnnotationSpan
 }
 type EditAction = {
   type: 'edit'
-  entity: ApiEntityAnnotationSpan
+  annotation: ApiAnnotationSpan
 }
 type DeleteAction = {
   type: 'delete'
-  entity: EntityAnnotationSpan
+  annotation: ApiAnnotationSpanBase
 }
 
 export type Action = AddAction | EditAction | DeleteAction
 
 const AnnotationContext = React.createContext<AnnotationContextService>([
-  { entities: [], words: [] },
+  { annotations: [], words: [] },
   () => {},
 ])
 
 function createSpanBoundaryMaps(
-  entities: readonly (EntityAnnotationSpan | ApiEntityAnnotationSpan)[],
+  annotations: readonly ApiAnnotationSpan[],
 ): [Map<string, string[]>, Map<string, string[]>] {
   const spanStarts = new Map<string, string[]>()
   const spanEnds = new Map<string, string[]>()
 
-  _.sortBy(entities, ({ span }) => -span.length).forEach(({ span, id }) => {
+  _.sortBy(annotations, ({ span }) => -span.length).forEach(({ span, id }) => {
     const start = span[0]
     const end = span[span.length - 1]
 
@@ -59,33 +60,40 @@ function getLowestOpenTier(occupiedTiers: number[]): number {
 
 function setTiers(
   words: readonly string[],
-  entities: readonly (EntityAnnotationSpan | ApiEntityAnnotationSpan)[],
-): readonly EntityAnnotationSpan[] {
-  const [spanStarts, spanEnds] = createSpanBoundaryMaps(entities)
+  annotations: readonly ApiAnnotationSpan[],
+): readonly AnnotationSpan[] {
+  const [spanStarts, spanEnds] = createSpanBoundaryMaps(annotations)
 
   const tiers = new Map<string, number>()
   const tierQueue = new Map<string, number>()
   const popStack = new Set<string>()
 
   words.forEach((wordId) => {
-    popStack.forEach((entityId) => tierQueue.delete(entityId))
+    popStack.forEach((annotationId) => tierQueue.delete(annotationId))
     popStack.clear()
-    spanStarts.get(wordId)?.forEach((entityId) => {
-      if (!tierQueue.has(entityId)) {
+    spanStarts.get(wordId)?.forEach((annotationId) => {
+      if (!tierQueue.has(annotationId)) {
         const openTier = getLowestOpenTier([...tierQueue.values()])
 
-        tierQueue.set(entityId, openTier)
-        tiers.set(entityId, openTier)
+        tierQueue.set(annotationId, openTier)
+        tiers.set(annotationId, openTier)
       }
     })
-    spanEnds.get(wordId)?.forEach((entityId) => popStack.add(entityId))
+    spanEnds.get(wordId)?.forEach((annotationId) => popStack.add(annotationId))
   })
 
-  return entities.map((entity) => ({
-    ...entity,
-    tier: tiers.get(entity.id) || 1,
-    name: EntityTypes[entity.type].name,
+  return annotations.map((annotation) => ({
+    ...annotation,
+    tier: tiers.get(annotation.id) || 1,
+    name: annotationSpanName(annotation),
   }))
+}
+
+function withoutId(
+  annotations: readonly AnnotationSpan[],
+  id: string,
+): readonly ApiAnnotationSpan[] {
+  return annotations.filter((annotation) => annotation.id !== id)
 }
 
 function reducer(state: State, action: Action): State {
@@ -93,22 +101,25 @@ function reducer(state: State, action: Action): State {
     case 'add':
       return {
         ...state,
-        entities: setTiers(state.words, [...state.entities, action.entity]),
+        annotations: setTiers(state.words, [
+          ...state.annotations,
+          action.annotation,
+        ]),
       }
     case 'edit':
       return {
         ...state,
-        entities: setTiers(state.words, [
-          ...state.entities.filter((entity) => entity.id !== action.entity.id),
-          action.entity,
+        annotations: setTiers(state.words, [
+          ...withoutId(state.annotations, action.annotation.id),
+          action.annotation,
         ]),
       }
     case 'delete':
       return {
         ...state,
-        entities: setTiers(
+        annotations: setTiers(
           state.words,
-          state.entities.filter((entity) => entity.id !== action.entity.id),
+          withoutId(state.annotations, action.annotation.id),
         ),
       }
   }
@@ -116,9 +127,9 @@ function reducer(state: State, action: Action): State {
 
 export function useAnnotationContext(
   words: readonly string[],
-  initial: readonly ApiEntityAnnotationSpan[] = [],
+  initial: readonly ApiAnnotationSpan[] = [],
 ): AnnotationContextService {
-  return useReducer(reducer, { entities: setTiers(words, initial), words })
+  return useReducer(reducer, { annotations: setTiers(words, initial), words })
 }
 
 export default AnnotationContext

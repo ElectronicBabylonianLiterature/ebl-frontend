@@ -42,3 +42,25 @@ const testData: TestData<RealiaService>[] = [
 ]
 
 describe('RealiaService', () => testDelegation(realiaService, testData))
+
+describe('RealiaService.find resolution', () => {
+  beforeEach(() => jest.clearAllMocks())
+
+  it('resolves a realiaId through the by-id endpoint', async () => {
+    realiaRepository.findByRealiaId.mockReturnValue(Promise.resolve(entry))
+
+    await expect(realiaService.find('realia_000846')).resolves.toEqual(entry)
+    expect(realiaRepository.findByRealiaId).toHaveBeenCalledWith(
+      'realia_000846',
+    )
+    expect(realiaRepository.find).not.toHaveBeenCalled()
+  })
+
+  it('resolves a lemma through the lemma endpoint', async () => {
+    realiaRepository.find.mockReturnValue(Promise.resolve(entry))
+
+    await expect(realiaService.find('Pig')).resolves.toEqual(entry)
+    expect(realiaRepository.find).toHaveBeenCalledWith('Pig')
+    expect(realiaRepository.findByRealiaId).not.toHaveBeenCalled()
+  })
+})

@@ -28,9 +28,9 @@ import AnnotationContext, {
 } from 'fragmentarium/ui/text-annotation/TextAnnotationContext'
 import { clearSelection } from 'fragmentarium/ui/text-annotation/SpanAnnotator'
 import {
-  ApiEntityAnnotationSpan,
-  EntityAnnotationSpan,
-} from 'fragmentarium/ui/text-annotation/EntityType'
+  ApiAnnotationSpan,
+  omitDerivedSpanFields,
+} from 'fragmentarium/ui/text-annotation/annotationSpan'
 import { Button, Form, Spinner } from 'react-bootstrap'
 import _ from 'lodash'
 import AnnotationInstructions from 'fragmentarium/ui/text-annotation/AnnotationInstructions'
@@ -147,12 +147,6 @@ function DisplayRow({
   )
 }
 
-function omitTiers(
-  entities: readonly EntityAnnotationSpan[],
-): readonly ApiEntityAnnotationSpan[] {
-  return entities.map((entity) => _.omit(entity, 'tier', 'name'))
-}
-
 function SpanAnnotationDisplay({
   fragment,
   initialAnnotations,
@@ -160,23 +154,26 @@ function SpanAnnotationDisplay({
   fragmentService,
 }: {
   fragment: Fragment
-  initialAnnotations: readonly ApiEntityAnnotationSpan[]
+  initialAnnotations: readonly ApiAnnotationSpan[]
   setInitialAnnotations: React.Dispatch<
-    React.SetStateAction<readonly ApiEntityAnnotationSpan[]>
+    React.SetStateAction<readonly ApiAnnotationSpan[]>
   >
   fragmentService: FragmentService
 }): JSX.Element {
   const [selection, setSelection] = useState<readonly string[]>([])
   const [activeSpanId, setActiveSpanId] = React.useState<string | null>(null)
   const selectionStartTokenIdRef = useRef<string | null>(null)
-  const [{ entities, words }] = useContext(AnnotationContext)
-  const isDirty = !_.isEqual(initialAnnotations, omitTiers(entities))
+  const [{ annotations, words }] = useContext(AnnotationContext)
+  const isDirty = !_.isEqual(
+    initialAnnotations,
+    omitDerivedSpanFields(annotations),
+  )
   const [isSaving, setIsSaving] = useState(false)
 
   const text = fragment.text
 
   const saveAnnotations = () => {
-    const updatedAnnotations = omitTiers(entities)
+    const updatedAnnotations = omitDerivedSpanFields(annotations)
     setIsSaving(true)
     fragmentService
       .updateNamedEntityAnnotations(fragment.number, updatedAnnotations)
@@ -293,7 +290,7 @@ function TextAnnotationView({
   fragmentService,
 }: {
   fragment: Fragment
-  annotations: readonly ApiEntityAnnotationSpan[]
+  annotations: readonly ApiAnnotationSpan[]
   fragmentService: FragmentService
 }): JSX.Element {
   const words: readonly string[] = useMemo(() => {
@@ -306,7 +303,7 @@ function TextAnnotationView({
       )
   }, [fragment.text])
   const [initialAnnotations, setInitialAnnotations] =
-    useState<readonly ApiEntityAnnotationSpan[]>(annotations)
+    useState<readonly ApiAnnotationSpan[]>(annotations)
   const annotationContext = useAnnotationContext(words, initialAnnotations)
 
   return (
@@ -325,7 +322,7 @@ function TextAnnotationView({
 export default withData<
   { fragmentService: FragmentService },
   { number: string; fragmentService: FragmentService },
-  { fragment: Fragment; annotations: readonly ApiEntityAnnotationSpan[] }
+  { fragment: Fragment; annotations: readonly ApiAnnotationSpan[] }
 >(
   ({ data, fragmentService }) => (
     <TextAnnotationView

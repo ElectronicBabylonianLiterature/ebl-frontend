@@ -3,10 +3,13 @@ import FragmentService from 'fragmentarium/application/FragmentService'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import TextAnnotation from 'fragmentarium/ui/text-annotation/TextAnnotation'
 import { tokenIdFragment } from 'test-support/fragment-fixtures'
-import { ApiEntityAnnotationSpan } from 'fragmentarium/ui/text-annotation/EntityType'
+import { ApiAnnotationSpan } from 'fragmentarium/ui/text-annotation/annotationSpan'
 import userEvent from '@testing-library/user-event'
 import { ThemeProvider } from 'react-bootstrap'
 import { getSelectedTokens } from 'fragmentarium/ui/text-annotation/selectionUtils'
+import { WithRealiaService } from 'fragmentarium/ui/text-annotation/textAnnotation.testSupport'
+
+jest.mock('realia/application/RealiaService')
 
 jest.mock('react-bootstrap', () => {
   const actual = jest.requireActual('react-bootstrap')
@@ -42,7 +45,7 @@ const fragmentServiceMock = new MockFragmentService()
 let container: HTMLElement
 const number = tokenIdFragment.number
 
-const testAnnotations: readonly ApiEntityAnnotationSpan[] = [
+const testAnnotations: readonly ApiAnnotationSpan[] = [
   {
     id: 'Entity-1',
     type: 'PERSONAL_NAME',
@@ -140,7 +143,12 @@ describe('Named Entity Annotation', () => {
     )
     container = render(
       <ThemeProvider>
-        <TextAnnotation fragmentService={fragmentServiceMock} number={number} />
+        <WithRealiaService>
+          <TextAnnotation
+            fragmentService={fragmentServiceMock}
+            number={number}
+          />
+        </WithRealiaService>
       </ThemeProvider>,
     ).container
     await screen.findByLabelText('save-annotations')

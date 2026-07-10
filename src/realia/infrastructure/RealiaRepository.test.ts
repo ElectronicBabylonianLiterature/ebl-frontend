@@ -21,6 +21,14 @@ const testData: TestData<RealiaRepository>[] = [
     Promise.resolve(entryDto),
   ),
   new TestData(
+    'findByRealiaId',
+    ['realia_000846'],
+    apiClient.fetchJson,
+    expectedEntry,
+    ['/realia/by-id/realia_000846', false],
+    Promise.resolve(entryDto),
+  ),
+  new TestData(
     'search',
     ['pig'],
     apiClient.fetchJson,
