@@ -42,6 +42,36 @@ Provide project context and coding guidelines that AI should follow when generat
 - After any code change, always run `yarn tsc` before finalizing work.
 - Treat TypeScript compilation as a hard gate: do not stop after changes until `yarn tsc` reports no errors.
 
+## Git Branching and Pushing
+
+- `master` is protected in intent: never commit to it, never push to it, never force-push it. All work lands on a feature branch via a pull request.
+- Treat this as a hard gate: **never create a branch with `git checkout -b <name> origin/master`**. That sets `branch.<name>.merge = refs/heads/master`, which makes the branch's upstream `master` itself. A later `git push` — including the VS Code Sync/Publish button — then writes the branch's commits straight onto `master`. Use `--no-track` instead:
+
+  ```sh
+  git checkout -b <name> --no-track origin/master   # or: git switch -c <name> --no-track origin/master
+  ```
+
+- Publish the branch with `git push -u origin <name>` immediately after the first commit, so it tracks a remote branch of the same name. Leaving a branch unpublished is what makes a stray `git push` land on `master`, and a PR cannot be opened without a remote head ref.
+- Before finalizing any branch, verify its upstream. Both checks are mandatory and must not name `master`:
+
+  ```sh
+  git config --get branch.<name>.merge   # must be refs/heads/<name>
+  git rev-parse --abbrev-ref '@{push}'   # must be origin/<name>
+  ```
+
+- Never pass a bare `git push` when the current branch's upstream has not been verified. When in doubt, push explicitly: `git push origin <name>:refs/heads/<name>`.
+- A push to `master` triggers the `docker` and `docker-test` jobs in `.github/workflows/main.yml`, which build and publish a Docker image to the registry. An accidental push therefore has effects beyond git history and must be reported to the user, not silently repaired.
+- Recovering from an accidental push to `master` (requires explicit user confirmation, since it rewrites a shared branch):
+
+  ```sh
+  git push -u origin <name>                      # 1. preserve the commit on its own ref first
+  git push --force-with-lease=refs/heads/master:<bad-sha> \
+      origin <good-sha>:refs/heads/master        # 2. rewind master
+  git ls-remote origin refs/heads/master         # 3. verify against the remote, not local refs
+  ```
+
+- Never verify remote state from local refs such as `origin/master`; they are only as fresh as the last fetch. Always confirm with `git ls-remote`.
+
 ## File Restore Rules
 
 - When asked to restore a file to its previous state, always restore it from the `master` branch reference.

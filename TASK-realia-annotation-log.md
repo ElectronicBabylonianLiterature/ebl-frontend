@@ -120,9 +120,36 @@ Behaviour is covered by unit/integration tests with a mocked `FragmentService`.
 `GET /realia/by-id/{realia_id}` and `GET /realia?query=` were exercised against the live
 API. No POST was made against production.
 
+## Git incident and recovery (2026-07-10)
+
+- The feature commit (`ea5c9a23`) was accidentally pushed to `master`. Root cause: the
+  branch was created with `git checkout -b add-realia-annotation origin/master`, which set
+  `branch.add-realia-annotation.merge = refs/heads/master`. The branch was never published,
+  so a push resolved its destination from that upstream and fast-forwarded `master`.
+- Recovery: pushed the branch to its own ref first (`git push -u origin
+add-realia-annotation`), then rewound `master` with
+  `git push --force-with-lease=refs/heads/master:ea5c9a23 origin 24d6dd36:refs/heads/master`,
+  and verified against the remote with `git ls-remote` (not the stale `origin/*` refs).
+- Post-recovery remote state: `master` at `24d6dd36`; `add-realia-annotation` at `ea5c9a23`
+  (its own ref, tracking itself); `ea5c9a23` is provably not an ancestor of `master`.
+- Side effect not undone by the rewind: the master push triggered the `docker` /
+  `docker-test` jobs in `.github/workflows/main.yml`, which build and publish a registry
+  image on any master push. The registry may still hold an image built from `ea5c9a23`.
+  Re-run that workflow on `24d6dd36` (or check the published tag) — outside git, not done here.
+
+## Pending working-tree change
+
+- `.github/copilot-instructions.md` has an uncommitted +30-line "Git Branching and Pushing"
+  section (require `--no-track` when branching, publish with `-u` immediately, verify the
+  upstream before finalizing, verify remote state with `git ls-remote`). Left uncommitted
+  for the user to decide how to land.
+
 ## Progress
 
 - [x] Branch created, backend contract verified and confirmed with the user.
 - [x] Implementation complete; all hard gates green.
+- [x] Feature committed (`ea5c9a23`) and branch published to `origin/add-realia-annotation`.
 - [ ] Backend schema change in `ebl-api` (see TODO file, "Blocked on the backend").
+- [ ] Decide how to land the pending `copilot-instructions.md` edit.
+- [ ] Re-publish the Docker image from `24d6dd36` (or confirm the bad image was superseded).
 - [ ] Remove `TASK-realia-annotation-todo.md` / `TASK-realia-annotation-log.md` before merge.

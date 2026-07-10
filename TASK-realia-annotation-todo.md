@@ -56,6 +56,15 @@ matching schema change**. Required there:
 3. Once (2) lands, the read-only links light up automatically — `CuneiformFragment`
    already builds the lookup from `fragment.namedEntities`.
 
+## Open follow-ups (post-implementation)
+
+- [ ] Backend schema change in `ebl-api` (see "Blocked on the backend" above).
+- [ ] Decide how to land the uncommitted `.github/copilot-instructions.md` edit
+      (the new "Git Branching and Pushing" section).
+- [ ] Re-publish the Docker image from `master` at `24d6dd36`, or confirm the image built
+      from the accidental master push was superseded (see log, "Git incident and recovery").
+- [ ] Remove this file and `TASK-realia-annotation-log.md` before the PR merges.
+
 ## Constraints (from .github/copilot-instructions.md)
 
 - 250-line ceiling on every file created or grown. `Markable.tsx` is at 245 → split it.
