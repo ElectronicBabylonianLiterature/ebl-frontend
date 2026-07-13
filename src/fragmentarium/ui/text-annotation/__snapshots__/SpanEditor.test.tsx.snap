@@ -32,7 +32,7 @@ exports[`SpanEditor shows the selection menu 1`] = `
               <div
                 class="css-1dimb5e-singleValue"
               >
-                PERSONAL_NAME
+                PN: Personal Name
               </div>
               <div
                 class="css-19bb58m"

@@ -43,6 +43,15 @@ export const entityTypeOptions: EntityTypeOption[] = entities.map((entity) => ({
   label: `${entity.label}: ${entity.name}`,
 }))
 
+export function getEntityTypeOption(type: EntityType): EntityTypeOption {
+  return (
+    entityTypeOptions.find((option) => option.value === type) ?? {
+      value: type,
+      label: type,
+    }
+  )
+}
+
 interface SpanAnnotatorProps {
   selection: readonly string[]
   setSelection: React.Dispatch<React.SetStateAction<readonly string[]>>

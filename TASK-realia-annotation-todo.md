@@ -109,6 +109,11 @@ for the picker.
       subtree, destroying the open editor's state. Fixed with `useCallback`; the editor
       now also registers the chosen entry on Apply rather than mid-edit. Covered by
       `TextAnnotation.realiaEditing.test.tsx`.
+- [x] 25. The tag editor opened showing the raw entity type (`ROYAL_NAME`) instead of the
+      option label (`RN: Royal Name`). `EntitySpanEditor` hand-built its initial react-select
+      value as `{ label: entitySpan.type, value: entitySpan.type }`, using the stored value as
+      the label. The label now comes from the single source of truth, `entityTypeOptions`, via
+      the new `getEntityTypeOption`.
 
 ## Open follow-ups (post-implementation)
 

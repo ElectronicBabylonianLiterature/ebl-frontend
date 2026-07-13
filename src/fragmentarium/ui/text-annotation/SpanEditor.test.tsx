@@ -24,6 +24,7 @@ let container: HTMLElement
 const setActiveSpanId = jest.fn()
 const mockDispatch = jest.fn()
 const buildingName = 'BN: Building Name'
+const personalName = 'PN: Personal Name'
 
 const entitySpan = entityAnnotationSpan({
   id: 'Entity-1',
@@ -60,6 +61,11 @@ describe('SpanEditor', () => {
   it('shows the selection menu', () => {
     setup()
     expect(container).toMatchSnapshot()
+  })
+  it('shows the label of the current tag, not its raw type', () => {
+    setup()
+    expect(screen.getByText(personalName)).toBeInTheDocument()
+    expect(screen.queryByText(entitySpan.type)).not.toBeInTheDocument()
   })
   it('updates the annotation', async () => {
     setup()
@@ -189,7 +195,9 @@ describe('SpanEditor uniqueness', () => {
 
     await userEvent.click(screen.getByLabelText('edit-named-entity'))
 
-    expect(screen.getByText('PN: Personal Name')).toBeInTheDocument()
+    expect(
+      screen.getByRole('option', { name: personalName }),
+    ).toBeInTheDocument()
   })
 
   it('does not offer a realia already on the same span', async () => {

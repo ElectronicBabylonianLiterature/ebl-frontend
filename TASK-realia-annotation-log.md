@@ -355,6 +355,43 @@ add-realia-annotation`), then rewound `master` with
   image on any master push. The registry may still hold an image built from `ea5c9a23`.
   Re-run that workflow on `24d6dd36` (or check the published tag) — outside git, not done here.
 
+## Bug: the tag editor showed the raw entity type (2026-07-13)
+
+**Symptom.** Opening the editor on an existing tag showed the stored value (`ROYAL_NAME`) in
+the select instead of the option label (`RN: Royal Name`). Picking any entry from the menu
+replaced it with a correctly formatted label, so the raw value only ever appeared on first
+open.
+
+**Root cause.** `EntitySpanEditor` hand-built its initial react-select value as
+`{ label: entitySpan.type, value: entitySpan.type }`, reusing the stored type as the _label_.
+react-select renders whatever `label` the value object carries, so it printed the enum. The
+menu entries were unaffected because they come from `entityTypeOptions`, which formats labels
+as `${entity.label}: ${entity.name}` from `EntityType.ts`. The two disagreed because the
+editor duplicated option construction instead of using the shared list — the same
+single-source-of-truth failure the DRY gate names.
+
+**Fix.** `getEntityTypeOption(type)` in `SpanAnnotator.tsx` resolves a type against
+`entityTypeOptions`; `EntitySpanEditor` seeds its state from it. No option is constructed by
+hand any more, so the displayed value and the menu cannot drift apart again.
+
+Not a stale-state bug: `SpanEditor` is only rendered while a span is active, so the
+`useState` initialiser re-runs on every open.
+
+**Regression cover.** `SpanEditor.test.tsx` asserts the editor shows `PN: Personal Name` and
+**not** `PERSONAL_NAME` on open. The existing "still offers the tag the span already has"
+case began matching two nodes once the fix landed (the selected value _and_ the menu option),
+which confirmed the diagnosis; it was narrowed to `getByRole('option', …)` so it keeps testing
+the menu rather than the value. The `SpanEditor` snapshot was updated — the only diff is
+`PERSONAL_NAME` → `PN: Personal Name` in `singleValue`.
+
+### Gates (tag-label fix)
+
+- `yarn lint` clean; `yarn tsc` clean.
+- `yarn test --watchAll=false` — 351 suites, 3630 passed, 2 skipped, 50 snapshots, exit 0,
+  **0** `console.error`/`console.warn`/`Warning:`/`not wrapped in act` occurrences.
+- One snapshot updated (`SpanEditor`), diff inspected before accepting: the single
+  `singleValue` line, nothing else.
+
 ## Progress
 
 - [x] Branch created, backend contract verified and confirmed with the user.

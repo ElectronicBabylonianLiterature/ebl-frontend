@@ -13,6 +13,7 @@ import {
 import {
   EntityTypeOption,
   entityTypeOptions,
+  getEntityTypeOption,
 } from 'fragmentarium/ui/text-annotation/SpanAnnotator'
 import RealiaSelect, {
   RealiaOption,
@@ -83,10 +84,9 @@ const EntitySpanEditor = forwardRef<
   EntityEditorProps & { entitySpan: EntityAnnotationSpan }
 >(function EntitySpanEditor({ entitySpan, onApply, onDelete }, ref) {
   const [spans] = useContext(AnnotationContext)
-  const [selectedType, setSelectedType] = React.useState<EntityTypeOption>({
-    label: entitySpan.type,
-    value: entitySpan.type,
-  })
+  const [selectedType, setSelectedType] = React.useState<EntityTypeOption>(
+    getEntityTypeOption(entitySpan.type),
+  )
   const usedTypes = getUsedEntityTypes(
     spans.namedEntities,
     entitySpan.span,
