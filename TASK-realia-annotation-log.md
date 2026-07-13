@@ -392,6 +392,34 @@ the menu rather than the value. The `SpanEditor` snapshot was updated — the on
 - One snapshot updated (`SpanEditor`), diff inspected before accepting: the single
   `singleValue` line, nothing else.
 
+## 2026-07-13 — Alt+click on a realia indicator opens the RlA page
+
+**Ask.** In the realia (RlA) indicator display, holding `alt` and pressing the left mouse
+button should open the realia page in a new tab; the hover element must hint at it beside
+the RlA lemma.
+
+**Change.** `SpanIndicator`'s `onMouseUp` now branches: for a realia span, `alt` + left
+button (`event.button === 0`) opens `/tools/realia/{realiaId}` via `window.open(…,
+'_blank', 'noopener,noreferrer')` and returns without activating the span; every other
+combination — plain click, another button, any click on a tag span — still opens the
+editor as before. The `title` (the hover element) becomes
+`{lemma} (Alt+click to open the Realia page in a new tab)` for realia spans and stays the
+plain name for tag spans. `alt` on a _token_ keeps its existing meaning (add/remove words
+from the selection, handled in `Markable`); the indicator is a different target, so the
+two shortcuts do not collide.
+
+**DRY.** The `/tools/realia/{id}` mapping was inline in several places. Added
+`realia/ui/realiaPage.ts` with `getRealiaPageUrl` / `openRealiaPageInNewTab`, and pointed
+the new code and the read-only `RealiaTokenLinks` at it.
+
+### Gates (Alt+click shortcut)
+
+- `yarn lint` clean; `yarn tsc` clean.
+- `yarn test --watchAll=false` green and console-clean.
+- New `SpanIndicator` cases: opens the page and does not activate the span on alt + left
+  click; activates (and does not open) on a plain click, on alt + a non-left button, and on
+  alt + left click on a tag span; the hover title carries the hint for realia only.
+
 ## Progress
 
 - [x] Branch created, backend contract verified and confirmed with the user.

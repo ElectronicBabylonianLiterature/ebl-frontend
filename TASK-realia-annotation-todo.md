@@ -93,6 +93,10 @@ for the picker.
       selection when the span has no tag, and colour the realia indicator to match its tag
       (unmapped realia keep the distinct teal).
 
+- [x] 26. Alt + left click on a realia indicator opens `/tools/realia/{realiaId}` in a new
+      tab instead of the span editor; the hover title hints the shortcut beside the lemma.
+      The URL mapping now lives in one helper (`realia/ui/realiaPage.ts`).
+
 ## Uniqueness
 
 - [x] 17. No duplicate tag or realia can be inserted. Uniqueness is per span (same key on

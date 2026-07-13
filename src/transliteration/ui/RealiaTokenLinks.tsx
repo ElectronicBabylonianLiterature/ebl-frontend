@@ -4,6 +4,7 @@ import { Token } from 'transliteration/domain/token'
 import { getTokenRealiaIds } from 'fragmentarium/domain/realiaAnnotations'
 import RealiaAnnotationsContext from 'transliteration/ui/RealiaAnnotationsContext'
 import RouterLinkModeContext from 'common/ui/RouterLinkModeContext'
+import { getRealiaPageUrl } from 'realia/ui/realiaPage'
 import './RealiaTokenLinks.sass'
 
 export default function RealiaTokenLinks({
@@ -24,7 +25,7 @@ export default function RealiaTokenLinks({
       {realiaIds.map((realiaId) => (
         <Link
           key={realiaId}
-          to={`/tools/realia/${encodeURIComponent(realiaId)}`}
+          to={getRealiaPageUrl(realiaId)}
           title={`Dictionary of Realia: ${realiaId}`}
           aria-label={`realia-link-${realiaId}`}
         >

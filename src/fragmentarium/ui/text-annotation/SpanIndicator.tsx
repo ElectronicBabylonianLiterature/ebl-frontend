@@ -10,6 +10,15 @@ import {
   getSpanIndicatorClass,
   getSpanLabel,
 } from 'fragmentarium/ui/text-annotation/realiaInfo'
+import { openRealiaPageInNewTab } from 'realia/ui/realiaPage'
+
+export const realiaPageHint = 'Alt+click to open the Realia page in a new tab'
+
+const leftMouseButton = 0
+
+function isRealiaPageShortcut(event: React.MouseEvent): boolean {
+  return event.altKey && event.button === leftMouseButton
+}
 
 export default function SpanIndicator({
   tokenId,
@@ -24,16 +33,24 @@ export default function SpanIndicator({
 }): JSX.Element {
   const { lookup } = useContext(RealiaInfoContext)
   const isInitial = tokenId === _.first(entitySpan.span)
-  const isRealia = isRealiaAnnotationSpan(entitySpan)
+  const realiaId = isRealiaAnnotationSpan(entitySpan)
+    ? entitySpan.realiaId
+    : null
   const label = getSpanLabel(lookup, entitySpan)
+
+  function handleMouseUp(event: React.MouseEvent): void {
+    if (realiaId && isRealiaPageShortcut(event)) {
+      openRealiaPageInNewTab(realiaId)
+      return
+    }
+    setActiveSpanId(entitySpan.id)
+  }
 
   return (
     <span
-      title={label}
-      data-label={isRealia ? label : undefined}
-      onMouseUp={() => {
-        setActiveSpanId(entitySpan.id)
-      }}
+      title={realiaId ? `${label} (${realiaPageHint})` : label}
+      data-label={realiaId ? label : undefined}
+      onMouseUp={handleMouseUp}
       data-span-id={entitySpan.id}
       data-testid={`${tokenId}__${entitySpan.id}`}
       className={classNames(
@@ -41,7 +58,7 @@ export default function SpanIndicator({
         `tier-depth--${entitySpan.tier}`,
         getSpanIndicatorClass(lookup, entitySpan),
         {
-          'span-indicator--realia': isRealia,
+          'span-indicator--realia': !!realiaId,
           highlight: entitySpan.id === activeSpanId,
           initial: isInitial,
           final: tokenId === _.last(entitySpan.span),
