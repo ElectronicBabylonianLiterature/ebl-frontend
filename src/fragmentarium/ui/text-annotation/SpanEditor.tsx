@@ -2,6 +2,8 @@ import {
   AnnotationSpan,
   ApiAnnotationSpan,
   EntityAnnotationSpan,
+  getUsedEntityTypes,
+  getUsedRealiaIds,
   isRealiaAnnotationSpan,
   RealiaAnnotationSpan,
 } from 'fragmentarium/ui/text-annotation/annotationSpan'
@@ -68,10 +70,16 @@ const EntitySpanEditor = forwardRef<
   SelectInstance<EntityTypeOption>,
   LayerEditorProps & { entitySpan: EntityAnnotationSpan }
 >(function EntitySpanEditor({ entitySpan, onApply, onDelete }, ref) {
+  const [{ annotations }] = useContext(AnnotationContext)
   const [selectedType, setSelectedType] = React.useState<EntityTypeOption>({
     label: entitySpan.type,
     value: entitySpan.type,
   })
+  const usedTypes = getUsedEntityTypes(
+    annotations,
+    entitySpan.span,
+    entitySpan.id,
+  )
 
   return (
     <SpanEditorForm
@@ -88,7 +96,9 @@ const EntitySpanEditor = forwardRef<
           ref={ref}
           aria-label={'edit-named-entity'}
           placeholder={'Select tag'}
-          options={entityTypeOptions}
+          options={entityTypeOptions.filter(
+            (option) => !usedTypes.includes(option.value),
+          )}
           value={selectedType}
           onChange={(option) => setSelectedType(option as EntityTypeOption)}
         />
@@ -103,11 +113,17 @@ function RealiaSpanEditor({
   onDelete,
 }: LayerEditorProps & { entitySpan: RealiaAnnotationSpan }): JSX.Element {
   const { lookup, register } = useContext(RealiaInfoContext)
+  const [{ annotations }] = useContext(AnnotationContext)
   const [selectedRealia, setSelectedRealia] =
     React.useState<RealiaOption | null>({
       label: getRealiaLabel(lookup, entitySpan.realiaId),
       value: entitySpan.realiaId,
     })
+  const usedRealiaIds = getUsedRealiaIds(
+    annotations,
+    entitySpan.span,
+    entitySpan.id,
+  )
 
   return (
     <SpanEditorForm
@@ -126,6 +142,7 @@ function RealiaSpanEditor({
         <RealiaSelect
           ariaLabel={'edit-realia'}
           value={selectedRealia}
+          excludedRealiaIds={usedRealiaIds}
           onChange={setSelectedRealia}
         />
       }

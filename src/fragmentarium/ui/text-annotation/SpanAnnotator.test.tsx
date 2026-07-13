@@ -260,3 +260,77 @@ describe('clearSelection', () => {
     expect(() => clearSelection()).not.toThrow()
   })
 })
+
+describe('SpanAnnotator uniqueness', () => {
+  const existingRealia: AnnotationSpan = {
+    id: 'Realia-1',
+    realiaId: 'realia_000846',
+    span: selection,
+    tier: 2,
+    name: 'realia_000846',
+  }
+
+  const setupWith = (annotations: readonly AnnotationSpan[]): void => {
+    jest.clearAllMocks()
+    mockRealiaSearch([realiaEntry])
+    render(
+      <WithRealiaService>
+        <AnnotationContext.Provider
+          value={[{ annotations, words: [] }, mockDispatch]}
+        >
+          <SpanAnnotator selection={selection} setSelection={setSelection} />
+        </AnnotationContext.Provider>
+      </WithRealiaService>,
+    )
+  }
+
+  it('does not offer a tag already on the selection', async () => {
+    setupWith([
+      {
+        id: 'Entity-1',
+        type: 'PERSONAL_NAME',
+        span: selection,
+        tier: 1,
+        name: 'Personal Name',
+      },
+    ])
+
+    await userEvent.click(screen.getByLabelText('annotate-named-entities'))
+
+    expect(screen.queryByText(testCategory)).not.toBeInTheDocument()
+    expect(screen.getByText('DN: Divine Name')).toBeInTheDocument()
+  })
+
+  it('still offers a tag used on a different span', async () => {
+    setupWith([
+      {
+        id: 'Entity-1',
+        type: 'PERSONAL_NAME',
+        span: ['Word-9'],
+        tier: 1,
+        name: 'Personal Name',
+      },
+    ])
+
+    await userEvent.click(screen.getByLabelText('annotate-named-entities'))
+
+    expect(screen.getByText(testCategory)).toBeInTheDocument()
+  })
+
+  it('does not offer a realia already on the selection', async () => {
+    setupWith([existingRealia])
+
+    await userEvent.type(screen.getByLabelText('annotate-realia'), 'Apk')
+
+    expect(await screen.findByText(/no options/i)).toBeInTheDocument()
+    expect(screen.queryByText('Apkallu')).not.toBeInTheDocument()
+  })
+
+  it('still offers a realia used on a different span', async () => {
+    setupWith([{ ...existingRealia, span: ['Word-9'] }])
+
+    await userEvent.type(screen.getByLabelText('annotate-realia'), 'Apk')
+
+    expect(await screen.findByText('Apkallu')).toBeInTheDocument()
+  })
+})

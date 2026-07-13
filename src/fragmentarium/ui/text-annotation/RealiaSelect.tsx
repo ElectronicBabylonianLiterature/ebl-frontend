@@ -17,10 +17,13 @@ export function toRealiaOption(entry: RealiaEntry): RealiaOption {
 export function loadRealiaOptions(
   realiaService: RealiaService,
   query: string,
+  excludedRealiaIds: readonly string[] = [],
 ): Promise<RealiaOption[]> {
   return query
     ? Promise.resolve(realiaService.search(query)).then((entries) =>
-        entries.map(toRealiaOption),
+        entries
+          .filter((entry) => !excludedRealiaIds.includes(entry.realiaId))
+          .map(toRealiaOption),
       )
     : Promise.resolve([])
 }
@@ -29,12 +32,14 @@ interface RealiaSelectProps {
   ariaLabel: string
   value: RealiaOption | null
   onChange: (option: RealiaOption | null) => void
+  excludedRealiaIds?: readonly string[]
 }
 
 export default function RealiaSelect({
   ariaLabel,
   value,
   onChange,
+  excludedRealiaIds = [],
 }: RealiaSelectProps): JSX.Element {
   const realiaService = useRealiaService()
 
@@ -42,9 +47,10 @@ export default function RealiaSelect({
     <AsyncSelect
       aria-label={ariaLabel}
       placeholder={'Search realia'}
-      cacheOptions
       isClearable
-      loadOptions={(query: string) => loadRealiaOptions(realiaService, query)}
+      loadOptions={(query: string) =>
+        loadRealiaOptions(realiaService, query, excludedRealiaIds)
+      }
       value={value}
       onChange={(option) => onChange(option as RealiaOption | null)}
     />

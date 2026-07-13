@@ -221,6 +221,33 @@ a picked realia stays displayed in the editor, Apply relabels the indicator to t
 lemma, and a realia span opens the realia editor rather than the tag editor. The second of
 these fails on the pre-fix code, which is how the diagnosis was confirmed.
 
+## Uniqueness of tags and realia
+
+Requirement: no duplicate tag or realia may be inserted if one is already present.
+
+**Scope: per span, not per fragment.** The same tag or the same realia entry may legitimately
+occur on several different token ranges (one person appears in many places in a text). A
+duplicate is therefore _the same key on the same span_, where the key is the entity type for
+a tag and the `realiaId` for a realia. A tag and a realia on the same span are never
+duplicates of each other — that pairing is the point of the feature.
+
+**Enforced in the reducer**, so no path can bypass it — manual selection, editing, and the
+automatic tag added from a realia classification all go through `add` / `edit`:
+
+- `isDuplicateAnnotation` compares the layer key and the span, ignoring the annotation's own
+  id (so re-applying an unchanged edit is not a self-duplicate).
+- `add` and `edit` return the state unchanged when the result would duplicate.
+- `dedupeAnnotations` also runs over the annotations loaded from the API, so duplicates
+  already stored server-side collapse on load rather than being rendered twice.
+
+**Prevented in the UI**, so a duplicate cannot even be clicked: the tag select omits types
+already on the span, and the realia search omits `realiaId`s already on the span. The editor
+applies the same filters but excludes the annotation being edited, so its own current value
+stays selectable.
+
+`cacheOptions` was removed from the realia `AsyncSelect`: with an exclusion list that varies
+by span, a cached result set would keep offering an entry that had just been used.
+
 ## Git incident and recovery (2026-07-10)
 
 - The feature commit (`ea5c9a23`) was accidentally pushed to `master`. Root cause: the

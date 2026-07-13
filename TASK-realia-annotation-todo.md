@@ -66,6 +66,14 @@ matching schema change**. Required there:
       selection when the span has no tag, and colour the realia indicator to match its tag
       (unmapped realia keep the distinct teal).
 
+## Uniqueness
+
+- [x] 17. No duplicate tag or realia can be inserted. Uniqueness is per span (same key on
+      the same token range); the same tag or realia may still be used on other spans, and a
+      tag and a realia on one span are not duplicates of each other. Enforced in the reducer
+      (`add`, `edit`, and the auto-tag path all go through it), deduplicated on load, and
+      prevented in the UI by omitting already-used options from both pickers.
+
 ## Bug fixes
 
 - [x] 16. Editing a realia annotation did not display the picked entry. Root cause was a
@@ -78,8 +86,6 @@ matching schema change**. Required there:
 ## Open follow-ups (post-implementation)
 
 - [ ] Backend schema change in `ebl-api` (see "Blocked on the backend" above).
-- [ ] Decide how to land the uncommitted `.github/copilot-instructions.md` edit
-      (the new "Git Branching and Pushing" section).
 - [ ] Re-publish the Docker image from `master` at `24d6dd36`, or confirm the image built
       from the accidental master push was superseded (see log, "Git incident and recovery").
 - [ ] Remove this file and `TASK-realia-annotation-log.md` before the PR merges.

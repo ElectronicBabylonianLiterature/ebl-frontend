@@ -3,6 +3,8 @@ import {
   ApiAnnotationSpan,
   ApiAnnotationSpanBase,
   annotationSpanName,
+  dedupeAnnotations,
+  isDuplicateAnnotation,
   isRealiaAnnotationSpan,
 } from 'fragmentarium/ui/text-annotation/annotationSpan'
 import _ from 'lodash'
@@ -118,21 +120,25 @@ function withoutId(
 function reducer(state: State, action: Action): State {
   switch (action.type) {
     case 'add':
-      return {
-        ...state,
-        annotations: setTiers(state.words, [
-          ...state.annotations,
-          action.annotation,
-        ]),
-      }
+      return isDuplicateAnnotation(state.annotations, action.annotation)
+        ? state
+        : {
+            ...state,
+            annotations: setTiers(state.words, [
+              ...state.annotations,
+              action.annotation,
+            ]),
+          }
     case 'edit':
-      return {
-        ...state,
-        annotations: setTiers(state.words, [
-          ...withoutId(state.annotations, action.annotation.id),
-          action.annotation,
-        ]),
-      }
+      return isDuplicateAnnotation(state.annotations, action.annotation)
+        ? state
+        : {
+            ...state,
+            annotations: setTiers(state.words, [
+              ...withoutId(state.annotations, action.annotation.id),
+              action.annotation,
+            ]),
+          }
     case 'delete':
       return {
         ...state,
@@ -148,7 +154,10 @@ export function useAnnotationContext(
   words: readonly string[],
   initial: readonly ApiAnnotationSpan[] = [],
 ): AnnotationContextService {
-  return useReducer(reducer, { annotations: setTiers(words, initial), words })
+  return useReducer(reducer, {
+    annotations: setTiers(words, dedupeAnnotations(initial)),
+    words,
+  })
 }
 
 export default AnnotationContext

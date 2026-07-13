@@ -2,7 +2,11 @@ import {
   entities,
   EntityType,
 } from 'fragmentarium/ui/text-annotation/EntityType'
-import { ApiAnnotationSpan } from 'fragmentarium/ui/text-annotation/annotationSpan'
+import {
+  ApiAnnotationSpan,
+  getUsedEntityTypes,
+  getUsedRealiaIds,
+} from 'fragmentarium/ui/text-annotation/annotationSpan'
 import {
   buildRealiaAnnotations,
   buildTagAnnotations,
@@ -48,6 +52,11 @@ const SpanAnnotator = forwardRef<
     React.useState<EntityTypeOption | null>(null)
   const [{ annotations }, dispatch] = useContext(AnnotationContext)
   const { register } = useContext(RealiaInfoContext)
+  const usedEntityTypes = getUsedEntityTypes(annotations, selection)
+  const usedRealiaIds = getUsedRealiaIds(annotations, selection)
+  const availableTypeOptions = entityTypeOptions.filter(
+    (option) => !usedEntityTypes.includes(option.value),
+  )
 
   const applyAnnotations = (added: readonly ApiAnnotationSpan[]) => {
     if (added.length === 0) {
@@ -66,7 +75,7 @@ const SpanAnnotator = forwardRef<
             ref={ref}
             aria-label={'annotate-named-entities'}
             placeholder={'Select tag'}
-            options={entityTypeOptions}
+            options={availableTypeOptions}
             value={selectedType}
             onChange={(option) => {
               const selectedOption = option as EntityTypeOption | null
@@ -81,6 +90,7 @@ const SpanAnnotator = forwardRef<
           <RealiaSelect
             ariaLabel={'annotate-realia'}
             value={null}
+            excludedRealiaIds={usedRealiaIds}
             onChange={(option: RealiaOption | null) => {
               register(option?.entry)
               applyAnnotations(

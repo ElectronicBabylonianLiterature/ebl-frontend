@@ -83,3 +83,22 @@ describe('RealiaSelect', () => {
     expect(realiaServiceMock.search).not.toHaveBeenCalled()
   })
 })
+
+describe('loadRealiaOptions exclusions', () => {
+  beforeEach(() => {
+    jest.clearAllMocks()
+    mockRealiaSearch([entry])
+  })
+
+  it('omits realia that are already annotated on the span', async () => {
+    await expect(
+      loadRealiaOptions(realiaServiceMock, 'Apk', ['realia_000846']),
+    ).resolves.toEqual([])
+  })
+
+  it('keeps realia that are not excluded', async () => {
+    await expect(
+      loadRealiaOptions(realiaServiceMock, 'Apk', ['realia_000999']),
+    ).resolves.toEqual([{ value: 'realia_000846', label: 'Apkallu', entry }])
+  })
+})

@@ -145,3 +145,71 @@ describe('SpanEditor', () => {
     })
   })
 })
+
+describe('SpanEditor uniqueness', () => {
+  const renderEditor = (
+    span: AnnotationSpan,
+    annotations: readonly AnnotationSpan[],
+  ): void => {
+    jest.clearAllMocks()
+    mockRealiaSearch([otherRealiaEntry])
+    render(
+      <ThemeProvider>
+        <WithRealiaService>
+          <AnnotationContext.Provider
+            value={[{ annotations, words: [] }, mockDispatch]}
+          >
+            <SpanEditor entitySpan={span} setActiveSpanId={setActiveSpanId} />
+          </AnnotationContext.Provider>
+        </WithRealiaService>
+      </ThemeProvider>,
+    )
+  }
+
+  const otherTag: AnnotationSpan = {
+    id: 'Entity-2',
+    type: 'BUILDING_NAME',
+    span: entitySpan.span,
+    tier: 2,
+    name: 'Building Name',
+  }
+
+  it('does not offer a tag already on the same span', async () => {
+    renderEditor(entitySpan, [entitySpan, otherTag])
+
+    await userEvent.click(screen.getByLabelText('edit-named-entity'))
+
+    expect(screen.queryByText(buildingName)).not.toBeInTheDocument()
+  })
+
+  it('still offers the tag the span already has', async () => {
+    renderEditor(entitySpan, [entitySpan])
+
+    await userEvent.click(screen.getByLabelText('edit-named-entity'))
+
+    expect(screen.getByText('PN: Personal Name')).toBeInTheDocument()
+  })
+
+  it('does not offer a realia already on the same span', async () => {
+    const otherRealia: AnnotationSpan = {
+      id: 'Realia-2',
+      realiaId: otherRealiaEntry.realiaId,
+      span: realiaSpan.span,
+      tier: 3,
+      name: otherRealiaEntry.realiaId,
+    }
+    renderEditor(realiaSpan, [realiaSpan, otherRealia])
+
+    await userEvent.type(screen.getByLabelText('edit-realia'), 'Zig')
+
+    expect(await screen.findByText(/no options/i)).toBeInTheDocument()
+  })
+
+  it('still offers other realia', async () => {
+    renderEditor(realiaSpan, [realiaSpan])
+
+    await userEvent.type(screen.getByLabelText('edit-realia'), 'Zig')
+
+    expect(await screen.findByText('Ziggurat')).toBeInTheDocument()
+  })
+})

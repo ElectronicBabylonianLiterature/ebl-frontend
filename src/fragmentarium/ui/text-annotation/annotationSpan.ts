@@ -53,6 +53,64 @@ export function isEntityAnnotationSpan<Span extends ApiAnnotationSpanBase>(
   return 'type' in span
 }
 
+export function annotationSpanKey(span: ApiAnnotationSpan): string {
+  return isRealiaAnnotationSpan(span)
+    ? `realia:${span.realiaId}`
+    : `type:${span.type}`
+}
+
+export function isDuplicateAnnotation(
+  annotations: readonly ApiAnnotationSpan[],
+  candidate: ApiAnnotationSpan,
+): boolean {
+  const candidateKey = annotationSpanKey(candidate)
+
+  return annotations.some(
+    (annotation) =>
+      annotation.id !== candidate.id &&
+      annotationSpanKey(annotation) === candidateKey &&
+      _.isEqual(annotation.span, candidate.span),
+  )
+}
+
+export function dedupeAnnotations(
+  annotations: readonly ApiAnnotationSpan[],
+): readonly ApiAnnotationSpan[] {
+  return _.uniqBy(
+    annotations,
+    (annotation) =>
+      `${annotationSpanKey(annotation)}|${annotation.span.join(',')}`,
+  )
+}
+
+export function getUsedEntityTypes(
+  annotations: readonly ApiAnnotationSpan[],
+  span: readonly string[],
+  excludedId?: string,
+): readonly EntityType[] {
+  return annotations
+    .filter(
+      (annotation) =>
+        annotation.id !== excludedId && _.isEqual(annotation.span, span),
+    )
+    .filter(isEntityAnnotationSpan)
+    .map((annotation) => annotation.type)
+}
+
+export function getUsedRealiaIds(
+  annotations: readonly ApiAnnotationSpan[],
+  span: readonly string[],
+  excludedId?: string,
+): readonly string[] {
+  return annotations
+    .filter(
+      (annotation) =>
+        annotation.id !== excludedId && _.isEqual(annotation.span, span),
+    )
+    .filter(isRealiaAnnotationSpan)
+    .map((annotation) => annotation.realiaId)
+}
+
 export function annotationSpanName(span: ApiAnnotationSpan): string {
   return isRealiaAnnotationSpan(span)
     ? span.realiaId

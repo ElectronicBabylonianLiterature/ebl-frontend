@@ -128,3 +128,104 @@ describe('useAnnotationContext with both layers', () => {
     ])
   })
 })
+
+describe('uniqueness', () => {
+  it('ignores adding a tag that is already on the span', () => {
+    const { result } = renderHook(() =>
+      useAnnotationContext(words, [entitySpan]),
+    )
+
+    act(() => {
+      result.current[1]({
+        type: 'add',
+        annotation: { ...entitySpan, id: 'Entity-2' },
+      })
+    })
+
+    expect(result.current[0].annotations).toHaveLength(1)
+  })
+
+  it('ignores adding a realia that is already on the span', () => {
+    const { result } = renderHook(() =>
+      useAnnotationContext(words, [realiaSpan]),
+    )
+
+    act(() => {
+      result.current[1]({
+        type: 'add',
+        annotation: { ...realiaSpan, id: 'Realia-2' },
+      })
+    })
+
+    expect(result.current[0].annotations).toHaveLength(1)
+  })
+
+  it('allows the same tag on a different span', () => {
+    const { result } = renderHook(() =>
+      useAnnotationContext(words, [entitySpan]),
+    )
+
+    act(() => {
+      result.current[1]({
+        type: 'add',
+        annotation: { ...entitySpan, id: 'Entity-2', span: ['Word-3'] },
+      })
+    })
+
+    expect(result.current[0].annotations).toHaveLength(2)
+  })
+
+  it('ignores an edit that would duplicate another annotation', () => {
+    const other: ApiEntityAnnotationSpan = {
+      id: 'Entity-2',
+      type: 'ROYAL_NAME',
+      span: entitySpan.span,
+    }
+    const { result } = renderHook(() =>
+      useAnnotationContext(words, [entitySpan, other]),
+    )
+
+    act(() => {
+      result.current[1]({
+        type: 'edit',
+        annotation: { ...other, type: entitySpan.type },
+      })
+    })
+
+    expect(
+      result.current[0].annotations.find(({ id }) => id === 'Entity-2'),
+    ).toMatchObject({ type: 'ROYAL_NAME' })
+  })
+
+  it('allows editing an annotation without changing it', () => {
+    const { result } = renderHook(() =>
+      useAnnotationContext(words, [entitySpan]),
+    )
+
+    act(() => {
+      result.current[1]({
+        type: 'edit',
+        annotation: { ...entitySpan, type: 'ROYAL_NAME' },
+      })
+    })
+
+    expect(result.current[0].annotations).toMatchObject([
+      { id: 'Entity-1', type: 'ROYAL_NAME' },
+    ])
+  })
+
+  it('drops duplicates already present in the loaded annotations', () => {
+    const { result } = renderHook(() =>
+      useAnnotationContext(words, [
+        entitySpan,
+        { ...entitySpan, id: 'Entity-2' },
+        realiaSpan,
+      ]),
+    )
+
+    expect(result.current[0].annotations.map(({ id }) => id)).toEqual([
+      'Entity-1',
+      'Realia-1',
+    ])
+  })
+})
