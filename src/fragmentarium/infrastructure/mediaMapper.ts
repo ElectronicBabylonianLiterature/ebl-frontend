@@ -325,14 +325,18 @@ export function normalizeMediaResource(
   const normalizedSortOrder = normalizeNonNegativeInteger(sortOrder)
   const normalizedRepresentations =
     normalizeMediaRepresentations(representations)
+  const normalizedCaption = normalizeOptionalText(caption)
+  const normalizedAttribution = normalizeOptionalText(attribution)
 
-  if (
-    !normalizedId ||
-    !isMediaType(type) ||
-    normalizedSortOrder === undefined ||
-    typeof isPrimary !== 'boolean' ||
-    !normalizedRepresentations
-  ) {
+  if (!normalizedId || !isMediaType(type)) {
+    return undefined
+  }
+
+  if (normalizedSortOrder === undefined || typeof isPrimary !== 'boolean') {
+    return undefined
+  }
+
+  if (!normalizedRepresentations) {
     return undefined
   }
 
@@ -341,12 +345,8 @@ export function normalizeMediaResource(
     type,
     sortOrder: normalizedSortOrder,
     isPrimary,
-    ...(normalizeOptionalText(caption)
-      ? { caption: normalizeOptionalText(caption) }
-      : {}),
-    ...(normalizeOptionalText(attribution)
-      ? { attribution: normalizeOptionalText(attribution) }
-      : {}),
+    ...(normalizedCaption ? { caption: normalizedCaption } : {}),
+    ...(normalizedAttribution ? { attribution: normalizedAttribution } : {}),
     references: Array.isArray(references)
       ? references
           .map((reference) => normalizeMediaReference(reference))
