@@ -56,6 +56,16 @@ matching schema change**. Required there:
 3. Once (2) lands, the read-only links light up automatically — `CuneiformFragment`
    already builds the lookup from `fragment.namedEntities`.
 
+## Follow-up round: UI polish and tag/realia synchronisation
+
+- [x] 12. Placeholders: `Select tag` (entity select), `Search realia` (realia select).
+- [x] 13. Realia indicator shows the full lemma instead of the static `RLA` label,
+      derived from `realiaId` via `RealiaService` (`realiaId` stays the source of truth).
+- [x] 14. Preview order: the tag layer always sits above the realia layer.
+- [x] 15. Map the realia classification to a tag (5 name-classes), auto-select it on realia
+      selection when the span has no tag, and colour the realia indicator to match its tag
+      (unmapped realia keep the distinct teal).
+
 ## Open follow-ups (post-implementation)
 
 - [ ] Backend schema change in `ebl-api` (see "Blocked on the backend" above).

@@ -3,6 +3,7 @@ import {
   ApiAnnotationSpan,
   ApiAnnotationSpanBase,
   annotationSpanName,
+  isRealiaAnnotationSpan,
 } from 'fragmentarium/ui/text-annotation/annotationSpan'
 import _ from 'lodash'
 import React, { Dispatch, useReducer } from 'react'
@@ -58,10 +59,10 @@ function getLowestOpenTier(occupiedTiers: number[]): number {
   return tier
 }
 
-function setTiers(
+function computeLayerTiers(
   words: readonly string[],
   annotations: readonly ApiAnnotationSpan[],
-): readonly AnnotationSpan[] {
+): Map<string, number> {
   const [spanStarts, spanEnds] = createSpanBoundaryMaps(annotations)
 
   const tiers = new Map<string, number>()
@@ -82,9 +83,27 @@ function setTiers(
     spanEnds.get(wordId)?.forEach((annotationId) => popStack.add(annotationId))
   })
 
+  return tiers
+}
+
+function setTiers(
+  words: readonly string[],
+  annotations: readonly ApiAnnotationSpan[],
+): readonly AnnotationSpan[] {
+  const entitySpans = annotations.filter(
+    (annotation) => !isRealiaAnnotationSpan(annotation),
+  )
+  const realiaSpans = annotations.filter(isRealiaAnnotationSpan)
+
+  const entityTiers = computeLayerTiers(words, entitySpans)
+  const realiaTiers = computeLayerTiers(words, realiaSpans)
+  const entityDepth = _.max([...entityTiers.values()]) || 0
+
   return annotations.map((annotation) => ({
     ...annotation,
-    tier: tiers.get(annotation.id) || 1,
+    tier: isRealiaAnnotationSpan(annotation)
+      ? entityDepth + (realiaTiers.get(annotation.id) || 1)
+      : entityTiers.get(annotation.id) || 1,
     name: annotationSpanName(annotation),
   }))
 }

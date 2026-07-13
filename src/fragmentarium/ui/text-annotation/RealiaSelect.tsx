@@ -7,10 +7,11 @@ import { useRealiaService } from 'realia/application/RealiaServiceContext'
 export interface RealiaOption {
   label: string
   value: string
+  entry?: RealiaEntry
 }
 
 export function toRealiaOption(entry: RealiaEntry): RealiaOption {
-  return { value: entry.realiaId, label: entry.id }
+  return { value: entry.realiaId, label: entry.id, entry }
 }
 
 export function loadRealiaOptions(
@@ -40,7 +41,7 @@ export default function RealiaSelect({
   return (
     <AsyncSelect
       aria-label={ariaLabel}
-      placeholder={'Search realia…'}
+      placeholder={'Search realia'}
       cacheOptions
       isClearable
       loadOptions={(query: string) => loadRealiaOptions(realiaService, query)}

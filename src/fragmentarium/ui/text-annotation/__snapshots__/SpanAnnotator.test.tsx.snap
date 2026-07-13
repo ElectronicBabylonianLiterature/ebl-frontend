@@ -31,7 +31,7 @@ exports[`SpanAnnotator shows the selection menu 1`] = `
                 class="css-1jqq78o-placeholder"
                 id="react-select-2-placeholder"
               >
-                Select...
+                Select tag
               </div>
               <div
                 class="css-19bb58m"
@@ -112,7 +112,7 @@ exports[`SpanAnnotator shows the selection menu 1`] = `
                 class="css-1jqq78o-placeholder"
                 id="react-select-3-placeholder"
               >
-                Search realia…
+                Search realia
               </div>
               <div
                 class="css-19bb58m"

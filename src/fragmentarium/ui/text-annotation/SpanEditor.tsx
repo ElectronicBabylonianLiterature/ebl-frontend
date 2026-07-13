@@ -13,6 +13,8 @@ import RealiaSelect, {
   RealiaOption,
 } from 'fragmentarium/ui/text-annotation/RealiaSelect'
 import AnnotationContext from 'fragmentarium/ui/text-annotation/TextAnnotationContext'
+import RealiaInfoContext from 'fragmentarium/ui/text-annotation/RealiaInfoContext'
+import { getRealiaLabel } from 'fragmentarium/ui/text-annotation/realiaInfo'
 import React, { forwardRef, useContext } from 'react'
 import { Button, ButtonGroup, Form } from 'react-bootstrap'
 import Select, { SelectInstance } from 'react-select'
@@ -85,6 +87,7 @@ const EntitySpanEditor = forwardRef<
         <Select
           ref={ref}
           aria-label={'edit-named-entity'}
+          placeholder={'Select tag'}
           options={entityTypeOptions}
           value={selectedType}
           onChange={(option) => setSelectedType(option as EntityTypeOption)}
@@ -99,9 +102,10 @@ function RealiaSpanEditor({
   onApply,
   onDelete,
 }: LayerEditorProps & { entitySpan: RealiaAnnotationSpan }): JSX.Element {
+  const { lookup, register } = useContext(RealiaInfoContext)
   const [selectedRealia, setSelectedRealia] =
     React.useState<RealiaOption | null>({
-      label: entitySpan.realiaId,
+      label: getRealiaLabel(lookup, entitySpan.realiaId),
       value: entitySpan.realiaId,
     })
 
@@ -121,7 +125,10 @@ function RealiaSpanEditor({
         <RealiaSelect
           ariaLabel={'edit-realia'}
           value={selectedRealia}
-          onChange={setSelectedRealia}
+          onChange={(option) => {
+            register(option?.entry)
+            setSelectedRealia(option)
+          }}
         />
       }
     />

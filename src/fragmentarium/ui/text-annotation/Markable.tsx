@@ -9,6 +9,8 @@ import SpanAnnotator, {
 } from 'fragmentarium/ui/text-annotation/SpanAnnotator'
 import { AnnotationSpan } from 'fragmentarium/ui/text-annotation/annotationSpan'
 import AnnotationContext from 'fragmentarium/ui/text-annotation/TextAnnotationContext'
+import RealiaInfoContext from 'fragmentarium/ui/text-annotation/RealiaInfoContext'
+import { getSpanLabel } from 'fragmentarium/ui/text-annotation/realiaInfo'
 import { SelectInstance } from 'react-select'
 import SpanEditor from 'fragmentarium/ui/text-annotation/SpanEditor'
 import SpanIndicator from 'fragmentarium/ui/text-annotation/SpanIndicator'
@@ -62,6 +64,7 @@ export default function Markable({
 }>): JSX.Element {
   const annotationContextValue = useContext(AnnotationContext)
   const [{ annotations, words }] = annotationContextValue
+  const { lookup: realiaLookup } = useContext(RealiaInfoContext)
   const selectRef = useRef<SelectInstance<EntityTypeOption> | null>(null)
   const [target, setTarget] = React.useState<HTMLSpanElement | null>(null)
   const activeSpan =
@@ -127,7 +130,7 @@ export default function Markable({
     <InlineEditor
       target={target}
       id={_.uniqueId('SpanEditorPopOver-')}
-      title={`Edit ${activeSpan.name}`}
+      title={`Edit ${getSpanLabel(realiaLookup, activeSpan)}`}
       show={showEditorOverlay}
       onHide={() => setActiveSpanId(null)}
       onEntered={() => selectRef.current?.focus()}

@@ -23,12 +23,37 @@ const mockDispatch = jest.fn()
 const realiaEntry = realiaEntryFactory.build({
   id: 'Apkallu',
   realiaId: 'realia_000846',
+  type: ['Divine names'],
+})
+const unmappedRealiaEntry = realiaEntryFactory.build({
+  id: 'Ziggurat',
+  realiaId: 'realia_000999',
+  type: ['Literature'],
 })
 
+const existingTag: AnnotationSpan = {
+  id: 'Entity-3',
+  type: 'ROYAL_NAME',
+  span: selection,
+  tier: 1,
+  name: 'Royal Name',
+}
+
+const selectRealia = async (label = 'Apkallu'): Promise<void> => {
+  await userEvent.type(
+    screen.getByLabelText('annotate-realia'),
+    label.slice(0, 3),
+  )
+  await userEvent.click(await screen.findByText(label))
+}
+
 describe('SpanAnnotator', () => {
-  const setup = (annotations: readonly AnnotationSpan[] = []): void => {
+  const setup = (
+    annotations: readonly AnnotationSpan[] = [],
+    entries = [realiaEntry],
+  ): void => {
     jest.clearAllMocks()
-    mockRealiaSearch([realiaEntry])
+    mockRealiaSearch(entries)
     container = render(
       <WithRealiaService>
         <AnnotationContext.Provider
@@ -112,6 +137,81 @@ describe('SpanAnnotator', () => {
         annotation: expect.objectContaining({ id: 'Realia-1' }),
       }),
     )
+  })
+
+  describe('automatic tagging from the realia classification', () => {
+    it('adds the mapped tag when the span has no tag', async () => {
+      setup()
+      await selectRealia()
+
+      expect(mockDispatch).toHaveBeenCalledWith({
+        type: 'add',
+        annotation: {
+          id: 'Entity-1',
+          type: 'DIVINE_NAME',
+          span: selection,
+        },
+      })
+      expect(mockDispatch).toHaveBeenCalledTimes(2)
+    })
+
+    it('does not add a tag when the span already has one', async () => {
+      setup([existingTag])
+      await selectRealia()
+
+      expect(mockDispatch).toHaveBeenCalledTimes(1)
+      expect(mockDispatch).toHaveBeenCalledWith(
+        expect.objectContaining({
+          annotation: expect.objectContaining({ realiaId: 'realia_000846' }),
+        }),
+      )
+    })
+
+    it('adds a tag when the existing tag covers a different span', async () => {
+      setup([{ ...existingTag, span: ['Word-9'] }])
+      await selectRealia()
+
+      expect(mockDispatch).toHaveBeenCalledTimes(2)
+      expect(mockDispatch).toHaveBeenCalledWith(
+        expect.objectContaining({
+          annotation: expect.objectContaining({ type: 'DIVINE_NAME' }),
+        }),
+      )
+    })
+
+    it('does not add a tag when the classification is not mapped', async () => {
+      setup([], [unmappedRealiaEntry])
+      await selectRealia('Ziggurat')
+
+      expect(mockDispatch).toHaveBeenCalledTimes(1)
+      expect(mockDispatch).toHaveBeenCalledWith(
+        expect.objectContaining({
+          annotation: expect.objectContaining({ realiaId: 'realia_000999' }),
+        }),
+      )
+    })
+
+    it('adds nothing when the tag selection is cleared', async () => {
+      setup()
+      const input = screen.getByLabelText('annotate-named-entities')
+      await userEvent.click(input)
+      await userEvent.click(screen.getByText(testCategory))
+      mockDispatch.mockClear()
+
+      await userEvent.type(input, '{backspace}')
+
+      expect(mockDispatch).not.toHaveBeenCalled()
+    })
+
+    it('adds nothing when the realia selection is cleared', async () => {
+      setup()
+      await userEvent.type(
+        screen.getByLabelText('annotate-realia'),
+        '{backspace}',
+      )
+
+      expect(mockDispatch).not.toHaveBeenCalled()
+    })
   })
 })
 

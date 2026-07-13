@@ -29,10 +29,11 @@ function renderSelect(): void {
 }
 
 describe('toRealiaOption', () => {
-  it('uses the realiaId as value and the lemma as label', () => {
+  it('uses the realiaId as value and the lemma as label, keeping the entry', () => {
     expect(toRealiaOption(entry)).toEqual({
       value: 'realia_000846',
       label: 'Apkallu',
+      entry,
     })
   })
 })
@@ -45,7 +46,7 @@ describe('loadRealiaOptions', () => {
 
   it('maps search results to options', async () => {
     await expect(loadRealiaOptions(realiaServiceMock, 'Apk')).resolves.toEqual([
-      { value: 'realia_000846', label: 'Apkallu' },
+      { value: 'realia_000846', label: 'Apkallu', entry },
     ])
     expect(realiaServiceMock.search).toHaveBeenCalledWith('Apk')
   })
@@ -71,6 +72,7 @@ describe('RealiaSelect', () => {
     expect(onChange).toHaveBeenCalledWith({
       value: 'realia_000846',
       label: 'Apkallu',
+      entry,
     })
   })
 

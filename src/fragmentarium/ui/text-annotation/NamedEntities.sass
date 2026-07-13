@@ -41,3 +41,11 @@
 
   &__REALIA
     @include indicator-label(RLA, $ebl-color-entity-realia)
+
+.span-indicator--realia[data-label]
+  &.initial::before
+    content: attr(data-label)
+    max-width: 16em
+    overflow: hidden
+    text-overflow: ellipsis
+    white-space: nowrap

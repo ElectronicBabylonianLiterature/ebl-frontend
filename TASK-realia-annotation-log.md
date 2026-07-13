@@ -120,6 +120,72 @@ Behaviour is covered by unit/integration tests with a mocked `FragmentService`.
 `GET /realia/by-id/{realia_id}` and `GET /realia?query=` were exercised against the live
 API. No POST was made against production.
 
+## Follow-up round: UI polish and tag/realia synchronisation
+
+Requested changes, all implemented:
+
+1. **Placeholders.** Entity select: `Select...` → `Select tag` (both the annotator and the
+   editor). Realia select: `Search realia…` → `Search realia`.
+2. **Lemma in the preview.** The realia indicator showed the static CSS label `RLA`. It now
+   shows the full lemma. `realiaId` remains the only stored field; the lemma is derived.
+   `SpanIndicator` writes it to `data-label` and the SASS rule
+   `.span-indicator--realia[data-label]` renders it with `content: attr(data-label)`
+   (attribute selector raises specificity so it beats the tag class's static label
+   regardless of stylesheet order). Long lemmas are ellipsised at `16em`.
+3. **Preview order.** Tier 1 sits closest to the text, so "tag above, realia below" means
+   tags must take lower tiers. `setTiers` now computes tiers per layer via
+   `computeLayerTiers` and offsets the realia layer by the deepest tag tier, so every
+   realia span sits below every tag even when tags are nested.
+4. **Classification → tag mapping + colour sync.** `realiaTypeMapping.ts` maps the five
+   name-classes (`Personal names`→PN, `Divine names`→DN, `Geographical names`→GN,
+   `Objects`→ON, `Peoples`→EN). Topical classes (Religion, Literature, Fauna, Art,
+   Astronomy, …) and untyped entries are deliberately unmapped. On realia selection, the
+   mapped tag is added automatically **only when the span carries no tag**. A realia
+   indicator takes its mapped tag's colour; unmapped realia keep the distinct teal
+   (`$ebl-color-entity-realia`), so "no tag matched" stays visible.
+
+### Vocabulary check (live API)
+
+`GET /api/realia?query=a` returns 18,953 entries. Distinct `type` values, by frequency:
+11,293 have **no** type; then Geographical names (2,436), Divine names (2,179), Personal
+names (1,209), Religion (577), Literature (577), Miscellaneous (394), Objects (203),
+Realia (203), History of science (141), Jurisprudence (102), Fauna (73), Peoples (62),
+Flora (58), Minerals (55), Materials (55), Art (53), Art styles (53), Sciences (42),
+Professions (34), Language (26), Linguistics (26), Astronomy (18), Excavated sites (2),
+plus a handful of malformed values (`Per–7`, `Geographical name–6`). The mapping was
+chosen against this real vocabulary, not guessed.
+
+### New files
+
+- `realiaTypeMapping.ts` — classification → `EntityType`.
+- `realiaInfo.ts` — derived display data (lemma, mapped tag, indicator class) keyed by
+  `realiaId`; `getRealiaIds` collects the realia layer's ids.
+- `RealiaInfoContext.tsx` — the lookup plus `useRealiaInfoService`, which resolves lemmas
+  for realia ids in the loaded annotations through `RealiaService.find` (→ `/realia/by-id/`)
+  and lets the picker register a chosen entry without a round-trip. Each id is fetched at
+  most once; a failed lookup degrades to showing the raw `realiaId`.
+- `spanAnnotatorActions.ts` — pure `buildTagAnnotations` / `buildRealiaAnnotations` /
+  `hasTagForSpan`. Extracted so the auto-tagging rules are unit-testable and so the
+  component holds no unreachable null-guards (this took `SpanAnnotator` to 100% branch
+  coverage rather than leaving dead defensive branches).
+
+### Gates (this round)
+
+- `yarn lint` clean; `yarn tsc` clean.
+- `yarn test --watchAll=false` — 350 suites, 3578 passed, 2 skipped, exit 0, **0** console
+  errors/warnings/act-warnings/unhandled rejections.
+- One snapshot updated (`SpanAnnotator`), diff inspected: only the two placeholder strings.
+- Coverage 100% (statements, branches, functions, lines) on every file this round touched:
+  `realiaTypeMapping.ts`, `realiaInfo.ts`, `RealiaInfoContext.tsx`,
+  `spanAnnotatorActions.ts`, `SpanIndicator.tsx`, `SpanAnnotator.tsx`, `SpanEditor.tsx`,
+  `RealiaSelect.tsx`, `annotationSpan.ts`.
+
+### Scope note
+
+Auto-tagging fires on realia **selection in the annotator** (creating an annotation), not
+when re-picking realia on an already-existing span in the editor, where an existing tag is
+assumed deliberate. Flag if the editor should behave the same way.
+
 ## Git incident and recovery (2026-07-10)
 
 - The feature commit (`ea5c9a23`) was accidentally pushed to `master`. Root cause: the

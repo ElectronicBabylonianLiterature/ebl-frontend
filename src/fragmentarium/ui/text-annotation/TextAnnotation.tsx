@@ -31,6 +31,10 @@ import {
   ApiAnnotationSpan,
   omitDerivedSpanFields,
 } from 'fragmentarium/ui/text-annotation/annotationSpan'
+import RealiaInfoContext, {
+  useRealiaInfoService,
+} from 'fragmentarium/ui/text-annotation/RealiaInfoContext'
+import { getRealiaIds } from 'fragmentarium/ui/text-annotation/realiaInfo'
 import { Button, Form, Spinner } from 'react-bootstrap'
 import _ from 'lodash'
 import AnnotationInstructions from 'fragmentarium/ui/text-annotation/AnnotationInstructions'
@@ -305,17 +309,28 @@ function TextAnnotationView({
   const [initialAnnotations, setInitialAnnotations] =
     useState<readonly ApiAnnotationSpan[]>(annotations)
   const annotationContext = useAnnotationContext(words, initialAnnotations)
+  const realiaIdKey = getRealiaIds(annotationContext[0].annotations)
+    .slice()
+    .sort()
+    .join(',')
+  const realiaIds = useMemo(
+    () => (realiaIdKey ? realiaIdKey.split(',') : []),
+    [realiaIdKey],
+  )
+  const realiaInfoService = useRealiaInfoService(realiaIds)
 
   return (
-    <AnnotationContext.Provider value={annotationContext}>
-      <AnnotationInstructions />
-      <SpanAnnotationDisplay
-        fragment={fragment}
-        initialAnnotations={initialAnnotations}
-        setInitialAnnotations={setInitialAnnotations}
-        fragmentService={fragmentService}
-      />
-    </AnnotationContext.Provider>
+    <RealiaInfoContext.Provider value={realiaInfoService}>
+      <AnnotationContext.Provider value={annotationContext}>
+        <AnnotationInstructions />
+        <SpanAnnotationDisplay
+          fragment={fragment}
+          initialAnnotations={initialAnnotations}
+          setInitialAnnotations={setInitialAnnotations}
+          fragmentService={fragmentService}
+        />
+      </AnnotationContext.Provider>
+    </RealiaInfoContext.Provider>
   )
 }
 

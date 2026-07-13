@@ -42,6 +42,44 @@ describe('useAnnotationContext with both layers', () => {
     expect(new Set(tiers).size).toBe(2)
   })
 
+  it('places the tag layer above the realia layer', () => {
+    const { result } = renderHook(() =>
+      useAnnotationContext(words, [realiaSpan, entitySpan]),
+    )
+    const [{ annotations }] = result.current
+    const tierOf = (id: string) =>
+      annotations.find((annotation) => annotation.id === id)?.tier
+
+    expect(tierOf('Entity-1')).toBe(1)
+    expect(tierOf('Realia-1')).toBe(2)
+  })
+
+  it('keeps every realia span below every tag, even when tags are nested', () => {
+    const nestedTag: ApiEntityAnnotationSpan = {
+      id: 'Entity-2',
+      type: 'ROYAL_NAME',
+      span: ['Word-1'],
+    }
+    const { result } = renderHook(() =>
+      useAnnotationContext(words, [entitySpan, nestedTag, realiaSpan]),
+    )
+    const [{ annotations }] = result.current
+    const tierOf = (id: string) =>
+      annotations.find((annotation) => annotation.id === id)?.tier as number
+
+    const deepestTag = Math.max(tierOf('Entity-1'), tierOf('Entity-2'))
+    expect(tierOf('Realia-1')).toBeGreaterThan(deepestTag)
+  })
+
+  it('falls back to the first tier for spans outside the word list', () => {
+    const { result } = renderHook(() =>
+      useAnnotationContext([], [entitySpan, realiaSpan]),
+    )
+    const [{ annotations }] = result.current
+
+    expect(annotations.map(({ tier }) => tier)).toEqual([1, 1])
+  })
+
   it('adds a realia annotation', () => {
     const { result } = renderHook(() => useAnnotationContext(words))
 
