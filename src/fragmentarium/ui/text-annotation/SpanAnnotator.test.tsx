@@ -3,7 +3,11 @@ import SpanAnnotator, {
   clearSelection,
 } from 'fragmentarium/ui/text-annotation/SpanAnnotator'
 import AnnotationContext from 'fragmentarium/ui/text-annotation/TextAnnotationContext'
-import { AnnotationSpan } from 'fragmentarium/ui/text-annotation/annotationSpan'
+import {
+  DerivedAnnotationSpans,
+  EntityAnnotationSpan,
+  RealiaAnnotationSpan,
+} from 'fragmentarium/ui/text-annotation/annotationSpan'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { realiaEntryFactory } from 'test-support/realia-fixtures'
@@ -33,11 +37,18 @@ const unmappedRealiaEntry = realiaEntryFactory.build({
   type: ['Literature'],
 })
 
-const existingTag: AnnotationSpan = entityAnnotationSpan({
+const existingTag: EntityAnnotationSpan = entityAnnotationSpan({
   id: 'Entity-3',
   type: 'ROYAL_NAME',
   span: selection,
 })
+
+function stateOf(
+  namedEntities: readonly EntityAnnotationSpan[] = [],
+  realia: readonly RealiaAnnotationSpan[] = [],
+): DerivedAnnotationSpans {
+  return { namedEntities, realia }
+}
 
 const selectRealia = async (label = 'Apkallu'): Promise<void> => {
   await userEvent.type(
@@ -49,7 +60,7 @@ const selectRealia = async (label = 'Apkallu'): Promise<void> => {
 
 describe('SpanAnnotator', () => {
   const setup = (
-    annotations: readonly AnnotationSpan[] = [],
+    annotations: DerivedAnnotationSpans = stateOf(),
     entries = [realiaEntry],
   ): void => {
     jest.clearAllMocks()
@@ -57,7 +68,7 @@ describe('SpanAnnotator', () => {
     container = render(
       <WithRealiaService>
         <AnnotationContext.Provider
-          value={[{ annotations, words: [] }, mockDispatch]}
+          value={[{ ...annotations, words: [] }, mockDispatch]}
         >
           <SpanAnnotator selection={selection} setSelection={setSelection} />
         </AnnotationContext.Provider>
@@ -93,11 +104,11 @@ describe('SpanAnnotator', () => {
 
     expect(mockDispatch).toHaveBeenCalledWith({
       type: 'add',
+      layer: 'namedEntities',
       annotation: {
         id: 'Entity-1',
         type: 'PERSONAL_NAME',
         span: selection,
-        layer: 'namedEntities',
       },
     })
   })
@@ -110,24 +121,26 @@ describe('SpanAnnotator', () => {
 
     expect(mockDispatch).toHaveBeenCalledWith({
       type: 'add',
+      layer: 'realia',
       annotation: {
         id: 'Realia-1',
         realiaId: 'realia_000846',
         span: selection,
-        layer: 'realia',
       },
     })
     expect(setSelection).toHaveBeenCalledWith([])
   })
 
   it('numbers realia ids independently of entity ids', async () => {
-    setup([
-      entityAnnotationSpan({
-        id: 'Entity-7',
-        type: 'PERSONAL_NAME',
-        span: ['Word-1'],
-      }),
-    ])
+    setup(
+      stateOf([
+        entityAnnotationSpan({
+          id: 'Entity-7',
+          type: 'PERSONAL_NAME',
+          span: ['Word-1'],
+        }),
+      ]),
+    )
     const input = screen.getByLabelText('annotate-realia')
     await userEvent.type(input, 'Apk')
     await userEvent.click(await screen.findByText('Apkallu'))
@@ -146,18 +159,18 @@ describe('SpanAnnotator', () => {
 
       expect(mockDispatch).toHaveBeenCalledWith({
         type: 'add',
+        layer: 'namedEntities',
         annotation: {
           id: 'Entity-1',
           type: 'DIVINE_NAME',
           span: selection,
-          layer: 'namedEntities',
         },
       })
       expect(mockDispatch).toHaveBeenCalledTimes(2)
     })
 
     it('does not add a tag when the span already has one', async () => {
-      setup([existingTag])
+      setup(stateOf([existingTag]))
       await selectRealia()
 
       expect(mockDispatch).toHaveBeenCalledTimes(1)
@@ -169,7 +182,7 @@ describe('SpanAnnotator', () => {
     })
 
     it('adds a tag when the existing tag covers a different span', async () => {
-      setup([{ ...existingTag, span: ['Word-9'] }])
+      setup(stateOf([{ ...existingTag, span: ['Word-9'] }]))
       await selectRealia()
 
       expect(mockDispatch).toHaveBeenCalledTimes(2)
@@ -181,7 +194,7 @@ describe('SpanAnnotator', () => {
     })
 
     it('does not add a tag when the classification is not mapped', async () => {
-      setup([], [unmappedRealiaEntry])
+      setup(stateOf(), [unmappedRealiaEntry])
       await selectRealia('Ziggurat')
 
       expect(mockDispatch).toHaveBeenCalledTimes(1)
@@ -263,19 +276,19 @@ describe('clearSelection', () => {
 })
 
 describe('SpanAnnotator uniqueness', () => {
-  const existingRealia: AnnotationSpan = realiaAnnotationSpan({
+  const existingRealia: RealiaAnnotationSpan = realiaAnnotationSpan({
     id: 'Realia-1',
     realiaId: 'realia_000846',
     span: selection,
   })
 
-  const setupWith = (annotations: readonly AnnotationSpan[]): void => {
+  const setupWith = (annotations: DerivedAnnotationSpans): void => {
     jest.clearAllMocks()
     mockRealiaSearch([realiaEntry])
     render(
       <WithRealiaService>
         <AnnotationContext.Provider
-          value={[{ annotations, words: [] }, mockDispatch]}
+          value={[{ ...annotations, words: [] }, mockDispatch]}
         >
           <SpanAnnotator selection={selection} setSelection={setSelection} />
         </AnnotationContext.Provider>
@@ -284,13 +297,15 @@ describe('SpanAnnotator uniqueness', () => {
   }
 
   it('does not offer a tag already on the selection', async () => {
-    setupWith([
-      entityAnnotationSpan({
-        id: 'Entity-1',
-        type: 'PERSONAL_NAME',
-        span: selection,
-      }),
-    ])
+    setupWith(
+      stateOf([
+        entityAnnotationSpan({
+          id: 'Entity-1',
+          type: 'PERSONAL_NAME',
+          span: selection,
+        }),
+      ]),
+    )
 
     await userEvent.click(screen.getByLabelText('annotate-named-entities'))
 
@@ -299,13 +314,15 @@ describe('SpanAnnotator uniqueness', () => {
   })
 
   it('still offers a tag used on a different span', async () => {
-    setupWith([
-      entityAnnotationSpan({
-        id: 'Entity-1',
-        type: 'PERSONAL_NAME',
-        span: ['Word-9'],
-      }),
-    ])
+    setupWith(
+      stateOf([
+        entityAnnotationSpan({
+          id: 'Entity-1',
+          type: 'PERSONAL_NAME',
+          span: ['Word-9'],
+        }),
+      ]),
+    )
 
     await userEvent.click(screen.getByLabelText('annotate-named-entities'))
 
@@ -313,7 +330,7 @@ describe('SpanAnnotator uniqueness', () => {
   })
 
   it('does not offer a realia already on the selection', async () => {
-    setupWith([existingRealia])
+    setupWith(stateOf([], [existingRealia]))
 
     await userEvent.type(screen.getByLabelText('annotate-realia'), 'Apk')
 
@@ -322,7 +339,7 @@ describe('SpanAnnotator uniqueness', () => {
   })
 
   it('still offers a realia used on a different span', async () => {
-    setupWith([{ ...existingRealia, span: ['Word-9'] }])
+    setupWith(stateOf([], [{ ...existingRealia, span: ['Word-9'] }]))
 
     await userEvent.type(screen.getByLabelText('annotate-realia'), 'Apk')
 

@@ -8,9 +8,9 @@ import {
   ApiRealiaAnnotationSpan,
   DerivedSpanFields,
   EntityAnnotationSpan,
+  NAMED_ENTITY_LAYER,
   RealiaAnnotationSpan,
-  tagEntitySpan,
-  tagRealiaSpan,
+  REALIA_LAYER,
 } from 'fragmentarium/ui/text-annotation/annotationSpan'
 import { EntityTypes } from 'fragmentarium/ui/text-annotation/EntityType'
 
@@ -19,7 +19,8 @@ export function entityAnnotationSpan(
   derived: Partial<DerivedSpanFields> = {},
 ): EntityAnnotationSpan {
   return {
-    ...tagEntitySpan(span),
+    ...span,
+    layer: NAMED_ENTITY_LAYER,
     tier: derived.tier ?? 1,
     name: derived.name ?? EntityTypes[span.type].name,
   }
@@ -30,7 +31,8 @@ export function realiaAnnotationSpan(
   derived: Partial<DerivedSpanFields> = {},
 ): RealiaAnnotationSpan {
   return {
-    ...tagRealiaSpan(span),
+    ...span,
+    layer: REALIA_LAYER,
     tier: derived.tier ?? 1,
     name: derived.name ?? span.realiaId,
   }

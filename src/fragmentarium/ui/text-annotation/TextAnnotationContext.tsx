@@ -1,51 +1,56 @@
 import {
-  AnnotationSpan,
+  AnnotationLayer,
   AnnotationSpans,
-  annotationSpanName,
-  dedupeAnnotations,
+  ApiEntityAnnotationSpan,
+  ApiRealiaAnnotationSpan,
+  dedupeEntitySpans,
+  dedupeRealiaSpans,
+  DerivedAnnotationSpans,
   emptyAnnotationSpans,
-  isDuplicateAnnotation,
-  isEntityAnnotationSpan,
-  isRealiaAnnotationSpan,
-  TaggedAnnotationSpan,
-  toTaggedSpans,
+  entitySpanName,
+  isDuplicateEntitySpan,
+  isDuplicateRealiaSpan,
+  NAMED_ENTITY_LAYER,
+  REALIA_LAYER,
 } from 'fragmentarium/ui/text-annotation/annotationSpan'
 import _ from 'lodash'
 import React, { Dispatch, useReducer } from 'react'
 
-type State = {
-  annotations: readonly AnnotationSpan[]
+type State = DerivedAnnotationSpans & {
   words: readonly string[]
 }
 export type AnnotationContextService = [State, Dispatch<Action>]
 
-type AddAction = {
-  type: 'add'
-  annotation: TaggedAnnotationSpan
+type EntityPayload = {
+  layer: typeof NAMED_ENTITY_LAYER
+  annotation: ApiEntityAnnotationSpan
 }
-type EditAction = {
-  type: 'edit'
-  annotation: TaggedAnnotationSpan
+type RealiaPayload = {
+  layer: typeof REALIA_LAYER
+  annotation: ApiRealiaAnnotationSpan
 }
-type DeleteAction = {
-  type: 'delete'
-  annotation: { id: string }
-}
+type UpsertPayload = EntityPayload | RealiaPayload
 
-export type Action = AddAction | EditAction | DeleteAction
+export type Action =
+  | ({ type: 'add' } & UpsertPayload)
+  | ({ type: 'edit' } & UpsertPayload)
+  | { type: 'delete'; layer: typeof NAMED_ENTITY_LAYER; id: string }
+  | { type: 'delete'; layer: typeof REALIA_LAYER; id: string }
 
 const AnnotationContext = React.createContext<AnnotationContextService>([
-  { annotations: [], words: [] },
+  { namedEntities: [], realia: [], words: [] },
   () => {},
 ])
 
+type SpanBoundaries = readonly { id: string; span: readonly string[] }[]
+
 function createSpanBoundaryMaps(
-  annotations: readonly TaggedAnnotationSpan[],
+  spans: SpanBoundaries,
 ): [Map<string, string[]>, Map<string, string[]>] {
   const spanStarts = new Map<string, string[]>()
   const spanEnds = new Map<string, string[]>()
 
-  _.sortBy(annotations, ({ span }) => -span.length).forEach(({ span, id }) => {
+  _.sortBy(spans, ({ span }) => -span.length).forEach(({ span, id }) => {
     const start = span[0]
     const end = span[span.length - 1]
 
@@ -66,26 +71,26 @@ function getLowestOpenTier(occupiedTiers: number[]): number {
 
 function computeLayerTiers(
   words: readonly string[],
-  annotations: readonly TaggedAnnotationSpan[],
+  spans: SpanBoundaries,
 ): Map<string, number> {
-  const [spanStarts, spanEnds] = createSpanBoundaryMaps(annotations)
+  const [spanStarts, spanEnds] = createSpanBoundaryMaps(spans)
 
   const tiers = new Map<string, number>()
   const tierQueue = new Map<string, number>()
   const popStack = new Set<string>()
 
   words.forEach((wordId) => {
-    popStack.forEach((annotationId) => tierQueue.delete(annotationId))
+    popStack.forEach((spanId) => tierQueue.delete(spanId))
     popStack.clear()
-    spanStarts.get(wordId)?.forEach((annotationId) => {
-      if (!tierQueue.has(annotationId)) {
+    spanStarts.get(wordId)?.forEach((spanId) => {
+      if (!tierQueue.has(spanId)) {
         const openTier = getLowestOpenTier([...tierQueue.values()])
 
-        tierQueue.set(annotationId, openTier)
-        tiers.set(annotationId, openTier)
+        tierQueue.set(spanId, openTier)
+        tiers.set(spanId, openTier)
       }
     })
-    spanEnds.get(wordId)?.forEach((annotationId) => popStack.add(annotationId))
+    spanEnds.get(wordId)?.forEach((spanId) => popStack.add(spanId))
   })
 
   return tiers
@@ -93,64 +98,102 @@ function computeLayerTiers(
 
 function setTiers(
   words: readonly string[],
-  annotations: readonly TaggedAnnotationSpan[],
-): readonly AnnotationSpan[] {
-  const entityTiers = computeLayerTiers(
-    words,
-    annotations.filter(isEntityAnnotationSpan),
-  )
-  const realiaTiers = computeLayerTiers(
-    words,
-    annotations.filter(isRealiaAnnotationSpan),
-  )
+  spans: AnnotationSpans,
+): DerivedAnnotationSpans {
+  const entityTiers = computeLayerTiers(words, spans.namedEntities)
+  const realiaTiers = computeLayerTiers(words, spans.realia)
   const entityDepth = _.max([...entityTiers.values()]) || 0
 
-  return annotations.map((annotation) => ({
-    ...annotation,
-    tier: isRealiaAnnotationSpan(annotation)
-      ? entityDepth + (realiaTiers.get(annotation.id) || 1)
-      : entityTiers.get(annotation.id) || 1,
-    name: annotationSpanName(annotation),
-  }))
+  return {
+    namedEntities: spans.namedEntities.map((span) => ({
+      ...span,
+      layer: NAMED_ENTITY_LAYER,
+      tier: entityTiers.get(span.id) || 1,
+      name: entitySpanName(span),
+    })),
+    realia: spans.realia.map((span) => ({
+      ...span,
+      layer: REALIA_LAYER,
+      tier: entityDepth + (realiaTiers.get(span.id) || 1),
+      name: span.realiaId,
+    })),
+  }
 }
 
-function withoutId(
-  annotations: readonly AnnotationSpan[],
-  id: string,
-): readonly TaggedAnnotationSpan[] {
-  return annotations.filter((annotation) => annotation.id !== id)
+function toApiSpans(state: State): AnnotationSpans {
+  return { namedEntities: state.namedEntities, realia: state.realia }
+}
+
+function derive(state: State, spans: AnnotationSpans): State {
+  return { ...setTiers(state.words, spans), words: state.words }
+}
+
+function upsert<Span extends { id: string }>(
+  spans: readonly Span[],
+  annotation: Span,
+  replace: boolean,
+  isDuplicate: (others: readonly Span[], candidate: Span) => boolean,
+): readonly Span[] {
+  const others = replace
+    ? spans.filter((span) => span.id !== annotation.id)
+    : spans
+
+  return isDuplicate(others, annotation) ? spans : [...others, annotation]
+}
+
+function applyUpsert(
+  state: State,
+  action: UpsertPayload,
+  replace: boolean,
+): State {
+  const spans = toApiSpans(state)
+
+  return derive(
+    state,
+    action.layer === REALIA_LAYER
+      ? {
+          ...spans,
+          realia: upsert(
+            spans.realia,
+            action.annotation,
+            replace,
+            isDuplicateRealiaSpan,
+          ),
+        }
+      : {
+          ...spans,
+          namedEntities: upsert(
+            spans.namedEntities,
+            action.annotation,
+            replace,
+            isDuplicateEntitySpan,
+          ),
+        },
+  )
+}
+
+function applyDelete(state: State, layer: AnnotationLayer, id: string): State {
+  const spans = toApiSpans(state)
+
+  return derive(
+    state,
+    layer === REALIA_LAYER
+      ? { ...spans, realia: spans.realia.filter((span) => span.id !== id) }
+      : {
+          ...spans,
+          namedEntities: spans.namedEntities.filter((span) => span.id !== id),
+        },
+  )
 }
 
 function reducer(state: State, action: Action): State {
   switch (action.type) {
     case 'add':
-      return isDuplicateAnnotation(state.annotations, action.annotation)
-        ? state
-        : {
-            ...state,
-            annotations: setTiers(state.words, [
-              ...state.annotations,
-              action.annotation,
-            ]),
-          }
+      return applyUpsert(state, action, false)
     case 'edit':
-      return isDuplicateAnnotation(state.annotations, action.annotation)
-        ? state
-        : {
-            ...state,
-            annotations: setTiers(state.words, [
-              ...withoutId(state.annotations, action.annotation.id),
-              action.annotation,
-            ]),
-          }
+      return applyUpsert(state, action, true)
     case 'delete':
-      return {
-        ...state,
-        annotations: setTiers(
-          state.words,
-          withoutId(state.annotations, action.annotation.id),
-        ),
-      }
+      return applyDelete(state, action.layer, action.id)
   }
 }
 
@@ -158,10 +201,12 @@ export function useAnnotationContext(
   words: readonly string[],
   initial: AnnotationSpans = emptyAnnotationSpans,
 ): AnnotationContextService {
-  return useReducer(reducer, {
-    annotations: setTiers(words, dedupeAnnotations(toTaggedSpans(initial))),
-    words,
-  })
+  const deduped: AnnotationSpans = {
+    namedEntities: dedupeEntitySpans(initial.namedEntities),
+    realia: dedupeRealiaSpans(initial.realia),
+  }
+
+  return useReducer(reducer, { ...setTiers(words, deduped), words })
 }
 
 export default AnnotationContext

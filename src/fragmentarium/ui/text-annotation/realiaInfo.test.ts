@@ -107,10 +107,9 @@ describe('getSpanIndicatorClass', () => {
 })
 
 describe('getRealiaIds', () => {
-  it('collects the distinct realiaIds of the realia layer', () => {
+  it('collects the distinct realiaIds of the realia collection', () => {
     expect(
       getRealiaIds([
-        entitySpan,
         realiaSpan,
         { ...realiaSpan, id: 'Realia-2' },
         { ...realiaSpan, id: 'Realia-3', realiaId: 'realia_000999' },
@@ -118,7 +117,7 @@ describe('getRealiaIds', () => {
     ).toEqual(['realia_000846', 'realia_000999'])
   })
 
-  it('returns nothing without realia spans', () => {
-    expect(getRealiaIds([entitySpan])).toEqual([])
+  it('returns nothing for an empty collection', () => {
+    expect(getRealiaIds([])).toEqual([])
   })
 })

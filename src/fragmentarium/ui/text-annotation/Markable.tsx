@@ -19,6 +19,34 @@ import { getSelectedTokens } from 'fragmentarium/ui/text-annotation/selectionUti
 
 const markableClass = 'markable'
 
+function SpanIndicators<Span extends AnnotationSpan>({
+  spans,
+  tokenId,
+  activeSpanId,
+  setActiveSpanId,
+}: {
+  spans: readonly Span[]
+  tokenId?: string | null
+  activeSpanId: string | null
+  setActiveSpanId: React.Dispatch<React.SetStateAction<string | null>>
+}): JSX.Element {
+  return (
+    <>
+      {spans
+        .filter((span) => !!tokenId && span.span.includes(tokenId))
+        .map((span) => (
+          <SpanIndicator
+            key={span.id}
+            tokenId={tokenId ?? undefined}
+            entitySpan={span}
+            activeSpanId={activeSpanId}
+            setActiveSpanId={setActiveSpanId}
+          />
+        ))}
+    </>
+  )
+}
+
 function sortSelection(
   selection: readonly string[],
   words: readonly string[],
@@ -63,12 +91,14 @@ export default function Markable({
   selectionStartTokenIdRef?: React.MutableRefObject<string | null>
 }>): JSX.Element {
   const annotationContextValue = useContext(AnnotationContext)
-  const [{ annotations, words }] = annotationContextValue
+  const [{ namedEntities, realia, words }] = annotationContextValue
   const { lookup: realiaLookup } = useContext(RealiaInfoContext)
   const selectRef = useRef<SelectInstance<EntityTypeOption> | null>(null)
   const [target, setTarget] = React.useState<HTMLSpanElement | null>(null)
-  const activeSpan =
-    _.find(annotations, (annotation) => annotation.id === activeSpanId) || null
+  const activeSpan: AnnotationSpan | null =
+    _.find(namedEntities, ({ id }) => id === activeSpanId) ||
+    _.find(realia, ({ id }) => id === activeSpanId) ||
+    null
   const hasWords = words.length > 0
   const showEditorOverlay =
     hasWords && !!activeSpan && _.head(activeSpan.span) === token.id
@@ -162,19 +192,18 @@ export default function Markable({
       {annotator}
       {editor}
       <span onMouseUp={handleSelection}>{children}</span>
-      {annotations.map((annotation, index) => {
-        return token.id && annotation.span.includes(token.id) ? (
-          <SpanIndicator
-            key={index}
-            tokenId={token.id}
-            entitySpan={annotation}
-            activeSpanId={activeSpanId}
-            setActiveSpanId={setActiveSpanId}
-          />
-        ) : (
-          <React.Fragment key={index} />
-        )
-      })}
+      <SpanIndicators
+        spans={namedEntities}
+        tokenId={token.id}
+        activeSpanId={activeSpanId}
+        setActiveSpanId={setActiveSpanId}
+      />
+      <SpanIndicators
+        spans={realia}
+        tokenId={token.id}
+        activeSpanId={activeSpanId}
+        setActiveSpanId={setActiveSpanId}
+      />
     </span>
   )
 }

@@ -23,7 +23,7 @@ function renderWithContext(
   render(
     <WithRealiaService>
       <AnnotationContext.Provider
-        value={[{ annotations: [], words }, dispatch]}
+        value={[{ namedEntities: [], realia: [], words }, dispatch]}
       >
         {ui}
       </AnnotationContext.Provider>

@@ -221,6 +221,48 @@ a picked realia stays displayed in the editor, Apply relabels the indicator to t
 lemma, and a realia span opens the realia editor rather than the tag editor. The second of
 these fails on the pre-fix code, which is how the diagnosis was confirmed.
 
+## Structural separation of the two kinds (data architecture gate)
+
+The instructions now require that different kinds of data are never intermixed in one array,
+map, or field — end to end, not just at the API boundary. **Our own code violated that**, and
+was fixed:
+
+The API payload was already two lists, but inside the app both kinds were pooled into a
+single heterogeneous array: `State.annotations: readonly AnnotationSpan[]`, with mixed
+`TaggedAnnotationSpan[]` threaded through every helper. The `layer` tag existed precisely to
+make that pooled array type-safe — which is the defect the rule names, not the remedy.
+
+What changed:
+
+- **Reducer state holds two collections**, `namedEntities` and `realia`, never one list.
+  Actions are per-kind (`{ type, layer, annotation }` / `{ type: 'delete', layer, id }`), so
+  a payload is routed to exactly one collection.
+- **Duplicate checks are per kind** (`isDuplicateEntitySpan` / `isDuplicateRealiaSpan`,
+  `dedupeEntitySpans` / `dedupeRealiaSpans`), each keyed by its own value plus the token
+  range. Cross-kind comparison is no longer expressible, which is what makes "a tag and a
+  realia on the same range are not duplicates" true by construction rather than by a filter.
+- **`getUsedEntityTypes` / `getUsedRealiaIds` each take only their own collection.**
+- **`spanAnnotatorActions` returns `{ tag, realia }`** — two named fields — instead of a mixed
+  array the caller had to re-split. `createAnnotationSpanId` now takes a homogeneous
+  `readonly string[]` of existing ids, so id uniqueness across both kinds needs no mixed array.
+- **`Markable` iterates the two collections separately** and renders one after the other.
+  `SpanIndicators` is generic over a single kind (`Span extends AnnotationSpan`), so it cannot
+  be handed an array containing both — and it needs no cast.
+- The `AnnotationSpan` union now survives only where the rule allows it: **single values**
+  whose kind is genuinely dynamic (the active span, an indicator's span, an editor's span).
+
+### Gate verification (required by the instructions)
+
+- No array, map, or field holds more than one kind — checked in reducer state and component
+  props, not only the API payload. `grep` for `AnnotationSpan[]` returns no mixed collection.
+- No type carries mutually exclusive optional fields as a de facto discriminant.
+- Each kind's ids resolve only against its own collection (`word.realia` → `fragment.realia`).
+- No `as` cast converts between the kinds. (A first cut of `SpanIndicators` widened a
+  union-of-arrays with `as readonly AnnotationSpan[]`; it was made generic instead, removing
+  the cast.)
+- The outbound payload is built in one place (`omitDerivedSpanFields`), carries no derived
+  field, and is pinned by repository tests.
+
 ## Migration to the two-list named-entities contract
 
 The backend now keeps tags and realia in **two separate lists that are never intermixed**.

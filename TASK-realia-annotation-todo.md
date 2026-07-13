@@ -56,6 +56,19 @@ for the picker.
 - [x] 10. Tests for every new/changed unit; 100% coverage of affected code.
 - [x] 11. Hard gates: `yarn lint`, `yarn tsc`, `yarn test --watchAll=false` console-clean.
 
+## Data architecture: kinds held structurally apart
+
+- [x] 23. Hardened `.github/copilot-instructions.md`: different kinds of data must never
+      intermix in one array, map, or field — end to end, not just at the API boundary. A
+      heterogeneous array is the defect; a discriminant that makes it type-safe is not a
+      remedy.
+- [x] 24. Fixed our own violation. Reducer state pooled both kinds into one
+      `annotations: AnnotationSpan[]`. It now holds separate `namedEntities` and `realia`
+      collections; actions are per-kind; duplicate checks, dedupe and the used-value helpers
+      are per-kind; `spanAnnotatorActions` returns `{ tag, realia }` instead of a mixed
+      array; `Markable` iterates the two collections separately. The `AnnotationSpan` union
+      survives only for single values (active span, indicator, editor).
+
 ## Two-list contract migration
 
 - [x] 18. POST/GET `{ namedEntities, realia }`; the `annotations` key is gone. A missing key

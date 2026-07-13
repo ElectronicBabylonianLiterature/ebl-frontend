@@ -1,122 +1,82 @@
 import {
   annotationSpanName,
+  ApiEntityAnnotationSpan,
+  ApiRealiaAnnotationSpan,
   createAnnotationSpanId,
-  dedupeAnnotations,
+  dedupeEntitySpans,
+  dedupeRealiaSpans,
   ENTITY_ID_PREFIX,
+  entitySpanKey,
   getUsedEntityTypes,
   getUsedRealiaIds,
-  isDuplicateAnnotation,
-  isEntityAnnotationSpan,
+  isDuplicateEntitySpan,
+  isDuplicateRealiaSpan,
   isRealiaAnnotationSpan,
   isSameRange,
   omitDerivedSpanFields,
+  realiaSpanKey,
   REALIA_ID_PREFIX,
-  tagEntitySpan,
-  tagRealiaSpan,
-  toTaggedSpans,
 } from 'fragmentarium/ui/text-annotation/annotationSpan'
 import {
   entityAnnotationSpan,
   realiaAnnotationSpan,
 } from 'fragmentarium/ui/text-annotation/textAnnotation.testSupport'
 
-const tag = tagEntitySpan({
+const tag: ApiEntityAnnotationSpan = {
   id: 'Entity-1',
   type: 'PERSONAL_NAME',
   span: ['Word-1'],
-})
-const realia = tagRealiaSpan({
+}
+const realia: ApiRealiaAnnotationSpan = {
   id: 'Realia-1',
   realiaId: 'realia_000846',
   span: ['Word-1'],
-})
+}
 
-describe('layer guards', () => {
-  it('recognises realia spans', () => {
-    expect(isRealiaAnnotationSpan(realia)).toBe(true)
-    expect(isRealiaAnnotationSpan(tag)).toBe(false)
-  })
-
-  it('recognises tag spans', () => {
-    expect(isEntityAnnotationSpan(tag)).toBe(true)
-    expect(isEntityAnnotationSpan(realia)).toBe(false)
+describe('isRealiaAnnotationSpan', () => {
+  it('discriminates a single derived span by its layer', () => {
+    expect(isRealiaAnnotationSpan(realiaAnnotationSpan(realia))).toBe(true)
+    expect(isRealiaAnnotationSpan(entityAnnotationSpan(tag))).toBe(false)
   })
 })
 
-describe('toTaggedSpans', () => {
-  it('tags each list with its layer', () => {
-    expect(
-      toTaggedSpans({
-        namedEntities: [{ id: 'Entity-1', type: 'PERSONAL_NAME', span: ['a'] }],
-        realia: [{ id: 'Realia-1', realiaId: 'realia_1', span: ['a'] }],
-      }),
-    ).toEqual([
-      {
-        id: 'Entity-1',
-        type: 'PERSONAL_NAME',
-        span: ['a'],
-        layer: 'namedEntities',
-      },
-      { id: 'Realia-1', realiaId: 'realia_1', span: ['a'], layer: 'realia' },
-    ])
+describe('annotationSpanName', () => {
+  it('uses the entity type name for a tag', () => {
+    expect(annotationSpanName(entityAnnotationSpan(tag))).toBe('Personal Name')
+  })
+
+  it('uses the realiaId for a realia', () => {
+    expect(annotationSpanName(realiaAnnotationSpan(realia))).toBe(
+      'realia_000846',
+    )
   })
 })
 
 describe('omitDerivedSpanFields', () => {
-  it('partitions into the two lists and strips tier, name and layer', () => {
+  it('strips tier, name and layer from each collection', () => {
     expect(
-      omitDerivedSpanFields([
-        realiaAnnotationSpan(
-          { id: 'Realia-1', realiaId: 'realia_000846', span: ['Word-1'] },
-          { tier: 2 },
-        ),
-        entityAnnotationSpan({
-          id: 'Entity-1',
-          type: 'PERSONAL_NAME',
-          span: ['Word-1'],
-        }),
-      ]),
-    ).toEqual({
-      namedEntities: [
-        { id: 'Entity-1', type: 'PERSONAL_NAME', span: ['Word-1'] },
-      ],
-      realia: [{ id: 'Realia-1', realiaId: 'realia_000846', span: ['Word-1'] }],
-    })
+      omitDerivedSpanFields({
+        namedEntities: [entityAnnotationSpan(tag)],
+        realia: [realiaAnnotationSpan(realia, { tier: 2 })],
+      }),
+    ).toEqual({ namedEntities: [tag], realia: [realia] })
   })
 
   it('never puts a realiaId in namedEntities or a type in realia', () => {
-    const spans = omitDerivedSpanFields([
-      entityAnnotationSpan({
-        id: 'Entity-1',
-        type: 'PERSONAL_NAME',
-        span: ['Word-1'],
-      }),
-      realiaAnnotationSpan({
-        id: 'Realia-1',
-        realiaId: 'realia_000846',
-        span: ['Word-1'],
-      }),
-    ])
+    const spans = omitDerivedSpanFields({
+      namedEntities: [entityAnnotationSpan(tag)],
+      realia: [realiaAnnotationSpan(realia)],
+    })
 
     expect(spans.namedEntities[0]).not.toHaveProperty('realiaId')
     expect(spans.realia[0]).not.toHaveProperty('type')
   })
 
-  it('yields empty lists for no annotations', () => {
-    expect(omitDerivedSpanFields([])).toEqual({
+  it('yields empty collections for no annotations', () => {
+    expect(omitDerivedSpanFields({ namedEntities: [], realia: [] })).toEqual({
       namedEntities: [],
       realia: [],
     })
-  })
-})
-
-describe('annotationSpanName', () => {
-  it('uses the entity type name for tags', () => {
-    expect(annotationSpanName(tag)).toBe('Personal Name')
-  })
-
-  it('uses the realiaId for realia', () => {
-    expect(annotationSpanName(realia)).toBe('realia_000846')
   })
 })
 
@@ -130,25 +90,31 @@ describe('isSameRange', () => {
   })
 })
 
-describe('isDuplicateAnnotation', () => {
-  it('detects the same tag on the same range', () => {
-    expect(isDuplicateAnnotation([tag], { ...tag, id: 'Entity-2' })).toBe(true)
+describe('span keys', () => {
+  it('keys a tag by its type and range', () => {
+    expect(entitySpanKey(tag)).toBe('PERSONAL_NAME|Word-1')
   })
 
-  it('detects the same realia on the same range', () => {
-    expect(isDuplicateAnnotation([realia], { ...realia, id: 'Realia-2' })).toBe(
-      true,
+  it('keys a realia by its realiaId and range', () => {
+    expect(realiaSpanKey(realia)).toBe('realia_000846|Word-1')
+  })
+
+  it('keys a reordered range identically', () => {
+    expect(entitySpanKey({ ...tag, span: ['Word-2', 'Word-1'] })).toBe(
+      entitySpanKey({ ...tag, span: ['Word-1', 'Word-2'] }),
     )
+  })
+})
+
+describe('isDuplicateEntitySpan', () => {
+  it('detects the same tag on the same range', () => {
+    expect(isDuplicateEntitySpan([tag], { ...tag, id: 'Entity-2' })).toBe(true)
   })
 
   it('detects a duplicate whose span is in a different order', () => {
-    const wide = tagEntitySpan({
-      id: 'Entity-1',
-      type: 'PERSONAL_NAME',
-      span: ['Word-2', 'Word-3'],
-    })
+    const wide = { ...tag, span: ['Word-2', 'Word-3'] }
     expect(
-      isDuplicateAnnotation([wide], {
+      isDuplicateEntitySpan([wide], {
         ...wide,
         id: 'Entity-2',
         span: ['Word-3', 'Word-2'],
@@ -158,7 +124,7 @@ describe('isDuplicateAnnotation', () => {
 
   it('allows the same tag on a different range', () => {
     expect(
-      isDuplicateAnnotation([tag], {
+      isDuplicateEntitySpan([tag], {
         ...tag,
         id: 'Entity-2',
         span: ['Word-2'],
@@ -168,7 +134,7 @@ describe('isDuplicateAnnotation', () => {
 
   it('allows a different tag on the same range', () => {
     expect(
-      isDuplicateAnnotation([tag], {
+      isDuplicateEntitySpan([tag], {
         ...tag,
         id: 'Entity-2',
         type: 'ROYAL_NAME',
@@ -176,52 +142,49 @@ describe('isDuplicateAnnotation', () => {
     ).toBe(false)
   })
 
-  it('allows a tag and a realia on the same range', () => {
-    expect(isDuplicateAnnotation([tag], realia)).toBe(false)
-  })
-
-  it('does not treat an annotation as a duplicate of itself', () => {
-    expect(isDuplicateAnnotation([tag], tag)).toBe(false)
+  it('does not treat a tag as a duplicate of itself', () => {
+    expect(isDuplicateEntitySpan([tag], tag)).toBe(false)
   })
 })
 
-describe('dedupeAnnotations', () => {
-  it('keeps the first occurrence of each duplicate', () => {
-    expect(
-      dedupeAnnotations([
-        tag,
-        { ...tag, id: 'Entity-2' },
-        realia,
-        { ...realia, id: 'Realia-2' },
-      ]),
-    ).toEqual([tag, realia])
+describe('isDuplicateRealiaSpan', () => {
+  it('detects the same realia on the same range', () => {
+    expect(isDuplicateRealiaSpan([realia], { ...realia, id: 'Realia-2' })).toBe(
+      true,
+    )
   })
 
-  it('deduplicates across a reordered span', () => {
-    const wide = tagEntitySpan({
-      id: 'Entity-1',
-      type: 'PERSONAL_NAME',
-      span: ['Word-2', 'Word-3'],
-    })
+  it('allows a different realia on the same range', () => {
     expect(
-      dedupeAnnotations([
-        wide,
-        { ...wide, id: 'Entity-2', span: ['Word-3', 'Word-2'] },
-      ]),
-    ).toEqual([wide])
+      isDuplicateRealiaSpan([realia], {
+        ...realia,
+        id: 'Realia-2',
+        realiaId: 'realia_000999',
+      }),
+    ).toBe(false)
+  })
+})
+
+describe('dedupe', () => {
+  it('keeps the first of each duplicate tag', () => {
+    expect(dedupeEntitySpans([tag, { ...tag, id: 'Entity-2' }])).toEqual([tag])
   })
 
-  it('keeps distinct annotations', () => {
+  it('keeps the first of each duplicate realia', () => {
+    expect(dedupeRealiaSpans([realia, { ...realia, id: 'Realia-2' }])).toEqual([
+      realia,
+    ])
+  })
+
+  it('keeps distinct tags', () => {
     const other = { ...tag, id: 'Entity-2', type: 'ROYAL_NAME' as const }
-    expect(dedupeAnnotations([tag, other])).toEqual([tag, other])
+    expect(dedupeEntitySpans([tag, other])).toEqual([tag, other])
   })
 })
 
 describe('getUsedEntityTypes', () => {
-  it('lists only the tags on the range', () => {
-    expect(getUsedEntityTypes([tag, realia], ['Word-1'])).toEqual([
-      'PERSONAL_NAME',
-    ])
+  it('lists the tags on the range', () => {
+    expect(getUsedEntityTypes([tag], ['Word-1'])).toEqual(['PERSONAL_NAME'])
   })
 
   it('matches the range regardless of order', () => {
@@ -241,10 +204,8 @@ describe('getUsedEntityTypes', () => {
 })
 
 describe('getUsedRealiaIds', () => {
-  it('lists only the realia on the range', () => {
-    expect(getUsedRealiaIds([tag, realia], ['Word-1'])).toEqual([
-      'realia_000846',
-    ])
+  it('lists the realia on the range', () => {
+    expect(getUsedRealiaIds([realia], ['Word-1'])).toEqual(['realia_000846'])
   })
 
   it('excludes the annotation being edited', () => {
@@ -253,25 +214,19 @@ describe('getUsedRealiaIds', () => {
 })
 
 describe('createAnnotationSpanId', () => {
-  it('starts at one when no spans exist', () => {
+  it('starts at one when no ids exist', () => {
     expect(createAnnotationSpanId([], ENTITY_ID_PREFIX)).toBe('Entity-1')
   })
 
   it('increments the highest id of the matching prefix', () => {
     expect(
-      createAnnotationSpanId(
-        [tag, { ...tag, id: 'Entity-4' }],
-        ENTITY_ID_PREFIX,
-      ),
+      createAnnotationSpanId(['Entity-1', 'Entity-4'], ENTITY_ID_PREFIX),
     ).toBe('Entity-5')
   })
 
-  it('numbers the layers independently, keeping ids unique across both', () => {
-    const spans = [
-      { ...tag, id: 'Entity-9' },
-      { ...realia, id: 'Realia-2' },
-    ]
-    expect(createAnnotationSpanId(spans, REALIA_ID_PREFIX)).toBe('Realia-3')
-    expect(createAnnotationSpanId(spans, ENTITY_ID_PREFIX)).toBe('Entity-10')
+  it('numbers the kinds independently, keeping ids unique across both', () => {
+    const ids = ['Entity-9', 'Realia-2']
+    expect(createAnnotationSpanId(ids, REALIA_ID_PREFIX)).toBe('Realia-3')
+    expect(createAnnotationSpanId(ids, ENTITY_ID_PREFIX)).toBe('Entity-10')
   })
 })

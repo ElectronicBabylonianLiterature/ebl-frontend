@@ -4,8 +4,8 @@ import {
   AnnotationSpans,
   ApiEntityAnnotationSpan,
   ApiRealiaAnnotationSpan,
-  tagEntitySpan,
-  tagRealiaSpan,
+  NAMED_ENTITY_LAYER,
+  REALIA_LAYER,
 } from 'fragmentarium/ui/text-annotation/annotationSpan'
 
 const words = ['Word-1', 'Word-2', 'Word-3']
@@ -33,26 +33,35 @@ const tierOf = (
   id: string,
 ): number => annotations.find((annotation) => annotation.id === id)?.tier ?? 0
 
-describe('useAnnotationContext with both layers', () => {
-  it('derives the display name of each layer', () => {
+describe('useAnnotationContext keeps the layers apart', () => {
+  it('exposes each kind in its own collection', () => {
     const { result } = renderHook(() =>
       useAnnotationContext(words, spans([tag], [realia])),
     )
+    const [state] = result.current
 
-    expect(result.current[0].annotations.map(({ name }) => name)).toEqual([
-      'Personal Name',
-      'realia_000846',
-    ])
+    expect(state.namedEntities.map(({ id }) => id)).toEqual(['Entity-1'])
+    expect(state.realia.map(({ id }) => id)).toEqual(['Realia-1'])
+  })
+
+  it('derives the display name of each kind', () => {
+    const { result } = renderHook(() =>
+      useAnnotationContext(words, spans([tag], [realia])),
+    )
+    const [state] = result.current
+
+    expect(state.namedEntities[0].name).toBe('Personal Name')
+    expect(state.realia[0].name).toBe('realia_000846')
   })
 
   it('places the tag layer above the realia layer', () => {
     const { result } = renderHook(() =>
       useAnnotationContext(words, spans([tag], [realia])),
     )
-    const { annotations } = result.current[0]
+    const [state] = result.current
 
-    expect(tierOf(annotations, 'Entity-1')).toBe(1)
-    expect(tierOf(annotations, 'Realia-1')).toBe(2)
+    expect(tierOf(state.namedEntities, 'Entity-1')).toBe(1)
+    expect(tierOf(state.realia, 'Realia-1')).toBe(2)
   })
 
   it('keeps every realia below every tag, even when tags are nested', () => {
@@ -64,35 +73,52 @@ describe('useAnnotationContext with both layers', () => {
     const { result } = renderHook(() =>
       useAnnotationContext(words, spans([tag, nestedTag], [realia])),
     )
-    const { annotations } = result.current[0]
+    const [state] = result.current
 
-    const deepestTag = Math.max(
-      tierOf(annotations, 'Entity-1'),
-      tierOf(annotations, 'Entity-2'),
-    )
-    expect(tierOf(annotations, 'Realia-1')).toBeGreaterThan(deepestTag)
+    const deepestTag = Math.max(...state.namedEntities.map(({ tier }) => tier))
+    expect(tierOf(state.realia, 'Realia-1')).toBeGreaterThan(deepestTag)
   })
 
   it('falls back to the first tier for spans outside the word list', () => {
     const { result } = renderHook(() =>
       useAnnotationContext([], spans([tag], [realia])),
     )
+    const [state] = result.current
 
-    expect(result.current[0].annotations.map(({ tier }) => tier)).toEqual([
-      1, 1,
-    ])
+    expect(state.namedEntities[0].tier).toBe(1)
+    expect(state.realia[0].tier).toBe(1)
   })
 
-  it('adds a realia annotation', () => {
+  it('adds a realia annotation to the realia collection only', () => {
     const { result } = renderHook(() => useAnnotationContext(words))
 
     act(() => {
-      result.current[1]({ type: 'add', annotation: tagRealiaSpan(realia) })
+      result.current[1]({
+        type: 'add',
+        layer: REALIA_LAYER,
+        annotation: realia,
+      })
     })
+    const [state] = result.current
 
-    expect(result.current[0].annotations).toEqual([
-      { ...tagRealiaSpan(realia), tier: 1, name: 'realia_000846' },
-    ])
+    expect(state.realia).toMatchObject([{ id: 'Realia-1' }])
+    expect(state.namedEntities).toEqual([])
+  })
+
+  it('adds a tag to the tag collection only', () => {
+    const { result } = renderHook(() => useAnnotationContext(words))
+
+    act(() => {
+      result.current[1]({
+        type: 'add',
+        layer: NAMED_ENTITY_LAYER,
+        annotation: tag,
+      })
+    })
+    const [state] = result.current
+
+    expect(state.namedEntities).toMatchObject([{ id: 'Entity-1' }])
+    expect(state.realia).toEqual([])
   })
 
   it('edits a realia annotation', () => {
@@ -103,11 +129,12 @@ describe('useAnnotationContext with both layers', () => {
     act(() => {
       result.current[1]({
         type: 'edit',
-        annotation: tagRealiaSpan({ ...realia, realiaId: 'realia_000999' }),
+        layer: REALIA_LAYER,
+        annotation: { ...realia, realiaId: 'realia_000999' },
       })
     })
 
-    expect(result.current[0].annotations).toMatchObject([
+    expect(result.current[0].realia).toMatchObject([
       { id: 'Realia-1', realiaId: 'realia_000999', name: 'realia_000999' },
     ])
   })
@@ -118,16 +145,38 @@ describe('useAnnotationContext with both layers', () => {
     )
 
     act(() => {
-      result.current[1]({ type: 'delete', annotation: realia })
+      result.current[1]({
+        type: 'delete',
+        layer: REALIA_LAYER,
+        id: 'Realia-1',
+      })
     })
+    const [state] = result.current
 
-    expect(result.current[0].annotations).toEqual([
-      { ...tagEntitySpan(tag), tier: 1, name: 'Personal Name' },
-    ])
+    expect(state.realia).toEqual([])
+    expect(state.namedEntities).toMatchObject([{ id: 'Entity-1' }])
+  })
+
+  it('deletes a tag without touching the realia layer', () => {
+    const { result } = renderHook(() =>
+      useAnnotationContext(words, spans([tag], [realia])),
+    )
+
+    act(() => {
+      result.current[1]({
+        type: 'delete',
+        layer: NAMED_ENTITY_LAYER,
+        id: 'Entity-1',
+      })
+    })
+    const [state] = result.current
+
+    expect(state.namedEntities).toEqual([])
+    expect(state.realia).toMatchObject([{ id: 'Realia-1' }])
   })
 })
 
-describe('uniqueness', () => {
+describe('uniqueness within each kind', () => {
   it('ignores adding a tag that is already on the range', () => {
     const { result } = renderHook(() =>
       useAnnotationContext(words, spans([tag])),
@@ -136,11 +185,12 @@ describe('uniqueness', () => {
     act(() => {
       result.current[1]({
         type: 'add',
-        annotation: tagEntitySpan({ ...tag, id: 'Entity-2' }),
+        layer: NAMED_ENTITY_LAYER,
+        annotation: { ...tag, id: 'Entity-2' },
       })
     })
 
-    expect(result.current[0].annotations).toHaveLength(1)
+    expect(result.current[0].namedEntities).toHaveLength(1)
   })
 
   it('ignores a duplicate whose span is in a different order', () => {
@@ -151,15 +201,12 @@ describe('uniqueness', () => {
     act(() => {
       result.current[1]({
         type: 'add',
-        annotation: tagEntitySpan({
-          ...tag,
-          id: 'Entity-2',
-          span: ['Word-2', 'Word-1'],
-        }),
+        layer: NAMED_ENTITY_LAYER,
+        annotation: { ...tag, id: 'Entity-2', span: ['Word-2', 'Word-1'] },
       })
     })
 
-    expect(result.current[0].annotations).toHaveLength(1)
+    expect(result.current[0].namedEntities).toHaveLength(1)
   })
 
   it('ignores adding a realia that is already on the range', () => {
@@ -170,11 +217,12 @@ describe('uniqueness', () => {
     act(() => {
       result.current[1]({
         type: 'add',
-        annotation: tagRealiaSpan({ ...realia, id: 'Realia-2' }),
+        layer: REALIA_LAYER,
+        annotation: { ...realia, id: 'Realia-2' },
       })
     })
 
-    expect(result.current[0].annotations).toHaveLength(1)
+    expect(result.current[0].realia).toHaveLength(1)
   })
 
   it('allows a tag and a realia on the same range', () => {
@@ -183,10 +231,16 @@ describe('uniqueness', () => {
     )
 
     act(() => {
-      result.current[1]({ type: 'add', annotation: tagRealiaSpan(realia) })
+      result.current[1]({
+        type: 'add',
+        layer: REALIA_LAYER,
+        annotation: realia,
+      })
     })
+    const [state] = result.current
 
-    expect(result.current[0].annotations).toHaveLength(2)
+    expect(state.namedEntities).toHaveLength(1)
+    expect(state.realia).toHaveLength(1)
   })
 
   it('allows the same tag on a different range', () => {
@@ -197,18 +251,15 @@ describe('uniqueness', () => {
     act(() => {
       result.current[1]({
         type: 'add',
-        annotation: tagEntitySpan({
-          ...tag,
-          id: 'Entity-2',
-          span: ['Word-3'],
-        }),
+        layer: NAMED_ENTITY_LAYER,
+        annotation: { ...tag, id: 'Entity-2', span: ['Word-3'] },
       })
     })
 
-    expect(result.current[0].annotations).toHaveLength(2)
+    expect(result.current[0].namedEntities).toHaveLength(2)
   })
 
-  it('ignores an edit that would duplicate another annotation', () => {
+  it('ignores an edit that would duplicate another tag', () => {
     const other: ApiEntityAnnotationSpan = {
       id: 'Entity-2',
       type: 'ROYAL_NAME',
@@ -221,16 +272,17 @@ describe('uniqueness', () => {
     act(() => {
       result.current[1]({
         type: 'edit',
-        annotation: tagEntitySpan({ ...other, type: tag.type }),
+        layer: NAMED_ENTITY_LAYER,
+        annotation: { ...other, type: tag.type },
       })
     })
 
     expect(
-      result.current[0].annotations.find(({ id }) => id === 'Entity-2'),
+      result.current[0].namedEntities.find(({ id }) => id === 'Entity-2'),
     ).toMatchObject({ type: 'ROYAL_NAME' })
   })
 
-  it('allows editing an annotation into a value nothing else uses', () => {
+  it('allows editing a tag into a value nothing else uses', () => {
     const { result } = renderHook(() =>
       useAnnotationContext(words, spans([tag])),
     )
@@ -238,11 +290,12 @@ describe('uniqueness', () => {
     act(() => {
       result.current[1]({
         type: 'edit',
-        annotation: tagEntitySpan({ ...tag, type: 'ROYAL_NAME' }),
+        layer: NAMED_ENTITY_LAYER,
+        annotation: { ...tag, type: 'ROYAL_NAME' },
       })
     })
 
-    expect(result.current[0].annotations).toMatchObject([
+    expect(result.current[0].namedEntities).toMatchObject([
       { id: 'Entity-1', type: 'ROYAL_NAME' },
     ])
   })
@@ -254,10 +307,9 @@ describe('uniqueness', () => {
         spans([tag, { ...tag, id: 'Entity-2' }], [realia]),
       ),
     )
+    const [state] = result.current
 
-    expect(result.current[0].annotations.map(({ id }) => id)).toEqual([
-      'Entity-1',
-      'Realia-1',
-    ])
+    expect(state.namedEntities.map(({ id }) => id)).toEqual(['Entity-1'])
+    expect(state.realia.map(({ id }) => id)).toEqual(['Realia-1'])
   })
 })

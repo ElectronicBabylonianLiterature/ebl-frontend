@@ -180,17 +180,15 @@ function SpanAnnotationDisplay({
   const [selection, setSelection] = useState<readonly string[]>([])
   const [activeSpanId, setActiveSpanId] = React.useState<string | null>(null)
   const selectionStartTokenIdRef = useRef<string | null>(null)
-  const [{ annotations, words }] = useContext(AnnotationContext)
-  const isDirty = !_.isEqual(
-    initialAnnotations,
-    omitDerivedSpanFields(annotations),
-  )
+  const [spans] = useContext(AnnotationContext)
+  const words = spans.words
+  const isDirty = !_.isEqual(initialAnnotations, omitDerivedSpanFields(spans))
   const [isSaving, setIsSaving] = useState(false)
 
   const text = fragment.text
 
   const saveAnnotations = () => {
-    const updatedAnnotations = omitDerivedSpanFields(annotations)
+    const updatedAnnotations = omitDerivedSpanFields(spans)
     setIsSaving(true)
     fragmentService
       .updateNamedEntityAnnotations(fragment.number, updatedAnnotations)
@@ -322,7 +320,7 @@ function TextAnnotationView({
   const [initialAnnotations, setInitialAnnotations] =
     useState<AnnotationSpans>(annotations)
   const annotationContext = useAnnotationContext(words, initialAnnotations)
-  const realiaIdKey = getRealiaIds(annotationContext[0].annotations)
+  const realiaIdKey = getRealiaIds(annotationContext[0].realia)
     .slice()
     .sort()
     .join(',')

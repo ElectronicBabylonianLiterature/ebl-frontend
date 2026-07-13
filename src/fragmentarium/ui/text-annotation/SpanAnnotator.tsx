@@ -5,11 +5,14 @@ import {
 import {
   getUsedEntityTypes,
   getUsedRealiaIds,
-  TaggedAnnotationSpan,
+  NAMED_ENTITY_LAYER,
+  REALIA_LAYER,
 } from 'fragmentarium/ui/text-annotation/annotationSpan'
 import {
   buildRealiaAnnotations,
   buildTagAnnotations,
+  isEmpty,
+  NewAnnotations,
 } from 'fragmentarium/ui/text-annotation/spanAnnotatorActions'
 import AnnotationContext from 'fragmentarium/ui/text-annotation/TextAnnotationContext'
 import RealiaInfoContext from 'fragmentarium/ui/text-annotation/RealiaInfoContext'
@@ -50,19 +53,32 @@ const SpanAnnotator = forwardRef<
 >(function SpanAnnotator({ selection, setSelection }, ref): JSX.Element {
   const [selectedType, setSelectedType] =
     React.useState<EntityTypeOption | null>(null)
-  const [{ annotations }, dispatch] = useContext(AnnotationContext)
+  const [spans, dispatch] = useContext(AnnotationContext)
   const { register } = useContext(RealiaInfoContext)
-  const usedEntityTypes = getUsedEntityTypes(annotations, selection)
-  const usedRealiaIds = getUsedRealiaIds(annotations, selection)
+  const usedEntityTypes = getUsedEntityTypes(spans.namedEntities, selection)
+  const usedRealiaIds = getUsedRealiaIds(spans.realia, selection)
   const availableTypeOptions = entityTypeOptions.filter(
     (option) => !usedEntityTypes.includes(option.value),
   )
 
-  const applyAnnotations = (added: readonly TaggedAnnotationSpan[]) => {
-    if (added.length === 0) {
+  const applyAnnotations = (added: NewAnnotations) => {
+    if (isEmpty(added)) {
       return
     }
-    added.forEach((annotation) => dispatch({ type: 'add', annotation }))
+    if (added.realia) {
+      dispatch({
+        type: 'add',
+        layer: REALIA_LAYER,
+        annotation: added.realia,
+      })
+    }
+    if (added.tag) {
+      dispatch({
+        type: 'add',
+        layer: NAMED_ENTITY_LAYER,
+        annotation: added.tag,
+      })
+    }
     clearSelection()
     setSelection([])
   }
@@ -81,7 +97,7 @@ const SpanAnnotator = forwardRef<
               const selectedOption = option as EntityTypeOption | null
               setSelectedType(selectedOption)
               applyAnnotations(
-                buildTagAnnotations(annotations, selection, selectedOption),
+                buildTagAnnotations(spans, selection, selectedOption),
               )
             }}
           />
@@ -93,9 +109,7 @@ const SpanAnnotator = forwardRef<
             excludedRealiaIds={usedRealiaIds}
             onChange={(option: RealiaOption | null) => {
               register(option?.entry)
-              applyAnnotations(
-                buildRealiaAnnotations(annotations, selection, option),
-              )
+              applyAnnotations(buildRealiaAnnotations(spans, selection, option))
             }}
           />
         </Form.Group>

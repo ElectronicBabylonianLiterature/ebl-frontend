@@ -31,74 +31,40 @@ export const REALIA_LAYER = 'realia'
 
 export type AnnotationLayer = typeof NAMED_ENTITY_LAYER | typeof REALIA_LAYER
 
-export type TaggedEntitySpan = ApiEntityAnnotationSpan & {
-  readonly layer: typeof NAMED_ENTITY_LAYER
-}
-export type TaggedRealiaSpan = ApiRealiaAnnotationSpan & {
-  readonly layer: typeof REALIA_LAYER
-}
-export type TaggedAnnotationSpan = TaggedEntitySpan | TaggedRealiaSpan
-
 export interface DerivedSpanFields {
   readonly tier: number
   readonly name: string
 }
 
-export type EntityAnnotationSpan = TaggedEntitySpan & DerivedSpanFields
-export type RealiaAnnotationSpan = TaggedRealiaSpan & DerivedSpanFields
+export type EntityAnnotationSpan = ApiEntityAnnotationSpan &
+  DerivedSpanFields & { readonly layer: typeof NAMED_ENTITY_LAYER }
+export type RealiaAnnotationSpan = ApiRealiaAnnotationSpan &
+  DerivedSpanFields & { readonly layer: typeof REALIA_LAYER }
+
 export type AnnotationSpan = EntityAnnotationSpan | RealiaAnnotationSpan
+
+export interface DerivedAnnotationSpans {
+  readonly namedEntities: readonly EntityAnnotationSpan[]
+  readonly realia: readonly RealiaAnnotationSpan[]
+}
 
 export const ENTITY_ID_PREFIX = 'Entity'
 export const REALIA_ID_PREFIX = 'Realia'
 
 export const REALIA_INDICATOR_CLASS = 'named-entity__REALIA'
 
-export function isRealiaAnnotationSpan<Span extends { layer: AnnotationLayer }>(
-  span: Span,
-): span is Extract<Span, { layer: typeof REALIA_LAYER }> {
+export function isRealiaAnnotationSpan(
+  span: AnnotationSpan,
+): span is RealiaAnnotationSpan {
   return span.layer === REALIA_LAYER
 }
 
-export function isEntityAnnotationSpan<Span extends { layer: AnnotationLayer }>(
-  span: Span,
-): span is Extract<Span, { layer: typeof NAMED_ENTITY_LAYER }> {
-  return span.layer === NAMED_ENTITY_LAYER
+export function entitySpanName(span: ApiEntityAnnotationSpan): string {
+  return EntityTypes[span.type].name
 }
 
-export function tagEntitySpan(span: ApiEntityAnnotationSpan): TaggedEntitySpan {
-  return { ...span, layer: NAMED_ENTITY_LAYER }
-}
-
-export function tagRealiaSpan(span: ApiRealiaAnnotationSpan): TaggedRealiaSpan {
-  return { ...span, layer: REALIA_LAYER }
-}
-
-export function toTaggedSpans(
-  spans: AnnotationSpans,
-): readonly TaggedAnnotationSpan[] {
-  return [
-    ...spans.namedEntities.map(tagEntitySpan),
-    ...spans.realia.map(tagRealiaSpan),
-  ]
-}
-
-export function omitDerivedSpanFields(
-  spans: readonly TaggedAnnotationSpan[],
-): AnnotationSpans {
-  return {
-    namedEntities: spans
-      .filter(isEntityAnnotationSpan)
-      .map(({ id, type, span }) => ({ id, type, span })),
-    realia: spans
-      .filter(isRealiaAnnotationSpan)
-      .map(({ id, realiaId, span }) => ({ id, realiaId, span })),
-  }
-}
-
-export function annotationSpanName(span: TaggedAnnotationSpan): string {
-  return isRealiaAnnotationSpan(span)
-    ? span.realiaId
-    : EntityTypes[span.type].name
+export function annotationSpanName(span: AnnotationSpan): string {
+  return isRealiaAnnotationSpan(span) ? span.realiaId : entitySpanName(span)
 }
 
 export function spanRangeKey(span: readonly string[]): string {
@@ -112,70 +78,108 @@ export function isSameRange(
   return spanRangeKey(first) === spanRangeKey(second)
 }
 
-export function annotationSpanKey(span: TaggedAnnotationSpan): string {
-  const value = isRealiaAnnotationSpan(span) ? span.realiaId : span.type
-  return `${span.layer}:${value}|${spanRangeKey(span.span)}`
+export function entitySpanKey(span: ApiEntityAnnotationSpan): string {
+  return `${span.type}|${spanRangeKey(span.span)}`
 }
 
-export function isDuplicateAnnotation(
-  annotations: readonly TaggedAnnotationSpan[],
-  candidate: TaggedAnnotationSpan,
-): boolean {
-  const candidateKey = annotationSpanKey(candidate)
+export function realiaSpanKey(span: ApiRealiaAnnotationSpan): string {
+  return `${span.realiaId}|${spanRangeKey(span.span)}`
+}
 
-  return annotations.some(
-    (annotation) =>
-      annotation.id !== candidate.id &&
-      annotationSpanKey(annotation) === candidateKey,
+function isDuplicate<Span extends { id: string }>(
+  spans: readonly Span[],
+  candidate: Span,
+  key: (span: Span) => string,
+): boolean {
+  const candidateKey = key(candidate)
+  return spans.some(
+    (span) => span.id !== candidate.id && key(span) === candidateKey,
   )
 }
 
-export function dedupeAnnotations(
-  annotations: readonly TaggedAnnotationSpan[],
-): readonly TaggedAnnotationSpan[] {
-  return _.uniqBy(annotations, annotationSpanKey)
+export function isDuplicateEntitySpan(
+  spans: readonly ApiEntityAnnotationSpan[],
+  candidate: ApiEntityAnnotationSpan,
+): boolean {
+  return isDuplicate(spans, candidate, entitySpanKey)
 }
 
-function onRange(
-  annotations: readonly TaggedAnnotationSpan[],
+export function isDuplicateRealiaSpan(
+  spans: readonly ApiRealiaAnnotationSpan[],
+  candidate: ApiRealiaAnnotationSpan,
+): boolean {
+  return isDuplicate(spans, candidate, realiaSpanKey)
+}
+
+export function dedupeEntitySpans(
+  spans: readonly ApiEntityAnnotationSpan[],
+): readonly ApiEntityAnnotationSpan[] {
+  return _.uniqBy(spans, entitySpanKey)
+}
+
+export function dedupeRealiaSpans(
+  spans: readonly ApiRealiaAnnotationSpan[],
+): readonly ApiRealiaAnnotationSpan[] {
+  return _.uniqBy(spans, realiaSpanKey)
+}
+
+function onRange<Span extends { id: string; span: readonly string[] }>(
+  spans: readonly Span[],
   span: readonly string[],
   excludedId?: string,
-): readonly TaggedAnnotationSpan[] {
-  return annotations.filter(
-    (annotation) =>
-      annotation.id !== excludedId && isSameRange(annotation.span, span),
+): readonly Span[] {
+  return spans.filter(
+    (candidate) =>
+      candidate.id !== excludedId && isSameRange(candidate.span, span),
   )
 }
 
 export function getUsedEntityTypes(
-  annotations: readonly TaggedAnnotationSpan[],
+  spans: readonly ApiEntityAnnotationSpan[],
   span: readonly string[],
   excludedId?: string,
 ): readonly EntityType[] {
-  return onRange(annotations, span, excludedId)
-    .filter(isEntityAnnotationSpan)
-    .map((annotation) => annotation.type)
+  return onRange(spans, span, excludedId).map((candidate) => candidate.type)
 }
 
 export function getUsedRealiaIds(
-  annotations: readonly TaggedAnnotationSpan[],
+  spans: readonly ApiRealiaAnnotationSpan[],
   span: readonly string[],
   excludedId?: string,
 ): readonly string[] {
-  return onRange(annotations, span, excludedId)
-    .filter(isRealiaAnnotationSpan)
-    .map((annotation) => annotation.realiaId)
+  return onRange(spans, span, excludedId).map((candidate) => candidate.realiaId)
+}
+
+export function toEntitySpans(
+  spans: readonly EntityAnnotationSpan[],
+): readonly ApiEntityAnnotationSpan[] {
+  return spans.map(({ id, type, span }) => ({ id, type, span }))
+}
+
+export function toRealiaSpans(
+  spans: readonly RealiaAnnotationSpan[],
+): readonly ApiRealiaAnnotationSpan[] {
+  return spans.map(({ id, realiaId, span }) => ({ id, realiaId, span }))
+}
+
+export function omitDerivedSpanFields(
+  spans: DerivedAnnotationSpans,
+): AnnotationSpans {
+  return {
+    namedEntities: toEntitySpans(spans.namedEntities),
+    realia: toRealiaSpans(spans.realia),
+  }
 }
 
 export function createAnnotationSpanId(
-  spans: readonly { id: string }[],
+  existingIds: readonly string[],
   prefix: string,
 ): string {
   const currentMaxId =
     _.max(
-      spans
-        .filter(({ id }) => id.startsWith(`${prefix}-`))
-        .map(({ id }) => parseInt(id.slice(prefix.length + 1))),
+      existingIds
+        .filter((id) => id.startsWith(`${prefix}-`))
+        .map((id) => parseInt(id.slice(prefix.length + 1))),
     ) || 0
 
   return `${prefix}-${currentMaxId + 1}`

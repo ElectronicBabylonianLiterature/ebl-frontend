@@ -1,5 +1,10 @@
 import React from 'react'
-import { AnnotationSpan } from 'fragmentarium/ui/text-annotation/annotationSpan'
+import {
+  AnnotationSpan,
+  DerivedAnnotationSpans,
+  EntityAnnotationSpan,
+  RealiaAnnotationSpan,
+} from 'fragmentarium/ui/text-annotation/annotationSpan'
 import { screen, render } from '@testing-library/react'
 import SpanEditor from 'fragmentarium/ui/text-annotation/SpanEditor'
 import userEvent from '@testing-library/user-event'
@@ -44,7 +49,7 @@ describe('SpanEditor', () => {
       <ThemeProvider>
         <WithRealiaService>
           <AnnotationContext.Provider
-            value={[{ annotations: [], words: [] }, mockDispatch]}
+            value={[{ namedEntities: [], realia: [], words: [] }, mockDispatch]}
           >
             <SpanEditor entitySpan={span} setActiveSpanId={setActiveSpanId} />
           </AnnotationContext.Provider>
@@ -65,11 +70,11 @@ describe('SpanEditor', () => {
 
     expect(mockDispatch).toHaveBeenCalledWith({
       type: 'edit',
+      layer: 'namedEntities',
       annotation: {
         id: entitySpan.id,
         type: 'BUILDING_NAME',
         span: entitySpan.span,
-        layer: 'namedEntities',
       },
     })
   })
@@ -82,7 +87,8 @@ describe('SpanEditor', () => {
 
     expect(mockDispatch).toHaveBeenCalledWith({
       type: 'delete',
-      annotation: entitySpan,
+      layer: 'namedEntities',
+      id: entitySpan.id,
     })
   })
 
@@ -109,11 +115,11 @@ describe('SpanEditor', () => {
 
       expect(mockDispatch).toHaveBeenCalledWith({
         type: 'edit',
+        layer: 'realia',
         annotation: {
           id: realiaSpan.id,
           span: realiaSpan.span,
           realiaId: 'realia_000999',
-          layer: 'realia',
         },
       })
       expect(setActiveSpanId).toHaveBeenCalledWith(null)
@@ -125,7 +131,8 @@ describe('SpanEditor', () => {
 
       expect(mockDispatch).toHaveBeenCalledWith({
         type: 'delete',
-        annotation: realiaSpan,
+        layer: 'realia',
+        id: realiaSpan.id,
       })
     })
 
@@ -143,7 +150,7 @@ describe('SpanEditor', () => {
 describe('SpanEditor uniqueness', () => {
   const renderEditor = (
     span: AnnotationSpan,
-    annotations: readonly AnnotationSpan[],
+    annotations: DerivedAnnotationSpans,
   ): void => {
     jest.clearAllMocks()
     mockRealiaSearch([otherRealiaEntry])
@@ -151,7 +158,7 @@ describe('SpanEditor uniqueness', () => {
       <ThemeProvider>
         <WithRealiaService>
           <AnnotationContext.Provider
-            value={[{ annotations, words: [] }, mockDispatch]}
+            value={[{ ...annotations, words: [] }, mockDispatch]}
           >
             <SpanEditor entitySpan={span} setActiveSpanId={setActiveSpanId} />
           </AnnotationContext.Provider>
@@ -160,14 +167,17 @@ describe('SpanEditor uniqueness', () => {
     )
   }
 
-  const otherTag: AnnotationSpan = entityAnnotationSpan({
+  const otherTag: EntityAnnotationSpan = entityAnnotationSpan({
     id: 'Entity-2',
     type: 'BUILDING_NAME',
     span: entitySpan.span,
   })
 
   it('does not offer a tag already on the same span', async () => {
-    renderEditor(entitySpan, [entitySpan, otherTag])
+    renderEditor(entitySpan, {
+      namedEntities: [entitySpan, otherTag],
+      realia: [],
+    })
 
     await userEvent.click(screen.getByLabelText('edit-named-entity'))
 
@@ -175,7 +185,7 @@ describe('SpanEditor uniqueness', () => {
   })
 
   it('still offers the tag the span already has', async () => {
-    renderEditor(entitySpan, [entitySpan])
+    renderEditor(entitySpan, { namedEntities: [entitySpan], realia: [] })
 
     await userEvent.click(screen.getByLabelText('edit-named-entity'))
 
@@ -183,12 +193,15 @@ describe('SpanEditor uniqueness', () => {
   })
 
   it('does not offer a realia already on the same span', async () => {
-    const otherRealia: AnnotationSpan = realiaAnnotationSpan({
+    const otherRealia: RealiaAnnotationSpan = realiaAnnotationSpan({
       id: 'Realia-2',
       realiaId: otherRealiaEntry.realiaId,
       span: realiaSpan.span,
     })
-    renderEditor(realiaSpan, [realiaSpan, otherRealia])
+    renderEditor(realiaSpan, {
+      namedEntities: [],
+      realia: [realiaSpan, otherRealia],
+    })
 
     await userEvent.type(screen.getByLabelText('edit-realia'), 'Zig')
 
@@ -196,7 +209,7 @@ describe('SpanEditor uniqueness', () => {
   })
 
   it('still offers other realia', async () => {
-    renderEditor(realiaSpan, [realiaSpan])
+    renderEditor(realiaSpan, { namedEntities: [], realia: [realiaSpan] })
 
     await userEvent.type(screen.getByLabelText('edit-realia'), 'Zig')
 
