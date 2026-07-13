@@ -1,6 +1,9 @@
 @import src/design-tokens
 @import './TextAnnotation.sass'
 
+$realia-label-gap: .25rem
+$realia-label-expanded-width: 16em
+
 .named-entity
 
   &__BUILDING_NAME
@@ -45,7 +48,11 @@
 .span-indicator--realia[data-label]
   &.initial::before
     content: attr(data-label)
-    max-width: 16em
+    max-width: calc(100% - #{$realia-label-gap})
     overflow: hidden
     text-overflow: ellipsis
     white-space: nowrap
+
+  &.initial:hover::before, &.highlight.initial::before
+    max-width: $realia-label-expanded-width
+    z-index: 2

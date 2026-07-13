@@ -97,6 +97,10 @@ for the picker.
       tab instead of the span editor; the hover title hints the shortcut beside the lemma.
       The URL mapping now lives in one helper (`realia/ui/realiaPage.ts`).
 
+- [x] 27. Realia labels of neighbouring tokens overlapped into one unreadable string. Each
+      label is now clamped to its own span's width (ellipsis), and expands to the full lemma
+      on hover or while active. No change to tiers or vertical alignment.
+
 ## Uniqueness
 
 - [x] 17. No duplicate tag or realia can be inserted. Uniqueness is per span (same key on

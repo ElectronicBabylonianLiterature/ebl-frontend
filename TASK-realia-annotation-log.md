@@ -420,6 +420,27 @@ the new code and the read-only `RealiaTokenLinks` at it.
   click; activates (and does not open) on a plain click, on alt + a non-left button, and on
   alt + left click on a tag span; the hover title carries the hint for realia only.
 
+## 2026-07-13 — Realia labels of neighbouring tokens no longer collide
+
+**Symptom.** Two annotated tokens next to each other rendered their lemmas on top of one
+another, so the labels read as one run-on string (`Texte / astrono Monc Mondomina`).
+
+**Cause.** The realia label is an absolutely positioned `::before` on the indicator with
+`max-width: 16em`. A lemma wider than its own token therefore spilled over the next
+token's label; nothing bounded it to its own span.
+
+**Fix (chosen by the user out of three options).** The label is clamped to its own span's
+width minus a gutter (`max-width: calc(100% - .25rem)`), so it can never reach the next
+label; the existing `text-overflow: ellipsis` truncates it. Hovering the indicator — or
+having the span active (`.highlight`) — expands it back to `16em` and lifts it to
+`z-index: 2`, so the full lemma reads above its neighbours on demand. The full lemma also
+remains in the `title` tooltip. Tier offsets, line height and the token-to-tag vertical
+alignment are untouched.
+
+Options not taken: a dedicated tier row per realia span (full lemma at rest, but every
+extra annotation grows the line), and reverting to a short `RlA` badge (compact, but drops
+the at-a-glance lemma added in item 13).
+
 ## Progress
 
 - [x] Branch created, backend contract verified and confirmed with the user.
