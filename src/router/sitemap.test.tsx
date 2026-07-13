@@ -42,6 +42,32 @@ function readBlobAsArrayBuffer(blob: Blob): Promise<ArrayBuffer> {
   })
 }
 
+async function generateSitemapXml(): Promise<string> {
+  const slugs = await getAllSlugs(services)
+  getSitemapAsFile(services, slugs)
+
+  const saveAsMock = saveAs as jest.MockedFunction<typeof saveAs>
+  const sitemapChunkCall = saveAsMock.mock.calls.find(
+    ([_blob, filename]) => filename === 'sitemap1.xml.gz',
+  )
+
+  expect(sitemapChunkCall).toBeDefined()
+
+  const sitemapChunkArchive = sitemapChunkCall?.[0] as Blob
+  const sitemapChunkBuffer = await readBlobAsArrayBuffer(sitemapChunkArchive)
+  return pako.ungzip(new Uint8Array(sitemapChunkBuffer), {
+    to: 'string',
+  }) as string
+}
+
+function mockRealiaEntries(entries: string[]): void {
+  ;(
+    services.realiaService.listAllRealia as jest.MockedFunction<
+      typeof services.realiaService.listAllRealia
+    >
+  ).mockReturnValue(Bluebird.resolve(entries))
+}
+
 beforeEach(() => {
   const signService = new (SignService as jest.Mock<jest.Mocked<SignService>>)()
   const bibliographyService = new (BibliographyService as jest.Mock<
@@ -131,21 +157,7 @@ it('get sitemap as file', async () => {
 })
 
 it('does not include projects wildcard route in sitemap xml', async () => {
-  const slugs = await getAllSlugs(services)
-  getSitemapAsFile(services, slugs)
-
-  const saveAsMock = saveAs as jest.MockedFunction<typeof saveAs>
-  const sitemapChunkCall = saveAsMock.mock.calls.find(
-    ([_blob, filename]) => filename === 'sitemap1.xml.gz',
-  )
-
-  expect(sitemapChunkCall).toBeDefined()
-
-  const sitemapChunkArchive = sitemapChunkCall?.[0] as Blob
-  const sitemapChunkBuffer = await readBlobAsArrayBuffer(sitemapChunkArchive)
-  const sitemapXml = pako.ungzip(new Uint8Array(sitemapChunkBuffer), {
-    to: 'string',
-  }) as string
+  const sitemapXml = await generateSitemapXml()
 
   expect(sitemapXml).toContain('/projects')
   expect(sitemapXml).toContain('/projects/CAIC')
@@ -153,51 +165,36 @@ it('does not include projects wildcard route in sitemap xml', async () => {
 })
 
 it('includes a URL for every Realia slug in sitemap xml', async () => {
-  const slugs = await getAllSlugs(services)
-  getSitemapAsFile(services, slugs)
-
-  const saveAsMock = saveAs as jest.MockedFunction<typeof saveAs>
-  const sitemapChunkCall = saveAsMock.mock.calls.find(
-    ([_blob, filename]) => filename === 'sitemap1.xml.gz',
-  )
-
-  expect(sitemapChunkCall).toBeDefined()
-
-  const sitemapChunkArchive = sitemapChunkCall?.[0] as Blob
-  const sitemapChunkBuffer = await readBlobAsArrayBuffer(sitemapChunkArchive)
-  const sitemapXml = pako.ungzip(new Uint8Array(sitemapChunkBuffer), {
-    to: 'string',
-  }) as string
+  const sitemapXml = await generateSitemapXml()
 
   expect(sitemapXml).toContain('/tools/realia/Pig')
-  // the Realia search page itself (/tools/realia, no trailing slug)
   expect(sitemapXml).toMatch(/\/tools\/realia</)
 })
 
 it('URL-encodes reserved characters in Realia slugs in sitemap xml', async () => {
-  ;(
-    services.realiaService.listAllRealia as jest.MockedFunction<
-      typeof services.realiaService.listAllRealia
-    >
-  ).mockReturnValue(Bluebird.resolve(['Enlil, Ellil']))
-  const slugs = await getAllSlugs(services)
-  getSitemapAsFile(services, slugs)
+  mockRealiaEntries(['Enlil, Ellil'])
 
-  const saveAsMock = saveAs as jest.MockedFunction<typeof saveAs>
-  const sitemapChunkCall = saveAsMock.mock.calls.find(
-    ([_blob, filename]) => filename === 'sitemap1.xml.gz',
-  )
-
-  expect(sitemapChunkCall).toBeDefined()
-
-  const sitemapChunkArchive = sitemapChunkCall?.[0] as Blob
-  const sitemapChunkBuffer = await readBlobAsArrayBuffer(sitemapChunkArchive)
-  const sitemapXml = pako.ungzip(new Uint8Array(sitemapChunkBuffer), {
-    to: 'string',
-  }) as string
+  const sitemapXml = await generateSitemapXml()
 
   expect(sitemapXml).toContain(
     `/tools/realia/${encodeURIComponent('Enlil, Ellil')}`,
   )
   expect(sitemapXml).not.toContain('/tools/realia/Enlil, Ellil')
+})
+
+it('produces a valid sitemap without Realia entry URLs when there are no Realia entries', async () => {
+  mockRealiaEntries([])
+
+  const slugs = await getAllSlugs(services)
+
+  expect(slugs.realiaSlugs).toEqual([])
+
+  const sitemapXml = await generateSitemapXml()
+
+  expect(sitemapXml).not.toContain('/tools/realia/')
+  expect(sitemapXml).toMatch(/\/tools\/realia</)
+  expect(sitemapXml).toContain('/tools/signs/a2')
+  expect(sitemapXml).toContain('/tools/references/ref1')
+  expect(sitemapXml).toContain('<urlset')
+  expect(saveAs).toHaveBeenCalledWith(expect.anything(), 'sitemap.xml.gz')
 })

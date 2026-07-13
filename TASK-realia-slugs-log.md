@@ -72,6 +72,65 @@ slugs: <x>Slugs })}` so the sitemap expands one URL per slug.
 - Gates re-run after changes: `yarn tsc` clean, `yarn lint` clean, affected suites
   green (29 realia/sitemap tests), zero console noise.
 
+## PR #762 review follow-up (Fabdulla1, `CHANGES_REQUESTED` 2026-07-10)
+
+Gathered from GitHub before starting: 1 timeline review event (`CHANGES_REQUESTED`,
+Fabdulla1), 0 inline review comments, 0 general/issue comments, 0 bot reviews.
+Both requested items were test-coverage requests; no code defects were raised.
+
+- R1 — empty-`listAllRealia()` regression test. Added
+  `sitemap.test.tsx` › "produces a valid sitemap without Realia entry URLs when
+  there are no Realia entries": mocks the service to `[]`, asserts `realiaSlugs`
+  resolves to `[]`, that no `/tools/realia/<slug>` `<loc>` is emitted, and that the
+  rest of the sitemap is unaffected (Realia search page, sign + bibliography entry
+  URLs, well-formed `<urlset>`, sitemap index file still saved).
+- R2 — targeted `getEntityRoutes()` route-threading test. Added
+  `router/toolsRoutes.entities.test.tsx` (new file, 72 lines): asserts the
+  `/tools/realia/:id` route carries `sitemapDefaults` + `slugs: realiaSlugs` when
+  `sitemap` is true; carries neither `slugs` nor `sitemapIndex` when false; and that
+  Realia slugs do not leak onto a sibling route (sign route still gets `signSlugs`).
+  Mutation-checked: deleting the `slugs: realiaSlugs` spread from
+  `toolsRoutes.entities.tsx` makes the first test fail, so it guards the wiring.
+- R2b — added a fourth test in the same file asserting the route's `render` decodes an
+  encoded slug (`Enlil%2C%20Ellil`) back to the entry id passed to `RealiaDisplay`.
+  This closes the loop with the F2 encoding fix (sitemap emits encoded slugs; the route
+  must decode them) and covers the previously-unexercised Realia `render` callback.
+
+### Pre-existing issues found and fixed in the same task
+
+- DRY / duplication: the gzip+blob unpacking of `sitemap1.xml.gz` was copy-pasted in
+  three `sitemap.test.tsx` tests (and R1 would have made a fourth). Root cause:
+  no shared helper. Extracted `generateSitemapXml()` and `mockRealiaEntries()` and
+  reused them in all tests; behaviour identical.
+- Coding standard violation: an explanatory `//` comment introduced by commit
+  `f5712fe9` in `sitemap.test.tsx` violated the "no comments unless requested" rule.
+  Removed, along with the comments added while doing R1.
+
+### Gates re-run after the follow-up
+
+- `yarn lint` (eslint + stylelint) → clean.
+- `yarn tsc` → clean.
+- `yarn test --watchAll=false` (full suite) → 338 suites / 3461 tests pass, 2 skipped;
+  full log scanned for `console.error`/`console.warn`/`console.log`/`Warning:`/
+  unhandled rejections / `not wrapped in act` → **0 hits** (console-clean gate met).
+- Coverage of the lines changed by this PR: `RealiaService.ts` 100%, `sitemapConfig.ts`
+  100%, `sitemap.tsx` realia branch covered, `toolsRoutes.entities.tsx` `return`
+  statement hit and the `sitemap && { …slugs }` branch covered on **both** sides
+  (line-level `coverage-final.json` check). Remaining uncovered lines in these files
+  (`RealiaRepository.ts:84`, `sitemap.tsx:181-183`, `toolsRoutes.entities.tsx:99,120,
+131,154,175,195`) are all pre-existing code untouched by this change — the latter are
+  the `render` callbacks of the sign/dictionary/bibliography routes.
+- Line-count gate: `sitemap.test.tsx` 200, `toolsRoutes.entities.test.tsx` 82,
+  `toolsRoutes.entities.tsx` 213 — all under the 250-line ceiling.
+
+### Known pre-existing issue NOT fixed (needs a decision)
+
+- `fragmentarium/ui/edition/Edition.test.tsx:49,53` — two tests disabled with `xit`
+  (the "2 skipped" in the full run). Pre-existing on `master`, unrelated to Realia or
+  the sitemap. Not re-enabled here: it would put an unrelated fragmentarium suite into
+  this PR, and the instructions require explicit approval around test skipping. Flagged
+  for the author to file separately.
+
 ## Notes / follow-up
 
 - Remove `TASK-realia-slugs-*.md` before merging this branch.

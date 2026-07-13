@@ -20,6 +20,14 @@ the corresponding "list all Realia ids" API query on the client.
 - [x] `RealiaService.test.ts`: delegation test for `listAllRealia`.
 - [x] `sitemap.test.tsx`: mock `realiaService.listAllRealia`, assert it is called.
 
+## PR #762 review follow-up (Fabdulla1, CHANGES_REQUESTED 2026-07-10)
+
+- [x] R1: `sitemap.test.tsx` — regression test for `listAllRealia()` returning an
+      empty array: sitemap still generates valid output with no Realia entry URLs.
+- [x] R2: `toolsRoutes.entities.test.tsx` (new) — focused unit test that
+      `getEntityRoutes()` threads `realiaSlugs` onto the `/tools/realia/:id` route
+      when sitemap generation is enabled (and not when it is disabled).
+
 ## Gates
 
 - [x] `yarn lint` clean.

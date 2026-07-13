@@ -122,23 +122,56 @@ slug/route helpers), and consistent with sibling entities. F1 and F2 are resolve
 (F2 in code, F1 specified at source in the API prompt). Merge of the full feature
 is gated only on the external API endpoint (F3).
 
+## PR #762 — Reviewer findings (Fabdulla1, `CHANGES_REQUESTED` 2026-07-10)
+
+Gathered from GitHub: 1 timeline review event (`CHANGES_REQUESTED`), 0 inline
+review comments, 0 general/issue comments, 0 automated-bot reviews. Both items are
+test-coverage requests against the current head; neither is outdated.
+
+| #   | Severity                    | Area                                                                 | Status                                    |
+| --- | --------------------------- | -------------------------------------------------------------------- | ----------------------------------------- |
+| R1  | Blocker (changes requested) | No test for `realiaService.listAllRealia()` returning an empty array | **Resolved** — regression test added      |
+| R2  | Blocker (changes requested) | No targeted test that `getEntityRoutes()` threads `realiaSlugs`      | **Resolved** — new focused unit test file |
+
+### R1 — Empty-`listAllRealia()` regression (Blocker) — RESOLVED
+
+Reviewer: sitemap generation must keep producing valid output, without Realia entry
+URLs, when the service returns `[]`. **Fix:** `sitemap.test.tsx` › "produces a valid
+sitemap without Realia entry URLs when there are no Realia entries" mocks the service
+to `[]` and asserts `realiaSlugs === []`, that no `/tools/realia/<slug>` `<loc>` is
+emitted, and that the rest of the sitemap is intact (Realia search page, sign and
+bibliography entry URLs, well-formed `<urlset>`, sitemap index still saved).
+
+### R2 — Route-threading of `realiaSlugs` (Blocker) — RESOLVED
+
+Reviewer: a focused unit test would catch regressions if the route configuration is
+refactored. **Fix:** new `router/toolsRoutes.entities.test.tsx` asserts the
+`/tools/realia/:id` route carries `sitemapDefaults` + `slugs: realiaSlugs` when
+sitemap generation is enabled, carries neither `slugs` nor `sitemapIndex` when it is
+disabled, and that Realia slugs do not leak onto sibling routes. Mutation-checked:
+removing the `slugs: realiaSlugs` spread from `toolsRoutes.entities.tsx` fails the
+test, confirming it guards the wiring rather than passing vacuously.
+
 ## Comment Status Tracking
 
 - Resolved: F1 (excluded at source via API prompt), F2 (Realia slugs encoded +
-  test), F4 (measurement artifact).
+  test), F4 (measurement artifact), **R1** and **R2** (reviewer-requested tests
+  added; the two `CHANGES_REQUESTED` blockers are cleared).
 - Open: F3 (external API dependency — implementation tracked in the API prompt).
-- No reviewer-requested changes (no PR yet); no `CHANGES_REQUESTED` events.
+- Timeline review events: `CHANGES_REQUESTED` by Fabdulla1 (2026-07-10) — awaiting
+  re-review; no `APPROVED` event yet.
 
 ## What Has To Be Done
 
 1. **API (F1 + F3 — blocker for the feature, not for this frontend change):**
    implement `GET /realia/all` per `TASK-realia-slugs-api-prompt.md` — returns all
    Realia `_id`s, **excluding pure cross-reference redirect stubs**.
-2. **Before merge:** remove the tracking docs `TASK-realia-slugs-todo.md`,
+2. **Re-review:** Fabdulla1's `CHANGES_REQUESTED` is still the active review state.
+   R1 and R2 are now implemented, so his re-review is needed to clear it. (Reviewer
+   assignment is left to the PR author — not changed programmatically.)
+3. **Before merge:** remove the tracking docs `TASK-realia-slugs-todo.md`,
    `TASK-realia-slugs-log.md`, `TASK-realia-slugs-api-prompt.md`,
    `TASK-realia-slugs-review.md`.
-3. **On PR open:** re-check inline comments and timeline review events
-   (`CHANGES_REQUESTED` / `APPROVED` / `COMMENTED`) and update this file.
 4. **Optional follow-up (out of scope):** extend the sitemap slug URL-encoding
    (F2 fix) to signs/dictionary/bibliography/fragments — needs care for fragment
    numbers containing `/`; file separately.
