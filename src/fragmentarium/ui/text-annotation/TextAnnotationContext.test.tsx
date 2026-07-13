@@ -1,174 +1,207 @@
 import { renderHook, act } from '@testing-library/react'
 import { useAnnotationContext } from 'fragmentarium/ui/text-annotation/TextAnnotationContext'
 import {
+  AnnotationSpans,
   ApiEntityAnnotationSpan,
   ApiRealiaAnnotationSpan,
+  tagEntitySpan,
+  tagRealiaSpan,
 } from 'fragmentarium/ui/text-annotation/annotationSpan'
 
 const words = ['Word-1', 'Word-2', 'Word-3']
 
-const entitySpan: ApiEntityAnnotationSpan = {
+const tag: ApiEntityAnnotationSpan = {
   id: 'Entity-1',
   type: 'PERSONAL_NAME',
   span: ['Word-1', 'Word-2'],
 }
-
-const realiaSpan: ApiRealiaAnnotationSpan = {
+const realia: ApiRealiaAnnotationSpan = {
   id: 'Realia-1',
   realiaId: 'realia_000846',
   span: ['Word-1', 'Word-2'],
 }
 
+function spans(
+  namedEntities: readonly ApiEntityAnnotationSpan[] = [],
+  realiaSpans: readonly ApiRealiaAnnotationSpan[] = [],
+): AnnotationSpans {
+  return { namedEntities, realia: realiaSpans }
+}
+
+const tierOf = (
+  annotations: readonly { id: string; tier: number }[],
+  id: string,
+): number => annotations.find((annotation) => annotation.id === id)?.tier ?? 0
+
 describe('useAnnotationContext with both layers', () => {
   it('derives the display name of each layer', () => {
     const { result } = renderHook(() =>
-      useAnnotationContext(words, [entitySpan, realiaSpan]),
+      useAnnotationContext(words, spans([tag], [realia])),
     )
-    const [{ annotations }] = result.current
 
-    expect(annotations.map(({ name }) => name)).toEqual([
+    expect(result.current[0].annotations.map(({ name }) => name)).toEqual([
       'Personal Name',
       'realia_000846',
     ])
   })
 
-  it('tiers overlapping spans of different layers separately', () => {
-    const { result } = renderHook(() =>
-      useAnnotationContext(words, [entitySpan, realiaSpan]),
-    )
-    const [{ annotations }] = result.current
-    const tiers = annotations.map(({ tier }) => tier)
-
-    expect(new Set(tiers).size).toBe(2)
-  })
-
   it('places the tag layer above the realia layer', () => {
     const { result } = renderHook(() =>
-      useAnnotationContext(words, [realiaSpan, entitySpan]),
+      useAnnotationContext(words, spans([tag], [realia])),
     )
-    const [{ annotations }] = result.current
-    const tierOf = (id: string) =>
-      annotations.find((annotation) => annotation.id === id)?.tier
+    const { annotations } = result.current[0]
 
-    expect(tierOf('Entity-1')).toBe(1)
-    expect(tierOf('Realia-1')).toBe(2)
+    expect(tierOf(annotations, 'Entity-1')).toBe(1)
+    expect(tierOf(annotations, 'Realia-1')).toBe(2)
   })
 
-  it('keeps every realia span below every tag, even when tags are nested', () => {
+  it('keeps every realia below every tag, even when tags are nested', () => {
     const nestedTag: ApiEntityAnnotationSpan = {
       id: 'Entity-2',
       type: 'ROYAL_NAME',
       span: ['Word-1'],
     }
     const { result } = renderHook(() =>
-      useAnnotationContext(words, [entitySpan, nestedTag, realiaSpan]),
+      useAnnotationContext(words, spans([tag, nestedTag], [realia])),
     )
-    const [{ annotations }] = result.current
-    const tierOf = (id: string) =>
-      annotations.find((annotation) => annotation.id === id)?.tier as number
+    const { annotations } = result.current[0]
 
-    const deepestTag = Math.max(tierOf('Entity-1'), tierOf('Entity-2'))
-    expect(tierOf('Realia-1')).toBeGreaterThan(deepestTag)
+    const deepestTag = Math.max(
+      tierOf(annotations, 'Entity-1'),
+      tierOf(annotations, 'Entity-2'),
+    )
+    expect(tierOf(annotations, 'Realia-1')).toBeGreaterThan(deepestTag)
   })
 
   it('falls back to the first tier for spans outside the word list', () => {
     const { result } = renderHook(() =>
-      useAnnotationContext([], [entitySpan, realiaSpan]),
+      useAnnotationContext([], spans([tag], [realia])),
     )
-    const [{ annotations }] = result.current
 
-    expect(annotations.map(({ tier }) => tier)).toEqual([1, 1])
+    expect(result.current[0].annotations.map(({ tier }) => tier)).toEqual([
+      1, 1,
+    ])
   })
 
   it('adds a realia annotation', () => {
     const { result } = renderHook(() => useAnnotationContext(words))
 
     act(() => {
-      result.current[1]({ type: 'add', annotation: realiaSpan })
+      result.current[1]({ type: 'add', annotation: tagRealiaSpan(realia) })
     })
 
     expect(result.current[0].annotations).toEqual([
-      { ...realiaSpan, tier: 1, name: 'realia_000846' },
+      { ...tagRealiaSpan(realia), tier: 1, name: 'realia_000846' },
     ])
   })
 
   it('edits a realia annotation', () => {
     const { result } = renderHook(() =>
-      useAnnotationContext(words, [realiaSpan]),
+      useAnnotationContext(words, spans([], [realia])),
     )
 
     act(() => {
       result.current[1]({
         type: 'edit',
-        annotation: { ...realiaSpan, realiaId: 'realia_000999' },
+        annotation: tagRealiaSpan({ ...realia, realiaId: 'realia_000999' }),
       })
     })
 
-    expect(result.current[0].annotations).toEqual([
-      {
-        ...realiaSpan,
-        realiaId: 'realia_000999',
-        tier: 1,
-        name: 'realia_000999',
-      },
+    expect(result.current[0].annotations).toMatchObject([
+      { id: 'Realia-1', realiaId: 'realia_000999', name: 'realia_000999' },
     ])
   })
 
-  it('deletes a realia annotation without touching the entity layer', () => {
+  it('deletes a realia annotation without touching the tag layer', () => {
     const { result } = renderHook(() =>
-      useAnnotationContext(words, [entitySpan, realiaSpan]),
+      useAnnotationContext(words, spans([tag], [realia])),
     )
 
     act(() => {
-      result.current[1]({ type: 'delete', annotation: realiaSpan })
+      result.current[1]({ type: 'delete', annotation: realia })
     })
 
     expect(result.current[0].annotations).toEqual([
-      { ...entitySpan, tier: 1, name: 'Personal Name' },
+      { ...tagEntitySpan(tag), tier: 1, name: 'Personal Name' },
     ])
   })
 })
 
 describe('uniqueness', () => {
-  it('ignores adding a tag that is already on the span', () => {
+  it('ignores adding a tag that is already on the range', () => {
     const { result } = renderHook(() =>
-      useAnnotationContext(words, [entitySpan]),
+      useAnnotationContext(words, spans([tag])),
     )
 
     act(() => {
       result.current[1]({
         type: 'add',
-        annotation: { ...entitySpan, id: 'Entity-2' },
+        annotation: tagEntitySpan({ ...tag, id: 'Entity-2' }),
       })
     })
 
     expect(result.current[0].annotations).toHaveLength(1)
   })
 
-  it('ignores adding a realia that is already on the span', () => {
+  it('ignores a duplicate whose span is in a different order', () => {
     const { result } = renderHook(() =>
-      useAnnotationContext(words, [realiaSpan]),
+      useAnnotationContext(words, spans([tag])),
     )
 
     act(() => {
       result.current[1]({
         type: 'add',
-        annotation: { ...realiaSpan, id: 'Realia-2' },
+        annotation: tagEntitySpan({
+          ...tag,
+          id: 'Entity-2',
+          span: ['Word-2', 'Word-1'],
+        }),
       })
     })
 
     expect(result.current[0].annotations).toHaveLength(1)
   })
 
-  it('allows the same tag on a different span', () => {
+  it('ignores adding a realia that is already on the range', () => {
     const { result } = renderHook(() =>
-      useAnnotationContext(words, [entitySpan]),
+      useAnnotationContext(words, spans([], [realia])),
     )
 
     act(() => {
       result.current[1]({
         type: 'add',
-        annotation: { ...entitySpan, id: 'Entity-2', span: ['Word-3'] },
+        annotation: tagRealiaSpan({ ...realia, id: 'Realia-2' }),
+      })
+    })
+
+    expect(result.current[0].annotations).toHaveLength(1)
+  })
+
+  it('allows a tag and a realia on the same range', () => {
+    const { result } = renderHook(() =>
+      useAnnotationContext(words, spans([tag])),
+    )
+
+    act(() => {
+      result.current[1]({ type: 'add', annotation: tagRealiaSpan(realia) })
+    })
+
+    expect(result.current[0].annotations).toHaveLength(2)
+  })
+
+  it('allows the same tag on a different range', () => {
+    const { result } = renderHook(() =>
+      useAnnotationContext(words, spans([tag])),
+    )
+
+    act(() => {
+      result.current[1]({
+        type: 'add',
+        annotation: tagEntitySpan({
+          ...tag,
+          id: 'Entity-2',
+          span: ['Word-3'],
+        }),
       })
     })
 
@@ -179,16 +212,16 @@ describe('uniqueness', () => {
     const other: ApiEntityAnnotationSpan = {
       id: 'Entity-2',
       type: 'ROYAL_NAME',
-      span: entitySpan.span,
+      span: tag.span,
     }
     const { result } = renderHook(() =>
-      useAnnotationContext(words, [entitySpan, other]),
+      useAnnotationContext(words, spans([tag, other])),
     )
 
     act(() => {
       result.current[1]({
         type: 'edit',
-        annotation: { ...other, type: entitySpan.type },
+        annotation: tagEntitySpan({ ...other, type: tag.type }),
       })
     })
 
@@ -197,15 +230,15 @@ describe('uniqueness', () => {
     ).toMatchObject({ type: 'ROYAL_NAME' })
   })
 
-  it('allows editing an annotation without changing it', () => {
+  it('allows editing an annotation into a value nothing else uses', () => {
     const { result } = renderHook(() =>
-      useAnnotationContext(words, [entitySpan]),
+      useAnnotationContext(words, spans([tag])),
     )
 
     act(() => {
       result.current[1]({
         type: 'edit',
-        annotation: { ...entitySpan, type: 'ROYAL_NAME' },
+        annotation: tagEntitySpan({ ...tag, type: 'ROYAL_NAME' }),
       })
     })
 
@@ -216,11 +249,10 @@ describe('uniqueness', () => {
 
   it('drops duplicates already present in the loaded annotations', () => {
     const { result } = renderHook(() =>
-      useAnnotationContext(words, [
-        entitySpan,
-        { ...entitySpan, id: 'Entity-2' },
-        realiaSpan,
-      ]),
+      useAnnotationContext(
+        words,
+        spans([tag, { ...tag, id: 'Entity-2' }], [realia]),
+      ),
     )
 
     expect(result.current[0].annotations.map(({ id }) => id)).toEqual([

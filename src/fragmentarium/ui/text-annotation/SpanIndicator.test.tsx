@@ -6,11 +6,11 @@ import {
   RealiaInfoLookup,
   toRealiaDisplayInfo,
 } from 'fragmentarium/ui/text-annotation/realiaInfo'
+import { AnnotationSpan } from 'fragmentarium/ui/text-annotation/annotationSpan'
 import {
-  AnnotationSpan,
-  EntityAnnotationSpan,
-  RealiaAnnotationSpan,
-} from 'fragmentarium/ui/text-annotation/annotationSpan'
+  entityAnnotationSpan,
+  realiaAnnotationSpan,
+} from 'fragmentarium/ui/text-annotation/textAnnotation.testSupport'
 import { realiaEntryFactory } from 'test-support/realia-fixtures'
 
 const mappedEntry = realiaEntryFactory.build({
@@ -29,20 +29,15 @@ const lookup: RealiaInfoLookup = new Map([
   ['realia_000999', toRealiaDisplayInfo(unmappedEntry)],
 ])
 
-const entitySpan: EntityAnnotationSpan = {
+const entitySpan = entityAnnotationSpan({
   id: 'Entity-1',
   type: 'DIVINE_NAME',
   span: ['Word-1'],
-  tier: 1,
-  name: 'Divine Name',
-}
-const realiaSpan: RealiaAnnotationSpan = {
-  id: 'Realia-1',
-  realiaId: 'realia_000846',
-  span: ['Word-1'],
-  tier: 2,
-  name: 'realia_000846',
-}
+})
+const realiaSpan = realiaAnnotationSpan(
+  { id: 'Realia-1', realiaId: 'realia_000846', span: ['Word-1'] },
+  { tier: 2 },
+)
 
 function renderIndicator(entitySpan: AnnotationSpan): void {
   render(

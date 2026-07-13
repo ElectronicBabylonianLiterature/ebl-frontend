@@ -1,11 +1,14 @@
 import {
   AnnotationSpan,
-  ApiAnnotationSpan,
-  ApiAnnotationSpanBase,
+  AnnotationSpans,
   annotationSpanName,
   dedupeAnnotations,
+  emptyAnnotationSpans,
   isDuplicateAnnotation,
+  isEntityAnnotationSpan,
   isRealiaAnnotationSpan,
+  TaggedAnnotationSpan,
+  toTaggedSpans,
 } from 'fragmentarium/ui/text-annotation/annotationSpan'
 import _ from 'lodash'
 import React, { Dispatch, useReducer } from 'react'
@@ -18,15 +21,15 @@ export type AnnotationContextService = [State, Dispatch<Action>]
 
 type AddAction = {
   type: 'add'
-  annotation: ApiAnnotationSpan
+  annotation: TaggedAnnotationSpan
 }
 type EditAction = {
   type: 'edit'
-  annotation: ApiAnnotationSpan
+  annotation: TaggedAnnotationSpan
 }
 type DeleteAction = {
   type: 'delete'
-  annotation: ApiAnnotationSpanBase
+  annotation: { id: string }
 }
 
 export type Action = AddAction | EditAction | DeleteAction
@@ -37,7 +40,7 @@ const AnnotationContext = React.createContext<AnnotationContextService>([
 ])
 
 function createSpanBoundaryMaps(
-  annotations: readonly ApiAnnotationSpan[],
+  annotations: readonly TaggedAnnotationSpan[],
 ): [Map<string, string[]>, Map<string, string[]>] {
   const spanStarts = new Map<string, string[]>()
   const spanEnds = new Map<string, string[]>()
@@ -63,7 +66,7 @@ function getLowestOpenTier(occupiedTiers: number[]): number {
 
 function computeLayerTiers(
   words: readonly string[],
-  annotations: readonly ApiAnnotationSpan[],
+  annotations: readonly TaggedAnnotationSpan[],
 ): Map<string, number> {
   const [spanStarts, spanEnds] = createSpanBoundaryMaps(annotations)
 
@@ -90,15 +93,16 @@ function computeLayerTiers(
 
 function setTiers(
   words: readonly string[],
-  annotations: readonly ApiAnnotationSpan[],
+  annotations: readonly TaggedAnnotationSpan[],
 ): readonly AnnotationSpan[] {
-  const entitySpans = annotations.filter(
-    (annotation) => !isRealiaAnnotationSpan(annotation),
+  const entityTiers = computeLayerTiers(
+    words,
+    annotations.filter(isEntityAnnotationSpan),
   )
-  const realiaSpans = annotations.filter(isRealiaAnnotationSpan)
-
-  const entityTiers = computeLayerTiers(words, entitySpans)
-  const realiaTiers = computeLayerTiers(words, realiaSpans)
+  const realiaTiers = computeLayerTiers(
+    words,
+    annotations.filter(isRealiaAnnotationSpan),
+  )
   const entityDepth = _.max([...entityTiers.values()]) || 0
 
   return annotations.map((annotation) => ({
@@ -113,7 +117,7 @@ function setTiers(
 function withoutId(
   annotations: readonly AnnotationSpan[],
   id: string,
-): readonly ApiAnnotationSpan[] {
+): readonly TaggedAnnotationSpan[] {
   return annotations.filter((annotation) => annotation.id !== id)
 }
 
@@ -152,10 +156,10 @@ function reducer(state: State, action: Action): State {
 
 export function useAnnotationContext(
   words: readonly string[],
-  initial: readonly ApiAnnotationSpan[] = [],
+  initial: AnnotationSpans = emptyAnnotationSpans,
 ): AnnotationContextService {
   return useReducer(reducer, {
-    annotations: setTiers(words, dedupeAnnotations(initial)),
+    annotations: setTiers(words, dedupeAnnotations(toTaggedSpans(initial))),
     words,
   })
 }

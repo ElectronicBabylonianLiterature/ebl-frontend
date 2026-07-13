@@ -7,26 +7,39 @@ parallel to the existing entity layer (PN, DN, …) and reusing the same UI comp
 for editing and display. `realiaId` is the source of truth; all embedded/display data
 is derived client-side and stripped before saving.
 
-## Backend contract (agreed, frontend-first)
+## Backend contract (shipped — two separate layers)
 
-Deployed `ebl-api@master` `EntityAnnotationSpanSchema` is `{id, type (required), span}`
-with marshmallow's default `unknown=RAISE`. It has **no** realia support, and
-`grep -rn realia ebl/fragmentarium/` returns zero hits. The backend change is tracked
-separately. The frontend targets this agreed payload:
+The backend now keeps tags and realia in two lists that are **never intermixed**. The client
+is aligned to it; there are no aliases for the old `annotations` shape.
 
 ```jsonc
-POST /fragments/{number}/named-entities
-{ "annotations": [
-    { "id": "Entity-1", "type": "PERSONAL_NAME", "span": ["t1", "t2"] },
-    { "id": "Realia-1", "realiaId": "realia_000846", "span": ["t1", "t2"] }
-] }
+// GET and POST /fragments/{number}/named-entities
+{
+  "namedEntities": [
+    { "id": "Entity-1", "type": "PERSONAL_NAME", "span": ["Word-2", "Word-3"] },
+  ],
+  "realia": [
+    { "id": "Realia-1", "realiaId": "realia_000846", "span": ["Word-2"] },
+  ],
+}
 ```
 
-- Realia spans carry `realiaId` and **no** `type`; entity spans are unchanged.
-- Derived fields (`tier`, `name`) are stripped before POST, as `omitTiers` does today.
+- A `namedEntities` entry never carries `realiaId`; a `realia` entry never carries `type`.
+  Mixing them is a `422`, as is any unknown key — so `tier` and `name` must keep being
+  stripped by `omitDerivedSpanFields`.
+- A missing key means an empty list.
+- `realiaId` must match `^realia_\d+$` and must exist.
+- `id` must be unique across **both** lists; `Entity-N` / `Realia-N` counters satisfy this.
+- Duplicates are dropped silently, keeping the first. A duplicate is the same value on the
+  same token range, and **span order is irrelevant**.
+- Fragment DTO exposes `namedEntities` and `realia` separately; `Word` carries two id lists
+  (`namedEntities`, `realia`), each resolved only against its own layer.
 
-Already deployed and usable now: `GET /realia/by-id/{realia_id}` (`RealiaByIdResource`),
-and `GET /realia?query=` for the picker.
+Still allowed: many tags and many realia per fragment; a tag _and_ a realia on one range;
+two different tags on one range; the same tag or realia at different ranges.
+
+Also deployed: `GET /realia/by-id/{realia_id}` (`RealiaByIdResource`), and `GET /realia?query=`
+for the picker.
 
 ## Checklist
 
@@ -43,18 +56,19 @@ and `GET /realia?query=` for the picker.
 - [x] 10. Tests for every new/changed unit; 100% coverage of affected code.
 - [x] 11. Hard gates: `yarn lint`, `yarn tsc`, `yarn test --watchAll=false` console-clean.
 
-## Blocked on the backend
+## Two-list contract migration
 
-The frontend is complete and green, but **nothing round-trips until `ebl-api` ships the
-matching schema change**. Required there:
-
-1. `EntityAnnotationSpanSchema` must accept a realia span: `type` optional (or a sibling
-   `RealiaAnnotationSpanSchema`), plus a `realiaId` string field. Marshmallow's default
-   `unknown=RAISE` currently rejects `realiaId` outright.
-2. `Fragment.named_entities` must persist realia entries (`{id, realiaId}`) and
-   `NamedEntityResource._create_annotation_spans` must echo `realiaId` back on GET.
-3. Once (2) lands, the read-only links light up automatically — `CuneiformFragment`
-   already builds the lookup from `fragment.namedEntities`.
+- [x] 18. POST/GET `{ namedEntities, realia }`; the `annotations` key is gone. A missing key
+      reads as an empty list.
+- [x] 19. Split the span types: distinct tag and realia types, discriminated by a derived
+      `layer` tag, so the **compiler** enforces non-intermixing instead of probing for an
+      optional `realiaId` at runtime. `layer` is stripped on save like `tier` and `name`.
+      Deleted the `FragmentNamedEntity` union.
+- [x] 20. `Fragment` exposes `namedEntities` and `realia` separately; `Word` carries two id
+      lists. The read-only view resolves `word.realia` against `fragment.realia` only.
+- [x] 21. Duplicate detection treats a span as an unordered range (`spanRangeKey` sorts).
+- [x] 22. Repository tests pin the wire shape (two lists, no `annotations` key, missing key
+      → empty list).
 
 ## Follow-up round: UI polish and tag/realia synchronisation
 
@@ -85,7 +99,6 @@ matching schema change**. Required there:
 
 ## Open follow-ups (post-implementation)
 
-- [ ] Backend schema change in `ebl-api` (see "Blocked on the backend" above).
 - [ ] Re-publish the Docker image from `master` at `24d6dd36`, or confirm the image built
       from the accidental master push was superseded (see log, "Git incident and recovery").
 - [ ] Remove this file and `TASK-realia-annotation-log.md` before the PR merges.

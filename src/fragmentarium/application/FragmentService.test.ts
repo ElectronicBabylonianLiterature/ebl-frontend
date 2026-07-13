@@ -38,7 +38,7 @@ import { ArchaeologyDto } from 'fragmentarium/domain/archaeologyDtos'
 import { toArchaeologyDto } from 'fragmentarium/domain/archaeologyDtos'
 import { LemmaOption } from 'fragmentarium/ui/lemmatization/LemmaSelectionForm'
 import { LineLemmaAnnotations } from 'fragmentarium/ui/fragment/lemma-annotation/LemmaAnnotation'
-import { ApiAnnotationSpan } from 'fragmentarium/ui/text-annotation/annotationSpan'
+import { AnnotationSpans } from 'fragmentarium/ui/text-annotation/annotationSpan'
 import { UncertainFragmentAttestation } from 'corpus/domain/uncertainFragmentAttestation'
 import { ProvenanceRecord } from 'fragmentarium/domain/Provenance'
 
@@ -791,13 +791,22 @@ describe('methods returning fragment', () => {
   })
 
   describe('fetch named entity annotations', () => {
-    const namedEntityAnnotations: readonly ApiAnnotationSpan[] = [
-      {
-        id: 'entity-1',
-        type: 'PERSONAL_NAME',
-        span: ['line:1'],
-      },
-    ]
+    const namedEntityAnnotations: AnnotationSpans = {
+      namedEntities: [
+        {
+          id: 'Entity-1',
+          type: 'PERSONAL_NAME',
+          span: ['line:1'],
+        },
+      ],
+      realia: [
+        {
+          id: 'Realia-1',
+          realiaId: 'realia_000846',
+          span: ['line:1'],
+        },
+      ],
+    }
 
     test('returns named entity annotations', async () => {
       fragmentRepository.fetchNamedEntityAnnotations.mockReturnValue(
@@ -814,13 +823,22 @@ describe('methods returning fragment', () => {
   })
 
   describe('update named entity annotations', () => {
-    const namedEntityAnnotations: readonly ApiAnnotationSpan[] = [
-      {
-        id: 'entity-1',
-        type: 'PERSONAL_NAME',
-        span: ['line:1'],
-      },
-    ]
+    const namedEntityAnnotations: AnnotationSpans = {
+      namedEntities: [
+        {
+          id: 'Entity-1',
+          type: 'PERSONAL_NAME',
+          span: ['line:1'],
+        },
+      ],
+      realia: [
+        {
+          id: 'Realia-1',
+          realiaId: 'realia_000846',
+          span: ['line:1'],
+        },
+      ],
+    }
 
     beforeEach(async () => {
       fragmentRepository.updateNamedEntityAnnotations.mockReturnValue(

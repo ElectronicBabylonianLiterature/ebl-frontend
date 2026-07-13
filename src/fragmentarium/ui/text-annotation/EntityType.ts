@@ -42,5 +42,3 @@ export type RealiaNamedEntity = {
   readonly id: string
   readonly realiaId: string
 }
-
-export type FragmentNamedEntity = NamedEntity | RealiaNamedEntity

@@ -1,4 +1,8 @@
 import { ReferenceDto } from 'bibliography/domain/referenceDto'
+import {
+  NamedEntity,
+  RealiaNamedEntity,
+} from 'fragmentarium/ui/text-annotation/EntityType'
 import Folio from './Folio'
 import { Introduction, Notes, ScriptDto } from './fragment'
 import { RecordEntry } from './RecordEntry'
@@ -152,4 +156,6 @@ export default interface FragmentDto {
   }
   colophon?: ColophonDto
   authorziedScopes?: string[]
+  namedEntities?: readonly NamedEntity[]
+  realia?: readonly RealiaNamedEntity[]
 }

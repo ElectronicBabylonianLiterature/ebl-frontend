@@ -3,19 +3,25 @@ import {
   buildTagAnnotations,
   hasTagForSpan,
 } from 'fragmentarium/ui/text-annotation/spanAnnotatorActions'
-import { AnnotationSpan } from 'fragmentarium/ui/text-annotation/annotationSpan'
+import {
+  AnnotationSpan,
+  tagEntitySpan,
+  tagRealiaSpan,
+} from 'fragmentarium/ui/text-annotation/annotationSpan'
 import { toRealiaOption } from 'fragmentarium/ui/text-annotation/RealiaSelect'
+import {
+  entityAnnotationSpan,
+  realiaAnnotationSpan,
+} from 'fragmentarium/ui/text-annotation/textAnnotation.testSupport'
 import { realiaEntryFactory } from 'test-support/realia-fixtures'
 
 const span = ['Word-1', 'Word-2']
 
-const existingTag: AnnotationSpan = {
+const existingTag: AnnotationSpan = entityAnnotationSpan({
   id: 'Entity-1',
   type: 'ROYAL_NAME',
   span,
-  tier: 1,
-  name: 'Royal Name',
-}
+})
 
 const mappedOption = toRealiaOption(
   realiaEntryFactory.build({
@@ -42,13 +48,11 @@ describe('hasTagForSpan', () => {
   })
 
   it('ignores the realia layer', () => {
-    const realiaSpan: AnnotationSpan = {
+    const realiaSpan: AnnotationSpan = realiaAnnotationSpan({
       id: 'Realia-1',
       realiaId: 'realia_000846',
       span,
-      tier: 1,
-      name: 'realia_000846',
-    }
+    })
     expect(hasTagForSpan([realiaSpan], span)).toBe(false)
   })
 })
@@ -56,7 +60,7 @@ describe('hasTagForSpan', () => {
 describe('buildTagAnnotations', () => {
   it('creates a tag annotation', () => {
     expect(buildTagAnnotations([], span, { value: 'PERSONAL_NAME' })).toEqual([
-      { id: 'Entity-1', type: 'PERSONAL_NAME', span },
+      tagEntitySpan({ id: 'Entity-1', type: 'PERSONAL_NAME', span }),
     ])
   })
 
@@ -72,20 +76,20 @@ describe('buildRealiaAnnotations', () => {
 
   it('creates the realia annotation and the mapped tag', () => {
     expect(buildRealiaAnnotations([], span, mappedOption)).toEqual([
-      { id: 'Realia-1', realiaId: 'realia_000846', span },
-      { id: 'Entity-1', type: 'DIVINE_NAME', span },
+      tagRealiaSpan({ id: 'Realia-1', realiaId: 'realia_000846', span }),
+      tagEntitySpan({ id: 'Entity-1', type: 'DIVINE_NAME', span }),
     ])
   })
 
   it('omits the tag when the span already has one', () => {
     expect(buildRealiaAnnotations([existingTag], span, mappedOption)).toEqual([
-      { id: 'Realia-1', realiaId: 'realia_000846', span },
+      tagRealiaSpan({ id: 'Realia-1', realiaId: 'realia_000846', span }),
     ])
   })
 
   it('omits the tag when the classification is not mapped', () => {
     expect(buildRealiaAnnotations([], span, unmappedOption)).toEqual([
-      { id: 'Realia-1', realiaId: 'realia_000999', span },
+      tagRealiaSpan({ id: 'Realia-1', realiaId: 'realia_000999', span }),
     ])
   })
 
@@ -95,6 +99,8 @@ describe('buildRealiaAnnotations', () => {
         label: 'Apkallu',
         value: 'realia_000846',
       }),
-    ).toEqual([{ id: 'Realia-1', realiaId: 'realia_000846', span }])
+    ).toEqual([
+      tagRealiaSpan({ id: 'Realia-1', realiaId: 'realia_000846', span }),
+    ])
   })
 })

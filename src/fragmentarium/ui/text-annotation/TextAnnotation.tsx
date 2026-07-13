@@ -34,7 +34,7 @@ import AnnotationContext, {
 } from 'fragmentarium/ui/text-annotation/TextAnnotationContext'
 import { clearSelection } from 'fragmentarium/ui/text-annotation/SpanAnnotator'
 import {
-  ApiAnnotationSpan,
+  AnnotationSpans,
   omitDerivedSpanFields,
 } from 'fragmentarium/ui/text-annotation/annotationSpan'
 import RealiaInfoContext, {
@@ -173,10 +173,8 @@ function SpanAnnotationDisplay({
   fragmentService,
 }: {
   fragment: Fragment
-  initialAnnotations: readonly ApiAnnotationSpan[]
-  setInitialAnnotations: React.Dispatch<
-    React.SetStateAction<readonly ApiAnnotationSpan[]>
-  >
+  initialAnnotations: AnnotationSpans
+  setInitialAnnotations: React.Dispatch<React.SetStateAction<AnnotationSpans>>
   fragmentService: FragmentService
 }): JSX.Element {
   const [selection, setSelection] = useState<readonly string[]>([])
@@ -309,7 +307,7 @@ function TextAnnotationView({
   fragmentService,
 }: {
   fragment: Fragment
-  annotations: readonly ApiAnnotationSpan[]
+  annotations: AnnotationSpans
   fragmentService: FragmentService
 }): JSX.Element {
   const words: readonly string[] = useMemo(() => {
@@ -322,7 +320,7 @@ function TextAnnotationView({
       )
   }, [fragment.text])
   const [initialAnnotations, setInitialAnnotations] =
-    useState<readonly ApiAnnotationSpan[]>(annotations)
+    useState<AnnotationSpans>(annotations)
   const annotationContext = useAnnotationContext(words, initialAnnotations)
   const realiaIdKey = getRealiaIds(annotationContext[0].annotations)
     .slice()
@@ -352,7 +350,7 @@ function TextAnnotationView({
 export default withData<
   { fragmentService: FragmentService },
   { number: string; fragmentService: FragmentService },
-  { fragment: Fragment; annotations: readonly ApiAnnotationSpan[] }
+  { fragment: Fragment; annotations: AnnotationSpans }
 >(
   ({ data, fragmentService }) => (
     <TextAnnotationView

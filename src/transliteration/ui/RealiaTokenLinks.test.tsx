@@ -13,7 +13,7 @@ const lookup = createRealiaIdLookup([
 ])
 const annotatedToken: Token = {
   ...atfTokenKur,
-  namedEntities: ['Realia-1'],
+  realia: ['Realia-1'],
 }
 
 function renderLinks(

@@ -1,5 +1,4 @@
-import { FragmentNamedEntity } from 'fragmentarium/ui/text-annotation/EntityType'
-import { hasRealiaId } from 'fragmentarium/ui/text-annotation/annotationSpan'
+import { RealiaNamedEntity } from 'fragmentarium/ui/text-annotation/EntityType'
 import { Token } from 'transliteration/domain/token'
 import { isAnyWord } from 'transliteration/domain/type-guards'
 
@@ -8,13 +7,9 @@ export type RealiaIdLookup = ReadonlyMap<string, string>
 export const emptyRealiaIdLookup: RealiaIdLookup = new Map()
 
 export function createRealiaIdLookup(
-  namedEntities: ReadonlyArray<FragmentNamedEntity> = [],
+  realia: ReadonlyArray<RealiaNamedEntity> = [],
 ): RealiaIdLookup {
-  return new Map(
-    namedEntities
-      .filter(hasRealiaId)
-      .map((namedEntity) => [namedEntity.id, namedEntity.realiaId]),
-  )
+  return new Map(realia.map(({ id, realiaId }) => [id, realiaId]))
 }
 
 export function getTokenRealiaIds(
@@ -24,7 +19,7 @@ export function getTokenRealiaIds(
   if (!isAnyWord(token)) {
     return []
   }
-  return (token.namedEntities ?? [])
-    .map((entityId) => lookup.get(entityId))
+  return (token.realia ?? [])
+    .map((annotationId) => lookup.get(annotationId))
     .filter((realiaId): realiaId is string => realiaId !== undefined)
 }

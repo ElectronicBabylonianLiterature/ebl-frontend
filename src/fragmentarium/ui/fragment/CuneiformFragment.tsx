@@ -57,8 +57,8 @@ const CuneiformFragment: FunctionComponent<CuneiformFragmentProps> = ({
 }: CuneiformFragmentProps) => {
   const [isColumnVisible, setColumnVisible] = useState(true)
   const realiaIdLookup = useMemo(
-    () => createRealiaIdLookup(fragment.namedEntities),
-    [fragment.namedEntities],
+    () => createRealiaIdLookup(fragment.realia),
+    [fragment.realia],
   )
 
   const handleToggle = (isCollapsed: boolean) => {

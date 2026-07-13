@@ -5,7 +5,7 @@ import { ThemeProvider } from 'react-bootstrap'
 import Bluebird from 'bluebird'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import TextAnnotation from 'fragmentarium/ui/text-annotation/TextAnnotation'
-import { ApiAnnotationSpan } from 'fragmentarium/ui/text-annotation/annotationSpan'
+import { AnnotationSpans } from 'fragmentarium/ui/text-annotation/annotationSpan'
 import { tokenIdFragment } from 'test-support/fragment-fixtures'
 import { realiaEntryFactory } from 'test-support/realia-fixtures'
 import {
@@ -46,9 +46,10 @@ const otherEntry = realiaEntryFactory.build({
   type: ['Divine names'],
 })
 
-const annotations: readonly ApiAnnotationSpan[] = [
-  { id: 'Realia-1', realiaId: 'realia_000846', span: ['Word-2'] },
-]
+const annotations: AnnotationSpans = {
+  namedEntities: [],
+  realia: [{ id: 'Realia-1', realiaId: 'realia_000846', span: ['Word-2'] }],
+}
 
 async function setup(): Promise<void> {
   jest.clearAllMocks()

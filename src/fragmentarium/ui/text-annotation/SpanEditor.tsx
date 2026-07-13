@@ -1,11 +1,13 @@
 import {
   AnnotationSpan,
-  ApiAnnotationSpan,
   EntityAnnotationSpan,
   getUsedEntityTypes,
   getUsedRealiaIds,
   isRealiaAnnotationSpan,
   RealiaAnnotationSpan,
+  TaggedAnnotationSpan,
+  tagEntitySpan,
+  tagRealiaSpan,
 } from 'fragmentarium/ui/text-annotation/annotationSpan'
 import {
   EntityTypeOption,
@@ -27,7 +29,7 @@ interface SpanEditorProps {
 }
 
 interface LayerEditorProps {
-  onApply: (annotation: ApiAnnotationSpan) => void
+  onApply: (annotation: TaggedAnnotationSpan) => void
   onDelete: () => void
 }
 
@@ -85,11 +87,13 @@ const EntitySpanEditor = forwardRef<
     <SpanEditorForm
       onDelete={onDelete}
       onApply={() =>
-        onApply({
-          id: entitySpan.id,
-          span: entitySpan.span,
-          type: selectedType.value,
-        })
+        onApply(
+          tagEntitySpan({
+            id: entitySpan.id,
+            span: entitySpan.span,
+            type: selectedType.value,
+          }),
+        )
       }
       control={
         <Select
@@ -131,11 +135,13 @@ function RealiaSpanEditor({
       onApply={() => {
         if (selectedRealia) {
           register(selectedRealia.entry)
-          onApply({
-            id: entitySpan.id,
-            span: entitySpan.span,
-            realiaId: selectedRealia.value,
-          })
+          onApply(
+            tagRealiaSpan({
+              id: entitySpan.id,
+              span: entitySpan.span,
+              realiaId: selectedRealia.value,
+            }),
+          )
         }
       }}
       control={
@@ -156,7 +162,7 @@ const SpanEditor = forwardRef<
 >(function SpanEditor({ entitySpan, setActiveSpanId }, ref): JSX.Element {
   const [, dispatch] = useContext(AnnotationContext)
 
-  const onApply = (annotation: ApiAnnotationSpan) => {
+  const onApply = (annotation: TaggedAnnotationSpan) => {
     dispatch({ type: 'edit', annotation })
     setActiveSpanId(null)
   }

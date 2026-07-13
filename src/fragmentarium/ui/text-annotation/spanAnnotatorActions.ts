@@ -1,59 +1,59 @@
 import {
-  AnnotationSpan,
-  ApiAnnotationSpan,
   createAnnotationSpanId,
   ENTITY_ID_PREFIX,
-  isEntityAnnotationSpan,
+  getUsedEntityTypes,
   REALIA_ID_PREFIX,
+  TaggedAnnotationSpan,
+  TaggedEntitySpan,
+  TaggedRealiaSpan,
+  tagEntitySpan,
+  tagRealiaSpan,
 } from 'fragmentarium/ui/text-annotation/annotationSpan'
 import { EntityType } from 'fragmentarium/ui/text-annotation/EntityType'
 import { getEntryEntityType } from 'fragmentarium/ui/text-annotation/realiaTypeMapping'
 import { RealiaOption } from 'fragmentarium/ui/text-annotation/RealiaSelect'
-import _ from 'lodash'
 
 export function hasTagForSpan(
-  annotations: readonly AnnotationSpan[],
+  annotations: readonly TaggedAnnotationSpan[],
   span: readonly string[],
 ): boolean {
-  return annotations
-    .filter(isEntityAnnotationSpan)
-    .some((annotation) => _.isEqual(annotation.span, span))
+  return getUsedEntityTypes(annotations, span).length > 0
 }
 
 function createTagAnnotation(
-  annotations: readonly AnnotationSpan[],
+  annotations: readonly TaggedAnnotationSpan[],
   span: readonly string[],
   type: EntityType,
-): ApiAnnotationSpan {
-  return {
+): TaggedEntitySpan {
+  return tagEntitySpan({
     id: createAnnotationSpanId(annotations, ENTITY_ID_PREFIX),
     type,
     span,
-  }
+  })
 }
 
 export function buildTagAnnotations(
-  annotations: readonly AnnotationSpan[],
+  annotations: readonly TaggedAnnotationSpan[],
   span: readonly string[],
   option: { value: EntityType } | null,
-): readonly ApiAnnotationSpan[] {
+): readonly TaggedAnnotationSpan[] {
   return option ? [createTagAnnotation(annotations, span, option.value)] : []
 }
 
 export function buildRealiaAnnotations(
-  annotations: readonly AnnotationSpan[],
+  annotations: readonly TaggedAnnotationSpan[],
   span: readonly string[],
   option: RealiaOption | null,
-): readonly ApiAnnotationSpan[] {
+): readonly TaggedAnnotationSpan[] {
   if (!option) {
     return []
   }
 
-  const realiaAnnotation: ApiAnnotationSpan = {
+  const realiaAnnotation: TaggedRealiaSpan = tagRealiaSpan({
     id: createAnnotationSpanId(annotations, REALIA_ID_PREFIX),
     realiaId: option.value,
     span,
-  }
+  })
   const mappedType = option.entry ? getEntryEntityType(option.entry) : null
   const shouldAddTag = !!mappedType && !hasTagForSpan(annotations, span)
 

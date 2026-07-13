@@ -3,6 +3,7 @@ import {
   AnnotationSpan,
   isRealiaAnnotationSpan,
   REALIA_INDICATOR_CLASS,
+  TaggedAnnotationSpan,
 } from 'fragmentarium/ui/text-annotation/annotationSpan'
 import { getEntryEntityType } from 'fragmentarium/ui/text-annotation/realiaTypeMapping'
 import { RealiaEntry } from 'realia/domain/RealiaEntry'
@@ -54,7 +55,7 @@ export function getSpanIndicatorClass(
 }
 
 export function getRealiaIds(
-  spans: readonly AnnotationSpan[],
+  spans: readonly TaggedAnnotationSpan[],
 ): readonly string[] {
   return [
     ...new Set(

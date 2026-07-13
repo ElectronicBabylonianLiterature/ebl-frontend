@@ -221,6 +221,54 @@ a picked realia stays displayed in the editor, Apply relabels the indicator to t
 lemma, and a realia span opens the realia editor rather than the tag editor. The second of
 these fails on the pre-fix code, which is how the diagnosis was confirmed.
 
+## Migration to the two-list named-entities contract
+
+The backend now keeps tags and realia in **two separate lists that are never intermixed**.
+The client was aligned to it; no aliases for the old shape were added.
+
+### Wire shape
+
+`GET` and `POST /fragments/{number}/named-entities` both use `{ namedEntities, realia }`.
+The old `annotations` key is gone. A `namedEntities` entry never carries `realiaId`, and a
+`realia` entry never carries `type` — sending either is a `422`. `omitDerivedSpanFields`
+still strips `tier` and `name`, which remain unknown keys.
+
+`FragmentRepository.fetchNamedEntityAnnotations` normalises a missing key to an empty list;
+`updateNamedEntityAnnotations` posts the two lists directly.
+
+### Types: the compiler now enforces non-intermixing
+
+Previously one union was discriminated by an _optional_ `realiaId`, so telling the kinds
+apart meant probing for a field at runtime. Now `ApiEntityAnnotationSpan` and
+`ApiRealiaAnnotationSpan` are distinct types, and the UI works on layer-tagged spans
+(`TaggedEntitySpan` / `TaggedRealiaSpan`, discriminated by `layer`). The `layer` tag is a
+derived, client-only field: it is added by `toTaggedSpans` on load and removed by
+`omitDerivedSpanFields` on save, exactly like `tier` and `name`. Guards return
+`Extract<Span, …>` so both branches of a check narrow, which is what lets `SpanEditor` hand a
+`RealiaAnnotationSpan` to the realia editor and an `EntityAnnotationSpan` to the tag editor
+without a cast. A tag can no longer be constructed with a `realiaId` — it is a type error,
+not a runtime check.
+
+`FragmentNamedEntity` (the old `NamedEntity | RealiaNamedEntity` union on the fragment) was
+deleted for the same reason: `Fragment` now has separate `namedEntities` and `realia` lists.
+
+### Word tokens and the read-only view
+
+`Word` carries two id lists. `createRealiaIdLookup` is built from `fragment.realia` and
+resolved against `word.realia`; a tag id is never looked up in the realia layer, and
+`word.realia` defaults to `[]`. There is a regression test asserting exactly that
+(`never resolves a tag id against the realia layer`).
+
+### Duplicates: span order is now irrelevant
+
+`["Word-2","Word-3"]` and `["Word-3","Word-2"]` are the same range, so the duplicate key
+sorts the span (`spanRangeKey`). This changed `isDuplicateAnnotation`, `dedupeAnnotations`,
+`getUsedEntityTypes` and `getUsedRealiaIds`. The backend drops duplicates silently, and the
+client still prevents them being created at all.
+
+Ids stay unique across both lists because `Entity-N` / `Realia-N` use independent counters
+over disjoint prefixes — covered by a test.
+
 ## Uniqueness of tags and realia
 
 Requirement: no duplicate tag or realia may be inserted if one is already present.
@@ -265,19 +313,12 @@ add-realia-annotation`), then rewound `master` with
   image on any master push. The registry may still hold an image built from `ea5c9a23`.
   Re-run that workflow on `24d6dd36` (or check the published tag) — outside git, not done here.
 
-## Pending working-tree change
-
-- `.github/copilot-instructions.md` has an uncommitted +30-line "Git Branching and Pushing"
-  section (require `--no-track` when branching, publish with `-u` immediately, verify the
-  upstream before finalizing, verify remote state with `git ls-remote`). Left uncommitted
-  for the user to decide how to land.
-
 ## Progress
 
 - [x] Branch created, backend contract verified and confirmed with the user.
 - [x] Implementation complete; all hard gates green.
 - [x] Feature committed (`ea5c9a23`) and branch published to `origin/add-realia-annotation`.
-- [ ] Backend schema change in `ebl-api` (see TODO file, "Blocked on the backend").
-- [ ] Decide how to land the pending `copilot-instructions.md` edit.
+- [x] Git branching/pushing rules added to `.github/copilot-instructions.md` (`7093386c`).
+- [x] Backend shipped the two-list contract; the client is aligned to it.
 - [ ] Re-publish the Docker image from `24d6dd36` (or confirm the bad image was superseded).
 - [ ] Remove `TASK-realia-annotation-todo.md` / `TASK-realia-annotation-log.md` before merge.

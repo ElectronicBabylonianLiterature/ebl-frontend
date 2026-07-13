@@ -8,9 +8,9 @@ import {
   toRealiaDisplayInfo,
 } from 'fragmentarium/ui/text-annotation/realiaInfo'
 import {
-  EntityAnnotationSpan,
-  RealiaAnnotationSpan,
-} from 'fragmentarium/ui/text-annotation/annotationSpan'
+  entityAnnotationSpan,
+  realiaAnnotationSpan,
+} from 'fragmentarium/ui/text-annotation/textAnnotation.testSupport'
 import { realiaEntryFactory } from 'test-support/realia-fixtures'
 
 const mappedEntry = realiaEntryFactory.build({
@@ -29,20 +29,15 @@ const lookup: RealiaInfoLookup = new Map([
   ['realia_000999', toRealiaDisplayInfo(unmappedEntry)],
 ])
 
-const realiaSpan: RealiaAnnotationSpan = {
-  id: 'Realia-1',
-  realiaId: 'realia_000846',
-  span: ['Word-1'],
-  tier: 2,
-  name: 'realia_000846',
-}
-const entitySpan: EntityAnnotationSpan = {
+const realiaSpan = realiaAnnotationSpan(
+  { id: 'Realia-1', realiaId: 'realia_000846', span: ['Word-1'] },
+  { tier: 2 },
+)
+const entitySpan = entityAnnotationSpan({
   id: 'Entity-1',
   type: 'PERSONAL_NAME',
   span: ['Word-1'],
-  tier: 1,
-  name: 'Personal Name',
-}
+})
 
 describe('toRealiaDisplayInfo', () => {
   it('derives the lemma and the mapped tag', () => {

@@ -3,9 +3,9 @@ import {
   EntityType,
 } from 'fragmentarium/ui/text-annotation/EntityType'
 import {
-  ApiAnnotationSpan,
   getUsedEntityTypes,
   getUsedRealiaIds,
+  TaggedAnnotationSpan,
 } from 'fragmentarium/ui/text-annotation/annotationSpan'
 import {
   buildRealiaAnnotations,
@@ -58,7 +58,7 @@ const SpanAnnotator = forwardRef<
     (option) => !usedEntityTypes.includes(option.value),
   )
 
-  const applyAnnotations = (added: readonly ApiAnnotationSpan[]) => {
+  const applyAnnotations = (added: readonly TaggedAnnotationSpan[]) => {
     if (added.length === 0) {
       return
     }

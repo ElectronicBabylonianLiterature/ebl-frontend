@@ -6,7 +6,7 @@ import DisplayToken from 'transliteration/ui/DisplayToken'
 import AnnotationContext, {
   useAnnotationContext,
 } from 'fragmentarium/ui/text-annotation/TextAnnotationContext'
-import { ApiAnnotationSpan } from 'fragmentarium/ui/text-annotation/annotationSpan'
+import { AnnotationSpans } from 'fragmentarium/ui/text-annotation/annotationSpan'
 import { WithRealiaService } from 'fragmentarium/ui/text-annotation/textAnnotation.testSupport'
 
 jest.mock('realia/application/RealiaService')
@@ -27,12 +27,13 @@ function TestWrapper({ children }: { children: React.ReactNode }) {
 }
 
 function TestWrapperWithEntity({ children }: { children: React.ReactNode }) {
-  const entity: ApiAnnotationSpan = {
-    id: 'Entity-1',
-    type: 'PERSONAL_NAME',
-    span: ['Word-1'],
+  const annotations: AnnotationSpans = {
+    namedEntities: [
+      { id: 'Entity-1', type: 'PERSONAL_NAME', span: ['Word-1'] },
+    ],
+    realia: [],
   }
-  const contextValue = useAnnotationContext(['Word-1', 'Word-2'], [entity])
+  const contextValue = useAnnotationContext(['Word-1', 'Word-2'], annotations)
   return (
     <WithRealiaService>
       <AnnotationContext.Provider value={contextValue}>

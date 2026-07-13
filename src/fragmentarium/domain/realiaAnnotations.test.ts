@@ -6,15 +6,14 @@ import {
 import { atfTokenKur } from 'test-support/test-tokens'
 import { Token } from 'transliteration/domain/token'
 
-const namedEntities = [
-  { id: 'Entity-1', type: 'PERSONAL_NAME' as const },
+const realiaEntities = [
   { id: 'Realia-1', realiaId: 'realia_000846' },
   { id: 'Realia-2', realiaId: 'realia_000999' },
 ]
 
 describe('createRealiaIdLookup', () => {
-  it('keeps only realia entries', () => {
-    expect([...createRealiaIdLookup(namedEntities)]).toEqual([
+  it('maps each realia annotation id to its realiaId', () => {
+    expect([...createRealiaIdLookup(realiaEntities)]).toEqual([
       ['Realia-1', 'realia_000846'],
       ['Realia-2', 'realia_000999'],
     ])
@@ -26,24 +25,28 @@ describe('createRealiaIdLookup', () => {
 })
 
 describe('getTokenRealiaIds', () => {
-  const lookup = createRealiaIdLookup(namedEntities)
+  const lookup = createRealiaIdLookup(realiaEntities)
 
   it('resolves the realiaIds of the annotated token', () => {
-    const token = { ...atfTokenKur, namedEntities: ['Entity-1', 'Realia-2'] }
+    const token = { ...atfTokenKur, realia: ['Realia-2'] }
     expect(getTokenRealiaIds(lookup, token)).toEqual(['realia_000999'])
   })
 
-  it('ignores ids that are not realia annotations', () => {
-    const token = { ...atfTokenKur, namedEntities: ['Entity-1'] }
+  it('never resolves a tag id against the realia layer', () => {
+    const token = {
+      ...atfTokenKur,
+      namedEntities: ['Entity-1'],
+      realia: [],
+    }
     expect(getTokenRealiaIds(lookup, token)).toEqual([])
   })
 
   it('ignores ids that are not in the lookup', () => {
-    const token = { ...atfTokenKur, namedEntities: ['Realia-404'] }
+    const token = { ...atfTokenKur, realia: ['Realia-404'] }
     expect(getTokenRealiaIds(lookup, token)).toEqual([])
   })
 
-  it('handles tokens without named entities', () => {
+  it('handles tokens with no realia', () => {
     expect(getTokenRealiaIds(lookup, atfTokenKur)).toEqual([])
   })
 
@@ -59,7 +62,7 @@ describe('getTokenRealiaIds', () => {
   })
 
   it('returns nothing with the empty lookup', () => {
-    const token = { ...atfTokenKur, namedEntities: ['Realia-1'] }
+    const token = { ...atfTokenKur, realia: ['Realia-1'] }
     expect(getTokenRealiaIds(emptyRealiaIdLookup, token)).toEqual([])
   })
 })
