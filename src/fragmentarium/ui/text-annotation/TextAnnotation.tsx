@@ -1,4 +1,10 @@
-import React, { useContext, useMemo, useRef, useState } from 'react'
+import React, {
+  useCallback,
+  useContext,
+  useMemo,
+  useRef,
+  useState,
+} from 'react'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import withData from 'http/withData'
@@ -57,25 +63,34 @@ function DisplayAnnotationLine({
 }): JSX.Element {
   const textLine = line as TextLine
 
-  function TokenTrigger({
-    children,
-    token,
-  }: TokenActionWrapperProps): JSX.Element {
-    return isIdToken(token) ? (
-      <Markable
-        token={token}
-        selection={selection}
-        setSelection={setSelection}
-        activeSpanId={activeSpanId}
-        setActiveSpanId={setActiveSpanId}
-        selectionStartTokenIdRef={selectionStartTokenIdRef}
-      >
-        {children}
-      </Markable>
-    ) : (
-      <>{children}</>
-    )
-  }
+  const TokenTrigger = useCallback(
+    function TokenTrigger({
+      children,
+      token,
+    }: TokenActionWrapperProps): JSX.Element {
+      return isIdToken(token) ? (
+        <Markable
+          token={token}
+          selection={selection}
+          setSelection={setSelection}
+          activeSpanId={activeSpanId}
+          setActiveSpanId={setActiveSpanId}
+          selectionStartTokenIdRef={selectionStartTokenIdRef}
+        >
+          {children}
+        </Markable>
+      ) : (
+        <>{children}</>
+      )
+    },
+    [
+      selection,
+      setSelection,
+      activeSpanId,
+      setActiveSpanId,
+      selectionStartTokenIdRef,
+    ],
+  )
 
   return (
     <>

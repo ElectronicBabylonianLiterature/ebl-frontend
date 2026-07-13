@@ -114,6 +114,7 @@ function RealiaSpanEditor({
       onDelete={onDelete}
       onApply={() => {
         if (selectedRealia) {
+          register(selectedRealia.entry)
           onApply({
             id: entitySpan.id,
             span: entitySpan.span,
@@ -125,10 +126,7 @@ function RealiaSpanEditor({
         <RealiaSelect
           ariaLabel={'edit-realia'}
           value={selectedRealia}
-          onChange={(option) => {
-            register(option?.entry)
-            setSelectedRealia(option)
-          }}
+          onChange={setSelectedRealia}
         />
       }
     />

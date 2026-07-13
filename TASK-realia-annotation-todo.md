@@ -66,6 +66,15 @@ matching schema change**. Required there:
       selection when the span has no tag, and colour the realia indicator to match its tag
       (unmapped realia keep the distinct teal).
 
+## Bug fixes
+
+- [x] 16. Editing a realia annotation did not display the picked entry. Root cause was a
+      pre-existing remount bug: `TokenTrigger` was declared inside `DisplayAnnotationLine`,
+      so every re-render created a new component type and remounted the whole `Markable`
+      subtree, destroying the open editor's state. Fixed with `useCallback`; the editor
+      now also registers the chosen entry on Apply rather than mid-edit. Covered by
+      `TextAnnotation.realiaEditing.test.tsx`.
+
 ## Open follow-ups (post-implementation)
 
 - [ ] Backend schema change in `ebl-api` (see "Blocked on the backend" above).

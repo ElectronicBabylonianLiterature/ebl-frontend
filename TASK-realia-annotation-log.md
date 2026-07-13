@@ -155,7 +155,7 @@ Professions (34), Language (26), Linguistics (26), Astronomy (18), Excavated sit
 plus a handful of malformed values (`Per–7`, `Geographical name–6`). The mapping was
 chosen against this real vocabulary, not guessed.
 
-### New files
+### New files (this round)
 
 - `realiaTypeMapping.ts` — classification → `EntityType`.
 - `realiaInfo.ts` — derived display data (lemma, mapped tag, indicator class) keyed by
@@ -185,6 +185,41 @@ chosen against this real vocabulary, not guessed.
 Auto-tagging fires on realia **selection in the annotator** (creating an annotation), not
 when re-picking realia on an already-existing span in the editor, where an existing tag is
 assumed deliberate. Flag if the editor should behave the same way.
+
+## Bug: picking a realia in the editor did not display it
+
+**Symptom.** In the span editor, the realia menu opened and search worked, but the picked
+entry was never shown in the select.
+
+**Root cause — a pre-existing remount bug, not the realia code.** `DisplayAnnotationLine`
+declares `TokenTrigger` _inside its own body_, so it is a brand-new component type on every
+render. React cannot reconcile a changed component type: it unmounts and remounts the whole
+`Markable` subtree — including any open popover — on every re-render of the line. All local
+state in `SpanAnnotator` / `SpanEditor` is destroyed.
+
+The entity editor never exposed this: changing the tag select only touches state local to
+`EntitySpanEditor`, so nothing above it re-renders. The realia editor did, because
+`register(entry)` updates the realia lookup held in `TextAnnotationView`. That parent state
+update re-rendered the line, gave `TokenTrigger` a new identity, remounted `SpanEditor`, and
+reset `selectedRealia` to its initial value — so the pick vanished.
+
+**Fix.**
+
+1. Root cause: `TokenTrigger` is now wrapped in `useCallback`, keyed on the props it closes
+   over, so its identity is stable across unrelated re-renders. Remounts now happen only
+   when the selection or the active span actually changes, where fresh state is wanted.
+   This also removes a real performance problem: previously _every_ re-render tore down and
+   rebuilt every `Markable` on the line.
+2. Defence in depth: `RealiaSpanEditor` no longer calls `register` while the user is
+   choosing. The chosen entry is held in local state and registered on **Apply**, so the
+   editor no longer mutates parent state mid-edit, and unconfirmed picks no longer enter
+   the lookup.
+
+**Regression cover.** `TextAnnotation.realiaEditing.test.tsx` drives the real component
+tree (fragment → line → `Markable` → `SpanEditor`): the indicator shows the resolved lemma,
+a picked realia stays displayed in the editor, Apply relabels the indicator to the new
+lemma, and a realia span opens the realia editor rather than the tag editor. The second of
+these fails on the pre-fix code, which is how the diagnosis was confirmed.
 
 ## Git incident and recovery (2026-07-10)
 
