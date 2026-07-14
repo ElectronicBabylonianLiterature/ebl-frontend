@@ -30,7 +30,25 @@ export interface HistoricalMapOverlayValidationError {
 const URL_SAFE_ID_PATTERN = /^[a-z0-9][a-z0-9_-]*$/
 const URL_BASE = 'https://www.ebl.lmu.de'
 
-export const historicalMapOverlays: readonly HistoricalMapOverlay[] = []
+export const historicalMapOverlays: readonly HistoricalMapOverlay[] = [
+  {
+    id: 'assur-andrae-1938-beilage',
+    title: 'Andrae 1938, Aššur, Beilage',
+    shortTitle: 'Andrae 1938',
+    dateLabel: '1938',
+    description:
+      'Georeferenced historical plan of Aššur. The overlay is suitable for site-scale orientation, but historical source material and georeferencing may include spatial inaccuracies.',
+    attribution:
+      'Andrae 1938, Aššur, Beilage. Georeferenced dataset supplied to eBL. Publication rights pending confirmation.',
+    type: 'raster-tiles',
+    tiles: ['/historical-maps/assur-andrae-1938-beilage/tiles/{z}/{x}/{y}.png'],
+    bounds: [43.2507948, 35.4442168, 43.268817, 35.4629941],
+    minZoom: 12,
+    maxZoom: 17,
+    tileSize: 256,
+    defaultOpacity: 0.7,
+  },
+]
 
 function isNonEmptyString(value: unknown): value is string {
   return typeof value === 'string' && value.trim().length > 0

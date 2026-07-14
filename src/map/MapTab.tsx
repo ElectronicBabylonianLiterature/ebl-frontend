@@ -117,105 +117,126 @@ export default function MapTab({ fragmentService }: Props): JSX.Element {
 
   return (
     <div className="map-tab">
-      <div className="map-tab__controls">
-        <Form.Group className="map-tab__search">
-          <Form.Control
-            type="text"
-            placeholder="Filter by site name..."
-            value={filter}
-            onChange={(event) => setFilter(event.target.value)}
-            aria-label="Filter findspots by name"
-          />
-        </Form.Group>
-        <Form.Group
-          className="map-tab__toggle"
-          controlId="show-site-boundaries"
+      <div className="map-controls">
+        <section
+          className="map-controls__group map-controls__search"
+          aria-labelledby="map-controls-search-heading"
         >
-          <Form.Check
-            type="checkbox"
-            label="Show site boundaries"
-            checked={showBoundaries}
-            onChange={(event) => setShowBoundaries(event.target.checked)}
-          />
-        </Form.Group>
-        <Form.Group
-          className="map-tab__historical-select"
-          controlId="historical-map-overlay"
-        >
-          <Form.Label>Historical map</Form.Label>
-          <Form.Select
-            value={selectedHistoricalOverlayId}
-            onChange={handleHistoricalOverlayChange}
-            disabled={validatedHistoricalMapOverlays.length === 0}
-            aria-label="Select historical map overlay"
+          <h2 id="map-controls-search-heading" className="map-controls__title">
+            Find a site
+          </h2>
+          <Form.Group
+            className="map-controls__search-field"
+            controlId="map-site-filter"
           >
-            <option value="">
-              {validatedHistoricalMapOverlays.length > 0
-                ? 'No historical map'
-                : 'No historical maps available'}
-            </option>
-            {validatedHistoricalMapOverlays.map((overlay) => (
-              <option key={overlay.id} value={overlay.id}>
-                {getHistoricalOverlayLabel(overlay)}
-              </option>
-            ))}
-          </Form.Select>
-        </Form.Group>
-        {selectedHistoricalOverlay ? (
-          <>
+            <Form.Label>Site name</Form.Label>
+            <Form.Control
+              type="text"
+              placeholder="Filter by site name..."
+              value={filter}
+              onChange={(event) => setFilter(event.target.value)}
+            />
+          </Form.Group>
+        </section>
+        <section
+          className="map-controls__group map-controls__display"
+          aria-labelledby="map-controls-display-heading"
+        >
+          <h2 id="map-controls-display-heading" className="map-controls__title">
+            Map display
+          </h2>
+          <div className="map-controls__display-row">
             <Form.Group
-              className="map-tab__opacity"
-              controlId="historical-map-opacity"
+              className="map-controls__historical"
+              controlId="historical-map-overlay"
             >
-              <div className="map-tab__opacity-header">
-                <Form.Label>Opacity</Form.Label>
-                <span>{Math.round(historicalOverlayOpacity * 100)}%</span>
-              </div>
-              <Form.Range
-                min={0}
-                max={1}
-                step={0.05}
-                value={historicalOverlayOpacity}
-                onChange={(event) =>
-                  setHistoricalOverlayOpacity(Number(event.target.value))
-                }
-                aria-label="Historical map opacity"
+              <Form.Label>Historical map</Form.Label>
+              <Form.Select
+                value={selectedHistoricalOverlayId}
+                onChange={handleHistoricalOverlayChange}
+                disabled={validatedHistoricalMapOverlays.length === 0}
+                aria-label="Select historical map overlay"
+              >
+                <option value="">
+                  {validatedHistoricalMapOverlays.length > 0
+                    ? 'No historical map'
+                    : 'No historical maps available'}
+                </option>
+                {validatedHistoricalMapOverlays.map((overlay) => (
+                  <option key={overlay.id} value={overlay.id}>
+                    {getHistoricalOverlayLabel(overlay)}
+                  </option>
+                ))}
+              </Form.Select>
+            </Form.Group>
+            <Form.Group
+              className="map-controls__toggle"
+              controlId="show-site-boundaries"
+            >
+              <Form.Check
+                type="checkbox"
+                label="Show site boundaries"
+                checked={showBoundaries}
+                onChange={(event) => setShowBoundaries(event.target.checked)}
               />
             </Form.Group>
-            <Button
-              type="button"
-              variant="outline-secondary"
-              size="sm"
-              className="map-tab__clear-overlay"
-              onClick={clearHistoricalOverlay}
-            >
-              Remove
-            </Button>
-          </>
-        ) : null}
+          </div>
+          {selectedHistoricalOverlay ? (
+            <>
+              <div className="map-controls__overlay-controls">
+                <Form.Group
+                  className="map-controls__opacity"
+                  controlId="historical-map-opacity"
+                >
+                  <div className="map-controls__opacity-header">
+                    <Form.Label>Opacity</Form.Label>
+                    <span>{Math.round(historicalOverlayOpacity * 100)}%</span>
+                  </div>
+                  <Form.Range
+                    min={0}
+                    max={1}
+                    step={0.05}
+                    value={historicalOverlayOpacity}
+                    onChange={(event) =>
+                      setHistoricalOverlayOpacity(Number(event.target.value))
+                    }
+                    aria-label="Historical map opacity"
+                  />
+                </Form.Group>
+                <Button
+                  type="button"
+                  variant="outline-secondary"
+                  size="sm"
+                  className="map-controls__clear-overlay"
+                  onClick={clearHistoricalOverlay}
+                >
+                  Remove
+                </Button>
+              </div>
+              <aside className="map-controls__metadata" aria-live="polite">
+                <strong>{selectedHistoricalOverlay.title}</strong>
+                {historicalOverlayMetadata ? (
+                  <span>{historicalOverlayMetadata}</span>
+                ) : null}
+                {selectedHistoricalOverlay.description ? (
+                  <span>{selectedHistoricalOverlay.description}</span>
+                ) : null}
+                <span>{selectedHistoricalOverlay.attribution}</span>
+                {selectedHistoricalOverlay.sourceUrl &&
+                isSafeOverlayUrl(selectedHistoricalOverlay.sourceUrl) ? (
+                  <a
+                    href={selectedHistoricalOverlay.sourceUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Source
+                  </a>
+                ) : null}
+              </aside>
+            </>
+          ) : null}
+        </section>
       </div>
-      {selectedHistoricalOverlay ? (
-        <aside className="map-tab__historical-details" aria-live="polite">
-          <strong>{selectedHistoricalOverlay.title}</strong>
-          {historicalOverlayMetadata ? (
-            <span>{historicalOverlayMetadata}</span>
-          ) : null}
-          {selectedHistoricalOverlay.description ? (
-            <span>{selectedHistoricalOverlay.description}</span>
-          ) : null}
-          <span>{selectedHistoricalOverlay.attribution}</span>
-          {selectedHistoricalOverlay.sourceUrl &&
-          isSafeOverlayUrl(selectedHistoricalOverlay.sourceUrl) ? (
-            <a
-              href={selectedHistoricalOverlay.sourceUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Source
-            </a>
-          ) : null}
-        </aside>
-      ) : null}
       {filteredProvenances && filteredProvenances.length === 0 ? (
         <Alert variant="info">No findspots match &ldquo;{filter}&rdquo;.</Alert>
       ) : null}

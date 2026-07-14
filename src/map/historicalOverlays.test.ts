@@ -1,5 +1,6 @@
 import type { HistoricalMapOverlay } from './historicalOverlays'
 import {
+  historicalMapOverlays,
   isSafeOverlayUrl,
   validateHistoricalMapOverlay,
   validateHistoricalMapOverlays,
@@ -301,5 +302,54 @@ describe('validateHistoricalMapOverlays', () => {
     expect(errors.length).toBeGreaterThan(1)
     expect(errors.some((e) => e.field === 'manifest')).toBe(true)
     expect(errors.some((e) => e.field === 'title')).toBe(true)
+  })
+})
+
+describe('production manifest', () => {
+  const assurOverlay = historicalMapOverlays.find(
+    (o) => o.id === 'assur-andrae-1938-beilage',
+  )
+
+  it('contains assur-andrae-1938-beilage', () => {
+    expect(assurOverlay).toBeDefined()
+  })
+
+  it('passes validation', () => {
+    if (assurOverlay) {
+      expect(validateHistoricalMapOverlay(assurOverlay)).toHaveLength(0)
+    }
+  })
+
+  it('uses a relative tile URL', () => {
+    expect(assurOverlay?.tiles[0]).toMatch(/^\/historical-maps\//)
+    expect(isSafeOverlayUrl(assurOverlay?.tiles[0] ?? '')).toBe(true)
+  })
+
+  it('declares the expected EPSG:4326 bounds', () => {
+    expect(assurOverlay?.bounds).toEqual([
+      43.2507948, 35.4442168, 43.268817, 35.4629941,
+    ])
+  })
+
+  it('declares zoom range 12–17', () => {
+    expect(assurOverlay?.minZoom).toBe(12)
+    expect(assurOverlay?.maxZoom).toBe(17)
+  })
+
+  it('declares a valid default opacity', () => {
+    expect(assurOverlay?.defaultOpacity).toBeGreaterThanOrEqual(0)
+    expect(assurOverlay?.defaultOpacity).toBeLessThanOrEqual(1)
+  })
+
+  it('does not fabricate a sourceUrl', () => {
+    expect(assurOverlay?.sourceUrl).toBeUndefined()
+  })
+
+  it('declares tile size 256', () => {
+    expect(assurOverlay?.tileSize).toBe(256)
+  })
+
+  it('passes the full manifest validator', () => {
+    expect(validateHistoricalMapOverlays(historicalMapOverlays)).toHaveLength(0)
   })
 })

@@ -274,14 +274,18 @@ describe('MapTab', () => {
     })
   })
 
-  it('renders search input, boundary toggle, and map container after data loads', async () => {
+  it('renders grouped search, display controls, and map container after data loads', async () => {
     const fragmentService = makeFragmentService([makeProvenance()])
 
     render(<MapTab fragmentService={fragmentService} />)
 
     expect(
-      await screen.findByPlaceholderText('Filter by site name...'),
+      await screen.findByRole('heading', { name: 'Find a site' }),
     ).toBeInTheDocument()
+    expect(
+      screen.getByRole('heading', { name: 'Map display' }),
+    ).toBeInTheDocument()
+    expect(screen.getByLabelText('Site name')).toBeInTheDocument()
     expect(
       screen.getByRole('checkbox', { name: 'Show site boundaries' }),
     ).toBeChecked()
@@ -1136,6 +1140,271 @@ describe('MapTab', () => {
 
       expect(screen.queryByText('Source')).not.toBeInTheDocument()
       expect(screen.queryByText('British Museum, 1900')).not.toBeInTheDocument()
+    })
+
+    it('does not render a source link when sourceUrl is absent', async () => {
+      mockValidatedOverlays = [
+        makeOverlayFixture({ sourceUrl: undefined }),
+      ] as unknown as typeof mockValidatedOverlays
+
+      render(
+        <MapTab fragmentService={makeFragmentService([makeProvenance()])} />,
+      )
+
+      const select = await screen.findByLabelText(
+        'Select historical map overlay',
+      )
+      await userEvent.selectOptions(select, 'babylon-map')
+
+      await screen.findByText('British Museum, 1900')
+      expect(screen.queryByText('Source')).not.toBeInTheDocument()
+    })
+
+    it('selects real overlay entry with expected tile template and bounds', async () => {
+      const assurOverlay = {
+        id: 'assur-andrae-1938-beilage',
+        title: 'Andrae 1938, Aššur, Beilage',
+        shortTitle: 'Andrae 1938',
+        dateLabel: '1938',
+        description:
+          'Georeferenced historical plan of Aššur. The overlay is suitable for site-scale orientation, but historical source material and georeferencing may include spatial inaccuracies.',
+        attribution:
+          'Andrae 1938, Aššur, Beilage. Georeferenced dataset supplied to eBL. Publication rights pending confirmation.',
+        type: 'raster-tiles',
+        tiles: [
+          '/historical-maps/assur-andrae-1938-beilage/tiles/{z}/{x}/{y}.png',
+        ],
+        bounds: [43.2507948, 35.4442168, 43.268817, 35.4629941],
+        minZoom: 12,
+        maxZoom: 17,
+        tileSize: 256,
+        defaultOpacity: 0.7,
+      }
+
+      mockValidatedOverlays = [
+        assurOverlay,
+      ] as unknown as typeof mockValidatedOverlays
+
+      render(
+        <MapTab fragmentService={makeFragmentService([makeProvenance()])} />,
+      )
+
+      const select = await screen.findByLabelText(
+        'Select historical map overlay',
+      )
+      expect(select).toBeEnabled()
+      expect(screen.getByText('No historical map')).toBeInTheDocument()
+      expect(screen.getByText('Andrae 1938 - 1938')).toBeInTheDocument()
+
+      await userEvent.selectOptions(select, 'assur-andrae-1938-beilage')
+
+      await waitFor(() => {
+        expect(mockAddSource).toHaveBeenCalledWith(
+          'ebl-historical-raster',
+          expect.objectContaining({
+            type: 'raster',
+            tiles: [
+              '/historical-maps/assur-andrae-1938-beilage/tiles/{z}/{x}/{y}.png',
+            ],
+            bounds: [43.2507948, 35.4442168, 43.268817, 35.4629941],
+            minzoom: 12,
+            maxzoom: 17,
+            tileSize: 256,
+            attribution:
+              'Andrae 1938, Aššur, Beilage. Georeferenced dataset supplied to eBL. Publication rights pending confirmation.',
+          }),
+        )
+      })
+
+      await waitFor(() => {
+        expect(mockAddLayer).toHaveBeenCalledWith(
+          expect.objectContaining({
+            id: 'ebl-historical-raster-layer',
+            type: 'raster',
+          }),
+          'ebl-findspot-polygon-fill',
+        )
+      })
+
+      expect(
+        await screen.findByText(
+          'Andrae 1938, Aššur, Beilage. Georeferenced dataset supplied to eBL. Publication rights pending confirmation.',
+        ),
+      ).toBeInTheDocument()
+      expect(screen.queryByText('Source')).not.toBeInTheDocument()
+      expect(screen.getByText('70%')).toBeInTheDocument()
+    })
+
+    describe('style-load race', () => {
+      it('applies the latest overlay exactly once when style loads after selection', async () => {
+        const assurOverlay = {
+          id: 'assur-andrae-1938-beilage',
+          title: 'Andrae 1938, Aššur, Beilage',
+          shortTitle: 'Andrae 1938',
+          dateLabel: '1938',
+          attribution:
+            'Andrae 1938, Aššur, Beilage. Georeferenced dataset supplied to eBL. Publication rights pending confirmation.',
+          type: 'raster-tiles',
+          tiles: [
+            '/historical-maps/assur-andrae-1938-beilage/tiles/{z}/{x}/{y}.png',
+          ],
+          bounds: [43.2507948, 35.4442168, 43.268817, 35.4629941],
+          minZoom: 12,
+          maxZoom: 17,
+          tileSize: 256,
+          defaultOpacity: 0.7,
+        }
+
+        mockValidatedOverlays = [
+          assurOverlay,
+        ] as unknown as typeof mockValidatedOverlays
+
+        mockLoadImmediately = false
+        mockIsStyleLoaded.mockReturnValue(false)
+
+        render(
+          <MapTab fragmentService={makeFragmentService([makeProvenance()])} />,
+        )
+
+        const select = await screen.findByLabelText(
+          'Select historical map overlay',
+        )
+        await userEvent.selectOptions(select, 'assur-andrae-1938-beilage')
+
+        expect(mockAddSource).not.toHaveBeenCalledWith(
+          'ebl-historical-raster',
+          expect.anything(),
+        )
+
+        act(() => {
+          mockIsStyleLoaded.mockReturnValue(true)
+          mockEventHandlers.load()
+        })
+
+        const rasterSourceCalls = mockAddSource.mock.calls.filter(
+          (call: unknown[]) => call[0] === 'ebl-historical-raster',
+        )
+        expect(rasterSourceCalls).toHaveLength(1)
+
+        const rasterLayerCalls = mockAddLayer.mock.calls.filter(
+          (call: unknown[]) =>
+            (call[0] as { id: string }).id === 'ebl-historical-raster-layer',
+        )
+        expect(rasterLayerCalls).toHaveLength(1)
+
+        expect(rasterLayerCalls[0][1]).toBe('ebl-findspot-polygon-fill')
+
+        expect(rasterSourceCalls[0][1]).toEqual(
+          expect.objectContaining({
+            type: 'raster',
+            tiles: [
+              '/historical-maps/assur-andrae-1938-beilage/tiles/{z}/{x}/{y}.png',
+            ],
+          }),
+        )
+      })
+
+      it('uses the expected opacity from the overlay', async () => {
+        const assurOverlay = {
+          id: 'assur-andrae-1938-beilage',
+          title: 'Andrae 1938, Aššur, Beilage',
+          shortTitle: 'Andrae 1938',
+          dateLabel: '1938',
+          attribution:
+            'Andrae 1938, Aššur, Beilage. Georeferenced dataset supplied to eBL. Publication rights pending confirmation.',
+          type: 'raster-tiles',
+          tiles: [
+            '/historical-maps/assur-andrae-1938-beilage/tiles/{z}/{x}/{y}.png',
+          ],
+          bounds: [43.2507948, 35.4442168, 43.268817, 35.4629941],
+          minZoom: 12,
+          maxZoom: 17,
+          tileSize: 256,
+          defaultOpacity: 0.7,
+        }
+
+        mockValidatedOverlays = [
+          assurOverlay,
+        ] as unknown as typeof mockValidatedOverlays
+
+        mockLoadImmediately = false
+        mockIsStyleLoaded.mockReturnValue(false)
+
+        render(
+          <MapTab fragmentService={makeFragmentService([makeProvenance()])} />,
+        )
+
+        const select = await screen.findByLabelText(
+          'Select historical map overlay',
+        )
+        await userEvent.selectOptions(select, 'assur-andrae-1938-beilage')
+
+        act(() => {
+          mockIsStyleLoaded.mockReturnValue(true)
+          mockEventHandlers.load()
+        })
+
+        const rasterLayerCalls = mockAddLayer.mock.calls.filter(
+          (call: unknown[]) =>
+            (call[0] as { id: string }).id === 'ebl-historical-raster-layer',
+        )
+
+        const layerObj = rasterLayerCalls[0][0] as {
+          paint?: { 'raster-opacity'?: number }
+        }
+        expect(layerObj.paint?.['raster-opacity']).toBe(0.7)
+      })
+
+      it('does not create duplicate sources when overlay re-selected', async () => {
+        const assurOverlay = {
+          id: 'assur-andrae-1938-beilage',
+          title: 'Andrae 1938, Aššur, Beilage',
+          shortTitle: 'Andrae 1938',
+          dateLabel: '1938',
+          attribution:
+            'Andrae 1938, Aššur, Beilage. Georeferenced dataset supplied to eBL. Publication rights pending confirmation.',
+          type: 'raster-tiles',
+          tiles: [
+            '/historical-maps/assur-andrae-1938-beilage/tiles/{z}/{x}/{y}.png',
+          ],
+          bounds: [43.2507948, 35.4442168, 43.268817, 35.4629941],
+          minZoom: 12,
+          maxZoom: 17,
+          tileSize: 256,
+          defaultOpacity: 0.7,
+        }
+
+        mockValidatedOverlays = [
+          assurOverlay,
+        ] as unknown as typeof mockValidatedOverlays
+
+        mockLoadImmediately = false
+        mockIsStyleLoaded.mockReturnValue(false)
+
+        render(
+          <MapTab fragmentService={makeFragmentService([makeProvenance()])} />,
+        )
+
+        const select = await screen.findByLabelText(
+          'Select historical map overlay',
+        )
+        await userEvent.selectOptions(select, 'assur-andrae-1938-beilage')
+
+        expect(mockAddSource).not.toHaveBeenCalledWith(
+          'ebl-historical-raster',
+          expect.anything(),
+        )
+
+        act(() => {
+          mockIsStyleLoaded.mockReturnValue(true)
+          mockEventHandlers.load()
+        })
+
+        const rasterSourceCalls = mockAddSource.mock.calls.filter(
+          (call: unknown[]) => call[0] === 'ebl-historical-raster',
+        )
+        expect(rasterSourceCalls).toHaveLength(1)
+      })
     })
   })
 })
