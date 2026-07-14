@@ -6,6 +6,7 @@ import { SearchResult } from './FragmentariumSearchResult'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import DossiersService from 'dossiers/application/DossiersService'
 import { QueryItem, QueryResult } from 'query/QueryResult'
+import { FragmentQuery } from 'query/FragmentQuery'
 
 jest.mock(
   'fragmentarium/ui/search/FragmentariumSearchResultComponents',
@@ -21,20 +22,42 @@ function LocationDisplay(): JSX.Element {
   return <div data-testid="location">{location.search}</div>
 }
 
-function buildQueryResult(totalItems = 500): QueryResult {
+function buildQueryResult({
+  items = 50,
+  hasNextPage = true,
+  matchCountTotal = null,
+}: {
+  items?: number
+  hasNextPage?: boolean | null
+  matchCountTotal?: number | null
+} = {}): QueryResult {
   return {
-    items: Array.from({ length: totalItems }, (_, index) => ({
+    items: Array.from({ length: items }, (_, index) => ({
       museumNumber: `K.${index + 1}`,
       matchingLines: [],
       matchCount: 0,
     })),
-    matchCountTotal: 0,
+    matchCountTotal,
+    hasNextPage,
   }
 }
 
-function renderSearchResult(search = ''): jest.Mocked<FragmentService> {
+function renderSearchResult({
+  search = '',
+  queryResult = buildQueryResult(),
+  fragmentQuery = {
+    number: 'K.1',
+    limit: 50,
+    offset: 0,
+    count: 'page' as const,
+  },
+}: {
+  search?: string
+  queryResult?: QueryResult
+  fragmentQuery?: FragmentQuery
+} = {}): jest.Mocked<FragmentService> {
   const fragmentService = {
-    query: jest.fn().mockResolvedValue(buildQueryResult()),
+    query: jest.fn().mockResolvedValue(queryResult),
   } as unknown as jest.Mocked<FragmentService>
 
   render(
@@ -43,7 +66,7 @@ function renderSearchResult(search = ''): jest.Mocked<FragmentService> {
       <SearchResult
         fragmentService={fragmentService}
         dossiersService={{} as DossiersService}
-        fragmentQuery={{ number: 'K.1' }}
+        fragmentQuery={fragmentQuery}
       />
     </MemoryRouter>,
   )
@@ -52,51 +75,130 @@ function renderSearchResult(search = ''): jest.Mocked<FragmentService> {
 }
 
 describe('FragmentariumSearchResult pagination', () => {
-  it('starts on page 6 when paginationIndex=5', async () => {
-    renderSearchResult('?paginationIndex=5')
+  it('renders the current server page and request range without chunking', async () => {
+    const view = renderSearchResult({
+      fragmentQuery: { number: 'K.1', limit: 50, offset: 50, count: 'page' },
+    })
 
-    expect(await screen.findByText('K.251')).toBeInTheDocument()
-    expect(screen.queryByText('K.1')).not.toBeInTheDocument()
+    expect(await screen.findByText('K.1')).toBeInTheDocument()
+    expect(screen.getByText(/Showing results 51-100/)).toBeInTheDocument()
+    expect(screen.getAllByText('Page 2')[0]).toBeInTheDocument()
+    expect(view.query).toHaveBeenCalledWith({
+      number: 'K.1',
+      limit: 50,
+      offset: 50,
+      count: 'page',
+    })
   })
 
-  it('updates the URL when clicking page 10', async () => {
-    renderSearchResult()
+  it('enables Next only when hasNextPage is true and updates the URL', async () => {
+    renderSearchResult({
+      search: '?number=000123&paginationIndex=0',
+      queryResult: buildQueryResult({ hasNextPage: true }),
+    })
 
     await screen.findByText('K.1')
-    await userEvent.click(screen.getAllByRole('button', { name: '10' })[0])
+    await userEvent.click(screen.getAllByText('Next')[0])
 
-    expect(await screen.findByText('K.451')).toBeInTheDocument()
     expect(screen.getByTestId('location')).toHaveTextContent(
-      'paginationIndex=9',
+      'number=000123&paginationIndex=1',
     )
   })
 
-  it.each(['?paginationIndex=abc', '?paginationIndex=-5'])(
-    'defaults to page 1 for invalid pagination value %s',
-    async (search) => {
-      renderSearchResult(search)
+  it('disables Previous on page zero and disables Next on the last page', async () => {
+    renderSearchResult({
+      queryResult: buildQueryResult({ items: 12, hasNextPage: false }),
+    })
 
-      expect(await screen.findByText('K.1')).toBeInTheDocument()
-      expect(screen.queryByText('K.51')).not.toBeInTheDocument()
-    },
-  )
-
-  it('uses the first paginationIndex when the URL contains multiple values', async () => {
-    renderSearchResult('?paginationIndex=5&paginationIndex=1')
-
-    expect(await screen.findByText('K.251')).toBeInTheDocument()
-    expect(screen.queryByText('K.51')).not.toBeInTheDocument()
+    await screen.findByText('K.1')
+    expect(screen.getAllByRole('listitem')[0]).toHaveClass('disabled')
+    expect(screen.getAllByRole('listitem')[2]).toHaveClass('disabled')
+    expect(screen.getByText(/Showing results 1-12/)).toBeInTheDocument()
   })
 
-  it('clamps out-of-range paginationIndex to the last page and normalizes the URL', async () => {
-    renderSearchResult('?paginationIndex=9999')
-
-    expect(await screen.findByText('K.451')).toBeInTheDocument()
-    expect(screen.queryByText('K.1')).not.toBeInTheDocument()
-    await waitFor(() => {
-      expect(screen.getByTestId('location')).toHaveTextContent(
-        'paginationIndex=9',
-      )
+  it('keeps a usable Previous control for an empty directly linked page', async () => {
+    renderSearchResult({
+      queryResult: buildQueryResult({ items: 0, hasNextPage: false }),
+      fragmentQuery: { number: 'K.1', limit: 50, offset: 100, count: 'page' },
     })
+
+    expect(await screen.findByText('No results on this page')).toBeVisible()
+    expect(screen.getAllByRole('listitem')[0]).not.toHaveClass('disabled')
+  })
+
+  it('ignores stale responses when the effective page query changes', async () => {
+    let resolveFirst: (value: QueryResult) => void = () => undefined
+    let resolveSecond: (value: QueryResult) => void = () => undefined
+    const fragmentService = {
+      query: jest
+        .fn()
+        .mockReturnValueOnce(
+          new Promise<QueryResult>((resolve) => {
+            resolveFirst = resolve
+          }),
+        )
+        .mockReturnValueOnce(
+          new Promise<QueryResult>((resolve) => {
+            resolveSecond = resolve
+          }),
+        ),
+    } as unknown as jest.Mocked<FragmentService>
+
+    const { rerender } = render(
+      <MemoryRouter initialEntries={['/library/search/?number=K.1']}>
+        <SearchResult
+          fragmentService={fragmentService}
+          dossiersService={{} as DossiersService}
+          fragmentQuery={{ number: 'K.1', limit: 50, offset: 0, count: 'page' }}
+        />
+      </MemoryRouter>,
+    )
+
+    rerender(
+      <MemoryRouter initialEntries={['/library/search/?number=K.1']}>
+        <SearchResult
+          fragmentService={fragmentService}
+          dossiersService={{} as DossiersService}
+          fragmentQuery={{
+            number: 'K.1',
+            limit: 50,
+            offset: 50,
+            count: 'page',
+          }}
+        />
+      </MemoryRouter>,
+    )
+
+    resolveSecond({
+      items: [{ museumNumber: 'K.new', matchingLines: [], matchCount: 0 }],
+      matchCountTotal: null,
+      hasNextPage: false,
+    })
+    expect(await screen.findByText('K.new')).toBeInTheDocument()
+
+    resolveFirst({
+      items: [{ museumNumber: 'K.old', matchingLines: [], matchCount: 0 }],
+      matchCountTotal: null,
+      hasNextPage: false,
+    })
+
+    await waitFor(() => {
+      expect(screen.queryByText('K.old')).not.toBeInTheDocument()
+    })
+  })
+
+  it('does not display zero when the total line count is unknown', async () => {
+    renderSearchResult({
+      queryResult: buildQueryResult({ matchCountTotal: null }),
+      fragmentQuery: {
+        transliteration: 'kur',
+        limit: 50,
+        offset: 0,
+        count: 'page',
+      },
+    })
+
+    await screen.findByText('K.1')
+    expect(screen.queryByText(/0 lines/)).not.toBeInTheDocument()
   })
 })

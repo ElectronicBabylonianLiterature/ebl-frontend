@@ -74,6 +74,7 @@ const createFragmentariumSearch = (
           bibliographyService={bibliographyService}
           dossiersService={dossiersService}
           fragmentQuery={query}
+          resultFragmentQuery={query}
           wordService={wordService}
           textService={textService}
           activeTab={activeTab}

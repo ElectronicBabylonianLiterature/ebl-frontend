@@ -1,6 +1,6 @@
 import React from 'react'
 import withData from 'http/withData'
-import { QueryResult } from 'query/QueryResult'
+import { QueryItem, QueryResult } from 'query/QueryResult'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import { highlightLemmas, LineColumns } from 'transliteration/ui/line-tokens'
@@ -90,7 +90,39 @@ const FragmentLines = withData<
       props.museumNumber,
       _.take(props.lineIndexes, linesToShow),
     ),
+  {
+    watch: ({ museumNumber, lineIndexes }) => [
+      museumNumber,
+      lineIndexes.join(','),
+    ],
+  },
 )
+
+function QueryItemFragmentLines({
+  queryItem,
+  fragmentService,
+  lemmaId,
+}: {
+  queryItem: QueryItem
+  fragmentService: FragmentService
+  lemmaId: string
+}): JSX.Element {
+  return queryItem.fragment ? (
+    <RenderFragmentLines
+      fragment={queryItem.fragment}
+      linesToShow={linesToShow}
+      totalLines={queryItem.matchCount}
+      lemmaIds={[lemmaId]}
+    />
+  ) : (
+    <FragmentLines
+      lineIndexes={queryItem.matchingLines}
+      museumNumber={queryItem.museumNumber}
+      fragmentService={fragmentService}
+      lemmaId={lemmaId}
+    />
+  )
+}
 
 function FragmentLemmaLines({
   queryResult,
@@ -112,12 +144,10 @@ function FragmentLemmaLines({
               </FragmentLink>
             </Col>
             <Col className={'fragmentlines-column'}>
-              <FragmentLines
-                lineIndexes={queryItem.matchingLines}
-                museumNumber={queryItem.museumNumber}
+              <QueryItemFragmentLines
+                queryItem={queryItem}
                 fragmentService={fragmentService}
                 lemmaId={lemmaId}
-                key={index}
               />
             </Col>
           </Row>
@@ -178,5 +208,6 @@ export default withData<
       </>
     )
   },
-  ({ fragmentService, lemmaId }) => fragmentService.query({ lemmas: lemmaId }),
+  ({ fragmentService, lemmaId }) =>
+    fragmentService.query({ lemmas: lemmaId, limit: 10, count: 'none' }),
 )
