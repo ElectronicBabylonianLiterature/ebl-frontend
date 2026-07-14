@@ -24,6 +24,13 @@ it('Creates URL with hash', () => {
   )
 })
 
+it('Normalizes already encoded fragment numbers', () => {
+  expect(createFragmentUrl('BM%20123')).toEqual('/library/BM%20123')
+  expect(createFragmentCanonicalUrl('BM%20123')).toEqual(
+    'https://www.ebl.lmu.de/library/BM%20123',
+  )
+})
+
 it('Creates URL with folio query', () => {
   const number = chance.string()
   const folio = folioFactory.build()
