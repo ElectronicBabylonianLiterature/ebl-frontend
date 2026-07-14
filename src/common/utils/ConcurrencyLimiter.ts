@@ -2,12 +2,7 @@ import Bluebird from 'bluebird'
 
 type QueueState = {
   activeCount: number
-  waitingResolvers: WaitingResolver[]
-}
-
-type WaitingResolver = {
-  active: boolean
-  acquire: () => boolean
+  waitingResolvers: (() => void)[]
 }
 
 export default class ConcurrencyLimiter {
@@ -21,10 +16,8 @@ export default class ConcurrencyLimiter {
   run<ReturnValue>(
     operation: () => Bluebird<ReturnValue>,
   ): Bluebird<ReturnValue> {
-    let releaseSlot: (() => void) | undefined
     let operationPromise: Bluebird<ReturnValue> | undefined
     let isCanceled = false
-    let hasOperationStarted = false
 
     const slotPromise = this.acquireSlot()
 
@@ -33,22 +26,15 @@ export default class ConcurrencyLimiter {
         isCanceled = true
         slotPromise.cancel()
         operationPromise?.cancel()
-
-        if (releaseSlot && !hasOperationStarted) {
-          releaseSlot()
-        }
       })
 
       slotPromise
-        .then((releaseAcquiredSlot) => {
-          releaseSlot = releaseAcquiredSlot
-
+        .then((releaseSlot) => {
           if (isCanceled) {
             releaseSlot()
             return
           }
 
-          hasOperationStarted = true
           operationPromise = Bluebird.try(operation).finally(releaseSlot)
           operationPromise.then(resolve, reject)
         })
@@ -58,35 +44,19 @@ export default class ConcurrencyLimiter {
 
   private acquireSlot(): Bluebird<() => void> {
     return new Bluebird((resolve, _reject, onCancel) => {
-      const waitingResolver: WaitingResolver = {
-        active: true,
-        acquire: () => {
-          if (!waitingResolver.active) {
-            return false
-          }
-
-          waitingResolver.active = false
-
-          if (this.queueState.activeCount < this.maximumConcurrency) {
-            this.queueState.activeCount += 1
-            resolve(this.createReleaseSlot())
-            return true
-          }
-
-          waitingResolver.active = true
-          return false
-        },
-      }
+      const waitingResolver = () => resolve(this.createReleaseSlot())
 
       onCancel?.(() => {
-        waitingResolver.active = false
         this.queueState.waitingResolvers =
           this.queueState.waitingResolvers.filter(
             (resolver) => resolver !== waitingResolver,
           )
       })
 
-      if (!waitingResolver.acquire()) {
+      if (this.queueState.activeCount < this.maximumConcurrency) {
+        this.queueState.activeCount += 1
+        resolve(this.createReleaseSlot())
+      } else {
         this.queueState.waitingResolvers.push(waitingResolver)
       }
     })
@@ -95,12 +65,11 @@ export default class ConcurrencyLimiter {
   private releaseSlot(): void {
     this.queueState.activeCount = Math.max(0, this.queueState.activeCount - 1)
 
-    while (this.queueState.waitingResolvers.length > 0) {
-      const next = this.queueState.waitingResolvers.shift()
+    const next = this.queueState.waitingResolvers.shift()
 
-      if (next?.acquire()) {
-        return
-      }
+    if (next) {
+      this.queueState.activeCount += 1
+      next()
     }
   }
 
