@@ -8,7 +8,10 @@ import { Fragment } from 'fragmentarium/domain/fragment'
 import Folio from 'fragmentarium/domain/Folio'
 import { Link } from 'react-router-dom'
 import { Button, ButtonGroup } from 'react-bootstrap'
-import { createFragmentUrl } from 'fragmentarium/ui/FragmentLink'
+import {
+  createFragmentCanonicalUrl,
+  createFragmentUrl,
+} from 'fragmentarium/ui/FragmentLink'
 import { SectionCrumb, TextCrumb } from 'common/ui/Breadcrumbs'
 import Download from 'fragmentarium/ui/fragment/Download'
 import SubmitCorrectionsButton from 'common/ui/SubmitCorrectionsButton'
@@ -109,6 +112,7 @@ function FragmentView({
         title={`${fragment.number}: eBL fragment edition`}
         description={`Fragment ${fragment.number} in the electronic Babylonian Library (eBL) Library.
          ${fragment.introduction.text}`}
+        canonicalUrl={createFragmentCanonicalUrl(fragment.number)}
       />
       <CuneiformFragment
         fragment={fragment}

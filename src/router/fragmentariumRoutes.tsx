@@ -129,7 +129,6 @@ export default function FragmentariumRoutes({
           />
         </HeadTagsService>
       )}
-      {...(sitemap && sitemapDefaults)}
     />,
     <Route
       key="FragmentLineToVecRanking"
