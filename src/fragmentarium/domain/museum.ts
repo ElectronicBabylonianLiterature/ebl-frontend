@@ -203,6 +203,13 @@ export const Museums = {
     country: 'BE',
     url: 'https://www.kmkg-mrah.be/',
   },
+  MUSEO_NAZIONALE_D_ARTE_ORIENTALE: {
+    key: 'MUSEO_NAZIONALE_D_ARTE_ORIENTALE',
+    name: 'Museo Nazionale d’Arte Orientale “Giuseppe Tucci”',
+    city: 'Rome',
+    country: 'IT',
+    url: 'https://www.museodellecivilta.it/arte-orientale/',
+  },
   MUSEUM_OF_ANATOLIAN_CIVILIZATIONS: {
     key: 'MUSEUM_OF_ANATOLIAN_CIVILIZATIONS',
     name: 'Anadolu Medeniyetleri Müzesi',
