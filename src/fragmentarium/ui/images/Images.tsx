@@ -92,11 +92,12 @@ export const FragmentPhoto = withData<
 
 interface TabPaneProps {
   eventKey: string
+  activeKey: string
   children: React.ReactNode
 }
 
-const TabPane: React.FC<TabPaneProps> = ({ eventKey, children }) => (
-  <Tab.Pane eventKey={eventKey}>{children}</Tab.Pane>
+const TabPane: React.FC<TabPaneProps> = ({ eventKey, activeKey, children }) => (
+  <Tab.Pane eventKey={eventKey}>{activeKey === eventKey && children}</Tab.Pane>
 )
 
 interface NavItemProps {
@@ -133,13 +134,11 @@ function Images({
   const navigate = useNavigate()
   const controller = new TabController(fragment, tab, activeFolio, navigate)
   const folios = fragment.folios
+  const activeKey = controller.activeKey
   const FOLIO_DROPDOWN_THRESHOLD = 3
 
   return (
-    <Tab.Container
-      activeKey={controller.activeKey}
-      onSelect={controller.openTab}
-    >
+    <Tab.Container activeKey={activeKey} onSelect={controller.openTab}>
       <Nav variant="tabs" id="folio-container">
         {fragment.hasPhoto && <NavItem eventKey={PHOTO} label="Photo" />}
         {fragment.cdliImages && fragment.cdliImages.length > 0 && (
@@ -167,7 +166,7 @@ function Images({
 
       <Tab.Content>
         {fragment.hasPhoto && (
-          <TabPane eventKey={PHOTO}>
+          <TabPane eventKey={PHOTO} activeKey={activeKey}>
             <FragmentPhoto
               fragment={fragment}
               fragmentService={fragmentService}
@@ -175,12 +174,12 @@ function Images({
           </TabPane>
         )}
         {fragment.getExternalNumber('cdliNumber') && (
-          <TabPane eventKey={CDLI}>
+          <TabPane eventKey={CDLI} activeKey={activeKey}>
             <CdliImages fragment={fragment} fragmentService={fragmentService} />
           </TabPane>
         )}
         {folios.map((folio, index) => (
-          <TabPane key={index} eventKey={String(index)}>
+          <TabPane key={index} eventKey={String(index)} activeKey={activeKey}>
             <FolioDetails
               fragmentService={fragmentService}
               fragmentNumber={fragment.number}

@@ -127,6 +127,7 @@ describe('preview mode', () => {
     expect(
       screen.queryByText(previewFragments[5].number),
     ).not.toBeInTheDocument()
+    expect(fragmentService.find).toHaveBeenCalledTimes(5)
   })
 
   test('shows view-all link to the Library', async () => {
@@ -177,6 +178,53 @@ describe('preview mode', () => {
       </MemoryRouter>,
     )
     await screen.findByAltText(ResearchProjects.CAIC.name)
+  })
+
+  test('preview uses prefetched summary fragments and thumbnail paths without extra fetches', async () => {
+    session = new MemorySession(['read:fragments'])
+    const fragmentWithPhoto = fragmentFactory.build(
+      { hasPhoto: true },
+      { transient: { chance } },
+    )
+    const thumbnailPath = '/images/latest-summary-thumbnail.jpg'
+
+    fragmentService.queryLatest.mockReturnValueOnce(
+      Promise.resolve({
+        items: [
+          {
+            museumNumber: fragmentWithPhoto.number,
+            matchingLines: [1, 2, 3],
+            matchCount: 3,
+            fragment: fragmentWithPhoto,
+            thumbnailPath,
+          },
+        ],
+        matchCountTotal: 1,
+      }),
+    )
+    dossiersService.queryByIds.mockResolvedValue([])
+
+    render(
+      <MemoryRouter>
+        <DictionaryContext.Provider value={wordService}>
+          <SessionContext.Provider value={session}>
+            <LatestTransliterations
+              fragmentService={fragmentService}
+              dossiersService={dossiersService}
+              preview={true}
+            />
+          </SessionContext.Provider>
+        </DictionaryContext.Provider>
+      </MemoryRouter>,
+    )
+
+    const thumbnail = await screen.findByAltText(
+      `Preview of ${fragmentWithPhoto.number}`,
+    )
+
+    expect(thumbnail).toHaveAttribute('src', thumbnailPath)
+    expect(fragmentService.find).not.toHaveBeenCalled()
+    expect(fragmentService.findThumbnail).not.toHaveBeenCalled()
   })
 
   test('shows thumbnails when thumbnail endpoint returns a blob', async () => {

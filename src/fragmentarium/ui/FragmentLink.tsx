@@ -10,6 +10,10 @@ export function createFragmentUrl(number: string, hash = ''): string {
   }${encodeURIComponent(hash)}`
 }
 
+export function createFragmentCanonicalUrl(number: string): string {
+  return `https://www.ebl.lmu.de${createFragmentUrl(number)}`
+}
+
 export function createFragmentUrlWithFolio(
   number: string,
   folio: Folio,

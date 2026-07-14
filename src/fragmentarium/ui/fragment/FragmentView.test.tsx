@@ -202,6 +202,16 @@ describe('Fragment is loaded', () => {
       ),
     ).toHaveAttribute('aria-selected', 'true')
   })
+
+  it('emits a clean canonical fragment URL for folio variants', async () => {
+    await renderAndWaitForLoadedFragment()
+    expect(helmetContext['helmet']['link']['toString']()).toEqual(
+      `<link data-rh="true" rel="canonical" href="https://www.ebl.lmu.de/library/${encodeURIComponent(
+        fragment.number,
+      )}"/>`,
+    )
+    expect(helmetContext['helmet']['link']['toString']()).not.toContain('folio')
+  })
 })
 
 describe('Fragment without an image is loaded', () => {

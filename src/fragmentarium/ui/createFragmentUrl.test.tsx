@@ -1,5 +1,9 @@
 import Chance from 'chance'
-import { createFragmentUrl, createFragmentUrlWithFolio } from './FragmentLink'
+import {
+  createFragmentCanonicalUrl,
+  createFragmentUrl,
+  createFragmentUrlWithFolio,
+} from './FragmentLink'
 import { parseUrl } from 'query-string'
 import { folioFactory } from 'test-support/fragment-data-fixtures'
 
@@ -31,4 +35,11 @@ it('Creates URL with folio query', () => {
       folioNumber: folio.number,
     },
   })
+})
+
+it('Creates canonical fragment URL without query parameters', () => {
+  const number = 'K 1+2/3'
+  expect(createFragmentCanonicalUrl(number)).toEqual(
+    `https://www.ebl.lmu.de/library/${encodeURIComponent(number)}`,
+  )
 })

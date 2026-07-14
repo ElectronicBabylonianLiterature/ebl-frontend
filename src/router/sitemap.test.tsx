@@ -149,3 +149,22 @@ it('does not include projects wildcard route in sitemap xml', async () => {
   expect(sitemapXml).toContain('/projects/CAIC')
   expect(sitemapXml).not.toContain('/projects/*')
 })
+
+it('omits interactive library search but keeps library content routes', async () => {
+  const slugs = await getAllSlugs(services)
+  getSitemapAsFile(services, slugs)
+
+  const saveAsMock = saveAs as jest.MockedFunction<typeof saveAs>
+  const sitemapChunkCall = saveAsMock.mock.calls.find(
+    ([_blob, filename]) => filename === 'sitemap1.xml.gz',
+  )
+  const sitemapChunkArchive = sitemapChunkCall?.[0] as Blob
+  const sitemapChunkBuffer = await readBlobAsArrayBuffer(sitemapChunkArchive)
+  const sitemapXml = pako.ungzip(new Uint8Array(sitemapChunkBuffer), {
+    to: 'string',
+  }) as string
+
+  expect(sitemapXml).toContain('/library</loc>')
+  expect(sitemapXml).toContain('/library/BM.42')
+  expect(sitemapXml).not.toContain('/library/search')
+})
