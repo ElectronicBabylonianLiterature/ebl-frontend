@@ -4,7 +4,7 @@ import FragmentRepository, { createScript } from './FragmentRepository'
 import Folio from 'fragmentarium/domain/Folio'
 import { fragment, fragmentDto } from 'test-support/test-fragment'
 import { annotations, annotationsDto } from 'test-support/test-annotation'
-import { stringify } from 'querystring'
+import { stringify } from 'query-string'
 import { QueryResult } from 'query/QueryResult'
 import { FragmentQuery } from 'query/FragmentQuery'
 import { queryItemFactory } from 'test-support/query-item-factory'
@@ -411,6 +411,9 @@ const queryTestCases: FragmentQuery[] = [
   { lemmaOperator: 'line', lemmas: lemmas },
   { lemmaOperator: 'phrase', lemmas: lemmas },
   { transliteration: 'me lik' },
+  { transliteration: 'me lik', limit: 50, offset: 0, count: 'page' },
+  { transliteration: 'me lik', limit: 50, offset: 50, count: 'page' },
+  { lemmas: 'foo I', limit: 10, count: 'none' },
   { bibId: 'foo' },
   { bibId: 'foo', pages: '1-2' },
   { number: 'X.1' },

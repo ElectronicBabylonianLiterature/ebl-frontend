@@ -23,7 +23,11 @@ import NotFoundPage from 'NotFoundPage'
 import DossiersService from 'dossiers/application/DossiersService'
 import RecordView from 'fragmentarium/ui/fragment/RecordView'
 import { FragmentQuery } from 'query/FragmentQuery'
-import { paginationURLParam } from 'fragmentarium/ui/search/pagination'
+import {
+  getPageIndex,
+  paginationURLParam,
+  RESULTS_PER_PAGE,
+} from 'fragmentarium/ui/search/pagination'
 
 function parseStringParam(location: Location, param: string): string | null {
   const value = parse(location.search)[param]
@@ -31,6 +35,29 @@ function parseStringParam(location: Location, param: string): string | null {
 }
 
 type RouteMatch = { params: Record<string, string | undefined> }
+
+function parseFragmentSearchQuery(location: Location): FragmentQuery {
+  return _.omit(
+    parse(location.search, {
+      decode: true,
+    }),
+    paginationURLParam,
+  ) as FragmentQuery
+}
+
+export function createPagedFragmentQuery(
+  fragmentQuery: FragmentQuery,
+  location: Location,
+): FragmentQuery {
+  const pageIndex = getPageIndex(location.search)
+
+  return {
+    ...fragmentQuery,
+    limit: RESULTS_PER_PAGE,
+    offset: pageIndex * RESULTS_PER_PAGE,
+    count: 'page',
+  }
+}
 
 function parseFragmentParams(
   match: RouteMatch,
@@ -89,14 +116,11 @@ export default function FragmentariumRoutes({
           <FragmentariumSearch
             fragmentSearchService={fragmentSearchService}
             fragmentService={fragmentService}
-            fragmentQuery={
-              _.omit(
-                parse(routeProps.location.search, {
-                  decode: true,
-                }),
-                paginationURLParam,
-              ) as FragmentQuery
-            }
+            fragmentQuery={parseFragmentSearchQuery(routeProps.location)}
+            resultFragmentQuery={createPagedFragmentQuery(
+              parseFragmentSearchQuery(routeProps.location),
+              routeProps.location,
+            )}
             bibliographyService={bibliographyService}
             wordService={wordService}
             textService={textService}

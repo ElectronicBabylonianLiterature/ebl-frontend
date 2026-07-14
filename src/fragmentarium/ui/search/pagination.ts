@@ -1,23 +1,17 @@
-import _ from 'lodash'
-import { parse } from 'query-string'
-
 export const paginationURLParam = 'paginationIndex'
+export const RESULTS_PER_PAGE = 50
 
 export function getRequestedPaginationIndex(
   search: string,
 ): number | undefined {
-  const query = parse(search, {
-    parseNumbers: true,
-  })
-  const paginationIndex = _.isArray(query[paginationURLParam])
-    ? query[paginationURLParam][0]
-    : query[paginationURLParam]
-  const parsedPaginationIndex = _.isNumber(paginationIndex)
-    ? paginationIndex
-    : Number(paginationIndex)
+  const paginationIndex = new URLSearchParams(search).get(paginationURLParam)
+  const parsedPaginationIndex =
+    paginationIndex === null || paginationIndex.trim() === ''
+      ? Number.NaN
+      : Number(paginationIndex)
 
-  return Number.isFinite(parsedPaginationIndex)
-    ? Math.trunc(parsedPaginationIndex)
+  return Number.isInteger(parsedPaginationIndex) && parsedPaginationIndex >= 0
+    ? parsedPaginationIndex
     : undefined
 }
 
@@ -52,4 +46,8 @@ export function updatePaginationSearchParam(
   }
 
   return nextParams.join('&')
+}
+
+export function getPageIndex(search: string): number {
+  return getRequestedPaginationIndex(search) ?? 0
 }
