@@ -1,16 +1,16 @@
 import React from 'react'
+import { produce } from 'immer'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { ThemeProvider } from 'react-bootstrap'
-import Bluebird from 'bluebird'
 import FragmentService from 'fragmentarium/application/FragmentService'
+import { Fragment } from 'fragmentarium/domain/fragment'
 import TextAnnotation from 'fragmentarium/ui/text-annotation/TextAnnotation'
 import { AnnotationSpans } from 'fragmentarium/ui/text-annotation/annotationSpan'
 import { tokenIdFragment } from 'test-support/fragment-fixtures'
 import { realiaEntryFactory } from 'test-support/realia-fixtures'
 import {
   mockRealiaSearch,
-  realiaServiceMock,
   WithRealiaService,
 } from 'fragmentarium/ui/text-annotation/textAnnotation.testSupport'
 
@@ -35,15 +35,16 @@ const fragmentServiceMock = new (FragmentService as jest.Mock<
   jest.Mocked<FragmentService>
 >)()
 
-const annotatedEntry = realiaEntryFactory.build({
-  id: 'Apkallu',
-  realiaId: 'realia_000846',
-  type: ['Divine names'],
-})
 const otherEntry = realiaEntryFactory.build({
   id: 'Ziggurat',
   realiaId: 'realia_000999',
   type: ['Divine names'],
+})
+
+const annotatedFragment: Fragment = produce(tokenIdFragment, (draft) => {
+  draft.realiaInfo = [
+    { realiaId: 'realia_000846', lemma: 'Apkallu', type: ['Divine names'] },
+  ]
 })
 
 const annotations: AnnotationSpans = {
@@ -53,9 +54,8 @@ const annotations: AnnotationSpans = {
 
 async function setup(): Promise<void> {
   jest.clearAllMocks()
-  fragmentServiceMock.find.mockResolvedValue(tokenIdFragment)
+  fragmentServiceMock.find.mockResolvedValue(annotatedFragment)
   fragmentServiceMock.fetchNamedEntityAnnotations.mockResolvedValue(annotations)
-  realiaServiceMock.find.mockReturnValue(Bluebird.resolve(annotatedEntry))
   mockRealiaSearch([otherEntry])
 
   render(

@@ -48,7 +48,7 @@ describe('NamedEntityPreviewToken', () => {
 
     const indicator = screen.getByTestId('Word-3__Realia-1')
     expect(indicator).toHaveClass('span-indicator--realia', 'tier-depth--3')
-    expect(indicator).toHaveAttribute('data-label', 'realia_000846')
+    expect(indicator).toHaveAttribute('data-label', 'Apkallu')
   })
 
   it('shows no indicator for a word without annotations', () => {

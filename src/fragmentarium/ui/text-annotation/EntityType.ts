@@ -42,3 +42,9 @@ export type RealiaNamedEntity = {
   readonly id: string
   readonly realiaId: string
 }
+
+export type RealiaInfoEntry = {
+  readonly realiaId: string
+  readonly lemma: string
+  readonly type: readonly string[]
+}

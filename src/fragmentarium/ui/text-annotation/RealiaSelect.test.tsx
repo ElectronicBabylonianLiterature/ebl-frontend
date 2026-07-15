@@ -2,7 +2,9 @@ import React from 'react'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import RealiaSelect, {
+  createRealiaOptionLoader,
   loadRealiaOptions,
+  RealiaOption,
   toRealiaOption,
 } from 'fragmentarium/ui/text-annotation/RealiaSelect'
 import { realiaEntryFactory } from 'test-support/realia-fixtures'
@@ -79,6 +81,58 @@ describe('RealiaSelect', () => {
   it('does not search on an empty query', async () => {
     renderSelect()
     await userEvent.click(screen.getByLabelText('realia'))
+
+    expect(realiaServiceMock.search).not.toHaveBeenCalled()
+  })
+})
+
+describe('createRealiaOptionLoader', () => {
+  const getContext = () => ({
+    realiaService: realiaServiceMock,
+    excludedRealiaIds: [] as readonly string[],
+  })
+
+  beforeEach(() => {
+    jest.clearAllMocks()
+    jest.useFakeTimers()
+    mockRealiaSearch([entry])
+  })
+
+  afterEach(() => {
+    jest.useRealTimers()
+  })
+
+  it('debounces rapid queries into a single search of the latest input', () => {
+    const load = createRealiaOptionLoader(getContext, 300)
+    const callback = jest.fn()
+
+    load('A', callback)
+    load('Ap', callback)
+    load('Apk', callback)
+    expect(realiaServiceMock.search).not.toHaveBeenCalled()
+
+    jest.advanceTimersByTime(300)
+
+    expect(realiaServiceMock.search).toHaveBeenCalledTimes(1)
+    expect(realiaServiceMock.search).toHaveBeenCalledWith('Apk')
+  })
+
+  it('returns empty and does not search on an empty query', () => {
+    const load = createRealiaOptionLoader(getContext, 300)
+    const callback = jest.fn<void, [RealiaOption[]]>()
+
+    load('', callback)
+
+    expect(callback).toHaveBeenCalledWith([])
+    expect(realiaServiceMock.search).not.toHaveBeenCalled()
+  })
+
+  it('cancels a pending search', () => {
+    const load = createRealiaOptionLoader(getContext, 300)
+
+    load('Apk', jest.fn())
+    load.cancel()
+    jest.advanceTimersByTime(300)
 
     expect(realiaServiceMock.search).not.toHaveBeenCalled()
   })

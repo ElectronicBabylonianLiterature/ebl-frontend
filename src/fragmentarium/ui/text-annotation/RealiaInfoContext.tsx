@@ -1,7 +1,8 @@
-import React, { Context, useCallback, useEffect, useRef, useState } from 'react'
+import React, { Context, useCallback, useMemo, useState } from 'react'
 import { RealiaEntry } from 'realia/domain/RealiaEntry'
-import { useRealiaService } from 'realia/application/RealiaServiceContext'
+import { RealiaInfoEntry } from 'fragmentarium/ui/text-annotation/EntityType'
 import {
+  buildRealiaInfoLookup,
   emptyRealiaInfoLookup,
   RealiaDisplayInfo,
   RealiaInfoLookup,
@@ -19,55 +20,33 @@ const RealiaInfoContext: Context<RealiaInfoService> =
     register: () => {},
   })
 
-function withEntries(
+function withEntry(
   current: RealiaInfoLookup,
-  entries: readonly RealiaEntry[],
+  entry: RealiaEntry,
 ): RealiaInfoLookup {
   const next = new Map<string, RealiaDisplayInfo>(current)
-  entries.forEach((entry) =>
-    next.set(entry.realiaId, toRealiaDisplayInfo(entry)),
-  )
+  next.set(entry.realiaId, toRealiaDisplayInfo(entry))
   return next
 }
 
 export function useRealiaInfoService(
-  realiaIds: readonly string[],
+  entries: readonly RealiaInfoEntry[],
 ): RealiaInfoService {
-  const realiaService = useRealiaService()
-  const [lookup, setLookup] = useState<RealiaInfoLookup>(emptyRealiaInfoLookup)
-  const requestedIds = useRef(new Set<string>())
+  const inlineLookup = useMemo(() => buildRealiaInfoLookup(entries), [entries])
+  const [registered, setRegistered] = useState<RealiaInfoLookup>(
+    emptyRealiaInfoLookup,
+  )
 
   const register = useCallback((entry?: RealiaEntry): void => {
-    if (!entry) {
-      return
+    if (entry) {
+      setRegistered((current) => withEntry(current, entry))
     }
-    requestedIds.current.add(entry.realiaId)
-    setLookup((current) => withEntries(current, [entry]))
   }, [])
 
-  useEffect(() => {
-    const missingIds = realiaIds.filter((id) => !requestedIds.current.has(id))
-    if (missingIds.length === 0) {
-      return
-    }
-    missingIds.forEach((id) => requestedIds.current.add(id))
-
-    let isCancelled = false
-    Promise.all(
-      missingIds.map((id) =>
-        Promise.resolve(realiaService.find(id)).catch(() => null),
-      ),
-    ).then((entries) => {
-      const found = entries.filter((entry): entry is RealiaEntry => !!entry)
-      if (!isCancelled && found.length > 0) {
-        setLookup((current) => withEntries(current, found))
-      }
-    })
-
-    return () => {
-      isCancelled = true
-    }
-  }, [realiaIds, realiaService])
+  const lookup = useMemo(
+    () => new Map<string, RealiaDisplayInfo>([...inlineLookup, ...registered]),
+    [inlineLookup, registered],
+  )
 
   return { lookup, register }
 }

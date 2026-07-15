@@ -1,11 +1,16 @@
-import { EntityType } from 'fragmentarium/ui/text-annotation/EntityType'
+import {
+  EntityType,
+  RealiaInfoEntry,
+} from 'fragmentarium/ui/text-annotation/EntityType'
 import {
   AnnotationSpan,
-  ApiRealiaAnnotationSpan,
   isRealiaAnnotationSpan,
   REALIA_INDICATOR_CLASS,
 } from 'fragmentarium/ui/text-annotation/annotationSpan'
-import { getEntryEntityType } from 'fragmentarium/ui/text-annotation/realiaTypeMapping'
+import {
+  getEntryEntityType,
+  getMappedEntityType,
+} from 'fragmentarium/ui/text-annotation/realiaTypeMapping'
 import { RealiaEntry } from 'realia/domain/RealiaEntry'
 
 export interface RealiaDisplayInfo {
@@ -17,8 +22,24 @@ export type RealiaInfoLookup = ReadonlyMap<string, RealiaDisplayInfo>
 
 export const emptyRealiaInfoLookup: RealiaInfoLookup = new Map()
 
+export const emptyRealiaInfoEntries: readonly RealiaInfoEntry[] = []
+
 export function toRealiaDisplayInfo(entry: RealiaEntry): RealiaDisplayInfo {
   return { lemma: entry.id, entityType: getEntryEntityType(entry) }
+}
+
+export function toRealiaDisplayInfoEntry(
+  entry: RealiaInfoEntry,
+): RealiaDisplayInfo {
+  return { lemma: entry.lemma, entityType: getMappedEntityType(entry.type) }
+}
+
+export function buildRealiaInfoLookup(
+  entries: readonly RealiaInfoEntry[],
+): RealiaInfoLookup {
+  return new Map(
+    entries.map((entry) => [entry.realiaId, toRealiaDisplayInfoEntry(entry)]),
+  )
 }
 
 export function getRealiaLabel(
@@ -52,10 +73,4 @@ export function getSpanIndicatorClass(
   return isRealiaAnnotationSpan(span)
     ? getRealiaIndicatorClass(lookup, span.realiaId)
     : `named-entity__${span.type}`
-}
-
-export function getRealiaIds(
-  spans: readonly ApiRealiaAnnotationSpan[],
-): readonly string[] {
-  return [...new Set(spans.map((span) => span.realiaId))]
 }

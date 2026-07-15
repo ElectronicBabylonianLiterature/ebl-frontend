@@ -42,6 +42,23 @@ Verify before finalizing, and state the result in the task log:
 - No `as` cast converts between the kinds, and no guard leaves its else-branch unnarrowed.
 - The outbound payload is built in one place, carries no derived field, and is pinned by a test.
 
+## API Call Efficiency — Audit Queries as a Hard Gate
+
+**Treat query efficiency as a hard gate on every change and every review.** Before finalizing, audit the data-fetching paths the change touches and confirm the architecture is as efficient as possible, with no redundant or inefficient API calls. Do not finalize a change that adds an avoidable request pattern.
+
+- **No N+1 fetching.** Never fetch a list of entities by issuing one request per id in a loop or `Promise.all(ids.map(fetch))`. Use a bulk endpoint (one request for many ids) or have the parent resource embed the data. If a bulk path does not exist, treat adding one (or embedding the data server-side) as part of the task, and align the client to that contract.
+- **Fetch once per page load.** Data needed to render a page is fetched a single time on load, then read from state — not re-fetched on every toggle, tab switch, re-render, hover, or remount. A UI control that only shows/hides already-available data must not trigger a network request.
+- **Prefer embedding over a second round-trip.** When a view needs display data (labels, titles, types) for ids already present in a primary response, prefer injecting that data into the primary response over a separate follow-up request. Embedded display data is inbound-only: it is read for rendering and never echoed back in an outbound payload.
+- **Debounce and bound search-as-you-type.** Any query that fires from user typing (autocomplete, async select, live search) must be debounced so a single keystroke does not equal a request; do not fire on an empty query. Cache only when the result set does not depend on per-context state.
+- **Cancel in-flight work.** Requests that can be superseded (debounced searches, effect fetches) are cancelled on unmount / re-issue so stale results and post-unmount state updates cannot occur.
+
+Verify before finalizing, and state the result in the task log:
+
+- Every list of entities is fetched in one bulk request (or embedded), never one-per-id.
+- No toggle, tab, hover, or re-render re-issues a request for data already in state.
+- Search-as-you-type is debounced and skips empty queries; superseded requests are cancelled.
+- No display-only data embedded from a primary response is included in any outbound payload.
+
 ## Coding Standards
 
 - Follow the existing coding style and conventions used in the project.
@@ -125,6 +142,7 @@ Verify before finalizing, and state the result in the task log:
 - Treat addressing every finding as a hard gate: resolve all findings surfaced in the review, including pre-existing ones and those raised by automated review bots, at their root cause before finalizing. Do not defer or merely report them.
 - Keep review comments short, specific, and actionable.
 - Prioritize correctness, regressions, security, and test coverage in every review.
+- Treat an API-call-efficiency audit as a hard gate in every review: always audit the data-fetching paths the change touches against the **API Call Efficiency** section above, and raise a finding for any redundant or inefficient call — N+1 per-id fetching, re-fetching on toggle/tab/re-render, un-debounced search-as-you-type, a second round-trip for data that could be embedded, or an uncancelled superseded request. Resolving every such finding is a blocker for approval.
 - All instances of console errors, warnings, or unhandled rejections found in the test output must be noted as findings in the review. They are never acceptable noise — every such instance must be fixed at its root cause. Resolving every such finding is a hard gate: a PR may not be approved while any console-noise finding remains.
 - Verify changed behavior locally while running the modified application before finalizing review conclusions.
 - Export every detailed review to a `.md` file using the same convention: `TASK-<id>-review.md`.

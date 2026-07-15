@@ -9,7 +9,7 @@ import { AnnotationSpans } from 'fragmentarium/ui/text-annotation/annotationSpan
 import RealiaInfoContext, {
   useRealiaInfoService,
 } from 'fragmentarium/ui/text-annotation/RealiaInfoContext'
-import { getRealiaIds } from 'fragmentarium/ui/text-annotation/realiaInfo'
+import { emptyRealiaInfoEntries } from 'fragmentarium/ui/text-annotation/realiaInfo'
 import { getWordIds } from 'fragmentarium/ui/text-annotation/fragmentSpans'
 import AnnotationInstructions from 'fragmentarium/ui/text-annotation/AnnotationInstructions'
 import SpanAnnotationDisplay from 'fragmentarium/ui/text-annotation/SpanAnnotationDisplay'
@@ -32,15 +32,9 @@ function TextAnnotationView({
   const [initialAnnotations, setInitialAnnotations] =
     useState<AnnotationSpans>(annotations)
   const annotationContext = useAnnotationContext(words, initialAnnotations)
-  const realiaIdKey = getRealiaIds(annotationContext[0].realia)
-    .slice()
-    .sort()
-    .join(',')
-  const realiaIds = useMemo(
-    () => (realiaIdKey ? realiaIdKey.split(',') : []),
-    [realiaIdKey],
+  const realiaInfoService = useRealiaInfoService(
+    fragment.realiaInfo ?? emptyRealiaInfoEntries,
   )
-  const realiaInfoService = useRealiaInfoService(realiaIds)
 
   return (
     <RealiaInfoContext.Provider value={realiaInfoService}>

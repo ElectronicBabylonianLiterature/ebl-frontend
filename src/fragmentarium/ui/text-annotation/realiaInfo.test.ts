@@ -1,12 +1,14 @@
 import {
-  getRealiaIds,
+  buildRealiaInfoLookup,
   getRealiaIndicatorClass,
   getRealiaLabel,
   getSpanIndicatorClass,
   getSpanLabel,
   RealiaInfoLookup,
   toRealiaDisplayInfo,
+  toRealiaDisplayInfoEntry,
 } from 'fragmentarium/ui/text-annotation/realiaInfo'
+import { RealiaInfoEntry } from 'fragmentarium/ui/text-annotation/EntityType'
 import {
   entityAnnotationSpan,
   realiaAnnotationSpan,
@@ -106,18 +108,42 @@ describe('getSpanIndicatorClass', () => {
   })
 })
 
-describe('getRealiaIds', () => {
-  it('collects the distinct realiaIds of the realia collection', () => {
-    expect(
-      getRealiaIds([
-        realiaSpan,
-        { ...realiaSpan, id: 'Realia-2' },
-        { ...realiaSpan, id: 'Realia-3', realiaId: 'realia_000999' },
-      ]),
-    ).toEqual(['realia_000846', 'realia_000999'])
+const mappedInfoEntry: RealiaInfoEntry = {
+  realiaId: 'realia_000846',
+  lemma: 'Apkallu',
+  type: ['Divine names'],
+}
+const unmappedInfoEntry: RealiaInfoEntry = {
+  realiaId: 'realia_000999',
+  lemma: 'Ziggurat',
+  type: ['Literature'],
+}
+
+describe('toRealiaDisplayInfoEntry', () => {
+  it('derives the lemma and the mapped tag from an inline entry', () => {
+    expect(toRealiaDisplayInfoEntry(mappedInfoEntry)).toEqual({
+      lemma: 'Apkallu',
+      entityType: 'DIVINE_NAME',
+    })
   })
 
-  it('returns nothing for an empty collection', () => {
-    expect(getRealiaIds([])).toEqual([])
+  it('leaves the tag null for an unmapped classification', () => {
+    expect(toRealiaDisplayInfoEntry(unmappedInfoEntry).entityType).toBeNull()
+  })
+})
+
+describe('buildRealiaInfoLookup', () => {
+  it('keys the inline entries by realiaId', () => {
+    const built = buildRealiaInfoLookup([mappedInfoEntry, unmappedInfoEntry])
+
+    expect(built.get('realia_000846')).toEqual({
+      lemma: 'Apkallu',
+      entityType: 'DIVINE_NAME',
+    })
+    expect(built.get('realia_000999')?.lemma).toBe('Ziggurat')
+  })
+
+  it('returns an empty lookup for no entries', () => {
+    expect(buildRealiaInfoLookup([]).size).toBe(0)
   })
 })

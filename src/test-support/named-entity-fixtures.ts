@@ -1,6 +1,7 @@
 import { Fragment } from 'fragmentarium/domain/fragment'
 import {
   NamedEntity,
+  RealiaInfoEntry,
   RealiaNamedEntity,
 } from 'fragmentarium/ui/text-annotation/EntityType'
 import { fragmentFactory } from 'test-support/fragment-fixtures'
@@ -16,6 +17,10 @@ export const previewNamedEntities: readonly NamedEntity[] = [
 
 export const previewRealia: readonly RealiaNamedEntity[] = [
   { id: 'Realia-1', realiaId: 'realia_000846' },
+]
+
+export const previewRealiaInfo: readonly RealiaInfoEntry[] = [
+  { realiaId: 'realia_000846', lemma: 'Apkallu', type: ['Divine names'] },
 ]
 
 export function createAnnotatedWord(
@@ -64,12 +69,14 @@ export function createAnnotatedFragment(
   words: readonly Word[],
   namedEntities: readonly NamedEntity[],
   realia: readonly RealiaNamedEntity[],
+  realiaInfo: readonly RealiaInfoEntry[] = [],
 ): Fragment {
   return fragmentFactory.build({
     number: 'Annotated.Fragment',
     text: createAnnotatedText(words),
     namedEntities,
     realia,
+    realiaInfo,
   })
 }
 
@@ -79,4 +86,5 @@ export const annotatedFragment = createAnnotatedFragment(
   annotatedWords,
   previewNamedEntities,
   previewRealia,
+  previewRealiaInfo,
 )

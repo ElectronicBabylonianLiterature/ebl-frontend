@@ -1,6 +1,5 @@
 import React from 'react'
-import Bluebird from 'bluebird'
-import { render, screen, waitFor } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import {
   emptyNamedEntityPreview,
   NamedEntityPreviewProvider,
@@ -10,17 +9,10 @@ import {
   realiaServiceMock,
   WithRealiaService,
 } from 'fragmentarium/ui/text-annotation/textAnnotation.testSupport'
-import { realiaEntryFactory } from 'test-support/realia-fixtures'
 import { annotatedFragment } from 'test-support/named-entity-fixtures'
 import { Token } from 'transliteration/domain/token'
 
 jest.mock('realia/application/RealiaService')
-
-const entry = realiaEntryFactory.build({
-  id: 'Apkallu',
-  realiaId: 'realia_000846',
-  type: ['Divine names'],
-})
 
 const realiaWord = annotatedFragment.text.lines[0].content[2] as Token
 
@@ -32,9 +24,7 @@ describe('emptyNamedEntityPreview', () => {
 })
 
 describe('NamedEntityPreviewProvider', () => {
-  it('labels and colours the realia spans from the realia entries', async () => {
-    realiaServiceMock.find.mockReturnValue(Bluebird.resolve(entry))
-
+  it('labels and colours realia spans from the inline info without fetching', () => {
     render(
       <WithRealiaService>
         <NamedEntityPreviewProvider fragment={annotatedFragment}>
@@ -45,15 +35,9 @@ describe('NamedEntityPreviewProvider', () => {
       </WithRealiaService>,
     )
 
-    await waitFor(() =>
-      expect(screen.getByTestId('Word-3__Realia-1')).toHaveAttribute(
-        'data-label',
-        'Apkallu',
-      ),
-    )
-    expect(screen.getByTestId('Word-3__Realia-1')).toHaveClass(
-      'named-entity__DIVINE_NAME',
-    )
-    expect(realiaServiceMock.find).toHaveBeenCalledWith('realia_000846')
+    const indicator = screen.getByTestId('Word-3__Realia-1')
+    expect(indicator).toHaveAttribute('data-label', 'Apkallu')
+    expect(indicator).toHaveClass('named-entity__DIVINE_NAME')
+    expect(realiaServiceMock.find).not.toHaveBeenCalled()
   })
 })

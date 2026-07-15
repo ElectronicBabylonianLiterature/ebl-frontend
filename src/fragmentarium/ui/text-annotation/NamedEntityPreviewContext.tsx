@@ -8,7 +8,7 @@ import {
   createFragmentAnnotationSpans,
   getWordIds,
 } from 'fragmentarium/ui/text-annotation/fragmentSpans'
-import { getRealiaIds } from 'fragmentarium/ui/text-annotation/realiaInfo'
+import { emptyRealiaInfoEntries } from 'fragmentarium/ui/text-annotation/realiaInfo'
 import RealiaInfoContext, {
   useRealiaInfoService,
 } from 'fragmentarium/ui/text-annotation/RealiaInfoContext'
@@ -39,8 +39,9 @@ export function NamedEntityPreviewProvider({
     () => setTiers(getWordIds(fragment.text), spans),
     [fragment.text, spans],
   )
-  const realiaIds = useMemo(() => getRealiaIds(spans.realia), [spans.realia])
-  const realiaInfoService = useRealiaInfoService(realiaIds)
+  const realiaInfoService = useRealiaInfoService(
+    fragment.realiaInfo ?? emptyRealiaInfoEntries,
+  )
 
   return (
     <RealiaInfoContext.Provider value={realiaInfoService}>

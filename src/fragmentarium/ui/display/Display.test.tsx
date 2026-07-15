@@ -139,7 +139,7 @@ describe('Named entity preview', () => {
     )
     expect(screen.getByTestId('Word-3__Realia-1')).toHaveAttribute(
       'data-label',
-      'realia_000846',
+      'Apkallu',
     )
     expect(screen.getByLabelText('toggle-named-entities')).toHaveAttribute(
       'aria-pressed',

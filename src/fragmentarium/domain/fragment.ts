@@ -24,6 +24,7 @@ import { Colophon } from 'fragmentarium/domain/Colophon'
 import { DossierReference } from 'dossiers/domain/DossierReference'
 import {
   NamedEntity,
+  RealiaInfoEntry,
   RealiaNamedEntity,
 } from 'fragmentarium/ui/text-annotation/EntityType'
 
@@ -120,6 +121,7 @@ interface FragmentProps {
   dossiers: ReadonlyArray<DossierReference>
   namedEntities?: ReadonlyArray<NamedEntity>
   realia?: ReadonlyArray<RealiaNamedEntity>
+  realiaInfo?: ReadonlyArray<RealiaInfoEntry>
 }
 
 export class Fragment {
@@ -159,6 +161,7 @@ export class Fragment {
     readonly authorizedScopes?: string[],
     readonly namedEntities?: ReadonlyArray<NamedEntity>,
     readonly realia?: ReadonlyArray<RealiaNamedEntity>,
+    readonly realiaInfo?: ReadonlyArray<RealiaInfoEntry>,
   ) {}
 
   static create(props: FragmentProps): Fragment {
@@ -196,6 +199,7 @@ export class Fragment {
       props.authorizedScopes,
       props.namedEntities,
       props.realia,
+      props.realiaInfo,
     )
   }
 
