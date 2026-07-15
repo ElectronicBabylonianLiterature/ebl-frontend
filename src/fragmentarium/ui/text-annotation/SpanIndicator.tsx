@@ -21,14 +21,14 @@ export default function SpanIndicator({
   activeSpanId: string | null
   setActiveSpanId: React.Dispatch<React.SetStateAction<string | null>>
 }): JSX.Element {
-  const { realiaId, title, dataLabel, baseClassName } = useSpanIndicator(
+  const { realiaId, label, title, dataLabel, baseClassName } = useSpanIndicator(
     entitySpan,
     tokenId,
   )
 
   function handleMouseUp(event: React.MouseEvent): void {
     if (realiaId && isRealiaPageShortcut(event)) {
-      openRealiaPageInNewTab(realiaId)
+      openRealiaPageInNewTab(label)
       return
     }
     setActiveSpanId(entitySpan.id)

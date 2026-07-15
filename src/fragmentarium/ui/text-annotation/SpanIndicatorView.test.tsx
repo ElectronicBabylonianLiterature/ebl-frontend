@@ -84,12 +84,12 @@ describe('SpanIndicatorView', () => {
     expect(getIndicator('Entity-1')).not.toHaveClass('highlight')
   })
 
-  it('opens the realia page in a new tab on alt + left click', () => {
+  it('opens the realia page by lemma in a new tab on alt + left click', () => {
     renderView(realiaSpan)
     fireEvent.mouseUp(getIndicator('Realia-1'), { altKey: true, button: 0 })
 
     expect(openInNewTab).toHaveBeenCalledWith(
-      '/tools/realia/realia_000846',
+      '/tools/realia/Apkallu',
       '_blank',
       'noopener,noreferrer',
     )

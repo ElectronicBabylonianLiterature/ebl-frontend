@@ -14,14 +14,14 @@ export default function SpanIndicatorView({
   tokenId?: string
   entitySpan: AnnotationSpan
 }): JSX.Element {
-  const { realiaId, title, dataLabel, baseClassName } = useSpanIndicator(
+  const { realiaId, label, title, dataLabel, baseClassName } = useSpanIndicator(
     entitySpan,
     tokenId,
   )
 
   function openRealiaPage(event: React.MouseEvent): void {
     if (realiaId && isRealiaPageShortcut(event)) {
-      openRealiaPageInNewTab(realiaId)
+      openRealiaPageInNewTab(label)
     }
   }
 

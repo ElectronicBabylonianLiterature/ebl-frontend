@@ -127,16 +127,27 @@ describe('SpanIndicator', () => {
     expect(getIndicator('Realia-1')).toHaveClass('tier-depth--2')
   })
 
-  it('opens the realia page in a new tab on alt + left click', () => {
+  it('opens the realia page by lemma in a new tab on alt + left click', () => {
     renderIndicator(realiaSpan)
     fireEvent.mouseUp(getIndicator('Realia-1'), { altKey: true, button: 0 })
 
     expect(openInNewTab).toHaveBeenCalledWith(
-      '/tools/realia/realia_000846',
+      '/tools/realia/Apkallu',
       '_blank',
       'noopener,noreferrer',
     )
     expect(setActiveSpanId).not.toHaveBeenCalled()
+  })
+
+  it('opens by realiaId when the lemma is not resolved', () => {
+    renderIndicator({ ...realiaSpan, realiaId: 'realia_404' })
+    fireEvent.mouseUp(getIndicator('Realia-1'), { altKey: true, button: 0 })
+
+    expect(openInNewTab).toHaveBeenCalledWith(
+      '/tools/realia/realia_404',
+      '_blank',
+      'noopener,noreferrer',
+    )
   })
 
   it('activates a realia span on a plain left click', () => {

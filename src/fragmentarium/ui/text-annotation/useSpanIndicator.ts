@@ -22,6 +22,7 @@ export function isRealiaPageShortcut(event: React.MouseEvent): boolean {
 
 export interface SpanIndicatorPresentation {
   readonly realiaId: string | null
+  readonly label: string
   readonly title: string
   readonly dataLabel: string | undefined
   readonly baseClassName: string
@@ -39,6 +40,7 @@ export function useSpanIndicator(
 
   return {
     realiaId,
+    label,
     title: realiaId ? `${label} (${realiaPageHint})` : label,
     dataLabel: realiaId ? label : undefined,
     baseClassName: classNames(
