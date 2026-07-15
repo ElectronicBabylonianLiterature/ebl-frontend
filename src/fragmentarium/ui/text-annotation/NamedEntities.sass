@@ -4,46 +4,55 @@
 $realia-label-gap: .25rem
 $realia-label-expanded-width: 16em
 
-.named-entity
+.named-entity-preview
+  position: relative
 
-  &__BUILDING_NAME
+.span-indicator
+
+  &.named-entity__BUILDING_NAME
     @include indicator-label(BN, $ebl-color-entity-building)
 
-  &__CELESTIAL_NAME
+  &.named-entity__CELESTIAL_NAME
     @include indicator-label(CN, $ebl-color-entity-celestial)
 
-  &__DIVINE_NAME
+  &.named-entity__DIVINE_NAME
     @include indicator-label(DN, $ebl-color-entity-divine)
 
-  &__ETHNOS_NAME
+  &.named-entity__ETHNOS_NAME
     @include indicator-label(EN, $ebl-color-entity-ethnos)
 
-  &__PERSONAL_NAME
+  &.named-entity__PERSONAL_NAME
     @include indicator-label(PN, $ebl-color-entity-personal)
 
-  &__ROYAL_NAME
+  &.named-entity__ROYAL_NAME
     @include indicator-label(RN, $ebl-color-entity-royal)
 
-  &__FIELD_NAME
+  &.named-entity__FIELD_NAME
     @include indicator-label(FN, $ebl-color-entity-field)
 
-  &__GEOGRAPHICAL_NAME
+  &.named-entity__GEOGRAPHICAL_NAME
     @include indicator-label(GN, $ebl-color-entity-geographical)
 
-  &__WATERCOURSE_NAME
+  &.named-entity__WATERCOURSE_NAME
     @include indicator-label(WN, $ebl-color-entity-celestial)
 
-  &__MONTH_NAME
+  &.named-entity__MONTH_NAME
     @include indicator-label(MN, $ebl-color-entity-month)
 
-  &__YEAR_NAME
+  &.named-entity__YEAR_NAME
     @include indicator-label(YN, $ebl-color-entity-year)
 
-  &__OBJECT_NAME
+  &.named-entity__OBJECT_NAME
     @include indicator-label(ON, $ebl-color-entity-object)
 
-  &__REALIA
+  &.named-entity__REALIA
     @include indicator-label(RLA, $ebl-color-entity-realia)
+
+.span-indicator.span-indicator--static
+  cursor: default
+
+  &.span-indicator--realia
+    cursor: pointer
 
 .span-indicator--realia[data-label]
   &.initial::before

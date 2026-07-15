@@ -4,46 +4,35 @@ import { AnnotationSpan } from 'fragmentarium/ui/text-annotation/annotationSpan'
 import { openRealiaPageInNewTab } from 'realia/ui/realiaPage'
 import {
   isRealiaPageShortcut,
-  realiaPageHint,
   useSpanIndicator,
 } from 'fragmentarium/ui/text-annotation/useSpanIndicator'
 
-export { realiaPageHint }
-
-export default function SpanIndicator({
+export default function SpanIndicatorView({
   tokenId,
   entitySpan,
-  activeSpanId,
-  setActiveSpanId,
 }: {
   tokenId?: string
   entitySpan: AnnotationSpan
-  activeSpanId: string | null
-  setActiveSpanId: React.Dispatch<React.SetStateAction<string | null>>
 }): JSX.Element {
   const { realiaId, title, dataLabel, baseClassName } = useSpanIndicator(
     entitySpan,
     tokenId,
   )
 
-  function handleMouseUp(event: React.MouseEvent): void {
+  function openRealiaPage(event: React.MouseEvent): void {
     if (realiaId && isRealiaPageShortcut(event)) {
       openRealiaPageInNewTab(realiaId)
-      return
     }
-    setActiveSpanId(entitySpan.id)
   }
 
   return (
     <span
       title={title}
       data-label={dataLabel}
-      onMouseUp={handleMouseUp}
+      onMouseUp={realiaId ? openRealiaPage : undefined}
       data-span-id={entitySpan.id}
       data-testid={`${tokenId}__${entitySpan.id}`}
-      className={classNames(baseClassName, {
-        highlight: entitySpan.id === activeSpanId,
-      })}
+      className={classNames(baseClassName, 'span-indicator--static')}
     />
   )
 }

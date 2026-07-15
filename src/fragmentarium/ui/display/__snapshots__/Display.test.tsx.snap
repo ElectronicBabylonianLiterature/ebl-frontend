@@ -14,6 +14,22 @@ exports[`correctly displays simple fragments 1`] = `
       </span>
     </p>
   </section>
+  <section>
+    <div
+      class="btn-group"
+      role="group"
+    >
+      <button
+        aria-label="toggle-named-entities"
+        aria-pressed="false"
+        class="btn btn-secondary btn-sm"
+        title="Toggle named entities"
+        type="button"
+      >
+        ⚘
+      </button>
+    </div>
+  </section>
   <section
     class="Transliteration"
   >

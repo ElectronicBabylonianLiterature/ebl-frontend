@@ -13,39 +13,12 @@ import RealiaInfoContext from 'fragmentarium/ui/text-annotation/RealiaInfoContex
 import { getSpanLabel } from 'fragmentarium/ui/text-annotation/realiaInfo'
 import { SelectInstance } from 'react-select'
 import SpanEditor from 'fragmentarium/ui/text-annotation/SpanEditor'
+import SpanIndicators from 'fragmentarium/ui/text-annotation/SpanIndicators'
 import SpanIndicator from 'fragmentarium/ui/text-annotation/SpanIndicator'
 import InlineEditor from 'fragmentarium/ui/text-annotation/InlineEditor'
 import { getSelectedTokens } from 'fragmentarium/ui/text-annotation/selectionUtils'
 
 const markableClass = 'markable'
-
-function SpanIndicators<Span extends AnnotationSpan>({
-  spans,
-  tokenId,
-  activeSpanId,
-  setActiveSpanId,
-}: {
-  spans: readonly Span[]
-  tokenId?: string | null
-  activeSpanId: string | null
-  setActiveSpanId: React.Dispatch<React.SetStateAction<string | null>>
-}): JSX.Element {
-  return (
-    <>
-      {spans
-        .filter((span) => !!tokenId && span.span.includes(tokenId))
-        .map((span) => (
-          <SpanIndicator
-            key={span.id}
-            tokenId={tokenId ?? undefined}
-            entitySpan={span}
-            activeSpanId={activeSpanId}
-            setActiveSpanId={setActiveSpanId}
-          />
-        ))}
-    </>
-  )
-}
 
 function sortSelection(
   selection: readonly string[],
@@ -104,6 +77,15 @@ export default function Markable({
     hasWords && !!activeSpan && _.head(activeSpan.span) === token.id
   const showAnnotatorOverlay =
     hasWords && !!token.id && _.head(selection) === token.id
+
+  const renderIndicator = (span: AnnotationSpan, id: string): JSX.Element => (
+    <SpanIndicator
+      tokenId={id}
+      entitySpan={span}
+      activeSpanId={activeSpanId}
+      setActiveSpanId={setActiveSpanId}
+    />
+  )
 
   function handleSelection(event: React.MouseEvent) {
     const altPressed = event.altKey
@@ -195,14 +177,12 @@ export default function Markable({
       <SpanIndicators
         spans={namedEntities}
         tokenId={token.id}
-        activeSpanId={activeSpanId}
-        setActiveSpanId={setActiveSpanId}
+        renderSpan={renderIndicator}
       />
       <SpanIndicators
         spans={realia}
         tokenId={token.id}
-        activeSpanId={activeSpanId}
-        setActiveSpanId={setActiveSpanId}
+        renderSpan={renderIndicator}
       />
     </span>
   )

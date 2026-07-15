@@ -1,4 +1,4 @@
-import React, { useState, useMemo, FunctionComponent } from 'react'
+import React, { useState, FunctionComponent } from 'react'
 import { Container, Row, Col } from 'react-bootstrap'
 import FragmentInCorpus from 'fragmentarium/ui/fragment/FragmentInCorpus'
 import Images from 'fragmentarium/ui/images/Images'
@@ -17,8 +17,6 @@ import { FindspotService } from 'fragmentarium/application/FindspotService'
 import AfoRegisterService from 'afo-register/application/AfoRegisterService'
 import { EditorTabs } from 'fragmentarium/ui/fragment/CuneiformFragmentEditor'
 import DossiersService from 'dossiers/application/DossiersService'
-import { createRealiaIdLookup } from 'fragmentarium/domain/realiaAnnotations'
-import RealiaAnnotationsContext from 'transliteration/ui/RealiaAnnotationsContext'
 
 type CuneiformFragmentProps = {
   fragment: Fragment
@@ -56,69 +54,63 @@ const CuneiformFragment: FunctionComponent<CuneiformFragmentProps> = ({
   activeLine,
 }: CuneiformFragmentProps) => {
   const [isColumnVisible, setColumnVisible] = useState(true)
-  const realiaIdLookup = useMemo(
-    () => createRealiaIdLookup(fragment.realia),
-    [fragment.realia],
-  )
 
   const handleToggle = (isCollapsed: boolean) => {
     setColumnVisible(!isCollapsed)
   }
 
   return (
-    <RealiaAnnotationsContext.Provider value={realiaIdLookup}>
-      <Container fluid>
-        <Row>
-          <Col xs={12} md={2} className={'CuneiformFragment__info'}>
-            {withErrorBoundary(
-              <Info
+    <Container fluid>
+      <Row>
+        <Col xs={12} md={2} className={'CuneiformFragment__info'}>
+          {withErrorBoundary(
+            <Info
+              fragment={fragment}
+              fragmentService={fragmentService}
+              dossiersService={dossiersService}
+              afoRegisterService={afoRegisterService}
+              onSave={onSave}
+            />,
+          )}
+        </Col>
+        <Col xs={12} md={isColumnVisible ? 5 : 10}>
+          {withErrorBoundary(
+            <>
+              <FragmentInCorpus
                 fragment={fragment}
                 fragmentService={fragmentService}
-                dossiersService={dossiersService}
-                afoRegisterService={afoRegisterService}
+              />
+              <EditorTabs
+                fragment={fragment}
+                fragmentService={fragmentService}
+                fragmentSearchService={fragmentSearchService}
+                wordService={wordService}
+                findspotService={findspotService}
                 onSave={onSave}
+                disabled={saving}
+                activeLine={activeLine}
+                onToggle={handleToggle}
+                isColumnVisible={isColumnVisible}
+              />
+              <Spinner loading={saving}>Saving...</Spinner>
+              <ErrorAlert error={error} />
+            </>,
+          )}
+        </Col>
+        {isColumnVisible && (
+          <Col xs={12} md={5}>
+            {withErrorBoundary(
+              <Images
+                fragment={fragment}
+                fragmentService={fragmentService}
+                activeFolio={activeFolio}
+                tab={tab}
               />,
             )}
           </Col>
-          <Col xs={12} md={isColumnVisible ? 5 : 10}>
-            {withErrorBoundary(
-              <>
-                <FragmentInCorpus
-                  fragment={fragment}
-                  fragmentService={fragmentService}
-                />
-                <EditorTabs
-                  fragment={fragment}
-                  fragmentService={fragmentService}
-                  fragmentSearchService={fragmentSearchService}
-                  wordService={wordService}
-                  findspotService={findspotService}
-                  onSave={onSave}
-                  disabled={saving}
-                  activeLine={activeLine}
-                  onToggle={handleToggle}
-                  isColumnVisible={isColumnVisible}
-                />
-                <Spinner loading={saving}>Saving...</Spinner>
-                <ErrorAlert error={error} />
-              </>,
-            )}
-          </Col>
-          {isColumnVisible && (
-            <Col xs={12} md={5}>
-              {withErrorBoundary(
-                <Images
-                  fragment={fragment}
-                  fragmentService={fragmentService}
-                  activeFolio={activeFolio}
-                  tab={tab}
-                />,
-              )}
-            </Col>
-          )}
-        </Row>
-      </Container>
-    </RealiaAnnotationsContext.Provider>
+        )}
+      </Row>
+    </Container>
   )
 }
 

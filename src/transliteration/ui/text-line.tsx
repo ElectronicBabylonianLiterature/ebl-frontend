@@ -8,17 +8,16 @@ import TransliterationTd from './TransliterationTd'
 import { Labels, labelsAbbreviation } from 'transliteration/domain/labels'
 import { LemmaPopover } from 'transliteration/ui/WordInfo'
 import { TokenActionWrapperProps } from 'transliteration/ui/LineAccumulator'
-import RealiaTokenLinks from 'transliteration/ui/RealiaTokenLinks'
+import NamedEntityPreviewToken from 'fragmentarium/ui/text-annotation/NamedEntityPreviewToken'
 
-function LemmaPopoverWithRealiaLinks({
+function LemmaPopoverWithNamedEntities({
   token,
   children,
 }: TokenActionWrapperProps): JSX.Element {
   return (
-    <>
+    <NamedEntityPreviewToken token={token}>
       <LemmaPopover token={token}>{children}</LemmaPopover>
-      <RealiaTokenLinks token={token} />
-    </>
+    </NamedEntityPreviewToken>
   )
 }
 
@@ -53,7 +52,7 @@ export default function DisplayTextLine({
       <LineColumns
         columns={textLine.columns}
         maxColumns={columns}
-        TokenActionWrapper={LemmaPopoverWithRealiaLinks}
+        TokenActionWrapper={LemmaPopoverWithNamedEntities}
       />
     </>
   )
