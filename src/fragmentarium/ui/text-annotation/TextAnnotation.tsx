@@ -1,3 +1,4 @@
+import Promise from 'bluebird'
 import React, { useMemo, useState } from 'react'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import { Fragment } from 'fragmentarium/domain/fragment'
@@ -64,12 +65,8 @@ export default withData<
     />
   ),
   (props) =>
-    props.fragmentService.find(props.number).then((fragment) =>
-      props.fragmentService
-        .fetchNamedEntityAnnotations(props.number)
-        .then((annotations) => ({
-          fragment,
-          annotations,
-        })),
-    ),
+    Promise.all([
+      props.fragmentService.find(props.number),
+      props.fragmentService.fetchNamedEntityAnnotations(props.number),
+    ]).then(([fragment, annotations]) => ({ fragment, annotations })),
 )

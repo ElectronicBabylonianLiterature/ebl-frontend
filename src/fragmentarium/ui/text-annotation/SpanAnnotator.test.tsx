@@ -1,95 +1,53 @@
-import React from 'react'
-import SpanAnnotator, {
-  clearSelection,
-} from 'fragmentarium/ui/text-annotation/SpanAnnotator'
-import AnnotationContext from 'fragmentarium/ui/text-annotation/TextAnnotationContext'
-import {
-  DerivedAnnotationSpans,
-  EntityAnnotationSpan,
-  RealiaAnnotationSpan,
-} from 'fragmentarium/ui/text-annotation/annotationSpan'
-import { render, screen } from '@testing-library/react'
+import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { realiaEntryFactory } from 'test-support/realia-fixtures'
+import { getEntityTypeOption } from 'fragmentarium/ui/text-annotation/SpanAnnotator'
+import { EntityType } from 'fragmentarium/ui/text-annotation/EntityType'
+import { entityAnnotationSpan } from 'fragmentarium/ui/text-annotation/textAnnotation.testSupport'
 import {
-  entityAnnotationSpan,
-  mockRealiaSearch,
-  realiaAnnotationSpan,
-  WithRealiaService,
-} from 'fragmentarium/ui/text-annotation/textAnnotation.testSupport'
+  existingTag,
+  mockDispatch,
+  setupSpanAnnotator,
+  selectRealia,
+  selection,
+  setSelection,
+  stateOf,
+  testCategory,
+  unmappedRealiaEntry,
+} from 'fragmentarium/ui/text-annotation/spanAnnotator.testSupport'
 
 jest.mock('realia/application/RealiaService')
 
-let container: HTMLElement
-const selection = ['Word-1', 'Word-2']
-const setSelection = jest.fn()
-const testCategory = 'PN: Personal Name'
-const mockDispatch = jest.fn()
+describe('getEntityTypeOption', () => {
+  it('returns the labelled option for a known entity type', () => {
+    expect(getEntityTypeOption('PERSONAL_NAME')).toEqual({
+      value: 'PERSONAL_NAME',
+      label: testCategory,
+    })
+  })
 
-const realiaEntry = realiaEntryFactory.build({
-  id: 'Apkallu',
-  realiaId: 'realia_000846',
-  type: ['Divine names'],
+  it('falls back to the raw type when it is not a known entity type', () => {
+    expect(getEntityTypeOption('UNMAPPED' as EntityType)).toEqual({
+      value: 'UNMAPPED',
+      label: 'UNMAPPED',
+    })
+  })
 })
-const unmappedRealiaEntry = realiaEntryFactory.build({
-  id: 'Ziggurat',
-  realiaId: 'realia_000999',
-  type: ['Literature'],
-})
-
-const existingTag: EntityAnnotationSpan = entityAnnotationSpan({
-  id: 'Entity-3',
-  type: 'ROYAL_NAME',
-  span: selection,
-})
-
-function stateOf(
-  namedEntities: readonly EntityAnnotationSpan[] = [],
-  realia: readonly RealiaAnnotationSpan[] = [],
-): DerivedAnnotationSpans {
-  return { namedEntities, realia }
-}
-
-const selectRealia = async (label = 'Apkallu'): Promise<void> => {
-  await userEvent.type(
-    screen.getByLabelText('annotate-realia'),
-    label.slice(0, 3),
-  )
-  await userEvent.click(await screen.findByText(label))
-}
 
 describe('SpanAnnotator', () => {
-  const setup = (
-    annotations: DerivedAnnotationSpans = stateOf(),
-    entries = [realiaEntry],
-  ): void => {
-    jest.clearAllMocks()
-    mockRealiaSearch(entries)
-    container = render(
-      <WithRealiaService>
-        <AnnotationContext.Provider
-          value={[{ ...annotations, words: [] }, mockDispatch]}
-        >
-          <SpanAnnotator selection={selection} setSelection={setSelection} />
-        </AnnotationContext.Provider>
-      </WithRealiaService>,
-    ).container
-  }
-
   it('shows the selection menu', () => {
-    setup()
+    const container = setupSpanAnnotator()
     expect(container).toMatchSnapshot()
   })
 
   it('shows the options', async () => {
-    setup()
+    setupSpanAnnotator()
     const input = screen.getByLabelText('annotate-named-entities')
     await userEvent.click(input)
     expect(screen.getByText(testCategory)).toBeInTheDocument()
   })
 
   it('sets the option on click', async () => {
-    setup()
+    setupSpanAnnotator()
     const input = screen.getByLabelText('annotate-named-entities')
     await userEvent.click(input)
     await userEvent.click(screen.getByText(testCategory))
@@ -97,7 +55,7 @@ describe('SpanAnnotator', () => {
   })
 
   it('dispatches add action when option is selected', async () => {
-    setup()
+    setupSpanAnnotator()
     const input = screen.getByLabelText('annotate-named-entities')
     await userEvent.click(input)
     await userEvent.click(screen.getByText(testCategory))
@@ -114,7 +72,7 @@ describe('SpanAnnotator', () => {
   })
 
   it('dispatches add action with the realiaId when a realia entry is selected', async () => {
-    setup()
+    setupSpanAnnotator()
     const input = screen.getByLabelText('annotate-realia')
     await userEvent.type(input, 'Apk')
     await userEvent.click(await screen.findByText('Apkallu'))
@@ -132,7 +90,7 @@ describe('SpanAnnotator', () => {
   })
 
   it('numbers realia ids independently of entity ids', async () => {
-    setup(
+    setupSpanAnnotator(
       stateOf([
         entityAnnotationSpan({
           id: 'Entity-7',
@@ -154,7 +112,7 @@ describe('SpanAnnotator', () => {
 
   describe('automatic tagging from the realia classification', () => {
     it('adds the mapped tag when the span has no tag', async () => {
-      setup()
+      setupSpanAnnotator()
       await selectRealia()
 
       expect(mockDispatch).toHaveBeenCalledWith({
@@ -170,7 +128,7 @@ describe('SpanAnnotator', () => {
     })
 
     it('does not add a tag when the span already has one', async () => {
-      setup(stateOf([existingTag]))
+      setupSpanAnnotator(stateOf([existingTag]))
       await selectRealia()
 
       expect(mockDispatch).toHaveBeenCalledTimes(1)
@@ -182,7 +140,7 @@ describe('SpanAnnotator', () => {
     })
 
     it('adds a tag when the existing tag covers a different span', async () => {
-      setup(stateOf([{ ...existingTag, span: ['Word-9'] }]))
+      setupSpanAnnotator(stateOf([{ ...existingTag, span: ['Word-9'] }]))
       await selectRealia()
 
       expect(mockDispatch).toHaveBeenCalledTimes(2)
@@ -194,7 +152,7 @@ describe('SpanAnnotator', () => {
     })
 
     it('does not add a tag when the classification is not mapped', async () => {
-      setup(stateOf(), [unmappedRealiaEntry])
+      setupSpanAnnotator(stateOf(), [unmappedRealiaEntry])
       await selectRealia('Ziggurat')
 
       expect(mockDispatch).toHaveBeenCalledTimes(1)
@@ -206,7 +164,7 @@ describe('SpanAnnotator', () => {
     })
 
     it('adds nothing when the tag selection is cleared', async () => {
-      setup()
+      setupSpanAnnotator()
       const input = screen.getByLabelText('annotate-named-entities')
       await userEvent.click(input)
       await userEvent.click(screen.getByText(testCategory))
@@ -218,7 +176,7 @@ describe('SpanAnnotator', () => {
     })
 
     it('adds nothing when the realia selection is cleared', async () => {
-      setup()
+      setupSpanAnnotator()
       await userEvent.type(
         screen.getByLabelText('annotate-realia'),
         '{backspace}',
@@ -226,123 +184,5 @@ describe('SpanAnnotator', () => {
 
       expect(mockDispatch).not.toHaveBeenCalled()
     })
-  })
-})
-
-describe('clearSelection', () => {
-  const originalGetSelection = window.getSelection
-
-  afterEach(() => {
-    window.getSelection = originalGetSelection
-  })
-
-  const mockSelection = (selection: Partial<Selection>): void => {
-    window.getSelection = jest.fn(() => selection as Selection)
-  }
-
-  it('empties the selection when the browser supports it', () => {
-    const empty = jest.fn()
-    mockSelection({ empty })
-
-    clearSelection()
-
-    expect(empty).toHaveBeenCalled()
-  })
-
-  it('removes all ranges when empty is unavailable', () => {
-    const removeAllRanges = jest.fn()
-    mockSelection({ removeAllRanges })
-
-    clearSelection()
-
-    expect(removeAllRanges).toHaveBeenCalled()
-  })
-
-  it('does nothing when neither method is available', () => {
-    mockSelection({})
-
-    expect(() => clearSelection()).not.toThrow()
-  })
-
-  it('does nothing when the browser has no selection API', () => {
-    Object.defineProperty(window, 'getSelection', {
-      value: undefined,
-      writable: true,
-      configurable: true,
-    })
-
-    expect(() => clearSelection()).not.toThrow()
-  })
-})
-
-describe('SpanAnnotator uniqueness', () => {
-  const existingRealia: RealiaAnnotationSpan = realiaAnnotationSpan({
-    id: 'Realia-1',
-    realiaId: 'realia_000846',
-    span: selection,
-  })
-
-  const setupWith = (annotations: DerivedAnnotationSpans): void => {
-    jest.clearAllMocks()
-    mockRealiaSearch([realiaEntry])
-    render(
-      <WithRealiaService>
-        <AnnotationContext.Provider
-          value={[{ ...annotations, words: [] }, mockDispatch]}
-        >
-          <SpanAnnotator selection={selection} setSelection={setSelection} />
-        </AnnotationContext.Provider>
-      </WithRealiaService>,
-    )
-  }
-
-  it('does not offer a tag already on the selection', async () => {
-    setupWith(
-      stateOf([
-        entityAnnotationSpan({
-          id: 'Entity-1',
-          type: 'PERSONAL_NAME',
-          span: selection,
-        }),
-      ]),
-    )
-
-    await userEvent.click(screen.getByLabelText('annotate-named-entities'))
-
-    expect(screen.queryByText(testCategory)).not.toBeInTheDocument()
-    expect(screen.getByText('DN: Divine Name')).toBeInTheDocument()
-  })
-
-  it('still offers a tag used on a different span', async () => {
-    setupWith(
-      stateOf([
-        entityAnnotationSpan({
-          id: 'Entity-1',
-          type: 'PERSONAL_NAME',
-          span: ['Word-9'],
-        }),
-      ]),
-    )
-
-    await userEvent.click(screen.getByLabelText('annotate-named-entities'))
-
-    expect(screen.getByText(testCategory)).toBeInTheDocument()
-  })
-
-  it('does not offer a realia already on the selection', async () => {
-    setupWith(stateOf([], [existingRealia]))
-
-    await userEvent.type(screen.getByLabelText('annotate-realia'), 'Apk')
-
-    expect(await screen.findByText(/no options/i)).toBeInTheDocument()
-    expect(screen.queryByText('Apkallu')).not.toBeInTheDocument()
-  })
-
-  it('still offers a realia used on a different span', async () => {
-    setupWith(stateOf([], [{ ...existingRealia, span: ['Word-9'] }]))
-
-    await userEvent.type(screen.getByLabelText('annotate-realia'), 'Apk')
-
-    expect(await screen.findByText('Apkallu')).toBeInTheDocument()
   })
 })

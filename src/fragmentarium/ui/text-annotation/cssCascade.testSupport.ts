@@ -101,18 +101,29 @@ function parseSelector(selector: string): ParsedSelector {
   }
 }
 
-function matches(parsed: ParsedSelector, element: ElementQuery): boolean {
-  const elementClasses = new Set(element.classes)
-  const elementAttributes = new Set(element.attributes ?? [])
-  const elementStates = new Set(element.states ?? [])
+function includesAll(
+  values: readonly string[],
+  available: ReadonlySet<string>,
+): boolean {
+  return values.every((value) => available.has(value))
+}
 
-  return (
-    parsed.isMatchable &&
-    (parsed.pseudoElement ?? null) === (element.pseudoElement ?? null) &&
-    parsed.classes.every((className) => elementClasses.has(className)) &&
-    parsed.attributes.every((attribute) => elementAttributes.has(attribute)) &&
-    parsed.pseudoClasses.every((pseudoClass) => elementStates.has(pseudoClass))
-  )
+function matchesPseudoElement(
+  parsed: ParsedSelector,
+  element: ElementQuery,
+): boolean {
+  return (parsed.pseudoElement ?? null) === (element.pseudoElement ?? null)
+}
+
+function matches(parsed: ParsedSelector, element: ElementQuery): boolean {
+  const checks: readonly boolean[] = [
+    parsed.isMatchable,
+    matchesPseudoElement(parsed, element),
+    includesAll(parsed.classes, new Set(element.classes)),
+    includesAll(parsed.attributes, new Set(element.attributes ?? [])),
+    includesAll(parsed.pseudoClasses, new Set(element.states ?? [])),
+  ]
+  return checks.every((passed) => passed)
 }
 
 function specificity(parsed: ParsedSelector): [number, number] {
