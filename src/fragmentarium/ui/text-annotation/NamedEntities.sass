@@ -3,6 +3,17 @@
 
 $realia-label-gap: .25rem
 $realia-label-expanded-width: 16em
+$named-entity-motion-duration: 0.3s
+
+@keyframes named-entity-indicator-in
+  from
+    opacity: 0
+  to
+    opacity: 1
+
+.named-entity-display
+  .Transliteration__lines td
+    transition: padding-bottom $named-entity-motion-duration ease
 
 .named-entity-preview
   position: relative
@@ -50,6 +61,7 @@ $realia-label-expanded-width: 16em
 
 .span-indicator.span-indicator--static
   cursor: default
+  animation: named-entity-indicator-in $named-entity-motion-duration ease
 
   &.span-indicator--realia
     cursor: pointer

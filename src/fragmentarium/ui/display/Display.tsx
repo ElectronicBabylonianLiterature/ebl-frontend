@@ -11,6 +11,7 @@ import FragmentDisplaySettings, {
   LanguageOption,
 } from 'fragmentarium/ui/display/FragmentDisplaySettings'
 import { NamedEntityPreviewProvider } from 'fragmentarium/ui/text-annotation/NamedEntityPreviewContext'
+import 'fragmentarium/ui/text-annotation/NamedEntities.sass'
 
 interface Props {
   fragment: Fragment
@@ -85,13 +86,15 @@ function Display({ fragment, wordService, activeLine }: Props): JSX.Element {
         />
       </section>
 
-      {showNamedEntities ? (
-        <NamedEntityPreviewProvider fragment={fragment}>
-          {transliteration}
-        </NamedEntityPreviewProvider>
-      ) : (
-        transliteration
-      )}
+      <div className="named-entity-display">
+        {showNamedEntities ? (
+          <NamedEntityPreviewProvider fragment={fragment}>
+            {transliteration}
+          </NamedEntityPreviewProvider>
+        ) : (
+          transliteration
+        )}
+      </div>
 
       {fragment.notes.text.trim() && (
         <MarkupSection title={'eBL Notes'} parts={fragment.notes.parts} />

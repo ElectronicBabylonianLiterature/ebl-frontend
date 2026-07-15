@@ -142,6 +142,28 @@ describe('a hovered realia badge expands its label', () => {
   })
 })
 
+describe('display indicators fade in when the named entity toggle turns on', () => {
+  it('animates a static (display) indicator', () => {
+    const element: ElementQuery = {
+      classes: [
+        'span-indicator',
+        'span-indicator--static',
+        'named-entity__PERSONAL_NAME',
+      ],
+    }
+    expect(resolveWinner(rules, element, 'animation')).toMatch(
+      /named-entity-indicator-in/,
+    )
+  })
+
+  it('does not animate an interactive (editor) indicator', () => {
+    const element: ElementQuery = {
+      classes: ['span-indicator', 'named-entity__PERSONAL_NAME'],
+    }
+    expect(resolveWinner(rules, element, 'animation')).toBeUndefined()
+  })
+})
+
 describe('display indicators are not interactive except realia', () => {
   it('gives a static tag indicator the default cursor', () => {
     const element: ElementQuery = {
