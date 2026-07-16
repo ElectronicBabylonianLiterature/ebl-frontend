@@ -1,11 +1,7 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
-import {
-  RealiaCrossReference,
-  RealiaEntry,
-  realiaCrossReferenceTarget,
-} from 'realia/domain/RealiaEntry'
+import { RealiaCrossReference, RealiaEntry } from 'realia/domain/RealiaEntry'
 import RealiaDevelopmentNotice from 'realia/ui/RealiaDevelopmentNotice'
+import { RealiaCrossReferenceLink } from 'realia/ui/RealiaCrossReferenceLink'
 
 export function RealiaRedirect({
   entry,
@@ -21,13 +17,7 @@ export function RealiaRedirect({
       <p className="Realia__redirect-pointer">
         <i className="fas fa-arrow-right" aria-hidden="true" />
         {' see '}
-        <Link
-          to={`/tools/realia/${encodeURIComponent(
-            realiaCrossReferenceTarget(target),
-          )}`}
-        >
-          {target.lemma}
-        </Link>
+        <RealiaCrossReferenceLink crossReference={target} />
       </p>
     </div>
   )

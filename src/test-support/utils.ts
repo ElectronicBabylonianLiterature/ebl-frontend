@@ -9,7 +9,6 @@ import {
 } from '@testing-library/react'
 import Bluebird from 'bluebird'
 import { Fragment } from 'fragmentarium/domain/fragment'
-import _ from 'lodash'
 import { QueryItem } from 'query/QueryResult'
 
 interface ExpectResult<T> {
@@ -141,7 +140,7 @@ export class TestData<S, T = any, Y extends any[] = any[]> {
 }
 
 export function testDelegation<S>(
-  object: S,
+  object: S | (() => S),
   testData: readonly TestData<S>[],
 ): void {
   describe.each(testData)(
@@ -159,7 +158,13 @@ export function testDelegation<S>(
       beforeEach(() => {
         jest.clearAllMocks()
         target.mockReturnValueOnce(targetResult ?? expectedResult)
-        result = (_.isFunction(object) ? object() : object)[method](...params)
+        const instance = (
+          typeof object === 'function' ? (object as () => S)() : object
+        ) as S
+        const delegate = instance[method] as unknown as (
+          ...args: unknown[]
+        ) => unknown
+        result = delegate.apply(instance, params)
       })
 
       it('Delegates', () => {
