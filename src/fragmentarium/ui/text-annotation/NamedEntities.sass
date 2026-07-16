@@ -77,3 +77,11 @@ $named-entity-motion-duration: 0.3s
   &.initial:hover::before, &.highlight.initial::before
     max-width: $realia-label-expanded-width
     z-index: 2
+
+@media (prefers-reduced-motion: reduce)
+  .named-entity-display
+    .Transliteration__lines td
+      transition: none
+
+  .span-indicator.span-indicator--static
+    animation: none

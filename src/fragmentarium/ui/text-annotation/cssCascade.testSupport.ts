@@ -4,6 +4,7 @@ import * as sass from 'sass'
 export interface CompiledRule {
   readonly selector: string
   readonly declarations: ReadonlyMap<string, string>
+  readonly media: string | null
   readonly order: number
 }
 
@@ -11,7 +12,15 @@ export interface ElementQuery {
   readonly classes: readonly string[]
   readonly attributes?: readonly string[]
   readonly states?: readonly string[]
+  readonly media?: readonly string[]
   readonly pseudoElement?: 'before' | 'after'
+}
+
+type RuleSeed = Omit<CompiledRule, 'order'>
+
+interface MediaSegment {
+  readonly condition: string | null
+  readonly css: string
 }
 
 interface ParsedSelector {
@@ -35,7 +44,9 @@ export function compileSass(
     style: 'expanded',
     logger: silentLogger,
   })
-  return parseRules(result.css)
+  return splitMediaSegments(result.css)
+    .flatMap((segment) => parseRules(segment.css, segment.condition))
+    .map((rule, order) => ({ ...rule, order }))
 }
 
 export function compileBundle(
@@ -46,11 +57,24 @@ export function compileBundle(
     .map((rule, order) => ({ ...rule, order }))
 }
 
-function parseRules(css: string): readonly CompiledRule[] {
-  const collected: {
-    selector: string
-    declarations: ReadonlyMap<string, string>
-  }[] = []
+function splitMediaSegments(css: string): readonly MediaSegment[] {
+  const segments: MediaSegment[] = []
+  const mediaPattern = /@media([^{]+)\{((?:[^{}]*\{[^{}]*\})*)\s*\}/g
+  let match: RegExpExecArray | null
+  let plainStart = 0
+
+  while ((match = mediaPattern.exec(css)) !== null) {
+    segments.push({ condition: null, css: css.slice(plainStart, match.index) })
+    segments.push({ condition: match[1].trim(), css: match[2] })
+    plainStart = mediaPattern.lastIndex
+  }
+  segments.push({ condition: null, css: css.slice(plainStart) })
+
+  return segments
+}
+
+function parseRules(css: string, media: string | null): readonly RuleSeed[] {
+  const collected: RuleSeed[] = []
   const blockPattern = /([^{}]+)\{([^{}]*)\}/g
   let match: RegExpExecArray | null
 
@@ -60,10 +84,10 @@ function parseRules(css: string): readonly CompiledRule[] {
       .split(',')
       .map((selector) => selector.trim())
       .filter((selector) => selector.length > 0)
-      .forEach((selector) => collected.push({ selector, declarations }))
+      .forEach((selector) => collected.push({ selector, declarations, media }))
   }
 
-  return collected.map((rule, order) => ({ ...rule, order }))
+  return collected
 }
 
 function parseDeclarations(body: string): ReadonlyMap<string, string> {
@@ -164,6 +188,10 @@ function beats(candidate: Winner, incumbent: Winner | null): boolean {
   return false
 }
 
+function isMediaActive(rule: CompiledRule, element: ElementQuery): boolean {
+  return rule.media === null || (element.media ?? []).includes(rule.media)
+}
+
 export function resolveWinner(
   rules: readonly CompiledRule[],
   element: ElementQuery,
@@ -171,7 +199,7 @@ export function resolveWinner(
 ): string | undefined {
   return rules.reduce<Winner | null>((winner, rule) => {
     const value = rule.declarations.get(property)
-    if (value === undefined) {
+    if (value === undefined || !isMediaActive(rule, element)) {
       return winner
     }
     const parsed = parseSelector(rule.selector)

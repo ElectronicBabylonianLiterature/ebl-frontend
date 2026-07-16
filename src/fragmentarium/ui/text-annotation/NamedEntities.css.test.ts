@@ -9,6 +9,7 @@ const NAMED_ENTITIES_SASS =
   'src/fragmentarium/ui/text-annotation/NamedEntities.sass'
 const TEXT_ANNOTATION_SASS =
   'src/fragmentarium/ui/text-annotation/TextAnnotation.sass'
+const REDUCED_MOTION = '(prefers-reduced-motion: reduce)'
 
 const entityColors: ReadonlyArray<[string, string, string]> = [
   ['BUILDING_NAME', '#d2b48c', '"BN"'],
@@ -143,15 +144,16 @@ describe('a hovered realia badge expands its label', () => {
 })
 
 describe('display indicators fade in when the named entity toggle turns on', () => {
+  const staticIndicator: ElementQuery = {
+    classes: [
+      'span-indicator',
+      'span-indicator--static',
+      'named-entity__PERSONAL_NAME',
+    ],
+  }
+
   it('animates a static (display) indicator', () => {
-    const element: ElementQuery = {
-      classes: [
-        'span-indicator',
-        'span-indicator--static',
-        'named-entity__PERSONAL_NAME',
-      ],
-    }
-    expect(resolveWinner(rules, element, 'animation')).toMatch(
+    expect(resolveWinner(rules, staticIndicator, 'animation')).toMatch(
       /named-entity-indicator-in/,
     )
   })
@@ -161,6 +163,32 @@ describe('display indicators fade in when the named entity toggle turns on', () 
       classes: ['span-indicator', 'named-entity__PERSONAL_NAME'],
     }
     expect(resolveWinner(rules, element, 'animation')).toBeUndefined()
+  })
+
+  it('drops the fade-in when reduced motion is requested', () => {
+    const element: ElementQuery = {
+      ...staticIndicator,
+      media: [REDUCED_MOTION],
+    }
+    expect(resolveWinner(rules, element, 'animation')).toEqual('none')
+  })
+})
+
+describe('the transliteration rows ease their padding with the toggle', () => {
+  const ROW_SELECTOR = '.named-entity-display .Transliteration__lines td'
+
+  function transitionOf(media: string | null): string | undefined {
+    return rules
+      .find((rule) => rule.selector === ROW_SELECTOR && rule.media === media)
+      ?.declarations.get('transition')
+  }
+
+  it('eases the row padding by default', () => {
+    expect(transitionOf(null)).toEqual('padding-bottom 0.3s ease')
+  })
+
+  it('drops the easing when reduced motion is requested', () => {
+    expect(transitionOf(REDUCED_MOTION)).toEqual('none')
   })
 })
 

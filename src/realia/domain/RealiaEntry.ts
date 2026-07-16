@@ -27,8 +27,7 @@ export function isRealiaId(id: string): boolean {
 export function realiaCrossReferenceTarget(
   crossReference: RealiaCrossReference,
 ): string {
-  // The route resolves entries by their `_id`, which equals the lemma; the
-  // realiaId is not a resolvable navigation key.
+  // The route resolves entries by their `_id`, which equals the lemma.
   return crossReference.lemma || crossReference.id
 }
 
