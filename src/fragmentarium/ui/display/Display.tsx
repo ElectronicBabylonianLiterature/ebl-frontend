@@ -5,11 +5,13 @@ import { Transliteration } from 'transliteration/ui/Transliteration'
 import WordService from 'dictionary/application/WordService'
 import { MarkupPart } from 'transliteration/domain/markup'
 import { MarkupText } from 'markup/ui/markup'
-import Button from 'react-bootstrap/Button'
-import ButtonGroup from 'react-bootstrap/ButtonGroup'
 import { TranslationStyle } from 'transliteration/ui/TransliterationLines'
-import classNames from 'classnames'
 import { isTranslationLine } from 'transliteration/domain/type-guards'
+import FragmentDisplaySettings, {
+  LanguageOption,
+} from 'fragmentarium/ui/display/FragmentDisplaySettings'
+import { NamedEntityPreviewProvider } from 'fragmentarium/ui/text-annotation/NamedEntityPreviewContext'
+import 'fragmentarium/ui/text-annotation/NamedEntities.sass'
 
 interface Props {
   fragment: Fragment
@@ -17,9 +19,7 @@ interface Props {
   activeLine: string
 }
 
-type LanguageOption = { label: string; value: string }
-
-const languages = [
+const languages: LanguageOption[] = [
   { label: 'English', value: 'en' },
   { label: 'العربية', value: 'ar' },
   { label: 'Deutsch', value: 'de' },
@@ -41,63 +41,6 @@ function MarkupSection({
   )
 }
 
-function getNext<T>(seq: T[], item: T): T {
-  const index = (seq.indexOf(item) + 1) % seq.length
-  return seq[index]
-}
-
-function FragmentDisplaySettings({
-  layout,
-  toggleLayout,
-  language,
-  setLanguage,
-  languageOptions,
-}: {
-  layout: TranslationStyle
-  toggleLayout: () => void
-  language: LanguageOption
-  setLanguage: (option: LanguageOption) => void
-  languageOptions: LanguageOption[]
-}) {
-  const nextLanguage = getNext<LanguageOption | null>(languageOptions, language)
-  const setNextLanguage = () => {
-    if (nextLanguage) {
-      setLanguage(nextLanguage)
-    }
-  }
-  return (
-    <ButtonGroup>
-      <Button
-        variant="secondary"
-        size="sm"
-        onClick={toggleLayout}
-        title={'Toggle layout'}
-        aria-label={'toggle-layout'}
-      >
-        <i
-          className={classNames('fas', {
-            'fa-table-columns': layout === 'inline',
-            'fa-align-justify': layout === 'standoff',
-          })}
-        ></i>
-      </Button>
-
-      {
-        <Button
-          variant="secondary"
-          size="sm"
-          onClick={setNextLanguage}
-          disabled={languageOptions.length <= 1}
-          title={'Switch language'}
-          aria-label={'switch-language'}
-        >
-          {language.label}
-        </Button>
-      }
-    </ButtonGroup>
-  )
-}
-
 function Display({ fragment, wordService, activeLine }: Props): JSX.Element {
   const languagesInFragment = new Set(
     fragment.text.lines.filter(isTranslationLine).map((line) => line.language),
@@ -105,11 +48,20 @@ function Display({ fragment, wordService, activeLine }: Props): JSX.Element {
   const availableLanguages = languages.filter((option) =>
     languagesInFragment.has(option.value),
   )
-  const defaultLanguage = availableLanguages[0] || null
   const [language, setLanguage] = React.useState<LanguageOption | null>(
-    defaultLanguage,
+    availableLanguages[0] || null,
   )
   const [layout, setLayout] = React.useState<TranslationStyle>('standoff')
+  const [showNamedEntities, setShowNamedEntities] = React.useState(false)
+
+  const transliteration = (
+    <Transliteration
+      text={fragment.text}
+      activeLine={activeLine}
+      translationStyle={layout}
+      language={language?.value}
+    />
+  )
 
   return (
     <>
@@ -120,25 +72,30 @@ function Display({ fragment, wordService, activeLine }: Props): JSX.Element {
         />
       )}
 
-      {defaultLanguage && language && (
-        <section>
-          <FragmentDisplaySettings
-            language={language}
-            setLanguage={setLanguage}
-            layout={layout}
-            toggleLayout={() =>
-              setLayout(layout === 'standoff' ? 'inline' : 'standoff')
-            }
-            languageOptions={availableLanguages}
-          />
-        </section>
-      )}
-      <Transliteration
-        text={fragment.text}
-        activeLine={activeLine}
-        translationStyle={layout}
-        language={language?.value}
-      />
+      <section>
+        <FragmentDisplaySettings
+          language={language}
+          setLanguage={setLanguage}
+          layout={layout}
+          toggleLayout={() =>
+            setLayout(layout === 'standoff' ? 'inline' : 'standoff')
+          }
+          languageOptions={availableLanguages}
+          showNamedEntities={showNamedEntities}
+          toggleNamedEntities={() => setShowNamedEntities(!showNamedEntities)}
+        />
+      </section>
+
+      <div className="named-entity-display">
+        {showNamedEntities ? (
+          <NamedEntityPreviewProvider fragment={fragment}>
+            {transliteration}
+          </NamedEntityPreviewProvider>
+        ) : (
+          transliteration
+        )}
+      </div>
+
       {fragment.notes.text.trim() && (
         <MarkupSection title={'eBL Notes'} parts={fragment.notes.parts} />
       )}

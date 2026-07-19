@@ -3,10 +3,13 @@ import FragmentService from 'fragmentarium/application/FragmentService'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import TextAnnotation from 'fragmentarium/ui/text-annotation/TextAnnotation'
 import { tokenIdFragment } from 'test-support/fragment-fixtures'
-import { ApiEntityAnnotationSpan } from 'fragmentarium/ui/text-annotation/EntityType'
+import { AnnotationSpans } from 'fragmentarium/ui/text-annotation/annotationSpan'
 import userEvent from '@testing-library/user-event'
 import { ThemeProvider } from 'react-bootstrap'
 import { getSelectedTokens } from 'fragmentarium/ui/text-annotation/selectionUtils'
+import { WithRealiaService } from 'fragmentarium/ui/text-annotation/textAnnotation.testSupport'
+
+jest.mock('realia/application/RealiaService')
 
 jest.mock('react-bootstrap', () => {
   const actual = jest.requireActual('react-bootstrap')
@@ -42,23 +45,26 @@ const fragmentServiceMock = new MockFragmentService()
 let container: HTMLElement
 const number = tokenIdFragment.number
 
-const testAnnotations: readonly ApiEntityAnnotationSpan[] = [
-  {
-    id: 'Entity-1',
-    type: 'PERSONAL_NAME',
-    span: ['Word-2'],
-  },
-  {
-    id: 'Entity-2',
-    type: 'BUILDING_NAME',
-    span: ['Word-2', 'Word-3'],
-  },
-  {
-    id: 'Entity-3',
-    type: 'YEAR_NAME',
-    span: ['Word-4', 'Word-5', 'Word-6', 'Word-10'],
-  },
-]
+const testAnnotations: AnnotationSpans = {
+  namedEntities: [
+    {
+      id: 'Entity-1',
+      type: 'PERSONAL_NAME',
+      span: ['Word-2'],
+    },
+    {
+      id: 'Entity-2',
+      type: 'BUILDING_NAME',
+      span: ['Word-2', 'Word-3'],
+    },
+    {
+      id: 'Entity-3',
+      type: 'YEAR_NAME',
+      span: ['Word-4', 'Word-5', 'Word-6', 'Word-10'],
+    },
+  ],
+  realia: [],
+}
 
 type SelectionConfig = {
   anchorNode: Node
@@ -140,7 +146,12 @@ describe('Named Entity Annotation', () => {
     )
     container = render(
       <ThemeProvider>
-        <TextAnnotation fragmentService={fragmentServiceMock} number={number} />
+        <WithRealiaService>
+          <TextAnnotation
+            fragmentService={fragmentServiceMock}
+            number={number}
+          />
+        </WithRealiaService>
       </ThemeProvider>,
     ).container
     await screen.findByLabelText('save-annotations')
@@ -156,7 +167,7 @@ describe('Named Entity Annotation', () => {
     expect(container).toMatchSnapshot()
   })
   it.each(
-    testAnnotations.flatMap((annotation) =>
+    testAnnotations.namedEntities.flatMap((annotation) =>
       annotation.span.map((wordId) => [`${wordId}__${annotation.id}`]),
     ),
   )('shows the named entity annotation for %s', async (testId) => {
@@ -173,10 +184,12 @@ describe('Named Entity Annotation', () => {
     await userEvent.click(saveButton)
     expect(
       fragmentServiceMock.updateNamedEntityAnnotations,
-    ).toHaveBeenCalledWith(
-      number,
-      testAnnotations.filter((entity) => entity.id !== 'Entity-1'),
-    )
+    ).toHaveBeenCalledWith(number, {
+      namedEntities: testAnnotations.namedEntities.filter(
+        (entity) => entity.id !== 'Entity-1',
+      ),
+      realia: [],
+    })
   })
 
   it('resets selection when browser selection is collapsed', async () => {

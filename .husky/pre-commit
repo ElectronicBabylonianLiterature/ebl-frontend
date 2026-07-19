@@ -1,6 +1,18 @@
 #!/bin/sh
 . "$(dirname "$0")/_/husky.sh"
 
+current_branch=$(git branch --show-current)
+
+case "$current_branch" in
+master | main)
+	printf >&2 "\nBLOCKED: refusing to commit on %s.\n\n" "$current_branch"
+	printf >&2 "  %s is protected. All work lands via a pull request.\n\n" "$current_branch"
+	printf >&2 "  Create a feature branch first (--no-track keeps its upstream off %s):\n\n" "$current_branch"
+	printf >&2 "      git checkout -b <name> --no-track origin/%s\n\n" "$current_branch"
+	exit 1
+	;;
+esac
+
 yarn lint-staged
 
 if ! command -v ggshield >/dev/null 2>&1; then

@@ -69,7 +69,7 @@ import {
 } from 'fragmentarium/ui/fragment/lemma-annotation/LemmaAnnotation'
 import { LemmaOption } from 'fragmentarium/ui/lemmatization/LemmaSelectionForm'
 import { UncertainFragmentAttestation } from 'corpus/domain/uncertainFragmentAttestation'
-import { ApiEntityAnnotationSpan } from 'fragmentarium/ui/text-annotation/EntityType'
+import { AnnotationSpans } from 'fragmentarium/ui/text-annotation/annotationSpan'
 import { ProvenanceRecord } from 'fragmentarium/domain/Provenance'
 
 export function createScript(dto: ScriptDto): Script {
@@ -108,6 +108,13 @@ export function createJoins(joins): Joins {
       museumNumber: museumNumberToString(join.museumNumber),
     })),
   )
+}
+
+function createAnnotationSpans(dto: Partial<AnnotationSpans>): AnnotationSpans {
+  return {
+    namedEntities: dto.namedEntities ?? [],
+    realia: dto.realia ?? [],
+  }
 }
 
 function createFragment(dto: FragmentDto): Fragment {
@@ -708,22 +715,22 @@ class ApiFragmentRepository
       })
   }
 
-  fetchNamedEntityAnnotations(
-    number: string,
-  ): Promise<readonly ApiEntityAnnotationSpan[]> {
-    return this.apiClient.fetchJson<readonly ApiEntityAnnotationSpan[]>(
-      createFragmentPath(number, 'named-entities'),
-      false,
-    )
+  fetchNamedEntityAnnotations(number: string): Promise<AnnotationSpans> {
+    return this.apiClient
+      .fetchJson<
+        Partial<AnnotationSpans>
+      >(createFragmentPath(number, 'named-entities'), false)
+      .then(createAnnotationSpans)
   }
 
   updateNamedEntityAnnotations(
     number: string,
-    annotations: readonly ApiEntityAnnotationSpan[],
+    annotations: AnnotationSpans,
   ): Promise<Fragment> {
     return this.apiClient
       .postJson<FragmentDto>(createFragmentPath(number, 'named-entities'), {
-        annotations: annotations,
+        namedEntities: annotations.namedEntities,
+        realia: annotations.realia,
       })
       .then(createFragment)
   }

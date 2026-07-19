@@ -5,6 +5,9 @@ import { atfTokenKur } from 'test-support/test-tokens'
 import DisplayToken from 'transliteration/ui/DisplayToken'
 import userEvent from '@testing-library/user-event'
 import AnnotationContext from 'fragmentarium/ui/text-annotation/TextAnnotationContext'
+import { WithRealiaService } from 'fragmentarium/ui/text-annotation/textAnnotation.testSupport'
+
+jest.mock('realia/application/RealiaService')
 
 const word = { ...atfTokenKur, id: 'Word-1' }
 const word2 = { ...atfTokenKur, id: 'Word-2' }
@@ -18,9 +21,13 @@ function renderWithContext(
   words: string[] = ['Word-1'],
 ): void {
   render(
-    <AnnotationContext.Provider value={[{ entities: [], words }, dispatch]}>
-      {ui}
-    </AnnotationContext.Provider>,
+    <WithRealiaService>
+      <AnnotationContext.Provider
+        value={[{ namedEntities: [], realia: [], words }, dispatch]}
+      >
+        {ui}
+      </AnnotationContext.Provider>
+    </WithRealiaService>,
   )
 }
 

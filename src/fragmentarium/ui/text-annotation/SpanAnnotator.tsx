@@ -1,11 +1,24 @@
 import {
-  ApiEntityAnnotationSpan,
   entities,
-  EntityAnnotationSpan,
   EntityType,
 } from 'fragmentarium/ui/text-annotation/EntityType'
+import {
+  getUsedEntityTypes,
+  getUsedRealiaIds,
+  NAMED_ENTITY_LAYER,
+  REALIA_LAYER,
+} from 'fragmentarium/ui/text-annotation/annotationSpan'
+import {
+  buildRealiaAnnotations,
+  buildTagAnnotations,
+  isEmpty,
+  NewAnnotations,
+} from 'fragmentarium/ui/text-annotation/spanAnnotatorActions'
 import AnnotationContext from 'fragmentarium/ui/text-annotation/TextAnnotationContext'
-import _ from 'lodash'
+import RealiaInfoContext from 'fragmentarium/ui/text-annotation/RealiaInfoContext'
+import RealiaSelect, {
+  RealiaOption,
+} from 'fragmentarium/ui/text-annotation/RealiaSelect'
 import React, { forwardRef, useContext } from 'react'
 import { Form } from 'react-bootstrap'
 import Select, { SelectInstance } from 'react-select'
@@ -30,11 +43,13 @@ export const entityTypeOptions: EntityTypeOption[] = entities.map((entity) => ({
   label: `${entity.label}: ${entity.name}`,
 }))
 
-function createId(annotationSpans: readonly EntityAnnotationSpan[]): string {
-  const currentMaxId =
-    _.max(annotationSpans.map(({ id }) => parseInt(id.split('-')[1]))) || 0
-
-  return `Entity-${currentMaxId + 1}`
+export function getEntityTypeOption(type: EntityType): EntityTypeOption {
+  return (
+    entityTypeOptions.find((option) => option.value === type) ?? {
+      value: type,
+      label: type,
+    }
+  )
 }
 
 interface SpanAnnotatorProps {
@@ -47,7 +62,35 @@ const SpanAnnotator = forwardRef<
 >(function SpanAnnotator({ selection, setSelection }, ref): JSX.Element {
   const [selectedType, setSelectedType] =
     React.useState<EntityTypeOption | null>(null)
-  const [{ entities }, dispatch] = useContext(AnnotationContext)
+  const [spans, dispatch] = useContext(AnnotationContext)
+  const { register } = useContext(RealiaInfoContext)
+  const usedEntityTypes = getUsedEntityTypes(spans.namedEntities, selection)
+  const usedRealiaIds = getUsedRealiaIds(spans.realia, selection)
+  const availableTypeOptions = entityTypeOptions.filter(
+    (option) => !usedEntityTypes.includes(option.value),
+  )
+
+  const applyAnnotations = (added: NewAnnotations) => {
+    if (isEmpty(added)) {
+      return
+    }
+    if (added.realia) {
+      dispatch({
+        type: 'add',
+        layer: REALIA_LAYER,
+        annotation: added.realia,
+      })
+    }
+    if (added.tag) {
+      dispatch({
+        type: 'add',
+        layer: NAMED_ENTITY_LAYER,
+        annotation: added.tag,
+      })
+    }
+    clearSelection()
+    setSelection([])
+  }
 
   return (
     <div onMouseUp={(event) => event.stopPropagation()}>
@@ -56,20 +99,26 @@ const SpanAnnotator = forwardRef<
           <Select
             ref={ref}
             aria-label={'annotate-named-entities'}
-            options={entityTypeOptions}
+            placeholder={'Select tag'}
+            options={availableTypeOptions}
             value={selectedType}
             onChange={(option) => {
-              setSelectedType(option as EntityTypeOption)
-              if (option) {
-                const entity: ApiEntityAnnotationSpan = {
-                  id: createId(entities),
-                  type: option.value,
-                  span: selection,
-                }
-                dispatch({ type: 'add', entity })
-                clearSelection()
-                setSelection([])
-              }
+              const selectedOption = option as EntityTypeOption | null
+              setSelectedType(selectedOption)
+              applyAnnotations(
+                buildTagAnnotations(spans, selection, selectedOption),
+              )
+            }}
+          />
+        </Form.Group>
+        <Form.Group className={'text-annotation__realia-group'}>
+          <RealiaSelect
+            ariaLabel={'annotate-realia'}
+            value={null}
+            excludedRealiaIds={usedRealiaIds}
+            onChange={(option: RealiaOption | null) => {
+              register(option?.entry)
+              applyAnnotations(buildRealiaAnnotations(spans, selection, option))
             }}
           />
         </Form.Group>

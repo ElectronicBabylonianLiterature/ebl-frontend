@@ -1,40 +1,87 @@
 @import src/design-tokens
 @import './TextAnnotation.sass'
 
-.named-entity
+$realia-label-gap: .25rem
+$realia-label-expanded-width: 16em
+$named-entity-motion-duration: 0.3s
 
-  &__BUILDING_NAME
+@keyframes named-entity-indicator-in
+  from
+    opacity: 0
+  to
+    opacity: 1
+
+.named-entity-display
+  .Transliteration__lines td
+    transition: padding-bottom $named-entity-motion-duration ease
+
+.named-entity-preview
+  position: relative
+
+.span-indicator
+
+  &.named-entity__BUILDING_NAME
     @include indicator-label(BN, $ebl-color-entity-building)
 
-  &__CELESTIAL_NAME
+  &.named-entity__CELESTIAL_NAME
     @include indicator-label(CN, $ebl-color-entity-celestial)
 
-  &__DIVINE_NAME
+  &.named-entity__DIVINE_NAME
     @include indicator-label(DN, $ebl-color-entity-divine)
 
-  &__ETHNOS_NAME
+  &.named-entity__ETHNOS_NAME
     @include indicator-label(EN, $ebl-color-entity-ethnos)
 
-  &__PERSONAL_NAME
+  &.named-entity__PERSONAL_NAME
     @include indicator-label(PN, $ebl-color-entity-personal)
 
-  &__ROYAL_NAME
+  &.named-entity__ROYAL_NAME
     @include indicator-label(RN, $ebl-color-entity-royal)
 
-  &__FIELD_NAME
+  &.named-entity__FIELD_NAME
     @include indicator-label(FN, $ebl-color-entity-field)
 
-  &__GEOGRAPHICAL_NAME
+  &.named-entity__GEOGRAPHICAL_NAME
     @include indicator-label(GN, $ebl-color-entity-geographical)
 
-  &__WATERCOURSE_NAME
+  &.named-entity__WATERCOURSE_NAME
     @include indicator-label(WN, $ebl-color-entity-celestial)
 
-  &__MONTH_NAME
+  &.named-entity__MONTH_NAME
     @include indicator-label(MN, $ebl-color-entity-month)
 
-  &__YEAR_NAME
+  &.named-entity__YEAR_NAME
     @include indicator-label(YN, $ebl-color-entity-year)
 
-  &__OBJECT_NAME
+  &.named-entity__OBJECT_NAME
     @include indicator-label(ON, $ebl-color-entity-object)
+
+  &.named-entity__REALIA
+    @include indicator-label(RLA, $ebl-color-entity-realia)
+
+.span-indicator.span-indicator--static
+  cursor: default
+  animation: named-entity-indicator-in $named-entity-motion-duration ease
+
+  &.span-indicator--realia
+    cursor: pointer
+
+.span-indicator--realia[data-label]
+  &.initial::before
+    content: attr(data-label)
+    max-width: calc(100% - #{$realia-label-gap})
+    overflow: hidden
+    text-overflow: ellipsis
+    white-space: nowrap
+
+  &.initial:hover::before, &.highlight.initial::before
+    max-width: $realia-label-expanded-width
+    z-index: 2
+
+@media (prefers-reduced-motion: reduce)
+  .named-entity-display
+    .Transliteration__lines td
+      transition: none
+
+  .span-indicator.span-indicator--static
+    animation: none

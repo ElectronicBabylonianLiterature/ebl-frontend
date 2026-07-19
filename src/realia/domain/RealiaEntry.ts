@@ -18,11 +18,16 @@ export interface AfoRegisterEntry {
   readonly crossReferences: readonly RealiaCrossReference[]
 }
 
+const REALIA_ID_PATTERN = /^realia_\d+$/
+
+export function isRealiaId(id: string): boolean {
+  return REALIA_ID_PATTERN.test(id)
+}
+
 export function realiaCrossReferenceTarget(
   crossReference: RealiaCrossReference,
 ): string {
-  // The route resolves entries by their `_id`, which equals the lemma; the
-  // realiaId is not a resolvable navigation key.
+  // The route resolves entries by their `_id`, which equals the lemma.
   return crossReference.lemma || crossReference.id
 }
 
