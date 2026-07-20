@@ -150,4 +150,8 @@ export default class RealiaRepository {
       .fetchJson<RealiaEntryDto[]>(path, false)
       .then((result) => result.map(mapRealiaEntry))
   }
+
+  listAllRealia(): Promise<string[]> {
+    return this.apiClient.fetchJson<string[]>(`/realia/all`, false)
+  }
 }

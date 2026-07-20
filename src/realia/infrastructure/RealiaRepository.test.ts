@@ -28,6 +28,14 @@ const testData: TestData<RealiaRepository>[] = [
     ['/realia?query=pig', false],
     Promise.resolve([entryDto]),
   ),
+  new TestData(
+    'listAllRealia',
+    [],
+    apiClient.fetchJson,
+    ['Pig'],
+    ['/realia/all', false],
+    Promise.resolve(['Pig']),
+  ),
 ]
 
 describe('RealiaRepository', () => testDelegation(realiaRepository, testData))
