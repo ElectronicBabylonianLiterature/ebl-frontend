@@ -1,11 +1,11 @@
 import React from 'react'
+import Bluebird from 'bluebird'
 import DynamicSitemap from 'react-dynamic-sitemap'
 import { Route } from 'router/compat'
 import { renderToString } from 'react-dom/server'
 import $ from 'jquery'
 import type Services from 'router/Services'
 import withData from 'http/withData'
-import Bluebird from 'bluebird'
 import convert from 'xml-js'
 import _ from 'lodash'
 import pako from 'pako'
@@ -132,13 +132,13 @@ async function getSlugs(
   service: string,
   getter: string,
   key: string,
-): Bluebird<SlugsArray> {
+): Promise<SlugsArray> {
   return services[service][getter]().then((array) =>
     mapStringsToSlugs(array, key),
   )
 }
 
-export async function getAllSlugs(services: Services): Bluebird<Slugs> {
+export async function getAllSlugs(services: Services): Promise<Slugs> {
   return {
     signSlugs: await getSlugs(services, 'signService', 'listAllSigns', 'id'),
     dictionarySlugs: await getSlugs(
@@ -168,5 +168,5 @@ export default withData<{ services: Services }, { services: Services }, Slugs>(
   ({ data, services }) => {
     return getSitemapAsFile(services, data)
   },
-  ({ services }): Bluebird<Slugs> => getAllSlugs(services),
+  ({ services }): Bluebird<Slugs> => Bluebird.resolve(getAllSlugs(services)),
 )

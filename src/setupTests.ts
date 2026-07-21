@@ -17,7 +17,7 @@ import fetchMock from 'jest-fetch-mock'
 
 const testEnv = parseEnv(readFileSync(resolve(__dirname, '..', '.env.test')))
 Object.entries(testEnv).forEach(([key, value]) => {
-  process.env[key] = value
+  process.env[key] = String(value)
 })
 
 jest.mock('react-router-dom', () => {

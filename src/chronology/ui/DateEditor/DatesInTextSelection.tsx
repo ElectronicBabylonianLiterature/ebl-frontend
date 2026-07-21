@@ -36,7 +36,7 @@ interface DatesInTextSelectionMethods {
 interface DatesInTextSelectionState
   extends DatesInTextSelectionAttrs, DatesInTextSelectionMethods {}
 
-async function updateDateInArray({
+function updateDateInArray({
   updateDatesInText,
   datesInTextDisplay,
   date,

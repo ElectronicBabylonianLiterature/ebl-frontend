@@ -6,7 +6,6 @@ import { useNavigate } from 'react-router-dom'
 import { AfoRegisterRecordSuggestion } from 'afo-register/domain/Record'
 import AfoRegisterService from 'afo-register/application/AfoRegisterService'
 import Select from 'react-select'
-import Promise from 'bluebird'
 import AfoRegisterTextSelect from 'afo-register/ui/AfoRegisterTextSelect'
 
 export type AfoRegisterQuery = { text: string; textNumber: string }

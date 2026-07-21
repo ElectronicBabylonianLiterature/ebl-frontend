@@ -1,8 +1,8 @@
+import Bluebird from 'bluebird'
 import React from 'react'
 import { MemoryRouter } from 'react-router-dom'
 import { render, screen } from '@testing-library/react'
 import { waitForSpinnerToBeRemoved } from 'test-support/waitForSpinnerToBeRemoved'
-import Promise from 'bluebird'
 import SessionContext from 'auth/SessionContext'
 import FragmentView from './FragmentView'
 import Lemmatization from 'transliteration/domain/Lemmatization'
@@ -89,7 +89,7 @@ beforeEach(() => {
   }
   wordService = new (WordService as jest.Mock<jest.Mocked<WordService>>)()
   const word = wordFactory.build()
-  wordService.find.mockReturnValue(Promise.resolve(word))
+  wordService.find.mockReturnValue(Bluebird.resolve(word))
   wordService.findAll.mockResolvedValue([
     word,
     wordFactory.build({ _id: 'hepû II' }),
@@ -98,7 +98,7 @@ beforeEach(() => {
     jest.Mocked<FragmentService>
   >)()
   fragmentService.createLemmatization.mockReturnValue(
-    Promise.resolve(new Lemmatization([], [])),
+    Bluebird.resolve(new Lemmatization([], [])),
   )
   fragmentSearchService = new (FragmentSearchService as jest.Mock<
     jest.Mocked<FragmentSearchService>
@@ -119,19 +119,19 @@ beforeEach(() => {
   ])
   ;(URL.createObjectURL as jest.Mock).mockReturnValue('url')
   fragmentService.findFolio.mockReturnValue(
-    Promise.resolve(new Blob([''], { type: 'image/jpeg' })),
+    Bluebird.resolve(new Blob([''], { type: 'image/jpeg' })),
   )
   fragmentService.findPhoto.mockReturnValue(
-    Promise.resolve(new Blob([''], { type: 'image/jpeg' })),
+    Bluebird.resolve(new Blob([''], { type: 'image/jpeg' })),
   )
-  fragmentService.folioPager.mockReturnValue(Promise.resolve(folioPager))
+  fragmentService.folioPager.mockReturnValue(Bluebird.resolve(folioPager))
   fragmentService.fragmentPager.mockReturnValue(
-    Promise.resolve(fragmentPagerData),
+    Bluebird.resolve(fragmentPagerData),
   )
   fragmentService.fetchGenres.mockReturnValue(
-    Promise.resolve([['ARCHIVAL'], ['ARCHIVAL', 'Administrative']]),
+    Bluebird.resolve([['ARCHIVAL'], ['ARCHIVAL', 'Administrative']]),
   )
-  fragmentService.fetchPeriods.mockReturnValue(Promise.resolve([]))
+  fragmentService.fetchPeriods.mockReturnValue(Bluebird.resolve([]))
   fragmentService.findInCorpus.mockResolvedValue({
     manuscriptAttestations: [],
     uncertainFragmentAttestations: [],
@@ -170,8 +170,8 @@ describe('Fragment is loaded', () => {
       )
       .setReferences(referenceFactory.buildList(2))
     selectedFolio = fragment.folios[0]
-    fragmentService.find.mockReturnValue(Promise.resolve(fragment))
-    fragmentService.updateGenres.mockReturnValue(Promise.resolve(fragment))
+    fragmentService.find.mockReturnValue(Bluebird.resolve(fragment))
+    fragmentService.updateGenres.mockReturnValue(Bluebird.resolve(fragment))
   })
 
   it('Queries the Fragmentarium API with given parameters', async () => {
@@ -221,7 +221,7 @@ describe('Fragment without an image is loaded', () => {
       },
       { associations: { folios: [], references: [] } },
     )
-    fragmentService.find.mockReturnValue(Promise.resolve(fragment))
+    fragmentService.find.mockReturnValue(Bluebird.resolve(fragment))
   })
 
   it('Tag signs button is disabled', async () => {
@@ -232,7 +232,7 @@ describe('Fragment without an image is loaded', () => {
 
 describe('On error', () => {
   it('Shows the error message', async () => {
-    fragmentService.find.mockReturnValue(Promise.reject(new Error(message)))
+    fragmentService.find.mockReturnValue(Bluebird.reject(new Error(message)))
     renderFragmentView(fragmentNumber, null, null, null)
     await waitForSpinnerToBeRemoved(screen)
     await screen.findByText(message)
@@ -266,7 +266,7 @@ describe('Filter folios', () => {
       },
       { associations: { folios: folios } },
     )
-    fragmentService.find.mockReturnValue(Promise.resolve(fragment))
+    fragmentService.find.mockReturnValue(Bluebird.resolve(fragment))
   })
 
   it("excludes folios the user doesn't have access to", async () => {

@@ -1,5 +1,4 @@
 import React from 'react'
-import Promise from 'bluebird'
 import { ChapterDisplay } from 'corpus/domain/chapter'
 import WordService from 'dictionary/application/WordService'
 import TextService from 'corpus/application/TextService'
