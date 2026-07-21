@@ -2,7 +2,6 @@ import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 import React, { useEffect, useState } from 'react'
 import AsyncSelect from 'react-select/async'
 import { usePrevious } from 'common/hooks/usePrevious'
-import Promise from 'bluebird'
 
 interface SelectedOption {
   value: string

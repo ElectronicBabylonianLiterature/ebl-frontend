@@ -1,5 +1,4 @@
 import ApiClient from 'http/ApiClient'
-import Promise from 'bluebird'
 import Sign, { OrderedSign, SignQuery, UnicodeAtf } from 'signs/domain/Sign'
 import { stringify } from 'query-string'
 import { AnnotationToken } from 'fragmentarium/domain/annotation-token'

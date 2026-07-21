@@ -44,11 +44,15 @@ async function fetchTextNumberOptions(
     React.SetStateAction<TextNumberOption[]>
   >,
   afoRegisterService: AfoRegisterService,
+  signal: AbortSignal,
 ): Promise<void> {
   const suggestions = await searchTextSuggestions(
     query.text,
     afoRegisterService,
   )
+  if (signal.aborted) {
+    return
+  }
   const suggestion = suggestions.find(
     (suggestion) => suggestion.text === query.text,
   )
@@ -111,14 +115,18 @@ function AfoRegisterSearch({ queryProp, afoRegisterService }: FormProps) {
   const navigate = useNavigate()
 
   useEffect(() => {
-    if (query.text) {
-      fetchTextNumberOptions(
-        query,
-        textNumberOptions,
-        setTextNumberOptions,
-        afoRegisterService,
-      )
+    if (!query.text) {
+      return
     }
+    const controller = new AbortController()
+    fetchTextNumberOptions(
+      query,
+      textNumberOptions,
+      setTextNumberOptions,
+      afoRegisterService,
+      controller.signal,
+    )
+    return () => controller.abort()
   }, [query, textNumberOptions, setTextNumberOptions, afoRegisterService])
 
   function submit(event) {

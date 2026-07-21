@@ -1,5 +1,4 @@
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
-import Promise from 'bluebird'
 import ApiClient from 'http/ApiClient'
 import { stringify } from 'query-string'
 

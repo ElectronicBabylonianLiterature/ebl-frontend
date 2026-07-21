@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react'
 import { Form, Button } from 'react-bootstrap'
-import Bluebird from 'bluebird'
 import SignService from 'signs/application/SignService'
+import ConcurrencyLimiter from 'common/utils/ConcurrencyLimiter'
 import replaceTransliteration from 'fragmentarium/domain/replaceTransliteration'
 import { displayUnicode } from 'signs/ui/search/SignsSearch'
 import './CuneiformConverterForm.sass'
@@ -38,23 +38,29 @@ function CuneiformConverterForm({
       .map((line, index) => ({ index, line }))
       .filter(({ line }) => line.trim() !== '')
 
-    Bluebird.map(
-      nonEmptyLines,
-      ({ index, line }): Bluebird<ConvertedLine> =>
-        query(line)
-          .then((result) => ({
-            index,
-            value: result
-              .map((entry) =>
-                entry.unicode[0] === 9999 ? ' ' : displayUnicode(entry.unicode),
-              )
-              .join(''),
-          }))
-          .catch((error) => {
-            console.error('Query Error:', error)
-            return { index, value: '' }
-          }),
-      { concurrency: conversionConcurrencyLimit },
+    const limiter = new ConcurrencyLimiter(conversionConcurrencyLimit)
+
+    Promise.all(
+      nonEmptyLines.map(
+        ({ index, line }): Promise<ConvertedLine> =>
+          limiter.run(() =>
+            query(line)
+              .then((result) => ({
+                index,
+                value: result
+                  .map((entry) =>
+                    entry.unicode[0] === 9999
+                      ? ' '
+                      : displayUnicode(entry.unicode),
+                  )
+                  .join(''),
+              }))
+              .catch((error) => {
+                console.error('Query Error:', error)
+                return { index, value: '' }
+              }),
+          ),
+      ),
     )
       .then((convertedLines) => {
         if (conversionRequestSequence.current !== conversionRequestId) {
@@ -76,7 +82,7 @@ function CuneiformConverterForm({
   }
 
   const query = (content: string) => {
-    return Bluebird.resolve(signService.getUnicodeFromAtf(content))
+    return Promise.resolve(signService.getUnicodeFromAtf(content))
   }
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {

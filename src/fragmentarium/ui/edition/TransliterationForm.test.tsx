@@ -1,7 +1,6 @@
 import React from 'react'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { submitFormByTestId } from 'test-support/utils'
-import { Promise } from 'bluebird'
 
 import TransliterationForm from './TransliterationForm'
 import { act } from 'react'
@@ -250,24 +249,16 @@ it('does not set an error for a cancellation error', async () => {
   await waitFor(() => expect(editorError).toBeNull())
 })
 
-it('does not set an error when the promise reports cancellation', async () => {
+it('does not set an error when the request is aborted', async () => {
   const requestError = new Error('request failed')
-  const cancelledPromise = {
-    then: jest.fn(),
-    catch: jest.fn(),
-    isCancelled: jest.fn(() => true),
-    cancel: jest.fn(),
-  }
-  cancelledPromise.then.mockReturnValue(cancelledPromise)
-  cancelledPromise.catch.mockImplementation((onRejected) => {
-    queueMicrotask(() => onRejected(requestError))
-    return cancelledPromise
-  })
+  let rejectEdition: (error: Error) => void = () => undefined
+  updateEdition = jest.fn().mockReturnValue(
+    new Promise<never>((_resolve, reject) => {
+      rejectEdition = reject
+    }),
+  )
 
-  updateEdition = jest.fn()
-  updateEdition.mockReturnValue(cancelledPromise as unknown as Promise<never>)
-
-  render(
+  const { unmount } = render(
     <TransliterationForm
       transliteration={transliteration}
       notes={notes}
@@ -277,8 +268,11 @@ it('does not set an error when the promise reports cancellation', async () => {
   )
 
   submitFormByTestId(screen, 'transliteration-form')
-
   await waitFor(() => expect(updateEdition).toHaveBeenCalledWith({}))
-  await waitFor(() => expect(cancelledPromise.isCancelled).toHaveBeenCalled())
-  await waitFor(() => expect(editorError).toBeNull())
+
+  unmount()
+  rejectEdition(requestError)
+  await new Promise((resolve) => setTimeout(resolve, 0))
+
+  expect(editorError).toBeNull()
 })

@@ -1,6 +1,5 @@
 import ApiClient from 'http/ApiClient'
 import Word from 'dictionary/domain/Word'
-import Promise from 'bluebird'
 
 class WordRepository {
   private readonly apiClient

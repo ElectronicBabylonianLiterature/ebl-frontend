@@ -1,4 +1,3 @@
-import Bluebird from 'bluebird'
 import ConcurrencyLimiter from './ConcurrencyLimiter'
 
 type QueueState = {
@@ -7,13 +6,13 @@ type QueueState = {
 }
 
 type Deferred<Value> = {
-  promise: Bluebird<Value>
+  promise: Promise<Value>
   resolve: (value: Value) => void
 }
 
 function deferred<Value>(): Deferred<Value> {
   let resolvePromise: (value: Value) => void = () => undefined
-  const promise = new Bluebird<Value>((resolve) => {
+  const promise = new Promise<Value>((resolve) => {
     resolvePromise = resolve
   })
 
@@ -25,8 +24,8 @@ function queueState(limiter: ConcurrencyLimiter): QueueState {
 }
 
 async function settle(): Promise<void> {
-  await Bluebird.delay(0)
-  await Bluebird.delay(0)
+  await new Promise((resolve) => setTimeout(resolve, 0))
+  await new Promise((resolve) => setTimeout(resolve, 0))
 }
 
 describe('ConcurrencyLimiter', () => {
@@ -37,7 +36,7 @@ describe('ConcurrencyLimiter', () => {
     let activeWork = 0
     let maximumActiveWork = 0
 
-    const runOperation = (name: string): Bluebird<string> =>
+    const runOperation = (name: string): Promise<string> =>
       limiter.run(() => {
         started.push(name)
         activeWork += 1
@@ -71,7 +70,7 @@ describe('ConcurrencyLimiter', () => {
     completions.get('three')?.resolve('three done')
     completions.get('four')?.resolve('four done')
 
-    await expect(Bluebird.all(operations)).resolves.toEqual([
+    await expect(Promise.all(operations)).resolves.toEqual([
       'one done',
       'two done',
       'three done',
@@ -92,7 +91,7 @@ describe('ConcurrencyLimiter', () => {
     })
     const second = limiter.run(() => {
       started.push('second')
-      return Bluebird.resolve('second done')
+      return Promise.resolve('second done')
     })
 
     await settle()
@@ -103,7 +102,7 @@ describe('ConcurrencyLimiter', () => {
     await settle()
 
     expect(started).toEqual(['first', 'second'])
-    await expect(Bluebird.all([first, second])).resolves.toEqual([
+    await expect(Promise.all([first, second])).resolves.toEqual([
       'first done',
       'second done',
     ])
@@ -126,19 +125,21 @@ describe('ConcurrencyLimiter', () => {
         })
       }),
     )
-    const canceledPromises = canceledOperations.map((operation) =>
+    const controllers = canceledOperations.map(() => new AbortController())
+    const canceledPromises = canceledOperations.map((operation, index) =>
       limiter.run(() => {
         operation()
-        return Bluebird.resolve('canceled operation ran')
-      }),
+        return Promise.resolve('canceled operation ran')
+      }, controllers[index].signal),
     )
+    canceledPromises.forEach((promise) => promise.catch(() => undefined))
 
     await settle()
 
     expect(queueState(limiter).activeCount).toBe(2)
     expect(queueState(limiter).waitingResolvers).toHaveLength(3)
 
-    canceledPromises.forEach((promise) => promise.cancel())
+    controllers.forEach((controller) => controller.abort())
     await settle()
 
     expect(queueState(limiter).waitingResolvers).toHaveLength(0)
@@ -146,10 +147,10 @@ describe('ConcurrencyLimiter', () => {
     activeCompletions.forEach((completion, index) => {
       completion.resolve(`active ${index} done`)
     })
-    await Bluebird.all(activeOperations)
+    await Promise.all(activeOperations)
     await settle()
 
-    const freshOperation = jest.fn(() => Bluebird.resolve('fresh done'))
+    const freshOperation = jest.fn(() => Promise.resolve('fresh done'))
     const freshPromise = limiter.run(freshOperation)
 
     await expect(freshPromise).resolves.toBe('fresh done')
@@ -162,23 +163,19 @@ describe('ConcurrencyLimiter', () => {
     expect(queueState(limiter).waitingResolvers).toHaveLength(0)
   })
 
-  it('releases a running operation when it is canceled', async () => {
+  it('does not interrupt a running operation when its signal aborts', async () => {
     const limiter = new ConcurrencyLimiter(1)
-    const activeStarted = jest.fn()
-    const activeCanceled = jest.fn()
-    const queuedOperation = jest.fn(() => Bluebird.resolve('queued done'))
+    const activeCompletion = deferred<string>()
+    const controller = new AbortController()
+    const queuedOperation = jest.fn(() => Promise.resolve('queued done'))
 
     const active = limiter.run(
-      () =>
-        new Bluebird<string>((_resolve, _reject, onCancel) => {
-          activeStarted()
-          onCancel?.(activeCanceled)
-        }),
+      () => activeCompletion.promise,
+      controller.signal,
     )
 
     await settle()
 
-    expect(activeStarted).toHaveBeenCalledTimes(1)
     expect(queueState(limiter).activeCount).toBe(1)
 
     const queued = limiter.run(queuedOperation)
@@ -188,40 +185,54 @@ describe('ConcurrencyLimiter', () => {
     expect(queuedOperation).not.toHaveBeenCalled()
     expect(queueState(limiter).waitingResolvers).toHaveLength(1)
 
-    active.cancel()
+    controller.abort()
     await settle()
 
-    expect(activeCanceled).toHaveBeenCalledTimes(1)
+    expect(queuedOperation).not.toHaveBeenCalled()
+    expect(queueState(limiter).activeCount).toBe(1)
+
+    activeCompletion.resolve('active done')
+    await expect(active).resolves.toBe('active done')
+    await settle()
+
     expect(queuedOperation).toHaveBeenCalledTimes(1)
     await expect(queued).resolves.toBe('queued done')
     expect(queueState(limiter).activeCount).toBe(0)
     expect(queueState(limiter).waitingResolvers).toHaveLength(0)
   })
 
-  it('continues running fresh work after repeated active cancellations', async () => {
+  it('continues running fresh work after repeated queued cancellations', async () => {
     const limiter = new ConcurrencyLimiter(1)
-    const activeCanceled = jest.fn()
 
     for (const iteration of [1, 2, 3]) {
-      const activeStarted = jest.fn()
-      const active = limiter.run(
-        () =>
-          new Bluebird<string>((_resolve, _reject, onCancel) => {
-            activeStarted()
-            onCancel?.(() => activeCanceled(iteration))
-          }),
-      )
+      const activeCompletion = deferred<string>()
+      const active = limiter.run(() => activeCompletion.promise)
 
       await settle()
 
-      expect(activeStarted).toHaveBeenCalledTimes(1)
       expect(queueState(limiter).activeCount).toBe(1)
 
-      active.cancel()
+      const controller = new AbortController()
+      const canceledOperation = jest.fn(() => Promise.resolve('canceled'))
+      const canceled = limiter.run(canceledOperation, controller.signal)
+      canceled.catch(() => undefined)
+
+      await settle()
+
+      expect(queueState(limiter).waitingResolvers).toHaveLength(1)
+
+      controller.abort()
+      await settle()
+
+      expect(canceledOperation).not.toHaveBeenCalled()
+      expect(queueState(limiter).waitingResolvers).toHaveLength(0)
+
+      activeCompletion.resolve(`active ${iteration} done`)
+      await expect(active).resolves.toBe(`active ${iteration} done`)
       await settle()
 
       const freshOperation = jest.fn(() =>
-        Bluebird.resolve(`fresh ${iteration} done`),
+        Promise.resolve(`fresh ${iteration} done`),
       )
 
       await expect(limiter.run(freshOperation)).resolves.toBe(
@@ -231,16 +242,14 @@ describe('ConcurrencyLimiter', () => {
       expect(queueState(limiter).activeCount).toBe(0)
       expect(queueState(limiter).waitingResolvers).toHaveLength(0)
     }
-
-    expect(activeCanceled).toHaveBeenCalledTimes(3)
   })
 
   it('releases the slot when an operation rejects', async () => {
     const limiter = new ConcurrencyLimiter(1)
     const failure = new Error('failure')
-    const queuedOperation = jest.fn(() => Bluebird.resolve('queued done'))
+    const queuedOperation = jest.fn(() => Promise.resolve('queued done'))
 
-    const rejected = limiter.run(() => Bluebird.reject(failure))
+    const rejected = limiter.run(() => Promise.reject(failure))
     const queued = limiter.run(queuedOperation)
 
     await expect(rejected).rejects.toBe(failure)
@@ -254,7 +263,7 @@ describe('ConcurrencyLimiter', () => {
     const limiter = new ConcurrencyLimiter(1)
     const boom = new Error('boom')
     const subsequentOperation = jest.fn(() =>
-      Bluebird.resolve('subsequent done'),
+      Promise.resolve('subsequent done'),
     )
 
     const thrown = limiter.run(() => {
@@ -272,7 +281,7 @@ describe('ConcurrencyLimiter', () => {
   it('ignores repeated release calls for the same acquired slot', async () => {
     const limiter = new ConcurrencyLimiter(1)
     const releaseSlot = await (
-      limiter as unknown as { acquireSlot: () => Bluebird<() => void> }
+      limiter as unknown as { acquireSlot: () => Promise<() => void> }
     ).acquireSlot()
 
     expect(queueState(limiter).activeCount).toBe(1)
@@ -282,7 +291,7 @@ describe('ConcurrencyLimiter', () => {
 
     expect(queueState(limiter).activeCount).toBe(0)
 
-    const freshOperation = jest.fn(() => Bluebird.resolve('fresh done'))
+    const freshOperation = jest.fn(() => Promise.resolve('fresh done'))
 
     await expect(limiter.run(freshOperation)).resolves.toBe('fresh done')
     expect(freshOperation).toHaveBeenCalledTimes(1)
@@ -293,20 +302,22 @@ describe('ConcurrencyLimiter', () => {
   it('does not deadlock when queued cancellation races with slot handoff', async () => {
     const limiter = new ConcurrencyLimiter(1)
     const firstCompletion = deferred<string>()
-    const queuedOperation = jest.fn(() => Bluebird.resolve('queued done'))
+    const queuedOperation = jest.fn(() => Promise.resolve('queued done'))
 
+    const controller = new AbortController()
     const first = limiter.run(() => firstCompletion.promise)
-    const queued = limiter.run(queuedOperation)
+    const queued = limiter.run(queuedOperation, controller.signal)
+    queued.catch(() => undefined)
 
     await settle()
 
     firstCompletion.resolve('first done')
-    queued.cancel()
+    controller.abort()
 
     await expect(first).resolves.toBe('first done')
     await settle()
 
-    const freshOperation = jest.fn(() => Bluebird.resolve('fresh done'))
+    const freshOperation = jest.fn(() => Promise.resolve('fresh done'))
     const fresh = limiter.run(freshOperation)
 
     await expect(fresh).resolves.toBe('fresh done')

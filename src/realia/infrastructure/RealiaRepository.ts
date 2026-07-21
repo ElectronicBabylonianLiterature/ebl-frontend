@@ -1,4 +1,3 @@
-import Promise from 'bluebird'
 import ApiClient from 'http/ApiClient'
 import createReference from 'bibliography/application/createReference'
 import { ReferenceDto } from 'bibliography/domain/referenceDto'

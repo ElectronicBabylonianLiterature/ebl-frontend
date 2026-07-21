@@ -1,4 +1,3 @@
-import Bluebird from 'bluebird'
 import React from 'react'
 import { render, screen, waitFor, fireEvent } from '@testing-library/react'
 import { bibliographyEntryFactory } from 'test-support/bibliography-fixtures'
@@ -193,20 +192,18 @@ beforeEach(async () => {
 
   searchEntry = bibliographyEntryFactory.build()
   fragmentService.searchBibliography.mockReturnValue(
-    Bluebird.resolve([searchEntry]),
+    Promise.resolve([searchEntry]),
   )
   fragmentService.fetchPeriods.mockReturnValue(
-    Bluebird.resolve(Object.keys(Periods)),
+    Promise.resolve(Object.keys(Periods)),
   )
-  fragmentService.fetchGenres.mockReturnValue(Bluebird.resolve(genres))
-  fragmentService.fetchProvenances.mockReturnValue(
-    Bluebird.resolve(provenances),
-  )
-  dossiersService.fetchAllDossiers.mockReturnValue(Bluebird.resolve([]))
-  dossiersService.fetchFilteredDossiers.mockReturnValue(Bluebird.resolve([]))
-  bibliographyService.find.mockReturnValue(Bluebird.resolve(searchEntry))
-  wordService.searchLemma.mockReturnValue(Bluebird.resolve([word]))
-  wordService.findAll.mockReturnValue(Bluebird.resolve([]))
+  fragmentService.fetchGenres.mockReturnValue(Promise.resolve(genres))
+  fragmentService.fetchProvenances.mockReturnValue(Promise.resolve(provenances))
+  dossiersService.fetchAllDossiers.mockReturnValue(Promise.resolve([]))
+  dossiersService.fetchFilteredDossiers.mockReturnValue(Promise.resolve([]))
+  bibliographyService.find.mockReturnValue(Promise.resolve(searchEntry))
+  wordService.searchLemma.mockReturnValue(Promise.resolve([word]))
+  wordService.findAll.mockReturnValue(Promise.resolve([]))
   session.isAllowedToReadFragments.mockReturnValue(true)
   session.isAllowedToTransliterateFragments.mockReturnValue(true)
 })

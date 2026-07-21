@@ -1,16 +1,30 @@
-import { useRef, useEffect } from 'react'
-import Promise from 'bluebird'
+import { useRef, useEffect, useCallback } from 'react'
 
-export default function usePromiseEffect<T = unknown>(): [
-  (promise: Promise<T>) => void,
+export default function usePromiseEffect(): [
+  (operation: (signal: AbortSignal) => Promise<unknown>) => void,
   () => void,
 ] {
-  const promiseRef = useRef<Promise<T>>()
-  useEffect(() => (): void => promiseRef.current?.cancel?.(), [])
-  return [
-    (promise: Promise<T>): void => {
-      promiseRef.current = promise
+  const controllerRef = useRef<AbortController | null>(null)
+  const cancel = useCallback((): void => {
+    controllerRef.current?.abort()
+  }, [])
+  useEffect(() => cancel, [cancel])
+  const run = useCallback(
+    (operation: (signal: AbortSignal) => Promise<unknown>): void => {
+      controllerRef.current?.abort()
+      const controller = new AbortController()
+      controllerRef.current = controller
+      operation(controller.signal).catch((error) => {
+        if (
+          controller.signal.aborted ||
+          (error as { name?: string })?.name === 'AbortError'
+        ) {
+          return
+        }
+        throw error
+      })
     },
-    (): void => promiseRef.current?.cancel?.(),
-  ]
+    [],
+  )
+  return [run, cancel]
 }

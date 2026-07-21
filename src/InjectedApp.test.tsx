@@ -1,6 +1,5 @@
 import React from 'react'
 import { render, screen, waitFor } from '@testing-library/react'
-import Bluebird from 'bluebird'
 import { AuthenticationContext, eblNameProperty } from 'auth/Auth'
 import type { AuthenticationService } from 'auth/Auth'
 import { guestSession } from 'auth/Session'
@@ -77,11 +76,11 @@ beforeEach(() => {
   ;(mockAuthService.getUser as jest.Mock).mockReturnValue({})
   FragmentService.prototype.fetchProvenances = jest
     .fn()
-    .mockReturnValue(Bluebird.resolve([]))
+    .mockReturnValue(Promise.resolve([]))
   FragmentService.prototype.fetchGenres = jest
     .fn()
-    .mockReturnValue(Bluebird.resolve([]))
-  TextService.prototype.list = jest.fn().mockReturnValue(Bluebird.resolve([]))
+    .mockReturnValue(Promise.resolve([]))
+  TextService.prototype.list = jest.fn().mockReturnValue(Promise.resolve([]))
 })
 
 describe('InjectedApp', () => {
@@ -115,7 +114,7 @@ describe('InjectedApp', () => {
     const error = new Error('provenance error')
     FragmentService.prototype.fetchProvenances = jest
       .fn()
-      .mockReturnValue(Bluebird.reject(error))
+      .mockReturnValue(Promise.reject(error))
 
     renderInjectedApp()
 
@@ -128,7 +127,7 @@ describe('InjectedApp', () => {
     const error = new Error('list error')
     TextService.prototype.list = jest
       .fn()
-      .mockReturnValue(Bluebird.reject(error))
+      .mockReturnValue(Promise.reject(error))
 
     renderInjectedApp()
 
@@ -141,7 +140,7 @@ describe('InjectedApp', () => {
     const error = new Error('genres error')
     FragmentService.prototype.fetchGenres = jest
       .fn()
-      .mockReturnValue(Bluebird.reject(error))
+      .mockReturnValue(Promise.reject(error))
 
     renderInjectedApp()
 

@@ -4,8 +4,6 @@ const url = 'http://example.com'
 const result = { success: true }
 const error = new Error('fake error message')
 
-const expectSignal = expect.any(AbortSignal)
-
 beforeEach(() => {
   fetchMock.resetMocks()
 })
@@ -26,28 +24,19 @@ describe('Successful request', () => {
       headers: new Headers({ Authorization: `Bearer token` }),
     }
     await cancellableFetch(url, options)
-    expect(fetch).toBeCalledWith(url, {
-      ...options,
-      signal: expectSignal,
-    })
+    expect(fetch).toBeCalledWith(url, options)
   })
 
   test('Makes a request without extra options', async () => {
     await cancellableFetch(url)
-    expect(fetch).toBeCalledWith(url, {
-      signal: expectSignal,
-    })
+    expect(fetch).toBeCalledWith(url, {})
   })
-})
 
-test('Can be cancelled', async () => {
-  fetchMock.mockResponse(JSON.stringify(result))
-  const callback = jest.fn()
-  const promise = cancellableFetch(url)
-  const waitable = promise.then(() => null)
-  promise.then(callback).catch(callback).cancel()
-  await waitable
-  expect(callback).not.toHaveBeenCalled()
+  test('Forwards the abort signal to fetch', async () => {
+    const controller = new AbortController()
+    await cancellableFetch(url, { signal: controller.signal })
+    expect(fetch).toBeCalledWith(url, { signal: controller.signal })
+  })
 })
 
 test('Rejects with error if fetch fails', async () => {

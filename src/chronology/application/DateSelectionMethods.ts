@@ -1,4 +1,3 @@
-import Bluebird from 'bluebird'
 import { MesopotamianDate } from 'chronology/domain/Date'
 import { DateFieldDto, MonthFieldDto } from 'fragmentarium/domain/FragmentDtos'
 import { Fragment } from 'fragmentarium/domain/fragment'
@@ -12,13 +11,12 @@ interface SaveDateParams {
   date?: MesopotamianDate
   updatedDate?: MesopotamianDate
   index?: number
-  cancelUpdatePromise: () => void
+  runUpdate: (operation: (signal: AbortSignal) => Promise<unknown>) => void
   setIsSaving: React.Dispatch<React.SetStateAction<boolean>>
-  setUpdatePromise: (promise: Bluebird<void>) => void
   updateDate: (
     date?: MesopotamianDate | undefined,
     index?: number | undefined,
-  ) => Bluebird<Fragment>
+  ) => Promise<Fragment>
   setDate: React.Dispatch<React.SetStateAction<MesopotamianDate | undefined>>
   setIsDisplayed: React.Dispatch<React.SetStateAction<boolean>>
 }
@@ -27,23 +25,31 @@ export function saveDateDefault({
   date,
   updatedDate,
   index,
-  cancelUpdatePromise,
+  runUpdate,
   setIsSaving,
-  setUpdatePromise,
   updateDate,
   setDate,
   setIsDisplayed,
 }: SaveDateParams): void {
   if (updatedDate !== date) {
-    cancelUpdatePromise()
     setIsSaving(true)
-    setUpdatePromise(
+    runUpdate((signal) =>
       updateDate(updatedDate, index)
         .then(() => {
-          setIsDisplayed(false)
+          if (!signal.aborted) {
+            setIsDisplayed(false)
+          }
         })
-        .finally(() => setIsSaving(false))
-        .then(() => setDate(updatedDate)),
+        .finally(() => {
+          if (!signal.aborted) {
+            setIsSaving(false)
+          }
+        })
+        .then(() => {
+          if (!signal.aborted) {
+            setDate(updatedDate)
+          }
+        }),
     )
   }
 }

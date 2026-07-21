@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import Promise from 'bluebird'
 
 import BibliographyEntryForm from './BibliographyEntryForm'
 import Spinner from 'common/ui/Spinner'
@@ -20,7 +19,7 @@ export default class BibliographyEntryFormController extends Component<
   static contextType = SessionContext
   context!: React.ContextType<typeof SessionContext>
 
-  private updatePromise: Promise<void>
+  private abortController: AbortController
 
   constructor(props: Props) {
     super(props)
@@ -28,10 +27,10 @@ export default class BibliographyEntryFormController extends Component<
       error: null,
       saving: false,
     }
-    this.updatePromise = Promise.resolve()
+    this.abortController = new AbortController()
   }
   componentWillUnmount(): void {
-    this.updatePromise.cancel()
+    this.abortController.abort()
   }
 
   get disabled(): boolean {
@@ -39,13 +38,21 @@ export default class BibliographyEntryFormController extends Component<
   }
 
   handleSubmit = (entry: BibliographyEntry): void => {
-    this.updatePromise.cancel()
+    this.abortController.abort()
+    this.abortController = new AbortController()
+    const { signal } = this.abortController
     this.setState({ error: null, saving: true })
-    this.updatePromise = this.props
+    this.props
       .onSubmit(entry)
-      .then(() => this.setState({ error: null, saving: false }))
+      .then(() => {
+        if (!signal.aborted) {
+          this.setState({ error: null, saving: false })
+        }
+      })
       .catch((error) => {
-        this.setState({ error: error, saving: false })
+        if (!signal.aborted) {
+          this.setState({ error: error, saving: false })
+        }
       })
   }
 

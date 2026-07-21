@@ -87,11 +87,15 @@ const Manuscripts = withData<
     textService,
     fragmentService,
   }) => {
-    const [setExtantLinesPromise] = usePromiseEffect<ExtantLines>()
+    const [runExtantLines] = usePromiseEffect()
     const [extantLines, setExtantLines] = useState<ExtantLines>()
     if (_.isNil(extantLines)) {
-      setExtantLinesPromise(
-        textService.findExtantLines(id).then(setExtantLines),
+      runExtantLines((signal) =>
+        textService.findExtantLines(id).then((lines) => {
+          if (!signal.aborted) {
+            setExtantLines(lines)
+          }
+        }),
       )
     }
 

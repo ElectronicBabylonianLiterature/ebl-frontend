@@ -1,7 +1,6 @@
 import BibliographyService from 'bibliography/application/BibliographyService'
 import ReferenceInjector from 'transliteration/application/ReferenceInjector'
 import { Text } from 'transliteration/domain/text'
-import Promise from 'bluebird'
 import { bibliographyEntryFactory } from 'test-support/bibliography-fixtures'
 import Reference from 'bibliography/domain/Reference'
 import { MarkupPart, TextPart } from 'transliteration/domain/markup'

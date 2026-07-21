@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import ReactMarkdown from 'react-markdown'
-import Promise from 'bluebird'
 
 import AppContent from 'common/ui/AppContent'
 import WordForm from './WordForm'
@@ -24,7 +23,7 @@ class WordEditor extends Component<
   static contextType = SessionContext
   context!: React.ContextType<typeof SessionContext>
 
-  private updatePromise: Promise<void>
+  private abortController: AbortController
 
   constructor(props) {
     super(props)
@@ -33,11 +32,11 @@ class WordEditor extends Component<
       error: null,
       saving: false,
     }
-    this.updatePromise = Promise.resolve()
+    this.abortController = new AbortController()
   }
 
   componentWillUnmount(): void {
-    this.updatePromise.cancel()
+    this.abortController.abort()
   }
 
   get disabled(): boolean {
@@ -45,13 +44,21 @@ class WordEditor extends Component<
   }
 
   updateWord = (word): void => {
-    this.updatePromise.cancel()
+    this.abortController.abort()
+    this.abortController = new AbortController()
+    const { signal } = this.abortController
     this.setState({ word: this.state.word, error: null, saving: true })
-    this.updatePromise = this.props.wordService
+    this.props.wordService
       .update(word)
-      .then(() => this.setState({ word: word, error: null, saving: false }))
+      .then(() => {
+        if (!signal.aborted) {
+          this.setState({ word: word, error: null, saving: false })
+        }
+      })
       .catch((error) => {
-        this.setState({ word: this.state.word, error: error, saving: false })
+        if (!signal.aborted) {
+          this.setState({ word: this.state.word, error: error, saving: false })
+        }
       })
   }
 

@@ -2,7 +2,6 @@ import React, { PropsWithChildren, useCallback, useMemo } from 'react'
 import { createRoot } from 'react-dom/client'
 import { BrowserRouter as Router } from 'react-router-dom'
 import { useHistory } from 'router/compat'
-import Promise from 'bluebird'
 import ErrorBoundary from 'common/errors/ErrorBoundary'
 import * as serviceWorker from './serviceWorker'
 
@@ -21,10 +20,6 @@ if (process.env.REACT_APP_SENTRY_DSN && process.env.NODE_ENV) {
     process.env.NODE_ENV,
   )
 }
-
-Promise.config({
-  cancellation: true,
-})
 
 const errorReporter = new SentryErrorReporter()
 

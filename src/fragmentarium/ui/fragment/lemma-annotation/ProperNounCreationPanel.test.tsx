@@ -1,4 +1,3 @@
-import Bluebird from 'bluebird'
 import React from 'react'
 import { render, screen, fireEvent, waitFor } from '@testing-library/react'
 import ProperNounCreationPanel from './ProperNounCreationPanel'
@@ -524,7 +523,7 @@ describe('ProperNounCreationPanel', () => {
     })
 
     it('disables button during creation', async () => {
-      const delayedPromise = new Bluebird<Word>((resolve) =>
+      const delayedPromise = new Promise<Word>((resolve) =>
         setTimeout(() => resolve(testWord), 100),
       )
       wordServiceMock.createProperNoun.mockReturnValue(delayedPromise)

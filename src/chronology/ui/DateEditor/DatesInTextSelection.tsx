@@ -1,6 +1,5 @@
 import React, { useRef, useState } from 'react'
 import { MesopotamianDate } from 'chronology/domain/Date'
-import Bluebird from 'bluebird'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import DateSelection, { DateEditor } from '../../application/DateSelection'
 import { MetaAddButton } from 'fragmentarium/ui/info/MetaEditButton'
@@ -9,7 +8,7 @@ interface Props {
   datesInText: readonly MesopotamianDate[]
   updateDatesInText: (
     datesInText: readonly MesopotamianDate[],
-  ) => Bluebird<Fragment>
+  ) => Promise<Fragment>
 }
 
 interface DatesInTextSelectionAttrs {
@@ -30,7 +29,7 @@ interface DatesInTextSelectionMethods {
   updateDateInArray: (
     date?: MesopotamianDate | undefined,
     index?: number,
-  ) => Bluebird<Fragment>
+  ) => Promise<Fragment>
 }
 
 interface DatesInTextSelectionState
@@ -46,7 +45,7 @@ function updateDateInArray({
   datesInTextDisplay: DatesInTextSelectionAttrs['datesInTextDisplay']
   date?: MesopotamianDate | undefined
   index?: number
-}): Bluebird<Fragment> {
+}): Promise<Fragment> {
   const updatedDatesInText = datesInTextDisplay.concat()
   if (index !== undefined && date !== undefined) {
     updatedDatesInText[index] = date

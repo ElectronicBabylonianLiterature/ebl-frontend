@@ -1,5 +1,4 @@
 import React, { useContext, useMemo } from 'react'
-import Bluebird from 'bluebird'
 import AppContent from 'common/ui/AppContent'
 import { Link } from 'react-router-dom'
 import { SectionCrumb } from 'common/ui/Breadcrumbs'
@@ -224,7 +223,7 @@ export default withData<
     <ChapterView chapter={chapter} text={text} {...props} />
   ),
   ({ id, textService }) =>
-    Bluebird.all([
+    Promise.all([
       textService.findChapterDisplay(id),
       textService.find(id.textId),
     ]),

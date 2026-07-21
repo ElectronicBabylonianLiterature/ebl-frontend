@@ -1,7 +1,6 @@
 import React from 'react'
 import { MemoryRouter } from 'react-router-dom'
 import { render, screen, within } from '@testing-library/react'
-import Promise from 'bluebird'
 import BibliographySearch from './BibliographySearch'
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 import createAuthorRegExp from 'test-support/createAuthorRexExp'

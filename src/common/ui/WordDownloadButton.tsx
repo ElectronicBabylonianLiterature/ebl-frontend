@@ -4,7 +4,6 @@ import { saveAs } from 'file-saver'
 import Spinner from 'common/ui/Spinner'
 import { Document, Packer } from 'docx'
 import $ from 'jquery'
-import Promise from 'bluebird'
 import usePromiseEffect from 'common/hooks/usePromiseEffect'
 import { FragmentWordExportContext } from 'fragmentarium/ui/fragment/Download'
 import { CorpusWordExportContext } from 'corpus/ui/Download'
@@ -23,22 +22,23 @@ export default function WordDownloadButton({
   getWordDoc,
 }: Props): JSX.Element {
   const [isLoading, setIsLoading] = useState(false)
-  const [setPromise, cancelPromise] = usePromiseEffect()
+  const [runDownload] = usePromiseEffect()
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     event.preventDefault()
 
     const jQueryRef = $('#jQueryContainer')
     setIsLoading(true)
-    cancelPromise()
 
-    setPromise(
+    runDownload((signal) =>
       getWordDoc
         .call(context, jQueryRef)
         .then(packWordDoc)
         .then((blob) => {
-          saveAs(blob, `${baseFileName}.docx`)
-          setIsLoading(false)
+          if (!signal.aborted) {
+            saveAs(blob, `${baseFileName}.docx`)
+            setIsLoading(false)
+          }
         }),
     )
   }

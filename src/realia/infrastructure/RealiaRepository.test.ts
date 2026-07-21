@@ -1,6 +1,5 @@
 import { testDelegation, TestData } from 'test-support/utils'
 import RealiaRepository from 'realia/infrastructure/RealiaRepository'
-import Promise from 'bluebird'
 import { cslDataFactory } from 'test-support/bibliography-fixtures'
 import {
   createRealiaRepositoryTestContext,

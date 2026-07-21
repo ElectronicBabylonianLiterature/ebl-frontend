@@ -1,4 +1,3 @@
-import Promise from 'bluebird'
 import { RealiaEntry } from 'realia/domain/RealiaEntry'
 import RealiaRepository from 'realia/infrastructure/RealiaRepository'
 

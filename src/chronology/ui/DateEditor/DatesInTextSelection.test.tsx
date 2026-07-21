@@ -5,7 +5,6 @@ import { MesopotamianDate } from 'chronology/domain/Date'
 import { mesopotamianDateFactory } from 'test-support/date-fixtures'
 import { fragment as mockFragment } from 'test-support/test-fragment'
 import SessionContext from 'auth/SessionContext'
-import { Promise } from 'bluebird'
 
 let session
 

@@ -1,4 +1,3 @@
-import Bluebird from 'bluebird'
 import ApiClient from 'http/ApiClient'
 import ReferenceInjector from 'transliteration/application/ReferenceInjector'
 import BibliographyService from 'bibliography/application/BibliographyService'
@@ -16,7 +15,7 @@ export default class MarkupService {
     this.referenceInjector = new ReferenceInjector(bibliographyService)
   }
 
-  fromString(text: string): Bluebird<readonly MarkupPart[]> {
+  fromString(text: string): Promise<readonly MarkupPart[]> {
     return this.apiClient
       .fetchJson(
         `/${this.urlPath}?${stringify({
@@ -40,7 +39,7 @@ export default class MarkupService {
 
   injectReferencesToMarkup(
     parts: readonly MarkupPart[],
-  ): Bluebird<readonly MarkupPart[]> {
+  ): Promise<readonly MarkupPart[]> {
     return this.referenceInjector.injectReferencesToMarkup(parts)
   }
 }

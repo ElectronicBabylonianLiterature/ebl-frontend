@@ -2,7 +2,6 @@ import DossierRecord, {
   DossierRecordDto,
   DossierRecordSuggestion,
 } from 'dossiers/domain/DossierRecord'
-import Promise from 'bluebird'
 import ApiClient from 'http/ApiClient'
 import { stringify } from 'query-string'
 

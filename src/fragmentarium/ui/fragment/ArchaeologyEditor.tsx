@@ -3,7 +3,6 @@ import _ from 'lodash'
 import { Form, Col, Button, Row } from 'react-bootstrap'
 import Select from 'react-select'
 import type { SingleValue } from 'react-select'
-import Bluebird from 'bluebird'
 import { Archaeology, Findspot } from 'fragmentarium/domain/archaeology'
 import { ArchaeologyDto } from 'fragmentarium/domain/archaeologyDtos'
 import { Fragment } from 'fragmentarium/domain/fragment'
@@ -279,7 +278,7 @@ export default withData<
     )
   },
   (props) =>
-    Bluebird.all([
+    Promise.all([
       props.findspotService.fetchFindspots(),
       props.fragmentService.fetchProvenances(),
     ]).then(([findspots, provenances]) => ({ findspots, provenances })),

@@ -5,7 +5,6 @@ import WordService from 'dictionary/application/WordService'
 import { Dropdown } from 'react-bootstrap'
 import Spinner from 'common/ui/Spinner'
 import $ from 'jquery'
-import Promise from 'bluebird'
 import usePromiseEffect from 'common/hooks/usePromiseEffect'
 import { jsPDF } from 'jspdf'
 
@@ -21,17 +20,18 @@ export default function PdfDownloadButton({
   children,
 }: Props): JSX.Element {
   const [isLoading, setIsLoading] = useState(false)
-  const [setPromise, cancelPromise] = usePromiseEffect()
+  const [runDownload] = usePromiseEffect()
 
   const handleClick = (event) => {
     const jQueryRef = $('#jQueryContainer')
     setIsLoading(true)
-    cancelPromise()
 
-    setPromise(
+    runDownload((signal) =>
       getPdfDoc(fragment, wordService, jQueryRef).then((doc) => {
-        doc.save(fragment.number + '.pdf')
-        setIsLoading(false)
+        if (!signal.aborted) {
+          doc.save(fragment.number + '.pdf')
+          setIsLoading(false)
+        }
       }),
     )
   }

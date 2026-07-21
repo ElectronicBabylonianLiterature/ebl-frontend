@@ -142,10 +142,9 @@ const CuneiformFragmentController: FunctionComponent<ControllerProps> = ({
   const [currentFragment, setFragment] = useState(fragment)
   const [isSaving, setIsSaving] = useState(false)
   const [error, setError] = useState(null)
-  const [setPromise, cancelPromise] = usePromiseEffect()
+  const [runSave] = usePromiseEffect()
 
   const handleSave = (promise) => {
-    cancelPromise()
     setError(null)
     setIsSaving(true)
 
@@ -154,10 +153,12 @@ const CuneiformFragmentController: FunctionComponent<ControllerProps> = ({
       setIsSaving(false)
       return updatedFragment
     })
-    setPromise(
+    runSave((signal) =>
       updatePromise.catch((error) => {
-        setError(error)
-        setIsSaving(false)
+        if (!signal.aborted) {
+          setError(error)
+          setIsSaving(false)
+        }
       }),
     )
     return updatePromise

@@ -122,11 +122,11 @@ describe('ApiClient - Edge Cases and Error Handling', () => {
       )
     })
 
-    test('AbortError - thrown when request is cancelled', async () => {
+    test('AbortError - thrown when request is cancelled, not reported', async () => {
       fetchMock.mockAbortOnce()
 
       await expect(apiClient.fetchJson(path, true)).rejects.toThrow('aborted')
-      expect(errorReporter.captureException).toHaveBeenCalled()
+      expect(errorReporter.captureException).not.toHaveBeenCalled()
     })
 
     test('Timeout error - network timeout', async () => {
@@ -182,30 +182,28 @@ describe('ApiClient - Edge Cases and Error Handling', () => {
   })
 
   describe('Request Cancellation', () => {
-    test('Cancelled promise rejects without completing', () => {
-      fetchMock.mockResponseOnce(
-        () =>
-          new Promise((resolve) =>
-            setTimeout(() => resolve({ body: 'data' }), 100),
-          ),
+    test('Forwards the abort signal to fetch', async () => {
+      fetchMock.mockResponse(JSON.stringify({ data: 'x' }))
+      const controller = new AbortController()
+
+      await apiClient.fetchJson(path, true, controller.signal)
+
+      expect(fetch).toHaveBeenLastCalledWith(
+        expect.any(String),
+        expect.objectContaining({ signal: controller.signal }),
       )
-
-      const promise = apiClient.fetchJson(path, true)
-      promise.cancel()
-
-      expect(promise.isCancelled()).toBe(true)
     })
 
-    test('Request cancellation is available on all methods', () => {
+    test('The abort signal can be passed to all methods', async () => {
       fetchMock.mockResponse(JSON.stringify({ data: 'test' }))
+      const controller = new AbortController()
 
-      const fetchPromise = apiClient.fetchJson(path, true)
-      const postPromise = apiClient.postJson(path, {})
-      const blobPromise = apiClient.fetchBlob(path, true)
-
-      expect(fetchPromise.cancel).toBeDefined()
-      expect(postPromise.cancel).toBeDefined()
-      expect(blobPromise.cancel).toBeDefined()
+      await apiClient.fetchJson(path, true, controller.signal)
+      await apiClient.postJson(path, {}, true, controller.signal)
+      await apiClient.fetchBlob(path, true, controller.signal)
+      ;(fetch as jest.Mock).mock.calls.forEach(([, options]) => {
+        expect(options.signal).toBe(controller.signal)
+      })
     })
   })
 

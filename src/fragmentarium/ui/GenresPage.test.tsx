@@ -3,7 +3,6 @@ import { render, screen } from '@testing-library/react'
 import '@testing-library/jest-dom'
 import GenresPage from 'fragmentarium/ui/GenresPage'
 import FragmentService from 'fragmentarium/application/FragmentService'
-import Bluebird from 'bluebird'
 
 jest.mock('common/ui/Markdown', () => ({
   __esModule: true,
@@ -21,7 +20,7 @@ const mockGenres: string[][] = [
 
 function makeFragmentService(genres = mockGenres): FragmentService {
   return {
-    fetchGenres: jest.fn().mockReturnValue(Bluebird.resolve(genres)),
+    fetchGenres: jest.fn().mockReturnValue(Promise.resolve(genres)),
   } as unknown as FragmentService
 }
 

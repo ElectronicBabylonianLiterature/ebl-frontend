@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import { Form, InputGroup, Button } from 'react-bootstrap'
 import Cite from 'citation-js'
 import _ from 'lodash'
-import Promise from 'bluebird'
 import { Parser } from 'html-to-react'
 
 import ExternalLink from 'common/ui/ExternalLink'
@@ -47,13 +46,13 @@ interface State {
 export default class BibliographyEntryForm extends Component<Props, State> {
   static defaultProps = { value: null, disabled: false }
 
-  private promise: Promise<void>
+  private abortController: AbortController
   private doLoad: (value: string) => Promise<void> | undefined
 
   constructor(props: Props) {
     super(props)
     this.state = this.getInitialState(props.value)
-    this.promise = Promise.resolve()
+    this.abortController = new AbortController()
     this.doLoad = _.debounce(this.load, 500, { leading: false, trailing: true })
   }
 
@@ -106,13 +105,18 @@ export default class BibliographyEntryForm extends Component<Props, State> {
       loading: true,
       isInvalid: false,
     })
-    this.promise = this.doLoad(event.target.value) || this.promise
+    this.doLoad(event.target.value)
   }
 
   private load = (value: string): Promise<void> => {
-    this.promise.cancel()
+    this.abortController.abort()
+    this.abortController = new AbortController()
+    const { signal } = this.abortController
 
     const handleSuccess = (cite: Cite): void => {
+      if (signal.aborted) {
+        return
+      }
       const cslData = cite.get({ format: 'real', type: 'json', style: 'csl' })
       const customId = generateIds(cslData[0])
 
@@ -126,6 +130,9 @@ export default class BibliographyEntryForm extends Component<Props, State> {
     }
 
     const handleError = (): void => {
+      if (signal.aborted) {
+        return
+      }
       this.setState({
         ...this.state,
         citation: '',

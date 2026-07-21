@@ -11,7 +11,6 @@ import MarkupService, {
 } from 'markup/application/MarkupService'
 import AfoRegisterService from 'afo-register/application/AfoRegisterService'
 import RealiaService from 'realia/application/RealiaService'
-import Bluebird from 'bluebird'
 import { saveAs } from 'file-saver'
 import pako from 'pako'
 import { FindspotService } from 'fragmentarium/application/FindspotService'
@@ -76,17 +75,17 @@ beforeEach(() => {
     jest.Mocked<DossiersService>
   >)()
 
-  signService.listAllSigns.mockReturnValue(Bluebird.resolve(['a2']))
+  signService.listAllSigns.mockReturnValue(Promise.resolve(['a2']))
   bibliographyService.listAllBibliography.mockReturnValue(
-    Bluebird.resolve(['ref1']),
+    Promise.resolve(['ref1']),
   )
-  wordService.listAllWords.mockReturnValue(Bluebird.resolve(['awīlum I']))
-  fragmentService.listAllFragments.mockReturnValue(Bluebird.resolve(['BM.42']))
+  wordService.listAllWords.mockReturnValue(Promise.resolve(['awīlum I']))
+  fragmentService.listAllFragments.mockReturnValue(Promise.resolve(['BM.42']))
   textService.listAllTexts.mockReturnValue(
-    Bluebird.resolve([{ index: 1, category: 1, genre: 'L' }]),
+    Promise.resolve([{ index: 1, category: 1, genre: 'L' }]),
   )
   textService.listAllChapters.mockReturnValue(
-    Bluebird.resolve([
+    Promise.resolve([
       { index: 1, category: 1, genre: 'L', stage: 'OB', chapter: '-' },
     ]),
   )

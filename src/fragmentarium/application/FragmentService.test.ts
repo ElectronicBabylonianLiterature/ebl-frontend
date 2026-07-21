@@ -1,4 +1,3 @@
-import Promise from 'bluebird'
 import Folio from 'fragmentarium/domain/Folio'
 import { fragment } from 'test-support/test-fragment'
 import createLemmatizationTestText from 'test-support/test-text'
@@ -1328,16 +1327,12 @@ describe('FragmentService cache', () => {
     expect(fragmentRepository.query).toHaveBeenCalledTimes(1)
   })
 
-  test('does not return cancelled in-flight query when re-requested', async () => {
-    const deferredQuery = new Promise<QueryResult>(() => {})
-
+  test('re-fetches after a failed in-flight query', async () => {
     fragmentRepository.query
-      .mockReturnValueOnce(deferredQuery)
+      .mockReturnValueOnce(Promise.reject(new Error('fail')))
       .mockReturnValueOnce(Promise.resolve(updatedQueryResult))
 
-    const firstQuery = service.query(query)
-
-    firstQuery.cancel()
+    await expect(service.query(query)).rejects.toThrow('fail')
 
     const secondQuery = service.query(query)
 

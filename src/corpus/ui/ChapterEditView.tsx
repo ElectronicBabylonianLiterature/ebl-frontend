@@ -11,7 +11,6 @@ import { Text } from 'corpus/domain/text'
 import { Chapter } from 'corpus/domain/chapter'
 import { ChapterId } from 'transliteration/domain/chapter-id'
 import { SectionCrumb, TextCrumb } from 'common/ui/Breadcrumbs'
-import Promise from 'bluebird'
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 import { BibliographySearch } from 'bibliography/application/BibliographyService'
 import TextService from 'corpus/application/TextService'
@@ -57,7 +56,7 @@ function ChapterEditView({
   const [isDirty, setIsDirty] = useState(false)
   const [isSaving, setIsSaving] = useState(false)
   const [error, setError] = useState<Error | null>(null)
-  const [setUpdatePromise, cancelUpdatePromise] = usePromiseEffect<void>()
+  const [runUpdate] = usePromiseEffect()
 
   const setStateUpdating = (): void => {
     setIsSaving(true)
@@ -77,9 +76,20 @@ function ChapterEditView({
   }
 
   const update = (updater: () => Promise<Chapter>): void => {
-    cancelUpdatePromise()
     setStateUpdating()
-    setUpdatePromise(updater().then(setStateUpdated).catch(setStateError))
+    runUpdate((signal) =>
+      updater()
+        .then((updatedChapter) => {
+          if (!signal.aborted) {
+            setStateUpdated(updatedChapter)
+          }
+        })
+        .catch((error) => {
+          if (!signal.aborted) {
+            setStateError(error)
+          }
+        }),
+    )
   }
 
   const updateAlignment = (alignment: ChapterAlignment): void => {

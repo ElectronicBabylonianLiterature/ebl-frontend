@@ -3,7 +3,6 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react'
 import AfoRegisterTextSelect from './AfoRegisterTextSelect'
 import userEvent from '@testing-library/user-event'
 import { AfoRegisterRecordSuggestion } from 'afo-register/domain/Record'
-import Bluebird from 'bluebird'
 
 describe('AfoRegisterTextSelect', () => {
   const mockSearchSuggestions = jest.fn()
@@ -38,7 +37,7 @@ describe('AfoRegisterTextSelect', () => {
       { text: 'Text option 1', textNumbers: ['1'] },
       { text: 'Text option 2', textNumbers: ['2'] },
     ]
-    mockSearchSuggestions.mockReturnValue(Bluebird.resolve(options))
+    mockSearchSuggestions.mockReturnValue(Promise.resolve(options))
     render(<AfoRegisterTextSelect {...defaultProps} />)
     await userEvent.type(screen.getByLabelText('test-select'), 'Option')
     const option = await screen.findByText(options[0].text)

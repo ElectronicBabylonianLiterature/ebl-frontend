@@ -12,7 +12,6 @@ import {
   Periods,
 } from 'common/utils/period'
 import { Button, Overlay, Popover } from 'react-bootstrap'
-import Bluebird from 'bluebird'
 import usePromiseEffect from 'common/hooks/usePromiseEffect'
 import Spinner from 'common/ui/Spinner'
 import { MetaEditButton } from 'fragmentarium/ui/info/MetaEditButton'
@@ -20,7 +19,7 @@ import ExternalLink from 'common/ui/ExternalLink'
 
 type Props = {
   fragment: Fragment
-  updateScript: (script: Script) => Bluebird<Fragment>
+  updateScript: (script: Script) => Promise<Fragment>
   periodOptions: readonly Period[]
 }
 
@@ -59,7 +58,7 @@ function ScriptSelection({
   const [isSaving, setIsSaving] = useState(false)
   const [isDirty, setIsDirty] = useState(false)
   const target = useRef<HTMLButtonElement | null>(null)
-  const [setUpdatePromise, cancelUpdatePromise] = usePromiseEffect<void>()
+  const [runUpdate] = usePromiseEffect()
 
   function updatePeriod(event) {
     setUpdates({ ...updates, period: Periods[event.value] })
@@ -131,13 +130,15 @@ function ScriptSelection({
             disabled={!isDirty}
             onClick={() => {
               if (updates !== script) {
-                cancelUpdatePromise()
                 setIsSaving(true)
-                setUpdatePromise(
-                  updateScript(updates)
-                    .then(() => setIsSaving(false))
-                    .then(() => setIsDisplayed(false))
-                    .then(() => setScript(updates)),
+                runUpdate((signal) =>
+                  updateScript(updates).then(() => {
+                    if (!signal.aborted) {
+                      setIsSaving(false)
+                      setIsDisplayed(false)
+                      setScript(updates)
+                    }
+                  }),
                 )
               }
             }}
@@ -179,7 +180,7 @@ function ScriptSelection({
 }
 
 export default withData<
-  { fragment: Fragment; updateScript: (script: Script) => Bluebird<Fragment> },
+  { fragment: Fragment; updateScript: (script: Script) => Promise<Fragment> },
   { fragmentService: FragmentService },
   readonly string[]
 >(

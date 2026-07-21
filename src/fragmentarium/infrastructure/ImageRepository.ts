@@ -1,4 +1,3 @@
-import Promise from 'bluebird'
 import Folio from 'fragmentarium/domain/Folio'
 import {
   ImageRepository,

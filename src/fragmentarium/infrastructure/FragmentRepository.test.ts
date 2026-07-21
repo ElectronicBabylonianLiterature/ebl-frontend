@@ -1,4 +1,3 @@
-import Promise from 'bluebird'
 import { testDelegation, TestData } from 'test-support/utils'
 import FragmentRepository, { createScript } from './FragmentRepository'
 import Folio from 'fragmentarium/domain/Folio'

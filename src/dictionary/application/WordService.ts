@@ -1,4 +1,3 @@
-import Promise from 'bluebird'
 import Word from 'dictionary/domain/Word'
 import WordRepository from 'dictionary/infrastructure/WordRepository'
 import _ from 'lodash'

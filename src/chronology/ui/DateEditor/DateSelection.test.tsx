@@ -4,7 +4,6 @@ import userEvent from '@testing-library/user-event'
 import DateSelection from '../../application/DateSelection'
 import { fragment as mockFragment } from 'test-support/test-fragment'
 import SessionContext from 'auth/SessionContext'
-import { Promise } from 'bluebird'
 
 let session
 let mockUpdateDate

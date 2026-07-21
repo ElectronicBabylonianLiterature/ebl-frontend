@@ -1,4 +1,4 @@
-import Promise from 'bluebird'
+import mapSeries from 'common/utils/mapSeries'
 import DictionaryWord from 'dictionary/domain/Word'
 import _ from 'lodash'
 import Lemma from 'transliteration/domain/Lemma'
@@ -34,7 +34,7 @@ export abstract class AbstractLemmatizationFactory<T, U> {
   protected createLemmatizationLine(
     tokens: readonly Token[],
   ): Promise<LemmatizationToken[]> {
-    return Promise.mapSeries(tokens, (token) =>
+    return mapSeries(tokens, (token) =>
       token.lemmatizable
         ? Promise.all([
             this.createLemmas(token),
@@ -56,7 +56,7 @@ export abstract class AbstractLemmatizationFactory<T, U> {
   }
 
   protected createLemmas(token: LemmatizableToken): Promise<UniqueLemma> {
-    return Promise.mapSeries(token.uniqueLemma, (lemma) =>
+    return mapSeries(token.uniqueLemma, (lemma) =>
       this.findWord(lemma).then((word: DictionaryWord) => new Lemma(word)),
     )
   }
@@ -66,7 +66,7 @@ export default class LemmatizationFactory extends AbstractLemmatizationFactory<
   Lemmatization
 > {
   createLemmatization(text: Text): Promise<Lemmatization> {
-    return Promise.mapSeries(text.allLines, (line) =>
+    return mapSeries(text.allLines, (line) =>
       this.createLemmatizationLine(line.content),
     ).then(
       (lines) =>

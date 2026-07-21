@@ -1,5 +1,4 @@
 import React from 'react'
-import Bluebird from 'bluebird'
 import { MemoryRouter } from 'react-router-dom'
 import { render, screen } from '@testing-library/react'
 import { QueryItem } from 'query/QueryResult'
@@ -107,7 +106,7 @@ describe('FragmentLines', () => {
 
   it('shows the hydration spinner when the query item is not render-ready', async () => {
     fragmentService.find.mockReturnValueOnce(
-      new Bluebird(() => undefined) as unknown as Bluebird<never>,
+      new Promise(() => undefined) as unknown as Promise<never>,
     )
 
     renderFragmentLines({

@@ -1,6 +1,5 @@
 import React from 'react'
 import { render, screen, RenderResult } from '@testing-library/react'
-import Bluebird from 'bluebird'
 import _ from 'lodash'
 
 import SessionContext from 'auth/SessionContext'
@@ -26,7 +25,7 @@ beforeEach(async () => {
     find: jest.fn(),
     update: jest.fn(),
   }
-  wordService.find.mockReturnValueOnce(Bluebird.resolve(result))
+  wordService.find.mockReturnValueOnce(Promise.resolve(result))
 })
 
 describe('Fecth word', () => {
@@ -45,7 +44,7 @@ describe('Fecth word', () => {
 
 describe('Update word', () => {
   it('Posts to API on submit', async () => {
-    wordService.update.mockReturnValueOnce(Bluebird.resolve(result))
+    wordService.update.mockReturnValueOnce(Promise.resolve(result))
     const { container } = await renderWithRouter()
 
     await submitForm(container)
@@ -55,7 +54,7 @@ describe('Update word', () => {
 
   it('Displays error message failure', async () => {
     wordService.update.mockImplementationOnce(() =>
-      Bluebird.reject(new Error(errorMessage)),
+      Promise.reject(new Error(errorMessage)),
     )
     const { container } = await renderWithRouter()
 
@@ -64,14 +63,22 @@ describe('Update word', () => {
     await screen.findByText(errorMessage)
   })
 
-  it('Cancels promise on unmount', async () => {
-    const promise = new Bluebird(_.noop)
-    jest.spyOn(promise, 'cancel')
-    wordService.update.mockReturnValueOnce(promise)
+  it('Ignores the update result after unmount', async () => {
+    let resolveUpdate: () => void = _.noop
+    wordService.update.mockReturnValueOnce(
+      new Promise<void>((resolve) => {
+        resolveUpdate = resolve
+      }),
+    )
     const { unmount, container } = await renderWithRouter()
     await submitForm(container)
     unmount()
-    expect(promise.isCancelled()).toBe(true)
+    await expect(
+      (async () => {
+        resolveUpdate()
+        await Promise.resolve()
+      })(),
+    ).resolves.toBeUndefined()
   })
 })
 

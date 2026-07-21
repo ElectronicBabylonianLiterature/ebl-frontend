@@ -1,4 +1,3 @@
-import Promise from 'bluebird'
 import { testDelegation, TestData } from 'test-support/utils'
 import BibliographyRepository from './BibliographyRepository'
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'

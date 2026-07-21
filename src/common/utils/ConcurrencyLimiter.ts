@@ -1,8 +1,13 @@
-import Bluebird from 'bluebird'
-
 type QueueState = {
   activeCount: number
   waitingResolvers: (() => void)[]
+}
+
+function abortError(signal: AbortSignal): Error {
+  return (
+    (signal.reason as Error | undefined) ??
+    new DOMException('The operation was aborted.', 'AbortError')
+  )
 }
 
 export default class ConcurrencyLimiter {
@@ -13,51 +18,39 @@ export default class ConcurrencyLimiter {
 
   constructor(private readonly maximumConcurrency: number) {}
 
-  run<ReturnValue>(
-    operation: () => Bluebird<ReturnValue>,
-  ): Bluebird<ReturnValue> {
-    let operationPromise: Bluebird<ReturnValue> | undefined
-    let isCanceled = false
-
-    const slotPromise = this.acquireSlot()
-
-    return new Bluebird<ReturnValue>((resolve, reject, onCancel) => {
-      onCancel?.(() => {
-        isCanceled = true
-        slotPromise.cancel()
-        operationPromise?.cancel()
-      })
-
-      slotPromise
-        .then((releaseSlot) => {
-          if (isCanceled) {
-            releaseSlot()
-            return
-          }
-
-          operationPromise = Bluebird.try(operation).finally(releaseSlot)
-          operationPromise.then(resolve, reject)
-        })
-        .catch(reject)
-    })
+  async run<ReturnValue>(
+    operation: () => Promise<ReturnValue>,
+    signal?: AbortSignal,
+  ): Promise<ReturnValue> {
+    const releaseSlot = await this.acquireSlot(signal)
+    try {
+      return await operation()
+    } finally {
+      releaseSlot()
+    }
   }
 
-  private acquireSlot(): Bluebird<() => void> {
-    return new Bluebird((resolve, _reject, onCancel) => {
-      const waitingResolver = () => resolve(this.createReleaseSlot())
-
-      onCancel?.(() => {
-        this.queueState.waitingResolvers =
-          this.queueState.waitingResolvers.filter(
-            (resolver) => resolver !== waitingResolver,
-          )
-      })
-
-      if (this.queueState.activeCount < this.maximumConcurrency) {
-        this.queueState.activeCount += 1
-        resolve(this.createReleaseSlot())
-      } else {
-        this.queueState.waitingResolvers.push(waitingResolver)
+  private acquireSlot(signal?: AbortSignal): Promise<() => void> {
+    if (this.queueState.activeCount < this.maximumConcurrency) {
+      this.queueState.activeCount += 1
+      return Promise.resolve(this.createReleaseSlot())
+    }
+    return new Promise<() => void>((resolve, reject) => {
+      const waitingResolver = (): void => resolve(this.createReleaseSlot())
+      this.queueState.waitingResolvers.push(waitingResolver)
+      if (signal) {
+        signal.addEventListener(
+          'abort',
+          () => {
+            const index =
+              this.queueState.waitingResolvers.indexOf(waitingResolver)
+            if (index >= 0) {
+              this.queueState.waitingResolvers.splice(index, 1)
+              reject(abortError(signal))
+            }
+          },
+          { once: true },
+        )
       }
     })
   }

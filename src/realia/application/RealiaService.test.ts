@@ -2,7 +2,6 @@ import { testDelegation, TestData } from 'test-support/utils'
 import RealiaRepository from 'realia/infrastructure/RealiaRepository'
 import RealiaService from 'realia/application/RealiaService'
 import { RealiaEntry } from 'realia/domain/RealiaEntry'
-import Promise from 'bluebird'
 
 jest.mock('realia/infrastructure/RealiaRepository')
 

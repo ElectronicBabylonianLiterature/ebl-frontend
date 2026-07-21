@@ -1,4 +1,3 @@
-import Promise from 'bluebird'
 import { ChapterDisplay } from 'corpus/domain/chapter'
 import { ChapterId } from 'transliteration/domain/chapter-id'
 import { ExtantLines } from 'corpus/domain/extant-lines'

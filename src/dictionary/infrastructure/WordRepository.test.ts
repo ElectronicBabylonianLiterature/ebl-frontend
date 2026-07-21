@@ -1,4 +1,3 @@
-import Promise from 'bluebird'
 import { testDelegation, TestData } from 'test-support/utils'
 import WordRepository from './WordRepository'
 import ApiClient from 'http/ApiClient'

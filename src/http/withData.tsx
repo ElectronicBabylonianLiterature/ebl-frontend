@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from 'react'
-import Promise from 'bluebird'
 import Spinner from 'common/ui/Spinner'
 import ErrorAlert from 'common/errors/ErrorAlert'
 import ErrorBoundary from 'common/errors/ErrorBoundary'
@@ -18,7 +17,7 @@ export type Config<PROPS, DATA> = {
 
 export default function withData<PROPS, GETTER_PROPS, DATA>(
   WrappedComponent: React.ComponentType<WithData<PROPS, DATA>>,
-  getter: (props: PROPS & GETTER_PROPS) => Promise<DATA>,
+  getter: (props: PROPS & GETTER_PROPS, signal: AbortSignal) => Promise<DATA>,
   config: Partial<Config<PROPS & GETTER_PROPS, DATA>> = {},
 ): React.ComponentType<PROPS & GETTER_PROPS> {
   const fullConfig: Config<PROPS & GETTER_PROPS, DATA> = {
@@ -36,12 +35,11 @@ export default function withData<PROPS, GETTER_PROPS, DATA>(
       () => {
         const requestId = requestSequence.current + 1
         requestSequence.current = requestId
-        let fetchPromise: Promise<DATA> | undefined
+        const abortController = new AbortController()
         setError(null)
         if (fullConfig.filter(props)) {
           setData(null)
-          fetchPromise = getter(props)
-          fetchPromise
+          getter(props, abortController.signal)
             .then((resolvedData) => {
               if (requestSequence.current === requestId) {
                 setData(resolvedData)
@@ -49,10 +47,8 @@ export default function withData<PROPS, GETTER_PROPS, DATA>(
             })
             .catch((resolvedError) => {
               const isCancellationError =
-                (resolvedError as { name?: string })?.name ===
-                  'CancellationError' ||
-                (typeof fetchPromise?.isCancelled === 'function' &&
-                  fetchPromise.isCancelled())
+                (resolvedError as { name?: string })?.name === 'AbortError' ||
+                abortController.signal.aborted
 
               if (
                 requestSequence.current === requestId &&
@@ -65,9 +61,7 @@ export default function withData<PROPS, GETTER_PROPS, DATA>(
           setData(fullConfig.defaultData(props))
         }
         return (): void => {
-          if (fetchPromise?.cancel) {
-            fetchPromise.cancel()
-          }
+          abortController.abort()
         }
       },
       // eslint-disable-next-line react-hooks/exhaustive-deps

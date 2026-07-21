@@ -6,7 +6,6 @@ import { waitForSpinnerToBeRemoved } from 'test-support/waitForSpinnerToBeRemove
 import SignsSearch from 'signs/ui/search/SignsSearch'
 import Sign from 'signs/domain/Sign'
 import SignService from 'signs/application/SignService'
-import Bluebird from 'bluebird'
 import { OrderedSignFactory, signFactory } from 'test-support/sign-fixtures'
 
 jest.mock('signs/application/SignService')
@@ -35,8 +34,8 @@ async function renderSignSearch(): Promise<void> {
 describe('Display Search Results', () => {
   const setup = async (): Promise<void> => {
     signs = signFactory.buildList(2)
-    signService.search.mockReturnValue(Bluebird.resolve(signs))
-    signService.findSignsByOrder.mockReturnValue(Bluebird.resolve(orderedSigns))
+    signService.search.mockReturnValue(Promise.resolve(signs))
+    signService.findSignsByOrder.mockReturnValue(Promise.resolve(orderedSigns))
     await renderSignSearch()
     expect(signService.search).toBeCalledWith(query)
   }

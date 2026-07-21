@@ -8,7 +8,6 @@ import WordService from 'dictionary/application/WordService'
 import TextService from 'corpus/application/TextService'
 import SignService from 'signs/application/SignService'
 import MemorySession from 'auth/Session'
-import Bluebird from 'bluebird'
 import { DictionaryContext } from '../dictionary-context'
 import { Chance } from 'chance'
 import { dictionaryLineDisplayFactory } from 'test-support/dictionary-line-fixtures'
@@ -250,11 +249,12 @@ describe('Fetch word', () => {
       ],
       matchCountTotal: matchingLines.length,
     }
-    wordService.find.mockReturnValue(Bluebird.resolve(word))
-    fragmentService.find.mockReturnValue(Bluebird.resolve(partialLinesFragment))
-    fragmentService.query.mockReturnValue(Bluebird.resolve(queryResult))
+    wordService.find.mockReturnValue(Promise.resolve(word))
+    signService.search.mockReturnValue(Promise.resolve([]))
+    fragmentService.find.mockReturnValue(Promise.resolve(partialLinesFragment))
+    fragmentService.query.mockReturnValue(Promise.resolve(queryResult))
     textService.searchLemma.mockReturnValue(
-      Bluebird.resolve(
+      Promise.resolve(
         dictionaryLineDisplayFactory.buildList(
           10,
           {},
@@ -263,7 +263,7 @@ describe('Fetch word', () => {
       ),
     )
     textService.query.mockReturnValue(
-      Bluebird.resolve({ items: [], matchCountTotal: 42 }),
+      Promise.resolve({ items: [], matchCountTotal: 42 }),
     )
 
     const view = renderWordInformationDisplay()

@@ -1,4 +1,3 @@
-import Promise from 'bluebird'
 import { testDelegation, TestData } from 'test-support/utils'
 import ApiClient from 'http/ApiClient'
 import SignRepository from 'signs/infrastructure/SignRepository'

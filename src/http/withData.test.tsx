@@ -1,6 +1,5 @@
 import React from 'react'
 import { render, RenderResult, screen, waitFor } from '@testing-library/react'
-import Promise from 'bluebird'
 import _ from 'lodash'
 import withData, { Config, WithData } from './withData'
 import ErrorReporterContext, { ErrorReporter } from 'ErrorReporterContext'
@@ -19,7 +18,7 @@ const errorMessage = 'error'
 
 let filter: jest.Mock<boolean, [Props]>
 let config: Config<Props, string>
-let getter: jest.Mock<Promise<string>, [Props]>
+let getter: jest.Mock<Promise<string>, [Props, AbortSignal]>
 let ComponentWithData: React.ComponentType<Props>
 let InnerComponent: jest.Mock<JSX.Element, [WithData<Props, string>]>
 
@@ -78,7 +77,7 @@ describe('On successful get', () => {
     getter.mockReturnValueOnce(Promise.resolve(data))
     renderWithData()
     await screen.findByText(RegExp(propValue))
-    expect(getter).toBeCalledWith({ prop: propValue })
+    expect(getter).toBeCalledWith({ prop: propValue }, expect.any(AbortSignal))
   })
 
   it('Renders the wrapped component', async () => {
@@ -112,7 +111,10 @@ describe('On successful get', () => {
     rerenderView(rerender, newPropValue)
     await screen.findByText(RegExp(newPropValue))
 
-    expect(getter).toBeCalledWith({ prop: newPropValue })
+    expect(getter).toBeCalledWith(
+      { prop: newPropValue },
+      expect.any(AbortSignal),
+    )
     expect(screen.getByText(`${newPropValue} ${newData}`)).toBeInTheDocument()
   })
 
@@ -178,12 +180,15 @@ describe('On failed request', () => {
 })
 
 describe('When unmounting', () => {
-  it('Cancels the promise', () => {
-    const promise: Promise<string> = new Promise(_.noop)
-    getter.mockReturnValueOnce(promise)
+  it('Aborts the request signal', () => {
+    let requestSignal: AbortSignal | undefined
+    getter.mockImplementationOnce((_props, signal) => {
+      requestSignal = signal
+      return new Promise(_.noop)
+    })
     const { unmount } = renderWithData()
     unmount()
-    expect(promise.isCancelled()).toBe(true)
+    expect(requestSignal?.aborted).toBe(true)
   })
 
   it('Does not show error', () => {
