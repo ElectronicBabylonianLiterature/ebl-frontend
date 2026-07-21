@@ -1,8 +1,8 @@
+import Bluebird from 'bluebird'
 import React from 'react'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import Chance from 'chance'
 import { MemoryRouter } from 'react-router-dom'
-import Promise from 'bluebird'
 import LatestTransliterations from './LatestTransliterations'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import { Fragment } from 'fragmentarium/domain/fragment'
@@ -46,14 +46,14 @@ const setup = async (): Promise<void> => {
     { transient: { chance } },
   )
   fragmentService.queryLatest.mockReturnValueOnce(
-    Promise.resolve({
+    Bluebird.resolve({
       items: fragments.map(queryItemOf),
       matchCountTotal: 0,
     }),
   )
   fragmentService.find
-    .mockReturnValueOnce(Promise.resolve(fragments[0]))
-    .mockReturnValueOnce(Promise.resolve(fragments[1]))
+    .mockReturnValueOnce(Bluebird.resolve(fragments[0]))
+    .mockReturnValueOnce(Bluebird.resolve(fragments[1]))
   fragmentService.findThumbnail.mockResolvedValue({ blob: null })
 
   dossiersService.queryByIds.mockResolvedValue([])
@@ -91,7 +91,7 @@ describe('preview mode', () => {
       { transient: { chance } },
     )
     fragmentService.queryLatest.mockReturnValueOnce(
-      Promise.resolve({
+      Bluebird.resolve({
         items: previewFragments.map(queryItemOf),
         matchCountTotal: 0,
       }),
@@ -99,7 +99,7 @@ describe('preview mode', () => {
     previewFragments
       .slice(0, 5)
       .forEach((fragment) =>
-        fragmentService.find.mockReturnValueOnce(Promise.resolve(fragment)),
+        fragmentService.find.mockReturnValueOnce(Bluebird.resolve(fragment)),
       )
     fragmentService.findThumbnail.mockResolvedValue({ blob: null })
     dossiersService.queryByIds.mockResolvedValue([])
@@ -153,13 +153,13 @@ describe('preview mode', () => {
       },
     )
     fragmentService.queryLatest.mockReturnValueOnce(
-      Promise.resolve({
+      Bluebird.resolve({
         items: [queryItemOf(fragmentWithProject)],
         matchCountTotal: 0,
       }),
     )
     fragmentService.find.mockReturnValueOnce(
-      Promise.resolve(fragmentWithProject),
+      Bluebird.resolve(fragmentWithProject),
     )
     fragmentService.findThumbnail.mockResolvedValue({ blob: null })
     dossiersService.queryByIds.mockResolvedValue([])
@@ -193,12 +193,14 @@ describe('preview mode', () => {
     const thumbnailBlob = new Blob(['thumbnail'], { type: 'image/jpeg' })
     ;(URL.createObjectURL as jest.Mock).mockReturnValueOnce('blob:thumbnail')
     fragmentService.queryLatest.mockReturnValueOnce(
-      Promise.resolve({
+      Bluebird.resolve({
         items: [queryItem],
         matchCountTotal: 0,
       }),
     )
-    fragmentService.find.mockReturnValueOnce(Promise.resolve(fragmentWithPhoto))
+    fragmentService.find.mockReturnValueOnce(
+      Bluebird.resolve(fragmentWithPhoto),
+    )
     fragmentService.findThumbnail.mockResolvedValueOnce({ blob: thumbnailBlob })
     dossiersService.queryByIds.mockResolvedValue([])
     render(
@@ -239,7 +241,7 @@ describe('preview mode', () => {
     const thumbnailPath = '/images/summary-thumbnail.jpg'
 
     fragmentService.queryLatest.mockReturnValueOnce(
-      Promise.resolve({
+      Bluebird.resolve({
         items: [
           {
             museumNumber: fragmentWithPhoto.number,
@@ -290,7 +292,7 @@ describe('preview mode', () => {
     )
 
     fragmentService.queryLatest.mockReturnValueOnce(
-      Promise.resolve({
+      Bluebird.resolve({
         items: [
           {
             museumNumber: fragmentWithoutPhoto.number,
@@ -335,7 +337,7 @@ describe('preview mode', () => {
     )
 
     fragmentService.queryLatest.mockReturnValueOnce(
-      Promise.resolve({
+      Bluebird.resolve({
         items: [
           {
             museumNumber: fragmentWithPhoto.number,
@@ -380,7 +382,7 @@ describe('preview mode', () => {
     )
 
     fragmentService.queryLatest.mockReturnValueOnce(
-      Promise.resolve({
+      Bluebird.resolve({
         items: [
           {
             museumNumber: fragmentWithPhoto.number,

@@ -1,3 +1,4 @@
+import Bluebird from 'bluebird'
 import React from 'react'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import SignService from 'signs/application/SignService'
@@ -5,7 +6,6 @@ import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import FragmentAnnotation from 'fragmentarium/ui/image-annotation/annotation-tool/FragmentAnnotation'
 import { fragmentFactory } from 'test-support/fragment-fixtures'
 import { signFactory } from 'test-support/sign-fixtures'
-import Promise from 'bluebird'
 import Annotation, {
   AnnotationTokenType,
   isBoundingBoxTooSmall,
@@ -49,10 +49,12 @@ const initialAnnotation = new Annotation(
 )
 
 const setup = async (): Promise<void> => {
-  jest.spyOn(signsRepository, 'search').mockReturnValue(Promise.resolve([sign]))
+  jest
+    .spyOn(signsRepository, 'search')
+    .mockReturnValue(Bluebird.resolve([sign]))
   jest
     .spyOn(fragmentService, 'updateAnnotations')
-    .mockReturnValue(Promise.resolve([]))
+    .mockReturnValue(Bluebird.resolve([]))
 
   render(
     <MemoryRouter>
@@ -123,7 +125,7 @@ it('Change existing annotation', async () => {
 it('Generate Annotations', async () => {
   await setup()
   jest.spyOn(fragmentService, 'generateAnnotations').mockReturnValue(
-    Promise.resolve([
+    Bluebird.resolve([
       new Annotation(
         { x: 50, y: 50, width: 10, height: 10, type: 'RECTANGLE' },
         {

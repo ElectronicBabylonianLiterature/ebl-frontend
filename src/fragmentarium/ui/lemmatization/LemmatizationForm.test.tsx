@@ -1,6 +1,6 @@
+import Bluebird from 'bluebird'
 import React from 'react'
 import { render, waitFor, screen, Matcher } from '@testing-library/react'
-import Promise from 'bluebird'
 
 import LemmatizationForm from './LemmatizationForm'
 import Lemma from 'transliteration/domain/Lemma'
@@ -13,7 +13,7 @@ let searchWord: Word
 let onChange: (selected: readonly Lemma[]) => void
 let container: HTMLElement
 let fragmentService: {
-  searchLemma: jest.Mock<Promise<readonly Word[]>, [string]>
+  searchLemma: jest.Mock<Bluebird<readonly Word[]>, [string]>
 }
 let token: LemmatizationToken
 
@@ -26,7 +26,7 @@ beforeEach(() => {
   fragmentService = {
     searchLemma: jest.fn(),
   }
-  fragmentService.searchLemma.mockReturnValue(Promise.resolve([searchWord]))
+  fragmentService.searchLemma.mockReturnValue(Bluebird.resolve([searchWord]))
 })
 
 describe('Single lemma', () => {

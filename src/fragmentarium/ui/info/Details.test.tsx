@@ -1,3 +1,4 @@
+import Bluebird from 'bluebird'
 import React from 'react'
 import { MemoryRouter } from 'react-router-dom'
 import { waitForSpinnerToBeRemoved } from 'test-support/waitForSpinnerToBeRemoved'
@@ -7,7 +8,6 @@ import { screen, render } from '@testing-library/react'
 import Details, { formatMeasurements } from './Details'
 import { Museums } from 'fragmentarium/domain/museum'
 import { Fragment } from 'fragmentarium/domain/fragment'
-import Promise from 'bluebird'
 import { Genres } from 'fragmentarium/domain/Genres'
 import { fragmentFactory } from 'test-support/fragment-fixtures'
 import {
@@ -66,10 +66,10 @@ function expectMeasurementsToBeRendered(fragment: Fragment) {
 describe('All details', () => {
   async function setupAllDetails(): Promise<void> {
     fragmentService.fetchGenres.mockReturnValue(
-      Promise.resolve([['ARCHIVAL'], ['ARCHIVAL', 'Administrative']]),
+      Bluebird.resolve([['ARCHIVAL'], ['ARCHIVAL', 'Administrative']]),
     )
     fragmentService.fetchPeriods.mockReturnValue(
-      Promise.resolve([...Object.keys(Periods)]),
+      Bluebird.resolve([...Object.keys(Periods)]),
     )
     const number = 'X.1'
     const museum = Museums['THE_BRITISH_MUSEUM']
@@ -329,8 +329,8 @@ describe('Missing details', () => {
         },
       },
     )
-    fragmentService.fetchGenres.mockReturnValue(Promise.resolve([]))
-    fragmentService.fetchPeriods.mockReturnValue(Promise.resolve([]))
+    fragmentService.fetchGenres.mockReturnValue(Bluebird.resolve([]))
+    fragmentService.fetchPeriods.mockReturnValue(Bluebird.resolve([]))
     await renderDetails()
   }
 

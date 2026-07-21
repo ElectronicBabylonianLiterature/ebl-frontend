@@ -1,7 +1,18 @@
+const path = require('path')
+
 const isFastDev = process.env.FAST_DEV === 'true'
+const sourceDirectory = path.resolve(__dirname, 'src')
 
 module.exports = {
   ...(isFastDev ? { eslint: { enable: false } } : {}),
+  jest: {
+    configure: (jestConfig) => {
+      jestConfig.modulePaths = Array.from(
+        new Set([...(jestConfig.modulePaths || []), sourceDirectory]),
+      )
+      return jestConfig
+    },
+  },
   webpack: {
     configure: (webpackConfig) => {
       webpackConfig.resolve = webpackConfig.resolve || {}
@@ -9,6 +20,12 @@ module.exports = {
         ...(webpackConfig.resolve.fallback || {}),
         stream: require.resolve('stream-browserify'),
       }
+      webpackConfig.resolve.modules = Array.from(
+        new Set([
+          ...(webpackConfig.resolve.modules || ['node_modules']),
+          sourceDirectory,
+        ]),
+      )
 
       if (isFastDev && Array.isArray(webpackConfig.plugins)) {
         webpackConfig.plugins = webpackConfig.plugins.filter(
