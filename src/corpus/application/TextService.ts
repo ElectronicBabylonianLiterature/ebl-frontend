@@ -376,40 +376,33 @@ export default class TextService {
       )
   }
 
-  findColophons(id: ChapterId): Promise<SiglumAndTransliteration[]> {
+  private fetchSiglaAndTransliterations(
+    id: ChapterId,
+    endpoint: string,
+  ): Promise<SiglumAndTransliteration[]> {
     return this.apiClient
-      .fetchJson(`${createChapterUrl(id)}/colophons`, false)
+      .fetchJson(`${createChapterUrl(id)}/${endpoint}`, false)
       .then(fromSiglumAndTransliterationDto)
-      .then((colophons) =>
+      .then((entries) =>
         Promise.all(
-          colophons.map(({ siglum, text }) =>
+          entries.map(({ siglum, text }) =>
             this.referenceInjector
               .injectReferencesToText(text)
-              .then((text) => ({
+              .then((injectedText) => ({
                 siglum,
-                text,
+                text: injectedText,
               })),
           ),
         ),
       )
   }
 
+  findColophons(id: ChapterId): Promise<SiglumAndTransliteration[]> {
+    return this.fetchSiglaAndTransliterations(id, 'colophons')
+  }
+
   findUnplacedLines(id: ChapterId): Promise<SiglumAndTransliteration[]> {
-    return this.apiClient
-      .fetchJson(`${createChapterUrl(id)}/unplaced_lines`, false)
-      .then(fromSiglumAndTransliterationDto)
-      .then((unplacedLines) =>
-        Promise.all(
-          unplacedLines.map(({ siglum, text }) =>
-            this.referenceInjector
-              .injectReferencesToText(text)
-              .then((text) => ({
-                siglum,
-                text,
-              })),
-          ),
-        ),
-      )
+    return this.fetchSiglaAndTransliterations(id, 'unplaced_lines')
   }
 
   findExtantLines(id: ChapterId): Promise<ExtantLines> {

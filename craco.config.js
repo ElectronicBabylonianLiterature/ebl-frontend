@@ -75,12 +75,7 @@ module.exports = {
                     loaderEntry.options.sassOptions = {
                       ...(loaderEntry.options.sassOptions || {}),
                       quietDeps: true,
-                      silenceDeprecations: [
-                        'legacy-js-api',
-                        'import',
-                        'global-builtin',
-                        'color-functions',
-                      ],
+                      silenceDeprecations: ['legacy-js-api'],
                     }
                   }
                 })
@@ -93,11 +88,7 @@ module.exports = {
       webpackConfig.ignoreWarnings = [
         ...(webpackConfig.ignoreWarnings || []),
         /Failed to parse source map/,
-        /Deprecation .* Sass/,
         /Deprecation .* legacy JS API/,
-        /Deprecation .* @import/,
-        /Deprecation .* Global built-in functions/,
-        /Deprecation .* darken\(\)/,
       ]
 
       return webpackConfig

@@ -34,10 +34,11 @@ Status: [x] done · [~] in progress · [ ] pending
 
 - [x] `yarn tsc` → clean.
 - [x] `yarn lint` → clean.
-- [~] Full `CI=true yarn test --watch=false` → running.
-- [ ] `yarn build`.
+- [x] Full `CI=true yarn test --watchAll=false` → 340 suites / 3470 passed, 2 skipped (pre-existing), console-clean.
+- [x] `yarn build` → success.
 - [x] `bluebird` + `@types/bluebird` removed from package.json.
-- [ ] Commit + push branch; open PR (separate from #773).
+- [x] Commit + push branch (`7ba6f490`, pushed to `origin/chore/remove-bluebird`).
+- [ ] Open PR (separate from #773).
 - [ ] Remove TASK docs before merge.
 
 ## Stage 2 — cancellation-aware utils
