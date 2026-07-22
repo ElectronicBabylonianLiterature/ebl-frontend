@@ -126,7 +126,10 @@ describe('RealiaDisplay cross-references and access', () => {
     expect(
       screen.getByRole('heading', { level: 1, name: 'Anu' }),
     ).toBeInTheDocument()
-    expect(realiaService.find).toHaveBeenCalledWith('Anu')
+    expect(realiaService.find).toHaveBeenCalledWith(
+      'Anu',
+      expect.any(AbortSignal),
+    )
   })
 
   it('shows the development notice for an authorized session', async () => {

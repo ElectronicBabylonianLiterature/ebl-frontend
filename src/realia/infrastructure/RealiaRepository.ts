@@ -134,19 +134,20 @@ export default class RealiaRepository {
     this.apiClient = apiClient
   }
 
-  find(realiaId: string): Promise<RealiaEntry> {
+  find(realiaId: string, signal?: AbortSignal): Promise<RealiaEntry> {
     return this.apiClient
       .fetchJson<RealiaEntryDto>(
         `/realia/${encodeURIComponent(realiaId)}`,
         false,
+        signal,
       )
       .then(mapRealiaEntry)
   }
 
-  search(query: string): Promise<readonly RealiaEntry[]> {
+  search(query: string, signal?: AbortSignal): Promise<readonly RealiaEntry[]> {
     const path = `/realia?query=${encodeURIComponent(query)}`
     return this.apiClient
-      .fetchJson<RealiaEntryDto[]>(path, false)
+      .fetchJson<RealiaEntryDto[]>(path, false, signal)
       .then((result) => result.map(mapRealiaEntry))
   }
 }

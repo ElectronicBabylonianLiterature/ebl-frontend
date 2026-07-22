@@ -8,11 +8,11 @@ export default class RealiaService {
     this.realiaRepository = realiaRepository
   }
 
-  find(realiaId: string): Promise<RealiaEntry> {
-    return this.realiaRepository.find(realiaId)
+  find(realiaId: string, signal?: AbortSignal): Promise<RealiaEntry> {
+    return this.realiaRepository.find(realiaId, signal)
   }
 
-  search(query: string): Promise<readonly RealiaEntry[]> {
-    return this.realiaRepository.search(query)
+  search(query: string, signal?: AbortSignal): Promise<readonly RealiaEntry[]> {
+    return this.realiaRepository.search(query, signal)
   }
 }

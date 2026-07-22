@@ -27,7 +27,7 @@ const testData: TestData<RealiaService>[] = [
     ['Pig'],
     realiaRepository.find,
     entry,
-    ['Pig'],
+    ['Pig', undefined],
     Promise.resolve(entry),
   ),
   new TestData(
@@ -35,7 +35,7 @@ const testData: TestData<RealiaService>[] = [
     ['pig'],
     realiaRepository.search,
     [entry],
-    ['pig'],
+    ['pig', undefined],
     Promise.resolve([entry]),
   ),
 ]
