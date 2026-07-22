@@ -212,6 +212,7 @@ describe('Tools routes', () => {
     expect(getDisplayTitle('dictionary')).toEqual('Akkadian Dictionary')
     expect(getDisplayTitle('dossiers')).toEqual('Dossiers')
     expect(getDisplayTitle('genres')).toEqual('Genres')
+    expect(getDisplayTitle('map')).toEqual('Findspot Map')
   })
 
   it('builds breadcrumbs for selected and unselected states', () => {
@@ -221,5 +222,6 @@ describe('Tools routes', () => {
     ).toHaveLength(2)
     expect(getToolsBreadcrumbs('Dossiers', 'dossiers')).toHaveLength(2)
     expect(getToolsBreadcrumbs('Genres', 'genres')).toHaveLength(2)
+    expect(getToolsBreadcrumbs('Findspot Map', 'map')).toHaveLength(2)
   })
 })

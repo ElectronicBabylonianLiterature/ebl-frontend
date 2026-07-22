@@ -28,6 +28,13 @@ const MAP_STYLE_URL =
 
 const INITIAL_CENTER: [number, number] = [44.4, 33.0]
 const INITIAL_ZOOM = 5
+const INTERACTIVE_LAYER_IDS = [clusterLayer.id, unclusteredLayer.id] as const
+
+interface MapLibreErrorEvent {
+  error?: {
+    message?: string
+  }
+}
 
 export function fitMapToData(
   map: MapLibreMap,
@@ -161,17 +168,52 @@ function handleMapClick(map: MapLibreMap, event: MapMouseEvent): void {
   }
 }
 
+function setCanvasCursor(map: MapLibreMap, cursor: string): void {
+  try {
+    const canvas = map.getCanvas()
+    if (canvas?.style) {
+      canvas.style.cursor = cursor
+    }
+  } catch {
+    // MapLibre can emit late pointer events while the canvas is unavailable.
+  }
+}
+
 function setPointerCursor(map: MapLibreMap, event: MapMouseEvent): void {
   const isOverFindspot =
     map.queryRenderedFeatures(event.point, {
-      layers: [unclusteredLayer.id],
+      layers: [...INTERACTIVE_LAYER_IDS],
     }).length > 0
-  map.getCanvas().style.cursor = isOverFindspot ? 'pointer' : ''
+  setCanvasCursor(map, isOverFindspot ? 'pointer' : '')
+}
+
+function showPointerCursor(map: MapLibreMap): void {
+  setCanvasCursor(map, 'pointer')
+}
+
+function resetPointerCursor(map: MapLibreMap): void {
+  setCanvasCursor(map, '')
+}
+
+const MAP_BACKGROUND_ERROR_PATTERNS = [
+  'basemaps.cartocdn.com',
+  MAP_STYLE_URL,
+  'style.json',
+  'failed to fetch',
+  'failed to load',
+]
+
+function isMapBackgroundLoadError(event: MapLibreErrorEvent): boolean {
+  const message = event.error?.message?.toLowerCase()
+  return message
+    ? MAP_BACKGROUND_ERROR_PATTERNS.some((pattern) => message.includes(pattern))
+    : false
 }
 
 export default function useFindspotMap(
   containerRef: RefObject<HTMLDivElement>,
   provenances: readonly ProvenanceRecord[] | null,
+  onMapBackgroundError?: () => void,
 ): MutableRefObject<MapLibreMap | null> {
   const mapRef = useRef<MapLibreMap | null>(null)
   const latestProvenancesRef = useRef(provenances)
@@ -189,17 +231,41 @@ export default function useFindspotMap(
     })
     mapRef.current = map
     map.addControl(new maplibregl.NavigationControl(), 'top-right')
-    map.on('load', () =>
-      initializeFindspotSource(map, latestProvenancesRef.current ?? []),
-    )
-    map.on('click', (event) => handleMapClick(map, event))
-    map.on('mousemove', (event) => setPointerCursor(map, event))
+    const handleLoad = () =>
+      initializeFindspotSource(map, latestProvenancesRef.current!)
+    const handleClick = (event: MapMouseEvent) => handleMapClick(map, event)
+    const handleMouseMove = (event: MapMouseEvent) =>
+      setPointerCursor(map, event)
+    const handleMouseEnter = () => showPointerCursor(map)
+    const handleMouseLeave = () => resetPointerCursor(map)
+    const handleError = (event: MapLibreErrorEvent) => {
+      if (isMapBackgroundLoadError(event)) {
+        onMapBackgroundError?.()
+      }
+    }
+
+    map.on('load', handleLoad)
+    map.on('click', handleClick)
+    map.on('mousemove', handleMouseMove)
+    map.on('error', handleError)
+    INTERACTIVE_LAYER_IDS.forEach((layerId) => {
+      map.on('mouseenter', layerId, handleMouseEnter)
+      map.on('mouseleave', layerId, handleMouseLeave)
+    })
 
     return () => {
+      map.off('load', handleLoad)
+      map.off('click', handleClick)
+      map.off('mousemove', handleMouseMove)
+      map.off('error', handleError)
+      INTERACTIVE_LAYER_IDS.forEach((layerId) => {
+        map.off('mouseenter', layerId, handleMouseEnter)
+        map.off('mouseleave', layerId, handleMouseLeave)
+      })
       map.remove()
       mapRef.current = null
     }
-  }, [containerRef, isReady])
+  }, [containerRef, isReady, onMapBackgroundError])
 
   return mapRef
 }
