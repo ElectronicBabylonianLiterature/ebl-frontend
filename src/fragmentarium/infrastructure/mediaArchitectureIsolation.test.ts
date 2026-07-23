@@ -3,12 +3,17 @@ import path from 'path'
 
 const sourceRoot = path.join(process.cwd(), 'src')
 const mediaArchitectureModules = [
+  'common/ui/ImageViewer',
   'fragmentarium/application/MediaBinaryLoader',
   'fragmentarium/application/MediaRepository',
   'fragmentarium/domain/media',
   'fragmentarium/domain/mediaGallery',
   'fragmentarium/infrastructure/mediaDtos',
   'fragmentarium/infrastructure/mediaMapper',
+  'fragmentarium/infrastructure/mediaMapperValidation',
+  'fragmentarium/infrastructure/mediaRepresentationMapper',
+  'fragmentarium/infrastructure/mediaResourceMapper',
+  'fragmentarium/infrastructure/mediaSummaryMapper',
 ].sort()
 
 function normalizePath(filePath: string): string {
