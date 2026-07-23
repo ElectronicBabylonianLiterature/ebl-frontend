@@ -35,11 +35,13 @@ proposed backend media shape while preserving all current runtime behavior.
   current fragment query DTOs.
 - No production mapper wiring, dependency injection changes, or bootstrap
   changes.
-- No gallery component, route, tab, or visible UI work.
+- No gallery component, reusable image viewer, route, tab, or visible UI work.
 - No Blob fetching, object URL creation, caching implementation, or browser API
   behavior.
 - No changes to CDLI, folio, photo, annotation, or current search-result image
   behavior.
+- Runtime viewer extraction and image-toolbar consolidation are deferred to a
+  later UI integration PR.
 
 ## No-Runtime-Change Boundary
 
