@@ -38,8 +38,8 @@ export default function Info({
 }: Props): JSX.Element {
   const updateGenres = (genres: Genres) =>
     onSave(fragmentService.updateGenres(fragment.number, genres))
-  const updateScript = (script: Script) =>
-    fragmentService.updateScript(fragment.number, script)
+  const updateScript = (script: Script, signal?: AbortSignal) =>
+    fragmentService.updateScript(fragment.number, script, signal)
   const updateDate = (date?: MesopotamianDate): Promise<Fragment> =>
     fragmentService.updateDate(fragment.number, date?.toDto())
   const updateDatesInText = (

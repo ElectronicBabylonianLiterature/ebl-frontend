@@ -121,7 +121,7 @@ describe('Sign Display', () => {
     const view = renderSignDisplay(sign.name)
 
     await screen.findAllByText(sign.name)
-    expect(signService.find).toBeCalledWith(sign.name)
+    expect(signService.find).toBeCalledWith(sign.name, expect.any(AbortSignal))
 
     return view
   }

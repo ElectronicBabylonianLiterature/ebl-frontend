@@ -448,6 +448,7 @@ export default class TextService {
   searchLemma(
     lemmaId: string,
     genre: string | null | undefined = null,
+    signal?: AbortSignal,
   ): Promise<DictionaryLineDisplay[]> {
     return this.apiClient
       .fetchJson<unknown[]>(
@@ -456,6 +457,7 @@ export default class TextService {
           genre: genre,
         })}`,
         false,
+        signal,
       )
       .then((dtos) => dtos.map(fromDictionaryLineDto))
   }

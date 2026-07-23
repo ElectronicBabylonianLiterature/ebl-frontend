@@ -32,7 +32,7 @@ describe('Fecth word', () => {
   it('Queries the word from API', async () => {
     await renderWithRouter()
 
-    expect(wordService.find).toBeCalledWith('id')
+    expect(wordService.find).toBeCalledWith('id', expect.any(AbortSignal))
   })
 
   it('Displays result on successfull query', async () => {

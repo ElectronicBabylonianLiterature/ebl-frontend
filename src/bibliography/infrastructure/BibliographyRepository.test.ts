@@ -44,7 +44,7 @@ const testData: TestData<BibliographyRepository>[] = [
     [query],
     apiClient.fetchJson,
     [entry],
-    [`/bibliography?query=${encodeURIComponent(query)}`, false],
+    [`/bibliography?query=${encodeURIComponent(query)}`, false, undefined],
     Promise.resolve([resultStub]),
   ),
   new TestData(

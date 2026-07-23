@@ -12,11 +12,12 @@ export default class DossiersRepository {
     this.apiClient = apiClient
   }
 
-  fetchAllDossiers(): Promise<DossierRecord[]> {
+  fetchAllDossiers(signal?: AbortSignal): Promise<DossierRecord[]> {
     return this.apiClient
       .fetchJson<DossierRecordDto[] | { dossiers: DossierRecordDto[] }>(
         '/dossiers',
         false,
+        signal,
       )
       .then((result) => {
         const dossiers = 'dossiers' in result ? result.dossiers : result

@@ -78,7 +78,10 @@ describe('Sign Images', () => {
     )
     renderSignImages()
     await waitForSpinnerToBeRemoved(screen)
-    expect(signService.getCentroidImages).toBeCalledWith(signName)
+    expect(signService.getCentroidImages).toBeCalledWith(
+      signName,
+      expect.any(AbortSignal),
+    )
   }
 
   it('Displays centroid preview labels while accordions are closed', async () => {
@@ -243,7 +246,10 @@ describe('Sign Images Empty', () => {
     signService.getCentroidImages.mockReturnValue(Promise.resolve([]))
     renderSignImages()
     await waitForSpinnerToBeRemoved(screen)
-    expect(signService.getCentroidImages).toBeCalledWith(signName)
+    expect(signService.getCentroidImages).toBeCalledWith(
+      signName,
+      expect.any(AbortSignal),
+    )
   }
 
   it('Check there are no Images', async () => {

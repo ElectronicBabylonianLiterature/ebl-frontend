@@ -483,7 +483,11 @@ const testData: TestData<TextService>[] = [
     ['qanû I', 'L'],
     apiClient.fetchJson,
     [fromDictionaryLineDto(dictionaryLineDisplayDto)],
-    [`/lemmasearch?genre=L&lemma=${encodeURIComponent('qanû I')}`, false],
+    [
+      `/lemmasearch?genre=L&lemma=${encodeURIComponent('qanû I')}`,
+      false,
+      undefined,
+    ],
     Promise.resolve([dictionaryLineDisplayDto]),
   ),
 ]

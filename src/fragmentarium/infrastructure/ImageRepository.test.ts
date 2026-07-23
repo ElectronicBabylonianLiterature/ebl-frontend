@@ -56,6 +56,7 @@ describe('findFolio', () => {
         folio.number,
       )}`,
       false,
+      undefined,
     )
   })
 
@@ -78,6 +79,7 @@ describe('findPhoto', () => {
     expect(apiClient.fetchBlob).toBeCalledWith(
       `/fragments/${encodeURIComponent(number)}/photo`,
       false,
+      undefined,
     )
   })
 

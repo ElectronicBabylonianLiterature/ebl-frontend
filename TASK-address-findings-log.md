@@ -46,11 +46,31 @@
 - Prod build OOMs in this RAM-limited env (`--max_old_space_size` killed early with ~3GB free);
   not a code issue — retry at final gates.
 
-## Entry 5 — Signal threading (#774-1) [IN PROGRESS]
+## Entry 5 — Signal threading (#774-1) mostly DONE
 
-- Scoping the getter → service → repository → ApiClient chain next.
+- Threaded AbortSignal through EVERY withData getter → service → repository → ApiClient across
+  all domains: realia, signs, dictionary/Word, fragmentarium (direct methods), corpus
+  (searchLemma), dossiers (fetchAllDossiers), bibliography (search).
+- CORRECTNESS: skipped cached/batched shared-request methods (aborting a shared request would
+  cancel it for other live consumers): FragmentService find/fetchProvenances/query/queryLatest/
+  findThumbnail (getOrFetchCachedValue), TextService findSuggestions (orchestrator over cached
+  services) + cached texts/chapters, DossiersService queryByIds (batching), BibliographyService
+  find/findMany (cached). Their getters stay guard-based (requestSequence still prevents stale UI).
+- MUTATION: threaded ScriptSelection updateScript end-to-end (Info→Details→ScriptSelection→
+  FragmentService→FragmentRepository→postJson) — fixes the flagged superseded-PUT persisting.
+- Reference slice by me (Realia); dictionary+signs+fragmentarium via subagents (verified;
+  reconciled cross-domain gaps: SignInformation wordService.find assertion; FakeApi.ts loosened
+  to tolerate the trailing signal in integration tests).
+- Fixed test assertions (TestData expectedParams get trailing `undefined`; component tests get
+  `expect.any(AbortSignal)`; FragmentService update block got per-row `extraArgs`).
+- Gates: `yarn tsc` exit 0; `yarn lint` exit 0; full suite **340 suites / 3470 passed / 2 skipped,
+  ZERO console noise**. Prod build still OOMs in this RAM-limited env (not a code issue).
+- NOT committed (user directive: never commit without explicit request).
 
 ## Pending
 
-- Signal threading (#774-1).
-- Full gate run (incl. prod build when memory allows) + doc finalization.
+- Remaining usePromiseEffect save-form mutations (WordEditor updateWord, TransliterationForm,
+  BibliographyEntryForm, CuneiformConverter): thread or document as guard-based (single-submit).
+- Update #774 review doc to reflect threading resolution.
+- Prod build (`yarn build`) when memory allows.
+- User decision on git (soft-reset eb6f892a?).

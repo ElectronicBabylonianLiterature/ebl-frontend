@@ -51,5 +51,5 @@ export default withData<{ folio: Folio }, { fragmentService }, Blob>(
       </article>
     )
   },
-  (props) => props.fragmentService.findFolio(props.folio),
+  (props, signal) => props.fragmentService.findFolio(props.folio, signal),
 )

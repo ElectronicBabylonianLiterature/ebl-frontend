@@ -114,21 +114,26 @@ const lemmas = 'foo I+bar II'
 const queryResultStub: QueryResult = { items: [], matchCountTotal: 0 }
 
 const testData: TestData<FragmentService>[] = [
-  new TestData('statistics', [], fragmentRepository.statistics, resultStub),
+  new TestData('statistics', [], fragmentRepository.statistics, resultStub, [
+    undefined,
+  ]),
   new TestData(
     'lineToVecRanking',
     ['X.0'],
     fragmentRepository.lineToVecRanking,
     resultStub,
+    ['X.0', undefined],
   ),
   new TestData('findFolio', [folio], imageRepository.findFolio, resultStub, [
     folio,
+    undefined,
   ]),
   new TestData('findImage', [fileName], imageRepository.find, resultStub, [
     fileName,
   ]),
   new TestData('findPhoto', [fragment], imageRepository.findPhoto, resultStub, [
     fragment.number,
+    undefined,
   ]),
   new TestData(
     'findThumbnail',
@@ -149,6 +154,7 @@ const testData: TestData<FragmentService>[] = [
     ['K.1'],
     fragmentRepository.fragmentPager,
     resultStub,
+    ['K.1', undefined],
   ),
   new TestData('searchLemma', ['lemma'], wordRepository.searchLemma, [
     resultStub,
@@ -587,6 +593,7 @@ describe('methods returning fragment', () => {
       description: 'update script',
       repositoryMethod: fragmentRepository.updateScript,
       expectedValue: () => fragment.script,
+      extraArgs: [undefined],
       serviceCall: (number: string) =>
         fragmentService.updateScript(number, fragment.script),
     },
@@ -594,22 +601,27 @@ describe('methods returning fragment', () => {
       description: 'update scopes',
       repositoryMethod: fragmentRepository.updateScopes,
       expectedValue: () => scopes,
+      extraArgs: [],
       serviceCall: (number: string) =>
         fragmentService.updateScopes(number, scopes),
     },
-  ])('$description', ({ repositoryMethod, expectedValue, serviceCall }) => {
-    beforeEach(async () => {
-      repositoryMethod.mockReturnValue(Promise.resolve(fragment))
-      result = await serviceCall(fragment.number)
-    })
+  ])(
+    '$description',
+    ({ repositoryMethod, expectedValue, extraArgs, serviceCall }) => {
+      beforeEach(async () => {
+        repositoryMethod.mockReturnValue(Promise.resolve(fragment))
+        result = await serviceCall(fragment.number)
+      })
 
-    test('returns updated fragment', () => expect(result).toEqual(fragment))
-    test('calls repository with correct parameters', () =>
-      expect(repositoryMethod).toHaveBeenCalledWith(
-        fragment.number,
-        expectedValue(),
-      ))
-  })
+      test('returns updated fragment', () => expect(result).toEqual(fragment))
+      test('calls repository with correct parameters', () =>
+        expect(repositoryMethod).toHaveBeenCalledWith(
+          fragment.number,
+          expectedValue(),
+          ...extraArgs,
+        ))
+    },
+  )
 
   describe('update date', () => {
     let expectedFragment: Fragment

@@ -479,17 +479,26 @@ export default class FakeApi {
   }
 
   verifyExpectations(): void {
+    // Calls may carry an optional trailing AbortSignal argument, so match on
+    // the meaningful leading arguments rather than an exact argument list.
     const methods = {
       GET: (expectation: Expectation): void => {
-        expect(
-          expectation.isBlob ? this.client.fetchBlob : this.client.fetchJson,
-        ).toHaveBeenCalledWith(expectation.path, expect.anything())
+        const mock = expectation.isBlob
+          ? this.client.fetchBlob
+          : this.client.fetchJson
+        expect(mock.mock.calls).toContainEqual(
+          expect.arrayContaining([expectation.path]),
+        )
       },
-      POST: (expectation: Expectation): void =>
-        expect(this.client.postJson).toHaveBeenCalledWith(
-          expectation.path,
-          expectation.body || expect.anything(),
-        ),
+      POST: (expectation: Expectation): void => {
+        expect(this.client.postJson.mock.calls).toContainEqual(
+          expect.arrayContaining(
+            expectation.body
+              ? [expectation.path, expectation.body]
+              : [expectation.path],
+          ),
+        )
+      },
     }
     this.expectations
       .filter((expectation) => expectation.verify)

@@ -25,7 +25,10 @@ beforeEach(() => {
 it('Queries the API with given parameters', async () => {
   render(<FolioImage fragmentService={fragmentService} folio={folio} />)
   await screen.findByAltText(folio.fileName)
-  expect(fragmentService.findFolio).toBeCalledWith(folio)
+  expect(fragmentService.findFolio).toBeCalledWith(
+    folio,
+    expect.any(AbortSignal),
+  )
 })
 
 it('Has the filename as alt text', async () => {

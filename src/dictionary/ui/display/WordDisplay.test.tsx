@@ -269,7 +269,9 @@ describe('Fetch word', () => {
     const view = renderWordInformationDisplay()
     await screen.findByText(word.meaning)
 
-    await waitFor(() => expect(wordService.find).toBeCalledWith('id'))
+    await waitFor(() =>
+      expect(wordService.find).toBeCalledWith('id', expect.any(AbortSignal)),
+    )
     await waitFor(() =>
       expect(fragmentService.find).toBeCalledWith(
         fragment.number,
@@ -281,7 +283,11 @@ describe('Fetch word', () => {
       expect(textService.query).toBeCalledWith({ lemmas: word._id }),
     )
     await waitFor(() =>
-      expect(textService.searchLemma).toBeCalledWith(word._id, undefined),
+      expect(textService.searchLemma).toBeCalledWith(
+        word._id,
+        undefined,
+        expect.any(AbortSignal),
+      ),
     )
 
     return view

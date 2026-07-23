@@ -355,7 +355,7 @@ class ApiFragmentRepository
 {
   constructor(private readonly apiClient: JsonApiClient) {}
 
-  statistics(): Promise<{
+  statistics(signal?: AbortSignal): Promise<{
     transliteratedFragments: number
     lines: number
     totalFragments: number
@@ -364,14 +364,18 @@ class ApiFragmentRepository
       transliteratedFragments: number
       lines: number
       totalFragments: number
-    }>(`/statistics`, false)
+    }>(`/statistics`, false, signal)
   }
 
-  lineToVecRanking(number: string): Promise<LineToVecRanking> {
+  lineToVecRanking(
+    number: string,
+    signal?: AbortSignal,
+  ): Promise<LineToVecRanking> {
     return this.apiClient
       .fetchJson<LineToVecRankingDto>(
         createFragmentPath(number, 'match'),
         false,
+        signal,
       )
       .then(createLineToVecRanking)
   }
@@ -407,21 +411,25 @@ class ApiFragmentRepository
     )
   }
 
-  fetchNeedsRevision(): FragmentInfosPromise {
-    return this._fetch({ needsRevision: true }).then((fragmentInfos) =>
+  fetchNeedsRevision(signal?: AbortSignal): FragmentInfosPromise {
+    return this._fetch({ needsRevision: true }, signal).then((fragmentInfos) =>
       fragmentInfos.map(createFragmentInfo),
     )
   }
 
-  _fetch(params: Record<string, unknown>): FragmentInfosDtoPromise {
+  _fetch(
+    params: Record<string, unknown>,
+    signal?: AbortSignal,
+  ): FragmentInfosDtoPromise {
     return this.apiClient.fetchJson<ReadonlyArray<FragmentInfoDto>>(
       `/fragments?${stringify(params)}`,
       false,
+      signal,
     )
   }
 
-  fetchGenres(): Promise<string[][]> {
-    return this.apiClient.fetchJson<string[][]>('/genres', false)
+  fetchGenres(signal?: AbortSignal): Promise<string[][]> {
+    return this.apiClient.fetchJson<string[][]>('/genres', false, signal)
   }
 
   fetchProvenances(): Promise<readonly ProvenanceRecord[]> {
@@ -452,8 +460,8 @@ class ApiFragmentRepository
     )
   }
 
-  fetchPeriods(): Promise<string[]> {
-    return this.apiClient.fetchJson<string[]>('/periods', false)
+  fetchPeriods(signal?: AbortSignal): Promise<string[]> {
+    return this.apiClient.fetchJson<string[]>('/periods', false, signal)
   }
 
   updateGenres(number: string, genres: Genres): Promise<Fragment> {
@@ -473,16 +481,25 @@ class ApiFragmentRepository
         .then(createFragment)
     )
   }
-  updateScript(number: string, script: Script): Promise<Fragment> {
+  updateScript(
+    number: string,
+    script: Script,
+    signal?: AbortSignal,
+  ): Promise<Fragment> {
     const path = createFragmentPath(number, 'script')
     return this.apiClient
-      .postJson<FragmentDto>(path, {
-        script: {
-          period: script.period.name,
-          periodModifier: script.periodModifier.name,
-          uncertain: script.uncertain,
+      .postJson<FragmentDto>(
+        path,
+        {
+          script: {
+            period: script.period.name,
+            periodModifier: script.periodModifier.name,
+            uncertain: script.uncertain,
+          },
         },
-      })
+        true,
+        signal,
+      )
       .then(createFragment)
   }
 
@@ -566,10 +583,14 @@ class ApiFragmentRepository
     )
   }
 
-  fragmentPager(fragmentNumber: string): Promise<FragmentPagerData> {
+  fragmentPager(
+    fragmentNumber: string,
+    signal?: AbortSignal,
+  ): Promise<FragmentPagerData> {
     return this.apiClient.fetchJson<FragmentPagerData>(
       `/fragments/${encodeURIComponent(fragmentNumber)}/pager`,
       false,
+      signal,
     )
   }
 
@@ -621,7 +642,10 @@ class ApiFragmentRepository
     )
   }
 
-  findInCorpus(number: string): Promise<{
+  findInCorpus(
+    number: string,
+    signal?: AbortSignal,
+  ): Promise<{
     manuscriptAttestations: ReadonlyArray<ManuscriptAttestation>
     uncertainFragmentAttestations: ReadonlyArray<UncertainFragmentAttestation>
   }> {
@@ -637,7 +661,7 @@ class ApiFragmentRepository
           text: Record<string, unknown>
           chapterId: ChapterId
         }>
-      }>(`${createFragmentPath(number)}/corpus`, false)
+      }>(`${createFragmentPath(number)}/corpus`, false, signal)
       .then((response) => ({
         manuscriptAttestations: (response.manuscriptAttestations ?? []).map(
           (manuscriptAttestation) =>

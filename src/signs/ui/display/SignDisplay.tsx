@@ -119,5 +119,5 @@ export default withData<WithoutData<Props>, { id: string }, Sign>(
       signService={signService}
     />
   ),
-  (props) => props.signService.find(props.id),
+  (props, signal) => props.signService.find(props.id, signal),
 )

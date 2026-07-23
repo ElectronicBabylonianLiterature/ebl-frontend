@@ -96,5 +96,5 @@ class WordEditor extends Component<
 
 export default withData<WithoutData<Props>, unknown, Word>(
   WordEditor,
-  (props) => props.wordService.find(props.id),
+  (props, signal) => props.wordService.find(props.id, signal),
 )

@@ -76,8 +76,8 @@ export interface ThumbnailBlob {
 
 export interface ImageRepository {
   find(fileName: string): Promise<Blob>
-  findFolio(folio: Folio): Promise<Blob>
-  findPhoto(number: string): Promise<Blob>
+  findFolio(folio: Folio, signal?: AbortSignal): Promise<Blob>
+  findPhoto(number: string, signal?: AbortSignal): Promise<Blob>
   findThumbnail(number: string, size: ThumbnailSize): Promise<ThumbnailBlob>
 }
 
@@ -92,7 +92,7 @@ export type EditionFields = {
 }
 
 export interface FragmentRepository {
-  statistics(): Promise<{
+  statistics(signal?: AbortSignal): Promise<{
     transliteratedFragments: number
     lines: number
     totalFragments: number
@@ -102,19 +102,26 @@ export interface FragmentRepository {
     lines?: readonly number[],
     excludeLines?: boolean,
   ): Promise<Fragment>
-  findInCorpus(number: string): Promise<{
+  findInCorpus(
+    number: string,
+    signal?: AbortSignal,
+  ): Promise<{
     manuscriptAttestations: ReadonlyArray<ManuscriptAttestation>
     uncertainFragmentAttestations: ReadonlyArray<UncertainFragmentAttestation>
   }>
-  fetchGenres(): Promise<string[][]>
+  fetchGenres(signal?: AbortSignal): Promise<string[][]>
   fetchProvenances(): Promise<readonly ProvenanceRecord[]>
   fetchProvenance(id: string): Promise<ProvenanceRecord>
   fetchProvenanceChildren(id: string): Promise<readonly ProvenanceRecord[]>
-  fetchPeriods(): Promise<string[]>
+  fetchPeriods(signal?: AbortSignal): Promise<string[]>
   fetchColophonNames(query: string): Promise<string[]>
   updateGenres(number: string, genres: Genres): Promise<Fragment>
   updateScopes(number: string, scopes: string[]): Promise<Fragment>
-  updateScript(number: string, script: Script): Promise<Fragment>
+  updateScript(
+    number: string,
+    script: Script,
+    signal?: AbortSignal,
+  ): Promise<Fragment>
   updateDate(
     number: string,
     date: MesopotamianDateDto | undefined,
@@ -142,9 +149,15 @@ export interface FragmentRepository {
   ): Promise<Fragment>
   updateColophon(number: string, colophon: Colophon): Promise<Fragment>
   folioPager(folio: Folio, fragmentNumber: string): Promise<FolioPagerData>
-  fragmentPager(fragmentNumber: string): Promise<FragmentPagerData>
+  fragmentPager(
+    fragmentNumber: string,
+    signal?: AbortSignal,
+  ): Promise<FragmentPagerData>
   findLemmas(lemma: string, isNormalized: boolean): Promise<Word[][]>
-  lineToVecRanking(number: string): Promise<LineToVecRanking>
+  lineToVecRanking(
+    number: string,
+    signal?: AbortSignal,
+  ): Promise<LineToVecRanking>
   query(fragmentQuery: FragmentQuery): Promise<QueryResult>
   queryLatest(): Promise<QueryResult>
   queryByTraditionalReferences(
@@ -236,16 +249,19 @@ export class FragmentService {
     this.referenceInjector = new ReferenceInjector(bibliographyService)
   }
 
-  statistics(): Promise<{
+  statistics(signal?: AbortSignal): Promise<{
     transliteratedFragments: number
     lines: number
     totalFragments: number
   }> {
-    return this.fragmentRepository.statistics()
+    return this.fragmentRepository.statistics(signal)
   }
 
-  lineToVecRanking(number: string): Promise<LineToVecRanking> {
-    return this.fragmentRepository.lineToVecRanking(number)
+  lineToVecRanking(
+    number: string,
+    signal?: AbortSignal,
+  ): Promise<LineToVecRanking> {
+    return this.fragmentRepository.lineToVecRanking(number, signal)
   }
 
   find(
@@ -282,9 +298,13 @@ export class FragmentService {
       .then((fragment: Fragment) => this.cacheUpdatedFragment(fragment))
   }
 
-  updateScript(number: string, script: Script): Promise<Fragment> {
+  updateScript(
+    number: string,
+    script: Script,
+    signal?: AbortSignal,
+  ): Promise<Fragment> {
     return this.fragmentRepository
-      .updateScript(number, script)
+      .updateScript(number, script, signal)
       .then((fragment: Fragment) => this.injectReferences(fragment))
       .then((fragment: Fragment) => this.cacheUpdatedFragment(fragment))
   }
@@ -315,8 +335,8 @@ export class FragmentService {
       .then((fragment: Fragment) => this.cacheUpdatedFragment(fragment))
   }
 
-  fetchGenres(): Promise<string[][]> {
-    return this.fragmentRepository.fetchGenres()
+  fetchGenres(signal?: AbortSignal): Promise<string[][]> {
+    return this.fragmentRepository.fetchGenres(signal)
   }
 
   fetchProvenances(): Promise<readonly ProvenanceRecord[]> {
@@ -383,8 +403,8 @@ export class FragmentService {
     )
   }
 
-  fetchPeriods(): Promise<string[]> {
-    return this.fragmentRepository.fetchPeriods()
+  fetchPeriods(signal?: AbortSignal): Promise<string[]> {
+    return this.fragmentRepository.fetchPeriods(signal)
   }
 
   fetchColophonNames(query: string): Promise<string[]> {
@@ -449,24 +469,27 @@ export class FragmentService {
       .then((fragment: Fragment) => this.cacheUpdatedFragment(fragment))
   }
 
-  findInCorpus(number: string): Promise<{
+  findInCorpus(
+    number: string,
+    signal?: AbortSignal,
+  ): Promise<{
     manuscriptAttestations: ReadonlyArray<ManuscriptAttestation>
     uncertainFragmentAttestations: ReadonlyArray<UncertainFragmentAttestation>
   }> {
-    return this.fragmentRepository.findInCorpus(number)
+    return this.fragmentRepository.findInCorpus(number, signal)
   }
 
-  findFolio(folio: Folio): Promise<Blob> {
-    return this.imageRepository.findFolio(folio)
+  findFolio(folio: Folio, signal?: AbortSignal): Promise<Blob> {
+    return this.imageRepository.findFolio(folio, signal)
   }
 
   findImage(fileName: string): Promise<Blob> {
     return this.imageRepository.find(fileName)
   }
 
-  findPhoto(fragment: Fragment): Promise<Blob> {
+  findPhoto(fragment: Fragment, signal?: AbortSignal): Promise<Blob> {
     if (fragment.hasPhoto) {
-      return this.imageRepository.findPhoto(fragment.number)
+      return this.imageRepository.findPhoto(fragment.number, signal)
     } else {
       throw Error(`Fragment ${fragment.number} doesn't have a Photo`)
     }
@@ -493,8 +516,11 @@ export class FragmentService {
     return this.fragmentRepository.folioPager(folio, fragmentNumber)
   }
 
-  fragmentPager(fragmentNumber: string): Promise<FragmentPagerData> {
-    return this.fragmentRepository.fragmentPager(fragmentNumber)
+  fragmentPager(
+    fragmentNumber: string,
+    signal?: AbortSignal,
+  ): Promise<FragmentPagerData> {
+    return this.fragmentRepository.fragmentPager(fragmentNumber, signal)
   }
 
   searchLemma(lemma: string): Promise<readonly Word[]> {

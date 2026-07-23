@@ -30,7 +30,8 @@ export default withData<
         signName={signName}
       />
     ) : null,
-  (props) => props.signService.getCentroidImages(props.signName),
+  (props, signal) =>
+    props.signService.getCentroidImages(props.signName, signal),
 )
 
 function SignImage({

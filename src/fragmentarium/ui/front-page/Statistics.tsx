@@ -57,4 +57,4 @@ export default withData<
   unknown,
   { fragmentService },
   { readonly [key: string]: number }
->(Statistics, (props) => props.fragmentService.statistics())
+>(Statistics, (props, signal) => props.fragmentService.statistics(signal))

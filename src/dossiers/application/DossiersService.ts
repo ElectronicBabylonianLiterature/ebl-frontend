@@ -17,7 +17,7 @@ export interface DossiersSearch {
       genre?: string | null
     },
   ): Promise<readonly DossierRecordSuggestion[]>
-  fetchAllDossiers(): Promise<readonly DossierRecord[]>
+  fetchAllDossiers(signal?: AbortSignal): Promise<readonly DossierRecord[]>
   fetchFilteredDossiers(filters: {
     provenance?: string
     scriptPeriod?: string
@@ -93,8 +93,8 @@ export default class DossiersService implements DossiersSearch {
     return this.dossiersRepository.searchSuggestions(query, filters)
   }
 
-  fetchAllDossiers(): Promise<readonly DossierRecord[]> {
-    return this.dossiersRepository.fetchAllDossiers()
+  fetchAllDossiers(signal?: AbortSignal): Promise<readonly DossierRecord[]> {
+    return this.dossiersRepository.fetchAllDossiers(signal)
   }
 
   fetchFilteredDossiers(filters: {

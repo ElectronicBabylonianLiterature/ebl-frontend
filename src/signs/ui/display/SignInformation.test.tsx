@@ -97,8 +97,14 @@ describe('Sign Information', () => {
     renderSignInformation()
     await screen.findByText('Words (as logogram):')
 
-    expect(wordService.find).toBeCalledWith(wordErimmatu._id)
-    expect(wordService.find).toBeCalledWith(wordLipu._id)
+    expect(wordService.find).toBeCalledWith(
+      wordErimmatu._id,
+      expect.any(AbortSignal),
+    )
+    expect(wordService.find).toBeCalledWith(
+      wordLipu._id,
+      expect.any(AbortSignal),
+    )
   }
   it('Sign Information Words (as logograms)', async () => {
     await setup()

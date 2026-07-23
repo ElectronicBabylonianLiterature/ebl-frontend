@@ -37,7 +37,7 @@ describe('Display Search Results', () => {
     signService.search.mockReturnValue(Promise.resolve(signs))
     signService.findSignsByOrder.mockReturnValue(Promise.resolve(orderedSigns))
     await renderSignSearch()
-    expect(signService.search).toBeCalledWith(query)
+    expect(signService.search).toBeCalledWith(query, expect.any(AbortSignal))
   }
   it('Displays results', async () => {
     await setup()

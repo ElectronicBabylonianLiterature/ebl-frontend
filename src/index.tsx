@@ -24,12 +24,21 @@ if (process.env.REACT_APP_SENTRY_DSN && process.env.NODE_ENV) {
 const errorReporter = new SentryErrorReporter()
 
 export type JsonApiClient = {
-  fetchJson: <T = unknown>(url: string, authorize: boolean) => Promise<T>
-  fetchBlob: (url: string, authorize: boolean) => Promise<Blob>
+  fetchJson: <T = unknown>(
+    url: string,
+    authorize: boolean,
+    signal?: AbortSignal,
+  ) => Promise<T>
+  fetchBlob: (
+    url: string,
+    authorize: boolean,
+    signal?: AbortSignal,
+  ) => Promise<Blob>
   postJson: <T = unknown>(
     url: string,
     body: Record<string, unknown>,
     authorize?: boolean,
+    signal?: AbortSignal,
   ) => Promise<T>
 }
 

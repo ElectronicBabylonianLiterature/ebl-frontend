@@ -19,7 +19,7 @@ import ExternalLink from 'common/ui/ExternalLink'
 
 type Props = {
   fragment: Fragment
-  updateScript: (script: Script) => Promise<Fragment>
+  updateScript: (script: Script, signal?: AbortSignal) => Promise<Fragment>
   periodOptions: readonly Period[]
 }
 
@@ -132,7 +132,7 @@ function ScriptSelection({
               if (updates !== script) {
                 setIsSaving(true)
                 runUpdate((signal) =>
-                  updateScript(updates).then(() => {
+                  updateScript(updates, signal).then(() => {
                     if (!signal.aborted) {
                       setIsSaving(false)
                       setIsDisplayed(false)
@@ -197,5 +197,5 @@ export default withData<
       />
     )
   },
-  (props) => props.fragmentService.fetchPeriods(),
+  (props, signal) => props.fragmentService.fetchPeriods(signal),
 )

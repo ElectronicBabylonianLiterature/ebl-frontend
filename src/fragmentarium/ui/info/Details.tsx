@@ -187,7 +187,10 @@ function ExcavationDate({ fragment }: Props): JSX.Element {
 interface DetailsProps {
   readonly fragment: Fragment
   readonly updateGenres: (genres: Genres) => void
-  readonly updateScript: (script: Script) => Promise<Fragment>
+  readonly updateScript: (
+    script: Script,
+    signal?: AbortSignal,
+  ) => Promise<Fragment>
   readonly updateDate: (date?: MesopotamianDate) => Promise<Fragment>
   readonly updateDatesInText: (
     datesInText: readonly MesopotamianDate[],

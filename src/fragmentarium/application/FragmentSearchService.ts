@@ -12,7 +12,7 @@ export type FragmentInfosPaginationPromise = Promise<FragmentInfosPagination>
 export interface FragmentInfoRepository {
   random(): FragmentInfosPromise
   interesting(): FragmentInfosPromise
-  fetchNeedsRevision(): FragmentInfosPromise
+  fetchNeedsRevision(signal?: AbortSignal): FragmentInfosPromise
 }
 
 export default class FragmentSearchService {
@@ -42,7 +42,7 @@ export default class FragmentSearchService {
     })
   }
 
-  fetchNeedsRevision(): FragmentInfosPromise {
-    return this.fragmentRepository.fetchNeedsRevision()
+  fetchNeedsRevision(signal?: AbortSignal): FragmentInfosPromise {
+    return this.fragmentRepository.fetchNeedsRevision(signal)
   }
 }

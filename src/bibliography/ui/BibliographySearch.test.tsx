@@ -34,7 +34,10 @@ async function renderBibliographySearchComponent(path = '/tools/references') {
 
 test('Fetch results from bibliography service', async () => {
   await renderBibliographySearchComponent()
-  expect(bibliographyServiceMock.search).toHaveBeenCalledWith(query)
+  expect(bibliographyServiceMock.search).toHaveBeenCalledWith(
+    query,
+    expect.any(AbortSignal),
+  )
 })
 
 test('Display search results correctly', async () => {

@@ -41,7 +41,8 @@ const CorpusLines = withData<
       </Tabs>
     )
   },
-  (props) => props.textService.searchLemma(props.lemmaId, props.genre),
+  (props, signal) =>
+    props.textService.searchLemma(props.lemmaId, props.genre, signal),
 )
 
 export default withData<

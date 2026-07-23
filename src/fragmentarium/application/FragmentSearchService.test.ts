@@ -36,7 +36,7 @@ const testData: TestData<FragmentSearchService>[] = [
     [],
     fragmentRepository.fetchNeedsRevision,
     [expectedResultStub],
-    null,
+    [undefined],
     Promise.resolve([expectedResultStub]),
   ),
 ]

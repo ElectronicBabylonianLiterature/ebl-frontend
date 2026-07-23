@@ -11,8 +11,11 @@ export default class SignService {
     this.signsRepository = signsRepository
   }
 
-  getCentroidImages(signName: string): Promise<CroppedAnnotation[]> {
-    return this.signsRepository.getCentroidImages(signName)
+  getCentroidImages(
+    signName: string,
+    signal?: AbortSignal,
+  ): Promise<CroppedAnnotation[]> {
+    return this.signsRepository.getCentroidImages(signName, signal)
   }
 
   getClusterVariants(
@@ -29,12 +32,12 @@ export default class SignService {
     return this.signsRepository.associateSigns(tokens)
   }
 
-  search(signQuery: SignQuery): Promise<Sign[]> {
-    return this.signsRepository.search(signQuery)
+  search(signQuery: SignQuery, signal?: AbortSignal): Promise<Sign[]> {
+    return this.signsRepository.search(signQuery, signal)
   }
 
-  find(signName: string): Promise<Sign> {
-    return this.signsRepository.find(signName)
+  find(signName: string, signal?: AbortSignal): Promise<Sign> {
+    return this.signsRepository.find(signName, signal)
   }
 
   listAllSigns(): Promise<string[]> {
@@ -44,8 +47,9 @@ export default class SignService {
   findSignsByOrder(
     signName: string,
     sortEra: string,
+    signal?: AbortSignal,
   ): Promise<[OrderedSign[]]> {
-    return this.signsRepository.findSignsByOrder(signName, sortEra)
+    return this.signsRepository.findSignsByOrder(signName, sortEra, signal)
   }
 
   getUnicodeFromAtf(text: string): Promise<UnicodeAtf[]> {

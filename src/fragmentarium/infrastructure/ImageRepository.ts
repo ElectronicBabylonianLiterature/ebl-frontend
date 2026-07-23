@@ -9,7 +9,11 @@ class ApiImageRepository implements ImageRepository {
   private readonly apiClient
 
   constructor(apiClient: {
-    fetchBlob: (url: string, authorize: boolean) => Promise<Blob>
+    fetchBlob: (
+      url: string,
+      authorize: boolean,
+      signal?: AbortSignal,
+    ) => Promise<Blob>
   }) {
     this.apiClient = apiClient
   }
@@ -21,16 +25,17 @@ class ApiImageRepository implements ImageRepository {
     )
   }
 
-  findFolio(folio: Folio): Promise<Blob> {
+  findFolio(folio: Folio, signal?: AbortSignal): Promise<Blob> {
     const name = encodeURIComponent(folio.name)
     const number = encodeURIComponent(folio.number)
-    return this.apiClient.fetchBlob(`/folios/${name}/${number}`, false)
+    return this.apiClient.fetchBlob(`/folios/${name}/${number}`, false, signal)
   }
 
-  findPhoto(number: string): Promise<Blob> {
+  findPhoto(number: string, signal?: AbortSignal): Promise<Blob> {
     return this.apiClient.fetchBlob(
       `/fragments/${encodeURIComponent(number)}/photo`,
       false,
+      signal,
     )
   }
 
