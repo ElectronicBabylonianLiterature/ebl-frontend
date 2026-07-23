@@ -56,7 +56,7 @@ function ChapterEditView({
   const [isDirty, setIsDirty] = useState(false)
   const [isSaving, setIsSaving] = useState(false)
   const [error, setError] = useState<Error | null>(null)
-  const [runUpdate] = usePromiseEffect()
+  const [, , runUpdate] = usePromiseEffect()
 
   const setStateUpdating = (): void => {
     setIsSaving(true)
@@ -75,10 +75,12 @@ function ChapterEditView({
     setError(null)
   }
 
-  const update = (updater: () => Promise<Chapter>): void => {
+  const update = (
+    updater: (signal?: AbortSignal) => Promise<Chapter>,
+  ): void => {
     setStateUpdating()
     runUpdate((signal) =>
-      updater()
+      updater(signal)
         .then((updatedChapter) => {
           if (!signal.aborted) {
             setStateUpdated(updatedChapter)
@@ -93,29 +95,36 @@ function ChapterEditView({
   }
 
   const updateAlignment = (alignment: ChapterAlignment): void => {
-    update(() => textService.updateAlignment(chapter.id, alignment))
+    update((signal) =>
+      textService.updateAlignment(chapter.id, alignment, signal),
+    )
   }
 
   const updateManuscripts = (): void => {
-    update(() =>
+    update((signal) =>
       textService.updateManuscripts(
         chapter.id,
         currentChapter.manuscripts,
         currentChapter.uncertainFragments,
+        signal,
       ),
     )
   }
 
   const updateLines = (): void => {
-    update(() => textService.updateLines(chapter.id, currentChapter.lines))
+    update((signal) =>
+      textService.updateLines(chapter.id, currentChapter.lines, signal),
+    )
   }
 
   const updateLemmatization = (lemmatization: ChapterLemmatization): void => {
-    update(() => textService.updateLemmatization(chapter.id, lemmatization))
+    update((signal) =>
+      textService.updateLemmatization(chapter.id, lemmatization, signal),
+    )
   }
 
   const importChapter = (atf: string): void => {
-    update(() => textService.importChapter(chapter.id, atf))
+    update((signal) => textService.importChapter(chapter.id, atf, signal))
   }
 
   const handleChange = (chapter: Chapter): void => {

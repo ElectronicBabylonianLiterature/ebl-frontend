@@ -20,7 +20,7 @@ const testData: TestData<FragmentSearchService>[] = [
     [],
     fragmentRepository.random,
     expectedResultStub,
-    null,
+    [undefined],
     Promise.resolve([expectedResultStub]),
   ),
   new TestData(
@@ -28,7 +28,7 @@ const testData: TestData<FragmentSearchService>[] = [
     [],
     fragmentRepository.interesting,
     expectedResultStub,
-    null,
+    [undefined],
     Promise.resolve([expectedResultStub]),
   ),
   new TestData(

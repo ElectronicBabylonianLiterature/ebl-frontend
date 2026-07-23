@@ -10,8 +10,8 @@ export type FragmentInfoPromise = Promise<FragmentInfo>
 export type FragmentInfosPaginationPromise = Promise<FragmentInfosPagination>
 
 export interface FragmentInfoRepository {
-  random(): FragmentInfosPromise
-  interesting(): FragmentInfosPromise
+  random(signal?: AbortSignal): FragmentInfosPromise
+  interesting(signal?: AbortSignal): FragmentInfosPromise
   fetchNeedsRevision(signal?: AbortSignal): FragmentInfosPromise
 }
 
@@ -22,8 +22,8 @@ export default class FragmentSearchService {
     this.fragmentRepository = fragmentRepository
   }
 
-  random(): FragmentInfoPromise {
-    return this.fragmentRepository.random().then((infos) => {
+  random(signal?: AbortSignal): FragmentInfoPromise {
+    return this.fragmentRepository.random(signal).then((infos) => {
       const info = infos[0]
       if (info) {
         return info
@@ -32,8 +32,8 @@ export default class FragmentSearchService {
     })
   }
 
-  interesting(): FragmentInfoPromise {
-    return this.fragmentRepository.interesting().then((infos) => {
+  interesting(signal?: AbortSignal): FragmentInfoPromise {
+    return this.fragmentRepository.interesting(signal).then((infos) => {
       const info = infos[0]
       if (info) {
         return info

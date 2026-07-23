@@ -13,7 +13,9 @@ export default function LuckyButton({
     <SessionContext.Consumer>
       {(session: Session): ReactNode =>
         session.isAllowedToReadFragments() && (
-          <FragmentButton query={() => fragmentSearchService.random()}>
+          <FragmentButton
+            query={(signal) => fragmentSearchService.random(signal)}
+          >
             I&apos;m feeling lucky
           </FragmentButton>
         )

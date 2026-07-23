@@ -8,7 +8,7 @@ import usePromiseEffect from 'common/hooks/usePromiseEffect'
 import { FragmentInfo } from 'fragmentarium/domain/fragment'
 
 type Props = {
-  query: () => Promise<FragmentInfo>
+  query: (signal?: AbortSignal) => Promise<FragmentInfo>
   children?: React.ReactNode
 }
 
@@ -30,7 +30,7 @@ function FragmentButton({ query, children }: Props) {
     setIsLoading(true)
     setError(null)
     runRequest((signal) =>
-      query()
+      query(signal)
         .then((fragmentInfo) => {
           if (!signal.aborted) {
             navigateToFragment(fragmentInfo)

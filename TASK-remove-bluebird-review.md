@@ -66,6 +66,25 @@ bluebird implementation and the PR description overstates what reaches the wire.
   future maintainers do not assume socket-level cancellation. Either way, resolve before
   merge or file an explicit follow-up.
 
+> ### ✅ RESOLVED on this branch
+>
+> - **Reads:** `signal` is now threaded getter → service → repository → `ApiClient` → `fetch`
+>   for every `withData` getter across realia, signs, dictionary, fragmentarium, corpus,
+>   dossiers and bibliography.
+> - **Writes:** `usePromiseEffect` gained a `run`/`runWrite` split. Aborting a write on
+>   unmount would silently discard the user's edit, so `runWrite` aborts **only** when a new
+>   write supersedes it. All save paths (script, date, chapter, fragment `onSave`) use it and
+>   thread their signal; the fragment `onSave` contract changed from an already-started
+>   promise to a `(signal?) => Promise<Fragment>` factory started inside `runWrite`.
+> - **Intentionally NOT threaded (correctness):** cached/batched _shared_ requests, because a
+>   per-caller abort would cancel a request other live consumers share — `FragmentService`
+>   `find`/`fetchProvenances`/`query`/`queryLatest`/`findThumbnail`, `TextService`
+>   `findSuggestions` plus cached texts/chapters, `DossiersService.queryByIds`, and
+>   `BibliographyService` `find`/`findMany`. Their getters remain guard-based; the
+>   `requestSequence` guard still prevents stale UI.
+> - Gates after the change: `yarn tsc` 0, `yarn lint` 0, full suite 340 suites / 3474 tests
+>   with zero console output; app compiles and serves.
+
 ### Finding 2 — ~~This PR fixes 2 pre-existing `tsc` errors~~ — RETRACTED (no such errors)
 
 - **Severity:** ~~Informational~~ — retracted

@@ -67,10 +67,38 @@
   ZERO console noise**. Prod build still OOMs in this RAM-limited env (not a code issue).
 - NOT committed (user directive: never commit without explicit request).
 
+## Entry 6 — run/runWrite split + save-form mutations DONE
+
+- FINDING that drove this: `usePromiseEffect` aborted on BOTH supersession and unmount. Aborting
+  a **write** on unmount silently discards the user's edit (worse than the guard-based status quo).
+  Reads are safe to abort; writes are not.
+- `usePromiseEffect` now returns `[run, cancel, runWrite]` (shared `startOperation` helper, DRY):
+  - `run` — aborts on supersession AND unmount (reads).
+  - `runWrite` — aborts ONLY on supersession, never on unmount (writes). `cancel` only cancels reads.
+  - 4 new tests cover: no-abort-on-unmount, no-abort-on-cancel, abort-on-supersede, and that
+    aborting reads leaves an in-flight write untouched.
+- Writes moved onto `runWrite`: ScriptSelection, DateSelectionState, ChapterEditView, CuneiformFragment.
+  Reads stay on `run`: Chapters (findExtantLines), FragmentButton, Pdf/WordDownloadButton.
+- Signals threaded through the write chains:
+  - script: updateScript (done earlier)
+  - date: updateDate / updateDatesInText (Info→Details→DateSelection→State→Methods, plus
+    DatesInTextSelection updateDateInArray); Details adapts `(date, index, signal)` at the call site.
+  - chapter: updateAlignment / updateManuscripts / updateLines / updateLemmatization / importChapter
+    (`loadProvenances()` preload deliberately left unthreaded — it is cached/shared).
+  - fragment save: `onSave` contract changed from "already-started promise" to
+    `(signal?) => Promise<Fragment>` factory, started INSIDE `runSave` so it gets that write's signal;
+    threaded updateEdition / updateLemmaAnnotation / updateReferences / updateArchaeology /
+    updateColophon / updateScopes / updateGenres. `handleSave` still returns the started promise —
+    TransliterationForm, ArchaeologyEditor and LemmaAnnotation chain on it.
+- Also threaded read paths: TextService.findExtantLines; FragmentSearchService random/interesting
+  via FragmentButton/LuckyButton/PioneersButton.
+- Gates: `yarn tsc` exit 0; `yarn lint` exit 0; full suite **340 suites / 3474 passed / 2 skipped,
+  ZERO console noise**.
+- Verified no uncommitted work was lost after a subagent briefly ran `git checkout HEAD --`.
+- NOT committed (user directive: no commits without an explicit request).
+
 ## Pending
 
-- Remaining usePromiseEffect save-form mutations (WordEditor updateWord, TransliterationForm,
-  BibliographyEntryForm, CuneiformConverter): thread or document as guard-based (single-submit).
-- Update #774 review doc to reflect threading resolution.
-- Prod build (`yarn build`) when memory allows.
-- User decision on git (soft-reset eb6f892a?).
+- Update #774 review doc to reflect the threading resolution.
+- Prod build (`yarn build`) — OOMs in this RAM-limited sandbox, not a code issue.
+- Remove all `TASK-*.md` before merge.

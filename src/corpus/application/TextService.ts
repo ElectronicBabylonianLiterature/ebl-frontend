@@ -405,10 +405,11 @@ export default class TextService {
     return this.fetchSiglaAndTransliterations(id, 'unplaced_lines')
   }
 
-  findExtantLines(id: ChapterId): Promise<ExtantLines> {
+  findExtantLines(id: ChapterId, signal?: AbortSignal): Promise<ExtantLines> {
     return this.apiClient.fetchJson<ExtantLines>(
       `${createChapterUrl(id)}/extant_lines`,
       false,
+      signal,
     )
   }
 
@@ -473,12 +474,15 @@ export default class TextService {
   updateAlignment(
     id: ChapterId,
     alignment: ChapterAlignment,
+    signal?: AbortSignal,
   ): Promise<Chapter> {
     return Promise.all([
       this.loadProvenances(),
       this.apiClient.postJson(
         `${createChapterUrl(id)}/alignment`,
         toAlignmentDto(alignment),
+        true,
+        signal,
       ),
     ]).then(([, dto]) => fromChapterDto(dto))
   }
@@ -486,12 +490,15 @@ export default class TextService {
   updateLemmatization(
     id: ChapterId,
     lemmatization: ChapterLemmatization,
+    signal?: AbortSignal,
   ): Promise<Chapter> {
     return Promise.all([
       this.loadProvenances(),
       this.apiClient.postJson(
         `${createChapterUrl(id)}/lemmatization`,
         toLemmatizationDto(lemmatization),
+        true,
+        signal,
       ),
     ]).then(([, dto]) => fromChapterDto(dto))
   }
@@ -500,30 +507,48 @@ export default class TextService {
     id: ChapterId,
     manuscripts: readonly Manuscript[],
     uncertainChapters: readonly string[],
+    signal?: AbortSignal,
   ): Promise<Chapter> {
     return Promise.all([
       this.loadProvenances(),
       this.apiClient.postJson(
         `${createChapterUrl(id)}/manuscripts`,
         toManuscriptsDto(manuscripts, uncertainChapters),
+        true,
+        signal,
       ),
     ]).then(([, dto]) => fromChapterDto(dto))
   }
 
-  updateLines(id: ChapterId, lines: readonly Line[]): Promise<Chapter> {
+  updateLines(
+    id: ChapterId,
+    lines: readonly Line[],
+    signal?: AbortSignal,
+  ): Promise<Chapter> {
     return Promise.all([
       this.loadProvenances(),
       this.apiClient.postJson(
         `${createChapterUrl(id)}/lines`,
         toLinesDto(lines),
+        true,
+        signal,
       ),
     ]).then(([, dto]) => fromChapterDto(dto))
   }
 
-  importChapter(id: ChapterId, atf: string): Promise<Chapter> {
+  importChapter(
+    id: ChapterId,
+    atf: string,
+    signal?: AbortSignal,
+  ): Promise<Chapter> {
     return Promise.all([
       this.loadProvenances(),
-      this.apiClient.postJson(`${createChapterUrl(id)}/import`, { atf }),
+      this.apiClient.postJson(
+        `${createChapterUrl(id)}/import`,
+        { atf },
+        true,
+        signal,
+      ),
     ]).then(([, dto]) => fromChapterDto(dto))
   }
 

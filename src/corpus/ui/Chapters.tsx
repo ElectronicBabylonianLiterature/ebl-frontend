@@ -91,7 +91,7 @@ const Manuscripts = withData<
     const [extantLines, setExtantLines] = useState<ExtantLines>()
     if (_.isNil(extantLines)) {
       runExtantLines((signal) =>
-        textService.findExtantLines(id).then((lines) => {
+        textService.findExtantLines(id, signal).then((lines) => {
           if (!signal.aborted) {
             setExtantLines(lines)
           }

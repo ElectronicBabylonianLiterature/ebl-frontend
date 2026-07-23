@@ -201,6 +201,8 @@ const testData: TestData<FragmentRepository>[] = [
       {
         transliteration,
       },
+      true,
+      undefined,
     ],
     Promise.resolve(fragmentDto),
   ),
@@ -214,6 +216,8 @@ const testData: TestData<FragmentRepository>[] = [
       {
         notes,
       },
+      true,
+      undefined,
     ],
     Promise.resolve(fragmentDto),
   ),
@@ -227,6 +231,8 @@ const testData: TestData<FragmentRepository>[] = [
       {
         introduction,
       },
+      true,
+      undefined,
     ],
     Promise.resolve(fragmentDto),
   ),
@@ -242,6 +248,8 @@ const testData: TestData<FragmentRepository>[] = [
         notes,
         transliteration,
       },
+      true,
+      undefined,
     ],
     Promise.resolve(fragmentDto),
   ),
@@ -264,6 +272,8 @@ const testData: TestData<FragmentRepository>[] = [
     [
       `/fragments/${encodeURIComponent(fragmentId)}/references`,
       { references: references },
+      true,
+      undefined,
     ],
     Promise.resolve(fragmentDto),
   ),
@@ -351,7 +361,12 @@ const testData: TestData<FragmentRepository>[] = [
     [fragmentId, new Genres(genres)],
     apiClient.postJson,
     fragment,
-    [`/fragments/${encodeURIComponent(fragmentId)}/genres`, { genres }],
+    [
+      `/fragments/${encodeURIComponent(fragmentId)}/genres`,
+      { genres },
+      true,
+      undefined,
+    ],
     Promise.resolve(fragmentDto),
   ),
   new TestData(
@@ -362,6 +377,8 @@ const testData: TestData<FragmentRepository>[] = [
     [
       `/fragments/${encodeURIComponent(fragmentId)}/date`,
       { date: mesopotamianDate.toDto() },
+      true,
+      undefined,
     ],
     Promise.resolve(fragmentDto),
   ),
@@ -370,7 +387,12 @@ const testData: TestData<FragmentRepository>[] = [
     [fragmentId, undefined],
     apiClient.postJson,
     fragment,
-    [`/fragments/${encodeURIComponent(fragmentId)}/date`, { date: undefined }],
+    [
+      `/fragments/${encodeURIComponent(fragmentId)}/date`,
+      { date: undefined },
+      true,
+      undefined,
+    ],
     Promise.resolve(fragmentDto),
   ),
   new TestData(
@@ -381,6 +403,8 @@ const testData: TestData<FragmentRepository>[] = [
     [
       `/fragments/${encodeURIComponent(fragmentId)}/dates-in-text`,
       { datesInText: [mesopotamianDate.toDto()] },
+      true,
+      undefined,
     ],
     Promise.resolve(fragmentDto),
   ),
@@ -392,6 +416,8 @@ const testData: TestData<FragmentRepository>[] = [
     [
       `/fragments/${encodeURIComponent(fragmentId)}/archaeology`,
       { archaeology },
+      true,
+      undefined,
     ],
     Promise.resolve(fragmentDto),
   ),

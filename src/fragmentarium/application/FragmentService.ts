@@ -115,8 +115,16 @@ export interface FragmentRepository {
   fetchProvenanceChildren(id: string): Promise<readonly ProvenanceRecord[]>
   fetchPeriods(signal?: AbortSignal): Promise<string[]>
   fetchColophonNames(query: string): Promise<string[]>
-  updateGenres(number: string, genres: Genres): Promise<Fragment>
-  updateScopes(number: string, scopes: string[]): Promise<Fragment>
+  updateGenres(
+    number: string,
+    genres: Genres,
+    signal?: AbortSignal,
+  ): Promise<Fragment>
+  updateScopes(
+    number: string,
+    scopes: string[],
+    signal?: AbortSignal,
+  ): Promise<Fragment>
   updateScript(
     number: string,
     script: Script,
@@ -125,12 +133,18 @@ export interface FragmentRepository {
   updateDate(
     number: string,
     date: MesopotamianDateDto | undefined,
+    signal?: AbortSignal,
   ): Promise<Fragment>
   updateDatesInText(
     number: string,
     date: MesopotamianDateDto[],
+    signal?: AbortSignal,
   ): Promise<Fragment>
-  updateEdition(number: string, updates: EditionFields): Promise<Fragment>
+  updateEdition(
+    number: string,
+    updates: EditionFields,
+    signal?: AbortSignal,
+  ): Promise<Fragment>
   updateLemmatization(
     number: string,
     lemmatization: LemmatizationDto,
@@ -138,16 +152,23 @@ export interface FragmentRepository {
   updateLemmaAnnotation(
     number: string,
     annotations: LineLemmaAnnotations,
+    signal?: AbortSignal,
   ): Promise<Fragment>
   updateReferences(
     number: string,
     references: ReadonlyArray<Reference>,
+    signal?: AbortSignal,
   ): Promise<Fragment>
   updateArchaeology(
     number: string,
     archaeology: ArchaeologyDto,
+    signal?: AbortSignal,
   ): Promise<Fragment>
-  updateColophon(number: string, colophon: Colophon): Promise<Fragment>
+  updateColophon(
+    number: string,
+    colophon: Colophon,
+    signal?: AbortSignal,
+  ): Promise<Fragment>
   folioPager(folio: Folio, fragmentNumber: string): Promise<FolioPagerData>
   fragmentPager(
     fragmentNumber: string,
@@ -291,9 +312,13 @@ export class FragmentService {
     }
   }
 
-  updateGenres(number: string, genres: Genres): Promise<Fragment> {
+  updateGenres(
+    number: string,
+    genres: Genres,
+    signal?: AbortSignal,
+  ): Promise<Fragment> {
     return this.fragmentRepository
-      .updateGenres(number, genres)
+      .updateGenres(number, genres, signal)
       .then((fragment: Fragment) => this.injectReferences(fragment))
       .then((fragment: Fragment) => this.cacheUpdatedFragment(fragment))
   }
@@ -308,9 +333,13 @@ export class FragmentService {
       .then((fragment: Fragment) => this.injectReferences(fragment))
       .then((fragment: Fragment) => this.cacheUpdatedFragment(fragment))
   }
-  updateScopes(number: string, scopes: string[]): Promise<Fragment> {
+  updateScopes(
+    number: string,
+    scopes: string[],
+    signal?: AbortSignal,
+  ): Promise<Fragment> {
     return this.fragmentRepository
-      .updateScopes(number, scopes)
+      .updateScopes(number, scopes, signal)
       .then((fragment: Fragment) => this.injectReferences(fragment))
       .then((fragment: Fragment) => this.cacheUpdatedFragment(fragment))
   }
@@ -318,9 +347,10 @@ export class FragmentService {
   updateDate(
     number: string,
     date: MesopotamianDateDto | undefined,
+    signal?: AbortSignal,
   ): Promise<Fragment> {
     return this.fragmentRepository
-      .updateDate(number, date)
+      .updateDate(number, date, signal)
       .then((fragment: Fragment) => this.injectReferences(fragment))
       .then((fragment: Fragment) => this.cacheUpdatedFragment(fragment))
   }
@@ -328,9 +358,10 @@ export class FragmentService {
   updateDatesInText(
     number: string,
     datesInText: MesopotamianDateDto[],
+    signal?: AbortSignal,
   ): Promise<Fragment> {
     return this.fragmentRepository
-      .updateDatesInText(number, datesInText)
+      .updateDatesInText(number, datesInText, signal)
       .then((fragment: Fragment) => this.injectReferences(fragment))
       .then((fragment: Fragment) => this.cacheUpdatedFragment(fragment))
   }
@@ -415,9 +446,13 @@ export class FragmentService {
     return this.fragmentRepository.listAllFragments()
   }
 
-  updateEdition(number: string, updates: EditionFields): Promise<Fragment> {
+  updateEdition(
+    number: string,
+    updates: EditionFields,
+    signal?: AbortSignal,
+  ): Promise<Fragment> {
     return this.fragmentRepository
-      .updateEdition(number, updates)
+      .updateEdition(number, updates, signal)
       .then((fragment: Fragment) => this.injectReferences(fragment))
       .then((fragment: Fragment) => this.cacheUpdatedFragment(fragment))
   }
@@ -435,9 +470,10 @@ export class FragmentService {
   updateLemmaAnnotation(
     number: string,
     annotations: LineLemmaAnnotations,
+    signal?: AbortSignal,
   ): Promise<Fragment> {
     return this.fragmentRepository
-      .updateLemmaAnnotation(number, annotations)
+      .updateLemmaAnnotation(number, annotations, signal)
       .then((fragment: Fragment) => this.injectReferences(fragment))
       .then((fragment: Fragment) => this.cacheUpdatedFragment(fragment))
   }
@@ -445,9 +481,10 @@ export class FragmentService {
   updateReferences(
     number: string,
     references: ReadonlyArray<Reference>,
+    signal?: AbortSignal,
   ): Promise<Fragment> {
     return this.fragmentRepository
-      .updateReferences(number, references)
+      .updateReferences(number, references, signal)
       .then((fragment: Fragment) => this.injectReferences(fragment))
       .then((fragment: Fragment) => this.cacheUpdatedFragment(fragment))
   }
@@ -455,16 +492,21 @@ export class FragmentService {
   updateArchaeology(
     number: string,
     archaeology: ArchaeologyDto,
+    signal?: AbortSignal,
   ): Promise<Fragment> {
     return this.fragmentRepository
-      .updateArchaeology(number, archaeology)
+      .updateArchaeology(number, archaeology, signal)
       .then((fragment: Fragment) => this.injectReferences(fragment))
       .then((fragment: Fragment) => this.cacheUpdatedFragment(fragment))
   }
 
-  updateColophon(number: string, colophon: Colophon): Promise<Fragment> {
+  updateColophon(
+    number: string,
+    colophon: Colophon,
+    signal?: AbortSignal,
+  ): Promise<Fragment> {
     return this.fragmentRepository
-      .updateColophon(number, colophon)
+      .updateColophon(number, colophon, signal)
       .then((fragment: Fragment) => this.injectReferences(fragment))
       .then((fragment: Fragment) => this.cacheUpdatedFragment(fragment))
   }

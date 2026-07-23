@@ -8,6 +8,7 @@ interface Props {
   datesInText: readonly MesopotamianDate[]
   updateDatesInText: (
     datesInText: readonly MesopotamianDate[],
+    signal?: AbortSignal,
   ) => Promise<Fragment>
 }
 
@@ -29,6 +30,7 @@ interface DatesInTextSelectionMethods {
   updateDateInArray: (
     date?: MesopotamianDate | undefined,
     index?: number,
+    signal?: AbortSignal,
   ) => Promise<Fragment>
 }
 
@@ -40,11 +42,13 @@ function updateDateInArray({
   datesInTextDisplay,
   date,
   index,
+  signal,
 }: {
   updateDatesInText: Props['updateDatesInText']
   datesInTextDisplay: DatesInTextSelectionAttrs['datesInTextDisplay']
   date?: MesopotamianDate | undefined
   index?: number
+  signal?: AbortSignal
 }): Promise<Fragment> {
   const updatedDatesInText = datesInTextDisplay.concat()
   if (index !== undefined && date !== undefined) {
@@ -54,7 +58,7 @@ function updateDateInArray({
   } else if (date !== undefined) {
     updatedDatesInText.push(date)
   }
-  return updateDatesInText(updatedDatesInText)
+  return updateDatesInText(updatedDatesInText, signal)
 }
 
 const saveDates = async ({
@@ -122,8 +126,8 @@ function useDateInTextSelectionState({
         updatedDate,
         index,
       }),
-    updateDateInArray: (date, index) =>
-      updateDateInArray({ updateDatesInText, ...attrs, date, index }),
+    updateDateInArray: (date, index, signal) =>
+      updateDateInArray({ updateDatesInText, ...attrs, date, index, signal }),
   }
 }
 

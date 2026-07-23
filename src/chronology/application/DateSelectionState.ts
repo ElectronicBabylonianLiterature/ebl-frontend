@@ -14,7 +14,11 @@ import {
 
 export interface DateEditorStateProps {
   date?: MesopotamianDate
-  updateDate: (date?: MesopotamianDate, index?: number) => Promise<Fragment>
+  updateDate: (
+    date?: MesopotamianDate,
+    index?: number,
+    signal?: AbortSignal,
+  ) => Promise<Fragment>
   setDate: React.Dispatch<React.SetStateAction<MesopotamianDate | undefined>>
   setIsDisplayed: React.Dispatch<React.SetStateAction<boolean>>
   setIsSaving: React.Dispatch<React.SetStateAction<boolean>>
@@ -252,7 +256,7 @@ function useAdditionalDateParams(
 export default function useDateSelectionState(
   props: DateEditorStateProps,
 ): DateSelectionState {
-  const [runUpdate] = usePromiseEffect()
+  const [, , runUpdate] = usePromiseEffect()
   const { date, saveDateOverride } = props
 
   const stateParams = {

@@ -411,6 +411,7 @@ describe('methods returning fragment', () => {
       expect(fragmentRepository.updateEdition).toHaveBeenCalledWith(
         fragment.number,
         edition,
+        undefined,
       )
     })
   })
@@ -583,6 +584,7 @@ describe('methods returning fragment', () => {
       expect(fragmentRepository.updateGenres).toHaveBeenCalledWith(
         fragment.number,
         genres,
+        undefined,
       ))
   })
 
@@ -601,7 +603,7 @@ describe('methods returning fragment', () => {
       description: 'update scopes',
       repositoryMethod: fragmentRepository.updateScopes,
       expectedValue: () => scopes,
-      extraArgs: [],
+      extraArgs: [undefined],
       serviceCall: (number: string) =>
         fragmentService.updateScopes(number, scopes),
     },
@@ -641,6 +643,7 @@ describe('methods returning fragment', () => {
       expect(fragmentRepository.updateDate).toHaveBeenCalledWith(
         fragment.number,
         date.toDto(),
+        undefined,
       ))
   })
 
@@ -661,6 +664,7 @@ describe('methods returning fragment', () => {
     test('calls repository with correct parameters', () =>
       expect(fragmentRepository.updateDate).toHaveBeenCalledWith(
         fragment.number,
+        undefined,
         undefined,
       ))
   })
@@ -686,6 +690,7 @@ describe('methods returning fragment', () => {
       expect(fragmentRepository.updateDatesInText).toHaveBeenCalledWith(
         fragment.number,
         datesInText.filter((date) => date).map((date) => date.toDto()),
+        undefined,
       ))
   })
 
@@ -712,6 +717,7 @@ describe('methods returning fragment', () => {
       expect(fragmentRepository.updateArchaeology).toHaveBeenCalledWith(
         fragment.number,
         archaeologyDto,
+        undefined,
       ))
   })
 
@@ -755,6 +761,7 @@ describe('methods returning fragment', () => {
       expect(fragmentRepository.updateReferences).toHaveBeenCalledWith(
         fragment.number,
         fragment.references,
+        undefined,
       ))
   })
 
@@ -780,6 +787,7 @@ describe('methods returning fragment', () => {
       expect(fragmentRepository.updateLemmaAnnotation).toHaveBeenCalledWith(
         fragment.number,
         annotations,
+        undefined,
       ))
   })
 
@@ -798,6 +806,7 @@ describe('methods returning fragment', () => {
       expect(fragmentRepository.updateColophon).toHaveBeenCalledWith(
         fragment.number,
         colophon,
+        undefined,
       ))
   })
 

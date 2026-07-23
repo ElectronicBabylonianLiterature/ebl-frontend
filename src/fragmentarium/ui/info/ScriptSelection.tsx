@@ -58,7 +58,7 @@ function ScriptSelection({
   const [isSaving, setIsSaving] = useState(false)
   const [isDirty, setIsDirty] = useState(false)
   const target = useRef<HTMLButtonElement | null>(null)
-  const [runUpdate] = usePromiseEffect()
+  const [, , runUpdate] = usePromiseEffect()
 
   function updatePeriod(event) {
     setUpdates({ ...updates, period: Periods[event.value] })

@@ -16,6 +16,7 @@ interface SaveDateParams {
   updateDate: (
     date?: MesopotamianDate | undefined,
     index?: number | undefined,
+    signal?: AbortSignal,
   ) => Promise<Fragment>
   setDate: React.Dispatch<React.SetStateAction<MesopotamianDate | undefined>>
   setIsDisplayed: React.Dispatch<React.SetStateAction<boolean>>
@@ -34,7 +35,7 @@ export function saveDateDefault({
   if (updatedDate !== date) {
     setIsSaving(true)
     runUpdate((signal) =>
-      updateDate(updatedDate, index)
+      updateDate(updatedDate, index, signal)
         .then(() => {
           if (!signal.aborted) {
             setIsDisplayed(false)

@@ -17,7 +17,11 @@ import { MetaEditButton } from 'fragmentarium/ui/info/MetaEditButton'
 
 type Props = {
   dateProp?: MesopotamianDate
-  updateDate: (date?: MesopotamianDate, index?: number) => Promise<Fragment>
+  updateDate: (
+    date?: MesopotamianDate,
+    index?: number,
+    signal?: AbortSignal,
+  ) => Promise<Fragment>
   inList?: boolean
   index?: number
   saveDateOverride?: (updatedDate?: MesopotamianDate, index?: number) => void

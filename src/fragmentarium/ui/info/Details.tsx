@@ -191,9 +191,13 @@ interface DetailsProps {
     script: Script,
     signal?: AbortSignal,
   ) => Promise<Fragment>
-  readonly updateDate: (date?: MesopotamianDate) => Promise<Fragment>
+  readonly updateDate: (
+    date?: MesopotamianDate,
+    signal?: AbortSignal,
+  ) => Promise<Fragment>
   readonly updateDatesInText: (
     datesInText: readonly MesopotamianDate[],
+    signal?: AbortSignal,
   ) => Promise<Fragment>
   readonly fragmentService: FragmentService
   readonly dossiersService: DossiersService
@@ -270,7 +274,10 @@ function Details({
         />
       </li>
       <li className="Details__item">
-        <DateSelection dateProp={fragment?.date} updateDate={updateDate} />
+        <DateSelection
+          dateProp={fragment?.date}
+          updateDate={(date, index, signal) => updateDate(date, signal)}
+        />
       </li>
       <li className="Details__item">
         <DatesInTextSelection

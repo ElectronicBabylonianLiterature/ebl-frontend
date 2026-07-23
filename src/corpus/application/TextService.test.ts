@@ -410,7 +410,7 @@ const testData: TestData<TextService>[] = [
     [chapterId],
     apiClient.fetchJson,
     extantLines,
-    [`${chapterUrl}/extant_lines`, false],
+    [`${chapterUrl}/extant_lines`, false, undefined],
     Promise.resolve(extantLines),
   ),
   new TestData(
@@ -427,7 +427,7 @@ const testData: TestData<TextService>[] = [
     [chapterId, chapter.alignment],
     apiClient.postJson,
     chapter,
-    [`${chapterUrl}/alignment`, alignmentDto],
+    [`${chapterUrl}/alignment`, alignmentDto, true, undefined],
     Promise.resolve(chapterDto),
   ),
   new TestData(
@@ -435,7 +435,7 @@ const testData: TestData<TextService>[] = [
     [chapterId, lemmatization],
     apiClient.postJson,
     chapter,
-    [`${chapterUrl}/lemmatization`, lemmatizationDto],
+    [`${chapterUrl}/lemmatization`, lemmatizationDto, true, undefined],
     Promise.resolve(chapterDto),
   ),
   new TestData(
@@ -443,7 +443,7 @@ const testData: TestData<TextService>[] = [
     [chapterId, chapter.manuscripts, chapter.uncertainFragments],
     apiClient.postJson,
     chapter,
-    [`${chapterUrl}/manuscripts`, manuscriptsDto],
+    [`${chapterUrl}/manuscripts`, manuscriptsDto, true, undefined],
     Promise.resolve(chapterDto),
   ),
   new TestData(
@@ -467,6 +467,8 @@ const testData: TestData<TextService>[] = [
         deleted: [0],
         new: [_.omit(createLine({ number: '3' }), 'status')],
       },
+      true,
+      undefined,
     ],
     Promise.resolve(chapterDto),
   ),
@@ -475,7 +477,7 @@ const testData: TestData<TextService>[] = [
     [chapterId, '1. kur'],
     apiClient.postJson,
     chapter,
-    [`${chapterUrl}/import`, { atf: '1. kur' }],
+    [`${chapterUrl}/import`, { atf: '1. kur' }, true, undefined],
     Promise.resolve(chapterDto),
   ),
   new TestData(
