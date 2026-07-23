@@ -249,6 +249,39 @@ it('does not set an error for a cancellation error', async () => {
   await waitFor(() => expect(editorError).toBeNull())
 })
 
+it('does not apply the saved fragment when the request is aborted', async () => {
+  let resolveEdition: (fragment: unknown) => void = () => undefined
+  updateEdition = jest.fn().mockReturnValue(
+    new Promise((resolve) => {
+      resolveEdition = resolve
+    }),
+  )
+
+  const { unmount } = render(
+    <TransliterationForm
+      transliteration={transliteration}
+      notes={notes}
+      introduction={introduction}
+      updateEdition={updateEdition}
+    />,
+  )
+
+  submitFormByTestId(screen, 'transliteration-form')
+  await waitFor(() => expect(updateEdition).toHaveBeenCalledWith({}))
+
+  unmount()
+  resolveEdition({
+    atf: 'saved transliteration',
+    notes: { text: 'saved notes' },
+    introduction: { text: 'saved intro' },
+  })
+  await new Promise((resolve) => setTimeout(resolve, 0))
+
+  expect(
+    screen.queryByDisplayValue('saved transliteration'),
+  ).not.toBeInTheDocument()
+})
+
 it('does not set an error when the request is aborted', async () => {
   const requestError = new Error('request failed')
   let rejectEdition: (error: Error) => void = () => undefined

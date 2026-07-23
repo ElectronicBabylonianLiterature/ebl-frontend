@@ -5,6 +5,7 @@ import Spinner from 'common/ui/Spinner'
 import ErrorAlert from 'common/errors/ErrorAlert'
 import SessionContext from 'auth/SessionContext'
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
+import AbortableOperation from 'common/utils/AbortableOperation'
 
 interface Props {
   entry: BibliographyEntry
@@ -19,7 +20,7 @@ export default class BibliographyEntryFormController extends Component<
   static contextType = SessionContext
   context!: React.ContextType<typeof SessionContext>
 
-  private abortController: AbortController
+  private readonly submitOperation = new AbortableOperation()
 
   constructor(props: Props) {
     super(props)
@@ -27,10 +28,9 @@ export default class BibliographyEntryFormController extends Component<
       error: null,
       saving: false,
     }
-    this.abortController = new AbortController()
   }
   componentWillUnmount(): void {
-    this.abortController.abort()
+    this.submitOperation.abort()
   }
 
   get disabled(): boolean {
@@ -38,9 +38,7 @@ export default class BibliographyEntryFormController extends Component<
   }
 
   handleSubmit = (entry: BibliographyEntry): void => {
-    this.abortController.abort()
-    this.abortController = new AbortController()
-    const { signal } = this.abortController
+    const signal = this.submitOperation.start()
     this.setState({ error: null, saving: true })
     this.props
       .onSubmit(entry)

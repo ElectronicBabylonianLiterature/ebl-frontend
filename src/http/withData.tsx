@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react'
 import Spinner from 'common/ui/Spinner'
 import ErrorAlert from 'common/errors/ErrorAlert'
 import ErrorBoundary from 'common/errors/ErrorBoundary'
+import { isCancellation } from 'common/utils/abortError'
 
 export type WithoutData<T> = Omit<T, 'data'>
 
@@ -46,13 +47,9 @@ export default function withData<PROPS, GETTER_PROPS, DATA>(
               }
             })
             .catch((resolvedError) => {
-              const isCancellationError =
-                (resolvedError as { name?: string })?.name === 'AbortError' ||
-                abortController.signal.aborted
-
               if (
                 requestSequence.current === requestId &&
-                !isCancellationError
+                !isCancellation(resolvedError, abortController.signal)
               ) {
                 setError(resolvedError as Error)
               }

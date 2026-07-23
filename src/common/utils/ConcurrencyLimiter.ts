@@ -1,13 +1,8 @@
+import { createAbortError } from 'common/utils/abortError'
+
 type QueueState = {
   activeCount: number
   waitingResolvers: (() => void)[]
-}
-
-function abortError(signal: AbortSignal): Error {
-  return (
-    (signal.reason as Error | undefined) ??
-    new DOMException('The operation was aborted.', 'AbortError')
-  )
 }
 
 export default class ConcurrencyLimiter {
@@ -31,27 +26,31 @@ export default class ConcurrencyLimiter {
   }
 
   private acquireSlot(signal?: AbortSignal): Promise<() => void> {
+    if (signal?.aborted) {
+      return Promise.reject(createAbortError(signal))
+    }
     if (this.queueState.activeCount < this.maximumConcurrency) {
       this.queueState.activeCount += 1
       return Promise.resolve(this.createReleaseSlot())
     }
+    return this.waitForSlot(signal)
+  }
+
+  private waitForSlot(signal?: AbortSignal): Promise<() => void> {
     return new Promise<() => void>((resolve, reject) => {
-      const waitingResolver = (): void => resolve(this.createReleaseSlot())
-      this.queueState.waitingResolvers.push(waitingResolver)
-      if (signal) {
-        signal.addEventListener(
-          'abort',
-          () => {
-            const index =
-              this.queueState.waitingResolvers.indexOf(waitingResolver)
-            if (index >= 0) {
-              this.queueState.waitingResolvers.splice(index, 1)
-              reject(abortError(signal))
-            }
-          },
-          { once: true },
-        )
+      const abortWhileWaiting = (): void => {
+        this.queueState.waitingResolvers =
+          this.queueState.waitingResolvers.filter(
+            (resolver) => resolver !== waitingResolver,
+          )
+        reject(createAbortError(signal as AbortSignal))
       }
+      const waitingResolver = (): void => {
+        signal?.removeEventListener('abort', abortWhileWaiting)
+        resolve(this.createReleaseSlot())
+      }
+      this.queueState.waitingResolvers.push(waitingResolver)
+      signal?.addEventListener('abort', abortWhileWaiting, { once: true })
     })
   }
 

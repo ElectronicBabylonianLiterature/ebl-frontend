@@ -2,6 +2,7 @@ import _ from 'lodash'
 import cancellableFetch from './cancellableFetch'
 import { AuthenticationService } from 'auth/Auth'
 import { ErrorReporter } from 'ErrorReporterContext'
+import { isAbortError } from 'common/utils/abortError'
 
 type Options = Omit<RequestInit, 'headers'> & {
   headers?: Record<string, string>
@@ -167,7 +168,7 @@ export default class ApiClient {
       }
       throw await ApiError.fromResponse(response)
     } catch (error) {
-      if ((error as Error)?.name === 'AbortError') {
+      if (isAbortError(error)) {
         throw error
       }
       const capturedError = error as Error & { __captured?: boolean }

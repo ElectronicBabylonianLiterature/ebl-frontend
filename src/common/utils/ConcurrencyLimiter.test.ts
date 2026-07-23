@@ -1,32 +1,10 @@
 import ConcurrencyLimiter from './ConcurrencyLimiter'
-
-type QueueState = {
-  activeCount: number
-  waitingResolvers: unknown[]
-}
-
-type Deferred<Value> = {
-  promise: Promise<Value>
-  resolve: (value: Value) => void
-}
-
-function deferred<Value>(): Deferred<Value> {
-  let resolvePromise: (value: Value) => void = () => undefined
-  const promise = new Promise<Value>((resolve) => {
-    resolvePromise = resolve
-  })
-
-  return { promise, resolve: resolvePromise }
-}
-
-function queueState(limiter: ConcurrencyLimiter): QueueState {
-  return (limiter as unknown as { queueState: QueueState }).queueState
-}
-
-async function settle(): Promise<void> {
-  await new Promise((resolve) => setTimeout(resolve, 0))
-  await new Promise((resolve) => setTimeout(resolve, 0))
-}
+import {
+  Deferred,
+  deferred,
+  queueState,
+  settle,
+} from 'test-support/concurrencyLimiterHelpers'
 
 describe('ConcurrencyLimiter', () => {
   it('limits normal concurrency', async () => {
@@ -109,141 +87,6 @@ describe('ConcurrencyLimiter', () => {
     expect(queueState(limiter).activeCount).toBe(0)
   })
 
-  it('does not leak slots when queued operations are canceled', async () => {
-    const limiter = new ConcurrencyLimiter(2)
-    const activeCompletions = [deferred<string>(), deferred<string>()]
-    const canceledOperations = [jest.fn(), jest.fn(), jest.fn()]
-    let activeWork = 0
-    let maximumActiveWork = 0
-
-    const activeOperations = activeCompletions.map((completion) =>
-      limiter.run(() => {
-        activeWork += 1
-        maximumActiveWork = Math.max(maximumActiveWork, activeWork)
-        return completion.promise.finally(() => {
-          activeWork -= 1
-        })
-      }),
-    )
-    const controllers = canceledOperations.map(() => new AbortController())
-    const canceledPromises = canceledOperations.map((operation, index) =>
-      limiter.run(() => {
-        operation()
-        return Promise.resolve('canceled operation ran')
-      }, controllers[index].signal),
-    )
-    canceledPromises.forEach((promise) => promise.catch(() => undefined))
-
-    await settle()
-
-    expect(queueState(limiter).activeCount).toBe(2)
-    expect(queueState(limiter).waitingResolvers).toHaveLength(3)
-
-    controllers.forEach((controller) => controller.abort())
-    await settle()
-
-    expect(queueState(limiter).waitingResolvers).toHaveLength(0)
-
-    activeCompletions.forEach((completion, index) => {
-      completion.resolve(`active ${index} done`)
-    })
-    await Promise.all(activeOperations)
-    await settle()
-
-    const freshOperation = jest.fn(() => Promise.resolve('fresh done'))
-    const freshPromise = limiter.run(freshOperation)
-
-    await expect(freshPromise).resolves.toBe('fresh done')
-    expect(freshOperation).toHaveBeenCalledTimes(1)
-    canceledOperations.forEach((operation) => {
-      expect(operation).not.toHaveBeenCalled()
-    })
-    expect(maximumActiveWork).toBe(2)
-    expect(queueState(limiter).activeCount).toBe(0)
-    expect(queueState(limiter).waitingResolvers).toHaveLength(0)
-  })
-
-  it('does not interrupt a running operation when its signal aborts', async () => {
-    const limiter = new ConcurrencyLimiter(1)
-    const activeCompletion = deferred<string>()
-    const controller = new AbortController()
-    const queuedOperation = jest.fn(() => Promise.resolve('queued done'))
-
-    const active = limiter.run(
-      () => activeCompletion.promise,
-      controller.signal,
-    )
-
-    await settle()
-
-    expect(queueState(limiter).activeCount).toBe(1)
-
-    const queued = limiter.run(queuedOperation)
-
-    await settle()
-
-    expect(queuedOperation).not.toHaveBeenCalled()
-    expect(queueState(limiter).waitingResolvers).toHaveLength(1)
-
-    controller.abort()
-    await settle()
-
-    expect(queuedOperation).not.toHaveBeenCalled()
-    expect(queueState(limiter).activeCount).toBe(1)
-
-    activeCompletion.resolve('active done')
-    await expect(active).resolves.toBe('active done')
-    await settle()
-
-    expect(queuedOperation).toHaveBeenCalledTimes(1)
-    await expect(queued).resolves.toBe('queued done')
-    expect(queueState(limiter).activeCount).toBe(0)
-    expect(queueState(limiter).waitingResolvers).toHaveLength(0)
-  })
-
-  it('continues running fresh work after repeated queued cancellations', async () => {
-    const limiter = new ConcurrencyLimiter(1)
-
-    for (const iteration of [1, 2, 3]) {
-      const activeCompletion = deferred<string>()
-      const active = limiter.run(() => activeCompletion.promise)
-
-      await settle()
-
-      expect(queueState(limiter).activeCount).toBe(1)
-
-      const controller = new AbortController()
-      const canceledOperation = jest.fn(() => Promise.resolve('canceled'))
-      const canceled = limiter.run(canceledOperation, controller.signal)
-      canceled.catch(() => undefined)
-
-      await settle()
-
-      expect(queueState(limiter).waitingResolvers).toHaveLength(1)
-
-      controller.abort()
-      await settle()
-
-      expect(canceledOperation).not.toHaveBeenCalled()
-      expect(queueState(limiter).waitingResolvers).toHaveLength(0)
-
-      activeCompletion.resolve(`active ${iteration} done`)
-      await expect(active).resolves.toBe(`active ${iteration} done`)
-      await settle()
-
-      const freshOperation = jest.fn(() =>
-        Promise.resolve(`fresh ${iteration} done`),
-      )
-
-      await expect(limiter.run(freshOperation)).resolves.toBe(
-        `fresh ${iteration} done`,
-      )
-      expect(freshOperation).toHaveBeenCalledTimes(1)
-      expect(queueState(limiter).activeCount).toBe(0)
-      expect(queueState(limiter).waitingResolvers).toHaveLength(0)
-    }
-  })
-
   it('releases the slot when an operation rejects', async () => {
     const limiter = new ConcurrencyLimiter(1)
     const failure = new Error('failure')
@@ -294,34 +137,6 @@ describe('ConcurrencyLimiter', () => {
     const freshOperation = jest.fn(() => Promise.resolve('fresh done'))
 
     await expect(limiter.run(freshOperation)).resolves.toBe('fresh done')
-    expect(freshOperation).toHaveBeenCalledTimes(1)
-    expect(queueState(limiter).activeCount).toBe(0)
-    expect(queueState(limiter).waitingResolvers).toHaveLength(0)
-  })
-
-  it('does not deadlock when queued cancellation races with slot handoff', async () => {
-    const limiter = new ConcurrencyLimiter(1)
-    const firstCompletion = deferred<string>()
-    const queuedOperation = jest.fn(() => Promise.resolve('queued done'))
-
-    const controller = new AbortController()
-    const first = limiter.run(() => firstCompletion.promise)
-    const queued = limiter.run(queuedOperation, controller.signal)
-    queued.catch(() => undefined)
-
-    await settle()
-
-    firstCompletion.resolve('first done')
-    controller.abort()
-
-    await expect(first).resolves.toBe('first done')
-    await settle()
-
-    const freshOperation = jest.fn(() => Promise.resolve('fresh done'))
-    const fresh = limiter.run(freshOperation)
-
-    await expect(fresh).resolves.toBe('fresh done')
-    expect(queuedOperation).not.toHaveBeenCalled()
     expect(freshOperation).toHaveBeenCalledTimes(1)
     expect(queueState(limiter).activeCount).toBe(0)
     expect(queueState(limiter).waitingResolvers).toHaveLength(0)

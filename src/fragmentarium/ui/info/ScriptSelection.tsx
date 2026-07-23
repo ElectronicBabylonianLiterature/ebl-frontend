@@ -14,6 +14,7 @@ import {
 import { Button, Overlay, Popover } from 'react-bootstrap'
 import usePromiseEffect from 'common/hooks/usePromiseEffect'
 import Spinner from 'common/ui/Spinner'
+import ErrorAlert from 'common/errors/ErrorAlert'
 import { MetaEditButton } from 'fragmentarium/ui/info/MetaEditButton'
 import ExternalLink from 'common/ui/ExternalLink'
 
@@ -56,6 +57,7 @@ function ScriptSelection({
   const [updates, setUpdates] = useState<Script>(fragment.script)
   const [isDisplayed, setIsDisplayed] = useState(false)
   const [isSaving, setIsSaving] = useState(false)
+  const [saveError, setSaveError] = useState<Error | null>(null)
   const [isDirty, setIsDirty] = useState(false)
   const target = useRef<HTMLButtonElement | null>(null)
   const [, , runUpdate] = usePromiseEffect()
@@ -131,14 +133,23 @@ function ScriptSelection({
             onClick={() => {
               if (updates !== script) {
                 setIsSaving(true)
+                setSaveError(null)
                 runUpdate((signal) =>
-                  updateScript(updates, signal).then(() => {
-                    if (!signal.aborted) {
-                      setIsSaving(false)
-                      setIsDisplayed(false)
-                      setScript(updates)
-                    }
-                  }),
+                  updateScript(updates, signal).then(
+                    () => {
+                      if (!signal.aborted) {
+                        setIsSaving(false)
+                        setIsDisplayed(false)
+                        setScript(updates)
+                      }
+                    },
+                    (error) => {
+                      if (!signal.aborted) {
+                        setIsSaving(false)
+                        setSaveError(error)
+                      }
+                    },
+                  ),
                 )
               }
             }}
@@ -146,6 +157,7 @@ function ScriptSelection({
             Save
           </Button>
           <Spinner loading={isSaving}>Saving...</Spinner>
+          <ErrorAlert error={saveError} />
         </div>
       </Popover.Body>
     </Popover>

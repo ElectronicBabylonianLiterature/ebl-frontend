@@ -228,6 +228,21 @@ describe('Filtering', () => {
     renderWithData()
     expect(screen.getByText(`${propValue} ${defaultData}`)).toBeInTheDocument()
   })
+
+  it('Falls back to null data when defaultData is not configured', () => {
+    const FilteredComponent = withData<Props, unknown, string>(
+      InnerComponent,
+      getter,
+      { filter: () => false },
+    )
+    render(
+      <ErrorReporterContext.Provider value={errorReportingService}>
+        <FilteredComponent prop={propValue} />
+      </ErrorReporterContext.Provider>,
+    )
+    expect(getter).not.toHaveBeenCalled()
+    expect(InnerComponent).not.toHaveBeenCalled()
+  })
 })
 
 describe('Child component crash', () => {

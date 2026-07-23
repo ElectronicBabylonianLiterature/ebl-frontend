@@ -144,6 +144,21 @@ function commonTests(create, waitFor): void {
     ).resolves.toBeUndefined()
   })
 
+  test('Ignores an update failure after unmount', async () => {
+    let rejectUpdate: (error: Error) => void = _.noop
+    const pending = new Promise<void>((resolve, reject) => {
+      rejectUpdate = reject
+    })
+    bibliographyService.update.mockReturnValueOnce(pending)
+    bibliographyService.create.mockReturnValueOnce(pending)
+    const { unmount, container } = await renderWithRouter(true, create, waitFor)
+    await submitForm(container)
+    unmount()
+    rejectUpdate(new Error(errorMessage))
+    await expect(pending).rejects.toThrow(errorMessage)
+    expect(screen.queryByText(errorMessage)).not.toBeInTheDocument()
+  })
+
   test('Saving is disabled when not allowed to write:bibliography', async () => {
     await renderWithRouter(false, create, waitFor)
     expect(screen.getByText('Save')).toBeDisabled()

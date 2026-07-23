@@ -25,6 +25,7 @@ import {
   editionFields,
   EditionFields,
 } from 'fragmentarium/application/FragmentService'
+import AbortableOperation from 'common/utils/AbortableOperation'
 
 type Props = {
   transliteration: string
@@ -137,8 +138,8 @@ const TransliterationForm: React.FC<Props> = ({
     error: null,
     disabled: false,
   })
-  const abortControllerRef = useRef<AbortController | null>(null)
-  useEffect(() => () => abortControllerRef.current?.abort(), [])
+  const updateOperation = useRef(new AbortableOperation())
+  useEffect(() => () => updateOperation.current.abort(), [])
   const initialValues = useMemo(
     () => ({ transliteration, notes, introduction }),
     [transliteration, notes, introduction],
@@ -172,9 +173,7 @@ const TransliterationForm: React.FC<Props> = ({
       _.pick(formData, editionFields),
       isDirty,
     ) as EditionFields
-    abortControllerRef.current?.abort()
-    abortControllerRef.current = new AbortController()
-    const { signal } = abortControllerRef.current
+    const signal = updateOperation.current.start()
     updateEdition(updatedFields)
       .then((fragment) => {
         if (!signal.aborted) {

@@ -9,6 +9,7 @@ import withData, { WithoutData } from 'http/withData'
 import SessionContext from 'auth/SessionContext'
 import Word from 'dictionary/domain/Word'
 import { SectionCrumb, TextCrumb } from 'common/ui/Breadcrumbs'
+import AbortableOperation from 'common/utils/AbortableOperation'
 
 type Props = {
   data: Word
@@ -23,7 +24,7 @@ class WordEditor extends Component<
   static contextType = SessionContext
   context!: React.ContextType<typeof SessionContext>
 
-  private abortController: AbortController
+  private readonly updateOperation = new AbortableOperation()
 
   constructor(props) {
     super(props)
@@ -32,11 +33,10 @@ class WordEditor extends Component<
       error: null,
       saving: false,
     }
-    this.abortController = new AbortController()
   }
 
   componentWillUnmount(): void {
-    this.abortController.abort()
+    this.updateOperation.abort()
   }
 
   get disabled(): boolean {
@@ -44,9 +44,7 @@ class WordEditor extends Component<
   }
 
   updateWord = (word): void => {
-    this.abortController.abort()
-    this.abortController = new AbortController()
-    const { signal } = this.abortController
+    const signal = this.updateOperation.start()
     this.setState({ word: this.state.word, error: null, saving: true })
     this.props.wordService
       .update(word)

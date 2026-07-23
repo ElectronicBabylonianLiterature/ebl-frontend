@@ -22,6 +22,7 @@ export interface DateEditorStateProps {
   setDate: React.Dispatch<React.SetStateAction<MesopotamianDate | undefined>>
   setIsDisplayed: React.Dispatch<React.SetStateAction<boolean>>
   setIsSaving: React.Dispatch<React.SetStateAction<boolean>>
+  setSaveError: React.Dispatch<React.SetStateAction<Error | null>>
   index?: number
   saveDateOverride?: (updatedDate?: MesopotamianDate, index?: number) => void
 }

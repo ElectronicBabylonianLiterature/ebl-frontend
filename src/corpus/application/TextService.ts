@@ -476,15 +476,12 @@ export default class TextService {
     alignment: ChapterAlignment,
     signal?: AbortSignal,
   ): Promise<Chapter> {
-    return Promise.all([
-      this.loadProvenances(),
-      this.apiClient.postJson(
-        `${createChapterUrl(id)}/alignment`,
-        toAlignmentDto(alignment),
-        true,
-        signal,
-      ),
-    ]).then(([, dto]) => fromChapterDto(dto))
+    return this.postChapterUpdate(
+      id,
+      'alignment',
+      toAlignmentDto(alignment),
+      signal,
+    )
   }
 
   updateLemmatization(
@@ -492,15 +489,12 @@ export default class TextService {
     lemmatization: ChapterLemmatization,
     signal?: AbortSignal,
   ): Promise<Chapter> {
-    return Promise.all([
-      this.loadProvenances(),
-      this.apiClient.postJson(
-        `${createChapterUrl(id)}/lemmatization`,
-        toLemmatizationDto(lemmatization),
-        true,
-        signal,
-      ),
-    ]).then(([, dto]) => fromChapterDto(dto))
+    return this.postChapterUpdate(
+      id,
+      'lemmatization',
+      toLemmatizationDto(lemmatization),
+      signal,
+    )
   }
 
   updateManuscripts(
@@ -509,15 +503,12 @@ export default class TextService {
     uncertainChapters: readonly string[],
     signal?: AbortSignal,
   ): Promise<Chapter> {
-    return Promise.all([
-      this.loadProvenances(),
-      this.apiClient.postJson(
-        `${createChapterUrl(id)}/manuscripts`,
-        toManuscriptsDto(manuscripts, uncertainChapters),
-        true,
-        signal,
-      ),
-    ]).then(([, dto]) => fromChapterDto(dto))
+    return this.postChapterUpdate(
+      id,
+      'manuscripts',
+      toManuscriptsDto(manuscripts, uncertainChapters),
+      signal,
+    )
   }
 
   updateLines(
@@ -525,15 +516,7 @@ export default class TextService {
     lines: readonly Line[],
     signal?: AbortSignal,
   ): Promise<Chapter> {
-    return Promise.all([
-      this.loadProvenances(),
-      this.apiClient.postJson(
-        `${createChapterUrl(id)}/lines`,
-        toLinesDto(lines),
-        true,
-        signal,
-      ),
-    ]).then(([, dto]) => fromChapterDto(dto))
+    return this.postChapterUpdate(id, 'lines', toLinesDto(lines), signal)
   }
 
   importChapter(
@@ -541,15 +524,24 @@ export default class TextService {
     atf: string,
     signal?: AbortSignal,
   ): Promise<Chapter> {
+    return this.postChapterUpdate(id, 'import', { atf }, signal)
+  }
+
+  private postChapterUpdate(
+    id: ChapterId,
+    endpoint: string,
+    dto: unknown,
+    signal?: AbortSignal,
+  ): Promise<Chapter> {
     return Promise.all([
       this.loadProvenances(),
       this.apiClient.postJson(
-        `${createChapterUrl(id)}/import`,
-        { atf },
+        `${createChapterUrl(id)}/${endpoint}`,
+        dto,
         true,
         signal,
       ),
-    ]).then(([, dto]) => fromChapterDto(dto))
+    ]).then(([, chapterDto]) => fromChapterDto(chapterDto))
   }
 
   findSuggestions(chapter: Chapter): Promise<ChapterLemmatization> {

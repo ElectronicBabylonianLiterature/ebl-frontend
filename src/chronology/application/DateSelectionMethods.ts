@@ -6,13 +6,15 @@ import {
   EponymDateField,
   KingDateField,
 } from 'chronology/domain/DateParameters'
+import { RunOperation } from 'common/hooks/usePromiseEffect'
 
 interface SaveDateParams {
   date?: MesopotamianDate
   updatedDate?: MesopotamianDate
   index?: number
-  runUpdate: (operation: (signal: AbortSignal) => Promise<unknown>) => void
+  runUpdate: RunOperation
   setIsSaving: React.Dispatch<React.SetStateAction<boolean>>
+  setSaveError: React.Dispatch<React.SetStateAction<Error | null>>
   updateDate: (
     date?: MesopotamianDate | undefined,
     index?: number | undefined,
@@ -28,31 +30,33 @@ export function saveDateDefault({
   index,
   runUpdate,
   setIsSaving,
+  setSaveError,
   updateDate,
   setDate,
   setIsDisplayed,
 }: SaveDateParams): void {
-  if (updatedDate !== date) {
-    setIsSaving(true)
-    runUpdate((signal) =>
-      updateDate(updatedDate, index, signal)
-        .then(() => {
-          if (!signal.aborted) {
-            setIsDisplayed(false)
-          }
-        })
-        .finally(() => {
-          if (!signal.aborted) {
-            setIsSaving(false)
-          }
-        })
-        .then(() => {
-          if (!signal.aborted) {
-            setDate(updatedDate)
-          }
-        }),
-    )
+  if (updatedDate === date) {
+    return
   }
+  setIsSaving(true)
+  setSaveError(null)
+  runUpdate((signal) =>
+    updateDate(updatedDate, index, signal).then(
+      () => {
+        if (!signal.aborted) {
+          setIsSaving(false)
+          setIsDisplayed(false)
+          setDate(updatedDate)
+        }
+      },
+      (error) => {
+        if (!signal.aborted) {
+          setIsSaving(false)
+          setSaveError(error)
+        }
+      },
+    ),
+  )
 }
 
 export function getDate(params: DateSelectionStateParams): MesopotamianDate {

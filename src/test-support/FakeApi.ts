@@ -479,25 +479,21 @@ export default class FakeApi {
   }
 
   verifyExpectations(): void {
-    // Calls may carry an optional trailing AbortSignal argument, so match on
-    // the meaningful leading arguments rather than an exact argument list.
     const methods = {
       GET: (expectation: Expectation): void => {
         const mock = expectation.isBlob
           ? this.client.fetchBlob
           : this.client.fetchJson
-        expect(mock.mock.calls).toContainEqual(
-          expect.arrayContaining([expectation.path]),
-        )
+        expect(leadingArguments(mock, 2)).toContainEqual([
+          expectation.path,
+          expect.anything(),
+        ])
       },
       POST: (expectation: Expectation): void => {
-        expect(this.client.postJson.mock.calls).toContainEqual(
-          expect.arrayContaining(
-            expectation.body
-              ? [expectation.path, expectation.body]
-              : [expectation.path],
-          ),
-        )
+        expect(leadingArguments(this.client.postJson, 2)).toContainEqual([
+          expectation.path,
+          expectation.body || expect.anything(),
+        ])
       },
     }
     this.expectations
@@ -505,6 +501,10 @@ export default class FakeApi {
       .forEach((expectation) => methods[expectation.method](expectation))
   }
 }
+function leadingArguments(mock: jest.Mock, argumentCount: number): unknown[][] {
+  return mock.mock.calls.map((call) => call.slice(0, argumentCount))
+}
+
 function createTextUrl(id): string {
   return `/texts/${id.genre}/${id.category}/${id.index}`
 }

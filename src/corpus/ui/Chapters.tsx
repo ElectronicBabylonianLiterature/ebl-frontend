@@ -1,4 +1,4 @@
-import React, { ReactNode, useState } from 'react'
+import React, { ReactNode, useEffect, useState } from 'react'
 import _ from 'lodash'
 import { createChapterId, Text, UncertainFragment } from 'corpus/domain/text'
 import withData from 'http/withData'
@@ -13,7 +13,8 @@ import HelpTrigger from 'common/ui/HelpTrigger'
 import { Popover } from 'react-bootstrap'
 import FragmentariumLink from './FragmentariumLink'
 import { ChapterTitleLink } from './chapter-title'
-import { ChapterId } from 'transliteration/domain/chapter-id'
+import { ChapterId, chapterIdToString } from 'transliteration/domain/chapter-id'
+import ErrorAlert from 'common/errors/ErrorAlert'
 
 import './Chapters.sass'
 import ManuscriptJoins from './ManuscriptJoins'
@@ -70,6 +71,24 @@ function excludeIndirectJoins(manuscripts: Manuscript[]): Manuscript[] {
   )
 }
 
+function ExtantLinesCell({
+  extantLines,
+  error,
+  siglum,
+}: {
+  extantLines?: ExtantLines
+  error: Error | null
+  siglum: string
+}): JSX.Element {
+  if (error) {
+    return <ErrorAlert error={error} />
+  }
+  if (!extantLines) {
+    return <Spinner />
+  }
+  return <ExtantLinesList extantLines={extantLines[siglum]} />
+}
+
 const Manuscripts = withData<
   {
     uncertainFragments: readonly UncertainFragment[]
@@ -89,15 +108,25 @@ const Manuscripts = withData<
   }) => {
     const [runExtantLines] = usePromiseEffect()
     const [extantLines, setExtantLines] = useState<ExtantLines>()
-    if (_.isNil(extantLines)) {
+    const [extantLinesError, setExtantLinesError] = useState<Error | null>(null)
+    const chapterIdKey = chapterIdToString(id)
+    useEffect(() => {
       runExtantLines((signal) =>
-        textService.findExtantLines(id, signal).then((lines) => {
-          if (!signal.aborted) {
-            setExtantLines(lines)
-          }
-        }),
+        textService.findExtantLines(id, signal).then(
+          (lines) => {
+            if (!signal.aborted) {
+              setExtantLines(lines)
+            }
+          },
+          (error) => {
+            if (!signal.aborted) {
+              setExtantLinesError(error)
+            }
+          },
+        ),
       )
-    }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [chapterIdKey, textService, runExtantLines])
 
     const siglumId = _.uniqueId('siglum-')
     const museumNumberId = _.uniqueId('museumNumber-')
@@ -187,13 +216,11 @@ const Manuscripts = withData<
                             ].join(' ')}
                             className="list-of-manuscripts__extant-lines"
                           >
-                            {extantLines ? (
-                              <ExtantLinesList
-                                extantLines={extantLines[manuscript.siglum]}
-                              />
-                            ) : (
-                              <Spinner />
-                            )}
+                            <ExtantLinesCell
+                              extantLines={extantLines}
+                              error={extantLinesError}
+                              siglum={manuscript.siglum}
+                            />
                           </td>
                         </tr>
                       )

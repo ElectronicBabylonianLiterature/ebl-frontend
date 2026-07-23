@@ -1,5 +1,5 @@
 import React from 'react'
-import { render, screen, waitFor } from '@testing-library/react'
+import { render, RenderResult, screen, waitFor } from '@testing-library/react'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import SessionContext from 'auth/SessionContext'
 import { fragmentFactory } from 'test-support/fragment-fixtures'
@@ -29,8 +29,8 @@ const script = {
   uncertain: false,
 }
 
-async function renderScriptSelection() {
-  render(
+async function renderScriptSelection(): Promise<RenderResult> {
+  const view = render(
     <MemoryRouter>
       <SessionContext.Provider value={session}>
         <ScriptSelection
@@ -42,9 +42,10 @@ async function renderScriptSelection() {
     </MemoryRouter>,
   )
   await waitForSpinnerToBeRemoved(screen)
+  return view
 }
 
-async function setup(): Promise<void> {
+async function setup(): Promise<RenderResult> {
   fragment = fragmentFactory.build(
     {},
     {
@@ -59,9 +60,10 @@ async function setup(): Promise<void> {
   session = new (MemorySession as jest.Mock<jest.Mocked<MemorySession>>)()
   session.isAllowedToTransliterateFragments.mockReturnValue(true)
 
-  await renderScriptSelection()
+  const view = await renderScriptSelection()
 
   await userEvent.click(screen.getByRole('button'))
+  return view
 }
 describe('User Input', () => {
   test.each([
@@ -102,5 +104,37 @@ describe('User Input', () => {
     await userEvent.click(screen.getByText('Save'))
 
     await waitFor(() => expect(updateScript).toHaveBeenCalled())
+  })
+
+  test('Ignores the update outcome after unmount', async () => {
+    let rejectUpdate: (error: Error) => void = () => undefined
+    const pending = new Promise((_resolve, reject) => {
+      rejectUpdate = reject
+    })
+    updateScript.mockImplementationOnce(() => pending)
+    const { unmount } = await setup()
+    const modifierSelect = screen.getByLabelText('select-period-modifier')
+    await userEvent.click(modifierSelect)
+    await userEvent.click(await screen.findByText(PeriodModifiers.Late.name))
+    await userEvent.click(screen.getByText('Save'))
+    unmount()
+    rejectUpdate(new Error('Update failed'))
+
+    await expect(pending).rejects.toThrow('Update failed')
+    expect(screen.queryByText('Update failed')).not.toBeInTheDocument()
+  })
+
+  test('Shows an error and stops saving when the update fails', async () => {
+    await setup()
+    updateScript.mockImplementationOnce(() =>
+      Promise.reject(new Error('Update failed')),
+    )
+    const modifierSelect = screen.getByLabelText('select-period-modifier')
+    await userEvent.click(modifierSelect)
+    await userEvent.click(await screen.findByText(PeriodModifiers.Late.name))
+    await userEvent.click(screen.getByText('Save'))
+
+    expect(await screen.findByText('Update failed')).toBeInTheDocument()
+    expect(screen.queryByText('Saving...')).not.toBeInTheDocument()
   })
 })
