@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import _ from 'lodash'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import withData from 'http/withData'
@@ -11,27 +11,13 @@ import { stringify } from 'query-string'
 import { FragmentLines } from './FragmentariumSearchResultComponents'
 import DossiersService from 'dossiers/application/DossiersService'
 import PaginationItems from './PaginationItems'
-import { useLocation } from 'react-router-dom'
-import { useHistory } from 'router/compat'
-import {
-  getRequestedPaginationIndex,
-  paginationURLParam,
-  updatePaginationSearchParam,
-} from './pagination'
+import { paginationURLParam, RESULTS_PER_PAGE } from './pagination'
 
-const RESULTS_PER_PAGE = 50
-
-export function getActivePageFromSearch(
-  search: string,
-  lastPage: number,
-): number {
-  const parsedPaginationIndex = getRequestedPaginationIndex(search)
-
-  if (parsedPaginationIndex === undefined) {
-    return 0
-  }
-
-  return _.clamp(parsedPaginationIndex, 0, lastPage)
+function getPageIndex(fragmentQuery: FragmentQuery): number {
+  const offset = fragmentQuery.offset ?? 0
+  return Number.isInteger(offset) && offset >= 0
+    ? Math.floor(offset / RESULTS_PER_PAGE)
+    : 0
 }
 
 function ResultPages({
@@ -40,48 +26,23 @@ function ResultPages({
   dossiersService,
   linesToShow,
   queryLemmas,
+  pageIndex,
+  hasNextPage,
 }: {
   fragments: readonly QueryItem[]
   fragmentService: FragmentService
   dossiersService: DossiersService
   linesToShow: number
   queryLemmas?: readonly string[]
+  pageIndex: number
+  hasNextPage: boolean
 }): JSX.Element {
-  const location = useLocation()
-  const history = useHistory()
-  const pages = _.chunk(fragments, RESULTS_PER_PAGE)
-  const lastPage = pages.length - 1
-  const initialActivePage = getActivePageFromSearch(location.search, lastPage)
-  const requestedPaginationIndex = getRequestedPaginationIndex(location.search)
-  const [active, setActive] = useState(initialActivePage)
-  const displayActive = _.clamp(active, 0, lastPage)
-
-  useEffect(() => {
-    setActive(initialActivePage)
-  }, [initialActivePage])
-
-  useEffect(() => {
-    if (
-      requestedPaginationIndex !== undefined &&
-      requestedPaginationIndex > lastPage
-    ) {
-      history.replace({
-        search: updatePaginationSearchParam(
-          location.search,
-          paginationURLParam,
-          lastPage,
-        ),
-      })
-    }
-  }, [history, lastPage, location.search, requestedPaginationIndex])
-
   const pageButtons = (
     <Row>
       <Col className="d-flex justify-content-center">
         <PaginationItems
-          activePage={displayActive}
-          lastPage={lastPage}
-          setActivePage={setActive}
+          activePage={pageIndex}
+          hasNextPage={hasNextPage}
           paginationURLParam={paginationURLParam}
         />
       </Col>
@@ -91,7 +52,7 @@ function ResultPages({
   return (
     <>
       {pageButtons}
-      {pages[displayActive].map((fragment) => (
+      {fragments.map((fragment) => (
         <React.Fragment
           key={`${fragment.museumNumber}:${fragment.matchingLines.join(',')}`}
         >
@@ -99,7 +60,7 @@ function ResultPages({
             fragmentService={fragmentService}
             dossiersService={dossiersService}
             queryItem={fragment}
-            active={displayActive}
+            active={pageIndex}
             queryLemmas={queryLemmas}
             linesToShow={linesToShow}
           />
@@ -122,13 +83,27 @@ export const SearchResult = withData<
 >(
   ({ data, fragmentService, dossiersService, fragmentQuery }): JSX.Element => {
     const fragmentCount = data.items.length
+    const pageIndex = getPageIndex(fragmentQuery)
+    const offset = fragmentQuery.offset ?? pageIndex * RESULTS_PER_PAGE
     const isLineQuery = fragmentQuery.lemmas || fragmentQuery.transliteration
     const hasLineCount = typeof data.matchCountTotal === 'number'
-    const lineCountInfo = hasLineCount
-      ? `${data.isMatchCountTotalExact === false ? 'about ' : ''}${data.matchCountTotal.toLocaleString()} line${
+    const documentCountInfo = `${fragmentCount.toLocaleString()} document${
+      fragmentCount === 1 ? '' : 's'
+    }`
+    const lineResultInfo = hasLineCount
+      ? `Found ${data.isMatchCountTotalExact === false ? 'about ' : ''}${data.matchCountTotal.toLocaleString()} line${
           data.matchCountTotal === 1 ? '' : 's'
-        } in `
-      : ''
+        } in ${documentCountInfo}`
+      : `Found ${documentCountInfo}`
+    const pageResultInfo =
+      fragmentCount > 0
+        ? `Showing results ${(offset + 1).toLocaleString()}-${(
+            offset + fragmentCount
+          ).toLocaleString()}`
+        : pageIndex > 0
+          ? 'No results on this page'
+          : `Found ${documentCountInfo}`
+    const resultInfo = isLineQuery ? lineResultInfo : pageResultInfo
     const showNumberSuggestion =
       fragmentCount === 0 && fragmentQuery.number?.match(/^[^.]+\s+[^.]+$/)
     const fixedNumber = fragmentQuery.number?.split(/\s+/).join('.')
@@ -136,20 +111,22 @@ export const SearchResult = withData<
       <>
         <Row>
           <Col className="justify-content-center fragment-result__match-info">
-            Found {isLineQuery && lineCountInfo}
-            {`${fragmentCount.toLocaleString()} document${
-              fragmentCount === 1 ? '' : 's'
-            }`}
+            {resultInfo}
             {data.hasNextPage === true && '; more results are available'}
             {showNumberSuggestion && (
               <>
                 {'. Did you mean'}
                 &nbsp;
                 <a
-                  href={`/library/search?${stringify({
-                    ...fragmentQuery,
-                    number: fixedNumber,
-                  })}`}
+                  href={`/library/search?${stringify(
+                    _.omit(
+                      {
+                        ...fragmentQuery,
+                        number: fixedNumber,
+                      },
+                      ['limit', 'offset', 'count'],
+                    ),
+                  )}`}
                 >
                   {fixedNumber}
                 </a>
@@ -159,12 +136,14 @@ export const SearchResult = withData<
           </Col>
         </Row>
 
-        {fragmentCount > 0 && (
+        {(fragmentCount > 0 || pageIndex > 0 || data.hasNextPage === true) && (
           <ResultPages
             fragments={data.items}
             fragmentService={fragmentService}
             dossiersService={dossiersService}
             queryLemmas={fragmentQuery.lemmas?.split('+')}
+            pageIndex={pageIndex}
+            hasNextPage={data.hasNextPage === true}
             linesToShow={Math.max(
               _.trimEnd(fragmentQuery.transliteration || '').split('\n').length,
               linesToShow,

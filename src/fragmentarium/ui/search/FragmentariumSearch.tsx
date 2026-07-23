@@ -24,6 +24,7 @@ type Props = Pick<
   'fragmentService' | 'fragmentSearchService' | 'bibliographyService'
 > & {
   fragmentQuery: FragmentQuery
+  resultFragmentQuery: FragmentQuery
   dossiersService: DossiersService
   wordService: WordService
   textService: TextService
@@ -45,6 +46,7 @@ function FragmentariumSearch({
   fragmentSearchService,
   bibliographyService,
   fragmentQuery,
+  resultFragmentQuery,
   wordService,
   textService,
   activeTab,
@@ -104,7 +106,7 @@ function FragmentariumSearch({
                     <SearchResult
                       fragmentService={fragmentService}
                       dossiersService={dossiersService}
-                      fragmentQuery={fragmentQuery}
+                      fragmentQuery={resultFragmentQuery}
                     />
                   </Tab>
                   <Tab

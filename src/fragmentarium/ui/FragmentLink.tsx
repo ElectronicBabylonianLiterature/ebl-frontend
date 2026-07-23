@@ -4,10 +4,22 @@ import { stringify } from 'query-string'
 import Folio from 'fragmentarium/domain/Folio'
 import RouterLinkModeContext from 'common/ui/RouterLinkModeContext'
 
+function encodeFragmentNumber(number: string): string {
+  try {
+    return encodeURIComponent(decodeURIComponent(number))
+  } catch {
+    return encodeURIComponent(number)
+  }
+}
+
 export function createFragmentUrl(number: string, hash = ''): string {
-  return `/library/${encodeURIComponent(number)}${
+  return `/library/${encodeFragmentNumber(number)}${
     hash && '#'
   }${encodeURIComponent(hash)}`
+}
+
+export function createFragmentCanonicalUrl(number: string): string {
+  return `https://www.ebl.lmu.de${createFragmentUrl(number)}`
 }
 
 export function createFragmentUrlWithFolio(

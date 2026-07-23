@@ -4,6 +4,7 @@ import { MemoryRouter } from 'react-router-dom'
 import {
   render,
   screen,
+  waitFor,
   waitForElementToBeRemoved,
 } from '@testing-library/react'
 import Promise from 'bluebird'
@@ -110,17 +111,68 @@ it('Displays photo if no folio specified', async () => {
 })
 
 it('Displays CDLI photo if no photo and no folio specified', async () => {
+  fragment = fragmentFactory.build(
+    { hasPhoto: false, cdliImages: ['dl/photo/P550449.jpg'] },
+    { associations: { folios: [] } },
+  )
+  renderImages()
+  await waitForElementToBeRemoved(() => screen.queryAllByLabelText('Spinner'))
+  expect(await screen.findByAltText('CDLI Photo')).toBeVisible()
+  expect(fragmentService.findPhoto).not.toHaveBeenCalled()
+  expect(fragmentService.findFolio).not.toHaveBeenCalled()
+  expect(fragmentService.folioPager).not.toHaveBeenCalled()
+})
+
+it('Defaults to the first folio when there is no photo and folios exist', async () => {
   folios = [
     folioFactory.build({ name: 'WGL' }),
     folioFactory.build({ name: 'AKG' }),
   ]
   fragment = fragmentFactory.build(
     { hasPhoto: false, cdliImages: ['dl/photo/P550449.jpg'] },
-    { associations: { folios: folios } },
+    { associations: { folios } },
   )
+
   renderImages()
-  await waitForElementToBeRemoved(() => screen.queryAllByLabelText('Spinner'))
-  expect(await screen.findByAltText('CDLI Photo')).toBeVisible()
+
+  await waitFor(() =>
+    expect(fragmentService.findFolio).toHaveBeenCalledTimes(1),
+  )
+  await waitFor(() =>
+    expect(fragmentService.folioPager).toHaveBeenCalledTimes(1),
+  )
+  expect(fragmentService.findFolio).toHaveBeenCalledWith(folios[0])
+  expect(fragmentService.folioPager).toHaveBeenCalledWith(
+    folios[0],
+    fragment.number,
+  )
+  expect(screen.queryByAltText('CDLI Photo')).not.toBeInTheDocument()
+})
+
+it('Displays photo when the photo tab is explicitly selected', async () => {
+  folios = folioFactory.buildList(2)
+  fragment = fragmentFactory.build(
+    { hasPhoto: true, cdliImages: ['dl/photo/P550449.jpg'] },
+    { associations: { folios } },
+  )
+
+  render(
+    <MemoryRouter>
+      <Images
+        fragment={fragment}
+        fragmentService={fragmentService}
+        activeFolio={null}
+        tab="photo"
+      />
+    </MemoryRouter>,
+  )
+
+  expect(
+    await screen.findByAltText(`Fragment ${fragment.number}`),
+  ).toBeVisible()
+  expect(fragmentService.findPhoto).toHaveBeenCalledTimes(1)
+  expect(fragmentService.findFolio).not.toHaveBeenCalled()
+  expect(fragmentService.folioPager).not.toHaveBeenCalled()
 })
 
 test('No photo, folios, CDLI photo', async () => {
@@ -131,6 +183,47 @@ test('No photo, folios, CDLI photo', async () => {
   renderImages()
   await waitForElementToBeRemoved(() => screen.queryAllByLabelText('Spinner'))
   expect(screen.queryByText('CDLI')).not.toBeInTheDocument()
+})
+
+it('requests only the active photo tab media by default', async () => {
+  folios = folioFactory.buildList(5)
+  fragment = fragmentFactory.build(
+    { hasPhoto: true },
+    { associations: { folios } },
+  )
+
+  renderImages()
+
+  expect(
+    await screen.findByAltText(`Fragment ${fragment.number}`),
+  ).toBeVisible()
+  expect(fragmentService.findPhoto).toHaveBeenCalledTimes(1)
+  expect(fragmentService.findFolio).not.toHaveBeenCalled()
+  expect(fragmentService.folioPager).not.toHaveBeenCalled()
+})
+
+it('requests only the selected folio image and pager', async () => {
+  folios = folioFactory.buildList(5)
+  fragment = fragmentFactory.build(
+    { hasPhoto: true },
+    { associations: { folios } },
+  )
+  const selected = folios[2]
+
+  renderImages(selected)
+
+  await waitFor(() =>
+    expect(fragmentService.findFolio).toHaveBeenCalledTimes(1),
+  )
+  await waitFor(() =>
+    expect(fragmentService.folioPager).toHaveBeenCalledTimes(1),
+  )
+  expect(fragmentService.findFolio).toHaveBeenCalledWith(selected)
+  expect(fragmentService.folioPager).toHaveBeenCalledWith(
+    selected,
+    fragment.number,
+  )
+  expect(fragmentService.findPhoto).not.toHaveBeenCalled()
 })
 
 function renderImages(activeFolio: Folio | null = null) {

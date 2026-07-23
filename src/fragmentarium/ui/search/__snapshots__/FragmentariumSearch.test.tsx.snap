@@ -1106,8 +1106,7 @@ exports[`Search Shows suggestion when entering wrong number format 1`] = `
               <div
                 class="justify-content-center fragment-result__match-info col"
               >
-                Found 
-                0 documents
+                Found 0 documents
                 . Did you mean
                  
                 <a

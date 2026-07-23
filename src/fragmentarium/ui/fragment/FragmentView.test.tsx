@@ -1,6 +1,6 @@
 import React from 'react'
 import { MemoryRouter } from 'react-router-dom'
-import { render, screen } from '@testing-library/react'
+import { render, screen, waitFor } from '@testing-library/react'
 import { waitForSpinnerToBeRemoved } from 'test-support/waitForSpinnerToBeRemoved'
 import Promise from 'bluebird'
 import SessionContext from 'auth/SessionContext'
@@ -34,8 +34,12 @@ jest.mock('fragmentarium/application/FragmentService')
 jest.mock('fragmentarium/application/FragmentSearchService')
 jest.mock('afo-register/application/AfoRegisterService')
 jest.mock('dossiers/application/DossiersService')
+jest.mock('fragmentarium/ui/fragment/TeiExport', () => ({
+  teiExport: jest.fn(() => ''),
+}))
 
 global.ResizeObserver = ResizeObserver
+HelmetProvider.canUseDOM = false
 
 const message = 'message'
 const fragmentNumber = 'K,K.1'
@@ -48,6 +52,12 @@ let afoRegisterService: jest.Mocked<AfoRegisterService>
 let dossiersService: jest.Mocked<DossiersService>
 let session
 let container: HTMLElement
+
+function getCanonicalMarkup(): string {
+  const canonicalMarkup = helmetContext['helmet']?.link?.toString() ?? ''
+  expect(canonicalMarkup).toContain('rel="canonical"')
+  return canonicalMarkup
+}
 
 function renderFragmentView(
   number: string,
@@ -201,6 +211,27 @@ describe('Fragment is loaded', () => {
         `${selectedFolio.humanizedName} Folio ${selectedFolio.number}`,
       ),
     ).toHaveAttribute('aria-selected', 'true')
+  })
+
+  it('emits a clean canonical fragment URL for folio variants', async () => {
+    await renderAndWaitForLoadedFragment()
+
+    await waitFor(() => {
+      expect(helmetContext['helmet']?.link?.toString()).toContain(
+        'rel="canonical"',
+      )
+    })
+
+    const canonicalMarkup = getCanonicalMarkup()
+    expect(canonicalMarkup).toContain(
+      `href="https://www.ebl.lmu.de/library/${encodeURIComponent(
+        fragment.number,
+      )}"`,
+    )
+    expect(canonicalMarkup).not.toContain('tab=')
+    expect(canonicalMarkup).not.toContain('folioName')
+    expect(canonicalMarkup).not.toContain('folioNumber')
+    expect(canonicalMarkup.match(/rel="canonical"/g)).toHaveLength(1)
   })
 })
 

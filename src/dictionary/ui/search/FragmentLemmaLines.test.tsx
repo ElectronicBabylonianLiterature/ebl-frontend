@@ -85,7 +85,11 @@ describe('Show Library entries', () => {
 
     renderFragmentLemmaLines()
 
-    expect(fragmentService.query).toBeCalledWith({ lemmas: word._id })
+    expect(fragmentService.query).toBeCalledWith({
+      lemmas: word._id,
+      limit: 10,
+      count: 'none',
+    })
     await screen.findByText(fragmentWithLemma.number)
   }
 
@@ -101,7 +105,7 @@ describe('Show Library entries', () => {
     expect(container).toMatchSnapshot()
   })
 
-  it('renders a document-count fallback when matchCountTotal is null', async () => {
+  it('renders example-count copy when matchCountTotal is null', async () => {
     const queryItem: QueryItem = {
       museumNumber: 'Test.Fragment',
       matchingLines: [0],
@@ -115,9 +119,50 @@ describe('Show Library entries', () => {
     renderFragmentLemmaLines()
 
     expect(
-      await screen.findByText('Matches found in 1 Library document'),
+      await screen.findByText('Showing 1 Library document example'),
     ).toBeVisible()
     expect(screen.queryByText('0 matches')).not.toBeInTheDocument()
+  })
+
+  it('renders summary examples without hydrating fragments', async () => {
+    const queryItem: QueryItem = {
+      museumNumber: previewSubsetFragment.number,
+      matchingLines: [0, 1],
+      matchCount: 5,
+      fragment: previewSubsetFragment,
+    }
+    fragmentService.query.mockReturnValue(
+      Bluebird.resolve({ items: [queryItem], matchCountTotal: null }),
+    )
+
+    renderFragmentLemmaLines()
+
+    expect(await screen.findByText(previewSubsetFragment.number)).toBeVisible()
+    expect(screen.getByRole('button', { name: 'kur' })).toBeVisible()
+    expect(screen.getByText('And 2 more')).toBeVisible()
+    expect(fragmentService.find).not.toHaveBeenCalled()
+  })
+
+  it('defensively renders no more than ten examples', async () => {
+    const items = Array.from(
+      { length: 12 },
+      (_, index): QueryItem => ({
+        museumNumber: `Test.Fragment.${index}`,
+        matchingLines: [0],
+        matchCount: 1,
+        fragment: previewSubsetFragment,
+      }),
+    )
+    fragmentService.query.mockReturnValue(
+      Bluebird.resolve({ items, matchCountTotal: null }),
+    )
+
+    renderFragmentLemmaLines()
+
+    expect(await screen.findByText('Test.Fragment.0')).toBeVisible()
+    expect(screen.getByText('Test.Fragment.9')).toBeVisible()
+    expect(screen.queryByText('Test.Fragment.10')).not.toBeInTheDocument()
+    expect(fragmentService.find).not.toHaveBeenCalled()
   })
 })
 
