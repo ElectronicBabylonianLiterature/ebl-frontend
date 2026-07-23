@@ -2,7 +2,6 @@ import React, { PropsWithChildren, useCallback, useMemo } from 'react'
 import { createRoot } from 'react-dom/client'
 import { BrowserRouter as Router } from 'react-router-dom'
 import { useHistory } from 'router/compat'
-import Promise from 'bluebird'
 import ErrorBoundary from 'common/errors/ErrorBoundary'
 import * as serviceWorker from './serviceWorker'
 
@@ -22,19 +21,24 @@ if (process.env.REACT_APP_SENTRY_DSN && process.env.NODE_ENV) {
   )
 }
 
-Promise.config({
-  cancellation: true,
-})
-
 const errorReporter = new SentryErrorReporter()
 
 export type JsonApiClient = {
-  fetchJson: <T = unknown>(url: string, authorize: boolean) => Promise<T>
-  fetchBlob: (url: string, authorize: boolean) => Promise<Blob>
+  fetchJson: <T = unknown>(
+    url: string,
+    authorize: boolean,
+    signal?: AbortSignal,
+  ) => Promise<T>
+  fetchBlob: (
+    url: string,
+    authorize: boolean,
+    signal?: AbortSignal,
+  ) => Promise<Blob>
   postJson: <T = unknown>(
     url: string,
     body: Record<string, unknown>,
     authorize?: boolean,
+    signal?: AbortSignal,
   ) => Promise<T>
 }
 

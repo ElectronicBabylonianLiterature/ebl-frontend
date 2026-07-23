@@ -12,15 +12,15 @@ import {
   Periods,
 } from 'common/utils/period'
 import { Button, Overlay, Popover } from 'react-bootstrap'
-import Bluebird from 'bluebird'
 import usePromiseEffect from 'common/hooks/usePromiseEffect'
 import Spinner from 'common/ui/Spinner'
+import ErrorAlert from 'common/errors/ErrorAlert'
 import { MetaEditButton } from 'fragmentarium/ui/info/MetaEditButton'
 import ExternalLink from 'common/ui/ExternalLink'
 
 type Props = {
   fragment: Fragment
-  updateScript: (script: Script) => Bluebird<Fragment>
+  updateScript: (script: Script, signal?: AbortSignal) => Promise<Fragment>
   periodOptions: readonly Period[]
 }
 
@@ -57,9 +57,10 @@ function ScriptSelection({
   const [updates, setUpdates] = useState<Script>(fragment.script)
   const [isDisplayed, setIsDisplayed] = useState(false)
   const [isSaving, setIsSaving] = useState(false)
+  const [saveError, setSaveError] = useState<Error | null>(null)
   const [isDirty, setIsDirty] = useState(false)
   const target = useRef<HTMLButtonElement | null>(null)
-  const [setUpdatePromise, cancelUpdatePromise] = usePromiseEffect<void>()
+  const [, , runUpdate] = usePromiseEffect()
 
   function updatePeriod(event) {
     setUpdates({ ...updates, period: Periods[event.value] })
@@ -131,13 +132,24 @@ function ScriptSelection({
             disabled={!isDirty}
             onClick={() => {
               if (updates !== script) {
-                cancelUpdatePromise()
                 setIsSaving(true)
-                setUpdatePromise(
-                  updateScript(updates)
-                    .then(() => setIsSaving(false))
-                    .then(() => setIsDisplayed(false))
-                    .then(() => setScript(updates)),
+                setSaveError(null)
+                runUpdate((signal) =>
+                  updateScript(updates, signal).then(
+                    () => {
+                      if (!signal.aborted) {
+                        setIsSaving(false)
+                        setIsDisplayed(false)
+                        setScript(updates)
+                      }
+                    },
+                    (error) => {
+                      if (!signal.aborted) {
+                        setIsSaving(false)
+                        setSaveError(error)
+                      }
+                    },
+                  ),
                 )
               }
             }}
@@ -145,6 +157,7 @@ function ScriptSelection({
             Save
           </Button>
           <Spinner loading={isSaving}>Saving...</Spinner>
+          <ErrorAlert error={saveError} />
         </div>
       </Popover.Body>
     </Popover>
@@ -179,7 +192,7 @@ function ScriptSelection({
 }
 
 export default withData<
-  { fragment: Fragment; updateScript: (script: Script) => Bluebird<Fragment> },
+  { fragment: Fragment; updateScript: (script: Script) => Promise<Fragment> },
   { fragmentService: FragmentService },
   readonly string[]
 >(
@@ -196,5 +209,5 @@ export default withData<
       />
     )
   },
-  (props) => props.fragmentService.fetchPeriods(),
+  (props, signal) => props.fragmentService.fetchPeriods(signal),
 )

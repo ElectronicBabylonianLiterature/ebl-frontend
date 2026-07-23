@@ -1,4 +1,3 @@
-import Promise from 'bluebird'
 import { testDelegation, TestData } from 'test-support/utils'
 import ApiClient from 'http/ApiClient'
 import SignRepository from 'signs/infrastructure/SignRepository'
@@ -38,7 +37,7 @@ const testData: TestData<SignRepository>[] = [
     [signName],
     apiClient.fetchJson,
     resultStub,
-    [`/signs/${encodeURIComponent(signName)}`, false],
+    [`/signs/${encodeURIComponent(signName)}`, false, undefined],
     Promise.resolve(resultStub),
   ),
   new TestData(
@@ -46,7 +45,7 @@ const testData: TestData<SignRepository>[] = [
     [query],
     apiClient.fetchJson,
     [resultStub],
-    [`/signs?${stringify(query)}`, false],
+    [`/signs?${stringify(query)}`, false, undefined],
     Promise.resolve([resultStub]),
   ),
   new TestData(
@@ -57,6 +56,7 @@ const testData: TestData<SignRepository>[] = [
     [
       `/signs/${encodeURIComponent(signName)}/images?centroids_only=true&include_unclustered=true`,
       false,
+      undefined,
     ],
     Promise.resolve([getImagesResult]),
   ),

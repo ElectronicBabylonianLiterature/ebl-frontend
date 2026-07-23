@@ -7,7 +7,6 @@ import {
   Screen,
   Matcher,
 } from '@testing-library/react'
-import Bluebird from 'bluebird'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import _ from 'lodash'
 import { QueryItem } from 'query/QueryResult'
@@ -167,7 +166,7 @@ export function testDelegation<S>(
       })
 
       it('Returns', async () => {
-        if (result instanceof Bluebird || result instanceof Promise) {
+        if (result instanceof Promise) {
           const resolvedResult = await result
           await expect(resolvedResult).toEqual(expectedResult)
         } else {

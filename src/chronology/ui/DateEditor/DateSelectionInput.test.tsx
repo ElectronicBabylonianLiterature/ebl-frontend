@@ -323,6 +323,7 @@ describe('useDateSelectionState', () => {
         setDate: jest.fn(),
         setIsDisplayed: jest.fn(),
         setIsSaving: jest.fn(),
+        setSaveError: jest.fn(),
       }),
     )
 

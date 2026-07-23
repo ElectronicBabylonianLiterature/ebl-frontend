@@ -12,18 +12,23 @@ const signRepository = new (SignRepository as jest.Mock<
 const signService = new SignService(signRepository)
 
 const testData: TestData<SignService>[] = [
-  new TestData('find', ['signName'], signRepository.find, resultStub),
+  new TestData('find', ['signName'], signRepository.find, resultStub, [
+    'signName',
+    undefined,
+  ]),
   new TestData(
     'search',
     [{ value: 'bar', subIndex: 1 }],
     signRepository.search,
     resultStub,
+    [{ value: 'bar', subIndex: 1 }, undefined],
   ),
   new TestData(
     'getCentroidImages',
     ['signName'],
     signRepository.getCentroidImages,
     [resultStub],
+    ['signName', undefined],
   ),
   new TestData(
     'getClusterVariants',
@@ -37,6 +42,7 @@ const testData: TestData<SignService>[] = [
     ['signName', 'neoBabylonianOnset'],
     signRepository.findSignsByOrder,
     resultStub,
+    ['signName', 'neoBabylonianOnset', undefined],
   ),
 ]
 

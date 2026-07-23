@@ -2,7 +2,6 @@ import { testDelegation, TestData } from 'test-support/utils'
 import RealiaRepository from 'realia/infrastructure/RealiaRepository'
 import RealiaService from 'realia/application/RealiaService'
 import { RealiaEntry } from 'realia/domain/RealiaEntry'
-import Promise from 'bluebird'
 
 jest.mock('realia/infrastructure/RealiaRepository')
 
@@ -28,7 +27,7 @@ const testData: TestData<RealiaService>[] = [
     ['Pig'],
     realiaRepository.find,
     entry,
-    ['Pig'],
+    ['Pig', undefined],
     Promise.resolve(entry),
   ),
   new TestData(
@@ -36,7 +35,7 @@ const testData: TestData<RealiaService>[] = [
     ['pig'],
     realiaRepository.search,
     [entry],
-    ['pig'],
+    ['pig', undefined],
     Promise.resolve([entry]),
   ),
 ]

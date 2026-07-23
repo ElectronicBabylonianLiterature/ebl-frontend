@@ -6,7 +6,6 @@ import {
 } from 'chronology/domain/DateParameters'
 import usePromiseEffect from 'common/hooks/usePromiseEffect'
 import { useState } from 'react'
-import Bluebird from 'bluebird'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import {
   getDate,
@@ -15,10 +14,15 @@ import {
 
 export interface DateEditorStateProps {
   date?: MesopotamianDate
-  updateDate: (date?: MesopotamianDate, index?: number) => Bluebird<Fragment>
+  updateDate: (
+    date?: MesopotamianDate,
+    index?: number,
+    signal?: AbortSignal,
+  ) => Promise<Fragment>
   setDate: React.Dispatch<React.SetStateAction<MesopotamianDate | undefined>>
   setIsDisplayed: React.Dispatch<React.SetStateAction<boolean>>
   setIsSaving: React.Dispatch<React.SetStateAction<boolean>>
+  setSaveError: React.Dispatch<React.SetStateAction<Error | null>>
   index?: number
   saveDateOverride?: (updatedDate?: MesopotamianDate, index?: number) => void
 }
@@ -253,7 +257,7 @@ function useAdditionalDateParams(
 export default function useDateSelectionState(
   props: DateEditorStateProps,
 ): DateSelectionState {
-  const [setUpdatePromise, cancelUpdatePromise] = usePromiseEffect<void>()
+  const [, , runUpdate] = usePromiseEffect()
   const { date, saveDateOverride } = props
 
   const stateParams = {
@@ -265,8 +269,7 @@ export default function useDateSelectionState(
   const _saveDate = (updatedDate) =>
     saveDateDefault({
       ...props,
-      cancelUpdatePromise,
-      setUpdatePromise,
+      runUpdate,
       updatedDate,
     })
 

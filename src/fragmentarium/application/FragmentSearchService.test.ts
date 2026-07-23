@@ -1,4 +1,3 @@
-import Promise from 'bluebird'
 import { createScript } from 'fragmentarium/infrastructure/FragmentRepository'
 import { testDelegation, TestData } from 'test-support/utils'
 import FragmentSearchService from './FragmentSearchService'
@@ -21,7 +20,7 @@ const testData: TestData<FragmentSearchService>[] = [
     [],
     fragmentRepository.random,
     expectedResultStub,
-    null,
+    [undefined],
     Promise.resolve([expectedResultStub]),
   ),
   new TestData(
@@ -29,7 +28,7 @@ const testData: TestData<FragmentSearchService>[] = [
     [],
     fragmentRepository.interesting,
     expectedResultStub,
-    null,
+    [undefined],
     Promise.resolve([expectedResultStub]),
   ),
   new TestData(
@@ -37,7 +36,7 @@ const testData: TestData<FragmentSearchService>[] = [
     [],
     fragmentRepository.fetchNeedsRevision,
     [expectedResultStub],
-    null,
+    [undefined],
     Promise.resolve([expectedResultStub]),
   ),
 ]

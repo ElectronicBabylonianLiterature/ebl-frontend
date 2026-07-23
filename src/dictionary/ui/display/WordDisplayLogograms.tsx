@@ -1,5 +1,4 @@
 import React, { Fragment } from 'react'
-import Bluebird from 'bluebird'
 import { Col, Row } from 'react-bootstrap'
 import SignService from 'signs/application/SignService'
 import MarkdownAndHtmlToHtml from 'common/utils/MarkdownAndHtmlToHtml'
@@ -90,8 +89,6 @@ export default withData<
     return <LogogramsDisplay signs={signs} wordId={wordId} {...props} />
   },
   ({ signService, wordId }) => {
-    return Bluebird.all(
-      signService.search({ wordId: decodeURIComponent(wordId) }),
-    )
+    return signService.search({ wordId: decodeURIComponent(wordId) })
   },
 )

@@ -2,14 +2,13 @@ import DossiersRepository from 'dossiers/infrastructure/DossiersRepository'
 import DossierRecord, {
   DossierRecordSuggestion,
 } from 'dossiers/domain/DossierRecord'
-import Bluebird from 'bluebird'
 
 const cacheEntryLifetimeInMilliseconds = 5 * 60 * 1000
 const defaultMaximumCachedDossiers = 250
 const defaultCacheScope = 'default'
 
 export interface DossiersSearch {
-  queryByIds(query: string[]): Bluebird<readonly DossierRecord[]>
+  queryByIds(query: string[]): Promise<readonly DossierRecord[]>
   searchSuggestions(
     query: string,
     filters?: {
@@ -17,13 +16,13 @@ export interface DossiersSearch {
       scriptPeriod?: string | null
       genre?: string | null
     },
-  ): Bluebird<readonly DossierRecordSuggestion[]>
-  fetchAllDossiers(): Bluebird<readonly DossierRecord[]>
+  ): Promise<readonly DossierRecordSuggestion[]>
+  fetchAllDossiers(signal?: AbortSignal): Promise<readonly DossierRecord[]>
   fetchFilteredDossiers(filters: {
     provenance?: string
     scriptPeriod?: string
     genre?: string
-  }): Bluebird<readonly DossierRecord[]>
+  }): Promise<readonly DossierRecord[]>
 }
 
 type PendingQueryByIdsRequest = {
@@ -40,7 +39,7 @@ type CacheEntry<Value> = {
 type PendingQueryByIdsBatch = {
   ids: Set<string>
   requests: PendingQueryByIdsRequest[]
-  inFlightRequest: Bluebird<readonly DossierRecord[]> | null
+  inFlightRequest: Promise<readonly DossierRecord[]> | null
   flushScheduled: boolean
 }
 
@@ -63,22 +62,22 @@ export default class DossiersService implements DossiersSearch {
     this.dossiersRepository = dossiersRepository
   }
 
-  queryByIds(query: string[]): Bluebird<readonly DossierRecord[]> {
+  queryByIds(query: string[]): Promise<readonly DossierRecord[]> {
     this.clearCachesWhenScopeChanges()
 
     const ids = Array.from(new Set(query.filter((id) => id.length > 0)))
 
     if (ids.length === 0) {
-      return Bluebird.resolve([])
+      return Promise.resolve([])
     }
 
     const missingIds = ids.filter((id) => !this.hasFreshCachedDossier(id))
 
     if (missingIds.length === 0) {
-      return Bluebird.resolve(this.selectCachedDossiers(ids))
+      return Promise.resolve(this.selectCachedDossiers(ids))
     }
 
-    return new Bluebird<readonly DossierRecord[]>((resolve, reject) => {
+    return new Promise<readonly DossierRecord[]>((resolve, reject) => {
       this.addToPendingQueryByIdsBatch(ids, missingIds, resolve, reject)
     })
   }
@@ -90,19 +89,19 @@ export default class DossiersService implements DossiersSearch {
       scriptPeriod?: string | null
       genre?: string | null
     },
-  ): Bluebird<readonly DossierRecordSuggestion[]> {
+  ): Promise<readonly DossierRecordSuggestion[]> {
     return this.dossiersRepository.searchSuggestions(query, filters)
   }
 
-  fetchAllDossiers(): Bluebird<readonly DossierRecord[]> {
-    return this.dossiersRepository.fetchAllDossiers()
+  fetchAllDossiers(signal?: AbortSignal): Promise<readonly DossierRecord[]> {
+    return this.dossiersRepository.fetchAllDossiers(signal)
   }
 
   fetchFilteredDossiers(filters: {
     provenance?: string
     scriptPeriod?: string
     genre?: string
-  }): Bluebird<readonly DossierRecord[]> {
+  }): Promise<readonly DossierRecord[]> {
     return this.dossiersRepository.fetchFilteredDossiers(filters)
   }
 
@@ -144,7 +143,7 @@ export default class DossiersService implements DossiersSearch {
     }
 
     const requestGeneration = this.cacheGeneration
-    pendingBatch.inFlightRequest = Bluebird.resolve(
+    pendingBatch.inFlightRequest = Promise.resolve(
       this.dossiersRepository.queryByIds(idsToFetch),
     )
 

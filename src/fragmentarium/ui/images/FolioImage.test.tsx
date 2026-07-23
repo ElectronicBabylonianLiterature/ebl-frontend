@@ -1,7 +1,6 @@
 import React from 'react'
 import { render, screen } from '@testing-library/react'
 import ResizeObserver from 'resize-observer-polyfill'
-import Promise from 'bluebird'
 import userEvent from '@testing-library/user-event'
 import FolioImage from './FolioImage'
 import Folio from 'fragmentarium/domain/Folio'
@@ -26,7 +25,10 @@ beforeEach(() => {
 it('Queries the API with given parameters', async () => {
   render(<FolioImage fragmentService={fragmentService} folio={folio} />)
   await screen.findByAltText(folio.fileName)
-  expect(fragmentService.findFolio).toBeCalledWith(folio)
+  expect(fragmentService.findFolio).toBeCalledWith(
+    folio,
+    expect.any(AbortSignal),
+  )
 })
 
 it('Has the filename as alt text', async () => {

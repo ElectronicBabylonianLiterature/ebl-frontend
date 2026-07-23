@@ -5,7 +5,6 @@ import WordService from 'dictionary/application/WordService'
 import { pdfExport } from './PdfExport'
 import { jsPDF } from 'jspdf'
 import { fragmentFactory } from 'test-support/fragment-fixtures'
-import Promise from 'bluebird'
 import { createDictionaryWord } from 'test-support/glossary'
 
 jest.mock('dictionary/application/WordService')

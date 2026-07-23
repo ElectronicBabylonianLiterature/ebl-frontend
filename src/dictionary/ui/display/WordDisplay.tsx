@@ -213,5 +213,5 @@ export default withData<
       fragmentService={fragmentService}
     />
   ),
-  (props) => props.wordService.find(props.wordId),
+  (props, signal) => props.wordService.find(props.wordId, signal),
 )

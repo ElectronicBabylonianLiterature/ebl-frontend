@@ -1,4 +1,3 @@
-import Bluebird from 'bluebird'
 import Sign, { OrderedSign, SignQuery, UnicodeAtf } from 'signs/domain/Sign'
 import SignRepository from 'signs/infrastructure/SignRepository'
 import { AnnotationToken } from 'fragmentarium/domain/annotation-token'
@@ -12,44 +11,48 @@ export default class SignService {
     this.signsRepository = signsRepository
   }
 
-  getCentroidImages(signName: string): Bluebird<CroppedAnnotation[]> {
-    return this.signsRepository.getCentroidImages(signName)
+  getCentroidImages(
+    signName: string,
+    signal?: AbortSignal,
+  ): Promise<CroppedAnnotation[]> {
+    return this.signsRepository.getCentroidImages(signName, signal)
   }
 
   getClusterVariants(
     signName: string,
     clusterId: string,
     script: string,
-  ): Bluebird<CroppedAnnotation[]> {
+  ): Promise<CroppedAnnotation[]> {
     return this.signsRepository.getClusterVariants(signName, clusterId, script)
   }
 
   associateSigns(
     tokens: ReadonlyArray<ReadonlyArray<AnnotationToken>>,
-  ): Bluebird<ReadonlyArray<ReadonlyArray<AnnotationToken>>> {
+  ): Promise<ReadonlyArray<ReadonlyArray<AnnotationToken>>> {
     return this.signsRepository.associateSigns(tokens)
   }
 
-  search(signQuery: SignQuery): Bluebird<Sign[]> {
-    return this.signsRepository.search(signQuery)
+  search(signQuery: SignQuery, signal?: AbortSignal): Promise<Sign[]> {
+    return this.signsRepository.search(signQuery, signal)
   }
 
-  find(signName: string): Bluebird<Sign> {
-    return this.signsRepository.find(signName)
+  find(signName: string, signal?: AbortSignal): Promise<Sign> {
+    return this.signsRepository.find(signName, signal)
   }
 
-  listAllSigns(): Bluebird<string[]> {
+  listAllSigns(): Promise<string[]> {
     return this.signsRepository.listAllSigns()
   }
 
   findSignsByOrder(
     signName: string,
     sortEra: string,
-  ): Bluebird<[OrderedSign[]]> {
-    return this.signsRepository.findSignsByOrder(signName, sortEra)
+    signal?: AbortSignal,
+  ): Promise<[OrderedSign[]]> {
+    return this.signsRepository.findSignsByOrder(signName, sortEra, signal)
   }
 
-  getUnicodeFromAtf(text: string): Bluebird<UnicodeAtf[]> {
+  getUnicodeFromAtf(text: string): Promise<UnicodeAtf[]> {
     return this.signsRepository.getUnicodeFromAtf(text)
   }
 }

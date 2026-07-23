@@ -1,7 +1,6 @@
 import React from 'react'
 import { render, screen } from '@testing-library/react'
 import { changeValueByLabel, submitFormByTestId } from 'test-support/utils'
-import Bluebird, { Promise } from 'bluebird'
 
 import ArchaeologyEditor from './ArchaeologyEditor'
 import {
@@ -52,11 +51,9 @@ const setup = async () => {
     (value) => _.isNil(value) || value === '',
   )
   findspots = findspotFactory.buildList(10)
-  findspotServiceMock.fetchFindspots.mockReturnValue(
-    Bluebird.resolve(findspots),
-  )
+  findspotServiceMock.fetchFindspots.mockReturnValue(Promise.resolve(findspots))
   fragmentServiceMock.fetchProvenances.mockReturnValue(
-    Bluebird.resolve([
+    Promise.resolve([
       {
         id: 'babylon',
         longName: 'Babylon',

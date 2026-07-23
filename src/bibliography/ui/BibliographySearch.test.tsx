@@ -1,7 +1,6 @@
 import React from 'react'
 import { MemoryRouter } from 'react-router-dom'
 import { render, screen, within } from '@testing-library/react'
-import Promise from 'bluebird'
 import BibliographySearch from './BibliographySearch'
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 import createAuthorRegExp from 'test-support/createAuthorRexExp'
@@ -35,7 +34,10 @@ async function renderBibliographySearchComponent(path = '/tools/references') {
 
 test('Fetch results from bibliography service', async () => {
   await renderBibliographySearchComponent()
-  expect(bibliographyServiceMock.search).toHaveBeenCalledWith(query)
+  expect(bibliographyServiceMock.search).toHaveBeenCalledWith(
+    query,
+    expect.any(AbortSignal),
+  )
 })
 
 test('Display search results correctly', async () => {

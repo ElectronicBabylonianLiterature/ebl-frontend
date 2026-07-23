@@ -3,7 +3,6 @@ import DossierRecord, {
   DossierRecordSuggestion,
 } from 'dossiers/domain/DossierRecord'
 import DossiersService from 'dossiers/application/DossiersService'
-import Bluebird from 'bluebird'
 
 jest.mock('dossiers/infrastructure/DossiersRepository')
 
@@ -60,7 +59,7 @@ describe('DossiersService', () => {
     let resolveFirstRequest: ((records: DossierRecord[]) => void) | undefined
     dossiersRepository.queryByIds.mockImplementationOnce(
       () =>
-        new Bluebird<DossierRecord[]>((resolve) => {
+        new Promise<DossierRecord[]>((resolve) => {
           resolveFirstRequest = resolve
         }),
     )
@@ -141,7 +140,7 @@ describe('DossiersService', () => {
     dossiersRepository.queryByIds
       .mockImplementationOnce(
         () =>
-          new Bluebird<DossierRecord[]>((resolve) => {
+          new Promise<DossierRecord[]>((resolve) => {
             resolveGuestRequest = resolve
           }),
       )

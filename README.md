@@ -178,9 +178,14 @@ Google [Lighthouse](https://developers.google.com/web/tools/lighthouse/) is inst
 yarn lighthouse <url>
 ```
 
-## Promises
+## Promises and cancellation
 
-[bluebird](http://bluebirdjs.com) promises are used whenever a cancellable promise is needed. E.g. when loading data to components (see [isMounted is an Antipattern](https://reactjs.org/blog/2015/12/16/ismounted-antipattern.html)). bluebird is compatible with native JavaScript promises, but care should taken that a bluebird promise is always used when `Promise.cancel()` is needed.
+Native promises are used throughout. Cancellation uses the web-standard `AbortController`/`AbortSignal`: the controller lives in the React layer and a `signal` is threaded down through the service and repository methods into `ApiClient`, which passes it to `fetch` (see [isMounted is an Antipattern](https://reactjs.org/blog/2015/12/16/ismounted-antipattern.html)).
+
+- **Reads.** `withData` owns an `AbortController`, passes its `signal` as the getter's second argument and aborts it on unmount or when the watched props change. Getters that thread the signal through abort the network request; the `requestSequence` guard prevents stale state either way.
+- **Writes.** `usePromiseEffect` returns `[run, cancel, runWrite]`. `run` is for reads and is aborted on unmount; `runWrite` is for saves and is aborted only when a newer save supersedes it, so unmounting never discards a write in flight. Class components use `AbortableOperation` for the same effect. Both `run` and `runWrite` return a promise that rejects with the operation's error, so the operation must handle its own failures (typically by rendering an `ErrorAlert`).
+- **Shared cached requests must not take a signal.** `getOrFetchCachedValue` hands the _same_ in-flight promise to every caller for a given key, so a per-caller abort would reject the request for all the other live consumers. The `fetchValue` callback therefore takes no arguments, and the cached paths in `FragmentService` (`find`, `fetchProvenances`, `query`, `queryLatest`, `findThumbnail`), `TextService`, `DossiersService.queryByIds` and `BibliographyService` stay guard-based on purpose.
+- Aborted operations reject with an `AbortError`. Use `isCancellation(error, signal)` from `common/utils/abortError` to distinguish a cancellation from a real failure; `ApiClient` skips error reporting for them.
 
 ## Authentication and Authorization
 

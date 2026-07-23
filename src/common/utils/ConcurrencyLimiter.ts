@@ -1,4 +1,4 @@
-import Bluebird from 'bluebird'
+import { createAbortError } from 'common/utils/abortError'
 
 type QueueState = {
   activeCount: number
@@ -13,52 +13,44 @@ export default class ConcurrencyLimiter {
 
   constructor(private readonly maximumConcurrency: number) {}
 
-  run<ReturnValue>(
-    operation: () => Bluebird<ReturnValue>,
-  ): Bluebird<ReturnValue> {
-    let operationPromise: Bluebird<ReturnValue> | undefined
-    let isCanceled = false
-
-    const slotPromise = this.acquireSlot()
-
-    return new Bluebird<ReturnValue>((resolve, reject, onCancel) => {
-      onCancel?.(() => {
-        isCanceled = true
-        slotPromise.cancel()
-        operationPromise?.cancel()
-      })
-
-      slotPromise
-        .then((releaseSlot) => {
-          if (isCanceled) {
-            releaseSlot()
-            return
-          }
-
-          operationPromise = Bluebird.try(operation).finally(releaseSlot)
-          operationPromise.then(resolve, reject)
-        })
-        .catch(reject)
-    })
+  async run<ReturnValue>(
+    operation: () => Promise<ReturnValue>,
+    signal?: AbortSignal,
+  ): Promise<ReturnValue> {
+    const releaseSlot = await this.acquireSlot(signal)
+    try {
+      return await operation()
+    } finally {
+      releaseSlot()
+    }
   }
 
-  private acquireSlot(): Bluebird<() => void> {
-    return new Bluebird((resolve, _reject, onCancel) => {
-      const waitingResolver = () => resolve(this.createReleaseSlot())
+  private acquireSlot(signal?: AbortSignal): Promise<() => void> {
+    if (signal?.aborted) {
+      return Promise.reject(createAbortError(signal))
+    }
+    if (this.queueState.activeCount < this.maximumConcurrency) {
+      this.queueState.activeCount += 1
+      return Promise.resolve(this.createReleaseSlot())
+    }
+    return this.waitForSlot(signal)
+  }
 
-      onCancel?.(() => {
+  private waitForSlot(signal?: AbortSignal): Promise<() => void> {
+    return new Promise<() => void>((resolve, reject) => {
+      const abortWhileWaiting = (): void => {
         this.queueState.waitingResolvers =
           this.queueState.waitingResolvers.filter(
             (resolver) => resolver !== waitingResolver,
           )
-      })
-
-      if (this.queueState.activeCount < this.maximumConcurrency) {
-        this.queueState.activeCount += 1
-        resolve(this.createReleaseSlot())
-      } else {
-        this.queueState.waitingResolvers.push(waitingResolver)
+        reject(createAbortError(signal as AbortSignal))
       }
+      const waitingResolver = (): void => {
+        signal?.removeEventListener('abort', abortWhileWaiting)
+        resolve(this.createReleaseSlot())
+      }
+      this.queueState.waitingResolvers.push(waitingResolver)
+      signal?.addEventListener('abort', abortWhileWaiting, { once: true })
     })
   }
 

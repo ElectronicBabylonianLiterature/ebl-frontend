@@ -1,6 +1,5 @@
 import { testDelegation, TestData } from 'test-support/utils'
 import RealiaRepository from 'realia/infrastructure/RealiaRepository'
-import Promise from 'bluebird'
 import { cslDataFactory } from 'test-support/bibliography-fixtures'
 import {
   createRealiaRepositoryTestContext,
@@ -17,7 +16,7 @@ const testData: TestData<RealiaRepository>[] = [
     ['Pig'],
     apiClient.fetchJson,
     expectedEntry,
-    ['/realia/Pig', false],
+    ['/realia/Pig', false, undefined],
     Promise.resolve(entryDto),
   ),
   new TestData(
@@ -25,7 +24,7 @@ const testData: TestData<RealiaRepository>[] = [
     ['pig'],
     apiClient.fetchJson,
     [expectedEntry],
-    ['/realia?query=pig', false],
+    ['/realia?query=pig', false, undefined],
     Promise.resolve([entryDto]),
   ),
 ]
@@ -199,7 +198,11 @@ describe('RealiaRepository search query encoding', () => {
     async (query, expectedUrl) => {
       apiClient.fetchJson.mockReturnValueOnce(Promise.resolve([]))
       await realiaRepository.search(query)
-      expect(apiClient.fetchJson).toHaveBeenLastCalledWith(expectedUrl, false)
+      expect(apiClient.fetchJson).toHaveBeenLastCalledWith(
+        expectedUrl,
+        false,
+        undefined,
+      )
     },
   )
 })

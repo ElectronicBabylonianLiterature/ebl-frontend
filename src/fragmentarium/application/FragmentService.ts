@@ -1,5 +1,4 @@
 import Reference from 'bibliography/domain/Reference'
-import Bluebird from 'bluebird'
 import DictionaryWord from 'dictionary/domain/Word'
 import Annotation from 'fragmentarium/domain/annotation'
 import Folio from 'fragmentarium/domain/Folio'
@@ -76,10 +75,10 @@ export interface ThumbnailBlob {
 }
 
 export interface ImageRepository {
-  find(fileName: string): Bluebird<Blob>
-  findFolio(folio: Folio): Bluebird<Blob>
-  findPhoto(number: string): Bluebird<Blob>
-  findThumbnail(number: string, size: ThumbnailSize): Bluebird<ThumbnailBlob>
+  find(fileName: string): Promise<Blob>
+  findFolio(folio: Folio, signal?: AbortSignal): Promise<Blob>
+  findPhoto(number: string, signal?: AbortSignal): Promise<Blob>
+  findThumbnail(number: string, size: ThumbnailSize): Promise<ThumbnailBlob>
 }
 
 export const editionFields = [
@@ -93,7 +92,7 @@ export type EditionFields = {
 }
 
 export interface FragmentRepository {
-  statistics(): Bluebird<{
+  statistics(signal?: AbortSignal): Promise<{
     transliteratedFragments: number
     lines: number
     totalFragments: number
@@ -102,75 +101,109 @@ export interface FragmentRepository {
     number: string,
     lines?: readonly number[],
     excludeLines?: boolean,
-  ): Bluebird<Fragment>
-  findInCorpus(number: string): Promise<{
+  ): Promise<Fragment>
+  findInCorpus(
+    number: string,
+    signal?: AbortSignal,
+  ): Promise<{
     manuscriptAttestations: ReadonlyArray<ManuscriptAttestation>
     uncertainFragmentAttestations: ReadonlyArray<UncertainFragmentAttestation>
   }>
-  fetchGenres(): Bluebird<string[][]>
-  fetchProvenances(): Bluebird<readonly ProvenanceRecord[]>
-  fetchProvenance(id: string): Bluebird<ProvenanceRecord>
-  fetchProvenanceChildren(id: string): Bluebird<readonly ProvenanceRecord[]>
-  fetchPeriods(): Bluebird<string[]>
-  fetchColophonNames(query: string): Bluebird<string[]>
-  updateGenres(number: string, genres: Genres): Bluebird<Fragment>
-  updateScopes(number: string, scopes: string[]): Bluebird<Fragment>
-  updateScript(number: string, script: Script): Bluebird<Fragment>
+  fetchGenres(signal?: AbortSignal): Promise<string[][]>
+  fetchProvenances(): Promise<readonly ProvenanceRecord[]>
+  fetchProvenance(id: string): Promise<ProvenanceRecord>
+  fetchProvenanceChildren(id: string): Promise<readonly ProvenanceRecord[]>
+  fetchPeriods(signal?: AbortSignal): Promise<string[]>
+  fetchColophonNames(query: string): Promise<string[]>
+  updateGenres(
+    number: string,
+    genres: Genres,
+    signal?: AbortSignal,
+  ): Promise<Fragment>
+  updateScopes(
+    number: string,
+    scopes: string[],
+    signal?: AbortSignal,
+  ): Promise<Fragment>
+  updateScript(
+    number: string,
+    script: Script,
+    signal?: AbortSignal,
+  ): Promise<Fragment>
   updateDate(
     number: string,
     date: MesopotamianDateDto | undefined,
-  ): Bluebird<Fragment>
+    signal?: AbortSignal,
+  ): Promise<Fragment>
   updateDatesInText(
     number: string,
     date: MesopotamianDateDto[],
-  ): Bluebird<Fragment>
-  updateEdition(number: string, updates: EditionFields): Bluebird<Fragment>
+    signal?: AbortSignal,
+  ): Promise<Fragment>
+  updateEdition(
+    number: string,
+    updates: EditionFields,
+    signal?: AbortSignal,
+  ): Promise<Fragment>
   updateLemmatization(
     number: string,
     lemmatization: LemmatizationDto,
-  ): Bluebird<Fragment>
+  ): Promise<Fragment>
   updateLemmaAnnotation(
     number: string,
     annotations: LineLemmaAnnotations,
-  ): Bluebird<Fragment>
+    signal?: AbortSignal,
+  ): Promise<Fragment>
   updateReferences(
     number: string,
     references: ReadonlyArray<Reference>,
-  ): Bluebird<Fragment>
+    signal?: AbortSignal,
+  ): Promise<Fragment>
   updateArchaeology(
     number: string,
     archaeology: ArchaeologyDto,
-  ): Bluebird<Fragment>
-  updateColophon(number: string, colophon: Colophon): Bluebird<Fragment>
-  folioPager(folio: Folio, fragmentNumber: string): Bluebird<FolioPagerData>
-  fragmentPager(fragmentNumber: string): Bluebird<FragmentPagerData>
-  findLemmas(lemma: string, isNormalized: boolean): Bluebird<Word[][]>
-  lineToVecRanking(number: string): Bluebird<LineToVecRanking>
-  query(fragmentQuery: FragmentQuery): Bluebird<QueryResult>
-  queryLatest(): Bluebird<QueryResult>
+    signal?: AbortSignal,
+  ): Promise<Fragment>
+  updateColophon(
+    number: string,
+    colophon: Colophon,
+    signal?: AbortSignal,
+  ): Promise<Fragment>
+  folioPager(folio: Folio, fragmentNumber: string): Promise<FolioPagerData>
+  fragmentPager(
+    fragmentNumber: string,
+    signal?: AbortSignal,
+  ): Promise<FragmentPagerData>
+  findLemmas(lemma: string, isNormalized: boolean): Promise<Word[][]>
+  lineToVecRanking(
+    number: string,
+    signal?: AbortSignal,
+  ): Promise<LineToVecRanking>
+  query(fragmentQuery: FragmentQuery): Promise<QueryResult>
+  queryLatest(): Promise<QueryResult>
   queryByTraditionalReferences(
     traditionalReferences: string[],
-  ): Bluebird<FragmentAfoRegisterQueryResult>
-  listAllFragments(): Bluebird<string[]>
-  collectLemmaSuggestions(number: string): Bluebird<LemmaSuggestions>
+  ): Promise<FragmentAfoRegisterQueryResult>
+  listAllFragments(): Promise<string[]>
+  collectLemmaSuggestions(number: string): Promise<LemmaSuggestions>
   fetchNamedEntityAnnotations(
     number: string,
-  ): Bluebird<readonly ApiEntityAnnotationSpan[]>
+  ): Promise<readonly ApiEntityAnnotationSpan[]>
   updateNamedEntityAnnotations(
     number: string,
     annotations: readonly ApiEntityAnnotationSpan[],
-  ): Bluebird<Fragment>
+  ): Promise<Fragment>
 }
 
 export interface AnnotationRepository {
   findAnnotations(
     number: string,
     generateAnnotations: boolean,
-  ): Bluebird<readonly Annotation[]>
+  ): Promise<readonly Annotation[]>
   updateAnnotations(
     number: string,
     annotations: readonly Annotation[],
-  ): Bluebird<readonly Annotation[]>
+  ): Promise<readonly Annotation[]>
 }
 export class FragmentService {
   private readonly referenceInjector: ReferenceInjector
@@ -182,7 +215,7 @@ export class FragmentService {
   >()
   private readonly cachedProvenanceRequests = new Map<
     string,
-    Bluebird<readonly ProvenanceRecord[]>
+    Promise<readonly ProvenanceRecord[]>
   >()
   private readonly cachedProvenanceById = new Map<
     string,
@@ -190,7 +223,7 @@ export class FragmentService {
   >()
   private readonly cachedProvenanceByIdRequest = new Map<
     string,
-    Bluebird<ProvenanceRecord>
+    Promise<ProvenanceRecord>
   >()
   private readonly cachedProvenanceChildrenById = new Map<
     string,
@@ -198,20 +231,17 @@ export class FragmentService {
   >()
   private readonly cachedProvenanceChildrenByIdRequest = new Map<
     string,
-    Bluebird<readonly ProvenanceRecord[]>
+    Promise<readonly ProvenanceRecord[]>
   >()
   private readonly cachedFragments = new Map<string, CacheEntry<Fragment>>()
-  private readonly cachedFragmentRequests = new Map<
-    string,
-    Bluebird<Fragment>
-  >()
+  private readonly cachedFragmentRequests = new Map<string, Promise<Fragment>>()
   private readonly cachedQueryResults = new Map<
     string,
     CacheEntry<QueryResult>
   >()
   private readonly cachedQueryResultRequests = new Map<
     string,
-    Bluebird<QueryResult>
+    Promise<QueryResult>
   >()
   private readonly prefetchedFragmentsByCacheKey = new Map<string, Fragment>()
   private readonly fragmentFetchLimiter = new ConcurrencyLimiter(
@@ -226,7 +256,7 @@ export class FragmentService {
   >()
   private readonly cachedThumbnailRequests = new Map<
     string,
-    Bluebird<ThumbnailBlob>
+    Promise<ThumbnailBlob>
   >()
 
   constructor(
@@ -240,23 +270,26 @@ export class FragmentService {
     this.referenceInjector = new ReferenceInjector(bibliographyService)
   }
 
-  statistics(): Bluebird<{
+  statistics(signal?: AbortSignal): Promise<{
     transliteratedFragments: number
     lines: number
     totalFragments: number
   }> {
-    return this.fragmentRepository.statistics()
+    return this.fragmentRepository.statistics(signal)
   }
 
-  lineToVecRanking(number: string): Bluebird<LineToVecRanking> {
-    return this.fragmentRepository.lineToVecRanking(number)
+  lineToVecRanking(
+    number: string,
+    signal?: AbortSignal,
+  ): Promise<LineToVecRanking> {
+    return this.fragmentRepository.lineToVecRanking(number, signal)
   }
 
   find(
     number: string,
     lines?: readonly number[],
     excludeLines?: boolean,
-  ): Bluebird<Fragment> {
+  ): Promise<Fragment> {
     const cacheKey = this.createFragmentCacheKey(number, lines, excludeLines)
     return this.getOrFetchCachedValue(
       this.cachedFragments,
@@ -279,22 +312,34 @@ export class FragmentService {
     }
   }
 
-  updateGenres(number: string, genres: Genres): Bluebird<Fragment> {
+  updateGenres(
+    number: string,
+    genres: Genres,
+    signal?: AbortSignal,
+  ): Promise<Fragment> {
     return this.fragmentRepository
-      .updateGenres(number, genres)
+      .updateGenres(number, genres, signal)
       .then((fragment: Fragment) => this.injectReferences(fragment))
       .then((fragment: Fragment) => this.cacheUpdatedFragment(fragment))
   }
 
-  updateScript(number: string, script: Script): Bluebird<Fragment> {
+  updateScript(
+    number: string,
+    script: Script,
+    signal?: AbortSignal,
+  ): Promise<Fragment> {
     return this.fragmentRepository
-      .updateScript(number, script)
+      .updateScript(number, script, signal)
       .then((fragment: Fragment) => this.injectReferences(fragment))
       .then((fragment: Fragment) => this.cacheUpdatedFragment(fragment))
   }
-  updateScopes(number: string, scopes: string[]): Bluebird<Fragment> {
+  updateScopes(
+    number: string,
+    scopes: string[],
+    signal?: AbortSignal,
+  ): Promise<Fragment> {
     return this.fragmentRepository
-      .updateScopes(number, scopes)
+      .updateScopes(number, scopes, signal)
       .then((fragment: Fragment) => this.injectReferences(fragment))
       .then((fragment: Fragment) => this.cacheUpdatedFragment(fragment))
   }
@@ -302,9 +347,10 @@ export class FragmentService {
   updateDate(
     number: string,
     date: MesopotamianDateDto | undefined,
-  ): Bluebird<Fragment> {
+    signal?: AbortSignal,
+  ): Promise<Fragment> {
     return this.fragmentRepository
-      .updateDate(number, date)
+      .updateDate(number, date, signal)
       .then((fragment: Fragment) => this.injectReferences(fragment))
       .then((fragment: Fragment) => this.cacheUpdatedFragment(fragment))
   }
@@ -312,18 +358,19 @@ export class FragmentService {
   updateDatesInText(
     number: string,
     datesInText: MesopotamianDateDto[],
-  ): Bluebird<Fragment> {
+    signal?: AbortSignal,
+  ): Promise<Fragment> {
     return this.fragmentRepository
-      .updateDatesInText(number, datesInText)
+      .updateDatesInText(number, datesInText, signal)
       .then((fragment: Fragment) => this.injectReferences(fragment))
       .then((fragment: Fragment) => this.cacheUpdatedFragment(fragment))
   }
 
-  fetchGenres(): Bluebird<string[][]> {
-    return this.fragmentRepository.fetchGenres()
+  fetchGenres(signal?: AbortSignal): Promise<string[][]> {
+    return this.fragmentRepository.fetchGenres(signal)
   }
 
-  fetchProvenances(): Bluebird<readonly ProvenanceRecord[]> {
+  fetchProvenances(): Promise<readonly ProvenanceRecord[]> {
     return this.getOrFetchCachedValue(
       this.cachedProvenances,
       this.cachedProvenanceRequests,
@@ -347,7 +394,7 @@ export class FragmentService {
     )
   }
 
-  fetchProvenance(id: string): Bluebird<ProvenanceRecord> {
+  fetchProvenance(id: string): Promise<ProvenanceRecord> {
     return this.getOrFetchCachedValue(
       this.cachedProvenanceById,
       this.cachedProvenanceByIdRequest,
@@ -362,7 +409,7 @@ export class FragmentService {
     )
   }
 
-  fetchProvenanceChildren(id: string): Bluebird<readonly ProvenanceRecord[]> {
+  fetchProvenanceChildren(id: string): Promise<readonly ProvenanceRecord[]> {
     return this.getOrFetchCachedValue(
       this.cachedProvenanceChildrenById,
       this.cachedProvenanceChildrenByIdRequest,
@@ -387,21 +434,25 @@ export class FragmentService {
     )
   }
 
-  fetchPeriods(): Bluebird<string[]> {
-    return this.fragmentRepository.fetchPeriods()
+  fetchPeriods(signal?: AbortSignal): Promise<string[]> {
+    return this.fragmentRepository.fetchPeriods(signal)
   }
 
-  fetchColophonNames(query: string): Bluebird<string[]> {
+  fetchColophonNames(query: string): Promise<string[]> {
     return this.fragmentRepository.fetchColophonNames(query)
   }
 
-  listAllFragments(): Bluebird<string[]> {
+  listAllFragments(): Promise<string[]> {
     return this.fragmentRepository.listAllFragments()
   }
 
-  updateEdition(number: string, updates: EditionFields): Bluebird<Fragment> {
+  updateEdition(
+    number: string,
+    updates: EditionFields,
+    signal?: AbortSignal,
+  ): Promise<Fragment> {
     return this.fragmentRepository
-      .updateEdition(number, updates)
+      .updateEdition(number, updates, signal)
       .then((fragment: Fragment) => this.injectReferences(fragment))
       .then((fragment: Fragment) => this.cacheUpdatedFragment(fragment))
   }
@@ -409,7 +460,7 @@ export class FragmentService {
   updateLemmatization(
     number: string,
     lemmatization: LemmatizationDto,
-  ): Bluebird<Fragment> {
+  ): Promise<Fragment> {
     return this.fragmentRepository
       .updateLemmatization(number, lemmatization)
       .then((fragment: Fragment) => this.injectReferences(fragment))
@@ -419,9 +470,10 @@ export class FragmentService {
   updateLemmaAnnotation(
     number: string,
     annotations: LineLemmaAnnotations,
-  ): Bluebird<Fragment> {
+    signal?: AbortSignal,
+  ): Promise<Fragment> {
     return this.fragmentRepository
-      .updateLemmaAnnotation(number, annotations)
+      .updateLemmaAnnotation(number, annotations, signal)
       .then((fragment: Fragment) => this.injectReferences(fragment))
       .then((fragment: Fragment) => this.cacheUpdatedFragment(fragment))
   }
@@ -429,9 +481,10 @@ export class FragmentService {
   updateReferences(
     number: string,
     references: ReadonlyArray<Reference>,
-  ): Bluebird<Fragment> {
+    signal?: AbortSignal,
+  ): Promise<Fragment> {
     return this.fragmentRepository
-      .updateReferences(number, references)
+      .updateReferences(number, references, signal)
       .then((fragment: Fragment) => this.injectReferences(fragment))
       .then((fragment: Fragment) => this.cacheUpdatedFragment(fragment))
   }
@@ -439,38 +492,46 @@ export class FragmentService {
   updateArchaeology(
     number: string,
     archaeology: ArchaeologyDto,
-  ): Bluebird<Fragment> {
+    signal?: AbortSignal,
+  ): Promise<Fragment> {
     return this.fragmentRepository
-      .updateArchaeology(number, archaeology)
+      .updateArchaeology(number, archaeology, signal)
       .then((fragment: Fragment) => this.injectReferences(fragment))
       .then((fragment: Fragment) => this.cacheUpdatedFragment(fragment))
   }
 
-  updateColophon(number: string, colophon: Colophon): Bluebird<Fragment> {
+  updateColophon(
+    number: string,
+    colophon: Colophon,
+    signal?: AbortSignal,
+  ): Promise<Fragment> {
     return this.fragmentRepository
-      .updateColophon(number, colophon)
+      .updateColophon(number, colophon, signal)
       .then((fragment: Fragment) => this.injectReferences(fragment))
       .then((fragment: Fragment) => this.cacheUpdatedFragment(fragment))
   }
 
-  findInCorpus(number: string): Promise<{
+  findInCorpus(
+    number: string,
+    signal?: AbortSignal,
+  ): Promise<{
     manuscriptAttestations: ReadonlyArray<ManuscriptAttestation>
     uncertainFragmentAttestations: ReadonlyArray<UncertainFragmentAttestation>
   }> {
-    return this.fragmentRepository.findInCorpus(number)
+    return this.fragmentRepository.findInCorpus(number, signal)
   }
 
-  findFolio(folio: Folio): Bluebird<Blob> {
-    return this.imageRepository.findFolio(folio)
+  findFolio(folio: Folio, signal?: AbortSignal): Promise<Blob> {
+    return this.imageRepository.findFolio(folio, signal)
   }
 
-  findImage(fileName: string): Bluebird<Blob> {
+  findImage(fileName: string): Promise<Blob> {
     return this.imageRepository.find(fileName)
   }
 
-  findPhoto(fragment: Fragment): Bluebird<Blob> {
+  findPhoto(fragment: Fragment, signal?: AbortSignal): Promise<Blob> {
     if (fragment.hasPhoto) {
-      return this.imageRepository.findPhoto(fragment.number)
+      return this.imageRepository.findPhoto(fragment.number, signal)
     } else {
       throw Error(`Fragment ${fragment.number} doesn't have a Photo`)
     }
@@ -479,7 +540,7 @@ export class FragmentService {
   findThumbnail(
     fragment: Fragment,
     size: ThumbnailSize,
-  ): Bluebird<ThumbnailBlob> {
+  ): Promise<ThumbnailBlob> {
     const cacheKey = this.createThumbnailCacheKey(fragment.number, size)
     return this.getOrFetchCachedValue(
       this.cachedThumbnails,
@@ -493,35 +554,38 @@ export class FragmentService {
     )
   }
 
-  folioPager(folio: Folio, fragmentNumber: string): Bluebird<FolioPagerData> {
+  folioPager(folio: Folio, fragmentNumber: string): Promise<FolioPagerData> {
     return this.fragmentRepository.folioPager(folio, fragmentNumber)
   }
 
-  fragmentPager(fragmentNumber: string): Bluebird<FragmentPagerData> {
-    return this.fragmentRepository.fragmentPager(fragmentNumber)
+  fragmentPager(
+    fragmentNumber: string,
+    signal?: AbortSignal,
+  ): Promise<FragmentPagerData> {
+    return this.fragmentRepository.fragmentPager(fragmentNumber, signal)
   }
 
-  searchLemma(lemma: string): Bluebird<readonly Word[]> {
+  searchLemma(lemma: string): Promise<readonly Word[]> {
     return _.isEmpty(lemma)
-      ? Bluebird.resolve([])
+      ? Promise.resolve([])
       : this.wordRepository.searchLemma(lemma)
   }
 
-  searchBibliography(query: string): Bluebird<readonly BibliographyEntry[]> {
+  searchBibliography(query: string): Promise<readonly BibliographyEntry[]> {
     return this.bibliographyService.search(query)
   }
 
-  findAnnotations(number: string): Bluebird<readonly Annotation[]> {
+  findAnnotations(number: string): Promise<readonly Annotation[]> {
     return this.fragmentRepository.findAnnotations(number, false)
   }
-  generateAnnotations(number: string): Bluebird<readonly Annotation[]> {
+  generateAnnotations(number: string): Promise<readonly Annotation[]> {
     return this.fragmentRepository.findAnnotations(number, true)
   }
 
   updateAnnotations(
     number: string,
     annotations: readonly Annotation[],
-  ): Bluebird<readonly Annotation[]> {
+  ): Promise<readonly Annotation[]> {
     return this.fragmentRepository
       .updateAnnotations(number, annotations)
       .then((updatedAnnotations) => {
@@ -531,7 +595,7 @@ export class FragmentService {
       })
   }
 
-  createLemmatization(text: Text): Bluebird<Lemmatization> {
+  createLemmatization(text: Text): Promise<Lemmatization> {
     return new LemmatizationFactory(
       this,
       this.wordRepository,
@@ -541,7 +605,7 @@ export class FragmentService {
   findSuggestions(
     value: string,
     isNormalized: boolean,
-  ): Bluebird<ReadonlyArray<UniqueLemma>> {
+  ): Promise<ReadonlyArray<UniqueLemma>> {
     return this.fragmentRepository
       .findLemmas(value, isNormalized)
       .then((lemmas: DictionaryWord[][]) =>
@@ -551,7 +615,7 @@ export class FragmentService {
       )
   }
 
-  query(fragmentQuery: FragmentQuery): Bluebird<QueryResult> {
+  query(fragmentQuery: FragmentQuery): Promise<QueryResult> {
     const cacheKey = this.createQueryCacheKey(fragmentQuery)
     const queryResultRequest = this.getOrFetchCachedValue(
       this.cachedQueryResults,
@@ -570,7 +634,7 @@ export class FragmentService {
     })
   }
 
-  queryLatest(): Bluebird<QueryResult> {
+  queryLatest(): Promise<QueryResult> {
     const queryResultRequest = this.getOrFetchCachedValue(
       this.cachedQueryResults,
       this.cachedQueryResultRequests,
@@ -590,13 +654,13 @@ export class FragmentService {
 
   queryByTraditionalReferences(
     traditionalReferences: string[],
-  ): Bluebird<FragmentAfoRegisterQueryResult> {
+  ): Promise<FragmentAfoRegisterQueryResult> {
     return this.fragmentRepository.queryByTraditionalReferences(
       traditionalReferences,
     )
   }
 
-  collectLemmaSuggestions(number: string): Bluebird<LemmaSuggestions> {
+  collectLemmaSuggestions(number: string): Promise<LemmaSuggestions> {
     return this.fragmentRepository.collectLemmaSuggestions(number)
   }
 
@@ -605,7 +669,7 @@ export class FragmentService {
     lines: readonly number[] | undefined,
     excludeLines: boolean | undefined,
     cacheKey: string,
-  ): Bluebird<Fragment> {
+  ): Promise<Fragment> {
     const prefetchedFragment = this.takePrefetchedFragment(cacheKey)
 
     if (prefetchedFragment) {
@@ -663,7 +727,7 @@ export class FragmentService {
     return prefetchedFragment
   }
 
-  private injectReferences(fragment: Fragment): Bluebird<Fragment> {
+  private injectReferences(fragment: Fragment): Promise<Fragment> {
     return this.referenceInjector
       .injectReferencesToText(fragment.text)
       .then((text) =>
@@ -672,7 +736,7 @@ export class FragmentService {
         }),
       )
       .then((fragment) =>
-        Bluebird.all([
+        Promise.all([
           this.referenceInjector.injectReferencesToIntroduction(
             fragment.introduction,
           ),
@@ -688,13 +752,13 @@ export class FragmentService {
 
   fetchNamedEntityAnnotations(
     number: string,
-  ): Bluebird<readonly ApiEntityAnnotationSpan[]> {
+  ): Promise<readonly ApiEntityAnnotationSpan[]> {
     return this.fragmentRepository.fetchNamedEntityAnnotations(number)
   }
   updateNamedEntityAnnotations(
     number: string,
     annotations: readonly ApiEntityAnnotationSpan[],
-  ): Bluebird<Fragment> {
+  ): Promise<Fragment> {
     return this.fragmentRepository
       .updateNamedEntityAnnotations(number, annotations)
       .then((fragment: Fragment) => this.injectReferences(fragment))
@@ -703,11 +767,11 @@ export class FragmentService {
 
   private getOrFetchCachedValue<CacheKey, CacheValue>(
     cache: Map<CacheKey, CacheEntry<CacheValue>>,
-    requests: Map<CacheKey, Bluebird<CacheValue>>,
+    requests: Map<CacheKey, Promise<CacheValue>>,
     key: CacheKey,
     maximumCacheSize: number,
-    fetchValue: () => Bluebird<CacheValue>,
-  ): Bluebird<CacheValue> {
+    fetchValue: () => Promise<CacheValue>,
+  ): Promise<CacheValue> {
     this.clearCachesWhenScopeChanges()
     return getOrFetchCachedValue({
       cache,

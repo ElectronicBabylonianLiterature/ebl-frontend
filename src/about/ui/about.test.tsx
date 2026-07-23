@@ -1,6 +1,5 @@
 import React from 'react'
 import About, { TabId } from 'about/ui/about'
-import Bluebird from 'bluebird'
 import '@testing-library/jest-dom'
 import MarkupService from 'markup/application/MarkupService'
 import { markupDtoSerialized } from 'test-support/markup-fixtures'
@@ -54,7 +53,7 @@ describe('About component', () => {
   beforeEach(() => {
     mockDate.mockReturnValue('1/1/2023')
     markupServiceMock.fromString.mockReturnValue(
-      Bluebird.resolve(markupDtoSerialized),
+      Promise.resolve(markupDtoSerialized),
     )
   })
 

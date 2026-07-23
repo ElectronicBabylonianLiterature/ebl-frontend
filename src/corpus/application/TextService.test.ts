@@ -1,4 +1,3 @@
-import Bluebird from 'bluebird'
 import _ from 'lodash'
 import { TestData, testDelegation } from 'test-support/utils'
 import TextService from './TextService'
@@ -279,7 +278,7 @@ const testData: TestData<TextService>[] = [
       )}/${encodeURIComponent(text.index)}`,
       false,
     ],
-    Bluebird.resolve(textDto),
+    Promise.resolve(textDto),
   ),
   new TestData(
     'list',
@@ -287,7 +286,7 @@ const testData: TestData<TextService>[] = [
     apiClient.fetchJson,
     [text],
     ['/texts', false],
-    Bluebird.resolve(textsDto),
+    Promise.resolve(textsDto),
   ),
   new TestData(
     'findChapter',
@@ -295,7 +294,7 @@ const testData: TestData<TextService>[] = [
     apiClient.fetchJson,
     chapter,
     [chapterUrl, false],
-    Bluebird.resolve(chapterDto),
+    Promise.resolve(chapterDto),
   ),
   new TestData(
     'findChapterDisplay',
@@ -303,7 +302,7 @@ const testData: TestData<TextService>[] = [
     apiClient.fetchJson,
     chapterDisplay,
     [`${chapterUrl}/display`, false],
-    Bluebird.resolve(chapterDisplay),
+    Promise.resolve(chapterDisplay),
   ),
   new TestData(
     'findChapterLine',
@@ -345,7 +344,7 @@ const testData: TestData<TextService>[] = [
       0,
     ),
     [`${chapterUrl}/lines/0`, false],
-    Bluebird.resolve({
+    Promise.resolve({
       variants: [
         {
           reconstruction: [],
@@ -396,7 +395,7 @@ const testData: TestData<TextService>[] = [
     apiClient.fetchJson,
     [{ siglum: 'NinNA1a', text: fragment.text }],
     [`${chapterUrl}/colophons`, false],
-    Bluebird.resolve([{ siglum: 'NinNA1a', text: fragmentDto.text }]),
+    Promise.resolve([{ siglum: 'NinNA1a', text: fragmentDto.text }]),
   ),
   new TestData(
     'findUnplacedLines',
@@ -404,15 +403,15 @@ const testData: TestData<TextService>[] = [
     apiClient.fetchJson,
     [{ siglum: 'NinNA1a', text: fragment.text }],
     [`${chapterUrl}/unplaced_lines`, false],
-    Bluebird.resolve([{ siglum: 'NinNA1a', text: fragmentDto.text }]),
+    Promise.resolve([{ siglum: 'NinNA1a', text: fragmentDto.text }]),
   ),
   new TestData(
     'findExtantLines',
     [chapterId],
     apiClient.fetchJson,
     extantLines,
-    [`${chapterUrl}/extant_lines`, false],
-    Bluebird.resolve(extantLines),
+    [`${chapterUrl}/extant_lines`, false, undefined],
+    Promise.resolve(extantLines),
   ),
   new TestData(
     'findManuscripts',
@@ -420,7 +419,7 @@ const testData: TestData<TextService>[] = [
     apiClient.fetchJson,
     chapter.manuscripts,
     [`${chapterUrl}/manuscripts`, false],
-    Bluebird.resolve(chapterDto.manuscripts),
+    Promise.resolve(chapterDto.manuscripts),
   ),
 
   new TestData(
@@ -428,24 +427,24 @@ const testData: TestData<TextService>[] = [
     [chapterId, chapter.alignment],
     apiClient.postJson,
     chapter,
-    [`${chapterUrl}/alignment`, alignmentDto],
-    Bluebird.resolve(chapterDto),
+    [`${chapterUrl}/alignment`, alignmentDto, true, undefined],
+    Promise.resolve(chapterDto),
   ),
   new TestData(
     'updateLemmatization',
     [chapterId, lemmatization],
     apiClient.postJson,
     chapter,
-    [`${chapterUrl}/lemmatization`, lemmatizationDto],
-    Bluebird.resolve(chapterDto),
+    [`${chapterUrl}/lemmatization`, lemmatizationDto, true, undefined],
+    Promise.resolve(chapterDto),
   ),
   new TestData(
     'updateManuscripts',
     [chapterId, chapter.manuscripts, chapter.uncertainFragments],
     apiClient.postJson,
     chapter,
-    [`${chapterUrl}/manuscripts`, manuscriptsDto],
-    Bluebird.resolve(chapterDto),
+    [`${chapterUrl}/manuscripts`, manuscriptsDto, true, undefined],
+    Promise.resolve(chapterDto),
   ),
   new TestData(
     'updateLines',
@@ -468,36 +467,42 @@ const testData: TestData<TextService>[] = [
         deleted: [0],
         new: [_.omit(createLine({ number: '3' }), 'status')],
       },
+      true,
+      undefined,
     ],
-    Bluebird.resolve(chapterDto),
+    Promise.resolve(chapterDto),
   ),
   new TestData(
     'importChapter',
     [chapterId, '1. kur'],
     apiClient.postJson,
     chapter,
-    [`${chapterUrl}/import`, { atf: '1. kur' }],
-    Bluebird.resolve(chapterDto),
+    [`${chapterUrl}/import`, { atf: '1. kur' }, true, undefined],
+    Promise.resolve(chapterDto),
   ),
   new TestData(
     'searchLemma',
     ['qanû I', 'L'],
     apiClient.fetchJson,
     [fromDictionaryLineDto(dictionaryLineDisplayDto)],
-    [`/lemmasearch?genre=L&lemma=${encodeURIComponent('qanû I')}`, false],
-    Bluebird.resolve([dictionaryLineDisplayDto]),
+    [
+      `/lemmasearch?genre=L&lemma=${encodeURIComponent('qanû I')}`,
+      false,
+      undefined,
+    ],
+    Promise.resolve([dictionaryLineDisplayDto]),
   ),
 ]
 
 beforeEach(() => {
-  fragmentServiceMock.fetchProvenances.mockReturnValue(Bluebird.resolve([]))
+  fragmentServiceMock.fetchProvenances.mockReturnValue(Promise.resolve([]))
 })
 
 describe('TextService', () => testDelegation(testService, testData))
 
 test('findSuggestions', async () => {
-  wordServiceMock.find.mockReturnValue(Bluebird.resolve(word))
-  fragmentServiceMock.findSuggestions.mockReturnValue(Bluebird.resolve([]))
+  wordServiceMock.find.mockReturnValue(Promise.resolve(word))
+  fragmentServiceMock.findSuggestions.mockReturnValue(Promise.resolve([]))
   await expect(testService.findSuggestions(chapter)).resolves.toEqual(
     lemmatization,
   )
@@ -568,12 +573,12 @@ test('inject ChapterDisplay', async () => {
       },
     ]
   })
-  apiClient.fetchJson.mockReturnValue(Bluebird.resolve(chapterWithReferences))
+  apiClient.fetchJson.mockReturnValue(Promise.resolve(chapterWithReferences))
   bibliographyServiceMock.findMany.mockReturnValueOnce(
-    Bluebird.resolve([translationReference.document]),
+    Promise.resolve([translationReference.document]),
   )
   bibliographyServiceMock.findMany.mockReturnValueOnce(
-    Bluebird.resolve([intertextReference.document]),
+    Promise.resolve([intertextReference.document]),
   )
   await expect(service.findChapterDisplay(chapterId)).resolves.toEqual(
     injectedChapter,
@@ -621,7 +626,7 @@ describe('findManuscripts provenance preload', () => {
       .mockImplementation(() => undefined)
 
     fragmentServiceMock.fetchProvenances.mockReturnValueOnce(
-      Bluebird.reject(provenanceError),
+      Promise.reject(provenanceError),
     )
     apiClient.fetchJson.mockResolvedValueOnce(chapterDto.manuscripts)
 
@@ -652,12 +657,12 @@ describe('findManuscripts provenance preload', () => {
     jest.spyOn(console, 'error').mockImplementation(() => undefined)
 
     fragmentServiceMock.fetchProvenances.mockReturnValueOnce(
-      Bluebird.reject(provenanceError),
+      Promise.reject(provenanceError),
     )
     apiClient.fetchJson.mockResolvedValueOnce(chapterDto.manuscripts)
 
     fragmentServiceMock.fetchProvenances.mockReturnValueOnce(
-      Bluebird.resolve([]),
+      Promise.resolve([]),
     )
     apiClient.fetchJson.mockResolvedValueOnce(chapterDto.manuscripts)
 
@@ -685,7 +690,7 @@ describe('list caching', () => {
   })
 
   test('returns cached result on second call', async () => {
-    apiClient.fetchJson.mockReturnValue(Bluebird.resolve(textsDto))
+    apiClient.fetchJson.mockReturnValue(Promise.resolve(textsDto))
 
     const first = await service.list()
     const second = await service.list()
@@ -698,11 +703,11 @@ describe('list caching', () => {
   test('clears cache on error and allows retry', async () => {
     const error = new Error('network error')
 
-    apiClient.fetchJson.mockReturnValueOnce(Bluebird.reject(error))
+    apiClient.fetchJson.mockReturnValueOnce(Promise.reject(error))
 
     await expect(service.list()).rejects.toThrow('network error')
 
-    apiClient.fetchJson.mockReturnValueOnce(Bluebird.resolve(textsDto))
+    apiClient.fetchJson.mockReturnValueOnce(Promise.resolve(textsDto))
 
     await expect(service.list()).resolves.toEqual([text])
     expect(apiClient.fetchJson).toHaveBeenCalledTimes(2)
@@ -717,7 +722,7 @@ describe('findChapterDisplay caching', () => {
       wordServiceMock,
       bibliographyServiceMock,
     )
-    fragmentServiceMock.fetchProvenances.mockReturnValue(Bluebird.resolve([]))
+    fragmentServiceMock.fetchProvenances.mockReturnValue(Promise.resolve([]))
 
     apiClient.fetchJson.mockResolvedValue(chapterDisplayDto)
 
@@ -745,7 +750,7 @@ describe('findChapterDisplay caching', () => {
       () => scope.current,
     )
 
-    fragmentServiceMock.fetchProvenances.mockReturnValue(Bluebird.resolve([]))
+    fragmentServiceMock.fetchProvenances.mockReturnValue(Promise.resolve([]))
     apiClient.fetchJson.mockResolvedValue(chapterDisplayDto)
 
     await expect(service.findChapterDisplay(chapterId)).resolves.toMatchObject({
@@ -767,8 +772,8 @@ describe('findChapterDisplay caching', () => {
 
 describe('loadProvenances delegation', () => {
   test('delegates to fragmentService.fetchProvenances', async () => {
-    fragmentServiceMock.fetchProvenances.mockReturnValue(Bluebird.resolve([]))
-    apiClient.fetchJson.mockReturnValue(Bluebird.resolve(chapterDto))
+    fragmentServiceMock.fetchProvenances.mockReturnValue(Promise.resolve([]))
+    apiClient.fetchJson.mockReturnValue(Promise.resolve(chapterDto))
 
     await testService.findChapter(chapterId)
 

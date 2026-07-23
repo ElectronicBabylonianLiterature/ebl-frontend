@@ -5,7 +5,6 @@ import { dictionaryWord } from 'test-support/word-info-fixtures'
 import FragmentLemmaLines, { RenderFragmentLines } from './FragmentLemmaLines'
 import { fragment, lines } from 'test-support/test-fragment'
 import { QueryItem, QueryResult } from 'query/QueryResult'
-import Bluebird from 'bluebird'
 import WordService from 'dictionary/application/WordService'
 import { MemoryRouter } from 'react-router-dom'
 import { DictionaryContext } from '../dictionary-context'
@@ -80,8 +79,8 @@ describe('Show Library entries', () => {
       matchCount: 1,
     }
     const queryResult: QueryResult = { items: [queryItem], matchCountTotal: 1 }
-    fragmentService.query.mockReturnValue(Bluebird.resolve(queryResult))
-    fragmentService.find.mockReturnValue(Bluebird.resolve(fragmentWithLemma))
+    fragmentService.query.mockReturnValue(Promise.resolve(queryResult))
+    fragmentService.find.mockReturnValue(Promise.resolve(fragmentWithLemma))
 
     renderFragmentLemmaLines()
 
@@ -108,9 +107,9 @@ describe('Show Library entries', () => {
       matchCount: 1,
     }
     fragmentService.query.mockReturnValue(
-      Bluebird.resolve({ items: [queryItem], matchCountTotal: null }),
+      Promise.resolve({ items: [queryItem], matchCountTotal: null }),
     )
-    fragmentService.find.mockReturnValue(Bluebird.resolve(fragmentWithLemma))
+    fragmentService.find.mockReturnValue(Promise.resolve(fragmentWithLemma))
 
     renderFragmentLemmaLines()
 

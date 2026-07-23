@@ -1,4 +1,3 @@
-import Promise from 'bluebird'
 import _ from 'lodash'
 import { GlossaryData, GlossaryToken } from 'transliteration/domain/glossary'
 import WordService from 'dictionary/application/WordService'
@@ -64,7 +63,7 @@ export default class GlossaryFactory {
     const tokensMap = labeledLines.flatMap((line) =>
       this.createTokensMapForLine(line),
     )
-    return Promise.all(this.createTokens(tokensMap)).then(createGlossaryData)
+    return this.createTokens(tokensMap).then(createGlossaryData)
   }
 
   private createTokensMapForLine([label, line]: LabeledLine): {

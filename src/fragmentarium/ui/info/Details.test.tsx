@@ -1,4 +1,3 @@
-import Bluebird from 'bluebird'
 import React from 'react'
 import { MemoryRouter } from 'react-router-dom'
 import { waitForSpinnerToBeRemoved } from 'test-support/waitForSpinnerToBeRemoved'
@@ -66,10 +65,10 @@ function expectMeasurementsToBeRendered(fragment: Fragment) {
 describe('All details', () => {
   async function setupAllDetails(): Promise<void> {
     fragmentService.fetchGenres.mockReturnValue(
-      Bluebird.resolve([['ARCHIVAL'], ['ARCHIVAL', 'Administrative']]),
+      Promise.resolve([['ARCHIVAL'], ['ARCHIVAL', 'Administrative']]),
     )
     fragmentService.fetchPeriods.mockReturnValue(
-      Bluebird.resolve([...Object.keys(Periods)]),
+      Promise.resolve([...Object.keys(Periods)]),
     )
     const number = 'X.1'
     const museum = Museums['THE_BRITISH_MUSEUM']
@@ -329,8 +328,8 @@ describe('Missing details', () => {
         },
       },
     )
-    fragmentService.fetchGenres.mockReturnValue(Bluebird.resolve([]))
-    fragmentService.fetchPeriods.mockReturnValue(Bluebird.resolve([]))
+    fragmentService.fetchGenres.mockReturnValue(Promise.resolve([]))
+    fragmentService.fetchPeriods.mockReturnValue(Promise.resolve([]))
     await renderDetails()
   }
 

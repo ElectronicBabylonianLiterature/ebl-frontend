@@ -7,7 +7,6 @@ import {
   waitFor,
   within,
 } from '@testing-library/react'
-import { Promise } from 'bluebird'
 import _ from 'lodash'
 import { submitFormByTestId, clickNth } from 'test-support/utils'
 import SessionContext from 'auth/SessionContext'
@@ -253,6 +252,7 @@ it('Calls `updateDate` with undefined on Date delete', async () => {
     expect(fragmentService.updateDate).toHaveBeenCalledWith(
       fragment.number,
       undefined,
+      expect.any(AbortSignal),
     ),
   )
 })

@@ -39,7 +39,11 @@ describe('DossiersRepository - fetchAllDossiers', () => {
     apiClient.fetchJson.mockResolvedValueOnce([resultStub])
     const response = await dossiersRepository.fetchAllDossiers()
     expect(response).toEqual([record])
-    expect(apiClient.fetchJson).toHaveBeenCalledWith('/dossiers', false)
+    expect(apiClient.fetchJson).toHaveBeenCalledWith(
+      '/dossiers',
+      false,
+      undefined,
+    )
   })
 
   it('handles response with dossiers wrapper', async () => {
@@ -279,7 +283,11 @@ describe('Dossiers Repository - fetchFilteredDossiers', () => {
     apiClient.fetchJson.mockResolvedValueOnce([resultStub])
     const response = await dossiersRepository.fetchFilteredDossiers({})
     expect(response).toEqual([record])
-    expect(apiClient.fetchJson).toHaveBeenCalledWith('/dossiers', false)
+    expect(apiClient.fetchJson).toHaveBeenCalledWith(
+      '/dossiers',
+      false,
+      undefined,
+    )
   })
 
   it('returns all dossiers when filters are empty strings', async () => {
@@ -290,7 +298,11 @@ describe('Dossiers Repository - fetchFilteredDossiers', () => {
       genre: '',
     })
     expect(response).toEqual([record])
-    expect(apiClient.fetchJson).toHaveBeenCalledWith('/dossiers', false)
+    expect(apiClient.fetchJson).toHaveBeenCalledWith(
+      '/dossiers',
+      false,
+      undefined,
+    )
   })
 
   it('fetches filtered dossiers with provenance filter', async () => {
@@ -379,7 +391,12 @@ describe('Dossiers Repository - fetchFilteredDossiers', () => {
       '/dossiers/filter?provenance=Babylon',
       false,
     )
-    expect(apiClient.fetchJson).toHaveBeenNthCalledWith(2, '/dossiers', false)
+    expect(apiClient.fetchJson).toHaveBeenNthCalledWith(
+      2,
+      '/dossiers',
+      false,
+      undefined,
+    )
     expect(consoleWarnSpy).toHaveBeenCalledWith(
       'Failed to fetch filtered dossiers:',
       'Filter endpoint not found',

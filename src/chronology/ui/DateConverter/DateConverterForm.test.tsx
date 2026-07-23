@@ -7,7 +7,6 @@ import DateConverterForm, {
 } from 'chronology/ui/DateConverter/DateConverterForm'
 import { markupDtoSerialized } from 'test-support/markup-fixtures'
 import { MemoryRouter } from 'react-router-dom'
-import Bluebird from 'bluebird'
 import { waitForSpinnerToBeRemoved } from 'test-support/waitForSpinnerToBeRemoved'
 
 jest.mock('markup/application/MarkupService')
@@ -18,7 +17,7 @@ describe('AboutDateConverter', () => {
   >)()
   it('renders without crashing', async () => {
     markupServiceMock.fromString.mockReturnValue(
-      Bluebird.resolve(markupDtoSerialized),
+      Promise.resolve(markupDtoSerialized),
     )
     render(<MemoryRouter>{AboutDateConverter(markupServiceMock)}</MemoryRouter>)
     await waitForSpinnerToBeRemoved(screen)

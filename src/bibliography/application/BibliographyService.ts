@@ -1,4 +1,3 @@
-import Promise from 'bluebird'
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 import BibliographyRepository from 'bibliography/infrastructure/BibliographyRepository'
 import _ from 'lodash'
@@ -9,7 +8,10 @@ const maximumCachedEntries = 500
 const defaultCacheScope = 'default'
 
 export interface BibliographySearch {
-  search(query: string): Promise<readonly BibliographyEntry[]>
+  search(
+    query: string,
+    signal?: AbortSignal,
+  ): Promise<readonly BibliographyEntry[]>
 }
 
 export default class BibliographyService implements BibliographySearch {
@@ -104,8 +106,11 @@ export default class BibliographyService implements BibliographySearch {
       .then((updatedEntry) => this.cacheUpdatedEntry(updatedEntry))
   }
 
-  search(query: string): Promise<readonly BibliographyEntry[]> {
-    return this.bibliographyRepository.search(query)
+  search(
+    query: string,
+    signal?: AbortSignal,
+  ): Promise<readonly BibliographyEntry[]> {
+    return this.bibliographyRepository.search(query, signal)
   }
 
   listAllBibliography(): Promise<string[]> {

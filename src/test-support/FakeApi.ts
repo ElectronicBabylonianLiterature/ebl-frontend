@@ -1,4 +1,3 @@
-import Promise from 'bluebird'
 import { ChapterDisplay } from 'corpus/domain/chapter'
 import { ChapterId } from 'transliteration/domain/chapter-id'
 import { ExtantLines } from 'corpus/domain/extant-lines'
@@ -482,21 +481,30 @@ export default class FakeApi {
   verifyExpectations(): void {
     const methods = {
       GET: (expectation: Expectation): void => {
-        expect(
-          expectation.isBlob ? this.client.fetchBlob : this.client.fetchJson,
-        ).toHaveBeenCalledWith(expectation.path, expect.anything())
+        const mock = expectation.isBlob
+          ? this.client.fetchBlob
+          : this.client.fetchJson
+        expect(leadingArguments(mock, 2)).toContainEqual([
+          expectation.path,
+          expect.anything(),
+        ])
       },
-      POST: (expectation: Expectation): void =>
-        expect(this.client.postJson).toHaveBeenCalledWith(
+      POST: (expectation: Expectation): void => {
+        expect(leadingArguments(this.client.postJson, 2)).toContainEqual([
           expectation.path,
           expectation.body || expect.anything(),
-        ),
+        ])
+      },
     }
     this.expectations
       .filter((expectation) => expectation.verify)
       .forEach((expectation) => methods[expectation.method](expectation))
   }
 }
+function leadingArguments(mock: jest.Mock, argumentCount: number): unknown[][] {
+  return mock.mock.calls.map((call) => call.slice(0, argumentCount))
+}
+
 function createTextUrl(id): string {
   return `/texts/${id.genre}/${id.category}/${id.index}`
 }

@@ -1,4 +1,3 @@
-import Promise from 'bluebird'
 import { testDelegation, TestData } from 'test-support/utils'
 import WordRepository from './WordRepository'
 import ApiClient from 'http/ApiClient'
@@ -20,7 +19,7 @@ const testData: TestData<WordRepository>[] = [
     [wordId],
     apiClient.fetchJson,
     resultStub,
-    [`/words/${encodeURIComponent(wordId)}`, false],
+    [`/words/${encodeURIComponent(wordId)}`, false, undefined],
     Promise.resolve(resultStub),
   ),
   new TestData(
@@ -28,7 +27,7 @@ const testData: TestData<WordRepository>[] = [
     [query],
     apiClient.fetchJson,
     [resultStub],
-    [`/words?query=${encodeURIComponent(query)}`, false],
+    [`/words?query=${encodeURIComponent(query)}`, false, undefined],
     Promise.resolve([resultStub]),
   ),
   new TestData(
@@ -36,7 +35,7 @@ const testData: TestData<WordRepository>[] = [
     [query],
     apiClient.fetchJson,
     [resultStub],
-    [`/words?lemma=${encodeURIComponent(query)}`, false],
+    [`/words?lemma=${encodeURIComponent(query)}`, false, undefined],
     Promise.resolve([resultStub]),
   ),
   new TestData(
@@ -44,7 +43,7 @@ const testData: TestData<WordRepository>[] = [
     [word],
     apiClient.postJson,
     resultStub,
-    [`/words/${encodeURIComponent(word._id)}`, word],
+    [`/words/${encodeURIComponent(word._id)}`, word, true, undefined],
     Promise.resolve(resultStub),
   ),
   new TestData(
@@ -55,6 +54,8 @@ const testData: TestData<WordRepository>[] = [
     [
       `/words/create-proper-noun`,
       { lemma: 'Shamash', namedEntityTags: ['DN'] },
+      true,
+      undefined,
     ],
     Promise.resolve(resultStub),
   ),
@@ -63,7 +64,7 @@ const testData: TestData<WordRepository>[] = [
     [],
     apiClient.fetchJson,
     [word._id],
-    ['/words/all', false],
+    ['/words/all', false, undefined],
     Promise.resolve([word._id]),
   ),
 ]

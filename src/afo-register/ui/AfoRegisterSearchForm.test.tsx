@@ -4,7 +4,6 @@ import userEvent from '@testing-library/user-event'
 import AfoRegisterSearchForm from './AfoRegisterSearchForm'
 import AfoRegisterService from 'afo-register/application/AfoRegisterService'
 import { MemoryRouter } from 'react-router-dom'
-import Bluebird from 'bluebird'
 import { AfoRegisterRecordSuggestion } from 'afo-register/domain/Record'
 
 jest.mock('afo-register/application/AfoRegisterService')
@@ -20,22 +19,25 @@ const routerFuture = Object.fromEntries([
   ['v7_relativeSplatPath', true],
 ])
 
-async function renderWithRouter(
-  children: JSX.Element,
-  path?: string,
-): Promise<void> {
-  render(<MemoryRouter future={routerFuture}>{children}</MemoryRouter>)
-}
-
 describe('AfoRegisterSearch Component Tests', () => {
   let afoRegisterServiceMock
+
+  async function renderWithRouter(
+    children: JSX.Element,
+    path?: string,
+  ): Promise<void> {
+    render(<MemoryRouter future={routerFuture}>{children}</MemoryRouter>)
+    await waitFor(() =>
+      expect(afoRegisterServiceMock.searchSuggestions).toHaveBeenCalled(),
+    )
+  }
 
   beforeEach(() => {
     afoRegisterServiceMock = new (AfoRegisterService as jest.Mock<
       jest.Mocked<AfoRegisterService>
     >)()
     afoRegisterServiceMock.searchSuggestions.mockReturnValue(
-      Bluebird.resolve([
+      Promise.resolve([
         new AfoRegisterRecordSuggestion({
           text: 'Sample text',
           textNumbers: ['1', '2', '3', '4'],
@@ -99,7 +101,7 @@ describe('AfoRegisterSearch Component Tests', () => {
 
   test('fetchTextNumberOptions updates options correctly', async () => {
     afoRegisterServiceMock.searchSuggestions.mockReturnValue(
-      Bluebird.resolve([
+      Promise.resolve([
         new AfoRegisterRecordSuggestion({
           text: 'Test',
           textNumbers: ['111', '222'],

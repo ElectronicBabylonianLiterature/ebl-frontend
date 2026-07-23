@@ -1,4 +1,3 @@
-import Promise from 'bluebird'
 import AfoRegisterRecord, {
   AfoRegisterRecordSuggestion,
 } from 'afo-register/domain/Record'

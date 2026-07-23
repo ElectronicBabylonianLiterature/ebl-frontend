@@ -19,7 +19,8 @@ const FragmentInCorpus = withData<
   }
 >(
   ({ data }): JSX.Element => <FragmentInCorpusDisplay attestations={data} />,
-  (props) => props.fragmentService.findInCorpus(props.fragment.number),
+  (props, signal) =>
+    props.fragmentService.findInCorpus(props.fragment.number, signal),
 )
 
 function FragmentInCorpusDisplay({

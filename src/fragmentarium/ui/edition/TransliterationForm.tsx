@@ -1,6 +1,7 @@
 import React, {
   useState,
   useEffect,
+  useRef,
   FormEvent,
   useCallback,
   useMemo,
@@ -14,7 +15,6 @@ import {
   Col,
 } from 'react-bootstrap'
 import _ from 'lodash'
-import Promise from 'bluebird'
 
 import Editor from 'editor/Editor'
 import SpecialCharactersHelp from 'editor/SpecialCharactersHelp'
@@ -25,6 +25,7 @@ import {
   editionFields,
   EditionFields,
 } from 'fragmentarium/application/FragmentService'
+import AbortableOperation from 'common/utils/AbortableOperation'
 
 type Props = {
   transliteration: string
@@ -56,10 +57,8 @@ const handleBeforeUnload = (
 
 const runBeforeUnloadEvent = ({
   hasChanges,
-  updatePromise,
 }: {
   hasChanges: () => boolean
-  updatePromise: Promise<void>
 }) => {
   const _handleBeforeEvent = (event) => handleBeforeUnload(event, hasChanges)
   if (hasChanges()) {
@@ -69,7 +68,6 @@ const runBeforeUnloadEvent = ({
   }
   return () => {
     window.removeEventListener('beforeunload', _handleBeforeEvent)
-    updatePromise.cancel()
   }
 }
 
@@ -140,7 +138,8 @@ const TransliterationForm: React.FC<Props> = ({
     error: null,
     disabled: false,
   })
-  const [updatePromise, setUpdatePromise] = useState(Promise.resolve())
+  const updateOperation = useRef(new AbortableOperation())
+  useEffect(() => () => updateOperation.current.abort(), [])
   const initialValues = useMemo(
     () => ({ transliteration, notes, introduction }),
     [transliteration, notes, introduction],
@@ -174,28 +173,24 @@ const TransliterationForm: React.FC<Props> = ({
       _.pick(formData, editionFields),
       isDirty,
     ) as EditionFields
-    const promise = updateEdition(updatedFields)
+    const signal = updateOperation.current.start()
+    updateEdition(updatedFields)
       .then((fragment) => {
-        setFormData((prev) => ({
-          ...prev,
-          transliteration: fragment.atf,
-          notes: fragment.notes.text,
-          introduction: fragment.introduction.text,
-          error: null,
-        }))
+        if (!signal.aborted) {
+          setFormData((prev) => ({
+            ...prev,
+            transliteration: fragment.atf,
+            notes: fragment.notes.text,
+            introduction: fragment.introduction.text,
+            error: null,
+          }))
+        }
       })
       .catch((error) => {
-        const isCancellationError =
-          (error as { name?: string })?.name === 'CancellationError' ||
-          (typeof (promise as { isCancelled?: () => boolean })?.isCancelled ===
-            'function' &&
-            (promise as { isCancelled: () => boolean }).isCancelled())
-        if (isCancellationError) {
-          return
+        if (!signal.aborted) {
+          setFormData((prev) => ({ ...prev, error }))
         }
-        setFormData((prev) => ({ ...prev, error }))
       })
-    setUpdatePromise(promise)
   }
 
   const hasChanges = useCallback(
@@ -207,15 +202,8 @@ const TransliterationForm: React.FC<Props> = ({
   )
 
   useEffect(() => {
-    return runBeforeUnloadEvent({ hasChanges, updatePromise })
-  }, [
-    formData,
-    transliteration,
-    notes,
-    introduction,
-    updatePromise,
-    hasChanges,
-  ])
+    return runBeforeUnloadEvent({ hasChanges })
+  }, [formData, transliteration, notes, introduction, hasChanges])
 
   const formGroups = editionFields.map(
     (name, key: number): JSX.Element =>

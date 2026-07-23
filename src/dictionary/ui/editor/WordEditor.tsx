@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import ReactMarkdown from 'react-markdown'
-import Promise from 'bluebird'
 
 import AppContent from 'common/ui/AppContent'
 import WordForm from './WordForm'
@@ -10,6 +9,7 @@ import withData, { WithoutData } from 'http/withData'
 import SessionContext from 'auth/SessionContext'
 import Word from 'dictionary/domain/Word'
 import { SectionCrumb, TextCrumb } from 'common/ui/Breadcrumbs'
+import AbortableOperation from 'common/utils/AbortableOperation'
 
 type Props = {
   data: Word
@@ -24,7 +24,7 @@ class WordEditor extends Component<
   static contextType = SessionContext
   context!: React.ContextType<typeof SessionContext>
 
-  private updatePromise: Promise<void>
+  private readonly updateOperation = new AbortableOperation()
 
   constructor(props) {
     super(props)
@@ -33,11 +33,10 @@ class WordEditor extends Component<
       error: null,
       saving: false,
     }
-    this.updatePromise = Promise.resolve()
   }
 
   componentWillUnmount(): void {
-    this.updatePromise.cancel()
+    this.updateOperation.abort()
   }
 
   get disabled(): boolean {
@@ -45,13 +44,19 @@ class WordEditor extends Component<
   }
 
   updateWord = (word): void => {
-    this.updatePromise.cancel()
+    const signal = this.updateOperation.start()
     this.setState({ word: this.state.word, error: null, saving: true })
-    this.updatePromise = this.props.wordService
+    this.props.wordService
       .update(word)
-      .then(() => this.setState({ word: word, error: null, saving: false }))
+      .then(() => {
+        if (!signal.aborted) {
+          this.setState({ word: word, error: null, saving: false })
+        }
+      })
       .catch((error) => {
-        this.setState({ word: this.state.word, error: error, saving: false })
+        if (!signal.aborted) {
+          this.setState({ word: this.state.word, error: error, saving: false })
+        }
       })
   }
 
@@ -89,5 +94,5 @@ class WordEditor extends Component<
 
 export default withData<WithoutData<Props>, unknown, Word>(
   WordEditor,
-  (props) => props.wordService.find(props.id),
+  (props, signal) => props.wordService.find(props.id, signal),
 )

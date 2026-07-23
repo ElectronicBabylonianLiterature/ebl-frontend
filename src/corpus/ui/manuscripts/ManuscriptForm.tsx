@@ -1,7 +1,6 @@
 import React from 'react'
 import { Form, Col, InputGroup, Row } from 'react-bootstrap'
 import _ from 'lodash'
-import Promise from 'bluebird'
 import { produce, castDraft, Draft } from 'immer'
 import { ManuscriptTypes, Manuscript, types } from 'corpus/domain/manuscript'
 import ReferencesForm from 'bibliography/ui/ReferencesForm'

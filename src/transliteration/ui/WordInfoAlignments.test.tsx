@@ -18,7 +18,6 @@ import {
   lineInfo,
 } from 'test-support/line-group-fixtures'
 import userEvent from '@testing-library/user-event'
-import Bluebird from 'bluebird'
 import {
   alignedManuscriptLineDto,
   dictionaryWord,
@@ -114,7 +113,7 @@ const lineDetailsWithVariant = new LineDetails(
 )
 
 async function renderAndOpen(dictionaryWord: DictionaryWord) {
-  wordServiceMock.find.mockReturnValue(Bluebird.resolve(dictionaryWord))
+  wordServiceMock.find.mockReturnValue(Promise.resolve(dictionaryWord))
 
   const lineGroup = new LineGroup(
     [reconstructionToken],
@@ -139,7 +138,7 @@ async function renderAndOpen(dictionaryWord: DictionaryWord) {
 describe('WordInfoWithPopover', () => {
   async function setup(): Promise<void> {
     textServiceMock.findChapterLine.mockReturnValue(
-      Bluebird.resolve(lineDetails),
+      Promise.resolve(lineDetails),
     )
     view = await renderAndOpen(dictionaryWord)
   }
@@ -168,7 +167,7 @@ describe('WordInfoWithPopover', () => {
 describe('WordInfoWithPopover with variant', () => {
   async function setup(): Promise<void> {
     textServiceMock.findChapterLine.mockReturnValue(
-      Bluebird.resolve(lineDetailsWithVariant),
+      Promise.resolve(lineDetailsWithVariant),
     )
     view = await renderAndOpen(dictionaryWord)
   }

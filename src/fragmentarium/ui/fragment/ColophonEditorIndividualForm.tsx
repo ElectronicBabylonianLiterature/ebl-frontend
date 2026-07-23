@@ -10,7 +10,6 @@ import ListForm from 'common/ui/List'
 import { BrokenAndUncertainSwitches } from 'common/ui/BrokenAndUncertain'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import { getSelectField } from './ColophonEditorIndividualInputs'
-import Bluebird from 'bluebird'
 
 const colophonSuggestionDebounceMilliseconds = 250
 const colophonSuggestionMinimumLength = 2
@@ -89,7 +88,7 @@ type ColophonAutocompleteFieldName = 'name' | 'sonOf' | 'grandsonOf' | 'family'
 type ColophonLoadOptionsMethod = (
   inputValue: string,
   callback: (options: ColophonNameOption[]) => void,
-) => Bluebird<void>
+) => Promise<void>
 
 type ColophonLoadOptionsByField = Record<
   ColophonAutocompleteFieldName,
@@ -241,7 +240,7 @@ export const getLoadOptionsMethod = (
   return (
     inputValue: string,
     callback: (options: ColophonNameOption[]) => void,
-  ): Bluebird<void> => {
+  ): Promise<void> => {
     const normalizedInput = inputValue.trim()
     const requestId = loadState.requestSequence + 1
     loadState.requestSequence = requestId
@@ -249,7 +248,7 @@ export const getLoadOptionsMethod = (
 
     if (normalizedInput.length < colophonSuggestionMinimumLength) {
       callback([])
-      return Bluebird.resolve()
+      return Promise.resolve()
     }
 
     return scheduleColophonLoad(
@@ -308,8 +307,8 @@ function scheduleColophonLoad(
   normalizedInput: string,
   requestId: number,
   callback: (options: ColophonNameOption[]) => void,
-): Bluebird<void> {
-  return new Bluebird<void>((resolve) => {
+): Promise<void> {
+  return new Promise<void>((resolve) => {
     loadState.pendingResolve = resolve
     loadState.pendingTimeout = setTimeout(() => {
       loadState.pendingTimeout = null

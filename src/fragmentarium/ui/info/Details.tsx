@@ -9,7 +9,6 @@ import { Genres } from 'fragmentarium/domain/Genres'
 import ScriptSelection from 'fragmentarium/ui/info/ScriptSelection'
 import DateSelection from 'chronology/application/DateSelection'
 import FragmentService from 'fragmentarium/application/FragmentService'
-import Bluebird from 'bluebird'
 import { MesopotamianDate } from 'chronology/domain/Date'
 import DatesInTextSelection from 'chronology/ui/DateEditor/DatesInTextSelection'
 import { DateRange, PartialDate } from 'fragmentarium/domain/archaeology'
@@ -188,11 +187,18 @@ function ExcavationDate({ fragment }: Props): JSX.Element {
 interface DetailsProps {
   readonly fragment: Fragment
   readonly updateGenres: (genres: Genres) => void
-  readonly updateScript: (script: Script) => Bluebird<Fragment>
-  readonly updateDate: (date?: MesopotamianDate) => Bluebird<Fragment>
+  readonly updateScript: (
+    script: Script,
+    signal?: AbortSignal,
+  ) => Promise<Fragment>
+  readonly updateDate: (
+    date?: MesopotamianDate,
+    signal?: AbortSignal,
+  ) => Promise<Fragment>
   readonly updateDatesInText: (
     datesInText: readonly MesopotamianDate[],
-  ) => Bluebird<Fragment>
+    signal?: AbortSignal,
+  ) => Promise<Fragment>
   readonly fragmentService: FragmentService
   readonly dossiersService: DossiersService
 }
@@ -268,7 +274,10 @@ function Details({
         />
       </li>
       <li className="Details__item">
-        <DateSelection dateProp={fragment?.date} updateDate={updateDate} />
+        <DateSelection
+          dateProp={fragment?.date}
+          updateDate={(date, index, signal) => updateDate(date, signal)}
+        />
       </li>
       <li className="Details__item">
         <DatesInTextSelection

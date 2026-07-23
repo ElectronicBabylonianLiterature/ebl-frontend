@@ -2,7 +2,6 @@ import React from 'react'
 import { render, screen } from '@testing-library/react'
 import { waitForSpinnerToBeRemoved } from 'test-support/waitForSpinnerToBeRemoved'
 import SignService from 'signs/application/SignService'
-import Bluebird from 'bluebird'
 import SignImages from 'signs/ui/display/SignImages'
 import { MemoryRouter } from 'react-router-dom'
 import { CroppedAnnotation } from 'signs/domain/CroppedAnnotation'
@@ -75,11 +74,14 @@ function renderSignImages() {
 describe('Sign Images', () => {
   async function setup(): Promise<void> {
     signService.getCentroidImages.mockReturnValue(
-      Bluebird.resolve(croppedAnnotations),
+      Promise.resolve(croppedAnnotations),
     )
     renderSignImages()
     await waitForSpinnerToBeRemoved(screen)
-    expect(signService.getCentroidImages).toBeCalledWith(signName)
+    expect(signService.getCentroidImages).toBeCalledWith(
+      signName,
+      expect.any(AbortSignal),
+    )
   }
 
   it('Displays centroid preview labels while accordions are closed', async () => {
@@ -110,7 +112,7 @@ describe('Sign Images', () => {
 
   it('Fetches cluster variants when a period accordion is opened', async () => {
     signService.getClusterVariants.mockReturnValue(
-      Bluebird.resolve([
+      Promise.resolve([
         {
           ...croppedAnnotations[2],
           annotationId: 'variant-annotation',
@@ -147,7 +149,7 @@ describe('Sign Images', () => {
   it('Shows a warning and keeps centroid fallback when some cluster variants fail', async () => {
     signService.getClusterVariants
       .mockReturnValueOnce(
-        Bluebird.resolve([
+        Promise.resolve([
           {
             ...croppedAnnotations[0],
             annotationId: 'loaded-variant-annotation',
@@ -164,7 +166,7 @@ describe('Sign Images', () => {
         ]),
       )
       .mockImplementationOnce(() =>
-        Bluebird.reject(new Error('Failed to load cluster')),
+        Promise.reject(new Error('Failed to load cluster')),
       )
 
     await setup()
@@ -188,9 +190,9 @@ describe('Sign Images', () => {
   it('Retries loading variants after a failed cluster request', async () => {
     signService.getClusterVariants
       .mockImplementationOnce(() =>
-        Bluebird.reject(new Error('Failed to load cluster')),
+        Promise.reject(new Error('Failed to load cluster')),
       )
-      .mockReturnValueOnce(Bluebird.resolve([]))
+      .mockReturnValueOnce(Promise.resolve([]))
 
     await setup()
 
@@ -216,7 +218,7 @@ describe('Sign Images', () => {
   })
 
   it('Shows warning and keeps centroid fallback when cluster variants response is empty', async () => {
-    signService.getClusterVariants.mockReturnValueOnce(Bluebird.resolve([]))
+    signService.getClusterVariants.mockReturnValueOnce(Promise.resolve([]))
 
     await setup()
 
@@ -241,10 +243,13 @@ describe('Sign Images', () => {
 
 describe('Sign Images Empty', () => {
   async function setup(): Promise<void> {
-    signService.getCentroidImages.mockReturnValue(Bluebird.resolve([]))
+    signService.getCentroidImages.mockReturnValue(Promise.resolve([]))
     renderSignImages()
     await waitForSpinnerToBeRemoved(screen)
-    expect(signService.getCentroidImages).toBeCalledWith(signName)
+    expect(signService.getCentroidImages).toBeCalledWith(
+      signName,
+      expect.any(AbortSignal),
+    )
   }
 
   it('Check there are no Images', async () => {

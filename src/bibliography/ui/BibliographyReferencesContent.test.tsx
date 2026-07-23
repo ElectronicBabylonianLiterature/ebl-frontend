@@ -4,7 +4,6 @@ import { MemoryRouter } from 'react-router-dom'
 import SessionContext from 'auth/SessionContext'
 import BibliographyReferencesContent from 'bibliography/ui/BibliographyReferencesContent'
 import BibliographyService from 'bibliography/application/BibliographyService'
-import Promise from 'bluebird'
 
 jest.mock('bibliography/ui/BibliographySearchForm', () => ({
   __esModule: true,

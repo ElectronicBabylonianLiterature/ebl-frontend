@@ -28,7 +28,7 @@ type CuneiformFragmentProps = {
   findspotService: FindspotService
   activeFolio: Folio | null
   tab: string | null
-  onSave: (updatedFragment: Promise<Fragment>) => void
+  onSave: (save: (signal?: AbortSignal) => Promise<Fragment>) => void
   saving: boolean
   error: Error | null
   activeLine: string
@@ -142,25 +142,34 @@ const CuneiformFragmentController: FunctionComponent<ControllerProps> = ({
   const [currentFragment, setFragment] = useState(fragment)
   const [isSaving, setIsSaving] = useState(false)
   const [error, setError] = useState(null)
-  const [setPromise, cancelPromise] = usePromiseEffect()
+  const [, , runSave] = usePromiseEffect()
 
-  const handleSave = (promise) => {
-    cancelPromise()
+  const handleSave = (
+    save: (signal?: AbortSignal) => Promise<Fragment>,
+  ): Promise<Fragment> => {
     setError(null)
     setIsSaving(true)
 
-    const updatePromise = promise.then((updatedFragment) => {
-      setFragment(updatedFragment)
-      setIsSaving(false)
-      return updatedFragment
+    let savePromise: Promise<Fragment> | undefined
+    runSave((signal) => {
+      savePromise = save(signal)
+      return savePromise
+        .then((updatedFragment) => {
+          setFragment(updatedFragment)
+          setIsSaving(false)
+        })
+        .catch((error) => {
+          if (!signal.aborted) {
+            setError(error)
+            setIsSaving(false)
+          }
+        })
     })
-    setPromise(
-      updatePromise.catch((error) => {
-        setError(error)
-        setIsSaving(false)
-      }),
-    )
-    return updatePromise
+
+    if (savePromise === undefined) {
+      throw new Error('The save operation did not start.')
+    }
+    return savePromise
   }
 
   return (

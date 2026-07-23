@@ -1,4 +1,3 @@
-import Bluebird from 'bluebird'
 import BibliographyService from './BibliographyService'
 import BibliographyRepository from 'bibliography/infrastructure/BibliographyRepository'
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
@@ -57,7 +56,7 @@ describe('BibliographyService', () => {
     const service = new BibliographyService(bibliographyRepository)
     let resolveFind: ((entry: BibliographyEntry) => void) | undefined
     bibliographyRepository.find.mockReturnValue(
-      new Bluebird((resolve) => {
+      new Promise((resolve) => {
         resolveFind = resolve
       }),
     )

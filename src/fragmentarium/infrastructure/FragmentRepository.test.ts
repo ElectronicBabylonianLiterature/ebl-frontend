@@ -1,4 +1,3 @@
-import Promise from 'bluebird'
 import { testDelegation, TestData } from 'test-support/utils'
 import FragmentRepository, { createScript } from './FragmentRepository'
 import Folio from 'fragmentarium/domain/Folio'
@@ -128,7 +127,7 @@ const testData: TestData<FragmentRepository>[] = [
     [],
     apiClient.fetchJson,
     resultStub,
-    ['/statistics', false],
+    ['/statistics', false, undefined],
     Promise.resolve(resultStub),
   ),
   new TestData(
@@ -136,7 +135,7 @@ const testData: TestData<FragmentRepository>[] = [
     [fragmentId],
     apiClient.fetchJson,
     lineToVecRanking,
-    [`/fragments/${encodeURIComponent(fragmentId)}/match`, false],
+    [`/fragments/${encodeURIComponent(fragmentId)}/match`, false, undefined],
     Promise.resolve(lineToVecRankingDto),
   ),
   new TestData(
@@ -173,7 +172,7 @@ const testData: TestData<FragmentRepository>[] = [
     [],
     apiClient.fetchJson,
     [fragmentInfo],
-    ['/fragments?random=true', false],
+    ['/fragments?random=true', false, undefined],
     Promise.resolve([fragmentInfoDto]),
   ),
   new TestData(
@@ -181,7 +180,7 @@ const testData: TestData<FragmentRepository>[] = [
     [],
     apiClient.fetchJson,
     [fragmentInfo],
-    ['/fragments?interesting=true', false],
+    ['/fragments?interesting=true', false, undefined],
     Promise.resolve([fragmentInfoDto]),
   ),
   new TestData(
@@ -189,7 +188,7 @@ const testData: TestData<FragmentRepository>[] = [
     [],
     apiClient.fetchJson,
     [fragmentInfo],
-    ['/fragments?needsRevision=true', false],
+    ['/fragments?needsRevision=true', false, undefined],
     Promise.resolve([fragmentInfoDto]),
   ),
   new TestData(
@@ -202,6 +201,8 @@ const testData: TestData<FragmentRepository>[] = [
       {
         transliteration,
       },
+      true,
+      undefined,
     ],
     Promise.resolve(fragmentDto),
   ),
@@ -215,6 +216,8 @@ const testData: TestData<FragmentRepository>[] = [
       {
         notes,
       },
+      true,
+      undefined,
     ],
     Promise.resolve(fragmentDto),
   ),
@@ -228,6 +231,8 @@ const testData: TestData<FragmentRepository>[] = [
       {
         introduction,
       },
+      true,
+      undefined,
     ],
     Promise.resolve(fragmentDto),
   ),
@@ -243,6 +248,8 @@ const testData: TestData<FragmentRepository>[] = [
         notes,
         transliteration,
       },
+      true,
+      undefined,
     ],
     Promise.resolve(fragmentDto),
   ),
@@ -265,6 +272,8 @@ const testData: TestData<FragmentRepository>[] = [
     [
       `/fragments/${encodeURIComponent(fragmentId)}/references`,
       { references: references },
+      true,
+      undefined,
     ],
     Promise.resolve(fragmentDto),
   ),
@@ -273,7 +282,12 @@ const testData: TestData<FragmentRepository>[] = [
     [fragmentId, createScript(script)],
     apiClient.postJson,
     fragment,
-    [`/fragments/${encodeURIComponent(fragmentId)}/script`, { script: script }],
+    [
+      `/fragments/${encodeURIComponent(fragmentId)}/script`,
+      { script: script },
+      true,
+      undefined,
+    ],
     Promise.resolve(fragmentDto),
   ),
   new TestData(
@@ -294,7 +308,7 @@ const testData: TestData<FragmentRepository>[] = [
     [fragmentId],
     apiClient.fetchJson,
     resultStub,
-    [`/fragments/${encodeURIComponent(fragmentId)}/pager`, false],
+    [`/fragments/${encodeURIComponent(fragmentId)}/pager`, false, undefined],
     Promise.resolve(resultStub),
   ),
   new TestData(
@@ -347,7 +361,12 @@ const testData: TestData<FragmentRepository>[] = [
     [fragmentId, new Genres(genres)],
     apiClient.postJson,
     fragment,
-    [`/fragments/${encodeURIComponent(fragmentId)}/genres`, { genres }],
+    [
+      `/fragments/${encodeURIComponent(fragmentId)}/genres`,
+      { genres },
+      true,
+      undefined,
+    ],
     Promise.resolve(fragmentDto),
   ),
   new TestData(
@@ -358,6 +377,8 @@ const testData: TestData<FragmentRepository>[] = [
     [
       `/fragments/${encodeURIComponent(fragmentId)}/date`,
       { date: mesopotamianDate.toDto() },
+      true,
+      undefined,
     ],
     Promise.resolve(fragmentDto),
   ),
@@ -366,7 +387,12 @@ const testData: TestData<FragmentRepository>[] = [
     [fragmentId, undefined],
     apiClient.postJson,
     fragment,
-    [`/fragments/${encodeURIComponent(fragmentId)}/date`, { date: undefined }],
+    [
+      `/fragments/${encodeURIComponent(fragmentId)}/date`,
+      { date: undefined },
+      true,
+      undefined,
+    ],
     Promise.resolve(fragmentDto),
   ),
   new TestData(
@@ -377,6 +403,8 @@ const testData: TestData<FragmentRepository>[] = [
     [
       `/fragments/${encodeURIComponent(fragmentId)}/dates-in-text`,
       { datesInText: [mesopotamianDate.toDto()] },
+      true,
+      undefined,
     ],
     Promise.resolve(fragmentDto),
   ),
@@ -388,6 +416,8 @@ const testData: TestData<FragmentRepository>[] = [
     [
       `/fragments/${encodeURIComponent(fragmentId)}/archaeology`,
       { archaeology },
+      true,
+      undefined,
     ],
     Promise.resolve(fragmentDto),
   ),
@@ -939,6 +969,7 @@ describe('FragmentRepository findInCorpus', () => {
     expect(apiClient.fetchJson).toHaveBeenCalledWith(
       `/fragments/${encodeURIComponent(fragmentId)}/corpus`,
       false,
+      undefined,
     )
   })
 

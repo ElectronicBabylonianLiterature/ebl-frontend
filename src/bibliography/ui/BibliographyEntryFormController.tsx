@@ -1,11 +1,11 @@
 import React, { Component } from 'react'
-import Promise from 'bluebird'
 
 import BibliographyEntryForm from './BibliographyEntryForm'
 import Spinner from 'common/ui/Spinner'
 import ErrorAlert from 'common/errors/ErrorAlert'
 import SessionContext from 'auth/SessionContext'
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
+import AbortableOperation from 'common/utils/AbortableOperation'
 
 interface Props {
   entry: BibliographyEntry
@@ -20,7 +20,7 @@ export default class BibliographyEntryFormController extends Component<
   static contextType = SessionContext
   context!: React.ContextType<typeof SessionContext>
 
-  private updatePromise: Promise<void>
+  private readonly submitOperation = new AbortableOperation()
 
   constructor(props: Props) {
     super(props)
@@ -28,10 +28,9 @@ export default class BibliographyEntryFormController extends Component<
       error: null,
       saving: false,
     }
-    this.updatePromise = Promise.resolve()
   }
   componentWillUnmount(): void {
-    this.updatePromise.cancel()
+    this.submitOperation.abort()
   }
 
   get disabled(): boolean {
@@ -39,13 +38,19 @@ export default class BibliographyEntryFormController extends Component<
   }
 
   handleSubmit = (entry: BibliographyEntry): void => {
-    this.updatePromise.cancel()
+    const signal = this.submitOperation.start()
     this.setState({ error: null, saving: true })
-    this.updatePromise = this.props
+    this.props
       .onSubmit(entry)
-      .then(() => this.setState({ error: null, saving: false }))
+      .then(() => {
+        if (!signal.aborted) {
+          this.setState({ error: null, saving: false })
+        }
+      })
       .catch((error) => {
-        this.setState({ error: error, saving: false })
+        if (!signal.aborted) {
+          this.setState({ error: error, saving: false })
+        }
       })
   }
 
