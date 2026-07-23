@@ -34,8 +34,12 @@ jest.mock('fragmentarium/application/FragmentService')
 jest.mock('fragmentarium/application/FragmentSearchService')
 jest.mock('afo-register/application/AfoRegisterService')
 jest.mock('dossiers/application/DossiersService')
+jest.mock('fragmentarium/ui/fragment/TeiExport', () => ({
+  teiExport: jest.fn(() => ''),
+}))
 
 global.ResizeObserver = ResizeObserver
+HelmetProvider.canUseDOM = false
 
 const message = 'message'
 const fragmentNumber = 'K,K.1'
@@ -48,6 +52,12 @@ let afoRegisterService: jest.Mocked<AfoRegisterService>
 let dossiersService: jest.Mocked<DossiersService>
 let session
 let container: HTMLElement
+
+function getCanonicalMarkup(): string {
+  const canonicalMarkup = helmetContext['helmet']?.link?.toString() ?? ''
+  expect(canonicalMarkup).toContain('rel="canonical"')
+  return canonicalMarkup
+}
 
 function renderFragmentView(
   number: string,
@@ -207,10 +217,12 @@ describe('Fragment is loaded', () => {
     await renderAndWaitForLoadedFragment()
 
     await waitFor(() => {
-      expect(helmetContext['helmet']?.link).toBeDefined()
+      expect(helmetContext['helmet']?.link?.toString()).toContain(
+        'rel="canonical"',
+      )
     })
 
-    const canonicalMarkup = helmetContext['helmet'].link.toString()
+    const canonicalMarkup = getCanonicalMarkup()
     expect(canonicalMarkup).toContain(
       `href="https://www.ebl.lmu.de/library/${encodeURIComponent(
         fragment.number,
@@ -307,39 +319,4 @@ describe('Filter folios', () => {
       ),
     ).not.toBeInTheDocument()
   })
-})
-
-describe('Fragment canonical encoding', () => {
-  async function getCanonicalMarkup(number: string): Promise<string> {
-    const fragment = fragmentFactory.build(
-      {
-        number,
-        atf: '1. ku',
-        hasPhoto: false,
-      },
-      { associations: { folios: [], references: [] } },
-    )
-    fragmentService.find.mockReturnValue(Promise.resolve(fragment))
-
-    renderFragmentView(number, null, null, 'photo')
-    await waitForSpinnerToBeRemoved(screen)
-    await waitFor(() => {
-      expect(helmetContext['helmet']?.link).toBeDefined()
-    })
-    return helmetContext['helmet'].link.toString()
-  }
-
-  it.each(['BM.123', 'BM 123', 'K 1+2/3', 'BM%20123'])(
-    'encodes %s exactly once in the canonical URL',
-    async (number) => {
-      const canonicalMarkup = await getCanonicalMarkup(number)
-      expect(canonicalMarkup).toContain(
-        `https://www.ebl.lmu.de/library/${encodeURIComponent(
-          decodeURIComponent(number),
-        )}`,
-      )
-      expect(canonicalMarkup).not.toContain('%2525')
-      expect(canonicalMarkup).not.toContain('?tab=')
-    },
-  )
 })

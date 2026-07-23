@@ -105,7 +105,7 @@ describe('Show Library entries', () => {
     expect(container).toMatchSnapshot()
   })
 
-  it('renders a document-count fallback when matchCountTotal is null', async () => {
+  it('renders example-count copy when matchCountTotal is null', async () => {
     const queryItem: QueryItem = {
       museumNumber: 'Test.Fragment',
       matchingLines: [0],
@@ -119,7 +119,7 @@ describe('Show Library entries', () => {
     renderFragmentLemmaLines()
 
     expect(
-      await screen.findByText('Matches found in 1 Library document'),
+      await screen.findByText('Showing 1 Library document example'),
     ).toBeVisible()
     expect(screen.queryByText('0 matches')).not.toBeInTheDocument()
   })

@@ -184,8 +184,8 @@ export default withData<
             </>
           ) : (
             <>
-              Matches found in {queryResult.items.length.toLocaleString()}{' '}
-              Library document{queryResult.items.length === 1 ? '' : 's'}
+              Showing {queryResult.items.length.toLocaleString()} Library
+              document example{queryResult.items.length === 1 ? '' : 's'}
               &nbsp;
             </>
           )}
