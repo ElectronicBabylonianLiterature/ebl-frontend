@@ -50,3 +50,18 @@ it('Creates canonical fragment URL without query parameters', () => {
     `https://www.ebl.lmu.de/library/${encodeURIComponent(number)}`,
   )
 })
+
+it.each(['BM.123', 'BM 123', 'K 1+2/3', 'BM%20123'])(
+  'encodes %s exactly once in the canonical URL',
+  (number) => {
+    const canonicalUrl = createFragmentCanonicalUrl(number)
+
+    expect(canonicalUrl).toContain(
+      `https://www.ebl.lmu.de/library/${encodeURIComponent(
+        decodeURIComponent(number),
+      )}`,
+    )
+    expect(canonicalUrl).not.toContain('%2525')
+    expect(canonicalUrl).not.toContain('?tab=')
+  },
+)

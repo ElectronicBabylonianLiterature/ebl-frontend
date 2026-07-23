@@ -62,6 +62,12 @@ const LatestAdditionThumbnail = withData<
     fragmentService.findThumbnail(fragment, 'small'),
 )
 
+function hasLatestTransliterationRecord(fragment: Fragment): boolean {
+  return _(fragment.uniqueRecord).some(
+    (entry) => entry.type === 'Transliteration' && !entry.isHistorical,
+  )
+}
+
 function CompactFragmentCardContent({
   fragment,
   fragmentService,
@@ -178,13 +184,21 @@ function CompactFragmentCard({
   queryItem: QueryItem
   fragmentService: FragmentService
 }): JSX.Element {
-  return queryItem.fragment ? (
-    <CompactFragmentCardContent
-      fragment={queryItem.fragment}
-      fragmentService={fragmentService}
-      queryItem={queryItem}
-    />
-  ) : (
+  if (
+    queryItem.fragment &&
+    (!('thumbnailPath' in queryItem) ||
+      hasLatestTransliterationRecord(queryItem.fragment))
+  ) {
+    return (
+      <CompactFragmentCardContent
+        fragment={queryItem.fragment}
+        fragmentService={fragmentService}
+        queryItem={queryItem}
+      />
+    )
+  }
+
+  return (
     <HydratedCompactFragmentCard
       queryItem={queryItem}
       fragmentService={fragmentService}

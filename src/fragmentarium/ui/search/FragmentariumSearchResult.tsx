@@ -87,17 +87,23 @@ export const SearchResult = withData<
     const offset = fragmentQuery.offset ?? pageIndex * RESULTS_PER_PAGE
     const isLineQuery = fragmentQuery.lemmas || fragmentQuery.transliteration
     const hasLineCount = typeof data.matchCountTotal === 'number'
-    const lineCountInfo = hasLineCount
-      ? `${data.isMatchCountTotalExact === false ? 'about ' : ''}${data.matchCountTotal.toLocaleString()} line${
+    const documentCountInfo = `${fragmentCount.toLocaleString()} document${
+      fragmentCount === 1 ? '' : 's'
+    }`
+    const lineResultInfo = hasLineCount
+      ? `Found ${data.isMatchCountTotalExact === false ? 'about ' : ''}${data.matchCountTotal.toLocaleString()} line${
           data.matchCountTotal === 1 ? '' : 's'
-        }. `
-      : ''
-    const resultRangeInfo =
+        } in ${documentCountInfo}`
+      : `Found ${documentCountInfo}`
+    const pageResultInfo =
       fragmentCount > 0
         ? `Showing results ${(offset + 1).toLocaleString()}-${(
             offset + fragmentCount
           ).toLocaleString()}`
-        : 'No results on this page'
+        : pageIndex > 0
+          ? 'No results on this page'
+          : `Found ${documentCountInfo}`
+    const resultInfo = isLineQuery ? lineResultInfo : pageResultInfo
     const showNumberSuggestion =
       fragmentCount === 0 && fragmentQuery.number?.match(/^[^.]+\s+[^.]+$/)
     const fixedNumber = fragmentQuery.number?.split(/\s+/).join('.')
@@ -105,8 +111,7 @@ export const SearchResult = withData<
       <>
         <Row>
           <Col className="justify-content-center fragment-result__match-info">
-            {isLineQuery && lineCountInfo && <>Found {lineCountInfo}</>}
-            {resultRangeInfo}
+            {resultInfo}
             {data.hasNextPage === true && '; more results are available'}
             {showNumberSuggestion && (
               <>
