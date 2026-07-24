@@ -1,11 +1,19 @@
+import { generatedHistoricalMapOverlays } from './historicalOverlays.generated'
 export interface HistoricalMapOverlay {
   readonly id: string
+  readonly siteId: string
+  readonly siteName: string
   readonly title: string
   readonly shortTitle?: string
   readonly dateLabel?: string
   readonly description?: string
   readonly cartographer?: string
   readonly institution?: string
+  readonly sourceFilename: string
+  readonly seriesId?: string
+  readonly seriesTitle?: string
+  readonly plateLabel?: string
+  readonly sourceChecksum?: string
   readonly attribution: string
   readonly sourceUrl?: string
   readonly type: 'raster-tiles'
@@ -30,25 +38,8 @@ export interface HistoricalMapOverlayValidationError {
 const URL_SAFE_ID_PATTERN = /^[a-z0-9][a-z0-9_-]*$/
 const URL_BASE = 'https://www.ebl.lmu.de'
 
-export const historicalMapOverlays: readonly HistoricalMapOverlay[] = [
-  {
-    id: 'assur-andrae-1938-beilage',
-    title: 'Andrae 1938, Aššur, Beilage',
-    shortTitle: 'Andrae 1938',
-    dateLabel: '1938',
-    description:
-      'Georeferenced historical plan of Aššur. The overlay is suitable for site-scale orientation, but historical source material and georeferencing may include spatial inaccuracies.',
-    attribution:
-      'Andrae 1938, Aššur, Beilage. Georeferenced dataset supplied to eBL. Publication rights pending confirmation.',
-    type: 'raster-tiles',
-    tiles: ['/historical-maps/assur-andrae-1938-beilage/tiles/{z}/{x}/{y}.png'],
-    bounds: [43.2507948, 35.4442168, 43.268817, 35.4629941],
-    minZoom: 12,
-    maxZoom: 17,
-    tileSize: 256,
-    defaultOpacity: 0.7,
-  },
-]
+export const historicalMapOverlays: readonly HistoricalMapOverlay[] =
+  generatedHistoricalMapOverlays
 
 function isNonEmptyString(value: unknown): value is string {
   return typeof value === 'string' && value.trim().length > 0
@@ -160,6 +151,95 @@ function validateZoomRange(
   }
 
   return errors
+}
+
+export interface ActiveHistoricalOverlay {
+  readonly id: string
+  readonly opacity: number
+  readonly visible: boolean
+}
+
+export interface HistoricalMapOverlaySeries {
+  readonly seriesId: string
+  readonly seriesTitle: string
+  readonly overlays: readonly HistoricalMapOverlay[]
+}
+
+export function historicalOverlayLabel(overlay: HistoricalMapOverlay): string {
+  if (overlay.seriesTitle && overlay.plateLabel) {
+    return `${overlay.seriesTitle} — ${overlay.plateLabel}`
+  }
+
+  return [overlay.shortTitle || overlay.title, overlay.dateLabel]
+    .filter(Boolean)
+    .join(' — ')
+}
+
+export function groupHistoricalMapOverlaySeries(
+  overlays: readonly HistoricalMapOverlay[],
+): readonly HistoricalMapOverlaySeries[] {
+  const series = new Map<string, HistoricalMapOverlay[]>()
+  const titles = new Map<string, string>()
+
+  for (const overlay of overlays) {
+    if (!overlay.seriesId || !overlay.seriesTitle) continue
+
+    titles.set(overlay.seriesId, overlay.seriesTitle)
+    const group = series.get(overlay.seriesId) ?? []
+    group.push(overlay)
+    series.set(overlay.seriesId, group)
+  }
+
+  return Array.from(series.entries()).map(([seriesId, overlaysInSeries]) => ({
+    seriesId,
+    seriesTitle: titles.get(seriesId) ?? seriesId,
+    overlays: overlaysInSeries,
+  }))
+}
+
+export function unionHistoricalOverlayBounds(
+  overlays: readonly HistoricalMapOverlay[],
+): readonly [number, number, number, number] | null {
+  const bounds = overlays
+    .map((overlay) => overlay.bounds)
+    .filter((value): value is readonly [number, number, number, number] =>
+      Boolean(value),
+    )
+
+  if (bounds.length === 0) return null
+
+  return [
+    Math.min(...bounds.map((bound) => bound[0])),
+    Math.min(...bounds.map((bound) => bound[1])),
+    Math.max(...bounds.map((bound) => bound[2])),
+    Math.max(...bounds.map((bound) => bound[3])),
+  ]
+}
+
+export interface HistoricalMapOverlayGroup {
+  readonly siteId: string
+  readonly siteName: string
+  readonly overlays: readonly HistoricalMapOverlay[]
+}
+
+export function groupHistoricalMapOverlaysBySite(
+  overlays: readonly HistoricalMapOverlay[],
+): readonly HistoricalMapOverlayGroup[] {
+  const groups = new Map<string, HistoricalMapOverlay[]>()
+  const siteNames = new Map<string, string>()
+
+  for (const overlay of overlays) {
+    siteNames.set(overlay.siteId, overlay.siteName)
+    const group = groups.get(overlay.siteId) ?? []
+    group.push(overlay)
+    groups.set(overlay.siteId, group)
+  }
+
+  return Array.from(groups.entries()).map(([siteId, siteOverlays]) => ({
+    siteId,
+    siteName: siteNames.get(siteId) ?? siteId,
+    overlays: siteOverlays,
+  }))
 }
 
 export function validateHistoricalMapOverlay(

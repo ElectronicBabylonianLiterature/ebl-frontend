@@ -10,6 +10,9 @@ export const SOURCE_ID = 'ebl-findspots'
 export const POLYGON_SOURCE_ID = 'ebl-findspot-polygons'
 export const HISTORICAL_RASTER_SOURCE_ID = 'ebl-historical-raster'
 export const HISTORICAL_RASTER_LAYER_ID = 'ebl-historical-raster-layer'
+export const EXCAVATION_AREAS_SOURCE_ID = 'ebl-excavation-areas'
+export const EXCAVATION_AREA_FILL_LAYER_ID = 'ebl-excavation-area-fill'
+export const EXCAVATION_AREA_OUTLINE_LAYER_ID = 'ebl-excavation-area-outline'
 export const CLUSTER_RADIUS = 50
 export const CLUSTER_MAX_ZOOM = 14
 
@@ -34,6 +37,14 @@ export function createFindspotPolygonsSource(
   }
 }
 
+export function historicalRasterSourceId(overlayId: string): string {
+  return `${HISTORICAL_RASTER_SOURCE_ID}-${overlayId}`
+}
+
+export function historicalRasterLayerId(overlayId: string): string {
+  return `${HISTORICAL_RASTER_LAYER_ID}-${overlayId}`
+}
+
 export function createHistoricalRasterSource(
   overlay: HistoricalMapOverlay,
 ): RasterSourceSpecification {
@@ -50,11 +61,14 @@ export function createHistoricalRasterSource(
   }
 }
 
-export function createHistoricalRasterLayer(opacity: number): AddLayerObject {
+export function createHistoricalRasterLayer(
+  overlay: HistoricalMapOverlay,
+  opacity: number,
+): AddLayerObject {
   return {
-    id: HISTORICAL_RASTER_LAYER_ID,
+    id: historicalRasterLayerId(overlay.id),
     type: 'raster',
-    source: HISTORICAL_RASTER_SOURCE_ID,
+    source: historicalRasterSourceId(overlay.id),
     paint: {
       'raster-opacity': opacity,
     },
@@ -85,6 +99,40 @@ export const polygonOutlineLayer: AddLayerObject = {
     'line-color': '#005b8f',
     'line-width': 2,
     'line-opacity': 0.8,
+  },
+}
+
+export function createExcavationAreasSource(): GeoJSONSourceSpecification {
+  return {
+    type: 'geojson',
+    data: '/map-data/findspots/all.geojson',
+  }
+}
+
+export const excavationAreaFillLayer: AddLayerObject = {
+  id: EXCAVATION_AREA_FILL_LAYER_ID,
+  type: 'fill',
+  source: EXCAVATION_AREAS_SOURCE_ID,
+  layout: {
+    visibility: 'visible',
+  },
+  paint: {
+    'fill-color': '#7a8f2a',
+    'fill-opacity': 0.16,
+  },
+}
+
+export const excavationAreaOutlineLayer: AddLayerObject = {
+  id: EXCAVATION_AREA_OUTLINE_LAYER_ID,
+  type: 'line',
+  source: EXCAVATION_AREAS_SOURCE_ID,
+  layout: {
+    visibility: 'visible',
+  },
+  paint: {
+    'line-color': '#5f711f',
+    'line-width': 1.5,
+    'line-opacity': 0.75,
   },
 }
 

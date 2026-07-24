@@ -11,12 +11,15 @@ function makeOverlay(
 ): HistoricalMapOverlay {
   return {
     id: 'babylon-map',
+    siteId: 'babylon',
+    siteName: 'Babylon',
     title: 'Babylon Map',
     shortTitle: 'Babylon',
     dateLabel: 'c. 600 BCE',
     description: 'A historical map of Babylon',
     cartographer: 'Unknown',
     institution: 'British Museum',
+    sourceFilename: 'babylon.tif',
     attribution: 'British Museum, 1900',
     sourceUrl: 'https://example.com/babylon',
     type: 'raster-tiles',
@@ -331,9 +334,9 @@ describe('production manifest', () => {
     ])
   })
 
-  it('declares zoom range 12–17', () => {
-    expect(assurOverlay?.minZoom).toBe(12)
-    expect(assurOverlay?.maxZoom).toBe(17)
+  it('declares a generated zoom range', () => {
+    expect(assurOverlay?.minZoom).toBe(13)
+    expect(assurOverlay?.maxZoom).toBe(18)
   })
 
   it('declares a valid default opacity', () => {
@@ -347,6 +350,34 @@ describe('production manifest', () => {
 
   it('declares tile size 256', () => {
     expect(assurOverlay?.tileSize).toBe(256)
+  })
+
+  it('groups Nippur RN2747 plates as a series with unambiguous labels', () => {
+    const rn2747 = historicalMapOverlays.filter(
+      (overlay) => overlay.seriesId === 'nippur-rn2747',
+    )
+
+    expect(rn2747.map((overlay) => overlay.plateLabel)).toEqual([
+      'Plate 5',
+      'Plate 52',
+      'Plate 54',
+      'Plate 59',
+      'Plate 61',
+      'Plate 74A',
+      'Plate 75A',
+      'Plate 76A',
+    ])
+    expect(rn2747.every((overlay) => overlay.seriesTitle === 'RN 2747')).toBe(
+      true,
+    )
+  })
+
+  it('does not include raw or temporary map paths in production overlays', () => {
+    for (const overlay of historicalMapOverlays) {
+      expect(JSON.stringify(overlay)).not.toContain('/workspaces/')
+      expect(JSON.stringify(overlay)).not.toContain('.map-processing')
+      expect(overlay.tiles[0]).not.toMatch(/\.(tif|tiff)$/i)
+    }
   })
 
   it('passes the full manifest validator', () => {

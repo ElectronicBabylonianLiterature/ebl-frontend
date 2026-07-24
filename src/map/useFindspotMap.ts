@@ -15,16 +15,22 @@ import {
   type FindspotPopupProperties,
 } from './createFindspotPopup'
 import {
-  HISTORICAL_RASTER_LAYER_ID,
-  HISTORICAL_RASTER_SOURCE_ID,
+  EXCAVATION_AREA_FILL_LAYER_ID,
+  EXCAVATION_AREA_OUTLINE_LAYER_ID,
+  EXCAVATION_AREAS_SOURCE_ID,
   POLYGON_SOURCE_ID,
   SOURCE_ID,
   clusterCountLayer,
   clusterLayer,
+  createExcavationAreasSource,
   createHistoricalRasterLayer,
   createHistoricalRasterSource,
   createFindspotPolygonsSource,
   createFindspotsSource,
+  excavationAreaFillLayer,
+  historicalRasterLayerId,
+  historicalRasterSourceId,
+  excavationAreaOutlineLayer,
   polygonFillLayer,
   polygonOutlineLayer,
   unclusteredLayer,
@@ -41,6 +47,7 @@ const INITIAL_ZOOM = 5
 const INTERACTIVE_LAYER_IDS = [
   clusterLayer.id,
   unclusteredLayer.id,
+  excavationAreaFillLayer.id,
   polygonFillLayer.id,
 ]
 
@@ -70,30 +77,41 @@ function clampRasterOpacity(opacity: number): number {
   return Math.min(Math.max(opacity, 0), 1)
 }
 
-function removeHistoricalOverlay(map: MapLibreMap): void {
-  if (map.getLayer(HISTORICAL_RASTER_LAYER_ID)) {
-    map.removeLayer(HISTORICAL_RASTER_LAYER_ID)
+interface ActiveHistoricalMapOverlay {
+  readonly overlay: HistoricalMapOverlay
+  readonly opacity: number
+  readonly visible: boolean
+}
+
+function removeHistoricalOverlay(map: MapLibreMap, overlayId: string): void {
+  const layerId = historicalRasterLayerId(overlayId)
+  const sourceId = historicalRasterSourceId(overlayId)
+
+  if (map.getLayer(layerId)) {
+    map.removeLayer(layerId)
   }
 
-  if (map.getSource(HISTORICAL_RASTER_SOURCE_ID)) {
-    map.removeSource(HISTORICAL_RASTER_SOURCE_ID)
+  if (map.getSource(sourceId)) {
+    map.removeSource(sourceId)
   }
 }
 
 function addHistoricalOverlay(
   map: MapLibreMap,
-  overlay: HistoricalMapOverlay,
-  opacity: number,
+  activeOverlay: ActiveHistoricalMapOverlay,
 ): void {
-  if (!map.getSource(HISTORICAL_RASTER_SOURCE_ID)) {
-    map.addSource(
-      HISTORICAL_RASTER_SOURCE_ID,
-      createHistoricalRasterSource(overlay),
-    )
+  const sourceId = historicalRasterSourceId(activeOverlay.overlay.id)
+  const layerId = historicalRasterLayerId(activeOverlay.overlay.id)
+
+  if (!map.getSource(sourceId)) {
+    map.addSource(sourceId, createHistoricalRasterSource(activeOverlay.overlay))
   }
 
-  if (!map.getLayer(HISTORICAL_RASTER_LAYER_ID)) {
-    const layer = createHistoricalRasterLayer(clampRasterOpacity(opacity))
+  if (!map.getLayer(layerId)) {
+    const layer = createHistoricalRasterLayer(
+      activeOverlay.overlay,
+      clampRasterOpacity(activeOverlay.opacity),
+    )
     const beforeLayerId = map.getLayer(polygonFillLayer.id)
       ? polygonFillLayer.id
       : undefined
@@ -106,38 +124,115 @@ function addHistoricalOverlay(
   }
 }
 
-function syncHistoricalOverlay(
+function syncHistoricalOverlays(
   map: MapLibreMap,
-  overlay: HistoricalMapOverlay | null,
-  opacity: number,
-  activeOverlayIdRef: MutableRefObject<string | null>,
+  activeOverlays: readonly ActiveHistoricalMapOverlay[],
+  activeOverlayIdsRef: MutableRefObject<readonly string[]>,
 ): void {
-  if (!overlay) {
-    removeHistoricalOverlay(map)
-    activeOverlayIdRef.current = null
-    return
+  const visibleOverlays = activeOverlays.filter((entry) => entry.visible)
+  const nextIds = visibleOverlays.map((entry) => entry.overlay.id)
+  const nextIdSet = new Set(nextIds)
+
+  for (const previousId of activeOverlayIdsRef.current) {
+    if (!nextIdSet.has(previousId)) {
+      removeHistoricalOverlay(map, previousId)
+    }
   }
 
-  if (activeOverlayIdRef.current !== overlay.id) {
-    removeHistoricalOverlay(map)
-    addHistoricalOverlay(map, overlay, opacity)
-    activeOverlayIdRef.current = overlay.id
-    return
+  for (const activeOverlay of visibleOverlays) {
+    addHistoricalOverlay(map, activeOverlay)
+    const layerId = historicalRasterLayerId(activeOverlay.overlay.id)
+    if (map.getLayer(layerId)) {
+      map.setPaintProperty(
+        layerId,
+        'raster-opacity',
+        clampRasterOpacity(activeOverlay.opacity),
+      )
+    }
   }
 
-  if (
-    !map.getSource(HISTORICAL_RASTER_SOURCE_ID) ||
-    !map.getLayer(HISTORICAL_RASTER_LAYER_ID)
-  ) {
-    addHistoricalOverlay(map, overlay, opacity)
+  activeOverlayIdsRef.current = nextIds
+}
+
+function createExcavationAreaPopup(
+  feature: MapGeoJSONFeature,
+  browseHistoricalMapsForSite?: (siteName: string) => void,
+): HTMLElement | null {
+  const properties = feature.properties
+  const siteName = properties?.siteName
+  const name = properties?.name
+  const sourceId = properties?.sourceId
+
+  if (typeof siteName !== 'string' || typeof name !== 'string') {
+    return null
   }
 
-  if (map.getLayer(HISTORICAL_RASTER_LAYER_ID)) {
-    map.setPaintProperty(
-      HISTORICAL_RASTER_LAYER_ID,
-      'raster-opacity',
-      clampRasterOpacity(opacity),
+  const container = document.createElement('div')
+  container.className = 'findspot-popup'
+
+  const title = document.createElement('strong')
+  title.textContent = name
+  container.append(title)
+
+  const site = document.createElement('span')
+  site.textContent = siteName
+  container.append(site)
+
+  const type = document.createElement('span')
+  type.textContent = 'Excavation area'
+  container.append(type)
+
+  if (typeof sourceId === 'number' || typeof sourceId === 'string') {
+    const source = document.createElement('span')
+    source.textContent = `Source ID: ${sourceId}`
+    container.append(source)
+  }
+
+  if (browseHistoricalMapsForSite) {
+    const button = document.createElement('button')
+    button.type = 'button'
+    button.className = 'btn btn-outline-secondary btn-sm'
+    button.textContent = `Browse historical maps for ${siteName}`
+    button.addEventListener('click', () =>
+      browseHistoricalMapsForSite(siteName),
     )
+    container.append(button)
+  }
+
+  return container
+}
+
+function openExcavationAreaPopup(
+  map: MapLibreMap,
+  feature: MapGeoJSONFeature,
+  coordinates: [number, number],
+  browseHistoricalMapsForSite?: (siteName: string) => void,
+): void {
+  const content = createExcavationAreaPopup(
+    feature,
+    browseHistoricalMapsForSite,
+  )
+  if (!content) return
+
+  new maplibregl.Popup()
+    .setLngLat(coordinates)
+    .setDOMContent(content)
+    .addTo(map)
+}
+
+function setExcavationAreaVisibility(
+  map: MapLibreMap,
+  isVisible: boolean,
+): void {
+  const visibility = isVisible ? 'visible' : 'none'
+
+  for (const layerId of [
+    EXCAVATION_AREA_FILL_LAYER_ID,
+    EXCAVATION_AREA_OUTLINE_LAYER_ID,
+  ]) {
+    if (map.getLayer(layerId)) {
+      map.setLayoutProperty(layerId, 'visibility', visibility)
+    }
   }
 }
 
@@ -155,6 +250,7 @@ function initializeFindspotSources(
   map: MapLibreMap,
   provenances: readonly ProvenanceRecord[],
   showBoundaries: boolean,
+  showExcavationAreas: boolean,
 ): void {
   const pointGeoJson = provenanceToGeoJson(provenances)
   const polygonGeoJson = provenancesToPolygonGeoJson(provenances)
@@ -163,6 +259,11 @@ function initializeFindspotSources(
   map.addLayer(polygonFillLayer)
   map.addLayer(polygonOutlineLayer)
   setBoundaryVisibility(map, showBoundaries)
+
+  map.addSource(EXCAVATION_AREAS_SOURCE_ID, createExcavationAreasSource())
+  map.addLayer(excavationAreaFillLayer)
+  map.addLayer(excavationAreaOutlineLayer)
+  setExcavationAreaVisibility(map, showExcavationAreas)
 
   map.addSource(SOURCE_ID, createFindspotsSource(pointGeoJson))
   map.addLayer(clusterLayer)
@@ -256,7 +357,11 @@ function openFindspotPopup(
     .addTo(map)
 }
 
-function handleMapClick(map: MapLibreMap, event: MapMouseEvent): void {
+function handleMapClick(
+  map: MapLibreMap,
+  event: MapMouseEvent,
+  browseHistoricalMapsForSite?: (siteName: string) => void,
+): void {
   const [cluster] = map.queryRenderedFeatures(event.point, {
     layers: [clusterLayer.id],
   })
@@ -275,6 +380,19 @@ function handleMapClick(map: MapLibreMap, event: MapMouseEvent): void {
     if (popupProperties && coordinates) {
       openFindspotPopup(map, popupProperties, coordinates)
     }
+    return
+  }
+
+  const [excavationArea] = map.queryRenderedFeatures(event.point, {
+    layers: [excavationAreaFillLayer.id],
+  })
+  if (excavationArea) {
+    openExcavationAreaPopup(
+      map,
+      excavationArea,
+      [event.lngLat.lng, event.lngLat.lat],
+      browseHistoricalMapsForSite,
+    )
     return
   }
 
@@ -304,19 +422,24 @@ export default function useFindspotMap(
   containerRef: RefObject<HTMLDivElement>,
   provenances: readonly ProvenanceRecord[] | null,
   showBoundaries: boolean,
-  historicalOverlay: HistoricalMapOverlay | null,
-  historicalOverlayOpacity: number,
+  activeHistoricalOverlays: readonly ActiveHistoricalMapOverlay[],
+  showExcavationAreas: boolean,
+  browseHistoricalMapsForSite?: (siteName: string) => void,
 ): MutableRefObject<MapLibreMap | null> {
   const mapRef = useRef<MapLibreMap | null>(null)
   const latestProvenancesRef = useRef(provenances)
   const latestShowBoundariesRef = useRef(showBoundaries)
-  const latestHistoricalOverlayRef = useRef(historicalOverlay)
-  const latestHistoricalOverlayOpacityRef = useRef(historicalOverlayOpacity)
-  const activeHistoricalOverlayIdRef = useRef<string | null>(null)
+  const latestHistoricalOverlaysRef = useRef(activeHistoricalOverlays)
+  const latestShowExcavationAreasRef = useRef(showExcavationAreas)
+  const latestBrowseHistoricalMapsForSiteRef = useRef(
+    browseHistoricalMapsForSite,
+  )
+  const activeHistoricalOverlayIdsRef = useRef<readonly string[]>([])
   latestProvenancesRef.current = provenances
   latestShowBoundariesRef.current = showBoundaries
-  latestHistoricalOverlayRef.current = historicalOverlay
-  latestHistoricalOverlayOpacityRef.current = historicalOverlayOpacity
+  latestHistoricalOverlaysRef.current = activeHistoricalOverlays
+  latestShowExcavationAreasRef.current = showExcavationAreas
+  latestBrowseHistoricalMapsForSiteRef.current = browseHistoricalMapsForSite
   const isReady = provenances !== null
 
   useEffect(() => {
@@ -331,19 +454,21 @@ export default function useFindspotMap(
     mapRef.current = map
     map.addControl(new maplibregl.NavigationControl(), 'top-right')
     map.on('load', () => {
-      syncHistoricalOverlay(
+      syncHistoricalOverlays(
         map,
-        latestHistoricalOverlayRef.current,
-        latestHistoricalOverlayOpacityRef.current,
-        activeHistoricalOverlayIdRef,
+        latestHistoricalOverlaysRef.current,
+        activeHistoricalOverlayIdsRef,
       )
       initializeFindspotSources(
         map,
         latestProvenancesRef.current ?? [],
         latestShowBoundariesRef.current,
+        latestShowExcavationAreasRef.current,
       )
     })
-    map.on('click', (event) => handleMapClick(map, event))
+    map.on('click', (event) =>
+      handleMapClick(map, event, latestBrowseHistoricalMapsForSiteRef.current),
+    )
     map.on('mousemove', (event) => setPointerCursor(map, event))
 
     return () => {
@@ -363,13 +488,19 @@ export default function useFindspotMap(
     const map = mapRef.current
     if (!map || !map.isStyleLoaded()) return
 
-    syncHistoricalOverlay(
+    setExcavationAreaVisibility(map, showExcavationAreas)
+  }, [showExcavationAreas])
+
+  useEffect(() => {
+    const map = mapRef.current
+    if (!map || !map.isStyleLoaded()) return
+
+    syncHistoricalOverlays(
       map,
-      historicalOverlay,
-      historicalOverlayOpacity,
-      activeHistoricalOverlayIdRef,
+      activeHistoricalOverlays,
+      activeHistoricalOverlayIdsRef,
     )
-  }, [historicalOverlay, historicalOverlayOpacity])
+  }, [activeHistoricalOverlays])
 
   return mapRef
 }

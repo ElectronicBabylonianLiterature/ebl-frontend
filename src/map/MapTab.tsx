@@ -1,13 +1,18 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react'
-import { Alert, Button, Form } from 'react-bootstrap'
+import { Alert, Form } from 'react-bootstrap'
 import 'maplibre-gl/dist/maplibre-gl.css'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import { ProvenanceRecord } from 'fragmentarium/domain/Provenance'
 import Spinner from 'common/ui/Spinner'
 import {
-  isSafeOverlayUrl,
+  type ActiveHistoricalOverlay,
+  type HistoricalMapOverlay,
+  groupHistoricalMapOverlaySeries,
+  groupHistoricalMapOverlaysBySite,
+  unionHistoricalOverlayBounds,
   validatedHistoricalMapOverlays,
 } from './historicalOverlays'
+import MapControls from './MapControls'
 import useFindspotMap from './useFindspotMap'
 import useMapSourceData from './useMapSourceData'
 import './MapTab.sass'
@@ -30,14 +35,35 @@ function filterProvenances(
     : provenances
 }
 
-function getHistoricalOverlayLabel(overlay: {
-  readonly title: string
-  readonly shortTitle?: string
-  readonly dateLabel?: string
-}): string {
-  return [overlay.shortTitle || overlay.title, overlay.dateLabel]
-    .filter(Boolean)
-    .join(' - ')
+function activeOverlayDetails(
+  activeOverlays: readonly ActiveHistoricalOverlay[],
+  overlayById: ReadonlyMap<string, HistoricalMapOverlay>,
+): readonly {
+  readonly overlay: HistoricalMapOverlay
+  readonly opacity: number
+  readonly visible: boolean
+}[] {
+  return activeOverlays.flatMap((activeOverlay) => {
+    const overlay = overlayById.get(activeOverlay.id)
+    return overlay
+      ? [
+          {
+            overlay,
+            opacity: activeOverlay.opacity,
+            visible: activeOverlay.visible,
+          },
+        ]
+      : []
+  })
+}
+
+function unionMaxZoom(
+  overlays: readonly HistoricalMapOverlay[],
+): number | undefined {
+  const maxZooms = overlays
+    .map((overlay) => overlay.maxZoom)
+    .filter((zoom): zoom is number => typeof zoom === 'number')
+  return maxZooms.length > 0 ? Math.min(...maxZooms) : undefined
 }
 
 export default function MapTab({ fragmentService }: Props): JSX.Element {
@@ -48,57 +74,165 @@ export default function MapTab({ fragmentService }: Props): JSX.Element {
   const [error, setError] = useState<string | null>(null)
   const [filter, setFilter] = useState('')
   const [showBoundaries, setShowBoundaries] = useState(true)
-  const [selectedHistoricalOverlayId, setSelectedHistoricalOverlayId] =
-    useState('')
-  const [historicalOverlayOpacity, setHistoricalOverlayOpacity] = useState(1)
+  const [showExcavationAreas, setShowExcavationAreas] = useState(false)
+  const [isLayerPanelOpen, setIsLayerPanelOpen] = useState(false)
+  const [historicalMapFilter, setHistoricalMapFilter] = useState('')
+  const [expandedHistoricalSiteIds, setExpandedHistoricalSiteIds] = useState(
+    () => new Set<string>(),
+  )
+  const [activeHistoricalOverlays, setActiveHistoricalOverlays] = useState<
+    readonly ActiveHistoricalOverlay[]
+  >([])
 
   const filteredProvenances = useMemo(
     () => filterProvenances(provenances, filter),
     [provenances, filter],
   )
-  const selectedHistoricalOverlay = useMemo(
+  const overlayById = useMemo(
     () =>
-      validatedHistoricalMapOverlays.find(
-        (overlay) => overlay.id === selectedHistoricalOverlayId,
-      ) ?? null,
-    [selectedHistoricalOverlayId],
+      new Map(
+        validatedHistoricalMapOverlays.map((overlay) => [overlay.id, overlay]),
+      ),
+    [],
   )
+  const activeOverlayEntries = useMemo(
+    () => activeOverlayDetails(activeHistoricalOverlays, overlayById),
+    [activeHistoricalOverlays, overlayById],
+  )
+  const activeOverlayIds = useMemo(
+    () => new Set(activeHistoricalOverlays.map((overlay) => overlay.id)),
+    [activeHistoricalOverlays],
+  )
+  const historicalOverlayGroups = useMemo(
+    () => groupHistoricalMapOverlaysBySite(validatedHistoricalMapOverlays),
+    [],
+  )
+  const historicalOverlaySeries = useMemo(
+    () => groupHistoricalMapOverlaySeries(validatedHistoricalMapOverlays),
+    [],
+  )
+  const browseHistoricalMapsForSite = (siteName: string): void => {
+    const siteGroup = historicalOverlayGroups.find(
+      (group) => group.siteName.toLowerCase() === siteName.toLowerCase(),
+    )
+
+    setIsLayerPanelOpen(true)
+    setHistoricalMapFilter(siteName)
+
+    if (siteGroup) {
+      setExpandedHistoricalSiteIds((current) => {
+        const next = new Set(current)
+        next.add(siteGroup.siteId)
+        return next
+      })
+    }
+  }
+
   const mapRef = useFindspotMap(
     mapContainer,
     filteredProvenances,
     showBoundaries,
-    selectedHistoricalOverlay,
-    historicalOverlayOpacity,
+    activeOverlayEntries,
+    showExcavationAreas,
+    browseHistoricalMapsForSite,
   )
   useMapSourceData(mapRef, filteredProvenances)
 
-  function handleHistoricalOverlayChange(
-    event: React.ChangeEvent<HTMLSelectElement>,
+  function setOverlayActive(
+    overlay: HistoricalMapOverlay,
+    isActive: boolean,
   ): void {
-    const overlayId = event.target.value
-    const overlay =
-      validatedHistoricalMapOverlays.find(
-        (historicalOverlay) => historicalOverlay.id === overlayId,
-      ) ?? null
-
-    setSelectedHistoricalOverlayId(overlay?.id ?? '')
-    setHistoricalOverlayOpacity(overlay?.defaultOpacity ?? 1)
+    setActiveHistoricalOverlays((current) => {
+      const withoutOverlay = current.filter((entry) => entry.id !== overlay.id)
+      return isActive
+        ? [
+            ...withoutOverlay,
+            {
+              id: overlay.id,
+              opacity: overlay.defaultOpacity,
+              visible: true,
+            },
+          ]
+        : withoutOverlay
+    })
   }
 
-  function clearHistoricalOverlay(): void {
-    setSelectedHistoricalOverlayId('')
-    setHistoricalOverlayOpacity(1)
+  function setOverlayOpacity(overlayId: string, opacity: number): void {
+    setActiveHistoricalOverlays((current) =>
+      current.map((entry) =>
+        entry.id === overlayId ? { ...entry, opacity } : entry,
+      ),
+    )
   }
 
-  const historicalOverlayMetadata = selectedHistoricalOverlay
-    ? [
-        selectedHistoricalOverlay.dateLabel,
-        selectedHistoricalOverlay.cartographer,
-        selectedHistoricalOverlay.institution,
+  function clearHistoricalOverlays(): void {
+    setActiveHistoricalOverlays([])
+  }
+
+  function showSeries(seriesId: string): void {
+    const series = historicalOverlaySeries.find(
+      (entry) => entry.seriesId === seriesId,
+    )
+    if (!series) return
+
+    setActiveHistoricalOverlays((current) => {
+      const seriesIds = new Set(series.overlays.map((overlay) => overlay.id))
+      const withoutSeries = current.filter((entry) => !seriesIds.has(entry.id))
+      return [
+        ...withoutSeries,
+        ...series.overlays.map((overlay) => ({
+          id: overlay.id,
+          opacity: overlay.defaultOpacity,
+          visible: true,
+        })),
       ]
-        .filter(Boolean)
-        .join(' - ')
-    : ''
+    })
+  }
+
+  function hideSeries(seriesId: string): void {
+    const series = historicalOverlaySeries.find(
+      (entry) => entry.seriesId === seriesId,
+    )
+    if (!series) return
+
+    const seriesIds = new Set(series.overlays.map((overlay) => overlay.id))
+    setActiveHistoricalOverlays((current) =>
+      current.filter((entry) => !seriesIds.has(entry.id)),
+    )
+  }
+
+  function fitToBounds(
+    bounds: readonly [number, number, number, number] | null,
+    maxZoom?: number,
+  ): void {
+    if (!bounds) return
+
+    mapRef.current?.fitBounds([...bounds], {
+      padding: 48,
+      ...(maxZoom !== undefined ? { maxZoom } : {}),
+    })
+  }
+
+  function zoomToOverlay(overlay: HistoricalMapOverlay): void {
+    fitToBounds(overlay.bounds ?? null, overlay.maxZoom)
+  }
+
+  function zoomToActiveOverlays(): void {
+    const overlays = activeOverlayEntries.map((entry) => entry.overlay)
+    fitToBounds(unionHistoricalOverlayBounds(overlays), unionMaxZoom(overlays))
+  }
+
+  function zoomToSeries(seriesId: string): void {
+    const series = historicalOverlaySeries.find(
+      (entry) => entry.seriesId === seriesId,
+    )
+    if (!series) return
+
+    fitToBounds(
+      unionHistoricalOverlayBounds(series.overlays),
+      unionMaxZoom(series.overlays),
+    )
+  }
 
   useEffect(() => {
     fragmentService
@@ -119,7 +253,7 @@ export default function MapTab({ fragmentService }: Props): JSX.Element {
     <div className="map-tab">
       <div className="map-controls">
         <section
-          className="map-controls__group map-controls__search"
+          className="map-controls__search"
           aria-labelledby="map-controls-search-heading"
         >
           <h2 id="map-controls-search-heading" className="map-controls__title">
@@ -138,113 +272,41 @@ export default function MapTab({ fragmentService }: Props): JSX.Element {
             />
           </Form.Group>
         </section>
-        <section
-          className="map-controls__group map-controls__display"
-          aria-labelledby="map-controls-display-heading"
-        >
-          <h2 id="map-controls-display-heading" className="map-controls__title">
-            Map display
-          </h2>
-          <div className="map-controls__display-row">
-            <Form.Group
-              className="map-controls__historical"
-              controlId="historical-map-overlay"
-            >
-              <Form.Label>Historical map</Form.Label>
-              <Form.Select
-                value={selectedHistoricalOverlayId}
-                onChange={handleHistoricalOverlayChange}
-                disabled={validatedHistoricalMapOverlays.length === 0}
-                aria-label="Select historical map overlay"
-              >
-                <option value="">
-                  {validatedHistoricalMapOverlays.length > 0
-                    ? 'No historical map'
-                    : 'No historical maps available'}
-                </option>
-                {validatedHistoricalMapOverlays.map((overlay) => (
-                  <option key={overlay.id} value={overlay.id}>
-                    {getHistoricalOverlayLabel(overlay)}
-                  </option>
-                ))}
-              </Form.Select>
-            </Form.Group>
-            <Form.Group
-              className="map-controls__toggle"
-              controlId="show-site-boundaries"
-            >
-              <Form.Check
-                type="checkbox"
-                label="Show site boundaries"
-                checked={showBoundaries}
-                onChange={(event) => setShowBoundaries(event.target.checked)}
-              />
-            </Form.Group>
-          </div>
-          {selectedHistoricalOverlay ? (
-            <>
-              <div className="map-controls__overlay-controls">
-                <Form.Group
-                  className="map-controls__opacity"
-                  controlId="historical-map-opacity"
-                >
-                  <div className="map-controls__opacity-header">
-                    <Form.Label>Opacity</Form.Label>
-                    <span>{Math.round(historicalOverlayOpacity * 100)}%</span>
-                  </div>
-                  <Form.Range
-                    min={0}
-                    max={1}
-                    step={0.05}
-                    value={historicalOverlayOpacity}
-                    onChange={(event) =>
-                      setHistoricalOverlayOpacity(Number(event.target.value))
-                    }
-                    aria-label="Historical map opacity"
-                  />
-                </Form.Group>
-                <Button
-                  type="button"
-                  variant="outline-secondary"
-                  size="sm"
-                  className="map-controls__clear-overlay"
-                  onClick={clearHistoricalOverlay}
-                >
-                  Remove
-                </Button>
-              </div>
-              <aside className="map-controls__metadata" aria-live="polite">
-                <strong>{selectedHistoricalOverlay.title}</strong>
-                {historicalOverlayMetadata ? (
-                  <span>{historicalOverlayMetadata}</span>
-                ) : null}
-                {selectedHistoricalOverlay.description ? (
-                  <span>{selectedHistoricalOverlay.description}</span>
-                ) : null}
-                <span>{selectedHistoricalOverlay.attribution}</span>
-                {selectedHistoricalOverlay.sourceUrl &&
-                isSafeOverlayUrl(selectedHistoricalOverlay.sourceUrl) ? (
-                  <a
-                    href={selectedHistoricalOverlay.sourceUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    Source
-                  </a>
-                ) : null}
-              </aside>
-            </>
-          ) : null}
-        </section>
       </div>
       {filteredProvenances && filteredProvenances.length === 0 ? (
         <Alert variant="info">No findspots match &ldquo;{filter}&rdquo;.</Alert>
       ) : null}
-      <div
-        ref={mapContainer}
-        className="map-tab__container"
-        aria-label="Findspot map"
-      />
+      <div className="map-tab__map-frame">
+        <MapControls
+          activeOverlayEntries={activeOverlayEntries}
+          activeOverlayIds={activeOverlayIds}
+          clearHistoricalOverlays={clearHistoricalOverlays}
+          expandedSiteIds={expandedHistoricalSiteIds}
+          hideSeries={hideSeries}
+          historicalMapFilter={historicalMapFilter}
+          historicalOverlayGroups={historicalOverlayGroups}
+          historicalOverlaySeries={historicalOverlaySeries}
+          isLayerPanelOpen={isLayerPanelOpen}
+          setExpandedSiteIds={setExpandedHistoricalSiteIds}
+          setHistoricalMapFilter={setHistoricalMapFilter}
+          setIsLayerPanelOpen={setIsLayerPanelOpen}
+          setOverlayActive={setOverlayActive}
+          setOverlayOpacity={setOverlayOpacity}
+          setShowBoundaries={setShowBoundaries}
+          setShowExcavationAreas={setShowExcavationAreas}
+          showBoundaries={showBoundaries}
+          showExcavationAreas={showExcavationAreas}
+          showSeries={showSeries}
+          zoomToActiveOverlays={zoomToActiveOverlays}
+          zoomToOverlay={zoomToOverlay}
+          zoomToSeries={zoomToSeries}
+        />
+        <div
+          ref={mapContainer}
+          className="map-tab__container"
+          aria-label="Findspot map"
+        />
+      </div>
     </div>
   )
 }

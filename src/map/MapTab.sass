@@ -1,23 +1,25 @@
 @import src/design-tokens
 
 .map-tab
+  &__map-frame
+    position: relative
+    min-width: 0
+
   &__container
     width: 100%
-    height: 500px
+    height: min(72vh, 680px)
+    min-height: 460px
     border-radius: 0.25rem
     border: 1px solid $ebl-color-border-default
 
 .map-controls
-  display: grid
-  grid-template-columns: minmax(280px, 1.35fr) minmax(320px, 1fr)
-  gap: 0.75rem 1rem
-  margin-bottom: 1rem
+  margin-bottom: 0.75rem
   padding: 0.75rem
   border: 1px solid $ebl-color-border-default
   border-radius: 0.25rem
   background: $ebl-color-surface-primary
 
-  &__group
+  &__search
     min-width: 0
 
   &__title
@@ -28,40 +30,141 @@
     line-height: 1.25
 
   &__search-field,
-  &__historical,
+  &__historical-filter,
   &__toggle,
   &__opacity
     margin-bottom: 0
 
   &__search-field,
-  &__historical,
+  &__historical-filter,
   &__opacity
     label
       margin-bottom: 0.25rem
       color: $ebl-color-text-secondary
       font-size: 0.875rem
 
-  &__display-row,
-  &__overlay-controls
+.map-tab__map-frame > .map-controls
+  position: absolute
+  z-index: 2
+  top: 0.75rem
+  left: 0.75rem
+  width: min(25rem, calc(100% - 1.5rem))
+  max-height: calc(100% - 1.5rem)
+  margin-bottom: 0
+  overflow: hidden
+
+.map-controls
+  &__summary,
+  &__series-header,
+  &__active-header
+    display: flex
+    align-items: flex-start
+    justify-content: space-between
+    gap: 0.5rem
+
+  &__summary
+    p
+      margin-bottom: 0
+
+  &__status,
+  &__count
+    color: $ebl-color-text-secondary
+    font-size: 0.875rem
+    line-height: 1.35
+
+  &__panel
+    display: grid
+    gap: 0.75rem
+    margin-top: 0.75rem
+    min-width: 0
+
+  &__scroll
+    display: grid
+    gap: 0.4rem
+    max-height: min(18rem, 42vh)
+    overflow-y: auto
+    overflow-x: hidden
+    padding-right: 0.25rem
+
+  &__site-group,
+  &__series,
+  &__active-row
+    min-width: 0
+
+  &__site-button
+    display: grid
+    grid-template-columns: auto minmax(0, 1fr) auto
+    align-items: center
+    gap: 0.35rem
+    width: 100%
+    min-height: 2.25rem
+    padding: 0.25rem 0
+    border: 0
+    background: transparent
+    color: $ebl-color-text-primary
+    text-align: left
+
+    strong
+      overflow-wrap: anywhere
+
+  &__site-content
+    display: grid
+    gap: 0.35rem
+    padding: 0.15rem 0 0.35rem 1.1rem
+
+  &__series
+    display: grid
+    gap: 0.35rem
+
+  &__series-actions,
+  &__active-actions,
+  &__footer-actions,
+  &__display-row
     display: flex
     flex-wrap: wrap
-    align-items: flex-end
-    gap: 0.65rem 0.85rem
+    gap: 0.4rem 0.5rem
 
-  &__historical
-    flex: 1 1 240px
-    min-width: 220px
+  &__series-actions
+    margin-bottom: 0.15rem
 
-  &__toggle
-    flex: 0 0 auto
-    padding-bottom: 0.35rem
+  &__active-overlays
+    display: grid
+    gap: 0.65rem
+    padding-top: 0.65rem
+    border-top: 1px solid $ebl-color-border-default
 
-  &__overlay-controls
-    margin-top: 0.65rem
+    h3
+      margin: 0
+      color: $ebl-color-text-primary
+      font-size: 0.9rem
+      font-weight: 600
+      line-height: 1.25
+
+  &__active-row
+    display: grid
+    grid-template-columns: minmax(0, 1fr)
+    gap: 0.45rem
+    padding-top: 0.6rem
+    border-top: 1px solid $ebl-color-border-default
+
+  &__active-title
+    display: flex
+    flex-direction: column
+    gap: 0.15rem
+    color: $ebl-color-text-secondary
+    font-size: 0.875rem
+    line-height: 1.35
+
+    strong
+      color: $ebl-color-text-primary
+      overflow-wrap: anywhere
+
+    a
+      color: $ebl-color-brand-primary
+      font-weight: 500
 
   &__opacity
-    flex: 1 1 180px
-    min-width: 180px
+    min-width: 0
 
     input
       display: block
@@ -76,51 +179,61 @@
     label
       margin-bottom: 0.25rem
 
-  &__clear-overlay
-    flex: 0 0 auto
-    margin-bottom: 0.05rem
-
-  &__metadata
-    display: flex
-    flex-wrap: wrap
-    align-items: center
-    gap: 0.2rem 0.65rem
-    margin-top: 0.55rem
-    color: $ebl-color-text-secondary
-    font-size: 0.875rem
-    line-height: 1.35
-
-    strong
-      color: $ebl-color-text-primary
-
-    a
-      color: $ebl-color-brand-primary
-      font-weight: 500
-
-@media (max-width: $ebl-breakpoint-lg-max)
-  .map-controls
-    grid-template-columns: 1fr
-
-@media (max-width: $ebl-breakpoint-sm-max)
-  .map-controls
-    padding: 0.65rem
-
-    &__display-row,
-    &__overlay-controls
-      align-items: stretch
-
-    &__historical,
-    &__opacity
-      flex-basis: 100%
-      min-width: 0
-
-    &__toggle
-      padding-bottom: 0
-
-    &__clear-overlay
-      align-self: flex-start
+  &__footer-actions
+    padding-top: 0.65rem
+    border-top: 1px solid $ebl-color-border-default
 
 .maplibregl-popup-content
   a
     color: $ebl-color-brand-primary
     font-weight: 500
+
+  .findspot-popup
+    display: grid
+    gap: 0.25rem
+
+@media (max-width: $ebl-breakpoint-md-max)
+  .map-tab
+    &__container
+      height: 62vh
+      min-height: 420px
+
+  .map-tab__map-frame > .map-controls
+    position: static
+    width: 100%
+    max-height: none
+    margin-bottom: 0.75rem
+
+  .map-controls
+    &__panel
+      max-height: 55vh
+      overflow-y: auto
+      overflow-x: hidden
+
+    &__scroll
+      max-height: none
+      overflow: visible
+
+@media (max-width: $ebl-breakpoint-sm-max)
+  .map-tab
+    &__container
+      height: 58vh
+      min-height: 360px
+
+  .map-controls
+    padding: 0.65rem
+
+    &__summary,
+    &__active-header
+      align-items: stretch
+
+    &__summary
+      flex-direction: column
+
+    &__display-row,
+    &__footer-actions,
+    &__active-actions
+      align-items: stretch
+
+    &__site-content
+      padding-left: 0.65rem

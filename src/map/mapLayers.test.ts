@@ -5,12 +5,16 @@ import {
   POLYGON_SOURCE_ID,
   HISTORICAL_RASTER_SOURCE_ID,
   HISTORICAL_RASTER_LAYER_ID,
+  EXCAVATION_AREAS_SOURCE_ID,
   CLUSTER_RADIUS,
   CLUSTER_MAX_ZOOM,
   createFindspotPolygonsSource,
   createFindspotsSource,
   createHistoricalRasterSource,
   createHistoricalRasterLayer,
+  historicalRasterLayerId,
+  historicalRasterSourceId,
+  createExcavationAreasSource,
   clusterLayer,
   clusterCountLayer,
   polygonFillLayer,
@@ -55,6 +59,16 @@ describe('mapLayers', () => {
 
       expect(source.type).toBe('geojson')
       expect(source.data).toBe(data)
+      expect(source.cluster).toBeUndefined()
+    })
+  })
+
+  describe('createExcavationAreasSource', () => {
+    it('points at the combined static excavation-area GeoJSON', () => {
+      const source = createExcavationAreasSource()
+
+      expect(source.type).toBe('geojson')
+      expect(source.data).toBe('/map-data/findspots/all.geojson')
       expect(source.cluster).toBeUndefined()
     })
   })
@@ -134,6 +148,7 @@ describe('mapLayers', () => {
     it('defines unique source IDs', () => {
       expect(SOURCE_ID).toBe('ebl-findspots')
       expect(POLYGON_SOURCE_ID).toBe('ebl-findspot-polygons')
+      expect(EXCAVATION_AREAS_SOURCE_ID).toBe('ebl-excavation-areas')
     })
 
     it('defines sensible clustering defaults', () => {
@@ -165,7 +180,10 @@ describe('mapLayers', () => {
     ): HistoricalMapOverlay {
       return {
         id: 'test-map',
+        siteId: 'test',
+        siteName: 'Test',
         title: 'Test Map',
+        sourceFilename: 'test.tif',
         attribution: 'Test Attribution',
         type: 'raster-tiles',
         tiles: ['https://example.com/{z}/{x}/{y}.png'],
@@ -253,29 +271,62 @@ describe('mapLayers', () => {
   })
 
   describe('createHistoricalRasterLayer', () => {
-    it('references the historical raster source', () => {
-      const layer = createHistoricalRasterLayer(0.8) as RasterLayerLike
+    function makeOverlay(): HistoricalMapOverlay {
+      return {
+        id: 'test-map',
+        siteId: 'test',
+        siteName: 'Test',
+        title: 'Test Map',
+        sourceFilename: 'test.tif',
+        attribution: 'Test Attribution',
+        type: 'raster-tiles',
+        tiles: ['https://example.com/{z}/{x}/{y}.png'],
+        defaultOpacity: 0.8,
+      }
+    }
 
-      expect(layer.id).toBe(HISTORICAL_RASTER_LAYER_ID)
+    it('derives stable per-overlay source and layer IDs', () => {
+      expect(historicalRasterSourceId('nippur-rn2747-pl5')).toBe(
+        'ebl-historical-raster-nippur-rn2747-pl5',
+      )
+      expect(historicalRasterLayerId('nippur-rn2747-pl5')).toBe(
+        'ebl-historical-raster-layer-nippur-rn2747-pl5',
+      )
+    })
+
+    it('references the historical raster source', () => {
+      const overlay = makeOverlay()
+      const layer = createHistoricalRasterLayer(overlay, 0.8) as RasterLayerLike
+
+      expect(layer.id).toBe('ebl-historical-raster-layer-test-map')
       expect(layer.type).toBe('raster')
-      expect(layer.source).toBe(HISTORICAL_RASTER_SOURCE_ID)
+      expect(layer.source).toBe('ebl-historical-raster-test-map')
     })
 
     it('sets raster-opacity paint property', () => {
-      const layer = createHistoricalRasterLayer(0.5) as RasterLayerLike
+      const layer = createHistoricalRasterLayer(
+        makeOverlay(),
+        0.5,
+      ) as RasterLayerLike
 
       expect(layer.paint).toBeDefined()
       expect(layer.paint?.['raster-opacity']).toBe(0.5)
     })
 
     it('accepts full opacity', () => {
-      const layer = createHistoricalRasterLayer(1) as RasterLayerLike
+      const layer = createHistoricalRasterLayer(
+        makeOverlay(),
+        1,
+      ) as RasterLayerLike
 
       expect(layer.paint?.['raster-opacity']).toBe(1)
     })
 
     it('accepts zero opacity', () => {
-      const layer = createHistoricalRasterLayer(0) as RasterLayerLike
+      const layer = createHistoricalRasterLayer(
+        makeOverlay(),
+        0,
+      ) as RasterLayerLike
 
       expect(layer.paint?.['raster-opacity']).toBe(0)
     })
