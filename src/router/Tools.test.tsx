@@ -1,9 +1,14 @@
 import React from 'react'
 import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import Tools from 'router/Tools'
+import Tools, {
+  getCurrentTab,
+  getDisplayTitle,
+  getToolsBreadcrumbs,
+} from 'router/Tools'
 import MemorySession, { guestSession } from 'auth/Session'
-import { renderTools } from 'router/Tools.testSupport'
+import { renderTools, toolsServiceProps } from 'router/Tools.testSupport'
+import { setReducedMotionMatchMedia } from 'test-support/matchMedia'
 
 jest.mock('router/compat', () => ({
   ...jest.requireActual('router/compat'),
@@ -59,6 +64,11 @@ jest.mock('chronology/ui/Kings/BrinkmanKingsTable', () => ({
 jest.mock('signs/ui/CuneiformConverter/CuneiformConverterForm', () => ({
   __esModule: true,
   default: () => <div>Cuneiform Converter Mock</div>,
+}))
+
+jest.mock('map/MapTab', () => ({
+  __esModule: true,
+  default: () => <div>Map Mock</div>,
 }))
 
 describe('Tools', () => {
@@ -125,6 +135,11 @@ describe('Tools', () => {
     expect(screen.getByText('Cuneiform Converter Mock')).toBeInTheDocument()
   })
 
+  it('renders map content', async () => {
+    renderTools('map')
+    expect(await screen.findByText('Map Mock')).toBeInTheDocument()
+  })
+
   it('renders introduction for unknown activeTab', () => {
     renderTools('unknown-tab' as Parameters<typeof Tools>[0]['activeTab'])
     expect(screen.getByText('Welcome to eBL Tools')).toBeInTheDocument()
@@ -164,6 +179,10 @@ describe('Tools', () => {
       'href',
       '/tools/references',
     )
+    expect(screen.getByRole('link', { name: /Findspot Map/ })).toHaveAttribute(
+      'href',
+      '/tools/map',
+    )
   })
 
   it('renders nav links in the requested order', () => {
@@ -185,13 +204,14 @@ describe('Tools', () => {
       '※References',
       '⊞AfO-Register',
       '𒐕Cuneiform Converter',
+      '◈Findspot Map',
     ])
   })
 
   it('marks decorative icons as hidden from assistive technologies', () => {
     renderTools('dictionary')
 
-    const navIcons = ['𒀀', 'Ꞌ', '⚘', '⇌', '♔', '⊕', '⊟', '※', '⊞', '𒐕']
+    const navIcons = ['𒀀', 'Ꞌ', '⚘', '⇌', '♔', '⊕', '⊟', '※', '⊞', '𒐕', '◈']
 
     navIcons.forEach((icon) => {
       expect(
@@ -202,5 +222,110 @@ describe('Tools', () => {
     expect(
       screen.getByText('Ꞌ', { selector: '.tools-content__icon' }),
     ).toHaveAttribute('aria-hidden', 'true')
+  })
+
+  it('syncs selected tab when activeTab prop changes', () => {
+    const { rerender } = renderTools('signs')
+
+    expect(screen.getByText('Signs Mock')).toBeInTheDocument()
+
+    rerender(<Tools {...toolsServiceProps()} activeTab="dictionary" />)
+
+    expect(screen.getByText('Dictionary Mock')).toBeInTheDocument()
+  })
+
+  it('scrolls to element from hash location', () => {
+    jest.useFakeTimers()
+    const scrollIntoView = jest.fn()
+    const getElementByIdSpy = jest
+      .spyOn(document, 'getElementById')
+      .mockReturnValue({
+        scrollIntoView,
+      } as unknown as HTMLElement)
+
+    renderTools(
+      undefined,
+      new MemorySession(['read:realia']),
+      '/tools#target-section',
+    )
+
+    jest.runAllTimers()
+    expect(getElementByIdSpy).toHaveBeenCalledWith('target-section')
+    expect(scrollIntoView).toHaveBeenCalledWith({ behavior: 'smooth' })
+
+    getElementByIdSpy.mockRestore()
+    jest.useRealTimers()
+  })
+
+  it('does not scroll when hash target element is missing', () => {
+    jest.useFakeTimers()
+    const getElementByIdSpy = jest
+      .spyOn(document, 'getElementById')
+      .mockReturnValue(null)
+
+    renderTools(
+      undefined,
+      new MemorySession(['read:realia']),
+      '/tools#missing-section',
+    )
+
+    jest.runAllTimers()
+    expect(getElementByIdSpy).toHaveBeenCalledWith('missing-section')
+
+    getElementByIdSpy.mockRestore()
+    jest.useRealTimers()
+  })
+
+  it('uses non-animated hash scrolling when reduced motion is enabled', () => {
+    jest.useFakeTimers()
+    const restoreMatchMedia = setReducedMotionMatchMedia(true)
+
+    const scrollIntoView = jest.fn()
+    const getElementByIdSpy = jest
+      .spyOn(document, 'getElementById')
+      .mockReturnValue({
+        scrollIntoView,
+      } as unknown as HTMLElement)
+
+    try {
+      renderTools(
+        undefined,
+        new MemorySession(['read:realia']),
+        '/tools#target-section',
+      )
+
+      jest.runAllTimers()
+      expect(scrollIntoView).toHaveBeenCalledWith({ behavior: 'auto' })
+    } finally {
+      getElementByIdSpy.mockRestore()
+      restoreMatchMedia()
+      jest.useRealTimers()
+    }
+  })
+
+  it('resolves tab metadata and fallback display title', () => {
+    expect(getCurrentTab('dictionary')?.title).toEqual('Akkadian Dictionary')
+    expect(getCurrentTab(undefined)).toBeUndefined()
+    expect(getDisplayTitle(undefined)).toEqual('Tools')
+    expect(
+      getDisplayTitle(
+        'unknown-tab' as Parameters<typeof Tools>[0]['activeTab'],
+      ),
+    ).toEqual('Tools')
+    expect(getDisplayTitle('signs')).toEqual('Signs')
+    expect(getDisplayTitle('dictionary')).toEqual('Akkadian Dictionary')
+    expect(getDisplayTitle('dossiers')).toEqual('Dossiers')
+    expect(getDisplayTitle('genres')).toEqual('Genres')
+    expect(getDisplayTitle('map')).toEqual('Findspot Map')
+  })
+
+  it('builds breadcrumbs for selected and unselected states', () => {
+    expect(getToolsBreadcrumbs('Tools')).toHaveLength(1)
+    expect(
+      getToolsBreadcrumbs('Akkadian Dictionary', 'dictionary'),
+    ).toHaveLength(2)
+    expect(getToolsBreadcrumbs('Dossiers', 'dossiers')).toHaveLength(2)
+    expect(getToolsBreadcrumbs('Genres', 'genres')).toHaveLength(2)
+    expect(getToolsBreadcrumbs('Findspot Map', 'map')).toHaveLength(2)
   })
 })

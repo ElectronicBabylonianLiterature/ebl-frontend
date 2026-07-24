@@ -8,19 +8,19 @@ import {
 } from 'router/sitemapConfig'
 import { HeadTagsService } from 'router/head'
 import NotFoundPage from 'NotFoundPage'
-import SignService from 'signs/application/SignService'
-import WordService from 'dictionary/application/WordService'
-import BibliographyService from 'bibliography/application/BibliographyService'
-import RealiaService from 'realia/application/RealiaService'
+import type SignService from 'signs/application/SignService'
+import type WordService from 'dictionary/application/WordService'
+import type BibliographyService from 'bibliography/application/BibliographyService'
+import type RealiaService from 'realia/application/RealiaService'
 import RealiaDisplay from 'realia/ui/RealiaDisplay'
-import FragmentService from 'fragmentarium/application/FragmentService'
-import TextService from 'corpus/application/TextService'
+import type FragmentService from 'fragmentarium/application/FragmentService'
+import type TextService from 'corpus/application/TextService'
 import BibliographyViewer from 'bibliography/ui/BibliographyViewer'
 import BibliographyEditor from 'bibliography/ui/BibliographyEditor'
 import SignDisplay from 'signs/ui/display/SignDisplay'
 import WordEditor from 'dictionary/ui/editor/WordEditor'
 import WordDisplay from 'dictionary/ui/display/WordDisplay'
-import { TabId } from 'router/Tools'
+import type { TabId } from 'router/Tools'
 
 export const tabDescriptions: Record<TabId, string> = {
   signs:
@@ -42,6 +42,7 @@ export const tabDescriptions: Record<TabId, string> = {
     'Reference list of Babylonian and Assyrian kings and dynasties at the eBL.',
   'cuneiform-converter':
     'Convert text to cuneiform script representations at the eBL.',
+  map: 'Explore a map of cuneiform findspots and their associated fragments at the eBL.',
 }
 
 export function getEntityRoutes({

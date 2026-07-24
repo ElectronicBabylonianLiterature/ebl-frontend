@@ -1,5 +1,5 @@
 import React from 'react'
-import { render } from '@testing-library/react'
+import { render, type RenderResult } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 import Tools from 'router/Tools'
 import MarkupService from 'markup/application/MarkupService'
@@ -32,17 +32,22 @@ export function toolsServiceProps(): Omit<
 export function renderTools(
   activeTab?: Parameters<typeof Tools>[0]['activeTab'],
   session: Session = new MemorySession(['read:realia']),
-): void {
+  initialEntry = '/tools',
+): RenderResult {
   const props = {
     ...toolsServiceProps(),
     activeTab,
   }
 
-  render(
-    <MemoryRouter>
-      <SessionContext.Provider value={session}>
-        <Tools {...props} />
-      </SessionContext.Provider>
-    </MemoryRouter>,
-  )
+  function Wrapper({ children }: { children: React.ReactNode }): JSX.Element {
+    return (
+      <MemoryRouter initialEntries={[initialEntry]}>
+        <SessionContext.Provider value={session}>
+          {children}
+        </SessionContext.Provider>
+      </MemoryRouter>
+    )
+  }
+
+  return render(<Tools {...props} />, { wrapper: Wrapper })
 }

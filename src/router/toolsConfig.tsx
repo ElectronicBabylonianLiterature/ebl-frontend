@@ -12,6 +12,7 @@ export const tabIds = [
   'afo-register',
   'realia',
   'cuneiform-converter',
+  'map',
 ] as const
 export type TabId = (typeof tabIds)[number]
 
@@ -43,7 +44,8 @@ export const tabConfig = [
   { id: 'references', title: 'References', icon: '※' },
   { id: 'afo-register', title: 'AfO-Register', icon: '⊞' },
   { id: 'cuneiform-converter', title: 'Cuneiform Converter', icon: '𒐕' },
-]
+  { id: 'map', title: 'Findspot Map', icon: '◈' },
+] as const
 
 export function isTabVisible(tabId: string, session: Session): boolean {
   if (tabId === 'realia') {
