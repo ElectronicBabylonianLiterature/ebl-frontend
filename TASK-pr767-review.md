@@ -456,6 +456,21 @@ noting, all recorded in `TASK-pr767-log.md`:
   sequential fetches. It now waits for the redirect milestone first; eight consecutive runs
   green.
 
+**Second pass — the first fix was incomplete.** It reported 100% on the strength of per-file
+runs and CI's summary table, and both were misleading: the table's "Uncovered Line #s" column
+is line-based, so branch-only gaps were invisible in it, and the measurement excluded the
+`*.testSupport` modules this PR adds — one of which, `overlayStub.testSupport.tsx:20`, was an
+uncovered _added line_, which is exactly what `qlty coverage diff` was reporting as 99.8%.
+
+Re-measured properly: the full suite in 16 batches with `--coverageReporters=json`, the
+`coverage-final.json` files merged with `istanbul-lib-coverage`, and every uncovered branch
+enumerated from `branchMap`/`b` rather than inferred. **62 of 62 changed files are now at
+100% on statements, branches, functions and lines.** Two unreachable branches were deleted
+rather than tested (the Overlay stub's render-prop arm, and `loadClusterAnnotations`'
+`: croppedAnnotations` fallback, which cannot be reached because every cluster id comes from
+the annotations being mapped). 100% coverage of affected code is now a **hard gate** in
+`.github/copilot-instructions.md`, together with how to measure it.
+
 ## Severity
 
 | ID  | Finding                                                        | Severity | Blocked approval       | Now           |

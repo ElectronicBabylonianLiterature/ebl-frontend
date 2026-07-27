@@ -121,3 +121,55 @@ describe('collectLemmaSuggestions', () => {
     expect(option.isSuggestion).toBe(true)
   })
 })
+
+describe('createFragment fills in every optional field', () => {
+  const minimalDto = {
+    ...fragmentDto,
+    accession: null,
+    acquisition: null,
+    joins: undefined,
+    length: {},
+    width: {},
+    thickness: {},
+    folios: undefined,
+    record: undefined,
+    references: undefined,
+    uncuratedReferences: undefined,
+    genres: undefined,
+    projects: undefined,
+    dossiers: undefined,
+    date: undefined,
+    datesInText: undefined,
+    archaeology: undefined,
+    colophon: undefined,
+  }
+
+  it('defaults each of them rather than failing', async () => {
+    apiClient.fetchJson.mockReturnValueOnce(Promise.resolve(minimalDto))
+
+    const result = await fragmentRepository.find(fragmentId)
+
+    expect(result.accession).toEqual('')
+    expect(result.acquisition).toBeNull()
+    expect(result.joins).toEqual([])
+    expect(result.measures).toEqual({
+      length: null,
+      width: null,
+      thickness: null,
+      lengthNote: null,
+      widthNote: null,
+      thicknessNote: null,
+    })
+    expect(result.folios).toEqual([])
+    expect([...result.record.entries()]).toEqual([])
+    expect(result.references).toEqual([])
+    expect(result.uncuratedReferences).toBeNull()
+    expect(result.genres.genres).toEqual([])
+    expect(result.projects).toEqual([])
+    expect(result.dossiers).toEqual([])
+    expect(result.date).toBeUndefined()
+    expect(result.datesInText).toEqual([])
+    expect(result.archaeology).toBeUndefined()
+    expect(result.colophon).toBeUndefined()
+  })
+})

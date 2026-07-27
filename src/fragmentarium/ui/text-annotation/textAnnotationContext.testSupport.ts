@@ -19,7 +19,7 @@ export const realia: ApiRealiaAnnotationSpan = {
 }
 
 export function spans(
-  namedEntities: readonly ApiEntityAnnotationSpan[] = [],
+  namedEntities: readonly ApiEntityAnnotationSpan[],
   realiaSpans: readonly ApiRealiaAnnotationSpan[] = [],
 ): AnnotationSpans {
   return { namedEntities, realia: realiaSpans }

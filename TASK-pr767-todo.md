@@ -76,6 +76,15 @@ every finding it surfaced. See `TASK-pr767-review.md` for the findings and
 - [x] Split `InjectedApp.test.tsx` (248 → 217 + 82 over a shared `injectedApp.testSupport`)
       because the new tests pushed it over the 250-line ceiling.
 
+## Coverage — verified at 100% (F16, second pass)
+
+- [x] Measure with merged JSON coverage over the whole suite, not per-file summaries.
+- [x] Cover the `*.testSupport` modules the PR adds — they are in the diff and `qlty
+    coverage diff` counts them.
+- [x] Close every uncovered _branch_, not just uncovered lines.
+- [x] 62 of 62 changed files at 100% statements/branches/functions/lines.
+- [x] Hard-gate 100% coverage in `.github/copilot-instructions.md`, with how to measure it.
+
 ## Gates after the fixes
 
 - [x] `yarn lint` clean.

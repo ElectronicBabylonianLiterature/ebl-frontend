@@ -290,7 +290,41 @@ into `InjectedApp.test.tsx` (217) and `InjectedApp.cacheScope.test.tsx` (82) ove
 (332) and `FragmentService.test.ts` (~1 990) were already over before this task and grew
 further; they stay recorded under F13.
 
-## Remote result — green (2026-07-27)
+### F16 (continued) — the last 0.2%, and how it was found
+
+The first pass at F16 reported "100%" on the strength of per-file runs and CI's summary
+table. Both were misleading:
+
+- CI's table shows an **"Uncovered Line #s" column, which is line-based**. A file can read
+  `100 | 75.45 | 100 | 100` and still have 27 uncovered branches — I read the line column and
+  called it done.
+- I limited the measurement to the 53 non-test source files, which **excluded the
+  `*.testSupport` modules this PR adds**. `overlayStub.testSupport.tsx:20` was an uncovered
+  _line_ in added code — that was the 0.2% `qlty coverage diff` was reporting.
+
+Measured properly this time: the full suite in 16 batches with `--coverageReporters=json`,
+the 16 `coverage-final.json` files merged with `istanbul-lib-coverage`, and every uncovered
+branch listed from `branchMap`/`b` rather than inferred from the summary. Result over all
+**62** files in `git diff --name-only master...HEAD`: **0 below 100%** on statements,
+branches, functions and lines.
+
+What closed the gaps:
+
+| File                                   | Was            | How                                                                                                                         |
+| -------------------------------------- | -------------- | --------------------------------------------------------------------------------------------------------------------------- |
+| `overlayStub.testSupport.tsx`          | 86/75/100/86   | dropped the render-prop branch no test uses                                                                                 |
+| `textAnnotationContext.testSupport.ts` | 100/50/100/100 | dropped an unused default, covered `tierOf`'s miss                                                                          |
+| `FragmentRepository.ts`                | 100/75/100/100 | minimal-DTO tests for `createFragment`, `createJoins`, `createScript`, `createFragmentInfo` and the query-summary fallbacks |
+| `SignImages.tsx`                       | 100/88/100/100 | fixtures for a missing label, unnumbered forms, a dated annotation, a blank form and a mixed clustered/unclustered period   |
+
+Two dead branches were deleted rather than tested, per the rule now written into the
+instructions: the render-prop arm of the Overlay stub, and `loadClusterAnnotations`'
+`? … : croppedAnnotations` fallback — every cluster id comes from the annotations being
+mapped, so a failed or empty cluster always contributes its own annotations and the three
+lists can never all be empty. `sortVariants` and `sortScriptsByPeriod` were exported so their
+logic is unit tested directly.
+
+## Remote result — green (2026-07-27)## Remote result — green (2026-07-27)
 
 Pushed `c70d7367` to `origin/add-realia-annotation` after verifying the push destination
 (`@{push}` = `origin/add-realia-annotation`, `branch.*.merge` = `refs/heads/add-realia-annotation`)

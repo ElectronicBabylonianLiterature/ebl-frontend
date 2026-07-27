@@ -3,10 +3,14 @@ import { render, screen } from '@testing-library/react'
 import { waitForSpinnerToBeRemoved } from 'test-support/waitForSpinnerToBeRemoved'
 import SignService from 'signs/application/SignService'
 import Bluebird from 'bluebird'
-import SignImages, { sortScriptsByPeriod } from 'signs/ui/display/SignImages'
+import SignImages, {
+  sortScriptsByPeriod,
+  sortVariants,
+} from 'signs/ui/display/SignImages'
 import { MemoryRouter } from 'react-router-dom'
 import { CroppedAnnotation } from 'signs/domain/CroppedAnnotation'
 import userEvent from '@testing-library/user-event'
+import { mesopotamianDateFactory } from 'test-support/date-fixtures'
 
 jest.mock('signs/application/SignService')
 
@@ -328,5 +332,87 @@ describe('sortScriptsByPeriod', () => {
     expect(() => sortScriptsByPeriod({ XX: [1] })).toThrow(
       'XX has to be one of',
     )
+  })
+})
+
+describe('Sign Images optional annotation data', () => {
+  const base = croppedAnnotations[0]
+
+  async function renderWithAnnotations(
+    annotations: CroppedAnnotation[],
+  ): Promise<void> {
+    signService.getCentroidImages.mockReturnValue(Bluebird.resolve(annotations))
+    renderSignImages()
+    await waitForSpinnerToBeRemoved(screen)
+  }
+
+  it('renders an annotation without a label', async () => {
+    await renderWithAnnotations([
+      { ...base, label: undefined as unknown as string },
+    ])
+
+    expect(screen.getByTitle('Canonical 1')).toBeInTheDocument()
+  })
+
+  it.each([
+    ['canonical', 'Canonical'],
+    ['variant', 'Variant'],
+  ])('titles the unnumbered %s form "%s"', async (form, title) => {
+    await renderWithAnnotations([
+      {
+        ...base,
+        pcaClustering: { ...base.pcaClustering, form },
+      } as CroppedAnnotation,
+    ])
+
+    expect(screen.getByTitle(title)).toBeInTheDocument()
+  })
+
+  it('keeps the annotations of a cluster whose variants fail to load', async () => {
+    signService.getClusterVariants.mockReturnValue(Bluebird.resolve([]))
+    await renderWithAnnotations([
+      { ...base, script: 'MA' },
+      {
+        ...base,
+        annotationId: 'no-cluster',
+        script: 'MA',
+        pcaClustering: undefined,
+      },
+    ])
+
+    await userEvent.click(
+      screen.getByRole('button', { name: /Middle Assyrian/ }),
+    )
+
+    expect(signService.getClusterVariants).toHaveBeenCalledTimes(1)
+  })
+
+  it('shows the date of an annotation that has one, sorted first', async () => {
+    const dated = {
+      ...base,
+      annotationId: 'dated',
+      date: mesopotamianDateFactory.build(),
+    }
+    await renderWithAnnotations([dated])
+
+    expect(screen.getByTitle('Canonical 1')).toBeInTheDocument()
+    expect(sortVariants([base, dated])[0]).toBe(dated)
+  })
+
+  it('labels a group whose form is blank', async () => {
+    signService.getClusterVariants.mockReturnValue(Bluebird.resolve([]))
+    await renderWithAnnotations([
+      {
+        ...base,
+        script: 'MA',
+        pcaClustering: { ...base.pcaClustering, form: '' },
+      } as CroppedAnnotation,
+    ])
+
+    await userEvent.click(
+      screen.getByRole('button', { name: /Middle Assyrian/ }),
+    )
+
+    expect(await screen.findByText('Unknown form:')).toBeInTheDocument()
   })
 })

@@ -90,6 +90,7 @@ describe('useAnnotationContext keeps the layers apart', () => {
 
     expect(tierOf(state.namedEntities, 'Entity-1')).toBe(1)
     expect(tierOf(state.realia, 'Realia-1')).toBe(2)
+    expect(tierOf(state.namedEntities, 'Realia-1')).toBe(0)
   })
 
   it('keeps every realia below every tag, even when tags are nested', () => {

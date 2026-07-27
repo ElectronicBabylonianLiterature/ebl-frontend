@@ -66,7 +66,9 @@ function SignImage({
   )
 }
 
-function sortVariants(annotations: CroppedAnnotation[]): CroppedAnnotation[] {
+export function sortVariants(
+  annotations: CroppedAnnotation[],
+): CroppedAnnotation[] {
   return _.sortBy(annotations, [
     (annotation) => (annotation.date ? 0 : 1),
     (annotation) => annotation.fragmentNumber,
@@ -325,16 +327,14 @@ async function loadClusterAnnotations({
   )
 
   return {
-    annotations:
-      successfulAnnotations.length ||
-      fallbackAnnotations.length ||
-      nonPcaAnnotations.length
-        ? [
-            ...successfulAnnotations,
-            ...fallbackAnnotations,
-            ...nonPcaAnnotations,
-          ]
-        : croppedAnnotations,
+    // Every cluster id comes from these annotations, so a cluster that fails or
+    // comes back empty always has its own annotations in fallbackAnnotations:
+    // the three lists together can never be empty here.
+    annotations: [
+      ...successfulAnnotations,
+      ...fallbackAnnotations,
+      ...nonPcaAnnotations,
+    ],
     hasFailures: fallbackClusterIds.length > 0,
   }
 }

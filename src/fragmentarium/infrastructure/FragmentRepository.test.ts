@@ -1,6 +1,9 @@
 import Promise from 'bluebird'
 import { testDelegation, TestData } from 'test-support/utils'
-import FragmentRepository, { createScript } from './FragmentRepository'
+import FragmentRepository, {
+  createJoins,
+  createScript,
+} from './FragmentRepository'
 import Folio from 'fragmentarium/domain/Folio'
 import { fragment, fragmentDto } from 'test-support/test-fragment'
 import { annotations, annotationsDto } from 'test-support/test-annotation'
@@ -800,6 +803,112 @@ describe('createScript fallback behavior', () => {
   })
 })
 
+describe('createFragment maps the optional structures it is given', () => {
+  beforeEach(() => {
+    jest.clearAllMocks()
+  })
+
+  it('builds the archaeology and the colophon when both are present', async () => {
+    apiClient.fetchJson.mockReturnValueOnce(
+      Promise.resolve({
+        ...fragmentDto,
+        archaeology: { excavationNumber: museumNumber },
+        colophon: {},
+      }),
+    )
+
+    const result = await fragmentRepository.find(fragmentId)
+
+    expect(result.archaeology?.excavationNumber).toEqual(
+      museumNumberToString(museumNumber),
+    )
+    expect(result.colophon).toBeDefined()
+  })
+})
+
+describe('createFragmentInfo without an accession', () => {
+  beforeEach(() => {
+    jest.clearAllMocks()
+  })
+
+  it('leaves the accession empty', async () => {
+    apiClient.fetchJson.mockReturnValueOnce(
+      Promise.resolve([{ ...fragmentInfoDto, accession: null }]),
+    )
+
+    const [info] = await fragmentRepository.random()
+
+    expect(info.accession).toEqual('')
+  })
+})
+
+describe('createScript without a dto', () => {
+  it('falls back to an uncertain, unmodified, certain script', () => {
+    const result = createScript(undefined as unknown as ScriptDto)
+
+    expect(result).toEqual({
+      period: Periods.Uncertain,
+      periodModifier: PeriodModifiers.None,
+      uncertain: false,
+    })
+  })
+})
+
+describe('createJoins tolerates missing groups', () => {
+  it('maps no joins at all', () => {
+    expect(createJoins(undefined)).toEqual([])
+  })
+
+  it('maps a missing group as empty', () => {
+    expect(createJoins([null])).toEqual([[]])
+  })
+})
+
+describe('FragmentRepository query summary without optional data', () => {
+  beforeEach(() => {
+    jest.clearAllMocks()
+  })
+
+  it('defaults every optional collection of a summary item', async () => {
+    mockQueryItems([
+      createSummaryItemDto({
+        references: undefined,
+        genres: undefined,
+        projects: undefined,
+        dossiers: undefined,
+        date: null,
+        archaeology: undefined,
+      }),
+    ])
+
+    const { fragment } = (await fragmentRepository.query({ lemmas: 'kur' }))
+      .items[0]
+
+    expect(fragment?.references).toEqual([])
+    expect(fragment?.genres.genres).toEqual([])
+    expect(fragment?.projects).toEqual([])
+    expect(fragment?.dossiers).toEqual([])
+    expect(fragment?.date).toBeUndefined()
+    expect(fragment?.archaeology).toBeUndefined()
+  })
+
+  it('keeps an archaeology without an excavation number or site', async () => {
+    mockQueryItems([
+      createSummaryItemDto({
+        archaeology: { excavationNumber: undefined, site: undefined },
+      }),
+    ])
+
+    const { fragment } = (await fragmentRepository.query({ lemmas: 'kur' }))
+      .items[0]
+
+    expect(fragment?.archaeology).toEqual({
+      excavationNumber: undefined,
+      site: undefined,
+    })
+  })
+})
+
 describe('FragmentRepository query summary with unrecognized script', () => {
   beforeEach(() => {
     jest.clearAllMocks()
@@ -1043,6 +1152,14 @@ describe('named entity annotations', () => {
     await expect(
       fragmentRepository.fetchNamedEntityAnnotations(fragmentId),
     ).resolves.toEqual({ namedEntities, realia: [] })
+  })
+
+  it('treats a missing named entity key as an empty list', async () => {
+    apiClient.fetchJson.mockReturnValue(Promise.resolve({ realia }))
+
+    await expect(
+      fragmentRepository.fetchNamedEntityAnnotations(fragmentId),
+    ).resolves.toEqual({ namedEntities: [], realia })
   })
 
   it('posts the two lists without an annotations key', async () => {

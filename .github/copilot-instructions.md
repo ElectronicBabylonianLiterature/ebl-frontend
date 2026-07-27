@@ -161,7 +161,20 @@ Verify before finalizing, and state the result in the task log:
 
 - Add / update tests for any new functionality or significant changes.
 - When writing tests, ensure they are isolated and do not depend on external state (Jest + React Testing Library conventions).
-- Ensure that coverage is 100% after changes in affected code.
+- **Treat 100% coverage of the affected code as a hard gate.** Every file the change adds or edits must reach **100% on all four metrics — statements, branches, functions and lines** — before the work is finalized. 99.8% is a failure. This is not "the files I wrote": it is every file in `git diff --name-only master...HEAD`, test-support modules included, whether or not the gap predates the change (see **Pre-existing Issues**).
+  - **Measure it, do not assume it.** A per-file run over one suite proves nothing about the whole suite, and the summary table's "Uncovered Line #s" column hides branch-only gaps — a file can read 100% on lines and still miss a dozen `??` fallbacks. Get the real numbers:
+
+    ```sh
+    yarn test --watchAll=false --coverage --collectCoverageFrom='<changed file>' …
+    # or, when the full suite will not fit in memory, run it in batches with
+    # --coverageReporters=json --coverageDirectory=<part> and merge the
+    # coverage-final.json files with istanbul-lib-coverage before reading them
+    ```
+
+  - **List the uncovered branches explicitly** (`branchMap` + `b` in `coverage-final.json`) and close them one by one. Do not report a percentage without naming what is still uncovered.
+  - **Prefer deleting a dead branch to testing it.** An unreachable defensive fallback, an unused default parameter, or a `?? x` that no caller can trigger is dead code: remove it. Where the branch is real but unreachable through the UI (a `throw` inside a render, for example), extract the logic into a pure exported function and unit test that — **never** silence `console.error` to make a render-time throw testable, which the console-clean gate forbids anyway.
+  - **Verify locally before committing, not after.** The gate is met when the local measurement says 100%; CI confirms it. `qlty coverage diff` on the PR is the authoritative check on newly added lines and must read 100%.
+
 - Tests must run without any console errors, warnings, or other noise. Any `console.error`, `console.warn`, or unhandled-rejection output is a defect that must be fixed at its root cause.
 - Suppressing console output (e.g. mocking `console.error`/`console.warn` to silence warnings or similar) is **never** an acceptable solution. Fix the source of the warning instead.
 - Treat console-clean runs as a hard gate: do not stop after changes until a full test run produces zero console output.
