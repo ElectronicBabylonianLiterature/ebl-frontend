@@ -81,6 +81,22 @@ event `pull_request`, checkout `Merge 1070d896 into 4db5c9cd`).
 The `test` job failed on two of its four steps — `yarn tsc` (exit 2) and `yarn build`
 (exit 1) — on the same two errors. Its Jest step passed (370 suites, 3 748 passed).
 
+### After the fix — head `c70d7367`, all checks green
+
+Run [30287646981](https://github.com/ElectronicBabylonianLiterature/ebl-frontend/actions/runs/30287646981),
+checkout `Merge c70d7367 into 4db5c9cd`:
+
+| Check                                           | Conclusion                                                                                                             |
+| ----------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- |
+| **test**                                        | **success** — `yarn lint`, `yarn tsc`, **372 suites / 3 768 passed / 2 skipped**, `yarn build` "Compiled successfully" |
+| CodeQL / Analyze (javascript)                   | success                                                                                                                |
+| GitGuardian scan / Security Checks              | success                                                                                                                |
+| qlty check / qlty coverage / qlty coverage diff | success                                                                                                                |
+| docker, docker-test                             | skipped (master only)                                                                                                  |
+
+No check on the PR is failing. CI's suite and test counts match the local run on the merge
+worktree exactly, which is the evidence that the worktree method reproduces CI.
+
 **This was red before the review started, and the first version of this review did not
 mention it: I gathered the reviews and comments but never fetched the check runs.** That gap
 is now closed by the **CI — The Remote Result Is the Gate** section added to
@@ -472,7 +488,7 @@ named-entity and realia annotations (e.g. `library/NCBT.1121` on `ebldev`).
 | Data-architecture audit   | Passed — two kinds separate through DTO, state, props, lookups; one serializer; guard narrows both branches; no cross-kind cast                                                                                                                                                                                                                                                         |
 | `yarn build`              | Succeeds — CI's second failing step; it type-checks through ForkTsChecker, so `yarn tsc` alone would not have caught **F14**                                                                                                                                                                                                                                                            |
 | Merge with `master`       | Gates re-run on `Merge <branch> into origin/master` in a scratch `git worktree` (master is 4 commits ahead): `yarn tsc` clean, **372 suites, 3 768 passed + 2 skipped, 0 failed**, zero console output — this is what CI actually builds, and it includes `ConcurrencyLimiter.test.ts`, which exists only on `master`                                                                   |
-| Remote CI                 | Head `1070d896`: `test` **failing** (**F14**); all other checks green. To be re-confirmed on the new head once pushed                                                                                                                                                                                                                                                                   |
+| Remote CI                 | Head `1070d896`: `test` **failing** (**F14**). Head `c70d7367` (pushed): **every check green**, `test` included — see **CI Status**                                                                                                                                                                                                                                                     |
 | Running the app           | **Partial** — `craco start` compiles and serves 200 on the branch with no webpack/type errors, but `REACT_APP_DICTIONARY_API_URL` (`localhost:8001`) is not running here and this environment has no browser or interactive Auth0 login, so the annotation and preview screens could not be exercised against real data. Behaviour was verified through the test suite and code reading |
 
 Note on the suite: `yarn test --watchAll=false` (the project's `--runInBand`,
@@ -498,12 +514,12 @@ files in batches of 25 with a larger heap completed green.
 
 ## Recommendation
 
-**Do not approve until CI is green on a pushed head.** F14 (a broken build) and F15 (gate
-results measured in a stale environment) both landed after the first pass of this review;
-every code finding — F1, F4–F11, F14, F15 and the in-scope part of F13 — is fixed locally,
-and lint, tsc, build, the full suite (on the branch _and_ on the merge with `master`), the
-console-noise check and 100 % coverage of the affected code all pass. None of that counts
-until the branch is pushed and the PR's checks come back green.
+**CI is green and every code finding is fixed** — F1, F4–F11, F14, F15 and the in-scope part
+of F13, on pushed head `c70d7367`, with lint, tsc, build, the full suite (on the branch _and_
+on the merge with `master`), the console-noise check and 100 % coverage of the affected code
+all passing — confirmed by the PR's own checks, not by a local run alone.
+
+**Approve once F2, F3 and F13's remainder are handled by the author.**
 
 What remains is not code:
 
@@ -558,6 +574,5 @@ and 14 remain, and are the author's.
 16. ~~**[Blocker — F15]** Re-measure every gate from a lockfile-consistent install.~~ Done —
     `yarn install --frozen-lockfile`; the CI-vs-local gap is now a hard gate in
     `.github/copilot-instructions.md` (**CI — The Remote Result Is the Gate**).
-17. **[Blocker — F14, after pushing]** Push the branch and confirm the `test` check goes
-    green on the new head before approving or merging. The fix is verified locally and
-    against the merge, but the PR's own checks are still red until a run completes.
+17. ~~**[Blocker — F14, after pushing]** Push and confirm the `test` check goes green.~~
+    Done — head `c70d7367`, run 30287646981: every check green.

@@ -244,6 +244,19 @@ rule is now explicit in **Commands and Tooling**: a local gate result from an un
   finding means changing the code, not offering to; and the review template gains a
   mandatory `CI Status` section.
 
+## Remote result — green (2026-07-27)
+
+Pushed `c70d7367` to `origin/add-realia-annotation` after verifying the push destination
+(`@{push}` = `origin/add-realia-annotation`, `branch.*.merge` = `refs/heads/add-realia-annotation`)
+and confirming `origin/master` was untouched at `4db5c9cd` via `git ls-remote`. Note the
+first commit, `05e32ab4`, had already been pushed by the user.
+
+Run [30287646981](https://github.com/ElectronicBabylonianLiterature/ebl-frontend/actions/runs/30287646981)
+on `Merge c70d7367 into 4db5c9cd`: **every check green** — `test` (lint, tsc, 372 suites /
+3 768 passed / 2 skipped, build "Compiled successfully"), CodeQL, GitGuardian, and the three
+qlty statuses. CI's counts match the local merge-worktree run exactly, which is the evidence
+that running the gates on a scratch merge worktree genuinely reproduces CI.
+
 ## Commit and PR description (2026-07-27)
 
 On the user's explicit request, all of the above — code, tests and these three `TASK-pr767`

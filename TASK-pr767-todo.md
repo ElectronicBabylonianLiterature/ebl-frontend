@@ -72,7 +72,6 @@ every finding it surfaced. See `TASK-pr767-review.md` for the findings and
 - [x] App compiles and serves (`craco start`); no browser/API here for a live run-through.
 - [x] `yarn build` green (CI's other failing step).
 - [x] Gates re-run on the merge with `master` in a scratch worktree.
-- [ ] **Push and confirm the PR's `test` check goes green** — the CI fix is verified locally
-      and against the merge, but the PR's own checks stay red until a run completes.
-- [x] First batch committed on the user's request; the F14/F15 fix and the instruction gates
-      are uncommitted, awaiting the user.
+- [x] **Pushed; every check on head `c70d7367` is green**, `test` included (run 30287646981:
+      lint, tsc, 372 suites / 3 768 passed / 2 skipped, build compiled successfully).
+- [x] Both batches committed and pushed on the user's request.
