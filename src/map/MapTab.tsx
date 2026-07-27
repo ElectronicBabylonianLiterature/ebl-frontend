@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { Alert, Form } from 'react-bootstrap'
 import 'maplibre-gl/dist/maplibre-gl.css'
 import FragmentService from 'fragmentarium/application/FragmentService'
+import { FindspotService } from 'fragmentarium/application/FindspotService'
 import { ProvenanceRecord } from 'fragmentarium/domain/Provenance'
 import Spinner from 'common/ui/Spinner'
 import {
@@ -15,9 +16,14 @@ import {
 import MapControls from './MapControls'
 import useFindspotMap from './useFindspotMap'
 import useMapSourceData from './useMapSourceData'
+import {
+  aggregateFindspotMapData,
+  type FindspotMapDataStatus,
+} from './findspotMapData'
 import './MapTab.sass'
 
 interface Props {
+  findspotService: FindspotService
   fragmentService: FragmentService
 }
 
@@ -66,12 +72,20 @@ function unionMaxZoom(
   return maxZooms.length > 0 ? Math.min(...maxZooms) : undefined
 }
 
-export default function MapTab({ fragmentService }: Props): JSX.Element {
+export default function MapTab({
+  findspotService,
+  fragmentService,
+}: Props): JSX.Element {
   const mapContainer = useRef<HTMLDivElement>(null)
   const [provenances, setProvenances] = useState<
     readonly ProvenanceRecord[] | null
   >(null)
   const [error, setError] = useState<string | null>(null)
+  const [findspotMapDataStatus, setFindspotMapDataStatus] =
+    useState<FindspotMapDataStatus>('idle')
+  const [polygonFindspotSummaries, setPolygonFindspotSummaries] = useState(() =>
+    aggregateFindspotMapData([]),
+  )
   const [filter, setFilter] = useState('')
   const [showBoundaries, setShowBoundaries] = useState(true)
   const [showExcavationAreas, setShowExcavationAreas] = useState(false)
@@ -135,6 +149,8 @@ export default function MapTab({ fragmentService }: Props): JSX.Element {
     activeOverlayEntries,
     showExcavationAreas,
     browseHistoricalMapsForSite,
+    polygonFindspotSummaries,
+    findspotMapDataStatus,
   )
   useMapSourceData(mapRef, filteredProvenances)
 
@@ -240,6 +256,28 @@ export default function MapTab({ fragmentService }: Props): JSX.Element {
       .then(setProvenances)
       .catch((err: Error) => setError(err.message))
   }, [fragmentService])
+
+  useEffect(() => {
+    let isMounted = true
+    setFindspotMapDataStatus('loading')
+
+    findspotService
+      .fetchAssurMapData()
+      .then((findspots) => {
+        if (!isMounted) return
+        setPolygonFindspotSummaries(aggregateFindspotMapData(findspots))
+        setFindspotMapDataStatus('loaded')
+      })
+      .catch(() => {
+        if (!isMounted) return
+        setPolygonFindspotSummaries(aggregateFindspotMapData([]))
+        setFindspotMapDataStatus('error')
+      })
+
+    return () => {
+      isMounted = false
+    }
+  }, [findspotService])
 
   if (error) {
     return <Alert variant="danger">Failed to load map data: {error}</Alert>

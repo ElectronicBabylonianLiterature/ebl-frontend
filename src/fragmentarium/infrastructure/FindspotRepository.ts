@@ -5,9 +5,16 @@ import {
   fromFindspotDto,
 } from 'fragmentarium/domain/archaeologyDtos'
 import { JsonApiClient } from 'index'
+import {
+  ASSUR_SITE_ID,
+  FindspotMapData,
+  FindspotMapDataResponseDto,
+  sanitizeFindspotMapDataResponse,
+} from 'map/findspotMapData'
 
 export interface FindspotRepository {
   fetchFindspots(): Bluebird<Findspot[]>
+  fetchAssurMapData(): Bluebird<readonly FindspotMapData[]>
 }
 
 export class ApiFindspotRepository implements FindspotRepository {
@@ -17,5 +24,14 @@ export class ApiFindspotRepository implements FindspotRepository {
     return this.apiClient
       .fetchJson<FindspotDto[]>('/findspots', false)
       .then((findspots) => findspots.map(fromFindspotDto))
+  }
+
+  fetchAssurMapData(): Bluebird<readonly FindspotMapData[]> {
+    return this.apiClient
+      .fetchJson<FindspotMapDataResponseDto>(
+        `/findspots/map-data?site=${ASSUR_SITE_ID}`,
+        false,
+      )
+      .then(sanitizeFindspotMapDataResponse)
   }
 }

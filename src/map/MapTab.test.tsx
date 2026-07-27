@@ -11,9 +11,13 @@ import {
 import userEvent from '@testing-library/user-event'
 import Bluebird from 'bluebird'
 import FragmentService from 'fragmentarium/application/FragmentService'
+import { FindspotService } from 'fragmentarium/application/FindspotService'
 import { ProvenanceRecord } from 'fragmentarium/domain/Provenance'
 import MapTab from './MapTab'
-import { buildFragmentSearchLink } from './mapLinks'
+import {
+  buildFindspotFragmentSearchLink,
+  buildFragmentSearchLink,
+} from './mapLinks'
 
 const mockAddSource = jest.fn()
 const mockAddLayer = jest.fn()
@@ -200,8 +204,37 @@ function makeFailingFragmentService(message: string): FragmentService {
   } as unknown as FragmentService
 }
 
+const mappedAssurFindspotMapData = [
+  {
+    findspotId: 123,
+    siteId: 'ASSUR',
+    siteName: 'Aššur',
+    polygonIds: ['assur-area-a-checksum'],
+    accessibleFragmentCount: 18,
+    locationPrecision: 'excavation-area' as const,
+    matchMethod: 'verified-source' as const,
+    sector: null,
+    area: 'Area A',
+    building: null,
+    room: null,
+  },
+]
+
+function makeFindspotService(
+  mapData?: typeof mappedAssurFindspotMapData,
+): FindspotService {
+  return {
+    fetchAssurMapData: () =>
+      mapData === undefined
+        ? new Bluebird(() => {})
+        : Bluebird.resolve(mapData),
+  } as unknown as FindspotService
+}
+
 async function openLayerPanel(): Promise<void> {
-  await userEvent.click(await screen.findByRole('button', { name: 'Show' }))
+  await userEvent.click(
+    await screen.findByRole('button', { name: 'Show map layers' }),
+  )
 }
 
 async function expandHistoricalSite(siteName: string): Promise<void> {
@@ -274,7 +307,12 @@ describe('MapTab', () => {
       fetchProvenances: () => new Bluebird(() => {}),
     } as unknown as FragmentService
 
-    render(<MapTab fragmentService={fragmentService} />)
+    render(
+      <MapTab
+        findspotService={makeFindspotService()}
+        fragmentService={fragmentService}
+      />,
+    )
 
     expect(screen.getByText('Loading map data...')).toBeInTheDocument()
   })
@@ -282,7 +320,12 @@ describe('MapTab', () => {
   it('renders error state when fetch fails', async () => {
     const fragmentService = makeFailingFragmentService('Network error')
 
-    render(<MapTab fragmentService={fragmentService} />)
+    render(
+      <MapTab
+        findspotService={makeFindspotService()}
+        fragmentService={fragmentService}
+      />,
+    )
 
     await waitFor(() => {
       expect(
@@ -294,16 +337,23 @@ describe('MapTab', () => {
   it('renders grouped search, display controls, and map container after data loads', async () => {
     const fragmentService = makeFragmentService([makeProvenance()])
 
-    render(<MapTab fragmentService={fragmentService} />)
+    render(
+      <MapTab
+        findspotService={makeFindspotService()}
+        fragmentService={fragmentService}
+      />,
+    )
 
     expect(
       await screen.findByRole('heading', { name: 'Find a site' }),
     ).toBeInTheDocument()
     expect(
-      screen.getByRole('heading', { name: 'Map layers' }),
+      screen.getByRole('button', { name: 'Show map layers' }),
     ).toBeInTheDocument()
     expect(screen.getByLabelText('Site name')).toBeInTheDocument()
-    expect(screen.getByText(/0 historical maps active/)).toBeInTheDocument()
+    expect(
+      screen.queryByText(/0 historical maps active/),
+    ).not.toBeInTheDocument()
     expect(screen.getByLabelText('Findspot map')).toBeInTheDocument()
   })
 
@@ -312,7 +362,12 @@ describe('MapTab', () => {
       makeProvenance({ longName: 'Babylon' }),
     ])
 
-    render(<MapTab fragmentService={fragmentService} />)
+    render(
+      <MapTab
+        findspotService={makeFindspotService()}
+        fragmentService={fragmentService}
+      />,
+    )
 
     const input = await screen.findByPlaceholderText('Filter by site name...')
     await userEvent.type(input, 'Nippur')
@@ -336,7 +391,12 @@ describe('MapTab', () => {
       }),
     ]
 
-    render(<MapTab fragmentService={makeFragmentService(provenances)} />)
+    render(
+      <MapTab
+        findspotService={makeFindspotService()}
+        fragmentService={makeFragmentService(provenances)}
+      />,
+    )
 
     await waitFor(() => {
       expect(mockAddSource).toHaveBeenCalledTimes(3)
@@ -373,7 +433,12 @@ describe('MapTab', () => {
   })
 
   it('creates a map with navigation control', async () => {
-    render(<MapTab fragmentService={makeFragmentService([makeProvenance()])} />)
+    render(
+      <MapTab
+        findspotService={makeFindspotService()}
+        fragmentService={makeFragmentService([makeProvenance()])}
+      />,
+    )
 
     await waitFor(() => {
       expect(mockAddControl).toHaveBeenCalled()
@@ -395,7 +460,12 @@ describe('MapTab', () => {
       makeProvenance({ id: 'uruk', longName: 'Uruk' }),
     ]
 
-    render(<MapTab fragmentService={makeFragmentService(provenances)} />)
+    render(
+      <MapTab
+        findspotService={makeFindspotService()}
+        fragmentService={makeFragmentService(provenances)}
+      />,
+    )
 
     const input = await screen.findByPlaceholderText('Filter by site name...')
     await userEvent.type(input, 'nip')
@@ -438,7 +508,12 @@ describe('MapTab', () => {
     mockLoadImmediately = false
     mockIsStyleLoaded.mockReturnValue(false)
 
-    render(<MapTab fragmentService={makeFragmentService(provenances)} />)
+    render(
+      <MapTab
+        findspotService={makeFindspotService()}
+        fragmentService={makeFragmentService(provenances)}
+      />,
+    )
 
     const input = await screen.findByPlaceholderText('Filter by site name...')
     await userEvent.type(input, 'nip')
@@ -461,7 +536,12 @@ describe('MapTab', () => {
   })
 
   it('disables and re-enables boundary layers without hiding points or clusters', async () => {
-    render(<MapTab fragmentService={makeFragmentService([makeProvenance()])} />)
+    render(
+      <MapTab
+        findspotService={makeFindspotService()}
+        fragmentService={makeFragmentService([makeProvenance()])}
+      />,
+    )
 
     await openLayerPanel()
     const checkbox = await screen.findByRole('checkbox', {
@@ -503,7 +583,12 @@ describe('MapTab', () => {
   })
 
   it('toggles excavation areas without changing boundary layers', async () => {
-    render(<MapTab fragmentService={makeFragmentService([makeProvenance()])} />)
+    render(
+      <MapTab
+        findspotService={makeFindspotService()}
+        fragmentService={makeFragmentService([makeProvenance()])}
+      />,
+    )
 
     await openLayerPanel()
     const checkbox = await screen.findByRole('checkbox', {
@@ -546,7 +631,12 @@ describe('MapTab', () => {
       properties: { [clusterIdProperty]: 42 },
       geometry: { type: 'Point', coordinates: [44.42, 32.542] },
     }
-    render(<MapTab fragmentService={makeFragmentService([makeProvenance()])} />)
+    render(
+      <MapTab
+        findspotService={makeFindspotService()}
+        fragmentService={makeFragmentService([makeProvenance()])}
+      />,
+    )
     await waitFor(() => {
       expect(mockAddSource).toHaveBeenCalled()
     })
@@ -585,7 +675,12 @@ describe('MapTab', () => {
       },
       geometry: { type: 'Point', coordinates: [44.42, 32.542] },
     }
-    render(<MapTab fragmentService={makeFragmentService([makeProvenance()])} />)
+    render(
+      <MapTab
+        findspotService={makeFindspotService()}
+        fragmentService={makeFragmentService([makeProvenance()])}
+      />,
+    )
     await waitFor(() => {
       expect(mockAddSource).toHaveBeenCalled()
     })
@@ -625,13 +720,21 @@ describe('MapTab', () => {
     const excavationArea = {
       type: 'Feature',
       properties: {
-        siteName: 'Uruk',
+        id: 'assur-area-a-checksum',
+        siteName: 'Aššur',
         name: '<script>Eanna</script>',
-        sourceId: 12,
       },
       geometry: { type: 'Polygon', coordinates: [] },
     }
-    render(<MapTab fragmentService={makeFragmentService([makeProvenance()])} />)
+    render(
+      <MapTab
+        findspotService={makeFindspotService(mappedAssurFindspotMapData)}
+        fragmentService={makeFragmentService([makeProvenance()])}
+      />,
+    )
+    await act(async () => {
+      await Bluebird.delay(0)
+    })
     await waitFor(() => {
       expect(mockAddSource).toHaveBeenCalled()
     })
@@ -657,13 +760,22 @@ describe('MapTab', () => {
     expect(
       within(content).getByText('<script>Eanna</script>'),
     ).toBeInTheDocument()
-    expect(within(content).getByText('Uruk')).toBeInTheDocument()
+    expect(within(content).getByText('Aššur')).toBeInTheDocument()
     expect(within(content).getByText('Excavation area')).toBeInTheDocument()
-    expect(within(content).getByText('Source ID: 12')).toBeInTheDocument()
+    await waitFor(() => {
+      expect(
+        within(content).getByText(
+          '18 accessible fragments from 1 mapped findspot',
+        ),
+      ).toBeInTheDocument()
+    })
+    expect(
+      within(content).getByRole('link', { name: 'Findspot 123' }),
+    ).toHaveAttribute('href', buildFindspotFragmentSearchLink(123))
 
     await userEvent.click(
       within(content).getByRole('button', {
-        name: 'Browse historical maps for Uruk',
+        name: 'Browse historical maps for Aššur',
       }),
     )
 
@@ -671,7 +783,7 @@ describe('MapTab', () => {
       'aria-expanded',
       'true',
     )
-    expect(screen.getByLabelText('Search historical maps')).toHaveValue('Uruk')
+    expect(screen.getByLabelText('Search historical maps')).toHaveValue('Aššur')
     expect(mockAddSource).not.toHaveBeenCalledWith(
       expect.stringMatching(/^ebl-historical-raster-/),
       expect.anything(),
@@ -699,7 +811,12 @@ describe('MapTab', () => {
         ],
       },
     }
-    render(<MapTab fragmentService={makeFragmentService([makeProvenance()])} />)
+    render(
+      <MapTab
+        findspotService={makeFindspotService()}
+        fragmentService={makeFragmentService([makeProvenance()])}
+      />,
+    )
     await waitFor(() => {
       expect(mockAddSource).toHaveBeenCalled()
     })
@@ -736,7 +853,12 @@ describe('MapTab', () => {
       geometry: { type: 'Point', coordinates: [44.42, 32.542] },
     }
 
-    render(<MapTab fragmentService={makeFragmentService([makeProvenance()])} />)
+    render(
+      <MapTab
+        findspotService={makeFindspotService()}
+        fragmentService={makeFragmentService([makeProvenance()])}
+      />,
+    )
     await waitFor(() => {
       expect(mockAddSource).toHaveBeenCalled()
     })
@@ -760,7 +882,12 @@ describe('MapTab', () => {
     const canvas = document.createElement('canvas')
     mockGetCanvas.mockReturnValue(canvas)
 
-    render(<MapTab fragmentService={makeFragmentService([makeProvenance()])} />)
+    render(
+      <MapTab
+        findspotService={makeFindspotService()}
+        fragmentService={makeFragmentService([makeProvenance()])}
+      />,
+    )
     await waitFor(() => {
       expect(mockAddSource).toHaveBeenCalled()
     })
@@ -786,7 +913,10 @@ describe('MapTab', () => {
 
   it('cleans up map on unmount', async () => {
     const { unmount } = render(
-      <MapTab fragmentService={makeFragmentService([makeProvenance()])} />,
+      <MapTab
+        findspotService={makeFindspotService()}
+        fragmentService={makeFragmentService([makeProvenance()])}
+      />,
     )
     await waitFor(() => {
       expect(mockAddSource).toHaveBeenCalled()
@@ -798,7 +928,12 @@ describe('MapTab', () => {
   })
 
   it('does not crash with empty provenance data', async () => {
-    render(<MapTab fragmentService={makeFragmentService([])} />)
+    render(
+      <MapTab
+        findspotService={makeFindspotService()}
+        fragmentService={makeFragmentService([])}
+      />,
+    )
 
     expect(
       await screen.findByPlaceholderText('Filter by site name...'),
@@ -817,7 +952,12 @@ describe('MapTab', () => {
       }),
     ]
 
-    render(<MapTab fragmentService={makeFragmentService(provenances)} />)
+    render(
+      <MapTab
+        findspotService={makeFindspotService()}
+        fragmentService={makeFragmentService(provenances)}
+      />,
+    )
 
     await waitFor(() => {
       expect(mockAddSource).toHaveBeenCalled()
@@ -902,10 +1042,15 @@ describe('MapTab', () => {
 
     it('is compact by default and reveals grouped checkboxes on demand', async () => {
       render(
-        <MapTab fragmentService={makeFragmentService([makeProvenance()])} />,
+        <MapTab
+          findspotService={makeFindspotService()}
+          fragmentService={makeFragmentService([makeProvenance()])}
+        />,
       )
 
-      const toggle = await screen.findByRole('button', { name: 'Show' })
+      const toggle = await screen.findByRole('button', {
+        name: 'Show map layers',
+      })
       expect(toggle).toHaveAttribute('aria-expanded', 'false')
       expect(screen.queryByLabelText('Historical maps')).not.toBeInTheDocument()
 
@@ -914,6 +1059,9 @@ describe('MapTab', () => {
         'aria-expanded',
         'true',
       )
+      expect(
+        screen.getByRole('region', { name: 'Map layer controls' }),
+      ).toHaveClass('map-controls__panel')
       expect(
         screen.getByRole('button', { name: /Babylon historical maps/ }),
       ).toHaveAttribute('aria-expanded', 'false')
@@ -928,11 +1076,20 @@ describe('MapTab', () => {
       expect(
         screen.queryByText('Active historical maps'),
       ).not.toBeInTheDocument()
+
+      await userEvent.click(screen.getByRole('button', { name: 'Hide' }))
+      expect(
+        screen.getByRole('button', { name: 'Show map layers' }),
+      ).toHaveAttribute('aria-expanded', 'false')
+      expect(screen.queryByLabelText('Historical maps')).not.toBeInTheDocument()
     })
 
     it('selects multiple overlays and creates unique sources and layers below vectors', async () => {
       render(
-        <MapTab fragmentService={makeFragmentService([makeProvenance()])} />,
+        <MapTab
+          findspotService={makeFindspotService()}
+          fragmentService={makeFragmentService([makeProvenance()])}
+        />,
       )
 
       await openLayerPanel()
@@ -972,7 +1129,10 @@ describe('MapTab', () => {
 
     it('filters catalog entries without removing active overlay controls', async () => {
       render(
-        <MapTab fragmentService={makeFragmentService([makeProvenance()])} />,
+        <MapTab
+          findspotService={makeFindspotService()}
+          fragmentService={makeFragmentService([makeProvenance()])}
+        />,
       )
 
       await openLayerPanel()
@@ -1003,7 +1163,10 @@ describe('MapTab', () => {
 
     it('updates opacity for only one active overlay without recreating sources', async () => {
       render(
-        <MapTab fragmentService={makeFragmentService([makeProvenance()])} />,
+        <MapTab
+          findspotService={makeFindspotService()}
+          fragmentService={makeFragmentService([makeProvenance()])}
+        />,
       )
 
       await openLayerPanel()
@@ -1030,7 +1193,10 @@ describe('MapTab', () => {
 
     it('removes one overlay without affecting another and can clear all', async () => {
       render(
-        <MapTab fragmentService={makeFragmentService([makeProvenance()])} />,
+        <MapTab
+          findspotService={makeFindspotService()}
+          fragmentService={makeFragmentService([makeProvenance()])}
+        />,
       )
 
       await openLayerPanel()
@@ -1067,7 +1233,10 @@ describe('MapTab', () => {
 
     it('shows, hides, and zooms the RN2747 series', async () => {
       render(
-        <MapTab fragmentService={makeFragmentService([makeProvenance()])} />,
+        <MapTab
+          findspotService={makeFindspotService()}
+          fragmentService={makeFragmentService([makeProvenance()])}
+        />,
       )
 
       await openLayerPanel()
@@ -1100,7 +1269,10 @@ describe('MapTab', () => {
 
     it('zooms to one overlay and to all active overlays', async () => {
       render(
-        <MapTab fragmentService={makeFragmentService([makeProvenance()])} />,
+        <MapTab
+          findspotService={makeFindspotService()}
+          fragmentService={makeFragmentService([makeProvenance()])}
+        />,
       )
 
       await openLayerPanel()
@@ -1132,7 +1304,10 @@ describe('MapTab', () => {
       mockLoadImmediately = false
       mockIsStyleLoaded.mockReturnValue(false)
       render(
-        <MapTab fragmentService={makeFragmentService([makeProvenance()])} />,
+        <MapTab
+          findspotService={makeFindspotService()}
+          fragmentService={makeFragmentService([makeProvenance()])}
+        />,
       )
 
       await openLayerPanel()

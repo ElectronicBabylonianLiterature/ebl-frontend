@@ -1,4 +1,7 @@
-import { buildFragmentSearchLink } from './mapLinks'
+import {
+  buildFindspotFragmentSearchLink,
+  buildFragmentSearchLink,
+} from './mapLinks'
 
 describe('buildFragmentSearchLink', () => {
   it('builds a link with the provenance name as site parameter', () => {
@@ -14,5 +17,13 @@ describe('buildFragmentSearchLink', () => {
   it('handles empty string', () => {
     const link = buildFragmentSearchLink('')
     expect(link).toBe('/library/search?site=')
+  })
+})
+
+describe('buildFindspotFragmentSearchLink', () => {
+  it('links to fragment search by authoritative findspot ID', () => {
+    expect(buildFindspotFragmentSearchLink(123)).toBe(
+      '/library/search?findspotId=123',
+    )
   })
 })

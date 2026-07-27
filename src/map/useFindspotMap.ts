@@ -36,6 +36,11 @@ import {
   unclusteredLayer,
 } from './mapLayers'
 import type { FindspotProperties } from './provenanceToGeoJson'
+import type {
+  FindspotMapDataStatus,
+  PolygonFindspotSummary,
+} from './findspotMapData'
+import { createExcavationAreaPopup } from './createExcavationAreaPopup'
 import { provenanceToGeoJson } from './provenanceToGeoJson'
 import { provenancesToPolygonGeoJson } from './provenanceToPolygonGeoJson'
 
@@ -154,62 +159,21 @@ function syncHistoricalOverlays(
   activeOverlayIdsRef.current = nextIds
 }
 
-function createExcavationAreaPopup(
-  feature: MapGeoJSONFeature,
-  browseHistoricalMapsForSite?: (siteName: string) => void,
-): HTMLElement | null {
-  const properties = feature.properties
-  const siteName = properties?.siteName
-  const name = properties?.name
-  const sourceId = properties?.sourceId
-
-  if (typeof siteName !== 'string' || typeof name !== 'string') {
-    return null
-  }
-
-  const container = document.createElement('div')
-  container.className = 'findspot-popup'
-
-  const title = document.createElement('strong')
-  title.textContent = name
-  container.append(title)
-
-  const site = document.createElement('span')
-  site.textContent = siteName
-  container.append(site)
-
-  const type = document.createElement('span')
-  type.textContent = 'Excavation area'
-  container.append(type)
-
-  if (typeof sourceId === 'number' || typeof sourceId === 'string') {
-    const source = document.createElement('span')
-    source.textContent = `Source ID: ${sourceId}`
-    container.append(source)
-  }
-
-  if (browseHistoricalMapsForSite) {
-    const button = document.createElement('button')
-    button.type = 'button'
-    button.className = 'btn btn-outline-secondary btn-sm'
-    button.textContent = `Browse historical maps for ${siteName}`
-    button.addEventListener('click', () =>
-      browseHistoricalMapsForSite(siteName),
-    )
-    container.append(button)
-  }
-
-  return container
-}
-
 function openExcavationAreaPopup(
   map: MapLibreMap,
   feature: MapGeoJSONFeature,
   coordinates: [number, number],
+  findspotSummaries: ReadonlyMap<string, PolygonFindspotSummary>,
+  mapDataStatus: FindspotMapDataStatus,
   browseHistoricalMapsForSite?: (siteName: string) => void,
 ): void {
+  const polygonId = feature.properties?.id
   const content = createExcavationAreaPopup(
     feature,
+    typeof polygonId === 'string'
+      ? findspotSummaries.get(polygonId)
+      : undefined,
+    mapDataStatus,
     browseHistoricalMapsForSite,
   )
   if (!content) return
@@ -360,6 +324,8 @@ function openFindspotPopup(
 function handleMapClick(
   map: MapLibreMap,
   event: MapMouseEvent,
+  findspotSummaries: ReadonlyMap<string, PolygonFindspotSummary>,
+  mapDataStatus: FindspotMapDataStatus,
   browseHistoricalMapsForSite?: (siteName: string) => void,
 ): void {
   const [cluster] = map.queryRenderedFeatures(event.point, {
@@ -391,6 +357,8 @@ function handleMapClick(
       map,
       excavationArea,
       [event.lngLat.lng, event.lngLat.lat],
+      findspotSummaries,
+      mapDataStatus,
       browseHistoricalMapsForSite,
     )
     return
@@ -425,6 +393,11 @@ export default function useFindspotMap(
   activeHistoricalOverlays: readonly ActiveHistoricalMapOverlay[],
   showExcavationAreas: boolean,
   browseHistoricalMapsForSite?: (siteName: string) => void,
+  polygonFindspotSummaries: ReadonlyMap<
+    string,
+    PolygonFindspotSummary
+  > = new Map(),
+  findspotMapDataStatus: FindspotMapDataStatus = 'idle',
 ): MutableRefObject<MapLibreMap | null> {
   const mapRef = useRef<MapLibreMap | null>(null)
   const latestProvenancesRef = useRef(provenances)
@@ -434,12 +407,16 @@ export default function useFindspotMap(
   const latestBrowseHistoricalMapsForSiteRef = useRef(
     browseHistoricalMapsForSite,
   )
+  const latestPolygonFindspotSummariesRef = useRef(polygonFindspotSummaries)
+  const latestFindspotMapDataStatusRef = useRef(findspotMapDataStatus)
   const activeHistoricalOverlayIdsRef = useRef<readonly string[]>([])
   latestProvenancesRef.current = provenances
   latestShowBoundariesRef.current = showBoundaries
   latestHistoricalOverlaysRef.current = activeHistoricalOverlays
   latestShowExcavationAreasRef.current = showExcavationAreas
   latestBrowseHistoricalMapsForSiteRef.current = browseHistoricalMapsForSite
+  latestPolygonFindspotSummariesRef.current = polygonFindspotSummaries
+  latestFindspotMapDataStatusRef.current = findspotMapDataStatus
   const isReady = provenances !== null
 
   useEffect(() => {
@@ -467,7 +444,13 @@ export default function useFindspotMap(
       )
     })
     map.on('click', (event) =>
-      handleMapClick(map, event, latestBrowseHistoricalMapsForSiteRef.current),
+      handleMapClick(
+        map,
+        event,
+        latestPolygonFindspotSummariesRef.current,
+        latestFindspotMapDataStatusRef.current,
+        latestBrowseHistoricalMapsForSiteRef.current,
+      ),
     )
     map.on('mousemove', (event) => setPointerCursor(map, event))
 

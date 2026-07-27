@@ -247,8 +247,30 @@ export default function MapControls(props: Props): JSX.Element {
     [props.historicalMapFilter, props.historicalOverlayGroups],
   )
 
+  if (!props.isLayerPanelOpen) {
+    return (
+      <div className="map-controls map-controls--collapsed">
+        <Button
+          type="button"
+          variant="outline-secondary"
+          size="sm"
+          className="map-controls__launcher"
+          aria-label="Show map layers"
+          aria-expanded={false}
+          aria-controls="map-layer-panel"
+          onClick={() => props.setIsLayerPanelOpen(true)}
+        >
+          + Map layers
+        </Button>
+      </div>
+    )
+  }
+
   return (
-    <section className="map-controls" aria-labelledby="map-layers-heading">
+    <section
+      className="map-controls map-controls--open"
+      aria-labelledby="map-layers-heading"
+    >
       <div className="map-controls__summary">
         <div>
           <h2 id="map-layers-heading" className="map-controls__title">
@@ -264,172 +286,170 @@ export default function MapControls(props: Props): JSX.Element {
           type="button"
           variant="outline-secondary"
           size="sm"
-          aria-expanded={props.isLayerPanelOpen}
+          aria-expanded={true}
           aria-controls="map-layer-panel"
-          onClick={() => props.setIsLayerPanelOpen(!props.isLayerPanelOpen)}
+          onClick={() => props.setIsLayerPanelOpen(false)}
         >
-          {props.isLayerPanelOpen ? 'Hide' : 'Show'}
+          Hide
         </Button>
       </div>
-      {props.isLayerPanelOpen ? (
-        <div id="map-layer-panel" className="map-controls__panel" tabIndex={-1}>
+      <div
+        id="map-layer-panel"
+        className="map-controls__panel"
+        role="region"
+        aria-label="Map layer controls"
+        tabIndex={-1}
+      >
+        <Form.Group
+          className="map-controls__historical-filter"
+          controlId="historical-map-filter"
+        >
+          <Form.Label>Search historical maps</Form.Label>
+          <Form.Control
+            type="text"
+            value={props.historicalMapFilter}
+            placeholder="Search historical maps..."
+            onChange={(event) =>
+              props.setHistoricalMapFilter(event.target.value)
+            }
+          />
+        </Form.Group>
+        <div className="map-controls__scroll" aria-label="Historical maps">
+          {filteredGroups.map((group) => {
+            const originalGroup =
+              props.historicalOverlayGroups.find(
+                (entry) => entry.siteId === group.siteId,
+              ) ?? group
+            const activeInGroup = groupActiveCount(
+              originalGroup,
+              props.activeOverlayIds,
+            )
+            const isExpanded =
+              props.expandedSiteIds.has(group.siteId) ||
+              activeInGroup > 0 ||
+              props.historicalMapFilter.trim().length > 0
+            const seriesForGroup = props.historicalOverlaySeries.filter(
+              (series) => series.overlays[0]?.siteId === group.siteId,
+            )
+            const seriesOverlayIds = new Set(
+              seriesForGroup.flatMap((series) =>
+                series.overlays.map((overlay) => overlay.id),
+              ),
+            )
+            const standaloneOverlays = group.overlays.filter(
+              (overlay) => !seriesOverlayIds.has(overlay.id),
+            )
+
+            return (
+              <section key={group.siteId} className="map-controls__site-group">
+                <button
+                  type="button"
+                  className="map-controls__site-button"
+                  aria-expanded={isExpanded}
+                  aria-label={`${group.siteName} historical maps, ${activeInGroup} of ${originalGroup.overlays.length} active`}
+                  onClick={() =>
+                    toggleExpandedSite(props.setExpandedSiteIds, group.siteId)
+                  }
+                >
+                  <span>{isExpanded ? '-' : '+'}</span>
+                  <strong>{group.siteName}</strong>
+                  <span className="map-controls__count">
+                    {activeInGroup}/{originalGroup.overlays.length}
+                  </span>
+                </button>
+                {isExpanded ? (
+                  <div className="map-controls__site-content">
+                    {seriesForGroup.map((series) =>
+                      renderSeriesControls(
+                        series,
+                        series.overlays.filter(
+                          (overlay) =>
+                            group.overlays.some(
+                              (entry) => entry.id === overlay.id,
+                            ) &&
+                            matchesHistoricalMapFilter(
+                              overlay,
+                              props.historicalMapFilter,
+                            ),
+                        ),
+                        props.activeOverlayIds,
+                        props,
+                      ),
+                    )}
+                    {standaloneOverlays.map((overlay) => (
+                      <Form.Check
+                        key={overlay.id}
+                        type="checkbox"
+                        id={`historical-overlay-${overlay.id}`}
+                        label={historicalOverlayLabel(overlay)}
+                        checked={props.activeOverlayIds.has(overlay.id)}
+                        onChange={(event) =>
+                          props.setOverlayActive(overlay, event.target.checked)
+                        }
+                      />
+                    ))}
+                  </div>
+                ) : null}
+              </section>
+            )
+          })}
+        </div>
+        <ActiveHistoricalMaps
+          activeOverlayEntries={props.activeOverlayEntries}
+          setOverlayActive={props.setOverlayActive}
+          setOverlayOpacity={props.setOverlayOpacity}
+          zoomToActiveOverlays={props.zoomToActiveOverlays}
+          zoomToOverlay={props.zoomToOverlay}
+        />
+        <div className="map-controls__display-row">
           <Form.Group
-            className="map-controls__historical-filter"
-            controlId="historical-map-filter"
+            className="map-controls__toggle"
+            controlId="show-excavation-areas"
           >
-            <Form.Label>Search historical maps</Form.Label>
-            <Form.Control
-              type="text"
-              value={props.historicalMapFilter}
-              placeholder="Search historical maps..."
+            <Form.Check
+              type="checkbox"
+              label="Show excavation areas"
+              checked={props.showExcavationAreas}
               onChange={(event) =>
-                props.setHistoricalMapFilter(event.target.value)
+                props.setShowExcavationAreas(event.target.checked)
               }
             />
           </Form.Group>
-          <div className="map-controls__scroll" aria-label="Historical maps">
-            {filteredGroups.map((group) => {
-              const originalGroup =
-                props.historicalOverlayGroups.find(
-                  (entry) => entry.siteId === group.siteId,
-                ) ?? group
-              const activeInGroup = groupActiveCount(
-                originalGroup,
-                props.activeOverlayIds,
-              )
-              const isExpanded =
-                props.expandedSiteIds.has(group.siteId) ||
-                activeInGroup > 0 ||
-                props.historicalMapFilter.trim().length > 0
-              const seriesForGroup = props.historicalOverlaySeries.filter(
-                (series) => series.overlays[0]?.siteId === group.siteId,
-              )
-              const seriesOverlayIds = new Set(
-                seriesForGroup.flatMap((series) =>
-                  series.overlays.map((overlay) => overlay.id),
-                ),
-              )
-              const standaloneOverlays = group.overlays.filter(
-                (overlay) => !seriesOverlayIds.has(overlay.id),
-              )
-
-              return (
-                <section
-                  key={group.siteId}
-                  className="map-controls__site-group"
-                >
-                  <button
-                    type="button"
-                    className="map-controls__site-button"
-                    aria-expanded={isExpanded}
-                    aria-label={`${group.siteName} historical maps, ${activeInGroup} of ${originalGroup.overlays.length} active`}
-                    onClick={() =>
-                      toggleExpandedSite(props.setExpandedSiteIds, group.siteId)
-                    }
-                  >
-                    <span>{isExpanded ? '-' : '+'}</span>
-                    <strong>{group.siteName}</strong>
-                    <span className="map-controls__count">
-                      {activeInGroup}/{originalGroup.overlays.length}
-                    </span>
-                  </button>
-                  {isExpanded ? (
-                    <div className="map-controls__site-content">
-                      {seriesForGroup.map((series) =>
-                        renderSeriesControls(
-                          series,
-                          series.overlays.filter(
-                            (overlay) =>
-                              group.overlays.some(
-                                (entry) => entry.id === overlay.id,
-                              ) &&
-                              matchesHistoricalMapFilter(
-                                overlay,
-                                props.historicalMapFilter,
-                              ),
-                          ),
-                          props.activeOverlayIds,
-                          props,
-                        ),
-                      )}
-                      {standaloneOverlays.map((overlay) => (
-                        <Form.Check
-                          key={overlay.id}
-                          type="checkbox"
-                          id={`historical-overlay-${overlay.id}`}
-                          label={historicalOverlayLabel(overlay)}
-                          checked={props.activeOverlayIds.has(overlay.id)}
-                          onChange={(event) =>
-                            props.setOverlayActive(
-                              overlay,
-                              event.target.checked,
-                            )
-                          }
-                        />
-                      ))}
-                    </div>
-                  ) : null}
-                </section>
-              )
-            })}
-          </div>
-          <ActiveHistoricalMaps
-            activeOverlayEntries={props.activeOverlayEntries}
-            setOverlayActive={props.setOverlayActive}
-            setOverlayOpacity={props.setOverlayOpacity}
-            zoomToActiveOverlays={props.zoomToActiveOverlays}
-            zoomToOverlay={props.zoomToOverlay}
-          />
-          <div className="map-controls__display-row">
-            <Form.Group
-              className="map-controls__toggle"
-              controlId="show-excavation-areas"
-            >
-              <Form.Check
-                type="checkbox"
-                label="Show excavation areas"
-                checked={props.showExcavationAreas}
-                onChange={(event) =>
-                  props.setShowExcavationAreas(event.target.checked)
-                }
-              />
-            </Form.Group>
-            <Form.Group
-              className="map-controls__toggle"
-              controlId="show-site-boundaries"
-            >
-              <Form.Check
-                type="checkbox"
-                label="Show site boundaries"
-                checked={props.showBoundaries}
-                onChange={(event) =>
-                  props.setShowBoundaries(event.target.checked)
-                }
-              />
-            </Form.Group>
-          </div>
-          <div className="map-controls__footer-actions">
-            <Button
-              type="button"
-              variant="outline-secondary"
-              size="sm"
-              onClick={props.zoomToActiveOverlays}
-              disabled={activeCount === 0}
-            >
-              Zoom to active maps
-            </Button>
-            <Button
-              type="button"
-              variant="outline-secondary"
-              size="sm"
-              onClick={props.clearHistoricalOverlays}
-              disabled={activeCount === 0}
-            >
-              Clear maps
-            </Button>
-          </div>
+          <Form.Group
+            className="map-controls__toggle"
+            controlId="show-site-boundaries"
+          >
+            <Form.Check
+              type="checkbox"
+              label="Show site boundaries"
+              checked={props.showBoundaries}
+              onChange={(event) =>
+                props.setShowBoundaries(event.target.checked)
+              }
+            />
+          </Form.Group>
         </div>
-      ) : null}
+        <div className="map-controls__footer-actions">
+          <Button
+            type="button"
+            variant="outline-secondary"
+            size="sm"
+            onClick={props.zoomToActiveOverlays}
+            disabled={activeCount === 0}
+          >
+            Zoom to active maps
+          </Button>
+          <Button
+            type="button"
+            variant="outline-secondary"
+            size="sm"
+            onClick={props.clearHistoricalOverlays}
+            disabled={activeCount === 0}
+          >
+            Clear maps
+          </Button>
+        </div>
+      </div>
     </section>
   )
 }
