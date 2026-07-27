@@ -118,24 +118,22 @@ function isTabDisabled({
   session,
   props,
 }: {
-  props: TabsProps
+  props: TabsProps & { disabled: boolean }
   name: TabName
   session: Session
 }): boolean {
-  return (
-    {
-      display: false,
-      edition: !session.isAllowedToTransliterateFragments(),
-      lemmatization:
-        _.isEmpty(props.fragment.text.lines) ||
-        !session.isAllowedToLemmatizeFragments(),
-      'named entities': !session.isAllowedToAnnotateFragments(),
-      references: props.disabled,
-      archaeology: props.disabled,
-      colophon: props.disabled,
-      permissions: props.disabled,
-    }[name] ?? false
-  )
+  return {
+    display: false,
+    edition: !session.isAllowedToTransliterateFragments(),
+    lemmatization:
+      _.isEmpty(props.fragment.text.lines) ||
+      !session.isAllowedToLemmatizeFragments(),
+    'named entities': !session.isAllowedToAnnotateFragments(),
+    references: props.disabled,
+    archaeology: props.disabled,
+    colophon: props.disabled,
+    permissions: props.disabled,
+  }[name]
 }
 
 export const EditorTabs: FunctionComponent<TabsProps> = ({
@@ -164,15 +162,16 @@ export const EditorTabs: FunctionComponent<TabsProps> = ({
             mountOnEnter={true}
           >
             {tabNames.map((name) => {
+              const tabProps = { disabled, ...props }
               const children = TabContentsMatcher({
                 name,
-                props: { disabled, ...props },
+                props: tabProps,
                 session,
               })
               return EditorTab({
                 children,
                 name,
-                disabled: isTabDisabled({ name, session, props }),
+                disabled: isTabDisabled({ name, session, props: tabProps }),
               })
             })}
           </Tabs>

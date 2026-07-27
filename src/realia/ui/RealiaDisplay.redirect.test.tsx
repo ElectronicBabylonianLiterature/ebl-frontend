@@ -92,9 +92,15 @@ describe('a realia id URL redirects to the lemma URL', () => {
       `/tools/realia/${realiaId}`,
     )
 
+    await waitFor(() => expectLocation(`/tools/realia/${lemma}`))
     await waitForSpinnerToBeRemoved(screen)
+
     expect(
-      await screen.findByRole('heading', { level: 1, name: lemma }),
+      await screen.findByRole(
+        'heading',
+        { level: 1, name: lemma },
+        { timeout: 3000 },
+      ),
     ).toBeInTheDocument()
   })
 

@@ -272,3 +272,26 @@ it('Calls `updateDatesInText` on Dates in text save', async () => {
     expect(fragmentService.updateDatesInText).toHaveBeenCalledTimes(1),
   )
 })
+
+it('Shows the error and stops saving when a save fails', async () => {
+  await setup()
+  fragmentService.updateEdition.mockReturnValueOnce(
+    Promise.reject(new Error('Save failed.')),
+  )
+
+  submitFormByTestId(screen, 'transliteration-form')
+
+  await screen.findByText('Save failed.')
+  expect(screen.queryByText('Saving...')).not.toBeInTheDocument()
+})
+
+it('Collapses the image column when the editor asks for the space', async () => {
+  await setup()
+  expect(screen.getAllByText('Photo').length).toBeGreaterThan(0)
+
+  fireEvent.click(screen.getByRole('button', { name: 'Hide Image Column' }))
+
+  await waitFor(() =>
+    expect(screen.queryByText('Photo')).not.toBeInTheDocument(),
+  )
+})

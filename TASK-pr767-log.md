@@ -244,6 +244,52 @@ rule is now explicit in **Commands and Tooling**: a local gate result from an un
   finding means changing the code, not offering to; and the review template gains a
   mandatory `CI Status` section.
 
+### F16 — Coverage below 100% in the code this PR touches
+
+CI's coverage table showed ten of the 53 source files this PR touches below 100%. Only one
+of them was introduced here — `editorTabContents.tsx`, extracted from
+`CuneiformFragmentEditor.tsx` in this PR, whose five `onSave` callbacks had no test. The
+other nine were already imperfect on `master`; the repository rule ("coverage is 100% after
+changes in affected code", plus the pre-existing-issues rule) covers them too, so all ten
+were taken.
+
+| File                          | Before (stmts/br/fn/ln) | What was missing                                                       |
+| ----------------------------- | ----------------------- | ---------------------------------------------------------------------- |
+| `editorTabContents.tsx`       | 79/50/69/79             | every tab's save callback, `DisplayContents`, the archaeology fallback |
+| `Info.tsx`                    | 82/63/71/80             | the genre/script/date callbacks and the four optional sections         |
+| `CuneiformFragment.tsx`       | 88/83/71/88             | the save-failure branch and the image-column toggle                    |
+| `CuneiformFragmentEditor.tsx` | 100/89/100/100          | the `disabled` default                                                 |
+| `InjectedApp.tsx`             | 96/100/92/96            | the cache-scope thunks of three services                               |
+| `FragmentService.ts`          | 100/93/100/100          | both non-matching branches of `clearCachedFragments`                   |
+| `FragmentRepository.ts`       | 87/75/86/87             | six delegating methods, `findInCorpus`, `collectLemmaSuggestions`      |
+| `RealiaRepository.ts`         | 96/94/100/96            | the AfO citation without a parenthesised year                          |
+| `SignImages.tsx`              | 96/76/100/96            | the unrecognised form label, the empty-cluster path, the reopen guard  |
+| `token.ts`                    | 100/50/100/100          | the short-circuit in `isStrictlyPartiallyEnclosed`                     |
+
+Three things came out of the work that are worth recording:
+
+1. **A latent bug in `EditorTabs`.** A test asserting that `disabled` disables the tabs
+   failed: `EditorTabs` destructures `disabled` out of its props and then passed the _rest_
+   to `isTabDisabled`, so `props.disabled` was always `undefined` there and no tab was ever
+   disabled while a save was in flight. Fixed by threading the same `tabProps` into both
+   `TabContentsMatcher` and `isTabDisabled`; the now-dead `?? false` fallback went with it.
+2. **A defensive `throw` inside a render cannot be covered without breaking another gate.**
+   `SignImagePagination` threw for an unknown script during render; covering that meant
+   letting React log the error, and silencing `console.error` is explicitly forbidden.
+   Extracted the sort into an exported `sortScriptsByPeriod` and unit tested it instead —
+   same behaviour, no console output.
+3. **A flaky test, found by the repeated runs.** `RealiaDisplay.redirect.test.tsx`'s "renders
+   the entry once it has redirected" failed about one run in five under load: it waited for
+   the spinner, then asserted the heading with the default 1 s timeout, while the redirect
+   does _two_ sequential fetches. It now waits for the redirect milestone first. Eight
+   consecutive runs green.
+
+`InjectedApp.test.tsx` went from 248 to 306 lines, over the 250-line ceiling, so it was split
+into `InjectedApp.test.tsx` (217) and `InjectedApp.cacheScope.test.tsx` (82) over a shared
+`injectedApp.testSupport.tsx` (58). `CuneiformFragment.test.tsx` (297), `SignImages.test.tsx`
+(332) and `FragmentService.test.ts` (~1 990) were already over before this task and grew
+further; they stay recorded under F13.
+
 ## Remote result — green (2026-07-27)
 
 Pushed `c70d7367` to `origin/add-realia-annotation` after verifying the push destination

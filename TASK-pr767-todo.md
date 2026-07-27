@@ -61,6 +61,21 @@ every finding it surfaced. See `TASK-pr767-review.md` for the findings and
 - [x] **Review Guidelines**: checks are a hard gate alongside reviews/comments; failing
       checks are blocking findings; mandatory `CI Status` section in the review template.
 
+## Coverage of the affected code (F16)
+
+- [x] `editorTabContents.tsx` — the one file this PR created that was below 100%: every tab's
+      save callback, the archaeology fallback and `DisplayContents` covered.
+- [x] `Info.tsx`, `CuneiformFragment.tsx`, `CuneiformFragmentEditor.tsx`, `InjectedApp.tsx`,
+      `FragmentService.ts`, `FragmentRepository.ts`, `RealiaRepository.ts`, `token.ts`,
+      `SignImages.tsx` — pre-existing gaps in files this PR touches, closed.
+- [x] Fixed the latent `EditorTabs` bug found while covering it: `disabled` was destructured
+      out before `isTabDisabled` read it, so no tab was ever disabled while saving.
+- [x] Extracted `sortScriptsByPeriod` from `SignImages.tsx` so its defensive throw is unit
+      tested without suppressing React's `console.error`.
+- [x] Made `RealiaDisplay.redirect.test.tsx` deterministic (it failed ~1 run in 5 under load).
+- [x] Split `InjectedApp.test.tsx` (248 → 217 + 82 over a shared `injectedApp.testSupport`)
+      because the new tests pushed it over the 250-line ceiling.
+
 ## Gates after the fixes
 
 - [x] `yarn lint` clean.

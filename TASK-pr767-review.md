@@ -63,6 +63,7 @@ Every finding below that is a code change is **fixed on this branch**, in the co
 | F13 | Partly fixed  | `Markable.test.tsx` split 307 → 59 + 104 lines; the six pre-existing oversized core files are left alone (see log)                 |
 | F14 | Fixed         | `onSave` typed as the `Bluebird<Fragment>` it actually returns, in `editorTabContents.tsx`, `CuneiformFragment.tsx` and `Info.tsx` |
 | F15 | Fixed         | `yarn install --frozen-lockfile`; gates re-run, and also run on the merge with `master` in a scratch worktree                      |
+| F16 | Fixed         | Coverage of all ten affected files below 100% closed; a latent `EditorTabs` bug and a flaky redirect test fixed on the way         |
 
 ## CI Status
 
@@ -432,6 +433,29 @@ external state, masked rather than fixed.
 (`src/common/utils/ConcurrencyLimiter.test.ts`, which exists only on `master`) that no local
 run of this branch executes. Gates now have to be run on the merge result too.
 
+### F16 — Coverage below 100% in the code this PR touches
+
+**Severity: Medium (project rule)**
+
+CI's coverage table showed ten of the 53 source files this PR touches below 100%. Only
+`editorTabContents.tsx` (79 % statements, 50 % branches) was introduced here — it was
+extracted from `CuneiformFragmentEditor.tsx` in this PR and none of its five `onSave`
+callbacks had a test. The other nine were already imperfect on `master`.
+
+**Fix**: all ten brought to 100 % statements, functions and lines. Three by-products worth
+noting, all recorded in `TASK-pr767-log.md`:
+
+- **A latent bug in `EditorTabs`**, found by a test that asserted `disabled` disables the
+  tabs: `disabled` was destructured out of the props before `isTabDisabled` read them, so no
+  tab was ever disabled during a save. Fixed, and the now-dead `?? false` removed.
+- **`SignImages.tsx`'s defensive `throw` could not be covered through rendering** without
+  letting React log to `console.error`, which the console-clean gate forbids. The sort was
+  extracted as `sortScriptsByPeriod` and unit tested instead.
+- **A flaky test**: `RealiaDisplay.redirect.test.tsx` failed roughly one run in five under
+  load — it asserted the heading with the default 1 s timeout while the redirect performs two
+  sequential fetches. It now waits for the redirect milestone first; eight consecutive runs
+  green.
+
 ## Severity
 
 | ID  | Finding                                                        | Severity | Blocked approval       | Now           |
@@ -449,6 +473,9 @@ run of this branch executes. Gates now have to be run on the merge result too.
 | F11 | Save-failure branch uncovered (`SpanAnnotationDisplay.tsx:53`) | Low      | No                     | Fixed         |
 | F12 | Unrelated tooling/policy changes in scope                      | Low      | No                     | Open — author |
 | F13 | Growth of files already over 250 lines                         | Low      | No                     | Partly fixed  |
+| F14 | CI red: `yarn tsc` and `yarn build` fail                       | Blocker  | Yes                    | Fixed         |
+| F15 | Local gates measured against a stale `node_modules`            | Blocker  | Yes                    | Fixed         |
+| F16 | Coverage below 100% in affected files                          | Medium   | Yes (project rule)     | Fixed         |
 
 ## Reproduction Steps
 

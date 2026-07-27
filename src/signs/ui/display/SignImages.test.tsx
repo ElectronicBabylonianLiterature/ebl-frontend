@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react'
 import { waitForSpinnerToBeRemoved } from 'test-support/waitForSpinnerToBeRemoved'
 import SignService from 'signs/application/SignService'
 import Bluebird from 'bluebird'
-import SignImages from 'signs/ui/display/SignImages'
+import SignImages, { sortScriptsByPeriod } from 'signs/ui/display/SignImages'
 import { MemoryRouter } from 'react-router-dom'
 import { CroppedAnnotation } from 'signs/domain/CroppedAnnotation'
 import userEvent from '@testing-library/user-event'
@@ -254,5 +254,79 @@ describe('Sign Images Empty', () => {
         screen.queryByText(croppedAnnotation.fragmentNumber),
       ).not.toBeInTheDocument()
     })
+  })
+})
+
+describe('Sign Images edge cases', () => {
+  function annotationWith(
+    overrides: Partial<CroppedAnnotation>,
+  ): CroppedAnnotation {
+    return { ...croppedAnnotations[0], ...overrides }
+  }
+
+  async function renderWith(annotations: CroppedAnnotation[]): Promise<void> {
+    signService.getCentroidImages.mockReturnValue(Bluebird.resolve(annotations))
+    renderSignImages()
+    await waitForSpinnerToBeRemoved(screen)
+  }
+
+  it('shows an unrecognised form label unchanged', async () => {
+    await renderWith([
+      annotationWith({
+        annotationId: 'odd-form',
+        pcaClustering: {
+          ...croppedAnnotations[0].pcaClustering,
+          form: 'unclustered',
+        },
+      } as Partial<CroppedAnnotation>),
+    ])
+
+    expect(screen.getByTitle('unclustered')).toBeInTheDocument()
+  })
+
+  it('keeps the centroids when no annotation carries a cluster', async () => {
+    await renderWith([
+      annotationWith({
+        annotationId: 'no-cluster',
+        script: 'MA',
+        pcaClustering: undefined,
+      }),
+    ])
+
+    await userEvent.click(
+      screen.getByRole('button', { name: /Middle Assyrian/ }),
+    )
+
+    expect(signService.getClusterVariants).not.toHaveBeenCalled()
+  })
+
+  it('does not refetch the variants when a period is reopened', async () => {
+    signService.getClusterVariants.mockReturnValue(
+      Bluebird.resolve([annotationWith({ script: 'MA' })]),
+    )
+    await renderWith([annotationWith({ script: 'MA' })])
+    const period = screen.getByRole('button', { name: /Middle Assyrian/ })
+
+    await userEvent.click(period)
+    await userEvent.click(period)
+    await userEvent.click(period)
+
+    expect(signService.getClusterVariants).toHaveBeenCalledTimes(1)
+  })
+})
+
+describe('sortScriptsByPeriod', () => {
+  it('orders the scripts by their period, unclassified last', () => {
+    expect(
+      sortScriptsByPeriod({ '': [1], MA: [2], NA: [3] }).map(
+        ([script]) => script,
+      ),
+    ).toEqual(['MA', 'NA', ''])
+  })
+
+  it('refuses a script that is not a known period', () => {
+    expect(() => sortScriptsByPeriod({ XX: [1] })).toThrow(
+      'XX has to be one of',
+    )
   })
 })

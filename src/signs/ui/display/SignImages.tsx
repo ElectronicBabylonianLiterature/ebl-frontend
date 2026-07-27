@@ -168,6 +168,20 @@ function PeriodPreview({
   )
 }
 
+export function sortScriptsByPeriod<Annotation>(
+  scripts: Record<string, Annotation[]>,
+): [string, Annotation[]][] {
+  const periodsAbbr = [...periods.map((period) => period.abbreviation), '']
+
+  return _.sortBy(Object.entries(scripts), ([script]) => {
+    const index = periodsAbbr.indexOf(script)
+    if (index === -1) {
+      throw new Error(`${script} has to be one of ${periodsAbbr}`)
+    }
+    return index
+  })
+}
+
 function SignImagePagination({
   croppedAnnotations,
   signService,
@@ -181,18 +195,10 @@ function SignImagePagination({
     croppedAnnotations,
     (croppedAnnotation) => croppedAnnotation.script,
   )
-  const periodsAbbr = [...periods.map((period) => period.abbreviation), '']
 
   const [activePeriod, setActivePeriod] = useState<string | null>(null)
 
-  const scriptsSorted = _.sortBy(Object.entries(scripts), (elem) => {
-    const index = periodsAbbr.indexOf(elem[0])
-    if (index === -1) {
-      throw new Error(`${elem[0]} has to be one of ${periodsAbbr}`)
-    } else {
-      return index
-    }
-  })
+  const scriptsSorted = sortScriptsByPeriod(scripts)
 
   return (
     <Container>
