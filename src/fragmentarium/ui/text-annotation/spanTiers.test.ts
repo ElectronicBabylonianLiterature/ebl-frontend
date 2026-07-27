@@ -1,5 +1,9 @@
 import { AnnotationSpans } from 'fragmentarium/ui/text-annotation/annotationSpan'
-import { setTiers } from 'fragmentarium/ui/text-annotation/spanTiers'
+import {
+  MAX_TIER_DEPTH,
+  setTiers,
+} from 'fragmentarium/ui/text-annotation/spanTiers'
+import _ from 'lodash'
 
 const words = ['Word-1', 'Word-2', 'Word-3']
 
@@ -55,5 +59,35 @@ describe('setTiers', () => {
       ['Entity-1', 2],
       ['Entity-2', 1],
     ])
+  })
+})
+
+describe('setTiers clamps to the deepest tier the stylesheet generates', () => {
+  const word = 'Word-1'
+  const deepSpans: AnnotationSpans = {
+    namedEntities: _.range(MAX_TIER_DEPTH + 3).map((index) => ({
+      id: `Entity-${index}`,
+      type: 'PERSONAL_NAME',
+      span: [word],
+    })),
+    realia: _.range(3).map((index) => ({
+      id: `Realia-${index}`,
+      realiaId: `realia_00000${index}`,
+      span: [word],
+    })),
+  }
+
+  it('never gives a tag a tier without a rule', () => {
+    const tiers = setTiers([word], deepSpans).namedEntities.map(
+      ({ tier }) => tier,
+    )
+
+    expect(_.max(tiers)).toEqual(MAX_TIER_DEPTH)
+  })
+
+  it('never gives a realia stacked above the tags a tier without a rule', () => {
+    const tiers = setTiers([word], deepSpans).realia.map(({ tier }) => tier)
+
+    expect(_.max(tiers)).toEqual(MAX_TIER_DEPTH)
   })
 })

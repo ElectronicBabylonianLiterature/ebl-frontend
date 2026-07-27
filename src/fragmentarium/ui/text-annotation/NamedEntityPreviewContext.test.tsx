@@ -24,20 +24,37 @@ describe('emptyNamedEntityPreview', () => {
 })
 
 describe('NamedEntityPreviewProvider', () => {
-  it('labels and colours realia spans from the inline info without fetching', () => {
+  function renderPreview(show?: boolean): void {
     render(
       <WithRealiaService>
-        <NamedEntityPreviewProvider fragment={annotatedFragment}>
+        <NamedEntityPreviewProvider fragment={annotatedFragment} show={show}>
           <NamedEntityPreviewToken token={realiaWord}>
             <span>{realiaWord.value}</span>
           </NamedEntityPreviewToken>
         </NamedEntityPreviewProvider>
       </WithRealiaService>,
     )
+  }
+
+  it('labels and colours realia spans from the inline info without fetching', () => {
+    renderPreview()
 
     const indicator = screen.getByTestId('Word-3__Realia-1')
     expect(indicator).toHaveAttribute('data-label', 'Apkallu')
     expect(indicator).toHaveClass('named-entity__DIVINE_NAME')
     expect(realiaServiceMock.find).not.toHaveBeenCalled()
+  })
+
+  it('shows the spans by default', () => {
+    renderPreview(true)
+
+    expect(screen.getByTestId('Word-3__Realia-1')).toBeInTheDocument()
+  })
+
+  it('keeps the token mounted but shows no span when hidden', () => {
+    renderPreview(false)
+
+    expect(screen.queryByTestId('Word-3__Realia-1')).not.toBeInTheDocument()
+    expect(screen.getByText(realiaWord.value)).toBeInTheDocument()
   })
 })

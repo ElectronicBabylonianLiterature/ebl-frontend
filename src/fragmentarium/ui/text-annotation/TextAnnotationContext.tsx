@@ -3,8 +3,7 @@ import {
   AnnotationSpans,
   ApiEntityAnnotationSpan,
   ApiRealiaAnnotationSpan,
-  dedupeEntitySpans,
-  dedupeRealiaSpans,
+  dedupeAnnotationSpans,
   DerivedAnnotationSpans,
   emptyAnnotationSpans,
   isDuplicateEntitySpan,
@@ -118,16 +117,21 @@ function reducer(state: State, action: Action): State {
   }
 }
 
+function createInitialState({
+  words,
+  spans,
+}: {
+  words: readonly string[]
+  spans: AnnotationSpans
+}): State {
+  return { ...setTiers(words, dedupeAnnotationSpans(spans)), words }
+}
+
 export function useAnnotationContext(
   words: readonly string[],
   initial: AnnotationSpans = emptyAnnotationSpans,
 ): AnnotationContextService {
-  const deduped: AnnotationSpans = {
-    namedEntities: dedupeEntitySpans(initial.namedEntities),
-    realia: dedupeRealiaSpans(initial.realia),
-  }
-
-  return useReducer(reducer, { ...setTiers(words, deduped), words })
+  return useReducer(reducer, { words, spans: initial }, createInitialState)
 }
 
 export default AnnotationContext

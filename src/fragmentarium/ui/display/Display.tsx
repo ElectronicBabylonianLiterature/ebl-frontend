@@ -54,15 +54,6 @@ function Display({ fragment, wordService, activeLine }: Props): JSX.Element {
   const [layout, setLayout] = React.useState<TranslationStyle>('standoff')
   const [showNamedEntities, setShowNamedEntities] = React.useState(false)
 
-  const transliteration = (
-    <Transliteration
-      text={fragment.text}
-      activeLine={activeLine}
-      translationStyle={layout}
-      language={language?.value}
-    />
-  )
-
   return (
     <>
       {fragment.introduction.parts.length > 0 && (
@@ -87,13 +78,17 @@ function Display({ fragment, wordService, activeLine }: Props): JSX.Element {
       </section>
 
       <div className="named-entity-display">
-        {showNamedEntities ? (
-          <NamedEntityPreviewProvider fragment={fragment}>
-            {transliteration}
-          </NamedEntityPreviewProvider>
-        ) : (
-          transliteration
-        )}
+        <NamedEntityPreviewProvider
+          fragment={fragment}
+          show={showNamedEntities}
+        >
+          <Transliteration
+            text={fragment.text}
+            activeLine={activeLine}
+            translationStyle={layout}
+            language={language?.value}
+          />
+        </NamedEntityPreviewProvider>
       </div>
 
       {fragment.notes.text.trim() && (

@@ -6,7 +6,10 @@ import withData from 'http/withData'
 import AnnotationContext, {
   useAnnotationContext,
 } from 'fragmentarium/ui/text-annotation/TextAnnotationContext'
-import { AnnotationSpans } from 'fragmentarium/ui/text-annotation/annotationSpan'
+import {
+  AnnotationSpans,
+  dedupeAnnotationSpans,
+} from 'fragmentarium/ui/text-annotation/annotationSpan'
 import RealiaInfoContext, {
   useRealiaInfoService,
 } from 'fragmentarium/ui/text-annotation/RealiaInfoContext'
@@ -32,8 +35,9 @@ function TextAnnotationView({
     () => getWordIds(fragment.text),
     [fragment.text],
   )
-  const [initialAnnotations, setInitialAnnotations] =
-    useState<AnnotationSpans>(annotations)
+  const [initialAnnotations, setInitialAnnotations] = useState<AnnotationSpans>(
+    () => dedupeAnnotationSpans(annotations),
+  )
   const annotationContext = useAnnotationContext(words, initialAnnotations)
   const realiaInfoService = useRealiaInfoService(
     fragment.realiaInfo ?? emptyRealiaInfoEntries,

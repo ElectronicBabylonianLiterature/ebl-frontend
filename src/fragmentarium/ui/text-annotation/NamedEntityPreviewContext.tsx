@@ -29,8 +29,9 @@ const NamedEntityPreviewContext: Context<NamedEntityPreview> =
 
 export function NamedEntityPreviewProvider({
   fragment,
+  show = true,
   children,
-}: PropsWithChildren<{ fragment: Fragment }>): JSX.Element {
+}: PropsWithChildren<{ fragment: Fragment; show?: boolean }>): JSX.Element {
   const spans = useMemo(
     () => createFragmentAnnotationSpans(fragment),
     [fragment],
@@ -45,7 +46,9 @@ export function NamedEntityPreviewProvider({
 
   return (
     <RealiaInfoContext.Provider value={realiaInfoService}>
-      <NamedEntityPreviewContext.Provider value={derivedSpans}>
+      <NamedEntityPreviewContext.Provider
+        value={show ? derivedSpans : emptyNamedEntityPreview}
+      >
         {children}
       </NamedEntityPreviewContext.Provider>
     </RealiaInfoContext.Provider>

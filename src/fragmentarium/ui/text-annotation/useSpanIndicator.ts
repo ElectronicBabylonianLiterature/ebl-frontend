@@ -23,10 +23,13 @@ function isRealiaPageShortcut(event: React.MouseEvent): boolean {
 
 export interface SpanIndicatorPresentation {
   readonly realiaId: string | null
+  readonly label: string
+  readonly isInitial: boolean
   readonly title: string
   readonly dataLabel: string | undefined
   readonly baseClassName: string
   readonly openRealiaPage: (event: React.MouseEvent) => boolean
+  readonly openRealiaPageDirectly: () => void
 }
 
 export function useSpanIndicator(
@@ -38,18 +41,26 @@ export function useSpanIndicator(
     ? entitySpan.realiaId
     : null
   const label = getSpanLabel(lookup, entitySpan)
+  const isInitial = tokenId === _.first(entitySpan.span)
+
+  function openRealiaPageDirectly(): void {
+    openRealiaPageInNewTab(label)
+  }
 
   function openRealiaPage(event: React.MouseEvent): boolean {
     if (!realiaId || !isRealiaPageShortcut(event)) {
       return false
     }
-    openRealiaPageInNewTab(label)
+    openRealiaPageDirectly()
     return true
   }
 
   return {
     realiaId,
+    label,
+    isInitial,
     openRealiaPage,
+    openRealiaPageDirectly,
     title: realiaId ? `${label} (${realiaPageHint})` : label,
     dataLabel: realiaId ? label : undefined,
     baseClassName: classNames(
@@ -58,7 +69,7 @@ export function useSpanIndicator(
       getSpanIndicatorClass(lookup, entitySpan),
       {
         'span-indicator--realia': !!realiaId,
-        initial: tokenId === _.first(entitySpan.span),
+        initial: isInitial,
         final: tokenId === _.last(entitySpan.span),
       },
     ),

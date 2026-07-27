@@ -46,7 +46,7 @@ function SpanEditorForm({
   onDelete,
 }: {
   control: JSX.Element
-  onApply: () => void
+  onApply?: () => void
   onDelete: () => void
 }) {
   return (
@@ -68,6 +68,7 @@ function SpanEditorForm({
             <Button
               variant={'primary'}
               aria-label="update-name-annotation"
+              disabled={!onApply}
               onClick={onApply}
             >
               Apply
@@ -140,16 +141,18 @@ function RealiaSpanEditor({
   return (
     <SpanEditorForm
       onDelete={onDelete}
-      onApply={() => {
-        if (selectedRealia) {
-          register(selectedRealia.entry)
-          onApply({
-            id: entitySpan.id,
-            span: entitySpan.span,
-            realiaId: selectedRealia.value,
-          })
-        }
-      }}
+      onApply={
+        selectedRealia
+          ? () => {
+              register(selectedRealia.entry)
+              onApply({
+                id: entitySpan.id,
+                span: entitySpan.span,
+                realiaId: selectedRealia.value,
+              })
+            }
+          : undefined
+      }
       control={
         <RealiaSelect
           ariaLabel={'edit-realia'}

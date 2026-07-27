@@ -61,25 +61,31 @@ function computeLayerTiers(
   return tiers
 }
 
+export const MAX_TIER_DEPTH = 10
+
+function clampTier(tier: number): number {
+  return Math.min(tier, MAX_TIER_DEPTH)
+}
+
 export function setTiers(
   words: readonly string[],
   spans: AnnotationSpans,
 ): DerivedAnnotationSpans {
   const entityTiers = computeLayerTiers(words, spans.namedEntities)
   const realiaTiers = computeLayerTiers(words, spans.realia)
-  const entityDepth = _.max([...entityTiers.values()]) || 0
+  const entityDepth = clampTier(_.max([...entityTiers.values()]) || 0)
 
   return {
     namedEntities: spans.namedEntities.map((span) => ({
       ...span,
       layer: NAMED_ENTITY_LAYER,
-      tier: entityTiers.get(span.id) || 1,
+      tier: clampTier(entityTiers.get(span.id) || 1),
       name: entitySpanName(span),
     })),
     realia: spans.realia.map((span) => ({
       ...span,
       layer: REALIA_LAYER,
-      tier: entityDepth + (realiaTiers.get(span.id) || 1),
+      tier: clampTier(entityDepth + (realiaTiers.get(span.id) || 1)),
       name: span.realiaId,
     })),
   }

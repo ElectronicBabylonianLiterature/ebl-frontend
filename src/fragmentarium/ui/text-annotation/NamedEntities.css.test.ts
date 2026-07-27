@@ -4,6 +4,8 @@ import {
   ElementQuery,
   resolveWinner,
 } from 'fragmentarium/ui/text-annotation/cssCascade.testSupport'
+import { MAX_TIER_DEPTH } from 'fragmentarium/ui/text-annotation/spanTiers'
+import _ from 'lodash'
 
 const NAMED_ENTITIES_SASS =
   'src/fragmentarium/ui/text-annotation/NamedEntities.sass'
@@ -189,6 +191,24 @@ describe('the transliteration rows ease their padding with the toggle', () => {
 
   it('drops the easing when reduced motion is requested', () => {
     expect(transitionOf(REDUCED_MOTION)).toEqual('none')
+  })
+})
+
+describe('the stylesheet generates a rule for every tier the code can derive', () => {
+  function hasTierRule(depth: number): boolean {
+    return rules.some((rule) =>
+      rule.selector.includes(`.span-indicator.tier-depth--${depth}`),
+    )
+  }
+
+  it('positions every tier up to the clamp', () => {
+    expect(
+      _.range(1, MAX_TIER_DEPTH + 1).filter((depth) => !hasTierRule(depth)),
+    ).toEqual([])
+  })
+
+  it('has no rule beyond the clamp, so the clamp may not be raised alone', () => {
+    expect(hasTierRule(MAX_TIER_DEPTH + 1)).toBe(false)
   })
 })
 

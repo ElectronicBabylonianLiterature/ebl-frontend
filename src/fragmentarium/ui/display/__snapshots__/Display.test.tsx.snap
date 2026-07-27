@@ -20,10 +20,10 @@ exports[`correctly displays simple fragments 1`] = `
       role="group"
     >
       <button
-        aria-label="toggle-named-entities"
+        aria-label="toggle-annotations"
         aria-pressed="false"
         class="btn btn-secondary btn-sm"
-        title="Toggle named entities"
+        title="Toggle annotations"
         type="button"
       >
         ⚘

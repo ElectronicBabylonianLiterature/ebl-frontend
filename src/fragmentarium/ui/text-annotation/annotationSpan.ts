@@ -123,6 +123,13 @@ export function dedupeRealiaSpans(
   return _.uniqBy(spans, realiaSpanKey)
 }
 
+export function dedupeAnnotationSpans(spans: AnnotationSpans): AnnotationSpans {
+  return {
+    namedEntities: dedupeEntitySpans(spans.namedEntities),
+    realia: dedupeRealiaSpans(spans.realia),
+  }
+}
+
 function onRange<Span extends { id: string; span: readonly string[] }>(
   spans: readonly Span[],
   span: readonly string[],

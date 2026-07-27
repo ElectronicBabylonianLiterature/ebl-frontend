@@ -3,6 +3,7 @@ import {
   ApiEntityAnnotationSpan,
   ApiRealiaAnnotationSpan,
   createAnnotationSpanId,
+  dedupeAnnotationSpans,
   dedupeEntitySpans,
   dedupeRealiaSpans,
   ENTITY_ID_PREFIX,
@@ -179,6 +180,15 @@ describe('dedupe', () => {
   it('keeps distinct tags', () => {
     const other = { ...tag, id: 'Entity-2', type: 'ROYAL_NAME' as const }
     expect(dedupeEntitySpans([tag, other])).toEqual([tag, other])
+  })
+
+  it('dedupes both collections without mixing them', () => {
+    expect(
+      dedupeAnnotationSpans({
+        namedEntities: [tag, { ...tag, id: 'Entity-2' }],
+        realia: [realia, { ...realia, id: 'Realia-2' }],
+      }),
+    ).toEqual({ namedEntities: [tag], realia: [realia] })
   })
 })
 

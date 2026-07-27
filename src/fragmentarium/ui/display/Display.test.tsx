@@ -114,7 +114,7 @@ describe('Named entity preview', () => {
   it('shows the toggle without translation controls', async () => {
     await renderFragment(annotatedFragment)
 
-    expect(screen.getByLabelText('toggle-named-entities')).toBeVisible()
+    expect(screen.getByLabelText('toggle-annotations')).toBeVisible()
     expect(screen.queryByLabelText('toggle-layout')).not.toBeInTheDocument()
     expect(screen.queryByLabelText('switch-language')).not.toBeInTheDocument()
   })
@@ -122,7 +122,7 @@ describe('Named entity preview', () => {
   it('hides the named entities by default', async () => {
     await renderFragment(annotatedFragment)
 
-    expect(screen.getByLabelText('toggle-named-entities')).toHaveAttribute(
+    expect(screen.getByLabelText('toggle-annotations')).toHaveAttribute(
       'aria-pressed',
       'false',
     )
@@ -132,7 +132,7 @@ describe('Named entity preview', () => {
   it('shows the named entity and realia spans when toggled on', async () => {
     await renderFragment(annotatedFragment)
 
-    await userEvent.click(screen.getByLabelText('toggle-named-entities'))
+    await userEvent.click(screen.getByLabelText('toggle-annotations'))
 
     expect(await screen.findByTestId('Word-2__Entity-1')).toHaveClass(
       'named-entity__PERSONAL_NAME',
@@ -141,7 +141,7 @@ describe('Named entity preview', () => {
       'data-label',
       'Apkallu',
     )
-    expect(screen.getByLabelText('toggle-named-entities')).toHaveAttribute(
+    expect(screen.getByLabelText('toggle-annotations')).toHaveAttribute(
       'aria-pressed',
       'true',
     )
@@ -149,7 +149,7 @@ describe('Named entity preview', () => {
 
   it('hides the named entities when toggled off again', async () => {
     await renderFragment(annotatedFragment)
-    const toggle = screen.getByLabelText('toggle-named-entities')
+    const toggle = screen.getByLabelText('toggle-annotations')
 
     await userEvent.click(toggle)
     expect(await screen.findByTestId('Word-2__Entity-1')).toBeVisible()

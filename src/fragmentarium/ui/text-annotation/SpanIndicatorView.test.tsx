@@ -116,3 +116,60 @@ describe('SpanIndicatorView', () => {
     expect(openInNewTab).not.toHaveBeenCalled()
   })
 })
+
+describe('reaching the realia page without a mouse', () => {
+  it('exposes the realia indicator as a named link in the tab order', () => {
+    renderView(realiaSpan)
+    const indicator = getIndicator('Realia-1')
+
+    expect(indicator).toHaveAttribute('role', 'link')
+    expect(indicator).toHaveAttribute('tabindex', '0')
+    expect(indicator).toHaveAccessibleName('Open the Realia page for Apkallu')
+  })
+
+  it.each([['Enter'], [' ']])('opens the realia page on %s', (key) => {
+    renderView(realiaSpan)
+    fireEvent.keyDown(getIndicator('Realia-1'), { key })
+
+    expect(openInNewTab).toHaveBeenCalledWith(
+      '/tools/realia/Apkallu',
+      '_blank',
+      'noopener,noreferrer',
+    )
+  })
+
+  it('ignores any other key', () => {
+    renderView(realiaSpan)
+    fireEvent.keyDown(getIndicator('Realia-1'), { key: 'a' })
+
+    expect(openInNewTab).not.toHaveBeenCalled()
+  })
+
+  it('leaves a tag indicator out of the tab order and unnamed', () => {
+    renderView(entitySpan)
+    const indicator = getIndicator('Entity-1')
+
+    expect(indicator).not.toHaveAttribute('role')
+    expect(indicator).not.toHaveAttribute('tabindex')
+    fireEvent.keyDown(indicator, { key: 'Enter' })
+    expect(openInNewTab).not.toHaveBeenCalled()
+  })
+
+  it('gives a multi-word realia a single tab stop, on its first word', () => {
+    const wideSpan = realiaAnnotationSpan({
+      id: 'Realia-2',
+      realiaId: 'realia_000846',
+      span: ['Word-1', 'Word-2'],
+    })
+    render(
+      <RealiaInfoContext.Provider value={{ lookup, register: jest.fn() }}>
+        <SpanIndicatorView tokenId={'Word-2'} entitySpan={wideSpan} />
+      </RealiaInfoContext.Provider>,
+    )
+    const continuation = screen.getByTestId('Word-2__Realia-2')
+
+    expect(continuation).not.toHaveAttribute('tabindex')
+    fireEvent.mouseUp(continuation, { altKey: true, button: 0 })
+    expect(openInNewTab).toHaveBeenCalled()
+  })
+})

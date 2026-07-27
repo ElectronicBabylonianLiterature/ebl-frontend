@@ -150,6 +150,15 @@ describe('SpanEditor', () => {
       expect(mockDispatch).not.toHaveBeenCalled()
       expect(setActiveSpanId).not.toHaveBeenCalled()
     })
+
+    it('disables applying while no realia is selected', async () => {
+      setup(realiaSpan)
+      expect(screen.getByLabelText('update-name-annotation')).toBeEnabled()
+
+      await userEvent.type(screen.getByLabelText('edit-realia'), '{backspace}')
+
+      expect(screen.getByLabelText('update-name-annotation')).toBeDisabled()
+    })
   })
 })
 
