@@ -34,6 +34,10 @@ every finding it surfaced. See `TASK-pr767-review.md` for the findings and
       down, so toggling does not remount the transliteration.
 - [x] **F11** Cover the save-failure branch of `SpanAnnotationDisplay`.
 - [x] **F13** Split `Markable.test.tsx` (307 lines) under the 250-line ceiling.
+- [x] **F14** Fix the failing CI `yarn tsc` / `yarn build` steps at their root cause
+      (`onSave` typed as the `Bluebird<Fragment>` it actually returns).
+- [x] **F15** Re-measure every gate from `yarn install --frozen-lockfile`, and on the merge
+      with `master` in a scratch worktree — the environment that hid F14.
 
 ## Findings that are not code changes (reported, owner = PR author)
 
@@ -47,6 +51,16 @@ every finding it surfaced. See `TASK-pr767-review.md` for the findings and
       `SignImages.tsx` (444), `fragment.ts` (267) are all pre-existing over the ceiling and
       untouched here beyond a few lines — splitting them is separate work. See log.
 
+## Hard gates added to the instructions
+
+- [x] New **CI — The Remote Result Is the Gate** section: fetch the checks before and after,
+      read failing job logs, treat red as blocking, reproduce before fixing, verify on the
+      merge with `master`, run `yarn build` too, and re-confirm after pushing.
+- [x] **Commands and Tooling**: lockfile-consistent install required before reporting any
+      local gate result.
+- [x] **Review Guidelines**: checks are a hard gate alongside reviews/comments; failing
+      checks are blocking findings; mandatory `CI Status` section in the review template.
+
 ## Gates after the fixes
 
 - [x] `yarn lint` clean.
@@ -56,4 +70,9 @@ every finding it surfaced. See `TASK-pr767-review.md` for the findings and
 - [x] Every changed/added file under 250 lines (except the pre-existing ones listed above).
 - [x] Snapshot updated on the single affected file after inspecting the diff.
 - [x] App compiles and serves (`craco start`); no browser/API here for a live run-through.
-- [x] Nothing committed — left staged in the working tree for the user.
+- [x] `yarn build` green (CI's other failing step).
+- [x] Gates re-run on the merge with `master` in a scratch worktree.
+- [ ] **Push and confirm the PR's `test` check goes green** — the CI fix is verified locally
+      and against the merge, but the PR's own checks stay red until a run completes.
+- [x] First batch committed on the user's request; the F14/F15 fix and the instruction gates
+      are uncommitted, awaiting the user.

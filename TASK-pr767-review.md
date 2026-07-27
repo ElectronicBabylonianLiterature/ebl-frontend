@@ -31,34 +31,61 @@ The architecture is sound and follows the repository's hard gates closely:
   The redirect path is served from the `RealiaService` cache, so `realia_x` → lemma costs
   one request, not two.
 
-Gates run locally on `1070d896`, and again after the fixes below: `yarn lint` clean,
-`yarn tsc` clean, full Jest suite green and console-clean, 100 % coverage of the affected
-code (details under **Verification** below).
+**CI on the branch was red the whole time** (`yarn tsc` and `yarn build` failing — **F14**),
+and the first version of this review missed it, because it never fetched the check runs and
+because the local `yarn tsc` it trusted ran against a `node_modules` that was missing
+`@types/bluebird` (**F15**). Both are fixed, and both gaps are now closed by rules in
+`.github/copilot-instructions.md`. Gate results after the fixes are under **Verification**.
 
-What blocked approval was never the design: an unresolved `CHANGES_REQUESTED` review, a
-backend contract this branch cannot ship without, and the `TASK-*.md` working documents that
-would be merged into `master`. The code half of that is now fixed in the working tree.
+What blocked approval was never the design: a broken build, an unresolved
+`CHANGES_REQUESTED` review, a backend contract this branch cannot ship without, and the
+`TASK-*.md` working documents that would be merged into `master`.
 
 ## Resolution status
 
 Every finding below that is a code change is **fixed on this branch**, in the commit
 "Address the PR #767 review findings". `TASK-pr767-log.md` records what changed and why.
 
-| ID  | Status        | What changed                                                                                                       |
-| --- | ------------- | ------------------------------------------------------------------------------------------------------------------ |
-| F1  | Fixed         | `title="Toggle annotations"` / `aria-label="toggle-annotations"`; tests + snapshot updated                         |
-| F2  | Open — author | Deployment ordering against `ebl-api@add-realia-annotation-api`; no client change is correct                       |
-| F3  | Open — author | The eight `TASK-*.md` files must go in the final pre-merge commit                                                  |
-| F4  | Fixed         | `TextAnnotation.save.test.tsx` — both lists non-empty, derived fields asserted absent                              |
-| F5  | Fixed         | Realia preview indicator is a focusable `role="link"` with Enter/Space and an accessible name                      |
-| F6  | Fixed         | `MAX_TIER_DEPTH` clamp in `spanTiers.ts`, pinned against the sass by a cascade test                                |
-| F7  | Fixed         | Lazy `useReducer` initializer                                                                                      |
-| F8  | Fixed         | `initialAnnotations` seeded through the shared `dedupeAnnotationSpans`                                             |
-| F9  | Fixed         | Apply is disabled while no realia is selected                                                                      |
-| F10 | Fixed         | Provider mounted unconditionally with a `show` prop; DOM unchanged                                                 |
-| F11 | Fixed         | Save-failure branch covered; annotation code back to 100 % on all four metrics                                     |
-| F12 | Open — author | Call the tooling/policy changes out in the PR description                                                          |
-| F13 | Partly fixed  | `Markable.test.tsx` split 307 → 59 + 104 lines; the six pre-existing oversized core files are left alone (see log) |
+| ID  | Status        | What changed                                                                                                                       |
+| --- | ------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
+| F1  | Fixed         | `title="Toggle annotations"` / `aria-label="toggle-annotations"`; tests + snapshot updated                                         |
+| F2  | Open — author | Deployment ordering against `ebl-api@add-realia-annotation-api`; no client change is correct                                       |
+| F3  | Open — author | The eight `TASK-*.md` files must go in the final pre-merge commit                                                                  |
+| F4  | Fixed         | `TextAnnotation.save.test.tsx` — both lists non-empty, derived fields asserted absent                                              |
+| F5  | Fixed         | Realia preview indicator is a focusable `role="link"` with Enter/Space and an accessible name                                      |
+| F6  | Fixed         | `MAX_TIER_DEPTH` clamp in `spanTiers.ts`, pinned against the sass by a cascade test                                                |
+| F7  | Fixed         | Lazy `useReducer` initializer                                                                                                      |
+| F8  | Fixed         | `initialAnnotations` seeded through the shared `dedupeAnnotationSpans`                                                             |
+| F9  | Fixed         | Apply is disabled while no realia is selected                                                                                      |
+| F10 | Fixed         | Provider mounted unconditionally with a `show` prop; DOM unchanged                                                                 |
+| F11 | Fixed         | Save-failure branch covered; annotation code back to 100 % on all four metrics                                                     |
+| F12 | Open — author | Call the tooling/policy changes out in the PR description                                                                          |
+| F13 | Partly fixed  | `Markable.test.tsx` split 307 → 59 + 104 lines; the six pre-existing oversized core files are left alone (see log)                 |
+| F14 | Fixed         | `onSave` typed as the `Bluebird<Fragment>` it actually returns, in `editorTabContents.tsx`, `CuneiformFragment.tsx` and `Info.tsx` |
+| F15 | Fixed         | `yarn install --frozen-lockfile`; gates re-run, and also run on the merge with `master` in a scratch worktree                      |
+
+## CI Status
+
+Measured on head `1070d896` (run
+[30267551126](https://github.com/ElectronicBabylonianLiterature/ebl-frontend/actions/runs/30267551126),
+event `pull_request`, checkout `Merge 1070d896 into 4db5c9cd`).
+
+| Check                              | Conclusion            |
+| ---------------------------------- | --------------------- |
+| **test**                           | **failure** → **F14** |
+| CodeQL / Analyze (javascript)      | success               |
+| GitGuardian scan / Security Checks | success               |
+| qlty check (commit status)         | success               |
+| docker, docker-test                | skipped (master only) |
+
+The `test` job failed on two of its four steps — `yarn tsc` (exit 2) and `yarn build`
+(exit 1) — on the same two errors. Its Jest step passed (370 suites, 3 748 passed).
+
+**This was red before the review started, and the first version of this review did not
+mention it: I gathered the reviews and comments but never fetched the check runs.** That gap
+is now closed by the **CI — The Remote Result Is the Gate** section added to
+`.github/copilot-instructions.md`, which makes fetching and reporting the checks a hard gate
+on every review.
 
 ## Pre-existing review state (gathered from GitHub before this review)
 
@@ -339,6 +366,56 @@ from 719 lines down to 60 — the direction of travel is right. The six above we
 over before this branch; the log flags only `SignImages.tsx`. No action required in this PR,
 but they should not keep growing.
 
+### F14 — CI is red: `yarn tsc` and `yarn build` both fail on the branch
+
+**Severity: Blocker (broken build)**
+
+The `test` job on head `1070d896` fails two steps with the same two errors:
+
+```
+src/fragmentarium/ui/fragment/editorTabContents.tsx(48,19): error TS2322:
+  Type '(fields: EditionFields) => Promise<Fragment>' is not assignable to
+  type '(fields: EditionFields) => Bluebird<Fragment>'.
+src/fragmentarium/ui/fragment/editorTabContents.tsx(65,7): error TS2322:
+  Type '(annotations: LineLemmaAnnotations) => Promise<Fragment>' is not assignable to
+  type '(annotations: LineLemmaAnnotations) => Bluebird<Fragment>'.
+```
+
+**Root cause**: commit `1070d896` changed `onSave` from returning `void` to returning
+`Promise<Fragment>` so the annotation editor could chain on the saved fragment — but it used
+the **global** `Promise` in the type, while the value actually returned is the Bluebird from
+`fragmentService.update*()`, and the consumers on the other side (`Edition.updateEdition`,
+`InitializeLemmatizer.updateAnnotation`) require `Bluebird<Fragment>`. The declared type was
+simply wrong about what `handleSave` returns; nothing at runtime was broken, which is why
+the Jest step passed and only the type steps failed.
+
+**Reproduction**: `yarn install --frozen-lockfile && yarn tsc` (see F15 — it does not
+reproduce against a stale `node_modules`).
+
+**Fix**: type the contract as what it actually carries — `onSave: (updatedFragment:
+Bluebird<Fragment>) => Bluebird<Fragment>` in `editorTabContents.tsx` and
+`CuneiformFragment.tsx`, and `onSave: (fragment: Bluebird<Fragment>) => void` in `Info.tsx`,
+which the first two then flow into. No runtime change, no cast.
+
+### F15 — Local gate results were measured against a stale `node_modules`
+
+**Severity: Blocker (invalid verification)**
+
+`@types/bluebird` is declared in `package.json` and pinned in `yarn.lock`, but was **missing
+from the local `node_modules`**. Without it, `import Bluebird from 'bluebird'` degrades to
+`any`, every `Bluebird<T>` annotation stops constraining anything, and both F14 errors
+disappear — so `yarn tsc` reported clean locally while CI failed on the same commit.
+
+This is what made the first version of this review report "tsc clean" as a gate result. It
+is the same class of defect the **Pre-existing Issues** rule warns about: a failure rooted in
+external state, masked rather than fixed.
+
+**Fix**: `yarn install --frozen-lockfile` before trusting any local gate, now a hard gate in
+**Commands and Tooling**. A second lesson lands with it: CI builds the **merge with
+`master`** (`Merge 1070d896 into 4db5c9cd`), so it ran one test file
+(`src/common/utils/ConcurrencyLimiter.test.ts`, which exists only on `master`) that no local
+run of this branch executes. Gates now have to be run on the merge result too.
+
 ## Severity
 
 | ID  | Finding                                                        | Severity | Blocked approval       | Now           |
@@ -384,14 +461,18 @@ named-entity and realia annotations (e.g. `library/NCBT.1121` on `ebldev`).
 
 | Gate                      | Result                                                                                                                                                                                                                                                                                                                                                                                  |
 | ------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Install                   | `yarn install --frozen-lockfile` — **required**; the earlier local runs used a `node_modules` missing `@types/bluebird` (**F15**), which hid **F14**                                                                                                                                                                                                                                    |
 | `yarn lint`               | Clean (eslint + stylelint)                                                                                                                                                                                                                                                                                                                                                              |
-| `yarn tsc`                | Clean                                                                                                                                                                                                                                                                                                                                                                                   |
+| `yarn tsc`                | Clean **after the F14 fix, in a lockfile-consistent install**; it failed with two `TS2322` errors before it (matching CI exactly)                                                                                                                                                                                                                                                       |
 | Full Jest suite           | Before: 369 suites, 3 739 passed + 2 skipped. After the fixes: **371 suites, 3 759 passed + 2 skipped, 0 failed** — run in 15 sequential batches (see note)                                                                                                                                                                                                                             |
 | Console noise             | Zero `console.error` / `console.warn` / `Warning:` / unhandled-rejection lines in the batched output, before and after                                                                                                                                                                                                                                                                  |
 | Coverage of new code      | Before: 26 of 27 files in `src/fragmentarium/ui/text-annotation/` at 100 %, the gap being `SpanAnnotationDisplay.tsx:53` (**F11**). After: **100 % statements, branches, functions and lines across all 27**. `src/realia/**` and `src/fragmentarium/ui/display/` at 100 %                                                                                                              |
 | 250-line ceiling          | Every file this PR adds or edits is under it after the `Markable.test.tsx` split; the six pre-existing exceptions are listed in **F13**                                                                                                                                                                                                                                                 |
 | API-call-efficiency audit | Passed — see **Summary**; no N+1, no fetch on toggle/tab switch, debounced + cancelled search, `realiaInfo` embedded and never echoed back                                                                                                                                                                                                                                              |
 | Data-architecture audit   | Passed — two kinds separate through DTO, state, props, lookups; one serializer; guard narrows both branches; no cross-kind cast                                                                                                                                                                                                                                                         |
+| `yarn build`              | Succeeds — CI's second failing step; it type-checks through ForkTsChecker, so `yarn tsc` alone would not have caught **F14**                                                                                                                                                                                                                                                            |
+| Merge with `master`       | Gates re-run on `Merge <branch> into origin/master` in a scratch `git worktree` (master is 4 commits ahead): `yarn tsc` clean, **372 suites, 3 768 passed + 2 skipped, 0 failed**, zero console output — this is what CI actually builds, and it includes `ConcurrencyLimiter.test.ts`, which exists only on `master`                                                                   |
+| Remote CI                 | Head `1070d896`: `test` **failing** (**F14**); all other checks green. To be re-confirmed on the new head once pushed                                                                                                                                                                                                                                                                   |
 | Running the app           | **Partial** — `craco start` compiles and serves 200 on the branch with no webpack/type errors, but `REACT_APP_DICTIONARY_API_URL` (`localhost:8001`) is not running here and this environment has no browser or interactive Auth0 login, so the annotation and preview screens could not be exercised against real data. Behaviour was verified through the test suite and code reading |
 
 Note on the suite: `yarn test --watchAll=false` (the project's `--runInBand`,
@@ -417,9 +498,12 @@ files in batches of 25 with a larger heap completed green.
 
 ## Recommendation
 
-**Approve once F2, F3 and F12 are done by the author** — every code finding (F1, F4–F11 and
-the in-scope part of F13) is now fixed in the working tree, and lint, tsc, the full suite,
-the console-noise check and 100 % coverage of the affected code all pass on the result.
+**Do not approve until CI is green on a pushed head.** F14 (a broken build) and F15 (gate
+results measured in a stale environment) both landed after the first pass of this review;
+every code finding — F1, F4–F11, F14, F15 and the in-scope part of F13 — is fixed locally,
+and lint, tsc, build, the full suite (on the branch _and_ on the merge with `master`), the
+console-noise check and 100 % coverage of the affected code all pass. None of that counts
+until the branch is pushed and the PR's checks come back green.
 
 What remains is not code:
 
@@ -435,8 +519,8 @@ The `CHANGES_REQUESTED` state stands until `Fabdulla1` re-reviews; both of their
 
 ## What Has To Be Done
 
-Items 1–9 are **done and committed** on this branch. Item 12 (the PR description) is done.
-Items 10, 11 and 13 remain, and are the author's.
+Items 1–9 and 15–16 are **done**. Item 12 (the PR description) is done. Items 10, 11, 13
+and 14 remain, and are the author's.
 
 1. ~~**[Blocker — F1]** Rename the display toggle to cover both layers.~~ Done —
    `FragmentDisplaySettings.tsx`, `Display.test.tsx` and the snapshot (one file, diff
@@ -465,5 +549,15 @@ Items 10, 11 and 13 remain, and are the author's.
 13. **[Re-review]** Re-request review from `Fabdulla1`, whose `CHANGES_REQUESTED` is the
     current blocking state. _(Reviewer assignment is the author's to do — not to be
     automated.)_
-14. **[Before merge]** Re-run `yarn lint`, `yarn tsc` and the full suite; confirm the run is
-    console-clean.
+14. **[Before merge]** Re-run `yarn lint`, `yarn tsc`, `yarn build` and the full suite from a
+    `yarn install --frozen-lockfile` environment, on the merge with `master`; confirm the run
+    is console-clean.
+15. ~~**[Blocker — F14]** Fix the failing `yarn tsc` / `yarn build` steps.~~ Done — `onSave`
+    is typed as the `Bluebird<Fragment>` it actually returns (`editorTabContents.tsx`,
+    `CuneiformFragment.tsx`, `Info.tsx`); verified against the merge with `master`.
+16. ~~**[Blocker — F15]** Re-measure every gate from a lockfile-consistent install.~~ Done —
+    `yarn install --frozen-lockfile`; the CI-vs-local gap is now a hard gate in
+    `.github/copilot-instructions.md` (**CI — The Remote Result Is the Gate**).
+17. **[Blocker — F14, after pushing]** Push the branch and confirm the `test` check goes
+    green on the new head before approving or merging. The fix is verified locally and
+    against the merge, but the PR's own checks are still red until a run completes.

@@ -1,4 +1,5 @@
 import React from 'react'
+import Bluebird from 'bluebird'
 
 import References from 'fragmentarium/ui/fragment/References'
 import Edition from 'fragmentarium/ui/edition/Edition'
@@ -29,7 +30,7 @@ export type TabsProps = {
   fragmentSearchService
   wordService: WordService
   findspotService: FindspotService
-  onSave: (updatedFragment: Promise<Fragment>) => Promise<Fragment>
+  onSave: (updatedFragment: Bluebird<Fragment>) => Bluebird<Fragment>
   disabled?: boolean
   activeLine: string
   onToggle

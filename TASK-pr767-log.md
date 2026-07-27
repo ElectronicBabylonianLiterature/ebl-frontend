@@ -1,5 +1,34 @@
 # TASK-pr767 — Work Log
 
+## Second process failure — the review never looked at CI
+
+The user asked whether the review mentions the CI errors. It did not, and it should have:
+the PR's `test` check had been **failing** the entire time (`yarn tsc` and `yarn build`,
+findings **F14**/**F15** in the review).
+
+Two independent mistakes produced that:
+
+1. **I never fetched the check runs.** The _Review Guidelines_ hard gate says to gather every
+   review and comment before reviewing, and to resolve findings "raised by automated review
+   bots". I read that as the qlty inline comments and stopped there — the GitHub Actions
+   result is not a review comment, so nothing in my process ever asked for it. A red build
+   is the single most important fact about a PR and my review did not contain it.
+2. **I reported a green `yarn tsc` from an environment I had not verified.** `@types/bluebird`
+   was missing from the local `node_modules` although `package.json` and `yarn.lock` both
+   pin it. Without it `Bluebird<T>` degrades to `any`, so the two real type errors vanished
+   locally. I took "Done in 24.45s" as proof and moved on.
+
+A third fact, found while fixing the first two: **CI builds the merge with `master`**
+(`Merge 1070d896 into 4db5c9cd`), and `master` is 4 commits ahead. It therefore runs one test
+file that exists only on `master` (`src/common/utils/ConcurrencyLimiter.test.ts`) — my local
+"369 suites" could never have matched CI's "370" and I did not notice the discrepancy.
+
+Root cause common to all three: I treated my own local run as the definition of "the gates
+pass", when the gate that actually decides is the remote one. Fixed in the instructions by a
+new **CI — The Remote Result Is the Gate** section, a lockfile-consistency rule in
+**Commands and Tooling**, and a CI clause plus a mandatory `CI Status` section in the
+**Review Guidelines**.
+
 ## Process failure at the start of this task
 
 I ran the review, exported `TASK-pr767-review.md`, and then **stopped and reported** the
@@ -174,6 +203,46 @@ its own task rather than attempted. `SignImages.tsx` was flagged the same way in
   (`localhost:8001`) is down and this environment has no browser or interactive Auth0
   login, so the annotation and preview screens could not be exercised against real data.
   Stated plainly rather than claimed.
+
+### F14 — `yarn tsc` and `yarn build` failed in CI
+
+`1070d896` widened `onSave` from `=> void` to `=> Promise<Fragment>` so the annotation
+editor could chain on the saved fragment, but typed it with the **global** `Promise`. What
+`handleSave` actually returns is the Bluebird from `fragmentService.update*()`, and the
+consumers on the other side — `Edition.updateEdition` and `InitializeLemmatizer`'s
+`updateAnnotation` — declare `Bluebird<Fragment>`. `Promise<Fragment>` is missing 40-odd
+Bluebird members, so both call sites in `editorTabContents.tsx` failed to type-check.
+
+Fixed by making the declaration honest rather than casting: `onSave` is
+`(updatedFragment: Bluebird<Fragment>) => Bluebird<Fragment>` in `editorTabContents.tsx` and
+`CuneiformFragment.tsx`, and `Info.tsx`'s narrower `onSave` prop follows to
+`(fragment: Bluebird<Fragment>) => void`. No runtime change: the values were always
+Bluebirds. Verified with `yarn tsc` **and** `yarn build` (CI fails on both; `yarn build`
+type-checks through ForkTsChecker, so running `yarn tsc` alone is not sufficient), and again
+on the merge with `master`.
+
+### F15 — Local gates ran against a stale `node_modules`
+
+`yarn install --frozen-lockfile` restored `@types/bluebird`, after which the local `yarn tsc`
+reproduced CI's two errors exactly. Every gate was then re-run from that environment. The
+rule is now explicit in **Commands and Tooling**: a local gate result from an unverified
+`node_modules` is not evidence.
+
+## Hard gates added to `.github/copilot-instructions.md`
+
+- **New section, CI — The Remote Result Is the Gate**: fetch every check run and commit
+  status for the PR head before starting and before finalizing; read the failing job's log
+  and annotations rather than guessing from the check name; treat a red check as a blocking
+  finding regardless of who made it red; reproduce every failure locally before fixing it,
+  and suspect the environment when it will not reproduce; run the gates on the **merge with
+  `master`** in a scratch `git worktree`, because that is what CI builds; run every gate CI
+  runs, `yarn build` included; and after pushing, wait for the run and confirm it is green.
+- **Commands and Tooling**: a lockfile-consistent install is a hard gate before any local
+  gate result may be reported.
+- **Review Guidelines**: fetching the checks is now a hard gate on equal footing with
+  gathering reviews and comments; every failing check is a blocking finding; "addressing" a
+  finding means changing the code, not offering to; and the review template gains a
+  mandatory `CI Status` section.
 
 ## Commit and PR description (2026-07-27)
 

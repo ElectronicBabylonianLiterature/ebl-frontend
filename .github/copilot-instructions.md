@@ -78,6 +78,49 @@ Verify before finalizing, and state the result in the task log:
 - Treat lint as a hard gate: do not stop after changes until `yarn lint` reports no lint errors.
 - After any code change, always run `yarn tsc` before finalizing work.
 - Treat TypeScript compilation as a hard gate: do not stop after changes until `yarn tsc` reports no errors.
+- Treat a lockfile-consistent install as a hard gate **before** any local gate result is reported. A local `yarn lint` / `yarn tsc` / test run proves nothing if `node_modules` does not match `yarn.lock` — a missing `@types/*` package silently degrades the types it declares to `any`, so real type errors disappear locally and surface only in CI. Run `yarn install --frozen-lockfile` (or `yarn install --check-files`) first, and never report a green local gate from an environment you have not verified.
+
+## CI — The Remote Result Is the Gate
+
+**Treat the pull request's remote checks as a hard gate, in every task and every review.** A green local run is evidence, not proof: CI installs from the lockfile in a clean environment and builds the **merge of the branch with `master`**, neither of which a local run reproduces. Never call work finished, and never approve or sign off a review, while any check on the PR is failing — including checks that were already red before the change.
+
+- **Always fetch the checks before starting and before finalizing.** For the PR head SHA, list every check run and commit status, with its conclusion:
+
+  ```sh
+  gh pr checks <number>                                     # or, without gh:
+  curl -s -H "Authorization: Bearer $GITHUB_TOKEN" \
+    "$GITHUB_API_URL/repos/$GITHUB_REPOSITORY/commits/<sha>/check-runs?per_page=100"
+  curl -s -H "Authorization: Bearer $GITHUB_TOKEN" \
+    "$GITHUB_API_URL/repos/$GITHUB_REPOSITORY/commits/<sha>/status"
+  ```
+
+- **Read the failing job's log and annotations — never infer the cause from the check name.** The annotations name the file and line; the log names the step and the exact command that failed:
+
+  ```sh
+  curl -s -H "Authorization: Bearer $GITHUB_TOKEN" \
+    "$GITHUB_API_URL/repos/$GITHUB_REPOSITORY/check-runs/<check_run_id>/annotations"
+  curl -s -L -H "Authorization: Bearer $GITHUB_TOKEN" \
+    "$GITHUB_API_URL/repos/$GITHUB_REPOSITORY/actions/jobs/<job_id>/logs"
+  ```
+
+- **A red check is a blocking finding, whoever made it red.** Fix it at its root cause under the Pre-existing Issues rule; do not defer it, do not describe it as someone else's, and do not report a task or review as complete while it is red.
+- **Reproduce every CI failure locally before fixing it.** If it does not reproduce, the environment is the bug: check `node_modules` against `yarn.lock` first, then the merge with `master`. Fixing a failure you cannot reproduce is guessing.
+- **Verify against the merge, not the branch.** CI checks out `Merge <head> into <base>`. `master` moves. Before finalizing, run the gates on the merge result in a scratch `git worktree` (never `git stash` on a working tree that is not yours):
+
+  ```sh
+  git worktree add --detach <path> origin/master
+  git -C <path> merge --no-ff --no-edit <branch>   # then run yarn tsc / yarn build / the suite there
+  git worktree remove <path>
+  ```
+
+- **Run every gate CI runs, not just the ones that are convenient.** For this repository that is `yarn lint`, `yarn tsc`, the full test suite, and `yarn build` — `yarn build` type-checks through a different path and has failed here when `yarn tsc` alone was thought to be enough.
+- **After pushing, wait for the checks and confirm they are green.** A push is not the end of the task; the run it triggers is. Re-fetch the checks for the new head and report the conclusion.
+
+Verify before finalizing, and state the result in the task log:
+
+- Every check on the PR head is listed with its conclusion, and none is failing.
+- Every failure was reproduced locally, fixed at its root cause, and re-verified.
+- The gates were run on the merge with `master`, from a lockfile-consistent install.
 
 ## Git Branching and Pushing
 
@@ -139,14 +182,15 @@ Verify before finalizing, and state the result in the task log:
 ## Review Guidelines
 
 - Treat fetching all pre-existing GitHub reviews and comments as a hard gate before any review: never start a review without first gathering every existing review (timeline review events) and every comment (inline review comments and general/issue comments) from GitHub for the PR. Include their resolution status (resolved vs unresolved) and whether each is outdated against the current head.
-- Treat addressing every finding as a hard gate: resolve all findings surfaced in the review, including pre-existing ones and those raised by automated review bots, at their root cause before finalizing. Do not defer or merely report them.
+- Treat addressing every finding as a hard gate: resolve all findings surfaced in the review, including pre-existing ones and those raised by automated review bots, at their root cause before finalizing. Do not defer or merely report them. "Addressing" means changing the code, not describing the change and offering to make it — the only exceptions are actions outside the repository (deployment order, another repository's PR) and actions the user has explicitly withheld.
+- Treat the remote CI result as a hard gate on every review, on equal footing with gathering the reviews and comments: **never start a review without also fetching every check run and commit status for the PR head**, per the **CI — The Remote Result Is the Gate** section above. The review file must state each check and its conclusion, and every failing check must be raised as a **blocking finding** and fixed at its root cause — a red check is a defect in the PR whether or not the change under review caused it. Never state that "gates pass" on the strength of a local run alone; a local run does not build the merge with `master` and does not prove the CI environment.
 - Keep review comments short, specific, and actionable.
 - Prioritize correctness, regressions, security, and test coverage in every review.
 - Treat an API-call-efficiency audit as a hard gate in every review: always audit the data-fetching paths the change touches against the **API Call Efficiency** section above, and raise a finding for any redundant or inefficient call — N+1 per-id fetching, re-fetching on toggle/tab/re-render, un-debounced search-as-you-type, a second round-trip for data that could be embedded, or an uncancelled superseded request. Resolving every such finding is a blocker for approval.
 - All instances of console errors, warnings, or unhandled rejections found in the test output must be noted as findings in the review. They are never acceptable noise — every such instance must be fixed at its root cause. Resolving every such finding is a hard gate: a PR may not be approved while any console-noise finding remains.
 - Verify changed behavior locally while running the modified application before finalizing review conclusions.
 - Export every detailed review to a `.md` file using the same convention: `TASK-<id>-review.md`.
-- Use a consistent review template with these sections: `Summary`, `Findings`, `Severity`, `Reproduction Steps`, and `Recommendation`.
+- Use a consistent review template with these sections: `Summary`, `CI Status`, `Findings`, `Severity`, `Reproduction Steps`, and `Recommendation`. `CI Status` lists every check on the PR head with its conclusion, the head SHA it was measured on, and — for any failure — the failing step, the root cause, and its finding id.
 - When asked to check PR reviews, always gather both inline comments and timeline review events (for example `CHANGES_REQUESTED`, `APPROVED`, `COMMENTED`).
 - In the review file, explicitly include comment status tracking: unresolved vs resolved comments.
 - In the review file, add a mandatory final section named `What Has To Be Done` with a numbered list of concrete required actions.
