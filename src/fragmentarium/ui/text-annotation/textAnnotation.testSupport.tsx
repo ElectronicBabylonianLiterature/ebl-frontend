@@ -4,6 +4,7 @@ import RealiaService from 'realia/application/RealiaService'
 import RealiaServiceContext from 'realia/application/RealiaServiceContext'
 import { RealiaEntry } from 'realia/domain/RealiaEntry'
 import {
+  AnnotationSpans,
   ApiEntityAnnotationSpan,
   ApiRealiaAnnotationSpan,
   DerivedSpanFields,
@@ -13,6 +14,16 @@ import {
   REALIA_LAYER,
 } from 'fragmentarium/ui/text-annotation/annotationSpan'
 import { EntityTypes } from 'fragmentarium/ui/text-annotation/EntityType'
+import { Fragment } from 'fragmentarium/domain/fragment'
+import { UpdateNamedEntityAnnotations } from 'fragmentarium/ui/text-annotation/SpanAnnotationDisplay'
+
+export function updateNamedEntityAnnotationsMock(
+  fragment: Fragment,
+): jest.MockedFunction<UpdateNamedEntityAnnotations> {
+  return jest.fn<Promise<Fragment>, [AnnotationSpans]>(() =>
+    Promise.resolve(fragment),
+  )
+}
 
 export function entityAnnotationSpan(
   span: ApiEntityAnnotationSpan,

@@ -229,7 +229,7 @@ function SignImagePagination({
 async function runWithConcurrencyLimit<T, R>(
   items: T[],
   limit: number,
-  task: (item: T) => Promise<R>,
+  task: (item: T) => PromiseLike<R>,
 ): Promise<PromiseSettledResult<R>[]> {
   const results: PromiseSettledResult<R>[] = []
   let index = 0
@@ -287,8 +287,11 @@ async function loadClusterAnnotations({
     }
   }
 
-  const results = await runWithConcurrencyLimit(clusterIds, 4, (clusterId) =>
-    signService.getClusterVariants(signName, clusterId, scriptAbbr),
+  const results = await runWithConcurrencyLimit<string, CroppedAnnotation[]>(
+    clusterIds,
+    4,
+    (clusterId) =>
+      signService.getClusterVariants(signName, clusterId, scriptAbbr),
   )
 
   const fallbackClusterIds = results

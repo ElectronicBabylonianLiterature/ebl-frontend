@@ -20,6 +20,8 @@ import ScopeEditor from 'fragmentarium/ui/fragment/ScopeEditor'
 import { LineLemmaAnnotations } from 'fragmentarium/ui/fragment/lemma-annotation/LemmaAnnotation'
 import { InitializeLemmatizer } from 'fragmentarium/ui/fragment/lemma-annotation/InitializeLemmatizer'
 import TextAnnotation from 'fragmentarium/ui/text-annotation/TextAnnotation'
+import { AnnotationSpans } from 'fragmentarium/ui/text-annotation/annotationSpan'
+import { UpdateNamedEntityAnnotations } from 'fragmentarium/ui/text-annotation/SpanAnnotationDisplay'
 
 export type TabsProps = {
   fragment: Fragment
@@ -27,7 +29,7 @@ export type TabsProps = {
   fragmentSearchService
   wordService: WordService
   findspotService: FindspotService
-  onSave
+  onSave: (updatedFragment: Promise<Fragment>) => Promise<Fragment>
   disabled?: boolean
   activeLine: string
   onToggle
@@ -66,10 +68,20 @@ export function LemmatizationContents(props: TabsProps): JSX.Element {
 }
 
 export function NamedEntityAnnotationContents(props: TabsProps): JSX.Element {
+  const updateNamedEntityAnnotations: UpdateNamedEntityAnnotations = (
+    annotations: AnnotationSpans,
+  ) =>
+    props.onSave(
+      props.fragmentService.updateNamedEntityAnnotations(
+        props.fragment.number,
+        annotations,
+      ),
+    )
   return (
     <TextAnnotation
       fragmentService={props.fragmentService}
       number={props.fragment.number}
+      updateNamedEntityAnnotations={updateNamedEntityAnnotations}
     />
   )
 }

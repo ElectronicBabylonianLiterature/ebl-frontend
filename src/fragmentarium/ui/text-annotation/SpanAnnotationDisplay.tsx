@@ -1,5 +1,4 @@
 import React, { useContext, useRef, useState } from 'react'
-import FragmentService from 'fragmentarium/application/FragmentService'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import { AbstractLine } from 'transliteration/domain/abstract-line'
 import { defaultLabels, Labels } from 'transliteration/domain/labels'
@@ -18,16 +17,20 @@ import _ from 'lodash'
 import './TextAnnotation.sass'
 import './NamedEntities.sass'
 
+export type UpdateNamedEntityAnnotations = (
+  annotations: AnnotationSpans,
+) => Promise<Fragment>
+
 export default function SpanAnnotationDisplay({
   fragment,
   initialAnnotations,
   setInitialAnnotations,
-  fragmentService,
+  updateNamedEntityAnnotations,
 }: {
   fragment: Fragment
   initialAnnotations: AnnotationSpans
   setInitialAnnotations: React.Dispatch<React.SetStateAction<AnnotationSpans>>
-  fragmentService: FragmentService
+  updateNamedEntityAnnotations: UpdateNamedEntityAnnotations
 }): JSX.Element {
   const [selection, setSelection] = useState<readonly string[]>([])
   const [activeSpanId, setActiveSpanId] = React.useState<string | null>(null)
@@ -42,12 +45,12 @@ export default function SpanAnnotationDisplay({
   const saveAnnotations = () => {
     const updatedAnnotations = omitDerivedSpanFields(spans)
     setIsSaving(true)
-    fragmentService
-      .updateNamedEntityAnnotations(fragment.number, updatedAnnotations)
+    updateNamedEntityAnnotations(updatedAnnotations)
       .then(() => {
         setIsSaving(false)
         setInitialAnnotations(updatedAnnotations)
       })
+      .catch(() => setIsSaving(false))
   }
   const resetSelections = () => {
     setSelection([])

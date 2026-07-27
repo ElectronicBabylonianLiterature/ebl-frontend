@@ -28,7 +28,7 @@ type CuneiformFragmentProps = {
   findspotService: FindspotService
   activeFolio: Folio | null
   tab: string | null
-  onSave: (updatedFragment: Promise<Fragment>) => void
+  onSave: (updatedFragment: Promise<Fragment>) => Promise<Fragment>
   saving: boolean
   error: Error | null
   activeLine: string

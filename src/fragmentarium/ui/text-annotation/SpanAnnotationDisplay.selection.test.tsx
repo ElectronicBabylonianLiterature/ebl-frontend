@@ -4,7 +4,10 @@ import { ThemeProvider } from 'react-bootstrap'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import TextAnnotation from 'fragmentarium/ui/text-annotation/TextAnnotation'
 import { getSelectedTokens } from 'fragmentarium/ui/text-annotation/selectionUtils'
-import { WithRealiaService } from 'fragmentarium/ui/text-annotation/textAnnotation.testSupport'
+import {
+  updateNamedEntityAnnotationsMock,
+  WithRealiaService,
+} from 'fragmentarium/ui/text-annotation/textAnnotation.testSupport'
 import {
   createAnnotatedFragment,
   createAnnotatedWord,
@@ -64,6 +67,9 @@ async function setup(): Promise<void> {
         <TextAnnotation
           fragmentService={fragmentServiceMock}
           number={fragment.number}
+          updateNamedEntityAnnotations={updateNamedEntityAnnotationsMock(
+            fragment,
+          )}
         />
       </WithRealiaService>
     </ThemeProvider>,

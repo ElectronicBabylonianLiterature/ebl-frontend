@@ -1,10 +1,11 @@
 import React from 'react'
-import { render, screen } from '@testing-library/react'
+import { act, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import RealiaSelect, {
   createRealiaOptionLoader,
   loadRealiaOptions,
   RealiaOption,
+  SEARCH_DEBOUNCE_MS,
   toRealiaOption,
 } from 'fragmentarium/ui/text-annotation/RealiaSelect'
 import { realiaEntryFactory } from 'test-support/realia-fixtures'
@@ -60,16 +61,33 @@ describe('loadRealiaOptions', () => {
 })
 
 describe('RealiaSelect', () => {
+  const setupUser = () =>
+    userEvent.setup({
+      advanceTimers: (delay) => jest.advanceTimersByTime(delay),
+    })
+  const advanceDebounce = () =>
+    act(() => {
+      jest.advanceTimersByTime(SEARCH_DEBOUNCE_MS)
+    })
+
   beforeEach(() => {
     jest.clearAllMocks()
+    jest.useFakeTimers()
     mockRealiaSearch([entry])
   })
 
-  it('searches realia entries and reports the realiaId', async () => {
-    renderSelect()
-    await userEvent.type(screen.getByLabelText('realia'), 'Apk')
-    await userEvent.click(await screen.findByText('Apkallu'))
+  afterEach(() => {
+    jest.useRealTimers()
+  })
 
+  it('searches realia entries and reports the realiaId', async () => {
+    const user = setupUser()
+    renderSelect()
+    await user.type(screen.getByLabelText('realia'), 'Apk')
+    advanceDebounce()
+    await user.click(await screen.findByText('Apkallu'))
+
+    expect(realiaServiceMock.search).toHaveBeenCalledTimes(1)
     expect(realiaServiceMock.search).toHaveBeenCalledWith('Apk')
     expect(onChange).toHaveBeenCalledWith({
       value: 'realia_000846',
@@ -79,8 +97,10 @@ describe('RealiaSelect', () => {
   })
 
   it('does not search on an empty query', async () => {
+    const user = setupUser()
     renderSelect()
-    await userEvent.click(screen.getByLabelText('realia'))
+    await user.click(screen.getByLabelText('realia'))
+    advanceDebounce()
 
     expect(realiaServiceMock.search).not.toHaveBeenCalled()
   })

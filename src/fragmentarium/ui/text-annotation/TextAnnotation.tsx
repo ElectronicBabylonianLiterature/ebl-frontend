@@ -13,18 +13,20 @@ import RealiaInfoContext, {
 import { emptyRealiaInfoEntries } from 'fragmentarium/ui/text-annotation/realiaInfo'
 import { getWordIds } from 'fragmentarium/ui/text-annotation/fragmentSpans'
 import AnnotationInstructions from 'fragmentarium/ui/text-annotation/AnnotationInstructions'
-import SpanAnnotationDisplay from 'fragmentarium/ui/text-annotation/SpanAnnotationDisplay'
+import SpanAnnotationDisplay, {
+  UpdateNamedEntityAnnotations,
+} from 'fragmentarium/ui/text-annotation/SpanAnnotationDisplay'
 import './TextAnnotation.sass'
 import './NamedEntities.sass'
 
 function TextAnnotationView({
   fragment,
   annotations,
-  fragmentService,
+  updateNamedEntityAnnotations,
 }: {
   fragment: Fragment
   annotations: AnnotationSpans
-  fragmentService: FragmentService
+  updateNamedEntityAnnotations: UpdateNamedEntityAnnotations
 }): JSX.Element {
   const words: readonly string[] = useMemo(
     () => getWordIds(fragment.text),
@@ -45,7 +47,7 @@ function TextAnnotationView({
           fragment={fragment}
           initialAnnotations={initialAnnotations}
           setInitialAnnotations={setInitialAnnotations}
-          fragmentService={fragmentService}
+          updateNamedEntityAnnotations={updateNamedEntityAnnotations}
         />
       </AnnotationContext.Provider>
     </RealiaInfoContext.Provider>
@@ -53,15 +55,19 @@ function TextAnnotationView({
 }
 
 export default withData<
-  { fragmentService: FragmentService },
-  { number: string; fragmentService: FragmentService },
+  { updateNamedEntityAnnotations: UpdateNamedEntityAnnotations },
+  {
+    number: string
+    fragmentService: FragmentService
+    updateNamedEntityAnnotations: UpdateNamedEntityAnnotations
+  },
   { fragment: Fragment; annotations: AnnotationSpans }
 >(
-  ({ data, fragmentService }) => (
+  ({ data, updateNamedEntityAnnotations }) => (
     <TextAnnotationView
       fragment={data.fragment}
       annotations={data.annotations}
-      fragmentService={fragmentService}
+      updateNamedEntityAnnotations={updateNamedEntityAnnotations}
     />
   ),
   (props) =>

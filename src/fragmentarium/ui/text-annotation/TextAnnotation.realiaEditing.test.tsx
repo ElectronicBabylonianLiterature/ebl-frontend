@@ -9,13 +9,17 @@ import TextAnnotation from 'fragmentarium/ui/text-annotation/TextAnnotation'
 import { AnnotationSpans } from 'fragmentarium/ui/text-annotation/annotationSpan'
 import { tokenIdFragment } from 'test-support/fragment-fixtures'
 import { realiaEntryFactory } from 'test-support/realia-fixtures'
+import { SEARCH_DEBOUNCE_MS } from 'fragmentarium/ui/text-annotation/RealiaSelect'
 import {
   mockRealiaSearch,
+  updateNamedEntityAnnotationsMock,
   WithRealiaService,
 } from 'fragmentarium/ui/text-annotation/textAnnotation.testSupport'
 
 jest.mock('realia/application/RealiaService')
 jest.mock('fragmentarium/application/FragmentService')
+
+const debouncedSearchTimeout = SEARCH_DEBOUNCE_MS + 3000
 
 jest.mock('react-bootstrap', () => {
   const actual = jest.requireActual('react-bootstrap')
@@ -64,11 +68,21 @@ async function setup(): Promise<void> {
         <TextAnnotation
           fragmentService={fragmentServiceMock}
           number={tokenIdFragment.number}
+          updateNamedEntityAnnotations={updateNamedEntityAnnotationsMock(
+            annotatedFragment,
+          )}
         />
       </WithRealiaService>
     </ThemeProvider>,
   )
   await screen.findByLabelText('save-annotations')
+}
+
+async function pickRealiaOption(query: string, label: string): Promise<void> {
+  await userEvent.type(await screen.findByLabelText('edit-realia'), query)
+  await userEvent.click(
+    await screen.findByText(label, {}, { timeout: debouncedSearchTimeout }),
+  )
 }
 
 describe('editing a realia annotation', () => {
@@ -86,9 +100,7 @@ describe('editing a realia annotation', () => {
 
     await userEvent.click(await screen.findByTestId('Word-2__Realia-1'))
 
-    const input = await screen.findByLabelText('edit-realia')
-    await userEvent.type(input, 'Zig')
-    await userEvent.click(await screen.findByText('Ziggurat'))
+    await pickRealiaOption('Zig', 'Ziggurat')
 
     expect(screen.getByLabelText('edit-realia')).toBeInTheDocument()
     expect(screen.getByText('Ziggurat')).toBeInTheDocument()
@@ -98,8 +110,7 @@ describe('editing a realia annotation', () => {
     await setup()
 
     await userEvent.click(await screen.findByTestId('Word-2__Realia-1'))
-    await userEvent.type(await screen.findByLabelText('edit-realia'), 'Zig')
-    await userEvent.click(await screen.findByText('Ziggurat'))
+    await pickRealiaOption('Zig', 'Ziggurat')
     await userEvent.click(screen.getByLabelText('update-name-annotation'))
 
     expect(await screen.findByTestId('Word-2__Realia-1')).toHaveAttribute(
