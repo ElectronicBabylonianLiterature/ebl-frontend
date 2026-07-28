@@ -25,6 +25,17 @@ export interface FindspotMapDataResponseDto {
 
 export type FindspotMapData = FindspotMapDataDto
 
+export interface FindspotMapDataDiagnostics {
+  readonly exactDuplicateRows: number
+  readonly conflictingDuplicateFindspots: number
+  readonly conflictingDuplicateRows: number
+}
+
+export interface SanitizedFindspotMapDataResponse {
+  readonly findspots: readonly FindspotMapData[]
+  readonly diagnostics: FindspotMapDataDiagnostics
+}
+
 export interface PolygonFindspotSummary {
   readonly polygonId: string
   readonly findspotIds: readonly number[]
@@ -113,22 +124,101 @@ function sanitizeFindspotMapData(value: unknown): FindspotMapData | null {
   }
 }
 
+function emptySanitizedResponse(): SanitizedFindspotMapDataResponse {
+  return {
+    findspots: [],
+    diagnostics: {
+      exactDuplicateRows: 0,
+      conflictingDuplicateFindspots: 0,
+      conflictingDuplicateRows: 0,
+    },
+  }
+}
+
+function stableFindspotFingerprint(findspot: FindspotMapData): string {
+  return JSON.stringify({
+    accessibleFragmentCount: findspot.accessibleFragmentCount,
+    area: findspot.area,
+    building: findspot.building,
+    findspotId: findspot.findspotId,
+    locationPrecision: findspot.locationPrecision,
+    matchMethod: findspot.matchMethod,
+    polygonIds: [...findspot.polygonIds].sort(),
+    room: findspot.room,
+    sector: findspot.sector,
+    siteId: findspot.siteId,
+    siteName: findspot.siteName,
+  })
+}
+
 export function sanitizeFindspotMapDataResponse(
   response: unknown,
 ): readonly FindspotMapData[] {
-  if (!response || typeof response !== 'object') return []
+  return sanitizeFindspotMapDataResponseWithDiagnostics(response).findspots
+}
+
+export function sanitizeFindspotMapDataResponseWithDiagnostics(
+  response: unknown,
+): SanitizedFindspotMapDataResponse {
+  if (!response || typeof response !== 'object') return emptySanitizedResponse()
 
   const findspots = (response as Record<string, unknown>).findspots
-  if (!Array.isArray(findspots)) return []
+  if (!Array.isArray(findspots)) return emptySanitizedResponse()
 
-  const seenFindspotIds = new Set<number>()
-  return findspots.flatMap((findspot) => {
+  const byFindspotId = new Map<
+    number,
+    { first: FindspotMapData; fingerprints: Map<string, number> }
+  >()
+
+  for (const findspot of findspots) {
     const sanitized = sanitizeFindspotMapData(findspot)
-    if (!sanitized || seenFindspotIds.has(sanitized.findspotId)) return []
+    if (!sanitized) continue
 
-    seenFindspotIds.add(sanitized.findspotId)
-    return [sanitized]
-  })
+    const fingerprint = stableFindspotFingerprint(sanitized)
+    const existing = byFindspotId.get(sanitized.findspotId)
+    if (existing) {
+      existing.fingerprints.set(
+        fingerprint,
+        (existing.fingerprints.get(fingerprint) ?? 0) + 1,
+      )
+    } else {
+      byFindspotId.set(sanitized.findspotId, {
+        first: sanitized,
+        fingerprints: new Map([[fingerprint, 1]]),
+      })
+    }
+  }
+
+  let exactDuplicateRows = 0
+  let conflictingDuplicateFindspots = 0
+  let conflictingDuplicateRows = 0
+  const sanitizedFindspots: FindspotMapData[] = []
+
+  for (const entry of [...byFindspotId.values()].sort(
+    (left, right) => left.first.findspotId - right.first.findspotId,
+  )) {
+    const rowCount = [...entry.fingerprints.values()].reduce(
+      (total, count) => total + count,
+      0,
+    )
+
+    if (entry.fingerprints.size === 1) {
+      exactDuplicateRows += rowCount - 1
+      sanitizedFindspots.push(entry.first)
+    } else {
+      conflictingDuplicateFindspots += 1
+      conflictingDuplicateRows += rowCount
+    }
+  }
+
+  return {
+    findspots: sanitizedFindspots,
+    diagnostics: {
+      exactDuplicateRows,
+      conflictingDuplicateFindspots,
+      conflictingDuplicateRows,
+    },
+  }
 }
 
 export function aggregateFindspotMapData(

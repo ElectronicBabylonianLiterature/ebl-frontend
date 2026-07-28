@@ -1,23 +1,13 @@
 import React from 'react'
 import type { FeatureCollection } from 'geojson'
-import {
-  act,
-  fireEvent,
-  render,
-  screen,
-  waitFor,
-  within,
-} from '@testing-library/react'
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import Bluebird from 'bluebird'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import { FindspotService } from 'fragmentarium/application/FindspotService'
 import { ProvenanceRecord } from 'fragmentarium/domain/Provenance'
 import MapTab from './MapTab'
-import {
-  buildFindspotFragmentSearchLink,
-  buildFragmentSearchLink,
-} from './mapLinks'
+import { buildFindspotFragmentSearchLink } from './mapLinks'
 
 const mockAddSource = jest.fn()
 const mockAddLayer = jest.fn()
@@ -44,6 +34,7 @@ const mockGetLayer = jest.fn((id: string): { id: string } | undefined => ({
 const mockRemoveLayer = jest.fn()
 const mockRemoveSource = jest.fn()
 const mockSetPaintProperty = jest.fn()
+const mockSetFeatureState = jest.fn()
 
 type MockMapEvent = {
   point: { x: number; y: number }
@@ -78,6 +69,7 @@ const mockMapInstance = {
   removeLayer: mockRemoveLayer,
   removeSource: mockRemoveSource,
   setPaintProperty: mockSetPaintProperty,
+  setFeatureState: mockSetFeatureState,
 }
 
 jest.mock(
@@ -345,16 +337,80 @@ describe('MapTab', () => {
     )
 
     expect(
-      await screen.findByRole('heading', { name: 'Find a site' }),
+      await screen.findByRole('heading', { name: 'Archaeological atlas' }),
     ).toBeInTheDocument()
     expect(
       screen.getByRole('button', { name: 'Show map layers' }),
     ).toBeInTheDocument()
     expect(screen.getByLabelText('Site name')).toBeInTheDocument()
+    expect(screen.getByText('Explore the ancient world')).toBeInTheDocument()
     expect(
       screen.queryByText(/0 historical maps active/),
     ).not.toBeInTheDocument()
     expect(screen.getByLabelText('Findspot map')).toBeInTheDocument()
+  })
+
+  it('shows loading excavation map-data status after provenances load', async () => {
+    render(
+      <MapTab
+        findspotService={makeFindspotService()}
+        fragmentService={makeFragmentService([makeProvenance()])}
+      />,
+    )
+
+    expect(await screen.findByText('Aššur map data')).toBeInTheDocument()
+    expect(
+      screen.getByText('Loading excavation fragment data...'),
+    ).toBeInTheDocument()
+    expect(
+      screen.getByText('Enable excavation areas and click a polygon'),
+    ).toBeInTheDocument()
+  })
+
+  it('shows loaded excavation map-data counts and toggle hint', async () => {
+    render(
+      <MapTab
+        findspotService={makeFindspotService(mappedAssurFindspotMapData)}
+        fragmentService={makeFragmentService([makeProvenance()])}
+      />,
+    )
+
+    expect(
+      await screen.findByText('1 mapped findspot across 1 excavation area'),
+    ).toBeInTheDocument()
+
+    await openLayerPanel()
+    expect(screen.getByText('1 linked area')).toBeInTheDocument()
+  })
+
+  it('shows unavailable excavation map-data status when loading fails', async () => {
+    const findspotService = {
+      fetchAssurMapData: () => Bluebird.reject(new Error('Network error')),
+    } as unknown as FindspotService
+
+    render(
+      <MapTab
+        findspotService={findspotService}
+        fragmentService={makeFragmentService([makeProvenance()])}
+      />,
+    )
+
+    expect(
+      await screen.findByText('Excavation fragment data unavailable'),
+    ).toBeInTheDocument()
+  })
+
+  it('shows empty excavation map-data status when no mapped rows are available', async () => {
+    render(
+      <MapTab
+        findspotService={makeFindspotService([])}
+        fragmentService={makeFragmentService([makeProvenance()])}
+      />,
+    )
+
+    expect(
+      await screen.findByText('No mapped excavation fragments available'),
+    ).toBeInTheDocument()
   })
 
   it('shows empty state when filter matches nothing', async () => {
@@ -409,6 +465,7 @@ describe('MapTab', () => {
 
     expect(mockAddSource.mock.calls[1][0]).toBe('ebl-excavation-areas')
     expect(mockAddSource.mock.calls[1][1].type).toBe('geojson')
+    expect(mockAddSource.mock.calls[1][1].promoteId).toBe('id')
     expect(mockAddSource.mock.calls[1][1].data).toBe(
       '/map-data/findspots/all.geojson',
     )
@@ -417,7 +474,7 @@ describe('MapTab', () => {
     expect(mockAddSource.mock.calls[2][1].cluster).toBe(true)
     expect(mockAddSource.mock.calls[2][1].data.features).toHaveLength(2)
 
-    expect(mockAddLayer).toHaveBeenCalledTimes(7)
+    expect(mockAddLayer).toHaveBeenCalledTimes(8)
     const layerIds = mockAddLayer.mock.calls.map(
       (call: unknown[]) => (call[0] as { id: string }).id,
     )
@@ -426,6 +483,7 @@ describe('MapTab', () => {
       'ebl-findspot-polygon-outline',
       'ebl-excavation-area-fill',
       'ebl-excavation-area-outline',
+      'ebl-excavation-area-selected',
       'ebl-clusters',
       'ebl-cluster-count',
       'ebl-unclustered-points',
@@ -617,6 +675,11 @@ describe('MapTab', () => {
       'visibility',
       'visible',
     )
+    expect(mockSetLayoutProperty).toHaveBeenCalledWith(
+      'ebl-excavation-area-selected',
+      'visibility',
+      'visible',
+    )
     expect(mockSetLayoutProperty).not.toHaveBeenCalledWith(
       'ebl-findspot-polygon-fill',
       'visibility',
@@ -661,16 +724,15 @@ describe('MapTab', () => {
     })
   })
 
-  it('opens an unclustered point popup with DOM-safe content', async () => {
+  it('selects an unclustered point in the inspector with DOM-safe content', async () => {
     const name = '<img src=x onerror=alert(1)>'
-    const parent = 'Babylonia<script>xss</script>'
-    const abbreviation = '<script>alert(1)</script>'
     const findspot = {
       type: 'Feature',
       properties: {
+        id: 'babylon',
         name,
-        parent,
-        abbreviation,
+        parent: 'Babylonia<script>xss</script>',
+        abbreviation: '<script>alert(1)</script>',
         geometryType: 'point',
       },
       geometry: { type: 'Point', coordinates: [44.42, 32.542] },
@@ -678,7 +740,9 @@ describe('MapTab', () => {
     render(
       <MapTab
         findspotService={makeFindspotService()}
-        fragmentService={makeFragmentService([makeProvenance()])}
+        fragmentService={makeFragmentService([
+          makeProvenance({ longName: name }),
+        ])}
       />,
     )
     await waitFor(() => {
@@ -696,27 +760,18 @@ describe('MapTab', () => {
       })
     })
 
-    expect(mockSetLngLat).toHaveBeenCalledWith([44.42, 32.542])
-    expect(mockSetDOMContent).toHaveBeenCalledTimes(1)
+    expect(mockSetDOMContent).not.toHaveBeenCalled()
     expect(mockSetHTML).not.toHaveBeenCalled()
-    expect(mockPopupAddTo).toHaveBeenCalledWith(mockMapInstance)
-
-    const content = mockSetDOMContent.mock.calls[0][0] as HTMLElement
-    document.body.append(content)
-    const popup = within(content)
-    expect(content.innerHTML).not.toContain('<img')
-    expect(content.innerHTML).not.toContain('<script')
-    expect(popup.getByText(name, { selector: 'strong' })).toHaveTextContent(
-      name,
+    expect(await screen.findByRole('heading', { name })).toBeInTheDocument()
+    expect(document.body.innerHTML).not.toContain('<img')
+    expect(document.body.innerHTML).not.toContain('<script')
+    expect(mockSetFeatureState).toHaveBeenCalledWith(
+      { source: 'ebl-findspots', id: 'babylon' },
+      { selected: true },
     )
-    expect(popup.getByText(`${parent} · ${abbreviation}`)).toBeInTheDocument()
-    expect(popup.getByText('32.54°N, 44.42°E')).toBeInTheDocument()
-    expect(popup.getByText('Single point')).toBeInTheDocument()
-    const link = popup.getByRole('link', { name: 'View fragments' })
-    expect(link).toHaveAttribute('href', buildFragmentSearchLink(name))
   })
 
-  it('opens an excavation-area popup before site-boundary polygons', async () => {
+  it('selects an excavation area before site-boundary polygons', async () => {
     const excavationArea = {
       type: 'Feature',
       properties: {
@@ -751,32 +806,25 @@ describe('MapTab', () => {
       })
     })
 
-    expect(mockSetLngLat).toHaveBeenCalledWith([45, 35])
     expect(mockSetHTML).not.toHaveBeenCalled()
+    expect(mockSetDOMContent).not.toHaveBeenCalled()
     expect(mockQueryRenderedFeatures).toHaveBeenCalledTimes(3)
-    const content = mockSetDOMContent.mock.calls[0][0] as HTMLElement
-    document.body.append(content)
-    expect(content.innerHTML).not.toContain('<script>')
     expect(
-      within(content).getByText('<script>Eanna</script>'),
+      await screen.findByRole('heading', { name: 'Area A' }),
     ).toBeInTheDocument()
-    expect(within(content).getByText('Aššur')).toBeInTheDocument()
-    expect(within(content).getByText('Excavation area')).toBeInTheDocument()
-    await waitFor(() => {
-      expect(
-        within(content).getByText(
-          '18 accessible fragments from 1 mapped findspot',
-        ),
-      ).toBeInTheDocument()
-    })
-    expect(
-      within(content).getByRole('link', { name: 'Findspot 123' }),
-    ).toHaveAttribute('href', buildFindspotFragmentSearchLink(123))
+    expect(screen.getByText('Excavation area')).toBeInTheDocument()
+    expect(screen.getByText('18')).toBeInTheDocument()
+    expect(screen.getByRole('link', { name: /Findspot 123/ })).toHaveAttribute(
+      'href',
+      buildFindspotFragmentSearchLink(123),
+    )
+    expect(mockSetFeatureState).toHaveBeenCalledWith(
+      { source: 'ebl-excavation-areas', id: 'assur-area-a-checksum' },
+      { selected: true },
+    )
 
     await userEvent.click(
-      within(content).getByRole('button', {
-        name: 'Browse historical maps for Aššur',
-      }),
+      screen.getByRole('button', { name: 'Browse historical maps for Aššur' }),
     )
 
     expect(screen.getByRole('button', { name: 'Hide' })).toHaveAttribute(
@@ -790,10 +838,11 @@ describe('MapTab', () => {
     )
   })
 
-  it('opens a polygon popup at the click coordinates', async () => {
+  it('selects a site-boundary polygon in the inspector', async () => {
     const polygon = {
       type: 'Feature',
       properties: {
+        id: 'nineveh',
         name: 'Nineveh',
         parent: 'Assyria',
         abbreviation: 'Nin',
@@ -814,7 +863,13 @@ describe('MapTab', () => {
     render(
       <MapTab
         findspotService={makeFindspotService()}
-        fragmentService={makeFragmentService([makeProvenance()])}
+        fragmentService={makeFragmentService([
+          makeProvenance({
+            id: 'nineveh',
+            longName: 'Nineveh',
+            parent: 'Assyria',
+          }),
+        ])}
       />,
     )
     await waitFor(() => {
@@ -834,18 +889,22 @@ describe('MapTab', () => {
       })
     })
 
-    expect(mockSetLngLat).toHaveBeenCalledWith([45, 35])
-    const content = mockSetDOMContent.mock.calls[0][0] as HTMLElement
-    document.body.append(content)
+    expect(mockSetDOMContent).not.toHaveBeenCalled()
     expect(
-      within(content).getByText('Area boundary available'),
+      await screen.findByRole('heading', { name: 'Nineveh' }),
     ).toBeInTheDocument()
+    expect(screen.getByText('Assyria')).toBeInTheDocument()
+    expect(mockSetFeatureState).toHaveBeenCalledWith(
+      { source: 'ebl-findspots', id: 'nineveh' },
+      { selected: true },
+    )
   })
 
   it('uses point clicks ahead of polygon clicks when both overlap', async () => {
     const point = {
       type: 'Feature',
       properties: {
+        id: 'babylon',
         name: 'Babylon',
         abbreviation: 'Bab',
         geometryType: 'point',
@@ -874,8 +933,11 @@ describe('MapTab', () => {
       })
     })
 
-    expect(mockSetLngLat).toHaveBeenCalledWith([44.42, 32.542])
+    expect(mockSetDOMContent).not.toHaveBeenCalled()
     expect(mockQueryRenderedFeatures).toHaveBeenCalledTimes(2)
+    expect(
+      await screen.findByRole('heading', { name: 'Babylon' }),
+    ).toBeInTheDocument()
   })
 
   it('sets a pointer cursor for polygon hover and restores it elsewhere', async () => {

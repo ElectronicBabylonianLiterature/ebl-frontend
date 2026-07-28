@@ -1,6 +1,7 @@
 import {
   aggregateFindspotMapData,
   sanitizeFindspotMapDataResponse,
+  sanitizeFindspotMapDataResponseWithDiagnostics,
   type FindspotMapData,
 } from './findspotMapData'
 
@@ -149,7 +150,7 @@ describe('sanitizeFindspotMapDataResponse', () => {
           findspot({ findspotId: 7, polygonIds: ['assur-b-checksum'] }),
         ],
       }),
-    ).toEqual([findspot({ findspotId: 7, polygonIds: ['assur-a-checksum'] })])
+    ).toEqual([])
   })
 
   it('keeps valid rows and ignores malformed rows', () => {
@@ -164,7 +165,35 @@ describe('sanitizeFindspotMapDataResponse', () => {
     ).toEqual([findspot({ accessibleFragmentCount: 0 })])
   })
 
-  it('ignores duplicate findspot rows', () => {
+  it('deduplicates exact duplicate findspot rows', () => {
+    expect(
+      sanitizeFindspotMapDataResponse({
+        findspots: [findspot({ findspotId: 7 }), findspot({ findspotId: 7 })],
+      }),
+    ).toEqual([findspot({ findspotId: 7 })])
+  })
+
+  it('reports duplicate diagnostics without exposing row content', () => {
+    expect(
+      sanitizeFindspotMapDataResponseWithDiagnostics({
+        findspots: [
+          findspot({ findspotId: 7 }),
+          findspot({ findspotId: 7 }),
+          findspot({ findspotId: 8, polygonIds: ['assur-a-checksum'] }),
+          findspot({ findspotId: 8, polygonIds: ['assur-b-checksum'] }),
+        ],
+      }),
+    ).toMatchObject({
+      findspots: [findspot({ findspotId: 7 })],
+      diagnostics: {
+        exactDuplicateRows: 1,
+        conflictingDuplicateFindspots: 1,
+        conflictingDuplicateRows: 2,
+      },
+    })
+  })
+
+  it('does not let later duplicate records override earlier records', () => {
     expect(
       sanitizeFindspotMapDataResponse({
         findspots: [
@@ -176,7 +205,27 @@ describe('sanitizeFindspotMapDataResponse', () => {
           }),
         ],
       }),
-    ).toEqual([findspot({ findspotId: 7 })])
+    ).toEqual([])
+  })
+
+  it('returns the same result when conflicting duplicates are reordered', () => {
+    const left = sanitizeFindspotMapDataResponse({
+      findspots: [
+        findspot({ findspotId: 7, polygonIds: ['assur-a-checksum'] }),
+        findspot({ findspotId: 7, polygonIds: ['assur-b-checksum'] }),
+        findspot({ findspotId: 8 }),
+      ],
+    })
+    const right = sanitizeFindspotMapDataResponse({
+      findspots: [
+        findspot({ findspotId: 8 }),
+        findspot({ findspotId: 7, polygonIds: ['assur-b-checksum'] }),
+        findspot({ findspotId: 7, polygonIds: ['assur-a-checksum'] }),
+      ],
+    })
+
+    expect(left).toEqual([findspot({ findspotId: 8 })])
+    expect(right).toEqual(left)
   })
 })
 

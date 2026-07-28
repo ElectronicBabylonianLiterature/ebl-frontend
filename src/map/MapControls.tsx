@@ -22,6 +22,7 @@ interface Props {
   readonly historicalOverlaySeries: readonly HistoricalMapOverlaySeries[]
   readonly historicalMapFilter: string
   readonly isLayerPanelOpen: boolean
+  readonly linkedExcavationAreaCount: number
   readonly showBoundaries: boolean
   readonly showExcavationAreas: boolean
   readonly clearHistoricalOverlays: () => void
@@ -65,6 +66,10 @@ function groupActiveCount(
 ): number {
   return group.overlays.filter((overlay) => activeOverlayIds.has(overlay.id))
     .length
+}
+
+function linkedExcavationAreaLabel(count: number): string {
+  return count === 1 ? '1 linked area' : `${count} linked areas`
 }
 
 function toggleExpandedSite(
@@ -260,7 +265,7 @@ export default function MapControls(props: Props): JSX.Element {
           aria-controls="map-layer-panel"
           onClick={() => props.setIsLayerPanelOpen(true)}
         >
-          + Map layers
+          Layers
         </Button>
       </div>
     )
@@ -300,6 +305,7 @@ export default function MapControls(props: Props): JSX.Element {
         aria-label="Map layer controls"
         tabIndex={-1}
       >
+        <div className="map-controls__section-title">Overlays</div>
         <Form.Group
           className="map-controls__historical-filter"
           controlId="historical-map-filter"
@@ -401,6 +407,7 @@ export default function MapControls(props: Props): JSX.Element {
           zoomToActiveOverlays={props.zoomToActiveOverlays}
           zoomToOverlay={props.zoomToOverlay}
         />
+        <div className="map-controls__section-title">Map view</div>
         <div className="map-controls__display-row">
           <Form.Group
             className="map-controls__toggle"
@@ -408,7 +415,18 @@ export default function MapControls(props: Props): JSX.Element {
           >
             <Form.Check
               type="checkbox"
-              label="Show excavation areas"
+              label={
+                <span className="map-controls__toggle-label">
+                  <span>Show excavation areas</span>
+                  {props.linkedExcavationAreaCount > 0 ? (
+                    <span className="map-controls__count">
+                      {linkedExcavationAreaLabel(
+                        props.linkedExcavationAreaCount,
+                      )}
+                    </span>
+                  ) : null}
+                </span>
+              }
               checked={props.showExcavationAreas}
               onChange={(event) =>
                 props.setShowExcavationAreas(event.target.checked)

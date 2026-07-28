@@ -1,9 +1,13 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react'
-import { Alert, Form } from 'react-bootstrap'
+import { Alert, Button, Form } from 'react-bootstrap'
 import 'maplibre-gl/dist/maplibre-gl.css'
+import type { Map as MapLibreMap } from 'maplibre-gl'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import { FindspotService } from 'fragmentarium/application/FindspotService'
-import { ProvenanceRecord } from 'fragmentarium/domain/Provenance'
+import {
+  ProvenanceRecord,
+  getRenderableProvenanceGeometry as getSpatialProvenanceShape,
+} from 'fragmentarium/domain/Provenance'
 import Spinner from 'common/ui/Spinner'
 import {
   type ActiveHistoricalOverlay,
@@ -14,6 +18,8 @@ import {
   validatedHistoricalMapOverlays,
 } from './historicalOverlays'
 import MapControls from './MapControls'
+import MapInspector from './MapInspector'
+import type { MapHoverPreview, MapSelection } from './mapSelection'
 import useFindspotMap from './useFindspotMap'
 import useMapSourceData from './useMapSourceData'
 import {
@@ -72,6 +78,66 @@ function unionMaxZoom(
   return maxZooms.length > 0 ? Math.min(...maxZooms) : undefined
 }
 
+function focusProvenanceOnMap(
+  map: MapLibreMap | null,
+  provenance: ProvenanceRecord | undefined,
+): void {
+  if (!map || !provenance) return
+
+  const spatialShape = getSpatialProvenanceShape(provenance)
+  if (!spatialShape) return
+
+  if (spatialShape.type === 'point') {
+    map.easeTo({
+      center: [
+        spatialShape.coordinates.longitude,
+        spatialShape.coordinates.latitude,
+      ],
+      zoom: 9,
+    })
+    return
+  }
+
+  if (spatialShape.coordinates.length === 0) return
+
+  const longitude =
+    spatialShape.coordinates.reduce(
+      (sum, coordinate) => sum + coordinate.longitude,
+      0,
+    ) / spatialShape.coordinates.length
+  const latitude =
+    spatialShape.coordinates.reduce(
+      (sum, coordinate) => sum + coordinate.latitude,
+      0,
+    ) / spatialShape.coordinates.length
+
+  map.easeTo({ center: [longitude, latitude], zoom: 9 })
+}
+
+function excavationMapDataStatusText(
+  status: FindspotMapDataStatus,
+  mappedFindspotCount: number,
+  linkedExcavationAreaCount: number,
+): string {
+  if (status === 'loading' || status === 'idle') {
+    return 'Loading excavation fragment data...'
+  }
+
+  if (status === 'error') {
+    return 'Excavation fragment data unavailable'
+  }
+
+  if (mappedFindspotCount === 0 || linkedExcavationAreaCount === 0) {
+    return 'No mapped excavation fragments available'
+  }
+
+  const findspotLabel = mappedFindspotCount === 1 ? 'findspot' : 'findspots'
+  const areaLabel =
+    linkedExcavationAreaCount === 1 ? 'excavation area' : 'excavation areas'
+
+  return `${mappedFindspotCount} mapped ${findspotLabel} across ${linkedExcavationAreaCount} ${areaLabel}`
+}
+
 export default function MapTab({
   findspotService,
   fragmentService,
@@ -86,11 +152,14 @@ export default function MapTab({
   const [polygonFindspotSummaries, setPolygonFindspotSummaries] = useState(() =>
     aggregateFindspotMapData([]),
   )
+  const [mappedFindspotCount, setMappedFindspotCount] = useState(0)
   const [filter, setFilter] = useState('')
   const [showBoundaries, setShowBoundaries] = useState(true)
   const [showExcavationAreas, setShowExcavationAreas] = useState(false)
   const [isLayerPanelOpen, setIsLayerPanelOpen] = useState(false)
   const [historicalMapFilter, setHistoricalMapFilter] = useState('')
+  const [selection, setSelection] = useState<MapSelection | null>(null)
+  const [hoverPreview, setHoverPreview] = useState<MapHoverPreview | null>(null)
   const [expandedHistoricalSiteIds, setExpandedHistoricalSiteIds] = useState(
     () => new Set<string>(),
   )
@@ -116,6 +185,21 @@ export default function MapTab({
   const activeOverlayIds = useMemo(
     () => new Set(activeHistoricalOverlays.map((overlay) => overlay.id)),
     [activeHistoricalOverlays],
+  )
+  const historicalMapSiteNames = useMemo(
+    () =>
+      new Set(
+        validatedHistoricalMapOverlays.map((overlay) =>
+          overlay.siteName.toLowerCase(),
+        ),
+      ),
+    [],
+  )
+  const linkedExcavationAreaCount = polygonFindspotSummaries.size
+  const excavationStatusText = excavationMapDataStatusText(
+    findspotMapDataStatus,
+    mappedFindspotCount,
+    linkedExcavationAreaCount,
   )
   const historicalOverlayGroups = useMemo(
     () => groupHistoricalMapOverlaysBySite(validatedHistoricalMapOverlays),
@@ -148,9 +232,10 @@ export default function MapTab({
     showBoundaries,
     activeOverlayEntries,
     showExcavationAreas,
-    browseHistoricalMapsForSite,
     polygonFindspotSummaries,
-    findspotMapDataStatus,
+    selection,
+    setSelection,
+    setHoverPreview,
   )
   useMapSourceData(mapRef, filteredProvenances)
 
@@ -250,6 +335,39 @@ export default function MapTab({
     )
   }
 
+  function resetMapExperience(): void {
+    setFilter('')
+    setSelection(null)
+    setHoverPreview(null)
+    clearHistoricalOverlays()
+    mapRef.current?.easeTo({ center: [44.4, 33.0], zoom: 5 })
+  }
+
+  function selectSiteFromExplorer(provenanceId: string): void {
+    setSelection({ type: 'site', provenanceId })
+    focusProvenanceOnMap(
+      mapRef.current,
+      provenances?.find((provenance) => provenance.id === provenanceId),
+    )
+  }
+
+  function showExcavationAreasFromInspector(): void {
+    setShowExcavationAreas(true)
+    setIsLayerPanelOpen(true)
+  }
+
+  useEffect(() => {
+    const clearSelectionOnEscape = (event: KeyboardEvent): void => {
+      if (event.key === 'Escape') {
+        setSelection(null)
+        setHoverPreview(null)
+      }
+    }
+
+    window.addEventListener('keydown', clearSelectionOnEscape)
+    return () => window.removeEventListener('keydown', clearSelectionOnEscape)
+  }, [])
+
   useEffect(() => {
     fragmentService
       .fetchProvenances()
@@ -265,11 +383,13 @@ export default function MapTab({
       .fetchAssurMapData()
       .then((findspots) => {
         if (!isMounted) return
+        setMappedFindspotCount(findspots.length)
         setPolygonFindspotSummaries(aggregateFindspotMapData(findspots))
         setFindspotMapDataStatus('loaded')
       })
       .catch(() => {
         if (!isMounted) return
+        setMappedFindspotCount(0)
         setPolygonFindspotSummaries(aggregateFindspotMapData([]))
         setFindspotMapDataStatus('error')
       })
@@ -288,62 +408,127 @@ export default function MapTab({
   }
 
   return (
-    <div className="map-tab">
-      <div className="map-controls">
-        <section
-          className="map-controls__search"
-          aria-labelledby="map-controls-search-heading"
+    <div className="map-tab map-experience">
+      <header className="map-experience__topbar">
+        <div className="map-experience__heading">
+          <span>eBL interactive map</span>
+          <h1>Archaeological atlas</h1>
+        </div>
+        <Form.Group
+          className="map-experience__search"
+          controlId="map-site-filter"
         >
-          <h2 id="map-controls-search-heading" className="map-controls__title">
-            Find a site
-          </h2>
-          <Form.Group
-            className="map-controls__search-field"
-            controlId="map-site-filter"
+          <Form.Label>Site name</Form.Label>
+          <Form.Control
+            type="search"
+            placeholder="Filter by site name..."
+            value={filter}
+            onChange={(event) => setFilter(event.target.value)}
+          />
+        </Form.Group>
+        <div className="map-experience__actions">
+          <span aria-live="polite">
+            {filteredProvenances?.length ?? 0} visible sites
+          </span>
+          {selection ? (
+            <Button
+              type="button"
+              variant="outline-secondary"
+              size="sm"
+              onClick={() => setSelection(null)}
+            >
+              Clear selection
+            </Button>
+          ) : null}
+          <Button
+            type="button"
+            variant="outline-secondary"
+            size="sm"
+            onClick={resetMapExperience}
           >
-            <Form.Label>Site name</Form.Label>
-            <Form.Control
-              type="text"
-              placeholder="Filter by site name..."
-              value={filter}
-              onChange={(event) => setFilter(event.target.value)}
-            />
-          </Form.Group>
-        </section>
-      </div>
+            Reset view
+          </Button>
+        </div>
+      </header>
       {filteredProvenances && filteredProvenances.length === 0 ? (
         <Alert variant="info">No findspots match &ldquo;{filter}&rdquo;.</Alert>
       ) : null}
-      <div className="map-tab__map-frame">
-        <MapControls
-          activeOverlayEntries={activeOverlayEntries}
-          activeOverlayIds={activeOverlayIds}
-          clearHistoricalOverlays={clearHistoricalOverlays}
-          expandedSiteIds={expandedHistoricalSiteIds}
-          hideSeries={hideSeries}
-          historicalMapFilter={historicalMapFilter}
-          historicalOverlayGroups={historicalOverlayGroups}
-          historicalOverlaySeries={historicalOverlaySeries}
-          isLayerPanelOpen={isLayerPanelOpen}
-          setExpandedSiteIds={setExpandedHistoricalSiteIds}
-          setHistoricalMapFilter={setHistoricalMapFilter}
-          setIsLayerPanelOpen={setIsLayerPanelOpen}
-          setOverlayActive={setOverlayActive}
-          setOverlayOpacity={setOverlayOpacity}
-          setShowBoundaries={setShowBoundaries}
-          setShowExcavationAreas={setShowExcavationAreas}
-          showBoundaries={showBoundaries}
+      <div className="map-experience__body">
+        <MapInspector
+          activeHistoricalMapCount={activeOverlayEntries.length}
+          excavationStatusText={excavationStatusText}
+          filteredProvenances={filteredProvenances ?? []}
+          historicalMapSiteNames={historicalMapSiteNames}
+          linkedExcavationAreaCount={linkedExcavationAreaCount}
+          mappedFindspotCount={mappedFindspotCount}
+          polygonSummaries={polygonFindspotSummaries}
+          provenances={provenances}
+          selection={selection}
           showExcavationAreas={showExcavationAreas}
-          showSeries={showSeries}
-          zoomToActiveOverlays={zoomToActiveOverlays}
-          zoomToOverlay={zoomToOverlay}
-          zoomToSeries={zoomToSeries}
+          status={findspotMapDataStatus}
+          onBrowseHistoricalMaps={browseHistoricalMapsForSite}
+          onClearSelection={() => setSelection(null)}
+          onSelectSite={selectSiteFromExplorer}
+          onShowExcavationAreas={showExcavationAreasFromInspector}
         />
-        <div
-          ref={mapContainer}
-          className="map-tab__container"
-          aria-label="Findspot map"
-        />
+        <div className="map-tab__map-frame map-stage">
+          <MapControls
+            activeOverlayEntries={activeOverlayEntries}
+            activeOverlayIds={activeOverlayIds}
+            clearHistoricalOverlays={clearHistoricalOverlays}
+            expandedSiteIds={expandedHistoricalSiteIds}
+            hideSeries={hideSeries}
+            historicalMapFilter={historicalMapFilter}
+            historicalOverlayGroups={historicalOverlayGroups}
+            historicalOverlaySeries={historicalOverlaySeries}
+            isLayerPanelOpen={isLayerPanelOpen}
+            linkedExcavationAreaCount={linkedExcavationAreaCount}
+            setExpandedSiteIds={setExpandedHistoricalSiteIds}
+            setHistoricalMapFilter={setHistoricalMapFilter}
+            setIsLayerPanelOpen={setIsLayerPanelOpen}
+            setOverlayActive={setOverlayActive}
+            setOverlayOpacity={setOverlayOpacity}
+            setShowBoundaries={setShowBoundaries}
+            setShowExcavationAreas={setShowExcavationAreas}
+            showBoundaries={showBoundaries}
+            showExcavationAreas={showExcavationAreas}
+            showSeries={showSeries}
+            zoomToActiveOverlays={zoomToActiveOverlays}
+            zoomToOverlay={zoomToOverlay}
+            zoomToSeries={zoomToSeries}
+          />
+          {hoverPreview ? (
+            <div
+              className="map-hover-tooltip"
+              role="status"
+              style={{ left: hoverPreview.x, top: hoverPreview.y }}
+            >
+              <strong>{hoverPreview.title}</strong>
+              {hoverPreview.details.map((detail) => (
+                <span key={detail}>{detail}</span>
+              ))}
+            </div>
+          ) : null}
+          <div className="map-legend" aria-label="Map legend">
+            <span>
+              <i className="map-legend__swatch map-legend__swatch--site" />
+              Site
+            </span>
+            <span>
+              <i className="map-legend__swatch map-legend__swatch--area" />
+              Linked area
+            </span>
+            <span>
+              <i className="map-legend__swatch map-legend__swatch--historical" />
+              Historical map
+            </span>
+          </div>
+          <div
+            ref={mapContainer}
+            className="map-tab__container"
+            aria-label="Findspot map"
+          />
+        </div>
       </div>
     </div>
   )

@@ -13,6 +13,7 @@ export const HISTORICAL_RASTER_LAYER_ID = 'ebl-historical-raster-layer'
 export const EXCAVATION_AREAS_SOURCE_ID = 'ebl-excavation-areas'
 export const EXCAVATION_AREA_FILL_LAYER_ID = 'ebl-excavation-area-fill'
 export const EXCAVATION_AREA_OUTLINE_LAYER_ID = 'ebl-excavation-area-outline'
+export const EXCAVATION_AREA_SELECTED_LAYER_ID = 'ebl-excavation-area-selected'
 export const CLUSTER_RADIUS = 50
 export const CLUSTER_MAX_ZOOM = 14
 
@@ -106,6 +107,7 @@ export function createExcavationAreasSource(): GeoJSONSourceSpecification {
   return {
     type: 'geojson',
     data: '/map-data/findspots/all.geojson',
+    promoteId: 'id',
   }
 }
 
@@ -117,8 +119,36 @@ export const excavationAreaFillLayer: AddLayerObject = {
     visibility: 'visible',
   },
   paint: {
-    'fill-color': '#7a8f2a',
-    'fill-opacity': 0.16,
+    'fill-color': [
+      'case',
+      ['boolean', ['feature-state', 'selected'], false],
+      '#b35c1e',
+      ['>', ['coalesce', ['feature-state', 'accessibleFragmentCount'], 0], 0],
+      '#b36b24',
+      ['>', ['coalesce', ['feature-state', 'findspotCount'], 0], 0],
+      '#4f8f9f',
+      '#7b7f73',
+    ],
+    'fill-opacity': [
+      'case',
+      ['boolean', ['feature-state', 'selected'], false],
+      0.36,
+      ['boolean', ['feature-state', 'hover'], false],
+      0.3,
+      ['>', ['coalesce', ['feature-state', 'accessibleFragmentCount'], 0], 0],
+      [
+        'interpolate',
+        ['linear'],
+        ['coalesce', ['feature-state', 'accessibleFragmentCount'], 0],
+        1,
+        0.18,
+        25,
+        0.34,
+      ],
+      ['>', ['coalesce', ['feature-state', 'findspotCount'], 0], 0],
+      0.16,
+      0.08,
+    ],
   },
 }
 
@@ -130,9 +160,60 @@ export const excavationAreaOutlineLayer: AddLayerObject = {
     visibility: 'visible',
   },
   paint: {
-    'line-color': '#5f711f',
-    'line-width': 1.5,
-    'line-opacity': 0.75,
+    'line-color': [
+      'case',
+      ['boolean', ['feature-state', 'selected'], false],
+      '#6f2f10',
+      ['>', ['coalesce', ['feature-state', 'findspotCount'], 0], 0],
+      '#7f4f20',
+      '#5f665c',
+    ],
+    'line-width': [
+      'case',
+      ['boolean', ['feature-state', 'selected'], false],
+      3.5,
+      ['boolean', ['feature-state', 'hover'], false],
+      2.4,
+      1.2,
+    ],
+    'line-opacity': [
+      'case',
+      ['boolean', ['feature-state', 'selected'], false],
+      0.95,
+      ['>', ['coalesce', ['feature-state', 'findspotCount'], 0], 0],
+      0.8,
+      0.45,
+    ],
+    'line-dasharray': [
+      'case',
+      ['>', ['coalesce', ['feature-state', 'findspotCount'], 0], 0],
+      ['literal', [1, 0]],
+      ['literal', [2, 1.5]],
+    ],
+  },
+}
+
+export const excavationAreaSelectedLayer: AddLayerObject = {
+  id: EXCAVATION_AREA_SELECTED_LAYER_ID,
+  type: 'line',
+  source: EXCAVATION_AREAS_SOURCE_ID,
+  layout: {
+    visibility: 'visible',
+  },
+  paint: {
+    'line-color': '#ffffff',
+    'line-width': [
+      'case',
+      ['boolean', ['feature-state', 'selected'], false],
+      6,
+      0,
+    ],
+    'line-opacity': [
+      'case',
+      ['boolean', ['feature-state', 'selected'], false],
+      0.85,
+      0,
+    ],
   },
 }
 
@@ -142,18 +223,11 @@ export const clusterLayer: AddLayerObject = {
   source: SOURCE_ID,
   filter: ['has', 'point_count'],
   paint: {
-    'circle-color': [
-      'step',
-      ['get', 'point_count'],
-      '#51bbd6',
-      10,
-      '#f1f075',
-      30,
-      '#f28cb1',
-    ],
-    'circle-radius': ['step', ['get', 'point_count'], 20, 10, 30, 30, 40],
-    'circle-stroke-width': 2,
-    'circle-stroke-color': '#ffffff',
+    'circle-color': '#26465f',
+    'circle-radius': ['step', ['get', 'point_count'], 18, 10, 24, 30, 32],
+    'circle-stroke-width': 3,
+    'circle-stroke-color': '#f7f3ea',
+    'circle-opacity': 0.92,
   },
 }
 
@@ -174,9 +248,24 @@ export const unclusteredLayer: AddLayerObject = {
   source: SOURCE_ID,
   filter: ['!', ['has', 'point_count']],
   paint: {
-    'circle-color': '#0077be',
-    'circle-radius': 8,
-    'circle-stroke-width': 2,
+    'circle-color': [
+      'case',
+      ['boolean', ['feature-state', 'selected'], false],
+      '#b35c1e',
+      '#0077be',
+    ],
+    'circle-radius': [
+      'case',
+      ['boolean', ['feature-state', 'selected'], false],
+      10,
+      7,
+    ],
+    'circle-stroke-width': [
+      'case',
+      ['boolean', ['feature-state', 'selected'], false],
+      4,
+      2,
+    ],
     'circle-stroke-color': '#ffffff',
   },
 }

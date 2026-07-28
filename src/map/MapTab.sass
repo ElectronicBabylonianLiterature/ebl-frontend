@@ -1,41 +1,313 @@
 @import src/design-tokens
 
 .map-tab
-  &__map-frame
-    position: relative
+  min-width: 0
+
+.map-experience
+  display: grid
+  gap: 0.85rem
+  color: $ebl-color-text-primary
+
+  &__topbar
+    display: grid
+    grid-template-columns: minmax(12rem, 1fr) minmax(16rem, 24rem) auto
+    align-items: end
+    gap: 0.75rem 1rem
+    padding: 0.8rem 0.95rem
+    border: 1px solid $ebl-color-border-subtle
+    border-radius: 0.35rem
+    background: linear-gradient(180deg, #fff, #f7f9fb)
+    box-shadow: 0 0.5rem 1.35rem $ebl-color-black-alpha-08
+
+  &__heading
     min-width: 0
 
-  &__container
-    width: 100%
-    height: min(72vh, 680px)
-    min-height: 460px
-    border-radius: 0.25rem
-    border: 1px solid $ebl-color-border-default
+    span
+      display: block
+      margin-bottom: 0.15rem
+      color: #6b5a42
+      font-size: 0.72rem
+      font-weight: 700
+      letter-spacing: 0
+      text-transform: uppercase
 
-.map-controls
-  margin-bottom: 0.75rem
-  padding: 0.75rem
-  border: 1px solid $ebl-color-border-default
-  border-radius: 0.25rem
-  background: $ebl-color-surface-primary
+    h1
+      margin: 0
+      color: #172331
+      font-size: 1.45rem
+      font-weight: 700
+      line-height: 1.15
 
   &__search
     min-width: 0
 
-  &__title
-    margin: 0 0 0.5rem
+    label
+      margin-bottom: 0.25rem
+      color: $ebl-color-text-secondary
+      font-size: 0.8rem
+      font-weight: 600
+
+    input
+      border-color: #cbd4de
+      background: $ebl-color-surface-primary
+
+  &__actions
+    display: flex
+    flex-wrap: wrap
+    align-items: center
+    justify-content: flex-end
+    gap: 0.45rem
+    min-width: 0
+    color: $ebl-color-text-secondary
+    font-size: 0.875rem
+
+  &__body
+    display: grid
+    grid-template-columns: minmax(18rem, 22rem) minmax(0, 1fr)
+    gap: 0.85rem
+    min-height: min(76vh, 760px)
+    position: relative
+
+.map-stage,
+.map-tab__map-frame
+  position: relative
+  min-width: 0
+  overflow: hidden
+  border: 1px solid #cbd4de
+  border-radius: 0.45rem
+  background: #dfe7ea
+  box-shadow: 0 0.75rem 2rem $ebl-color-black-alpha-10
+
+.map-tab__container
+  width: 100%
+  height: min(76vh, 760px)
+  min-height: 540px
+
+.map-inspector
+  display: flex
+  flex-direction: column
+  gap: 0.85rem
+  min-width: 0
+  max-height: min(76vh, 760px)
+  overflow: auto
+  padding: 1rem
+  border: 1px solid #d4d1c7
+  border-radius: 0.45rem
+  background: #fffdfa
+  box-shadow: 0 0.75rem 1.75rem $ebl-color-black-alpha-08
+  overscroll-behavior: contain
+
+  &--selected
+    border-color: #c8a16f
+
+  &__eyebrow
+    color: #8a5b24
+    font-size: 0.72rem
+    font-weight: 800
+    letter-spacing: 0
+    text-transform: uppercase
+
+  h2
+    margin: -0.4rem 0 0
+    color: #172331
+    font-size: 1.35rem
+    line-height: 1.18
+
+  p
+    margin: -0.35rem 0 0
+    color: $ebl-color-text-secondary
+    line-height: 1.45
+
+  &__metrics
+    display: grid
+    grid-template-columns: repeat(2, minmax(0, 1fr))
+    gap: 0.55rem
+
+  &__metric
+    min-width: 0
+    padding: 0.65rem
+    border: 1px solid #e2ddd2
+    border-radius: 0.35rem
+    background: #faf7f0
+
+    strong,
+    span
+      display: block
+
+    strong
+      color: #172331
+      font-size: 1.1rem
+      line-height: 1.1
+
+    span
+      margin-top: 0.15rem
+      color: $ebl-color-text-secondary
+      font-size: 0.78rem
+      line-height: 1.25
+
+  &__status
+    display: grid
+    gap: 0.15rem
+    padding: 0.7rem
+    border: 1px solid #d8e1e7
+    border-left: 0.3rem solid rgb(79, 143, 159)
+    border-radius: 0.35rem
+    background: #f7fbfc
+    color: $ebl-color-text-secondary
+    font-size: 0.875rem
+    line-height: 1.35
+
+    strong
+      color: $ebl-color-text-primary
+
+    small
+      color: $ebl-color-text-secondary
+
+  &__status--error
+    border-left-color: #a64535
+
+  &__site-list,
+  &__findspots,
+  &__actions
+    display: grid
+    gap: 0.5rem
+
+  &__site-card,
+  &__findspot-row
+    display: grid
+    grid-template-columns: minmax(0, 1fr) auto
+    align-items: center
+    gap: 0.6rem
+    width: 100%
+    min-height: 3rem
+    padding: 0.65rem 0.75rem
+    border: 1px solid #ded8cc
+    border-radius: 0.35rem
+    background: $ebl-color-surface-primary
     color: $ebl-color-text-primary
+    text-align: left
+    text-decoration: none
+    transition: border-color $ebl-motion-duration-fast $ebl-motion-ease-standard, background $ebl-motion-duration-fast $ebl-motion-ease-standard
+
+    &:hover,
+    &:focus
+      border-color: #b88549
+      background: #fff8ec
+      text-decoration: none
+
+    span
+      min-width: 0
+
+    strong,
+    small
+      display: block
+      overflow-wrap: anywhere
+
+    small
+      margin-top: 0.15rem
+      color: $ebl-color-text-secondary
+
+    > span:last-child
+      color: #7b562e
+      font-size: 0.78rem
+      font-weight: 700
+      text-align: right
+      white-space: nowrap
+
+.map-hover-tooltip
+  position: absolute
+  z-index: 4
+  display: grid
+  gap: 0.12rem
+  max-width: min(16rem, calc(100% - 2rem))
+  padding: 0.55rem 0.65rem
+  border: 1px solid #c8a16f
+  border-radius: 0.35rem
+  background: $ebl-color-white-alpha-90
+  box-shadow: 0 0.65rem 1.3rem $ebl-color-black-alpha-15
+  color: $ebl-color-text-secondary
+  font-size: 0.78rem
+  line-height: 1.25
+  pointer-events: none
+  transform: translate(0.85rem, 0.85rem)
+
+  strong
+    color: #172331
+    font-size: 0.9rem
+
+.map-legend
+  position: absolute
+  z-index: 2
+  right: 0.75rem
+  bottom: 0.75rem
+  display: flex
+  flex-wrap: wrap
+  gap: 0.45rem 0.65rem
+  max-width: calc(100% - 1.5rem)
+  padding: 0.5rem 0.6rem
+  border: 1px solid #d5dce3
+  border-radius: 0.35rem
+  background: $ebl-color-white-alpha-90
+  box-shadow: 0 0.45rem 1rem $ebl-color-black-alpha-08
+  color: $ebl-color-text-secondary
+  font-size: 0.78rem
+
+  span
+    display: inline-flex
+    align-items: center
+    gap: 0.3rem
+
+  &__swatch
+    width: 0.7rem
+    height: 0.7rem
+    border-radius: 50%
+    border: 2px solid #fff
+    box-shadow: 0 0 0 1px $ebl-color-black-alpha-15
+
+    &--site
+      background: #0077be
+
+    &--area
+      background: #b36b24
+
+    &--historical
+      border-radius: 0.15rem
+      background: #6b8d68
+
+.map-controls
+  margin-bottom: 0.75rem
+  padding: 0.75rem
+  border: 1px solid #d5dce3
+  border-radius: 0.35rem
+  background: $ebl-color-white-alpha-90
+  box-shadow: 0 0.65rem 1.35rem $ebl-color-black-alpha-08
+  backdrop-filter: blur(8px)
+
+  &__title
+    margin: 0 0 0.35rem
+    color: #172331
     font-size: 0.95rem
-    font-weight: 600
+    font-weight: 700
     line-height: 1.25
 
-  &__search-field,
+  &__section-title
+    margin-top: 0.15rem
+    color: #7b562e
+    font-size: 0.72rem
+    font-weight: 800
+    letter-spacing: 0
+    text-transform: uppercase
+
   &__historical-filter,
   &__toggle,
   &__opacity
     margin-bottom: 0
 
-  &__search-field,
+  &__toggle-label
+    display: inline-grid
+    gap: 0.1rem
+    min-width: 0
+
   &__historical-filter,
   &__opacity
     label
@@ -45,7 +317,7 @@
 
 .map-tab__map-frame > .map-controls
   position: absolute
-  z-index: 2
+  z-index: 3
   top: 0.75rem
   left: 0.75rem
   margin-bottom: 0
@@ -235,60 +507,94 @@
     color: $ebl-color-brand-primary
     font-weight: 500
 
-  .findspot-popup
-    display: grid
-    gap: 0.25rem
+@media (prefers-reduced-motion: reduce)
+  .map-inspector__site-card,
+  .map-inspector__findspot-row
+    transition: none
 
-    &__findspots
-      margin: 0
-      padding-left: 1rem
+@media (max-width: $ebl-breakpoint-lg-max)
+  .map-experience
+    &__topbar
+      grid-template-columns: minmax(0, 1fr) minmax(14rem, 22rem)
 
-      li
-        margin: 0
+    &__actions
+      grid-column: 1 / -1
+      justify-content: flex-start
+
+    &__body
+      grid-template-columns: minmax(16rem, 19rem) minmax(0, 1fr)
 
 @media (max-width: $ebl-breakpoint-md-max)
-  .map-tab
-    &__container
-      height: 62vh
-      min-height: 420px
+  .map-experience
+    &__topbar
+      grid-template-columns: minmax(0, 1fr)
+      align-items: stretch
+
+    &__body
+      display: block
+      min-height: 0
+
+  .map-stage,
+  .map-tab__map-frame
+    min-height: 68vh
+
+  .map-tab__container
+    height: 68vh
+    min-height: 430px
+
+  .map-inspector
+    position: absolute
+    z-index: 4
+    right: 0.75rem
+    bottom: 0.75rem
+    left: 0.75rem
+    max-height: min(48vh, 26rem)
+    padding: 0.85rem
+    border-radius: 0.45rem
 
   .map-tab__map-frame > .map-controls
-    position: static
-    margin-bottom: 0.75rem
-
-  .map-tab__map-frame > .map-controls--collapsed,
-  .map-tab__map-frame > .map-controls--open
-    width: 100%
-    max-width: none
-    max-height: none
+    top: 0.75rem
+    left: 0.75rem
 
   .map-tab__map-frame > .map-controls--open
-    height: auto
+    width: min(24rem, calc(100% - 1.5rem))
+    height: min(50vh, 24rem)
 
-  .map-controls
-    &__panel
-      max-height: 55vh
+  .map-legend
+    right: 0.75rem
+    bottom: calc(min(48vh, 26rem) + 1.25rem)
 
 @media (max-width: $ebl-breakpoint-sm-max)
-  .map-tab
-    &__container
-      height: 58vh
-      min-height: 360px
+  .map-experience
+    &__heading h1
+      font-size: 1.25rem
 
-  .map-controls
-    padding: 0.65rem
-
-    &__summary,
-    &__active-header
+    &__actions
       align-items: stretch
 
-    &__summary
-      flex-direction: column
+      .btn
+        flex: 1 1 auto
 
-    &__display-row,
-    &__footer-actions,
-    &__active-actions
-      align-items: stretch
+  .map-tab__container
+    height: 64vh
+    min-height: 390px
 
-    &__site-content
-      padding-left: 0.65rem
+  .map-inspector
+    right: 0.5rem
+    bottom: 0.5rem
+    left: 0.5rem
+    max-height: 50vh
+
+    &__metrics
+      grid-template-columns: minmax(0, 1fr)
+
+  .map-tab__map-frame > .map-controls
+    top: 0.5rem
+    left: 0.5rem
+
+  .map-tab__map-frame > .map-controls--open
+    width: calc(100% - 1rem)
+    height: min(48vh, 22rem)
+
+  .map-legend
+    display: none
