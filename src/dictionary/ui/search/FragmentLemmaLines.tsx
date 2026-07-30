@@ -33,7 +33,8 @@ export function RenderFragmentLines({
   ) as TextLine[]
   const visibleLines = matchingLines.slice(0, linesToShow)
   const authoritativeTotal = totalLines ?? matchingLines.length
-  const remainingLines = Math.max(authoritativeTotal - visibleLines.length, 0)
+  const previewCapacity = Math.min(linesToShow, authoritativeTotal)
+  const remainingLines = Math.max(authoritativeTotal - previewCapacity, 0)
 
   return (
     <table>

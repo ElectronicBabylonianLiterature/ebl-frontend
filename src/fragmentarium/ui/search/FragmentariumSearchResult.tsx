@@ -98,13 +98,11 @@ export const SearchResult = withData<
       fragmentCount === 1 ? '' : 's'
     }`
     const isCompleteFirstPage = pageIndex === 0 && data.hasNextPage !== true
-    const pageRange =
+    const documentRange =
       fragmentCount > 0
-        ? isCompleteFirstPage
-          ? `Found ${documentCountInfo}`
-          : `Showing documents ${(offset + 1).toLocaleString()}-${(
-              offset + fragmentCount
-            ).toLocaleString()}`
+        ? `Showing documents ${(offset + 1).toLocaleString()}-${(
+            offset + fragmentCount
+          ).toLocaleString()}`
         : pageIndex > 0
           ? 'No results on this page'
           : 'Found 0 documents'
@@ -113,11 +111,15 @@ export const SearchResult = withData<
         ? `Found ${data.isMatchCountTotalExact === false ? 'about ' : ''}${data.matchCountTotal.toLocaleString()} line${
             data.matchCountTotal === 1 ? '' : 's'
           } in ${documentCountInfo}`
-        : `Found ${data.isMatchCountTotalExact === false ? 'about ' : ''}${data.matchCountTotal.toLocaleString()} matching line${
+        : `Found ${data.isMatchCountTotalExact === false ? 'about ' : ''}${data.matchCountTotal.toLocaleString()} line${
             data.matchCountTotal === 1 ? '' : 's'
-          }${fragmentCount > 0 ? `. ${pageRange}` : ''}`
-      : pageRange
-    const resultInfo = isLineQuery ? lineResultInfo : pageRange
+          } in ${documentCountInfo}${
+            data.hasNextPage === true ? '; more results are available' : ''
+          }`
+      : isCompleteFirstPage
+        ? `Found ${documentCountInfo}`
+        : documentRange
+    const resultInfo = isLineQuery ? lineResultInfo : documentRange
     const showNumberSuggestion =
       fragmentCount === 0 && fragmentQuery.number?.match(/^[^.]+\s+[^.]+$/)
     const fixedNumber = fragmentQuery.number?.split(/\s+/).join('.')
