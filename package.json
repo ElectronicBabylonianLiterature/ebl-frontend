@@ -44,7 +44,10 @@
   "jest": {
     "transformIgnorePatterns": [
       "node_modules/(?!(react-markdown|remark-.*|rehype-.*|unified|bail|is-plain-obj|trough|vfile|vfile-message|unist-.*|mdast-.*|hast-.*|property-information|space-separated-tokens|comma-separated-tokens|web-namespaces|zwitch|html-void-elements|ccount|escape-string-regexp|markdown-table|trim-lines|micromark.*|decode-named-character-reference|character-entities|devlop|iobuffer|fast-png)/)"
-    ]
+    ],
+    "moduleNameMapper": {
+      "^maplibre-gl/dist/maplibre-gl\\.css$": "identity-obj-proxy"
+    }
   },
   "dependencies": {
     "@auth0/auth0-spa-js": "^2.1.0",

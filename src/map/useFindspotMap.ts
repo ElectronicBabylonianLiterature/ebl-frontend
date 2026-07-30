@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react'
 import type { MutableRefObject, RefObject } from 'react'
-import type { Feature, Point } from 'geojson'
+import type { Point } from 'geojson'
 import maplibregl from 'maplibre-gl'
 import type {
   GeoJSONSource,
@@ -9,50 +9,34 @@ import type {
   MapMouseEvent,
 } from 'maplibre-gl'
 import { ProvenanceRecord } from 'fragmentarium/domain/Provenance'
+import { createFindspotPopup } from 'map/createFindspotPopup'
 import {
-  createFindspotPopup,
-  type FindspotPopupProperties,
-} from './createFindspotPopup'
+  getFeaturePointCoordinates,
+  getPopupProperties,
+} from 'map/findspotPopupProperties'
+import {
+  INTERACTIVE_LAYER_IDS,
+  resetPointerCursor,
+  setPointerCursor,
+  showPointerCursor,
+} from 'map/mapCursor'
 import {
   SOURCE_ID,
   clusterCountLayer,
   clusterLayer,
   createFindspotsSource,
   unclusteredLayer,
-} from './mapLayers'
-import type { FindspotProperties } from './provenanceToGeoJson'
-import { provenanceToGeoJson } from './provenanceToGeoJson'
-
-const MAP_STYLE_URL =
-  'https://basemaps.cartocdn.com/gl/positron-gl-style/style.json'
+} from 'map/mapLayers'
+import { fitMapToData } from 'map/mapBounds'
+import {
+  MAP_STYLE_URL,
+  type MapLibreErrorEvent,
+  isMapBackgroundLoadError,
+} from 'map/mapBackgroundError'
+import { provenanceToGeoJson } from 'map/provenanceToGeoJson'
 
 const INITIAL_CENTER: [number, number] = [44.4, 33.0]
 const INITIAL_ZOOM = 5
-const INTERACTIVE_LAYER_IDS = [clusterLayer.id, unclusteredLayer.id] as const
-
-interface MapLibreErrorEvent {
-  error?: {
-    message?: string
-  }
-}
-
-export function fitMapToData(
-  map: MapLibreMap,
-  features: readonly Feature[],
-): void {
-  if (features.length === 0) return
-
-  const bounds = new maplibregl.LngLatBounds()
-  for (const feature of features) {
-    if (feature.geometry.type === 'Point') {
-      bounds.extend(feature.geometry.coordinates as [number, number])
-    }
-  }
-
-  if (!bounds.isEmpty()) {
-    map.fitBounds(bounds, { padding: 40, maxZoom: 12 })
-  }
-}
 
 function initializeFindspotSource(
   map: MapLibreMap,
@@ -82,68 +66,12 @@ function expandCluster(map: MapLibreMap, cluster: MapGeoJSONFeature): void {
   })
 }
 
-function isGeometryType(
-  value: unknown,
-): value is FindspotProperties['geometryType'] {
-  return value === 'point' || value === 'polygon'
-}
-
-function getFeaturePointCoordinates(
-  feature: MapGeoJSONFeature,
-): [number, number] | null {
-  if (feature.geometry.type !== 'Point') return null
-
-  const coordinates = (feature.geometry as Point).coordinates
-  const longitude = coordinates[0]
-  const latitude = coordinates[1]
-
-  if (typeof longitude !== 'number' || !Number.isFinite(longitude)) {
-    return null
-  }
-
-  if (typeof latitude !== 'number' || !Number.isFinite(latitude)) {
-    return null
-  }
-
-  return [longitude, latitude]
-}
-
-function getPopupProperties(
-  feature: MapGeoJSONFeature,
-): FindspotPopupProperties | null {
-  const name = feature.properties?.name
-  const abbreviation = feature.properties?.abbreviation
-  const parent = feature.properties?.parent
-  const geometryType = feature.properties?.geometryType
-  const pointCoordinates = getFeaturePointCoordinates(feature)
-
-  if (typeof name !== 'string' || typeof abbreviation !== 'string') {
-    return null
-  }
-
-  if (parent !== undefined && parent !== null && typeof parent !== 'string') {
-    return null
-  }
-
-  if (!isGeometryType(geometryType)) {
-    return null
-  }
-
-  return {
-    name,
-    abbreviation,
-    parent: typeof parent === 'string' ? parent : undefined,
-    geometryType,
-    coordinates: pointCoordinates
-      ? { latitude: pointCoordinates[1], longitude: pointCoordinates[0] }
-      : undefined,
-  }
-}
-
 function openFindspotPopup(map: MapLibreMap, feature: MapGeoJSONFeature): void {
-  const popupProperties = getPopupProperties(feature)
   const coordinates = getFeaturePointCoordinates(feature)
-  if (!popupProperties || !coordinates) return
+  if (!coordinates) return
+
+  const popupProperties = getPopupProperties(feature, coordinates)
+  if (!popupProperties) return
 
   new maplibregl.Popup()
     .setLngLat(coordinates)
@@ -166,48 +94,6 @@ function handleMapClick(map: MapLibreMap, event: MapMouseEvent): void {
   if (findspot) {
     openFindspotPopup(map, findspot)
   }
-}
-
-function setCanvasCursor(map: MapLibreMap, cursor: string): void {
-  try {
-    const canvas = map.getCanvas()
-    if (canvas?.style) {
-      canvas.style.cursor = cursor
-    }
-  } catch {
-    // MapLibre can emit late pointer events while the canvas is unavailable.
-  }
-}
-
-function setPointerCursor(map: MapLibreMap, event: MapMouseEvent): void {
-  const isOverFindspot =
-    map.queryRenderedFeatures(event.point, {
-      layers: [...INTERACTIVE_LAYER_IDS],
-    }).length > 0
-  setCanvasCursor(map, isOverFindspot ? 'pointer' : '')
-}
-
-function showPointerCursor(map: MapLibreMap): void {
-  setCanvasCursor(map, 'pointer')
-}
-
-function resetPointerCursor(map: MapLibreMap): void {
-  setCanvasCursor(map, '')
-}
-
-const MAP_BACKGROUND_ERROR_PATTERNS = [
-  'basemaps.cartocdn.com',
-  MAP_STYLE_URL,
-  'style.json',
-  'failed to fetch',
-  'failed to load',
-]
-
-function isMapBackgroundLoadError(event: MapLibreErrorEvent): boolean {
-  const message = event.error?.message?.toLowerCase()
-  return message
-    ? MAP_BACKGROUND_ERROR_PATTERNS.some((pattern) => message.includes(pattern))
-    : false
 }
 
 export default function useFindspotMap(

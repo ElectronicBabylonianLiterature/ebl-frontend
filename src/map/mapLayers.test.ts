@@ -7,7 +7,7 @@ import {
   clusterLayer,
   clusterCountLayer,
   unclusteredLayer,
-} from './mapLayers'
+} from 'map/mapLayers'
 
 type LayerWithSource = { id: string; source: string; filter: unknown[] }
 type LayerWithPaint = LayerWithSource & { paint: Record<string, unknown> }

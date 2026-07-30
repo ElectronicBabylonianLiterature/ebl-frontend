@@ -1,5 +1,6 @@
 import React from 'react'
 import { act, render, screen } from '@testing-library/react'
+
 import {
   makeFragmentService,
   makeProvenance,
@@ -9,8 +10,10 @@ import {
   mockSetDOMContent,
   resetMapMocks,
   triggerMapEvent,
-} from './MapTab.testHelpers'
-import MapTab from './MapTab'
+} from 'map/MapTab.testHelpers'
+import MapTab from 'map/MapTab'
+
+jest.mock('maplibre-gl')
 
 describe('MapTab click guards', () => {
   beforeEach(resetMapMocks)

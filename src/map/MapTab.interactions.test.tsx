@@ -1,6 +1,7 @@
 import React from 'react'
 import { act, render, screen, waitFor, within } from '@testing-library/react'
-import { buildFragmentSearchLink } from './mapLinks'
+import { buildFragmentSearchLink } from 'map/mapLinks'
+
 import {
   makeFragmentService,
   makeProvenance,
@@ -20,8 +21,10 @@ import {
   mockSetLngLat,
   resetMapMocks,
   triggerMapEvent,
-} from './MapTab.testHelpers'
-import MapTab from './MapTab'
+} from 'map/MapTab.testHelpers'
+import MapTab from 'map/MapTab'
+
+jest.mock('maplibre-gl')
 
 describe('MapTab interactions', () => {
   beforeEach(resetMapMocks)

@@ -2,8 +2,8 @@ import { within } from '@testing-library/react'
 import {
   createFindspotPopup,
   type FindspotPopupProperties,
-} from './createFindspotPopup'
-import { buildFragmentSearchLink } from './mapLinks'
+} from 'map/createFindspotPopup'
+import { buildFragmentSearchLink } from 'map/mapLinks'
 
 function makePopupProperties(
   overrides: Partial<FindspotPopupProperties> = {},
@@ -54,7 +54,7 @@ describe('createFindspotPopup', () => {
     expect(popup.getByText('URU')).toBeInTheDocument()
     expect(popup.queryByText(/ · /)).not.toBeInTheDocument()
     expect(popup.getByText('12.34°S, 45.67°W')).toBeInTheDocument()
-    expect(popup.getByText('Area boundary available')).toBeInTheDocument()
+    expect(popup.getByText('Approximate area location')).toBeInTheDocument()
   })
 
   it('renders malicious-looking values as text instead of markup', () => {
@@ -78,5 +78,20 @@ describe('createFindspotPopup', () => {
       name,
     )
     expect(popup.getByText(`${parent} · ${abbreviation}`)).toBeInTheDocument()
+  })
+
+  it('renders popup content without coordinates', () => {
+    const content = createFindspotPopup(
+      makePopupProperties({ coordinates: undefined }),
+    )
+    document.body.append(content)
+    const popup = within(content)
+
+    expect(popup.queryByText(/°/)).not.toBeInTheDocument()
+    expect(popup.getByText('Single point')).toBeInTheDocument()
+    expect(popup.getByRole('link', { name: 'View fragments' })).toHaveAttribute(
+      'href',
+      buildFragmentSearchLink('Babylon'),
+    )
   })
 })

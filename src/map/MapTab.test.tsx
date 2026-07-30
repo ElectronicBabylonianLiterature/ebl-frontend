@@ -3,7 +3,8 @@ import type { FeatureCollection } from 'geojson'
 import { act, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import FragmentService from 'fragmentarium/application/FragmentService'
-import { buildFragmentSearchLink } from './mapLinks'
+import { buildFragmentSearchLink } from 'map/mapLinks'
+
 import {
   deferMapLoad,
   makeFailingFragmentService,
@@ -17,8 +18,10 @@ import {
   mockSetData,
   resetMapMocks,
   triggerMapEvent,
-} from './MapTab.testHelpers'
-import MapTab from './MapTab'
+} from 'map/MapTab.testHelpers'
+import MapTab from 'map/MapTab'
+
+jest.mock('maplibre-gl')
 
 describe('MapTab', () => {
   beforeEach(resetMapMocks)
@@ -202,4 +205,37 @@ describe('MapTab', () => {
     expect(sourceCall[1].data.features).toHaveLength(1)
     expect(sourceCall[1].data.features[0].properties.name).toBe('Babylon')
   })
+
+  it.each(['success', 'rejection'])(
+    'does not update state after unmount before fetch %s',
+    async (outcome) => {
+      let resolveFetch!: (
+        provenances: readonly ReturnType<typeof makeProvenance>[],
+      ) => void
+      let rejectFetch!: (error: Error) => void
+      const fragmentService = {
+        fetchProvenances: () =>
+          new Promise((resolve, reject) => {
+            resolveFetch = resolve
+            rejectFetch = reject
+          }),
+      } as unknown as FragmentService
+      const consoleError = jest.spyOn(console, 'error').mockImplementation()
+
+      const { unmount } = render(<MapTab fragmentService={fragmentService} />)
+      unmount()
+
+      await act(async () => {
+        if (outcome === 'success') {
+          resolveFetch([makeProvenance()])
+        } else {
+          rejectFetch(new Error('Late failure'))
+        }
+      })
+
+      expect(consoleError).not.toHaveBeenCalled()
+      expect(screen.queryByText(/Late failure/)).not.toBeInTheDocument()
+      consoleError.mockRestore()
+    },
+  )
 })

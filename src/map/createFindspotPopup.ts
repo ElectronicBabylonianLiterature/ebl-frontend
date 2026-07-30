@@ -1,5 +1,5 @@
-import type { FindspotProperties } from './provenanceToGeoJson'
-import { buildFragmentSearchLink } from './mapLinks'
+import type { FindspotProperties } from 'map/provenanceToGeoJson'
+import { buildFragmentSearchLink } from 'map/mapLinks'
 
 export interface FindspotPopupProperties extends Pick<
   FindspotProperties,
@@ -62,7 +62,7 @@ export function createFindspotPopup(
 
   content.append(
     createRow(
-      geometryType === 'polygon' ? 'Area boundary available' : 'Single point',
+      geometryType === 'polygon' ? 'Approximate area location' : 'Single point',
     ),
     link,
   )

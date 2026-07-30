@@ -1,15 +1,14 @@
 import React, { useRef } from 'react'
 import { render } from '@testing-library/react'
-import type { Feature } from 'geojson'
 import {
   makeProvenance,
-  mockFitBounds,
-  mockMapInstance,
   mockOn,
   resetMapMocks,
   triggerMapEvent,
-} from './MapTab.testHelpers'
-import useFindspotMap, { fitMapToData } from './useFindspotMap'
+} from 'map/MapTab.testHelpers'
+import useFindspotMap from 'map/useFindspotMap'
+
+jest.mock('maplibre-gl')
 
 function HookHarness({
   withContainer = true,
@@ -27,15 +26,6 @@ function HookHarness({
 
 describe('useFindspotMap', () => {
   beforeEach(resetMapMocks)
-
-  it('does not fit the map when there are no point features', () => {
-    fitMapToData(mockMapInstance as never, [])
-    fitMapToData(mockMapInstance as never, [
-      { geometry: { type: 'Polygon', coordinates: [] } } as unknown as Feature,
-    ])
-
-    expect(mockFitBounds).not.toHaveBeenCalled()
-  })
 
   it('does not initialize a map before data is ready', () => {
     render(<HookHarness provenances={null} />)
@@ -56,7 +46,11 @@ describe('useFindspotMap', () => {
 
     expect(() => {
       triggerMapEvent('error', {
-        error: { message: 'Failed to load style.json' },
+        resourceType: 'style',
+        error: {
+          message:
+            'Failed to fetch https://basemaps.cartocdn.com/gl/positron-gl-style/style.json',
+        },
       })
     }).not.toThrow()
   })

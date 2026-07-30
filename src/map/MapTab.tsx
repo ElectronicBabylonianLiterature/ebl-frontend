@@ -4,10 +4,10 @@ import 'maplibre-gl/dist/maplibre-gl.css'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import { ProvenanceRecord } from 'fragmentarium/domain/Provenance'
 import Spinner from 'common/ui/Spinner'
-import useFindspotMap from './useFindspotMap'
-import useMapSourceData from './useMapSourceData'
-import { buildFragmentSearchLink } from './mapLinks'
-import './MapTab.sass'
+import useFindspotMap from 'map/useFindspotMap'
+import useMapSourceData from 'map/useMapSourceData'
+import { buildFragmentSearchLink } from 'map/mapLinks'
+import 'map/MapTab.sass'
 
 interface Props {
   fragmentService: FragmentService
@@ -51,10 +51,24 @@ export default function MapTab({ fragmentService }: Props): JSX.Element {
   useMapSourceData(mapRef, filteredProvenances)
 
   useEffect(() => {
+    let ignore = false
+
     fragmentService
       .fetchProvenances()
-      .then(setProvenances)
-      .catch((err: Error) => setError(err.message))
+      .then((provenances) => {
+        if (!ignore) {
+          setProvenances(provenances)
+        }
+      })
+      .catch((err: Error) => {
+        if (!ignore) {
+          setError(err.message)
+        }
+      })
+
+    return () => {
+      ignore = true
+    }
   }, [fragmentService])
 
   if (error) {

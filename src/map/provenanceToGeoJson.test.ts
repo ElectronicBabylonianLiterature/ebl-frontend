@@ -1,19 +1,6 @@
 import type { Point } from 'geojson'
-import { ProvenanceRecord } from 'fragmentarium/domain/Provenance'
-import { provenanceToGeoJson } from './provenanceToGeoJson'
-
-function makeProvenance(
-  overrides: Partial<ProvenanceRecord> = {},
-): ProvenanceRecord {
-  return {
-    id: 'babylon',
-    longName: 'Babylon',
-    abbreviation: 'Bab',
-    sortKey: 1,
-    coordinates: { latitude: 32.542, longitude: 44.42 },
-    ...overrides,
-  }
-}
+import { provenanceToGeoJson } from 'map/provenanceToGeoJson'
+import { makeProvenance } from 'map/testFixtures/provenance'
 
 describe('provenanceToGeoJson', () => {
   it('converts a valid point provenance to a GeoJSON feature', () => {
