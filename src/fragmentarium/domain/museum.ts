@@ -104,6 +104,13 @@ export const Museums = {
     country: 'US',
     url: 'https://hmane.harvard.edu/',
   },
+  HARVEY_CUSHING_WHITNEY_MEDICAL_LIBRARY: {
+    key: 'HARVEY_CUSHING_WHITNEY_MEDICAL_LIBRARY',
+    name: 'Harvey Cushing/John Hay Whitney Medical Library, Yale University',
+    city: 'New Haven',
+    country: 'US',
+    url: 'https://library.medicine.yale.edu/',
+  },
   HATAY_ARCHAEOLOGY_MUSEUM: {
     key: 'HATAY_ARCHAEOLOGY_MUSEUM',
     name: 'Hatay Archaeology Museum',
