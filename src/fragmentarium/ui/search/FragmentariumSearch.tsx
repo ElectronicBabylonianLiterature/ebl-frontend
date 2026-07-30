@@ -36,6 +36,9 @@ export const linesToShow = 5
 function hasNonDefaultValues(query: FragmentQuery | CorpusQuery) {
   return !_(query)
     .omit('lemmaOperator')
+    .omit('limit')
+    .omit('offset')
+    .omit('count')
     .omitBy((value) => !value)
     .isEmpty()
 }

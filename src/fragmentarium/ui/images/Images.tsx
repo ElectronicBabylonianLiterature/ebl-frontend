@@ -97,7 +97,9 @@ interface TabPaneProps {
 }
 
 const TabPane: React.FC<TabPaneProps> = ({ eventKey, activeKey, children }) => (
-  <Tab.Pane eventKey={eventKey}>{activeKey === eventKey && children}</Tab.Pane>
+  <Tab.Pane eventKey={eventKey} hidden={activeKey !== eventKey}>
+    {children}
+  </Tab.Pane>
 )
 
 interface NavItemProps {
@@ -135,7 +137,16 @@ function Images({
   const controller = new TabController(fragment, tab, activeFolio, navigate)
   const folios = fragment.folios
   const activeKey = controller.activeKey
+  const [visitedTabs, setVisitedTabs] = React.useState<ReadonlySet<string>>(
+    () => new Set([activeKey]),
+  )
   const FOLIO_DROPDOWN_THRESHOLD = 3
+
+  React.useEffect(() => {
+    setVisitedTabs((visited) =>
+      visited.has(activeKey) ? visited : new Set([...visited, activeKey]),
+    )
+  }, [activeKey])
 
   return (
     <Tab.Container activeKey={activeKey} onSelect={controller.openTab}>
@@ -167,24 +178,33 @@ function Images({
       <Tab.Content>
         {fragment.hasPhoto && (
           <TabPane eventKey={PHOTO} activeKey={activeKey}>
-            <FragmentPhoto
-              fragment={fragment}
-              fragmentService={fragmentService}
-            />
+            {visitedTabs.has(PHOTO) && (
+              <FragmentPhoto
+                fragment={fragment}
+                fragmentService={fragmentService}
+              />
+            )}
           </TabPane>
         )}
         {fragment.getExternalNumber('cdliNumber') && (
           <TabPane eventKey={CDLI} activeKey={activeKey}>
-            <CdliImages fragment={fragment} fragmentService={fragmentService} />
+            {visitedTabs.has(CDLI) && (
+              <CdliImages
+                fragment={fragment}
+                fragmentService={fragmentService}
+              />
+            )}
           </TabPane>
         )}
         {folios.map((folio, index) => (
           <TabPane key={index} eventKey={String(index)} activeKey={activeKey}>
-            <FolioDetails
-              fragmentService={fragmentService}
-              fragmentNumber={fragment.number}
-              folio={folio}
-            />
+            {visitedTabs.has(String(index)) && (
+              <FolioDetails
+                fragmentService={fragmentService}
+                fragmentNumber={fragment.number}
+                folio={folio}
+              />
+            )}
           </TabPane>
         ))}
       </Tab.Content>

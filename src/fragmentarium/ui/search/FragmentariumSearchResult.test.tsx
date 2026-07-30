@@ -81,7 +81,7 @@ describe('FragmentariumSearchResult pagination', () => {
     })
 
     expect(await screen.findByText('K.1')).toBeInTheDocument()
-    expect(screen.getByText(/Showing results 51-100/)).toBeInTheDocument()
+    expect(screen.getByText(/Showing documents 51-100/)).toBeInTheDocument()
     expect(screen.getAllByText('Page 2')[0]).toBeInTheDocument()
     expect(view.query).toHaveBeenCalledWith({
       number: 'K.1',
@@ -113,7 +113,7 @@ describe('FragmentariumSearchResult pagination', () => {
     await screen.findByText('K.1')
     expect(screen.getAllByRole('listitem')[0]).toHaveClass('disabled')
     expect(screen.getAllByRole('listitem')[2]).toHaveClass('disabled')
-    expect(screen.getByText(/Showing results 1-12/)).toBeInTheDocument()
+    expect(screen.getByText(/Showing documents 1-12/)).toBeInTheDocument()
   })
 
   it('keeps a usable Previous control for an empty directly linked page', async () => {

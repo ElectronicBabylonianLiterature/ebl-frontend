@@ -115,10 +115,22 @@ type FragmentLinesProps = {
   active?: number
 }
 
+function hasLatestTransliterationRecord(fragment: Fragment): boolean {
+  return _(fragment.uniqueRecord).some(
+    (entry) => entry.type === 'Transliteration' && !entry.isHistorical,
+  )
+}
+
 function hasRenderReadyFragment(
-  queryItem: QueryItem,
-): queryItem is QueryItem & { fragment: Fragment } {
-  return Boolean(queryItem.fragment)
+  props: FragmentLinesProps,
+): props is FragmentLinesProps & {
+  queryItem: QueryItem & { fragment: Fragment }
+} {
+  return Boolean(
+    props.queryItem.fragment &&
+    (!props.includeLatestRecord ||
+      hasLatestTransliterationRecord(props.queryItem.fragment)),
+  )
 }
 
 function FragmentLinesContent({
@@ -195,7 +207,7 @@ function FragmentLinesContent({
           <RenderFragmentLines
             fragment={fragment}
             linesToShow={linesToShow}
-            totalLines={queryItem.matchingLines.length}
+            totalLines={queryItem.matchCount}
             lemmaIds={queryLemmas}
           />
         </ResponsiveCol>
@@ -250,7 +262,7 @@ const HydratedFragmentLines = withData<
 )
 
 export function FragmentLines(props: FragmentLinesProps): JSX.Element {
-  return hasRenderReadyFragment(props.queryItem) ? (
+  return hasRenderReadyFragment(props) ? (
     <FragmentLinesContent fragment={props.queryItem.fragment} {...props} />
   ) : (
     <HydratedFragmentLines {...props} />

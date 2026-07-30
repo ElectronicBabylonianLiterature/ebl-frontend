@@ -27,7 +27,6 @@ beforeEach(() => {
 const chance = new Chance('latest-test')
 
 const numberOfFragments = 2
-let container: HTMLElement
 let fragments: Fragment[]
 let session: Session
 
@@ -62,7 +61,7 @@ const setup = async (): Promise<void> => {
   fragmentService.findThumbnail.mockResolvedValue({ blob: null })
 
   dossiersService.queryByIds.mockResolvedValue([])
-  container = render(
+  render(
     <MemoryRouter>
       <DictionaryContext.Provider value={wordService}>
         <SessionContext.Provider value={session}>
@@ -73,15 +72,19 @@ const setup = async (): Promise<void> => {
         </SessionContext.Provider>
       </DictionaryContext.Provider>
     </MemoryRouter>,
-  ).container
+  )
   await screen.findByText('Latest Additions')
   await screen.findByText(fragments[0].number)
   await screen.findByText(fragments[1].number)
 }
 
-test('Snapshot', async () => {
+test('renders latest additions with hydrated fragment content', async () => {
   await setup()
-  expect(container).toMatchSnapshot()
+
+  expect(screen.getByText('Latest Additions')).toBeVisible()
+  expect(screen.getByText(fragments[0].number)).toBeVisible()
+  expect(screen.getByText(fragments[1].number)).toBeVisible()
+  expect(fragmentService.find).toHaveBeenCalledTimes(numberOfFragments)
 })
 
 describe('preview mode', () => {

@@ -1,8 +1,13 @@
 import React from 'react'
-import { Pagination } from 'react-bootstrap'
+import { Form, Pagination } from 'react-bootstrap'
 import { useLocation } from 'react-router-dom'
 import { useHistory } from 'router/compat'
-import { updatePaginationSearchParam } from './pagination'
+import {
+  getValidatedPageSize,
+  RESULT_PAGE_SIZES,
+  updatePageSizeSearchParam,
+  updatePaginationSearchParam,
+} from './pagination'
 
 function PaginationControl({
   paginationURLParam,
@@ -49,23 +54,49 @@ export default function PaginationItems({
   paginationURLParam: string
   hasNextPage: boolean
 }): JSX.Element {
+  const location = useLocation()
+  const history = useHistory()
+
   return (
-    <Pagination>
-      <PaginationControl
-        paginationURLParam={paginationURLParam}
-        index={activePage - 1}
-        disabled={activePage === 0}
+    <div className="d-flex align-items-center gap-2">
+      <Form.Select
+        aria-label="Results per page"
+        size="sm"
+        value={getValidatedPageSize(
+          new URLSearchParams(location.search).get('limit'),
+        )}
+        onChange={(event) => {
+          history.push({
+            search: updatePageSizeSearchParam(
+              location.search,
+              Number(event.currentTarget.value),
+            ),
+          })
+        }}
       >
-        Previous
-      </PaginationControl>
-      <Pagination.Item active>Page {activePage + 1}</Pagination.Item>
-      <PaginationControl
-        paginationURLParam={paginationURLParam}
-        index={activePage + 1}
-        disabled={!hasNextPage}
-      >
-        Next
-      </PaginationControl>
-    </Pagination>
+        {RESULT_PAGE_SIZES.map((size) => (
+          <option key={size} value={size}>
+            {size}
+          </option>
+        ))}
+      </Form.Select>
+      <Pagination>
+        <PaginationControl
+          paginationURLParam={paginationURLParam}
+          index={activePage - 1}
+          disabled={activePage === 0}
+        >
+          Previous
+        </PaginationControl>
+        <Pagination.Item active>Page {activePage + 1}</Pagination.Item>
+        <PaginationControl
+          paginationURLParam={paginationURLParam}
+          index={activePage + 1}
+          disabled={!hasNextPage}
+        >
+          Next
+        </PaginationControl>
+      </Pagination>
+    </div>
   )
 }

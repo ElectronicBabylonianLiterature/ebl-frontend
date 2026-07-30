@@ -6,6 +6,7 @@ import {
 } from './FragmentLink'
 import { parseUrl } from 'query-string'
 import { folioFactory } from 'test-support/fragment-data-fixtures'
+import { CANONICAL_ORIGIN } from 'router/domain'
 
 const chance = new Chance()
 
@@ -24,10 +25,10 @@ it('Creates URL with hash', () => {
   )
 })
 
-it('Normalizes already encoded fragment numbers', () => {
-  expect(createFragmentUrl('BM%20123')).toEqual('/library/BM%20123')
+it('preserves literal percent sequences in raw fragment numbers', () => {
+  expect(createFragmentUrl('BM%20123')).toEqual('/library/BM%2520123')
   expect(createFragmentCanonicalUrl('BM%20123')).toEqual(
-    'https://www.ebl.lmu.de/library/BM%20123',
+    `${CANONICAL_ORIGIN}/library/BM%2520123`,
   )
 })
 
@@ -51,17 +52,29 @@ it('Creates canonical fragment URL without query parameters', () => {
   )
 })
 
-it.each(['BM.123', 'BM 123', 'K 1+2/3', 'BM%20123'])(
-  'encodes %s exactly once in the canonical URL',
+it.each([
+  'BM.123',
+  'A B',
+  'A/B',
+  'A%41B',
+  'A%20B',
+  '100%',
+  'Šumma ālu',
+  '%',
+  '%A',
+  '%ZZ',
+])(
+  'encodes raw fragment number %s without semantic transformation',
   (number) => {
+    const encodedNumber = encodeURIComponent(number)
     const canonicalUrl = createFragmentCanonicalUrl(number)
 
-    expect(canonicalUrl).toContain(
-      `https://www.ebl.lmu.de/library/${encodeURIComponent(
-        decodeURIComponent(number),
-      )}`,
-    )
-    expect(canonicalUrl).not.toContain('%2525')
+    expect(createFragmentUrl(number)).toEqual(`/library/${encodedNumber}`)
+    expect(canonicalUrl).toEqual(`${CANONICAL_ORIGIN}/library/${encodedNumber}`)
     expect(canonicalUrl).not.toContain('?tab=')
   },
 )
+
+it('repairs malformed unicode before encoding', () => {
+  expect(createFragmentUrl('A\uD800B')).toEqual('/library/A%EF%BF%BDB')
+})

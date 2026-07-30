@@ -26,7 +26,7 @@ import { FragmentQuery } from 'query/FragmentQuery'
 import {
   getPageIndex,
   paginationURLParam,
-  RESULTS_PER_PAGE,
+  getValidatedPageSize,
 } from 'fragmentarium/ui/search/pagination'
 
 function parseStringParam(location: Location, param: string): string | null {
@@ -50,12 +50,16 @@ export function createPagedFragmentQuery(
   location: Location,
 ): FragmentQuery {
   const pageIndex = getPageIndex(location.search)
+  const limit = getValidatedPageSize(fragmentQuery.limit)
+  const isLineQuery = Boolean(
+    fragmentQuery.lemmas || fragmentQuery.transliteration,
+  )
 
   return {
     ...fragmentQuery,
-    limit: RESULTS_PER_PAGE,
-    offset: pageIndex * RESULTS_PER_PAGE,
-    count: 'page',
+    limit,
+    offset: pageIndex * limit,
+    count: isLineQuery ? 'exact' : 'page',
   }
 }
 
@@ -108,27 +112,30 @@ export default function FragmentariumRoutes({
       key="FragmentariumSearch"
       path="/library/search"
       exact
-      render={(routeProps): ReactNode => (
-        <HeadTagsService
-          title="Library search: eBL"
-          description="Search for cuneiform manuscripts in the electronic Babylonian Library (eBL)."
-        >
-          <FragmentariumSearch
-            fragmentSearchService={fragmentSearchService}
-            fragmentService={fragmentService}
-            fragmentQuery={parseFragmentSearchQuery(routeProps.location)}
-            resultFragmentQuery={createPagedFragmentQuery(
-              parseFragmentSearchQuery(routeProps.location),
-              routeProps.location,
-            )}
-            bibliographyService={bibliographyService}
-            wordService={wordService}
-            textService={textService}
-            dossiersService={dossiersService}
-            activeTab={_.trimStart(routeProps.location.hash, '#')}
-          />
-        </HeadTagsService>
-      )}
+      render={(routeProps): ReactNode => {
+        const fragmentQuery = parseFragmentSearchQuery(routeProps.location)
+        return (
+          <HeadTagsService
+            title="Library search: eBL"
+            description="Search for cuneiform manuscripts in the electronic Babylonian Library (eBL)."
+          >
+            <FragmentariumSearch
+              fragmentSearchService={fragmentSearchService}
+              fragmentService={fragmentService}
+              fragmentQuery={fragmentQuery}
+              resultFragmentQuery={createPagedFragmentQuery(
+                fragmentQuery,
+                routeProps.location,
+              )}
+              bibliographyService={bibliographyService}
+              wordService={wordService}
+              textService={textService}
+              dossiersService={dossiersService}
+              activeTab={_.trimStart(routeProps.location.hash, '#')}
+            />
+          </HeadTagsService>
+        )
+      }}
     />,
     <Route
       key="FragmentLineToVecRanking"

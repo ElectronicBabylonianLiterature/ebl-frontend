@@ -8,17 +8,17 @@ import { FragmentQuery } from 'query/FragmentQuery'
 import { linesToShow } from './FragmentariumSearch'
 import './FragmentariumSearchResult.sass'
 import { stringify } from 'query-string'
+import { useLocation } from 'react-router-dom'
+import { useHistory } from 'router/compat'
 import { FragmentLines } from './FragmentariumSearchResultComponents'
 import DossiersService from 'dossiers/application/DossiersService'
 import PaginationItems from './PaginationItems'
-import { paginationURLParam, RESULTS_PER_PAGE } from './pagination'
-
-function getPageIndex(fragmentQuery: FragmentQuery): number {
-  const offset = fragmentQuery.offset ?? 0
-  return Number.isInteger(offset) && offset >= 0
-    ? Math.floor(offset / RESULTS_PER_PAGE)
-    : 0
-}
+import {
+  getPageIndexForOffset,
+  getValidatedPageSize,
+  paginationURLParam,
+  updatePaginationSearchParam,
+} from './pagination'
 
 function ResultPages({
   fragments,
@@ -82,37 +82,61 @@ export const SearchResult = withData<
   QueryResult
 >(
   ({ data, fragmentService, dossiersService, fragmentQuery }): JSX.Element => {
+    const location = useLocation()
+    const history = useHistory()
     const fragmentCount = data.items.length
-    const pageIndex = getPageIndex(fragmentQuery)
-    const offset = fragmentQuery.offset ?? pageIndex * RESULTS_PER_PAGE
-    const isLineQuery = fragmentQuery.lemmas || fragmentQuery.transliteration
+    const pageIndex = getPageIndexForOffset(
+      fragmentQuery.offset,
+      fragmentQuery.limit,
+    )
+    const offset = pageIndex * getValidatedPageSize(fragmentQuery.limit)
+    const isLineQuery = Boolean(
+      fragmentQuery.lemmas || fragmentQuery.transliteration,
+    )
     const hasLineCount = typeof data.matchCountTotal === 'number'
-    const documentCountInfo = `${fragmentCount.toLocaleString()} document${
-      fragmentCount === 1 ? '' : 's'
-    }`
-    const lineResultInfo = hasLineCount
-      ? `Found ${data.isMatchCountTotalExact === false ? 'about ' : ''}${data.matchCountTotal.toLocaleString()} line${
-          data.matchCountTotal === 1 ? '' : 's'
-        } in ${documentCountInfo}`
-      : `Found ${documentCountInfo}`
-    const pageResultInfo =
+    const pageRange =
       fragmentCount > 0
-        ? `Showing results ${(offset + 1).toLocaleString()}-${(
+        ? `Showing documents ${(offset + 1).toLocaleString()}-${(
             offset + fragmentCount
           ).toLocaleString()}`
         : pageIndex > 0
           ? 'No results on this page'
-          : `Found ${documentCountInfo}`
-    const resultInfo = isLineQuery ? lineResultInfo : pageResultInfo
+          : 'Found 0 documents'
+    const lineResultInfo = hasLineCount
+      ? `Found ${data.isMatchCountTotalExact === false ? 'about ' : ''}${data.matchCountTotal.toLocaleString()} matching line${
+          data.matchCountTotal === 1 ? '' : 's'
+        }${fragmentCount > 0 ? `. ${pageRange}` : ''}`
+      : pageRange
+    const resultInfo = isLineQuery ? lineResultInfo : pageRange
     const showNumberSuggestion =
       fragmentCount === 0 && fragmentQuery.number?.match(/^[^.]+\s+[^.]+$/)
     const fixedNumber = fragmentQuery.number?.split(/\s+/).join('.')
+    React.useEffect(() => {
+      if (
+        data.items.length === 0 &&
+        pageIndex > 0 &&
+        data.hasNextPage !== true
+      ) {
+        history.replace({
+          search: updatePaginationSearchParam(
+            location.search,
+            paginationURLParam,
+            0,
+          ),
+        })
+      }
+    }, [
+      data.hasNextPage,
+      data.items.length,
+      history,
+      location.search,
+      pageIndex,
+    ])
     return (
       <>
         <Row>
           <Col className="justify-content-center fragment-result__match-info">
             {resultInfo}
-            {data.hasNextPage === true && '; more results are available'}
             {showNumberSuggestion && (
               <>
                 {'. Did you mean'}

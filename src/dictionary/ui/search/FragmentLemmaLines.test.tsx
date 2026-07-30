@@ -139,7 +139,7 @@ describe('Show Library entries', () => {
 
     expect(await screen.findByText(previewSubsetFragment.number)).toBeVisible()
     expect(screen.getByRole('button', { name: 'kur' })).toBeVisible()
-    expect(screen.getByText('And 2 more')).toBeVisible()
+    expect(screen.getByText('And 3 more')).toBeVisible()
     expect(fragmentService.find).not.toHaveBeenCalled()
   })
 
@@ -183,6 +183,6 @@ describe('RenderFragmentLines', () => {
 
     expect(fragmentService.find).not.toHaveBeenCalled()
     expect(screen.getByRole('button', { name: 'kur' })).toBeVisible()
-    expect(screen.getByText('And 2 more')).toBeVisible()
+    expect(screen.getByText('And 3 more')).toBeVisible()
   })
 })

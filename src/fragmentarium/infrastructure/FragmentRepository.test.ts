@@ -888,6 +888,21 @@ describe('FragmentRepository queryLatest', () => {
     expect(latestQueryItem.fragment?.number).toEqual(fragment.number)
   })
 
+  it('prefers top-level latest fragments over summary placeholders', async () => {
+    apiClient.fetchJson.mockResolvedValueOnce({
+      matchCountTotal: 1,
+      items: [createSummaryItemDto()],
+      fragments: [fragmentDto],
+    })
+
+    const latestQueryResult = await fragmentRepository.queryLatest()
+    const latestQueryItem = latestQueryResult.items[0]
+
+    expect(latestQueryItem.fragment?.number).toEqual(fragment.number)
+    expect(latestQueryItem.fragment?.uniqueRecord.length).toBeGreaterThan(0)
+    expect(latestQueryItem.thumbnailPath).toBeNull()
+  })
+
   it('maps prefetched fragment from top-level fragments payload', async () => {
     apiClient.fetchJson.mockResolvedValueOnce({
       matchCountTotal: 1,

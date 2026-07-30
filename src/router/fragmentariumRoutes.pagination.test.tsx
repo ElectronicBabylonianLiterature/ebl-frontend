@@ -143,6 +143,44 @@ describe('FragmentariumRoutes library search pagination', () => {
     },
   )
 
+  it('requests exact counts for transliteration line searches', async () => {
+    const view = renderRoutes('/library/search/?transliteration=kur')
+
+    expect(await screen.findByText('K.1')).toBeInTheDocument()
+    expect(view.query).toHaveBeenCalledWith({
+      transliteration: 'kur',
+      limit: 50,
+      offset: 0,
+      count: 'exact',
+    })
+  })
+
+  it('requests exact counts for lemma line searches', async () => {
+    const view = renderRoutes('/library/search/?lemmas=kur')
+
+    expect(await screen.findByText('K.1')).toBeInTheDocument()
+    expect(view.query).toHaveBeenCalledWith({
+      lemmas: 'kur',
+      limit: 50,
+      offset: 0,
+      count: 'exact',
+    })
+  })
+
+  it('uses a validated URL result size without fetching every result', async () => {
+    const view = renderRoutes(
+      '/library/search/?number=000123&limit=100&paginationIndex=1',
+    )
+
+    expect(await screen.findByText('K.101')).toBeInTheDocument()
+    expect(view.query).toHaveBeenCalledWith({
+      number: '000123',
+      limit: 100,
+      offset: 100,
+      count: 'page',
+    })
+  })
+
   it('uses URL page changes to request the next server page', async () => {
     const view = renderRoutes(
       '/library/search/?number=000123&paginationIndex=1',
