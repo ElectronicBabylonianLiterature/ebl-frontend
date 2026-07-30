@@ -43,6 +43,7 @@ export class TabController {
     return (
       _([
         this.fragment.hasPhoto && PHOTO,
+        this.fragment.getExternalNumber('cdliNumber') && CDLI,
         ...this.fragment.folios.map((folio, index) => String(index)),
       ])
         .compact()
