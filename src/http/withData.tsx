@@ -14,6 +14,7 @@ export type Config<PROPS, DATA> = {
   watch: (props: PROPS) => unknown[]
   filter: (props: PROPS) => boolean
   defaultData: (props: PROPS) => DATA | null
+  retry?: boolean
 }
 
 export default function withData<PROPS, GETTER_PROPS, DATA>(
@@ -25,11 +26,13 @@ export default function withData<PROPS, GETTER_PROPS, DATA>(
     watch: () => [],
     filter: () => true,
     defaultData: () => null,
+    retry: false,
     ...config,
   }
   return function ComponentWithData(props: PROPS & GETTER_PROPS): JSX.Element {
     const [data, setData] = useState<DATA | null>(null)
     const [error, setError] = useState<Error | null>(null)
+    const [retryCount, setRetryCount] = useState(0)
     const requestSequence = useRef(0)
 
     useEffect(
@@ -71,7 +74,7 @@ export default function withData<PROPS, GETTER_PROPS, DATA>(
         }
       },
       // eslint-disable-next-line react-hooks/exhaustive-deps
-      fullConfig.watch(props),
+      [...fullConfig.watch(props), retryCount],
     )
 
     return (
@@ -81,7 +84,14 @@ export default function withData<PROPS, GETTER_PROPS, DATA>(
             <Spinner />
           </div>
         )}
-        <ErrorAlert error={error} />
+        <ErrorAlert
+          error={error}
+          onRetry={
+            fullConfig.retry === true
+              ? () => setRetryCount(retryCount + 1)
+              : undefined
+          }
+        />
         {data && <WrappedComponent data={data} {...props} />}
       </ErrorBoundary>
     )

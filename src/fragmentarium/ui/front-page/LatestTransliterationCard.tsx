@@ -15,12 +15,6 @@ import useNearViewport from 'common/hooks/useNearViewport'
 
 const LATEST_CARD_LINES_TO_SHOW = 3
 
-export function hasLatestTransliterationRecord(fragment: Fragment): boolean {
-  return _(fragment.uniqueRecord).some(
-    (entry) => entry.type === 'Transliteration' && !entry.isHistorical,
-  )
-}
-
 export function LatestAdditionSummaryThumbnail({
   fragment,
   thumbnailPath,
@@ -179,8 +173,7 @@ export function CompactFragmentCard({
   queryItem: QueryItem
   fragmentService: FragmentService
 }): JSX.Element {
-  return queryItem.fragment &&
-    hasLatestTransliterationRecord(queryItem.fragment) ? (
+  return queryItem.fragment ? (
     <CompactFragmentCardContent
       fragment={queryItem.fragment}
       fragmentService={fragmentService}

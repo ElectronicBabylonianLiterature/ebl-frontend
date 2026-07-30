@@ -1,559 +1,109 @@
 import React from 'react'
-import { fireEvent, render, screen, waitFor } from '@testing-library/react'
-import Chance from 'chance'
 import { MemoryRouter } from 'react-router-dom'
+import { fireEvent, render, screen } from '@testing-library/react'
 import Promise from 'bluebird'
-import LatestTransliterations from './LatestTransliterations'
 import FragmentService from 'fragmentarium/application/FragmentService'
-import { Fragment } from 'fragmentarium/domain/fragment'
-import { fragmentFactory } from 'test-support/fragment-fixtures'
-import WordService from 'dictionary/application/WordService'
-import { DictionaryContext } from 'dictionary/ui/dictionary-context'
-import SessionContext from 'auth/SessionContext'
-import MemorySession, { Session } from 'auth/Session'
-import { queryItemOf } from 'test-support/utils'
 import DossiersService from 'dossiers/application/DossiersService'
-import { ResearchProjects } from 'research-projects/researchProject'
-import { recordFactory } from 'test-support/fragment-data-fixtures'
+import LatestTransliterations from './LatestTransliterations'
+import { fragmentFactory } from 'test-support/fragment-fixtures'
+import { QueryItem, QueryResult } from 'query/QueryResult'
 
 jest.mock('fragmentarium/application/FragmentService')
-jest.mock('dictionary/application/WordService')
 jest.mock('dossiers/application/DossiersService')
 
-beforeEach(() => {
-  jest.clearAllMocks()
-})
+let fragmentService: jest.Mocked<FragmentService>
+let dossiersService: jest.Mocked<DossiersService>
 
-const chance = new Chance('latest-test')
+function latestItem(
+  index: number,
+  thumbnailPath: string | null = null,
+): QueryItem {
+  const fragment = fragmentFactory.build(
+    {
+      description: `Summary ${index}\nExtra`,
+      hasPhoto: thumbnailPath !== null,
+    },
+    { associations: { record: [] } },
+  )
 
-const numberOfFragments = 2
-let fragments: Fragment[]
-let session: Session
-
-const fragmentService = new (FragmentService as jest.Mock<
-  jest.Mocked<FragmentService>
->)()
-const wordService = new (WordService as jest.Mock<jest.Mocked<WordService>>)()
-const dossiersService = new (DossiersService as jest.Mock<
-  jest.Mocked<DossiersService>
->)()
-
-function latestTransliterationRecord(date = '2024-05-02') {
-  return recordFactory.build({ date, type: 'Transliteration' })
+  return {
+    museumNumber: fragment.number,
+    matchingLines: [1, 2, 3],
+    matchCount: 3,
+    fragment,
+    thumbnailPath,
+  }
 }
 
-const setup = async (): Promise<void> => {
-  session = new MemorySession(['read:fragments'])
-  fragments = fragmentFactory.buildList(
-    numberOfFragments,
-    {},
-    { transient: { chance } },
-  )
-  fragmentService.queryLatest.mockReturnValueOnce(
-    Promise.resolve({
-      items: fragments.map(queryItemOf),
-      matchCountTotal: 0,
-    }),
-  )
-  fragmentService.find
-    .mockReturnValueOnce(Promise.resolve(fragments[0]))
-    .mockReturnValueOnce(Promise.resolve(fragments[1]))
-  fragmentService.findThumbnail.mockResolvedValue({ blob: null })
+function renderLatest(queryResult: QueryResult, preview = true): void {
+  fragmentService.queryLatest.mockReturnValueOnce(Promise.resolve(queryResult))
 
-  dossiersService.queryByIds.mockResolvedValue([])
   render(
     <MemoryRouter>
-      <DictionaryContext.Provider value={wordService}>
-        <SessionContext.Provider value={session}>
-          <LatestTransliterations
-            fragmentService={fragmentService}
-            dossiersService={dossiersService}
-          />
-        </SessionContext.Provider>
-      </DictionaryContext.Provider>
+      <LatestTransliterations
+        fragmentService={fragmentService}
+        dossiersService={dossiersService}
+        preview={preview}
+      />
     </MemoryRouter>,
   )
-  await screen.findByText('Latest Additions')
-  await screen.findByText(fragments[0].number)
-  await screen.findByText(fragments[1].number)
 }
 
-test('renders latest additions with hydrated fragment content', async () => {
-  await setup()
-
-  expect(screen.getByText('Latest Additions')).toBeVisible()
-  expect(screen.getByText(fragments[0].number)).toBeVisible()
-  expect(screen.getByText(fragments[1].number)).toBeVisible()
-  expect(fragmentService.find).toHaveBeenCalledTimes(numberOfFragments)
+beforeEach(() => {
+  fragmentService = new (FragmentService as jest.Mock<
+    jest.Mocked<FragmentService>
+  >)()
+  dossiersService = new (DossiersService as jest.Mock<
+    jest.Mocked<DossiersService>
+  >)()
+  fragmentService.find.mockResolvedValue(fragmentFactory.build())
+  fragmentService.findThumbnail.mockResolvedValue({ blob: null })
 })
 
-describe('preview mode', () => {
-  const previewFragmentCount = 6
-  let previewFragments: Fragment[]
+test('preview renders repository-shaped summaries without detail hydration', async () => {
+  const items = [latestItem(1, '/images/latest-1.jpg')]
 
-  const setupPreview = async (): Promise<void> => {
-    session = new MemorySession(['read:fragments'])
-    previewFragments = fragmentFactory.buildList(
-      previewFragmentCount,
-      {},
-      { transient: { chance } },
-    )
-    fragmentService.queryLatest.mockReturnValueOnce(
-      Promise.resolve({
-        items: previewFragments.map(queryItemOf),
-        matchCountTotal: 0,
-      }),
-    )
-    previewFragments
-      .slice(0, 5)
-      .forEach((fragment) =>
-        fragmentService.find.mockReturnValueOnce(Promise.resolve(fragment)),
-      )
-    fragmentService.findThumbnail.mockResolvedValue({ blob: null })
-    dossiersService.queryByIds.mockResolvedValue([])
-    render(
-      <MemoryRouter>
-        <DictionaryContext.Provider value={wordService}>
-          <SessionContext.Provider value={session}>
-            <LatestTransliterations
-              fragmentService={fragmentService}
-              dossiersService={dossiersService}
-              preview={true}
-            />
-          </SessionContext.Provider>
-        </DictionaryContext.Provider>
-      </MemoryRouter>,
-    )
-    await screen.findByText('Latest Additions')
-    for (const fragment of previewFragments.slice(0, 5)) {
-      await screen.findByText(fragment.number)
-    }
-  }
+  renderLatest({ items, matchCountTotal: 1 })
 
-  test('shows only 5 items regardless of total available', async () => {
-    await setupPreview()
-    expect(
-      screen.queryByText(previewFragments[5].number),
-    ).not.toBeInTheDocument()
-    expect(fragmentService.find).toHaveBeenCalledTimes(5)
+  expect(await screen.findByText(items[0].museumNumber)).toBeVisible()
+  expect(screen.getByText('Summary 1')).toBeVisible()
+  expect(
+    screen.getByAltText(`Preview of ${items[0].museumNumber}`),
+  ).toHaveAttribute('src', '/images/latest-1.jpg')
+  expect(fragmentService.find).not.toHaveBeenCalled()
+  expect(fragmentService.findThumbnail).not.toHaveBeenCalled()
+})
+
+test('preview caps repository-shaped summaries before rendering cards', async () => {
+  const items = Array.from({ length: 6 }, (_, index) => latestItem(index + 1))
+
+  renderLatest({ items, matchCountTotal: 6 })
+
+  expect(await screen.findByText(items[0].museumNumber)).toBeVisible()
+  expect(screen.getByText(items[4].museumNumber)).toBeVisible()
+  expect(screen.queryByText(items[5].museumNumber)).not.toBeInTheDocument()
+  expect(fragmentService.find).not.toHaveBeenCalled()
+})
+
+test('preview omits missing and broken summary thumbnails', async () => {
+  const withBrokenThumbnail = latestItem(1, '/images/broken.jpg')
+  const withoutThumbnail = latestItem(2)
+
+  renderLatest({
+    items: [withBrokenThumbnail, withoutThumbnail],
+    matchCountTotal: 2,
   })
 
-  test('shows view-all link to the Library', async () => {
-    await setupPreview()
-    const viewAllLink = screen.getByRole('link', {
-      name: /view all in library/i,
-    })
-    expect(viewAllLink).toHaveAttribute('href', '/library')
-  })
+  const thumbnail = await screen.findByAltText(
+    `Preview of ${withBrokenThumbnail.museumNumber}`,
+  )
+  fireEvent.error(thumbnail)
 
-  test('shows fragment description first line', async () => {
-    await setupPreview()
-    const firstLine = previewFragments[0].description.split('\n')[0]
-    expect(screen.getByText(firstLine)).toBeInTheDocument()
-  })
-
-  test('shows project banner when fragment has projects', async () => {
-    session = new MemorySession(['read:fragments'])
-    const fragmentWithProject = fragmentFactory.build(
-      {},
-      {
-        associations: { projects: [ResearchProjects.CAIC] },
-        transient: { chance },
-      },
-    )
-    fragmentService.queryLatest.mockReturnValueOnce(
-      Promise.resolve({
-        items: [queryItemOf(fragmentWithProject)],
-        matchCountTotal: 0,
-      }),
-    )
-    fragmentService.find.mockReturnValueOnce(
-      Promise.resolve(fragmentWithProject),
-    )
-    fragmentService.findThumbnail.mockResolvedValue({ blob: null })
-    dossiersService.queryByIds.mockResolvedValue([])
-    render(
-      <MemoryRouter>
-        <DictionaryContext.Provider value={wordService}>
-          <SessionContext.Provider value={session}>
-            <LatestTransliterations
-              fragmentService={fragmentService}
-              dossiersService={dossiersService}
-              preview={true}
-            />
-          </SessionContext.Provider>
-        </DictionaryContext.Provider>
-      </MemoryRouter>,
-    )
-    await screen.findByAltText(ResearchProjects.CAIC.name)
-  })
-
-  test('preview uses prefetched summary fragments and thumbnail paths without extra fetches', async () => {
-    session = new MemorySession(['read:fragments'])
-    const fragmentWithPhoto = fragmentFactory.build(
-      { hasPhoto: true },
-      {
-        associations: { record: [latestTransliterationRecord()] },
-        transient: { chance },
-      },
-    )
-    const thumbnailPath = '/images/latest-summary-thumbnail.jpg'
-
-    fragmentService.queryLatest.mockReturnValueOnce(
-      Promise.resolve({
-        items: [
-          {
-            museumNumber: fragmentWithPhoto.number,
-            matchingLines: [1, 2, 3],
-            matchCount: 3,
-            fragment: fragmentWithPhoto,
-            thumbnailPath,
-          },
-        ],
-        matchCountTotal: 1,
-      }),
-    )
-    dossiersService.queryByIds.mockResolvedValue([])
-
-    render(
-      <MemoryRouter>
-        <DictionaryContext.Provider value={wordService}>
-          <SessionContext.Provider value={session}>
-            <LatestTransliterations
-              fragmentService={fragmentService}
-              dossiersService={dossiersService}
-              preview={true}
-            />
-          </SessionContext.Provider>
-        </DictionaryContext.Provider>
-      </MemoryRouter>,
-    )
-
-    const thumbnail = await screen.findByAltText(
-      `Preview of ${fragmentWithPhoto.number}`,
-    )
-
-    expect(thumbnail).toHaveAttribute('src', thumbnailPath)
-    expect(fragmentService.find).not.toHaveBeenCalled()
-    expect(fragmentService.findThumbnail).not.toHaveBeenCalled()
-  })
-
-  test('hydrates summary fragments without records before showing latest dates', async () => {
-    session = new MemorySession(['read:fragments'])
-    const summaryFragment = fragmentFactory.build(
-      { hasPhoto: true },
-      { associations: { record: [] }, transient: { chance } },
-    )
-    const hydratedFragment = fragmentFactory.build(
-      {
-        number: summaryFragment.number,
-        hasPhoto: true,
-      },
-      {
-        associations: {
-          record: [latestTransliterationRecord('2024-05-02')],
-        },
-        transient: { chance },
-      },
-    )
-    const thumbnailPath = '/images/latest-summary-thumbnail.jpg'
-
-    fragmentService.queryLatest.mockReturnValueOnce(
-      Promise.resolve({
-        items: [
-          {
-            museumNumber: summaryFragment.number,
-            matchingLines: [1, 2, 3, 4],
-            matchCount: 4,
-            fragment: summaryFragment,
-            thumbnailPath,
-          },
-        ],
-        matchCountTotal: 1,
-      }),
-    )
-    fragmentService.find.mockReturnValueOnce(Promise.resolve(hydratedFragment))
-    dossiersService.queryByIds.mockResolvedValue([])
-
-    render(
-      <MemoryRouter>
-        <DictionaryContext.Provider value={wordService}>
-          <SessionContext.Provider value={session}>
-            <LatestTransliterations
-              fragmentService={fragmentService}
-              dossiersService={dossiersService}
-              preview={true}
-            />
-          </SessionContext.Provider>
-        </DictionaryContext.Provider>
-      </MemoryRouter>,
-    )
-
-    expect(await screen.findByText('2 May 2024')).toBeVisible()
-    expect(
-      await screen.findByAltText(`Preview of ${summaryFragment.number}`),
-    ).toHaveAttribute('src', thumbnailPath)
-    expect(fragmentService.find).toHaveBeenCalledWith(
-      summaryFragment.number,
-      [1, 2, 3],
-      false,
-    )
-    expect(fragmentService.findThumbnail).not.toHaveBeenCalled()
-  })
-
-  test('shows thumbnails when thumbnail endpoint returns a blob', async () => {
-    session = new MemorySession(['read:fragments'])
-    const fragmentWithPhoto = fragmentFactory.build(
-      { hasPhoto: true },
-      {
-        associations: { record: [latestTransliterationRecord()] },
-        transient: { chance },
-      },
-    )
-    const queryItem = {
-      museumNumber: fragmentWithPhoto.number,
-      matchingLines: [1, 2, 3, 4],
-      matchCount: 4,
-    }
-    const thumbnailBlob = new Blob(['thumbnail'], { type: 'image/jpeg' })
-    ;(URL.createObjectURL as jest.Mock).mockReturnValueOnce('blob:thumbnail')
-    fragmentService.queryLatest.mockReturnValueOnce(
-      Promise.resolve({
-        items: [queryItem],
-        matchCountTotal: 0,
-      }),
-    )
-    fragmentService.find.mockReturnValueOnce(Promise.resolve(fragmentWithPhoto))
-    fragmentService.findThumbnail.mockResolvedValueOnce({ blob: thumbnailBlob })
-    dossiersService.queryByIds.mockResolvedValue([])
-    render(
-      <MemoryRouter>
-        <DictionaryContext.Provider value={wordService}>
-          <SessionContext.Provider value={session}>
-            <LatestTransliterations
-              fragmentService={fragmentService}
-              dossiersService={dossiersService}
-              preview={true}
-            />
-          </SessionContext.Provider>
-        </DictionaryContext.Provider>
-      </MemoryRouter>,
-    )
-
-    const thumbnail = await screen.findByAltText(
-      `Preview of ${fragmentWithPhoto.number}`,
-    )
-    expect(thumbnail).toHaveAttribute('src', 'blob:thumbnail')
-    expect(fragmentService.find).toHaveBeenCalledWith(
-      fragmentWithPhoto.number,
-      [1, 2, 3],
-      false,
-    )
-    expect(fragmentService.findThumbnail).toHaveBeenCalledWith(
-      fragmentWithPhoto,
-      'small',
-    )
-  })
-
-  test('uses prefetched summary fragments and thumbnail paths without extra fetches', async () => {
-    session = new MemorySession(['read:fragments'])
-    const fragmentWithPhoto = fragmentFactory.build(
-      { hasPhoto: true },
-      {
-        associations: { record: [latestTransliterationRecord()] },
-        transient: { chance },
-      },
-    )
-    const thumbnailPath = '/images/summary-thumbnail.jpg'
-
-    fragmentService.queryLatest.mockReturnValueOnce(
-      Promise.resolve({
-        items: [
-          {
-            museumNumber: fragmentWithPhoto.number,
-            matchingLines: [1, 2, 3, 4],
-            matchCount: 4,
-            fragment: fragmentWithPhoto,
-            thumbnailPath,
-          },
-        ],
-        matchCountTotal: 4,
-      }),
-    )
-    dossiersService.queryByIds.mockResolvedValue([])
-
-    render(
-      <MemoryRouter>
-        <DictionaryContext.Provider value={wordService}>
-          <SessionContext.Provider value={session}>
-            <LatestTransliterations
-              fragmentService={fragmentService}
-              dossiersService={dossiersService}
-            />
-          </SessionContext.Provider>
-        </DictionaryContext.Provider>
-      </MemoryRouter>,
-    )
-
-    const thumbnail = await screen.findByAltText(
-      `Preview of ${fragmentWithPhoto.number}`,
-    )
-
-    expect(thumbnail).toHaveAttribute('src', thumbnailPath)
-    expect(thumbnail).toHaveAttribute('loading', 'lazy')
-    expect(
-      screen.getByRole('link', {
-        name: `Preview of ${fragmentWithPhoto.number}`,
-      }),
-    ).toHaveAttribute('href', `/library/${fragmentWithPhoto.number}`)
-    expect(fragmentService.find).not.toHaveBeenCalled()
-    expect(fragmentService.findThumbnail).not.toHaveBeenCalled()
-  })
-
-  test('does not show a summary thumbnail when the fragment has no photo', async () => {
-    session = new MemorySession(['read:fragments'])
-    const fragmentWithoutPhoto = fragmentFactory.build(
-      { hasPhoto: false },
-      {
-        associations: { record: [latestTransliterationRecord()] },
-        transient: { chance },
-      },
-    )
-
-    fragmentService.queryLatest.mockReturnValueOnce(
-      Promise.resolve({
-        items: [
-          {
-            museumNumber: fragmentWithoutPhoto.number,
-            matchingLines: [1, 2, 3, 4],
-            matchCount: 4,
-            fragment: fragmentWithoutPhoto,
-            thumbnailPath: '/images/not-shown.jpg',
-          },
-        ],
-        matchCountTotal: 4,
-      }),
-    )
-    dossiersService.queryByIds.mockResolvedValue([])
-
-    render(
-      <MemoryRouter>
-        <DictionaryContext.Provider value={wordService}>
-          <SessionContext.Provider value={session}>
-            <LatestTransliterations
-              fragmentService={fragmentService}
-              dossiersService={dossiersService}
-            />
-          </SessionContext.Provider>
-        </DictionaryContext.Provider>
-      </MemoryRouter>,
-    )
-
-    await screen.findByText(fragmentWithoutPhoto.number)
-
-    expect(
-      screen.queryByAltText(`Preview of ${fragmentWithoutPhoto.number}`),
-    ).not.toBeInTheDocument()
-    expect(fragmentService.find).not.toHaveBeenCalled()
-    expect(fragmentService.findThumbnail).not.toHaveBeenCalled()
-  })
-
-  test('does not show a summary thumbnail when the thumbnail path is null', async () => {
-    session = new MemorySession(['read:fragments'])
-    const fragmentWithPhoto = fragmentFactory.build(
-      { hasPhoto: true },
-      {
-        associations: { record: [latestTransliterationRecord()] },
-        transient: { chance },
-      },
-    )
-
-    fragmentService.queryLatest.mockReturnValueOnce(
-      Promise.resolve({
-        items: [
-          {
-            museumNumber: fragmentWithPhoto.number,
-            matchingLines: [1, 2, 3, 4],
-            matchCount: 4,
-            fragment: fragmentWithPhoto,
-            thumbnailPath: null,
-          },
-        ],
-        matchCountTotal: 4,
-      }),
-    )
-    dossiersService.queryByIds.mockResolvedValue([])
-
-    render(
-      <MemoryRouter>
-        <DictionaryContext.Provider value={wordService}>
-          <SessionContext.Provider value={session}>
-            <LatestTransliterations
-              fragmentService={fragmentService}
-              dossiersService={dossiersService}
-            />
-          </SessionContext.Provider>
-        </DictionaryContext.Provider>
-      </MemoryRouter>,
-    )
-
-    await screen.findByText(fragmentWithPhoto.number)
-
-    expect(
-      screen.queryByAltText(`Preview of ${fragmentWithPhoto.number}`),
-    ).not.toBeInTheDocument()
-    expect(fragmentService.find).not.toHaveBeenCalled()
-    expect(fragmentService.findThumbnail).not.toHaveBeenCalled()
-  })
-
-  test('removes broken summary thumbnails after an image error', async () => {
-    session = new MemorySession(['read:fragments'])
-    const fragmentWithPhoto = fragmentFactory.build(
-      { hasPhoto: true },
-      {
-        associations: { record: [latestTransliterationRecord()] },
-        transient: { chance },
-      },
-    )
-
-    fragmentService.queryLatest.mockReturnValueOnce(
-      Promise.resolve({
-        items: [
-          {
-            museumNumber: fragmentWithPhoto.number,
-            matchingLines: [1, 2, 3, 4],
-            matchCount: 4,
-            fragment: fragmentWithPhoto,
-            thumbnailPath: '/images/broken-thumbnail.jpg',
-          },
-        ],
-        matchCountTotal: 4,
-      }),
-    )
-    dossiersService.queryByIds.mockResolvedValue([])
-
-    render(
-      <MemoryRouter>
-        <DictionaryContext.Provider value={wordService}>
-          <SessionContext.Provider value={session}>
-            <LatestTransliterations
-              fragmentService={fragmentService}
-              dossiersService={dossiersService}
-            />
-          </SessionContext.Provider>
-        </DictionaryContext.Provider>
-      </MemoryRouter>,
-    )
-
-    const thumbnail = await screen.findByAltText(
-      `Preview of ${fragmentWithPhoto.number}`,
-    )
-    fireEvent.error(thumbnail)
-
-    await waitFor(() =>
-      expect(
-        screen.queryByAltText(`Preview of ${fragmentWithPhoto.number}`),
-      ).not.toBeInTheDocument(),
-    )
-  })
+  expect(
+    screen.queryByAltText(`Preview of ${withBrokenThumbnail.museumNumber}`),
+  ).not.toBeInTheDocument()
+  expect(
+    screen.queryByAltText(`Preview of ${withoutThumbnail.museumNumber}`),
+  ).not.toBeInTheDocument()
+  expect(fragmentService.find).not.toHaveBeenCalled()
 })

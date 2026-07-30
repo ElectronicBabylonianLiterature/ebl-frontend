@@ -341,8 +341,8 @@ function createLatestQueryResult(dto: LatestQueryResultDto): QueryResult {
     items: dto.items.map((itemDto) => {
       const queryItem = createQueryItem(itemDto)
       const prefetchedFragment =
-        fragmentsByMuseumNumber.get(queryItem.museumNumber) ??
-        queryItem.fragment
+        queryItem.fragment ??
+        fragmentsByMuseumNumber.get(queryItem.museumNumber)
 
       return prefetchedFragment
         ? { ...queryItem, fragment: prefetchedFragment }

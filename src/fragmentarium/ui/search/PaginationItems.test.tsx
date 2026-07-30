@@ -52,7 +52,7 @@ describe('PaginationItems', () => {
     expect(screen.getAllByRole('listitem')[2]).toHaveClass('disabled')
   })
 
-  it('preserves existing numeric text and encoded query values when going next', async () => {
+  it('preserves encoded query values when going next', async () => {
     renderPaginationItems(
       0,
       true,
@@ -79,5 +79,29 @@ describe('PaginationItems', () => {
     expect(mockHistoryPush).toHaveBeenLastCalledWith({
       search: 'museum=BM&paginationIndex=3&genre=letters',
     })
+  })
+
+  it('jumps directly to a requested page', async () => {
+    renderPaginationItems(0, true, '/library/search/?number=K.1')
+
+    await userEvent.type(screen.getByLabelText('Go to page'), '4')
+    await userEvent.click(screen.getByText('Go'))
+
+    expect(mockHistoryPush).toHaveBeenLastCalledWith({
+      search: 'number=K.1&paginationIndex=3',
+    })
+  })
+
+  it('ignores invalid and current page jump requests', async () => {
+    renderPaginationItems(2, true, '/library/search/?number=K.1')
+
+    await userEvent.type(screen.getByLabelText('Go to page'), '0')
+    await userEvent.click(screen.getByText('Go'))
+    expect(mockHistoryPush).not.toHaveBeenCalled()
+
+    await userEvent.clear(screen.getByLabelText('Go to page'))
+    await userEvent.type(screen.getByLabelText('Go to page'), '3')
+    await userEvent.click(screen.getByText('Go'))
+    expect(mockHistoryPush).not.toHaveBeenCalled()
   })
 })

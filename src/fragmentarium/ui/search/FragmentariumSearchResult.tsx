@@ -94,10 +94,10 @@ export const SearchResult = withData<
       fragmentQuery.lemmas || fragmentQuery.transliteration,
     )
     const hasLineCount = typeof data.matchCountTotal === 'number'
-    const documentCountInfo = `${fragmentCount.toLocaleString()} document${
+    const isCompleteFirstPage = pageIndex === 0 && data.hasNextPage !== true
+    const pageDocumentCount = `${fragmentCount.toLocaleString()} document${
       fragmentCount === 1 ? '' : 's'
     }`
-    const isCompleteFirstPage = pageIndex === 0 && data.hasNextPage !== true
     const documentRange =
       fragmentCount > 0
         ? `Showing documents ${(offset + 1).toLocaleString()}-${(
@@ -106,18 +106,15 @@ export const SearchResult = withData<
         : pageIndex > 0
           ? 'No results on this page'
           : 'Found 0 documents'
-    const lineResultInfo = hasLineCount
-      ? isCompleteFirstPage
-        ? `Found ${data.isMatchCountTotalExact === false ? 'about ' : ''}${data.matchCountTotal.toLocaleString()} line${
-            data.matchCountTotal === 1 ? '' : 's'
-          } in ${documentCountInfo}`
-        : `Found ${data.isMatchCountTotalExact === false ? 'about ' : ''}${data.matchCountTotal.toLocaleString()} line${
-            data.matchCountTotal === 1 ? '' : 's'
-          } in ${documentCountInfo}${
-            data.hasNextPage === true ? '; more results are available' : ''
-          }`
+    const lineCountInfo = hasLineCount
+      ? `Found ${data.isMatchCountTotalExact === false ? 'about ' : ''}${data.matchCountTotal.toLocaleString()} matching line${
+          data.matchCountTotal === 1 ? '' : 's'
+        }`
+      : null
+    const lineResultInfo = lineCountInfo
+      ? `${lineCountInfo}. ${documentRange}`
       : isCompleteFirstPage
-        ? `Found ${documentCountInfo}`
+        ? `Found ${pageDocumentCount}`
         : documentRange
     const resultInfo = isLineQuery ? lineResultInfo : documentRange
     const showNumberSuggestion =

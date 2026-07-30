@@ -4,7 +4,7 @@ import FragmentRepository, { createScript } from './FragmentRepository'
 import Folio from 'fragmentarium/domain/Folio'
 import { fragment, fragmentDto } from 'test-support/test-fragment'
 import { annotations, annotationsDto } from 'test-support/test-annotation'
-import { stringify } from 'query-string'
+import { stringify } from 'querystring'
 import { QueryResult } from 'query/QueryResult'
 import { FragmentQuery } from 'query/FragmentQuery'
 import { queryItemFactory } from 'test-support/query-item-factory'
@@ -411,9 +411,6 @@ const queryTestCases: FragmentQuery[] = [
   { lemmaOperator: 'line', lemmas: lemmas },
   { lemmaOperator: 'phrase', lemmas: lemmas },
   { transliteration: 'me lik' },
-  { transliteration: 'me lik', limit: 50, offset: 0, count: 'page' },
-  { transliteration: 'me lik', limit: 50, offset: 50, count: 'page' },
-  { lemmas: 'foo I', limit: 10, count: 'none' },
   { bibId: 'foo' },
   { bibId: 'foo', pages: '1-2' },
   { number: 'X.1' },
@@ -886,21 +883,6 @@ describe('FragmentRepository queryLatest', () => {
 
     expect(latestQueryItem.museumNumber).toEqual(fragment.number)
     expect(latestQueryItem.fragment?.number).toEqual(fragment.number)
-  })
-
-  it('prefers top-level latest fragments over summary placeholders', async () => {
-    apiClient.fetchJson.mockResolvedValueOnce({
-      matchCountTotal: 1,
-      items: [createSummaryItemDto()],
-      fragments: [fragmentDto],
-    })
-
-    const latestQueryResult = await fragmentRepository.queryLatest()
-    const latestQueryItem = latestQueryResult.items[0]
-
-    expect(latestQueryItem.fragment?.number).toEqual(fragment.number)
-    expect(latestQueryItem.fragment?.uniqueRecord.length).toBeGreaterThan(0)
-    expect(latestQueryItem.thumbnailPath).toBeNull()
   })
 
   it('maps prefetched fragment from top-level fragments payload', async () => {

@@ -201,4 +201,52 @@ describe('FragmentariumSearchResult pagination', () => {
     await screen.findByText('K.1')
     expect(screen.queryByText(/0 lines/)).not.toBeInTheDocument()
   })
+
+  it('separates exact line totals from page-size document ranges', async () => {
+    renderSearchResult({
+      queryResult: {
+        ...buildQueryResult({ matchCountTotal: 90, hasNextPage: true }),
+        isMatchCountTotalExact: true,
+      },
+      fragmentQuery: {
+        transliteration: 'kur',
+        limit: 50,
+        offset: 0,
+        count: 'exact',
+      },
+    })
+
+    expect(await screen.findByText('K.1')).toBeInTheDocument()
+    expect(
+      screen.getByText('Found 90 matching lines. Showing documents 1-50'),
+    ).toBeInTheDocument()
+    expect(screen.queryByText(/in 50 documents/)).not.toBeInTheDocument()
+    expect(
+      screen.queryByText(/more results are available/),
+    ).not.toBeInTheDocument()
+  })
+
+  it('shows singular approximate line totals on later pages', async () => {
+    renderSearchResult({
+      queryResult: {
+        ...buildQueryResult({
+          items: 1,
+          matchCountTotal: 1,
+          hasNextPage: false,
+        }),
+        isMatchCountTotalExact: false,
+      },
+      fragmentQuery: {
+        lemmas: 'kur I',
+        limit: 25,
+        offset: 50,
+        count: 'exact',
+      },
+    })
+
+    expect(await screen.findByText('K.1')).toBeInTheDocument()
+    expect(
+      screen.getByText('Found about 1 matching line. Showing documents 51-51'),
+    ).toBeInTheDocument()
+  })
 })

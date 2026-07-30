@@ -1,5 +1,5 @@
 import React from 'react'
-import { Form, Pagination } from 'react-bootstrap'
+import { Button, Form, Pagination } from 'react-bootstrap'
 import { useLocation } from 'react-router-dom'
 import { useHistory } from 'router/compat'
 import {
@@ -56,9 +56,32 @@ export default function PaginationItems({
 }): JSX.Element {
   const location = useLocation()
   const history = useHistory()
+  const [pageJump, setPageJump] = React.useState('')
+  const goToPage = (event: React.FormEvent): void => {
+    event.preventDefault()
+    const pageNumber = Number(pageJump)
+
+    if (!Number.isInteger(pageNumber) || pageNumber < 1) {
+      return
+    }
+
+    const index = pageNumber - 1
+
+    if (index === activePage) {
+      return
+    }
+
+    history.push({
+      search: updatePaginationSearchParam(
+        location.search,
+        paginationURLParam,
+        index,
+      ),
+    })
+  }
 
   return (
-    <div className="d-flex align-items-center gap-2">
+    <div className="d-flex align-items-center gap-2 flex-wrap">
       <Form.Select
         aria-label="Results per page"
         size="sm"
@@ -97,6 +120,20 @@ export default function PaginationItems({
           Next
         </PaginationControl>
       </Pagination>
+      <Form className="d-flex gap-2" onSubmit={goToPage}>
+        <Form.Control
+          aria-label="Go to page"
+          min={1}
+          onChange={(event) => setPageJump(event.currentTarget.value)}
+          placeholder="Page"
+          size="sm"
+          type="number"
+          value={pageJump}
+        />
+        <Button size="sm" type="submit" variant="outline-secondary">
+          Go
+        </Button>
+      </Form>
     </div>
   )
 }
