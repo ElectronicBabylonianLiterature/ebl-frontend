@@ -209,6 +209,7 @@ function FragmentLinesContent({
             linesToShow={linesToShow}
             totalLines={queryItem.matchCount}
             lemmaIds={queryLemmas}
+            countRemainingFromLinesToShow={true}
           />
         </ResponsiveCol>
         <ResponsiveCol className={'fragment-result__preview'}>

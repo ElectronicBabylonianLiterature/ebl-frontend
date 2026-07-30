@@ -22,18 +22,22 @@ export function RenderFragmentLines({
   lemmaIds,
   linesToShow,
   totalLines,
+  countRemainingFromLinesToShow = false,
 }: {
   fragment: Fragment
   lemmaIds?: readonly string[]
   linesToShow: number
   totalLines?: number
+  countRemainingFromLinesToShow?: boolean
 }): JSX.Element {
   const matchingLines = fragment.text.lines.filter(
     (line) => line.type === 'TextLine',
   ) as TextLine[]
   const visibleLines = matchingLines.slice(0, linesToShow)
   const authoritativeTotal = totalLines ?? matchingLines.length
-  const previewCapacity = Math.min(linesToShow, authoritativeTotal)
+  const previewCapacity = countRemainingFromLinesToShow
+    ? Math.min(linesToShow, authoritativeTotal)
+    : visibleLines.length
   const remainingLines = Math.max(authoritativeTotal - previewCapacity, 0)
 
   return (
