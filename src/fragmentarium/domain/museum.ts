@@ -41,6 +41,13 @@ export const Museums = {
     country: 'BE',
     url: 'https://www.nbb.be/',
   },
+  BATMAN_HASANKEYF_MUZESI: {
+    key: 'BATMAN_HASANKEYF_MUZESI',
+    name: 'Batman Hasankeyf Müzesi',
+    city: 'Batman',
+    country: 'TR',
+    url: 'https://kvmgm.ktb.gov.tr/TR-281298/batman-muze-mudurlugu.html',
+  },
   BRYN_MAWR_COLLEGE: {
     key: 'BRYN_MAWR_COLLEGE',
     name: 'Bryn Mawr College Special Collections',
@@ -189,6 +196,13 @@ export const Museums = {
     country: 'FR',
     url: 'https://www.louvre.fr/',
   },
+  MARDIN_MUZESI: {
+    key: 'MARDIN_MUZESI',
+    name: 'Mardin Müzesi',
+    city: 'Mardin',
+    country: 'TR',
+    url: 'https://muze.gov.tr/muze-detay?sectionId=MRD01&distId=MRK',
+  },
   MOSUL_MUSEUM: {
     key: 'MOSUL_MUSEUM',
     name: 'Mosul Museum',
@@ -311,6 +325,12 @@ export const Museums = {
     city: '',
     country: 'GB',
   },
+  PRIVATE_COLLECTION_OF_Z_YILDIZ: {
+    key: 'PRIVATE_COLLECTION_OF_Z_YILDIZ',
+    name: 'Private collection of Zeynel Yıldız',
+    city: 'Elazığ',
+    country: 'TR',
+  },
   MCGILL_UNIVERSITY: {
     key: 'MCGILL_UNIVERSITY',
     name: 'McGill University Ethnological Collections',
@@ -424,7 +444,7 @@ export const Museums = {
     key: 'TOPKAPI_SARAYI',
     name: 'Topkapı Sarayı Müzesi',
     city: 'Istanbul',
-    country: 'TUR',
+    country: 'TR',
     url: 'https://muze.gen.tr/muze-detay/topkapi',
   },
   TRINITY_COLLEGE_DUBLIN: {
