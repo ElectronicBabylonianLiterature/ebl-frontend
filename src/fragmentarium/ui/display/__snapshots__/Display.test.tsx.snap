@@ -20,7 +20,7 @@ exports[`correctly displays simple fragments 1`] = `
       role="group"
     >
       <button
-        aria-label="toggle-annotations"
+        aria-label="Toggle annotations"
         aria-pressed="false"
         class="btn btn-secondary btn-sm"
         title="Toggle annotations"

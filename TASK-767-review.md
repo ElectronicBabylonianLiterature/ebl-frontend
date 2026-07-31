@@ -1,11 +1,12 @@
 # TASK-767 — Review: PR #767 "Add realia annotation layer to named entity annotation"
 
 - **PR**: <https://github.com/ElectronicBabylonianLiterature/ebl-frontend/pull/767>
-- **Head reviewed**: `f93df64333e79f5abe92079eeb9c260acdbd9101`
-- **Base**: `master` at `d93126190b58fb9af1df4cc76294664c36b48be1`
-- **Working tree**: every fix below round 2 is **applied but uncommitted**. CI has not seen it.
-- **Status**: every in-repository finding is now **resolved**. The one remaining blocker,
-  **F10**, is in another repository.
+- **Head reviewed**: `8eb7643be39554a827fe73c9df826b5b49761354` (round 4)
+- **Base**: `master` — 184 files changed, +20461 / −11101
+- **Author**: `khoidt` · **Review decision**: `CHANGES_REQUESTED` · **Merge state**: `BLOCKED`
+- **Working tree**: clean; the head is pushed and CI has run against it.
+- **Status**: every in-repository code finding is **resolved**. Two housekeeping findings
+  (**N3**, **N4**) and the external blocker **F10** are **open**.
 
 ## Summary
 
@@ -14,96 +15,73 @@ layer. The two kinds stay structurally apart end to end — separate fields on t
 `AnnotationSpans`, in the reducer, in props and in each lookup, rendered by two separate
 `SpanIndicators` passes. `layer` is a required discriminant, so `isRealiaAnnotationSpan`
 narrows both branches with no cast. `tier`, `name` and `layer` are stripped by the single
-helper `omitDerivedSpanFields` at the one place that builds the outbound payload, pinned by
-a repository test. `realiaInfo` is embedded in the fragment response and never echoed back.
+helper `omitDerivedSpanFields` at the one place that builds the outbound payload.
+`realiaInfo` is embedded in the fragment response and never echoed back.
 
-All seven points from the reviewer's two `CHANGES_REQUESTED` reviews were verified fixed on
-`f93df643`. This review then raised two further findings (**N1**, **N2**), and the user asked
-for every open finding to be addressed. **N1**, **N2**, **F6**, **F7** and **F9** are now all
-resolved in the working tree.
+Round 3 is now **committed and pushed** (`f93df643`, `8eb7643b`), which closes the previous
+round's action item 2. CI on the head is fully green. All seven points from the reviewer's two
+`CHANGES_REQUESTED` reviews were re-verified fixed on `8eb7643b`, file by file — see the
+point-by-point table below.
+
+This round adds no new code findings. `qlty check` over all 184 changed files reports no
+issues, no changed `.ts`/`.tsx` file exceeds 250 lines, and the logic the two layers have in
+common is factored into single helpers (`useSpanIndicator`, `omitDerivedSpanFields`,
+`SpanIndicators`, `createRealiaOptionLoader`) rather than duplicated per layer.
+
+**The one blocker is still external and unchanged: `ebl-api` #740 is open, unmerged, and now
+also has merge conflicts.** Until it ships, this PR breaks saving on the _existing_
+named-entity feature — see **F10**, whose scope is corrected below.
 
 ## CI Status
 
-### Remote checks on head `f93df643`
+### Remote checks on head `8eb7643b`
 
-Every check run and commit status was fetched from the GitHub API. **No check is failing**,
-so no CI-derived finding is raised.
+Every check run and commit status was fetched from the GitHub API. **No check is failing.**
 
-| Check                         | Check-run id | Status    | Conclusion  |
-| ----------------------------- | ------------ | --------- | ----------- |
-| `test`                        | 91116808843  | completed | **success** |
-| `CodeQL`                      | 91117068477  | completed | **success** |
-| `Analyze (javascript)`        | 91116808789  | completed | **success** |
-| `GitGuardian scan`            | 91116808689  | completed | **success** |
-| `GitGuardian scan`            | 91116805673  | completed | **success** |
-| `GitGuardian Security Checks` | 91116803735  | completed | **success** |
-| `docker`                      | 91118459355  | completed | skipped     |
-| `docker-test`                 | 91116809713  | completed | skipped     |
+| Check                         | Status    | Conclusion  |
+| ----------------------------- | --------- | ----------- |
+| `test`                        | completed | **success** |
+| `CodeQL`                      | completed | **success** |
+| `Analyze (javascript)`        | completed | **success** |
+| `GitGuardian scan` (×2)       | completed | **success** |
+| `GitGuardian Security Checks` | completed | **success** |
+| `docker`                      | completed | skipped     |
+| `docker-test`                 | completed | skipped     |
 
 | Commit status        | State       | Description            |
 | -------------------- | ----------- | ---------------------- |
 | `qlty check`         | **success** | No blocking issues     |
 | `qlty coverage diff` | **success** | 100.0% (75% threshold) |
-| `qlty coverage`      | **success** | 94.0% (+0.8% change)   |
+| `qlty coverage`      | **success** | 94.0% (+0.9% change)   |
 
-Combined commit status: **success**.
+Combined commit status: **success**. `mergeable_state` is `BLOCKED` solely because of the
+outstanding `CHANGES_REQUESTED` review, not because of a failing check.
 
-**These conclusions describe `f93df643`, not the working tree.** The round-3 changes are
-uncommitted, so CI has not run against them; the gates below were run locally against the
-merge instead.
+### Local gates on `8eb7643b`
 
-### Local gates on the merge with `master`, including the round-3 changes
+| Gate                             | Result                                                                                                       |
+| -------------------------------- | ------------------------------------------------------------------------------------------------------------ |
+| `yarn lint`                      | **exit 0** — no eslint or stylelint errors                                                                   |
+| `yarn tsc`                       | **exit 0** — no type errors                                                                                  |
+| `yarn test --watchAll=false`     | **exit 0** — 405/405 suites, 3863 passed, 2 skipped, 50 snapshots, 413.7 s                                   |
+| Console output in the test run   | **zero** — no `console.error`/`console.warn`, no `Warning:`, no unhandled rejection, no "not wrapped in act" |
+| `qlty check` (184 changed files) | **✔ No issues**                                                                                              |
+| 250-line ceiling                 | **0 files** in the changed set exceed 250 lines                                                              |
 
-The merge worktree was built from `origin/master` (`d9312619`), merged with
-`add-realia-annotation`, and had the uncommitted working-tree changes applied on top
-(`git diff HEAD --binary` plus the 38 untracked files) — so the gates ran on exactly what CI
-will build once this is pushed. `yarn.lock` and `package.json` were confirmed byte-identical
-between the worktree and the `--frozen-lockfile` install.
+### qlty issues
 
-| Gate                                    | Result                                                            |
-| --------------------------------------- | ----------------------------------------------------------------- |
-| `yarn install --frozen-lockfile`        | exit 0                                                            |
-| `git merge --no-ff origin/master`       | clean, no conflicts                                               |
-| `yarn tsc`                              | exit 0                                                            |
-| `yarn lint` (eslint + stylelint)        | exit 0                                                            |
-| `yarn build`                            | exit 0 (143 s)                                                    |
-| `yarn test --watchAll=false`            | **406/406 suites, 3872 passed, 2 skipped, 50 snapshots** (403 s)  |
-| Console output during the suite         | **zero**                                                          |
-| Coverage of all 92 changed source files | **100% statements / 100% branches / 100% functions / 100% lines** |
+`qlty check` was run locally over the exact changed-file list
+(`git diff --name-status origin/master...HEAD | grep -E '^[AM]'`, 184 files) and separately
+over the five directories the feature touches. Both runs report **✔ No issues**. The remote
+`qlty check` commit status agrees ("No blocking issues"). The qlty web UI requires a login, so
+the authoritative signals used here are the commit status and the local CLI run.
 
-Coverage was measured over the **full suite** with `--collectCoverageFrom` set to each of the
-92 changed non-test `.ts`/`.tsx` files, and `coverage-final.json` was read directly: `s`, every
-arm of `b`, and `f` were checked per file. All 92 were present and none was below 100% on any
-metric, so no branch-only gap is hiding behind a 100% line figure.
-
-Four gaps surfaced on the first pass and were closed by deleting dead code rather than by
-adding tests: the `= () => defaultCacheScope` default arguments on `ScopedCache` and
-`FragmentCache` (both callers always pass a resolver) and two never-invoked
-`bibliographyService` stubs in the new test-support modules.
-
-The 2 skipped tests are `xit` in `src/fragmentarium/ui/edition/Edition.test.tsx`; both are on
-`master` and that file is not in this PR's changed set.
-
-### qlty
-
-- Remote `qlty check` on `f93df643`: **No blocking issues**.
-- Local `qlty check` over all 176 changed files: **✔ No issues**.
-- Local `qlty smells`: **one** finding remains — `TestData`'s 6-parameter constructor in
-  `src/test-support/utils.ts`. `Fragment`'s 34-parameter constructor is gone (F9), and the
-  30-line `externalNumbers` duplication that the `test-fragment.ts` split surfaced is gone.
-- All five inline qlty threads on the PR are **resolved** and **outdated**.
-
-### Application run
-
-`yarn start` compiles the merged tree cleanly and serves HTTP 200. The annotation flow could
-not be exercised interactively: `REACT_APP_DICTIONARY_API_URL` points at
-`http://localhost:8001` with no `ebl-api` running, and the tab is behind Auth0 plus
-`isAllowedToAnnotateFragments`. Behaviour is covered by the suite; live verification is
-blocked by the same dependency as F10.
+The five historical `qltysh[bot]` inline comments (4 × `similar-code`, 1 × `boolean-logic`) are
+all **resolved and outdated** — they point at line ranges that no longer exist.
 
 ## Comment status tracking
 
-### Inline review threads
+### Inline review threads — 5 total, **5 resolved, 0 unresolved**
 
 | Thread                    | Author        | Path                                 | Resolved | Outdated |
 | ------------------------- | ------------- | ------------------------------------ | -------- | -------- |
@@ -113,217 +91,241 @@ blocked by the same dependency as F10.
 | T4 similar-code (mass 92) | `qltysh[bot]` | `TextAnnotationContext.test.tsx:175` | resolved | outdated |
 | T5 boolean-logic          | `qltysh[bot]` | `cssCascade.testSupport.ts:110`      | resolved | outdated |
 
-**5 threads, 5 resolved, 0 unresolved.** General / issue comments: **0**.
+General / issue comments on the PR: **0**.
 
-### Timeline review events
+### Timeline review events — 5 total
 
 | Review     | Author        | State             | Commit     | Status                                           |
 | ---------- | ------------- | ----------------- | ---------- | ------------------------------------------------ |
 | 4686217547 | `qltysh[bot]` | COMMENTED         | `f37f6df0` | superseded                                       |
 | 4703525359 | `qltysh[bot]` | COMMENTED         | `123f5f3a` | superseded                                       |
 | 4753665596 | `Fabdulla1`   | APPROVED          | `b4b16fe5` | superseded                                       |
-| 4753712550 | `Fabdulla1`   | CHANGES_REQUESTED | `b4b16fe5` | both points fixed, re-verified on `f93df643`     |
-| 4815952885 | `Fabdulla1`   | CHANGES_REQUESTED | `7d5015e2` | all five points fixed, re-verified on `f93df643` |
+| 4753712550 | `Fabdulla1`   | CHANGES_REQUESTED | `b4b16fe5` | both points fixed, re-verified on `8eb7643b`     |
+| 4815952885 | `Fabdulla1`   | CHANGES_REQUESTED | `7d5015e2` | all five points fixed, re-verified on `8eb7643b` |
 
-The PR still reads `CHANGES_REQUESTED` only because the reviewer has not looked at it since
-`7d5015e2`. Clearing it needs a fresh review, not a code change.
+**Blocker for approval:** review `4815952885` still reads `CHANGES_REQUESTED` and is the only
+reason `mergeable_state` is `BLOCKED`. It was submitted against `7d5015e2`; every point it
+raises was fixed in the two commits after it. Clearing it needs a fresh look from the
+reviewer, not a code change. No reviewers are re-requested by this review — reviewer
+assignment is the author's to make.
 
-#### Point-by-point re-verification
+Outstanding review requests: **none**.
 
-| #   | Reviewer's point                                              | Where it is fixed                                                                                                                                                       |
-| --- | ------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 1   | Toggle says "Toggle named entities" but controls both layers  | `FragmentDisplaySettings.tsx` — `title={'Toggle annotations'}`, `aria-label={'toggle-annotations'}`                                                                     |
-| 2   | Workflow test: both arrays submitted, derived fields stripped | `TextAnnotation.save.test.tsx` — asserts `tier`, `name`, `layer` absent from every submitted span of both lists                                                         |
-| 3   | `any` + eslint-disable in `injectedApp.testSupport.tsx`       | Replaced by the structural `MockedConstructorCalls`; no `no-explicit-any` suppression in any changed file                                                               |
-| 4   | `RealiaSelect` rejection / stale-response race / unmount      | `realiaOptionLoader.ts` — request-id ordering guard, `isDisposed` flag, rejections through the same `respond`, Bluebird handlers attached synchronously                 |
-| 5   | Refresh failure reported as a save failure                    | `FragmentService.updateNamedEntityAnnotations` resolves `{ fragment, refreshError }`; `SpanAnnotationDisplay` advances the baseline on persistence and warns separately |
-| 6   | `useAnnotationContext` seeded once at mount                   | `TextAnnotation.tsx` — `{ watch: (props) => [props.number] }`; `TextAnnotation.fragmentChange.test.tsx` asserts refetch and reseed                                      |
-| 7   | No negative assertions for Word / PDF export                  | `export.annotations.test.ts` — renders the exporters' tree and asserts no annotation markup, plus a static guard on the three export modules                            |
+#### Point-by-point re-verification on `8eb7643b`
+
+| #   | Reviewer's point                                              | Verified at                                                                                                                                                                                                                                                                                        |
+| --- | ------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1   | Toggle said "Toggle named entities" but controls both layers  | `FragmentDisplaySettings.tsx:96` — `title={'Toggle annotations'}`. See **N5** for the residual a11y nit.                                                                                                                                                                                           |
+| 2   | Workflow test: both arrays submitted, derived fields stripped | `TextAnnotation.save.test.tsx:37-56` — asserts the exact `{ namedEntities, realia }` payload and that `tier`/`name`/`layer` are absent.                                                                                                                                                            |
+| 3   | `any` + eslint-disable in `injectedApp.testSupport.tsx`       | Replaced by the structural `MockedConstructorCalls` interface (`injectedApp.testSupport.tsx:36-48`). No `no-explicit-any` suppression in any file this PR adds or edits.                                                                                                                           |
+| 4   | `RealiaSelect` rejection / stale-response race / unmount      | `realiaOptionLoader.ts:53-93` — `latestRequestId` ordering guard, `isDisposed` flag set by `cancel`, rejections routed through the same `respond`; `RealiaSelect.tsx:34` calls `loadOptions.cancel` on unmount.                                                                                    |
+| 5   | Refresh failure reported as a save failure                    | `fragmentServiceBase.ts:141-158` resolves `{ fragment, refreshError }`; `SpanAnnotationDisplay.tsx:54-58` advances the saved baseline on persistence and surfaces the refresh problem as a separate warning. `TextAnnotation.saveOutcomes.test.tsx` covers all five scenarios the reviewer listed. |
+| 6   | `useAnnotationContext` seeded once at mount                   | `TextAnnotation.tsx:73` — `{ watch: (props) => [props.number] }`; `withData.tsx:41` sets `data` to `null` before refetching, so the view unmounts and remounts. `TextAnnotation.fragmentChange.test.tsx:106-114` proves the reseed.                                                                |
+| 7   | No negative assertions for Word / PDF export                  | `export.annotations.test.ts` — renders the exporters' tree with `RouterLinkModeContext={false}` and asserts none of six annotation markers appear, plus a static guard that the three export modules never wire `NamedEntityPreview`.                                                              |
 
 ## Findings
 
-### N1 — The editor fetched annotations the fragment response already carried — **Major · FIXED**
+### F10 — Merging before `ebl-api` #740 breaks saving on the existing named-entity feature — **Blocker (external) · OPEN**
 
-`TextAnnotation.tsx` loaded the editor with two requests, `find` and
-`fetchNamedEntityAnnotations`. The second was redundant: this PR's own
-`createFragmentAnnotationSpans` derives the identical `AnnotationSpans` from
-`fragment.namedEntities`, `fragment.realia` and the word tokens — which is what the _display_
-path already did. One avoidable request, and two mappings of the same value to keep in step.
+Re-verified against `ebl-api` `master` during this review. PR #740 ("Realia annotation API:
+resolve realiaInfo on every fragment-returning route") is **open, unmerged, and now
+`mergeable_state: dirty`** — it has merge conflicts that must be resolved before it can land.
 
-**Fix.** `TextAnnotation` now loads only `fragmentService.find(number)` and seeds the reducer
-from `createFragmentAnnotationSpans(fragment)`. `fetchNamedEntityAnnotations` is removed from
-`FragmentService`, `ApiFragmentRepository` and the `FragmentRepository` port, together with
-the now-unreachable `createAnnotationSpans` DTO helper. Their tests were removed with the
-user's explicit approval, since the code path they asserted no longer exists.
+On `ebl-api` `master`, `ebl/fragmentarium/web/named_entities.py` still has
+`on_post: data = req.media["annotations"]`. This PR changes the client payload from
+`{ annotations: [...] }` (what `master` sends today) to `{ namedEntities, realia }`
+(`fragmentRepositoryUpdates.ts:143-153`). Against the deployed API that is a `KeyError` — a
+**500, not a 422** — so **saving any named-entity annotation fails**, including annotations
+that have nothing to do with realia. That is a regression to a shipped feature, not an
+incomplete new one.
 
-**One behavioural detail had to be settled first.** `GET /fragments/{number}/named-entities`
-returns entities whose `span` is `[]` — registered on the fragment but attached to no word —
-whereas `createFragmentAnnotationSpans` filtered those out. Deriving with the filter in place
-would have silently **deleted** such annotations on the next save. The filter was therefore
-removed so the derived value matches the API exactly. Nothing renders differently:
-`SpanIndicators` filters by `span.includes(wordId)`, so an empty span produces no indicator
-either way.
+**Scope correction to the round-3 write-up.** The earlier version of F10 also claimed that
+every existing named-entity annotation would _read_ as empty. That no longer holds. After the
+N1 fix the editor stops calling `GET /fragments/{number}/named-entities` and derives its state
+from the fragment response instead, and `ebl-api` `master`'s `fragment_schema.py:109` already
+dumps `named_entities` under `data_key="namedEntities"`. The read path therefore degrades
+gracefully on the current API: `namedEntities` loads, while `realia` and `realiaInfo` are
+absent and fall back to `[]` / `emptyRealiaInfoEntries`. **The read regression is gone; the
+save regression remains.**
 
-**Tests.** `withAnnotationSpans` (`src/test-support/annotated-fragment.ts`) writes an
-`AnnotationSpans` back onto a fragment, so every editor suite now seeds through the fragment.
-`fragmentSpans.test.ts` pins the empty-span behaviour and keeps both cross-kind negative tests
-— a foreign id still resolves to nothing. `TextAnnotation.fragmentChange.test.tsx` asserts the
-editor issues exactly one `find`.
-
-### N2 — Explanatory comment added against the no-comments rule — **Minor · FIXED**
-
-`src/signs/ui/display/SignImages.tsx` gained a three-line comment explaining why the dead
-`: croppedAnnotations` fallback could be removed. The Coding Standards forbid comments unless
-requested. The comment is removed; the code change it documented was verified correct —
-`clusterIds` is derived from `croppedAnnotations`, so the removed branch really was
-unreachable.
-
-### F6 — The 250-line ceiling — **Major · FIXED**
-
-Every file in the changed set is now at or under 250 lines. Verified with:
-
-```sh
-{ git diff --name-only origin/master...HEAD; git status --short | awk '{print $2}'; } |
-  sort -u | grep -E '\.tsx?$' |
-  while read f; do [ -f "$f" ] && n=$(wc -l < "$f") && [ "$n" -gt 250 ] && echo "$n $f"; done
-```
-
-| File                         | before | now | extracted into                                                                                                         |
-| ---------------------------- | -----: | --: | ---------------------------------------------------------------------------------------------------------------------- |
-| `FragmentService.ts`         |    729 | 246 | `fragmentServiceBase`, `fragmentCache`, `scopedCache`, `fragmentCacheKeys`, `fragmentProvenance`, `fragmentReferences` |
-| `FragmentRepository.ts`      |    541 | 234 | `fragmentFactories`, `fragmentRepositoryUpdates`, `fragmentRepositoryAttestations`                                     |
-| `SignImages.tsx`             |    368 | 209 | `signClusterAnnotations`, `SignImageFigures`                                                                           |
-| `FragmentService.test.ts`    |   1921 | 211 | 13 sibling suites + 3 test-support modules                                                                             |
-| `FragmentRepository.test.ts` |    950 | 190 | 6 sibling suites; shared constants moved into `fragmentRepository.testSupport`                                         |
-| `test-fragment.ts`           |    560 | 126 | `test-fragment-dto`, `test-fragment-lines`, `test-fragment-more-lines`                                                 |
-
-`test-fragment.ts` and `fragment-fixtures.ts` were not in the changed set before this round —
-the F9 refactor pulled them in, which is why the former needed splitting too.
-
-The decomposition extracts cohesive collaborators rather than shuffling lines: a `ScopedCache`
-owning cache scope, generation and the shared get-or-fetch; a `FragmentCache` built on it;
-free functions for provenance fetching, reference injection and cache-key construction; and
-base classes holding the mutation surface. The cache-key format, the generation bump on
-invalidation and the scope-change clearing were preserved verbatim and are covered by the
-split cache suites.
-
-`FragmentService.trimCache` had no production caller and existed only to reach a defensive
-branch from one test. It now lives on `FragmentCache`, and that test constructs a
-`FragmentCache` directly instead of reaching through the service with a cast.
-
-### F7 — Repository-policy changes bundled into a feature PR — **Minor · FIXED**
-
-`.github/copilot-instructions.md` and both `.husky` hooks are restored from `origin/master`
-and verified byte-identical (`git diff origin/master -- .github .husky` is empty). The user
-confirmed master-push protection is now enforced on GitHub itself, so the hooks are redundant.
-
-**Worth carrying into the follow-up policy PR:** `master`'s instructions keep the 250-line,
-DRY, 100%-coverage, console-clean and test-removal rules, but **lose** the branch's Data
-Architecture, API Call Efficiency, "CI — The Remote Result Is the Gate" and Git Branching
-sections. Those went with the revert.
-
-### F9 — `Fragment`'s 34-parameter constructor — **Minor · FIXED**
-
-The positional constructor is replaced by a single `FragmentProps` argument with 34 explicit
-`readonly` field declarations assigned in the constructor body. No definite-assignment
-assertions, no declaration merging, no eslint suppression — the three objections that caused
-the earlier attempt to be reverted. `Fragment.create` delegates to it, and both direct
-`new Fragment(...)` call sites were converted to object form. `qlty smells` no longer reports
-`Fragment`.
-
-### F10 — Merging before `ebl-api` #740 breaks the existing named-entity feature — **Blocker (external) · OPEN**
-
-Re-verified during this review. `ebl-api` PR #740 ("Realia annotation API: resolve realiaInfo
-on every fragment-returning route") is **open and unmerged**. On `ebl-api` `master`,
-`ebl/fragmentarium/web/named_entities.py` still has:
-
-- `on_post`: `data = req.media["annotations"]`. The frontend posts `{ namedEntities, realia }`
-  with no `annotations` key → `KeyError` → **500**, not a 422.
-- `on_get`: returns a **flat list**. The frontend reads `namedEntities` / `realia` keys, so
-  against the current API **every existing named-entity annotation reads as empty**.
-
-The second point is a regression to a shipped feature, not an incomplete new one. Confirmed on
-the #740 branch that `FragmentSchema` gains `named_entities` and `realia`, and `FragmentDtoSchema`
-gains `realiaInfo` on every fragment-returning route — which is also what N1's fix depends on.
+**Client/backend field names are aligned** with #740's target schema — `id`, `type`, `span`
+for entity spans and `id`, `realiaId`, `span` for realia spans match `named_entity_schema.py`
+on the `add-realia-annotation-api` branch, and `RealiaInfoEntry { realiaId, lemma, type }`
+matches the DTO that branch adds. No client-side aliases were introduced.
 
 This is outside this repository, so it is recorded rather than fixed.
+
+### N3 — The PR description no longer matches the branch — **Minor · FIXED**
+
+The description's "Changes outside the realia feature" section described work that is not in
+the branch:
+
+- It claims three new sections in `.github/copilot-instructions.md` and new `.husky/pre-commit`
+  / `.husky/pre-push` hooks. Both were reverted in round 3 (finding F7):
+  `git diff origin/master...HEAD -- .github .husky` is **empty**.
+- It points readers at `TASK-realia-annotation-todo.md` and `TASK-pr767-review.md`. Neither
+  file exists; the task docs are named `TASK-767-*.md`.
+- It states that six edited files are over the 250-line ceiling and "recorded in
+  `TASK-pr767-review.md` (F13) as separate work". All six were split in round 3 and are now
+  under the ceiling — `FragmentService.ts` 246, `FragmentRepository.ts` 234, `SignImages.tsx`
+  199, `FragmentService.test.ts` 211, `FragmentRepository.test.ts` 171, `fragment.ts` 214.
+
+A reviewer reading the description would look for changes that are not there and mis-scope the
+review.
+
+**Fix.** The description was rewritten against `8eb7643b` (`PATCH /repos/.../pulls/767`). The
+`.github/copilot-instructions.md` and `.husky` paragraphs are gone, as are the references to
+the two task files that do not exist. The `SignImages.tsx` paragraph now names where the
+`TS18046` fix actually lives after the split (`task: (item: T) => PromiseLike<R>` in
+`signImageGrouping.ts`). The "Line counts" section is inverted: it now states that every file
+in the changed set is at or under the ceiling, with a table of the six that were split and the
+modules each was extracted into. Every file and number in the new body was verified against
+the branch before it was posted. The description also now covers two behavioural changes it
+had never mentioned — the single-request editor load and the persistence/refresh split — and
+gives the `ebl-api` #740 dependency its own section rather than a closing sentence.
+
+### N4 — The task-tracking docs are tracked on the branch and would merge into `master` — **Minor · OPEN**
+
+`TASK-767-todo.md` (93 lines), `TASK-767-log.md` (378) and `TASK-767-review.md` (this file) are
+committed on `add-realia-annotation`, absent from `master`, and not covered by `.gitignore`.
+Merging the PR as it stands publishes all three to `master`. They are working artefacts and
+must be deleted in a final commit before merge.
+
+### N5 — The annotation toggle's accessible name is a kebab-case identifier — **Minor · FIXED**
+
+`FragmentDisplaySettings.tsx:96-97` set `title={'Toggle annotations'}` and
+`aria-label={'toggle-annotations'}`. `aria-label` wins for the accessible name, so a screen
+reader announced the literal string "toggle-annotations" rather than the readable title — the
+half of the reviewer's original point about screen readers that the title change did not
+cover.
+
+**Fix.** `aria-label` is now `'Toggle annotations'`, matching the `title`. The five
+`Display.test.tsx` assertions that queried the old label were updated, and the one
+`Display.test.tsx.snap` entry was refreshed with `--updateSnapshot` scoped to that file; the
+snapshot diff is the single `aria-label` line and nothing else.
+
+This does leave the control inconsistent with the kebab-case labels around it
+(`annotate-named-entities`, `save-annotations`, `delete-name-annotation`, `edit-realia`), which
+is why it was originally filed as an observation rather than a required change. Those labels
+are test hooks that happen to sit in the `aria-label` attribute; converting them all is a
+separate, larger change, and worth doing — the right end state is `data-testid` for the test
+hooks and readable prose in `aria-label` throughout.
+
+### Resolved in earlier rounds — re-verified on `8eb7643b`
+
+| Id  | Finding                                                    | Verification on this head                                                                                                            |
+| --- | ---------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
+| N1  | Editor round-tripped for data the fragment already carries | `TextAnnotation.tsx` calls only `fragmentService.find`; `fetchNamedEntityAnnotations` is gone from the service, repository and port. |
+| N2  | Comment added against the no-comments rule                 | No added explanatory comments in the diff outside `eslint`/`camelcase` directives.                                                   |
+| F6  | Files over the 250-line ceiling                            | Sweep over every added/modified `.ts`/`.tsx` prints nothing.                                                                         |
+| F7  | Repository-policy changes bundled in a feature PR          | `git diff origin/master...HEAD -- .github .husky` is empty.                                                                          |
+| F9  | `Fragment` constructor at 34 parameters                    | `fragment.ts` takes a single `FragmentProps`; the file is 214 lines.                                                                 |
+
+F1–F5 and F8 from the first round were fixed in `f93df643` and are covered by the
+point-by-point table above.
 
 ### Not applied, with reasons
 
 **`TestData`'s 6-parameter constructor** (`src/test-support/utils.ts`) is the only remaining
-`qlty smells` finding. It is pre-existing, untouched by this PR's diff, and non-blocking on
-remote `qlty check`. Converting it to a parameter object would rewrite every
-`new TestData(...)` call site across a dozen unrelated test files, dragging them into the
-changed set and under the 250-line and coverage gates. Left alone deliberately.
+`qlty smells` finding. It is pre-existing, non-blocking on remote `qlty check`, and converting
+it to a parameter object would rewrite every `new TestData(...)` call site across a dozen
+unrelated test files, dragging them into the changed set and under the 250-line and coverage
+gates. Left alone deliberately.
 
 ## Severity
 
-| Id  | Finding                                                     | Severity               | Status                             |
-| --- | ----------------------------------------------------------- | ---------------------- | ---------------------------------- |
-| F10 | `ebl-api` #740 not merged — existing annotations read empty | **Blocker (external)** | **Open**                           |
-| N1  | Editor round-tripped for data the fragment already carries  | Major                  | **Fixed**                          |
-| F6  | Files over the 250-line ceiling                             | Major                  | **Fixed** — none remain            |
-| N2  | Comment added against the no-comments rule                  | Minor                  | **Fixed**                          |
-| F7  | Repository-policy changes bundled in a feature PR           | Minor                  | **Fixed** — restored from `master` |
-| F9  | `Fragment` constructor at 34 parameters                     | Minor                  | **Fixed**                          |
+| Id  | Finding                                                    | Severity               | Status              |
+| --- | ---------------------------------------------------------- | ---------------------- | ------------------- |
+| F10 | `ebl-api` #740 unmerged — saving named entities 500s       | **Blocker (external)** | **Open**            |
+| —   | `CHANGES_REQUESTED` review `4815952885` still standing     | **Blocker (process)**  | **Open**            |
+| N4  | `TASK-767-*.md` tracked and would merge into `master`      | Minor                  | **Open**            |
+| N3  | PR description does not match the branch                   | Minor                  | Fixed               |
+| N5  | Toggle's accessible name is a kebab-case identifier        | Minor                  | Fixed               |
+| N1  | Editor round-tripped for data the fragment already carries | Major                  | Fixed               |
+| F6  | Files over the 250-line ceiling                            | Major                  | Fixed — none remain |
+| N2  | Comment added against the no-comments rule                 | Minor                  | Fixed               |
+| F7  | Repository-policy changes bundled in a feature PR          | Minor                  | Fixed               |
+| F9  | `Fragment` constructor at 34 parameters                    | Minor                  | Fixed               |
 
-F1–F5 and F8 from the first round were fixed in `f93df643` and re-verified point by point.
+**Console noise: none.** No `console.error`, `console.warn`, `Warning:`, unhandled rejection or
+"not wrapped in act" output appears anywhere in the 405-suite local run, so no console-noise
+finding is raised.
 
 ## Reproduction Steps
 
-**N1** — open the named-entity annotation tab with the network panel open. Before the fix two
-requests went out, `GET /fragments/{number}` and `GET /fragments/{number}/named-entities`, and
-the first response already contained everything the second returned. Now exactly one request
-is issued, pinned by `TextAnnotation.fragmentChange.test.tsx`. The empty-span nuance: give a
-fragment an entity attached to no word — before the fix the derived path dropped it and the
-next save would have deleted it; now it survives, as `fragmentSpans.test.ts` asserts.
+**F10** — point the frontend at an `ebl-api` deployment built from `master`. Open the
+named-entity annotation tab of a fragment, add or delete a **named-entity** tag (no realia
+needed) and press Save. `POST /fragments/{number}/named-entities` is sent with body
+`{ namedEntities, realia }`; the handler evaluates `req.media["annotations"]` and raises
+`KeyError`, returning **500**. The same action on `master` succeeds. Reading the fragment still
+works: `namedEntities` is present on the fragment DTO, while `realia` and `realiaInfo` are
+absent and fall back to empty.
 
-**N2** —
+**N3** (before the fix) —
 
 ```sh
-git diff origin/master...HEAD -- 'src/**/*.ts' 'src/**/*.tsx' |
-  grep -nE "^\+\s*(//|/\*|\*)" | grep -vE "eslint|@ts-|istanbul|prettier"
+git diff origin/master...HEAD --stat -- .github .husky   # empty
+ls TASK-realia-annotation-todo.md TASK-pr767-review.md   # No such file or directory
 ```
 
-Now empty apart from lines moved unchanged out of files already on `master`.
+Then read the "Changes outside the realia feature" section of the PR description, which
+described both as present. The rewritten description no longer does.
 
-**F6** — the line-count sweep quoted in the finding; it now prints nothing.
+**N4** —
 
-**F7** — `git diff origin/master --stat -- .github .husky`; now empty.
+```sh
+git ls-tree HEAD --name-only | grep TASK          # three files
+git ls-tree origin/master --name-only | grep TASK # none
+grep TASK .gitignore                              # no match
+```
 
-**F9** — `qlty smells src/fragmentarium/domain/fragment.ts`; `Fragment` is no longer reported.
-
-**F10** — point the frontend at an `ebl-api` deployment built from `master`, open the
-named-entity annotation tab of a fragment that already has annotations (the editor shows
-none), add a tag and press Save (the request 500s on `KeyError: 'annotations'`).
+**N5** (before the fix) — open a fragment display, turn on a screen reader, and move to the
+annotation toggle in the display settings. It was announced as "toggle-annotations"; it is now
+announced as "Toggle annotations".
 
 ## Recommendation
 
-**Do not merge yet — the only blocker left is external.**
+**Do not merge yet.** Two blockers stand, neither of them a code defect in this repository.
 
-Every in-repository finding is resolved. On the merge with current `master`, `tsc` and `lint`
-exit 0, 405/405 suites and 3863 tests pass with zero console output, `qlty check` is clean, and
-no changed file exceeds 250 lines. `qlty smells` is down to one pre-existing constructor.
+The code is in good shape: every point from both `CHANGES_REQUESTED` reviews is fixed and was
+re-verified line by line on this head; `lint`, `tsc` and the full local suite are clean with
+zero console output; remote CI is green including `qlty check` and 100% diff coverage; no
+changed file exceeds 250 lines; and the two layers share single helpers rather than duplicated
+logic.
 
-**F10** remains: until `ebl-api` #740 is merged _and deployed_, this PR makes existing
-named-entity annotations read as empty and makes saving fail with a 500. N1's fix also depends
-on #740 shipping, since the fragment route only carries `realia` and `realiaInfo` there.
+What holds it back is **F10** — until `ebl-api` #740 is merged _and deployed_, this PR makes
+saving named-entity annotations fail with a 500 on a feature that works today — and the
+standing `CHANGES_REQUESTED` review, which only the reviewer can clear. **N3** and **N5** were
+fixed in this round; **N4** is a one-line commit that must not be forgotten.
 
 ## What Has To Be Done
 
 1. **[Blocker · F10 · outside this repository]** Get `ebl-api` PR #740 merged **and deployed**
-   before #767 is merged. Confirm on the deployed API that a fragment response carries
-   `namedEntities`, `realia` and `realiaInfo`, and that `POST /named-entities` accepts
-   `{ namedEntities, realia }`.
-2. **Commit and push** the round-3 changes — they are uncommitted, so CI has not seen them.
-   Then re-fetch the check runs and commit statuses for the new head and confirm every one is
-   green.
-3. **[Follow-up PR · F7]** Re-raise the repository-policy changes on their own branch. Note
-   that reverting `.github/copilot-instructions.md` to `master` also dropped the Data
-   Architecture, API Call Efficiency, CI-as-a-gate and Git Branching sections.
-4. **[Optional]** Decide whether `TestData`'s 6-parameter constructor deserves its own
-   refactor. It is not worth doing inside this PR — see the finding.
-5. **Re-review**: request a fresh review from `Fabdulla1` to clear the outstanding
-   `CHANGES_REQUESTED` (review `4815952885`), all points of which are addressed. Reviewer
-   assignment is the author's to make — this review does not add reviewers.
-6. **Before merge**: delete `TASK-767-todo.md`, `TASK-767-log.md` and `TASK-767-review.md`.
+   before #767 merges. It currently has merge conflicts (`mergeable_state: dirty`) that must be
+   resolved first. Then confirm on the deployed API that
+   `POST /fragments/{number}/named-entities` accepts `{ namedEntities, realia }` and that a
+   fragment response carries `namedEntities`, `realia` and `realiaInfo`.
+2. **[Blocker · process]** Clear the outstanding `CHANGES_REQUESTED` review `4815952885` from
+   `Fabdulla1`. All five of its points, and both points of the earlier review `4753712550`, are
+   addressed on `8eb7643b`; the point-by-point table above gives the file and line for each.
+   Reviewer assignment is the author's to make — this review does not add or re-request
+   reviewers.
+3. **Commit the round-4 changes.** `FragmentDisplaySettings.tsx`, `Display.test.tsx`,
+   `Display.test.tsx.snap` and the three `TASK-767-*.md` files are modified in the working tree
+   and **uncommitted**, so CI has not seen them. Commit and push, then confirm the checks on
+   the new head.
+4. **[N4] Before merge**: delete `TASK-767-todo.md`, `TASK-767-log.md` and `TASK-767-review.md`
+   in a final commit, so they do not land on `master`.
+5. **[Follow-up, optional]** The remaining `aria-label` values in the annotation UI
+   (`annotate-named-entities`, `edit-named-entity`, `edit-realia`, `save-annotations`,
+   `delete-name-annotation`, `update-name-annotation`) are still kebab-case test hooks sitting
+   in an accessibility attribute. Moving them to `data-testid` and giving each control readable
+   prose is worth its own PR; it is out of scope here because it reaches beyond this PR's diff.
+6. **[Optional]** Decide whether `TestData`'s 6-parameter constructor deserves its own
+   refactor. Not worth doing inside this PR — see the finding.
+
+### Done in round 4
+
+- **N3** — the PR description was rewritten against `8eb7643b` and now matches the branch.
+- **N5** — the annotation toggle's `aria-label` is the readable `'Toggle annotations'`; the
+  five `Display.test.tsx` queries and the one snapshot entry were updated with it.

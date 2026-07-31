@@ -353,11 +353,13 @@ pre-existing, untouched by this PR's diff, non-blocking on remote `qlty check`, 
 it to a parameter object would rewrite every `new TestData(...)` call site across a dozen
 unrelated test files — dragging them into the changed set and under the 250-line gate.
 
-### State left behind
+### State left behind after round 3
 
 Everything in round 3 is **uncommitted** in the working tree. It must be committed and pushed
 before CI can confirm it. `F10` is unchanged: `ebl-api` #740 is still open, so this PR must
 not merge yet.
+
+_(Superseded: round 3 was committed as `f93df643` and `8eb7643b`.)_
 
 ### Coverage gaps found and closed
 
@@ -376,3 +378,134 @@ it, per the "prefer deleting a dead branch to testing it" rule:
 
 The re-measured run has all 92 changed source files at 100% on statements, branches, functions
 and lines.
+
+## Round 4 — review of the pushed head `8eb7643b`
+
+Round 3's work is now committed as `f93df643` ("Address the PR #767 review findings") and
+`8eb7643b` ("Address the remaining PR #767 review findings") and pushed, which closes round
+3's open action item. The working tree is clean and CI has run against the head.
+
+### What was gathered
+
+Every timeline review event (5) and every comment (5 inline, 0 general) was fetched from the
+GitHub REST and GraphQL APIs, with `isResolved` / `isOutdated` per thread. All five inline
+threads are `qltysh[bot]` and all five are resolved and outdated. The PR's review decision is
+`CHANGES_REQUESTED` from review `4815952885`, which is the only thing holding
+`mergeStateStatus` at `BLOCKED`; no check is failing and there are no outstanding review
+requests.
+
+### Gates on the head
+
+| Gate                            | Result                                                                 |
+| ------------------------------- | ---------------------------------------------------------------------- |
+| `yarn lint`                     | exit 0                                                                 |
+| `yarn tsc`                      | exit 0                                                                 |
+| `yarn test --watchAll=false`    | exit 0 — 405/405 suites, 3863 passed, 2 skipped, 50 snapshots, 413.7 s |
+| Console output                  | **zero** across the whole run                                          |
+| `qlty check`, 184 changed files | ✔ No issues                                                            |
+| `qlty check`, 5 feature dirs    | ✔ No issues                                                            |
+| 250-line sweep                  | no added or modified `.ts`/`.tsx` over the ceiling                     |
+| Remote checks / statuses        | 8 check runs, 3 commit statuses — all success or skipped               |
+
+`qlty coverage diff` on the head reports 100.0% against a 75% threshold, and overall coverage
+is 94.0% (+0.9%).
+
+Note on tooling: `gh` is not installed in this container, so everything was fetched with
+`curl` against `$GITHUB_API_URL` / `$GITHUB_GRAPHQL_URL` using `$GITHUB_TOKEN`. The qlty web
+UI needs an interactive login, so the qlty signals used are the commit status and the local
+`qlty` CLI.
+
+### Reviewer points re-verified
+
+All seven points across reviews `4753712550` and `4815952885` were re-checked against the code
+on this head rather than taken from the previous round's write-up. Each one is fixed; the
+review file records the file and line for every one.
+
+### Findings this round
+
+- **F10** re-verified and its **scope corrected**. `ebl-api` #740 is still open and now also
+  has merge conflicts (`mergeable_state: dirty`). The earlier claim that existing named-entity
+  annotations would read as empty no longer holds — after the N1 fix the editor derives its
+  state from the fragment response, and `ebl-api` `master` already dumps `named_entities`
+  under `data_key="namedEntities"`, so the read path degrades gracefully. What remains is the
+  save path: the client now posts `{ namedEntities, realia }` while `master`'s `on_post` reads
+  `req.media["annotations"]`, so saving named-entity annotations 500s. Still a blocker.
+- **N3** — the PR description describes the `.github/copilot-instructions.md` and `.husky`
+  changes that round 3 reverted, references two task files that do not exist, and states that
+  six files are over the 250-line ceiling when none are.
+- **N4** — `TASK-767-todo.md`, `TASK-767-log.md` and `TASK-767-review.md` are tracked on the
+  branch and absent from `master`, so merging as-is publishes them.
+- **N5** (observation, not required) — the annotation toggle's `aria-label` is the kebab-case
+  `toggle-annotations`, which is what a screen reader announces. It matches the surrounding
+  convention, so it is recorded rather than required.
+
+## Round 4b — fixing N3 and N5
+
+After the review was delivered, the user asked for every finding that touches the code or the
+PR description to be addressed, explicitly excluding doc removal (**N4**) and without
+committing. **F10** is in `ebl-api` and cannot be fixed from this repository.
+
+### N5 — the toggle's accessible name
+
+`FragmentDisplaySettings.tsx:97` changed from `aria-label={'toggle-annotations'}` to
+`aria-label={'Toggle annotations'}`, so it now matches the `title` and a screen reader
+announces readable prose. `title` is kept: `aria-label` supplies the accessible name, `title`
+supplies the tooltip.
+
+Call sites updated:
+
+- `Display.test.tsx` — five `getByLabelText('toggle-annotations')` queries.
+- `__snapshots__/Display.test.tsx.snap` — refreshed with `--updateSnapshot` scoped to
+  `--testPathPattern="src/fragmentarium/ui/display/Display.test.tsx"`, never globally. The
+  diff was inspected afterwards and is exactly one line, the `aria-label` attribute; the
+  `title="Toggle annotations"` line beside it is unchanged.
+
+`getByLabelText` matches `aria-label`, not `title`, so the two identical strings do not
+produce ambiguous matches — the eight tests in that suite pass unchanged apart from the label
+text.
+
+The other kebab-case `aria-label`s in the annotation UI were left alone. They are test hooks
+that happen to live in an accessibility attribute, and converting them means touching
+`SpanAnnotator`, `SpanEditor`, `SpanAnnotationDisplay` and their suites — beyond this PR's
+diff. Recorded as a follow-up in the review instead.
+
+### N3 — the PR description
+
+The description was rewritten against `8eb7643b` and posted with
+`PATCH /repos/ElectronicBabylonianLiterature/ebl-frontend/pulls/767`. What changed:
+
+- Dropped the `.github/copilot-instructions.md` and `.husky/pre-commit` / `.husky/pre-push`
+  paragraphs — round 3 reverted both, and `git diff origin/master...HEAD -- .github .husky` is
+  empty.
+- Dropped the references to `TASK-realia-annotation-todo.md` and `TASK-pr767-review.md`;
+  neither file exists.
+- Corrected the `SignImages.tsx` paragraph. The `TS18046` fix is real but no longer lives in
+  that file: after the split it is `task: (item: T) => PromiseLike<R>` in
+  `signImageGrouping.ts:60`.
+- Inverted the "Line counts" section. It claimed six edited files were over the 250-line
+  ceiling and deferred them; all six were split in round 3, so it now states that nothing in
+  the changed set is over the ceiling and tables the six splits with the modules extracted from
+  each.
+- Gave the `ebl-api` #740 dependency its own section instead of a closing sentence, with the
+  concrete failure mode (the payload key change makes `on_post` raise `KeyError` → 500) and the
+  note that reading still degrades gracefully.
+- Added the two behavioural changes the description had never mentioned: the single-request
+  editor load (`fetchNamedEntityAnnotations` removed) and the persistence/refresh split.
+
+Every file path and line count in the new body was verified against the branch before posting.
+
+### Gates after the N3 / N5 changes
+
+| Gate                               | Result                                                               |
+| ---------------------------------- | -------------------------------------------------------------------- |
+| `yarn lint`                        | exit 0                                                               |
+| `yarn tsc`                         | exit 0                                                               |
+| `yarn test --watchAll=false`       | exit 0 — 405/405 suites, 3863 passed, 2 skipped, zero console output |
+| `qlty check` on the 3 edited files | ✔ No issues                                                          |
+
+### State left behind after round 4b
+
+`src/fragmentarium/ui/display/FragmentDisplaySettings.tsx`, `Display.test.tsx`,
+`__snapshots__/Display.test.tsx.snap` and the three `TASK-767-*.md` files are modified and
+**uncommitted**, per the user's instruction not to commit. CI has not seen them. **N4** is
+untouched by request: the task docs are still tracked and must be deleted before merge.

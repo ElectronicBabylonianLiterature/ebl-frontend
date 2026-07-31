@@ -79,13 +79,55 @@ remediation of every open finding.
 - [ ] `yarn build` on the merge
 - [ ] Full suite + 100% coverage of every changed source file on the merge
 
+## Round 4 — review of the pushed head `8eb7643b`
+
+- [x] Fetch every timeline review event (5) and every inline / issue comment (5 / 0) with
+      resolved and outdated status
+- [x] Fetch every check run (8) and commit status (3) for the head — all green
+- [x] `qlty check` locally over all 184 changed files and over the five feature directories —
+      **✔ No issues**
+- [x] `yarn lint` on `8eb7643b` — exit 0
+- [x] `yarn tsc` on `8eb7643b` — exit 0
+- [x] `yarn test --watchAll=false` on `8eb7643b` — 405/405 suites, 3863 passed, 2 skipped,
+      50 snapshots, **zero console output**
+- [x] 250-line sweep over every added / modified `.ts`/`.tsx` — none over the ceiling
+- [x] Re-verify all seven reviewer points file by file (see the review's point-by-point table)
+- [x] Re-verify **F10** against `ebl-api` `master` and PR #740 — still open, now also
+      `mergeable_state: dirty`; scope corrected (read path recovers, save path still 500s)
+- [x] New findings recorded: **N3** (stale PR description), **N4** (`TASK-767-*.md` would merge
+      into `master`), **N5** (toggle `aria-label` is a kebab-case identifier — observation)
+
+## Round 4b — fixing the findings that touch code and the PR description
+
+- [x] **N5** — `aria-label={'Toggle annotations'}` in `FragmentDisplaySettings.tsx`
+- [x] **N5** — update the five `getByLabelText` queries in `Display.test.tsx`
+- [x] **N5** — refresh `__snapshots__/Display.test.tsx.snap` with `--updateSnapshot` scoped to
+      that one test file, then inspect the diff (one `aria-label` line, nothing else)
+- [x] **N3** — rewrite the PR description against `8eb7643b` and post it with
+      `PATCH /repos/.../pulls/767`; every file path and line count verified against the branch
+      first
+- [x] `yarn lint` after the change — exit 0
+- [x] `yarn tsc` after the change — exit 0
+- [x] `yarn test --watchAll=false` after the change — 405/405 suites, 3863 passed, zero
+      console output
+- [x] `qlty check` on the three edited files — ✔ No issues
+- [n/a] **N4** — doc removal excluded by the user for this round
+- [n/a] **F10** — lives in `ebl-api`, cannot be fixed from this repository
+
 ## Open items
 
-- [ ] **F10 (external blocker)** — `ebl-api` #740 merged **and deployed** before #767 merges
-- [ ] Commit and push this branch so CI sees the changes, then confirm the checks are green
+- [ ] **F10 (external blocker)** — `ebl-api` #740 merged **and deployed** before #767 merges;
+      it has merge conflicts that must be resolved first
+- [x] Commit and push this branch so CI sees the changes, then confirm the checks are green —
+      done on `8eb7643b`, all checks green
+- [ ] Commit and push the round-4b changes (`FragmentDisplaySettings.tsx`, `Display.test.tsx`,
+      `Display.test.tsx.snap`, the three `TASK-767-*.md`) — uncommitted by request, so CI has
+      not seen them
 - [ ] Re-review from `Fabdulla1` to clear `CHANGES_REQUESTED` (`4815952885`)
 - [ ] `TestData`'s 6-parameter constructor — pre-existing, left alone (see the review)
-- [ ] Remove `TASK-767-*.md` before the PR is merged
+- [ ] Follow-up PR: move the remaining kebab-case `aria-label` test hooks in the annotation UI
+      to `data-testid` and give each control readable prose
+- [ ] **N4** — remove `TASK-767-*.md` before the PR is merged
 
 ## Output
 

@@ -94,7 +94,7 @@ export default function FragmentDisplaySettings({
         aria-pressed={showNamedEntities}
         onClick={toggleNamedEntities}
         title={'Toggle annotations'}
-        aria-label={'toggle-annotations'}
+        aria-label={'Toggle annotations'}
       >
         {realiaIcon}
       </Button>
