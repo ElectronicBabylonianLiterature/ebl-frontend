@@ -16,9 +16,8 @@ import {
 } from 'fragmentarium/ui/text-annotation/spanAnnotatorActions'
 import AnnotationContext from 'fragmentarium/ui/text-annotation/TextAnnotationContext'
 import RealiaInfoContext from 'fragmentarium/ui/text-annotation/RealiaInfoContext'
-import RealiaSelect, {
-  RealiaOption,
-} from 'fragmentarium/ui/text-annotation/RealiaSelect'
+import RealiaSelect from 'fragmentarium/ui/text-annotation/RealiaSelect'
+import { RealiaOption } from 'fragmentarium/ui/text-annotation/realiaOptionLoader'
 import React, { forwardRef, useContext } from 'react'
 import { Form } from 'react-bootstrap'
 import Select, { SelectInstance } from 'react-select'

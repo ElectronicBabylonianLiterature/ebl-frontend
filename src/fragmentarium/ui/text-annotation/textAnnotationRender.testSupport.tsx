@@ -4,7 +4,7 @@ import { ThemeProvider } from 'react-bootstrap'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import TextAnnotation from 'fragmentarium/ui/text-annotation/TextAnnotation'
 import { AnnotationSpans } from 'fragmentarium/ui/text-annotation/annotationSpan'
-import { UpdateNamedEntityAnnotations } from 'fragmentarium/ui/text-annotation/SpanAnnotationDisplay'
+import { UpdateNamedEntityAnnotations } from 'fragmentarium/ui/text-annotation/annotationSave'
 import {
   updateNamedEntityAnnotationsMock,
   WithRealiaService,

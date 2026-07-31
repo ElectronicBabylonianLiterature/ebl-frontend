@@ -22,7 +22,7 @@ import { LineLemmaAnnotations } from 'fragmentarium/ui/fragment/lemma-annotation
 import { InitializeLemmatizer } from 'fragmentarium/ui/fragment/lemma-annotation/InitializeLemmatizer'
 import TextAnnotation from 'fragmentarium/ui/text-annotation/TextAnnotation'
 import { AnnotationSpans } from 'fragmentarium/ui/text-annotation/annotationSpan'
-import { UpdateNamedEntityAnnotations } from 'fragmentarium/ui/text-annotation/SpanAnnotationDisplay'
+import { UpdateNamedEntityAnnotations } from 'fragmentarium/ui/text-annotation/annotationSave'
 
 export type TabsProps = {
   fragment: Fragment
@@ -72,12 +72,11 @@ export function NamedEntityAnnotationContents(props: TabsProps): JSX.Element {
   const updateNamedEntityAnnotations: UpdateNamedEntityAnnotations = (
     annotations: AnnotationSpans,
   ) =>
-    props.onSave(
-      props.fragmentService.updateNamedEntityAnnotations(
-        props.fragment.number,
-        annotations,
-      ),
-    )
+    props.fragmentService
+      .updateNamedEntityAnnotations(props.fragment.number, annotations)
+      .then((result) =>
+        props.onSave(Bluebird.resolve(result.fragment)).then(() => result),
+      )
   return (
     <TextAnnotation
       fragmentService={props.fragmentService}

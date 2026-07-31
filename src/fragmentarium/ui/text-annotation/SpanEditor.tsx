@@ -15,9 +15,8 @@ import {
   entityTypeOptions,
   getEntityTypeOption,
 } from 'fragmentarium/ui/text-annotation/SpanAnnotator'
-import RealiaSelect, {
-  RealiaOption,
-} from 'fragmentarium/ui/text-annotation/RealiaSelect'
+import RealiaSelect from 'fragmentarium/ui/text-annotation/RealiaSelect'
+import { RealiaOption } from 'fragmentarium/ui/text-annotation/realiaOptionLoader'
 import AnnotationContext from 'fragmentarium/ui/text-annotation/TextAnnotationContext'
 import RealiaInfoContext from 'fragmentarium/ui/text-annotation/RealiaInfoContext'
 import { getRealiaLabel } from 'fragmentarium/ui/text-annotation/realiaInfo'

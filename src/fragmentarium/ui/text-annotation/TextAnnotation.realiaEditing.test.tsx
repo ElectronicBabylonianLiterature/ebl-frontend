@@ -9,7 +9,7 @@ import TextAnnotation from 'fragmentarium/ui/text-annotation/TextAnnotation'
 import { AnnotationSpans } from 'fragmentarium/ui/text-annotation/annotationSpan'
 import { tokenIdFragment } from 'test-support/fragment-fixtures'
 import { realiaEntryFactory } from 'test-support/realia-fixtures'
-import { SEARCH_DEBOUNCE_MS } from 'fragmentarium/ui/text-annotation/RealiaSelect'
+import { SEARCH_DEBOUNCE_MS } from 'fragmentarium/ui/text-annotation/realiaOptionLoader'
 import {
   mockRealiaSearch,
   updateNamedEntityAnnotationsMock,

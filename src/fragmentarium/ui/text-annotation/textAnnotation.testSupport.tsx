@@ -15,13 +15,17 @@ import {
 } from 'fragmentarium/ui/text-annotation/annotationSpan'
 import { EntityTypes } from 'fragmentarium/ui/text-annotation/EntityType'
 import { Fragment } from 'fragmentarium/domain/fragment'
-import { UpdateNamedEntityAnnotations } from 'fragmentarium/ui/text-annotation/SpanAnnotationDisplay'
+import {
+  AnnotationSaveResult,
+  UpdateNamedEntityAnnotations,
+} from 'fragmentarium/ui/text-annotation/annotationSave'
 
 export function updateNamedEntityAnnotationsMock(
   fragment: Fragment,
+  refreshError: Error | null = null,
 ): jest.MockedFunction<UpdateNamedEntityAnnotations> {
-  return jest.fn<Promise<Fragment>, [AnnotationSpans]>(() =>
-    Promise.resolve(fragment),
+  return jest.fn<Promise<AnnotationSaveResult>, [AnnotationSpans]>(() =>
+    Promise.resolve({ fragment, refreshError }),
   )
 }
 

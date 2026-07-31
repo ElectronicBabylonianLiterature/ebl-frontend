@@ -14,6 +14,7 @@ import {
 import { openRealiaPageInNewTab } from 'realia/ui/realiaPage'
 
 export const realiaPageHint = 'Alt+click to open the Realia page in a new tab'
+export const realiaPageLinkHint = 'Click to open the Realia page in a new tab'
 
 const leftMouseButton = 0
 
@@ -29,12 +30,14 @@ export interface SpanIndicatorPresentation {
   readonly dataLabel: string | undefined
   readonly baseClassName: string
   readonly openRealiaPage: (event: React.MouseEvent) => boolean
+  readonly openRealiaPageOnClick: (event: React.MouseEvent) => boolean
   readonly openRealiaPageDirectly: () => void
 }
 
 export function useSpanIndicator(
   entitySpan: AnnotationSpan,
   tokenId?: string,
+  hint: string = realiaPageHint,
 ): SpanIndicatorPresentation {
   const { lookup } = useContext(RealiaInfoContext)
   const realiaId = isRealiaAnnotationSpan(entitySpan)
@@ -55,13 +58,22 @@ export function useSpanIndicator(
     return true
   }
 
+  function openRealiaPageOnClick(event: React.MouseEvent): boolean {
+    if (!realiaId || event.button !== leftMouseButton) {
+      return false
+    }
+    openRealiaPageDirectly()
+    return true
+  }
+
   return {
     realiaId,
     label,
     isInitial,
     openRealiaPage,
+    openRealiaPageOnClick,
     openRealiaPageDirectly,
-    title: realiaId ? `${label} (${realiaPageHint})` : label,
+    title: realiaId ? `${label} (${hint})` : label,
     dataLabel: realiaId ? label : undefined,
     baseClassName: classNames(
       'span-indicator',

@@ -1,7 +1,7 @@
 import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import FragmentService from 'fragmentarium/application/FragmentService'
-import { UpdateNamedEntityAnnotations } from 'fragmentarium/ui/text-annotation/SpanAnnotationDisplay'
+import { UpdateNamedEntityAnnotations } from 'fragmentarium/ui/text-annotation/annotationSave'
 import {
   renderTextAnnotation,
   testAnnotations,

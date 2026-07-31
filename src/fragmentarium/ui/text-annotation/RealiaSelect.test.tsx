@@ -1,13 +1,12 @@
 import React from 'react'
+import Bluebird from 'bluebird'
 import { act, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import RealiaSelect, {
-  createRealiaOptionLoader,
-  loadRealiaOptions,
+import RealiaSelect from 'fragmentarium/ui/text-annotation/RealiaSelect'
+import {
   RealiaOption,
   SEARCH_DEBOUNCE_MS,
-  toRealiaOption,
-} from 'fragmentarium/ui/text-annotation/RealiaSelect'
+} from 'fragmentarium/ui/text-annotation/realiaOptionLoader'
 import { realiaEntryFactory } from 'test-support/realia-fixtures'
 import {
   mockRealiaSearch,
@@ -21,65 +20,48 @@ const entry = realiaEntryFactory.build({
   id: 'Apkallu',
   realiaId: 'realia_000846',
 })
+const selected: RealiaOption = { value: 'realia_000846', label: 'Apkallu' }
 const onChange = jest.fn()
 
-function renderSelect(): void {
-  render(
+function renderSelect(value: RealiaOption | null = null): {
+  unmount: () => void
+} {
+  const { unmount } = render(
     <WithRealiaService>
-      <RealiaSelect ariaLabel={'realia'} value={null} onChange={onChange} />
+      <RealiaSelect ariaLabel={'realia'} value={value} onChange={onChange} />
     </WithRealiaService>,
   )
+  return { unmount }
 }
 
-describe('toRealiaOption', () => {
-  it('uses the realiaId as value and the lemma as label, keeping the entry', () => {
-    expect(toRealiaOption(entry)).toEqual({
-      value: 'realia_000846',
-      label: 'Apkallu',
-      entry,
-    })
+const setupUser = () =>
+  userEvent.setup({
+    advanceTimers: (delay) => jest.advanceTimersByTime(delay),
   })
+
+const advanceDebounce = () =>
+  act(() => {
+    jest.advanceTimersByTime(SEARCH_DEBOUNCE_MS)
+  })
+
+const flushPromises = async (): Promise<void> => {
+  await act(async () => {
+    await Promise.resolve()
+    await Promise.resolve()
+  })
+}
+
+beforeEach(() => {
+  jest.clearAllMocks()
+  jest.useFakeTimers()
+  mockRealiaSearch([entry])
 })
 
-describe('loadRealiaOptions', () => {
-  beforeEach(() => {
-    jest.clearAllMocks()
-    mockRealiaSearch([entry])
-  })
-
-  it('maps search results to options', async () => {
-    await expect(loadRealiaOptions(realiaServiceMock, 'Apk')).resolves.toEqual([
-      { value: 'realia_000846', label: 'Apkallu', entry },
-    ])
-    expect(realiaServiceMock.search).toHaveBeenCalledWith('Apk')
-  })
-
-  it('does not search on an empty query', async () => {
-    await expect(loadRealiaOptions(realiaServiceMock, '')).resolves.toEqual([])
-    expect(realiaServiceMock.search).not.toHaveBeenCalled()
-  })
+afterEach(() => {
+  jest.useRealTimers()
 })
 
-describe('RealiaSelect', () => {
-  const setupUser = () =>
-    userEvent.setup({
-      advanceTimers: (delay) => jest.advanceTimersByTime(delay),
-    })
-  const advanceDebounce = () =>
-    act(() => {
-      jest.advanceTimersByTime(SEARCH_DEBOUNCE_MS)
-    })
-
-  beforeEach(() => {
-    jest.clearAllMocks()
-    jest.useFakeTimers()
-    mockRealiaSearch([entry])
-  })
-
-  afterEach(() => {
-    jest.useRealTimers()
-  })
-
+describe('searching', () => {
   it('searches realia entries and reports the realiaId', async () => {
     const user = setupUser()
     renderSelect()
@@ -106,73 +88,91 @@ describe('RealiaSelect', () => {
   })
 })
 
-describe('createRealiaOptionLoader', () => {
-  const getContext = () => ({
-    realiaService: realiaServiceMock,
-    excludedRealiaIds: [] as readonly string[],
-  })
-
+describe('when the search fails', () => {
   beforeEach(() => {
-    jest.clearAllMocks()
-    jest.useFakeTimers()
-    mockRealiaSearch([entry])
+    realiaServiceMock.search.mockImplementation(() =>
+      Bluebird.reject(new Error('Search failed.')),
+    )
   })
 
-  afterEach(() => {
-    jest.useRealTimers()
+  it('clears the loading state and offers no options', async () => {
+    const user = setupUser()
+    renderSelect()
+    await user.type(screen.getByLabelText('realia'), 'Apk')
+    advanceDebounce()
+
+    expect(await screen.findByText('No options')).toBeInTheDocument()
+    expect(screen.queryByText('Loading...')).not.toBeInTheDocument()
   })
 
-  it('debounces rapid queries into a single search of the latest input', () => {
-    const load = createRealiaOptionLoader(getContext, 300)
-    const callback = jest.fn()
+  it('leaves the existing selection intact', async () => {
+    const user = setupUser()
+    renderSelect(selected)
+    await user.type(screen.getByLabelText('realia'), 'Apk')
+    advanceDebounce()
+    expect(await screen.findByText('No options')).toBeInTheDocument()
 
-    load('A', callback)
-    load('Ap', callback)
-    load('Apk', callback)
-    expect(realiaServiceMock.search).not.toHaveBeenCalled()
+    await user.clear(screen.getByLabelText('realia'))
 
-    jest.advanceTimersByTime(300)
-
-    expect(realiaServiceMock.search).toHaveBeenCalledTimes(1)
-    expect(realiaServiceMock.search).toHaveBeenCalledWith('Apk')
-  })
-
-  it('returns empty and does not search on an empty query', () => {
-    const load = createRealiaOptionLoader(getContext, 300)
-    const callback = jest.fn<void, [RealiaOption[]]>()
-
-    load('', callback)
-
-    expect(callback).toHaveBeenCalledWith([])
-    expect(realiaServiceMock.search).not.toHaveBeenCalled()
-  })
-
-  it('cancels a pending search', () => {
-    const load = createRealiaOptionLoader(getContext, 300)
-
-    load('Apk', jest.fn())
-    load.cancel()
-    jest.advanceTimersByTime(300)
-
-    expect(realiaServiceMock.search).not.toHaveBeenCalled()
+    expect(screen.getByText('Apkallu')).toBeInTheDocument()
+    expect(onChange).not.toHaveBeenCalled()
   })
 })
 
-describe('loadRealiaOptions exclusions', () => {
-  beforeEach(() => {
-    jest.clearAllMocks()
-    mockRealiaSearch([entry])
-  })
+describe('when a request is superseded', () => {
+  it('does not let a stale result replace a newer one', async () => {
+    const stale = realiaEntryFactory.build({ id: 'Stale', realiaId: 'r_1' })
+    let resolveStale: (entries: readonly (typeof stale)[]) => void = () => {}
+    realiaServiceMock.search
+      .mockReturnValueOnce(
+        new Bluebird((resolve) => {
+          resolveStale = resolve
+        }),
+      )
+      .mockReturnValueOnce(Bluebird.resolve([entry]))
 
-  it('omits realia that are already annotated on the span', async () => {
-    await expect(
-      loadRealiaOptions(realiaServiceMock, 'Apk', ['realia_000846']),
-    ).resolves.toEqual([])
-  })
+    const user = setupUser()
+    renderSelect()
+    await user.type(screen.getByLabelText('realia'), 'Sta')
+    advanceDebounce()
+    await user.clear(screen.getByLabelText('realia'))
+    await user.type(screen.getByLabelText('realia'), 'Apk')
+    advanceDebounce()
+    await flushPromises()
 
-  it('keeps realia that are not excluded', async () => {
-    await expect(
-      loadRealiaOptions(realiaServiceMock, 'Apk', ['realia_000999']),
-    ).resolves.toEqual([{ value: 'realia_000846', label: 'Apkallu', entry }])
+    expect(await screen.findByText('Apkallu')).toBeInTheDocument()
+
+    await act(async () => {
+      resolveStale([stale])
+    })
+    await flushPromises()
+
+    expect(screen.queryByText('Stale')).not.toBeInTheDocument()
+    expect(screen.getByText('Apkallu')).toBeInTheDocument()
+  })
+})
+
+describe('when unmounted during a request', () => {
+  it('updates no state after the request resolves', async () => {
+    let resolveSearch: (entries: readonly (typeof entry)[]) => void = () => {}
+    realiaServiceMock.search.mockReturnValue(
+      new Bluebird((resolve) => {
+        resolveSearch = resolve
+      }),
+    )
+
+    const user = setupUser()
+    const { unmount } = renderSelect()
+    await user.type(screen.getByLabelText('realia'), 'Apk')
+    advanceDebounce()
+    unmount()
+
+    await act(async () => {
+      resolveSearch([entry])
+    })
+    await flushPromises()
+
+    expect(screen.queryByText('Apkallu')).not.toBeInTheDocument()
+    expect(onChange).not.toHaveBeenCalled()
   })
 })

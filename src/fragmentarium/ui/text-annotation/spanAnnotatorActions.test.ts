@@ -7,7 +7,7 @@ import {
   noNewAnnotations,
 } from 'fragmentarium/ui/text-annotation/spanAnnotatorActions'
 import { DerivedAnnotationSpans } from 'fragmentarium/ui/text-annotation/annotationSpan'
-import { toRealiaOption } from 'fragmentarium/ui/text-annotation/RealiaSelect'
+import { toRealiaOption } from 'fragmentarium/ui/text-annotation/realiaOptionLoader'
 import {
   entityAnnotationSpan,
   realiaAnnotationSpan,

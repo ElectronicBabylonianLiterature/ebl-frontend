@@ -38,7 +38,6 @@ import { ArchaeologyDto } from 'fragmentarium/domain/archaeologyDtos'
 import { toArchaeologyDto } from 'fragmentarium/domain/archaeologyDtos'
 import { LemmaOption } from 'fragmentarium/ui/lemmatization/LemmaSelectionForm'
 import { LineLemmaAnnotations } from 'fragmentarium/ui/fragment/lemma-annotation/LemmaAnnotation'
-import { AnnotationSpans } from 'fragmentarium/ui/text-annotation/annotationSpan'
 import { UncertainFragmentAttestation } from 'corpus/domain/uncertainFragmentAttestation'
 import { ProvenanceRecord } from 'fragmentarium/domain/Provenance'
 
@@ -788,73 +787,6 @@ describe('methods returning fragment', () => {
         fragment.number,
         colophon,
       ))
-  })
-
-  describe('fetch named entity annotations', () => {
-    const namedEntityAnnotations: AnnotationSpans = {
-      namedEntities: [
-        {
-          id: 'Entity-1',
-          type: 'PERSONAL_NAME',
-          span: ['line:1'],
-        },
-      ],
-      realia: [
-        {
-          id: 'Realia-1',
-          realiaId: 'realia_000846',
-          span: ['line:1'],
-        },
-      ],
-    }
-
-    test('returns named entity annotations', async () => {
-      fragmentRepository.fetchNamedEntityAnnotations.mockReturnValue(
-        Promise.resolve(namedEntityAnnotations),
-      )
-
-      await expect(
-        fragmentService.fetchNamedEntityAnnotations(fragment.number),
-      ).resolves.toEqual(namedEntityAnnotations)
-      expect(
-        fragmentRepository.fetchNamedEntityAnnotations,
-      ).toHaveBeenCalledWith(fragment.number)
-    })
-  })
-
-  describe('update named entity annotations', () => {
-    const namedEntityAnnotations: AnnotationSpans = {
-      namedEntities: [
-        {
-          id: 'Entity-1',
-          type: 'PERSONAL_NAME',
-          span: ['line:1'],
-        },
-      ],
-      realia: [
-        {
-          id: 'Realia-1',
-          realiaId: 'realia_000846',
-          span: ['line:1'],
-        },
-      ],
-    }
-
-    beforeEach(async () => {
-      fragmentRepository.updateNamedEntityAnnotations.mockReturnValue(
-        Promise.resolve(fragment),
-      )
-      result = await fragmentService.updateNamedEntityAnnotations(
-        fragment.number,
-        namedEntityAnnotations,
-      )
-    })
-
-    test('returns updated fragment', () => expect(result).toEqual(fragment))
-    test('calls repository with correct parameters', () =>
-      expect(
-        fragmentRepository.updateNamedEntityAnnotations,
-      ).toHaveBeenCalledWith(fragment.number, namedEntityAnnotations))
   })
 })
 

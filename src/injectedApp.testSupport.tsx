@@ -33,9 +33,12 @@ export function renderInjectedApp(): RenderResult {
   )
 }
 
+interface MockedConstructorCalls {
+  mock: { calls: readonly (readonly unknown[])[] }
+}
+
 export function cacheScopeResolverOf(
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  mockClass: jest.MockedClass<any>,
+  mockClass: MockedConstructorCalls,
   argumentIndex: number,
 ): () => string {
   const calls = mockClass.mock.calls

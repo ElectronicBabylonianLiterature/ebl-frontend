@@ -16,9 +16,8 @@ import RealiaInfoContext, {
 import { emptyRealiaInfoEntries } from 'fragmentarium/ui/text-annotation/realiaInfo'
 import { getWordIds } from 'fragmentarium/ui/text-annotation/fragmentSpans'
 import AnnotationInstructions from 'fragmentarium/ui/text-annotation/AnnotationInstructions'
-import SpanAnnotationDisplay, {
-  UpdateNamedEntityAnnotations,
-} from 'fragmentarium/ui/text-annotation/SpanAnnotationDisplay'
+import SpanAnnotationDisplay from 'fragmentarium/ui/text-annotation/SpanAnnotationDisplay'
+import { UpdateNamedEntityAnnotations } from 'fragmentarium/ui/text-annotation/annotationSave'
 import './TextAnnotation.sass'
 import './NamedEntities.sass'
 
@@ -79,4 +78,5 @@ export default withData<
       props.fragmentService.find(props.number),
       props.fragmentService.fetchNamedEntityAnnotations(props.number),
     ]).then(([fragment, annotations]) => ({ fragment, annotations })),
+  { watch: (props) => [props.number] },
 )

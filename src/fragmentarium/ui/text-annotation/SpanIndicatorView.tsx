@@ -1,7 +1,10 @@
 import React from 'react'
 import classNames from 'classnames'
 import { AnnotationSpan } from 'fragmentarium/ui/text-annotation/annotationSpan'
-import { useSpanIndicator } from 'fragmentarium/ui/text-annotation/useSpanIndicator'
+import {
+  realiaPageLinkHint,
+  useSpanIndicator,
+} from 'fragmentarium/ui/text-annotation/useSpanIndicator'
 
 const activationKeys = ['Enter', ' ']
 
@@ -16,12 +19,12 @@ export default function SpanIndicatorView({
     realiaId,
     label,
     isInitial,
-    openRealiaPage,
+    openRealiaPageOnClick,
     openRealiaPageDirectly,
     title,
     dataLabel,
     baseClassName,
-  } = useSpanIndicator(entitySpan, tokenId)
+  } = useSpanIndicator(entitySpan, tokenId, realiaPageLinkHint)
 
   function handleKeyDown(event: React.KeyboardEvent): void {
     if (activationKeys.includes(event.key)) {
@@ -40,7 +43,7 @@ export default function SpanIndicatorView({
         }
       : {}
   const realiaProps = realiaId
-    ? { onMouseUp: openRealiaPage, ...linkProps }
+    ? { onMouseUp: openRealiaPageOnClick, ...linkProps }
     : {}
 
   return (

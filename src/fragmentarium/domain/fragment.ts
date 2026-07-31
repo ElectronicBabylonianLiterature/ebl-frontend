@@ -8,10 +8,8 @@ import Folio from './Folio'
 import { Genres } from 'fragmentarium/domain/Genres'
 import { Joins } from './join'
 import { Acquisition } from './Acquisition'
-import { MarkupPart } from 'transliteration/domain/markup'
-import { Period, PeriodModifier } from 'common/utils/period'
 import { Session } from 'auth/Session'
-import FragmentDto, {
+import {
   ExternalNumber,
   ExternalNumbers,
   ExternalNumberTypes,
@@ -27,66 +25,15 @@ import {
   RealiaInfoEntry,
   RealiaNamedEntity,
 } from 'fragmentarium/ui/text-annotation/EntityType'
+import {
+  Introduction,
+  Measures,
+  Notes,
+  Script,
+  UncuratedReference,
+} from 'fragmentarium/domain/fragmentTypes'
 
-export interface FragmentInfo {
-  readonly number: string
-  readonly accession: string
-  readonly script: Script
-  readonly description: string
-  readonly matchingLines: Text | null
-  readonly editor: string
-  readonly edition_date: string
-  readonly references: ReadonlyArray<Reference>
-  readonly genres: Genres
-}
-
-export type FragmentInfoDto = Omit<FragmentInfo, 'script' | 'accession'> &
-  Pick<FragmentDto, 'script' | 'accession'>
-
-export interface FragmentInfosPagination {
-  fragmentInfos: readonly FragmentInfo[]
-  totalCount: number
-}
-
-RecordEntry[immerable] = true
-
-export interface Measures {
-  readonly length: number | null
-  readonly width: number | null
-  readonly thickness: number | null
-  readonly lengthNote: string | null
-  readonly widthNote: string | null
-  readonly thicknessNote: string | null
-}
-
-export interface UncuratedReference {
-  readonly searchTerm?: string
-  readonly document: string
-  readonly pages: ReadonlyArray<number>
-}
-
-export interface Introduction {
-  readonly text: string
-  readonly parts: ReadonlyArray<MarkupPart>
-}
-
-export interface Notes {
-  readonly text: string
-  readonly parts: ReadonlyArray<MarkupPart>
-}
-
-export interface Script {
-  readonly period: Period
-  readonly periodModifier: PeriodModifier
-  readonly uncertain: boolean
-}
-
-export interface ScriptDto {
-  readonly period: string
-  readonly periodModifier: string
-  readonly uncertain: boolean
-}
-
+export * from 'fragmentarium/domain/fragmentTypes'
 interface FragmentProps {
   number: string
   accession: string

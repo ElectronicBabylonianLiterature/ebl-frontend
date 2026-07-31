@@ -34,9 +34,10 @@ async function setup(saveFails = false): Promise<void> {
       new Error('save failed'),
     )
   } else {
-    fragmentServiceMock.updateNamedEntityAnnotations.mockResolvedValue(
-      tokenIdFragment,
-    )
+    fragmentServiceMock.updateNamedEntityAnnotations.mockResolvedValue({
+      fragment: tokenIdFragment,
+      refreshError: null,
+    })
   }
   onSave = jest.fn((updatedFragment: Promise<Fragment>) => updatedFragment)
 

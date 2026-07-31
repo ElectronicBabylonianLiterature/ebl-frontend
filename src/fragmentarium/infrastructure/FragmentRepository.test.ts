@@ -1,9 +1,16 @@
 import Promise from 'bluebird'
 import { testDelegation, TestData } from 'test-support/utils'
-import FragmentRepository, {
-  createJoins,
-  createScript,
-} from './FragmentRepository'
+import FragmentRepository, { createScript } from './FragmentRepository'
+import {
+  apiClient,
+  createSummaryItemDto,
+  fragmentId,
+  fragmentInfo,
+  fragmentInfoDto,
+  fragmentRepository,
+  mockQueryItems,
+  script,
+} from 'fragmentarium/infrastructure/fragmentRepository.testSupport'
 import Folio from 'fragmentarium/domain/Folio'
 import { fragment, fragmentDto } from 'test-support/test-fragment'
 import { annotations, annotationsDto } from 'test-support/test-annotation'
@@ -18,21 +25,9 @@ import { archaeologyFactory } from 'test-support/fragment-data-fixtures'
 import { referenceDtoFactory } from 'test-support/bibliography-fixtures'
 import { textLineDto } from 'test-support/lines/text-line'
 import { lineNumberFactory } from 'test-support/linenumber-factory'
-import {
-  FragmentInfo,
-  FragmentInfoDto,
-  ScriptDto,
-} from 'fragmentarium/domain/fragment'
+import { ScriptDto } from 'fragmentarium/domain/fragment'
 import { PeriodModifiers, Periods } from 'common/utils/period'
 
-const apiClient = {
-  fetchJson: jest.fn(),
-  postJson: jest.fn(),
-  fetchBlob: jest.fn(),
-}
-const fragmentRepository = new FragmentRepository(apiClient)
-
-const fragmentId = 'K 23+1234'
 const transliteration = 'transliteration'
 const notes = 'notes'
 const introduction = 'introduction'
@@ -78,12 +73,6 @@ const references = [
   { id: 'RN54', type: 'COPY', pages: '', notes: '', linesCited: [] },
 ]
 
-const script = {
-  period: 'Neo-Assyrian',
-  periodModifier: 'None',
-  uncertain: false,
-}
-
 const lineToVecScore = {
   museumNumber: 'X.1',
   script: createScript(script),
@@ -100,29 +89,6 @@ const lineToVecRanking = {
 const lineToVecRankingDto = {
   score: [lineToVecScoreDto],
   scoreWeighted: [lineToVecScoreDto],
-}
-
-const fragmentInfo: FragmentInfo = {
-  number: 'K.1',
-  accession: 'A.1234',
-  script: createScript(script),
-  description: 'a fragment',
-  matchingLines: null,
-  editor: 'Editor',
-  // eslint-disable-next-line camelcase
-  edition_date: '2019-09-10T13:03:37.575580',
-  references: [],
-  genres: new Genres([]),
-}
-
-const fragmentInfoDto: FragmentInfoDto = {
-  ...fragmentInfo,
-  script,
-  accession: {
-    prefix: 'A',
-    number: '1234',
-    suffix: '',
-  },
 }
 
 const testData: TestData<FragmentRepository>[] = [
@@ -440,39 +406,6 @@ const emptyMatchingLinePreview = {
   numberOfLines: 0,
   // eslint-disable-next-line camelcase
   parser_version: 'backend',
-}
-
-function createSummaryItemDto(
-  overrides: Record<string, unknown> = {},
-): Record<string, unknown> {
-  return {
-    museumNumber: fragmentDto.museumNumber,
-    accession: fragmentDto.accession,
-    description: fragmentDto.description,
-    script: fragmentDto.script,
-    date: fragmentDto.date ?? null,
-    genres: fragmentDto.genres,
-    archaeology: {
-      excavationNumber: fragmentDto.museumNumber,
-      site: { name: 'Sippar' },
-    },
-    references: fragmentDto.references,
-    projects: fragmentDto.projects,
-    dossiers: fragmentDto.dossiers,
-    matchingLines: [1, 2],
-    matchingLinePreview: fragmentDto.text,
-    matchCount: 2,
-    hasPhoto: true,
-    thumbnailPath: null,
-    ...overrides,
-  }
-}
-
-function mockQueryItems(items: readonly Record<string, unknown>[]): void {
-  apiClient.fetchJson.mockResolvedValueOnce({
-    matchCountTotal: items.length,
-    items,
-  })
 }
 
 describe('FragmentRepository query summary items', () => {
@@ -803,112 +736,6 @@ describe('createScript fallback behavior', () => {
   })
 })
 
-describe('createFragment maps the optional structures it is given', () => {
-  beforeEach(() => {
-    jest.clearAllMocks()
-  })
-
-  it('builds the archaeology and the colophon when both are present', async () => {
-    apiClient.fetchJson.mockReturnValueOnce(
-      Promise.resolve({
-        ...fragmentDto,
-        archaeology: { excavationNumber: museumNumber },
-        colophon: {},
-      }),
-    )
-
-    const result = await fragmentRepository.find(fragmentId)
-
-    expect(result.archaeology?.excavationNumber).toEqual(
-      museumNumberToString(museumNumber),
-    )
-    expect(result.colophon).toBeDefined()
-  })
-})
-
-describe('createFragmentInfo without an accession', () => {
-  beforeEach(() => {
-    jest.clearAllMocks()
-  })
-
-  it('leaves the accession empty', async () => {
-    apiClient.fetchJson.mockReturnValueOnce(
-      Promise.resolve([{ ...fragmentInfoDto, accession: null }]),
-    )
-
-    const [info] = await fragmentRepository.random()
-
-    expect(info.accession).toEqual('')
-  })
-})
-
-describe('createScript without a dto', () => {
-  it('falls back to an uncertain, unmodified, certain script', () => {
-    const result = createScript(undefined as unknown as ScriptDto)
-
-    expect(result).toEqual({
-      period: Periods.Uncertain,
-      periodModifier: PeriodModifiers.None,
-      uncertain: false,
-    })
-  })
-})
-
-describe('createJoins tolerates missing groups', () => {
-  it('maps no joins at all', () => {
-    expect(createJoins(undefined)).toEqual([])
-  })
-
-  it('maps a missing group as empty', () => {
-    expect(createJoins([null])).toEqual([[]])
-  })
-})
-
-describe('FragmentRepository query summary without optional data', () => {
-  beforeEach(() => {
-    jest.clearAllMocks()
-  })
-
-  it('defaults every optional collection of a summary item', async () => {
-    mockQueryItems([
-      createSummaryItemDto({
-        references: undefined,
-        genres: undefined,
-        projects: undefined,
-        dossiers: undefined,
-        date: null,
-        archaeology: undefined,
-      }),
-    ])
-
-    const { fragment } = (await fragmentRepository.query({ lemmas: 'kur' }))
-      .items[0]
-
-    expect(fragment?.references).toEqual([])
-    expect(fragment?.genres.genres).toEqual([])
-    expect(fragment?.projects).toEqual([])
-    expect(fragment?.dossiers).toEqual([])
-    expect(fragment?.date).toBeUndefined()
-    expect(fragment?.archaeology).toBeUndefined()
-  })
-
-  it('keeps an archaeology without an excavation number or site', async () => {
-    mockQueryItems([
-      createSummaryItemDto({
-        archaeology: { excavationNumber: undefined, site: undefined },
-      }),
-    ])
-
-    const { fragment } = (await fragmentRepository.query({ lemmas: 'kur' }))
-      .items[0]
-
-    expect(fragment?.archaeology).toEqual({
-      excavationNumber: undefined,
-      site: undefined,
-    })
-  })
-})
-
 describe('FragmentRepository query summary with unrecognized script', () => {
   beforeEach(() => {
     jest.clearAllMocks()
@@ -1118,61 +945,6 @@ describe('FragmentRepository provenances', () => {
     expect(apiClient.fetchJson).toHaveBeenCalledWith(
       '/provenances/babylonia/children',
       false,
-    )
-  })
-})
-
-describe('named entity annotations', () => {
-  const namedEntities = [
-    { id: 'Entity-1', type: 'PERSONAL_NAME' as const, span: ['Word-2'] },
-  ]
-  const realia = [
-    { id: 'Realia-1', realiaId: 'realia_000846', span: ['Word-2'] },
-  ]
-
-  beforeEach(() => jest.clearAllMocks())
-
-  it('fetches both layers from the two-list body', async () => {
-    apiClient.fetchJson.mockReturnValue(
-      Promise.resolve({ namedEntities, realia }),
-    )
-
-    await expect(
-      fragmentRepository.fetchNamedEntityAnnotations(fragmentId),
-    ).resolves.toEqual({ namedEntities, realia })
-    expect(apiClient.fetchJson).toHaveBeenCalledWith(
-      `/fragments/${encodeURIComponent(fragmentId)}/named-entities`,
-      false,
-    )
-  })
-
-  it('treats a missing key as an empty list', async () => {
-    apiClient.fetchJson.mockReturnValue(Promise.resolve({ namedEntities }))
-
-    await expect(
-      fragmentRepository.fetchNamedEntityAnnotations(fragmentId),
-    ).resolves.toEqual({ namedEntities, realia: [] })
-  })
-
-  it('treats a missing named entity key as an empty list', async () => {
-    apiClient.fetchJson.mockReturnValue(Promise.resolve({ realia }))
-
-    await expect(
-      fragmentRepository.fetchNamedEntityAnnotations(fragmentId),
-    ).resolves.toEqual({ namedEntities: [], realia })
-  })
-
-  it('posts the two lists without an annotations key', async () => {
-    apiClient.postJson.mockReturnValue(Promise.resolve(fragmentDto))
-
-    await fragmentRepository.updateNamedEntityAnnotations(fragmentId, {
-      namedEntities,
-      realia,
-    })
-
-    expect(apiClient.postJson).toHaveBeenCalledWith(
-      `/fragments/${encodeURIComponent(fragmentId)}/named-entities`,
-      { namedEntities, realia },
     )
   })
 })

@@ -9,7 +9,7 @@ import {
 } from 'fragmentarium/ui/text-annotation/annotationSpan'
 import { EntityType } from 'fragmentarium/ui/text-annotation/EntityType'
 import { getEntryEntityType } from 'fragmentarium/ui/text-annotation/realiaTypeMapping'
-import { RealiaOption } from 'fragmentarium/ui/text-annotation/RealiaSelect'
+import { RealiaOption } from 'fragmentarium/ui/text-annotation/realiaOptionLoader'
 
 export interface NewAnnotations {
   readonly tag: ApiEntityAnnotationSpan | null

@@ -1,18 +1,17 @@
-import React from 'react'
-import { produce } from 'immer'
-import { render, screen, waitFor } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
-import { ThemeProvider } from 'react-bootstrap'
-import FragmentService from 'fragmentarium/application/FragmentService'
-import { Fragment } from 'fragmentarium/domain/fragment'
-import TextAnnotation from 'fragmentarium/ui/text-annotation/TextAnnotation'
+import { screen, waitFor } from '@testing-library/react'
 import { AnnotationSpans } from 'fragmentarium/ui/text-annotation/annotationSpan'
-import { UpdateNamedEntityAnnotations } from 'fragmentarium/ui/text-annotation/SpanAnnotationDisplay'
 import {
-  updateNamedEntityAnnotationsMock,
-  WithRealiaService,
-} from 'fragmentarium/ui/text-annotation/textAnnotation.testSupport'
-import { tokenIdFragment } from 'test-support/fragment-fixtures'
+  AnnotationSaveResult,
+  UpdateNamedEntityAnnotations,
+} from 'fragmentarium/ui/text-annotation/annotationSave'
+import { updateNamedEntityAnnotationsMock } from 'fragmentarium/ui/text-annotation/textAnnotation.testSupport'
+import {
+  annotatedFragment,
+  deleteTagAndSave,
+  openAnnotationEditor,
+  saveButton,
+  savedAnnotations as annotations,
+} from 'fragmentarium/ui/text-annotation/annotationSave.testSupport'
 
 jest.mock('realia/application/RealiaService')
 jest.mock('fragmentarium/application/FragmentService')
@@ -22,53 +21,7 @@ jest.mock('react-bootstrap', () =>
     .reactBootstrapWithVisibleOverlay(),
 )
 
-const fragmentServiceMock = new (FragmentService as jest.Mock<
-  jest.Mocked<FragmentService>
->)()
-
-const annotatedFragment: Fragment = produce(tokenIdFragment, (draft) => {
-  draft.realiaInfo = [
-    { realiaId: 'realia_000846', lemma: 'Apkallu', type: ['Divine names'] },
-  ]
-})
-
-const annotations: AnnotationSpans = {
-  namedEntities: [
-    { id: 'Entity-1', type: 'PERSONAL_NAME', span: ['Word-2'] },
-    { id: 'Entity-2', type: 'BUILDING_NAME', span: ['Word-2', 'Word-3'] },
-  ],
-  realia: [{ id: 'Realia-1', realiaId: 'realia_000846', span: ['Word-2'] }],
-}
-
 const derivedFields = ['tier', 'name', 'layer']
-
-async function setup(
-  updateNamedEntityAnnotations: jest.MockedFunction<UpdateNamedEntityAnnotations>,
-  loaded: AnnotationSpans = annotations,
-): Promise<void> {
-  jest.clearAllMocks()
-  fragmentServiceMock.find.mockResolvedValue(annotatedFragment)
-  fragmentServiceMock.fetchNamedEntityAnnotations.mockResolvedValue(loaded)
-
-  render(
-    <ThemeProvider>
-      <WithRealiaService>
-        <TextAnnotation
-          fragmentService={fragmentServiceMock}
-          number={annotatedFragment.number}
-          updateNamedEntityAnnotations={updateNamedEntityAnnotations}
-        />
-      </WithRealiaService>
-    </ThemeProvider>,
-  )
-  await screen.findByLabelText('save-annotations')
-}
-
-async function deleteTagAndSave(): Promise<void> {
-  await userEvent.click(screen.getByTestId('Word-2__Entity-1'))
-  await userEvent.click(await screen.findByLabelText('delete-name-annotation'))
-  await userEvent.click(screen.getByLabelText('save-annotations'))
-}
 
 describe('saving both annotation layers', () => {
   let updateNamedEntityAnnotations: jest.MockedFunction<UpdateNamedEntityAnnotations>
@@ -76,7 +29,7 @@ describe('saving both annotation layers', () => {
   beforeEach(async () => {
     updateNamedEntityAnnotations =
       updateNamedEntityAnnotationsMock(annotatedFragment)
-    await setup(updateNamedEntityAnnotations)
+    await openAnnotationEditor(updateNamedEntityAnnotations)
   })
 
   it('submits both lists together', async () => {
@@ -101,7 +54,7 @@ describe('saving both annotation layers', () => {
   })
 
   it('disables saving until an annotation changes', async () => {
-    expect(screen.getByLabelText('save-annotations')).toBeDisabled()
+    expect(saveButton()).toBeDisabled()
   })
 })
 
@@ -115,11 +68,14 @@ describe('when the loaded annotations contain duplicates', () => {
       realia: [...annotations.realia, { ...annotations.realia[0], id: 'R-2' }],
     }
 
-    await setup(updateNamedEntityAnnotationsMock(annotatedFragment), duplicated)
+    await openAnnotationEditor(
+      updateNamedEntityAnnotationsMock(annotatedFragment),
+      duplicated,
+    )
 
     expect(screen.queryByTestId('Word-2__Entity-3')).not.toBeInTheDocument()
     expect(screen.queryByTestId('Word-2__R-2')).not.toBeInTheDocument()
-    expect(screen.getByLabelText('save-annotations')).toBeDisabled()
+    expect(saveButton()).toBeDisabled()
   })
 })
 
@@ -128,10 +84,10 @@ describe('when saving fails', () => {
 
   beforeEach(async () => {
     updateNamedEntityAnnotations = jest.fn<
-      Promise<Fragment>,
+      Promise<AnnotationSaveResult>,
       [AnnotationSpans]
     >(() => Promise.reject(new Error('Save failed.')))
-    await setup(updateNamedEntityAnnotations)
+    await openAnnotationEditor(updateNamedEntityAnnotations)
     await deleteTagAndSave()
   })
 
@@ -142,9 +98,7 @@ describe('when saving fails', () => {
   })
 
   it('leaves the annotations dirty so the save can be retried', async () => {
-    await waitFor(() =>
-      expect(screen.getByLabelText('save-annotations')).toBeEnabled(),
-    )
+    await waitFor(() => expect(saveButton()).toBeEnabled())
     expect(updateNamedEntityAnnotations).toHaveBeenCalledTimes(1)
   })
 })

@@ -1,7 +1,7 @@
 import React from 'react'
 import { fireEvent, render, screen } from '@testing-library/react'
 import SpanIndicatorView from 'fragmentarium/ui/text-annotation/SpanIndicatorView'
-import { realiaPageHint } from 'fragmentarium/ui/text-annotation/SpanIndicator'
+import { realiaPageLinkHint } from 'fragmentarium/ui/text-annotation/useSpanIndicator'
 import RealiaInfoContext from 'fragmentarium/ui/text-annotation/RealiaInfoContext'
 import {
   RealiaInfoLookup,
@@ -64,7 +64,10 @@ describe('SpanIndicatorView', () => {
       'tier-depth--2',
     )
     expect(indicator).toHaveAttribute('data-label', 'Apkallu')
-    expect(indicator).toHaveAttribute('title', `Apkallu (${realiaPageHint})`)
+    expect(indicator).toHaveAttribute(
+      'title',
+      `Apkallu (${realiaPageLinkHint})`,
+    )
   })
 
   it('renders a tag span with its entity class, no realia label, no hint', () => {
@@ -84,34 +87,30 @@ describe('SpanIndicatorView', () => {
     expect(getIndicator('Entity-1')).not.toHaveClass('highlight')
   })
 
-  it('opens the realia page by lemma in a new tab on alt + left click', () => {
-    renderView(realiaSpan)
-    fireEvent.mouseUp(getIndicator('Realia-1'), { altKey: true, button: 0 })
+  it.each([[false], [true]])(
+    'opens the realia page by lemma on a left click, altKey %s',
+    (altKey) => {
+      renderView(realiaSpan)
+      fireEvent.mouseUp(getIndicator('Realia-1'), { altKey, button: 0 })
 
-    expect(openInNewTab).toHaveBeenCalledWith(
-      '/tools/realia/Apkallu',
-      '_blank',
-      'noopener,noreferrer',
-    )
-  })
+      expect(openInNewTab).toHaveBeenCalledWith(
+        '/tools/realia/Apkallu',
+        '_blank',
+        'noopener,noreferrer',
+      )
+    },
+  )
 
-  it('does nothing on a plain left click of a realia span', () => {
+  it('does nothing on a button other than the left one', () => {
     renderView(realiaSpan)
-    fireEvent.mouseUp(getIndicator('Realia-1'), { altKey: false, button: 0 })
+    fireEvent.mouseUp(getIndicator('Realia-1'), { altKey: false, button: 1 })
 
     expect(openInNewTab).not.toHaveBeenCalled()
   })
 
-  it('does nothing on alt + a button other than the left one', () => {
-    renderView(realiaSpan)
-    fireEvent.mouseUp(getIndicator('Realia-1'), { altKey: true, button: 1 })
-
-    expect(openInNewTab).not.toHaveBeenCalled()
-  })
-
-  it('does nothing on alt + left click of a tag span', () => {
+  it('does nothing on a left click of a tag span', () => {
     renderView(entitySpan)
-    fireEvent.mouseUp(getIndicator('Entity-1'), { altKey: true, button: 0 })
+    fireEvent.mouseUp(getIndicator('Entity-1'), { altKey: false, button: 0 })
 
     expect(openInNewTab).not.toHaveBeenCalled()
   })
@@ -169,7 +168,7 @@ describe('reaching the realia page without a mouse', () => {
     const continuation = screen.getByTestId('Word-2__Realia-2')
 
     expect(continuation).not.toHaveAttribute('tabindex')
-    fireEvent.mouseUp(continuation, { altKey: true, button: 0 })
+    fireEvent.mouseUp(continuation, { altKey: false, button: 0 })
     expect(openInNewTab).toHaveBeenCalled()
   })
 })

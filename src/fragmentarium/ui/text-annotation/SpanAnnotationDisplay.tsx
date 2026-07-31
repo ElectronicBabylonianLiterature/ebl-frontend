@@ -12,14 +12,15 @@ import {
 } from 'fragmentarium/ui/text-annotation/annotationSpan'
 import DisplayRow from 'fragmentarium/ui/text-annotation/AnnotationLines'
 import { getSelectedTokens } from 'fragmentarium/ui/text-annotation/selectionUtils'
-import { Button, Form, Spinner } from 'react-bootstrap'
+import { Alert, Button, Form, Spinner } from 'react-bootstrap'
+import ErrorAlert from 'common/errors/ErrorAlert'
+import {
+  refreshFailedMessage,
+  UpdateNamedEntityAnnotations,
+} from 'fragmentarium/ui/text-annotation/annotationSave'
 import _ from 'lodash'
 import './TextAnnotation.sass'
 import './NamedEntities.sass'
-
-export type UpdateNamedEntityAnnotations = (
-  annotations: AnnotationSpans,
-) => Promise<Fragment>
 
 export default function SpanAnnotationDisplay({
   fragment,
@@ -39,18 +40,26 @@ export default function SpanAnnotationDisplay({
   const words = spans.words
   const isDirty = !_.isEqual(initialAnnotations, omitDerivedSpanFields(spans))
   const [isSaving, setIsSaving] = useState(false)
+  const [saveError, setSaveError] = useState<Error | null>(null)
+  const [refreshError, setRefreshError] = useState<Error | null>(null)
 
   const text = fragment.text
 
   const saveAnnotations = () => {
     const updatedAnnotations = omitDerivedSpanFields(spans)
     setIsSaving(true)
+    setSaveError(null)
+    setRefreshError(null)
     updateNamedEntityAnnotations(updatedAnnotations)
-      .then(() => {
+      .then((result) => {
         setIsSaving(false)
         setInitialAnnotations(updatedAnnotations)
+        setRefreshError(result.refreshError)
       })
-      .catch(() => setIsSaving(false))
+      .catch((error: Error) => {
+        setIsSaving(false)
+        setSaveError(error)
+      })
   }
   const resetSelections = () => {
     setSelection([])
@@ -149,6 +158,12 @@ export default function SpanAnnotationDisplay({
             )}
           </Button>
         </Form>
+        <ErrorAlert error={saveError} />
+        {refreshError && (
+          <Alert variant={'warning'} role={'alert'}>
+            {refreshFailedMessage}
+          </Alert>
+        )}
       </div>
     </div>
   )
