@@ -10,16 +10,11 @@ import { AnnotationSpans } from 'fragmentarium/ui/text-annotation/annotationSpan
 import { UpdateNamedEntityAnnotations } from 'fragmentarium/ui/text-annotation/annotationSave'
 import { WithRealiaService } from 'fragmentarium/ui/text-annotation/textAnnotation.testSupport'
 import { tokenIdFragment } from 'test-support/fragment-fixtures'
+import { withAnnotationSpans } from 'test-support/annotated-fragment'
 
 export const fragmentServiceMock = new (FragmentService as jest.Mock<
   jest.Mocked<FragmentService>
 >)()
-
-export const annotatedFragment: Fragment = produce(tokenIdFragment, (draft) => {
-  draft.realiaInfo = [
-    { realiaId: 'realia_000846', lemma: 'Apkallu', type: ['Divine names'] },
-  ]
-})
 
 export const savedAnnotations: AnnotationSpans = {
   namedEntities: [
@@ -29,16 +24,24 @@ export const savedAnnotations: AnnotationSpans = {
   realia: [{ id: 'Realia-1', realiaId: 'realia_000846', span: ['Word-2'] }],
 }
 
+export const annotatedFragment: Fragment = produce(
+  withAnnotationSpans(tokenIdFragment, savedAnnotations),
+  (draft) => {
+    draft.realiaInfo = [
+      { realiaId: 'realia_000846', lemma: 'Apkallu', type: ['Divine names'] },
+    ]
+  },
+)
+
 export const saveButton = (): HTMLElement =>
   screen.getByLabelText('save-annotations')
 
 export async function openAnnotationEditor(
   updateNamedEntityAnnotations: jest.MockedFunction<UpdateNamedEntityAnnotations>,
-  loaded: AnnotationSpans = savedAnnotations,
+  loaded: Fragment = annotatedFragment,
 ): Promise<void> {
   jest.clearAllMocks()
-  fragmentServiceMock.find.mockResolvedValue(annotatedFragment)
-  fragmentServiceMock.fetchNamedEntityAnnotations.mockResolvedValue(loaded)
+  fragmentServiceMock.find.mockResolvedValue(loaded)
 
   render(
     <ThemeProvider>

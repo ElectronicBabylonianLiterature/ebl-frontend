@@ -24,6 +24,14 @@ describe('getWordIds', () => {
   })
 })
 
+const unattachedSpans = {
+  namedEntities: previewNamedEntities.map((entity) => ({
+    ...entity,
+    span: [],
+  })),
+  realia: previewRealia.map((entity) => ({ ...entity, span: [] })),
+}
+
 describe('createFragmentAnnotationSpans', () => {
   it('rebuilds the named entity spans in reading order', () => {
     expect(
@@ -40,17 +48,14 @@ describe('createFragmentAnnotationSpans', () => {
     ])
   })
 
-  it('ignores annotations no word refers to', () => {
+  it('keeps annotations no word refers to, with an empty span', () => {
     const fragment = createAnnotatedFragment(
       [createAnnotatedWord('kur', 'Word-1')],
       previewNamedEntities,
       previewRealia,
     )
 
-    expect(createFragmentAnnotationSpans(fragment)).toEqual({
-      namedEntities: [],
-      realia: [],
-    })
+    expect(createFragmentAnnotationSpans(fragment)).toEqual(unattachedSpans)
   })
 
   it('does not resolve a realia id against the named entities', () => {
@@ -60,10 +65,7 @@ describe('createFragmentAnnotationSpans', () => {
       previewRealia,
     )
 
-    expect(createFragmentAnnotationSpans(fragment)).toEqual({
-      namedEntities: [],
-      realia: [],
-    })
+    expect(createFragmentAnnotationSpans(fragment)).toEqual(unattachedSpans)
   })
 
   it('does not resolve a named entity id against the realia', () => {
@@ -73,10 +75,7 @@ describe('createFragmentAnnotationSpans', () => {
       previewRealia,
     )
 
-    expect(createFragmentAnnotationSpans(fragment)).toEqual({
-      namedEntities: [],
-      realia: [],
-    })
+    expect(createFragmentAnnotationSpans(fragment)).toEqual(unattachedSpans)
   })
 
   it('returns no spans for a fragment without annotations', () => {
@@ -86,16 +85,13 @@ describe('createFragmentAnnotationSpans', () => {
     })
   })
 
-  it('returns no spans for words without annotation ids', () => {
+  it('gives words without annotation ids no span', () => {
     const fragment = createAnnotatedFragment(
       [{ ...atfTokenKur, id: 'Word-1' }],
       previewNamedEntities,
       previewRealia,
     )
 
-    expect(createFragmentAnnotationSpans(fragment)).toEqual({
-      namedEntities: [],
-      realia: [],
-    })
+    expect(createFragmentAnnotationSpans(fragment)).toEqual(unattachedSpans)
   })
 })

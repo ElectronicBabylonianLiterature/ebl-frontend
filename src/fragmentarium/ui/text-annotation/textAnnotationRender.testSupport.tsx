@@ -10,6 +10,7 @@ import {
   WithRealiaService,
 } from 'fragmentarium/ui/text-annotation/textAnnotation.testSupport'
 import { tokenIdFragment } from 'test-support/fragment-fixtures'
+import { withAnnotationSpans } from 'test-support/annotated-fragment'
 
 export const testAnnotations: AnnotationSpans = {
   namedEntities: [
@@ -43,19 +44,17 @@ export async function renderTextAnnotation(
   container: HTMLElement
   updateNamedEntityAnnotations: jest.MockedFunction<UpdateNamedEntityAnnotations>
 }> {
-  fragmentServiceMock.find.mockResolvedValue(tokenIdFragment)
-  fragmentServiceMock.fetchNamedEntityAnnotations.mockResolvedValue(
-    testAnnotations,
-  )
+  const fragment = withAnnotationSpans(tokenIdFragment, testAnnotations)
+  fragmentServiceMock.find.mockResolvedValue(fragment)
   const updateNamedEntityAnnotations =
-    updateNamedEntityAnnotationsMock(tokenIdFragment)
+    updateNamedEntityAnnotationsMock(fragment)
 
   const { container } = render(
     <ThemeProvider>
       <WithRealiaService>
         <TextAnnotation
           fragmentService={fragmentServiceMock}
-          number={tokenIdFragment.number}
+          number={fragment.number}
           updateNamedEntityAnnotations={updateNamedEntityAnnotations}
         />
       </WithRealiaService>

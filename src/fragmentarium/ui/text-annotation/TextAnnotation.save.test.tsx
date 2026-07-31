@@ -12,6 +12,7 @@ import {
   saveButton,
   savedAnnotations as annotations,
 } from 'fragmentarium/ui/text-annotation/annotationSave.testSupport'
+import { withAnnotationSpans } from 'test-support/annotated-fragment'
 
 jest.mock('realia/application/RealiaService')
 jest.mock('fragmentarium/application/FragmentService')
@@ -70,7 +71,7 @@ describe('when the loaded annotations contain duplicates', () => {
 
     await openAnnotationEditor(
       updateNamedEntityAnnotationsMock(annotatedFragment),
-      duplicated,
+      withAnnotationSpans(annotatedFragment, duplicated),
     )
 
     expect(screen.queryByTestId('Word-2__Entity-3')).not.toBeInTheDocument()

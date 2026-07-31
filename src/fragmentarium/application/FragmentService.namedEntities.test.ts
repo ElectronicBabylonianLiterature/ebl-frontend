@@ -29,7 +29,6 @@ jest.mock('transliteration/application/ReferenceInjector', () => {
 })
 
 const fragmentRepository = {
-  fetchNamedEntityAnnotations: jest.fn(),
   updateNamedEntityAnnotations: jest.fn(),
 }
 const imageRepository = { find: jest.fn() }
@@ -69,21 +68,6 @@ beforeEach(() => {
   )
   stubSuccessfulInjection(fragment)
   fragmentService = createService()
-})
-
-describe('fetchNamedEntityAnnotations', () => {
-  it('delegates to the repository', async () => {
-    fragmentRepository.fetchNamedEntityAnnotations.mockReturnValue(
-      Promise.resolve(annotations),
-    )
-
-    await expect(
-      fragmentService.fetchNamedEntityAnnotations(fragment.number),
-    ).resolves.toEqual(annotations)
-    expect(fragmentRepository.fetchNamedEntityAnnotations).toHaveBeenCalledWith(
-      fragment.number,
-    )
-  })
 })
 
 describe('updateNamedEntityAnnotations', () => {

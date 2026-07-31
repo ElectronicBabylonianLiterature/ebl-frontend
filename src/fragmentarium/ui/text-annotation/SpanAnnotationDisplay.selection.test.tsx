@@ -57,10 +57,6 @@ const fragment = createAnnotatedFragment(
 
 async function setup(): Promise<void> {
   fragmentServiceMock.find.mockResolvedValue(fragment)
-  fragmentServiceMock.fetchNamedEntityAnnotations.mockResolvedValue({
-    namedEntities: [],
-    realia: [],
-  })
   render(
     <ThemeProvider>
       <WithRealiaService>

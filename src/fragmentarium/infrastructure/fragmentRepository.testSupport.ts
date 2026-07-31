@@ -5,6 +5,15 @@ import { fragmentDto } from 'test-support/test-fragment'
 import { FragmentInfo, FragmentInfoDto } from 'fragmentarium/domain/fragment'
 import { Genres } from 'fragmentarium/domain/Genres'
 
+import Folio from 'fragmentarium/domain/Folio'
+import { fragment } from 'test-support/test-fragment'
+import { QueryResult } from 'query/QueryResult'
+import { queryItemFactory } from 'test-support/query-item-factory'
+import { museumNumberToString } from 'fragmentarium/domain/MuseumNumber'
+import { Genre } from 'fragmentarium/domain/Genres'
+import { mesopotamianDateFactory } from 'test-support/date-fixtures'
+import { archaeologyFactory } from 'test-support/fragment-data-fixtures'
+
 export const apiClient = {
   fetchJson: jest.fn(),
   postJson: jest.fn(),
@@ -14,8 +23,6 @@ export const apiClient = {
 export const fragmentRepository = new FragmentRepository(apiClient)
 
 export const fragmentId = 'K 23+1234'
-
-export const museumNumber = { prefix: 'A', number: '7', suffix: '' }
 
 export const script = {
   period: 'Neo-Assyrian',
@@ -75,4 +82,67 @@ export function mockQueryItems(
     matchCountTotal: items.length,
     items,
   })
+}
+
+export const transliteration = 'transliteration'
+export const notes = 'notes'
+export const introduction = 'introduction'
+export const lemmatization = [[{ value: 'kur', uniqueLemma: [] }]]
+export const resultStub = {}
+export const folio = new Folio({ name: 'MJG', number: 'K1' })
+export const word = 'šim'
+export const lemmas = 'foo I+bar II'
+export const genres: Genre[] = [
+  new Genre(['ARCHIVE', 'Letter'], false),
+  new Genre(['CANONICAL', 'Divination'], true),
+]
+export const mesopotamianDate = mesopotamianDateFactory.build()
+export const archaeology = archaeologyFactory.build()
+export const museumNumber = { prefix: 'A', number: '7', suffix: '' }
+export const queryResult: QueryResult = {
+  items: [
+    queryItemFactory.build({
+      museumNumber: museumNumberToString(museumNumber),
+    }),
+  ],
+  matchCountTotal: 2,
+}
+export const queryResultDto = {
+  ...queryResult,
+  items: queryResult.items.map((item) => ({
+    ...item,
+    museumNumber: museumNumber,
+  })),
+}
+
+export const fragmentAfoRegisterQueryResult = {
+  items: [
+    {
+      traditionalReference: fragment.traditionalReferences[0],
+      fragmentNumbers: [fragment.number],
+    },
+  ],
+}
+
+export const references = [
+  { id: 'RN52', type: 'DISCUSSION', pages: '', notes: '', linesCited: [] },
+  { id: 'RN54', type: 'COPY', pages: '', notes: '', linesCited: [] },
+]
+
+export const lineToVecScore = {
+  museumNumber: 'X.1',
+  script: createScript(script),
+  score: 1,
+}
+
+export const lineToVecScoreDto = { ...lineToVecScore, script: script }
+
+export const lineToVecRanking = {
+  score: [lineToVecScore],
+  scoreWeighted: [lineToVecScore],
+}
+
+export const lineToVecRankingDto = {
+  score: [lineToVecScoreDto],
+  scoreWeighted: [lineToVecScoreDto],
 }

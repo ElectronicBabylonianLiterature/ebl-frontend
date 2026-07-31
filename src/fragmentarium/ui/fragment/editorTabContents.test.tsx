@@ -11,6 +11,7 @@ import {
 import { AnnotationSpans } from 'fragmentarium/ui/text-annotation/annotationSpan'
 import { WithRealiaService } from 'fragmentarium/ui/text-annotation/textAnnotation.testSupport'
 import { tokenIdFragment } from 'test-support/fragment-fixtures'
+import { withAnnotationSpans } from 'test-support/annotated-fragment'
 
 jest.mock('realia/application/RealiaService')
 jest.mock('fragmentarium/application/FragmentService')
@@ -24,11 +25,12 @@ const annotations: AnnotationSpans = {
   realia: [],
 }
 
+const annotatedFragment = withAnnotationSpans(tokenIdFragment, annotations)
+
 let onSave: jest.Mock<Promise<Fragment>, [Promise<Fragment>]>
 
 async function setup(saveFails = false): Promise<void> {
-  fragmentServiceMock.find.mockResolvedValue(tokenIdFragment)
-  fragmentServiceMock.fetchNamedEntityAnnotations.mockResolvedValue(annotations)
+  fragmentServiceMock.find.mockResolvedValue(annotatedFragment)
   if (saveFails) {
     fragmentServiceMock.updateNamedEntityAnnotations.mockRejectedValue(
       new Error('save failed'),

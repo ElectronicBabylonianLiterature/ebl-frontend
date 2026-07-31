@@ -46,11 +46,9 @@ function toSpans<Annotation extends { id: string }, Span>(
   spans: ReadonlyMap<string, readonly string[]>,
   createSpan: (annotation: Annotation, span: readonly string[]) => Span,
 ): readonly Span[] {
-  return annotations
-    .filter((annotation) => (spans.get(annotation.id) || []).length > 0)
-    .map((annotation) =>
-      createSpan(annotation, spans.get(annotation.id) as readonly string[]),
-    )
+  return annotations.map((annotation) =>
+    createSpan(annotation, spans.get(annotation.id) ?? []),
+  )
 }
 
 function createEntitySpans(

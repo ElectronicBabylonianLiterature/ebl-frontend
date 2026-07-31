@@ -1,21 +1,10 @@
 import Promise from 'bluebird'
 import _ from 'lodash'
 import { stringify } from 'query-string'
-import { produce } from 'immer'
-import {
-  Fragment,
-  FragmentInfo,
-  FragmentInfoDto,
-  Script,
-  ScriptDto,
-} from 'fragmentarium/domain/fragment'
-import { RecordEntry } from 'fragmentarium/domain/RecordEntry'
+import { Fragment, FragmentInfoDto } from 'fragmentarium/domain/fragment'
 import Folio from 'fragmentarium/domain/Folio'
-import { Acquisition } from 'fragmentarium/domain/Acquisition'
-import { Museums, MuseumKey } from 'fragmentarium/domain/museum'
 import {
   AnnotationRepository,
-  EditionFields,
   FragmentRepository,
 } from 'fragmentarium/application/FragmentService'
 import Annotation, {
@@ -27,28 +16,13 @@ import {
   FragmentInfosDtoPromise,
   FragmentInfosPromise,
 } from 'fragmentarium/application/FragmentSearchService'
-import Reference from 'bibliography/domain/Reference'
-import { LemmatizationDto } from 'transliteration/domain/Lemmatization'
-import { ChapterId } from 'transliteration/domain/chapter-id'
-import { fromManuscriptDto } from 'corpus/application/dtos'
 import { FolioPagerData, FragmentPagerData } from 'fragmentarium/domain/pager'
-import { museumNumberToString } from 'fragmentarium/domain/MuseumNumber'
-import { Genres } from 'fragmentarium/domain/Genres'
 import Word from 'dictionary/domain/Word'
 import {
   LineToVecRanking,
   LineToVecRankingDto,
-  LineToVecScore,
-  LineToVecScoreDto,
 } from 'fragmentarium/domain/lineToVecRanking'
-import createReference from 'bibliography/application/createReference'
-import { createTransliteration } from 'transliteration/application/dtos'
-import { Joins } from 'fragmentarium/domain/join'
-import { ManuscriptAttestation } from 'corpus/domain/manuscriptAttestation'
-import FragmentDto, {
-  MesopotamianDateDto,
-} from 'fragmentarium/domain/FragmentDtos'
-import { PeriodModifiers, Periods } from 'common/utils/period'
+import FragmentDto from 'fragmentarium/domain/FragmentDtos'
 import {
   createLatestQueryResult,
   createQueryResult,
@@ -57,129 +31,27 @@ import {
 } from 'fragmentarium/infrastructure/fragmentQueryMapping'
 import { FragmentQuery } from 'query/FragmentQuery'
 import { QueryResult, FragmentAfoRegisterQueryResult } from 'query/QueryResult'
-import { createResearchProject } from 'research-projects/researchProject'
-import { MesopotamianDate } from 'chronology/domain/Date'
-import { ArchaeologyDto } from 'fragmentarium/domain/archaeologyDtos'
-import { createArchaeology } from 'fragmentarium/domain/archaeologyDtos'
-import { JsonApiClient } from 'index'
-import { Colophon } from 'fragmentarium/domain/Colophon'
-import { fromDto as fromTextDto } from 'corpus/application/dtos'
-import {
-  LemmaSuggestions,
-  LineLemmaAnnotations,
-} from 'fragmentarium/ui/fragment/lemma-annotation/LemmaAnnotation'
-import { LemmaOption } from 'fragmentarium/ui/lemmatization/LemmaSelectionForm'
-import { UncertainFragmentAttestation } from 'corpus/domain/uncertainFragmentAttestation'
-import { AnnotationSpans } from 'fragmentarium/ui/text-annotation/annotationSpan'
 import { ProvenanceRecord } from 'fragmentarium/domain/Provenance'
+import {
+  createFragment,
+  createFragmentInfo,
+  createFragmentPath,
+  createLineToVecRanking,
+} from 'fragmentarium/infrastructure/fragmentFactories'
 
-export function createScript(dto: ScriptDto): Script {
-  const period =
-    Periods[dto && typeof dto.period === 'string' ? dto.period : ''] ??
-    Periods.Uncertain
-  const periodModifier =
-    PeriodModifiers[
-      dto && typeof dto.periodModifier === 'string'
-        ? dto.periodModifier
-        : 'None'
-    ] ?? PeriodModifiers.None
-  return {
-    uncertain: dto?.uncertain ?? false,
-    period,
-    periodModifier,
-  }
-}
+import { ApiFragmentUpdates } from 'fragmentarium/infrastructure/fragmentRepositoryUpdates'
 
-function createLineToVecScore(dto: LineToVecScoreDto): LineToVecScore {
-  return { ...dto, script: createScript(dto.script) }
-}
-
-function createLineToVecRanking(dto: LineToVecRankingDto): LineToVecRanking {
-  return {
-    score: dto.score.map(createLineToVecScore),
-    scoreWeighted: dto.scoreWeighted.map(createLineToVecScore),
-  }
-}
-
-export function createJoins(joins): Joins {
-  const safeJoins = joins ?? []
-  return safeJoins.map((group) =>
-    (group ?? []).map((join) => ({
-      ...join,
-      museumNumber: museumNumberToString(join.museumNumber),
-    })),
-  )
-}
-
-function createAnnotationSpans(dto: Partial<AnnotationSpans>): AnnotationSpans {
-  return {
-    namedEntities: dto.namedEntities ?? [],
-    realia: dto.realia ?? [],
-  }
-}
-
-export function createFragment(dto: FragmentDto): Fragment {
-  const museumKey: MuseumKey = dto.museum
-  return Fragment.create({
-    ...dto,
-    number: museumNumberToString(dto.museumNumber),
-    accession: dto.accession ? museumNumberToString(dto.accession) : '',
-    acquisition: dto.acquisition
-      ? new Acquisition(
-          dto.acquisition.supplier,
-          dto.acquisition.date,
-          dto.acquisition.description,
-        )
-      : null,
-    museum: Museums[museumKey],
-    joins: createJoins(dto.joins ?? []),
-    measures: {
-      length: dto.length.value || null,
-      width: dto.width.value || null,
-      thickness: dto.thickness.value || null,
-      lengthNote: dto.length.note || null,
-      widthNote: dto.width.note || null,
-      thicknessNote: dto.thickness.note || null,
-    },
-    folios: (dto.folios ?? []).map((folioDto) => new Folio(folioDto)),
-    record: (dto.record ?? []).map((recordDto) => new RecordEntry(recordDto)),
-    text: createTransliteration(dto.text),
-    references: (dto.references ?? []).map(createReference),
-    uncuratedReferences: dto.uncuratedReferences ?? null,
-    cdliImages: dto.cdliImages,
-    traditionalReferences: dto.traditionalReferences,
-    genres: Genres.fromJson(dto.genres ?? []),
-    script: createScript(dto.script),
-    projects: (dto.projects ?? []).map(createResearchProject),
-    dossiers: dto.dossiers ?? [],
-    date: dto.date ? MesopotamianDate.fromJson(dto.date) : undefined,
-    datesInText: dto.datesInText
-      ? dto.datesInText.map((date) => MesopotamianDate.fromJson(date))
-      : [],
-    archaeology: dto.archaeology
-      ? createArchaeology(dto.archaeology)
-      : undefined,
-    colophon: dto.colophon ? Colophon.fromJson(dto.colophon) : undefined,
-  })
-}
-
-export function createFragmentInfo(dto: FragmentInfoDto): FragmentInfo {
-  return {
-    ...dto,
-    script: createScript(dto.script),
-    accession: dto.accession ? museumNumberToString(dto.accession) : '',
-  }
-}
-
-function createFragmentPath(number: string, ...subResources: string[]): string {
-  return ['/fragments', encodeURIComponent(number), ...subResources].join('/')
-}
+export {
+  createFragment,
+  createFragmentInfo,
+  createJoins,
+  createScript,
+} from 'fragmentarium/infrastructure/fragmentFactories'
 
 class ApiFragmentRepository
+  extends ApiFragmentUpdates
   implements FragmentInfoRepository, FragmentRepository, AnnotationRepository
 {
-  constructor(private readonly apiClient: JsonApiClient) {}
-
   statistics(): Promise<{
     transliteratedFragments: number
     lines: number
@@ -281,107 +153,6 @@ class ApiFragmentRepository
     return this.apiClient.fetchJson<string[]>('/periods', false)
   }
 
-  updateGenres(number: string, genres: Genres): Promise<Fragment> {
-    const path = createFragmentPath(number, 'genres')
-    return this.apiClient
-      .postJson<FragmentDto>(path, {
-        genres: genres.genres,
-      })
-      .then(createFragment)
-  }
-  updateScopes(number: string, scopes: string[]): Promise<Fragment> {
-    const path = createFragmentPath(number, 'scopes')
-    return (
-      this.apiClient
-        // eslint-disable-next-line camelcase
-        .postJson<FragmentDto>(path, { authorized_scopes: scopes })
-        .then(createFragment)
-    )
-  }
-  updateScript(number: string, script: Script): Promise<Fragment> {
-    const path = createFragmentPath(number, 'script')
-    return this.apiClient
-      .postJson<FragmentDto>(path, {
-        script: {
-          period: script.period.name,
-          periodModifier: script.periodModifier.name,
-          uncertain: script.uncertain,
-        },
-      })
-      .then(createFragment)
-  }
-
-  updateDate(
-    number: string,
-    date: MesopotamianDateDto | undefined,
-  ): Promise<Fragment> {
-    const path = createFragmentPath(number, 'date')
-    return this.apiClient
-      .postJson<FragmentDto>(path, { date })
-      .then(createFragment)
-  }
-
-  updateDatesInText(
-    number: string,
-    datesInText: readonly MesopotamianDateDto[],
-  ): Promise<Fragment> {
-    const path = createFragmentPath(number, 'dates-in-text')
-    return this.apiClient
-      .postJson<FragmentDto>(path, { datesInText })
-      .then(createFragment)
-  }
-
-  updateEdition(number: string, updates: EditionFields): Promise<Fragment> {
-    const path = createFragmentPath(number, 'edition')
-    return this.apiClient
-      .postJson<FragmentDto>(path, _.omitBy(updates, _.isNull))
-      .then(createFragment)
-  }
-
-  updateLemmatization(
-    number: string,
-    lemmatization: LemmatizationDto,
-  ): Promise<Fragment> {
-    const path = createFragmentPath(number, 'lemmatization')
-    return this.apiClient
-      .postJson<FragmentDto>(path, { lemmatization: lemmatization })
-      .then(createFragment)
-  }
-
-  updateLemmaAnnotation(
-    number: string,
-    annotations: LineLemmaAnnotations,
-  ): Promise<Fragment> {
-    const path = createFragmentPath(number, 'lemma-annotation')
-    return this.apiClient
-      .postJson<FragmentDto>(path, annotations)
-      .then(createFragment)
-  }
-
-  updateReferences(number: string, references: Reference[]): Promise<Fragment> {
-    const path = createFragmentPath(number, 'references')
-    return this.apiClient
-      .postJson<FragmentDto>(path, { references: references })
-      .then(createFragment)
-  }
-
-  updateArchaeology(
-    number: string,
-    archaeology: ArchaeologyDto,
-  ): Promise<Fragment> {
-    const path = createFragmentPath(number, 'archaeology')
-    return this.apiClient
-      .postJson<FragmentDto>(path, { archaeology: archaeology })
-      .then(createFragment)
-  }
-
-  updateColophon(number: string, colophon: Colophon): Promise<Fragment> {
-    const path = createFragmentPath(number, 'colophon')
-    return this.apiClient
-      .postJson<FragmentDto>(path, { colophon: colophon })
-      .then(createFragment)
-  }
-
   folioPager(folio: Folio, number: string): Promise<FolioPagerData> {
     return this.apiClient.fetchJson<FolioPagerData>(
       `/fragments/${encodeURIComponent(number)}/pager/${encodeURIComponent(
@@ -428,63 +199,6 @@ class ApiFragmentRepository
       )
   }
 
-  updateAnnotations(
-    number: string,
-    annotations: readonly Annotation[],
-  ): Promise<readonly Annotation[]> {
-    return this.apiClient.postJson<readonly Annotation[]>(
-      `${createFragmentPath(number)}/annotations`,
-      {
-        fragmentNumber: number,
-        annotations: annotations.map(
-          produce((annotation) => ({
-            geometry: _.omit(annotation.geometry, 'type'),
-            data: annotation.data,
-          })),
-        ),
-      },
-    )
-  }
-
-  findInCorpus(number: string): Promise<{
-    manuscriptAttestations: ReadonlyArray<ManuscriptAttestation>
-    uncertainFragmentAttestations: ReadonlyArray<UncertainFragmentAttestation>
-  }> {
-    return this.apiClient
-      .fetchJson<{
-        manuscriptAttestations: Array<{
-          text: Record<string, unknown>
-          chapterId: ChapterId
-          manuscript: Record<string, unknown>
-          manuscriptSiglum: string
-        }>
-        uncertainFragmentAttestations: Array<{
-          text: Record<string, unknown>
-          chapterId: ChapterId
-        }>
-      }>(`${createFragmentPath(number)}/corpus`, false)
-      .then((response) => ({
-        manuscriptAttestations: (response.manuscriptAttestations ?? []).map(
-          (manuscriptAttestation) =>
-            new ManuscriptAttestation(
-              fromTextDto(manuscriptAttestation.text),
-              manuscriptAttestation.chapterId,
-              fromManuscriptDto(manuscriptAttestation.manuscript),
-              manuscriptAttestation.manuscriptSiglum,
-            ),
-        ),
-        uncertainFragmentAttestations: (
-          response.uncertainFragmentAttestations ?? []
-        ).map(
-          (uncertain) =>
-            new UncertainFragmentAttestation(
-              fromTextDto(uncertain.text),
-              uncertain.chapterId,
-            ),
-        ),
-      }))
-  }
-
   query(fragmentQuery: FragmentQuery): Promise<QueryResult> {
     return this.apiClient
       .fetchJson<QueryResultDto>(
@@ -514,42 +228,6 @@ class ApiFragmentRepository
 
   listAllFragments(): Promise<string[]> {
     return this.apiClient.fetchJson<string[]>(`/fragments/all`, false)
-  }
-
-  collectLemmaSuggestions(number: string): Promise<LemmaSuggestions> {
-    return this.apiClient
-      .fetchJson<
-        Record<string, Word[]>
-      >(`${createFragmentPath(number)}/collect-lemmas`, false)
-      .then((suggestions) => {
-        return new Map(
-          Object.entries(
-            _.mapValues(suggestions, (wordDtos) =>
-              wordDtos.map((word) => new LemmaOption(word, true)),
-            ),
-          ),
-        )
-      })
-  }
-
-  fetchNamedEntityAnnotations(number: string): Promise<AnnotationSpans> {
-    return this.apiClient
-      .fetchJson<
-        Partial<AnnotationSpans>
-      >(createFragmentPath(number, 'named-entities'), false)
-      .then(createAnnotationSpans)
-  }
-
-  updateNamedEntityAnnotations(
-    number: string,
-    annotations: AnnotationSpans,
-  ): Promise<Fragment> {
-    return this.apiClient
-      .postJson<FragmentDto>(createFragmentPath(number, 'named-entities'), {
-        namedEntities: annotations.namedEntities,
-        realia: annotations.realia,
-      })
-      .then(createFragment)
   }
 }
 

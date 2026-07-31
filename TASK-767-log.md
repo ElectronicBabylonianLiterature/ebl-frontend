@@ -160,3 +160,219 @@ environment artifact, not a build defect.
 
 The fixes are committed on this branch, with the code and these task docs in a single
 commit. The commit is **not pushed** — publishing it is the author's call.
+
+---
+
+## Second review round — head `f93df64333e79f5abe92079eeb9c260acdbd9101`
+
+The fixes from the first round were committed as `f93df643` and pushed;
+`git ls-remote origin refs/heads/add-realia-annotation` confirms the remote head matches
+local `HEAD`. `master` has since moved from `e96b8536` to `d9312619` (6 commits), so every
+gate was re-run against the new merge.
+
+### Gathering (re-fetched, not reused)
+
+- Check runs (8) and commit statuses (3) for `f93df643`: all `success` or `skipped`.
+  Combined status `success`. Nothing failing, so no CI-derived finding.
+- Review threads (GraphQL `reviewThreads`): 5, all `qltysh[bot]`, all resolved + outdated.
+- Timeline review events: 5. Latest is `4815952885` `CHANGES_REQUESTED` on `7d5015e2`;
+  the fixes landed in `f93df643`, so the state is stale rather than unaddressed.
+- Issue / general comments: 0.
+- qlty: remote `qlty check` "No blocking issues"; local `qlty check` over all 137 changed
+  `.ts`/`.tsx`/`.sass` files reports "✔ No issues"; local `qlty smells` reports only the two
+  pre-existing constructors (`Fragment` 34 params, `TestData` 6 params). The qlty web UI
+  needs a login, so the issue list was reproduced with the local CLI.
+
+### Re-verification of all seven reviewer points
+
+All seven are **fixed** on this head and were each traced to the code that fixes them —
+see the point-by-point table in `TASK-767-review.md`. The `RealiaSelect` fix in particular
+was checked in full: `realiaOptionLoader.ts` guards response ordering by request id, marks
+itself disposed on unmount, routes rejections through the same `respond` path, and converts
+the Bluebird promise with handlers attached synchronously so no unhandled rejection is
+reported.
+
+### Gates on the merge with `origin/master` (`d9312619`, merge head `200a9c59`)
+
+`yarn.lock` and `package.json` were confirmed byte-identical between the worktree and the
+main tree before linking `node_modules`, so the lockfile-consistent install carried over.
+
+| Gate                              | Result                                               |
+| --------------------------------- | ---------------------------------------------------- |
+| `yarn install --frozen-lockfile`  | exit 0                                               |
+| merge with `origin/master`        | clean                                                |
+| `yarn tsc`                        | exit 0 (31 s)                                        |
+| `yarn lint`                       | exit 0 (50 s)                                        |
+| `yarn build`                      | exit 0 (170 s)                                       |
+| `yarn test --watchAll=false`      | 386/386 suites, 3875 passed, 2 skipped, 50 snapshots |
+| Console output                    | zero                                                 |
+| Coverage, 72 changed source files | 100 / 100 / 100 / 100                                |
+
+`yarn build` completed on the first attempt this time, run on its own rather than batched.
+Coverage was read out of `coverage-final.json` per file (`s`, every arm of `b`, and `f`),
+not from the summary table, so branch-only gaps could not hide behind a 100% line figure.
+All 72 files were present in the report and none was below 100%.
+
+The 2 skipped tests are `xit` at `src/fragmentarium/ui/edition/Edition.test.tsx:49,53`,
+both present on `master`, in a file this PR does not touch.
+
+### Application run
+
+`yarn start` compiled the merged tree cleanly and served HTTP 200 at `localhost:3199` with
+`No issues found.` from the typecheck. The annotation flow itself could not be exercised:
+`REACT_APP_DICTIONARY_API_URL` is `http://localhost:8001` with no `ebl-api` running, and the
+tab is behind Auth0 plus `isAllowedToAnnotateFragments`.
+
+### New findings this round
+
+- **N1 (Major, open).** `TextAnnotation.tsx:76-80` fetches `find` **and**
+  `fetchNamedEntityAnnotations`, but this PR's own `createFragmentAnnotationSpans` derives
+  the identical `AnnotationSpans` from the fragment for the display path. One avoidable
+  request plus two mappings of the same value. The PR did improve it — on `master` the two
+  calls were a sequential waterfall, now they are parallel. Not fixable before `ebl-api`
+  #740 ships, because the fragment route only gains `realia` / `realiaInfo` there.
+  A semantic difference has to be settled first: the API returns entities with empty spans,
+  `fragmentSpans.ts` filters those out.
+- **N2 (Minor, fixed here).** `SignImages.tsx` gained a three-line explanatory comment,
+  against the no-comments rule. Removed. The code it documented was verified correct —
+  `clusterIds` is derived from `croppedAnnotations`, so the removed `: croppedAnnotations`
+  fallback really was unreachable. Re-verified after the edit: eslint clean, `yarn tsc`
+  exit 0, the three `SignImages` suites pass (20 tests), the file is still 100 / 100 / 100 /
+  100, no console output.
+
+### External blocker re-checked
+
+`ebl-api` PR #740 is **still open and unmerged**. `ebl/fragmentarium/web/named_entities.py`
+on `ebl-api` `master` still reads `req.media["annotations"]` in `on_post` (→ `KeyError`, 500)
+and returns a flat list from `on_get` (→ every existing annotation reads as empty against
+`dto.namedEntities ?? []`). F10 stands.
+
+### State left behind
+
+The comment removal in `src/signs/ui/display/SignImages.tsx` is **uncommitted** in the
+working tree, along with the updated task docs. The scratch worktree was removed and
+`git worktree list` shows no leftover; the `.qlty` run artefacts were deleted.
+
+---
+
+## Round 3 — remediation of every open finding (working tree, uncommitted)
+
+The user chose: split all five oversized files to ≤250 lines; remove
+`fetchNamedEntityAnnotations` and its tests; and strip the repository-policy files out of
+this PR, because master-push protection is now enforced on GitHub itself.
+
+### F7 — policy files restored from `master`
+
+`.github/copilot-instructions.md`, `.husky/pre-commit` and `.husky/pre-push` were restored
+with `git checkout origin/master -- <path>` and each verified byte-identical to
+`origin/master` (`git diff --quiet origin/master -- <path>` exits 0 for all three);
+`git diff origin/master --stat -- .github .husky` is empty.
+
+Worth noting for the follow-up policy PR: `master`'s version of the instructions keeps the
+250-line, DRY, 100%-coverage, console-clean and test-removal rules, but **loses** the
+branch's Data Architecture, API Call Efficiency, "CI — The Remote Result Is the Gate" and
+Git Branching sections. Those went with the revert.
+
+### N1 — one request instead of two
+
+`TextAnnotation` now loads only `fragmentService.find(number)` and seeds the reducer from
+`createFragmentAnnotationSpans(fragment)`, the same derivation the display path already
+used. `fetchNamedEntityAnnotations` is gone from `FragmentService`, `ApiFragmentRepository`
+and the `FragmentRepository` port, along with the now-meaningless `createAnnotationSpans`
+DTO helper.
+
+One behavioural detail had to be settled first. `GET /fragments/{number}/named-entities`
+returns entities whose `span` is `[]` (registered on the fragment, attached to no word),
+while `createFragmentAnnotationSpans` filtered those out. Filtering them in the editor would
+have **deleted** such annotations on the next save. The filter was therefore removed, so the
+derived value matches the API exactly. Nothing renders differently: `SpanIndicators` filters
+by `span.includes(wordId)`, so an empty span produces no indicator either way.
+
+Test support was reworked to seed annotations through the fragment: `withAnnotationSpans`
+(`src/test-support/annotated-fragment.ts`) writes an `AnnotationSpans` back onto a fragment's
+`namedEntities`, `realia` and word tokens. `fragmentSpans.test.ts` now asserts the empty-span
+behaviour, and both cross-kind negative tests were kept and strengthened — a foreign id still
+resolves to nothing. A new test pins that opening the editor issues exactly one `find`.
+
+### F9 — `Fragment` constructor
+
+The 34 positional parameters are replaced by a single `FragmentProps` argument with 34
+explicit `readonly` field declarations assigned in the constructor body — no
+definite-assignment assertions, no declaration merging, no eslint suppression. `Fragment.create`
+delegates to it. The two direct `new Fragment(...)` call sites were converted to object form.
+`qlty smells` no longer reports `Fragment`.
+
+### F6 — every changed file is now at or under 250 lines
+
+| File                         | before | now | new siblings                                                                                                                  |
+| ---------------------------- | -----: | --: | ----------------------------------------------------------------------------------------------------------------------------- |
+| `FragmentService.ts`         |    729 | 246 | `fragmentServiceBase`, `fragmentCache`, `scopedCache`, `fragmentCacheKeys`, `fragmentProvenance`, `fragmentReferences`        |
+| `FragmentRepository.ts`      |    541 | 234 | `fragmentFactories`, `fragmentRepositoryUpdates`, `fragmentRepositoryAttestations`                                            |
+| `SignImages.tsx`             |    368 | 209 | `signClusterAnnotations`, `SignImageFigures`                                                                                  |
+| `FragmentService.test.ts`    |   1921 | 214 | 13 sibling suites + `fragmentService.testSupport`, `fragmentServiceCache.testSupport`, `fragmentServiceFragments.testSupport` |
+| `FragmentRepository.test.ts` |    950 | 190 | 6 sibling suites, shared constants moved into `fragmentRepository.testSupport`                                                |
+| `test-fragment.ts`           |    560 | 126 | `test-fragment-dto`, `test-fragment-lines`, `test-fragment-more-lines`                                                        |
+
+`test-fragment.ts` and `fragment-fixtures.ts` were not in the changed set before this round;
+the F9 refactor pulled them in, which is why `test-fragment.ts` needed splitting too.
+
+The two service classes and the repository were decomposed by extracting cohesive
+collaborators rather than by moving lines around: a `ScopedCache` that owns cache scope,
+generation and the shared get-or-fetch; a `FragmentCache` built on it; free functions for
+provenance fetching, reference injection and cache-key construction; and base classes holding
+the mutation surface (`FragmentServiceBase`, `ApiFragmentUpdates`, `ApiFragmentAttestations`).
+Behaviour is unchanged — the cache-key format, the generation bump on invalidation and the
+scope-change clearing were all preserved verbatim and are covered by the split cache suites.
+
+`FragmentService.trimCache` had no production caller and existed only for one test; it now
+lives on `FragmentCache` and that test constructs a `FragmentCache` directly instead of
+reaching through the service with a cast.
+
+### Follow-on quality
+
+Splitting `test-fragment.ts` surfaced a pre-existing near-duplicate `externalNumbers` fixture
+shared with `src/fragmentarium/domain/Fragment.test.ts` (30 lines, mass 113). `Fragment.test.ts`
+now spreads the shared fixture and overrides the five values it deliberately differs on.
+
+### Gate results
+
+| Gate                                    | Result                                                          |
+| --------------------------------------- | --------------------------------------------------------------- |
+| `yarn tsc` on the merge with `d9312619` | exit 0                                                          |
+| `yarn lint` on the merge                | exit 0                                                          |
+| `yarn test --watchAll=false` (local)    | **405/405 suites, 3863 passed, 2 skipped, zero console output** |
+| `qlty check` over 178 changed files     | ✔ No issues                                                     |
+| `qlty smells` over the same set         | only the pre-existing `TestData` 6-parameter constructor        |
+
+The merge worktree was built from `origin/master` (`d9312619`), merged with the branch, then
+had the uncommitted working-tree changes applied on top (`git diff HEAD --binary` plus the 42
+untracked files), so the gates ran against exactly what CI would build once this is pushed.
+
+`TestData`'s 6-parameter constructor in `src/test-support/utils.ts` is left alone: it is
+pre-existing, untouched by this PR's diff, non-blocking on remote `qlty check`, and converting
+it to a parameter object would rewrite every `new TestData(...)` call site across a dozen
+unrelated test files — dragging them into the changed set and under the 250-line gate.
+
+### State left behind
+
+Everything in round 3 is **uncommitted** in the working tree. It must be committed and pushed
+before CI can confirm it. `F10` is unchanged: `ebl-api` #740 is still open, so this PR must
+not merge yet.
+
+### Coverage gaps found and closed
+
+The first coverage pass on the merge showed four files below 100%, all from code the round-3
+refactor introduced. Each was closed by deleting dead code rather than by writing a test for
+it, per the "prefer deleting a dead branch to testing it" rule:
+
+- `scopedCache.ts` and `fragmentCache.ts` — the `= () => defaultCacheScope` default arguments
+  were unreachable, because `FragmentServiceBase` already defaults the resolver and always
+  passes one down. Both parameters are now required.
+- `fragmentServiceCache.testSupport.ts` — `bibliographyService.find.mockImplementation(...)`
+  was never invoked by any cache suite. Removed.
+- `fragmentServiceFragments.testSupport.ts` — `bibliographyService.find.mockImplementation(...)`
+  was never invoked either. Removed; the `findMany` stub next to it **is** load-bearing (the
+  update suites fail without it) and was kept.
+
+The re-measured run has all 92 changed source files at 100% on statements, branches, functions
+and lines.

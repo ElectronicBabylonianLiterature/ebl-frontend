@@ -74,80 +74,80 @@ interface FragmentProps {
 export class Fragment {
   readonly [immerable] = true
 
-  constructor(
-    readonly number: string,
-    readonly accession: string,
-    readonly publication: string,
-    readonly acquisition: Acquisition | null,
-    readonly description: string,
-    readonly joins: Joins,
-    readonly measures: Measures,
-    readonly collection: string,
-    readonly legacyScript: string,
-    readonly cdliImages: readonly string[],
-    readonly folios: ReadonlyArray<Folio>,
-    readonly record: ReadonlyArray<RecordEntry>,
-    readonly text: Text,
-    readonly notes: Notes,
-    readonly museum: Museum,
-    readonly references: ReadonlyArray<Reference>,
-    readonly uncuratedReferences: ReadonlyArray<UncuratedReference> | null,
-    readonly traditionalReferences: readonly string[],
-    readonly atf: string,
-    readonly hasPhoto: boolean,
-    readonly genres: Genres,
-    readonly introduction: Introduction,
-    readonly script: Script,
-    readonly externalNumbers: ExternalNumbers,
-    readonly projects: ReadonlyArray<ResearchProject>,
-    readonly dossiers: ReadonlyArray<DossierReference>,
-    readonly date?: MesopotamianDate,
-    readonly datesInText?: ReadonlyArray<MesopotamianDate>,
-    readonly archaeology?: Archaeology,
-    readonly colophon?: Colophon,
-    readonly authorizedScopes?: string[],
-    readonly namedEntities?: ReadonlyArray<NamedEntity>,
-    readonly realia?: ReadonlyArray<RealiaNamedEntity>,
-    readonly realiaInfo?: ReadonlyArray<RealiaInfoEntry>,
-  ) {}
+  readonly number: string
+  readonly accession: string
+  readonly publication: string
+  readonly acquisition: Acquisition | null
+  readonly description: string
+  readonly joins: Joins
+  readonly measures: Measures
+  readonly collection: string
+  readonly legacyScript: string
+  readonly cdliImages: readonly string[]
+  readonly folios: ReadonlyArray<Folio>
+  readonly record: ReadonlyArray<RecordEntry>
+  readonly text: Text
+  readonly notes: Notes
+  readonly museum: Museum
+  readonly references: ReadonlyArray<Reference>
+  readonly uncuratedReferences: ReadonlyArray<UncuratedReference> | null
+  readonly traditionalReferences: readonly string[]
+  readonly atf: string
+  readonly hasPhoto: boolean
+  readonly genres: Genres
+  readonly introduction: Introduction
+  readonly script: Script
+  readonly externalNumbers: ExternalNumbers
+  readonly projects: ReadonlyArray<ResearchProject>
+  readonly dossiers: ReadonlyArray<DossierReference>
+  readonly date?: MesopotamianDate
+  readonly datesInText?: ReadonlyArray<MesopotamianDate>
+  readonly archaeology?: Archaeology
+  readonly colophon?: Colophon
+  readonly authorizedScopes?: string[]
+  readonly namedEntities?: ReadonlyArray<NamedEntity>
+  readonly realia?: ReadonlyArray<RealiaNamedEntity>
+  readonly realiaInfo?: ReadonlyArray<RealiaInfoEntry>
+
+  constructor(props: FragmentProps) {
+    this.number = props.number
+    this.accession = props.accession
+    this.publication = props.publication
+    this.acquisition = props.acquisition ?? null
+    this.description = props.description
+    this.joins = props.joins
+    this.measures = props.measures
+    this.collection = props.collection
+    this.legacyScript = props.legacyScript
+    this.cdliImages = props.cdliImages
+    this.folios = props.folios
+    this.record = props.record
+    this.text = props.text
+    this.notes = props.notes
+    this.museum = props.museum
+    this.references = props.references
+    this.uncuratedReferences = props.uncuratedReferences ?? null
+    this.traditionalReferences = props.traditionalReferences
+    this.atf = props.atf
+    this.hasPhoto = props.hasPhoto
+    this.genres = props.genres
+    this.introduction = props.introduction
+    this.script = props.script
+    this.externalNumbers = props.externalNumbers
+    this.projects = props.projects
+    this.dossiers = props.dossiers
+    this.date = props.date
+    this.datesInText = props.datesInText
+    this.archaeology = props.archaeology
+    this.colophon = props.colophon
+    this.authorizedScopes = props.authorizedScopes
+    this.namedEntities = props.namedEntities
+    this.realia = props.realia
+    this.realiaInfo = props.realiaInfo
+  }
 
   static create(props: FragmentProps): Fragment {
-    return new Fragment(
-      props.number,
-      props.accession,
-      props.publication,
-      props?.acquisition ?? null,
-      props.description,
-      props.joins,
-      props.measures,
-      props.collection,
-      props.legacyScript,
-      props.cdliImages,
-      props.folios,
-      props.record,
-      props.text,
-      props.notes,
-      props.museum,
-      props.references,
-      props?.uncuratedReferences ?? null,
-      props.traditionalReferences,
-      props.atf,
-      props.hasPhoto,
-      props.genres,
-      props.introduction,
-      props.script,
-      props.externalNumbers,
-      props.projects,
-      props.dossiers,
-      props.date,
-      props.datesInText,
-      props.archaeology,
-      props.colophon,
-      props.authorizedScopes,
-      props.namedEntities,
-      props.realia,
-      props.realiaInfo,
-    )
+    return new Fragment(props)
   }
 
   get hasUncuratedReferences(): boolean {

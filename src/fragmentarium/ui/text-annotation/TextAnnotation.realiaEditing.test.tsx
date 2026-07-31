@@ -8,6 +8,7 @@ import { Fragment } from 'fragmentarium/domain/fragment'
 import TextAnnotation from 'fragmentarium/ui/text-annotation/TextAnnotation'
 import { AnnotationSpans } from 'fragmentarium/ui/text-annotation/annotationSpan'
 import { tokenIdFragment } from 'test-support/fragment-fixtures'
+import { withAnnotationSpans } from 'test-support/annotated-fragment'
 import { realiaEntryFactory } from 'test-support/realia-fixtures'
 import { SEARCH_DEBOUNCE_MS } from 'fragmentarium/ui/text-annotation/realiaOptionLoader'
 import {
@@ -45,21 +46,23 @@ const otherEntry = realiaEntryFactory.build({
   type: ['Divine names'],
 })
 
-const annotatedFragment: Fragment = produce(tokenIdFragment, (draft) => {
-  draft.realiaInfo = [
-    { realiaId: 'realia_000846', lemma: 'Apkallu', type: ['Divine names'] },
-  ]
-})
-
 const annotations: AnnotationSpans = {
   namedEntities: [],
   realia: [{ id: 'Realia-1', realiaId: 'realia_000846', span: ['Word-2'] }],
 }
 
+const annotatedFragment: Fragment = produce(
+  withAnnotationSpans(tokenIdFragment, annotations),
+  (draft) => {
+    draft.realiaInfo = [
+      { realiaId: 'realia_000846', lemma: 'Apkallu', type: ['Divine names'] },
+    ]
+  },
+)
+
 async function setup(): Promise<void> {
   jest.clearAllMocks()
   fragmentServiceMock.find.mockResolvedValue(annotatedFragment)
-  fragmentServiceMock.fetchNamedEntityAnnotations.mockResolvedValue(annotations)
   mockRealiaSearch([otherEntry])
 
   render(

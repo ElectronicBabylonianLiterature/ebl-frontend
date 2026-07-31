@@ -16,36 +16,6 @@ describe('named entity annotations', () => {
 
   beforeEach(() => jest.clearAllMocks())
 
-  it('fetches both layers from the two-list body', async () => {
-    apiClient.fetchJson.mockReturnValue(
-      Promise.resolve({ namedEntities, realia }),
-    )
-
-    await expect(
-      fragmentRepository.fetchNamedEntityAnnotations(fragmentId),
-    ).resolves.toEqual({ namedEntities, realia })
-    expect(apiClient.fetchJson).toHaveBeenCalledWith(
-      `/fragments/${encodeURIComponent(fragmentId)}/named-entities`,
-      false,
-    )
-  })
-
-  it('treats a missing key as an empty list', async () => {
-    apiClient.fetchJson.mockReturnValue(Promise.resolve({ namedEntities }))
-
-    await expect(
-      fragmentRepository.fetchNamedEntityAnnotations(fragmentId),
-    ).resolves.toEqual({ namedEntities, realia: [] })
-  })
-
-  it('treats a missing named entity key as an empty list', async () => {
-    apiClient.fetchJson.mockReturnValue(Promise.resolve({ realia }))
-
-    await expect(
-      fragmentRepository.fetchNamedEntityAnnotations(fragmentId),
-    ).resolves.toEqual({ namedEntities: [], realia })
-  })
-
   it('posts the two lists without an annotations key', async () => {
     apiClient.postJson.mockReturnValue(Promise.resolve(fragmentDto))
 

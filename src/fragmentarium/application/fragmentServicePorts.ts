@@ -113,7 +113,6 @@ export interface FragmentRepository {
   ): Bluebird<FragmentAfoRegisterQueryResult>
   listAllFragments(): Bluebird<string[]>
   collectLemmaSuggestions(number: string): Bluebird<LemmaSuggestions>
-  fetchNamedEntityAnnotations(number: string): Bluebird<AnnotationSpans>
   updateNamedEntityAnnotations(
     number: string,
     annotations: AnnotationSpans,
