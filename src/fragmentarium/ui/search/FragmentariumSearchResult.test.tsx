@@ -1,80 +1,17 @@
 import React from 'react'
-import { render, screen, waitFor } from '@testing-library/react'
+import { screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { MemoryRouter, useLocation } from 'react-router-dom'
-import { SearchResult } from './FragmentariumSearchResult'
+import { useLocation } from 'react-router-dom'
 import FragmentService from 'fragmentarium/application/FragmentService'
-import DossiersService from 'dossiers/application/DossiersService'
-import { QueryItem, QueryResult } from 'query/QueryResult'
-import { FragmentQuery } from 'query/FragmentQuery'
-
-jest.mock(
-  'fragmentarium/ui/search/FragmentariumSearchResultComponents',
-  () => ({
-    FragmentLines: ({ queryItem }: { queryItem: QueryItem }) => (
-      <div>{queryItem.museumNumber}</div>
-    ),
-  }),
-)
+import { QueryResult } from 'query/QueryResult'
+import {
+  buildQueryResult,
+  renderSearchResult,
+} from './FragmentariumSearchResult.test-support'
 
 function LocationDisplay(): JSX.Element {
   const location = useLocation()
   return <div data-testid="location">{location.search}</div>
-}
-
-function buildQueryResult({
-  items = 50,
-  hasNextPage = true,
-  matchCountTotal = null,
-}: {
-  items?: number
-  hasNextPage?: boolean | null
-  matchCountTotal?: number | null
-} = {}): QueryResult {
-  return {
-    items: Array.from({ length: items }, (_, index) => ({
-      museumNumber: `K.${index + 1}`,
-      matchingLines: [],
-      matchCount: 0,
-    })),
-    matchCountTotal,
-    hasNextPage,
-  }
-}
-
-function renderSearchResult({
-  search = '',
-  queryResult = buildQueryResult(),
-  fragmentQuery = {
-    number: 'K.1',
-    limit: 50,
-    offset: 0,
-    count: 'page' as const,
-  },
-  resultPageSize,
-}: {
-  search?: string
-  queryResult?: QueryResult
-  fragmentQuery?: FragmentQuery
-  resultPageSize?: number
-} = {}): jest.Mocked<FragmentService> {
-  const fragmentService = {
-    query: jest.fn().mockResolvedValue(queryResult),
-  } as unknown as jest.Mocked<FragmentService>
-
-  render(
-    <MemoryRouter initialEntries={[`/library/search/${search}`]}>
-      <LocationDisplay />
-      <SearchResult
-        fragmentService={fragmentService}
-        dossiersService={{} as DossiersService}
-        fragmentQuery={fragmentQuery}
-        resultPageSize={resultPageSize}
-      />
-    </MemoryRouter>,
-  )
-
-  return fragmentService
 }
 
 describe('FragmentariumSearchResult pagination', () => {
@@ -98,6 +35,7 @@ describe('FragmentariumSearchResult pagination', () => {
     renderSearchResult({
       search: '?number=000123&paginationIndex=0',
       queryResult: buildQueryResult({ hasNextPage: true }),
+      leadingContent: <LocationDisplay />,
     })
 
     await screen.findByText('K.1')
@@ -160,30 +98,15 @@ describe('FragmentariumSearchResult pagination', () => {
         ),
     } as unknown as jest.Mocked<FragmentService>
 
-    const { rerender } = render(
-      <MemoryRouter initialEntries={['/library/search/?number=K.1']}>
-        <SearchResult
-          fragmentService={fragmentService}
-          dossiersService={{} as DossiersService}
-          fragmentQuery={{ number: 'K.1', limit: 50, offset: 0, count: 'page' }}
-        />
-      </MemoryRouter>,
-    )
+    const view = renderSearchResult({
+      search: '?number=K.1',
+      fragmentService,
+      fragmentQuery: { number: 'K.1', limit: 50, offset: 0, count: 'page' },
+    })
 
-    rerender(
-      <MemoryRouter initialEntries={['/library/search/?number=K.1']}>
-        <SearchResult
-          fragmentService={fragmentService}
-          dossiersService={{} as DossiersService}
-          fragmentQuery={{
-            number: 'K.1',
-            limit: 50,
-            offset: 50,
-            count: 'page',
-          }}
-        />
-      </MemoryRouter>,
-    )
+    view.renderView({
+      fragmentQuery: { number: 'K.1', limit: 50, offset: 50, count: 'page' },
+    })
 
     resolveSecond({
       items: [{ museumNumber: 'K.new', matchingLines: [], matchCount: 0 }],

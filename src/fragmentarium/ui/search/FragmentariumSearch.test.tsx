@@ -15,40 +15,54 @@ import { FragmentQuery } from 'query/FragmentQuery'
 import { QueryResult } from 'query/QueryResult'
 import TextService from 'corpus/application/TextService'
 import DossiersService from 'dossiers/application/DossiersService'
+import PropTypes from 'prop-types'
+
 jest.mock('fragmentarium/application/FragmentSearchService')
 jest.mock('dictionary/application/WordService')
 jest.mock('fragmentarium/application/FragmentService')
 jest.mock('corpus/application/TextService')
 jest.mock('bibliography/application/BibliographyService')
 jest.mock('dossiers/application/DossiersService')
-jest.mock('corpus/ui/search/CorpusSearchResult', () => {
-  /* eslint-disable react/prop-types */
-  const React = jest.requireActual('react')
-  return {
-    CorpusSearchResult: ({ textService, corpusQuery }) => {
-      const [result, setResult] = React.useState(null)
-      React.useEffect(() => {
-        let isCurrent = true
-        textService.query(corpusQuery).then((queryResult) => {
-          if (isCurrent) setResult(queryResult)
-        })
-        return () => {
-          isCurrent = false
-        }
-      }, [corpusQuery, textService])
-      if (result === null) return <div>Loading Corpus</div>
-      return (
-        <div>
-          <div>Found {result.items.length} chapters</div>
-          {result.items.map((item) => (
-            <div key={item.name}>{item.name}</div>
-          ))}
-        </div>
-      )
-    },
-  }
-})
-/* eslint-enable react/prop-types */
+
+function MockCorpusSearchResult({
+  textService,
+  corpusQuery,
+}: {
+  textService: Pick<TextService, 'query'>
+  corpusQuery: Record<string, unknown>
+}) {
+  const [result, setResult] = React.useState<QueryResult | null>(null)
+  React.useEffect(() => {
+    let isCurrent = true
+    textService.query(corpusQuery).then((queryResult) => {
+      if (isCurrent) setResult(queryResult)
+    })
+    return () => {
+      isCurrent = false
+    }
+  }, [corpusQuery, textService])
+  if (result === null) return <div>Loading Corpus</div>
+  return (
+    <div>
+      <div>Found {result.items.length} chapters</div>
+      {result.items.map((item) => (
+        <div key={item.name}>{item.name}</div>
+      ))}
+    </div>
+  )
+}
+
+MockCorpusSearchResult.propTypes = {
+  textService: PropTypes.shape({
+    query: PropTypes.func.isRequired,
+  }).isRequired,
+  corpusQuery: PropTypes.object.isRequired,
+}
+
+jest.mock('corpus/ui/search/CorpusSearchResult', () => ({
+  CorpusSearchResult: MockCorpusSearchResult,
+}))
+
 let wordService: jest.Mocked<WordService>
 let textService: jest.Mocked<TextService>
 let bibliographyService: jest.Mocked<BibliographyService>
@@ -239,14 +253,11 @@ test('displays Corpus results when the Corpus tab is selected', async () => {
 
 test('updates the URL anchor when switching between result tabs', async () => {
   fragmentService.query.mockResolvedValue(queryResult())
-  textService.query.mockResolvedValue({ items: [], matchCountTotal: 0 })
-
   renderSearch({ transliteration: 'kur' })
 
-  await screen.findByText('Found 0 chapters')
+  await screen.findByText('Found 2 matching lines. Showing documents 1-1')
   await userEvent.click(screen.getByRole('tab', { name: 'Corpus' }))
-  expect(window.location.hash).toEqual('#corpus')
-
+  expect(window.location.hash).toBe('#corpus')
   await userEvent.click(screen.getByRole('tab', { name: 'Library' }))
-  expect(window.location.hash).toEqual('#library')
+  expect(window.location.hash).toBe('#library')
 })

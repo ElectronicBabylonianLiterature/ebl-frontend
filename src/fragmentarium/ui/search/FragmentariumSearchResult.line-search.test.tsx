@@ -1,74 +1,12 @@
-import React from 'react'
-import { render, screen } from '@testing-library/react'
-import { MemoryRouter } from 'react-router-dom'
-import { SearchResult } from 'fragmentarium/ui/search/FragmentariumSearchResult'
-import FragmentService from 'fragmentarium/application/FragmentService'
-import DossiersService from 'dossiers/application/DossiersService'
-import { QueryItem, QueryResult } from 'query/QueryResult'
-import { FragmentQuery } from 'query/FragmentQuery'
-
-jest.mock(
-  'fragmentarium/ui/search/FragmentariumSearchResultComponents',
-  () => ({
-    FragmentLines: ({ queryItem }: { queryItem: QueryItem }) => (
-      <div>{queryItem.museumNumber}</div>
-    ),
-  }),
-)
-
-function buildQueryResult({
-  items = 50,
-  hasNextPage = true,
-  matchCountTotal = null,
-}: {
-  items?: number
-  hasNextPage?: boolean | null
-  matchCountTotal?: number | null
-} = {}): QueryResult {
-  return {
-    items: Array.from({ length: items }, (_, index) => ({
-      museumNumber: `K.${index + 1}`,
-      matchingLines: [],
-      matchCount: 0,
-    })),
-    matchCountTotal,
-    hasNextPage,
-  }
-}
-
-function renderLineSearchResult({
-  queryResult = buildQueryResult(),
-  fragmentQuery = {
-    transliteration: 'kur',
-    limit: 51,
-    offset: 0,
-    count: 'exact' as const,
-  },
-  resultPageSize = 50,
-}: {
-  queryResult?: QueryResult
-  fragmentQuery?: FragmentQuery
-  resultPageSize?: number
-} = {}): void {
-  const fragmentService = {
-    query: jest.fn().mockResolvedValue(queryResult),
-  } as unknown as jest.Mocked<FragmentService>
-
-  render(
-    <MemoryRouter initialEntries={['/library/search/?transliteration=kur']}>
-      <SearchResult
-        fragmentService={fragmentService}
-        dossiersService={{} as DossiersService}
-        fragmentQuery={fragmentQuery}
-        resultPageSize={resultPageSize}
-      />
-    </MemoryRouter>,
-  )
-}
+import { screen } from '@testing-library/react'
+import {
+  buildQueryResult,
+  renderSearchResult,
+} from './FragmentariumSearchResult.test-support'
 
 describe('FragmentariumSearchResult line-search counts', () => {
   it('does not display zero when the total line count is unknown', async () => {
-    renderLineSearchResult({
+    renderSearchResult({
       queryResult: buildQueryResult({ matchCountTotal: null }),
       fragmentQuery: {
         transliteration: 'kur',
@@ -83,7 +21,7 @@ describe('FragmentariumSearchResult line-search counts', () => {
   })
 
   it('separates exact line totals from page-size document ranges', async () => {
-    renderLineSearchResult({
+    renderSearchResult({
       queryResult: {
         ...buildQueryResult({ matchCountTotal: 90, hasNextPage: true }),
         isMatchCountTotalExact: true,
@@ -109,7 +47,7 @@ describe('FragmentariumSearchResult line-search counts', () => {
   })
 
   it('derives Next from overfetched line results when backend metadata is absent', async () => {
-    renderLineSearchResult({
+    renderSearchResult({
       queryResult: {
         ...buildQueryResult({ items: 51, matchCountTotal: 90 }),
         hasNextPage: null,
@@ -130,7 +68,7 @@ describe('FragmentariumSearchResult line-search counts', () => {
   })
 
   it('honors explicit false backend pagination metadata for line searches', async () => {
-    renderLineSearchResult({
+    renderSearchResult({
       queryResult: {
         ...buildQueryResult({ items: 51, matchCountTotal: 90 }),
         hasNextPage: false,
@@ -151,7 +89,7 @@ describe('FragmentariumSearchResult line-search counts', () => {
   })
 
   it('shows singular approximate line totals on later pages', async () => {
-    renderLineSearchResult({
+    renderSearchResult({
       queryResult: {
         ...buildQueryResult({
           items: 1,
