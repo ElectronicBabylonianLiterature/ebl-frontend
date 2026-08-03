@@ -185,4 +185,20 @@ describe('RenderFragmentLines', () => {
     expect(screen.getByRole('button', { name: 'kur' })).toBeVisible()
     expect(screen.getByText('And 3 more')).toBeVisible()
   })
+
+  it('falls back to the fragment line count when no total is given', () => {
+    render(
+      <MemoryRouter>
+        <DictionaryContext.Provider value={wordService}>
+          <RenderFragmentLines
+            fragment={previewSubsetFragment}
+            lemmaIds={[word._id]}
+            linesToShow={1}
+          />
+        </DictionaryContext.Provider>
+      </MemoryRouter>,
+    )
+
+    expect(screen.getByText('And 1 more')).toBeVisible()
+  })
 })

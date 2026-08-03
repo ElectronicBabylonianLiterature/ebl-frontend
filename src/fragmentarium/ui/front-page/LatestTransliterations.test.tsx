@@ -102,3 +102,49 @@ test('preview caps minimal latest items before hydrating cards', async () => {
   expect(screen.queryByText('K.6')).not.toBeInTheDocument()
   expect(fragmentService.find).toHaveBeenCalledTimes(5)
 })
+
+test('library page renders render-ready items with a transliteration record without hydrating', async () => {
+  const fragment = latestFragment(1)
+  const items: QueryItem[] = [
+    {
+      museumNumber: fragment.number,
+      matchingLines: [1, 2, 3],
+      matchCount: 3,
+      fragment,
+      thumbnailPath: null,
+    },
+  ]
+
+  renderLatest({ items, matchCountTotal: 1 }, false)
+
+  expect(await screen.findByText(fragment.number)).toBeInTheDocument()
+  expect(screen.getByText(/Tester \(Transliteration/)).toBeVisible()
+  expect(fragmentService.find).not.toHaveBeenCalled()
+})
+
+test('library page hydrates summary items that lack a transliteration record', async () => {
+  const summaryFragment = fragmentFactory.build(
+    { hasPhoto: false, dossiers: [] },
+    { associations: { record: [] } },
+  )
+  const detailFragment = latestFragment(2)
+  const items: QueryItem[] = [
+    {
+      museumNumber: summaryFragment.number,
+      matchingLines: [1, 2, 3],
+      matchCount: 3,
+      fragment: summaryFragment,
+      thumbnailPath: null,
+    },
+  ]
+  fragmentService.find.mockResolvedValue(detailFragment)
+
+  renderLatest({ items, matchCountTotal: 1 }, false)
+
+  expect(await screen.findByText(detailFragment.number)).toBeInTheDocument()
+  expect(fragmentService.find).toHaveBeenCalledWith(
+    summaryFragment.number,
+    [1, 2, 3],
+    false,
+  )
+})

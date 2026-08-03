@@ -174,6 +174,21 @@ describe('TabController', () => {
     expect(controller.activeKey).toBe('photo')
   })
 
+  it('Returns the raw tab as activeKey when it is a valid folio index', () => {
+    const controller = new TabController(fragment, '1', null, navigate)
+    expect(controller.activeKey).toBe('1')
+  })
+
+  it('Falls back to defaultKey when the tab is not available', () => {
+    const controller = new TabController(
+      fragment,
+      'unknown-tab',
+      null,
+      navigate,
+    )
+    expect(controller.activeKey).toBe('photo')
+  })
+
   it('Opens the correct tab for a folio', () => {
     const controller = new TabController(fragment, null, activeFolio, navigate)
     controller.openTab('1')

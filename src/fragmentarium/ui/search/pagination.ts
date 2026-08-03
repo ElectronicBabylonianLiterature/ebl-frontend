@@ -44,7 +44,7 @@ function updateRawSearchParams(
     usedKeys.add(updateKey)
     return [
       `${encodeURIComponent(updateKey)}=${encodeURIComponent(
-        updates.get(updateKey) ?? '',
+        updates.get(updateKey) as string,
       )}`,
     ]
   })

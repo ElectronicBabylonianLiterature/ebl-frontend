@@ -44,6 +44,14 @@ describe('PaginationItems', () => {
     expect(screen.getAllByRole('listitem')[2]).not.toHaveClass('disabled')
   })
 
+  it('ignores clicks on the disabled Previous control', async () => {
+    renderPaginationItems(0, true)
+
+    await userEvent.click(screen.getByText('Previous'))
+
+    expect(mockHistoryPush).not.toHaveBeenCalled()
+  })
+
   it('uses hasNextPage as the only Next navigation signal', () => {
     renderPaginationItems(4, false)
 

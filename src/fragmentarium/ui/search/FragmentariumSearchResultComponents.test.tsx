@@ -117,6 +117,24 @@ describe('FragmentLines', () => {
     expect(screen.queryByText('X.1')).not.toBeInTheDocument()
   })
 
+  it('fetches and renders a thumbnail for a hydrated fragment with a photo', async () => {
+    const fragment = fragmentFactory.build({ hasPhoto: true, dossiers: [] })
+    fragmentService.find.mockResolvedValueOnce(fragment)
+    fragmentService.findThumbnail.mockResolvedValueOnce({
+      blob: new Blob([''], { type: 'image/jpeg' }),
+    })
+
+    renderFragmentLines({
+      museumNumber: fragment.number,
+      matchingLines: [1, 2, 3],
+      matchCount: 3,
+    })
+
+    expect(
+      await screen.findByAltText(`Preview of ${fragment.number}`),
+    ).toBeInTheDocument()
+  })
+
   it('counts remaining summary lines from rows actually rendered', () => {
     const fragment = fragmentFactory.build({
       hasPhoto: false,

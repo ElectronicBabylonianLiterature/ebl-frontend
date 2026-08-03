@@ -78,3 +78,11 @@ it.each([
 it('repairs malformed unicode before encoding', () => {
   expect(createFragmentUrl('A\uD800B')).toEqual('/library/A%EF%BF%BDB')
 })
+
+it('preserves valid surrogate pairs while repairing a trailing lone low surrogate', () => {
+  const input = '𐀀\uDC00'
+  const repaired = '𐀀�'
+  expect(createFragmentUrl(input)).toEqual(
+    `/library/${encodeURIComponent(repaired)}`,
+  )
+})
