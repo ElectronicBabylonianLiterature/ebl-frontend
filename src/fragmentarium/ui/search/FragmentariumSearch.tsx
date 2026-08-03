@@ -18,6 +18,7 @@ import TextService from 'corpus/application/TextService'
 import { Col, Row, Tab, Tabs } from 'react-bootstrap'
 import { CorpusQuery } from 'query/CorpusQuery'
 import DossiersService from 'dossiers/application/DossiersService'
+import { getValidatedPageSize } from 'fragmentarium/ui/search/pagination'
 
 type Props = Pick<
   SearchFormProps,
@@ -110,6 +111,7 @@ function FragmentariumSearch({
                       fragmentService={fragmentService}
                       dossiersService={dossiersService}
                       fragmentQuery={resultFragmentQuery ?? fragmentQuery}
+                      resultPageSize={getValidatedPageSize(fragmentQuery.limit)}
                     />
                   </Tab>
                   <Tab

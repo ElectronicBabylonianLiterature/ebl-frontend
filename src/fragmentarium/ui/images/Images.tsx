@@ -2,7 +2,6 @@ import React from 'react'
 import { Nav, Tab } from 'react-bootstrap'
 import { useNavigate } from 'react-router-dom'
 import _ from 'lodash'
-
 import withData from 'http/withData'
 import Photo from 'fragmentarium/ui/images/Photo'
 import FolioDetails from 'fragmentarium/ui/images/FolioDetails'
@@ -20,6 +19,10 @@ import FolioTooltip from 'fragmentarium/ui/images/FolioTooltip'
 const FOLIO = 'folio'
 const PHOTO = 'photo'
 const CDLI = 'cdli'
+
+export function hasUsableCdliTab(fragment: Fragment): boolean {
+  return (fragment.cdliImages?.length ?? 0) > 0
+}
 
 export class TabController {
   readonly fragment: Fragment
@@ -43,8 +46,8 @@ export class TabController {
     return (
       _([
         this.fragment.hasPhoto && PHOTO,
-        this.fragment.getExternalNumber('cdliNumber') && CDLI,
         ...this.fragment.folios.map((folio, index) => String(index)),
+        hasUsableCdliTab(this.fragment) && CDLI,
       ])
         .compact()
         .head() ?? CDLI
@@ -53,13 +56,27 @@ export class TabController {
 
   get activeKey(): string {
     if (this.tab === FOLIO) {
-      const index = this.fragment.folios.findIndex((folio) =>
-        _.isEqual(folio, this.activeFolio),
+      const index = this.fragment.folios.findIndex(
+        (folio) =>
+          this.activeFolio !== null &&
+          folio.name === this.activeFolio.name &&
+          folio.number === this.activeFolio.number,
       )
-      return index >= 0 ? String(index) : '0'
-    } else {
-      return this.tab ?? this.defaultKey
+      return index >= 0 ? String(index) : this.defaultKey
     }
+
+    return this.tab && this.isAvailableTab(this.tab)
+      ? this.tab
+      : this.defaultKey
+  }
+
+  private isAvailableTab(tab: string): boolean {
+    const index = Number.parseInt(tab, 10)
+    return Boolean(
+      (tab === PHOTO && this.fragment.hasPhoto) ||
+      (tab === CDLI && hasUsableCdliTab(this.fragment)) ||
+      (!Number.isNaN(index) && this.fragment.folios[index]),
+    )
   }
 
   openTab = (eventKey: string | null): void => {
@@ -139,24 +156,33 @@ function Images({
   const controller = new TabController(fragment, tab, activeFolio, navigate)
   const folios = fragment.folios
   const activeKey = controller.activeKey
-  const [visitedTabs, setVisitedTabs] = React.useState<ReadonlySet<string>>(
-    () => new Set([activeKey]),
-  )
+  const [visitedTabState, setVisitedTabState] = React.useState<{
+    fragmentNumber: string
+    tabs: ReadonlySet<string>
+  }>(() => ({ fragmentNumber: fragment.number, tabs: new Set([activeKey]) }))
+  const visitedTabs = visitedTabState.tabs
   const FOLIO_DROPDOWN_THRESHOLD = 3
 
   React.useEffect(() => {
-    setVisitedTabs((visited) =>
-      visited.has(activeKey) ? visited : new Set([...visited, activeKey]),
-    )
-  }, [activeKey])
+    setVisitedTabState((visited) => {
+      if (visited.fragmentNumber !== fragment.number) {
+        return { fragmentNumber: fragment.number, tabs: new Set([activeKey]) }
+      }
+
+      return visited.tabs.has(activeKey)
+        ? visited
+        : {
+            fragmentNumber: fragment.number,
+            tabs: new Set([...visited.tabs, activeKey]),
+          }
+    })
+  }, [activeKey, fragment.number])
 
   return (
     <Tab.Container activeKey={activeKey} onSelect={controller.openTab}>
       <Nav variant="tabs" id="folio-container">
         {fragment.hasPhoto && <NavItem eventKey={PHOTO} label="Photo" />}
-        {fragment.cdliImages && fragment.cdliImages.length > 0 && (
-          <NavItem eventKey={CDLI} label="CDLI" />
-        )}
+        {hasUsableCdliTab(fragment) && <NavItem eventKey={CDLI} label="CDLI" />}
         {folios.length > FOLIO_DROPDOWN_THRESHOLD ? (
           <Nav.Item>
             <FolioDropdown folios={folios} controller={controller} />
@@ -188,7 +214,7 @@ function Images({
             )}
           </TabPane>
         )}
-        {fragment.getExternalNumber('cdliNumber') && (
+        {hasUsableCdliTab(fragment) && (
           <TabPane eventKey={CDLI} activeKey={activeKey}>
             {visitedTabs.has(CDLI) && (
               <CdliImages

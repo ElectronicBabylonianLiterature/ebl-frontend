@@ -51,10 +51,12 @@ function renderSearchResult({
     offset: 0,
     count: 'page' as const,
   },
+  resultPageSize,
 }: {
   search?: string
   queryResult?: QueryResult
   fragmentQuery?: FragmentQuery
+  resultPageSize?: number
 } = {}): jest.Mocked<FragmentService> {
   const fragmentService = {
     query: jest.fn().mockResolvedValue(queryResult),
@@ -67,6 +69,7 @@ function renderSearchResult({
         fragmentService={fragmentService}
         dossiersService={{} as DossiersService}
         fragmentQuery={fragmentQuery}
+        resultPageSize={resultPageSize}
       />
     </MemoryRouter>,
   )
@@ -124,6 +127,19 @@ describe('FragmentariumSearchResult pagination', () => {
 
     expect(await screen.findByText('No results on this page')).toBeVisible()
     expect(screen.getAllByRole('listitem')[0]).not.toHaveClass('disabled')
+  })
+
+  it('shows a number-format suggestion when no Library results match', async () => {
+    renderSearchResult({
+      queryResult: buildQueryResult({ items: 0, hasNextPage: false }),
+      fragmentQuery: { number: 'K 2', limit: 50, offset: 0, count: 'page' },
+    })
+
+    expect(await screen.findByText(/Found 0 documents/)).toBeVisible()
+    expect(screen.getByRole('link', { name: 'K.2' })).toHaveAttribute(
+      'href',
+      '/library/search?number=K.2',
+    )
   })
 
   it('ignores stale responses when the effective page query changes', async () => {
@@ -185,68 +201,5 @@ describe('FragmentariumSearchResult pagination', () => {
     await waitFor(() => {
       expect(screen.queryByText('K.old')).not.toBeInTheDocument()
     })
-  })
-
-  it('does not display zero when the total line count is unknown', async () => {
-    renderSearchResult({
-      queryResult: buildQueryResult({ matchCountTotal: null }),
-      fragmentQuery: {
-        transliteration: 'kur',
-        limit: 50,
-        offset: 0,
-        count: 'page',
-      },
-    })
-
-    await screen.findByText('K.1')
-    expect(screen.queryByText(/0 lines/)).not.toBeInTheDocument()
-  })
-
-  it('separates exact line totals from page-size document ranges', async () => {
-    renderSearchResult({
-      queryResult: {
-        ...buildQueryResult({ matchCountTotal: 90, hasNextPage: true }),
-        isMatchCountTotalExact: true,
-      },
-      fragmentQuery: {
-        transliteration: 'kur',
-        limit: 50,
-        offset: 0,
-        count: 'exact',
-      },
-    })
-
-    expect(await screen.findByText('K.1')).toBeInTheDocument()
-    expect(
-      screen.getByText('Found 90 matching lines. Showing documents 1-50'),
-    ).toBeInTheDocument()
-    expect(screen.queryByText(/in 50 documents/)).not.toBeInTheDocument()
-    expect(
-      screen.queryByText(/more results are available/),
-    ).not.toBeInTheDocument()
-  })
-
-  it('shows singular approximate line totals on later pages', async () => {
-    renderSearchResult({
-      queryResult: {
-        ...buildQueryResult({
-          items: 1,
-          matchCountTotal: 1,
-          hasNextPage: false,
-        }),
-        isMatchCountTotalExact: false,
-      },
-      fragmentQuery: {
-        lemmas: 'kur I',
-        limit: 25,
-        offset: 50,
-        count: 'exact',
-      },
-    })
-
-    expect(await screen.findByText('K.1')).toBeInTheDocument()
-    expect(
-      screen.getByText('Found about 1 matching line. Showing documents 51-51'),
-    ).toBeInTheDocument()
   })
 })

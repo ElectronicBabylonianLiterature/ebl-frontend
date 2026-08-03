@@ -81,6 +81,24 @@ describe('PaginationItems', () => {
     })
   })
 
+  it('preserves encoded query values when changing page size', async () => {
+    renderPaginationItems(
+      2,
+      true,
+      '/library/search/?museum=BM&genre=CANONICAL%3ATechnical%3AAstronomy%3AAstronomical%20Diaries&transliteration=a%2Bb&number=000123',
+    )
+
+    await userEvent.selectOptions(
+      screen.getByLabelText('Results per page'),
+      '100',
+    )
+
+    expect(mockHistoryPush).toHaveBeenLastCalledWith({
+      search:
+        'museum=BM&genre=CANONICAL%3ATechnical%3AAstronomy%3AAstronomical%20Diaries&transliteration=a%2Bb&number=000123&limit=100&paginationIndex=0',
+    })
+  })
+
   it('jumps directly to a requested page', async () => {
     renderPaginationItems(0, true, '/library/search/?number=K.1')
 

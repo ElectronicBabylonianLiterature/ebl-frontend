@@ -1,6 +1,6 @@
 import React from 'react'
 import { MemoryRouter } from 'react-router-dom'
-import { render, screen, waitFor } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import { waitForSpinnerToBeRemoved } from 'test-support/waitForSpinnerToBeRemoved'
 import Promise from 'bluebird'
 import SessionContext from 'auth/SessionContext'
@@ -11,7 +11,6 @@ import WordService from 'dictionary/application/WordService'
 import FragmentSearchService from 'fragmentarium/application/FragmentSearchService'
 import MemorySession from 'auth/Session'
 import { DictionaryContext } from 'dictionary/ui/dictionary-context'
-import { referenceFactory } from 'test-support/bibliography-fixtures'
 import { fragmentFactory } from 'test-support/fragment-fixtures'
 import {
   folioPagerFactory,
@@ -20,6 +19,7 @@ import {
 import { FragmentPagerData } from 'fragmentarium/domain/pager'
 import { wordFactory } from 'test-support/word-fixtures'
 import { Fragment } from 'fragmentarium/domain/fragment'
+import Folio from 'fragmentarium/domain/Folio'
 import { helmetContext } from 'router/head'
 import { HelmetProvider } from 'react-helmet-async'
 import { FindspotService } from 'fragmentarium/application/FindspotService'
@@ -36,6 +36,7 @@ jest.mock('dossiers/application/DossiersService')
 
 global.ResizeObserver = ResizeObserver
 
+const message = 'message'
 const fragmentNumber = 'K,K.1'
 
 let fragmentService: jest.Mocked<FragmentService>
@@ -45,7 +46,6 @@ let findspotService: jest.Mocked<FindspotService>
 let afoRegisterService: jest.Mocked<AfoRegisterService>
 let dossiersService: jest.Mocked<DossiersService>
 let session
-let container: HTMLElement
 
 function renderFragmentView(
   number: string,
@@ -53,7 +53,7 @@ function renderFragmentView(
   folioNumber: string | null,
   tab: string | null,
 ) {
-  container = render(
+  render(
     <HelmetProvider context={helmetContext}>
       <MemoryRouter>
         <SessionContext.Provider value={session}>
@@ -76,7 +76,7 @@ function renderFragmentView(
         </SessionContext.Provider>
       </MemoryRouter>
     </HelmetProvider>,
-  ).container
+  )
 }
 
 beforeEach(() => {
@@ -138,74 +138,22 @@ beforeEach(() => {
   dossiersService.queryByIds.mockResolvedValue([])
 })
 
-describe('Fragment is loaded', () => {
-  let fragment
-  let selectedFolio
-
-  async function renderAndWaitForLoadedFragment(): Promise<void> {
-    renderFragmentView(
-      fragmentNumber,
-      selectedFolio.name,
-      selectedFolio.number,
-      'folio',
-    )
+describe('On error', () => {
+  it('Shows the error message', async () => {
+    fragmentService.find.mockReturnValue(Promise.reject(new Error(message)))
+    renderFragmentView(fragmentNumber, null, null, null)
     await waitForSpinnerToBeRemoved(screen)
-  }
-
-  beforeEach(async () => {
-    const folios = [
-      folioFactory.build({ name: 'WGL' }),
-      folioFactory.build({ name: 'AKG' }),
-    ]
-    fragment = fragmentFactory
-      .build(
-        {
-          number: fragmentNumber,
-          atf: '1. ku',
-          hasPhoto: true,
-        },
-        { associations: { folios: folios } },
-      )
-      .setReferences(referenceFactory.buildList(2))
-    selectedFolio = fragment.folios[0]
-    fragmentService.find.mockReturnValue(Promise.resolve(fragment))
-    fragmentService.updateGenres.mockReturnValue(Promise.resolve(fragment))
-  })
-
-  it('Queries the Fragmentarium API with given parameters', async () => {
-    await renderAndWaitForLoadedFragment()
-    expect(fragmentService.find).toBeCalledWith(fragmentNumber)
-  })
-
-  it('Shows the fragment number', async () => {
-    await renderAndWaitForLoadedFragment()
-    expect(container).toHaveTextContent(fragmentNumber)
-  })
-
-  it('Shows pager', async () => {
-    await renderAndWaitForLoadedFragment()
-    expect(screen.getByLabelText('Next')).toBeVisible()
-  })
-
-  it('Shows annotate button', async () => {
-    await renderAndWaitForLoadedFragment()
-    expect(screen.getByText('Tag signs')).not.toHaveAttribute('aria-disabled')
-  })
-
-  it('Selects active folio', async () => {
-    await renderAndWaitForLoadedFragment()
-    await waitFor(() =>
-      expect(
-        screen.getByRole('tab', {
-          name: `${selectedFolio.humanizedName} Folio ${selectedFolio.number}`,
-        }),
-      ).toHaveAttribute('aria-selected', 'true'),
-    )
+    await screen.findByText(message)
   })
 })
 
-describe('Fragment without an image is loaded', () => {
+describe('Filter folios', () => {
   let fragment: Fragment
+  let folios: readonly Folio[]
+  const openFolios: readonly Folio[] = [
+    folioFactory.build({ name: 'WGL' }),
+    folioFactory.build({ name: 'AKG' }),
+  ]
 
   async function renderAndWaitForFragment(): Promise<void> {
     renderFragmentView(fragment.number, null, null, null)
@@ -213,19 +161,39 @@ describe('Fragment without an image is loaded', () => {
   }
 
   beforeEach(async () => {
+    session = new MemorySession(['read:WGL-folios', 'read:AKG-folios'])
+    folios = [
+      ...openFolios,
+      folioFactory.build({}, { associations: { name: 'WRM' } }),
+    ]
     fragment = fragmentFactory.build(
       {
         number: fragmentNumber,
         atf: '1. ku',
-        hasPhoto: false,
+        hasPhoto: true,
       },
-      { associations: { folios: [], references: [] } },
+      { associations: { folios: folios } },
     )
     fragmentService.find.mockReturnValue(Promise.resolve(fragment))
   })
 
-  it('Tag signs button is disabled', async () => {
+  it("excludes folios the user doesn't have access to", async () => {
+    expect(fragment.filterFolios(session).folios).toEqual(openFolios)
+  })
+
+  it.each(openFolios)('shows the included folio %#', async (folio) => {
     await renderAndWaitForFragment()
-    expect(screen.getByText('Tag signs')).toBeDisabled()
+    expect(
+      screen.getByText(`${folio.humanizedName} Folio ${folio.number}`),
+    ).toBeVisible()
+  })
+
+  it('Does not show the excluded folios', async () => {
+    await renderAndWaitForFragment()
+    expect(
+      screen.queryByText(
+        `${folios[2].humanizedName} Folio ${folios[2].number}`,
+      ),
+    ).not.toBeInTheDocument()
   })
 })

@@ -16,37 +16,54 @@ export function getRequestedPaginationIndex(
     : undefined
 }
 
+function updateRawSearchParams(
+  search: string,
+  updates: ReadonlyMap<string, string>,
+): string {
+  const encodedUpdateKeys = new Set(
+    [...updates.keys()].map((key) => encodeURIComponent(key)),
+  )
+  const params = search.replace(/^\?/, '').split('&').filter(Boolean)
+  const usedKeys = new Set<string>()
+
+  const nextParams = params.flatMap((searchParam) => {
+    const [key] = searchParam.split('=')
+
+    if (!encodedUpdateKeys.has(key)) {
+      return [searchParam]
+    }
+
+    const updateKey = [...updates.keys()].find(
+      (candidate) => encodeURIComponent(candidate) === key,
+    )
+
+    if (!updateKey || usedKeys.has(updateKey)) {
+      return []
+    }
+
+    usedKeys.add(updateKey)
+    return [
+      `${encodeURIComponent(updateKey)}=${encodeURIComponent(
+        updates.get(updateKey) ?? '',
+      )}`,
+    ]
+  })
+
+  updates.forEach((value, key) => {
+    if (!usedKeys.has(key)) {
+      nextParams.push(`${encodeURIComponent(key)}=${encodeURIComponent(value)}`)
+    }
+  })
+
+  return nextParams.join('&')
+}
+
 export function updatePaginationSearchParam(
   search: string,
   param: string,
   index: number,
 ): string {
-  const params = search.replace(/^\?/, '').split('&').filter(Boolean)
-  const paginationParam = `${encodeURIComponent(param)}=${encodeURIComponent(
-    index.toString(),
-  )}`
-  let updated = false
-
-  const nextParams = params.flatMap((searchParam) => {
-    const [key] = searchParam.split('=')
-
-    if (key !== encodeURIComponent(param)) {
-      return [searchParam]
-    }
-
-    if (!updated) {
-      updated = true
-      return [paginationParam]
-    }
-
-    return []
-  })
-
-  if (!updated) {
-    nextParams.push(paginationParam)
-  }
-
-  return nextParams.join('&')
+  return updateRawSearchParams(search, new Map([[param, index.toString()]]))
 }
 
 export function getPageIndex(search: string): number {
@@ -74,8 +91,11 @@ export function updatePageSizeSearchParam(
   search: string,
   limit: number,
 ): string {
-  const params = new URLSearchParams(search)
-  params.set('limit', String(getValidatedPageSize(limit)))
-  params.set(paginationURLParam, '0')
-  return params.toString()
+  return updateRawSearchParams(
+    search,
+    new Map([
+      ['limit', String(getValidatedPageSize(limit))],
+      [paginationURLParam, '0'],
+    ]),
+  )
 }

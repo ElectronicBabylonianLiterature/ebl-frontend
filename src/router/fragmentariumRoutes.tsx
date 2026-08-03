@@ -57,7 +57,7 @@ export function createPagedFragmentQuery(
 
   return {
     ...fragmentQuery,
-    limit,
+    limit: isLineQuery ? limit + 1 : limit,
     offset: pageIndex * limit,
     count: isLineQuery ? 'exact' : 'page',
   }

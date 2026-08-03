@@ -110,10 +110,7 @@ it('Displays photo if no folio specified', async () => {
 })
 
 it('Displays CDLI photo if no photo and no folio specified', async () => {
-  folios = [
-    folioFactory.build({ name: 'WGL' }),
-    folioFactory.build({ name: 'AKG' }),
-  ]
+  folios = []
   fragment = fragmentFactory.build(
     { hasPhoto: false, cdliImages: ['dl/photo/P550449.jpg'] },
     { associations: { folios: folios } },
@@ -129,7 +126,6 @@ test('No photo, folios, CDLI photo', async () => {
     { associations: { folios: [] } },
   )
   renderImages()
-  await waitForElementToBeRemoved(() => screen.queryAllByLabelText('Spinner'))
   expect(screen.queryByText('CDLI')).not.toBeInTheDocument()
 })
 

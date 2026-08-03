@@ -48,7 +48,7 @@ it('Creates URL with folio query', () => {
 it('Creates canonical fragment URL without query parameters', () => {
   const number = 'K 1+2/3'
   expect(createFragmentCanonicalUrl(number)).toEqual(
-    `https://www.ebl.lmu.de/library/${encodeURIComponent(number)}`,
+    `${CANONICAL_ORIGIN}/library/${encodeURIComponent(number)}`,
   )
 })
 

@@ -149,7 +149,7 @@ describe('FragmentariumRoutes library search pagination', () => {
     expect(await screen.findByText('K.1')).toBeInTheDocument()
     expect(view.query).toHaveBeenCalledWith({
       transliteration: 'kur',
-      limit: 50,
+      limit: 51,
       offset: 0,
       count: 'exact',
     })
@@ -161,8 +161,22 @@ describe('FragmentariumRoutes library search pagination', () => {
     expect(await screen.findByText('K.1')).toBeInTheDocument()
     expect(view.query).toHaveBeenCalledWith({
       lemmas: 'kur',
-      limit: 50,
+      limit: 51,
       offset: 0,
+      count: 'exact',
+    })
+  })
+
+  it('overfetches line searches by one item while offsetting by the visible page size', async () => {
+    const view = renderRoutes(
+      '/library/search/?transliteration=kur&limit=25&paginationIndex=2',
+    )
+
+    expect(await screen.findByText('K.51')).toBeInTheDocument()
+    expect(view.query).toHaveBeenCalledWith({
+      transliteration: 'kur',
+      limit: 26,
+      offset: 50,
       count: 'exact',
     })
   })

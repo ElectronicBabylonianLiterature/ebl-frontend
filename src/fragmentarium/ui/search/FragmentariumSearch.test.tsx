@@ -1,6 +1,7 @@
 import React from 'react'
 import { MemoryRouter } from 'react-router-dom'
 import { render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import FragmentariumSearch from './FragmentariumSearch'
 import SessionContext from 'auth/SessionContext'
 import FragmentSearchService from 'fragmentarium/application/FragmentSearchService'
@@ -14,14 +15,40 @@ import { FragmentQuery } from 'query/FragmentQuery'
 import { QueryResult } from 'query/QueryResult'
 import TextService from 'corpus/application/TextService'
 import DossiersService from 'dossiers/application/DossiersService'
-
 jest.mock('fragmentarium/application/FragmentSearchService')
 jest.mock('dictionary/application/WordService')
 jest.mock('fragmentarium/application/FragmentService')
 jest.mock('corpus/application/TextService')
 jest.mock('bibliography/application/BibliographyService')
 jest.mock('dossiers/application/DossiersService')
-
+jest.mock('corpus/ui/search/CorpusSearchResult', () => {
+  /* eslint-disable react/prop-types */
+  const React = jest.requireActual('react')
+  return {
+    CorpusSearchResult: ({ textService, corpusQuery }) => {
+      const [result, setResult] = React.useState(null)
+      React.useEffect(() => {
+        let isCurrent = true
+        textService.query(corpusQuery).then((queryResult) => {
+          if (isCurrent) setResult(queryResult)
+        })
+        return () => {
+          isCurrent = false
+        }
+      }, [corpusQuery, textService])
+      if (result === null) return <div>Loading Corpus</div>
+      return (
+        <div>
+          <div>Found {result.items.length} chapters</div>
+          {result.items.map((item) => (
+            <div key={item.name}>{item.name}</div>
+          ))}
+        </div>
+      )
+    },
+  }
+})
+/* eslint-enable react/prop-types */
 let wordService: jest.Mocked<WordService>
 let textService: jest.Mocked<TextService>
 let bibliographyService: jest.Mocked<BibliographyService>
@@ -114,6 +141,7 @@ test('fills in the search form query', async () => {
   renderSearch({ number: 'K.1' })
 
   expect(await screen.findByLabelText('Number')).toHaveValue('K.1')
+  await screen.findByText('Found 0 chapters')
 })
 
 test('does not refetch on an equivalent query with a new object reference', async () => {
@@ -145,6 +173,7 @@ test('does not refetch on an equivalent query with a new object reference', asyn
   )
 
   expect(fragmentService.query).toHaveBeenCalledTimes(1)
+  await screen.findByText('Found 0 chapters')
 })
 
 test('labels inexact line totals without using page size as document total', async () => {
@@ -164,6 +193,7 @@ test('labels inexact line totals without using page size as document total', asy
   expect(
     screen.queryByText(/more results are available/),
   ).not.toBeInTheDocument()
+  await screen.findByText('Found 0 chapters')
 })
 
 test('renders summary-backed rows without hydrating the fragment', async () => {
@@ -178,4 +208,45 @@ test('renders summary-backed rows without hydrating the fragment', async () => {
   expect(fragmentService.find).not.toHaveBeenCalled()
   expect(screen.queryByLabelText('Spinner')).not.toBeInTheDocument()
   expect(screen.getByText(result.items[0].museumNumber)).toBeVisible()
+  await screen.findByText('Found 0 chapters')
+})
+
+test('displays Corpus results when the Corpus tab is selected', async () => {
+  fragmentService.query.mockResolvedValue(queryResult())
+  const corpusResult = {
+    items: [
+      {
+        textId: { genre: 'L', category: 1, index: 1 },
+        lines: [1],
+        variants: [0],
+        name: 'Only Chapter',
+        stage: 'Neo-Assyrian',
+        matchCount: 1,
+      },
+    ],
+    matchCountTotal: 1,
+  }
+  textService.query.mockResolvedValue(corpusResult)
+
+  renderSearch({ transliteration: 'kur' })
+
+  await screen.findByText('Found 2 matching lines. Showing documents 1-1')
+  await userEvent.click(screen.getByRole('tab', { name: 'Corpus' }))
+
+  expect(await screen.findByText('Only Chapter')).toBeVisible()
+  expect(textService.query).toHaveBeenCalledWith({ transliteration: 'kur' })
+})
+
+test('updates the URL anchor when switching between result tabs', async () => {
+  fragmentService.query.mockResolvedValue(queryResult())
+  textService.query.mockResolvedValue({ items: [], matchCountTotal: 0 })
+
+  renderSearch({ transliteration: 'kur' })
+
+  await screen.findByText('Found 0 chapters')
+  await userEvent.click(screen.getByRole('tab', { name: 'Corpus' }))
+  expect(window.location.hash).toEqual('#corpus')
+
+  await userEvent.click(screen.getByRole('tab', { name: 'Library' }))
+  expect(window.location.hash).toEqual('#library')
 })
