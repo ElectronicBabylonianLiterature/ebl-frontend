@@ -1,17 +1,17 @@
-export type { NormalizedMediaSummaryCompatibility } from './mediaSummaryMapper'
+export type { NormalizedMediaSummaryCompatibility } from 'fragmentarium/infrastructure/mediaSummaryMapper'
 export {
   normalizeCompatibleMediaSummary,
   normalizeLegacyMediaSummary,
   normalizeMediaSummary,
-} from './mediaSummaryMapper'
+} from 'fragmentarium/infrastructure/mediaSummaryMapper'
 export {
   normalizeMediaRepresentation,
   normalizeMediaRepresentations,
   normalizeThumbnailSize,
-  normalizeUrl,
-} from './mediaRepresentationMapper'
+} from 'fragmentarium/infrastructure/mediaRepresentationMapper'
 export {
   normalizeFragmentMediaResponse,
   normalizeMediaReference,
   normalizeMediaResource,
-} from './mediaResourceMapper'
+} from 'fragmentarium/infrastructure/mediaResourceMapper'
+export { normalizeNonEmptyString } from 'fragmentarium/infrastructure/mediaMapperValidation'

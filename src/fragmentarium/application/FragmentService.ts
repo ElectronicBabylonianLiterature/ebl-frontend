@@ -3,6 +3,7 @@ import Bluebird from 'bluebird'
 import DictionaryWord from 'dictionary/domain/Word'
 import Annotation from 'fragmentarium/domain/annotation'
 import Folio from 'fragmentarium/domain/Folio'
+import type { ThumbnailSize } from 'fragmentarium/domain/media'
 import { Fragment, Script } from 'fragmentarium/domain/fragment'
 import _ from 'lodash'
 import Lemma from 'transliteration/domain/Lemma'
@@ -61,7 +62,7 @@ const defaultCacheScope = 'default'
 
 type QueryItemWithPrefetchedFragment = QueryResult['items'][number]
 
-export type ThumbnailSize = 'small' | 'medium' | 'large'
+export type { ThumbnailSize }
 
 export const onError = (error) => {
   if (error.message === '403 Forbidden') {

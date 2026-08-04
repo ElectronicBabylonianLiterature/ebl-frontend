@@ -1,131 +1,153 @@
 import fs from 'fs'
 import path from 'path'
+import {
+  findMediaArchitectureReferences,
+  isProductionSourceFile,
+  listSourceFiles,
+  mediaArchitectureModules,
+  toRelativePath,
+} from 'test-support/mediaArchitectureIsolationGuard'
 
 const sourceRoot = path.join(process.cwd(), 'src')
-const mediaArchitectureModules = [
-  'common/ui/ImageViewer',
-  'fragmentarium/application/MediaBinaryLoader',
-  'fragmentarium/application/MediaRepository',
-  'fragmentarium/domain/media',
-  'fragmentarium/domain/mediaGallery',
-  'fragmentarium/infrastructure/mediaDtos',
-  'fragmentarium/infrastructure/mediaMapper',
-  'fragmentarium/infrastructure/mediaMapperValidation',
-  'fragmentarium/infrastructure/mediaRepresentationMapper',
-  'fragmentarium/infrastructure/mediaResourceMapper',
-  'fragmentarium/infrastructure/mediaSummaryMapper',
-].sort()
+const reExportPattern = /^\s*export\s+(\*|\{)/m
 
-function normalizePath(filePath: string): string {
-  return filePath.split('\\').join('/')
+function readSource(filePath: string): string {
+  return fs.readFileSync(filePath, 'utf8')
 }
 
-function listSourceFiles(directory: string): string[] {
-  return fs
-    .readdirSync(directory, { withFileTypes: true })
-    .flatMap((entry) => {
-      const absolutePath = path.join(directory, entry.name)
-      return entry.isDirectory()
-        ? listSourceFiles(absolutePath)
-        : absolutePath.endsWith('.ts') || absolutePath.endsWith('.tsx')
-          ? [absolutePath]
-          : []
-    })
-    .sort()
-}
+describe('media architecture module inventory', () => {
+  test('tracks a non-empty set of architecture modules that all exist on disk', () => {
+    expect(mediaArchitectureModules.length).toBeGreaterThan(0)
 
-function toRelativePath(filePath: string): string {
-  return normalizePath(path.relative(sourceRoot, filePath))
-}
+    for (const architectureModule of mediaArchitectureModules) {
+      const existsAsTs = fs.existsSync(
+        path.join(sourceRoot, `${architectureModule}.ts`),
+      )
+      const existsAsTsx = fs.existsSync(
+        path.join(sourceRoot, `${architectureModule}.tsx`),
+      )
+      expect(existsAsTs || existsAsTsx).toBe(true)
+    }
+  })
+})
 
-function toModulePath(moduleSpecifier: string): string {
-  return normalizePath(moduleSpecifier).replace(/\.(ts|tsx)$/, '')
-}
-
-function resolveModuleSpecifier(
-  filePath: string,
-  moduleSpecifier: string,
-): string {
-  if (!moduleSpecifier.startsWith('.')) {
-    return toModulePath(moduleSpecifier)
-  }
-
-  const relativeDirectory = path.posix.dirname(toRelativePath(filePath))
-  return toModulePath(
-    path.posix.normalize(path.posix.join(relativeDirectory, moduleSpecifier)),
-  )
-}
-
-function isMediaArchitectureFile(relativePath: string): boolean {
-  const modulePath = toModulePath(relativePath)
-  return mediaArchitectureModules.some(
-    (architectureModule) =>
-      modulePath === architectureModule ||
-      modulePath.startsWith(`${architectureModule}.`),
-  )
-}
-
-function isProductionSourceFile(relativePath: string): boolean {
-  return (
-    !relativePath.includes('.test.') && !isMediaArchitectureFile(relativePath)
-  )
-}
-
-function isFragmentariumBarrelFile(relativePath: string): boolean {
-  return (
-    relativePath === 'fragmentarium/index.ts' ||
-    relativePath === 'fragmentarium/index.tsx' ||
-    new RegExp('^fragmentarium/.*/index\\.tsx?$').test(relativePath)
-  )
-}
-
-function readModuleSpecifiers(
-  source: string,
-  pattern: RegExp,
-  filePath: string,
-): readonly string[] {
-  return Array.from(source.matchAll(pattern), (match) =>
-    resolveModuleSpecifier(filePath, match[1]),
-  )
-}
-
-describe('media architecture isolation', () => {
+describe('media architecture isolation: real source tree', () => {
   test('keeps new media modules out of current production runtime imports', () => {
-    const sourceFiles = listSourceFiles(sourceRoot).filter((filePath) => {
-      const relativePath = toRelativePath(filePath)
-      return isProductionSourceFile(relativePath)
-    })
+    const sourceFiles = listSourceFiles(sourceRoot).filter((filePath) =>
+      isProductionSourceFile(toRelativePath(sourceRoot, filePath)),
+    )
+    expect(sourceFiles.length).toBeGreaterThan(0)
 
     for (const filePath of sourceFiles) {
-      const source = fs.readFileSync(filePath, 'utf8')
-      const moduleSpecifiers = readModuleSpecifiers(
-        source,
-        /\b(?:import|export)\s+(?:type\s+)?(?:[\s\S]*?\s+from\s+)?['"]([^'"]+)['"]/g,
-        filePath,
-      )
-
-      for (const mediaArchitectureModule of mediaArchitectureModules) {
-        expect(moduleSpecifiers).not.toContain(mediaArchitectureModule)
-      }
+      const relativePath = toRelativePath(sourceRoot, filePath)
+      expect(
+        findMediaArchitectureReferences(relativePath, readSource(filePath)),
+      ).toEqual([])
     }
   })
 
-  test('keeps fragmentarium barrel files from re-exporting new media modules', () => {
+  test('finds barrel-style re-export files, proving the scan is not vacuous', () => {
     const barrelFiles = listSourceFiles(sourceRoot).filter((filePath) =>
-      isFragmentariumBarrelFile(toRelativePath(filePath)),
+      reExportPattern.test(readSource(filePath)),
     )
 
-    for (const filePath of barrelFiles) {
-      const source = fs.readFileSync(filePath, 'utf8')
-      const reExportedModules = readModuleSpecifiers(
-        source,
-        /\bexport\s+(?:type\s+)?(?:\*|\{[\s\S]*?\})\s+from\s+['"]([^'"]+)['"]/g,
-        filePath,
-      )
+    expect(barrelFiles.length).toBeGreaterThan(0)
+  })
 
-      for (const mediaArchitectureModule of mediaArchitectureModules) {
-        expect(reExportedModules).not.toContain(mediaArchitectureModule)
-      }
+  test('keeps every production barrel from re-exporting new media modules', () => {
+    const barrelFiles = listSourceFiles(sourceRoot).filter((filePath) => {
+      const relativePath = toRelativePath(sourceRoot, filePath)
+      return (
+        isProductionSourceFile(relativePath) &&
+        reExportPattern.test(readSource(filePath))
+      )
+    })
+
+    for (const filePath of barrelFiles) {
+      const relativePath = toRelativePath(sourceRoot, filePath)
+      const reExports = findMediaArchitectureReferences(
+        relativePath,
+        readSource(filePath),
+      ).filter((reference) => reference.kind === 'reexport')
+
+      expect(reExports).toEqual([])
     }
+  })
+})
+
+describe('media architecture isolation: mutation fixtures', () => {
+  const filePath = 'fragmentarium/ui/fragment/CuneiformFragment.tsx'
+
+  test.each([
+    [
+      'static import (alias)',
+      "import { normalizeMediaSummary } from 'fragmentarium/infrastructure/mediaMapper'",
+    ],
+    [
+      'static import (relative)',
+      "import { MediaResource } from '../../domain/media'",
+    ],
+    ['side-effect import', "import 'fragmentarium/domain/media'"],
+    [
+      'mixed type/value import',
+      "import { type MediaResource, isMediaType } from 'fragmentarium/domain/media'",
+    ],
+    [
+      're-export',
+      "export { normalizeMediaSummary } from 'fragmentarium/infrastructure/mediaMapper'",
+    ],
+    ['wildcard re-export', "export * from 'fragmentarium/domain/media'"],
+    [
+      'dynamic import',
+      "async function load() { return import('fragmentarium/domain/media') }",
+    ],
+    ['require', "const media = require('fragmentarium/domain/media')"],
+  ])('flags a %s of a media architecture module', (_label, source) => {
+    expect(
+      findMediaArchitectureReferences(filePath, source).length,
+    ).toBeGreaterThan(0)
+  })
+
+  test.each([
+    [
+      'type-only import',
+      "import type { MediaResource } from 'fragmentarium/domain/media'",
+    ],
+    [
+      'type-only re-export',
+      "export type { MediaResource } from 'fragmentarium/domain/media'",
+    ],
+    [
+      'a comment mentioning the module path',
+      '// see fragmentarium/domain/media for reference',
+    ],
+    [
+      'a string literal that is not import-like',
+      "const modulePath = 'fragmentarium/domain/media'",
+    ],
+    [
+      'an unrelated module',
+      "import Fragment from 'fragmentarium/domain/fragment'",
+    ],
+  ])('does not flag %s', (_label, source) => {
+    expect(findMediaArchitectureReferences(filePath, source)).toEqual([])
+  })
+
+  test('would have caught the earlier Photo/ImageViewer-style integration', () => {
+    const photoSource = `
+      import React from 'react'
+      import { normalizeMediaSummary } from 'fragmentarium/infrastructure/mediaMapper'
+
+      export default function Photo() {
+        return null
+      }
+    `
+
+    expect(
+      findMediaArchitectureReferences(
+        'fragmentarium/ui/images/Photo.tsx',
+        photoSource,
+      ),
+    ).not.toEqual([])
   })
 })

@@ -101,6 +101,25 @@ describe('compatible media summary normalization', () => {
     })
   })
 
+  test('falls back to legacy when a positive count has no usable type or primary', () => {
+    expect(
+      normalizeCompatibleMediaSummary({
+        mediaSummary: {
+          count: 1,
+          types: ['BAD'],
+        },
+        hasPhoto: true,
+        thumbnailPath: '/legacy-thumbnail',
+      }),
+    ).toEqual({
+      mediaSummary: {
+        count: 1,
+        types: ['PHOTO'],
+      },
+      legacyThumbnailPath: '/legacy-thumbnail',
+    })
+  })
+
   test('keeps a safe malformed summary when no legacy fallback exists', () => {
     expect(
       normalizeCompatibleMediaSummary({

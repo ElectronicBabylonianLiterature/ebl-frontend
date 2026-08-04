@@ -24,7 +24,3 @@ export function normalizePositiveInteger(value: unknown): number | undefined {
     ? (value as number)
     : undefined
 }
-
-export function normalizeOptionalText(value: unknown): string | undefined {
-  return normalizeNonEmptyString(value)
-}

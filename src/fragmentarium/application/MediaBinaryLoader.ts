@@ -9,5 +9,5 @@ export interface MediaBinaryRequest {
 }
 
 export default interface MediaBinaryLoader {
-  fetch(request: MediaBinaryRequest): Promise<Blob>
+  fetch(request: MediaBinaryRequest, signal?: AbortSignal): Promise<Blob>
 }

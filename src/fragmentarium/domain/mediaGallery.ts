@@ -1,4 +1,4 @@
-import { MediaResource } from './media'
+import { MediaResource } from 'fragmentarium/domain/media'
 
 export interface MediaGalleryState {
   readonly selectedMediaId: string | null
@@ -32,5 +32,5 @@ export function selectMediaById(
   media: readonly MediaResource[],
   id: string,
 ): MediaResource | null {
-  return sortMedia(media).find((resource) => resource.id === id) ?? null
+  return media.find((resource) => resource.id === id) ?? null
 }

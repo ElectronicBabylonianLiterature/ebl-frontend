@@ -9,16 +9,12 @@ import {
   MediaRepresentationDto,
   MediaRepresentationsDto,
   ThumbnailDtoMap,
-} from './mediaDtos'
+} from 'fragmentarium/infrastructure/mediaDtos'
 import {
   isRecord,
   normalizeNonEmptyString,
   normalizePositiveInteger,
-} from './mediaMapperValidation'
-
-export function normalizeUrl(value: unknown): string | undefined {
-  return normalizeNonEmptyString(value)
-}
+} from 'fragmentarium/infrastructure/mediaMapperValidation'
 
 export function normalizeMediaRepresentation(
   representation: unknown,
@@ -29,7 +25,7 @@ export function normalizeMediaRepresentation(
 
   const { url, mimeType, width, height } =
     representation as MediaRepresentationDto
-  const normalizedUrl = normalizeUrl(url)
+  const normalizedUrl = normalizeNonEmptyString(url)
   const normalizedMimeType = normalizeNonEmptyString(mimeType)
 
   if (!normalizedUrl || !normalizedMimeType) {

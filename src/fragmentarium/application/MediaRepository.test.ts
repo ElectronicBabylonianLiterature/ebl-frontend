@@ -38,4 +38,30 @@ describe('MediaRepository contract', () => {
       },
     ])
   })
+
+  test('forwards an optional AbortSignal to the implementation', async () => {
+    const controller = new AbortController()
+    let receivedSignal: AbortSignal | undefined
+    const mediaRepository: MediaRepository = {
+      findByFragment: async (fragmentNumber, signal) => {
+        receivedSignal = signal
+        return []
+      },
+    }
+
+    await mediaRepository.findByFragment('K.1', controller.signal)
+
+    expect(receivedSignal).toBe(controller.signal)
+  })
+
+  test('supports calling without a signal', async () => {
+    const mediaRepository: MediaRepository = {
+      findByFragment: async (fragmentNumber, signal) => {
+        expect(signal).toBeUndefined()
+        return []
+      },
+    }
+
+    await expect(mediaRepository.findByFragment('K.1')).resolves.toEqual([])
+  })
 })

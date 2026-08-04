@@ -1,8 +1,8 @@
 import {
   normalizeMediaRepresentation,
   normalizeMediaRepresentations,
+  normalizeNonEmptyString,
   normalizeThumbnailSize,
-  normalizeUrl,
 } from './mediaMapper'
 
 describe('media representation normalization', () => {
@@ -121,8 +121,8 @@ describe('media representation normalization', () => {
   })
 
   test('normalizes urls and thumbnail sizes', () => {
-    expect(normalizeUrl(' /media/file ')).toBe('/media/file')
-    expect(normalizeUrl('')).toBeUndefined()
+    expect(normalizeNonEmptyString(' /media/file ')).toBe('/media/file')
+    expect(normalizeNonEmptyString('')).toBeUndefined()
 
     expect(normalizeThumbnailSize('small')).toBe('small')
     expect(normalizeThumbnailSize('medium')).toBe('medium')

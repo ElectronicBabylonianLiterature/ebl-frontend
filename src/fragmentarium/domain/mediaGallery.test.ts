@@ -1,4 +1,4 @@
-import { MediaResource } from './media'
+import { MediaResource } from 'fragmentarium/domain/media'
 import { selectInitialMedia, selectMediaById, sortMedia } from './mediaGallery'
 
 function createMediaResource(
@@ -86,15 +86,52 @@ describe('media gallery helpers', () => {
     expect(selectInitialMedia([])).toBeNull()
     expect(selectMediaById([], 'missing')).toBeNull()
   })
+})
 
-  test('selects media by id from the sorted collection', () => {
+describe('selectMediaById', () => {
+  test('returns null when no item matches', () => {
+    const media = [
+      createMediaResource({}, 'first'),
+      createMediaResource({}, 'second'),
+    ]
+
+    expect(selectMediaById(media, 'missing')).toBeNull()
+  })
+
+  test('returns the single matching item', () => {
+    const media = [
+      createMediaResource({}, 'first'),
+      createMediaResource({}, 'second'),
+    ]
+
+    expect(selectMediaById(media, 'second')?.id).toBe('second')
+  })
+
+  test('returns the first match without sorting when ids are duplicated', () => {
+    const media = [
+      createMediaResource({ sortOrder: 5 }, 'duplicate'),
+      createMediaResource({ sortOrder: 0 }, 'duplicate'),
+    ]
+
+    expect(selectMediaById(media, 'duplicate')).toBe(media[0])
+  })
+
+  test('does not mutate or reorder the input array', () => {
     const media = [
       createMediaResource({ sortOrder: 2 }, 'third'),
       createMediaResource({ sortOrder: 0 }, 'first'),
       createMediaResource({ sortOrder: 1 }, 'second'),
     ]
+    const inputOrder = media.map(({ id }) => id)
 
-    expect(selectMediaById(media, 'second')?.id).toBe('second')
-    expect(selectMediaById(media, 'missing')).toBeNull()
+    selectMediaById(media, 'second')
+
+    expect(media.map(({ id }) => id)).toEqual(inputOrder)
+  })
+
+  test('supports a frozen, readonly input array', () => {
+    const media = Object.freeze([createMediaResource({}, 'only')])
+
+    expect(selectMediaById(media, 'only')?.id).toBe('only')
   })
 })

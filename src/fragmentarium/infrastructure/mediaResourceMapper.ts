@@ -8,14 +8,13 @@ import {
   FragmentMediaResponseDto,
   MediaReferenceDto,
   MediaResourceDto,
-} from './mediaDtos'
-import { normalizeMediaRepresentations } from './mediaRepresentationMapper'
+} from 'fragmentarium/infrastructure/mediaDtos'
+import { normalizeMediaRepresentations } from 'fragmentarium/infrastructure/mediaRepresentationMapper'
 import {
   isRecord,
   normalizeNonEmptyString,
   normalizeNonNegativeInteger,
-  normalizeOptionalText,
-} from './mediaMapperValidation'
+} from 'fragmentarium/infrastructure/mediaMapperValidation'
 
 export function normalizeMediaReference(
   reference: unknown,
@@ -52,8 +51,8 @@ export function normalizeMediaResource(
   const normalizedSortOrder = normalizeNonNegativeInteger(sortOrder)
   const normalizedRepresentations =
     normalizeMediaRepresentations(representations)
-  const normalizedCaption = normalizeOptionalText(caption)
-  const normalizedAttribution = normalizeOptionalText(attribution)
+  const normalizedCaption = normalizeNonEmptyString(caption)
+  const normalizedAttribution = normalizeNonEmptyString(attribution)
 
   if (!normalizedId || !isMediaType(type)) {
     return undefined

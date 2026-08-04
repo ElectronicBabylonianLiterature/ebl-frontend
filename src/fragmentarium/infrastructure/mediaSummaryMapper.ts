@@ -8,16 +8,13 @@ import {
   MediaSummaryCompatibilityDto,
   MediaSummaryDto,
   MediaSummaryPrimaryDto,
-} from './mediaDtos'
-import {
-  normalizeMediaRepresentation,
-  normalizeUrl,
-} from './mediaRepresentationMapper'
+} from 'fragmentarium/infrastructure/mediaDtos'
+import { normalizeMediaRepresentation } from 'fragmentarium/infrastructure/mediaRepresentationMapper'
 import {
   isRecord,
   normalizeNonEmptyString,
   normalizeNonNegativeInteger,
-} from './mediaMapperValidation'
+} from 'fragmentarium/infrastructure/mediaMapperValidation'
 
 export interface NormalizedMediaSummaryCompatibility {
   readonly mediaSummary: MediaSummary | null
@@ -75,16 +72,13 @@ function normalizeMediaSummaryWithDiagnostics(
 
   const normalizedPrimary = normalizeMediaSummaryPrimaryInternal(primary)
   const normalizedTypes = Array.from(normalizeMediaTypes(types))
-  if (
-    normalizedPrimary &&
-    !normalizedTypes.includes(normalizedPrimary.type as MediaType)
-  ) {
+  if (normalizedPrimary && !normalizedTypes.includes(normalizedPrimary.type)) {
     normalizedTypes.push(normalizedPrimary.type)
   }
 
   const hasCriticalError =
     (primary !== undefined && primary !== null && normalizedCount === 0) ||
-    (normalizedCount > 0 && normalizedTypes.length === 0 && !normalizedPrimary)
+    (normalizedCount > 0 && normalizedTypes.length === 0)
 
   if (normalizedCount === 0) {
     return {
@@ -120,7 +114,7 @@ function normalizeLegacyMediaSummaryWithThumbnail(
 ): NormalizedMediaSummaryCompatibility {
   return {
     mediaSummary: createLegacyPhotoSummary(),
-    legacyThumbnailPath: normalizeUrl(thumbnailPath) ?? null,
+    legacyThumbnailPath: normalizeNonEmptyString(thumbnailPath) ?? null,
   }
 }
 

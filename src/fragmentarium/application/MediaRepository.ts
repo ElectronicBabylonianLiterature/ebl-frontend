@@ -1,5 +1,8 @@
 import { MediaResource } from 'fragmentarium/domain/media'
 
 export default interface MediaRepository {
-  findByFragment(fragmentNumber: string): Promise<readonly MediaResource[]>
+  findByFragment(
+    fragmentNumber: string,
+    signal?: AbortSignal,
+  ): Promise<readonly MediaResource[]>
 }
