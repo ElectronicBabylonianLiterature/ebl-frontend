@@ -5,8 +5,7 @@ import {
   realiaPageLinkHint,
   useSpanIndicator,
 } from 'fragmentarium/ui/text-annotation/useSpanIndicator'
-
-const activationKeys = ['Enter', ' ']
+import { getRealiaPageUrl } from 'realia/ui/realiaPage'
 
 export default function SpanIndicatorView({
   tokenId,
@@ -20,40 +19,35 @@ export default function SpanIndicatorView({
     label,
     isInitial,
     openRealiaPageOnClick,
-    openRealiaPageDirectly,
     title,
     dataLabel,
     baseClassName,
   } = useSpanIndicator(entitySpan, tokenId, realiaPageLinkHint)
 
-  function handleKeyDown(event: React.KeyboardEvent): void {
-    if (activationKeys.includes(event.key)) {
-      event.preventDefault()
-      openRealiaPageDirectly()
-    }
+  const sharedProps = {
+    title,
+    'data-label': dataLabel,
+    'data-span-id': entitySpan.id,
+    'data-testid': `${tokenId}__${entitySpan.id}`,
+    className: classNames(baseClassName, 'span-indicator--static'),
   }
 
-  const linkProps =
-    realiaId && isInitial
-      ? {
-          role: 'link',
-          tabIndex: 0,
-          'aria-label': `Open the Realia page for ${label}`,
-          onKeyDown: handleKeyDown,
-        }
-      : {}
-  const realiaProps = realiaId
-    ? { onMouseUp: openRealiaPageOnClick, ...linkProps }
-    : {}
+  if (realiaId && isInitial) {
+    return (
+      <a
+        {...sharedProps}
+        href={getRealiaPageUrl(label)}
+        target={'_blank'}
+        rel={'noopener noreferrer'}
+        aria-label={`Open the Realia page for ${label}`}
+      />
+    )
+  }
 
   return (
     <span
-      title={title}
-      data-label={dataLabel}
-      data-span-id={entitySpan.id}
-      data-testid={`${tokenId}__${entitySpan.id}`}
-      className={classNames(baseClassName, 'span-indicator--static')}
-      {...realiaProps}
+      {...sharedProps}
+      {...(realiaId ? { onMouseUp: openRealiaPageOnClick } : {})}
     />
   )
 }

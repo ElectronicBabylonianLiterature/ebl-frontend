@@ -31,7 +31,6 @@ export interface SpanIndicatorPresentation {
   readonly baseClassName: string
   readonly openRealiaPage: (event: React.MouseEvent) => boolean
   readonly openRealiaPageOnClick: (event: React.MouseEvent) => boolean
-  readonly openRealiaPageDirectly: () => void
 }
 
 export function useSpanIndicator(
@@ -59,7 +58,7 @@ export function useSpanIndicator(
   }
 
   function openRealiaPageOnClick(event: React.MouseEvent): boolean {
-    if (!realiaId || event.button !== leftMouseButton) {
+    if (event.button !== leftMouseButton) {
       return false
     }
     openRealiaPageDirectly()
@@ -72,7 +71,6 @@ export function useSpanIndicator(
     isInitial,
     openRealiaPage,
     openRealiaPageOnClick,
-    openRealiaPageDirectly,
     title: realiaId ? `${label} (${hint})` : label,
     dataLabel: realiaId ? label : undefined,
     baseClassName: classNames(

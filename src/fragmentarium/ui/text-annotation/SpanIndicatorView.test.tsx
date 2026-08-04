@@ -87,26 +87,25 @@ describe('SpanIndicatorView', () => {
     expect(getIndicator('Entity-1')).not.toHaveClass('highlight')
   })
 
+  it('points a realia span at its page instead of scripting the navigation', () => {
+    renderView(realiaSpan)
+    const indicator = getIndicator('Realia-1')
+
+    expect(indicator.tagName).toEqual('A')
+    expect(indicator).toHaveAttribute('href', '/tools/realia/Apkallu')
+    expect(indicator).toHaveAttribute('target', '_blank')
+    expect(indicator).toHaveAttribute('rel', 'noopener noreferrer')
+  })
+
   it.each([[false], [true]])(
-    'opens the realia page by lemma on a left click, altKey %s',
+    'leaves a realia left click to the browser, altKey %s',
     (altKey) => {
       renderView(realiaSpan)
       fireEvent.mouseUp(getIndicator('Realia-1'), { altKey, button: 0 })
 
-      expect(openInNewTab).toHaveBeenCalledWith(
-        '/tools/realia/Apkallu',
-        '_blank',
-        'noopener,noreferrer',
-      )
+      expect(openInNewTab).not.toHaveBeenCalled()
     },
   )
-
-  it('does nothing on a button other than the left one', () => {
-    renderView(realiaSpan)
-    fireEvent.mouseUp(getIndicator('Realia-1'), { altKey: false, button: 1 })
-
-    expect(openInNewTab).not.toHaveBeenCalled()
-  })
 
   it('does nothing on a left click of a tag span', () => {
     renderView(entitySpan)
@@ -116,19 +115,68 @@ describe('SpanIndicatorView', () => {
   })
 })
 
+function getContinuationIndicator(): HTMLElement {
+  const wideSpan = realiaAnnotationSpan({
+    id: 'Realia-2',
+    realiaId: 'realia_000846',
+    span: ['Word-1', 'Word-2'],
+  })
+  render(
+    <RealiaInfoContext.Provider value={{ lookup, register: jest.fn() }}>
+      <SpanIndicatorView tokenId={'Word-2'} entitySpan={wideSpan} />
+    </RealiaInfoContext.Provider>,
+  )
+  return screen.getByTestId('Word-2__Realia-2')
+}
+
 describe('reaching the realia page without a mouse', () => {
-  it('exposes the realia indicator as a named link in the tab order', () => {
+  it('exposes the realia indicator as a named link', () => {
     renderView(realiaSpan)
     const indicator = getIndicator('Realia-1')
 
-    expect(indicator).toHaveAttribute('role', 'link')
-    expect(indicator).toHaveAttribute('tabindex', '0')
     expect(indicator).toHaveAccessibleName('Open the Realia page for Apkallu')
+    expect(screen.getByRole('link')).toEqual(indicator)
   })
 
-  it.each([['Enter'], [' ']])('opens the realia page on %s', (key) => {
+  it('relies on the native link instead of a role and tabindex shim', () => {
     renderView(realiaSpan)
-    fireEvent.keyDown(getIndicator('Realia-1'), { key })
+    const indicator = getIndicator('Realia-1')
+
+    expect(indicator).not.toHaveAttribute('role')
+    expect(indicator).not.toHaveAttribute('tabindex')
+  })
+
+  it.each([['Enter'], [' '], ['a']])(
+    'leaves %s to the browser rather than scripting it',
+    (key) => {
+      renderView(realiaSpan)
+      fireEvent.keyDown(getIndicator('Realia-1'), { key })
+
+      expect(openInNewTab).not.toHaveBeenCalled()
+    },
+  )
+
+  it('leaves a tag indicator out of the tab order and unnamed', () => {
+    renderView(entitySpan)
+    const indicator = getIndicator('Entity-1')
+
+    expect(indicator).not.toHaveAttribute('role')
+    expect(indicator).not.toHaveAttribute('tabindex')
+    expect(screen.queryByRole('link')).not.toBeInTheDocument()
+    fireEvent.keyDown(indicator, { key: 'Enter' })
+    expect(openInNewTab).not.toHaveBeenCalled()
+  })
+
+  it('gives a multi-word realia a single tab stop, on its first word', () => {
+    const continuation = getContinuationIndicator()
+
+    expect(continuation.tagName).toEqual('SPAN')
+    expect(continuation).not.toHaveAttribute('tabindex')
+    expect(screen.queryByRole('link')).not.toBeInTheDocument()
+  })
+
+  it('still opens the realia page from a left click on a later word', () => {
+    fireEvent.mouseUp(getContinuationIndicator(), { altKey: false, button: 0 })
 
     expect(openInNewTab).toHaveBeenCalledWith(
       '/tools/realia/Apkallu',
@@ -137,38 +185,9 @@ describe('reaching the realia page without a mouse', () => {
     )
   })
 
-  it('ignores any other key', () => {
-    renderView(realiaSpan)
-    fireEvent.keyDown(getIndicator('Realia-1'), { key: 'a' })
+  it('ignores a non-left click on a later word', () => {
+    fireEvent.mouseUp(getContinuationIndicator(), { altKey: false, button: 1 })
 
     expect(openInNewTab).not.toHaveBeenCalled()
-  })
-
-  it('leaves a tag indicator out of the tab order and unnamed', () => {
-    renderView(entitySpan)
-    const indicator = getIndicator('Entity-1')
-
-    expect(indicator).not.toHaveAttribute('role')
-    expect(indicator).not.toHaveAttribute('tabindex')
-    fireEvent.keyDown(indicator, { key: 'Enter' })
-    expect(openInNewTab).not.toHaveBeenCalled()
-  })
-
-  it('gives a multi-word realia a single tab stop, on its first word', () => {
-    const wideSpan = realiaAnnotationSpan({
-      id: 'Realia-2',
-      realiaId: 'realia_000846',
-      span: ['Word-1', 'Word-2'],
-    })
-    render(
-      <RealiaInfoContext.Provider value={{ lookup, register: jest.fn() }}>
-        <SpanIndicatorView tokenId={'Word-2'} entitySpan={wideSpan} />
-      </RealiaInfoContext.Provider>,
-    )
-    const continuation = screen.getByTestId('Word-2__Realia-2')
-
-    expect(continuation).not.toHaveAttribute('tabindex')
-    fireEvent.mouseUp(continuation, { altKey: false, button: 0 })
-    expect(openInNewTab).toHaveBeenCalled()
   })
 })
