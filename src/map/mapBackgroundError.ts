@@ -12,12 +12,20 @@ export interface MapLibreErrorEvent {
   url?: string
 }
 
+function isStyleUrl(value: string): boolean {
+  try {
+    const parsed = new URL(value)
+    return (
+      parsed.hostname.toLowerCase() === MAP_STYLE_HOST &&
+      parsed.pathname === MAP_STYLE_PATH
+    )
+  } catch {
+    return false
+  }
+}
+
 function includesStyleUrl(value: string): boolean {
-  const normalized = value.toLowerCase()
-  return (
-    normalized.includes(MAP_STYLE_URL) ||
-    (normalized.includes(MAP_STYLE_HOST) && normalized.includes(MAP_STYLE_PATH))
-  )
+  return value.toLowerCase().includes(MAP_STYLE_URL)
 }
 
 function isStyleDocumentResource(event: MapLibreErrorEvent): boolean {
@@ -34,7 +42,7 @@ export function isMapBackgroundLoadError(
   const message = mapEvent.error?.message
   const url = mapEvent.url
 
-  if (typeof url === 'string' && includesStyleUrl(url)) {
+  if (typeof url === 'string' && isStyleUrl(url)) {
     return true
   }
 
