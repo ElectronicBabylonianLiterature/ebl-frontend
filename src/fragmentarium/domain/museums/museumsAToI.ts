@@ -41,6 +41,13 @@ export const museumsAToI = {
     country: 'BE',
     url: 'https://www.nbb.be/',
   },
+  BATMAN_HASANKEYF_MUZESI: {
+    key: 'BATMAN_HASANKEYF_MUZESI',
+    name: 'Batman Hasankeyf Müzesi',
+    city: 'Batman',
+    country: 'TR',
+    url: 'https://kvmgm.ktb.gov.tr/TR-281298/batman-muze-mudurlugu.html',
+  },
   BRYN_MAWR_COLLEGE: {
     key: 'BRYN_MAWR_COLLEGE',
     name: 'Bryn Mawr College Special Collections',
@@ -103,6 +110,13 @@ export const museumsAToI = {
     city: 'Cambridge',
     country: 'US',
     url: 'https://hmane.harvard.edu/',
+  },
+  HARVEY_CUSHING_WHITNEY_MEDICAL_LIBRARY: {
+    key: 'HARVEY_CUSHING_WHITNEY_MEDICAL_LIBRARY',
+    name: 'Harvey Cushing/John Hay Whitney Medical Library, Yale University',
+    city: 'New Haven',
+    country: 'US',
+    url: 'https://library.medicine.yale.edu/',
   },
   HATAY_ARCHAEOLOGY_MUSEUM: {
     key: 'HATAY_ARCHAEOLOGY_MUSEUM',

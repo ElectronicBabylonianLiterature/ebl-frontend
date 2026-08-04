@@ -34,6 +34,13 @@ export const museumsKToP = {
     country: 'FR',
     url: 'https://www.louvre.fr/',
   },
+  MARDIN_MUZESI: {
+    key: 'MARDIN_MUZESI',
+    name: 'Mardin Müzesi',
+    city: 'Mardin',
+    country: 'TR',
+    url: 'https://muze.gov.tr/muze-detay?sectionId=MRD01&distId=MRK',
+  },
   MOSUL_MUSEUM: {
     key: 'MOSUL_MUSEUM',
     name: 'Mosul Museum',
@@ -54,6 +61,13 @@ export const museumsKToP = {
     city: 'Brussels',
     country: 'BE',
     url: 'https://www.kmkg-mrah.be/',
+  },
+  MUSEO_NAZIONALE_D_ARTE_ORIENTALE: {
+    key: 'MUSEO_NAZIONALE_D_ARTE_ORIENTALE',
+    name: 'Museo Nazionale d’Arte Orientale “Giuseppe Tucci”',
+    city: 'Rome',
+    country: 'IT',
+    url: 'https://www.museodellecivilta.it/arte-orientale/',
   },
   MUSEUM_OF_ANATOLIAN_CIVILIZATIONS: {
     key: 'MUSEUM_OF_ANATOLIAN_CIVILIZATIONS',
@@ -148,6 +162,12 @@ export const museumsKToP = {
     name: 'Private collection of W. Lamplough',
     city: '',
     country: 'GB',
+  },
+  PRIVATE_COLLECTION_OF_Z_YILDIZ: {
+    key: 'PRIVATE_COLLECTION_OF_Z_YILDIZ',
+    name: 'Private collection of Zeynel Yıldız',
+    city: 'Elazığ',
+    country: 'TR',
   },
   MCGILL_UNIVERSITY: {
     key: 'MCGILL_UNIVERSITY',

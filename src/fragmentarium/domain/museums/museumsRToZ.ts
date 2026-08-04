@@ -105,7 +105,7 @@ export const museumsRToZ = {
     key: 'TOPKAPI_SARAYI',
     name: 'Topkapı Sarayı Müzesi',
     city: 'Istanbul',
-    country: 'TUR',
+    country: 'TR',
     url: 'https://muze.gen.tr/muze-detay/topkapi',
   },
   TRINITY_COLLEGE_DUBLIN: {
