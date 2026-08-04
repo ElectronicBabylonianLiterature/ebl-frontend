@@ -50,6 +50,17 @@ const onAbort = jest.fn()
 
 global.URL.createObjectURL = jest.fn()
 global.URL.revokeObjectURL = jest.fn()
+
+// resetMocks (CRA default) clears mock implementations before every test,
+// which drops this default. Re-arm it here so tests that don't provide
+// their own createObjectURL mock still get a usable blob URL.
+beforeEach(() => {
+  if (jest.isMockFunction(URL.createObjectURL)) {
+    ;(URL.createObjectURL as jest.Mock).mockImplementation(
+      () => 'blob:mock-url',
+    )
+  }
+})
 try {
   window.scrollTo = jest.fn()
 } catch {
