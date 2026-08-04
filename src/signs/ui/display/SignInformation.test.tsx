@@ -97,6 +97,8 @@ describe('Sign Information', () => {
       .mockReturnValueOnce(Bluebird.resolve(wordLipu))
     renderSignInformation()
     await screen.findByText('Words (as logogram):')
+    await screen.findByRole('link', { name: wordErimmatu.lemma[0] })
+    await screen.findByRole('link', { name: wordLipu.lemma[0] })
 
     expect(wordService.find).toBeCalledWith(wordErimmatu._id)
     expect(wordService.find).toBeCalledWith(wordLipu._id)

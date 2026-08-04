@@ -85,6 +85,14 @@ describe('groupAfoRegisterByVolume', () => {
     expect(volumes).toEqual(['AfO 52', 'AfO 48-49', 'AfO 40/41', 'AfO 25'])
   })
 
+  it('sorts a volume carrying no number last', () => {
+    const volumes = groupAfoRegisterByVolume([
+      afoRegisterEntryFactory.build({ afoVolume: 'AfO Beiheft', page: '10' }),
+      afoRegisterEntryFactory.build({ afoVolume: 'AfO 25', page: '370' }),
+    ]).map((group) => group.volume)
+    expect(volumes).toEqual(['AfO 25', 'AfO Beiheft'])
+  })
+
   it('uses the afoVolume label verbatim, including the slash form', () => {
     const [group] = groupAfoRegisterByVolume([
       afoRegisterEntryFactory.build({ afoVolume: 'AfO 40/41', page: '420' }),
