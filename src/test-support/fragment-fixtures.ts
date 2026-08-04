@@ -122,8 +122,8 @@ export const fragmentFactory = Factory.define<Fragment>(
 )
 
 export const fragmentInfoFactory = Factory.define<FragmentInfo>(
-  ({ associations }) => ({
-    number: defaultChance.word(),
+  ({ associations, sequence }) => ({
+    number: `${defaultChance.word()}.${sequence}`,
     accession: defaultChance.word(),
     description: fragmentDescription(),
     script: scriptFactory.build(),
