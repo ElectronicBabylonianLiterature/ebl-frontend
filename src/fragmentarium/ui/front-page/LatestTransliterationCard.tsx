@@ -12,6 +12,8 @@ import { createFragmentUrl } from 'fragmentarium/ui/FragmentLink'
 import ErrorBoundary from 'common/errors/ErrorBoundary'
 import { ThumbnailImage } from 'common/ui/BlobImage'
 import useNearViewport from 'common/hooks/useNearViewport'
+import SummaryThumbnail from 'fragmentarium/ui/search/SummaryThumbnail'
+import { hasRenderReadyFragment } from 'query/queryItemRenderReady'
 
 const LATEST_CARD_LINES_TO_SHOW = 3
 
@@ -22,12 +24,7 @@ const LatestAdditionThumbnail = withData<
 >(
   ({ data, fragment }): JSX.Element =>
     data.blob ? (
-      <div className="latest-addition-card__thumbnail">
-        <ThumbnailImage
-          photo={data.blob}
-          alt={`Preview of ${fragment.number}`}
-        />
-      </div>
+      <ThumbnailImage photo={data.blob} alt={`Preview of ${fragment.number}`} />
     ) : (
       <></>
     ),
@@ -38,9 +35,11 @@ const LatestAdditionThumbnail = withData<
 function CompactFragmentCardContent({
   fragment,
   fragmentService,
+  queryItem,
 }: {
   fragment: Fragment
   fragmentService: FragmentService
+  queryItem: QueryItem
 }): JSX.Element {
   const { containerRef: thumbnailContainerRef, isNearViewport } =
     useNearViewport()
@@ -60,10 +59,20 @@ function CompactFragmentCardContent({
       <div ref={thumbnailContainerRef}>
         {fragment.hasPhoto && isNearViewport && (
           <ErrorBoundary>
-            <LatestAdditionThumbnail
-              fragmentService={fragmentService}
-              fragment={fragment}
-            />
+            <div className="latest-addition-card__thumbnail">
+              {'thumbnailPath' in queryItem ? (
+                <SummaryThumbnail
+                  fragmentNumber={fragment.number}
+                  thumbnailPath={queryItem.thumbnailPath ?? null}
+                  linked={false}
+                />
+              ) : (
+                <LatestAdditionThumbnail
+                  fragmentService={fragmentService}
+                  fragment={fragment}
+                />
+              )}
+            </div>
           </ErrorBoundary>
         )}
       </div>
@@ -121,6 +130,7 @@ const HydratedCompactFragmentCard = withData<
     <CompactFragmentCardContent
       fragment={fragment}
       fragmentService={fragmentService}
+      queryItem={queryItem}
     />
   ),
   ({ fragmentService, queryItem }) => {
@@ -137,7 +147,13 @@ export function CompactFragmentCard({
   queryItem: QueryItem
   fragmentService: FragmentService
 }): JSX.Element {
-  return (
+  return hasRenderReadyFragment(queryItem, { includeLatestRecord: true }) ? (
+    <CompactFragmentCardContent
+      fragment={queryItem.fragment}
+      queryItem={queryItem}
+      fragmentService={fragmentService}
+    />
+  ) : (
     <HydratedCompactFragmentCard
       queryItem={queryItem}
       fragmentService={fragmentService}

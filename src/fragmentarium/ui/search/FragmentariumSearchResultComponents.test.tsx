@@ -12,6 +12,7 @@ import { Text } from 'transliteration/domain/text'
 import { TextLine } from 'transliteration/domain/text-line'
 import { lines } from 'test-support/test-fragment'
 import { FragmentLines } from './FragmentariumSearchResultComponents'
+import mockObjectUrl from 'test-support/mockObjectUrl'
 
 jest.mock('fragmentarium/application/FragmentService')
 jest.mock('dossiers/application/DossiersService')
@@ -24,6 +25,8 @@ const dossiersService = new (DossiersService as jest.Mock<
   jest.Mocked<DossiersService>
 >)()
 const wordService = new (WordService as jest.Mock<jest.Mocked<WordService>>)()
+
+mockObjectUrl('blob:url')
 
 beforeEach(() => {
   jest.clearAllMocks()

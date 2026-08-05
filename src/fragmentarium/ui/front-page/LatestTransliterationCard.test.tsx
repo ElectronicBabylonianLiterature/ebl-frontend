@@ -1,23 +1,53 @@
 import React from 'react'
 import { MemoryRouter } from 'react-router-dom'
-import { render, screen } from '@testing-library/react'
+import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import Promise from 'bluebird'
 import FragmentService from 'fragmentarium/application/FragmentService'
-import { CompactFragmentCard } from './LatestTransliterationCard'
+import { CompactFragmentCard } from 'fragmentarium/ui/front-page/LatestTransliterationCard'
 import { fragmentFactory } from 'test-support/fragment-fixtures'
 import { QueryItem } from 'query/QueryResult'
 import { ResearchProject } from 'research-projects/researchProject'
+import { RecordEntry } from 'fragmentarium/domain/RecordEntry'
+import mockObjectUrl from 'test-support/mockObjectUrl'
 
 jest.mock('fragmentarium/application/FragmentService')
 
 let fragmentService: jest.Mocked<FragmentService>
 
+mockObjectUrl('blob:url')
+
 beforeEach(() => {
   fragmentService = new (FragmentService as jest.Mock<
     jest.Mocked<FragmentService>
   >)()
-  ;(URL.createObjectURL as jest.Mock).mockReturnValue('blob:url')
 })
+
+function makeReadyItem(overrides: Partial<QueryItem> = {}): QueryItem {
+  const fragment =
+    overrides.fragment ??
+    fragmentFactory.build(
+      { hasPhoto: false, description: 'Render-ready description' },
+      {
+        associations: {
+          record: [
+            new RecordEntry({
+              type: 'Transliteration',
+              user: 'Tester',
+              date: '2024-02-03T00:00:00.000Z',
+            }),
+          ],
+        },
+      },
+    )
+
+  return {
+    museumNumber: fragment.number,
+    matchingLines: [1, 2, 3],
+    matchCount: 3,
+    ...overrides,
+    fragment,
+  }
+}
 
 function renderCard(queryItem: QueryItem): void {
   render(
@@ -86,4 +116,111 @@ test('omits the project logo image when the project has no logo', async () => {
 
   expect(await screen.findByText(fragment.number)).toBeInTheDocument()
   expect(screen.queryByAltText(projectWithoutLogo.name)).not.toBeInTheDocument()
+})
+
+test('renders a render-ready query item without hydrating details', async () => {
+  const latestQueryItem = makeReadyItem()
+
+  renderCard(latestQueryItem)
+
+  expect(
+    await screen.findByText(latestQueryItem.museumNumber),
+  ).toBeInTheDocument()
+  expect(screen.getByText('Render-ready description')).toBeVisible()
+  expect(screen.getByText('3 Feb 2024')).toBeVisible()
+  expect(fragmentService.find).not.toHaveBeenCalled()
+})
+
+test('uses a summary thumbnail path without fetching a thumbnail blob', async () => {
+  const latestQueryItem = makeReadyItem({
+    thumbnailPath: '/images/summary-thumbnail.jpg',
+    fragment: fragmentFactory.build(
+      { hasPhoto: true },
+      {
+        associations: {
+          record: [
+            new RecordEntry({
+              type: 'Transliteration',
+              user: 'Tester',
+              date: '2024-02-03T00:00:00.000Z',
+            }),
+          ],
+        },
+      },
+    ),
+  })
+
+  renderCard(latestQueryItem)
+
+  const thumbnail = await screen.findByAltText(
+    `Preview of ${latestQueryItem.fragment?.number}`,
+  )
+  expect(thumbnail).toHaveAttribute('src', '/images/summary-thumbnail.jpg')
+  expect(fragmentService.find).not.toHaveBeenCalled()
+  expect(fragmentService.findThumbnail).not.toHaveBeenCalled()
+})
+
+test('hides a broken summary thumbnail', async () => {
+  const latestQueryItem = makeReadyItem({
+    thumbnailPath: '/images/broken-thumbnail.jpg',
+    fragment: fragmentFactory.build(
+      { hasPhoto: true },
+      {
+        associations: {
+          record: [
+            new RecordEntry({
+              type: 'Transliteration',
+              user: 'Tester',
+              date: '2024-02-03T00:00:00.000Z',
+            }),
+          ],
+        },
+      },
+    ),
+  })
+
+  renderCard(latestQueryItem)
+
+  const thumbnail = await screen.findByAltText(
+    `Preview of ${latestQueryItem.fragment?.number}`,
+  )
+  fireEvent.error(thumbnail)
+
+  await waitFor(() =>
+    expect(
+      screen.queryByAltText(`Preview of ${latestQueryItem.fragment?.number}`),
+    ).not.toBeInTheDocument(),
+  )
+  expect(fragmentService.find).not.toHaveBeenCalled()
+})
+
+test('omits a missing summary thumbnail without detail hydration', async () => {
+  const latestQueryItem = makeReadyItem({
+    thumbnailPath: null,
+    fragment: fragmentFactory.build(
+      { hasPhoto: true },
+      {
+        associations: {
+          record: [
+            new RecordEntry({
+              type: 'Transliteration',
+              user: 'Tester',
+              date: '2024-02-03T00:00:00.000Z',
+            }),
+          ],
+        },
+      },
+    ),
+  })
+
+  renderCard(latestQueryItem)
+
+  expect(
+    await screen.findByText(latestQueryItem.museumNumber),
+  ).toBeInTheDocument()
+  expect(
+    screen.queryByAltText(`Preview of ${latestQueryItem.fragment?.number}`),
+  ).not.toBeInTheDocument()
+  expect(fragmentService.find).not.toHaveBeenCalled()
+  expect(fragmentService.findThumbnail).not.toHaveBeenCalled()
 })

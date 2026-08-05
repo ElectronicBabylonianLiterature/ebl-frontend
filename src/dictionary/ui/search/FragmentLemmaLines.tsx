@@ -13,6 +13,7 @@ import { TextLine } from 'transliteration/domain/text-line'
 import { Col, Row } from 'react-bootstrap'
 import LemmaQueryLink from '../display/LemmaQueryLink'
 import { LemmaPopover } from 'transliteration/ui/WordInfo'
+import { hasRenderReadyFragment } from 'query/queryItemRenderReady'
 
 export const FRAGMENT_LINES_TO_SHOW = 3
 export const FRAGMENT_EXAMPLE_LIMIT = 10
@@ -111,7 +112,7 @@ function QueryItemFragmentLines({
   fragmentService: FragmentService
   lemmaId: string
 }): JSX.Element {
-  return queryItem.fragment ? (
+  return hasRenderReadyFragment(queryItem) ? (
     <RenderFragmentLines
       fragment={queryItem.fragment}
       linesToShow={FRAGMENT_LINES_TO_SHOW}

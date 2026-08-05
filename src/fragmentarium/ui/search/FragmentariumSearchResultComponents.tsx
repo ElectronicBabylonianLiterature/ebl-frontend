@@ -21,7 +21,8 @@ import { ThumbnailImage } from 'common/ui/BlobImage'
 import DossiersService from 'dossiers/application/DossiersService'
 import useNearViewport from 'common/hooks/useNearViewport'
 import FragmentDossierRecordsDisplay from 'dossiers/ui/DossiersDisplay'
-import SummaryThumbnail from './SummaryThumbnail'
+import SummaryThumbnail from 'fragmentarium/ui/search/SummaryThumbnail'
+import { hasRenderReadyFragment } from 'query/queryItemRenderReady'
 
 function GenresDisplay({ genres }: { genres: Genres }): JSX.Element {
   return (
@@ -87,24 +88,6 @@ type FragmentLinesProps = {
   fragmentService: FragmentService
   dossiersService: DossiersService
   active?: number
-}
-
-function hasLatestTransliterationRecord(fragment: Fragment): boolean {
-  return _(fragment.uniqueRecord).some(
-    (entry) => entry.type === 'Transliteration' && !entry.isHistorical,
-  )
-}
-
-function hasRenderReadyFragment(
-  props: FragmentLinesProps,
-): props is FragmentLinesProps & {
-  queryItem: QueryItem & { fragment: Fragment }
-} {
-  return Boolean(
-    props.queryItem.fragment &&
-    (!props.includeLatestRecord ||
-      hasLatestTransliterationRecord(props.queryItem.fragment)),
-  )
 }
 
 function FragmentLinesContent({
@@ -236,7 +219,9 @@ const HydratedFragmentLines = withData<
 )
 
 export function FragmentLines(props: FragmentLinesProps): JSX.Element {
-  return hasRenderReadyFragment(props) ? (
+  return hasRenderReadyFragment(props.queryItem, {
+    includeLatestRecord: props.includeLatestRecord,
+  }) ? (
     <FragmentLinesContent fragment={props.queryItem.fragment} {...props} />
   ) : (
     <HydratedFragmentLines {...props} />

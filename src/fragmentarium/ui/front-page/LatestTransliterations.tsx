@@ -6,7 +6,7 @@ import FragmentService from 'fragmentarium/application/FragmentService'
 import DossiersService from 'dossiers/application/DossiersService'
 import { QueryResult } from 'query/QueryResult'
 import { FragmentLines } from 'fragmentarium/ui/search/FragmentariumSearchResultComponents'
-import { CompactFragmentCard } from './LatestTransliterationCard'
+import { CompactFragmentCard } from 'fragmentarium/ui/front-page/LatestTransliterationCard'
 
 export const LATEST_PREVIEW_COUNT = 5
 
