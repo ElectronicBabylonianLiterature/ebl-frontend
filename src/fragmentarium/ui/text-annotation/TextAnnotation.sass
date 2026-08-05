@@ -95,6 +95,12 @@ $indicator-width: 3px
   height: $indicator-width
   $max-gap: tier-calc($max-tier-depth - 1)
   cursor: pointer
+  color: inherit
+  text-decoration: none
+
+  &:hover, &:focus
+    color: inherit
+    text-decoration: none
 
   bottom: calc(-1 * #{$max-gap})
 

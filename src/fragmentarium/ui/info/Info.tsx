@@ -27,7 +27,7 @@ interface Props {
   fragmentService: FragmentService
   dossiersService: DossiersService
   afoRegisterService: AfoRegisterService
-  onSave: (fragment: Promise<Fragment>) => void
+  onSave: (fragment: Bluebird<Fragment>) => void
 }
 
 export default function Info({

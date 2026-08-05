@@ -161,3 +161,56 @@ describe('Security: Fragment View Tabs', () => {
     expect(guestSession.isAllowedToWriteTexts()).toBe(false)
   })
 })
+
+describe('EditorTabs enables its tabs unless told otherwise', () => {
+  const fragment = fragmentFactory.build({ atf: '1. ku' })
+  const props = {
+    fragment,
+    fragmentService: new (FragmentService as jest.Mock<
+      jest.Mocked<FragmentService>
+    >)(),
+    fragmentSearchService: new (FragmentSearchService as jest.Mock<
+      jest.Mocked<FragmentSearchService>
+    >)(),
+    wordService: new (WordService as jest.Mock<jest.Mocked<WordService>>)(),
+    findspotService: new (FindspotService as jest.Mock<
+      jest.Mocked<FindspotService>
+    >)(),
+    onSave: jest.fn(),
+    activeLine: '',
+    onToggle: jest.fn(),
+    isColumnVisible: true,
+  }
+  const session = new MemorySession([
+    'read:fragments',
+    'transliterate:fragments',
+  ])
+
+  function renderTabs(disabled?: boolean): void {
+    render(
+      <MemoryRouter>
+        <SessionContext.Provider value={session}>
+          <DictionaryContext.Provider value={props.wordService}>
+            <EditorTabs {...props} disabled={disabled} />
+          </DictionaryContext.Provider>
+        </SessionContext.Provider>
+      </MemoryRouter>,
+    )
+  }
+
+  it('leaves the references tab enabled when disabled is not given', () => {
+    renderTabs()
+
+    expect(screen.getByRole('tab', { name: /References/ })).not.toHaveClass(
+      'disabled',
+    )
+  })
+
+  it('disables it when disabled is passed', () => {
+    renderTabs(true)
+
+    expect(screen.getByRole('tab', { name: /References/ })).toHaveClass(
+      'disabled',
+    )
+  })
+})

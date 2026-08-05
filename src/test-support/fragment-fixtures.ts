@@ -46,18 +46,19 @@ export const fragmentFactory = Factory.define<Fragment>(
     const museumNumber = `${chance.word()}.${sequence}`
     const museum = associations.museum ?? Museums['THE_BRITISH_MUSEUM']
 
-    return new Fragment(
-      museumNumber,
-      `${chance.word()}.${sequence}`,
-      chance.sentence({ words: 4 }),
-      associations.acquisition ??
+    return new Fragment({
+      number: museumNumber,
+      accession: `${chance.word()}.${sequence}`,
+      publication: chance.sentence({ words: 4 }),
+      acquisition:
+        associations.acquisition ??
         new Acquisition(
           chance.company(),
           chance.year({ min: 1800, max: 2020 }),
           chance.sentence({ words: 3 }),
         ),
-      fragmentDescription(chance),
-      associations.joins ?? [
+      description: fragmentDescription(chance),
+      joins: associations.joins ?? [
         [
           joinFactory.build(
             { museumNumber, isInFragmentarium: true },
@@ -66,17 +67,20 @@ export const fragmentFactory = Factory.define<Fragment>(
         ],
         [joinFactory.build({}, { transient: { chance } })],
       ],
-      associations.measures ??
+      measures:
+        associations.measures ??
         measuresFactory.build({}, { transient: { chance } }),
-      fragmentCollection(chance),
-      chance.pickone(['NA', 'NB']),
-      associations.cdliImages ?? ['dl/lineart/P550449_l.jpg'],
-      associations.folios ??
+      collection: fragmentCollection(chance),
+      legacyScript: chance.pickone(['NA', 'NB']),
+      cdliImages: associations.cdliImages ?? ['dl/lineart/P550449_l.jpg'],
+      folios:
+        associations.folios ??
         folioFactory.buildList(2, {}, { transient: { chance } }),
-      associations.record ??
+      record:
+        associations.record ??
         recordFactory.buildList(2, {}, { transient: { chance } }),
-      associations.text ?? complexText,
-      associations.notes ?? {
+      text: associations.text ?? complexText,
+      notes: associations.notes ?? {
         text: 'Lorem @i{ipsum}',
         parts: [
           { text: 'Lorem ', type: 'StringPart' },
@@ -84,13 +88,15 @@ export const fragmentFactory = Factory.define<Fragment>(
         ],
       },
       museum,
-      associations.references ??
+      references:
+        associations.references ??
         referenceFactory.buildList(2, {}, { transient: { chance } }),
-      associations.uncuratedReferences ?? null,
-      [],
-      '',
-      chance.bool(),
-      associations.genres ??
+      uncuratedReferences: associations.uncuratedReferences ?? null,
+      traditionalReferences: [],
+      atf: '',
+      hasPhoto: chance.bool(),
+      genres:
+        associations.genres ??
         chance.pickone([
           new Genres([
             new Genre(['ARCHIVE', 'Administrative', 'Lists'], false),
@@ -98,32 +104,37 @@ export const fragmentFactory = Factory.define<Fragment>(
           ]),
           new Genres([new Genre(['Other', 'Fake', 'Certain'], false)]),
         ]),
-      associations.introduction ?? {
+      introduction: associations.introduction ?? {
         text: 'Introduction',
         parts: [{ type: 'StringPart', text: 'Introduction' }],
       },
-      associations.script ?? scriptFactory.build({}, { transient: { chance } }),
-      associations.externalNumbers ??
+      script:
+        associations.script ??
+        scriptFactory.build({}, { transient: { chance } }),
+      externalNumbers:
+        associations.externalNumbers ??
         externalNumbersFactory.build({}, { transient: { chance } }),
-      associations.projects ?? [],
-      associations.dossiers ?? [],
-      associations.date ??
+      projects: associations.projects ?? [],
+      dossiers: associations.dossiers ?? [],
+      date:
+        associations.date ??
         new MesopotamianDate({
           year: { value: '1' },
           month: { value: '1' },
           day: { value: '1' },
           isSeleucidEra: true,
         }),
-      associations.datesInText ?? undefined,
-      associations.archaeology ??
+      datesInText: associations.datesInText ?? undefined,
+      archaeology:
+        associations.archaeology ??
         archaeologyFactory.build({}, { transient: { chance } }),
-    )
+    })
   },
 )
 
 export const fragmentInfoFactory = Factory.define<FragmentInfo>(
-  ({ associations }) => ({
-    number: defaultChance.word(),
+  ({ associations, sequence }) => ({
+    number: `${defaultChance.word()}.${sequence}`,
     accession: defaultChance.word(),
     description: fragmentDescription(),
     script: scriptFactory.build(),
