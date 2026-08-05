@@ -37,6 +37,27 @@ describe('MapTab click guards', () => {
     expect(mockGetClusterExpansionZoom).not.toHaveBeenCalled()
   })
 
+  it('ignores a cluster click when the source is missing', async () => {
+    const clusterIdProperty = 'cluster_id'
+    render(<MapTab fragmentService={makeFragmentService([makeProvenance()])} />)
+    await screen.findByPlaceholderText('Filter by site name...')
+    mockQueryRenderedFeatures.mockReturnValue([
+      {
+        properties: { [clusterIdProperty]: 42 },
+        geometry: { type: 'Point', coordinates: [44.42, 32.542] },
+      },
+    ])
+    mockGetSource.mockReturnValue(undefined)
+
+    expect(() => {
+      act(() => {
+        triggerMapEvent('click', { point: { x: 10, y: 20 } })
+      })
+    }).not.toThrow()
+
+    expect(mockGetClusterExpansionZoom).not.toHaveBeenCalled()
+  })
+
   it('ignores clicks without clusters or findspots', async () => {
     render(<MapTab fragmentService={makeFragmentService([makeProvenance()])} />)
     await screen.findByPlaceholderText('Filter by site name...')

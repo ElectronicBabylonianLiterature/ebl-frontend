@@ -50,20 +50,32 @@ function initializeFindspotSource(
   fitMapToData(map, geoJson.features)
 }
 
-function expandCluster(map: MapLibreMap, cluster: MapGeoJSONFeature): void {
+function expandCluster(
+  map: MapLibreMap,
+  cluster: MapGeoJSONFeature,
+  isActive: () => boolean,
+): void {
   const clusterId = cluster.properties?.cluster_id
   if (typeof clusterId !== 'number') return
 
-  const source = map.getSource(SOURCE_ID) as GeoJSONSource
-  void source.getClusterExpansionZoom(clusterId).then((zoom) => {
-    map.easeTo({
-      center: (cluster.geometry as Point).coordinates.slice() as [
-        number,
-        number,
-      ],
-      zoom,
+  const source = map.getSource(SOURCE_ID) as GeoJSONSource | undefined
+  if (!source) return
+
+  const center = (cluster.geometry as Point).coordinates.slice() as [
+    number,
+    number,
+  ]
+
+  source
+    .getClusterExpansionZoom(clusterId)
+    .then((zoom) => {
+      if (isActive()) {
+        map.easeTo({ center, zoom })
+      }
     })
-  })
+    .catch(() => {
+      if (!isActive()) return
+    })
 }
 
 function openFindspotPopup(map: MapLibreMap, feature: MapGeoJSONFeature): void {
@@ -79,12 +91,16 @@ function openFindspotPopup(map: MapLibreMap, feature: MapGeoJSONFeature): void {
     .addTo(map)
 }
 
-function handleMapClick(map: MapLibreMap, event: MapMouseEvent): void {
+function handleMapClick(
+  map: MapLibreMap,
+  event: MapMouseEvent,
+  isActive: () => boolean,
+): void {
   const [cluster] = map.queryRenderedFeatures(event.point, {
     layers: [clusterLayer.id],
   })
   if (cluster) {
-    expandCluster(map, cluster)
+    expandCluster(map, cluster, isActive)
     return
   }
 
@@ -117,15 +133,20 @@ export default function useFindspotMap(
     })
     mapRef.current = map
     map.addControl(new maplibregl.NavigationControl(), 'top-right')
-    const handleLoad = () =>
+    let isActive = true
+    let hasStyleLoaded = false
+    const handleLoad = () => {
+      hasStyleLoaded = true
       initializeFindspotSource(map, latestProvenancesRef.current!)
-    const handleClick = (event: MapMouseEvent) => handleMapClick(map, event)
+    }
+    const handleClick = (event: MapMouseEvent) =>
+      handleMapClick(map, event, () => isActive)
     const handleMouseMove = (event: MapMouseEvent) =>
       setPointerCursor(map, event)
     const handleMouseEnter = () => showPointerCursor(map)
     const handleMouseLeave = () => resetPointerCursor(map)
     const handleError = (event: MapLibreErrorEvent) => {
-      if (isMapBackgroundLoadError(event)) {
+      if (isMapBackgroundLoadError(event, hasStyleLoaded)) {
         onMapBackgroundError?.()
       }
     }
@@ -140,6 +161,7 @@ export default function useFindspotMap(
     })
 
     return () => {
+      isActive = false
       map.off('load', handleLoad)
       map.off('click', handleClick)
       map.off('mousemove', handleMouseMove)

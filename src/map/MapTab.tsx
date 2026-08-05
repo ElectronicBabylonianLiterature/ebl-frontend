@@ -96,8 +96,8 @@ export default function MapTab({ fragmentService }: Props): JSX.Element {
       </p>
       {mapBackgroundError ? (
         <Alert variant="warning" className="map-tab__map-error">
-          The map background could not be loaded. Check your connection and try
-          again.
+          The interactive map could not be loaded. Findspot links remain
+          available below.
         </Alert>
       ) : null}
       {filteredProvenances && filteredProvenances.length === 0 ? (

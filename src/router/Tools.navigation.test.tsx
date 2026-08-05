@@ -4,14 +4,10 @@ import userEvent from '@testing-library/user-event'
 import Tools from 'router/Tools'
 import { renderTools, toolsServiceProps } from 'router/Tools.testSupport'
 
+const mockHistoryPush = jest.fn()
 jest.mock('router/compat', () => ({
   ...jest.requireActual('router/compat'),
-  useHistory: () => {
-    const { mockHistoryPush } = jest.requireActual(
-      'router/Tools.contentMocks.testSupport',
-    )
-    return { push: mockHistoryPush }
-  },
+  useHistory: () => ({ push: mockHistoryPush }),
 }))
 
 jest.mock('signs/ui/search/Signs', () => ({

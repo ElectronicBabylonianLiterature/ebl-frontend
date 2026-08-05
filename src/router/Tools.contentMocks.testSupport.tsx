@@ -1,7 +1,5 @@
 import React from 'react'
 
-export const mockHistoryPush = jest.fn()
-
 export function SignsMock(): JSX.Element {
   return <div>Signs Mock</div>
 }

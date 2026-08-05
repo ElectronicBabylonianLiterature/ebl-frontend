@@ -7,9 +7,11 @@ const MAP_STYLE_PATH = '/gl/positron-gl-style/style.json'
 export interface MapLibreErrorEvent {
   error?: {
     message?: string
+    url?: string
   }
-  resourceType?: string
-  url?: string
+  sourceId?: string
+  layer?: { id?: string }
+  tile?: unknown
 }
 
 function isStyleUrl(value: string): boolean {
@@ -24,29 +26,30 @@ function isStyleUrl(value: string): boolean {
   }
 }
 
-function includesStyleUrl(value: string): boolean {
-  return value.toLowerCase().includes(MAP_STYLE_URL)
-}
-
-function isStyleDocumentResource(event: MapLibreErrorEvent): boolean {
-  const resourceType = event.resourceType?.toLowerCase()
-  return resourceType === 'style' || resourceType === 'styledocument'
+function isSourceOrLayerScoped(event: MapLibreErrorEvent): boolean {
+  return (
+    typeof event.sourceId === 'string' ||
+    typeof event.layer?.id === 'string' ||
+    event.tile !== undefined
+  )
 }
 
 export function isMapBackgroundLoadError(
   event: MapLibreErrorEvent | unknown,
+  hasStyleLoaded: boolean,
 ): boolean {
   if (!event || typeof event !== 'object') return false
 
   const mapEvent = event as MapLibreErrorEvent
-  const message = mapEvent.error?.message
-  const url = mapEvent.url
+  const error = mapEvent.error
+  if (!error || typeof error !== 'object') return false
 
-  if (typeof url === 'string' && isStyleUrl(url)) {
-    return true
+  if (isSourceOrLayerScoped(mapEvent)) return false
+
+  const url = error.url
+  if (typeof url === 'string') {
+    return isStyleUrl(url)
   }
 
-  if (typeof message !== 'string') return false
-
-  return includesStyleUrl(message) && isStyleDocumentResource(mapEvent)
+  return !hasStyleLoaded
 }
