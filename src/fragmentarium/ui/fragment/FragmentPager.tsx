@@ -51,7 +51,8 @@ export default withData<
   FragmentPagerData
 >(
   ({ data, ...props }) => <FragmentPager data={data} {...props} />,
-  (props) => props.fragmentService.fragmentPager(props.fragmentNumber),
+  (props, signal) =>
+    props.fragmentService.fragmentPager(props.fragmentNumber, signal),
   {
     watch: (props) => [props.fragmentNumber],
   },

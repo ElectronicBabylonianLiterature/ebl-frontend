@@ -2,7 +2,6 @@ import React from 'react'
 import { MemoryRouter } from 'react-router-dom'
 
 import { render, RenderResult } from '@testing-library/react'
-import Promise from 'bluebird'
 import { whenClicked } from 'test-support/utils'
 import SessionContext from 'auth/SessionContext'
 import LuckyButton from './LuckyButton'

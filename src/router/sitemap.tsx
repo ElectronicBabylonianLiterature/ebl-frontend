@@ -1,5 +1,4 @@
 import React from 'react'
-import Bluebird from 'bluebird'
 import DynamicSitemap from 'react-dynamic-sitemap'
 import { Route } from 'router/compat'
 import { renderToString } from 'react-dom/server'
@@ -168,5 +167,5 @@ export default withData<{ services: Services }, { services: Services }, Slugs>(
   ({ data, services }) => {
     return getSitemapAsFile(services, data)
   },
-  ({ services }): Bluebird<Slugs> => Bluebird.resolve(getAllSlugs(services)),
+  ({ services }): Promise<Slugs> => Promise.resolve(getAllSlugs(services)),
 )

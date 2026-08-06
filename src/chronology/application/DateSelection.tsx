@@ -3,7 +3,7 @@ import { Fragment } from 'fragmentarium/domain/fragment'
 import { MesopotamianDate } from 'chronology/domain/Date'
 import { Button, Overlay, Popover } from 'react-bootstrap'
 import Spinner from 'common/ui/Spinner'
-import Bluebird from 'bluebird'
+import ErrorAlert from 'common/errors/ErrorAlert'
 import DateDisplay from 'chronology/ui/DateDisplay'
 import {
   DateOptionsInput,
@@ -18,13 +18,13 @@ import { MetaEditButton } from 'fragmentarium/ui/info/MetaEditButton'
 
 type Props = {
   dateProp?: MesopotamianDate
-  updateDate: (date?: MesopotamianDate, index?: number) => Bluebird<Fragment>
+  updateDate: (date?: MesopotamianDate, index?: number) => Promise<Fragment>
   inList?: boolean
   index?: number
   saveDateOverride?: (updatedDate?: MesopotamianDate, index?: number) => void
 }
 
-interface DateEditorProps extends DateEditorStateProps {
+interface DateEditorProps extends Omit<DateEditorStateProps, 'setSaveError'> {
   target: React.MutableRefObject<null>
   isSaving: boolean
   isDisplayed: boolean
@@ -64,6 +64,7 @@ export function DateEditor({
   setIsSaving,
   saveDateOverride,
 }: DateEditorProps): JSX.Element {
+  const [saveError, setSaveError] = useState<Error | null>(null)
   const state = useDateSelectionState({
     date,
     setDate,
@@ -71,6 +72,7 @@ export function DateEditor({
     index,
     setIsDisplayed,
     setIsSaving,
+    setSaveError,
     saveDateOverride,
   })
 
@@ -134,6 +136,7 @@ export function DateEditor({
         {date && deleteButton}
         {saveButton}
         <Spinner loading={isSaving}>Saving...</Spinner>
+        <ErrorAlert error={saveError} />
       </Popover.Body>
     </Popover>
   )

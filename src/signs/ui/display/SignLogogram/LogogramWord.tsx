@@ -48,5 +48,6 @@ export default withData<
   Word | Record<string, never>
 >(
   ({ data }) => <LogogramWord word={data} />,
-  (props) => props.wordService.find(props.wordId).catch(() => ({})),
+  (props, signal) =>
+    props.wordService.find(props.wordId, signal).catch(() => ({})),
 )

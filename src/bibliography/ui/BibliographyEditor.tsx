@@ -6,7 +6,6 @@ import BibliographyEntry, {
   template,
 } from 'bibliography/domain/BibliographyEntry'
 import { Crumb, SectionCrumb, TextCrumb } from 'common/ui/Breadcrumbs'
-import Promise from 'bluebird'
 import { Button } from 'react-bootstrap'
 import { useNavigate } from 'react-router-dom'
 import { referencesEntryRoute } from 'bibliography/ui/referencesRouteContext'

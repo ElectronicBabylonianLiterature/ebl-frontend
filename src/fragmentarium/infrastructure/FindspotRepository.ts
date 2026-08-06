@@ -1,4 +1,3 @@
-import Bluebird from 'bluebird'
 import { Findspot } from 'fragmentarium/domain/archaeology'
 import {
   FindspotDto,
@@ -7,13 +6,13 @@ import {
 import { JsonApiClient } from 'index'
 
 export interface FindspotRepository {
-  fetchFindspots(): Bluebird<Findspot[]>
+  fetchFindspots(): Promise<Findspot[]>
 }
 
 export class ApiFindspotRepository implements FindspotRepository {
   constructor(private readonly apiClient: JsonApiClient) {}
 
-  fetchFindspots(): Bluebird<Findspot[]> {
+  fetchFindspots(): Promise<Findspot[]> {
     return this.apiClient
       .fetchJson<FindspotDto[]>('/findspots', false)
       .then((findspots) => findspots.map(fromFindspotDto))

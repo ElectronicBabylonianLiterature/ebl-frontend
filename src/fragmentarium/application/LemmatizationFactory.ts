@@ -1,4 +1,4 @@
-import Promise from 'bluebird'
+import mapSeries from 'common/utils/mapSeries'
 import DictionaryWord from 'dictionary/domain/Word'
 import _ from 'lodash'
 import Lemma from 'transliteration/domain/Lemma'
@@ -8,7 +8,13 @@ import Lemmatization, {
 } from 'transliteration/domain/Lemmatization'
 import { Text } from 'transliteration/domain/text'
 import { LemmatizableToken, Token } from 'transliteration/domain/token'
-import { FragmentService } from './FragmentService'
+
+export interface LemmaSuggestionSource {
+  findSuggestions(
+    value: string,
+    isNormalized: boolean,
+  ): Promise<readonly UniqueLemma[]>
+}
 
 export abstract class AbstractLemmatizationFactory<T, U> {
   private readonly findSuggestions: (
@@ -18,7 +24,7 @@ export abstract class AbstractLemmatizationFactory<T, U> {
   private readonly findWord: (word: string) => Promise<DictionaryWord>
 
   constructor(
-    fragmentService: FragmentService,
+    fragmentService: LemmaSuggestionSource,
     wordRepository: { find(word: string): Promise<DictionaryWord> },
   ) {
     this.findSuggestions = _.memoize(
@@ -34,7 +40,7 @@ export abstract class AbstractLemmatizationFactory<T, U> {
   protected createLemmatizationLine(
     tokens: readonly Token[],
   ): Promise<LemmatizationToken[]> {
-    return Promise.mapSeries(tokens, (token) =>
+    return mapSeries(tokens, (token) =>
       token.lemmatizable
         ? Promise.all([
             this.createLemmas(token),
@@ -56,7 +62,7 @@ export abstract class AbstractLemmatizationFactory<T, U> {
   }
 
   protected createLemmas(token: LemmatizableToken): Promise<UniqueLemma> {
-    return Promise.mapSeries(token.uniqueLemma, (lemma) =>
+    return mapSeries(token.uniqueLemma, (lemma) =>
       this.findWord(lemma).then((word: DictionaryWord) => new Lemma(word)),
     )
   }
@@ -66,7 +72,7 @@ export default class LemmatizationFactory extends AbstractLemmatizationFactory<
   Lemmatization
 > {
   createLemmatization(text: Text): Promise<Lemmatization> {
-    return Promise.mapSeries(text.allLines, (line) =>
+    return mapSeries(text.allLines, (line) =>
       this.createLemmatizationLine(line.content),
     ).then(
       (lines) =>

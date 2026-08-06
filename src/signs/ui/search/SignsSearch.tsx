@@ -143,7 +143,8 @@ const SignLists = withData<
       </table>
     )
   },
-  (props) => props.signService.findSignsByOrder(props.sign.name, props.sortEra),
+  (props, signal) =>
+    props.signService.findSignsByOrder(props.sign.name, props.sortEra, signal),
 )
 function SignsSearch({
   signs,
@@ -227,7 +228,7 @@ export default withData<
       signService={signService}
     />
   ),
-  (props) => props.signService.search(props.signQuery),
+  (props, signal) => props.signService.search(props.signQuery, signal),
   {
     watch: (props) => [props.signQuery],
     filter: (props) => _.some(props.signQuery),

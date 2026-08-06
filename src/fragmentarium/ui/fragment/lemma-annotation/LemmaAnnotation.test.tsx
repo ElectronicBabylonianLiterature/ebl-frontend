@@ -13,7 +13,6 @@ import EditableToken from 'fragmentarium/ui/fragment/linguistic-annotation/Edita
 import { AkkadianWord } from 'transliteration/domain/token'
 import WordService from 'dictionary/application/WordService'
 import FragmentService from 'fragmentarium/application/FragmentService'
-import Promise from 'bluebird'
 import { LemmaOption } from 'fragmentarium/ui/lemmatization/LemmaSelectionForm'
 import { wordFactory } from 'test-support/word-fixtures'
 

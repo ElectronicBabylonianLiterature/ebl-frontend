@@ -1,7 +1,6 @@
 import React from 'react'
 import { render, screen, within } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
-import Bluebird from 'bluebird'
 import RealiaSearchPage from 'realia/ui/RealiaSearchPage'
 import RealiaService from 'realia/application/RealiaService'
 import SessionContext from 'auth/SessionContext'
@@ -36,7 +35,7 @@ async function renderProtectedSearch(
   session = new MemorySession(['read:realia']),
   entries: readonly RealiaEntry[] = [richEntry],
 ): Promise<void> {
-  realiaService.search.mockReturnValue(Bluebird.resolve(entries))
+  realiaService.search.mockReturnValue(Promise.resolve(entries))
   render(
     <MemoryRouter initialEntries={['/tools/realia?query=enlil']}>
       <SessionContext.Provider value={session}>

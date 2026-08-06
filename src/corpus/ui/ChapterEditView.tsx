@@ -7,11 +7,11 @@ import ErrorAlert from 'common/errors/ErrorAlert'
 import ChapterEditor from './ChapterEditor'
 import ChapterNavigation from './ChapterNavigation'
 import usePromiseEffect from 'common/hooks/usePromiseEffect'
+import applyWhenCurrent from 'common/utils/applyWhenCurrent'
 import { Text } from 'corpus/domain/text'
 import { Chapter } from 'corpus/domain/chapter'
 import { ChapterId } from 'transliteration/domain/chapter-id'
 import { SectionCrumb, TextCrumb } from 'common/ui/Breadcrumbs'
-import Promise from 'bluebird'
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 import { BibliographySearch } from 'bibliography/application/BibliographyService'
 import TextService from 'corpus/application/TextService'
@@ -57,7 +57,7 @@ function ChapterEditView({
   const [isDirty, setIsDirty] = useState(false)
   const [isSaving, setIsSaving] = useState(false)
   const [error, setError] = useState<Error | null>(null)
-  const [setUpdatePromise, cancelUpdatePromise] = usePromiseEffect<void>()
+  const [, , runUpdate] = usePromiseEffect()
 
   const setStateUpdating = (): void => {
     setIsSaving(true)
@@ -77,9 +77,13 @@ function ChapterEditView({
   }
 
   const update = (updater: () => Promise<Chapter>): void => {
-    cancelUpdatePromise()
     setStateUpdating()
-    setUpdatePromise(updater().then(setStateUpdated).catch(setStateError))
+    runUpdate(
+      applyWhenCurrent(updater, {
+        onSuccess: setStateUpdated,
+        onError: setStateError,
+      }),
+    )
   }
 
   const updateAlignment = (alignment: ChapterAlignment): void => {

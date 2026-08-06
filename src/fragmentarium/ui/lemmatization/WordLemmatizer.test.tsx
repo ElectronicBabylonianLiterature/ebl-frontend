@@ -6,7 +6,6 @@ import { LemmatizationToken } from 'transliteration/domain/Lemmatization'
 import Lemma from 'transliteration/domain/Lemma'
 import { wordFactory } from 'test-support/word-fixtures'
 import FragmentService from 'fragmentarium/application/FragmentService'
-import Promise from 'bluebird'
 
 const fragmentService = {
   searchLemma: jest.fn(),

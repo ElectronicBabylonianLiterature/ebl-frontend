@@ -53,7 +53,7 @@ const GenresContentWithData = withData<
   string[][]
 >(
   ({ data }) => <GenreTree genres={data} />,
-  (props) => props.fragmentService.fetchGenres(),
+  (props, signal) => props.fragmentService.fetchGenres(signal),
 )
 
 export default function GenresPage({

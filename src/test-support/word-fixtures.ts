@@ -10,7 +10,7 @@ import Word, {
   Vowels,
 } from 'dictionary/domain/Word'
 
-const defaultChance = new Chance()
+const defaultChance = new Chance('word fixtures')
 
 const nonVerbPos = [
   'AJ',

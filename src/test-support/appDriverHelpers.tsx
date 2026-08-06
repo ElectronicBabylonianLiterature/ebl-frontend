@@ -10,7 +10,6 @@ import TextService from 'corpus/application/TextService'
 import BibliographyRepository from 'bibliography/infrastructure/BibliographyRepository'
 import BibliographyService from 'bibliography/application/BibliographyService'
 import FragmentSearchService from 'fragmentarium/application/FragmentSearchService'
-import Promise from 'bluebird'
 import SignRepository from 'signs/infrastructure/SignRepository'
 import SignService from 'signs/application/SignService'
 import MarkupService, {

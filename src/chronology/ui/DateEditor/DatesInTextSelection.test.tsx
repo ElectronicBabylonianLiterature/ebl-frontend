@@ -5,7 +5,6 @@ import { MesopotamianDate } from 'chronology/domain/Date'
 import { mesopotamianDateFactory } from 'test-support/date-fixtures'
 import { fragment as mockFragment } from 'test-support/test-fragment'
 import SessionContext from 'auth/SessionContext'
-import { Promise } from 'bluebird'
 
 let session
 
@@ -94,6 +93,29 @@ describe('DatesInTextSelection', () => {
     expect(screen.getAllByRole('time')[0]).not.toHaveTextContent(
       firstDateString,
     )
+  })
+
+  it('shows an error when saving a date fails', async () => {
+    mockUpdateDatesInText.mockImplementationOnce(() =>
+      Promise.reject(new Error('Saving the dates failed')),
+    )
+    render(
+      <SessionContext.Provider value={session}>
+        <DatesInTextSelection {...defaultProps} />
+      </SessionContext.Provider>,
+    )
+    fireEvent.click(screen.getByLabelText('Add date button'))
+    fireEvent.change(screen.getByPlaceholderText('Day'), {
+      target: { value: '18' },
+    })
+    fireEvent.change(screen.getByPlaceholderText('Month'), {
+      target: { value: '10' },
+    })
+    fireEvent.click(screen.getByText('Save'))
+
+    expect(
+      await screen.findByText('Saving the dates failed'),
+    ).toBeInTheDocument()
   })
 
   it('renders add button', () => {

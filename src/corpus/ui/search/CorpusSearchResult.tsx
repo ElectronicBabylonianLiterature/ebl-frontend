@@ -5,7 +5,6 @@ import { CorpusQuery } from 'query/CorpusQuery'
 import { CorpusQueryItem, CorpusQueryResult } from 'query/QueryResult'
 import { Col, Row } from 'react-bootstrap'
 import _ from 'lodash'
-import Bluebird from 'bluebird'
 import { ResultPageButtons } from 'common/ui/ResultPageButtons'
 import { ChapterId, chapterIdToString } from 'transliteration/domain/chapter-id'
 import { ChapterDisplay } from 'corpus/domain/chapter'
@@ -114,7 +113,7 @@ const ChapterResult = withData<
       (queryItem as CorpusQueryItemWithChapterDisplay).chapterDisplay ?? null
 
     return prefetchedChapterDisplay
-      ? Bluebird.resolve(prefetchedChapterDisplay)
+      ? Promise.resolve(prefetchedChapterDisplay)
       : textService.findChapterDisplay(
           chapterId,
           _.take(lines, variantsToShow),

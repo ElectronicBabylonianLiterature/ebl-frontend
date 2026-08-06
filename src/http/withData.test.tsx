@@ -1,65 +1,21 @@
-import React from 'react'
-import { render, RenderResult, screen, waitFor } from '@testing-library/react'
-import Promise from 'bluebird'
+import { RenderResult, screen, waitFor } from '@testing-library/react'
 import _ from 'lodash'
-import withData, { Config, WithData } from './withData'
-import ErrorReporterContext, { ErrorReporter } from 'ErrorReporterContext'
-import { silenceConsoleErrors } from 'setupTests'
+import {
+  WithDataHarness,
+  createWithDataHarness,
+  data,
+  errorMessage,
+  newData,
+  newPropValue,
+  propValue,
+  renderWithData,
+  rerenderWithData,
+} from 'http/withData.testSupport'
 
-interface Props {
-  prop: string
-}
+let harness: WithDataHarness
 
-const data = 'Test data'
-const defaultData = 'Default data'
-const newData = 'New Test Data'
-const propValue = 'passed value'
-const newPropValue = 'new value'
-const errorMessage = 'error'
-
-let filter: jest.Mock<boolean, [Props]>
-let config: Config<Props, string>
-let getter: jest.Mock<Promise<string>, [Props]>
-let ComponentWithData: React.ComponentType<Props>
-let InnerComponent: jest.Mock<JSX.Element, [WithData<Props, string>]>
-
-let errorReportingService: ErrorReporter
-
-function renderWithData(): RenderResult {
-  return render(
-    <ErrorReporterContext.Provider value={errorReportingService}>
-      <ComponentWithData prop={propValue} />{' '}
-    </ErrorReporterContext.Provider>,
-  )
-}
-
-beforeEach(async () => {
-  const watch = (props: Props): [string] => [props.prop]
-  filter = jest.fn()
-  filter.mockReturnValue(true)
-  getter = jest.fn()
-  InnerComponent = jest.fn()
-  InnerComponent.mockImplementation((props: WithData<Props, string>) => (
-    <h1>
-      {props.prop} {props.data}
-    </h1>
-  ))
-  config = {
-    watch,
-    filter,
-    defaultData: () => defaultData,
-  }
-  ComponentWithData = withData<Props, unknown, string>(
-    InnerComponent,
-    getter,
-    config,
-  )
-  errorReportingService = {
-    captureException: jest.fn(),
-    showReportDialog: jest.fn(),
-    setUser: jest.fn(),
-    clearScope: jest.fn(),
-  }
+beforeEach(() => {
+  harness = createWithDataHarness()
 })
 
 describe('On successful get', () => {
@@ -67,32 +23,31 @@ describe('On successful get', () => {
     rerender: RenderResult['rerender'],
     prop: string,
   ): void {
-    rerender(
-      <ErrorReporterContext.Provider value={errorReportingService}>
-        <ComponentWithData prop={prop} />{' '}
-      </ErrorReporterContext.Provider>,
-    )
+    rerenderWithData(harness, rerender, prop)
   }
 
   it('Calls getter with props', async () => {
-    getter.mockReturnValueOnce(Promise.resolve(data))
-    renderWithData()
+    harness.getter.mockReturnValueOnce(Promise.resolve(data))
+    renderWithData(harness)
     await screen.findByText(RegExp(propValue))
-    expect(getter).toBeCalledWith({ prop: propValue })
+    expect(harness.getter).toBeCalledWith(
+      { prop: propValue },
+      expect.any(AbortSignal),
+    )
   })
 
   it('Renders the wrapped component', async () => {
-    getter.mockReturnValueOnce(Promise.resolve(data))
-    renderWithData()
+    harness.getter.mockReturnValueOnce(Promise.resolve(data))
+    renderWithData(harness)
     await screen.findByText(RegExp(propValue))
     expect(screen.getByText(`${propValue} ${data}`)).toBeInTheDocument()
   })
 
   it('Passes properties to inner component', async () => {
-    getter.mockReturnValueOnce(Promise.resolve(data))
-    renderWithData()
+    harness.getter.mockReturnValueOnce(Promise.resolve(data))
+    renderWithData(harness)
     await screen.findByText(RegExp(propValue))
-    expect(InnerComponent).toHaveBeenCalledWith(
+    expect(harness.InnerComponent).toHaveBeenCalledWith(
       {
         data,
         prop: propValue,
@@ -102,17 +57,20 @@ describe('On successful get', () => {
   })
 
   it('Queries again when prop updated', async () => {
-    getter.mockReturnValueOnce(Promise.resolve(data))
-    const { rerender } = renderWithData()
+    harness.getter.mockReturnValueOnce(Promise.resolve(data))
+    const { rerender } = renderWithData(harness)
     await screen.findByText(RegExp(propValue))
 
-    InnerComponent.mockClear()
-    getter.mockClear()
-    getter.mockReturnValueOnce(Promise.resolve(newData))
+    harness.InnerComponent.mockClear()
+    harness.getter.mockClear()
+    harness.getter.mockReturnValueOnce(Promise.resolve(newData))
     rerenderView(rerender, newPropValue)
     await screen.findByText(RegExp(newPropValue))
 
-    expect(getter).toBeCalledWith({ prop: newPropValue })
+    expect(harness.getter).toBeCalledWith(
+      { prop: newPropValue },
+      expect.any(AbortSignal),
+    )
     expect(screen.getByText(`${newPropValue} ${newData}`)).toBeInTheDocument()
   })
 
@@ -124,7 +82,7 @@ describe('On successful get', () => {
       | ((value: string | PromiseLike<string>) => void)
       | undefined
 
-    getter
+    harness.getter
       .mockImplementationOnce(
         () =>
           new globalThis.Promise<string>((resolve) => {
@@ -138,7 +96,7 @@ describe('On successful get', () => {
           }) as unknown as Promise<string>,
       )
 
-    const { rerender } = renderWithData()
+    const { rerender } = renderWithData(harness)
     rerenderView(rerender, newPropValue)
 
     resolveSecond?.(newData)
@@ -155,90 +113,55 @@ describe('On successful get', () => {
   })
 
   it('Does not query the API when prop did not update', async () => {
-    getter.mockReturnValueOnce(Promise.resolve(data))
-    const { rerender } = renderWithData()
+    harness.getter.mockReturnValueOnce(Promise.resolve(data))
+    const { rerender } = renderWithData(harness)
     await screen.findByText(RegExp(propValue))
 
-    InnerComponent.mockClear()
-    getter.mockClear()
+    harness.InnerComponent.mockClear()
+    harness.getter.mockClear()
     rerenderView(rerender, propValue)
 
-    expect(getter).not.toHaveBeenCalled()
+    expect(harness.getter).not.toHaveBeenCalled()
     expect(screen.getByText(`${propValue} ${data}`)).toBeInTheDocument()
   })
 })
 
 describe('On failed request', () => {
   it('Does not render wrapped component', async () => {
-    getter.mockImplementationOnce(() => Promise.reject(new Error(errorMessage)))
-    renderWithData()
+    harness.getter.mockImplementationOnce(() =>
+      Promise.reject(new Error(errorMessage)),
+    )
+    renderWithData(harness)
     await screen.findByText(errorMessage)
-    expect(InnerComponent).not.toHaveBeenCalled()
+    expect(harness.InnerComponent).not.toHaveBeenCalled()
   })
 })
 
 describe('When unmounting', () => {
-  it('Cancels the promise', () => {
-    const promise: Promise<string> = new Promise(_.noop)
-    getter.mockReturnValueOnce(promise)
-    const { unmount } = renderWithData()
+  it('Aborts the request signal', () => {
+    let requestSignal: AbortSignal | undefined
+    harness.getter.mockImplementationOnce((_props, signal) => {
+      requestSignal = signal
+      return new Promise(_.noop)
+    })
+    const { unmount } = renderWithData(harness)
     unmount()
-    expect(promise.isCancelled()).toBe(true)
+    expect(requestSignal?.aborted).toBe(true)
   })
 
   it('Does not show error', () => {
     const promise: Promise<string> = new Promise(_.noop)
-    getter.mockReturnValueOnce(promise)
-    const { unmount } = renderWithData()
+    harness.getter.mockReturnValueOnce(promise)
+    const { unmount } = renderWithData(harness)
     unmount()
     expect(screen.queryByText(errorMessage)).not.toBeInTheDocument()
   })
 
   it('Does not render wrapped component', () => {
     const promise: Promise<string> = new Promise(_.noop)
-    getter.mockReturnValueOnce(promise)
-    const { unmount } = renderWithData()
+    harness.getter.mockReturnValueOnce(promise)
+    const { unmount } = renderWithData(harness)
     unmount()
-    expect(InnerComponent).not.toHaveBeenCalled()
-  })
-})
-
-describe('Filtering', () => {
-  it('Calls the filter with props', () => {
-    filter.mockReturnValueOnce(false)
-    renderWithData()
-    expect(filter).toHaveBeenCalledWith({
-      prop: propValue,
-    })
-  })
-
-  it('Does not query the API', () => {
-    filter.mockReturnValueOnce(false)
-    renderWithData()
-    expect(getter).not.toHaveBeenCalled()
-  })
-
-  it('Renders the wrapped component with default data', () => {
-    filter.mockReturnValueOnce(false)
-    renderWithData()
-    expect(screen.getByText(`${propValue} ${defaultData}`)).toBeInTheDocument()
-  })
-})
-
-describe('Child component crash', () => {
-  it('Displays error message', async () => {
-    silenceConsoleErrors()
-    const CrashingComponent = withData<unknown, unknown, string>(
-      () => {
-        throw new Error(errorMessage)
-      },
-      () => Promise.resolve(data),
-    )
-    render(
-      <ErrorReporterContext.Provider value={errorReportingService}>
-        <CrashingComponent />
-      </ErrorReporterContext.Provider>,
-    )
-    await screen.findByText("Something's gone wrong.")
+    expect(harness.InnerComponent).not.toHaveBeenCalled()
   })
 })

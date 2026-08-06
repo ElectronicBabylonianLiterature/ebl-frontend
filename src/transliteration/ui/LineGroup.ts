@@ -3,7 +3,6 @@ import { LemmatizableToken, Token } from 'transliteration/domain/token'
 import { EmptyLineToken, LineToken, OneOfLineToken } from './line-tokens'
 import { ChapterId } from 'transliteration/domain/chapter-id'
 import TextService from 'corpus/application/TextService'
-import Bluebird from 'bluebird'
 
 export interface LineInfo {
   chapterId: ChapterId
@@ -33,7 +32,7 @@ export class LineGroup {
   highlightIndex = 0
   highlightIndexSetter: React.Dispatch<React.SetStateAction<number>>
   lineInfo: LineInfo
-  findChapterLine: () => Bluebird<LineDetails>
+  findChapterLine: () => Promise<LineDetails>
   lineDetails: LineDetails | null = null
 
   constructor(

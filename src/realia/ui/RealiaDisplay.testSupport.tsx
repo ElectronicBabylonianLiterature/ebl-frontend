@@ -5,7 +5,6 @@ import RealiaDisplay from 'realia/ui/RealiaDisplay'
 import RealiaService from 'realia/application/RealiaService'
 import SessionContext from 'auth/SessionContext'
 import MemorySession from 'auth/Session'
-import Bluebird from 'bluebird'
 import { RealiaEntry } from 'realia/domain/RealiaEntry'
 
 export const realiaService = new (RealiaService as jest.Mock<
@@ -16,7 +15,7 @@ export function renderDisplay(
   entry: RealiaEntry,
   session = new MemorySession(['read:realia']),
 ): void {
-  realiaService.find.mockReturnValue(Bluebird.resolve(entry))
+  realiaService.find.mockReturnValue(Promise.resolve(entry))
   render(
     <MemoryRouter>
       <SessionContext.Provider value={session}>
@@ -35,7 +34,7 @@ export function renderDisplayWithLocation(
   entry: RealiaEntry,
   initialEntry: string | { pathname: string; hash: string } = '/',
 ): void {
-  realiaService.find.mockReturnValue(Bluebird.resolve(entry))
+  realiaService.find.mockReturnValue(Promise.resolve(entry))
   render(
     <MemoryRouter initialEntries={[initialEntry]}>
       <SessionContext.Provider value={new MemorySession(['read:realia'])}>

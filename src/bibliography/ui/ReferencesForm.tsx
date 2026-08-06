@@ -1,5 +1,4 @@
 import React from 'react'
-import Promise from 'bluebird'
 import ListForm from 'common/ui/List'
 import ReferenceForm from './ReferenceForm'
 import Reference from 'bibliography/domain/Reference'

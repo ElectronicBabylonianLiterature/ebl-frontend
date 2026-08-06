@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import { Button } from 'react-bootstrap'
 import { useNavigate } from 'react-router-dom'
-import Promise from 'bluebird'
 import ErrorAlert from 'common/errors/ErrorAlert'
 import Spinner from 'common/ui/Spinner'
 import { createFragmentUrl } from './FragmentLink'
@@ -9,7 +8,7 @@ import usePromiseEffect from 'common/hooks/usePromiseEffect'
 import { FragmentInfo } from 'fragmentarium/domain/fragment'
 
 type Props = {
-  query: () => Promise<FragmentInfo>
+  query: (signal?: AbortSignal) => Promise<FragmentInfo>
   children?: React.ReactNode
 }
 
@@ -17,7 +16,7 @@ function FragmentButton({ query, children }: Props) {
   const navigate = useNavigate()
   const [error, setError] = useState(null)
   const [isLoading, setIsLoading] = useState(false)
-  const [setPromise, cancelPromise] = usePromiseEffect()
+  const [runRequest] = usePromiseEffect()
 
   const onError = (error) => {
     setIsLoading(false)
@@ -28,12 +27,21 @@ function FragmentButton({ query, children }: Props) {
     navigate(createFragmentUrl(fragmentInfo.number))
 
   const handleClick = (event) => {
-    cancelPromise()
     setIsLoading(true)
     setError(null)
-    const request = query()
-    setPromise(request)
-    request.then(navigateToFragment).catch(onError)
+    runRequest((signal) =>
+      query(signal)
+        .then((fragmentInfo) => {
+          if (!signal.aborted) {
+            navigateToFragment(fragmentInfo)
+          }
+        })
+        .catch((error) => {
+          if (!signal.aborted) {
+            onError(error)
+          }
+        }),
+    )
   }
 
   return (

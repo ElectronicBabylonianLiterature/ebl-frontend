@@ -1,75 +1,36 @@
-import Bluebird from 'bluebird'
-import React from 'react'
-import { MemoryRouter } from 'react-router-dom'
-import { waitForSpinnerToBeRemoved } from 'test-support/waitForSpinnerToBeRemoved'
 import _ from 'lodash'
-import { screen, render } from '@testing-library/react'
-
-import Details, { formatMeasurements } from './Details'
+import { screen } from '@testing-library/react'
 import { Museums } from 'fragmentarium/domain/museum'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import { Genres } from 'fragmentarium/domain/Genres'
 import { fragmentFactory } from 'test-support/fragment-fixtures'
-import {
-  archaeologyFactory,
-  externalNumbersFactory,
-  findspotFactory,
-  measuresFactory,
-} from 'test-support/fragment-data-fixtures'
+import { archaeologyFactory } from 'test-support/fragment-data-fixtures'
 import { joinFactory } from 'test-support/join-fixtures'
 import { Periods } from 'common/utils/period'
-import { excavationSites, PartialDate } from 'fragmentarium/domain/archaeology'
-import FragmentService from 'fragmentarium/application/FragmentService'
-import DossiersService from 'dossiers/application/DossiersService'
+import { excavationSites } from 'fragmentarium/domain/archaeology'
+import {
+  createDetailsTestContext,
+  DetailsTestContext,
+  expectMeasurementsToBeRendered,
+} from 'fragmentarium/ui/info/Details.testSupport'
 
 jest.mock('fragmentarium/application/FragmentService')
 
-const MockFragmentService = FragmentService as jest.Mock<
-  jest.Mocked<FragmentService>
->
-const MockDossiersService = DossiersService as jest.Mock<
-  jest.Mocked<DossiersService>
->
-const fragmentService = new MockFragmentService()
-const dossiersService = new MockDossiersService()
-
-const updateGenres = jest.fn()
-const updateScript = jest.fn()
-const updateDate = jest.fn()
-const updateDatesInText = jest.fn()
-
+let context: DetailsTestContext
 let fragment: Fragment
 
-async function renderDetails() {
-  render(
-    <MemoryRouter>
-      <Details
-        fragment={fragment}
-        updateGenres={updateGenres}
-        updateScript={updateScript}
-        updateDate={updateDate}
-        updateDatesInText={updateDatesInText}
-        fragmentService={fragmentService}
-        dossiersService={dossiersService}
-      />
-    </MemoryRouter>,
-  )
-  await waitForSpinnerToBeRemoved(screen)
-}
-
-function expectMeasurementsToBeRendered(fragment: Fragment) {
-  const measurements = formatMeasurements(fragment.measures)
-  const expectedMeasures = `${measurements} cm`
-  expect(screen.getByText(expectedMeasures)).toBeInTheDocument()
-}
+beforeEach(() => {
+  context = createDetailsTestContext()
+})
 
 describe('All details', () => {
   async function setupAllDetails(): Promise<void> {
+    const { fragmentService, renderDetails } = context
     fragmentService.fetchGenres.mockReturnValue(
-      Bluebird.resolve([['ARCHIVAL'], ['ARCHIVAL', 'Administrative']]),
+      Promise.resolve([['ARCHIVAL'], ['ARCHIVAL', 'Administrative']]),
     )
     fragmentService.fetchPeriods.mockReturnValue(
-      Bluebird.resolve([...Object.keys(Periods)]),
+      Promise.resolve([...Object.keys(Periods)]),
     )
     const number = 'X.1'
     const museum = Museums['THE_BRITISH_MUSEUM']
@@ -104,7 +65,7 @@ describe('All details', () => {
         },
       },
     )
-    await renderDetails()
+    await renderDetails(fragment)
   }
 
   it('Renders museum', async () => {
@@ -201,169 +162,5 @@ describe('All details', () => {
         `/library/search/?site=${encodeURIComponent(site)}`,
       )
     }
-  })
-})
-
-describe('ExcavationDate', () => {
-  beforeEach(() => {
-    fragmentService.fetchGenres.mockResolvedValue([])
-    fragmentService.fetchPeriods.mockResolvedValue([])
-    Object.defineProperty(navigator, 'language', {
-      value: 'en-US',
-      writable: true,
-    })
-  })
-
-  it('renders excavation date when isRegularExcavation is true', async () => {
-    const excavationDate = {
-      start: new PartialDate(2024, 5, 10),
-      end: new PartialDate(2024, 10, 10),
-    }
-    fragment = fragmentFactory.build({
-      archaeology: {
-        isRegularExcavation: true,
-        date: excavationDate,
-      },
-    })
-    await renderDetails()
-
-    expect(screen.getByText(/Regular Excavation/)).toBeInTheDocument()
-    expect(screen.getByText(/05\/10\/2024 – 10\/10\/2024/)).toBeInTheDocument()
-  })
-
-  it('renders only start date when end date is missing', async () => {
-    const excavationDate = {
-      start: new PartialDate(2024, 5, 10),
-      end: null,
-    }
-    fragment = fragmentFactory.build({
-      archaeology: {
-        isRegularExcavation: true,
-        date: excavationDate,
-      },
-    })
-    await renderDetails()
-
-    expect(screen.getByText(/Regular Excavation/)).toBeInTheDocument()
-    expect(screen.getByText(/05\/10\/2024/)).toBeInTheDocument()
-  })
-
-  it('does not render excavation date when isRegularExcavation is false', async () => {
-    fragment = fragmentFactory.build({
-      archaeology: {
-        isRegularExcavation: false,
-        date: undefined,
-      },
-    })
-    await renderDetails()
-
-    expect(screen.queryByText(/Regular Excavation/)).not.toBeInTheDocument()
-    expect(screen.queryByText(/10\/05\/2024/)).not.toBeInTheDocument()
-  })
-})
-
-describe('Findspot uncertain display', () => {
-  beforeEach(() => {
-    fragmentService.fetchGenres.mockResolvedValue([])
-    fragmentService.fetchPeriods.mockResolvedValue([])
-  })
-
-  it('appends (?) to findspot string when isFindspotUncertain is true', async () => {
-    const findspot = findspotFactory.build()
-    fragment = fragmentFactory.build({
-      archaeology: archaeologyFactory.build(
-        { isFindspotUncertain: true },
-        { associations: { findspot } },
-      ),
-    })
-    const findspotString = fragment.archaeology?.findspot?.toString()
-    await renderDetails()
-
-    expect(findspotString).toBeTruthy()
-    expect(
-      screen.getByText(`Findspot: ${findspotString} (?)`),
-    ).toBeInTheDocument()
-  })
-
-  it('does not append (?) when isFindspotUncertain is false', async () => {
-    const findspot = findspotFactory.build()
-    fragment = fragmentFactory.build({
-      archaeology: archaeologyFactory.build(
-        { isFindspotUncertain: false },
-        { associations: { findspot } },
-      ),
-    })
-    const findspotString = fragment.archaeology?.findspot?.toString()
-    await renderDetails()
-
-    expect(findspotString).toBeTruthy()
-    expect(screen.getByText(`Findspot: ${findspotString}`)).toBeInTheDocument()
-    expect(
-      screen.queryByText(`Findspot: ${findspotString} (?)`),
-    ).not.toBeInTheDocument()
-  })
-})
-
-describe('Missing details', () => {
-  async function setupMissingDetails(): Promise<void> {
-    const archaeology = archaeologyFactory.build({
-      excavationNumber: undefined,
-      site: undefined,
-    })
-    fragment = fragmentFactory.build(
-      {
-        collection: '',
-        accession: '',
-        archaeology,
-      },
-      {
-        associations: {
-          joins: [],
-          measures: measuresFactory.build({
-            width: null,
-          }),
-          externalNumbers: externalNumbersFactory.build({
-            cdliNumber: '',
-            bmIdNumber: '',
-          }),
-        },
-      },
-    )
-    fragmentService.fetchGenres.mockReturnValue(Bluebird.resolve([]))
-    fragmentService.fetchPeriods.mockReturnValue(Bluebird.resolve([]))
-    await renderDetails()
-  }
-
-  it('Does not render undefined', async () => {
-    await setupMissingDetails()
-    expect(screen.queryByText('undefined')).not.toBeInTheDocument()
-  })
-
-  it('Does not render collection', async () => {
-    await setupMissingDetails()
-    expect(screen.queryByText('Collection')).not.toBeInTheDocument()
-  })
-
-  it(`Renders dash for joins`, async () => {
-    await setupMissingDetails()
-    expect(screen.getByText(/Joins:/)).toHaveTextContent('-')
-  })
-
-  it('Does not render missing measures', async () => {
-    await setupMissingDetails()
-    expectMeasurementsToBeRendered(fragment)
-  })
-
-  it('Renders dash for accession', async () => {
-    await setupMissingDetails()
-    expect(screen.getByText('Accession no.: -')).toBeInTheDocument()
-  })
-  it('Renders dash for excavation', async () => {
-    await setupMissingDetails()
-    expect(screen.getByText('Excavation no.: -')).toBeInTheDocument()
-  })
-  it('Renders dash for provenance', async () => {
-    await setupMissingDetails()
-    expect(screen.getByText('Provenance: -')).toBeInTheDocument()
   })
 })

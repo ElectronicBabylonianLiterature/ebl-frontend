@@ -1,6 +1,5 @@
 import React from 'react'
 import { render, screen } from '@testing-library/react'
-import { Promise } from 'bluebird'
 import _ from 'lodash'
 
 import { changeValueByLabel, clickNth, submitForm } from 'test-support/utils'

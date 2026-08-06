@@ -1,5 +1,4 @@
 import React from 'react'
-import Promise from 'bluebird'
 import WordService from 'dictionary/application/WordService'
 import FragmentSearchService from 'fragmentarium/application/FragmentSearchService'
 import FragmentService from 'fragmentarium/application/FragmentService'

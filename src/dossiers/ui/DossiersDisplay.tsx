@@ -4,7 +4,6 @@ import MarkdownAndHtmlToHtml from 'common/utils/MarkdownAndHtmlToHtml'
 import withData from 'http/withData'
 import DossiersService from 'dossiers/application/DossiersService'
 import _ from 'lodash'
-import Bluebird from 'bluebird'
 import { Popover, Overlay } from 'react-bootstrap'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import './DossiersDisplay.sass'
@@ -191,7 +190,7 @@ const FragmentDossierRecordsDisplay = withData<
 >(
   DossierRecordsListDisplay,
   (props) => {
-    return Bluebird.resolve(
+    return Promise.resolve(
       props.dossiersService
         .queryByIds([
           ...props.fragment.dossiers.map((record) => record.dossierId),

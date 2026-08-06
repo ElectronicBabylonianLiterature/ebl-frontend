@@ -1,4 +1,3 @@
-import Promise from 'bluebird'
 import ApiImageRepository from './ImageRepository'
 import Folio from 'fragmentarium/domain/Folio'
 import { folioFactory } from 'test-support/fragment-data-fixtures'
@@ -57,6 +56,7 @@ describe('findFolio', () => {
         folio.number,
       )}`,
       false,
+      undefined,
     )
   })
 
@@ -79,6 +79,7 @@ describe('findPhoto', () => {
     expect(apiClient.fetchBlob).toBeCalledWith(
       `/fragments/${encodeURIComponent(number)}/photo`,
       false,
+      undefined,
     )
   })
 

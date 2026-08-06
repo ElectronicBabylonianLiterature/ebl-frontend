@@ -30,7 +30,7 @@ const setup = async () => {
 
 it('Searches with the query', async () => {
   await setup()
-  expect(wordService.search).toBeCalledWith(query)
+  expect(wordService.search).toBeCalledWith(query, expect.any(AbortSignal))
 })
 
 it('Displays results', async () => {

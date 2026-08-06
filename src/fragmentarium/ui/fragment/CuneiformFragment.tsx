@@ -6,6 +6,7 @@ import Info from 'fragmentarium/ui/info/Info'
 import ErrorAlert from 'common/errors/ErrorAlert'
 import Spinner from 'common/ui/Spinner'
 import usePromiseEffect from 'common/hooks/usePromiseEffect'
+import applyWhenCurrent from 'common/utils/applyWhenCurrent'
 import './CuneiformFragment.sass'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import Folio from 'fragmentarium/domain/Folio'
@@ -28,7 +29,7 @@ type CuneiformFragmentProps = {
   findspotService: FindspotService
   activeFolio: Folio | null
   tab: string | null
-  onSave: (updatedFragment: Promise<Fragment>) => void
+  onSave: (save: () => Promise<Fragment>) => void
   saving: boolean
   error: Error | null
   activeLine: string
@@ -141,26 +142,27 @@ const CuneiformFragmentController: FunctionComponent<ControllerProps> = ({
 }: ControllerProps) => {
   const [currentFragment, setFragment] = useState(fragment)
   const [isSaving, setIsSaving] = useState(false)
-  const [error, setError] = useState(null)
-  const [setPromise, cancelPromise] = usePromiseEffect()
+  const [error, setError] = useState<Error | null>(null)
+  const [, , runSave] = usePromiseEffect()
 
-  const handleSave = (promise) => {
-    cancelPromise()
+  const handleSave = (save: () => Promise<Fragment>): Promise<Fragment> => {
     setError(null)
     setIsSaving(true)
 
-    const updatePromise = promise.then((updatedFragment) => {
-      setFragment(updatedFragment)
-      setIsSaving(false)
-      return updatedFragment
-    })
-    setPromise(
-      updatePromise.catch((error) => {
-        setError(error)
-        setIsSaving(false)
+    const savePromise = save()
+    runSave(
+      applyWhenCurrent(() => savePromise, {
+        onSuccess: (updatedFragment) => {
+          setFragment(updatedFragment)
+          setIsSaving(false)
+        },
+        onError: (error) => {
+          setError(error)
+          setIsSaving(false)
+        },
       }),
     )
-    return updatePromise
+    return savePromise
   }
 
   return (

@@ -3,7 +3,6 @@ import { resolve } from 'path'
 import { parse as parseEnv } from 'dotenv'
 import 'jest-date-mock'
 import '@testing-library/jest-dom'
-import Promise from 'bluebird'
 import _ from 'lodash'
 import { TextEncoder, TextDecoder } from 'util'
 
@@ -67,10 +66,6 @@ if (!window.HTMLElement.prototype.scrollIntoView) {
 afterEach(() => {
   abort.mockReset()
   onAbort.mockReset()
-})
-
-Promise.config({
-  cancellation: true,
 })
 
 afterEach(() => localStorage.clear())

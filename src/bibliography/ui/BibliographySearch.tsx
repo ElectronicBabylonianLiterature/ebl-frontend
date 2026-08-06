@@ -56,7 +56,7 @@ export default withData<
   readonly BibliographyEntry[]
 >(
   BibliographySearch,
-  (props) => props.bibliographyService.search(props.query),
+  (props, signal) => props.bibliographyService.search(props.query, signal),
   {
     watch: (props) => [props.query],
     filter: (props) => !_.isEmpty(props.query),

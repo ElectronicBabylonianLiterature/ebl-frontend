@@ -20,14 +20,13 @@ import AfoRegisterFragmentRecords from 'afo-register/ui/AfoRegisterFragmentRecor
 import ColophonInfo from './Colophon'
 import DossiersService from 'dossiers/application/DossiersService'
 import { MesopotamianDate } from 'chronology/domain/Date'
-import Bluebird from 'bluebird'
 
 interface Props {
   fragment: Fragment
   fragmentService: FragmentService
   dossiersService: DossiersService
   afoRegisterService: AfoRegisterService
-  onSave: (fragment: Promise<Fragment>) => void
+  onSave: (save: () => Promise<Fragment>) => void
 }
 
 export default function Info({
@@ -38,14 +37,14 @@ export default function Info({
   onSave,
 }: Props): JSX.Element {
   const updateGenres = (genres: Genres) =>
-    onSave(fragmentService.updateGenres(fragment.number, genres))
+    onSave(() => fragmentService.updateGenres(fragment.number, genres))
   const updateScript = (script: Script) =>
     fragmentService.updateScript(fragment.number, script)
-  const updateDate = (date?: MesopotamianDate): Bluebird<Fragment> =>
+  const updateDate = (date?: MesopotamianDate): Promise<Fragment> =>
     fragmentService.updateDate(fragment.number, date?.toDto())
   const updateDatesInText = (
     datesInText: readonly MesopotamianDate[],
-  ): Bluebird<Fragment> =>
+  ): Promise<Fragment> =>
     fragmentService.updateDatesInText(
       fragment.number,
       datesInText.filter((date) => date).map((date) => date.toDto()),

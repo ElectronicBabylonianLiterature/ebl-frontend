@@ -1,5 +1,4 @@
 import React, { useContext, useMemo } from 'react'
-import Bluebird from 'bluebird'
 import WordService from 'dictionary/application/WordService'
 import Word from 'dictionary/domain/Word'
 import withData from 'http/withData'
@@ -80,11 +79,14 @@ const Info = withData<
     )
   },
   ({ dictionary, lemmaKeys }) =>
-    Bluebird.all(
+    Promise.all(
       lemmaKeys.map((uniqueLemma) =>
         dictionary
           .find(uniqueLemma)
-          .then((lemma: DictionaryWord) => [uniqueLemma, lemma]),
+          .then((lemma: DictionaryWord): [string, DictionaryWord] => [
+            uniqueLemma,
+            lemma,
+          ]),
       ),
     ),
   {

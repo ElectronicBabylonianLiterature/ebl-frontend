@@ -6,7 +6,6 @@ import {
   screen,
   waitForElementToBeRemoved,
 } from '@testing-library/react'
-import Promise from 'bluebird'
 import Images, { FragmentPhoto, TabController } from './Images'
 import Folio from 'fragmentarium/domain/Folio'
 import { Fragment } from 'fragmentarium/domain/fragment'

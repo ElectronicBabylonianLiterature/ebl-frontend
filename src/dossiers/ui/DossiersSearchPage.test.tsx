@@ -6,7 +6,6 @@ import DossiersSearchPage from 'dossiers/ui/DossiersSearchPage'
 import DossierRecord from 'dossiers/domain/DossierRecord'
 import DossiersService from 'dossiers/application/DossiersService'
 import { referenceDtoFactory } from 'test-support/bibliography-fixtures'
-import Bluebird from 'bluebird'
 
 jest.mock('common/ui/Markdown', () => ({
   __esModule: true,
@@ -56,7 +55,7 @@ function makeDossiersService(
   data: readonly DossierRecord[] = records,
 ): DossiersService {
   return {
-    fetchAllDossiers: jest.fn().mockReturnValue(Bluebird.resolve(data)),
+    fetchAllDossiers: jest.fn().mockReturnValue(Promise.resolve(data)),
   } as unknown as DossiersService
 }
 

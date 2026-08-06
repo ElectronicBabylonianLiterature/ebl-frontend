@@ -62,8 +62,8 @@ export default withData<
   FolioPagerData
 >(
   ({ data, ...props }) => <FolioPager data={data} {...props} />,
-  (props) =>
-    props.fragmentService.folioPager(props.folio, props.fragmentNumber),
+  (props, signal) =>
+    props.fragmentService.folioPager(props.folio, props.fragmentNumber, signal),
   {
     watch: (props) => [props.folio, props.fragmentNumber],
   },

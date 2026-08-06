@@ -6,7 +6,6 @@ import SessionContext from 'auth/SessionContext'
 import SignDisplay from 'signs/ui/display/SignDisplay'
 import MemorySession from 'auth/Session'
 import SignService from 'signs/application/SignService'
-import Bluebird from 'bluebird'
 import Sign, { Value } from 'signs/domain/Sign'
 import WordService from 'dictionary/application/WordService'
 import Word from 'dictionary/domain/Word'
@@ -112,17 +111,17 @@ function renderSignDisplay(signName: string) {
 
 describe('Sign Display', () => {
   const setup = async () => {
-    signService.search.mockReturnValue(Bluebird.resolve([]))
+    signService.search.mockReturnValue(Promise.resolve([]))
     signService.getCentroidImages.mockReturnValue(
-      Bluebird.resolve([croppedAnnotation]),
+      Promise.resolve([croppedAnnotation]),
     )
-    signService.find.mockReturnValue(Bluebird.resolve(sign))
-    wordService.find.mockReturnValue(Bluebird.resolve(word))
+    signService.find.mockReturnValue(Promise.resolve(sign))
+    wordService.find.mockReturnValue(Promise.resolve(word))
 
     const view = renderSignDisplay(sign.name)
 
     await screen.findAllByText(sign.name)
-    expect(signService.find).toBeCalledWith(sign.name)
+    expect(signService.find).toBeCalledWith(sign.name, expect.any(AbortSignal))
 
     return view
   }

@@ -1,6 +1,5 @@
 import React from 'react'
 import { render, screen, waitFor } from '@testing-library/react'
-import { Promise } from 'bluebird'
 
 import BibliographySelect from 'bibliography/ui/BibliographySelect'
 import userEvent from '@testing-library/user-event'

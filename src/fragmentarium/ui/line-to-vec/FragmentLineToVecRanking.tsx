@@ -96,7 +96,8 @@ export default withData<
   ({ data, ...props }) => (
     <FragmentLineToVecRanking lineToVecRanking={data} number={props.number} />
   ),
-  (props) => props.fragmentService.lineToVecRanking(props.number),
+  (props, signal) =>
+    props.fragmentService.lineToVecRanking(props.number, signal),
   {
     watch: (props) => [props.number],
   },

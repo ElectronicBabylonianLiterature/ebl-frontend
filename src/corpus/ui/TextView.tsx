@@ -1,5 +1,4 @@
 import React from 'react'
-import Promise from 'bluebird'
 import AppContent from 'common/ui/AppContent'
 import { SectionCrumb } from 'common/ui/Breadcrumbs'
 import { createChapterId, Text } from 'corpus/domain/text'

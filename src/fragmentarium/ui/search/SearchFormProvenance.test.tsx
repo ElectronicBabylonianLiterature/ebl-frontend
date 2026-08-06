@@ -1,7 +1,6 @@
 import React from 'react'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import Promise from 'bluebird'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import SearchFormProvenance from './SearchFormProvenance'
 

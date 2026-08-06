@@ -1,6 +1,5 @@
 import React from 'react'
 import { render, RenderResult, screen } from '@testing-library/react'
-import Bluebird from 'bluebird'
 import Sign, { Value } from 'signs/domain/Sign'
 import WordService from 'dictionary/application/WordService'
 import Word from 'dictionary/domain/Word'
@@ -91,15 +90,21 @@ function renderSignInformation(): RenderResult {
 
 describe('Sign Information', () => {
   const setup = async (): Promise<void> => {
-    signService.search.mockReturnValueOnce(Bluebird.resolve([]))
+    signService.search.mockReturnValueOnce(Promise.resolve([]))
     wordService.find
-      .mockReturnValueOnce(Bluebird.resolve(wordErimmatu))
-      .mockReturnValueOnce(Bluebird.resolve(wordLipu))
+      .mockReturnValueOnce(Promise.resolve(wordErimmatu))
+      .mockReturnValueOnce(Promise.resolve(wordLipu))
     renderSignInformation()
     await screen.findByText('Words (as logogram):')
 
-    expect(wordService.find).toBeCalledWith(wordErimmatu._id)
-    expect(wordService.find).toBeCalledWith(wordLipu._id)
+    expect(wordService.find).toBeCalledWith(
+      wordErimmatu._id,
+      expect.any(AbortSignal),
+    )
+    expect(wordService.find).toBeCalledWith(
+      wordLipu._id,
+      expect.any(AbortSignal),
+    )
   }
   it('Sign Information Words (as logograms)', async () => {
     await setup()

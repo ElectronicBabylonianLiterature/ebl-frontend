@@ -15,7 +15,6 @@ import EditableToken from 'fragmentarium/ui/fragment/linguistic-annotation/Edita
 import _ from 'lodash'
 import { LemmaOption } from 'fragmentarium/ui/lemmatization/LemmaSelectionForm'
 import { Fragment } from 'fragmentarium/domain/fragment'
-import Bluebird from 'bluebird'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import lineNumberToString from 'transliteration/domain/lineNumberToString'
 import TokenAnnotation from 'fragmentarium/ui/fragment/linguistic-annotation/TokenAnnotation'
@@ -38,7 +37,7 @@ export type LemmaAnnotatorProps = {
   fragmentService: FragmentService
   editableTokens: EditableToken[]
   setText: TextSetter
-  updateAnnotation: (annotations: LineLemmaAnnotations) => Bluebird<Fragment>
+  updateAnnotation: (annotations: LineLemmaAnnotations) => Promise<Fragment>
 }
 
 export default class LemmaAnnotation extends TokenAnnotation {
@@ -49,7 +48,7 @@ export default class LemmaAnnotation extends TokenAnnotation {
   private editorRef = createRef<SelectInstance<LemmaOption, true>>()
   private updateAnnotation: (
     annotations: LineLemmaAnnotations,
-  ) => Bluebird<Fragment>
+  ) => Promise<Fragment>
 
   constructor(props: LemmaAnnotatorProps) {
     super(props)

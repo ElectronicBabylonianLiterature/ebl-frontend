@@ -1,4 +1,3 @@
-import Promise from 'bluebird'
 import { ChapterDisplay } from 'corpus/domain/chapter'
 import { ChapterId } from 'transliteration/domain/chapter-id'
 import { ExtantLines } from 'corpus/domain/extant-lines'
@@ -7,502 +6,185 @@ import { museumNumberToString } from 'fragmentarium/domain/MuseumNumber'
 import FragmentDto from 'fragmentarium/domain/FragmentDtos'
 import { stringify } from 'query-string'
 import { WordQuery } from 'dictionary/application/WordService'
+import FakeApiBase from 'test-support/FakeApiBase'
+import {
+  createChapterUrl,
+  createTextUrl,
+  Dto,
+} from 'test-support/FakeApiExpectation'
 
-type Dto = Record<string, unknown>
-
-class Expectation {
-  method: 'POST' | 'GET' = 'GET'
-  path = ''
-  authenticate: boolean | undefined = false
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  response: any = {}
-  verify = false
-  called = false
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  body: any = null
-  isBlob = false
-
-  constructor(data: Partial<Expectation>) {
-    Object.assign(this, data)
-  }
-}
-
-export default class FakeApi {
-  private expectations: Expectation[] = []
-
-  readonly client = {
-    fetchJson: jest.fn().mockImplementation((path, authenticate) => {
-      const expectation = this.expectations.find(
-        (entry) =>
-          entry.method === 'GET' && entry.path === path && !entry.isBlob,
-      )
-      return expectation
-        ? Promise.resolve(expectation.response)
-        : Promise.reject(
-            new Error(
-              `Unexpected ${
-                authenticate ? 'authenticated' : 'not-authenticated'
-              } fetchJson: ${path}`,
-            ),
-          )
-    }),
-
-    postJson: jest.fn().mockImplementation((path) => {
-      const expectation = this.expectations.find(
-        (entry) =>
-          entry.method === 'POST' && entry.path === path && !entry.isBlob,
-      )
-      return expectation
-        ? Promise.resolve(expectation.response)
-        : Promise.reject(new Error(`Unexpected postJson: ${path}`))
-    }),
-
-    fetchBlob: jest.fn().mockImplementation((path, authenticate) => {
-      const expectation = this.expectations.find(
-        (entry) =>
-          entry.method === 'GET' && entry.path === path && entry.isBlob,
-      )
-      return expectation
-        ? Promise.resolve(expectation.response)
-        : Promise.reject(
-            new Error(
-              `Unexpected ${
-                authenticate ? 'authenticated' : 'not-authenticated'
-              } fetchBlob: ${path}`,
-            ),
-          )
-    }),
-  }
-
+export default class FakeApi extends FakeApiBase {
   expectTexts(texts: Dto[]): FakeApi {
-    this.expectations.push(
-      new Expectation({
-        method: 'GET',
-        path: `/texts`,
-        authenticate: false,
-        response: texts,
-        verify: true,
-      }),
-    )
-    return this
+    return this.expectGet('/texts', texts)
   }
 
   expectProvenances(provenances: Dto[]): FakeApi {
-    this.expectations.push(
-      new Expectation({
-        method: 'GET',
-        path: '/provenances',
-        authenticate: false,
-        response: provenances,
-        verify: true,
-      }),
-    )
-    return this
+    return this.expectGet('/provenances', provenances)
   }
 
   allowProvenances(provenances: Dto[]): FakeApi {
-    this.expectations.push(
-      new Expectation({
-        method: 'GET',
-        path: '/provenances',
-        authenticate: false,
-        response: provenances,
-      }),
-    )
-    return this
+    return this.allowGet('/provenances', provenances)
   }
 
   expectProvenance(id: string, provenance: Dto): FakeApi {
-    this.expectations.push(
-      new Expectation({
-        method: 'GET',
-        path: `/provenances/${id}`,
-        authenticate: false,
-        response: provenance,
-        verify: true,
-      }),
-    )
-    return this
+    return this.expectGet(`/provenances/${id}`, provenance)
   }
 
   expectProvenanceChildren(id: string, children: Dto[]): FakeApi {
-    this.expectations.push(
-      new Expectation({
-        method: 'GET',
-        path: `/provenances/${id}/children`,
-        authenticate: false,
-        response: children,
-        verify: true,
-      }),
-    )
-    return this
+    return this.expectGet(`/provenances/${id}/children`, children)
   }
 
   allowProvenance(id: string, provenance: Dto): FakeApi {
-    this.expectations.push(
-      new Expectation({
-        method: 'GET',
-        path: `/provenances/${id}`,
-        authenticate: false,
-        response: provenance,
-      }),
-    )
-    return this
+    return this.allowGet(`/provenances/${id}`, provenance)
   }
 
   allowProvenanceChildren(id: string, children: Dto[]): FakeApi {
-    this.expectations.push(
-      new Expectation({
-        method: 'GET',
-        path: `/provenances/${id}/children`,
-        authenticate: false,
-        response: children,
-      }),
-    )
-    return this
+    return this.allowGet(`/provenances/${id}/children`, children)
   }
 
   allowText(text: Dto): FakeApi {
-    this.expectations.push(
-      new Expectation({
-        method: 'GET',
-        path: createTextUrl(text),
-        authenticate: false,
-        response: text,
-      }),
-    )
-    return this
+    return this.allowGet(createTextUrl(text), text)
   }
 
   allowChapter(chapter: ChapterId): FakeApi {
-    this.expectations.push(
-      new Expectation({
-        method: 'GET',
-        path: `${createChapterUrl(chapter)}`,
-        authenticate: false,
-        response: chapter,
-      }),
-    )
-    return this
+    return this.allowGet(createChapterUrl(chapter), chapter)
   }
 
   expectText(text: Dto): FakeApi {
-    this.expectations.push(
-      new Expectation({
-        method: 'GET',
-        path: createTextUrl(text),
-        authenticate: false,
-        response: text,
-        verify: true,
-      }),
-    )
-    return this
+    return this.expectGet(createTextUrl(text), text)
   }
 
   expectChapter(chapter: ChapterId): FakeApi {
-    this.expectations.push(
-      new Expectation({
-        method: 'GET',
-        path: `${createChapterUrl(chapter)}`,
-        authenticate: false,
-        response: chapter,
-        verify: true,
-      }),
-    )
-    return this
+    return this.expectGet(createChapterUrl(chapter), chapter)
   }
 
   expectChapterDisplay(chapter: ChapterDisplay): FakeApi {
-    this.expectations.push(
-      new Expectation({
-        method: 'GET',
-        path: `${createChapterUrl(chapter.id)}/display`,
-        authenticate: false,
-        response: {
-          id: chapter.id,
-          textHasDoi: chapter.textHasDoi,
-          textName: chapter.textName,
-          isSingleStage: chapter.isSingleStage,
-          title: chapter.title,
-          lines: chapter.lines,
-          record: chapter.record,
-        },
-        verify: true,
-      }),
-    )
-    return this
+    return this.expectGet(`${createChapterUrl(chapter.id)}/display`, {
+      id: chapter.id,
+      textHasDoi: chapter.textHasDoi,
+      textName: chapter.textName,
+      isSingleStage: chapter.isSingleStage,
+      title: chapter.title,
+      lines: chapter.lines,
+      record: chapter.record,
+    })
   }
 
   expectLineDetails(id: ChapterId, line: number, lineDetails: Dto): FakeApi {
-    this.expectations.push(
-      new Expectation({
-        method: 'GET',
-        path: `${createChapterUrl(id)}/lines/${line}`,
-        authenticate: false,
-        response: lineDetails,
-        verify: true,
-      }),
-    )
-    return this
+    return this.expectGet(`${createChapterUrl(id)}/lines/${line}`, lineDetails)
   }
 
   expectManuscripts(id: ChapterId, manuscriptsDto: Dto[]): FakeApi {
-    this.expectations.push(
-      new Expectation({
-        method: 'GET',
-        path: `${createChapterUrl(id)}/manuscripts`,
-        authenticate: false,
-        response: manuscriptsDto,
-        verify: true,
-      }),
-    )
-    return this
+    return this.expectGet(`${createChapterUrl(id)}/manuscripts`, manuscriptsDto)
   }
 
   expectExtantLines(id: ChapterId, extantLines: ExtantLines): FakeApi {
-    this.expectations.push(
-      new Expectation({
-        method: 'GET',
-        path: `${createChapterUrl(id)}/extant_lines`,
-        authenticate: false,
-        response: extantLines,
-        verify: true,
-      }),
-    )
-    return this
+    return this.expectGet(`${createChapterUrl(id)}/extant_lines`, extantLines)
   }
 
   expectUpdateManuscripts(chapter: ChapterId, manuscripts: Dto): FakeApi {
-    this.expectations.push(
-      new Expectation({
-        method: 'POST',
-        path: `${createChapterUrl(chapter)}/manuscripts`,
-        authenticate: true,
-        response: chapter,
-        verify: true,
-        body: manuscripts,
-      }),
+    return this.expectPost(
+      `${createChapterUrl(chapter)}/manuscripts`,
+      manuscripts,
+      chapter,
     )
-    return this
+  }
+
+  expectUpdateAlignment(chapter: ChapterId, alignment: Dto): FakeApi {
+    return this.expectPost(
+      `${createChapterUrl(chapter)}/alignment`,
+      alignment,
+      chapter,
+    )
+  }
+
+  expectUpdateLemmatization(chapter: ChapterId, lemmatization: Dto): FakeApi {
+    return this.expectPost(
+      `${createChapterUrl(chapter)}/lemmatization`,
+      lemmatization,
+      chapter,
+    )
   }
 
   expectUpdateLines(chapter: ChapterId, lines: Dto): FakeApi {
-    this.expectations.push(
-      new Expectation({
-        method: 'POST',
-        path: `${createChapterUrl(chapter)}/lines`,
-        authenticate: true,
-        response: chapter,
-        verify: true,
-        body: lines,
-      }),
-    )
-    return this
+    return this.expectPost(`${createChapterUrl(chapter)}/lines`, lines, chapter)
   }
 
   expectImportChapter(chapter: ChapterId, atf: string): FakeApi {
-    this.expectations.push(
-      new Expectation({
-        method: 'POST',
-        path: `${createChapterUrl(chapter)}/import`,
-        authenticate: false,
-        response: chapter,
-        verify: true,
-        body: { atf },
-      }),
+    return this.expectPost(
+      `${createChapterUrl(chapter)}/import`,
+      { atf },
+      chapter,
+      false,
     )
-    return this
   }
 
   expectAnnotations(number: string, annotationDtos: readonly Dto[]): FakeApi {
-    this.expectations.push(
-      new Expectation({
-        method: 'GET',
-        path: `/fragments/${number}/annotations?generateAnnotations=false`,
-        authenticate: false,
-        response: { annotations: annotationDtos },
-        verify: true,
-      }),
+    return this.expectGet(
+      `/fragments/${number}/annotations?generateAnnotations=false`,
+      { annotations: annotationDtos },
     )
-    return this
   }
 
   expectUpdateAnnotations(
     number: string,
     annotationDtos: readonly Dto[],
   ): FakeApi {
-    this.expectations.push(
-      new Expectation({
-        method: 'POST',
-        path: `/fragments/${number}/annotations`,
-        body: {
-          fragmentNumber: number,
-          annotations: annotationDtos,
-        },
-        authenticate: true,
-        response: { annotations: annotationDtos },
-        verify: true,
-      }),
+    return this.expectPost(
+      `/fragments/${number}/annotations`,
+      { fragmentNumber: number, annotations: annotationDtos },
+      { annotations: annotationDtos },
     )
-    return this
   }
 
   expectFragment(fragmentDto: FragmentDto): FakeApi {
-    this.expectations.push(
-      new Expectation({
-        method: 'GET',
-        path: `/fragments/${museumNumberToString(fragmentDto.museumNumber)}`,
-        authenticate: false,
-        response: fragmentDto,
-        verify: true,
-      }),
+    return this.expectGet(
+      `/fragments/${museumNumberToString(fragmentDto.museumNumber)}`,
+      fragmentDto,
     )
-    return this
   }
 
   expectPhoto(
     number: string,
     photo: { blobParts: string[]; options: { type: string } },
   ): FakeApi {
-    this.expectations.push(
-      new Expectation({
-        method: 'GET',
-        path: `/fragments/${number}/photo`,
-        response: photo,
-        authenticate: false,
-        isBlob: true,
-        verify: true,
-      }),
-    )
-    return this
+    return this.expectGet(`/fragments/${number}/photo`, photo, true)
   }
 
   expectSearchWords(query: WordQuery, words: readonly Word[]): FakeApi {
-    this.expectations.push(
-      new Expectation({
-        method: 'GET',
-        path: `/words?query=${encodeURIComponent(
-          stringify(query, { skipEmptyString: true }),
-        )}`,
-        response: words,
-        authenticate: false,
-        verify: true,
-      }),
+    return this.expectGet(
+      `/words?query=${encodeURIComponent(
+        stringify(query, { skipEmptyString: true }),
+      )}`,
+      words,
     )
-    return this
   }
 
   expectWord(word: Word): FakeApi {
-    this.expectations.push(
-      new Expectation({
-        method: 'GET',
-        path: `/words/${encodeURIComponent(word._id)}`,
-        response: word,
-        authenticate: false,
-        verify: true,
-      }),
-    )
-    return this
+    return this.expectGet(`/words/${encodeURIComponent(word._id)}`, word)
   }
 
   expectUpdateWord(word: Word): FakeApi {
-    this.expectations.push(
-      new Expectation({
-        method: 'POST',
-        path: `/words/${encodeURIComponent(word._id)}`,
-        body: word,
-        response: word,
-        authenticate: true,
-        verify: true,
-      }),
-    )
-    return this
+    return this.expectPost(`/words/${encodeURIComponent(word._id)}`, word, word)
   }
 
   allowStatistics(statistics: Dto): FakeApi {
-    this.expectations.push(
-      new Expectation({
-        method: 'GET',
-        path: `/statistics`,
-        authenticate: false,
-        response: statistics,
-      }),
-    )
-    return this
+    return this.allowGet('/statistics', statistics)
   }
 
   allowDossiers(dossiers: Dto[]): FakeApi {
-    this.expectations.push(
-      new Expectation({
-        method: 'GET',
-        path: '/dossiers',
-        authenticate: false,
-        response: dossiers,
-      }),
-    )
-    return this
+    return this.allowGet('/dossiers', dossiers)
   }
 
   allowGenres(genres: string[][]): FakeApi {
-    this.expectations.push(
-      new Expectation({
-        method: 'GET',
-        path: '/genres',
-        authenticate: false,
-        response: genres,
-      }),
-    )
-    return this
+    return this.allowGet('/genres', genres)
   }
 
   allowLatestFragments(queryResult: Dto): FakeApi {
-    this.expectations.push(
-      new Expectation({
-        method: 'GET',
-        path: '/fragments/latest',
-        authenticate: false,
-        response: queryResult,
-      }),
-    )
-    return this
+    return this.allowGet('/fragments/latest', queryResult)
   }
 
   allowImage(file: string): FakeApi {
-    this.expectations.push(
-      new Expectation({
-        method: 'GET',
-        path: `/images/${file}`,
-        authenticate: false,
-        isBlob: true,
-      }),
-    )
-    return this
+    return this.allowGet(`/images/${file}`, {}, true)
   }
-
-  verifyExpectations(): void {
-    const methods = {
-      GET: (expectation: Expectation): void => {
-        expect(
-          expectation.isBlob ? this.client.fetchBlob : this.client.fetchJson,
-        ).toHaveBeenCalledWith(expectation.path, expect.anything())
-      },
-      POST: (expectation: Expectation): void =>
-        expect(this.client.postJson).toHaveBeenCalledWith(
-          expectation.path,
-          expectation.body || expect.anything(),
-        ),
-    }
-    this.expectations
-      .filter((expectation) => expectation.verify)
-      .forEach((expectation) => methods[expectation.method](expectation))
-  }
-}
-function createTextUrl(id): string {
-  return `/texts/${id.genre}/${id.category}/${id.index}`
-}
-
-function createChapterUrl(id): string {
-  return `${createTextUrl(id.textId)}/chapters/${encodeURIComponent(
-    id.stage,
-  )}/${encodeURIComponent(id.name)}`
 }

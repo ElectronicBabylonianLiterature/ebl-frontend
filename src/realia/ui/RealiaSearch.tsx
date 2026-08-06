@@ -16,8 +16,12 @@ export default withData<
   unknown,
   { realiaService: RealiaService; query: string },
   readonly RealiaEntry[]
->(RealiaSearchDisplay, (props) => props.realiaService.search(props.query), {
-  watch: (props) => [props.query],
-  filter: (props) => props.query.trim().length > 0,
-  defaultData: () => [],
-})
+>(
+  RealiaSearchDisplay,
+  (props, signal) => props.realiaService.search(props.query, signal),
+  {
+    watch: (props) => [props.query],
+    filter: (props) => props.query.trim().length > 0,
+    defaultData: () => [],
+  },
+)

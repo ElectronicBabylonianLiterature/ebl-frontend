@@ -1,6 +1,5 @@
 import _ from 'lodash'
 import React from 'react'
-import Promise from 'bluebird'
 import ListForm from 'common/ui/List'
 import withData from 'http/withData'
 import { Chapter } from 'corpus/domain/chapter'

@@ -2,7 +2,6 @@ import React from 'react'
 import { MemoryRouter } from 'react-router-dom'
 
 import { render, RenderResult, screen } from '@testing-library/react'
-import Promise from 'bluebird'
 import _ from 'lodash'
 import { whenClicked, clickNth } from 'test-support/utils'
 import FragmentButton from './FragmentButton'
@@ -65,12 +64,19 @@ describe('On failed request', () => {
 })
 
 describe('When unmounting', () => {
-  it('Cancels fetch', async () => {
+  it('Does not navigate after unmount', async () => {
     setup()
-    const promise = new Promise(_.noop)
-    query.mockReturnValueOnce(promise)
+    const fragment = fragmentFactory.build()
+    let resolveQuery: (info: Fragment) => void = _.noop
+    query.mockReturnValueOnce(
+      new Promise<Fragment>((resolve) => {
+        resolveQuery = resolve
+      }),
+    )
     clickNth(screen, buttonText, 0)
     element.unmount()
-    expect(promise.isCancelled()).toBe(true)
+    resolveQuery(fragment)
+    await Promise.resolve()
+    expect(mockNavigate).not.toHaveBeenCalled()
   })
 })

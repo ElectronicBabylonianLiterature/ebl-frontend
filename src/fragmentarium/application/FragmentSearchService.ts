@@ -1,4 +1,3 @@
-import Promise from 'bluebird'
 import {
   FragmentInfo,
   FragmentInfoDto,
@@ -11,9 +10,9 @@ export type FragmentInfoPromise = Promise<FragmentInfo>
 export type FragmentInfosPaginationPromise = Promise<FragmentInfosPagination>
 
 export interface FragmentInfoRepository {
-  random(): FragmentInfosPromise
-  interesting(): FragmentInfosPromise
-  fetchNeedsRevision(): FragmentInfosPromise
+  random(signal?: AbortSignal): FragmentInfosPromise
+  interesting(signal?: AbortSignal): FragmentInfosPromise
+  fetchNeedsRevision(signal?: AbortSignal): FragmentInfosPromise
 }
 
 export default class FragmentSearchService {
@@ -23,8 +22,8 @@ export default class FragmentSearchService {
     this.fragmentRepository = fragmentRepository
   }
 
-  random(): FragmentInfoPromise {
-    return this.fragmentRepository.random().then((infos) => {
+  random(signal?: AbortSignal): FragmentInfoPromise {
+    return this.fragmentRepository.random(signal).then((infos) => {
       const info = infos[0]
       if (info) {
         return info
@@ -33,8 +32,8 @@ export default class FragmentSearchService {
     })
   }
 
-  interesting(): FragmentInfoPromise {
-    return this.fragmentRepository.interesting().then((infos) => {
+  interesting(signal?: AbortSignal): FragmentInfoPromise {
+    return this.fragmentRepository.interesting(signal).then((infos) => {
       const info = infos[0]
       if (info) {
         return info
@@ -43,7 +42,7 @@ export default class FragmentSearchService {
     })
   }
 
-  fetchNeedsRevision(): FragmentInfosPromise {
-    return this.fragmentRepository.fetchNeedsRevision()
+  fetchNeedsRevision(signal?: AbortSignal): FragmentInfosPromise {
+    return this.fragmentRepository.fetchNeedsRevision(signal)
   }
 }

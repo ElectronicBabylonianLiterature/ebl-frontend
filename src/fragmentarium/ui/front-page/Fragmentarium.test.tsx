@@ -6,7 +6,6 @@ import FragmentSearchService from 'fragmentarium/application/FragmentSearchServi
 import MemorySession, { Session } from 'auth/Session'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import Fragmentarium from './Fragmentarium'
-import Bluebird from 'bluebird'
 import {
   fragmentFactory,
   fragmentInfoFactory,
@@ -87,7 +86,7 @@ describe('Fragmentarium', () => {
     ].forEach((service) => {
       Object.keys(service).forEach((key) => {
         if (typeof service[key] === 'function') {
-          service[key].mockReturnValue(Bluebird.resolve())
+          service[key].mockReturnValue(Promise.resolve())
         }
       })
     })
@@ -107,12 +106,12 @@ describe('Fragmentarium', () => {
   beforeEach(() => {
     mockAllServiceMethods()
     fragmentService.statistics.mockReturnValue(
-      Bluebird.resolve(initialStatistics),
+      Promise.resolve(initialStatistics),
     )
-    wordService.findAll.mockReturnValue(Bluebird.resolve([]))
-    fragmentService.fetchPeriods.mockReturnValue(Bluebird.resolve([]))
-    fragmentService.fetchGenres.mockReturnValue(Bluebird.resolve([]))
-    fragmentService.fetchProvenances.mockReturnValue(Bluebird.resolve([]))
+    wordService.findAll.mockReturnValue(Promise.resolve([]))
+    fragmentService.fetchPeriods.mockReturnValue(Promise.resolve([]))
+    fragmentService.fetchGenres.mockReturnValue(Promise.resolve([]))
+    fragmentService.fetchProvenances.mockReturnValue(Promise.resolve([]))
   })
 
   describe('Statistics', () => {
@@ -146,12 +145,12 @@ describe('Fragmentarium', () => {
       latest = fragmentFactory.build()
       session = new MemorySession(['read:fragments', 'transliterate:fragments'])
       fragmentService.queryLatest.mockReturnValue(
-        Bluebird.resolve({ items: [queryItemOf(latest)], matchCountTotal: 0 }),
+        Promise.resolve({ items: [queryItemOf(latest)], matchCountTotal: 0 }),
       )
-      fragmentService.find.mockReturnValue(Bluebird.resolve(latest))
+      fragmentService.find.mockReturnValue(Promise.resolve(latest))
       needsRevision = fragmentInfoFactory.build()
       fragmentSearchService.fetchNeedsRevision.mockReturnValue(
-        Bluebird.resolve([needsRevision]),
+        Promise.resolve([needsRevision]),
       )
       await renderFragmentarium()
     }

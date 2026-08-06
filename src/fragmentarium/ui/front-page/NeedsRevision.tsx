@@ -2,7 +2,6 @@ import React from 'react'
 import FragmentList from 'fragmentarium/ui/FragmentList'
 import withData from 'http/withData'
 import { FragmentInfo } from 'fragmentarium/domain/fragment'
-import Promise from 'bluebird'
 
 function NeedsRevision({ data }: { data: readonly FragmentInfo[] }) {
   return (
@@ -24,8 +23,12 @@ export default withData<
   unknown,
   {
     fragmentSearchService: {
-      fetchNeedsRevision: () => Promise<readonly FragmentInfo[]>
+      fetchNeedsRevision: (
+        signal?: AbortSignal,
+      ) => Promise<readonly FragmentInfo[]>
     }
   },
   readonly FragmentInfo[]
->(NeedsRevision, (props) => props.fragmentSearchService.fetchNeedsRevision())
+>(NeedsRevision, (props, signal) =>
+  props.fragmentSearchService.fetchNeedsRevision(signal),
+)

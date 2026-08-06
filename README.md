@@ -178,9 +178,15 @@ Google [Lighthouse](https://developers.google.com/web/tools/lighthouse/) is inst
 yarn lighthouse <url>
 ```
 
-## Promises
+## Promises and cancellation
 
-[bluebird](http://bluebirdjs.com) promises are used whenever a cancellable promise is needed. E.g. when loading data to components (see [isMounted is an Antipattern](https://reactjs.org/blog/2015/12/16/ismounted-antipattern.html)). bluebird is compatible with native JavaScript promises, but care should taken that a bluebird promise is always used when `Promise.cancel()` is needed.
+Native promises are used throughout. Cancellation uses the web-standard `AbortController`/`AbortSignal`: the controller lives in the React layer and a `signal` is threaded down through the service and repository methods into `ApiClient`, which passes it to `fetch` (see [isMounted is an Antipattern](https://reactjs.org/blog/2015/12/16/ismounted-antipattern.html)).
+
+- **Reads.** `withData` owns an `AbortController`, passes its `signal` as the getter's second argument and aborts it on unmount or when the watched props change. Getters that thread the signal through abort the network request; the `requestSequence` guard prevents stale state either way.
+- **Writes are never aborted.** `usePromiseEffect` returns `[run, cancel, runWrite]`. `run` is for reads: it hands the operation an `AbortSignal` and aborts it on unmount or supersession. `runWrite` is for saves and hands the operation an `isStale()` predicate instead of a signal, backed by `SupersedableOperation`. A superseded write keeps running to completion and only its _UI update_ is discarded — once a write has been dispatched the client cannot know whether the server applied it, so aborting the connection would lose that outcome silently. Write methods on services and repositories therefore take **no** `signal` parameter at all; the type system, not convention, is what keeps a signal out of a write's `fetch`. Class components use `AbortableOperation` for reads. Both `run` and `runWrite` return a promise that rejects with the operation's error, so the operation must handle its own failures (typically by rendering an `ErrorAlert`).
+- **Shared cached requests must not take a signal.** `getOrFetchCachedValue` hands the _same_ in-flight promise to every caller for a given key, so a per-caller abort would reject the request for all the other live consumers. The `fetchValue` callback therefore takes no arguments, and the cached paths in `FragmentService` (`find`, `fetchProvenances`, `query`, `queryLatest`, `findThumbnail`), `TextService`, `DossiersService.queryByIds` and `BibliographyService` stay guard-based on purpose.
+- **Reads that take no signal.** Besides the shared-cache paths above, a read omits `signal` only when no caller owns a controller to pass: `fetchColophonNames` (react-select `loadOptions`), `findLemmas`/`findSuggestions` and `collectLemmaSuggestions` (lemmatisation editors), and `listAllFragments` (sitemap generation). Everything else reachable from a `withData` getter or `run` threads one.
+- Aborted operations reject with an `AbortError`. Use `isCancellation(error, signal)` from `common/utils/abortError` to distinguish a cancellation from a real failure; `ApiClient` skips error reporting for them.
 
 ## Authentication and Authorization
 

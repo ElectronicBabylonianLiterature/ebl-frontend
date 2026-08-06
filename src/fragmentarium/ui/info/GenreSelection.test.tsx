@@ -1,4 +1,3 @@
-import Bluebird from 'bluebird'
 import React from 'react'
 import { BrowserRouter as Router } from 'react-router-dom'
 import { render, screen, waitFor } from '@testing-library/react'
@@ -50,7 +49,7 @@ async function setup(): Promise<void> {
       },
     },
   )
-  fragmentServiceMock.fetchGenres.mockReturnValue(Bluebird.resolve(mockGenres))
+  fragmentServiceMock.fetchGenres.mockReturnValue(Promise.resolve(mockGenres))
   session = {
     isAllowedToTransliterateFragments: jest.fn(),
   }
