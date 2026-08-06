@@ -13,6 +13,7 @@ import {
 } from 'common/utils/period'
 import { Button, Overlay, Popover } from 'react-bootstrap'
 import usePromiseEffect from 'common/hooks/usePromiseEffect'
+import applyWhenCurrent from 'common/utils/applyWhenCurrent'
 import Spinner from 'common/ui/Spinner'
 import ErrorAlert from 'common/errors/ErrorAlert'
 import { MetaEditButton } from 'fragmentarium/ui/info/MetaEditButton'
@@ -133,22 +134,18 @@ function ScriptSelection({
             onClick={() => {
               setIsSaving(true)
               setSaveError(null)
-              runUpdate((isStale) =>
-                updateScript(updates).then(
-                  () => {
-                    if (!isStale()) {
-                      setIsSaving(false)
-                      setIsDisplayed(false)
-                      setScript(updates)
-                    }
+              runUpdate(
+                applyWhenCurrent(() => updateScript(updates), {
+                  onSuccess: () => {
+                    setIsSaving(false)
+                    setIsDisplayed(false)
+                    setScript(updates)
                   },
-                  (error) => {
-                    if (!isStale()) {
-                      setIsSaving(false)
-                      setSaveError(error)
-                    }
+                  onError: (error) => {
+                    setIsSaving(false)
+                    setSaveError(error)
                   },
-                ),
+                }),
               )
             }}
           >

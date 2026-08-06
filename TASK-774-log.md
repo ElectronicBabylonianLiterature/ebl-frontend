@@ -398,3 +398,253 @@ instrumentation overhead against a `waitFor` timeout, not a defect in the code u
 - `ChapterEditView.integration.test.ts` (443 lines, pre-existing and previously out of scope)
   came into scope once its fixtures were needed by the new saving suite. Its fixtures and
   harness moved to `ChapterEditView.testSupport.ts`, bringing the file to 243 lines.
+
+---
+
+## 2026-08-06 — Phase 3: re-review at head `1b0fe6b2`
+
+Re-reviewed the PR from scratch at the current head rather than trusting the Phase 1/2
+write-up. Every prior finding was re-derived from the code and from GitHub.
+
+### Tooling note
+
+`gh` is not installed in this devcontainer. `GITHUB_TOKEN`, `GITHUB_API_URL` and
+`GITHUB_REPOSITORY` are set, so the REST API was called through `curl` + a small paginating
+Python helper, and GraphQL was used for `reviewThreads { isResolved isOutdated }` — the REST
+comment payload cannot distinguish "resolved because fixed" from "auto-resolved because
+outdated", and that distinction turned out to matter (see Finding 4).
+
+### What was gathered
+
+- 3 review events: two `qltysh[bot]` `COMMENTED`, one `Fabdulla1` `CHANGES_REQUESTED`
+  (2026-08-04, on `5ef4a984`). PR `reviewDecision` is still `CHANGES_REQUESTED`.
+- 6 inline review comments, all `qltysh[bot]`, all `isResolved=true` **and** `isOutdated=true`.
+- 0 general/issue comments.
+- 0 sourcery-ai reviews, comments or checks. There is no sourcery config in the repo.
+- Check runs on the head SHA: three GitGuardian runs plus the `qlty check` commit status.
+  No `CI`, no CodeQL.
+
+### Pre-existing issue found and fixed during this pass
+
+The first full-suite run was killed at 122 suites with "The build failed because the process
+exited too early" (exit 1). Root cause: `yarn tsc` and `qlty smells` were running concurrently
+with the suite on a 2-CPU / 8 GB container with ~2 GB free, and jest's `--runInBand` worker was
+OOM-killed. This is an environment interaction, not a defect in the code under test — the
+re-run with nothing else executing passed all 402 suites in 335 s. Recorded in the review's
+verification appendix so the next person does not misread it as a flaky suite. It also
+supersedes the Phase 2 note that the suite must be chunked: a single invocation works.
+
+### Verification of the prior findings
+
+| Prior finding                 | Verdict at `1b0fe6b2`        | How it was checked                                                                                                                                                                      |
+| ----------------------------- | ---------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1 — write abort               | **Fixed**                    | `runWrite` takes a `WriteOperation` and hands it `isStale()` from `SupersedableOperation` (a monotonic token, no `AbortController`). All four call sites guard both promise arms.       |
+| 2 — CI never ran              | **Still open**               | `main.yml` / `codeql-analysis.yml` are gated on `pull_request: branches: [master]`; base is `chore/ts7-tsconfig-migration`.                                                             |
+| 3 — no sourcery-ai            | **Confirmed**, informational | No reviews, comments or checks from that app.                                                                                                                                           |
+| 4 — test locked in the defect | **Fixed**                    | The supersede-abort case is now `describe('run')` only; `usePromiseEffect.write.integration.test.tsx` proves the two guarantees in separate tests.                                      |
+| 5 — coverage                  | Not re-measured this pass    | Coverage instrumentation plus a full suite does not fit in the available memory. Carried forward from Phase 2.                                                                          |
+| 6 — 250-line ceiling          | **Fixed**                    | Intersecting the over-250 file list with the PR's changed-file list returns **zero** rows. The 54 files still over the limit are all inherited from the base branch and untouched here. |
+| 7 — signal surface            | **Fixed**                    | README lines 183-189 state the read rule, the write rule, the shared-cache exception and the enumerated no-signal reads.                                                                |
+| 8 — floating promise          | **Fixed**                    | `AfoRegisterSearchForm.tsx:95-99` has the `.catch` with `isCancellation`.                                                                                                               |
+| 9 — `cancellableFetch`        | **Fixed**                    | File deleted; no references remain.                                                                                                                                                     |
+
+### New findings raised
+
+Running `qlty smells` scoped to the 385 changed source files (the cloud `qlty check` status is
+`success`, so this would otherwise have been missed) surfaced that the Finding 6 remediation
+traded the 250-line gate for the DRY gate in three places: `withData.test.tsx` ↔
+`withData.filtering.test.tsx` (28 identical lines), `SignImages.test.tsx` ↔
+`SignImages.empty.test.tsx` (48 identical), `SearchForm.testSupport.tsx` ↔
+`ColophonEditor.test.tsx` (30 identical). Each was confirmed against the base branch to be
+newly introduced. `FragmentService.testSupport.ts`, shared by twelve test files in the same
+PR, is the pattern the three should follow.
+
+Also new: `usePromiseEffect.test.tsx`'s `renderReads`/`renderWrites` duplication is still live
+(mass 98) despite both qlty threads reading as resolved; a vestigial `signal?: AbortSignal`
+remains in `CuneiformFragment.tsx`'s `onSave` prop type; the `if (!isStale())` guard is
+copy-pasted across all four write consumers; and eleven files _added_ by this PR use relative
+imports instead of module-alias paths.
+
+### Gates at head `1b0fe6b2`
+
+| Gate                                 | Result                                                                              |
+| ------------------------------------ | ----------------------------------------------------------------------------------- |
+| `yarn tsc`                           | pass, exit 0, 54.8 s                                                                |
+| `yarn lint`                          | pass, exit 0, 38.6 s                                                                |
+| `yarn test --watchAll=false`         | pass, exit 0 — 402/402 suites, 3569 passed, 2 skipped, 50 snapshots, 335 s          |
+| Console-clean                        | pass — zero matches for `console.*`, `Warning:`, act warnings, unhandled rejections |
+| `qlty check` (385 changed files)     | pass                                                                                |
+| `qlty smells` (385 changed files)    | fail — Findings 3 and 4                                                             |
+| 250-line ceiling on PR-touched files | pass                                                                                |
+
+The 2 skipped tests are pre-existing `xit`s at `Edition.test.tsx:48,52`, present at the same
+positions on the base branch. No test was removed, disabled or skipped by this review.
+
+### Not done
+
+No commit, no branch, no push. Nothing posted to GitHub; no reviewer assignments changed.
+
+---
+
+## 2026-08-06 — Phase 4: remediation of the Phase 3 findings
+
+Scope: every code-level finding from the Phase 3 review. The two blockers (CI re-target,
+dismissal of the `CHANGES_REQUESTED` review) are maintainer actions and were deliberately
+left alone; no reviewer assignment was touched and nothing was posted to GitHub.
+
+### N1 — duplication introduced by the 250-line splits
+
+Three pairs, each split earlier by copying rather than extracting. All three now share a
+module, following the `FragmentService.testSupport.ts` pattern already used in this PR:
+
+| Duplicate                                                                                   | Extracted to                                                                                                                                                                                                                                             |
+| ------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 28-line `beforeEach` harness in `withData.test.tsx` / `withData.filtering.test.tsx`         | `http/withData.testSupport.tsx` — `createWithDataHarness()` returns the mocks and the wrapped component as one object; `renderWithData` / `rerenderWithData` / `renderInErrorReporter` render it                                                         |
+| 48-line `croppedAnnotations` fixture in `SignImages.test.tsx` / `SignImages.empty.test.tsx` | `signs/ui/display/SignImages.testSupport.tsx` — also holds `createMockSignService()` and `setUpSignImages()`, which absorbs the duplicated `setup()` body                                                                                                |
+| 30-line `provenances` fixture in `SearchForm.testSupport.tsx` / `ColophonEditor.test.tsx`   | `test-support/provenance-records.ts` — the two consumers sit in different feature folders, so a neutral `test-support` module is the right home. `SearchForm.testSupport.tsx` re-exports it as `provenances` so its three consumer suites are unaffected |
+
+Test sets were diffed by title against `HEAD` for all four affected files: **identical**. No
+test was removed, renamed, skipped or disabled.
+
+### N2 — `renderReads` / `renderWrites`
+
+Collapsed onto one `renderRuns({ select, operation, runCount, cancelAfterRun, results })`,
+where `select` picks the runner off the `usePromiseEffect()` tuple. `renderReads` and
+`renderWrites` remain as one-line delegating wrappers, so all fifteen call sites are
+unchanged and the diff stays reviewable.
+
+### N3 — vestigial `AbortSignal`
+
+`onSave: (save: (signal?: AbortSignal) => Promise<Fragment>) => void` →
+`onSave: (save: () => Promise<Fragment>) => void`. It now matches the sibling declaration in
+`Info.tsx` and the actual implementation, and no longer advertises a capability the write
+design forbids.
+
+### N4 — the repeated `isStale` guard
+
+New `common/utils/applyWhenCurrent.ts`:
+
+```ts
+applyWhenCurrent(operation, { onSuccess, onError }) // → (isStale) => Promise<void>
+```
+
+It lives in `utils` rather than `hooks` so the layering stays one-directional: it depends only
+on `StalenessCheck` from `SupersedableOperation`, not on the hook. All four consumers
+(`DateSelectionMethods`, `ChapterEditView`, `ScriptSelection`, `CuneiformFragment`) now pass
+handlers instead of writing the guard themselves.
+
+One deliberate semantic change: two of the four sites used `.then(ok).catch(err)`, which would
+route an exception thrown by the _success_ handler into the _save-failed_ path — mislabelling
+a render bug as a failed write. The helper uses `.then(onSuccess, onError)` uniformly, which is
+what the other two sites already did.
+
+**This closed the two coverage gaps the Phase 1 review documented as structurally unreachable.**
+The `if (!isStale())` else-arms are now inside one unit-tested helper instead of four
+components whose Save buttons are disabled while a write is in flight:
+
+| File                    | Before                  | After                                                                                                     |
+| ----------------------- | ----------------------- | --------------------------------------------------------------------------------------------------------- |
+| `ScriptSelection.tsx`   | 100 stmts / 87.5 branch | **100 / 100 / 100 / 100**                                                                                 |
+| `ChapterEditView.tsx`   | 97.91 stmts / 50 branch | 97.67 stmts / **100 branch** (the one uncovered line is the `searchBibliography` pass-through, unchanged) |
+| `CuneiformFragment.tsx` | 100 / 100               | **100 / 100 / 100 / 100**                                                                                 |
+| `applyWhenCurrent.ts`   | —                       | **100 / 100 / 100 / 100** (6 new tests)                                                                   |
+
+### N5 — relative imports
+
+The eleven newly-added files listed in the review now use alias paths, plus
+`usePromiseEffect.test.tsx` and `ColophonEditor.test.tsx`, which were being edited anyway.
+Pre-existing relative imports elsewhere were left alone — a codebase-wide sweep does not
+belong in this PR.
+
+### N8 — `Realia.sass`
+
+Split into six partials (`_realia-link-pill` 16, `_realia-layout` 189, `_realia-section` 20,
+`_realia-afo` 71, `_realia-rla` 102, `_realia-results-list` 66); `Realia.sass` is now six
+`@use` lines.
+
+The first attempt changed the cascade: cross-module `@extend` emits the extended rules where
+the placeholder's _module_ is loaded, so the `%realia-section-*` output moved to the top of the
+file. Fixed by keeping the two placeholder groups in separate modules loaded at the positions
+their definitions originally occupied (`link-pill` first, `section` after `layout`).
+
+Verified rather than assumed:
+
+```bash
+sass --load-path=. --load-path=src src/realia/ui/Realia.sass after.css --no-source-map
+diff before.css after.css   # → byte-identical
+```
+
+### Pre-existing issue found and fixed
+
+`CuneiformFragment.tsx:145` had `const [error, setError] = useState(null)`, inferred as
+`useState<null>`. The state could never legally hold an `Error`; it type-checked only because
+the old untyped `.catch((error) => …)` fed it `any`. Giving `applyWhenCurrent`'s error handler
+a real `Error` type surfaced `TS2345`. Fixed at root with `useState<Error | null>(null)`,
+matching the component's own `error: Error | null` prop rather than widening the handler.
+
+### A failure that was investigated and attributed, not fixed
+
+A scoped coverage run over the whole `fragmentarium` + `chronology` tree failed
+`FragmentView.test.tsx` with 13 unresolved spinners. Before treating it as a regression:
+
+1. `FragmentView` passes without coverage (2 suites, 11 tests).
+2. `FragmentView` passes _with_ coverage when run alone (7 tests).
+3. The same large coverage batch was re-run against a **stashed, pristine `HEAD`** working
+   tree — it died with `The build failed because the process exited too early`, and every
+   suite that did run passed, `FragmentView.test.tsx` included.
+
+So it is the devcontainer OOM-killing a large instrumented `--runInBand` batch (2 CPUs, ~2 GB
+free), not a defect and not caused by these changes. Coverage was then measured in two small
+batches instead. The stash was popped and the working tree verified restored.
+
+### Gates after remediation
+
+| Gate                        | Result                                                                                   |
+| --------------------------- | ---------------------------------------------------------------------------------------- |
+| `yarn tsc`                  | pass, exit 0                                                                             |
+| `yarn lint`                 | pass, exit 0 (three `prettier/prettier` errors from the import rewrites were auto-fixed) |
+| Affected suites (19)        | pass, 148 tests, console-clean                                                           |
+| Coverage on changed modules | see the table above                                                                      |
+| 250-line ceiling            | pass — no `.ts`/`.tsx` file this PR touches exceeds 250 lines                            |
+| Full suite                  | recorded below                                                                           |
+
+### N9 — a duplication the Phase 3 review missed
+
+After the fixes, `qlty smells` was re-run over all 390 changed source files and every
+remaining finding was checked against a **base-branch worktree**
+(`git worktree add --detach <tmp> origin/chore/ts7-tsconfig-migration`) rather than assumed
+pre-existing. All but one matched base with identical mass.
+
+The exception: `ArchaeologyEditorFields.tsx` reports a 20-line duplication (mass 91) between
+`RegularExcavationField` and `FindspotUncertainField`; base `ArchaeologyEditor.tsx` reports
+nothing. The split had turned inline JSX into two exported components, which is what made the
+duplication visible to the detector. The Phase 3 review had scoped Finding 3 to the three
+cross-sibling pairs it had verified, and missed this within-file one.
+
+Fixed by collapsing both onto a private `CheckboxField` parameterised by
+`groupIdPrefix` / `checkboxIdPrefix` / `label` / `ariaLabel`, with the two exports kept as thin
+wrappers so no consumer changed. `qlty smells` on the file is now clean and the three
+`Archaeology` suites (29 tests) pass.
+
+### Verified pre-existing (base-worktree comparison), left for the follow-up issue
+
+`ManuscriptForm.tsx` (15 lines ×2, mass 75), `DossiersSearchPage.tsx` (18 ×2, mass 99),
+`Download.test.tsx` (17 ×2, mass 101), `ApiClient.test.ts` (16/mass 69 at base → 15/mass 66
+now), `WordDisplay.testSupport.ts` (45 ×2, mass 121 — relocated verbatim from
+`WordDisplay.test.tsx`), `DetailsFields.tsx` (`Joins` complexity 22 — relocated from
+`Details.tsx`), `setupTests.ts` (`createRange` complexity 18), `SignsSearch.tsx`
+(`renderSignColumn`, 7 params), `test-support/utils.ts` (constructor, 6 params),
+`GlossaryFactory.ts` (`labelLines`, 6 returns).
+
+### Also verified
+
+- **Sass module paths.** The partials initially used `@use 'realia/ui/…'`. That would not
+  resolve in webpack: the repo's working convention is root-rooted
+  (`@use 'src/common/ui/sidebar-page-shell'` in `router/tools.sass` and `about/ui/about.sass`),
+  and craco puts `<root>/src` on `resolve.modules`. Since jest does not compile sass, **no test
+  would have caught this** — it would have failed only at build time. Corrected to
+  `src/realia/ui/…` and confirmed with a real `yarn build:ci-stable` (exit 0), plus a
+  root-only-load-path `sass` compile that still diffs byte-identical against the original.
+- **No test lost.** Test titles were diffed against `HEAD` for `withData`(+filtering),
+  `SignImages`(+empty), `usePromiseEffect` and `ColophonEditor`: identical sets. Nothing was
+  removed, renamed, skipped or disabled.

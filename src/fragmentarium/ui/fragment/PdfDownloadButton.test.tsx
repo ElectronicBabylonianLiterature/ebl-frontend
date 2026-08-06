@@ -4,9 +4,9 @@ import PdfDownloadButton from 'fragmentarium/ui/fragment/PdfDownloadButton'
 import { waitForSpinnerToBeRemoved } from 'test-support/waitForSpinnerToBeRemoved'
 import { fragmentFactory } from 'test-support/fragment-fixtures'
 import WordService from 'dictionary/application/WordService'
-import { pdfExport } from './PdfExport'
+import { pdfExport } from 'fragmentarium/ui/fragment/PdfExport'
 
-jest.mock('./PdfExport')
+jest.mock('fragmentarium/ui/fragment/PdfExport')
 jest.mock('dictionary/application/WordService')
 
 const pdfExportMock = pdfExport as jest.Mock

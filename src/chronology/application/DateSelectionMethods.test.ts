@@ -1,4 +1,4 @@
-import { saveDateDefault } from './DateSelectionMethods'
+import { saveDateDefault } from 'chronology/application/DateSelectionMethods'
 import { MesopotamianDate } from 'chronology/domain/Date'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import { WriteOperation } from 'common/hooks/usePromiseEffect'

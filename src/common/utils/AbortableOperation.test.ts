@@ -1,4 +1,4 @@
-import AbortableOperation from './AbortableOperation'
+import AbortableOperation from 'common/utils/AbortableOperation'
 
 describe('AbortableOperation', () => {
   it('starts with a live signal', () => {

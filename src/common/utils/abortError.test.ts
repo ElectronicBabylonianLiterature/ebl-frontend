@@ -1,4 +1,8 @@
-import { createAbortError, isAbortError, isCancellation } from './abortError'
+import {
+  createAbortError,
+  isAbortError,
+  isCancellation,
+} from 'common/utils/abortError'
 
 describe('isAbortError', () => {
   it.each([

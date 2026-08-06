@@ -15,7 +15,7 @@ import {
   fromLineDetailsDto,
   fromSiglumAndTransliterationDto,
   LineVariantDisplayDto,
-} from './dtos'
+} from 'corpus/application/dtos'
 import { isNoteLine } from 'transliteration/domain/type-guards'
 import { NoteLine, NoteLineDto } from 'transliteration/domain/note-line'
 import { fromTransliterationLineDto } from 'transliteration/application/dtos'

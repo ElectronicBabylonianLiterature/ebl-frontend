@@ -7,6 +7,7 @@ import ErrorAlert from 'common/errors/ErrorAlert'
 import ChapterEditor from './ChapterEditor'
 import ChapterNavigation from './ChapterNavigation'
 import usePromiseEffect from 'common/hooks/usePromiseEffect'
+import applyWhenCurrent from 'common/utils/applyWhenCurrent'
 import { Text } from 'corpus/domain/text'
 import { Chapter } from 'corpus/domain/chapter'
 import { ChapterId } from 'transliteration/domain/chapter-id'
@@ -77,18 +78,11 @@ function ChapterEditView({
 
   const update = (updater: () => Promise<Chapter>): void => {
     setStateUpdating()
-    runUpdate((isStale) =>
-      updater()
-        .then((updatedChapter) => {
-          if (!isStale()) {
-            setStateUpdated(updatedChapter)
-          }
-        })
-        .catch((error) => {
-          if (!isStale()) {
-            setStateError(error)
-          }
-        }),
+    runUpdate(
+      applyWhenCurrent(updater, {
+        onSuccess: setStateUpdated,
+        onError: setStateError,
+      }),
     )
   }
 

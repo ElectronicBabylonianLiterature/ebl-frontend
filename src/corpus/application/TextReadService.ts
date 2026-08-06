@@ -7,7 +7,11 @@ import { ChapterId } from 'transliteration/domain/chapter-id'
 
 import { Text } from 'corpus/domain/text'
 import { TextId } from 'transliteration/domain/text-id'
-import { ChapterDisplayDto, fromChapterDto, fromDto } from './dtos'
+import {
+  ChapterDisplayDto,
+  fromChapterDto,
+  fromDto,
+} from 'corpus/application/dtos'
 import TranslationLine from 'transliteration/domain/translation-line'
 import getOrFetchCachedValue from 'common/utils/getOrFetchCachedValue'
 

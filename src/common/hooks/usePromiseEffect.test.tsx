@@ -3,7 +3,7 @@ import { render, RenderResult } from '@testing-library/react'
 import usePromiseEffect, {
   PromiseOperation,
   WriteOperation,
-} from './usePromiseEffect'
+} from 'common/hooks/usePromiseEffect'
 
 type SignalCapture = {
   signals: AbortSignal[]
@@ -37,52 +37,48 @@ function capturePendingWrites(): StalenessCapture {
   }
 }
 
-function renderReads({
+type PromiseEffect = ReturnType<typeof usePromiseEffect>
+
+type SelectRunner<Operation> = (
+  effect: PromiseEffect,
+) => (operation: Operation) => Promise<void>
+
+interface RunOptions<Operation> {
+  operation: Operation
+  runCount?: number
+  cancelAfterRun?: boolean
+  results?: Promise<void>[]
+}
+
+function renderRuns<Operation>({
+  select,
   operation,
   runCount = 1,
   cancelAfterRun = false,
   results = [],
-}: {
-  operation: PromiseOperation
-  runCount?: number
-  cancelAfterRun?: boolean
-  results?: Promise<void>[]
+}: RunOptions<Operation> & {
+  select: SelectRunner<Operation>
 }): RenderResult {
   const TestComponent: FunctionComponent = () => {
-    const [run, cancel] = usePromiseEffect()
+    const effect = usePromiseEffect()
+    const run = select(effect)
     for (let index = 0; index < runCount; index += 1) {
       results.push(run(operation))
     }
     if (cancelAfterRun) {
-      cancel()
+      effect[1]()
     }
     return <>Test</>
   }
   return render(<TestComponent />)
 }
 
-function renderWrites({
-  operation,
-  runCount = 1,
-  cancelAfterRun = false,
-  results = [],
-}: {
-  operation: WriteOperation
-  runCount?: number
-  cancelAfterRun?: boolean
-  results?: Promise<void>[]
-}): RenderResult {
-  const TestComponent: FunctionComponent = () => {
-    const [, cancel, runWrite] = usePromiseEffect()
-    for (let index = 0; index < runCount; index += 1) {
-      results.push(runWrite(operation))
-    }
-    if (cancelAfterRun) {
-      cancel()
-    }
-    return <>Test</>
-  }
-  return render(<TestComponent />)
+function renderReads(options: RunOptions<PromiseOperation>): RenderResult {
+  return renderRuns({ ...options, select: ([run]) => run })
+}
+
+function renderWrites(options: RunOptions<WriteOperation>): RenderResult {
+  return renderRuns({ ...options, select: ([, , runWrite]) => runWrite })
 }
 
 describe('run', () => {

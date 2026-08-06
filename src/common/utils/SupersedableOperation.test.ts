@@ -1,4 +1,4 @@
-import SupersedableOperation from './SupersedableOperation'
+import SupersedableOperation from 'common/utils/SupersedableOperation'
 
 test('An operation is current until it is superseded', () => {
   const operation = new SupersedableOperation()

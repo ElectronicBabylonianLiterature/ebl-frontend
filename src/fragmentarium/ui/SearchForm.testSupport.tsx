@@ -1,6 +1,7 @@
 import React from 'react'
 import { render, screen, waitFor, fireEvent } from '@testing-library/react'
 import { bibliographyEntryFactory } from 'test-support/bibliography-fixtures'
+import { provenanceRecords } from 'test-support/provenance-records'
 import { FragmentQuery } from 'query/FragmentQuery'
 import { Periods } from 'common/utils/period'
 import { MemoryRouter } from 'react-router-dom'
@@ -33,36 +34,7 @@ export const genres = [
   ['MONUMENTAL'],
 ]
 
-export const provenances = [
-  {
-    id: 'standard-text',
-    longName: 'Standard Text',
-    abbreviation: 'Std',
-    parent: null,
-    sortKey: 1,
-  },
-  {
-    id: 'assyria',
-    longName: 'Assyria',
-    abbreviation: 'Assa',
-    parent: null,
-    sortKey: 2,
-  },
-  {
-    id: 'assur',
-    longName: 'Aššur',
-    abbreviation: 'Ašš',
-    parent: 'Assyria',
-    sortKey: 3,
-  },
-  {
-    id: 'dur-katlimmu',
-    longName: 'Dūr-Katlimmu',
-    abbreviation: 'Dka',
-    parent: 'Assyria',
-    sortKey: 4,
-  },
-]
+export const provenances = provenanceRecords
 
 const query: FragmentQuery = {}
 

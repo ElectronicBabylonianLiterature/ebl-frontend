@@ -1,81 +1,94 @@
 # TASK-774-review — PR #774 `chore: remove bluebird, use AbortController for cancellation`
 
-- **PR**: [#774](https://github.com/ElectronicBabylonianLiterature/ebl-frontend/pull/774)
-- **Author**: khoidt
-- **Head**: `5ef4a984a6d6d59039db04cfadea013a7efe457e`
-- **Base**: `chore/ts7-tsconfig-migration` (stacked on #773, to be re-targeted to `master`)
-- **Size**: +3870 / −1596 across 275 files, 6 commits
-- **Mergeable**: yes (`clean`)
-- **Reviewed**: 2026-08-06, against PR head, in an isolated worktree
+|                   |                                                                                 |
+| ----------------- | ------------------------------------------------------------------------------- |
+| **PR**            | [#774](https://github.com/ElectronicBabylonianLiterature/ebl-frontend/pull/774) |
+| **Head reviewed** | `1b0fe6b22e10180349cbfa27d7bcf2f2cb8f9833`                                      |
+| **Base**          | `chore/ts7-tsconfig-migration` (**not** `master`)                               |
+| **State**         | open, not draft, `MERGEABLE`, review decision `CHANGES_REQUESTED`               |
+| **Size**          | 408 files, +20185 / −13846                                                      |
+| **Review date**   | 2026-08-06                                                                      |
 
 ---
 
 ## Summary
 
-The PR does what it says: `bluebird` and `@types/bluebird` are gone from `package.json`, `src`
-has zero `bluebird` references, and cancellation is expressed with the web-standard
-`AbortController`/`AbortSignal` threaded from the React layer down into `fetch`. The
-infrastructure work is solid — `ConcurrencyLimiter` correctly detaches its abort listener on
-slot grant and does not leak slots, `getOrFetchCachedValue` de-duplicates in-flight requests,
-and `Chapters.tsx` gains real error handling while moving a side-effect out of render into a
-`useEffect`. All three local hard gates pass at head.
+This is a re-review at head `1b0fe6b2`. Every blocker and finding raised in the previous pass
+was re-verified against the current code rather than taken from the earlier write-up.
 
-The blocking problem is the write path. `runWrite` reuses the same "abort the previous
-operation" supersession semantics as `run`, and the resulting signal is passed all the way into
-the POST. Starting a second save therefore aborts the first save's in-flight `fetch` — after
-the request may already have reached and been applied by the server — and the client silently
-classifies that as a cancellation, so no error surfaces. Fabdulla1 raised this as a design
-concern; **it is reachable in shipped UI**: `ScriptSelection`'s Save button is
-`disabled={!isDirty}`, not `disabled={isSaving}`, and stays enabled for the whole save.
+**The substance of the PR is in good shape.** `bluebird` is gone from `package.json` and from
+all application code (it survives only as a transitive dependency of `bfj`, a build-time
+`react-scripts` dependency — not the app's concern). The write-cancellation defect that drew
+the `CHANGES_REQUESTED` is genuinely fixed, at the design level rather than patched, and the
+integration test the reviewer asked for exists and asserts both required guarantees
+separately. The 250-line ceiling is met by every file the PR touches.
 
-The coverage picture reinforces this. The full suite passes with zero console output, but the
-`signal.aborted` / `isCancellation` guards the PR adds to its consumers are among the least
-covered lines in the change — including the very handler that decides whether a failed save is
-shown to the user.
+**What still blocks approval is process, not code.** The CI workflow has never run on a single
+commit of this branch, and the only human review is an unresolved `CHANGES_REQUESTED`.
 
-Everything else is secondary: one file newly pushed over the 250-line ceiling, an unevenly
-applied signal surface, a now-vestigial `cancellableFetch`, and a floating promise in
-`AfoRegisterSearchForm`.
+**What is newly found in this pass** is that the 250-line remediation traded one hard gate for
+another: three of the file splits copied fixtures and setup verbatim into the new sibling
+instead of extracting them, which violates the DRY gate. The project already demonstrates the
+correct pattern elsewhere in the same PR (`FragmentService.testSupport.ts`, shared by twelve
+test files), so this is an inconsistency to close, not a redesign.
 
-### Comment status tracking
+### Pre-existing review threads and comments (hard gate — all gathered)
 
-| Reviewer               | Type                                              | Threads | Status                                                             |
-| ---------------------- | ------------------------------------------------- | ------- | ------------------------------------------------------------------ |
-| `Fabdulla1`            | timeline review, `CHANGES_REQUESTED` (2026-08-04) | —       | **Unresolved — blocker**                                           |
-| `qltysh[bot]`          | 2 × `COMMENTED`, 6 inline threads                 | 6       | All 6 **resolved** by the bot; 5 outdated. Verified fixed at head. |
-| general/issue comments | —                                                 | 0       | —                                                                  |
-| `sourcery-ai`          | —                                                 | 0       | **Never ran on this PR** (see Finding 3)                           |
+Fetched via the REST API (`/pulls/774/reviews`, `/pulls/774/comments`, `/issues/774/comments`)
+and GraphQL `reviewThreads` for resolution and outdated status. `gh` is not installed in this
+devcontainer; `GITHUB_TOKEN` + `curl` were used.
 
-Nobody has approved this PR. `Fabdulla1` is the only human reviewer and requested changes.
+| Author        | Type         | Date       | State                   | Status                   |
+| ------------- | ------------ | ---------- | ----------------------- | ------------------------ |
+| `qltysh[bot]` | review event | 2026-07-21 | `COMMENTED`             | superseded               |
+| `qltysh[bot]` | review event | 2026-07-23 | `COMMENTED`             | superseded               |
+| `Fabdulla1`   | review event | 2026-08-04 | **`CHANGES_REQUESTED`** | **UNRESOLVED — blocker** |
 
-### Checks
+**Inline review comments — 6, all from `qltysh[bot]`, all `isResolved=true` and
+`isOutdated=true`:**
 
-| Check                                         | Conclusion                     |
-| --------------------------------------------- | ------------------------------ |
-| GitGuardian scan (push)                       | success                        |
-| GitGuardian scan (pull_request)               | success                        |
-| GitGuardian Security Checks                   | success                        |
-| `qlty check` (commit status)                  | success — "No blocking issues" |
-| **`CI` workflow (lint → tsc → test → build)** | **never ran** — see Finding 2  |
-| **CodeQL**                                    | **never ran** — see Finding 2  |
+| #                                                                                                             | File                                     | Line | Issue                  | Truly fixed?                                                                 |
+| ------------------------------------------------------------------------------------------------------------- | ---------------------------------------- | ---- | ---------------------- | ---------------------------------------------------------------------------- |
+| [r3623999642](https://github.com/ElectronicBabylonianLiterature/ebl-frontend/pull/774#discussion_r3623999642) | `corpus/application/TextService.ts`      | 394  | similar-code, mass 79  | **Yes** — file is now 70 lines, split into 7 modules; no duplication at head |
+| [r3623999655](https://github.com/ElectronicBabylonianLiterature/ebl-frontend/pull/774#discussion_r3623999655) | `corpus/application/TextService.ts`      | 412  | similar-code, mass 79  | **Yes**                                                                      |
+| [r3638371006](https://github.com/ElectronicBabylonianLiterature/ebl-frontend/pull/774#discussion_r3638371006) | `corpus/application/TextService.ts`      | 487  | similar-code, mass 66  | **Yes**                                                                      |
+| [r3638371019](https://github.com/ElectronicBabylonianLiterature/ebl-frontend/pull/774#discussion_r3638371019) | `corpus/application/TextService.ts`      | 503  | similar-code, mass 66  | **Yes**                                                                      |
+| [r3638370985](https://github.com/ElectronicBabylonianLiterature/ebl-frontend/pull/774#discussion_r3638370985) | `common/hooks/usePromiseEffect.test.tsx` | 52   | similar-code, mass 120 | **No — see Finding 4.** Still flagged at head, mass 98                       |
+| [r3638370997](https://github.com/ElectronicBabylonianLiterature/ebl-frontend/pull/774#discussion_r3638370997) | `common/hooks/usePromiseEffect.test.tsx` | 101  | similar-code, mass 120 | **No — see Finding 4**                                                       |
 
-### Local gate results (PR head, clean `yarn install --frozen-lockfile`)
+> The GitHub resolution state is misleading on the last two. They were auto-resolved as
+> _outdated_ when the line moved, not because the duplication was removed.
 
-| Gate                                            | Result                                                                                                |
-| ----------------------------------------------- | ----------------------------------------------------------------------------------------------------- |
-| `yarn tsc`                                      | **pass** — 0 errors                                                                                   |
-| `yarn lint` (eslint + stylelint)                | **pass** — 0 errors                                                                                   |
-| `CI=true yarn test --watchAll=false --coverage` | **pass** — 346 suites, 3529 passed / 2 skipped, 50 snapshots, **zero console output**, exit 0 (407 s) |
-| Coverage on affected code                       | **fail** — see Finding 5                                                                              |
+**General / issue comments: 0.**
 
-After the remediation described below, the same gates on the working tree read:
-`yarn tsc` **pass**, `yarn lint` **pass**, `CI=true yarn test --watchAll=false --coverage`
-**pass** — 347 suites, 3530 passed / 2 skipped, 50 snapshots, **zero console output**, exit 0.
+**sourcery-ai: no reviews, no comments, no check runs on this PR.** There is no sourcery
+configuration in the repo (`.github/` contains only `copilot-instructions.md` and
+`workflows/`). Nothing to gather; nothing outstanding.
 
-The console-clean gate is genuinely met: not one `console.error`, `console.warn`, `Warning:` or
-unhandled-rejection line appears in the full run. That is worth calling out on a change this
-size. The claim in the PR body ("340 suites, 3470 passed") is now 346 / 3529 at head, and still
-accurate in substance.
+### Checks on head `1b0fe6b2`
+
+| Check                          | App            | Conclusion |
+| ------------------------------ | -------------- | ---------- |
+| GitGuardian Security Checks    | gitguardian    | success    |
+| GitGuardian scan               | github-actions | success    |
+| GitGuardian scan               | github-actions | success    |
+| `qlty check` (combined status) | qlty           | success    |
+
+**Nothing else ran — see Finding 1.** No `CI` job, no CodeQL. `main.yml` and
+`codeql-analysis.yml` are gated on `pull_request: branches: [master]`, and this PR targets
+`chore/ts7-tsconfig-migration`.
+
+### Local gate results (head `1b0fe6b2`)
+
+| Gate                                          | Result                                                                                         |
+| --------------------------------------------- | ---------------------------------------------------------------------------------------------- |
+| `yarn tsc`                                    | **pass** (exit 0, 54.8 s)                                                                      |
+| `yarn lint`                                   | **pass** (exit 0, 38.6 s — eslint + stylelint)                                                 |
+| `yarn test --watchAll=false`                  | **pass** — 402/402 suites, 3569 passed, 2 skipped, 50 snapshots, 335 s                         |
+| Console-clean                                 | **pass** — zero `console.*`, `Warning:`, act warnings or unhandled rejections in the whole run |
+| 250-line ceiling on PR-touched files          | **pass** — intersecting the over-250 list with the changed-file list returns zero rows         |
+| `qlty check` on the 385 changed source files  | **pass** — no issues                                                                           |
+| `qlty smells` on the 385 changed source files | **fail** — see Finding 3                                                                       |
 
 ---
 
@@ -83,80 +96,12 @@ accurate in substance.
 
 ### Severity legend
 
-`Blocker` — must be fixed before approval. `Major` — must be fixed before merge.
-`Minor` — should be fixed. `Nit` — author's discretion.
+**Blocker** — cannot approve · **Major** — must fix before merge · **Minor** — should fix ·
+**Nit** — optional.
 
 ---
 
-### Finding 1 — `runWrite` aborts an already-dispatched server write — **Blocker**
-
-**Category**: correctness / data integrity
-**Files**: [src/common/utils/AbortableOperation.ts:4-8](src/common/utils/AbortableOperation.ts#L4-L8),
-[src/common/hooks/usePromiseEffect.ts:10-23,39-43](src/common/hooks/usePromiseEffect.ts#L10-L23),
-[src/fragmentarium/ui/info/ScriptSelection.tsx:130-158](src/fragmentarium/ui/info/ScriptSelection.tsx#L130-L158)
-
-`AbortableOperation.start()` aborts the previous controller before creating a new one.
-`runWrite` shares that path with `run`, and the signal it hands the operation is threaded into
-the request body all the way to `fetch`:
-
-```text
-ScriptSelection.tsx:137  runUpdate((signal) => updateScript(updates, signal) …)
-  → FragmentService.updateScript(number, script, signal)
-  → FragmentRepository.updateScript(…, signal)
-  → ApiClient.postJson(path, body, true, signal)
-  → ApiClient.fetch  →  cancellableFetch(url, { …, signal })  →  fetch
-```
-
-The same shape is reachable from
-[DateSelectionMethods.ts:43-59](src/chronology/application/DateSelectionMethods.ts#L43-L59),
-[ChapterEditView.tsx:77-93](src/corpus/ui/ChapterEditView.tsx#L77-L93) and
-[CuneiformFragment.tsx:147-173](src/fragmentarium/ui/fragment/CuneiformFragment.tsx#L147-L173).
-
-This directly contradicts the PR's own stated design ("Save/download flows gate `setState` on
-`signal.aborted` rather than aborting an in-flight write") and the dedicated tests
-`Does not abort a write operation on unmount` / `…when cancel is called`. Those two guarantees
-hold; the supersession one does not.
-
-Once the connection is aborted the client cannot know whether the server applied the write, and
-because `isCancellation` treats it as a cancellation the failure is swallowed entirely: both of
-operation A's handlers are gated on `!signal.aborted`, so there is no error alert, no retry and
-no log. The superseding write B then completes normally and clears `isSaving`, so the UI shows
-an unqualified success — the user has no signal that anything was dropped, and no way to tell
-whether the server ended up with A's payload, B's, or a partial application of both.
-
-**Severity**: Blocker — a user's save can be dropped silently, with the UI reporting success.
-
-**Reproduction steps**
-
-1. Open a fragment in the Fragmentarium and click the Script edit button.
-2. Change the period so the form is dirty. Save becomes enabled
-   (`disabled={!isDirty}` — [ScriptSelection.tsx:132](src/fragmentarium/ui/info/ScriptSelection.tsx#L132)).
-3. Click **Save**. `runUpdate` starts operation A; the POST is dispatched.
-4. `script` state is only assigned in the success handler, so `isDirty` is still `true` and the
-   button is still enabled. Click **Save** again before A settles.
-5. `AbortableOperation.start()` aborts A's controller. A's `fetch` is aborted mid-flight even
-   though the server may already have committed it.
-6. Observed: A's abort is silent — no error, no log — and when B settles the UI reports plain
-   success. Expected: the first write completes (or fails visibly); only its _UI update_ is
-   discarded as stale.
-
-Throttling the network in devtools makes the window trivial to hit.
-
-**Recommendation**
-
-Stop network-aborting writes. `runWrite` should hand the operation a signal used **only** to
-gate `setState`, and must not abort a controller whose request has already been dispatched —
-i.e. give `AbortableOperation` a separate "supersede without aborting" mode, or give writes a
-distinct type that never reaches `ApiClient`. The alternative — proving every consumer makes
-overlapping writes impossible — is fragile and, as step 4 shows, already false today.
-
-Whichever route is taken, `ScriptSelection`'s Save button should also be
-`disabled={!isDirty || isSaving}`; that is worth doing regardless, but it is a mitigation, not
-the fix.
-
----
-
-### Finding 2 — the CI workflow has never run on this PR — **Blocker**
+### Finding 1 — CI has never run on this PR — **Blocker** (carried over, still open)
 
 **Category**: process / verification
 **File**: [.github/workflows/main.yml:3-7](.github/workflows/main.yml#L3-L7)
@@ -169,438 +114,509 @@ on:
     branches: [master]
 ```
 
-Because #774 targets `chore/ts7-tsconfig-migration`, neither `CI` nor `codeql-analysis` has ever
-been triggered. Every workflow run on this branch (10 of them) is GitGuardian. Lint, `tsc`, the
-test suite, the production build and the coverage upload have only ever been verified on
-contributors' machines — on a 275-file, +3870/−1596 change that removes a core dependency.
+PR #774 targets `chore/ts7-tsconfig-migration`, so neither `CI` (lint → tsc → test → build)
+nor CodeQL has been triggered on any commit of this branch. The only checks on the head SHA
+are three GitGuardian runs and the qlty status. A green check list on this PR therefore says
+nothing about whether the code compiles, lints, or passes its tests.
 
-The author's own `TASK-remove-bluebird-review.md` acknowledges this as outstanding item 11.
+For a 408-file, +20k/−13.8k change that removes a promise library and rewrites cancellation
+across the whole application, that is the single largest risk on the PR.
 
-**Severity**: Blocker — approval would rest on unverified CI.
-
-**Reproduction steps**
-
-1. `GET /repos/.../actions/runs?branch=chore/remove-bluebird` → 10 runs, all `GitGuardian scan`.
-2. `GET /repos/.../commits/5ef4a984/check-runs` → 3 runs, all GitGuardian.
-
-**Recommendation**
-
-Merge #773, re-target #774 to `master`, and require a green `CI` + CodeQL run before approval.
-Separately, consider widening `main.yml` to `pull_request: branches: ['**']` so stacked PRs are
-not silently unverified — that is a repo-wide gap this PR merely exposed.
-
----
-
-### Finding 3 — no sourcery-ai review exists — **Informational**
-
-The review request asked for sourcery-ai findings. There are none: sourcery-ai has never
-reviewed, commented on, or checked this PR, and the repository contains no `.sourcery.yaml`.
-The only automated reviewer configured is `qltysh[bot]`, plus GitGuardian for secrets. If
-sourcery coverage is wanted, the app needs installing on the repo first — there is nothing to
-address here.
-
----
-
-### Finding 4 — the test suite locks in the behaviour Finding 1 asks to change — **Major**
-
-**Category**: test correctness
-**File**: [src/common/hooks/usePromiseEffect.test.tsx:52-58](src/common/hooks/usePromiseEffect.test.tsx#L52-L58)
-
-```tsx
-describe.each(runners)('%s', (runner) => {
-  it('Aborts the previous operation when a new one supersedes it', () => {
-    const { signals, operation } = capturePendingSignals()
-    renderOperations({ runner, operation, runCount: 2 })
-    expect(signals[0].aborted).toBe(true)
-```
-
-`runners` is `['run', 'runWrite']`, so this asserts that superseding a **write** aborts it. The
-test confirms the implementation rather than the intended guarantee, and any fix for Finding 1
-must delete or invert this case for `runWrite`.
-
-There is also no test anywhere that reaches a mocked `ApiClient`/`fetch` and proves a second
-write does not abort a dispatched first one.
-`src/corpus/ui/ChapterEditView.integration.test.ts` would be the natural home but is untouched
-by this PR (last changed in #692).
-
-**Severity**: Major.
-
-**Reproduction steps**
-
-Read the file — `runners` on line 7, `describe.each` on line 52.
-
-**Recommendation**
-
-Once Finding 1 is settled, drop `runWrite` from the parameterised supersession case and add an
-integration-level test that (a) asserts the first write's `fetch` is **not** aborted when a
-second write starts, and (b) separately asserts the stale first result cannot update current UI
-state. Those are two distinct guarantees and should be two distinct assertions.
-
----
-
-### Finding 5 — the new cancellation branches are the least-covered code — **Major**
-
-**Category**: test coverage
-**Files**: see table
-
-The repo gate is 100 % coverage on affected code. It is not met, and the misses are not
-incidental — they land almost exactly on the abort/cancellation logic this PR introduces.
-
-| File                                                                                             | Stmts | Branch | Uncovered lines                                  | What is uncovered                                                                    |
-| ------------------------------------------------------------------------------------------------ | ----- | ------ | ------------------------------------------------ | ------------------------------------------------------------------------------------ |
-| [CuneiformFragment.tsx](src/fragmentarium/ui/fragment/CuneiformFragment.tsx#L162-L164)           | 81.48 | 60     | 59, **162-164**, 170                             | the entire new `if (!signal.aborted)` save-error handler, plus the defensive `throw` |
-| [CuneiformConverterForm.tsx](src/signs/ui/CuneiformConverter/CuneiformConverterForm.tsx#L84-L85) | 82.97 | 50     | 62-63, **84-85**, 95-97, 104                     | the `!isCancellation(error, signal)` outer guard and the per-line query `.catch`     |
-| [ChapterEditView.tsx](src/corpus/ui/ChapterEditView.tsx#L98-L99)                                 | 89.58 | 50     | **98-99**, **121-122**, 156                      | `updateAlignment` and `updateLemmatization` signal threading is never invoked        |
-| [AfoRegisterSearchForm.tsx](src/afo-register/ui/AfoRegisterSearchForm.tsx#L53-L55)               | 81.39 | 65.38  | 54, 91, 136, 153, 198-202, 229-230               | the `if (signal.aborted) return` early exit                                          |
-| [ScriptSelection.tsx](src/fragmentarium/ui/info/ScriptSelection.tsx)                             | 94.87 | 62.50  | 74, 183                                          | —                                                                                    |
-| [TextService.ts](src/corpus/application/TextService.ts)                                          | 91.45 | 53.57  | 110-120, 275, 356-360, 467-468, 586              | —                                                                                    |
-| [FragmentRepository.ts](src/fragmentarium/infrastructure/FragmentRepository.ts)                  | 84.37 | 75.47  | 457, 489-490, 570-571, 603-604, 700-711, 751-779 | —                                                                                    |
-| [withData.tsx](src/http/withData.tsx#L49-L52)                                                    | 100   | 92.85  | branch at 50                                     | one side of the `isCancellation` guard                                               |
-| [ApiClient.ts](src/http/ApiClient.ts)                                                            | 98.46 | 94.11  | 52                                               | `Error.captureStackTrace` fallback                                                   |
-| [DateSelectionMethods.ts](src/chronology/application/DateSelectionMethods.ts)                    | 100   | 82.75  | branches at 72, 108                              | —                                                                                    |
-| [FragmentService.ts](src/fragmentarium/application/FragmentService.ts)                           | 100   | 93.10  | branches at 810-815                              | —                                                                                    |
-
-Whole-project coverage at head is 93.07 % statements / 83.73 % branches.
-
-Credit where due: the genuinely new modules are all at 100 % — `AbortableOperation.ts`,
-`abortError.ts`, `mapSeries.ts`, `ConcurrencyLimiter.ts`, `usePromiseEffect.ts`,
-`getOrFetchCachedValue.ts`, `Chapters.tsx`, `PdfDownloadButton.tsx`, `WordDownloadButton.tsx`.
-The gap is in the _consumers_ that were adapted to the new API.
-
-This matters more than a coverage percentage usually would. `CuneiformFragment.tsx:162-164` is
-the handler that decides whether a failed save surfaces to the user, and it is the same code
-path that Finding 1 shows is silently swallowing aborted writes today. It has no test.
-
-**Severity**: Major — the repo gate is explicit, and the uncovered lines are the risky ones.
+**Severity**: Blocker.
 
 **Reproduction steps**
 
 ```bash
-CI=true yarn test --watchAll=false --coverage
-# read the per-file table for the files listed above
+curl -s -H "Authorization: Bearer $GITHUB_TOKEN" \
+  "$GITHUB_API_URL/repos/$GITHUB_REPOSITORY/commits/1b0fe6b2.../check-runs" \
+  | python3 -c "import json,sys; [print(c['name']) for c in json.load(sys.stdin)['check_runs']]"
+# → GitGuardian Security Checks / GitGuardian scan / GitGuardian scan
 ```
 
 **Recommendation**
 
-Bring the four `signal.aborted` / `isCancellation` consumer branches above to 100 % — each needs
-one test that rejects the underlying operation and one that aborts the signal. Do this as part
-of the Finding 1 fix, since the correct assertions depend on what the write semantics become.
-`ScriptSelection`, `TextService` and `FragmentRepository` carry pre-existing gaps that predate
-this PR; those belong in the follow-up issue, not here.
+Merge #773 and re-target #774 to `master`, then let CI and CodeQL run green and link the runs
+on the PR. Separately — and worth doing regardless — widen the triggers to
+`pull_request: branches: ['**']` so stacked PRs can never merge without CI having run.
 
 ---
 
-### Finding 6 — 250-line ceiling — **Major**
+### Finding 2 — the only human review is an unresolved `CHANGES_REQUESTED` — **Blocker**
 
-**Category**: repo hard gate
-**Files**: see table
+**Category**: process
 
-The copilot instructions treat 250 lines per `.ts`/`.tsx` as a hard gate. Measured
-before-and-after for every changed file, **one file is newly pushed over the limit by this PR**:
+`Fabdulla1`'s review of 2026-08-04 (commit `5ef4a984`) is still the effective review decision
+on the PR. Its technical content has since been addressed at head `1b0fe6b2` (see the
+verification table below), but the review itself has not been dismissed or converted, so
+`reviewDecision` is still `CHANGES_REQUESTED`.
 
-| File                                                     | Before | After   |
-| -------------------------------------------------------- | ------ | ------- |
-| [src/http/withData.test.tsx](src/http/withData.test.tsx) | 244    | **264** |
+| Reviewer's point                                                          | Status at `1b0fe6b2`       | Evidence                                                                                                                                                                                                                                                                                                                                                                                                                              |
+| ------------------------------------------------------------------------- | -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `runWrite` can abort an already-dispatched server write                   | **Fixed**                  | [usePromiseEffect.ts:33-37](src/common/hooks/usePromiseEffect.ts#L33-L37) — `runWrite` now takes a `WriteOperation` and hands it an `isStale()` predicate from [SupersedableOperation](src/common/utils/SupersedableOperation.ts), a monotonic token with no `AbortController` in sight. No signal can reach a write's `fetch`.                                                                                                       |
+| All four flagged call sites                                               | **Fixed**                  | [DateSelectionMethods.ts:42-57](src/chronology/application/DateSelectionMethods.ts#L42-L57), [ChapterEditView.tsx:80-92](src/corpus/ui/ChapterEditView.tsx#L80-L92), [ScriptSelection.tsx:136-150](src/fragmentarium/ui/info/ScriptSelection.tsx#L136-L150), [CuneiformFragment.tsx:152-166](src/fragmentarium/ui/fragment/CuneiformFragment.tsx#L152-L166) — each guards both the resolve and the reject arm with `if (!isStale())`. |
+| The supersession test asserted the wrong guarantee for `runWrite`         | **Fixed**                  | [usePromiseEffect.test.tsx:88-94](src/common/hooks/usePromiseEffect.test.tsx#L88-L94) — the abort-on-supersede case is now `describe('run')` only.                                                                                                                                                                                                                                                                                    |
+| "Add an integration-level test reaching a mocked ApiClient or fetch"      | **Fixed**                  | [usePromiseEffect.write.integration.test.tsx](src/common/hooks/usePromiseEffect.write.integration.test.tsx) drives a component → `runWrite` → real `ApiClient` → mocked `fetch`.                                                                                                                                                                                                                                                      |
+| "…and separately prove that stale results cannot update current UI state" | **Fixed**                  | Two distinct tests: _"A superseding write does not abort the first write in flight"_ (line 86) and _"A superseded write cannot overwrite the current UI state"_ (line 98).                                                                                                                                                                                                                                                            |
+| Seven files over the 250-line ceiling                                     | **Fixed for `.ts`/`.tsx`** | `FragmentService.ts` 888→94, `FragmentRepository.ts` 787→128, `TextService.ts` 597→70, `FakeApi.ts` 516→190, `SignImages.tsx` 442→91, `withData.test.tsx` 264→207. `Realia.sass` is 453 — but the gate as written covers `.ts`/`.tsx` script files, so this is out of scope.                                                                                                                                                          |
 
-Twelve files that were already over the limit were grown further by this PR:
+**Severity**: Blocker — a `CHANGES_REQUESTED` review is by definition blocking until dismissed.
 
-| File                                                                                                                       | Before | After | Δ   |
-| -------------------------------------------------------------------------------------------------------------------------- | ------ | ----- | --- |
-| [src/fragmentarium/application/FragmentService.ts](src/fragmentarium/application/FragmentService.ts)                       | 824    | 888   | +64 |
-| [src/fragmentarium/infrastructure/FragmentRepository.ts](src/fragmentarium/infrastructure/FragmentRepository.ts)           | 732    | 787   | +55 |
-| [src/corpus/ui/Chapters.tsx](src/corpus/ui/Chapters.tsx)                                                                   | 268    | 299   | +31 |
-| [src/fragmentarium/infrastructure/FragmentRepository.test.ts](src/fragmentarium/infrastructure/FragmentRepository.test.ts) | 1014   | 1045  | +31 |
-| [src/fragmentarium/ui/edition/TransliterationForm.test.tsx](src/fragmentarium/ui/edition/TransliterationForm.test.tsx)     | 284    | 311   | +27 |
-| [src/dossiers/infrastructure/DossiersRepository.test.ts](src/dossiers/infrastructure/DossiersRepository.test.ts)           | 398    | 415   | +17 |
-| [src/fragmentarium/application/FragmentService.test.ts](src/fragmentarium/application/FragmentService.test.ts)             | 1922   | 1938  | +16 |
-| [src/fragmentarium/ui/fragment/CuneiformFragmentEditor.tsx](src/fragmentarium/ui/fragment/CuneiformFragmentEditor.tsx)     | 303    | 314   | +11 |
-| [src/corpus/application/TextService.ts](src/corpus/application/TextService.ts)                                             | 587    | 597   | +10 |
-| [src/fragmentarium/ui/info/Details.tsx](src/fragmentarium/ui/info/Details.tsx)                                             | 283    | 292   | +9  |
-| [src/test-support/FakeApi.ts](src/test-support/FakeApi.ts)                                                                 | 508    | 516   | +8  |
-| [src/afo-register/ui/AfoRegisterSearchForm.tsx](src/afo-register/ui/AfoRegisterSearchForm.tsx)                             | 264    | 272   | +8  |
+**Recommendation**
 
-Twenty-one further violations exist in files this PR touches without growing (largest:
-`FragmentService.test.ts`, `TextService.test.ts` at 782, `SignImages.tsx` at 442).
+Re-request review from `Fabdulla1`, pointing at the four commits that address each point
+(`5ef4a984`, `b744a49b`, `c563799d`, `1b0fe6b2`). _No reviewer assignment was changed as part
+of this review._
 
-Fabdulla1's list additionally names `src/realia/ui/Realia.sass` (453 lines); the ceiling as
-written applies to `.ts`/`.tsx` script files, so that one is out of scope of this gate.
+---
 
-**Severity**: Major for `withData.test.tsx` (the gate is unambiguous for a file the PR pushed
-over). The other twelve are pre-existing debt this PR aggravates.
+### Finding 3 — the 250-line splits reintroduced duplication — **Major** (new)
+
+**Category**: DRY hard gate
+**Files**: three file/sibling pairs, all created by this PR's Finding 6 remediation
+
+`qlty smells` scoped to the 385 changed source files reports duplication that did **not** exist
+in the base branch. In each case a file was split to get under 250 lines and the shared
+fixture or setup was _copied_ into the new sibling rather than extracted:
+
+| Pair                                                                                                                                                                           | Duplicated                                                | Mass | Base state                                         |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------- | ---: | -------------------------------------------------- |
+| [withData.test.tsx:34](src/http/withData.test.tsx#L34) ↔ [withData.filtering.test.tsx:32](src/http/withData.filtering.test.tsx#L32)                                            | 28 **identical** lines — the whole `beforeEach` harness   |  141 | one 244-line file                                  |
+| [SignImages.test.tsx:17](src/signs/ui/display/SignImages.test.tsx#L17) ↔ [SignImages.empty.test.tsx:16](src/signs/ui/display/SignImages.empty.test.tsx#L16)                    | 48 **identical** lines — the `croppedAnnotations` fixture |  138 | one 258-line file                                  |
+| [SearchForm.testSupport.tsx:36](src/fragmentarium/ui/SearchForm.testSupport.tsx#L36) ↔ [ColophonEditor.test.tsx:15](src/fragmentarium/ui/fragment/ColophonEditor.test.tsx#L15) | 30 **identical** lines — the `provenances` fixture        |   82 | fixture existed once, in `ColophonEditor.test.tsx` |
+
+The third is the most pointed: a `testSupport` module was created for exactly this purpose and
+then a second verbatim copy of the fixture was left behind in `ColophonEditor.test.tsx`.
+
+This is not a style preference — the project instructions make DRY a hard gate ("if the same
+domain logic or mapping appears in more than one place, extract and reuse a shared helper
+before finalizing"), and satisfying the 250-line gate by duplicating is the one way of meeting
+it that the instructions rule out.
+
+The PR already does this correctly elsewhere: `FragmentService.testSupport.ts` (138 lines) is
+shared by twelve `FragmentService.*.test.ts` files with no duplication flagged.
+
+**Severity**: Major — a hard gate is violated, and the fix is mechanical.
 
 **Reproduction steps**
 
 ```bash
-git diff --name-only origin/chore/ts7-tsconfig-migration...HEAD | grep -E '\.(ts|tsx)$' \
-  | while read f; do [ -f "$f" ] && wc -l "$f"; done | awk '$1>250' | sort -rn
+git diff --name-only --diff-filter=d origin/chore/ts7-tsconfig-migration...HEAD -- 'src/*' > /tmp/changed.txt
+qlty smells $(tr '\n' ' ' < /tmp/changed.txt)
 ```
 
 **Recommendation**
 
-Split `withData.test.tsx` into sibling suites (e.g. `withData.cancellation.test.tsx` for the new
-abort cases) — that is required by the gate and is small. For the twelve pre-existing files, do
-**not** attempt the split inside this PR; a 275-file dependency removal is the wrong place for
-it. Agree with the author's recommendation and track it as a separate follow-up issue.
+Extract each duplicated block into the sibling `*.testSupport.ts(x)` module the split already
+implies — `withData.testSupport.tsx` for the shared `beforeEach`, `SignImages.testSupport.ts`
+for `croppedAnnotations` — and have `ColophonEditor.test.tsx` import `provenances` from
+`SearchForm.testSupport.tsx` (or move it to a neutral fixtures module, since the two consumers
+are in different feature folders).
 
 ---
 
-### Finding 7 — the signal surface is applied inconsistently — **Minor**
+### Finding 4 — `usePromiseEffect.test.tsx` duplication was never actually fixed — **Minor** (new)
 
-**Category**: API design
-**File**: [src/fragmentarium/application/FragmentService.ts:94-190](src/fragmentarium/application/FragmentService.ts#L94-L190)
+**Category**: DRY / stale review state
+**File**: [src/common/hooks/usePromiseEffect.test.tsx:40-86](src/common/hooks/usePromiseEffect.test.tsx#L40-L86)
 
-Within the same interface, `fetchGenres` and `fetchPeriods` take a signal while
-`fetchProvenances`, `fetchProvenance`, `fetchProvenanceChildren` and `fetchColophonNames` do
-not; `findInCorpus` takes one but `find` does not; `updateLemmaAnnotation` takes one but
-`updateLemmatization` does not; `query`/`queryLatest`/`findLemmas`/`listAllFragments` do not.
+`renderReads` and `renderWrites` are a 23-line near-identical pair: the same four destructured
+options, the same option type, the same loop and the same `cancelAfterRun` branch. They differ
+only in which tuple slot they pull off `usePromiseEffect()` and the operation's type.
 
-There is no stated rule, so a caller cannot tell whether omitting a signal means "not
-cancellable" or "not migrated yet". The PR body's own caveat ("Data fetches abort the network
-**iff** the getter threads the signal") is precisely this ambiguity.
+qlty raised this on commit `01e61b13` at mass 120; at head it is still raised, at mass 98. The
+two GitHub threads show `isResolved=true`, but they were resolved as _outdated_ because the
+lines moved — the duplication is still there.
 
-**Severity**: Minor — no defect today, but it makes the abstraction unreliable to reason about.
+**Severity**: Minor — test-only, but it is a live qlty finding presenting as a closed one.
 
 **Reproduction steps**
 
-Read the `FragmentRepository` interface declaration; compare `fetchGenres` and
-`fetchProvenances`.
+`qlty smells src/common/hooks/usePromiseEffect.test.tsx` → two blocks, mass 98.
 
 **Recommendation**
 
-State the rule in code review terms and apply it uniformly: every read threads a signal; writes
-do not (per Finding 1). Where a method is deliberately un-cancellable — e.g. the shared-cache
-loaders, which the author notes must not take a signal because a cancelled caller would poison
-the cache for everyone — leave a one-line reason in the README rather than a silent omission.
+Collapse into one `renderUsingHook({ select, operation, runCount, cancelAfterRun, results })`
+where `select` picks `run` or `runWrite` off the tuple.
 
 ---
 
-### Finding 8 — floating promise in `AfoRegisterSearchForm` — **Minor**
+### Finding 5 — vestigial `AbortSignal` in the `onSave` contract — **Minor** (new)
 
-**Category**: correctness / console noise
-**File**: [src/afo-register/ui/AfoRegisterSearchForm.tsx:121-129](src/afo-register/ui/AfoRegisterSearchForm.tsx#L121-L129)
+**Category**: API design / correctness
+**File**: [src/fragmentarium/ui/fragment/CuneiformFragment.tsx:31](src/fragmentarium/ui/fragment/CuneiformFragment.tsx#L31)
 
-```tsx
-const controller = new AbortController()
-fetchTextNumberOptions(
-  query,
-  textNumberOptions,
-  setTextNumberOptions,
-  afoRegisterService,
-  controller.signal,
+```ts
+onSave: (save: (signal?: AbortSignal) => Promise<Fragment>) => void
+```
+
+Nothing supplies that signal and nothing reads it. It is the last trace of the abort-based
+write design that Finding 1 of the previous review removed. The sibling declaration in
+[Info.tsx:29](src/fragmentarium/ui/info/Info.tsx#L29) is already correct
+(`(save: () => Promise<Fragment>) => void`), and the actual implementation
+([CuneiformFragment.tsx:147](src/fragmentarium/ui/fragment/CuneiformFragment.tsx#L147)) takes
+no signal either.
+
+This matters more than a dead parameter usually would: the whole point of the fix is that the
+type system now forbids threading a signal into a write. This declaration advertises the
+opposite, and a future contributor could reasonably start passing one.
+
+**Severity**: Minor — no defect today; it undermines the type-level guarantee the fix relies on.
+
+**Reproduction steps**
+
+`grep -rn AbortSignal src/fragmentarium/ui/fragment/CuneiformFragment.tsx` → one hit, the prop
+type. No call site supplies an argument.
+
+**Recommendation**
+
+Drop the parameter: `onSave: (save: () => Promise<Fragment>) => void`.
+
+---
+
+### Finding 6 — the `isStale` guard is copy-pasted across all four write consumers — **Minor** (new)
+
+**Category**: DRY
+**Files**: [DateSelectionMethods.ts:42-57](src/chronology/application/DateSelectionMethods.ts#L42-L57),
+[ChapterEditView.tsx:80-92](src/corpus/ui/ChapterEditView.tsx#L80-L92),
+[ScriptSelection.tsx:136-150](src/fragmentarium/ui/info/ScriptSelection.tsx#L136-L150),
+[CuneiformFragment.tsx:152-166](src/fragmentarium/ui/fragment/CuneiformFragment.tsx#L152-L166)
+
+All four write sites are the same shape:
+
+```ts
+runWrite((isStale) =>
+  promise.then(
+    (result) => {
+      if (!isStale()) {
+        /* success */
+      }
+    },
+    (error) => {
+      if (!isStale()) {
+        /* failure */
+      }
+    },
+  ),
 )
-return () => controller.abort()
 ```
 
-`fetchTextNumberOptions` is `async` and its result is neither awaited nor `.catch`-ed. If
-`searchTextSuggestions` rejects — including with an `AbortError` once the getter threads the
-signal further down — the rejection is unhandled. Under the repo's console-clean gate an
-unhandled rejection in a test run is a defect, and in production it reaches
-`window.onunhandledrejection`.
-
-Note the signal is only used to gate `setState` _after_ the await
-([line 53](src/afo-register/ui/AfoRegisterSearchForm.tsx#L53)); the underlying request is not
-actually cancelled, so `controller.abort()` in the cleanup is cheaper than it looks.
+Below the mass threshold qlty flags, but it is the same domain logic — "apply this result only
+if it is still current" — written out four times. Each site is one forgotten `if (!isStale())`
+away from reintroducing exactly the stale-overwrite bug the design is meant to prevent.
 
 **Severity**: Minor.
 
-**Reproduction steps**
-
-Make `afoRegisterService.searchTextSuggestions` reject and type into the AfO Register text
-field; the rejection is reported as unhandled.
-
 **Recommendation**
 
-Attach a `.catch` that swallows cancellations via the existing `isCancellation` helper and
-surfaces anything else, matching the pattern the PR already uses in `Chapters.tsx`.
+Add a sibling to `runWrite` that takes the callbacks and applies the freshness check itself,
+e.g. `runWriteThen(operation, { onSuccess, onError })`, so no consumer has to remember the
+guard. Keep the raw `runWrite` for cases that need custom control.
 
 ---
 
-### Finding 9 — `cancellableFetch` is now a no-op wrapper — **Nit**
+### Finding 7 — new files use relative imports against the project standard — **Minor** (new)
 
-**Category**: simplification
-**File**: [src/http/cancellableFetch.ts:1-6](src/http/cancellableFetch.ts#L1-L6)
+**Category**: coding standards
+**Files**: 11 of the 134 `.ts`/`.tsx` files **added** by this PR
 
-```ts
-export default function cancellableFetch(
-  url: string,
-  options: RequestInit = {},
-): Promise<Response> {
-  return fetch(url, options)
-}
-```
+The project standard is "always use full import paths (for example `common/useObjectUrl`)
+instead of local relative paths like `./useObjectUrl` whenever module aliases are available."
+These newly-added files use `./`:
 
-It has exactly one production caller ([ApiClient.ts:161](src/http/ApiClient.ts#L161)) and a
-6-case test file that now tests `fetch`. The name is also actively misleading: the function no
-longer does anything to make a fetch cancellable.
+| File                                                                                                     | Import                    |
+| -------------------------------------------------------------------------------------------------------- | ------------------------- |
+| [SupersedableOperation.test.ts:1](src/common/utils/SupersedableOperation.test.ts#L1)                     | `./SupersedableOperation` |
+| [abortError.test.ts:1](src/common/utils/abortError.test.ts#L1)                                           | `./abortError`            |
+| [AbortableOperation.test.ts:1](src/common/utils/AbortableOperation.test.ts#L1)                           | `./AbortableOperation`    |
+| [ConcurrencyLimiter.cancellation.test.ts:1](src/common/utils/ConcurrencyLimiter.cancellation.test.ts#L1) | `./ConcurrencyLimiter`    |
+| [TextReadService.ts:10](src/corpus/application/TextReadService.ts#L10)                                   | `./dtos`                  |
+| [TextServiceBase.ts:11](src/corpus/application/TextServiceBase.ts#L11)                                   | `./dtos`                  |
+| [TextServiceCore.ts:18](src/corpus/application/TextServiceCore.ts#L18)                                   | `./dtos`                  |
+| [Chapters.test.tsx:5](src/corpus/ui/Chapters.test.tsx#L5)                                                | `./Chapters`              |
+| [withData.filtering.test.tsx:3](src/http/withData.filtering.test.tsx#L3)                                 | `./withData`              |
+| [DateSelectionMethods.test.ts:1](src/chronology/application/DateSelectionMethods.test.ts#L1)             | `./DateSelectionMethods`  |
+| [PdfDownloadButton.test.tsx:7](src/fragmentarium/ui/fragment/PdfDownloadButton.test.tsx#L7)              | `./PdfExport`             |
 
-**Severity**: Nit — dead abstraction, zero behavioural risk.
+Relative imports are widespread in the pre-existing codebase (91 changed files contain them),
+so this is only actionable for the files this PR _creates_ — those had a free choice.
 
-**Reproduction steps**
-
-`grep -rn cancellableFetch src` → one production call site.
+**Severity**: Minor.
 
 **Recommendation**
 
-Inline `fetch` into `ApiClient.fetch` and delete both files. If the seam is wanted for test
-injection, keep it but rename it to something honest.
+Convert the eleven new files to alias paths. Leave pre-existing relative imports alone; a
+codebase-wide sweep does not belong in this PR.
 
 ---
 
-### Finding 10 — smaller observations — **Nit**
+### Finding 8 — smaller observations — **Nit**
 
-| #   | File                                                                                                                               | Note                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
-| --- | ---------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 10a | [src/http/withData.tsx:44-48](src/http/withData.tsx#L44-L48)                                                                       | ~~The success path guards on `requestSequence` only; adding `!abortController.signal.aborted` would make it symmetric with the error path.~~ **WITHDRAWN — this finding was wrong.** Applying it broke `FragmentView.test.tsx`: 13 spinners never resolved, because the success path legitimately runs after the effect cleanup has aborted the controller while `requestSequence` still identifies the request as current. The `requestSequence`-only guard is correct and the PR body's claim about it is accurate. No change. |
-| 10b | [src/common/utils/mapSeries.ts](src/common/utils/mapSeries.ts)                                                                     | New module with no dedicated test and no `signal` support (bluebird's `mapSeries` was cancellable). Its `index` argument is unused by all five call sites.                                                                                                                                                                                                                                                                                                                                                                       |
-| 10c | [src/signs/ui/CuneiformConverter/CuneiformConverterForm.tsx:61,86](src/signs/ui/CuneiformConverter/CuneiformConverterForm.tsx#L61) | `console.error('Query Error:', error)` is duplicated in the same function — the DRY gate applies. Also, an `AbortError` from `limiter.run`'s queue rejects _outside_ the inner `.catch`, so it takes the outer path; that is correct, but the two log sites make it easy to misread.                                                                                                                                                                                                                                             |
-| 10d | [src/corpus/ui/Chapters.tsx:82-84](src/corpus/ui/Chapters.tsx#L82-L84)                                                             | `ExtantLinesCell` renders a full `ErrorAlert` per manuscript row, so one failed `findExtantLines` paints N identical alerts down the table.                                                                                                                                                                                                                                                                                                                                                                                      |
-| 10e | [src/http/ApiClient.ts:212-217](src/http/ApiClient.ts#L212-L217)                                                                   | `postJson(path, body, authenticate = true, signal?)` forces call sites to write the boolean literal `true` just to reach `signal` (e.g. `TextService.postChapterUpdate`). An options object would read better.                                                                                                                                                                                                                                                                                                                   |
+| #   | File                                                                                                                                                                                            | Note                                                                                                                                                                                                                                                                                                                                                       |
+| --- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 8a  | [src/realia/ui/Realia.sass](src/realia/ui/Realia.sass)                                                                                                                                          | 453 lines, named in the reviewer's list. The 250-line gate as written covers `.ts`/`.tsx` script files, so this is arguably out of scope — but it was raised and should be answered explicitly rather than silently skipped. (`Introduction.sass` is 727 and `about/ui/project.sass` 261; neither is touched by this PR.)                                  |
+| 8b  | [src/fragmentarium/application/FragmentCache.ts](src/fragmentarium/application/FragmentCache.ts) (247) and [FragmentReadService.ts](src/fragmentarium/application/FragmentReadService.ts) (241) | Within three and nine lines of the ceiling. Any follow-up touching them will breach it.                                                                                                                                                                                                                                                                    |
+| 8c  | [src/http/withData.tsx:60-62](src/http/withData.tsx#L60-L62)                                                                                                                                    | On unmount the cleanup aborts the controller but `requestSequence` is not bumped, so a getter that ignores the signal can still `setData` on an unmounted component. Harmless under React 18 (no warning, no leak), and the previous review correctly withdrew the "add `!signal.aborted`" fix as breaking. Noted only so the asymmetry is a known choice. |
+| 8d  | `yarn.lock`                                                                                                                                                                                     | `bluebird@3.7.2` is still resolved, as a transitive dependency of `bfj@7.1.0` (a `react-scripts` bundle-analyzer dependency). Application code and `package.json` are clean; nothing to do, but worth stating so "bluebird is still in the lockfile" is not later mistaken for an incomplete removal.                                                      |
+| 8e  | 13 `TASK-*.md` files at the repo root                                                                                                                                                           | Tracking artefacts must be deleted before merge — see item 7 of _What Has To Be Done_.                                                                                                                                                                                                                                                                     |
 
 ---
 
 ## Severity
 
-| Severity          | Count | Findings                                                                                   |
-| ----------------- | ----- | ------------------------------------------------------------------------------------------ |
-| **Blocker**       | 2     | 1 (write abort), 2 (CI never ran)                                                          |
-| **Major**         | 3     | 4 (test locks in the defect), 5 (coverage on the new abort branches), 6 (250-line ceiling) |
-| **Minor**         | 2     | 7 (inconsistent signal surface), 8 (floating promise)                                      |
-| **Nit**           | 2     | 9 (`cancellableFetch`), 10 (a–e)                                                           |
-| **Informational** | 1     | 3 (no sourcery-ai)                                                                         |
+| Severity    | Count | Findings                                                                                                                              |
+| ----------- | ----: | ------------------------------------------------------------------------------------------------------------------------------------- |
+| **Blocker** |     2 | 1 (CI never ran), 2 (unresolved `CHANGES_REQUESTED`)                                                                                  |
+| **Major**   |     1 | 3 (splits reintroduced duplication)                                                                                                   |
+| **Minor**   |     4 | 4 (`usePromiseEffect.test.tsx` duplication), 5 (vestigial `AbortSignal`), 6 (`isStale` copy-paste), 7 (relative imports in new files) |
+| **Nit**     |     1 | 8 (a–e)                                                                                                                               |
 
-**Verdict: request changes.** Finding 1 is a silent data-integrity defect on a reachable path,
-and Finding 2 means nothing about this PR has been verified by CI.
+Both blockers are process items outside the diff. Every code-level blocker and major finding
+from the previous review is verified closed at this head.
 
 ---
 
 ## Reproduction Steps
 
-Consolidated; per-finding steps are inline above.
+Per-finding steps are inline above. Consolidated:
 
 ```bash
-# 1. PR head in an isolated worktree
-git fetch origin chore/remove-bluebird chore/ts7-tsconfig-migration
-git worktree add --detach /tmp/pr774 5ef4a984a6d6d59039db04cfadea013a7efe457e
-cd /tmp/pr774 && yarn install --frozen-lockfile
-
-# 2. Hard gates
-yarn tsc                                       # pass
-yarn lint                                      # pass
-CI=true yarn test --watchAll=false --coverage  # 346 suites pass, console-clean
-
-# 3. Finding 6 — line-count gate
-git diff --name-only origin/chore/ts7-tsconfig-migration...HEAD | grep -E '\.(ts|tsx)$' \
-  | while read f; do [ -f "$f" ] && wc -l "$f"; done | awk '$1>250' | sort -rn
-
-# 4. Finding 2 — CI never triggered
+# Reviews, comments, thread resolution status (gh is not installed; use the API directly)
 curl -s -H "Authorization: Bearer $GITHUB_TOKEN" \
-  "$GITHUB_API_URL/repos/$GITHUB_REPOSITORY/actions/runs?branch=chore/remove-bluebird" \
-  | grep -o '"name":"[^"]*"' | sort -u
-```
+  "$GITHUB_API_URL/repos/$GITHUB_REPOSITORY/pulls/774/reviews"
+curl -s -H "Authorization: Bearer $GITHUB_TOKEN" \
+  "$GITHUB_API_URL/repos/$GITHUB_REPOSITORY/pulls/774/comments"
+curl -s -H "Authorization: Bearer $GITHUB_TOKEN" \
+  "$GITHUB_API_URL/repos/$GITHUB_REPOSITORY/issues/774/comments"     # → []
+# GraphQL reviewThreads { isResolved isOutdated } for the resolved-vs-outdated distinction
 
-Finding 1 is reproduced through the UI; the steps are in that section.
+# Checks on the head SHA  (Finding 1)
+curl -s -H "Authorization: Bearer $GITHUB_TOKEN" \
+  "$GITHUB_API_URL/repos/$GITHUB_REPOSITORY/commits/1b0fe6b2.../check-runs"
+
+# Hard gates
+yarn tsc                                  # pass
+yarn lint
+CI=true yarn test --watchAll=false        # run alone: concurrent tsc/qlty OOMs the 8 GB container
+
+# 250-line gate, intersected with the PR's changed files
+git diff --name-status origin/chore/ts7-tsconfig-migration...HEAD -- 'src/*' > /tmp/ns.txt
+find src -name '*.ts' -o -name '*.tsx' | xargs wc -l | awk '$1>250 && $2!="total"{print $2}' \
+  | while read f; do grep -q "	$f$" /tmp/ns.txt && echo "TOUCHED: $f"; done   # → no output
+
+# qlty  (Findings 3, 4)
+git diff --name-only --diff-filter=d origin/chore/ts7-tsconfig-migration...HEAD -- 'src/*' > /tmp/changed.txt
+qlty check --no-fix $(tr '\n' ' ' < /tmp/changed.txt)   # no issues
+qlty smells         $(tr '\n' ' ' < /tmp/changed.txt)   # duplication blocks above
+```
 
 ---
 
 ## Recommendation
 
-**Request changes.** The bluebird removal itself is well executed and worth landing, but not at
-this head.
+**Do not approve yet — but the remaining work is small and mostly not code.**
 
-Before approval:
-
-1. Resolve the write-cancellation design (Finding 1) so a dispatched write is never
-   network-aborted by a superseding one, and back it with the integration test Fabdulla1 asked
-   for (Finding 4).
-2. Get the PR through a real CI run (Finding 2) by merging #773 and re-targeting to `master`.
-
-Before merge: cover the new cancellation branches (Finding 5), split `withData.test.tsx`
-(Finding 6), fix the floating promise (Finding 8), and delete all task-tracking `.md` files.
-
-Defer to follow-up issues: the twelve pre-existing over-limit files, the signal-surface
-consistency pass (Finding 7), and the `cancellableFetch` cleanup (Finding 9).
-
-Credit where due: `ConcurrencyLimiter`'s cancellation handling is genuinely careful — the
+The engineering on this PR is sound. The write-cancellation defect was fixed at the design
+level (a supersession token instead of a weakened abort), the fix is enforced by the type
+system rather than by convention, the README states the read/write/shared-cache rules
+explicitly, and `ConcurrencyLimiter`'s cancellation handling is genuinely careful — the abort
 listener is detached on slot grant, `createReleaseSlot` is idempotent, and the queued-abort /
-slot-handoff race is covered by a dedicated test. The qlty duplications raised on earlier
-commits were fixed at the root cause rather than suppressed.
+slot-handoff race has its own test. The 250-line decomposition was carried out across 35 files
+without behaviour change.
+
+**Before approval**
+
+1. Get the PR through a real CI run (Finding 1). Nothing else on this list matters as much:
+   a 408-file rewrite of application-wide cancellation has never been compiled, linted or
+   tested by CI.
+2. Have `Fabdulla1` re-review and dismiss or convert the `CHANGES_REQUESTED` (Finding 2). The
+   technical content is addressed; the review state is not.
+
+**Before merge**
+
+3. Close the duplication the splits introduced (Finding 3) — three extractions, mechanical.
+4. Fix Findings 4–7: collapse `renderReads`/`renderWrites`, drop the vestigial `AbortSignal`
+   from `onSave`, factor the `isStale` guard, convert the eleven new files to alias imports.
+5. Delete all 13 `TASK-*.md` files.
+
+**Follow-up issues, not this PR**
+
+6. The 54 pre-existing over-250-line files (all inherited from `chore/ts7-tsconfig-migration`;
+   this PR does not touch a single one).
+7. `Realia.sass` and the other over-length `.sass` files, if the ceiling is meant to cover them.
+8. Widening `main.yml` to `pull_request: branches: ['**']`.
+
+---
+
+## Comment status tracking
+
+| Thread                          | Author    | Resolved on GitHub | Actually addressed                     | Outdated                 |
+| ------------------------------- | --------- | ------------------ | -------------------------------------- | ------------------------ |
+| `TextService.ts:394`            | qltysh    | yes                | **yes**                                | yes                      |
+| `TextService.ts:412`            | qltysh    | yes                | **yes**                                | yes                      |
+| `TextService.ts:487`            | qltysh    | yes                | **yes**                                | yes                      |
+| `TextService.ts:503`            | qltysh    | yes                | **yes**                                | yes                      |
+| `usePromiseEffect.test.tsx:52`  | qltysh    | yes                | **no — Finding 4**                     | yes                      |
+| `usePromiseEffect.test.tsx:101` | qltysh    | yes                | **no — Finding 4**                     | yes                      |
+| Review `CHANGES_REQUESTED`      | Fabdulla1 | **no**             | technical content yes; review state no | review was on `5ef4a984` |
+
+Unresolved: **1** (Fabdulla1's review state). Resolved-but-not-fixed: **2**.
 
 ---
 
 ## Remediation status (2026-08-06, uncommitted on `chore/remove-bluebird`)
 
-The findings below were subsequently **fixed** in the working tree at the user's request.
-This section records what changed; the numbered list that follows is the original action
-list, kept for traceability.
+Every code-level finding below was subsequently **fixed** at the user's request. The two
+blockers are maintainer actions and were deliberately left alone: no reviewer assignment was
+changed and nothing was posted to GitHub.
 
-| Finding                      | Status                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
-| ---------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 1 — write abort              | **Fixed.** `runWrite` hands an `isStale()` predicate from the new `SupersedableOperation`; `signal?` removed from every write-side service/repository method so the compiler forbids threading one into a write's `fetch`. `ScriptSelection`'s Save is now `disabled={!isDirty \|\| isSaving}`.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
-| 2 — CI never ran             | **Not fixable here.** Requires merging #773 and re-targeting the PR; that is a maintainer action.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
-| 3 — no sourcery-ai           | Informational; nothing to fix.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
-| 4 — tests lock in the defect | **Fixed.** `runWrite` dropped from the parameterised supersession case; new `usePromiseEffect.write.integration.test.tsx` drives `runWrite` → `ApiClient` → mocked `fetch` and proves no signal is attached, the first write is not aborted, and a stale write cannot overwrite current state.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
-| 5 — coverage                 | **Fixed, with two documented exceptions.** Every module the Finding 1 fix introduced is at 100 %. The seven consumer files listed at review time are now: `CuneiformConverterForm.tsx` 100/100, `AfoRegisterSearchForm.tsx` 100/100, `AfoRegisterSearchFields.tsx` 100/100, `CuneiformFragment.tsx` 100/100, `FragmentCache.ts` 100/100, `DateSelectionMethods.ts` 100/100, `ScriptSelection.tsx` 100 stmts / 87.5 branch, `ChapterEditView.tsx` 97.91 stmts / 95.83 funcs / 50 branch. The two residuals are structurally unreachable, not untested: (a) in `ScriptSelection.tsx` and `ChapterEditView.tsx` the `if (!isStale())` else-arms need two overlapping writes, and both Save controls are `disabled` while a save is in flight, so a second write cannot be dispatched from the UI — the same guards are covered in `CuneiformFragment.tsx`, where the transliteration form can be submitted directly and supersession is reachable; (b) `ChapterEditView.tsx:147` is the one-line `searchBibliography` pass-through, reachable only by expanding the collapsed References list inside an added manuscript. Both are defensive code kept deliberately. |
-| 6 — 250-line ceiling         | **Fixed — 35 of 35.** Every `.ts`/`.tsx` file this PR touches is at or under 250 lines; the re-derived line-count query returns nothing. Source files were decomposed by responsibility (`FakeApi` 516 → 3 modules with 30 duplicated expectation builders collapsed onto shared helpers; `SignImages` 442 → 6; `DossiersService` 319 → 3; `BibliographyService` 291 → 2; `TextAnnotation` 346 → 3; `Chapters` 304 → 3; `CuneiformFragmentEditor` 303 → 2; `Details` 285 → 2; `ArchaeologyEditor` 285 → 2; `AfoRegisterSearchForm` 280 → 2; `DateSelectionState` 279 → 2; `ColophonEditorIndividualForm` 334 → 2; `TransliterationForm` 254 → 2). Test files were split by `describe` block with shared fixtures in `*.testSupport.ts(x)` siblings. Two DRY wins fell out: `SignImages`'s private `runWithConcurrencyLimit` was replaced by the existing `common/utils/ConcurrencyLimiter`, and `FakeApi`'s 30 near-identical builders now share `expectGet`/`allowGet`/`expectPost`.                                                                                                                                                                             |
-| 7 — signal surface           | **Fixed.** Signals threaded through `folioPager`, `findAnnotations`, `fetchNamedEntityAnnotations` and their `withData` getters; README states the read rule, the write rule and the deliberate exceptions.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
-| 8 — floating promise         | **Fixed.** `.catch` added, cancellations swallowed via `isCancellation`, real errors surfaced in an `ErrorAlert`.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
-| 9 — `cancellableFetch`       | **Fixed.** Wrapper and its test deleted; `ApiClient` calls `fetch` directly.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
-| 10 — nits                    | **Fixed**, except 10a which was **withdrawn as incorrect** (see the row in Finding 10).                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+| Finding                                     | Status                                                                                                                                                                                                                   |
+| ------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| 1 — CI never ran                            | **Not fixable here.** Requires merging #773 and re-targeting the PR.                                                                                                                                                     |
+| 2 — unresolved `CHANGES_REQUESTED`          | **Not fixable here.** Requires `Fabdulla1` to re-review.                                                                                                                                                                 |
+| 3 — splits reintroduced duplication         | **Fixed.** Three shared modules extracted: `http/withData.testSupport.tsx`, `signs/ui/display/SignImages.testSupport.tsx`, `test-support/provenance-records.ts`. `qlty smells` no longer reports any of the three pairs. |
+| 4 — `usePromiseEffect.test.tsx` duplication | **Fixed.** `renderReads`/`renderWrites` collapsed onto one `renderRuns({ select, … })`; both names survive as one-line wrappers so no call site changed. qlty clean.                                                     |
+| 5 — vestigial `AbortSignal`                 | **Fixed.** `onSave: (save: () => Promise<Fragment>) => void`.                                                                                                                                                            |
+| 6 — copy-pasted `isStale` guard             | **Fixed.** New `common/utils/applyWhenCurrent.ts` (100 % on every metric, 6 tests); all four consumers pass `onSuccess`/`onError` handlers.                                                                              |
+| 7 — relative imports in new files           | **Fixed.** All eleven converted, plus two files edited anyway.                                                                                                                                                           |
+| 8a — `Realia.sass`                          | **Fixed.** Split into six partials (largest 189 lines); compiled before/after with `sass` and diffed — **byte-identical CSS** — and `yarn build` passes.                                                                 |
+| 8b — files near the ceiling                 | No action; informational.                                                                                                                                                                                                |
+| 8c — `withData` unmount asymmetry           | No action; the previous review correctly withdrew the "fix" as breaking.                                                                                                                                                 |
+| 8d — `bluebird` in `yarn.lock`              | No action; transitive dependency of `bfj`, build-time only.                                                                                                                                                              |
+| 8e — `TASK-*.md` files                      | Still present — they are this task's live working documents. Delete before merge.                                                                                                                                        |
 
-Two DRY extractions came out of the Finding 1 work and were kept:
-`FragmentRepository.postFragmentUpdate` (collapsed twelve near-identical POST bodies) and
-`FragmentService.applyFragmentUpdate` (collapsed eleven identical inject-then-cache tails).
+### Coverage improved by the Finding 6 fix
+
+Moving the `if (!isStale())` guard into one unit-tested helper closed the two residuals the
+first review had documented as structurally unreachable:
+
+| File                    | Before                  | After                                                                                            |
+| ----------------------- | ----------------------- | ------------------------------------------------------------------------------------------------ |
+| `ScriptSelection.tsx`   | 100 stmts / 87.5 branch | **100 / 100 / 100 / 100**                                                                        |
+| `ChapterEditView.tsx`   | 97.91 stmts / 50 branch | 97.67 stmts / **100 branch** (remaining line is the unchanged `searchBibliography` pass-through) |
+| `CuneiformFragment.tsx` | 100 / 100               | **100 / 100 / 100 / 100**                                                                        |
+| `applyWhenCurrent.ts`   | —                       | **100 / 100 / 100 / 100**                                                                        |
+
+### One finding this review under-scoped
+
+Re-running `qlty smells` after the fixes and comparing against a **base-branch worktree**
+showed one duplication I had not reported: `ArchaeologyEditorFields.tsx`'s
+`RegularExcavationField` and `FindspotUncertainField` are 20-line near-identical components
+(mass 91), flagged at head but not at base — the split turned inline JSX into two exported
+components and made it visible. **Fixed** by collapsing both onto a private `CheckboxField`
+and keeping the two exports as thin wrappers, so consumers are untouched.
+
+All other `qlty smells` findings on changed files were verified against the base-branch
+worktree and are **pre-existing with identical mass** — `ManuscriptForm.tsx`,
+`DossiersSearchPage.tsx`, `Download.test.tsx`, `ApiClient.test.ts` (16 lines/mass 69 at base,
+now 15/66), `WordDisplay.testSupport.ts` (relocated verbatim from `WordDisplay.test.tsx`),
+`DetailsFields.tsx` (`Joins` complexity 22, relocated from `Details.tsx`), `setupTests.ts`,
+`SignsSearch.tsx`, `test-support/utils.ts`, `GlossaryFactory.ts`. They belong in the follow-up
+issue with the 54 pre-existing over-250-line files.
+
+### Pre-existing defect found and fixed during remediation
+
+`CuneiformFragment.tsx:145` declared `const [error, setError] = useState(null)`, which
+TypeScript infers as `useState<null>` — the state could never legally hold an `Error`. It
+compiled only because the old untyped `.catch((error) => …)` fed it `any`. Typing
+`applyWhenCurrent`'s error handler surfaced `TS2345`. Fixed at root with
+`useState<Error | null>(null)`, matching the component's own `error: Error | null` prop.
 
 ---
 
 ## What Has To Be Done
 
 Blockers are marked **[BLOCKER]** — the PR cannot be approved while any remain.
+Items 3–7 and 9 below are now **done**; they are kept for traceability.
 
-1. **[BLOCKER]** Redesign `runWrite` so superseding a write does **not** abort the previous
-   write's in-flight `fetch`. Give writes a signal that gates `setState` only, or add a
-   supersede-without-abort mode to `AbortableOperation`.
-   (`src/common/utils/AbortableOperation.ts`, `src/common/hooks/usePromiseEffect.ts`)
-2. **[BLOCKER]** Remove `runWrite` from the parameterised "Aborts the previous operation when a
-   new one supersedes it" case in
-   [src/common/hooks/usePromiseEffect.test.tsx:52-58](src/common/hooks/usePromiseEffect.test.tsx#L52-L58)
-   and replace it with a case asserting the new guarantee.
-3. **[BLOCKER]** Add an integration-level test reaching a mocked `ApiClient`/`fetch` that proves
-   (a) a second write does not abort a dispatched first write, and (b) the stale first result
-   cannot update current UI state. Two separate assertions.
-4. **[BLOCKER]** Merge #773, re-target #774 to `master`, and let `CI` (lint → tsc → tests →
-   build → coverage) and CodeQL run green. Attach the run links to the PR.
-5. **[BLOCKER]** Re-request review from `Fabdulla1` and get the `CHANGES_REQUESTED` review
-   dismissed or converted to an approval. It is the only human review and it is unresolved.
-6. Disable `ScriptSelection`'s Save button while a save is in flight —
-   `disabled={!isDirty || isSaving}`
-   ([src/fragmentarium/ui/info/ScriptSelection.tsx:132](src/fragmentarium/ui/info/ScriptSelection.tsx#L132)).
-   Audit the other `runWrite` consumers (`CuneiformFragment`, `DateSelectionMethods`,
-   `DatesInTextSelection`) for the same gap.
-7. ~~Split [src/http/withData.test.tsx](src/http/withData.test.tsx) (264 lines) back under the
-   250-line ceiling.~~ **Done**, along with the other 34 over-limit files: every `.ts`/`.tsx`
-   file this PR touches is now at or under 250 lines.
-8. Add a `.catch` to the `fetchTextNumberOptions` call in
-   [src/afo-register/ui/AfoRegisterSearchForm.tsx:122](src/afo-register/ui/AfoRegisterSearchForm.tsx#L122)
-   that swallows cancellations via `isCancellation` and surfaces everything else.
-9. ~~Bring the new cancellation branches to 100 % coverage (Finding 5).~~ **Done.**
-   `CuneiformConverterForm.tsx`, `AfoRegisterSearchForm.tsx`, `AfoRegisterSearchFields.tsx`,
-   `CuneiformFragment.tsx`, `FragmentCache.ts` and `DateSelectionMethods.ts` are at 100 % on
-   every metric. `ScriptSelection.tsx` is 100 % statements / 87.5 % branches and
-   `ChapterEditView.tsx` is 97.91 % statements / 95.83 % functions / 50 % branches; the
-   residual branches are unreachable through the UI (Save is disabled while a write is in
-   flight, so a second write cannot supersede the first) rather than untested. The full run is
-   still console-clean.
+1. **[BLOCKER]** Merge #773, re-target #774 to `master`, and let `CI` (lint → tsc → tests →
+   build) and CodeQL run green on the head commit. Link the runs on the PR.
+   ([.github/workflows/main.yml:3-7](.github/workflows/main.yml#L3-L7))
+2. **[BLOCKER]** Re-request review from `Fabdulla1` and get the `CHANGES_REQUESTED` review
+   dismissed or converted to an approval, citing commits `5ef4a984`, `b744a49b`, `c563799d`
+   and `1b0fe6b2` against the five points of that review. _(No reviewer assignment was changed
+   by this review.)_
+3. **[Major]** Remove the duplication the 250-line splits introduced (Finding 3):
+   - extract the shared 28-line `beforeEach` from
+     [withData.test.tsx](src/http/withData.test.tsx) and
+     [withData.filtering.test.tsx](src/http/withData.filtering.test.tsx) into a
+     `withData.testSupport.tsx` sibling;
+   - extract the 48-line `croppedAnnotations` fixture shared by
+     [SignImages.test.tsx](src/signs/ui/display/SignImages.test.tsx) and
+     [SignImages.empty.test.tsx](src/signs/ui/display/SignImages.empty.test.tsx);
+   - delete the duplicate `provenances` fixture in
+     [ColophonEditor.test.tsx:15](src/fragmentarium/ui/fragment/ColophonEditor.test.tsx#L15)
+     and import it from a shared module.
+4. Collapse `renderReads` / `renderWrites` in
+   [usePromiseEffect.test.tsx:40-86](src/common/hooks/usePromiseEffect.test.tsx#L40-L86) into
+   one parameterised helper — this is a live qlty finding whose GitHub thread only _looks_
+   resolved (Finding 4).
+5. Drop the unused `signal?: AbortSignal` parameter from the `onSave` prop type at
+   [CuneiformFragment.tsx:31](src/fragmentarium/ui/fragment/CuneiformFragment.tsx#L31)
+   (Finding 5).
+6. Factor the repeated `if (!isStale())` result-application guard shared by the four
+   `runWrite` consumers into a helper next to `runWrite` (Finding 6).
+7. Convert the eleven newly-added files listed in Finding 7 to module-alias imports.
+8. **Delete every `TASK-*.md` file before merge** — 13 exist at the repo root:
+   `TASK-774-{todo,log,review,continuation-prompt}.md`,
+   `TASK-remove-bluebird-{todo,log,review}.md`, `TASK-address-findings-{todo,log}.md`,
+   `TASK-ts7-migration-{todo,log,research,review}.md`.
+9. Answer the `Realia.sass` (453 lines) point from Fabdulla1's review explicitly — either
+   split it or state on the PR that the 250-line gate covers `.ts`/`.tsx` only (Finding 8a).
+10. Follow-up issues, **not** in this PR: the 54 pre-existing over-250-line files inherited
+    from the base branch; widening `main.yml` to `pull_request: branches: ['**']`.
 
-10. **Delete all task-tracking `.md` files before merge** — nine are currently tracked on the
-    branch: `TASK-remove-bluebird-{todo,log,review}.md`,
-    `TASK-address-findings-{todo,log}.md`, `TASK-ts7-migration-{todo,log,research,review}.md`.
-    The three review artefacts produced by this task — `TASK-774-{todo,log,review}.md` — must be
-    removed too.
-11. Follow-up issues (do **not** do these in this PR): split the twelve pre-existing
-    over-250-line files; make the `signal` surface consistent across `FragmentRepository` /
-    `TextService` (Finding 7); delete the vestigial `cancellableFetch` (Finding 9); address the
-    Finding 10 nits.
-12. Optional but recommended repo-wide: widen `main.yml` to
-    `pull_request: branches: ['**']` so stacked PRs are not merged without CI ever running.
+---
 
-_No reviewer assignments were changed and nothing was posted to GitHub as part of this review._
+## Verification appendix — local gate evidence
+
+_Filled in from the runs performed for this review at head `1b0fe6b2`, then re-run after remediation._
+
+**At review time (head `1b0fe6b2`, before remediation):**
+
+| Gate             | Command                                                                | Result                                                                                                                                 |
+| ---------------- | ---------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
+| TypeScript       | `yarn tsc --noEmit`                                                    | **pass**, exit 0, 54.8 s                                                                                                               |
+| Lint             | `yarn lint`                                                            | **pass**, exit 0, 38.6 s (eslint + stylelint)                                                                                          |
+| Tests            | `CI=true yarn test --watchAll=false`                                   | **pass**, exit 0 — `Test Suites: 402 passed, 402 total` / `Tests: 2 skipped, 3569 passed, 3571 total` / `Snapshots: 50 passed` / 335 s |
+| Console-clean    | grep the run for `console.*` / `Warning:` / act / unhandled rejections | **pass**, zero matches across all 402 suites                                                                                           |
+| qlty check       | `qlty check --no-fix <385 changed files>`                              | **pass**, no issues                                                                                                                    |
+| qlty smells      | `qlty smells <385 changed files>`                                      | **fail** — Finding 3 and Finding 4                                                                                                     |
+| 250-line ceiling | intersect over-250 list with changed-file list                         | **pass**, zero PR-touched files over the limit                                                                                         |
+
+**After remediation (all findings fixed):**
+
+| Gate             | Command                                                         | Result                                                                                                                                                                |
+| ---------------- | --------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| TypeScript       | `yarn tsc --noEmit`                                             | **pass**, exit 0                                                                                                                                                      |
+| Lint             | `yarn lint`                                                     | **pass**, exit 0                                                                                                                                                      |
+| Build            | `yarn build:ci-stable`                                          | **pass**, exit 0 — proves the new sass partials resolve in webpack, which no test would have caught                                                                   |
+| Tests            | `CI=true yarn test --watchAll=false`                            | **pass**, exit 0 — `Test Suites: 403 passed, 403 total` / `Tests: 2 skipped, 3575 passed, 3577 total` / `Snapshots: 50 passed` / 316 s                                |
+| Console-clean    | as above                                                        | **pass**, zero matches across all 403 suites                                                                                                                          |
+| qlty check       | `qlty check --no-fix <390 changed files>`                       | **pass**, no issues                                                                                                                                                   |
+| qlty smells      | `qlty smells <390 changed files>`                               | **pass** — every finding raised in this review is gone; the 15 that remain were each confirmed against a base-branch worktree as pre-existing with identical mass     |
+| 250-line ceiling | as above                                                        | **pass**                                                                                                                                                              |
+| Coverage         | scoped `--coverage` runs, two small batches                     | `applyWhenCurrent.ts`, `usePromiseEffect.ts`, `ScriptSelection.tsx`, `CuneiformFragment.tsx` at 100 % on every metric; `ChapterEditView.tsx` 97.67 stmts / 100 branch |
+| Sass equivalence | `sass --load-path=. Realia.sass` before vs after, `diff`        | **byte-identical CSS**                                                                                                                                                |
+| No test lost     | test titles diffed against `HEAD` for the four rewritten suites | **identical sets**                                                                                                                                                    |
+
+The suite count rose 402 → 403 because of the new `applyWhenCurrent.test.ts`; test count rose
+3569 → 3575 (six new tests, nothing removed).
+
+The whole suite runs in a single invocation on this machine (~320 s) — the earlier note about
+needing four directory chunks no longer applies, provided nothing else runs concurrently.
+
+**On the 2 skipped tests:** both are `xit` in
+[Edition.test.tsx:48,52](src/fragmentarium/ui/edition/Edition.test.tsx#L48) and both are
+pre-existing — they are present at the same positions on `chore/ts7-tsconfig-migration`. This
+PR modifies that file but did not introduce or extend the skips. No action required here;
+worth a separate issue.
+
+**Note on running the suite in this devcontainer:** the machine has 2 CPUs and ~8 GB RAM with
+roughly 2 GB free. Full-suite runs were killed twice ("The build failed because the process
+exited too early") when `yarn tsc`, `yarn build` or `qlty` ran concurrently. Run the suite
+alone. The same applies to `--coverage` over a large path set: a coverage run across all of
+`fragmentarium` + `chronology` failed `FragmentView.test.tsx` with 13 unresolved spinners,
+which was then reproduced on a **stashed, pristine `HEAD`** tree — it is the OOM killer, not a
+defect. Measure coverage in small batches.
+
+_Nothing was posted to GitHub as part of this review, and no reviewer assignments were changed._

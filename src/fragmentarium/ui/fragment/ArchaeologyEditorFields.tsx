@@ -55,24 +55,47 @@ export function ExcavationSiteField({
   )
 }
 
-export function RegularExcavationField({
-  checked,
-  onChange,
-}: {
+interface CheckboxFieldProps {
   checked: boolean
   onChange: (event: ChangeEvent<HTMLInputElement>) => void
+}
+
+function CheckboxField({
+  groupIdPrefix,
+  checkboxIdPrefix,
+  label,
+  ariaLabel,
+  checked,
+  onChange,
+}: CheckboxFieldProps & {
+  groupIdPrefix: string
+  checkboxIdPrefix: string
+  label: string
+  ariaLabel: string
 }): JSX.Element {
   return (
-    <Form.Group as={Col} controlId={_.uniqueId('regularExcavationSite-')}>
+    <Form.Group as={Col} controlId={_.uniqueId(groupIdPrefix)}>
       <Form.Check
         type="checkbox"
-        id={_.uniqueId('isRegularExcavation-')}
-        label="Regular Excavation"
-        aria-label="regular-excavation"
+        id={_.uniqueId(checkboxIdPrefix)}
+        label={label}
+        aria-label={ariaLabel}
         checked={checked}
         onChange={onChange}
       />
     </Form.Group>
+  )
+}
+
+export function RegularExcavationField(props: CheckboxFieldProps): JSX.Element {
+  return (
+    <CheckboxField
+      {...props}
+      groupIdPrefix="regularExcavationSite-"
+      checkboxIdPrefix="isRegularExcavation-"
+      label="Regular Excavation"
+      ariaLabel="regular-excavation"
+    />
   )
 }
 
@@ -105,23 +128,14 @@ export function FindspotField({
   )
 }
 
-export function FindspotUncertainField({
-  checked,
-  onChange,
-}: {
-  checked: boolean
-  onChange: (event: ChangeEvent<HTMLInputElement>) => void
-}): JSX.Element {
+export function FindspotUncertainField(props: CheckboxFieldProps): JSX.Element {
   return (
-    <Form.Group as={Col} controlId={_.uniqueId('isFindspotUncertain-')}>
-      <Form.Check
-        type="checkbox"
-        id={_.uniqueId('isFindspotUncertain-')}
-        label="Findspot uncertain"
-        aria-label="findspot-uncertain"
-        checked={checked}
-        onChange={onChange}
-      />
-    </Form.Group>
+    <CheckboxField
+      {...props}
+      groupIdPrefix="isFindspotUncertain-"
+      checkboxIdPrefix="isFindspotUncertain-"
+      label="Findspot uncertain"
+      ariaLabel="findspot-uncertain"
+    />
   )
 }

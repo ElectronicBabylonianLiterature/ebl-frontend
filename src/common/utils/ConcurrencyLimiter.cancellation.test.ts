@@ -1,4 +1,4 @@
-import ConcurrencyLimiter from './ConcurrencyLimiter'
+import ConcurrencyLimiter from 'common/utils/ConcurrencyLimiter'
 import {
   deferred,
   queueState,

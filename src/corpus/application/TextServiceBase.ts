@@ -8,7 +8,11 @@ import { Manuscript } from 'corpus/domain/manuscript'
 
 import SiglumAndTransliteration from 'corpus/domain/SiglumAndTransliteration'
 import { Text } from 'corpus/domain/text'
-import { fromDictionaryLineDto, fromDto, fromManuscriptDto } from './dtos'
+import {
+  fromDictionaryLineDto,
+  fromDto,
+  fromManuscriptDto,
+} from 'corpus/application/dtos'
 import { CorpusQuery } from 'query/CorpusQuery'
 import { CorpusQueryResult } from 'query/QueryResult'
 import { ChapterSlugs, TextSlugs } from 'router/sitemapConfig'

@@ -1,0 +1,20 @@
+@use 'src/design-tokens' as *
+
+%realia-section-surface
+    scroll-margin-top: 1rem
+
+    & + &
+        margin-top: 1rem
+
+%realia-section-title
+    position: sticky
+    top: 0
+    z-index: 2
+    margin: 0
+    padding: 0.45rem 0.75rem
+    font-size: 0.95rem
+    font-weight: 400
+    background-color: $ebl-color-surface-subtle
+    border: 1px solid $ebl-color-brand-primary
+    border-radius: 0.35rem
+    box-shadow: 0 1px 4px $ebl-color-black-alpha-05

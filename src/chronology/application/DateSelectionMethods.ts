@@ -1,12 +1,13 @@
 import { MesopotamianDate } from 'chronology/domain/Date'
 import { DateFieldDto, MonthFieldDto } from 'fragmentarium/domain/FragmentDtos'
 import { Fragment } from 'fragmentarium/domain/fragment'
-import { DateSelectionStateParams } from './DateSelectionState'
+import { DateSelectionStateParams } from 'chronology/application/DateSelectionState'
 import {
   EponymDateField,
   KingDateField,
 } from 'chronology/domain/DateParameters'
 import { RunWriteOperation } from 'common/hooks/usePromiseEffect'
+import applyWhenCurrent from 'common/utils/applyWhenCurrent'
 
 interface SaveDateParams {
   date?: MesopotamianDate
@@ -39,22 +40,18 @@ export function saveDateDefault({
   }
   setIsSaving(true)
   setSaveError(null)
-  runUpdate((isStale) =>
-    updateDate(updatedDate, index).then(
-      () => {
-        if (!isStale()) {
-          setIsSaving(false)
-          setIsDisplayed(false)
-          setDate(updatedDate)
-        }
+  runUpdate(
+    applyWhenCurrent(() => updateDate(updatedDate, index), {
+      onSuccess: () => {
+        setIsSaving(false)
+        setIsDisplayed(false)
+        setDate(updatedDate)
       },
-      (error) => {
-        if (!isStale()) {
-          setIsSaving(false)
-          setSaveError(error)
-        }
+      onError: (error) => {
+        setIsSaving(false)
+        setSaveError(error)
       },
-    ),
+    }),
   )
 }
 
