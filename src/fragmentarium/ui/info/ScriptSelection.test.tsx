@@ -124,6 +124,24 @@ describe('User Input', () => {
     expect(screen.queryByText('Update failed')).not.toBeInTheDocument()
   })
 
+  test('Ignores a successful update after unmount', async () => {
+    let resolveUpdate: (updated: Fragment) => void = () => undefined
+    const pending = new Promise<Fragment>((resolve) => {
+      resolveUpdate = resolve
+    })
+    updateScript.mockImplementationOnce(() => pending)
+    const { unmount } = await setup()
+    const modifierSelect = screen.getByLabelText('select-period-modifier')
+    await userEvent.click(modifierSelect)
+    await userEvent.click(await screen.findByText(PeriodModifiers.Late.name))
+    await userEvent.click(screen.getByText('Save'))
+    unmount()
+    resolveUpdate(fragment)
+
+    await expect(pending).resolves.toBe(fragment)
+    expect(screen.queryByText('Saving...')).not.toBeInTheDocument()
+  })
+
   test('Shows an error and stops saving when the update fails', async () => {
     await setup()
     updateScript.mockImplementationOnce(() =>
@@ -136,5 +154,93 @@ describe('User Input', () => {
 
     expect(await screen.findByText('Update failed')).toBeInTheDocument()
     expect(screen.queryByText('Saving...')).not.toBeInTheDocument()
+  })
+})
+
+describe('Uncertain switch and overlay', () => {
+  test('toggling Uncertain enables saving the updated script', async () => {
+    await setup()
+    updateScript.mockReturnValue(Promise.resolve(fragment))
+
+    await userEvent.click(screen.getByRole('checkbox'))
+
+    expect(screen.getByRole('checkbox')).toBeChecked()
+    expect(screen.getByText('Save')).toBeEnabled()
+
+    await userEvent.click(screen.getByText('Save'))
+
+    await waitFor(() =>
+      expect(updateScript).toHaveBeenCalledWith({
+        ...script,
+        uncertain: true,
+      }),
+    )
+  })
+
+  test('clicking outside closes the editor', async () => {
+    await setup()
+    expect(screen.getByText('Save')).toBeInTheDocument()
+
+    await userEvent.click(document.body)
+
+    await waitFor(() =>
+      expect(screen.queryByText('Save')).not.toBeInTheDocument(),
+    )
+  })
+})
+
+describe('Script summary', () => {
+  test('renders a dash and no link when the period is unset', async () => {
+    fragment = fragmentFactory.build(
+      {},
+      {
+        associations: {
+          script: {
+            period: Periods.None,
+            periodModifier: PeriodModifiers.None,
+            uncertain: false,
+          },
+        },
+      },
+    )
+    fragmentService.fetchPeriods.mockReturnValue(
+      Promise.resolve([...Object.keys(Periods)]),
+    )
+    session = new (MemorySession as jest.Mock<jest.Mocked<MemorySession>>)()
+    session.isAllowedToTransliterateFragments.mockReturnValue(true)
+
+    await renderScriptSelection()
+
+    expect(screen.getByText(/Script:/)).toHaveTextContent('Script: -')
+    expect(screen.queryByRole('link')).not.toBeInTheDocument()
+  })
+
+  test('links without a modifier when the period modifier is None', async () => {
+    fragment = fragmentFactory.build(
+      {},
+      {
+        associations: {
+          script: {
+            period: Periods['Old Elamite'],
+            periodModifier: PeriodModifiers.None,
+            uncertain: false,
+          },
+        },
+      },
+    )
+    fragmentService.fetchPeriods.mockReturnValue(
+      Promise.resolve([...Object.keys(Periods)]),
+    )
+    session = new (MemorySession as jest.Mock<jest.Mocked<MemorySession>>)()
+    session.isAllowedToTransliterateFragments.mockReturnValue(true)
+
+    await renderScriptSelection()
+
+    expect(screen.getByRole('link')).toHaveAttribute(
+      'href',
+      `/library/search/?scriptPeriod=${encodeURIComponent(
+        Periods['Old Elamite'].name,
+      )}`,
+    )
   })
 })

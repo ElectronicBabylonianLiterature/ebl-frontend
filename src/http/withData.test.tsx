@@ -3,7 +3,6 @@ import { render, RenderResult, screen, waitFor } from '@testing-library/react'
 import _ from 'lodash'
 import withData, { Config, WithData } from './withData'
 import ErrorReporterContext, { ErrorReporter } from 'ErrorReporterContext'
-import { silenceConsoleErrors } from 'setupTests'
 
 interface Props {
   prop: string
@@ -60,7 +59,6 @@ beforeEach(async () => {
     clearScope: jest.fn(),
   }
 })
-
 describe('On successful get', () => {
   function rerenderView(
     rerender: RenderResult['rerender'],
@@ -205,60 +203,5 @@ describe('When unmounting', () => {
     const { unmount } = renderWithData()
     unmount()
     expect(InnerComponent).not.toHaveBeenCalled()
-  })
-})
-
-describe('Filtering', () => {
-  it('Calls the filter with props', () => {
-    filter.mockReturnValueOnce(false)
-    renderWithData()
-    expect(filter).toHaveBeenCalledWith({
-      prop: propValue,
-    })
-  })
-
-  it('Does not query the API', () => {
-    filter.mockReturnValueOnce(false)
-    renderWithData()
-    expect(getter).not.toHaveBeenCalled()
-  })
-
-  it('Renders the wrapped component with default data', () => {
-    filter.mockReturnValueOnce(false)
-    renderWithData()
-    expect(screen.getByText(`${propValue} ${defaultData}`)).toBeInTheDocument()
-  })
-
-  it('Falls back to null data when defaultData is not configured', () => {
-    const FilteredComponent = withData<Props, unknown, string>(
-      InnerComponent,
-      getter,
-      { filter: () => false },
-    )
-    render(
-      <ErrorReporterContext.Provider value={errorReportingService}>
-        <FilteredComponent prop={propValue} />
-      </ErrorReporterContext.Provider>,
-    )
-    expect(getter).not.toHaveBeenCalled()
-    expect(InnerComponent).not.toHaveBeenCalled()
-  })
-})
-
-describe('Child component crash', () => {
-  it('Displays error message', async () => {
-    silenceConsoleErrors()
-    const CrashingComponent = withData<unknown, unknown, string>(
-      () => {
-        throw new Error(errorMessage)
-      },
-      () => Promise.resolve(data),
-    )
-    render(
-      <ErrorReporterContext.Provider value={errorReportingService}>
-        <CrashingComponent />
-      </ErrorReporterContext.Provider>,
-    )
-    await screen.findByText("Something's gone wrong.")
   })
 })

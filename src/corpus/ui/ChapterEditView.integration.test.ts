@@ -1,196 +1,14 @@
 import _ from 'lodash'
-import Chance from 'chance'
-
+import { produce } from 'immer'
 import AppDriver from 'test-support/AppDriver'
 import FakeApi from 'test-support/FakeApi'
-import { produce } from 'immer'
-import { manuscriptDtoFactory } from 'test-support/manuscript-fixtures'
-import { stageToAbbreviation } from 'common/utils/period'
-
-const chance = new Chance('chapter-edit-view-integration-test')
-
-const genre = 'L'
-const category = 1
-const index = 1
-const textName = 'Palm and Vine'
-const textDto = {
-  genre: genre,
-  category: category,
-  index: index,
-  name: textName,
-  numberOfVerses: 99,
-  approximateVerses: false,
-  intro: '**Test**',
-  chapters: [
-    {
-      stage: 'Old Babylonian',
-      name: 'The First Chapter',
-      title: [],
-      uncertainFragments: [
-        {
-          museumNumber: {
-            prefix: 'X',
-            number: '1',
-            suffix: '',
-          },
-        },
-      ],
-    },
-    {
-      stage: 'Neo-Babylonian',
-      name: 'III',
-      title: [],
-      uncertainFragments: [],
-    },
-    {
-      stage: 'Old Babylonian',
-      name: 'The Second Chapter',
-      title: [],
-      uncertainFragments: [],
-    },
-  ],
-  references: [],
-}
-
-const textId = {
-  genre: genre,
-  category: category,
-  index: index,
-}
-
-const chapterDtos = [
-  {
-    textId: textId,
-    classification: 'Ancient',
-    stage: 'Old Babylonian',
-    version: 'B',
-    name: 'The First Chapter',
-    order: 1,
-    manuscripts: [
-      manuscriptDtoFactory.build(
-        {
-          siglumDisambiguator: '1c',
-          oldSigla: [],
-          museumNumber: 'BM.X',
-          accession: 'X.1',
-          periodModifier: 'Late',
-          period: 'Ur III',
-          provenance: 'Nippur',
-          type: 'School',
-          notes: 'some notes',
-          colophon: '1. kur',
-          unplacedLines: '1. bu',
-          references: [],
-          joins: [],
-          isInFragmentarium: false,
-        },
-        { transient: { chance } },
-      ),
-    ],
-    uncertainFragments: [],
-    lines: [],
-  },
-  {
-    textId: textId,
-    classification: 'Ancient',
-    stage: 'Neo-Babylonian',
-    version: 'A',
-    name: 'III',
-    order: 3,
-    manuscripts: [],
-    uncertainFragments: [],
-    lines: [],
-  },
-  {
-    textId: textId,
-    classification: 'Ancient',
-    stage: 'Old Babylonian',
-    version: '',
-    name: 'The Second Chapter',
-    order: 5,
-    manuscripts: [1, 2].map((id) =>
-      manuscriptDtoFactory.build({ id }, { transient: { chance } }),
-    ),
-    uncertainFragments: [],
-    lines: [
-      {
-        number: "1'",
-        isBeginningOfSection: false,
-        isSecondLineOfParallelism: false,
-        translation: '#tr.en: translation',
-        variants: [
-          {
-            reconstruction: 'ideal',
-            intertext: 'this is intertext',
-            manuscripts: [
-              {
-                manuscriptId: 1,
-                labels: ['iii'],
-                number: 'a+1',
-                atf: 'kur',
-                omittedWords: [],
-              },
-            ],
-          },
-        ],
-      },
-    ],
-  },
-]
-
-const defaultManuscriptDto = {
-  id: null,
-  siglumDisambiguator: '',
-  oldSigla: [],
-  museumNumber: '',
-  accession: '',
-  periodModifier: 'None',
-  period: 'Neo-Assyrian',
-  provenance: 'Nineveh',
-  type: 'Library',
-  notes: '',
-  colophon: '',
-  unplacedLines: '',
-  references: [],
-}
-
-const defaultLineDto = {
-  number: '',
-  isBeginningOfSection: false,
-  isSecondLineOfParallelism: false,
-  translation: '',
-  variants: [
-    {
-      reconstruction: '%n ',
-      intertext: '',
-      manuscripts: [],
-    },
-  ],
-}
-
-const provenanceDtos = [
-  {
-    id: 'nineveh',
-    longName: 'Nineveh',
-    abbreviation: 'Nin',
-    parent: null,
-    sortKey: 1,
-  },
-  {
-    id: 'nippur',
-    longName: 'Nippur',
-    abbreviation: 'Nip',
-    parent: null,
-    sortKey: 2,
-  },
-  {
-    id: 'borsippa',
-    longName: 'Borsippa',
-    abbreviation: 'Bor',
-    parent: null,
-    sortKey: 3,
-  },
-]
+import {
+  chapterDtos,
+  defaultLineDto,
+  defaultManuscriptDto,
+  setUpChapterEditView,
+  textName,
+} from 'corpus/ui/ChapterEditView.testSupport'
 
 let fakeApi: FakeApi
 let appDriver: AppDriver
@@ -418,26 +236,9 @@ test('Import chapter', async () => {
 })
 
 async function setup(chapter) {
-  fakeApi = new FakeApi()
-    .allowProvenances(provenanceDtos)
-    .expectText(textDto)
-    .expectChapter(chapter)
-  appDriver = new AppDriver(fakeApi.client)
-    .withSession()
-    .withPath(createChapterPath(chapter.stage, chapter.name))
-    .render()
-  await appDriver.waitForText(`Edit ${createChapterTitle(chapter)}`)
-  await appDriver.waitForText('Save manuscripts')
-}
+  const context = await setUpChapterEditView(chapter)
 
-function createChapterPath(stage: string, name: string) {
-  return `/corpus/${encodeURIComponent(genre)}/${encodeURIComponent(
-    category,
-  )}/${encodeURIComponent(index)}/${encodeURIComponent(
-    stageToAbbreviation(stage),
-  )}/${encodeURIComponent(name)}/edit`
-}
+  fakeApi = context.fakeApi
 
-function createChapterTitle(chapter) {
-  return `${textDto.name} ${chapter.stage} ${chapter.name}`
+  appDriver = context.appDriver
 }

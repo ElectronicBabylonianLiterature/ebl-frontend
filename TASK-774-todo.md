@@ -63,14 +63,34 @@ codebase, and the 250-line refactor applied to **every `.ts`/`.tsx` file the PR 
 - [x] `src/corpus/application/TextService.ts` (573) → 7 modules: `TextService` (75),
       `TextReadService` (148), `TextServiceBase` (145), `TextServiceCore` (169),
       `CorpusLemmatizationFactory` (81), `chapterUrls` (23), `textServiceConstants` (4)
-- [ ] 32 files still over 250 lines (11 source, 21 test) — listed in `TASK-774-review.md`
+- [x] The remaining 32 over-limit files (11 source, 21 test) are all split; every `.ts`/`.tsx`
+      file this PR touches is now at or under 250 lines. Verified with the re-derived
+      line-count command; the query returns nothing.
+      Source splits: `FakeApi` (516 → `FakeApi` 174 + `FakeApiBase` 129 + `FakeApiExpectation` 43,
+      collapsing 30 near-identical expectation builders onto shared `expectGet`/`allowGet`/`expectPost`
+      helpers), `SignImages` (442 → 6 modules; the local `runWithConcurrencyLimit` copy was
+      dropped for the existing `common/utils/ConcurrencyLimiter`), `TextAnnotation` (346 → 3),
+      `ColophonEditorIndividualForm` (334 → 2), `DossiersService` (319 → `DossiersService` 109 +
+      `DossierCache` 76 + `DossiersQueryByIdsBatcher` 161), `Chapters` (304 → 3),
+      `CuneiformFragmentEditor` (303 → 2), `BibliographyService` (291 → `BibliographyService` 95 +
+      `BibliographyEntryLoader` 198), `Details` (285 → 2), `ArchaeologyEditor` (285 → 2),
+      `AfoRegisterSearchForm` (280 → 2), `DateSelectionState` (279 → 2),
+      `TransliterationForm` (254 → 2).
+      Test splits followed the `describe`-per-file convention with shared fixtures in
+      `*.testSupport.ts(x)` siblings.
 
 ### Gates
 
-- [x] `yarn tsc` clean after every step
-- [x] `yarn lint` clean after every step
-- [ ] Full suite green and console-clean (final run)
-- [ ] 100 % coverage on affected code (Finding 5) — pending, must follow the file splits
+- [x] `yarn tsc` clean after every step and at the end
+- [x] `yarn lint` clean after every step and at the end
+- [x] Full suite green and console-clean: all 402 suites pass across four directory chunks
+      (memory limits prevent a single run); each chunk was re-run and grepped for
+      `console.error`/`console.warn`/`console.log`/`Warning:`/unhandled rejections/act warnings —
+      no matches.
+- [x] No `.ts`/`.tsx` file the PR touches exceeds 250 lines.
+- [x] Coverage on affected code (Finding 5) — six of the seven files are at 100 % on every
+      metric. Two branches remain, both structurally unreachable through the UI; see
+      `TASK-774-review.md` for the analysis.
 
 ## Not done, and not to be done without an explicit ask
 

@@ -1,8 +1,16 @@
 import React, { ChangeEvent, Component, FormEvent } from 'react'
 import _ from 'lodash'
-import { Form, Col, Button, Row } from 'react-bootstrap'
-import Select from 'react-select'
+import { Form, Button, Row } from 'react-bootstrap'
 import type { SingleValue } from 'react-select'
+import {
+  ExcavationNumberField,
+  ExcavationSiteField,
+  FindspotField,
+  FindspotOption,
+  FindspotUncertainField,
+  RegularExcavationField,
+  SiteOption,
+} from 'fragmentarium/ui/fragment/ArchaeologyEditorFields'
 import { Archaeology, Findspot } from 'fragmentarium/domain/archaeology'
 import { ArchaeologyDto } from 'fragmentarium/domain/archaeologyDtos'
 import { Fragment } from 'fragmentarium/domain/fragment'
@@ -27,13 +35,6 @@ interface State {
   findspotId: number | null
   findspot: Findspot | null
   error: Error | null
-}
-
-type SiteOption = { value: string; label: string }
-
-interface FindspotOption {
-  value: number | null
-  label: string | null
 }
 
 class ArchaeologyEditor extends Component<Props, State> {
@@ -166,85 +167,42 @@ class ArchaeologyEditor extends Component<Props, State> {
       )
   }
 
-  renderExcavationNumberForm = (): JSX.Element => (
-    <Form.Group as={Col} controlId={_.uniqueId('excavationNumber-')}>
-      <Form.Label>Excavation number</Form.Label>
-      <Form.Control
-        type="text"
-        value={this.state.excavationNumber}
-        onChange={this.updateExcavationNumber}
-      />
-    </Form.Group>
-  )
-  renderExcavationSiteForm = (): JSX.Element => (
-    <Form.Group as={Col} controlId={_.uniqueId('excavationSite-')}>
-      <Form.Label>Excavation site</Form.Label>
-      <Select<SiteOption, false>
-        aria-label="select-site"
-        options={this.siteOptions}
-        value={
-          this.siteOptions.find(
-            (option) => option.value === this.state.site,
-          ) || {
-            value: this.state.site,
-            label: this.state.site,
-          }
-        }
-        onChange={this.updateSite}
-        isSearchable={true}
-        isClearable
-      />
-    </Form.Group>
-  )
-  renderIsRegularExcavationForm = (): JSX.Element => (
-    <Form.Group as={Col} controlId={_.uniqueId('regularExcavationSite-')}>
-      <Form.Check
-        type="checkbox"
-        id={_.uniqueId('isRegularExcavation-')}
-        label="Regular Excavation"
-        aria-label="regular-excavation"
-        checked={this.state.isRegularExcavation}
-        onChange={this.updateIsRegularExcavation}
-      />
-    </Form.Group>
-  )
-  renderFindspotForm = (): JSX.Element => (
-    <Form.Group as={Col} controlId={_.uniqueId('findspot-')}>
-      <Form.Label>Findspot</Form.Label>
-      <Select<FindspotOption, false>
-        aria-label="select-findspot"
-        options={this.findspotOptions}
-        value={{
-          value: this.state.findspotId,
-          label: this.state.findspot?.toString() ?? null,
-        }}
-        onChange={this.updateFindspot}
-        isSearchable={true}
-        isClearable
-      />
-    </Form.Group>
-  )
-  renderIsFindspotUncertainForm = (): JSX.Element => (
-    <Form.Group as={Col} controlId={_.uniqueId('isFindspotUncertain-')}>
-      <Form.Check
-        type="checkbox"
-        id={_.uniqueId('isFindspotUncertain-')}
-        label="Findspot uncertain"
-        aria-label="findspot-uncertain"
-        checked={this.state.isFindspotUncertain}
-        onChange={this.updateIsFindspotUncertain}
-      />
-    </Form.Group>
-  )
-
   render(): JSX.Element {
     return (
       <Form onSubmit={this.submit} data-testid="archaeology-form">
-        <Row>{this.renderExcavationNumberForm()}</Row>
-        <Row>{this.renderExcavationSiteForm()}</Row>
-        <Row>{this.renderIsRegularExcavationForm()}</Row>
-        <Row>{this.renderFindspotForm()}</Row>
-        <Row>{this.renderIsFindspotUncertainForm()}</Row>
+        <Row>
+          <ExcavationNumberField
+            value={this.state.excavationNumber}
+            onChange={this.updateExcavationNumber}
+          />
+        </Row>
+        <Row>
+          <ExcavationSiteField
+            site={this.state.site}
+            options={this.siteOptions}
+            onChange={this.updateSite}
+          />
+        </Row>
+        <Row>
+          <RegularExcavationField
+            checked={this.state.isRegularExcavation}
+            onChange={this.updateIsRegularExcavation}
+          />
+        </Row>
+        <Row>
+          <FindspotField
+            findspotId={this.state.findspotId}
+            findspotLabel={this.state.findspot?.toString() ?? null}
+            options={this.findspotOptions}
+            onChange={this.updateFindspot}
+          />
+        </Row>
+        <Row>
+          <FindspotUncertainField
+            checked={this.state.isFindspotUncertain}
+            onChange={this.updateIsFindspotUncertain}
+          />
+        </Row>
         <Button
           variant="primary"
           type="submit"

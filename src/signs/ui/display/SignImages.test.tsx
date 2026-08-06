@@ -70,7 +70,6 @@ function renderSignImages() {
     </MemoryRouter>,
   )
 }
-
 describe('Sign Images', () => {
   async function setup(): Promise<void> {
     signService.getCentroidImages.mockReturnValue(
@@ -238,26 +237,5 @@ describe('Sign Images', () => {
     expect(
       screen.getAllByText('No additional variants').length,
     ).toBeGreaterThan(0)
-  })
-})
-
-describe('Sign Images Empty', () => {
-  async function setup(): Promise<void> {
-    signService.getCentroidImages.mockReturnValue(Promise.resolve([]))
-    renderSignImages()
-    await waitForSpinnerToBeRemoved(screen)
-    expect(signService.getCentroidImages).toBeCalledWith(
-      signName,
-      expect.any(AbortSignal),
-    )
-  }
-
-  it('Check there are no Images', async () => {
-    await setup()
-    croppedAnnotations.forEach((croppedAnnotation) => {
-      expect(
-        screen.queryByText(croppedAnnotation.fragmentNumber),
-      ).not.toBeInTheDocument()
-    })
   })
 })

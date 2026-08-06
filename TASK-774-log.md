@@ -244,3 +244,157 @@ Zero `console.*` / `Warning:` / unhandled-rejection lines in any chunk. `yarn ts
 The 347-suite single-process run did complete earlier in the session (before these two
 splits) with 3530 passing and zero console output; the chunked runs above cover the same
 347 suites.
+
+## Session 3 — the remaining 32 files and the coverage gate
+
+### Task 1 — 250-line ceiling: all 32 remaining files
+
+Every `.ts`/`.tsx` file this PR touches is now at or under 250 lines. The re-derived query
+returns nothing:
+
+```bash
+{ git diff --name-only origin/chore/ts7-tsconfig-migration...HEAD
+  git status --porcelain | awk '{print $NF}'; } \
+  | grep -E '\.(ts|tsx)$' | sort -u \
+  | while read f; do [ -f "$f" ] && wc -l "$f"; done \
+  | awk '$1>250' | sort -rn
+```
+
+**Test files** were split by `describe` block into sibling suites, with shared fixtures and
+mock factories in `*.testSupport.ts(x)` modules (a suffix Jest does not collect). The three
+suites that own a snapshot (`FragmentariumSearch`, `LatestTransliterations`, `about`) kept
+their original filename and `describe` name so the existing `.snap` entries stayed valid.
+
+| Original                           | Lines | Split into                                                                                                         |
+| ---------------------------------- | ----: | ------------------------------------------------------------------------------------------------------------------ |
+| `FragmentService.test.ts`          |  1930 | 11 suites + 2 testSupport modules (delegation, reads, provenance, updates, annotations, query, and 6 cache suites) |
+| `FragmentRepository.test.ts`       |  1017 | reads, writes, query, provenances, summaryItems, rawSummary, `createScript.test.ts` + testSupport                  |
+| `TextService.test.ts`              |   780 | reads, writes, chapterDisplay, caching, misc + 2 testSupport modules                                               |
+| `ProperNounCreationPanel.test.tsx` |   649 | validation, lemmaSearch, actions, create + testSupport                                                             |
+| `FragmentariumSearch.test.tsx`     |   545 | (kept) + contract, transliteration, summary + testSupport                                                          |
+| `SearchForm.test.tsx`              |   461 | basic, advanced, shortcuts + testSupport                                                                           |
+| `LatestTransliterations.test.tsx`  |   421 | (kept) + preview, summaryThumbnails + testSupport                                                                  |
+| `DossiersRepository.test.ts`       |   415 | fetch, suggestions, filter + testSupport                                                                           |
+| `ApiClient.edge-cases.test.ts`     |   408 | `ApiClient.errors`, `ApiClient.requests`, merged into `ApiError.test.ts` + testSupport                             |
+| `Details.test.tsx`                 |   368 | (kept) + archaeology, missing + testSupport                                                                        |
+| `DateSelectionInput.test.tsx`      |   335 | (kept) + `DateInputGroups.test.tsx`, `useDateSelectionState.test.ts`                                               |
+| `WordDisplay.test.tsx`             |   334 | (kept) + testSupport holding the 188-line `word` fixture                                                           |
+| `DossiersService.test.ts`          |   321 | batching, caching, delegation                                                                                      |
+| `TransliterationForm.test.tsx`     |   311 | (kept) + errors, abort + `.mocks` and `.testSupport` modules                                                       |
+| `FragmentView.test.tsx`            |   290 | (kept) + folios + testSupport                                                                                      |
+| `CuneiformFragment.test.tsx`       |   273 | (kept) + save, saveErrors + testSupport                                                                            |
+| `withData.test.tsx`                |   264 | (kept) + filtering                                                                                                 |
+| `SignImages.test.tsx`              |   263 | (kept) + empty                                                                                                     |
+| `about.test.tsx`                   |   257 | (kept) + navigation                                                                                                |
+
+**Source files** were decomposed by responsibility. Two of the splits removed real
+duplication rather than just moving lines:
+
+- `FakeApi.ts` (516) had thirty methods that each pushed a hand-written `Expectation` and
+  returned `this`. It is now `FakeApi` (174, one fluent line per endpoint), `FakeApiBase`
+  (129, the mock client plus `expectGet`/`allowGet`/`expectPost`) and `FakeApiExpectation`
+  (43, the `Expectation` class and URL helpers). `createTextUrl`/`createChapterUrl` lost
+  their implicit `any` parameters.
+- `SignImages.tsx` (442) carried a private `runWithConcurrencyLimit` that duplicated
+  `common/utils/ConcurrencyLimiter`, already used by `FragmentCache`, `TextServiceCore` and
+  `CuneiformConverterForm`. `loadClusterAnnotations` now uses the shared limiter with
+  `Promise.allSettled`, which preserves both ordering and the concurrency cap.
+
+The rest: `TextAnnotation` → `AnnotationRow` + `SpanAnnotationDisplay`;
+`ColophonEditorIndividualForm` → `colophonNameSuggestions`; `DossiersService` →
+`DossierCache` + `DossiersQueryByIdsBatcher`; `Chapters` → `ManuscriptsTable` +
+`manuscriptTableCells`; `CuneiformFragmentEditor` → `CuneiformFragmentTabContents`;
+`BibliographyService` → `BibliographyEntryLoader`; `Details` → `DetailsFields`;
+`ArchaeologyEditor` → `ArchaeologyEditorFields`; `AfoRegisterSearchForm` →
+`AfoRegisterSearchFields`; `DateSelectionState` → `DateSelectionStateTypes`;
+`TransliterationForm` → `TransliterationFormFields`.
+
+Public surfaces were preserved by re-exporting moved symbols from the original entry point
+(`Details.tsx` re-exports `formatMeasurements`; `AfoRegisterSearchForm.tsx` re-exports
+`AfoRegisterQuery`; `DateSelectionState.ts` re-exports its three public types).
+
+### Task 2 — coverage on affected code
+
+| File                          | Before (stmts / branch) | After                                 |
+| ----------------------------- | ----------------------- | ------------------------------------- |
+| `CuneiformConverterForm.tsx`  | 81.25 / 50              | **100 / 100**                         |
+| `AfoRegisterSearchForm.tsx`   | 78.26 / 60.71           | **100 / 100**                         |
+| `AfoRegisterSearchFields.tsx` | (new)                   | **100 / 100**                         |
+| `CuneiformFragment.tsx`       | 84.61 / 60              | **100 / 100**                         |
+| `FragmentCache.ts`            | 98.93 / 88.23           | **100 / 100**                         |
+| `DateSelectionMethods.ts`     | 100 / 68.96             | **100 / 100**                         |
+| `ScriptSelection.tsx`         | 94.87 / 66.66           | 100 / 87.5                            |
+| `ChapterEditView.tsx`         | 89.58 / 50              | 97.91 stmts / 95.83 funcs / 50 branch |
+
+Three pieces of genuinely dead code were removed rather than tested around:
+
+- `loadTextNumberOptions`' `textNumbers: string[] = []` default was unreachable — both call
+  sites pass a checked value.
+- `ScriptSelection`'s `if (updates !== script)` guard inside the Save handler was redundant:
+  the button is already `disabled={!isDirty || isSaving}` and `isDirty` is a deep-equality
+  check, so `isDirty` implies reference inequality.
+- `SignImages`' `runWithConcurrencyLimit`, as above.
+
+Two branches remain uncovered and are **unreachable through the UI, not untested**:
+
+1. The `if (!isStale())` else-arms in `ScriptSelection.tsx:139-146` and
+   `ChapterEditView.tsx`. Making `isStale()` return true requires a second write to be
+   dispatched while the first is in flight, and both Save controls are `disabled` while
+   saving, so the UI cannot produce one. The same guards _are_ covered in
+   `CuneiformFragment.tsx`, where the transliteration form can be submitted directly with
+   `submitFormByTestId`, bypassing the disabled button — two new tests
+   (`Ignores a superseded save outcome` / `... save failure`) exercise both arms there.
+2. `ChapterEditView.tsx:147`, the one-line `searchBibliography` pass-through to
+   `bibliographyService.search`. Reaching it means adding a manuscript, expanding the
+   collapsed References list and typing into a react-select whose `aria-label` is a
+   `_.uniqueId`. Attempted and abandoned as disproportionate for a pass-through closure.
+
+New tests added for coverage: `CuneiformConverterForm.errors.test.tsx` (query failure,
+non-cancellation failure, Shift+Enter, plain Enter, cancelled conversion, clipboard failure),
+`AfoRegisterSearchForm.coverage.test.tsx` (short query, abort-by-unmount, cancelled vs. real
+suggestion errors, suggestions without text numbers, exact-number quoting, suggestion and
+number selection), `AfoRegisterSearchFields.test.tsx` (the `if (option)` guard, via a
+react-select stub that emits `null`), `getDate.test.ts` (all Assyrian / Seleucid / regnal /
+Ur III permutations), `FragmentService.cache.invalidationScope.test.ts` (cached and in-flight
+reads for other fragment numbers survive an update), `ChapterEditView.saving.test.ts`
+(alignment and lemmatization saves plus a save failure), and additions to
+`ScriptSelection.test.tsx`, `CuneiformFragment.save.test.tsx` and
+`CuneiformFragment.saveErrors.test.tsx`. `FakeApi` gained `expectUpdateAlignment` and
+`expectUpdateLemmatization`.
+
+### Gates
+
+| Gate             | Result                                                                                                        |
+| ---------------- | ------------------------------------------------------------------------------------------------------------- |
+| `yarn tsc`       | pass                                                                                                          |
+| `yarn lint`      | pass                                                                                                          |
+| Full suite       | **402 suites, all passing** across four directory chunks                                                      |
+| Console-clean    | each chunk re-run and grepped for `console.*`, `Warning:`, unhandled rejections and act warnings — no matches |
+| 250-line ceiling | pass — the re-derived query returns nothing                                                                   |
+
+The suite is still run in chunks because a single full-suite invocation exhausts the
+devcontainer's memory. The four chunks together cover all 402 test files (verified by
+diffing the file list against the chunk patterns — no file is missed):
+
+| Chunk                                                                                     | Suites | Tests            |
+| ----------------------------------------------------------------------------------------- | -----: | ---------------- |
+| common, http, auth, about, router, bibliography, afo-register, dossiers                   |    102 | 938              |
+| fragmentarium                                                                             |    135 | 1253 + 2 skipped |
+| corpus, chronology, dictionary, signs                                                     |    102 | 886              |
+| transliteration, query, markup, research-projects, test-support, App, editor, akkadian, … |     63 | 492              |
+
+One note for whoever runs coverage next: a whole-`fragmentarium`+`chronology` run **with**
+`--coverage` once failed a spinner wait in a timing-sensitive suite; the same pattern passes
+without instrumentation and passes when coverage is scoped to a smaller path. It is
+instrumentation overhead against a `waitFor` timeout, not a defect in the code under test.
+
+### Pre-existing issues found and fixed
+
+- `src/http/ApiError.test.ts` already existed; an early edit overwrote it. Restored from
+  `HEAD` and the new `ApiError` construction tests appended rather than replacing the
+  original `bodyToMessage` table test.
+- `createTextUrl` / `createChapterUrl` in `FakeApi` had implicit-`any` parameters; they are
+  typed now.
+- `ChapterEditView.integration.test.ts` (443 lines, pre-existing and previously out of scope)
+  came into scope once its fixtures were needed by the new saving suite. Its fixtures and
+  harness moved to `ChapterEditView.testSupport.ts`, bringing the file to 243 lines.

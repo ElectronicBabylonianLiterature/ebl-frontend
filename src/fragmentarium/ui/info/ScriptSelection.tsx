@@ -131,27 +131,25 @@ function ScriptSelection({
             className="m-1"
             disabled={!isDirty || isSaving}
             onClick={() => {
-              if (updates !== script) {
-                setIsSaving(true)
-                setSaveError(null)
-                runUpdate((isStale) =>
-                  updateScript(updates).then(
-                    () => {
-                      if (!isStale()) {
-                        setIsSaving(false)
-                        setIsDisplayed(false)
-                        setScript(updates)
-                      }
-                    },
-                    (error) => {
-                      if (!isStale()) {
-                        setIsSaving(false)
-                        setSaveError(error)
-                      }
-                    },
-                  ),
-                )
-              }
+              setIsSaving(true)
+              setSaveError(null)
+              runUpdate((isStale) =>
+                updateScript(updates).then(
+                  () => {
+                    if (!isStale()) {
+                      setIsSaving(false)
+                      setIsDisplayed(false)
+                      setScript(updates)
+                    }
+                  },
+                  (error) => {
+                    if (!isStale()) {
+                      setIsSaving(false)
+                      setSaveError(error)
+                    }
+                  },
+                ),
+              )
             }}
           >
             Save

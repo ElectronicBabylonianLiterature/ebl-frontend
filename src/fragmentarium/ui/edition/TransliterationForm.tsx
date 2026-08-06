@@ -6,19 +6,10 @@ import React, {
   useCallback,
   useMemo,
 } from 'react'
-import {
-  FormGroup,
-  FormLabel,
-  Button,
-  Container,
-  Row,
-  Col,
-} from 'react-bootstrap'
+import { Container, Row, Col } from 'react-bootstrap'
 import _ from 'lodash'
 
-import Editor from 'editor/Editor'
-import SpecialCharactersHelp from 'editor/SpecialCharactersHelp'
-import TemplateForm from './TemplateForm'
+import TemplateForm from 'fragmentarium/ui/edition/TemplateForm'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import { ErrorBoundary } from '@sentry/react'
 import {
@@ -26,6 +17,12 @@ import {
   EditionFields,
 } from 'fragmentarium/application/FragmentService'
 import AbortableOperation from 'common/utils/AbortableOperation'
+import {
+  FormData,
+  getFormGroup,
+  runBeforeUnloadEvent,
+  SubmitButton,
+} from 'fragmentarium/ui/edition/TransliterationFormFields'
 
 type Props = {
   transliteration: string
@@ -33,94 +30,6 @@ type Props = {
   introduction: string
   updateEdition: (fields: EditionFields) => Promise<Fragment>
   disabled?: boolean
-}
-
-type FormData = {
-  transliteration: string
-  notes: string
-  introduction: string
-  error: Error | null
-  disabled?: boolean
-}
-
-const handleBeforeUnload = (
-  event: BeforeUnloadEvent,
-  hasChanges: () => boolean,
-): string | void => {
-  if (hasChanges()) {
-    const confirmationMessage =
-      'You have unsaved changes. Are you sure you want to leave?'
-    event.returnValue = confirmationMessage
-    return confirmationMessage
-  }
-}
-
-const runBeforeUnloadEvent = ({
-  hasChanges,
-}: {
-  hasChanges: () => boolean
-}) => {
-  const _handleBeforeEvent = (event) => handleBeforeUnload(event, hasChanges)
-  if (hasChanges()) {
-    window.addEventListener('beforeunload', _handleBeforeEvent)
-  } else {
-    window.removeEventListener('beforeunload', _handleBeforeEvent)
-  }
-  return () => {
-    window.removeEventListener('beforeunload', _handleBeforeEvent)
-  }
-}
-
-const SubmitButton = ({
-  propsDisabled,
-  hasChanges,
-  formId,
-}: {
-  propsDisabled?: boolean
-  hasChanges: boolean
-  formId: string
-}) => (
-  <Button
-    type="submit"
-    variant="primary"
-    disabled={propsDisabled || !hasChanges}
-    form={formId}
-  >
-    Save
-  </Button>
-)
-
-const getFormGroup = ({
-  name,
-  key,
-  value,
-  formId,
-  propsDisabled,
-  update,
-  formData,
-}: {
-  name: 'transliteration' | 'notes' | 'introduction'
-  key: number
-  value: string
-  formId: string
-  propsDisabled?: boolean
-  update: (property: keyof FormData) => (value: string) => void
-  formData: FormData
-}): JSX.Element => {
-  return (
-    <FormGroup controlId={`${formId}-${name}`} key={key}>
-      <FormLabel>{_.capitalize(name)}</FormLabel>{' '}
-      {name === 'transliteration' && <SpecialCharactersHelp />}
-      <Editor
-        name={name}
-        value={value}
-        onChange={update(name)}
-        disabled={propsDisabled}
-        {...(name === 'transliteration' && { error: formData.error })}
-        data-testid={`${name}-form-field`}
-      />
-    </FormGroup>
-  )
 }
 
 const TransliterationForm: React.FC<Props> = ({
