@@ -41,6 +41,42 @@ export const ManuscriptTypes = {
     displayName: null,
     order: 6,
   },
+  MultiColumnTablet: {
+    name: 'MultiColumnTablet',
+    abbreviation: 'MultCol',
+    displayName: 'Multi-column tablet',
+    order: 7,
+  },
+  CollectiveTablet: {
+    name: 'CollectiveTablet',
+    abbreviation: 'Coll',
+    displayName: 'Collective tablet',
+    order: 8,
+  },
+  StudentTeacherTablet: {
+    name: 'StudentTeacherTablet',
+    abbreviation: 'StuTea',
+    displayName: 'Student-teacher tablet',
+    order: 9,
+  },
+  SchoolLentil: {
+    name: 'SchoolLentil',
+    abbreviation: 'SchLen',
+    displayName: 'School lentils',
+    order: 10,
+  },
+  Prism: {
+    name: 'Prism',
+    abbreviation: 'Prism',
+    displayName: 'Prisms',
+    order: 11,
+  },
+  Uncertain: {
+    name: 'Uncertain',
+    abbreviation: 'Unc',
+    displayName: null,
+    order: null,
+  },
 } as const
 
 export type ManuscriptType =
@@ -55,6 +91,12 @@ export const types = [
   ManuscriptTypes.Amulet,
   ManuscriptTypes.Excerpt,
   ManuscriptTypes.Parallel,
+  ManuscriptTypes.MultiColumnTablet,
+  ManuscriptTypes.CollectiveTablet,
+  ManuscriptTypes.StudentTeacherTablet,
+  ManuscriptTypes.SchoolLentil,
+  ManuscriptTypes.Prism,
+  ManuscriptTypes.Uncertain,
 ] as const
 
 export function compareManuscriptTypes(
