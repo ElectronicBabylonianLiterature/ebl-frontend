@@ -11,6 +11,10 @@ import 'signs/ui/display/SignDisplay.css'
 
 const conversionConcurrencyLimit = 4
 
+function reportQueryError(error: unknown): void {
+  console.error('Query Error:', error)
+}
+
 type ConvertedLine = {
   index: number
   value: string
@@ -59,7 +63,7 @@ function CuneiformConverterForm({
                     .join(''),
                 }))
                 .catch((error) => {
-                  console.error('Query Error:', error)
+                  reportQueryError(error)
                   return { index, value: '' }
                 }),
             signal,
@@ -82,7 +86,7 @@ function CuneiformConverterForm({
       })
       .catch((error) => {
         if (!isCancellation(error, signal)) {
-          console.error('Query Error:', error)
+          reportQueryError(error)
         }
       })
   }

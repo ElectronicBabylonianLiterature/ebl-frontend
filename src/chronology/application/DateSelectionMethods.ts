@@ -6,19 +6,18 @@ import {
   EponymDateField,
   KingDateField,
 } from 'chronology/domain/DateParameters'
-import { RunOperation } from 'common/hooks/usePromiseEffect'
+import { RunWriteOperation } from 'common/hooks/usePromiseEffect'
 
 interface SaveDateParams {
   date?: MesopotamianDate
   updatedDate?: MesopotamianDate
   index?: number
-  runUpdate: RunOperation
+  runUpdate: RunWriteOperation
   setIsSaving: React.Dispatch<React.SetStateAction<boolean>>
   setSaveError: React.Dispatch<React.SetStateAction<Error | null>>
   updateDate: (
     date?: MesopotamianDate | undefined,
     index?: number | undefined,
-    signal?: AbortSignal,
   ) => Promise<Fragment>
   setDate: React.Dispatch<React.SetStateAction<MesopotamianDate | undefined>>
   setIsDisplayed: React.Dispatch<React.SetStateAction<boolean>>
@@ -40,17 +39,17 @@ export function saveDateDefault({
   }
   setIsSaving(true)
   setSaveError(null)
-  runUpdate((signal) =>
-    updateDate(updatedDate, index, signal).then(
+  runUpdate((isStale) =>
+    updateDate(updatedDate, index).then(
       () => {
-        if (!signal.aborted) {
+        if (!isStale()) {
           setIsSaving(false)
           setIsDisplayed(false)
           setDate(updatedDate)
         }
       },
       (error) => {
-        if (!signal.aborted) {
+        if (!isStale()) {
           setIsSaving(false)
           setSaveError(error)
         }

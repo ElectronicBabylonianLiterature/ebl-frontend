@@ -464,154 +464,99 @@ class ApiFragmentRepository
     return this.apiClient.fetchJson<string[]>('/periods', false, signal)
   }
 
-  updateGenres(
+  private postFragmentUpdate(
     number: string,
-    genres: Genres,
-    signal?: AbortSignal,
+    endpoint: string,
+    body: Record<string, unknown>,
   ): Promise<Fragment> {
-    const path = createFragmentPath(number, 'genres')
     return this.apiClient
-      .postJson<FragmentDto>(
-        path,
-        {
-          genres: genres.genres,
-        },
-        true,
-        signal,
-      )
+      .postJson<FragmentDto>(createFragmentPath(number, endpoint), body)
       .then(createFragment)
   }
-  updateScopes(
-    number: string,
-    scopes: string[],
-    signal?: AbortSignal,
-  ): Promise<Fragment> {
-    const path = createFragmentPath(number, 'scopes')
-    return this.apiClient
-      .postJson<FragmentDto>(
-        path,
-        // eslint-disable-next-line camelcase
-        { authorized_scopes: scopes },
-        true,
-        signal,
-      )
-      .then(createFragment)
+
+  updateGenres(number: string, genres: Genres): Promise<Fragment> {
+    return this.postFragmentUpdate(number, 'genres', { genres: genres.genres })
   }
-  updateScript(
-    number: string,
-    script: Script,
-    signal?: AbortSignal,
-  ): Promise<Fragment> {
-    const path = createFragmentPath(number, 'script')
-    return this.apiClient
-      .postJson<FragmentDto>(
-        path,
-        {
-          script: {
-            period: script.period.name,
-            periodModifier: script.periodModifier.name,
-            uncertain: script.uncertain,
-          },
-        },
-        true,
-        signal,
-      )
-      .then(createFragment)
+
+  updateScopes(number: string, scopes: string[]): Promise<Fragment> {
+    return this.postFragmentUpdate(number, 'scopes', {
+      // eslint-disable-next-line camelcase
+      authorized_scopes: scopes,
+    })
+  }
+
+  updateScript(number: string, script: Script): Promise<Fragment> {
+    return this.postFragmentUpdate(number, 'script', {
+      script: {
+        period: script.period.name,
+        periodModifier: script.periodModifier.name,
+        uncertain: script.uncertain,
+      },
+    })
   }
 
   updateDate(
     number: string,
     date: MesopotamianDateDto | undefined,
-    signal?: AbortSignal,
   ): Promise<Fragment> {
-    const path = createFragmentPath(number, 'date')
-    return this.apiClient
-      .postJson<FragmentDto>(path, { date }, true, signal)
-      .then(createFragment)
+    return this.postFragmentUpdate(number, 'date', { date })
   }
 
   updateDatesInText(
     number: string,
     datesInText: readonly MesopotamianDateDto[],
-    signal?: AbortSignal,
   ): Promise<Fragment> {
-    const path = createFragmentPath(number, 'dates-in-text')
-    return this.apiClient
-      .postJson<FragmentDto>(path, { datesInText }, true, signal)
-      .then(createFragment)
+    return this.postFragmentUpdate(number, 'dates-in-text', { datesInText })
   }
 
-  updateEdition(
-    number: string,
-    updates: EditionFields,
-    signal?: AbortSignal,
-  ): Promise<Fragment> {
-    const path = createFragmentPath(number, 'edition')
-    return this.apiClient
-      .postJson<FragmentDto>(path, _.omitBy(updates, _.isNull), true, signal)
-      .then(createFragment)
+  updateEdition(number: string, updates: EditionFields): Promise<Fragment> {
+    return this.postFragmentUpdate(
+      number,
+      'edition',
+      _.omitBy(updates, _.isNull),
+    )
   }
 
   updateLemmatization(
     number: string,
     lemmatization: LemmatizationDto,
   ): Promise<Fragment> {
-    const path = createFragmentPath(number, 'lemmatization')
-    return this.apiClient
-      .postJson<FragmentDto>(path, { lemmatization: lemmatization })
-      .then(createFragment)
+    return this.postFragmentUpdate(number, 'lemmatization', { lemmatization })
   }
 
   updateLemmaAnnotation(
     number: string,
     annotations: LineLemmaAnnotations,
-    signal?: AbortSignal,
   ): Promise<Fragment> {
-    const path = createFragmentPath(number, 'lemma-annotation')
-    return this.apiClient
-      .postJson<FragmentDto>(path, annotations, true, signal)
-      .then(createFragment)
+    return this.postFragmentUpdate(number, 'lemma-annotation', annotations)
   }
 
-  updateReferences(
-    number: string,
-    references: Reference[],
-    signal?: AbortSignal,
-  ): Promise<Fragment> {
-    const path = createFragmentPath(number, 'references')
-    return this.apiClient
-      .postJson<FragmentDto>(path, { references: references }, true, signal)
-      .then(createFragment)
+  updateReferences(number: string, references: Reference[]): Promise<Fragment> {
+    return this.postFragmentUpdate(number, 'references', { references })
   }
 
   updateArchaeology(
     number: string,
     archaeology: ArchaeologyDto,
-    signal?: AbortSignal,
   ): Promise<Fragment> {
-    const path = createFragmentPath(number, 'archaeology')
-    return this.apiClient
-      .postJson<FragmentDto>(path, { archaeology: archaeology }, true, signal)
-      .then(createFragment)
+    return this.postFragmentUpdate(number, 'archaeology', { archaeology })
   }
 
-  updateColophon(
+  updateColophon(number: string, colophon: Colophon): Promise<Fragment> {
+    return this.postFragmentUpdate(number, 'colophon', { colophon })
+  }
+
+  folioPager(
+    folio: Folio,
     number: string,
-    colophon: Colophon,
     signal?: AbortSignal,
-  ): Promise<Fragment> {
-    const path = createFragmentPath(number, 'colophon')
-    return this.apiClient
-      .postJson<FragmentDto>(path, { colophon: colophon }, true, signal)
-      .then(createFragment)
-  }
-
-  folioPager(folio: Folio, number: string): Promise<FolioPagerData> {
+  ): Promise<FolioPagerData> {
     return this.apiClient.fetchJson<FolioPagerData>(
       `/fragments/${encodeURIComponent(number)}/pager/${encodeURIComponent(
         folio.name,
       )}/${encodeURIComponent(folio.number)}`,
       false,
+      signal,
     )
   }
 
@@ -638,6 +583,7 @@ class ApiFragmentRepository
   findAnnotations(
     number: string,
     generateAnnotations = false,
+    signal?: AbortSignal,
   ): Promise<readonly Annotation[]> {
     return this.apiClient
       .fetchJson<{
@@ -647,6 +593,7 @@ class ApiFragmentRepository
           number,
         )}/annotations?generateAnnotations=${generateAnnotations}`,
         false,
+        signal,
       )
       .then(({ annotations }) =>
         annotations.map(
@@ -765,10 +712,12 @@ class ApiFragmentRepository
 
   fetchNamedEntityAnnotations(
     number: string,
+    signal?: AbortSignal,
   ): Promise<readonly ApiEntityAnnotationSpan[]> {
     return this.apiClient.fetchJson<readonly ApiEntityAnnotationSpan[]>(
       createFragmentPath(number, 'named-entities'),
       false,
+      signal,
     )
   }
 
@@ -776,11 +725,7 @@ class ApiFragmentRepository
     number: string,
     annotations: readonly ApiEntityAnnotationSpan[],
   ): Promise<Fragment> {
-    return this.apiClient
-      .postJson<FragmentDto>(createFragmentPath(number, 'named-entities'), {
-        annotations: annotations,
-      })
-      .then(createFragment)
+    return this.postFragmentUpdate(number, 'named-entities', { annotations })
   }
 }
 

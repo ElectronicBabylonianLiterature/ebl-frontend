@@ -144,31 +144,26 @@ const CuneiformFragmentController: FunctionComponent<ControllerProps> = ({
   const [error, setError] = useState(null)
   const [, , runSave] = usePromiseEffect()
 
-  const handleSave = (
-    save: (signal?: AbortSignal) => Promise<Fragment>,
-  ): Promise<Fragment> => {
+  const handleSave = (save: () => Promise<Fragment>): Promise<Fragment> => {
     setError(null)
     setIsSaving(true)
 
-    let savePromise: Promise<Fragment> | undefined
-    runSave((signal) => {
-      savePromise = save(signal)
-      return savePromise
+    const savePromise = save()
+    runSave((isStale) =>
+      savePromise
         .then((updatedFragment) => {
-          setFragment(updatedFragment)
-          setIsSaving(false)
-        })
-        .catch((error) => {
-          if (!signal.aborted) {
-            setError(error)
+          if (!isStale()) {
+            setFragment(updatedFragment)
             setIsSaving(false)
           }
         })
-    })
-
-    if (savePromise === undefined) {
-      throw new Error('The save operation did not start.')
-    }
+        .catch((error) => {
+          if (!isStale()) {
+            setError(error)
+            setIsSaving(false)
+          }
+        }),
+    )
     return savePromise
   }
 

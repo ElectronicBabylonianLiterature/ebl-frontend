@@ -8,7 +8,13 @@ import Lemmatization, {
 } from 'transliteration/domain/Lemmatization'
 import { Text } from 'transliteration/domain/text'
 import { LemmatizableToken, Token } from 'transliteration/domain/token'
-import { FragmentService } from './FragmentService'
+
+export interface LemmaSuggestionSource {
+  findSuggestions(
+    value: string,
+    isNormalized: boolean,
+  ): Promise<readonly UniqueLemma[]>
+}
 
 export abstract class AbstractLemmatizationFactory<T, U> {
   private readonly findSuggestions: (
@@ -18,7 +24,7 @@ export abstract class AbstractLemmatizationFactory<T, U> {
   private readonly findWord: (word: string) => Promise<DictionaryWord>
 
   constructor(
-    fragmentService: FragmentService,
+    fragmentService: LemmaSuggestionSource,
     wordRepository: { find(word: string): Promise<DictionaryWord> },
   ) {
     this.findSuggestions = _.memoize(

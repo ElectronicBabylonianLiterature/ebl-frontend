@@ -1,14 +1,18 @@
-import usePromiseEffect, { PromiseOperation } from './usePromiseEffect'
 import React, { FunctionComponent } from 'react'
 import { render, RenderResult } from '@testing-library/react'
-
-type RunnerName = 'run' | 'runWrite'
-
-const runners: RunnerName[] = ['run', 'runWrite']
+import usePromiseEffect, {
+  PromiseOperation,
+  WriteOperation,
+} from './usePromiseEffect'
 
 type SignalCapture = {
   signals: AbortSignal[]
   operation: PromiseOperation
+}
+
+type StalenessCapture = {
+  checks: (() => boolean)[]
+  operation: WriteOperation
 }
 
 function capturePendingSignals(): SignalCapture {
@@ -22,24 +26,32 @@ function capturePendingSignals(): SignalCapture {
   }
 }
 
-function renderOperations({
-  runner,
+function capturePendingWrites(): StalenessCapture {
+  const checks: (() => boolean)[] = []
+  return {
+    checks,
+    operation: (isStale) => {
+      checks.push(isStale)
+      return new Promise(() => undefined)
+    },
+  }
+}
+
+function renderReads({
   operation,
   runCount = 1,
   cancelAfterRun = false,
   results = [],
 }: {
-  runner: RunnerName
   operation: PromiseOperation
   runCount?: number
   cancelAfterRun?: boolean
   results?: Promise<void>[]
 }): RenderResult {
   const TestComponent: FunctionComponent = () => {
-    const [run, cancel, runWrite] = usePromiseEffect()
-    const start = runner === 'run' ? run : runWrite
+    const [run, cancel] = usePromiseEffect()
     for (let index = 0; index < runCount; index += 1) {
-      results.push(start(operation))
+      results.push(run(operation))
     }
     if (cancelAfterRun) {
       cancel()
@@ -49,35 +61,71 @@ function renderOperations({
   return render(<TestComponent />)
 }
 
-describe.each(runners)('%s', (runner) => {
-  it('Aborts the previous operation when a new one supersedes it', () => {
+function renderWrites({
+  operation,
+  runCount = 1,
+  cancelAfterRun = false,
+  results = [],
+}: {
+  operation: WriteOperation
+  runCount?: number
+  cancelAfterRun?: boolean
+  results?: Promise<void>[]
+}): RenderResult {
+  const TestComponent: FunctionComponent = () => {
+    const [, cancel, runWrite] = usePromiseEffect()
+    for (let index = 0; index < runCount; index += 1) {
+      results.push(runWrite(operation))
+    }
+    if (cancelAfterRun) {
+      cancel()
+    }
+    return <>Test</>
+  }
+  return render(<TestComponent />)
+}
+
+describe('run', () => {
+  it('Aborts the previous read when a new one supersedes it', () => {
     const { signals, operation } = capturePendingSignals()
-    renderOperations({ runner, operation, runCount: 2 })
+    renderReads({ operation, runCount: 2 })
     expect(signals[0].aborted).toBe(true)
     expect(signals[1].aborted).toBe(false)
   })
 
-  it('Leaves the operation running while it is the current one', () => {
+  it('Leaves the read running while it is the current one', () => {
     const { signals, operation } = capturePendingSignals()
-    renderOperations({ runner, operation })
+    renderReads({ operation })
     expect(signals[0].aborted).toBe(false)
   })
 
-  it('Resolves instead of rejecting when the operation reports an abort', async () => {
-    const abortError = new DOMException('aborted', 'AbortError')
+  it('Aborts a read on unmount', () => {
+    const { signals, operation } = capturePendingSignals()
+    const { unmount } = renderReads({ operation })
+    expect(signals[0].aborted).toBe(false)
+    unmount()
+    expect(signals[0].aborted).toBe(true)
+  })
+
+  it('Aborts a read when cancel is called', () => {
+    const { signals, operation } = capturePendingSignals()
+    renderReads({ operation, cancelAfterRun: true })
+    expect(signals[0].aborted).toBe(true)
+  })
+
+  it('Resolves instead of rejecting when the read reports an abort', async () => {
     const results: Promise<void>[] = []
-    renderOperations({
-      runner,
-      operation: () => Promise.reject(abortError),
+    renderReads({
+      operation: () =>
+        Promise.reject(new DOMException('aborted', 'AbortError')),
       results,
     })
     await expect(results[0]).resolves.toBeUndefined()
   })
 
-  it('Resolves instead of rejecting when the signal was aborted', async () => {
+  it('Resolves instead of rejecting when the read signal was aborted', async () => {
     const results: Promise<void>[] = []
-    renderOperations({
-      runner,
+    renderReads({
       operation: (signal) =>
         new Promise((_resolve, reject) => {
           signal.addEventListener('abort', () =>
@@ -90,66 +138,79 @@ describe.each(runners)('%s', (runner) => {
     await expect(results[0]).resolves.toBeUndefined()
   })
 
-  it('Rejects with the original error when the operation fails', async () => {
+  it('Rejects with the original error when the read fails', async () => {
     const failure = new Error('network failure')
     const results: Promise<void>[] = []
-    renderOperations({
-      runner,
-      operation: () => Promise.reject(failure),
-      results,
-    })
+    renderReads({ operation: () => Promise.reject(failure), results })
     await expect(results[0]).rejects.toBe(failure)
   })
 
-  it('Resolves when the operation succeeds', async () => {
+  it('Resolves when the read succeeds', async () => {
     const results: Promise<void>[] = []
-    renderOperations({
-      runner,
-      operation: () => Promise.resolve('done'),
-      results,
-    })
+    renderReads({ operation: () => Promise.resolve('done'), results })
     await expect(results[0]).resolves.toBeUndefined()
   })
 })
 
-it('Aborts a read operation on unmount', () => {
-  const { signals, operation } = capturePendingSignals()
-  const { unmount } = renderOperations({ runner: 'run', operation })
-  expect(signals[0].aborted).toBe(false)
-  unmount()
-  expect(signals[0].aborted).toBe(true)
+describe('runWrite', () => {
+  it('Marks the previous write stale when a new one supersedes it', () => {
+    const { checks, operation } = capturePendingWrites()
+    renderWrites({ operation, runCount: 2 })
+    expect(checks[0]()).toBe(true)
+    expect(checks[1]()).toBe(false)
+  })
+
+  it('Leaves the write current while it is the latest one', () => {
+    const { checks, operation } = capturePendingWrites()
+    renderWrites({ operation })
+    expect(checks[0]()).toBe(false)
+  })
+
+  it('Does not make a write stale on unmount', () => {
+    const { checks, operation } = capturePendingWrites()
+    const { unmount } = renderWrites({ operation })
+    unmount()
+    expect(checks[0]()).toBe(false)
+  })
+
+  it('Does not make a write stale when cancel is called', () => {
+    const { checks, operation } = capturePendingWrites()
+    renderWrites({ operation, cancelAfterRun: true })
+    expect(checks[0]()).toBe(false)
+  })
+
+  it('Gives the write a staleness check rather than an abort signal', () => {
+    const { checks, operation } = capturePendingWrites()
+    renderWrites({ operation })
+    expect(typeof checks[0]).toBe('function')
+    expect(checks[0]).not.toHaveProperty('aborted')
+  })
+
+  it('Rejects with the original error when the write fails', async () => {
+    const failure = new Error('network failure')
+    const results: Promise<void>[] = []
+    renderWrites({ operation: () => Promise.reject(failure), results })
+    await expect(results[0]).rejects.toBe(failure)
+  })
+
+  it('Resolves when the write succeeds', async () => {
+    const results: Promise<void>[] = []
+    renderWrites({ operation: () => Promise.resolve('done'), results })
+    await expect(results[0]).resolves.toBeUndefined()
+  })
 })
 
-it('Aborts a read operation when cancel is called', () => {
-  const { signals, operation } = capturePendingSignals()
-  renderOperations({ runner: 'run', operation, cancelAfterRun: true })
-  expect(signals[0].aborted).toBe(true)
-})
-
-it('Does not abort a write operation on unmount', () => {
-  const { signals, operation } = capturePendingSignals()
-  const { unmount } = renderOperations({ runner: 'runWrite', operation })
-  unmount()
-  expect(signals[0].aborted).toBe(false)
-})
-
-it('Does not abort a write operation when cancel is called', () => {
-  const { signals, operation } = capturePendingSignals()
-  renderOperations({ runner: 'runWrite', operation, cancelAfterRun: true })
-  expect(signals[0].aborted).toBe(false)
-})
-
-it('Aborting reads leaves an in-flight write untouched', () => {
+it('Aborting reads leaves an in-flight write current', () => {
   let readSignal: AbortSignal | undefined
-  let writeSignal: AbortSignal | undefined
+  let isWriteStale: (() => boolean) | undefined
   const TestComponent: FunctionComponent = () => {
     const [run, , runWrite] = usePromiseEffect()
     run((signal) => {
       readSignal = signal
       return new Promise(() => undefined)
     })
-    runWrite((signal) => {
-      writeSignal = signal
+    runWrite((isStale) => {
+      isWriteStale = isStale
       return new Promise(() => undefined)
     })
     return <>Test</>
@@ -157,5 +218,5 @@ it('Aborting reads leaves an in-flight write untouched', () => {
   const { unmount } = render(<TestComponent />)
   unmount()
   expect(readSignal?.aborted).toBe(true)
-  expect(writeSignal?.aborted).toBe(false)
+  expect(isWriteStale?.()).toBe(false)
 })

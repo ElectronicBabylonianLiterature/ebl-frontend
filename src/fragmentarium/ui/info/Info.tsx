@@ -26,7 +26,7 @@ interface Props {
   fragmentService: FragmentService
   dossiersService: DossiersService
   afoRegisterService: AfoRegisterService
-  onSave: (save: (signal?: AbortSignal) => Promise<Fragment>) => void
+  onSave: (save: () => Promise<Fragment>) => void
 }
 
 export default function Info({
@@ -37,24 +37,17 @@ export default function Info({
   onSave,
 }: Props): JSX.Element {
   const updateGenres = (genres: Genres) =>
-    onSave((signal) =>
-      fragmentService.updateGenres(fragment.number, genres, signal),
-    )
-  const updateScript = (script: Script, signal?: AbortSignal) =>
-    fragmentService.updateScript(fragment.number, script, signal)
-  const updateDate = (
-    date?: MesopotamianDate,
-    signal?: AbortSignal,
-  ): Promise<Fragment> =>
-    fragmentService.updateDate(fragment.number, date?.toDto(), signal)
+    onSave(() => fragmentService.updateGenres(fragment.number, genres))
+  const updateScript = (script: Script) =>
+    fragmentService.updateScript(fragment.number, script)
+  const updateDate = (date?: MesopotamianDate): Promise<Fragment> =>
+    fragmentService.updateDate(fragment.number, date?.toDto())
   const updateDatesInText = (
     datesInText: readonly MesopotamianDate[],
-    signal?: AbortSignal,
   ): Promise<Fragment> =>
     fragmentService.updateDatesInText(
       fragment.number,
       datesInText.filter((date) => date).map((date) => date.toDto()),
-      signal,
     )
 
   return (

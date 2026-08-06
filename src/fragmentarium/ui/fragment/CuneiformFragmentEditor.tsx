@@ -207,23 +207,18 @@ function DisplayContents(props: TabsProps): JSX.Element {
 
 function EditionContents(props: TabsProps): JSX.Element {
   const updateEdition = (fields: EditionFields) =>
-    props.onSave((signal) =>
-      props.fragmentService.updateEdition(
-        props.fragment.number,
-        fields,
-        signal,
-      ),
+    props.onSave(() =>
+      props.fragmentService.updateEdition(props.fragment.number, fields),
     )
   return <Edition updateEdition={updateEdition} {...props} />
 }
 
 function LemmatizationContents(props: TabsProps): JSX.Element {
   const updateLemmaAnnotation = (annotations: LineLemmaAnnotations) =>
-    props.onSave((signal) =>
+    props.onSave(() =>
       props.fragmentService.updateLemmaAnnotation(
         props.fragment.number,
         annotations,
-        signal,
       ),
     )
   return (
@@ -248,11 +243,10 @@ function NamedEntityAnnotationContents(props: TabsProps): JSX.Element {
 
 function ReferencesContents(props: TabsProps): JSX.Element {
   const updateReferences = (references) =>
-    props.onSave((signal) =>
+    props.onSave(() =>
       props.fragmentService.updateReferences(
         props.fragment.number,
         references.map(serializeReference),
-        signal,
       ),
     )
   const searchBibliography = (query) =>
@@ -269,11 +263,10 @@ function ReferencesContents(props: TabsProps): JSX.Element {
 
 function ArchaeologyContents(props: TabsProps): JSX.Element {
   const updateArchaeology = (archaeology: ArchaeologyDto) =>
-    props.onSave((signal) =>
+    props.onSave(() =>
       props.fragmentService.updateArchaeology(
         props.fragment.number,
         archaeology,
-        signal,
       ),
     )
   return (
@@ -287,12 +280,8 @@ function ArchaeologyContents(props: TabsProps): JSX.Element {
 
 function ColophonContents(props: TabsProps): JSX.Element {
   const updateColophon = async (colophon: Colophon) => {
-    props.onSave((signal) =>
-      props.fragmentService.updateColophon(
-        props.fragment.number,
-        colophon,
-        signal,
-      ),
+    props.onSave(() =>
+      props.fragmentService.updateColophon(props.fragment.number, colophon),
     )
   }
 
@@ -301,8 +290,8 @@ function ColophonContents(props: TabsProps): JSX.Element {
 
 function ScopeContents(props: TabsProps, session: Session): JSX.Element {
   const updateScopes = async (scopes: string[]) => {
-    props.onSave((signal) =>
-      props.fragmentService.updateScopes(props.fragment.number, scopes, signal),
+    props.onSave(() =>
+      props.fragmentService.updateScopes(props.fragment.number, scopes),
     )
   }
 

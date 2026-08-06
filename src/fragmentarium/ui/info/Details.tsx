@@ -187,17 +187,10 @@ function ExcavationDate({ fragment }: Props): JSX.Element {
 interface DetailsProps {
   readonly fragment: Fragment
   readonly updateGenres: (genres: Genres) => void
-  readonly updateScript: (
-    script: Script,
-    signal?: AbortSignal,
-  ) => Promise<Fragment>
-  readonly updateDate: (
-    date?: MesopotamianDate,
-    signal?: AbortSignal,
-  ) => Promise<Fragment>
+  readonly updateScript: (script: Script) => Promise<Fragment>
+  readonly updateDate: (date?: MesopotamianDate) => Promise<Fragment>
   readonly updateDatesInText: (
     datesInText: readonly MesopotamianDate[],
-    signal?: AbortSignal,
   ) => Promise<Fragment>
   readonly fragmentService: FragmentService
   readonly dossiersService: DossiersService
@@ -276,7 +269,7 @@ function Details({
       <li className="Details__item">
         <DateSelection
           dateProp={fragment?.date}
-          updateDate={(date, index, signal) => updateDate(date, signal)}
+          updateDate={(date) => updateDate(date)}
         />
       </li>
       <li className="Details__item">

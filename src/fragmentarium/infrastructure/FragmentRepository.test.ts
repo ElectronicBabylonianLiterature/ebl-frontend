@@ -201,8 +201,6 @@ const testData: TestData<FragmentRepository>[] = [
       {
         transliteration,
       },
-      true,
-      undefined,
     ],
     Promise.resolve(fragmentDto),
   ),
@@ -216,8 +214,6 @@ const testData: TestData<FragmentRepository>[] = [
       {
         notes,
       },
-      true,
-      undefined,
     ],
     Promise.resolve(fragmentDto),
   ),
@@ -231,8 +227,6 @@ const testData: TestData<FragmentRepository>[] = [
       {
         introduction,
       },
-      true,
-      undefined,
     ],
     Promise.resolve(fragmentDto),
   ),
@@ -248,8 +242,6 @@ const testData: TestData<FragmentRepository>[] = [
         notes,
         transliteration,
       },
-      true,
-      undefined,
     ],
     Promise.resolve(fragmentDto),
   ),
@@ -272,8 +264,6 @@ const testData: TestData<FragmentRepository>[] = [
     [
       `/fragments/${encodeURIComponent(fragmentId)}/references`,
       { references: references },
-      true,
-      undefined,
     ],
     Promise.resolve(fragmentDto),
   ),
@@ -282,12 +272,7 @@ const testData: TestData<FragmentRepository>[] = [
     [fragmentId, createScript(script)],
     apiClient.postJson,
     fragment,
-    [
-      `/fragments/${encodeURIComponent(fragmentId)}/script`,
-      { script: script },
-      true,
-      undefined,
-    ],
+    [`/fragments/${encodeURIComponent(fragmentId)}/script`, { script: script }],
     Promise.resolve(fragmentDto),
   ),
   new TestData(
@@ -300,6 +285,7 @@ const testData: TestData<FragmentRepository>[] = [
         folio.name,
       )}/${encodeURIComponent(folio.number)}`,
       false,
+      undefined,
     ],
     Promise.resolve(resultStub),
   ),
@@ -329,6 +315,7 @@ const testData: TestData<FragmentRepository>[] = [
         fragmentId,
       )}/annotations?generateAnnotations=true`,
       false,
+      undefined,
     ],
     Promise.resolve({ annotations: annotationsDto }),
   ),
@@ -342,6 +329,7 @@ const testData: TestData<FragmentRepository>[] = [
         fragmentId,
       )}/annotations?generateAnnotations=false`,
       false,
+      undefined,
     ],
     Promise.resolve({ annotations: annotationsDto }),
   ),
@@ -361,12 +349,7 @@ const testData: TestData<FragmentRepository>[] = [
     [fragmentId, new Genres(genres)],
     apiClient.postJson,
     fragment,
-    [
-      `/fragments/${encodeURIComponent(fragmentId)}/genres`,
-      { genres },
-      true,
-      undefined,
-    ],
+    [`/fragments/${encodeURIComponent(fragmentId)}/genres`, { genres }],
     Promise.resolve(fragmentDto),
   ),
   new TestData(
@@ -377,8 +360,6 @@ const testData: TestData<FragmentRepository>[] = [
     [
       `/fragments/${encodeURIComponent(fragmentId)}/date`,
       { date: mesopotamianDate.toDto() },
-      true,
-      undefined,
     ],
     Promise.resolve(fragmentDto),
   ),
@@ -387,12 +368,7 @@ const testData: TestData<FragmentRepository>[] = [
     [fragmentId, undefined],
     apiClient.postJson,
     fragment,
-    [
-      `/fragments/${encodeURIComponent(fragmentId)}/date`,
-      { date: undefined },
-      true,
-      undefined,
-    ],
+    [`/fragments/${encodeURIComponent(fragmentId)}/date`, { date: undefined }],
     Promise.resolve(fragmentDto),
   ),
   new TestData(
@@ -403,8 +379,6 @@ const testData: TestData<FragmentRepository>[] = [
     [
       `/fragments/${encodeURIComponent(fragmentId)}/dates-in-text`,
       { datesInText: [mesopotamianDate.toDto()] },
-      true,
-      undefined,
     ],
     Promise.resolve(fragmentDto),
   ),
@@ -416,8 +390,6 @@ const testData: TestData<FragmentRepository>[] = [
     [
       `/fragments/${encodeURIComponent(fragmentId)}/archaeology`,
       { archaeology },
-      true,
-      undefined,
     ],
     Promise.resolve(fragmentDto),
   ),

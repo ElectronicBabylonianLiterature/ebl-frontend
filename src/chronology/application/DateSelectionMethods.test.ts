@@ -1,7 +1,7 @@
 import { saveDateDefault } from './DateSelectionMethods'
 import { MesopotamianDate } from 'chronology/domain/Date'
 import { Fragment } from 'fragmentarium/domain/fragment'
-import { PromiseOperation } from 'common/hooks/usePromiseEffect'
+import { WriteOperation } from 'common/hooks/usePromiseEffect'
 
 const date = MesopotamianDate.fromJson({
   year: { value: '1' },
@@ -21,9 +21,8 @@ let setSaveError: jest.Mock
 let setDate: jest.Mock
 let setIsDisplayed: jest.Mock
 let updateDate: jest.Mock
-let signal: AbortSignal
-let controller: AbortController
-let runUpdate: jest.Mock<Promise<void>, [PromiseOperation]>
+let isStale: boolean
+let runUpdate: jest.Mock<Promise<void>, [WriteOperation]>
 
 function save(newDate?: MesopotamianDate): void {
   saveDateDefault({
@@ -44,10 +43,9 @@ beforeEach(() => {
   setDate = jest.fn()
   setIsDisplayed = jest.fn()
   updateDate = jest.fn()
-  controller = new AbortController()
-  signal = controller.signal
-  runUpdate = jest.fn((operation: PromiseOperation) =>
-    operation(signal).then(() => undefined),
+  isStale = false
+  runUpdate = jest.fn((operation: WriteOperation) =>
+    operation(() => isStale).then(() => undefined),
   )
 })
 
@@ -64,7 +62,7 @@ it('Saves and updates the state when the date changed', async () => {
   save(updatedDate)
   await runUpdate.mock.results[0].value
 
-  expect(updateDate).toHaveBeenCalledWith(updatedDate, undefined, signal)
+  expect(updateDate).toHaveBeenCalledWith(updatedDate, undefined)
   expect(setIsSaving).toHaveBeenNthCalledWith(1, true)
   expect(setIsSaving).toHaveBeenLastCalledWith(false)
   expect(setIsDisplayed).toHaveBeenCalledWith(false)
@@ -83,9 +81,9 @@ it('Reports the error when saving fails', async () => {
   expect(setDate).not.toHaveBeenCalled()
 })
 
-it('Leaves the state alone when the save was aborted', async () => {
+it('Leaves the state alone when the save was superseded', async () => {
   updateDate.mockImplementation(() => {
-    controller.abort()
+    isStale = true
     return Promise.resolve({} as Fragment)
   })
   save(updatedDate)
@@ -96,9 +94,9 @@ it('Leaves the state alone when the save was aborted', async () => {
   expect(setIsSaving).toHaveBeenCalledTimes(1)
 })
 
-it('Leaves the state alone when an aborted save fails', async () => {
+it('Leaves the state alone when a superseded save fails', async () => {
   updateDate.mockImplementation(() => {
-    controller.abort()
+    isStale = true
     return Promise.reject(new Error('Saving failed'))
   })
   save(updatedDate)

@@ -47,29 +47,18 @@ class WordRepository {
     return this.apiClient.fetchJson(`/words/all`, false, signal)
   }
 
-  update(word: Word, signal?: AbortSignal): Promise<Word> {
+  update(word: Word): Promise<Word> {
     return this.apiClient.postJson(
       `/words/${encodeURIComponent(word._id)}`,
       word,
-      true,
-      signal,
     )
   }
 
-  createProperNoun(
-    lemma: string,
-    namedEntityTag: string,
-    signal?: AbortSignal,
-  ): Promise<Word> {
-    return this.apiClient.postJson(
-      `/words/create-proper-noun`,
-      {
-        lemma,
-        namedEntityTags: [namedEntityTag],
-      },
-      true,
-      signal,
-    )
+  createProperNoun(lemma: string, namedEntityTag: string): Promise<Word> {
+    return this.apiClient.postJson(`/words/create-proper-noun`, {
+      lemma,
+      namedEntityTags: [namedEntityTag],
+    })
   }
 }
 

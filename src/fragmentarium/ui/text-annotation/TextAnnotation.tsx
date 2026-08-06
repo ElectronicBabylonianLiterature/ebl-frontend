@@ -334,10 +334,10 @@ export default withData<
       fragmentService={fragmentService}
     />
   ),
-  (props) =>
+  (props, signal) =>
     props.fragmentService.find(props.number).then((fragment) =>
       props.fragmentService
-        .fetchNamedEntityAnnotations(props.number)
+        .fetchNamedEntityAnnotations(props.number, signal)
         .then((annotations) => ({
           fragment,
           annotations,

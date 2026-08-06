@@ -7,6 +7,7 @@ import Lemmatization, {
   LemmatizationToken,
 } from 'transliteration/domain/Lemmatization'
 import FragmentService from './FragmentService'
+import FragmentCache from './FragmentCache'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import { produce, castDraft, Draft } from 'immer'
 import { Genres } from 'fragmentarium/domain/Genres'
@@ -148,6 +149,7 @@ const testData: TestData<FragmentService>[] = [
     [folio, 'K.1'],
     fragmentRepository.folioPager,
     resultStub,
+    [folio, 'K.1', undefined],
   ),
   new TestData(
     'fragmentPager',
@@ -167,15 +169,17 @@ const testData: TestData<FragmentService>[] = [
   ),
   new TestData(
     'findAnnotations',
-    [fragment.number, false],
+    [fragment.number],
     fragmentRepository.findAnnotations,
     resultStub,
+    [fragment.number, false, undefined],
   ),
   new TestData(
     'generateAnnotations',
-    [fragment.number, true],
+    [fragment.number],
     fragmentRepository.findAnnotations,
     resultStub,
+    [fragment.number, true],
   ),
   new TestData(
     'updateAnnotations',
@@ -411,7 +415,6 @@ describe('methods returning fragment', () => {
       expect(fragmentRepository.updateEdition).toHaveBeenCalledWith(
         fragment.number,
         edition,
-        undefined,
       )
     })
   })
@@ -584,7 +587,6 @@ describe('methods returning fragment', () => {
       expect(fragmentRepository.updateGenres).toHaveBeenCalledWith(
         fragment.number,
         genres,
-        undefined,
       ))
   })
 
@@ -595,7 +597,7 @@ describe('methods returning fragment', () => {
       description: 'update script',
       repositoryMethod: fragmentRepository.updateScript,
       expectedValue: () => fragment.script,
-      extraArgs: [undefined],
+      extraArgs: [],
       serviceCall: (number: string) =>
         fragmentService.updateScript(number, fragment.script),
     },
@@ -603,7 +605,7 @@ describe('methods returning fragment', () => {
       description: 'update scopes',
       repositoryMethod: fragmentRepository.updateScopes,
       expectedValue: () => scopes,
-      extraArgs: [undefined],
+      extraArgs: [],
       serviceCall: (number: string) =>
         fragmentService.updateScopes(number, scopes),
     },
@@ -643,7 +645,6 @@ describe('methods returning fragment', () => {
       expect(fragmentRepository.updateDate).toHaveBeenCalledWith(
         fragment.number,
         date.toDto(),
-        undefined,
       ))
   })
 
@@ -664,7 +665,6 @@ describe('methods returning fragment', () => {
     test('calls repository with correct parameters', () =>
       expect(fragmentRepository.updateDate).toHaveBeenCalledWith(
         fragment.number,
-        undefined,
         undefined,
       ))
   })
@@ -690,7 +690,6 @@ describe('methods returning fragment', () => {
       expect(fragmentRepository.updateDatesInText).toHaveBeenCalledWith(
         fragment.number,
         datesInText.filter((date) => date).map((date) => date.toDto()),
-        undefined,
       ))
   })
 
@@ -717,7 +716,6 @@ describe('methods returning fragment', () => {
       expect(fragmentRepository.updateArchaeology).toHaveBeenCalledWith(
         fragment.number,
         archaeologyDto,
-        undefined,
       ))
   })
 
@@ -761,7 +759,6 @@ describe('methods returning fragment', () => {
       expect(fragmentRepository.updateReferences).toHaveBeenCalledWith(
         fragment.number,
         fragment.references,
-        undefined,
       ))
   })
 
@@ -787,7 +784,6 @@ describe('methods returning fragment', () => {
       expect(fragmentRepository.updateLemmaAnnotation).toHaveBeenCalledWith(
         fragment.number,
         annotations,
-        undefined,
       ))
   })
 
@@ -806,7 +802,6 @@ describe('methods returning fragment', () => {
       expect(fragmentRepository.updateColophon).toHaveBeenCalledWith(
         fragment.number,
         colophon,
-        undefined,
       ))
   })
 
@@ -829,7 +824,7 @@ describe('methods returning fragment', () => {
       ).resolves.toEqual(namedEntityAnnotations)
       expect(
         fragmentRepository.fetchNamedEntityAnnotations,
-      ).toHaveBeenCalledWith(fragment.number)
+      ).toHaveBeenCalledWith(fragment.number, undefined)
     })
   })
 
@@ -1239,9 +1234,13 @@ describe('FragmentService cache', () => {
     }
     const injectReferencesMock = jest
       .spyOn(
-        service as unknown as {
-          injectReferences: (fragment: Fragment) => Promise<Fragment>
-        },
+        (
+          service as unknown as {
+            queryLoader: {
+              injectReferences: (fragment: Fragment) => Promise<Fragment>
+            }
+          }
+        ).queryLoader,
         'injectReferences',
       )
       .mockReturnValue(Promise.reject(new Error('403 Forbidden')))
@@ -1900,14 +1899,7 @@ describe('FragmentService cache', () => {
     >().keys()
     const keysSpy = jest.spyOn(cache, 'keys').mockReturnValue(emptyKeys)
 
-    ;(
-      service as unknown as {
-        trimCache: (
-          cache: Map<string, { expiresAt: number; value: Fragment }>,
-          maximumCacheSize: number,
-        ) => void
-      }
-    ).trimCache(cache, 1)
+    new FragmentCache().trim(cache, 1)
 
     expect(cache.size).toBe(2)
     keysSpy.mockRestore()

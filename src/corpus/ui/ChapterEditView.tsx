@@ -75,19 +75,17 @@ function ChapterEditView({
     setError(null)
   }
 
-  const update = (
-    updater: (signal?: AbortSignal) => Promise<Chapter>,
-  ): void => {
+  const update = (updater: () => Promise<Chapter>): void => {
     setStateUpdating()
-    runUpdate((signal) =>
-      updater(signal)
+    runUpdate((isStale) =>
+      updater()
         .then((updatedChapter) => {
-          if (!signal.aborted) {
+          if (!isStale()) {
             setStateUpdated(updatedChapter)
           }
         })
         .catch((error) => {
-          if (!signal.aborted) {
+          if (!isStale()) {
             setStateError(error)
           }
         }),
@@ -95,36 +93,29 @@ function ChapterEditView({
   }
 
   const updateAlignment = (alignment: ChapterAlignment): void => {
-    update((signal) =>
-      textService.updateAlignment(chapter.id, alignment, signal),
-    )
+    update(() => textService.updateAlignment(chapter.id, alignment))
   }
 
   const updateManuscripts = (): void => {
-    update((signal) =>
+    update(() =>
       textService.updateManuscripts(
         chapter.id,
         currentChapter.manuscripts,
         currentChapter.uncertainFragments,
-        signal,
       ),
     )
   }
 
   const updateLines = (): void => {
-    update((signal) =>
-      textService.updateLines(chapter.id, currentChapter.lines, signal),
-    )
+    update(() => textService.updateLines(chapter.id, currentChapter.lines))
   }
 
   const updateLemmatization = (lemmatization: ChapterLemmatization): void => {
-    update((signal) =>
-      textService.updateLemmatization(chapter.id, lemmatization, signal),
-    )
+    update(() => textService.updateLemmatization(chapter.id, lemmatization))
   }
 
   const importChapter = (atf: string): void => {
-    update((signal) => textService.importChapter(chapter.id, atf, signal))
+    update(() => textService.importChapter(chapter.id, atf))
   }
 
   const handleChange = (chapter: Chapter): void => {

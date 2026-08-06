@@ -20,7 +20,7 @@ import ExternalLink from 'common/ui/ExternalLink'
 
 type Props = {
   fragment: Fragment
-  updateScript: (script: Script, signal?: AbortSignal) => Promise<Fragment>
+  updateScript: (script: Script) => Promise<Fragment>
   periodOptions: readonly Period[]
 }
 
@@ -129,22 +129,22 @@ function ScriptSelection({
         <div>
           <Button
             className="m-1"
-            disabled={!isDirty}
+            disabled={!isDirty || isSaving}
             onClick={() => {
               if (updates !== script) {
                 setIsSaving(true)
                 setSaveError(null)
-                runUpdate((signal) =>
-                  updateScript(updates, signal).then(
+                runUpdate((isStale) =>
+                  updateScript(updates).then(
                     () => {
-                      if (!signal.aborted) {
+                      if (!isStale()) {
                         setIsSaving(false)
                         setIsDisplayed(false)
                         setScript(updates)
                       }
                     },
                     (error) => {
-                      if (!signal.aborted) {
+                      if (!isStale()) {
                         setIsSaving(false)
                         setSaveError(error)
                       }

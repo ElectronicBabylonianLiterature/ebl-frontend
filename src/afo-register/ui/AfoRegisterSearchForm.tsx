@@ -7,6 +7,8 @@ import { AfoRegisterRecordSuggestion } from 'afo-register/domain/Record'
 import AfoRegisterService from 'afo-register/application/AfoRegisterService'
 import Select from 'react-select'
 import AfoRegisterTextSelect from 'afo-register/ui/AfoRegisterTextSelect'
+import ErrorAlert from 'common/errors/ErrorAlert'
+import { isCancellation } from 'common/utils/abortError'
 
 export type AfoRegisterQuery = { text: string; textNumber: string }
 
@@ -112,6 +114,7 @@ function AfoRegisterSearch({ queryProp, afoRegisterService }: FormProps) {
     !!queryProp.textNumber &&
       queryProp.textNumber.length === query.textNumber.length + 2,
   )
+  const [suggestionsError, setSuggestionsError] = useState<Error | null>(null)
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -125,7 +128,11 @@ function AfoRegisterSearch({ queryProp, afoRegisterService }: FormProps) {
       setTextNumberOptions,
       afoRegisterService,
       controller.signal,
-    )
+    ).catch((error) => {
+      if (!isCancellation(error, controller.signal)) {
+        setSuggestionsError(error as Error)
+      }
+    })
     return () => controller.abort()
   }, [query, textNumberOptions, setTextNumberOptions, afoRegisterService])
 
@@ -178,6 +185,7 @@ function AfoRegisterSearch({ queryProp, afoRegisterService }: FormProps) {
             />
           </Col>
         </Row>
+        <ErrorAlert error={suggestionsError} />
       </Form.Group>
     </Form>
   )

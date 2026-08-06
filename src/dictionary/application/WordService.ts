@@ -39,16 +39,12 @@ class WordService {
       : this.wordRepository.searchLemma(lemma, signal)
   }
 
-  update(word: Word, signal?: AbortSignal): Promise<Word> {
-    return this.wordRepository.update(word, signal)
+  update(word: Word): Promise<Word> {
+    return this.wordRepository.update(word)
   }
 
-  createProperNoun(
-    lemma: string,
-    namedEntityTag: string,
-    signal?: AbortSignal,
-  ): Promise<Word> {
-    return this.wordRepository.createProperNoun(lemma, namedEntityTag, signal)
+  createProperNoun(lemma: string, namedEntityTag: string): Promise<Word> {
+    return this.wordRepository.createProperNoun(lemma, namedEntityTag)
   }
 
   listAllWords(signal?: AbortSignal): Promise<string[]> {

@@ -43,7 +43,7 @@ const testData: TestData<WordRepository>[] = [
     [word],
     apiClient.postJson,
     resultStub,
-    [`/words/${encodeURIComponent(word._id)}`, word, true, undefined],
+    [`/words/${encodeURIComponent(word._id)}`, word],
     Promise.resolve(resultStub),
   ),
   new TestData(
@@ -54,8 +54,6 @@ const testData: TestData<WordRepository>[] = [
     [
       `/words/create-proper-noun`,
       { lemma: 'Shamash', namedEntityTags: ['DN'] },
-      true,
-      undefined,
     ],
     Promise.resolve(resultStub),
   ),

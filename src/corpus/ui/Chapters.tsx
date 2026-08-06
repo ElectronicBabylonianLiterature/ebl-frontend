@@ -73,15 +73,15 @@ function excludeIndirectJoins(manuscripts: Manuscript[]): Manuscript[] {
 
 function ExtantLinesCell({
   extantLines,
-  error,
+  hasError,
   siglum,
 }: {
   extantLines?: ExtantLines
-  error: Error | null
+  hasError: boolean
   siglum: string
 }): JSX.Element {
-  if (error) {
-    return <ErrorAlert error={error} />
+  if (hasError) {
+    return <>&mdash;</>
   }
   if (!extantLines) {
     return <Spinner />
@@ -133,132 +133,137 @@ const Manuscripts = withData<
     const uncertainFragmentsId = _.uniqueId('uncertainFragmets-')
     const extantLinesId = _.uniqueId('extantLines-')
     return (
-      <table>
-        <colgroup span={3}></colgroup>
-        <thead>
-          <tr className="list-of-manuscripts__header">
-            <th
-              id={siglumId}
-              scope="col"
-              className="list-of-manuscripts__column-heading"
-            >
-              Siglum
-            </th>
-            <th
-              id={museumNumberId}
-              scope="col"
-              className="list-of-manuscripts__column-heading"
-            >
-              Museum Number
-              <ReferencesHelp className="list-of-manuscripts__help" />
-            </th>
-            <th
-              id={extantLinesId}
-              scope="col"
-              className="list-of-manuscripts__column-heading"
-            >
-              Extant Lines
-              <span className="list-of-manuscripts__help">
-                <HelpTrigger
-                  overlay={
-                    <Popover id={_.uniqueId('ExtantLinesHelp-')}>
-                      <Popover.Body>
-                        Bold figures indicate lines at the beginning or end of
-                        columns, sides, or excerpts.
-                      </Popover.Body>
-                    </Popover>
-                  }
-                />
-              </span>
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          {_(manuscripts)
-            .sort(compareManuscripts)
-            .groupBy((manuscript) => manuscript.provenance.name)
-            .map((manuscripts, provenance) => {
-              const provenanceId = _.uniqueId('provenace-')
-              return (
-                <React.Fragment key={provenance}>
-                  <ProvenanceHeading id={provenanceId}>
-                    {provenance}
-                  </ProvenanceHeading>
-                  {excludeIndirectJoins(manuscripts).map(
-                    (manuscript, index) => {
-                      const rowId = _.uniqueId('row-')
-                      return (
-                        <tr key={`${provenance} ${index}`}>
-                          <th
-                            id={rowId}
-                            headers={[provenanceId, siglumId].join(' ')}
-                            scope="row"
-                            className="list-of-manuscripts__siglum-heading"
-                          >
-                            {manuscript.siglum}
-                          </th>
-                          <td
-                            headers={[provenanceId, rowId, museumNumberId].join(
-                              ' ',
-                            )}
-                            className="list-of-manuscripts__museum-numbers"
-                          >
-                            <ManuscriptJoins manuscript={manuscript} />
-                            <ManuscriptReferences
-                              references={manuscript.references}
-                            />
-                          </td>
-                          <td
-                            headers={[
-                              extantLinesId,
-                              rowId,
-                              museumNumberId,
-                            ].join(' ')}
-                            className="list-of-manuscripts__extant-lines"
-                          >
-                            <ExtantLinesCell
-                              extantLines={extantLines}
-                              error={extantLinesError}
-                              siglum={manuscript.siglum}
-                            />
-                          </td>
-                        </tr>
-                      )
-                    },
-                  )}
-                </React.Fragment>
-              )
-            })
-            .value()}
-          {!_.isEmpty(uncertainFragments) && (
-            <>
-              <ProvenanceHeading id={uncertainFragmentsId}>
-                Uncertain Fragments
-              </ProvenanceHeading>
-              <tr>
-                <td></td>
-                <td>
-                  <ul className="list-of-manuscripts__uncertain-fragments">
-                    {uncertainFragments.map((uncertainFragment, index) => (
-                      <li key={index}>
-                        <FragmentariumLink
-                          item={{
-                            ...uncertainFragment,
-                            isInFragmentarium:
-                              fragmentService.isInFragmentarium(
-                                uncertainFragment.museumNumber,
-                              ),
-                          }}
-                        />
-                      </li>
-                    ))}
-                  </ul>
-                </td>
-              </tr>
-            </>
-          )}
-        </tbody>
-      </table>
+      <>
+        <ErrorAlert error={extantLinesError} />
+        <table>
+          <colgroup span={3}></colgroup>
+          <thead>
+            <tr className="list-of-manuscripts__header">
+              <th
+                id={siglumId}
+                scope="col"
+                className="list-of-manuscripts__column-heading"
+              >
+                Siglum
+              </th>
+              <th
+                id={museumNumberId}
+                scope="col"
+                className="list-of-manuscripts__column-heading"
+              >
+                Museum Number
+                <ReferencesHelp className="list-of-manuscripts__help" />
+              </th>
+              <th
+                id={extantLinesId}
+                scope="col"
+                className="list-of-manuscripts__column-heading"
+              >
+                Extant Lines
+                <span className="list-of-manuscripts__help">
+                  <HelpTrigger
+                    overlay={
+                      <Popover id={_.uniqueId('ExtantLinesHelp-')}>
+                        <Popover.Body>
+                          Bold figures indicate lines at the beginning or end of
+                          columns, sides, or excerpts.
+                        </Popover.Body>
+                      </Popover>
+                    }
+                  />
+                </span>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {_(manuscripts)
+              .sort(compareManuscripts)
+              .groupBy((manuscript) => manuscript.provenance.name)
+              .map((manuscripts, provenance) => {
+                const provenanceId = _.uniqueId('provenace-')
+                return (
+                  <React.Fragment key={provenance}>
+                    <ProvenanceHeading id={provenanceId}>
+                      {provenance}
+                    </ProvenanceHeading>
+                    {excludeIndirectJoins(manuscripts).map(
+                      (manuscript, index) => {
+                        const rowId = _.uniqueId('row-')
+                        return (
+                          <tr key={`${provenance} ${index}`}>
+                            <th
+                              id={rowId}
+                              headers={[provenanceId, siglumId].join(' ')}
+                              scope="row"
+                              className="list-of-manuscripts__siglum-heading"
+                            >
+                              {manuscript.siglum}
+                            </th>
+                            <td
+                              headers={[
+                                provenanceId,
+                                rowId,
+                                museumNumberId,
+                              ].join(' ')}
+                              className="list-of-manuscripts__museum-numbers"
+                            >
+                              <ManuscriptJoins manuscript={manuscript} />
+                              <ManuscriptReferences
+                                references={manuscript.references}
+                              />
+                            </td>
+                            <td
+                              headers={[
+                                extantLinesId,
+                                rowId,
+                                museumNumberId,
+                              ].join(' ')}
+                              className="list-of-manuscripts__extant-lines"
+                            >
+                              <ExtantLinesCell
+                                extantLines={extantLines}
+                                hasError={extantLinesError !== null}
+                                siglum={manuscript.siglum}
+                              />
+                            </td>
+                          </tr>
+                        )
+                      },
+                    )}
+                  </React.Fragment>
+                )
+              })
+              .value()}
+            {!_.isEmpty(uncertainFragments) && (
+              <>
+                <ProvenanceHeading id={uncertainFragmentsId}>
+                  Uncertain Fragments
+                </ProvenanceHeading>
+                <tr>
+                  <td></td>
+                  <td>
+                    <ul className="list-of-manuscripts__uncertain-fragments">
+                      {uncertainFragments.map((uncertainFragment, index) => (
+                        <li key={index}>
+                          <FragmentariumLink
+                            item={{
+                              ...uncertainFragment,
+                              isInFragmentarium:
+                                fragmentService.isInFragmentarium(
+                                  uncertainFragment.museumNumber,
+                                ),
+                            }}
+                          />
+                        </li>
+                      ))}
+                    </ul>
+                  </td>
+                </tr>
+              </>
+            )}
+          </tbody>
+        </table>
+      </>
     )
   },
   ({ id, textService }) => textService.findManuscripts(id),

@@ -474,26 +474,18 @@ export default class TextService {
   updateAlignment(
     id: ChapterId,
     alignment: ChapterAlignment,
-    signal?: AbortSignal,
   ): Promise<Chapter> {
-    return this.postChapterUpdate(
-      id,
-      'alignment',
-      toAlignmentDto(alignment),
-      signal,
-    )
+    return this.postChapterUpdate(id, 'alignment', toAlignmentDto(alignment))
   }
 
   updateLemmatization(
     id: ChapterId,
     lemmatization: ChapterLemmatization,
-    signal?: AbortSignal,
   ): Promise<Chapter> {
     return this.postChapterUpdate(
       id,
       'lemmatization',
       toLemmatizationDto(lemmatization),
-      signal,
     )
   }
 
@@ -501,46 +493,30 @@ export default class TextService {
     id: ChapterId,
     manuscripts: readonly Manuscript[],
     uncertainChapters: readonly string[],
-    signal?: AbortSignal,
   ): Promise<Chapter> {
     return this.postChapterUpdate(
       id,
       'manuscripts',
       toManuscriptsDto(manuscripts, uncertainChapters),
-      signal,
     )
   }
 
-  updateLines(
-    id: ChapterId,
-    lines: readonly Line[],
-    signal?: AbortSignal,
-  ): Promise<Chapter> {
-    return this.postChapterUpdate(id, 'lines', toLinesDto(lines), signal)
+  updateLines(id: ChapterId, lines: readonly Line[]): Promise<Chapter> {
+    return this.postChapterUpdate(id, 'lines', toLinesDto(lines))
   }
 
-  importChapter(
-    id: ChapterId,
-    atf: string,
-    signal?: AbortSignal,
-  ): Promise<Chapter> {
-    return this.postChapterUpdate(id, 'import', { atf }, signal)
+  importChapter(id: ChapterId, atf: string): Promise<Chapter> {
+    return this.postChapterUpdate(id, 'import', { atf })
   }
 
   private postChapterUpdate(
     id: ChapterId,
     endpoint: string,
     dto: unknown,
-    signal?: AbortSignal,
   ): Promise<Chapter> {
     return Promise.all([
       this.loadProvenances(),
-      this.apiClient.postJson(
-        `${createChapterUrl(id)}/${endpoint}`,
-        dto,
-        true,
-        signal,
-      ),
+      this.apiClient.postJson(`${createChapterUrl(id)}/${endpoint}`, dto),
     ]).then(([, chapterDto]) => fromChapterDto(chapterDto))
   }
 

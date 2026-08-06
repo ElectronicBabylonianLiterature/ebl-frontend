@@ -1,5 +1,4 @@
 import _ from 'lodash'
-import cancellableFetch from './cancellableFetch'
 import { AuthenticationService } from 'auth/Auth'
 import { ErrorReporter } from 'ErrorReporterContext'
 import { isAbortError } from 'common/utils/abortError'
@@ -158,7 +157,7 @@ export default class ApiClient {
         options.headers ?? {},
         path,
       )
-      const response = await cancellableFetch(apiUrl(path), {
+      const response = await fetch(apiUrl(path), {
         ...options,
         headers,
         ...(signal ? { signal } : {}),

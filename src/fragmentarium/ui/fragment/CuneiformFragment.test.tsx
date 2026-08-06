@@ -252,7 +252,6 @@ it('Calls `updateDate` with undefined on Date delete', async () => {
     expect(fragmentService.updateDate).toHaveBeenCalledWith(
       fragment.number,
       undefined,
-      expect.any(AbortSignal),
     ),
   )
 })

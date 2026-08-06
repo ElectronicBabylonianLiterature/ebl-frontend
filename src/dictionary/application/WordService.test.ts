@@ -30,14 +30,13 @@ const testData: TestData<WordService>[] = [
   ),
   new TestData('update', [{ _id: 'id' }], wordRepository.update, resultStub, [
     { _id: 'id' } as unknown as Word,
-    undefined,
   ]),
   new TestData(
     'createProperNoun',
     ['Shamash', 'DN'],
     wordRepository.createProperNoun,
     resultStub,
-    ['Shamash', 'DN', undefined],
+    ['Shamash', 'DN'],
   ),
   new TestData(
     'listAllWords',
