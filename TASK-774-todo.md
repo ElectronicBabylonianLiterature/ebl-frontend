@@ -57,8 +57,13 @@ codebase, and the 250-line refactor applied to **every `.ts`/`.tsx` file the PR 
       `FragmentLemmaLoader` (51), `FragmentImageLoader` (50),
       `injectFragmentReferences` (27). `LemmatizationFactory` now depends on a narrow
       `LemmaSuggestionSource` interface instead of the whole service.
-- [ ] 15 remaining source files (see `TASK-774-review.md` Finding 6 for the list)
-- [ ] 19 remaining test files
+- [x] `src/fragmentarium/infrastructure/FragmentRepository.ts` (732) → 5 modules:
+      `FragmentRepository` (128), `ApiFragmentReadRepository` (217),
+      `ApiFragmentQueryRepository` (145), `createQueryResult` (203), `createFragment` (128)
+- [x] `src/corpus/application/TextService.ts` (573) → 7 modules: `TextService` (75),
+      `TextReadService` (148), `TextServiceBase` (145), `TextServiceCore` (169),
+      `CorpusLemmatizationFactory` (81), `chapterUrls` (23), `textServiceConstants` (4)
+- [ ] 32 files still over 250 lines (11 source, 21 test) — listed in `TASK-774-review.md`
 
 ### Gates
 

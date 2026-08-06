@@ -181,3 +181,66 @@ delegation expectations gained the forwarded `signal` argument.
 15 source files and 19 test files are still over 250 lines. They are listed in
 `TASK-774-review.md` under Finding 6. Each split is independent and the tree is green
 between them, so this can be picked up incrementally.
+
+---
+
+## 2026-08-06 (continued, after commit b744a49b) — more 250-line splits
+
+### `FragmentRepository.ts` (732 → 5 modules)
+
+| Module                       | Lines | Holds                                                        |
+| ---------------------------- | ----- | ------------------------------------------------------------ |
+| `FragmentRepository`         | 128   | `ApiFragmentRepository`; every mutation                      |
+| `ApiFragmentReadRepository`  | 217   | pagers, lemmas, annotations, corpus lookup, suggestions      |
+| `ApiFragmentQueryRepository` | 145   | statistics, fragment info feeds, queries, provenance reads   |
+| `createQueryResult`          | 203   | query-result DTO types and their mapping                     |
+| `createFragment`             | 128   | `createScript`, `createJoins`, `createFragment`, path helper |
+
+The public entry point still re-exports `createScript` / `createJoins` /
+`createFragmentInfo`, which `corpus/application/dtos`, `DossierRecord` and two test files
+import.
+
+### `TextService.ts` (573 → 6 modules)
+
+| Module                       | Lines | Holds                                                     |
+| ---------------------------- | ----- | --------------------------------------------------------- |
+| `TextService`                | 75    | the chapter mutations                                     |
+| `TextReadService`            | 148   | text and chapter-display reads                            |
+| `TextServiceBase`            | 145   | colophons, extant lines, manuscripts, list, search, query |
+| `TextServiceCore`            | 169   | construction, chapter-display caching, provenance loading |
+| `CorpusLemmatizationFactory` | 81    | the corpus lemmatisation factory                          |
+| `chapterUrls`                | 23    | `createTextUrl` / `createChapterUrl`                      |
+| `textServiceConstants`       | 4     | cache TTL, sizes, concurrency limit, default scope        |
+
+`textServiceConstants` exists because the four `const`s would otherwise be duplicated across
+five files, which the DRY gate forbids.
+
+### Status
+
+32 files remain over 250 lines. `yarn tsc` and `yarn lint` are clean and the affected suites
+pass after every step.
+
+### Verification after the FragmentRepository and TextService splits
+
+The devcontainer runs out of memory partway through a single full-suite invocation
+("The build failed because the process exited too early" — an environment limit, not a test
+failure; `free -m` showed ~1.2 GB free with VS Code's own node processes holding ~5.7 GB).
+The suite was therefore run in directory chunks, which all pass:
+
+| Chunk                                                                          | Suites | Tests            |
+| ------------------------------------------------------------------------------ | ------ | ---------------- |
+| common, http, auth, about, router, bibliography                                | 77     | 796              |
+| fragmentarium                                                                  | 99     | 1241 + 2 skipped |
+| corpus                                                                         | 34     | 412              |
+| chronology                                                                     | 17     | 171              |
+| dictionary                                                                     | 29     | 230              |
+| dossiers                                                                       | 7      | 89               |
+| signs, transliteration, realia, afo-register, query, research-projects, markup | 73     | 485              |
+| App, Introduction, InjectedApp, index, Header, editor, akkadian, test-support  | 13     | 133              |
+
+Zero `console.*` / `Warning:` / unhandled-rejection lines in any chunk. `yarn tsc` and
+`yarn lint` are clean.
+
+The 347-suite single-process run did complete earlier in the session (before these two
+splits) with 3530 passing and zero console output; the chunked runs above cover the same
+347 suites.
