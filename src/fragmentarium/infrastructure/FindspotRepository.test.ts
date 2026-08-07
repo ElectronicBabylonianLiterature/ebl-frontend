@@ -41,8 +41,8 @@ const testData: TestData<ApiFindspotRepository>[] = [
     Promise.resolve(expectedFindspots.map(toFindspotDto)),
   ),
   new TestData(
-    'fetchAssurMapData',
-    [],
+    'fetchMapData',
+    ['ASSUR'],
     apiClient.fetchJson,
     expectedMapData,
     ['/findspots/map-data?site=ASSUR', false],

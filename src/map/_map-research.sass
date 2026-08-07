@@ -1,0 +1,189 @@
+// Evidence-first inspector content: segmented sections, evidence badges,
+// definition rows, the historical-map list and the research-summary actions.
+
+.map-inspector
+  &__tabs
+    display: grid
+    gap: 0.6rem
+    min-width: 0
+
+  &__tablist
+    display: flex
+    flex-wrap: wrap
+    gap: 0.25rem
+    padding: 0.2rem
+    border: 1px solid #e2ddd2
+    border-radius: 0.4rem
+    background: #f6f2ea
+
+  &__tab
+    flex: 1 1 auto
+    min-height: 2.25rem
+    padding: 0.35rem 0.55rem
+    border: 0
+    border-radius: 0.3rem
+    background: transparent
+    color: $ebl-color-text-secondary
+    font-size: 0.82rem
+    font-weight: 600
+    transition: background $ebl-motion-duration-fast $ebl-motion-ease-standard
+
+    &--active
+      background: $ebl-color-surface-primary
+      box-shadow: 0 0.1rem 0.4rem $ebl-color-black-alpha-08
+      color: #7b3f10
+
+  &__tabpanel
+    display: grid
+    gap: 0.75rem
+    min-width: 0
+
+  &__overview,
+  &__evidence,
+  &__maps
+    display: grid
+    gap: 0.75rem
+    min-width: 0
+
+  &__badges
+    display: flex
+    flex-wrap: wrap
+    gap: 0.35rem
+
+  // The word is the state; the border colour only reinforces it.
+  &__badge
+    padding: 0.2rem 0.5rem
+    border: 1px solid #cfc7b8
+    border-left-width: 0.25rem
+    border-radius: 0.25rem
+    background: #faf7f0
+    color: $ebl-color-text-primary
+    font-size: 0.75rem
+    font-weight: 700
+
+    &--verified-source
+      border-left-color: #b3702a
+
+    &--curated
+      border-left-color: #3f6f8f
+
+    &--mixed
+      border-left-color: #6f5f9c
+
+    &--unmapped
+      border-left-color: #7b7f73
+
+    &--precision
+      border-left-color: #4f8f9f
+
+  &__definitions
+    display: grid
+    gap: 0.4rem
+    margin: 0
+
+    > div
+      display: grid
+      grid-template-columns: minmax(6rem, 9rem) minmax(0, 1fr)
+      gap: 0.5rem
+
+    dt
+      color: $ebl-color-text-secondary
+      font-size: 0.8rem
+      font-weight: 600
+
+    dd
+      margin: 0
+      overflow-wrap: anywhere
+      color: $ebl-color-text-primary
+      font-size: 0.85rem
+
+  &__footnote,
+  &__findspots-heading,
+  &__maps-heading
+    margin: 0
+    color: $ebl-color-text-secondary
+    font-size: 0.8rem
+    line-height: 1.35
+
+  &__map-list
+    display: grid
+    gap: 0.4rem
+    margin: 0
+    padding: 0
+    list-style: none
+
+  &__map-row
+    display: grid
+    grid-template-columns: minmax(0, 1fr) auto
+    align-items: center
+    gap: 0.5rem
+    min-height: 2.75rem
+    padding: 0.5rem 0.6rem
+    border: 1px solid #ded8cc
+    border-radius: 0.35rem
+    background: $ebl-color-surface-primary
+
+    span
+      min-width: 0
+
+    strong,
+    small
+      display: block
+      overflow-wrap: anywhere
+
+    small
+      color: $ebl-color-text-secondary
+      font-size: 0.72rem
+
+  &__attribution
+    margin-top: 0.15rem
+    font-style: italic
+
+.map-research-actions
+  display: flex
+  flex-wrap: wrap
+  align-items: center
+  gap: 0.4rem
+
+  &__status
+    flex: 1 1 100%
+    color: $ebl-color-text-secondary
+    font-size: 0.78rem
+
+.map-precision-note
+  display: grid
+  gap: 0.3rem
+
+  &__toggle
+    justify-self: start
+    min-height: 2.25rem
+    padding: 0
+    border: 0
+    background: transparent
+    color: #7b562e
+    font-size: 0.78rem
+    font-weight: 700
+    text-align: left
+    text-decoration: underline
+
+  &__body
+    margin: 0
+    padding: 0.5rem 0.6rem
+    border-left: 0.2rem solid #c8a16f
+    background: #faf7f0
+    color: $ebl-color-text-secondary
+    font-size: 0.78rem
+    line-height: 1.4
+
+@media (max-width: $ebl-breakpoint-md-max)
+  .map-inspector__tab,
+  .map-precision-note__toggle
+    min-height: 2.75rem
+
+  .map-inspector__definitions > div
+    grid-template-columns: minmax(0, 1fr)
+    gap: 0.1rem
+
+@media (prefers-reduced-motion: reduce)
+  .map-inspector__tab
+    transition: none

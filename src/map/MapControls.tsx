@@ -5,14 +5,15 @@ import {
   type HistoricalMapOverlayGroup,
   type HistoricalMapOverlaySeries,
   historicalOverlayLabel,
-  isSafeOverlayUrl,
 } from './historicalOverlays'
-
-interface ActiveOverlayEntry {
-  readonly overlay: HistoricalMapOverlay
-  readonly opacity: number
-  readonly visible: boolean
-}
+import ActiveHistoricalMaps, { renderSeriesControls } from './MapControlsSeries'
+import type { ActiveOverlayEntry } from './historicalOverlayActions'
+import {
+  groupActiveCount,
+  linkedExcavationAreaLabel,
+  matchesHistoricalMapFilter,
+  toggleExpandedSite,
+} from './mapControlsHelpers'
 
 interface Props {
   readonly activeOverlayEntries: readonly ActiveOverlayEntry[]
@@ -21,7 +22,6 @@ interface Props {
   readonly historicalOverlayGroups: readonly HistoricalMapOverlayGroup[]
   readonly historicalOverlaySeries: readonly HistoricalMapOverlaySeries[]
   readonly historicalMapFilter: string
-  readonly isLayerPanelOpen: boolean
   readonly linkedExcavationAreaCount: number
   readonly showBoundaries: boolean
   readonly showExcavationAreas: boolean
@@ -29,7 +29,6 @@ interface Props {
   readonly hideSeries: (seriesId: string) => void
   readonly setExpandedSiteIds: React.Dispatch<React.SetStateAction<Set<string>>>
   readonly setHistoricalMapFilter: (filter: string) => void
-  readonly setIsLayerPanelOpen: (isOpen: boolean) => void
   readonly setOverlayActive: (
     overlay: HistoricalMapOverlay,
     isActive: boolean,
@@ -43,196 +42,78 @@ interface Props {
   readonly zoomToSeries: (seriesId: string) => void
 }
 
-function matchesHistoricalMapFilter(
-  overlay: HistoricalMapOverlay,
-  filter: string,
-): boolean {
-  const normalizedFilter = filter.trim().toLowerCase()
-  if (!normalizedFilter) return true
-
-  return [
-    overlay.title,
-    overlay.shortTitle,
-    overlay.siteName,
-    overlay.seriesTitle,
-    overlay.plateLabel,
-    overlay.sourceFilename,
-  ].some((value) => value?.toLowerCase().includes(normalizedFilter))
-}
-
-function groupActiveCount(
-  group: HistoricalMapOverlayGroup,
-  activeOverlayIds: ReadonlySet<string>,
-): number {
-  return group.overlays.filter((overlay) => activeOverlayIds.has(overlay.id))
-    .length
-}
-
-function linkedExcavationAreaLabel(count: number): string {
-  return count === 1 ? '1 linked area' : `${count} linked areas`
-}
-
-function toggleExpandedSite(
-  setExpandedSiteIds: React.Dispatch<React.SetStateAction<Set<string>>>,
-  siteId: string,
-): void {
-  setExpandedSiteIds((current) => {
-    const next = new Set(current)
-    next.has(siteId) ? next.delete(siteId) : next.add(siteId)
-    return next
-  })
-}
-
-function renderSeriesControls(
-  series: HistoricalMapOverlaySeries,
-  visibleOverlays: readonly HistoricalMapOverlay[],
-  activeOverlayIds: ReadonlySet<string>,
-  props: Props,
-): JSX.Element | null {
-  if (visibleOverlays.length === 0) return null
-
-  return (
-    <div key={series.seriesId} className="map-controls__series">
-      <div className="map-controls__series-header">
-        <strong>{series.seriesTitle}</strong>
-        <span className="map-controls__count">
-          {
-            visibleOverlays.filter((overlay) =>
-              activeOverlayIds.has(overlay.id),
-            ).length
-          }
-          /{series.overlays.length}
-        </span>
-      </div>
-      <div className="map-controls__series-actions">
-        <Button
-          type="button"
-          variant="outline-secondary"
-          size="sm"
-          onClick={() => props.showSeries(series.seriesId)}
-        >
-          Show series
-        </Button>
-        <Button
-          type="button"
-          variant="outline-secondary"
-          size="sm"
-          onClick={() => props.hideSeries(series.seriesId)}
-        >
-          Hide series
-        </Button>
-        <Button
-          type="button"
-          variant="outline-secondary"
-          size="sm"
-          onClick={() => props.zoomToSeries(series.seriesId)}
-        >
-          Zoom
-        </Button>
-      </div>
-      {visibleOverlays.map((overlay) => (
-        <Form.Check
-          key={overlay.id}
-          type="checkbox"
-          id={`historical-overlay-${overlay.id}`}
-          label={historicalOverlayLabel(overlay)}
-          checked={activeOverlayIds.has(overlay.id)}
-          onChange={(event) =>
-            props.setOverlayActive(overlay, event.target.checked)
-          }
-        />
-      ))}
-    </div>
+function SiteGroup({
+  group,
+  controls,
+}: {
+  readonly group: HistoricalMapOverlayGroup
+  readonly controls: Props
+}): JSX.Element {
+  const activeInGroup = groupActiveCount(group, controls.activeOverlayIds)
+  const isExpanded =
+    controls.expandedSiteIds.has(group.siteId) ||
+    activeInGroup > 0 ||
+    controls.historicalMapFilter.trim().length > 0
+  const seriesForGroup = controls.historicalOverlaySeries.filter(
+    (series) => series.overlays[0]?.siteId === group.siteId,
   )
-}
-
-function ActiveHistoricalMaps({
-  activeOverlayEntries,
-  setOverlayActive,
-  setOverlayOpacity,
-  zoomToActiveOverlays,
-  zoomToOverlay,
-}: Pick<
-  Props,
-  | 'activeOverlayEntries'
-  | 'setOverlayActive'
-  | 'setOverlayOpacity'
-  | 'zoomToActiveOverlays'
-  | 'zoomToOverlay'
->): JSX.Element | null {
-  if (activeOverlayEntries.length === 0) return null
+  const seriesOverlayIds = new Set(
+    seriesForGroup.flatMap((series) =>
+      series.overlays.map((entry) => entry.id),
+    ),
+  )
+  const standaloneOverlays = group.overlays.filter(
+    (overlay) => !seriesOverlayIds.has(overlay.id),
+  )
 
   return (
-    <section
-      className="map-controls__active-overlays"
-      aria-labelledby="active-historical-maps-heading"
-    >
-      <div className="map-controls__active-header">
-        <h3 id="active-historical-maps-heading">Active historical maps</h3>
-        <Button
-          type="button"
-          variant="outline-secondary"
-          size="sm"
-          onClick={zoomToActiveOverlays}
-        >
-          Zoom to active maps
-        </Button>
-      </div>
-      {activeOverlayEntries.map(({ overlay, opacity }) => (
-        <section key={overlay.id} className="map-controls__active-row">
-          <div className="map-controls__active-title">
-            <strong>{historicalOverlayLabel(overlay)}</strong>
-            <span>{overlay.attribution}</span>
-            {overlay.sourceUrl && isSafeOverlayUrl(overlay.sourceUrl) ? (
-              <a
-                href={overlay.sourceUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Source
-              </a>
-            ) : null}
-          </div>
-          <Form.Group
-            className="map-controls__opacity"
-            controlId={`historical-map-opacity-${overlay.id}`}
-          >
-            <div className="map-controls__opacity-header">
-              <Form.Label>Opacity</Form.Label>
-              <span>{Math.round(opacity * 100)}%</span>
-            </div>
-            <Form.Range
-              min={0}
-              max={1}
-              step={0.05}
-              value={opacity}
+    <section className="map-controls__site-group">
+      <button
+        type="button"
+        className="map-controls__site-button"
+        aria-expanded={isExpanded}
+        aria-label={`${group.siteName} historical maps, ${activeInGroup} of ${group.overlays.length} active`}
+        onClick={() =>
+          toggleExpandedSite(controls.setExpandedSiteIds, group.siteId)
+        }
+      >
+        <span>{isExpanded ? '-' : '+'}</span>
+        <strong>{group.siteName}</strong>
+        <span className="map-controls__count">
+          {activeInGroup}/{group.overlays.length}
+        </span>
+      </button>
+      {isExpanded ? (
+        <div className="map-controls__site-content">
+          {seriesForGroup.map((series) =>
+            renderSeriesControls(
+              series,
+              series.overlays.filter(
+                (overlay) =>
+                  group.overlays.some((entry) => entry.id === overlay.id) &&
+                  matchesHistoricalMapFilter(
+                    overlay,
+                    controls.historicalMapFilter,
+                  ),
+              ),
+              controls.activeOverlayIds,
+              controls,
+            ),
+          )}
+          {standaloneOverlays.map((overlay) => (
+            <Form.Check
+              key={overlay.id}
+              type="checkbox"
+              id={`historical-overlay-${overlay.id}`}
+              label={historicalOverlayLabel(overlay)}
+              checked={controls.activeOverlayIds.has(overlay.id)}
               onChange={(event) =>
-                setOverlayOpacity(overlay.id, Number(event.target.value))
+                controls.setOverlayActive(overlay, event.target.checked)
               }
-              aria-label={`${historicalOverlayLabel(overlay)} opacity`}
             />
-          </Form.Group>
-          <div className="map-controls__active-actions">
-            <Button
-              type="button"
-              variant="outline-secondary"
-              size="sm"
-              onClick={() => zoomToOverlay(overlay)}
-              disabled={!overlay.bounds}
-            >
-              Zoom
-            </Button>
-            <Button
-              type="button"
-              variant="outline-secondary"
-              size="sm"
-              onClick={() => setOverlayActive(overlay, false)}
-            >
-              Remove
-            </Button>
-          </div>
-        </section>
-      ))}
+          ))}
+        </div>
+      ) : null}
     </section>
   )
 }
@@ -252,59 +133,14 @@ export default function MapControls(props: Props): JSX.Element {
     [props.historicalMapFilter, props.historicalOverlayGroups],
   )
 
-  if (!props.isLayerPanelOpen) {
-    return (
-      <div className="map-controls map-controls--collapsed">
-        <Button
-          type="button"
-          variant="outline-secondary"
-          size="sm"
-          className="map-controls__launcher"
-          aria-label="Show map layers"
-          aria-expanded={false}
-          aria-controls="map-layer-panel"
-          onClick={() => props.setIsLayerPanelOpen(true)}
-        >
-          Layers
-        </Button>
-      </div>
-    )
-  }
-
   return (
-    <section
-      className="map-controls map-controls--open"
-      aria-labelledby="map-layers-heading"
-    >
-      <div className="map-controls__summary">
-        <div>
-          <h2 id="map-layers-heading" className="map-controls__title">
-            Map layers
-          </h2>
-          <p className="map-controls__status">
-            {activeCount} historical maps active · Excavation areas{' '}
-            {props.showExcavationAreas ? 'on' : 'off'} · Site boundaries{' '}
-            {props.showBoundaries ? 'on' : 'off'}
-          </p>
-        </div>
-        <Button
-          type="button"
-          variant="outline-secondary"
-          size="sm"
-          aria-expanded={true}
-          aria-controls="map-layer-panel"
-          onClick={() => props.setIsLayerPanelOpen(false)}
-        >
-          Hide
-        </Button>
-      </div>
-      <div
-        id="map-layer-panel"
-        className="map-controls__panel"
-        role="region"
-        aria-label="Map layer controls"
-        tabIndex={-1}
-      >
+    <div className="map-controls">
+      <p className="map-controls__status">
+        {activeCount} historical maps active · Excavation areas{' '}
+        {props.showExcavationAreas ? 'on' : 'off'} · Site boundaries{' '}
+        {props.showBoundaries ? 'on' : 'off'}
+      </p>
+      <div className="map-controls__panel">
         <div className="map-controls__section-title">Overlays</div>
         <Form.Group
           className="map-controls__historical-filter"
@@ -321,84 +157,9 @@ export default function MapControls(props: Props): JSX.Element {
           />
         </Form.Group>
         <div className="map-controls__scroll" aria-label="Historical maps">
-          {filteredGroups.map((group) => {
-            const originalGroup =
-              props.historicalOverlayGroups.find(
-                (entry) => entry.siteId === group.siteId,
-              ) ?? group
-            const activeInGroup = groupActiveCount(
-              originalGroup,
-              props.activeOverlayIds,
-            )
-            const isExpanded =
-              props.expandedSiteIds.has(group.siteId) ||
-              activeInGroup > 0 ||
-              props.historicalMapFilter.trim().length > 0
-            const seriesForGroup = props.historicalOverlaySeries.filter(
-              (series) => series.overlays[0]?.siteId === group.siteId,
-            )
-            const seriesOverlayIds = new Set(
-              seriesForGroup.flatMap((series) =>
-                series.overlays.map((overlay) => overlay.id),
-              ),
-            )
-            const standaloneOverlays = group.overlays.filter(
-              (overlay) => !seriesOverlayIds.has(overlay.id),
-            )
-
-            return (
-              <section key={group.siteId} className="map-controls__site-group">
-                <button
-                  type="button"
-                  className="map-controls__site-button"
-                  aria-expanded={isExpanded}
-                  aria-label={`${group.siteName} historical maps, ${activeInGroup} of ${originalGroup.overlays.length} active`}
-                  onClick={() =>
-                    toggleExpandedSite(props.setExpandedSiteIds, group.siteId)
-                  }
-                >
-                  <span>{isExpanded ? '-' : '+'}</span>
-                  <strong>{group.siteName}</strong>
-                  <span className="map-controls__count">
-                    {activeInGroup}/{originalGroup.overlays.length}
-                  </span>
-                </button>
-                {isExpanded ? (
-                  <div className="map-controls__site-content">
-                    {seriesForGroup.map((series) =>
-                      renderSeriesControls(
-                        series,
-                        series.overlays.filter(
-                          (overlay) =>
-                            group.overlays.some(
-                              (entry) => entry.id === overlay.id,
-                            ) &&
-                            matchesHistoricalMapFilter(
-                              overlay,
-                              props.historicalMapFilter,
-                            ),
-                        ),
-                        props.activeOverlayIds,
-                        props,
-                      ),
-                    )}
-                    {standaloneOverlays.map((overlay) => (
-                      <Form.Check
-                        key={overlay.id}
-                        type="checkbox"
-                        id={`historical-overlay-${overlay.id}`}
-                        label={historicalOverlayLabel(overlay)}
-                        checked={props.activeOverlayIds.has(overlay.id)}
-                        onChange={(event) =>
-                          props.setOverlayActive(overlay, event.target.checked)
-                        }
-                      />
-                    ))}
-                  </div>
-                ) : null}
-              </section>
-            )
-          })}
+          {filteredGroups.map((group) => (
+            <SiteGroup key={group.siteId} group={group} controls={props} />
+          ))}
         </div>
         <ActiveHistoricalMaps
           activeOverlayEntries={props.activeOverlayEntries}
@@ -468,6 +229,6 @@ export default function MapControls(props: Props): JSX.Element {
           </Button>
         </div>
       </div>
-    </section>
+    </div>
   )
 }

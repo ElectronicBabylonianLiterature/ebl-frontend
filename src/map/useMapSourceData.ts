@@ -5,7 +5,7 @@ import { ProvenanceRecord } from 'fragmentarium/domain/Provenance'
 import { POLYGON_SOURCE_ID, SOURCE_ID } from './mapLayers'
 import { provenanceToGeoJson } from './provenanceToGeoJson'
 import { provenancesToPolygonGeoJson } from './provenanceToPolygonGeoJson'
-import { fitMapToData } from './useFindspotMap'
+import { fitMapToData } from './mapCamera'
 
 export default function useMapSourceData(
   mapRef: MutableRefObject<MapLibreMap | null>,

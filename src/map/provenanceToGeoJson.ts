@@ -3,22 +3,7 @@ import {
   ProvenanceRecord,
   getRenderableProvenanceGeometry as getProvenanceGeometry,
 } from 'fragmentarium/domain/Provenance'
-
-function centroid(
-  coordinates: readonly {
-    readonly latitude: number
-    readonly longitude: number
-  }[],
-): { latitude: number; longitude: number } {
-  const sum = coordinates.reduce(
-    (acc, c) => ({ lat: acc.lat + c.latitude, lng: acc.lng + c.longitude }),
-    { lat: 0, lng: 0 },
-  )
-  return {
-    latitude: sum.lat / coordinates.length,
-    longitude: sum.lng / coordinates.length,
-  }
-}
+import { type GeographicPoint, centroidOf } from './mapGeometry'
 
 export interface FindspotProperties {
   id: string
@@ -36,12 +21,11 @@ export function provenanceToGeoJson(
       const provenanceGeometry = getProvenanceGeometry(provenance)
       if (!provenanceGeometry) return null
 
-      let point: { latitude: number; longitude: number }
-      if (provenanceGeometry.type === 'point') {
-        point = provenanceGeometry.coordinates
-      } else {
-        point = centroid(provenanceGeometry.coordinates)
-      }
+      const point: GeographicPoint | null =
+        provenanceGeometry.type === 'point'
+          ? provenanceGeometry.coordinates
+          : centroidOf(provenanceGeometry.coordinates)
+      if (!point) return null
 
       return {
         type: 'Feature' as const,

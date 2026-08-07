@@ -4,7 +4,7 @@ import { testDelegation, TestData } from 'test-support/utils'
 
 const findspotRepository = {
   fetchFindspots: jest.fn(),
-  fetchAssurMapData: jest.fn(),
+  fetchMapData: jest.fn(),
 }
 const findspotService = new FindspotService(findspotRepository)
 const expectedFindspots = findspotFactory.buildList(3)
@@ -34,11 +34,11 @@ const testData: TestData<FindspotService>[] = [
     Promise.resolve(expectedFindspots),
   ),
   new TestData(
-    'fetchAssurMapData',
-    [],
-    findspotRepository.fetchAssurMapData,
+    'fetchMapData',
+    ['assur'],
+    findspotRepository.fetchMapData,
     expectedMapData,
-    null,
+    ['ASSUR'],
     Promise.resolve(expectedMapData),
   ),
 ]
