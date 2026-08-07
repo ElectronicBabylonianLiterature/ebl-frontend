@@ -41,34 +41,34 @@ export const ManuscriptTypes = {
     displayName: null,
     order: 6,
   },
-  MultiColumnTablet: {
-    name: 'MultiColumnTablet',
+  'Multi-column tablet': {
+    name: 'Multi-column tablet',
     abbreviation: 'MultCol',
-    displayName: 'Multi-column tablet',
+    displayName: null,
     order: 7,
   },
-  CollectiveTablet: {
-    name: 'CollectiveTablet',
+  'Collective tablet': {
+    name: 'Collective tablet',
     abbreviation: 'Coll',
-    displayName: 'Collective tablet',
+    displayName: null,
     order: 8,
   },
-  StudentTeacherTablet: {
-    name: 'StudentTeacherTablet',
+  'Student-teacher tablet': {
+    name: 'Student-teacher tablet',
     abbreviation: 'StuTea',
-    displayName: 'Student-teacher tablet',
+    displayName: null,
     order: 9,
   },
-  SchoolLentil: {
-    name: 'SchoolLentil',
+  'School lentils': {
+    name: 'School lentils',
     abbreviation: 'SchLen',
-    displayName: 'School lentils',
+    displayName: null,
     order: 10,
   },
-  Prism: {
-    name: 'Prism',
+  Prisms: {
+    name: 'Prisms',
     abbreviation: 'Prism',
-    displayName: 'Prisms',
+    displayName: null,
     order: 11,
   },
   Uncertain: {
@@ -91,11 +91,11 @@ export const types = [
   ManuscriptTypes.Amulet,
   ManuscriptTypes.Excerpt,
   ManuscriptTypes.Parallel,
-  ManuscriptTypes.MultiColumnTablet,
-  ManuscriptTypes.CollectiveTablet,
-  ManuscriptTypes.StudentTeacherTablet,
-  ManuscriptTypes.SchoolLentil,
-  ManuscriptTypes.Prism,
+  ManuscriptTypes['Multi-column tablet'],
+  ManuscriptTypes['Collective tablet'],
+  ManuscriptTypes['Student-teacher tablet'],
+  ManuscriptTypes['School lentils'],
+  ManuscriptTypes.Prisms,
   ManuscriptTypes.Uncertain,
 ] as const
 
