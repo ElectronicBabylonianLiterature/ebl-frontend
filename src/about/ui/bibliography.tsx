@@ -222,7 +222,7 @@ export default function AboutBibliography(
               @bib{Charpin2020reprNABU2020-60};
               @bib{Charpin2020reprNABU2020-90};
               @bib{charpin2025ur};
-              @bib{Chen 2020 CM 51};
+              @bib{chen2020study};
               @bib{PBS_8_1};
               @bib{PBS_11_2}; 
               @bib{RN2137ax};
@@ -743,7 +743,7 @@ export default function AboutBibliography(
               @bib{RN920};
               @bib{RN433};
               @bib{RN1013};
-              @bib{CT0046Mil};
+              @bib{CT0046};
               @bib{RN435};
               @bib{lambert2023an};
               @bib{RN3006}; 
@@ -1045,7 +1045,7 @@ export default function AboutBibliography(
               @bib{deRidder2023Ludlul};
               @bib{deridder2025nocturnal};
               @bib{YOS_23};
-              @bib{Wallenfels AUWE 19};
+              @bib{RN1543};
               @bib{Roaf2017Kassite};
               @bib{robson2004mathematical};
               @bib{RN275};
