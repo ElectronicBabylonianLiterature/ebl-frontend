@@ -226,6 +226,6 @@ export default withData<
     fragmentService.query({
       lemmas: lemmaId,
       limit: FRAGMENT_EXAMPLE_LIMIT,
-      count: 'none',
+      count: 'exact',
     }),
 )

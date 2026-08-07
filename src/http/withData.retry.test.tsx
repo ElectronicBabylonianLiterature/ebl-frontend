@@ -64,3 +64,21 @@ test('re-queries the API when the retry button is clicked', async () => {
   expect(await screen.findByText(`${propValue} ${data}`)).toBeInTheDocument()
   expect(getter).toHaveBeenCalledTimes(2)
 })
+
+test('keeps re-querying the API on every repeated retry', async () => {
+  const getter = jest
+    .fn()
+    .mockImplementationOnce(() => Promise.reject(new Error(errorMessage)))
+    .mockImplementationOnce(() => Promise.reject(new Error(errorMessage)))
+    .mockImplementationOnce(() => Promise.resolve(data))
+  renderWithConfig(true, getter)
+
+  await screen.findByText(errorMessage)
+  await userEvent.click(screen.getByRole('button', { name: 'Retry' }))
+
+  await screen.findByText(errorMessage)
+  await userEvent.click(screen.getByRole('button', { name: 'Retry' }))
+
+  expect(await screen.findByText(`${propValue} ${data}`)).toBeInTheDocument()
+  expect(getter).toHaveBeenCalledTimes(3)
+})

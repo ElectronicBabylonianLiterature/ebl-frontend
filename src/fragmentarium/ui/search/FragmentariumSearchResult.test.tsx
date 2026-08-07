@@ -17,7 +17,7 @@ function LocationDisplay(): JSX.Element {
 describe('FragmentariumSearchResult pagination', () => {
   it('renders the current server page and request range without chunking', async () => {
     const view = renderSearchResult({
-      fragmentQuery: { number: 'K.1', limit: 50, offset: 50, count: 'page' },
+      pagination: { pageIndex: 1, pageSize: 50 },
     })
 
     expect(await screen.findByText('K.1')).toBeInTheDocument()
@@ -54,13 +54,13 @@ describe('FragmentariumSearchResult pagination', () => {
     await screen.findByText('K.1')
     expect(screen.getAllByRole('listitem')[0]).toHaveClass('disabled')
     expect(screen.getAllByRole('listitem')[2]).toHaveClass('disabled')
-    expect(screen.getByText(/Showing documents 1-12/)).toBeInTheDocument()
+    expect(screen.getByText(/Found 12 documents/)).toBeInTheDocument()
   })
 
   it('keeps a usable Previous control for an empty directly linked page', async () => {
     renderSearchResult({
       queryResult: buildQueryResult({ items: 0, hasNextPage: false }),
-      fragmentQuery: { number: 'K.1', limit: 50, offset: 100, count: 'page' },
+      pagination: { pageIndex: 2, pageSize: 50 },
     })
 
     expect(await screen.findByText('No results on this page')).toBeVisible()
@@ -70,7 +70,7 @@ describe('FragmentariumSearchResult pagination', () => {
   it('shows a number-format suggestion when no Library results match', async () => {
     renderSearchResult({
       queryResult: buildQueryResult({ items: 0, hasNextPage: false }),
-      fragmentQuery: { number: 'K 2', limit: 50, offset: 0, count: 'page' },
+      fragmentQuery: { number: 'K 2' },
     })
 
     expect(await screen.findByText(/Found 0 documents/)).toBeVisible()
@@ -101,11 +101,10 @@ describe('FragmentariumSearchResult pagination', () => {
     const view = renderSearchResult({
       search: '?number=K.1',
       fragmentService,
-      fragmentQuery: { number: 'K.1', limit: 50, offset: 0, count: 'page' },
     })
 
     view.renderView({
-      fragmentQuery: { number: 'K.1', limit: 50, offset: 50, count: 'page' },
+      pagination: { pageIndex: 1, pageSize: 50 },
     })
 
     resolveSecond({

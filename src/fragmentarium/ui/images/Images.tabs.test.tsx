@@ -119,7 +119,7 @@ test('keeps visited folios mounted when switching away and back', async () => {
   expect(fragmentService.findFolio).toHaveBeenNthCalledWith(2, folios[1])
 })
 
-test('resets visited media tabs when the fragment changes', async () => {
+test('resets visited media tabs when navigating to another fragment', async () => {
   const firstFolios = [
     folioFactory.build({ name: 'WGL' }),
     folioFactory.build({ name: 'AKG' }),
@@ -134,34 +134,31 @@ test('resets visited media tabs when the fragment changes', async () => {
     { number: 'K.2', hasPhoto: false },
     { associations: { folios: secondFolios } },
   )
-  const { rerender } = renderImages({
-    fragment: firstFragment,
-    fragmentService,
-  })
+
+  function renderFragment(
+    fragment: Fragment,
+    activeFolio: Folio | null,
+  ): JSX.Element {
+    return (
+      <MemoryRouter>
+        <Images
+          key={fragment.number}
+          fragment={fragment}
+          fragmentService={fragmentService}
+          activeFolio={activeFolio}
+          tab={activeFolio ? 'folio' : null}
+        />
+      </MemoryRouter>
+    )
+  }
+
+  const { rerender } = render(renderFragment(firstFragment, null))
 
   expect(await screen.findByAltText(firstFolios[0].fileName)).toBeVisible()
-  rerender(
-    <MemoryRouter>
-      <Images
-        fragment={firstFragment}
-        fragmentService={fragmentService}
-        activeFolio={firstFolios[1]}
-        tab="folio"
-      />
-    </MemoryRouter>,
-  )
+  rerender(renderFragment(firstFragment, firstFolios[1]))
   expect(await screen.findByAltText(firstFolios[1].fileName)).toBeVisible()
 
-  rerender(
-    <MemoryRouter>
-      <Images
-        fragment={secondFragment}
-        fragmentService={fragmentService}
-        activeFolio={null}
-        tab={null}
-      />
-    </MemoryRouter>,
-  )
+  rerender(renderFragment(secondFragment, null))
 
   expect(await screen.findByAltText(secondFolios[0].fileName)).toBeVisible()
   expect(screen.queryByAltText(firstFolios[1].fileName)).not.toBeInTheDocument()

@@ -4,7 +4,7 @@ import FragmentService from 'fragmentarium/application/FragmentService'
 import withData from 'http/withData'
 import { QueryItem, QueryResult } from 'query/QueryResult'
 import { Col, Row } from 'react-bootstrap'
-import { FragmentQuery } from 'query/FragmentQuery'
+import { FragmentSearchCriteria } from 'query/FragmentQuery'
 import { linesToShow } from './FragmentariumSearch'
 import './FragmentariumSearchResult.sass'
 import { stringify } from 'query-string'
@@ -12,9 +12,10 @@ import { FragmentLines } from './FragmentariumSearchResultComponents'
 import DossiersService from 'dossiers/application/DossiersService'
 import PaginationItems from './PaginationItems'
 import {
-  getPageIndexForOffset,
-  getValidatedPageSize,
+  createPagedFragmentQuery,
+  isLineQuery,
   paginationURLParam,
+  SearchPagination,
 } from './pagination'
 
 function ResultPages({
@@ -24,6 +25,7 @@ function ResultPages({
   linesToShow,
   queryLemmas,
   pageIndex,
+  pageSize,
   hasNextPage,
 }: {
   fragments: readonly QueryItem[]
@@ -32,6 +34,7 @@ function ResultPages({
   linesToShow: number
   queryLemmas?: readonly string[]
   pageIndex: number
+  pageSize: number
   hasNextPage: boolean
 }): JSX.Element {
   const pageButtons = (
@@ -39,6 +42,7 @@ function ResultPages({
       <Col className="d-flex justify-content-center">
         <PaginationItems
           activePage={pageIndex}
+          pageSize={pageSize}
           hasNextPage={hasNextPage}
           paginationURLParam={paginationURLParam}
         />
@@ -73,8 +77,8 @@ export const SearchResult = withData<
   {
     fragmentService: FragmentService
     dossiersService: DossiersService
-    fragmentQuery: FragmentQuery
-    resultPageSize?: number
+    fragmentQuery: FragmentSearchCriteria
+    pagination: SearchPagination
   },
   unknown,
   QueryResult
@@ -84,24 +88,13 @@ export const SearchResult = withData<
     fragmentService,
     dossiersService,
     fragmentQuery,
-    resultPageSize,
+    pagination: { pageIndex, pageSize },
   }): JSX.Element => {
-    const isLineQuery = Boolean(
-      fragmentQuery.lemmas || fragmentQuery.transliteration,
-    )
-    const visiblePageSize =
-      resultPageSize ?? getValidatedPageSize(fragmentQuery.limit)
-    const visibleItems = isLineQuery
-      ? data.items.slice(0, visiblePageSize)
-      : data.items
+    const visibleItems = data.items.slice(0, pageSize)
     const effectiveHasNextPage =
-      data.hasNextPage ?? (isLineQuery && data.items.length > visiblePageSize)
+      data.hasNextPage ?? data.items.length > pageSize
     const fragmentCount = visibleItems.length
-    const pageIndex = getPageIndexForOffset(
-      fragmentQuery.offset,
-      visiblePageSize,
-    )
-    const offset = pageIndex * visiblePageSize
+    const offset = pageIndex * pageSize
     const hasLineCount = typeof data.matchCountTotal === 'number'
     const isCompleteFirstPage = pageIndex === 0 && effectiveHasNextPage !== true
     const pageDocumentCount = `${fragmentCount.toLocaleString()} document${
@@ -115,17 +108,17 @@ export const SearchResult = withData<
         : pageIndex > 0
           ? 'No results on this page'
           : 'Found 0 documents'
-    const lineCountInfo = hasLineCount
-      ? `Found ${data.isMatchCountTotalExact === false ? 'about ' : ''}${data.matchCountTotal.toLocaleString()} matching line${
-          data.matchCountTotal === 1 ? '' : 's'
-        }`
-      : null
-    const lineResultInfo = lineCountInfo
+    const lineCountInfo =
+      isLineQuery(fragmentQuery) && hasLineCount
+        ? `Found ${data.isMatchCountTotalExact === false ? 'about ' : ''}${data.matchCountTotal.toLocaleString()} matching line${
+            data.matchCountTotal === 1 ? '' : 's'
+          }`
+        : null
+    const resultInfo = lineCountInfo
       ? `${lineCountInfo}. ${documentRange}`
       : isCompleteFirstPage
         ? `Found ${pageDocumentCount}`
         : documentRange
-    const resultInfo = isLineQuery ? lineResultInfo : documentRange
     const showNumberSuggestion =
       fragmentCount === 0 && fragmentQuery.number?.match(/^[^.]+\s+[^.]+$/)
     const fixedNumber = fragmentQuery.number?.split(/\s+/).join('.')
@@ -139,15 +132,10 @@ export const SearchResult = withData<
                 {'. Did you mean'}
                 &nbsp;
                 <a
-                  href={`/library/search?${stringify(
-                    _.omit(
-                      {
-                        ...fragmentQuery,
-                        number: fixedNumber,
-                      },
-                      ['limit', 'offset', 'count'],
-                    ),
-                  )}`}
+                  href={`/library/search?${stringify({
+                    ...fragmentQuery,
+                    number: fixedNumber,
+                  })}`}
                 >
                   {fixedNumber}
                 </a>
@@ -166,6 +154,7 @@ export const SearchResult = withData<
             dossiersService={dossiersService}
             queryLemmas={fragmentQuery.lemmas?.split('+')}
             pageIndex={pageIndex}
+            pageSize={pageSize}
             hasNextPage={effectiveHasNextPage === true}
             linesToShow={Math.max(
               _.trimEnd(fragmentQuery.transliteration || '').split('\n').length,
@@ -176,8 +165,11 @@ export const SearchResult = withData<
       </>
     )
   },
-  ({ fragmentService, fragmentQuery }) => fragmentService.query(fragmentQuery),
+  ({ fragmentService, fragmentQuery, pagination }) =>
+    fragmentService.query(createPagedFragmentQuery(fragmentQuery, pagination)),
   {
-    watch: ({ fragmentQuery }) => [stringify(fragmentQuery)],
+    watch: ({ fragmentQuery, pagination }) => [
+      stringify(createPagedFragmentQuery(fragmentQuery, pagination)),
+    ],
   },
 )

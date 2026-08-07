@@ -19,12 +19,14 @@ function renderPaginationItems(
   activePage = 0,
   hasNextPage = true,
   initialEntry = '/library/search/',
+  pageSize = 50,
 ) {
   return render(
     <MemoryRouter initialEntries={[initialEntry]}>
       <PaginationItems
         paginationURLParam="paginationIndex"
         activePage={activePage}
+        pageSize={pageSize}
         hasNextPage={hasNextPage}
       />
     </MemoryRouter>,
@@ -105,6 +107,12 @@ describe('PaginationItems', () => {
       search:
         'museum=BM&genre=CANONICAL%3ATechnical%3AAstronomy%3AAstronomical%20Diaries&transliteration=a%2Bb&number=000123&limit=100&paginationIndex=0',
     })
+  })
+
+  it('shows the page size it was given rather than re-deriving it', () => {
+    renderPaginationItems(0, true, '/library/search/?limit=50', 25)
+
+    expect(screen.getByLabelText('Results per page')).toHaveValue('25')
   })
 
   it('jumps directly to a requested page', async () => {

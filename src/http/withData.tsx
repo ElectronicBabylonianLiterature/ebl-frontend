@@ -88,7 +88,8 @@ export default function withData<PROPS, GETTER_PROPS, DATA>(
           error={error}
           onRetry={
             fullConfig.retry === true
-              ? () => setRetryCount(retryCount + 1)
+              ? () =>
+                  setRetryCount((currentRetryCount) => currentRetryCount + 1)
               : undefined
           }
         />

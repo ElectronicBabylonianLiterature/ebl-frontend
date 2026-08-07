@@ -88,7 +88,7 @@ describe('Show Library entries', () => {
     expect(fragmentService.query).toBeCalledWith({
       lemmas: word._id,
       limit: 10,
-      count: 'none',
+      count: 'exact',
     })
     await screen.findByText(fragmentWithLemma.number)
   }

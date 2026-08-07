@@ -1,6 +1,16 @@
+import _ from 'lodash'
+import { parse } from 'query-string'
+import { FragmentQuery, FragmentSearchCriteria } from 'query/FragmentQuery'
+
 export const paginationURLParam = 'paginationIndex'
+export const pageSizeURLParam = 'limit'
 export const RESULTS_PER_PAGE = 50
 export const RESULT_PAGE_SIZES = [25, 50, 100] as const
+
+export type SearchPagination = {
+  readonly pageIndex: number
+  readonly pageSize: number
+}
 
 export function getRequestedPaginationIndex(
   search: string,
@@ -70,7 +80,9 @@ export function getPageIndex(search: string): number {
   return getRequestedPaginationIndex(search) ?? 0
 }
 
-export function getValidatedPageSize(value: unknown): number {
+export function getValidatedPageSize(
+  value: number | string | null | undefined,
+): number {
   const parsedValue = Number(value)
   return RESULT_PAGE_SIZES.includes(
     parsedValue as (typeof RESULT_PAGE_SIZES)[number],
@@ -79,12 +91,39 @@ export function getValidatedPageSize(value: unknown): number {
     : RESULTS_PER_PAGE
 }
 
-export function getPageIndexForOffset(offset: unknown, limit: unknown): number {
-  const parsedOffset = Number(offset ?? 0)
-  const parsedLimit = getValidatedPageSize(limit)
-  return Number.isInteger(parsedOffset) && parsedOffset >= 0
-    ? Math.floor(parsedOffset / parsedLimit)
-    : 0
+export function parseSearchPagination(search: string): SearchPagination {
+  return {
+    pageIndex: getPageIndex(search),
+    pageSize: getValidatedPageSize(
+      new URLSearchParams(search).get(pageSizeURLParam),
+    ),
+  }
+}
+
+export function parseSearchCriteria(search: string): FragmentSearchCriteria {
+  return _.omit(parse(search, { decode: true }), [
+    paginationURLParam,
+    pageSizeURLParam,
+    'offset',
+    'count',
+  ]) as FragmentSearchCriteria
+}
+
+export function isLineQuery(fragmentQuery: FragmentSearchCriteria): boolean {
+  return Boolean(fragmentQuery.lemmas || fragmentQuery.transliteration)
+}
+
+export function createPagedFragmentQuery(
+  fragmentQuery: FragmentSearchCriteria,
+  { pageIndex, pageSize }: SearchPagination,
+): FragmentQuery {
+  const needsOverfetchToDetectNextPage = isLineQuery(fragmentQuery)
+  return {
+    ...fragmentQuery,
+    limit: needsOverfetchToDetectNextPage ? pageSize + 1 : pageSize,
+    offset: pageIndex * pageSize,
+    count: needsOverfetchToDetectNextPage ? 'exact' : 'page',
+  }
 }
 
 export function updatePageSizeSearchParam(
@@ -94,7 +133,7 @@ export function updatePageSizeSearchParam(
   return updateRawSearchParams(
     search,
     new Map([
-      ['limit', String(getValidatedPageSize(limit))],
+      [pageSizeURLParam, String(getValidatedPageSize(limit))],
       [paginationURLParam, '0'],
     ]),
   )

@@ -156,27 +156,16 @@ function Images({
   const controller = new TabController(fragment, tab, activeFolio, navigate)
   const folios = fragment.folios
   const activeKey = controller.activeKey
-  const [visitedTabState, setVisitedTabState] = React.useState<{
-    fragmentNumber: string
-    tabs: ReadonlySet<string>
-  }>(() => ({ fragmentNumber: fragment.number, tabs: new Set([activeKey]) }))
-  const visitedTabs = visitedTabState.tabs
+  const [visitedTabs, setVisitedTabs] = React.useState<ReadonlySet<string>>(
+    () => new Set([activeKey]),
+  )
   const FOLIO_DROPDOWN_THRESHOLD = 3
 
   React.useEffect(() => {
-    setVisitedTabState((visited) => {
-      if (visited.fragmentNumber !== fragment.number) {
-        return { fragmentNumber: fragment.number, tabs: new Set([activeKey]) }
-      }
-
-      return visited.tabs.has(activeKey)
-        ? visited
-        : {
-            fragmentNumber: fragment.number,
-            tabs: new Set([...visited.tabs, activeKey]),
-          }
-    })
-  }, [activeKey, fragment.number])
+    setVisitedTabs((visited) =>
+      visited.has(activeKey) ? visited : new Set([...visited, activeKey]),
+    )
+  }, [activeKey])
 
   return (
     <Tab.Container activeKey={activeKey} onSelect={controller.openTab}>

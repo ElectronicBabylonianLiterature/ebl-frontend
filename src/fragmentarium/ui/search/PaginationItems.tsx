@@ -3,7 +3,6 @@ import { Button, Form, Pagination } from 'react-bootstrap'
 import { useLocation } from 'react-router-dom'
 import { useHistory } from 'router/compat'
 import {
-  getValidatedPageSize,
   RESULT_PAGE_SIZES,
   updatePageSizeSearchParam,
   updatePaginationSearchParam,
@@ -47,10 +46,12 @@ function PaginationControl({
 
 export default function PaginationItems({
   activePage,
+  pageSize,
   hasNextPage,
   paginationURLParam,
 }: {
   activePage: number
+  pageSize: number
   paginationURLParam: string
   hasNextPage: boolean
 }): JSX.Element {
@@ -85,9 +86,7 @@ export default function PaginationItems({
       <Form.Select
         aria-label="Results per page"
         size="sm"
-        value={getValidatedPageSize(
-          new URLSearchParams(location.search).get('limit'),
-        )}
+        value={pageSize}
         onChange={(event) => {
           history.push({
             search: updatePageSizeSearchParam(

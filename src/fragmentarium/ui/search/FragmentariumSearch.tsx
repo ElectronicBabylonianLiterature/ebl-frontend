@@ -10,7 +10,7 @@ import SearchForm, {
 import { SectionCrumb, TextCrumb } from 'common/ui/Breadcrumbs'
 import { Session } from 'auth/Session'
 import 'fragmentarium/ui/search/FragmentariumSearch.css'
-import { FragmentQuery } from 'query/FragmentQuery'
+import { FragmentQuery, FragmentSearchCriteria } from 'query/FragmentQuery'
 import WordService from 'dictionary/application/WordService'
 import { SearchResult } from './FragmentariumSearchResult'
 import { CorpusSearchResult } from 'corpus/ui/search/CorpusSearchResult'
@@ -18,14 +18,14 @@ import TextService from 'corpus/application/TextService'
 import { Col, Row, Tab, Tabs } from 'react-bootstrap'
 import { CorpusQuery } from 'query/CorpusQuery'
 import DossiersService from 'dossiers/application/DossiersService'
-import { getValidatedPageSize } from 'fragmentarium/ui/search/pagination'
+import { SearchPagination } from 'fragmentarium/ui/search/pagination'
 
 type Props = Pick<
   SearchFormProps,
   'fragmentService' | 'fragmentSearchService' | 'bibliographyService'
 > & {
-  fragmentQuery: FragmentQuery
-  resultFragmentQuery?: FragmentQuery
+  fragmentQuery: FragmentSearchCriteria
+  pagination: SearchPagination
   dossiersService: DossiersService
   wordService: WordService
   textService: TextService
@@ -50,7 +50,7 @@ function FragmentariumSearch({
   fragmentSearchService,
   bibliographyService,
   fragmentQuery,
-  resultFragmentQuery,
+  pagination,
   wordService,
   textService,
   activeTab,
@@ -110,8 +110,8 @@ function FragmentariumSearch({
                     <SearchResult
                       fragmentService={fragmentService}
                       dossiersService={dossiersService}
-                      fragmentQuery={resultFragmentQuery ?? fragmentQuery}
-                      resultPageSize={getValidatedPageSize(fragmentQuery.limit)}
+                      fragmentQuery={fragmentQuery}
+                      pagination={pagination}
                     />
                   </Tab>
                   <Tab

@@ -6,7 +6,8 @@ import { SearchResult } from './FragmentariumSearchResult'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import DossiersService from 'dossiers/application/DossiersService'
 import { QueryItem, QueryResult } from 'query/QueryResult'
-import { FragmentQuery } from 'query/FragmentQuery'
+import { FragmentSearchCriteria } from 'query/FragmentQuery'
+import { SearchPagination } from './pagination'
 
 function MockFragmentLines({ queryItem }: { queryItem: QueryItem }) {
   return <div>{queryItem.museumNumber}</div>
@@ -28,18 +29,14 @@ jest.mock(
 type RenderSearchResultOptions = {
   search?: string
   queryResult?: QueryResult
-  fragmentQuery?: FragmentQuery
-  resultPageSize?: number
+  fragmentQuery?: FragmentSearchCriteria
+  pagination?: SearchPagination
   leadingContent?: React.ReactNode
   fragmentService?: jest.Mocked<FragmentService>
 }
 
-const defaultFragmentQuery: FragmentQuery = {
-  number: 'K.1',
-  limit: 50,
-  offset: 0,
-  count: 'page',
-}
+const defaultFragmentQuery: FragmentSearchCriteria = { number: 'K.1' }
+const defaultPagination: SearchPagination = { pageIndex: 0, pageSize: 50 }
 
 export function buildQueryResult({
   items = 50,
@@ -65,7 +62,7 @@ export function renderSearchResult({
   search = '',
   queryResult = buildQueryResult(),
   fragmentQuery = defaultFragmentQuery,
-  resultPageSize,
+  pagination = defaultPagination,
   leadingContent,
   fragmentService: providedFragmentService,
 }: RenderSearchResultOptions = {}) {
@@ -79,7 +76,7 @@ export function renderSearchResult({
   function renderView(nextOptions: Partial<RenderSearchResultOptions> = {}) {
     const nextSearch = nextOptions.search ?? search
     const nextFragmentQuery = nextOptions.fragmentQuery ?? fragmentQuery
-    const nextResultPageSize = nextOptions.resultPageSize ?? resultPageSize
+    const nextPagination = nextOptions.pagination ?? pagination
     const nextLeadingContent = nextOptions.leadingContent ?? leadingContent
     const element = (
       <MemoryRouter initialEntries={[`/library/search/${nextSearch}`]}>
@@ -88,7 +85,7 @@ export function renderSearchResult({
           fragmentService={fragmentService}
           dossiersService={{} as DossiersService}
           fragmentQuery={nextFragmentQuery}
-          resultPageSize={nextResultPageSize}
+          pagination={nextPagination}
         />
       </MemoryRouter>
     )

@@ -8,12 +8,7 @@ describe('FragmentariumSearchResult line-search counts', () => {
   it('does not display zero when the total line count is unknown', async () => {
     renderSearchResult({
       queryResult: buildQueryResult({ matchCountTotal: null }),
-      fragmentQuery: {
-        transliteration: 'kur',
-        limit: 50,
-        offset: 0,
-        count: 'page',
-      },
+      fragmentQuery: { transliteration: 'kur' },
     })
 
     await screen.findByText('K.1')
@@ -21,21 +16,22 @@ describe('FragmentariumSearchResult line-search counts', () => {
   })
 
   it('separates exact line totals from page-size document ranges', async () => {
-    renderSearchResult({
+    const view = renderSearchResult({
       queryResult: {
         ...buildQueryResult({ matchCountTotal: 90, hasNextPage: true }),
         isMatchCountTotalExact: true,
       },
-      fragmentQuery: {
-        transliteration: 'kur',
-        limit: 51,
-        offset: 0,
-        count: 'exact',
-      },
-      resultPageSize: 50,
+      fragmentQuery: { transliteration: 'kur' },
+      pagination: { pageIndex: 0, pageSize: 50 },
     })
 
     expect(await screen.findByText('K.1')).toBeInTheDocument()
+    expect(view.query).toHaveBeenCalledWith({
+      transliteration: 'kur',
+      limit: 51,
+      offset: 0,
+      count: 'exact',
+    })
     expect(
       screen.getByText('Found 90 matching lines. Showing documents 1-50'),
     ).toBeInTheDocument()
@@ -53,13 +49,8 @@ describe('FragmentariumSearchResult line-search counts', () => {
         hasNextPage: null,
         isMatchCountTotalExact: true,
       },
-      fragmentQuery: {
-        transliteration: 'kur',
-        limit: 51,
-        offset: 0,
-        count: 'exact',
-      },
-      resultPageSize: 50,
+      fragmentQuery: { transliteration: 'kur' },
+      pagination: { pageIndex: 0, pageSize: 50 },
     })
 
     expect(await screen.findByText('K.1')).toBeInTheDocument()
@@ -74,13 +65,8 @@ describe('FragmentariumSearchResult line-search counts', () => {
         hasNextPage: false,
         isMatchCountTotalExact: true,
       },
-      fragmentQuery: {
-        transliteration: 'kur',
-        limit: 51,
-        offset: 0,
-        count: 'exact',
-      },
-      resultPageSize: 50,
+      fragmentQuery: { transliteration: 'kur' },
+      pagination: { pageIndex: 0, pageSize: 50 },
     })
 
     expect(await screen.findByText('K.1')).toBeInTheDocument()
@@ -89,7 +75,7 @@ describe('FragmentariumSearchResult line-search counts', () => {
   })
 
   it('shows singular approximate line totals on later pages', async () => {
-    renderSearchResult({
+    const view = renderSearchResult({
       queryResult: {
         ...buildQueryResult({
           items: 1,
@@ -98,16 +84,17 @@ describe('FragmentariumSearchResult line-search counts', () => {
         }),
         isMatchCountTotalExact: false,
       },
-      fragmentQuery: {
-        lemmas: 'kur I',
-        limit: 26,
-        offset: 50,
-        count: 'exact',
-      },
-      resultPageSize: 25,
+      fragmentQuery: { lemmas: 'kur I' },
+      pagination: { pageIndex: 2, pageSize: 25 },
     })
 
     expect(await screen.findByText('K.1')).toBeInTheDocument()
+    expect(view.query).toHaveBeenCalledWith({
+      lemmas: 'kur I',
+      limit: 26,
+      offset: 50,
+      count: 'exact',
+    })
     expect(
       screen.getByText('Found about 1 matching line. Showing documents 51-51'),
     ).toBeInTheDocument()

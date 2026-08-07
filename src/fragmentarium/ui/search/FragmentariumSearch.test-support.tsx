@@ -116,6 +116,7 @@ export function createFragmentariumSearchHarness() {
               bibliographyService={bibliographyService}
               dossiersService={dossiersService}
               fragmentQuery={query}
+              pagination={{ pageIndex: 0, pageSize: 50 }}
               wordService={wordService}
               textService={textService}
               activeTab="library"

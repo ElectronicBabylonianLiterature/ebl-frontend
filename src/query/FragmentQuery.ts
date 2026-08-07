@@ -27,3 +27,8 @@ export type FragmentQuery = Partial<{
   latest: boolean
   dossier: string
 }>
+
+export type FragmentSearchCriteria = Omit<
+  FragmentQuery,
+  'limit' | 'offset' | 'count'
+>

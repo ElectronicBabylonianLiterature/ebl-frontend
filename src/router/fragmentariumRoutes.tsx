@@ -22,11 +22,9 @@ import AfoRegisterService from 'afo-register/application/AfoRegisterService'
 import NotFoundPage from 'NotFoundPage'
 import DossiersService from 'dossiers/application/DossiersService'
 import RecordView from 'fragmentarium/ui/fragment/RecordView'
-import { FragmentQuery } from 'query/FragmentQuery'
 import {
-  getPageIndex,
-  paginationURLParam,
-  getValidatedPageSize,
+  parseSearchCriteria,
+  parseSearchPagination,
 } from 'fragmentarium/ui/search/pagination'
 
 function parseStringParam(location: Location, param: string): string | null {
@@ -35,33 +33,6 @@ function parseStringParam(location: Location, param: string): string | null {
 }
 
 type RouteMatch = { params: Record<string, string | undefined> }
-
-function parseFragmentSearchQuery(location: Location): FragmentQuery {
-  return _.omit(
-    parse(location.search, {
-      decode: true,
-    }),
-    paginationURLParam,
-  ) as FragmentQuery
-}
-
-export function createPagedFragmentQuery(
-  fragmentQuery: FragmentQuery,
-  location: Location,
-): FragmentQuery {
-  const pageIndex = getPageIndex(location.search)
-  const limit = getValidatedPageSize(fragmentQuery.limit)
-  const isLineQuery = Boolean(
-    fragmentQuery.lemmas || fragmentQuery.transliteration,
-  )
-
-  return {
-    ...fragmentQuery,
-    limit: isLineQuery ? limit + 1 : limit,
-    offset: pageIndex * limit,
-    count: isLineQuery ? 'exact' : 'page',
-  }
-}
 
 function parseFragmentParams(
   match: RouteMatch,
@@ -113,7 +84,7 @@ export default function FragmentariumRoutes({
       path="/library/search"
       exact
       render={(routeProps): ReactNode => {
-        const fragmentQuery = parseFragmentSearchQuery(routeProps.location)
+        const fragmentQuery = parseSearchCriteria(routeProps.location.search)
         return (
           <HeadTagsService
             title="Library search: eBL"
@@ -123,10 +94,7 @@ export default function FragmentariumRoutes({
               fragmentSearchService={fragmentSearchService}
               fragmentService={fragmentService}
               fragmentQuery={fragmentQuery}
-              resultFragmentQuery={createPagedFragmentQuery(
-                fragmentQuery,
-                routeProps.location,
-              )}
+              pagination={parseSearchPagination(routeProps.location.search)}
               bibliographyService={bibliographyService}
               wordService={wordService}
               textService={textService}
