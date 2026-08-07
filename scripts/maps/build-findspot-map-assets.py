@@ -13,8 +13,26 @@ DEFAULT_FINDSPOT_DIR = ROOT / 'public' / 'map-data' / 'findspots'
 DEFAULT_INVENTORY = ROOT / '.map-processing' / 'backend-artifacts' / 'assur_polygon_inventory.json'
 DEFAULT_MAPPING = ROOT / '.map-processing' / 'backend-artifacts' / 'assur_findspot_polygon_mappings.json'
 SITES = ('assur', 'kalhu', 'nippur', 'uruk')
-EXPECTED_COUNTS = {'assur': 134, 'kalhu': 12, 'nippur': 20, 'uruk': 128}
 LEGACY_ASSUR_ID = re.compile(r'^assur-\d+$')
+
+# Production guard rails. Overridable only so the generator contract can be
+# exercised with small synthetic fixtures; the defaults are the committed
+# canonical asset guarantees.
+DEFAULT_EXPECTATIONS = {
+    'siteFeatureCounts': {'assur': 134, 'kalhu': 12, 'nippur': 20, 'uruk': 128},
+    'inventoryCount': 134,
+    'mappingCount': 317,
+    'mappedPolygonCount': 133,
+}
+
+
+def load_expectations(path: Path | None) -> dict[str, Any]:
+    if path is None:
+        return DEFAULT_EXPECTATIONS
+    overrides = read_json(path)
+    if not isinstance(overrides, dict):
+        raise RuntimeError('Expectations file must be a JSON object')
+    return {**DEFAULT_EXPECTATIONS, **overrides}
 
 
 def read_json(path: Path) -> Any:
@@ -29,7 +47,7 @@ def source_key(value: object) -> str:
     return str(value).strip()
 
 
-def load_inventory(path: Path) -> dict[str, str]:
+def load_inventory(path: Path, expected_count: int) -> dict[str, str]:
     records = read_json(path)
     if not isinstance(records, list):
         raise RuntimeError('Aššur polygon inventory must be a JSON list')
@@ -53,12 +71,12 @@ def load_inventory(path: Path) -> dict[str, str]:
             raise RuntimeError(f'Ambiguous inventory source name: {name}')
         seen_ids.add(polygon_id)
         by_name[key] = polygon_id
-    if len(by_name) != 134:
-        raise RuntimeError(f'Expected 134 inventory records, found {len(by_name)}')
+    if len(by_name) != expected_count:
+        raise RuntimeError(f'Expected {expected_count} inventory records, found {len(by_name)}')
     return by_name
 
 
-def load_mapping(path: Path, inventory_ids: set[str]) -> set[str]:
+def load_mapping(path: Path, inventory_ids: set[str], expected_records: int, expected_mapped: int) -> set[str]:
     records = read_json(path)
     if not isinstance(records, list):
         raise RuntimeError('Aššur mapping artifact must be a JSON list')
@@ -82,17 +100,17 @@ def load_mapping(path: Path, inventory_ids: set[str]) -> set[str]:
             raise RuntimeError(f'Mapping row {index} references unknown polygonIds: {missing}')
         findspot_ids.add(findspot_id)
         mapped_ids.update(polygon_ids)
-    if len(records) != 317:
-        raise RuntimeError(f'Expected 317 mapping records, found {len(records)}')
-    if len(findspot_ids) != 317:
-        raise RuntimeError(f'Expected 317 unique findspot IDs, found {len(findspot_ids)}')
-    if len(mapped_ids) != 133:
-        raise RuntimeError(f'Expected 133 mapped polygon IDs, found {len(mapped_ids)}')
+    if len(records) != expected_records:
+        raise RuntimeError(f'Expected {expected_records} mapping records, found {len(records)}')
+    if len(findspot_ids) != expected_records:
+        raise RuntimeError(f'Expected {expected_records} unique findspot IDs, found {len(findspot_ids)}')
+    if len(mapped_ids) != expected_mapped:
+        raise RuntimeError(f'Expected {expected_mapped} mapped polygon IDs, found {len(mapped_ids)}')
     return mapped_ids
 
 
-def validate_site_counts(collections: dict[str, dict[str, Any]]) -> None:
-    for site, expected in EXPECTED_COUNTS.items():
+def validate_site_counts(collections: dict[str, dict[str, Any]], expected_counts: dict[str, int]) -> None:
+    for site, expected in expected_counts.items():
         features = collections[site].get('features')
         if collections[site].get('type') != 'FeatureCollection' or not isinstance(features, list):
             raise RuntimeError(f'{site}.geojson is not a FeatureCollection')
@@ -130,11 +148,12 @@ def canonicalize_assur(collection: dict[str, Any], inventory: dict[str, str], ma
     return {'type': 'FeatureCollection', 'features': features}
 
 
-def build_assets(findspot_dir: Path, inventory_path: Path, mapping_path: Path) -> tuple[dict[str, Any], dict[str, Any]]:
+def build_assets(findspot_dir: Path, inventory_path: Path, mapping_path: Path, expectations: dict[str, Any] | None = None) -> tuple[dict[str, Any], dict[str, Any]]:
+    resolved = expectations or DEFAULT_EXPECTATIONS
     collections = {site: read_json(findspot_dir / f'{site}.geojson') for site in SITES}
-    validate_site_counts(collections)
-    inventory = load_inventory(inventory_path)
-    mapped_ids = load_mapping(mapping_path, set(inventory.values()))
+    validate_site_counts(collections, resolved['siteFeatureCounts'])
+    inventory = load_inventory(inventory_path, resolved['inventoryCount'])
+    mapped_ids = load_mapping(mapping_path, set(inventory.values()), resolved['mappingCount'], resolved['mappedPolygonCount'])
     assur = canonicalize_assur(collections['assur'], inventory, mapped_ids)
     all_features = [feature for site in SITES for feature in (assur if site == 'assur' else collections[site])['features']]
     return assur, {'type': 'FeatureCollection', 'features': all_features}
@@ -156,12 +175,13 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument('--findspot-dir', type=Path, default=DEFAULT_FINDSPOT_DIR)
     parser.add_argument('--polygon-inventory', type=Path, default=DEFAULT_INVENTORY)
     parser.add_argument('--mapping-artifact', type=Path, default=DEFAULT_MAPPING)
+    parser.add_argument('--expectations', type=Path, default=None)
     return parser.parse_args()
 
 
 def main() -> None:
     args = parse_args()
-    assur, all_sites = build_assets(args.findspot_dir, args.polygon_inventory, args.mapping_artifact)
+    assur, all_sites = build_assets(args.findspot_dir, args.polygon_inventory, args.mapping_artifact, load_expectations(args.expectations))
     atomic_write_outputs(args.findspot_dir, assur, all_sites)
     print(json.dumps({'assurFeatureCount': len(assur['features']), 'allFeatureCount': len(all_sites['features'])}, sort_keys=True))
 
