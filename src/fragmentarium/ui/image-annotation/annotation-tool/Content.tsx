@@ -1,11 +1,10 @@
 import React, { ReactElement, useEffect } from 'react'
 import { Button, Card } from 'react-bootstrap'
 import Annotation from 'fragmentarium/domain/annotation'
-import Bluebird from 'bluebird'
 
 export type ContentProps = {
   annotation: Annotation
-  onDelete: (annotation: Annotation) => Bluebird<void>
+  onDelete: (annotation: Annotation) => Promise<void>
   contentScale: number
   setHovering: (annotation: Annotation | null) => void
   displayCards: boolean

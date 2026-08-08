@@ -22,7 +22,6 @@ import automaticAlignment from 'fragmentarium/ui/image-annotation/annotation-too
 import HelpTrigger from 'common/ui/HelpTrigger'
 import Help from 'fragmentarium/ui/image-annotation/annotation-tool/Help'
 import Spinner from 'common/ui/Spinner'
-import Bluebird from 'bluebird'
 import ErrorAlert from 'common/errors/ErrorAlert'
 import { createAnnotationTokens } from 'fragmentarium/ui/image-annotation/annotation-tool/mapTokensToAnnotationTokens'
 
@@ -193,7 +192,7 @@ function FragmentAnnotation({
       .catch(setError)
   }
 
-  const onDelete = async (annotation: Annotation): Bluebird<void> => {
+  const onDelete = async (annotation: Annotation): Promise<void> => {
     const updatedAnnotations = annotations.filter(
       (other: Annotation) => annotation.data.id !== other.data.id,
     )

@@ -1,3 +1,4 @@
+import Bluebird from 'bluebird'
 import React from 'react'
 import { render, screen, waitFor, fireEvent } from '@testing-library/react'
 import { bibliographyEntryFactory } from 'test-support/bibliography-fixtures'
@@ -11,7 +12,6 @@ import DossiersService from 'dossiers/application/DossiersService'
 import FragmentSearchService from 'fragmentarium/application/FragmentSearchService'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import MemorySession, { Session } from 'auth/Session'
-import Promise from 'bluebird'
 import SearchForm from './SearchForm'
 import SessionContext from 'auth/SessionContext'
 import userEvent from '@testing-library/user-event'
@@ -193,18 +193,20 @@ beforeEach(async () => {
 
   searchEntry = bibliographyEntryFactory.build()
   fragmentService.searchBibliography.mockReturnValue(
-    Promise.resolve([searchEntry]),
+    Bluebird.resolve([searchEntry]),
   )
   fragmentService.fetchPeriods.mockReturnValue(
-    Promise.resolve(Object.keys(Periods)),
+    Bluebird.resolve(Object.keys(Periods)),
   )
-  fragmentService.fetchGenres.mockReturnValue(Promise.resolve(genres))
-  fragmentService.fetchProvenances.mockReturnValue(Promise.resolve(provenances))
-  dossiersService.fetchAllDossiers.mockReturnValue(Promise.resolve([]))
-  dossiersService.fetchFilteredDossiers.mockReturnValue(Promise.resolve([]))
-  bibliographyService.find.mockReturnValue(Promise.resolve(searchEntry))
-  wordService.searchLemma.mockReturnValue(Promise.resolve([word]))
-  wordService.findAll.mockReturnValue(Promise.resolve([]))
+  fragmentService.fetchGenres.mockReturnValue(Bluebird.resolve(genres))
+  fragmentService.fetchProvenances.mockReturnValue(
+    Bluebird.resolve(provenances),
+  )
+  dossiersService.fetchAllDossiers.mockReturnValue(Bluebird.resolve([]))
+  dossiersService.fetchFilteredDossiers.mockReturnValue(Bluebird.resolve([]))
+  bibliographyService.find.mockReturnValue(Bluebird.resolve(searchEntry))
+  wordService.searchLemma.mockReturnValue(Bluebird.resolve([word]))
+  wordService.findAll.mockReturnValue(Bluebird.resolve([]))
   session.isAllowedToReadFragments.mockReturnValue(true)
   session.isAllowedToTransliterateFragments.mockReturnValue(true)
 })

@@ -12,7 +12,6 @@ import { MemoryRouter } from 'react-router-dom'
 import _ from 'lodash'
 import MemorySession, { Session, guestSession } from 'auth/Session'
 import { eblNameProperty, AuthenticationContext } from 'auth/Auth'
-import Promise from 'bluebird'
 import {
   breadcrumbs,
   createApp,

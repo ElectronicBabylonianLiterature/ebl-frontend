@@ -1,8 +1,8 @@
+import Bluebird from 'bluebird'
 import React from 'react'
 import { BrowserRouter as Router } from 'react-router-dom'
 import { render, screen, waitFor } from '@testing-library/react'
 import { Fragment } from 'fragmentarium/domain/fragment'
-import Promise from 'bluebird'
 import GenreSelection from 'fragmentarium/ui/info/GenreEditor'
 import userEvent from '@testing-library/user-event'
 import { Genres } from 'fragmentarium/domain/Genres'
@@ -50,7 +50,7 @@ async function setup(): Promise<void> {
       },
     },
   )
-  fragmentServiceMock.fetchGenres.mockReturnValue(Promise.resolve(mockGenres))
+  fragmentServiceMock.fetchGenres.mockReturnValue(Bluebird.resolve(mockGenres))
   session = {
     isAllowedToTransliterateFragments: jest.fn(),
   }

@@ -1,7 +1,7 @@
+import Bluebird from 'bluebird'
 import React from 'react'
 import { render, screen, waitFor } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
-import Promise from 'bluebird'
 import SessionContext from 'auth/SessionContext'
 import MemorySession from 'auth/Session'
 import SignService from 'signs/application/SignService'
@@ -18,8 +18,8 @@ let session: MemorySession
 describe('Searching for word', () => {
   beforeEach(() => {
     session = new MemorySession(['read:words'])
-    signService.search.mockReturnValue(Promise.resolve(signs))
-    signService.findSignsByOrder.mockReturnValue(Promise.resolve(orderedSigns))
+    signService.search.mockReturnValue(Bluebird.resolve(signs))
+    signService.findSignsByOrder.mockReturnValue(Bluebird.resolve(orderedSigns))
   })
   it('displays result on successfull query', async () => {
     const value = signs[1].values[0]

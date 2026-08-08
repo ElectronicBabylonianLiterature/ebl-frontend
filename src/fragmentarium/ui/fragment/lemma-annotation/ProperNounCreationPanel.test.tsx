@@ -1,3 +1,4 @@
+import Bluebird from 'bluebird'
 import React from 'react'
 import { render, screen, fireEvent, waitFor } from '@testing-library/react'
 import ProperNounCreationPanel from './ProperNounCreationPanel'
@@ -5,7 +6,6 @@ import WordService from 'dictionary/application/WordService'
 import { NAMED_ENTITY_TAGS } from 'dictionary/domain/namedEntityTags'
 import { wordFactory } from 'test-support/word-fixtures'
 import Word from 'dictionary/domain/Word'
-import Promise from 'bluebird'
 
 jest.mock('dictionary/application/WordService')
 
@@ -524,7 +524,7 @@ describe('ProperNounCreationPanel', () => {
     })
 
     it('disables button during creation', async () => {
-      const delayedPromise = new Promise<Word>((resolve) =>
+      const delayedPromise = new Bluebird<Word>((resolve) =>
         setTimeout(() => resolve(testWord), 100),
       )
       wordServiceMock.createProperNoun.mockReturnValue(delayedPromise)

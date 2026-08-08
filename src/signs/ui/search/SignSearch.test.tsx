@@ -2,7 +2,6 @@ import React from 'react'
 import { MemoryRouter } from 'react-router-dom'
 import { render, screen } from '@testing-library/react'
 import { waitForSpinnerToBeRemoved } from 'test-support/waitForSpinnerToBeRemoved'
-import Promise from 'bluebird'
 
 import SignsSearch from 'signs/ui/search/SignsSearch'
 import Sign from 'signs/domain/Sign'
@@ -37,7 +36,7 @@ describe('Display Search Results', () => {
   const setup = async (): Promise<void> => {
     signs = signFactory.buildList(2)
     signService.search.mockReturnValue(Bluebird.resolve(signs))
-    signService.findSignsByOrder.mockReturnValue(Promise.resolve(orderedSigns))
+    signService.findSignsByOrder.mockReturnValue(Bluebird.resolve(orderedSigns))
     await renderSignSearch()
     expect(signService.search).toBeCalledWith(query)
   }

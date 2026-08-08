@@ -1,9 +1,9 @@
+import Bluebird from 'bluebird'
 import React from 'react'
 import Chance from 'chance'
 import { produce, castDraft } from 'immer'
 import { MemoryRouter } from 'react-router-dom'
 import { render, screen } from '@testing-library/react'
-import Promise from 'bluebird'
 import FragmentariumSearch from './FragmentariumSearch'
 import Citation from 'bibliography/domain/Citation'
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
@@ -106,11 +106,11 @@ beforeEach(async () => {
     jest.Mocked<DossiersService>
   >)()
   session = new MemorySession(['read:fragments'])
-  fragmentService.fetchPeriods.mockReturnValueOnce(Promise.resolve([]))
-  fragmentService.fetchGenres.mockReturnValueOnce(Promise.resolve([]))
-  fragmentService.fetchProvenances.mockReturnValueOnce(Promise.resolve([]))
+  fragmentService.fetchPeriods.mockReturnValueOnce(Bluebird.resolve([]))
+  fragmentService.fetchGenres.mockReturnValueOnce(Bluebird.resolve([]))
+  fragmentService.fetchProvenances.mockReturnValueOnce(Bluebird.resolve([]))
   fragmentService.findThumbnail.mockResolvedValue({ blob: null })
-  dossiersService.fetchFilteredDossiers.mockReturnValue(Promise.resolve([]))
+  dossiersService.fetchFilteredDossiers.mockReturnValue(Bluebird.resolve([]))
 })
 
 function buildSummaryBackedFragment(): Fragment {
@@ -198,17 +198,17 @@ describe('Search', () => {
     async function setupSearchByNumber(): Promise<void> {
       fragments = fragmentFactory.buildList(2, {}, { transient: { chance } })
       fragmentService.query.mockReturnValueOnce(
-        Promise.resolve({
+        Bluebird.resolve({
           items: fragments.map(queryItemOf),
           matchCountTotal: 0,
         }),
       )
       fragmentService.find
-        .mockReturnValueOnce(Promise.resolve(fragments[0]))
-        .mockReturnValueOnce(Promise.resolve(fragments[1]))
-      wordService.findAll.mockReturnValue(Promise.resolve([]))
+        .mockReturnValueOnce(Bluebird.resolve(fragments[0]))
+        .mockReturnValueOnce(Bluebird.resolve(fragments[1]))
+      wordService.findAll.mockReturnValue(Bluebird.resolve([]))
       textService.query.mockReturnValueOnce(
-        Promise.resolve({ items: [], matchCountTotal: 0 }),
+        Bluebird.resolve({ items: [], matchCountTotal: 0 }),
       )
       await renderFragmentariumSearch(fragments[0].number, {
         number: museumNumber,
@@ -240,9 +240,9 @@ describe('Search', () => {
 
     fragmentService.query.mockResolvedValue(result)
     fragmentService.find.mockResolvedValue(fragments[0])
-    wordService.findAll.mockReturnValue(Promise.resolve([]))
+    wordService.findAll.mockReturnValue(Bluebird.resolve([]))
     textService.query.mockReturnValue(
-      Promise.resolve({ items: [], matchCountTotal: 0 }),
+      Bluebird.resolve({ items: [], matchCountTotal: 0 }),
     )
 
     const { rerender } = render(createFragmentariumSearch({ transliteration }))
@@ -275,14 +275,14 @@ describe('Search', () => {
 
   it('Shows suggestion when entering wrong number format', async () => {
     fragmentService.query.mockReturnValueOnce(
-      Promise.resolve({
+      Bluebird.resolve({
         items: [],
         matchCountTotal: 0,
       }),
     )
-    wordService.findAll.mockReturnValue(Promise.resolve([]))
+    wordService.findAll.mockReturnValue(Bluebird.resolve([]))
     textService.query.mockReturnValueOnce(
-      Promise.resolve({ items: [], matchCountTotal: 0 }),
+      Bluebird.resolve({ items: [], matchCountTotal: 0 }),
     )
     await renderFragmentariumSearch('K.2', {
       number: 'K 2',
@@ -297,11 +297,11 @@ describe('Search result contract compatibility', () => {
   const transliteration = 'kur'
 
   async function renderLibraryResult(result: QueryResult): Promise<void> {
-    fragmentService.query.mockReturnValueOnce(Promise.resolve(result))
+    fragmentService.query.mockReturnValueOnce(Bluebird.resolve(result))
     textService.query.mockReturnValueOnce(
-      Promise.resolve({ items: [], matchCountTotal: 0 }),
+      Bluebird.resolve({ items: [], matchCountTotal: 0 }),
     )
-    wordService.findAll.mockReturnValue(Promise.resolve([]))
+    wordService.findAll.mockReturnValue(Bluebird.resolve([]))
 
     await renderFragmentariumSearch(
       result.matchCountTotal === null
@@ -368,12 +368,12 @@ describe('Search result contract compatibility', () => {
 
   it('renders corpus results when matchCountTotal is null', async () => {
     fragmentService.query.mockReturnValueOnce(
-      Promise.resolve({ items: [], matchCountTotal: null }),
+      Bluebird.resolve({ items: [], matchCountTotal: null }),
     )
     textService.query.mockReturnValueOnce(
-      Promise.resolve({ items: [], matchCountTotal: null }),
+      Bluebird.resolve({ items: [], matchCountTotal: null }),
     )
-    wordService.findAll.mockReturnValue(Promise.resolve([]))
+    wordService.findAll.mockReturnValue(Bluebird.resolve([]))
 
     await renderFragmentariumSearch(
       'Found 0 chapters',
@@ -414,24 +414,24 @@ describe('Searching fragments by transliteration', () => {
       ),
       matchCountTotal: 0,
     }
-    fragmentService.query.mockReturnValueOnce(Promise.resolve(result))
-    textService.query.mockReturnValueOnce(Promise.resolve(corpusResult))
+    fragmentService.query.mockReturnValueOnce(Bluebird.resolve(result))
+    textService.query.mockReturnValueOnce(Bluebird.resolve(corpusResult))
     fragmentService.find
-      .mockReturnValueOnce(Promise.resolve(fragments[0]))
-      .mockReturnValueOnce(Promise.resolve(fragments[1]))
+      .mockReturnValueOnce(Bluebird.resolve(fragments[0]))
+      .mockReturnValueOnce(Bluebird.resolve(fragments[1]))
     fragmentService.findThumbnail
       .mockReturnValueOnce(
-        Promise.resolve({
+        Bluebird.resolve({
           blob: new Blob(['imagedata'], { type: 'image/jpeg' }),
         }),
       )
-      .mockReturnValueOnce(Promise.resolve({ blob: null }))
-    wordService.findAll.mockReturnValue(Promise.resolve([]))
+      .mockReturnValueOnce(Bluebird.resolve({ blob: null }))
+    wordService.findAll.mockReturnValue(Bluebird.resolve([]))
     textService.findChapterDisplay
-      .mockReturnValueOnce(Promise.resolve(chapters[0]))
-      .mockReturnValueOnce(Promise.resolve(chapters[1]))
+      .mockReturnValueOnce(Bluebird.resolve(chapters[0]))
+      .mockReturnValueOnce(Bluebird.resolve(chapters[1]))
     textService.findChapterLine.mockReturnValue(
-      Promise.resolve(
+      Bluebird.resolve(
         new LineDetails(
           [
             lineVariantDisplayFactory.build({
@@ -483,7 +483,7 @@ describe('Searching fragments from summary-backed results', () => {
     const citation = Citation.for(summaryFragment.references[0]).getMarkdown()
 
     fragmentService.query.mockReturnValueOnce(
-      Promise.resolve({
+      Bluebird.resolve({
         items: [
           {
             museumNumber: summaryFragment.number,
@@ -495,9 +495,9 @@ describe('Searching fragments from summary-backed results', () => {
         matchCountTotal: 7,
       }),
     )
-    wordService.findAll.mockReturnValue(Promise.resolve([]))
+    wordService.findAll.mockReturnValue(Bluebird.resolve([]))
     textService.query.mockReturnValueOnce(
-      Promise.resolve({ items: [], matchCountTotal: 0 }),
+      Bluebird.resolve({ items: [], matchCountTotal: 0 }),
     )
     dossiersService.queryByIds.mockResolvedValue([
       new DossierRecord({

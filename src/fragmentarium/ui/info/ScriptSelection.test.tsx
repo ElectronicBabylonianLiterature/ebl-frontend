@@ -1,7 +1,7 @@
+import Bluebird from 'bluebird'
 import React from 'react'
 import { render, screen, waitFor } from '@testing-library/react'
 import { Fragment } from 'fragmentarium/domain/fragment'
-import Promise from 'bluebird'
 import SessionContext from 'auth/SessionContext'
 import { fragmentFactory } from 'test-support/fragment-fixtures'
 import { waitForSpinnerToBeRemoved } from '../../../test-support/waitForSpinnerToBeRemoved'
@@ -55,7 +55,7 @@ async function setup(): Promise<void> {
     },
   )
   fragmentService.fetchPeriods.mockReturnValue(
-    Promise.resolve([...Object.keys(Periods)]),
+    Bluebird.resolve([...Object.keys(Periods)]),
   )
   session = new (MemorySession as jest.Mock<jest.Mocked<MemorySession>>)()
   session.isAllowedToTransliterateFragments.mockReturnValue(true)
@@ -96,7 +96,7 @@ describe('User Input', () => {
   })
   test('Clicking Save triggers update', async () => {
     await setup()
-    updateScript.mockReturnValue(Promise.resolve(fragment))
+    updateScript.mockReturnValue(Bluebird.resolve(fragment))
     const modifierSelect = screen.getByLabelText('select-period-modifier')
     await userEvent.click(modifierSelect)
     await userEvent.click(await screen.findByText(PeriodModifiers.Late.name))

@@ -1,7 +1,6 @@
 import React from 'react'
 import { render, screen } from '@testing-library/react'
 import { waitForSpinnerToBeRemoved } from 'test-support/waitForSpinnerToBeRemoved'
-import Promise from 'bluebird'
 import Statistics from './Statistics'
 import { statisticsFactory } from 'test-support/fragment-data-fixtures'
 
