@@ -3,7 +3,7 @@ import {
   normalizeMediaRepresentations,
   normalizeNonEmptyString,
   normalizeThumbnailSize,
-} from './mediaMapper'
+} from 'fragmentarium/infrastructure/mediaMapper'
 
 describe('media representation normalization', () => {
   test('normalizes valid representations and drops invalid dimensions', () => {

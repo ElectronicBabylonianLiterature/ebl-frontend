@@ -1,4 +1,4 @@
-import { normalizeMediaSummary } from './mediaMapper'
+import { normalizeMediaSummary } from 'fragmentarium/infrastructure/mediaMapper'
 
 describe('media summary normalization', () => {
   test('accepts count greater than zero without a primary selection', () => {
@@ -122,6 +122,7 @@ describe('media summary normalization', () => {
     expect(normalizeMediaSummary('not-a-summary')).toBeNull()
     expect(normalizeMediaSummary({ count: 1, types: 'PHOTO' })).toBeNull()
     expect(normalizeMediaSummary({ count: -1, types: ['PHOTO'] })).toBeNull()
+    expect(normalizeMediaSummary({ count: 1.5, types: ['PHOTO'] })).toBeNull()
   })
 
   test('keeps a safe shell for positive counts with no valid type or primary', () => {

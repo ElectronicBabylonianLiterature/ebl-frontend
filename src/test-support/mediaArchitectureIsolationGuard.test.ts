@@ -1,10 +1,11 @@
 import {
   collectModuleReferences,
+  findExpectedMediaArchitectureModules,
   isMediaArchitectureModule,
   isProductionSourceFile,
   resolveModuleSpecifier,
   toModulePath,
-} from './mediaArchitectureIsolationGuard'
+} from 'test-support/mediaArchitectureIsolationGuard'
 
 describe('collectModuleReferences', () => {
   test('ignores dynamic imports with a non-literal specifier', () => {
@@ -85,6 +86,25 @@ describe('toModulePath', () => {
     expect(toModulePath('fragmentarium/domain/media')).toBe(
       'fragmentarium/domain/media',
     )
+  })
+})
+
+describe('findExpectedMediaArchitectureModules', () => {
+  test('discovers production media architecture modules in architecture layers', () => {
+    expect(
+      findExpectedMediaArchitectureModules(`${process.cwd()}/src`),
+    ).toEqual([
+      'fragmentarium/application/MediaBinaryLoader',
+      'fragmentarium/application/MediaRepository',
+      'fragmentarium/domain/media',
+      'fragmentarium/domain/mediaGallery',
+      'fragmentarium/infrastructure/mediaDtos',
+      'fragmentarium/infrastructure/mediaMapper',
+      'fragmentarium/infrastructure/mediaMapperValidation',
+      'fragmentarium/infrastructure/mediaRepresentationMapper',
+      'fragmentarium/infrastructure/mediaResourceMapper',
+      'fragmentarium/infrastructure/mediaSummaryMapper',
+    ])
   })
 })
 

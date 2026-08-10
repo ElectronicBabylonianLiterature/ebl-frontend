@@ -1,4 +1,4 @@
-import { ThumbnailSize } from 'fragmentarium/domain/media'
+import type { ThumbnailSize } from 'fragmentarium/domain/media'
 
 export interface MediaRepresentationDto {
   readonly url?: unknown

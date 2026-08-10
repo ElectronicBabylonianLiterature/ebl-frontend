@@ -3,7 +3,7 @@ import {
   isThumbnailSize,
   MediaTypes,
   ThumbnailSizes,
-} from './media'
+} from 'fragmentarium/domain/media'
 
 test.each(MediaTypes)('accepts media type %s', (mediaType) => {
   expect(isMediaType(mediaType)).toBe(true)

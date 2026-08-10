@@ -1,4 +1,4 @@
-import { MediaResource } from 'fragmentarium/domain/media'
+import type { MediaResource } from 'fragmentarium/domain/media'
 
 export interface MediaGalleryState {
   readonly selectedMediaId: string | null
@@ -22,6 +22,9 @@ export function selectInitialMedia(
 ): MediaResource | null {
   const orderedMedia = sortMedia(media)
   return (
+    orderedMedia.find(
+      (resource) => resource.isPrimary && resource.type === 'PHOTO',
+    ) ??
     orderedMedia.find((resource) => resource.isPrimary) ??
     orderedMedia[0] ??
     null

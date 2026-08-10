@@ -109,13 +109,12 @@ function createLegacyPhotoSummary(): MediaSummary {
   }
 }
 
-function normalizeLegacyMediaSummaryWithThumbnail(
-  thumbnailPath: unknown,
-): NormalizedMediaSummaryCompatibility {
-  return {
-    mediaSummary: createLegacyPhotoSummary(),
-    legacyThumbnailPath: normalizeNonEmptyString(thumbnailPath) ?? null,
-  }
+function normalizeLegacyThumbnailPath(thumbnailPath: unknown): string | null {
+  return normalizeNonEmptyString(thumbnailPath) ?? null
+}
+
+function hasPrimaryThumbnail(mediaSummary: MediaSummary): boolean {
+  return mediaSummary.primary?.thumbnail !== undefined
 }
 
 export function normalizeMediaSummary(
@@ -128,19 +127,10 @@ export function normalizeLegacyMediaSummary(
   hasPhoto: unknown,
   thumbnailPath?: unknown,
 ): NormalizedMediaSummaryCompatibility {
-  if (hasPhoto !== true) {
-    return {
-      mediaSummary: null,
-      legacyThumbnailPath: null,
-    }
+  return {
+    mediaSummary: hasPhoto === true ? createLegacyPhotoSummary() : null,
+    legacyThumbnailPath: normalizeLegacyThumbnailPath(thumbnailPath),
   }
-
-  return thumbnailPath === undefined
-    ? {
-        mediaSummary: createLegacyPhotoSummary(),
-        legacyThumbnailPath: null,
-      }
-    : normalizeLegacyMediaSummaryWithThumbnail(thumbnailPath)
 }
 
 export function normalizeCompatibleMediaSummary(
@@ -150,25 +140,29 @@ export function normalizeCompatibleMediaSummary(
     compatibility?.mediaSummary,
   )
 
+  const normalizedLegacySummary = normalizeLegacyMediaSummary(
+    compatibility?.hasPhoto,
+    compatibility?.thumbnailPath,
+  )
+
   if (
     normalizedNewSummary.mediaSummary &&
     !normalizedNewSummary.hasCriticalError
   ) {
     return {
       mediaSummary: normalizedNewSummary.mediaSummary,
-      legacyThumbnailPath: null,
+      legacyThumbnailPath: hasPrimaryThumbnail(
+        normalizedNewSummary.mediaSummary,
+      )
+        ? null
+        : normalizedLegacySummary.legacyThumbnailPath,
     }
   }
-
-  const normalizedLegacySummary = normalizeLegacyMediaSummary(
-    compatibility?.hasPhoto,
-    compatibility?.thumbnailPath,
-  )
 
   return normalizedLegacySummary.mediaSummary
     ? normalizedLegacySummary
     : {
         mediaSummary: normalizedNewSummary.mediaSummary,
-        legacyThumbnailPath: null,
+        legacyThumbnailPath: normalizedLegacySummary.legacyThumbnailPath,
       }
 }

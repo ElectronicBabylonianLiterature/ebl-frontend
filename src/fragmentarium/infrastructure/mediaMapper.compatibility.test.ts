@@ -1,7 +1,7 @@
 import {
   normalizeCompatibleMediaSummary,
   normalizeLegacyMediaSummary,
-} from './mediaMapper'
+} from 'fragmentarium/infrastructure/mediaMapper'
 
 describe('compatible media summary normalization', () => {
   test('uses a valid new summary without legacy fallback', () => {
@@ -55,6 +55,33 @@ describe('compatible media summary normalization', () => {
     })
   })
 
+  test('keeps legacy thumbnail path with a valid summary missing a primary thumbnail', () => {
+    expect(
+      normalizeCompatibleMediaSummary({
+        mediaSummary: {
+          count: 1,
+          types: ['PHOTO'],
+          primary: {
+            id: 'photo-id',
+            type: 'PHOTO',
+          },
+        },
+        hasPhoto: true,
+        thumbnailPath: '/legacy-thumbnail',
+      }),
+    ).toEqual({
+      mediaSummary: {
+        count: 1,
+        types: ['PHOTO'],
+        primary: {
+          id: 'photo-id',
+          type: 'PHOTO',
+        },
+      },
+      legacyThumbnailPath: '/legacy-thumbnail',
+    })
+  })
+
   test('normalizes a legacy photo without a thumbnail path', () => {
     expect(normalizeLegacyMediaSummary(true)).toEqual({
       mediaSummary: {
@@ -75,7 +102,16 @@ describe('compatible media summary normalization', () => {
     })
   })
 
-  test('returns null for legacy no-photo input', () => {
+  test('keeps thumbnail paths for legacy no-photo input', () => {
+    expect(
+      normalizeLegacyMediaSummary(false, '/fragments/K.1/thumbnail/small'),
+    ).toEqual({
+      mediaSummary: null,
+      legacyThumbnailPath: '/fragments/K.1/thumbnail/small',
+    })
+  })
+
+  test('returns null values for legacy no-photo input without a path', () => {
     expect(normalizeLegacyMediaSummary(false)).toEqual({
       mediaSummary: null,
       legacyThumbnailPath: null,
@@ -116,6 +152,19 @@ describe('compatible media summary normalization', () => {
         count: 1,
         types: ['PHOTO'],
       },
+      legacyThumbnailPath: '/legacy-thumbnail',
+    })
+  })
+
+  test('keeps legacy thumbnail path without synthesizing media for malformed hasPhoto', () => {
+    expect(
+      normalizeCompatibleMediaSummary({
+        mediaSummary: null,
+        hasPhoto: 'true',
+        thumbnailPath: '/legacy-thumbnail',
+      }),
+    ).toEqual({
+      mediaSummary: null,
       legacyThumbnailPath: '/legacy-thumbnail',
     })
   })

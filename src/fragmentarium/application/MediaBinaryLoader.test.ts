@@ -1,4 +1,6 @@
-import MediaBinaryLoader, { MediaBinaryRequest } from './MediaBinaryLoader'
+import MediaBinaryLoader, {
+  MediaBinaryRequest,
+} from 'fragmentarium/application/MediaBinaryLoader'
 
 describe('MediaBinaryLoader contract', () => {
   test('supports a fake implementation for future authenticated loading', async () => {
@@ -33,6 +35,16 @@ describe('MediaBinaryLoader contract', () => {
     await mediaBinaryLoader.fetch(request, controller.signal)
 
     expect(receivedSignal).toBe(controller.signal)
+  })
+
+  test('accepts display binary representations', () => {
+    const request: MediaBinaryRequest = {
+      mediaId: 'media-id',
+      url: '/fragments/K.1/media/media-id/display',
+      representation: 'display',
+    }
+
+    expect(request.representation).toBe('display')
   })
 
   test('supports fetching without a signal', async () => {

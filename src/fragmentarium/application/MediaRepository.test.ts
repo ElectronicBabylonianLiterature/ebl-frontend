@@ -1,4 +1,4 @@
-import MediaRepository from './MediaRepository'
+import MediaRepository from 'fragmentarium/application/MediaRepository'
 
 describe('MediaRepository contract', () => {
   test('supports a fake metadata repository implementation', async () => {

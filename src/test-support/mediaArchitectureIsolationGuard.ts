@@ -15,6 +15,12 @@ export const mediaArchitectureModules = [
   'fragmentarium/infrastructure/mediaSummaryMapper',
 ].sort()
 
+const mediaArchitectureDirectories = [
+  'fragmentarium/application',
+  'fragmentarium/domain',
+  'fragmentarium/infrastructure',
+] as const
+
 export type ModuleReferenceKind =
   | 'import'
   | 'reexport'
@@ -109,6 +115,31 @@ export function isMediaArchitectureModule(modulePath: string): boolean {
       modulePath === architectureModule ||
       modulePath.startsWith(`${architectureModule}.`),
   )
+}
+
+function isMediaArchitectureFile(relativePath: string): boolean {
+  const modulePath = toModulePath(relativePath)
+  const directory = path.posix.dirname(modulePath)
+  const fileName = path.posix.basename(modulePath)
+  return (
+    mediaArchitectureDirectories.includes(
+      directory as (typeof mediaArchitectureDirectories)[number],
+    ) && /^media/i.test(fileName)
+  )
+}
+
+export function findExpectedMediaArchitectureModules(
+  sourceRoot: string,
+): readonly string[] {
+  return listSourceFiles(sourceRoot)
+    .map((filePath) => toRelativePath(sourceRoot, filePath))
+    .filter(
+      (relativePath) =>
+        !relativePath.includes('.test.') &&
+        isMediaArchitectureFile(relativePath),
+    )
+    .map(toModulePath)
+    .sort()
 }
 
 export function findMediaArchitectureReferences(

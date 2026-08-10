@@ -1,6 +1,6 @@
-import { ThumbnailSize } from 'fragmentarium/domain/media'
+import type { ThumbnailSize } from 'fragmentarium/domain/media'
 
-export type MediaBinaryRepresentation = 'original' | ThumbnailSize
+export type MediaBinaryRepresentation = 'original' | 'display' | ThumbnailSize
 
 export interface MediaBinaryRequest {
   readonly mediaId: string

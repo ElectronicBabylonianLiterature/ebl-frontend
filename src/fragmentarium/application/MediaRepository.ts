@@ -1,4 +1,4 @@
-import { MediaResource } from 'fragmentarium/domain/media'
+import type { MediaResource } from 'fragmentarium/domain/media'
 
 export default interface MediaRepository {
   findByFragment(

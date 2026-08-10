@@ -1,5 +1,9 @@
 import { MediaResource } from 'fragmentarium/domain/media'
-import { selectInitialMedia, selectMediaById, sortMedia } from './mediaGallery'
+import {
+  selectInitialMedia,
+  selectMediaById,
+  sortMedia,
+} from 'fragmentarium/domain/mediaGallery'
 
 function createMediaResource(
   overrides: Partial<MediaResource>,
@@ -49,6 +53,21 @@ describe('media gallery helpers', () => {
       'second',
       'third',
     ])
+  })
+
+  test('prefers the first primary photo over an earlier primary copy', () => {
+    const media = [
+      createMediaResource(
+        { sortOrder: 0, isPrimary: true, type: 'COPY' },
+        'primary-copy',
+      ),
+      createMediaResource(
+        { sortOrder: 1, isPrimary: true, type: 'PHOTO' },
+        'primary-photo',
+      ),
+    ]
+
+    expect(selectInitialMedia(media)?.id).toBe('primary-photo')
   })
 
   test('selects the first primary media item after sorting', () => {

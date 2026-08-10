@@ -1,6 +1,7 @@
 import fs from 'fs'
 import path from 'path'
 import {
+  findExpectedMediaArchitectureModules,
   findMediaArchitectureReferences,
   isProductionSourceFile,
   listSourceFiles,
@@ -28,6 +29,12 @@ describe('media architecture module inventory', () => {
       )
       expect(existsAsTs || existsAsTsx).toBe(true)
     }
+  })
+
+  test('lists every media architecture module discovered on disk', () => {
+    expect(mediaArchitectureModules).toEqual(
+      findExpectedMediaArchitectureModules(sourceRoot),
+    )
   })
 })
 

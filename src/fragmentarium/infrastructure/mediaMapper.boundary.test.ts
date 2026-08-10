@@ -1,4 +1,4 @@
-import { normalizeMediaResource } from './mediaMapper'
+import { normalizeMediaResource } from 'fragmentarium/infrastructure/mediaMapper'
 
 describe('media mapper DTO boundaries', () => {
   test('drops backend-only fields from normalized media resources', () => {

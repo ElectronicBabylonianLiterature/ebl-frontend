@@ -7,6 +7,19 @@ import { lineNumberToAtf } from 'transliteration/domain/lineNumberToString'
 import TransliterationTd from './TransliterationTd'
 import { Labels, labelsAbbreviation } from 'transliteration/domain/labels'
 import { LemmaPopover } from 'transliteration/ui/WordInfo'
+import { TokenActionWrapperProps } from 'transliteration/ui/LineAccumulator'
+import NamedEntityPreviewToken from 'fragmentarium/ui/text-annotation/NamedEntityPreviewToken'
+
+function LemmaPopoverWithNamedEntities({
+  token,
+  children,
+}: TokenActionWrapperProps): JSX.Element {
+  return (
+    <NamedEntityPreviewToken token={token}>
+      <LemmaPopover token={token}>{children}</LemmaPopover>
+    </NamedEntityPreviewToken>
+  )
+}
 
 function createId(labels: Labels | undefined, textLine: TextLine) {
   const label = labels ? `${labelsAbbreviation(labels)} ` : ''
@@ -39,7 +52,7 @@ export default function DisplayTextLine({
       <LineColumns
         columns={textLine.columns}
         maxColumns={columns}
-        TokenActionWrapper={LemmaPopover}
+        TokenActionWrapper={LemmaPopoverWithNamedEntities}
       />
     </>
   )

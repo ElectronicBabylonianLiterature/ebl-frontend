@@ -2,7 +2,7 @@ import {
   normalizeFragmentMediaResponse,
   normalizeMediaReference,
   normalizeMediaResource,
-} from './mediaMapper'
+} from 'fragmentarium/infrastructure/mediaMapper'
 
 const validRepresentations = {
   original: {
@@ -132,6 +132,16 @@ describe('media resource normalization', () => {
         id: 'media-id',
         type: 'PHOTO',
         sortOrder: -1,
+        isPrimary: true,
+        representations: validRepresentations,
+      },
+    ],
+    [
+      'non-integer sort order',
+      {
+        id: 'media-id',
+        type: 'PHOTO',
+        sortOrder: 1.5,
         isPrimary: true,
         representations: validRepresentations,
       },
