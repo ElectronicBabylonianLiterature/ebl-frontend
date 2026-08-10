@@ -1,6 +1,7 @@
 import React from 'react'
 import { Image } from 'react-bootstrap'
 import { createFragmentUrl } from 'fragmentarium/ui/FragmentLink'
+import { apiUrl } from 'http/ApiClient'
 
 export default function SummaryThumbnail({
   fragmentNumber,
@@ -19,7 +20,7 @@ export default function SummaryThumbnail({
 
   const image = (
     <Image
-      src={thumbnailPath}
+      src={apiUrl(thumbnailPath)}
       alt={`Preview of ${fragmentNumber}`}
       fluid
       loading="lazy"

@@ -24,18 +24,17 @@ test('renders nothing when no thumbnail path is provided', () => {
   ).not.toBeInTheDocument()
 })
 
-test('renders the thumbnail image when a thumbnail path is provided', () => {
-  const thumbnailPath = '/images/summary-thumbnail.jpg'
-  renderThumbnail(thumbnailPath)
+test('resolves an API-relative thumbnail path against the API base URL', () => {
+  renderThumbnail(`/fragments/${fragmentNumber}/thumbnail/small`)
 
   expect(screen.getByAltText(`Preview of ${fragmentNumber}`)).toHaveAttribute(
     'src',
-    thumbnailPath,
+    `http://example.com/fragments/${fragmentNumber}/thumbnail/small`,
   )
 })
 
 test('hides the image after it fails to load', () => {
-  renderThumbnail('/images/broken-thumbnail.jpg')
+  renderThumbnail(`/fragments/${fragmentNumber}/thumbnail/small`)
 
   fireEvent.error(screen.getByAltText(`Preview of ${fragmentNumber}`))
 

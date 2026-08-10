@@ -131,9 +131,9 @@ test('renders a render-ready query item without hydrating details', async () => 
   expect(fragmentService.find).not.toHaveBeenCalled()
 })
 
-test('uses a summary thumbnail path without fetching a thumbnail blob', async () => {
+test('resolves a summary thumbnail path without fetching a thumbnail blob', async () => {
   const latestQueryItem = makeReadyItem({
-    thumbnailPath: '/images/summary-thumbnail.jpg',
+    thumbnailPath: '/fragments/K.1/thumbnail/small',
     fragment: fragmentFactory.build(
       { hasPhoto: true },
       {
@@ -155,14 +155,17 @@ test('uses a summary thumbnail path without fetching a thumbnail blob', async ()
   const thumbnail = await screen.findByAltText(
     `Preview of ${latestQueryItem.fragment?.number}`,
   )
-  expect(thumbnail).toHaveAttribute('src', '/images/summary-thumbnail.jpg')
+  expect(thumbnail).toHaveAttribute(
+    'src',
+    'http://example.com/fragments/K.1/thumbnail/small',
+  )
   expect(fragmentService.find).not.toHaveBeenCalled()
   expect(fragmentService.findThumbnail).not.toHaveBeenCalled()
 })
 
 test('hides a broken summary thumbnail', async () => {
   const latestQueryItem = makeReadyItem({
-    thumbnailPath: '/images/broken-thumbnail.jpg',
+    thumbnailPath: '/fragments/K.1/thumbnail/small',
     fragment: fragmentFactory.build(
       { hasPhoto: true },
       {

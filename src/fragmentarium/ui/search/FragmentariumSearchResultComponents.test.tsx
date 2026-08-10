@@ -85,9 +85,9 @@ describe('FragmentLines', () => {
     expect(screen.getByText(fragment.number)).toBeInTheDocument()
   })
 
-  it('uses summary thumbnail paths without fetching thumbnail blobs', async () => {
+  it('resolves summary thumbnail paths without fetching thumbnail blobs', async () => {
     const fragment = fragmentFactory.build({ hasPhoto: true, dossiers: [] })
-    const thumbnailPath = '/images/summary-thumbnail.jpg'
+    const thumbnailPath = `/fragments/${fragment.number}/thumbnail/small`
 
     renderFragmentLines({
       museumNumber: fragment.number,
@@ -99,7 +99,7 @@ describe('FragmentLines', () => {
 
     expect(
       await screen.findByAltText(`Preview of ${fragment.number}`),
-    ).toHaveAttribute('src', thumbnailPath)
+    ).toHaveAttribute('src', `http://example.com${thumbnailPath}`)
     expect(fragmentService.find).not.toHaveBeenCalled()
     expect(fragmentService.findThumbnail).not.toHaveBeenCalled()
   })
