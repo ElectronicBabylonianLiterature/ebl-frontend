@@ -5,17 +5,13 @@ import { MemoryRouter, useLocation } from 'react-router-dom'
 import { Switch } from 'router/compat'
 import SessionContext from 'auth/SessionContext'
 import MemorySession from 'auth/Session'
-import FragmentariumRoutes from './fragmentariumRoutes'
+import ResearchProjectRoutes from './researchProjectRoutes'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import FragmentSearchService from 'fragmentarium/application/FragmentSearchService'
 import BibliographyService from 'bibliography/application/BibliographyService'
 import WordService from 'dictionary/application/WordService'
-import TextService from 'corpus/application/TextService'
 import DossiersService from 'dossiers/application/DossiersService'
 import { QueryItem, QueryResult } from 'query/QueryResult'
-import { FindspotService } from 'fragmentarium/application/FindspotService'
-import AfoRegisterService from 'afo-register/application/AfoRegisterService'
-import SignService from 'signs/application/SignService'
 import { FragmentQuery } from 'query/FragmentQuery'
 
 jest.mock('router/head', () => ({
@@ -59,13 +55,11 @@ function renderRoutes(initialEntry: string): jest.Mocked<FragmentService> {
     query: jest.fn((query: FragmentQuery) =>
       Promise.resolve(buildQueryResult(query)),
     ),
+    find: jest.fn(),
     fetchPeriods: jest.fn().mockResolvedValue([]),
     fetchGenres: jest.fn().mockResolvedValue([]),
     fetchProvenances: jest.fn().mockResolvedValue([]),
   } as unknown as jest.Mocked<FragmentService>
-  const textService = {
-    query: jest.fn().mockResolvedValue({ items: [], matchCountTotal: 0 }),
-  } as unknown as jest.Mocked<TextService>
   const dossiersService = {
     fetchFilteredDossiers: jest.fn().mockResolvedValue([]),
   } as unknown as jest.Mocked<DossiersService>
@@ -78,17 +72,13 @@ function renderRoutes(initialEntry: string): jest.Mocked<FragmentService> {
       <SessionContext.Provider value={new MemorySession(['read:fragments'])}>
         <LocationDisplay />
         <Switch>
-          {FragmentariumRoutes({
+          {ResearchProjectRoutes({
             sitemap: false,
             fragmentService,
             fragmentSearchService: {} as FragmentSearchService,
-            textService,
             wordService,
-            findspotService: {} as FindspotService,
-            afoRegisterService: {} as AfoRegisterService,
-            dossiersService,
-            signService: {} as SignService,
             bibliographyService: {} as BibliographyService,
+            dossiersService,
           })}
         </Switch>
       </SessionContext.Provider>
@@ -98,128 +88,145 @@ function renderRoutes(initialEntry: string): jest.Mocked<FragmentService> {
   return fragmentService
 }
 
-describe('FragmentariumRoutes library search pagination', () => {
-  it('sends the first explicit-limit page by default', async () => {
-    const view = renderRoutes('/library/search/?number=000123')
+describe('ResearchProjectRoutes search pagination', () => {
+  it('requests a bounded first page for a bare project search', async () => {
+    const view = renderRoutes('/projects/CAIC/search')
 
     expect(await screen.findByText('K.1')).toBeInTheDocument()
     expect(view.query).toHaveBeenCalledWith({
-      number: '000123',
+      project: 'CAIC',
       limit: 50,
       offset: 0,
       count: 'page',
     })
+    expect(view.query).toHaveBeenCalledTimes(1)
   })
 
-  it('direct navigation to paginationIndex=2 sends offset 100 without normalizing search values', async () => {
+  it('renders only the returned page and never hydrates summary-less items', async () => {
+    const view = renderRoutes('/projects/CAIC/search')
+
+    expect(await screen.findByText('K.1')).toBeInTheDocument()
+    expect(screen.getByText(/Showing documents 1-1/)).toBeInTheDocument()
+    expect(view.find).not.toHaveBeenCalled()
+  })
+
+  it('sends the page offset for a directly linked later page', async () => {
+    const view = renderRoutes('/projects/CAIC/search?paginationIndex=1')
+
+    expect(await screen.findByText('K.51')).toBeInTheDocument()
+    expect(view.query).toHaveBeenCalledWith({
+      project: 'CAIC',
+      limit: 50,
+      offset: 50,
+      count: 'page',
+    })
+  })
+
+  it('keeps other project search criteria while paging', async () => {
     const view = renderRoutes(
-      '/library/search/?number=000123&genre=CANONICAL%3ATechnical%3AAstronomy%3AAstronomical%20Diaries&paginationIndex=2',
+      '/projects/CAIC/search?number=000123&genre=CANONICAL%3ATechnical&paginationIndex=2',
     )
 
     expect(await screen.findByText('K.101')).toBeInTheDocument()
     expect(view.query).toHaveBeenCalledWith({
+      project: 'CAIC',
       number: '000123',
-      genre: 'CANONICAL:Technical:Astronomy:Astronomical Diaries',
+      genre: 'CANONICAL:Technical',
       limit: 50,
       offset: 100,
       count: 'page',
     })
   })
 
-  it.each(['abc', '-5', '1.5'])(
-    'treats invalid paginationIndex=%s as page zero',
-    async (paginationIndex) => {
-      const view = renderRoutes(
-        `/library/search/?number=K.1&paginationIndex=${paginationIndex}`,
-      )
+  it('never forwards paginationIndex to the API', async () => {
+    const view = renderRoutes('/projects/CAIC/search?paginationIndex=3')
 
-      expect(await screen.findByText('K.1')).toBeInTheDocument()
-      expect(view.query).toHaveBeenCalledWith({
-        number: 'K.1',
-        limit: 50,
-        offset: 0,
-        count: 'page',
-      })
-    },
-  )
+    expect(await screen.findByText('K.151')).toBeInTheDocument()
+    expect(view.query).not.toHaveBeenCalledWith(
+      expect.objectContaining({ paginationIndex: expect.anything() }),
+    )
+  })
 
-  it('requests exact counts for transliteration line searches', async () => {
-    const view = renderRoutes('/library/search/?transliteration=kur')
+  it('honours a URL page size and resets to the first page', async () => {
+    const view = renderRoutes(
+      '/projects/CAIC/search?limit=25&paginationIndex=0',
+    )
 
     expect(await screen.findByText('K.1')).toBeInTheDocument()
     expect(view.query).toHaveBeenCalledWith({
-      transliteration: 'kur',
-      limit: 51,
+      project: 'CAIC',
+      limit: 25,
       offset: 0,
-      count: 'exact',
-    })
-  })
-
-  it('requests exact counts for lemma line searches', async () => {
-    const view = renderRoutes('/library/search/?lemmas=kur')
-
-    expect(await screen.findByText('K.1')).toBeInTheDocument()
-    expect(view.query).toHaveBeenCalledWith({
-      lemmas: 'kur',
-      limit: 51,
-      offset: 0,
-      count: 'exact',
-    })
-  })
-
-  it('overfetches line searches by one item while offsetting by the visible page size', async () => {
-    const view = renderRoutes(
-      '/library/search/?transliteration=kur&limit=25&paginationIndex=2',
-    )
-
-    expect(await screen.findByText('K.51')).toBeInTheDocument()
-    expect(view.query).toHaveBeenCalledWith({
-      transliteration: 'kur',
-      limit: 26,
-      offset: 50,
-      count: 'exact',
-    })
-  })
-
-  it('uses a validated URL result size without fetching every result', async () => {
-    const view = renderRoutes(
-      '/library/search/?number=000123&limit=100&paginationIndex=1',
-    )
-
-    expect(await screen.findByText('K.101')).toBeInTheDocument()
-    expect(view.query).toHaveBeenCalledWith({
-      number: '000123',
-      limit: 100,
-      offset: 100,
       count: 'page',
     })
   })
 
-  it('uses URL page changes to request the next server page', async () => {
-    const view = renderRoutes(
-      '/library/search/?number=000123&paginationIndex=1',
-    )
+  it('requests the next server page when Next is used', async () => {
+    const view = renderRoutes('/projects/CAIC/search')
 
-    expect(await screen.findByText('K.51')).toBeInTheDocument()
-    expect(view.query).toHaveBeenLastCalledWith({
-      number: '000123',
-      limit: 50,
-      offset: 50,
-      count: 'page',
-    })
-
+    expect(await screen.findByText('K.1')).toBeInTheDocument()
     await userEvent.click(screen.getAllByText('Next')[0])
 
     await waitFor(() => {
       expect(screen.getByTestId('location')).toHaveTextContent(
-        'number=000123&paginationIndex=2',
+        'paginationIndex=1',
       )
     })
-    expect(await screen.findByText('K.101')).toBeInTheDocument()
+    expect(await screen.findByText('K.51')).toBeInTheDocument()
     expect(view.query).toHaveBeenLastCalledWith({
-      number: '000123',
+      project: 'CAIC',
       limit: 50,
-      offset: 100,
+      offset: 50,
+      count: 'page',
+    })
+  })
+
+  it('jumps to a requested page by offset', async () => {
+    const view = renderRoutes('/projects/RECC/search')
+
+    expect(await screen.findByText('K.1')).toBeInTheDocument()
+    await userEvent.type(screen.getAllByLabelText('Go to page')[0], '4')
+    await userEvent.click(screen.getAllByText('Go')[0])
+
+    expect(await screen.findByText('K.151')).toBeInTheDocument()
+    expect(view.query).toHaveBeenLastCalledWith({
+      project: 'RECC',
+      limit: 50,
+      offset: 150,
+      count: 'page',
+    })
+  })
+
+  it('resets to the first page when the page size changes', async () => {
+    const view = renderRoutes('/projects/AMPS/search?paginationIndex=2')
+
+    expect(await screen.findByText('K.101')).toBeInTheDocument()
+    await userEvent.selectOptions(
+      screen.getAllByLabelText('Results per page')[0],
+      '25',
+    )
+
+    await waitFor(() => {
+      expect(screen.getByTestId('location')).toHaveTextContent(
+        'paginationIndex=0',
+      )
+    })
+    expect(view.query).toHaveBeenLastCalledWith({
+      project: 'AMPS',
+      limit: 25,
+      offset: 0,
+      count: 'page',
+    })
+  })
+
+  it('paginates aluGeneva through the same bounded query', async () => {
+    const view = renderRoutes('/projects/aluGeneva/search?paginationIndex=1')
+
+    expect(await screen.findByText('K.51')).toBeInTheDocument()
+    expect(view.query).toHaveBeenCalledWith({
+      project: 'aluGeneva',
+      limit: 50,
+      offset: 50,
       count: 'page',
     })
   })

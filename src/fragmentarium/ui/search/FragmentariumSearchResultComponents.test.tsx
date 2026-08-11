@@ -9,7 +9,10 @@ import { DictionaryContext } from 'dictionary/ui/dictionary-context'
 import WordService from 'dictionary/application/WordService'
 import { fragmentFactory } from 'test-support/fragment-fixtures'
 import { Text } from 'transliteration/domain/text'
+import { TextLine } from 'transliteration/domain/text-line'
+import { lines } from 'test-support/test-fragment'
 import { FragmentLines } from './FragmentariumSearchResultComponents'
+import mockObjectUrl from 'test-support/mockObjectUrl'
 
 jest.mock('fragmentarium/application/FragmentService')
 jest.mock('dossiers/application/DossiersService')
@@ -23,12 +26,14 @@ const dossiersService = new (DossiersService as jest.Mock<
 >)()
 const wordService = new (WordService as jest.Mock<jest.Mocked<WordService>>)()
 
+mockObjectUrl('blob:url')
+
 beforeEach(() => {
   jest.clearAllMocks()
   dossiersService.queryByIds.mockResolvedValue([])
 })
 
-function renderFragmentLines(queryItem: QueryItem) {
+function renderFragmentLines(queryItem: QueryItem, linesToShow = 3) {
   return render(
     <MemoryRouter>
       <DictionaryContext.Provider value={wordService}>
@@ -36,7 +41,7 @@ function renderFragmentLines(queryItem: QueryItem) {
           fragmentService={fragmentService}
           dossiersService={dossiersService}
           queryItem={queryItem}
-          linesToShow={3}
+          linesToShow={linesToShow}
         />
       </DictionaryContext.Provider>
     </MemoryRouter>,
@@ -45,10 +50,7 @@ function renderFragmentLines(queryItem: QueryItem) {
 
 describe('FragmentLines', () => {
   it('renders summary-backed rows without hydrating them', async () => {
-    const fragment = fragmentFactory.build({
-      hasPhoto: false,
-      dossiers: [],
-    })
+    const fragment = fragmentFactory.build({ hasPhoto: false, dossiers: [] })
 
     renderFragmentLines({
       museumNumber: fragment.number,
@@ -83,12 +85,9 @@ describe('FragmentLines', () => {
     expect(screen.getByText(fragment.number)).toBeInTheDocument()
   })
 
-  it('uses summary thumbnail paths without fetching thumbnail blobs', async () => {
-    const fragment = fragmentFactory.build({
-      hasPhoto: true,
-      dossiers: [],
-    })
-    const thumbnailPath = '/images/summary-thumbnail.jpg'
+  it('resolves summary thumbnail paths without fetching thumbnail blobs', async () => {
+    const fragment = fragmentFactory.build({ hasPhoto: true, dossiers: [] })
+    const thumbnailPath = `/fragments/${fragment.number}/thumbnail/small`
 
     renderFragmentLines({
       museumNumber: fragment.number,
@@ -100,7 +99,7 @@ describe('FragmentLines', () => {
 
     expect(
       await screen.findByAltText(`Preview of ${fragment.number}`),
-    ).toHaveAttribute('src', thumbnailPath)
+    ).toHaveAttribute('src', `http://example.com${thumbnailPath}`)
     expect(fragmentService.find).not.toHaveBeenCalled()
     expect(fragmentService.findThumbnail).not.toHaveBeenCalled()
   })
@@ -119,5 +118,46 @@ describe('FragmentLines', () => {
     expect(fragmentService.find).toHaveBeenCalledWith('X.1', [1, 2, 3], false)
     expect(await screen.findByLabelText('Spinner')).toBeInTheDocument()
     expect(screen.queryByText('X.1')).not.toBeInTheDocument()
+  })
+
+  it('fetches and renders a thumbnail for a hydrated fragment with a photo', async () => {
+    const fragment = fragmentFactory.build({ hasPhoto: true, dossiers: [] })
+    fragmentService.find.mockResolvedValueOnce(fragment)
+    fragmentService.findThumbnail.mockResolvedValueOnce({
+      blob: new Blob([''], { type: 'image/jpeg' }),
+    })
+
+    renderFragmentLines({
+      museumNumber: fragment.number,
+      matchingLines: [1, 2, 3],
+      matchCount: 3,
+    })
+
+    expect(
+      await screen.findByAltText(`Preview of ${fragment.number}`),
+    ).toBeInTheDocument()
+  })
+
+  it('counts remaining summary lines from rows actually rendered', () => {
+    const fragment = fragmentFactory.build({
+      hasPhoto: false,
+      dossiers: [],
+      text: new Text({
+        lines: [new TextLine(lines[0]), new TextLine(lines[1])],
+      }),
+    })
+
+    renderFragmentLines(
+      {
+        museumNumber: fragment.number,
+        matchingLines: [1, 2],
+        matchCount: 7,
+        fragment,
+        thumbnailPath: null,
+      },
+      5,
+    )
+
+    expect(screen.getByText('And 5 more')).toBeInTheDocument()
   })
 })
