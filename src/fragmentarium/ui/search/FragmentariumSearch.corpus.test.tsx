@@ -4,7 +4,7 @@ import {
   createFragmentariumSearchHarness,
   queryResult,
   FragmentariumSearchHarness,
-} from './FragmentariumSearch.testSupport'
+} from './FragmentariumSearch.test-support'
 
 let harness: FragmentariumSearchHarness
 

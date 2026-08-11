@@ -7,7 +7,7 @@ import { QueryResult } from 'query/QueryResult'
 import {
   buildQueryResult,
   renderSearchResult,
-} from './FragmentariumSearchResult.testSupport'
+} from './FragmentariumSearchResult.test-support'
 
 function LocationDisplay(): JSX.Element {
   const location = useLocation()
