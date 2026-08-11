@@ -102,7 +102,6 @@ const CuneiformFragment: FunctionComponent<CuneiformFragmentProps> = ({
           <Col xs={12} md={5}>
             {withErrorBoundary(
               <Images
-                key={fragment.number}
                 fragment={fragment}
                 fragmentService={fragmentService}
                 activeFolio={activeFolio}

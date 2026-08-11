@@ -11,8 +11,6 @@ export type FragmentQuery = Partial<{
   lemmas: string
   lemmaOperator: QueryType
   limit: number
-  offset: number
-  count: 'exact' | 'page' | 'none'
   number: string
   pages: string
   transliteration: string
@@ -27,8 +25,3 @@ export type FragmentQuery = Partial<{
   latest: boolean
   dossier: string
 }>
-
-export type FragmentSearchCriteria = Omit<
-  FragmentQuery,
-  'limit' | 'offset' | 'count'
->

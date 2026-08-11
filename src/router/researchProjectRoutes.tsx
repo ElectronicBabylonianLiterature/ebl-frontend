@@ -1,4 +1,5 @@
 import React, { ReactNode } from 'react'
+import { parse } from 'query-string'
 import { Route, Redirect } from 'router/compat'
 import { sitemapDefaults } from 'router/sitemapConfig'
 import { HeadTagsService } from 'router/head'
@@ -15,10 +16,6 @@ import ReccHome from 'research-projects/subpages/recc/Home'
 import AluGenevaHome from 'research-projects/subpages/aluGeneva/Home'
 import ResearchProjectSearch from 'research-projects/subpages/ResearchProjectSearch'
 import NotFoundPage from 'NotFoundPage'
-import {
-  parseSearchCriteria,
-  parseSearchPagination,
-} from 'fragmentarium/ui/search/pagination'
 
 export default function ResearchProjectRoutes({
   sitemap,
@@ -102,10 +99,9 @@ export default function ResearchProjectRoutes({
             bibliographyService={bibliographyService}
             dossiersService={dossiersService}
             fragmentQuery={{
-              ...parseSearchCriteria(location.search),
+              ...parse(location.search),
               project: project.abbreviation as keyof typeof ResearchProjects,
             }}
-            pagination={parseSearchPagination(location.search)}
             project={project}
           />
         </HeadTagsService>

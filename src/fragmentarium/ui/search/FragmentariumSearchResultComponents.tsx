@@ -5,7 +5,7 @@ import FragmentService, {
 } from 'fragmentarium/application/FragmentService'
 import withData from 'http/withData'
 import { QueryItem } from 'query/QueryResult'
-import { Col, Container, Row } from 'react-bootstrap'
+import { Col, Container, Image, Row } from 'react-bootstrap'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import { RenderFragmentLines } from 'dictionary/ui/search/FragmentLemmaLines'
 import FragmentLink, { createFragmentUrl } from '../FragmentLink'
@@ -21,8 +21,6 @@ import { ThumbnailImage } from 'common/ui/BlobImage'
 import DossiersService from 'dossiers/application/DossiersService'
 import useNearViewport from 'common/hooks/useNearViewport'
 import FragmentDossierRecordsDisplay from 'dossiers/ui/DossiersDisplay'
-import SummaryThumbnail from 'fragmentarium/ui/search/SummaryThumbnail'
-import { hasRenderReadyFragment } from 'query/queryItemRenderReady'
 
 function GenresDisplay({ genres }: { genres: Genres }): JSX.Element {
   return (
@@ -58,6 +56,33 @@ const FragmentThumbnail = withData<
     fragmentService.findThumbnail(fragment, 'small'),
 )
 
+function SummaryThumbnail({
+  fragmentNumber,
+  thumbnailPath,
+}: {
+  fragmentNumber: string
+  thumbnailPath: string | null
+}): JSX.Element {
+  const [isBroken, setIsBroken] = React.useState(false)
+
+  if (!thumbnailPath || isBroken) {
+    return <></>
+  }
+
+  return (
+    <a href={createFragmentUrl(fragmentNumber)}>
+      <Image
+        src={thumbnailPath}
+        alt={`Preview of ${fragmentNumber}`}
+        fluid
+        loading="lazy"
+        decoding="async"
+        onError={() => setIsBroken(true)}
+      />
+    </a>
+  )
+}
+
 function TransliterationRecord({
   record,
   className,
@@ -88,6 +113,12 @@ type FragmentLinesProps = {
   fragmentService: FragmentService
   dossiersService: DossiersService
   active?: number
+}
+
+function hasRenderReadyFragment(
+  queryItem: QueryItem,
+): queryItem is QueryItem & { fragment: Fragment } {
+  return Boolean(queryItem.fragment)
 }
 
 function FragmentLinesContent({
@@ -164,7 +195,7 @@ function FragmentLinesContent({
           <RenderFragmentLines
             fragment={fragment}
             linesToShow={linesToShow}
-            totalLines={queryItem.matchCount}
+            totalLines={queryItem.matchingLines.length}
             lemmaIds={queryLemmas}
           />
         </ResponsiveCol>
@@ -219,9 +250,7 @@ const HydratedFragmentLines = withData<
 )
 
 export function FragmentLines(props: FragmentLinesProps): JSX.Element {
-  return hasRenderReadyFragment(props.queryItem, {
-    includeLatestRecord: props.includeLatestRecord,
-  }) ? (
+  return hasRenderReadyFragment(props.queryItem) ? (
     <FragmentLinesContent fragment={props.queryItem.fragment} {...props} />
   ) : (
     <HydratedFragmentLines {...props} />

@@ -2,7 +2,6 @@ import React from 'react'
 import Promise from 'bluebird'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import Record from 'fragmentarium/ui/info/Record'
-import { CANONICAL_ORIGIN } from 'router/domain'
 import {
   Document,
   HeadingLevel,
@@ -172,8 +171,8 @@ function getMainTableWithFootnotes(
 function getHyperLink(fragment: Fragment) {
   return {
     headLink: {
-      link: `${CANONICAL_ORIGIN}/library/${fragment.number}`,
-      text: `${CANONICAL_ORIGIN}/library/${fragment.number}`,
+      link: 'https://www.ebl.lmu.de/library/' + fragment.number,
+      text: 'https://www.ebl.lmu.de/library/' + fragment.number,
       type: HyperlinkType.EXTERNAL,
     },
   }

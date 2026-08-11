@@ -1,35 +1,31 @@
 import React from 'react'
-import { Button, Form, Pagination } from 'react-bootstrap'
+import { Pagination } from 'react-bootstrap'
 import { useLocation } from 'react-router-dom'
 import { useHistory } from 'router/compat'
-import {
-  RESULT_PAGE_SIZES,
-  updatePageSizeSearchParam,
-  updatePaginationSearchParam,
-} from './pagination'
+import _ from 'lodash'
+import { updatePaginationSearchParam } from './pagination'
 
-function PaginationControl({
+const NEIGHBOURING_PAGINATION_ITEMS = 3
+
+function PaginationItem({
   paginationURLParam,
+  active,
   index,
-  disabled,
-  children,
+  setActivePage,
 }: {
   paginationURLParam: string
+  active: boolean
   index: number
-  disabled: boolean
-  children: React.ReactNode
+  setActivePage: (number: number) => void
 }) {
   const location = useLocation()
   const history = useHistory()
   return (
     <Pagination.Item
-      disabled={disabled}
+      active={active}
       onClick={(event) => {
         event.preventDefault()
-        if (disabled) {
-          return
-        }
-
+        setActivePage(index)
         history.push({
           search: updatePaginationSearchParam(
             location.search,
@@ -39,100 +35,87 @@ function PaginationControl({
         })
       }}
     >
-      {children}
+      {index + 1}
     </Pagination.Item>
   )
 }
 
+type PaginationItemElement = { component: () => JSX.Element; index: number }
+
+function createItems(
+  start,
+  end,
+  activePage,
+  setActivePage: (number: number) => void,
+  paginationURLParam: string,
+): readonly PaginationItemElement[] {
+  return _.range(start, end + 1).map((index) => ({
+    index: index,
+    component: () => (
+      <PaginationItem
+        paginationURLParam={paginationURLParam}
+        setActivePage={setActivePage}
+        index={index}
+        key={index}
+        active={index === activePage}
+      />
+    ),
+  }))
+}
+
 export default function PaginationItems({
   activePage,
-  pageSize,
-  hasNextPage,
+  lastPage,
+  setActivePage,
   paginationURLParam,
 }: {
   activePage: number
-  pageSize: number
   paginationURLParam: string
-  hasNextPage: boolean
+  lastPage: number
+  setActivePage: (number: number) => void
 }): JSX.Element {
-  const location = useLocation()
-  const history = useHistory()
-  const [pageJump, setPageJump] = React.useState('')
-  const goToPage = (event: React.FormEvent): void => {
-    event.preventDefault()
-    const pageNumber = Number(pageJump)
-
-    if (!Number.isInteger(pageNumber) || pageNumber < 1) {
-      return
-    }
-
-    const index = pageNumber - 1
-
-    if (index === activePage) {
-      return
-    }
-
-    history.push({
-      search: updatePaginationSearchParam(
-        location.search,
-        paginationURLParam,
-        index,
-      ),
-    })
-  }
-
-  return (
-    <div className="d-flex align-items-center gap-2 flex-wrap">
-      <Form.Select
-        aria-label="Results per page"
-        size="sm"
-        value={pageSize}
-        onChange={(event) => {
-          history.push({
-            search: updatePageSizeSearchParam(
-              location.search,
-              Number(event.currentTarget.value),
-            ),
-          })
-        }}
-      >
-        {RESULT_PAGE_SIZES.map((size) => (
-          <option key={size} value={size}>
-            {size}
-          </option>
-        ))}
-      </Form.Select>
-      <Pagination>
-        <PaginationControl
-          paginationURLParam={paginationURLParam}
-          index={activePage - 1}
-          disabled={activePage === 0}
-        >
-          Previous
-        </PaginationControl>
-        <Pagination.Item active>Page {activePage + 1}</Pagination.Item>
-        <PaginationControl
-          paginationURLParam={paginationURLParam}
-          index={activePage + 1}
-          disabled={!hasNextPage}
-        >
-          Next
-        </PaginationControl>
-      </Pagination>
-      <Form className="d-flex gap-2" onSubmit={goToPage}>
-        <Form.Control
-          aria-label="Go to page"
-          min={1}
-          onChange={(event) => setPageJump(event.currentTarget.value)}
-          placeholder="Page"
-          size="sm"
-          type="number"
-          value={pageJump}
-        />
-        <Button size="sm" type="submit" variant="outline-secondary">
-          Go
-        </Button>
-      </Form>
-    </div>
+  const start = Math.max(0, activePage - NEIGHBOURING_PAGINATION_ITEMS)
+  const end = Math.min(activePage + NEIGHBOURING_PAGINATION_ITEMS, lastPage)
+  const items = createItems(
+    start,
+    end,
+    activePage,
+    setActivePage,
+    paginationURLParam,
   )
+
+  const generatePaginationItem = (index) => (
+    <PaginationItem
+      paginationURLParam={paginationURLParam}
+      setActivePage={setActivePage}
+      index={index}
+      key={index}
+      active={index === activePage}
+    />
+  )
+  const first = generatePaginationItem(0)
+  const second = generatePaginationItem(1)
+  const nextToLast = generatePaginationItem(lastPage - 1)
+  const last = generatePaginationItem(lastPage)
+  const ellipsis1 = <Pagination.Ellipsis key={lastPage + 100} />
+  const ellipsis2 = <Pagination.Ellipsis key={lastPage + 200} />
+
+  let paginationItems: JSX.Element[] = []
+  const mostLeft = items[0].index
+  const mostRight = items[items.length - 1].index
+
+  mostLeft > 0 && paginationItems.push(first)
+  mostLeft === 2 && paginationItems.push(second)
+  mostLeft > 2 && paginationItems.push(ellipsis1)
+
+  paginationItems = [
+    ...paginationItems,
+    ...items.map((item) => item.component()),
+  ]
+
+  mostRight < lastPage - 2 && paginationItems.push(ellipsis2)
+  mostRight === lastPage - 2 && paginationItems.push(nextToLast)
+  mostRight < lastPage && paginationItems.push(last)
+
+  return <Pagination>{paginationItems}</Pagination>
 }

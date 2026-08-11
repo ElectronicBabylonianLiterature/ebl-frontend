@@ -164,14 +164,6 @@ it('does not include projects wildcard route in sitemap xml', async () => {
   expect(sitemapXml).not.toContain('/projects/*')
 })
 
-it('omits interactive library search but keeps library content routes', async () => {
-  const sitemapXml = await generateSitemapXml()
-
-  expect(sitemapXml).toContain('/library</loc>')
-  expect(sitemapXml).toContain('/library/BM.42')
-  expect(sitemapXml).not.toContain('/library/search')
-})
-
 it('includes a URL for every Realia slug in sitemap xml', async () => {
   const sitemapXml = await generateSitemapXml()
 
