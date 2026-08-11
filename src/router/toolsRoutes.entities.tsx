@@ -4,6 +4,7 @@ import {
   sitemapDefaults,
   type BibliographySlugs,
   type DictionarySlugs,
+  type RealiaSlugs,
   type SignSlugs,
 } from 'router/sitemapConfig'
 import { HeadTagsService } from 'router/head'
@@ -55,6 +56,7 @@ export function getEntityRoutes({
   signSlugs,
   dictionarySlugs,
   bibliographySlugs,
+  realiaSlugs,
 }: {
   sitemap: boolean
   signService: SignService
@@ -66,6 +68,7 @@ export function getEntityRoutes({
   signSlugs?: SignSlugs
   dictionarySlugs?: DictionarySlugs
   bibliographySlugs?: BibliographySlugs
+  realiaSlugs?: RealiaSlugs
 }): JSX.Element[] {
   return [
     <Route
@@ -83,6 +86,10 @@ export function getEntityRoutes({
           </HeadTagsService>
         )
       }}
+      {...(sitemap && {
+        ...sitemapDefaults,
+        slugs: realiaSlugs,
+      })}
     />,
     <Route
       key="tools-sign-display"

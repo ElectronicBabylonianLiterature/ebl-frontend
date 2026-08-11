@@ -1,12 +1,11 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
 import {
   AfoRegisterEntry,
   AfoRegisterVolumeGroup,
   afoCrossReferenceCitation,
   formatAfoRegisterVolumeTitle,
-  realiaCrossReferenceTarget,
 } from 'realia/domain/RealiaEntry'
+import { RealiaCrossReferenceLink } from 'realia/ui/RealiaCrossReferenceLink'
 import { afoVolumeId } from 'realia/ui/realiaSections'
 
 function afoEntryHasVisibleContent(
@@ -39,13 +38,10 @@ function AfoEntryCrossReference({
       {afoEntry.crossReferences.map((crossReference, index) => (
         <React.Fragment key={`${crossReference.id}-${index}`}>
           {index > 0 && ', '}
-          <Link
-            to={`/tools/realia/${encodeURIComponent(
-              realiaCrossReferenceTarget(crossReference),
-            )}${volumeAnchor}`}
-          >
-            {crossReference.lemma}
-          </Link>
+          <RealiaCrossReferenceLink
+            crossReference={crossReference}
+            anchor={volumeAnchor}
+          />
         </React.Fragment>
       ))}
       {citation && (

@@ -1,148 +1,14 @@
-import React from 'react'
-import { MemoryRouter } from 'react-router-dom'
-import {
-  fireEvent,
-  render,
-  screen,
-  waitFor,
-  within,
-} from '@testing-library/react'
+import { fireEvent, screen, waitFor, within } from '@testing-library/react'
 import { Promise } from 'bluebird'
 import _ from 'lodash'
 import { submitFormByTestId, clickNth } from 'test-support/utils'
-import SessionContext from 'auth/SessionContext'
-import CuneiformFragment from './CuneiformFragment'
-import Lemmatization from 'transliteration/domain/Lemmatization'
-import WordService from 'dictionary/application/WordService'
-import FragmentService from 'fragmentarium/application/FragmentService'
-import FragmentSearchService from 'fragmentarium/application/FragmentSearchService'
-import MemorySession, { Session } from 'auth/Session'
-import { referenceFactory } from 'test-support/bibliography-fixtures'
-import { fragmentFactory } from 'test-support/fragment-fixtures'
-import { folioPagerFactory } from 'test-support/fragment-data-fixtures'
-import { Fragment } from 'fragmentarium/domain/fragment'
-import { FindspotService } from 'fragmentarium/application/FindspotService'
-import AfoRegisterService from 'afo-register/application/AfoRegisterService'
-import DossiersService from 'dossiers/application/DossiersService'
-import ResizeObserver from 'resize-observer-polyfill'
-
-jest.mock('dictionary/application/WordService')
-jest.mock('fragmentarium/application/FindspotService')
-jest.mock('fragmentarium/application/FragmentService')
-jest.mock('fragmentarium/application/FragmentSearchService')
-jest.mock('afo-register/application/AfoRegisterService')
-jest.mock('auth/Session')
-
-global.ResizeObserver = ResizeObserver
-let fragment: Fragment
-let container: HTMLElement
-let fragmentService: jest.Mocked<FragmentService>
-let fragmentSearchService: jest.Mocked<FragmentSearchService>
-let wordService: jest.Mocked<WordService>
-let findspotService: jest.Mocked<FindspotService>
-let afoRegisterService: jest.Mocked<AfoRegisterService>
-let dossiersService: jest.Mocked<DossiersService>
-let session: jest.Mocked<Session>
-let updatedFragment: Fragment
-
-const setup = async () => {
-  const folioPager = folioPagerFactory.build()
-  const references = referenceFactory.buildList(2)
-  wordService = new (WordService as jest.Mock<jest.Mocked<WordService>>)()
-  fragment = fragmentFactory
-    .build({
-      atf: '1. ku',
-      hasPhoto: true,
-      collection: 'Sippar',
-    })
-    .setReferences(referenceFactory.buildList(2))
-  updatedFragment = fragmentFactory
-    .build({
-      number: fragment.number,
-      atf: fragment.atf,
-      date: {
-        year: { value: '3' },
-        month: { value: '3' },
-        day: { value: '3' },
-        isSeleucidEra: true,
-      },
-      datesInText: [
-        {
-          year: { value: '2' },
-          month: { value: '2' },
-          day: { value: '2' },
-          isSeleucidEra: true,
-        },
-      ],
-    })
-    .setReferences(references)
-  fragmentService = new (FragmentService as jest.Mock<
-    jest.Mocked<FragmentService>
-  >)()
-  fragmentService.createLemmatization.mockImplementation((text) =>
-    Promise.resolve(new Lemmatization([], [])),
-  )
-  fragmentService.findInCorpus.mockReturnValue(
-    Promise.resolve({
-      manuscriptAttestations: [],
-      uncertainFragmentAttestations: [],
-    }),
-  )
-  fragmentSearchService = new (FragmentSearchService as jest.Mock<
-    jest.Mocked<FragmentSearchService>
-  >)()
-  findspotService = new (FindspotService as jest.Mock<
-    jest.Mocked<FindspotService>
-  >)()
-  afoRegisterService = new (AfoRegisterService as jest.Mock<
-    jest.Mocked<AfoRegisterService>
-  >)()
-  dossiersService = new (DossiersService as jest.Mock<
-    jest.Mocked<DossiersService>
-  >)()
-  session = new (MemorySession as jest.Mock<jest.Mocked<MemorySession>>)()
-
-  session.isAllowedToTransliterateFragments.mockReturnValue(true)
-  session.isAllowedToLemmatizeFragments.mockReturnValue(false)
-  session.hasBetaAccess.mockReturnValue(false)
-  ;(URL.createObjectURL as jest.Mock).mockReturnValue('url')
-  fragmentService.findFolio.mockReturnValue(
-    Promise.resolve(new Blob([''], { type: 'image/jpeg' })),
-  )
-  fragmentService.findPhoto.mockReturnValue(
-    Promise.resolve(new Blob([''], { type: 'image/jpeg' })),
-  )
-  fragmentService.folioPager.mockReturnValue(Promise.resolve(folioPager))
-  fragmentService.fetchGenres.mockReturnValue(
-    Promise.resolve([['ARCHIVAL'], ['ARCHIVAL', 'Administrative']]),
-  )
-  fragmentService.fetchPeriods.mockReturnValue(Promise.resolve([]))
-  fragmentService.updateGenres.mockReturnValue(Promise.resolve(fragment))
-  fragmentService.updateDate.mockReturnValue(Promise.resolve(fragment))
-  fragmentService.updateDatesInText.mockReturnValue(Promise.resolve(fragment))
-  container = render(
-    <MemoryRouter>
-      <SessionContext.Provider value={session}>
-        <CuneiformFragment
-          fragment={fragment}
-          fragmentService={fragmentService}
-          fragmentSearchService={fragmentSearchService}
-          wordService={wordService}
-          findspotService={findspotService}
-          afoRegisterService={afoRegisterService}
-          dossiersService={dossiersService}
-          activeLine=""
-        />
-      </SessionContext.Provider>
-    </MemoryRouter>,
-  ).container
-  await screen.findAllByText('Photo')
-}
-
-test.each(['collection', 'accession'])('Renders %s', async (property) => {
-  await setup()
-  expect(container).toHaveTextContent(fragment[property])
-})
+import {
+  container,
+  fragment,
+  fragmentService,
+  setup,
+  updatedFragment,
+} from 'fragmentarium/ui/fragment/cuneiformFragment.testSupport'
 
 it('Renders CDLI number', async () => {
   await setup()
@@ -270,5 +136,28 @@ it('Calls `updateDatesInText` on Dates in text save', async () => {
   fireEvent.click(saveButton)
   await waitFor(() =>
     expect(fragmentService.updateDatesInText).toHaveBeenCalledTimes(1),
+  )
+})
+
+it('Shows the error and stops saving when a save fails', async () => {
+  await setup()
+  fragmentService.updateEdition.mockReturnValueOnce(
+    Promise.reject(new Error('Save failed.')),
+  )
+
+  submitFormByTestId(screen, 'transliteration-form')
+
+  await screen.findByText('Save failed.')
+  expect(screen.queryByText('Saving...')).not.toBeInTheDocument()
+})
+
+it('Collapses the image column when the editor asks for the space', async () => {
+  await setup()
+  expect(screen.getAllByText('Photo').length).toBeGreaterThan(0)
+
+  fireEvent.click(screen.getByRole('button', { name: 'Hide Image Column' }))
+
+  await waitFor(() =>
+    expect(screen.queryByText('Photo')).not.toBeInTheDocument(),
   )
 })

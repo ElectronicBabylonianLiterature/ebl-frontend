@@ -1,4 +1,5 @@
 import React, { useState, FunctionComponent } from 'react'
+import Bluebird from 'bluebird'
 import { Container, Row, Col } from 'react-bootstrap'
 import FragmentInCorpus from 'fragmentarium/ui/fragment/FragmentInCorpus'
 import Images from 'fragmentarium/ui/images/Images'
@@ -28,7 +29,7 @@ type CuneiformFragmentProps = {
   findspotService: FindspotService
   activeFolio: Folio | null
   tab: string | null
-  onSave: (updatedFragment: Promise<Fragment>) => void
+  onSave: (updatedFragment: Bluebird<Fragment>) => Bluebird<Fragment>
   saving: boolean
   error: Error | null
   activeLine: string
