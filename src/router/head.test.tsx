@@ -3,9 +3,17 @@ import { render } from '@testing-library/react'
 import { HelmetProvider } from 'react-helmet-async'
 import { helmetContext, HeadTags, HeadTagsService } from 'router/head'
 
-HelmetProvider.canUseDOM = false
+const originalCanUseDOM = HelmetProvider.canUseDOM
 
-it('should render all metadata', () => {
+beforeAll(() => {
+  HelmetProvider.canUseDOM = false
+})
+
+afterAll(() => {
+  HelmetProvider.canUseDOM = originalCanUseDOM
+})
+
+it('should render all metadata through HeadTags', () => {
   render(
     <HelmetProvider context={helmetContext}>
       <HeadTags title={'title'} description={''} />
@@ -19,7 +27,7 @@ it('should render all metadata', () => {
   )
 })
 
-it('should render all metadata', () => {
+it('should render all metadata through HeadTagsService', () => {
   render(
     <HelmetProvider context={helmetContext}>
       <HeadTagsService title={'title'} description={''}></HeadTagsService>

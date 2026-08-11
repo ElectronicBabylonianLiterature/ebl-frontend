@@ -18,9 +18,12 @@ export default function SummaryThumbnail({
     return <></>
   }
 
+  const thumbnailUrl = /^https?:\/\//i.test(thumbnailPath)
+    ? thumbnailPath
+    : apiUrl(thumbnailPath)
   const image = (
     <Image
-      src={apiUrl(thumbnailPath)}
+      src={thumbnailUrl}
       alt={`Preview of ${fragmentNumber}`}
       fluid
       loading="lazy"

@@ -91,8 +91,9 @@ export const SearchResult = withData<
     pagination: { pageIndex, pageSize },
   }): JSX.Element => {
     const visibleItems = data.items.slice(0, pageSize)
-    const effectiveHasNextPage =
-      data.hasNextPage ?? data.items.length > pageSize
+    const effectiveHasNextPage = isLineQuery(fragmentQuery)
+      ? data.items.length > pageSize
+      : (data.hasNextPage ?? data.items.length > pageSize)
     const fragmentCount = visibleItems.length
     const offset = pageIndex * pageSize
     const hasLineCount = typeof data.matchCountTotal === 'number'

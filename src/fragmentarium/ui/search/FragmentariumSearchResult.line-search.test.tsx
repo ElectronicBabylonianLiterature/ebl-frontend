@@ -58,7 +58,7 @@ describe('FragmentariumSearchResult line-search counts', () => {
     expect(screen.getAllByRole('listitem')[2]).not.toHaveClass('disabled')
   })
 
-  it('honors explicit false backend pagination metadata for line searches', async () => {
+  it('prefers the overfetched item when backend pagination metadata is false', async () => {
     renderSearchResult({
       queryResult: {
         ...buildQueryResult({ items: 51, matchCountTotal: 90 }),
@@ -71,7 +71,7 @@ describe('FragmentariumSearchResult line-search counts', () => {
 
     expect(await screen.findByText('K.1')).toBeInTheDocument()
     expect(screen.queryByText('K.51')).not.toBeInTheDocument()
-    expect(screen.getAllByRole('listitem')[2]).toHaveClass('disabled')
+    expect(screen.getAllByRole('listitem')[2]).not.toHaveClass('disabled')
   })
 
   it('shows singular approximate line totals on later pages', async () => {

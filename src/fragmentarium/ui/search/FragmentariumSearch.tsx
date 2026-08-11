@@ -35,6 +35,7 @@ type Props = Pick<
 export const linesToShow = 5
 
 function hasNonDefaultValues(query: FragmentQuery | CorpusQuery) {
+  // Corpus queries may still contain transport pagination fields.
   return !_(query)
     .omit('lemmaOperator')
     .omit('limit')

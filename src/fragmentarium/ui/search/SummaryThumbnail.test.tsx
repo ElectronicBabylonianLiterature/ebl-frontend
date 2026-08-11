@@ -33,6 +33,16 @@ test('resolves an API-relative thumbnail path against the API base URL', () => {
   )
 })
 
+test('leaves an absolute thumbnail URL unchanged', () => {
+  const thumbnailUrl = 'https://images.example.org/K.1/small.jpg'
+  renderThumbnail(thumbnailUrl)
+
+  expect(screen.getByAltText(`Preview of ${fragmentNumber}`)).toHaveAttribute(
+    'src',
+    thumbnailUrl,
+  )
+})
+
 test('hides the image after it fails to load', () => {
   renderThumbnail(`/fragments/${fragmentNumber}/thumbnail/small`)
 

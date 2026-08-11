@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useEffect, useRef } from 'react'
 import Promise from 'bluebird'
 import Spinner from 'common/ui/Spinner'
 import ErrorAlert from 'common/errors/ErrorAlert'
@@ -30,9 +30,9 @@ export default function withData<PROPS, GETTER_PROPS, DATA>(
     ...config,
   }
   return function ComponentWithData(props: PROPS & GETTER_PROPS): JSX.Element {
-    const [data, setData] = useState<DATA | null>(null)
-    const [error, setError] = useState<Error | null>(null)
-    const [retryCount, setRetryCount] = useState(0)
+    const [data, setData] = React.useState<DATA | null>(null)
+    const [error, setError] = React.useState<Error | null>(null)
+    const [retryCount, setRetryCount] = React.useState(0)
     const requestSequence = useRef(0)
 
     useEffect(
