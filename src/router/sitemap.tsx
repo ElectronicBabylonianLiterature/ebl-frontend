@@ -27,7 +27,8 @@ import {
   type RouteModuleProps,
 } from 'router/websiteRouteGroups'
 import IntroductionRoute from 'router/introductionRoute'
-import { CANONICAL_DOMAIN } from 'router/domain'
+
+const DOMAIN = 'www.ebl.lmu.de'
 
 const lazyWebsiteRouteModules: Record<LazyWebsiteRouteGroup, RouteModule> = {
   tools: ToolsRoutes,
@@ -97,9 +98,7 @@ function mapArchiveDownloadSitemap(xmlStrings: string[]): void {
     'sitemap.xml.gz',
   )
   xmlStrings.forEach((xmlString, index) => {
-    const archive = pako.gzip(
-      xmlString.replaceAll('localhost', CANONICAL_DOMAIN),
-    )
+    const archive = pako.gzip(xmlString.replaceAll('localhost', DOMAIN))
     const archiveBlob = new Blob([archive], {
       type: 'application/gzip',
     })
@@ -113,7 +112,7 @@ function getSitemapIndex(filenames: string[]): string {
       ${filenames
         .map(
           (filename) => `<sitemap>
-          <loc>https://${CANONICAL_DOMAIN}/sitemap/${filename}</loc>
+          <loc>https://${DOMAIN}/sitemap/${filename}</loc>
           <lastmod>${new Date().toISOString()}</lastmod>
         </sitemap>`,
         )

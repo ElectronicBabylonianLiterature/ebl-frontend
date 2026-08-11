@@ -4,7 +4,6 @@ import { Helmet } from 'react-helmet-async'
 interface RouteAndHeadProps {
   title: string
   description: string
-  canonicalUrl?: string
 }
 
 export const helmetContext = {}
@@ -12,11 +11,9 @@ export const helmetContext = {}
 export function HeadTags({
   title = 'electronic Babylonian Library',
   description = 'The electronic Babylonian Library (eBL) Project brings together ancient Near Eastern specialists and data scientists to revolutionize the way in which the literature of Iraq in the first millennium BCE is reconstructed and analyzed.',
-  canonicalUrl,
 }: {
   title: string
   description: string
-  canonicalUrl?: string
 }): JSX.Element {
   return (
     <Helmet>
@@ -26,7 +23,6 @@ export function HeadTags({
       <meta property="og:description" content={description} />
       <meta name="twitter:title" content={title} />
       <meta name="twitter:description" content={description} />
-      {canonicalUrl && <link rel="canonical" href={canonicalUrl} />}
     </Helmet>
   )
 }
@@ -34,16 +30,11 @@ export function HeadTags({
 export function HeadTagsService({
   title,
   description,
-  canonicalUrl,
   children,
 }: PropsWithChildren<RouteAndHeadProps>): JSX.Element {
   return (
     <>
-      <HeadTags
-        title={title}
-        description={description}
-        canonicalUrl={canonicalUrl}
-      />
+      <HeadTags title={title} description={description} />
       {children}
     </>
   )

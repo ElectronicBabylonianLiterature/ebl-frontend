@@ -1,5 +1,4 @@
 import React from 'react'
-import { CANONICAL_ORIGIN } from 'router/domain'
 import {
   DictionaryLineDisplay,
   LineVariantDisplay,
@@ -32,7 +31,7 @@ function createCorpusChapterUrl(
     name,
   ]
 
-  return `${CANONICAL_ORIGIN}/corpus/${urlParts
+  return `https://www.ebl.lmu.de/corpus/${urlParts
     .map(encodeURIComponent)
     .join('/')}`
 }

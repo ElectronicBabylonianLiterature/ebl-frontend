@@ -1,6 +1,6 @@
 import React from 'react'
 import withData from 'http/withData'
-import { QueryItem, QueryResult } from 'query/QueryResult'
+import { QueryResult } from 'query/QueryResult'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import { highlightLemmas, LineColumns } from 'transliteration/ui/line-tokens'
@@ -13,10 +13,8 @@ import { TextLine } from 'transliteration/domain/text-line'
 import { Col, Row } from 'react-bootstrap'
 import LemmaQueryLink from '../display/LemmaQueryLink'
 import { LemmaPopover } from 'transliteration/ui/WordInfo'
-import { hasRenderReadyFragment } from 'query/queryItemRenderReady'
 
-export const FRAGMENT_LINES_TO_SHOW = 3
-export const FRAGMENT_EXAMPLE_LIMIT = 10
+const linesToShow = 3
 
 export function RenderFragmentLines({
   fragment,
@@ -27,19 +25,16 @@ export function RenderFragmentLines({
   fragment: Fragment
   lemmaIds?: readonly string[]
   linesToShow: number
-  totalLines?: number
+  totalLines: number
 }): JSX.Element {
-  const matchingLines = fragment.text.lines.filter(
+  const lines = fragment.text.lines.filter(
     (line) => line.type === 'TextLine',
   ) as TextLine[]
-  const visibleLines = matchingLines.slice(0, linesToShow)
-  const authoritativeTotal = totalLines ?? matchingLines.length
-  const remainingLines = Math.max(authoritativeTotal - visibleLines.length, 0)
 
   return (
     <table>
       <tbody>
-        {visibleLines.map((line, index) => {
+        {lines.map((line, index) => {
           const columns = [
             {
               span: 1,
@@ -63,10 +58,10 @@ export function RenderFragmentLines({
             </tr>
           )
         })}
-        {remainingLines > 0 && (
+        {totalLines > linesToShow && (
           <tr>
             <td></td>
-            <td>And {remainingLines} more</td>
+            <td>And {totalLines - linesToShow} more</td>
           </tr>
         )}
       </tbody>
@@ -85,7 +80,7 @@ const FragmentLines = withData<
   ({ data: fragment, lemmaId, lineIndexes }): JSX.Element => (
     <RenderFragmentLines
       fragment={fragment}
-      linesToShow={FRAGMENT_LINES_TO_SHOW}
+      linesToShow={linesToShow}
       totalLines={lineIndexes.length}
       lemmaIds={[lemmaId]}
     />
@@ -93,41 +88,9 @@ const FragmentLines = withData<
   (props) =>
     props.fragmentService.find(
       props.museumNumber,
-      _.take(props.lineIndexes, FRAGMENT_LINES_TO_SHOW),
+      _.take(props.lineIndexes, linesToShow),
     ),
-  {
-    watch: ({ museumNumber, lineIndexes }) => [
-      museumNumber,
-      lineIndexes.join(','),
-    ],
-  },
 )
-
-function QueryItemFragmentLines({
-  queryItem,
-  fragmentService,
-  lemmaId,
-}: {
-  queryItem: QueryItem
-  fragmentService: FragmentService
-  lemmaId: string
-}): JSX.Element {
-  return hasRenderReadyFragment(queryItem) ? (
-    <RenderFragmentLines
-      fragment={queryItem.fragment}
-      linesToShow={FRAGMENT_LINES_TO_SHOW}
-      totalLines={queryItem.matchCount}
-      lemmaIds={[lemmaId]}
-    />
-  ) : (
-    <FragmentLines
-      lineIndexes={queryItem.matchingLines}
-      museumNumber={queryItem.museumNumber}
-      fragmentService={fragmentService}
-      lemmaId={lemmaId}
-    />
-  )
-}
 
 function FragmentLemmaLines({
   queryResult,
@@ -140,26 +103,26 @@ function FragmentLemmaLines({
 }): JSX.Element {
   return (
     <>
-      {_.take(queryResult.items, FRAGMENT_EXAMPLE_LIMIT).map(
-        (queryItem, index) => {
-          return (
-            <Row key={index}>
-              <Col xs={1}>
-                <FragmentLink number={queryItem.museumNumber}>
-                  {queryItem.museumNumber}
-                </FragmentLink>
-              </Col>
-              <Col className={'fragmentlines-column'}>
-                <QueryItemFragmentLines
-                  queryItem={queryItem}
-                  fragmentService={fragmentService}
-                  lemmaId={lemmaId}
-                />
-              </Col>
-            </Row>
-          )
-        },
-      )}
+      {_.take(queryResult.items, 10).map((queryItem, index) => {
+        return (
+          <Row key={index}>
+            <Col xs={1}>
+              <FragmentLink number={queryItem.museumNumber}>
+                {queryItem.museumNumber}
+              </FragmentLink>
+            </Col>
+            <Col className={'fragmentlines-column'}>
+              <FragmentLines
+                lineIndexes={queryItem.matchingLines}
+                museumNumber={queryItem.museumNumber}
+                fragmentService={fragmentService}
+                lemmaId={lemmaId}
+                key={index}
+              />
+            </Col>
+          </Row>
+        )
+      })}
     </>
   )
 }
@@ -173,7 +136,6 @@ export default withData<
   QueryResult
 >(
   ({ data: queryResult, fragmentService, lemmaId }): JSX.Element => {
-    // Keep the item-count fallback for backends that ignore count: 'exact'.
     const hasMatchCount = typeof queryResult.matchCountTotal === 'number'
     const total = hasMatchCount
       ? queryResult.matchCountTotal.toLocaleString()
@@ -192,15 +154,8 @@ export default withData<
             </>
           ) : (
             <>
-              Showing{' '}
-              {Math.min(
-                queryResult.items.length,
-                FRAGMENT_EXAMPLE_LIMIT,
-              ).toLocaleString()}{' '}
-              Library document example
-              {Math.min(queryResult.items.length, FRAGMENT_EXAMPLE_LIMIT) === 1
-                ? ''
-                : 's'}
+              Matches found in {queryResult.items.length.toLocaleString()}{' '}
+              Library document{queryResult.items.length === 1 ? '' : 's'}
               &nbsp;
             </>
           )}
@@ -223,10 +178,5 @@ export default withData<
       </>
     )
   },
-  ({ fragmentService, lemmaId }) =>
-    fragmentService.query({
-      lemmas: lemmaId,
-      limit: FRAGMENT_EXAMPLE_LIMIT,
-      count: 'exact',
-    }),
+  ({ fragmentService, lemmaId }) => fragmentService.query({ lemmas: lemmaId }),
 )
