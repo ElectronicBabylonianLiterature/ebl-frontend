@@ -8,7 +8,7 @@ import { Fragment } from 'fragmentarium/domain/fragment'
 import {
   createFragmentViewHarness,
   fragmentNumber,
-} from './FragmentView.test-support'
+} from './FragmentView.testSupport'
 
 describe('Fragment is loaded', () => {
   let fragment: Fragment
