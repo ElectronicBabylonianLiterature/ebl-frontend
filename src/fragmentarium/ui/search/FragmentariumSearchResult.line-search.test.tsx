@@ -2,7 +2,7 @@ import { screen } from '@testing-library/react'
 import {
   buildQueryResult,
   renderSearchResult,
-} from './FragmentariumSearchResult.test-support'
+} from './FragmentariumSearchResult.testSupport'
 
 describe('FragmentariumSearchResult line-search counts', () => {
   it('does not display zero when the total line count is unknown', async () => {
