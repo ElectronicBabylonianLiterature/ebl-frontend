@@ -40,13 +40,20 @@ describe('reference identity', () => {
     'note',
     ['1.'],
     new BibliographyEntry(),
-    'RN52',
-    true,
-  )
+  ).withIdentity('RN52', true)
+
+  test('a reference has no identity until one is assigned', () => {
+    const reference = new Reference()
+
+    expect(reference.referenceId).toEqual('')
+    expect(reference.isCompactSummary).toBe(false)
+  })
 
   test('a full reference falls back to its document id', () => {
     const entry = bibliographyEntryFactory.build()
-    const reference = new Reference('COPY', '', '', [], entry)
+    const reference = new Reference('COPY', '', '', [], entry).withIdentity(
+      entry.id,
+    )
 
     expect(reference.id).toEqual(entry.id)
     expect(reference.isCompactSummary).toBe(false)
@@ -86,9 +93,7 @@ describe('reference identity', () => {
       '',
       [],
       new BibliographyEntry(),
-      'RN54',
-      true,
-    )
+    ).withIdentity('RN54', true)
     const groupingKeys = [compactReference, other]
       .map((reference) => reference.setPages('').setLinesCited([]))
       .map((reference) => `${reference.id}-${reference.type}`)

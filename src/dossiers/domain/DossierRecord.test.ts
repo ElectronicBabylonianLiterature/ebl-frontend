@@ -40,16 +40,14 @@ describe('DossierRecord', () => {
         uncertain: false,
       })
       expect(record.references).toEqual(
-        references.map(
-          (reference) =>
-            new Reference(
-              reference.type,
-              reference.pages,
-              reference.notes,
-              reference.linesCited,
-              new BibliographyEntry(reference.document),
-              reference.id,
-            ),
+        references.map((reference) =>
+          new Reference(
+            reference.type,
+            reference.pages,
+            reference.notes,
+            reference.linesCited,
+            new BibliographyEntry(reference.document),
+          ).withIdentity(reference.id),
         ),
       )
     })

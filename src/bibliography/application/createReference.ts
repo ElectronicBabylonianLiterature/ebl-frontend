@@ -12,9 +12,7 @@ function mapReference(
     referenceDto.notes,
     referenceDto.linesCited,
     new BibliographyEntry(referenceDto.document),
-    referenceDto.id,
-    isCompactSummary,
-  )
+  ).withIdentity(referenceDto.id, isCompactSummary)
 }
 
 export default function createReference(referenceDto: ReferenceDto): Reference {

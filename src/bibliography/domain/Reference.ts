@@ -40,14 +40,15 @@ export default class Reference {
   readonly [immerable] = true
   static readonly DEFAULT_TYPE: ReferenceType = 'DISCUSSION'
 
+  readonly referenceId: string = ''
+  readonly isCompactSummary: boolean = false
+
   constructor(
     readonly type: ReferenceType = Reference.DEFAULT_TYPE,
     readonly pages: string = '',
     readonly notes: string = '',
     readonly linesCited: ReadonlyArray<string> = [],
     readonly document: BibliographyEntry = new BibliographyEntry({}),
-    readonly referenceId: string = '',
-    readonly isCompactSummary: boolean = false,
   ) {}
 
   get hasCitationMetadata(): boolean {
@@ -121,6 +122,13 @@ export default class Reference {
   setDocument(document_: BibliographyEntry): Reference {
     return produce(this, (draft: Draft<Reference>) => {
       draft.document = document_
+    })
+  }
+
+  withIdentity(referenceId: string, isCompactSummary = false): Reference {
+    return produce(this, (draft: Draft<Reference>) => {
+      draft.referenceId = referenceId
+      draft.isCompactSummary = isCompactSummary
     })
   }
 

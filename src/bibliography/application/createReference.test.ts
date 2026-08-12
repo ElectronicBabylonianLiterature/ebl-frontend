@@ -20,8 +20,7 @@ test('createReference', () => {
       dto.notes,
       dto.linesCited,
       entry,
-      dto.id,
-    ),
+    ).withIdentity(dto.id),
   )
 })
 test('preserves the root ID without a bibliography document', () => {
