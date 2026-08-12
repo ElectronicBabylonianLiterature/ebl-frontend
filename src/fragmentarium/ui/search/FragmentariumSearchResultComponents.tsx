@@ -7,7 +7,7 @@ import withData from 'http/withData'
 import { QueryItem } from 'query/QueryResult'
 import { Col, Container, Row } from 'react-bootstrap'
 import { Fragment } from 'fragmentarium/domain/fragment'
-import { RenderFragmentLines } from 'dictionary/ui/search/FragmentLemmaLines'
+import RenderFragmentLines from 'dictionary/ui/search/RenderFragmentLines'
 import FragmentLink, { createFragmentUrl } from '../FragmentLink'
 import { Genres } from 'fragmentarium/domain/Genres'
 import ReferenceList from 'bibliography/ui/ReferenceList'
@@ -22,8 +22,13 @@ import DossiersService from 'dossiers/application/DossiersService'
 import useNearViewport from 'common/hooks/useNearViewport'
 import FragmentDossierRecordsDisplay from 'dossiers/ui/DossiersDisplay'
 import SummaryThumbnail from 'fragmentarium/ui/search/SummaryThumbnail'
-import { hasRenderReadyFragment } from 'query/queryItemRenderReady'
+import {
+  hasFragmentCardSummary,
+  hasRenderReadyFragment,
+  hasUnsupportedFragmentCardSummary,
+} from 'query/queryItemRenderReady'
 import CompactFragmentLines from 'fragmentarium/ui/search/CompactFragmentLines'
+import UnavailableFragmentCard from 'fragmentarium/ui/search/UnavailableFragmentCard'
 
 function GenresDisplay({ genres }: { genres: Genres }): JSX.Element {
   return (
@@ -162,7 +167,7 @@ function FragmentLinesContent({
           </small>
         </ResponsiveCol>
         <ResponsiveCol className={'mt-4 mb-4 mt-sm-0 mb-sm-0'}>
-          {queryItem.cardSummary ? (
+          {hasFragmentCardSummary(queryItem) ? (
             <CompactFragmentLines
               lines={queryItem.cardSummary.matchingLinePreview}
               linesToShow={linesToShow}
@@ -229,11 +234,15 @@ const HydratedFragmentLines = withData<
 )
 
 export function FragmentLines(props: FragmentLinesProps): JSX.Element {
-  return hasRenderReadyFragment(props.queryItem, {
-    includeLatestRecord: props.includeLatestRecord,
-  }) ? (
-    <FragmentLinesContent fragment={props.queryItem.fragment} {...props} />
-  ) : (
-    <HydratedFragmentLines {...props} />
-  )
+  const { queryItem, includeLatestRecord } = props
+
+  if (hasRenderReadyFragment(queryItem, { includeLatestRecord })) {
+    return <FragmentLinesContent fragment={queryItem.fragment} {...props} />
+  }
+
+  if (hasUnsupportedFragmentCardSummary(queryItem)) {
+    return <UnavailableFragmentCard museumNumber={queryItem.museumNumber} />
+  }
+
+  return <HydratedFragmentLines {...props} />
 }

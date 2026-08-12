@@ -2,7 +2,8 @@ import React from 'react'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import { render, screen } from '@testing-library/react'
 import { dictionaryWord } from 'test-support/word-info-fixtures'
-import FragmentLemmaLines, { RenderFragmentLines } from './FragmentLemmaLines'
+import FragmentLemmaLines from './FragmentLemmaLines'
+import RenderFragmentLines from 'dictionary/ui/search/RenderFragmentLines'
 import { fragment, lines } from 'test-support/test-fragment'
 import { QueryItem, QueryResult } from 'query/QueryResult'
 import Bluebird from 'bluebird'
@@ -148,6 +149,25 @@ describe('Show Library entries', () => {
       'fragment-query-preview__token--highlight',
     )
     expect(screen.getByText('And 3 more')).toBeVisible()
+    expect(fragmentService.find).not.toHaveBeenCalled()
+  })
+
+  it('reports unsupported summaries without hydrating fragments', async () => {
+    const queryItem: QueryItem = {
+      museumNumber: previewSubsetFragment.number,
+      matchingLines: [0, 1],
+      matchCount: 5,
+      cardSummary: { type: 'UnsupportedFragmentCardSummary' },
+    }
+    fragmentService.query.mockReturnValue(
+      Bluebird.resolve({ items: [queryItem], matchCountTotal: null }),
+    )
+
+    renderFragmentLemmaLines()
+
+    expect(
+      await screen.findByText('Details for this result are unavailable.'),
+    ).toBeVisible()
     expect(fragmentService.find).not.toHaveBeenCalled()
   })
 

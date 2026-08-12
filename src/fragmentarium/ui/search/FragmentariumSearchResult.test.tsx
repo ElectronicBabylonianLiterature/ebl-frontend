@@ -1,5 +1,5 @@
 import React from 'react'
-import { screen, waitFor } from '@testing-library/react'
+import { screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { useLocation } from 'react-router-dom'
 import FragmentService from 'fragmentarium/application/FragmentService'
@@ -54,9 +54,7 @@ describe('FragmentariumSearchResult pagination', () => {
       })
 
       await screen.findByText(new RegExp(`Found ${items} document`))
-      expect(
-        screen.queryByRole('group', { name: 'Pagination controls' }),
-      ).not.toBeInTheDocument()
+      expect(screen.queryAllByRole('navigation')).toHaveLength(0)
     },
   )
 
@@ -71,11 +69,58 @@ describe('FragmentariumSearchResult pagination', () => {
       })
 
       await screen.findByText('K.1')
-      expect(
-        screen.getAllByRole('group', { name: 'Pagination controls' }),
-      ).toHaveLength(2)
+      expect(screen.getAllByRole('navigation')).toHaveLength(2)
     },
   )
+
+  it('names the top and bottom pagers distinctly without duplicating ids', async () => {
+    renderSearchResult({
+      queryResult: buildQueryResult({ items: 50, hasNextPage: true }),
+    })
+
+    await screen.findByText('K.1')
+
+    expect(
+      screen
+        .getAllByRole('navigation')
+        .map((landmark) => landmark.getAttribute('aria-label')),
+    ).toEqual([
+      'Search results pagination, top',
+      'Search results pagination, bottom',
+    ])
+
+    const controlIds = [
+      ...screen.getAllByLabelText('Go to page'),
+      ...screen.getAllByLabelText('Results per page'),
+    ].map((control) => control.id)
+
+    expect(controlIds).toHaveLength(4)
+    expect(new Set(controlIds).size).toEqual(4)
+  })
+
+  it('points each pager label at the control in its own pager', async () => {
+    renderSearchResult({
+      queryResult: buildQueryResult({ items: 50, hasNextPage: true }),
+    })
+
+    await screen.findByText('K.1')
+
+    const pagers = screen.getAllByRole('navigation')
+
+    pagers.forEach((pager) => {
+      const pageJump = within(pager).getByLabelText('Go to page')
+      const pageSize = within(pager).getByLabelText('Results per page')
+
+      expect(within(pager).getByText('Go to page')).toHaveAttribute(
+        'for',
+        pageJump.id,
+      )
+      expect(within(pager).getByText('Results per page')).toHaveAttribute(
+        'for',
+        pageSize.id,
+      )
+    })
+  })
 
   it('shows controls on a later short page', async () => {
     renderSearchResult({
@@ -84,9 +129,7 @@ describe('FragmentariumSearchResult pagination', () => {
     })
 
     await screen.findByText('K.1')
-    expect(
-      screen.getAllByRole('group', { name: 'Pagination controls' }),
-    ).toHaveLength(2)
+    expect(screen.getAllByRole('navigation')).toHaveLength(2)
     expect(screen.getAllByRole('listitem')[0]).not.toHaveClass('disabled')
   })
 
@@ -96,9 +139,7 @@ describe('FragmentariumSearchResult pagination', () => {
     })
 
     await screen.findByText('K.1')
-    expect(
-      screen.getAllByRole('group', { name: 'Pagination controls' }),
-    ).toHaveLength(2)
+    expect(screen.getAllByRole('navigation')).toHaveLength(2)
   })
 
   it('keeps a usable Previous control for an empty directly linked page', async () => {

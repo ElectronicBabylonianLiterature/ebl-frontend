@@ -65,7 +65,10 @@ describe('FragmentRepository query summary items', () => {
       fragment.number,
     )
     expect(item.fragment?.archaeology?.site?.name).toEqual('Sippar')
-    expect(item.cardSummary?.matchingLinePreview).toEqual(compactPreviewLines)
+    expect(item.cardSummary).toEqual({
+      type: 'FragmentCardSummary',
+      matchingLinePreview: compactPreviewLines,
+    })
     expect(item.fragment?.text.lines).toHaveLength(0)
   })
 
@@ -86,7 +89,10 @@ describe('FragmentRepository query summary items', () => {
     expect(item.thumbnailPath).toBeNull()
     expect(item.fragment?.number).toEqual(fragment.number)
     expect(item.fragment?.text.lines).toHaveLength(0)
-    expect(item.cardSummary?.matchingLinePreview).toEqual([])
+    expect(item.cardSummary).toEqual({
+      type: 'FragmentCardSummary',
+      matchingLinePreview: [],
+    })
   })
 
   it('keeps old-shape items without summary metadata on the hydration path', async () => {
@@ -101,43 +107,9 @@ describe('FragmentRepository query summary items', () => {
     const result = await fragmentRepository.query({ number: fragment.number })
     const item = result.items[0]
 
+    expect(item.cardSummary).toBeUndefined()
     expect(item.thumbnailPath).toBeUndefined()
     expect(item.fragment).toBeUndefined()
-  })
-
-  it('maps summary metadata without matchingLinePreview using an empty preview', async () => {
-    const itemDto = createSummaryItemDto({
-      matchingLines: [],
-      matchCount: 0,
-    })
-    delete itemDto.matchingLinePreview
-    delete itemDto.thumbnailPath
-    mockQueryItems([itemDto])
-
-    const result = await fragmentRepository.query({ number: fragment.number })
-    const item = result.items[0]
-
-    expect(item.thumbnailPath).toBeNull()
-    expect(item.fragment?.number).toEqual(fragment.number)
-    expect(item.fragment?.text.lines).toHaveLength(0)
-    expect(item.cardSummary?.matchingLinePreview).toEqual([])
-  })
-
-  it('maps summary metadata with null matchingLinePreview using an empty preview', async () => {
-    mockQueryItems([
-      createSummaryItemDto({
-        matchingLines: [],
-        matchingLinePreview: null,
-        matchCount: 0,
-      }),
-    ])
-
-    const result = await fragmentRepository.query({ number: fragment.number })
-    const item = result.items[0]
-
-    expect(item.fragment?.number).toEqual(fragment.number)
-    expect(item.fragment?.text.lines).toHaveLength(0)
-    expect(item.cardSummary?.matchingLinePreview).toEqual([])
   })
 
   it('maps summary items when optional fields are omitted', async () => {

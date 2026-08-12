@@ -28,6 +28,7 @@ function renderPaginationItems(
         activePage={activePage}
         pageSize={pageSize}
         hasNextPage={hasNextPage}
+        position="top"
       />
     </MemoryRouter>,
   )
@@ -38,18 +39,14 @@ beforeEach(() => {
 })
 
 describe('PaginationItems', () => {
-  it('renders centered semantic navigation and option groups', () => {
+  it('renders a named navigation landmark with centered control groups', () => {
     renderPaginationItems()
 
     expect(
-      screen.getByRole('group', { name: 'Pagination controls' }),
+      screen.getByRole('navigation', {
+        name: 'Search results pagination, top',
+      }),
     ).toHaveClass('fragment-result__pagination')
-    expect(screen.getByRole('group', { name: 'Page navigation' })).toHaveClass(
-      'fragment-result__pagination-primary',
-    )
-    expect(
-      screen.getByRole('group', { name: 'Pagination options' }),
-    ).toHaveClass('fragment-result__pagination-secondary')
     expect(screen.getByText('Go to page')).toBeVisible()
     expect(screen.getByText('Results per page')).toBeVisible()
     expect(screen.getByLabelText('Go to page')).toHaveClass(
@@ -61,6 +58,25 @@ describe('PaginationItems', () => {
     expect(screen.getByRole('list', { name: 'Pages' })).toHaveClass(
       'pagination-sm',
       'fragment-result__pagination-pages',
+    )
+  })
+
+  it('associates each visible label with its own control', () => {
+    renderPaginationItems()
+
+    const pageJumpLabel = screen.getByText('Go to page')
+    const pageSizeLabel = screen.getByText('Results per page')
+
+    expect(pageJumpLabel).toHaveAttribute(
+      'for',
+      screen.getByLabelText('Go to page').id,
+    )
+    expect(pageSizeLabel).toHaveAttribute(
+      'for',
+      screen.getByLabelText('Results per page').id,
+    )
+    expect(screen.getByLabelText('Go to page').id).not.toEqual(
+      screen.getByLabelText('Results per page').id,
     )
   })
   it('disables Previous on page zero and shows the one-based page number', () => {

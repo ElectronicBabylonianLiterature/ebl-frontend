@@ -60,6 +60,24 @@ function renderCard(queryItem: QueryItem): void {
   )
 }
 
+test('reports an unsupported summary without hydrating details', () => {
+  renderCard({
+    museumNumber: 'K.9',
+    matchingLines: [1, 2, 3],
+    matchCount: 3,
+    cardSummary: { type: 'UnsupportedFragmentCardSummary' },
+  })
+
+  expect(fragmentService.find).not.toHaveBeenCalled()
+  expect(
+    screen.getByText('Details for this result are unavailable.'),
+  ).toBeVisible()
+  expect(screen.getByRole('link', { name: 'K.9' })).toHaveAttribute(
+    'href',
+    '/library/K.9',
+  )
+})
+
 test('renders a thumbnail when the fragment has a photo', async () => {
   const fragment = fragmentFactory.build({ hasPhoto: true })
   fragmentService.find.mockReturnValue(Promise.resolve(fragment))

@@ -1,4 +1,5 @@
 import { museumNumberToString } from 'fragmentarium/domain/MuseumNumber'
+import { cardSummaryLines } from 'test-support/fragment-query-summary'
 import {
   apiClient,
   fragmentRepository,
@@ -93,7 +94,7 @@ describe('FragmentRepository raw summary items', () => {
     expect(item.fragment?.archaeology?.site?.name).toEqual('Babylon')
     expect(item.fragment?.script.period.abbreviation).toEqual('LB')
     expect(item.fragment?.text.lines).toHaveLength(0)
-    expect(item.cardSummary?.matchingLinePreview).toHaveLength(2)
+    expect(cardSummaryLines(item)).toHaveLength(2)
     expect(item.fragment?.references).toHaveLength(1)
     expect(item.fragment?.references[0].id).toEqual('RAW-REF-1')
   })

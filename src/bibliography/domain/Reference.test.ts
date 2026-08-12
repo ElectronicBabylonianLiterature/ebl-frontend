@@ -33,6 +33,70 @@ describe('getters', () => {
   })
 })
 
+describe('reference identity', () => {
+  const compactReference = new Reference(
+    'DISCUSSION',
+    '12-13',
+    'note',
+    ['1.'],
+    new BibliographyEntry(),
+    'RN52',
+    true,
+  )
+
+  test('a full reference falls back to its document id', () => {
+    const entry = bibliographyEntryFactory.build()
+    const reference = new Reference('COPY', '', '', [], entry)
+
+    expect(reference.id).toEqual(entry.id)
+    expect(reference.isCompactSummary).toBe(false)
+  })
+
+  test('a compact reference keeps its root id without a document', () => {
+    expect(compactReference.id).toEqual('RN52')
+    expect(compactReference.isCompactSummary).toBe(true)
+    expect(compactReference.hasCitationMetadata).toBe(false)
+  })
+
+  test.each([
+    ['setType', (reference: Reference) => reference.setType('COPY')],
+    ['setPages', (reference: Reference) => reference.setPages('99')],
+    ['setNotes', (reference: Reference) => reference.setNotes('changed')],
+    [
+      'setLinesCited',
+      (reference: Reference) => reference.setLinesCited(['2.']),
+    ],
+    [
+      'setDocument',
+      (reference: Reference) =>
+        reference.setDocument(bibliographyEntryFactory.build()),
+    ],
+  ])('%s preserves compact identity on the produced copy', (_name, copy) => {
+    const copied = copy(compactReference)
+
+    expect(copied).not.toBe(compactReference)
+    expect(copied.id).toEqual('RN52')
+    expect(copied.isCompactSummary).toBe(true)
+  })
+
+  test('chained copies keep distinct ids for same-type compact references', () => {
+    const other = new Reference(
+      'DISCUSSION',
+      '27',
+      '',
+      [],
+      new BibliographyEntry(),
+      'RN54',
+      true,
+    )
+    const groupingKeys = [compactReference, other]
+      .map((reference) => reference.setPages('').setLinesCited([]))
+      .map((reference) => `${reference.id}-${reference.type}`)
+
+    expect(groupingKeys).toEqual(['RN52-DISCUSSION', 'RN54-DISCUSSION'])
+  })
+})
+
 test('toHtml', () => {
   const entry = bibliographyEntryFactory.build()
   const reference = referenceFactory.build({ document: entry })

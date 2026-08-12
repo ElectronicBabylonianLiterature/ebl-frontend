@@ -10,7 +10,7 @@ import './FragmentariumSearchResult.sass'
 import { stringify } from 'query-string'
 import { FragmentLines } from './FragmentariumSearchResultComponents'
 import DossiersService from 'dossiers/application/DossiersService'
-import PaginationItems from './PaginationItems'
+import PaginationItems, { PaginationPosition } from './PaginationItems'
 import {
   createPagedFragmentQuery,
   isLineQuery,
@@ -40,22 +40,26 @@ function ResultPages({
   hasNextPage: boolean
   showPaginationControls: boolean
 }): JSX.Element {
-  const pageButtons = showPaginationControls ? (
-    <Row>
-      <Col className="d-flex justify-content-center">
-        <PaginationItems
-          activePage={pageIndex}
-          pageSize={pageSize}
-          hasNextPage={hasNextPage}
-          paginationURLParam={paginationURLParam}
-        />
-      </Col>
-    </Row>
-  ) : null
+  const renderPageButtons = (
+    position: PaginationPosition,
+  ): JSX.Element | null =>
+    showPaginationControls ? (
+      <Row>
+        <Col className="d-flex justify-content-center">
+          <PaginationItems
+            activePage={pageIndex}
+            pageSize={pageSize}
+            hasNextPage={hasNextPage}
+            paginationURLParam={paginationURLParam}
+            position={position}
+          />
+        </Col>
+      </Row>
+    ) : null
 
   return (
     <>
-      {pageButtons}
+      {renderPageButtons('top')}
       {fragments.map((fragment) => (
         <React.Fragment
           key={`${fragment.museumNumber}:${fragment.matchingLines.join(',')}`}
@@ -71,7 +75,7 @@ function ResultPages({
         </React.Fragment>
       ))}
 
-      {pageButtons}
+      {renderPageButtons('bottom')}
     </>
   )
 }

@@ -3,77 +3,22 @@ import withData from 'http/withData'
 import { QueryItem, QueryResult } from 'query/QueryResult'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import FragmentService from 'fragmentarium/application/FragmentService'
-import { highlightLemmas, LineColumns } from 'transliteration/ui/line-tokens'
-import { createColumns } from 'transliteration/domain/columns'
 import FragmentLink from 'fragmentarium/ui/FragmentLink'
-import lineNumberToString from 'transliteration/domain/lineNumberToString'
 import './FragmentLemmaLines.sass'
 import _ from 'lodash'
-import { TextLine } from 'transliteration/domain/text-line'
 import { Col, Row } from 'react-bootstrap'
 import LemmaQueryLink from '../display/LemmaQueryLink'
-import { LemmaPopover } from 'transliteration/ui/WordInfo'
-import { hasRenderReadyFragment } from 'query/queryItemRenderReady'
+import RenderFragmentLines from 'dictionary/ui/search/RenderFragmentLines'
+import {
+  hasFragmentCardSummary,
+  hasRenderReadyFragment,
+  hasUnsupportedFragmentCardSummary,
+} from 'query/queryItemRenderReady'
 import CompactFragmentLines from 'fragmentarium/ui/search/CompactFragmentLines'
+import { UnavailableSummaryNote } from 'fragmentarium/ui/search/UnavailableFragmentCard'
 
 export const FRAGMENT_LINES_TO_SHOW = 3
 export const FRAGMENT_EXAMPLE_LIMIT = 10
-
-export function RenderFragmentLines({
-  fragment,
-  lemmaIds,
-  linesToShow,
-  totalLines,
-}: {
-  fragment: Fragment
-  lemmaIds?: readonly string[]
-  linesToShow: number
-  totalLines?: number
-}): JSX.Element {
-  const matchingLines = fragment.text.lines.filter(
-    (line) => line.type === 'TextLine',
-  ) as TextLine[]
-  const visibleLines = matchingLines.slice(0, linesToShow)
-  const authoritativeTotal = totalLines ?? matchingLines.length
-  const remainingLines = Math.max(authoritativeTotal - visibleLines.length, 0)
-
-  return (
-    <table>
-      <tbody>
-        {visibleLines.map((line, index) => {
-          const columns = [
-            {
-              span: 1,
-              content: createColumns(line.content).flatMap(
-                (column) => column.content,
-              ),
-            },
-          ]
-
-          return (
-            <tr key={index}>
-              <td className={'fragment-lines-with-lemma__line-number'}>
-                {lineNumberToString(line.lineNumber)}
-              </td>
-              <LineColumns
-                columns={columns}
-                maxColumns={1}
-                TokenActionWrapper={LemmaPopover}
-                conditionalBemModifiers={highlightLemmas(lemmaIds || [])}
-              />
-            </tr>
-          )
-        })}
-        {remainingLines > 0 && (
-          <tr>
-            <td></td>
-            <td>And {remainingLines} more</td>
-          </tr>
-        )}
-      </tbody>
-    </table>
-  )
-}
 
 const FragmentLines = withData<
   { lemmaId: string; lineIndexes: readonly number[] },
@@ -113,21 +58,33 @@ function QueryItemFragmentLines({
   fragmentService: FragmentService
   lemmaId: string
 }): JSX.Element {
-  return queryItem.cardSummary ? (
-    <CompactFragmentLines
-      lines={queryItem.cardSummary.matchingLinePreview}
-      linesToShow={FRAGMENT_LINES_TO_SHOW}
-      totalLines={queryItem.matchCount}
-      lemmaIds={[lemmaId]}
-    />
-  ) : hasRenderReadyFragment(queryItem) ? (
-    <RenderFragmentLines
-      fragment={queryItem.fragment}
-      linesToShow={FRAGMENT_LINES_TO_SHOW}
-      totalLines={queryItem.matchCount}
-      lemmaIds={[lemmaId]}
-    />
-  ) : (
+  if (hasFragmentCardSummary(queryItem)) {
+    return (
+      <CompactFragmentLines
+        lines={queryItem.cardSummary.matchingLinePreview}
+        linesToShow={FRAGMENT_LINES_TO_SHOW}
+        totalLines={queryItem.matchCount}
+        lemmaIds={[lemmaId]}
+      />
+    )
+  }
+
+  if (hasRenderReadyFragment(queryItem)) {
+    return (
+      <RenderFragmentLines
+        fragment={queryItem.fragment}
+        linesToShow={FRAGMENT_LINES_TO_SHOW}
+        totalLines={queryItem.matchCount}
+        lemmaIds={[lemmaId]}
+      />
+    )
+  }
+
+  if (hasUnsupportedFragmentCardSummary(queryItem)) {
+    return <UnavailableSummaryNote />
+  }
+
+  return (
     <FragmentLines
       lineIndexes={queryItem.matchingLines}
       museumNumber={queryItem.museumNumber}

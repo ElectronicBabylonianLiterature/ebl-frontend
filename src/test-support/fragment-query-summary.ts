@@ -2,6 +2,7 @@ import { ReferenceDto } from 'bibliography/domain/referenceDto'
 import {
   FragmentCardSummary,
   FragmentQueryPreviewLine,
+  QueryItem,
 } from 'query/QueryResult'
 
 export const SUMMARY_LEMMA_ID = 'testWordId'
@@ -49,6 +50,17 @@ export const compactPreviewLines: readonly FragmentQueryPreviewLine[] = [
 
 export const compactMatchingLinePreview = {
   lines: compactPreviewLines,
+}
+
+export function cardSummaryLines(
+  queryItem: QueryItem,
+): readonly FragmentQueryPreviewLine[] {
+  if (queryItem.cardSummary?.type !== 'FragmentCardSummary') {
+    throw new Error(
+      `Expected a FragmentCardSummary for ${queryItem.museumNumber}.`,
+    )
+  }
+  return queryItem.cardSummary.matchingLinePreview
 }
 
 export function createFragmentCardSummary(

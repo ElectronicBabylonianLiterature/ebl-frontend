@@ -13,7 +13,11 @@ import ErrorBoundary from 'common/errors/ErrorBoundary'
 import { ThumbnailImage } from 'common/ui/BlobImage'
 import useNearViewport from 'common/hooks/useNearViewport'
 import SummaryThumbnail from 'fragmentarium/ui/search/SummaryThumbnail'
-import { hasRenderReadyFragment } from 'query/queryItemRenderReady'
+import {
+  hasRenderReadyFragment,
+  hasUnsupportedFragmentCardSummary,
+} from 'query/queryItemRenderReady'
+import UnavailableFragmentCard from 'fragmentarium/ui/search/UnavailableFragmentCard'
 
 const LATEST_CARD_LINES_TO_SHOW = 3
 
@@ -147,13 +151,21 @@ export function CompactFragmentCard({
   queryItem: QueryItem
   fragmentService: FragmentService
 }): JSX.Element {
-  return hasRenderReadyFragment(queryItem, { includeLatestRecord: true }) ? (
-    <CompactFragmentCardContent
-      fragment={queryItem.fragment}
-      queryItem={queryItem}
-      fragmentService={fragmentService}
-    />
-  ) : (
+  if (hasRenderReadyFragment(queryItem, { includeLatestRecord: true })) {
+    return (
+      <CompactFragmentCardContent
+        fragment={queryItem.fragment}
+        queryItem={queryItem}
+        fragmentService={fragmentService}
+      />
+    )
+  }
+
+  if (hasUnsupportedFragmentCardSummary(queryItem)) {
+    return <UnavailableFragmentCard museumNumber={queryItem.museumNumber} />
+  }
+
+  return (
     <HydratedCompactFragmentCard
       queryItem={queryItem}
       fragmentService={fragmentService}

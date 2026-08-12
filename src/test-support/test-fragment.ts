@@ -85,6 +85,7 @@ export const fragment = new Fragment({
       '',
       [],
       new BibliographyEntry({ id: 'RN52' }),
+      'RN52',
     ),
   ],
   uncuratedReferences: null,

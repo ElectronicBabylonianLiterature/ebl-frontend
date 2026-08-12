@@ -83,10 +83,28 @@ export type QueryResultDto = {
   hasNextPage?: boolean | null
 }
 
+const SUMMARY_MARKER_FIELDS = [
+  'description',
+  'script',
+  'hasPhoto',
+  'matchingLinePreview',
+  'thumbnailPath',
+] as const
+
 function isQuerySummaryItemDto(
   dto: QueryResultItemDto,
 ): dto is QuerySummaryItemDto {
-  return 'description' in dto && 'script' in dto && 'hasPhoto' in dto
+  const candidate = dto as Partial<QuerySummaryItemDto>
+  return (
+    typeof candidate.description === 'string' &&
+    typeof candidate.hasPhoto === 'boolean' &&
+    typeof candidate.script === 'object' &&
+    candidate.script !== null
+  )
+}
+
+function isSummaryShapedDto(dto: QueryResultItemDto): boolean {
+  return SUMMARY_MARKER_FIELDS.some((field) => field in dto)
 }
 
 function createQuerySummaryFragment(dto: QuerySummaryItemDto): Fragment {
@@ -159,6 +177,13 @@ function createQueryItem(dto: QueryResultItemDto): QueryItem {
         matchingLinePreview: dto.matchingLinePreview?.lines ?? [],
       },
       thumbnailPath: dto.thumbnailPath ?? null,
+    }
+  }
+
+  if (isSummaryShapedDto(dto)) {
+    return {
+      ...queryItem,
+      cardSummary: { type: 'UnsupportedFragmentCardSummary' },
     }
   }
 

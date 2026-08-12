@@ -44,19 +44,26 @@ function PaginationControl({
   )
 }
 
+export type PaginationPosition = 'top' | 'bottom'
+
 export default function PaginationItems({
   activePage,
   pageSize,
   hasNextPage,
   paginationURLParam,
+  position,
 }: {
   activePage: number
   pageSize: number
   paginationURLParam: string
   hasNextPage: boolean
+  position: PaginationPosition
 }): JSX.Element {
   const location = useLocation()
   const history = useHistory()
+  const controlIdPrefix = React.useId()
+  const pageJumpId = `${controlIdPrefix}page-jump`
+  const pageSizeId = `${controlIdPrefix}page-size`
   const [pageJump, setPageJump] = React.useState('')
   const goToPage = (event: React.FormEvent): void => {
     event.preventDefault()
@@ -82,16 +89,11 @@ export default function PaginationItems({
   }
 
   return (
-    <div
-      aria-label="Pagination controls"
+    <nav
+      aria-label={`Search results pagination, ${position}`}
       className="fragment-result__pagination"
-      role="group"
     >
-      <div
-        aria-label="Page navigation"
-        className="fragment-result__pagination-primary"
-        role="group"
-      >
+      <div className="fragment-result__pagination-primary">
         <Pagination
           aria-label="Pages"
           className="fragment-result__pagination-pages"
@@ -114,19 +116,17 @@ export default function PaginationItems({
           </PaginationControl>
         </Pagination>
       </div>
-      <div
-        aria-label="Pagination options"
-        className="fragment-result__pagination-secondary"
-        role="group"
-      >
+      <div className="fragment-result__pagination-secondary">
         <Form
           className="fragment-result__pagination-control-group"
           onSubmit={goToPage}
         >
-          <Form.Label className="mb-0">Go to page</Form.Label>
+          <Form.Label className="mb-0" htmlFor={pageJumpId}>
+            Go to page
+          </Form.Label>
           <Form.Control
-            aria-label="Go to page"
             className="fragment-result__pagination-page-input"
+            id={pageJumpId}
             min={1}
             onChange={(event) => setPageJump(event.currentTarget.value)}
             placeholder="Page"
@@ -138,10 +138,12 @@ export default function PaginationItems({
             Go
           </Button>
         </Form>
-        <Form.Group className="fragment-result__pagination-control-group">
+        <Form.Group
+          className="fragment-result__pagination-control-group"
+          controlId={pageSizeId}
+        >
           <Form.Label className="mb-0">Results per page</Form.Label>
           <Form.Select
-            aria-label="Results per page"
             className="fragment-result__pagination-page-size"
             size="sm"
             value={pageSize}
@@ -162,6 +164,6 @@ export default function PaginationItems({
           </Form.Select>
         </Form.Group>
       </div>
-    </div>
+    </nav>
   )
 }
