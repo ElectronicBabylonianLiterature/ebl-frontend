@@ -3,19 +3,23 @@ import { Genres } from 'fragmentarium/domain/Genres'
 import { MesopotamianDate } from 'chronology/domain/Date'
 import FragmentDto, {
   MesopotamianDateDto,
-  TextDto,
 } from 'fragmentarium/domain/FragmentDtos'
 import { ScriptDto } from 'fragmentarium/domain/fragment'
-import { createTransliteration } from 'transliteration/application/dtos'
-import { QueryItem, QueryResult } from 'query/QueryResult'
+import {
+  FragmentQueryPreviewLine,
+  FragmentQueryPreviewToken,
+  QueryItem,
+  QueryResult,
+} from 'query/QueryResult'
 import { museumNumberToString } from 'fragmentarium/domain/MuseumNumber'
 import { Museums } from 'fragmentarium/domain/museum'
-import createReference from 'bibliography/application/createReference'
+import { createCompactReference } from 'bibliography/application/createReference'
 import { createResearchProject } from 'research-projects/researchProject'
 import {
   createFragment,
   createScript,
 } from 'fragmentarium/infrastructure/FragmentRepository'
+import { Text } from 'transliteration/domain/text'
 
 export type QueryMuseumNumberDto = {
   prefix: string
@@ -28,6 +32,13 @@ export type QueryItemDto = {
   matchingLines: readonly number[]
   matchCount: number
   fragment?: FragmentDto
+}
+
+export type FragmentQueryPreviewTokenDto = FragmentQueryPreviewToken
+export type FragmentQueryPreviewLineDto = FragmentQueryPreviewLine
+
+export type FragmentQueryPreviewDto = {
+  lines: readonly FragmentQueryPreviewLineDto[]
 }
 
 export type QuerySummaryArchaeologyDto = {
@@ -47,7 +58,7 @@ export type QuerySummaryItemDto = {
   projects?: FragmentDto['projects']
   dossiers?: FragmentDto['dossiers']
   matchingLines: readonly number[]
-  matchingLinePreview?: TextDto | null
+  matchingLinePreview?: FragmentQueryPreviewDto | null
   matchCount: number
   hasPhoto: boolean
   thumbnailPath?: string | null
@@ -70,17 +81,6 @@ export type QueryResultDto = {
   matchCountTotal: number | null
   isMatchCountTotalExact?: boolean
   hasNextPage?: boolean | null
-}
-
-const emptyMatchingLinePreview: TextDto = { lines: [], numberOfLines: 0 }
-
-function normalizeMatchingLinePreview(dto?: TextDto | null): TextDto {
-  const { parserVersion, ...preview } = dto ?? emptyMatchingLinePreview
-  return {
-    ...preview,
-    // eslint-disable-next-line camelcase
-    parser_version: preview.parser_version ?? parserVersion,
-  }
 }
 
 function isQuerySummaryItemDto(
@@ -110,12 +110,10 @@ function createQuerySummaryFragment(dto: QuerySummaryItemDto): Fragment {
     cdliImages: [],
     folios: [],
     record: [],
-    text: createTransliteration(
-      normalizeMatchingLinePreview(dto.matchingLinePreview),
-    ),
+    text: new Text({ lines: [] }),
     notes: { text: '', parts: [] },
     museum: Museums.HYPERURANION,
-    references: (dto.references ?? []).map(createReference),
+    references: (dto.references ?? []).map(createCompactReference),
     uncuratedReferences: null,
     traditionalReferences: [],
     atf: '',
@@ -156,6 +154,10 @@ function createQueryItem(dto: QueryResultItemDto): QueryItem {
     return {
       ...queryItem,
       fragment: createQuerySummaryFragment(dto),
+      cardSummary: {
+        type: 'FragmentCardSummary',
+        matchingLinePreview: dto.matchingLinePreview?.lines ?? [],
+      },
       thumbnailPath: dto.thumbnailPath ?? null,
     }
   }

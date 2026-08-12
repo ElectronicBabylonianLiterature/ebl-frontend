@@ -15,6 +15,7 @@ import {
   createPagedFragmentQuery,
   isLineQuery,
   paginationURLParam,
+  RESULT_PAGE_SIZES,
   SearchPagination,
 } from './pagination'
 
@@ -27,6 +28,7 @@ function ResultPages({
   pageIndex,
   pageSize,
   hasNextPage,
+  showPaginationControls,
 }: {
   fragments: readonly QueryItem[]
   fragmentService: FragmentService
@@ -36,8 +38,9 @@ function ResultPages({
   pageIndex: number
   pageSize: number
   hasNextPage: boolean
+  showPaginationControls: boolean
 }): JSX.Element {
-  const pageButtons = (
+  const pageButtons = showPaginationControls ? (
     <Row>
       <Col className="d-flex justify-content-center">
         <PaginationItems
@@ -48,7 +51,7 @@ function ResultPages({
         />
       </Col>
     </Row>
-  )
+  ) : null
 
   return (
     <>
@@ -91,13 +94,24 @@ export const SearchResult = withData<
     pagination: { pageIndex, pageSize },
   }): JSX.Element => {
     const visibleItems = data.items.slice(0, pageSize)
-    const effectiveHasNextPage = isLineQuery(fragmentQuery)
+    const lineQuery = isLineQuery(fragmentQuery)
+    const effectiveHasNextPage = lineQuery
       ? data.items.length > pageSize
       : (data.hasNextPage ?? data.items.length > pageSize)
+    const isPageCompletenessKnown =
+      lineQuery ||
+      typeof data.hasNextPage === 'boolean' ||
+      data.items.length > pageSize
     const fragmentCount = visibleItems.length
     const offset = pageIndex * pageSize
     const hasLineCount = typeof data.matchCountTotal === 'number'
-    const isCompleteFirstPage = pageIndex === 0 && effectiveHasNextPage !== true
+    const isCompleteFirstPage =
+      pageIndex === 0 &&
+      isPageCompletenessKnown &&
+      effectiveHasNextPage === false
+    const showPaginationControls = !(
+      isCompleteFirstPage && visibleItems.length < RESULT_PAGE_SIZES[0]
+    )
     const pageDocumentCount = `${fragmentCount.toLocaleString()} document${
       fragmentCount === 1 ? '' : 's'
     }`
@@ -157,6 +171,7 @@ export const SearchResult = withData<
             pageIndex={pageIndex}
             pageSize={pageSize}
             hasNextPage={effectiveHasNextPage === true}
+            showPaginationControls={showPaginationControls}
             linesToShow={Math.max(
               _.trimEnd(fragmentQuery.transliteration || '').split('\n').length,
               linesToShow,

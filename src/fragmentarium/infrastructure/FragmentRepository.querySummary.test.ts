@@ -1,6 +1,6 @@
 import { fragment, fragmentDto } from 'test-support/test-fragment'
 import { FragmentQuery } from 'query/FragmentQuery'
-import { textLineDto } from 'test-support/lines/text-line'
+import { compactPreviewLines } from 'test-support/fragment-query-summary'
 import {
   apiClient,
   createSummaryItemDto,
@@ -10,9 +10,6 @@ import {
 
 const emptyMatchingLinePreview = {
   lines: [],
-  numberOfLines: 0,
-  // eslint-disable-next-line camelcase
-  parser_version: 'backend',
 }
 
 describe('FragmentRepository query summary items', () => {
@@ -38,24 +35,18 @@ describe('FragmentRepository query summary items', () => {
     })
   })
 
-  it.each(['parser_version', 'parserVersion'] as const)(
-    'accepts matchingLinePreview.%s',
-    async (parserVersionField) => {
-      mockQueryItems([
-        createSummaryItemDto({
-          matchingLinePreview: {
-            lines: [textLineDto],
-            numberOfLines: 1,
-            [parserVersionField]: 'backend',
-          },
-        }),
-      ])
+  it('preserves production-shaped compact matching-line previews', async () => {
+    mockQueryItems([createSummaryItemDto({})])
 
-      const result = await fragmentRepository.query({ lemmas: 'kur' })
+    const result = await fragmentRepository.query({ lemmas: 'kur' })
+    const item = result.items[0]
 
-      expect(result.items[0].fragment?.text.lines).toHaveLength(1)
-    },
-  )
+    expect(item.cardSummary).toEqual({
+      type: 'FragmentCardSummary',
+      matchingLinePreview: compactPreviewLines,
+    })
+    expect(item.fragment?.text.lines).toHaveLength(0)
+  })
 
   it('maps summary items into prefetched fragments and thumbnail paths', async () => {
     const thumbnailPath = '/images/Test.Fragment.jpg'
@@ -74,7 +65,8 @@ describe('FragmentRepository query summary items', () => {
       fragment.number,
     )
     expect(item.fragment?.archaeology?.site?.name).toEqual('Sippar')
-    expect(item.fragment?.text.lines).toHaveLength(fragment.text.lines.length)
+    expect(item.cardSummary?.matchingLinePreview).toEqual(compactPreviewLines)
+    expect(item.fragment?.text.lines).toHaveLength(0)
   })
 
   it('maps summary items with empty matching lines and an empty preview', async () => {
@@ -94,6 +86,7 @@ describe('FragmentRepository query summary items', () => {
     expect(item.thumbnailPath).toBeNull()
     expect(item.fragment?.number).toEqual(fragment.number)
     expect(item.fragment?.text.lines).toHaveLength(0)
+    expect(item.cardSummary?.matchingLinePreview).toEqual([])
   })
 
   it('keeps old-shape items without summary metadata on the hydration path', async () => {
@@ -127,6 +120,7 @@ describe('FragmentRepository query summary items', () => {
     expect(item.thumbnailPath).toBeNull()
     expect(item.fragment?.number).toEqual(fragment.number)
     expect(item.fragment?.text.lines).toHaveLength(0)
+    expect(item.cardSummary?.matchingLinePreview).toEqual([])
   })
 
   it('maps summary metadata with null matchingLinePreview using an empty preview', async () => {
@@ -143,6 +137,7 @@ describe('FragmentRepository query summary items', () => {
 
     expect(item.fragment?.number).toEqual(fragment.number)
     expect(item.fragment?.text.lines).toHaveLength(0)
+    expect(item.cardSummary?.matchingLinePreview).toEqual([])
   })
 
   it('maps summary items when optional fields are omitted', async () => {

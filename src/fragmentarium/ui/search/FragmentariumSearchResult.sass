@@ -46,3 +46,49 @@
   &__record, &__preview
     @media (min-width: $ebl-breakpoint-sm)
       padding-left: 10vw
+  &__pagination
+    display: flex
+    flex-direction: column
+    align-items: center
+    gap: .5rem
+    margin: .75rem 0
+    max-width: 100%
+    width: 100%
+
+    &-primary
+      display: flex
+      justify-content: center
+      max-width: 100%
+
+    &-pages
+      flex-wrap: nowrap
+      margin-bottom: 0
+
+    &-secondary
+      display: flex
+      align-items: center
+      justify-content: center
+      flex-wrap: wrap
+      gap: .75rem 1.25rem
+      width: 100%
+
+    &-control-group
+      display: flex
+      align-items: center
+      justify-content: center
+      flex-wrap: nowrap
+      gap: .5rem
+
+      label
+        white-space: nowrap
+
+    &-page-input
+      min-width: 0
+      width: 5rem
+
+    &-page-size
+      width: auto
+
+    @media (max-width: $ebl-breakpoint-sm)
+      &-secondary
+        flex-direction: column

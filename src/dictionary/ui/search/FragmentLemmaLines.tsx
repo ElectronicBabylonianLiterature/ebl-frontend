@@ -14,6 +14,7 @@ import { Col, Row } from 'react-bootstrap'
 import LemmaQueryLink from '../display/LemmaQueryLink'
 import { LemmaPopover } from 'transliteration/ui/WordInfo'
 import { hasRenderReadyFragment } from 'query/queryItemRenderReady'
+import CompactFragmentLines from 'fragmentarium/ui/search/CompactFragmentLines'
 
 export const FRAGMENT_LINES_TO_SHOW = 3
 export const FRAGMENT_EXAMPLE_LIMIT = 10
@@ -112,7 +113,14 @@ function QueryItemFragmentLines({
   fragmentService: FragmentService
   lemmaId: string
 }): JSX.Element {
-  return hasRenderReadyFragment(queryItem) ? (
+  return queryItem.cardSummary ? (
+    <CompactFragmentLines
+      lines={queryItem.cardSummary.matchingLinePreview}
+      linesToShow={FRAGMENT_LINES_TO_SHOW}
+      totalLines={queryItem.matchCount}
+      lemmaIds={[lemmaId]}
+    />
+  ) : hasRenderReadyFragment(queryItem) ? (
     <RenderFragmentLines
       fragment={queryItem.fragment}
       linesToShow={FRAGMENT_LINES_TO_SHOW}

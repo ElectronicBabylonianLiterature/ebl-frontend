@@ -38,6 +38,31 @@ beforeEach(() => {
 })
 
 describe('PaginationItems', () => {
+  it('renders centered semantic navigation and option groups', () => {
+    renderPaginationItems()
+
+    expect(
+      screen.getByRole('group', { name: 'Pagination controls' }),
+    ).toHaveClass('fragment-result__pagination')
+    expect(screen.getByRole('group', { name: 'Page navigation' })).toHaveClass(
+      'fragment-result__pagination-primary',
+    )
+    expect(
+      screen.getByRole('group', { name: 'Pagination options' }),
+    ).toHaveClass('fragment-result__pagination-secondary')
+    expect(screen.getByText('Go to page')).toBeVisible()
+    expect(screen.getByText('Results per page')).toBeVisible()
+    expect(screen.getByLabelText('Go to page')).toHaveClass(
+      'fragment-result__pagination-page-input',
+    )
+    expect(screen.getByLabelText('Results per page')).toHaveClass(
+      'fragment-result__pagination-page-size',
+    )
+    expect(screen.getByRole('list', { name: 'Pages' })).toHaveClass(
+      'pagination-sm',
+      'fragment-result__pagination-pages',
+    )
+  })
   it('disables Previous on page zero and shows the one-based page number', () => {
     renderPaginationItems(0, true)
 

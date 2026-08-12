@@ -4,6 +4,8 @@ import {
   queryResult,
   FragmentariumSearchHarness,
 } from './FragmentariumSearch.testSupport'
+import { fragmentFactory } from 'test-support/fragment-fixtures'
+import { createFragmentCardSummary } from 'test-support/fragment-query-summary'
 
 let harness: FragmentariumSearchHarness
 
@@ -80,4 +82,39 @@ test('renders summary-backed rows without hydrating the fragment', async () => {
   expect(screen.queryByLabelText('Spinner')).not.toBeInTheDocument()
   expect(screen.getByText(result.items[0].museumNumber)).toBeVisible()
   await screen.findByText('Found 0 chapters')
+})
+
+test('keeps one bounded query and zero card hydration calls for 50 summaries', async () => {
+  const summaryFragment = fragmentFactory.build({
+    hasPhoto: true,
+    dossiers: [],
+  })
+  const thumbnailPath = '/fragments/summary/thumbnail/small'
+  harness.fragmentService.query.mockResolvedValue({
+    items: Array.from({ length: 50 }, (_, index) => ({
+      museumNumber: `Summary.${index + 1}`,
+      matchingLines: [1, 2],
+      matchCount: 2,
+      fragment: summaryFragment,
+      cardSummary: createFragmentCardSummary(),
+      thumbnailPath,
+    })),
+    matchCountTotal: null,
+    hasNextPage: false,
+  })
+
+  harness.renderSearch({ number: 'Summary' })
+
+  expect(await screen.findAllByText(summaryFragment.number)).toHaveLength(50)
+  expect(harness.fragmentService.query).toHaveBeenCalledTimes(1)
+  expect(harness.fragmentService.query).toHaveBeenCalledWith({
+    number: 'Summary',
+    limit: 50,
+    offset: 0,
+    count: 'page',
+  })
+  expect(harness.fragmentService.find).not.toHaveBeenCalled()
+  expect(harness.fragmentService.findThumbnail).not.toHaveBeenCalled()
+  expect(harness.bibliographyService.find).not.toHaveBeenCalled()
+  expect(harness.bibliographyService.findMany).not.toHaveBeenCalled()
 })

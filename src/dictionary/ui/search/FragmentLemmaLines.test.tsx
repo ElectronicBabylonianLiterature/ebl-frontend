@@ -14,6 +14,10 @@ import { produce, castDraft, Draft } from 'immer'
 import { Text } from 'transliteration/domain/text'
 import { TextLine, TextLineDto } from 'transliteration/domain/text-line'
 import { atfTokenKur } from 'test-support/test-tokens'
+import {
+  createFragmentCardSummary,
+  SUMMARY_LEMMA_ID,
+} from 'test-support/fragment-query-summary'
 import { lineNumberFactory } from 'test-support/linenumber-factory'
 
 jest.mock('fragmentarium/application/FragmentService')
@@ -23,7 +27,7 @@ beforeEach(() => {
   jest.clearAllMocks()
 })
 
-const word = { ...dictionaryWord, _id: 'testWordId' }
+const word = { ...dictionaryWord, _id: SUMMARY_LEMMA_ID }
 
 const fragmentService = new (FragmentService as jest.Mock<
   jest.Mocked<FragmentService>
@@ -124,12 +128,13 @@ describe('Show Library entries', () => {
     expect(screen.queryByText('0 matches')).not.toBeInTheDocument()
   })
 
-  it('renders summary examples without hydrating fragments', async () => {
+  it('renders compact summary examples without hydrating fragments', async () => {
     const queryItem: QueryItem = {
       museumNumber: previewSubsetFragment.number,
       matchingLines: [0, 1],
       matchCount: 5,
       fragment: previewSubsetFragment,
+      cardSummary: createFragmentCardSummary(),
     }
     fragmentService.query.mockReturnValue(
       Bluebird.resolve({ items: [queryItem], matchCountTotal: null }),
@@ -138,7 +143,10 @@ describe('Show Library entries', () => {
     renderFragmentLemmaLines()
 
     expect(await screen.findByText(previewSubsetFragment.number)).toBeVisible()
-    expect(screen.getByRole('button', { name: 'kur' })).toBeVisible()
+    expect(screen.getByText('1.')).toBeVisible()
+    expect(screen.getByText('kur')).toHaveClass(
+      'fragment-query-preview__token--highlight',
+    )
     expect(screen.getByText('And 3 more')).toBeVisible()
     expect(fragmentService.find).not.toHaveBeenCalled()
   })
@@ -151,6 +159,7 @@ describe('Show Library entries', () => {
         matchingLines: [0],
         matchCount: 1,
         fragment: previewSubsetFragment,
+        cardSummary: createFragmentCardSummary(),
       }),
     )
     fragmentService.query.mockReturnValue(

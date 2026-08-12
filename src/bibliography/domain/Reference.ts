@@ -35,6 +35,8 @@ export function groupReferences(
     .map()
     .value()
 }
+const referenceIds = new WeakMap<Reference, string>()
+const compactSummaryReferences = new WeakSet<Reference>()
 
 export default class Reference {
   readonly [immerable] = true
@@ -46,7 +48,20 @@ export default class Reference {
     readonly notes: string = '',
     readonly linesCited: ReadonlyArray<string> = [],
     readonly document: BibliographyEntry = new BibliographyEntry({}),
-  ) {}
+    referenceId: string = '',
+    isCompactSummary: boolean = false,
+  ) {
+    referenceIds.set(this, referenceId)
+    if (isCompactSummary) compactSummaryReferences.add(this)
+  }
+
+  get isCompactSummary(): boolean {
+    return compactSummaryReferences.has(this)
+  }
+
+  get hasCitationMetadata(): boolean {
+    return Boolean(this.document.label.trim())
+  }
 
   get hasShortContainerTitle(): boolean {
     return !_.isEmpty(this.shortContainerTitle)
@@ -57,7 +72,7 @@ export default class Reference {
   }
 
   get id(): string {
-    return this.document.id
+    return referenceIds.get(this) || this.document.id
   }
 
   get primaryAuthor(): string {

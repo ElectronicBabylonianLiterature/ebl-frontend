@@ -8,9 +8,16 @@ import DossiersService from 'dossiers/application/DossiersService'
 import { DictionaryContext } from 'dictionary/ui/dictionary-context'
 import WordService from 'dictionary/application/WordService'
 import { fragmentFactory } from 'test-support/fragment-fixtures'
-import { Text } from 'transliteration/domain/text'
-import { TextLine } from 'transliteration/domain/text-line'
-import { lines } from 'test-support/test-fragment'
+import { fragment } from 'test-support/test-fragment'
+import {
+  createFragmentCardSummary,
+  productionSummaryReferences,
+  SUMMARY_LEMMA_ID,
+} from 'test-support/fragment-query-summary'
+import { createCompactReference } from 'bibliography/application/createReference'
+import { createResearchProject } from 'research-projects/researchProject'
+import DossierRecord from 'dossiers/domain/DossierRecord'
+import { Fragment } from 'fragmentarium/domain/fragment'
 import { FragmentLines } from './FragmentariumSearchResultComponents'
 import mockObjectUrl from 'test-support/mockObjectUrl'
 
@@ -33,7 +40,11 @@ beforeEach(() => {
   dossiersService.queryByIds.mockResolvedValue([])
 })
 
-function renderFragmentLines(queryItem: QueryItem, linesToShow = 3) {
+function renderFragmentLines(
+  queryItem: QueryItem,
+  linesToShow = 3,
+  queryLemmas?: readonly string[],
+) {
   return render(
     <MemoryRouter>
       <DictionaryContext.Provider value={wordService}>
@@ -42,6 +53,7 @@ function renderFragmentLines(queryItem: QueryItem, linesToShow = 3) {
           dossiersService={dossiersService}
           queryItem={queryItem}
           linesToShow={linesToShow}
+          queryLemmas={queryLemmas}
         />
       </DictionaryContext.Provider>
     </MemoryRouter>,
@@ -49,34 +61,41 @@ function renderFragmentLines(queryItem: QueryItem, linesToShow = 3) {
 }
 
 describe('FragmentLines', () => {
-  it('renders summary-backed rows without hydrating them', async () => {
+  it('renders compact summary lines and lemma highlights without hydration', () => {
     const fragment = fragmentFactory.build({ hasPhoto: false, dossiers: [] })
 
-    renderFragmentLines({
-      museumNumber: fragment.number,
-      matchingLines: [1, 2, 3],
-      matchCount: 3,
-      fragment,
-      thumbnailPath: null,
-    })
+    renderFragmentLines(
+      {
+        museumNumber: fragment.number,
+        matchingLines: [1, 2],
+        matchCount: 2,
+        fragment,
+        cardSummary: createFragmentCardSummary(),
+        thumbnailPath: null,
+      },
+      3,
+      [SUMMARY_LEMMA_ID],
+    )
 
     expect(fragmentService.find).not.toHaveBeenCalled()
     expect(screen.queryByLabelText('Spinner')).not.toBeInTheDocument()
     expect(screen.getByText(fragment.number)).toBeInTheDocument()
+    expect(screen.getByText('1.')).toBeVisible()
+    expect(screen.getByRole('table')).toHaveTextContent('kur ša')
+    expect(screen.getByText('kur')).toHaveClass(
+      'fragment-query-preview__token--highlight',
+    )
   })
 
-  it('renders summary-backed rows with empty previews without hydrating them', async () => {
-    const fragment = fragmentFactory.build({
-      hasPhoto: false,
-      dossiers: [],
-      text: new Text({ lines: [] }),
-    })
+  it('renders empty compact previews without hydrating them', () => {
+    const fragment = fragmentFactory.build({ hasPhoto: false, dossiers: [] })
 
     renderFragmentLines({
       museumNumber: fragment.number,
       matchingLines: [],
       matchCount: 0,
       fragment,
+      cardSummary: createFragmentCardSummary([]),
       thumbnailPath: null,
     })
 
@@ -91,9 +110,10 @@ describe('FragmentLines', () => {
 
     renderFragmentLines({
       museumNumber: fragment.number,
-      matchingLines: [1, 2, 3],
-      matchCount: 3,
+      matchingLines: [1, 2],
+      matchCount: 2,
       fragment,
+      cardSummary: createFragmentCardSummary(),
       thumbnailPath,
     })
 
@@ -138,14 +158,66 @@ describe('FragmentLines', () => {
     ).toBeInTheDocument()
   })
 
-  it('counts remaining summary lines from rows actually rendered', () => {
-    const fragment = fragmentFactory.build({
-      hasPhoto: false,
-      dossiers: [],
-      text: new Text({
-        lines: [new TextLine(lines[0]), new TextLine(lines[1])],
-      }),
+  it('preserves scholarly card fields for production-shaped summaries', async () => {
+    const summaryFragment = Fragment.create({
+      ...fragment,
+      references: productionSummaryReferences.map(createCompactReference),
+      projects: [createResearchProject('CAIC')],
+      dossiers: [{ dossierId: 'D001', isUncertain: false }],
+      archaeology: {
+        excavationNumber: 'EX.7',
+        site: { name: 'Babylon', abbreviation: '', parent: null },
+      },
     })
+    const thumbnailPath = '/fragments/Test.Fragment/thumbnail/small'
+    dossiersService.queryByIds.mockResolvedValue([
+      new DossierRecord({ _id: 'D001' }),
+    ])
+
+    renderFragmentLines(
+      {
+        museumNumber: summaryFragment.number,
+        matchingLines: [1, 2],
+        matchCount: 5,
+        fragment: summaryFragment,
+        cardSummary: createFragmentCardSummary(),
+        thumbnailPath,
+      },
+      2,
+      [SUMMARY_LEMMA_ID],
+    )
+    expect(await screen.findByRole('button', { name: 'D001' })).toBeVisible()
+
+    expect(
+      screen.getByRole('heading', { name: 'Test.Fragment (LB)' }),
+    ).toBeVisible()
+    expect(screen.getByText('Accession no.: A.38.b')).toBeVisible()
+    expect(screen.getByText('Excavation no.: EX.7')).toBeVisible()
+    expect(screen.getByText('Provenance: Babylon')).toBeVisible()
+    expect(screen.getByText('ARCHIVE ➝ Administrative ➝ Lists')).toBeVisible()
+    expect(screen.getByRole('time')).toHaveTextContent('1.I.1 SE')
+    expect(
+      screen.getByLabelText(
+        'Link to Cuneiform Artefacts of Iraq in Context project',
+      ),
+    ).toBeVisible()
+    expect(screen.getByText('1.')).toBeVisible()
+    expect(screen.getByRole('table')).toHaveTextContent('kur ša')
+    expect(screen.getByText('And 3 more')).toBeVisible()
+    expect(screen.getByText(/RN52/)).toHaveTextContent(
+      'RN52: 12-13 [l. 1.] [Summary note] (D)',
+    )
+    expect(
+      screen.queryByText(/RN52/, { selector: '.reference-popover__citation' }),
+    ).not.toBeInTheDocument()
+    expect(
+      await screen.findByAltText('Preview of Test.Fragment'),
+    ).toHaveAttribute('src', `http://example.com${thumbnailPath}`)
+    expect(fragmentService.find).not.toHaveBeenCalled()
+    expect(fragmentService.findThumbnail).not.toHaveBeenCalled()
+  })
+  it('counts remaining compact summary lines from rows actually rendered', () => {
+    const fragment = fragmentFactory.build({ hasPhoto: false, dossiers: [] })
 
     renderFragmentLines(
       {
@@ -153,6 +225,7 @@ describe('FragmentLines', () => {
         matchingLines: [1, 2],
         matchCount: 7,
         fragment,
+        cardSummary: createFragmentCardSummary(),
         thumbnailPath: null,
       },
       5,

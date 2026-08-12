@@ -46,15 +46,59 @@ describe('FragmentariumSearchResult pagination', () => {
     )
   })
 
-  it('disables Previous on page zero and disables Next on the last page', async () => {
+  it.each([0, 1, 12, 24])(
+    'hides controls for a known-complete first page with %i results',
+    async (items) => {
+      renderSearchResult({
+        queryResult: buildQueryResult({ items, hasNextPage: false }),
+      })
+
+      await screen.findByText(new RegExp(`Found ${items} document`))
+      expect(
+        screen.queryByRole('group', { name: 'Pagination controls' }),
+      ).not.toBeInTheDocument()
+    },
+  )
+
+  it.each([25, 26, 50, 51])(
+    'shows controls on the first page with %i results',
+    async (items) => {
+      renderSearchResult({
+        queryResult: buildQueryResult({
+          items,
+          hasNextPage: items > 50,
+        }),
+      })
+
+      await screen.findByText('K.1')
+      expect(
+        screen.getAllByRole('group', { name: 'Pagination controls' }),
+      ).toHaveLength(2)
+    },
+  )
+
+  it('shows controls on a later short page', async () => {
     renderSearchResult({
       queryResult: buildQueryResult({ items: 12, hasNextPage: false }),
+      pagination: { pageIndex: 2, pageSize: 50 },
     })
 
     await screen.findByText('K.1')
-    expect(screen.getAllByRole('listitem')[0]).toHaveClass('disabled')
-    expect(screen.getAllByRole('listitem')[2]).toHaveClass('disabled')
-    expect(screen.getByText(/Found 12 documents/)).toBeInTheDocument()
+    expect(
+      screen.getAllByRole('group', { name: 'Pagination controls' }),
+    ).toHaveLength(2)
+    expect(screen.getAllByRole('listitem')[0]).not.toHaveClass('disabled')
+  })
+
+  it('shows controls when first-page completeness is unknown', async () => {
+    renderSearchResult({
+      queryResult: buildQueryResult({ items: 12, hasNextPage: null }),
+    })
+
+    await screen.findByText('K.1')
+    expect(
+      screen.getAllByRole('group', { name: 'Pagination controls' }),
+    ).toHaveLength(2)
   })
 
   it('keeps a usable Previous control for an empty directly linked page', async () => {

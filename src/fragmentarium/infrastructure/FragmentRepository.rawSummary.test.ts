@@ -1,6 +1,3 @@
-import { referenceDtoFactory } from 'test-support/bibliography-fixtures'
-import { textLineDto } from 'test-support/lines/text-line'
-import { lineNumberFactory } from 'test-support/linenumber-factory'
 import { museumNumberToString } from 'fragmentarium/domain/MuseumNumber'
 import {
   apiClient,
@@ -9,20 +6,13 @@ import {
 
 describe('FragmentRepository raw summary items', () => {
   it('maps the backend summary envelope into a render-ready query item', async () => {
-    const rawReference = referenceDtoFactory.build({
+    const rawReference = {
       id: 'RAW-REF-1',
       type: 'DISCUSSION',
       pages: '1-2',
       notes: 'raw summary reference',
       linesCited: ['1.'],
-      document: {
-        id: 'RAW-REF-1',
-        title: 'Raw backend reference',
-        type: 'article-journal',
-        issued: { 'date-parts': [[2024]] },
-        author: [{ family: 'Tester', given: 'T.' }],
-      },
-    })
+    }
     apiClient.fetchJson.mockResolvedValueOnce({
       matchCountTotal: 1,
       items: [
@@ -31,7 +21,7 @@ describe('FragmentRepository raw summary items', () => {
           accession: { prefix: 'A', number: '7', suffix: '' },
           description: 'Raw backend summary item',
           script: {
-            period: 'Late Babylonian',
+            period: 'LB',
             periodModifier: 'None',
             uncertain: false,
           },
@@ -54,16 +44,26 @@ describe('FragmentRepository raw summary items', () => {
           matchingLines: [1, 2, 3, 4],
           matchingLinePreview: {
             lines: [
-              textLineDto,
               {
-                ...textLineDto,
+                number: 1,
+                prefix: '1.',
+                text: 'kur',
+                tokens: [
+                  {
+                    type: 'Word',
+                    value: 'kur',
+                    cleanValue: 'kur',
+                    uniqueLemma: ['raw'],
+                  },
+                ],
+              },
+              {
+                number: 2,
                 prefix: '2.',
-                lineNumber: lineNumberFactory.build({ number: 2 }),
+                text: 'ša',
+                tokens: [],
               },
             ],
-            numberOfLines: 2,
-            // eslint-disable-next-line camelcase
-            parser_version: 'backend',
           },
           matchCount: 4,
           hasPhoto: true,
@@ -91,7 +91,9 @@ describe('FragmentRepository raw summary items', () => {
     ])
     expect(item.fragment?.archaeology?.excavationNumber).toEqual('BM.123')
     expect(item.fragment?.archaeology?.site?.name).toEqual('Babylon')
-    expect(item.fragment?.text.lines).toHaveLength(2)
+    expect(item.fragment?.script.period.abbreviation).toEqual('LB')
+    expect(item.fragment?.text.lines).toHaveLength(0)
+    expect(item.cardSummary?.matchingLinePreview).toHaveLength(2)
     expect(item.fragment?.references).toHaveLength(1)
     expect(item.fragment?.references[0].id).toEqual('RAW-REF-1')
   })

@@ -64,7 +64,7 @@ function latestSummaryItemDto() {
       periodModifier: 'None',
       uncertain: false,
     },
-    matchingLinePreview: { lines: [], numberOfLines: 0 },
+    matchingLinePreview: { lines: [] },
     hasPhoto: false,
     thumbnailPath: null,
   }

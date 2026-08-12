@@ -23,6 +23,7 @@ import useNearViewport from 'common/hooks/useNearViewport'
 import FragmentDossierRecordsDisplay from 'dossiers/ui/DossiersDisplay'
 import SummaryThumbnail from 'fragmentarium/ui/search/SummaryThumbnail'
 import { hasRenderReadyFragment } from 'query/queryItemRenderReady'
+import CompactFragmentLines from 'fragmentarium/ui/search/CompactFragmentLines'
 
 function GenresDisplay({ genres }: { genres: Genres }): JSX.Element {
   return (
@@ -161,12 +162,21 @@ function FragmentLinesContent({
           </small>
         </ResponsiveCol>
         <ResponsiveCol className={'mt-4 mb-4 mt-sm-0 mb-sm-0'}>
-          <RenderFragmentLines
-            fragment={fragment}
-            linesToShow={linesToShow}
-            totalLines={queryItem.matchCount}
-            lemmaIds={queryLemmas}
-          />
+          {queryItem.cardSummary ? (
+            <CompactFragmentLines
+              lines={queryItem.cardSummary.matchingLinePreview}
+              linesToShow={linesToShow}
+              totalLines={queryItem.matchCount}
+              lemmaIds={queryLemmas}
+            />
+          ) : (
+            <RenderFragmentLines
+              fragment={fragment}
+              linesToShow={linesToShow}
+              totalLines={queryItem.matchCount}
+              lemmaIds={queryLemmas}
+            />
+          )}
         </ResponsiveCol>
         <ResponsiveCol className={'fragment-result__preview'}>
           <ErrorBoundary>
