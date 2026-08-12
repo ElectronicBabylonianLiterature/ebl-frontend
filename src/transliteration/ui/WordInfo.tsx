@@ -49,6 +49,29 @@ function hasLemma(token: Token): token is AnyWord {
   return isAnyWord(token) && token.uniqueLemma.length > 0
 }
 
+function AlignmentHoverTrigger({
+  token,
+  lineGroup,
+  children,
+}: PropsWithChildren<{
+  token: AnyWord
+  lineGroup: LineGroup
+}>): JSX.Element {
+  return (
+    <span
+      className="word-info__hover-trigger"
+      onMouseEnter={() =>
+        lineGroup.setActiveTokenIndex(token.sentenceIndex || 0)
+      }
+      onMouseLeave={() => lineGroup.setActiveTokenIndex(0)}
+    >
+      <VariantAlignmentIndicator token={token}>
+        {children}
+      </VariantAlignmentIndicator>
+    </span>
+  )
+}
+
 function AlignmentInfoPopover({
   token,
   lineGroup,
@@ -143,15 +166,23 @@ export function AlignmentPopover({
     )
   }
 
-  return hasLemma(token) ? (
-    <AlignmentInfoPopover
-      token={token}
-      lineGroup={lineGroup}
-      showMeter={showMeter}
-      showIpa={showIpa}
-    >
+  if (hasLemma(token)) {
+    return (
+      <AlignmentInfoPopover
+        token={token}
+        lineGroup={lineGroup}
+        showMeter={showMeter}
+        showIpa={showIpa}
+      >
+        {children}
+      </AlignmentInfoPopover>
+    )
+  }
+
+  return isAnyWord(token) ? (
+    <AlignmentHoverTrigger token={token} lineGroup={lineGroup}>
       {children}
-    </AlignmentInfoPopover>
+    </AlignmentHoverTrigger>
   ) : (
     <>{children}</>
   )
