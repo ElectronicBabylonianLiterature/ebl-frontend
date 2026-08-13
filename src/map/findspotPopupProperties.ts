@@ -1,27 +1,6 @@
-import type { Point } from 'geojson'
 import type { MapGeoJSONFeature } from 'maplibre-gl'
 import type { FindspotPopupProperties } from 'map/createFindspotPopup'
 import type { FindspotProperties } from 'map/provenanceToGeoJson'
-
-export function getFeaturePointCoordinates(
-  feature: MapGeoJSONFeature,
-): [number, number] | null {
-  if (feature.geometry.type !== 'Point') return null
-
-  const coordinates = (feature.geometry as Point).coordinates
-  const longitude = coordinates[0]
-  const latitude = coordinates[1]
-
-  if (typeof longitude !== 'number' || !Number.isFinite(longitude)) {
-    return null
-  }
-
-  if (typeof latitude !== 'number' || !Number.isFinite(latitude)) {
-    return null
-  }
-
-  return [longitude, latitude]
-}
 
 function isGeometryType(
   value: unknown,

@@ -1,24 +1,10 @@
-import type { Feature, Point } from 'geojson'
+import type { Feature } from 'geojson'
 import maplibregl from 'maplibre-gl'
 import type { Map as MapLibreMap } from 'maplibre-gl'
+import { getFeaturePointCoordinates } from 'map/pointCoordinates'
 
 const FIT_BOUNDS_PADDING = 40
 const FIT_BOUNDS_MAX_ZOOM = 12
-
-function getPointCoordinates(feature: Feature): [number, number] | null {
-  if (feature.geometry.type !== 'Point') return null
-
-  const coordinates = (feature.geometry as Point).coordinates
-  const longitude = coordinates[0]
-  const latitude = coordinates[1]
-
-  return typeof longitude === 'number' &&
-    Number.isFinite(longitude) &&
-    typeof latitude === 'number' &&
-    Number.isFinite(latitude)
-    ? [longitude, latitude]
-    : null
-}
 
 export function fitMapToData(
   map: MapLibreMap,
@@ -27,7 +13,7 @@ export function fitMapToData(
   const bounds = new maplibregl.LngLatBounds()
 
   features.forEach((feature) => {
-    const coordinates = getPointCoordinates(feature)
+    const coordinates = getFeaturePointCoordinates(feature)
     if (coordinates) {
       bounds.extend(coordinates)
     }

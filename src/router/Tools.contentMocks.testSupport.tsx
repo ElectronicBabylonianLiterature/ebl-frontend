@@ -1,49 +1,84 @@
 import React from 'react'
 
-export function SignsMock(): JSX.Element {
-  return <div>Signs Mock</div>
+export type ToolsContentMockName =
+  | 'signs'
+  | 'dictionary'
+  | 'references'
+  | 'afoRegister'
+  | 'realia'
+  | 'dossiers'
+  | 'genres'
+  | 'dateConverter'
+  | 'kings'
+  | 'cuneiformConverter'
+  | 'map'
+
+interface ToolsContentMock {
+  modulePath: string
+  mockModule: unknown
 }
 
-export function DictionaryMock(): JSX.Element {
-  return <div>Dictionary Mock</div>
+function createMockPage(text: string): () => JSX.Element {
+  return function MockPage(): JSX.Element {
+    return <div>{text}</div>
+  }
 }
 
-export function BibliographyReferencesMock(): JSX.Element {
-  return <div>Bibliography References Mock</div>
+function createMockPageModule(
+  modulePath: string,
+  text: string,
+): ToolsContentMock {
+  return {
+    modulePath,
+    mockModule: { __esModule: true, default: createMockPage(text) },
+  }
 }
 
-export function AfoRegisterMock(): JSX.Element {
-  return <div>AfO-Register Mock</div>
+const TOOLS_CONTENT_MOCKS: Record<ToolsContentMockName, ToolsContentMock> = {
+  signs: createMockPageModule('signs/ui/search/Signs', 'Signs Mock'),
+  dictionary: createMockPageModule(
+    'dictionary/ui/search/Dictionary',
+    'Dictionary Mock',
+  ),
+  references: createMockPageModule(
+    'bibliography/ui/BibliographyReferencesContent',
+    'Bibliography References Mock',
+  ),
+  afoRegister: createMockPageModule(
+    'afo-register/ui/AfoRegisterSearchPage',
+    'AfO-Register Mock',
+  ),
+  realia: createMockPageModule('realia/ui/RealiaSearchPage', 'Realia Mock'),
+  dossiers: createMockPageModule(
+    'dossiers/ui/DossiersSearchPage',
+    'Dossiers Mock',
+  ),
+  genres: createMockPageModule('fragmentarium/ui/GenresPage', 'Genres Mock'),
+  dateConverter: {
+    modulePath: 'chronology/ui/DateConverter/DateConverterForm',
+    mockModule: {
+      __esModule: true,
+      default: createMockPage('Date Converter Form Mock'),
+      AboutDateConverter: createMockPage('About Date Converter Mock'),
+    },
+  },
+  kings: createMockPageModule(
+    'chronology/ui/Kings/BrinkmanKingsTable',
+    'Kings Mock',
+  ),
+  cuneiformConverter: createMockPageModule(
+    'signs/ui/CuneiformConverter/CuneiformConverterForm',
+    'Cuneiform Converter Mock',
+  ),
+  map: createMockPageModule('map/MapTab', 'Map Mock'),
 }
 
-export function RealiaMock(): JSX.Element {
-  return <div>Realia Mock</div>
+export function toolsContentMock(name: ToolsContentMockName): unknown {
+  return TOOLS_CONTENT_MOCKS[name].mockModule
 }
 
-export function DossiersMock(): JSX.Element {
-  return <div>Dossiers Mock</div>
-}
-
-export function GenresMock(): JSX.Element {
-  return <div>Genres Mock</div>
-}
-
-export function DateConverterFormMock(): JSX.Element {
-  return <div>Date Converter Form Mock</div>
-}
-
-export function AboutDateConverterMock(): JSX.Element {
-  return <div>About Date Converter Mock</div>
-}
-
-export function KingsMock(): JSX.Element {
-  return <div>Kings Mock</div>
-}
-
-export function CuneiformConverterMock(): JSX.Element {
-  return <div>Cuneiform Converter Mock</div>
-}
-
-export function MapMock(): JSX.Element {
-  return <div>Map Mock</div>
+export function expectToolsContentPagesMocked(): void {
+  Object.values(TOOLS_CONTENT_MOCKS).forEach(({ modulePath, mockModule }) => {
+    expect(jest.requireMock(modulePath)).toBe(mockModule)
+  })
 }

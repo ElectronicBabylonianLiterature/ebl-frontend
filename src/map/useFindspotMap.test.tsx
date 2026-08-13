@@ -1,7 +1,9 @@
 import React, { useRef } from 'react'
 import { act, render } from '@testing-library/react'
 import {
+  deferMapLoad,
   makeProvenance,
+  mockAddSource,
   mockEaseTo,
   mockGetClusterExpansionZoom,
   mockGetSource,
@@ -60,6 +62,20 @@ describe('useFindspotMap', () => {
     expect(mockOn).not.toHaveBeenCalled()
   })
 
+  it('does not initialize a source when the data is gone before the style loads', () => {
+    deferMapLoad()
+    const { rerender } = render(
+      <HookHarness provenances={[makeProvenance()]} />,
+    )
+
+    rerender(<HookHarness provenances={null} />)
+    act(() => {
+      triggerMapEvent('load')
+    })
+
+    expect(mockAddSource).not.toHaveBeenCalled()
+  })
+
   it('does not require an error callback', () => {
     render(<HookHarness provenances={[makeProvenance()]} />)
 
@@ -95,7 +111,12 @@ describe('useFindspotMap', () => {
       expect(mockSetDOMContent).not.toHaveBeenCalled()
     })
 
-    it('does not surface an unhandled rejection when expansion fails', async () => {
+    it('pans to the cluster centre when the expansion zoom is unavailable', async () => {
+      const unhandledRejections: unknown[] = []
+      const recordRejection = (reason: unknown): void => {
+        unhandledRejections.push(reason)
+      }
+      process.on('unhandledRejection', recordRejection)
       render(<HookHarness provenances={[makeProvenance()]} />)
       let rejectZoom!: (error: Error) => void
       mockGetSource.mockReturnValue({
@@ -108,6 +129,39 @@ describe('useFindspotMap', () => {
       )
 
       clickCluster()
+
+      try {
+        await act(async () => {
+          rejectZoom(new Error('worker unavailable'))
+          await new Promise((resolve) => setTimeout(resolve, 0))
+        })
+      } finally {
+        process.off('unhandledRejection', recordRejection)
+      }
+
+      expect(mockEaseTo).toHaveBeenCalledWith({
+        center: CLUSTER.geometry.coordinates,
+      })
+      expect(Object.keys(mockEaseTo.mock.calls[0][0])).toEqual(['center'])
+      expect(unhandledRejections).toEqual([])
+    })
+
+    it('does not pan a stale map generation when expansion fails', async () => {
+      const { unmount } = render(
+        <HookHarness provenances={[makeProvenance()]} />,
+      )
+      let rejectZoom!: (error: Error) => void
+      mockGetSource.mockReturnValue({
+        getClusterExpansionZoom: mockGetClusterExpansionZoom,
+      })
+      mockGetClusterExpansionZoom.mockReturnValue(
+        new Promise((_resolve, reject) => {
+          rejectZoom = reject
+        }),
+      )
+
+      clickCluster()
+      unmount()
 
       await act(async () => {
         rejectZoom(new Error('worker unavailable'))

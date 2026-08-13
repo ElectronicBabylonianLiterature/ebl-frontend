@@ -17,6 +17,18 @@ import MapTab from 'map/MapTab'
 
 jest.mock('maplibre-gl')
 
+function mixedGeometryProvenances(): ReturnType<typeof makeProvenance>[] {
+  return [
+    makeProvenance(),
+    makeProvenance({
+      id: 'no-geom',
+      longName: 'No Geometry',
+      coordinates: undefined,
+      polygonCoordinates: undefined,
+    }),
+  ]
+}
+
 describe('MapTab', () => {
   beforeEach(resetMapMocks)
 
@@ -131,18 +143,21 @@ describe('MapTab', () => {
     ).toBeInTheDocument()
   })
 
-  it('handles provenances with no spatial geometry gracefully', async () => {
-    const provenances = [
-      makeProvenance(),
-      makeProvenance({
-        id: 'no-geom',
-        longName: 'No Geometry',
-        coordinates: undefined,
-        polygonCoordinates: undefined,
-      }),
-    ]
+  it('reports missing data rather than a failed filter match', async () => {
+    render(<MapTab fragmentService={makeFragmentService([])} />)
 
-    render(<MapTab fragmentService={makeFragmentService(provenances)} />)
+    expect(
+      await screen.findByText('No findspot locations are available.'),
+    ).toBeInTheDocument()
+    expect(screen.queryByText(/No findspots match/)).not.toBeInTheDocument()
+  })
+
+  it('handles provenances with no spatial geometry gracefully', async () => {
+    render(
+      <MapTab
+        fragmentService={makeFragmentService(mixedGeometryProvenances())}
+      />,
+    )
 
     await waitFor(() => {
       expect(mockAddSource).toHaveBeenCalled()
@@ -151,6 +166,18 @@ describe('MapTab', () => {
     const sourceCall = mockAddSource.mock.calls[0]
     expect(sourceCall[1].data.features).toHaveLength(1)
     expect(sourceCall[1].data.features[0].properties.name).toBe('Babylon')
+  })
+
+  it('links to searches for provenances that have no map geometry', async () => {
+    render(
+      <MapTab
+        fragmentService={makeFragmentService(mixedGeometryProvenances())}
+      />,
+    )
+
+    expect(
+      await screen.findByRole('link', { name: 'No Geometry' }),
+    ).toHaveAttribute('href', buildFragmentSearchLink('No Geometry'))
   })
 
   it.each(['success', 'rejection'])(

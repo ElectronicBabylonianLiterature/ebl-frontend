@@ -1,6 +1,18 @@
 import { isMapBackgroundLoadError, MAP_STYLE_URL } from 'map/mapBackgroundError'
 
 describe('isMapBackgroundLoadError', () => {
+  it('recognises failures of the style url the map actually loads', () => {
+    expect(MAP_STYLE_URL).toBe(
+      'https://basemaps.cartocdn.com/gl/positron-gl-style/style.json',
+    )
+    expect(
+      isMapBackgroundLoadError(
+        { error: { url: MAP_STYLE_URL, message: 'Not Found' } },
+        true,
+      ),
+    ).toBe(true)
+  })
+
   it.each([
     [
       'style document AJAXError (404, matching url)',

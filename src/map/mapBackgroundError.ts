@@ -1,8 +1,7 @@
-export const MAP_STYLE_URL =
-  'https://basemaps.cartocdn.com/gl/positron-gl-style/style.json'
-
 const MAP_STYLE_HOST = 'basemaps.cartocdn.com'
 const MAP_STYLE_PATH = '/gl/positron-gl-style/style.json'
+
+export const MAP_STYLE_URL = `https://${MAP_STYLE_HOST}${MAP_STYLE_PATH}`
 
 export interface MapLibreErrorEvent {
   error?: {

@@ -1,19 +1,15 @@
 import React from 'react'
-import { render, screen } from '@testing-library/react'
-import { MemoryRouter } from 'react-router-dom'
+import { screen } from '@testing-library/react'
 import Tools, {
   getCurrentTab,
   getDisplayTitle,
   getToolsBreadcrumbs,
 } from 'router/Tools'
-import MarkupService from 'markup/application/MarkupService'
-import SignService from 'signs/application/SignService'
-import WordService from 'dictionary/application/WordService'
-import BibliographyService from 'bibliography/application/BibliographyService'
-import AfoRegisterService from 'afo-register/application/AfoRegisterService'
-import RealiaService from 'realia/application/RealiaService'
-import FragmentService from 'fragmentarium/application/FragmentService'
-import DossiersService from 'dossiers/application/DossiersService'
+import { renderTools, toolsServiceProps } from 'router/Tools.testSupport'
+import {
+  expectToolsContentPagesMocked,
+  type ToolsContentMockName,
+} from 'router/Tools.contentMocks.testSupport'
 import { setReducedMotionMatchMedia } from 'test-support/matchMedia'
 
 jest.mock('router/compat', () => ({
@@ -21,84 +17,45 @@ jest.mock('router/compat', () => ({
   useHistory: () => ({ push: jest.fn() }),
 }))
 
-jest.mock('signs/ui/search/Signs', () => ({
-  __esModule: true,
-  default: () => <div>Signs Mock</div>,
-}))
+function mockToolsContent(name: ToolsContentMockName): unknown {
+  return jest
+    .requireActual('router/Tools.contentMocks.testSupport')
+    .toolsContentMock(name)
+}
 
-jest.mock('dictionary/ui/search/Dictionary', () => ({
-  __esModule: true,
-  default: () => <div>Dictionary Mock</div>,
-}))
-
-jest.mock('bibliography/ui/BibliographyReferencesContent', () => ({
-  __esModule: true,
-  default: () => <div>Bibliography References Mock</div>,
-}))
-
-jest.mock('afo-register/ui/AfoRegisterSearchPage', () => ({
-  __esModule: true,
-  default: () => <div>AfO-Register Mock</div>,
-}))
-
-jest.mock('realia/ui/RealiaSearchPage', () => ({
-  __esModule: true,
-  default: () => <div>Realia Mock</div>,
-}))
-
-jest.mock('dossiers/ui/DossiersSearchPage', () => ({
-  __esModule: true,
-  default: () => <div>Dossiers Mock</div>,
-}))
-
-jest.mock('fragmentarium/ui/GenresPage', () => ({
-  __esModule: true,
-  default: () => <div>Genres Mock</div>,
-}))
-
-jest.mock('chronology/ui/DateConverter/DateConverterForm', () => ({
-  __esModule: true,
-  default: () => <div>Date Converter Form Mock</div>,
-  AboutDateConverter: () => <div>About Date Converter Mock</div>,
-}))
-
-jest.mock('chronology/ui/Kings/BrinkmanKingsTable', () => ({
-  __esModule: true,
-  default: () => <div>Kings Mock</div>,
-}))
-
-jest.mock('signs/ui/CuneiformConverter/CuneiformConverterForm', () => ({
-  __esModule: true,
-  default: () => <div>Cuneiform Converter Mock</div>,
-}))
+jest.mock('signs/ui/search/Signs', () => mockToolsContent('signs'))
+jest.mock('dictionary/ui/search/Dictionary', () =>
+  mockToolsContent('dictionary'),
+)
+jest.mock('bibliography/ui/BibliographyReferencesContent', () =>
+  mockToolsContent('references'),
+)
+jest.mock('afo-register/ui/AfoRegisterSearchPage', () =>
+  mockToolsContent('afoRegister'),
+)
+jest.mock('realia/ui/RealiaSearchPage', () => mockToolsContent('realia'))
+jest.mock('dossiers/ui/DossiersSearchPage', () => mockToolsContent('dossiers'))
+jest.mock('fragmentarium/ui/GenresPage', () => mockToolsContent('genres'))
+jest.mock('chronology/ui/DateConverter/DateConverterForm', () =>
+  mockToolsContent('dateConverter'),
+)
+jest.mock('chronology/ui/Kings/BrinkmanKingsTable', () =>
+  mockToolsContent('kings'),
+)
+jest.mock('signs/ui/CuneiformConverter/CuneiformConverterForm', () =>
+  mockToolsContent('cuneiformConverter'),
+)
+jest.mock('map/MapTab', () => mockToolsContent('map'))
 
 describe('Tools routes', () => {
-  it('syncs selected tab when activeTab prop changes', () => {
-    const props = {
-      markupService: {} as MarkupService,
-      signService: {} as SignService,
-      wordService: {} as WordService,
-      bibliographyService: {} as BibliographyService,
-      afoRegisterService: {} as AfoRegisterService,
-      realiaService: {} as RealiaService,
-      dossiersService: {} as DossiersService,
-      fragmentService: {} as FragmentService,
-      activeTab: 'signs' as Parameters<typeof Tools>[0]['activeTab'],
-    }
+  it('stubs every tools content page', expectToolsContentPagesMocked)
 
-    const { rerender } = render(
-      <MemoryRouter>
-        <Tools {...props} />
-      </MemoryRouter>,
-    )
+  it('syncs selected tab when activeTab prop changes', () => {
+    const { rerender } = renderTools('signs')
 
     expect(screen.getByText('Signs Mock')).toBeInTheDocument()
 
-    rerender(
-      <MemoryRouter>
-        <Tools {...props} activeTab="dictionary" />
-      </MemoryRouter>,
-    )
+    rerender(<Tools {...toolsServiceProps()} activeTab="dictionary" />)
 
     expect(screen.getByText('Dictionary Mock')).toBeInTheDocument()
   })
@@ -112,20 +69,7 @@ describe('Tools routes', () => {
         scrollIntoView,
       } as unknown as HTMLElement)
 
-    render(
-      <MemoryRouter initialEntries={['/tools#target-section']}>
-        <Tools
-          markupService={{} as MarkupService}
-          signService={{} as SignService}
-          wordService={{} as WordService}
-          bibliographyService={{} as BibliographyService}
-          afoRegisterService={{} as AfoRegisterService}
-          realiaService={{} as RealiaService}
-          dossiersService={{} as DossiersService}
-          fragmentService={{} as FragmentService}
-        />
-      </MemoryRouter>,
-    )
+    renderTools(undefined, undefined, '/tools#target-section')
 
     jest.runAllTimers()
     expect(getElementByIdSpy).toHaveBeenCalledWith('target-section')
@@ -141,20 +85,7 @@ describe('Tools routes', () => {
       .spyOn(document, 'getElementById')
       .mockReturnValue(null)
 
-    render(
-      <MemoryRouter initialEntries={['/tools#missing-section']}>
-        <Tools
-          markupService={{} as MarkupService}
-          signService={{} as SignService}
-          wordService={{} as WordService}
-          bibliographyService={{} as BibliographyService}
-          afoRegisterService={{} as AfoRegisterService}
-          realiaService={{} as RealiaService}
-          dossiersService={{} as DossiersService}
-          fragmentService={{} as FragmentService}
-        />
-      </MemoryRouter>,
-    )
+    renderTools(undefined, undefined, '/tools#missing-section')
 
     jest.runAllTimers()
     expect(getElementByIdSpy).toHaveBeenCalledWith('missing-section')
@@ -175,20 +106,7 @@ describe('Tools routes', () => {
       } as unknown as HTMLElement)
 
     try {
-      render(
-        <MemoryRouter initialEntries={['/tools#target-section']}>
-          <Tools
-            markupService={{} as MarkupService}
-            signService={{} as SignService}
-            wordService={{} as WordService}
-            bibliographyService={{} as BibliographyService}
-            afoRegisterService={{} as AfoRegisterService}
-            realiaService={{} as RealiaService}
-            dossiersService={{} as DossiersService}
-            fragmentService={{} as FragmentService}
-          />
-        </MemoryRouter>,
-      )
+      renderTools(undefined, undefined, '/tools#target-section')
 
       jest.runAllTimers()
       expect(scrollIntoView).toHaveBeenCalledWith({ behavior: 'auto' })

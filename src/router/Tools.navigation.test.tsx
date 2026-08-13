@@ -3,6 +3,10 @@ import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import Tools from 'router/Tools'
 import { renderTools, toolsServiceProps } from 'router/Tools.testSupport'
+import {
+  expectToolsContentPagesMocked,
+  type ToolsContentMockName,
+} from 'router/Tools.contentMocks.testSupport'
 
 const mockHistoryPush = jest.fn()
 jest.mock('router/compat', () => ({
@@ -10,75 +14,39 @@ jest.mock('router/compat', () => ({
   useHistory: () => ({ push: mockHistoryPush }),
 }))
 
-jest.mock('signs/ui/search/Signs', () => ({
-  __esModule: true,
-  default: jest.requireActual('router/Tools.contentMocks.testSupport')
-    .SignsMock,
-}))
+function mockToolsContent(name: ToolsContentMockName): unknown {
+  return jest
+    .requireActual('router/Tools.contentMocks.testSupport')
+    .toolsContentMock(name)
+}
 
-jest.mock('dictionary/ui/search/Dictionary', () => ({
-  __esModule: true,
-  default: jest.requireActual('router/Tools.contentMocks.testSupport')
-    .DictionaryMock,
-}))
-
-jest.mock('bibliography/ui/BibliographyReferencesContent', () => ({
-  __esModule: true,
-  default: jest.requireActual('router/Tools.contentMocks.testSupport')
-    .BibliographyReferencesMock,
-}))
-
-jest.mock('afo-register/ui/AfoRegisterSearchPage', () => ({
-  __esModule: true,
-  default: jest.requireActual('router/Tools.contentMocks.testSupport')
-    .AfoRegisterMock,
-}))
-
-jest.mock('realia/ui/RealiaSearchPage', () => ({
-  __esModule: true,
-  default: jest.requireActual('router/Tools.contentMocks.testSupport')
-    .RealiaMock,
-}))
-
-jest.mock('dossiers/ui/DossiersSearchPage', () => ({
-  __esModule: true,
-  default: jest.requireActual('router/Tools.contentMocks.testSupport')
-    .DossiersMock,
-}))
-
-jest.mock('fragmentarium/ui/GenresPage', () => ({
-  __esModule: true,
-  default: jest.requireActual('router/Tools.contentMocks.testSupport')
-    .GenresMock,
-}))
-
-jest.mock('chronology/ui/DateConverter/DateConverterForm', () => ({
-  __esModule: true,
-  default: jest.requireActual('router/Tools.contentMocks.testSupport')
-    .DateConverterFormMock,
-  AboutDateConverter: jest.requireActual(
-    'router/Tools.contentMocks.testSupport',
-  ).AboutDateConverterMock,
-}))
-
-jest.mock('chronology/ui/Kings/BrinkmanKingsTable', () => ({
-  __esModule: true,
-  default: jest.requireActual('router/Tools.contentMocks.testSupport')
-    .KingsMock,
-}))
-
-jest.mock('signs/ui/CuneiformConverter/CuneiformConverterForm', () => ({
-  __esModule: true,
-  default: jest.requireActual('router/Tools.contentMocks.testSupport')
-    .CuneiformConverterMock,
-}))
-
-jest.mock('map/MapTab', () => ({
-  __esModule: true,
-  default: jest.requireActual('router/Tools.contentMocks.testSupport').MapMock,
-}))
+jest.mock('signs/ui/search/Signs', () => mockToolsContent('signs'))
+jest.mock('dictionary/ui/search/Dictionary', () =>
+  mockToolsContent('dictionary'),
+)
+jest.mock('bibliography/ui/BibliographyReferencesContent', () =>
+  mockToolsContent('references'),
+)
+jest.mock('afo-register/ui/AfoRegisterSearchPage', () =>
+  mockToolsContent('afoRegister'),
+)
+jest.mock('realia/ui/RealiaSearchPage', () => mockToolsContent('realia'))
+jest.mock('dossiers/ui/DossiersSearchPage', () => mockToolsContent('dossiers'))
+jest.mock('fragmentarium/ui/GenresPage', () => mockToolsContent('genres'))
+jest.mock('chronology/ui/DateConverter/DateConverterForm', () =>
+  mockToolsContent('dateConverter'),
+)
+jest.mock('chronology/ui/Kings/BrinkmanKingsTable', () =>
+  mockToolsContent('kings'),
+)
+jest.mock('signs/ui/CuneiformConverter/CuneiformConverterForm', () =>
+  mockToolsContent('cuneiformConverter'),
+)
+jest.mock('map/MapTab', () => mockToolsContent('map'))
 
 describe('Tools navigation', () => {
+  it('stubs every tools content page', expectToolsContentPagesMocked)
+
   it('updates selected tab when nav item is clicked', async () => {
     renderTools()
     const dictionaryLink = screen.getByRole('link', {

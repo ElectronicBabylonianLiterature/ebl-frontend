@@ -27,6 +27,12 @@ function filterProvenances(
     : provenances
 }
 
+function getEmptyStateMessage(filter: string): string {
+  return filter.trim()
+    ? `No findspots match “${filter}”.`
+    : 'No findspot locations are available.'
+}
+
 export default function MapTab({ fragmentService }: Props): JSX.Element {
   const mapContainer = useRef<HTMLDivElement>(null)
   const [provenances, setProvenances] = useState<
@@ -101,7 +107,7 @@ export default function MapTab({ fragmentService }: Props): JSX.Element {
         </Alert>
       ) : null}
       {filteredProvenances && filteredProvenances.length === 0 ? (
-        <Alert variant="info">No findspots match &ldquo;{filter}&rdquo;.</Alert>
+        <Alert variant="info">{getEmptyStateMessage(filter)}</Alert>
       ) : null}
       <div
         ref={mapContainer}

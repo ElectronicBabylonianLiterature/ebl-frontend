@@ -10,10 +10,8 @@ import type {
 } from 'maplibre-gl'
 import { ProvenanceRecord } from 'fragmentarium/domain/Provenance'
 import { createFindspotPopup } from 'map/createFindspotPopup'
-import {
-  getFeaturePointCoordinates,
-  getPopupProperties,
-} from 'map/findspotPopupProperties'
+import { getPopupProperties } from 'map/findspotPopupProperties'
+import { getFeaturePointCoordinates } from 'map/pointCoordinates'
 import {
   INTERACTIVE_LAYER_IDS,
   resetPointerCursor,
@@ -65,17 +63,16 @@ function expandCluster(
     number,
     number,
   ]
+  const easeToClusterCenter = (zoom?: number): void => {
+    if (isActive()) {
+      map.easeTo(zoom === undefined ? { center } : { center, zoom })
+    }
+  }
 
   source
     .getClusterExpansionZoom(clusterId)
-    .then((zoom) => {
-      if (isActive()) {
-        map.easeTo({ center, zoom })
-      }
-    })
-    .catch(() => {
-      if (!isActive()) return
-    })
+    .then(easeToClusterCenter)
+    .catch(() => easeToClusterCenter())
 }
 
 function openFindspotPopup(map: MapLibreMap, feature: MapGeoJSONFeature): void {
@@ -137,7 +134,10 @@ export default function useFindspotMap(
     let hasStyleLoaded = false
     const handleLoad = () => {
       hasStyleLoaded = true
-      initializeFindspotSource(map, latestProvenancesRef.current!)
+      const loadedProvenances = latestProvenancesRef.current
+      if (loadedProvenances) {
+        initializeFindspotSource(map, loadedProvenances)
+      }
     }
     const handleClick = (event: MapMouseEvent) =>
       handleMapClick(map, event, () => isActive)

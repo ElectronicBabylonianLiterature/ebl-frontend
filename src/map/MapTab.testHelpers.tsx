@@ -1,65 +1,9 @@
 import Bluebird from 'bluebird'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import { ProvenanceRecord } from 'fragmentarium/domain/Provenance'
-import {
-  deferMapLoad,
-  mockAddControl,
-  mockAddLayer,
-  mockAddSource,
-  mockBoundsExtend,
-  mockCanvas,
-  mockEaseTo,
-  mockFitBounds,
-  mockGetCanvas,
-  mockGetClusterExpansionZoom,
-  mockGetSource,
-  mockIsStyleLoaded,
-  mockMapInstance,
-  mockOff,
-  mockOn,
-  mockPopupAddTo,
-  mockQueryRenderedFeatures,
-  mockRemove,
-  mockSetData,
-  mockSetDOMContent,
-  mockSetHTML,
-  mockSetLngLat,
-  resetMapMocks,
-  triggerMapEvent,
-  type MockErrorEvent,
-  type MockMapEvent,
-} from 'map/testSupport/mapLibreMock'
-import { makeProvenance } from 'map/testFixtures/provenance'
 
-export {
-  deferMapLoad,
-  makeProvenance,
-  mockAddControl,
-  mockAddLayer,
-  mockAddSource,
-  mockBoundsExtend,
-  mockCanvas,
-  mockEaseTo,
-  mockFitBounds,
-  mockGetCanvas,
-  mockGetClusterExpansionZoom,
-  mockGetSource,
-  mockIsStyleLoaded,
-  mockMapInstance,
-  mockOff,
-  mockOn,
-  mockPopupAddTo,
-  mockQueryRenderedFeatures,
-  mockRemove,
-  mockSetData,
-  mockSetDOMContent,
-  mockSetHTML,
-  mockSetLngLat,
-  resetMapMocks,
-  triggerMapEvent,
-  type MockErrorEvent,
-  type MockMapEvent,
-}
+export * from 'map/testSupport/mapLibreMock'
+export { makeProvenance } from 'map/testFixtures/provenance'
 
 export function makeFragmentService(
   provenances: readonly ProvenanceRecord[],

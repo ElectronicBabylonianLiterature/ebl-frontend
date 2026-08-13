@@ -1,8 +1,5 @@
 import type { MapGeoJSONFeature } from 'maplibre-gl'
-import {
-  getFeaturePointCoordinates,
-  getPopupProperties,
-} from 'map/findspotPopupProperties'
+import { getPopupProperties } from 'map/findspotPopupProperties'
 
 function feature(
   overrides: Partial<MapGeoJSONFeature> = {},
@@ -21,20 +18,6 @@ function feature(
 }
 
 describe('findspot popup properties', () => {
-  it('gets valid point coordinates', () => {
-    expect(getFeaturePointCoordinates(feature())).toEqual([44.42, 32.542])
-  })
-
-  it.each([
-    ['non-point geometry', { type: 'LineString', coordinates: [] }],
-    ['non-finite longitude', { type: 'Point', coordinates: [NaN, 32.542] }],
-    ['non-finite latitude', { type: 'Point', coordinates: [44.42, NaN] }],
-  ])('rejects %s', (_label, geometry) => {
-    expect(
-      getFeaturePointCoordinates(feature({ geometry } as never)),
-    ).toBeNull()
-  })
-
   it('builds popup properties from previously derived coordinates', () => {
     expect(getPopupProperties(feature(), [44.42, 32.542])).toEqual({
       name: 'Babylon',
