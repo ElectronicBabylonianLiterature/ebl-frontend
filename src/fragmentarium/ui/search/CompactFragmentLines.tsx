@@ -99,7 +99,7 @@ export default function CompactFragmentLines({
       <tbody>
         {visibleLines.map((line, index) => (
           <tr key={`${line.number}:${line.prefix}:${index}`}>
-            <td className="fragment-lines-with-lemma__line-number">
+            <td className="fragment-query-preview__line-number">
               {line.prefix || line.number}
             </td>
             <td className="fragment-query-preview__line">

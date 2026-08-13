@@ -21,7 +21,8 @@ export function getRequestedPaginationIndex(
       ? Number.NaN
       : Number(paginationIndex)
 
-  return Number.isInteger(parsedPaginationIndex) && parsedPaginationIndex >= 0
+  return Number.isSafeInteger(parsedPaginationIndex) &&
+    parsedPaginationIndex >= 0
     ? parsedPaginationIndex
     : undefined
 }

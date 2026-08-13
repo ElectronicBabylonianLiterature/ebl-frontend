@@ -1,5 +1,6 @@
 import {
   createPagedFragmentQuery,
+  getRequestedPaginationIndex,
   getValidatedPageSize,
   isLineQuery,
   parseSearchCriteria,
@@ -39,6 +40,36 @@ describe('parseSearchPagination', () => {
       )
     },
   )
+})
+
+describe('getRequestedPaginationIndex safe-integer boundary', () => {
+  it('accepts Number.MAX_SAFE_INTEGER', () => {
+    expect(
+      getRequestedPaginationIndex('?paginationIndex=9007199254740991'),
+    ).toEqual(Number.MAX_SAFE_INTEGER)
+  })
+
+  it('rejects the first unsafe integer (2^53)', () => {
+    expect(
+      getRequestedPaginationIndex('?paginationIndex=9007199254740992'),
+    ).toBeUndefined()
+  })
+
+  it('rejects values far beyond the safe-integer range', () => {
+    expect(
+      getRequestedPaginationIndex('?paginationIndex=999999999999999999999'),
+    ).toBeUndefined()
+  })
+
+  it('still rejects negative, fractional and non-numeric values', () => {
+    expect(getRequestedPaginationIndex('?paginationIndex=-1')).toBeUndefined()
+    expect(getRequestedPaginationIndex('?paginationIndex=1.5')).toBeUndefined()
+    expect(getRequestedPaginationIndex('?paginationIndex=abc')).toBeUndefined()
+  })
+
+  it('still accepts an ordinary safe page index', () => {
+    expect(getRequestedPaginationIndex('?paginationIndex=2')).toEqual(2)
+  })
 })
 
 describe('getValidatedPageSize', () => {

@@ -86,6 +86,7 @@ export default function PaginationItems({
         index,
       ),
     })
+    setPageJump('')
   }
 
   return (
@@ -130,6 +131,7 @@ export default function PaginationItems({
             min={1}
             onChange={(event) => setPageJump(event.currentTarget.value)}
             placeholder="Page"
+            required
             size="sm"
             type="number"
             value={pageJump}

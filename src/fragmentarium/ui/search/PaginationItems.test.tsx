@@ -156,15 +156,17 @@ describe('PaginationItems', () => {
     expect(screen.getByLabelText('Results per page')).toHaveValue('25')
   })
 
-  it('jumps directly to a requested page', async () => {
+  it('jumps directly to a requested page and clears the input afterwards', async () => {
     renderPaginationItems(0, true, '/library/search/?number=K.1')
 
-    await userEvent.type(screen.getByLabelText('Go to page'), '4')
+    const pageJumpInput = screen.getByLabelText('Go to page')
+    await userEvent.type(pageJumpInput, '4')
     await userEvent.click(screen.getByText('Go'))
 
     expect(mockHistoryPush).toHaveBeenLastCalledWith({
       search: 'number=K.1&paginationIndex=3',
     })
+    expect(pageJumpInput).toHaveValue(null)
   })
 
   it('ignores invalid and current page jump requests', async () => {
@@ -177,6 +179,18 @@ describe('PaginationItems', () => {
     await userEvent.clear(screen.getByLabelText('Go to page'))
     await userEvent.type(screen.getByLabelText('Go to page'), '3')
     await userEvent.click(screen.getByText('Go'))
+    expect(mockHistoryPush).not.toHaveBeenCalled()
+  })
+
+  it('requires the page-jump input and rejects an empty submission', async () => {
+    renderPaginationItems(0, true, '/library/search/?number=K.1')
+
+    const pageJumpInput = screen.getByLabelText('Go to page')
+    expect(pageJumpInput).toBeRequired()
+    expect(pageJumpInput).toHaveAttribute('min', '1')
+
+    await userEvent.click(screen.getByText('Go'))
+
     expect(mockHistoryPush).not.toHaveBeenCalled()
   })
 })
