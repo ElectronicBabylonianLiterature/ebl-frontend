@@ -11,7 +11,7 @@ import {
   createLemmaMap,
   LineLemmasContext,
 } from './LineLemmasContext'
-import { AlignmentPopover } from './WordInfo'
+import { AlignmentPopover } from './AlignmentPopover'
 import {
   highlightIndexSetterMock,
   lemmatizableToken,
