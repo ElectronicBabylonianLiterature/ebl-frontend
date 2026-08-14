@@ -122,6 +122,7 @@ export default class Reference {
   setDocument(document_: BibliographyEntry): Reference {
     return produce(this, (draft: Draft<Reference>) => {
       draft.document = document_
+      draft.referenceId = ''
     })
   }
 

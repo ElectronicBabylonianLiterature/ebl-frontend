@@ -16,6 +16,12 @@ export function hasUnsupportedFragmentCardSummary(
   return queryItem.cardSummary?.type === 'UnsupportedFragmentCardSummary'
 }
 
+export function hasPrefetchableFullFragment(
+  queryItem: QueryItem,
+): queryItem is RenderReadyQueryItem {
+  return Boolean(queryItem.fragment) && queryItem.cardSummary === undefined
+}
+
 export function hasRenderReadyFragment(
   queryItem: QueryItem,
   options: { includeLatestRecord?: boolean } = {},

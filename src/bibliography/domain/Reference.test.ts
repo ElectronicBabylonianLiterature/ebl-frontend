@@ -70,16 +70,43 @@ describe('reference identity', () => {
       'setLinesCited',
       (reference: Reference) => reference.setLinesCited(['2.']),
     ],
-    [
-      'setDocument',
-      (reference: Reference) =>
-        reference.setDocument(bibliographyEntryFactory.build()),
-    ],
   ])('%s preserves compact identity on the produced copy', (_name, copy) => {
     const copied = copy(compactReference)
 
     expect(copied).not.toBe(compactReference)
     expect(copied.id).toEqual('RN52')
+  })
+
+  test('setDocument adopts the newly selected document id', () => {
+    const entry = bibliographyEntryFactory.build()
+    const copied = compactReference.setDocument(entry)
+
+    expect(copied).not.toBe(compactReference)
+    expect(copied.referenceId).toEqual('')
+    expect(copied.id).toEqual(entry.id)
+    expect(compactReference.id).toEqual('RN52')
+  })
+
+  test('setters chained after setDocument keep the new document id', () => {
+    const entry = bibliographyEntryFactory.build()
+    const copied = compactReference
+      .setDocument(entry)
+      .setPages('99')
+      .setNotes('changed')
+      .setType('COPY')
+      .setLinesCited(['2.'])
+
+    expect(copied.id).toEqual(entry.id)
+  })
+
+  test('setDocument replaces an already resolved document id', () => {
+    const entry = bibliographyEntryFactory.build()
+    const replacement = bibliographyEntryFactory.build()
+    const reference = new Reference('COPY', '', '', [], entry).withIdentity(
+      entry.id,
+    )
+
+    expect(reference.setDocument(replacement).id).toEqual(replacement.id)
   })
 
   test('chained copies keep distinct ids for same-type compact references', () => {

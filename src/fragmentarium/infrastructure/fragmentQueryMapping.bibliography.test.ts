@@ -8,6 +8,8 @@ import {
 } from 'test-support/fragment-query-summary'
 import { summaryPreviewLines } from 'test-support/fragment-query-preview'
 import Reference from 'bibliography/domain/Reference'
+import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
+import serializeReference from 'bibliography/application/serializeReference'
 import { BibliographyDocumentsDto } from 'fragmentarium/infrastructure/fragmentQueryMapping'
 
 function summaryReferences(
@@ -55,6 +57,21 @@ describe('summary bibliography join', () => {
     expect(first.id).toEqual('RN52')
     expect(first.document.id).toEqual('CANONICAL-1')
     expect(first.primaryAuthor).toEqual('Borger')
+  })
+
+  it('serializes the replacement document id after an explicit edit', () => {
+    const [first] = summaryReferences({
+      RN52: { ...borgerDocument, id: 'CANONICAL-1' },
+      RN54: seriesDocument,
+    })
+    const replacement = new BibliographyEntry({
+      ...seriesDocument,
+      id: 'RN99',
+    })
+
+    expect(serializeReference(first.setDocument(replacement)).id).toEqual(
+      'RN99',
+    )
   })
 
   it('keeps distinct grouping keys for same-type references', () => {
