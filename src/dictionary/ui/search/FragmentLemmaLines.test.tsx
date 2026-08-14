@@ -144,10 +144,11 @@ describe('Show Library entries', () => {
     renderFragmentLemmaLines()
 
     expect(await screen.findByText(previewSubsetFragment.number)).toBeVisible()
-    expect(screen.getByText('1.')).toBeVisible()
-    expect(screen.getByText('kur')).toHaveClass(
-      'fragment-query-preview__token--highlight',
-    )
+    expect(
+      screen.getByText('kur', {
+        selector: '.Transliteration__Word--highlight',
+      }),
+    ).toBeInTheDocument()
     expect(screen.getByText('And 3 more')).toBeVisible()
     expect(fragmentService.find).not.toHaveBeenCalled()
   })

@@ -41,7 +41,6 @@ export default class Reference {
   static readonly DEFAULT_TYPE: ReferenceType = 'DISCUSSION'
 
   readonly referenceId: string = ''
-  readonly isCompactSummary: boolean = false
 
   constructor(
     readonly type: ReferenceType = Reference.DEFAULT_TYPE,
@@ -125,10 +124,9 @@ export default class Reference {
     })
   }
 
-  withIdentity(referenceId: string, isCompactSummary = false): Reference {
+  withIdentity(referenceId: string): Reference {
     return produce(this, (draft: Draft<Reference>) => {
       draft.referenceId = referenceId
-      draft.isCompactSummary = isCompactSummary
     })
   }
 

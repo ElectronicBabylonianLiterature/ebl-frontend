@@ -1,6 +1,6 @@
 import { fragment, fragmentDto } from 'test-support/test-fragment'
 import { FragmentQuery } from 'query/FragmentQuery'
-import { compactPreviewLines } from 'test-support/fragment-query-summary'
+import { summaryPreviewLines } from 'test-support/fragment-query-preview'
 import {
   apiClient,
   createSummaryItemDto,
@@ -41,11 +41,8 @@ describe('FragmentRepository query summary items', () => {
     const result = await fragmentRepository.query({ lemmas: 'kur' })
     const item = result.items[0]
 
-    expect(item.cardSummary).toEqual({
-      type: 'FragmentCardSummary',
-      matchingLinePreview: compactPreviewLines,
-    })
-    expect(item.fragment?.text.lines).toHaveLength(0)
+    expect(item.cardSummary).toEqual({ type: 'FragmentCardSummary' })
+    expect(item.fragment?.text.lines).toHaveLength(summaryPreviewLines.length)
   })
 
   it('maps summary items into prefetched fragments and thumbnail paths', async () => {
@@ -65,11 +62,8 @@ describe('FragmentRepository query summary items', () => {
       fragment.number,
     )
     expect(item.fragment?.archaeology?.site?.name).toEqual('Sippar')
-    expect(item.cardSummary).toEqual({
-      type: 'FragmentCardSummary',
-      matchingLinePreview: compactPreviewLines,
-    })
-    expect(item.fragment?.text.lines).toHaveLength(0)
+    expect(item.cardSummary).toEqual({ type: 'FragmentCardSummary' })
+    expect(item.fragment?.text.lines).toHaveLength(summaryPreviewLines.length)
   })
 
   it('maps summary items with empty matching lines and an empty preview', async () => {
@@ -89,10 +83,7 @@ describe('FragmentRepository query summary items', () => {
     expect(item.thumbnailPath).toBeNull()
     expect(item.fragment?.number).toEqual(fragment.number)
     expect(item.fragment?.text.lines).toHaveLength(0)
-    expect(item.cardSummary).toEqual({
-      type: 'FragmentCardSummary',
-      matchingLinePreview: [],
-    })
+    expect(item.cardSummary).toEqual({ type: 'FragmentCardSummary' })
   })
 
   it('keeps old-shape items without summary metadata on the hydration path', async () => {

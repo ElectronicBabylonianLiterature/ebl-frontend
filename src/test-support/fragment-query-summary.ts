@@ -1,75 +1,17 @@
 import { ReferenceDto } from 'bibliography/domain/referenceDto'
-import {
-  FragmentCardSummary,
-  FragmentQueryPreviewLine,
-  QueryItem,
-} from 'query/QueryResult'
+import { CslData } from 'bibliography/domain/BibliographyEntry'
+import { FragmentCardSummary } from 'query/QueryResult'
+import { BibliographyDocumentsDto } from 'fragmentarium/infrastructure/fragmentQueryMapping'
+import { summaryPreviewLines } from 'test-support/fragment-query-preview'
 
-export const SUMMARY_LEMMA_ID = 'testWordId'
-
-export const compactPreviewLines: readonly FragmentQueryPreviewLine[] = [
-  {
-    number: 1,
-    prefix: '1.',
-    text: 'kur ša',
-    tokens: [
-      {
-        type: 'Word',
-        value: 'kur',
-        cleanValue: 'kur',
-        uniqueLemma: [SUMMARY_LEMMA_ID],
-      },
-      {
-        type: 'Word',
-        value: 'ša',
-        cleanValue: 'ša',
-        uniqueLemma: [],
-      },
-    ],
-  },
-  {
-    number: 2,
-    prefix: '2.',
-    text: 'ana bīti',
-    tokens: [
-      {
-        type: 'Word',
-        value: 'ana',
-        cleanValue: 'ana',
-        uniqueLemma: [],
-      },
-      {
-        type: 'Word',
-        value: 'bīti',
-        cleanValue: 'bīti',
-        uniqueLemma: [],
-      },
-    ],
-  },
-]
+export { SUMMARY_LEMMA_ID } from 'test-support/fragment-query-preview'
 
 export const compactMatchingLinePreview = {
-  lines: compactPreviewLines,
+  lines: summaryPreviewLines,
 }
 
-export function cardSummaryLines(
-  queryItem: QueryItem,
-): readonly FragmentQueryPreviewLine[] {
-  if (queryItem.cardSummary?.type !== 'FragmentCardSummary') {
-    throw new Error(
-      `Expected a FragmentCardSummary for ${queryItem.museumNumber}.`,
-    )
-  }
-  return queryItem.cardSummary.matchingLinePreview
-}
-
-export function createFragmentCardSummary(
-  lines: readonly FragmentQueryPreviewLine[] = compactPreviewLines,
-): FragmentCardSummary {
-  return {
-    type: 'FragmentCardSummary',
-    matchingLinePreview: lines,
-  }
+export function createFragmentCardSummary(): FragmentCardSummary {
+  return { type: 'FragmentCardSummary' }
 }
 
 export const productionSummaryReferences: readonly ReferenceDto[] = [
@@ -88,3 +30,28 @@ export const productionSummaryReferences: readonly ReferenceDto[] = [
     linesCited: [],
   },
 ]
+
+export const borgerDocument: CslData = {
+  id: 'RN52',
+  type: 'book',
+  title: 'Handbuch der Keilschriftliteratur',
+  author: [{ family: 'Borger', given: 'Rykle' }],
+  issued: { 'date-parts': [[1957]] },
+  URL: 'https://example.com/borger',
+}
+
+export const seriesDocument: CslData = {
+  id: 'RN54',
+  type: 'book',
+  title: 'Cuneiform Texts',
+  'container-title-short': 'CT',
+  'collection-number': '51',
+  author: [{ family: 'Lambert', given: 'Wilfred' }],
+  issued: { 'date-parts': [[1974]] },
+  DOI: '10.1000/ct51',
+}
+
+export const summaryBibliographyDocuments: BibliographyDocumentsDto = {
+  RN52: borgerDocument,
+  RN54: seriesDocument,
+}

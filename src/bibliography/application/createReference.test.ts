@@ -1,5 +1,5 @@
 import Reference from 'bibliography/domain/Reference'
-import createReference, { createCompactReference } from './createReference'
+import createReference from './createReference'
 import {
   cslDataFactory,
   referenceDtoFactory,
@@ -24,7 +24,7 @@ test('createReference', () => {
   )
 })
 test('preserves the root ID without a bibliography document', () => {
-  const reference = createCompactReference({
+  const reference = createReference({
     id: 'SUMMARY-1',
     type: 'DISCUSSION',
     pages: '4-5',
@@ -37,5 +37,4 @@ test('preserves the root ID without a bibliography document', () => {
   expect(reference.pages).toEqual('4-5')
   expect(reference.notes).toEqual('Summary note')
   expect(reference.linesCited).toEqual(['2.'])
-  expect(reference.isCompactSummary).toBe(true)
 })

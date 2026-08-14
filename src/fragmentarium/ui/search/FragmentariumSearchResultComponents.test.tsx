@@ -12,9 +12,11 @@ import { fragment } from 'test-support/test-fragment'
 import {
   createFragmentCardSummary,
   productionSummaryReferences,
+  summaryBibliographyDocuments,
   SUMMARY_LEMMA_ID,
 } from 'test-support/fragment-query-summary'
-import { createCompactReference } from 'bibliography/application/createReference'
+import { withPreviewLines } from 'test-support/fragment-query-preview'
+import createReference from 'bibliography/application/createReference'
 import { createResearchProject } from 'research-projects/researchProject'
 import DossierRecord from 'dossiers/domain/DossierRecord'
 import { Fragment } from 'fragmentarium/domain/fragment'
@@ -69,7 +71,7 @@ describe('FragmentLines', () => {
         museumNumber: fragment.number,
         matchingLines: [1, 2],
         matchCount: 2,
-        fragment,
+        fragment: withPreviewLines(fragment),
         cardSummary: createFragmentCardSummary(),
         thumbnailPath: null,
       },
@@ -80,11 +82,13 @@ describe('FragmentLines', () => {
     expect(fragmentService.find).not.toHaveBeenCalled()
     expect(screen.queryByLabelText('Spinner')).not.toBeInTheDocument()
     expect(screen.getByText(fragment.number)).toBeInTheDocument()
-    expect(screen.getByText('1.')).toBeVisible()
+    expect(screen.getByText('1')).toBeVisible()
     expect(screen.getByRole('table')).toHaveTextContent('kur ša')
-    expect(screen.getByText('kur')).toHaveClass(
-      'fragment-query-preview__token--highlight',
-    )
+    expect(
+      screen.getByText('kur', {
+        selector: '.Transliteration__Word--highlight',
+      }),
+    ).toBeInTheDocument()
   })
 
   it('renders empty compact previews without hydrating them', () => {
@@ -95,7 +99,7 @@ describe('FragmentLines', () => {
       matchingLines: [],
       matchCount: 0,
       fragment,
-      cardSummary: createFragmentCardSummary([]),
+      cardSummary: createFragmentCardSummary(),
       thumbnailPath: null,
     })
 
@@ -112,7 +116,7 @@ describe('FragmentLines', () => {
       museumNumber: fragment.number,
       matchingLines: [1, 2],
       matchCount: 2,
-      fragment,
+      fragment: withPreviewLines(fragment),
       cardSummary: createFragmentCardSummary(),
       thumbnailPath,
     })
@@ -161,7 +165,12 @@ describe('FragmentLines', () => {
   it('preserves scholarly card fields for production-shaped summaries', async () => {
     const summaryFragment = Fragment.create({
       ...fragment,
-      references: productionSummaryReferences.map(createCompactReference),
+      references: productionSummaryReferences.map((reference) =>
+        createReference({
+          ...reference,
+          document: summaryBibliographyDocuments[reference.id],
+        }),
+      ),
       projects: [createResearchProject('CAIC')],
       dossiers: [{ dossierId: 'D001', isUncertain: false }],
       archaeology: {
@@ -179,7 +188,7 @@ describe('FragmentLines', () => {
         museumNumber: summaryFragment.number,
         matchingLines: [1, 2],
         matchCount: 5,
-        fragment: summaryFragment,
+        fragment: withPreviewLines(summaryFragment),
         cardSummary: createFragmentCardSummary(),
         thumbnailPath,
       },
@@ -201,15 +210,14 @@ describe('FragmentLines', () => {
         'Link to Cuneiform Artefacts of Iraq in Context project',
       ),
     ).toBeVisible()
-    expect(screen.getByText('1.')).toBeVisible()
+    expect(screen.getByText('1')).toBeVisible()
     expect(screen.getByRole('table')).toHaveTextContent('kur ša')
     expect(screen.getByText('And 3 more')).toBeVisible()
-    expect(screen.getByText(/RN52/)).toHaveTextContent(
-      'RN52: 12-13 [l. 1.] [Summary note] (D)',
-    )
     expect(
-      screen.queryByText(/RN52/, { selector: '.reference-popover__citation' }),
-    ).not.toBeInTheDocument()
+      screen.getByText(/Borger/, {
+        selector: '.reference-popover__interactive',
+      }),
+    ).toHaveTextContent('Borger, 1957: 12-13 [l. 1.] (D)')
     expect(
       await screen.findByAltText('Preview of Test.Fragment'),
     ).toHaveAttribute('src', `http://example.com${thumbnailPath}`)
@@ -224,7 +232,7 @@ describe('FragmentLines', () => {
         museumNumber: fragment.number,
         matchingLines: [1, 2],
         matchCount: 7,
-        fragment,
+        fragment: withPreviewLines(fragment),
         cardSummary: createFragmentCardSummary(),
         thumbnailPath: null,
       },

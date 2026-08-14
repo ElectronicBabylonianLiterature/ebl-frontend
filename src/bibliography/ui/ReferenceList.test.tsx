@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react'
 
 import ReferenceList from './ReferenceList'
 import { referenceFactory } from 'test-support/bibliography-fixtures'
-import { createCompactReference } from 'bibliography/application/createReference'
+import createReference from 'bibliography/application/createReference'
 import { productionSummaryReferences } from 'test-support/fragment-query-summary'
 
 it('List all references', () => {
@@ -19,7 +19,7 @@ it('Displays placeholder if no references', async () => {
   expect(container).toHaveTextContent('No references')
 })
 it('keeps distinct id-only references in separate groups', () => {
-  const references = productionSummaryReferences.map(createCompactReference)
+  const references = productionSummaryReferences.map(createReference)
   render(<ReferenceList references={references} />)
 
   expect(screen.getAllByRole('listitem')).toHaveLength(2)

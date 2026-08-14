@@ -1,23 +1,8 @@
 import { Fragment } from 'fragmentarium/domain/fragment'
 import { TextId } from 'transliteration/domain/text-id'
 
-export interface FragmentQueryPreviewToken {
-  readonly type: string
-  readonly value: string
-  readonly cleanValue: string
-  readonly uniqueLemma: readonly string[]
-}
-
-export interface FragmentQueryPreviewLine {
-  readonly number: number
-  readonly prefix: string
-  readonly text: string
-  readonly tokens: readonly FragmentQueryPreviewToken[]
-}
-
 export interface FragmentCardSummary {
   readonly type: 'FragmentCardSummary'
-  readonly matchingLinePreview: readonly FragmentQueryPreviewLine[]
 }
 
 export interface UnsupportedFragmentCardSummary {

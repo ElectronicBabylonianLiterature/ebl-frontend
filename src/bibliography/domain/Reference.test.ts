@@ -40,13 +40,12 @@ describe('reference identity', () => {
     'note',
     ['1.'],
     new BibliographyEntry(),
-  ).withIdentity('RN52', true)
+  ).withIdentity('RN52')
 
   test('a reference has no identity until one is assigned', () => {
     const reference = new Reference()
 
     expect(reference.referenceId).toEqual('')
-    expect(reference.isCompactSummary).toBe(false)
   })
 
   test('a full reference falls back to its document id', () => {
@@ -56,12 +55,10 @@ describe('reference identity', () => {
     )
 
     expect(reference.id).toEqual(entry.id)
-    expect(reference.isCompactSummary).toBe(false)
   })
 
   test('a compact reference keeps its root id without a document', () => {
     expect(compactReference.id).toEqual('RN52')
-    expect(compactReference.isCompactSummary).toBe(true)
     expect(compactReference.hasCitationMetadata).toBe(false)
   })
 
@@ -83,7 +80,6 @@ describe('reference identity', () => {
 
     expect(copied).not.toBe(compactReference)
     expect(copied.id).toEqual('RN52')
-    expect(copied.isCompactSummary).toBe(true)
   })
 
   test('chained copies keep distinct ids for same-type compact references', () => {
@@ -93,7 +89,7 @@ describe('reference identity', () => {
       '',
       [],
       new BibliographyEntry(),
-    ).withIdentity('RN54', true)
+    ).withIdentity('RN54')
     const groupingKeys = [compactReference, other]
       .map((reference) => reference.setPages('').setLinesCited([]))
       .map((reference) => `${reference.id}-${reference.type}`)

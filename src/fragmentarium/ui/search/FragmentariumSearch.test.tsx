@@ -5,7 +5,14 @@ import {
   FragmentariumSearchHarness,
 } from './FragmentariumSearch.testSupport'
 import { fragmentFactory } from 'test-support/fragment-fixtures'
-import { createFragmentCardSummary } from 'test-support/fragment-query-summary'
+import {
+  createFragmentCardSummary,
+  productionSummaryReferences,
+  summaryBibliographyDocuments,
+} from 'test-support/fragment-query-summary'
+import { withPreviewLines } from 'test-support/fragment-query-preview'
+import createReference from 'bibliography/application/createReference'
+import { Fragment } from 'fragmentarium/domain/fragment'
 
 let harness: FragmentariumSearchHarness
 
@@ -85,10 +92,17 @@ test('renders summary-backed rows without hydrating the fragment', async () => {
 })
 
 test('keeps one bounded query and zero card hydration calls for 50 summaries', async () => {
-  const summaryFragment = fragmentFactory.build({
-    hasPhoto: true,
-    dossiers: [],
-  })
+  const summaryFragment = withPreviewLines(
+    Fragment.create({
+      ...fragmentFactory.build({ hasPhoto: true, dossiers: [] }),
+      references: productionSummaryReferences.map((reference) =>
+        createReference({
+          ...reference,
+          document: summaryBibliographyDocuments[reference.id],
+        }),
+      ),
+    }),
+  )
   const thumbnailPath = '/fragments/summary/thumbnail/small'
   harness.fragmentService.query.mockResolvedValue({
     items: Array.from({ length: 50 }, (_, index) => ({
@@ -117,4 +131,9 @@ test('keeps one bounded query and zero card hydration calls for 50 summaries', a
   expect(harness.fragmentService.findThumbnail).not.toHaveBeenCalled()
   expect(harness.bibliographyService.find).not.toHaveBeenCalled()
   expect(harness.bibliographyService.findMany).not.toHaveBeenCalled()
+  expect(screen.getAllByText(/Borger, 1957/).length).toBeGreaterThan(0)
+  expect(
+    screen.getAllByText('kur', { selector: '.Transliteration__Reading' })
+      .length,
+  ).toEqual(50)
 })

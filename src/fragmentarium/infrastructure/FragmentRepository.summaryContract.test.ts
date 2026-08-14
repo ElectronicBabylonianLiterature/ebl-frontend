@@ -93,10 +93,7 @@ describe('FragmentRepository summary contract drift', () => {
     expect(item.thumbnailPath).toBeNull()
     expect(item.fragment?.number).toEqual(fragment.number)
     expect(item.fragment?.text.lines).toHaveLength(0)
-    expect(item.cardSummary).toEqual({
-      type: 'FragmentCardSummary',
-      matchingLinePreview: [],
-    })
+    expect(item.cardSummary).toEqual({ type: 'FragmentCardSummary' })
   })
 
   it('maps summary metadata with null matchingLinePreview using an empty preview', async () => {
@@ -113,9 +110,6 @@ describe('FragmentRepository summary contract drift', () => {
 
     expect(item.fragment?.number).toEqual(fragment.number)
     expect(item.fragment?.text.lines).toHaveLength(0)
-    expect(item.cardSummary).toEqual({
-      type: 'FragmentCardSummary',
-      matchingLinePreview: [],
-    })
+    expect(item.cardSummary).toEqual({ type: 'FragmentCardSummary' })
   })
 })

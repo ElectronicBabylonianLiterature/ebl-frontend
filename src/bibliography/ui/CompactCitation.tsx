@@ -100,10 +100,7 @@ export default function CompactCitation({ references }: Props): JSX.Element {
     return <></>
   }
 
-  if (
-    primaryReference.isCompactSummary &&
-    !primaryReference.hasCitationMetadata
-  ) {
+  if (!primaryReference.hasCitationMetadata) {
     return <FallbackReferences references={references} />
   }
 

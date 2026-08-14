@@ -6,8 +6,12 @@ import {
   referenceFactory,
 } from 'test-support/bibliography-fixtures'
 
-import { createCompactReference } from 'bibliography/application/createReference'
-import { productionSummaryReferences } from 'test-support/fragment-query-summary'
+import createReference from 'bibliography/application/createReference'
+import {
+  borgerDocument,
+  productionSummaryReferences,
+  seriesDocument,
+} from 'test-support/fragment-query-summary'
 import CompactCitation from './CompactCitation'
 
 test('Shows compact citation', () => {
@@ -88,7 +92,7 @@ test('Shows grouped references', () => {
 })
 
 test('shows an honest non-interactive fallback without citation metadata', () => {
-  const reference = createCompactReference(productionSummaryReferences[0])
+  const reference = createReference(productionSummaryReferences[0])
   render(<CompactCitation references={[reference]} />)
   const fallback = screen.getByText(/RN52/)
 
@@ -101,7 +105,7 @@ test('shows an honest non-interactive fallback without citation metadata', () =>
 })
 
 test('renders an empty compact reference as an honest unknown fallback', () => {
-  const reference = createCompactReference({
+  const reference = createReference({
     id: '',
     type: 'COPY',
     pages: '',
@@ -117,7 +121,7 @@ test('renders an empty compact reference as an honest unknown fallback', () => {
 })
 
 test('renders all available details for grouped compact references', () => {
-  const references = productionSummaryReferences.map(createCompactReference)
+  const references = productionSummaryReferences.map(createReference)
 
   render(<CompactCitation references={references} />)
 
@@ -127,7 +131,7 @@ test('renders all available details for grouped compact references', () => {
 })
 
 test('retains rich citation behavior when a compact reference has metadata', () => {
-  const reference = createCompactReference({
+  const reference = createReference({
     id: 'ROOT-1',
     type: 'EDITION',
     pages: '8',
@@ -154,4 +158,34 @@ test('retains rich citation behavior when a compact reference has metadata', () 
 test('renders no citation when no references are supplied', () => {
   const { container } = render(<CompactCitation references={[]} />)
   expect(container).toBeEmptyDOMElement()
+})
+
+test('renders a summary-joined reference exactly like a full one', () => {
+  const referenceDto = {
+    ...productionSummaryReferences[0],
+    document: borgerDocument,
+  }
+  const summaryRendering = render(
+    <CompactCitation references={[createReference(referenceDto)]} />,
+  ).container.innerHTML
+  const fullRendering = render(
+    <CompactCitation
+      references={[createReference({ ...referenceDto, id: 'RN52' })]}
+    />,
+  ).container.innerHTML
+
+  expect(summaryRendering).toEqual(fullRendering)
+  expect(summaryRendering).toContain('reference-popover__citation')
+})
+
+test('renders a series citation for a joined container document', () => {
+  const reference = createReference({
+    ...productionSummaryReferences[1],
+    type: 'COPY',
+    document: seriesDocument,
+  })
+
+  const { container } = render(<CompactCitation references={[reference]} />)
+
+  expect(container).toHaveTextContent('CT 51, 27 (C)')
 })

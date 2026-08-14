@@ -15,6 +15,7 @@ import { CorpusQueryResult } from 'query/QueryResult'
 import TextService from 'corpus/application/TextService'
 import DossiersService from 'dossiers/application/DossiersService'
 import { createFragmentCardSummary } from 'test-support/fragment-query-summary'
+import { withPreviewLines } from 'test-support/fragment-query-preview'
 import PropTypes from 'prop-types'
 
 jest.mock('fragmentarium/application/FragmentSearchService')
@@ -71,7 +72,7 @@ export function queryResult(lines = 2, hasNextPage = false) {
         museumNumber: fragment.number,
         matchingLines: [1, 2],
         matchCount: lines,
-        fragment,
+        fragment: withPreviewLines(fragment),
         cardSummary: createFragmentCardSummary(),
         thumbnailPath: null,
       },

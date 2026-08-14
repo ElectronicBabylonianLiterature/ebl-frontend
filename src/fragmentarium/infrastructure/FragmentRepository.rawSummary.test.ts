@@ -1,5 +1,5 @@
 import { museumNumberToString } from 'fragmentarium/domain/MuseumNumber'
-import { cardSummaryLines } from 'test-support/fragment-query-summary'
+import { summaryPreviewLines } from 'test-support/fragment-query-preview'
 import {
   apiClient,
   fragmentRepository,
@@ -44,27 +44,7 @@ describe('FragmentRepository raw summary items', () => {
           dossiers: [{ dossierId: 'D001', isUncertain: false }],
           matchingLines: [1, 2, 3, 4],
           matchingLinePreview: {
-            lines: [
-              {
-                number: 1,
-                prefix: '1.',
-                text: 'kur',
-                tokens: [
-                  {
-                    type: 'Word',
-                    value: 'kur',
-                    cleanValue: 'kur',
-                    uniqueLemma: ['raw'],
-                  },
-                ],
-              },
-              {
-                number: 2,
-                prefix: '2.',
-                text: 'ša',
-                tokens: [],
-              },
-            ],
+            lines: summaryPreviewLines,
           },
           matchCount: 4,
           hasPhoto: true,
@@ -93,8 +73,8 @@ describe('FragmentRepository raw summary items', () => {
     expect(item.fragment?.archaeology?.excavationNumber).toEqual('BM.123')
     expect(item.fragment?.archaeology?.site?.name).toEqual('Babylon')
     expect(item.fragment?.script.period.abbreviation).toEqual('LB')
-    expect(item.fragment?.text.lines).toHaveLength(0)
-    expect(cardSummaryLines(item)).toHaveLength(2)
+    expect(item.cardSummary).toEqual({ type: 'FragmentCardSummary' })
+    expect(item.fragment?.text.lines).toHaveLength(summaryPreviewLines.length)
     expect(item.fragment?.references).toHaveLength(1)
     expect(item.fragment?.references[0].id).toEqual('RAW-REF-1')
   })

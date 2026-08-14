@@ -10,11 +10,9 @@ import { Col, Row } from 'react-bootstrap'
 import LemmaQueryLink from '../display/LemmaQueryLink'
 import RenderFragmentLines from 'dictionary/ui/search/RenderFragmentLines'
 import {
-  hasFragmentCardSummary,
   hasRenderReadyFragment,
   hasUnsupportedFragmentCardSummary,
 } from 'query/queryItemRenderReady'
-import CompactFragmentLines from 'fragmentarium/ui/search/CompactFragmentLines'
 import { UnavailableSummaryNote } from 'fragmentarium/ui/search/UnavailableFragmentCard'
 
 export const FRAGMENT_LINES_TO_SHOW = 3
@@ -58,17 +56,6 @@ function QueryItemFragmentLines({
   fragmentService: FragmentService
   lemmaId: string
 }): JSX.Element {
-  if (hasFragmentCardSummary(queryItem)) {
-    return (
-      <CompactFragmentLines
-        lines={queryItem.cardSummary.matchingLinePreview}
-        linesToShow={FRAGMENT_LINES_TO_SHOW}
-        totalLines={queryItem.matchCount}
-        lemmaIds={[lemmaId]}
-      />
-    )
-  }
-
   if (hasRenderReadyFragment(queryItem)) {
     return (
       <RenderFragmentLines
