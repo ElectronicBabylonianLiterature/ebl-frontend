@@ -11,6 +11,7 @@ import { createTransliteration } from 'transliteration/application/dtos'
 import {
   scholarlyPreviewLine,
   SUMMARY_LEMMA_ID,
+  tokenWithClass,
 } from 'test-support/fragment-query-preview'
 import { fragmentDto } from 'test-support/test-fragment'
 
@@ -70,15 +71,17 @@ describe('summary line rendering parity with the full-fragment path', () => {
   })
 
   it.each([
-    ['reading', 'kur', '.Transliteration__Reading'],
-    ['logogram', 'INANNA', '.Transliteration__Logogram'],
-    ['determinative', 'd', '.Transliteration__Determinative'],
+    ['reading', 'kur', 'Transliteration__Reading'],
+    ['logogram', 'INANNA', 'Transliteration__Logogram'],
+    ['determinative', '.d', 'Transliteration__Determinative'],
   ])(
     'renders a %s through the master token components',
-    (_name, text, selector) => {
+    (_name, text, className) => {
       renderLines(summaryQueryItemFragment())
 
-      expect(screen.getByText(text, { selector })).toBeInTheDocument()
+      expect(
+        screen.getByText(tokenWithClass(className, text)),
+      ).toBeInTheDocument()
     },
   )
 
@@ -86,10 +89,9 @@ describe('summary line rendering parity with the full-fragment path', () => {
     renderLines(summaryQueryItemFragment())
 
     expect(
-      screen.getByText('d', {
-        selector: '.Transliteration__Determinative sup',
-      }),
+      screen.getByText(tokenWithClass('Transliteration__glossJoiner', '.')),
     ).toBeInTheDocument()
+    expect(screen.getAllByText('d').length).toBeGreaterThan(0)
   })
 
   it('renders damage brackets for flagged signs', () => {
@@ -103,9 +105,9 @@ describe('summary line rendering parity with the full-fragment path', () => {
     renderLines(summaryQueryItemFragment())
 
     expect(
-      screen.getByText('kur', {
-        selector: '.Transliteration__Word--highlight',
-      }),
+      screen.getByText(
+        tokenWithClass('Transliteration__Word--highlight', 'kur'),
+      ),
     ).toBeInTheDocument()
   })
 

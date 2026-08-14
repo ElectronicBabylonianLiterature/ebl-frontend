@@ -100,7 +100,7 @@ export default function CompactCitation({ references }: Props): JSX.Element {
     return <></>
   }
 
-  if (!primaryReference.hasCitationMetadata) {
+  if (primaryReference.hasUnresolvedDocument) {
     return <FallbackReferences references={references} />
   }
 

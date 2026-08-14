@@ -64,12 +64,22 @@ function isRenderablePreviewLine(line: unknown): line is TextLineDto {
 
 function hasRenderablePreview(dto: Partial<QuerySummaryItemDto>): boolean {
   const preview = dto.matchingLinePreview
+  if (preview === undefined || preview === null) {
+    return true
+  }
   return (
-    preview === undefined ||
-    preview === null ||
-    (Array.isArray(preview.lines) &&
-      preview.lines.every(isRenderablePreviewLine))
+    Array.isArray(preview.lines) && preview.lines.every(isRenderablePreviewLine)
   )
+}
+
+function hasSummaryMetadata(dto: Partial<QuerySummaryItemDto>): boolean {
+  return (
+    typeof dto.description === 'string' && typeof dto.hasPhoto === 'boolean'
+  )
+}
+
+function hasSummaryScript(dto: Partial<QuerySummaryItemDto>): boolean {
+  return typeof dto.script === 'object' && dto.script !== null
 }
 
 export function isQuerySummaryItemDto(
@@ -77,10 +87,8 @@ export function isQuerySummaryItemDto(
 ): dto is QuerySummaryItemDto {
   const candidate = dto as Partial<QuerySummaryItemDto>
   return (
-    typeof candidate.description === 'string' &&
-    typeof candidate.hasPhoto === 'boolean' &&
-    typeof candidate.script === 'object' &&
-    candidate.script !== null &&
+    hasSummaryMetadata(candidate) &&
+    hasSummaryScript(candidate) &&
     hasRenderablePreview(candidate)
   )
 }
@@ -89,12 +97,13 @@ function createSummaryReferences(
   references: readonly ReferenceDto[],
   bibliographyDocuments: BibliographyDocumentsDto,
 ): readonly Reference[] {
-  return references.map((reference) =>
-    createReference({
-      ...reference,
-      document: reference.document ?? bibliographyDocuments[reference.id],
-    }),
-  )
+  return references.map((reference) => {
+    const document = reference.document ?? bibliographyDocuments[reference.id]
+    return createReference({ ...reference, document }).withIdentity(
+      reference.id,
+      !document,
+    )
+  })
 }
 
 function createSummaryArchaeology(

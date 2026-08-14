@@ -19,7 +19,9 @@ it('Displays placeholder if no references', async () => {
   expect(container).toHaveTextContent('No references')
 })
 it('keeps distinct id-only references in separate groups', () => {
-  const references = productionSummaryReferences.map(createReference)
+  const references = productionSummaryReferences.map((reference) =>
+    createReference(reference).withIdentity(reference.id, true),
+  )
   render(<ReferenceList references={references} />)
 
   expect(screen.getAllByRole('listitem')).toHaveLength(2)

@@ -69,9 +69,19 @@ describe('summary bibliography join', () => {
     const [first, second] = summaryReferences({ RN54: seriesDocument })
 
     expect(first.hasCitationMetadata).toBe(false)
+    expect(first.hasUnresolvedDocument).toBe(true)
     expect(first.id).toEqual('RN52')
     expect(first.pages).toEqual('12-13')
     expect(second.hasCitationMetadata).toBe(true)
+    expect(second.hasUnresolvedDocument).toBe(false)
+  })
+
+  it('never marks a resolved document as unresolved', () => {
+    const references = summaryReferences(summaryBibliographyDocuments)
+
+    expect(
+      references.map((reference) => reference.hasUnresolvedDocument),
+    ).toEqual([false, false])
   })
 
   it('degrades safely when the response omits the document map entirely', () => {

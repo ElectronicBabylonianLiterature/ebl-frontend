@@ -15,7 +15,10 @@ import {
   summaryBibliographyDocuments,
   SUMMARY_LEMMA_ID,
 } from 'test-support/fragment-query-summary'
-import { withPreviewLines } from 'test-support/fragment-query-preview'
+import {
+  tokenWithClass,
+  withPreviewLines,
+} from 'test-support/fragment-query-preview'
 import createReference from 'bibliography/application/createReference'
 import { createResearchProject } from 'research-projects/researchProject'
 import DossierRecord from 'dossiers/domain/DossierRecord'
@@ -85,9 +88,9 @@ describe('FragmentLines', () => {
     expect(screen.getByText('1')).toBeVisible()
     expect(screen.getByRole('table')).toHaveTextContent('kur ša')
     expect(
-      screen.getByText('kur', {
-        selector: '.Transliteration__Word--highlight',
-      }),
+      screen.getByText(
+        tokenWithClass('Transliteration__Word--highlight', 'kur'),
+      ),
     ).toBeInTheDocument()
   })
 

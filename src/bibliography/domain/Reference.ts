@@ -41,6 +41,7 @@ export default class Reference {
   static readonly DEFAULT_TYPE: ReferenceType = 'DISCUSSION'
 
   readonly referenceId: string = ''
+  readonly hasUnresolvedDocument: boolean = false
 
   constructor(
     readonly type: ReferenceType = Reference.DEFAULT_TYPE,
@@ -124,9 +125,10 @@ export default class Reference {
     })
   }
 
-  withIdentity(referenceId: string): Reference {
+  withIdentity(referenceId: string, hasUnresolvedDocument = false): Reference {
     return produce(this, (draft: Draft<Reference>) => {
       draft.referenceId = referenceId
+      draft.hasUnresolvedDocument = hasUnresolvedDocument
     })
   }
 

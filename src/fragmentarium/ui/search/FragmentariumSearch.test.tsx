@@ -10,7 +10,10 @@ import {
   productionSummaryReferences,
   summaryBibliographyDocuments,
 } from 'test-support/fragment-query-summary'
-import { withPreviewLines } from 'test-support/fragment-query-preview'
+import {
+  tokenWithClass,
+  withPreviewLines,
+} from 'test-support/fragment-query-preview'
 import createReference from 'bibliography/application/createReference'
 import { Fragment } from 'fragmentarium/domain/fragment'
 
@@ -133,7 +136,6 @@ test('keeps one bounded query and zero card hydration calls for 50 summaries', a
   expect(harness.bibliographyService.findMany).not.toHaveBeenCalled()
   expect(screen.getAllByText(/Borger, 1957/).length).toBeGreaterThan(0)
   expect(
-    screen.getAllByText('kur', { selector: '.Transliteration__Reading' })
-      .length,
-  ).toEqual(50)
+    screen.getAllByText(tokenWithClass('Transliteration__Reading', 'kur')),
+  ).toHaveLength(50)
 })

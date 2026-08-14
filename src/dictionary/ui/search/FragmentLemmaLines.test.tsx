@@ -19,6 +19,7 @@ import {
   createFragmentCardSummary,
   SUMMARY_LEMMA_ID,
 } from 'test-support/fragment-query-summary'
+import { tokenWithClass } from 'test-support/fragment-query-preview'
 import { lineNumberFactory } from 'test-support/linenumber-factory'
 
 jest.mock('fragmentarium/application/FragmentService')
@@ -145,9 +146,9 @@ describe('Show Library entries', () => {
 
     expect(await screen.findByText(previewSubsetFragment.number)).toBeVisible()
     expect(
-      screen.getByText('kur', {
-        selector: '.Transliteration__Word--highlight',
-      }),
+      screen.getByText(
+        tokenWithClass('Transliteration__Word--highlight', 'kur'),
+      ),
     ).toBeInTheDocument()
     expect(screen.getByText('And 3 more')).toBeVisible()
     expect(fragmentService.find).not.toHaveBeenCalled()

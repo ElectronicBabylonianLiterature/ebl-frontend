@@ -109,6 +109,15 @@ export const summaryPreviewLines: readonly TextLineDto[] = [
   previewLine(2, [word('ana', [namedSign('Reading', 'ana')])]),
 ]
 
+export function tokenWithClass(
+  className: string,
+  text: string,
+): (content: string, element: Element | null) => boolean {
+  return (_content, element) =>
+    element?.classList.contains(className) === true &&
+    element.textContent === text
+}
+
 export function withPreviewLines(
   fragment: Fragment,
   lines: readonly TextLineDto[] = summaryPreviewLines,

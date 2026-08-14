@@ -92,7 +92,9 @@ test('Shows grouped references', () => {
 })
 
 test('shows an honest non-interactive fallback without citation metadata', () => {
-  const reference = createReference(productionSummaryReferences[0])
+  const reference = createReference(
+    productionSummaryReferences[0],
+  ).withIdentity('RN52', true)
   render(<CompactCitation references={[reference]} />)
   const fallback = screen.getByText(/RN52/)
 
@@ -111,7 +113,7 @@ test('renders an empty compact reference as an honest unknown fallback', () => {
     pages: '',
     notes: '',
     linesCited: [],
-  })
+  }).withIdentity('', true)
 
   render(<CompactCitation references={[reference]} />)
 
@@ -121,7 +123,9 @@ test('renders an empty compact reference as an honest unknown fallback', () => {
 })
 
 test('renders all available details for grouped compact references', () => {
-  const references = productionSummaryReferences.map(createReference)
+  const references = productionSummaryReferences.map((reference) =>
+    createReference(reference).withIdentity(reference.id, true),
+  )
 
   render(<CompactCitation references={references} />)
 
@@ -188,4 +192,19 @@ test('renders a series citation for a joined container document', () => {
   const { container } = render(<CompactCitation references={[reference]} />)
 
   expect(container).toHaveTextContent('CT 51, 27 (C)')
+})
+
+test('keeps the master citation path for a reference that never had a document', () => {
+  const reference = createReference({
+    id: 'RN99',
+    type: 'DISCUSSION',
+    pages: '5',
+    notes: '',
+    linesCited: [],
+  })
+
+  const { container } = render(<CompactCitation references={[reference]} />)
+
+  expect(container).toHaveTextContent(': 5 (D)')
+  expect(screen.queryByText(/RN99/)).not.toBeInTheDocument()
 })
