@@ -69,7 +69,7 @@ export default function PaginationItems({
     event.preventDefault()
     const pageNumber = Number(pageJump)
 
-    if (!Number.isInteger(pageNumber) || pageNumber < 1) {
+    if (!Number.isSafeInteger(pageNumber) || pageNumber < 1) {
       return
     }
 

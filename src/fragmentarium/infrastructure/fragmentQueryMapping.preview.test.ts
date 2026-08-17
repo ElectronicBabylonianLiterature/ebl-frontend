@@ -62,3 +62,102 @@ describe('preview line cap', () => {
     expect(item.fragment).toBeUndefined()
   })
 })
+
+describe('malformed structured preview lines', () => {
+  const validWord = word('kur', [namedSign('Reading', 'kur')])
+  const unsupported = { type: 'UnsupportedFragmentCardSummary' }
+
+  it('classifies a preview line without a line number as unsupported', () => {
+    const item = summaryItem(
+      [{ type: 'TextLine', prefix: '1.', content: [validWord] }],
+      3,
+    )
+
+    expect(item.cardSummary).toEqual(unsupported)
+    expect(item.fragment).toBeUndefined()
+  })
+
+  it('classifies an invalid line number shape as unsupported', () => {
+    const item = summaryItem(
+      [
+        {
+          type: 'TextLine',
+          prefix: '1.',
+          lineNumber: { number: '1', hasPrime: false },
+          content: [validWord],
+        },
+      ],
+      3,
+    )
+
+    expect(item.cardSummary).toEqual(unsupported)
+    expect(item.fragment).toBeUndefined()
+  })
+
+  it('classifies an incomplete line number range as unsupported', () => {
+    const item = summaryItem(
+      [
+        {
+          type: 'TextLine',
+          prefix: '1-2.',
+          lineNumber: {
+            type: 'LineNumberRange',
+            start: { number: 1, hasPrime: false },
+          },
+          content: [validWord],
+        },
+      ],
+      3,
+    )
+
+    expect(item.cardSummary).toEqual(unsupported)
+    expect(item.fragment).toBeUndefined()
+  })
+
+  it('classifies a token without enclosure information as unsupported', () => {
+    const line = previewLine(1, [])
+    const item = summaryItem(
+      [{ ...line, content: [{ type: 'ValueToken', value: 'kur' }] }],
+      3,
+    )
+
+    expect(item.cardSummary).toEqual(unsupported)
+    expect(item.fragment).toBeUndefined()
+  })
+
+  it('classifies a malformed nested token part as unsupported', () => {
+    const line = previewLine(1, [])
+    const item = summaryItem(
+      [
+        {
+          ...line,
+          content: [{ ...validWord, parts: [{ type: 'Reading' }] }],
+        },
+      ],
+      3,
+    )
+
+    expect(item.cardSummary).toEqual(unsupported)
+    expect(item.fragment).toBeUndefined()
+  })
+
+  it('accepts a valid line number range', () => {
+    const line = previewLine(1, [validWord])
+    const item = summaryItem(
+      [
+        {
+          ...line,
+          lineNumber: {
+            type: 'LineNumberRange',
+            start: { number: 1, hasPrime: false },
+            end: { number: 2, hasPrime: false },
+          },
+        },
+      ],
+      3,
+    )
+
+    expect(item.cardSummary).toEqual({ type: 'FragmentCardSummary' })
+    expect(item.fragment?.text.lines).toHaveLength(1)
+  })
+})

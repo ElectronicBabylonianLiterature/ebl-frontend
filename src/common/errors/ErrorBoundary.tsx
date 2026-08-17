@@ -7,7 +7,9 @@ import React, {
 import { Alert, Button } from 'react-bootstrap'
 import ErrorReporterContext from 'ErrorReporterContext'
 
-class ErrorBoundary extends Component<PropsWithChildren<unknown>> {
+class ErrorBoundary extends Component<
+  PropsWithChildren<{ fallback?: ReactNode }>
+> {
   state = {
     error: null,
   }
@@ -21,7 +23,13 @@ class ErrorBoundary extends Component<PropsWithChildren<unknown>> {
   }
 
   render(): ReactNode {
-    return this.state.error ? (
+    if (!this.state.error) {
+      return this.props.children
+    }
+
+    return this.props.fallback !== undefined ? (
+      this.props.fallback
+    ) : (
       <Alert variant="danger">
         <h4>Something&apos;s gone wrong.</h4>
         <p>
@@ -37,8 +45,6 @@ class ErrorBoundary extends Component<PropsWithChildren<unknown>> {
           </Button>
         </p>
       </Alert>
-    ) : (
-      this.props.children
     )
   }
 }

@@ -222,7 +222,7 @@ const HydratedFragmentLines = withData<
   },
 )
 
-export function FragmentLines(props: FragmentLinesProps): JSX.Element {
+function FragmentLinesCard(props: FragmentLinesProps): JSX.Element {
   const { queryItem, includeLatestRecord } = props
 
   if (hasRenderReadyFragment(queryItem, { includeLatestRecord })) {
@@ -234,4 +234,16 @@ export function FragmentLines(props: FragmentLinesProps): JSX.Element {
   }
 
   return <HydratedFragmentLines {...props} />
+}
+
+export function FragmentLines(props: FragmentLinesProps): JSX.Element {
+  return (
+    <ErrorBoundary
+      fallback={
+        <UnavailableFragmentCard museumNumber={props.queryItem.museumNumber} />
+      }
+    >
+      <FragmentLinesCard {...props} />
+    </ErrorBoundary>
+  )
 }

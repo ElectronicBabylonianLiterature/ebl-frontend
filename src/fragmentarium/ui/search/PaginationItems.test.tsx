@@ -182,6 +182,20 @@ describe('PaginationItems', () => {
     expect(mockHistoryPush).not.toHaveBeenCalled()
   })
 
+  it('rejects a page jump beyond the safe integer range', async () => {
+    renderPaginationItems(0, true, '/library/search/?number=K.1')
+
+    const unsafePage = '99999999999999999'
+    expect(Number(unsafePage)).toBeGreaterThan(Number.MAX_SAFE_INTEGER)
+
+    const pageJumpInput = screen.getByLabelText('Go to page')
+    await userEvent.type(pageJumpInput, unsafePage)
+    await userEvent.click(screen.getByText('Go'))
+
+    expect(mockHistoryPush).not.toHaveBeenCalled()
+    expect(pageJumpInput).toHaveValue(Number(unsafePage))
+  })
+
   it('requires the page-jump input and rejects an empty submission', async () => {
     renderPaginationItems(0, true, '/library/search/?number=K.1')
 

@@ -15,6 +15,8 @@ import { createResearchProject } from 'research-projects/researchProject'
 import { createScript } from 'fragmentarium/infrastructure/FragmentRepository'
 import { createTransliteration } from 'transliteration/application/dtos'
 import { TextLineDto } from 'transliteration/domain/text-line'
+import { LineNumber, LineNumberRange } from 'transliteration/domain/line-number'
+import { BaseToken, Token } from 'transliteration/domain/token'
 
 export type QueryMuseumNumberDto = {
   prefix: string
@@ -53,12 +55,44 @@ export type QuerySummaryItemDto = {
   thumbnailPath?: string | null
 }
 
+function isRenderablePreviewToken(token: unknown): token is Token {
+  const candidate = token as Partial<BaseToken> | null
+  return (
+    typeof candidate?.type === 'string' &&
+    typeof candidate.value === 'string' &&
+    Array.isArray(candidate.enclosureType) &&
+    (candidate.parts === undefined ||
+      (Array.isArray(candidate.parts) &&
+        candidate.parts.every(isRenderablePreviewToken)))
+  )
+}
+
+function isRenderableLineNumberPart(lineNumber: unknown): boolean {
+  const candidate = lineNumber as Partial<LineNumber> | null
+  return (
+    typeof candidate?.number === 'number' &&
+    typeof candidate.hasPrime === 'boolean'
+  )
+}
+
+function isRenderableLineNumber(
+  lineNumber: unknown,
+): lineNumber is LineNumber | LineNumberRange {
+  const candidate = lineNumber as Partial<LineNumberRange> | null
+  return candidate?.type === 'LineNumberRange'
+    ? isRenderableLineNumberPart(candidate.start) &&
+        isRenderableLineNumberPart(candidate.end)
+    : isRenderableLineNumberPart(lineNumber)
+}
+
 function isRenderablePreviewLine(line: unknown): line is TextLineDto {
   const candidate = line as Partial<TextLineDto> | null
   return (
     candidate?.type === 'TextLine' &&
     typeof candidate.prefix === 'string' &&
-    Array.isArray(candidate.content)
+    isRenderableLineNumber(candidate.lineNumber) &&
+    Array.isArray(candidate.content) &&
+    candidate.content.every(isRenderablePreviewToken)
   )
 }
 
