@@ -55,15 +55,23 @@ export type QuerySummaryItemDto = {
   thumbnailPath?: string | null
 }
 
+function areRenderablePreviewTokens(tokens: unknown): boolean {
+  return Array.isArray(tokens) && tokens.every(isRenderablePreviewToken)
+}
+
+function hasRenderableTokenParts(parts: unknown): boolean {
+  return parts === undefined || areRenderablePreviewTokens(parts)
+}
+
 function isRenderablePreviewToken(token: unknown): token is Token {
   const candidate = token as Partial<BaseToken> | null
+  if (typeof candidate?.type !== 'string') {
+    return false
+  }
   return (
-    typeof candidate?.type === 'string' &&
     typeof candidate.value === 'string' &&
     Array.isArray(candidate.enclosureType) &&
-    (candidate.parts === undefined ||
-      (Array.isArray(candidate.parts) &&
-        candidate.parts.every(isRenderablePreviewToken)))
+    hasRenderableTokenParts(candidate.parts)
   )
 }
 
@@ -87,12 +95,13 @@ function isRenderableLineNumber(
 
 function isRenderablePreviewLine(line: unknown): line is TextLineDto {
   const candidate = line as Partial<TextLineDto> | null
+  if (candidate?.type !== 'TextLine') {
+    return false
+  }
   return (
-    candidate?.type === 'TextLine' &&
     typeof candidate.prefix === 'string' &&
     isRenderableLineNumber(candidate.lineNumber) &&
-    Array.isArray(candidate.content) &&
-    candidate.content.every(isRenderablePreviewToken)
+    areRenderablePreviewTokens(candidate.content)
   )
 }
 
