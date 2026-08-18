@@ -21,16 +21,36 @@ import createReference from 'bibliography/application/createReference'
 import { createTransliteration } from 'transliteration/application/dtos'
 import { Joins } from 'fragmentarium/domain/join'
 import FragmentDto from 'fragmentarium/domain/FragmentDtos'
-import { PeriodModifiers, Periods } from 'common/utils/period'
+import {
+  Period,
+  PeriodModifiers,
+  periodFromAbbreviation,
+  Periods,
+} from 'common/utils/period'
 import { createResearchProject } from 'research-projects/researchProject'
 import { MesopotamianDate } from 'chronology/domain/Date'
 import { createArchaeology } from 'fragmentarium/domain/archaeologyDtos'
 import { Colophon } from 'fragmentarium/domain/Colophon'
 
+function createPeriod(periodName: string): Period {
+  const canonicalPeriod = Periods[periodName]
+  if (canonicalPeriod) {
+    return canonicalPeriod
+  }
+
+  try {
+    const abbreviatedPeriod = periodFromAbbreviation(periodName)
+    return Periods[abbreviatedPeriod.name] ?? Periods.Uncertain
+  } catch {
+    return Periods.Uncertain
+  }
+}
+
 export function createScript(dto: ScriptDto): Script {
   const period =
-    Periods[dto && typeof dto.period === 'string' ? dto.period : ''] ??
-    Periods.Uncertain
+    dto && typeof dto.period === 'string'
+      ? createPeriod(dto.period)
+      : Periods.Uncertain
   const periodModifier =
     PeriodModifiers[
       dto && typeof dto.periodModifier === 'string'

@@ -20,6 +20,7 @@ import { fixHtmlParseOrder } from 'common/utils/HtmlParsing'
 import { getLineTypeByHtml } from 'common/utils/HtmlLineType'
 import RouterLinkModeContext from 'common/ui/RouterLinkModeContext'
 
+import { CANONICAL_ORIGIN } from 'router/domain'
 export async function pdfExport(
   fragment: Fragment,
   wordService: WordService,
@@ -744,7 +745,7 @@ function isNoteCell(element: JQuery): boolean {
 }
 
 function getHyperLink(fragment: Fragment): string {
-  return 'https://www.ebl.lmu.de/library/' + fragment.number
+  return `${CANONICAL_ORIGIN}/library/${fragment.number}`
 }
 
 function getCredit(records: JQuery): string {

@@ -40,6 +40,9 @@ export default class Reference {
   readonly [immerable] = true
   static readonly DEFAULT_TYPE: ReferenceType = 'DISCUSSION'
 
+  readonly referenceId: string = ''
+  readonly hasUnresolvedDocument: boolean = false
+
   constructor(
     readonly type: ReferenceType = Reference.DEFAULT_TYPE,
     readonly pages: string = '',
@@ -47,6 +50,10 @@ export default class Reference {
     readonly linesCited: ReadonlyArray<string> = [],
     readonly document: BibliographyEntry = new BibliographyEntry({}),
   ) {}
+
+  get hasCitationMetadata(): boolean {
+    return Boolean(this.document.label.trim())
+  }
 
   get hasShortContainerTitle(): boolean {
     return !_.isEmpty(this.shortContainerTitle)
@@ -57,7 +64,7 @@ export default class Reference {
   }
 
   get id(): string {
-    return this.document.id
+    return this.referenceId || this.document.id
   }
 
   get primaryAuthor(): string {
@@ -115,6 +122,14 @@ export default class Reference {
   setDocument(document_: BibliographyEntry): Reference {
     return produce(this, (draft: Draft<Reference>) => {
       draft.document = document_
+      draft.referenceId = ''
+    })
+  }
+
+  withIdentity(referenceId: string, hasUnresolvedDocument = false): Reference {
+    return produce(this, (draft: Draft<Reference>) => {
+      draft.referenceId = referenceId
+      draft.hasUnresolvedDocument = hasUnresolvedDocument
     })
   }
 

@@ -5,9 +5,9 @@ import FragmentService, {
 } from 'fragmentarium/application/FragmentService'
 import withData from 'http/withData'
 import { QueryItem } from 'query/QueryResult'
-import { Col, Container, Image, Row } from 'react-bootstrap'
+import { Col, Container, Row } from 'react-bootstrap'
 import { Fragment } from 'fragmentarium/domain/fragment'
-import { RenderFragmentLines } from 'dictionary/ui/search/FragmentLemmaLines'
+import RenderFragmentLines from 'dictionary/ui/search/RenderFragmentLines'
 import FragmentLink, { createFragmentUrl } from '../FragmentLink'
 import { Genres } from 'fragmentarium/domain/Genres'
 import ReferenceList from 'bibliography/ui/ReferenceList'
@@ -21,6 +21,12 @@ import { ThumbnailImage } from 'common/ui/BlobImage'
 import DossiersService from 'dossiers/application/DossiersService'
 import useNearViewport from 'common/hooks/useNearViewport'
 import FragmentDossierRecordsDisplay from 'dossiers/ui/DossiersDisplay'
+import SummaryThumbnail from 'fragmentarium/ui/search/SummaryThumbnail'
+import {
+  hasRenderReadyFragment,
+  hasUnsupportedFragmentCardSummary,
+} from 'query/queryItemRenderReady'
+import UnavailableFragmentCard from 'fragmentarium/ui/search/UnavailableFragmentCard'
 
 function GenresDisplay({ genres }: { genres: Genres }): JSX.Element {
   return (
@@ -56,33 +62,6 @@ const FragmentThumbnail = withData<
     fragmentService.findThumbnail(fragment, 'small'),
 )
 
-function SummaryThumbnail({
-  fragmentNumber,
-  thumbnailPath,
-}: {
-  fragmentNumber: string
-  thumbnailPath: string | null
-}): JSX.Element {
-  const [isBroken, setIsBroken] = React.useState(false)
-
-  if (!thumbnailPath || isBroken) {
-    return <></>
-  }
-
-  return (
-    <a href={createFragmentUrl(fragmentNumber)}>
-      <Image
-        src={thumbnailPath}
-        alt={`Preview of ${fragmentNumber}`}
-        fluid
-        loading="lazy"
-        decoding="async"
-        onError={() => setIsBroken(true)}
-      />
-    </a>
-  )
-}
-
 function TransliterationRecord({
   record,
   className,
@@ -113,12 +92,6 @@ type FragmentLinesProps = {
   fragmentService: FragmentService
   dossiersService: DossiersService
   active?: number
-}
-
-function hasRenderReadyFragment(
-  queryItem: QueryItem,
-): queryItem is QueryItem & { fragment: Fragment } {
-  return Boolean(queryItem.fragment)
 }
 
 function FragmentLinesContent({
@@ -195,7 +168,7 @@ function FragmentLinesContent({
           <RenderFragmentLines
             fragment={fragment}
             linesToShow={linesToShow}
-            totalLines={queryItem.matchingLines.length}
+            totalLines={queryItem.matchCount}
             lemmaIds={queryLemmas}
           />
         </ResponsiveCol>
@@ -249,10 +222,28 @@ const HydratedFragmentLines = withData<
   },
 )
 
+function FragmentLinesCard(props: FragmentLinesProps): JSX.Element {
+  const { queryItem, includeLatestRecord } = props
+
+  if (hasRenderReadyFragment(queryItem, { includeLatestRecord })) {
+    return <FragmentLinesContent fragment={queryItem.fragment} {...props} />
+  }
+
+  if (hasUnsupportedFragmentCardSummary(queryItem)) {
+    return <UnavailableFragmentCard museumNumber={queryItem.museumNumber} />
+  }
+
+  return <HydratedFragmentLines {...props} />
+}
+
 export function FragmentLines(props: FragmentLinesProps): JSX.Element {
-  return hasRenderReadyFragment(props.queryItem) ? (
-    <FragmentLinesContent fragment={props.queryItem.fragment} {...props} />
-  ) : (
-    <HydratedFragmentLines {...props} />
+  return (
+    <ErrorBoundary
+      fallback={
+        <UnavailableFragmentCard museumNumber={props.queryItem.museumNumber} />
+      }
+    >
+      <FragmentLinesCard {...props} />
+    </ErrorBoundary>
   )
 }

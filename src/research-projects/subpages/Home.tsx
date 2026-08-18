@@ -1,7 +1,6 @@
 import React from 'react'
 import { Container } from 'react-bootstrap'
 import SearchForm, { SearchFormProps } from 'fragmentarium/ui/SearchForm'
-import { SearchResult } from 'fragmentarium/ui/search/FragmentariumSearchResult'
 import PageContent from 'research-projects/subpages/PageContent'
 import {
   ResearchProject,
@@ -45,13 +44,6 @@ export default function ProjectHome({
           />
         </Container>
       </div>
-      {fragmentQuery && (
-        <SearchResult
-          fragmentService={fragmentService}
-          dossiersService={dossiersService}
-          fragmentQuery={fragmentQuery}
-        />
-      )}
     </PageContent>
   )
 }

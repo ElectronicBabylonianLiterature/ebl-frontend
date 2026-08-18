@@ -1,102 +1,212 @@
 import React from 'react'
-import { render, screen, waitFor } from '@testing-library/react'
+import { screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { MemoryRouter, useLocation } from 'react-router-dom'
-import { SearchResult } from './FragmentariumSearchResult'
+import { useLocation } from 'react-router-dom'
 import FragmentService from 'fragmentarium/application/FragmentService'
-import DossiersService from 'dossiers/application/DossiersService'
-import { QueryItem, QueryResult } from 'query/QueryResult'
-
-jest.mock(
-  'fragmentarium/ui/search/FragmentariumSearchResultComponents',
-  () => ({
-    FragmentLines: ({ queryItem }: { queryItem: QueryItem }) => (
-      <div>{queryItem.museumNumber}</div>
-    ),
-  }),
-)
+import { QueryResult } from 'query/QueryResult'
+import {
+  buildQueryResult,
+  renderSearchResult,
+} from './FragmentariumSearchResult.testSupport'
 
 function LocationDisplay(): JSX.Element {
   const location = useLocation()
   return <div data-testid="location">{location.search}</div>
 }
 
-function buildQueryResult(totalItems = 500): QueryResult {
-  return {
-    items: Array.from({ length: totalItems }, (_, index) => ({
-      museumNumber: `K.${index + 1}`,
-      matchingLines: [],
-      matchCount: 0,
-    })),
-    matchCountTotal: 0,
-  }
-}
-
-function renderSearchResult(search = ''): jest.Mocked<FragmentService> {
-  const fragmentService = {
-    query: jest.fn().mockResolvedValue(buildQueryResult()),
-  } as unknown as jest.Mocked<FragmentService>
-
-  render(
-    <MemoryRouter initialEntries={[`/library/search/${search}`]}>
-      <LocationDisplay />
-      <SearchResult
-        fragmentService={fragmentService}
-        dossiersService={{} as DossiersService}
-        fragmentQuery={{ number: 'K.1' }}
-      />
-    </MemoryRouter>,
-  )
-
-  return fragmentService
-}
-
 describe('FragmentariumSearchResult pagination', () => {
-  it('starts on page 6 when paginationIndex=5', async () => {
-    renderSearchResult('?paginationIndex=5')
+  it('renders the current server page and request range without chunking', async () => {
+    const view = renderSearchResult({
+      pagination: { pageIndex: 1, pageSize: 50 },
+    })
 
-    expect(await screen.findByText('K.251')).toBeInTheDocument()
-    expect(screen.queryByText('K.1')).not.toBeInTheDocument()
+    expect(await screen.findByText('K.1')).toBeInTheDocument()
+    expect(screen.getByText(/Showing documents 51-100/)).toBeInTheDocument()
+    expect(screen.getAllByText('Page 2')[0]).toBeInTheDocument()
+    expect(view.query).toHaveBeenCalledWith({
+      number: 'K.1',
+      limit: 50,
+      offset: 50,
+      count: 'page',
+    })
   })
 
-  it('updates the URL when clicking page 10', async () => {
-    renderSearchResult()
+  it('enables Next only when hasNextPage is true and updates the URL', async () => {
+    renderSearchResult({
+      search: '?number=000123&paginationIndex=0',
+      queryResult: buildQueryResult({ hasNextPage: true }),
+      leadingContent: <LocationDisplay />,
+    })
 
     await screen.findByText('K.1')
-    await userEvent.click(screen.getAllByRole('button', { name: '10' })[0])
+    await userEvent.click(screen.getAllByText('Next')[0])
 
-    expect(await screen.findByText('K.451')).toBeInTheDocument()
     expect(screen.getByTestId('location')).toHaveTextContent(
-      'paginationIndex=9',
+      'number=000123&paginationIndex=1',
     )
   })
 
-  it.each(['?paginationIndex=abc', '?paginationIndex=-5'])(
-    'defaults to page 1 for invalid pagination value %s',
-    async (search) => {
-      renderSearchResult(search)
+  it.each([0, 1, 12, 24])(
+    'hides controls for a known-complete first page with %i results',
+    async (items) => {
+      renderSearchResult({
+        queryResult: buildQueryResult({ items, hasNextPage: false }),
+      })
 
-      expect(await screen.findByText('K.1')).toBeInTheDocument()
-      expect(screen.queryByText('K.51')).not.toBeInTheDocument()
+      await screen.findByText(new RegExp(`Found ${items} document`))
+      expect(screen.queryAllByRole('navigation')).toHaveLength(0)
     },
   )
 
-  it('uses the first paginationIndex when the URL contains multiple values', async () => {
-    renderSearchResult('?paginationIndex=5&paginationIndex=1')
+  it.each([25, 26, 50, 51])(
+    'shows controls on the first page with %i results',
+    async (items) => {
+      renderSearchResult({
+        queryResult: buildQueryResult({
+          items,
+          hasNextPage: items > 50,
+        }),
+      })
 
-    expect(await screen.findByText('K.251')).toBeInTheDocument()
-    expect(screen.queryByText('K.51')).not.toBeInTheDocument()
+      await screen.findByText('K.1')
+      expect(screen.getAllByRole('navigation')).toHaveLength(2)
+    },
+  )
+
+  it('names the top and bottom pagers distinctly without duplicating ids', async () => {
+    renderSearchResult({
+      queryResult: buildQueryResult({ items: 50, hasNextPage: true }),
+    })
+
+    await screen.findByText('K.1')
+
+    expect(
+      screen
+        .getAllByRole('navigation')
+        .map((landmark) => landmark.getAttribute('aria-label')),
+    ).toEqual([
+      'Search results pagination, top',
+      'Search results pagination, bottom',
+    ])
+
+    const controlIds = [
+      ...screen.getAllByLabelText('Go to page'),
+      ...screen.getAllByLabelText('Results per page'),
+    ].map((control) => control.id)
+
+    expect(controlIds).toHaveLength(4)
+    expect(new Set(controlIds).size).toEqual(4)
   })
 
-  it('clamps out-of-range paginationIndex to the last page and normalizes the URL', async () => {
-    renderSearchResult('?paginationIndex=9999')
+  it('points each pager label at the control in its own pager', async () => {
+    renderSearchResult({
+      queryResult: buildQueryResult({ items: 50, hasNextPage: true }),
+    })
 
-    expect(await screen.findByText('K.451')).toBeInTheDocument()
-    expect(screen.queryByText('K.1')).not.toBeInTheDocument()
-    await waitFor(() => {
-      expect(screen.getByTestId('location')).toHaveTextContent(
-        'paginationIndex=9',
+    await screen.findByText('K.1')
+
+    const pagers = screen.getAllByRole('navigation')
+
+    pagers.forEach((pager) => {
+      const pageJump = within(pager).getByLabelText('Go to page')
+      const pageSize = within(pager).getByLabelText('Results per page')
+
+      expect(within(pager).getByText('Go to page')).toHaveAttribute(
+        'for',
+        pageJump.id,
       )
+      expect(within(pager).getByText('Results per page')).toHaveAttribute(
+        'for',
+        pageSize.id,
+      )
+    })
+  })
+
+  it('shows controls on a later short page', async () => {
+    renderSearchResult({
+      queryResult: buildQueryResult({ items: 12, hasNextPage: false }),
+      pagination: { pageIndex: 2, pageSize: 50 },
+    })
+
+    await screen.findByText('K.1')
+    expect(screen.getAllByRole('navigation')).toHaveLength(2)
+    expect(screen.getAllByRole('listitem')[0]).not.toHaveClass('disabled')
+  })
+
+  it('shows controls when first-page completeness is unknown', async () => {
+    renderSearchResult({
+      queryResult: buildQueryResult({ items: 12, hasNextPage: null }),
+    })
+
+    await screen.findByText('K.1')
+    expect(screen.getAllByRole('navigation')).toHaveLength(2)
+  })
+
+  it('keeps a usable Previous control for an empty directly linked page', async () => {
+    renderSearchResult({
+      queryResult: buildQueryResult({ items: 0, hasNextPage: false }),
+      pagination: { pageIndex: 2, pageSize: 50 },
+    })
+
+    expect(await screen.findByText('No results on this page')).toBeVisible()
+    expect(screen.getAllByRole('listitem')[0]).not.toHaveClass('disabled')
+  })
+
+  it('shows a number-format suggestion when no Library results match', async () => {
+    renderSearchResult({
+      queryResult: buildQueryResult({ items: 0, hasNextPage: false }),
+      fragmentQuery: { number: 'K 2' },
+    })
+
+    expect(await screen.findByText(/Found 0 documents/)).toBeVisible()
+    expect(screen.getByRole('link', { name: 'K.2' })).toHaveAttribute(
+      'href',
+      '/library/search?number=K.2',
+    )
+  })
+
+  it('ignores stale responses when the effective page query changes', async () => {
+    let resolveFirst: (value: QueryResult) => void = () => undefined
+    let resolveSecond: (value: QueryResult) => void = () => undefined
+    const fragmentService = {
+      query: jest
+        .fn()
+        .mockReturnValueOnce(
+          new Promise<QueryResult>((resolve) => {
+            resolveFirst = resolve
+          }),
+        )
+        .mockReturnValueOnce(
+          new Promise<QueryResult>((resolve) => {
+            resolveSecond = resolve
+          }),
+        ),
+    } as unknown as jest.Mocked<FragmentService>
+
+    const view = renderSearchResult({
+      search: '?number=K.1',
+      fragmentService,
+    })
+
+    view.renderView({
+      pagination: { pageIndex: 1, pageSize: 50 },
+    })
+
+    resolveSecond({
+      items: [{ museumNumber: 'K.new', matchingLines: [], matchCount: 0 }],
+      matchCountTotal: null,
+      hasNextPage: false,
+    })
+    expect(await screen.findByText('K.new')).toBeInTheDocument()
+
+    resolveFirst({
+      items: [{ museumNumber: 'K.old', matchingLines: [], matchCount: 0 }],
+      matchCountTotal: null,
+      hasNextPage: false,
+    })
+
+    await waitFor(() => {
+      expect(screen.queryByText('K.old')).not.toBeInTheDocument()
     })
   })
 })
