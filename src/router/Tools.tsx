@@ -4,14 +4,15 @@ import { Link, useLocation } from 'react-router-dom'
 import SessionContext from 'auth/SessionContext'
 import AppContent from 'common/ui/AppContent'
 import './tools.sass'
-import MarkupService from 'markup/application/MarkupService'
-import SignService from 'signs/application/SignService'
-import WordService from 'dictionary/application/WordService'
-import BibliographyService from 'bibliography/application/BibliographyService'
-import AfoRegisterService from 'afo-register/application/AfoRegisterService'
-import RealiaService from 'realia/application/RealiaService'
-import FragmentService from 'fragmentarium/application/FragmentService'
-import DossiersService from 'dossiers/application/DossiersService'
+import type MarkupService from 'markup/application/MarkupService'
+import type SignService from 'signs/application/SignService'
+import type WordService from 'dictionary/application/WordService'
+import type BibliographyService from 'bibliography/application/BibliographyService'
+import type AfoRegisterService from 'afo-register/application/AfoRegisterService'
+import type RealiaService from 'realia/application/RealiaService'
+import type FragmentService from 'fragmentarium/application/FragmentService'
+import type DossiersService from 'dossiers/application/DossiersService'
+import type { FindspotService } from 'fragmentarium/application/FindspotService'
 import { useHistory } from 'router/compat'
 import useScrollToHash from 'common/hooks/useScrollToHash'
 import {
@@ -41,6 +42,7 @@ export default function Tools({
   realiaService,
   dossiersService,
   fragmentService,
+  findspotService,
   activeTab,
 }: {
   markupService: MarkupService
@@ -51,6 +53,7 @@ export default function Tools({
   realiaService: RealiaService
   dossiersService: DossiersService
   fragmentService: FragmentService
+  findspotService: FindspotService
   activeTab?: TabId
 }): JSX.Element {
   const session = useContext(SessionContext)
@@ -125,6 +128,7 @@ export default function Tools({
                 realiaService,
                 dossiersService,
                 fragmentService,
+                findspotService,
                 history,
                 location,
                 match: { params: {}, isExact: true, path: '', url: '' },

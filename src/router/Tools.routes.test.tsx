@@ -14,6 +14,7 @@ import AfoRegisterService from 'afo-register/application/AfoRegisterService'
 import RealiaService from 'realia/application/RealiaService'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import DossiersService from 'dossiers/application/DossiersService'
+import { FindspotService } from 'fragmentarium/application/FindspotService'
 import { setReducedMotionMatchMedia } from 'test-support/matchMedia'
 
 jest.mock('router/compat', () => ({
@@ -83,6 +84,7 @@ describe('Tools routes', () => {
       realiaService: {} as RealiaService,
       dossiersService: {} as DossiersService,
       fragmentService: {} as FragmentService,
+      findspotService: {} as FindspotService,
       activeTab: 'signs' as Parameters<typeof Tools>[0]['activeTab'],
     }
 
@@ -123,6 +125,7 @@ describe('Tools routes', () => {
           realiaService={{} as RealiaService}
           dossiersService={{} as DossiersService}
           fragmentService={{} as FragmentService}
+          findspotService={{} as FindspotService}
         />
       </MemoryRouter>,
     )
@@ -152,6 +155,7 @@ describe('Tools routes', () => {
           realiaService={{} as RealiaService}
           dossiersService={{} as DossiersService}
           fragmentService={{} as FragmentService}
+          findspotService={{} as FindspotService}
         />
       </MemoryRouter>,
     )
@@ -186,6 +190,7 @@ describe('Tools routes', () => {
             realiaService={{} as RealiaService}
             dossiersService={{} as DossiersService}
             fragmentService={{} as FragmentService}
+            findspotService={{} as FindspotService}
           />
         </MemoryRouter>,
       )
