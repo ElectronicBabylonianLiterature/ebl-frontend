@@ -4,19 +4,20 @@ import DateConverterForm, {
 } from 'chronology/ui/DateConverter/DateConverterForm'
 import ListOfKings from 'chronology/ui/Kings/BrinkmanKingsTable'
 import CuneiformConverterForm from 'signs/ui/CuneiformConverter/CuneiformConverterForm'
-import MarkupService from 'markup/application/MarkupService'
-import SignService from 'signs/application/SignService'
+import Spinner from 'common/ui/Spinner'
+import type MarkupService from 'markup/application/MarkupService'
+import type SignService from 'signs/application/SignService'
 import Signs from 'signs/ui/search/Signs'
 import Dictionary from 'dictionary/ui/search/Dictionary'
 import BibliographyReferencesContent from 'bibliography/ui/BibliographyReferencesContent'
 import AfoRegisterSearchPage from 'afo-register/ui/AfoRegisterSearchPage'
 import RealiaSearchPage from 'realia/ui/RealiaSearchPage'
-import WordService from 'dictionary/application/WordService'
-import BibliographyService from 'bibliography/application/BibliographyService'
-import AfoRegisterService from 'afo-register/application/AfoRegisterService'
-import RealiaService from 'realia/application/RealiaService'
-import FragmentService from 'fragmentarium/application/FragmentService'
-import DossiersService from 'dossiers/application/DossiersService'
+import type WordService from 'dictionary/application/WordService'
+import type BibliographyService from 'bibliography/application/BibliographyService'
+import type AfoRegisterService from 'afo-register/application/AfoRegisterService'
+import type RealiaService from 'realia/application/RealiaService'
+import type FragmentService from 'fragmentarium/application/FragmentService'
+import type DossiersService from 'dossiers/application/DossiersService'
 import DossiersSearchPage from 'dossiers/ui/DossiersSearchPage'
 import GenresPage from 'fragmentarium/ui/GenresPage'
 import {
@@ -25,6 +26,8 @@ import {
   ContentMatch,
   TabId,
 } from 'router/toolsConfig'
+
+const MapTab = React.lazy(() => import('map/MapTab'))
 
 export function ToolsIntroduction(): JSX.Element {
   return (
@@ -107,6 +110,11 @@ export function getContent({
     ),
     'list-of-kings': ListOfKings(),
     'cuneiform-converter': <CuneiformConverterForm signService={signService} />,
+    map: (
+      <React.Suspense fallback={<Spinner>Loading map...</Spinner>}>
+        <MapTab fragmentService={fragmentService} />
+      </React.Suspense>
+    ),
   }
 
   return activeTab ? (
