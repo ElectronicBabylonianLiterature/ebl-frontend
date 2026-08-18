@@ -1,51 +1,16 @@
-import React from 'react'
 import { screen } from '@testing-library/react'
-import Tools, {
+import {
   getCurrentTab,
   getDisplayTitle,
   getToolsBreadcrumbs,
-} from 'router/Tools'
-import { renderTools, toolsServiceProps } from 'router/Tools.testSupport'
+} from 'router/toolsConfig'
 import {
-  expectToolsContentPagesMocked,
-  type ToolsContentMockName,
-} from 'router/Tools.contentMocks.testSupport'
+  renderTools,
+  rerenderTools,
+  type ToolsActiveTab,
+} from 'router/Tools.testSupport'
+import { expectToolsContentPagesMocked } from 'router/Tools.contentMocks.testSupport'
 import { setReducedMotionMatchMedia } from 'test-support/matchMedia'
-
-jest.mock('router/compat', () => ({
-  ...jest.requireActual('router/compat'),
-  useHistory: () => ({ push: jest.fn() }),
-}))
-
-function mockToolsContent(name: ToolsContentMockName): unknown {
-  return jest
-    .requireActual('router/Tools.contentMocks.testSupport')
-    .toolsContentMock(name)
-}
-
-jest.mock('signs/ui/search/Signs', () => mockToolsContent('signs'))
-jest.mock('dictionary/ui/search/Dictionary', () =>
-  mockToolsContent('dictionary'),
-)
-jest.mock('bibliography/ui/BibliographyReferencesContent', () =>
-  mockToolsContent('references'),
-)
-jest.mock('afo-register/ui/AfoRegisterSearchPage', () =>
-  mockToolsContent('afoRegister'),
-)
-jest.mock('realia/ui/RealiaSearchPage', () => mockToolsContent('realia'))
-jest.mock('dossiers/ui/DossiersSearchPage', () => mockToolsContent('dossiers'))
-jest.mock('fragmentarium/ui/GenresPage', () => mockToolsContent('genres'))
-jest.mock('chronology/ui/DateConverter/DateConverterForm', () =>
-  mockToolsContent('dateConverter'),
-)
-jest.mock('chronology/ui/Kings/BrinkmanKingsTable', () =>
-  mockToolsContent('kings'),
-)
-jest.mock('signs/ui/CuneiformConverter/CuneiformConverterForm', () =>
-  mockToolsContent('cuneiformConverter'),
-)
-jest.mock('map/MapTab', () => mockToolsContent('map'))
 
 describe('Tools routes', () => {
   it('stubs every tools content page', expectToolsContentPagesMocked)
@@ -55,7 +20,7 @@ describe('Tools routes', () => {
 
     expect(screen.getByText('Signs Mock')).toBeInTheDocument()
 
-    rerender(<Tools {...toolsServiceProps()} activeTab="dictionary" />)
+    rerenderTools(rerender, 'dictionary')
 
     expect(screen.getByText('Dictionary Mock')).toBeInTheDocument()
   })
@@ -121,11 +86,7 @@ describe('Tools routes', () => {
     expect(getCurrentTab('dictionary')?.title).toEqual('Akkadian Dictionary')
     expect(getCurrentTab(undefined)).toBeUndefined()
     expect(getDisplayTitle(undefined)).toEqual('Tools')
-    expect(
-      getDisplayTitle(
-        'unknown-tab' as Parameters<typeof Tools>[0]['activeTab'],
-      ),
-    ).toEqual('Tools')
+    expect(getDisplayTitle('unknown-tab' as ToolsActiveTab)).toEqual('Tools')
     expect(getDisplayTitle('signs')).toEqual('Signs')
     expect(getDisplayTitle('dictionary')).toEqual('Akkadian Dictionary')
     expect(getDisplayTitle('dossiers')).toEqual('Dossiers')

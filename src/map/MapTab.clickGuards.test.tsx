@@ -1,5 +1,4 @@
-import React from 'react'
-import { act, render, screen } from '@testing-library/react'
+import { act, screen } from '@testing-library/react'
 
 import {
   makeFragmentService,
@@ -8,10 +7,10 @@ import {
   mockGetSource,
   mockQueryRenderedFeatures,
   mockSetDOMContent,
+  renderMapTab,
   resetMapMocks,
   triggerMapEvent,
 } from 'map/MapTab.testHelpers'
-import MapTab from 'map/MapTab'
 
 jest.mock('maplibre-gl')
 
@@ -19,7 +18,7 @@ describe('MapTab click guards', () => {
   beforeEach(resetMapMocks)
 
   it('ignores clusters without a numeric cluster id', async () => {
-    render(<MapTab fragmentService={makeFragmentService([makeProvenance()])} />)
+    renderMapTab(makeFragmentService([makeProvenance()]))
     await screen.findByPlaceholderText('Filter by site name...')
     mockQueryRenderedFeatures.mockReturnValue([
       {
@@ -39,7 +38,7 @@ describe('MapTab click guards', () => {
 
   it('ignores a cluster click when the source is missing', async () => {
     const clusterIdProperty = 'cluster_id'
-    render(<MapTab fragmentService={makeFragmentService([makeProvenance()])} />)
+    renderMapTab(makeFragmentService([makeProvenance()]))
     await screen.findByPlaceholderText('Filter by site name...')
     mockQueryRenderedFeatures.mockReturnValue([
       {
@@ -59,7 +58,7 @@ describe('MapTab click guards', () => {
   })
 
   it('ignores clicks without clusters or findspots', async () => {
-    render(<MapTab fragmentService={makeFragmentService([makeProvenance()])} />)
+    renderMapTab(makeFragmentService([makeProvenance()]))
     await screen.findByPlaceholderText('Filter by site name...')
     mockQueryRenderedFeatures.mockReturnValue([])
 
@@ -75,7 +74,7 @@ describe('MapTab click guards', () => {
   })
 
   it('ignores clicked findspots without point geometry', async () => {
-    render(<MapTab fragmentService={makeFragmentService([makeProvenance()])} />)
+    renderMapTab(makeFragmentService([makeProvenance()]))
     await screen.findByPlaceholderText('Filter by site name...')
     mockQueryRenderedFeatures.mockReturnValueOnce([]).mockReturnValueOnce([
       {

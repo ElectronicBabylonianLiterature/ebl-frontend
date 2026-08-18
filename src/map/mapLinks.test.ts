@@ -15,4 +15,16 @@ describe('buildFragmentSearchLink', () => {
     const link = buildFragmentSearchLink('')
     expect(link).toBe('/library/search?site=')
   })
+
+  it('keeps query delimiters inside the site value', () => {
+    const name = 'A & B = C # D?'
+
+    const { searchParams } = new URL(
+      buildFragmentSearchLink(name),
+      'https://www.ebl.lmu.de',
+    )
+
+    expect(searchParams.get('site')).toBe(name)
+    expect([...searchParams.keys()]).toEqual(['site'])
+  })
 })

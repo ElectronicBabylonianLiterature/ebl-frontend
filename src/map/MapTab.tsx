@@ -1,44 +1,22 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import React, { useCallback, useMemo, useRef, useState } from 'react'
 import { Alert, Form } from 'react-bootstrap'
 import 'maplibre-gl/dist/maplibre-gl.css'
 import FragmentService from 'fragmentarium/application/FragmentService'
-import { ProvenanceRecord } from 'fragmentarium/domain/Provenance'
 import Spinner from 'common/ui/Spinner'
 import useFindspotMap from 'map/useFindspotMap'
 import useMapSourceData from 'map/useMapSourceData'
-import { buildFragmentSearchLink } from 'map/mapLinks'
+import useProvenances from 'map/useProvenances'
+import { FindspotEmptyState, FindspotSearchList } from 'map/FindspotResults'
+import { filterProvenances } from 'map/findspotFilter'
 import 'map/MapTab.sass'
 
 interface Props {
   fragmentService: FragmentService
 }
 
-function filterProvenances(
-  provenances: readonly ProvenanceRecord[] | null,
-  filter: string,
-): readonly ProvenanceRecord[] | null {
-  if (!provenances) return null
-
-  const normalizedFilter = filter.trim().toLowerCase()
-  return normalizedFilter
-    ? provenances.filter((provenance) =>
-        provenance.longName.toLowerCase().includes(normalizedFilter),
-      )
-    : provenances
-}
-
-function getEmptyStateMessage(filter: string): string {
-  return filter.trim()
-    ? `No findspots match “${filter}”.`
-    : 'No findspot locations are available.'
-}
-
 export default function MapTab({ fragmentService }: Props): JSX.Element {
   const mapContainer = useRef<HTMLDivElement>(null)
-  const [provenances, setProvenances] = useState<
-    readonly ProvenanceRecord[] | null
-  >(null)
-  const [error, setError] = useState<string | null>(null)
+  const { provenances, error } = useProvenances(fragmentService)
   const [mapBackgroundError, setMapBackgroundError] = useState(false)
   const [filter, setFilter] = useState('')
 
@@ -56,32 +34,11 @@ export default function MapTab({ fragmentService }: Props): JSX.Element {
   )
   useMapSourceData(mapRef, filteredProvenances)
 
-  useEffect(() => {
-    let ignore = false
-
-    fragmentService
-      .fetchProvenances()
-      .then((provenances) => {
-        if (!ignore) {
-          setProvenances(provenances)
-        }
-      })
-      .catch((err: Error) => {
-        if (!ignore) {
-          setError(err.message)
-        }
-      })
-
-    return () => {
-      ignore = true
-    }
-  }, [fragmentService])
-
   if (error) {
     return <Alert variant="danger">Failed to load map data: {error}</Alert>
   }
 
-  if (!provenances) {
+  if (!filteredProvenances) {
     return <Spinner>Loading map data...</Spinner>
   }
 
@@ -100,15 +57,13 @@ export default function MapTab({ fragmentService }: Props): JSX.Element {
         Filter findspots by name. Matching fragment search links are available
         below the map.
       </p>
-      {mapBackgroundError ? (
+      {mapBackgroundError && (
         <Alert variant="warning" className="map-tab__map-error">
           The interactive map could not be loaded. Findspot links remain
           available below.
         </Alert>
-      ) : null}
-      {filteredProvenances && filteredProvenances.length === 0 ? (
-        <Alert variant="info">{getEmptyStateMessage(filter)}</Alert>
-      ) : null}
+      )}
+      <FindspotEmptyState provenances={filteredProvenances} filter={filter} />
       <div
         ref={mapContainer}
         className="map-tab__container"
@@ -116,23 +71,7 @@ export default function MapTab({ fragmentService }: Props): JSX.Element {
         aria-label="Interactive findspot map"
         aria-describedby="findspot-map-description"
       />
-      {filteredProvenances && filteredProvenances.length > 0 ? (
-        <nav
-          className="map-tab__findspot-links"
-          aria-label="Findspot fragment searches"
-        >
-          <h3 className="map-tab__findspot-links-heading">Findspot searches</h3>
-          <ul>
-            {filteredProvenances.map((provenance) => (
-              <li key={provenance.id}>
-                <a href={buildFragmentSearchLink(provenance.longName)}>
-                  {provenance.longName}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </nav>
-      ) : null}
+      <FindspotSearchList provenances={filteredProvenances} />
     </div>
   )
 }

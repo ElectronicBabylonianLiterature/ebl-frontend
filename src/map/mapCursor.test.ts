@@ -3,7 +3,7 @@ import {
   mockMapInstance,
   mockQueryRenderedFeatures,
   resetMapMocks,
-} from 'map/MapTab.testHelpers'
+} from 'map/testSupport/mapLibreMock'
 import {
   resetPointerCursor,
   setCanvasCursor,

@@ -11,7 +11,7 @@ export default function useMapSourceData(
 ): void {
   useEffect(() => {
     const map = mapRef.current
-    if (!map || !map.isStyleLoaded() || provenances === null) return
+    if (!map || provenances === null) return
 
     const source = map.getSource(SOURCE_ID) as GeoJSONSource | undefined
     if (!source) return

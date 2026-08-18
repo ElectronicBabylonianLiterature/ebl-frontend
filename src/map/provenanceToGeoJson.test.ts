@@ -101,4 +101,28 @@ describe('provenanceToGeoJson', () => {
 
     expect(result.features).toHaveLength(0)
   })
+
+  it.each([
+    ['an out-of-range latitude', { latitude: 925.4, longitude: 44.42 }],
+    ['an out-of-range longitude', { latitude: 32.542, longitude: -180.5 }],
+  ])('skips provenances with %s', (_label, coordinates) => {
+    expect(
+      provenanceToGeoJson([makeProvenance({ coordinates })]).features,
+    ).toHaveLength(0)
+  })
+
+  it('skips polygons whose approximate point falls outside the valid range', () => {
+    const result = provenanceToGeoJson([
+      makeProvenance({
+        coordinates: undefined,
+        polygonCoordinates: [
+          { latitude: 120, longitude: 43.1 },
+          { latitude: 130, longitude: 43.2 },
+          { latitude: 140, longitude: 43.15 },
+        ],
+      }),
+    ])
+
+    expect(result.features).toHaveLength(0)
+  })
 })

@@ -3,13 +3,22 @@ import {
   ProvenanceRecord,
   getRenderableProvenanceGeometry as getProvenanceGeometry,
 } from 'fragmentarium/domain/Provenance'
+import { isValidPointCoordinate } from 'map/pointCoordinates'
 
-function centroid(
-  coordinates: readonly {
-    readonly latitude: number
-    readonly longitude: number
-  }[],
-): { latitude: number; longitude: number } {
+export interface FindspotProperties {
+  id: string
+  name: string
+  abbreviation: string
+  parent: string | undefined
+  geometryType: 'point' | 'polygon'
+}
+
+interface FindspotPoint {
+  latitude: number
+  longitude: number
+}
+
+function centroid(coordinates: readonly FindspotPoint[]): FindspotPoint {
   const sum = coordinates.reduce(
     (acc, c) => ({ lat: acc.lat + c.latitude, lng: acc.lng + c.longitude }),
     { lat: 0, lng: 0 },
@@ -20,12 +29,21 @@ function centroid(
   }
 }
 
-export interface FindspotProperties {
-  id: string
-  name: string
-  abbreviation: string
-  parent: string | undefined
-  geometryType: 'point' | 'polygon'
+function toFindspotLocation(provenance: ProvenanceRecord): {
+  point: FindspotPoint
+  geometryType: FindspotProperties['geometryType']
+} | null {
+  const provenanceGeometry = getProvenanceGeometry(provenance)
+  if (!provenanceGeometry) return null
+
+  const point =
+    provenanceGeometry.type === 'point'
+      ? provenanceGeometry.coordinates
+      : centroid(provenanceGeometry.coordinates)
+
+  return isValidPointCoordinate(point.longitude, point.latitude)
+    ? { point, geometryType: provenanceGeometry.type }
+    : null
 }
 
 export function provenanceToGeoJson(
@@ -33,29 +51,25 @@ export function provenanceToGeoJson(
 ): FeatureCollection<Point, FindspotProperties> {
   const features = provenances
     .map((provenance) => {
-      const provenanceGeometry = getProvenanceGeometry(provenance)
-      if (!provenanceGeometry) return null
-
-      let point: { latitude: number; longitude: number }
-      if (provenanceGeometry.type === 'point') {
-        point = provenanceGeometry.coordinates
-      } else {
-        point = centroid(provenanceGeometry.coordinates)
-      }
+      const location = toFindspotLocation(provenance)
+      if (!location) return null
 
       return {
         type: 'Feature' as const,
         id: provenance.id,
         geometry: {
           type: 'Point' as const,
-          coordinates: [point.longitude, point.latitude] as [number, number],
+          coordinates: [location.point.longitude, location.point.latitude] as [
+            number,
+            number,
+          ],
         },
         properties: {
           id: provenance.id,
           name: provenance.longName,
           abbreviation: provenance.abbreviation,
           parent: provenance.parent ?? undefined,
-          geometryType: provenanceGeometry.type,
+          geometryType: location.geometryType,
         },
       }
     })

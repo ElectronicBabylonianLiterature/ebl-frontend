@@ -1,16 +1,15 @@
-import React from 'react'
-import { act, render, screen } from '@testing-library/react'
+import { act, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 import {
   deferMapLoad,
   makeFragmentService,
   makeProvenance,
+  renderMapTab,
   resetMapMocks,
   triggerMapEvent,
 } from 'map/MapTab.testHelpers'
 import { MAP_STYLE_URL } from 'map/mapBackgroundError'
-import MapTab from 'map/MapTab'
 
 jest.mock('maplibre-gl')
 
@@ -20,7 +19,7 @@ describe('MapTab map errors', () => {
   beforeEach(resetMapMocks)
 
   it('shows a user-visible warning when the style document fails to load', async () => {
-    render(<MapTab fragmentService={makeFragmentService([makeProvenance()])} />)
+    renderMapTab(makeFragmentService([makeProvenance()]))
     const input = await screen.findByPlaceholderText('Filter by site name...')
 
     act(() => {
@@ -43,7 +42,7 @@ describe('MapTab map errors', () => {
 
   it('shows a warning for an unresolvable style request before the style has ever loaded', async () => {
     deferMapLoad()
-    render(<MapTab fragmentService={makeFragmentService([makeProvenance()])} />)
+    renderMapTab(makeFragmentService([makeProvenance()]))
     await screen.findByPlaceholderText('Filter by site name...')
 
     act(() => {
@@ -54,7 +53,7 @@ describe('MapTab map errors', () => {
   })
 
   it('ignores a tile failure', async () => {
-    render(<MapTab fragmentService={makeFragmentService([makeProvenance()])} />)
+    renderMapTab(makeFragmentService([makeProvenance()]))
     await screen.findByPlaceholderText('Filter by site name...')
 
     act(() => {
@@ -69,7 +68,7 @@ describe('MapTab map errors', () => {
   })
 
   it('ignores a sprite failure', async () => {
-    render(<MapTab fragmentService={makeFragmentService([makeProvenance()])} />)
+    renderMapTab(makeFragmentService([makeProvenance()]))
     await screen.findByPlaceholderText('Filter by site name...')
 
     act(() => {
@@ -85,7 +84,7 @@ describe('MapTab map errors', () => {
   })
 
   it('ignores a generic error once the style has already loaded', async () => {
-    render(<MapTab fragmentService={makeFragmentService([makeProvenance()])} />)
+    renderMapTab(makeFragmentService([makeProvenance()]))
     await screen.findByPlaceholderText('Filter by site name...')
 
     act(() => {
@@ -96,7 +95,7 @@ describe('MapTab map errors', () => {
   })
 
   it('ignores map errors without a nested error object', async () => {
-    render(<MapTab fragmentService={makeFragmentService([makeProvenance()])} />)
+    renderMapTab(makeFragmentService([makeProvenance()]))
     await screen.findByPlaceholderText('Filter by site name...')
 
     act(() => {

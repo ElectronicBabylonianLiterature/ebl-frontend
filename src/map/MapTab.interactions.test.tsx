@@ -1,5 +1,4 @@
-import React from 'react'
-import { act, render, screen, waitFor, within } from '@testing-library/react'
+import { act, screen, waitFor, within } from '@testing-library/react'
 import { buildFragmentSearchLink } from 'map/mapLinks'
 
 import {
@@ -19,10 +18,10 @@ import {
   mockSetDOMContent,
   mockSetHTML,
   mockSetLngLat,
+  renderMapTab,
   resetMapMocks,
   triggerMapEvent,
 } from 'map/MapTab.testHelpers'
-import MapTab from 'map/MapTab'
 
 jest.mock('maplibre-gl')
 
@@ -36,7 +35,7 @@ describe('MapTab interactions', () => {
       properties: { [clusterIdProperty]: 42 },
       geometry: { type: 'Point', coordinates: [44.42, 32.542] },
     }
-    render(<MapTab fragmentService={makeFragmentService([makeProvenance()])} />)
+    renderMapTab(makeFragmentService([makeProvenance()]))
     await waitFor(() => {
       expect(mockOn).toHaveBeenCalledWith('click', expect.any(Function))
     })
@@ -69,7 +68,7 @@ describe('MapTab interactions', () => {
       properties: { name, parent, abbreviation, geometryType: 'point' },
       geometry: { type: 'Point', coordinates: [44.42, 32.542] },
     }
-    render(<MapTab fragmentService={makeFragmentService([makeProvenance()])} />)
+    renderMapTab(makeFragmentService([makeProvenance()]))
     await screen.findByPlaceholderText('Filter by site name...')
 
     mockQueryRenderedFeatures
@@ -119,7 +118,7 @@ describe('MapTab interactions', () => {
       },
       geometry: geometry ?? { type: 'Point', coordinates: [44.42, 32.542] },
     }
-    render(<MapTab fragmentService={makeFragmentService([makeProvenance()])} />)
+    renderMapTab(makeFragmentService([makeProvenance()]))
     await screen.findByPlaceholderText('Filter by site name...')
 
     mockQueryRenderedFeatures
@@ -135,7 +134,7 @@ describe('MapTab interactions', () => {
   })
 
   it('sets pointer cursor over cluster and unclustered layers', async () => {
-    render(<MapTab fragmentService={makeFragmentService([makeProvenance()])} />)
+    renderMapTab(makeFragmentService([makeProvenance()]))
     await screen.findByPlaceholderText('Filter by site name...')
 
     const clusterIdProperty = 'cluster_id'
@@ -164,7 +163,7 @@ describe('MapTab interactions', () => {
   })
 
   it('resets cursor away from interactive layers', async () => {
-    render(<MapTab fragmentService={makeFragmentService([makeProvenance()])} />)
+    renderMapTab(makeFragmentService([makeProvenance()]))
     await screen.findByPlaceholderText('Filter by site name...')
     mockCanvas.style.cursor = 'pointer'
 
@@ -184,7 +183,7 @@ describe('MapTab interactions', () => {
   })
 
   it('does not throw when the map canvas or style is unavailable', async () => {
-    render(<MapTab fragmentService={makeFragmentService([makeProvenance()])} />)
+    renderMapTab(makeFragmentService([makeProvenance()]))
     await screen.findByPlaceholderText('Filter by site name...')
 
     mockQueryRenderedFeatures.mockReturnValue([{}])
@@ -200,9 +199,7 @@ describe('MapTab interactions', () => {
   })
 
   it('registers and cleans up map event handlers on unmount', async () => {
-    const { unmount } = render(
-      <MapTab fragmentService={makeFragmentService([makeProvenance()])} />,
-    )
+    const { unmount } = renderMapTab(makeFragmentService([makeProvenance()]))
     await screen.findByPlaceholderText('Filter by site name...')
 
     expect(mockOn).toHaveBeenCalledWith('mousemove', expect.any(Function))

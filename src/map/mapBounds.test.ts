@@ -4,7 +4,7 @@ import {
   mockFitBounds,
   mockMapInstance,
   resetMapMocks,
-} from 'map/MapTab.testHelpers'
+} from 'map/testSupport/mapLibreMock'
 import { fitMapToData } from 'map/mapBounds'
 
 jest.mock('maplibre-gl')

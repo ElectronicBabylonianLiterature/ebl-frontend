@@ -1,5 +1,4 @@
-import React from 'react'
-import { act, render, screen, waitFor } from '@testing-library/react'
+import { act, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import { buildFragmentSearchLink } from 'map/mapLinks'
@@ -11,9 +10,9 @@ import {
   mockAddControl,
   mockAddLayer,
   mockAddSource,
+  renderMapTab,
   resetMapMocks,
 } from 'map/MapTab.testHelpers'
-import MapTab from 'map/MapTab'
 
 jest.mock('maplibre-gl')
 
@@ -37,15 +36,13 @@ describe('MapTab', () => {
       fetchProvenances: () => new Promise(() => {}),
     } as unknown as FragmentService
 
-    render(<MapTab fragmentService={fragmentService} />)
+    renderMapTab(fragmentService)
 
     expect(screen.getByText('Loading map data...')).toBeInTheDocument()
   })
 
   it('renders error state when fetch fails', async () => {
-    render(
-      <MapTab fragmentService={makeFailingFragmentService('Network error')} />,
-    )
+    renderMapTab(makeFailingFragmentService('Network error'))
 
     await waitFor(() => {
       expect(
@@ -55,7 +52,7 @@ describe('MapTab', () => {
   })
 
   it('renders search input, map region, and findspot links', async () => {
-    render(<MapTab fragmentService={makeFragmentService([makeProvenance()])} />)
+    renderMapTab(makeFragmentService([makeProvenance()]))
 
     expect(
       await screen.findByPlaceholderText('Filter by site name...'),
@@ -75,13 +72,7 @@ describe('MapTab', () => {
   })
 
   it('shows empty state when filter matches nothing', async () => {
-    render(
-      <MapTab
-        fragmentService={makeFragmentService([
-          makeProvenance({ longName: 'Babylon' }),
-        ])}
-      />,
-    )
+    renderMapTab(makeFragmentService([makeProvenance({ longName: 'Babylon' })]))
 
     const input = await screen.findByPlaceholderText('Filter by site name...')
     await userEvent.type(input, 'Nippur')
@@ -101,7 +92,7 @@ describe('MapTab', () => {
       }),
     ]
 
-    render(<MapTab fragmentService={makeFragmentService(provenances)} />)
+    renderMapTab(makeFragmentService(provenances))
 
     await waitFor(() => {
       expect(mockAddSource).toHaveBeenCalled()
@@ -125,7 +116,7 @@ describe('MapTab', () => {
   })
 
   it('creates a map with navigation control', async () => {
-    render(<MapTab fragmentService={makeFragmentService([makeProvenance()])} />)
+    renderMapTab(makeFragmentService([makeProvenance()]))
 
     await waitFor(() => {
       expect(mockAddControl).toHaveBeenCalled()
@@ -133,7 +124,7 @@ describe('MapTab', () => {
   })
 
   it('does not crash with empty provenance data', async () => {
-    render(<MapTab fragmentService={makeFragmentService([])} />)
+    renderMapTab(makeFragmentService([]))
 
     expect(
       await screen.findByPlaceholderText('Filter by site name...'),
@@ -144,7 +135,7 @@ describe('MapTab', () => {
   })
 
   it('reports missing data rather than a failed filter match', async () => {
-    render(<MapTab fragmentService={makeFragmentService([])} />)
+    renderMapTab(makeFragmentService([]))
 
     expect(
       await screen.findByText('No findspot locations are available.'),
@@ -153,11 +144,7 @@ describe('MapTab', () => {
   })
 
   it('handles provenances with no spatial geometry gracefully', async () => {
-    render(
-      <MapTab
-        fragmentService={makeFragmentService(mixedGeometryProvenances())}
-      />,
-    )
+    renderMapTab(makeFragmentService(mixedGeometryProvenances()))
 
     await waitFor(() => {
       expect(mockAddSource).toHaveBeenCalled()
@@ -169,11 +156,7 @@ describe('MapTab', () => {
   })
 
   it('links to searches for provenances that have no map geometry', async () => {
-    render(
-      <MapTab
-        fragmentService={makeFragmentService(mixedGeometryProvenances())}
-      />,
-    )
+    renderMapTab(makeFragmentService(mixedGeometryProvenances()))
 
     expect(
       await screen.findByRole('link', { name: 'No Geometry' }),
@@ -195,7 +178,7 @@ describe('MapTab', () => {
           }),
       } as unknown as FragmentService
 
-      const { unmount } = render(<MapTab fragmentService={fragmentService} />)
+      const { unmount } = renderMapTab(fragmentService)
       unmount()
 
       await act(async () => {
