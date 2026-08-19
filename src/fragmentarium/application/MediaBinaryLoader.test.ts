@@ -1,65 +1,88 @@
 import MediaBinaryLoader, {
+  MediaBinaryRepresentation,
   MediaBinaryRequest,
 } from 'fragmentarium/application/MediaBinaryLoader'
+import { ThumbnailSizes } from 'fragmentarium/domain/media'
+import { fragmentMediaBinaryUrl } from 'fragmentarium/infrastructure/mediaUrls'
+
+const representations: readonly MediaBinaryRepresentation[] = [
+  'original',
+  'display',
+  ...ThumbnailSizes,
+]
+
+const request: MediaBinaryRequest = {
+  fragmentNumber: 'K.1',
+  mediaId: 'media-id',
+  representation: 'original',
+}
+
+function createLoader(
+  record: (url: string, signal?: AbortSignal) => void,
+): MediaBinaryLoader {
+  return {
+    fetch: async (binaryRequest, signal) => {
+      const url = fragmentMediaBinaryUrl(binaryRequest)
+      record(url, signal)
+      return new Blob([], { type: 'image/jpeg' })
+    },
+  }
+}
 
 describe('MediaBinaryLoader contract', () => {
-  test('supports a fake implementation for future authenticated loading', async () => {
-    const request: MediaBinaryRequest = {
-      mediaId: 'media-id',
-      url: '/fragments/K.1/media/media-id/file',
-      representation: 'original',
-    }
+  test('carries enough identity to address a fragment-scoped route', async () => {
+    const requested: string[] = []
+    await createLoader((url) => requested.push(url)).fetch(request)
 
-    const mediaBinaryLoader: MediaBinaryLoader = {
-      fetch: async ({ url }) => new Blob([url], { type: 'image/jpeg' }),
-    }
+    expect(requested).toEqual(['/fragments/K.1/media/media-id/file'])
+  })
 
-    await expect(mediaBinaryLoader.fetch(request)).resolves.toBeInstanceOf(Blob)
+  test.each(representations)(
+    'addresses a distinct route for the %s representation',
+    async (representation) => {
+      const requested: string[] = []
+      await createLoader((url) => requested.push(url)).fetch({
+        ...request,
+        representation,
+      })
+
+      expect(requested[0]).toContain('/fragments/K.1/media/media-id/')
+    },
+  )
+
+  test('never addresses another fragment', async () => {
+    const requested: string[] = []
+    const loader = createLoader((url) => requested.push(url))
+
+    await loader.fetch({ ...request, fragmentNumber: 'K.1' })
+    await loader.fetch({ ...request, fragmentNumber: 'BM.2' })
+
+    expect(requested).toEqual([
+      '/fragments/K.1/media/media-id/file',
+      '/fragments/BM.2/media/media-id/file',
+    ])
   })
 
   test('forwards an optional AbortSignal to the implementation', async () => {
-    const request: MediaBinaryRequest = {
-      mediaId: 'media-id',
-      url: '/fragments/K.1/media/media-id/file',
-      representation: 'original',
-    }
     const controller = new AbortController()
     let receivedSignal: AbortSignal | undefined
-    const mediaBinaryLoader: MediaBinaryLoader = {
-      fetch: async ({ url }, signal) => {
-        receivedSignal = signal
-        return new Blob([url], { type: 'image/jpeg' })
-      },
-    }
+    const loader = createLoader((_url, signal) => {
+      receivedSignal = signal
+    })
 
-    await mediaBinaryLoader.fetch(request, controller.signal)
+    await loader.fetch(request, controller.signal)
 
     expect(receivedSignal).toBe(controller.signal)
   })
 
-  test('accepts display binary representations', () => {
-    const request: MediaBinaryRequest = {
-      mediaId: 'media-id',
-      url: '/fragments/K.1/media/media-id/display',
-      representation: 'display',
-    }
-
-    expect(request.representation).toBe('display')
-  })
-
   test('supports fetching without a signal', async () => {
-    const request: MediaBinaryRequest = {
-      mediaId: 'media-id',
-      url: '/fragments/K.1/media/media-id/file',
-      representation: 'original',
-    }
-    const mediaBinaryLoader: MediaBinaryLoader = {
-      fetch: async ({ url }, signal) => {
-        expect(signal).toBeUndefined()
-        return new Blob([url], { type: 'image/jpeg' })
-      },
-    }
+    let receivedSignal: AbortSignal | undefined = new AbortController().signal
+    const loader = createLoader((_url, signal) => {
+      receivedSignal = signal
+    })
 
-    await expect(mediaBinaryLoader.fetch(request)).resolves.toBeInstanceOf(Blob)
+    await loader.fetch(request)
+
+    expect(receivedSignal).toBeUndefined()
   })
 })

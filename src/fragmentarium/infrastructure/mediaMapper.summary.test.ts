@@ -13,15 +13,11 @@ describe('media summary normalization', () => {
     })
   })
 
-  test('removes primary data when count is zero', () => {
+  test('normalizes an empty summary to a zero count with no types', () => {
     expect(
       normalizeMediaSummary({
         count: 0,
         types: ['PHOTO'],
-        primary: {
-          id: 'media-id',
-          type: 'PHOTO',
-        },
       }),
     ).toEqual({
       count: 0,
@@ -125,15 +121,29 @@ describe('media summary normalization', () => {
     expect(normalizeMediaSummary({ count: 1.5, types: ['PHOTO'] })).toBeNull()
   })
 
-  test('keeps a safe shell for positive counts with no valid type or primary', () => {
+  test('returns null for positive counts with no valid type or primary', () => {
     expect(
       normalizeMediaSummary({
         count: 1,
         types: ['BAD'],
       }),
-    ).toEqual({
-      count: 1,
-      types: [],
-    })
+    ).toBeNull()
+    expect(
+      normalizeMediaSummary({
+        count: 5,
+        types: ['NOPE'],
+      }),
+    ).toBeNull()
+    expect(normalizeMediaSummary({ count: 3, types: [] })).toBeNull()
+  })
+
+  test('returns null when a zero count still carries a primary', () => {
+    expect(
+      normalizeMediaSummary({
+        count: 0,
+        types: ['PHOTO'],
+        primary: { id: 'media-id', type: 'PHOTO' },
+      }),
+    ).toBeNull()
   })
 })

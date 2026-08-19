@@ -1,9 +1,5 @@
 import type { MediaResource } from 'fragmentarium/domain/media'
 
-export interface MediaGalleryState {
-  readonly selectedMediaId: string | null
-}
-
 export function sortMedia(
   media: readonly MediaResource[],
 ): readonly MediaResource[] {

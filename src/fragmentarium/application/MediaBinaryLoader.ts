@@ -3,8 +3,8 @@ import type { ThumbnailSize } from 'fragmentarium/domain/media'
 export type MediaBinaryRepresentation = 'original' | 'display' | ThumbnailSize
 
 export interface MediaBinaryRequest {
+  readonly fragmentNumber: string
   readonly mediaId: string
-  readonly url: string
   readonly representation: MediaBinaryRepresentation
 }
 

@@ -1,9 +1,14 @@
 import {
-  MediaRepresentation,
   MediaRepresentations,
+  MediaType,
+  OriginalMediaRepresentation,
+  RasterMediaRepresentation,
   ThumbnailSize,
   ThumbnailSizes,
-  isThumbnailSize,
+  isOriginalMediaMimeType,
+  isRasterMediaMimeType,
+  isSvgAllowedAsOriginal,
+  isSvgMediaMimeType,
 } from 'fragmentarium/domain/media'
 import {
   MediaRepresentationDto,
@@ -14,18 +19,26 @@ import {
   isRecord,
   normalizeNonEmptyString,
   normalizePositiveInteger,
+  normalizeRelativeMediaUrl,
 } from 'fragmentarium/infrastructure/mediaMapperValidation'
 
-export function normalizeMediaRepresentation(
+interface RepresentationFields {
+  readonly url: string
+  readonly mimeType: string
+  readonly width?: number
+  readonly height?: number
+}
+
+function normalizeRepresentationFields(
   representation: unknown,
-): MediaRepresentation | undefined {
+): RepresentationFields | undefined {
   if (!isRecord(representation)) {
     return undefined
   }
 
   const { url, mimeType, width, height } =
     representation as MediaRepresentationDto
-  const normalizedUrl = normalizeNonEmptyString(url)
+  const normalizedUrl = normalizeRelativeMediaUrl(url)
   const normalizedMimeType = normalizeNonEmptyString(mimeType)
 
   if (!normalizedUrl || !normalizedMimeType) {
@@ -43,19 +56,50 @@ export function normalizeMediaRepresentation(
   }
 }
 
+export function normalizeRasterRepresentation(
+  representation: unknown,
+): RasterMediaRepresentation | undefined {
+  const fields = normalizeRepresentationFields(representation)
+  if (!fields) {
+    return undefined
+  }
+
+  const { mimeType, ...rest } = fields
+  return isRasterMediaMimeType(mimeType) ? { ...rest, mimeType } : undefined
+}
+
+export function normalizeOriginalRepresentation(
+  representation: unknown,
+  mediaType: MediaType,
+): OriginalMediaRepresentation | undefined {
+  const fields = normalizeRepresentationFields(representation)
+  if (!fields) {
+    return undefined
+  }
+
+  const { mimeType, ...rest } = fields
+  if (!isOriginalMediaMimeType(mimeType)) {
+    return undefined
+  }
+
+  return isSvgMediaMimeType(mimeType) && !isSvgAllowedAsOriginal(mediaType)
+    ? undefined
+    : { ...rest, mimeType }
+}
+
 function normalizeThumbnailMap(
   thumbnails: unknown,
-): Readonly<Partial<Record<ThumbnailSize, MediaRepresentation>>> {
+): Readonly<Partial<Record<ThumbnailSize, RasterMediaRepresentation>>> {
   if (!isRecord(thumbnails)) {
     return {}
   }
 
   const normalizedThumbnails: Partial<
-    Record<ThumbnailSize, MediaRepresentation>
+    Record<ThumbnailSize, RasterMediaRepresentation>
   > = {}
 
   for (const thumbnailSize of ThumbnailSizes) {
-    const thumbnail = normalizeMediaRepresentation(
+    const thumbnail = normalizeRasterRepresentation(
       (thumbnails as ThumbnailDtoMap)[thumbnailSize],
     )
     if (thumbnail) {
@@ -68,6 +112,7 @@ function normalizeThumbnailMap(
 
 export function normalizeMediaRepresentations(
   representations: unknown,
+  mediaType: MediaType,
 ): MediaRepresentations | undefined {
   if (!isRecord(representations)) {
     return undefined
@@ -75,22 +120,19 @@ export function normalizeMediaRepresentations(
 
   const { original, display, thumbnails } =
     representations as MediaRepresentationsDto
-  const normalizedOriginal = normalizeMediaRepresentation(original)
+  const normalizedOriginal = normalizeOriginalRepresentation(
+    original,
+    mediaType,
+  )
   if (!normalizedOriginal) {
     return undefined
   }
 
-  const normalizedDisplay = normalizeMediaRepresentation(display)
+  const normalizedDisplay = normalizeRasterRepresentation(display)
 
   return {
     original: normalizedOriginal,
     ...(normalizedDisplay ? { display: normalizedDisplay } : {}),
     thumbnails: normalizeThumbnailMap(thumbnails),
   }
-}
-
-export function normalizeThumbnailSize(
-  value: unknown,
-): ThumbnailSize | undefined {
-  return isThumbnailSize(value) ? value : undefined
 }

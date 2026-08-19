@@ -1,11 +1,25 @@
+import fs from 'fs'
+import os from 'os'
+import path from 'path'
 import {
   collectModuleReferences,
   findExpectedMediaArchitectureModules,
+  isMediaArchitectureFile,
   isMediaArchitectureModule,
   isProductionSourceFile,
   resolveModuleSpecifier,
   toModulePath,
 } from 'test-support/mediaArchitectureIsolationGuard'
+
+function writeFixtureTree(files: readonly string[]): string {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'media-guard-'))
+  for (const file of files) {
+    const absolutePath = path.join(root, file)
+    fs.mkdirSync(path.dirname(absolutePath), { recursive: true })
+    fs.writeFileSync(absolutePath, 'export {}\n')
+  }
+  return root
+}
 
 describe('collectModuleReferences', () => {
   test('ignores dynamic imports with a non-literal specifier', () => {
@@ -89,22 +103,47 @@ describe('toModulePath', () => {
   })
 })
 
+describe('isMediaArchitectureFile', () => {
+  test.each([
+    'fragmentarium/domain/media.ts',
+    'fragmentarium/application/MediaRepository.ts',
+    'fragmentarium/infrastructure/mediaUrls.ts',
+    'fragmentarium/ui/media/MediaGallery.tsx',
+    'fragmentarium/ui/images/MediaThumbnail.tsx',
+  ])('recognises %p as a media architecture module', (relativePath) => {
+    expect(isMediaArchitectureFile(relativePath)).toBe(true)
+  })
+
+  test.each([
+    'fragmentarium/ui/images/Photo.tsx',
+    'fragmentarium/domain/fragment.ts',
+    'corpus/domain/media.ts',
+    'test-support/mediaArchitectureIsolationGuard.ts',
+  ])('does not recognise %p as a media architecture module', (relativePath) => {
+    expect(isMediaArchitectureFile(relativePath)).toBe(false)
+  })
+})
+
 describe('findExpectedMediaArchitectureModules', () => {
-  test('discovers production media architecture modules in architecture layers', () => {
-    expect(
-      findExpectedMediaArchitectureModules(`${process.cwd()}/src`),
-    ).toEqual([
-      'fragmentarium/application/MediaBinaryLoader',
-      'fragmentarium/application/MediaRepository',
-      'fragmentarium/domain/media',
-      'fragmentarium/domain/mediaGallery',
-      'fragmentarium/infrastructure/mediaDtos',
-      'fragmentarium/infrastructure/mediaMapper',
-      'fragmentarium/infrastructure/mediaMapperValidation',
-      'fragmentarium/infrastructure/mediaRepresentationMapper',
-      'fragmentarium/infrastructure/mediaResourceMapper',
-      'fragmentarium/infrastructure/mediaSummaryMapper',
+  test('discovers media modules anywhere under fragmentarium and ignores tests', () => {
+    const root = writeFixtureTree([
+      'fragmentarium/domain/media.ts',
+      'fragmentarium/domain/media.test.ts',
+      'fragmentarium/ui/media/MediaGallery.tsx',
+      'fragmentarium/ui/images/Photo.tsx',
+      'corpus/domain/mediaThing.ts',
     ])
+
+    expect(findExpectedMediaArchitectureModules(root)).toEqual([
+      'fragmentarium/domain/media',
+      'fragmentarium/ui/media/MediaGallery',
+    ])
+  })
+
+  test('returns nothing for a tree without media modules', () => {
+    const root = writeFixtureTree(['fragmentarium/ui/images/Photo.tsx'])
+
+    expect(findExpectedMediaArchitectureModules(root)).toEqual([])
   })
 })
 

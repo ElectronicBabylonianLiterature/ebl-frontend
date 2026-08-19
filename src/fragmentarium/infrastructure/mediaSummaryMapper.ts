@@ -9,11 +9,12 @@ import {
   MediaSummaryDto,
   MediaSummaryPrimaryDto,
 } from 'fragmentarium/infrastructure/mediaDtos'
-import { normalizeMediaRepresentation } from 'fragmentarium/infrastructure/mediaRepresentationMapper'
+import { normalizeRasterRepresentation } from 'fragmentarium/infrastructure/mediaRepresentationMapper'
 import {
   isRecord,
   normalizeNonEmptyString,
   normalizeNonNegativeInteger,
+  normalizeRelativeMediaUrl,
 } from 'fragmentarium/infrastructure/mediaMapperValidation'
 
 export interface NormalizedMediaSummaryCompatibility {
@@ -44,7 +45,7 @@ function normalizeMediaSummaryPrimaryInternal(
     return undefined
   }
 
-  const normalizedThumbnail = normalizeMediaRepresentation(thumbnail)
+  const normalizedThumbnail = normalizeRasterRepresentation(thumbnail)
   return normalizedThumbnail
     ? {
         id: normalizedId,
@@ -110,7 +111,7 @@ function createLegacyPhotoSummary(): MediaSummary {
 }
 
 function normalizeLegacyThumbnailPath(thumbnailPath: unknown): string | null {
-  return normalizeNonEmptyString(thumbnailPath) ?? null
+  return normalizeRelativeMediaUrl(thumbnailPath) ?? null
 }
 
 function hasPrimaryThumbnail(mediaSummary: MediaSummary): boolean {
@@ -120,7 +121,8 @@ function hasPrimaryThumbnail(mediaSummary: MediaSummary): boolean {
 export function normalizeMediaSummary(
   mediaSummary: unknown,
 ): MediaSummary | null {
-  return normalizeMediaSummaryWithDiagnostics(mediaSummary).mediaSummary
+  const normalized = normalizeMediaSummaryWithDiagnostics(mediaSummary)
+  return normalized.hasCriticalError ? null : normalized.mediaSummary
 }
 
 export function normalizeLegacyMediaSummary(
@@ -162,7 +164,7 @@ export function normalizeCompatibleMediaSummary(
   return normalizedLegacySummary.mediaSummary
     ? normalizedLegacySummary
     : {
-        mediaSummary: normalizedNewSummary.mediaSummary,
+        mediaSummary: null,
         legacyThumbnailPath: normalizedLegacySummary.legacyThumbnailPath,
       }
 }

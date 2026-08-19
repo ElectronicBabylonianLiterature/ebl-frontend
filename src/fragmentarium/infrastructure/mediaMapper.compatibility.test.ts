@@ -102,7 +102,7 @@ describe('compatible media summary normalization', () => {
     })
   })
 
-  test('keeps thumbnail paths for legacy no-photo input', () => {
+  test('treats thumbnailPath as an unconditional route hint, not gated by hasPhoto', () => {
     expect(
       normalizeLegacyMediaSummary(false, '/fragments/K.1/thumbnail/small'),
     ).toEqual({
@@ -169,7 +169,7 @@ describe('compatible media summary normalization', () => {
     })
   })
 
-  test('keeps a safe malformed summary when no legacy fallback exists', () => {
+  test('returns a null summary for critical input when no legacy fallback exists', () => {
     expect(
       normalizeCompatibleMediaSummary({
         mediaSummary: {
@@ -180,8 +180,47 @@ describe('compatible media summary normalization', () => {
         hasPhoto: false,
       }),
     ).toEqual({
-      mediaSummary: { count: 0, types: [] },
+      mediaSummary: null,
       legacyThumbnailPath: null,
+    })
+  })
+
+  test('never leaks a positive-count shell when no legacy fallback exists', () => {
+    expect(
+      normalizeCompatibleMediaSummary({
+        mediaSummary: { count: 5, types: ['NOPE'] },
+        hasPhoto: false,
+        thumbnailPath: '/fragments/K.1/thumbnail/small',
+      }),
+    ).toEqual({
+      mediaSummary: null,
+      legacyThumbnailPath: '/fragments/K.1/thumbnail/small',
+    })
+  })
+
+  test('keeps the legacy thumbnail route while the new media projection is empty before backfill', () => {
+    expect(
+      normalizeCompatibleMediaSummary({
+        mediaSummary: { count: 0, types: [] },
+        hasPhoto: true,
+        thumbnailPath: '/fragments/K.1/thumbnail/small',
+      }),
+    ).toEqual({
+      mediaSummary: { count: 0, types: [] },
+      legacyThumbnailPath: '/fragments/K.1/thumbnail/small',
+    })
+  })
+
+  test('keeps the legacy route hint for an un-backfilled fragment reporting no photo', () => {
+    expect(
+      normalizeCompatibleMediaSummary({
+        mediaSummary: { count: 0, types: [] },
+        hasPhoto: false,
+        thumbnailPath: '/fragments/K.1/thumbnail/small',
+      }),
+    ).toEqual({
+      mediaSummary: { count: 0, types: [] },
+      legacyThumbnailPath: '/fragments/K.1/thumbnail/small',
     })
   })
 })

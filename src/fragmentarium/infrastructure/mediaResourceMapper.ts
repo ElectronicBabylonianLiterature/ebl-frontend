@@ -29,6 +29,16 @@ export function normalizeMediaReference(
   return normalizedId ? { id: normalizedId } : undefined
 }
 
+function normalizeMediaReferences(
+  references: unknown,
+): readonly MediaReference[] {
+  return Array.isArray(references)
+    ? references
+        .map((reference) => normalizeMediaReference(reference))
+        .filter((reference): reference is MediaReference => Boolean(reference))
+    : []
+}
+
 export function normalizeMediaResource(
   resource: unknown,
 ): MediaResource | undefined {
@@ -48,23 +58,25 @@ export function normalizeMediaResource(
   } = resource as MediaResourceDto
 
   const normalizedId = normalizeNonEmptyString(id)
-  const normalizedSortOrder = normalizeNonNegativeInteger(sortOrder)
-  const normalizedRepresentations =
-    normalizeMediaRepresentations(representations)
-  const normalizedCaption = normalizeNonEmptyString(caption)
-  const normalizedAttribution = normalizeNonEmptyString(attribution)
-
   if (!normalizedId || !isMediaType(type)) {
     return undefined
   }
 
+  const normalizedSortOrder = normalizeNonNegativeInteger(sortOrder)
   if (normalizedSortOrder === undefined || typeof isPrimary !== 'boolean') {
     return undefined
   }
 
+  const normalizedRepresentations = normalizeMediaRepresentations(
+    representations,
+    type,
+  )
   if (!normalizedRepresentations) {
     return undefined
   }
+
+  const normalizedCaption = normalizeNonEmptyString(caption)
+  const normalizedAttribution = normalizeNonEmptyString(attribution)
 
   return {
     id: normalizedId,
@@ -73,13 +85,7 @@ export function normalizeMediaResource(
     isPrimary,
     ...(normalizedCaption ? { caption: normalizedCaption } : {}),
     ...(normalizedAttribution ? { attribution: normalizedAttribution } : {}),
-    references: Array.isArray(references)
-      ? references
-          .map((reference) => normalizeMediaReference(reference))
-          .filter((reference): reference is MediaReference =>
-            Boolean(reference),
-          )
-      : [],
+    references: normalizeMediaReferences(references),
     representations: normalizedRepresentations,
   }
 }

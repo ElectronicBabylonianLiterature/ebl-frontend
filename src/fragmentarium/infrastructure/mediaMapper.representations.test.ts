@@ -1,14 +1,13 @@
 import {
-  normalizeMediaRepresentation,
   normalizeMediaRepresentations,
-  normalizeNonEmptyString,
-  normalizeThumbnailSize,
+  normalizeOriginalRepresentation,
+  normalizeRasterRepresentation,
 } from 'fragmentarium/infrastructure/mediaMapper'
 
 describe('media representation normalization', () => {
   test('normalizes valid representations and drops invalid dimensions', () => {
     expect(
-      normalizeMediaRepresentation({
+      normalizeRasterRepresentation({
         url: '/thumbnail',
         mimeType: 'image/jpeg',
         width: 240,
@@ -22,16 +21,16 @@ describe('media representation normalization', () => {
   })
 
   test('returns undefined for invalid representation records', () => {
-    expect(normalizeMediaRepresentation(null)).toBeUndefined()
-    expect(normalizeMediaRepresentation('image')).toBeUndefined()
+    expect(normalizeRasterRepresentation(null)).toBeUndefined()
+    expect(normalizeRasterRepresentation('image')).toBeUndefined()
     expect(
-      normalizeMediaRepresentation({
+      normalizeRasterRepresentation({
         url: '',
         mimeType: 'image/jpeg',
       }),
     ).toBeUndefined()
     expect(
-      normalizeMediaRepresentation({
+      normalizeRasterRepresentation({
         url: '/thumbnail',
         mimeType: '',
       }),
@@ -40,30 +39,33 @@ describe('media representation normalization', () => {
 
   test('normalizes representations with thumbnail maps', () => {
     expect(
-      normalizeMediaRepresentations({
-        original: {
-          url: '/original',
-          mimeType: 'image/svg+xml',
-        },
-        display: {
-          url: '/display',
-          mimeType: 'image/png',
-          width: 1600,
-          height: 1200,
-        },
-        thumbnails: {
-          small: {
-            url: '/thumbnail/small',
-            mimeType: 'image/png',
-            width: 240,
-            height: 180,
+      normalizeMediaRepresentations(
+        {
+          original: {
+            url: '/original',
+            mimeType: 'image/svg+xml',
           },
-          medium: {
-            url: '',
+          display: {
+            url: '/display',
             mimeType: 'image/png',
+            width: 1600,
+            height: 1200,
+          },
+          thumbnails: {
+            small: {
+              url: '/thumbnail/small',
+              mimeType: 'image/png',
+              width: 240,
+              height: 180,
+            },
+            medium: {
+              url: '',
+              mimeType: 'image/png',
+            },
           },
         },
-      }),
+        'COPY',
+      ),
     ).toEqual({
       original: {
         url: '/original',
@@ -88,16 +90,19 @@ describe('media representation normalization', () => {
 
   test('drops invalid display representations without rejecting originals', () => {
     expect(
-      normalizeMediaRepresentations({
-        original: {
-          url: '/original',
-          mimeType: 'image/jpeg',
+      normalizeMediaRepresentations(
+        {
+          original: {
+            url: '/original',
+            mimeType: 'image/jpeg',
+          },
+          display: {
+            url: '',
+            mimeType: 'image/jpeg',
+          },
         },
-        display: {
-          url: '',
-          mimeType: 'image/jpeg',
-        },
-      }),
+        'PHOTO',
+      ),
     ).toEqual({
       original: {
         url: '/original',
@@ -107,26 +112,58 @@ describe('media representation normalization', () => {
     })
   })
 
-  test('rejects malformed representation collections and originals', () => {
-    expect(normalizeMediaRepresentations(null)).toBeUndefined()
-    expect(normalizeMediaRepresentations('representations')).toBeUndefined()
+  test('keeps an empty thumbnail object when the backend sends one', () => {
     expect(
-      normalizeMediaRepresentations({
-        original: {
-          url: '',
-          mimeType: 'image/jpeg',
+      normalizeMediaRepresentations(
+        {
+          original: { url: '/original', mimeType: 'image/png' },
+          thumbnails: {},
         },
-      }),
+        'PHOTO',
+      ),
+    ).toEqual({
+      original: { url: '/original', mimeType: 'image/png' },
+      thumbnails: {},
+    })
+  })
+
+  test('ignores unknown thumbnail sizes', () => {
+    expect(
+      normalizeMediaRepresentations(
+        {
+          original: { url: '/original', mimeType: 'image/png' },
+          thumbnails: {
+            'x-large': { url: '/x-large', mimeType: 'image/png' },
+          },
+        },
+        'PHOTO',
+      ),
+    ).toEqual({
+      original: { url: '/original', mimeType: 'image/png' },
+      thumbnails: {},
+    })
+  })
+
+  test('rejects malformed representation collections and originals', () => {
+    expect(normalizeMediaRepresentations(null, 'PHOTO')).toBeUndefined()
+    expect(
+      normalizeMediaRepresentations('representations', 'PHOTO'),
+    ).toBeUndefined()
+    expect(
+      normalizeMediaRepresentations(
+        {
+          original: {
+            url: '',
+            mimeType: 'image/jpeg',
+          },
+        },
+        'PHOTO',
+      ),
     ).toBeUndefined()
   })
 
-  test('normalizes urls and thumbnail sizes', () => {
-    expect(normalizeNonEmptyString(' /media/file ')).toBe('/media/file')
-    expect(normalizeNonEmptyString('')).toBeUndefined()
-
-    expect(normalizeThumbnailSize('small')).toBe('small')
-    expect(normalizeThumbnailSize('medium')).toBe('medium')
-    expect(normalizeThumbnailSize('large')).toBe('large')
-    expect(normalizeThumbnailSize('x-large')).toBeUndefined()
+  test('rejects non-record originals for every media type', () => {
+    expect(normalizeOriginalRepresentation(null, 'COPY')).toBeUndefined()
+    expect(normalizeOriginalRepresentation('original', 'PHOTO')).toBeUndefined()
   })
 })

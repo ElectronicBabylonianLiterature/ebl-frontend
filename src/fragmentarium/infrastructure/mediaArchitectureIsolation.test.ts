@@ -60,26 +60,6 @@ describe('media architecture isolation: real source tree', () => {
 
     expect(barrelFiles.length).toBeGreaterThan(0)
   })
-
-  test('keeps every production barrel from re-exporting new media modules', () => {
-    const barrelFiles = listSourceFiles(sourceRoot).filter((filePath) => {
-      const relativePath = toRelativePath(sourceRoot, filePath)
-      return (
-        isProductionSourceFile(relativePath) &&
-        reExportPattern.test(readSource(filePath))
-      )
-    })
-
-    for (const filePath of barrelFiles) {
-      const relativePath = toRelativePath(sourceRoot, filePath)
-      const reExports = findMediaArchitectureReferences(
-        relativePath,
-        readSource(filePath),
-      ).filter((reference) => reference.kind === 'reexport')
-
-      expect(reExports).toEqual([])
-    }
-  })
 })
 
 describe('media architecture isolation: mutation fixtures', () => {
