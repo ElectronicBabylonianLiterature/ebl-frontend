@@ -21,7 +21,9 @@ import { MesopotamianDateDto } from 'fragmentarium/domain/FragmentDtos'
 import { UncertainFragmentAttestation } from 'corpus/domain/uncertainFragmentAttestation'
 import { AnnotationSpans } from 'fragmentarium/ui/text-annotation/annotationSpan'
 import { ProvenanceRecord } from 'fragmentarium/domain/Provenance'
-export type ThumbnailSize = 'small' | 'medium' | 'large'
+import type { ThumbnailSize } from 'fragmentarium/domain/media'
+
+export type { ThumbnailSize }
 
 export const onError = (error) => {
   if (error.message === '403 Forbidden') {
