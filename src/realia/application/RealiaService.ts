@@ -44,4 +44,8 @@ export default class RealiaService {
   search(query: string): Promise<readonly RealiaEntry[]> {
     return this.realiaRepository.search(query)
   }
+
+  listAllRealia(): Promise<string[]> {
+    return this.realiaRepository.listAllRealia()
+  }
 }
