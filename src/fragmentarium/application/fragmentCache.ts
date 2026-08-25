@@ -16,6 +16,7 @@ import {
   fragmentKeyPrefix,
   provenanceCacheKey,
 } from 'fragmentarium/application/fragmentCacheKeys'
+import { IiifCache } from 'fragmentarium/application/iiifCache'
 
 export { defaultCacheScope }
 
@@ -28,6 +29,7 @@ export const maximumCachedQueryResults = 250
 type QueryItemWithPrefetchedFragment = QueryResult['items'][number]
 
 export class FragmentCache {
+  readonly iiif: IiifCache
   private readonly scoped: ScopedCache
   private readonly provenances: Map<
     string,
@@ -60,6 +62,7 @@ export class FragmentCache {
 
   constructor(getCacheScope: () => string) {
     this.scoped = new ScopedCache(getCacheScope)
+    this.iiif = new IiifCache(this.scoped)
     this.provenances = this.scoped.register(new Map())
     this.provenanceRequests = this.scoped.register(new Map())
     this.provenancesById = this.scoped.register(new Map())

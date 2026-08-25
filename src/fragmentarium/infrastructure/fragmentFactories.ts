@@ -26,6 +26,7 @@ import { createResearchProject } from 'research-projects/researchProject'
 import { MesopotamianDate } from 'chronology/domain/Date'
 import { createArchaeology } from 'fragmentarium/domain/archaeologyDtos'
 import { Colophon } from 'fragmentarium/domain/Colophon'
+import { normalizeFragmentIiifReference } from 'fragmentarium/infrastructure/iiif/iiifReference'
 
 export function createScript(dto: ScriptDto): Script {
   const period =
@@ -109,6 +110,7 @@ export function createFragment(dto: FragmentDto): Fragment {
       ? createArchaeology(dto.archaeology)
       : undefined,
     colophon: dto.colophon ? Colophon.fromJson(dto.colophon) : undefined,
+    iiif: normalizeFragmentIiifReference(dto),
   })
 }
 

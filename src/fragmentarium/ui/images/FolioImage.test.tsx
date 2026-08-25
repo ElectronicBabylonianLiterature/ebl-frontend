@@ -49,7 +49,7 @@ it('Opens the image in a new tab', async () => {
   const openButton = screen.getByLabelText('Open in New Tab')
   window.open = jest.fn()
   await userEvent.click(openButton)
-  expect(window.open).toBeCalledWith(objectUrl, '_blank')
+  expect(window.open).toBeCalledWith(objectUrl, '_blank', 'noopener,noreferrer')
 })
 
 describe('Zoom buttons', () => {

@@ -3,6 +3,7 @@ import './ImageButtonGroup.css'
 import { Button, ButtonGroup, OverlayTrigger, Tooltip } from 'react-bootstrap'
 import { useCallback } from 'react'
 import useObjectUrl from 'common/hooks/useObjectUrl'
+import { imageDownloadFileName } from 'common/utils/imageFileExtension'
 
 export const getImageActions = ({
   zoomIn,
@@ -36,8 +37,7 @@ export const useImageActions = (
 
   const handleDownload = useCallback(() => {
     const link = document.createElement('a')
-    const extension = image.type.split('/')[1]
-    link.download = `eBL-${fileName}.${extension}`
+    link.download = imageDownloadFileName(fileName, image.type)
     if (imageUrl) {
       link.href = imageUrl
       link.click()
@@ -46,7 +46,7 @@ export const useImageActions = (
 
   const handleOpenInNewTab = useCallback(() => {
     const photoUrl = URL.createObjectURL(image)
-    window.open(photoUrl, '_blank')
+    window.open(photoUrl, '_blank', 'noopener,noreferrer')
     setTimeout(() => URL.revokeObjectURL(photoUrl), 60000)
   }, [image])
 

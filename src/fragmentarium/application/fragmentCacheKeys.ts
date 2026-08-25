@@ -27,6 +27,14 @@ export function thumbnailKey(number: string, size: ThumbnailSize): string {
   return `${number.length}:${number}:${size}`
 }
 
+export function manifestKey(manifestUrl: string): string {
+  return `manifest:${manifestUrl}`
+}
+
+export function imageInfoKey(serviceId: string): string {
+  return `imageInfo:${serviceId}`
+}
+
 export function deleteByPrefix<CacheValue>(
   cache: Map<string, CacheValue>,
   prefix: string,

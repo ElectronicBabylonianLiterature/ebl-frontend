@@ -20,6 +20,7 @@ import { MesopotamianDate } from 'chronology/domain/Date'
 import { Archaeology } from './archaeology'
 import { Colophon } from 'fragmentarium/domain/Colophon'
 import { DossierReference } from 'dossiers/domain/DossierReference'
+import { IiifReference } from 'fragmentarium/domain/iiifDocument'
 import {
   NamedEntity,
   RealiaInfoEntry,
@@ -55,6 +56,7 @@ interface FragmentProps {
   traditionalReferences: readonly string[]
   atf: string
   hasPhoto: boolean
+  iiif?: IiifReference
   genres: Genres
   introduction: Introduction
   script: Script
@@ -94,6 +96,7 @@ export class Fragment {
   readonly traditionalReferences: readonly string[]
   readonly atf: string
   readonly hasPhoto: boolean
+  readonly iiif?: IiifReference
   readonly genres: Genres
   readonly introduction: Introduction
   readonly script: Script
@@ -130,6 +133,7 @@ export class Fragment {
     this.traditionalReferences = props.traditionalReferences
     this.atf = props.atf
     this.hasPhoto = props.hasPhoto
+    this.iiif = props.iiif
     this.genres = props.genres
     this.introduction = props.introduction
     this.script = props.script
