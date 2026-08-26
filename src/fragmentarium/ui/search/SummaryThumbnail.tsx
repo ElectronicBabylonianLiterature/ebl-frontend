@@ -1,5 +1,6 @@
 import React from 'react'
 import { Image } from 'react-bootstrap'
+import ExternalLink from 'common/ui/ExternalLink'
 import { createFragmentUrl } from 'fragmentarium/ui/FragmentLink'
 import { apiUrl } from 'http/ApiClient'
 
@@ -33,7 +34,9 @@ export default function SummaryThumbnail({
   )
 
   return linked ? (
-    <a href={createFragmentUrl(fragmentNumber)}>{image}</a>
+    <ExternalLink href={createFragmentUrl(fragmentNumber)}>
+      {image}
+    </ExternalLink>
   ) : (
     image
   )

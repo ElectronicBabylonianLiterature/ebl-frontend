@@ -34,13 +34,12 @@ type Props = Pick<
 
 export const linesToShow = 5
 
+const transportPaginationFields = ['limit', 'offset', 'count'] as const
+
 function hasNonDefaultValues(query: FragmentQuery | CorpusQuery) {
-  // Corpus queries may still contain transport pagination fields.
   return !_(query)
     .omit('lemmaOperator')
-    .omit('limit')
-    .omit('offset')
-    .omit('count')
+    .omit(transportPaginationFields)
     .omitBy((value) => !value)
     .isEmpty()
 }

@@ -2,12 +2,12 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { render } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
-import { SearchResult } from './FragmentariumSearchResult'
+import { SearchResult } from 'fragmentarium/ui/search/FragmentariumSearchResult'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import DossiersService from 'dossiers/application/DossiersService'
 import { QueryItem, QueryResult } from 'query/QueryResult'
 import { FragmentSearchCriteria } from 'query/FragmentQuery'
-import { SearchPagination } from './pagination'
+import { SearchPagination } from 'fragmentarium/ui/search/pagination'
 
 function MockFragmentLines({ queryItem }: { queryItem: QueryItem }) {
   return <div>{queryItem.museumNumber}</div>

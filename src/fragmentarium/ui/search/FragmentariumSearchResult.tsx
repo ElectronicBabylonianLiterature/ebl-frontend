@@ -13,11 +13,12 @@ import DossiersService from 'dossiers/application/DossiersService'
 import PaginationItems, { PaginationPosition } from './PaginationItems'
 import {
   createPagedFragmentQuery,
+  hasNextPageAfter,
   isLineQuery,
   paginationURLParam,
   RESULT_PAGE_SIZES,
   SearchPagination,
-} from './pagination'
+} from 'fragmentarium/ui/search/pagination'
 
 function ResultPages({
   fragments,
@@ -60,9 +61,11 @@ function ResultPages({
   return (
     <>
       {renderPageButtons('top')}
-      {fragments.map((fragment) => (
+      {fragments.map((fragment, index) => (
         <React.Fragment
-          key={`${fragment.museumNumber}:${fragment.matchingLines.join(',')}`}
+          key={`${index}:${fragment.museumNumber}:${fragment.matchingLines.join(
+            ',',
+          )}`}
         >
           <FragmentLines
             fragmentService={fragmentService}
@@ -99,20 +102,15 @@ export const SearchResult = withData<
   }): JSX.Element => {
     const visibleItems = data.items.slice(0, pageSize)
     const lineQuery = isLineQuery(fragmentQuery)
-    const effectiveHasNextPage = lineQuery
-      ? data.items.length > pageSize
-      : (data.hasNextPage ?? data.items.length > pageSize)
-    const isPageCompletenessKnown =
-      lineQuery ||
-      typeof data.hasNextPage === 'boolean' ||
-      data.items.length > pageSize
+    const effectiveHasNextPage = hasNextPageAfter(
+      data.items,
+      pageSize,
+      data.hasNextPage,
+    )
     const fragmentCount = visibleItems.length
     const offset = pageIndex * pageSize
     const hasLineCount = typeof data.matchCountTotal === 'number'
-    const isCompleteFirstPage =
-      pageIndex === 0 &&
-      isPageCompletenessKnown &&
-      effectiveHasNextPage === false
+    const isCompleteFirstPage = pageIndex === 0 && !effectiveHasNextPage
     const showPaginationControls = !(
       isCompleteFirstPage && visibleItems.length < RESULT_PAGE_SIZES[0]
     )
@@ -128,7 +126,7 @@ export const SearchResult = withData<
           ? 'No results on this page'
           : 'Found 0 documents'
     const lineCountInfo =
-      isLineQuery(fragmentQuery) && hasLineCount
+      lineQuery && hasLineCount
         ? `Found ${data.isMatchCountTotalExact === false ? 'about ' : ''}${data.matchCountTotal.toLocaleString()} matching line${
             data.matchCountTotal === 1 ? '' : 's'
           }`
@@ -164,9 +162,7 @@ export const SearchResult = withData<
           </Col>
         </Row>
 
-        {(fragmentCount > 0 ||
-          pageIndex > 0 ||
-          effectiveHasNextPage === true) && (
+        {(fragmentCount > 0 || pageIndex > 0 || effectiveHasNextPage) && (
           <ResultPages
             fragments={visibleItems}
             fragmentService={fragmentService}
@@ -174,7 +170,7 @@ export const SearchResult = withData<
             queryLemmas={fragmentQuery.lemmas?.split('+')}
             pageIndex={pageIndex}
             pageSize={pageSize}
-            hasNextPage={effectiveHasNextPage === true}
+            hasNextPage={effectiveHasNextPage}
             showPaginationControls={showPaginationControls}
             linesToShow={Math.max(
               _.trimEnd(fragmentQuery.transliteration || '').split('\n').length,

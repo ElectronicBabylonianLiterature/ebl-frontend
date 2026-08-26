@@ -126,7 +126,7 @@ test('keeps one bounded query and zero card hydration calls for 50 summaries', a
   expect(harness.fragmentService.query).toHaveBeenCalledTimes(1)
   expect(harness.fragmentService.query).toHaveBeenCalledWith({
     number: 'Summary',
-    limit: 50,
+    limit: 51,
     offset: 0,
     count: 'page',
   })

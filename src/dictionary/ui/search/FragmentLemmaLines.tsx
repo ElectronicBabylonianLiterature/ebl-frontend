@@ -125,7 +125,6 @@ export default withData<
   QueryResult
 >(
   ({ data: queryResult, fragmentService, lemmaId }): JSX.Element => {
-    // Keep the item-count fallback for backends that ignore count: 'exact'.
     const hasMatchCount = typeof queryResult.matchCountTotal === 'number'
     const total = hasMatchCount
       ? queryResult.matchCountTotal.toLocaleString()

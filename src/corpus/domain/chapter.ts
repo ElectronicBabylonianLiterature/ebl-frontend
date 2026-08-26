@@ -18,8 +18,8 @@ import { ParallelLine } from 'transliteration/domain/parallel-line'
 import { Token } from 'transliteration/domain/token'
 import { LineDetails, ManuscriptLineDisplay } from 'corpus/domain/line-details'
 import { stageToAbbreviation } from 'common/utils/period'
-
 import { CANONICAL_ORIGIN } from 'router/domain'
+
 export class Chapter {
   readonly [immerable] = true
 

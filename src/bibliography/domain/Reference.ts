@@ -51,10 +51,6 @@ export default class Reference {
     readonly document: BibliographyEntry = new BibliographyEntry({}),
   ) {}
 
-  get hasCitationMetadata(): boolean {
-    return Boolean(this.document.label.trim())
-  }
-
   get hasShortContainerTitle(): boolean {
     return !_.isEmpty(this.shortContainerTitle)
   }
@@ -123,6 +119,7 @@ export default class Reference {
     return produce(this, (draft: Draft<Reference>) => {
       draft.document = document_
       draft.referenceId = ''
+      draft.hasUnresolvedDocument = false
     })
   }
 

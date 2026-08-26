@@ -22,6 +22,9 @@ describe('getters', () => {
   test('primaryAuthor', () =>
     expect(reference.primaryAuthor).toEqual(reference.document.primaryAuthor))
 
+  test('authors', () =>
+    expect(reference.authors).toEqual(reference.document.authors))
+
   test('typeAbbreviation returns first letter for most types', () => {
     const ref = referenceFactory.build({ type: 'EDITION' })
     expect(ref.typeAbbreviation).toEqual('E')
@@ -59,7 +62,7 @@ describe('reference identity', () => {
 
   test('a compact reference keeps its root id without a document', () => {
     expect(compactReference.id).toEqual('RN52')
-    expect(compactReference.hasCitationMetadata).toBe(false)
+    expect(compactReference.document.label.trim()).toEqual('')
   })
 
   test.each([

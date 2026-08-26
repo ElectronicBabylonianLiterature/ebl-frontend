@@ -18,7 +18,7 @@ import {
 } from 'test-support/fragment-query-preview'
 import { Token } from 'transliteration/domain/token'
 import { Fragment } from 'fragmentarium/domain/fragment'
-import { FragmentLines } from './FragmentariumSearchResultComponents'
+import { FragmentLines } from 'fragmentarium/ui/search/FragmentariumSearchResultComponents'
 
 jest.mock('fragmentarium/application/FragmentService')
 jest.mock('dossiers/application/DossiersService')
@@ -151,6 +151,36 @@ describe('summary contract guardrail', () => {
     ).toBeInTheDocument()
     expect(screen.queryByText(/gone wrong/)).not.toBeInTheDocument()
     expect(errorReporter.captureException).toHaveBeenCalledTimes(1)
+    expect(fragmentService.find).not.toHaveBeenCalled()
+  })
+
+  it('keeps valid sibling cards when one summary has a malformed identity', () => {
+    renderCards(
+      mapItems([
+        summaryItemDto(1),
+        createSummaryItemDto({ museumNumber: null, hasPhoto: false }),
+        summaryItemDto(3),
+      ]),
+    )
+
+    expect(screen.getByRole('link', { name: 'Summary.1' })).toBeInTheDocument()
+    expect(screen.getByRole('link', { name: 'Summary.3' })).toBeInTheDocument()
+    expect(
+      screen.getByText('Details for this result are unavailable.'),
+    ).toBeInTheDocument()
+    expect(fragmentService.find).not.toHaveBeenCalled()
+    expect(screen.queryByLabelText('Spinner')).not.toBeInTheDocument()
+  })
+
+  it('renders no fragment link when the museum number cannot be recovered', () => {
+    renderCards(
+      mapItems([createSummaryItemDto({ museumNumber: null, hasPhoto: false })]),
+    )
+
+    expect(
+      screen.getByText('Details for this result are unavailable.'),
+    ).toBeInTheDocument()
+    expect(screen.queryByRole('link')).not.toBeInTheDocument()
     expect(fragmentService.find).not.toHaveBeenCalled()
   })
 

@@ -19,8 +19,8 @@ import { DictionaryContext } from 'dictionary/ui/dictionary-context'
 import { fixHtmlParseOrder } from 'common/utils/HtmlParsing'
 import { getLineTypeByHtml } from 'common/utils/HtmlLineType'
 import RouterLinkModeContext from 'common/ui/RouterLinkModeContext'
-
 import { CANONICAL_ORIGIN } from 'router/domain'
+
 export async function pdfExport(
   fragment: Fragment,
   wordService: WordService,

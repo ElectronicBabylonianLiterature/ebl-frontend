@@ -5,7 +5,11 @@ import FragmentDto, {
   MesopotamianDateDto,
 } from 'fragmentarium/domain/FragmentDtos'
 import { ScriptDto } from 'fragmentarium/domain/fragment'
-import { museumNumberToString } from 'fragmentarium/domain/MuseumNumber'
+import {
+  isMuseumNumber,
+  museumNumberToString,
+  toMuseumNumberString,
+} from 'fragmentarium/domain/MuseumNumber'
 import { Museums } from 'fragmentarium/domain/museum'
 import createReference from 'bibliography/application/createReference'
 import Reference from 'bibliography/domain/Reference'
@@ -115,6 +119,30 @@ function hasRenderablePreview(dto: Partial<QuerySummaryItemDto>): boolean {
   )
 }
 
+function isNonNegativeInteger(value: unknown): value is number {
+  return typeof value === 'number' && Number.isSafeInteger(value) && value >= 0
+}
+
+export function isSummaryLineIndexes(
+  matchingLines: unknown,
+): matchingLines is readonly number[] {
+  return (
+    Array.isArray(matchingLines) && matchingLines.every(isNonNegativeInteger)
+  )
+}
+
+export function isSummaryMatchCount(matchCount: unknown): matchCount is number {
+  return isNonNegativeInteger(matchCount)
+}
+
+function hasSummaryIdentity(dto: Partial<QuerySummaryItemDto>): boolean {
+  return (
+    isMuseumNumber(dto.museumNumber) &&
+    isSummaryLineIndexes(dto.matchingLines) &&
+    isSummaryMatchCount(dto.matchCount)
+  )
+}
+
 function hasSummaryMetadata(dto: Partial<QuerySummaryItemDto>): boolean {
   return (
     typeof dto.description === 'string' && typeof dto.hasPhoto === 'boolean'
@@ -130,6 +158,7 @@ export function isQuerySummaryItemDto(
 ): dto is QuerySummaryItemDto {
   const candidate = dto as Partial<QuerySummaryItemDto>
   return (
+    hasSummaryIdentity(candidate) &&
     hasSummaryMetadata(candidate) &&
     hasSummaryScript(candidate) &&
     hasRenderablePreview(candidate)
@@ -154,9 +183,8 @@ function createSummaryArchaeology(
 ) {
   return archaeology
     ? {
-        excavationNumber: archaeology.excavationNumber
-          ? museumNumberToString(archaeology.excavationNumber)
-          : undefined,
+        excavationNumber:
+          toMuseumNumberString(archaeology.excavationNumber) || undefined,
         site: archaeology.site
           ? { name: archaeology.site.name, abbreviation: '', parent: null }
           : undefined,
@@ -170,7 +198,7 @@ export function createQuerySummaryFragment(
 ): Fragment {
   return Fragment.create({
     number: museumNumberToString(dto.museumNumber),
-    accession: dto.accession ? museumNumberToString(dto.accession) : '',
+    accession: toMuseumNumberString(dto.accession),
     publication: '',
     acquisition: null,
     description: dto.description,

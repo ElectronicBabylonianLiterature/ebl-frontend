@@ -118,13 +118,20 @@ export function createPagedFragmentQuery(
   fragmentQuery: FragmentSearchCriteria,
   { pageIndex, pageSize }: SearchPagination,
 ): FragmentQuery {
-  const needsOverfetchToDetectNextPage = isLineQuery(fragmentQuery)
   return {
     ...fragmentQuery,
-    limit: needsOverfetchToDetectNextPage ? pageSize + 1 : pageSize,
+    limit: pageSize + 1,
     offset: pageIndex * pageSize,
-    count: needsOverfetchToDetectNextPage ? 'exact' : 'page',
+    count: isLineQuery(fragmentQuery) ? 'exact' : 'page',
   }
+}
+
+export function hasNextPageAfter(
+  items: readonly unknown[],
+  pageSize: number,
+  reportedHasNextPage: boolean | null | undefined,
+): boolean {
+  return reportedHasNextPage === true || items.length > pageSize
 }
 
 export function updatePageSizeSearchParam(

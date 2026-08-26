@@ -2,11 +2,12 @@ import {
   createPagedFragmentQuery,
   getRequestedPaginationIndex,
   getValidatedPageSize,
+  hasNextPageAfter,
   isLineQuery,
   parseSearchCriteria,
   parseSearchPagination,
   RESULTS_PER_PAGE,
-} from './pagination'
+} from 'fragmentarium/ui/search/pagination'
 
 describe('parseSearchPagination', () => {
   it('defaults to the first page and the default page size', () => {
@@ -119,22 +120,22 @@ describe('isLineQuery', () => {
 })
 
 describe('createPagedFragmentQuery', () => {
-  it('bounds a document query to one page and asks for page metadata', () => {
+  it('overfetches a document query by one item and asks for page metadata', () => {
     expect(
       createPagedFragmentQuery(
         { project: 'CAIC' },
         { pageIndex: 0, pageSize: 50 },
       ),
-    ).toEqual({ project: 'CAIC', limit: 50, offset: 0, count: 'page' })
+    ).toEqual({ project: 'CAIC', limit: 51, offset: 0, count: 'page' })
   })
 
-  it('offsets later pages by the visible page size', () => {
+  it('offsets later pages by the visible page size, not the fetched size', () => {
     expect(
       createPagedFragmentQuery(
         { project: 'CAIC' },
         { pageIndex: 2, pageSize: 25 },
       ),
-    ).toEqual({ project: 'CAIC', limit: 25, offset: 50, count: 'page' })
+    ).toEqual({ project: 'CAIC', limit: 26, offset: 50, count: 'page' })
   })
 
   it('overfetches line queries by one item to detect the next page', () => {
@@ -161,9 +162,37 @@ describe('createPagedFragmentQuery', () => {
       project: 'CAIC',
       genre: 'CANONICAL',
       museum: 'THE_BRITISH_MUSEUM',
-      limit: 100,
+      limit: 101,
       offset: 0,
       count: 'page',
     })
+  })
+})
+
+describe('hasNextPageAfter', () => {
+  const page = new Array(50).fill(null)
+
+  it.each([true, false, null, undefined])(
+    'detects the next page from the overfetched item regardless of hasNextPage=%s',
+    (reportedHasNextPage) => {
+      expect(hasNextPageAfter([...page, null], 50, reportedHasNextPage)).toBe(
+        true,
+      )
+    },
+  )
+
+  it('trusts a reported next page even without an overfetched item', () => {
+    expect(hasNextPageAfter(page, 50, true)).toBe(true)
+  })
+
+  it.each([false, null, undefined])(
+    'reports no next page for a bounded page with hasNextPage=%s',
+    (reportedHasNextPage) => {
+      expect(hasNextPageAfter(page, 50, reportedHasNextPage)).toBe(false)
+    },
+  )
+
+  it('reports no next page for a partial page', () => {
+    expect(hasNextPageAfter(page.slice(0, 10), 50, undefined)).toBe(false)
   })
 })

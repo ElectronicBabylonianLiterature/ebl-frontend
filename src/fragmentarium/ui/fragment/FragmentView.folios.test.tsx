@@ -7,7 +7,7 @@ import { Fragment } from 'fragmentarium/domain/fragment'
 import {
   createFragmentViewHarness,
   fragmentNumber,
-} from './FragmentView.testSupport'
+} from 'fragmentarium/ui/fragment/FragmentView.testSupport'
 
 describe('On error', () => {
   let harness: ReturnType<typeof createFragmentViewHarness>

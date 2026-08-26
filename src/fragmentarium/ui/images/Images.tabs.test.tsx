@@ -73,6 +73,7 @@ test('selects the first folio when CDLI number has no usable images', async () =
   )
   expect(folioTab).toHaveAttribute('aria-selected', 'true')
   expect(screen.queryByText('CDLI')).not.toBeInTheDocument()
+  expect(await screen.findByAltText(folios[0].fileName)).toBeVisible()
 })
 
 test('keeps visited folios mounted when switching away and back', async () => {
@@ -162,4 +163,7 @@ test('resets visited media tabs when navigating to another fragment', async () =
 
   expect(await screen.findByAltText(secondFolios[0].fileName)).toBeVisible()
   expect(screen.queryByAltText(firstFolios[1].fileName)).not.toBeInTheDocument()
+  await waitFor(() =>
+    expect(fragmentService.folioPager).toHaveBeenCalledTimes(3),
+  )
 })

@@ -1,13 +1,20 @@
 import _ from 'lodash'
 import { Fragment } from 'fragmentarium/domain/fragment'
+import { RecordEntry } from 'fragmentarium/domain/RecordEntry'
 import { QueryItem } from 'query/QueryResult'
 
 export type RenderReadyQueryItem = QueryItem & { fragment: Fragment }
 
+export function getLatestTransliterationRecord(
+  fragment: Fragment,
+): RecordEntry | undefined {
+  return _(fragment.uniqueRecord)
+    .filter((entry) => entry.type === 'Transliteration' && !entry.isHistorical)
+    .first()
+}
+
 export function hasLatestTransliterationRecord(fragment: Fragment): boolean {
-  return _(fragment.uniqueRecord).some(
-    (entry) => entry.type === 'Transliteration' && !entry.isHistorical,
-  )
+  return getLatestTransliterationRecord(fragment) !== undefined
 }
 
 export function hasUnsupportedFragmentCardSummary(

@@ -19,9 +19,11 @@ export default function UnavailableFragmentCard({
     <Container>
       <Row className={'fragment-result__header'}>
         <Col xs={12}>
-          <h4 className={'fragment-result__fragment-number'}>
-            <FragmentLink number={museumNumber}>{museumNumber}</FragmentLink>
-          </h4>
+          {museumNumber && (
+            <h4 className={'fragment-result__fragment-number'}>
+              <FragmentLink number={museumNumber}>{museumNumber}</FragmentLink>
+            </h4>
+          )}
           <UnavailableSummaryNote />
         </Col>
       </Row>

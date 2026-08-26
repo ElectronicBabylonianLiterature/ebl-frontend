@@ -2,6 +2,15 @@ const isFastDev = process.env.FAST_DEV === 'true'
 
 module.exports = {
   ...(isFastDev ? { eslint: { enable: false } } : {}),
+  jest: {
+    configure: (jestConfig) => {
+      jestConfig.moduleNameMapper = {
+        '^maplibre-gl/dist/maplibre-gl\\.css$': 'identity-obj-proxy',
+        ...(jestConfig.moduleNameMapper || {}),
+      }
+      return jestConfig
+    },
+  },
   webpack: {
     configure: (webpackConfig) => {
       webpackConfig.resolve = webpackConfig.resolve || {}

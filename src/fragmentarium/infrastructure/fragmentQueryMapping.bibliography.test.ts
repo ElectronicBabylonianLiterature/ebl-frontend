@@ -39,7 +39,6 @@ describe('summary bibliography join', () => {
   it('joins documents by reference id and keeps citation metadata', () => {
     const [first, second] = summaryReferences(summaryBibliographyDocuments)
 
-    expect(first.hasCitationMetadata).toBe(true)
     expect(first.primaryAuthor).toEqual('Borger')
     expect(first.year).toEqual('1957')
     expect(first.link).toEqual('https://example.com/borger')
@@ -85,11 +84,11 @@ describe('summary bibliography join', () => {
   it('degrades safely when a document is missing from the map', () => {
     const [first, second] = summaryReferences({ RN54: seriesDocument })
 
-    expect(first.hasCitationMetadata).toBe(false)
+    expect(first.document.label.trim()).toEqual('')
     expect(first.hasUnresolvedDocument).toBe(true)
     expect(first.id).toEqual('RN52')
     expect(first.pages).toEqual('12-13')
-    expect(second.hasCitationMetadata).toBe(true)
+    expect(second.document.label.trim()).not.toEqual('')
     expect(second.hasUnresolvedDocument).toBe(false)
   })
 
@@ -104,7 +103,7 @@ describe('summary bibliography join', () => {
   it('degrades safely when the response omits the document map entirely', () => {
     const [first] = summaryReferences({})
 
-    expect(first.hasCitationMetadata).toBe(false)
+    expect(first.document.label.trim()).toEqual('')
     expect(first.id).toEqual('RN52')
   })
 })

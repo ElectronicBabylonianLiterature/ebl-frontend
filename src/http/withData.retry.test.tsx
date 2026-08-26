@@ -2,7 +2,7 @@ import React from 'react'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import Promise from 'bluebird'
-import withData, { WithData } from './withData'
+import withData, { WithData } from 'http/withData'
 import ErrorReporterContext, { ErrorReporter } from 'ErrorReporterContext'
 
 interface Props {

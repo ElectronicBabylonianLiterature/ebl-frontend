@@ -5,7 +5,7 @@ import { MemoryRouter, useLocation } from 'react-router-dom'
 import { Switch } from 'router/compat'
 import SessionContext from 'auth/SessionContext'
 import MemorySession from 'auth/Session'
-import ResearchProjectRoutes from './researchProjectRoutes'
+import ResearchProjectRoutes from 'router/researchProjectRoutes'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import FragmentSearchService from 'fragmentarium/application/FragmentSearchService'
 import BibliographyService from 'bibliography/application/BibliographyService'
@@ -95,7 +95,7 @@ describe('ResearchProjectRoutes search pagination', () => {
     expect(await screen.findByText('K.1')).toBeInTheDocument()
     expect(view.query).toHaveBeenCalledWith({
       project: 'CAIC',
-      limit: 50,
+      limit: 51,
       offset: 0,
       count: 'page',
     })
@@ -116,7 +116,7 @@ describe('ResearchProjectRoutes search pagination', () => {
     expect(await screen.findByText('K.51')).toBeInTheDocument()
     expect(view.query).toHaveBeenCalledWith({
       project: 'CAIC',
-      limit: 50,
+      limit: 51,
       offset: 50,
       count: 'page',
     })
@@ -132,7 +132,7 @@ describe('ResearchProjectRoutes search pagination', () => {
       project: 'CAIC',
       number: '000123',
       genre: 'CANONICAL:Technical',
-      limit: 50,
+      limit: 51,
       offset: 100,
       count: 'page',
     })
@@ -155,7 +155,7 @@ describe('ResearchProjectRoutes search pagination', () => {
     expect(await screen.findByText('K.1')).toBeInTheDocument()
     expect(view.query).toHaveBeenCalledWith({
       project: 'CAIC',
-      limit: 25,
+      limit: 26,
       offset: 0,
       count: 'page',
     })
@@ -175,7 +175,7 @@ describe('ResearchProjectRoutes search pagination', () => {
     expect(await screen.findByText('K.51')).toBeInTheDocument()
     expect(view.query).toHaveBeenLastCalledWith({
       project: 'CAIC',
-      limit: 50,
+      limit: 51,
       offset: 50,
       count: 'page',
     })
@@ -191,7 +191,7 @@ describe('ResearchProjectRoutes search pagination', () => {
     expect(await screen.findByText('K.151')).toBeInTheDocument()
     expect(view.query).toHaveBeenLastCalledWith({
       project: 'RECC',
-      limit: 50,
+      limit: 51,
       offset: 150,
       count: 'page',
     })
@@ -213,7 +213,7 @@ describe('ResearchProjectRoutes search pagination', () => {
     })
     expect(view.query).toHaveBeenLastCalledWith({
       project: 'AMPS',
-      limit: 25,
+      limit: 26,
       offset: 0,
       count: 'page',
     })
@@ -225,7 +225,7 @@ describe('ResearchProjectRoutes search pagination', () => {
     expect(await screen.findByText('K.51')).toBeInTheDocument()
     expect(view.query).toHaveBeenCalledWith({
       project: 'aluGeneva',
-      limit: 50,
+      limit: 51,
       offset: 50,
       count: 'page',
     })

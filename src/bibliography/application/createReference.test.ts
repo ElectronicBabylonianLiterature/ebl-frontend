@@ -33,7 +33,7 @@ test('preserves the root ID without a bibliography document', () => {
   })
 
   expect(reference.id).toEqual('SUMMARY-1')
-  expect(reference.hasCitationMetadata).toBe(false)
+  expect(reference.document.label.trim()).toEqual('')
   expect(reference.pages).toEqual('4-5')
   expect(reference.notes).toEqual('Summary note')
   expect(reference.linesCited).toEqual(['2.'])

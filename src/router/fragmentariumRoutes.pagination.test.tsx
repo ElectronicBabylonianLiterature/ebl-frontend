@@ -105,7 +105,7 @@ describe('FragmentariumRoutes library search pagination', () => {
     expect(await screen.findByText('K.1')).toBeInTheDocument()
     expect(view.query).toHaveBeenCalledWith({
       number: '000123',
-      limit: 50,
+      limit: 51,
       offset: 0,
       count: 'page',
     })
@@ -120,7 +120,7 @@ describe('FragmentariumRoutes library search pagination', () => {
     expect(view.query).toHaveBeenCalledWith({
       number: '000123',
       genre: 'CANONICAL:Technical:Astronomy:Astronomical Diaries',
-      limit: 50,
+      limit: 51,
       offset: 100,
       count: 'page',
     })
@@ -136,7 +136,7 @@ describe('FragmentariumRoutes library search pagination', () => {
       expect(await screen.findByText('K.1')).toBeInTheDocument()
       expect(view.query).toHaveBeenCalledWith({
         number: 'K.1',
-        limit: 50,
+        limit: 51,
         offset: 0,
         count: 'page',
       })
@@ -189,7 +189,7 @@ describe('FragmentariumRoutes library search pagination', () => {
     expect(await screen.findByText('K.101')).toBeInTheDocument()
     expect(view.query).toHaveBeenCalledWith({
       number: '000123',
-      limit: 100,
+      limit: 101,
       offset: 100,
       count: 'page',
     })
@@ -203,7 +203,7 @@ describe('FragmentariumRoutes library search pagination', () => {
     expect(await screen.findByText('K.51')).toBeInTheDocument()
     expect(view.query).toHaveBeenLastCalledWith({
       number: '000123',
-      limit: 50,
+      limit: 51,
       offset: 50,
       count: 'page',
     })
@@ -218,7 +218,7 @@ describe('FragmentariumRoutes library search pagination', () => {
     expect(await screen.findByText('K.101')).toBeInTheDocument()
     expect(view.query).toHaveBeenLastCalledWith({
       number: '000123',
-      limit: 50,
+      limit: 51,
       offset: 100,
       count: 'page',
     })

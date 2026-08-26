@@ -7,6 +7,7 @@ import {
 } from 'test-support/bibliography-fixtures'
 
 import createReference from 'bibliography/application/createReference'
+import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 import {
   borgerDocument,
   productionSummaryReferences,
@@ -104,6 +105,22 @@ test('shows an honest non-interactive fallback without citation metadata', () =>
     screen.queryByText(/RN52/, { selector: '.reference-popover__citation' }),
   ).not.toBeInTheDocument()
   expect(screen.queryByRole('link')).not.toBeInTheDocument()
+})
+
+test('leaves the fallback once an editor resolves the document', () => {
+  const reference = createReference(
+    productionSummaryReferences[0],
+  ).withIdentity('RN52', true)
+  const resolved = reference.setDocument(
+    new BibliographyEntry({ ...borgerDocument, id: 'RN99' }),
+  )
+
+  render(<CompactCitation references={[resolved]} />)
+
+  expect(
+    screen.queryByText(/RN52/, { selector: '.reference-summary-fallback' }),
+  ).not.toBeInTheDocument()
+  expect(screen.getByText(/Borger/)).toBeInTheDocument()
 })
 
 test('renders an empty compact reference as an honest unknown fallback', () => {

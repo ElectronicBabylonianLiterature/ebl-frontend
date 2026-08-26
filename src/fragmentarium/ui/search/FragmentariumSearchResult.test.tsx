@@ -25,7 +25,7 @@ describe('FragmentariumSearchResult pagination', () => {
     expect(screen.getAllByText('Page 2')[0]).toBeInTheDocument()
     expect(view.query).toHaveBeenCalledWith({
       number: 'K.1',
-      limit: 50,
+      limit: 51,
       offset: 50,
       count: 'page',
     })
@@ -133,13 +133,25 @@ describe('FragmentariumSearchResult pagination', () => {
     expect(screen.getAllByRole('listitem')[0]).not.toHaveClass('disabled')
   })
 
-  it('shows controls when first-page completeness is unknown', async () => {
+  it('resolves first-page completeness from the overfetched item without hasNextPage', async () => {
+    renderSearchResult({
+      queryResult: buildQueryResult({ items: 51, hasNextPage: null }),
+    })
+
+    await screen.findByText('K.1')
+    expect(screen.getAllByRole('navigation')).toHaveLength(2)
+    expect(screen.getByText(/Showing documents 1-50/)).toBeInTheDocument()
+    expect(screen.queryByText('K.51')).not.toBeInTheDocument()
+  })
+
+  it('reports a short first page as complete without hasNextPage', async () => {
     renderSearchResult({
       queryResult: buildQueryResult({ items: 12, hasNextPage: null }),
     })
 
     await screen.findByText('K.1')
-    expect(screen.getAllByRole('navigation')).toHaveLength(2)
+    expect(screen.getByText('Found 12 documents')).toBeInTheDocument()
+    expect(screen.queryByRole('navigation')).not.toBeInTheDocument()
   })
 
   it('keeps a usable Previous control for an empty directly linked page', async () => {

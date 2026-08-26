@@ -15,7 +15,6 @@ import './FragmentariumSearchResult.sass'
 import DateDisplay from 'chronology/ui/DateDisplay'
 import { ProjectList } from '../info/ResearchProjects'
 import { RecordList } from 'fragmentarium/ui/info/Record'
-import { RecordEntry } from 'fragmentarium/domain/RecordEntry'
 import ErrorBoundary from 'common/errors/ErrorBoundary'
 import { ThumbnailImage } from 'common/ui/BlobImage'
 import DossiersService from 'dossiers/application/DossiersService'
@@ -23,6 +22,7 @@ import useNearViewport from 'common/hooks/useNearViewport'
 import FragmentDossierRecordsDisplay from 'dossiers/ui/DossiersDisplay'
 import SummaryThumbnail from 'fragmentarium/ui/search/SummaryThumbnail'
 import {
+  getLatestTransliterationRecord,
   hasRenderReadyFragment,
   hasUnsupportedFragmentCardSummary,
 } from 'query/queryItemRenderReady'
@@ -63,15 +63,13 @@ const FragmentThumbnail = withData<
 )
 
 function TransliterationRecord({
-  record,
+  fragment,
   className,
 }: {
-  record: readonly RecordEntry[]
+  fragment: Fragment
   className?: string
 }): JSX.Element {
-  const latestRecord = _(record)
-    .filter((record) => record.type === 'Transliteration')
-    .first()
+  const latestRecord = getLatestTransliterationRecord(fragment)
   return (
     <RecordList
       record={latestRecord ? [latestRecord] : []}
@@ -146,9 +144,7 @@ function FragmentLinesContent({
           <GenresDisplay genres={fragment.genres} />
         </ResponsiveCol>
         <ResponsiveCol className={'fragment-result__record'}>
-          {includeLatestRecord && (
-            <TransliterationRecord record={fragment.uniqueRecord} />
-          )}
+          {includeLatestRecord && <TransliterationRecord fragment={fragment} />}
         </ResponsiveCol>
       </Row>
       {fragment?.date && (

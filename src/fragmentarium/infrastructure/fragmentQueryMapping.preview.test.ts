@@ -125,6 +125,18 @@ describe('malformed structured preview lines', () => {
     expect(item.fragment).toBeUndefined()
   })
 
+  it.each([
+    ['a token without a type', { value: 'kur', enclosureType: [] }],
+    ['a token with a non-string type', { type: 7, value: 'kur' }],
+    ['a null token', null],
+  ])('classifies %s as unsupported', (unusedName, token) => {
+    const line = previewLine(1, [])
+    const item = summaryItem([{ ...line, content: [token] }], 3)
+
+    expect(item.cardSummary).toEqual(unsupported)
+    expect(item.fragment).toBeUndefined()
+  })
+
   it('classifies a malformed nested token part as unsupported', () => {
     const line = previewLine(1, [])
     const item = summaryItem(

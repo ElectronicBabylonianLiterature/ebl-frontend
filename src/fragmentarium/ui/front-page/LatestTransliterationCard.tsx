@@ -14,6 +14,7 @@ import { ThumbnailImage } from 'common/ui/BlobImage'
 import useNearViewport from 'common/hooks/useNearViewport'
 import SummaryThumbnail from 'fragmentarium/ui/search/SummaryThumbnail'
 import {
+  getLatestTransliterationRecord,
   hasRenderReadyFragment,
   hasUnsupportedFragmentCardSummary,
 } from 'query/queryItemRenderReady'
@@ -48,9 +49,7 @@ function CompactFragmentCardContent({
   const { containerRef: thumbnailContainerRef, isNearViewport } =
     useNearViewport()
   const periodAbbr = fragment.script.period.abbreviation
-  const latestRecord = _(fragment.uniqueRecord)
-    .filter((entry) => entry.type === 'Transliteration' && !entry.isHistorical)
-    .first()
+  const latestRecord = getLatestTransliterationRecord(fragment)
   const recordDate = latestRecord
     ? DateTime.fromISO(latestRecord.date).toFormat('d LLL yyyy')
     : null

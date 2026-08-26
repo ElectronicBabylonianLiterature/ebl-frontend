@@ -42,19 +42,17 @@ export class TabController {
     this.navigate = navigate
   }
 
-  get defaultKey(): string {
-    return (
-      _([
-        this.fragment.hasPhoto && PHOTO,
-        ...this.fragment.folios.map((folio, index) => String(index)),
-        hasUsableCdliTab(this.fragment) && CDLI,
-      ])
-        .compact()
-        .head() ?? CDLI
-    )
+  get defaultKey(): string | undefined {
+    return _([
+      this.fragment.hasPhoto && PHOTO,
+      ...this.fragment.folios.map((folio, index) => String(index)),
+      hasUsableCdliTab(this.fragment) && CDLI,
+    ])
+      .compact()
+      .head()
   }
 
-  get activeKey(): string {
+  get activeKey(): string | undefined {
     if (this.tab === FOLIO) {
       const index = this.fragment.folios.findIndex(
         (folio) =>
@@ -111,7 +109,7 @@ export const FragmentPhoto = withData<
 
 interface TabPaneProps {
   eventKey: string
-  activeKey: string
+  activeKey: string | undefined
   children: React.ReactNode
 }
 
@@ -157,13 +155,15 @@ function Images({
   const folios = fragment.folios
   const activeKey = controller.activeKey
   const [visitedTabs, setVisitedTabs] = React.useState<ReadonlySet<string>>(
-    () => new Set([activeKey]),
+    () => new Set(activeKey === undefined ? [] : [activeKey]),
   )
   const FOLIO_DROPDOWN_THRESHOLD = 3
 
   React.useEffect(() => {
     setVisitedTabs((visited) =>
-      visited.has(activeKey) ? visited : new Set([...visited, activeKey]),
+      activeKey === undefined || visited.has(activeKey)
+        ? visited
+        : new Set([...visited, activeKey]),
     )
   }, [activeKey])
 

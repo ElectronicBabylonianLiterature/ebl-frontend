@@ -1,3 +1,4 @@
+import _ from 'lodash'
 import {
   Fragment,
   FragmentInfo,
@@ -21,29 +22,26 @@ import createReference from 'bibliography/application/createReference'
 import { createTransliteration } from 'transliteration/application/dtos'
 import { Joins } from 'fragmentarium/domain/join'
 import FragmentDto from 'fragmentarium/domain/FragmentDtos'
-import {
-  Period,
-  PeriodModifiers,
-  periodFromAbbreviation,
-  Periods,
-} from 'common/utils/period'
+import { Period, PeriodModifiers, Periods } from 'common/utils/period'
 import { createResearchProject } from 'research-projects/researchProject'
 import { MesopotamianDate } from 'chronology/domain/Date'
 import { createArchaeology } from 'fragmentarium/domain/archaeologyDtos'
 import { Colophon } from 'fragmentarium/domain/Colophon'
 
-function createPeriod(periodName: string): Period {
-  const canonicalPeriod = Periods[periodName]
-  if (canonicalPeriod) {
-    return canonicalPeriod
-  }
+const periodValues: readonly Period[] = _.values(Periods)
+const periodsByName = new Map<string, Period>(
+  periodValues.map((period) => [period.name, period]),
+)
+const periodsByAbbreviation = new Map<string, Period>(
+  periodValues.map((period) => [period.abbreviation, period]),
+)
 
-  try {
-    const abbreviatedPeriod = periodFromAbbreviation(periodName)
-    return Periods[abbreviatedPeriod.name] ?? Periods.Uncertain
-  } catch {
-    return Periods.Uncertain
-  }
+function createPeriod(periodName: string): Period {
+  return (
+    periodsByName.get(periodName) ??
+    periodsByAbbreviation.get(periodName) ??
+    Periods.Uncertain
+  )
 }
 
 export function createScript(dto: ScriptDto): Script {

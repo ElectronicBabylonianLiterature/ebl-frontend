@@ -1,12 +1,14 @@
 import { Fragment } from 'fragmentarium/domain/fragment'
 import FragmentDto from 'fragmentarium/domain/FragmentDtos'
 import { QueryItem, QueryResult } from 'query/QueryResult'
-import { museumNumberToString } from 'fragmentarium/domain/MuseumNumber'
+import { toMuseumNumberString } from 'fragmentarium/domain/MuseumNumber'
 import { createFragment } from 'fragmentarium/infrastructure/FragmentRepository'
 import {
   BibliographyDocumentsDto,
   createQuerySummaryFragment,
   isQuerySummaryItemDto,
+  isSummaryLineIndexes,
+  isSummaryMatchCount,
   QueryMuseumNumberDto,
   QuerySummaryItemDto,
 } from 'fragmentarium/infrastructure/querySummaryFragment'
@@ -60,15 +62,21 @@ function isSummaryShapedDto(dto: QueryResultItemDto): boolean {
   return SUMMARY_MARKER_FIELDS.some((field) => field in dto)
 }
 
+function createQueryItemIdentity(dto: QueryResultItemDto): QueryItem {
+  return {
+    museumNumber: toMuseumNumberString(dto.museumNumber),
+    matchingLines: isSummaryLineIndexes(dto.matchingLines)
+      ? dto.matchingLines
+      : [],
+    matchCount: isSummaryMatchCount(dto.matchCount) ? dto.matchCount : 0,
+  }
+}
+
 function createQueryItem(
   dto: QueryResultItemDto,
-  bibliographyDocuments: BibliographyDocumentsDto = {},
+  bibliographyDocuments: BibliographyDocumentsDto,
 ): QueryItem {
-  const queryItem = {
-    museumNumber: museumNumberToString(dto.museumNumber),
-    matchingLines: dto.matchingLines,
-    matchCount: dto.matchCount,
-  }
+  const queryItem = createQueryItemIdentity(dto)
 
   if (isQuerySummaryItemDto(dto)) {
     return {
@@ -79,7 +87,7 @@ function createQueryItem(
     }
   }
 
-  if (isSummaryShapedDto(dto)) {
+  if (isSummaryShapedDto(dto) || !queryItem.museumNumber) {
     return {
       ...queryItem,
       cardSummary: { type: 'UnsupportedFragmentCardSummary' },
