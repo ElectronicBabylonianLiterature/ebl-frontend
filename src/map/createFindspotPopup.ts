@@ -31,6 +31,16 @@ function formatCoordinates(coordinates: {
   )}`
 }
 
+function isPlainLeftClick(event: MouseEvent): boolean {
+  return (
+    event.button === 0 &&
+    !event.metaKey &&
+    !event.altKey &&
+    !event.ctrlKey &&
+    !event.shiftKey
+  )
+}
+
 function createRow(text: string): HTMLDivElement {
   const row = document.createElement('div')
   row.textContent = text
@@ -39,17 +49,25 @@ function createRow(text: string): HTMLDivElement {
 
 export function createFindspotPopup(
   properties: FindspotPopupProperties,
+  onNavigate: (path: string) => void,
 ): HTMLDivElement {
   const { name, abbreviation, parent, geometryType, coordinates } = properties
   const content = document.createElement('div')
   const titleRow = document.createElement('div')
   const title = document.createElement('strong')
   const link = document.createElement('a')
+  const fragmentSearchLink = buildFragmentSearchLink(name)
 
   title.textContent = name
   titleRow.append(title)
   link.textContent = 'View fragments'
-  link.setAttribute('href', buildFragmentSearchLink(name))
+  link.setAttribute('href', fragmentSearchLink)
+  link.addEventListener('click', (event) => {
+    if (!isPlainLeftClick(event)) return
+
+    event.preventDefault()
+    onNavigate(fragmentSearchLink)
+  })
 
   content.append(
     titleRow,

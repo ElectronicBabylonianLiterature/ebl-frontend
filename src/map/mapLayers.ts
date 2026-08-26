@@ -1,5 +1,6 @@
 import type { FeatureCollection } from 'geojson'
 import type { AddLayerObject, GeoJSONSourceSpecification } from 'maplibre-gl'
+import { EBL_COLOR_BRAND_PRIMARY } from 'designTokens'
 
 export const SOURCE_ID = 'ebl-findspots'
 export const CLUSTER_RADIUS = 50
@@ -55,7 +56,7 @@ export const unclusteredLayer: AddLayerObject = {
   source: SOURCE_ID,
   filter: ['!', ['has', 'point_count']],
   paint: {
-    'circle-color': '#0077be',
+    'circle-color': EBL_COLOR_BRAND_PRIMARY,
     'circle-radius': 8,
     'circle-stroke-width': 2,
     'circle-stroke-color': '#ffffff',

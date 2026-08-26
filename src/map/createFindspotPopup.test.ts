@@ -19,12 +19,18 @@ function makePopupProperties(
 }
 
 describe('createFindspotPopup', () => {
+  const onNavigate = jest.fn()
+
+  beforeEach(() => {
+    onNavigate.mockClear()
+  })
+
   afterEach(() => {
     document.body.innerHTML = ''
   })
 
   it('renders point popup details and fragment link', () => {
-    const content = createFindspotPopup(makePopupProperties())
+    const content = createFindspotPopup(makePopupProperties(), onNavigate)
     document.body.append(content)
     const popup = within(content)
 
@@ -47,6 +53,7 @@ describe('createFindspotPopup', () => {
         geometryType: 'polygon',
         coordinates: { latitude: -12.34, longitude: -45.67 },
       }),
+      onNavigate,
     )
     document.body.append(content)
     const popup = within(content)
@@ -68,6 +75,7 @@ describe('createFindspotPopup', () => {
         abbreviation,
         parent,
       }),
+      onNavigate,
     )
     document.body.append(content)
     const popup = within(content)
@@ -83,6 +91,7 @@ describe('createFindspotPopup', () => {
   it('renders popup content without coordinates', () => {
     const content = createFindspotPopup(
       makePopupProperties({ coordinates: undefined }),
+      onNavigate,
     )
     document.body.append(content)
     const popup = within(content)
@@ -93,5 +102,35 @@ describe('createFindspotPopup', () => {
       'href',
       buildFragmentSearchLink('Babylon'),
     )
+  })
+
+  function clickFragmentLink(init: MouseEventInit = {}): MouseEvent {
+    const content = createFindspotPopup(makePopupProperties(), onNavigate)
+    document.body.append(content)
+    const link = within(content).getByRole('link', { name: 'View fragments' })
+    const clickEvent = new MouseEvent('click', {
+      bubbles: true,
+      cancelable: true,
+      ...init,
+    })
+    link.dispatchEvent(clickEvent)
+    return clickEvent
+  }
+
+  it('navigates in the app instead of reloading the document', () => {
+    const clickEvent = clickFragmentLink()
+
+    expect(clickEvent.defaultPrevented).toBe(true)
+    expect(onNavigate).toHaveBeenCalledWith(buildFragmentSearchLink('Babylon'))
+  })
+
+  it.each([
+    ['a modified click', { metaKey: true }],
+    ['a middle click', { button: 1 }],
+  ])('leaves %s to the browser', (_label, init) => {
+    const clickEvent = clickFragmentLink(init)
+
+    expect(clickEvent.defaultPrevented).toBe(false)
+    expect(onNavigate).not.toHaveBeenCalled()
   })
 })

@@ -1,5 +1,6 @@
 import type { Map as MapLibreMap, MapMouseEvent } from 'maplibre-gl'
 import { clusterLayer, unclusteredLayer } from 'map/mapLayers'
+import { queryFindspotFeatures } from 'map/mapFeatureQuery'
 
 export const INTERACTIVE_LAYER_IDS = [
   clusterLayer.id,
@@ -7,18 +8,12 @@ export const INTERACTIVE_LAYER_IDS = [
 ] as const
 
 export function setCanvasCursor(map: MapLibreMap, cursor: string): void {
-  const canvas = map.getCanvas()
-
-  if (canvas?.style) {
-    canvas.style.cursor = cursor
-  }
+  map.getCanvas().style.cursor = cursor
 }
 
 export function setPointerCursor(map: MapLibreMap, event: MapMouseEvent): void {
   const isOverFindspot =
-    map.queryRenderedFeatures(event.point, {
-      layers: [...INTERACTIVE_LAYER_IDS],
-    }).length > 0
+    queryFindspotFeatures(map, event.point, INTERACTIVE_LAYER_IDS).length > 0
   setCanvasCursor(map, isOverFindspot ? 'pointer' : '')
 }
 

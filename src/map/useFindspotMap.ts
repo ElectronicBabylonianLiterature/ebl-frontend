@@ -1,7 +1,9 @@
-import { useEffect, useRef } from 'react'
+import { useContext, useEffect, useRef } from 'react'
 import type { MutableRefObject, RefObject } from 'react'
 import type { Point } from 'geojson'
 import maplibregl from 'maplibre-gl'
+import ErrorReporterContext from 'ErrorReporterContext'
+import { useHistory } from 'router/compat'
 import type {
   GeoJSONSource,
   Map as MapLibreMap,
@@ -26,6 +28,7 @@ import {
   unclusteredLayer,
 } from 'map/mapLayers'
 import { fitMapToData } from 'map/mapBounds'
+import { queryFindspotFeatures } from 'map/mapFeatureQuery'
 import {
   MAP_STYLE_URL,
   type MapLibreErrorEvent,
@@ -35,6 +38,12 @@ import { provenanceToGeoJson } from 'map/provenanceToGeoJson'
 
 const INITIAL_CENTER: [number, number] = [44.4, 33.0]
 const INITIAL_ZOOM = 5
+
+interface FindspotMapHandlers {
+  isActive: () => boolean
+  navigate: (path: string) => void
+  reportError: (error: Error) => void
+}
 
 function initializeFindspotSource(
   map: MapLibreMap,
@@ -51,7 +60,7 @@ function initializeFindspotSource(
 function expandCluster(
   map: MapLibreMap,
   cluster: MapGeoJSONFeature,
-  isActive: () => boolean,
+  handlers: FindspotMapHandlers,
 ): void {
   const clusterId = cluster.properties?.cluster_id
   if (typeof clusterId !== 'number') return
@@ -64,7 +73,7 @@ function expandCluster(
     number,
   ]
   const easeToClusterCenter = (zoom?: number): void => {
-    if (isActive()) {
+    if (handlers.isActive()) {
       map.easeTo(zoom === undefined ? { center } : { center, zoom })
     }
   }
@@ -72,10 +81,17 @@ function expandCluster(
   source
     .getClusterExpansionZoom(clusterId)
     .then(easeToClusterCenter)
-    .catch(() => easeToClusterCenter())
+    .catch((error: Error) => {
+      handlers.reportError(error)
+      easeToClusterCenter()
+    })
 }
 
-function openFindspotPopup(map: MapLibreMap, feature: MapGeoJSONFeature): void {
+function openFindspotPopup(
+  map: MapLibreMap,
+  feature: MapGeoJSONFeature,
+  navigate: (path: string) => void,
+): void {
   const coordinates = getFeaturePointCoordinates(feature)
   if (!coordinates) return
 
@@ -84,39 +100,41 @@ function openFindspotPopup(map: MapLibreMap, feature: MapGeoJSONFeature): void {
 
   new maplibregl.Popup()
     .setLngLat(coordinates)
-    .setDOMContent(createFindspotPopup(popupProperties))
+    .setDOMContent(createFindspotPopup(popupProperties, navigate))
     .addTo(map)
 }
 
 function handleMapClick(
   map: MapLibreMap,
   event: MapMouseEvent,
-  isActive: () => boolean,
+  handlers: FindspotMapHandlers,
 ): void {
-  const [cluster] = map.queryRenderedFeatures(event.point, {
-    layers: [clusterLayer.id],
-  })
+  const [cluster] = queryFindspotFeatures(map, event.point, [clusterLayer.id])
   if (cluster) {
-    expandCluster(map, cluster, isActive)
+    expandCluster(map, cluster, handlers)
     return
   }
 
-  const [findspot] = map.queryRenderedFeatures(event.point, {
-    layers: [unclusteredLayer.id],
-  })
+  const [findspot] = queryFindspotFeatures(map, event.point, [
+    unclusteredLayer.id,
+  ])
   if (findspot) {
-    openFindspotPopup(map, findspot)
+    openFindspotPopup(map, findspot, handlers.navigate)
   }
 }
 
 export default function useFindspotMap(
   containerRef: RefObject<HTMLDivElement>,
   provenances: readonly ProvenanceRecord[] | null,
-  onMapBackgroundError?: () => void,
+  onMapBackgroundErrorChange?: (hasError: boolean) => void,
 ): MutableRefObject<MapLibreMap | null> {
   const mapRef = useRef<MapLibreMap | null>(null)
+  const history = useHistory()
+  const errorReporter = useContext(ErrorReporterContext)
   const latestProvenancesRef = useRef(provenances)
   latestProvenancesRef.current = provenances
+  const latestServicesRef = useRef({ history, errorReporter })
+  latestServicesRef.current = { history, errorReporter }
   const isReady = provenances !== null
 
   useEffect(() => {
@@ -132,22 +150,29 @@ export default function useFindspotMap(
     map.addControl(new maplibregl.NavigationControl(), 'top-right')
     let isActive = true
     let hasStyleLoaded = false
+    const handlers: FindspotMapHandlers = {
+      isActive: () => isActive,
+      navigate: (path) => latestServicesRef.current.history.push(path),
+      reportError: (error) =>
+        latestServicesRef.current.errorReporter.captureException(error),
+    }
     const handleLoad = () => {
       hasStyleLoaded = true
+      onMapBackgroundErrorChange?.(false)
       const loadedProvenances = latestProvenancesRef.current
       if (loadedProvenances) {
         initializeFindspotSource(map, loadedProvenances)
       }
     }
     const handleClick = (event: MapMouseEvent) =>
-      handleMapClick(map, event, () => isActive)
+      handleMapClick(map, event, handlers)
     const handleMouseMove = (event: MapMouseEvent) =>
       setPointerCursor(map, event)
     const handleMouseEnter = () => showPointerCursor(map)
     const handleMouseLeave = () => resetPointerCursor(map)
     const handleError = (event: MapLibreErrorEvent) => {
       if (isMapBackgroundLoadError(event, hasStyleLoaded)) {
-        onMapBackgroundError?.()
+        onMapBackgroundErrorChange?.(true)
       }
     }
 
@@ -173,7 +198,7 @@ export default function useFindspotMap(
       map.remove()
       mapRef.current = null
     }
-  }, [containerRef, isReady, onMapBackgroundError])
+  }, [containerRef, isReady, onMapBackgroundErrorChange])
 
   return mapRef
 }

@@ -8,7 +8,7 @@ import {
   renderMapTab,
   resetMapMocks,
   triggerMapEvent,
-} from 'map/MapTab.testHelpers'
+} from 'map/MapTab.testSupport'
 import { MAP_STYLE_URL } from 'map/mapBackgroundError'
 
 jest.mock('maplibre-gl')
@@ -50,6 +50,36 @@ describe('MapTab map errors', () => {
     })
 
     expect(screen.getByText(BACKGROUND_WARNING)).toBeInTheDocument()
+  })
+
+  it('stays quiet when the map is used before the style has loaded', async () => {
+    deferMapLoad()
+    renderMapTab(makeFragmentService([makeProvenance()]))
+    await screen.findByPlaceholderText('Filter by site name...')
+
+    act(() => {
+      triggerMapEvent('mousemove', { point: { x: 10, y: 20 } })
+      triggerMapEvent('click', { point: { x: 10, y: 20 } })
+    })
+
+    expect(screen.queryByText(BACKGROUND_WARNING)).not.toBeInTheDocument()
+  })
+
+  it('clears the warning once the style finishes loading', async () => {
+    deferMapLoad()
+    renderMapTab(makeFragmentService([makeProvenance()]))
+    await screen.findByPlaceholderText('Filter by site name...')
+
+    act(() => {
+      triggerMapEvent('error', { error: { message: 'Failed to fetch' } })
+    })
+    expect(screen.getByText(BACKGROUND_WARNING)).toBeInTheDocument()
+
+    act(() => {
+      triggerMapEvent('load')
+    })
+
+    expect(screen.queryByText(BACKGROUND_WARNING)).not.toBeInTheDocument()
   })
 
   it('ignores a tile failure', async () => {

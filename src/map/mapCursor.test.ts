@@ -1,12 +1,13 @@
 import {
+  markLayersAdded,
   mockCanvas,
   mockMapInstance,
   mockQueryRenderedFeatures,
   resetMapMocks,
 } from 'map/testSupport/mapLibreMock'
 import {
+  INTERACTIVE_LAYER_IDS,
   resetPointerCursor,
-  setCanvasCursor,
   setPointerCursor,
   showPointerCursor,
 } from 'map/mapCursor'
@@ -14,7 +15,10 @@ import {
 jest.mock('maplibre-gl')
 
 describe('map cursor helpers', () => {
-  beforeEach(resetMapMocks)
+  beforeEach(() => {
+    resetMapMocks()
+    markLayersAdded(...INTERACTIVE_LAYER_IDS)
+  })
 
   it('sets a pointer cursor when entering an interactive feature', () => {
     showPointerCursor(mockMapInstance as never)
@@ -55,11 +59,5 @@ describe('map cursor helpers', () => {
     )
 
     expect(mockCanvas).toHaveStyle({ cursor: '' })
-  })
-
-  it('ignores a canvas without a style object', () => {
-    expect(() => {
-      setCanvasCursor({ getCanvas: () => ({}) } as never, 'pointer')
-    }).not.toThrow()
   })
 })

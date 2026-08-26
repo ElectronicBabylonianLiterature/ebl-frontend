@@ -2,11 +2,11 @@ import { act, screen, waitFor, within } from '@testing-library/react'
 import { buildFragmentSearchLink } from 'map/mapLinks'
 
 import {
+  CURRENT_LOCATION_TEST_ID,
   makeFragmentService,
   makeProvenance,
   mockCanvas,
   mockEaseTo,
-  mockGetCanvas,
   mockGetClusterExpansionZoom,
   mockGetSource,
   mockMapInstance,
@@ -21,7 +21,7 @@ import {
   renderMapTab,
   resetMapMocks,
   triggerMapEvent,
-} from 'map/MapTab.testHelpers'
+} from 'map/MapTab.testSupport'
 
 jest.mock('maplibre-gl')
 
@@ -133,6 +133,37 @@ describe('MapTab interactions', () => {
     expect(mockSetDOMContent).not.toHaveBeenCalled()
   })
 
+  it('navigates in the app when the popup link is clicked', async () => {
+    const findspot = {
+      type: 'Feature',
+      properties: {
+        name: 'Babylon',
+        abbreviation: 'BAB',
+        geometryType: 'point',
+      },
+      geometry: { type: 'Point', coordinates: [44.42, 32.542] },
+    }
+    renderMapTab(makeFragmentService([makeProvenance()]))
+    await screen.findByPlaceholderText('Filter by site name...')
+
+    mockQueryRenderedFeatures
+      .mockReturnValueOnce([])
+      .mockReturnValueOnce([findspot])
+    act(() => {
+      triggerMapEvent('click', { point: { x: 10, y: 20 } })
+    })
+
+    const content = mockSetDOMContent.mock.calls[0][0] as HTMLElement
+    document.body.append(content)
+    act(() => {
+      within(content).getByRole('link', { name: 'View fragments' }).click()
+    })
+
+    expect(screen.getByTestId(CURRENT_LOCATION_TEST_ID)).toHaveTextContent(
+      buildFragmentSearchLink('Babylon'),
+    )
+  })
+
   it('sets pointer cursor over cluster and unclustered layers', async () => {
     renderMapTab(makeFragmentService([makeProvenance()]))
     await screen.findByPlaceholderText('Filter by site name...')
@@ -180,22 +211,6 @@ describe('MapTab interactions', () => {
     })
 
     expect(mockCanvas).toHaveStyle({ cursor: '' })
-  })
-
-  it('does not throw when the map canvas or style is unavailable', async () => {
-    renderMapTab(makeFragmentService([makeProvenance()]))
-    await screen.findByPlaceholderText('Filter by site name...')
-
-    mockQueryRenderedFeatures.mockReturnValue([{}])
-    mockGetCanvas.mockReturnValueOnce(undefined)
-    expect(() => {
-      triggerMapEvent('mousemove', { point: { x: 1, y: 2 } })
-    }).not.toThrow()
-
-    mockGetCanvas.mockReturnValueOnce({} as HTMLElement)
-    expect(() => {
-      triggerMapEvent('mouseleave', undefined, 'ebl-unclustered-points')
-    }).not.toThrow()
   })
 
   it('registers and cleans up map event handlers on unmount', async () => {

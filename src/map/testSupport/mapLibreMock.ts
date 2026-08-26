@@ -1,15 +1,23 @@
+const addedLayerIds = new Set<string>()
+
+function rememberAddedLayer(layer: { id: string }): void {
+  addedLayerIds.add(layer.id)
+}
+
+function findAddedLayer(layerId: string): { id: string } | undefined {
+  return addedLayerIds.has(layerId) ? { id: layerId } : undefined
+}
+
 export const mockAddSource = jest.fn()
-export const mockAddLayer = jest.fn()
+export const mockAddLayer = jest.fn(rememberAddedLayer)
+export const mockGetLayer = jest.fn(findAddedLayer)
 export const mockAddControl = jest.fn()
 export const mockRemove = jest.fn()
 export const mockGetSource = jest.fn()
-export const mockCanvas = document.createElement('div')
-export const mockGetCanvas = jest.fn<HTMLElement | undefined, []>(
-  () => mockCanvas,
-)
+export const mockCanvas = document.createElement('canvas')
+export const mockGetCanvas = jest.fn<HTMLCanvasElement, []>(() => mockCanvas)
 export const mockOn = jest.fn()
 export const mockOff = jest.fn()
-export const mockIsStyleLoaded = jest.fn(() => true)
 export const mockFitBounds = jest.fn()
 export const mockSetData = jest.fn()
 export const mockQueryRenderedFeatures = jest.fn<unknown[], unknown[]>(() => [])
@@ -36,20 +44,51 @@ let mockLoadImmediately = true
 export const mockMapInstance = {
   addSource: mockAddSource,
   addLayer: mockAddLayer,
+  getLayer: mockGetLayer,
   addControl: mockAddControl,
   remove: mockRemove,
   getSource: mockGetSource,
   getCanvas: mockGetCanvas,
   on: mockOn,
   off: mockOff,
-  isStyleLoaded: mockIsStyleLoaded,
   fitBounds: mockFitBounds,
-  queryRenderedFeatures: mockQueryRenderedFeatures,
+  queryRenderedFeatures: queryRenderedFeaturesFromStyle,
   easeTo: mockEaseTo,
 }
 
 function eventKey(event: string, layerId?: string): string {
   return layerId ? `${event}:${layerId}` : event
+}
+
+function fireMapEvent(
+  event: string,
+  eventPayload?: MockMapEvent | MockErrorEvent,
+  layerId?: string,
+): void {
+  mockEventHandlers[eventKey(event, layerId)]?.(eventPayload)
+}
+
+function queryRenderedFeaturesFromStyle(
+  point: unknown,
+  options?: { layers?: readonly string[] },
+): unknown[] {
+  const missingLayerId = options?.layers?.find(
+    (layerId) => !addedLayerIds.has(layerId),
+  )
+  if (missingLayerId !== undefined) {
+    fireMapEvent('error', {
+      error: {
+        message: `The layer '${missingLayerId}' does not exist in the map's style and cannot be queried for features.`,
+      },
+    })
+    return []
+  }
+
+  return mockQueryRenderedFeatures(point, options)
+}
+
+export function markLayersAdded(...layerIds: readonly string[]): void {
+  layerIds.forEach((layerId) => addedLayerIds.add(layerId))
 }
 
 function rememberHandler(
@@ -119,12 +158,14 @@ export function resetMapMocks(): void {
   Object.keys(mockEventHandlers).forEach((event) => {
     delete mockEventHandlers[event]
   })
+  addedLayerIds.clear()
   mockCanvas.style.cursor = ''
   mockLoadImmediately = true
-  mockIsStyleLoaded.mockReturnValue(true)
   mockGetCanvas.mockReturnValue(mockCanvas)
   mockGetSource.mockReturnValue(undefined)
   mockQueryRenderedFeatures.mockReturnValue([])
+  mockAddLayer.mockImplementation(rememberAddedLayer)
+  mockGetLayer.mockImplementation(findAddedLayer)
   mockOn.mockImplementation(
     (
       event: string,
@@ -143,7 +184,7 @@ export function triggerMapEvent(
   eventPayload?: MockMapEvent | MockErrorEvent,
   layerId?: string,
 ): void {
-  mockEventHandlers[eventKey(event, layerId)]?.(eventPayload)
+  fireMapEvent(event, eventPayload, layerId)
 }
 
 const maplibregl = {

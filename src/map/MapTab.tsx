@@ -24,13 +24,13 @@ export default function MapTab({ fragmentService }: Props): JSX.Element {
     () => filterProvenances(provenances, filter),
     [provenances, filter],
   )
-  const handleMapBackgroundError = useCallback(() => {
-    setMapBackgroundError(true)
+  const handleMapBackgroundErrorChange = useCallback((hasError: boolean) => {
+    setMapBackgroundError(hasError)
   }, [])
   const mapRef = useFindspotMap(
     mapContainer,
     filteredProvenances,
-    handleMapBackgroundError,
+    handleMapBackgroundErrorChange,
   )
   useMapSourceData(mapRef, filteredProvenances)
 

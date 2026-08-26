@@ -9,12 +9,11 @@ import {
   mockAddSource,
   mockFitBounds,
   mockGetSource,
-  mockIsStyleLoaded,
   mockSetData,
   renderMapTab,
   resetMapMocks,
   triggerMapEvent,
-} from 'map/MapTab.testHelpers'
+} from 'map/MapTab.testSupport'
 
 jest.mock('maplibre-gl')
 
@@ -70,7 +69,6 @@ describe('MapTab filtering', () => {
       makeProvenance({ id: 'nippur', longName: 'Nippur' }),
     ]
     deferMapLoad()
-    mockIsStyleLoaded.mockReturnValue(false)
 
     renderMapTab(makeFragmentService(provenances))
 
@@ -88,7 +86,7 @@ describe('MapTab filtering', () => {
     expect(source.data.features[0].properties.name).toBe('Babylon')
   })
 
-  it('updates the source while the style reports unfinished tile loading', async () => {
+  it('updates the source in place once it has been added to the map', async () => {
     const provenances = [
       makeProvenance({ id: 'babylon', longName: 'Babylon' }),
       makeProvenance({ id: 'nippur', longName: 'Nippur' }),
@@ -99,7 +97,6 @@ describe('MapTab filtering', () => {
     const input = await screen.findByPlaceholderText('Filter by site name...')
     await waitFor(() => expect(mockAddSource).toHaveBeenCalled())
 
-    mockIsStyleLoaded.mockReturnValue(false)
     await userEvent.type(input, 'nip')
 
     await waitFor(() => expect(mockSetData).toHaveBeenCalled())
@@ -112,7 +109,6 @@ describe('MapTab filtering', () => {
 
   it('does not update a source that has not been added yet', async () => {
     deferMapLoad()
-    mockIsStyleLoaded.mockReturnValue(false)
     mockGetSource.mockReturnValue(undefined)
 
     renderMapTab(
