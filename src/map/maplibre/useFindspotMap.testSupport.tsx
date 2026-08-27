@@ -6,8 +6,8 @@ import {
   mockErrorReporter,
   mockQueryRenderedFeatures,
   triggerMapEvent,
-} from 'map/MapTab.testSupport'
-import useFindspotMap from 'map/useFindspotMap'
+} from 'map/ui/MapTab.testSupport'
+import useFindspotMap from 'map/maplibre/useFindspotMap'
 
 const CLUSTER_ID_PROPERTY = 'cluster_id'
 

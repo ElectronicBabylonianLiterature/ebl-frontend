@@ -1,5 +1,5 @@
 import type { MapGeoJSONFeature } from 'maplibre-gl'
-import { getPopupProperties } from 'map/findspotPopupProperties'
+import { getPopupProperties } from 'map/maplibre/findspotPopupProperties'
 
 function feature(
   overrides: Partial<MapGeoJSONFeature> = {},

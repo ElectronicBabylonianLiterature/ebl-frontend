@@ -1,5 +1,5 @@
-import type { FindspotProperties } from 'map/provenanceToGeoJson'
-import { buildFragmentSearchLink } from 'map/mapLinks'
+import type { FindspotProperties } from 'map/domain/provenanceToGeoJson'
+import { buildFragmentSearchLink } from 'map/domain/mapLinks'
 
 export interface FindspotPopupProperties extends Pick<
   FindspotProperties,
@@ -31,14 +31,12 @@ function formatCoordinates(coordinates: {
   )}`
 }
 
+function hasModifierKey(event: MouseEvent): boolean {
+  return event.metaKey || event.altKey || event.ctrlKey || event.shiftKey
+}
+
 function isPlainLeftClick(event: MouseEvent): boolean {
-  return (
-    event.button === 0 &&
-    !event.metaKey &&
-    !event.altKey &&
-    !event.ctrlKey &&
-    !event.shiftKey
-  )
+  return event.button === 0 && !hasModifierKey(event)
 }
 
 function createRow(text: string): HTMLDivElement {

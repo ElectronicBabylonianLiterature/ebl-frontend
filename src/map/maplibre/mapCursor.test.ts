@@ -10,7 +10,7 @@ import {
   resetPointerCursor,
   setPointerCursor,
   showPointerCursor,
-} from 'map/mapCursor'
+} from 'map/maplibre/mapCursor'
 
 jest.mock('maplibre-gl')
 

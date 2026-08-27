@@ -1,6 +1,6 @@
 import type { Map as MapLibreMap, MapMouseEvent } from 'maplibre-gl'
-import { clusterLayer, unclusteredLayer } from 'map/mapLayers'
-import { queryFindspotFeatures } from 'map/mapFeatureQuery'
+import { clusterLayer, unclusteredLayer } from 'map/maplibre/mapLayers'
+import { queryFindspotFeatures } from 'map/maplibre/mapFeatureQuery'
 
 export const INTERACTIVE_LAYER_IDS = [
   clusterLayer.id,

@@ -1,5 +1,5 @@
 import { act, screen, waitFor, within } from '@testing-library/react'
-import { buildFragmentSearchLink } from 'map/mapLinks'
+import { buildFragmentSearchLink } from 'map/domain/mapLinks'
 
 import {
   CURRENT_LOCATION_TEST_ID,
@@ -21,7 +21,7 @@ import {
   renderMapTab,
   resetMapMocks,
   triggerMapEvent,
-} from 'map/MapTab.testSupport'
+} from 'map/ui/MapTab.testSupport'
 
 jest.mock('maplibre-gl')
 

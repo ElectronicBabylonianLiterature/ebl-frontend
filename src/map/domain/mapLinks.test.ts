@@ -1,4 +1,4 @@
-import { buildFragmentSearchLink } from 'map/mapLinks'
+import { buildFragmentSearchLink } from 'map/domain/mapLinks'
 
 describe('buildFragmentSearchLink', () => {
   it('builds a link with the provenance name as site parameter', () => {

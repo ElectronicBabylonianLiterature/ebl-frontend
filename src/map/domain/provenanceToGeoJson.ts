@@ -3,7 +3,7 @@ import {
   ProvenanceRecord,
   getRenderableProvenanceGeometry as getProvenanceGeometry,
 } from 'fragmentarium/domain/Provenance'
-import { isValidPointCoordinate } from 'map/pointCoordinates'
+import { isValidPointCoordinate } from 'map/domain/pointCoordinates'
 
 export interface FindspotProperties {
   id: string

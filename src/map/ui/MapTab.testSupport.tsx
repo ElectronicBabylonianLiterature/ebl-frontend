@@ -5,7 +5,7 @@ import { MemoryRouter, useLocation } from 'react-router-dom'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import { ProvenanceRecord } from 'fragmentarium/domain/Provenance'
 import ErrorReporterContext, { type ErrorReporter } from 'ErrorReporterContext'
-import MapTab from 'map/MapTab'
+import MapTab from 'map/ui/MapTab'
 
 export const mockCaptureException = jest.fn()
 

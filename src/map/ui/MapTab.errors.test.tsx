@@ -8,8 +8,8 @@ import {
   renderMapTab,
   resetMapMocks,
   triggerMapEvent,
-} from 'map/MapTab.testSupport'
-import { MAP_STYLE_URL } from 'map/mapBackgroundError'
+} from 'map/ui/MapTab.testSupport'
+import { MAP_STYLE_URL } from 'map/maplibre/mapBackgroundError'
 
 jest.mock('maplibre-gl')
 
@@ -40,13 +40,18 @@ describe('MapTab map errors', () => {
     expect(screen.getByRole('link', { name: 'Babylon' })).toBeInTheDocument()
   })
 
-  it('shows a warning for an unresolvable style request before the style has ever loaded', async () => {
+  it('shows a warning when the style request cannot reach the network', async () => {
     deferMapLoad()
     renderMapTab(makeFragmentService([makeProvenance()]))
     await screen.findByPlaceholderText('Filter by site name...')
 
     act(() => {
-      triggerMapEvent('error', { error: { message: 'Failed to fetch' } })
+      triggerMapEvent('error', {
+        error: {
+          url: MAP_STYLE_URL,
+          message: `AJAXError:  (0): ${MAP_STYLE_URL}`,
+        },
+      })
     })
 
     expect(screen.getByText(BACKGROUND_WARNING)).toBeInTheDocument()
@@ -71,7 +76,9 @@ describe('MapTab map errors', () => {
     await screen.findByPlaceholderText('Filter by site name...')
 
     act(() => {
-      triggerMapEvent('error', { error: { message: 'Failed to fetch' } })
+      triggerMapEvent('error', {
+        error: { url: MAP_STYLE_URL, message: 'Not Found' },
+      })
     })
     expect(screen.getByText(BACKGROUND_WARNING)).toBeInTheDocument()
 

@@ -8,13 +8,13 @@ import {
   mockGetSource,
   mockSetDOMContent,
   resetMapMocks,
-} from 'map/MapTab.testSupport'
+} from 'map/ui/MapTab.testSupport'
 import {
   CLUSTER,
   HookHarness,
   clickCluster,
   renderHarness,
-} from 'map/useFindspotMap.testSupport'
+} from 'map/maplibre/useFindspotMap.testSupport'
 
 jest.mock('maplibre-gl')
 

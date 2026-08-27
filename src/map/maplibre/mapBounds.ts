@@ -1,7 +1,7 @@
 import type { Feature } from 'geojson'
 import maplibregl from 'maplibre-gl'
 import type { Map as MapLibreMap } from 'maplibre-gl'
-import { getFeaturePointCoordinates } from 'map/pointCoordinates'
+import { getFeaturePointCoordinates } from 'map/domain/pointCoordinates'
 
 const FIT_BOUNDS_PADDING = 40
 const FIT_BOUNDS_MAX_ZOOM = 12

@@ -1,6 +1,6 @@
 import type { MapGeoJSONFeature } from 'maplibre-gl'
-import type { FindspotPopupProperties } from 'map/createFindspotPopup'
-import type { FindspotProperties } from 'map/provenanceToGeoJson'
+import type { FindspotPopupProperties } from 'map/ui/createFindspotPopup'
+import type { FindspotProperties } from 'map/domain/provenanceToGeoJson'
 
 function isGeometryType(
   value: unknown,

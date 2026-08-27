@@ -2,8 +2,8 @@ import React from 'react'
 import { Alert } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import { ProvenanceRecord } from 'fragmentarium/domain/Provenance'
-import { buildFragmentSearchLink } from 'map/mapLinks'
-import { getEmptyStateMessage } from 'map/findspotFilter'
+import { buildFragmentSearchLink } from 'map/domain/mapLinks'
+import { getEmptyStateMessage } from 'map/domain/findspotFilter'
 
 interface ResultsProps {
   provenances: readonly ProvenanceRecord[]

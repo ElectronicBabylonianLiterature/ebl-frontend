@@ -27,7 +27,7 @@ import {
   TabId,
 } from 'router/toolsConfig'
 
-const MapTab = React.lazy(() => import('map/MapTab'))
+const MapTab = React.lazy(() => import('map/ui/MapTab'))
 
 export function ToolsIntroduction(): JSX.Element {
   return (

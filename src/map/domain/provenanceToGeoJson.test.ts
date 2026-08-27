@@ -1,5 +1,5 @@
 import type { Point } from 'geojson'
-import { provenanceToGeoJson } from 'map/provenanceToGeoJson'
+import { provenanceToGeoJson } from 'map/domain/provenanceToGeoJson'
 import { makeProvenance } from 'map/testFixtures/provenance'
 
 describe('provenanceToGeoJson', () => {

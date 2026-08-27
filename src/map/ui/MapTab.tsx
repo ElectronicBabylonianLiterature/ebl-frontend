@@ -3,12 +3,12 @@ import { Alert, Form } from 'react-bootstrap'
 import 'maplibre-gl/dist/maplibre-gl.css'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import Spinner from 'common/ui/Spinner'
-import useFindspotMap from 'map/useFindspotMap'
-import useMapSourceData from 'map/useMapSourceData'
-import useProvenances from 'map/useProvenances'
-import { FindspotEmptyState, FindspotSearchList } from 'map/FindspotResults'
-import { filterProvenances } from 'map/findspotFilter'
-import 'map/MapTab.sass'
+import useFindspotMap from 'map/maplibre/useFindspotMap'
+import useMapSourceData from 'map/maplibre/useMapSourceData'
+import useProvenances from 'map/ui/useProvenances'
+import { FindspotEmptyState, FindspotSearchList } from 'map/ui/FindspotResults'
+import { filterProvenances } from 'map/domain/findspotFilter'
+import 'map/ui/MapTab.sass'
 
 interface Props {
   fragmentService: FragmentService

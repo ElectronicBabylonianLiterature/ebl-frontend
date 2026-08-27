@@ -35,7 +35,6 @@ function isSourceOrLayerScoped(event: MapLibreErrorEvent): boolean {
 
 export function isMapBackgroundLoadError(
   event: MapLibreErrorEvent | unknown,
-  hasStyleLoaded: boolean,
 ): boolean {
   if (!event || typeof event !== 'object') return false
 
@@ -45,10 +44,5 @@ export function isMapBackgroundLoadError(
 
   if (isSourceOrLayerScoped(mapEvent)) return false
 
-  const url = error.url
-  if (typeof url === 'string') {
-    return isStyleUrl(url)
-  }
-
-  return !hasStyleLoaded
+  return typeof error.url === 'string' && isStyleUrl(error.url)
 }

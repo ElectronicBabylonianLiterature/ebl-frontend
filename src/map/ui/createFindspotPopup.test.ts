@@ -2,8 +2,8 @@ import { within } from '@testing-library/react'
 import {
   createFindspotPopup,
   type FindspotPopupProperties,
-} from 'map/createFindspotPopup'
-import { buildFragmentSearchLink } from 'map/mapLinks'
+} from 'map/ui/createFindspotPopup'
+import { buildFragmentSearchLink } from 'map/domain/mapLinks'
 
 function makePopupProperties(
   overrides: Partial<FindspotPopupProperties> = {},

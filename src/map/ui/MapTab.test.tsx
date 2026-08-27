@@ -1,7 +1,7 @@
 import { act, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import FragmentService from 'fragmentarium/application/FragmentService'
-import { buildFragmentSearchLink } from 'map/mapLinks'
+import { buildFragmentSearchLink } from 'map/domain/mapLinks'
 
 import {
   makeFailingFragmentService,
@@ -12,7 +12,7 @@ import {
   mockAddSource,
   renderMapTab,
   resetMapMocks,
-} from 'map/MapTab.testSupport'
+} from 'map/ui/MapTab.testSupport'
 
 jest.mock('maplibre-gl')
 

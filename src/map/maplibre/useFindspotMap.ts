@@ -11,30 +11,30 @@ import type {
   MapMouseEvent,
 } from 'maplibre-gl'
 import { ProvenanceRecord } from 'fragmentarium/domain/Provenance'
-import { createFindspotPopup } from 'map/createFindspotPopup'
-import { getPopupProperties } from 'map/findspotPopupProperties'
-import { getFeaturePointCoordinates } from 'map/pointCoordinates'
+import { createFindspotPopup } from 'map/ui/createFindspotPopup'
+import { getPopupProperties } from 'map/maplibre/findspotPopupProperties'
+import { getFeaturePointCoordinates } from 'map/domain/pointCoordinates'
 import {
   INTERACTIVE_LAYER_IDS,
   resetPointerCursor,
   setPointerCursor,
   showPointerCursor,
-} from 'map/mapCursor'
+} from 'map/maplibre/mapCursor'
 import {
   SOURCE_ID,
   clusterCountLayer,
   clusterLayer,
   createFindspotsSource,
   unclusteredLayer,
-} from 'map/mapLayers'
-import { fitMapToData } from 'map/mapBounds'
-import { queryFindspotFeatures } from 'map/mapFeatureQuery'
+} from 'map/maplibre/mapLayers'
+import { fitMapToData } from 'map/maplibre/mapBounds'
+import { queryFindspotFeatures } from 'map/maplibre/mapFeatureQuery'
 import {
   MAP_STYLE_URL,
   type MapLibreErrorEvent,
   isMapBackgroundLoadError,
-} from 'map/mapBackgroundError'
-import { provenanceToGeoJson } from 'map/provenanceToGeoJson'
+} from 'map/maplibre/mapBackgroundError'
+import { provenanceToGeoJson } from 'map/domain/provenanceToGeoJson'
 
 const INITIAL_CENTER: [number, number] = [44.4, 33.0]
 const INITIAL_ZOOM = 5
@@ -149,7 +149,6 @@ export default function useFindspotMap(
     mapRef.current = map
     map.addControl(new maplibregl.NavigationControl(), 'top-right')
     let isActive = true
-    let hasStyleLoaded = false
     const handlers: FindspotMapHandlers = {
       isActive: () => isActive,
       navigate: (path) => latestServicesRef.current.history.push(path),
@@ -157,7 +156,6 @@ export default function useFindspotMap(
         latestServicesRef.current.errorReporter.captureException(error),
     }
     const handleLoad = () => {
-      hasStyleLoaded = true
       onMapBackgroundErrorChange?.(false)
       const loadedProvenances = latestProvenancesRef.current
       if (loadedProvenances) {
@@ -171,7 +169,7 @@ export default function useFindspotMap(
     const handleMouseEnter = () => showPointerCursor(map)
     const handleMouseLeave = () => resetPointerCursor(map)
     const handleError = (event: MapLibreErrorEvent) => {
-      if (isMapBackgroundLoadError(event, hasStyleLoaded)) {
+      if (isMapBackgroundLoadError(event)) {
         onMapBackgroundErrorChange?.(true)
       }
     }

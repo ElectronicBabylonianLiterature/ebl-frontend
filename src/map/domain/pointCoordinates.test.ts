@@ -1,5 +1,5 @@
 import type { Feature, Geometry } from 'geojson'
-import { getFeaturePointCoordinates } from 'map/pointCoordinates'
+import { getFeaturePointCoordinates } from 'map/domain/pointCoordinates'
 
 function feature(geometry: Geometry): Feature {
   return { type: 'Feature', properties: {}, geometry }

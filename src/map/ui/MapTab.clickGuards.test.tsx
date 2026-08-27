@@ -10,7 +10,7 @@ import {
   renderMapTab,
   resetMapMocks,
   triggerMapEvent,
-} from 'map/MapTab.testSupport'
+} from 'map/ui/MapTab.testSupport'
 
 jest.mock('maplibre-gl')
 

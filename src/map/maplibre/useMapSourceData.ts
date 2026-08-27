@@ -2,8 +2,8 @@ import { useEffect } from 'react'
 import type { MutableRefObject } from 'react'
 import type { GeoJSONSource, Map as MapLibreMap } from 'maplibre-gl'
 import { ProvenanceRecord } from 'fragmentarium/domain/Provenance'
-import { SOURCE_ID } from 'map/mapLayers'
-import { provenanceToGeoJson } from 'map/provenanceToGeoJson'
+import { SOURCE_ID } from 'map/maplibre/mapLayers'
+import { provenanceToGeoJson } from 'map/domain/provenanceToGeoJson'
 
 export default function useMapSourceData(
   mapRef: MutableRefObject<MapLibreMap | null>,

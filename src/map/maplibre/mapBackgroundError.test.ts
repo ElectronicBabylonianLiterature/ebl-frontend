@@ -1,4 +1,7 @@
-import { isMapBackgroundLoadError, MAP_STYLE_URL } from 'map/mapBackgroundError'
+import {
+  isMapBackgroundLoadError,
+  MAP_STYLE_URL,
+} from 'map/maplibre/mapBackgroundError'
 
 describe('isMapBackgroundLoadError', () => {
   it('recognises failures of the style url the map actually loads', () => {
@@ -6,10 +9,9 @@ describe('isMapBackgroundLoadError', () => {
       'https://basemaps.cartocdn.com/gl/positron-gl-style/style.json',
     )
     expect(
-      isMapBackgroundLoadError(
-        { error: { url: MAP_STYLE_URL, message: 'Not Found' } },
-        true,
-      ),
+      isMapBackgroundLoadError({
+        error: { url: MAP_STYLE_URL, message: 'Not Found' },
+      }),
     ).toBe(true)
   })
 
@@ -22,24 +24,19 @@ describe('isMapBackgroundLoadError', () => {
           message: `AJAXError: Not Found (404): ${MAP_STYLE_URL}`,
         },
       },
-      false,
     ],
     [
-      'style document AJAXError after a previous successful load',
-      { error: { url: MAP_STYLE_URL, message: 'AJAXError: Not Found (404)' } },
-      true,
+      'style document network failure (status 0, matching url)',
+      {
+        error: {
+          url: MAP_STYLE_URL,
+          message: `AJAXError:  (0): ${MAP_STYLE_URL}`,
+        },
+      },
     ],
-    [
-      'generic network failure with no url before the style has loaded',
-      { error: { message: 'Failed to fetch' } },
-      false,
-    ],
-  ])(
-    'classifies %s as a background failure',
-    (_label, event, hasStyleLoaded) => {
-      expect(isMapBackgroundLoadError(event, hasStyleLoaded)).toBe(true)
-    },
-  )
+  ])('classifies %s as a background failure', (_label, event) => {
+    expect(isMapBackgroundLoadError(event)).toBe(true)
+  })
 
   it.each([
     [
@@ -49,7 +46,6 @@ describe('isMapBackgroundLoadError', () => {
         sourceId: 'ebl-findspots',
         tile: {},
       },
-      false,
     ],
     [
       'sprite failure',
@@ -59,7 +55,6 @@ describe('isMapBackgroundLoadError', () => {
           message: 'Not Found',
         },
       },
-      false,
     ],
     [
       'glyph failure',
@@ -69,17 +64,14 @@ describe('isMapBackgroundLoadError', () => {
           message: 'Not Found',
         },
       },
-      false,
     ],
     [
       'application GeoJSON source error',
       { error: { message: 'invalid geojson' }, sourceId: 'ebl-findspots' },
-      true,
     ],
     [
       'layer paint/layout error',
       { error: { message: 'expected number' }, layer: { id: 'ebl-clusters' } },
-      false,
     ],
     [
       'hostname lookalike',
@@ -89,7 +81,6 @@ describe('isMapBackgroundLoadError', () => {
           message: 'Not Found',
         },
       },
-      false,
     ],
     [
       'path lookalike',
@@ -99,37 +90,23 @@ describe('isMapBackgroundLoadError', () => {
           message: 'Not Found',
         },
       },
-      false,
     ],
     [
       'relative url',
       { error: { url: '/gl/positron-gl-style/style.json', message: 'x' } },
-      false,
     ],
-    ['invalid url', { error: { url: 'not a url', message: 'x' } }, false],
+    ['invalid url', { error: { url: 'not a url', message: 'x' } }],
     [
-      'generic fetch error after the style has already loaded',
+      'generic network failure with no url',
       { error: { message: 'Failed to fetch' } },
-      true,
     ],
-    [
-      'error without a nested error object',
-      { sourceId: 'ebl-findspots' },
-      false,
-    ],
-    ['non-object nested error', { error: 'oops' }, false],
-    [
-      'non-string message after the style has loaded',
-      { error: { message: 42 } },
-      true,
-    ],
-    ['non-object event', 'Failed to fetch style.json', false],
-    ['null event', null, false],
-    ['undefined event', undefined, false],
-  ])(
-    'does not classify %s as a background failure',
-    (_label, event, hasStyleLoaded) => {
-      expect(isMapBackgroundLoadError(event, hasStyleLoaded)).toBe(false)
-    },
-  )
+    ['error without a nested error object', { sourceId: 'ebl-findspots' }],
+    ['non-object nested error', { error: 'oops' }],
+    ['non-string message', { error: { message: 42 } }],
+    ['non-object event', 'Failed to fetch style.json'],
+    ['null event', null],
+    ['undefined event', undefined],
+  ])('does not classify %s as a background failure', (_label, event) => {
+    expect(isMapBackgroundLoadError(event)).toBe(false)
+  })
 })
