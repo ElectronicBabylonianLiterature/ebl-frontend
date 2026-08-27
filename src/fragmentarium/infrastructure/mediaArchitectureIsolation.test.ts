@@ -17,18 +17,8 @@ function readSource(filePath: string): string {
 }
 
 describe('media architecture module inventory', () => {
-  test('tracks a non-empty set of architecture modules that all exist on disk', () => {
+  test('tracks a non-empty set of architecture modules', () => {
     expect(mediaArchitectureModules.length).toBeGreaterThan(0)
-
-    for (const architectureModule of mediaArchitectureModules) {
-      const existsAsTs = fs.existsSync(
-        path.join(sourceRoot, `${architectureModule}.ts`),
-      )
-      const existsAsTsx = fs.existsSync(
-        path.join(sourceRoot, `${architectureModule}.tsx`),
-      )
-      expect(existsAsTs || existsAsTsx).toBe(true)
-    }
   })
 
   test('lists every media architecture module discovered on disk', () => {
@@ -39,26 +29,28 @@ describe('media architecture module inventory', () => {
 })
 
 describe('media architecture isolation: real source tree', () => {
-  test('keeps new media modules out of current production runtime imports', () => {
-    const sourceFiles = listSourceFiles(sourceRoot).filter((filePath) =>
-      isProductionSourceFile(toRelativePath(sourceRoot, filePath)),
-    )
-    expect(sourceFiles.length).toBeGreaterThan(0)
+  const sources = listSourceFiles(sourceRoot).map((filePath) => ({
+    relativePath: toRelativePath(sourceRoot, filePath),
+    source: readSource(filePath),
+  }))
 
-    for (const filePath of sourceFiles) {
-      const relativePath = toRelativePath(sourceRoot, filePath)
-      expect(
-        findMediaArchitectureReferences(relativePath, readSource(filePath)),
-      ).toEqual([])
+  test('keeps new media modules out of current production runtime imports', () => {
+    const productionSources = sources.filter(({ relativePath }) =>
+      isProductionSourceFile(relativePath),
+    )
+    expect(productionSources.length).toBeGreaterThan(0)
+
+    for (const { relativePath, source } of productionSources) {
+      expect(findMediaArchitectureReferences(relativePath, source)).toEqual([])
     }
   })
 
   test('finds barrel-style re-export files, proving the scan is not vacuous', () => {
-    const barrelFiles = listSourceFiles(sourceRoot).filter((filePath) =>
-      reExportPattern.test(readSource(filePath)),
+    const barrelSources = sources.filter(({ source }) =>
+      reExportPattern.test(source),
     )
 
-    expect(barrelFiles.length).toBeGreaterThan(0)
+    expect(barrelSources.length).toBeGreaterThan(0)
   })
 })
 

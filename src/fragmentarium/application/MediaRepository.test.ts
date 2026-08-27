@@ -1,5 +1,6 @@
 import MediaRepository from 'fragmentarium/application/MediaRepository'
 import { MediaResource } from 'fragmentarium/domain/media'
+import { fragmentMediaOriginalUrl } from 'fragmentarium/infrastructure/mediaUrls'
 
 const media: readonly MediaResource[] = [
   {
@@ -10,7 +11,7 @@ const media: readonly MediaResource[] = [
     references: [],
     representations: {
       original: {
-        url: '/fragments/K.1/media/photo-id/file',
+        url: fragmentMediaOriginalUrl('K.1', 'photo-id'),
         mimeType: 'image/jpeg',
       },
       thumbnails: {},
@@ -24,7 +25,7 @@ const media: readonly MediaResource[] = [
     references: [],
     representations: {
       original: {
-        url: '/fragments/K.1/media/copy-id/file',
+        url: fragmentMediaOriginalUrl('K.1', 'copy-id'),
         mimeType: 'image/svg+xml',
       },
       thumbnails: {},
@@ -55,8 +56,8 @@ describe('MediaRepository contract', () => {
     expect(
       found.map((resource) => resource.representations.original.url),
     ).toEqual([
-      '/fragments/K.1/media/photo-id/file',
-      '/fragments/K.1/media/copy-id/file',
+      fragmentMediaOriginalUrl('K.1', 'photo-id'),
+      fragmentMediaOriginalUrl('K.1', 'copy-id'),
     ])
   })
 

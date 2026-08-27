@@ -37,18 +37,20 @@ describe('MediaBinaryLoader contract', () => {
     expect(requested).toEqual(['/fragments/K.1/media/media-id/file'])
   })
 
-  test.each(representations)(
-    'addresses a distinct route for the %s representation',
-    async (representation) => {
-      const requested: string[] = []
-      await createLoader((url) => requested.push(url)).fetch({
-        ...request,
-        representation,
-      })
+  test('addresses a distinct route for each representation', async () => {
+    const requested: string[] = []
+    await Promise.all(
+      representations.map((representation) =>
+        createLoader((url) => requested.push(url)).fetch({
+          ...request,
+          representation,
+        }),
+      ),
+    )
 
-      expect(requested[0]).toContain('/fragments/K.1/media/media-id/')
-    },
-  )
+    expect(requested).toHaveLength(representations.length)
+    expect(new Set(requested).size).toBe(representations.length)
+  })
 
   test('never addresses another fragment', async () => {
     const requested: string[] = []

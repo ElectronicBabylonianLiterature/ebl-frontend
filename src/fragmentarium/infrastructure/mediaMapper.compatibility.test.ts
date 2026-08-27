@@ -198,7 +198,7 @@ describe('compatible media summary normalization', () => {
     })
   })
 
-  test('keeps the legacy thumbnail route while the new media projection is empty before backfill', () => {
+  test('reports the legacy photo when the new media projection is empty before backfill', () => {
     expect(
       normalizeCompatibleMediaSummary({
         mediaSummary: { count: 0, types: [] },
@@ -206,7 +206,7 @@ describe('compatible media summary normalization', () => {
         thumbnailPath: '/fragments/K.1/thumbnail/small',
       }),
     ).toEqual({
-      mediaSummary: { count: 0, types: [] },
+      mediaSummary: { count: 1, types: ['PHOTO'] },
       legacyThumbnailPath: '/fragments/K.1/thumbnail/small',
     })
   })

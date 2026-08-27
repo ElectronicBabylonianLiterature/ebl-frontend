@@ -151,6 +151,13 @@ export function normalizeCompatibleMediaSummary(
     normalizedNewSummary.mediaSummary &&
     !normalizedNewSummary.hasCriticalError
   ) {
+    if (
+      normalizedNewSummary.mediaSummary.count === 0 &&
+      normalizedLegacySummary.mediaSummary
+    ) {
+      return normalizedLegacySummary
+    }
+
     return {
       mediaSummary: normalizedNewSummary.mediaSummary,
       legacyThumbnailPath: hasPrimaryThumbnail(
