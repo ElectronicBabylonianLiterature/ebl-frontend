@@ -72,6 +72,44 @@ function createQueryItemIdentity(dto: QueryResultItemDto): QueryItem {
   }
 }
 
+function toUnsupportedQueryItem(queryItem: QueryItem): QueryItem {
+  return {
+    ...queryItem,
+    cardSummary: { type: 'UnsupportedFragmentCardSummary' },
+  }
+}
+
+function createSummaryQueryItem(
+  dto: QuerySummaryItemDto,
+  queryItem: QueryItem,
+  bibliographyDocuments: BibliographyDocumentsDto,
+): QueryItem {
+  try {
+    return {
+      ...queryItem,
+      fragment: createQuerySummaryFragment(dto, bibliographyDocuments),
+      cardSummary: { type: 'FragmentCardSummary' },
+      thumbnailPath: dto.thumbnailPath ?? null,
+    }
+  } catch {
+    return toUnsupportedQueryItem(queryItem)
+  }
+}
+
+function createPrefetchedQueryItem(
+  dto: QueryItemDto,
+  queryItem: QueryItem,
+): QueryItem {
+  try {
+    const prefetchedFragment = dto.fragment && createFragment(dto.fragment)
+    return prefetchedFragment
+      ? { ...queryItem, fragment: prefetchedFragment }
+      : queryItem
+  } catch {
+    return toUnsupportedQueryItem(queryItem)
+  }
+}
+
 function createQueryItem(
   dto: QueryResultItemDto,
   bibliographyDocuments: BibliographyDocumentsDto,
@@ -79,25 +117,14 @@ function createQueryItem(
   const queryItem = createQueryItemIdentity(dto)
 
   if (isQuerySummaryItemDto(dto)) {
-    return {
-      ...queryItem,
-      fragment: createQuerySummaryFragment(dto, bibliographyDocuments),
-      cardSummary: { type: 'FragmentCardSummary' },
-      thumbnailPath: dto.thumbnailPath ?? null,
-    }
+    return createSummaryQueryItem(dto, queryItem, bibliographyDocuments)
   }
 
   if (isSummaryShapedDto(dto) || !queryItem.museumNumber) {
-    return {
-      ...queryItem,
-      cardSummary: { type: 'UnsupportedFragmentCardSummary' },
-    }
+    return toUnsupportedQueryItem(queryItem)
   }
 
-  const prefetchedFragment = dto.fragment && createFragment(dto.fragment)
-  return prefetchedFragment
-    ? { ...queryItem, fragment: prefetchedFragment }
-    : queryItem
+  return createPrefetchedQueryItem(dto, queryItem)
 }
 
 export function createQueryResult(dto: QueryResultDto): QueryResult {

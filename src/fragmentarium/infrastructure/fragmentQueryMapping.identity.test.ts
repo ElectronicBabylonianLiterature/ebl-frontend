@@ -128,4 +128,34 @@ describe('malformed items never reject the query result', () => {
       mapItems([malformedMiddle, withoutField('matchCount')]),
     ).not.toThrow()
   })
+
+  it.each([
+    ['an unknown project abbreviation', { projects: ['NEWPROJECT'] }],
+    ['a malformed date', { date: 'not-a-date' }],
+    ['references that are not an array', { references: {} }],
+  ])(
+    'degrades a summary item with %s to a single unavailable card',
+    (unusedName, overrides) => {
+      const items = mapItems([
+        validFirst,
+        createSummaryItemDto(overrides),
+        validLast,
+      ])
+
+      expect(items).toHaveLength(3)
+      expect(items[0].cardSummary).toEqual(supported)
+      expect(items[0].fragment?.number).toEqual('Valid.1')
+      expect(items[1].cardSummary).toEqual(unsupported)
+      expect(items[1].fragment).toBeUndefined()
+      expect(items[2].cardSummary).toEqual(supported)
+      expect(items[2].fragment?.number).toEqual('Valid.3')
+    },
+  )
+
+  it('keeps the museum number on a card degraded by a non-identity field', () => {
+    const [item] = mapItems([createSummaryItemDto({ date: 'not-a-date' })])
+
+    expect(item.cardSummary).toEqual(unsupported)
+    expect(item.museumNumber).toBeTruthy()
+  })
 })
