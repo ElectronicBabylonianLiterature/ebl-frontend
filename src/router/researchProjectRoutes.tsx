@@ -16,6 +16,7 @@ import AluGenevaHome from 'research-projects/subpages/aluGeneva/Home'
 import ResearchProjectSearch from 'research-projects/subpages/ResearchProjectSearch'
 import NotFoundPage from 'NotFoundPage'
 import {
+  hasSearchCriteria,
   parseSearchCriteria,
   parseSearchPagination,
 } from 'fragmentarium/ui/search/pagination'
@@ -63,21 +64,27 @@ export default function ResearchProjectRoutes({
       key={`${key}-home`}
       exact
       path={`/projects/${project.abbreviation}`}
-      render={(): ReactNode => (
-        <HeadTagsService
-          title={`${project.abbreviation} in eBL`}
-          description={project.name}
-        >
-          <HomeComponent
-            fragmentService={fragmentService}
-            fragmentSearchService={fragmentSearchService}
-            wordService={wordService}
-            bibliographyService={bibliographyService}
-            dossiersService={dossiersService}
-            project={project}
+      render={({ location }): ReactNode =>
+        hasSearchCriteria(location.search) ? (
+          <Redirect
+            to={`/projects/${project.abbreviation}/search${location.search}`}
           />
-        </HeadTagsService>
-      )}
+        ) : (
+          <HeadTagsService
+            title={`${project.abbreviation} in eBL`}
+            description={project.name}
+          >
+            <HomeComponent
+              fragmentService={fragmentService}
+              fragmentSearchService={fragmentSearchService}
+              wordService={wordService}
+              bibliographyService={bibliographyService}
+              dossiersService={dossiersService}
+              project={project}
+            />
+          </HeadTagsService>
+        )
+      }
       {...(sitemap && sitemapDefaults)}
     />,
     <Redirect

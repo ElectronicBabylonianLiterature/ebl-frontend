@@ -110,6 +110,10 @@ export function parseSearchCriteria(search: string): FragmentSearchCriteria {
   ]) as FragmentSearchCriteria
 }
 
+export function hasSearchCriteria(search: string): boolean {
+  return !_.isEmpty(parseSearchCriteria(search))
+}
+
 export function isLineQuery(fragmentQuery: FragmentSearchCriteria): boolean {
   return Boolean(fragmentQuery.lemmas || fragmentQuery.transliteration)
 }
