@@ -1,5 +1,5 @@
 import React, { FunctionComponent } from 'react'
-import { render } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import { clickNth } from 'test-support/utils'
 import ErrorBoundary from './ErrorBoundary'
 import ErrorReporterContext, {
@@ -59,4 +59,34 @@ it('Displays children if they do not crash', () => {
     </ErrorReporterContext.Provider>,
   )
   expect(container).toHaveTextContent(content)
+})
+
+describe('Custom fallback prop', () => {
+  function renderWithFallback(fallback: React.ReactNode) {
+    silenceConsoleErrors()
+    const CrashingComponent: FunctionComponent = () => {
+      throw new Error('Error happened!')
+    }
+    return render(
+      <ErrorReporterContext.Provider value={new ConsoleErrorReporter()}>
+        <ErrorBoundary fallback={fallback}>
+          <CrashingComponent />
+        </ErrorBoundary>
+      </ErrorReporterContext.Provider>,
+    )
+  }
+
+  it('Renders the custom fallback instead of the default alert', () => {
+    const { container } = renderWithFallback(<div>Custom fallback</div>)
+
+    expect(container).toHaveTextContent('Custom fallback')
+    expect(screen.queryByText("Something's gone wrong")).not.toBeInTheDocument()
+  })
+
+  it('Renders nothing when fallback is explicitly null', () => {
+    const { container } = renderWithFallback(null)
+
+    expect(container).toBeEmptyDOMElement()
+    expect(screen.queryByText("Something's gone wrong")).not.toBeInTheDocument()
+  })
 })

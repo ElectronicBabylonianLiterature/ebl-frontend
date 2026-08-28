@@ -1,5 +1,6 @@
 import { createQueryResult } from 'fragmentarium/infrastructure/fragmentQueryMapping'
 import { createSummaryItemDto } from 'fragmentarium/infrastructure/fragmentRepository.testSupport'
+import { fragmentDto } from 'test-support/test-fragment-dto'
 import { QueryItem } from 'query/QueryResult'
 
 const unsupported = { type: 'UnsupportedFragmentCardSummary' }
@@ -157,5 +158,23 @@ describe('malformed items never reject the query result', () => {
 
     expect(item.cardSummary).toEqual(unsupported)
     expect(item.museumNumber).toBeTruthy()
+  })
+
+  it('degrades a malformed prefetched fragment dto to a single unavailable card', () => {
+    const malformedFragmentDto: Record<string, unknown> = { ...fragmentDto }
+    delete malformedFragmentDto.length
+
+    const [item] = mapItems([
+      {
+        museumNumber: { prefix: 'Test', number: '1', suffix: '' },
+        matchingLines: [],
+        matchCount: 0,
+        fragment: malformedFragmentDto,
+      },
+    ])
+
+    expect(item.cardSummary).toEqual(unsupported)
+    expect(item.fragment).toBeUndefined()
+    expect(item.museumNumber).toEqual('Test.1')
   })
 })
