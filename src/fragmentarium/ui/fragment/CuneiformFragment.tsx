@@ -1,4 +1,4 @@
-import React, { useState, FunctionComponent } from 'react'
+import React, { useEffect, useState, FunctionComponent } from 'react'
 import Bluebird from 'bluebird'
 import { Container, Row, Col } from 'react-bootstrap'
 import FragmentInCorpus from 'fragmentarium/ui/fragment/FragmentInCorpus'
@@ -145,6 +145,18 @@ const CuneiformFragmentController: FunctionComponent<ControllerProps> = ({
   const [error, setError] = useState(null)
   const [setPromise, cancelPromise] = usePromiseEffect()
 
+  const visibleFragment =
+    currentFragment.number === fragment.number ? currentFragment : fragment
+
+  useEffect(() => {
+    if (currentFragment.number !== fragment.number) {
+      cancelPromise()
+      setFragment(fragment)
+      setError(null)
+      setIsSaving(false)
+    }
+  }, [cancelPromise, currentFragment.number, fragment])
+
   const handleSave = (promise) => {
     cancelPromise()
     setError(null)
@@ -167,7 +179,7 @@ const CuneiformFragmentController: FunctionComponent<ControllerProps> = ({
   return (
     <>
       <CuneiformFragment
-        fragment={currentFragment}
+        fragment={visibleFragment}
         fragmentService={fragmentService}
         fragmentSearchService={fragmentSearchService}
         dossiersService={dossiersService}
