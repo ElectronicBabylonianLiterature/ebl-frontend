@@ -2,7 +2,7 @@ import React from 'react'
 import { render, screen } from '@testing-library/react'
 
 import SessionContext from 'auth/SessionContext'
-import LemmaActionButton from './LemmaAnnotationButton'
+import LemmaActionButton from 'fragmentarium/ui/fragment/lemma-annotation/LemmaAnnotationButton'
 import EditableToken from 'fragmentarium/ui/fragment/linguistic-annotation/EditableToken'
 import { kurToken } from 'test-support/test-tokens'
 import MemorySession from 'auth/Session'

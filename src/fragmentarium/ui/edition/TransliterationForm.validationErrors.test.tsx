@@ -4,7 +4,7 @@ import { Promise } from 'bluebird'
 
 import { editorErrorOf, resetEditorMock } from 'editor/Editor.testSupport'
 import { submitFormByTestId } from 'test-support/utils'
-import TransliterationForm from './TransliterationForm'
+import TransliterationForm from 'fragmentarium/ui/edition/TransliterationForm'
 
 type TemplateFormMockProps = {
   onSubmit: (templateValue: string) => void
@@ -16,7 +16,7 @@ jest.mock('editor/SpecialCharactersHelp', () => {
   }
 })
 
-jest.mock('./TemplateForm', () => {
+jest.mock('fragmentarium/ui/edition/TemplateForm', () => {
   return function TemplateFormMock({
     onSubmit,
   }: TemplateFormMockProps): JSX.Element {
