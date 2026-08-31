@@ -72,7 +72,7 @@ describe('media summary normalization', () => {
   test('adds a valid primary type that is missing from the type list', () => {
     expect(
       normalizeMediaSummary({
-        count: 1,
+        count: 2,
         types: ['PHOTO'],
         primary: {
           id: 'copy-id',
@@ -80,7 +80,7 @@ describe('media summary normalization', () => {
         },
       }),
     ).toEqual({
-      count: 1,
+      count: 2,
       types: ['PHOTO', 'COPY'],
       primary: {
         id: 'copy-id',
@@ -135,6 +135,15 @@ describe('media summary normalization', () => {
       }),
     ).toBeNull()
     expect(normalizeMediaSummary({ count: 3, types: [] })).toBeNull()
+  })
+
+  test('returns null when distinct media types exceed the item count', () => {
+    expect(
+      normalizeMediaSummary({
+        count: 1,
+        types: ['PHOTO', 'COPY'],
+      }),
+    ).toBeNull()
   })
 
   test('returns null when a zero count still carries a primary', () => {

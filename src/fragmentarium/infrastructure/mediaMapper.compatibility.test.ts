@@ -156,6 +156,19 @@ describe('compatible media summary normalization', () => {
     })
   })
 
+  test('falls back to legacy when media types exceed the item count', () => {
+    expect(
+      normalizeCompatibleMediaSummary({
+        mediaSummary: { count: 1, types: ['PHOTO', 'COPY'] },
+        hasPhoto: true,
+        thumbnailPath: '/legacy-thumbnail',
+      }),
+    ).toEqual({
+      mediaSummary: { count: 1, types: ['PHOTO'] },
+      legacyThumbnailPath: '/legacy-thumbnail',
+    })
+  })
+
   test('keeps legacy thumbnail path without synthesizing media for malformed hasPhoto', () => {
     expect(
       normalizeCompatibleMediaSummary({

@@ -21,11 +21,11 @@ export function normalizeNonEmptyString(value: unknown): string | undefined {
   return normalizedValue === '' ? undefined : normalizedValue
 }
 
-function decodeUrlSegment(segment: string): string {
+function decodeUrlSegment(segment: string): string | undefined {
   try {
     return decodeURIComponent(segment)
   } catch {
-    return segment
+    return undefined
   }
 }
 
@@ -40,7 +40,14 @@ export function normalizeRelativeMediaUrl(value: unknown): string | undefined {
   }
 
   const segments = url.split('/')
-  if (segments.map(decodeUrlSegment).includes(TRAVERSAL_SEGMENT)) {
+  const decodedSegments = segments.map(decodeUrlSegment)
+  if (
+    decodedSegments.includes(undefined) ||
+    decodedSegments.includes(TRAVERSAL_SEGMENT) ||
+    decodedSegments.some(
+      (segment) => segment !== undefined && hasControlCharacter(segment),
+    )
+  ) {
     return undefined
   }
 

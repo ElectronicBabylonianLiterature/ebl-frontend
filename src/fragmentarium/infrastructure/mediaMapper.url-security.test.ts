@@ -11,7 +11,6 @@ const acceptedUrls = [
   '/fragments/K.1/media/media-id/thumbnail/small',
   '/fragments/K.1/thumbnail/small',
   '/fragments/K.1%2F2/media/media-id/file',
-  '/fragments/%zz/file',
 ]
 
 const scriptUrl = `${'javascript'}:alert(1)`
@@ -32,6 +31,9 @@ const rejectedUrls = [
   '/fragments/%2e%2e/admin',
   '/fragments/%2E%2E/admin',
   '/fragments/.%2e/admin',
+  '/fragments/%0Aadmin',
+  '/fragments/%7Fadmin',
+  '/fragments/%zz/file',
   '/fragments/K.1/media/media-id/file?token=secret',
   '/fragments/K.1/media/media-id/file#fragment',
   '/fragments/K.1/a\nb',

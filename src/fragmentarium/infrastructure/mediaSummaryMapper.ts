@@ -79,7 +79,9 @@ function normalizeMediaSummaryWithDiagnostics(
 
   const hasCriticalError =
     (primary !== undefined && primary !== null && normalizedCount === 0) ||
-    (normalizedCount > 0 && normalizedTypes.length === 0)
+    (normalizedCount > 0 &&
+      (normalizedTypes.length === 0 ||
+        normalizedTypes.length > normalizedCount))
 
   if (normalizedCount === 0) {
     return {
