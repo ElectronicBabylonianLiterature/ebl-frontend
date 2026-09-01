@@ -12,9 +12,8 @@ export function scrollLineIntoView(
     }
   }
 
-  if (!fonts || fonts.status === 'loaded') {
-    scroll()
-  } else {
+  scroll()
+  if (fonts && fonts.status !== 'loaded') {
     void fonts.ready.then(scroll)
   }
 

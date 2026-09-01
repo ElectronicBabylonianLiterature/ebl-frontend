@@ -101,9 +101,11 @@ test.each([
     renderFragmentLine({ number, labels, encodedHash })
 
     expect(screen.getByRole('link')).toHaveAttribute('id', expectedId)
+    expect(HTMLElement.prototype.scrollIntoView).toHaveBeenCalledTimes(1)
     await finishFontSwap(displacement)
 
     expect(viewportTop).toBe(0)
+    expect(HTMLElement.prototype.scrollIntoView).toHaveBeenCalledTimes(2)
   },
 )
 
@@ -126,7 +128,9 @@ test('keeps corpus line 52 at the viewport after fonts settle', async () => {
   )
 
   expect(screen.getByRole('link')).toHaveAttribute('id', '52')
+  expect(HTMLElement.prototype.scrollIntoView).toHaveBeenCalledTimes(1)
   await finishFontSwap(-360)
 
   expect(viewportTop).toBe(0)
+  expect(HTMLElement.prototype.scrollIntoView).toHaveBeenCalledTimes(2)
 })
