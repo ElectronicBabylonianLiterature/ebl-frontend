@@ -145,8 +145,8 @@ const CuneiformFragmentController: FunctionComponent<ControllerProps> = ({
   const [error, setError] = useState(null)
   const [setPromise, cancelPromise] = usePromiseEffect()
 
-  const visibleFragment =
-    currentFragment.number === fragment.number ? currentFragment : fragment
+  const isCurrentFragment = currentFragment.number === fragment.number
+  const visibleFragment = isCurrentFragment ? currentFragment : fragment
 
   useEffect(() => {
     if (currentFragment.number !== fragment.number) {
@@ -179,6 +179,7 @@ const CuneiformFragmentController: FunctionComponent<ControllerProps> = ({
   return (
     <>
       <CuneiformFragment
+        key={visibleFragment.number}
         fragment={visibleFragment}
         fragmentService={fragmentService}
         fragmentSearchService={fragmentSearchService}
@@ -189,8 +190,8 @@ const CuneiformFragmentController: FunctionComponent<ControllerProps> = ({
         activeFolio={activeFolio}
         tab={tab}
         onSave={handleSave}
-        saving={isSaving}
-        error={error}
+        saving={isCurrentFragment && isSaving}
+        error={isCurrentFragment ? error : null}
         activeLine={activeLine}
       />
     </>

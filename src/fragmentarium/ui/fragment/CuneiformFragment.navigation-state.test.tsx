@@ -1,5 +1,5 @@
 import React from 'react'
-import { act, render, screen } from '@testing-library/react'
+import { act, fireEvent, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import Bluebird from 'bluebird'
 
@@ -21,21 +21,32 @@ jest.mock('fragmentarium/ui/info/Info', () => {
 
 let mockSavePromise: Bluebird<Fragment>
 
-jest.mock('fragmentarium/ui/fragment/CuneiformFragmentEditor', () => ({
-  EditorTabs: function EditorTabsMock(props: {
-    fragment: { number: string }
-    onSave: (promise: Bluebird<Fragment>) => Bluebird<Fragment>
-  }) {
-    return (
-      <div data-testid="fragment-editor">
-        {props.fragment.number}
-        <button type="button" onClick={() => props.onSave(mockSavePromise)}>
-          Save fragment
-        </button>
-      </div>
-    )
-  },
-}))
+jest.mock('fragmentarium/ui/fragment/CuneiformFragmentEditor', () => {
+  const { useState } = jest.requireActual('react')
+  return {
+    EditorTabs: function EditorTabsMock(props: {
+      fragment: { number: string }
+      onSave: (promise: Bluebird<Fragment>) => Bluebird<Fragment>
+    }) {
+      const [draft, setDraft] = useState(props.fragment.number)
+      return (
+        <div data-testid="fragment-editor">
+          {props.fragment.number}
+          <label>
+            Fragment editor draft
+            <input
+              value={draft}
+              onChange={(event) => setDraft(event.target.value)}
+            />
+          </label>
+          <button type="button" onClick={() => props.onSave(mockSavePromise)}>
+            Save fragment
+          </button>
+        </div>
+      )
+    },
+  }
+})
 
 jest.mock('common/errors/ErrorAlert', () => {
   return function ErrorAlertMock(props: { error: Error | null }) {
@@ -83,16 +94,26 @@ it('renders the incoming fragment after navigation changes', () => {
 
   expect(screen.getByTestId('fragment-info')).toHaveTextContent('K.1')
   expect(screen.getByTestId('fragment-editor')).toHaveTextContent('K.1')
+  fireEvent.change(
+    screen.getByRole('textbox', { name: 'Fragment editor draft' }),
+    { target: { value: 'K.1 local draft' } },
+  )
 
   rerender(view(secondFragment))
 
   expect(screen.getByTestId('fragment-info')).toHaveTextContent('K.2')
   expect(screen.getByTestId('fragment-editor')).toHaveTextContent('K.2')
+  expect(
+    screen.getByRole('textbox', { name: 'Fragment editor draft' }),
+  ).toHaveValue('K.2')
 
   rerender(view(firstFragment))
 
   expect(screen.getByTestId('fragment-info')).toHaveTextContent('K.1')
   expect(screen.getByTestId('fragment-editor')).toHaveTextContent('K.1')
+  expect(
+    screen.getByRole('textbox', { name: 'Fragment editor draft' }),
+  ).toHaveValue('K.1')
 })
 
 it('does not show a previous fragment save error after navigation', async () => {

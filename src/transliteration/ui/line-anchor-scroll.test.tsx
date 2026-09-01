@@ -44,20 +44,22 @@ async function finishFontSwap(displacement: number): Promise<void> {
   })
 }
 
-function renderFragmentLine({
+function fragmentLineView({
   number,
   labels,
   encodedHash,
+  activeLine = decodeURIComponent(encodedHash),
 }: {
   number: number
   labels: Labels
   encodedHash: string
-}): void {
+  activeLine?: string
+}): JSX.Element {
   const line = new TextLine({
     ...textLineDto,
     lineNumber: lineNumberFactory.build({ number }),
   })
-  render(
+  return (
     <MemoryRouter>
       <table>
         <tbody>
@@ -66,13 +68,19 @@ function renderFragmentLine({
               line={line}
               columns={1}
               labels={labels}
-              activeLine={decodeURIComponent(encodedHash)}
+              activeLine={activeLine}
             />
           </tr>
         </tbody>
       </table>
-    </MemoryRouter>,
+    </MemoryRouter>
   )
+}
+
+function renderFragmentLine(
+  props: Parameters<typeof fragmentLineView>[0],
+): ReturnType<typeof render> {
+  return render(fragmentLineView(props))
 }
 
 test.each([
@@ -133,4 +141,20 @@ test('keeps corpus line 52 at the viewport after fonts settle', async () => {
 
   expect(viewportTop).toBe(0)
   expect(HTMLElement.prototype.scrollIntoView).toHaveBeenCalledTimes(2)
+})
+
+test('cancels a stale font correction when the active line changes', async () => {
+  const props = {
+    number: 60,
+    labels: defaultLabels,
+    encodedHash: '%2060',
+  }
+  const { rerender } = renderFragmentLine(props)
+
+  expect(HTMLElement.prototype.scrollIntoView).toHaveBeenCalledTimes(1)
+  rerender(fragmentLineView({ ...props, activeLine: '' }))
+  await finishFontSwap(-430)
+
+  expect(viewportTop).toBe(-430)
+  expect(HTMLElement.prototype.scrollIntoView).toHaveBeenCalledTimes(1)
 })
