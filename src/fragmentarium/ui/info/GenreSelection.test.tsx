@@ -42,6 +42,11 @@ async function renderGenreSelection() {
   await waitForSpinnerToBeRemoved(screen)
 }
 async function setup(): Promise<void> {
+  await setupClosed()
+  await userEvent.click(screen.getByLabelText('edit-genre'))
+}
+
+async function setupClosed(): Promise<void> {
   fragment = fragmentFactory.build(
     {},
     {
@@ -56,7 +61,6 @@ async function setup(): Promise<void> {
   }
   session.isAllowedToTransliterateFragments.mockReturnValue(true)
   await renderGenreSelection()
-  await userEvent.click(screen.getByLabelText('edit-genre'))
 }
 
 async function selectGenreOption(optionLabel: string): Promise<void> {
@@ -69,6 +73,14 @@ describe('Genre Editor', () => {
   it('shows the editor when the user clicks the edit button', async () => {
     await setup()
     expect(screen).toMatchSnapshot()
+  })
+  it('keeps focus on the edit button when the editor opens', async () => {
+    await setupClosed()
+    const editButton = screen.getByLabelText('edit-genre')
+    await userEvent.click(editButton)
+
+    expect(screen.getByLabelText('select-genre')).toBeInTheDocument()
+    expect(editButton).toHaveFocus()
   })
   it('shows the available options when clicking Select...', async () => {
     await setup()

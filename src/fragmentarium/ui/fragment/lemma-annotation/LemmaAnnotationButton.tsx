@@ -49,9 +49,7 @@ export default function LemmaActionButton({
         size="sm"
         id="dropdown-split-basic"
         aria-label="Open token actions"
-      >
-        <i className={'fas fa-caret-down'} aria-hidden="true"></i>
-      </Dropdown.Toggle>
+      />
 
       <Dropdown.Menu>
         <Dropdown.Item {...hoverHandlers} onClick={onMultiApply}>
