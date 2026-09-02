@@ -30,7 +30,7 @@ describe('MapTab filtering', () => {
 
     renderMapTab(makeFragmentService(provenances))
 
-    const input = await screen.findByPlaceholderText('Filter by site name...')
+    const input = await screen.findByLabelText('Filter findspots by name')
     await userEvent.type(input, 'bab')
 
     await waitFor(() => {
@@ -52,7 +52,7 @@ describe('MapTab filtering', () => {
 
     renderMapTab(makeFragmentService(provenances))
 
-    const input = await screen.findByPlaceholderText('Filter by site name...')
+    const input = await screen.findByLabelText('Filter findspots by name')
     await userEvent.type(input, 'assur')
 
     await waitFor(() => {
@@ -74,7 +74,7 @@ describe('MapTab filtering', () => {
 
     renderMapTab(makeFragmentService(provenances))
 
-    const input = await screen.findByPlaceholderText('Filter by site name...')
+    const input = await screen.findByLabelText('Filter findspots by name')
     await waitFor(() => expect(mockFitBounds).toHaveBeenCalledTimes(1))
 
     await userEvent.type(input, 'bab')
@@ -94,7 +94,7 @@ describe('MapTab filtering', () => {
 
     renderMapTab(makeFragmentService(provenances))
 
-    const input = await screen.findByPlaceholderText('Filter by site name...')
+    const input = await screen.findByLabelText('Filter findspots by name')
     await userEvent.type(input, 'bab')
     expect(mockAddSource).not.toHaveBeenCalled()
 
@@ -116,7 +116,7 @@ describe('MapTab filtering', () => {
     mockGetSource.mockReturnValue({ setData: mockSetData })
 
     renderMapTab(makeFragmentService(provenances))
-    const input = await screen.findByPlaceholderText('Filter by site name...')
+    const input = await screen.findByLabelText('Filter findspots by name')
     await waitFor(() => expect(mockAddSource).toHaveBeenCalled())
 
     await userEvent.type(input, 'nip')
@@ -138,7 +138,7 @@ describe('MapTab filtering', () => {
         makeProvenance({ id: 'babylon', longName: 'Babylon' }),
       ]),
     )
-    const input = await screen.findByPlaceholderText('Filter by site name...')
+    const input = await screen.findByLabelText('Filter findspots by name')
     await userEvent.type(input, 'bab')
 
     expect(mockSetData).not.toHaveBeenCalled()

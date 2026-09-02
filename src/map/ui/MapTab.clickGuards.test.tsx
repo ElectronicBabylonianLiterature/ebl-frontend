@@ -19,7 +19,7 @@ describe('MapTab click guards', () => {
 
   it('ignores clusters without a numeric cluster id', async () => {
     renderMapTab(makeFragmentService([makeProvenance()]))
-    await screen.findByPlaceholderText('Filter by site name...')
+    await screen.findByLabelText('Filter findspots by name')
     mockQueryRenderedFeatures.mockReturnValue([
       {
         properties: {},
@@ -39,7 +39,7 @@ describe('MapTab click guards', () => {
   it('ignores a cluster click when the source is missing', async () => {
     const clusterIdProperty = 'cluster_id'
     renderMapTab(makeFragmentService([makeProvenance()]))
-    await screen.findByPlaceholderText('Filter by site name...')
+    await screen.findByLabelText('Filter findspots by name')
     mockQueryRenderedFeatures.mockReturnValue([
       {
         properties: { [clusterIdProperty]: 42 },
@@ -59,7 +59,7 @@ describe('MapTab click guards', () => {
 
   it('ignores clicks without clusters or findspots', async () => {
     renderMapTab(makeFragmentService([makeProvenance()]))
-    await screen.findByPlaceholderText('Filter by site name...')
+    await screen.findByLabelText('Filter findspots by name')
     mockQueryRenderedFeatures.mockReturnValue([])
 
     act(() => {
@@ -75,7 +75,7 @@ describe('MapTab click guards', () => {
 
   it('ignores clicked findspots without point geometry', async () => {
     renderMapTab(makeFragmentService([makeProvenance()]))
-    await screen.findByPlaceholderText('Filter by site name...')
+    await screen.findByLabelText('Filter findspots by name')
     mockQueryRenderedFeatures.mockReturnValueOnce([]).mockReturnValueOnce([
       {
         type: 'Feature',

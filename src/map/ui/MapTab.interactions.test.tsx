@@ -69,7 +69,7 @@ describe('MapTab interactions', () => {
       geometry: { type: 'Point', coordinates: [44.42, 32.542] },
     }
     renderMapTab(makeFragmentService([makeProvenance()]))
-    await screen.findByPlaceholderText('Filter by site name...')
+    await screen.findByLabelText('Filter findspots by name')
 
     mockQueryRenderedFeatures
       .mockReturnValueOnce([])
@@ -119,7 +119,7 @@ describe('MapTab interactions', () => {
       geometry: geometry ?? { type: 'Point', coordinates: [44.42, 32.542] },
     }
     renderMapTab(makeFragmentService([makeProvenance()]))
-    await screen.findByPlaceholderText('Filter by site name...')
+    await screen.findByLabelText('Filter findspots by name')
 
     mockQueryRenderedFeatures
       .mockReturnValueOnce([])
@@ -144,7 +144,7 @@ describe('MapTab interactions', () => {
       geometry: { type: 'Point', coordinates: [44.42, 32.542] },
     }
     renderMapTab(makeFragmentService([makeProvenance()]))
-    await screen.findByPlaceholderText('Filter by site name...')
+    await screen.findByLabelText('Filter findspots by name')
 
     mockQueryRenderedFeatures
       .mockReturnValueOnce([])
@@ -166,7 +166,7 @@ describe('MapTab interactions', () => {
 
   it('sets pointer cursor over cluster and unclustered layers', async () => {
     renderMapTab(makeFragmentService([makeProvenance()]))
-    await screen.findByPlaceholderText('Filter by site name...')
+    await screen.findByLabelText('Filter findspots by name')
 
     const clusterIdProperty = 'cluster_id'
     mockQueryRenderedFeatures.mockReturnValue([
@@ -195,7 +195,7 @@ describe('MapTab interactions', () => {
 
   it('resets cursor away from interactive layers', async () => {
     renderMapTab(makeFragmentService([makeProvenance()]))
-    await screen.findByPlaceholderText('Filter by site name...')
+    await screen.findByLabelText('Filter findspots by name')
     mockCanvas.style.cursor = 'pointer'
 
     mockQueryRenderedFeatures.mockReturnValue([])
@@ -215,7 +215,7 @@ describe('MapTab interactions', () => {
 
   it('registers and cleans up map event handlers on unmount', async () => {
     const { unmount } = renderMapTab(makeFragmentService([makeProvenance()]))
-    await screen.findByPlaceholderText('Filter by site name...')
+    await screen.findByLabelText('Filter findspots by name')
 
     expect(mockOn).toHaveBeenCalledWith('mousemove', expect.any(Function))
     expect(mockOn).toHaveBeenCalledWith(

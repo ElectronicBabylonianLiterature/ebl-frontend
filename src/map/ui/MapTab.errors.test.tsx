@@ -20,7 +20,7 @@ describe('MapTab map errors', () => {
 
   it('shows a user-visible warning when the style document fails to load', async () => {
     renderMapTab(makeFragmentService([makeProvenance()]))
-    const input = await screen.findByPlaceholderText('Filter by site name...')
+    const input = await screen.findByLabelText('Filter findspots by name')
 
     act(() => {
       triggerMapEvent('error', {
@@ -43,7 +43,7 @@ describe('MapTab map errors', () => {
   it('shows a warning when the style request cannot reach the network', async () => {
     deferMapLoad()
     renderMapTab(makeFragmentService([makeProvenance()]))
-    await screen.findByPlaceholderText('Filter by site name...')
+    await screen.findByLabelText('Filter findspots by name')
 
     act(() => {
       triggerMapEvent('error', {
@@ -60,7 +60,7 @@ describe('MapTab map errors', () => {
   it('stays quiet when the map is used before the style has loaded', async () => {
     deferMapLoad()
     renderMapTab(makeFragmentService([makeProvenance()]))
-    await screen.findByPlaceholderText('Filter by site name...')
+    await screen.findByLabelText('Filter findspots by name')
 
     act(() => {
       triggerMapEvent('mousemove', { point: { x: 10, y: 20 } })
@@ -73,7 +73,7 @@ describe('MapTab map errors', () => {
   it('clears the warning once the style finishes loading', async () => {
     deferMapLoad()
     renderMapTab(makeFragmentService([makeProvenance()]))
-    await screen.findByPlaceholderText('Filter by site name...')
+    await screen.findByLabelText('Filter findspots by name')
 
     act(() => {
       triggerMapEvent('error', {
@@ -91,7 +91,7 @@ describe('MapTab map errors', () => {
 
   it('ignores a tile failure', async () => {
     renderMapTab(makeFragmentService([makeProvenance()]))
-    await screen.findByPlaceholderText('Filter by site name...')
+    await screen.findByLabelText('Filter findspots by name')
 
     act(() => {
       triggerMapEvent('error', {
@@ -106,7 +106,7 @@ describe('MapTab map errors', () => {
 
   it('ignores a sprite failure', async () => {
     renderMapTab(makeFragmentService([makeProvenance()]))
-    await screen.findByPlaceholderText('Filter by site name...')
+    await screen.findByLabelText('Filter findspots by name')
 
     act(() => {
       triggerMapEvent('error', {
@@ -122,7 +122,7 @@ describe('MapTab map errors', () => {
 
   it('ignores a generic error once the style has already loaded', async () => {
     renderMapTab(makeFragmentService([makeProvenance()]))
-    await screen.findByPlaceholderText('Filter by site name...')
+    await screen.findByLabelText('Filter findspots by name')
 
     act(() => {
       triggerMapEvent('error', { error: { message: 'Failed to fetch' } })
@@ -133,7 +133,7 @@ describe('MapTab map errors', () => {
 
   it('ignores map errors without a nested error object', async () => {
     renderMapTab(makeFragmentService([makeProvenance()]))
-    await screen.findByPlaceholderText('Filter by site name...')
+    await screen.findByLabelText('Filter findspots by name')
 
     act(() => {
       triggerMapEvent('error', { sourceId: 'ebl-findspots' })

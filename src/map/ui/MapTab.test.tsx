@@ -55,7 +55,7 @@ describe('MapTab', () => {
     renderMapTab(makeFragmentService([makeProvenance()]))
 
     expect(
-      await screen.findByPlaceholderText('Filter by site name...'),
+      await screen.findByLabelText('Filter findspots by name'),
     ).toBeInTheDocument()
     const mapRegion = screen.getByRole('region', {
       name: 'Interactive findspot map',
@@ -74,7 +74,7 @@ describe('MapTab', () => {
   it('shows empty state when filter matches nothing', async () => {
     renderMapTab(makeFragmentService([makeProvenance({ longName: 'Babylon' })]))
 
-    const input = await screen.findByPlaceholderText('Filter by site name...')
+    const input = await screen.findByLabelText('Filter findspots by name')
     await userEvent.type(input, 'Nippur')
 
     expect(
@@ -127,7 +127,7 @@ describe('MapTab', () => {
     renderMapTab(makeFragmentService([]))
 
     expect(
-      await screen.findByPlaceholderText('Filter by site name...'),
+      await screen.findByLabelText('Filter findspots by name'),
     ).toBeInTheDocument()
     expect(
       screen.getByRole('region', { name: 'Interactive findspot map' }),

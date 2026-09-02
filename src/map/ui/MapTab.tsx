@@ -1,11 +1,12 @@
 import React, { useCallback, useMemo, useRef, useState } from 'react'
-import { Alert, Form } from 'react-bootstrap'
+import { Alert } from 'react-bootstrap'
 import 'maplibre-gl/dist/maplibre-gl.css'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import Spinner from 'common/ui/Spinner'
 import useFindspotMap from 'map/maplibre/useFindspotMap'
 import useMapSourceData from 'map/maplibre/useMapSourceData'
 import useProvenances from 'map/ui/useProvenances'
+import FindspotFilterInput from 'map/ui/FindspotFilterInput'
 import { FindspotEmptyState, FindspotSearchList } from 'map/ui/FindspotResults'
 import { filterProvenances } from 'map/domain/findspotFilter'
 import 'map/ui/MapTab.sass'
@@ -44,15 +45,13 @@ export default function MapTab({ fragmentService }: Props): JSX.Element {
 
   return (
     <div className="map-tab">
-      <Form.Group className="map-tab__search mb-3">
-        <Form.Control
-          type="text"
-          placeholder="Filter by site name..."
-          value={filter}
-          onChange={(event) => setFilter(event.target.value)}
-          aria-label="Filter findspots by name"
+      <div className="map-tab__search mb-3">
+        <FindspotFilterInput
+          provenances={provenances ?? []}
+          filter={filter}
+          onFilterChange={setFilter}
         />
-      </Form.Group>
+      </div>
       <p id="findspot-map-description" className="map-tab__description">
         Filter findspots by name. Matching fragment search links are available
         below the map.
