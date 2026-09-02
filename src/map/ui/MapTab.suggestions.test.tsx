@@ -5,6 +5,9 @@ import { buildFragmentSearchLink } from 'map/domain/mapLinks'
 import {
   makeFragmentService,
   makeProvenance,
+  mockFitBounds,
+  mockGetSource,
+  mockSetData,
   renderMapTab,
   resetMapMocks,
 } from 'map/ui/MapTab.testSupport'
@@ -49,5 +52,37 @@ describe('MapTab findspot suggestions', () => {
     expect(
       screen.queryByRole('link', { name: 'Babylon' }),
     ).not.toBeInTheDocument()
+  })
+
+  it('keeps the chosen site name visible in the filter box', async () => {
+    renderMapTab(makeFragmentService(provenances))
+
+    const input = await screen.findByLabelText('Filter findspots by name')
+    await userEvent.type(input, 'assur')
+    await userEvent.click(await screen.findByRole('option', { name: 'Aššur' }))
+
+    expect(
+      await screen.findByText('Aššur', {
+        selector: '.findspot-filter__single-value',
+      }),
+    ).toBeInTheDocument()
+  })
+
+  it('zooms the map to a chosen site', async () => {
+    mockGetSource.mockReturnValue({ setData: mockSetData })
+    renderMapTab(makeFragmentService(provenances))
+
+    const input = await screen.findByLabelText('Filter findspots by name')
+    await waitFor(() => expect(mockFitBounds).toHaveBeenCalled())
+    const fitCallsBeforePick = mockFitBounds.mock.calls.length
+
+    await userEvent.type(input, 'assur')
+    await userEvent.click(await screen.findByRole('option', { name: 'Aššur' }))
+
+    await waitFor(() =>
+      expect(mockFitBounds.mock.calls.length).toBeGreaterThan(
+        fitCallsBeforePick,
+      ),
+    )
   })
 })

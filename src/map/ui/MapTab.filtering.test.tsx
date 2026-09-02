@@ -65,7 +65,7 @@ describe('MapTab filtering', () => {
     expect(setDataCall.features[0].properties?.name).toBe('Aššur')
   })
 
-  it('updates the source without re-fitting the camera on each filter change', async () => {
+  it('re-fits the camera to the filtered findspots on filter change', async () => {
     const provenances = [
       makeProvenance({ id: 'babylon', longName: 'Babylon' }),
       makeProvenance({ id: 'nippur', longName: 'Nippur' }),
@@ -75,14 +75,19 @@ describe('MapTab filtering', () => {
     renderMapTab(makeFragmentService(provenances))
 
     const input = await screen.findByLabelText('Filter findspots by name')
-    await waitFor(() => expect(mockFitBounds).toHaveBeenCalledTimes(1))
+    await waitFor(() => expect(mockFitBounds).toHaveBeenCalled())
+    const fitCallsBeforeFilter = mockFitBounds.mock.calls.length
 
     await userEvent.type(input, 'bab')
 
     await waitFor(() => {
       expect(mockSetData).toHaveBeenCalled()
     })
-    expect(mockFitBounds).toHaveBeenCalledTimes(1)
+    await waitFor(() =>
+      expect(mockFitBounds.mock.calls.length).toBeGreaterThan(
+        fitCallsBeforeFilter,
+      ),
+    )
   })
 
   it('uses the active filter when the style loads after filtering', async () => {

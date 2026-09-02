@@ -4,6 +4,7 @@ import type { GeoJSONSource, Map as MapLibreMap } from 'maplibre-gl'
 import { ProvenanceRecord } from 'fragmentarium/domain/Provenance'
 import { SOURCE_ID } from 'map/maplibre/mapLayers'
 import { provenanceToGeoJson } from 'map/domain/provenanceToGeoJson'
+import { fitMapToData } from 'map/maplibre/mapBounds'
 
 export default function useMapSourceData(
   mapRef: MutableRefObject<MapLibreMap | null>,
@@ -16,6 +17,8 @@ export default function useMapSourceData(
     const source = map.getSource(SOURCE_ID) as GeoJSONSource | undefined
     if (!source) return
 
-    source.setData(provenanceToGeoJson(provenances))
+    const geoJson = provenanceToGeoJson(provenances)
+    source.setData(geoJson)
+    fitMapToData(map, geoJson.features)
   }, [mapRef, provenances])
 }
