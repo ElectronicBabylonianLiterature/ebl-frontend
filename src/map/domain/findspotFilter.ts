@@ -1,4 +1,5 @@
 import { ProvenanceRecord } from 'fragmentarium/domain/Provenance'
+import foldForSearch from 'map/domain/foldForSearch'
 
 export function filterProvenances(
   provenances: readonly ProvenanceRecord[] | null,
@@ -6,10 +7,10 @@ export function filterProvenances(
 ): readonly ProvenanceRecord[] | null {
   if (!provenances) return null
 
-  const normalizedFilter = filter.trim().toLowerCase()
+  const normalizedFilter = foldForSearch(filter.trim())
   return normalizedFilter
     ? provenances.filter((provenance) =>
-        provenance.longName.toLowerCase().includes(normalizedFilter),
+        foldForSearch(provenance.longName).includes(normalizedFilter),
       )
     : provenances
 }

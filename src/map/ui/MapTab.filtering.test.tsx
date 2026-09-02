@@ -43,6 +43,28 @@ describe('MapTab filtering', () => {
     expect(setDataCall.features[0].properties?.name).toBe('Babylon')
   })
 
+  it('filters diacritic sites when the plain-ASCII form is typed', async () => {
+    const provenances = [
+      makeProvenance({ id: 'assur', longName: 'Aššur' }),
+      makeProvenance({ id: 'babylon', longName: 'Babylon' }),
+    ]
+    mockGetSource.mockReturnValue({ setData: mockSetData })
+
+    renderMapTab(makeFragmentService(provenances))
+
+    const input = await screen.findByPlaceholderText('Filter by site name...')
+    await userEvent.type(input, 'assur')
+
+    await waitFor(() => {
+      expect(mockSetData).toHaveBeenCalled()
+    })
+    const setDataCall = mockSetData.mock.calls[
+      mockSetData.mock.calls.length - 1
+    ][0] as FeatureCollection
+    expect(setDataCall.features).toHaveLength(1)
+    expect(setDataCall.features[0].properties?.name).toBe('Aššur')
+  })
+
   it('updates the source without re-fitting the camera on each filter change', async () => {
     const provenances = [
       makeProvenance({ id: 'babylon', longName: 'Babylon' }),
