@@ -68,6 +68,28 @@ describe('MapTab findspot suggestions', () => {
     ).toBeInTheDocument()
   })
 
+  it('clears a chosen site with the keyboard and restores the full list', async () => {
+    renderMapTab(makeFragmentService(provenances))
+
+    const input = await screen.findByLabelText('Filter findspots by name')
+    await userEvent.type(input, 'assur')
+    await userEvent.click(await screen.findByRole('option', { name: 'Aššur' }))
+    await screen.findByText('Aššur', {
+      selector: '.findspot-filter__single-value',
+    })
+
+    await userEvent.type(input, '{Backspace}')
+
+    await waitFor(() => {
+      expect(
+        screen.queryByText('Aššur', {
+          selector: '.findspot-filter__single-value',
+        }),
+      ).not.toBeInTheDocument()
+    })
+    expect(screen.getByRole('link', { name: 'Babylon' })).toBeInTheDocument()
+  })
+
   it('zooms the map to a chosen site', async () => {
     mockGetSource.mockReturnValue({ setData: mockSetData })
     renderMapTab(makeFragmentService(provenances))

@@ -13,6 +13,10 @@ export interface MapLibreErrorEvent {
   tile?: unknown
 }
 
+type MapLibreErrorEventWithError = MapLibreErrorEvent & {
+  error: NonNullable<MapLibreErrorEvent['error']>
+}
+
 function isStyleUrl(value: string): boolean {
   try {
     const parsed = new URL(value)
@@ -25,46 +29,49 @@ function isStyleUrl(value: string): boolean {
   }
 }
 
+function toMapErrorEvent(
+  event: MapLibreErrorEvent | unknown,
+): MapLibreErrorEventWithError | null {
+  if (!event || typeof event !== 'object') return null
+
+  const mapEvent = event as MapLibreErrorEvent
+  if (!mapEvent.error || typeof mapEvent.error !== 'object') return null
+
+  return mapEvent as MapLibreErrorEventWithError
+}
+
 function isSourceOrLayerScoped(event: MapLibreErrorEvent): boolean {
   return (
-    typeof event.sourceId === 'string' ||
-    typeof event.layer?.id === 'string' ||
-    event.tile !== undefined
+    typeof event.sourceId === 'string' || typeof event.layer?.id === 'string'
   )
+}
+
+function isTileScoped(event: MapLibreErrorEvent): boolean {
+  return event.tile !== undefined
 }
 
 export function isMapBackgroundLoadError(
   event: MapLibreErrorEvent | unknown,
 ): boolean {
-  if (!event || typeof event !== 'object') return false
+  const mapEvent = toMapErrorEvent(event)
+  if (!mapEvent) return false
 
-  const mapEvent = event as MapLibreErrorEvent
-  const error = mapEvent.error
-  if (!error || typeof error !== 'object') return false
+  if (isSourceOrLayerScoped(mapEvent) || isTileScoped(mapEvent)) return false
 
-  if (isSourceOrLayerScoped(mapEvent)) return false
-
-  return typeof error.url === 'string' && isStyleUrl(error.url)
+  const { url } = mapEvent.error
+  return typeof url === 'string' && isStyleUrl(url)
 }
 
 export function getReportableMapError(
   event: MapLibreErrorEvent | unknown,
 ): Error | null {
-  if (!event || typeof event !== 'object') return null
+  const mapEvent = toMapErrorEvent(event)
+  if (!mapEvent) return null
 
-  const mapEvent = event as MapLibreErrorEvent
-  const error = mapEvent.error
-  if (
-    !error ||
-    typeof error !== 'object' ||
-    typeof error.message !== 'string'
-  ) {
-    return null
-  }
+  const { error } = mapEvent
+  if (typeof error.message !== 'string') return null
 
-  if (mapEvent.tile !== undefined || !isSourceOrLayerScoped(mapEvent)) {
-    return null
-  }
+  if (isTileScoped(mapEvent) || isMapBackgroundLoadError(event)) return null
 
   return error instanceof Error ? error : new Error(error.message)
 }

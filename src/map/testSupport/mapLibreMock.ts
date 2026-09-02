@@ -40,7 +40,7 @@ type MockEventHandler = (event?: MockMapEvent | MockErrorEvent) => void
 
 const mockEventHandlers: Record<string, MockEventHandler> = {}
 let mockLoadImmediately = true
-let mockMapConstructionError: Error | null = null
+let mockMapConstructionError: unknown = null
 
 export const mockMapInstance = {
   addSource: mockAddSource,
@@ -157,7 +157,7 @@ export function deferMapLoad(): void {
   mockLoadImmediately = false
 }
 
-export function failMapConstruction(error: Error): void {
+export function failMapConstruction(error: unknown): void {
   mockMapConstructionError = error
 }
 

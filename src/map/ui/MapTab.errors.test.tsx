@@ -106,7 +106,7 @@ describe('MapTab map errors', () => {
     expect(screen.queryByText(BACKGROUND_WARNING)).not.toBeInTheDocument()
   })
 
-  it('ignores a sprite failure', async () => {
+  it('reports a sprite failure to Sentry without showing the banner', async () => {
     renderMapTab(makeFragmentService([makeProvenance()]))
     await screen.findByLabelText('Filter findspots by name')
 
@@ -120,9 +120,10 @@ describe('MapTab map errors', () => {
     })
 
     expect(screen.queryByText(BACKGROUND_WARNING)).not.toBeInTheDocument()
+    expect(mockCaptureException).toHaveBeenCalledWith(new Error('Not Found'))
   })
 
-  it('ignores a generic error once the style has already loaded', async () => {
+  it('reports a generic style error without showing the banner', async () => {
     renderMapTab(makeFragmentService([makeProvenance()]))
     await screen.findByLabelText('Filter findspots by name')
 
@@ -131,6 +132,9 @@ describe('MapTab map errors', () => {
     })
 
     expect(screen.queryByText(BACKGROUND_WARNING)).not.toBeInTheDocument()
+    expect(mockCaptureException).toHaveBeenCalledWith(
+      new Error('Failed to fetch'),
+    )
   })
 
   it('falls back to the findspot list when the map cannot be constructed', async () => {
@@ -142,6 +146,17 @@ describe('MapTab map errors', () => {
     expect(screen.getByRole('link', { name: 'Babylon' })).toBeInTheDocument()
     expect(mockCaptureException).toHaveBeenCalledWith(
       new Error('Failed to initialize WebGL'),
+    )
+  })
+
+  it('wraps a non-Error thrown while constructing the map', async () => {
+    failMapConstruction('WebGL context lost')
+
+    renderMapTab(makeFragmentService([makeProvenance()]))
+
+    expect(await screen.findByText(BACKGROUND_WARNING)).toBeInTheDocument()
+    expect(mockCaptureException).toHaveBeenCalledWith(
+      new Error('WebGL context lost'),
     )
   })
 

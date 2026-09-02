@@ -3,6 +3,7 @@ import { Alert } from 'react-bootstrap'
 import 'maplibre-gl/dist/maplibre-gl.css'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import Spinner from 'common/ui/Spinner'
+import { ProvenanceRecord } from 'fragmentarium/domain/Provenance'
 import useFindspotMap from 'map/maplibre/useFindspotMap'
 import useMapSourceData from 'map/maplibre/useMapSourceData'
 import useProvenances from 'map/ui/useProvenances'
@@ -15,9 +16,12 @@ interface Props {
   fragmentService: FragmentService
 }
 
-export default function MapTab({ fragmentService }: Props): JSX.Element {
+function LoadedMapTab({
+  provenances,
+}: {
+  provenances: readonly ProvenanceRecord[]
+}): JSX.Element {
   const mapContainer = useRef<HTMLDivElement>(null)
-  const { provenances, error } = useProvenances(fragmentService)
   const [mapBackgroundError, setMapBackgroundError] = useState(false)
   const [filter, setFilter] = useState('')
 
@@ -35,19 +39,11 @@ export default function MapTab({ fragmentService }: Props): JSX.Element {
   )
   useMapSourceData(mapRef, filteredProvenances)
 
-  if (error) {
-    return <Alert variant="danger">Failed to load map data: {error}</Alert>
-  }
-
-  if (!filteredProvenances) {
-    return <Spinner>Loading map data...</Spinner>
-  }
-
   return (
     <div className="map-tab">
       <div className="map-tab__search mb-3">
         <FindspotFilterInput
-          provenances={provenances ?? []}
+          provenances={provenances}
           filter={filter}
           onFilterChange={setFilter}
         />
@@ -73,4 +69,18 @@ export default function MapTab({ fragmentService }: Props): JSX.Element {
       <FindspotSearchList provenances={filteredProvenances} />
     </div>
   )
+}
+
+export default function MapTab({ fragmentService }: Props): JSX.Element {
+  const { provenances, error } = useProvenances(fragmentService)
+
+  if (error) {
+    return <Alert variant="danger">Failed to load map data: {error}</Alert>
+  }
+
+  if (provenances === null) {
+    return <Spinner>Loading map data...</Spinner>
+  }
+
+  return <LoadedMapTab provenances={provenances} />
 }

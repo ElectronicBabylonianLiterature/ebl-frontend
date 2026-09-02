@@ -132,12 +132,40 @@ describe('getReportableMapError', () => {
 
   it.each([
     [
+      'a sprite failure',
+      {
+        error: {
+          url: 'https://basemaps.cartocdn.com/gl/positron-gl-style/sprite.json',
+          message: 'Not Found',
+        },
+      },
+    ],
+    [
+      'a glyph failure',
+      {
+        error: {
+          url: 'https://basemaps.cartocdn.com/gl/positron-gl-style/fonts/0-255.pbf',
+          message: 'Not Found',
+        },
+      },
+    ],
+    [
+      'a style parse error carrying no url',
+      { error: { message: 'Expected a valid layer type' } },
+    ],
+  ])('reports %s so it is not silently discarded', (_label, event) => {
+    expect(getReportableMapError(event)).toEqual(
+      new Error((event.error as { message: string }).message),
+    )
+  })
+
+  it.each([
+    [
       'a tile miss',
       { error: { message: 'Not Found' }, sourceId: 's', tile: {} },
     ],
-    ['a sprite failure', { error: { message: 'Not Found' } }],
     [
-      'a style document failure',
+      'the style document failure that already shows a banner',
       { error: { url: MAP_STYLE_URL, message: 'x' } },
     ],
     ['an event without a message', { sourceId: 'ebl-findspots' }],

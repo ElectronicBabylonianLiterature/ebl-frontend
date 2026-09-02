@@ -1,6 +1,7 @@
 import {
   filterProvenances,
   getEmptyStateMessage,
+  matchesFindspot,
 } from 'map/domain/findspotFilter'
 import { makeProvenance } from 'map/testFixtures/provenance'
 
@@ -46,6 +47,26 @@ describe('filterProvenances', () => {
 
   it('returns null when there are no provenances', () => {
     expect(filterProvenances(null, 'x')).toBeNull()
+  })
+
+  it('ignores surrounding whitespace in the filter', () => {
+    expect(filterProvenances([assur, babylon], '  bab  ')).toEqual([babylon])
+  })
+})
+
+describe('matchesFindspot', () => {
+  it('trims and folds both sides so padded queries still match', () => {
+    expect(matchesFindspot('Babylon', 'bab')).toBe(true)
+    expect(matchesFindspot('Babylon', ' bab ')).toBe(true)
+    expect(matchesFindspot('Aššur', 'assur')).toBe(true)
+  })
+
+  it('treats a whitespace-only query as no filter', () => {
+    expect(matchesFindspot('Babylon', '   ')).toBe(true)
+  })
+
+  it('rejects a non-substring query', () => {
+    expect(matchesFindspot('Babylon', 'nippur')).toBe(false)
   })
 })
 

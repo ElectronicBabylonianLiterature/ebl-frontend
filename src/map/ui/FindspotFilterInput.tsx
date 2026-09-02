@@ -1,7 +1,7 @@
 import React, { useMemo, useState } from 'react'
 import Select from 'react-select'
 import { ProvenanceRecord } from 'fragmentarium/domain/Provenance'
-import foldForSearch from 'map/domain/foldForSearch'
+import { matchesFindspot } from 'map/domain/findspotFilter'
 
 interface Props {
   provenances: readonly ProvenanceRecord[]
@@ -34,15 +34,18 @@ export default function FindspotFilterInput({
     () => options.find((option) => option.value === filter) ?? null,
     [options, filter],
   )
+  const value =
+    selectedOption ?? (filter ? { value: filter, label: filter } : null)
 
   return (
     <Select<FindspotOption>
-      value={selectedOption}
+      value={value}
+      controlShouldRenderValue={selectedOption !== null}
       inputValue={inputValue}
-      onInputChange={(value, meta) => {
+      onInputChange={(nextInput, meta) => {
         if (meta.action === 'input-change') {
-          setInputValue(value)
-          onFilterChange(value)
+          setInputValue(nextInput)
+          onFilterChange(nextInput)
         }
       }}
       onChange={(option) => {
@@ -51,7 +54,7 @@ export default function FindspotFilterInput({
       }}
       options={options}
       filterOption={(option, rawInput) =>
-        foldForSearch(option.label).includes(foldForSearch(rawInput))
+        matchesFindspot(option.label, rawInput)
       }
       placeholder="Filter by site name..."
       aria-label="Filter findspots by name"
@@ -59,7 +62,7 @@ export default function FindspotFilterInput({
       isClearable
       menuPortalTarget={document.body}
       styles={{ menuPortal: (base) => ({ ...base, zIndex: 9999 }) }}
-      noOptionsMessage={() => null}
+      noOptionsMessage={() => 'No site names match your filter.'}
     />
   )
 }

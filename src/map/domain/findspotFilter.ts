@@ -1,16 +1,28 @@
 import { ProvenanceRecord } from 'fragmentarium/domain/Provenance'
 import foldForSearch from 'map/domain/foldForSearch'
 
+export function matchesFindspot(name: string, query: string): boolean {
+  const normalizedQuery = foldForSearch(query.trim())
+  return normalizedQuery === '' || foldForSearch(name).includes(normalizedQuery)
+}
+
+export function filterProvenances(
+  provenances: readonly ProvenanceRecord[],
+  filter: string,
+): readonly ProvenanceRecord[]
+export function filterProvenances(
+  provenances: readonly ProvenanceRecord[] | null,
+  filter: string,
+): readonly ProvenanceRecord[] | null
 export function filterProvenances(
   provenances: readonly ProvenanceRecord[] | null,
   filter: string,
 ): readonly ProvenanceRecord[] | null {
   if (!provenances) return null
 
-  const normalizedFilter = foldForSearch(filter.trim())
-  return normalizedFilter
+  return foldForSearch(filter.trim())
     ? provenances.filter((provenance) =>
-        foldForSearch(provenance.longName).includes(normalizedFilter),
+        matchesFindspot(provenance.longName, filter),
       )
     : provenances
 }
