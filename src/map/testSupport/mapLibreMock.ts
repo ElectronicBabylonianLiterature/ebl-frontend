@@ -40,6 +40,7 @@ type MockEventHandler = (event?: MockMapEvent | MockErrorEvent) => void
 
 const mockEventHandlers: Record<string, MockEventHandler> = {}
 let mockLoadImmediately = true
+let mockMapConstructionError: Error | null = null
 
 export const mockMapInstance = {
   addSource: mockAddSource,
@@ -107,6 +108,9 @@ function rememberHandler(
 
 class MockMap {
   constructor() {
+    if (mockMapConstructionError) {
+      throw mockMapConstructionError
+    }
     return mockMapInstance
   }
 }
@@ -153,6 +157,10 @@ export function deferMapLoad(): void {
   mockLoadImmediately = false
 }
 
+export function failMapConstruction(error: Error): void {
+  mockMapConstructionError = error
+}
+
 export function resetMapMocks(): void {
   jest.clearAllMocks()
   Object.keys(mockEventHandlers).forEach((event) => {
@@ -161,6 +169,7 @@ export function resetMapMocks(): void {
   addedLayerIds.clear()
   mockCanvas.style.cursor = ''
   mockLoadImmediately = true
+  mockMapConstructionError = null
   mockGetCanvas.mockReturnValue(mockCanvas)
   mockGetSource.mockReturnValue(undefined)
   mockQueryRenderedFeatures.mockReturnValue([])

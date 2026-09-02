@@ -46,3 +46,25 @@ export function isMapBackgroundLoadError(
 
   return typeof error.url === 'string' && isStyleUrl(error.url)
 }
+
+export function getReportableMapError(
+  event: MapLibreErrorEvent | unknown,
+): Error | null {
+  if (!event || typeof event !== 'object') return null
+
+  const mapEvent = event as MapLibreErrorEvent
+  const error = mapEvent.error
+  if (
+    !error ||
+    typeof error !== 'object' ||
+    typeof error.message !== 'string'
+  ) {
+    return null
+  }
+
+  if (mapEvent.tile !== undefined || !isSourceOrLayerScoped(mapEvent)) {
+    return null
+  }
+
+  return error instanceof Error ? error : new Error(error.message)
+}

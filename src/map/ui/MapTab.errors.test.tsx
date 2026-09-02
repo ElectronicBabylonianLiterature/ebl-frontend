@@ -3,8 +3,10 @@ import userEvent from '@testing-library/user-event'
 
 import {
   deferMapLoad,
+  failMapConstruction,
   makeFragmentService,
   makeProvenance,
+  mockCaptureException,
   renderMapTab,
   resetMapMocks,
   triggerMapEvent,
@@ -129,6 +131,18 @@ describe('MapTab map errors', () => {
     })
 
     expect(screen.queryByText(BACKGROUND_WARNING)).not.toBeInTheDocument()
+  })
+
+  it('falls back to the findspot list when the map cannot be constructed', async () => {
+    failMapConstruction(new Error('Failed to initialize WebGL'))
+
+    renderMapTab(makeFragmentService([makeProvenance()]))
+
+    expect(await screen.findByText(BACKGROUND_WARNING)).toBeInTheDocument()
+    expect(screen.getByRole('link', { name: 'Babylon' })).toBeInTheDocument()
+    expect(mockCaptureException).toHaveBeenCalledWith(
+      new Error('Failed to initialize WebGL'),
+    )
   })
 
   it('ignores map errors without a nested error object', async () => {

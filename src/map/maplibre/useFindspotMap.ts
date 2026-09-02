@@ -32,6 +32,7 @@ import { queryFindspotFeatures } from 'map/maplibre/mapFeatureQuery'
 import {
   MAP_STYLE_URL,
   type MapLibreErrorEvent,
+  getReportableMapError,
   isMapBackgroundLoadError,
 } from 'map/maplibre/mapBackgroundError'
 import { provenanceToGeoJson } from 'map/domain/provenanceToGeoJson'
@@ -140,12 +141,21 @@ export default function useFindspotMap(
   useEffect(() => {
     if (!containerRef.current || !isReady) return
 
-    const map = new maplibregl.Map({
-      container: containerRef.current,
-      style: MAP_STYLE_URL,
-      center: INITIAL_CENTER,
-      zoom: INITIAL_ZOOM,
-    })
+    let map: MapLibreMap
+    try {
+      map = new maplibregl.Map({
+        container: containerRef.current,
+        style: MAP_STYLE_URL,
+        center: INITIAL_CENTER,
+        zoom: INITIAL_ZOOM,
+      })
+    } catch (error) {
+      latestServicesRef.current.errorReporter.captureException(
+        error instanceof Error ? error : new Error(String(error)),
+      )
+      onMapBackgroundErrorChange?.(true)
+      return
+    }
     mapRef.current = map
     map.addControl(new maplibregl.NavigationControl(), 'top-right')
     let isActive = true
@@ -171,6 +181,11 @@ export default function useFindspotMap(
     const handleError = (event: MapLibreErrorEvent) => {
       if (isMapBackgroundLoadError(event)) {
         onMapBackgroundErrorChange?.(true)
+        return
+      }
+      const reportableError = getReportableMapError(event)
+      if (reportableError) {
+        handlers.reportError(reportableError)
       }
     }
 

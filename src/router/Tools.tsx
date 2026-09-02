@@ -94,7 +94,7 @@ export default function Tools({
                     className={`tools-nav__item ${
                       selectedTab === tab.id ? 'active' : ''
                     }`}
-                    onClick={() => handleSelect(tab.id as TabId)}
+                    onClick={() => handleSelect(tab.id)}
                   >
                     <span className="tools-nav__icon" aria-hidden="true">
                       {tab.icon}

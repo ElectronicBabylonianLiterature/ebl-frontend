@@ -2,8 +2,10 @@ import React from 'react'
 import { act } from '@testing-library/react'
 import {
   deferMapLoad,
+  failMapConstruction,
   makeProvenance,
   mockAddSource,
+  mockCaptureException,
   mockOn,
   resetMapMocks,
   triggerMapEvent,
@@ -57,5 +59,50 @@ describe('useFindspotMap', () => {
         },
       })
     }).not.toThrow()
+  })
+
+  it('reports a construction failure and signals a background error', () => {
+    const onMapBackgroundErrorChange = jest.fn()
+    failMapConstruction(new Error('Failed to initialize WebGL'))
+
+    expect(() =>
+      renderHarness(
+        <HookHarness
+          provenances={[makeProvenance()]}
+          onMapBackgroundErrorChange={onMapBackgroundErrorChange}
+        />,
+      ),
+    ).not.toThrow()
+
+    expect(onMapBackgroundErrorChange).toHaveBeenCalledWith(true)
+    expect(mockCaptureException).toHaveBeenCalledWith(
+      new Error('Failed to initialize WebGL'),
+    )
+    expect(mockOn).not.toHaveBeenCalled()
+  })
+
+  it('reports a source or layer error through the error reporter', () => {
+    renderHarness(<HookHarness provenances={[makeProvenance()]} />)
+
+    triggerMapEvent('error', {
+      error: { message: 'Invalid GeoJSON' },
+      sourceId: 'ebl-findspots',
+    })
+
+    expect(mockCaptureException).toHaveBeenCalledWith(
+      new Error('Invalid GeoJSON'),
+    )
+  })
+
+  it('does not report a recoverable tile miss', () => {
+    renderHarness(<HookHarness provenances={[makeProvenance()]} />)
+
+    triggerMapEvent('error', {
+      error: { message: 'Not Found' },
+      sourceId: 'ebl-findspots',
+      tile: {},
+    })
+
+    expect(mockCaptureException).not.toHaveBeenCalled()
   })
 })

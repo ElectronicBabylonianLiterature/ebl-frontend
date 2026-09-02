@@ -33,6 +33,12 @@ export function makeFailingFragmentService(message: string): FragmentService {
   } as unknown as FragmentService
 }
 
+export function makeRejectingFragmentService(reason: unknown): FragmentService {
+  return {
+    fetchProvenances: () => Bluebird.reject(reason),
+  } as unknown as FragmentService
+}
+
 export const CURRENT_LOCATION_TEST_ID = 'current-location'
 
 function CurrentLocation(): JSX.Element {

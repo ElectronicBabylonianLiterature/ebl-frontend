@@ -7,6 +7,7 @@ import {
   makeFailingFragmentService,
   makeFragmentService,
   makeProvenance,
+  makeRejectingFragmentService,
   mockAddControl,
   mockAddLayer,
   mockAddSource,
@@ -49,6 +50,14 @@ describe('MapTab', () => {
         screen.getByText('Failed to load map data: Network error'),
       ).toBeInTheDocument()
     })
+  })
+
+  it('renders a generic error state when the fetch rejects without an Error', async () => {
+    renderMapTab(makeRejectingFragmentService('offline'))
+
+    expect(
+      await screen.findByText('Failed to load map data: Unknown error'),
+    ).toBeInTheDocument()
   })
 
   it('renders search input, map region, and findspot links', async () => {

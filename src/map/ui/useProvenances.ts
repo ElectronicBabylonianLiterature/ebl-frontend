@@ -25,9 +25,11 @@ export default function useProvenances(
           setProvenances(fetchedProvenances)
         }
       })
-      .catch((fetchError: Error) => {
+      .catch((fetchError: unknown) => {
         if (!ignore) {
-          setError(fetchError.message)
+          setError(
+            fetchError instanceof Error ? fetchError.message : 'Unknown error',
+          )
         }
       })
 

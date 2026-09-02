@@ -1,4 +1,5 @@
 import {
+  getReportableMapError,
   isMapBackgroundLoadError,
   MAP_STYLE_URL,
 } from 'map/maplibre/mapBackgroundError'
@@ -108,5 +109,41 @@ describe('isMapBackgroundLoadError', () => {
     ['undefined event', undefined],
   ])('does not classify %s as a background failure', (_label, event) => {
     expect(isMapBackgroundLoadError(event)).toBe(false)
+  })
+})
+
+describe('getReportableMapError', () => {
+  it('returns the error for a GeoJSON source failure', () => {
+    const error = new Error('Invalid GeoJSON')
+
+    expect(getReportableMapError({ error, sourceId: 'ebl-findspots' })).toBe(
+      error,
+    )
+  })
+
+  it('wraps a plain error-like object from a layer failure', () => {
+    expect(
+      getReportableMapError({
+        error: { message: 'expected number' },
+        layer: { id: 'ebl-clusters' },
+      }),
+    ).toEqual(new Error('expected number'))
+  })
+
+  it.each([
+    [
+      'a tile miss',
+      { error: { message: 'Not Found' }, sourceId: 's', tile: {} },
+    ],
+    ['a sprite failure', { error: { message: 'Not Found' } }],
+    [
+      'a style document failure',
+      { error: { url: MAP_STYLE_URL, message: 'x' } },
+    ],
+    ['an event without a message', { sourceId: 'ebl-findspots' }],
+    ['a non-object event', 'boom'],
+    ['null', null],
+  ])('returns null for %s', (_label, event) => {
+    expect(getReportableMapError(event)).toBeNull()
   })
 })

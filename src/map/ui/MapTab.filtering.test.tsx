@@ -90,6 +90,25 @@ describe('MapTab filtering', () => {
     )
   })
 
+  it('coalesces rapid filter changes into a single camera fit', async () => {
+    const provenances = [
+      makeProvenance({ id: 'babylon', longName: 'Babylon' }),
+      makeProvenance({ id: 'nippur', longName: 'Nippur' }),
+    ]
+    mockGetSource.mockReturnValue({ setData: mockSetData })
+
+    renderMapTab(makeFragmentService(provenances))
+    const input = await screen.findByLabelText('Filter findspots by name')
+    await waitFor(() => expect(mockSetData).toHaveBeenCalled())
+    mockFitBounds.mockClear()
+
+    await userEvent.type(input, 'nippur')
+    await waitFor(() => expect(mockFitBounds).toHaveBeenCalled())
+
+    expect(mockFitBounds).toHaveBeenCalledTimes(1)
+    expect(mockSetData.mock.calls.length).toBeGreaterThan(1)
+  })
+
   it('uses the active filter when the style loads after filtering', async () => {
     const provenances = [
       makeProvenance({ id: 'babylon', longName: 'Babylon' }),
