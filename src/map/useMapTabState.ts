@@ -30,7 +30,11 @@ import {
   anySiteHasExcavationPolygons,
   deriveMapSiteCapabilities,
 } from 'map/mapSiteCapabilities'
-import type { ExcavationPolygon } from 'map/excavationPolygonIndex'
+import type {
+  ExcavationPolygon,
+  ExcavationPolygonIndex,
+} from 'map/excavationPolygonIndex'
+import { type MapExportRow, toExportRows } from 'map/mapExportData'
 
 export interface MapTabState {
   readonly provenances: readonly ProvenanceRecord[] | null
@@ -49,7 +53,14 @@ export interface MapTabState {
   readonly visualization: MapVisualization
   readonly measurement: MeasurementController
   readonly spatialSearch: SpatialSearchController
+  readonly exportRows: readonly MapExportRow[]
   readonly resetView: () => void
+}
+
+function allExcavationPolygons(
+  index: ExcavationPolygonIndex,
+): readonly ExcavationPolygon[] {
+  return [...index.values()].flat()
 }
 
 function findPolygon(
@@ -140,6 +151,15 @@ export default function useMapTabState(
     fragmentMapData.polygonSummaries,
   )
 
+  const exportRows = useMemo(
+    () =>
+      toExportRows(
+        allExcavationPolygons(polygonIndex),
+        fragmentMapData.polygonSummaries,
+      ),
+    [polygonIndex, fragmentMapData.polygonSummaries],
+  )
+
   const resetView = useCallback(() => {
     experience.resetState()
     resetMapCamera(mapRef.current)
@@ -162,6 +182,7 @@ export default function useMapTabState(
     visualization,
     measurement,
     spatialSearch,
+    exportRows,
     resetView,
   }
 }
