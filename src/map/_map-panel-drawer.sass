@@ -1,0 +1,243 @@
+@import src/map/map-zindex
+
+// Layout chrome only. Panel *content* keeps its own visual styling in
+// `_map-inspector-content.sass`, `_map-controls-content.sass` and
+// `_map-tools.sass` — this file just decides where the toolbar, the one
+// shared panel and the legend sit, and never both cover the same corner as
+// MapLibre's own navigation and attribution controls.
+
+.map-toolbar__bar
+  position: absolute
+  z-index: $map-z-toolbar
+  bottom: 0.75rem
+  left: 0.75rem
+  display: flex
+  flex-wrap: wrap
+  gap: 0.35rem
+  max-width: calc(100% - 1.5rem)
+
+.map-selection-pill
+  position: absolute
+  z-index: $map-z-toolbar
+  bottom: 3.35rem
+  left: 0.75rem
+  max-width: calc(100% - 1.5rem)
+
+.map-legend
+  position: absolute
+  z-index: $map-z-legend
+  top: 0.75rem
+  left: 0.75rem
+  display: flex
+  flex-direction: column
+  align-items: flex-start
+  gap: 0.4rem
+
+  &__body
+    max-width: min(18rem, calc(100vw - 2rem))
+    padding: 0.5rem 0.6rem
+    border: 1px solid #d5dce3
+    border-radius: 0.35rem
+    background: $ebl-color-white-alpha-90
+    box-shadow: 0 0.45rem 1rem $ebl-color-black-alpha-08
+    color: $ebl-color-text-secondary
+    font-size: 0.78rem
+
+  &__unit
+    margin: 0 0 0.35rem
+    color: #172331
+    font-size: 0.72rem
+    font-weight: 700
+    letter-spacing: 0
+    text-transform: uppercase
+
+  &__entries
+    display: grid
+    gap: 0.3rem
+    margin: 0
+    padding: 0
+    list-style: none
+
+  &__entry
+    display: grid
+    grid-template-columns: 1.35rem minmax(0, 1fr)
+    align-items: center
+    gap: 0.4rem
+
+  &__label
+    overflow-wrap: anywhere
+
+  // The mark repeats the outline treatment the polygon itself uses, so the
+  // legend stays readable without relying on colour perception.
+  &__mark
+    width: 1.2rem
+    height: 0.72rem
+    border-radius: 0.15rem
+    border-style: solid
+    border-width: 2px
+    box-shadow: 0 0 0 1px $ebl-color-black-alpha-15
+
+    &--dashed
+      border-style: dashed
+      background: transparent !important
+
+    &--dash-dot
+      border-style: dotted
+
+    &--halo
+      box-shadow: 0 0 0 3px $ebl-color-white-alpha-90, 0 0 0 4px $ebl-color-black-alpha-15
+
+.map-legend--inline
+  position: static
+  display: block
+
+  .map-legend__entries
+    gap: 0.35rem
+    font-size: 0.8rem
+
+.map-hover-tooltip
+  position: absolute
+  z-index: $map-z-tooltip
+  display: grid
+  gap: 0.12rem
+  max-width: min(16rem, calc(100% - 2rem))
+  padding: 0.55rem 0.65rem
+  border: 1px solid #c8a16f
+  border-radius: 0.35rem
+  background: $ebl-color-white-alpha-90
+  box-shadow: 0 0.65rem 1.3rem $ebl-color-black-alpha-15
+  color: $ebl-color-text-secondary
+  font-size: 0.78rem
+  line-height: 1.25
+  pointer-events: none
+  transform: translate(0.85rem, 0.85rem)
+
+  strong
+    color: #172331
+    font-size: 0.9rem
+
+// A tooltip is a pointer affordance; a touch device has no hover to preview
+// with, and the same information is one tap away in the inspector.
+@media (hover: none)
+  .map-hover-tooltip
+    display: none
+
+.map-panel-drawer
+  position: absolute
+  z-index: $map-z-panel
+  top: 3.5rem
+  right: 0.75rem
+  bottom: 1.75rem
+  display: flex
+  flex-direction: column
+  width: min(24rem, calc(100% - 1.5rem))
+  overflow: hidden
+  border: 1px solid #d5dce3
+  border-radius: 0.45rem
+  background: $ebl-color-white-alpha-90
+  backdrop-filter: blur(8px)
+  box-shadow: 0 0.75rem 1.75rem $ebl-color-black-alpha-10
+
+  &__header
+    display: flex
+    flex: 0 0 auto
+    flex-wrap: wrap
+    align-items: center
+    gap: 0.5rem
+    padding: 0.6rem 0.75rem
+    border-bottom: 1px solid $ebl-color-border-subtle
+
+  &__handle
+    display: none
+
+  &__title
+    flex: 1 1 auto
+    min-width: 0
+    overflow-wrap: anywhere
+    color: #172331
+    font-size: 0.95rem
+
+  &__body
+    flex: 1 1 auto
+    min-height: 0
+    overflow-y: auto
+    overflow-x: hidden
+    padding: 0.75rem
+    overscroll-behavior: contain
+    -webkit-overflow-scrolling: touch
+
+@media (max-width: $ebl-breakpoint-lg-max)
+  .map-panel-drawer
+    width: min(19rem, calc(100% - 1.25rem))
+
+@media (max-width: $ebl-breakpoint-md-max)
+  .map-toolbar__bar
+    left: 0.5rem
+    bottom: 0.5rem
+
+    .btn
+      min-height: 2.75rem
+
+  .map-panel-drawer__header .btn
+    min-height: 2.75rem
+    min-width: 2.75rem
+
+  .map-toolbar__bar--panel-open
+    bottom: 4rem
+
+  .map-selection-pill
+    left: 0.5rem
+    bottom: 4.6rem
+
+  .map-legend
+    top: 0.5rem
+    left: 0.5rem
+
+  .map-panel-drawer
+    top: auto
+    right: 0.5rem
+    bottom: 0.5rem
+    left: 0.5rem
+    width: auto
+    height: min(55vh, 28rem)
+    max-height: min(55vh, 28rem)
+
+    &--collapsed
+      height: auto
+      max-height: none
+
+    &__handle
+      display: flex
+      flex: 1 1 auto
+      align-items: center
+      gap: 0.5rem
+      min-height: 2.75rem
+      padding: 0
+      border: 0
+      background: transparent
+      color: $ebl-color-text-primary
+      font-size: 0.85rem
+      text-align: left
+
+    &__title
+      flex: 0 0 auto
+      order: -1
+
+  .map-panel-drawer__grip
+    display: block
+    width: 2.25rem
+    height: 0.3rem
+    border-radius: 0.2rem
+    background: #c9c2b4
+
+@media (max-width: $ebl-breakpoint-sm-max)
+  .map-panel-drawer
+    right: 0.4rem
+    left: 0.4rem
+    bottom: 0.4rem
+    height: min(50vh, 24rem)
+    max-height: min(50vh, 24rem)
+
+@media (prefers-reduced-motion: reduce)
+  .map-panel-drawer
+    transition: none
