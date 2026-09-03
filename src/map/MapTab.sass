@@ -1,11 +1,12 @@
 @import src/design-tokens
+@import src/map/map-zindex
+@import src/map/map-panel-drawer
 
 .map-stage
   &__background-alert
     margin-bottom: 0.75rem
 
 .map-share-link
-  margin-top: 0.5rem
   display: flex
   align-items: center
   gap: 0.5rem
@@ -14,31 +15,84 @@
     color: $ebl-color-text-secondary
     font-size: 0.875rem
 
-.map-tab
-  &__container
-    width: 100%
-    height: 500px
-    border-radius: 0.25rem
-    border: 1px solid $ebl-color-border-default
+.map-experience
+  display: grid
+  gap: 0.85rem
+  color: $ebl-color-text-primary
+
+  &__topbar
+    display: grid
+    grid-template-columns: minmax(12rem, 1fr) minmax(16rem, 24rem) auto
+    align-items: end
+    gap: 0.75rem 1rem
+    padding: 0.8rem 0.95rem
+    border: 1px solid $ebl-color-border-subtle
+    border-radius: 0.35rem
+    background: $ebl-color-surface-primary
+
+  &__heading
+    min-width: 0
+
+    span
+      display: block
+      color: $ebl-color-text-secondary
+      font-size: 0.72rem
+      font-weight: 700
+      text-transform: uppercase
+
+    h1
+      margin: 0
+      font-size: 1.45rem
+      font-weight: 700
+      line-height: 1.15
 
   &__search
-    max-width: 400px
+    min-width: 0
 
-    .findspot-filter__control
-      min-height: 38px
+  &__actions
+    display: flex
+    flex-wrap: wrap
+    align-items: center
+    justify-content: flex-end
+    gap: 0.45rem
+    color: $ebl-color-text-secondary
+    font-size: 0.875rem
 
-    .findspot-filter__value-container
-      padding: 0 0.5rem
+  &__body
+    position: relative
+    min-height: min(76vh, 760px)
 
-    .findspot-filter__input-container
-      margin: 0
+.map-stage
+  position: relative
+  width: 100%
+  height: min(76vh, 760px)
+  overflow: hidden
+  border: 1px solid $ebl-color-border-default
+  border-radius: 0.45rem
+  background: $ebl-color-surface-muted
+
+  &__container
+    width: 100%
+    height: 100%
+
+.map-presentation-bar
+  display: flex
+  align-items: center
+  justify-content: space-between
+  gap: 0.5rem
+  padding: 0.5rem 0.75rem
+  border: 1px solid $ebl-color-border-subtle
+  border-radius: 0.35rem
+
+.map-experience--presenting .map-experience__body
+  min-height: 82vh
+
+.map-tab
+  min-width: 0
 
   &__description
     color: $ebl-color-text-secondary
-    margin-bottom: 0.75rem
-
-  &__map-error
-    margin-bottom: 0.75rem
+    margin: 0.75rem 0
 
   &__findspot-links
     margin-top: 1rem
@@ -51,7 +105,17 @@
     font-size: 1rem
     margin-bottom: 0.5rem
 
-  .maplibregl-popup-content
-    a
-      color: $ebl-color-brand-primary
-      font-weight: 500
+  .maplibregl-popup-content a
+    color: $ebl-color-brand-primary
+    font-weight: 500
+
+@media (max-width: $ebl-breakpoint-md-max)
+  .map-experience__topbar
+    grid-template-columns: minmax(0, 1fr)
+    align-items: stretch
+
+  .map-stage
+    height: 68vh
+
+.findspot-filter__control
+  min-height: 38px
