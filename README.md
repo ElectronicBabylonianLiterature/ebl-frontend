@@ -223,20 +223,46 @@ This action will:
 
 ⚠️ Note that an application redeploy ([Swarmpit](https://www.ebl.lmu.de/cluster/swarmpit/#/stacks/ebl)) is still needed for the sitemap to refresh.
 
-#### 🔑 Personal Access Token (PAT) Setup (Yearly Maintenance)
+#### 🤖 Bot Identity (One-Off Setup, No Yearly Rotation)
 
-To keep the automation working, you must refresh the `SITEMAP_AUTOUPDATE` secret approximately **once per year**, as PATs expire.
+The workflow runs as a GitHub App rather than as a person. It mints a short-lived
+installation token at run time, so there is **no token to rotate** and the pull requests
+it opens are authored by the app, not by a maintainer. That matters because GitHub
+forbids self-approval: when a human's token opened these pull requests, the one person
+who would normally merge them was the one person who could not.
 
-1. Go to your GitHub [Developer Settings → Fine-Grained Tokens](https://github.com/settings/personal-access-tokens).
-2. Create a Fine-Grained Token:
-   - Restrict it to just the ElectronicBabylonianLiterature/ebl-frontend repo.
-   - Minimal scopes. Contents: Read and write, Pull requests: Read and write.
-3. Name the token `sitemap-autoupdate` and set an expiration period (max. 12 months).
-4. Save the value of the new token.
-5. In the repository, go to **Settings → Secrets and variables → Actions → Repository secrets**.
-6. Find `SITEMAP_AUTOUPDATE` and update the value with the token you just generated.
-7. Save the secret. The next time the workflow runs, it will use the updated token.
-8. If the PAT user changes, update `git config user.name` and `git config user.email` information in `.github/workflows/update-sitemaps.yml`.
+Two repository secrets must exist for the workflow to run:
+
+| Secret                       | Value                                                                      |
+| ---------------------------- | -------------------------------------------------------------------------- |
+| `EBL_AUTOMATION_APP_ID`      | The numeric App ID                                                         |
+| `EBL_AUTOMATION_PRIVATE_KEY` | The entire `.pem` private key, including the `-----BEGIN`/`-----END` lines |
+
+To create them (once):
+
+1. Under the **organisation** settings, create a **New GitHub App** named `eBL Automation`.
+   Untick **Webhook → Active**.
+2. Grant exactly `Contents: Read and write` and `Pull requests: Read and write`; leave
+   everything else at _No access_. Set installation scope to **Only on this account**.
+3. Note the **App ID**, then **Generate a private key** — the `.pem` downloads only once.
+4. **Install App** → the `ElectronicBabylonianLiterature` organisation → **Only select
+   repositories** → `ebl-frontend`.
+5. Add both secrets under **Settings → Secrets and variables → Actions**.
+
+A missing line break in the private key is the usual cause of a "failed to generate
+token" error.
+
+#### 🔒 Failure Behaviour
+
+The update script fails closed. If the sitemap source is unreachable, or if fewer files
+download than the site currently has, the run **fails** and the existing sitemaps are
+restored from a backup. It never publishes a partial set, and it never opens or closes a
+pull request on a failed crawl. A red run means the sitemaps on `master` are untouched
+and the crawl needs looking at.
+
+The workflow uses a single fixed branch, `autoupdate-sitemap`, so a run that fires while
+a sitemap pull request is still open updates that pull request instead of opening a
+second one. Runs are serialised by a `concurrency` group.
 
 #### 🛠 Manual Update (Legacy Method)
 

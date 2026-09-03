@@ -2,6 +2,16 @@ const isFastDev = process.env.FAST_DEV === 'true'
 
 module.exports = {
   ...(isFastDev ? { eslint: { enable: false } } : {}),
+  jest: {
+    configure: (jestConfig) => {
+      jestConfig.roots = [...(jestConfig.roots || []), '<rootDir>/scripts']
+      jestConfig.testMatch = [
+        ...(jestConfig.testMatch || []),
+        '<rootDir>/scripts/**/*.{spec,test}.{js,jsx,ts,tsx}',
+      ]
+      return jestConfig
+    },
+  },
   webpack: {
     configure: (webpackConfig) => {
       webpackConfig.resolve = webpackConfig.resolve || {}

@@ -5,18 +5,25 @@ on:
     - cron: '0 1 * * 0'
   workflow_dispatch:
 
+permissions:
+  contents: read
+
+concurrency:
+  group: update-sitemap
+  cancel-in-progress: false
+
 jobs:
   update-sitemap:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
         with:
           persist-credentials: false
 
       - name: Set up Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
         with:
           node-version: '20'
 
@@ -56,37 +63,33 @@ jobs:
       - name: Remove temporary environment
         run: rm -rf tmp-script-env
 
-      - name: Commit sitemap changes
-        id: commit
-        run: |
-          git config user.name "Ilya Khait"
-          git config user.email "ilya.khait@lmu.de"
-          git add public/sitemap
-          if git diff --cached --quiet; then
-            echo "No changes to commit."
-            echo "commit-needed=false" >> $GITHUB_OUTPUT
-          else
-            git commit -m "Update sitemap files"
-            echo "commit-needed=true" >> $GITHUB_OUTPUT
-          fi
+      - name: Generate automation app token
+        id: app-token
+        uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3.2.0
+        with:
+          app-id: ${{ secrets.EBL_AUTOMATION_APP_ID }}
+          private-key: ${{ secrets.EBL_AUTOMATION_PRIVATE_KEY }}
+          permission-contents: write
+          permission-pull-requests: write
 
       - name: Create Pull Request
-        if: steps.commit.outputs.commit-needed == 'true'
         id: create-pull-request
-        uses: peter-evans/create-pull-request@v5
+        uses: peter-evans/create-pull-request@5f6978faf089d4d20b00c7766989d076bb2fc7f1 # v8.1.1
         with:
-          token: ${{ secrets.SITEMAP_AUTOUPDATE }}
+          token: ${{ steps.app-token.outputs.token }}
+          add-paths: public/sitemap
           commit-message: Update sitemap files
+          sign-commits: true
           title: 'Automated sitemap update'
           body: 'This PR was created automatically by a GitHub Action to update sitemap files.'
           base: master
-          branch: autoupdate-sitemap-${{ github.run_id }}
+          branch: autoupdate-sitemap
           delete-branch: true
 
       - name: Enable auto-merge for PR
         if: steps.create-pull-request.outputs.pull-request-number != ''
-        uses: peter-evans/enable-pull-request-automerge@v3
+        uses: peter-evans/enable-pull-request-automerge@a660677d5469627102a1c1e11409dd063606628d # v3.0.0
         with:
-          token: ${{ secrets.SITEMAP_AUTOUPDATE }}
+          token: ${{ steps.app-token.outputs.token }}
           pull-request-number: ${{ steps.create-pull-request.outputs.pull-request-number }}
           merge-method: squash
