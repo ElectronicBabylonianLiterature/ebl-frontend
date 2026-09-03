@@ -14,6 +14,7 @@ import MapLayerControls from 'map/MapLayerControls'
 import MapInspector from 'map/MapInspector'
 import MapLegend from 'map/MapLegend'
 import MapVisualizationControl from 'map/MapVisualizationControl'
+import MapMeasurePanel from 'map/MapMeasurePanel'
 import { findMapSite } from 'map/mapSites'
 import type { MapPanelDefinition } from 'map/MapToolbar'
 import FindspotFilterInput from 'map/FindspotFilterInput'
@@ -68,6 +69,12 @@ function LoadedMapTab({
           onModeChange={experience.setVisualization}
         />
       ),
+    },
+    {
+      id: 'measurement',
+      label: 'Measure',
+      isSupported: true,
+      render: () => <MapMeasurePanel measurement={state.measurement} />,
     },
     {
       id: 'layers',
