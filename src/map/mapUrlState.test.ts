@@ -18,6 +18,7 @@ describe('map URL state', () => {
       filter: 'Aššur',
       showExcavationAreas: true,
       selection: { type: 'excavation-area', polygonId: 'assur-area-a' },
+      visualization: 'count',
     }
 
     expect(parseMapUrlState(serializeMapUrlState(state))).toEqual(state)

@@ -4,6 +4,10 @@ import {
   parseMapSelection,
   serializeMapSelection,
 } from 'map/mapSelection'
+import {
+  type MapVisualizationMode,
+  isMapVisualizationMode,
+} from 'map/mapChoroplethScale'
 
 export const MAP_URL_STATE_VERSION = 1
 
@@ -11,12 +15,16 @@ const VERSION_PARAM = 'mv'
 const FILTER_PARAM = 'findspot'
 const AREAS_PARAM = 'areas'
 const SELECTION_PARAM = 'selected'
+const VISUALIZATION_PARAM = 'viz'
+
+const DEFAULT_VISUALIZATION: MapVisualizationMode = 'mapped'
 
 export interface MapUrlState {
   readonly version: number
   readonly filter: string
   readonly showExcavationAreas: boolean
   readonly selection: MapSelection | null
+  readonly visualization: MapVisualizationMode
 }
 
 export const DEFAULT_MAP_URL_STATE: MapUrlState = {
@@ -24,6 +32,7 @@ export const DEFAULT_MAP_URL_STATE: MapUrlState = {
   filter: '',
   showExcavationAreas: false,
   selection: null,
+  visualization: DEFAULT_VISUALIZATION,
 }
 
 function asString(value: string | (string | null)[] | null): string {
@@ -39,11 +48,16 @@ export function parseMapUrlState(search: string): MapUrlState {
     return DEFAULT_MAP_URL_STATE
   }
 
+  const visualization = asString(query[VISUALIZATION_PARAM])
+
   return {
     version: MAP_URL_STATE_VERSION,
     filter: asString(query[FILTER_PARAM]),
     showExcavationAreas: asString(query[AREAS_PARAM]) === '1',
     selection: parseMapSelection(asString(query[SELECTION_PARAM])),
+    visualization: isMapVisualizationMode(visualization)
+      ? visualization
+      : DEFAULT_VISUALIZATION,
   }
 }
 
@@ -54,6 +68,10 @@ export function serializeMapUrlState(state: MapUrlState): string {
       [FILTER_PARAM]: state.filter || undefined,
       [AREAS_PARAM]: state.showExcavationAreas ? '1' : undefined,
       [SELECTION_PARAM]: serializeMapSelection(state.selection) || undefined,
+      [VISUALIZATION_PARAM]:
+        state.visualization === DEFAULT_VISUALIZATION
+          ? undefined
+          : state.visualization,
     },
     { skipEmptyString: true },
   )

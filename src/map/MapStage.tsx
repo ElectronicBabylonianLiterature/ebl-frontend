@@ -5,6 +5,7 @@ interface Props {
   readonly containerRef: React.RefObject<HTMLDivElement>
   readonly isBackgroundUnavailable: boolean
   readonly overlay?: React.ReactNode
+  readonly legend?: React.ReactNode
   readonly describedById?: string
 }
 
@@ -12,6 +13,7 @@ export default function MapStage({
   containerRef,
   isBackgroundUnavailable,
   overlay,
+  legend,
   describedById,
 }: Props): JSX.Element {
   return (
@@ -22,6 +24,7 @@ export default function MapStage({
           available below.
         </Alert>
       ) : null}
+      {legend}
       {overlay}
       <div
         ref={containerRef}

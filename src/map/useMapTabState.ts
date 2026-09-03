@@ -14,6 +14,9 @@ import useFragmentMapData, {
 } from 'map/useFragmentMapData'
 import useMapExperience, { type MapExperience } from 'map/useMapExperience'
 import useMapPanel, { type MapPanelController } from 'map/useMapPanel'
+import useMapVisualization, {
+  type MapVisualization,
+} from 'map/useMapVisualization'
 import useMapLayoutEffects from 'map/useMapLayoutEffects'
 import { resetMapCamera } from 'map/mapCamera'
 import { filterProvenances } from 'map/findspotFilter'
@@ -37,6 +40,7 @@ export interface MapTabState {
   readonly showExcavationAreas: boolean
   readonly fragmentMapData: FragmentMapDataState
   readonly selectedPolygon: ExcavationPolygon | null
+  readonly visualization: MapVisualization
   readonly resetView: () => void
 }
 
@@ -89,6 +93,12 @@ export default function useMapTabState(
   )
   useMapSourceData(mapRef, filteredProvenances)
 
+  const visualization = useMapVisualization(
+    fragmentMapData.polygonSummaries,
+    polygonIndex,
+    experience.visualization,
+  )
+
   const { setSelection } = experience
   const { open: openPanel } = panel
   const onSelectPolygon = useCallback(
@@ -106,6 +116,7 @@ export default function useMapTabState(
   useExcavationAreas(mapRef, {
     isVisible: showExcavationAreas,
     selectedPolygonId,
+    paint: visualization.paint,
     onSelectPolygon,
   })
   useMapLayoutEffects(mapContainer, mapRef, drawerRef, panel.active)
@@ -129,6 +140,7 @@ export default function useMapTabState(
     showExcavationAreas,
     fragmentMapData,
     selectedPolygon: findPolygon(polygonIndex, selectedPolygonId),
+    visualization,
     resetView,
   }
 }
