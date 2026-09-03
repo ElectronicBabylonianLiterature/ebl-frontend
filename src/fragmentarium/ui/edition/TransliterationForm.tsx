@@ -24,6 +24,9 @@ import {
 
 type EditedValues = Pick<FormData, (typeof editionFields)[number]>
 
+const isValidationError = (error: unknown): boolean =>
+  !_.isEmpty(_.get(error, 'data.errors'))
+
 type Props = {
   transliteration: string
   notes: string
@@ -108,7 +111,6 @@ const TransliterationForm: React.FC<Props> = ({
     event.preventDefault()
     const editedValues = _.pick(formData, editionFields) as EditedValues
     const updatedFields = _.pickBy(editedValues, isDirty) as EditionFields
-    setLastAttempt(editedValues)
     const promise = updateEdition(updatedFields)
       .then((fragment) => {
         setLastAttempt(null)
@@ -128,6 +130,9 @@ const TransliterationForm: React.FC<Props> = ({
             (promise as { isCancelled: () => boolean }).isCancelled())
         if (isCancellationError) {
           return
+        }
+        if (isValidationError(error)) {
+          setLastAttempt(editedValues)
         }
         setFormData((prev) => ({ ...prev, error }))
       })

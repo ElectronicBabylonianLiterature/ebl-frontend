@@ -1,12 +1,14 @@
 import React from 'react'
-import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { fireEvent, screen, waitFor } from '@testing-library/react'
 import { submitFormByTestId } from 'test-support/utils'
 import { Promise } from 'bluebird'
-
-import TransliterationForm from './TransliterationForm'
 import { act } from 'react'
 import userEvent from '@testing-library/user-event'
-import { editorErrorOf, resetEditorMock } from 'editor/Editor.testSupport'
+
+import {
+  editorError,
+  renderTransliterationForm,
+} from './TransliterationForm.testSupport'
 
 type TemplateFormMockProps = {
   onSubmit: (templateValue: string) => void
@@ -34,34 +36,16 @@ jest.mock('editor/Editor', () =>
   jest.requireActual('editor/Editor.testSupport'),
 )
 
-const editorError = (): unknown => editorErrorOf('transliteration')
-
-const transliteration = 'line1\nline2'
-const notes = 'notes'
-const introduction = 'introduction'
-
 let addEventListenerSpy
 let updateEdition
 
-const renderForm = (updateEditionMock: jest.Mock): void => {
-  render(
-    <TransliterationForm
-      transliteration={transliteration}
-      notes={notes}
-      introduction={introduction}
-      updateEdition={updateEditionMock}
-    />,
-  )
-}
-
 const setup = () => {
   jest.restoreAllMocks()
-  resetEditorMock()
   addEventListenerSpy = jest.spyOn(window, 'addEventListener')
   updateEdition = jest.fn()
   updateEdition.mockReturnValue(new Promise(() => undefined))
 
-  renderForm(updateEdition)
+  renderTransliterationForm(updateEdition)
 }
 
 it('Updates transliteration on change', async () => {
@@ -128,7 +112,7 @@ it('keeps error on editor input change', async () => {
   updateEdition = jest.fn()
   updateEdition.mockReturnValue(Promise.reject(requestError))
 
-  renderForm(updateEdition)
+  renderTransliterationForm(updateEdition)
 
   submitFormByTestId(screen, 'transliteration-form')
   await waitFor(() => expect(editorError()).toBe(requestError))
@@ -145,7 +129,7 @@ it('keeps error on template application', async () => {
   updateEdition = jest.fn()
   updateEdition.mockReturnValue(Promise.reject(requestError))
 
-  renderForm(updateEdition)
+  renderTransliterationForm(updateEdition)
 
   submitFormByTestId(screen, 'transliteration-form')
   await waitFor(() => expect(editorError()).toBe(requestError))
@@ -169,7 +153,7 @@ it('clears error after successful save', async () => {
     .mockReturnValueOnce(Promise.reject(requestError))
     .mockReturnValueOnce(Promise.resolve(successfulFragment))
 
-  renderForm(updateEdition)
+  renderTransliterationForm(updateEdition)
 
   submitFormByTestId(screen, 'transliteration-form')
   await waitFor(() => expect(editorError()).toBe(requestError))
@@ -192,7 +176,7 @@ it('does not set an error for a cancellation error', async () => {
   updateEdition = jest.fn()
   updateEdition.mockReturnValue(Promise.reject(cancellationError))
 
-  renderForm(updateEdition)
+  renderTransliterationForm(updateEdition)
 
   submitFormByTestId(screen, 'transliteration-form')
 
@@ -217,7 +201,7 @@ it('does not set an error when the promise reports cancellation', async () => {
   updateEdition = jest.fn()
   updateEdition.mockReturnValue(cancelledPromise as unknown as Promise<never>)
 
-  renderForm(updateEdition)
+  renderTransliterationForm(updateEdition)
 
   submitFormByTestId(screen, 'transliteration-form')
 

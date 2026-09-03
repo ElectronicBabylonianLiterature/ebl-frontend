@@ -1,10 +1,16 @@
 import React from 'react'
-import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { fireEvent, screen, waitFor } from '@testing-library/react'
 import { submitFormByTestId } from 'test-support/utils'
 import { Promise } from 'bluebird'
 
-import TransliterationForm from './TransliterationForm'
-import { editorErrorOf, resetEditorMock } from 'editor/Editor.testSupport'
+import {
+  editorError,
+  failingUpdate,
+  renderTransliterationForm,
+  saveButton,
+  transliterationField,
+  validationError,
+} from './TransliterationForm.testSupport'
 
 jest.mock('editor/SpecialCharactersHelp', () => {
   return function SpecialCharactersHelpMock() {
@@ -22,34 +28,9 @@ jest.mock('editor/Editor', () =>
   jest.requireActual('editor/Editor.testSupport'),
 )
 
-const transliteration = 'line1\nline2'
-const notes = 'notes'
-const introduction = 'introduction'
-
-const editorError = (): unknown => editorErrorOf('transliteration')
-const saveButton = (): HTMLElement =>
-  screen.getByRole('button', { name: 'Save' })
-const transliterationField = (): HTMLElement =>
-  screen.getByLabelText('transliteration')
-
-const renderForm = (updateEdition: jest.Mock): void => {
-  resetEditorMock()
-  render(
-    <TransliterationForm
-      transliteration={transliteration}
-      notes={notes}
-      introduction={introduction}
-      updateEdition={updateEdition}
-    />,
-  )
-}
-
-const failingUpdate = (error: Error): jest.Mock =>
-  jest.fn().mockReturnValue(Promise.reject(error))
-
-it('disables Save after a failed save attempt without further edits', async () => {
-  const requestError = new Error('invalid transliteration')
-  renderForm(failingUpdate(requestError))
+it('disables Save after a failed validation attempt without further edits', async () => {
+  const requestError = validationError()
+  renderTransliterationForm(failingUpdate(requestError))
 
   fireEvent.change(transliterationField(), {
     target: { value: 'line1\nbroken line' },
@@ -63,8 +44,8 @@ it('disables Save after a failed save attempt without further edits', async () =
   expect(saveButton()).toBeDisabled()
 })
 
-it('re-enables Save once the transliteration changes after a failed save', async () => {
-  renderForm(failingUpdate(new Error('invalid transliteration')))
+it('re-enables Save once the transliteration changes after a failed validation', async () => {
+  renderTransliterationForm(failingUpdate(validationError()))
 
   fireEvent.change(transliterationField(), {
     target: { value: 'line1\nbroken line' },
@@ -78,8 +59,8 @@ it('re-enables Save once the transliteration changes after a failed save', async
   expect(saveButton()).toBeEnabled()
 })
 
-it('disables Save again when reverting to the failed attempt', async () => {
-  renderForm(failingUpdate(new Error('invalid transliteration')))
+it('disables Save again when reverting to the failed validation attempt', async () => {
+  renderTransliterationForm(failingUpdate(validationError()))
 
   fireEvent.change(transliterationField(), {
     target: { value: 'line1\nbroken line' },
@@ -98,9 +79,29 @@ it('disables Save again when reverting to the failed attempt', async () => {
   expect(saveButton()).toBeDisabled()
 })
 
-it('still warns about unsaved changes after a failed save disables Save', async () => {
+it('keeps Save enabled after a non-validation failure so it can be retried', async () => {
+  const transientError = new Error('service unavailable')
+  const updateEdition = jest
+    .fn()
+    .mockReturnValueOnce(Promise.reject(transientError))
+    .mockReturnValueOnce(new Promise(() => undefined))
+  renderTransliterationForm(updateEdition)
+
+  fireEvent.change(transliterationField(), {
+    target: { value: 'line1\nline2\nline3' },
+  })
+  submitFormByTestId(screen, 'transliteration-form')
+  await waitFor(() => expect(editorError()).toBe(transientError))
+
+  expect(saveButton()).toBeEnabled()
+
+  submitFormByTestId(screen, 'transliteration-form')
+  await waitFor(() => expect(updateEdition).toHaveBeenCalledTimes(2))
+})
+
+it('still warns about unsaved changes after a failed validation disables Save', async () => {
   const addEventListenerSpy = jest.spyOn(window, 'addEventListener')
-  renderForm(failingUpdate(new Error('invalid transliteration')))
+  renderTransliterationForm(failingUpdate(validationError()))
 
   fireEvent.change(transliterationField(), {
     target: { value: 'line1\nbroken line' },
@@ -126,9 +127,9 @@ it('still warns about unsaved changes after a failed save disables Save', async 
 it('sends every field still differing from the saved version when retrying', async () => {
   const updateEdition = jest
     .fn()
-    .mockReturnValueOnce(Promise.reject(new Error('invalid transliteration')))
+    .mockReturnValueOnce(Promise.reject(validationError()))
     .mockReturnValueOnce(new Promise(() => undefined))
-  renderForm(updateEdition)
+  renderTransliterationForm(updateEdition)
 
   fireEvent.change(transliterationField(), {
     target: { value: 'broken atf' },
