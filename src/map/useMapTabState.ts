@@ -90,10 +90,13 @@ export default function useMapTabState(
   useMapSourceData(mapRef, filteredProvenances)
 
   const { setSelection } = experience
+  const { open: openPanel } = panel
   const onSelectPolygon = useCallback(
-    (polygonId: string) =>
-      setSelection({ type: 'excavation-area', polygonId }),
-    [setSelection],
+    (polygonId: string) => {
+      setSelection({ type: 'excavation-area', polygonId })
+      openPanel('inspector')
+    },
+    [setSelection, openPanel],
   )
   const selectedPolygonId =
     experience.selection?.type === 'excavation-area'

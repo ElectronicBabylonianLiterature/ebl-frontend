@@ -11,7 +11,8 @@ import MapExperienceHeader from 'map/MapExperienceHeader'
 import MapPresentationBar from 'map/MapPresentationBar'
 import MapSelectionPill from 'map/MapSelectionPill'
 import MapLayerControls from 'map/MapLayerControls'
-import MapSelectedAreaCard from 'map/MapSelectedAreaCard'
+import MapInspector from 'map/MapInspector'
+import { findMapSite } from 'map/mapSites'
 import type { MapPanelDefinition } from 'map/MapToolbar'
 import FindspotFilterInput from 'map/FindspotFilterInput'
 import { FindspotEmptyState, FindspotSearchList } from 'map/FindspotResults'
@@ -31,6 +32,28 @@ function LoadedMapTab({
   const isPresenting = experience.presentation.isActive
 
   const panels: readonly MapPanelDefinition[] = [
+    {
+      id: 'inspector',
+      label: 'Selected area',
+      isSupported: selectedPolygon !== null,
+      render: () =>
+        selectedPolygon ? (
+          <MapInspector
+            polygon={selectedPolygon}
+            summary={state.fragmentMapData.polygonSummaries.get(
+              selectedPolygon.polygonId,
+            )}
+            siteName={
+              findMapSite(selectedPolygon.siteId)?.siteName ??
+              selectedPolygon.siteId
+            }
+            status={state.fragmentMapData.status}
+            onClear={() => experience.setSelection(null)}
+          />
+        ) : (
+          <p>No excavation area is selected.</p>
+        ),
+    },
     {
       id: 'layers',
       label: 'Map layers',
@@ -80,10 +103,10 @@ function LoadedMapTab({
                   panel={panel}
                   drawerRef={state.drawerRef}
                 />
-                {selectedPolygon ? (
+                {selectedPolygon && panel.active !== 'inspector' ? (
                   <MapSelectionPill
                     label="Show selected area"
-                    onShow={() => panel.open('layers')}
+                    onShow={() => panel.open('inspector')}
                   />
                 ) : null}
               </>
@@ -93,17 +116,6 @@ function LoadedMapTab({
       </div>
       {isPresenting ? null : (
         <>
-          {selectedPolygon ? (
-            <MapSelectedAreaCard
-              polygonId={selectedPolygon.polygonId}
-              polygonName={selectedPolygon.name}
-              summary={state.fragmentMapData.polygonSummaries.get(
-                selectedPolygon.polygonId,
-              )}
-              status={state.fragmentMapData.status}
-              onClear={() => experience.setSelection(null)}
-            />
-          ) : null}
           <p id="findspot-map-description" className="map-tab__description">
             Matching fragment search links are available below the map.
           </p>
