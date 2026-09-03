@@ -16,6 +16,7 @@ const FILTER_PARAM = 'findspot'
 const AREAS_PARAM = 'areas'
 const SELECTION_PARAM = 'selected'
 const VISUALIZATION_PARAM = 'viz'
+const TERRAIN_PARAM = 'terrain'
 
 const DEFAULT_VISUALIZATION: MapVisualizationMode = 'mapped'
 
@@ -25,6 +26,7 @@ export interface MapUrlState {
   readonly showExcavationAreas: boolean
   readonly selection: MapSelection | null
   readonly visualization: MapVisualizationMode
+  readonly terrain: boolean
 }
 
 export const DEFAULT_MAP_URL_STATE: MapUrlState = {
@@ -33,6 +35,7 @@ export const DEFAULT_MAP_URL_STATE: MapUrlState = {
   showExcavationAreas: false,
   selection: null,
   visualization: DEFAULT_VISUALIZATION,
+  terrain: false,
 }
 
 function asString(value: string | (string | null)[] | null): string {
@@ -58,6 +61,7 @@ export function parseMapUrlState(search: string): MapUrlState {
     visualization: isMapVisualizationMode(visualization)
       ? visualization
       : DEFAULT_VISUALIZATION,
+    terrain: asString(query[TERRAIN_PARAM]) === '1',
   }
 }
 
@@ -72,6 +76,7 @@ export function serializeMapUrlState(state: MapUrlState): string {
         state.visualization === DEFAULT_VISUALIZATION
           ? undefined
           : state.visualization,
+      [TERRAIN_PARAM]: state.terrain ? '1' : undefined,
     },
     { skipEmptyString: true },
   )

@@ -17,6 +17,7 @@ import MapVisualizationControl from 'map/MapVisualizationControl'
 import MapMeasurePanel from 'map/MapMeasurePanel'
 import MapSpatialSearchPanel from 'map/MapSpatialSearchPanel'
 import MapExportPanel from 'map/MapExportPanel'
+import MapTerrainPanel from 'map/MapTerrainPanel'
 import { assessImageExport } from 'map/mapImageExportRights'
 import { findMapSite } from 'map/mapSites'
 import type { MapPanelDefinition } from 'map/MapToolbar'
@@ -110,6 +111,18 @@ function LoadedMapTab({
             exportedAt: new Date().toISOString(),
           })}
           imageExport={assessImageExport()}
+        />
+      ),
+    },
+    {
+      id: 'terrain',
+      label: 'Terrain',
+      isSupported: true,
+      render: () => (
+        <MapTerrainPanel
+          terrain={state.terrain}
+          isRequested={experience.terrain}
+          onChange={experience.setTerrain}
         />
       ),
     },

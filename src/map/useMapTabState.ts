@@ -23,6 +23,7 @@ import useMapMeasurement, {
 import useMapSpatialSearch, {
   type SpatialSearchController,
 } from 'map/useMapSpatialSearch'
+import useMapTerrain, { type MapTerrainResult } from 'map/useMapTerrain'
 import useMapLayoutEffects from 'map/useMapLayoutEffects'
 import { resetMapCamera } from 'map/mapCamera'
 import { filterProvenances } from 'map/findspotFilter'
@@ -54,6 +55,7 @@ export interface MapTabState {
   readonly measurement: MeasurementController
   readonly spatialSearch: SpatialSearchController
   readonly exportRows: readonly MapExportRow[]
+  readonly terrain: MapTerrainResult
   readonly resetView: () => void
 }
 
@@ -140,6 +142,8 @@ export default function useMapTabState(
   })
   useMapLayoutEffects(mapContainer, mapRef, drawerRef, panel.active)
 
+  const terrain = useMapTerrain(mapRef, experience.terrain)
+
   const measurement = useMapMeasurement(
     mapRef,
     panel.active === 'measurement',
@@ -183,6 +187,7 @@ export default function useMapTabState(
     measurement,
     spatialSearch,
     exportRows,
+    terrain,
     resetView,
   }
 }

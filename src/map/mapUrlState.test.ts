@@ -19,6 +19,7 @@ describe('map URL state', () => {
       showExcavationAreas: true,
       selection: { type: 'excavation-area', polygonId: 'assur-area-a' },
       visualization: 'count',
+      terrain: true,
     }
 
     expect(parseMapUrlState(serializeMapUrlState(state))).toEqual(state)
