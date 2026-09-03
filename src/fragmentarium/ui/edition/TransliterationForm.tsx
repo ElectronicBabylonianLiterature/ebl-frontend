@@ -22,6 +22,11 @@ import {
   TransliterationFormFields,
 } from 'fragmentarium/ui/edition/TransliterationFormControls'
 
+type EditedValues = Pick<FormData, (typeof editionFields)[number]>
+
+const isValidationError = (error: unknown): boolean =>
+  !_.isEmpty(_.get(error, 'data.errors'))
+
 type Props = {
   transliteration: string
   notes: string
@@ -77,6 +82,7 @@ const TransliterationForm: React.FC<Props> = ({
     disabled: false,
   })
   const [updatePromise, setUpdatePromise] = useState(Promise.resolve())
+  const [lastAttempt, setLastAttempt] = useState<EditedValues | null>(null)
   const initialValues = useMemo(
     () => ({ transliteration, notes, introduction }),
     [transliteration, notes, introduction],
@@ -103,12 +109,11 @@ const TransliterationForm: React.FC<Props> = ({
 
   const submit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    const updatedFields = _.pickBy(
-      _.pick(formData, editionFields),
-      isDirty,
-    ) as EditionFields
+    const editedValues = _.pick(formData, editionFields) as EditedValues
+    const updatedFields = _.pickBy(editedValues, isDirty) as EditionFields
     const promise = updateEdition(updatedFields)
       .then((fragment) => {
+        setLastAttempt(null)
         setFormData((prev) => ({
           ...prev,
           transliteration: fragment.atf,
@@ -126,6 +131,9 @@ const TransliterationForm: React.FC<Props> = ({
         if (isCancellationError) {
           return
         }
+        if (isValidationError(error)) {
+          setLastAttempt(editedValues)
+        }
         setFormData((prev) => ({ ...prev, error }))
       })
     setUpdatePromise(promise)
@@ -138,6 +146,10 @@ const TransliterationForm: React.FC<Props> = ({
       formData.introduction !== introduction,
     [formData, transliteration, notes, introduction],
   )
+
+  const matchesLastAttempt =
+    lastAttempt !== null &&
+    _.isEqual(_.pick(formData, editionFields), lastAttempt)
 
   useEffect(() => {
     return runBeforeUnloadEvent({ hasChanges, updatePromise })
@@ -174,7 +186,7 @@ const TransliterationForm: React.FC<Props> = ({
         <Col>
           <SubmitButton
             disabled={propsDisabled}
-            hasChanges={hasChanges()}
+            hasChanges={hasChanges() && !matchesLastAttempt}
             formId={formId}
           />
         </Col>
