@@ -3,6 +3,7 @@ import Bluebird from 'bluebird'
 import { render, type RenderResult } from '@testing-library/react'
 import { MemoryRouter, useLocation } from 'react-router-dom'
 import FragmentService from 'fragmentarium/application/FragmentService'
+import { FindspotService } from 'fragmentarium/application/FindspotService'
 import { ProvenanceRecord } from 'fragmentarium/domain/Provenance'
 import ErrorReporterContext, { type ErrorReporter } from 'ErrorReporterContext'
 import MapTab from 'map/MapTab'
@@ -50,11 +51,19 @@ function CurrentLocation(): JSX.Element {
   )
 }
 
-export function renderMapTab(fragmentService: FragmentService): RenderResult {
+export function renderMapTab(
+  fragmentService: FragmentService,
+  findspotService: FindspotService = {
+    fetchMapData: () => Bluebird.resolve([]),
+  } as unknown as FindspotService,
+): RenderResult {
   return render(
     <ErrorReporterContext.Provider value={mockErrorReporter}>
       <MemoryRouter>
-        <MapTab fragmentService={fragmentService} />
+        <MapTab
+          findspotService={findspotService}
+          fragmentService={fragmentService}
+        />
         <CurrentLocation />
       </MemoryRouter>
     </ErrorReporterContext.Provider>,

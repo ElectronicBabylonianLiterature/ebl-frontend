@@ -15,6 +15,21 @@ const findspotRepository = new ApiFindspotRepository(apiClient)
 const expectedFindspots = findspotFactory
   .buildList(3)
   .map((findspot) => fromFindspotDto(toFindspotDto(findspot)))
+const expectedMapData = [
+  {
+    findspotId: 123,
+    siteId: 'ASSUR',
+    siteName: 'Aššur',
+    polygonIds: ['assur-area-a-checksum'],
+    accessibleFragmentCount: 18,
+    locationPrecision: 'excavation-area' as const,
+    matchMethod: 'verified-source' as const,
+    sector: null,
+    area: 'Area A',
+    building: null,
+    room: null,
+  },
+]
 
 const testData: TestData<ApiFindspotRepository>[] = [
   new TestData(
@@ -24,6 +39,19 @@ const testData: TestData<ApiFindspotRepository>[] = [
     expectedFindspots,
     ['/findspots', false],
     Promise.resolve(expectedFindspots.map(toFindspotDto)),
+  ),
+  new TestData(
+    'fetchMapData',
+    ['ASSUR'],
+    apiClient.fetchJson,
+    expectedMapData,
+    ['/findspots/map-data?site=ASSUR', false],
+    Promise.resolve({
+      findspots: [
+        ...expectedMapData,
+        { ...expectedMapData[0], findspotId: 124, polygonIds: [] },
+      ],
+    }),
   ),
 ]
 
