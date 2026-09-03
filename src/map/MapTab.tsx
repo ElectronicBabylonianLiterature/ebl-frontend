@@ -8,8 +8,15 @@ import useFindspotMap from 'map/useFindspotMap'
 import useMapSourceData from 'map/useMapSourceData'
 import useProvenances from 'map/useProvenances'
 import useMapUrlState from 'map/useMapUrlState'
+import useExcavationAreas from 'map/useExcavationAreas'
+import useExcavationPolygonIndex from 'map/useExcavationPolygonIndex'
+import {
+  anySiteHasExcavationPolygons,
+  deriveMapSiteCapabilities,
+} from 'map/mapSiteCapabilities'
 import MapStage from 'map/MapStage'
 import MapShareLink from 'map/MapShareLink'
+import MapLayerControls from 'map/MapLayerControls'
 import FindspotFilterInput from 'map/FindspotFilterInput'
 import { FindspotEmptyState, FindspotSearchList } from 'map/FindspotResults'
 import { filterProvenances } from 'map/findspotFilter'
@@ -33,6 +40,13 @@ function LoadedMapTab({
     [update],
   )
 
+  const { index: polygonIndex } = useExcavationPolygonIndex()
+  const canShowExcavationAreas = useMemo(
+    () => anySiteHasExcavationPolygons(deriveMapSiteCapabilities(polygonIndex)),
+    [polygonIndex],
+  )
+  const showExcavationAreas = state.showExcavationAreas && canShowExcavationAreas
+
   const filteredProvenances = useMemo(
     () => filterProvenances(provenances, filter),
     [provenances, filter],
@@ -46,6 +60,7 @@ function LoadedMapTab({
     handleMapBackgroundErrorChange,
   )
   useMapSourceData(mapRef, filteredProvenances)
+  useExcavationAreas(mapRef, showExcavationAreas)
 
   return (
     <div className="map-tab">
@@ -57,6 +72,13 @@ function LoadedMapTab({
         />
         <MapShareLink />
       </div>
+      <MapLayerControls
+        showExcavationAreas={showExcavationAreas}
+        canShowExcavationAreas={canShowExcavationAreas}
+        onShowExcavationAreasChange={(isVisible) =>
+          update({ showExcavationAreas: isVisible })
+        }
+      />
       <p id="findspot-map-description" className="map-tab__description">
         Filter findspots by name. Matching fragment search links are available
         below the map.
