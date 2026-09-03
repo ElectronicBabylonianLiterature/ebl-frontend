@@ -1,0 +1,14 @@
+[
+  {
+    "findspotId": 9001,
+    "polygonIds": [
+      "assur-aa1i-1111aaaa1111"
+    ]
+  },
+  {
+    "findspotId": 9002,
+    "polygonIds": [
+      "assur-aa2i-2222bbbb2222"
+    ]
+  }
+]
