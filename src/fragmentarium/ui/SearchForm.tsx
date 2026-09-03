@@ -46,6 +46,7 @@ interface State {
   site: string | null
   museum: string | null
   dossier: string | null
+  findspotId: number | string | null
 }
 
 type SearchFormValue =
@@ -123,6 +124,7 @@ class SearchForm extends Component<SearchFormProps, State> {
       project: fragmentQuery.project || null,
       museum: fragmentQuery.museum || null,
       dossier: fragmentQuery.dossier || null,
+      findspotId: fragmentQuery.findspotId || null,
     }
   }
 
@@ -176,6 +178,7 @@ class SearchForm extends Component<SearchFormProps, State> {
         project: state.project,
         museum: state.museum,
         dossier: state.dossier,
+        findspotId: state.findspotId,
       },
       (value) => !value,
     )
