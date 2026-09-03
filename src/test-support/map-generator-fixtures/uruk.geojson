@@ -1,0 +1,1 @@
+{"type": "FeatureCollection", "features": [{"type": "Feature", "id": "uruk-1", "properties": {"id": "uruk-1", "siteId": "uruk", "siteName": "Uruk", "name": "Area 1", "locationType": "excavation_area"}, "geometry": {"type": "Polygon", "coordinates": [[[45.64, 32.0], [45.641, 32.0], [45.641, 32.001], [45.64, 32.001], [45.64, 32.0]]]}}]}
