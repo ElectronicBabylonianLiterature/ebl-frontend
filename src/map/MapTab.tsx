@@ -16,6 +16,8 @@ import MapLegend from 'map/MapLegend'
 import MapVisualizationControl from 'map/MapVisualizationControl'
 import MapMeasurePanel from 'map/MapMeasurePanel'
 import MapSpatialSearchPanel from 'map/MapSpatialSearchPanel'
+import MapExportPanel from 'map/MapExportPanel'
+import { assessImageExport } from 'map/mapImageExportRights'
 import { findMapSite } from 'map/mapSites'
 import type { MapPanelDefinition } from 'map/MapToolbar'
 import FindspotFilterInput from 'map/FindspotFilterInput'
@@ -52,6 +54,8 @@ function LoadedMapTab({
               selectedPolygon.siteId
             }
             status={state.fragmentMapData.status}
+            visualizationMode={state.visualization.effectiveMode}
+            siteFilter={experience.filter}
             onClear={() => experience.setSelection(null)}
           />
         ) : (
@@ -89,6 +93,23 @@ function LoadedMapTab({
           onSearchViewport={state.spatialSearch.searchViewport}
           onStartDrawing={state.spatialSearch.startDrawing}
           onClear={state.spatialSearch.clear}
+        />
+      ),
+    },
+    {
+      id: 'export',
+      label: 'Export',
+      isSupported: state.canShowExcavationAreas,
+      render: () => (
+        <MapExportPanel
+          rows={state.exportRows}
+          buildContext={() => ({
+            visualization: state.visualization.effectiveMode,
+            siteFilter: experience.filter,
+            shareUrl: window.location.href,
+            exportedAt: new Date().toISOString(),
+          })}
+          imageExport={assessImageExport()}
         />
       ),
     },
