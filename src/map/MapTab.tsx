@@ -15,6 +15,7 @@ import MapInspector from 'map/MapInspector'
 import MapLegend from 'map/MapLegend'
 import MapVisualizationControl from 'map/MapVisualizationControl'
 import MapMeasurePanel from 'map/MapMeasurePanel'
+import MapSpatialSearchPanel from 'map/MapSpatialSearchPanel'
 import { findMapSite } from 'map/mapSites'
 import type { MapPanelDefinition } from 'map/MapToolbar'
 import FindspotFilterInput from 'map/FindspotFilterInput'
@@ -75,6 +76,21 @@ function LoadedMapTab({
       label: 'Measure',
       isSupported: true,
       render: () => <MapMeasurePanel measurement={state.measurement} />,
+    },
+    {
+      id: 'spatial-search',
+      label: 'Search area',
+      isSupported: state.canShowExcavationAreas,
+      render: () => (
+        <MapSpatialSearchPanel
+          shape={state.spatialSearch.shape}
+          result={state.spatialSearch.result}
+          isDrawing={state.spatialSearch.isDrawing}
+          onSearchViewport={state.spatialSearch.searchViewport}
+          onStartDrawing={state.spatialSearch.startDrawing}
+          onClear={state.spatialSearch.clear}
+        />
+      ),
     },
     {
       id: 'layers',
