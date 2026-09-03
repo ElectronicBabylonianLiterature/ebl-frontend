@@ -20,6 +20,9 @@ import useMapVisualization, {
 import useMapMeasurement, {
   type MeasurementController,
 } from 'map/useMapMeasurement'
+import useMapSpatialSearch, {
+  type SpatialSearchController,
+} from 'map/useMapSpatialSearch'
 import useMapLayoutEffects from 'map/useMapLayoutEffects'
 import { resetMapCamera } from 'map/mapCamera'
 import { filterProvenances } from 'map/findspotFilter'
@@ -45,6 +48,7 @@ export interface MapTabState {
   readonly selectedPolygon: ExcavationPolygon | null
   readonly visualization: MapVisualization
   readonly measurement: MeasurementController
+  readonly spatialSearch: SpatialSearchController
   readonly resetView: () => void
 }
 
@@ -129,6 +133,12 @@ export default function useMapTabState(
     mapRef,
     panel.active === 'measurement',
   )
+  const spatialSearch = useMapSpatialSearch(
+    mapRef,
+    panel.active === 'spatial-search',
+    polygonIndex,
+    fragmentMapData.polygonSummaries,
+  )
 
   const resetView = useCallback(() => {
     experience.resetState()
@@ -151,6 +161,7 @@ export default function useMapTabState(
     selectedPolygon: findPolygon(polygonIndex, selectedPolygonId),
     visualization,
     measurement,
+    spatialSearch,
     resetView,
   }
 }
