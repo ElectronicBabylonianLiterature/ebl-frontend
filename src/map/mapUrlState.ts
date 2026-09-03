@@ -8,6 +8,12 @@ import {
   type MapVisualizationMode,
   isMapVisualizationMode,
 } from 'map/mapChoroplethScale'
+import {
+  type Map3dState,
+  DEFAULT_MAP_3D_STATE,
+  parseMap3dState,
+  serializeMap3dState,
+} from 'map/map3dState'
 
 export const MAP_URL_STATE_VERSION = 1
 
@@ -17,6 +23,7 @@ const AREAS_PARAM = 'areas'
 const SELECTION_PARAM = 'selected'
 const VISUALIZATION_PARAM = 'viz'
 const TERRAIN_PARAM = 'terrain'
+const THREE_D_PARAM = 'td'
 
 const DEFAULT_VISUALIZATION: MapVisualizationMode = 'mapped'
 
@@ -27,6 +34,7 @@ export interface MapUrlState {
   readonly selection: MapSelection | null
   readonly visualization: MapVisualizationMode
   readonly terrain: boolean
+  readonly map3d: Map3dState
 }
 
 export const DEFAULT_MAP_URL_STATE: MapUrlState = {
@@ -36,6 +44,7 @@ export const DEFAULT_MAP_URL_STATE: MapUrlState = {
   selection: null,
   visualization: DEFAULT_VISUALIZATION,
   terrain: false,
+  map3d: DEFAULT_MAP_3D_STATE,
 }
 
 function asString(value: string | (string | null)[] | null): string {
@@ -62,6 +71,7 @@ export function parseMapUrlState(search: string): MapUrlState {
       ? visualization
       : DEFAULT_VISUALIZATION,
     terrain: asString(query[TERRAIN_PARAM]) === '1',
+    map3d: parseMap3dState(asString(query[THREE_D_PARAM]) || null),
   }
 }
 
@@ -77,6 +87,7 @@ export function serializeMapUrlState(state: MapUrlState): string {
           ? undefined
           : state.visualization,
       [TERRAIN_PARAM]: state.terrain ? '1' : undefined,
+      [THREE_D_PARAM]: serializeMap3dState(state.map3d),
     },
     { skipEmptyString: true },
   )

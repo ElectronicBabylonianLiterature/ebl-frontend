@@ -6,6 +6,7 @@ export type MapPanelId =
   | 'spatial-search'
   | 'export'
   | 'terrain'
+  | 'three-d'
 
 export type ActiveMapPanel = MapPanelId | null
 
