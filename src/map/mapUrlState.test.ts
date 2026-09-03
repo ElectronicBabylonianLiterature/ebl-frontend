@@ -20,6 +20,13 @@ describe('map URL state', () => {
       selection: { type: 'excavation-area', polygonId: 'assur-area-a' },
       visualization: 'count',
       terrain: true,
+      map3d: {
+        isExtrusionEnabled: true,
+        extrusionMetric: 'mapped-findspots',
+        extrusionScale: 1.5,
+        terrainExaggeration: 1.2,
+        hillshadeVisible: false,
+      },
     }
 
     expect(parseMapUrlState(serializeMapUrlState(state))).toEqual(state)

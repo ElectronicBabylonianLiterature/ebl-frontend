@@ -24,6 +24,12 @@ import useMapSpatialSearch, {
   type SpatialSearchController,
 } from 'map/useMapSpatialSearch'
 import useMapTerrain, { type MapTerrainResult } from 'map/useMapTerrain'
+import useMap3d, { type Map3d } from 'map/useMap3d'
+import useExcavationExtrusion from 'map/useExcavationExtrusion'
+import useMapElevationProfile, {
+  type MapElevationProfile,
+} from 'map/useMapElevationProfile'
+import { findMapSite } from 'map/mapSites'
 import useMapLayoutEffects from 'map/useMapLayoutEffects'
 import { resetMapCamera } from 'map/mapCamera'
 import { filterProvenances } from 'map/findspotFilter'
@@ -56,6 +62,8 @@ export interface MapTabState {
   readonly spatialSearch: SpatialSearchController
   readonly exportRows: readonly MapExportRow[]
   readonly terrain: MapTerrainResult
+  readonly threeD: Map3d
+  readonly elevation: MapElevationProfile
   readonly resetView: () => void
 }
 
@@ -144,6 +152,30 @@ export default function useMapTabState(
 
   const terrain = useMapTerrain(mapRef, experience.terrain)
 
+  const allPolygons = useMemo(
+    () => allExcavationPolygons(polygonIndex),
+    [polygonIndex],
+  )
+  const selectedPolygon = findPolygon(polygonIndex, selectedPolygonId)
+  const { setMap3d } = experience
+  const threeD = useMap3d({
+    mapRef,
+    state: experience.map3d,
+    setState: setMap3d,
+    visualization,
+    terrain,
+    siteName:
+      findMapSite(allPolygons[0]?.siteId ?? '')?.siteName ?? 'the map',
+    provenances: provenances ?? [],
+    excavationPolygons: allPolygons,
+    selectedPolygon,
+  })
+  useExcavationExtrusion(mapRef, {
+    isEnabled: showExcavationAreas && experience.map3d.isExtrusionEnabled,
+    paint: visualization.paint,
+    scale: threeD.panel.scale,
+  })
+
   const measurement = useMapMeasurement(
     mapRef,
     panel.active === 'measurement',
@@ -153,6 +185,15 @@ export default function useMapTabState(
     panel.active === 'spatial-search',
     polygonIndex,
     fragmentMapData.polygonSummaries,
+  )
+
+  const elevation = useMapElevationProfile(
+    mapRef,
+    panel.active === 'measurement' && measurement.mode === 'distance'
+      ? measurement.positions
+      : [],
+    terrain.isEnabled,
+    experience.map3d.terrainExaggeration,
   )
 
   const exportRows = useMemo(
@@ -182,12 +223,14 @@ export default function useMapTabState(
     canShowExcavationAreas,
     showExcavationAreas,
     fragmentMapData,
-    selectedPolygon: findPolygon(polygonIndex, selectedPolygonId),
+    selectedPolygon,
     visualization,
     measurement,
     spatialSearch,
     exportRows,
     terrain,
+    threeD,
+    elevation,
     resetView,
   }
 }

@@ -5,22 +5,14 @@ import FragmentService from 'fragmentarium/application/FragmentService'
 import { FindspotService } from 'fragmentarium/application/FindspotService'
 import Spinner from 'common/ui/Spinner'
 import useMapTabState from 'map/useMapTabState'
+import mapPanelDefinitions from 'map/mapPanelDefinitions'
 import MapStage from 'map/MapStage'
 import MapPanelDock from 'map/MapPanelDock'
 import MapExperienceHeader from 'map/MapExperienceHeader'
 import MapPresentationBar from 'map/MapPresentationBar'
 import MapSelectionPill from 'map/MapSelectionPill'
-import MapLayerControls from 'map/MapLayerControls'
-import MapInspector from 'map/MapInspector'
 import MapLegend from 'map/MapLegend'
-import MapVisualizationControl from 'map/MapVisualizationControl'
-import MapMeasurePanel from 'map/MapMeasurePanel'
-import MapSpatialSearchPanel from 'map/MapSpatialSearchPanel'
-import MapExportPanel from 'map/MapExportPanel'
-import MapTerrainPanel from 'map/MapTerrainPanel'
-import { assessImageExport } from 'map/mapImageExportRights'
-import { findMapSite } from 'map/mapSites'
-import type { MapPanelDefinition } from 'map/MapToolbar'
+import Map3dTourControls from 'map/Map3dTourControls'
 import FindspotFilterInput from 'map/FindspotFilterInput'
 import { FindspotEmptyState, FindspotSearchList } from 'map/FindspotResults'
 import 'map/MapTab.sass'
@@ -38,107 +30,7 @@ function LoadedMapTab({
   const { experience, panel, filteredProvenances, selectedPolygon } = state
   const isPresenting = experience.presentation.isActive
 
-  const panels: readonly MapPanelDefinition[] = [
-    {
-      id: 'inspector',
-      label: 'Selected area',
-      isSupported: selectedPolygon !== null,
-      render: () =>
-        selectedPolygon ? (
-          <MapInspector
-            polygon={selectedPolygon}
-            summary={state.fragmentMapData.polygonSummaries.get(
-              selectedPolygon.polygonId,
-            )}
-            siteName={
-              findMapSite(selectedPolygon.siteId)?.siteName ??
-              selectedPolygon.siteId
-            }
-            status={state.fragmentMapData.status}
-            visualizationMode={state.visualization.effectiveMode}
-            siteFilter={experience.filter}
-            onClear={() => experience.setSelection(null)}
-          />
-        ) : (
-          <p>No excavation area is selected.</p>
-        ),
-    },
-    {
-      id: 'visualization',
-      label: 'Visualization',
-      isSupported: state.canShowExcavationAreas,
-      render: () => (
-        <MapVisualizationControl
-          mode={state.visualization.effectiveMode}
-          legend={state.visualization.legend}
-          isDensityAvailable={state.visualization.isDensityAvailable}
-          onModeChange={experience.setVisualization}
-        />
-      ),
-    },
-    {
-      id: 'measurement',
-      label: 'Measure',
-      isSupported: true,
-      render: () => <MapMeasurePanel measurement={state.measurement} />,
-    },
-    {
-      id: 'spatial-search',
-      label: 'Search area',
-      isSupported: state.canShowExcavationAreas,
-      render: () => (
-        <MapSpatialSearchPanel
-          shape={state.spatialSearch.shape}
-          result={state.spatialSearch.result}
-          isDrawing={state.spatialSearch.isDrawing}
-          onSearchViewport={state.spatialSearch.searchViewport}
-          onStartDrawing={state.spatialSearch.startDrawing}
-          onClear={state.spatialSearch.clear}
-        />
-      ),
-    },
-    {
-      id: 'export',
-      label: 'Export',
-      isSupported: state.canShowExcavationAreas,
-      render: () => (
-        <MapExportPanel
-          rows={state.exportRows}
-          buildContext={() => ({
-            visualization: state.visualization.effectiveMode,
-            siteFilter: experience.filter,
-            shareUrl: window.location.href,
-            exportedAt: new Date().toISOString(),
-          })}
-          imageExport={assessImageExport()}
-        />
-      ),
-    },
-    {
-      id: 'terrain',
-      label: 'Terrain',
-      isSupported: true,
-      render: () => (
-        <MapTerrainPanel
-          terrain={state.terrain}
-          isRequested={experience.terrain}
-          onChange={experience.setTerrain}
-        />
-      ),
-    },
-    {
-      id: 'layers',
-      label: 'Map layers',
-      isSupported: true,
-      render: () => (
-        <MapLayerControls
-          showExcavationAreas={state.showExcavationAreas}
-          canShowExcavationAreas={state.canShowExcavationAreas}
-          onShowExcavationAreasChange={experience.setShowExcavationAreas}
-        />
-      ),
-    },
-  ]
+  const panels = mapPanelDefinitions(state)
 
   return (
     <div
@@ -183,6 +75,9 @@ function LoadedMapTab({
                   panel={panel}
                   drawerRef={state.drawerRef}
                 />
+                {state.threeD.tour.canStart ? (
+                  <Map3dTourControls tour={state.threeD.tour} isCompact />
+                ) : null}
                 {selectedPolygon && panel.active !== 'inspector' ? (
                   <MapSelectionPill
                     label="Show selected area"

@@ -18,6 +18,7 @@ export interface MeasurementController {
   readonly mode: MeasurementMode
   readonly units: MeasurementUnits
   readonly measurement: Measurement
+  readonly positions: readonly Position[]
   readonly pointCount: number
   readonly setMode: (mode: MeasurementMode) => void
   readonly setUnits: (units: MeasurementUnits) => void
@@ -79,6 +80,7 @@ export default function useMapMeasurement(
     mode,
     units,
     measurement: measure(mode, positions, units),
+    positions,
     pointCount: positions.length,
     setMode: useCallback((next: MeasurementMode) => {
       setMode(next)
