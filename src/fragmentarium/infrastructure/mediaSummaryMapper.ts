@@ -20,6 +20,7 @@ import {
 export interface NormalizedMediaSummaryCompatibility {
   readonly mediaSummary: MediaSummary | null
   readonly legacyThumbnailPath: string | null
+  readonly newSummaryIsMalformed: boolean
 }
 
 interface MediaSummaryNormalizationResult {
@@ -27,7 +28,7 @@ interface MediaSummaryNormalizationResult {
   readonly hasCriticalError: boolean
 }
 
-function normalizeMediaTypes(values: readonly unknown[]): readonly MediaType[] {
+function normalizeMediaTypes(values: readonly unknown[]): MediaType[] {
   const mediaTypes = values.filter(isMediaType)
   return Array.from(new Set(mediaTypes))
 }
@@ -72,7 +73,7 @@ function normalizeMediaSummaryWithDiagnostics(
   }
 
   const normalizedPrimary = normalizeMediaSummaryPrimaryInternal(primary)
-  const normalizedTypes = Array.from(normalizeMediaTypes(types))
+  const normalizedTypes = normalizeMediaTypes(types)
   if (normalizedPrimary && !normalizedTypes.includes(normalizedPrimary.type)) {
     normalizedTypes.push(normalizedPrimary.type)
   }
@@ -134,7 +135,12 @@ export function normalizeLegacyMediaSummary(
   return {
     mediaSummary: hasPhoto === true ? createLegacyPhotoSummary() : null,
     legacyThumbnailPath: normalizeLegacyThumbnailPath(thumbnailPath),
+    newSummaryIsMalformed: false,
   }
+}
+
+function wasNewSummaryProvided(newSummaryValue: unknown): boolean {
+  return newSummaryValue !== undefined && newSummaryValue !== null
 }
 
 export function normalizeCompatibleMediaSummary(
@@ -149,6 +155,10 @@ export function normalizeCompatibleMediaSummary(
     compatibility?.thumbnailPath,
   )
 
+  const newSummaryIsMalformed =
+    wasNewSummaryProvided(compatibility?.mediaSummary) &&
+    normalizedNewSummary.hasCriticalError
+
   if (
     normalizedNewSummary.mediaSummary &&
     !normalizedNewSummary.hasCriticalError
@@ -157,7 +167,7 @@ export function normalizeCompatibleMediaSummary(
       normalizedNewSummary.mediaSummary.count === 0 &&
       normalizedLegacySummary.mediaSummary
     ) {
-      return normalizedLegacySummary
+      return { ...normalizedLegacySummary, newSummaryIsMalformed }
     }
 
     return {
@@ -167,13 +177,15 @@ export function normalizeCompatibleMediaSummary(
       )
         ? null
         : normalizedLegacySummary.legacyThumbnailPath,
+      newSummaryIsMalformed,
     }
   }
 
   return normalizedLegacySummary.mediaSummary
-    ? normalizedLegacySummary
+    ? { ...normalizedLegacySummary, newSummaryIsMalformed }
     : {
         mediaSummary: null,
         legacyThumbnailPath: normalizedLegacySummary.legacyThumbnailPath,
+        newSummaryIsMalformed,
       }
 }

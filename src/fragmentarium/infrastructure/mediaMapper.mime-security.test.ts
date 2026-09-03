@@ -1,10 +1,15 @@
 import { normalizeMediaResource } from 'fragmentarium/infrastructure/mediaMapper'
 import { RasterMediaMimeTypes } from 'fragmentarium/domain/media'
 import type { MediaType } from 'fragmentarium/domain/media'
+import {
+  fragmentMediaDisplayUrl,
+  fragmentMediaOriginalUrl,
+  fragmentMediaThumbnailUrl,
+} from 'fragmentarium/infrastructure/mediaUrls'
 
-const originalUrl = '/fragments/K.1/media/media-id/file'
-const displayUrl = '/fragments/K.1/media/media-id/display'
-const thumbnailUrl = '/fragments/K.1/media/media-id/thumbnail/small'
+const originalUrl = fragmentMediaOriginalUrl('K.1', 'media-id')
+const displayUrl = fragmentMediaDisplayUrl('K.1', 'media-id')
+const thumbnailUrl = fragmentMediaThumbnailUrl('K.1', 'media-id', 'small')
 
 function resourceWith(
   type: MediaType,

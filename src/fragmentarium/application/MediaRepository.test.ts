@@ -1,37 +1,39 @@
 import MediaRepository from 'fragmentarium/application/MediaRepository'
-import { MediaResource } from 'fragmentarium/domain/media'
+import { normalizeFragmentMediaResponse } from 'fragmentarium/infrastructure/mediaMapper'
 import { fragmentMediaOriginalUrl } from 'fragmentarium/infrastructure/mediaUrls'
 
-const media: readonly MediaResource[] = [
-  {
-    id: 'photo-id',
-    type: 'PHOTO',
-    sortOrder: 0,
-    isPrimary: true,
-    references: [],
-    representations: {
-      original: {
-        url: fragmentMediaOriginalUrl('K.1', 'photo-id'),
-        mimeType: 'image/jpeg',
+const media = normalizeFragmentMediaResponse({
+  media: [
+    {
+      id: 'photo-id',
+      type: 'PHOTO',
+      sortOrder: 0,
+      isPrimary: true,
+      references: [],
+      representations: {
+        original: {
+          url: fragmentMediaOriginalUrl('K.1', 'photo-id'),
+          mimeType: 'image/jpeg',
+        },
+        thumbnails: {},
       },
-      thumbnails: {},
     },
-  },
-  {
-    id: 'copy-id',
-    type: 'COPY',
-    sortOrder: 1,
-    isPrimary: false,
-    references: [],
-    representations: {
-      original: {
-        url: fragmentMediaOriginalUrl('K.1', 'copy-id'),
-        mimeType: 'image/svg+xml',
+    {
+      id: 'copy-id',
+      type: 'COPY',
+      sortOrder: 1,
+      isPrimary: false,
+      references: [],
+      representations: {
+        original: {
+          url: fragmentMediaOriginalUrl('K.1', 'copy-id'),
+          mimeType: 'image/svg+xml',
+        },
+        thumbnails: {},
       },
-      thumbnails: {},
     },
-  },
-]
+  ],
+}).media
 
 function createRepository(
   record: (fragmentNumber: string, signal?: AbortSignal) => void,

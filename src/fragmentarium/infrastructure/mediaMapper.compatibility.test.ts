@@ -1,7 +1,4 @@
-import {
-  normalizeCompatibleMediaSummary,
-  normalizeLegacyMediaSummary,
-} from 'fragmentarium/infrastructure/mediaMapper'
+import { normalizeCompatibleMediaSummary } from 'fragmentarium/infrastructure/mediaMapper'
 
 describe('compatible media summary normalization', () => {
   test('uses a valid new summary without legacy fallback', () => {
@@ -40,18 +37,7 @@ describe('compatible media summary normalization', () => {
         },
       },
       legacyThumbnailPath: null,
-    })
-  })
-
-  test('normalizes a legacy photo with a thumbnail path', () => {
-    expect(
-      normalizeLegacyMediaSummary(true, '/fragments/K.1/thumbnail/small'),
-    ).toEqual({
-      mediaSummary: {
-        count: 1,
-        types: ['PHOTO'],
-      },
-      legacyThumbnailPath: '/fragments/K.1/thumbnail/small',
+      newSummaryIsMalformed: false,
     })
   })
 
@@ -79,46 +65,11 @@ describe('compatible media summary normalization', () => {
         },
       },
       legacyThumbnailPath: '/legacy-thumbnail',
+      newSummaryIsMalformed: false,
     })
   })
 
-  test('normalizes a legacy photo without a thumbnail path', () => {
-    expect(normalizeLegacyMediaSummary(true)).toEqual({
-      mediaSummary: {
-        count: 1,
-        types: ['PHOTO'],
-      },
-      legacyThumbnailPath: null,
-    })
-  })
-
-  test('normalizes a legacy photo with an explicit null thumbnail path', () => {
-    expect(normalizeLegacyMediaSummary(true, null)).toEqual({
-      mediaSummary: {
-        count: 1,
-        types: ['PHOTO'],
-      },
-      legacyThumbnailPath: null,
-    })
-  })
-
-  test('treats thumbnailPath as an unconditional route hint, not gated by hasPhoto', () => {
-    expect(
-      normalizeLegacyMediaSummary(false, '/fragments/K.1/thumbnail/small'),
-    ).toEqual({
-      mediaSummary: null,
-      legacyThumbnailPath: '/fragments/K.1/thumbnail/small',
-    })
-  })
-
-  test('returns null values for legacy no-photo input without a path', () => {
-    expect(normalizeLegacyMediaSummary(false)).toEqual({
-      mediaSummary: null,
-      legacyThumbnailPath: null,
-    })
-  })
-
-  test('falls back to legacy when the new summary is malformed', () => {
+  test('falls back to legacy and flags a malformed new summary', () => {
     expect(
       normalizeCompatibleMediaSummary({
         mediaSummary: {
@@ -134,10 +85,11 @@ describe('compatible media summary normalization', () => {
         types: ['PHOTO'],
       },
       legacyThumbnailPath: '/legacy-thumbnail',
+      newSummaryIsMalformed: true,
     })
   })
 
-  test('falls back to legacy when a positive count has no usable type or primary', () => {
+  test('flags a positive count with no usable type or primary as malformed', () => {
     expect(
       normalizeCompatibleMediaSummary({
         mediaSummary: {
@@ -153,10 +105,11 @@ describe('compatible media summary normalization', () => {
         types: ['PHOTO'],
       },
       legacyThumbnailPath: '/legacy-thumbnail',
+      newSummaryIsMalformed: true,
     })
   })
 
-  test('falls back to legacy when media types exceed the item count', () => {
+  test('flags media types exceeding the item count as malformed', () => {
     expect(
       normalizeCompatibleMediaSummary({
         mediaSummary: { count: 1, types: ['PHOTO', 'COPY'] },
@@ -166,10 +119,11 @@ describe('compatible media summary normalization', () => {
     ).toEqual({
       mediaSummary: { count: 1, types: ['PHOTO'] },
       legacyThumbnailPath: '/legacy-thumbnail',
+      newSummaryIsMalformed: true,
     })
   })
 
-  test('keeps legacy thumbnail path without synthesizing media for malformed hasPhoto', () => {
+  test('does not flag an absent new summary as malformed', () => {
     expect(
       normalizeCompatibleMediaSummary({
         mediaSummary: null,
@@ -179,6 +133,7 @@ describe('compatible media summary normalization', () => {
     ).toEqual({
       mediaSummary: null,
       legacyThumbnailPath: '/legacy-thumbnail',
+      newSummaryIsMalformed: false,
     })
   })
 
@@ -195,6 +150,7 @@ describe('compatible media summary normalization', () => {
     ).toEqual({
       mediaSummary: null,
       legacyThumbnailPath: null,
+      newSummaryIsMalformed: true,
     })
   })
 
@@ -208,6 +164,7 @@ describe('compatible media summary normalization', () => {
     ).toEqual({
       mediaSummary: null,
       legacyThumbnailPath: '/fragments/K.1/thumbnail/small',
+      newSummaryIsMalformed: true,
     })
   })
 
@@ -221,6 +178,7 @@ describe('compatible media summary normalization', () => {
     ).toEqual({
       mediaSummary: { count: 1, types: ['PHOTO'] },
       legacyThumbnailPath: '/fragments/K.1/thumbnail/small',
+      newSummaryIsMalformed: false,
     })
   })
 
@@ -234,6 +192,7 @@ describe('compatible media summary normalization', () => {
     ).toEqual({
       mediaSummary: { count: 0, types: [] },
       legacyThumbnailPath: '/fragments/K.1/thumbnail/small',
+      newSummaryIsMalformed: false,
     })
   })
 })

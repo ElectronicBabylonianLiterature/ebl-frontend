@@ -115,6 +115,7 @@ describe('unsafe legacy thumbnail paths', () => {
     ).toEqual({
       mediaSummary: { count: 1, types: ['PHOTO'] },
       legacyThumbnailPath: '/fragments/K.1/thumbnail/small',
+      newSummaryIsMalformed: false,
     })
   })
 
@@ -129,6 +130,7 @@ describe('unsafe legacy thumbnail paths', () => {
       ).toEqual({
         mediaSummary: { count: 1, types: ['PHOTO'] },
         legacyThumbnailPath: null,
+        newSummaryIsMalformed: false,
       })
     },
   )
