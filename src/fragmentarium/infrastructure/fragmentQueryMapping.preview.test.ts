@@ -45,6 +45,18 @@ describe('preview line cap', () => {
     expect(item.fragment?.text.lines).toHaveLength(0)
   })
 
+  it('accepts the backend source index on a preview line', () => {
+    const line = {
+      ...previewLine(3, [word('kur', [namedSign('Reading', 'kur')])]),
+    }
+    expect(line.index).toEqual(2)
+
+    const item = summaryItem([line], 4)
+
+    expect(item.cardSummary).toEqual({ type: 'FragmentCardSummary' })
+    expect(item.fragment?.text.lines).toHaveLength(1)
+  })
+
   it('classifies unstructured legacy preview lines as unsupported', () => {
     const item = summaryItem(
       [{ number: 1, prefix: '1.', text: 'kur', tokens: [] }],

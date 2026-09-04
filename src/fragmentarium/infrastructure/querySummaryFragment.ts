@@ -28,7 +28,9 @@ export type QueryMuseumNumberDto = {
   suffix: string
 }
 
-export type FragmentQueryPreviewLineDto = TextLineDto
+export type FragmentQueryPreviewLineDto = TextLineDto & {
+  readonly index?: number
+}
 
 export type FragmentQueryPreviewDto = {
   lines: readonly FragmentQueryPreviewLineDto[]

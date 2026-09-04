@@ -2,6 +2,7 @@ import { TextLineDto } from 'transliteration/domain/text-line'
 import { NamedSign, Token, Word } from 'transliteration/domain/token'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import { createTransliteration } from 'transliteration/application/dtos'
+import { FragmentQueryPreviewLineDto } from 'fragmentarium/infrastructure/fragmentQueryMapping'
 
 export const SUMMARY_LEMMA_ID = 'testWordId'
 
@@ -81,7 +82,7 @@ export function languageShift(language: string): Token {
 export function previewLine(
   number: number,
   content: readonly Token[],
-): TextLineDto {
+): FragmentQueryPreviewLineDto {
   return {
     type: 'TextLine',
     prefix: `${number}.`,
@@ -93,6 +94,7 @@ export function previewLine(
       type: 'LineNumber',
     },
     content,
+    index: number - 1,
   }
 }
 
@@ -104,7 +106,7 @@ export const readingWord = word(
 
 export const secondWord = word('ša', [namedSign('Reading', 'ša')])
 
-export const summaryPreviewLines: readonly TextLineDto[] = [
+export const summaryPreviewLines: readonly FragmentQueryPreviewLineDto[] = [
   previewLine(1, [readingWord, secondWord]),
   previewLine(2, [word('ana', [namedSign('Reading', 'ana')])]),
 ]
