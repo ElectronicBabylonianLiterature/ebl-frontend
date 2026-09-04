@@ -24,6 +24,13 @@ it('Has alt text', async () => {
   )
 })
 
+it('Keeps the existing photo action toolbar', async () => {
+  setup()
+  expect(
+    await screen.findByRole('button', { name: 'Open in New Tab' }),
+  ).toBeInTheDocument()
+})
+
 it('Has a link to the copyright page', async () => {
   setup()
   const link = await screen.findByRole('link', {
