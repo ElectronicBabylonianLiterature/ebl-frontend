@@ -12,6 +12,10 @@ import { queryItemFactory } from 'test-support/query-item-factory'
 import { museumNumberToString } from 'fragmentarium/domain/MuseumNumber'
 import { Genre } from 'fragmentarium/domain/Genres'
 import { mesopotamianDateFactory } from 'test-support/date-fixtures'
+import {
+  compactMatchingLinePreview,
+  productionSummaryReferences,
+} from 'test-support/fragment-query-summary'
 import { archaeologyFactory } from 'test-support/fragment-data-fixtures'
 
 export const apiClient = {
@@ -56,18 +60,21 @@ export function createSummaryItemDto(
     museumNumber: fragmentDto.museumNumber,
     accession: fragmentDto.accession,
     description: fragmentDto.description,
-    script: fragmentDto.script,
+    script: {
+      ...fragmentDto.script,
+      period: fragment.script.period.abbreviation,
+    },
     date: fragmentDto.date,
     genres: fragmentDto.genres,
     archaeology: {
       excavationNumber: fragmentDto.museumNumber,
       site: { name: 'Sippar' },
     },
-    references: fragmentDto.references,
+    references: productionSummaryReferences,
     projects: fragmentDto.projects,
     dossiers: fragmentDto.dossiers,
     matchingLines: [1, 2],
-    matchingLinePreview: fragmentDto.text,
+    matchingLinePreview: compactMatchingLinePreview,
     matchCount: 2,
     hasPhoto: true,
     thumbnailPath: null,

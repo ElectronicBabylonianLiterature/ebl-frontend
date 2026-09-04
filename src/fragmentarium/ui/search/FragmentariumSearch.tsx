@@ -10,7 +10,7 @@ import SearchForm, {
 import { SectionCrumb, TextCrumb } from 'common/ui/Breadcrumbs'
 import { Session } from 'auth/Session'
 import 'fragmentarium/ui/search/FragmentariumSearch.css'
-import { FragmentQuery } from 'query/FragmentQuery'
+import { FragmentQuery, FragmentSearchCriteria } from 'query/FragmentQuery'
 import WordService from 'dictionary/application/WordService'
 import { SearchResult } from './FragmentariumSearchResult'
 import { CorpusSearchResult } from 'corpus/ui/search/CorpusSearchResult'
@@ -18,12 +18,14 @@ import TextService from 'corpus/application/TextService'
 import { Col, Row, Tab, Tabs } from 'react-bootstrap'
 import { CorpusQuery } from 'query/CorpusQuery'
 import DossiersService from 'dossiers/application/DossiersService'
+import { SearchPagination } from 'fragmentarium/ui/search/pagination'
 
 type Props = Pick<
   SearchFormProps,
   'fragmentService' | 'fragmentSearchService' | 'bibliographyService'
 > & {
-  fragmentQuery: FragmentQuery
+  fragmentQuery: FragmentSearchCriteria
+  pagination: SearchPagination
   dossiersService: DossiersService
   wordService: WordService
   textService: TextService
@@ -32,9 +34,12 @@ type Props = Pick<
 
 export const linesToShow = 5
 
+const transportPaginationFields = ['limit', 'offset', 'count'] as const
+
 function hasNonDefaultValues(query: FragmentQuery | CorpusQuery) {
   return !_(query)
     .omit('lemmaOperator')
+    .omit(transportPaginationFields)
     .omitBy((value) => !value)
     .isEmpty()
 }
@@ -45,6 +50,7 @@ function FragmentariumSearch({
   fragmentSearchService,
   bibliographyService,
   fragmentQuery,
+  pagination,
   wordService,
   textService,
   activeTab,
@@ -105,6 +111,7 @@ function FragmentariumSearch({
                       fragmentService={fragmentService}
                       dossiersService={dossiersService}
                       fragmentQuery={fragmentQuery}
+                      pagination={pagination}
                     />
                   </Tab>
                   <Tab

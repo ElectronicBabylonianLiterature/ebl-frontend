@@ -2,7 +2,6 @@ import React from 'react'
 import { Nav, Tab } from 'react-bootstrap'
 import { useNavigate } from 'react-router-dom'
 import _ from 'lodash'
-
 import withData from 'http/withData'
 import Photo from 'fragmentarium/ui/images/Photo'
 import FolioDetails from 'fragmentarium/ui/images/FolioDetails'
@@ -20,6 +19,10 @@ import FolioTooltip from 'fragmentarium/ui/images/FolioTooltip'
 const FOLIO = 'folio'
 const PHOTO = 'photo'
 const CDLI = 'cdli'
+
+export function hasUsableCdliTab(fragment: Fragment): boolean {
+  return (fragment.cdliImages?.length ?? 0) > 0
+}
 
 export class TabController {
   readonly fragment: Fragment
@@ -39,26 +42,39 @@ export class TabController {
     this.navigate = navigate
   }
 
-  get defaultKey(): string {
-    return (
-      _([
-        this.fragment.hasPhoto && PHOTO,
-        ...this.fragment.folios.map((folio, index) => String(index)),
-      ])
-        .compact()
-        .head() ?? CDLI
-    )
+  get defaultKey(): string | undefined {
+    return _([
+      this.fragment.hasPhoto && PHOTO,
+      ...this.fragment.folios.map((folio, index) => String(index)),
+      hasUsableCdliTab(this.fragment) && CDLI,
+    ])
+      .compact()
+      .head()
   }
 
-  get activeKey(): string {
+  get activeKey(): string | undefined {
     if (this.tab === FOLIO) {
-      const index = this.fragment.folios.findIndex((folio) =>
-        _.isEqual(folio, this.activeFolio),
+      const index = this.fragment.folios.findIndex(
+        (folio) =>
+          this.activeFolio !== null &&
+          folio.name === this.activeFolio.name &&
+          folio.number === this.activeFolio.number,
       )
-      return index >= 0 ? String(index) : '0'
-    } else {
-      return this.tab ?? this.defaultKey
+      return index >= 0 ? String(index) : this.defaultKey
     }
+
+    return this.tab && this.isAvailableTab(this.tab)
+      ? this.tab
+      : this.defaultKey
+  }
+
+  private isAvailableTab(tab: string): boolean {
+    const index = Number.parseInt(tab, 10)
+    return Boolean(
+      (tab === PHOTO && this.fragment.hasPhoto) ||
+      (tab === CDLI && hasUsableCdliTab(this.fragment)) ||
+      (!Number.isNaN(index) && this.fragment.folios[index]),
+    )
   }
 
   openTab = (eventKey: string | null): void => {
@@ -88,15 +104,19 @@ export const FragmentPhoto = withData<
 >(
   ({ data, fragment }) => <Photo fragment={fragment} photo={data} />,
   ({ fragment, fragmentService }) => fragmentService.findPhoto(fragment),
+  { retry: true },
 )
 
 interface TabPaneProps {
   eventKey: string
+  activeKey: string | undefined
   children: React.ReactNode
 }
 
-const TabPane: React.FC<TabPaneProps> = ({ eventKey, children }) => (
-  <Tab.Pane eventKey={eventKey}>{children}</Tab.Pane>
+const TabPane: React.FC<TabPaneProps> = ({ eventKey, activeKey, children }) => (
+  <Tab.Pane eventKey={eventKey} hidden={activeKey !== eventKey}>
+    {children}
+  </Tab.Pane>
 )
 
 interface NavItemProps {
@@ -133,18 +153,25 @@ function Images({
   const navigate = useNavigate()
   const controller = new TabController(fragment, tab, activeFolio, navigate)
   const folios = fragment.folios
+  const activeKey = controller.activeKey
+  const [visitedTabs, setVisitedTabs] = React.useState<ReadonlySet<string>>(
+    () => new Set(activeKey === undefined ? [] : [activeKey]),
+  )
   const FOLIO_DROPDOWN_THRESHOLD = 3
 
+  React.useEffect(() => {
+    setVisitedTabs((visited) =>
+      activeKey === undefined || visited.has(activeKey)
+        ? visited
+        : new Set([...visited, activeKey]),
+    )
+  }, [activeKey])
+
   return (
-    <Tab.Container
-      activeKey={controller.activeKey}
-      onSelect={controller.openTab}
-    >
+    <Tab.Container activeKey={activeKey} onSelect={controller.openTab}>
       <Nav variant="tabs" id="folio-container">
         {fragment.hasPhoto && <NavItem eventKey={PHOTO} label="Photo" />}
-        {fragment.cdliImages && fragment.cdliImages.length > 0 && (
-          <NavItem eventKey={CDLI} label="CDLI" />
-        )}
+        {hasUsableCdliTab(fragment) && <NavItem eventKey={CDLI} label="CDLI" />}
         {folios.length > FOLIO_DROPDOWN_THRESHOLD ? (
           <Nav.Item>
             <FolioDropdown folios={folios} controller={controller} />
@@ -167,25 +194,34 @@ function Images({
 
       <Tab.Content>
         {fragment.hasPhoto && (
-          <TabPane eventKey={PHOTO}>
-            <FragmentPhoto
-              fragment={fragment}
-              fragmentService={fragmentService}
-            />
+          <TabPane eventKey={PHOTO} activeKey={activeKey}>
+            {visitedTabs.has(PHOTO) && (
+              <FragmentPhoto
+                fragment={fragment}
+                fragmentService={fragmentService}
+              />
+            )}
           </TabPane>
         )}
-        {fragment.getExternalNumber('cdliNumber') && (
-          <TabPane eventKey={CDLI}>
-            <CdliImages fragment={fragment} fragmentService={fragmentService} />
+        {hasUsableCdliTab(fragment) && (
+          <TabPane eventKey={CDLI} activeKey={activeKey}>
+            {visitedTabs.has(CDLI) && (
+              <CdliImages
+                fragment={fragment}
+                fragmentService={fragmentService}
+              />
+            )}
           </TabPane>
         )}
         {folios.map((folio, index) => (
-          <TabPane key={index} eventKey={String(index)}>
-            <FolioDetails
-              fragmentService={fragmentService}
-              fragmentNumber={fragment.number}
-              folio={folio}
-            />
+          <TabPane key={index} eventKey={String(index)} activeKey={activeKey}>
+            {visitedTabs.has(String(index)) && (
+              <FolioDetails
+                fragmentService={fragmentService}
+                fragmentNumber={fragment.number}
+                folio={folio}
+              />
+            )}
           </TabPane>
         ))}
       </Tab.Content>

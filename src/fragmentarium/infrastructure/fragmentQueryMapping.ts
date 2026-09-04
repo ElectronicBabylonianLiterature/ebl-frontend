@@ -1,56 +1,32 @@
 import { Fragment } from 'fragmentarium/domain/fragment'
-import { Genres } from 'fragmentarium/domain/Genres'
-import { MesopotamianDate } from 'chronology/domain/Date'
-import FragmentDto, {
-  MesopotamianDateDto,
-  TextDto,
-} from 'fragmentarium/domain/FragmentDtos'
-import { ScriptDto } from 'fragmentarium/domain/fragment'
-import { createTransliteration } from 'transliteration/application/dtos'
+import FragmentDto from 'fragmentarium/domain/FragmentDtos'
 import { QueryItem, QueryResult } from 'query/QueryResult'
-import { museumNumberToString } from 'fragmentarium/domain/MuseumNumber'
-import { Museums } from 'fragmentarium/domain/museum'
-import createReference from 'bibliography/application/createReference'
-import { createResearchProject } from 'research-projects/researchProject'
+import { toMuseumNumberString } from 'fragmentarium/domain/MuseumNumber'
+import { createFragment } from 'fragmentarium/infrastructure/FragmentRepository'
 import {
-  createFragment,
-  createScript,
-} from 'fragmentarium/infrastructure/FragmentRepository'
+  BibliographyDocumentsDto,
+  createQuerySummaryFragment,
+  isQuerySummaryItemDto,
+  isSummaryLineIndexes,
+  isSummaryMatchCount,
+  QueryMuseumNumberDto,
+  QuerySummaryItemDto,
+} from 'fragmentarium/infrastructure/querySummaryFragment'
 
-export type QueryMuseumNumberDto = {
-  prefix: string
-  number: string
-  suffix: string
-}
+export type {
+  BibliographyDocumentsDto,
+  FragmentQueryPreviewDto,
+  FragmentQueryPreviewLineDto,
+  QueryMuseumNumberDto,
+  QuerySummaryArchaeologyDto,
+  QuerySummaryItemDto,
+} from 'fragmentarium/infrastructure/querySummaryFragment'
 
 export type QueryItemDto = {
   museumNumber: QueryMuseumNumberDto
   matchingLines: readonly number[]
   matchCount: number
   fragment?: FragmentDto
-}
-
-export type QuerySummaryArchaeologyDto = {
-  excavationNumber: QueryMuseumNumberDto | null
-  site: { name: string } | null
-} | null
-
-export type QuerySummaryItemDto = {
-  museumNumber: QueryMuseumNumberDto
-  accession?: QueryMuseumNumberDto | null
-  description: string
-  script: ScriptDto
-  date?: MesopotamianDateDto | null
-  genres?: FragmentDto['genres']
-  archaeology?: QuerySummaryArchaeologyDto
-  references?: FragmentDto['references']
-  projects?: FragmentDto['projects']
-  dossiers?: FragmentDto['dossiers']
-  matchingLines: readonly number[]
-  matchingLinePreview?: TextDto | null
-  matchCount: number
-  hasPhoto: boolean
-  thumbnailPath?: string | null
 }
 
 export type QueryResultItemDto = QueryItemDto | QuerySummaryItemDto
@@ -62,6 +38,7 @@ export type LatestQueryResultDto = {
   matchCountTotal: number | null
   isMatchCountTotalExact?: boolean
   hasNextPage?: boolean | null
+  bibliographyDocuments?: BibliographyDocumentsDto
   fragments?: readonly FragmentDto[]
 }
 
@@ -70,100 +47,84 @@ export type QueryResultDto = {
   matchCountTotal: number | null
   isMatchCountTotalExact?: boolean
   hasNextPage?: boolean | null
+  bibliographyDocuments?: BibliographyDocumentsDto
 }
 
-const emptyMatchingLinePreview: TextDto = { lines: [], numberOfLines: 0 }
+const SUMMARY_MARKER_FIELDS = [
+  'description',
+  'script',
+  'hasPhoto',
+  'matchingLinePreview',
+  'thumbnailPath',
+] as const
 
-function normalizeMatchingLinePreview(dto?: TextDto | null): TextDto {
-  const { parserVersion, ...preview } = dto ?? emptyMatchingLinePreview
+function isSummaryShapedDto(dto: QueryResultItemDto): boolean {
+  return SUMMARY_MARKER_FIELDS.some((field) => field in dto)
+}
+
+function createQueryItemIdentity(dto: QueryResultItemDto): QueryItem {
   return {
-    ...preview,
-    // eslint-disable-next-line camelcase
-    parser_version: preview.parser_version ?? parserVersion,
+    museumNumber: toMuseumNumberString(dto.museumNumber),
+    matchingLines: isSummaryLineIndexes(dto.matchingLines)
+      ? dto.matchingLines
+      : [],
+    matchCount: isSummaryMatchCount(dto.matchCount) ? dto.matchCount : 0,
   }
 }
 
-function isQuerySummaryItemDto(
-  dto: QueryResultItemDto,
-): dto is QuerySummaryItemDto {
-  return 'description' in dto && 'script' in dto && 'hasPhoto' in dto
-}
-
-function createQuerySummaryFragment(dto: QuerySummaryItemDto): Fragment {
-  return Fragment.create({
-    number: museumNumberToString(dto.museumNumber),
-    accession: dto.accession ? museumNumberToString(dto.accession) : '',
-    publication: '',
-    acquisition: null,
-    description: dto.description,
-    joins: [],
-    measures: {
-      length: null,
-      width: null,
-      thickness: null,
-      lengthNote: null,
-      widthNote: null,
-      thicknessNote: null,
-    },
-    collection: '',
-    legacyScript: '',
-    cdliImages: [],
-    folios: [],
-    record: [],
-    text: createTransliteration(
-      normalizeMatchingLinePreview(dto.matchingLinePreview),
-    ),
-    notes: { text: '', parts: [] },
-    museum: Museums.HYPERURANION,
-    references: (dto.references ?? []).map(createReference),
-    uncuratedReferences: null,
-    traditionalReferences: [],
-    atf: '',
-    hasPhoto: dto.hasPhoto,
-    genres: Genres.fromJson(dto.genres ?? []),
-    introduction: { text: '', parts: [] },
-    script: createScript(dto.script),
-    externalNumbers: {},
-    projects: (dto.projects ?? []).map(createResearchProject),
-    dossiers: dto.dossiers ?? [],
-    date: dto.date ? MesopotamianDate.fromJson(dto.date) : undefined,
-    datesInText: [],
-    archaeology: dto.archaeology
-      ? {
-          excavationNumber: dto.archaeology.excavationNumber
-            ? museumNumberToString(dto.archaeology.excavationNumber)
-            : undefined,
-          site: dto.archaeology.site
-            ? {
-                name: dto.archaeology.site.name,
-                abbreviation: '',
-                parent: null,
-              }
-            : undefined,
-        }
-      : undefined,
-  })
-}
-
-function createQueryItem(dto: QueryResultItemDto): QueryItem {
-  const queryItem = {
-    museumNumber: museumNumberToString(dto.museumNumber),
-    matchingLines: dto.matchingLines,
-    matchCount: dto.matchCount,
+function toUnsupportedQueryItem(queryItem: QueryItem): QueryItem {
+  return {
+    ...queryItem,
+    cardSummary: { type: 'UnsupportedFragmentCardSummary' },
   }
+}
 
-  if (isQuerySummaryItemDto(dto)) {
+function createSummaryQueryItem(
+  dto: QuerySummaryItemDto,
+  queryItem: QueryItem,
+  bibliographyDocuments: BibliographyDocumentsDto,
+): QueryItem {
+  try {
     return {
       ...queryItem,
-      fragment: createQuerySummaryFragment(dto),
+      fragment: createQuerySummaryFragment(dto, bibliographyDocuments),
+      cardSummary: { type: 'FragmentCardSummary' },
       thumbnailPath: dto.thumbnailPath ?? null,
     }
+  } catch {
+    return toUnsupportedQueryItem(queryItem)
+  }
+}
+
+function createPrefetchedQueryItem(
+  dto: QueryItemDto,
+  queryItem: QueryItem,
+): QueryItem {
+  try {
+    const prefetchedFragment = dto.fragment && createFragment(dto.fragment)
+    return prefetchedFragment
+      ? { ...queryItem, fragment: prefetchedFragment }
+      : queryItem
+  } catch {
+    return toUnsupportedQueryItem(queryItem)
+  }
+}
+
+function createQueryItem(
+  dto: QueryResultItemDto,
+  bibliographyDocuments: BibliographyDocumentsDto,
+): QueryItem {
+  const queryItem = createQueryItemIdentity(dto)
+
+  if (isQuerySummaryItemDto(dto)) {
+    return createSummaryQueryItem(dto, queryItem, bibliographyDocuments)
   }
 
-  const prefetchedFragment = dto.fragment && createFragment(dto.fragment)
-  return prefetchedFragment
-    ? { ...queryItem, fragment: prefetchedFragment }
-    : queryItem
+  if (isSummaryShapedDto(dto) || !queryItem.museumNumber) {
+    return toUnsupportedQueryItem(queryItem)
+  }
+
+  return createPrefetchedQueryItem(dto, queryItem)
 }
 
 export function createQueryResult(dto: QueryResultDto): QueryResult {
@@ -171,7 +132,9 @@ export function createQueryResult(dto: QueryResultDto): QueryResult {
     matchCountTotal: dto.matchCountTotal,
     isMatchCountTotalExact: dto.isMatchCountTotalExact,
     hasNextPage: dto.hasNextPage,
-    items: dto.items.map(createQueryItem),
+    items: dto.items.map((itemDto) =>
+      createQueryItem(itemDto, dto.bibliographyDocuments ?? {}),
+    ),
   }
 }
 
@@ -190,7 +153,10 @@ export function createLatestQueryResult(
     isMatchCountTotalExact: dto.isMatchCountTotalExact,
     hasNextPage: dto.hasNextPage,
     items: dto.items.map((itemDto) => {
-      const queryItem = createQueryItem(itemDto)
+      const queryItem = createQueryItem(
+        itemDto,
+        dto.bibliographyDocuments ?? {},
+      )
       const prefetchedFragment =
         queryItem.fragment ??
         fragmentsByMuseumNumber.get(queryItem.museumNumber)

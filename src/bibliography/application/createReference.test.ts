@@ -14,6 +14,27 @@ test('createReference', () => {
     { associations: { document: cslData } },
   )
   expect(createReference(dto)).toEqual(
-    new Reference(dto.type, dto.pages, dto.notes, dto.linesCited, entry),
+    new Reference(
+      dto.type,
+      dto.pages,
+      dto.notes,
+      dto.linesCited,
+      entry,
+    ).withIdentity(dto.id),
   )
+})
+test('preserves the root ID without a bibliography document', () => {
+  const reference = createReference({
+    id: 'SUMMARY-1',
+    type: 'DISCUSSION',
+    pages: '4-5',
+    notes: 'Summary note',
+    linesCited: ['2.'],
+  })
+
+  expect(reference.id).toEqual('SUMMARY-1')
+  expect(reference.document.label.trim()).toEqual('')
+  expect(reference.pages).toEqual('4-5')
+  expect(reference.notes).toEqual('Summary note')
+  expect(reference.linesCited).toEqual(['2.'])
 })
