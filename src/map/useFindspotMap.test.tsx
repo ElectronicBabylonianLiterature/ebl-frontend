@@ -10,10 +10,7 @@ import {
   resetMapMocks,
   triggerMapEvent,
 } from 'map/MapTab.testSupport'
-import {
-  HookHarness,
-  renderHarness,
-} from 'map/useFindspotMap.testSupport'
+import { HookHarness, renderHarness } from 'map/useFindspotMap.testSupport'
 
 jest.mock('maplibre-gl')
 
