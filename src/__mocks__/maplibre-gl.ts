@@ -1,2 +1,2 @@
-export * from 'map/testSupport/mapLibreMock'
-export { default } from 'map/testSupport/mapLibreMock'
+export * from 'map/mapLibreMock.testSupport'
+export { default } from 'map/mapLibreMock.testSupport'
