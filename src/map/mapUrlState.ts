@@ -1,6 +1,7 @@
 import { parse, stringify } from 'query-string'
 
 export const MAP_URL_STATE_VERSION = 1
+export const MAX_FILTER_LENGTH = 200
 
 const VERSION_PARAM = 'mv'
 const FILTER_PARAM = 'findspot'
@@ -30,15 +31,21 @@ export function parseMapUrlState(search: string): MapUrlState {
 
   return {
     version: MAP_URL_STATE_VERSION,
-    filter: asString(query[FILTER_PARAM]),
+    filter: asString(query[FILTER_PARAM]).slice(0, MAX_FILTER_LENGTH),
   }
 }
 
 export function serializeMapUrlState(state: MapUrlState): string {
+  const filter = state.filter.slice(0, MAX_FILTER_LENGTH)
+
+  if (!filter) {
+    return ''
+  }
+
   return stringify(
     {
       [VERSION_PARAM]: MAP_URL_STATE_VERSION,
-      [FILTER_PARAM]: state.filter || undefined,
+      [FILTER_PARAM]: filter,
     },
     { skipEmptyString: true },
   )

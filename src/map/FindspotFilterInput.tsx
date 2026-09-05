@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
 import Select from 'react-select'
 import { ProvenanceRecord } from 'fragmentarium/domain/Provenance'
 import { matchesFindspot } from 'map/findspotFilter'
@@ -19,7 +19,16 @@ export default function FindspotFilterInput({
   filter,
   onFilterChange,
 }: Props): JSX.Element {
-  const [inputValue, setInputValue] = useState('')
+  const [inputValue, setInputValue] = useState(filter)
+  const isInternalChangeRef = useRef(false)
+
+  useEffect(() => {
+    if (isInternalChangeRef.current) {
+      isInternalChangeRef.current = false
+      return
+    }
+    setInputValue(filter)
+  }, [filter])
 
   const options = useMemo<FindspotOption[]>(
     () =>
@@ -44,11 +53,13 @@ export default function FindspotFilterInput({
       inputValue={inputValue}
       onInputChange={(nextInput, meta) => {
         if (meta.action === 'input-change') {
+          isInternalChangeRef.current = true
           setInputValue(nextInput)
           onFilterChange(nextInput)
         }
       }}
       onChange={(option) => {
+        isInternalChangeRef.current = true
         setInputValue('')
         onFilterChange(option ? option.value : '')
       }}

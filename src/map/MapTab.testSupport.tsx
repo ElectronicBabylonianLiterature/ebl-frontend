@@ -62,10 +62,13 @@ function MapRoute({
   ) : null
 }
 
-export function renderMapTab(fragmentService: FragmentService): RenderResult {
+export function renderMapTab(
+  fragmentService: FragmentService,
+  initialEntry: string = MAP_ROUTE,
+): RenderResult {
   return render(
     <ErrorReporterContext.Provider value={mockErrorReporter}>
-      <MemoryRouter initialEntries={[MAP_ROUTE]}>
+      <MemoryRouter initialEntries={[initialEntry]}>
         <MapRoute fragmentService={fragmentService} />
         <CurrentLocation />
       </MemoryRouter>

@@ -17,7 +17,9 @@ export default function useMapUrlState(): MapUrlStateController {
   const [state, setState] = useState<MapUrlState>(() =>
     parseMapUrlState(location.search),
   )
-  const lastWrittenSearchRef = useRef<string | null>(null)
+  const lastWrittenSearchRef = useRef<string | null>(
+    location.search.replace(/^\?/, ''),
+  )
 
   const update = useCallback((patch: Partial<MapUrlState>) => {
     setState((current) => ({ ...current, ...patch }))
