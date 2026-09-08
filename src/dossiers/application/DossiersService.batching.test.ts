@@ -114,4 +114,14 @@ describe('DossiersService batching', () => {
     ])
     expect(dossiersRepository.queryByIds).toHaveBeenCalledWith(['A'])
   })
+
+  it('omits an id the repository did not answer with', async () => {
+    const recordA = createRecord('A')
+    dossiersRepository.queryByIds.mockResolvedValue([recordA])
+
+    await expect(dossiersService.queryByIds(['A', 'B'])).resolves.toEqual([
+      recordA,
+    ])
+    expect(dossiersRepository.queryByIds).toHaveBeenCalledWith(['A', 'B'])
+  })
 })

@@ -5,6 +5,7 @@ import ErrorAlert from 'common/errors/ErrorAlert'
 import Spinner from 'common/ui/Spinner'
 import { createFragmentUrl } from './FragmentLink'
 import usePromiseEffect from 'common/hooks/usePromiseEffect'
+import { applyWhenNotAborted } from 'common/utils/applyWhenCurrent'
 import { FragmentInfo } from 'fragmentarium/domain/fragment'
 
 type Props = {
@@ -30,17 +31,10 @@ function FragmentButton({ query, children }: Props) {
     setIsLoading(true)
     setError(null)
     runRequest((signal) =>
-      query(signal)
-        .then((fragmentInfo) => {
-          if (!signal.aborted) {
-            navigateToFragment(fragmentInfo)
-          }
-        })
-        .catch((error) => {
-          if (!signal.aborted) {
-            onError(error)
-          }
-        }),
+      applyWhenNotAborted(() => query(signal), signal, {
+        onSuccess: navigateToFragment,
+        onError,
+      }),
     )
   }
 

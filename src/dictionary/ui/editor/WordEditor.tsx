@@ -9,7 +9,8 @@ import withData, { WithoutData } from 'http/withData'
 import SessionContext from 'auth/SessionContext'
 import Word from 'dictionary/domain/Word'
 import { SectionCrumb, TextCrumb } from 'common/ui/Breadcrumbs'
-import AbortableOperation from 'common/utils/AbortableOperation'
+import SupersedableOperation from 'common/utils/SupersedableOperation'
+import applyWhenCurrent from 'common/utils/applyWhenCurrent'
 
 type Props = {
   data: Word
@@ -24,7 +25,7 @@ class WordEditor extends Component<
   static contextType = SessionContext
   context!: React.ContextType<typeof SessionContext>
 
-  private readonly updateOperation = new AbortableOperation()
+  private readonly updateOperation = new SupersedableOperation()
 
   constructor(props) {
     super(props)
@@ -36,28 +37,23 @@ class WordEditor extends Component<
   }
 
   componentWillUnmount(): void {
-    this.updateOperation.abort()
+    this.updateOperation.supersede()
   }
 
   get disabled(): boolean {
     return this.state.saving || !this.context.isAllowedToWriteWords()
   }
 
-  updateWord = (word): void => {
-    const signal = this.updateOperation.start()
+  updateWord = (word: Word): void => {
     this.setState({ word: this.state.word, error: null, saving: true })
-    this.props.wordService
-      .update(word)
-      .then(() => {
-        if (!signal.aborted) {
-          this.setState({ word: word, error: null, saving: false })
-        }
-      })
-      .catch((error) => {
-        if (!signal.aborted) {
-          this.setState({ word: this.state.word, error: error, saving: false })
-        }
-      })
+    applyWhenCurrent(() => this.props.wordService.update(word), {
+      onSuccess: () => {
+        this.setState({ word: word, error: null, saving: false })
+      },
+      onError: (error) => {
+        this.setState({ word: this.state.word, error: error, saving: false })
+      },
+    })(this.updateOperation.start())
   }
 
   render(): JSX.Element {

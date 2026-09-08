@@ -84,8 +84,8 @@ export class TextReadService extends TextServiceBase {
 
   protected fetchChapterDisplay(
     id: ChapterId,
-    lines: readonly number[] = [],
-    variants: readonly number[] = [],
+    lines: readonly number[],
+    variants: readonly number[],
   ): Promise<ChapterDisplay> {
     const lineParams = _.isEmpty(lines)
       ? ''

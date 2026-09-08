@@ -1,5 +1,4 @@
 import mapSeries from 'common/utils/mapSeries'
-import _ from 'lodash'
 
 import { Chapter } from 'corpus/domain/chapter'
 import {
@@ -9,11 +8,7 @@ import {
 import { LineVariant, ManuscriptLine } from 'corpus/domain/line'
 
 import { AbstractLemmatizationFactory } from 'fragmentarium/application/LemmatizationFactory'
-import {
-  LemmatizationToken,
-  UniqueLemma,
-} from 'transliteration/domain/Lemmatization'
-import { Token } from 'transliteration/domain/token'
+import { LemmatizationToken } from 'transliteration/domain/Lemmatization'
 
 export class CorpusLemmatizationFactory extends AbstractLemmatizationFactory<
   Chapter,
@@ -50,26 +45,6 @@ export class CorpusLemmatizationFactory extends AbstractLemmatizationFactory<
           )
         : new LemmatizationToken(token.value, false),
     )
-  }
-
-  private applySuggestion(
-    lemmatizationToken: LemmatizationToken,
-    atfToken: Token,
-    reconstruction: LemmatizationToken[],
-  ): LemmatizationToken {
-    const suggestion = this.getSuggestion(atfToken, reconstruction)
-    return lemmatizationToken.hasLemma || _.isEmpty(suggestion)
-      ? lemmatizationToken.applySuggestion()
-      : lemmatizationToken.setUniqueLemma(suggestion as UniqueLemma, true)
-  }
-
-  private getSuggestion(
-    atfToken: Token,
-    reconstruction: LemmatizationToken[],
-  ): UniqueLemma | null {
-    return _.isNil(atfToken.alignment)
-      ? null
-      : reconstruction[atfToken.alignment].uniqueLemma
   }
 }
 

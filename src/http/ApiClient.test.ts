@@ -52,6 +52,18 @@ describe('fetchJson', () => {
   commonTests(() => apiClient.fetchJson(path, true))
 })
 
+function expectJsonRequest(method: string): void {
+  const expectedHeaders = new Headers({
+    Authorization: `Bearer ${accessToken}`,
+    'Content-Type': 'application/json; charset=utf-8',
+  })
+  expect(fetch).toBeCalledWith(expectedUrl, {
+    body: JSON.stringify(requestJson),
+    headers: expectedHeaders,
+    method: method,
+  })
+}
+
 describe('postJson', () => {
   test('Resolves on success', async () => {
     setUpSuccessResponse()
@@ -83,15 +95,7 @@ describe('postJson', () => {
 
     await apiClient.postJson(path, requestJson)
 
-    const expectedHeaders = new Headers({
-      Authorization: `Bearer ${accessToken}`,
-      'Content-Type': 'application/json; charset=utf-8',
-    })
-    expect(fetch).toBeCalledWith(expectedUrl, {
-      body: JSON.stringify(requestJson),
-      headers: expectedHeaders,
-      method: 'POST',
-    })
+    expectJsonRequest('POST')
   })
 
   commonTests(() => apiClient.postJson(path, requestJson))
@@ -115,15 +119,7 @@ describe('putJson', () => {
 
     await apiClient.putJson(path, requestJson)
 
-    const expectedHeaders = new Headers({
-      Authorization: `Bearer ${accessToken}`,
-      'Content-Type': 'application/json; charset=utf-8',
-    })
-    expect(fetch).toBeCalledWith(expectedUrl, {
-      body: JSON.stringify(requestJson),
-      headers: expectedHeaders,
-      method: 'PUT',
-    })
+    expectJsonRequest('PUT')
   })
 
   commonTests(() => apiClient.postJson(path, requestJson))

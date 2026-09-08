@@ -8,4 +8,8 @@ export default class SupersedableOperation {
     const startedToken = this.currentToken
     return () => this.currentToken !== startedToken
   }
+
+  supersede(): void {
+    this.currentToken += 1
+  }
 }

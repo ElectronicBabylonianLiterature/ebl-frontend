@@ -1,13 +1,9 @@
 import DossierRecord from 'dossiers/domain/DossierRecord'
+import { CacheEntry, getCachedValue, setCachedValue } from 'common/utils/cache'
 
 export const cacheEntryLifetimeInMilliseconds = 5 * 60 * 1000
 export const defaultMaximumCachedDossiers = 250
 export const defaultCacheScope = 'default'
-
-type CacheEntry<Value> = {
-  readonly value: Value
-  readonly expiresAt: number
-}
 
 export default class DossierCache {
   private readonly cachedDossiersById = new Map<
@@ -21,12 +17,14 @@ export default class DossierCache {
   ) {}
 
   set(record: DossierRecord): void {
-    this.cachedDossiersById.delete(record.id)
-    this.cachedDossiersById.set(record.id, {
+    setCachedValue({
+      cache: this.cachedDossiersById,
+      key: record.id,
       value: record,
-      expiresAt: this.getCurrentTime() + cacheEntryLifetimeInMilliseconds,
+      maximumCacheSize: this.maximumCachedDossiers,
+      cacheEntryLifetimeInMilliseconds,
+      getCurrentTime: this.getCurrentTime,
     })
-    this.trim()
   }
 
   hasFresh(id: string): boolean {
@@ -34,21 +32,7 @@ export default class DossierCache {
   }
 
   read(id: string): DossierRecord | null {
-    const cacheEntry = this.cachedDossiersById.get(id)
-
-    if (!cacheEntry) {
-      return null
-    }
-
-    if (cacheEntry.expiresAt <= this.getCurrentTime()) {
-      this.cachedDossiersById.delete(id)
-      return null
-    }
-
-    this.cachedDossiersById.delete(id)
-    this.cachedDossiersById.set(id, cacheEntry)
-
-    return cacheEntry.value
+    return getCachedValue(this.cachedDossiersById, id, this.getCurrentTime)
   }
 
   select(ids: readonly string[]): readonly DossierRecord[] {
@@ -60,17 +44,5 @@ export default class DossierCache {
 
   clear(): void {
     this.cachedDossiersById.clear()
-  }
-
-  private trim(): void {
-    while (this.cachedDossiersById.size > this.maximumCachedDossiers) {
-      const oldestId = this.cachedDossiersById.keys().next().value
-
-      if (oldestId === undefined) {
-        return
-      }
-
-      this.cachedDossiersById.delete(oldestId)
-    }
   }
 }

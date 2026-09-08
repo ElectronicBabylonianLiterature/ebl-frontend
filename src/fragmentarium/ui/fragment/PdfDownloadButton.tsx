@@ -7,6 +7,7 @@ import Spinner from 'common/ui/Spinner'
 import ErrorAlert from 'common/errors/ErrorAlert'
 import $ from 'jquery'
 import usePromiseEffect from 'common/hooks/usePromiseEffect'
+import { applyWhenNotAborted } from 'common/utils/applyWhenCurrent'
 import { jsPDF } from 'jspdf'
 
 type Props = {
@@ -30,19 +31,20 @@ export default function PdfDownloadButton({
     setError(null)
 
     runDownload((signal) =>
-      getPdfDoc(fragment, wordService, jQueryRef)
-        .then((doc) => {
-          if (!signal.aborted) {
+      applyWhenNotAborted(
+        () => getPdfDoc(fragment, wordService, jQueryRef),
+        signal,
+        {
+          onSuccess: (doc) => {
             doc.save(fragment.number + '.pdf')
             setIsLoading(false)
-          }
-        })
-        .catch((downloadError) => {
-          if (!signal.aborted) {
+          },
+          onError: (downloadError) => {
             setError(downloadError)
             setIsLoading(false)
-          }
-        }),
+          },
+        },
+      ),
     )
   }
 

@@ -6,6 +6,7 @@ import ErrorAlert from 'common/errors/ErrorAlert'
 import { Document, Packer } from 'docx'
 import $ from 'jquery'
 import usePromiseEffect from 'common/hooks/usePromiseEffect'
+import { applyWhenNotAborted } from 'common/utils/applyWhenCurrent'
 import { FragmentWordExportContext } from 'fragmentarium/ui/fragment/Download'
 import { CorpusWordExportContext } from 'corpus/ui/Download'
 
@@ -34,21 +35,20 @@ export default function WordDownloadButton({
     setError(null)
 
     runDownload((signal) =>
-      getWordDoc
-        .call(context, jQueryRef)
-        .then(packWordDoc)
-        .then((blob) => {
-          if (!signal.aborted) {
+      applyWhenNotAborted(
+        () => getWordDoc.call(context, jQueryRef).then(packWordDoc),
+        signal,
+        {
+          onSuccess: (blob) => {
             saveAs(blob, `${baseFileName}.docx`)
             setIsLoading(false)
-          }
-        })
-        .catch((downloadError) => {
-          if (!signal.aborted) {
+          },
+          onError: (downloadError) => {
             setError(downloadError)
             setIsLoading(false)
-          }
-        }),
+          },
+        },
+      ),
     )
   }
 

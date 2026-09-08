@@ -23,3 +23,11 @@ export default function applyWhenCurrent<Result>(
       },
     )
 }
+
+export function applyWhenNotAborted<Result>(
+  operation: () => Promise<Result>,
+  signal: AbortSignal,
+  handlers: CurrentResultHandlers<Result>,
+): Promise<void> {
+  return applyWhenCurrent(operation, handlers)(() => signal.aborted)
+}

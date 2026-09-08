@@ -19,3 +19,27 @@ test('Only the most recent operation is current', () => {
   const checks = [operation.start(), operation.start(), operation.start()]
   expect(checks.map((isStale) => isStale())).toEqual([true, true, false])
 })
+
+test('Superseding makes the current operation stale', () => {
+  const operation = new SupersedableOperation()
+  const isStale = operation.start()
+
+  operation.supersede()
+
+  expect(isStale()).toBe(true)
+})
+
+test('Superseding without a started operation is harmless', () => {
+  const operation = new SupersedableOperation()
+  operation.supersede()
+
+  expect(operation.start()()).toBe(false)
+})
+
+test('An operation started after superseding is current', () => {
+  const operation = new SupersedableOperation()
+  operation.start()
+  operation.supersede()
+
+  expect(operation.start()()).toBe(false)
+})

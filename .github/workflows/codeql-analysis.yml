@@ -15,8 +15,9 @@ on:
   push:
     branches: [master]
   pull_request:
-    # The branches below must be a subset of the branches above
-    branches: [master]
+    # Base branches to analyse pull requests against. Stacked PRs target a
+    # long-lived branch rather than master, so those bases are listed too.
+    branches: [master, 'chore/**', 'feature/**', 'fix/**']
   schedule:
     - cron: '16 15 * * 1'
 

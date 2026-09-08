@@ -150,3 +150,57 @@ describe('FragmentRepository query summary with unrecognized script', () => {
     expect(item.fragment?.script.period.abbreviation).toBe('Unc')
   })
 })
+
+describe('FragmentRepository query summary with a sparse item', () => {
+  beforeEach(() => {
+    jest.clearAllMocks()
+  })
+
+  it('falls back to empty values for every optional field the backend omits', async () => {
+    apiClient.fetchJson.mockResolvedValueOnce({
+      matchCountTotal: 1,
+      items: [
+        {
+          museumNumber: { prefix: 'X', number: '42', suffix: 'a' },
+          description: 'Sparse backend summary item',
+          script: {
+            period: 'Late Babylonian',
+            periodModifier: 'None',
+            uncertain: false,
+          },
+          hasPhoto: false,
+          matchingLinePreview: { lines: [], numberOfLines: 0 },
+          matchingLines: [],
+          matchCount: 0,
+        },
+      ],
+    })
+
+    const result = await fragmentRepository.query({ transliteration: 'kur₂' })
+    const sparseFragment = result.items[0].fragment
+
+    expect(sparseFragment?.references).toEqual([])
+    expect(sparseFragment?.projects).toEqual([])
+    expect(sparseFragment?.dossiers).toEqual([])
+    expect(sparseFragment?.genres.genres).toEqual([])
+    expect(sparseFragment?.date).toBeUndefined()
+    expect(sparseFragment?.archaeology).toBeUndefined()
+  })
+
+  it('leaves an archaeology without an excavation number or site undefined', async () => {
+    apiClient.fetchJson.mockResolvedValueOnce({
+      matchCountTotal: 1,
+      items: [
+        createSummaryItemDto({
+          archaeology: {},
+        } as Record<string, unknown>),
+      ],
+    })
+
+    const result = await fragmentRepository.query({ transliteration: 'kur₂' })
+    const archaeology = result.items[0].fragment?.archaeology
+
+    expect(archaeology?.excavationNumber).toBeUndefined()
+    expect(archaeology?.site).toBeUndefined()
+  })
+})

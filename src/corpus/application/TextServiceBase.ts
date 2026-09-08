@@ -136,8 +136,8 @@ export class TextServiceBase extends TextServiceCore {
 
   protected createChapterDisplayCacheKey(
     id: ChapterId,
-    lines: readonly number[] = [],
-    variants: readonly number[] = [],
+    lines: readonly number[],
+    variants: readonly number[],
   ): string {
     return `${createChapterUrl(id)}?${stringify({ lines, variants })}`
   }

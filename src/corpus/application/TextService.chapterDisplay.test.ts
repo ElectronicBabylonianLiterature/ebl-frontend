@@ -156,3 +156,51 @@ describe('findChapterDisplay caching', () => {
     expect(apiClient.fetchJson).toHaveBeenCalledTimes(2)
   })
 })
+
+describe('findChapterDisplay line selection', () => {
+  test('requests only the selected lines and variants', async () => {
+    const service = createService()
+    apiClient.fetchJson.mockResolvedValue(chapterDisplayDto)
+
+    await service.findChapterDisplay(chapterId, [1, 2], [0])
+
+    expect(apiClient.fetchJson).toHaveBeenCalledWith(
+      `${chapterUrl}/display?lines=1&lines=2&variants=0`,
+      false,
+    )
+  })
+
+  test('injects references into old line numbers', async () => {
+    const service = createService()
+    const reference = referenceFactory.build(
+      {},
+      { associations: { document: bibliographyEntryFactory.build() } },
+    )
+    bibliographyServiceMock.find.mockResolvedValue(reference.document)
+    apiClient.fetchJson.mockResolvedValue({
+      ...chapterDisplayDto,
+      lines: [
+        {
+          ...chapterDisplayDto.lines[0],
+          oldLineNumbers: [
+            {
+              number: 'old 1',
+              reference: {
+                id: reference.document.id,
+                type: 'DISCUSSION',
+                pages: '1',
+                notes: '',
+                linesCited: [],
+              },
+            },
+          ],
+        },
+      ],
+    })
+
+    const display = await service.findChapterDisplay(chapterId)
+
+    expect(display.lines[0].oldLineNumbers).toHaveLength(1)
+    expect(display.lines[0].oldLineNumbers[0].number).toEqual('old 1')
+  })
+})

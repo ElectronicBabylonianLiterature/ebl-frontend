@@ -16,7 +16,8 @@ import {
   editionFields,
   EditionFields,
 } from 'fragmentarium/application/FragmentService'
-import AbortableOperation from 'common/utils/AbortableOperation'
+import SupersedableOperation from 'common/utils/SupersedableOperation'
+import applyWhenCurrent from 'common/utils/applyWhenCurrent'
 import {
   FormData,
   getFormGroup,
@@ -47,8 +48,8 @@ const TransliterationForm: React.FC<Props> = ({
     error: null,
     disabled: false,
   })
-  const updateOperation = useRef(new AbortableOperation())
-  useEffect(() => () => updateOperation.current.abort(), [])
+  const updateOperation = useRef(new SupersedableOperation())
+  useEffect(() => () => updateOperation.current.supersede(), [])
   const initialValues = useMemo(
     () => ({ transliteration, notes, introduction }),
     [transliteration, notes, introduction],
@@ -82,24 +83,20 @@ const TransliterationForm: React.FC<Props> = ({
       _.pick(formData, editionFields),
       isDirty,
     ) as EditionFields
-    const signal = updateOperation.current.start()
-    updateEdition(updatedFields)
-      .then((fragment) => {
-        if (!signal.aborted) {
-          setFormData((prev) => ({
-            ...prev,
-            transliteration: fragment.atf,
-            notes: fragment.notes.text,
-            introduction: fragment.introduction.text,
-            error: null,
-          }))
-        }
-      })
-      .catch((error) => {
-        if (!signal.aborted) {
-          setFormData((prev) => ({ ...prev, error }))
-        }
-      })
+    applyWhenCurrent(() => updateEdition(updatedFields), {
+      onSuccess: (fragment: Fragment) => {
+        setFormData((prev) => ({
+          ...prev,
+          transliteration: fragment.atf,
+          notes: fragment.notes.text,
+          introduction: fragment.introduction.text,
+          error: null,
+        }))
+      },
+      onError: (error) => {
+        setFormData((prev) => ({ ...prev, error }))
+      },
+    })(updateOperation.current.start())
   }
 
   const hasChanges = useCallback(

@@ -5,7 +5,8 @@ import Spinner from 'common/ui/Spinner'
 import ErrorAlert from 'common/errors/ErrorAlert'
 import SessionContext from 'auth/SessionContext'
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
-import AbortableOperation from 'common/utils/AbortableOperation'
+import SupersedableOperation from 'common/utils/SupersedableOperation'
+import applyWhenCurrent from 'common/utils/applyWhenCurrent'
 
 interface Props {
   entry: BibliographyEntry
@@ -20,7 +21,7 @@ export default class BibliographyEntryFormController extends Component<
   static contextType = SessionContext
   context!: React.ContextType<typeof SessionContext>
 
-  private readonly submitOperation = new AbortableOperation()
+  private readonly submitOperation = new SupersedableOperation()
 
   constructor(props: Props) {
     super(props)
@@ -30,7 +31,7 @@ export default class BibliographyEntryFormController extends Component<
     }
   }
   componentWillUnmount(): void {
-    this.submitOperation.abort()
+    this.submitOperation.supersede()
   }
 
   get disabled(): boolean {
@@ -38,20 +39,15 @@ export default class BibliographyEntryFormController extends Component<
   }
 
   handleSubmit = (entry: BibliographyEntry): void => {
-    const signal = this.submitOperation.start()
     this.setState({ error: null, saving: true })
-    this.props
-      .onSubmit(entry)
-      .then(() => {
-        if (!signal.aborted) {
-          this.setState({ error: null, saving: false })
-        }
-      })
-      .catch((error) => {
-        if (!signal.aborted) {
-          this.setState({ error: error, saving: false })
-        }
-      })
+    applyWhenCurrent(() => this.props.onSubmit(entry), {
+      onSuccess: () => {
+        this.setState({ error: null, saving: false })
+      },
+      onError: (error) => {
+        this.setState({ error: error, saving: false })
+      },
+    })(this.submitOperation.start())
   }
 
   render(): JSX.Element {

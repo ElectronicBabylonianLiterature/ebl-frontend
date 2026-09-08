@@ -10,6 +10,8 @@ import BibliographyEntry, {
   CslData,
 } from 'bibliography/domain/BibliographyEntry'
 import { generateIds } from 'bibliography/domain/GenerateIds'
+import SupersedableOperation from 'common/utils/SupersedableOperation'
+import applyWhenCurrent from 'common/utils/applyWhenCurrent'
 
 import './BibliographyEntryForm.css'
 
@@ -46,14 +48,17 @@ interface State {
 export default class BibliographyEntryForm extends Component<Props, State> {
   static defaultProps = { value: null, disabled: false }
 
-  private abortController: AbortController
+  private readonly loadOperation = new SupersedableOperation()
   private doLoad: (value: string) => Promise<void> | undefined
 
   constructor(props: Props) {
     super(props)
     this.state = this.getInitialState(props.value)
-    this.abortController = new AbortController()
     this.doLoad = _.debounce(this.load, 500, { leading: false, trailing: true })
+  }
+
+  componentWillUnmount(): void {
+    this.loadOperation.supersede()
   }
 
   private getInitialState(value?: BibliographyEntry | null): State {
@@ -108,50 +113,30 @@ export default class BibliographyEntryForm extends Component<Props, State> {
     this.doLoad(event.target.value)
   }
 
-  private load = (value: string): Promise<void> => {
-    this.abortController.abort()
-    this.abortController = new AbortController()
-    const { signal } = this.abortController
+  private load = (value: string): Promise<void> =>
+    applyWhenCurrent<Cite>(() => Cite.async(value), {
+      onSuccess: this.applyCitation,
+      onError: this.applyInvalidEntry,
+    })(this.loadOperation.start())
 
-    const handleSuccess = (cite: Cite): void => {
-      if (signal.aborted) {
-        return
-      }
-      const cslData = cite.get({ format: 'real', type: 'json', style: 'csl' })
-      const customId = generateIds(cslData[0])
+  private applyCitation = (cite: Cite): void => {
+    const cslData = cite.get({ format: 'real', type: 'json', style: 'csl' })
+    this.setState({
+      ...this.state,
+      citation: this.formatCitation(cite),
+      cslData,
+      customId: generateIds(cslData[0]),
+      loading: false,
+    })
+  }
 
-      this.setState({
-        ...this.state,
-        citation: this.formatCitation(cite),
-        cslData,
-        customId,
-        loading: false,
-      })
-    }
-
-    const handleError = (): void => {
-      if (signal.aborted) {
-        return
-      }
-      this.setState({
-        ...this.state,
-        citation: '',
-        cslData: null,
-        loading: false,
-        isInvalid: true,
-      })
-    }
-
-    return new Promise<void>((resolve, reject) => {
-      Cite.async(value)
-        .then((cite: Cite) => {
-          handleSuccess(cite)
-          resolve()
-        })
-        .catch(() => {
-          handleError()
-          reject()
-        })
+  private applyInvalidEntry = (): void => {
+    this.setState({
+      ...this.state,
+      citation: '',
+      cslData: null,
+      loading: false,
+      isInvalid: true,
     })
   }
 

@@ -89,19 +89,3 @@ it('clears error after successful save', async () => {
   await screen.findByDisplayValue('saved transliteration')
   await waitFor(() => expect(editorState.error).toBeNull())
 })
-
-it('does not set an error for a cancellation error', async () => {
-  const cancellationError = Object.assign(new Error('cancelled'), {
-    name: 'CancellationError',
-  })
-
-  const updateEdition = jest.fn()
-  updateEdition.mockReturnValue(Promise.reject(cancellationError))
-
-  renderTransliterationForm(updateEdition)
-
-  submitFormByTestId(screen, 'transliteration-form')
-
-  await waitFor(() => expect(updateEdition).toHaveBeenCalledWith({}))
-  await waitFor(() => expect(editorState.error).toBeNull())
-})

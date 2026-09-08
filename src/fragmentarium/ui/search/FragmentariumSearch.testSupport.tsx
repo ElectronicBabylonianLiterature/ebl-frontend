@@ -38,12 +38,12 @@ export interface FragmentariumSearchTestContext {
   session: Session
   container: HTMLElement
   createSearch: (
-    query?: Partial<FragmentQuery>,
+    query: Partial<FragmentQuery>,
     activeTab?: string,
   ) => React.ReactElement
   renderSearch: (
     waitForText: string,
-    query?: Partial<FragmentQuery>,
+    query: Partial<FragmentQuery>,
     activeTab?: string,
   ) => Promise<void>
 }
@@ -66,7 +66,7 @@ export function createFragmentariumSearchTestContext(): FragmentariumSearchTestC
   const session: Session = new MemorySession(['read:fragments'])
 
   const createSearch = (
-    query: Partial<FragmentQuery> = {},
+    query: Partial<FragmentQuery>,
     activeTab = 'library',
   ): React.ReactElement => (
     <MemoryRouter>
@@ -99,7 +99,7 @@ export function createFragmentariumSearchTestContext(): FragmentariumSearchTestC
     createSearch: createSearch,
     renderSearch: async (
       waitForText: string,
-      query: Partial<FragmentQuery> = {},
+      query: Partial<FragmentQuery>,
       activeTab = 'library',
     ): Promise<void> => {
       context.container = render(createSearch(query, activeTab)).container

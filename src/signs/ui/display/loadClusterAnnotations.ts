@@ -68,16 +68,11 @@ export default async function loadClusterAnnotations({
   )
 
   return {
-    annotations:
-      successfulAnnotations.length ||
-      fallbackAnnotations.length ||
-      nonPcaAnnotations.length
-        ? [
-            ...successfulAnnotations,
-            ...fallbackAnnotations,
-            ...nonPcaAnnotations,
-          ]
-        : croppedAnnotations,
+    annotations: [
+      ...successfulAnnotations,
+      ...fallbackAnnotations,
+      ...nonPcaAnnotations,
+    ],
     hasFailures: fallbackClusterIds.length > 0,
   }
 }

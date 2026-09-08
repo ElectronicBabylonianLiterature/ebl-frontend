@@ -648,3 +648,303 @@ now), `WordDisplay.testSupport.ts` (45 ×2, mass 121 — relocated verbatim from
 - **No test lost.** Test titles were diffed against `HEAD` for `withData`(+filtering),
   `SignImages`(+empty), `usePromiseEffect` and `ColophonEditor`: identical sets. Nothing was
   removed, renamed, skipped or disabled.
+
+---
+
+## 2026-09-03 — Re-review of PR #774 at head `7afb78ed` (review only, no source changes)
+
+Requested: review the PR under the copilot instructions, gather every review and comment from
+every bot and human reviewer, check failing checks plus qlty and CodeQL, warn on any dev
+container change, confirm no new `.md` files, and rewrite the review document with a metadata
+header, a short human-readable summary with a full `Details` subsection, no line-length limit,
+and no third-person reference to the PR author.
+
+### Gathering
+
+`gh` is not installed in this dev container, so `GITHUB_TOKEN` + `curl` were used against
+`/pulls/774/{reviews,comments,files}`, `/issues/774/{comments,timeline}`,
+`/commits/<sha>/{check-runs,status}`, `/actions/runs`, and GraphQL `reviewThreads` for the
+resolved-vs-outdated distinction. `/code-scanning/alerts` and `/dependabot/alerts` returned
+`Resource not accessible by integration` — the available token lacks `security_events`, so
+CodeQL alert contents could not be read. That does not affect the finding, because the CodeQL
+workflow has never run on this branch at all.
+
+Found: 3 timeline review events (2 × `qltysh[bot]` `COMMENTED`, 1 × `Fabdulla1`
+`CHANGES_REQUESTED`), 6 inline comments (all `qltysh[bot]`, all resolved and outdated), 0
+general comments. **No `sourcery-ai` review or comment exists on this PR**, nor CodeRabbit,
+Copilot, Codecov or Snyk. The complete timeline is 10 `committed`, 3 `reviewed`, 1
+`review_requested`, 1 `cross-referenced`.
+
+### Hard gates run at head `7afb78ed`
+
+| Gate                                            | Result                                                                                                          |
+| ----------------------------------------------- | --------------------------------------------------------------------------------------------------------------- |
+| `yarn tsc --noEmit`                             | clean, 48.75 s                                                                                                  |
+| `yarn lint`                                     | clean, 74.32 s                                                                                                  |
+| `CI=true yarn test --watchAll=false --coverage` | 403 suites, 3 575 passed / 2 skipped, 50 snapshots, 546 s                                                       |
+| console-clean                                   | zero hits for `console.error`/`console.warn`/`console.log`/`Warning:`/`not wrapped in act`/unhandled rejections |
+| `yarn build:ci-stable`                          | exit 0, 82.86 s, zero warnings                                                                                  |
+| 250-line ceiling over changed files             | no `.ts`/`.tsx` file over 250                                                                                   |
+
+The plain `yarn build` was killed three times (1536 / 2400 / 3072 MB heap) before I switched to
+`build:ci-stable`. Root cause: the container has ~2.9 GB available with the VS Code server and
+its TypeScript service holding ~2.5 GB, and CRA reports an OOM-killed webpack child as "the
+process exited too early". Environmental, and CI runs the `ci-stable` form anyway
+(`main.yml:54`), so this is not a defect and no source change was made for it.
+
+### Verifications worth recording
+
+- **No write call site passes a signal.** Every `postJson`/`putJson` call in `src/` outside
+  tests and `ApiClient.ts` was enumerated (9 sites); none passes one. The type-enforced write
+  fix holds.
+- **Sass migration proven equivalent.** A detached base worktree at `4f71cb2` was created and
+  every non-partial `.sass` file compiled on both sides with `style: "expanded"`:
+  **59/59 byte-identical CSS, 0 differing, 0 failures.** The six-partial `Realia.sass` split is
+  byte-identical too (9 161 bytes both sides), so the cross-module `@extend` placeholders kept
+  their cascade position. Built `Realia` rules land in `193.*.chunk.css`.
+- **qlty "3 blocking issues" are all pre-existing.** `qlty smells --all` reproduced them and
+  each was checked against the base: `WordDisplay.testSupport.ts` (fixture relocated verbatim
+  from `WordDisplay.test.tsx`), `DetailsFields.Joins` (complexity 22, relocated from
+  `Details.tsx:54`), `ApiClient.test.ts` post/put pair (both tests present at base lines 84 and
+  117). The two `usePromiseEffect.test.tsx` duplications flagged in the previous pass as
+  "auto-resolved because outdated, not actually fixed" are now genuinely gone.
+- **Dev container: no changes.** `.devcontainer/` is tracked (`Dockerfile`, `README.md`,
+  `devcontainer.json`, `inject-secrets.sh`) and produces an empty diff against both the PR base
+  and `master`. Neither #774 nor #773 touches it. Nothing to warn about.
+- **New `.md` files: 10 in #774, 3 more in #773** — 13 reach `master` unless both are cleaned.
+  `README.md` (+8/−2) is a legitimate doc change and stays.
+- **Could not run the app in a browser.** No Chrome/Chromium binary is installed and only
+  `puppeteer-core` is present, so the "verify while running the modified application" guideline
+  could not be satisfied. The production build, the byte-identical CSS diff and the 403-suite
+  console-clean run stand in for it; a manual dev-server pass is listed as a follow-up.
+
+### New findings raised in this pass
+
+- **F1 (Medium)** — `TransliterationForm`, `WordEditor` and `BibliographyEntryFormController`
+  still hold a live `AbortSignal` beside a write via `AbortableOperation`. No signal reaches
+  `fetch`, so behaviour is correct, but the README claims the type system prevents it and for
+  these three it is convention.
+- **F2 (Medium)** — the signal-flavoured twin of `applyWhenCurrent` is hand-written verbatim in
+  8 components. DRY is a hard gate and the extraction already exists for the `isStale` shape.
+- **F3 (Medium)** — 89 changed files and 30 newly-added files are below 100% coverage; worst new
+  file at 25% branches. Mostly gaps that travelled with extracted code. No `coverageThreshold`
+  is configured, so nothing enforces this.
+- **F4/F5/N2 (Low/Info)** — `runWrite` has no unmount guard while the `AbortableOperation` write
+  paths do; the README overstates the type-level guarantee (`ApiClient.postJson`/`putJson` and
+  the `JsonApiClient` type still take `signal?`); the PR description is stale on four points.
+
+### Verdict
+
+**Request changes.** The cancellation design and all four points of the standing
+`CHANGES_REQUESTED` are genuinely resolved and every local gate passes. Merge is blocked on
+B1 (no CI, no CodeQL has ever run on this branch), B2 (the `CHANGES_REQUESTED` still stands),
+B3 (13 tracking documents) and B4 (scope). Full detail in `TASK-774-review.md`.
+
+### Not done
+
+No commit, branch or push. No GitHub review submitted, no comment posted, no reviewer touched.
+`TASK-774-review.md`, `TASK-774-todo.md` and this log are modified in the working tree only.
+
+---
+
+## 2026-09-03 (later) — Remediation of the review findings (paused mid-flight)
+
+Asked to address all the findings from the re-review. Work is **uncommitted** on top of
+`7afb78ed`. Resume instructions: `TASK-774-continuation-prompt.md`.
+
+### Three decisions I asked about, and the answers
+
+1. **The false-positive test.** `TransliterationForm.errors.test.tsx` →
+   `does not set an error for a cancellation error` failed after the F1 conversion. I probed
+   it against the unmodified file with a temporary spec: the cancellation error **does** reach
+   the form's error state on the old code too; the assertion just ran one microtask earlier
+   than the rejection landed, because `.then().catch()` settles a tick after
+   `.then(onSuccess, onError)`. Nothing ever special-cased cancellation errors there, and
+   bluebird's `CancellationError` is gone from the codebase. Approved for deletion; deleted.
+   The file's other three tests still cover real error display and clearing.
+2. **The `TASK-*.md` files.** Keep for now, remind before merge. Not deleted.
+3. **The PR description.** Approved to update on GitHub. **Not yet done** — it is still open.
+
+### F1 — no write path holds a live `AbortSignal`
+
+`AbortableOperation.start()` aborts the previous controller, so holding its signal next to a
+write is one refactor away from the defect the original review raised. Four components moved
+to `SupersedableOperation` + `applyWhenCurrent`: `TransliterationForm` (useEffect cleanup
+calls the new `supersede()`), `WordEditor` and `BibliographyEntryFormController`
+(`componentWillUnmount`), and `BibliographyEntryForm`, which also **gained** an unmount guard
+it never had.
+
+`BibliographyEntryForm.load` had a second, latent defect: it wrapped `Cite.async` in a
+`new Promise` that **rejected** on invalid input, and `handleChange` dropped the returned
+promise — an unhandled rejection on every invalid entry. `applyWhenCurrent` never rejects, so
+the conversion removes it. No test depended on the rejection.
+
+`AbortableOperation` is now used only by `usePromiseEffect`'s read slot and
+`CuneiformConverterForm`. It is a read-only primitive, exactly as the README claims.
+
+### F2 — the abort guard, eight copies to one
+
+Added `applyWhenNotAborted(operation, signal, handlers)` next to `applyWhenCurrent`; it is one
+line, delegating with `() => signal.aborted`. `FragmentButton`, `PdfDownloadButton`,
+`WordDownloadButton` and `ManuscriptsTable` now use it. Remaining `signal.aborted` sites
+(`withData`, `usePromiseEffect`, `CuneiformConverterForm`, `AfoRegisterSearchForm`) are
+genuinely different shapes — a mid-async early return and an error-only guard — and were left
+alone rather than distorted to fit.
+
+### F4 — reverted a behaviour change, documented instead
+
+I first made `usePromiseEffect`'s cleanup supersede the write, for consistency with the four
+components above. Two existing tests then failed —
+`Does not make a write stale on unmount` and `Aborting reads leaves an in-flight write
+current` — which deliberately pin the opposite contract. Rather than rewrite tests that encode
+a deliberate design decision, I reverted the change and documented both semantics in
+`README.md`. F4's own wording offered this as the first option.
+
+### F6 — all three qlty issues fixed, not dismissed
+
+- `ApiClient.test.ts`: the post/put "makes a request with given parameters" pair collapsed onto
+  an `expectJsonRequest(method)` helper.
+- `DetailsFields.Joins` (complexity 22, four nested ternaries): split into `JoinPrefix` and
+  `JoinNumber`. All ten `Details`/`CuneiformFragment`/`FragmentView` suites still pass.
+- `WordDisplay.testSupport.ts` (45 duplicated lines, mass 121): two attempts to factor the
+  fixture in TypeScript made it _worse_ (mass 124, then 87 — the two entries are structurally
+  identical by construction). Moved the data verbatim into `wordDisplayWord.json` instead and
+  imported it, following the repo's existing pattern (`dateConverterData.json`, `Kings.json`).
+  The `.ts` file is now three lines, the JSON was generated from the original object so the
+  data is byte-identical, and the smell is gone. Snapshots unchanged.
+
+Repo-wide `qlty smells`: 155 → 98. `WordDisplay.tsx` (mass 64, shared with
+`DateFieldPatternsHelp.tsx`) appears in the new output but neither file is in my diff — it
+surfaced in the ranking once the others cleared.
+
+### Pre-existing defects fixed at root
+
+- `CorpusLemmatizationFactory.applySuggestion` and `getSuggestion` were dead private methods —
+  never called, overriding nothing. Verified dead at the base branch too
+  (`4f71cb2:src/corpus/application/TextService.ts`), so the split carried them over rather than
+  orphaning them. Deleted, with the `_`, `UniqueLemma` and `Token` imports they alone used.
+  This was the file at 25% branch coverage; the branches were unreachable.
+- `FragmentRepository.testSupport.createSummaryItemDto` had an `overrides = {}` default that
+  every call site overrides and a `fragmentDto.date ?? null` whose right side can never fire.
+  Both removed; the file is now 100%.
+
+### F3 — coverage, partially closed
+
+100% reached on `signImageGrouping.ts`, `colophonNameSuggestions.ts`,
+`CuneiformFragmentTabContents.tsx`, `FragmentRepository.testSupport.ts` and
+`CorpusLemmatizationFactory.ts`. Four new test files plus a mocks module were added. The
+`colophonNameSuggestions` suite uses fake timers to cover the debounce, the superseded-pending
+and superseded-in-flight paths, and both error branches.
+
+Still open, worst first: `BibliographyEntryLoader.ts`, `TextServiceBase.ts`,
+`TextServiceCore.ts`, `ApiFragmentQueryRepository.ts`, `createFragment.ts`,
+`createQueryResult.ts`, and the rest of the 30 listed under F3 in the review.
+
+### Environment notes worth keeping
+
+- Plain `yarn build` is OOM-killed here at 1536/2400/3072 MB heap; the VS Code server and its
+  TypeScript service hold ~2.5 GB of the 7.9 GB. `yarn build:ci-stable` — CI's exact command —
+  succeeds in ~85 s with zero warnings. Use that.
+- The same pressure killed two full `yarn test --coverage` runs that were competing with a
+  targeted run or `qlty`. Run the full suite alone.
+- A targeted run with `--collectCoverageFrom` overwrites `coverage/coverage-final.json`, so the
+  per-file analysis must follow a completed full run.
+- Running `qlty` leaves untracked `.qlty/{logs,out,plugin_cachedir,results}`; `.gitignore` does
+  not cover them. Deleted rather than committed. Adding the ignore rule was offered and not
+  taken up — it would be an unrequested source change on a branch under review.
+
+### State at the pause
+
+`yarn tsc` clean. **`yarn lint` red** — three errors, all in files added this session: an
+unused `FragmentRepository` import in `FragmentRepository.corpus.test.ts` and two prettier
+errors in `colophonNameSuggestions.test.ts`. The full suite has **not** been run since; every
+targeted run of the touched suites passed. Fixing the lint and doing one clean full run is the
+first task on resuming.
+
+### Not done
+
+No commit, branch or push. Nothing written to GitHub — the approved PR-description update is
+still outstanding. No reviewer assignments touched. No `TASK-*.md` files deleted.
+
+---
+
+## 2026-09-08 — Remediation completed (uncommitted)
+
+Resumed from the handoff. All findings that could be closed without your involvement are
+closed; the gates are green.
+
+### Cleared the red tree
+
+Removed the unused `FragmentRepository` import from `FragmentRepository.corpus.test.ts` and
+prettier-fixed `colophonNameSuggestions.test.ts`. `yarn tsc` and `yarn lint` clean from there
+on.
+
+### F3 — coverage
+
+Newly-added files below 100%: **30 → 15**. All changed files: **89 → 73**. Global coverage
+93.58 → **94.11%** statements, 84.19 → **85.50%** branches, 93.13 → **93.81%** functions.
+
+Closed to 100%: `signImageGrouping`, `colophonNameSuggestions`, `CuneiformFragmentTabContents`,
+`FragmentRepository.testSupport`, `CorpusLemmatizationFactory`, `DossierCache`,
+`BibliographyEntryLoader` (+ its testSupport), `loadClusterAnnotations`, `TextServiceBase`,
+`TextServiceCore`, `ApiFragmentReadRepository`, `ApiFragmentQueryRepository`,
+`createQueryResult`, `FragmentariumSearch.testSupport`.
+
+Several of those closed by **deleting unreachable code rather than testing it** — see below.
+Where a gap could only be closed by a brittle test (a simulated cross-token DOM selection in
+jsdom, for `SpanAnnotationDisplay`'s retry path), I left it and listed it in the review instead
+of forcing it.
+
+### Pre-existing defects fixed at root
+
+- **`CorpusLemmatizationFactory.applySuggestion`/`getSuggestion`** — private, never called,
+  overriding nothing. Verified dead at the base branch too, so the 250-line split carried them
+  over rather than orphaning them. Deleted with the imports they alone used. That file was the
+  one at 25% branch coverage; the branches were unreachable.
+- **Seven sets of unreachable default arguments** — `createSummaryItemDto(overrides = {})`,
+  `fragmentDto.date ?? null`, `createChapterDisplayCacheKey`'s and `fetchChapterDisplay`'s two
+  each, `FragmentariumSearch.testSupport`'s two `query = {}`, and `TextService.testSupport`'s
+  `oldLineNumbers?.… ?? []`. Every caller supplies the argument.
+- **`BibliographyEntryLoader.cachedFindManyRequests` was unreadable.** `fetchMany` is only
+  called with ids absent from `cachedFindRequests`, and it registers all of them there before
+  returning — so a repeat batch always takes the in-flight-single path and the findMany request
+  cache can never be hit. Coverage confirmed the branch was never true. Removed the map, its
+  `.finally` bookkeeping, and `trackIdRequest`'s equally unreachable per-id fallback; ids are
+  now tracked by index against the order `fetchMany` already guarantees, which avoids the
+  `as BibliographyEntry` cast a lookup would have needed. File is 100% covered.
+- **`DossierCache` reimplemented `common/utils/cache`.** `read`/`set`/`trim` were
+  line-for-line `getCachedValue`/`setCachedValue`/`trimCache`. Rewritten to delegate: 76 → 48
+  lines, and the duplicated dead `oldestId === undefined` guard disappears. All dossier suites
+  still pass; the file is 100% covered.
+- **`loadClusterAnnotations`' final fallback was unreachable.** With at least one cluster id,
+  either a cluster returns variants or its annotations land in the fallback list, so the
+  `: croppedAnnotations` arm cannot run. Removed.
+- **A flaky shared test helper.** `test-support/waitForSpinnerToBeRemoved` (pre-existing, used
+  by 27 suites) relied on `waitFor`'s default 1 s timeout. Two of five full runs failed a
+  `FragmentView` suite on it — a _different_ suite each time, which is the signature of a
+  timeout flake rather than a defect. Given an explicit 5 s timeout, matching the convention
+  already used in `BibliographyEntryForm.test.tsx`. Five full runs since: green.
+
+### N2 — PR description
+
+Rewritten and posted to GitHub (`PATCH /pulls/774`). It now describes the `[run, cancel,
+runWrite]` API and the write-supersession design, states the correct save-flow behaviour, names
+the Sass migration and the 250-line refactor as deliberate co-travellers with their verification
+evidence, records the CI/CodeQL trigger change, and asks for all `TASK-*.md` files to be removed
+before merge. You approved this for this task only.
+
+### Gates
+
+| Gate                                            | Result                                                                             |
+| ----------------------------------------------- | ---------------------------------------------------------------------------------- |
+| `yarn tsc --noEmit`                             | clean                                                                              |
+| `yarn lint`                                     | clean                                                                              |
+| `CI=true yarn test --watchAll=false --coverage` | 414 suites passed, 3 661 passed / 2 skipped, 50 snapshots, **zero console output** |
+| `yarn build:ci-stable`                          | exit 0, 92.71 s, zero warnings                                                     |
+| 250-line ceiling                                | no changed `.ts`/`.tsx` over 250                                                   |
+| `qlty smells`                                   | 155 → 98 repo-wide                                                                 |
+
+### Not done
+
+No commit, branch or push. No reviewer assignment touched. No `TASK-*.md` deleted. The only
+thing written to GitHub was the PR description, which you approved.

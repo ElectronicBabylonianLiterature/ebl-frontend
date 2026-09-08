@@ -130,14 +130,14 @@ export const emptyMatchingLinePreview = {
 }
 
 export function createSummaryItemDto(
-  overrides: Record<string, unknown> = {},
+  overrides: Record<string, unknown>,
 ): Record<string, unknown> {
   return {
     museumNumber: fragmentDto.museumNumber,
     accession: fragmentDto.accession,
     description: fragmentDto.description,
     script: fragmentDto.script,
-    date: fragmentDto.date ?? null,
+    date: fragmentDto.date,
     genres: fragmentDto.genres,
     archaeology: {
       excavationNumber: fragmentDto.museumNumber,

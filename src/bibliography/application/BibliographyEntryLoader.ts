@@ -18,11 +18,6 @@ export default class BibliographyEntryLoader {
     Promise<BibliographyEntry>
   >()
 
-  private readonly cachedFindManyRequests = new Map<
-    string,
-    Promise<readonly BibliographyEntry[]>
-  >()
-
   constructor(
     private readonly bibliographyRepository: BibliographyRepository,
   ) {}
@@ -100,7 +95,6 @@ export default class BibliographyEntryLoader {
   }
 
   cacheUpdatedEntry(entry: BibliographyEntry): BibliographyEntry {
-    this.cachedFindManyRequests.clear()
     this.cacheEntry(entry)
     return entry
   }
@@ -108,7 +102,6 @@ export default class BibliographyEntryLoader {
   clear(): void {
     this.cachedEntries.clear()
     this.cachedFindRequests.clear()
-    this.cachedFindManyRequests.clear()
   }
 
   private cacheEntry(entry: BibliographyEntry): BibliographyEntry {
@@ -125,15 +118,6 @@ export default class BibliographyEntryLoader {
     ids: readonly string[],
   ): Promise<readonly BibliographyEntry[]> {
     const sortedUniqueIds = _.uniq(ids).sort()
-    const requestKey = sortedUniqueIds.join('|')
-    const cachedRequest = this.cachedFindManyRequests.get(requestKey)
-    if (cachedRequest) {
-      return cachedRequest.then((entries) => entries)
-    }
-
-    const requestReference: {
-      current?: Promise<readonly BibliographyEntry[]>
-    } = {}
     const request = this.bibliographyRepository
       .findMany(sortedUniqueIds)
       .then((entries) => {
@@ -151,41 +135,22 @@ export default class BibliographyEntryLoader {
           }),
         )
       })
-      .finally(() => {
-        if (
-          this.cachedFindManyRequests.get(requestKey) ===
-          requestReference.current
-        ) {
-          this.cachedFindManyRequests.delete(requestKey)
-        }
-      })
 
-    requestReference.current = request
-    this.cachedFindManyRequests.set(requestKey, request)
-
-    sortedUniqueIds.forEach((id) => this.trackIdRequest(id, request))
+    sortedUniqueIds.forEach((id, index) =>
+      this.trackIdRequest(id, index, request),
+    )
 
     return request
   }
 
   private trackIdRequest(
     id: string,
+    index: number,
     request: Promise<readonly BibliographyEntry[]>,
   ): void {
-    if (this.cachedFindRequests.has(id)) {
-      return
-    }
-
     const idRequestReference: { current?: Promise<BibliographyEntry> } = {}
     const idRequest = request
-      .then((entries) => {
-        const entry = entries.find((currentEntry) => currentEntry.id === id)
-        return entry
-          ? entry
-          : this.bibliographyRepository
-              .find(id)
-              .then((resolvedEntry) => this.cacheEntry(resolvedEntry))
-      })
+      .then((entries) => entries[index])
       .finally(() => {
         if (this.cachedFindRequests.get(id) === idRequestReference.current) {
           this.cachedFindRequests.delete(id)

@@ -5,6 +5,7 @@ import { UncertainFragment } from 'corpus/domain/text'
 import { compareManuscripts, Manuscript } from 'corpus/domain/manuscript'
 import { ReferencesHelp } from 'bibliography/ui/ReferencesHelp'
 import usePromiseEffect from 'common/hooks/usePromiseEffect'
+import { applyWhenNotAborted } from 'common/utils/applyWhenCurrent'
 import { ExtantLines } from 'corpus/domain/extant-lines'
 import HelpTrigger from 'common/ui/HelpTrigger'
 import { Popover } from 'react-bootstrap'
@@ -42,17 +43,10 @@ export default withData<
     const chapterIdKey = chapterIdToString(id)
     useEffect(() => {
       runExtantLines((signal) =>
-        textService.findExtantLines(id, signal).then(
-          (lines) => {
-            if (!signal.aborted) {
-              setExtantLines(lines)
-            }
-          },
-          (error) => {
-            if (!signal.aborted) {
-              setExtantLinesError(error)
-            }
-          },
+        applyWhenNotAborted(
+          () => textService.findExtantLines(id, signal),
+          signal,
+          { onSuccess: setExtantLines, onError: setExtantLinesError },
         ),
       )
       // eslint-disable-next-line react-hooks/exhaustive-deps

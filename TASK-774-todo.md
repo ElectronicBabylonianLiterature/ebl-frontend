@@ -93,7 +93,7 @@ codebase, and the 250-line refactor applied to **every `.ts`/`.tsx` file the PR 
 - [x] **N5 (Minor)** — the eleven newly-added files now use module-alias imports
       (plus `usePromiseEffect.test.tsx` and `ColophonEditor.test.tsx`, edited anyway).
 - [ ] **N6 (Blocker, carried over)** — `main.yml` triggers only on `pull_request: branches:
-    [master]`; this PR targets `chore/ts7-tsconfig-migration`, so lint/tsc/test/build have
+  [master]`; this PR targets `chore/ts7-tsconfig-migration`, so lint/tsc/test/build have
       never run in CI on any commit of this branch. **Maintainer action — not fixable here.**
 - [ ] **N7 (Blocker, carried over)** — `Fabdulla1`'s `CHANGES_REQUESTED` is still the review
       decision. **Maintainer action — not fixable here.**
@@ -132,3 +132,106 @@ follow-up issue alongside the 54 pre-existing over-250-line files.
 - Nothing posted to GitHub; no reviewer assignments touched.
 - `TASK-774-{todo,log,review,continuation-prompt}.md` must be deleted before merge, along
   with the nine `TASK-*.md` files already tracked on the branch.
+
+## Phase 3 — Re-review at head `7afb78ed` (2026-09-03, complete)
+
+Full re-review requested. Nothing in `src/` was changed during this phase; the only file
+written is `TASK-774-review.md`.
+
+- [x] Re-fetch every timeline review event, inline comment and general comment with
+      resolution/outdated status (REST + GraphQL `reviewThreads`); confirm no `sourcery-ai`
+      or other review bot has ever touched this PR
+- [x] Re-check check runs and commit statuses at head; confirm `CI` and `CodeQL` have still
+      never run on any of the ten commits
+- [x] Reproduce the qlty "3 blocking issues" locally and classify each as new or pre-existing
+- [x] Verify all four points of Fabdulla1's standing `CHANGES_REQUESTED` against the code
+- [x] Re-run the 250-line gate over every changed file
+- [x] Hard gates: `yarn tsc`, `yarn lint`, full suite + coverage, `yarn build:ci-stable`
+- [x] Confirm zero console output across the full run
+- [x] Measure coverage of the changed and newly-added surface from `coverage-final.json`
+- [x] **Dev container check (explicitly requested):** confirm `.devcontainer/` is untouched by
+      #774 and by base #773, against both the PR base and `master`
+- [x] **New `.md` files check (explicitly requested):** enumerate every `.md` in the diff
+- [x] Prove the out-of-scope Sass migration is behaviour-preserving: compile all 59
+      entrypoints against a base worktree and diff the CSS
+- [x] Rewrite `TASK-774-review.md` with a metadata header (date, verdict, gate results), a
+      short human-readable summary section with a full `Details` subsection, no line-length
+      limit, and no third-person reference to the PR author
+
+## Still not done, and not to be done without an explicit ask
+
+- No commit, branch or push. The review file is left modified in the working tree.
+- Nothing posted to GitHub; no reviewer assignments touched; no review submitted.
+- `TASK-774-{todo,log,review,continuation-prompt}.md` must still be deleted before merge,
+  along with the other six `TASK-*.md` files on this branch and the three on #773.
+
+## Phase 4 — Remediation of the review findings (2026-09-03, paused mid-flight)
+
+Full detail and the resume instructions are in `TASK-774-continuation-prompt.md`.
+
+### Closed
+
+- [x] **F1** — no write path holds a live `AbortSignal`. `TransliterationForm`, `WordEditor`,
+      `BibliographyEntryFormController` and `BibliographyEntryForm` moved to
+      `SupersedableOperation` + `applyWhenCurrent`. `AbortableOperation` is now read-only.
+- [x] **F2** — added `applyWhenNotAborted`; the eight hand-written abort guards are gone.
+- [x] **F4** — resolved by documenting the `runWrite` unmount semantics in `README.md`.
+      The behaviour change was attempted and reverted: two existing `usePromiseEffect` tests
+      deliberately pin the current semantics. Do not re-attempt without asking.
+- [x] **F5** — README's type-level claim corrected and scoped to service/repository writes.
+- [x] **F6** — all three qlty blocking issues fixed at root, not dismissed.
+      Repo-wide `qlty smells` 155 → 98.
+- [x] **B1** — `CI` and `CodeQL` now trigger for PRs based on `chore/**`, `feature/**`, `fix/**`.
+- [x] Pre-existing dead code removed: `CorpusLemmatizationFactory.applySuggestion`/
+      `getSuggestion` (dead at the base branch too) and two unreachable branches in
+      `createSummaryItemDto`.
+- [x] One test deleted **with explicit approval**: the false-positive
+      `does not set an error for a cancellation error` in `TransliterationForm.errors.test.tsx`.
+
+### Open
+
+- [ ] **Fix the three lint errors** left in the tree (unused import in
+      `FragmentRepository.corpus.test.ts`, two prettier errors in
+      `colophonNameSuggestions.test.ts`). The tree is red until this is done.
+- [ ] Run the full suite once, alone, and confirm zero failures and zero console output.
+- [ ] **F3** — coverage. Closed: `signImageGrouping`, `colophonNameSuggestions`,
+      `CuneiformFragmentTabContents`, `FragmentRepository.testSupport`,
+      `CorpusLemmatizationFactory`. Still open, worst first: `BibliographyEntryLoader.ts`,
+      `TextServiceBase.ts`, `TextServiceCore.ts`, `ApiFragmentQueryRepository.ts`,
+      `createFragment.ts`, `createQueryResult.ts`, and the rest of the 30 in the review.
+- [ ] **N2** — update the PR description on GitHub. Approved for this task only; confirm again
+      in a later session before writing to GitHub.
+- [ ] **B2** — re-review from `Fabdulla1`. Never touch reviewer assignment via the API.
+- [ ] **B3** — delete the 13 `TASK-*.md` files (10 here, 3 on #773) before merge. Remind, do
+      not delete unprompted.
+- [ ] Optional: add `coverageThreshold` to the Jest config so the 100% gate is mechanical.
+
+## Phase 4 — outcome (2026-09-08, complete for everything actionable locally)
+
+- [x] Lint fixed; `yarn tsc`, `yarn lint`, `yarn build:ci-stable` and the full suite are all green
+      (414 suites, 3 661 passed / 2 skipped, 50 snapshots, zero console output).
+- [x] **F3** — newly-added files below 100%: 30 → 15. All changed files: 89 → 73. Global
+      coverage 93.58 → 94.11% statements, 84.19 → 85.50% branches, 93.13 → 93.81% functions.
+      New suites: `signImageGrouping`, `colophonNameSuggestions`,
+      `CuneiformFragmentTabContents.saving`, `FragmentRepository.corpus`,
+      `FragmentRepository.lookups`, `BibliographyEntryLoader.{find,batch}`, `DossierCache`,
+      `loadClusterAnnotations`, `createFragment.sparse`, `TextService.lineDetails`, plus
+      additions to `TextService.misc`, `TextService.chapterDisplay`,
+      `FragmentRepository.rawSummary` and `DossiersService.batching`.
+- [x] **N2** — PR description rewritten and posted to GitHub.
+- [x] Pre-existing defects fixed at root: dead code in `CorpusLemmatizationFactory`, seven sets
+      of unreachable default arguments, the unreachable batch cache in
+      `BibliographyEntryLoader`, duplicated cache logic in `DossierCache`, the unreachable
+      fallback in `loadClusterAnnotations`, and the flaky 1 s timeout in the shared
+      `waitForSpinnerToBeRemoved` helper.
+
+### Still open — none of it actionable without you
+
+- [ ] **B1** — CI and CodeQL are configured to run on `chore/**` bases now, but have not run;
+      that needs a push or a retarget.
+- [ ] **B2** — re-review from `Fabdulla1`. Never touch reviewer assignment via the API.
+- [ ] **B3** — delete the 13 `TASK-*.md` files (10 here, 3 on #773) before merge.
+- [ ] **F3 residue** — 15 newly-added files still short of 100%, listed in the review under
+      "What remains on F3". Six are test-support helper options; the rest are UI fallback
+      branches and defensive DTO mappings.
+- [ ] Optional: add `coverageThreshold` to the Jest config so the gate is mechanical.

@@ -91,11 +91,10 @@ export const chapterDisplay = new ChapterDisplay(
   chapterDisplayDto.lines.map((dto, index) => ({
     ...dto,
     originalIndex: index,
-    oldLineNumbers:
-      dto.oldLineNumbers?.map((oldLineNumberDto) => ({
-        number: oldLineNumberDto.number,
-        reference: createReference(oldLineNumberDto.reference),
-      })) ?? [],
+    oldLineNumbers: dto.oldLineNumbers.map((oldLineNumberDto) => ({
+      number: oldLineNumberDto.number,
+      reference: createReference(oldLineNumberDto.reference),
+    })),
     translation: dto.translation.map(
       (translation) => new TranslationLine(translation),
     ),

@@ -39,6 +39,58 @@ export function MuseumName({ fragment: { museum } }: Props): JSX.Element {
   )
 }
 
+type Join = Fragment['joins'][number][number]
+
+function JoinPrefix({
+  join,
+  groupIndex,
+  index,
+}: {
+  readonly join: Join
+  readonly groupIndex: number
+  readonly index: number
+}): JSX.Element {
+  const uncertainty = !join.isChecked && <sup>?</sup>
+  if (join.isEnvelope) {
+    return (
+      <>
+        <br />
+        <i className="fa-solid fa-envelope" aria-label="envelope icon"></i>
+      </>
+    )
+  }
+  if (index > 0) {
+    return (
+      <>
+        <br />+{uncertainty}
+      </>
+    )
+  }
+  if (groupIndex > 0) {
+    return (
+      <>
+        <br />
+        (+{uncertainty})
+      </>
+    )
+  }
+  return <></>
+}
+
+function JoinNumber({
+  join,
+  number,
+}: {
+  readonly join: Join
+  readonly number: string
+}): JSX.Element {
+  return !join.isInFragmentarium || number === join.museumNumber ? (
+    <>{join.museumNumber}</>
+  ) : (
+    <FragmentLink number={join.museumNumber}>{join.museumNumber}</FragmentLink>
+  )
+}
+
 export function Joins({ fragment: { number, joins } }: Props): JSX.Element {
   return (
     <div className="Details-joins">
@@ -53,33 +105,8 @@ export function Joins({ fragment: { number, joins } }: Props): JSX.Element {
                 className="Details-joins__join"
                 key={`${groupIndex}-${index}`}
               >
-                {join.isEnvelope ? (
-                  <>
-                    <br />
-                    <i
-                      className="fa-solid fa-envelope"
-                      aria-label="envelope icon"
-                    ></i>
-                  </>
-                ) : index > 0 ? (
-                  <>
-                    <br />+{!join.isChecked && <sup>?</sup>}
-                  </>
-                ) : groupIndex > 0 ? (
-                  <>
-                    <br />
-                    (+{!join.isChecked && <sup>?</sup>})
-                  </>
-                ) : (
-                  ''
-                )}{' '}
-                {!join.isInFragmentarium || number === join.museumNumber ? (
-                  join.museumNumber
-                ) : (
-                  <FragmentLink number={join.museumNumber}>
-                    {join.museumNumber}
-                  </FragmentLink>
-                )}{' '}
+                <JoinPrefix join={join} groupIndex={groupIndex} index={index} />{' '}
+                <JoinNumber join={join} number={number} />{' '}
                 <sup>{_.compact([join.date, join.joinedBy]).join(', ')}</sup>
               </li>
             )),

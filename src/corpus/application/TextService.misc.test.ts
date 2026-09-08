@@ -103,3 +103,43 @@ describe('findManuscripts provenance preload', () => {
     expect(fragmentServiceMock.fetchProvenances).toHaveBeenCalledTimes(2)
   })
 })
+
+test('query', async () => {
+  const queryResult = { items: [], matchCountTotal: 0 }
+  apiClient.fetchJson.mockResolvedValueOnce(queryResult)
+
+  await expect(textService.query({ lemmas: 'foo' })).resolves.toEqual(
+    queryResult,
+  )
+  expect(apiClient.fetchJson).toHaveBeenCalledWith(
+    '/corpus/query?lemmas=foo',
+    false,
+  )
+})
+
+test('searchLemma without a genre', async () => {
+  apiClient.fetchJson.mockResolvedValueOnce([])
+
+  await expect(textService.searchLemma('lemmaId')).resolves.toEqual([])
+  expect(apiClient.fetchJson).toHaveBeenCalledWith(
+    '/lemmasearch?genre&lemma=lemmaId',
+    false,
+    undefined,
+  )
+})
+
+test('A failing cache scope falls back to the default scope', async () => {
+  const service = createService(() => {
+    throw new Error('no session')
+  })
+  const queryResult = { items: [], matchCountTotal: 0 }
+  apiClient.fetchJson.mockResolvedValue(queryResult)
+
+  await expect(service.query({ lemmas: 'foo' })).resolves.toEqual(queryResult)
+  await expect(service.query({ lemmas: 'foo' })).resolves.toEqual(queryResult)
+
+  expect(apiClient.fetchJson).toHaveBeenCalledWith(
+    '/corpus/query?lemmas=foo',
+    false,
+  )
+})
