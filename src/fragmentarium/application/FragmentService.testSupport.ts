@@ -10,7 +10,7 @@ import {
   bibliographyEntryFactory,
   referenceFactory,
 } from 'test-support/bibliography-fixtures'
-import { silenceConsoleErrors } from 'setupTests'
+import { expectConsoleErrors } from 'setupTests'
 
 export const createFragmentRepository = () => ({
   statistics: jest.fn(),
@@ -128,11 +128,8 @@ export function buildFragmentWithReferences(number: string): Fragment {
 export function rejectBibliographyLookups(
   bibliographyService: MockedBibliographyService,
 ): void {
-  bibliographyService.find.mockImplementation((id: string) =>
-    Promise.reject(new Error(`${id} not found.`)),
-  )
   bibliographyService.findMany.mockImplementation((ids: string[]) =>
     Promise.reject(new Error(`${ids} not found.`)),
   )
-  silenceConsoleErrors()
+  expectConsoleErrors(/not found\./)
 }

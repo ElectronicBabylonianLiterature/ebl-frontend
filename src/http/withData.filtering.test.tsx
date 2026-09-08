@@ -1,7 +1,7 @@
 import React from 'react'
 import { screen } from '@testing-library/react'
 import withData from 'http/withData'
-import { silenceConsoleErrors } from 'setupTests'
+import { expectConsoleErrors } from 'setupTests'
 import {
   Props,
   WithDataHarness,
@@ -55,7 +55,7 @@ describe('Filtering', () => {
 
 describe('Child component crash', () => {
   it('Displays error message', async () => {
-    silenceConsoleErrors()
+    expectConsoleErrors(/Uncaught \[Error: error\]|The above error occurred/)
     const CrashingComponent = withData<unknown, unknown, string>(
       () => {
         throw new Error(errorMessage)

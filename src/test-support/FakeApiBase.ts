@@ -74,11 +74,7 @@ export default class FakeApiBase {
     })
   }
 
-  protected allowGet(
-    path: string,
-    response: unknown = {},
-    isBlob = false,
-  ): this {
+  protected allowGet(path: string, response: unknown, isBlob = false): this {
     return this.addExpectation({
       method: 'GET',
       path: path,
@@ -118,7 +114,7 @@ export default class FakeApiBase {
       POST: (expectation: Expectation): void => {
         expect(leadingArguments(this.client.postJson, 2)).toContainEqual([
           expectation.path,
-          expectation.body || expect.anything(),
+          expectation.body,
         ])
       },
     }

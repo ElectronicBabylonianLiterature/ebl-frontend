@@ -18,6 +18,8 @@ import { ParallelLine } from 'transliteration/domain/parallel-line'
 import { fromTransliterationLineDto } from 'transliteration/application/dtos'
 import { wordFactory } from 'test-support/word-fixtures'
 import createReference from 'bibliography/application/createReference'
+import { OldLineNumberDto } from 'corpus/application/dtos'
+import { OldLineNumber } from 'transliteration/domain/line-number'
 
 export interface TextServiceTestContext {
   apiClient: jest.Mocked<ApiClient>
@@ -80,6 +82,15 @@ export const extantLines: ExtantLines = {
   },
 }
 
+export function createOldLineNumbers(
+  dtos: OldLineNumberDto[],
+): OldLineNumber[] {
+  return dtos.map((oldLineNumberDto) => ({
+    number: oldLineNumberDto.number,
+    reference: createReference(oldLineNumberDto.reference),
+  }))
+}
+
 export const chapterDisplayDto = chapterDisplayDtoFactory.build()
 
 export const chapterDisplay = new ChapterDisplay(
@@ -91,10 +102,7 @@ export const chapterDisplay = new ChapterDisplay(
   chapterDisplayDto.lines.map((dto, index) => ({
     ...dto,
     originalIndex: index,
-    oldLineNumbers: dto.oldLineNumbers.map((oldLineNumberDto) => ({
-      number: oldLineNumberDto.number,
-      reference: createReference(oldLineNumberDto.reference),
-    })),
+    oldLineNumbers: createOldLineNumbers(dto.oldLineNumbers),
     translation: dto.translation.map(
       (translation) => new TranslationLine(translation),
     ),

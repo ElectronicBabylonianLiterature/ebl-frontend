@@ -12,17 +12,12 @@ export interface TransliterationFormTestContext {
   addEventListenerSpy: jest.SpyInstance
 }
 
-export function setUpTransliterationForm(
-  updateEditionImplementation?: jest.Mock,
-): TransliterationFormTestContext {
+export function setUpTransliterationForm(): TransliterationFormTestContext {
   jest.restoreAllMocks()
   editorState.error = null
   const addEventListenerSpy = jest.spyOn(window, 'addEventListener')
-  const updateEdition = updateEditionImplementation ?? jest.fn()
-
-  if (!updateEditionImplementation) {
-    updateEdition.mockReturnValue(new Promise(() => undefined))
-  }
+  const updateEdition = jest.fn()
+  updateEdition.mockReturnValue(new Promise(() => undefined))
 
   render(
     <TransliterationForm

@@ -343,19 +343,135 @@ Every finding below was worked after the review above was written. The review te
 
 | #      | Status                           | What changed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
 | ------ | -------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **B1** | **Fixed**                        | `main.yml` and `codeql-analysis.yml` now trigger on `pull_request` to `[master, 'chore/**', 'feature/**', 'fix/**']`, so stacked PRs get CI and CodeQL. The stale "must be a subset" comment was corrected. Neither workflow has _run_ yet — that happens on the next push or retarget.                                                                                                                                                                                                                         |
+| **B1** | **Fixed and verified in CI**     | `main.yml` and `codeql-analysis.yml` now trigger on `pull_request` to `[master, 'chore/**', 'feature/**', 'fix/**']`. Both **have now run** on `f11cca21`: CodeQL green over the added lines, GitGuardian and `qlty check` green, and CI's lint/type-check/build steps green. The `test` job failed on a pre-existing vacuous assertion — see **F8**, fixed.                                                                                                                                                    |
 | **B2** | **Open — yours**                 | The `CHANGES_REQUESTED` still stands. Its four points remain verified fixed; the evidence is in section B2. Re-review must be requested by you.                                                                                                                                                                                                                                                                                                                                                                 |
 | **B3** | **Open — deferred by decision**  | The 13 `TASK-*.md` files are still present. You chose to keep them; they must be deleted before merge (10 here, 3 on #773).                                                                                                                                                                                                                                                                                                                                                                                     |
 | **B4** | **Closed as reviewed**           | Scope stands, but the Sass half is proven byte-identical against the base branch and the build passes.                                                                                                                                                                                                                                                                                                                                                                                                          |
 | **F1** | **Fixed**                        | `TransliterationForm`, `WordEditor`, `BibliographyEntryFormController` and `BibliographyEntryForm` moved from `AbortableOperation` to `SupersedableOperation` + `applyWhenCurrent`. No write path holds an `AbortSignal` any more; `AbortableOperation` is now used only by `usePromiseEffect`'s read slot and `CuneiformConverterForm`. `BibliographyEntryForm.load` also lost a latent unhandled rejection — it wrapped `Cite.async` in a promise that rejected into a dropped handle on every invalid entry. |
 | **F2** | **Fixed**                        | `applyWhenNotAborted(operation, signal, handlers)` added next to `applyWhenCurrent`; all eight hand-written `if (!signal.aborted)` guard pairs now route through one helper.                                                                                                                                                                                                                                                                                                                                    |
-| **F3** | **Substantially closed**         | Newly-added files below 100%: **30 → 15**. All changed files: **89 → 73**. Global coverage 93.58 → **94.11 %** statements, 84.19 → **85.50 %** branches, 93.13 → **93.81 %** functions. See "What remains on F3" below.                                                                                                                                                                                                                                                                                         |
+| **F3** | **Closed**                       | Newly-added files below 100%: 30 → 15 → **0** (phase 6). All 70 added files measured are at 100 % statements, branches and functions. See "F3 — how the last 15 were closed" below.                                                                                                                                                                                                                                                                                                                             |
 | **F4** | **Fixed by documentation**       | The behaviour change was attempted and reverted: two existing `usePromiseEffect` tests deliberately pin the current semantics. Both unmount behaviours are now documented in `README.md`.                                                                                                                                                                                                                                                                                                                       |
 | **F5** | **Fixed**                        | The README's guarantee is now scoped to service and repository write methods, and states why `ApiClient.postJson`/`putJson` keep the parameter. `SupersedableOperation.supersede()` and the two `applyWhen*` helpers are documented.                                                                                                                                                                                                                                                                            |
 | **F6** | **Fixed at root, not dismissed** | `ApiClient.test.ts` post/put duplication → `expectJsonRequest(method)`. `DetailsFields.Joins` complexity 22 → split into `JoinPrefix` + `JoinNumber`. `WordDisplay.testSupport.ts` 45-line fixture duplication → the data moved verbatim into `wordDisplayWord.json` (following the repo's existing `dateConverterData.json` pattern); the `.ts` file is now three lines. Repo-wide `qlty smells` **155 → 98**.                                                                                                 |
 | **F7** | **Closed**                       | `yarn build:ci-stable` — CI's exact command — passes in ~93 s with zero warnings.                                                                                                                                                                                                                                                                                                                                                                                                                               |
 | **N1** | **Unchanged**                    | `.devcontainer/` still untouched.                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
 | **N2** | **Fixed**                        | The PR description was rewritten and posted to GitHub on 2026-09-08.                                                                                                                                                                                                                                                                                                                                                                                                                                            |
+| **F9** | **Fixed**                        | `silenceConsoleErrors` replaced by `expectConsoleErrors(pattern)`, which verifies rather than suppresses; one call site deleted as unnecessary; `react-auth0-spa.security.test.tsx` split under the 250-line ceiling. Proven to fail on unexpected noise.                                                                                                                                                                                                                                                       |
+
+### F8 — CI `test` job failure: an assertion that compared two Promises (2026-09-08)
+
+**Severity: high** — a test that asserted nothing, and a red CI check on the PR head.
+
+**Reproduction.** `NODE_OPTIONS=--max_old_space_size=1536 CI=true yarn test --coverage
+--forceExit --detectOpenHandles --watch=false`, or simply `yarn test:diag`. Locally reproducible;
+also observed on GitHub Actions run `34219166831`, job `102037960544`.
+
+```
+FAIL src/fragmentarium/application/FragmentService.query.test.ts
+  ● Query by traditional references › returns traditional reference to fragment numbers mapping data
+    expect(received).toEqual(expected) // deep equality
+      Promise {
+    -   Symbol(async_id_symbol): 588200,
+    +   Symbol(async_id_symbol): 594013,
+      }
+```
+
+**Finding.** The test bound `expected` to `Promise.resolve(returnData)` and `result` to the
+un-awaited call, so `expect(result).toEqual(expected)` compared two Promise _objects_. It never
+asserted anything about the returned mapping data; it passed only because both promises were
+property-less. Under `--detectOpenHandles`, `async_hooks` stamps `Symbol(async_id_symbol)` and
+`Symbol(trigger_async_id_symbol)` onto every promise, and jest's `toEqual` compares own symbol
+properties — so the vacuous assertion finally failed.
+
+**Pre-existing.** Carried verbatim from the base branch,
+`4f71cb2:src/fragmentarium/application/FragmentService.test.ts:1900-1920`; the split at
+`1b0fe6b2` moved it unchanged. Fixed here under the pre-existing-issues gate rather than deferred.
+
+**Recommendation, applied.** Await the call and assert against `returnData`, with `result` typed
+`FragmentAfoRegisterQueryResult` — the convention already used by the sibling block in the same
+file and by `testDelegation`. The promise is captured into `pendingResult` first because
+`testing-library/no-await-sync-queries` matches the `queryBy*` prefix and mis-identifies this
+domain method as a synchronous Testing Library query; capturing avoids the false positive without
+an inline `eslint-disable` and without weakening the rule repo-wide. A repo-wide search confirms
+this was the only instance.
+
+**Process finding.** The phase-1-4 local gate, `CI=true yarn test --watchAll=false --coverage`,
+omits `--detectOpenHandles` and so cannot reproduce CI; five clean local runs missed this. The
+repo already ships `yarn test:diag` with CI's exact flags. That should be the local gate.
+
+### F9 — `silenceConsoleErrors` suppresses `console.error` (2026-09-08, NEW)
+
+**Severity: medium — FIXED (2026-09-08). Option 2 applied on your instruction to address every remaining finding.**
+
+**What.** `src/setupTests.ts:112` exports `silenceConsoleErrors()`, which runs
+`jest.spyOn(console, 'error').mockImplementation()`. The project rules state that suppressing
+console output is **never** an acceptable solution and that the source must be fixed instead.
+There are five call sites; **three are in files this PR added**
+(`http/withData.filtering.test.tsx`, `corpus/ui/ChapterEditView.saving.test.ts`,
+`fragmentarium/application/FragmentService.testSupport.ts`, the last shared by four suites), and
+two are pre-existing (`auth/react-auth0-spa.security.test.tsx`,
+`common/errors/ErrorBoundary.test.tsx`).
+
+This matters beyond tidiness: the "zero console output" gate reported in earlier phases is partly
+achieved by hiding output rather than by not producing it.
+
+**Reproduction.** Delete the `silenceConsoleErrors()` call from
+`FragmentService.testSupport.ts` and run
+`CI=true yarn test src/fragmentarium/application/FragmentService.reads.test.ts --watch=false`.
+Sixteen `console.error` blocks appear, each `Error: RN1 not found.` raised through
+`ReferenceInjector.injectReferencesToMarkup`.
+
+**Root cause.** `rejectBibliographyLookups` deliberately makes `bibliographyService.findMany`
+reject; production code at `ReferenceInjector.ts:88` catches that and calls `console.error`. The
+logging is _correct production behaviour_ reacting to a failure the test forces on purpose.
+
+**Fix at source attempted and reverted.** Replacing the rejection with
+`findMany.mockResolvedValue([])` — matching the sibling helper `createCacheTestContext`, which
+needs no suppression — makes the injector succeed rather than fail. That changes the injected
+markup structure and breaks **14 assertions across 3 suites**, because those expected values
+encode the un-injected result. The rejection is load-bearing, so there is no drop-in fix.
+
+**Options, all with costs.**
+
+1. Accept the suppression where the test's subject _is_ the error path, and document it.
+2. Convert each silencer into a `console.error` spy the test asserts on — turning suppression
+   into a verified expectation. Correct in principle, invasive across four suites.
+3. Stop `ReferenceInjector` logging and let the error propagate — changes production behaviour
+   and is outside this PR's scope.
+
+The `ErrorBoundary` and auth cases are React logging its own caught errors; they have no
+source-side fix at all and would need option 1 or 2 regardless.
+
+**Fix applied — option 2, at every call site.** `silenceConsoleErrors()` is gone. `setupTests.ts`
+now exports `expectConsoleErrors(pattern: RegExp)`, which installs the spy _and_ registers the
+errors the test declares it expects. A global `afterEach` then fails the test if any recorded
+`console.error` does **not** match the declared pattern. Blanket suppression becomes a verified
+expectation: declared errors are tolerated, anything else breaks the build.
+
+The declared patterns were derived empirically, by removing the suppression and capturing what
+each site actually logs:
+
+| Call site                                                  | Declared pattern                                                  | What it is                                                         |
+| ---------------------------------------------------------- | ----------------------------------------------------------------- | ------------------------------------------------------------------ |
+| `http/withData.filtering.test.tsx`                         | `/Uncaught \[Error: error\]\|The above error occurred/`           | React reporting a deliberately crashing child                      |
+| `common/errors/ErrorBoundary.test.tsx`                     | `/Uncaught \[Error: Error happened!\]\|The above error occurred/` | React reporting the boundary's caught error                        |
+| `auth/react-auth0-spa.*`                                   | `/Failed to create authenticated session/`                        | the app's own log on auth failure                                  |
+| `fragmentarium/application/FragmentService.testSupport.ts` | `/not found\./`                                                   | `ReferenceInjector` logging the forced lookup rejection            |
+| `corpus/ui/ChapterEditView.saving.test.ts`                 | _(call deleted)_                                                  | **it logged nothing at all** — the suppression was pure cargo cult |
+
+**Verified to actually catch noise.** A probe `console.error('PROBE: unexpected stray noise')`
+added to `ErrorBoundary.test.tsx` failed all three of its tests with the stray message shown in
+the diff. The guard is not a no-op.
+
+`react-auth0-spa.security.test.tsx` was 370 lines, over the 250-line ceiling. Touching it brought
+it under the gate, so it was split into `react-auth0-spa.sessionFallback.test.tsx` (128),
+`react-auth0-spa.tokenSecurity.test.tsx` (94), `react-auth0-spa.guestPermissions.test.ts` (40)
+and a shared `react-auth0-spa.testSupport.tsx` (33) that also removes an eight-fold duplicated
+`Auth0Provider` render block. Every original assertion survives; the four permission tests were
+duplicates of one another across two describes and are now ten granular `it.each` cases.
+
+Note that `react-auth0-spa.*`'s existing `console.warn` spies were already the correct pattern —
+they assert on the spy — and were left alone.
 
 ### Pre-existing defects fixed at root while remediating
 
@@ -370,22 +486,22 @@ Every finding below was worked after the review above was written. The review te
 
 `TransliterationForm.errors.test.tsx` → `does not set an error for a cancellation error`. Probed against the unmodified code: the cancellation error **does** reach the form's error state; the assertion merely ran one microtask before it landed, because `.then().catch()` settles a tick later than `.then(onSuccess, onError)`. Nothing ever special-cased cancellation errors there, and bluebird's `CancellationError` no longer exists in the codebase. The file's other three tests still cover real error display and clearing.
 
-### What remains on F3
+### F3 — how the last 15 were closed (phase 6)
 
-Fifteen newly-added files are still short of 100 %. Six are `*.testSupport.*` helper modules whose uncovered branches are helper options no suite exercises; the rest are UI fallback branches and defensive DTO mappings:
+All fifteen are now at 100 %. Nine were closed with new tests, six by deleting provably dead
+code. The details are in `TASK-774-log.md` under "Phase 6". Three points worth keeping here:
 
-| File                                                                                                                                                                               | Gap                                                                                                                                            |
-| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
-| `src/fragmentarium/ui/text-annotation/SpanAnnotationDisplay.tsx`                                                                                                                   | 93.2 / 84.2 / 90.9 — the "selection started on a different token" retry needs a simulated cross-token DOM selection, which jsdom makes brittle |
-| `src/test-support/FakeApiBase.ts`                                                                                                                                                  | 95.8 / 80 / 94.4                                                                                                                               |
-| `src/signs/ui/display/PeriodAccordion.tsx`                                                                                                                                         | 96.2 / 84.2 / 100                                                                                                                              |
-| `src/fragmentarium/ui/info/DetailsFields.tsx`                                                                                                                                      | 100 / 85 / 100 — museum-name, measurement and excavation-date fallbacks                                                                        |
-| `src/signs/ui/display/SignImage.tsx`                                                                                                                                               | 100 / 81.8 / 100                                                                                                                               |
-| `src/dossiers/application/DossiersQueryByIdsBatcher.ts`                                                                                                                            | 98.4 / 90.9 / 100 — the empty-flush guard                                                                                                      |
-| `src/fragmentarium/infrastructure/createFragment.ts`                                                                                                                               | 100 / 95 / 100                                                                                                                                 |
-| `src/fragmentarium/ui/edition/TransliterationFormFields.tsx`                                                                                                                       | 100 / 90 / 100                                                                                                                                 |
-| `src/fragmentarium/ui/fragment/ArchaeologyEditorFields.tsx`, `src/signs/ui/display/PeriodPreview.tsx`                                                                              | 100 / 50 / 100 — one fallback branch each                                                                                                      |
-| `CuneiformFragment.testSupport.tsx`, `TransliterationForm.testSupport.tsx`, `TextService.testSupport.ts`, `FragmentService.testSupport.ts`, `FragmentService.cache.testSupport.ts` | unexercised helper options                                                                                                                     |
+- **`SpanAnnotationDisplay.tsx` was not brittle after all.** The earlier pass judged its
+  "selection started on a different token" retry untestable in jsdom. It is testable: the
+  existing suite already fires the right mousedown/mouseup pair but replaces the interim
+  selection **before** the deferred `applySelection` runs, so the retry branch was skipped.
+  Holding the single-token selection steady reaches it deterministically.
+- **`DossiersQueryByIdsBatcher`'s empty-flush guard was unreachable and redundant.** `ids` and
+  `requests` only ever accumulate together, so no requests implies no ids, which already falls to
+  a no-op. Removed rather than tested.
+- **Six test-support helpers carried dead configuration** — mock implementations for functions no
+  suite ever calls, a dead default argument, a dead `||` fallback and a dead parameter. Removed;
+  all dependent suites still pass.
 
 ### Gates after remediation
 
@@ -603,23 +719,25 @@ Nothing here requires redesign. Items 1–3 are mechanical; item 4 is the only r
 
 ## What Has To Be Done
 
-> **Updated 2026-09-08.** Items 1, 7, 8, 10, 11, 12, 13 and 14 are done; item 2 and 3 are done locally but not in CI; item 9 is substantially done. See "Remediation status" above. What is genuinely left is items 4, 5, 6 and the residue of 9 — the list below is kept in its original form so nothing is lost.
+> **Updated 2026-09-08, second revision.** Items 1, 3, 7, 8, 10, 11, 12 and 13 are done; item 9 is substantially done. Item 2 is one push away — CI now runs on this PR and only the `test` job failed, on the pre-existing defect recorded as **F8**, which is fixed locally with every gate re-verified under CI's exact flags. What is genuinely left is items 2, 4, 5, 6, 14 and the residue of 9. The list is kept in its original numbering so nothing is lost; item 14 is new.
 
-1. **Make CI and CodeQL run on this PR.** Merge #773 so GitHub retargets #774 to `master`, or add `chore/**` to `on.pull_request.branches` in both `.github/workflows/main.yml` and `.github/workflows/codeql-analysis.yml`. **Blocker B1.**
-2. **Get a green `CI` run on head, `yarn build` included.** The build passes locally with CI's exact command (F7), but CI has never executed it — nor the tests, lint or type-check — against this branch. **Blocker B1.**
-3. **Get a green `CodeQL` run on head.** No static security analysis has been performed on 21 188 added lines. **Blocker B1.**
+1. ~~**Make CI and CodeQL run on this PR.**~~ **Done.** Both workflows ran on `f11cca21` after the push.
+2. **Get a green `CI` run on head.** On `f11cca21` lint, type-check and build passed; the `test` job failed on F8, now fixed locally. CI must be re-run on the new head to confirm green. **Blocker B1 — needs a push, ask first.**
+3. ~~**Get a green `CodeQL` run on head.**~~ **Done.** `CodeQL` and `Analyze (javascript)` both succeeded on `f11cca21`.
 4. **Delete the 10 tracking `.md` files from this PR**: `TASK-774-continuation-prompt.md`, `TASK-774-log.md`, `TASK-774-review.md` (this file), `TASK-774-todo.md`, `TASK-address-findings-log.md`, `TASK-address-findings-todo.md`, `TASK-remove-bluebird-log.md`, `TASK-remove-bluebird-review.md`, `TASK-remove-bluebird-todo.md`, `TASK-ts7-migration-review.md`. **Blocker B3.**
 5. **Delete the 3 tracking `.md` files from base PR #773**: `TASK-ts7-migration-log.md`, `TASK-ts7-migration-research.md`, `TASK-ts7-migration-todo.md`. Cleaning #774 alone still lets 3 documents reach `master`. **Blocker B3.**
 6. **Obtain a re-review from `Fabdulla1`.** The `CHANGES_REQUESTED` from 2026-08-04 is the standing review decision and will block the merge button. All four of its points are answered in section B2 above — link them in the request. **Blocker B2.**
 7. **Convert the three remaining `AbortableOperation` write paths to `SupersedableOperation`** — `TransliterationForm.submit`, `WordEditor.updateWord`, `BibliographyEntryFormController.handleSubmit` — so no write path holds an `AbortSignal`. **Required code change, F1.**
 8. **Extract the signal-flavoured guard into a shared helper** and route all 8 hand-written copies through it (`FragmentButton`, `PdfDownloadButton`, `WordDownloadButton`, `ManuscriptsTable`, `TransliterationForm`, `WordEditor`, `BibliographyEntryFormController`, `BibliographyEntryForm`). Generalising `applyWhenCurrent` over a `() => boolean` predicate satisfies items 7 and 8 in one change. **Required code change — DRY hard gate, F2.**
-9. **Close the coverage gaps on the newly-added files, or record an explicit waiver in the PR.** Priority order: `CorpusLemmatizationFactory.ts` (25 % branches), `FragmentRepository.testSupport.ts` (33.3 % branches), `CuneiformFragmentTabContents.tsx` (50 % branches / 57.1 % functions), `ApiFragmentReadRepository.ts` (66.7 % statements/functions), `colophonNameSuggestions.ts` (50 % branches), `BibliographyEntryLoader.ts` (61.5 % branches), `signImageGrouping.ts` (56.3 % branches), `TextServiceBase.ts` (66.7 % branches), `TextServiceCore.ts` (80 % branches). **Required test update, F3.**
+9. ~~**Close the coverage gaps on the newly-added files.**~~ **Done.** All 70 added files are at 100 % statements, branches and functions (was 15 short). **F3 closed.**
 10. **Document the unmount semantics of `runWrite`** in `README.md`, or add a `supersede()` to `SupersedableOperation` and call it from `usePromiseEffect`'s cleanup so both write mechanisms behave identically on unmount. **Required change, F4.**
 11. **Correct the README's type-level claim.** `ApiClient.postJson`/`putJson` and the exported `JsonApiClient` type still accept `signal?: AbortSignal`. Reword to scope the guarantee to service and repository write methods. **Required doc change, F5.**
 12. **Dismiss the 3 pre-existing qlty blocking issues** in the qlty project (`WordDisplay.testSupport.ts` duplication, `DetailsFields.Joins` complexity, `ApiClient.test.ts` post/put duplication), or extract them. All three were verified as verbatim moves of base-branch code. No behaviour change is warranted. **Required follow-up, F6.**
 13. **Update the PR description**: the `[run, cancel, runWrite]` API and the write-supersession design, the corrected save-flow behaviour note, the tracking-document count, and the `yarn build` result. **Required doc change, N2.**
-14. **Consider adding `coverageThreshold` to the Jest config** so the 100 %-on-affected-code gate is enforced mechanically rather than audited by hand each review. **Optional, follow-up to F3.**
-15. **Delete this review file before merge**, together with the documents in items 4 and 5.
+14. ~~**Decide how to handle `silenceConsoleErrors`.**~~ **Done.** Replaced with `expectConsoleErrors(pattern)`, which verifies the declared errors and fails on anything else. **F9 closed.**
+15. **Use `yarn test:diag` as the local test gate.** It is CI's exact flag set; the command used in phases 1-4 omits `--detectOpenHandles` and cannot reproduce CI. This is what let F8 through five clean local runs. **Required process change, F8.**
+16. ~~**Consider adding `coverageThreshold` to the Jest config.**~~ **Done.** `craco.config.js` now sets a global ratchet (statements 94, branches 85, functions 93, lines 94), just under the current 94.2 / 85.9 / 93.9 / 94.32, so a regression fails CI.
+17. **Delete this review file before merge**, together with the documents in items 4 and 5.
 
 ---
 
@@ -640,3 +758,26 @@ Nothing here requires redesign. Items 1–3 are mechanical; item 4 is the only r
 | `Realia.sass` split       | compiled CSS, six partials vs the base 453-line file                                                                                   | ✅ byte-identical, 9 161 bytes both sides                                           |
 | Production build          | `yarn build:ci-stable` (CI's exact command)                                                                                            | ✅ exit 0, 82.86 s, zero warnings — see F7 for the plain `yarn build` OOM           |
 | Global coverage           | `coverage/coverage-final.json`                                                                                                         | 93.58 % statements · 84.19 % branches · 93.13 % functions · 93.72 % lines           |
+
+---
+
+## Closing state — 2026-09-08 (phase 7)
+
+**Every code-level finding is closed:** B1, B4, F1-F9 and N2 fixed; N1 was informational. B2 and
+B3 are yours by design — reviewer assignment and the deletion of the tracking documents.
+
+Final gates, all under CI's exact flag set (`yarn test:diag`):
+
+| Gate                    | Result                                                            |
+| ----------------------- | ----------------------------------------------------------------- |
+| `yarn lint`             | clean                                                             |
+| `yarn tsc`              | clean                                                             |
+| Full suite              | 425 suites passed, 3 692 passed / 2 skipped, 50 snapshots, exit 0 |
+| Console output          | zero                                                              |
+| `coverageThreshold`     | passes (global ratchet 94 / 85 / 93 / 94)                         |
+| Coverage of added files | 71 measured, 0 below 100 %                                        |
+| `yarn build:ci-stable`  | exit 0                                                            |
+| 250-line ceiling        | no changed `.ts`/`.tsx` over 250                                  |
+
+The work is committed on top of `f11cca21` and **not pushed**. Next steps are listed in
+`TASK-774-todo.md` and in the continuation prompt; the first is pushing so CI can run.

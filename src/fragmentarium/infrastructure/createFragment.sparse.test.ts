@@ -3,9 +3,11 @@ import {
   createFragment,
   createFragmentInfo,
   createJoins,
+  createScript,
 } from 'fragmentarium/infrastructure/createFragment'
 import { fragmentDto } from 'test-support/test-fragment'
 import FragmentDto from 'fragmentarium/domain/FragmentDtos'
+import { ScriptDto } from 'fragmentarium/domain/fragment'
 
 const optionalKeys = [
   'accession',
@@ -80,4 +82,26 @@ test('A fragment info without an accession gets an empty one', () => {
   } as never)
 
   expect(info.accession).toEqual('')
+})
+
+test('A script without an uncertainty flag is treated as certain', () => {
+  const script = createScript({
+    period: 'Neo-Assyrian',
+    periodModifier: 'None',
+  } as unknown as ScriptDto)
+
+  expect(script.uncertain).toBe(false)
+})
+
+test('Archaeology and colophon are constructed when the backend sends them', () => {
+  const dto = {
+    ...sparseFragmentDto(),
+    archaeology: { excavationNumber: { prefix: 'X', number: '1', suffix: '' } },
+    colophon: { individuals: [] },
+  } as unknown as FragmentDto
+
+  const fragment = createFragment(dto)
+
+  expect(fragment.archaeology?.excavationNumber).toEqual('X.1')
+  expect(fragment.colophon?.individuals).toEqual([])
 })

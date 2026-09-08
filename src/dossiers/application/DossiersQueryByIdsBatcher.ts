@@ -74,10 +74,6 @@ export default class DossiersQueryByIdsBatcher {
     pendingBatch.ids = new Set<string>()
     pendingBatch.requests = []
 
-    if (requestsToResolve.length === 0) {
-      return
-    }
-
     if (idsToFetch.length === 0) {
       this.resolveFromCache(requestsToResolve)
       return

@@ -10,6 +10,14 @@ module.exports = {
       jestConfig.modulePaths = Array.from(
         new Set([...(jestConfig.modulePaths || []), sourceDirectory]),
       )
+      jestConfig.coverageThreshold = {
+        global: {
+          statements: 94,
+          branches: 85,
+          functions: 93,
+          lines: 94,
+        },
+      }
       return jestConfig
     },
   },

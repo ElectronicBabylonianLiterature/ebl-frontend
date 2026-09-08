@@ -26,9 +26,6 @@ export const edition = {
 export function createCacheTestContext(): CacheTestContext {
   const context = createFragmentServiceTestContext()
 
-  context.bibliographyService.find.mockImplementation((id: string) =>
-    Promise.reject(new Error(`${id} not found.`)),
-  )
   context.bibliographyService.findMany.mockResolvedValue([])
 
   return {

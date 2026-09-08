@@ -1,6 +1,5 @@
 import AppDriver from 'test-support/AppDriver'
 import FakeApi from 'test-support/FakeApi'
-import { silenceConsoleErrors } from 'setupTests'
 import {
   chapterDtos,
   setUpChapterEditView,
@@ -44,7 +43,6 @@ test('Save lemmatization', async () => {
 })
 
 test('Shows an error when saving the alignment fails', async () => {
-  silenceConsoleErrors()
   const chapter = chapterDtos[0]
   await setup(chapter)
 

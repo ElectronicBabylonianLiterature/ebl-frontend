@@ -93,7 +93,7 @@ codebase, and the 250-line refactor applied to **every `.ts`/`.tsx` file the PR 
 - [x] **N5 (Minor)** — the eleven newly-added files now use module-alias imports
       (plus `usePromiseEffect.test.tsx` and `ColophonEditor.test.tsx`, edited anyway).
 - [ ] **N6 (Blocker, carried over)** — `main.yml` triggers only on `pull_request: branches:
-  [master]`; this PR targets `chore/ts7-tsconfig-migration`, so lint/tsc/test/build have
+[master]`; this PR targets `chore/ts7-tsconfig-migration`, so lint/tsc/test/build have
       never run in CI on any commit of this branch. **Maintainer action — not fixable here.**
 - [ ] **N7 (Blocker, carried over)** — `Fabdulla1`'s `CHANGES_REQUESTED` is still the review
       decision. **Maintainer action — not fixable here.**
@@ -225,13 +225,81 @@ Full detail and the resume instructions are in `TASK-774-continuation-prompt.md`
       fallback in `loadClusterAnnotations`, and the flaky 1 s timeout in the shared
       `waitForSpinnerToBeRemoved` helper.
 
-### Still open — none of it actionable without you
+## Phase 5 — 2026-09-08 — CI ran, and the `test` job failed
 
-- [ ] **B1** — CI and CodeQL are configured to run on `chore/**` bases now, but have not run;
-      that needs a push or a retarget.
+- [x] Reconciled the stale handoff: the phase-4 work is committed as `f11cca21` and pushed;
+      `origin/chore/remove-bluebird` matches it. The push is what finally triggered CI.
+- [x] **B1 — CodeQL and CI have now run on `f11cca21`.** CodeQL green over the added lines;
+      GitGuardian and `qlty check` green; CI's lint, type-check and build steps all green.
+- [x] **Fixed the failing `test` job at root.**
+      `FragmentService.query.test.ts` → `returns traditional reference to fragment numbers
+    mapping data` asserted `expect(result).toEqual(expected)` where **both sides were
+      un-awaited Promises** — it never tested the data. It failed only in CI because
+      `--detectOpenHandles` enables `async_hooks`, which stamps `Symbol(async_id_symbol)` onto
+      promises, and jest's `toEqual` compares own symbol properties.
+      **Pre-existing** — carried verbatim from `4f71cb2:.../FragmentService.test.ts:1900-1920`.
+      Now awaits and asserts against `returnData`, typed `FragmentAfoRegisterQueryResult`.
+- [x] Verified no second instance of the pattern exists repo-wide; `testDelegation` awaits
+      correctly.
+- [x] Re-ran every gate with **CI's exact flags** this time: lint clean, `tsc` clean, 414 suites
+      passed / 3 661 tests / 50 snapshots with **zero console output**, `build:ci-stable` exit 0.
+
+### Process fix
+
+- [ ] **Use `yarn test:diag` as the local test gate.** It is already CI's exact flag set. The
+      command used in phases 1-4 (`CI=true yarn test --watchAll=false --coverage`) omits
+      `--detectOpenHandles` and therefore cannot reproduce CI. Five clean local runs missed this.
+
+## Phase 6 — 2026-09-08 — F3 closed, every finding audited
+
+- [x] Re-gathered every GitHub finding: 3 timeline reviews, 6 inline `qltysh[bot]` comments,
+      0 issue comments. All six bot comments were already verified resolved; `qlty check` is
+      green on the head. Only **F3** was genuinely outstanding.
+- [x] **F3 closed.** Newly-added files below 100 %: **15 → 0**; all 70 added files are at 100 %
+      statements, branches and functions. Nine closed with new tests, six by deleting provably
+      dead code (dead mock configuration in four test-support helpers, a dead default argument
+      and a dead `||` fallback in `FakeApiBase`, a dead helper parameter, and an unreachable
+      guard in `DossiersQueryByIdsBatcher`).
+- [x] `SpanAnnotationDisplay`'s retry — previously judged too brittle for jsdom — turned out to
+      be deterministically testable; the existing suite simply swapped the selection too early.
+- [x] All gates re-run with CI's exact flags: 423 suites, 3 685 passed / 2 skipped, 50 snapshots,
+      **zero console output**, `build:ci-stable` exit 0, nothing over 250 lines.
+
+## Phase 7 — 2026-09-08 — F9 fixed, ratchet added, every code finding closed
+
+- [x] **F9 fixed.** `silenceConsoleErrors` deleted; `setupTests.ts` now exports
+      `expectConsoleErrors(pattern)`, which declares the expected errors and fails the test on
+      any unmatched `console.error`. Patterns derived empirically per call site. One of the five
+      call sites (`ChapterEditView.saving.test.ts`) logged **nothing** and was simply removed.
+- [x] Guard proven, not assumed: a stray `console.error` probe failed all three `ErrorBoundary`
+      tests, then was reverted.
+- [x] **250-line gate restored.** Editing the 370-line `react-auth0-spa.security.test.tsx`
+      brought it under the ceiling, so it was split into three suites plus a shared testSupport
+      that also kills an eight-fold duplicated `Auth0Provider` render block. All assertions
+      preserved; the duplicated permission tests became ten `it.each` cases.
+- [x] **`coverageThreshold` added** to `craco.config.js` — global ratchet at 94/85/93/94, just
+      under the current 94.2/85.9/93.9/94.32.
+- [x] Gates: lint clean, `tsc` clean, **425 suites / 3 692 tests, zero console output**,
+      0 threshold failures, 71 added files all at 100 %, build exit 0, nothing over 250 lines.
+
+### Still open — none of it is mine to do
+
+- [ ] **B1 residue** — CI must go green on the _new_ head once this is pushed. Ask first.
 - [ ] **B2** — re-review from `Fabdulla1`. Never touch reviewer assignment via the API.
 - [ ] **B3** — delete the 13 `TASK-*.md` files (10 here, 3 on #773) before merge.
-- [ ] **F3 residue** — 15 newly-added files still short of 100%, listed in the review under
-      "What remains on F3". Six are test-support helper options; the rest are UI fallback
-      branches and defensive DTO mappings.
-- [ ] Optional: add `coverageThreshold` to the Jest config so the gate is mechanical.
+- [ ] **qlty project** — dismiss the 3 pre-existing blocking issues in the qlty dashboard (F6).
+      That is an action in their web UI, not in this repo.
+
+## Next steps, in order (2026-09-08)
+
+1. [ ] **Push the branch** so CI runs on the new head. Everything else is blocked on this.
+       _Ask before pushing — it is not pre-approved._
+2. [ ] **Verify the CI run**: `test`, `CodeQL`, `Analyze (javascript)`, GitGuardian ×3 and
+       `qlty check` all green.
+3. [ ] **Re-review from `Fabdulla1`** (B2) — requested by `khoidt`, never via the API.
+4. [ ] **Dismiss the 3 qlty blocking issues** in the qlty dashboard (F6).
+5. [ ] **Merge #773 first** — it is the base of this PR.
+6. [ ] **Delete the 13 `TASK-*.md` files immediately before merge** (B3): 10 here, 3 on #773.
+       Keep them until then; they are the working record.
+
+Nothing in this list is a code change. Every code-level finding is closed.

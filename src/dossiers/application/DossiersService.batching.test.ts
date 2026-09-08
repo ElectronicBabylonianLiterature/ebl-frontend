@@ -115,6 +115,28 @@ describe('DossiersService batching', () => {
     expect(dossiersRepository.queryByIds).toHaveBeenCalledWith(['A'])
   })
 
+  it('omits an unanswered id when the cache scope changed mid-flight', async () => {
+    const recordA = createRecord('A')
+    let resolveQuery: ((records: DossierRecord[]) => void) | undefined
+    dossiersRepository.queryByIds.mockImplementationOnce(
+      () =>
+        new Promise<DossierRecord[]>((resolve) => {
+          resolveQuery = resolve
+        }),
+    )
+
+    const request = dossiersService.queryByIds(['A', 'B'])
+    await flushMicrotasks()
+
+    cacheScope = 'signed-in'
+    const scopeChange = dossiersService.queryByIds([])
+    await scopeChange
+
+    resolveQuery?.([recordA])
+
+    await expect(request).resolves.toEqual([recordA])
+  })
+
   it('omits an id the repository did not answer with', async () => {
     const recordA = createRecord('A')
     dossiersRepository.queryByIds.mockResolvedValue([recordA])

@@ -3,7 +3,6 @@ import { MemoryRouter } from 'react-router-dom'
 import { render, screen } from '@testing-library/react'
 import SessionContext from 'auth/SessionContext'
 import CuneiformFragment from 'fragmentarium/ui/fragment/CuneiformFragment'
-import Lemmatization from 'transliteration/domain/Lemmatization'
 import WordService from 'dictionary/application/WordService'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import FragmentSearchService from 'fragmentarium/application/FragmentSearchService'
@@ -63,9 +62,6 @@ export async function setUpCuneiformFragment(): Promise<CuneiformFragmentTestCon
   const fragmentService = new (FragmentService as jest.Mock<
     jest.Mocked<FragmentService>
   >)()
-  fragmentService.createLemmatization.mockImplementation(() =>
-    Promise.resolve(new Lemmatization([], [])),
-  )
   fragmentService.findInCorpus.mockReturnValue(
     Promise.resolve({
       manuscriptAttestations: [],
