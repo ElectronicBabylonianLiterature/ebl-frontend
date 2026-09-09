@@ -10,53 +10,35 @@ describe('Security: API Client Error Reporting', () => {
   restoreFetchAroundTests()
 
   describe('Error Handling & Reporting', () => {
-    it('should report 401 errors as auth errors', async () => {
-      const authService = createMockAuthService(true)
-      const apiClient = new ApiClient(authService, mockErrorReporter)
+    it.each([
+      [401, 'Unauthorized', '/protected'],
+      [403, 'Forbidden', '/admin-only'],
+    ])(
+      'should report %i errors as auth errors',
+      async (status: number, statusText: string, endpoint: string) => {
+        const authService = createMockAuthService(true)
+        const apiClient = new ApiClient(authService, mockErrorReporter)
 
-      global.fetch = jest.fn().mockResolvedValue(
-        createJsonResponse({
-          ok: false,
-          status: 401,
-          statusText: 'Unauthorized',
-          body: { error: 'Unauthorized' },
-        }),
-      )
+        global.fetch = jest.fn().mockResolvedValue(
+          createJsonResponse({
+            ok: false,
+            status: status,
+            statusText: statusText,
+            body: { error: statusText },
+          }),
+        )
 
-      await expect(apiClient.fetchJson('/protected', true)).rejects.toThrow()
+        await expect(apiClient.fetchJson(endpoint, true)).rejects.toThrow()
 
-      expect(mockErrorReporter.captureException).toHaveBeenCalledWith(
-        expect.any(ApiError),
-        expect.objectContaining({
-          status: 401,
-          authError: true,
-        }),
-      )
-    })
-
-    it('should report 403 errors as auth errors', async () => {
-      const authService = createMockAuthService(true)
-      const apiClient = new ApiClient(authService, mockErrorReporter)
-
-      global.fetch = jest.fn().mockResolvedValue(
-        createJsonResponse({
-          ok: false,
-          status: 403,
-          statusText: 'Forbidden',
-          body: { error: 'Forbidden' },
-        }),
-      )
-
-      await expect(apiClient.fetchJson('/admin-only', true)).rejects.toThrow()
-
-      expect(mockErrorReporter.captureException).toHaveBeenCalledWith(
-        expect.any(ApiError),
-        expect.objectContaining({
-          status: 403,
-          authError: true,
-        }),
-      )
-    })
+        expect(mockErrorReporter.captureException).toHaveBeenCalledWith(
+          expect.any(ApiError),
+          expect.objectContaining({
+            status: status,
+            authError: true,
+          }),
+        )
+      },
+    )
 
     it('should not double-report errors', async () => {
       const authService = createMockAuthService(true)

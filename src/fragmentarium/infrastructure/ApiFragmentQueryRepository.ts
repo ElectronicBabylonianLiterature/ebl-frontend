@@ -11,7 +11,7 @@ import {
   LineToVecRankingDto,
 } from 'fragmentarium/domain/lineToVecRanking'
 import FragmentDto from 'fragmentarium/domain/FragmentDtos'
-import { JsonApiClient } from 'index'
+import { JsonApiClient } from 'http/JsonApiClient'
 import { ProvenanceRecord } from 'fragmentarium/domain/Provenance'
 import {
   createFragment,

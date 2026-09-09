@@ -3,7 +3,7 @@ import {
   FindspotDto,
   fromFindspotDto,
 } from 'fragmentarium/domain/archaeologyDtos'
-import { JsonApiClient } from 'index'
+import { JsonApiClient } from 'http/JsonApiClient'
 
 export interface FindspotRepository {
   fetchFindspots(): Promise<Findspot[]>

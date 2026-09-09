@@ -10,13 +10,29 @@ module.exports = {
       jestConfig.modulePaths = Array.from(
         new Set([...(jestConfig.modulePaths || []), sourceDirectory]),
       )
+      const fullCoverage = {
+        statements: 100,
+        branches: 100,
+        functions: 100,
+        lines: 100,
+      }
       jestConfig.coverageThreshold = {
         global: {
-          statements: 94.1,
-          branches: 86,
-          functions: 93.8,
-          lines: 94.2,
+          statements: 93,
+          branches: 85,
+          functions: 93,
+          lines: 93,
         },
+        'src/common/hooks/usePromiseEffect.ts': fullCoverage,
+        'src/common/utils/AbortableOperation.ts': fullCoverage,
+        'src/common/utils/ConcurrencyLimiter.ts': fullCoverage,
+        'src/common/utils/SupersedableOperation.ts': fullCoverage,
+        'src/common/utils/abortError.ts': fullCoverage,
+        'src/common/utils/applyWhenCurrent.ts': fullCoverage,
+        'src/common/utils/getOrFetchCachedValue.ts': fullCoverage,
+        'src/common/utils/mapSeries.ts': fullCoverage,
+        'src/http/ApiClient.ts': fullCoverage,
+        'src/http/withData.tsx': fullCoverage,
       }
       return jestConfig
     },

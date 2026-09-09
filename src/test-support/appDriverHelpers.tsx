@@ -25,16 +25,7 @@ import FakeApi from 'test-support/FakeApi'
 import DossiersService from 'dossiers/application/DossiersService'
 import DossiersRepository from 'dossiers/infrastructure/DossiersRepository'
 import ApiClient from 'http/ApiClient'
-
-export type JsonApiClient = {
-  fetchJson: <T = unknown>(url: string, authorize: boolean) => Promise<T>
-  postJson: <T = unknown>(
-    url: string,
-    body: Record<string, unknown>,
-    authorize?: boolean,
-  ) => Promise<T>
-  fetchBlob: (url: string, authorize: boolean) => Promise<Blob>
-}
+import { JsonApiClient } from 'http/JsonApiClient'
 
 export function getServices(api: JsonApiClient = new FakeApi().client): {
   signService: SignService
