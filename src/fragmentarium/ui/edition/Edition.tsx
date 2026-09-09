@@ -13,7 +13,7 @@ type Props = {
   updateEdition: (fields: EditionFields) => Promise<Fragment>
   fragmentSearchService: FragmentSearchService
   disabled?: boolean
-  onToggle: () => void
+  onToggle: (isCollapsed: boolean) => void
   isColumnVisible: boolean
 }
 

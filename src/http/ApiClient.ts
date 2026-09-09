@@ -18,9 +18,6 @@ async function deserializeJson(response: Response): Promise<unknown> {
     return null
   }
   if (response.status === 201) {
-    if (typeof response.text !== 'function') {
-      return typeof response.json === 'function' ? response.json() : null
-    }
     const responseText = await response.text()
     return responseText.trim() ? JSON.parse(responseText) : null
   }
@@ -45,11 +42,7 @@ export class ApiError extends Error {
     this.name = this.constructor.name
     this.data = data
     this.status = status
-    if (typeof Error.captureStackTrace === 'function') {
-      Error.captureStackTrace(this, this.constructor)
-    } else {
-      this.stack = new Error(message).stack
-    }
+    Error.captureStackTrace(this, this.constructor)
   }
 
   static async fromResponse(response: Response): Promise<ApiError> {
@@ -82,7 +75,7 @@ export class ApiError extends Error {
   private static titleAndDescriptionToMessage(
     body: { [key: string]: unknown },
     statusText: string,
-  ) {
+  ): string {
     const title = body.title || statusText
     const description = body.description
       ? ': ' + JSON.stringify(body.description)
@@ -212,22 +205,14 @@ export default class ApiClient {
     path: string,
     body: unknown,
     authenticate = true,
-    signal?: AbortSignal,
   ): Promise<T> {
-    return this.fetch(
-      path,
-      authenticate,
-      createOptions(body, 'POST'),
-      signal,
-    ).then(deserializeJson) as Promise<T>
+    return this.fetch(path, authenticate, createOptions(body, 'POST')).then(
+      deserializeJson,
+    ) as Promise<T>
   }
 
-  putJson<T = unknown>(
-    path: string,
-    body: unknown,
-    signal?: AbortSignal,
-  ): Promise<T> {
-    return this.fetch(path, true, createOptions(body, 'PUT'), signal).then(
+  putJson<T = unknown>(path: string, body: unknown): Promise<T> {
+    return this.fetch(path, true, createOptions(body, 'PUT')).then(
       deserializeJson,
     ) as Promise<T>
   }

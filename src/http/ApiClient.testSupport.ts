@@ -24,3 +24,26 @@ export function createApiClientTestContext(): ApiClientTestContext {
     errorReporter: errorReporter,
   }
 }
+
+export interface JsonResponseOptions {
+  ok?: boolean
+  status?: number
+  statusText?: string
+  body?: unknown
+}
+
+export function createJsonResponse({
+  ok = true,
+  status = 200,
+  statusText = 'OK',
+  body = null,
+}: JsonResponseOptions = {}): Response {
+  const serializedBody = body === null ? '' : JSON.stringify(body)
+  return {
+    ok: ok,
+    status: status,
+    statusText: statusText,
+    json: async () => JSON.parse(serializedBody),
+    text: async () => serializedBody,
+  } as Response
+}

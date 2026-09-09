@@ -53,4 +53,9 @@ describe('ApiError Construction', () => {
     const message = ApiError.bodyToMessage({ custom: 'field' }, 'Bad Request')
     expect(message).toBe('{"custom":"field"}')
   })
+
+  test('ApiError.bodyToMessage omits an absent description', () => {
+    const message = ApiError.bodyToMessage({ title: 'Error' }, 'Bad Request')
+    expect(message).toBe('Error')
+  })
 })

@@ -24,3 +24,6 @@ yarn-error.log*
 
 # Added by ggshield
 .cache_ggshield
+
+# Task tracking scratch files (never committed)
+TASK-*.md

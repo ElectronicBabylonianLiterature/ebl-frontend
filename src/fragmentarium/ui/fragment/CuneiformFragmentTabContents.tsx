@@ -5,6 +5,7 @@ import Display from 'fragmentarium/ui/display/Display'
 import serializeReference from 'bibliography/application/serializeReference'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import WordService from 'dictionary/application/WordService'
+import FragmentSearchService from 'fragmentarium/application/FragmentSearchService'
 import FragmentService, {
   EditionFields,
 } from 'fragmentarium/application/FragmentService'
@@ -22,13 +23,13 @@ import TextAnnotation from 'fragmentarium/ui/text-annotation/TextAnnotation'
 export type TabsProps = {
   fragment: Fragment
   fragmentService: FragmentService
-  fragmentSearchService
+  fragmentSearchService: FragmentSearchService
   wordService: WordService
   findspotService: FindspotService
-  onSave
+  onSave: (save: () => Promise<Fragment>) => Promise<Fragment>
   disabled?: boolean
   activeLine: string
-  onToggle
+  onToggle: (isCollapsed: boolean) => void
   isColumnVisible: boolean
 }
 

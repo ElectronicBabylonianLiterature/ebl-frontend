@@ -25,16 +25,26 @@ describe('Request Cancellation', () => {
     )
   })
 
-  test('The abort signal can be passed to all methods', async () => {
+  test('The abort signal can be passed to the read methods', async () => {
     const { apiClient } = context
     fetchMock.mockResponse(JSON.stringify({ data: 'test' }))
     const controller = new AbortController()
 
     await apiClient.fetchJson(path, true, controller.signal)
-    await apiClient.postJson(path, {}, true, controller.signal)
     await apiClient.fetchBlob(path, true, controller.signal)
     ;(fetch as jest.Mock).mock.calls.forEach(([, options]) => {
       expect(options.signal).toBe(controller.signal)
+    })
+  })
+
+  test('Writes never attach an abort signal', async () => {
+    const { apiClient } = context
+    fetchMock.mockResponse(JSON.stringify({ data: 'test' }))
+
+    await apiClient.postJson(path, {})
+    await apiClient.putJson(path, {})
+    ;(fetch as jest.Mock).mock.calls.forEach(([, options]) => {
+      expect(options.signal).toBeUndefined()
     })
   })
 })

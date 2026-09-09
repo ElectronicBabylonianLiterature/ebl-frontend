@@ -165,3 +165,27 @@ describe('When unmounting', () => {
     expect(harness.InnerComponent).not.toHaveBeenCalled()
   })
 })
+
+describe('When a request is superseded', () => {
+  it('Discards a non-cancellation failure from the superseded request', async () => {
+    let rejectSuperseded: (error: Error) => void = _.noop
+    harness.getter
+      .mockImplementationOnce(
+        () =>
+          new Promise<string>((_resolve, reject) => {
+            rejectSuperseded = reject
+          }),
+      )
+      .mockImplementationOnce(() => Promise.resolve(newData))
+
+    const { rerender } = renderWithData(harness)
+    rerenderWithData(harness, rerender, newPropValue)
+    await screen.findByText(`${newPropValue} ${newData}`)
+
+    rejectSuperseded(new Error(errorMessage))
+    await waitFor(() =>
+      expect(screen.queryByText(errorMessage)).not.toBeInTheDocument(),
+    )
+    expect(screen.getByText(`${newPropValue} ${newData}`)).toBeInTheDocument()
+  })
+})
