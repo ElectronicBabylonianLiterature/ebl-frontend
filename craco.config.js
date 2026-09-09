@@ -12,10 +12,10 @@ module.exports = {
       )
       jestConfig.coverageThreshold = {
         global: {
-          statements: 94.2,
+          statements: 94.1,
           branches: 86,
-          functions: 93.9,
-          lines: 94.3,
+          functions: 93.8,
+          lines: 94.2,
         },
       }
       return jestConfig

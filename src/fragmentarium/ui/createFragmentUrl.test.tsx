@@ -3,7 +3,7 @@ import { createFragmentUrl, createFragmentUrlWithFolio } from './FragmentLink'
 import { parseUrl } from 'query-string'
 import { folioFactory } from 'test-support/fragment-data-fixtures'
 
-const chance = new Chance()
+const chance = new Chance('createFragmentUrl')
 
 it('Creates encoded URL', () => {
   const number = chance.string()

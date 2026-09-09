@@ -7,7 +7,7 @@ import {
   RealiaCrossReference,
 } from 'realia/domain/RealiaEntry'
 
-const chance = new Chance()
+const chance = new Chance('realia-fixtures')
 
 export const afoRegisterEntryFactory = Factory.define<AfoRegisterEntry>(() => {
   const volumeNumber = chance.integer({ min: 10, max: 52 })

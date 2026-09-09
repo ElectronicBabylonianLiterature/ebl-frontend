@@ -38,7 +38,7 @@ import { produce, castDraft, Draft } from 'immer'
 import { AbstractLine } from 'transliteration/domain/abstract-line'
 import { isIdToken } from 'transliteration/domain/type-guards'
 
-const defaultChance = new Chance()
+const defaultChance = new Chance('fragment-fixtures')
 
 export const fragmentFactory = Factory.define<Fragment>(
   ({ associations, sequence, transientParams }) => {
