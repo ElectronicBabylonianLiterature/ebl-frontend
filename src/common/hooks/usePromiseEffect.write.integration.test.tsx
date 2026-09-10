@@ -7,8 +7,15 @@ import { AuthenticationService } from 'auth/Auth'
 
 type ResolveBody = (body: string) => void
 
+type SettledWrite = {
+  value: string
+  outcome: 'resolved' | 'rejected'
+  detail: string
+}
+
 let apiClient: ApiClient
 let resolveRequests: ResolveBody[]
+let settledWrites: SettledWrite[]
 
 const SaveForm: FunctionComponent<{ client: ApiClient }> = ({ client }) => {
   const [, , runWrite] = usePromiseEffect()
@@ -19,11 +26,21 @@ const SaveForm: FunctionComponent<{ client: ApiClient }> = ({ client }) => {
     runWrite((isStale) =>
       client.postJson<{ value: string }>('/values', { value }).then(
         (response) => {
+          settledWrites.push({
+            value: value,
+            outcome: 'resolved',
+            detail: response.value,
+          })
           if (!isStale()) {
             setSavedValue(response.value)
           }
         },
         (error) => {
+          settledWrites.push({
+            value: value,
+            outcome: 'rejected',
+            detail: (error as Error).name,
+          })
           if (!isStale()) {
             setFailure((error as Error).name)
           }
@@ -49,6 +66,7 @@ function startedRequests(): RequestInit[] {
 beforeEach(() => {
   fetchMock.resetMocks()
   resolveRequests = []
+  settledWrites = []
   fetchMock.mockResponse(
     () =>
       new Promise<string>((resolve) => {
@@ -92,7 +110,12 @@ test('A superseding write does not abort the first write in flight', async () =>
     await Promise.resolve()
   })
 
-  expect(await screen.findByText('Failure: no failure')).toBeVisible()
+  expect(settledWrites).toContainEqual({
+    value: 'first',
+    outcome: 'resolved',
+    detail: 'first',
+  })
+  expect(settledWrites.map((write) => write.outcome)).not.toContain('rejected')
 })
 
 test('A superseded write cannot overwrite the current UI state', async () => {

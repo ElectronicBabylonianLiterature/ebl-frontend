@@ -2,6 +2,7 @@ import _ from 'lodash'
 import { AuthenticationService } from 'auth/Auth'
 import { ErrorReporter } from 'ErrorReporterContext'
 import { isAbortError } from 'common/utils/abortError'
+import captureStackTrace from 'common/utils/captureStackTrace'
 
 type Options = Omit<RequestInit, 'headers'> & {
   headers?: Record<string, string>
@@ -42,7 +43,7 @@ export class ApiError extends Error {
     this.name = this.constructor.name
     this.data = data
     this.status = status
-    Error.captureStackTrace(this, this.constructor)
+    captureStackTrace(this, this.constructor)
   }
 
   static async fromResponse(response: Response): Promise<ApiError> {

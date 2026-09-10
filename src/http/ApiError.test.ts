@@ -59,3 +59,52 @@ describe('ApiError Construction', () => {
     expect(message).toBe('Error')
   })
 })
+
+describe('On an engine without Error.captureStackTrace', () => {
+  type ErrorWithOptionalCapture = { captureStackTrace?: unknown }
+  const errorConstructor = Error as unknown as ErrorWithOptionalCapture
+  let originalCaptureStackTrace: unknown
+
+  beforeEach(() => {
+    originalCaptureStackTrace = errorConstructor.captureStackTrace
+    delete errorConstructor.captureStackTrace
+  })
+
+  afterEach(() => {
+    errorConstructor.captureStackTrace = originalCaptureStackTrace
+  })
+
+  test('Constructing an ApiError does not throw', () => {
+    const error = new ApiError('Test error', { status: 400 }, 400)
+
+    expect(error.name).toBe('ApiError')
+    expect(error.message).toBe('Test error')
+    expect(error.status).toBe(400)
+    expect(error.stack).toContain('Test error')
+  })
+
+  test('fromResponse preserves the server error instead of a TypeError', async () => {
+    const response = new Response(
+      JSON.stringify({ description: 'Fragment not found' }),
+      { status: 404, statusText: 'Not Found' },
+    )
+
+    const error = await ApiError.fromResponse(response)
+
+    expect(error).toBeInstanceOf(ApiError)
+    expect(error.message).toBe('Fragment not found')
+    expect(error.status).toBe(404)
+  })
+
+  test('fromResponse still falls back to the status text on malformed JSON', async () => {
+    const response = new Response('not json', {
+      status: 400,
+      statusText: 'Bad Request',
+    })
+
+    const error = await ApiError.fromResponse(response)
+
+    expect(error).toBeInstanceOf(ApiError)
+    expect(error.message).toBe('Bad Request')
+  })
+})

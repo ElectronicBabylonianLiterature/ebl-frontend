@@ -1,5 +1,6 @@
 import _ from 'lodash'
 import { CroppedAnnotation } from 'signs/domain/CroppedAnnotation'
+import { periods } from 'common/utils/period'
 
 export function sortVariants(
   annotations: CroppedAnnotation[],
@@ -37,4 +38,52 @@ export function formatFormLabel(form: string): string {
     return number ? `Variant ${number}` : 'Variant'
   }
   return form
+}
+
+export function sortScriptsByPeriod<Annotation>(
+  scripts: Record<string, Annotation[]>,
+): [string, Annotation[]][] {
+  const periodsAbbr = [...periods.map((period) => period.abbreviation), '']
+
+  return _.sortBy(Object.entries(scripts), ([script]) => {
+    const index = periodsAbbr.indexOf(script)
+    if (index === -1) {
+      throw new Error(`${script} has to be one of ${periodsAbbr}`)
+    }
+    return index
+  })
+}
+
+export async function runWithConcurrencyLimit<T, R>(
+  items: T[],
+  limit: number,
+  task: (item: T) => PromiseLike<R>,
+): Promise<PromiseSettledResult<R>[]> {
+  const results: PromiseSettledResult<R>[] = []
+  let index = 0
+
+  async function worker() {
+    while (index < items.length) {
+      const currentIndex = index
+      index += 1
+
+      try {
+        results[currentIndex] = {
+          status: 'fulfilled',
+          value: await task(items[currentIndex]),
+        }
+      } catch (reason) {
+        results[currentIndex] = {
+          status: 'rejected',
+          reason,
+        }
+      }
+    }
+  }
+
+  await Promise.all(
+    Array.from({ length: Math.min(limit, items.length) }, () => worker()),
+  )
+
+  return results
 }

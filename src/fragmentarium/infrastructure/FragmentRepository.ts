@@ -1,127 +1,239 @@
 import _ from 'lodash'
-import { Fragment, Script } from 'fragmentarium/domain/fragment'
-import { ApiEntityAnnotationSpan } from 'fragmentarium/ui/text-annotation/EntityType'
-import Reference from 'bibliography/domain/Reference'
-import { LemmatizationDto } from 'transliteration/domain/Lemmatization'
-import { Genres } from 'fragmentarium/domain/Genres'
-import FragmentDto, {
-  MesopotamianDateDto,
-} from 'fragmentarium/domain/FragmentDtos'
-import { ArchaeologyDto } from 'fragmentarium/domain/archaeologyDtos'
-import { Colophon } from 'fragmentarium/domain/Colophon'
-import { LineLemmaAnnotations } from 'fragmentarium/ui/fragment/lemma-annotation/LemmaAnnotation'
+import { stringify } from 'query-string'
+import { Fragment, FragmentInfoDto } from 'fragmentarium/domain/fragment'
+import Folio from 'fragmentarium/domain/Folio'
 import {
   AnnotationRepository,
-  EditionFields,
   FragmentRepository,
 } from 'fragmentarium/application/FragmentService'
-import { FragmentInfoRepository } from 'fragmentarium/application/FragmentSearchService'
-import ApiFragmentReadRepository from 'fragmentarium/infrastructure/ApiFragmentReadRepository'
+import Annotation, {
+  AnnotationData,
+  Geometry,
+} from 'fragmentarium/domain/annotation'
 import {
-  createFragment,
-  createFragmentPath,
-} from 'fragmentarium/infrastructure/createFragment'
-
-export {
-  createScript,
-  createJoins,
+  FragmentInfoRepository,
+  FragmentInfosDtoPromise,
+  FragmentInfosPromise,
+} from 'fragmentarium/application/FragmentSearchService'
+import { FolioPagerData, FragmentPagerData } from 'fragmentarium/domain/pager'
+import Word from 'dictionary/domain/Word'
+import {
+  LineToVecRanking,
+  LineToVecRankingDto,
+} from 'fragmentarium/domain/lineToVecRanking'
+import FragmentDto from 'fragmentarium/domain/FragmentDtos'
+import {
+  createLatestQueryResult,
+  createQueryResult,
+  LatestQueryResultDto,
+  QueryResultDto,
+} from 'fragmentarium/infrastructure/fragmentQueryMapping'
+import { FragmentQuery } from 'query/FragmentQuery'
+import { QueryResult, FragmentAfoRegisterQueryResult } from 'query/QueryResult'
+import { ProvenanceRecord } from 'fragmentarium/domain/Provenance'
+import {
   createFragment,
   createFragmentInfo,
   createFragmentPath,
   createLineToVecRanking,
-} from 'fragmentarium/infrastructure/createFragment'
+} from 'fragmentarium/infrastructure/fragmentFactories'
+
+import { ApiFragmentUpdates } from 'fragmentarium/infrastructure/fragmentRepositoryUpdates'
+
+export {
+  createFragment,
+  createFragmentInfo,
+  createJoins,
+  createScript,
+} from 'fragmentarium/infrastructure/fragmentFactories'
 
 class ApiFragmentRepository
-  extends ApiFragmentReadRepository
+  extends ApiFragmentUpdates
   implements FragmentInfoRepository, FragmentRepository, AnnotationRepository
 {
-  private postFragmentUpdate(
-    number: string,
-    endpoint: string,
-    body: Record<string, unknown>,
-  ): Promise<Fragment> {
+  statistics(): Promise<{
+    transliteratedFragments: number
+    lines: number
+    totalFragments: number
+  }> {
+    return this.apiClient.fetchJson<{
+      transliteratedFragments: number
+      lines: number
+      totalFragments: number
+    }>(`/statistics`, false)
+  }
+
+  lineToVecRanking(number: string): Promise<LineToVecRanking> {
     return this.apiClient
-      .postJson<FragmentDto>(createFragmentPath(number, endpoint), body)
+      .fetchJson<LineToVecRankingDto>(
+        createFragmentPath(number, 'match'),
+        false,
+      )
+      .then(createLineToVecRanking)
+  }
+
+  find(
+    number: string,
+    lines?: readonly number[],
+    excludeLines?: boolean,
+  ): Promise<Fragment> {
+    const params = _.omitBy(
+      { lines: lines, excludeLines: excludeLines },
+      (value) => _.isNil(value),
+    )
+    return this.apiClient
+      .fetchJson<FragmentDto>(
+        `/fragments/${encodeURIComponent(number)}${
+          _.isEmpty(params) ? '' : `?${stringify(params)}`
+        }`,
+        false,
+      )
       .then(createFragment)
   }
 
-  updateGenres(number: string, genres: Genres): Promise<Fragment> {
-    return this.postFragmentUpdate(number, 'genres', { genres: genres.genres })
-  }
-
-  updateScopes(number: string, scopes: string[]): Promise<Fragment> {
-    return this.postFragmentUpdate(number, 'scopes', {
-      // eslint-disable-next-line camelcase
-      authorized_scopes: scopes,
-    })
-  }
-
-  updateScript(number: string, script: Script): Promise<Fragment> {
-    return this.postFragmentUpdate(number, 'script', {
-      script: {
-        period: script.period.name,
-        periodModifier: script.periodModifier.name,
-        uncertain: script.uncertain,
-      },
-    })
-  }
-
-  updateDate(
-    number: string,
-    date: MesopotamianDateDto | undefined,
-  ): Promise<Fragment> {
-    return this.postFragmentUpdate(number, 'date', { date })
-  }
-
-  updateDatesInText(
-    number: string,
-    datesInText: readonly MesopotamianDateDto[],
-  ): Promise<Fragment> {
-    return this.postFragmentUpdate(number, 'dates-in-text', { datesInText })
-  }
-
-  updateEdition(number: string, updates: EditionFields): Promise<Fragment> {
-    return this.postFragmentUpdate(
-      number,
-      'edition',
-      _.omitBy(updates, _.isNull),
+  random(): FragmentInfosPromise {
+    return this._fetch({ random: true }).then((fragmentInfos) =>
+      fragmentInfos.map(createFragmentInfo),
     )
   }
 
-  updateLemmatization(
+  interesting(): FragmentInfosPromise {
+    return this._fetch({ interesting: true }).then((fragmentInfos) =>
+      fragmentInfos.map(createFragmentInfo),
+    )
+  }
+
+  fetchNeedsRevision(): FragmentInfosPromise {
+    return this._fetch({ needsRevision: true }).then((fragmentInfos) =>
+      fragmentInfos.map(createFragmentInfo),
+    )
+  }
+
+  _fetch(params: Record<string, unknown>): FragmentInfosDtoPromise {
+    return this.apiClient.fetchJson<ReadonlyArray<FragmentInfoDto>>(
+      `/fragments?${stringify(params)}`,
+      false,
+    )
+  }
+
+  fetchGenres(signal?: AbortSignal): Promise<string[][]> {
+    return this.apiClient.fetchJson<string[][]>('/genres', false, signal)
+  }
+
+  fetchProvenances(): Promise<readonly ProvenanceRecord[]> {
+    return this.apiClient.fetchJson<readonly ProvenanceRecord[]>(
+      '/provenances',
+      false,
+    )
+  }
+
+  fetchProvenance(id: string): Promise<ProvenanceRecord> {
+    return this.apiClient.fetchJson<ProvenanceRecord>(
+      `/provenances/${encodeURIComponent(id)}`,
+      false,
+    )
+  }
+
+  fetchProvenanceChildren(id: string): Promise<readonly ProvenanceRecord[]> {
+    return this.apiClient.fetchJson<readonly ProvenanceRecord[]>(
+      `/provenances/${encodeURIComponent(id)}/children`,
+      false,
+    )
+  }
+
+  fetchColophonNames(query: string): Promise<string[]> {
+    return this.apiClient.fetchJson<string[]>(
+      `/fragments/colophon-names?${stringify({ query })}`,
+      false,
+    )
+  }
+
+  fetchPeriods(signal?: AbortSignal): Promise<string[]> {
+    return this.apiClient.fetchJson<string[]>('/periods', false, signal)
+  }
+
+  folioPager(
+    folio: Folio,
     number: string,
-    lemmatization: LemmatizationDto,
-  ): Promise<Fragment> {
-    return this.postFragmentUpdate(number, 'lemmatization', { lemmatization })
+    signal?: AbortSignal,
+  ): Promise<FolioPagerData> {
+    return this.apiClient.fetchJson<FolioPagerData>(
+      `/fragments/${encodeURIComponent(number)}/pager/${encodeURIComponent(
+        folio.name,
+      )}/${encodeURIComponent(folio.number)}`,
+      false,
+      signal,
+    )
   }
 
-  updateLemmaAnnotation(
+  fragmentPager(fragmentNumber: string): Promise<FragmentPagerData> {
+    return this.apiClient.fetchJson<FragmentPagerData>(
+      `/fragments/${encodeURIComponent(fragmentNumber)}/pager`,
+      false,
+    )
+  }
+
+  findLemmas(word: string, isNormalized: boolean): Promise<Word[][]> {
+    return this.apiClient.fetchJson<Word[][]>(
+      `/lemmas?word=${encodeURIComponent(
+        word,
+      )}&isNormalized=${encodeURIComponent(isNormalized)}`,
+      false,
+    )
+  }
+
+  findAnnotations(
     number: string,
-    annotations: LineLemmaAnnotations,
-  ): Promise<Fragment> {
-    return this.postFragmentUpdate(number, 'lemma-annotation', annotations)
+    generateAnnotations = false,
+    signal?: AbortSignal,
+  ): Promise<readonly Annotation[]> {
+    return this.apiClient
+      .fetchJson<{
+        annotations: { geometry: Geometry; data: AnnotationData }[]
+      }>(
+        `${createFragmentPath(
+          number,
+        )}/annotations?generateAnnotations=${generateAnnotations}`,
+        false,
+        signal,
+      )
+      .then(({ annotations }) =>
+        annotations.map(
+          ({ geometry, data }) =>
+            new Annotation({ ...geometry, type: 'RECTANGLE' }, data),
+        ),
+      )
   }
 
-  updateReferences(number: string, references: Reference[]): Promise<Fragment> {
-    return this.postFragmentUpdate(number, 'references', { references })
+  query(fragmentQuery: FragmentQuery): Promise<QueryResult> {
+    return this.apiClient
+      .fetchJson<QueryResultDto>(
+        `/fragments/query?${stringify(fragmentQuery)}`,
+        false,
+      )
+      .then(createQueryResult)
   }
 
-  updateArchaeology(
-    number: string,
-    archaeology: ArchaeologyDto,
-  ): Promise<Fragment> {
-    return this.postFragmentUpdate(number, 'archaeology', { archaeology })
+  queryLatest(): Promise<QueryResult> {
+    return this.apiClient
+      .fetchJson<LatestQueryResultDto>('/fragments/latest', false)
+      .then(createLatestQueryResult)
   }
 
-  updateColophon(number: string, colophon: Colophon): Promise<Fragment> {
-    return this.postFragmentUpdate(number, 'colophon', { colophon })
+  queryByTraditionalReferences(
+    traditionalReferences: string[],
+  ): Promise<FragmentAfoRegisterQueryResult> {
+    return this.apiClient.postJson<FragmentAfoRegisterQueryResult>(
+      `/fragments/query-by-traditional-references`,
+      {
+        traditionalReferences,
+      },
+      false,
+    )
   }
 
-  updateNamedEntityAnnotations(
-    number: string,
-    annotations: readonly ApiEntityAnnotationSpan[],
-  ): Promise<Fragment> {
-    return this.postFragmentUpdate(number, 'named-entities', { annotations })
+  listAllFragments(): Promise<string[]> {
+    return this.apiClient.fetchJson<string[]>(`/fragments/all`, false)
   }
 }
 

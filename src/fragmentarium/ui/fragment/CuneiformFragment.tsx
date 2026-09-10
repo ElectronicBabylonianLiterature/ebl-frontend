@@ -1,11 +1,11 @@
-import React, { useState, FunctionComponent } from 'react'
+import React, { useEffect, useRef, useState, FunctionComponent } from 'react'
 import { Container, Row, Col } from 'react-bootstrap'
 import FragmentInCorpus from 'fragmentarium/ui/fragment/FragmentInCorpus'
 import Images from 'fragmentarium/ui/images/Images'
 import Info from 'fragmentarium/ui/info/Info'
 import ErrorAlert from 'common/errors/ErrorAlert'
 import Spinner from 'common/ui/Spinner'
-import usePromiseEffect from 'common/hooks/usePromiseEffect'
+import SupersedableOperation from 'common/utils/SupersedableOperation'
 import applyWhenCurrent from 'common/utils/applyWhenCurrent'
 import './CuneiformFragment.sass'
 import { Fragment } from 'fragmentarium/domain/fragment'
@@ -143,32 +143,45 @@ const CuneiformFragmentController: FunctionComponent<ControllerProps> = ({
   const [currentFragment, setFragment] = useState(fragment)
   const [isSaving, setIsSaving] = useState(false)
   const [error, setError] = useState<Error | null>(null)
-  const [, , runSave] = usePromiseEffect()
+  const saveOperation = useRef(new SupersedableOperation())
+
+  const isCurrentFragment = currentFragment.number === fragment.number
+  const visibleFragment = isCurrentFragment ? currentFragment : fragment
+
+  useEffect(() => () => saveOperation.current.supersede(), [])
+
+  useEffect(() => {
+    if (currentFragment.number !== fragment.number) {
+      saveOperation.current.supersede()
+      setFragment(fragment)
+      setError(null)
+      setIsSaving(false)
+    }
+  }, [currentFragment.number, fragment])
 
   const handleSave = (save: () => Promise<Fragment>): Promise<Fragment> => {
     setError(null)
     setIsSaving(true)
 
     const savePromise = save()
-    runSave(
-      applyWhenCurrent(() => savePromise, {
-        onSuccess: (updatedFragment) => {
-          setFragment(updatedFragment)
-          setIsSaving(false)
-        },
-        onError: (error) => {
-          setError(error)
-          setIsSaving(false)
-        },
-      }),
-    )
+    applyWhenCurrent(() => savePromise, {
+      onSuccess: (updatedFragment) => {
+        setFragment(updatedFragment)
+        setIsSaving(false)
+      },
+      onError: (saveError) => {
+        setError(saveError)
+        setIsSaving(false)
+      },
+    })(saveOperation.current.start())
     return savePromise
   }
 
   return (
     <>
       <CuneiformFragment
-        fragment={currentFragment}
+        key={visibleFragment.number}
+        fragment={visibleFragment}
         fragmentService={fragmentService}
         fragmentSearchService={fragmentSearchService}
         dossiersService={dossiersService}
@@ -178,8 +191,8 @@ const CuneiformFragmentController: FunctionComponent<ControllerProps> = ({
         activeFolio={activeFolio}
         tab={tab}
         onSave={handleSave}
-        saving={isSaving}
-        error={error}
+        saving={isCurrentFragment && isSaving}
+        error={isCurrentFragment ? error : null}
         activeLine={activeLine}
       />
     </>

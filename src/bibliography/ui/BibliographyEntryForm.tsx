@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Form, InputGroup, Button } from 'react-bootstrap'
 import Cite from 'citation-js'
-import _ from 'lodash'
+import _, { DebouncedFunc } from 'lodash'
 import { Parser } from 'html-to-react'
 
 import ExternalLink from 'common/ui/ExternalLink'
@@ -49,7 +49,7 @@ export default class BibliographyEntryForm extends Component<Props, State> {
   static defaultProps = { value: null, disabled: false }
 
   private readonly loadOperation = new SupersedableOperation()
-  private doLoad: (value: string) => Promise<void> | undefined
+  private doLoad: DebouncedFunc<(value: string) => Promise<void>>
 
   constructor(props: Props) {
     super(props)
@@ -58,6 +58,7 @@ export default class BibliographyEntryForm extends Component<Props, State> {
   }
 
   componentWillUnmount(): void {
+    this.doLoad.cancel()
     this.loadOperation.supersede()
   }
 
@@ -177,7 +178,10 @@ export default class BibliographyEntryForm extends Component<Props, State> {
     const parsed = Parser().parse(this.state.citation)
     return (
       <>
-        <Form onSubmit={this.handleSubmit}>
+        <Form
+          onSubmit={this.handleSubmit}
+          data-testid="bibliography-entry-form"
+        >
           <Form.Group controlId={'editor'}>
             <BibliographyHelp />
             <InputGroup>

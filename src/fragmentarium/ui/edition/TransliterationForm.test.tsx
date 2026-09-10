@@ -1,37 +1,70 @@
-import { fireEvent, screen } from '@testing-library/react'
+import React from 'react'
+import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { submitFormByTestId } from 'test-support/utils'
+
+import TransliterationForm from './TransliterationForm'
 import { act } from 'react'
 import userEvent from '@testing-library/user-event'
-import {
-  setUpTransliterationForm,
-  TransliterationFormTestContext,
-} from 'fragmentarium/ui/edition/TransliterationForm.testSupport'
+import { editorErrorOf, resetEditorMock } from 'editor/Editor.testSupport'
 
-jest.mock(
-  'editor/SpecialCharactersHelp',
-  () =>
-    jest.requireActual('fragmentarium/ui/edition/TransliterationForm.mocks')
-      .SpecialCharactersHelpMock,
+type TemplateFormMockProps = {
+  onSubmit: (templateValue: string) => void
+}
+
+jest.mock('editor/SpecialCharactersHelp', () => {
+  return function SpecialCharactersHelpMock() {
+    return null
+  }
+})
+
+jest.mock('./TemplateForm', () => {
+  return function TemplateFormMock({
+    onSubmit,
+  }: TemplateFormMockProps): JSX.Element {
+    return (
+      <button onClick={() => onSubmit('template value')} type="button">
+        Apply template
+      </button>
+    )
+  }
+})
+
+jest.mock('editor/Editor', () =>
+  jest.requireActual('editor/Editor.testSupport'),
 )
 
-jest.mock(
-  'fragmentarium/ui/edition/TemplateForm',
-  () =>
-    jest.requireActual('fragmentarium/ui/edition/TransliterationForm.mocks')
-      .TemplateFormMock,
-)
+const editorError = (): unknown => editorErrorOf('transliteration')
 
-jest.mock(
-  'editor/Editor',
-  () =>
-    jest.requireActual('fragmentarium/ui/edition/TransliterationForm.mocks')
-      .EditorMock,
-)
+const transliteration = 'line1\nline2'
+const notes = 'notes'
+const introduction = 'introduction'
 
-let context: TransliterationFormTestContext
+let addEventListenerSpy
+let updateEdition
+
+const renderForm = (updateEditionMock: jest.Mock): void => {
+  render(
+    <TransliterationForm
+      transliteration={transliteration}
+      notes={notes}
+      introduction={introduction}
+      updateEdition={updateEditionMock}
+    />,
+  )
+}
+
+const setup = () => {
+  jest.restoreAllMocks()
+  resetEditorMock()
+  addEventListenerSpy = jest.spyOn(window, 'addEventListener')
+  updateEdition = jest.fn()
+  updateEdition.mockReturnValue(new Promise(() => undefined))
+
+  renderForm(updateEdition)
+}
 
 it('Updates transliteration on change', async () => {
-  context = setUpTransliterationForm()
+  setup()
   const newTransliteration = 'line1\nline2\nnew line'
   const transliterationEditor = screen.getAllByRole('textbox')[0]
 
@@ -46,16 +79,16 @@ it('Updates transliteration on change', async () => {
 })
 
 it('calls updateEdition when submitting the form', async () => {
-  context = setUpTransliterationForm()
+  setup()
   await act(async () => {
     submitFormByTestId(screen, 'transliteration-form')
     await Promise.resolve()
   })
-  expect(context.updateEdition).toHaveBeenCalledWith({})
+  expect(updateEdition).toHaveBeenCalledWith({})
 })
 
 it('Displays warning before closing when unsaved', async () => {
-  context = setUpTransliterationForm()
+  setup()
   const newTransliteration = 'line1\nline2\nnew line'
   window.confirm = jest.fn(() => true)
   const beforeUnloadEvent = new Event('beforeunload', { cancelable: true })
@@ -72,19 +105,113 @@ it('Displays warning before closing when unsaved', async () => {
 
   window.dispatchEvent(beforeUnloadEvent)
 
-  expect(context.addEventListenerSpy).toHaveBeenCalledWith(
+  expect(addEventListenerSpy).toHaveBeenCalledWith(
     'beforeunload',
     expect.any(Function),
   )
 
   const mockEvent = { returnValue: '' }
-  const beforeUnloadHandler = context.addEventListenerSpy.mock.calls.find(
+  const beforeUnloadHandler = addEventListenerSpy.mock.calls.find(
     (call) => call[0] === 'beforeunload',
-  )?.[1] as (event: { returnValue: string }) => void
+  )[1]
 
   beforeUnloadHandler(mockEvent)
 
   expect(mockEvent.returnValue).toBe(
     'You have unsaved changes. Are you sure you want to leave?',
   )
+})
+
+it('keeps error on editor input change', async () => {
+  const requestError = new Error('request failed')
+  updateEdition = jest.fn()
+  updateEdition.mockReturnValue(Promise.reject(requestError))
+
+  renderForm(updateEdition)
+
+  submitFormByTestId(screen, 'transliteration-form')
+  await waitFor(() => expect(editorError()).toBe(requestError))
+
+  fireEvent.change(screen.getByLabelText('transliteration'), {
+    target: { value: 'changed transliteration' },
+  })
+
+  await waitFor(() => expect(editorError()).toBe(requestError))
+})
+
+it('keeps error on template application', async () => {
+  const requestError = new Error('request failed')
+  updateEdition = jest.fn()
+  updateEdition.mockReturnValue(Promise.reject(requestError))
+
+  renderForm(updateEdition)
+
+  submitFormByTestId(screen, 'transliteration-form')
+  await waitFor(() => expect(editorError()).toBe(requestError))
+
+  await userEvent.click(screen.getByRole('button', { name: 'Apply template' }))
+
+  await waitFor(() => expect(editorError()).toBe(requestError))
+  expect(screen.getByLabelText('transliteration')).toHaveValue('template value')
+})
+
+it('clears error after successful save', async () => {
+  const requestError = new Error('request failed')
+  const successfulFragment = {
+    atf: 'saved transliteration',
+    notes: { text: 'saved notes' },
+    introduction: { text: 'saved intro' },
+  }
+
+  updateEdition = jest.fn()
+  updateEdition
+    .mockReturnValueOnce(Promise.reject(requestError))
+    .mockReturnValueOnce(Promise.resolve(successfulFragment))
+
+  renderForm(updateEdition)
+
+  submitFormByTestId(screen, 'transliteration-form')
+  await waitFor(() => expect(editorError()).toBe(requestError))
+
+  fireEvent.change(screen.getByLabelText('transliteration'), {
+    target: { value: 'dirty value' },
+  })
+  await waitFor(() => expect(editorError()).toBe(requestError))
+  submitFormByTestId(screen, 'transliteration-form')
+
+  await screen.findByDisplayValue('saved transliteration')
+  await waitFor(() => expect(editorError()).toBeNull())
+})
+
+it('does not surface an error from a superseded update', async () => {
+  const supersededFailure = new Error('superseded request failed')
+  const successfulFragment = {
+    atf: 'saved transliteration',
+    notes: { text: 'saved notes' },
+    introduction: { text: 'saved intro' },
+  }
+  let rejectSuperseded: (error: Error) => void = () => undefined
+
+  updateEdition = jest.fn()
+  updateEdition
+    .mockReturnValueOnce(
+      new Promise((_resolve, reject) => {
+        rejectSuperseded = reject
+      }),
+    )
+    .mockReturnValueOnce(Promise.resolve(successfulFragment))
+
+  renderForm(updateEdition)
+
+  submitFormByTestId(screen, 'transliteration-form')
+  submitFormByTestId(screen, 'transliteration-form')
+
+  await waitFor(() => expect(updateEdition).toHaveBeenCalledTimes(2))
+  await act(async () => {
+    rejectSuperseded(supersededFailure)
+    await Promise.resolve()
+  })
+
+  await screen.findByDisplayValue('saved transliteration')
+  await waitFor(() => expect(editorError()).toBeNull())
 })

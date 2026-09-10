@@ -8,10 +8,8 @@ import Folio from './Folio'
 import { Genres } from 'fragmentarium/domain/Genres'
 import { Joins } from './join'
 import { Acquisition } from './Acquisition'
-import { MarkupPart } from 'transliteration/domain/markup'
-import { Period, PeriodModifier } from 'common/utils/period'
 import { Session } from 'auth/Session'
-import FragmentDto, {
+import {
   ExternalNumber,
   ExternalNumbers,
   ExternalNumberTypes,
@@ -22,67 +20,20 @@ import { MesopotamianDate } from 'chronology/domain/Date'
 import { Archaeology } from './archaeology'
 import { Colophon } from 'fragmentarium/domain/Colophon'
 import { DossierReference } from 'dossiers/domain/DossierReference'
-import { NamedEntity } from 'fragmentarium/ui/text-annotation/EntityType'
+import {
+  NamedEntity,
+  RealiaInfoEntry,
+  RealiaNamedEntity,
+} from 'fragmentarium/ui/text-annotation/EntityType'
+import {
+  Introduction,
+  Measures,
+  Notes,
+  Script,
+  UncuratedReference,
+} from 'fragmentarium/domain/fragmentTypes'
 
-export interface FragmentInfo {
-  readonly number: string
-  readonly accession: string
-  readonly script: Script
-  readonly description: string
-  readonly matchingLines: Text | null
-  readonly editor: string
-  readonly edition_date: string
-  readonly references: ReadonlyArray<Reference>
-  readonly genres: Genres
-}
-
-export type FragmentInfoDto = Omit<FragmentInfo, 'script' | 'accession'> &
-  Pick<FragmentDto, 'script' | 'accession'>
-
-export interface FragmentInfosPagination {
-  fragmentInfos: readonly FragmentInfo[]
-  totalCount: number
-}
-
-RecordEntry[immerable] = true
-
-export interface Measures {
-  readonly length: number | null
-  readonly width: number | null
-  readonly thickness: number | null
-  readonly lengthNote: string | null
-  readonly widthNote: string | null
-  readonly thicknessNote: string | null
-}
-
-export interface UncuratedReference {
-  readonly searchTerm?: string
-  readonly document: string
-  readonly pages: ReadonlyArray<number>
-}
-
-export interface Introduction {
-  readonly text: string
-  readonly parts: ReadonlyArray<MarkupPart>
-}
-
-export interface Notes {
-  readonly text: string
-  readonly parts: ReadonlyArray<MarkupPart>
-}
-
-export interface Script {
-  readonly period: Period
-  readonly periodModifier: PeriodModifier
-  readonly uncertain: boolean
-}
-
-export interface ScriptDto {
-  readonly period: string
-  readonly periodModifier: string
-  readonly uncertain: boolean
-}
-
+export * from 'fragmentarium/domain/fragmentTypes'
 interface FragmentProps {
   number: string
   accession: string
@@ -116,81 +67,87 @@ interface FragmentProps {
   authorizedScopes?: string[]
   dossiers: ReadonlyArray<DossierReference>
   namedEntities?: ReadonlyArray<NamedEntity>
+  realia?: ReadonlyArray<RealiaNamedEntity>
+  realiaInfo?: ReadonlyArray<RealiaInfoEntry>
 }
 
 export class Fragment {
   readonly [immerable] = true
 
-  constructor(
-    readonly number: string,
-    readonly accession: string,
-    readonly publication: string,
-    readonly acquisition: Acquisition | null,
-    readonly description: string,
-    readonly joins: Joins,
-    readonly measures: Measures,
-    readonly collection: string,
-    readonly legacyScript: string,
-    readonly cdliImages: readonly string[],
-    readonly folios: ReadonlyArray<Folio>,
-    readonly record: ReadonlyArray<RecordEntry>,
-    readonly text: Text,
-    readonly notes: Notes,
-    readonly museum: Museum,
-    readonly references: ReadonlyArray<Reference>,
-    readonly uncuratedReferences: ReadonlyArray<UncuratedReference> | null,
-    readonly traditionalReferences: readonly string[],
-    readonly atf: string,
-    readonly hasPhoto: boolean,
-    readonly genres: Genres,
-    readonly introduction: Introduction,
-    readonly script: Script,
-    readonly externalNumbers: ExternalNumbers,
-    readonly projects: ReadonlyArray<ResearchProject>,
-    readonly dossiers: ReadonlyArray<DossierReference>,
-    readonly date?: MesopotamianDate,
-    readonly datesInText?: ReadonlyArray<MesopotamianDate>,
-    readonly archaeology?: Archaeology,
-    readonly colophon?: Colophon,
-    readonly authorizedScopes?: string[],
-    readonly namedEntities?: ReadonlyArray<NamedEntity>,
-  ) {}
+  readonly number: string
+  readonly accession: string
+  readonly publication: string
+  readonly acquisition: Acquisition | null
+  readonly description: string
+  readonly joins: Joins
+  readonly measures: Measures
+  readonly collection: string
+  readonly legacyScript: string
+  readonly cdliImages: readonly string[]
+  readonly folios: ReadonlyArray<Folio>
+  readonly record: ReadonlyArray<RecordEntry>
+  readonly text: Text
+  readonly notes: Notes
+  readonly museum: Museum
+  readonly references: ReadonlyArray<Reference>
+  readonly uncuratedReferences: ReadonlyArray<UncuratedReference> | null
+  readonly traditionalReferences: readonly string[]
+  readonly atf: string
+  readonly hasPhoto: boolean
+  readonly genres: Genres
+  readonly introduction: Introduction
+  readonly script: Script
+  readonly externalNumbers: ExternalNumbers
+  readonly projects: ReadonlyArray<ResearchProject>
+  readonly dossiers: ReadonlyArray<DossierReference>
+  readonly date?: MesopotamianDate
+  readonly datesInText?: ReadonlyArray<MesopotamianDate>
+  readonly archaeology?: Archaeology
+  readonly colophon?: Colophon
+  readonly authorizedScopes?: string[]
+  readonly namedEntities?: ReadonlyArray<NamedEntity>
+  readonly realia?: ReadonlyArray<RealiaNamedEntity>
+  readonly realiaInfo?: ReadonlyArray<RealiaInfoEntry>
+
+  constructor(props: FragmentProps) {
+    this.number = props.number
+    this.accession = props.accession
+    this.publication = props.publication
+    this.acquisition = props.acquisition ?? null
+    this.description = props.description
+    this.joins = props.joins
+    this.measures = props.measures
+    this.collection = props.collection
+    this.legacyScript = props.legacyScript
+    this.cdliImages = props.cdliImages
+    this.folios = props.folios
+    this.record = props.record
+    this.text = props.text
+    this.notes = props.notes
+    this.museum = props.museum
+    this.references = props.references
+    this.uncuratedReferences = props.uncuratedReferences ?? null
+    this.traditionalReferences = props.traditionalReferences
+    this.atf = props.atf
+    this.hasPhoto = props.hasPhoto
+    this.genres = props.genres
+    this.introduction = props.introduction
+    this.script = props.script
+    this.externalNumbers = props.externalNumbers
+    this.projects = props.projects
+    this.dossiers = props.dossiers
+    this.date = props.date
+    this.datesInText = props.datesInText
+    this.archaeology = props.archaeology
+    this.colophon = props.colophon
+    this.authorizedScopes = props.authorizedScopes
+    this.namedEntities = props.namedEntities
+    this.realia = props.realia
+    this.realiaInfo = props.realiaInfo
+  }
 
   static create(props: FragmentProps): Fragment {
-    return new Fragment(
-      props.number,
-      props.accession,
-      props.publication,
-      props?.acquisition ?? null,
-      props.description,
-      props.joins,
-      props.measures,
-      props.collection,
-      props.legacyScript,
-      props.cdliImages,
-      props.folios,
-      props.record,
-      props.text,
-      props.notes,
-      props.museum,
-      props.references,
-      props?.uncuratedReferences ?? null,
-      props.traditionalReferences,
-      props.atf,
-      props.hasPhoto,
-      props.genres,
-      props.introduction,
-      props.script,
-      props.externalNumbers,
-      props.projects,
-      props.dossiers,
-      props.date,
-      props.datesInText,
-      props.archaeology,
-      props.colophon,
-      props.authorizedScopes,
-      props.namedEntities,
-    )
+    return new Fragment(props)
   }
 
   get hasUncuratedReferences(): boolean {

@@ -2,7 +2,7 @@ import React from 'react'
 import { render, screen } from '@testing-library/react'
 import PeriodPreview from 'signs/ui/display/PeriodPreview'
 import { CroppedAnnotation } from 'signs/domain/CroppedAnnotation'
-import { imageString } from 'signs/ui/display/SignImages.testSupport'
+import { imageString } from 'signs/ui/display/signImages.testSupport'
 
 function createAnnotation(
   annotationId: string,

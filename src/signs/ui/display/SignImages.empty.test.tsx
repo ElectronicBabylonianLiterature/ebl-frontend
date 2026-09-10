@@ -3,7 +3,7 @@ import {
   createMockSignService,
   croppedAnnotations,
   setUpSignImages,
-} from 'signs/ui/display/SignImages.testSupport'
+} from 'signs/ui/display/signImages.testSupport'
 
 jest.mock('signs/application/SignService')
 

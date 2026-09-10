@@ -65,7 +65,7 @@ function vowel(chance = defaultChance) {
 }
 
 function wordArray(chance = defaultChance) {
-  return [chance.word(), chance.word()]
+  return chance.unique(chance.word, 2)
 }
 
 export const formFactory = Factory.define<Form>(() => ({

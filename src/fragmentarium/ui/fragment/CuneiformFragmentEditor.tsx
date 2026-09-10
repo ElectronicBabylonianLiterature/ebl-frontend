@@ -7,6 +7,7 @@ import SessionContext from 'auth/SessionContext'
 import './CuneiformFragment.sass'
 import ErrorBoundary from 'common/errors/ErrorBoundary'
 import { Session } from 'auth/Session'
+import { realiaIcon } from 'realia/ui/realiaIcon'
 import {
   ArchaeologyContents,
   ColophonContents,
@@ -17,7 +18,7 @@ import {
   ReferencesContents,
   ScopeContents,
   TabsProps,
-} from 'fragmentarium/ui/fragment/CuneiformFragmentTabContents'
+} from 'fragmentarium/ui/fragment/editorTabContents'
 
 const ContentSection = ({
   children,
@@ -52,7 +53,7 @@ const tabIcons: Record<TabName, string> = {
   display: '𒀭',
   edition: '✏',
   lemmatization: 'Ꞌ',
-  'named entities': '⊛',
+  'named entities': realiaIcon,
   references: '§',
   archaeology: '⛏',
   colophon: '⊕',
@@ -117,24 +118,22 @@ function isTabDisabled({
   session,
   props,
 }: {
-  props: TabsProps
+  props: TabsProps & { disabled: boolean }
   name: TabName
   session: Session
 }): boolean {
-  return (
-    {
-      display: false,
-      edition: !session.isAllowedToTransliterateFragments(),
-      lemmatization:
-        _.isEmpty(props.fragment.text.lines) ||
-        !session.isAllowedToLemmatizeFragments(),
-      'named entities': !session.isAllowedToAnnotateFragments(),
-      references: props.disabled,
-      archaeology: props.disabled,
-      colophon: props.disabled,
-      permissions: props.disabled,
-    }[name] ?? false
-  )
+  return {
+    display: false,
+    edition: !session.isAllowedToTransliterateFragments(),
+    lemmatization:
+      _.isEmpty(props.fragment.text.lines) ||
+      !session.isAllowedToLemmatizeFragments(),
+    'named entities': !session.isAllowedToAnnotateFragments(),
+    references: props.disabled,
+    archaeology: props.disabled,
+    colophon: props.disabled,
+    permissions: props.disabled,
+  }[name]
 }
 
 export const EditorTabs: FunctionComponent<TabsProps> = ({
@@ -163,15 +162,16 @@ export const EditorTabs: FunctionComponent<TabsProps> = ({
             mountOnEnter={true}
           >
             {tabNames.map((name) => {
+              const tabProps = { disabled, ...props }
               const children = TabContentsMatcher({
                 name,
-                props: { disabled, ...props },
+                props: tabProps,
                 session,
               })
               return EditorTab({
                 children,
                 name,
-                disabled: isTabDisabled({ name, session, props }),
+                disabled: isTabDisabled({ name, session, props: tabProps }),
               })
             })}
           </Tabs>

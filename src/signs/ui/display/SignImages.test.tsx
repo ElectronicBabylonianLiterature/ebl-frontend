@@ -1,19 +1,26 @@
 import { screen } from '@testing-library/react'
+import { waitForSpinnerToBeRemoved } from 'test-support/waitForSpinnerToBeRemoved'
 import userEvent from '@testing-library/user-event'
 import {
-  createMockSignService,
   croppedAnnotations,
-  setUpSignImages,
+  renderSignImages,
   signName,
-} from 'signs/ui/display/SignImages.testSupport'
+  signService,
+} from 'signs/ui/display/signImages.testSupport'
 
 jest.mock('signs/application/SignService')
 
-const signService = createMockSignService()
-
 describe('Sign Images', () => {
   async function setup(): Promise<void> {
-    await setUpSignImages(signService, croppedAnnotations)
+    signService.getCentroidImages.mockReturnValue(
+      Promise.resolve(croppedAnnotations),
+    )
+    renderSignImages()
+    await waitForSpinnerToBeRemoved(screen)
+    expect(signService.getCentroidImages).toBeCalledWith(
+      signName,
+      expect.any(AbortSignal),
+    )
   }
 
   it('Displays centroid preview labels while accordions are closed', async () => {
@@ -170,5 +177,26 @@ describe('Sign Images', () => {
     expect(
       screen.getAllByText('No additional variants').length,
     ).toBeGreaterThan(0)
+  })
+})
+
+describe('Sign Images Empty', () => {
+  async function setup(): Promise<void> {
+    signService.getCentroidImages.mockReturnValue(Promise.resolve([]))
+    renderSignImages()
+    await waitForSpinnerToBeRemoved(screen)
+    expect(signService.getCentroidImages).toBeCalledWith(
+      signName,
+      expect.any(AbortSignal),
+    )
+  }
+
+  it('Check there are no Images', async () => {
+    await setup()
+    croppedAnnotations.forEach((croppedAnnotation) => {
+      expect(
+        screen.queryByText(croppedAnnotation.fragmentNumber),
+      ).not.toBeInTheDocument()
+    })
   })
 })

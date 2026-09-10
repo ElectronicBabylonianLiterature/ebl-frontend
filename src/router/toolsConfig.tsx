@@ -1,5 +1,6 @@
 import { Session } from 'auth/Session'
 import { Crumb, SectionCrumb, TextCrumb } from 'common/ui/Breadcrumbs'
+import { realiaIcon } from 'realia/ui/realiaIcon'
 
 export const tabIds = [
   'date-converter',
@@ -12,6 +13,7 @@ export const tabIds = [
   'afo-register',
   'realia',
   'cuneiform-converter',
+  'map',
 ] as const
 export type TabId = (typeof tabIds)[number]
 
@@ -35,7 +37,7 @@ export type ContentMatch = {
 export const tabConfig = [
   { id: 'signs', title: 'Signs', icon: '𒀀' },
   { id: 'dictionary', title: 'Akkadian Dictionary', icon: 'Ꞌ' },
-  { id: 'realia', title: 'Realia', icon: '⚘' },
+  { id: 'realia', title: 'Realia', icon: realiaIcon },
   { id: 'date-converter', title: 'Date Converter', icon: '⇌' },
   { id: 'list-of-kings', title: 'List of Kings', icon: '♔' },
   { id: 'genres', title: 'Genres', icon: '⊕' },
@@ -43,7 +45,8 @@ export const tabConfig = [
   { id: 'references', title: 'References', icon: '※' },
   { id: 'afo-register', title: 'AfO-Register', icon: '⊞' },
   { id: 'cuneiform-converter', title: 'Cuneiform Converter', icon: '𒐕' },
-]
+  { id: 'map', title: 'Findspot Map', icon: '◈' },
+] as const
 
 export function isTabVisible(tabId: string, session: Session): boolean {
   if (tabId === 'realia') {

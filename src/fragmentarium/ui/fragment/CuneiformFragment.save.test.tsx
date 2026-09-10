@@ -3,7 +3,7 @@ import { submitFormByTestId, clickNth } from 'test-support/utils'
 import {
   CuneiformFragmentTestContext,
   setUpCuneiformFragment,
-} from 'fragmentarium/ui/fragment/CuneiformFragment.testSupport'
+} from 'fragmentarium/ui/fragment/cuneiformFragment.testSupport'
 import ResizeObserver from 'resize-observer-polyfill'
 
 jest.mock('dictionary/application/WordService')

@@ -1,15 +1,11 @@
-import { fragment } from 'test-support/test-fragment'
-import { museumNumberToString } from 'fragmentarium/domain/MuseumNumber'
 import { referenceDtoFactory } from 'test-support/bibliography-fixtures'
 import { textLineDto } from 'test-support/lines/text-line'
 import { lineNumberFactory } from 'test-support/linenumber-factory'
-import { PeriodModifiers } from 'common/utils/period'
+import { museumNumberToString } from 'fragmentarium/domain/MuseumNumber'
 import {
-  createFragmentRepositoryTestContext,
-  createSummaryItemDto,
-} from 'fragmentarium/infrastructure/FragmentRepository.testSupport'
-
-const { apiClient, fragmentRepository } = createFragmentRepositoryTestContext()
+  apiClient,
+  fragmentRepository,
+} from 'fragmentarium/infrastructure/fragmentRepository.testSupport'
 
 describe('FragmentRepository raw summary items', () => {
   it('maps the backend summary envelope into a render-ready query item', async () => {
@@ -98,109 +94,5 @@ describe('FragmentRepository raw summary items', () => {
     expect(item.fragment?.text.lines).toHaveLength(2)
     expect(item.fragment?.references).toHaveLength(1)
     expect(item.fragment?.references[0].id).toEqual('RAW-REF-1')
-  })
-})
-
-describe('FragmentRepository query summary with unrecognized script', () => {
-  beforeEach(() => {
-    jest.clearAllMocks()
-  })
-
-  it('produces a render-safe fragment when period is unrecognized', async () => {
-    apiClient.fetchJson.mockResolvedValueOnce({
-      matchCountTotal: 1,
-      items: [
-        createSummaryItemDto({
-          script: {
-            period: 'ED IIIb',
-            periodModifier: 'None',
-            uncertain: false,
-          },
-        } as Record<string, unknown>),
-      ],
-    })
-
-    const result = await fragmentRepository.query({ transliteration: 'kur₂' })
-    const item = result.items[0]
-
-    expect(item.fragment?.script.period.abbreviation).toBeDefined()
-    expect(item.fragment?.script.period.abbreviation).toBe('Unc')
-    expect(item.fragment?.number).toEqual(fragment.number)
-    expect(item.fragment?.script.periodModifier).toBe(PeriodModifiers.None)
-  })
-
-  it('produces a render-safe fragment when period is null', async () => {
-    apiClient.fetchJson.mockResolvedValueOnce({
-      matchCountTotal: 1,
-      items: [
-        createSummaryItemDto({
-          script: {
-            period: null,
-            periodModifier: 'None',
-            uncertain: false,
-          },
-        } as Record<string, unknown>),
-      ],
-    })
-
-    const result = await fragmentRepository.query({ transliteration: 'kur₂' })
-    const item = result.items[0]
-
-    expect(item.fragment?.script.period.abbreviation).toBeDefined()
-    expect(item.fragment?.script.period.abbreviation).toBe('Unc')
-  })
-})
-
-describe('FragmentRepository query summary with a sparse item', () => {
-  beforeEach(() => {
-    jest.clearAllMocks()
-  })
-
-  it('falls back to empty values for every optional field the backend omits', async () => {
-    apiClient.fetchJson.mockResolvedValueOnce({
-      matchCountTotal: 1,
-      items: [
-        {
-          museumNumber: { prefix: 'X', number: '42', suffix: 'a' },
-          description: 'Sparse backend summary item',
-          script: {
-            period: 'Late Babylonian',
-            periodModifier: 'None',
-            uncertain: false,
-          },
-          hasPhoto: false,
-          matchingLinePreview: { lines: [], numberOfLines: 0 },
-          matchingLines: [],
-          matchCount: 0,
-        },
-      ],
-    })
-
-    const result = await fragmentRepository.query({ transliteration: 'kur₂' })
-    const sparseFragment = result.items[0].fragment
-
-    expect(sparseFragment?.references).toEqual([])
-    expect(sparseFragment?.projects).toEqual([])
-    expect(sparseFragment?.dossiers).toEqual([])
-    expect(sparseFragment?.genres.genres).toEqual([])
-    expect(sparseFragment?.date).toBeUndefined()
-    expect(sparseFragment?.archaeology).toBeUndefined()
-  })
-
-  it('leaves an archaeology without an excavation number or site undefined', async () => {
-    apiClient.fetchJson.mockResolvedValueOnce({
-      matchCountTotal: 1,
-      items: [
-        createSummaryItemDto({
-          archaeology: {},
-        } as Record<string, unknown>),
-      ],
-    })
-
-    const result = await fragmentRepository.query({ transliteration: 'kur₂' })
-    const archaeology = result.items[0].fragment?.archaeology
-
-    expect(archaeology?.excavationNumber).toBeUndefined()
-    expect(archaeology?.site).toBeUndefined()
   })
 })

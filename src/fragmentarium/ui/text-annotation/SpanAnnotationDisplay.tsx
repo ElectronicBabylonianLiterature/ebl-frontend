@@ -1,5 +1,4 @@
 import React, { useContext, useRef, useState } from 'react'
-import FragmentService from 'fragmentarium/application/FragmentService'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import { AbstractLine } from 'transliteration/domain/abstract-line'
 import { defaultLabels, Labels } from 'transliteration/domain/labels'
@@ -8,50 +7,58 @@ import { hideLine } from 'fragmentarium/ui/fragment/linguistic-annotation/TokenA
 import AnnotationContext from 'fragmentarium/ui/text-annotation/TextAnnotationContext'
 import { clearSelection } from 'fragmentarium/ui/text-annotation/SpanAnnotator'
 import {
-  ApiEntityAnnotationSpan,
-  EntityAnnotationSpan,
-} from 'fragmentarium/ui/text-annotation/EntityType'
-import { Button, Form, Spinner } from 'react-bootstrap'
-import _ from 'lodash'
+  AnnotationSpans,
+  omitDerivedSpanFields,
+} from 'fragmentarium/ui/text-annotation/annotationSpan'
+import DisplayRow from 'fragmentarium/ui/text-annotation/AnnotationLines'
 import { getSelectedTokens } from 'fragmentarium/ui/text-annotation/selectionUtils'
-import DisplayRow from 'fragmentarium/ui/text-annotation/AnnotationRow'
-
-function omitTiers(
-  entities: readonly EntityAnnotationSpan[],
-): readonly ApiEntityAnnotationSpan[] {
-  return entities.map((entity) => _.omit(entity, 'tier', 'name'))
-}
+import { Alert, Button, Form, Spinner } from 'react-bootstrap'
+import ErrorAlert from 'common/errors/ErrorAlert'
+import {
+  refreshFailedMessage,
+  UpdateNamedEntityAnnotations,
+} from 'fragmentarium/ui/text-annotation/annotationSave'
+import _ from 'lodash'
+import './TextAnnotation.sass'
+import './NamedEntities.sass'
 
 export default function SpanAnnotationDisplay({
   fragment,
   initialAnnotations,
   setInitialAnnotations,
-  fragmentService,
+  updateNamedEntityAnnotations,
 }: {
   fragment: Fragment
-  initialAnnotations: readonly ApiEntityAnnotationSpan[]
-  setInitialAnnotations: React.Dispatch<
-    React.SetStateAction<readonly ApiEntityAnnotationSpan[]>
-  >
-  fragmentService: FragmentService
+  initialAnnotations: AnnotationSpans
+  setInitialAnnotations: React.Dispatch<React.SetStateAction<AnnotationSpans>>
+  updateNamedEntityAnnotations: UpdateNamedEntityAnnotations
 }): JSX.Element {
   const [selection, setSelection] = useState<readonly string[]>([])
   const [activeSpanId, setActiveSpanId] = React.useState<string | null>(null)
   const selectionStartTokenIdRef = useRef<string | null>(null)
-  const [{ entities, words }] = useContext(AnnotationContext)
-  const isDirty = !_.isEqual(initialAnnotations, omitTiers(entities))
+  const [spans] = useContext(AnnotationContext)
+  const words = spans.words
+  const isDirty = !_.isEqual(initialAnnotations, omitDerivedSpanFields(spans))
   const [isSaving, setIsSaving] = useState(false)
+  const [saveError, setSaveError] = useState<Error | null>(null)
+  const [refreshError, setRefreshError] = useState<Error | null>(null)
 
   const text = fragment.text
 
   const saveAnnotations = () => {
-    const updatedAnnotations = omitTiers(entities)
+    const updatedAnnotations = omitDerivedSpanFields(spans)
     setIsSaving(true)
-    fragmentService
-      .updateNamedEntityAnnotations(fragment.number, updatedAnnotations)
-      .then(() => {
+    setSaveError(null)
+    setRefreshError(null)
+    updateNamedEntityAnnotations(updatedAnnotations)
+      .then((result) => {
         setIsSaving(false)
         setInitialAnnotations(updatedAnnotations)
+        setRefreshError(result.refreshError)
+      })
+      .catch((error: Error) => {
+        setIsSaving(false)
+        setSaveError(error)
       })
   }
   const resetSelections = () => {
@@ -151,6 +158,12 @@ export default function SpanAnnotationDisplay({
             )}
           </Button>
         </Form>
+        <ErrorAlert error={saveError} />
+        {refreshError && (
+          <Alert variant={'warning'} role={'alert'}>
+            {refreshFailedMessage}
+          </Alert>
+        )}
       </div>
     </div>
   )

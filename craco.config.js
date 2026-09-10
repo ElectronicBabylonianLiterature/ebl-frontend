@@ -3,6 +3,43 @@ const path = require('path')
 const isFastDev = process.env.FAST_DEV === 'true'
 const sourceDirectory = path.resolve(__dirname, 'src')
 
+const fullyCoveredPaths = [
+  'src/afo-register/ui/AfoRegisterSearchFields.tsx',
+  'src/bibliography/application/BibliographyEntryLoader.ts',
+  'src/bibliography/ui/BibliographyEntryForm.tsx',
+  'src/common/hooks/usePromiseEffect.ts',
+  'src/common/utils/AbortableOperation.ts',
+  'src/common/utils/ConcurrencyLimiter.ts',
+  'src/common/utils/SupersedableOperation.ts',
+  'src/common/utils/abortError.ts',
+  'src/common/utils/applyWhenCurrent.ts',
+  'src/common/utils/captureStackTrace.ts',
+  'src/common/utils/getOrFetchCachedValue.ts',
+  'src/common/utils/mapSeries.ts',
+  'src/corpus/application/CorpusLemmatizationFactory.ts',
+  'src/corpus/application/TextReadService.ts',
+  'src/corpus/application/TextServiceBase.ts',
+  'src/corpus/application/TextServiceCore.ts',
+  'src/corpus/application/chapterUrls.ts',
+  'src/corpus/application/textServiceConstants.ts',
+  'src/corpus/ui/ManuscriptsTable.tsx',
+  'src/corpus/ui/manuscriptTableCells.tsx',
+  'src/dossiers/application/DossierCache.ts',
+  'src/dossiers/application/DossiersQueryByIdsBatcher.ts',
+  'src/fragmentarium/ui/fragment/ArchaeologyEditorFields.tsx',
+  'src/fragmentarium/ui/fragment/colophonNameSuggestions.ts',
+  'src/fragmentarium/ui/info/DetailsFields.tsx',
+  'src/fragmentarium/ui/text-annotation/SpanAnnotationDisplay.tsx',
+  'src/http/ApiClient.ts',
+  'src/http/withData.tsx',
+  'src/signs/ui/display/PeriodAccordion.tsx',
+  'src/signs/ui/display/PeriodPreview.tsx',
+  'src/signs/ui/display/SignImage.tsx',
+  'src/signs/ui/display/VariantGroup.tsx',
+  'src/signs/ui/display/loadClusterAnnotations.ts',
+  'src/signs/ui/display/signImageGrouping.ts',
+]
+
 module.exports = {
   ...(isFastDev ? { eslint: { enable: false } } : {}),
   jest: {
@@ -16,24 +53,20 @@ module.exports = {
         functions: 100,
         lines: 100,
       }
-      jestConfig.coverageThreshold = {
-        global: {
-          statements: 93,
-          branches: 85,
-          functions: 93,
-          lines: 93,
+      jestConfig.coverageThreshold = fullyCoveredPaths.reduce(
+        (thresholds, fullyCoveredPath) => ({
+          ...thresholds,
+          [fullyCoveredPath]: fullCoverage,
+        }),
+        {
+          global: {
+            statements: 93,
+            branches: 84,
+            functions: 93,
+            lines: 93,
+          },
         },
-        'src/common/hooks/usePromiseEffect.ts': fullCoverage,
-        'src/common/utils/AbortableOperation.ts': fullCoverage,
-        'src/common/utils/ConcurrencyLimiter.ts': fullCoverage,
-        'src/common/utils/SupersedableOperation.ts': fullCoverage,
-        'src/common/utils/abortError.ts': fullCoverage,
-        'src/common/utils/applyWhenCurrent.ts': fullCoverage,
-        'src/common/utils/getOrFetchCachedValue.ts': fullCoverage,
-        'src/common/utils/mapSeries.ts': fullCoverage,
-        'src/http/ApiClient.ts': fullCoverage,
-        'src/http/withData.tsx': fullCoverage,
-      }
+      )
       return jestConfig
     },
   },

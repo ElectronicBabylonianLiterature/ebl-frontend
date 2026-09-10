@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 import SignImage from 'signs/ui/display/SignImage'
 import { CroppedAnnotation } from 'signs/domain/CroppedAnnotation'
-import { imageString } from 'signs/ui/display/SignImages.testSupport'
+import { imageString } from 'signs/ui/display/signImages.testSupport'
 import { mesopotamianDateFactory } from 'test-support/date-fixtures'
 
 function renderSignImage(overrides: Partial<CroppedAnnotation>): void {
@@ -38,4 +38,10 @@ test('An annotation with a date shows the date', () => {
   expect(screen.getByRole('figure')).toHaveTextContent(
     date.toString().split(' (')[0],
   )
+})
+
+test('An annotation with a provenance shows it', () => {
+  renderSignImage({ label: 'label-1', provenance: 'Sippar' })
+
+  expect(screen.getByText('Sippar')).toBeVisible()
 })

@@ -9,21 +9,20 @@ import React, {
 import { Container, Row, Col } from 'react-bootstrap'
 import _ from 'lodash'
 
-import TemplateForm from 'fragmentarium/ui/edition/TemplateForm'
+import TemplateForm from './TemplateForm'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import { ErrorBoundary } from '@sentry/react'
 import {
   editionFields,
   EditionFields,
 } from 'fragmentarium/application/FragmentService'
-import SupersedableOperation from 'common/utils/SupersedableOperation'
-import applyWhenCurrent from 'common/utils/applyWhenCurrent'
 import {
   FormData,
-  getFormGroup,
-  runBeforeUnloadEvent,
   SubmitButton,
-} from 'fragmentarium/ui/edition/TransliterationFormFields'
+  TransliterationFormFields,
+} from 'fragmentarium/ui/edition/TransliterationFormControls'
+import SupersedableOperation from 'common/utils/SupersedableOperation'
+import applyWhenCurrent from 'common/utils/applyWhenCurrent'
 
 type Props = {
   transliteration: string
@@ -31,6 +30,34 @@ type Props = {
   introduction: string
   updateEdition: (fields: EditionFields) => Promise<Fragment>
   disabled?: boolean
+}
+
+const handleBeforeUnload = (
+  event: BeforeUnloadEvent,
+  hasChanges: () => boolean,
+): string | void => {
+  if (hasChanges()) {
+    const confirmationMessage =
+      'You have unsaved changes. Are you sure you want to leave?'
+    event.returnValue = confirmationMessage
+    return confirmationMessage
+  }
+}
+
+const runBeforeUnloadEvent = ({
+  hasChanges,
+}: {
+  hasChanges: () => boolean
+}) => {
+  const _handleBeforeEvent = (event) => handleBeforeUnload(event, hasChanges)
+  if (hasChanges()) {
+    window.addEventListener('beforeunload', _handleBeforeEvent)
+  } else {
+    window.removeEventListener('beforeunload', _handleBeforeEvent)
+  }
+  return () => {
+    window.removeEventListener('beforeunload', _handleBeforeEvent)
+  }
 }
 
 const TransliterationForm: React.FC<Props> = ({
@@ -49,7 +76,6 @@ const TransliterationForm: React.FC<Props> = ({
     disabled: false,
   })
   const updateOperation = useRef(new SupersedableOperation())
-  useEffect(() => () => updateOperation.current.supersede(), [])
   const initialValues = useMemo(
     () => ({ transliteration, notes, introduction }),
     [transliteration, notes, introduction],
@@ -64,7 +90,6 @@ const TransliterationForm: React.FC<Props> = ({
     setFormData((prev) => ({
       ...prev,
       [property]: value,
-      error: null,
     }))
   }
 
@@ -72,13 +97,11 @@ const TransliterationForm: React.FC<Props> = ({
     setFormData((prev) => ({
       ...prev,
       transliteration: template,
-      error: null,
     }))
   }
 
   const submit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    setFormData((prev) => ({ ...prev, error: null }))
     const updatedFields = _.pickBy(
       _.pick(formData, editionFields),
       isDirty,
@@ -107,22 +130,11 @@ const TransliterationForm: React.FC<Props> = ({
     [formData, transliteration, notes, introduction],
   )
 
+  useEffect(() => () => updateOperation.current.supersede(), [])
+
   useEffect(() => {
     return runBeforeUnloadEvent({ hasChanges })
   }, [formData, transliteration, notes, introduction, hasChanges])
-
-  const formGroups = editionFields.map(
-    (name, key: number): JSX.Element =>
-      getFormGroup({
-        name,
-        key,
-        value: formData[name],
-        formId,
-        propsDisabled,
-        update,
-        formData,
-      }),
-  )
 
   return (
     <Container fluid>
@@ -134,7 +146,12 @@ const TransliterationForm: React.FC<Props> = ({
               id={formId}
               data-testid="transliteration-form"
             >
-              {formGroups}
+              <TransliterationFormFields
+                formData={formData}
+                formId={formId}
+                disabled={propsDisabled}
+                update={update}
+              />
             </form>
           </ErrorBoundary>
         </Col>
@@ -142,7 +159,7 @@ const TransliterationForm: React.FC<Props> = ({
       <Row>
         <Col>
           <SubmitButton
-            propsDisabled={propsDisabled}
+            disabled={propsDisabled}
             hasChanges={hasChanges()}
             formId={formId}
           />

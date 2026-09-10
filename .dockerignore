@@ -1,3 +1,8 @@
 src/**/*.test.ts
 src/**/*.test.tsx
+src/**/*.testSupport.ts
+src/**/*.testSupport.tsx
+src/**/testSupport
+src/**/testFixtures
+src/__mocks__
 src/test-support
