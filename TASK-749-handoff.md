@@ -30,8 +30,10 @@ what you actually see on screen.
 
 ## State
 
-Implemented, all gates green, committed, pushed, PR opened. See `TASK-749-log.md` for the
-full gate table and `TASK-749-todo.md` for the checklist.
+Implemented, all gates green, committed as `d506a0de`, pushed, and opened as
+**[PR #817](https://github.com/ElectronicBabylonianLiterature/ebl-frontend/pull/817)**
+against `chore/remove-bluebird`. See `TASK-749-log.md` for the full gate table and
+`TASK-749-todo.md` for the checklist.
 
 | Gate                                 | Result                                                 |
 | ------------------------------------ | ------------------------------------------------------ |
