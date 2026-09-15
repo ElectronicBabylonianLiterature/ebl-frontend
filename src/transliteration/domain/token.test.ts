@@ -3,6 +3,7 @@ import {
   EnclosureType,
   isStrictlyPartiallyEnclosed,
   NamedSign,
+  nameTokens,
 } from 'transliteration/domain/token'
 
 function namedSign(partEnclosures: EnclosureType[][]): NamedSign {
@@ -46,5 +47,40 @@ describe('isStrictlyPartiallyEnclosed', () => {
     expect(
       isStrictlyPartiallyEnclosed(namedSign([[], []]), 'BROKEN_AWAY'),
     ).toBe(false)
+  })
+})
+
+function name(nameParts: string[], nameBreaks?: string[] | null): NamedSign {
+  return {
+    nameParts: nameParts.map((value) => ({ value })),
+    ...(nameBreaks === undefined
+      ? {}
+      : { nameBreaks: nameBreaks?.map((value) => ({ value })) ?? nameBreaks }),
+  } as unknown as NamedSign
+}
+
+function values(namedSign: NamedSign): string[] {
+  return nameTokens(namedSign).map((token) => token.value)
+}
+
+describe('nameTokens', () => {
+  it('interleaves the breaks back between the parts', () => {
+    expect(values(name(['k', 'u'], [']']))).toEqual(['k', ']', 'u'])
+  })
+
+  it('returns the parts unchanged when there are no breaks', () => {
+    expect(values(name(['k', 'u'], []))).toEqual(['k', 'u'])
+  })
+
+  it('keeps a trailing break after its part', () => {
+    expect(values(name(['ku'], [']']))).toEqual(['ku', ']'])
+  })
+
+  it('passes a legacy already-interleaved payload through untouched', () => {
+    expect(values(name(['k', ']', 'u']))).toEqual(['k', ']', 'u'])
+  })
+
+  it('treats an explicit null as the legacy shape', () => {
+    expect(values(name(['k', ']', 'u'], null))).toEqual(['k', ']', 'u'])
   })
 })

@@ -114,6 +114,7 @@ export interface NamedSign extends Sign {
   readonly type: 'Reading' | 'Logogram' | 'Number'
   readonly name: string
   readonly nameParts: readonly (ValueToken | Enclosure)[]
+  readonly nameBreaks?: readonly Enclosure[] | null
   readonly subIndex?: number | null
   readonly sign?: Token | null
   readonly surrogate?: readonly Token[] | null
@@ -211,10 +212,22 @@ export type Token =
   | GreekLetter
   | AnyWord
 
+export function nameTokens(
+  namedSign: NamedSign,
+): readonly (ValueToken | Enclosure)[] {
+  const nameBreaks = namedSign.nameBreaks
+  if (!nameBreaks) {
+    return namedSign.nameParts
+  }
+  return namedSign.nameParts.flatMap((part, index) =>
+    index < nameBreaks.length ? [part, nameBreaks[index]] : [part],
+  )
+}
+
 function extractEnclosureTypes(
   namedSign: NamedSign,
 ): readonly (readonly EnclosureType[])[] {
-  return namedSign.nameParts.map((part) => part.enclosureType)
+  return nameTokens(namedSign).map((part) => part.enclosureType)
 }
 
 export function effectiveEnclosure(namedSign: NamedSign): EnclosureType[] {
