@@ -114,6 +114,13 @@ never achievable on this base. The diff, message and authorship are preserved.
 `gh` is not installed in this workspace, so the PR was opened through the GitHub REST
 API with the Codespace token.
 
+- Commit: `d506a0de` (10 files, +1119 / -4 — code, tests and task docs)
+- Branch pushed: `add-name-breaks`
+- PR: [#817](https://github.com/ElectronicBabylonianLiterature/ebl-frontend/pull/817), base `chore/remove-bluebird`
+
+The pre-commit hook (lint-staged + prettier) reformatted the committed markdown tables;
+eslint reported nothing to fix on the four source files.
+
 ### Note on the brief's push blocker — resolved
 
 Brief section 11 records that the branch could not be pushed from the ebl-api Codespace,
