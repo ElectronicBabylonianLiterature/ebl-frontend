@@ -4,7 +4,6 @@ import userEvent from '@testing-library/user-event'
 import DateSelection from '../../application/DateSelection'
 import { fragment as mockFragment } from 'test-support/test-fragment'
 import SessionContext from 'auth/SessionContext'
-import { Promise } from 'bluebird'
 
 let session
 let mockUpdateDate
@@ -129,6 +128,31 @@ describe('DateSelection', () => {
     await waitFor(() => {
       expect(screen.getByText('Saving...')).toBeInTheDocument()
     })
+  })
+
+  test('shows an error and stops saving when the update fails', async () => {
+    mockUpdateDate.mockImplementationOnce(() =>
+      Promise.reject(new Error('Saving the date failed')),
+    )
+    render(
+      <SessionContext.Provider value={session}>
+        <DateSelection
+          dateProp={mockFragment?.date}
+          updateDate={mockUpdateDate}
+        />
+      </SessionContext.Provider>,
+    )
+    const editButton = screen.getByLabelText('Edit date button')
+    await userEvent.click(editButton)
+    const yearInput = screen.getByPlaceholderText('Year')
+    await userEvent.clear(yearInput)
+    await userEvent.type(yearInput, '189')
+    await userEvent.click(screen.getByText('Save'))
+
+    expect(
+      await screen.findByText('Saving the date failed'),
+    ).toBeInTheDocument()
+    expect(screen.queryByText('Saving...')).not.toBeInTheDocument()
   })
 
   test('does not display the edit button for unauthorized users', () => {

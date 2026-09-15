@@ -1,23 +1,14 @@
 import React, {
   useState,
   useEffect,
+  useRef,
   FormEvent,
   useCallback,
   useMemo,
 } from 'react'
-import {
-  FormGroup,
-  FormLabel,
-  Button,
-  Container,
-  Row,
-  Col,
-} from 'react-bootstrap'
+import { Container, Row, Col } from 'react-bootstrap'
 import _ from 'lodash'
-import Promise from 'bluebird'
 
-import Editor from 'editor/Editor'
-import SpecialCharactersHelp from 'editor/SpecialCharactersHelp'
 import TemplateForm from './TemplateForm'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import { ErrorBoundary } from '@sentry/react'
@@ -25,20 +16,19 @@ import {
   editionFields,
   EditionFields,
 } from 'fragmentarium/application/FragmentService'
+import {
+  FormData,
+  SubmitButton,
+  TransliterationFormFields,
+} from 'fragmentarium/ui/edition/TransliterationFormControls'
+import SupersedableOperation from 'common/utils/SupersedableOperation'
+import applyWhenCurrent from 'common/utils/applyWhenCurrent'
 
 type Props = {
   transliteration: string
   notes: string
   introduction: string
   updateEdition: (fields: EditionFields) => Promise<Fragment>
-  disabled?: boolean
-}
-
-type FormData = {
-  transliteration: string
-  notes: string
-  introduction: string
-  error: Error | null
   disabled?: boolean
 }
 
@@ -56,10 +46,8 @@ const handleBeforeUnload = (
 
 const runBeforeUnloadEvent = ({
   hasChanges,
-  updatePromise,
 }: {
   hasChanges: () => boolean
-  updatePromise: Promise<void>
 }) => {
   const _handleBeforeEvent = (event) => handleBeforeUnload(event, hasChanges)
   if (hasChanges()) {
@@ -69,60 +57,7 @@ const runBeforeUnloadEvent = ({
   }
   return () => {
     window.removeEventListener('beforeunload', _handleBeforeEvent)
-    updatePromise.cancel()
   }
-}
-
-const SubmitButton = ({
-  propsDisabled,
-  hasChanges,
-  formId,
-}: {
-  propsDisabled?: boolean
-  hasChanges: boolean
-  formId: string
-}) => (
-  <Button
-    type="submit"
-    variant="primary"
-    disabled={propsDisabled || !hasChanges}
-    form={formId}
-  >
-    Save
-  </Button>
-)
-
-const getFormGroup = ({
-  name,
-  key,
-  value,
-  formId,
-  propsDisabled,
-  update,
-  formData,
-}: {
-  name: 'transliteration' | 'notes' | 'introduction'
-  key: number
-  value: string
-  formId: string
-  propsDisabled?: boolean
-  update: (property: keyof FormData) => (value: string) => void
-  formData: FormData
-}): JSX.Element => {
-  return (
-    <FormGroup controlId={`${formId}-${name}`} key={key}>
-      <FormLabel>{_.capitalize(name)}</FormLabel>{' '}
-      {name === 'transliteration' && <SpecialCharactersHelp />}
-      <Editor
-        name={name}
-        value={value}
-        onChange={update(name)}
-        disabled={propsDisabled}
-        {...(name === 'transliteration' && { error: formData.error })}
-        data-testid={`${name}-form-field`}
-      />
-    </FormGroup>
-  )
 }
 
 const TransliterationForm: React.FC<Props> = ({
@@ -140,7 +75,7 @@ const TransliterationForm: React.FC<Props> = ({
     error: null,
     disabled: false,
   })
-  const [updatePromise, setUpdatePromise] = useState(Promise.resolve())
+  const updateOperation = useRef(new SupersedableOperation())
   const initialValues = useMemo(
     () => ({ transliteration, notes, introduction }),
     [transliteration, notes, introduction],
@@ -155,7 +90,6 @@ const TransliterationForm: React.FC<Props> = ({
     setFormData((prev) => ({
       ...prev,
       [property]: value,
-      error: null,
     }))
   }
 
@@ -163,19 +97,17 @@ const TransliterationForm: React.FC<Props> = ({
     setFormData((prev) => ({
       ...prev,
       transliteration: template,
-      error: null,
     }))
   }
 
   const submit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    setFormData((prev) => ({ ...prev, error: null }))
     const updatedFields = _.pickBy(
       _.pick(formData, editionFields),
       isDirty,
     ) as EditionFields
-    const promise = updateEdition(updatedFields)
-      .then((fragment) => {
+    applyWhenCurrent(() => updateEdition(updatedFields), {
+      onSuccess: (fragment: Fragment) => {
         setFormData((prev) => ({
           ...prev,
           transliteration: fragment.atf,
@@ -183,19 +115,11 @@ const TransliterationForm: React.FC<Props> = ({
           introduction: fragment.introduction.text,
           error: null,
         }))
-      })
-      .catch((error) => {
-        const isCancellationError =
-          (error as { name?: string })?.name === 'CancellationError' ||
-          (typeof (promise as { isCancelled?: () => boolean })?.isCancelled ===
-            'function' &&
-            (promise as { isCancelled: () => boolean }).isCancelled())
-        if (isCancellationError) {
-          return
-        }
+      },
+      onError: (error) => {
         setFormData((prev) => ({ ...prev, error }))
-      })
-    setUpdatePromise(promise)
+      },
+    })(updateOperation.current.start())
   }
 
   const hasChanges = useCallback(
@@ -206,29 +130,11 @@ const TransliterationForm: React.FC<Props> = ({
     [formData, transliteration, notes, introduction],
   )
 
-  useEffect(() => {
-    return runBeforeUnloadEvent({ hasChanges, updatePromise })
-  }, [
-    formData,
-    transliteration,
-    notes,
-    introduction,
-    updatePromise,
-    hasChanges,
-  ])
+  useEffect(() => () => updateOperation.current.supersede(), [])
 
-  const formGroups = editionFields.map(
-    (name, key: number): JSX.Element =>
-      getFormGroup({
-        name,
-        key,
-        value: formData[name],
-        formId,
-        propsDisabled,
-        update,
-        formData,
-      }),
-  )
+  useEffect(() => {
+    return runBeforeUnloadEvent({ hasChanges })
+  }, [formData, transliteration, notes, introduction, hasChanges])
 
   return (
     <Container fluid>
@@ -240,7 +146,12 @@ const TransliterationForm: React.FC<Props> = ({
               id={formId}
               data-testid="transliteration-form"
             >
-              {formGroups}
+              <TransliterationFormFields
+                formData={formData}
+                formId={formId}
+                disabled={propsDisabled}
+                update={update}
+              />
             </form>
           </ErrorBoundary>
         </Col>
@@ -248,7 +159,7 @@ const TransliterationForm: React.FC<Props> = ({
       <Row>
         <Col>
           <SubmitButton
-            propsDisabled={propsDisabled}
+            disabled={propsDisabled}
             hasChanges={hasChanges()}
             formId={formId}
           />

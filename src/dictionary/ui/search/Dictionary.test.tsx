@@ -1,4 +1,3 @@
-import Bluebird from 'bluebird'
 import React from 'react'
 import { render, screen } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
@@ -31,7 +30,7 @@ beforeEach(() => {
 describe('Searching for word', () => {
   beforeEach(() => {
     session = new MemorySession(['read:words'])
-    wordService.search.mockReturnValue(Bluebird.resolve(words))
+    wordService.search.mockReturnValue(Promise.resolve(words))
   })
 
   it('displays result on successfull query', async () => {

@@ -1,6 +1,5 @@
 import React from 'react'
 import { render, screen, waitFor } from '@testing-library/react'
-import { Promise } from 'bluebird'
 
 import BibliographySelect from 'bibliography/ui/BibliographySelect'
 import userEvent from '@testing-library/user-event'
@@ -79,6 +78,25 @@ describe('no container short, collection number', () => {
   it('Displays the entry label', async () => {
     setup()
     expect(await screen.findByText(entry.label)).toBeVisible()
+  })
+})
+
+describe('long selected label', () => {
+  function setup(): void {
+    const cslData = cslDataFactory.build({
+      title:
+        'A very long catalogue reference title that should remain accessible while the select renders a constrained selected value',
+    })
+    entry = bibliographyEntryFactory.build({}, { transient: cslData })
+    renderBibliographySelect()
+  }
+
+  it('keeps the full label available on the selected value', async () => {
+    setup()
+    const selectedLabel = await screen.findByTitle(entry.label)
+
+    expect(selectedLabel).toHaveClass('search-form-select__single-value-label')
+    expect(selectedLabel).toHaveTextContent(entry.label)
   })
 })
 

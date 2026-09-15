@@ -1,5 +1,4 @@
 import { testDelegation, TestData } from 'test-support/utils'
-import Bluebird from 'bluebird'
 import { stringify } from 'query-string'
 
 import MarkupService from 'markup/application/MarkupService'
@@ -31,7 +30,7 @@ const testData: TestData<MarkupService>[] = [
       })}`,
       false,
     ],
-    Bluebird.resolve(markupDtoSerialized),
+    Promise.resolve(markupDtoSerialized),
   ),
 ]
 
@@ -42,7 +41,7 @@ describe('MarkupService: fromString', () => {
         MarkupService.prototype as MarkupService,
         'injectReferencesToMarkup',
       )
-      .mockImplementation(() => Bluebird.resolve(markupDtoSerialized))
+      .mockImplementation(() => Promise.resolve(markupDtoSerialized))
   })
   afterEach(() => {
     spy.mockClear()

@@ -8,6 +8,7 @@ export type SlugsArray = readonly { [key: string]: string }[]
 export type SignSlugs = SlugsArray
 export type DictionarySlugs = SlugsArray
 export type BibliographySlugs = SlugsArray
+export type RealiaSlugs = SlugsArray
 export type FragmentSlugs = SlugsArray
 export type TextSlugs = {
   index: number
@@ -26,6 +27,7 @@ export interface Slugs {
   readonly signSlugs?: SignSlugs
   readonly dictionarySlugs?: DictionarySlugs
   readonly bibliographySlugs?: BibliographySlugs
+  readonly realiaSlugs?: RealiaSlugs
   readonly fragmentSlugs?: FragmentSlugs
   readonly textSlugs?: TextSlugs
   readonly chapterSlugs?: ChapterSlugs

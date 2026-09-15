@@ -4,7 +4,7 @@ import SentryErrorReporter from './SentryErrorReporter'
 import { ApiError } from 'http/ApiClient'
 import Chance from 'chance'
 
-const chance = new Chance()
+const chance = new Chance('SentryErrorReporter')
 const sentryErrorReporter = new SentryErrorReporter()
 const dsn = 'http://example.com/sentry'
 const environment = 'test'

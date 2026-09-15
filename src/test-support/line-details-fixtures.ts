@@ -14,7 +14,7 @@ import { referenceFactory } from './bibliography-fixtures'
 import { oldSiglumFactory } from './old-siglum-fixtures'
 import { joinFactory } from './join-fixtures'
 
-const defaultChance = new Chance()
+const defaultChance = new Chance('line-details-fixtures')
 
 class ManuscriptLineDisplayFactory extends Factory<
   ManuscriptLineDisplay,

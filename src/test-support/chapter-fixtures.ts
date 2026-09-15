@@ -1,203 +1,25 @@
 import { Factory } from 'fishery'
 import Chance from 'chance'
-import { ChapterDisplay, LineDisplay } from 'corpus/domain/chapter'
-import { ChapterId } from 'transliteration/domain/chapter-id'
-import { TextId } from 'transliteration/domain/text-id'
-import { periods } from 'common/utils/period'
-import _ from 'lodash'
-import { reconstructionTokens } from './test-corpus-text'
-import { ChapterDisplayDto, LineDisplayDto } from 'corpus/application/dtos'
-import TranslationLine from 'transliteration/domain/translation-line'
-import { NoteLine } from 'transliteration/domain/note-line'
+import { ChapterDisplay } from 'corpus/domain/chapter'
+import { ChapterDisplayDto } from 'corpus/application/dtos'
+import { chapterFixtureChance } from 'test-support/chapter-fixture-chance'
 import {
-  ParallelComposition,
-  parallelLinePrefix,
-} from 'transliteration/domain/parallel-line'
-import { lineNumberFactory } from './linenumber-factory'
+  chapterIdFactory,
+  textIdFactory,
+} from 'test-support/chapter-id-fixtures'
+import {
+  lineDisplayDtoFactory,
+  lineDisplayFactory,
+} from 'test-support/line-display-fixtures'
 
-const defaultChance = new Chance()
-const maxRoman = 3999
-
-export const textIdFactory = Factory.define<TextId, { chance: Chance.Chance }>(
-  ({ transientParams }) => {
-    const chance = transientParams.chance ?? defaultChance
-    return {
-      genre: chance.pickone(['L', 'D']),
-      category: chance.integer({ min: 0, max: maxRoman }),
-      index: chance.integer({ min: 0 }),
-    }
-  },
-)
-
-export const chapterIdFactory = Factory.define<
-  ChapterId,
-  { chance: Chance.Chance }
->(({ transientParams }) => {
-  const chance = transientParams.chance ?? defaultChance
-  return {
-    textId: textIdFactory.build({}, { transient: { chance } }),
-    stage: chance.pickone([...periods]).name,
-    name: chance.sentence(),
-  }
-})
-
-export const lineDisplayDtoFactory = Factory.define<
-  LineDisplayDto,
-  { chance: Chance.Chance }
->(({ associations, sequence, transientParams }) => {
-  const chance = transientParams.chance ?? defaultChance
-  return {
-    number: lineNumberFactory.build(),
-    originalIndex: associations.originalIndex ?? sequence,
-    oldLineNumbers: associations.oldLineNumbers ?? [],
-    isSecondLineOfParallelism: chance.bool(),
-    isBeginningOfSection: chance.bool(),
-    translation: [
-      {
-        language: 'en',
-        extent: null,
-        parts: [
-          {
-            text: chance.sentence(),
-            type: 'StringPart',
-          },
-        ],
-        content: [],
-      },
-      {
-        language: 'de',
-        extent: null,
-        parts: [
-          {
-            text: chance.sentence(),
-            type: 'StringPart',
-          },
-        ],
-        content: [],
-      },
-    ],
-    variants: [
-      {
-        originalIndex: 0,
-        isPrimaryVariant: true,
-        intertext: [
-          {
-            text: chance.sentence(),
-            type: 'StringPart',
-          },
-        ],
-        reconstruction: _.cloneDeep(reconstructionTokens),
-        note: {
-          prefix: '#note: ',
-          content: [],
-          parts: [
-            {
-              text: chance.sentence(),
-              type: 'StringPart',
-            },
-          ],
-        },
-        manuscripts: [],
-        parallelLines: [
-          {
-            type: 'ParallelComposition',
-            prefix: parallelLinePrefix,
-            hasCf: false,
-            name: 'A Composition',
-            lineNumber: {
-              prefixModifier: '',
-              number: 2,
-              hasPrime: false,
-              suffixModifier: '',
-            },
-            content: [],
-          },
-        ],
-      },
-    ],
-  }
-})
-
-export const lineDisplayFactory = Factory.define<
-  LineDisplay,
-  { chance: Chance.Chance }
->(({ associations, sequence, transientParams }) => {
-  const chance = transientParams.chance ?? defaultChance
-  return {
-    number: lineNumberFactory.build(),
-    originalIndex: associations.originalIndex ?? sequence,
-    oldLineNumbers: associations.oldLineNumbers ?? [],
-    isSecondLineOfParallelism: chance.bool(),
-    isBeginningOfSection: chance.bool(),
-    translation: [
-      new TranslationLine({
-        language: 'en',
-        extent: null,
-        parts: [
-          {
-            text: chance.sentence(),
-            type: 'StringPart',
-          },
-        ],
-        content: [],
-      }),
-      new TranslationLine({
-        language: 'de',
-        extent: null,
-        parts: [
-          {
-            text: chance.sentence(),
-            type: 'StringPart',
-          },
-        ],
-        content: [],
-      }),
-    ],
-
-    variants: [
-      {
-        originalIndex: 0,
-        isPrimaryVariant: true,
-        intertext: [
-          {
-            text: chance.sentence(),
-            type: 'StringPart',
-          },
-        ],
-        reconstruction: _.cloneDeep(reconstructionTokens),
-        manuscripts: [],
-        note: new NoteLine({
-          content: [],
-          parts: [
-            {
-              text: chance.sentence(),
-              type: 'StringPart',
-            },
-          ],
-        }),
-        parallelLines: [
-          new ParallelComposition({
-            hasCf: false,
-            name: 'A Composition',
-            lineNumber: {
-              prefixModifier: '',
-              number: 2,
-              hasPrime: false,
-              suffixModifier: '',
-            },
-            content: [],
-          }),
-        ],
-      },
-    ],
-  }
-})
+export { textIdFactory, chapterIdFactory }
+export { lineDisplayDtoFactory, lineDisplayFactory }
 
 export const chapterDisplayDtoFactory = Factory.define<
   ChapterDisplayDto,
   { chance: Chance.Chance }
 >(({ transientParams }) => {
-  const chance = transientParams.chance ?? defaultChance
+  const chance = transientParams.chance ?? chapterFixtureChance
   return {
     id: chapterIdFactory.build({}, { transient: { chance } }),
     textHasDoi: chance.bool(),
@@ -239,7 +61,7 @@ class ChapterDisplayFactory extends Factory<
 
 export const chapterDisplayFactory = ChapterDisplayFactory.define(
   ({ transientParams }) => {
-    const chance = transientParams.chance ?? defaultChance
+    const chance = transientParams.chance ?? chapterFixtureChance
     return new ChapterDisplay(
       chapterIdFactory.build({}, { transient: { chance } }),
       chance.bool(),

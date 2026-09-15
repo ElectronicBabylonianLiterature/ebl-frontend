@@ -3,12 +3,69 @@ const path = require('path')
 const isFastDev = process.env.FAST_DEV === 'true'
 const sourceDirectory = path.resolve(__dirname, 'src')
 
+const fullyCoveredPaths = [
+  'src/afo-register/ui/AfoRegisterSearchFields.tsx',
+  'src/bibliography/application/BibliographyEntryLoader.ts',
+  'src/bibliography/ui/BibliographyEntryForm.tsx',
+  'src/common/hooks/usePromiseEffect.ts',
+  'src/common/utils/AbortableOperation.ts',
+  'src/common/utils/ConcurrencyLimiter.ts',
+  'src/common/utils/SupersedableOperation.ts',
+  'src/common/utils/abortError.ts',
+  'src/common/utils/applyWhenCurrent.ts',
+  'src/common/utils/captureStackTrace.ts',
+  'src/common/utils/getOrFetchCachedValue.ts',
+  'src/common/utils/mapSeries.ts',
+  'src/corpus/application/CorpusLemmatizationFactory.ts',
+  'src/corpus/application/TextReadService.ts',
+  'src/corpus/application/TextServiceBase.ts',
+  'src/corpus/application/TextServiceCore.ts',
+  'src/corpus/application/chapterUrls.ts',
+  'src/corpus/application/textServiceConstants.ts',
+  'src/corpus/ui/ManuscriptsTable.tsx',
+  'src/corpus/ui/manuscriptTableCells.tsx',
+  'src/dossiers/application/DossierCache.ts',
+  'src/dossiers/application/DossiersQueryByIdsBatcher.ts',
+  'src/fragmentarium/ui/fragment/ArchaeologyEditorFields.tsx',
+  'src/fragmentarium/ui/fragment/colophonNameSuggestions.ts',
+  'src/fragmentarium/ui/info/DetailsFields.tsx',
+  'src/fragmentarium/ui/text-annotation/SpanAnnotationDisplay.tsx',
+  'src/http/ApiClient.ts',
+  'src/http/withData.tsx',
+  'src/signs/ui/display/PeriodAccordion.tsx',
+  'src/signs/ui/display/PeriodPreview.tsx',
+  'src/signs/ui/display/SignImage.tsx',
+  'src/signs/ui/display/VariantGroup.tsx',
+  'src/signs/ui/display/loadClusterAnnotations.ts',
+  'src/signs/ui/display/signImageGrouping.ts',
+]
+
 module.exports = {
   ...(isFastDev ? { eslint: { enable: false } } : {}),
   jest: {
     configure: (jestConfig) => {
       jestConfig.modulePaths = Array.from(
         new Set([...(jestConfig.modulePaths || []), sourceDirectory]),
+      )
+      const fullCoverage = {
+        statements: 100,
+        branches: 100,
+        functions: 100,
+        lines: 100,
+      }
+      jestConfig.coverageThreshold = fullyCoveredPaths.reduce(
+        (thresholds, fullyCoveredPath) => ({
+          ...thresholds,
+          [fullyCoveredPath]: fullCoverage,
+        }),
+        {
+          global: {
+            statements: 93,
+            branches: 84,
+            functions: 93,
+            lines: 93,
+          },
+        },
       )
       return jestConfig
     },
@@ -75,12 +132,7 @@ module.exports = {
                     loaderEntry.options.sassOptions = {
                       ...(loaderEntry.options.sassOptions || {}),
                       quietDeps: true,
-                      silenceDeprecations: [
-                        'legacy-js-api',
-                        'import',
-                        'global-builtin',
-                        'color-functions',
-                      ],
+                      silenceDeprecations: ['legacy-js-api'],
                     }
                   }
                 })
@@ -93,11 +145,7 @@ module.exports = {
       webpackConfig.ignoreWarnings = [
         ...(webpackConfig.ignoreWarnings || []),
         /Failed to parse source map/,
-        /Deprecation .* Sass/,
         /Deprecation .* legacy JS API/,
-        /Deprecation .* @import/,
-        /Deprecation .* Global built-in functions/,
-        /Deprecation .* darken\(\)/,
       ]
 
       return webpackConfig

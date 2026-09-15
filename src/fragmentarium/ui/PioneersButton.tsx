@@ -12,7 +12,9 @@ export default function PioneersButton({
     <SessionContext.Consumer>
       {(session) =>
         session.isAllowedToTransliterateFragments() && (
-          <FragmentButton query={() => fragmentSearchService.interesting()}>
+          <FragmentButton
+            query={(signal) => fragmentSearchService.interesting(signal)}
+          >
             Path of the Pioneers
           </FragmentButton>
         )

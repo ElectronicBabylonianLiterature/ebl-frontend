@@ -3,7 +3,6 @@ import { resolve } from 'path'
 import { parse as parseEnv } from 'dotenv'
 import 'jest-date-mock'
 import '@testing-library/jest-dom'
-import Promise from 'bluebird'
 import _ from 'lodash'
 import { TextEncoder, TextDecoder } from 'util'
 
@@ -69,10 +68,6 @@ afterEach(() => {
   onAbort.mockReset()
 })
 
-Promise.config({
-  cancellation: true,
-})
-
 afterEach(() => localStorage.clear())
 
 if (global.document) {
@@ -114,6 +109,28 @@ if (global.document) {
   }
 }
 
-export function silenceConsoleErrors(): void {
-  jest.spyOn(console, 'error').mockImplementation()
+let consoleErrorSpy: jest.SpyInstance | null = null
+let expectedConsoleError: RegExp | null = null
+
+export function expectConsoleErrors(pattern: RegExp): void {
+  expectedConsoleError = pattern
+  consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation()
 }
+
+afterEach(() => {
+  const spy = consoleErrorSpy
+  const pattern = expectedConsoleError
+  consoleErrorSpy = null
+  expectedConsoleError = null
+
+  if (!spy || !pattern) {
+    return
+  }
+
+  const unexpected = spy.mock.calls
+    .map((call) => call.map((argument) => String(argument)).join(' '))
+    .filter((message) => !pattern.test(message))
+  spy.mockRestore()
+
+  expect(unexpected).toEqual([])
+})

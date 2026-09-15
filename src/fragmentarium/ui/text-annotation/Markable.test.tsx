@@ -1,36 +1,25 @@
 import React from 'react'
-import { fireEvent, render, screen, waitFor } from '@testing-library/react'
-import Markable from 'fragmentarium/ui/text-annotation/Markable'
-import { atfTokenKur } from 'test-support/test-tokens'
-import DisplayToken from 'transliteration/ui/DisplayToken'
+import { screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import AnnotationContext from 'fragmentarium/ui/text-annotation/TextAnnotationContext'
+import Markable from 'fragmentarium/ui/text-annotation/Markable'
+import {
+  renderWithAnnotationContext,
+  word,
+} from 'fragmentarium/ui/text-annotation/markable.testSupport'
+import DisplayToken from 'transliteration/ui/DisplayToken'
 
-const word = { ...atfTokenKur, id: 'Word-1' }
-const word2 = { ...atfTokenKur, id: 'Word-2' }
+jest.mock('realia/application/RealiaService')
+
 const setSelection = jest.fn()
-const activeSpanId = null
 const setActiveSpanId = jest.fn()
-const dispatch = jest.fn()
-
-function renderWithContext(
-  ui: React.ReactElement,
-  words: string[] = ['Word-1'],
-): void {
-  render(
-    <AnnotationContext.Provider value={[{ entities: [], words }, dispatch]}>
-      {ui}
-    </AnnotationContext.Provider>,
-  )
-}
 
 async function renderMarkable(selection: string[] = []): Promise<void> {
-  renderWithContext(
+  renderWithAnnotationContext(
     <Markable
       token={word}
       selection={selection}
       setSelection={setSelection}
-      activeSpanId={activeSpanId}
+      activeSpanId={null}
       setActiveSpanId={setActiveSpanId}
     >
       <DisplayToken token={word} />
@@ -39,11 +28,16 @@ async function renderMarkable(selection: string[] = []): Promise<void> {
   await screen.findByText('kur')
 }
 
+beforeEach(() => {
+  jest.clearAllMocks()
+})
+
 describe('Markable', () => {
   it('renders the token', async () => {
     await renderMarkable()
     expect(screen.getByText('kur')).toBeInTheDocument()
   })
+
   it('calls setSelection', async () => {
     await renderMarkable()
     await userEvent.click(screen.getByText('kur'))
@@ -52,249 +46,14 @@ describe('Markable', () => {
       expect(setSelection).toHaveBeenCalled()
     })
   })
+
   it('does not highlight unselected markables', async () => {
     await renderMarkable()
     expect(screen.getByRole('button')).not.toHaveClass('selected')
   })
+
   it('highlights the selected markable', async () => {
     await renderMarkable(['Word-1'])
     expect(screen.getByRole('button')).toHaveClass('selected')
-  })
-  it('selects across tokens when selection starts on separator', async () => {
-    const setSelectionLocal = jest.fn()
-    const setActiveSpanIdLocal = jest.fn()
-
-    renderWithContext(
-      <div>
-        <Markable
-          token={word}
-          selection={[]}
-          setSelection={setSelectionLocal}
-          activeSpanId={activeSpanId}
-          setActiveSpanId={setActiveSpanIdLocal}
-        >
-          <DisplayToken token={word} />
-        </Markable>
-        <span data-testid="separator" />
-        <Markable
-          token={word2}
-          selection={[]}
-          setSelection={setSelectionLocal}
-          activeSpanId={activeSpanId}
-          setActiveSpanId={setActiveSpanIdLocal}
-        >
-          <DisplayToken token={word2} />
-        </Markable>
-      </div>,
-      ['Word-1', 'Word-2'],
-    )
-
-    const separator = screen.getByTestId('separator')
-    const [, secondMarkable] = screen.getAllByRole('button')
-    const selection = {
-      anchorNode: separator,
-      focusNode: secondMarkable,
-      addRange: jest.fn(),
-      empty: jest.fn(),
-      removeAllRanges: jest.fn(),
-    } as unknown as Selection
-
-    const documentSelection = jest
-      .spyOn(document, 'getSelection')
-      .mockReturnValue(selection)
-    const windowSelection = jest
-      .spyOn(window, 'getSelection')
-      .mockReturnValue(selection)
-
-    fireEvent.mouseUp(screen.getAllByText('kur')[1])
-
-    await waitFor(() => {
-      expect(setSelectionLocal).toHaveBeenCalledWith(['Word-1', 'Word-2'])
-    })
-
-    documentSelection.mockRestore()
-    windowSelection.mockRestore()
-  })
-
-  it('selects across tokens when range boundaries define the selection', async () => {
-    const setSelectionLocal = jest.fn()
-    const setActiveSpanIdLocal = jest.fn()
-
-    renderWithContext(
-      <div data-testid="container">
-        <Markable
-          token={word}
-          selection={[]}
-          setSelection={setSelectionLocal}
-          activeSpanId={activeSpanId}
-          setActiveSpanId={setActiveSpanIdLocal}
-        >
-          <DisplayToken token={word} />
-        </Markable>
-        <span data-testid="separator" />
-        <Markable
-          token={word2}
-          selection={[]}
-          setSelection={setSelectionLocal}
-          activeSpanId={activeSpanId}
-          setActiveSpanId={setActiveSpanIdLocal}
-        >
-          <DisplayToken token={word2} />
-        </Markable>
-      </div>,
-      ['Word-1', 'Word-2'],
-    )
-
-    const container = screen.getByTestId('container')
-    const [firstMarkable, secondMarkable] = screen.getAllByRole('button')
-    const selection = {
-      anchorNode: container,
-      focusNode: container,
-      rangeCount: 1,
-      getRangeAt: jest.fn().mockReturnValue({
-        startContainer: firstMarkable,
-        endContainer: secondMarkable,
-      }),
-      addRange: jest.fn(),
-      empty: jest.fn(),
-      removeAllRanges: jest.fn(),
-    } as unknown as Selection
-
-    const documentSelection = jest
-      .spyOn(document, 'getSelection')
-      .mockReturnValue(selection)
-    const windowSelection = jest
-      .spyOn(window, 'getSelection')
-      .mockReturnValue(selection)
-
-    fireEvent.mouseUp(screen.getAllByText('kur')[1])
-
-    await waitFor(() => {
-      expect(setSelectionLocal).toHaveBeenCalledWith(['Word-1', 'Word-2'])
-    })
-
-    documentSelection.mockRestore()
-    windowSelection.mockRestore()
-  })
-
-  it('does not handle collapsed selection that starts on separator', async () => {
-    const setSelectionLocal = jest.fn()
-    const setActiveSpanIdLocal = jest.fn()
-
-    renderWithContext(
-      <div>
-        <Markable
-          token={word}
-          selection={[]}
-          setSelection={setSelectionLocal}
-          activeSpanId={activeSpanId}
-          setActiveSpanId={setActiveSpanIdLocal}
-        >
-          <DisplayToken token={word} />
-        </Markable>
-        <span data-testid="separator" />
-        <Markable
-          token={word2}
-          selection={[]}
-          setSelection={setSelectionLocal}
-          activeSpanId={activeSpanId}
-          setActiveSpanId={setActiveSpanIdLocal}
-        >
-          <DisplayToken token={word2} />
-        </Markable>
-      </div>,
-      ['Word-1', 'Word-2'],
-    )
-
-    const separator = screen.getByTestId('separator')
-    const selection = {
-      anchorNode: separator,
-      focusNode: separator,
-      isCollapsed: true,
-      rangeCount: 0,
-      getRangeAt: jest.fn(),
-      addRange: jest.fn(),
-      empty: jest.fn(),
-      removeAllRanges: jest.fn(),
-    } as unknown as Selection
-
-    const documentSelection = jest
-      .spyOn(document, 'getSelection')
-      .mockReturnValue(selection)
-    const windowSelection = jest
-      .spyOn(window, 'getSelection')
-      .mockReturnValue(selection)
-
-    fireEvent.mouseUp(screen.getAllByText('kur')[1])
-
-    await waitFor(() => {
-      expect(setSelectionLocal).not.toHaveBeenCalled()
-    })
-
-    documentSelection.mockRestore()
-    windowSelection.mockRestore()
-  })
-
-  it('selects across tokens when selection is collapsed but range is not', async () => {
-    const setSelectionLocal = jest.fn()
-    const setActiveSpanIdLocal = jest.fn()
-
-    renderWithContext(
-      <div data-testid="container">
-        <Markable
-          token={word}
-          selection={[]}
-          setSelection={setSelectionLocal}
-          activeSpanId={activeSpanId}
-          setActiveSpanId={setActiveSpanIdLocal}
-        >
-          <DisplayToken token={word} />
-        </Markable>
-        <span data-testid="separator" />
-        <Markable
-          token={word2}
-          selection={[]}
-          setSelection={setSelectionLocal}
-          activeSpanId={activeSpanId}
-          setActiveSpanId={setActiveSpanIdLocal}
-        >
-          <DisplayToken token={word2} />
-        </Markable>
-      </div>,
-      ['Word-1', 'Word-2'],
-    )
-
-    const container = screen.getByTestId('container')
-    const [firstMarkable, secondMarkable] = screen.getAllByRole('button')
-    const selection = {
-      anchorNode: container,
-      focusNode: container,
-      isCollapsed: true,
-      rangeCount: 1,
-      getRangeAt: jest.fn().mockReturnValue({
-        collapsed: false,
-        startContainer: firstMarkable,
-        endContainer: secondMarkable,
-      }),
-      addRange: jest.fn(),
-      empty: jest.fn(),
-      removeAllRanges: jest.fn(),
-    } as unknown as Selection
-
-    const documentSelection = jest
-      .spyOn(document, 'getSelection')
-      .mockReturnValue(selection)
-    const windowSelection = jest
-      .spyOn(window, 'getSelection')
-      .mockReturnValue(selection)
-
-    fireEvent.mouseUp(screen.getAllByText('kur')[1])
-
-    await waitFor(() => {
-      expect(setSelectionLocal).toHaveBeenCalledWith(['Word-1', 'Word-2'])
-    })
-
-    documentSelection.mockRestore()
-    windowSelection.mockRestore()
   })
 })

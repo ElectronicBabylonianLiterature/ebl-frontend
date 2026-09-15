@@ -87,7 +87,8 @@ export const FragmentPhoto = withData<
   Blob
 >(
   ({ data, fragment }) => <Photo fragment={fragment} photo={data} />,
-  ({ fragment, fragmentService }) => fragmentService.findPhoto(fragment),
+  ({ fragment, fragmentService }, signal) =>
+    fragmentService.findPhoto(fragment, signal),
 )
 
 interface TabPaneProps {

@@ -1,5 +1,4 @@
 import React from 'react'
-import Bluebird from 'bluebird'
 import DynamicSitemap from 'react-dynamic-sitemap'
 import { Route } from 'router/compat'
 import { renderToString } from 'react-dom/server'
@@ -121,9 +120,13 @@ function getSitemapIndex(filenames: string[]): string {
   return convert.js2xml(convert.xml2js(sitemapString))
 }
 
-function mapStringsToSlugs(array: string[], key: string): SlugsArray {
+function mapStringsToSlugs(
+  array: string[],
+  key: string,
+  encode: boolean,
+): SlugsArray {
   return array.map((element) => {
-    return { [key]: element }
+    return { [key]: encode ? encodeURIComponent(element) : element }
   })
 }
 
@@ -132,9 +135,10 @@ async function getSlugs(
   service: string,
   getter: string,
   key: string,
+  encode = false,
 ): Promise<SlugsArray> {
   return services[service][getter]().then((array) =>
-    mapStringsToSlugs(array, key),
+    mapStringsToSlugs(array, key, encode),
   )
 }
 
@@ -153,6 +157,13 @@ export async function getAllSlugs(services: Services): Promise<Slugs> {
       'listAllBibliography',
       'id',
     ),
+    realiaSlugs: await getSlugs(
+      services,
+      'realiaService',
+      'listAllRealia',
+      'id',
+      true,
+    ),
     fragmentSlugs: await getSlugs(
       services,
       'fragmentService',
@@ -168,5 +179,5 @@ export default withData<{ services: Services }, { services: Services }, Slugs>(
   ({ data, services }) => {
     return getSitemapAsFile(services, data)
   },
-  ({ services }): Bluebird<Slugs> => Bluebird.resolve(getAllSlugs(services)),
+  ({ services }): Promise<Slugs> => Promise.resolve(getAllSlugs(services)),
 )

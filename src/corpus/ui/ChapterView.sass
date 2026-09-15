@@ -1,4 +1,4 @@
-@import src/design-tokens
+@use 'src/design-tokens' as *
 
 .chapter-display
     width: 100%
@@ -136,3 +136,8 @@
     .chapter-view__section .collapsible_section__heading + div
         font-size: 0.9rem
         color: $ebl-color-text-corpus-body
+
+.chapter-display
+    td
+        .Transliteration__AkkadianWord--highlight, .Transliteration__Word--highlight
+            background-color: $ebl-color-highlight-active

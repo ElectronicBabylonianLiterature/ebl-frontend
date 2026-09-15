@@ -44,12 +44,14 @@
   "jest": {
     "transformIgnorePatterns": [
       "node_modules/(?!(react-markdown|remark-.*|rehype-.*|unified|bail|is-plain-obj|trough|vfile|vfile-message|unist-.*|mdast-.*|hast-.*|property-information|space-separated-tokens|comma-separated-tokens|web-namespaces|zwitch|html-void-elements|ccount|escape-string-regexp|markdown-table|trim-lines|micromark.*|decode-named-character-reference|character-entities|devlop|iobuffer|fast-png)/)"
-    ]
+    ],
+    "moduleNameMapper": {
+      "^maplibre-gl/dist/maplibre-gl\\.css$": "identity-obj-proxy"
+    }
   },
   "dependencies": {
     "@auth0/auth0-spa-js": "^2.1.0",
     "@sentry/react": "^7.99.0",
-    "@types/bluebird": "^3.5.28",
     "@types/jquery": "^3.5.5",
     "@types/lodash": "^4.14.144",
     "@types/luxon": "^3.4.0",
@@ -58,7 +60,6 @@
     "@types/react-dom": "^18.2.0",
     "@types/react-router-bootstrap": "^0.26.0",
     "@types/react-router-dom": "^5.3.0",
-    "bluebird": "^3.5.2",
     "bootstrap": "^5.3.3",
     "citation-js": "^0.6.4",
     "classnames": "^2.2.6",
@@ -150,6 +151,7 @@
     "debug": "^4.3.4",
     "fishery": "^2.1.0",
     "husky": "^8.0.0",
+    "identity-obj-proxy": "^3.0.0",
     "jest-canvas-mock": "^2.3.1",
     "jest-date-mock": "^1.0.2",
     "jest-fetch-mock": "^3.0.1",

@@ -4,7 +4,7 @@ import { CorpusQueryItem, QueryItem } from 'query/QueryResult'
 import { periods } from 'common/utils/period'
 import { textIdFactory } from './chapter-fixtures'
 
-const defaultChance = new Chance()
+const defaultChance = new Chance('query-item-factory')
 
 export const queryItemFactory = Factory.define<QueryItem>(
   ({ associations, sequence }) => ({

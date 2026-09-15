@@ -34,7 +34,7 @@ function Fragmentarium({
         {(session: Session): JSX.Element => (
           <Container fluid>
             <Row>
-              <Col>
+              <Col className="Fragmentarium__search-column">
                 {session.isAllowedToReadFragments() ? (
                   <SearchForm
                     fragmentSearchService={fragmentSearchService}
@@ -49,7 +49,7 @@ function Fragmentarium({
                 <Statistics fragmentService={fragmentService} />
               </Col>
               {
-                <Col md={6}>
+                <Col md={6} className="Fragmentarium__image-column">
                   <ApiImage
                     fileName="Babel_Project_01_cropped.svg"
                     className="Fragmentarium__hero-image"

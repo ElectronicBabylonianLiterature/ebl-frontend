@@ -5,7 +5,6 @@ import AfoRegisterRecord, {
 } from 'afo-register/domain/Record'
 import { stringify } from 'query-string'
 import ApiClient from 'http/ApiClient'
-import Bluebird from 'bluebird'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import { FragmentAfoRegisterQueryResult } from 'query/QueryResult'
 
@@ -71,7 +70,7 @@ describe('afoRegisterService', () =>
 
 describe('AfoRegisterRepository - search', () => {
   it('handles search without fragmentService', async () => {
-    apiClient.fetchJson.mockReturnValue(Bluebird.resolve([record]))
+    apiClient.fetchJson.mockReturnValue(Promise.resolve([record]))
     const response = await afoRegisterRepository.search(stringify(query))
     expect(response).toEqual([record])
     expect(apiClient.fetchJson).toHaveBeenCalledWith(
@@ -168,7 +167,7 @@ describe('AfoRegisterRepository - search with fragmentService', () => {
   it('injects fragment references when fragmentService is provided', async () => {
     const modifiedRecord = { ...record, fragmentNumbers: ['Frag1', 'Frag2'] }
     fragmentService.queryByTraditionalReferences.mockReturnValueOnce(
-      Bluebird.resolve({
+      Promise.resolve({
         items: [
           {
             traditionalReference: record.id,

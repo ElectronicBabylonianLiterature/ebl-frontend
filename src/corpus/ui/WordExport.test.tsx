@@ -5,7 +5,6 @@ import { RowsContextService } from 'corpus/ui/RowsContext'
 import { TranslationContextService } from 'corpus/ui/TranslationContext'
 import { wordDto } from 'test-support/test-word'
 import { wordExport } from 'corpus/ui/WordExport'
-import Bluebird from 'bluebird'
 import { chapterDisplayFactory } from 'test-support/chapter-fixtures'
 import { ChapterDisplay } from 'corpus/domain/chapter'
 import { Document } from 'docx'
@@ -27,7 +26,7 @@ let wordBlob: Document
 beforeEach(async () => {
   chapter = chapterDisplayFactory.build()
   wordService = new (WordService as jest.Mock<jest.Mocked<WordService>>)()
-  wordService.find.mockReturnValue(Bluebird.resolve(wordDto))
+  wordService.find.mockReturnValue(Promise.resolve(wordDto))
   textService = new (TextService as jest.Mock<jest.Mocked<TextService>>)()
   rowsContext = [
     Object.fromEntries(

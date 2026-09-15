@@ -1,4 +1,4 @@
-@import src/design-tokens
+@use 'src/design-tokens' as *
 
 @mixin highlight-token
   box-shadow: 0 2px 6px $ebl-color-brand-alpha-25
@@ -58,6 +58,7 @@ $confirm-green: $ebl-color-status-success
     &__col
       padding: 0
     &__row
+      display: flex
       padding: 0 .5rem
       flex-wrap: nowrap
       justify-content: space-between

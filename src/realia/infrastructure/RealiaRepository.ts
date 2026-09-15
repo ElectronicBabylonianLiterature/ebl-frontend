@@ -1,4 +1,3 @@
-import Promise from 'bluebird'
 import ApiClient from 'http/ApiClient'
 import createReference from 'bibliography/application/createReference'
 import { ReferenceDto } from 'bibliography/domain/referenceDto'
@@ -135,19 +134,31 @@ export default class RealiaRepository {
     this.apiClient = apiClient
   }
 
-  find(realiaId: string): Promise<RealiaEntry> {
+  private fetchEntry(path: string, signal?: AbortSignal): Promise<RealiaEntry> {
     return this.apiClient
-      .fetchJson<RealiaEntryDto>(
-        `/realia/${encodeURIComponent(realiaId)}`,
-        false,
-      )
+      .fetchJson<RealiaEntryDto>(path, false, signal)
       .then(mapRealiaEntry)
   }
 
-  search(query: string): Promise<readonly RealiaEntry[]> {
+  find(lemma: string, signal?: AbortSignal): Promise<RealiaEntry> {
+    return this.fetchEntry(`/realia/${encodeURIComponent(lemma)}`, signal)
+  }
+
+  findByRealiaId(realiaId: string, signal?: AbortSignal): Promise<RealiaEntry> {
+    return this.fetchEntry(
+      `/realia/by-id/${encodeURIComponent(realiaId)}`,
+      signal,
+    )
+  }
+
+  search(query: string, signal?: AbortSignal): Promise<readonly RealiaEntry[]> {
     const path = `/realia?query=${encodeURIComponent(query)}`
     return this.apiClient
-      .fetchJson<RealiaEntryDto[]>(path, false)
+      .fetchJson<RealiaEntryDto[]>(path, false, signal)
       .then((result) => result.map(mapRealiaEntry))
+  }
+
+  listAllRealia(): Promise<string[]> {
+    return this.apiClient.fetchJson<string[]>(`/realia/all`, false)
   }
 }

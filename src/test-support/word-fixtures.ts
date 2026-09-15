@@ -10,7 +10,7 @@ import Word, {
   Vowels,
 } from 'dictionary/domain/Word'
 
-const defaultChance = new Chance()
+const defaultChance = new Chance('word fixtures')
 
 const nonVerbPos = [
   'AJ',
@@ -65,7 +65,7 @@ function vowel(chance = defaultChance) {
 }
 
 function wordArray(chance = defaultChance) {
-  return [chance.word(), chance.word()]
+  return chance.unique(chance.word, 2)
 }
 
 export const formFactory = Factory.define<Form>(() => ({

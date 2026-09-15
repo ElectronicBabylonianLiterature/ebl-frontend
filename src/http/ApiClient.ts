@@ -1,8 +1,8 @@
 import _ from 'lodash'
-import Bluebird from 'bluebird'
-import cancellableFetch from './cancellableFetch'
 import { AuthenticationService } from 'auth/Auth'
 import { ErrorReporter } from 'ErrorReporterContext'
+import { isAbortError } from 'common/utils/abortError'
+import captureStackTrace from 'common/utils/captureStackTrace'
 
 type Options = Omit<RequestInit, 'headers'> & {
   headers?: Record<string, string>
@@ -19,9 +19,6 @@ async function deserializeJson(response: Response): Promise<unknown> {
     return null
   }
   if (response.status === 201) {
-    if (typeof response.text !== 'function') {
-      return typeof response.json === 'function' ? response.json() : null
-    }
     const responseText = await response.text()
     return responseText.trim() ? JSON.parse(responseText) : null
   }
@@ -46,11 +43,7 @@ export class ApiError extends Error {
     this.name = this.constructor.name
     this.data = data
     this.status = status
-    if (typeof Error.captureStackTrace === 'function') {
-      Error.captureStackTrace(this, this.constructor)
-    } else {
-      this.stack = new Error(message).stack
-    }
+    captureStackTrace(this, this.constructor)
   }
 
   static async fromResponse(response: Response): Promise<ApiError> {
@@ -83,7 +76,7 @@ export class ApiError extends Error {
   private static titleAndDescriptionToMessage(
     body: { [key: string]: unknown },
     statusText: string,
-  ) {
+  ): string {
     const title = body.title || statusText
     const description = body.description
       ? ': ' + JSON.stringify(body.description)
@@ -146,56 +139,65 @@ export default class ApiClient {
     }
   }
 
-  fetch(
+  async fetch(
     path: string,
     authenticate: boolean,
     options: Options,
-  ): Bluebird<Response> {
-    return new Bluebird<Headers>((resolve, reject) => {
-      this.createHeaders(authenticate, options.headers ?? {}, path)
-        .then(resolve)
-        .catch(reject)
-    })
-      .then((headers) =>
-        cancellableFetch(apiUrl(path), {
-          ...options,
-          headers: headers,
-        }),
+    signal?: AbortSignal,
+  ): Promise<Response> {
+    try {
+      const headers = await this.createHeaders(
+        authenticate,
+        options.headers ?? {},
+        path,
       )
-      .then(async (response) => {
-        if (response.ok) {
-          return response
-        } else {
-          throw await ApiError.fromResponse(response)
-        }
+      const response = await fetch(apiUrl(path), {
+        ...options,
+        headers,
+        ...(signal ? { signal } : {}),
       })
-      .catch((error) => {
-        const capturedError = error as Error & { __captured?: boolean }
-        if (!capturedError.__captured) {
-          const errorInfo: Record<string, unknown> = {
-            endpoint: path,
-            method: options.method ?? 'GET',
-          }
-          if (error instanceof ApiError && error.status) {
-            errorInfo.status = error.status
-            if (error.status === 401 || error.status === 403) {
-              errorInfo.authError = true
-            }
-          }
-          this.errorReporter.captureException(capturedError, errorInfo)
-        }
+      if (response.ok) {
+        return response
+      }
+      throw await ApiError.fromResponse(response)
+    } catch (error) {
+      if (isAbortError(error)) {
         throw error
-      })
+      }
+      const capturedError = error as Error & { __captured?: boolean }
+      if (!capturedError.__captured) {
+        const errorInfo: Record<string, unknown> = {
+          endpoint: path,
+          method: options.method ?? 'GET',
+        }
+        if (error instanceof ApiError && error.status) {
+          errorInfo.status = error.status
+          if (error.status === 401 || error.status === 403) {
+            errorInfo.authError = true
+          }
+        }
+        this.errorReporter.captureException(capturedError, errorInfo)
+      }
+      throw error
+    }
   }
 
-  fetchJson<T = unknown>(path: string, authenticate: boolean): Bluebird<T> {
-    return this.fetch(path, authenticate, {}).then((response) =>
+  fetchJson<T = unknown>(
+    path: string,
+    authenticate: boolean,
+    signal?: AbortSignal,
+  ): Promise<T> {
+    return this.fetch(path, authenticate, {}, signal).then((response) =>
       response.json(),
-    ) as Bluebird<T>
+    ) as Promise<T>
   }
 
-  fetchBlob(path: string, authenticate: boolean): Bluebird<Blob> {
-    return this.fetch(path, authenticate, {}).then((response) =>
+  fetchBlob(
+    path: string,
+    authenticate: boolean,
+    signal?: AbortSignal,
+  ): Promise<Blob> {
+    return this.fetch(path, authenticate, {}, signal).then((response) =>
       response.blob(),
     )
   }
@@ -204,15 +206,15 @@ export default class ApiClient {
     path: string,
     body: unknown,
     authenticate = true,
-  ): Bluebird<T> {
+  ): Promise<T> {
     return this.fetch(path, authenticate, createOptions(body, 'POST')).then(
       deserializeJson,
-    ) as Bluebird<T>
+    ) as Promise<T>
   }
 
-  putJson<T = unknown>(path: string, body: unknown): Bluebird<T> {
+  putJson<T = unknown>(path: string, body: unknown): Promise<T> {
     return this.fetch(path, true, createOptions(body, 'PUT')).then(
       deserializeJson,
-    ) as Bluebird<T>
+    ) as Promise<T>
   }
 }

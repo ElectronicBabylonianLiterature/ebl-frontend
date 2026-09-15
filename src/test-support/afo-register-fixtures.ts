@@ -4,7 +4,7 @@ import AfoRegisterRecord, {
   AfoRegisterRecordSuggestion,
 } from 'afo-register/domain/Record'
 
-const chance = new Chance()
+const chance = new Chance('afo-register-fixtures')
 const PUBLICATIONS = [
   'StOr',
   'Al.T.',
