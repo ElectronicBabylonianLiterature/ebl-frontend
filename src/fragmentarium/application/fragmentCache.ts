@@ -3,6 +3,7 @@ import _ from 'lodash'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import { ProvenanceRecord } from 'fragmentarium/domain/Provenance'
 import { QueryResult } from 'query/QueryResult'
+import { hasPrefetchableFullFragment } from 'query/queryItemRenderReady'
 import { CacheEntry, setCachedValue } from 'common/utils/cache'
 import { ThumbnailBlob } from 'fragmentarium/application/fragmentServicePorts'
 import {
@@ -221,12 +222,11 @@ export class FragmentCache {
   private storePrefetchedFragment(
     queryItem: QueryItemWithPrefetchedFragment,
   ): void {
-    const prefetchedFragment = queryItem.fragment ?? null
-
-    if (!prefetchedFragment) {
+    if (!hasPrefetchableFullFragment(queryItem)) {
       return
     }
 
+    const prefetchedFragment = queryItem.fragment
     const lines = _.take(queryItem.matchingLines, 3)
     const excludeLines = _.isEmpty(queryItem.matchingLines)
 

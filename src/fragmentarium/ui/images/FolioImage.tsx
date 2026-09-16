@@ -52,4 +52,5 @@ export default withData<{ folio: Folio }, { fragmentService }, Blob>(
     )
   },
   (props) => props.fragmentService.findFolio(props.folio),
+  { retry: true },
 )

@@ -3,11 +3,20 @@ import { Link } from 'react-router-dom'
 import { stringify } from 'query-string'
 import Folio from 'fragmentarium/domain/Folio'
 import RouterLinkModeContext from 'common/ui/RouterLinkModeContext'
+import { CANONICAL_ORIGIN } from 'router/domain'
+
+export function encodeFragmentNumber(number: string): string {
+  return encodeURIComponent(number.toWellFormed?.() ?? number)
+}
 
 export function createFragmentUrl(number: string, hash = ''): string {
-  return `/library/${encodeURIComponent(number)}${
+  return `/library/${encodeFragmentNumber(number)}${
     hash && '#'
   }${encodeURIComponent(hash)}`
+}
+
+export function createFragmentCanonicalUrl(number: string): string {
+  return `${CANONICAL_ORIGIN}${createFragmentUrl(number)}`
 }
 
 export function createFragmentUrlWithFolio(

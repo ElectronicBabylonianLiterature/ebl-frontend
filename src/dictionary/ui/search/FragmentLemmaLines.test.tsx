@@ -2,7 +2,8 @@ import React from 'react'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import { render, screen } from '@testing-library/react'
 import { dictionaryWord } from 'test-support/word-info-fixtures'
-import FragmentLemmaLines, { RenderFragmentLines } from './FragmentLemmaLines'
+import FragmentLemmaLines from './FragmentLemmaLines'
+import RenderFragmentLines from 'dictionary/ui/search/RenderFragmentLines'
 import { fragment, lines } from 'test-support/test-fragment'
 import { QueryItem, QueryResult } from 'query/QueryResult'
 import Bluebird from 'bluebird'
@@ -14,6 +15,11 @@ import { produce, castDraft, Draft } from 'immer'
 import { Text } from 'transliteration/domain/text'
 import { TextLine, TextLineDto } from 'transliteration/domain/text-line'
 import { atfTokenKur } from 'test-support/test-tokens'
+import {
+  createFragmentCardSummary,
+  SUMMARY_LEMMA_ID,
+} from 'test-support/fragment-query-summary'
+import { tokenWithClass } from 'test-support/fragment-query-preview'
 import { lineNumberFactory } from 'test-support/linenumber-factory'
 
 jest.mock('fragmentarium/application/FragmentService')
@@ -23,7 +29,7 @@ beforeEach(() => {
   jest.clearAllMocks()
 })
 
-const word = { ...dictionaryWord, _id: 'testWordId' }
+const word = { ...dictionaryWord, _id: SUMMARY_LEMMA_ID }
 
 const fragmentService = new (FragmentService as jest.Mock<
   jest.Mocked<FragmentService>
@@ -85,7 +91,11 @@ describe('Show Library entries', () => {
 
     renderFragmentLemmaLines()
 
-    expect(fragmentService.query).toBeCalledWith({ lemmas: word._id })
+    expect(fragmentService.query).toBeCalledWith({
+      lemmas: word._id,
+      limit: 10,
+      count: 'exact',
+    })
     await screen.findByText(fragmentWithLemma.number)
   }
 
@@ -101,7 +111,7 @@ describe('Show Library entries', () => {
     expect(container).toMatchSnapshot()
   })
 
-  it('renders a document-count fallback when matchCountTotal is null', async () => {
+  it('renders example-count copy when matchCountTotal is null', async () => {
     const queryItem: QueryItem = {
       museumNumber: 'Test.Fragment',
       matchingLines: [0],
@@ -115,9 +125,75 @@ describe('Show Library entries', () => {
     renderFragmentLemmaLines()
 
     expect(
-      await screen.findByText('Matches found in 1 Library document'),
+      await screen.findByText('Showing 1 Library document example'),
     ).toBeVisible()
     expect(screen.queryByText('0 matches')).not.toBeInTheDocument()
+  })
+
+  it('renders compact summary examples without hydrating fragments', async () => {
+    const queryItem: QueryItem = {
+      museumNumber: previewSubsetFragment.number,
+      matchingLines: [0, 1],
+      matchCount: 5,
+      fragment: previewSubsetFragment,
+      cardSummary: createFragmentCardSummary(),
+    }
+    fragmentService.query.mockReturnValue(
+      Bluebird.resolve({ items: [queryItem], matchCountTotal: null }),
+    )
+
+    renderFragmentLemmaLines()
+
+    expect(await screen.findByText(previewSubsetFragment.number)).toBeVisible()
+    expect(
+      screen.getByText(
+        tokenWithClass('Transliteration__Word--highlight', 'kur'),
+      ),
+    ).toBeInTheDocument()
+    expect(screen.getByText('And 3 more')).toBeVisible()
+    expect(fragmentService.find).not.toHaveBeenCalled()
+  })
+
+  it('reports unsupported summaries without hydrating fragments', async () => {
+    const queryItem: QueryItem = {
+      museumNumber: previewSubsetFragment.number,
+      matchingLines: [0, 1],
+      matchCount: 5,
+      cardSummary: { type: 'UnsupportedFragmentCardSummary' },
+    }
+    fragmentService.query.mockReturnValue(
+      Bluebird.resolve({ items: [queryItem], matchCountTotal: null }),
+    )
+
+    renderFragmentLemmaLines()
+
+    expect(
+      await screen.findByText('Details for this result are unavailable.'),
+    ).toBeVisible()
+    expect(fragmentService.find).not.toHaveBeenCalled()
+  })
+
+  it('defensively renders no more than ten examples', async () => {
+    const items = Array.from(
+      { length: 12 },
+      (_, index): QueryItem => ({
+        museumNumber: `Test.Fragment.${index}`,
+        matchingLines: [0],
+        matchCount: 1,
+        fragment: previewSubsetFragment,
+        cardSummary: createFragmentCardSummary(),
+      }),
+    )
+    fragmentService.query.mockReturnValue(
+      Bluebird.resolve({ items, matchCountTotal: null }),
+    )
+
+    renderFragmentLemmaLines()
+
+    expect(await screen.findByText('Test.Fragment.0')).toBeVisible()
+    expect(screen.getByText('Test.Fragment.9')).toBeVisible()
+    expect(screen.queryByText('Test.Fragment.10')).not.toBeInTheDocument()
+    expect(fragmentService.find).not.toHaveBeenCalled()
   })
 })
 
@@ -138,6 +214,22 @@ describe('RenderFragmentLines', () => {
 
     expect(fragmentService.find).not.toHaveBeenCalled()
     expect(screen.getByRole('button', { name: 'kur' })).toBeVisible()
-    expect(screen.getByText('And 2 more')).toBeVisible()
+    expect(screen.getByText('And 3 more')).toBeVisible()
+  })
+
+  it('falls back to the fragment line count when no total is given', () => {
+    render(
+      <MemoryRouter>
+        <DictionaryContext.Provider value={wordService}>
+          <RenderFragmentLines
+            fragment={previewSubsetFragment}
+            lemmaIds={[word._id]}
+            linesToShow={1}
+          />
+        </DictionaryContext.Provider>
+      </MemoryRouter>,
+    )
+
+    expect(screen.getByText('And 1 more')).toBeVisible()
   })
 })

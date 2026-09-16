@@ -24,3 +24,5 @@ yarn-error.log*
 
 # Added by ggshield
 .cache_ggshield
+
+.claude
