@@ -1,0 +1,16 @@
+// Single z-index scale for everything stacked above the map canvas.
+// Higher layers must always be able to see and reach the ones below them;
+// nothing here may cover the toolbar, the drawer's close control, or
+// MapLibre's own attribution/navigation controls.
+//
+//   0  map canvas + MapLibre native layers
+//   1  MapLibre native controls (navigation, attribution)
+//   2  map legend
+//   3  hover tooltip
+//   4  toolbar + selection pill
+//   5  panel drawer / bottom sheet
+$map-z-native-controls: 1
+$map-z-legend: 2
+$map-z-tooltip: 3
+$map-z-toolbar: 4
+$map-z-panel: 5
