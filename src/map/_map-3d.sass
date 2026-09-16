@@ -1,0 +1,207 @@
+@import src/map/map-zindex
+
+// Analytical 3D: the tools panel, the height key, the elevation profile and
+// the tour controls. Nothing here competes with MapLibre's own attribution or
+// navigation controls for a corner.
+
+.map-3d-panel
+  display: grid
+  gap: 0.85rem
+
+  &__group
+    display: grid
+    gap: 0.5rem
+    min-width: 0
+    margin: 0
+    padding: 0
+    border: 0
+
+    legend
+      float: none
+      width: auto
+      margin: 0
+      color: #172331
+      font-size: 0.8rem
+      font-weight: 700
+      letter-spacing: 0
+      text-transform: uppercase
+
+  input[type="range"]
+    width: 100%
+
+.map-3d-legend
+  display: grid
+  gap: 0.35rem
+  padding: 0.6rem
+  border: 1px solid #e2ddd2
+  border-radius: 0.35rem
+  background: #faf7f0
+
+  &__title
+    margin: 0
+    color: #172331
+    font-size: 0.85rem
+    font-weight: 700
+
+  &__metric
+    margin: 0
+    color: #7b3f10
+    font-size: 0.82rem
+    font-weight: 700
+
+  &__method,
+  &__note
+    margin: 0
+    color: $ebl-color-text-secondary
+    font-size: 0.75rem
+
+  &__samples
+    display: grid
+    gap: 0.3rem
+    margin: 0
+    padding: 0
+    list-style: none
+
+    li
+      display: grid
+      grid-template-columns: 1.5rem minmax(0, 1fr)
+      align-items: end
+      gap: 0.5rem
+      min-height: 1.4rem
+      color: $ebl-color-text-secondary
+      font-size: 0.78rem
+
+  // A bar whose own height is the encoding, so the key never depends on colour.
+  &__bar
+    width: 0.7rem
+    min-height: 0.18rem
+    border-radius: 0.1rem 0.1rem 0 0
+    background: linear-gradient(180deg, #c98d4d, #8a4d13)
+
+    &--flat
+      height: 0.18rem
+      background: #7b7f73
+
+    &--selected
+      height: 60%
+      background: #b35c1e
+      box-shadow: 0 0 0 2px $ebl-color-white-alpha-90, 0 0 0 3px #6f2f10
+
+  &__disclaimer
+    margin: 0
+    padding: 0.4rem 0.5rem
+    border-left: 0.2rem solid #a64535
+    background: $ebl-color-surface-primary
+    color: $ebl-color-text-primary
+    font-size: 0.75rem
+    line-height: 1.35
+
+.map-stage__analytical-note
+  position: absolute
+  z-index: $map-z-legend
+  right: 0.75rem
+  bottom: 0.75rem
+  max-width: min(22rem, calc(100% - 1.5rem))
+  margin: 0
+  padding: 0.4rem 0.6rem
+  border: 1px solid #c8a16f
+  border-radius: 0.3rem
+  background: $ebl-color-white-alpha-90
+  color: $ebl-color-text-primary
+  font-size: 0.72rem
+  line-height: 1.3
+
+.map-elevation
+  display: grid
+  gap: 0.5rem
+  min-width: 0
+
+  &__title
+    margin: 0
+    color: #172331
+    font-size: 0.85rem
+    font-weight: 700
+
+  &__metrics
+    display: grid
+    grid-template-columns: repeat(2, minmax(0, 1fr))
+    gap: 0.3rem 0.6rem
+    margin: 0
+
+    > div
+      display: flex
+      justify-content: space-between
+      gap: 0.4rem
+
+    dt
+      color: $ebl-color-text-secondary
+      font-size: 0.75rem
+      font-weight: 600
+
+    dd
+      margin: 0
+      color: $ebl-color-text-primary
+      font-size: 0.78rem
+
+  &__samples
+    margin: 0
+    color: $ebl-color-text-secondary
+    font-size: 0.72rem
+
+.map-elevation-chart
+  width: 100%
+  height: 5.5rem
+  border: 1px solid #ded8cc
+  border-radius: 0.3rem
+  background: #fbf8f2
+
+  &__line
+    fill: none
+    stroke: #8a4d13
+    stroke-width: 2
+    vector-effect: non-scaling-stroke
+
+  &__baseline
+    fill: none
+    stroke: #ded8cc
+    stroke-width: 1
+    vector-effect: non-scaling-stroke
+
+.map-3d-tour
+  display: flex
+  flex-wrap: wrap
+  align-items: center
+  gap: 0.35rem
+
+  &__progress
+    flex: 1 1 100%
+    color: $ebl-color-text-secondary
+    font-size: 0.75rem
+
+  &--compact
+    justify-content: flex-end
+    padding: 0.35rem 0.5rem
+
+    .map-3d-tour__progress
+      flex: 0 1 auto
+
+@media (max-width: $ebl-breakpoint-md-max)
+  .map-3d-panel input[type="range"]
+    height: 2.75rem
+
+  .map-3d-panel .form-check-label,
+  .map-3d-tour .btn
+    min-height: 2.75rem
+
+  .map-elevation__metrics
+    grid-template-columns: minmax(0, 1fr)
+
+  .map-stage__analytical-note
+    right: 0.5rem
+    bottom: 3.6rem
+    left: 0.5rem
+    max-width: none
+
+@media (prefers-reduced-motion: reduce)
+  .map-elevation-chart__line
+    transition: none
