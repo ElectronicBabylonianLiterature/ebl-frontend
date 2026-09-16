@@ -1,6 +1,16 @@
 import { produce } from 'immer'
-import { addAccents, addBreves } from './accents'
-import { AkkadianWord, Enclosure, NamedSign, ValueToken } from './token'
+import { addAccents, addBreves } from 'transliteration/domain/accents'
+import {
+  AkkadianWord,
+  Enclosure,
+  NamedSign,
+  ValueToken,
+} from 'transliteration/domain/token'
+import {
+  brokenAway,
+  namedSignFixture,
+  valueToken,
+} from 'test-support/named-sign-fixtures'
 
 test('addBreves', () => {
   const word: AkkadianWord = {
@@ -45,48 +55,19 @@ test('addBreves', () => {
   )
 })
 
-function valuePart(value: string): ValueToken {
-  return {
-    value,
-    cleanValue: value,
-    enclosureType: [],
-    erasure: 'NONE',
-    type: 'ValueToken',
-  }
-}
-
-const closingBreak = {
-  value: ']',
-  cleanValue: '',
-  enclosureType: ['BROKEN_AWAY'],
-  erasure: 'NONE',
-  type: 'BrokenAway',
-  side: 'RIGHT',
-} as unknown as Enclosure
-
 function reading(
   nameParts: readonly (ValueToken | Enclosure)[],
   nameBreaks?: readonly Enclosure[] | null,
 ): NamedSign {
-  return {
-    value: 'k]u',
-    cleanValue: 'ku',
-    enclosureType: [],
-    erasure: 'NONE',
-    type: 'Reading',
-    name: 'ku',
-    nameParts,
-    nameBreaks,
-    subIndex: 1,
-    modifiers: [],
-    flags: [],
-  } as unknown as NamedSign
+  return namedSignFixture({ nameParts, nameBreaks })
 }
+
+const closingBreak: Enclosure = brokenAway(']', 'RIGHT')
 
 describe('addAccents', () => {
   it('puts a name break back between the parts it separates', () => {
     const [parts] = addAccents(
-      reading([valuePart('k'), valuePart('u')], [closingBreak]),
+      reading([valueToken('k'), valueToken('u')], [closingBreak]),
     )
 
     expect(parts.map((part) => part.value)).toEqual(['k', ']', 'u'])
@@ -94,7 +75,7 @@ describe('addAccents', () => {
 
   it('renders a legacy already-interleaved name unchanged', () => {
     const [parts] = addAccents(
-      reading([valuePart('k'), closingBreak, valuePart('u')]),
+      reading([valueToken('k'), closingBreak, valueToken('u')]),
     )
 
     expect(parts.map((part) => part.value)).toEqual(['k', ']', 'u'])

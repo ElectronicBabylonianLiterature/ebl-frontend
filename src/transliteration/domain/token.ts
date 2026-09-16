@@ -215,12 +215,14 @@ export type Token =
 export function nameTokens(
   namedSign: NamedSign,
 ): readonly (ValueToken | Enclosure)[] {
-  const nameBreaks = namedSign.nameBreaks
+  const { nameParts, nameBreaks } = namedSign
   if (!nameBreaks) {
-    return namedSign.nameParts
+    return nameParts
   }
-  return namedSign.nameParts.flatMap((part, index) =>
-    index < nameBreaks.length ? [part, nameBreaks[index]] : [part],
+  return _.zip(nameParts, nameBreaks).flatMap((pair) =>
+    pair.filter(
+      (token): token is ValueToken | Enclosure => token !== undefined,
+    ),
   )
 }
 

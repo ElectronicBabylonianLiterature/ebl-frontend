@@ -1,53 +1,46 @@
 <!-- markdownlint-disable MD013 -->
 
-# TASK-749 — Read `nameBreaks` alongside `nameParts` (frontend)
+# TASK-749 — TODO (review follow-up on PR #817)
 
-**Branch:** `add-name-breaks`
-**Based on:** `chore/remove-bluebird` (PR #774) — per explicit user instruction, _not_ `master` as the brief specifies
-**Blocks:** `ebl-api` [PR #743](https://github.com/ElectronicBabylonianLiterature/ebl-api/pull/743)
-**Source material:** `TASK-749-frontend-brief.md`, `TASK-749-frontend.patch` (commit `a9df351`), `TASK-749-frontend-pr-body.md`
+Working document. **Delete before merge**, together with `TASK-749-log.md`, `TASK-749-review.md` and the other `TASK-*` files listed in review finding F1.
 
-## Todo
+## Scope
 
-- [x] Commit the pre-existing untracked `TASK-*.md` task docs (explicit user request)
-- [x] Read the brief, the patch, and the PR body
-- [x] Confirm Node 20 is active (brief warns Node 22 breaks `yarn install` and husky)
-- [x] Create branch `add-name-breaks` with `--no-track`, based on `chore/remove-bluebird`
-- [x] Verify the patch applies cleanly (`git apply --check`)
-- [x] Apply the patch to the working tree
-- [x] Confirm the diffstat matches the patch header (4 files, +110 / -4)
-- [x] Create the task TODO and log files
-- [x] Verify the applied change matches the brief section by section
-  - [x] `token.ts` — `nameBreaks` field on `NamedSign`
-  - [x] `token.ts` — exported `nameTokens` helper
-  - [x] `token.ts` — `extractEnclosureTypes` routed through `nameTokens`
-  - [x] `accents.ts` — import updated, `addAccents` routed through `nameTokens`
-  - [x] `token.test.ts` — five `nameTokens` cases
-  - [x] `accents.test.ts` — two `addAccents` cases
-  - [x] `nameParts` keeps its union type (narrowing would break the legacy fallback)
-- [x] Hard gate: 250-line ceiling on every touched file
-- [x] Hard gate: `yarn tsc` — zero errors
-- [x] Hard gate: `yarn lint` — zero errors
-- [x] Hard gate: `CI=true yarn test --watchAll=false` — 500 suites / 4402 tests, zero failures, zero console output
-- [x] Hard gate: coverage on the affected code — `token.ts` 100% incl. branches; `accents.ts` 100% stmts/funcs/lines
-- [x] Report results and **ask** before committing / pushing / opening the PR
-- [x] Write the handoff (`TASK-749-handoff.md`) with remaining findings and next steps
-- [x] Commit code + docs together (explicitly authorised)
-- [x] Push `add-name-breaks` and open the PR against `chore/remove-bluebird` — [#817](https://github.com/ElectronicBabylonianLiterature/ebl-frontend/pull/817)
-- [x] Fix the red `test` check on #817 — pre-existing vacuous promise comparison in `FragmentService.queries.test.ts`
-- [x] Reproduce the full CI job locally (bluebird check, lint, tsc, tests with `--detectOpenHandles`, build) — all green
-- [ ] Retarget the PR to `master` once #774 merges
-- [ ] Decide: keep stacked on #774, or re-cut from `master` to decouple the deploy
-- [ ] Decide: fix the pre-existing Browserslist advisory separately?
-- [ ] Before merge: remove the `TASK-749-*` and `TASK-774-*` / `TASK-ts7-*` tracking docs
+Address every finding from `TASK-749-review.md` **except F1 (cleanup)**, which is explicitly out of scope for this pass.
 
-## Open questions for the user
+## Items
 
-1. **PR base** — the new PR should target `chore/remove-bluebird`, not `master`, since it
-   is stacked on #774. It will need retargeting to `master` once #774 merges.
-2. **Deploy order** — the brief is emphatic that this frontend change must ship _before_
-   ebl-api #743. Stacking it on #774 couples its release to #774 merging first.
-3. **Browserslist advisory** — pre-existing noise in every test run; fixing it means a
-   `yarn.lock` dependency bump. Bundle it here, or leave it?
-4. **Doc cleanup before merge** — `TASK-749-*` (5 files), `TASK-774-*` (5) and
-   `TASK-ts7-*` (3) should be removed before merging.
+- [x] **F2** — Add tests that fail if `extractEnclosureTypes` stops routing through `nameTokens`
+  - [x] `effectiveEnclosure` with `nameBreaks` present, break carrying a different enclosure set than the parts
+  - [x] `isStrictlyPartiallyEnclosed` likewise
+  - [x] Re-run the mutation check: reverting `token.ts:230` must now turn the suite **red**
+- [x] **F3** — Stop discarding surplus `nameBreaks` in `nameTokens`
+  - [x] Superseded: rewrote `nameTokens` with `_.zip`, mirroring the backend's `zip_longest` — shorter than a `slice` and surplus breaks fall out for free
+  - [x] Add a covering test
+- [x] **F4** — **Withdrawn.** Inlining breaks `testing-library/no-await-sync-queries`; the variable is a deliberate workaround. Reverted, finding corrected in the review.
+- [x] **F5** — Replace the three `as unknown as` fabricators with one typed builder
+  - [x] New `src/test-support/named-sign-fixtures.ts`, fully typed, zero casts
+  - [x] Migrate `token.test.ts` (`namedSign()`, `name()`)
+  - [x] Migrate `accents.test.ts` (`valuePart()`, `closingBreak`, `reading()`)
+  - [x] Confirm no `as unknown as` remains in either test file
+- [x] **F6** — Record the type-narrowing follow-up (no code change; blocked on ebl-api#743 deploying)
+- [ ] **F7** — Base branch / deploy order: needs a decision, not a code change
+- [ ] **F8** — Dev container: nothing to do (no changes in this PR)
+
+## Instruction-compliance corrections
+
+- [x] Create `TASK-749-todo.md` and `TASK-749-log.md` (were missing from the review pass)
+- [x] Keep both updated while working
+- [x] Verify changed behaviour against the **running application**, not only the test suite
+- [x] Shorten the friendly review summary — the brief asked for _very short_
+
+## Hard gates
+
+- [x] `yarn lint` — 0 errors (one prettier error found and fixed on `token.ts`)
+- [x] `yarn tsc` — 0 errors
+- [ ] `CI=true yarn test --watchAll=false` — 0 failures, 0 console output
+- [ ] Coverage 100% on affected code
+- [x] 250-line ceiling on every changed file — max 247 (`token.ts`)
+- [x] DRY — no duplicated domain logic or fixture construction
+- [ ] `qlty check` / `qlty smells` clean
+- [x] `TASK-749-review.md` updated to reflect what was fixed

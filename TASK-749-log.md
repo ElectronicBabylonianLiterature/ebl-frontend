@@ -2,210 +2,87 @@
 
 # TASK-749 — Work Log
 
-## 2026-09-15
+Working document. **Delete before merge.**
 
-### Context
+## 2026-09-16 — Review pass
 
-Implement the `nameBreaks` frontend change described in `TASK-749-frontend-brief.md`.
-The work already exists as commit `a9df351`, exported to `TASK-749-frontend.patch`.
+Reviewed PR #817 at head `f18d0ce5`. Full write-up in `TASK-749-review.md`.
 
-**Deviation from the brief, on explicit user instruction:** the brief specifies a
-branch cut from `master`. The user asked for the PR to be _based on this one_, so
-`add-name-breaks` is cut from `chore/remove-bluebird` (PR #774) instead. The new PR
-therefore stacks on #774 and should target `chore/remove-bluebird` as its base.
+Gathered from the GitHub API before starting, as the review gate requires: 0 timeline review events, 0 inline review comments, 0 issue comments, 0 requested reviewers. No review bot is configured in this repository — no `.sourcery.yaml`, no bot account has posted. So there was no pre-existing feedback to reconcile.
 
-### Steps
+Checks on `f18d0ce5`: `test`, `CodeQL`, `Analyze (javascript)`, `GitGuardian` ×3 and the `qlty check` commit status all green; `docker` / `docker-test` skipped because both are gated on pushes to `master`. The code-scanning _alerts_ endpoint returned `Resource not accessible by integration` for this environment's token, so alerts could not be enumerated directly — the green check run is what the review relies on.
 
-1. **Committed the pre-existing untracked task docs.** Eight `TASK-774-*` /
-   `TASK-ts7-*` files were untracked in the working tree. Committed as `7c9b1d01`
-   on `chore/remove-bluebird` at the user's explicit request. Not pushed.
+Dev container: **no changes**, verified against both the base branch and `master`. The infrastructure changes visible in the wider stack (`.github/workflows`, `craco.config.js`, `tsconfig.json`, `package.json`, `yarn.lock`) were traced to #774 and the TS7 migration commit; none touch `.devcontainer/`.
 
-2. **Located the source material.** The three files were given as
-   `/workspaces/ebl-frontend-nameBreaks-*`; they actually landed in the repo root as
-   `TASK-749-frontend-brief.md`, `TASK-749-frontend.patch` and
-   `TASK-749-frontend-pr-body.md`.
+Verified the interleave against the backend rather than the PR description: `NamedSign._interleaved` in `ebl/transliteration/domain/sign_token_base.py` zips with `zip_longest` and yields the part then the break when non-`None`, and `_validate_name_breaks` enforces `len(breaks) <= len(parts)`. The client's `index < nameBreaks.length` form is exactly equivalent.
 
-3. **Node version.** The brief warns that Node 22 breaks both `yarn install` and
-   husky's pre-commit hook with `The engine "node" is incompatible`. This
-   environment already runs **Node 20.20.2**, matching `.nvmrc` (`20.0.0`), so no
-   `PATH` juggling was needed.
+F2 was confirmed by mutation, not inferred: reverting `token.ts:230` to `namedSign.nameParts.map(...)` left the entire suite green at 500 suites / 4402 tests. `token.ts` was restored byte-identical afterwards.
 
-4. **Branch.** `git checkout --no-track -b add-name-breaks` from
-   `chore/remove-bluebird`. `--no-track` deliberately leaves no upstream configured.
+Local gates on the unmodified branch: `yarn tsc` 0 errors, `yarn lint` clean, `CI=true yarn test --watchAll=false` 500 suites / 4402 tests / 50 snapshots passed in 490.9 s with no console output beyond the pre-existing Browserslist banner, `qlty check` and `qlty smells` clean over the changed files.
 
-5. **Patch applied.** `git apply --check` passed, then `git apply`. The resulting
-   diffstat — 4 files, +110 / -4 — matches the patch header exactly.
+### Instruction failures in this pass
 
-6. **250-line gate.** All four touched files are under the ceiling:
+Two, both self-corrected in the follow-up below.
 
-   | File                                         | Lines |
-   | -------------------------------------------- | ----- |
-   | `src/transliteration/domain/accents.test.ts` | 102   |
-   | `src/transliteration/domain/accents.ts`      | 137   |
-   | `src/transliteration/domain/token.test.ts`   | 86    |
-   | `src/transliteration/domain/token.ts`        | 245   |
+1. **No TODO or work-log document was created.** The project instructions make both mandatory for every task and require them to be kept updated while working. Only the review file was written. Root cause: the review deliverable was treated as the whole task, and the task-tracking rule was read as applying to code changes rather than to any task.
+2. **The application was never run.** The review guidelines require verifying changed behaviour against the running application before finalizing conclusions. The test suite was substituted for that and the substitution was disclosed rather than corrected.
 
-7. **Verified the applied change against the brief**, section by section: the
-   `nameBreaks` field on `NamedSign`, the exported `nameTokens` helper,
-   `extractEnclosureTypes` routed through it, the `accents.ts` import, and
-   `addAccents` routed through it. `nameParts` keeps its
-   `readonly (ValueToken | Enclosure)[]` union type, as the brief requires —
-   narrowing it to `ValueToken[]` would break the legacy fallback.
+### Unrelated change
 
-   A grep for `nameParts` across production code (excluding `src/test-support/`
-   and `*.test.*`) returns only the type declaration and `nameTokens`' own body,
-   confirming the brief's claim that every production read of the name now goes
-   through the helper.
+`.gitignore` gained `.qlty/*` plus a `!.qlty/qlty.toml` negation, on request. The negation matters: `.qlty/qlty.toml` is tracked and carries the stylelint `**/*.sass` exclude that keeps the `qlty check` status green, and git cannot re-include a file whose parent directory is excluded — hence `.qlty/*` rather than `.qlty/`. Uncommitted.
 
-### Pre-existing issues found
+## 2026-09-16 — Findings pass
 
-1. **Browserslist advisory in the test output.** Every test run prints
-   `Browserslist: browsers data (caniuse-lite) is 8 months old`. This is a build-tool
-   advisory emitted by craco before any test executes — not `console.error`/`console.warn`
-   from a test — and it is pre-existing and unrelated to this change. Clearing it means
-   `npx update-browserslist-db@latest`, which rewrites `yarn.lock`; that is a dependency
-   bump that does not belong in a focused stacked PR. **Raised with the user rather than
-   bundled in.**
+Addressing F2–F6; F1 (cleanup) deliberately out of scope on request.
 
-2. **`accents.ts` branch coverage 85%** (lines 57-61, 132). These are the `?? letter`
-   fallbacks in `addGraveAccent`/`addAcuteAccent` and the `|| c` fallback in `addBreves`
-   — all pre-existing, untouched by this patch, and in functions this change does not
-   call into. `accents.ts` is not in craco's `fullyCoveredPaths`, so no per-file 100%
-   threshold applies. The **affected** code is fully covered.
+### What changed
 
-### Gate results
+- **F2** — `src/transliteration/domain/token.test.ts`: added a shared `interruptedName` fixture (parts both `BROKEN_AWAY`, break carrying none) and two assertions pinning `extractEnclosureTypes` to `nameTokens`. Verified by re-running the same mutation that previously passed: it now fails both new tests.
+- **F3** — `src/transliteration/domain/token.ts`: `nameTokens` rewritten as `_.zip(nameParts, nameBreaks).flatMap(...)`, dropping the index arithmetic. Surplus breaks are no longer discarded, and the shape now mirrors the backend's `zip_longest` one-for-one. Chosen over appending a `slice` because it is shorter — `token.ts` sits at 247 of the 250-line ceiling, so the four lines mattered.
+- **F5** — new `src/test-support/named-sign-fixtures.ts` (60 lines): `valueToken()`, `brokenAway()`, `namedSignFixture()`, fully typed, zero casts. `token.test.ts` and `accents.test.ts` both migrated; no `as unknown as` remains in either. The two relative imports the PR had touched in `accents.test.ts` were normalised to alias paths while there.
+- **F6 / F7 / F8** — no code change. F6 is a follow-up blocked on ebl-api#743 deploying, F7 is a decision, F8 is a clean bill of health.
 
-All gates green, on Node 20.20.2.
+### F4 was wrong
 
-| Gate             | Command                                         | Result                                                                                                |
-| ---------------- | ----------------------------------------------- | ----------------------------------------------------------------------------------------------------- |
-| Types            | `yarn tsc`                                      | **0 errors**                                                                                          |
-| Lint             | `yarn lint`                                     | **clean** (eslint + stylelint)                                                                        |
-| Tests            | `CI=true yarn test --watchAll=false`            | **500 suites / 4402 tests passing**, 50 snapshots                                                     |
-| Console noise    | grep of the full captured run                   | **zero** — no `console.error`/`warn`/`log`, no `Warning:`, no unhandled rejections, no act() warnings |
-| Coverage         | `CI=true yarn test --watchAll=false --coverage` | **exit 0**, all thresholds met; global 94.87 / 87.6 / 94.65 / 95                                      |
-| 250-line ceiling | `wc -l` on all four touched files               | **max 245** (`token.ts`)                                                                              |
+The finding claimed the `pendingResult` variable in `FragmentService.queries.test.ts` was a pointless single-use temporary. Inlining it fails lint:
 
-Coverage of the affected files:
-
-| File         | Stmts | Branch                       | Funcs | Lines |
-| ------------ | ----- | ---------------------------- | ----- | ----- |
-| `token.ts`   | 100   | **100**                      | 100   | 100   |
-| `accents.ts` | 100   | 85 (pre-existing, see above) | 100   | 100   |
-
-`token.ts` is at 100% branch coverage, so both arms of `nameTokens` — the legacy
-passthrough and the interleave — are exercised.
-
-**Test count differs from the brief.** The brief expects 435 suites / 4180 tests; this
-run shows 500 / 4402. That is expected: the brief assumed a branch cut from `master`,
-whereas this one is cut from `chore/remove-bluebird`, which adds suites of its own.
-
-### Commit and PR
-
-The user explicitly authorised committing, pushing and opening the PR. Code and task
-docs went in **one commit**, per the project rule that task docs ship with the code
-rather than in a separate docs commit.
-
-The commit keeps the message and authorship of `a9df351`
-(`Ilya Khait <ilya.khait@lmu.de>`) via `--author`. Its **hash necessarily differs** from
-`a9df351`: the parent is `chore/remove-bluebird`, not `master`, so an identical hash was
-never achievable on this base. The diff, message and authorship are preserved.
-
-`gh` is not installed in this workspace, so the PR was opened through the GitHub REST
-API with the Codespace token.
-
-- Commit: `d506a0de` (10 files, +1119 / -4 — code, tests and task docs)
-- Branch pushed: `add-name-breaks`
-- PR: [#817](https://github.com/ElectronicBabylonianLiterature/ebl-frontend/pull/817), base `chore/remove-bluebird`
-
-The pre-commit hook (lint-staged + prettier) reformatted the committed markdown tables;
-eslint reported nothing to fix on the four source files.
-
-### Note on the brief's push blocker — resolved
-
-Brief section 11 records that the branch could not be pushed from the ebl-api Codespace,
-whose token is scoped to `ebl-api` only. That blocker does **not** apply here: this
-workspace is the `ebl-frontend` repo itself and its token pushes fine.
-
-### CI failure on PR #817 — fixed at root cause
-
-The `test` check went red on the first push. One suite failed:
-`src/fragmentarium/application/FragmentService.queries.test.ts` —
-_"Query by traditional references › returns traditional reference to fragment numbers
-mapping data"_. It passed locally but failed in CI.
-
-**Pre-existing, and not caused by this change.** Neither commit on this branch touches
-that file, and it is byte-identical to the file on `chore/remove-bluebird`.
-
-**Root cause.** The test compared two _Promise objects_ with `toEqual`:
-
-```ts
-const expected = Promise.resolve(returnData)
-result = fragmentService.queryByTraditionalReferences(['text 1'])
-expect(result).toEqual(expected)
+```text
+error  `queryByTraditionalReferences` query is sync so it does not need to be awaited
+       testing-library/no-await-sync-queries
 ```
 
-That assertion was **vacuous** — it compared promise wrappers, never the values they
-resolve to. Verified directly: `expect(Promise.resolve({x:1}))
-.toEqual(Promise.resolve({completely:'different'}))` passes. The test never checked
-anything.
+The rule matches any `await …queryBy*(…)` call and mistakes the service method for a Testing Library query. The variable is a deliberate workaround. Reverted; the finding is marked withdrawn in the review rather than quietly dropped.
 
-**Why it only broke now — two causes compounding.**
+Root cause of the bad finding: the simplification was judged by reading alone, without running lint against it first.
 
-1. On `master` the file did `import Promise from 'bluebird'`. Bluebird promises carry no
-   `async_id_symbol`, so two of them always compared equal. PR #774 removed that import,
-   making these **native** promises.
-2. CI runs jest with **`--detectOpenHandles`** (workflow step _Unit Tests_), which
-   enables `async_hooks`. That attaches own `Symbol(async_id_symbol)` /
-   `Symbol(trigger_async_id_symbol)` properties, with different ids per promise, to every
-   native promise — so `toEqual` now sees two differing objects. Locally, without that
-   flag, no symbols are attached and the vacuous assertion still "passed".
+### Two mistakes worth recording
 
-So #774 armed it and `--detectOpenHandles` fired it. Reproduced locally with the exact CI
-command, which fails on the original file and passes on the fixed one.
+1. **`git checkout -- src/transliteration/domain/token.ts`** was used to undo the F2 mutation experiment. It reverted the whole file, silently wiping the F3 fix applied minutes earlier. Caught only because the new F3 test failed in the next full run. Undoing a deliberate experiment should be a targeted inverse edit, not a whole-file checkout, whenever the file also carries unrelated work.
+2. **The prettier pass was re-run before a later hand edit,** so `token.ts` went into the gate run unformatted and lint failed on it. Formatting belongs after the last edit to a file, not before.
 
-**Fix.** Await the promise and compare the resolved value, and type the result rather
-than leaving it implicitly `any`:
+### Verification against the running application
 
-```ts
-let result: FragmentAfoRegisterQueryResult
-const pendingResult = fragmentService.queryByTraditionalReferences(['text 1'])
-result = await pendingResult
-expect(result).toEqual(returnData)
-```
+The review guidelines require verifying changed behaviour against the running application. Done properly this pass.
 
-Mutation-checked: feeding it `{ items: [] }` now fails the test, so the assertion is real.
+Chrome 131 was installed to `~/.cache/puppeteer` (outside the repo — `git status` unaffected). The app's entry point was temporarily pointed at a harness rendering the real `DisplayToken` for both payload shapes, served by `yarn start:fast`, and loaded headless with `--dump-dom` and `--screenshot`.
 
-The await is bound to a variable rather than applied to the call directly because
-`testing-library/no-await-sync-queries` false-positives on the `query*` method name,
-thinking it is a Testing Library query. `testDelegation` in `src/test-support/utils.ts`
-already awaits via a variable for the same reason — this matches it, and avoids an
-`eslint-disable` comment.
+| `addAccents` implementation          | New shape (`nameParts` + `nameBreaks`) | Legacy shape (interleaved) |
+| ------------------------------------ | -------------------------------------- | -------------------------- |
+| `nameTokens(namedSign)` — as shipped | `k]u`                                  | `k]u`                      |
+| `namedSign.nameParts` — pre-PR       | **`ku`** — bracket silently dropped    | `k]u`                      |
 
-**Scope check.** A repo-wide search for the same antipattern found no other test
-comparing un-awaited promises; the other `Promise.resolve(...)` bindings are mock return
-values. `testDelegation` already awaits correctly.
+The negative control is the point: it reproduces the actual bug, in a real browser, and shows the fix curing it. Rendered markup was identical between the two shapes with the fix in place.
 
-**Full CI job reproduced locally, all steps green:**
+Harness removed afterwards; `git diff src/index.tsx` and `git diff src/transliteration/domain/accents.ts` are both empty.
 
-| CI step                                                              | Result                                                                   |
-| -------------------------------------------------------------------- | ------------------------------------------------------------------------ |
-| No bluebird                                                          | pass — no `bluebird` imports under `src`                                 |
-| `yarn lint`                                                          | clean                                                                    |
-| `yarn tsc`                                                           | 0 errors                                                                 |
-| `yarn test --coverage --forceExit --detectOpenHandles --watch=false` | exit 0, **500 suites / 4402 tests**, zero console noise, no open handles |
-| `yarn build`                                                         | exit 0                                                                   |
+### Files changed in this pass
 
-**Unrelated CI warning, left alone:** the runner reports `actions/checkout@v4` and
-`actions/setup-node@v4` target Node 20 but are forced onto Node 24. That is a GitHub
-Actions deprecation notice about the _action runtime_, not the project's Node version
-(`setup-node` still pins the job to Node 20). It is a warning, not a failure, it affects
-every workflow run on the repo, and bumping the actions is a repo-wide change outside
-this PR.
+| File                                                            | Change                                                |
+| --------------------------------------------------------------- | ----------------------------------------------------- |
+| `src/transliteration/domain/token.ts`                           | F3 — `nameTokens` rewritten (247 lines)               |
+| `src/transliteration/domain/token.test.ts`                      | F2 + F5 — new assertions, shared fixtures (120 lines) |
+| `src/transliteration/domain/accents.test.ts`                    | F5 — shared fixtures, alias imports (83 lines)        |
+| `src/test-support/named-sign-fixtures.ts`                       | F5 — new (60 lines)                                   |
+| `src/fragmentarium/application/FragmentService.queries.test.ts` | unchanged — F4 reverted                               |
 
-### Remaining findings
-
-Tracked in `TASK-749-handoff.md`. In short: the deploy-order tension created by stacking
-on #774, retargeting the PR base to `master` after #774 merges, the pre-existing
-Browserslist advisory, pre-existing `accents.ts` branch coverage, and deleting the task
-docs before merge.
+Nothing committed.
