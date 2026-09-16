@@ -1,0 +1,171 @@
+// Visual styling for the layers panel content. Positioning is owned by
+// `_map-panel-drawer.sass` — this file only styles what is inside it.
+.map-controls
+  &__status,
+  &__count
+    color: $ebl-color-text-secondary
+    font-size: 0.875rem
+    line-height: 1.35
+    overflow-wrap: anywhere
+
+  &__panel
+    display: flex
+    flex-direction: column
+    gap: 0.75rem
+    min-width: 0
+
+  &__section-title
+    margin-top: 0.15rem
+    color: #7b562e
+    font-size: 0.72rem
+    font-weight: 800
+    letter-spacing: 0
+    text-transform: uppercase
+
+  &__historical-filter,
+  &__toggle,
+  &__opacity
+    margin-bottom: 0
+
+  &__toggle-label
+    display: inline-grid
+    gap: 0.1rem
+    min-width: 0
+
+  &__historical-filter,
+  &__opacity
+    label
+      margin-bottom: 0.25rem
+      color: $ebl-color-text-secondary
+      font-size: 0.875rem
+
+  &__scroll
+    display: grid
+    gap: 0.45rem
+    min-height: 0
+
+    .form-check
+      display: grid
+      grid-template-columns: 1rem minmax(0, 1fr)
+      gap: 0.45rem
+      align-items: start
+      min-height: 1.5rem
+      margin-bottom: 0.25rem
+      padding-left: 0
+
+    .form-check-input
+      float: none
+      margin-left: 0
+      margin-top: 0.2rem
+
+    .form-check-label
+      min-width: 0
+      line-height: 1.35
+      overflow-wrap: anywhere
+
+  &__site-group,
+  &__series,
+  &__active-row
+    min-width: 0
+
+  &__site-button
+    display: grid
+    grid-template-columns: auto minmax(0, 1fr) auto
+    align-items: center
+    gap: 0.35rem
+    width: 100%
+    min-height: 2.25rem
+    padding: 0.25rem 0
+    border: 0
+    background: transparent
+    color: $ebl-color-text-primary
+    text-align: left
+
+    strong
+      overflow-wrap: anywhere
+
+  &__site-content
+    display: grid
+    gap: 0.45rem
+    min-width: 0
+    padding: 0.15rem 0 0.35rem 1.1rem
+
+  &__series
+    display: grid
+    gap: 0.45rem
+    min-width: 0
+
+  &__series-header,
+  &__active-header
+    display: flex
+    flex-wrap: wrap
+    align-items: flex-start
+    justify-content: space-between
+    gap: 0.5rem
+
+  &__series-actions,
+  &__active-actions,
+  &__footer-actions,
+  &__display-row
+    display: flex
+    flex-wrap: wrap
+    gap: 0.4rem 0.5rem
+
+  &__series-actions
+    margin-bottom: 0.15rem
+
+  &__active-overlays
+    display: grid
+    gap: 0.65rem
+    padding-top: 0.65rem
+    border-top: 1px solid $ebl-color-border-default
+
+    h3
+      margin: 0
+      color: $ebl-color-text-primary
+      font-size: 0.9rem
+      font-weight: 600
+      line-height: 1.25
+
+  &__active-row
+    display: grid
+    grid-template-columns: minmax(0, 1fr)
+    gap: 0.45rem
+    padding-top: 0.6rem
+    border-top: 1px solid $ebl-color-border-default
+
+  &__active-title
+    display: flex
+    flex-direction: column
+    gap: 0.15rem
+    color: $ebl-color-text-secondary
+    font-size: 0.875rem
+    line-height: 1.35
+
+    strong
+      color: $ebl-color-text-primary
+      overflow-wrap: anywhere
+
+    a
+      color: $ebl-color-brand-primary
+      font-weight: 500
+
+  &__opacity
+    min-width: 0
+
+    input
+      display: block
+
+  &__opacity-header
+    display: flex
+    justify-content: space-between
+    gap: 0.5rem
+    color: $ebl-color-text-secondary
+    font-size: 0.875rem
+
+    label
+      margin-bottom: 0.25rem
+
+  &__footer-actions
+    padding-top: 0.65rem
+    border-top: 1px solid $ebl-color-border-default
