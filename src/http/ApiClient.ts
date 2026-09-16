@@ -139,7 +139,7 @@ export default class ApiClient {
     }
   }
 
-  async fetch(
+  private async fetch(
     path: string,
     authenticate: boolean,
     options: Options,

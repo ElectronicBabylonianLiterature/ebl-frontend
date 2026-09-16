@@ -20,9 +20,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v5
         with:
           node-version: '20'
 
@@ -39,8 +39,8 @@ jobs:
       - name: No bluebird
         if: success() || steps.install.outcome == 'success'
         run: |
-          if git grep -lE "from 'bluebird'|from \"bluebird\"|require\('bluebird'\)" -- src; then
-            echo "::error::bluebird was removed in #774; the files above import it again."
+          if git grep -lE "(from|import|require)[[:space:]]*\\(?[[:space:]]*['\"]bluebird['\"]" -- src; then
+            echo "::error::bluebird was removed from this project; the files above import it again."
             exit 1
           fi
 
@@ -55,7 +55,7 @@ jobs:
       - name: Unit Tests
         id: unit_tests
         if: success() || steps.install.outcome == 'success'
-        run: NODE_OPTIONS=--max_old_space_size=1536 yarn test --coverage --forceExit --detectOpenHandles --watch=false
+        run: yarn test:ci
 
       - name: Build
         if: success() || steps.install.outcome == 'success'
@@ -71,7 +71,7 @@ jobs:
     needs: [test]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - uses: docker/setup-buildx-action@v3
 
@@ -104,7 +104,7 @@ jobs:
     if: github.event_name == 'push' && github.ref == 'refs/heads/master'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - uses: docker/setup-buildx-action@v3
 

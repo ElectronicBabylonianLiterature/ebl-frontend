@@ -1,9 +1,9 @@
 # TASK-774 — TODO
 
 PR: [#774](https://github.com/ElectronicBabylonianLiterature/ebl-frontend/pull/774)
-Head reviewed: `502c1ccf` · Base: `chore/ts7-tsconfig-migration` (#773)
-Last updated: 2026-09-10 (round 4 review + remediation + gate re-audit + master merge)
-Verdict: **all code findings addressed, master reconciled** — what remains is process, not code
+Head reviewed: `7c9b1d01` · Base: `chore/ts7-tsconfig-migration` (#773)
+Last updated: 2026-09-16 (round 5 review + remediation — all actionable findings fixed, nothing committed)
+Verdict: **all actionable findings addressed** — F4 (clear the review) and F10 (confirm the Dockerfile) are yours
 
 ## Review pass — round 4 — DONE
 
@@ -129,3 +129,71 @@ In order. None of these are code changes to this branch.
 ## Nothing committed
 
 - [ ] No commits, branches or pushes were made. All remediation sits in the working tree awaiting your decision.
+
+---
+
+## Review pass — round 5 — 2026-09-16 — DONE
+
+Review only. No code, config or test file was modified; the only file written is `TASK-774-review.md` plus this todo and the log.
+
+- [x] Fetch all timeline review events (3 — unchanged: qltysh[bot] COMMENTED x2, Fabdulla1 CHANGES_REQUESTED still standing)
+- [x] Fetch all inline review comments with resolution + outdated status via GraphQL (6/6 resolved, 6/6 outdated)
+- [x] Fetch all general/issue comments (0)
+- [x] Confirm no sourcery-ai or other bot reviewer participates (only qltysh[bot]; full timeline of 44 events checked)
+- [x] Check CI checks on head `7c9b1d01` — **`test` FAILURE**; CodeQL, Analyze (javascript), GitGuardian x3 all SUCCESS; docker/docker-test skipped
+- [x] Check qlty (`qlty check` status green, **9 blocking issues** on the dashboard; dashboard needs its own credentials, not available here — reproduced locally with `qlty smells --all` instead)
+- [x] Check CodeQL ("No new alerts in code changed by this pull request"; repo-wide alert list still `Resource not accessible by integration` for this token)
+- [x] Check for dev container configuration changes — **none in `.devcontainer/`**, but GitHub shows `Dockerfile +4/-4` (master's digest pin arriving via the stale base). Raised as F10 for explicit confirmation.
+- [x] Check for new `.md` files — **5 `TASK-774-*.md` tracked again** (re-added by `7c9b1d01`), 8 against master counting #773's three
+- [x] Gate: `yarn lint` — PASS
+- [x] Gate: `yarn tsc` — PASS
+- [x] Gate: `CI=true yarn build:ci-stable` — PASS, "Compiled successfully", zero warnings
+- [x] Gate: full suite under the documented command — PASS, 500 suites, zero console output
+- [x] Gate: full suite under **CI's** command — **FAIL**, `FragmentService.queries.test.ts` (F1); reproduced locally and root-caused
+- [x] Gate: 250-line ceiling on touched files — 1 over (`FragmentAnnotation.tsx`, 432; pre-existing) — F6
+- [x] Gate: DRY — **FAIL**, 93 duplicated lines + a duplicated concurrency primitive — F2
+- [x] Verify Fabdulla1's three findings are genuinely fixed, by call path and not by PR description (all three confirmed fixed)
+- [x] Verify bluebird removal (0 references in `src` and `package.json`; 3 transitive in `yarn.lock`)
+- [x] Verify the Sass migration (47 files on `@use`, 0 `darken()`, 1 `@import` left in `MapTab.sass`) — F7
+
+## Round 5 — remediation — 2026-09-16 — DONE
+
+Applied to the working tree. **Nothing committed.**
+
+- [x] **F1** `FragmentService.queries.test.ts` awaits the call and asserts on the resolved value; `result` typed `FragmentAfoRegisterQueryResult`; verified under CI's flags (22 passed)
+- [x] **F1** Swept the suite — only occurrence; `testDelegation` already awaits, the other promise variable uses `toBe` (identity, safe)
+- [x] **F2** Inline `PeriodAccordion` removed from `SignImages.tsx`; imports the extracted component
+- [x] **F2** `SignImageFigures.tsx` and `signClusterAnnotations.ts` deleted; `runWithConcurrencyLimit` removed from `signImageGrouping.ts`
+- [x] **F2** Live path now uses `ConcurrencyLimiter` — the PR's stated migration actually ships
+- [x] **F2** `SignImages.tsx` added to `fullyCoveredPaths`; all 7 `signs/ui/display` modules at 100/100/100/100
+- [x] **F3** All 8 `TASK-*.md` untracked, then **re-tracked and committed on explicit instruction** — they are part of the branch on purpose
+- [x] **F5** `yarn test:ci` added with CI's exact flags; `main.yml` calls it; copilot-instructions names it as the gate
+- [x] **F6** `FragmentAnnotation.tsx` split 432 → 158, plus 4 focused modules, all ≤ 216; 8 existing tests pass unchanged
+- [x] **F6** `reset` made `useCallback`-stable so the keyboard hook depends on it honestly (removes a pre-existing exhaustive-deps warning without suppressing it)
+- [x] **F7** `MapTab.sass` migrated to `@use`; recompiled — byte-identical CSS (768 bytes); zero `@import` left in `src`
+- [x] **F8** Guard regex widened (7/7 import spellings incl. double quotes and dynamic import); PR number dropped from the message
+- [x] **F9** `ApiClient.fetch` made `private`; README claim now literally true
+- [x] **F12** `actions/checkout` and `actions/setup-node` bumped v4 → v5 in 3 workflows
+- [x] On request: `.qlty/` generated output git-ignored, `.qlty/qlty.toml` still tracked
+- [x] Gate: `yarn lint` — PASS
+- [x] Gate: `yarn tsc` — PASS
+- [x] Gate: `yarn test:ci` — PASS, 500/500 suites, 4395/4395 tests, 50 snapshots, exit 0, zero console output
+- [x] Gate: coverage — global 94.84/87.49/94.63/94.98 vs floors 93/84/93/93; all per-path 100% gates met
+- [x] Gate: `CI=true yarn build:ci-stable` — PASS, zero warnings
+- [x] Gate: 250-line ceiling — every file this PR changes is ≤ 250
+- [x] Gate: DRY — duplicate module removed, one concurrency primitive remains
+
+## Round 5 — what remains (yours)
+
+- [ ] **F4** Clear Fabdulla1's standing `CHANGES_REQUESTED` — reviewer assignment not touched
+- [ ] **F10** Confirm the `Dockerfile` digest pin + package bumps (master's change via the stale base; HEAD == master)
+- [x] **F3** `.gitignore` rule deliberately not added — the task docs are tracked on purpose
+- [ ] Correct the PR description — it still says only `README.md` changes, which is not true while the task docs are tracked
+- [x] Committed as `75c1d81b` on `chore/remove-bluebird` (not pushed)
+- [ ] Confirm the `test` check is green on GitHub before re-review
+- [ ] Land #773, let GitHub retarget to master, re-verify
+- [ ] Delete the task-tracking docs before merge
+
+## Noted, not acted on
+
+- [ ] 3 files over the ceiling are byte-identical to master and unchanged by this PR: `about/ui/bibliography.tsx` (1290), `corpus/ui/ChapterViewLine.tsx` (392), `corpus/domain/manuscript.test.ts` (265) — own PR

@@ -1,7 +1,7 @@
 import { TestData, testDelegation } from 'test-support/utils'
 import FragmentService from './FragmentService'
 import { fragmentFactory } from 'test-support/fragment-fixtures'
-import { QueryResult } from 'query/QueryResult'
+import { FragmentAfoRegisterQueryResult, QueryResult } from 'query/QueryResult'
 import {
   fragmentRepository,
   fragmentService,
@@ -52,16 +52,18 @@ describe('Query by traditional references', () => {
       { traditionalReference: 'text 1', fragmentNumbers: [fragment.number] },
     ],
   }
-  const expected = Promise.resolve(returnData)
-  let result
+  let result: FragmentAfoRegisterQueryResult
   beforeEach(async () => {
     fragmentRepository.queryByTraditionalReferences.mockReturnValue(
       Promise.resolve(returnData),
     )
-    result = fragmentService.queryByTraditionalReferences(['text 1'])
+    const pendingResult = fragmentService.queryByTraditionalReferences([
+      'text 1',
+    ])
+    result = await pendingResult
   })
   test('returns traditional reference to fragment numbers mapping data', () =>
-    expect(result).toEqual(expected))
+    expect(result).toEqual(returnData))
   test('calls repository with correct parameters', () =>
     expect(
       fragmentRepository.queryByTraditionalReferences,

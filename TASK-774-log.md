@@ -1741,3 +1741,166 @@ Two files I edited crossed it and were fixed: `FragmentService.ts` (252 → 246,
 ### State
 
 Merge staged, not committed. `MERGE_HEAD` is set; `git commit` completes it whenever you say so.
+
+---
+
+## 2026-09-16 — Round 5 review (review only, nothing committed)
+
+Reviewed head `7c9b1d01` against base `chore/ts7-tsconfig-migration` (`4f71cb24`). Master at `af0b7942`. No code, config or test file was modified in this round; the only files written are `TASK-774-review.md`, `TASK-774-todo.md` and this log.
+
+### What changed since round 4
+
+Round 4 reviewed `502c1ccf` and recorded every gate green. Two commits have landed since: `baba036e` (merge master into the branch) and `7c9b1d01` (add task tracking docs). Both changed the picture.
+
+- The `test` CI job has failed on **both** post-merge runs — `baba036e` and `7c9b1d01` — each with `Test Suites: 1 failed, 499 passed`. The two runs before the merge passed. This is deterministic, not flaky.
+- `7c9b1d01` re-added the five `TASK-774-*.md` files that round 4 had untracked, so the round-4 F3 finding has regressed and the PR description is now inaccurate.
+
+### F1 root cause — traced, not guessed
+
+`FragmentService.queries.test.ts` never awaits anything; it compares two promise _objects_ with `toEqual`. It passed on master by accident because master's copy of the file opens with `import Promise from 'bluebird'`, so both sides were Bluebird objects, whose own enumerable fields are deep-equal for two promises fulfilled with the same value.
+
+This PR removes that import. `Promise` is now the native global, and under `--detectOpenHandles` Jest enables `async_hooks`, which makes Node attach a unique `Symbol(async_id_symbol)` / `Symbol(trigger_async_id_symbol)` pair to every native promise as own _enumerable_ symbols. Two native promises therefore can never be `toEqual`.
+
+Measured:
+
+```text
+bluebird own enumerable symbols: []
+native   own enumerable symbols: ["Symbol(async_id_symbol)","Symbol(trigger_async_id_symbol)"]
+```
+
+Reproduced locally, both directions — fails with `--detectOpenHandles`, passes without it. The output matches CI's byte for byte.
+
+This also explains why round 4 recorded `tests: PASS` in good faith: the documented local gate is `yarn test --watchAll=false`, while CI runs `yarn test --coverage --forceExit --detectOpenHandles --watch=false`. Raised separately as F5.
+
+### F2 — found by following the qlty duplication report
+
+`qlty check` reports 9 blocking issues on its dashboard, which needs credentials not available here. Ran `qlty smells --all` locally and intersected the results with the PR's changed files. The largest item by mass (333) is a 93-line identical block reported against both `SignImages.tsx` and `PeriodAccordion.tsx`.
+
+Following it up: the 250-line split of `SignImages.tsx` extracted `PeriodAccordion` into its own file but never deleted the original or rewired the caller. `SignImagePagination` still renders the inline copy. Checking the import graph, `PeriodAccordion.tsx`, `VariantGroup.tsx`, `PeriodPreview.tsx` and `loadClusterAnnotations.ts` are reachable only from their own tests.
+
+The two halves have already diverged, and the divergence runs against this PR's own purpose: the dead `loadClusterAnnotations.ts` uses the new `ConcurrencyLimiter`, while the live `signClusterAnnotations.ts` uses a separately hand-rolled `runWithConcurrencyLimit` in `signImageGrouping.ts`. So the `Bluebird.map({ concurrency })` → `ConcurrencyLimiter` migration does not actually ship in the palaeography code the app runs.
+
+`craco.config.js` `fullyCoveredPaths` pins 100% coverage on four of the dead modules and none of the live ones, so the coverage gate reads green while measuring code that never executes.
+
+### Gates run this round
+
+| Gate                           | Result                                                            |
+| ------------------------------ | ----------------------------------------------------------------- |
+| `yarn lint`                    | PASS — exit 0                                                     |
+| `yarn tsc`                     | PASS — exit 0                                                     |
+| `CI=true yarn build:ci-stable` | PASS — "Compiled successfully", zero warnings                     |
+| Full suite, documented command | PASS — 500 suites, zero console output                            |
+| Full suite, CI's command       | FAIL — F1                                                         |
+| 250-line ceiling               | 1 touched file over (`FragmentAnnotation.tsx`, 432, pre-existing) |
+| DRY                            | FAIL — F2                                                         |
+
+Two earlier local runs were lost to OOM in this devcontainer (7.9 GB total) when the build and the suite were run concurrently. Re-run sequentially; the results above are from the clean sequential runs.
+
+### Verification of Fabdulla1's three findings
+
+Checked by call path rather than by reading the PR description. All three are genuinely fixed — `runWrite` is token-based via `SupersedableOperation`, `postJson`/`putJson` take no `signal`, no repository or service write method accepts one, all four cited call sites go through the token, all five components owning a `SupersedableOperation` supersede on unmount, the integration test proves the three separate properties it claims, and all seven flagged files are under 250 lines. The `CHANGES_REQUESTED` review itself is still standing and needs clearing on GitHub.
+
+### Container configuration
+
+No `.devcontainer/` changes anywhere in the stack. GitHub's PR diff does show `Dockerfile +4/-4` — a base-image digest pin and two Alpine patch bumps — but `git diff origin/master HEAD -- Dockerfile` is empty, so this is master's own change surfacing through a stale base branch and the net effect on master is zero. Raised as F10 for explicit confirmation since it is container config.
+
+### Outcome
+
+Verdict: **CHANGES REQUESTED**. 12 findings — 4 blocking (F1, F2 code; F3, F4 process), 4 non-blocking, 4 informational. Full detail and the numbered action list are in `TASK-774-review.md`.
+
+## 2026-09-16 — Round 5 remediation (working tree only, nothing committed)
+
+Asked to address all findings, and to git-ignore qlty output.
+
+### F1 — the CI-red test
+
+Awaited the call and asserted on the resolved value against `returnData`; typed `result` as `FragmentAfoRegisterQueryResult`. Verified under CI's exact flags — 22 passed, where it previously failed.
+
+Two lint errors surfaced from the first attempt. Prettier wanted the import on one line. More interestingly, `testing-library/no-await-sync-queries` fired on `await fragmentService.queryByTraditionalReferences(...)` — a false positive, because the rule keys off the `query*` prefix and this is a domain method, not a testing-library query. Rather than suppress the rule with a comment, the call is assigned to `pendingResult` first and then awaited, which sidesteps the pattern without changing behaviour.
+
+Swept the rest of the suite for the same shape. It was the only occurrence: `testDelegation` in `test-support/utils.ts` already awaits before comparing, and the one other promise-valued variable (`editorTabContents.callbacks.test.tsx`) asserts with `toBe`, which is identity and therefore safe.
+
+### F2 — the duplicate palaeography module
+
+Removed the inline `PeriodAccordion` from `SignImages.tsx` and imported the extracted component. Deleted `SignImageFigures.tsx` and `signClusterAnnotations.ts`, and removed `runWithConcurrencyLimit` from `signImageGrouping.ts`. `SignImages.tsx` is the only consumer of all three, so nothing else needed rewiring.
+
+The point of doing it this way round: the surviving `loadClusterAnnotations.ts` is the one built on `ConcurrencyLimiter`, so the `Bluebird.map({ concurrency })` → `ConcurrencyLimiter` migration this PR describes now actually ships in the code the app runs. Before this change it existed only in a module nothing rendered.
+
+Added `SignImages.tsx` to `fullyCoveredPaths`. All seven modules in `signs/ui/display` now report 100/100/100/100, including the newly-live `SignImages.tsx`, and all 8 suites in that directory pass (46 tests).
+
+### F6 — splitting FragmentAnnotation.tsx
+
+432 → 158 lines, split into `useFragmentAnnotationState.ts` (216), `useAnnotationKeyboardShortcuts.ts` (89), `FragmentAnnotationToolbar.tsx` (73) and `initializeAnnotations.ts` (24). The first split attempt left the state hook at 276 lines, so the keyboard and `beforeunload` handling was extracted into its own hook.
+
+Baseline coverage for this file was 79.38/55.55/86.84/79.23 — it is pre-existing and not in the 100% gate, so the split is coverage-neutral by construction. All 8 existing behaviour tests pass unchanged, which is the real check that the refactor is faithful.
+
+One genuine improvement fell out: `reset` is now `useCallback`-stable, so the keyboard hook can list it in its dependency array honestly. That removes a pre-existing `react-hooks/exhaustive-deps` warning without an eslint-disable comment. It is behaviour-identical because `reset` only calls setters, which React guarantees are stable.
+
+### F7 — the last @import
+
+`src/map/ui/MapTab.sass` migrated to `@use 'src/design-tokens' as *`. Recompiled both versions with the PR's Sass options: byte-identical CSS, 768 bytes, and the deprecation warning fires only on the old version. Zero `@import` left in `src`.
+
+### F8, F9, F12
+
+Guard regex widened to `(from|import|require)[[:space:]]*\(?[[:space:]]*['"]bluebird['"]`; checked against 7 import spellings (single/double quotes, `require`, dynamic `import()`, `export … from`) — all 7 match, and it still does not match current `src`. PR number dropped from the error message.
+
+`ApiClient.fetch` made `private`; no external caller existed, and tsc is clean. The README's claim that the write guarantee is type-enforced is now literally true rather than nearly true, and the wording explains why.
+
+`actions/checkout` and `actions/setup-node` bumped v4 → v5 across `main.yml`, `codeql-analysis.yml` and `update-sitemaps.yml`. `secret-scan.yml` keeps its pinned commit SHAs, which is deliberate supply-chain pinning.
+
+### F5 — closing the gap that hid F1
+
+Added `yarn test:ci`, carrying CI's exact flags. `main.yml` now calls it instead of spelling the flags inline, and `.github/copilot-instructions.md` names it as the hard gate with a note on why `--detectOpenHandles` matters. This is the change that stops a future F1 passing locally and failing in CI.
+
+### F3 and qlty ignore
+
+All eight `TASK-*.md` files untracked with `git rm --cached` — staged as deletions, still on disk. `.gitignore` gained a qlty block (`.qlty/*` with negations for `qlty.toml` and `configs`), verified: the five generated paths are ignored, `qlty.toml` is not. `git status` is clean of qlty noise.
+
+No `TASK-*.md` ignore rule was added — round 3 records that being removed at the user's request, so it is left as an explicit question.
+
+### 250-line ceiling
+
+Every file this PR actually changes is now at or under 250 lines. Three files in the diff are still over — `about/ui/bibliography.tsx` (1290), `corpus/ui/ChapterViewLine.tsx` (392), `corpus/domain/manuscript.test.ts` (265) — but `git diff origin/master HEAD` is empty for all three. They are master's files appearing in the diff only because the base branch is stale, the same mechanism as the Dockerfile in F10. Splitting them would be scope creep into unrelated code.
+
+### Gates
+
+`yarn lint` PASS. `yarn tsc` PASS. Full `yarn test:ci` run recorded separately below.
+
+Nothing was committed.
+
+### Round 5 remediation — final gate run
+
+All gates run sequentially (concurrent runs OOM this 7.9 GB devcontainer).
+
+| Gate                           | Result                                                                 |
+| ------------------------------ | ---------------------------------------------------------------------- |
+| `yarn lint`                    | PASS — eslint + stylelint, exit 0                                      |
+| `yarn tsc`                     | PASS — exit 0                                                          |
+| `yarn test:ci`                 | PASS — 500/500 suites, 4395/4395 tests, 50/50 snapshots, exit 0, 528 s |
+| Console output                 | PASS — zero errors, warnings, act warnings or unhandled rejections     |
+| Coverage, global               | PASS — 94.84 / 87.49 / 94.63 / 94.98 against floors 93 / 84 / 93 / 93  |
+| Coverage, per-path 100% gates  | PASS — all met, including the newly-added `SignImages.tsx`             |
+| `CI=true yarn build:ci-stable` | PASS — "Compiled successfully", zero warnings                          |
+| 250-line ceiling               | PASS — every file this PR changes is at or under 250 lines             |
+| DRY                            | PASS — duplicate module removed, one concurrency primitive remains     |
+
+CI previously reported `4394 passed, 1 failed`; the run is now `4395 passed`, which is exactly the single F1 test.
+
+`signs/ui/display` after F2 — all seven modules at 100/100/100/100: `PeriodAccordion.tsx`, `PeriodPreview.tsx`, `SignImage.tsx`, `SignImages.tsx`, `VariantGroup.tsx`, `loadClusterAnnotations.ts`, `signImageGrouping.ts`. `ApiClient.ts` and `withData.tsx`, the core of the cancellation change, are also at 100 across the board.
+
+The `FragmentAnnotation.tsx` split redistributed its coverage rather than changing it: the file itself is now 100/77.77/100/100, with the previously-untested branches relocated into `useFragmentAnnotationState.ts` (82.75/46.87/91.3/82.55) and `useAnnotationKeyboardShortcuts.ts` (66.66/20/66.66/66.66). Global coverage is flat against round 4, and none of these files is in the per-path 100% gate, so this is the same pre-existing test debt in new locations — not a regression, and not newly introduced.
+
+### Commit state Note for whoever commits: the four new files under `src/fragmentarium/ui/image-annotation/annotation-tool/` are untracked, so `git commit -a` would miss them; they need `git add`. The eight `TASK-*.md` deletions are already staged.
+
+### Commit — 2026-09-16
+
+Committed to `chore/remove-bluebird` as `75c1d81b`, on explicit instruction. Not pushed.
+
+The pre-commit hook (`lint-staged`) ran `prettier --write` and `eslint --fix` over the staged files and the secret scan reported nothing. `yarn tsc` and the three most affected suites were re-run against the committed state: clean, 38 tests passed.
+
+**F3 reversed, on instruction.** The eight `TASK-*.md` files were untracked as the F3 fix, then re-tracked and folded into the same commit when asked to add the documents. This is a deliberate reversal, not an oversight, and it has two consequences worth restating:
+
+- The PR body's claim that "the only `.md` change against `master` is `README.md`" is still inaccurate, and now stays inaccurate until the files are deleted before merge.
+- No `TASK-*.md` rule was added to `.gitignore`, which is what makes keeping them tracked possible in the first place.
+
+Tracked `.md` changes against `master` are therefore: `README.md` (F9), `.github/copilot-instructions.md` (F5), and the eight task documents.

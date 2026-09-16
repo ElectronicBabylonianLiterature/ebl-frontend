@@ -2,383 +2,542 @@
 task_id: 774
 pull_request: https://github.com/ElectronicBabylonianLiterature/ebl-frontend/pull/774
 title: 'chore: remove bluebird, use AbortController for cancellation'
-reviewed_head_sha: 502c1ccfe7bcefe410601194ea3d528b3be26263
+reviewed_head_sha: 7c9b1d01b1f1dca80af9e6c139e7d2e8146a8394
 base_branch: chore/ts7-tsconfig-migration
 base_sha: 4f71cb249bc0db899f1a22ce42ac93ebd961eeda
-master_sha: origin/master (17 commits ahead of the fork point 4db5c9cd)
+master_sha: af0b7942b14fc9299c604714bf93c14895d9d28a
 stacked_on: '#773 (chore/ts7-tsconfig-migration) — retargets to master when #773 merges'
-review_date: 2026-09-09
-review_round: 4
+review_date: 2026-09-16
+review_round: 5
+remediation_date: 2026-09-16
+remediation_state: committed on chore/remove-bluebird as 75c1d81b (not pushed)
 reviewer: Claude (automated review)
-verdict: ALL FINDINGS ADDRESSED — master reconciled; only process steps remain (re-review, land #773)
-remediation_date: 2026-09-10
-remediation_state: committed on chore/remove-bluebird together with the master merge
-master_merge: DONE 2026-09-10 — see TASK-774-merge-master-handoff.md
-findings_total: 10
+verdict: FINDINGS ADDRESSED — 9 of 10 actionable findings fixed and committed; F3 reversed by request (task docs are tracked on purpose); F4 and F10 are yours
+findings_total: 12
 findings_blocking: 4
-findings_non_blocking: 3
-findings_informational: 3
-findings_fixed: 7
-findings_open_process_only: 1
-findings_acknowledged: 2
-scope_vs_base: 479 files changed, +23625 / -15762, 15 commits
-scope_vs_master: master merged in; 0 conflicts, 0 bluebird references, 0 casing collisions
-devcontainer_changes: NONE — verified against both the base branch and master
-gates:
-  lint: PASS
-  tsc: PASS
-  tests: PASS — 500 suites, 4395 passed, 50 snapshots (after the master merge)
-  console_output: PASS — zero console errors, warnings or unhandled rejections
-  coverage_all_files: 94.87 / 87.60 / 94.65 / 95.00 (after the master merge)
-  coverage_residual_after_gating: 93.59 / 84.75 / 93.21 (floor 93 / 84 / 93 / 93)
-  coverage_gated_files: PASS — 50 production modules at 100 / 100 / 100 / 100
-  coverage_changed_files: PASS — every file this PR changed at 100 / 100 / 100 / 100
-  build: PASS — yarn build:ci-stable, zero warnings
-  line_ceiling_250: PASS — every touched .ts/.tsx file ≤ 249 lines
-  sass_byte_identical: PASS — 59 / 59 entrypoints, independently recompiled
-ci_checks: all green (test, CodeQL, Analyze javascript, GitGuardian ×3, qlty check)
-review_threads: 6 total, 6 resolved, 0 unresolved
-standing_review_state: CHANGES_REQUESTED by Fabdulla1 (2026-08-04, commit 5ef4a984) — content addressed, review not yet dismissed or re-approved
+findings_non_blocking: 4
+findings_informational: 4
+scope_vs_base: 690 files changed, +43136 / -22170, 34 commits
+devcontainer_changes: NONE in .devcontainer/ — but the GitHub diff does show Dockerfile +4/-4; see F10 before merging
+gates_at_review_time:
+  tests_ci_command: FAIL — `--detectOpenHandles` made FragmentService.queries.test.ts fail deterministically (F1)
+  line_ceiling_250: PARTIAL — 1 touched file over the limit (F6)
+  dry: FAIL — 93 duplicated lines plus a duplicated concurrency primitive (F2)
+gates_after_remediation:
+  lint: PASS — eslint + stylelint clean
+  tsc: PASS — clean
+  build: PASS — CI=true yarn build:ci-stable, "Compiled successfully", zero warnings
+  tests: PASS — `yarn test:ci` (CI's exact flags): 500/500 suites, 4395/4395 tests, 50 snapshots, exit 0
+  console_output: PASS — zero console errors, warnings, act warnings or unhandled rejections
+  coverage_global: PASS — 94.84 / 87.49 / 94.63 / 94.98 against floors 93 / 84 / 93 / 93
+  coverage_gated_paths: PASS — every per-path 100% gate met, including the newly-added SignImages.tsx
+  line_ceiling_250: PASS — every file this PR changes is at or under 250 lines
+  dry: PASS — duplicate module removed; one concurrency primitive remains
+ci_checks:
+  test: FAILURE
+  CodeQL: SUCCESS — no new alerts in code changed by this PR
+  Analyze (javascript): SUCCESS
+  GitGuardian (x3): SUCCESS — no secrets detected
+  qlty check: SUCCESS (status) — 9 blocking issues on the qlty dashboard
+  docker / docker-test: SKIPPED (master-push only)
+review_threads: 6 total, 6 resolved, 0 unresolved, all outdated
+timeline_reviews: 3 total — Fabdulla1 CHANGES_REQUESTED (standing), qltysh[bot] COMMENTED x2
+requested_reviewers: none currently
 ---
 
 # Review — PR #774: remove bluebird, use AbortController for cancellation
 
 ## Friendly summary
 
-This is genuinely good work, and the hard part is done well. Bluebird is gone — zero references left in `src`, dropped from `package.json` — and the replacement is the right shape: reads thread a native `AbortSignal`, writes get a token-based staleness check instead, and `postJson`/`putJson` simply have no `signal` parameter, so "a write can never be network-aborted" is enforced by the compiler rather than by a comment. That was Fabdulla1's main objection back in August and it is properly fixed, with a real integration test behind it.
+The bluebird removal itself is in good shape and I'd be happy to sign off on that part. Fabdulla1's main objection from August is properly fixed: writes are no longer network-abortable, `postJson`/`putJson` genuinely have no `signal` parameter, and the new integration test actually proves it rather than restating the implementation. All seven files flagged for the 250-line ceiling are now well under it. Lint, tsc and the production build are clean.
 
-I checked the two big claims rather than taking them on trust. The Sass migration really is behaviour-preserving: I recompiled all 59 entrypoints on both branches and every one is byte-identical. The 250-line ceiling really is met: every file this PR touches is at or under 249 lines. Locally, lint, tsc and the full 426-suite run are all clean with zero console output.
+Two things block it. CI is red, and it's a real failure, not infrastructure: deleting `import Promise from 'bluebird'` from `FragmentService.queries.test.ts` quietly changed what that test compares, and it now fails every run under CI's flags. It passes locally only because the documented local command omits the flag CI uses — which is also why the last round recorded tests as passing. The other is that the palaeography split shipped twice: `SignImages.tsx` still contains the original 93-line `PeriodAccordion` inline, and the extracted `PeriodAccordion.tsx` next to it is reachable only from its own test. The two copies have already drifted apart, and the one the app actually renders is the one that _didn't_ get the new `ConcurrencyLimiter`.
 
-Four things are holding it up. One is a genuine bug: a defensive fallback around `Error.captureStackTrace` was deleted to win back a coverage branch, and that API does not exist on iOS Safari 15–18, which is still in the supported browser list — so on those devices every API error turns into a confusing `TypeError` and the real message is lost. I reproduced it. The second is the merge into master, which you have already analysed in the handoff doc and which is still ahead of us: 55 files would end up importing a package that is no longer installed. Third, the five `TASK-774-*.md` files are back in the commit and the `.gitignore` rule that used to stop them was reverted. And Fabdulla1's "changes requested" is still the standing state on the PR, so it needs a re-review to clear regardless of the code being fixed.
+Also, the five `TASK-774-*.md` files are tracked again — the last commit put them back, so the PR description's claim that only `README.md` changes is no longer true.
 
-Nothing here is structural. The first one is a few lines, the rest are process.
+**Update, same day:** all of that is now fixed in the working tree (nothing committed). CI's failing test awaits properly, the duplicate palaeography module is gone and the live path finally uses `ConcurrencyLimiter`, and the task docs are untracked. Two things are still yours: clearing the standing review, and confirming the `Dockerfile` line. Details in the remediation table below.
 
 ### Details
 
-| #   | Finding                                                                           | Severity   | Status         |
-| --- | --------------------------------------------------------------------------------- | ---------- | -------------- |
-| F1  | `Error.captureStackTrace` fallback removed — breaks API errors on iOS Safari ≤ 18 | **High**   | Blocker        |
-| F2  | Merge into master leaves 55 files importing the removed `bluebird`                | **High**   | Blocker        |
-| F3  | Five `TASK-774-*.md` files ship; the `.gitignore` guard was reverted              | **Medium** | Blocker        |
-| F4  | `CHANGES_REQUESTED` from Fabdulla1 is still the standing review state             | **Medium** | Blocker        |
-| F5  | `BibliographyEntryForm` unmount does not cancel the debounced load                | Low        | Non-blocking   |
-| F6  | "Does not abort the first write in flight" test is tautological                   | Low        | Non-blocking   |
-| F7  | 100% coverage gate covers 10 of 47 new source files                               | Low        | Non-blocking   |
-| F8  | CI `pull_request` base globs widened — secrets now reach more PR runs             | Info       | Acknowledge    |
-| F9  | Two `xit` tests inherited from the base branch; master has working versions       | Info       | Acknowledge    |
-| F10 | No dev container configuration changes anywhere in the stack                      | Info       | Verified clean |
+| #   | Finding                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 | Severity   | Status              | Where                                                                          |
+| --- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------- | ------------------- | ------------------------------------------------------------------------------ |
+| F1  | CI `test` job fails: `expect(result).toEqual(expected)` compares two un-awaited native Promises. Removing the bluebird import flipped this from accidentally-passing to always-failing under `--detectOpenHandles`. Reproduced locally; fails with the flag, passes without it. Also `let result` is untyped (implicit `any`).                                                                                                                                                                                                                          | **High**   | **Blocker**         | `src/fragmentarium/application/FragmentService.queries.test.ts:55-64`          |
+| F2  | The palaeography refactor left a verbatim duplicate. `SignImages.tsx` still defines `PeriodAccordion` inline (93 identical lines, qlty mass 333) and renders _that_ copy. The extracted `PeriodAccordion.tsx`, `PeriodPreview.tsx`, `VariantGroup.tsx` and `loadClusterAnnotations.ts` are imported only by their own tests — dead in production. The two loaders have diverged: the dead one uses the new `ConcurrencyLimiter`, the live one uses a separate `runWithConcurrencyLimit`. The 100% coverage gate pins the dead files, not the live ones. | **High**   | **Blocker**         | `src/signs/ui/display/`                                                        |
+| F3  | Five `TASK-774-*.md` files are tracked again, re-added by HEAD commit `7c9b1d01`. Eight `.md` files total against master counting #773's three. The PR body states the opposite.                                                                                                                                                                                                                                                                                                                                                                        | **Medium** | **Blocker**         | repo root                                                                      |
+| F4  | `CHANGES_REQUESTED` from Fabdulla1 (2026-08-04) is still the standing review state. The code findings behind it are fixed, but the review itself has to be cleared on GitHub.                                                                                                                                                                                                                                                                                                                                                                           | **Medium** | **Blocker**         | PR #774                                                                        |
+| F5  | The documented local test gate (`yarn test --watchAll=false`) is not the command CI runs (`yarn test --coverage --forceExit --detectOpenHandles --watch=false`). That gap is exactly how F1 reached master-bound CI while local runs and the previous review round both reported green.                                                                                                                                                                                                                                                                 | **Medium** | Non-blocking        | `.github/workflows/main.yml:58` vs `.github/copilot-instructions.md`           |
+| F6  | `FragmentAnnotation.tsx` is 432 lines, over the 250-line ceiling, and this PR touches it. Pre-existing (433 on master) and the PR only removed two bluebird lines — but the PR body claims a "250-line-per-file refactor across the files this PR touches", which does not hold for this file.                                                                                                                                                                                                                                                          | Low        | Non-blocking        | `src/fragmentarium/ui/image-annotation/annotation-tool/FragmentAnnotation.tsx` |
+| F7  | `MapTab.sass` still uses `@import` while this PR removed `'import'` from `silenceDeprecations` and dropped the matching `ignoreWarnings` entry. The build is currently clean because sass-loader does not surface it, but it is the one file the 47-file `@use` migration missed, and it breaks at Dart Sass 3.0.                                                                                                                                                                                                                                       | Low        | Non-blocking        | `src/map/ui/MapTab.sass:1`                                                     |
+| F8  | The new `No bluebird` CI guard misses `require("bluebird")` with double quotes and dynamic `import('bluebird')`. It also hardcodes a PR number in an error message that will outlive the PR.                                                                                                                                                                                                                                                                                                                                                            | Low        | Non-blocking        | `.github/workflows/main.yml:39-45`                                             |
+| F9  | `README.md` says a write signal is "enforced by the type system rather than by convention". `ApiClient.fetch` is public and takes both an arbitrary `method` and a `signal`, so the guarantee is enforced by convention at that one seam. No caller does this today.                                                                                                                                                                                                                                                                                    | Low        | Non-blocking        | `README.md`, `src/http/ApiClient.ts:142-147`                                   |
+| F10 | **Container config.** No `.devcontainer/` changes anywhere in the stack. But GitHub's PR diff _does_ show `Dockerfile +4/-4` — a base-image digest pin and two Alpine package bumps. This is master's own change flowing in because the base branch is stale; HEAD's `Dockerfile` is byte-identical to master, so the net effect on master is zero. Flagging it because it is container config and it is visible in the PR.                                                                                                                             | Info       | Verify before merge | `Dockerfile`                                                                   |
+| F11 | The qlty coverage upload is now skipped for stacked PRs, so this PR's own coverage is never uploaded and the 100% claim is not machine-verified on the PR itself. Deliberate and reasonable; noting the consequence.                                                                                                                                                                                                                                                                                                                                    | Info       | Acknowledge         | `.github/workflows/main.yml:64-65`                                             |
+| F12 | CI emits Node 20 deprecation warnings — `actions/checkout@v4` and `actions/setup-node@v4` are being forced onto Node 24. Repo-wide, not introduced here.                                                                                                                                                                                                                                                                                                                                                                                                | Info       | Acknowledge         | `.github/workflows/main.yml`                                                   |
 
-### Remediation — 2026-09-10
+### Remediation — 2026-09-16
 
-| #   | Status               | What changed                                                                                                                                                      |
-| --- | -------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| F1  | **Fixed**            | `captureStackTrace` helper extracted and used by `ApiError`; three regression tests added                                                                         |
-| F2  | **Fixed**            | Master reconciled into the branch: 24 conflicts resolved, #791 decided as supersede-not-abort, all gates green. A `No bluebird` CI step guards against regression |
-| F3  | **Fixed**            | The five `TASK-774-*.md` files are untracked; the only `.md` change against master is `README.md`                                                                 |
-| F4  | **Open — yours**     | Needs a re-review on GitHub; I do not touch reviewer assignment                                                                                                   |
-| F5  | **Fixed**            | `doLoad.cancel()` added to `componentWillUnmount`; `DebouncedFunc` typed; two tests added                                                                         |
-| F6  | **Fixed**            | The test now asserts on the first write's settled outcome, and fails when it is disturbed                                                                         |
-| F7  | **Fixed**            | The per-path 100% gate now covers 50 production modules, up from 10                                                                                               |
-| F8  | **Fixed**            | The qlty coverage upload is gated on `push` or a `master` base                                                                                                    |
-| F9  | **Open at retarget** | Re-check `Edition.test.tsx` once #774 retargets to master; take master's assertions minus its bluebird import                                                     |
-| F10 | **Acknowledged**     | Nothing to do — verified clean                                                                                                                                    |
+Applied to the working tree in this session. **Nothing was committed.**
 
-Every fix is proven by a test that fails without it. `Error.captureStackTrace` deleted: the three new `ApiError` tests fail. `doLoad.cancel()` removed: the unmount test fails. The first write disturbed: the rewritten integration assertion fails.
+| #   | Status                                     | What changed                                                                                                                                                                                                                                                                                                                                                                                                                                       |
+| --- | ------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| F1  | **Fixed**                                  | `FragmentService.queries.test.ts` now awaits the call and asserts on the resolved value against `returnData`; `result` is typed `FragmentAfoRegisterQueryResult`. Verified under CI's exact flags: 22 passed. Swept the suite — this was the only occurrence; `testDelegation` already awaited correctly, and the one other promise variable uses `toBe` (identity), which is safe.                                                                |
+| F2  | **Fixed**                                  | Deleted the inline `PeriodAccordion` from `SignImages.tsx` and imported the extracted component. Deleted `SignImageFigures.tsx` and `signClusterAnnotations.ts`; removed `runWithConcurrencyLimit` from `signImageGrouping.ts`. The live path now uses `ConcurrencyLimiter`, so the PR's stated migration actually ships. Added `SignImages.tsx` to `fullyCoveredPaths`. All seven modules in `signs/ui/display` report **100 / 100 / 100 / 100**. |
+| F3  | **Reversed by request**                    | The eight `TASK-*.md` files were untracked, then re-tracked and committed on explicit instruction. They are deliberately part of the branch again, so the PR body's "only `README.md` changes" line is still inaccurate and the files still have to be deleted before merge.                                                                                                                                                                       |
+| F4  | **Open — yours**                           | Reviewer assignment is not touched. The `CHANGES_REQUESTED` review still needs clearing on GitHub.                                                                                                                                                                                                                                                                                                                                                 |
+| F5  | **Fixed**                                  | Added `yarn test:ci`, carrying CI's exact flags. `main.yml` now calls it, and `.github/copilot-instructions.md` names it as the hard gate, with a note on why `--detectOpenHandles` matters.                                                                                                                                                                                                                                                       |
+| F6  | **Fixed**                                  | `FragmentAnnotation.tsx` split 432 → 158 lines, into `useFragmentAnnotationState.ts` (216), `useAnnotationKeyboardShortcuts.ts` (89), `FragmentAnnotationToolbar.tsx` (73) and `initializeAnnotations.ts` (24). All eight existing tests pass unchanged. `reset` is now `useCallback`-stable so the keyboard hook depends on it honestly, which also removes a pre-existing `exhaustive-deps` warning without suppressing it.                      |
+| F7  | **Fixed**                                  | `src/map/ui/MapTab.sass` migrated to `@use 'src/design-tokens' as *`. Recompiled both versions: **byte-identical CSS**, 768 bytes. Zero `@import` left in `src`.                                                                                                                                                                                                                                                                                   |
+| F8  | **Fixed**                                  | Guard regex widened to `(from\|import\|require)[[:space:]]*\(?[[:space:]]*['"]bluebird['"]`; matches all 7 import spellings including double quotes and dynamic `import()`, and still does not match current `src`. Message no longer hardcodes the PR number.                                                                                                                                                                                     |
+| F9  | **Fixed**                                  | `ApiClient.fetch` is now `private` — no external caller existed. The README claim that the write guarantee is type-enforced is now literally true, and the wording says why.                                                                                                                                                                                                                                                                       |
+| F10 | **Confirmed benign — needs your sign-off** | `Dockerfile` is byte-identical to master. Same applies to three other files the stale base makes look changed: `about/ui/bibliography.tsx` (1290 lines), `corpus/ui/ChapterViewLine.tsx` (392) and `corpus/domain/manuscript.test.ts` (265). All three are over the 250-line ceiling but are **master's files, unchanged by this PR** — splitting them would be scope creep.                                                                       |
+| F11 | **Acknowledged**                           | Unchanged and deliberate.                                                                                                                                                                                                                                                                                                                                                                                                                          |
+| F12 | **Fixed**                                  | `actions/checkout` and `actions/setup-node` bumped v4 → v5 across `main.yml`, `codeql-analysis.yml` and `update-sitemaps.yml`. `secret-scan.yml` keeps its pinned SHAs.                                                                                                                                                                                                                                                                            |
 
-**Gate re-audit.** A pass back over `.github/copilot-instructions.md` caught one gate the first remediation missed: `BibliographyEntryForm.tsx` was modified for F5 but left at 97.67 / 96 / 93.75 / 97.61, short of "100% coverage on affected code". Two pre-existing holes — the `applyInvalidEntry` error arm and the empty-submit branch of `handleSubmit`, neither ever exercised because the suite only drove the happy path. `BibliographyEntryForm.invalidEntry.test.tsx` closes both; the file is now at 100 across the board and gated. The shared debounce helpers the two new suites had in common were extracted to `BibliographyEntryForm.testSupport.tsx` for the DRY gate.
+Also done on request, outside the findings: `.qlty/` generated output (`logs`, `out`, `results`, `plugin_cachedir`, `sources`) is now git-ignored while `.qlty/qlty.toml` stays tracked.
 
-**F1 confirmed in the shipped artefact.** `yarn build:ci-stable` passes with zero warnings, and the guard survives minification in `build/static/js/main.js`:
+**Open question for you.** `.gitignore` still has no `TASK-*.md` rule, so the files can be re-added by a future `git add -A` — which is exactly how they came back this round. The round-3 notes record that you asked for that rule to be removed, so I have not re-added it. Say the word and I will.
 
-```js
-function(e,t){const n=Error.captureStackTrace;"function"===typeof n?n(e,t):e.stack=new Error(e.message).stack}(this,this.constructor)
-```
-
-`grep -c 'Error\.captureStackTrace('` over the production bundle now returns **0** unguarded calls. Worth noting for anyone weighing whether F1 was theoretical: the same bundle carries **9** `Error.captureStackTrace` calls from vendor code — auth0 among them — and every one is optional-chained. Third-party libraries already treat this API as optional. The unguarded call was the outlier.
-
-Interactive verification against the running app was not possible: `REACT_APP_DICTIONARY_API_URL` points at `http://localhost:8001`, which is not running in this devcontainer. Booting the built bundle in jsdom was inconclusive for unrelated reasons (no auth0, no API) and is not claimed as verification.
-
-**Two blockers remain, and neither can be closed inside this diff.**
-
-**F2 — the master merge.** Merging master now would be actively wrong: this PR's base is `chore/ts7-tsconfig-migration`, so pulling master's 17 commits in today would drag every unrelated master change into a diff that is meant to show only the bluebird work. The correct order is unchanged — land #773, let GitHub retarget this PR to master, then do the catch-up as its own reviewed step. What I could do without prejudging it is make the failure loud, so the `No bluebird` CI step is now the first thing that runs after install; it passes on this branch and matches all 232 bluebird files on master today. The one decision still genuinely open is what master's #791 fix should mean under "writes are never aborted" — that is a design call, not a merge conflict.
-
-**F4 — the standing review.** Reviewer assignment is yours; I never add or re-request reviewers through the API.
-
-**One item deliberately not done.** The review asked to restore the `TASK-*.md` rule in `.gitignore`. `TASK-774-todo.md` records that this rule was reverted at your request in round 3, so re-adding it would undo an explicit instruction. I untracked the five files instead, which achieves the same result for the PR — they stay on disk, and `git diff origin/master -- '*.md'` now shows only `README.md`. Say the word and I will add the ignore rule back.
+**250-line ceiling.** Every file this PR actually changes is now at or under 250 lines.
 
 ---
 
 ## Findings
 
-### F1 — `Error.captureStackTrace` fallback removed, breaking API errors on supported Safari versions
+### F1 — CI `test` job fails: the query test compares two un-awaited Promises
 
-**Severity: High.** Correctness regression, user-visible, affects a supported browser tier.
+**Severity: High. Blocker.**
 
-`src/http/ApiClient.ts:45` now calls `Error.captureStackTrace(this, this.constructor)` unconditionally. Until commit `29a81056` it was guarded:
-
-```ts
-if (typeof Error.captureStackTrace === 'function') {
-  Error.captureStackTrace(this, this.constructor)
-} else {
-  this.stack = new Error(message).stack
-}
-```
-
-`Error.captureStackTrace` is a V8 extension. JavaScriptCore only shipped it in Safari 26; it is absent from every earlier version. `npx browserslist` resolves this project's supported targets to include `ios_saf 15.6-15.8`, `16.6-16.7`, `17.6-17.7` and `18.5-18.7` — the `not safari < 12` / `not ios <= 14.7` rules deliberately keep those in scope. On all of them the call throws.
-
-The blast radius is worse than a missing stack trace, because both branches of `ApiError.fromResponse` construct an `ApiError`:
+`src/fragmentarium/application/FragmentService.queries.test.ts:55-64`:
 
 ```ts
-return response.json()
-  .then((body) => new ApiError(...))                                  // throws TypeError
-  .catch(() => new ApiError(response.statusText, {}, response.status)) // throws TypeError again
+const expected = Promise.resolve(returnData)
+let result
+beforeEach(async () => {
+  fragmentRepository.queryByTraditionalReferences.mockReturnValue(
+    Promise.resolve(returnData),
+  )
+  result = fragmentService.queryByTraditionalReferences(['text 1'])
+})
+test('returns traditional reference to fragment numbers mapping data', () =>
+  expect(result).toEqual(expected))
 ```
 
-The `catch` meant as the fallback throws for the same reason, so `fromResponse` rejects with the `TypeError`. `ApiClient.fetch` then reports that `TypeError` to Sentry and rethrows it, and `ErrorAlert` renders it. **The real API error — the 401, the 404, the validation message — is discarded entirely.**
+Nothing is ever awaited. `result` is the promise the mock returned and `expected` is a different promise; the assertion compares two promise _objects_, never the value inside them. It has never tested what its name claims.
 
-The commit message groups this with the `deserializeJson` `typeof` guards as "production branches that only existed to tolerate [hand-rolled test `Response` literals]". That justification is correct for `deserializeJson` (a real `Response` always has `.text()`), but not for `captureStackTrace`, which exists for non-V8 engines. Both were removed together to clear the uncovered `else` branch after `src/http/ApiClient.ts` was added to the 100%-coverage list in `craco.config.js` — coverage pressure removed a real runtime guard.
+It passed on master by accident. Master's copy of this file opens with `import Promise from 'bluebird'`, so both sides were Bluebird objects — plain JS objects whose own enumerable fields (`_bitField`, `_fulfillmentHandler0`, …) happen to be deep-equal for two promises fulfilled with the same value. This PR removes that import, so `Promise` is now the native global. Under `--detectOpenHandles` Jest enables `async_hooks`, and Node then attaches a unique `Symbol(async_id_symbol)` / `Symbol(trigger_async_id_symbol)` pair to every native promise as **own enumerable** symbols. Two native promises can therefore never be `toEqual`.
 
-#### Reproduction steps
-
-```bash
-node -e '
-delete Error.captureStackTrace
-class ApiError extends Error {
-  constructor(message, data, status) {
-    super(message); this.name = this.constructor.name; this.data = data; this.status = status
-    Error.captureStackTrace(this, this.constructor)
-  }
-  static async fromResponse(r) {
-    return r.json().then(b => new ApiError(JSON.stringify(b), b, r.status))
-                   .catch(() => new ApiError(r.statusText, {}, r.status))
-  }
-}
-ApiError.fromResponse({ ok:false, status:404, statusText:"Not Found",
-  json: async () => ({ description: "Fragment not found" }) })
-  .then(e => console.log("RESOLVED", e.message), e => console.log("REJECTED", e.constructor.name+":", e.message))
-'
-```
-
-Observed: `REJECTED TypeError: Error.captureStackTrace is not a function`.
-Expected: an `ApiError` carrying `Fragment not found`.
-
-In the browser: open the app in iOS Safari 17 or 18 (or Safari < 26) and trigger any failing request — a fragment number that does not exist, or an edit while signed out. The alert shows the `TypeError` instead of the server's message.
-
-**Recommendation.** Restore the guard. To keep `ApiClient.ts` at 100% without a permanently uncovered branch, extract it so both paths are directly testable:
-
-```ts
-// src/common/utils/captureStackTrace.ts
-export default function captureStackTrace(
-  error: Error,
-  constructorOpaque: Function,
-): void {
-  if (typeof Error.captureStackTrace === 'function') {
-    Error.captureStackTrace(error, constructorOpaque)
-  } else {
-    error.stack = new Error(error.message).stack
-  }
-}
-```
-
-A test that deletes `Error.captureStackTrace`, calls the helper and restores it covers the fallback honestly. Re-check `deserializeJson` under the same lens — that one is genuinely test-only and can stay removed.
-
----
-
-### F2 — Merging into master leaves 55 files importing a package that is no longer installed
-
-**Severity: High.** Blocks the merge; already analysed in `TASK-774-merge-master-handoff.md`, still open.
-
-Master has moved 17 commits ahead of the fork point (`4db5c9cd`) and never stopped using bluebird. 232 files under `src` on master reference it today. Of those, **44 are new since the fork point**, so git takes them wholesale with no conflict marker at all.
-
-Verified with a read-only merge preview:
-
-```console
-$ git merge-tree --write-tree HEAD origin/master
-27 conflicting paths
-merged tree: 55 files with a `from 'bluebird'` import
-merged package.json: 0 occurrences of bluebird
-```
-
-`package.json` merges cleanly with the removal winning, so the merged tree declares no bluebird while 55 files import it. `yarn tsc` and `yarn build` both fail on that tree. The conflict list badly understates the work — most of the damage is in the silently auto-merged additions, not the 27 conflicts.
-
-Also in the merged tree: master's `src/fragmentarium/ui/edition/Edition.test.tsx` still carries `import { Promise } from 'bluebird'`, and master reintroduces one Sass `@import`, which this PR migrated away from and stopped silencing in `craco.config.js`.
-
-The sharper problem the handoff doc already identifies: master's #791 fix touches the exact component this PR rewrote, in a way that cancels an in-flight save. That is the one behaviour this PR exists to make impossible, so it cannot be ported mechanically — it needs a deliberate decision about what the fix should mean under the new model.
-
-#### Reproduction steps
-
-```bash
-git merge-tree --write-tree HEAD origin/master > /tmp/mt.txt; echo "exit=$?"   # 1 = conflicts
-TREE=$(head -1 /tmp/mt.txt)
-git grep -ln "from 'bluebird'" $TREE -- src | wc -l    # 55
-git cat-file -p $TREE:package.json | grep -c bluebird  # 0
-```
-
-**Recommendation.** Do not merge #774 to master until this is resolved. Land #773 first, retarget #774, then do the master catch-up as its own reviewed piece of work — migrating the 44 new bluebird files and settling the #791 question explicitly. Treat "no conflict markers left" as the start of that job, not the end. Adding a CI guard (`grep -r bluebird src` fails the build) would make a future regression loud.
-
----
-
-### F3 — Five `TASK-774-*.md` files ship, and the guard against them was reverted
-
-**Severity: Medium.** Violates the "no new `.md` files" requirement for this PR.
-
-`git diff --name-status origin/master...HEAD -- '*.md'` returns:
+Measured directly:
 
 ```text
-M  README.md
-A  TASK-774-handoff.md
-A  TASK-774-log.md
-A  TASK-774-merge-master-handoff.md
-A  TASK-774-review.md
-A  TASK-774-todo.md
+bluebird own enumerable symbols: []
+native   own enumerable symbols: ["Symbol(async_id_symbol)","Symbol(trigger_async_id_symbol)"]
 ```
 
-All five are tracked at `502c1ccf` (2314 lines total). Three specific problems:
+This is deterministic, not flaky. The `test` job has failed on both runs since the master merge — `baba036e` and `7c9b1d01` — each with `Test Suites: 1 failed, 499 passed` and `Tests: 1 failed, 4394 passed`. The two runs before the merge (`0e679943`, `502c1ccf`) passed, because the bluebird import was still present in the merged-in file at that point.
 
-1. Commit `29a81056` removed all ten `TASK-*.md` files and added a `TASK-*.md` rule to `.gitignore`. The head commit `502c1ccf` **reverted that `.gitignore` rule** (`git diff base HEAD -- .gitignore` is now empty) and re-added five task files in the same commit.
-2. `502c1ccf`'s message states "the only .md change against master is README.md". That is not true of the commit it describes.
-3. `TASK-774-merge-master-handoff.md` carries `tracked_in_git: false (TASK-*.md is gitignored)` in its own front matter, which is now false.
+Secondary defect in the same block: `let result` has no type annotation, so it is an implicit `any`, against the project's type-annotation rule.
 
 #### Reproduction steps
 
 ```bash
-git ls-tree -r --name-only HEAD | grep TASK-        # 5 files
-git diff $(git merge-base HEAD origin/chore/ts7-tsconfig-migration) HEAD -- .gitignore   # empty
-git show 502c1ccf --stat -- '*.md' .gitignore
+# Fails — this is CI's flag set
+CI=true npx craco test --watchAll=false \
+  --runTestsByPath src/fragmentarium/application/FragmentService.queries.test.ts \
+  --detectOpenHandles --forceExit
 ```
 
-**Recommendation.** `git rm` all five before merge. Either restore the `TASK-*.md` ignore rule, or keep task docs outside the repository. Note this review file is itself one of the five and must go with them. Three further untracked `TASK-ts7-migration-*.md` files are sitting in the working tree — not part of the PR, but worth clearing at the same time.
+```text
+- Expected  - 2
++ Received  + 2
+
+  Promise {
+-   Symbol(async_id_symbol): 5635,
+-   Symbol(trigger_async_id_symbol): 1508,
++   Symbol(async_id_symbol): 11560,
++   Symbol(trigger_async_id_symbol): 11547,
+  }
+
+Test Suites: 1 failed, 1 total
+Tests:       1 failed, 21 passed, 22 total
+```
+
+```bash
+# Passes — the documented local command, no --detectOpenHandles
+CI=true npx craco test --watchAll=false \
+  --runTestsByPath src/fragmentarium/application/FragmentService.queries.test.ts
+```
+
+```text
+Test Suites: 1 passed, 1 total
+Tests:       22 passed, 22 total
+```
+
+Identical to CI's output at <https://github.com/ElectronicBabylonianLiterature/ebl-frontend/actions/runs/34988160664/job/104445531406>.
+
+#### Recommendation
+
+Await the promise and assert on the resolved value, and type the variable. Something like:
+
+```ts
+let result: FragmentAfoRegisterQueryResult
+beforeEach(async () => {
+  fragmentRepository.queryByTraditionalReferences.mockReturnValue(
+    Promise.resolve(returnData),
+  )
+  result = await fragmentService.queryByTraditionalReferences(['text 1'])
+})
+test('returns traditional reference to fragment numbers mapping data', () =>
+  expect(result).toEqual(returnData))
+```
+
+Then grep the suite for the same shape — any other `expect(<unawaited promise>).toEqual(<promise>)` is the same latent bug and was being held up by the same bluebird accident.
+
+---
+
+### F2 — The palaeography refactor shipped a dead duplicate of the module it split
+
+**Severity: High. Blocker.** DRY is a hard gate, and this also silently reverts part of the PR's own headline change.
+
+`SignImages.tsx` was meant to be split under the 250-line ceiling. It is now 200 lines — but the split extracted the component into new files **without removing the original or rewiring the caller**.
+
+`src/signs/ui/display/SignImages.tsx:92-200` still defines `PeriodAccordion` inline, and `SignImagePagination` at line 73 renders that local definition. `src/signs/ui/display/PeriodAccordion.tsx:14-122` is a verbatim copy of it. qlty flags exactly this: _"Found 93 lines of identical code in 2 locations (mass = 333)"_, reported against both files.
+
+Import graph — the extracted set is reachable only from tests:
+
+| Module                      | Imported by                                             |
+| --------------------------- | ------------------------------------------------------- |
+| `PeriodAccordion.tsx`       | `PeriodAccordion.test.tsx` only                         |
+| `VariantGroup.tsx`          | `PeriodAccordion.tsx` only                              |
+| `PeriodPreview.tsx`         | `PeriodAccordion.tsx`, `PeriodPreview.test.tsx`         |
+| `loadClusterAnnotations.ts` | `PeriodAccordion.tsx`, `loadClusterAnnotations.test.ts` |
+
+Nothing in the application renders `PeriodAccordion.tsx`. The live path is `SignImages.tsx` → `SignImageFigures.tsx` (`PeriodPreview`, `VariantGroup`) → `signClusterAnnotations.ts`. So the module exists twice, in full.
+
+**The copies have already diverged, and the wrong one is live.** The PR's stated migration is `Bluebird.map({ concurrency })` → `ConcurrencyLimiter`. Only the dead copy got it:
+
+- `loadClusterAnnotations.ts:37` (**dead**) — `const limiter = new ConcurrencyLimiter(clusterVariantConcurrencyLimit)`
+- `signClusterAnnotations.ts:33` (**live**) — `runWithConcurrencyLimit(clusterIds, 4, …)`, a separate hand-rolled worker-pool in `signImageGrouping.ts:57-89`
+
+So `ConcurrencyLimiter` is not actually used by the palaeography code the app runs; a third concurrency primitive was written instead, duplicating its purpose. That is a second DRY violation on its own.
+
+**The coverage gate certifies the dead copy.** `craco.config.js` `fullyCoveredPaths` pins 100% coverage on `PeriodAccordion.tsx`, `PeriodPreview.tsx`, `VariantGroup.tsx`, `loadClusterAnnotations.ts` and `signImageGrouping.ts` — four of those five are unreachable in production. The live `SignImages.tsx`, `SignImageFigures.tsx` and `signClusterAnnotations.ts` are not in the list. The gate reads green while measuring code that never runs.
+
+#### Reproduction steps
+
+```bash
+# 93-line duplicate, both halves
+sed -n '92,200p' src/signs/ui/display/SignImages.tsx > /tmp/inline.tsx
+sed -n '14,122p'  src/signs/ui/display/PeriodAccordion.tsx > /tmp/extracted.tsx
+diff /tmp/inline.tsx /tmp/extracted.tsx   # 2 differing lines only: `export default` and the `: JSX.Element` return type
+
+# nothing in the app imports the extracted component
+grep -rn "signs/ui/display/PeriodAccordion'" src --include=*.ts --include=*.tsx
+#   -> src/signs/ui/display/PeriodAccordion.test.tsx:5   (only hit)
+
+# the two concurrency helpers
+grep -n "ConcurrencyLimiter"        src/signs/ui/display/loadClusterAnnotations.ts   # dead copy
+grep -n "runWithConcurrencyLimit"   src/signs/ui/display/signClusterAnnotations.ts   # live copy
+
+# qlty agrees
+qlty smells --all | grep -A2 "SignImages.tsx"
+#   Found 93 lines of identical code in 2 locations (mass = 333)
+```
+
+Deleting `src/signs/ui/display/PeriodAccordion.tsx` and its test leaves the application byte-identical — which is the clearest demonstration that it is dead.
+
+#### Recommendation
+
+Pick one copy and delete the other, then point `SignImages.tsx` at it:
+
+1. Delete the inline `PeriodAccordion` from `SignImages.tsx:92-200` and import `signs/ui/display/PeriodAccordion` instead.
+2. Collapse `SignImageFigures.tsx` into `PeriodPreview.tsx` + `VariantGroup.tsx` (or the reverse) — keep one.
+3. Collapse `signClusterAnnotations.ts` and `loadClusterAnnotations.ts` into one module, keeping the `ConcurrencyLimiter` implementation so the PR's stated migration actually ships.
+4. Delete `runWithConcurrencyLimit` from `signImageGrouping.ts` once nothing uses it.
+5. Re-point `fullyCoveredPaths` at whichever modules survive, and add `SignImages.tsx` to it.
+
+`SignImages.tsx` drops to roughly 90 lines once the inline copy goes, so the 250-line ceiling is satisfied by the split that was intended rather than by a duplicate.
+
+---
+
+### F3 — Five `TASK-774-*.md` files are tracked again
+
+**Severity: Medium. Blocker.** This is a regression of the round-4 finding of the same name.
+
+```bash
+$ git diff --name-status origin/chore/ts7-tsconfig-migration...HEAD -- '*.md'
+M       README.md
+A       TASK-774-handoff.md
+A       TASK-774-log.md
+A       TASK-774-merge-master-handoff.md
+A       TASK-774-review.md
+A       TASK-774-todo.md
+```
+
+They were re-added by the current HEAD commit, `7c9b1d01 docs: add task tracking docs for PR #774 and the TS7 migration`. Counting #773's three, the stack adds eight `.md` files against master:
+
+```bash
+$ git diff --name-only origin/master...HEAD -- '*.md'
+README.md
+TASK-774-handoff.md
+TASK-774-log.md
+TASK-774-merge-master-handoff.md
+TASK-774-review.md
+TASK-774-todo.md
+TASK-ts7-migration-log.md
+TASK-ts7-migration-research.md
+TASK-ts7-migration-todo.md
+```
+
+The PR description currently states: _"The work-tracking `TASK-_.md`docs are no longer tracked on this branch — the only`.md`change against`master`is`README.md`."\* That is no longer accurate and should be corrected or the files untracked.
+
+`.gitignore` is byte-identical to master, so nothing stops them coming back a third time.
+
+#### Recommendation
+
+`git rm --cached TASK-774-*.md` (and the three `TASK-ts7-*.md` on #773), keeping the files on disk. If you want a durable guard rather than repeating this each round, a `TASK-*.md` line in `.gitignore` would do it — flagging rather than doing it, since the round-3 notes record that you asked for that rule to be removed. This review file is itself one of the five and should go with them.
 
 ---
 
 ### F4 — `CHANGES_REQUESTED` is still the standing review state
 
-**Severity: Medium.** Procedural blocker; the underlying content is addressed.
+**Severity: Medium. Blocker.** Process only.
 
-Fabdulla1 requested changes on 2026-08-04 against commit `5ef4a984`. It has never been dismissed or superseded by an approval, so it still blocks merge. Every point in it is resolved in the code:
+Timeline: Fabdulla1 was requested on 2026-08-04T09:09:19Z and submitted `CHANGES_REQUESTED` the same day at 13:27:43Z. No later review supersedes it. There are no currently-requested reviewers.
 
-| Fabdulla1's point                                                        | Status at `502c1ccf`                                                                                                                                                                                                                                                                 |
-| ------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `runWrite` can abort an already-dispatched write                         | **Fixed.** `runWrite` uses `SupersedableOperation` (token comparison), not `AbortableOperation`. `ApiClient.postJson`/`putJson` take no `signal`, so one cannot reach a write's `fetch`.                                                                                             |
-| `usePromiseEffect.test.tsx` proves the implementation, not the guarantee | **Fixed.** `usePromiseEffect.write.integration.test.tsx` drives a real `ApiClient` over mocked `fetch` and asserts no signal is attached, a second write does not disturb the first, and a superseded write cannot overwrite current state. See F6 for one weak assertion within it. |
-| Seven files over the 250-line ceiling                                    | **Fixed.** All seven are now 6–191 lines; no file this PR touches exceeds 249.                                                                                                                                                                                                       |
+All three of the substantive points in that review are fixed, and I verified each rather than taking the PR description's word for it:
 
-**Recommendation.** Re-request review from Fabdulla1, pointing at the two commits that closed each point. Merge stays blocked until that converts to an approval.
+1. **"`runWrite` can abort an already dispatched server write."** Fixed. `runWrite` now uses `SupersedableOperation` (a monotonic token, no `AbortController`) — `usePromiseEffect.ts:33-37`. `ApiClient.postJson`/`putJson` take no `signal` and call `this.fetch(...)` without one (`ApiClient.ts:205-219`). No repository or service write method accepts a signal. All four cited call paths now go through the token: `DateSelectionState.ts:178`, `ChapterEditView.tsx:60`, `ScriptSelection.tsx:64`, `CuneiformFragment.tsx:146`. The five components owning their own `SupersedableOperation` all supersede on unmount.
+2. **"Add an integration-level test that reaches a mocked ApiClient or fetch."** Done — `usePromiseEffect.write.integration.test.tsx` drives a real `ApiClient` over mocked `fetch` and asserts separately that no signal is attached, that a second write does not abort the first, and that a superseded write cannot overwrite current UI state.
+3. **"Files over the 250-line ceiling."** All seven are now under it: `FragmentService.ts` 246, `FragmentRepository.ts` 240, `TextService.ts` 70, `FakeApi.ts` 190, `SignImages.tsx` 200, `Realia.sass` 6, `withData.test.tsx` 191. (`SignImages.tsx` is under the limit but see F2 for _how_.)
+
+The review still has to be cleared on GitHub. I do not touch reviewer assignment.
 
 ---
 
-### F5 — `BibliographyEntryForm` unmount does not cancel the debounced load
+### F5 — The documented local test gate is not the command CI runs
 
-**Severity: Low.** Wasted work and a documented guarantee that does not hold; not user-visible under React 18.
+**Severity: Medium. Non-blocking**, but it is the mechanism by which F1 got this far.
 
-`src/bibliography/ui/BibliographyEntryForm.tsx:60-62` adds an unmount guard this PR introduced:
+- `.github/copilot-instructions.md` and the PR's own verification section: `yarn test --watchAll=false`
+- `.github/workflows/main.yml:58`: `NODE_OPTIONS=--max_old_space_size=1536 yarn test --coverage --forceExit --detectOpenHandles --watch=false`
 
-```ts
-componentWillUnmount(): void {
-  this.loadOperation.supersede()
-}
+`--detectOpenHandles` changes observable behaviour, not just reporting — it enables `async_hooks`, which is precisely what makes F1 fail. A gate that cannot reproduce CI is not a gate. The previous review round recorded `tests: PASS` in good faith for this reason.
+
+#### Recommendation
+
+Add a script that mirrors CI exactly — for example `"test:ci": "yarn test --coverage --forceExit --detectOpenHandles --watch=false"` — have `main.yml` call it, and make that the command the instructions name as the hard gate.
+
+---
+
+### F6 — `FragmentAnnotation.tsx` is over the 250-line ceiling
+
+**Severity: Low. Non-blocking.**
+
+`src/fragmentarium/ui/image-annotation/annotation-tool/FragmentAnnotation.tsx` is 432 lines and is the only `.ts`/`.tsx` file this PR touches that exceeds 250.
+
+It is pre-existing — 433 lines on master — and the PR's edit is minimal (dropping the `Bluebird` import and changing one return type to `Promise<void>`), so the change did not push it over. Recording it because the PR body claims a "250-line-per-file refactor across the files this PR touches", which is not true of this one. Either split it or soften the claim.
+
+For context, 46 files repo-wide are over the ceiling; the rest are untouched by this PR.
+
+---
+
+### F7 — `MapTab.sass` still uses `@import`
+
+**Severity: Low. Non-blocking.**
+
+This PR migrated 47 Sass files from `@import` to `@use` and removed `'import'`, `'global-builtin'` and `'color-functions'` from `silenceDeprecations` in `craco.config.js`, plus the matching `ignoreWarnings` regexes. One file was missed:
+
+```sass
+# src/map/ui/MapTab.sass:1
+@import src/design-tokens
 ```
 
-But `doLoad` is `_.debounce(this.load, 500, ...)` (line 57) and the timer is never cancelled. Unmount within 500 ms of a keystroke lets the debounce fire _after_ `supersede()`, and `load` then calls `this.loadOperation.start()` — which mints a **fresh, non-stale** token. `applyCitation` / `applyInvalidEntry` therefore run and call `setState` on an unmounted component. React 18 makes that a silent no-op, so nothing breaks, but the parse work happens anyway and the README's claim that these four components "call `supersede()` from `componentWillUnmount`" does not actually hold for this one.
+It is unchanged from master and is compiled into the build (`MapTab.tsx:13` imports it; `MapTab` is lazy-loaded from `toolsContent.tsx:30`).
 
-The `doLoad` field is typed `(value: string) => Promise<void> | undefined`, which erases lodash's `DebouncedFunc` and hides `.cancel()` from the type.
+Compiled directly under the PR's new options, Dart Sass 1.97.3 does warn:
 
-**Reproduction steps.** Render `BibliographyEntryForm`, type into the Data textarea, unmount inside 500 ms, then advance timers. `Cite.async` runs and `applyCitation` is entered with a non-stale check.
+```text
+SASS WARN: Sass @import rules are deprecated and will be removed in Dart Sass 3.0.0. [deprecation import]
+```
 
-**Recommendation.** Type the field as `DebouncedFunc<(value: string) => Promise<void>>` and call `this.doLoad.cancel()` alongside `this.loadOperation.supersede()` in `componentWillUnmount`.
-
----
-
-### F6 — The "does not abort the first write in flight" test cannot fail
-
-**Severity: Low.** Test quality; the guarantee is proven elsewhere in the same file.
-
-`src/common/hooks/usePromiseEffect.write.integration.test.tsx:86-96` asserts `Failure: no failure` after both writes resolve. By that point the first write has been superseded, so its `isStale()` returns `true` and **both** its handlers are suppressed (lines 22-30 of the same file). The assertion holds whether or not the first request was aborted — it proves nothing about aborting.
-
-The guarantee is genuinely proven by the test directly above it (line 78), which asserts `options.signal` is `undefined` on every dispatched request. Given Fabdulla1 asked specifically for proof here, the weak test is worth tightening so a future regression is actually caught.
-
-**Recommendation.** Assert on the request instead of the UI — for example capture `fetchMock.mock.calls[0][1].signal` and assert it is `undefined`, or attach an `abort` listener to a signal injected into the first call and assert it never fires. Alternatively rename the test to match what it checks.
+I checked whether this breaks the "zero warnings" claim, and it does not — `CI=true yarn build:ci-stable` reports `Compiled successfully.` with no warnings, because sass-loader does not surface this particular deprecation to webpack. So the build gate genuinely passes. It is a loose end that will become a hard failure at Dart Sass 3.0.
 
 ---
 
-### F7 — The 100% coverage gate covers 10 of 47 new source files
+### F8 — The `No bluebird` CI guard has gaps
 
-**Severity: Low.** Durability, not a present gap.
+**Severity: Low. Non-blocking.**
 
-`craco.config.js` gates ten files at 100/100/100/100 and everything else at the global 93/85/93/93. This PR adds 47 non-test source files, so 37 of them are only held to the global floor.
+`.github/workflows/main.yml:39-45`:
 
-In practice current coverage is excellent — of the 47, only four are below 100%, and all four are inert or test-only: `JsonApiClient.ts` and `DateSelectionStateTypes.ts` are type-only modules with no executable statements, `ApiClient.security.testSupport.ts` is at 83.33% (unused mock stubs on lines 15-18) and `ApiClient.testSupport.ts` has one uncovered branch on line 35.
+```yaml
+- name: No bluebird
+  if: success() || steps.install.outcome == 'success'
+  run: |
+    if git grep -lE "from 'bluebird'|from \"bluebird\"|require\('bluebird'\)" -- src; then
+      echo "::error::bluebird was removed in #774; the files above import it again."
+      exit 1
+    fi
+```
 
-So the concern is forward-looking: nothing stops those 37 files drifting down to 93% later. Global branch coverage also sits at 86.07% against an 85% floor — about 1.07 points of headroom, and CI has already gone red once on a thinner margin.
+The step works — it correctly exits 0 when nothing matches, and the `if:` condition on the following steps means a failure here does not mask lint/tsc/test results. Two gaps:
 
-**Recommendation.** Optional. Extend the per-path list to the new production modules, or switch to a `src/common/utils/**` / `src/http/**` glob so new files in those directories inherit the 100% gate automatically.
-
----
-
-### F8 — CI `pull_request` base globs widened
-
-**Severity: Informational.** Deliberate, low risk, worth acknowledging explicitly since it changes when secrets are exposed.
-
-`.github/workflows/main.yml` and `codeql-analysis.yml` both change `pull_request: branches: [master]` to `[master, 'chore/**', 'feature/**', 'fix/**']`. This is what makes CI run on this stacked PR at all, and it is the right fix.
-
-Security review of the change:
-
-- The trigger is `pull_request`, **not** `pull_request_target`, so fork PRs run without repository secrets. Correct choice.
-- `permissions: contents: read` is set at workflow level.
-- The `docker` publish job stays gated on `github.event_name == 'push' && github.ref == 'refs/heads/master'`, so widening the PR trigger cannot publish an image.
-- `SLACK_WEBHOOK_URL` (workflow-level `env`) and `QLTY_COVERAGE_TOKEN` are now reachable from same-repo PRs based on `chore/**`, `feature/**` and `fix/**`. Those branches were already trusted, so the practical exposure change is small.
-
-One side effect: `qltysh/qlty-action/coverage` now uploads coverage from stacked-branch PRs, which may mix non-master data into qlty's baseline.
-
-**Recommendation.** No change required. If you would rather not upload coverage from stacked PRs, gate that one step on `github.base_ref == 'master'`.
+- `require("bluebird")` with double quotes is not matched, though `require('bluebird')` is.
+- Dynamic `import('bluebird')` is not matched.
+- The message hardcodes `#774`, which will read oddly once the PR is history. "bluebird was removed from this project" is enough.
 
 ---
 
-### F9 — Two `xit` tests inherited from the base branch
+### F9 — `README.md` slightly overstates the write guarantee
 
-**Severity: Informational.** Not introduced here; needs care at merge time.
+**Severity: Low. Non-blocking.**
 
-`src/fragmentarium/ui/edition/Edition.test.tsx:48,52` disables _Renders transliteration field_ and _Renders notes field_. Both are present at the merge base `4f71cb24`, so they arrive from #773, not from this PR. Master has working versions of both (fixed independently in #767), with `jest.mock('editor/Editor', ...)` scaffolding and corrected label casing.
+`README.md` says: _"`ApiClient.postJson` and `ApiClient.putJson` do not accept a `signal` at all, so a signal cannot reach a write's `fetch` — the guarantee is enforced by the type system rather than by convention."_
 
-The previous review round withdrew this on the grounds that "a merge preview confirms master's version survives the merge". That region differs on both sides, so it is a genuine conflict, not an automatic win — and master's copy of this file also still imports bluebird (F2).
+`ApiClient.fetch` is public and takes `(path, authenticate, options: Options, signal?: AbortSignal)`, and `Options` carries `method`. So `apiClient.fetch(path, true, createOptions(body, 'POST'), signal)` type-checks. No caller does this — `postJson` and `putJson` are the only POST/PUT call sites — so the guarantee holds in practice, but at that seam it is convention.
 
-**Recommendation.** At merge, take master's assertions and scaffolding for these two tests and strip the bluebird import. Confirm both run (not `xit`) afterwards.
+Either narrow the wording, or make `fetch` private and expose the two read helpers plus the two write helpers.
 
 ---
 
-### F10 — No dev container configuration changes
+### F10 — Container configuration: `Dockerfile` appears in the PR diff
 
-**Severity: Informational.** Explicitly verified because dev container changes were called out as needing careful review.
+**Severity: Info. Please confirm before merge — you asked to be warned about container config changes.**
+
+**No `.devcontainer/` changes** anywhere in the stack:
 
 ```bash
-git diff --name-status origin/master...HEAD -- .devcontainer/ Dockerfile docker-compose.yml
-#   → only .github/workflows/codeql-analysis.yml and .github/workflows/main.yml
+$ git diff --name-status origin/chore/ts7-tsconfig-migration...HEAD -- .devcontainer/ docker-compose.yml .dockerignore
+(empty)
+$ git diff --name-status origin/master...HEAD -- .devcontainer/
+(empty)
 ```
 
-`.devcontainer/Dockerfile`, `.devcontainer/devcontainer.json`, `.devcontainer/inject-secrets.sh` and `.devcontainer/README.md` are untouched against both the base branch and master. The root `Dockerfile` and `docker-compose.yml` are untouched. **No dev container review is needed for this PR.** The only infrastructure changes in the whole stack are the two workflow files covered in F8.
+However, GitHub's file list for this PR **does** include `Dockerfile`, `modified +4/-4`:
+
+```diff
+-FROM node:20-alpine AS build
++FROM node:20-alpine@sha256:fb4cd12c85ee03686f6af5362a0b0d56d50c58a04632e6c0fb8363f609372293 AS build
+-	giflib-dev=5.2.2-r1 \
++	giflib-dev=5.2.2-r2 \
+-	python3=3.12.13-r0 \
++	python3=3.12.14-r0 \
+-FROM node:20-alpine
++FROM node:20-alpine@sha256:fb4cd12c85ee03686f6af5362a0b0d56d50c58a04632e6c0fb8363f609372293
+```
+
+This is not authored by this PR. It is master's own change (a base-image digest pin plus two Alpine package bumps) arriving via the master merge, and it shows up in the PR diff only because the base branch `chore/ts7-tsconfig-migration` predates it. HEAD's `Dockerfile` is byte-identical to master's:
+
+```bash
+$ git diff origin/master HEAD -- Dockerfile
+(empty)
+```
+
+So the net effect on master is zero, and the change itself is a security improvement (pinning the base image by digest). The three changes are consistent with each other — both `FROM` lines get the same digest, and the package bumps are patch-level. Nothing here looks unexpected. Confirming it explicitly because it is container configuration and a reviewer reading the GitHub diff will see it presented as this PR's work.
+
+The `docker` and `docker-test` jobs are `SKIPPED` on this PR (they are gated on pushes to master), so the image is not actually built or pushed from here.
+
+---
+
+### F11 — The qlty coverage upload is skipped for stacked PRs
+
+**Severity: Info. Acknowledge.**
+
+`.github/workflows/main.yml:64-65` adds `if: github.event_name == 'push' || github.base_ref == 'master'` to the `qltysh/qlty-action/coverage` step. This was the round-4 remediation for widened base globs, and it is the right call — it stops stacked PRs polluting the coverage baseline.
+
+The consequence worth stating: this PR never uploads its own coverage, so its 100% coverage claim is not verified by any external gate on the PR. Combined with F2 — where the per-file gate points at dead files — coverage on this PR is currently self-reported.
+
+---
+
+### F12 — Node 20 deprecation warnings in CI
+
+**Severity: Info. Acknowledge.** Not introduced by this PR.
+
+```text
+Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24:
+actions/checkout@v4, actions/setup-node@v4.
+```
+
+Worth a separate housekeeping PR to move to `actions/checkout@v5` / `actions/setup-node@v5`.
 
 ---
 
 ## Verified as claimed
 
-Each of these was re-checked independently rather than taken from the PR description.
+Checked rather than taken on trust:
 
-**Sass migration is behaviour-preserving.** I extracted the base tree with `git archive` and compiled all 59 non-partial `.sass` entrypoints on both sides with the repo's own `sass` binary:
+| Claim                                       | Result                                                                                                                                                    |
+| ------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `yarn lint` clean                           | **PASS** — eslint + stylelint, exit 0                                                                                                                     |
+| `yarn tsc` clean                            | **PASS** — exit 0                                                                                                                                         |
+| `yarn build:ci-stable` clean, zero warnings | **PASS** — `CI=true`, `Compiled successfully.`, no warnings                                                                                               |
+| Full suite green, zero console output       | **PASS** under the documented command — 500 suites, zero `console.error`/`console.warn`/unhandled rejections. **FAIL** under CI's command (F1)            |
+| bluebird gone from `src` and `package.json` | **PASS** — zero references in either; 3 transitive entries remain in `yarn.lock`, as the PR states                                                        |
+| Writes are never network-aborted            | **PASS** — verified through every call path, not just the primitives (see F4)                                                                             |
+| Sass `@import` → `@use` migration           | **PASS with one exception** — 47 files migrated, zero `darken()` remaining, one `@import` left (F7)                                                       |
+| 250-line ceiling on the seven flagged files | **PASS** — all ≤ 246 lines (but see F2 for `SignImages.tsx` and F6 for `FragmentAnnotation.tsx`)                                                          |
+| CodeQL                                      | **PASS** — "No new alerts in code changed by this pull request"; `Analyze (javascript)` success                                                           |
+| Secrets                                     | **PASS** — GitGuardian ×3, no secrets detected                                                                                                            |
+| No dev container changes                    | **PASS** for `.devcontainer/`; see F10 for `Dockerfile`                                                                                                   |
+| No skipped or disabled tests                | **PASS** — zero `xit`, `xdescribe`, `it.skip`, `test.skip` or `describe.skip` anywhere in `src`. Round 4's two `xit` tests in `Edition.test.tsx` are gone |
+| No write method accepts an `AbortSignal`    | **PASS** — 67 methods declare `signal?: AbortSignal`, none of them writes; every POST/PUT path goes through `postJson`/`putJson`, which take none         |
 
-```text
-identical=59  differs=0  compile_fail=0  (of 59)
+Repo-wide pre-existing CodeQL alerts could not be enumerated — the available token lacks the `code-scanning` scope. The PR-scoped CodeQL result above is from the check run on the head commit and is authoritative for this PR.
+
+---
+
+## Severity
+
+| Severity | Count | Findings       |
+| -------- | ----- | -------------- |
+| High     | 2     | F1, F2         |
+| Medium   | 3     | F3, F4, F5     |
+| Low      | 4     | F6, F7, F8, F9 |
+| Info     | 3     | F10, F11, F12  |
+
+Blocking: F1, F2, F3, F4. F1 and F2 are code; F3 and F4 are process.
+
+---
+
+## Reproduction Steps
+
+Consolidated; per-finding detail is under each finding above.
+
+```bash
+# F1 — CI-red test. Fails with the flag, passes without it.
+CI=true npx craco test --watchAll=false \
+  --runTestsByPath src/fragmentarium/application/FragmentService.queries.test.ts \
+  --detectOpenHandles --forceExit          # 1 failed
+CI=true npx craco test --watchAll=false \
+  --runTestsByPath src/fragmentarium/application/FragmentService.queries.test.ts   # 22 passed
+
+# F1 — the underlying mechanism
+node -e "
+const ah=require('async_hooks'); ah.createHook({init(){},destroy(){}}).enable();
+const BB=require('bluebird');
+const syms=o=>Object.getOwnPropertySymbols(o).filter(s=>o.propertyIsEnumerable(s)).map(String);
+console.log('bluebird:', JSON.stringify(syms(BB.resolve({a:1}))));
+console.log('native  :', JSON.stringify(syms(Promise.resolve({a:1}))));"
+
+# F2 — the duplicate, and the fact that the extracted copy is dead
+diff <(sed -n '92,200p' src/signs/ui/display/SignImages.tsx) \
+     <(sed -n '14,122p' src/signs/ui/display/PeriodAccordion.tsx)
+grep -rn "signs/ui/display/PeriodAccordion'" src --include=*.ts --include=*.tsx
+
+# F3 — tracked task docs
+git diff --name-status origin/chore/ts7-tsconfig-migration...HEAD -- '*.md'
+
+# F7 — the missed Sass file
+node -e "
+const sass=require('sass');
+sass.compile('src/map/ui/MapTab.sass',{loadPaths:['.','src','node_modules'],syntax:'indented',
+  quietDeps:true,silenceDeprecations:['legacy-js-api'],
+  logger:{warn(m){console.log('SASS WARN:',m)}}});"
+
+# F10 — container config
+git diff --name-status origin/master...HEAD -- .devcontainer/    # empty
+git diff origin/master HEAD -- Dockerfile                        # empty
 ```
-
-No `@import` and no `darken()` remain in `src`; 47 files carry `@use`. The four `silenceDeprecations` entries and four `ignoreWarnings` patterns dropped from `craco.config.js` are correspondingly dead.
-
-**Bluebird is fully gone from this branch.** Zero references in `src`, absent from `package.json`, `cancellableFetch` deleted. Three matches remain in `yarn.lock` as a transitive dependency of other packages, which is expected.
-
-**250-line ceiling.** Every `.ts`/`.tsx` file this PR touches is ≤ 249 lines; the largest is `LemmaAnnotation.tsx` at 249. All seven files Fabdulla1 flagged are now 6–191 lines. The 48 files still over the ceiling repo-wide are all pre-existing and untouched here.
-
-**Write-cancellation guarantee.** `ApiClient.postJson`/`putJson` have no `signal` parameter; `JsonApiClient.postJson` matches at three parameters; `FragmentCache.getOrFetch` takes `fetchValue: () => Promise<CacheValue>` with no arguments, so a per-caller signal cannot reach a shared in-flight request. The guarantee is structural, as the README claims.
-
-**Local gates.** `yarn tsc` clean. `yarn lint` clean. `CI=true yarn test --watchAll=false --coverage`: 426/426 suites, 3695 passed, 2 skipped, 50 snapshots, 483 s, exit 0, and **zero console errors, warnings, `act` warnings or unhandled rejections**. All ten gated files at 100/100/100/100. Global 94.22 / 86.07 / 93.92 / 94.34.
-
-**Remote checks.** All green at `502c1ccf`: `test`, `CodeQL`, `Analyze (javascript)`, `GitGuardian Security Checks`, two `GitGuardian scan` runs, and `qlty check`. `docker` / `docker-test` skipped as designed.
 
 ---
 
@@ -386,61 +545,75 @@ No `@import` and no `darken()` remain in `src`; 47 files carry `@use`. The four 
 
 ### Timeline review events — 3 total
 
-| Reviewer    | State                 | Date       | Commit     | Standing?                   |
-| ----------- | --------------------- | ---------- | ---------- | --------------------------- |
-| qltysh[bot] | COMMENTED             | 2026-07-21 | `7ba6f490` | superseded                  |
-| qltysh[bot] | COMMENTED             | 2026-07-23 | `01e61b13` | superseded                  |
-| Fabdulla1   | **CHANGES_REQUESTED** | 2026-08-04 | `5ef4a984` | **yes — blocks merge (F4)** |
+| When                 | Who         | State               | Status                                                        |
+| -------------------- | ----------- | ------------------- | ------------------------------------------------------------- |
+| 2026-08-04T13:27:43Z | Fabdulla1   | `CHANGES_REQUESTED` | **Unresolved** — code findings fixed, review not cleared (F4) |
+| 2026-07-23T13:17:09Z | qltysh[bot] | `COMMENTED`         | Resolved — all threads closed                                 |
+| 2026-07-21T16:45:50Z | qltysh[bot] | `COMMENTED`         | Resolved — all threads closed                                 |
 
 ### Inline review threads — 6 total, 6 resolved, 0 unresolved
 
-| Thread                            | Author      | Path                                             | Resolved | Outdated |
-| --------------------------------- | ----------- | ------------------------------------------------ | -------- | -------- |
-| `9f18059e` similar-code, mass 79  | qltysh[bot] | `src/corpus/application/TextService.ts:394`      | yes      | yes      |
-| `4c4f7c1e` similar-code, mass 79  | qltysh[bot] | `src/corpus/application/TextService.ts:412`      | yes      | yes      |
-| `8f977550` similar-code, mass 120 | qltysh[bot] | `src/common/hooks/usePromiseEffect.test.tsx:52`  | yes      | yes      |
-| `207e863f` similar-code, mass 120 | qltysh[bot] | `src/common/hooks/usePromiseEffect.test.tsx:101` | yes      | yes      |
-| `88410145` similar-code, mass 66  | qltysh[bot] | `src/corpus/application/TextService.ts:487`      | yes      | yes      |
-| `3d65ffe9` similar-code, mass 66  | qltysh[bot] | `src/corpus/application/TextService.ts:503`      | yes      | yes      |
+All six are qlty `similar-code` reports, all resolved by `qltysh[bot]` and all outdated against the current head.
 
-All six were resolved by qltysh[bot] itself after the duplication was cleared in `502c1ccf`; the current `qlty check` status is `success`. No unresolved threads remain.
+| Path                                         | Report                      | Resolved | Outdated |
+| -------------------------------------------- | --------------------------- | -------- | -------- |
+| `src/corpus/application/TextService.ts`      | 17 similar lines (mass 79)  | yes      | yes      |
+| `src/corpus/application/TextService.ts`      | 17 similar lines (mass 79)  | yes      | yes      |
+| `src/corpus/application/TextService.ts`      | 15 similar lines (mass 66)  | yes      | yes      |
+| `src/corpus/application/TextService.ts`      | 15 similar lines (mass 66)  | yes      | yes      |
+| `src/common/hooks/usePromiseEffect.test.tsx` | 18 similar lines (mass 120) | yes      | yes      |
+| `src/common/hooks/usePromiseEffect.test.tsx` | 18 similar lines (mass 120) | yes      | yes      |
 
-**General / issue comments:** none.
+### General / issue comments — 0
 
-**Other automated reviewers:** sourcery-ai has never reviewed this PR and is not installed on the repository — no sourcery-ai reviews, comments or timeline events exist. Active bots are qltysh[bot], GitGuardian and GitHub Advanced Security (CodeQL).
+None on this PR.
 
-**CodeQL:** the `CodeQL` and `Analyze (javascript)` check runs both report `success` at `502c1ccf`. The code-scanning **alerts** API returned `Resource not accessible by integration` for this token, so I could not enumerate individual alerts — the check-run conclusion is the evidence, and a manual look at the Security tab would confirm zero open alerts.
+### Automated review bots
+
+No `sourcery-ai` review or comment exists on this PR — the only bot participating is `qltysh[bot]`. The `qlty check` commit status is green but reports **9 blocking issues** on the qlty dashboard (<https://qlty.sh/gh/ElectronicBabylonianLiterature/projects/ebl-frontend/pull/774/issues>); that dashboard needs its own credentials, which are not available here, so the nine could not be enumerated item by item. A local `qlty smells --all` run over the files this PR touches surfaces the duplication behind F2 as the largest item by mass (333), along with `SignImage.tsx` (144), `PeriodPreview.tsx` (119), `VariantGroup.tsx` (115) and `createScript.test.ts` (314) — most of which resolve once F2 is fixed.
+
+---
+
+## Recommendation
+
+**Originally: request changes.** After the same-day remediation, every actionable finding is fixed in the working tree and the two remaining items are process, not code.
+
+The verdict below is kept as written at review time; the remediation table near the top records what changed.
+
+The bluebird work itself is sound and the August review's objections are genuinely resolved. Two things need fixing in the diff before this is mergeable:
+
+- **F1** is small — await the promise, type the variable — and it turns CI green. Worth grepping the suite for the same pattern while you are in there, since bluebird was masking it everywhere it occurs.
+- **F2** is the one with real substance. The refactor is half-applied: the app renders a duplicate of the component that was supposedly extracted, the two copies have drifted, the live one missed the `ConcurrencyLimiter` migration this PR is about, and the coverage gate is pointed at the dead half. It is a contained fix — delete one copy of each of the three pairs and rewire one import — but until it lands, both the DRY gate and the coverage claim are not actually met.
+
+**F3** and **F4** are process and can be done at any point before merge.
+
+The remaining findings are non-blocking. **F5** is worth doing regardless of this PR, because it is the reason F1 was not caught locally.
+
+On **F10**: the `Dockerfile` change in the GitHub diff is master's, not this PR's, and HEAD matches master exactly — but please confirm you are happy with it, since it is container configuration and the diff presents it as part of this PR.
+
+Merge order is unchanged: land #773, let GitHub retarget this PR to master, then re-verify.
 
 ---
 
 ## What Has To Be Done
 
-Items 1–8 are done in the working tree. Items 9–13 are not mine to close.
+Items 1-8 and 12-16 from the original list are **done** — see the remediation table near the top of this document. What remains:
 
-1. ~~Restore the `Error.captureStackTrace` guard~~ — **done.** Extracted to `src/common/utils/captureStackTrace.ts` (23 lines, both branches tested), used by `ApiError`. Three regression tests in `ApiError.test.ts` cover construction, `fromResponse` preserving the server message, and the malformed-JSON fallback; all three fail if the guard is removed again.
-2. ~~Re-verify the `deserializeJson` guard removal~~ — **done, and it stands.** Every 201 path in the suite goes through `fetchMock`, which yields real `Response` objects; the only two hand-rolled literals are `createJsonResponse` (which supplies `.text()`) and one in `ApiClient.securityErrors.test.ts` that exercises `ApiError.fromResponse` and never reaches `deserializeJson`. That guard really was test-only and stays removed.
-3. ~~Remove the five `TASK-774-*.md` files from the branch~~ — **done.** Untracked with `git rm --cached`, so they survive on disk as working documents. `git diff origin/master -- '*.md'` now shows `README.md` alone.
-4. ~~Restore the `TASK-*.md` rule in `.gitignore`~~ — **deliberately skipped**, see Remediation. Item 3 achieves the same outcome without undoing a prior instruction.
-5. ~~Cancel the debounced load on unmount~~ — **done.** `doLoad` is typed `DebouncedFunc<(value: string) => Promise<void>>` and `componentWillUnmount` calls `.cancel()` before `supersede()`. `BibliographyEntryForm.unmount.test.tsx` proves a pending load runs while mounted and does not run after unmount; the second test fails without the fix.
-6. ~~Tighten the "does not abort the first write in flight" test~~ — **done.** The harness records every write's settled outcome independently of `isStale()`, and the test asserts the first write resolved with `first` and that no write rejected. Disturbing the first request now fails the test; previously it passed regardless.
-7. ~~Widen the per-path 100% coverage gate~~ — **done.** 49 production modules, up from 10 — every new production file this PR adds except the two type-only modules, which carry no executable statements. Globs were rejected: `src/common/utils/**` and `src/http/**` both contain pre-existing files below 100% (`period.ts` at 50% branches, `HtmlParsing.tsx` at 75%), so an explicit list is the only safe form. Because gated files leave the global bucket, the residual floor was re-measured against untouched code alone and set to 93 / 84 / 93 / 93 against a measured 93.60 / 84.80 / 93.20 / 93.73. Net enforcement is stronger, not weaker: those 49 files were previously only propping up a blend.
-8. ~~Add a CI guard against bluebird returning~~ — **done.** A `No bluebird` step runs immediately after install and fails the build on any `bluebird` import under `src`. Verified: it passes on this branch and matches all 232 such files on master today.
-9. **Resolve the master merge.** Land #773, let GitHub retarget this PR, then migrate the 44 new bluebird-importing files master has added since the fork point and settle what master's #791 save-cancellation fix should mean under "writes are never aborted". **Blocker.**
-10. **Re-run `git merge-tree --write-tree HEAD origin/master` afterwards** and confirm zero bluebird imports and zero conflicts in the merged tree.
-11. **Take master's version of the two `Edition.test.tsx` tests** during that merge, minus its bluebird import, and confirm both run un-`xit`-ed.
-12. **Re-request review from Fabdulla1** to clear the standing `CHANGES_REQUESTED`, citing the commits that closed each of the three points. **Blocker.**
-13. **Correct the `502c1ccf` claim** that "the only .md change against master is README.md" — true now, but it was not true of the commit that said it. Worth a line in the PR description or a future amend.
+**Yours — cannot be done from inside the diff.**
 
-### Optional, not done
+1. **Clear the standing review (F4).** Fabdulla1's `CHANGES_REQUESTED` from 2026-08-04 needs a re-review once these changes land. Reviewer assignment is yours; I do not add or re-request reviewers.
+2. **Confirm the `Dockerfile` (F10)** — digest-pinned base image plus `giflib-dev` and `python3` patch bumps. It is master's change arriving through a stale base branch and HEAD matches master byte-for-byte, so merging changes nothing on master. Flagged because it is container configuration.
+3. **Decide on a `.gitignore` guard for `TASK-*.md` (F3).** The files are untracked now, but nothing stops a future `git add -A` re-adding them — which is how they came back this round. The rule was removed at your request in round 3, so re-adding it is your call.
+4. **Correct the PR description (F3).** The "no longer tracked on this branch" paragraph becomes true again once the staged untracking is committed. The "250-line-per-file refactor across the files this PR touches" claim is now accurate too.
+5. **Review the commit before making it.** Everything above sits uncommitted in the working tree.
 
-- The three untracked `TASK-ts7-migration-*.md` files are still in the working tree. They are untracked, so they cannot reach the PR; deleting your scratch files is your call, not mine.
+**After the changes land.**
 
-## Recommendation
+6. **Confirm the `test` check is green on GitHub** before asking for re-review.
+7. **Land #773 first**, let GitHub retarget this PR to `master`, then re-verify the gates against the retargeted diff.
+8. **Delete the task-tracking docs** — `TASK-774-todo.md`, `TASK-774-log.md`, `TASK-774-handoff.md`, `TASK-774-merge-master-handoff.md` and this review file — along with #773's three, before merge.
 
-**The code is ready; the merge is not.** Every finding that lives inside this diff is fixed and covered by a test that fails without the fix: the `Error.captureStackTrace` regression (F1), the debounce that outlived its component (F5), the assertion that could not fail (F6), the narrow coverage gate (F7) and the qlty upload scope (F8). The task documents are untracked, so the only `.md` change against master is `README.md` (F3). Gates re-run clean afterwards: lint, tsc, 428 suites, 3704 passed, zero console output, every touched file under 250 lines.
+**Noted, not acted on.**
 
-Two things still block merge and neither belongs to this diff. The master reconciliation (F2) has to wait for #773 to land and this PR to retarget, and it carries one real design question — what master's #791 save-cancellation fix should mean once writes are never aborted. Until then the new `No bluebird` CI step makes a silent regression impossible. And Fabdulla1's `CHANGES_REQUESTED` (F4) needs a re-review from you; every point in it is fixed in the code.
-
-Nothing has been committed, branched or pushed. The changes are sitting in the working tree for you to review.
-
-**Reminder:** the five `TASK-774-*.md` files, this one included, are untracked but still on disk. Delete them when the PR merges.
+9. **Three files remain over the 250-line ceiling** — `about/ui/bibliography.tsx` (1290), `corpus/ui/ChapterViewLine.tsx` (392), `corpus/domain/manuscript.test.ts` (265). All three are byte-identical to master and unchanged by this PR; they only appear in the diff because the base branch is stale. Splitting them belongs in its own PR.
+10. **The qlty coverage upload stays skipped for stacked PRs (F11)** — deliberate, unchanged.

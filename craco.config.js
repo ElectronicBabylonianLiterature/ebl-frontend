@@ -35,6 +35,7 @@ const fullyCoveredPaths = [
   'src/signs/ui/display/PeriodAccordion.tsx',
   'src/signs/ui/display/PeriodPreview.tsx',
   'src/signs/ui/display/SignImage.tsx',
+  'src/signs/ui/display/SignImages.tsx',
   'src/signs/ui/display/VariantGroup.tsx',
   'src/signs/ui/display/loadClusterAnnotations.ts',
   'src/signs/ui/display/signImageGrouping.ts',
