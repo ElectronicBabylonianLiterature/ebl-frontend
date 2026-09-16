@@ -1,0 +1,65 @@
+.map-tools
+  position: absolute
+  z-index: 4
+  right: 0.75rem
+  bottom: 0.75rem
+  max-width: 20rem
+  font-size: 0.78rem
+
+  &__bar
+    display: flex
+    flex-wrap: wrap
+    gap: 0.25rem
+    justify-content: flex-end
+
+  &__panel
+    margin-top: 0.4rem
+    max-height: 24rem
+    overflow-y: auto
+    padding: 0.6rem 0.7rem
+    border: 1px solid #d5dce3
+    border-radius: 0.35rem
+    background: $ebl-color-white-alpha-90
+
+.map-tool-panel
+  label
+    margin-bottom: 0.2rem
+    font-weight: 600
+
+  select,
+  input
+    font-size: 0.78rem
+
+  &__actions
+    display: flex
+    flex-wrap: wrap
+    gap: 0.25rem
+    margin: 0.4rem 0
+
+  &__note,
+  &__status
+    margin: 0.4rem 0 0
+    font-size: 0.72rem
+
+  &__attribution
+    margin: 0.4rem 0 0
+    font-size: 0.68rem
+
+  &__measurement
+    margin: 0.4rem 0
+    font-weight: 600
+
+  &__findspots
+    margin: 0.3rem 0 0
+    padding-left: 1rem
+    max-height: 10rem
+    overflow-y: auto
+
+@media (max-width: $ebl-breakpoint-md-max)
+  .map-tools
+    position: static
+    max-width: none
+    margin-bottom: 0.5rem
+
+    &__bar
+      justify-content: flex-start
