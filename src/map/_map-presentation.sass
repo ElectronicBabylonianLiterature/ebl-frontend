@@ -1,0 +1,43 @@
+@import src/map/map-zindex
+
+// Presentation mode: the map takes the whole route and every piece of
+// application chrome except MapLibre's own attribution steps aside. Nothing
+// here changes map state — it only changes how much room the map is given.
+
+.map-experience--presenting
+  gap: 0.5rem
+
+  .map-experience__body
+    min-height: min(88vh, 1000px)
+
+  .map-stage,
+  .map-tab__map-frame
+    height: min(88vh, 1000px)
+    border-radius: 0.3rem
+
+.map-presentation-bar
+  display: flex
+  flex-wrap: wrap
+  align-items: center
+  justify-content: space-between
+  gap: 0.5rem
+  padding: 0.45rem 0.6rem
+  border: 1px solid $ebl-color-border-subtle
+  border-radius: 0.35rem
+  background: $ebl-color-surface-primary
+  box-shadow: 0 0.35rem 0.9rem $ebl-color-black-alpha-08
+
+  &__title
+    min-width: 0
+    overflow-wrap: anywhere
+    color: #172331
+    font-size: 1rem
+
+@media (max-width: $ebl-breakpoint-md-max)
+  .map-presentation-bar .btn
+    min-height: 2.75rem
+
+  .map-experience--presenting
+    .map-stage,
+    .map-tab__map-frame
+      height: 82vh

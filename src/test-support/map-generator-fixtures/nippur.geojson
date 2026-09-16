@@ -1,0 +1,1 @@
+{"type": "FeatureCollection", "features": [{"type": "Feature", "id": "nippur-1", "properties": {"id": "nippur-1", "siteId": "nippur", "siteName": "Nippur", "name": "Area 1", "locationType": "excavation_area"}, "geometry": {"type": "Polygon", "coordinates": [[[45.2, 32.0], [45.201, 32.0], [45.201, 32.001], [45.2, 32.001], [45.2, 32.0]]]}}]}
