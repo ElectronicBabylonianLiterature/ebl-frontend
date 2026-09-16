@@ -34,6 +34,8 @@
 - [x] Write the handoff (`TASK-749-handoff.md`) with remaining findings and next steps
 - [x] Commit code + docs together (explicitly authorised)
 - [x] Push `add-name-breaks` and open the PR against `chore/remove-bluebird` — [#817](https://github.com/ElectronicBabylonianLiterature/ebl-frontend/pull/817)
+- [x] Fix the red `test` check on #817 — pre-existing vacuous promise comparison in `FragmentService.queries.test.ts`
+- [x] Reproduce the full CI job locally (bluebird check, lint, tsc, tests with `--detectOpenHandles`, build) — all green
 - [ ] Retarget the PR to `master` once #774 merges
 - [ ] Decide: keep stacked on #774, or re-cut from `master` to decouple the deploy
 - [ ] Decide: fix the pre-existing Browserslist advisory separately?

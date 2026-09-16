@@ -127,6 +127,82 @@ Brief section 11 records that the branch could not be pushed from the ebl-api Co
 whose token is scoped to `ebl-api` only. That blocker does **not** apply here: this
 workspace is the `ebl-frontend` repo itself and its token pushes fine.
 
+### CI failure on PR #817 — fixed at root cause
+
+The `test` check went red on the first push. One suite failed:
+`src/fragmentarium/application/FragmentService.queries.test.ts` —
+_"Query by traditional references › returns traditional reference to fragment numbers
+mapping data"_. It passed locally but failed in CI.
+
+**Pre-existing, and not caused by this change.** Neither commit on this branch touches
+that file, and it is byte-identical to the file on `chore/remove-bluebird`.
+
+**Root cause.** The test compared two _Promise objects_ with `toEqual`:
+
+```ts
+const expected = Promise.resolve(returnData)
+result = fragmentService.queryByTraditionalReferences(['text 1'])
+expect(result).toEqual(expected)
+```
+
+That assertion was **vacuous** — it compared promise wrappers, never the values they
+resolve to. Verified directly: `expect(Promise.resolve({x:1}))
+.toEqual(Promise.resolve({completely:'different'}))` passes. The test never checked
+anything.
+
+**Why it only broke now — two causes compounding.**
+
+1. On `master` the file did `import Promise from 'bluebird'`. Bluebird promises carry no
+   `async_id_symbol`, so two of them always compared equal. PR #774 removed that import,
+   making these **native** promises.
+2. CI runs jest with **`--detectOpenHandles`** (workflow step _Unit Tests_), which
+   enables `async_hooks`. That attaches own `Symbol(async_id_symbol)` /
+   `Symbol(trigger_async_id_symbol)` properties, with different ids per promise, to every
+   native promise — so `toEqual` now sees two differing objects. Locally, without that
+   flag, no symbols are attached and the vacuous assertion still "passed".
+
+So #774 armed it and `--detectOpenHandles` fired it. Reproduced locally with the exact CI
+command, which fails on the original file and passes on the fixed one.
+
+**Fix.** Await the promise and compare the resolved value, and type the result rather
+than leaving it implicitly `any`:
+
+```ts
+let result: FragmentAfoRegisterQueryResult
+const pendingResult = fragmentService.queryByTraditionalReferences(['text 1'])
+result = await pendingResult
+expect(result).toEqual(returnData)
+```
+
+Mutation-checked: feeding it `{ items: [] }` now fails the test, so the assertion is real.
+
+The await is bound to a variable rather than applied to the call directly because
+`testing-library/no-await-sync-queries` false-positives on the `query*` method name,
+thinking it is a Testing Library query. `testDelegation` in `src/test-support/utils.ts`
+already awaits via a variable for the same reason — this matches it, and avoids an
+`eslint-disable` comment.
+
+**Scope check.** A repo-wide search for the same antipattern found no other test
+comparing un-awaited promises; the other `Promise.resolve(...)` bindings are mock return
+values. `testDelegation` already awaits correctly.
+
+**Full CI job reproduced locally, all steps green:**
+
+| CI step                                                              | Result                                                                   |
+| -------------------------------------------------------------------- | ------------------------------------------------------------------------ |
+| No bluebird                                                          | pass — no `bluebird` imports under `src`                                 |
+| `yarn lint`                                                          | clean                                                                    |
+| `yarn tsc`                                                           | 0 errors                                                                 |
+| `yarn test --coverage --forceExit --detectOpenHandles --watch=false` | exit 0, **500 suites / 4402 tests**, zero console noise, no open handles |
+| `yarn build`                                                         | exit 0                                                                   |
+
+**Unrelated CI warning, left alone:** the runner reports `actions/checkout@v4` and
+`actions/setup-node@v4` target Node 20 but are forced onto Node 24. That is a GitHub
+Actions deprecation notice about the _action runtime_, not the project's Node version
+(`setup-node` still pins the job to Node 20). It is a warning, not a failure, it affects
+every workflow run on the repo, and bumping the actions is a repo-wide change outside
+this PR.
+
 ### Remaining findings
 
 Tracked in `TASK-749-handoff.md`. In short: the deploy-order tension created by stacking

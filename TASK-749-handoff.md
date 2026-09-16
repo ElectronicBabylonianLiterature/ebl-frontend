@@ -44,6 +44,25 @@ against `chore/remove-bluebird`. See `TASK-749-log.md` for the full gate table a
 | Coverage                             | exit 0, thresholds met; `token.ts` 100% incl. branches |
 | 250-line ceiling                     | max 245 (`token.ts`)                                   |
 
+## CI
+
+The first push went red on the `test` check. The cause was **pre-existing and unrelated
+to this change**: `FragmentService.queries.test.ts` compared two Promise _objects_ with
+`toEqual`, which asserted nothing at all. PR #774 removed the bluebird import that had
+been masking it, and CI's `--detectOpenHandles` flag enables `async_hooks`, which stamps
+differing `async_id_symbol` properties onto native promises — so the empty assertion
+finally broke.
+
+Fixed by awaiting the promise and comparing resolved values. The whole CI job now
+reproduces green locally: bluebird check, `yarn lint`, `yarn tsc`,
+`yarn test --coverage --forceExit --detectOpenHandles --watch=false`, and `yarn build`.
+Details in `TASK-749-log.md`.
+
+> [!NOTE]
+> That fix is a base-branch defect repaired from this PR. If #817 is ever re-cut from
+> `master` (see finding 1), the same fix must travel with it — on `master` the file still
+> imports bluebird, so it is latent there rather than failing.
+
 ## Findings that remain to address
 
 1. **Deploy order vs. the stacked base — the one to actually think about.**
@@ -74,7 +93,14 @@ against `chore/remove-bluebird`. See `TASK-749-log.md` for the full gate table a
    `TASK-749-*` (6 files, including the three source-material files and this handoff),
    `TASK-774-*` (5), `TASK-ts7-*` (3).
 
-6. **`src/test-support/` fixtures were intentionally left alone.** They carry
+6. **GitHub Actions Node 20 deprecation warning.** The runner warns that
+   `actions/checkout@v4` and `actions/setup-node@v4` target Node 20 but are forced onto
+   Node 24. This is about the _action runtime_, not the project's Node version — the job
+   still runs on Node 20 via `setup-node`. It is a warning, not a failure, and it affects
+   every workflow run in the repo. Bumping those actions to `@v5` is a sensible
+   housekeeping PR of its own, deliberately not done here.
+
+7. **`src/test-support/` fixtures were intentionally left alone.** They carry
    legacy-shaped payloads with brackets already interleaved into `nameParts`; the
    fallback handles them, and the tests prove it. If the backend fixtures are ever
    regenerated against the new API, they will start carrying `nameBreaks` and should be
