@@ -12,6 +12,7 @@ import type AfoRegisterService from 'afo-register/application/AfoRegisterService
 import type RealiaService from 'realia/application/RealiaService'
 import type FragmentService from 'fragmentarium/application/FragmentService'
 import type DossiersService from 'dossiers/application/DossiersService'
+import type { FindspotService } from 'fragmentarium/application/FindspotService'
 import { useHistory } from 'router/compat'
 import useScrollToHash from 'common/hooks/useScrollToHash'
 import {
@@ -41,6 +42,7 @@ export default function Tools({
   realiaService,
   dossiersService,
   fragmentService,
+  findspotService,
   activeTab,
 }: {
   markupService: MarkupService
@@ -51,6 +53,7 @@ export default function Tools({
   realiaService: RealiaService
   dossiersService: DossiersService
   fragmentService: FragmentService
+  findspotService: FindspotService
   activeTab?: TabId
 }): JSX.Element {
   const session = useContext(SessionContext)
@@ -125,6 +128,7 @@ export default function Tools({
                 realiaService,
                 dossiersService,
                 fragmentService,
+                findspotService,
                 history,
                 location,
                 match: { params: {}, isExact: true, path: '', url: '' },
