@@ -2017,3 +2017,27 @@ Behaviour is unchanged, and the evidence is that **every existing test passed un
 The container has no cgroup memory limit and `memory.events` records `oom_kill 0`, so the kill is coming from the host. Memory went from comfortable to ~2 GB free over the session, with the editor's two `tsserver` processes (936 MB and 140 MB), the extension host (657 MB) and the ESLint server (245 MB) accounting for most of it.
 
 Conclusion: an environment limitation, not a regression. `lint`, `tsc` and `test:ci` all pass locally, and the build is verified remotely by CI on every push. Worth re-running once the editor has been restarted, if local confirmation is wanted before the next push.
+
+## Round 7 remediation — 2026-09-17
+
+Instruction: address every finding except the `.md` cleanup.
+
+**F1 was the one that mattered, and it had two causes, not one.**
+
+The visible symptom was a snapshot missing `style="transform: translate(0px, 0px) scale(1);"` on the `react-transform-component` div. A probe confirmed that attribute is present immediately after the Save button appears on an idle machine — so the test was not asserting something impossible, it was asserting something nothing waited for. `react-zoom-pan-pinch` writes that attribute imperatively from `TransformComponent`'s mount effect and re-applies it from a `ResizeObserver` callback; the test's only wait was `findByRole('button', { name: 'Save' })`, an unrelated element.
+
+The second cause was found while fixing the first: that `findByRole` carries `{ timeout: 10000 }` but lives in a `beforeEach` running on Jest's **default 5000 ms hook budget**. The hook could therefore die before the render finished, independently of the snapshot. It had never been noticed because the render usually completes in about two seconds. The first attempt at the fix made this visible immediately — adding any further await pushed the hook over its budget and it failed with "Exceeded timeout of 5000 ms for a hook".
+
+Both are fixed: the hook declares a budget larger than the waits it contains, and a `waitFor` polls the transform attribute itself. Verified with six isolated runs and four consecutive full `yarn test:ci` runs.
+
+**F13 exposed a second pre-existing defect.** Making `expectConsoleErrors` assert that the expected error actually occurred turned 17 tests across 5 suites red. The cause was real: `stubMissingBibliography` and `resetAuth0Mocks` call the helper from a blanket `beforeEach`, so they claimed to expect an error that most tests in those suites never trigger. Rather than weaken the assertion back, the helper now has two modes — `expectConsoleErrors` (the error must occur) and `tolerateConsoleErrors` (the error is arranged, and tolerated if it occurs). Both still fail on any _unexpected_ message, which is the property that matters relative to the blanket suppression this PR removed.
+
+**F8 needed a correction mid-flight.** The first attempt raised the global branch floor to 87 on the strength of the 87.98 printed in the coverage summary. That failed: Jest subtracts files covered by per-path thresholds from the global figure, so the number the floor is compared against is 86.84, not 87.98. Recomputed the effective figures from `coverage/coverage-final.json` excluding the 50 listed paths — 94.57 statements / 86.84 branches / 94.21 functions — and set the floors to 94 / 86 / 94 / 94, a real tightening from 93 / 84 / 93 / 93 with headroom left.
+
+**Lint pushed back on the first F1 fix.** `container.querySelector` trips `testing-library/no-node-access` and two assertions in one `waitFor` trips `testing-library/no-wait-for-multiple-assertions`. Restructured to a single assertion behind a small accessor with one scoped disable, matching the existing precedent in `withData.tsx`. The alternative — adding a `data-testid` to app code purely for a test — was rejected.
+
+**Not done, deliberately:** the `.md` cleanup (excluded by instruction); merging the three master commits (a merge is a commit, and commits are not made unprompted); resolving #773's conflicts (different branch); clearing the standing review (needs the reviewer).
+
+Gates: lint PASS, tsc PASS, `yarn test:ci` PASS at 504 suites / 4428 tests / 50 snapshots with zero console output across repeated full runs (the last two fully green end to end), coverage 95.08/87.98/94.74/95.23 with every per-path 100% gate met, 250-line ceiling PASS. `yarn build` and the dev server remain unrunnable in this container — fork-ts-checker is OOM-killed with SIGTERM at roughly 2.8 GB available — so that gate is taken from CI, which compiled this sha green.
+
+**Lesson.** Two this round. First: when a test fails on an attribute, check whether anything waits for that attribute before blaming the value. Second, and more useful: tightening an assertion is a good way to find out that the assertion was never true. F13 was filed as a small hygiene point and it uncovered five suites whose shared setup was asserting something most of their tests never did.

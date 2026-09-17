@@ -7,7 +7,7 @@ import { fragmentFactory } from 'test-support/fragment-fixtures'
 import { signFactory } from 'test-support/sign-fixtures'
 import Annotation, {
   AnnotationTokenType,
-  isBoundingBoxTooSmall,
+  isBoundingBoxLargeEnough,
 } from 'fragmentarium/domain/annotation'
 import userEvent from '@testing-library/user-event'
 
@@ -191,21 +191,21 @@ it('delete everything', async () => {
   )
 })
 
-it('isBoundingBoxTooSmall', () => {
-  const geometryTooSmall = {
+it('isBoundingBoxLargeEnough', () => {
+  const geometryTooSmallToKeep = {
     x: 0,
     y: 0,
     height: 0,
     width: 0,
     type: 'RECTANGLE',
   }
-  const geometryValid = {
+  const geometryLargeEnough = {
     x: 0,
     y: 0,
     height: 0.35,
     width: 0.35,
     type: 'RECTANGLE',
   }
-  expect(isBoundingBoxTooSmall(geometryTooSmall)).toBe(false)
-  expect(isBoundingBoxTooSmall(geometryValid)).toBe(true)
+  expect(isBoundingBoxLargeEnough(geometryTooSmallToKeep)).toBe(false)
+  expect(isBoundingBoxLargeEnough(geometryLargeEnough)).toBe(true)
 })

@@ -3,7 +3,7 @@ import { AnnotationToken } from 'fragmentarium/domain/annotation-token'
 import Annotation, {
   AnnotationData,
   Geometry,
-  isBoundingBoxTooSmall,
+  isBoundingBoxLargeEnough,
   RawAnnotation,
 } from 'fragmentarium/domain/annotation'
 
@@ -36,7 +36,7 @@ export function createAnnotation(
   geometry: Geometry,
   data: AnnotationData,
 ): Annotation | null {
-  return isBoundingBoxTooSmall(geometry)
+  return isBoundingBoxLargeEnough(geometry)
     ? new Annotation(geometry, { ...data, id: uuid4() })
     : null
 }

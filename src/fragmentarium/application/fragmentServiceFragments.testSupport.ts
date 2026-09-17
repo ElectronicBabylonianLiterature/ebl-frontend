@@ -8,7 +8,7 @@ import {
   referenceFactory,
 } from 'test-support/bibliography-fixtures'
 import { fragmentFactory } from 'test-support/fragment-fixtures'
-import { expectConsoleErrors } from 'setupTests'
+import { tolerateConsoleErrors } from 'setupTests'
 import { bibliographyService } from 'fragmentarium/application/fragmentService.testSupport'
 
 export {
@@ -119,5 +119,5 @@ export function stubMissingBibliography(): void {
   bibliographyService.findMany.mockImplementation((ids: string[]) =>
     Promise.reject(new Error(`${ids} not found.`)),
   )
-  expectConsoleErrors(/not found\./)
+  tolerateConsoleErrors(/not found\./)
 }

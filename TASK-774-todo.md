@@ -229,3 +229,36 @@ Applied to the working tree. **Nothing committed.**
 ## Noted, not acted on
 
 - [ ] 3 files over the ceiling are byte-identical to master and unchanged by this PR: `about/ui/bibliography.tsx` (1290), `corpus/ui/ChapterViewLine.tsx` (392), `corpus/domain/manuscript.test.ts` (265) — own PR
+
+## Round 7 — remediation (this pass)
+
+Instruction: address every finding **except** the `.md` cleanup (F2).
+
+- [x] **F1** `AnnotationsView.integration.test.ts` snapshot flake — root-caused and fixed twice over: the hook waited 10 s for the Save button inside Jest's default 5 s `beforeEach` budget, and nothing waited for the `react-zoom-pan-pinch` transform the snapshot asserts. Added an explicit hook timeout and a `waitFor` on the transform attribute itself.
+- [x] **F6** `docker-test` given `needs: [test]` — a red master can no longer publish the `:test` image
+- [x] **F8** `fullyCoveredPaths` now validated at config load (every path must exist, no duplicates, throws with the offending paths) and the global floors ratcheted 93/84/93/93 → 94/86/94/94
+- [x] **F9** README corrected to five components; `CuneiformFragment` added with a note on its per-fragment supersede
+- [x] **F10** unused `SLACK_WEBHOOK_URL` removed from the workflow-level `env`
+- [x] **F11** explicit `permissions:` added to `codeql-analysis.yml` — `contents: read` at workflow level, `actions: read` / `contents: read` / `security-events: write` on the analyze job
+- [x] **F12** `github/codeql-action/{init,autobuild,analyze}` bumped v3 → v4
+- [x] **F13** `expectConsoleErrors` now asserts the expected error actually occurred; added `tolerateConsoleErrors` for the two blanket setups that arrange an error without requiring it
+- [x] **F14** `isBoundingBoxTooSmall` → `isBoundingBoxLargeEnough` (it returns `minSize >= 0.3`); test fixtures renamed to match
+- [x] **F15** PR description's Verification section now cites `yarn test:ci`
+- [x] **F9/F15** PR description updated on GitHub (also "four components" → five)
+- [x] **F16** handoff frontmatter `head_reviewed` corrected to `18033c77`
+
+### Excluded by instruction
+
+- [ ] **F2** delete the eight `TASK-*.md` files — explicitly out of scope this pass
+
+### Still not actionable from inside the diff
+
+- [ ] **F3** clear the standing `CHANGES_REQUESTED` — needs the reviewer; assignment never touched automatically
+- [ ] **F4** CodeQL diff ranges — clears when the PR retargets to master and the diff collapses
+- [ ] **F5** resolve #773's merge conflicts against master — different branch, and it gates the whole stack
+- [ ] **F7** merge the three master commits — a merge is a commit; not done without an explicit request
+
+### Pre-existing issues found and fixed at root during this pass
+
+- [x] Jest's default 5 s `beforeEach` budget was smaller than the 10 s wait inside it in `AnnotationsView.integration.test.ts` — a latent timeout unrelated to the snapshot
+- [x] `stubMissingBibliography` and `resetAuth0Mocks` ran a strict console-error expectation from a blanket `beforeEach`, so they asserted an error that most tests in those suites never trigger — surfaced by F13 and split into the tolerant mode

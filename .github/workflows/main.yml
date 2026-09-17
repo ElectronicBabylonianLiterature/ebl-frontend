@@ -12,9 +12,6 @@ on:
 permissions:
   contents: read
 
-env:
-  SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -107,6 +104,7 @@ jobs:
 
   docker-test:
     if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+    needs: [test]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5

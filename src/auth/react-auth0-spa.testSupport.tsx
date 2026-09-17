@@ -2,7 +2,7 @@ import React from 'react'
 import { render, screen, waitFor } from '@testing-library/react'
 import { Auth0Client, createAuth0Client } from '@auth0/auth0-spa-js'
 import { Auth0Provider } from 'auth/react-auth0-spa'
-import { expectConsoleErrors } from 'setupTests'
+import { tolerateConsoleErrors } from 'setupTests'
 
 export const guestFallbackWarning =
   'Session check failed, falling back to guest:'
@@ -29,7 +29,7 @@ export function mockedCreateAuth0Client(): jest.MockedFunction<
 }
 
 export function resetAuth0Mocks(): void {
-  expectConsoleErrors(/Failed to create authenticated session/)
+  tolerateConsoleErrors(/Failed to create authenticated session/)
   jest.clearAllMocks()
   localStorage.clear()
 }

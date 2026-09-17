@@ -111,26 +111,45 @@ if (global.document) {
 
 let consoleErrorSpy: jest.SpyInstance | null = null
 let expectedConsoleError: RegExp | null = null
+let isExpectedConsoleErrorRequired = true
+
+function captureConsoleErrors(pattern: RegExp, isRequired: boolean): void {
+  consoleErrorSpy?.mockRestore()
+  expectedConsoleError = pattern
+  isExpectedConsoleErrorRequired = isRequired
+  consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation()
+}
 
 export function expectConsoleErrors(pattern: RegExp): void {
-  expectedConsoleError = pattern
-  consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation()
+  captureConsoleErrors(pattern, true)
+}
+
+export function tolerateConsoleErrors(pattern: RegExp): void {
+  captureConsoleErrors(pattern, false)
 }
 
 afterEach(() => {
   const spy = consoleErrorSpy
   const pattern = expectedConsoleError
+  const isRequired = isExpectedConsoleErrorRequired
   consoleErrorSpy = null
   expectedConsoleError = null
+  isExpectedConsoleErrorRequired = true
 
   if (!spy || !pattern) {
     return
   }
 
-  const unexpected = spy.mock.calls
-    .map((call) => call.map((argument) => String(argument)).join(' '))
-    .filter((message) => !pattern.test(message))
+  const messages = spy.mock.calls.map((call) =>
+    call.map((argument) => String(argument)).join(' '),
+  )
   spy.mockRestore()
 
+  const unexpected = messages.filter((message) => !pattern.test(message))
+  const matched = messages.filter((message) => pattern.test(message))
+
   expect(unexpected).toEqual([])
+  if (isRequired) {
+    expect(matched).not.toEqual([])
+  }
 })

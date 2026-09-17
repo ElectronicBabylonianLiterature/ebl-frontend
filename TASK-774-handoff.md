@@ -4,12 +4,13 @@ document: handoff / continuation prompt
 pull_request: https://github.com/ElectronicBabylonianLiterature/ebl-frontend/pull/774
 branch: chore/remove-bluebird
 base_branch: chore/ts7-tsconfig-migration
-head_reviewed: eac106a4
+head_reviewed: 18033c77
 date: 2026-09-17
-last_updated: 2026-09-17 (review round 6 + remediation)
-state: 14 of 18 findings resolved plus the qlty follow-up; 4 remain and none of them can be done from inside the diff
-tracked_in_git: true — the eight scratch .md files are tracked on purpose and must be deleted before merge
-blocking_items: 4 (delete the scratch docs; clear the standing review; merge the base branch up; pick up the three master commits)
+last_updated: 2026-09-17 (review round 7 + remediation)
+state: 12 of 19 round-7 findings fixed; 1 excluded by instruction; 4 need actions outside the diff; 2 informational
+tracked_in_git: true — the eight scratch .md files are still tracked and must be deleted before merge
+blocking_items: 5 (land #773; delete the scratch docs; merge master up; clear the standing review; confirm CodeQL really diffed the PR)
+gates: lint PASS, tsc PASS, test:ci PASS (504 suites / 4428 tests / 50 snapshots, zero console output), coverage 95.08/87.98/94.74/95.23, 250-line ceiling PASS
 ---
 
 # TASK-774 — Handoff
@@ -27,101 +28,107 @@ So the PR does reads and writes differently. Reads get a real cancel signal. Wri
 
 Everything else in the PR is tidying that came along with it: a stylesheet migration, splitting oversized files, and better tests.
 
-## Round 6 — what was found, in plain words
+## Round 7 — what was found and what was done
 
-Eighteen findings. Four mattered.
+Nineteen findings. The design was not one of them — it was already right. Twelve are now fixed.
 
-| #    | In plain words                                                                                                                                                                                                    | Outcome                                 |
-| ---- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------- |
-| F1   | The test suite was red. One test about a page that redirects to its proper address gave the app **one second** to finish a four-step chain. Alone it was fine; 276 test files into a slow run it ran out of time. | **Fixed**                               |
-| F2   | A test file had been copied word for word. The same five checks ran twice, from two files.                                                                                                                        | **Fixed**                               |
-| F3   | The eight scratch note files are still tracked, so merging would dump 3,210 lines of working notes onto `master`.                                                                                                 | **Open — excluded by your instruction** |
-| F4   | The reviewer's "changes requested" from August is still standing. Everything they asked for is genuinely done.                                                                                                    | **Open — yours**                        |
-| F5   | The PR description said the scratch files were gone. They were not.                                                                                                                                               | **Fixed**                               |
-| F6   | Two brand-new files had poor test coverage — one only 20% of its branches.                                                                                                                                        | **Fixed**                               |
-| F7   | The "must be 100% covered" list is typed out by hand, so it goes stale, and it was missing the very files this PR changed.                                                                                        | **Fixed**                               |
-| F8   | Coverage is not sent to qlty for stacked PRs. Deliberate, but nowhere written down.                                                                                                                               | **Fixed**                               |
-| F9   | The security scanner **could not read this PR's changes at all** — too many files — yet still reported "no new problems".                                                                                         | **Open — needs a merge**                |
-| F10  | The "no bluebird" guard missed a few ways of sneaking the library back in.                                                                                                                                        | **Fixed**                               |
-| F11  | If installing packages failed three times in CI, the step still reported success.                                                                                                                                 | **Fixed**                               |
-| F12  | If lint failed, CI kept running everything after it instead of stopping.                                                                                                                                          | **Fixed**                               |
-| F13  | A helper treats _any_ error as "cancelled" when a page is closing, so a real bug at that moment goes unseen.                                                                                                      | **Documented**                          |
-| F14  | The branch is three commits behind `master`.                                                                                                                                                                      | **Open — needs a merge**                |
-| F15  | The test run printed a stray warning about out-of-date browser data.                                                                                                                                              | **Fixed**                               |
-| F16  | A few functions had no types, and one had a leftover duplicate branch.                                                                                                                                            | **Fixed**                               |
-| W1   | GitHub shows `Dockerfile` and `.dockerignore` as changed. This PR did not change them.                                                                                                                            | Informational                           |
-| W2   | CI now also runs for stacked branches. Checked for secret leaks — safe.                                                                                                                                           | Informational                           |
-| qlty | After the first push one code-quality warning was left: a single function doing three jobs at once.                                                                                                               | **Fixed**                               |
+| #   | In plain words                                                                                                                         | Outcome                                 |
+| --- | -------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------- |
+| F1  | The test suite was red again. One test took a picture of the screen before part of the screen had finished being drawn.                | **Fixed**                               |
+| F2  | The eight scratch note files are still tracked, so merging would dump 3,200 lines of working notes onto `master`.                      | **Open — excluded by your instruction** |
+| F3  | The reviewer's "changes requested" from August is still standing. Everything they asked for is genuinely done.                         | **Open — yours**                        |
+| F4  | The security scanner never actually looked at this PR's changes, but still reported "no new problems".                                 | **Open — needs a merge**                |
+| F5  | The PR underneath this one (#773) now clashes with `master` and cannot be merged. Nothing can land until that is sorted.               | **Open — yours**                        |
+| F6  | If `master` was broken, the test server image was still built and published anyway.                                                    | **Fixed**                               |
+| F7  | The branch is three commits behind `master`.                                                                                           | **Open — needs a merge**                |
+| F8  | The "these files must be 100% tested" list is typed out by hand, so it quietly goes stale.                                             | **Fixed**                               |
+| F9  | The README said four components do a certain thing. There are five.                                                                    | **Fixed**                               |
+| F10 | A password-like secret was handed to every single CI step, even though nothing uses it.                                                | **Fixed**                               |
+| F11 | The security-scanning workflow never said what permissions it needs, so it just took whatever it was given.                            | **Fixed**                               |
+| F12 | CI warned on every run that the scanning tool version is being retired in December.                                                    | **Fixed**                               |
+| F13 | A test helper checked that no _unexpected_ error was printed, but never checked the expected one actually happened.                    | **Fixed**                               |
+| F14 | A function called "is the box too small" returned true when the box was **big enough**. It had meant its own opposite for a long time. | **Fixed**                               |
+| F15 | The PR description still told people to run the old test command.                                                                      | **Fixed**                               |
+| F16 | This handoff's own header pointed at an old commit.                                                                                    | **Fixed**                               |
+| W1  | GitHub shows `Dockerfile` as changed. This PR did not change it — but nothing ever builds it on a PR. Read the warning below.          | Informational                           |
+| W2  | CI now stops at the first broken step instead of running everything. Deliberate.                                                       | Informational                           |
+| W3  | Some code-quality warnings sit in files this PR barely touched. Not this PR's to fix.                                                  | Informational                           |
 
-## Why F1 was the important one
+## Why F1 was the important one, again
 
-The failing test was not broken logic. It was a **stopwatch problem**.
+Last round's flaky test was a stopwatch problem. This one looks the same but is not.
 
-Its sibling test file drives exactly the same redirect and never fails — because it waits for something it can _see_ (the address bar changing, the spinner disappearing) and gives it a generous five seconds. The failing one instead counted how many times a function had been called, and used the library's silent one-second default.
+The test takes a picture of the annotation screen and compares it with a saved copy. Sometimes one line was missing from the picture — the line that positions the zoomable image. That line is not written by our code. It is written by the zoom library, a moment after the page appears. Nothing in the test waited for it. The test waited for the **Save button**, which is a completely different part of the screen.
 
-Between the data arriving and that second call, React has to redraw, run an effect, let the router change the address, redraw again, and only then re-fetch. One second is plenty on an idle machine and not reliably enough deep into a long run with coverage and handle-tracking switched on.
+So on a fast, quiet machine the line was always there. Deep into a long run it sometimes was not.
 
-The fix waits for the redirect to **actually land**, then checks the calls. That is a stronger test than before — it proves the redirect happened, not just that something was called twice — and there is no stopwatch left to lose.
+While fixing that, a second, older problem turned up in the same six lines. The setup step is allowed to wait ten seconds for the page to load — but Jest only gives a setup step **five** seconds before killing it. That mismatch had been sitting there unnoticed, because the page normally loads in about two seconds. The first attempt at the fix made it fire immediately.
 
-## What was done
+Both are fixed. The test now waits for the actual thing it photographs, and the setup step is given a budget bigger than the waits inside it.
 
-- **F1** — the test now waits for the page to reach its proper address. The shared setup used by both redirect test files was moved into one place instead of being copied.
-- **F2** — deleted the copied test file. The original keeps all five checks and is untouched.
-- **F5** — the PR description now says plainly that the scratch files are tracked on purpose and must be deleted before merge.
-- **F6 / F7** — six files brought to full coverage with new tests. The hand-typed list grew from 35 to 48 entries and now includes every save-related file this PR touches.
-- **F8** — the reason stacked PRs skip the coverage upload is now written next to the setting.
-- **F10 / F11 / F12** — the bluebird guard now also catches sub-imports, `require.resolve` and `package.json`; a failed install now actually fails; CI stops at the first broken step again.
-- **F13** — left as is, on purpose, and explained in `README.md`. Making it stricter would cause saves to error out when a page closes.
-- **F15 / F16** — browser data refreshed; missing types added; a duplicate branch removed.
-- **Bonus.** Found and fixed a real leak that predates this PR: a keyboard listener was being _added_ again in the cleanup code where it should have been removed.
-- **qlty follow-up.** The last quality warning was one function holding the selection, deciding what a selection means, and talking to the server, all at once. Split into three files along those lines; the warning went away as a side effect. Every existing test passed without being touched, which is the evidence that nothing changed behaviourally.
+## The other one worth knowing about
+
+Finding F13 looked like a small tidy-up: a test helper promised "this error is expected" but only ever checked that no _other_ error appeared. Making it check properly turned **17 tests across 5 suites red**.
+
+The helper was not wrong — the way it was being used was. Two shared setup functions called it for every test in their file, while only some of those tests actually produce the error. So the helper has been split in two, and each name now says what it means:
+
+- `expectConsoleErrors` — this error **must** happen.
+- `tolerateConsoleErrors` — this error is set up on purpose and is fine **if** it happens.
+
+Both still fail the test if anything unexpected is printed, which is the part that matters. Tightening an assertion turned out to be a good way of discovering that the assertion had never been true.
 
 ## Gates — all green
 
-| Gate                   | Result                                                                        |
-| ---------------------- | ----------------------------------------------------------------------------- |
-| `yarn lint`            | PASS                                                                          |
-| `yarn tsc`             | PASS                                                                          |
-| `yarn test:ci`         | PASS — 504 suites, 4428 tests, 50 snapshots                                   |
-| Console output         | PASS — completely silent                                                      |
-| Coverage               | 95.08 / 87.98 / 94.74 / 95.23, up from 94.84 / 87.49 / 94.63 / 94.98          |
-| `yarn build:ci-stable` | Not re-run locally (container memory); CI built this code green on `a9b0542f` |
-| 250-line limit         | PASS — largest file touched is 249                                            |
-| No duplicated logic    | PASS                                                                          |
+| Gate                   | Result                                                                                       |
+| ---------------------- | -------------------------------------------------------------------------------------------- |
+| `yarn lint`            | PASS                                                                                         |
+| `yarn tsc`             | PASS                                                                                         |
+| `yarn test:ci`         | PASS — 504 suites, 4428 tests, 50 snapshots, exit 0                                          |
+| Console output         | PASS — completely silent                                                                     |
+| Flake check            | PASS — the previously flaky suite is green in four consecutive full runs plus six on its own |
+| Coverage               | 95.08 / 87.98 / 94.74 / 95.23; floors tightened from 93/84/93/93 to 94/86/94/94              |
+| 250-line limit         | PASS — largest file touched this round is 211                                                |
+| qlty                   | PASS — no new smells in anything changed this round                                          |
+| `yarn build` / app run | Not runnable in this container — it runs out of memory. CI built this code green.            |
 
-The suite went from 4,395 tests with one failure to **4,428 passing**.
+## A trap for whoever changes the coverage floors next
 
-## Things checked properly, not taken on trust
-
-- **The stylesheet claim holds.** All 60 stylesheets were compiled on both sides and compared: every one produces byte-for-byte identical CSS.
-- **No test was lost.** The count went from 2,573 to 2,771. Twenty-seven test names disappeared; each one was traced. They were renamed, merged into table-driven tests, or were duplicates. Nothing was quietly dropped.
-- **The app runs.** The built site boots, every page renders, and clicking quickly between pages — which now cancels downloads mid-flight — produces no errors.
+Jest **removes** the fifty "must be 100%" files from the global figure before comparing it with the floors. So the global branch number the floor is checked against is **86.84**, not the 87.98 printed in the summary table. Setting the floor from the printed number fails. Work it out from `coverage/coverage-final.json` with those fifty paths excluded.
 
 ## Next steps
 
-**Four things, in order. None of them is code.**
+**Five things, in this order. Only the second is ours to write.**
 
-1. **Delete the eight scratch `.md` files (F3).** Five `TASK-774-*` and three `TASK-ts7-migration-*`, this handoff included. Add a `TASK-*.md` rule to `.gitignore` in the same commit if you want to keep them locally. This was deliberately left out of round 6 at your request.
-2. **Land #773 first (F9).** GitHub will retarget this PR to `master` by itself. This is the highest-value single step: the diff drops from 696 files to what this PR actually owns, and the security scanner can finally read the changes instead of giving up and reporting a pass it never verified.
-3. **Merge the three `master` commits (F14)** — `e281f7ba`, `af0b7942`, `51bfc9ff` — so the branch is tested against current `master`.
-4. **Clear the standing review (F4).** All three of the reviewer's points are fixed and were re-verified this round. Reviewer assignment is deliberately never touched automatically.
+1. **Sort out #773 and land it (F5).** It now clashes with `master` and cannot merge. This is the critical path — nothing else can finish until it does. When it lands, GitHub retargets this PR to `master` by itself, the diff drops from 705 files to what this PR actually owns, and F4 fixes itself.
+2. **Delete the eight scratch `.md` files (F2).** `TASK-774-handoff.md` (this file), `TASK-774-log.md`, `TASK-774-merge-master-handoff.md`, `TASK-774-review.md`, `TASK-774-todo.md`, `TASK-ts7-migration-log.md`, `TASK-ts7-migration-research.md`, `TASK-ts7-migration-todo.md`. Add a `TASK-*.md` line to `.gitignore` in the same commit to keep them locally. Deliberately left out of this round at your request.
+3. **Merge the three `master` commits (F7)** — `e281f7ba`, `af0b7942`, `51bfc9ff` — so the branch is tested against current `master`. Not done here because a merge is a commit.
+4. **Check the security scanner actually looked this time (F4).** After the retarget, open the `Analyze (javascript)` job log and make sure it no longer says "the PR diff ranges could not be computed" or "skipping diff-informed analysis stage". Until those lines are gone, its green tick means nothing.
+5. **Clear the standing "changes requested" (F3).** All three of the reviewer's points are fixed and were re-verified this round. Reviewer assignment is deliberately never touched automatically.
 
 **Then:**
 
-5. Re-run the gates against the retargeted diff.
-6. Check that the `test` check is green on GitHub across more than one run — F1 was intermittent, so a single green is not proof.
-7. Re-check the qlty result. It went 3 blocking issues → 1 after the first push, and the last one is now fixed too, so it should come back clean.
+6. Re-run every gate against the smaller, retargeted diff.
+7. Check the `test` check is green on GitHub across more than one run — F1 was intermittent, and one green is not proof.
+8. Re-check qlty. It should come back clean.
 
 ## Known, deliberately not fixed
 
-**F13 — the "everything is a cancellation" helper.** When a page is closing, `isCancellation` treats any error as a cancellation, so a genuine bug at that exact moment does not reach the screen. Making it stricter was tried on paper and rejected: that clause is what stops half-finished page loads from throwing errors at users, and removing it would make saves reject when a page closes. It is also less severe than it sounds — every network-level failure is already reported to Sentry before this check runs. The trade-off is now written down in `README.md`.
+**F13 — the "everything is a cancellation" helper.** When a page is closing, `isCancellation` treats any error as a cancellation, so a genuine bug at that exact moment does not reach the screen. Making it stricter was tried and rejected: that clause is what stops half-finished page loads from throwing errors at users, and removing it would make saves reject when a page closes. Every network-level failure is already reported to Sentry before this check runs. The trade-off is written down in `README.md`.
 
 **Files over the 250-line limit that this PR did not touch.** `about/ui/bibliography.tsx` (1290), `corpus/ui/ChapterViewLine.tsx` (392), `corpus/domain/manuscript.test.ts` (265). All identical to `master`. They show up for the same reason `Dockerfile` does — the base branch is stale — and they drop out of the diff automatically once #773 lands.
 
-**W1 — the `Dockerfile`.** GitHub shows `Dockerfile` (+4/−4) and `.dockerignore` (+6/−1) as changed. This PR changed neither; `master` did, and this branch picked them up. Worth one look before merging anyway, because the Docker build **never runs on a pull request** — it only runs on `master` — so the pinned image digest and the two package version pins are first tested after this lands. `docker build .` locally is the cheap insurance.
+## W1 — the Docker warning, please read before merging
+
+- `.devcontainer/` is **not touched by this PR**. Nothing in it changed.
+- The root `Dockerfile` shows as changed on GitHub, but it is **byte-identical to `master`**. It only appears because the base branch is stale. This PR changes no Docker configuration.
+- **The risk is that nothing builds the Dockerfile on a pull request at all.** Both Docker jobs only run when something is pushed to `master`, and both were skipped here. What `master` recently added, and no PR has ever built, is a pinned base image plus two exact Alpine package versions (`giflib-dev=5.2.2-r2`, `python3=3.12.14-r0`). Alpine drops old package versions without warning, and when that happens the build breaks **on `master`, after merge, in the same job that publishes the image**.
+- Run `docker build .` once before merging. It is cheap insurance. Docker is not installed in this container, so it could not be done here. Longer term, building (without publishing) on pull requests would move that failure to where it belongs.
+- Related and now fixed: the test image used to be published even when the tests had failed.
 
 ## The lesson from this round
 
-Last round's lesson was that a local gate which cannot reproduce CI is not a gate. This round's is narrower and more practical: **a test that waits on a stopwatch is not a test, it is a coin flip that usually lands the same way.** The fix was not a longer timeout — it was waiting for something observable to actually happen.
+Round 5's lesson was that a local gate which cannot reproduce CI is not a gate. Round 6's was that a test waiting on a stopwatch is a coin flip. This round adds two more.
 
-A smaller one, self-inflicted: a lint fix that swapped one query for another looked obviously correct and broke three tests, because the replacement relies on an accessibility role this version of the tooling does not recognise. Re-run the affected tests after a lint fix, not just the linter.
+**When a test fails on one attribute, check whether anything waits for that attribute before arguing about its value.** The saved picture was correct all along.
+
+**Tightening an assertion is a good way to find out it was never true.** F13 was filed as a small hygiene point and it uncovered five test files whose shared setup had been asserting something most of their tests never did.

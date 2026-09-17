@@ -1,3 +1,4 @@
+const fs = require('fs')
 const path = require('path')
 
 const isFastDev = process.env.FAST_DEV === 'true'
@@ -56,6 +57,30 @@ const fullyCoveredPaths = [
   'src/signs/ui/display/VariantGroup.tsx',
 ]
 
+function validateFullyCoveredPaths(paths) {
+  const missing = paths.filter(
+    (fullyCoveredPath) =>
+      !fs.existsSync(path.resolve(__dirname, fullyCoveredPath)),
+  )
+  if (missing.length > 0) {
+    throw new Error(
+      `craco.config.js: fullyCoveredPaths lists ${missing.length} path(s) that no longer exist. ` +
+        `Remove or rename them so the coverage gate cannot silently stop enforcing anything:\n  ` +
+        missing.join('\n  '),
+    )
+  }
+  const duplicates = paths.filter(
+    (fullyCoveredPath, index) => paths.indexOf(fullyCoveredPath) !== index,
+  )
+  if (duplicates.length > 0) {
+    throw new Error(
+      `craco.config.js: fullyCoveredPaths contains duplicate entries:\n  ` +
+        Array.from(new Set(duplicates)).join('\n  '),
+    )
+  }
+  return paths
+}
+
 module.exports = {
   ...(isFastDev ? { eslint: { enable: false } } : {}),
   jest: {
@@ -69,17 +94,19 @@ module.exports = {
         functions: 100,
         lines: 100,
       }
-      jestConfig.coverageThreshold = fullyCoveredPaths.reduce(
+      jestConfig.coverageThreshold = validateFullyCoveredPaths(
+        fullyCoveredPaths,
+      ).reduce(
         (thresholds, fullyCoveredPath) => ({
           ...thresholds,
           [fullyCoveredPath]: fullCoverage,
         }),
         {
           global: {
-            statements: 93,
-            branches: 84,
-            functions: 93,
-            lines: 93,
+            statements: 94,
+            branches: 86,
+            functions: 94,
+            lines: 94,
           },
         },
       )
