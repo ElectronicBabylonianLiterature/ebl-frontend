@@ -27,7 +27,7 @@ export default function useAnnotationKeyboardShortcuts({
   const [isDisableAnnotating, setIsDisableAnnotating] = useState(false)
 
   const onPressingDown = useCallback(
-    (event) => {
+    (event: KeyboardEvent): void => {
       switch (event.keyCode) {
         case buttonEscape:
           reset()
@@ -46,7 +46,7 @@ export default function useAnnotationKeyboardShortcuts({
   )
 
   const onReleaseButton = useCallback(
-    (event) => {
+    (event: KeyboardEvent): void => {
       if (event.keyCode === buttonY) {
         setIsChangeExistingModeButtonPressed(false)
       } else if (event.keyCode === buttonShift) {
@@ -57,7 +57,7 @@ export default function useAnnotationKeyboardShortcuts({
   )
 
   useEffect(() => {
-    const alertUser = (event) => {
+    const alertUser = (event: BeforeUnloadEvent): boolean | null => {
       if (!_.isEqual(savedAnnotations, annotations)) {
         event.preventDefault()
         return (event.returnValue = false)
@@ -72,10 +72,10 @@ export default function useAnnotationKeyboardShortcuts({
     })
     document.addEventListener('keydown', onPressingDown, false)
     document.addEventListener('keyup', onReleaseButton, false)
-    return () => {
+    return (): void => {
       document.removeEventListener('keydown', onPressingDown, false)
-      window.removeEventListener('beforeunload', alertUser)
-      document.addEventListener('keyup', onReleaseButton, false)
+      window.removeEventListener('beforeunload', alertUser, { capture: true })
+      document.removeEventListener('keyup', onReleaseButton, false)
     }
   }, [
     annotations,

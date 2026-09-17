@@ -82,6 +82,43 @@ describe('Update word', () => {
   })
 })
 
+describe('Word heading', () => {
+  async function renderWord(word: Word): Promise<RenderResult> {
+    result = word
+    wordService.find.mockReset()
+    wordService.find.mockReturnValueOnce(Promise.resolve(word))
+    return renderWithRouter()
+  }
+
+  it('marks an unattested word with an asterisk', async () => {
+    const word = wordFactory.verb().build({ attested: false })
+
+    await renderWord(word)
+
+    expect(screen.getByText(`*${word.lemma.join(' ')}`)).toBeInTheDocument()
+  })
+
+  it('does not mark an attested word', async () => {
+    const word = wordFactory.verb().build({ attested: true })
+
+    await renderWord(word)
+
+    expect(screen.getByText(word.lemma.join(' '))).toBeInTheDocument()
+    expect(
+      screen.queryByText(`*${word.lemma.join(' ')}`),
+    ).not.toBeInTheDocument()
+  })
+
+  it('renders an empty source for a word without one', async () => {
+    const word = wordFactory.verb().build({ attested: true, source: undefined })
+
+    await renderWord(word)
+
+    expect(screen.getByText(word.lemma.join(' '))).toBeInTheDocument()
+    expect(screen.getByRole('group')).toBeInTheDocument()
+  })
+})
+
 describe('User is not allowed to write:words', () => {
   it('The form is disabled', async () => {
     await renderWithRouter(false)
@@ -104,6 +141,6 @@ async function renderWithRouter(isAllowedTo = true): Promise<RenderResult> {
       </SessionContext.Provider>
     </MemoryRouter>,
   )
-  await screen.findByText(result.lemma.join(' '))
+  await screen.findByRole('group')
   return view
 }

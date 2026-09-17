@@ -10,6 +10,10 @@ import FragmentService from 'fragmentarium/application/FragmentService'
 import automaticAlignment from 'fragmentarium/ui/image-annotation/annotation-tool/automatic-alignment'
 import initializeAnnotations from 'fragmentarium/ui/image-annotation/annotation-tool/initializeAnnotations'
 import useAnnotationKeyboardShortcuts from 'fragmentarium/ui/image-annotation/annotation-tool/useAnnotationKeyboardShortcuts'
+import {
+  FragmentAnnotationState,
+  ZoomEvent,
+} from 'fragmentarium/ui/image-annotation/annotation-tool/fragmentAnnotationStateTypes'
 
 function getSelectionById(
   id: string | undefined,
@@ -35,7 +39,7 @@ export default function useFragmentAnnotationState({
   fragment: Fragment
   initialAnnotations: readonly Annotation[]
   fragmentService: FragmentService
-}) {
+}): FragmentAnnotationState {
   const [isSaving, setIsSaving] = useState(false)
   const [isDeleting, setIsDeleting] = useState(false)
   const [isGenerateAnnotationsLoading, setIsGenerateAnnotationsLoading] =
@@ -71,11 +75,13 @@ export default function useFragmentAnnotationState({
       fragmentNumber: fragment.number,
     })
 
-  const saveAnnotations = async (annotations: readonly Annotation[]) => {
-    setAnnotations(annotations)
+  const saveAnnotations = async (
+    updatedAnnotations: readonly Annotation[],
+  ): Promise<void> => {
+    setAnnotations(updatedAnnotations)
     return fragmentService
-      .updateAnnotations(fragment.number, annotations)
-      .then(() => setSavedAnnotations(annotations))
+      .updateAnnotations(fragment.number, updatedAnnotations)
+      .then(() => setSavedAnnotations(updatedAnnotations))
       .catch(setError)
   }
 
@@ -131,14 +137,11 @@ export default function useFragmentAnnotationState({
     }
   }
 
-  const onZoom = (event) => {
+  const onZoom = (event: ZoomEvent): void => {
     setContentScale(1 / event.state.scale)
   }
 
-  const onClick = (event: MouseEvent) => {
-    if (isChangeExistingModeButtonPressed && isChangeExistingMode) {
-      setToggled(hovering)
-    }
+  const onClick = (): void => {
     if (isChangeExistingModeButtonPressed) {
       setToggled(hovering)
       setIsChangeExistingMode(true)

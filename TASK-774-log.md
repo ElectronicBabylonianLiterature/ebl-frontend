@@ -1904,3 +1904,88 @@ The pre-commit hook (`lint-staged`) ran `prettier --write` and `eslint --fix` ov
 - No `TASK-*.md` rule was added to `.gitignore`, which is what makes keeping them tracked possible in the first place.
 
 Tracked `.md` changes against `master` are therefore: `README.md` (F9), `.github/copilot-instructions.md` (F5), and the eight task documents.
+
+## Round 6 — remediation — 2026-09-17
+
+Instruction: address every round-6 finding **except the cleanup** (F3, the eight tracked `TASK-*.md` files). Nothing committed.
+
+### F1 — the flaky realia test — fixed at its root
+
+The diagnosis came from the sibling suite. `RealiaDisplay.redirect.test.tsx` drives the _same_ canonicalising-redirect chain and never flakes, because it waits on observable state with explicit budgets (`waitForSpinnerToBeRemoved` at 5000 ms, `findByRole` at 3000 ms). `RealiaDisplay.redirectFetching.test.tsx` polled a _call counter_ on `waitFor`'s bare 1000 ms default. The empty `<body><div /></body>` in the failure output confirmed the chain had reached the point where `RealiaEntryDisplay` returns `<Redirect>` (which renders `null`) but had not yet completed `<Navigate>`'s effect, the router state update, the re-render and `withData`'s re-fetch. That is four render/effect hops, and 1000 ms of wall clock is not a reliable budget for them at suite 276 of a `--runInBand --coverage --detectOpenHandles` run.
+
+The fix asserts the end state rather than an intermediate counter: wait for the location to _become_ the canonical URL, then assert the call sequence synchronously. This is strictly stronger than the old assertion — it proves the redirect actually landed, not merely that a second call happened — and it removes the wall-clock race. The second test additionally waits for the spinner to clear, because for a canonical URL the location assertion is true immediately and would otherwise pass before any fetch was issued.
+
+`LocationProbe`, `RealiaRouteEntry`, `expectLocation`, `waitForLocation` and `renderRealiaRoute` were duplicated between the two suites; they now live once in `RealiaDisplay.testSupport.tsx` and both suites use them (DRY gate).
+
+### F2 — duplicated test file — removed
+
+`createScript.test.ts` was deleted. It was a verbatim copy of `FragmentRepository.script.test.ts:11-65`, added by `1b0fe6b2`. The original is byte-identical to master and keeps all five cases, so no assertion was lost — only the second copy.
+
+### F5 — PR body — corrected on GitHub
+
+The "Note" section now states that the eight `TASK-*.md` files are tracked deliberately, that all eight must be deleted before merge, and that the tracked `.md` changes against `master` are `README.md`, `.github/copilot-instructions.md` and those eight documents. The old "Correction to commit `502c1ccf`" paragraph was replaced with one that corrects both earlier claims. Applied on explicit approval; the PR description is the only thing that was changed on GitHub.
+
+### F6 / F7 — coverage
+
+Brought to 100/100/100/100 and added to the `fullyCoveredPaths` gate:
+
+| File                                | Before                       | How                                                                                                    |
+| ----------------------------------- | ---------------------------- | ------------------------------------------------------------------------------------------------------ |
+| `useAnnotationKeyboardShortcuts.ts` | 66.66 / 20 / 66.66 / 66.66   | new `useAnnotationKeyboardShortcuts.test.ts` — every key branch, unmount, both `beforeunload` outcomes |
+| `useFragmentAnnotationState.ts`     | 82.75 / 46.87 / 91.3 / 82.55 | new `useFragmentAnnotationState.test.ts` + `.modes.test.ts` + `.testSupport.ts`                        |
+| `TransliterationForm.tsx`           | 100 / 85.71 / 100 / 100      | `handleBeforeUnload`/`runBeforeUnloadEvent` extracted to `beforeUnloadWarning.ts` with its own suite   |
+| `WordEditor.tsx`                    | 100 / 66.66 / 100 / 100      | attested / unattested / no-source heading cases                                                        |
+| `ChapterEditView.tsx`               | 97.67 / 100 / 95.23 / 97.43  | `ChapterEditView.bibliographySearch.test.tsx` exercises the inline `searchBibliography` prop           |
+
+`DateSelectionMethods.ts`, `ScriptSelection.tsx`, `BibliographyEntryFormController.tsx`, `CuneiformFragment.tsx`, `initializeAnnotations.ts` and `FragmentAnnotationToolbar.tsx` were already at 100% and were added to the gate as a ratchet. The allowlist went from 35 to 47 paths.
+
+The `handleBeforeUnload` false branch was genuinely unreachable through the component: `runBeforeUnloadEvent` only attaches the listener when `hasChanges()` is true, and the listener closes over that same predicate, so the guard inside `handleBeforeUnload` could never see `false`. Extracting the pair into a plain module made both branches reachable as a unit test without changing any behaviour, and dropped `TransliterationForm.tsx` from 177 to 150 lines.
+
+### F8 / F10 / F11 / F12 — `.github/workflows/main.yml`
+
+- **F11 (pre-existing bug).** The install retry loop ended on the `{ echo; sleep 10; }` group, which exits 0, so three consecutive failed installs still produced a _successful_ step. Rewritten to `&& exit 0` per attempt with an explicit `::error::` and `exit 1` after the loop.
+- **F10.** The bluebird guard now also catches subpath imports (`bluebird/js/release/promise`), `require.resolve`, and re-introduction into `package.json`. Verified against a scratch repository: all four import shapes plus the manifest are caught, and the current tree is clean.
+- **F12.** `if: success() || steps.install.outcome == 'success'` removed from Lint, Compile, Unit Tests, Build and the new No-bluebird step, restoring fail-fast.
+- **F8.** The qlty coverage gate keeps its `push`-or-`base_ref == master` condition, with a comment recording why a stacked PR must not overwrite the master baseline and where to check coverage instead.
+
+### F13 — `isCancellation` — documented, behaviour unchanged
+
+Narrowing it was considered and rejected. The `signal.aborted` clause is load-bearing: it is what suppresses the UI update for a getter that does not thread the signal and so rejects with something other than an `AbortError` after its view has gone. Narrowing would make `usePromiseEffect.run` reject at unmount and risk unhandled rejections in consumers. The trade-off is now recorded in `README.md` instead, including the mitigation that `ApiClient` already reports every non-abort failure to Sentry before this check runs, so only a failure originating after the HTTP layer goes unreported. The project forbids code comments, so the README is the right home for it.
+
+### F16 — types, plus a pre-existing listener leak
+
+- `DateSelectionState.ts`: `_saveDate` and `_getDate` annotated (`noImplicitAny` is `false`, so these compiled silently).
+- `useFragmentAnnotationState.ts`: `onZoom` typed, an explicit `FragmentAnnotationState` return type added, and the `annotations` shadowing in `saveAnnotations` renamed. The type block moved to `fragmentAnnotationStateTypes.ts` to keep the hook at 219 lines.
+- The redundant first `onClick` branch was removed — whenever it fired, the second branch ran and did the same `setToggled(hovering)` plus more.
+- **Pre-existing bug fixed:** `useAnnotationKeyboardShortcuts`'s effect cleanup called `document.addEventListener('keyup', ...)` where it meant `removeEventListener`, so every effect re-run leaked another keyup listener. Present on master since before the split (`FragmentAnnotation.tsx:177`). The `beforeunload` removal also now passes `{ capture: true }` to match how it was added.
+
+### F15 — `caniuse-lite` refreshed
+
+`npx update-browserslist-db@latest` — "No target browser changes", so this is lockfile-only and removes the last line of output from `yarn test:ci`.
+
+### Not addressed, and why
+
+- **F3** — excluded by instruction.
+- **F4** — re-requesting review is reviewer management, which is not mine to do.
+- **F9 / F14** — both need a merge commit (master into the base branch, and the three outstanding master commits into this one). Committing was not requested.
+
+### Gates after round-6 remediation — 2026-09-17
+
+| Gate                   | Result                                                                                                     |
+| ---------------------- | ---------------------------------------------------------------------------------------------------------- |
+| `yarn lint`            | PASS                                                                                                       |
+| `yarn tsc`             | PASS                                                                                                       |
+| `yarn test:ci`         | PASS — 504 suites, 4428 tests, 50 snapshots, exit 0                                                        |
+| Console-clean          | PASS — zero console output, and the `browserslist` line is gone                                            |
+| `yarn build:ci-stable` | PASS — "Compiled successfully", zero warnings                                                              |
+| Coverage               | global 95.09 / 87.97 / 94.73 / 95.23, up from 94.84 / 87.49 / 94.63 / 94.98; all 48 per-path gates at 100% |
+| 250-line ceiling       | PASS — largest file touched is 219 lines                                                                   |
+| DRY                    | PASS                                                                                                       |
+
+The suite went from 4395 tests with one failure to 4428 passing. The realia flake did not recur.
+
+One self-inflicted detour worth recording: fixing the `testing-library/no-container` lint error in `WordEditor.test.tsx` by switching to `getByRole('strong')` looked right but failed in the full run — this version of `aria-query` does not map `<strong>` to a role. `getByText` works because `getNodeText` concatenates an element's direct text children, so the `<strong>` reads as `*Apkallu` when unattested and `Apkallu` when attested, which is exactly the branch under test. Lesson: re-run the affected suite after a lint fix, not just the linter.
+
+### Commit state
+
+Nothing committed. `createScript.test.ts` is staged as deleted (it was removed with `git rm`); everything else is unstaged or untracked. The eight new files under `src/` are untracked, so `git commit -a` would miss them.

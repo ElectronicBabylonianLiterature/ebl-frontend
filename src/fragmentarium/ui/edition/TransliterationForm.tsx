@@ -23,6 +23,7 @@ import {
 } from 'fragmentarium/ui/edition/TransliterationFormControls'
 import SupersedableOperation from 'common/utils/SupersedableOperation'
 import applyWhenCurrent from 'common/utils/applyWhenCurrent'
+import { runBeforeUnloadEvent } from 'fragmentarium/ui/edition/beforeUnloadWarning'
 
 type Props = {
   transliteration: string
@@ -30,34 +31,6 @@ type Props = {
   introduction: string
   updateEdition: (fields: EditionFields) => Promise<Fragment>
   disabled?: boolean
-}
-
-const handleBeforeUnload = (
-  event: BeforeUnloadEvent,
-  hasChanges: () => boolean,
-): string | void => {
-  if (hasChanges()) {
-    const confirmationMessage =
-      'You have unsaved changes. Are you sure you want to leave?'
-    event.returnValue = confirmationMessage
-    return confirmationMessage
-  }
-}
-
-const runBeforeUnloadEvent = ({
-  hasChanges,
-}: {
-  hasChanges: () => boolean
-}) => {
-  const _handleBeforeEvent = (event) => handleBeforeUnload(event, hasChanges)
-  if (hasChanges()) {
-    window.addEventListener('beforeunload', _handleBeforeEvent)
-  } else {
-    window.removeEventListener('beforeunload', _handleBeforeEvent)
-  }
-  return () => {
-    window.removeEventListener('beforeunload', _handleBeforeEvent)
-  }
 }
 
 const TransliterationForm: React.FC<Props> = ({

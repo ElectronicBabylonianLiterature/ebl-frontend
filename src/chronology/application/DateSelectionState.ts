@@ -184,14 +184,14 @@ export default function useDateSelectionState(
     ...useDayState(date),
     ...useAdditionalDateParams(date),
   }
-  const _saveDate = (updatedDate) =>
+  const _saveDate = (updatedDate?: MesopotamianDate): void =>
     saveDateDefault({
       ...props,
       runUpdate,
       updatedDate,
     })
 
-  const _getDate = () => getDate(stateParams)
+  const _getDate = (): MesopotamianDate => getDate(stateParams)
 
   return {
     ...stateParams,

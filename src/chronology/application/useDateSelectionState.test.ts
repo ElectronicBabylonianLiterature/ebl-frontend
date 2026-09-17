@@ -2,6 +2,7 @@ import { renderHook } from '@testing-library/react'
 import useDateSelectionState from 'chronology/application/DateSelectionState'
 import { MesopotamianDate } from 'chronology/domain/Date'
 import Kings from 'chronology/domain/Kings.json'
+import { Ur3Calendar } from 'chronology/domain/DateParameters'
 
 describe('useDateSelectionState', () => {
   it('initializes with the original king and year-0 when a year-0 date is passed', () => {
@@ -29,5 +30,27 @@ describe('useDateSelectionState', () => {
     expect(result.current.yearReconstructed).toBe(true)
     expect(result.current.yearEmended).toBe(true)
     expect(result.current.king?.name).toBe('Nabonidus')
+  })
+
+  it('shows the calendar field for a date that has an Ur III calendar', () => {
+    const { result } = renderHook(() =>
+      useDateSelectionState({
+        date: new MesopotamianDate({
+          year: { value: '1' },
+          month: { value: '1' },
+          day: { value: '1' },
+          isSeleucidEra: false,
+          ur3Calendar: Ur3Calendar.UMMA,
+        }),
+        updateDate: jest.fn(),
+        setDate: jest.fn(),
+        setIsDisplayed: jest.fn(),
+        setIsSaving: jest.fn(),
+        setSaveError: jest.fn(),
+      }),
+    )
+
+    expect(result.current.isCalendarFieldDisplayed).toBe(true)
+    expect(result.current.ur3Calendar).toBe(Ur3Calendar.UMMA)
   })
 })

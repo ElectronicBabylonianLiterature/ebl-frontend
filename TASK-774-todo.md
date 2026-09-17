@@ -1,9 +1,40 @@
 # TASK-774 — TODO
 
 PR: [#774](https://github.com/ElectronicBabylonianLiterature/ebl-frontend/pull/774)
-Head reviewed: `7c9b1d01` · Base: `chore/ts7-tsconfig-migration` (#773)
-Last updated: 2026-09-16 (round 5 review + remediation — all actionable findings fixed, nothing committed)
-Verdict: **all actionable findings addressed** — F4 (clear the review) and F10 (confirm the Dockerfile) are yours
+Head reviewed: `eac106a4` · Base: `chore/ts7-tsconfig-migration` (#773)
+Last updated: 2026-09-17 (round 6 review + remediation — every finding fixed except the cleanup, which was excluded by instruction)
+Verdict: **13 of 18 findings fixed in the working tree, nothing committed.** F3 (delete the task docs) excluded by instruction; F4 (clear the review), F9 and F14 (merges) are yours.
+
+## Round 6 — remediation — DONE
+
+- [x] F1 — `RealiaDisplay.redirectFetching.test.tsx` now waits on the landed redirect, not a call counter on a 1000 ms budget
+- [x] F1 — `LocationProbe`/`RealiaRouteEntry`/`expectLocation`/`waitForLocation`/`renderRealiaRoute` extracted into `RealiaDisplay.testSupport.tsx` (DRY)
+- [x] F2 — deleted the verbatim duplicate `createScript.test.ts`
+- [ ] F3 — delete the eight tracked `TASK-*.md` files — **excluded by instruction**
+- [ ] F4 — dismiss / re-request the CHANGES_REQUESTED review — **yours**
+- [x] F5 — PR description corrected on GitHub (the task docs are now described as deliberately tracked and due for deletion before merge)
+- [x] F6 — `useAnnotationKeyboardShortcuts.ts` and `useFragmentAnnotationState.ts` brought to 100/100/100/100
+- [x] F7 — `fullyCoveredPaths` extended from 35 to 47 paths, including every write-path file this PR touches
+- [x] F8 — documented why stacked PRs do not upload coverage to qlty
+- [ ] F9 — **needs a merge commit, not requested** — merge master into the base branch, or land #773 first
+- [x] F10 — bluebird guard widened to subpaths, `require.resolve` and `package.json`; verified against a scratch repository
+- [x] F11 — the install retry loop can now fail the step (pre-existing bug)
+- [x] F12 — fail-fast restored across the CI job's steps
+- [x] F13 — the `isCancellation` trade-off documented in `README.md`; behaviour deliberately unchanged
+- [ ] F14 — merge the three outstanding master commits — **needs a merge commit, not requested**
+- [x] F15 — `caniuse-lite` refreshed; "No target browser changes"
+- [x] F16 — type annotations added, shadowing removed, redundant `onClick` branch dropped
+- [x] Pre-existing — fixed the leaked `keyup` listener in `useAnnotationKeyboardShortcuts`'s effect cleanup
+
+### Gates after remediation
+
+- [x] `yarn lint` — PASS
+- [x] `yarn tsc` — PASS
+- [x] 250-line ceiling — PASS, largest touched file is 219 lines
+- [x] `yarn test:ci` — PASS (504 suites, 4428 tests, 50 snapshots, exit 0)
+- [x] Console-clean — PASS (zero console output; the `browserslist` line is gone too)
+- [x] `yarn build:ci-stable` — PASS ("Compiled successfully", zero warnings)
+- [x] Coverage — global 95.09 / 87.97 / 94.73 / 95.23 (up from 94.84 / 87.49 / 94.63 / 94.98); all 48 per-path gates at 100%
 
 ## Review pass — round 4 — DONE
 
