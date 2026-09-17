@@ -7,7 +7,7 @@ base_branch: chore/ts7-tsconfig-migration
 head_reviewed: eac106a4
 date: 2026-09-17
 last_updated: 2026-09-17 (review round 6 + remediation)
-state: 14 of 18 findings resolved; 4 remain and none of them can be done from inside the diff
+state: 14 of 18 findings resolved plus the qlty follow-up; 4 remain and none of them can be done from inside the diff
 tracked_in_git: true — the eight scratch .md files are tracked on purpose and must be deleted before merge
 blocking_items: 4 (delete the scratch docs; clear the standing review; merge the base branch up; pick up the three master commits)
 ---
@@ -31,26 +31,27 @@ Everything else in the PR is tidying that came along with it: a stylesheet migra
 
 Eighteen findings. Four mattered.
 
-| #   | In plain words                                                                                                                                                                                                    | Outcome                                 |
-| --- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------- |
-| F1  | The test suite was red. One test about a page that redirects to its proper address gave the app **one second** to finish a four-step chain. Alone it was fine; 276 test files into a slow run it ran out of time. | **Fixed**                               |
-| F2  | A test file had been copied word for word. The same five checks ran twice, from two files.                                                                                                                        | **Fixed**                               |
-| F3  | The eight scratch note files are still tracked, so merging would dump 3,210 lines of working notes onto `master`.                                                                                                 | **Open — excluded by your instruction** |
-| F4  | The reviewer's "changes requested" from August is still standing. Everything they asked for is genuinely done.                                                                                                    | **Open — yours**                        |
-| F5  | The PR description said the scratch files were gone. They were not.                                                                                                                                               | **Fixed**                               |
-| F6  | Two brand-new files had poor test coverage — one only 20% of its branches.                                                                                                                                        | **Fixed**                               |
-| F7  | The "must be 100% covered" list is typed out by hand, so it goes stale, and it was missing the very files this PR changed.                                                                                        | **Fixed**                               |
-| F8  | Coverage is not sent to qlty for stacked PRs. Deliberate, but nowhere written down.                                                                                                                               | **Fixed**                               |
-| F9  | The security scanner **could not read this PR's changes at all** — too many files — yet still reported "no new problems".                                                                                         | **Open — needs a merge**                |
-| F10 | The "no bluebird" guard missed a few ways of sneaking the library back in.                                                                                                                                        | **Fixed**                               |
-| F11 | If installing packages failed three times in CI, the step still reported success.                                                                                                                                 | **Fixed**                               |
-| F12 | If lint failed, CI kept running everything after it instead of stopping.                                                                                                                                          | **Fixed**                               |
-| F13 | A helper treats _any_ error as "cancelled" when a page is closing, so a real bug at that moment goes unseen.                                                                                                      | **Documented**                          |
-| F14 | The branch is three commits behind `master`.                                                                                                                                                                      | **Open — needs a merge**                |
-| F15 | The test run printed a stray warning about out-of-date browser data.                                                                                                                                              | **Fixed**                               |
-| F16 | A few functions had no types, and one had a leftover duplicate branch.                                                                                                                                            | **Fixed**                               |
-| W1  | GitHub shows `Dockerfile` and `.dockerignore` as changed. This PR did not change them.                                                                                                                            | Informational                           |
-| W2  | CI now also runs for stacked branches. Checked for secret leaks — safe.                                                                                                                                           | Informational                           |
+| #    | In plain words                                                                                                                                                                                                    | Outcome                                 |
+| ---- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------- |
+| F1   | The test suite was red. One test about a page that redirects to its proper address gave the app **one second** to finish a four-step chain. Alone it was fine; 276 test files into a slow run it ran out of time. | **Fixed**                               |
+| F2   | A test file had been copied word for word. The same five checks ran twice, from two files.                                                                                                                        | **Fixed**                               |
+| F3   | The eight scratch note files are still tracked, so merging would dump 3,210 lines of working notes onto `master`.                                                                                                 | **Open — excluded by your instruction** |
+| F4   | The reviewer's "changes requested" from August is still standing. Everything they asked for is genuinely done.                                                                                                    | **Open — yours**                        |
+| F5   | The PR description said the scratch files were gone. They were not.                                                                                                                                               | **Fixed**                               |
+| F6   | Two brand-new files had poor test coverage — one only 20% of its branches.                                                                                                                                        | **Fixed**                               |
+| F7   | The "must be 100% covered" list is typed out by hand, so it goes stale, and it was missing the very files this PR changed.                                                                                        | **Fixed**                               |
+| F8   | Coverage is not sent to qlty for stacked PRs. Deliberate, but nowhere written down.                                                                                                                               | **Fixed**                               |
+| F9   | The security scanner **could not read this PR's changes at all** — too many files — yet still reported "no new problems".                                                                                         | **Open — needs a merge**                |
+| F10  | The "no bluebird" guard missed a few ways of sneaking the library back in.                                                                                                                                        | **Fixed**                               |
+| F11  | If installing packages failed three times in CI, the step still reported success.                                                                                                                                 | **Fixed**                               |
+| F12  | If lint failed, CI kept running everything after it instead of stopping.                                                                                                                                          | **Fixed**                               |
+| F13  | A helper treats _any_ error as "cancelled" when a page is closing, so a real bug at that moment goes unseen.                                                                                                      | **Documented**                          |
+| F14  | The branch is three commits behind `master`.                                                                                                                                                                      | **Open — needs a merge**                |
+| F15  | The test run printed a stray warning about out-of-date browser data.                                                                                                                                              | **Fixed**                               |
+| F16  | A few functions had no types, and one had a leftover duplicate branch.                                                                                                                                            | **Fixed**                               |
+| W1   | GitHub shows `Dockerfile` and `.dockerignore` as changed. This PR did not change them.                                                                                                                            | Informational                           |
+| W2   | CI now also runs for stacked branches. Checked for secret leaks — safe.                                                                                                                                           | Informational                           |
+| qlty | After the first push one code-quality warning was left: a single function doing three jobs at once.                                                                                                               | **Fixed**                               |
 
 ## Why F1 was the important one
 
@@ -73,19 +74,20 @@ The fix waits for the redirect to **actually land**, then checks the calls. That
 - **F13** — left as is, on purpose, and explained in `README.md`. Making it stricter would cause saves to error out when a page closes.
 - **F15 / F16** — browser data refreshed; missing types added; a duplicate branch removed.
 - **Bonus.** Found and fixed a real leak that predates this PR: a keyboard listener was being _added_ again in the cleanup code where it should have been removed.
+- **qlty follow-up.** The last quality warning was one function holding the selection, deciding what a selection means, and talking to the server, all at once. Split into three files along those lines; the warning went away as a side effect. Every existing test passed without being touched, which is the evidence that nothing changed behaviourally.
 
 ## Gates — all green
 
-| Gate                   | Result                                                               |
-| ---------------------- | -------------------------------------------------------------------- |
-| `yarn lint`            | PASS                                                                 |
-| `yarn tsc`             | PASS                                                                 |
-| `yarn test:ci`         | PASS — 504 suites, 4428 tests, 50 snapshots                          |
-| Console output         | PASS — completely silent                                             |
-| Coverage               | 95.09 / 87.97 / 94.73 / 95.23, up from 94.84 / 87.49 / 94.63 / 94.98 |
-| `yarn build:ci-stable` | PASS — zero warnings                                                 |
-| 250-line limit         | PASS — largest file touched is 219                                   |
-| No duplicated logic    | PASS                                                                 |
+| Gate                   | Result                                                                        |
+| ---------------------- | ----------------------------------------------------------------------------- |
+| `yarn lint`            | PASS                                                                          |
+| `yarn tsc`             | PASS                                                                          |
+| `yarn test:ci`         | PASS — 504 suites, 4428 tests, 50 snapshots                                   |
+| Console output         | PASS — completely silent                                                      |
+| Coverage               | 95.08 / 87.98 / 94.74 / 95.23, up from 94.84 / 87.49 / 94.63 / 94.98          |
+| `yarn build:ci-stable` | Not re-run locally (container memory); CI built this code green on `a9b0542f` |
+| 250-line limit         | PASS — largest file touched is 249                                            |
+| No duplicated logic    | PASS                                                                          |
 
 The suite went from 4,395 tests with one failure to **4,428 passing**.
 
@@ -108,7 +110,7 @@ The suite went from 4,395 tests with one failure to **4,428 passing**.
 
 5. Re-run the gates against the retargeted diff.
 6. Check that the `test` check is green on GitHub across more than one run — F1 was intermittent, so a single green is not proof.
-7. Re-check the qlty blocking issues. Two of the three were the copied test file, which is gone.
+7. Re-check the qlty result. It went 3 blocking issues → 1 after the first push, and the last one is now fixed too, so it should come back clean.
 
 ## Known, deliberately not fixed
 

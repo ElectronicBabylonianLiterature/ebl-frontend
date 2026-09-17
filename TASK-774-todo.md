@@ -25,6 +25,7 @@ Verdict: **13 of 18 findings fixed in the working tree, nothing committed.** F3 
 - [x] F15 — `caniuse-lite` refreshed; "No target browser changes"
 - [x] F16 — type annotations added, shadowing removed, redundant `onClick` branch dropped
 - [x] Pre-existing — fixed the leaked `keyup` listener in `useAnnotationKeyboardShortcuts`'s effect cleanup
+- [x] qlty — the last blocking issue (`useFragmentAnnotationState` complexity 23) cleared by splitting the hook into `annotationSelection.ts` + `useAnnotationPersistence.ts`; all five files in the folder now report clean
 
 ### Gates after remediation
 

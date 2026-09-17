@@ -4,6 +4,17 @@ import Annotation, { RawAnnotation } from 'fragmentarium/domain/annotation'
 
 export type ZoomEvent = { state: { scale: number } }
 
+export type AnnotationPersistence = {
+  deleteAllAnnotations: () => void
+  error: Error | null
+  generateAnnotations: () => void
+  isDeleting: boolean
+  isGenerateAnnotationsLoading: boolean
+  isSaving: boolean
+  onDelete: (annotation: Annotation) => Promise<void>
+  saveCurrentAnnotations: () => void
+}
+
 export type FragmentAnnotationState = {
   annotation: RawAnnotation
   annotations: readonly Annotation[]

@@ -1989,3 +1989,31 @@ One self-inflicted detour worth recording: fixing the `testing-library/no-contai
 ### Commit state
 
 Nothing committed. `createScript.test.ts` is staged as deleted (it was removed with `git rm`); everything else is unstaged or untracked. The eight new files under `src/` are untracked, so `git commit -a` would miss them.
+
+## Round 6 — follow-up: the last qlty blocking issue — 2026-09-17
+
+After `a9b0542f` was pushed, `qlty check` went from 3 blocking issues to 1. The two that cleared were the identical-code pair behind `createScript.test.ts`. The survivor was `useFragmentAnnotationState` at cognitive complexity 23 — down from 25 once the redundant `onClick` branch went, and well down from the 50 that master's `FragmentAnnotation.tsx` carried before the split, but still over qlty's threshold.
+
+Raising the threshold or adding an ignore was not considered. The function was doing three unrelated jobs at once: holding selection state, deciding what a selection means, and talking to the server. Splitting it along those seams removes the smell as a side effect of the code being better arranged.
+
+- **`annotationSelection.ts`** — the pure decisions, with no React in them: `findAnnotationById`, `replaceAnnotation`, `createAnnotation`, `toAutomaticAnnotation`. These were the deepest nesting in the old `handleSelection`, and as plain functions they carry no nesting penalty at all.
+- **`useAnnotationPersistence.ts`** — everything asynchronous: `saveAnnotations`, `onDelete`, `saveCurrentAnnotations`, `deleteAllAnnotations`, `generateAnnotations`, plus the four flags they own (`isSaving`, `isDeleting`, `isGenerateAnnotationsLoading`, `error`). The parent now spreads its result straight into the returned state, so no call site changed.
+- **`useFragmentAnnotationState.ts`** — down from 219 lines to 142, and now only composes: state, the keyboard hook, the persistence hook, and three short handlers.
+
+`handleSelection` also lost a level of nesting. The old shape was `if (data) { if (selected) {...} else if (geometry) { if (tooSmall) {...} } }` — four levels deep. It now returns early on missing data, delegates the replace path, and treats "create" as a single nullable expression.
+
+Behaviour is unchanged, and the evidence is that **every existing test passed untouched**: 45 tests across the annotation-tool folder, including the `FragmentAnnotation` and `AnnotationsView` integration suites, with no edits to any test file. All four modules sit at 100/100/100/100, and `annotationSelection.ts` and `useAnnotationPersistence.ts` were added to the coverage gate, which is now 50 paths.
+
+`qlty smells` reports all five files in the folder clean — no complexity, no duplication, no long parameter lists.
+
+### Build gate — could not be re-run locally
+
+`yarn build:ci-stable` fails in this dev container with CRA's "the build failed because the process exited too early", which is what it prints when the webpack child is killed. It is **not** caused by the split:
+
+- The same command succeeded twice earlier in this session, on this branch.
+- Raising the heap to 3072 MB does not help, so it is not the `--max_old_space_size` cap.
+- Stashing every uncommitted change and building the committed `a9b0542f` reproduces the failure identically — and that is the commit GitHub Actions built green.
+
+The container has no cgroup memory limit and `memory.events` records `oom_kill 0`, so the kill is coming from the host. Memory went from comfortable to ~2 GB free over the session, with the editor's two `tsserver` processes (936 MB and 140 MB), the extension host (657 MB) and the ESLint server (245 MB) accounting for most of it.
+
+Conclusion: an environment limitation, not a regression. `lint`, `tsc` and `test:ci` all pass locally, and the build is verified remotely by CI on every push. Worth re-running once the editor has been restarted, if local confirmation is wanted before the next push.
