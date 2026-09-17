@@ -6,7 +6,6 @@ import ArrayInput from 'common/ui/ArrayInput'
 import HelpTrigger from 'common/ui/HelpTrigger'
 import BibliographySelect from 'bibliography/ui/BibliographySelect'
 import NotesHelp from './NotesHelp'
-import Promise from 'bluebird'
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 interface Props {
   value

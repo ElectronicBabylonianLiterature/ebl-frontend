@@ -1,6 +1,5 @@
 import React from 'react'
 import { render, screen, RenderResult } from '@testing-library/react'
-import Bluebird from 'bluebird'
 import _ from 'lodash'
 
 import SessionContext from 'auth/SessionContext'
@@ -26,14 +25,14 @@ beforeEach(async () => {
     find: jest.fn(),
     update: jest.fn(),
   }
-  wordService.find.mockReturnValueOnce(Bluebird.resolve(result))
+  wordService.find.mockReturnValueOnce(Promise.resolve(result))
 })
 
 describe('Fecth word', () => {
   it('Queries the word from API', async () => {
     await renderWithRouter()
 
-    expect(wordService.find).toBeCalledWith('id')
+    expect(wordService.find).toBeCalledWith('id', expect.any(AbortSignal))
   })
 
   it('Displays result on successfull query', async () => {
@@ -45,7 +44,7 @@ describe('Fecth word', () => {
 
 describe('Update word', () => {
   it('Posts to API on submit', async () => {
-    wordService.update.mockReturnValueOnce(Bluebird.resolve(result))
+    wordService.update.mockReturnValueOnce(Promise.resolve(result))
     const { container } = await renderWithRouter()
 
     await submitForm(container)
@@ -55,7 +54,7 @@ describe('Update word', () => {
 
   it('Displays error message failure', async () => {
     wordService.update.mockImplementationOnce(() =>
-      Bluebird.reject(new Error(errorMessage)),
+      Promise.reject(new Error(errorMessage)),
     )
     const { container } = await renderWithRouter()
 
@@ -64,14 +63,59 @@ describe('Update word', () => {
     await screen.findByText(errorMessage)
   })
 
-  it('Cancels promise on unmount', async () => {
-    const promise = new Bluebird(_.noop)
-    jest.spyOn(promise, 'cancel')
-    wordService.update.mockReturnValueOnce(promise)
+  it('Ignores the update result after unmount', async () => {
+    let resolveUpdate: () => void = _.noop
+    wordService.update.mockReturnValueOnce(
+      new Promise<void>((resolve) => {
+        resolveUpdate = resolve
+      }),
+    )
     const { unmount, container } = await renderWithRouter()
     await submitForm(container)
     unmount()
-    expect(promise.isCancelled()).toBe(true)
+    await expect(
+      (async () => {
+        resolveUpdate()
+        await Promise.resolve()
+      })(),
+    ).resolves.toBeUndefined()
+  })
+})
+
+describe('Word heading', () => {
+  async function renderWord(word: Word): Promise<RenderResult> {
+    result = word
+    wordService.find.mockReset()
+    wordService.find.mockReturnValueOnce(Promise.resolve(word))
+    return renderWithRouter()
+  }
+
+  it('marks an unattested word with an asterisk', async () => {
+    const word = wordFactory.verb().build({ attested: false })
+
+    await renderWord(word)
+
+    expect(screen.getByText(`*${word.lemma.join(' ')}`)).toBeInTheDocument()
+  })
+
+  it('does not mark an attested word', async () => {
+    const word = wordFactory.verb().build({ attested: true })
+
+    await renderWord(word)
+
+    expect(screen.getByText(word.lemma.join(' '))).toBeInTheDocument()
+    expect(
+      screen.queryByText(`*${word.lemma.join(' ')}`),
+    ).not.toBeInTheDocument()
+  })
+
+  it('renders an empty source for a word without one', async () => {
+    const word = wordFactory.verb().build({ attested: true, source: undefined })
+
+    await renderWord(word)
+
+    expect(screen.getByText(word.lemma.join(' '))).toBeInTheDocument()
+    expect(screen.getByRole('group')).toBeInTheDocument()
   })
 })
 
@@ -97,6 +141,6 @@ async function renderWithRouter(isAllowedTo = true): Promise<RenderResult> {
       </SessionContext.Provider>
     </MemoryRouter>,
   )
-  await screen.findByText(result.lemma.join(' '))
+  await screen.findByRole('group')
   return view
 }

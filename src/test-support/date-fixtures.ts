@@ -90,7 +90,7 @@ export const rimushKing = {
   notes: '',
 }
 
-const chance = new Chance()
+const chance = new Chance('date-fixtures')
 
 export const mesopotamianDateFactory = Factory.define<MesopotamianDate>(() => {
   const isSeleucidEra = chance.bool()

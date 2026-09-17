@@ -130,7 +130,7 @@ const DossiersContentWithData = withData<
   readonly DossierRecord[]
 >(
   ({ data }) => <DossiersContent data={data} />,
-  (props) => props.dossiersService.fetchAllDossiers(),
+  (props, signal) => props.dossiersService.fetchAllDossiers(signal),
 )
 
 export default function DossiersSearchPage({

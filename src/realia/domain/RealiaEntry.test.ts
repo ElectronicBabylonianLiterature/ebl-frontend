@@ -2,6 +2,7 @@ import {
   afoCrossReferenceCitation,
   getRealiaCrossReferences,
   getRedirectTarget,
+  isRealiaId,
   realiaCrossReferenceTarget,
   rlaArticleUrl,
 } from 'realia/domain/RealiaEntry'
@@ -189,5 +190,21 @@ describe('getRedirectTarget', () => {
       afoCrossReferences: [realiaCrossReferenceFactory.build()],
     })
     expect(getRedirectTarget(entry)).toBeNull()
+  })
+})
+
+describe('isRealiaId', () => {
+  it.each(['realia_000846', 'realia_1'])('recognises %s', (id) => {
+    expect(isRealiaId(id)).toBe(true)
+  })
+
+  it.each([
+    'Apkallu',
+    'Apkallu=',
+    'realia_',
+    'realia_abc',
+    'Assyrien (Geschichte)',
+  ])('rejects the lemma %s', (id) => {
+    expect(isRealiaId(id)).toBe(false)
   })
 })

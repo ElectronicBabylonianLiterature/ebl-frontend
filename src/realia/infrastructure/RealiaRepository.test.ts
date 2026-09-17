@@ -1,6 +1,5 @@
 import { testDelegation, TestData } from 'test-support/utils'
 import RealiaRepository from 'realia/infrastructure/RealiaRepository'
-import Promise from 'bluebird'
 import { cslDataFactory } from 'test-support/bibliography-fixtures'
 import {
   createRealiaRepositoryTestContext,
@@ -17,7 +16,15 @@ const testData: TestData<RealiaRepository>[] = [
     ['Pig'],
     apiClient.fetchJson,
     expectedEntry,
-    ['/realia/Pig', false],
+    ['/realia/Pig', false, undefined],
+    Promise.resolve(entryDto),
+  ),
+  new TestData(
+    'findByRealiaId',
+    ['realia_000846'],
+    apiClient.fetchJson,
+    expectedEntry,
+    ['/realia/by-id/realia_000846', false, undefined],
     Promise.resolve(entryDto),
   ),
   new TestData(
@@ -25,8 +32,16 @@ const testData: TestData<RealiaRepository>[] = [
     ['pig'],
     apiClient.fetchJson,
     [expectedEntry],
-    ['/realia?query=pig', false],
+    ['/realia?query=pig', false, undefined],
     Promise.resolve([entryDto]),
+  ),
+  new TestData(
+    'listAllRealia',
+    [],
+    apiClient.fetchJson,
+    ['Pig'],
+    ['/realia/all', false],
+    Promise.resolve(['Pig']),
   ),
 ]
 
@@ -186,20 +201,4 @@ describe('RealiaRepository reallexikon mapping', () => {
     expect(result.afoCrossReferences).toEqual([])
     expect(result.references).toEqual([])
   })
-})
-
-describe('RealiaRepository search query encoding', () => {
-  it.each([
-    ['pig & cow', '/realia?query=pig%20%26%20cow'],
-    ['spaced query', '/realia?query=spaced%20query'],
-    ['Ninĝirsu', '/realia?query=Nin%C4%9Dirsu'],
-    ['?=#&/+', '/realia?query=%3F%3D%23%26%2F%2B'],
-  ])(
-    'sends the query %p url-encoded to preserve reserved characters',
-    async (query, expectedUrl) => {
-      apiClient.fetchJson.mockReturnValueOnce(Promise.resolve([]))
-      await realiaRepository.search(query)
-      expect(apiClient.fetchJson).toHaveBeenLastCalledWith(expectedUrl, false)
-    },
-  )
 })

@@ -2,7 +2,6 @@ import {
   createRealiaRepositoryTestContext,
   entryDto,
 } from 'realia/infrastructure/realiaRepositoryTestData'
-import Promise from 'bluebird'
 
 jest.mock('http/ApiClient')
 const { apiClient, realiaRepository } = createRealiaRepositoryTestContext()

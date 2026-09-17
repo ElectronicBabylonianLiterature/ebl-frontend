@@ -3,7 +3,7 @@ import Chance from 'chance'
 import { LineNumber, OldLineNumber } from 'transliteration/domain/line-number'
 import { referenceFactory } from './bibliography-fixtures'
 
-const defaultChance = new Chance()
+const defaultChance = new Chance('linenumber-factory')
 
 export const lineNumberFactory = Factory.define<LineNumber>(({ sequence }) => ({
   number: sequence,

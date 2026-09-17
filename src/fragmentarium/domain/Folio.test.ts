@@ -2,7 +2,7 @@ import Chance from 'chance'
 import Folio from './Folio'
 
 describe('Folio', () => {
-  const chance = new Chance()
+  const chance = new Chance('Folio')
 
   describe.each([
     ['Unknown', 'Unknown', false],

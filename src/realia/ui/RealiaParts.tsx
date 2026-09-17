@@ -1,12 +1,8 @@
 import React from 'react'
 import classNames from 'classnames'
 import { Collapse } from 'react-bootstrap'
-import { Link } from 'react-router-dom'
-import {
-  RealiaCrossReference,
-  RealiaEntry,
-  realiaCrossReferenceTarget,
-} from 'realia/domain/RealiaEntry'
+import { RealiaCrossReference, RealiaEntry } from 'realia/domain/RealiaEntry'
+import { RealiaCrossReferenceLink } from 'realia/ui/RealiaCrossReferenceLink'
 import ExternalLink from 'common/ui/ExternalLink'
 
 export function RealiaMetadata({ entry }: { entry: RealiaEntry }): JSX.Element {
@@ -82,13 +78,7 @@ export function SeeAlsoList({
     <ul className="Realia__see-also">
       {crossReferences.map((crossReference) => (
         <li key={crossReference.id}>
-          <Link
-            to={`/tools/realia/${encodeURIComponent(
-              realiaCrossReferenceTarget(crossReference),
-            )}`}
-          >
-            {crossReference.lemma}
-          </Link>
+          <RealiaCrossReferenceLink crossReference={crossReference} />
         </li>
       ))}
     </ul>

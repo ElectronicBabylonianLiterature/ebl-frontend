@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import ReactMarkdown from 'react-markdown'
-import Promise from 'bluebird'
 
 import AppContent from 'common/ui/AppContent'
 import WordForm from './WordForm'
@@ -10,6 +9,8 @@ import withData, { WithoutData } from 'http/withData'
 import SessionContext from 'auth/SessionContext'
 import Word from 'dictionary/domain/Word'
 import { SectionCrumb, TextCrumb } from 'common/ui/Breadcrumbs'
+import SupersedableOperation from 'common/utils/SupersedableOperation'
+import applyWhenCurrent from 'common/utils/applyWhenCurrent'
 
 type Props = {
   data: Word
@@ -24,7 +25,7 @@ class WordEditor extends Component<
   static contextType = SessionContext
   context!: React.ContextType<typeof SessionContext>
 
-  private updatePromise: Promise<void>
+  private readonly updateOperation = new SupersedableOperation()
 
   constructor(props) {
     super(props)
@@ -33,26 +34,26 @@ class WordEditor extends Component<
       error: null,
       saving: false,
     }
-    this.updatePromise = Promise.resolve()
   }
 
   componentWillUnmount(): void {
-    this.updatePromise.cancel()
+    this.updateOperation.supersede()
   }
 
   get disabled(): boolean {
     return this.state.saving || !this.context.isAllowedToWriteWords()
   }
 
-  updateWord = (word): void => {
-    this.updatePromise.cancel()
+  updateWord = (word: Word): void => {
     this.setState({ word: this.state.word, error: null, saving: true })
-    this.updatePromise = this.props.wordService
-      .update(word)
-      .then(() => this.setState({ word: word, error: null, saving: false }))
-      .catch((error) => {
+    applyWhenCurrent(() => this.props.wordService.update(word), {
+      onSuccess: () => {
+        this.setState({ word: word, error: null, saving: false })
+      },
+      onError: (error) => {
         this.setState({ word: this.state.word, error: error, saving: false })
-      })
+      },
+    })(this.updateOperation.start())
   }
 
   render(): JSX.Element {
@@ -89,5 +90,5 @@ class WordEditor extends Component<
 
 export default withData<WithoutData<Props>, unknown, Word>(
   WordEditor,
-  (props) => props.wordService.find(props.id),
+  (props, signal) => props.wordService.find(props.id, signal),
 )

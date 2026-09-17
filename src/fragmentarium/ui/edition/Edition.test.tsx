@@ -1,7 +1,6 @@
 import React from 'react'
 import { MemoryRouter } from 'react-router-dom'
 import { render, screen } from '@testing-library/react'
-import { Promise } from 'bluebird'
 
 import { submitFormByTestId } from 'test-support/utils'
 import Edition from './Edition'
@@ -15,6 +14,10 @@ let updateEdition
 let container: HTMLElement
 
 jest.mock('fragmentarium/application/FragmentSearchService')
+
+jest.mock('editor/Editor', () =>
+  jest.requireActual('editor/Editor.testSupport'),
+)
 
 const renderWithRouter = (children: React.ReactNode) =>
   render(<MemoryRouter>{children}</MemoryRouter>)
@@ -46,12 +49,16 @@ it('Renders header', async () => {
   expect(container).toHaveTextContent(fragment.publication)
 })
 
-xit('Renders transliteration field', () => {
-  expect(screen.getByLabelText('Transliteration')).toHaveValue(fragment.atf)
+it('Renders transliteration field', async () => {
+  setup()
+  await screen.findByText(`(Publication: ${fragment.publication || '- '})`)
+  expect(screen.getByLabelText('transliteration')).toHaveValue(fragment.atf)
 })
 
-xit('Renders notes field', () => {
-  expect(screen.getByLabelText('Notes')).toEqual(fragment.notes)
+it('Renders notes field', async () => {
+  setup()
+  await screen.findByText(`(Publication: ${fragment.publication || '- '})`)
+  expect(screen.getByLabelText('notes')).toHaveValue(fragment.notes.text)
 })
 
 it('Calls updateEdition on save', async () => {

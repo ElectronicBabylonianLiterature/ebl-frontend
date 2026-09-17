@@ -1,3 +1,4 @@
+import { waitFor } from '@testing-library/react'
 import ResizeObserver from 'resize-observer-polyfill'
 import AppDriver from 'test-support/AppDriver'
 import FakeApi from 'test-support/FakeApi'
@@ -14,6 +15,26 @@ const fragmentNumber = 'Test.Fragment'
 const photo = { blobParts: [''], options: { type: 'image/jpeg' }, size: 1 }
 let fakeApi: FakeApi
 let appDriver: AppDriver
+
+const renderTimeout = 10000
+const zoomTransformTimeout = 5000
+const hookTimeout = renderTimeout + zoomTransformTimeout + 5000
+
+function getZoomTransformStyle(): string | null | undefined {
+  return (
+    appDriver
+      .getView()
+      // eslint-disable-next-line testing-library/no-node-access
+      .container.querySelector('.react-transform-component')
+      ?.getAttribute('style')
+  )
+}
+
+async function waitForZoomTransformToBeApplied(): Promise<void> {
+  await waitFor(() => expect(getZoomTransformStyle()).toMatch(/transform:/), {
+    timeout: zoomTransformTimeout,
+  })
+}
 
 afterEach(() => {
   fakeApi.verifyExpectations()
@@ -32,8 +53,9 @@ describe('Display annotate view', () => {
       .render()
     await appDriver
       .getView()
-      .findByRole('button', { name: 'Save' }, { timeout: 10000 })
-  })
+      .findByRole('button', { name: 'Save' }, { timeout: renderTimeout })
+    await waitForZoomTransformToBeApplied()
+  }, hookTimeout)
 
   test('Breadcrumbs', () => {
     appDriver.breadcrumbs.expectCrumbs([

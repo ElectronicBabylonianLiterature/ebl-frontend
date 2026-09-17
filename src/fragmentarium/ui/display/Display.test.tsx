@@ -11,10 +11,12 @@ import {
   translatedFragment,
 } from 'test-support/fragment-fixtures'
 import { DictionaryContext } from 'dictionary/ui/dictionary-context'
-import Bluebird from 'bluebird'
 import { createDictionaryWord } from 'test-support/glossary'
+import { WithRealiaService } from 'fragmentarium/ui/text-annotation/textAnnotation.testSupport'
+import { annotatedFragment } from 'test-support/named-entity-fixtures'
 
 jest.mock('dictionary/application/WordService')
+jest.mock('realia/application/RealiaService')
 
 let wordService: WordService
 let fragment: Fragment
@@ -22,9 +24,15 @@ let fragment: Fragment
 async function renderFragment(fragment: Fragment) {
   const view = render(
     <MemoryRouter>
-      <DictionaryContext.Provider value={wordService}>
-        <Display fragment={fragment} wordService={wordService} activeLine="" />
-      </DictionaryContext.Provider>
+      <WithRealiaService>
+        <DictionaryContext.Provider value={wordService}>
+          <Display
+            fragment={fragment}
+            wordService={wordService}
+            activeLine=""
+          />
+        </DictionaryContext.Provider>
+      </WithRealiaService>
     </MemoryRouter>,
   )
 
@@ -39,7 +47,7 @@ beforeEach(async () => {
   wordService = new (WordService as jest.Mock<WordService>)()
   jest.spyOn(wordService, 'findAll').mockImplementation((ids) => {
     const words = [...new Set(ids)].map((id) => createDictionaryWord(id))
-    return Bluebird.resolve(words)
+    return Promise.resolve(words)
   })
 })
 
@@ -85,6 +93,12 @@ describe('Translation display layouts', () => {
     expect(
       screen.queryByTestId('translation-for-line-0'),
     ).not.toBeInTheDocument()
+
+    await userEvent.click(screen.getByLabelText('toggle-layout'))
+
+    expect(await screen.findByTestId('translation-for-line-0')).toHaveClass(
+      'TranslationColumn',
+    )
   })
   it('switches the language', async () => {
     await renderFragment(translatedFragment)
@@ -93,5 +107,56 @@ describe('Translation display layouts', () => {
       expect(screen.queryByText('English translation')).not.toBeInTheDocument()
     })
     expect(screen.getByText('Arabic translation')).toBeInTheDocument()
+  })
+})
+describe('Named entity preview', () => {
+  it('shows the toggle without translation controls', async () => {
+    await renderFragment(annotatedFragment)
+
+    expect(screen.getByLabelText('Toggle annotations')).toBeVisible()
+    expect(screen.queryByLabelText('toggle-layout')).not.toBeInTheDocument()
+    expect(screen.queryByLabelText('switch-language')).not.toBeInTheDocument()
+  })
+
+  it('hides the named entities by default', async () => {
+    await renderFragment(annotatedFragment)
+
+    expect(screen.getByLabelText('Toggle annotations')).toHaveAttribute(
+      'aria-pressed',
+      'false',
+    )
+    expect(screen.queryByTestId('Word-2__Entity-1')).not.toBeInTheDocument()
+  })
+
+  it('shows the named entity and realia spans when toggled on', async () => {
+    await renderFragment(annotatedFragment)
+
+    await userEvent.click(screen.getByLabelText('Toggle annotations'))
+
+    expect(await screen.findByTestId('Word-2__Entity-1')).toHaveClass(
+      'named-entity__PERSONAL_NAME',
+    )
+    expect(screen.getByTestId('Word-3__Realia-1')).toHaveAttribute(
+      'data-label',
+      'Apkallu',
+    )
+    expect(screen.getByLabelText('Toggle annotations')).toHaveAttribute(
+      'aria-pressed',
+      'true',
+    )
+  })
+
+  it('hides the named entities when toggled off again', async () => {
+    await renderFragment(annotatedFragment)
+    const toggle = screen.getByLabelText('Toggle annotations')
+
+    await userEvent.click(toggle)
+    expect(await screen.findByTestId('Word-2__Entity-1')).toBeVisible()
+
+    await userEvent.click(toggle)
+
+    await waitFor(() =>
+      expect(screen.queryByTestId('Word-2__Entity-1')).not.toBeInTheDocument(),
+    )
   })
 })

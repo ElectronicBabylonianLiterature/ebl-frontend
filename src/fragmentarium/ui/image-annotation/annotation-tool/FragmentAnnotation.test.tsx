@@ -1,4 +1,3 @@
-import Bluebird from 'bluebird'
 import React from 'react'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import SignService from 'signs/application/SignService'
@@ -8,7 +7,7 @@ import { fragmentFactory } from 'test-support/fragment-fixtures'
 import { signFactory } from 'test-support/sign-fixtures'
 import Annotation, {
   AnnotationTokenType,
-  isBoundingBoxTooSmall,
+  isBoundingBoxLargeEnough,
 } from 'fragmentarium/domain/annotation'
 import userEvent from '@testing-library/user-event'
 
@@ -49,12 +48,10 @@ const initialAnnotation = new Annotation(
 )
 
 const setup = async (): Promise<void> => {
-  jest
-    .spyOn(signsRepository, 'search')
-    .mockReturnValue(Bluebird.resolve([sign]))
+  jest.spyOn(signsRepository, 'search').mockReturnValue(Promise.resolve([sign]))
   jest
     .spyOn(fragmentService, 'updateAnnotations')
-    .mockReturnValue(Bluebird.resolve([]))
+    .mockReturnValue(Promise.resolve([]))
 
   render(
     <MemoryRouter>
@@ -125,7 +122,7 @@ it('Change existing annotation', async () => {
 it('Generate Annotations', async () => {
   await setup()
   jest.spyOn(fragmentService, 'generateAnnotations').mockReturnValue(
-    Bluebird.resolve([
+    Promise.resolve([
       new Annotation(
         { x: 50, y: 50, width: 10, height: 10, type: 'RECTANGLE' },
         {
@@ -194,21 +191,21 @@ it('delete everything', async () => {
   )
 })
 
-it('isBoundingBoxTooSmall', () => {
-  const geometryTooSmall = {
+it('isBoundingBoxLargeEnough', () => {
+  const geometryTooSmallToKeep = {
     x: 0,
     y: 0,
     height: 0,
     width: 0,
     type: 'RECTANGLE',
   }
-  const geometryValid = {
+  const geometryLargeEnough = {
     x: 0,
     y: 0,
     height: 0.35,
     width: 0.35,
     type: 'RECTANGLE',
   }
-  expect(isBoundingBoxTooSmall(geometryTooSmall)).toBe(false)
-  expect(isBoundingBoxTooSmall(geometryValid)).toBe(true)
+  expect(isBoundingBoxLargeEnough(geometryTooSmallToKeep)).toBe(false)
+  expect(isBoundingBoxLargeEnough(geometryLargeEnough)).toBe(true)
 })

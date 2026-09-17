@@ -2,7 +2,6 @@ import React from 'react'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import CuneiformConverterForm from 'signs/ui/CuneiformConverter/CuneiformConverterForm'
 import SignService from 'signs/application/SignService'
-import Bluebird from 'bluebird'
 
 jest.mock('signs/application/SignService')
 const signServiceMock = new (SignService as jest.Mock<
@@ -86,7 +85,7 @@ describe('CuneiformConverterForm', () => {
     signServiceMock.getUnicodeFromAtf
       .mockImplementationOnce(
         () =>
-          new Bluebird<{ unicode: number[] }[]>((resolve) => {
+          new Promise<{ unicode: number[] }[]>((resolve) => {
             resolveFirstRequest = resolve
           }),
       )

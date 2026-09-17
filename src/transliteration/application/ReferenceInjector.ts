@@ -1,5 +1,4 @@
 import { produce, Draft, castDraft } from 'immer'
-import Promise from 'bluebird'
 import Reference from 'bibliography/domain/Reference'
 import BibliographyService from 'bibliography/application/BibliographyService'
 import { NoteLine } from 'transliteration/domain/note-line'

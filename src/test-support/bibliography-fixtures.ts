@@ -6,7 +6,7 @@ import BibliographyEntry, {
 } from 'bibliography/domain/BibliographyEntry'
 import { ReferenceDto } from 'bibliography/domain/referenceDto'
 
-const defaultChance = new Chance()
+const defaultChance = new Chance('bibliography-fixtures')
 
 function integer(min: number, max: number, chance?: Chance.Chance): number {
   return (chance || defaultChance).integer({ min: min, max: max })

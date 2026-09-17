@@ -3,7 +3,6 @@ import { resolve } from 'path'
 import { parse as parseEnv } from 'dotenv'
 import 'jest-date-mock'
 import '@testing-library/jest-dom'
-import Promise from 'bluebird'
 import _ from 'lodash'
 import { TextEncoder, TextDecoder } from 'util'
 
@@ -69,10 +68,6 @@ afterEach(() => {
   onAbort.mockReset()
 })
 
-Promise.config({
-  cancellation: true,
-})
-
 afterEach(() => localStorage.clear())
 
 if (global.document) {
@@ -114,6 +109,47 @@ if (global.document) {
   }
 }
 
-export function silenceConsoleErrors(): void {
-  jest.spyOn(console, 'error').mockImplementation()
+let consoleErrorSpy: jest.SpyInstance | null = null
+let expectedConsoleError: RegExp | null = null
+let isExpectedConsoleErrorRequired = true
+
+function captureConsoleErrors(pattern: RegExp, isRequired: boolean): void {
+  consoleErrorSpy?.mockRestore()
+  expectedConsoleError = pattern
+  isExpectedConsoleErrorRequired = isRequired
+  consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation()
 }
+
+export function expectConsoleErrors(pattern: RegExp): void {
+  captureConsoleErrors(pattern, true)
+}
+
+export function tolerateConsoleErrors(pattern: RegExp): void {
+  captureConsoleErrors(pattern, false)
+}
+
+afterEach(() => {
+  const spy = consoleErrorSpy
+  const pattern = expectedConsoleError
+  const isRequired = isExpectedConsoleErrorRequired
+  consoleErrorSpy = null
+  expectedConsoleError = null
+  isExpectedConsoleErrorRequired = true
+
+  if (!spy || !pattern) {
+    return
+  }
+
+  const messages = spy.mock.calls.map((call) =>
+    call.map((argument) => String(argument)).join(' '),
+  )
+  spy.mockRestore()
+
+  const unexpected = messages.filter((message) => !pattern.test(message))
+  const matched = messages.filter((message) => pattern.test(message))
+
+  expect(unexpected).toEqual([])
+  if (isRequired) {
+    expect(matched).not.toEqual([])
+  }
+})

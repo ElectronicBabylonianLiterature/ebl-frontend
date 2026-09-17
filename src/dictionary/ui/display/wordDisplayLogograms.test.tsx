@@ -7,7 +7,6 @@ import MemorySession from 'auth/Session'
 
 import WordDisplayLogograms from 'dictionary/ui/display/WordDisplayLogograms'
 import SignService from 'signs/application/SignService'
-import Bluebird from 'bluebird'
 import { sign } from 'signs/domain/Sign.test'
 
 jest.mock('common/utils/MarkdownAndHtmlToHtml', () => ({
@@ -41,7 +40,7 @@ let container: HTMLElement
 
 describe('Fetch logograms', () => {
   const setup = async () => {
-    signService.search.mockReturnValue(Bluebird.resolve([sign]))
+    signService.search.mockReturnValue(Promise.resolve([sign]))
     renderWordDisplayLogograms()
     await screen.findByText('some notes')
     expect(signService.search).toBeCalledWith({

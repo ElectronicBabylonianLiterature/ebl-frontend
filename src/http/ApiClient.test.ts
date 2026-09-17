@@ -6,7 +6,6 @@ const result = { success: true }
 const accessToken = 'accessToken'
 
 const errorResponse = { status: 404, statusText: 'NOT_FOUND' }
-const expectSignal = expect.any(AbortSignal)
 const requestJson = {
   payload: 1,
 }
@@ -36,24 +35,34 @@ describe('fetchJson', () => {
       const expectedHeaders = new Headers({
         Authorization: `Bearer ${accessToken}`,
       })
-      await apiClient.fetchJson(path, true, expectSignal)
+      await apiClient.fetchJson(path, true)
       expect(fetch).toBeCalledWith(expectedUrl, {
         headers: expectedHeaders,
-        signal: expectSignal,
       })
     })
 
     test('Makes a request without Authorization header', async () => {
-      await apiClient.fetchJson(path, false, expectSignal)
+      await apiClient.fetchJson(path, false)
       expect(fetch).toBeCalledWith(expectedUrl, {
         headers: new Headers(),
-        signal: expectSignal,
       })
     })
   })
 
   commonTests(() => apiClient.fetchJson(path, true))
 })
+
+function expectJsonRequest(method: string): void {
+  const expectedHeaders = new Headers({
+    Authorization: `Bearer ${accessToken}`,
+    'Content-Type': 'application/json; charset=utf-8',
+  })
+  expect(fetch).toBeCalledWith(expectedUrl, {
+    body: JSON.stringify(requestJson),
+    headers: expectedHeaders,
+    method: method,
+  })
+}
 
 describe('postJson', () => {
   test('Resolves on success', async () => {
@@ -86,16 +95,7 @@ describe('postJson', () => {
 
     await apiClient.postJson(path, requestJson)
 
-    const expectedHeaders = new Headers({
-      Authorization: `Bearer ${accessToken}`,
-      'Content-Type': 'application/json; charset=utf-8',
-    })
-    expect(fetch).toBeCalledWith(expectedUrl, {
-      body: JSON.stringify(requestJson),
-      headers: expectedHeaders,
-      method: 'POST',
-      signal: expectSignal,
-    })
+    expectJsonRequest('POST')
   })
 
   commonTests(() => apiClient.postJson(path, requestJson))
@@ -119,16 +119,7 @@ describe('putJson', () => {
 
     await apiClient.putJson(path, requestJson)
 
-    const expectedHeaders = new Headers({
-      Authorization: `Bearer ${accessToken}`,
-      'Content-Type': 'application/json; charset=utf-8',
-    })
-    expect(fetch).toBeCalledWith(expectedUrl, {
-      body: JSON.stringify(requestJson),
-      headers: expectedHeaders,
-      method: 'PUT',
-      signal: expectSignal,
-    })
+    expectJsonRequest('PUT')
   })
 
   commonTests(() => apiClient.postJson(path, requestJson))
@@ -153,7 +144,6 @@ describe('fetchBlob', () => {
     })
     expect(fetch).toBeCalledWith(expectedUrl, {
       headers: expectedHeaders,
-      signal: expectSignal,
     })
   })
 
@@ -164,7 +154,6 @@ describe('fetchBlob', () => {
 
     expect(fetch).toBeCalledWith(expectedUrl, {
       headers: new Headers(),
-      signal: expectSignal,
     })
   })
 

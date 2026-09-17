@@ -1,4 +1,4 @@
-FROM node:20-alpine AS build
+FROM node:20-alpine@sha256:fb4cd12c85ee03686f6af5362a0b0d56d50c58a04632e6c0fb8363f609372293 AS build
 
 ENV NODE_ENV=production
 WORKDIR /usr/src/ebl-frontend
@@ -7,12 +7,12 @@ WORKDIR /usr/src/ebl-frontend
 RUN apk add --no-cache \
 	cairo-dev=1.18.4-r0 \
 	g++=15.2.0-r2 \
-	giflib-dev=5.2.2-r1 \
+	giflib-dev=5.2.2-r2 \
 	jpeg-dev=9f-r0 \
 	make=4.4.1-r3 \
 	pango-dev=1.56.4-r0 \
 	pixman-dev=0.46.4-r0 \
-	python3=3.12.13-r0 \
+	python3=3.12.14-r0 \
 	&& ln -sf /usr/bin/python3 /usr/bin/python
 ENV PYTHON=/usr/bin/python3
 
@@ -50,7 +50,7 @@ ENV NODE_OPTIONS=--max_old_space_size=1536
 RUN yarn build
 
 
-FROM node:20-alpine
+FROM node:20-alpine@sha256:fb4cd12c85ee03686f6af5362a0b0d56d50c58a04632e6c0fb8363f609372293
 
 EXPOSE 5000
 RUN npm install -g serve@13.0.2

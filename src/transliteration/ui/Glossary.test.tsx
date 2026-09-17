@@ -8,7 +8,6 @@ import { Text } from 'transliteration/domain/text'
 import { MemoryRouter } from 'react-router-dom'
 import { createDictionaryWord } from 'test-support/glossary'
 import { DictionaryContext } from 'dictionary/ui/dictionary-context'
-import { Promise } from 'bluebird'
 import { waitForSpinnerToBeRemoved } from 'test-support/waitForSpinnerToBeRemoved'
 
 jest.mock('dictionary/application/WordService')

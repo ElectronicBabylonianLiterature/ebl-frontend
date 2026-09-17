@@ -1,7 +1,6 @@
 import React from 'react'
 import { Tab, Tabs } from 'react-bootstrap'
 import _ from 'lodash'
-import Bluebird from 'bluebird'
 
 import withData from 'http/withData'
 import LinkedImage from 'common/ui/LinkedImage'
@@ -81,7 +80,7 @@ interface Props {
 export default withData<unknown, Props, { cdliImages: string[] }>(
   ({ data }) => <CdliImages cdliImages={data.cdliImages} />,
   ({ fragment }) =>
-    Bluebird.resolve({
+    Promise.resolve({
       cdliImages: (fragment.cdliImages || []) as string[],
     }),
 )

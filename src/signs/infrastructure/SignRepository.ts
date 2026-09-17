@@ -1,5 +1,4 @@
 import ApiClient from 'http/ApiClient'
-import Promise from 'bluebird'
 import Sign, { OrderedSign, SignQuery, UnicodeAtf } from 'signs/domain/Sign'
 import { stringify } from 'query-string'
 import { AnnotationToken } from 'fragmentarium/domain/annotation-token'
@@ -65,13 +64,17 @@ class SignRepository {
     return Promise.all(tokensWithSigns.map((token) => Promise.all(token)))
   }
 
-  getCentroidImages(signName: string): Promise<CroppedAnnotation[]> {
+  getCentroidImages(
+    signName: string,
+    signal?: AbortSignal,
+  ): Promise<CroppedAnnotation[]> {
     return this.apiClient
       .fetchJson(
         `/signs/${encodeURIComponent(
           signName,
         )}/images?centroids_only=true&include_unclustered=true`,
         false,
+        signal,
       )
       .then(this.processCroppedAnnotations)
   }
@@ -93,15 +96,15 @@ class SignRepository {
       .then(this.processCroppedAnnotations)
   }
 
-  search(signQuery: SignQuery): Promise<Sign[]> {
+  search(signQuery: SignQuery, signal?: AbortSignal): Promise<Sign[]> {
     return this.apiClient
-      .fetchJson(`/signs?${stringify(signQuery)}`, false)
+      .fetchJson(`/signs?${stringify(signQuery)}`, false, signal)
       .then((signDtos) => signDtos.map((signDto) => Sign.fromDto(signDto)))
   }
 
-  find(signName: string): Promise<Sign> {
+  find(signName: string, signal?: AbortSignal): Promise<Sign> {
     return this.apiClient
-      .fetchJson(`/signs/${encodeURIComponent(signName)}`, false)
+      .fetchJson(`/signs/${encodeURIComponent(signName)}`, false, signal)
       .then(Sign.fromDto)
   }
 
@@ -112,10 +115,12 @@ class SignRepository {
   findSignsByOrder(
     signName: string,
     sortEra: string,
+    signal?: AbortSignal,
   ): Promise<[OrderedSign[]]> {
     return this.apiClient.fetchJson(
       `/signs/${encodeURIComponent(signName)}/${sortEra}`,
       false,
+      signal,
     )
   }
 

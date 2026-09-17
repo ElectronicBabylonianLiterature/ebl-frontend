@@ -20,7 +20,7 @@ import { createColumns } from 'transliteration/domain/columns'
 import { numberToUnicodeSubscript } from 'transliteration/application/SubIndex'
 import LineNumber from './LineNumber'
 import { LineGroup, LineInfo } from 'transliteration/ui/LineGroup'
-import { AlignmentPopover } from 'transliteration/ui/WordInfo'
+import { AlignmentPopover } from 'transliteration/ui/AlignmentPopover'
 import { Token } from 'transliteration/domain/token'
 import { isBreak } from 'transliteration/domain/type-guards'
 
