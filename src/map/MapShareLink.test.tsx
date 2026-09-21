@@ -1,5 +1,5 @@
 import React from 'react'
-import { render, screen, waitFor } from '@testing-library/react'
+import { act, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import MapShareLink from 'map/MapShareLink'
 
@@ -62,5 +62,42 @@ describe('MapShareLink', () => {
     render(<MapShareLink />)
 
     expect(screen.getByRole('status')).toHaveTextContent('')
+  })
+
+  it('ignores a stale result from an earlier copy attempt', async () => {
+    let rejectFirstAttempt!: (error: Error) => void
+    let resolveSecondAttempt!: () => void
+    const firstAttempt = new Promise<void>((_resolve, reject) => {
+      rejectFirstAttempt = reject
+    })
+    const secondAttempt = new Promise<void>((resolve) => {
+      resolveSecondAttempt = resolve
+    })
+    const writeText = jest
+      .fn()
+      .mockReturnValueOnce(firstAttempt)
+      .mockReturnValueOnce(secondAttempt)
+    mockClipboard(writeText)
+
+    render(<MapShareLink />)
+    const button = screen.getByRole('button', { name: 'Copy map link' })
+    await userEvent.click(button)
+    await userEvent.click(button)
+
+    await act(async () => {
+      resolveSecondAttempt()
+      await secondAttempt
+    })
+    expect(
+      screen.getByText('Map link copied to clipboard.'),
+    ).toBeInTheDocument()
+
+    await act(async () => {
+      rejectFirstAttempt(new Error('stale failure'))
+      await Promise.resolve()
+    })
+    expect(
+      screen.getByText('Map link copied to clipboard.'),
+    ).toBeInTheDocument()
   })
 })

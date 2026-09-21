@@ -1,5 +1,6 @@
-import { screen, waitFor } from '@testing-library/react'
+import { fireEvent, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import { MAX_FILTER_LENGTH, parseMapUrlState } from 'map/mapUrlState'
 
 import {
   CURRENT_LOCATION_TEST_ID,
@@ -14,7 +15,7 @@ jest.mock('maplibre-gl')
 describe('MapTab URL state', () => {
   beforeEach(resetMapMocks)
 
-  it('shows the URL-loaded filter in the input and the results', async () => {
+  it('shows a URL-loaded free-text filter in the input and the results', async () => {
     const provenances = [
       makeProvenance({ id: 'babylon', longName: 'Babylon' }),
       makeProvenance({ id: 'nippur', longName: 'Nippur' }),
@@ -22,11 +23,11 @@ describe('MapTab URL state', () => {
 
     renderMapTab(
       makeFragmentService(provenances),
-      '/tools/map?mv=1&findspot=Babylon',
+      '/tools/map?mv=1&findspot=bab',
     )
 
     const input = await screen.findByLabelText('Filter findspots by name')
-    await waitFor(() => expect(input).toHaveValue('Babylon'))
+    await waitFor(() => expect(input).toHaveValue('bab'))
     expect(screen.getByRole('link', { name: 'Babylon' })).toBeInTheDocument()
     expect(
       screen.queryByRole('link', { name: 'Nippur' }),
@@ -59,5 +60,19 @@ describe('MapTab URL state', () => {
         'findspot=bab',
       )
     })
+  })
+
+  it('shows the same capped filter that it writes to the URL', async () => {
+    renderMapTab(makeFragmentService([makeProvenance()]))
+    const overlongFilter = 'a'.repeat(MAX_FILTER_LENGTH + 50)
+    const cappedFilter = 'a'.repeat(MAX_FILTER_LENGTH)
+
+    const input = await screen.findByLabelText('Filter findspots by name')
+    fireEvent.change(input, { target: { value: overlongFilter } })
+
+    await waitFor(() => expect(input).toHaveValue(cappedFilter))
+    const location = screen.getByTestId(CURRENT_LOCATION_TEST_ID).textContent
+    const search = location?.split('?')[1] ?? ''
+    expect(parseMapUrlState(search).filter).toBe(cappedFilter)
   })
 })

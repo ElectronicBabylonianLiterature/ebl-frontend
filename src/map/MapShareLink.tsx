@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 import { Button } from 'react-bootstrap'
 
 type CopyStatus = 'idle' | 'copied' | 'failed'
@@ -18,11 +18,18 @@ async function writeToClipboard(link: string): Promise<void> {
 
 export default function MapShareLink(): JSX.Element {
   const [status, setStatus] = useState<CopyStatus>('idle')
+  const latestCopyAttemptRef = useRef(0)
 
   const copyLink = (): void => {
+    const copyAttempt = latestCopyAttemptRef.current + 1
+    latestCopyAttemptRef.current = copyAttempt
     writeToClipboard(window.location.href).then(
-      () => setStatus('copied'),
-      () => setStatus('failed'),
+      () => {
+        if (copyAttempt === latestCopyAttemptRef.current) setStatus('copied')
+      },
+      () => {
+        if (copyAttempt === latestCopyAttemptRef.current) setStatus('failed')
+      },
     )
   }
 

@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useRef, useState } from 'react'
 import Select from 'react-select'
 import { ProvenanceRecord } from 'fragmentarium/domain/Provenance'
 import { matchesFindspot } from 'map/findspotFilter'
+import { normalizeMapFilter } from 'map/mapUrlState'
 
 interface Props {
   provenances: readonly ProvenanceRecord[]
@@ -53,9 +54,10 @@ export default function FindspotFilterInput({
       inputValue={inputValue}
       onInputChange={(nextInput, meta) => {
         if (meta.action === 'input-change') {
+          const nextFilter = normalizeMapFilter(nextInput)
           isInternalChangeRef.current = true
-          setInputValue(nextInput)
-          onFilterChange(nextInput)
+          setInputValue(nextFilter)
+          onFilterChange(nextFilter)
         }
       }}
       onChange={(option) => {

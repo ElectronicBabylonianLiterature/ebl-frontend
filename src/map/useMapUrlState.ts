@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import {
   type MapUrlState,
+  normalizeMapUrlState,
   parseMapUrlState,
   serializeMapUrlState,
 } from 'map/mapUrlState'
@@ -17,19 +18,29 @@ export default function useMapUrlState(): MapUrlStateController {
   const [state, setState] = useState<MapUrlState>(() =>
     parseMapUrlState(location.search),
   )
+  const latestLocationRef = useRef(location)
+  latestLocationRef.current = location
   const lastWrittenSearchRef = useRef<string | null>(
     location.search.replace(/^\?/, ''),
   )
 
   const update = useCallback((patch: Partial<MapUrlState>) => {
-    setState((current) => ({ ...current, ...patch }))
+    setState((current) => normalizeMapUrlState({ ...current, ...patch }))
   }, [])
 
   useEffect(() => {
     const search = serializeMapUrlState(state)
     if (search === lastWrittenSearchRef.current) return
     lastWrittenSearchRef.current = search
-    navigate({ search }, { replace: true })
+    const currentLocation = latestLocationRef.current
+    navigate(
+      {
+        pathname: currentLocation.pathname,
+        search,
+        hash: currentLocation.hash,
+      },
+      { replace: true, state: currentLocation.state },
+    )
   }, [state, navigate])
 
   useEffect(() => {

@@ -33,6 +33,15 @@ describe('parseMapUrlState', () => {
     )
   })
 
+  it.each(['1abc', '1.5', '1e3', '01', '+1', '%201'])(
+    'falls back when the version token is %s',
+    (version) => {
+      expect(parseMapUrlState(`mv=${version}&findspot=Babylon`)).toEqual(
+        DEFAULT_MAP_URL_STATE,
+      )
+    },
+  )
+
   it('uses the first value when the filter param is duplicated', () => {
     expect(parseMapUrlState('mv=1&findspot=a&findspot=b')).toEqual({
       version: 1,
@@ -49,6 +58,14 @@ describe('parseMapUrlState', () => {
     const state = parseMapUrlState(`mv=1&findspot=${overlong}`)
     expect(state.filter).toHaveLength(MAX_FILTER_LENGTH)
     expect(state.filter).toBe('a'.repeat(MAX_FILTER_LENGTH))
+  })
+
+  it.each([
+    ['a lone high surrogate', '\uD800', '\uFFFD'],
+    ['a lone low surrogate', '\uDC00', '\uFFFD'],
+    ['an embedded lone surrogate', 'before\uD800after', 'before\uFFFDafter'],
+  ])('normalizes %s while parsing', (_label, filter, expected) => {
+    expect(parseMapUrlState(`mv=1&findspot=${filter}`).filter).toBe(expected)
   })
 })
 
@@ -73,5 +90,22 @@ describe('serializeMapUrlState', () => {
     const search = serializeMapUrlState({ version: 1, filter: overlong })
     const written = parseMapUrlState(search)
     expect(written.filter).toHaveLength(MAX_FILTER_LENGTH)
+  })
+
+  it('does not split a Unicode character at the filter limit', () => {
+    const boundaryFilter = `${'a'.repeat(MAX_FILTER_LENGTH - 1)}😀`
+    const search = serializeMapUrlState({ version: 1, filter: boundaryFilter })
+
+    expect(parseMapUrlState(search).filter).toBe(boundaryFilter)
+  })
+
+  it.each([
+    ['a lone high surrogate', '\uD800', '\uFFFD'],
+    ['a lone low surrogate', '\uDC00', '\uFFFD'],
+    ['an embedded lone surrogate', 'before\uD800after', 'before\uFFFDafter'],
+  ])('normalizes %s before serializing', (_label, filter, expected) => {
+    const search = serializeMapUrlState({ version: 1, filter })
+
+    expect(parseMapUrlState(search).filter).toBe(expected)
   })
 })
