@@ -29,3 +29,7 @@ yarn-error.log*
 __pycache__/
 *.pyc
 /scripts/maps/.map-processing
+
+# qlty
+.qlty/*
+!.qlty/qlty.toml
