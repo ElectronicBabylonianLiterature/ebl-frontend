@@ -1,4 +1,7 @@
 import Promise from 'bluebird'
+import BibliographyBatchLoader, {
+  isNotFoundError,
+} from 'bibliography/application/BibliographyBatchLoader'
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 import BibliographyRepository from 'bibliography/infrastructure/BibliographyRepository'
 import _ from 'lodash'
@@ -27,16 +30,19 @@ export default class BibliographyService implements BibliographySearch {
     Promise<BibliographyEntry>
   >()
 
-  private readonly cachedFindManyRequests = new Map<
-    string,
-    Promise<readonly BibliographyEntry[]>
-  >()
+  private readonly batchLoader: BibliographyBatchLoader
 
   constructor(
     bibliographyRepository: BibliographyRepository,
     private readonly getCacheScope: () => string = () => defaultCacheScope,
   ) {
     this.bibliographyRepository = bibliographyRepository
+    this.batchLoader = new BibliographyBatchLoader(
+      bibliographyRepository,
+      (id, entry) => {
+        this.cacheEntry(id, entry)
+      },
+    )
   }
 
   create(entry: BibliographyEntry): Promise<BibliographyEntry> {
@@ -58,18 +64,17 @@ export default class BibliographyService implements BibliographySearch {
       return inFlightRequest.then((entry) => entry)
     }
 
+    const inFlightBatchRequest = this.batchLoader.findInFlight(id)
+    if (inFlightBatchRequest) {
+      return inFlightBatchRequest
+    }
+
     const requestReference: { current?: Promise<BibliographyEntry> } = {}
     const request = this.bibliographyRepository
       .find(id)
       .then((entry) =>
         this.cachedFindRequests.get(id) === requestReference.current
-          ? setCachedValue({
-              cache: this.cachedEntries,
-              key: id,
-              value: entry,
-              maximumCacheSize: maximumCachedEntries,
-              cacheEntryLifetimeInMilliseconds,
-            })
+          ? this.cacheEntry(id, entry)
           : entry,
       )
       .finally(() => {
@@ -84,18 +89,24 @@ export default class BibliographyService implements BibliographySearch {
   }
 
   findMany(ids: readonly string[]): Promise<readonly BibliographyEntry[]> {
-    this.clearCachesWhenScopeChanges()
-
-    const uniqueIds = _.uniq(ids)
-    if (_.isEmpty(uniqueIds)) {
-      return Promise.resolve([])
-    }
-
-    return this.loadEntriesByIds(uniqueIds).then((entriesById) =>
+    return this.findManyById(ids).then((entriesById) =>
       ids
         .map((id) => entriesById.get(id))
         .filter((entry): entry is BibliographyEntry => entry !== undefined),
     )
+  }
+
+  findManyById(
+    ids: readonly string[],
+  ): Promise<ReadonlyMap<string, BibliographyEntry>> {
+    this.clearCachesWhenScopeChanges()
+
+    const uniqueIds = _.uniq(ids)
+    if (_.isEmpty(uniqueIds)) {
+      return Promise.resolve(new Map<string, BibliographyEntry>())
+    }
+
+    return this.loadEntriesByIds(uniqueIds)
   }
 
   update(entry: BibliographyEntry): Promise<BibliographyEntry> {
@@ -126,11 +137,29 @@ export default class BibliographyService implements BibliographySearch {
         return
       }
 
-      const inFlight = this.cachedFindRequests.get(id)
-      if (inFlight) {
+      const directFindRequest = this.cachedFindRequests.get(id)
+      if (directFindRequest) {
         inFlightRequests.push(
-          inFlight.then((entry) => {
-            entriesById.set(id, entry)
+          directFindRequest
+            .then((entry) => {
+              entriesById.set(id, entry)
+            })
+            .catch((error) => {
+              if (!isNotFoundError(error)) {
+                throw error
+              }
+            }),
+        )
+        return
+      }
+
+      const batchFindRequest = this.batchLoader.findManyInFlight(id)
+      if (batchFindRequest) {
+        inFlightRequests.push(
+          batchFindRequest.then((entry) => {
+            if (entry) {
+              entriesById.set(id, entry)
+            }
           }),
         )
         return
@@ -140,127 +169,40 @@ export default class BibliographyService implements BibliographySearch {
     })
 
     const fetchMissingEntries = _.isEmpty(missingIds)
-      ? Promise.resolve([] as readonly BibliographyEntry[])
-      : this.fetchMany(missingIds)
+      ? Promise.resolve(new Map<string, BibliographyEntry>())
+      : this.batchLoader.load(missingIds)
 
     return Promise.all([
       Promise.all(inFlightRequests),
       fetchMissingEntries,
     ]).then(([, fetchedEntries]) => {
-      fetchedEntries.forEach((entry) => {
-        entriesById.set(entry.id, entry)
+      fetchedEntries.forEach((entry, id) => {
+        entriesById.set(id, entry)
       })
       return entriesById
     })
   }
 
-  private fetchMany(
-    ids: readonly string[],
-  ): Promise<readonly BibliographyEntry[]> {
-    const sortedUniqueIds = _.uniq(ids).sort()
-    const requestKey = sortedUniqueIds.join('|')
-    const cachedRequest = this.cachedFindManyRequests.get(requestKey)
-    if (cachedRequest) {
-      return cachedRequest.then((entries) => entries)
-    }
-
-    const requestReference: {
-      current?: Promise<readonly BibliographyEntry[]>
-    } = {}
-    const request = this.bibliographyRepository
-      .findMany(sortedUniqueIds)
-      .then((entries) => {
-        entries.forEach((entry) => {
-          setCachedValue({
-            cache: this.cachedEntries,
-            key: entry.id,
-            value: entry,
-            maximumCacheSize: maximumCachedEntries,
-            cacheEntryLifetimeInMilliseconds,
-          })
-        })
-
-        const entriesById = _.keyBy(entries, 'id')
-        return Promise.all(
-          sortedUniqueIds.map((id) => {
-            const entry = entriesById[id]
-            return entry
-              ? entry
-              : this.bibliographyRepository.find(id).then((resolvedEntry) =>
-                  setCachedValue({
-                    cache: this.cachedEntries,
-                    key: resolvedEntry.id,
-                    value: resolvedEntry,
-                    maximumCacheSize: maximumCachedEntries,
-                    cacheEntryLifetimeInMilliseconds,
-                  }),
-                )
-          }),
-        )
-      })
-      .finally(() => {
-        if (
-          this.cachedFindManyRequests.get(requestKey) ===
-          requestReference.current
-        ) {
-          this.cachedFindManyRequests.delete(requestKey)
-        }
-      })
-
-    requestReference.current = request
-    this.cachedFindManyRequests.set(requestKey, request)
-
-    sortedUniqueIds.forEach((id) => {
-      if (this.cachedFindRequests.has(id)) {
-        return
-      }
-
-      const idRequestReference: { current?: Promise<BibliographyEntry> } = {}
-      const idRequest = request
-        .then((entries) => {
-          const entry = entries.find((currentEntry) => currentEntry.id === id)
-          return entry
-            ? entry
-            : this.bibliographyRepository.find(id).then((resolvedEntry) =>
-                setCachedValue({
-                  cache: this.cachedEntries,
-                  key: resolvedEntry.id,
-                  value: resolvedEntry,
-                  maximumCacheSize: maximumCachedEntries,
-                  cacheEntryLifetimeInMilliseconds,
-                }),
-              )
-        })
-        .finally(() => {
-          if (this.cachedFindRequests.get(id) === idRequestReference.current) {
-            this.cachedFindRequests.delete(id)
-          }
-        })
-
-      idRequestReference.current = idRequest
-      this.cachedFindRequests.set(id, idRequest)
-    })
-
-    return request
-  }
-
   private cacheUpdatedEntry(entry: BibliographyEntry): BibliographyEntry {
     this.clearCachesWhenScopeChanges()
-    this.cachedFindManyRequests.clear()
-    setCachedValue({
+    this.batchLoader.clear()
+    return this.cacheEntry(entry.id, entry)
+  }
+
+  private cacheEntry(id: string, entry: BibliographyEntry): BibliographyEntry {
+    return setCachedValue({
       cache: this.cachedEntries,
-      key: entry.id,
+      key: id,
       value: entry,
       maximumCacheSize: maximumCachedEntries,
       cacheEntryLifetimeInMilliseconds,
     })
-    return entry
   }
 
   private clearAllCaches(): void {
     this.cachedEntries.clear()
     this.cachedFindRequests.clear()
-    this.cachedFindManyRequests.clear()
+    this.batchLoader.clear()
   }
 
   private clearCachesWhenScopeChanges(): void {
