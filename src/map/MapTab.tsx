@@ -33,6 +33,7 @@ function LoadedMapTab({
 }): JSX.Element {
   const mapContainer = useRef<HTMLDivElement>(null)
   const [mapBackgroundError, setMapBackgroundError] = useState(false)
+  const [mapExcavationAreasError, setMapExcavationAreasError] = useState(false)
   const { state, update } = useMapUrlState()
   const filter = state.filter
   const setFilter = useCallback(
@@ -40,12 +41,22 @@ function LoadedMapTab({
     [update],
   )
 
-  const { index: polygonIndex } = useExcavationPolygonIndex()
+  const {
+    index: polygonIndex,
+    isLoaded: isPolygonIndexLoaded,
+    error: polygonIndexError,
+  } = useExcavationPolygonIndex()
+  const excavationAreasUnavailable =
+    polygonIndexError !== null || mapExcavationAreasError
   const canShowExcavationAreas = useMemo(
-    () => anySiteHasExcavationPolygons(deriveMapSiteCapabilities(polygonIndex)),
-    [polygonIndex],
+    () =>
+      isPolygonIndexLoaded &&
+      !excavationAreasUnavailable &&
+      anySiteHasExcavationPolygons(deriveMapSiteCapabilities(polygonIndex)),
+    [excavationAreasUnavailable, isPolygonIndexLoaded, polygonIndex],
   )
-  const showExcavationAreas = state.showExcavationAreas && canShowExcavationAreas
+  const showExcavationAreas =
+    state.showExcavationAreas && canShowExcavationAreas
 
   const filteredProvenances = useMemo(
     () => filterProvenances(provenances, filter),
@@ -54,13 +65,23 @@ function LoadedMapTab({
   const handleMapBackgroundErrorChange = useCallback((hasError: boolean) => {
     setMapBackgroundError(hasError)
   }, [])
+  const handleExcavationAreasAvailabilityChange = useCallback(
+    (isUnavailable: boolean) => {
+      setMapExcavationAreasError(isUnavailable)
+    },
+    [],
+  )
   const mapRef = useFindspotMap(
     mapContainer,
     filteredProvenances,
     handleMapBackgroundErrorChange,
   )
   useMapSourceData(mapRef, filteredProvenances)
-  useExcavationAreas(mapRef, showExcavationAreas)
+  useExcavationAreas(
+    mapRef,
+    showExcavationAreas,
+    handleExcavationAreasAvailabilityChange,
+  )
 
   return (
     <div className="map-tab">
@@ -79,6 +100,9 @@ function LoadedMapTab({
           update({ showExcavationAreas: isVisible })
         }
       />
+      {excavationAreasUnavailable ? (
+        <Alert variant="warning">Excavation areas are unavailable.</Alert>
+      ) : null}
       <p id="findspot-map-description" className="map-tab__description">
         Filter findspots by name. Matching fragment search links are available
         below the map.
