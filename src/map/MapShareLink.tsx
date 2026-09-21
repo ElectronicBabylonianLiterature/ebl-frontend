@@ -1,10 +1,11 @@
 import React, { useRef, useState } from 'react'
 import { Button } from 'react-bootstrap'
 
-type CopyStatus = 'idle' | 'copied' | 'failed'
+type CopyStatus = 'idle' | 'copying' | 'copied' | 'failed'
 
 const STATUS_MESSAGES: Readonly<Record<CopyStatus, string>> = {
   idle: '',
+  copying: 'Copying map link…',
   copied: 'Map link copied to clipboard.',
   failed: 'Copying failed. Copy the address bar URL instead.',
 }
@@ -23,6 +24,7 @@ export default function MapShareLink(): JSX.Element {
   const copyLink = (): void => {
     const copyAttempt = latestCopyAttemptRef.current + 1
     latestCopyAttemptRef.current = copyAttempt
+    setStatus('copying')
     writeToClipboard(window.location.href).then(
       () => {
         if (copyAttempt === latestCopyAttemptRef.current) setStatus('copied')

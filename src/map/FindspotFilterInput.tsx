@@ -21,13 +21,14 @@ export default function FindspotFilterInput({
   onFilterChange,
 }: Props): JSX.Element {
   const [inputValue, setInputValue] = useState(filter)
-  const isInternalChangeRef = useRef(false)
+  const internallyRequestedFilterRef = useRef<string | null>(null)
 
   useEffect(() => {
-    if (isInternalChangeRef.current) {
-      isInternalChangeRef.current = false
+    if (internallyRequestedFilterRef.current === filter) {
+      internallyRequestedFilterRef.current = null
       return
     }
+    internallyRequestedFilterRef.current = null
     setInputValue(filter)
   }, [filter])
 
@@ -55,15 +56,20 @@ export default function FindspotFilterInput({
       onInputChange={(nextInput, meta) => {
         if (meta.action === 'input-change') {
           const nextFilter = normalizeMapFilter(nextInput)
-          isInternalChangeRef.current = true
+          if (nextFilter !== filter) {
+            internallyRequestedFilterRef.current = nextFilter
+          }
           setInputValue(nextFilter)
           onFilterChange(nextFilter)
         }
       }}
       onChange={(option) => {
-        isInternalChangeRef.current = true
+        const nextFilter = option ? option.value : ''
+        if (nextFilter !== filter) {
+          internallyRequestedFilterRef.current = nextFilter
+        }
         setInputValue('')
-        onFilterChange(option ? option.value : '')
+        onFilterChange(nextFilter)
       }}
       options={options}
       filterOption={(option, rawInput) =>

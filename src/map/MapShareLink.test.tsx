@@ -61,7 +61,35 @@ describe('MapShareLink', () => {
   it('shows no status message before the button is used', () => {
     render(<MapShareLink />)
 
-    expect(screen.getByRole('status')).toHaveTextContent('')
+    expect(screen.getByRole('status')).toBeEmptyDOMElement()
+  })
+
+  it('announces each new copy attempt before reporting success', async () => {
+    let resolveSecondAttempt!: () => void
+    const secondAttempt = new Promise<void>((resolve) => {
+      resolveSecondAttempt = resolve
+    })
+    const writeText = jest
+      .fn()
+      .mockResolvedValueOnce(undefined)
+      .mockReturnValueOnce(secondAttempt)
+    mockClipboard(writeText)
+
+    render(<MapShareLink />)
+    const button = screen.getByRole('button', { name: 'Copy map link' })
+    await userEvent.click(button)
+    await screen.findByText('Map link copied to clipboard.')
+
+    await userEvent.click(button)
+    expect(screen.getByRole('status')).toHaveTextContent('Copying map link…')
+
+    await act(async () => {
+      resolveSecondAttempt()
+      await secondAttempt
+    })
+    expect(screen.getByRole('status')).toHaveTextContent(
+      'Map link copied to clipboard.',
+    )
   })
 
   it('ignores a stale result from an earlier copy attempt', async () => {

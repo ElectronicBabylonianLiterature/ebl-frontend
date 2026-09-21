@@ -38,6 +38,14 @@ function Harness(): JSX.Element {
       <button onClick={() => navigate('/tools/map?mv=1&findspot=External')}>
         external-nav
       </button>
+      <button
+        onClick={() => {
+          update({ filter: 'Local' })
+          navigate('/tools/map?mv=1&findspot=External')
+        }}
+      >
+        local-and-external
+      </button>
     </div>
   )
 }
@@ -62,7 +70,17 @@ describe('useMapUrlState', () => {
     renderHarness('/tools/map')
 
     await waitFor(() => {
-      expect(screen.getByTestId(SEARCH_TEST_ID)).toHaveTextContent('')
+      expect(screen.getByTestId(SEARCH_TEST_ID)).toBeEmptyDOMElement()
+    })
+  })
+
+  it('does not rewrite a URL with a future map-state version', async () => {
+    renderHarness('/tools/map?mv=2&findspot=Future&source=archive')
+
+    await waitFor(() => {
+      expect(screen.getByTestId(SEARCH_TEST_ID)).toHaveTextContent(
+        '?mv=2&findspot=Future&source=archive',
+      )
     })
   })
 
@@ -85,8 +103,40 @@ describe('useMapUrlState', () => {
     })
 
     await waitFor(() => {
-      expect(screen.getByTestId(SEARCH_TEST_ID)).toHaveTextContent('')
+      expect(screen.getByTestId(SEARCH_TEST_ID)).toBeEmptyDOMElement()
     })
+  })
+
+  it('preserves query parameters not owned by the map', async () => {
+    renderHarness('/tools/map?source=archive')
+
+    act(() => {
+      screen.getByText('set-babylon').click()
+    })
+
+    await waitFor(() => {
+      expect(screen.getByTestId(SEARCH_TEST_ID)).toHaveTextContent(
+        /source=archive/,
+      )
+    })
+    expect(screen.getByTestId(SEARCH_TEST_ID)).toHaveTextContent(
+      /findspot=Babylon/,
+    )
+  })
+
+  it('lets external map state win over a pending local write', async () => {
+    renderHarness('/tools/map?mv=1&findspot=Initial')
+
+    act(() => {
+      screen.getByText('local-and-external').click()
+    })
+
+    await waitFor(() => {
+      expect(screen.getByTestId(FILTER_TEST_ID)).toHaveTextContent('External')
+    })
+    expect(screen.getByTestId(SEARCH_TEST_ID)).toHaveTextContent(
+      '?mv=1&findspot=External',
+    )
   })
 
   it('picks up a filter from an external navigation', async () => {

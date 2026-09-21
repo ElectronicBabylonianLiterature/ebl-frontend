@@ -66,3 +66,20 @@ export function serializeMapUrlState(state: MapUrlState): string {
     { skipEmptyString: true },
   )
 }
+
+export function mergeMapUrlStateIntoSearch(
+  search: string,
+  state: MapUrlState,
+): string {
+  const parameters = new URLSearchParams(search)
+  const { filter } = normalizeMapUrlState(state)
+
+  parameters.delete(VERSION_PARAM)
+  parameters.delete(FILTER_PARAM)
+  if (filter) {
+    parameters.set(VERSION_PARAM, String(MAP_URL_STATE_VERSION))
+    parameters.set(FILTER_PARAM, filter)
+  }
+
+  return parameters.toString()
+}
