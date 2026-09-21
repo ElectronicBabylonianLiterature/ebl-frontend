@@ -11,6 +11,13 @@ function findAddedLayer(layerId: string): { id: string } | undefined {
 export const mockAddSource = jest.fn()
 export const mockAddLayer = jest.fn(rememberAddedLayer)
 export const mockGetLayer = jest.fn(findAddedLayer)
+export const mockRemoveLayer = jest.fn((layerId: string) => {
+  addedLayerIds.delete(layerId)
+})
+export const mockRemoveSource = jest.fn()
+export const mockSetLayoutProperty = jest.fn()
+export const mockIsStyleLoaded = jest.fn(() => true)
+export const mockOnce = jest.fn()
 export const mockAddControl = jest.fn()
 export const mockRemove = jest.fn()
 export const mockGetSource = jest.fn()
@@ -46,6 +53,11 @@ export const mockMapInstance = {
   addSource: mockAddSource,
   addLayer: mockAddLayer,
   getLayer: mockGetLayer,
+  removeLayer: mockRemoveLayer,
+  removeSource: mockRemoveSource,
+  setLayoutProperty: mockSetLayoutProperty,
+  isStyleLoaded: mockIsStyleLoaded,
+  once: mockOnce,
   addControl: mockAddControl,
   remove: mockRemove,
   getSource: mockGetSource,
@@ -172,6 +184,7 @@ export function resetMapMocks(): void {
   mockMapConstructionError = null
   mockGetCanvas.mockReturnValue(mockCanvas)
   mockGetSource.mockReturnValue(undefined)
+  mockIsStyleLoaded.mockReturnValue(true)
   mockQueryRenderedFeatures.mockReturnValue([])
   mockAddLayer.mockImplementation(rememberAddedLayer)
   mockGetLayer.mockImplementation(findAddedLayer)
@@ -185,6 +198,10 @@ export function resetMapMocks(): void {
       return mockMapInstance
     },
   )
+  mockOnce.mockImplementation((event: string, callback: MockEventHandler) => {
+    rememberHandler(event, callback)
+    return mockMapInstance
+  })
   mockOff.mockReturnValue(mockMapInstance)
 }
 
