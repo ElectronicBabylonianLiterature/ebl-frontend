@@ -1,6 +1,6 @@
 import fs from 'fs'
 import path from 'path'
-import { act, screen, waitFor } from '@testing-library/react'
+import { act, screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import Bluebird from 'bluebird'
 import fetchMock from 'jest-fetch-mock'
@@ -11,6 +11,7 @@ import {
   mockAddLayer,
   mockQueryRenderedFeatures,
   mockSetLayoutProperty,
+  mockSetPadding,
   renderMapTab,
   resetMapMocks,
   triggerMapEvent,
@@ -22,6 +23,7 @@ import {
 import { findspotMapDataDto } from 'test-support/map-fixtures'
 
 jest.mock('maplibre-gl')
+jest.mock('map/useElementSize', () => () => ({ width: 320, height: 200 }))
 
 const POLYGON_ID = 'assur-bb6i-3d76dc1e02af'
 const CANONICAL_POLYGON_ASSET = fs.readFileSync(
@@ -88,7 +90,7 @@ describe('MapTab excavation selection', () => {
     ).not.toBeInTheDocument()
   })
 
-  it('stores a canonical click, highlights it, and shows one linked-data card', async () => {
+  it('stores a canonical click, highlights it, and opens one evidence inspector', async () => {
     renderMapTab(
       makeFragmentService([makeProvenance()]),
       '/tools/map?mv=1&areas=1',
@@ -123,24 +125,28 @@ describe('MapTab excavation selection', () => {
       ),
     )
     expect(mockSetLayoutProperty).toHaveBeenCalled()
-    const showSelectedArea = await screen.findByRole('button', {
-      name: 'Show selected area',
-    })
-
-    await userEvent.click(showSelectedArea)
-
     expect(
-      screen.getAllByRole('region', { name: 'Selected excavation area' }),
+      await screen.findAllByRole('region', { name: 'Selected area' }),
     ).toHaveLength(1)
     expect(
-      await screen.findByText('3 accessible fragments across 1 findspot.'),
-    ).toBeInTheDocument()
+      screen.queryByRole('button', { name: 'Show selected area' }),
+    ).not.toBeInTheDocument()
+    expect(
+      within(screen.getByRole('region', { name: 'Selected area' })).getByRole(
+        'status',
+      ),
+    ).toHaveTextContent('3 accessible fragments across 1 findspot.')
 
-    await userEvent.click(screen.getByRole('button', { name: 'Clear' }))
+    await userEvent.click(
+      screen.getByRole('button', { name: 'Clear selection' }),
+    )
 
     expect(
-      screen.queryByRole('region', { name: 'Selected excavation area' }),
+      screen.queryByRole('region', { name: 'Selected area' }),
     ).not.toBeInTheDocument()
+    await waitFor(() =>
+      expect(screen.getByRole('button', { name: 'Map layers' })).toHaveFocus(),
+    )
     expect(screen.getByTestId('current-location')).not.toHaveTextContent(
       'selected=',
     )
@@ -151,5 +157,83 @@ describe('MapTab excavation selection', () => {
     expect(mockAddLayer).toHaveBeenCalledWith(
       expect.objectContaining({ id: EXCAVATION_AREA_SELECTED_LAYER_ID }),
     )
+  })
+  it('keeps a selected-site error distinct while another site loads', async () => {
+    const fetchMapData = jest.fn((siteId: string) =>
+      siteId === 'assur'
+        ? Bluebird.reject(new Error('Assur API unavailable'))
+        : Bluebird.resolve([]),
+    )
+    renderMapTab(
+      makeFragmentService([makeProvenance()]),
+      '/tools/map?mv=1&areas=1',
+      { fetchMapData } as unknown as FindspotService,
+    )
+
+    await waitFor(() =>
+      expect(mockAddLayer).toHaveBeenCalledWith(
+        expect.objectContaining({ id: EXCAVATION_AREA_FILL_LAYER_ID }),
+      ),
+    )
+    mockQueryRenderedFeatures.mockReturnValue([{ id: POLYGON_ID }])
+
+    act(() => {
+      triggerMapEvent(
+        'click',
+        { point: { x: 10, y: 20 } },
+        EXCAVATION_AREA_FILL_LAYER_ID,
+      )
+    })
+
+    const inspector = within(
+      await screen.findByRole('region', { name: 'Selected area' }),
+    )
+    expect(await inspector.findByRole('status')).toHaveTextContent(
+      'Linked fragment data is unavailable right now.',
+    )
+    expect(inspector.queryByText('Mapped findspots')).not.toBeInTheDocument()
+    expect(fetchMapData).toHaveBeenCalledWith('uruk')
+  })
+  it('closes and unpads the inspector after external navigation clears selection', async () => {
+    renderMapTab(
+      makeFragmentService([makeProvenance()]),
+      '/tools/map?mv=1&areas=1&selected=area%3A' + POLYGON_ID,
+      makeFindspotService(),
+    )
+
+    await userEvent.click(
+      await screen.findByRole('button', { name: 'Show selected area' }),
+    )
+    expect(
+      screen.getByRole('region', { name: 'Selected area' }),
+    ).toBeInTheDocument()
+    await waitFor(() =>
+      expect(mockSetPadding).toHaveBeenLastCalledWith({
+        top: 0,
+        right: 320,
+        bottom: 0,
+        left: 0,
+      }),
+    )
+
+    await userEvent.click(
+      screen.getByRole('button', { name: 'Navigate without selection' }),
+    )
+
+    await waitFor(() =>
+      expect(
+        screen.queryByRole('region', { name: 'Selected area' }),
+      ).not.toBeInTheDocument(),
+    )
+    expect(screen.getByTestId('current-location')).not.toHaveTextContent(
+      'selected=',
+    )
+    expect(screen.getByRole('button', { name: 'Map layers' })).toHaveFocus()
+    expect(mockSetPadding).toHaveBeenLastCalledWith({
+      top: 0,
+      right: 0,
+      bottom: 0,
+      left: 0,
+    })
   })
 })

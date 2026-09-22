@@ -111,7 +111,7 @@ export default function useMapTabState(
   useMapSourceData(mapRef, filteredProvenances, cameraResetVersion)
 
   const { setSelection } = experience
-  const { open: openPanel } = panel
+  const { open: openPanel, close: closePanel } = panel
   const onSelectPolygon = useCallback(
     (polygonId: string) => {
       setSelection({ type: 'excavation-area', polygonId })
@@ -133,14 +133,22 @@ export default function useMapTabState(
       selectedPolygon === null
     ) {
       setSelection(null)
+      closePanel()
     }
   }, [
+    closePanel,
     isPolygonIndexLoaded,
     polygonIndexError,
     selectedPolygon,
     selectedPolygonId,
     setSelection,
   ])
+
+  useEffect(() => {
+    if (selectedPolygonId === null && panel.active === 'inspector') {
+      closePanel()
+    }
+  }, [closePanel, panel.active, selectedPolygonId])
 
   useExcavationAreas(mapRef, {
     isVisible: showExcavationAreas,
@@ -158,8 +166,9 @@ export default function useMapTabState(
   const resetView = useCallback(() => {
     setCameraResetVersion((current) => current + 1)
     experience.resetState()
+    closePanel()
     resetMapCamera(mapRef.current)
-  }, [experience, mapRef])
+  }, [closePanel, experience, mapRef])
 
   return {
     provenances,

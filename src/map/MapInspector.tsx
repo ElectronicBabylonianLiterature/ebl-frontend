@@ -28,25 +28,35 @@ function hasLoaded(status: FragmentMapDataStatus): boolean {
   return status === 'loaded-with-mappings' || status === 'loaded-empty'
 }
 
-function LinkedDataStatus({
-  status,
-}: {
-  status: FragmentMapDataStatus
-}): JSX.Element | null {
-  const message = {
+function linkedDataMessage(
+  status: FragmentMapDataStatus,
+  research: PolygonResearchSummary,
+): string {
+  if (status === 'loaded-with-mappings' || status === 'loaded-empty') {
+    return `${countLabel(
+      research.accessibleFragmentCount,
+      'accessible fragment',
+    )} across ${countLabel(research.mappedFindspotCount, 'findspot')}.`
+  }
+
+  return {
     'not-configured': 'Linked fragment data is not configured for this site.',
     loading: 'Loading linked fragment data…',
     error: 'Linked fragment data is unavailable right now.',
     incompatible: 'Linked fragment data is incompatible with this map.',
-    'loaded-empty': null,
-    'loaded-with-mappings': null,
   }[status]
+}
 
-  return message ? (
-    <p role="status" aria-live="polite">
-      {message}
-    </p>
-  ) : null
+function LinkedDataStatus({
+  status,
+  research,
+}: {
+  status: FragmentMapDataStatus
+  research: PolygonResearchSummary
+}): JSX.Element | null {
+  return hasLoaded(status) ? null : (
+    <p aria-hidden="true">{linkedDataMessage(status, research)}</p>
+  )
 }
 
 function OverviewTab({
@@ -63,6 +73,8 @@ function OverviewTab({
         <dd>{research.siteName}</dd>
         <dt>Excavation area</dt>
         <dd>{research.displayName}</dd>
+        <dt>Polygon ID</dt>
+        <dd>{research.polygonId}</dd>
         {research.areaSquareKm !== null ? (
           <>
             <dt>Mapped area</dt>
@@ -78,7 +90,7 @@ function OverviewTab({
           </>
         ) : null}
       </dl>
-      <LinkedDataStatus status={status} />
+      <LinkedDataStatus status={status} research={research} />
     </>
   )
 }
@@ -90,7 +102,9 @@ function EvidenceTab({
   research: PolygonResearchSummary
   status: FragmentMapDataStatus
 }): JSX.Element {
-  if (!hasLoaded(status)) return <LinkedDataStatus status={status} />
+  if (!hasLoaded(status)) {
+    return <LinkedDataStatus status={status} research={research} />
+  }
 
   return (
     <>
@@ -116,7 +130,9 @@ function FindspotsTab({
   expandedCount: number
   onExpand: () => void
 }): JSX.Element {
-  if (!hasLoaded(status)) return <LinkedDataStatus status={status} />
+  if (!hasLoaded(status)) {
+    return <LinkedDataStatus status={status} research={research} />
+  }
   if (research.findspots.length === 0) {
     return <p>No fragments are linked to this excavation area.</p>
   }
@@ -127,7 +143,9 @@ function FindspotsTab({
         {visible.map((findspot) => (
           <li key={findspot.findspotId}>
             <Link to={buildFindspotFragmentSearchLink(findspot.findspotId)}>
-              {findspot.area ?? 'Findspot ' + findspot.findspotId}
+              {findspot.area
+                ? `${findspot.area} — Findspot ${findspot.findspotId}`
+                : `Findspot ${findspot.findspotId}`}
             </Link>{' '}
             ({countLabel(findspot.accessibleFragmentCount, 'fragment')})
           </li>
@@ -190,6 +208,14 @@ export default function MapInspector({
           Clear selection
         </button>
       </header>
+      <p
+        className="visually-hidden"
+        role="status"
+        aria-live="polite"
+        aria-atomic="true"
+      >
+        {linkedDataMessage(status, research)}
+      </p>
       <MapInspectorTabs tabs={tabs} label="Excavation area detail" />
     </div>
   )

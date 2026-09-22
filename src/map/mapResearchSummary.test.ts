@@ -3,9 +3,11 @@ import {
   mappingEvidenceOf,
   polygonDisplayName,
   summaryLocationPrecisionOf,
-  UNNAMED_EXCAVATION_AREA,
 } from 'map/mapResearchSummary'
-import { excavationPolygon, findspotMapDataDto } from 'test-support/map-fixtures'
+import {
+  excavationPolygon,
+  findspotMapDataDto,
+} from 'test-support/map-fixtures'
 
 describe('mappingEvidenceOf', () => {
   it('is unmapped with no findspots', () => {
@@ -14,7 +16,10 @@ describe('mappingEvidenceOf', () => {
 
   it('is the single method when all rows agree', () => {
     expect(
-      mappingEvidenceOf([{ matchMethod: 'curated' }, { matchMethod: 'curated' }]),
+      mappingEvidenceOf([
+        { matchMethod: 'curated' },
+        { matchMethod: 'curated' },
+      ]),
     ).toBe('curated')
   })
 
@@ -41,12 +46,12 @@ describe('summaryLocationPrecisionOf', () => {
 })
 
 describe('polygonDisplayName', () => {
-  it('prefers the polygon name, then a findspot area, then the generic noun', () => {
-    expect(polygonDisplayName({ name: 'Ištar Temple' }, [])).toBe('Ištar Temple')
-    expect(polygonDisplayName({ name: null }, [{ area: 'Area A' }])).toBe(
-      'Area A',
+  it('prefers the canonical polygon name and falls back to its stable ID', () => {
+    expect(polygonDisplayName({ name: 'Ištar Temple' }, 'p1')).toBe(
+      'Ištar Temple',
     )
-    expect(polygonDisplayName(undefined, [])).toBe(UNNAMED_EXCAVATION_AREA)
+    expect(polygonDisplayName({ name: null }, 'p1')).toBe('p1')
+    expect(polygonDisplayName(undefined, 'p1')).toBe('p1')
   })
 })
 
