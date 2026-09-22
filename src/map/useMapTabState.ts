@@ -15,6 +15,9 @@ import useMapPanel, { type MapPanelController } from 'map/useMapPanel'
 import useMapVisualization, {
   type MapVisualization,
 } from 'map/useMapVisualization'
+import useMapMeasurement, {
+  type MeasurementController,
+} from 'map/useMapMeasurement'
 import useMapLayoutEffects from 'map/useMapLayoutEffects'
 import { resetMapCamera } from 'map/mapCamera'
 import { filterProvenances } from 'map/findspotFilter'
@@ -41,6 +44,7 @@ export interface MapTabState {
   readonly fragmentMapData: FragmentMapDataState
   readonly selectedPolygon: ExcavationPolygon | null
   readonly visualization: MapVisualization
+  readonly measurement: MeasurementController
   readonly excavationPolygons: readonly ExcavationPolygon[]
   readonly selectPolygon: (polygonId: string) => void
   readonly resetView: () => void
@@ -71,6 +75,10 @@ export default function useMapTabState(
 
   const experience = useMapExperience()
   const panel = useMapPanel()
+  const isMeasurementActive =
+    panel.active === 'measurement' &&
+    !experience.presentation.isActive &&
+    !isBackgroundUnavailable
   const {
     index: polygonIndex,
     isLoaded: isPolygonIndexLoaded,
@@ -111,6 +119,7 @@ export default function useMapTabState(
     filteredProvenances,
     onMapBackgroundError,
     cameraResetVersion,
+    !isMeasurementActive,
   )
   useMapSourceData(mapRef, filteredProvenances, cameraResetVersion)
 
@@ -161,7 +170,16 @@ export default function useMapTabState(
     if (!canShowExcavationAreas && panel.active === 'visualization') {
       closePanel()
     }
-  }, [canShowExcavationAreas, closePanel, panel.active, selectedPolygonId])
+    if (isBackgroundUnavailable && panel.active === 'measurement') {
+      closePanel()
+    }
+  }, [
+    canShowExcavationAreas,
+    closePanel,
+    isBackgroundUnavailable,
+    panel.active,
+    selectedPolygonId,
+  ])
 
   useExcavationAreas(mapRef, {
     isVisible: showExcavationAreas,
@@ -170,6 +188,7 @@ export default function useMapTabState(
     values: visualization.values,
     onSelectPolygon,
     onAvailabilityChange: setIsRenderedAreasUnavailable,
+    isInteractionEnabled: !isMeasurementActive,
   })
   useMapLayoutEffects(
     mapContainer,
@@ -177,6 +196,8 @@ export default function useMapTabState(
     drawerRef,
     experience.presentation.isActive ? null : panel.active,
   )
+
+  const measurement = useMapMeasurement(mapRef, isMeasurementActive)
 
   const resetView = useCallback(() => {
     setCameraResetVersion((current) => current + 1)
@@ -201,6 +222,7 @@ export default function useMapTabState(
     fragmentMapData,
     selectedPolygon,
     visualization,
+    measurement,
     selectPolygon: onSelectPolygon,
     excavationPolygons: [...polygonIndex.values()]
       .flatMap((polygons) => [...polygons])

@@ -1,10 +1,10 @@
-import type {
-  MockErrorEvent,
-  MockEventHandler,
-  MockMapEvent,
+import {
+  mockGetCenter,
+  type MockErrorEvent,
+  type MockEventHandler,
+  type MockMapEvent,
 } from 'map/mapLibreMockEvents.testSupport'
 export * from 'map/mapLibreMockEvents.testSupport'
-
 const addedLayerIds = new Set<string>()
 function rememberAddedLayer(layer: { id: string }): void {
   addedLayerIds.add(layer.id)
@@ -45,7 +45,6 @@ export const mockBoundsExtend = jest.fn()
 const mockEventHandlers: Record<string, MockEventHandler[]> = {}
 let mockLoadImmediately = true
 let mockMapConstructionError: unknown = null
-
 export const mockMapInstance = {
   addSource: mockAddSource,
   addLayer: mockAddLayer,
@@ -61,6 +60,7 @@ export const mockMapInstance = {
   remove: mockRemove,
   getSource: mockGetSource,
   getCanvas: mockGetCanvas,
+  getCenter: mockGetCenter,
   on: mockOn,
   off: mockOff,
   fitBounds: mockFitBounds,
@@ -175,7 +175,6 @@ export function deferMapLoad(): void {
 export function failMapConstruction(error: unknown): void {
   mockMapConstructionError = error
 }
-
 export function resetMapMocks(): void {
   jest.clearAllMocks()
   Object.keys(mockEventHandlers).forEach((event) => {
@@ -186,6 +185,7 @@ export function resetMapMocks(): void {
   mockLoadImmediately = true
   mockMapConstructionError = null
   mockGetCanvas.mockReturnValue(mockCanvas)
+  mockGetCenter.mockReturnValue({ lng: 43.25, lat: 35.45 })
   mockGetSource.mockReturnValue(undefined)
   mockIsStyleLoaded.mockReturnValue(true)
   mockQueryRenderedFeatures.mockReturnValue([])

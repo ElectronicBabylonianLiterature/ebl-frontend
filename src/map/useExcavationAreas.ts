@@ -28,6 +28,13 @@ const ALL_LAYER_IDS: readonly string[] = [
 ]
 const EMPTY_VALUES: PolygonVisualizationValues = new Map()
 
+function ownsMap(
+  mapRef: MutableRefObject<MapLibreMap | null>,
+  map: MapLibreMap,
+): boolean {
+  return mapRef.current === map
+}
+
 function addExcavationAreas(map: MapLibreMap): void {
   if (!map.getSource(EXCAVATION_AREAS_SOURCE_ID)) {
     map.addSource(EXCAVATION_AREAS_SOURCE_ID, createExcavationAreasSource())
@@ -108,6 +115,7 @@ export interface ExcavationAreaOptions {
   readonly values?: PolygonVisualizationValues
   readonly onSelectPolygon: (polygonId: string) => void
   readonly onAvailabilityChange?: (isUnavailable: boolean) => void
+  readonly isInteractionEnabled?: boolean
 }
 
 export default function useExcavationAreas(
@@ -130,6 +138,7 @@ export default function useExcavationAreas(
       }
     }
     const handleClick = (event: MapMouseEvent): void => {
+      if (latestOptionsRef.current.isInteractionEnabled === false) return
       const [feature] = map.queryRenderedFeatures(event.point, {
         layers: [EXCAVATION_AREA_FILL_LAYER_ID],
       })
@@ -161,7 +170,7 @@ export default function useExcavationAreas(
     else map.once('load', updateVisibility)
 
     return () => {
-      if (mapRef.current === map) map.off('load', updateVisibility)
+      if (ownsMap(mapRef, map)) map.off('load', updateVisibility)
     }
   }, [mapRef, options.isVisible])
 
@@ -178,7 +187,7 @@ export default function useExcavationAreas(
     else map.once('load', updateSelection)
 
     return () => {
-      if (mapRef.current === map) map.off('load', updateSelection)
+      if (ownsMap(mapRef, map)) map.off('load', updateSelection)
     }
   }, [mapRef, options.isVisible, options.selectedPolygonId])
 
@@ -192,7 +201,7 @@ export default function useExcavationAreas(
     else map.once('load', updatePaint)
 
     return () => {
-      if (mapRef.current === map) map.off('load', updatePaint)
+      if (ownsMap(mapRef, map)) map.off('load', updatePaint)
     }
   }, [mapRef, options.paint])
 
@@ -206,7 +215,7 @@ export default function useExcavationAreas(
     else map.once('load', updateValues)
 
     return () => {
-      if (mapRef.current === map) map.off('load', updateValues)
+      if (ownsMap(mapRef, map)) map.off('load', updateValues)
     }
   }, [mapRef, options.values])
 }

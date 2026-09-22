@@ -14,6 +14,7 @@ import MapLayerControls from 'map/MapLayerControls'
 import MapInspector from 'map/MapInspector'
 import MapLegend from 'map/MapLegend'
 import MapVisualizationControl from 'map/MapVisualizationControl'
+import MapMeasurePanel from 'map/MapMeasurePanel'
 import MapSelectionPill from 'map/MapSelectionPill'
 import MapExcavationAreaSelector from 'map/MapExcavationAreaSelector'
 import { findMapSite, isMapSiteId } from 'map/mapSites'
@@ -99,6 +100,12 @@ function LoadedMapTab({
           onModeChange={experience.setVisualization}
         />
       ),
+    },
+    {
+      id: 'measurement',
+      label: 'Measure',
+      isSupported: !state.isBackgroundUnavailable,
+      render: () => <MapMeasurePanel measurement={state.measurement} />,
     },
     {
       id: 'layers',
