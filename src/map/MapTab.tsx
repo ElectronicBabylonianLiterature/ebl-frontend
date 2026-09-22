@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Alert } from 'react-bootstrap'
 import 'maplibre-gl/dist/maplibre-gl.css'
 import FragmentService from 'fragmentarium/application/FragmentService'
@@ -26,6 +26,7 @@ import type { MapPanelDefinition } from 'map/MapToolbar'
 import FindspotFilterInput from 'map/FindspotFilterInput'
 import { FindspotEmptyState, FindspotSearchList } from 'map/FindspotResults'
 import { filterProvenances } from 'map/findspotFilter'
+import { provenanceToGeoJson } from 'map/provenanceToGeoJson'
 import 'map/MapTab.sass'
 
 interface Props {
@@ -39,11 +40,15 @@ function LoadedMapTab({
 }): JSX.Element {
   const mapContainer = useRef<HTMLDivElement>(null)
   const drawerRef = useRef<HTMLElement>(null)
+  const presentationTriggerRef = useRef<HTMLButtonElement>(null)
+  const wasPresentingRef = useRef(false)
   const [mapBackgroundError, setMapBackgroundError] = useState(false)
   const [mapExcavationAreasError, setMapExcavationAreasError] = useState(false)
+  const [cameraResetVersion, setCameraResetVersion] = useState(0)
 
   const experience = useMapExperience()
   const panel = useMapPanel()
+  const isPresenting = experience.presentation.isActive
 
   const {
     index: polygonIndex,
@@ -66,6 +71,10 @@ function LoadedMapTab({
     () => filterProvenances(provenances, experience.filter),
     [provenances, experience.filter],
   )
+  const visibleFindspotCount = useMemo(
+    () => provenanceToGeoJson(filteredProvenances).features.length,
+    [filteredProvenances],
+  )
   const handleMapBackgroundErrorChange = useCallback((hasError: boolean) => {
     setMapBackgroundError(hasError)
   }, [])
@@ -79,16 +88,30 @@ function LoadedMapTab({
     mapContainer,
     filteredProvenances,
     handleMapBackgroundErrorChange,
+    cameraResetVersion,
   )
-  useMapSourceData(mapRef, filteredProvenances)
+  useMapSourceData(mapRef, filteredProvenances, cameraResetVersion)
   useExcavationAreas(
     mapRef,
     showExcavationAreas,
     handleExcavationAreasAvailabilityChange,
   )
-  useMapLayoutEffects(mapContainer, mapRef, drawerRef, panel.active)
+  useMapLayoutEffects(
+    mapContainer,
+    mapRef,
+    drawerRef,
+    isPresenting ? null : panel.active,
+  )
+
+  useEffect(() => {
+    if (wasPresentingRef.current && !isPresenting) {
+      presentationTriggerRef.current?.focus()
+    }
+    wasPresentingRef.current = isPresenting
+  }, [isPresenting])
 
   const resetView = useCallback(() => {
+    setCameraResetVersion((current) => current + 1)
     experience.resetState()
     resetMapCamera(mapRef.current)
   }, [experience, mapRef])
@@ -108,8 +131,6 @@ function LoadedMapTab({
     },
   ]
 
-  const isPresenting = experience.presentation.isActive
-
   return (
     <div
       className={`map-tab map-experience${isPresenting ? ' map-experience--presenting' : ''}`}
@@ -121,8 +142,9 @@ function LoadedMapTab({
         />
       ) : (
         <MapExperienceHeader
-          visibleSiteCount={filteredProvenances.length}
+          visibleSiteCount={visibleFindspotCount}
           onResetView={resetView}
+          presentationTriggerRef={presentationTriggerRef}
           onEnterPresentation={experience.presentation.enter}
           filterControl={
             <FindspotFilterInput
@@ -138,6 +160,7 @@ function LoadedMapTab({
           containerRef={mapContainer}
           isBackgroundUnavailable={mapBackgroundError}
           describedById="findspot-map-description"
+          showFallbackHint={!isPresenting}
           overlay={
             isPresenting ? null : (
               <MapPanelDock
@@ -149,14 +172,19 @@ function LoadedMapTab({
           }
         />
       </div>
-      {!isPresenting && excavationAreasUnavailable ? (
+      {excavationAreasUnavailable ? (
         <Alert variant="warning">Excavation areas are unavailable.</Alert>
       ) : null}
+      <p
+        id="findspot-map-description"
+        className={isPresenting ? 'visually-hidden' : 'map-tab__description'}
+      >
+        {isPresenting
+          ? 'Interactive findspot map in presentation mode.'
+          : 'Matching fragment search links are available below the map.'}
+      </p>
       {isPresenting ? null : (
         <>
-          <p id="findspot-map-description" className="map-tab__description">
-            Matching fragment search links are available below the map.
-          </p>
           <FindspotEmptyState
             provenances={filteredProvenances}
             filter={experience.filter}

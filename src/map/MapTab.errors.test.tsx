@@ -163,6 +163,11 @@ describe('MapTab map errors', () => {
     expect(await screen.findByText(EXCAVATION_WARNING)).toBeInTheDocument()
     await openLayerControls()
     expect(screen.getByLabelText('Excavation areas')).toBeDisabled()
+
+    await userEvent.click(
+      screen.getByRole('button', { name: 'Presentation mode' }),
+    )
+    expect(screen.getByText(EXCAVATION_WARNING)).toBeInTheDocument()
   })
 
   it('shows an unavailable state for a malformed HTTP-200 asset', async () => {

@@ -1,5 +1,5 @@
 import { act, renderHook } from '@testing-library/react'
-import usePresentationMode from './usePresentationMode'
+import usePresentationMode from 'map/usePresentationMode'
 
 function pressEscape(): void {
   act(() => {
