@@ -1,17 +1,23 @@
 import type { AddLayerObject, GeoJSONSourceSpecification } from 'maplibre-gl'
-import { EXCAVATION_POLYGON_GEOJSON_URL } from './excavationPolygonIndex'
+import { EXCAVATION_POLYGON_GEOJSON_URL } from 'map/excavationPolygonIndex'
 import {
   EXCAVATION_AREA_FILL_LAYER_ID,
   EXCAVATION_AREA_OUTLINE_LAYER_ID,
   EXCAVATION_AREA_SELECTED_LAYER_ID,
   EXCAVATION_AREAS_SOURCE_ID,
-} from './mapLayerIds'
+} from 'map/mapLayerIds'
 import {
   CATEGORICAL_PAINT,
   type ExcavationPaint,
   excavationPaintProperties,
-} from './mapExcavationPaint'
-import { SELECTED } from './mapStateExpressions'
+} from 'map/mapExcavationPaint'
+import { SELECTED } from 'map/mapStateExpressions'
+export {
+  EXCAVATION_AREA_FILL_LAYER_ID,
+  EXCAVATION_AREA_OUTLINE_LAYER_ID,
+  EXCAVATION_AREA_SELECTED_LAYER_ID,
+  EXCAVATION_AREAS_SOURCE_ID,
+} from 'map/mapLayerIds'
 
 export function createExcavationAreasSource(): GeoJSONSourceSpecification {
   return {
@@ -71,3 +77,7 @@ export const excavationAreaSelectedLayer: AddLayerObject = {
 
 export const excavationAreaFillLayer = createExcavationAreaFillLayer()
 export const excavationAreaOutlineLayer = createExcavationAreaOutlineLayer()
+export const EXCAVATION_AREA_LAYER_IDS: readonly string[] = [
+  EXCAVATION_AREA_FILL_LAYER_ID,
+  EXCAVATION_AREA_OUTLINE_LAYER_ID,
+]

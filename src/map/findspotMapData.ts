@@ -1,7 +1,3 @@
-export const ASSUR_SITE_ID = 'ASSUR'
-
-export type FindspotMapDataStatus = 'idle' | 'loading' | 'loaded' | 'error'
-
 export type LocationPrecision = 'excavation-area'
 export type MatchMethod = 'curated' | 'verified-source'
 
@@ -29,6 +25,7 @@ export interface FindspotMapDataDiagnostics {
   readonly exactDuplicateRows: number
   readonly conflictingDuplicateFindspots: number
   readonly conflictingDuplicateRows: number
+  readonly rejectedRows: number
 }
 
 export interface SanitizedFindspotMapDataResponse {
@@ -58,7 +55,9 @@ function optionalString(value: unknown): string | null | undefined {
     : undefined
 }
 
-export function sanitizeFindspotMapData(value: unknown): FindspotMapData | null {
+export function sanitizeFindspotMapData(
+  value: unknown,
+): FindspotMapData | null {
   if (!value || typeof value !== 'object') return null
 
   const dto = value as Record<string, unknown>
@@ -72,12 +71,16 @@ export function sanitizeFindspotMapData(value: unknown): FindspotMapData | null 
   const building = optionalString(dto.building)
   const room = optionalString(dto.room)
 
-  if (typeof findspotId !== 'number' || !Number.isInteger(findspotId)) {
+  if (
+    typeof findspotId !== 'number' ||
+    !Number.isSafeInteger(findspotId) ||
+    findspotId < 0
+  ) {
     return null
   }
   if (
     typeof accessibleFragmentCount !== 'number' ||
-    !Number.isFinite(accessibleFragmentCount) ||
+    !Number.isSafeInteger(accessibleFragmentCount) ||
     accessibleFragmentCount < 0
   ) {
     return null

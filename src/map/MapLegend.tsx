@@ -3,9 +3,9 @@ import { Button } from 'react-bootstrap'
 import type {
   ChoroplethLegend,
   MapVisualizationMode,
-} from './mapChoroplethScale'
-import { mapLegendEntries } from './mapLegendEntries'
-import MapLegendList from './MapLegendList'
+} from 'map/mapChoroplethScale'
+import { mapLegendEntries } from 'map/mapLegendEntries'
+import MapLegendList from 'map/MapLegendList'
 
 interface Props {
   readonly mode: MapVisualizationMode
