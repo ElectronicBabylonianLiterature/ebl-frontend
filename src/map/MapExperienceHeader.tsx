@@ -7,6 +7,7 @@ interface Props {
   readonly visibleSiteCount: number
   readonly onResetView: () => void
   readonly onEnterPresentation: () => void
+  readonly presentationTriggerRef: React.Ref<HTMLButtonElement>
 }
 
 export default function MapExperienceHeader({
@@ -14,6 +15,7 @@ export default function MapExperienceHeader({
   visibleSiteCount,
   onResetView,
   onEnterPresentation,
+  presentationTriggerRef,
 }: Props): JSX.Element {
   return (
     <header className="map-experience__topbar">
@@ -23,9 +25,13 @@ export default function MapExperienceHeader({
       </div>
       <div className="map-experience__search">{filterControl}</div>
       <div className="map-experience__actions">
-        <span aria-live="polite">{visibleSiteCount} visible findspots</span>
+        <span aria-live="polite">
+          {visibleSiteCount} visible{' '}
+          {visibleSiteCount === 1 ? 'findspot' : 'findspots'}
+        </span>
         <MapShareLink />
         <Button
+          ref={presentationTriggerRef}
           type="button"
           variant="outline-secondary"
           size="sm"

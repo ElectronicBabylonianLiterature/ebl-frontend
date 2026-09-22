@@ -3,188 +3,200 @@ from __future__ import annotations
 
 import argparse
 import json
-import re
 import tempfile
+import unicodedata
 from pathlib import Path
 from typing import Any
 
-ROOT = Path(__file__).resolve().parents[2]
-DEFAULT_FINDSPOT_DIR = ROOT / 'public' / 'map-data' / 'findspots'
-DEFAULT_INVENTORY = ROOT / '.map-processing' / 'backend-artifacts' / 'assur_polygon_inventory.json'
-DEFAULT_MAPPING = ROOT / '.map-processing' / 'backend-artifacts' / 'assur_findspot_polygon_mappings.json'
-SITES = ('assur', 'kalhu', 'nippur', 'uruk')
-LEGACY_ASSUR_ID = re.compile(r'^assur-\d+$')
+from findspot_artifact_validation import load_inventory, load_mapping
+from findspot_geometry_identity import geometry_checksum
 
-# Production guard rails. Overridable only so the generator contract can be
-# exercised with small synthetic fixtures; the defaults are the committed
-# canonical asset guarantees.
+ROOT = Path(__file__).resolve().parents[2]
+DEFAULT_ARTIFACT_DIR = ROOT / ".map-processing" / "backend-artifacts"
+SITES = ("assur", "kalhu", "nippur", "uruk")
 DEFAULT_EXPECTATIONS = {
-    'siteFeatureCounts': {'assur': 134, 'kalhu': 12, 'nippur': 20, 'uruk': 128},
-    'inventoryCount': 134,
-    'mappingCount': 317,
-    'mappedPolygonCount': 133,
+    "assur": {"features": 134, "inventory": 134, "mappings": 317, "mapped": 133},
+    "kalhu": {"features": 12, "inventory": 12, "mappings": 8, "mapped": 8},
+    "nippur": {"features": 20, "inventory": 20, "mappings": 20, "mapped": 9},
+    "uruk": {"features": 128, "inventory": 128, "mappings": 131, "mapped": 126},
 }
 
 
-def load_expectations(path: Path | None) -> dict[str, Any]:
-    if path is None:
-        return DEFAULT_EXPECTATIONS
-    overrides = read_json(path)
-    if not isinstance(overrides, dict):
-        raise RuntimeError('Expectations file must be a JSON object')
-    return {**DEFAULT_EXPECTATIONS, **overrides}
-
-
 def read_json(path: Path) -> Any:
-    return json.loads(path.read_text())
+    return json.loads(path.read_text(encoding="utf-8"))
 
 
 def write_json(path: Path, value: Any) -> None:
-    path.write_text(json.dumps(value, ensure_ascii=False, separators=(',', ':')))
+    path.write_text(
+        json.dumps(value, ensure_ascii=False, separators=(",", ":")),
+        encoding="utf-8",
+    )
 
 
-def source_key(value: object) -> str:
-    return str(value).strip()
+def load_expectations(path: Path | None) -> dict[str, dict[str, int]]:
+    value = DEFAULT_EXPECTATIONS if path is None else read_json(path)
+    if not isinstance(value, dict) or set(value) != set(SITES):
+        raise RuntimeError("Expectations must define exactly the configured sites")
+    for site, counts in value.items():
+        if not isinstance(counts, dict) or set(counts) != {
+            "features",
+            "inventory",
+            "mappings",
+            "mapped",
+        }:
+            raise RuntimeError(f"Invalid expectations for {site}")
+        if any(not isinstance(count, int) or count < 0 for count in counts.values()):
+            raise RuntimeError(f"Invalid expectation count for {site}")
+    return value
 
 
-def load_inventory(path: Path, expected_count: int) -> dict[str, str]:
-    records = read_json(path)
-    if not isinstance(records, list):
-        raise RuntimeError('Aššur polygon inventory must be a JSON list')
-    by_name: dict[str, str] = {}
-    seen_ids: set[str] = set()
-    for index, record in enumerate(records, start=1):
-        if not isinstance(record, dict):
-            raise RuntimeError(f'Inventory row {index} is not an object')
-        polygon_id = record.get('polygonId')
-        name = record.get('name')
-        if not isinstance(polygon_id, str) or not polygon_id.startswith('assur-'):
-            raise RuntimeError(f'Inventory row {index} has invalid polygonId')
-        if LEGACY_ASSUR_ID.fullmatch(polygon_id):
-            raise RuntimeError(f'Inventory row {index} has legacy polygonId')
-        if not isinstance(name, str) or not name.strip():
-            raise RuntimeError(f'Inventory row {index} has invalid name')
-        if polygon_id in seen_ids:
-            raise RuntimeError(f'Duplicate inventory polygonId: {polygon_id}')
-        key = source_key(name)
-        if key in by_name:
-            raise RuntimeError(f'Ambiguous inventory source name: {name}')
-        seen_ids.add(polygon_id)
-        by_name[key] = polygon_id
-    if len(by_name) != expected_count:
-        raise RuntimeError(f'Expected {expected_count} inventory records, found {len(by_name)}')
-    return by_name
+def source_key(value: str) -> str:
+    return unicodedata.normalize("NFKC", value).strip()
 
 
-def load_mapping(path: Path, inventory_ids: set[str], expected_records: int, expected_mapped: int) -> set[str]:
-    records = read_json(path)
-    if not isinstance(records, list):
-        raise RuntimeError('Aššur mapping artifact must be a JSON list')
-    findspot_ids: set[int] = set()
-    mapped_ids: set[str] = set()
-    for index, record in enumerate(records, start=1):
-        if not isinstance(record, dict):
-            raise RuntimeError(f'Mapping row {index} is not an object')
-        findspot_id = record.get('findspotId')
-        polygon_ids = record.get('polygonIds')
-        if not isinstance(findspot_id, int):
-            raise RuntimeError(f'Mapping row {index} has invalid findspotId')
-        if findspot_id in findspot_ids:
-            raise RuntimeError(f'Duplicate mapping findspotId: {findspot_id}')
-        if not isinstance(polygon_ids, list) or not polygon_ids:
-            raise RuntimeError(f'Mapping row {index} has invalid polygonIds')
-        if len(polygon_ids) != len(set(polygon_ids)):
-            raise RuntimeError(f'Mapping row {index} duplicates a polygonId')
-        missing = [item for item in polygon_ids if item not in inventory_ids]
-        if missing:
-            raise RuntimeError(f'Mapping row {index} references unknown polygonIds: {missing}')
-        findspot_ids.add(findspot_id)
-        mapped_ids.update(polygon_ids)
-    if len(records) != expected_records:
-        raise RuntimeError(f'Expected {expected_records} mapping records, found {len(records)}')
-    if len(findspot_ids) != expected_records:
-        raise RuntimeError(f'Expected {expected_records} unique findspot IDs, found {len(findspot_ids)}')
-    if len(mapped_ids) != expected_mapped:
-        raise RuntimeError(f'Expected {expected_mapped} mapped polygon IDs, found {len(mapped_ids)}')
-    return mapped_ids
-
-
-def validate_site_counts(collections: dict[str, dict[str, Any]], expected_counts: dict[str, int]) -> None:
-    for site, expected in expected_counts.items():
-        features = collections[site].get('features')
-        if collections[site].get('type') != 'FeatureCollection' or not isinstance(features, list):
-            raise RuntimeError(f'{site}.geojson is not a FeatureCollection')
-        if len(features) != expected:
-            raise RuntimeError(f'{site}.geojson expected {expected} features, found {len(features)}')
-
-
-def canonicalize_assur(collection: dict[str, Any], inventory: dict[str, str], mapped_ids: set[str]) -> dict[str, Any]:
-    matched: set[str] = set()
+def canonicalize_site(
+    collection: object,
+    site: str,
+    inventory: dict[str, dict[str, str]],
+    mapped_ids: set[str],
+    expected_features: int,
+) -> dict[str, Any]:
+    if not isinstance(collection, dict) or collection.get("type") != "FeatureCollection":
+        raise RuntimeError(f"{site}.geojson is not a FeatureCollection")
+    source_features = collection.get("features")
+    if not isinstance(source_features, list) or len(source_features) != expected_features:
+        raise RuntimeError(f"{site}.geojson must contain {expected_features} features")
     canonical_ids: set[str] = set()
-    features = []
-    for index, feature in enumerate(collection['features'], start=1):
-        props = dict(feature.get('properties') or {})
-        name = props.get('name')
-        if not isinstance(name, str):
-            raise RuntimeError(f'Aššur feature {index} has no source name')
-        key = source_key(name)
-        polygon_id = inventory.get(key)
-        if polygon_id is None:
-            raise RuntimeError(f'Missing inventory match for Aššur source name: {name}')
-        if key in matched:
-            raise RuntimeError(f'Ambiguous frontend Aššur source name: {name}')
+    features: list[dict[str, Any]] = []
+    for index, feature in enumerate(source_features, start=1):
+        if not isinstance(feature, dict) or not isinstance(feature.get("properties"), dict):
+            raise RuntimeError(f"{site} feature {index} is invalid")
+        checksum = geometry_checksum(feature.get("geometry"))
+        record = inventory.get(checksum)
+        if record is None:
+            raise RuntimeError(f"{site} feature {index} has no geometry inventory match")
+        properties = feature["properties"]
+        name = properties.get("name")
+        if properties.get("siteId") != site:
+            raise RuntimeError(f"{site} feature {index} has the wrong siteId")
+        if properties.get("siteName") != record["siteName"]:
+            raise RuntimeError(f"{site} feature {index} has the wrong siteName")
+        if not isinstance(name, str) or source_key(name) != source_key(record["name"]):
+            raise RuntimeError(f"{site} feature {index} disagrees with inventory name")
+        polygon_id = record["polygonId"]
         if polygon_id in canonical_ids:
-            raise RuntimeError(f'Duplicate generated canonical ID: {polygon_id}')
-        matched.add(key)
+            raise RuntimeError(f"{site} frontend geometry duplicates {polygon_id}")
         canonical_ids.add(polygon_id)
-        props['id'] = polygon_id
-        features.append({**feature, 'id': polygon_id, 'properties': props})
-    unused = sorted(set(inventory) - matched)
-    if unused:
-        raise RuntimeError(f'Unused inventory source names: {unused}')
-    missing_mapped = sorted(mapped_ids - canonical_ids)
-    if missing_mapped:
-        raise RuntimeError(f'Mapped polygon IDs missing from generated Aššur GeoJSON: {missing_mapped}')
-    return {'type': 'FeatureCollection', 'features': features}
+        properties = {**feature["properties"], "id": polygon_id}
+        features.append({**feature, "id": polygon_id, "properties": properties})
+    if canonical_ids != {record["polygonId"] for record in inventory.values()}:
+        raise RuntimeError(f"{site} inventory and frontend geometry are not one-to-one")
+    if not mapped_ids <= canonical_ids:
+        raise RuntimeError(f"{site} mapped polygons are missing from frontend geometry")
+    return {"type": "FeatureCollection", "features": features}
 
 
-def build_assets(findspot_dir: Path, inventory_path: Path, mapping_path: Path, expectations: dict[str, Any] | None = None) -> tuple[dict[str, Any], dict[str, Any]]:
-    resolved = expectations or DEFAULT_EXPECTATIONS
-    collections = {site: read_json(findspot_dir / f'{site}.geojson') for site in SITES}
-    validate_site_counts(collections, resolved['siteFeatureCounts'])
-    inventory = load_inventory(inventory_path, resolved['inventoryCount'])
-    mapped_ids = load_mapping(mapping_path, set(inventory.values()), resolved['mappingCount'], resolved['mappedPolygonCount'])
-    assur = canonicalize_assur(collections['assur'], inventory, mapped_ids)
-    all_features = [feature for site in SITES for feature in (assur if site == 'assur' else collections[site])['features']]
-    return assur, {'type': 'FeatureCollection', 'features': all_features}
+def build_assets(
+    findspot_dir: Path,
+    artifact_dir: Path,
+    expectations: dict[str, dict[str, int]],
+) -> tuple[dict[str, dict[str, Any]], dict[str, Any]]:
+    collections: dict[str, dict[str, Any]] = {}
+    all_findspot_ids: set[int] = set()
+    for site in SITES:
+        counts = expectations[site]
+        inventory, inventory_ids = load_inventory(
+            artifact_dir / f"{site}_polygon_inventory.json", site, counts["inventory"]
+        )
+        mapped_ids, findspot_ids = load_mapping(
+            artifact_dir / f"{site}_findspot_polygon_mappings.json",
+            site,
+            inventory_ids,
+            counts["mappings"],
+            counts["mapped"],
+        )
+        duplicate_findspot_ids = all_findspot_ids & findspot_ids
+        if duplicate_findspot_ids:
+            raise RuntimeError(
+                f"{site} mappings reuse global findspot IDs: "
+                f"{sorted(duplicate_findspot_ids)}"
+            )
+        all_findspot_ids.update(findspot_ids)
+        collections[site] = canonicalize_site(
+            read_json(findspot_dir / f"{site}.geojson"),
+            site,
+            inventory,
+            mapped_ids,
+            counts["features"],
+        )
+    all_features = [
+        feature for site in SITES for feature in collections[site]["features"]
+    ]
+    return collections, {"type": "FeatureCollection", "features": all_features}
 
 
-def atomic_write_outputs(findspot_dir: Path, assur: dict[str, Any], all_sites: dict[str, Any]) -> None:
-    with tempfile.TemporaryDirectory(dir=findspot_dir) as tmp:
-        tmpdir = Path(tmp)
-        assur_tmp = tmpdir / 'assur.geojson'
-        all_tmp = tmpdir / 'all.geojson'
-        write_json(assur_tmp, assur)
-        write_json(all_tmp, all_sites)
-        assur_tmp.replace(findspot_dir / 'assur.geojson')
-        all_tmp.replace(findspot_dir / 'all.geojson')
+def atomic_write_outputs(
+    findspot_dir: Path,
+    collections: dict[str, dict[str, Any]],
+    all_sites: dict[str, Any],
+) -> None:
+    with tempfile.TemporaryDirectory(dir=findspot_dir) as temporary:
+        temporary_dir = Path(temporary)
+        outputs = {**collections, "all": all_sites}
+        output_paths = {
+            name: findspot_dir / f"{name}.geojson" for name in outputs
+        }
+        originals = {
+            name: path.read_bytes() if path.exists() else None
+            for name, path in output_paths.items()
+        }
+        for name, collection in outputs.items():
+            write_json(temporary_dir / f"{name}.geojson", collection)
+        committed: list[str] = []
+        try:
+            for name, output_path in output_paths.items():
+                (temporary_dir / f"{name}.geojson").replace(output_path)
+                committed.append(name)
+        except OSError:
+            for name in committed:
+                original = originals[name]
+                if original is None:
+                    output_paths[name].unlink(missing_ok=True)
+                else:
+                    output_paths[name].write_bytes(original)
+            raise
 
 
 def parse_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description='Build canonical findspot map GeoJSON assets.')
-    parser.add_argument('--findspot-dir', type=Path, default=DEFAULT_FINDSPOT_DIR)
-    parser.add_argument('--polygon-inventory', type=Path, default=DEFAULT_INVENTORY)
-    parser.add_argument('--mapping-artifact', type=Path, default=DEFAULT_MAPPING)
-    parser.add_argument('--expectations', type=Path, default=None)
+    parser = argparse.ArgumentParser(
+        description="Build canonical multi-site findspot map GeoJSON assets."
+    )
+    parser.add_argument("--findspot-dir", type=Path, required=True)
+    parser.add_argument("--artifact-dir", type=Path, default=DEFAULT_ARTIFACT_DIR)
+    parser.add_argument("--expectations", type=Path)
     return parser.parse_args()
 
 
 def main() -> None:
     args = parse_args()
-    assur, all_sites = build_assets(args.findspot_dir, args.polygon_inventory, args.mapping_artifact, load_expectations(args.expectations))
-    atomic_write_outputs(args.findspot_dir, assur, all_sites)
-    print(json.dumps({'assurFeatureCount': len(assur['features']), 'allFeatureCount': len(all_sites['features'])}, sort_keys=True))
+    expectations = load_expectations(args.expectations)
+    collections, all_sites = build_assets(
+        args.findspot_dir, args.artifact_dir, expectations
+    )
+    atomic_write_outputs(args.findspot_dir, collections, all_sites)
+    print(
+        json.dumps(
+            {
+                "siteFeatureCounts": {
+                    site: len(collection["features"])
+                    for site, collection in collections.items()
+                },
+                "allFeatureCount": len(all_sites["features"]),
+            },
+            sort_keys=True,
+        )
+    )
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

@@ -4,6 +4,7 @@
 
 .map-stage
   &__background-alert
+    flex: 0 0 auto
     margin-bottom: 0.75rem
 
 .map-share-link
@@ -60,20 +61,23 @@
 
   &__body
     position: relative
-    min-height: min(76vh, 760px)
+    height: min(76vh, 760px)
 
 .map-stage
   position: relative
+  display: flex
+  flex-direction: column
   width: 100%
-  height: min(76vh, 760px)
+  height: 100%
   overflow: hidden
   border: 1px solid $ebl-color-border-default
   border-radius: 0.45rem
   background: $ebl-color-surface-muted
 
   &__container
+    flex: 1 1 auto
+    min-height: 0
     width: 100%
-    height: 100%
 
 .map-presentation-bar
   display: flex
@@ -85,7 +89,7 @@
   border-radius: 0.35rem
 
 .map-experience--presenting .map-experience__body
-  min-height: 82vh
+  height: 82vh
 
 .map-tab
   min-width: 0
@@ -114,7 +118,7 @@
     grid-template-columns: minmax(0, 1fr)
     align-items: stretch
 
-  .map-stage
+  .map-experience__body
     height: 68vh
 
 .findspot-filter__control
