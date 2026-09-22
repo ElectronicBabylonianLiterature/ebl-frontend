@@ -1,81 +1,134 @@
-import { useEffect, useState } from 'react'
-import Bluebird from 'bluebird'
+import { useEffect, useMemo, useState } from 'react'
 import { FindspotService } from 'fragmentarium/application/FindspotService'
-import { mapSites } from 'map/mapSites'
+import {
+  IncompatibleFindspotMapDataError,
+  aggregateFindspotMapData,
+} from 'map/findspotMapDataSanitizer'
 import type {
   FindspotMapData,
   PolygonFindspotSummary,
 } from 'map/findspotMapData'
-import { aggregateFindspotMapData } from 'map/findspotMapDataSanitizer'
+import type { ExcavationPolygon } from 'map/excavationPolygonIndex'
+import { type MapSiteDefinition, type MapSiteId, mapSites } from 'map/mapSites'
 
 export type FragmentMapDataStatus =
   | 'not-configured'
   | 'loading'
-  | 'loaded'
+  | 'loaded-with-mappings'
+  | 'loaded-empty'
   | 'error'
+  | 'incompatible'
+
+export interface SiteFragmentMapDataState {
+  readonly status: FragmentMapDataStatus
+  readonly findspots: readonly FindspotMapData[]
+  readonly polygonSummaries: ReadonlyMap<string, PolygonFindspotSummary>
+}
 
 export interface FragmentMapDataState {
-  readonly status: FragmentMapDataStatus
+  readonly sites: ReadonlyMap<MapSiteId, SiteFragmentMapDataState>
   readonly findspots: readonly FindspotMapData[]
   readonly polygonSummaries: ReadonlyMap<string, PolygonFindspotSummary>
 }
 
 const EMPTY_SUMMARIES = aggregateFindspotMapData([])
 
-function configuredMapDataSiteIds(): readonly string[] {
-  return mapSites()
-    .filter((site) => site.mapDataSiteParam !== null)
-    .map((site) => site.siteId)
+function emptySiteState(
+  status: FragmentMapDataStatus,
+): SiteFragmentMapDataState {
+  return { status, findspots: [], polygonSummaries: EMPTY_SUMMARIES }
+}
+
+function initialSiteStates(): Map<MapSiteId, SiteFragmentMapDataState> {
+  return new Map(
+    mapSites().map((site) => [
+      site.siteId,
+      emptySiteState(site.mapDataSiteParam ? 'loading' : 'not-configured'),
+    ]),
+  )
+}
+
+function isCompatibleWithCanonicalPolygons(
+  site: MapSiteDefinition,
+  findspots: readonly FindspotMapData[],
+  polygonIndex: ReadonlyMap<string, readonly ExcavationPolygon[]>,
+): boolean {
+  const canonicalPolygons = polygonIndex.get(site.siteId)
+  if (!canonicalPolygons) return false
+  const canonicalIds = new Set(
+    canonicalPolygons.map((polygon) => polygon.polygonId),
+  )
+
+  return findspots.every(
+    (findspot) =>
+      findspot.siteId === site.mapDataSiteParam &&
+      findspot.siteName === site.siteName &&
+      findspot.polygonIds.every((polygonId) => canonicalIds.has(polygonId)),
+  )
 }
 
 export default function useFragmentMapData(
   findspotService: FindspotService,
+  polygonIndex: ReadonlyMap<string, readonly ExcavationPolygon[]> | null,
 ): FragmentMapDataState {
-  const [state, setState] = useState<FragmentMapDataState>({
-    status: 'not-configured',
-    findspots: [],
-    polygonSummaries: EMPTY_SUMMARIES,
-  })
+  const [sites, setSites] = useState(initialSiteStates)
 
   useEffect(() => {
-    const siteIds = configuredMapDataSiteIds()
-    if (siteIds.length === 0) {
-      setState({
-        status: 'not-configured',
-        findspots: [],
-        polygonSummaries: EMPTY_SUMMARIES,
-      })
-      return
-    }
+    setSites(initialSiteStates())
+    if (polygonIndex === null) return
 
     let isMounted = true
-    setState((current) => ({ ...current, status: 'loading' }))
+    const updateSite = (
+      siteId: MapSiteId,
+      next: SiteFragmentMapDataState,
+    ): void => {
+      if (!isMounted) return
+      setSites((current) => new Map(current).set(siteId, next))
+    }
 
-    Bluebird.all(
-      siteIds.map((siteId) => findspotService.fetchMapData(siteId)),
-    )
-      .then((responses) => {
-        if (!isMounted) return
-        const findspots = responses.flatMap((response) => [...response])
-        setState({
-          status: 'loaded',
-          findspots,
-          polygonSummaries: aggregateFindspotMapData(findspots),
+    mapSites().forEach((site) => {
+      if (!site.mapDataSiteParam) return
+
+      findspotService
+        .fetchMapData(site.siteId)
+        .then((findspots) => {
+          if (
+            !isCompatibleWithCanonicalPolygons(site, findspots, polygonIndex)
+          ) {
+            updateSite(site.siteId, emptySiteState('incompatible'))
+            return
+          }
+
+          updateSite(site.siteId, {
+            status:
+              findspots.length === 0 ? 'loaded-empty' : 'loaded-with-mappings',
+            findspots,
+            polygonSummaries: aggregateFindspotMapData(findspots),
+          })
         })
-      })
-      .catch(() => {
-        if (!isMounted) return
-        setState({
-          status: 'error',
-          findspots: [],
-          polygonSummaries: EMPTY_SUMMARIES,
+        .catch((error: unknown) => {
+          updateSite(
+            site.siteId,
+            emptySiteState(
+              error instanceof IncompatibleFindspotMapDataError
+                ? 'incompatible'
+                : 'error',
+            ),
+          )
         })
-      })
+    })
 
     return () => {
       isMounted = false
     }
-  }, [findspotService])
+  }, [findspotService, polygonIndex])
 
-  return state
+  return useMemo(() => {
+    const findspots = [...sites.values()].flatMap((site) => [...site.findspots])
+    return {
+      sites,
+      findspots,
+      polygonSummaries: aggregateFindspotMapData(findspots),
+    }
+  }, [sites])
 }

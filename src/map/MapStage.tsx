@@ -7,6 +7,7 @@ interface Props {
   readonly overlay?: React.ReactNode
   readonly legend?: React.ReactNode
   readonly describedById?: string
+  readonly showFallbackHint?: boolean
 }
 
 export default function MapStage({
@@ -15,13 +16,14 @@ export default function MapStage({
   overlay,
   legend,
   describedById,
+  showFallbackHint = false,
 }: Props): JSX.Element {
   return (
     <div className="map-stage">
       {isBackgroundUnavailable ? (
         <Alert variant="warning" className="map-stage__background-alert">
-          The interactive map could not be loaded. Findspot links remain
-          available below.
+          The interactive map could not be loaded.
+          {showFallbackHint ? ' Findspot links remain available below.' : null}
         </Alert>
       ) : null}
       {legend}

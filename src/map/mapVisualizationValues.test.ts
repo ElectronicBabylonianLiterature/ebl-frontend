@@ -1,18 +1,31 @@
+import type { ExcavationPolygonIndex } from 'map/excavationPolygonIndex'
+import type { PolygonFindspotSummary } from 'map/findspotMapData'
+import type { MapSiteId } from 'map/mapSites'
 import { aggregateFindspotMapData } from 'map/findspotMapDataSanitizer'
+import { EVIDENCE_CODES } from 'map/mapEvidencePaint'
 import {
   buildVisualizationValues,
   featureStateFor,
   isDensityAvailable,
   visualizationValuesFor,
-} from './mapVisualizationValues'
-import { EVIDENCE_CODES } from './mapEvidencePaint'
+} from 'map/mapVisualizationValues'
+import type {
+  FragmentMapDataState,
+  FragmentMapDataStatus,
+  SiteFragmentMapDataState,
+} from 'map/useFragmentMapData'
 import {
   excavationPolygon,
   findspotMapDataDto as findspotMapData,
 } from 'test-support/map-fixtures'
 
 function summariesFor(
-  entries: readonly { polygonId: string; fragments: number }[],
+  entries: readonly {
+    polygonId: string
+    fragments: number
+    siteId?: string
+    siteName?: string
+  }[],
 ): ReturnType<typeof aggregateFindspotMapData> {
   return aggregateFindspotMapData(
     entries.map((entry, index) =>
@@ -20,12 +33,39 @@ function summariesFor(
         findspotId: 100 + index,
         polygonIds: [entry.polygonId],
         accessibleFragmentCount: entry.fragments,
+        siteId: entry.siteId ?? 'ASSUR',
+        siteName: entry.siteName ?? 'Aššur',
       }),
     ),
   )
 }
 
-const index = new Map([
+function siteState(
+  status: FragmentMapDataStatus,
+  summaries: ReadonlyMap<string, PolygonFindspotSummary> = new Map(),
+): SiteFragmentMapDataState {
+  return { status, findspots: [], polygonSummaries: summaries }
+}
+
+function mapData(
+  assur: SiteFragmentMapDataState,
+  uruk?: SiteFragmentMapDataState,
+): FragmentMapDataState {
+  const sites = new Map<MapSiteId, SiteFragmentMapDataState>([['assur', assur]])
+  if (uruk) sites.set('uruk', uruk)
+
+  return {
+    sites,
+    findspots: [],
+    polygonSummaries: new Map(
+      [...sites.values()].flatMap((site) => [
+        ...site.polygonSummaries.entries(),
+      ]),
+    ),
+  }
+}
+
+const index: ExcavationPolygonIndex = new Map([
   [
     'assur',
     [
@@ -39,11 +79,12 @@ const index = new Map([
 
 describe('buildVisualizationValues', () => {
   it('divides authorized counts by geodesic area', () => {
+    const summaries = summariesFor([
+      { polygonId: 'a', fragments: 10 },
+      { polygonId: 'b', fragments: 10 },
+    ])
     const values = buildVisualizationValues(
-      summariesFor([
-        { polygonId: 'a', fragments: 10 },
-        { polygonId: 'b', fragments: 10 },
-      ]),
+      mapData(siteState('loaded-with-mappings', summaries)),
       index,
     )
 
@@ -51,122 +92,145 @@ describe('buildVisualizationValues', () => {
     expect(values.get('b')?.densityPerSquareKm).toBe(20)
   })
 
-  it('leaves density null when the geometry has no usable area', () => {
+  it('keeps missing denominators unclassified rather than zero', () => {
+    const summaries = summariesFor([
+      { polygonId: 'no-area', fragments: 4 },
+      { polygonId: 'zero-area', fragments: 4 },
+    ])
     const values = buildVisualizationValues(
-      summariesFor([
-        { polygonId: 'no-area', fragments: 4 },
-        { polygonId: 'zero-area', fragments: 4 },
-      ]),
+      mapData(siteState('loaded-with-mappings', summaries)),
       index,
     )
 
-    expect(values.get('no-area')?.densityPerSquareKm).toBeNull()
-    expect(values.get('zero-area')?.densityPerSquareKm).toBeNull()
+    expect(values.get('no-area')).toMatchObject({
+      densityAvailable: false,
+      densityPerSquareKm: null,
+      accessibleFragmentCount: 4,
+    })
+    expect(values.get('zero-area')?.densityAvailable).toBe(false)
   })
 
-  it('leaves density null for a polygon absent from the index', () => {
+  it('represents a successful missing summary as genuinely unmapped', () => {
     const values = buildVisualizationValues(
-      summariesFor([{ polygonId: 'unknown', fragments: 4 }]),
-      index,
-    )
-
-    expect(values.get('unknown')?.areaSquareKm).toBeNull()
-    expect(values.get('unknown')?.densityPerSquareKm).toBeNull()
-  })
-
-  it('carries the authorized counts through unchanged', () => {
-    const values = buildVisualizationValues(
-      summariesFor([{ polygonId: 'a', fragments: 7 }]),
+      mapData(siteState('loaded-empty')),
       index,
     )
 
     expect(values.get('a')).toMatchObject({
-      polygonId: 'a',
-      findspotCount: 1,
-      accessibleFragmentCount: 7,
-      areaSquareKm: 2,
+      dataAvailable: true,
+      findspotCount: 0,
+      accessibleFragmentCount: 0,
     })
   })
 
-  it('is empty without map data', () => {
-    expect(buildVisualizationValues(new Map(), index).size).toBe(0)
-  })
-})
+  it.each(['loading', 'error', 'incompatible', 'not-configured'] as const)(
+    'keeps %s data unavailable instead of unmapped',
+    (status) => {
+      const values = buildVisualizationValues(mapData(siteState(status)), index)
 
-describe('visualizationValuesFor', () => {
-  const values = buildVisualizationValues(
-    summariesFor([
-      { polygonId: 'a', fragments: 10 },
-      { polygonId: 'no-area', fragments: 3 },
-    ]),
-    index,
+      expect(values.get('a')).toMatchObject({
+        dataAvailable: false,
+        findspotCount: 0,
+      })
+      expect(visualizationValuesFor(values, 'count')).toEqual([])
+    },
   )
 
-  it('lists accessible counts for count and log modes', () => {
-    expect([...visualizationValuesFor(values, 'count')].sort()).toEqual([10, 3])
-    expect([...visualizationValuesFor(values, 'log')].sort()).toEqual([10, 3])
+  it('keeps successful and failed sites distinct during partial loading', () => {
+    const assurSummaries = summariesFor([{ polygonId: 'a', fragments: 7 }])
+    const mixedIndex: ExcavationPolygonIndex = new Map([
+      ...index,
+      [
+        'uruk',
+        [
+          excavationPolygon({
+            polygonId: 'uruk-a',
+            siteId: 'uruk',
+            areaSquareKm: 1,
+          }),
+        ],
+      ],
+    ])
+    const values = buildVisualizationValues(
+      mapData(
+        siteState('loaded-with-mappings', assurSummaries),
+        siteState('error'),
+      ),
+      mixedIndex,
+    )
+
+    expect(values.get('a')?.dataAvailable).toBe(true)
+    expect(values.get('uruk-a')?.dataAvailable).toBe(false)
+    expect(visualizationValuesFor(values, 'count')).toContain(7)
   })
 
-  it('omits polygons without a density from density mode', () => {
-    expect(visualizationValuesFor(values, 'density')).toEqual([5])
+  it('ignores non-canonical summary IDs absent from the polygon index', () => {
+    const summaries = summariesFor([{ polygonId: 'unknown', fragments: 4 }])
+    const values = buildVisualizationValues(
+      mapData(siteState('loaded-with-mappings', summaries)),
+      index,
+    )
+
+    expect(values.has('unknown')).toBe(false)
   })
 })
 
-describe('isDensityAvailable', () => {
-  it('is true when at least one polygon has a positive density', () => {
-    expect(
-      isDensityAvailable(
-        buildVisualizationValues(
-          summariesFor([{ polygonId: 'a', fragments: 4 }]),
-          index,
-        ),
-      ),
-    ).toBe(true)
+describe('visualization classification', () => {
+  it('omits unavailable density while retaining authorized counts', () => {
+    const summaries = summariesFor([
+      { polygonId: 'a', fragments: 10 },
+      { polygonId: 'no-area', fragments: 3 },
+    ])
+    const values = buildVisualizationValues(
+      mapData(siteState('loaded-with-mappings', summaries)),
+      index,
+    )
+
+    expect(visualizationValuesFor(values, 'count')).toEqual(
+      expect.arrayContaining([10, 3]),
+    )
+    expect(visualizationValuesFor(values, 'density')).toEqual([5])
   })
 
-  it('is false when every density is null', () => {
-    expect(
-      isDensityAvailable(
-        buildVisualizationValues(
-          summariesFor([{ polygonId: 'no-area', fragments: 4 }]),
-          index,
-        ),
-      ),
-    ).toBe(false)
-  })
+  it('offers density even when a valid mapped density is zero', () => {
+    const summaries = summariesFor([{ polygonId: 'a', fragments: 0 }])
+    const values = buildVisualizationValues(
+      mapData(siteState('loaded-with-mappings', summaries)),
+      index,
+    )
 
-  it('is false when every mapped polygon has zero accessible fragments', () => {
-    expect(
-      isDensityAvailable(
-        buildVisualizationValues(
-          summariesFor([{ polygonId: 'a', fragments: 0 }]),
-          index,
-        ),
-      ),
-    ).toBe(false)
+    expect(isDensityAvailable(values)).toBe(true)
+    expect(visualizationValuesFor(values, 'density')).toContain(0)
   })
 })
 
 describe('featureStateFor', () => {
-  it('includes density only when it exists', () => {
-    const values = buildVisualizationValues(
-      summariesFor([
-        { polygonId: 'a', fragments: 10 },
-        { polygonId: 'no-area', fragments: 3 },
-      ]),
+  it('writes every key explicitly so later states cannot retain stale values', () => {
+    const summaries = summariesFor([{ polygonId: 'a', fragments: 10 }])
+    const available = buildVisualizationValues(
+      mapData(siteState('loaded-with-mappings', summaries)),
       index,
-    )
+    ).get('a')!
+    const unavailable = buildVisualizationValues(
+      mapData(siteState('error')),
+      index,
+    ).get('a')!
 
-    expect(featureStateFor(values.get('a')!)).toEqual({
+    expect(featureStateFor(available)).toEqual({
+      dataAvailable: true,
       findspotCount: 1,
       accessibleFragmentCount: 10,
       evidenceCode: EVIDENCE_CODES['verified-source'],
+      densityAvailable: true,
       densityPerSquareKm: 5,
     })
-    expect(featureStateFor(values.get('no-area')!)).toEqual({
-      findspotCount: 1,
-      accessibleFragmentCount: 3,
-      evidenceCode: EVIDENCE_CODES['verified-source'],
+    expect(featureStateFor(unavailable)).toEqual({
+      dataAvailable: false,
+      findspotCount: 0,
+      accessibleFragmentCount: 0,
+      evidenceCode: EVIDENCE_CODES.unmapped,
+      densityAvailable: false,
+      densityPerSquareKm: 0,
     })
   })
 })

@@ -1,8 +1,8 @@
 import { renderHook } from '@testing-library/react'
 import { asLibreMap, createMapMock } from 'test-support/maplibre-map-helpers'
 import { resetMapLibreMock } from 'test-support/maplibre-map-helpers'
-import useMapPanelPadding from './useMapPanelPadding'
-import { NO_PANEL_PADDING, panelPadding } from './mapPanelPadding'
+import useMapPanelPadding from 'map/useMapPanelPadding'
+import { NO_PANEL_PADDING, panelPadding } from 'map/mapPanelPadding'
 
 beforeEach(() => resetMapLibreMock())
 

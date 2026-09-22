@@ -1,5 +1,9 @@
 import { useCallback, useState } from 'react'
-import { type ActiveMapPanel, type MapPanelId, toggledPanel } from './mapPanel'
+import {
+  type ActiveMapPanel,
+  type MapPanelId,
+  toggledPanel,
+} from 'map/mapPanel'
 
 export interface MapPanelController {
   readonly active: ActiveMapPanel

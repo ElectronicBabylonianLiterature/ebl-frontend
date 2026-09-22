@@ -1,8 +1,8 @@
 import {
   buildChoroplethLegend,
   buildChoroplethScale,
-} from './mapChoroplethScale'
-import { classLabel, mapLegendEntries } from './mapLegendEntries'
+} from 'map/mapChoroplethScale'
+import { classLabel, mapLegendEntries } from 'map/mapLegendEntries'
 
 function labelsFor(
   mode: Parameters<typeof mapLegendEntries>[0],
@@ -16,18 +16,19 @@ function labelsFor(
 
 describe('classLabel', () => {
   it('names a bounded class and an open-ended one', () => {
-    expect(classLabel(1, 5)).toBe('1 – 5')
-    expect(classLabel(20, null)).toBe('20 and above')
+    expect(classLabel(1, 5)).toBe('≥ 1 and < 5')
+    expect(classLabel(20, null)).toBe('≥ 20')
   })
 
   it('keeps a fractional bound readable', () => {
-    expect(classLabel(0.1234, 0.5678)).toBe('0.12 – 0.57')
+    expect(classLabel(0.1234, 0.5678)).toBe('≥ 0.1234 and < 0.5678')
   })
 })
 
 describe('mapLegendEntries', () => {
   it('describes the evidence states', () => {
     expect(labelsFor('evidence')).toEqual([
+      'Linked fragment data unavailable or loading',
       'No mapped findspot',
       'Verified-source mapping',
       'Curated mapping',
@@ -38,6 +39,7 @@ describe('mapLegendEntries', () => {
 
   it('describes the mapped-status states', () => {
     expect(labelsFor('mapped')).toEqual([
+      'Linked fragment data unavailable or loading',
       'No mapped findspot',
       'Mapped, zero accessible fragments',
       'Mapped with accessible fragments',
@@ -48,16 +50,31 @@ describe('mapLegendEntries', () => {
   it('lists class ranges around the zero and unmapped states', () => {
     const labels = labelsFor('count', [1, 4, 9, 30])
 
-    expect(labels[0]).toBe('No mapped findspot')
-    expect(labels[1]).toBe('Zero accessible fragments')
+    expect(labels[0]).toBe('Linked fragment data unavailable or loading')
+    expect(labels[1]).toBe('No mapped findspot')
+    expect(labels[2]).toBe('Zero accessible fragments')
     expect(labels[labels.length - 1]).toBe('Selected area')
     expect(labels.length).toBeGreaterThan(4)
+
+    const entries = mapLegendEntries(
+      'count',
+      buildChoroplethLegend(
+        'count',
+        buildChoroplethScale('count', [1, 4, 9, 30]),
+        [1, 4, 9, 30],
+      ),
+    ).filter((entry) => entry.key.startsWith('class-'))
+    expect(entries.map((entry) => entry.outlineWidth)).toEqual([
+      1.2, 1.9, 2.6, 3.3,
+    ])
   })
 
   it('still describes the categorical states when nothing can be classified', () => {
     expect(labelsFor('density')).toEqual([
+      'Linked fragment data unavailable or loading',
       'No mapped findspot',
-      'Zero accessible fragments',
+      'Density unavailable (no usable mapped area)',
+      'Zero accessible fragments per km²',
       'Selected area',
     ])
   })
@@ -69,9 +86,10 @@ describe('mapLegendEntries', () => {
     )
 
     expect(entries.map((entry) => entry.pattern)).toEqual([
+      'dotted',
       'dashed',
       'solid',
-      'solid',
+      'dashed',
       'dash-dot',
       'halo',
     ])

@@ -5,6 +5,13 @@ import {
   sanitizeFindspotMapData,
 } from 'map/findspotMapData'
 
+export class IncompatibleFindspotMapDataError extends Error {
+  constructor(message: string) {
+    super(message)
+    this.name = 'IncompatibleFindspotMapDataError'
+  }
+}
+
 function emptySanitizedResponse(): SanitizedFindspotMapDataResponse {
   return {
     findspots: [],
@@ -12,6 +19,7 @@ function emptySanitizedResponse(): SanitizedFindspotMapDataResponse {
       exactDuplicateRows: 0,
       conflictingDuplicateFindspots: 0,
       conflictingDuplicateRows: 0,
+      rejectedRows: 0,
     },
   }
 }
@@ -34,12 +42,20 @@ function stableFindspotFingerprint(findspot: FindspotMapData): string {
 
 export function sanitizeFindspotMapDataResponse(
   response: unknown,
+  expectedSiteId?: string,
+  expectedSiteName?: string,
 ): readonly FindspotMapData[] {
-  return sanitizeFindspotMapDataResponseWithDiagnostics(response).findspots
+  return sanitizeFindspotMapDataResponseWithDiagnostics(
+    response,
+    expectedSiteId,
+    expectedSiteName,
+  ).findspots
 }
 
 export function sanitizeFindspotMapDataResponseWithDiagnostics(
   response: unknown,
+  expectedSiteId?: string,
+  expectedSiteName?: string,
 ): SanitizedFindspotMapDataResponse {
   if (!response || typeof response !== 'object') return emptySanitizedResponse()
 
@@ -50,10 +66,18 @@ export function sanitizeFindspotMapDataResponseWithDiagnostics(
     number,
     { first: FindspotMapData; fingerprints: Map<string, number> }
   >()
+  let rejectedRows = 0
 
   for (const findspot of findspots) {
     const sanitized = sanitizeFindspotMapData(findspot)
-    if (!sanitized) continue
+    if (
+      !sanitized ||
+      (expectedSiteId && sanitized.siteId !== expectedSiteId) ||
+      (expectedSiteName && sanitized.siteName !== expectedSiteName)
+    ) {
+      rejectedRows += 1
+      continue
+    }
 
     const fingerprint = stableFindspotFingerprint(sanitized)
     const existing = byFindspotId.get(sanitized.findspotId)
@@ -98,8 +122,40 @@ export function sanitizeFindspotMapDataResponseWithDiagnostics(
       exactDuplicateRows,
       conflictingDuplicateFindspots,
       conflictingDuplicateRows,
+      rejectedRows,
     },
   }
+}
+
+export function requireCompatibleFindspotMapDataResponse(
+  response: unknown,
+  expectedSiteId: string,
+  expectedSiteName: string,
+): readonly FindspotMapData[] {
+  if (
+    !response ||
+    typeof response !== 'object' ||
+    !Array.isArray((response as Record<string, unknown>).findspots)
+  ) {
+    throw new IncompatibleFindspotMapDataError(
+      'Invalid map-data envelope for ' + expectedSiteId,
+    )
+  }
+
+  const result = sanitizeFindspotMapDataResponseWithDiagnostics(
+    response,
+    expectedSiteId,
+    expectedSiteName,
+  )
+  if (
+    result.diagnostics.rejectedRows > 0 ||
+    result.diagnostics.conflictingDuplicateFindspots > 0
+  ) {
+    throw new IncompatibleFindspotMapDataError(
+      'Rejected map-data rows for ' + expectedSiteId,
+    )
+  }
+  return result.findspots
 }
 
 export function aggregateFindspotMapData(

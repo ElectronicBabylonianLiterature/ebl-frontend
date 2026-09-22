@@ -28,6 +28,7 @@ import {
   unclusteredLayer,
 } from 'map/mapLayers'
 import { fitMapToData } from 'map/mapBounds'
+import { INITIAL_CENTER, INITIAL_ZOOM } from 'map/mapCamera'
 import { queryFindspotFeatures } from 'map/mapFeatureQuery'
 import {
   MAP_STYLE_URL,
@@ -36,9 +37,6 @@ import {
   isMapBackgroundLoadError,
 } from 'map/mapBackgroundError'
 import { provenanceToGeoJson } from 'map/provenanceToGeoJson'
-
-const INITIAL_CENTER: [number, number] = [44.4, 33.0]
-const INITIAL_ZOOM = 5
 
 interface FindspotMapHandlers {
   isActive: () => boolean
@@ -49,13 +47,14 @@ interface FindspotMapHandlers {
 function initializeFindspotSource(
   map: MapLibreMap,
   provenances: readonly ProvenanceRecord[],
+  shouldFitData: boolean,
 ): void {
   const geoJson = provenanceToGeoJson(provenances)
   map.addSource(SOURCE_ID, createFindspotsSource(geoJson))
   map.addLayer(clusterLayer)
   map.addLayer(clusterCountLayer)
   map.addLayer(unclusteredLayer)
-  fitMapToData(map, geoJson.features)
+  if (shouldFitData) fitMapToData(map, geoJson.features)
 }
 
 function expandCluster(
@@ -128,12 +127,24 @@ export default function useFindspotMap(
   containerRef: RefObject<HTMLDivElement>,
   provenances: readonly ProvenanceRecord[] | null,
   onMapBackgroundErrorChange?: (hasError: boolean) => void,
+  cameraResetVersion = 0,
+  isInteractionEnabled = true,
 ): MutableRefObject<MapLibreMap | null> {
   const mapRef = useRef<MapLibreMap | null>(null)
   const history = useHistory()
   const errorReporter = useContext(ErrorReporterContext)
   const latestProvenancesRef = useRef(provenances)
   latestProvenancesRef.current = provenances
+  const latestInteractionEnabledRef = useRef(isInteractionEnabled)
+  latestInteractionEnabledRef.current = isInteractionEnabled
+  const latestCameraResetVersionRef = useRef(cameraResetVersion)
+  const previousCameraResetVersionRef = useRef(cameraResetVersion)
+  const cameraResetProvenancesRef = useRef(provenances)
+  latestCameraResetVersionRef.current = cameraResetVersion
+  if (previousCameraResetVersionRef.current !== cameraResetVersion) {
+    previousCameraResetVersionRef.current = cameraResetVersion
+    cameraResetProvenancesRef.current = provenances
+  }
   const latestServicesRef = useRef({ history, errorReporter })
   latestServicesRef.current = { history, errorReporter }
   const isReady = provenances !== null
@@ -141,6 +152,7 @@ export default function useFindspotMap(
   useEffect(() => {
     if (!containerRef.current || !isReady) return
 
+    const cameraResetVersionAtCreation = latestCameraResetVersionRef.current
     let map: MapLibreMap
     try {
       map = new maplibregl.Map({
@@ -160,7 +172,7 @@ export default function useFindspotMap(
     map.addControl(new maplibregl.NavigationControl(), 'top-right')
     let isActive = true
     const handlers: FindspotMapHandlers = {
-      isActive: () => isActive,
+      isActive: () => isActive && latestInteractionEnabledRef.current,
       navigate: (path) => latestServicesRef.current.history.push(path),
       reportError: (error) =>
         latestServicesRef.current.errorReporter.captureException(error),
@@ -169,14 +181,27 @@ export default function useFindspotMap(
       onMapBackgroundErrorChange?.(false)
       const loadedProvenances = latestProvenancesRef.current
       if (loadedProvenances) {
-        initializeFindspotSource(map, loadedProvenances)
+        const resetStillOwnsLatestData =
+          latestCameraResetVersionRef.current !==
+            cameraResetVersionAtCreation &&
+          loadedProvenances === cameraResetProvenancesRef.current
+        initializeFindspotSource(
+          map,
+          loadedProvenances,
+          !resetStillOwnsLatestData,
+        )
       }
     }
-    const handleClick = (event: MapMouseEvent) =>
-      handleMapClick(map, event, handlers)
+    const handleClick = (event: MapMouseEvent) => {
+      if (handlers.isActive()) handleMapClick(map, event, handlers)
+    }
     const handleMouseMove = (event: MapMouseEvent) =>
-      setPointerCursor(map, event)
-    const handleMouseEnter = () => showPointerCursor(map)
+      handlers.isActive()
+        ? setPointerCursor(map, event)
+        : resetPointerCursor(map)
+    const handleMouseEnter = () => {
+      if (handlers.isActive()) showPointerCursor(map)
+    }
     const handleMouseLeave = () => resetPointerCursor(map)
     const handleError = (event: MapLibreErrorEvent) => {
       if (isMapBackgroundLoadError(event)) {
@@ -212,6 +237,12 @@ export default function useFindspotMap(
       mapRef.current = null
     }
   }, [containerRef, isReady, onMapBackgroundErrorChange])
+
+  useEffect(() => {
+    if (!isInteractionEnabled && mapRef.current) {
+      resetPointerCursor(mapRef.current)
+    }
+  }, [isInteractionEnabled])
 
   return mapRef
 }

@@ -6,7 +6,7 @@ import {
   type PanelPaddingSide,
   paddingEquals,
   panelPadding,
-} from './mapPanelPadding'
+} from 'map/mapPanelPadding'
 export default function useMapPanelPadding(
   mapRef: MutableRefObject<MapLibreMap | null>,
   isOpen: boolean,

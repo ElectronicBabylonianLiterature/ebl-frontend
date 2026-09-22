@@ -1,5 +1,5 @@
 import type { Position } from 'geojson'
-import { MEASUREMENT_DISCLAIMER, measure } from './mapMeasurement'
+import { MEASUREMENT_DISCLAIMER, measure } from 'map/mapMeasurement'
 
 const ASSUR: Position = [43.2597, 35.4573]
 const NEARBY: Position = [43.2697, 35.4573]
