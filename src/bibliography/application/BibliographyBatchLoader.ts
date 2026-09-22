@@ -20,7 +20,11 @@ interface RequestedEntryResult {
 }
 
 type BatchRequest = Promise<ReadonlyMap<string, EntryResult>>
-type CacheEntry = (id: string, entry: BibliographyEntry) => void
+type CacheEntry = (
+  id: string,
+  entry: BibliographyEntry,
+  generation: number,
+) => void
 
 export function isNotFoundError(error: unknown): error is ApiError {
   return error instanceof ApiError && error.status === 404
@@ -37,6 +41,7 @@ export default class BibliographyBatchLoader {
 
   load(
     ids: readonly string[],
+    generation: number,
   ): Promise<ReadonlyMap<string, BibliographyEntry>> {
     const sortedUniqueIds = _.uniq(ids).sort()
     const requestKey = sortedUniqueIds.join('|')
@@ -48,7 +53,9 @@ export default class BibliographyBatchLoader {
     const requestReference: { current?: BatchRequest } = {}
     const request = this.bibliographyRepository
       .findMany(sortedUniqueIds)
-      .then((entries) => this.resolveEntries(sortedUniqueIds, entries))
+      .then((entries) =>
+        this.resolveEntries(sortedUniqueIds, entries, generation),
+      )
       .finally(() => {
         if (this.cachedRequests.get(requestKey) === requestReference.current) {
           this.cachedRequests.delete(requestKey)
@@ -73,10 +80,7 @@ export default class BibliographyBatchLoader {
   findInFlight(id: string): Promise<BibliographyEntry> | undefined {
     const request = this.inFlightRequestsById.get(id)
     return request?.then((results) => {
-      const result = results.get(id)
-      if (!result) {
-        throw new Error(`Missing batch result for ${id}`)
-      }
+      const result = results.get(id)!
       if ('entry' in result) {
         return result.entry
       }
@@ -89,10 +93,7 @@ export default class BibliographyBatchLoader {
   ): Promise<BibliographyEntry | undefined> | undefined {
     const request = this.inFlightRequestsById.get(id)
     return request?.then((results) => {
-      const result = results.get(id)
-      if (!result) {
-        throw new Error(`Missing batch result for ${id}`)
-      }
+      const result = results.get(id)!
       return 'entry' in result ? result.entry : undefined
     })
   }
@@ -105,8 +106,9 @@ export default class BibliographyBatchLoader {
   private resolveEntries(
     ids: readonly string[],
     entries: readonly BibliographyEntry[],
+    generation: number,
   ): Promise<ReadonlyMap<string, EntryResult>> {
-    entries.forEach((entry) => this.cacheEntry(entry.id, entry))
+    entries.forEach((entry) => this.cacheEntry(entry.id, entry, generation))
     const entriesById = _.keyBy(entries, 'id')
 
     return Promise.all(
@@ -117,7 +119,7 @@ export default class BibliographyBatchLoader {
               id,
               result: { entry },
             })
-          : this.findMissingEntry(id)
+          : this.findMissingEntry(id, generation)
       }),
     ).then(
       (results) =>
@@ -125,12 +127,15 @@ export default class BibliographyBatchLoader {
     )
   }
 
-  private findMissingEntry(id: string): Promise<RequestedEntryResult> {
+  private findMissingEntry(
+    id: string,
+    generation: number,
+  ): Promise<RequestedEntryResult> {
     return this.bibliographyRepository
       .find(id)
       .then((entry) => {
-        this.cacheEntry(id, entry)
-        this.cacheEntry(entry.id, entry)
+        this.cacheEntry(id, entry, generation)
+        this.cacheEntry(entry.id, entry, generation)
         return { id, result: { entry } }
       })
       .catch((error) => {

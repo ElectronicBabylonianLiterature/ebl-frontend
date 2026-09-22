@@ -1,0 +1,121 @@
+import Bluebird from 'bluebird'
+import BibliographyBatchLoader from 'bibliography/application/BibliographyBatchLoader'
+import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
+import BibliographyRepository from 'bibliography/infrastructure/BibliographyRepository'
+import { ApiError } from 'http/ApiClient'
+
+jest.mock('bibliography/infrastructure/BibliographyRepository', () => {
+  return function () {
+    return {
+      find: jest.fn(),
+      findMany: jest.fn(),
+      search: jest.fn(),
+      update: jest.fn(),
+      create: jest.fn(),
+      listAllBibliography: jest.fn(),
+    }
+  }
+})
+
+interface Deferred<Value> {
+  readonly promise: Bluebird<Value>
+  readonly resolve: (value: Value) => void
+}
+
+function createDeferred<Value>(): Deferred<Value> {
+  let resolvePromise = (_value: Value): void => {
+    throw new Error('Deferred promise was not initialized')
+  }
+  const promise = new Bluebird<Value>((resolve) => {
+    resolvePromise = resolve
+  })
+  return { promise, resolve: resolvePromise }
+}
+
+describe('BibliographyBatchLoader', () => {
+  const bibliographyRepository = new (BibliographyRepository as jest.Mock<
+    jest.Mocked<BibliographyRepository>
+  >)()
+  const cacheEntry = jest.fn<void, [string, BibliographyEntry, number]>()
+
+  beforeEach(() => {
+    jest.clearAllMocks()
+  })
+
+  test('shares an exact repeated request', async () => {
+    const entry = new BibliographyEntry({ id: 'RN1', title: 'Entry' })
+    const batch = createDeferred<readonly BibliographyEntry[]>()
+    bibliographyRepository.findMany.mockReturnValue(batch.promise)
+    const loader = new BibliographyBatchLoader(
+      bibliographyRepository,
+      cacheEntry,
+    )
+
+    const firstRequest = loader.load([entry.id], 3)
+    const secondRequest = loader.load([entry.id], 3)
+    expect(bibliographyRepository.findMany).toHaveBeenCalledTimes(1)
+    batch.resolve([entry])
+
+    await expect(firstRequest).resolves.toEqual(new Map([[entry.id, entry]]))
+    await expect(secondRequest).resolves.toEqual(new Map([[entry.id, entry]]))
+    expect(cacheEntry).toHaveBeenCalledWith(entry.id, entry, 3)
+  })
+
+  test('keeps the first per-id request while registering new overlapping ids', async () => {
+    const firstA = new BibliographyEntry({ id: 'RN1', title: 'First A' })
+    const secondA = new BibliographyEntry({ id: 'RN1', title: 'Second A' })
+    const entryB = new BibliographyEntry({ id: 'RN2', title: 'Entry B' })
+    const entryC = new BibliographyEntry({ id: 'RN3', title: 'Entry C' })
+    const firstBatch = createDeferred<readonly BibliographyEntry[]>()
+    const secondBatch = createDeferred<readonly BibliographyEntry[]>()
+    bibliographyRepository.findMany
+      .mockReturnValueOnce(firstBatch.promise)
+      .mockReturnValueOnce(secondBatch.promise)
+    const loader = new BibliographyBatchLoader(
+      bibliographyRepository,
+      cacheEntry,
+    )
+
+    const firstRequest = loader.load([firstA.id, entryB.id], 4)
+    const secondRequest = loader.load([secondA.id, entryC.id], 4)
+    const inFlightA = loader.findInFlight(firstA.id)
+    const inFlightC = loader.findInFlight(entryC.id)
+    secondBatch.resolve([secondA, entryC])
+    await expect(inFlightC).resolves.toBe(entryC)
+    firstBatch.resolve([firstA, entryB])
+
+    await expect(inFlightA).resolves.toBe(firstA)
+    await expect(firstRequest).resolves.toEqual(
+      new Map([
+        [firstA.id, firstA],
+        [entryB.id, entryB],
+      ]),
+    )
+    await expect(secondRequest).resolves.toEqual(
+      new Map([
+        [secondA.id, secondA],
+        [entryC.id, entryC],
+      ]),
+    )
+  })
+
+  test('shares a fallback 404 with direct and optional in-flight readers', async () => {
+    const id = 'missing-entry'
+    const error = new ApiError('Not Found', {}, 404)
+    bibliographyRepository.findMany.mockResolvedValue([])
+    bibliographyRepository.find.mockRejectedValue(error)
+    const loader = new BibliographyBatchLoader(
+      bibliographyRepository,
+      cacheEntry,
+    )
+
+    const batchRequest = loader.load([id], 5)
+    const directRequest = loader.findInFlight(id)
+    const optionalRequest = loader.findManyInFlight(id)
+
+    await expect(batchRequest).resolves.toEqual(new Map())
+    await expect(directRequest).rejects.toBe(error)
+    await expect(optionalRequest).resolves.toBeUndefined()
+    expect(bibliographyRepository.find).toHaveBeenCalledTimes(1)
+  })
+})

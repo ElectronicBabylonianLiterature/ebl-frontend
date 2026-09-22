@@ -27,7 +27,7 @@ function createPart(id: string, pages = ''): BibliographyPart {
 function expectHydrated(
   part: MarkupPart,
   entry: BibliographyEntry,
-  pages: string,
+  source: ReferenceDto,
 ): void {
   expect(isBibliographyPart(part)).toBe(true)
   if (!isBibliographyPart(part)) {
@@ -38,7 +38,10 @@ function expectHydrated(
     throw new Error('Expected hydrated reference')
   }
   expect(part.reference.id).toBe(entry.id)
-  expect(part.reference.pages).toBe(pages)
+  expect(part.reference.type).toBe(source.type)
+  expect(part.reference.pages).toBe(source.pages)
+  expect(part.reference.notes).toBe(source.notes)
+  expect(part.reference.linesCited).toEqual(source.linesCited)
 }
 
 test('hydrates resolved siblings and leaves a missing reference unchanged', async () => {
@@ -54,7 +57,16 @@ test('hydrates resolved siblings and leaves a missing reference unchanged', asyn
   )
   const firstPart = createPart(firstEntry.id)
   const missingPart = createPart('attinger2014lamentation')
-  const secondPart = createPart(secondEntry.id, '12–14')
+  const secondPart: BibliographyPart = {
+    type: 'BibliographyPart',
+    reference: {
+      id: secondEntry.id,
+      type: 'COPY',
+      pages: '12–14',
+      notes: 'Collated in Aššur',
+      linesCited: ['o 1', 'r 2'],
+    },
+  }
   bibliographyService.findManyById.mockResolvedValue(
     new Map([
       [firstEntry.id, firstEntry],
@@ -68,9 +80,9 @@ test('hydrates resolved siblings and leaves a missing reference unchanged', asyn
     secondPart,
   ])
 
-  expectHydrated(result[0], firstEntry, '')
+  expectHydrated(result[0], firstEntry, firstPart.reference)
   expect(result[1]).toBe(missingPart)
-  expectHydrated(result[2], secondEntry, '12–14')
+  expectHydrated(result[2], secondEntry, secondPart.reference)
 })
 
 test('hydrates a requested alias with its canonical document', async () => {
@@ -89,5 +101,5 @@ test('hydrates a requested alias with its canonical document', async () => {
     createPart(requestedId),
   ])
 
-  expectHydrated(result, canonicalEntry, '')
+  expectHydrated(result, canonicalEntry, createPart(requestedId).reference)
 })

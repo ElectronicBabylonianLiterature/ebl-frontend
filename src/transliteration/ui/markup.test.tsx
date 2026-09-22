@@ -6,10 +6,11 @@ import Markup, {
   DisplayLanguagePart,
   DisplayTextPart,
   DisplayUrlPart,
-} from './markup'
+} from 'transliteration/ui/markup'
 import {
   BibliographyPart,
   LanguagePart,
+  ParagraphPart,
   TextPart,
   UrlPart,
 } from 'transliteration/domain/markup'
@@ -40,6 +41,10 @@ const urlPart: UrlPart = {
   type: 'UrlPart',
   url: url,
   text: linkText,
+}
+const paragraphPart: ParagraphPart = {
+  type: 'ParagraphPart',
+  text: '',
 }
 const bibliographyPart: BibliographyPart = {
   type: 'BibliographyPart',
@@ -85,6 +90,18 @@ test('DisplayUrlPart', () => {
   render(<DisplayUrlPart part={urlPart} />)
 
   expect(screen.getByText(linkText)).toHaveAttribute('href', url)
+})
+
+test('DisplayUrlPart uses the URL when text is empty', () => {
+  render(<DisplayUrlPart part={{ ...urlPart, text: '' }} />)
+
+  expect(screen.getByText(url)).toHaveAttribute('href', url)
+})
+
+test('Markup rejects an unsplit paragraph part', () => {
+  expect(() => Markup({ parts: [paragraphPart] })).toThrow(
+    'Unexpected ParagraphPart. Use createParagraphs to split parts into paragraphs',
+  )
 })
 
 test('DisplayBibliographyPart', () => {

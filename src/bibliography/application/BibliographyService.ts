@@ -17,21 +17,20 @@ export interface BibliographySearch {
 
 export default class BibliographyService implements BibliographySearch {
   private readonly bibliographyRepository: BibliographyRepository
-
   private cacheScope: string | null = null
-
+  private cacheGeneration = 0
+  private scopeGeneration = 0
+  private readonly mutationState = { started: 0, applied: 0 }
   private readonly cachedEntries = new Map<
     string,
     CacheEntry<BibliographyEntry>
   >()
-
   private readonly cachedFindRequests = new Map<
     string,
     Promise<BibliographyEntry>
   >()
 
   private readonly batchLoader: BibliographyBatchLoader
-
   constructor(
     bibliographyRepository: BibliographyRepository,
     private readonly getCacheScope: () => string = () => defaultCacheScope,
@@ -39,16 +38,14 @@ export default class BibliographyService implements BibliographySearch {
     this.bibliographyRepository = bibliographyRepository
     this.batchLoader = new BibliographyBatchLoader(
       bibliographyRepository,
-      (id, entry) => {
-        this.cacheEntry(id, entry)
+      (id, entry, generation) => {
+        this.cacheEntryForGeneration(id, entry, generation)
       },
     )
   }
 
   create(entry: BibliographyEntry): Promise<BibliographyEntry> {
-    return this.bibliographyRepository
-      .create(entry)
-      .then((createdEntry) => this.cacheUpdatedEntry(createdEntry))
+    return this.mutate(() => this.bibliographyRepository.create(entry))
   }
 
   find(id: string): Promise<BibliographyEntry> {
@@ -70,9 +67,11 @@ export default class BibliographyService implements BibliographySearch {
     }
 
     const requestReference: { current?: Promise<BibliographyEntry> } = {}
+    const generation = this.cacheGeneration
     const request = this.bibliographyRepository
       .find(id)
       .then((entry) =>
+        generation === this.cacheGeneration &&
         this.cachedFindRequests.get(id) === requestReference.current
           ? this.cacheEntry(id, entry)
           : entry,
@@ -110,9 +109,7 @@ export default class BibliographyService implements BibliographySearch {
   }
 
   update(entry: BibliographyEntry): Promise<BibliographyEntry> {
-    return this.bibliographyRepository
-      .update(entry)
-      .then((updatedEntry) => this.cacheUpdatedEntry(updatedEntry))
+    return this.mutate(() => this.bibliographyRepository.update(entry))
   }
 
   search(query: string): Promise<readonly BibliographyEntry[]> {
@@ -170,7 +167,7 @@ export default class BibliographyService implements BibliographySearch {
 
     const fetchMissingEntries = _.isEmpty(missingIds)
       ? Promise.resolve(new Map<string, BibliographyEntry>())
-      : this.batchLoader.load(missingIds)
+      : this.batchLoader.load(missingIds, this.cacheGeneration)
 
     return Promise.all([
       Promise.all(inFlightRequests),
@@ -183,10 +180,33 @@ export default class BibliographyService implements BibliographySearch {
     })
   }
 
-  private cacheUpdatedEntry(entry: BibliographyEntry): BibliographyEntry {
+  private mutate(
+    request: () => Promise<BibliographyEntry>,
+  ): Promise<BibliographyEntry> {
     this.clearCachesWhenScopeChanges()
-    this.batchLoader.clear()
-    return this.cacheEntry(entry.id, entry)
+    const scopeGeneration = this.scopeGeneration
+    const sequence = ++this.mutationState.started
+    return request().then((entry) => {
+      this.clearCachesWhenScopeChanges()
+      if (
+        scopeGeneration === this.scopeGeneration &&
+        sequence > this.mutationState.applied
+      ) {
+        this.mutationState.applied = sequence
+        this.invalidateCaches()
+        return this.cacheEntry(entry.id, entry)
+      }
+      return entry
+    })
+  }
+  private cacheEntryForGeneration(
+    id: string,
+    entry: BibliographyEntry,
+    generation: number,
+  ): BibliographyEntry {
+    return generation === this.cacheGeneration
+      ? this.cacheEntry(id, entry)
+      : entry
   }
 
   private cacheEntry(id: string, entry: BibliographyEntry): BibliographyEntry {
@@ -199,7 +219,8 @@ export default class BibliographyService implements BibliographySearch {
     })
   }
 
-  private clearAllCaches(): void {
+  private invalidateCaches(): void {
+    this.cacheGeneration += 1
     this.cachedEntries.clear()
     this.cachedFindRequests.clear()
     this.batchLoader.clear()
@@ -214,7 +235,8 @@ export default class BibliographyService implements BibliographySearch {
 
     if (this.cacheScope !== nextScope) {
       this.cacheScope = nextScope
-      this.clearAllCaches()
+      this.scopeGeneration += 1
+      this.invalidateCaches()
     }
   }
 

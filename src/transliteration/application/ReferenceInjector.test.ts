@@ -80,22 +80,55 @@ describe('ReferenceInjector', () => {
       )
   })
 
-  it('supports bibliography services without requested-id map lookup', async () => {
-    const legacyBibliographyService = {
-      find: jest.fn<Promise<BibliographyEntry>, [string]>(),
-      findMany: jest
-        .fn<Promise<readonly BibliographyEntry[]>, [readonly string[]]>()
-        .mockReturnValue(Promise.resolve([entry])),
+  it('looks up unique requested ids and hydrates aliases from their map keys', async () => {
+    const requestedAlias = 'former-entry-id'
+    const canonicalEntry = bibliographyEntryFactory.build(
+      {},
+      { associations: { id: 'canonical-entry-id' } },
+    )
+    const aliasPart: MarkupPart = {
+      type: 'BibliographyPart',
+      reference: { ...referenceDto, id: requestedAlias },
     }
-    const legacyReferenceInjector = new ReferenceInjector(
-      legacyBibliographyService,
+    const bibliographyService = {
+      find: jest.fn<Promise<BibliographyEntry>, [string]>(),
+      findManyById: jest
+        .fn<
+          Promise<ReadonlyMap<string, BibliographyEntry>>,
+          [readonly string[]]
+        >()
+        .mockReturnValue(
+          Promise.resolve(
+            new Map([
+              [referenceId, entry],
+              [requestedAlias, canonicalEntry],
+            ]),
+          ),
+        ),
+    }
+    const injector = new ReferenceInjector(bibliographyService)
+    const canonicalReference = new Reference(
+      referenceDto.type,
+      referenceDto.pages,
+      referenceDto.notes,
+      referenceDto.linesCited,
+      canonicalEntry,
     )
 
     await expect(
-      legacyReferenceInjector.injectReferencesToMarkup([bibliographyPart]),
-    ).resolves.toEqual(injectedParts)
-    expect(legacyBibliographyService.findMany).toHaveBeenCalledWith([
+      injector.injectReferencesToMarkup([
+        bibliographyPart,
+        aliasPart,
+        bibliographyPart,
+      ]),
+    ).resolves.toEqual([
+      ...injectedParts,
+      { type: 'BibliographyPart', reference: canonicalReference },
+      ...injectedParts,
+    ])
+    expect(bibliographyService.findManyById).toHaveBeenCalledWith([
       referenceId,
+      requestedAlias,
     ])
   })
 

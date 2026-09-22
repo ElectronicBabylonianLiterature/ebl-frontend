@@ -15,8 +15,7 @@ import { Introduction, Notes } from 'fragmentarium/domain/fragment'
 import _ from 'lodash'
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 
-type BibliographyLookup = Pick<BibliographyService, 'find' | 'findMany'> &
-  Partial<Pick<BibliographyService, 'findManyById'>>
+type BibliographyLookup = Pick<BibliographyService, 'find' | 'findManyById'>
 
 function isMarkupLine(line: AbstractLine): line is NoteLine | TranslationLine {
   return ['NoteLine', 'TranslationLine'].includes(line.type)
@@ -87,28 +86,10 @@ export default class ReferenceInjector {
     )
 
     return _.isEmpty(ids)
-      ? Promise.resolve(parts as MarkupPart[])
-      : this.findManyById(ids)
+      ? Promise.resolve([...parts])
+      : this.bibliographyService
+          .findManyById(ids)
           .then((entriesById) => this.mergeEntries(parts, entriesById))
-          .catch((error) => {
-            console.error(error)
-            return parts as MarkupPart[]
-          })
-  }
-
-  private findManyById(
-    ids: readonly string[],
-  ): Promise<ReadonlyMap<string, BibliographyEntry>> {
-    const requestedEntries = this.bibliographyService.findManyById?.(ids)
-    return (
-      requestedEntries ??
-      this.bibliographyService
-        .findMany(ids)
-        .then(
-          (entries) =>
-            new Map(entries.map((entry) => [entry.id, entry] as const)),
-        )
-    )
   }
 
   injectReferencesToIntroduction(
