@@ -1,0 +1,56 @@
+.map-inspector
+  display: grid
+  gap: 0.6rem
+
+  &__header
+    display: flex
+    align-items: center
+    justify-content: space-between
+    gap: 0.5rem
+
+  &__tablist
+    display: flex
+    flex-wrap: wrap
+    gap: 0.25rem
+
+  &__tab
+    padding: 0.25rem 0.6rem
+    border: 1px solid $ebl-color-border-subtle
+    border-radius: 0.25rem
+    background: transparent
+    font-size: 0.8rem
+
+    &--active
+      background: $ebl-color-brand-soft
+      font-weight: 600
+
+  &__tabpanel
+    padding-top: 0.5rem
+
+  &__facts
+    display: grid
+    grid-template-columns: auto 1fr
+    gap: 0.2rem 0.75rem
+    margin: 0
+
+    dt
+      color: $ebl-color-text-secondary
+      font-weight: 600
+
+    dd
+      margin: 0
+
+  &__findspots
+    margin: 0.4rem 0 0
+    padding-left: 1.1rem
+
+.map-precision-note
+  margin-top: 0.5rem
+  font-size: 0.8rem
+
+  &__toggle
+    padding: 0
+    border: 0
+    background: transparent
+    color: $ebl-color-brand-primary
+    text-decoration: underline

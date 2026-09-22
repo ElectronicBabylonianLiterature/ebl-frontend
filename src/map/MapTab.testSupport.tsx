@@ -1,7 +1,7 @@
 import React from 'react'
 import Bluebird from 'bluebird'
 import { render, type RenderResult } from '@testing-library/react'
-import { MemoryRouter, useLocation } from 'react-router-dom'
+import { MemoryRouter, useLocation, useNavigate } from 'react-router-dom'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import { FindspotService } from 'fragmentarium/application/FindspotService'
 import { ProvenanceRecord } from 'fragmentarium/domain/Provenance'
@@ -49,10 +49,16 @@ const MAP_ROUTE = '/tools/map'
 
 function CurrentLocation(): JSX.Element {
   const location = useLocation()
+  const navigate = useNavigate()
   return (
-    <div data-testid={CURRENT_LOCATION_TEST_ID}>
-      {`${location.pathname}${location.search}`}
-    </div>
+    <>
+      <div data-testid={CURRENT_LOCATION_TEST_ID}>
+        {`${location.pathname}${location.search}`}
+      </div>
+      <button type="button" onClick={() => navigate('/tools/map?mv=1&areas=1')}>
+        Navigate without selection
+      </button>
+    </>
   )
 }
 
