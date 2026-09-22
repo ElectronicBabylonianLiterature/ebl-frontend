@@ -104,7 +104,7 @@ function LoadedMapTab({
     {
       id: 'measurement',
       label: 'Measure',
-      isSupported: true,
+      isSupported: !state.isBackgroundUnavailable,
       render: () => <MapMeasurePanel measurement={state.measurement} />,
     },
     {

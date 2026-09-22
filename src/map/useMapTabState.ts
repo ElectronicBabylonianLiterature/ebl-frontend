@@ -75,6 +75,10 @@ export default function useMapTabState(
 
   const experience = useMapExperience()
   const panel = useMapPanel()
+  const isMeasurementActive =
+    panel.active === 'measurement' &&
+    !experience.presentation.isActive &&
+    !isBackgroundUnavailable
   const {
     index: polygonIndex,
     isLoaded: isPolygonIndexLoaded,
@@ -115,6 +119,7 @@ export default function useMapTabState(
     filteredProvenances,
     onMapBackgroundError,
     cameraResetVersion,
+    !isMeasurementActive,
   )
   useMapSourceData(mapRef, filteredProvenances, cameraResetVersion)
 
@@ -165,7 +170,16 @@ export default function useMapTabState(
     if (!canShowExcavationAreas && panel.active === 'visualization') {
       closePanel()
     }
-  }, [canShowExcavationAreas, closePanel, panel.active, selectedPolygonId])
+    if (isBackgroundUnavailable && panel.active === 'measurement') {
+      closePanel()
+    }
+  }, [
+    canShowExcavationAreas,
+    closePanel,
+    isBackgroundUnavailable,
+    panel.active,
+    selectedPolygonId,
+  ])
 
   useExcavationAreas(mapRef, {
     isVisible: showExcavationAreas,
@@ -174,6 +188,7 @@ export default function useMapTabState(
     values: visualization.values,
     onSelectPolygon,
     onAvailabilityChange: setIsRenderedAreasUnavailable,
+    isInteractionEnabled: !isMeasurementActive,
   })
   useMapLayoutEffects(
     mapContainer,
@@ -182,7 +197,7 @@ export default function useMapTabState(
     experience.presentation.isActive ? null : panel.active,
   )
 
-  const measurement = useMapMeasurement(mapRef, panel.active === 'measurement')
+  const measurement = useMapMeasurement(mapRef, isMeasurementActive)
 
   const resetView = useCallback(() => {
     setCameraResetVersion((current) => current + 1)

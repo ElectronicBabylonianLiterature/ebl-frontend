@@ -5,6 +5,10 @@ import type {
   GeoJSONSourceSpecification,
   Map as MapLibreMap,
 } from 'maplibre-gl'
+import {
+  type MeasurementMode,
+  measurementPathPositions,
+} from 'map/mapMeasurement'
 
 export const MEASUREMENT_SOURCE_ID = 'ebl-measurement'
 export const MEASUREMENT_LINE_LAYER_ID = 'ebl-measurement-line'
@@ -44,14 +48,15 @@ const pointLayer: AddLayerObject = {
 }
 
 export function addMeasurementLayers(map: MapLibreMap): void {
-  if (map.getSource(MEASUREMENT_SOURCE_ID)) return
-  map.addSource(MEASUREMENT_SOURCE_ID, measurementSource())
-  map.addLayer(lineLayer)
-  map.addLayer(pointLayer)
+  if (!map.getSource(MEASUREMENT_SOURCE_ID)) {
+    map.addSource(MEASUREMENT_SOURCE_ID, measurementSource())
+  }
+  if (!map.getLayer(MEASUREMENT_LINE_LAYER_ID)) map.addLayer(lineLayer)
+  if (!map.getLayer(MEASUREMENT_POINT_LAYER_ID)) map.addLayer(pointLayer)
 }
 
 export function removeMeasurementLayers(map: MapLibreMap): void {
-  ;[MEASUREMENT_LINE_LAYER_ID, MEASUREMENT_POINT_LAYER_ID].forEach((id) => {
+  ;[MEASUREMENT_POINT_LAYER_ID, MEASUREMENT_LINE_LAYER_ID].forEach((id) => {
     if (map.getLayer(id)) map.removeLayer(id)
   })
   if (map.getSource(MEASUREMENT_SOURCE_ID)) {
@@ -60,6 +65,7 @@ export function removeMeasurementLayers(map: MapLibreMap): void {
 }
 
 export function measurementCollection(
+  mode: MeasurementMode,
   positions: readonly Position[],
 ): FeatureCollection {
   const points = positions.map((position) => ({
@@ -81,7 +87,7 @@ export function measurementCollection(
         properties: {},
         geometry: {
           type: 'LineString',
-          coordinates: positions.map((position) => [...position]),
+          coordinates: measurementPathPositions(mode, positions),
         },
       },
     ],
@@ -90,8 +96,11 @@ export function measurementCollection(
 
 export function updateMeasurementGeometry(
   map: MapLibreMap,
+  mode: MeasurementMode,
   positions: readonly Position[],
 ): void {
-  const source = map.getSource(MEASUREMENT_SOURCE_ID) as GeoJSONSource | undefined
-  source?.setData(measurementCollection(positions))
+  const source = map.getSource(MEASUREMENT_SOURCE_ID) as
+    | GeoJSONSource
+    | undefined
+  source?.setData(measurementCollection(mode, positions))
 }
