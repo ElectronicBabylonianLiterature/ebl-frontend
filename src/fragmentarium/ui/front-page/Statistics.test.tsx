@@ -3,27 +3,28 @@ import { render, screen } from '@testing-library/react'
 import { waitForSpinnerToBeRemoved } from 'test-support/waitForSpinnerToBeRemoved'
 import Statistics from './Statistics'
 import { statisticsFactory } from 'test-support/fragment-data-fixtures'
-
-interface ExtendedStatistics {
-  transliteratedFragments: number
-  lines: number
-  totalFragments: number
-}
+import FragmentService, {
+  FragmentStatistics,
+} from 'fragmentarium/application/FragmentService'
 
 let fragmentService: { statistics: jest.Mock }
-let statistics: ExtendedStatistics
+let statistics: FragmentStatistics
 
 const setup = async (): Promise<void> => {
   statistics = statisticsFactory.build({
     transliteratedFragments: 1234,
     lines: 5678,
     totalFragments: 9012,
-  }) as ExtendedStatistics
+  }) as FragmentStatistics
   fragmentService = {
     statistics: jest.fn(),
   }
   fragmentService.statistics.mockReturnValueOnce(Promise.resolve(statistics))
-  render(<Statistics fragmentService={fragmentService} />)
+  render(
+    <Statistics
+      fragmentService={fragmentService as unknown as FragmentService}
+    />,
+  )
   await waitForSpinnerToBeRemoved(screen)
 }
 

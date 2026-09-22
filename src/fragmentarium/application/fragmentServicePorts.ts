@@ -47,25 +47,32 @@ export const editionFields = [
   'introduction',
 ] as const
 
+export type FragmentStatistics = {
+  transliteratedFragments: number
+  lines: number
+  totalFragments: number
+}
+
+export type CorpusAttestations = {
+  manuscriptAttestations: ReadonlyArray<ManuscriptAttestation>
+  uncertainFragmentAttestations: ReadonlyArray<UncertainFragmentAttestation>
+}
+
 export type EditionFields = {
   [K in (typeof editionFields)[number]]: string | null
 }
 
 export interface FragmentRepository {
-  statistics(): Promise<{
-    transliteratedFragments: number
-    lines: number
-    totalFragments: number
-  }>
+  statistics(signal?: AbortSignal): Promise<FragmentStatistics>
   find(
     number: string,
     lines?: readonly number[],
     excludeLines?: boolean,
   ): Promise<Fragment>
-  findInCorpus(number: string): Promise<{
-    manuscriptAttestations: ReadonlyArray<ManuscriptAttestation>
-    uncertainFragmentAttestations: ReadonlyArray<UncertainFragmentAttestation>
-  }>
+  findInCorpus(
+    number: string,
+    signal?: AbortSignal,
+  ): Promise<CorpusAttestations>
   fetchGenres(signal?: AbortSignal): Promise<string[][]>
   fetchProvenances(): Promise<readonly ProvenanceRecord[]>
   fetchProvenance(id: string): Promise<ProvenanceRecord>
@@ -106,9 +113,15 @@ export interface FragmentRepository {
     fragmentNumber: string,
     signal?: AbortSignal,
   ): Promise<FolioPagerData>
-  fragmentPager(fragmentNumber: string): Promise<FragmentPagerData>
+  fragmentPager(
+    fragmentNumber: string,
+    signal?: AbortSignal,
+  ): Promise<FragmentPagerData>
   findLemmas(lemma: string, isNormalized: boolean): Promise<Word[][]>
-  lineToVecRanking(number: string): Promise<LineToVecRanking>
+  lineToVecRanking(
+    number: string,
+    signal?: AbortSignal,
+  ): Promise<LineToVecRanking>
   query(fragmentQuery: FragmentQuery): Promise<QueryResult>
   queryLatest(): Promise<QueryResult>
   queryByTraditionalReferences(

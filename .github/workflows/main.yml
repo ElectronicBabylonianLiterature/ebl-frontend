@@ -56,7 +56,7 @@ jobs:
         run: yarn test:ci
 
       - name: Build
-        run: GENERATE_SOURCEMAP=false DISABLE_ESLINT_PLUGIN=true NODE_OPTIONS=--max_old_space_size=1536 yarn build
+        run: yarn build:ci-stable
 
       # Coverage is uploaded only from master pushes and PRs based on master.
       # A stacked PR is measured against its own base, so uploading it would

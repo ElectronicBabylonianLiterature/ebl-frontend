@@ -2,401 +2,407 @@
 task_id: 774
 pull_request: https://github.com/ElectronicBabylonianLiterature/ebl-frontend/pull/774
 title: 'chore: remove bluebird, use AbortController for cancellation'
-reviewed_head_sha: 18033c77bdc2ef1131118de472d70b3e6907501e
+reviewed_head_sha: ee275e43248ea13ebf2a828cc1fe30255911c36b
 base_branch: chore/ts7-tsconfig-migration
 base_sha: 4f71cb249bc0db899f1a22ce42ac93ebd961eeda
-stacked_on: '#773 (chore/ts7-tsconfig-migration) — OPEN and CONFLICTED against master (mergeable_state: dirty)'
+pr_state: 'open, mergeable: true, mergeable_state: clean (against its own base)'
+stacked_on: '#773 (chore/ts7-tsconfig-migration) — OPEN and CONFLICTED against master (mergeable_state: dirty, last updated 2026-08-05)'
 master_drift: 3 commits behind master (e281f7ba, af0b7942, 51bfc9ff)
-review_date: 2026-09-17
-review_round: 7
-remediation_date: 2026-09-17
-remediation_state: 12 of 19 findings resolved in the working tree (uncommitted) plus 2 applied to the PR description; F2 excluded by instruction; F3/F4/F5/F7 need actions outside the diff
+review_date: 2026-09-20
+review_round: 8
 reviewer: Claude (automated review)
-verdict: CHANGES REQUESTED, LARGELY REMEDIATED — the design was already right; F1, F6, F8-F16 are now fixed at their root and the gates are green, leaving F2 (excluded by instruction) and F3/F4/F5/F7 which cannot be done from inside the diff
-findings_total: 19
-findings_resolved: 12
-findings_open: 7
-findings_blocking: 5
+remediation_date: 2026-09-22
+remediation_state: '11 of 17 findings closed in the working tree (F5-F11, W5) plus three applied to the PR description on GitHub. F1 excluded by instruction; F2, F3, F4, F12, W1, W2 and W3 cannot be closed from inside this diff.'
+verdict: CHANGES REQUESTED — every finding inside the diff is now fixed (F5 through F11, verified by the gates below), and the PR description is corrected. What blocks a merge is outside the code: the eight scratch .md files (excluded from this pass by instruction), the conflicted base PR #773, the outstanding CHANGES_REQUESTED, and CodeQL's inability to diff a PR this size.
+findings_total: 17
+findings_blocking: 4
 findings_major: 2
-findings_minor: 9
-findings_warning_info: 3
-scope_vs_base: 705 files, +44518 / -22653, 37 commits
-scope_vs_master: 515 files, +19633 / -10988 (497 in src/)
-scope_note: 'The GitHub diff is inflated: master was merged into this branch but not into the base branch, so roughly 331 files are base-branch drift rather than this PR''s work. Landing #773 collapses the diff to what this PR owns.'
-devcontainer_changes: 'NONE. .devcontainer/ is untouched. Dockerfile shows +4/-4 in the GitHub diff but is byte-identical to origin/master — pure base-branch drift. Read W1 before merging anyway: the Docker jobs never run on a pull request.'
+findings_minor: 6
+findings_warning: 2
+findings_info: 3
+scope_vs_base: 707 files, +44625 / -22668, 38 commits
+scope_vs_master: 510 files, +19743 / -10796
+scope_note: 'The GitHub diff is inflated: master was merged into this branch but not into the base branch, so roughly 197 files are base-branch drift rather than this PR''s work. Landing #773 (30 files) collapses the GitHub diff to about 510 files — still over CodeQL''s 300-file cap, so it does not fix F4.'
+devcontainer_changes: 'NONE. .devcontainer/ is byte-identical to master (Dockerfile, devcontainer.json, inject-secrets.sh, README.md). The root Dockerfile is also byte-identical to master — its +4/-4 in the GitHub diff is base-branch drift. The CI workflows ARE materially changed; see W1 for a line-by-line verdict. Read W1 before merging: no pull request ever builds the Dockerfile.'
+tsconfig_note: 'tsconfig.json differs from master (target es5 -> es2020, moduleResolution node -> bundler, baseUrl -> paths) but is IDENTICAL to the base branch, so those changes belong to #773, not to this PR. CRACO compensates for the removed baseUrl via jestConfig.modulePaths and webpackConfig.resolve.modules; verified working. noImplicitAny: false is pre-existing on master and is what lets F5 Group A compile.'
 gates:
-  lint: PASS — eslint + stylelint clean
-  tsc: PASS — clean
-  test_ci_local: PASS after remediation — 504 suites, 4428 tests, 50 snapshots, exit 0; was 1 suite / 1 test / 1 snapshot failing before F1 was fixed. Four consecutive full runs with the previously flaky suite green; the last two fully green end to end (the earlier two failed only on the F13 assertion and the F8 floor, both since fixed). Six isolated runs of the suite on top.
-  test_ci_github: PASS — 504 suites, 4428 tests, 50 snapshots on this same sha (before remediation)
-  console_clean: PASS — zero console.error / console.warn / unhandled rejections, locally and in CI
-  coverage: PASS — 95.08 stmts / 87.98 branch / 94.74 funcs / 95.23 lines; no per-file threshold breach across the 50-path gate; identical figures locally and in CI. Floors ratcheted 93 / 84 / 93 / 93 -> 94 / 86 / 94 / 94 (F8). Note: Jest subtracts the 50 per-path files from the global figure, so the number the floors are compared against is 94.57 / 86.84 / 94.21, not the 95.08 / 87.98 / 94.74 printed in the summary row.
-  line_ceiling_250: PASS — no file this PR changes exceeds 250 lines
-  dry: PASS
-  build: PASS in CI ("Compiled successfully", zero warnings); NOT runnable locally — the container OOM-kills fork-ts-checker
-  app_runs: NOT VERIFIED — the dev server cannot start in this container (SIGTERM on the type-checker child at ~2.8 GB available). Not a code defect; CI builds the same sha green.
-  no_new_md: FAIL — 8 TASK-*.md files tracked on the branch (F2); cleanup explicitly excluded from this remediation pass by instruction
+  note: 'Two sets. "review" is the reviewed sha ee275e43; "remediated" is the working tree after the round-8 fixes.'
+  lint: PASS (review) / PASS (remediated) — eslint + stylelint clean, exit 0
+  tsc: PASS (review) / PASS (remediated) — clean, exit 0
+  test_ci_local: 'PASS (review) — 504 suites, 4428 tests, 50 snapshots, 0 failures, exit 0, 621.7s. PASS (remediated) — 505 suites, 4435 tests, 50 snapshots, 0 failures, exit 0, 796.9s; +1 suite and +7 tests are FragmentRepository.abortSignal.test.ts.'
+  console_clean: PASS (review) / PASS (remediated) — zero console.error / console.warn / unhandled rejections in both full runs
+  coverage: 'PASS (review) / PASS (remediated) — 95.08 stmts / 87.98 branch / 94.74 funcs / 95.23 lines, identical before and after, no threshold breach. Note Jest subtracts the 50 per-path files from the global figure, so the floors (94 / 86 / 94 / 94) are checked against roughly 94.57 / 86.84 / 94.21, not the printed summary row.'
+  coverage_allowlist: PASS — craco.config.js validates fullyCoveredPaths at load; 50 entries, no duplicates, none missing
+  line_ceiling_250: 'PASS (review) / PASS (remediated) — no changed or new .ts/.tsx file exceeds 250 lines. Threading the signals pushed FragmentRepository.ts to 253, so ApiFragmentInfo was extracted to fragmentRepositoryInfo.ts: 177 and 84 lines respectively.'
+  dry: 'PASS (review, with one exception) / PASS (remediated) — main.yml now calls yarn build:ci-stable instead of repeating its environment; FragmentStatistics and CorpusAttestations replace shapes that were written out four times each; three fragment-info readers share a private helper; two hand-built URLs go through createFragmentPath.'
+  no_new_md: FAIL — 8 TASK-*.md files tracked on the branch (F1); the cleanup was excluded from this pass by instruction
+  build: PASS in CI; NOT runnable locally — the container OOM-kills fork-ts-checker
+  app_runs: NOT VERIFIED — the dev server cannot start in this container (SIGTERM on the type-checker child). Not a code defect; CI compiled the reviewed sha green.
+  docker_build: NOT VERIFIED — Docker is unavailable in this container, and no pull request ever builds the Dockerfile (W1)
 ci_checks_on_head:
   test: success
-  CodeQL: success — but the run never diffed the PR (F4)
-  Analyze (javascript): success
+  CodeQL: 'success — but the verdict is unearned; the diff stage was skipped (F4)'
+  Analyze (javascript): 'success, with 1 warning annotation: "Cannot retrieve the full diff because there are too many (300) changed files in the pull request."'
   GitGuardian scan: success
-  GitGuardian Security Checks: success
-  qlty check: success — no blocking issues
+  GitGuardian Security Checks: success — 38 commits scanned, no secrets
+  qlty check: 'success, "No blocking issues" — static analysis only; coverage was never uploaded for this PR (W2)'
   docker: skipped — never runs on a pull request
   docker-test: skipped — never runs on a pull request
-codeql_alert_api: not queryable with the available token (403 Resource not accessible by integration); the check run itself is green
+codeql_alert_api: 'not queryable with the available token (403 Resource not accessible by integration) for either ?pr=774 or ?ref=refs/heads/chore/remove-bluebird; the branch alerts have to be read in the UI'
 review_threads: 6 total, all qltysh[bot], all resolved and outdated
-standing_reviews: 1 — Fabdulla1 CHANGES_REQUESTED, 2026-08-04, still open (F3)
+standing_reviews: 1 — Fabdulla1 CHANGES_REQUESTED, 2026-08-04, still open (F3); all three of its concerns verified fixed this round
+issue_comments: 0
+other_review_bots: 'none — no sourcery-ai review, comment or check run exists on this PR; qltysh[bot] is the only bot reviewer'
+requested_reviewers: none currently assigned
 ---
 
 # Review — PR #774
 
 ## Friendly summary
 
-This is good work and the hard part is genuinely done. Removing bluebird meant deciding what "cancel" should mean, and the answer here is the right one: reads get a real `AbortSignal` and stop the download; writes never get one, because once a save has left the browser, cutting the connection does not un-save it — it only throws away the answer. What I like most is that this is not left to discipline. `ApiClient.postJson` and `putJson` have no signal parameter at all, and the one method that does take one is `private`, so a signal simply cannot reach a write's `fetch` from outside the class. I checked every service and repository write method: none of them accepts a signal. The compiler is holding the rule, not a convention.
+The design is right and it has held up under eight rounds of looking at it. Reads get a real `AbortSignal`; writes never do, because once a save has left the browser, cutting the connection does not un-save it — it only throws away the answer. And that rule is enforced by the compiler, not by discipline: `postJson` and `putJson` have no signal parameter, and the one method that takes one is `private`. Everything the August review asked for is done, and every gate is green.
 
-Everything the standing human review asked for in August is done. The write-abort path is gone, there is now an integration test that drives a real `ApiClient` over a mocked `fetch` and proves separately that a second save does not abort the first and that a stale save cannot overwrite the screen, and all seven of the files called out as oversized are under the limit — `TextService.ts` went from 597 lines to 70. The newest commit's refactor of the annotation hook is faithful too; I compared it line by line against master's original and the only behavioural difference is one redundant branch that was doing nothing.
-
-So the remaining problems are not about the design. Five things block a merge, and four of them are not code at all: eight scratch `TASK-*.md` files are still tracked and would dump 3,200 lines of working notes onto master, the August review is still standing, the base PR #773 now has merge conflicts against master, and CodeQL quietly never looked at this diff — its log says it could not compute the changed lines and skipped that stage, yet the check still reports "no new alerts in code changed by this pull request". The one code blocker is a flaky snapshot: `yarn test:ci` failed for me on this exact commit while CI passed on the same commit, which is the same "green once is not proof" trap that bit round 6.
-
-**Since the review above was written, everything except the document cleanup has been fixed.** The flaky snapshot is gone and `yarn test:ci` is green run after run; the CI workflow no longer publishes the test image without passing tests, no longer leaks an unused secret into every step, and declares its CodeQL permissions explicitly; the coverage allowlist now fails loudly if it goes stale; and `isBoundingBoxTooSmall`, which returned true when the box was _large enough_, is finally called `isBoundingBoxLargeEnough`. Tightening the console-error helper also flushed out a second pre-existing problem worth knowing about: two shared test setups were claiming to expect an error that most of their tests never produce. Details are in "Remediation applied this round". What is left is the four things nobody can do from inside the diff, plus the `.md` cleanup that was deliberately left out.
-
-One thing to flag because it is easy to miss: **the Docker build never runs on a pull request.** It is only wired to pushes on master. The Dockerfile in this diff is byte-identical to master so this PR does not change it, but the pinned image digest and the two Alpine package pins it carries get their first real test only after something lands. Details in W1.
-
-### Details
-
-| #   | Severity | Finding                                                                                                                         | Status                         |
-| --- | -------- | ------------------------------------------------------------------------------------------------------------------------------- | ------------------------------ |
-| F1  | BLOCKER  | `yarn test:ci` is red locally — `AnnotationsView.integration.test.ts` snapshot fails under full-suite load, passes in isolation | **Fixed**                      |
-| F2  | BLOCKER  | Eight `TASK-*.md` scratch files are tracked and would land on master                                                            | Open — excluded by instruction |
-| F3  | BLOCKER  | The `CHANGES_REQUESTED` review from 2026-08-04 is still standing                                                                | Open — needs a human action    |
-| F4  | BLOCKER  | CodeQL never diff-analysed this PR yet reports a clean per-PR result                                                            | Open — clears when #773 lands  |
-| F5  | BLOCKER  | Base PR #773 is conflicted against master (`mergeable_state: dirty`), so the whole stack is stuck                               | Open — new this round          |
-| F6  | MAJOR    | `docker-test` has no `needs: [test]`, so a red master still publishes the `:test` image                                         | **Fixed**                      |
-| F7  | MAJOR    | Branch is 3 commits behind master                                                                                               | Open — needs a merge           |
-| F8  | MINOR    | `fullyCoveredPaths` is still a hand-maintained allowlist, so new files silently escape the 100% gate                            | **Fixed**                      |
-| F9  | MINOR    | README and the PR body both say "the four components that own a `SupersedableOperation`"; there are five                        | **Fixed**                      |
-| F10 | MINOR    | `SLACK_WEBHOOK_URL` is injected into every step's environment but referenced by no step                                         | **Fixed**                      |
-| F11 | MINOR    | `codeql-analysis.yml` declares no `permissions:` block, unlike `main.yml`                                                       | **Fixed**                      |
-| F12 | MINOR    | `github/codeql-action@v3` is deprecated from December 2026; CI emits the warning on every run                                   | **Fixed**                      |
-| F13 | MINOR    | `expectConsoleErrors(pattern)` never asserts the expected error actually occurred                                               | **Fixed**                      |
-| F14 | MINOR    | `createAnnotation` reads as inverted because `isBoundingBoxTooSmall` actually means "big enough"                                | **Fixed**                      |
-| F15 | MINOR    | The PR body's Verification section still cites the superseded test command                                                      | **Fixed**                      |
-| F16 | MINOR    | `TASK-774-handoff.md` frontmatter says `head_reviewed: eac106a4`; the head is two commits further on                            | **Fixed**                      |
-| W1  | WARNING  | Dev container / Docker configuration — read before merging                                                                      | Informational                  |
-| W2  | WARNING  | Fail-fast restoration removes the "see every failure in one run" property                                                       | Informational                  |
-| W3  | INFO     | qlty smells in eight PR-touched files, all pre-existing in untouched regions                                                    | Informational                  |
+One real thing turned up this round. Seven reads _look_ abortable and are not — they pass a signal into a method that has no signal parameter, so it is quietly dropped. Three of those are fully typed and still wrong: `FragmentInfoRepository` declares `random(signal?)` but `FragmentRepository.random()` takes no arguments, and TypeScript accepts that happily. Nothing breaks, but the README now claims otherwise, and that wants fixing before this lands. The rest is bookkeeping — an unasserted `console.error` mock that slipped back in, a few counts that drifted, and the eight `TASK-*.md` scratch files that still have to go. The two hardest blockers are not in this code at all: #773 is still conflicted and gates the stack, and CodeQL has never actually looked at this diff.
 
 ## Summary
 
-PR #774 removes `bluebird` and replaces it with `AbortController`/`AbortSignal` for reads and a token-based `SupersedableOperation` for writes. The split is deliberate and correct, and it is enforced structurally rather than by convention. Alongside the removal the PR carries a Sass `@import` → `@use` migration, a 250-line-per-file refactor of everything it touches, and a substantial test expansion.
+PR #774 removes `bluebird` and replaces its cancellable promises with the web-standard `AbortController`/`AbortSignal` for reads and a token-based supersession primitive for writes. Alongside that it carries a Sass `@import` → `@use` migration (48 files), a 250-line-per-file refactor of everything it touches, and CI/CodeQL configuration so stacked PRs based on `chore/**`, `feature/**` and `fix/**` are no longer merged without checks.
 
-The design is sound and every substantive point raised by the standing human review is resolved at its root. What remains is one flaky test and four non-code blockers, three of which are GitHub-side actions rather than changes to the diff.
+The central design decision is correct and is enforced structurally rather than by convention: `ApiClient.postJson` and `ApiClient.putJson` accept no `signal`, and `ApiClient.fetch` — the only method that takes one alongside an arbitrary method — is `private`, so a signal cannot reach a write's `fetch` from outside the class. Every service and repository write method was checked; none accepts a signal. `JsonApiClient`'s `postJson` declares no signal either.
 
-### What I verified independently, rather than taking on trust
+All three concerns from the standing August review are resolved, and the requested integration test exists and is genuine. Every local gate is green: lint and tsc clean, 504 suites / 4428 tests / 50 snapshots passing with zero console output, coverage 95.08 / 87.98 / 94.74 / 95.23 with no threshold breach, and no changed `.ts`/`.tsx` file over 250 lines.
 
-- **No write path can receive a signal.** Grepped every `update*` / `create*` / `save*` / `delete*` method across `src/*/application` and `src/*/infrastructure`: none accepts an `AbortSignal`. `ApiClient.postJson` (`src/http/ApiClient.ts:205`) and `ApiClient.putJson` (`:215`) have no signal parameter; `ApiClient.fetch` (`:142`) is `private`. The README's claim that the guarantee is type-enforced is literally true.
-- **The integration test the reviewer asked for exists and does what was asked.** `src/common/hooks/usePromiseEffect.write.integration.test.tsx` drives a real `ApiClient` over a mocked `fetch` and asserts separately that no signal is attached to a dispatched write, that a superseding write does not abort the first, and that a superseded write cannot overwrite current UI state.
-- **All seven files the reviewer flagged as oversized are now under the ceiling:** `FragmentService.ts` 888 → 246, `FragmentRepository.ts` 787 → 240, `TextService.ts` 597 → 70, `FakeApi.ts` 516 → 190, `SignImages.tsx` 442 → 83, `Realia.sass` 453 → 6, `withData.test.tsx` 264 → 191. No file this PR changes exceeds 250 lines.
-- **bluebird is genuinely gone.** Zero references in `src` and `package.json`. `yarn.lock` still carries `bluebird@^3.7.2` purely as a transitive dependency of another package, which is out of the project's control and correctly not covered by the CI guard.
-- **The newest commit is behaviour-faithful.** I compared `useFragmentAnnotationState.ts` against master's original `FragmentAnnotation.tsx` handler by handler. `getSelectionById`'s `.filter(...)[0]` became `.find(...) ?? null`; master's two consecutive `setAnnotations` calls became one call with the same final value (React batched them anyway); the nested `else if (geometry) { if (isBoundingBoxTooSmall(...)) }` became a nullable expression with the same guard. The only removal is master's first `onClick` branch, which set `setToggled(hovering)` under a condition strictly implied by the very next block — dead code.
-- **The install retry loop actually fails now.** I ran the exact loop under `bash -e`: it retries three times and exits 1, rather than exiting 0 after three failures as the old `&& break || { ... }` form did.
-- **Console suppression was replaced with assertion, not hidden.** `silenceConsoleErrors` (a blanket `jest.spyOn(console, 'error').mockImplementation()`) is gone; `expectConsoleErrors(pattern)` now fails the test on any console error that does not match the expected pattern. That is the right direction and matches the project's rule that suppression is never acceptable.
-- **Coverage and console-cleanliness hold.** My local run and CI's run on the same sha produce identical coverage — 95.08 / 87.98 / 94.74 / 95.23 — with zero console output in both.
+Seventeen items are recorded below: four blockers, two major, six minor, two warnings and three informational. Only one blocker is about this code — the other three are the stacked base branch, the outstanding review event, and CodeQL's inability to diff a PR this size. The one substantive code finding is F5: seven reads accept an `AbortSignal` that is dropped before it reaches `fetch`, which contradicts the README section this PR adds.
 
 ## Findings
 
-### F1 — BLOCKER — `yarn test:ci` is red: the AnnotationsView snapshot fails under full-suite load
-
-`yarn test:ci` on `18033c77` finished **1 failed, 503 passed** (1 test, 1 snapshot) with exit code 1. The failure is `src/fragmentarium/ui/image-annotation/AnnotationsView.integration.test.ts` → `Display annotate view › Snapshot`. The received DOM is missing one attribute on the `react-transform-component` div:
-
-```
--  style="transform: translate(0px, 0px) scale(1);"
-```
-
-The same suite passes three times out of three in isolation, and GitHub's `test` check passed 504/504 on this identical sha. So this is intermittent, not deterministic — which is precisely the trap round 6 recorded as its lesson. A single green CI run is not evidence that this is fixed.
-
-Root cause is the same shape as round 6's F1. That `style` attribute is written by `react-zoom-pan-pinch` 3.7.0, which applies it from `TransformComponent`'s mount effect (`init` → `handleInitialize` → `applyTransformation`) and then re-applies it from a `ResizeObserver` callback — and the test installs `resize-observer-polyfill`, whose notifications are scheduled asynchronously. The test's only wait is `findByRole('button', { name: 'Save' })`, which is an unrelated element: nothing in the test waits for the transform to land before the snapshot is taken. On a fast, idle run it is there; deep into a `--runInBand --coverage --detectOpenHandles` run it sometimes is not.
-
-The fix should be to wait for something observable rather than to raise a timeout — either wait for the transform to be applied before snapshotting, or keep the volatile third-party style out of the snapshot with a serializer. Note that the snapshot file itself is byte-identical to master, so nothing about the expected value is wrong; only the wait is missing.
-
-### F2 — BLOCKER — eight `TASK-*.md` files are tracked and would land on master
-
-Against `origin/master` the branch adds `TASK-774-handoff.md`, `TASK-774-log.md`, `TASK-774-merge-master-handoff.md`, `TASK-774-review.md`, `TASK-774-todo.md`, `TASK-ts7-migration-log.md`, `TASK-ts7-migration-research.md` and `TASK-ts7-migration-todo.md` — 3,200 lines of scratch work-tracking. These are working notes, not documentation, and the explicit instruction for this branch is that no new `.md` files should be present. Only `README.md` and `.github/copilot-instructions.md` are legitimate `.md` changes here.
-
-This document is one of the eight and must go with the rest. Adding a `TASK-*.md` rule to `.gitignore` in the same commit keeps them available locally.
-
-### F3 — BLOCKER — the `CHANGES_REQUESTED` review is still standing
-
-Fabdulla1 requested changes on 2026-08-04 against `5ef4a984`. The review is still open and blocks merge. All three of its points are genuinely resolved and I re-verified each this round (see "What I verified independently"). This needs a re-review rather than a code change. Reviewer assignment is deliberately never touched automatically.
-
-### F4 — BLOCKER — CodeQL never diff-analysed this PR, but reports a clean per-PR result
-
-The `CodeQL` check on `18033c77` is green with the message "No new alerts in code changed by this pull request". The job log says otherwise:
-
-```
-Computing PR diff ranges...
-Reverting overlay database mode to none because the PR diff ranges could not be computed.
-...
-No precomputed diff ranges found; skipping diff-informed analysis stage.
-```
-
-The diff is 705 files against the stale base, which is past the limit at which the action can compute changed-line ranges. The "code changed by this pull request" set was therefore never established, so the green result is a claim the run did not verify. This is the same finding as round 6's F9 and it still reproduces on the current head. It clears by itself once #773 lands and the diff collapses to what this PR owns; until then, treat the security gate on this PR as unproven rather than passed.
-
-The Code Scanning alert API is not readable with the token available here (403 `Resource not accessible by integration`), so I could not cross-check the alert list directly.
-
-### F5 — BLOCKER — base PR #773 is conflicted against master, so the stack cannot land
-
-`#773` (`chore/ts7-tsconfig-migration` → `master`) reports `mergeable: false`, `mergeable_state: dirty`. It has merge conflicts with master and cannot be merged as it stands. Since #774 is stacked on it and three of the other blockers are waiting on it to land, this is now the critical path. New this round — #773 was mergeable when round 6 recommended landing it first.
-
-### F6 — MAJOR — `docker-test` publishes the `:test` image without waiting for tests
-
-In `.github/workflows/main.yml`, the `docker` job declares `needs: [test]` (line 76) but `docker-test` (lines 108-138) declares no `needs` at all. Both are gated only on `github.event_name == 'push' && github.ref == 'refs/heads/master'`. On a master push with a failing test job, `docker` is skipped but `docker-test` still builds and pushes `ebl.badw.de/ebl-frontend:test`, so a broken master reaches the test environment.
-
-This is pre-existing on master, not introduced here — but this PR edits that job block (it bumps `actions/checkout` to v5 on line 112), and the project rule is to fix pre-existing defects surfaced while working. One line: add `needs: [test]` to `docker-test`.
-
-### F7 — MAJOR — the branch is three commits behind master
-
-`e281f7ba` (Read nameBreaks alongside nameParts, #817), `af0b7942` (Add Gaziantep Museum, #819) and `51bfc9ff` (Add Erimtan and Marash museums, #818) are on master and not on this branch. The PR has not been tested against current master.
-
-### F8 — MINOR — the 100% coverage gate is still a hand-maintained allowlist
-
-`craco.config.js` holds `fullyCoveredPaths`, now 50 hand-typed entries. Round 6's F7 grew the list from 35 to 48 but did not remove the staleness risk: a file added by a future change is not covered by the 100% gate unless someone remembers to add it, and nothing fails if they forget. Deriving the list — for example from the set of files the branch changes — would make the gate self-maintaining. Not a blocker; the list is currently accurate.
-
-### F9 — MINOR — "four components" is wrong in both README and the PR body
-
-`README.md` says "Components that own a single write and are not using `usePromiseEffect` hold their own `SupersedableOperation` ... : `TransliterationForm`, `WordEditor`, `BibliographyEntryFormController` and `BibliographyEntryForm`", and the PR body repeats "the four components that own a `SupersedableOperation`". There are five. `src/fragmentarium/ui/fragment/CuneiformFragment.tsx` holds one at line 146, supersedes it from a `useEffect` cleanup at line 151 and again on fragment change at line 155. The list reads as exhaustive, so it should include it.
-
-### F10 — MINOR — a secret is injected into every step but used by none
-
-`.github/workflows/main.yml` line 16 sets `SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}` at workflow level. No step in any workflow references it. Workflow-level `env` is visible to every step of every job, so this places an unused credential in the environment of every command the CI runs, including third-party actions. Now that the `pull_request` trigger is widened to `chore/**`, `feature/**` and `fix/**` bases, that happens on more events than before. Fork PRs are unaffected — `pull_request` does not expose secrets to forks — so the exposure is limited to same-repo PRs, but the line should simply be removed.
-
-### F11 — MINOR — `codeql-analysis.yml` declares no `permissions:` block
-
-`main.yml` correctly restricts itself with `permissions: contents: read`. `codeql-analysis.yml` declares nothing and relies on whatever the repository default grants, which must include `security-events: write` for the upload to work. Declaring the minimum explicitly (`contents: read`, `security-events: write`, `actions: read`) makes the grant visible and stops it drifting with the repository setting.
-
-### F12 — MINOR — deprecated action versions surface as warnings on every run
-
-The CodeQL job log carries `CodeQL Action v3 will be deprecated in December 2026` and `Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: github/codeql-action/analyze@v3, github/codeql-action/autobuild@v3, github/codeql-action/init@v3`. Since this PR already bumps `actions/checkout` and `actions/setup-node` to v5, moving `github/codeql-action/*` to v4 belongs in the same sweep.
-
-### F13 — MINOR — `expectConsoleErrors` does not assert that the expected error happened
-
-`src/setupTests.ts` replaces blanket suppression with a pattern check, which is the right call. But the `afterEach` only asserts that nothing _unmatched_ was logged:
-
-```ts
-const unexpected = spy.mock.calls
-  .map((call) => call.map((argument) => String(argument)).join(' '))
-  .filter((message) => !pattern.test(message))
-spy.mockRestore()
-
-expect(unexpected).toEqual([])
-```
-
-If the expected `console.error` stops being emitted — because the code path it came from was removed or silently changed — the test still passes and the helper's name stops being true. Asserting that at least one call matched `pattern` would close that. A second, smaller point: calling `expectConsoleErrors` twice in one test replaces `consoleErrorSpy` without restoring the first spy.
-
-### F14 — MINOR — `createAnnotation` reads as the inverse of what it does
-
-`src/fragmentarium/domain/annotation.ts:11-14`:
-
-```ts
-export function isBoundingBoxTooSmall(geometry: Geometry): boolean {
-  const minSize = Math.min(geometry.height, geometry.width)
-  return minSize >= 0.3
-}
-```
-
-The function returns true when the box is _large enough_, so the name has meant its own opposite since before this PR. The refactor faithfully preserves the behaviour but moves the call into a new function where the contradiction is sharper — `annotationSelection.ts:39` reads "create the annotation if the bounding box is too small". Renaming to `isBoundingBoxLargeEnough` is a two-call-site change and removes a real trap for the next reader.
-
-### F15 — MINOR — the PR body's Verification section cites the superseded command
-
-It lists `CI=true yarn test --watchAll=false --coverage`. Round 5 established `yarn test:ci` as the gate precisely because `--detectOpenHandles` changes runtime behaviour and the other form can pass locally while CI fails. The body should cite the command the gate actually is.
-
-### F16 — MINOR — the handoff document's frontmatter is stale
-
-`TASK-774-handoff.md` says `head_reviewed: eac106a4`, but its body describes work delivered in `a9b0542f` and `18033c77`. Moot once F2 deletes the file.
-
-### W1 — WARNING — dev container and Docker configuration (please read before merging)
-
-**Requested explicitly, so stated plainly.**
-
-- `.devcontainer/` — `Dockerfile`, `devcontainer.json`, `inject-secrets.sh` and `README.md` — is **not touched by this PR**. `git diff origin/master HEAD -- .devcontainer` is empty.
-- The root `Dockerfile` **does** appear in the GitHub diff at +4/−4, but `git diff origin/master HEAD -- Dockerfile` is empty: it is byte-identical to master. The diff entry is base-branch drift, exactly like the three oversized files that show up for the same reason. This PR changes no Docker configuration.
-- **The risk is not this PR's change, it is that nothing tests the Dockerfile on a pull request.** Both `docker` and `docker-test` are gated on `github.event_name == 'push' && github.ref == 'refs/heads/master'`, and both were `skipped` on this head. What master recently introduced and nobody has built on a PR is a pinned base image digest (`node:20-alpine@sha256:fb4cd12c85ee03686f6af5362a0b0d56d50c58a04632e6c0fb8363f609372293`, used for both the build and runtime stages) plus exact Alpine package pins that were bumped at the same time — `giflib-dev=5.2.2-r2` and `python3=3.12.14-r0`. Alpine rolls package versions out of its repositories without notice, so an exact `apk add pkg=version` pin fails the build the moment the index moves on. When that happens here it happens on master, after merge, with the image push in the same job.
-- A local `docker build .` before merging is cheap insurance. Longer term, building (without pushing) on pull requests would move that failure to where it belongs.
-- See also F6: `docker-test` publishes the `:test` tag without waiting for the test job.
-
-### W2 — WARNING — fail-fast restoration is correct but changes the feedback shape
-
-Round 6 removed `if: success() || steps.install.outcome == 'success'` from the Lint, Compile, Unit Tests and Build steps. That was the right fix — the condition made every later step run regardless of earlier failures — but the side effect is that a run now stops at the first broken step, so a contributor with both a lint error and a test failure sees only the lint error and has to iterate. Worth keeping as is; noted so the change in behaviour is not a surprise.
-
-### W3 — INFO — qlty smells in PR-touched files are pre-existing
-
-GitHub's `qlty check` status is green ("No blocking issues") and all six inline qlty threads are resolved and outdated. A local `qlty smells --all` reports 110 findings across 44 files repo-wide; eight of those files are touched by this PR, but in every case the change is 1-3 lines (mostly the bluebird import removal) and the smell sits in untouched code: duplicate blocks in `ManuscriptForm.tsx`, `DossiersSearchPage.tsx` and `Download.test.tsx`; high complexity in `WordExport.tsx` (`getMainTableWithFootnotes`, 20) and `setupTests.ts` (`createRange`, 18); parameter counts in `SignsSearch.tsx` and `test-support/utils.ts`; six returns in `GlossaryFactory.ts`. Not this PR's to fix.
-
-## Remediation applied this round
-
-Everything except the `.md` cleanup was addressed. Twelve findings are fixed in the working tree (uncommitted), two of them also applied to the PR description on GitHub.
-
-| #   | What was done                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
-| --- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| F1  | Root-caused twice over. The snapshot asserts a `transform` attribute that `react-zoom-pan-pinch` writes after mount, and nothing waited for it — the only wait was on an unrelated Save button. Separately, that wait is `{ timeout: 10000 }` inside a `beforeEach` running on Jest's **default 5 s hook budget**, so the hook could die before the render finished regardless of the snapshot. Fixed both: the hook now declares a budget larger than the waits it contains, and `waitForZoomTransformToBeApplied` polls the transform attribute itself. Verified with four consecutive full `yarn test:ci` runs and six isolated runs of the suite. |
-| F6  | `needs: [test]` added to the `docker-test` job.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
-| F8  | `fullyCoveredPaths` is now validated at config load — every entry must exist on disk and there may be no duplicates, otherwise the config throws and names the offending paths. Proven with a negative test. The global floors were also ratcheted from 93 / 84 / 93 / 93 to 94 / 86 / 94 / 94.                                                                                                                                                                                                                                                                                                                                                       |
-| F9  | README corrected to five components, with a note that `CuneiformFragment` supersedes both on unmount and on fragment change. Applied to the PR body too.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
-| F10 | The unused `SLACK_WEBHOOK_URL` removed from workflow-level `env`.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
-| F11 | `permissions: contents: read` at workflow level and `actions: read` / `contents: read` / `security-events: write` on the analyze job in `codeql-analysis.yml`.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
-| F12 | `github/codeql-action/{init,autobuild,analyze}` bumped v3 → v4.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
-| F13 | `expectConsoleErrors` now also asserts that a matching error actually occurred. A new `tolerateConsoleErrors` covers the two blanket setups that _arrange_ an error without every test triggering it.                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
-| F14 | `isBoundingBoxTooSmall` → `isBoundingBoxLargeEnough` across all call sites, and the test fixtures renamed so the assertions read correctly.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
-| F15 | PR body's Verification section now cites `yarn test:ci` and says why.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
-| F16 | Handoff frontmatter `head_reviewed` corrected to `18033c77`.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
-
-### Two pre-existing defects found and fixed at root while doing the above
-
-1. **`AnnotationsView.integration.test.ts` had a latent hook timeout** unrelated to the snapshot: a 10 s `findByRole` inside a hook with a 5 s budget. It only ever passed because the render usually finished in about 2 s.
-2. **`stubMissingBibliography` and `resetAuth0Mocks` asserted a console error from a blanket `beforeEach`.** Tightening `expectConsoleErrors` (F13) exposed that most tests in those five suites never trigger the error the helper claimed to expect — 17 tests across 5 suites failed the new assertion. The honest split is "this error must happen" (`expectConsoleErrors`) versus "this error is arranged and tolerated if it happens" (`tolerateConsoleErrors`), which is what the helper now offers. Both remain strictly better than the blanket suppression this PR replaced, because neither will let an _unexpected_ message through.
-
-### Gates after remediation
-
-| Gate                   | Result                                                                                                                                                                                 |
-| ---------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `yarn lint`            | PASS                                                                                                                                                                                   |
-| `yarn tsc`             | PASS                                                                                                                                                                                   |
-| `yarn test:ci`         | PASS — 504 suites, 4428 tests, 50 snapshots, exit 0. Two consecutive fully green full runs, and the previously flaky suite green in four consecutive full runs plus six isolated ones. |
-| Console output         | PASS — zero across the full run                                                                                                                                                        |
-| Coverage               | PASS — 95.08 / 87.98 / 94.74 / 95.23, every per-path 100% gate met, against ratcheted floors                                                                                           |
-| 250-line ceiling       | PASS — largest file touched this round is 211                                                                                                                                          |
-| `yarn build` / app run | Still not executable in this container (OOM); unchanged from the review above                                                                                                          |
-
-### Deliberately not done
-
-- **F2, the `.md` cleanup** — excluded by instruction.
-- **F7, merging the three master commits** — a merge is a commit, and commits are never made without an explicit request.
-- **F3, F4, F5** — none is actionable from inside the diff. F3 needs the reviewer, F5 needs conflicts resolved on a different branch, and F4 clears itself once the PR retargets to master.
+| #   | Finding                                                                                                                       | Severity | Status                         |
+| --- | ----------------------------------------------------------------------------------------------------------------------------- | -------- | ------------------------------ |
+| F1  | Eight `TASK-*.md` scratch documents tracked on the branch; no `.gitignore` rule                                               | Blocker  | Open — excluded by instruction |
+| F2  | #773 open and `mergeable_state: dirty` against master; gates the whole stack                                                  | Blocker  | Open — yours                   |
+| F3  | Standing `CHANGES_REQUESTED` (2026-08-04) still open; all its concerns verified fixed                                         | Blocker  | Open — needs the reviewer      |
+| F4  | CodeQL never diff-analysed the PR (300-file cap); landing #773 will not fix it                                                | Blocker  | Open — needs a decision        |
+| F5  | Seven reads accept an `AbortSignal` that never reaches `fetch`; README claims otherwise                                       | Major    | **Fixed**                      |
+| F6  | Unasserted `console.error` suppression reintroduced in `TextService.misc.test.ts:84`                                          | Major    | **Fixed**                      |
+| F7  | Blanket `beforeEach` console spy covers two non-asserting tests in `CuneiformConverterForm.errors.test.tsx`                   | Minor    | **Fixed**                      |
+| F8  | `BibliographyEntryForm` documented as a write owner; it guards a read                                                         | Minor    | **Fixed**                      |
+| F9  | PR description misstates CI's build command; `main.yml:59` duplicates `build:ci-stable`                                       | Minor    | **Fixed**                      |
+| F10 | Sass counts in the PR description drifted (47 → 48 files, 59 → 60 entrypoints)                                                | Minor    | **Fixed**                      |
+| F11 | `initializeAnnotations` recomputes `tokens.flat()` per annotation (pre-existing, faithfully extracted)                        | Minor    | **Fixed**                      |
+| F12 | Two bluebird-cancellation tests deleted — justified and superseded, but needs explicit sign-off                               | Minor    | Open — needs approval          |
+| W1  | Dev container untouched and Dockerfile identical to master; CI workflows materially changed; no PR ever builds the Dockerfile | Warning  | Open — Docker unavailable here |
+| W2  | qlty coverage never uploaded for stacked PRs, so the green `qlty check` carries no coverage verdict                           | Warning  | Open — after retarget          |
+| W3  | Three commits behind master                                                                                                   | Info     | Open — needs a merge commit    |
+| W4  | Pre-existing oversized files; none touched by this PR                                                                         | Info     | Noted                          |
+| W5  | `Introduction.sass` (727) and `project.sass` (261) touched but not split, while `Realia.sass` was                             | Info     | Addressed — no claim made      |
 
 ## Severity
 
-| Severity                | Count | Findings                                  |
-| ----------------------- | ----- | ----------------------------------------- |
-| Blocker                 | 5     | F1, F2, F3, F4, F5                        |
-| Major                   | 2     | F6, F7                                    |
-| Minor                   | 9     | F8, F9, F10, F11, F12, F13, F14, F15, F16 |
-| Warning / informational | 3     | W1, W2, W3                                |
+| Severity | Count | Meaning                                                                                                           |
+| -------- | ----- | ----------------------------------------------------------------------------------------------------------------- |
+| Blocker  | 4     | Must be cleared before merge. F1 and F4 are actionable here; F2 and F3 need a different branch or another person. |
+| Major    | 2     | Should be fixed in this PR. F5 contradicts documented behaviour; F6 reintroduces the pattern this PR removed.     |
+| Minor    | 6     | Worth fixing before merge; none changes runtime behaviour.                                                        |
+| Warning  | 2     | Not defects. Read before merging — they describe what the green checks do _not_ cover.                            |
+| Info     | 3     | Context; no action required beyond a decision on W5.                                                              |
 
-Of the five blockers, one is code (F1) and four are process or repository state (F2, F3, F4, F5). F4 resolves itself when F5 and the retarget are done.
+## Remediation applied
+
+Applied on 2026-09-22 against `ee275e43`, in the working tree. Everything except the `.md` cleanup (F1) was addressed; F2, F3, F4, F12, W1, W2 and W3 cannot be closed from inside this diff and are listed with what each one needs.
+
+**F5 — the signal now reaches `fetch`.** `FragmentRepository._fetch` takes a `signal` and passes it to `fetchJson`; `random`, `interesting` and `fetchNeedsRevision` take the `signal` their own port already declared; `statistics`, `lineToVecRanking`, `fragmentPager` and `findInCorpus` take one through the service and the port. `FragmentRepository.abortSignal.test.ts` is new and asserts, for all seven, that the caller's signal arrives at `apiClient.fetchJson`. The five `withData` type arguments written `{ fragmentService }` are now `{ fragmentService: FragmentService }` — the fifth, `FolioImage.tsx`, was not in the original finding but is the identical hole and was closed with it, which is the point of the fix: the compiler now rejects the next dropped argument rather than swallowing it.
+
+Removing the `any` immediately surfaced three errors that had been invisible, which is the best evidence the finding was real: `FragmentInCorpus.tsx` was declaring a mutable-array shape incompatible with the repository's `ReadonlyArray`, and two test files were passing partial stubs where a `FragmentService` was required. All three are fixed rather than cast away — `FragmentInCorpus` now uses the shared type, and the two stubs are explicit `as unknown as FragmentService`, matching the `as unknown as Session` precedent already in those files.
+
+**Two duplicated shapes became named types.** `statistics`'s `{ transliteratedFragments; lines; totalFragments }` was written out in the port, the repository, the service and a test; `findInCorpus`'s attestation pair was written out in the port, the repository, the service and `FragmentInCorpus.tsx`. Both are now `FragmentStatistics` and `CorpusAttestations` in `fragmentServicePorts.ts`.
+
+**The `FragmentInfoRepository` implementation moved to its own module.** Threading the signals pushed `FragmentRepository.ts` from 240 to 253 lines, over the ceiling. Rather than compress the signatures, `statistics`, `lineToVecRanking`, `fragmentPager`, `random`, `interesting`, `fetchNeedsRevision` and `_fetch` moved into `fragmentRepositoryInfo.ts` as `ApiFragmentInfo`, inserted into the existing `ApiFragmentAttestations` → `ApiFragmentUpdates` → `ApiFragmentRepository` chain. `FragmentRepository.ts` is now 178 lines, the new module 85, and the `FragmentInfoRepository` port is implemented in one place. The three `fetchFragmentInfos` callers share a private helper instead of repeating `.then(infos => infos.map(createFragmentInfo))`, and two hand-built `/fragments/<n>/...` URLs now go through `createFragmentPath`.
+
+**F6, F7 — console suppression.** `TextService.misc.test.ts` no longer installs an unasserted spy; both provenance tests use `expectConsoleErrors`, which asserts the arranged error actually occurred and still fails on anything unexpected. The first test's exact-argument check is preserved by matching the error text in the pattern. The `afterEach(jest.restoreAllMocks)` in that describe was removed — it would have restored the spy before `setupTests`' own `afterEach` could read it. In `CuneiformConverterForm.errors.test.tsx` the two tests that never touched the shared spy now assert `expect(consoleErrorSpy).not.toHaveBeenCalled()`, matching the precedent already in that file; all six tests now check it.
+
+**F8, F9, F10 — documentation.** `README.md` no longer calls `BibliographyEntryForm` a write owner; the bullet now describes the primitive as guarding _operations that cannot take a signal_ and names `BibliographyEntryForm`'s `Cite.async` as the read case. The "Reads that take no signal" list is now accurate and says explicitly that an accepted-then-dropped signal is a defect, with the TypeScript reason it is not caught. The shared-cache list gained `fetchProvenance` and `fetchProvenanceChildren`, which are cached paths and were missing from it. The PR description was corrected on GitHub: 48 changed Sass files and 60 entrypoints, the build-command claim, the write-owner list, and a new section recording these fixes. `.github/workflows/main.yml:59` now runs `yarn build:ci-stable` instead of repeating its environment inline, which makes the description's claim true and leaves one definition of the CI build.
+
+**F11.** `initializeAnnotations` hoists `tokens.flat()` above the `map`; the inner `find` parameter was renamed to stop shadowing the outer `token`.
+
+**W5 — no action needed.** The recommendation was to avoid claiming the Sass ceiling had been addressed. No such claim exists in the PR description or the README, so nothing had to change. `Introduction.sass` and `project.sass` are left alone; both are one-line touches and the 250-line rule covers `.ts`/`.tsx`.
+
+**Still open, and why.** F1 is excluded by instruction. F2 needs #773's conflicts resolved on a different branch. F3 needs the reviewer. F4 needs either a split under CodeQL's 300-file cap or a manual read of the branch alerts. F12 needs explicit approval for two test removals. W1's `docker build .` needs an environment with Docker. W2 can only be checked after the retarget. W3 needs a merge commit, which was not requested.
+
+## Details
+
+### F1 — Eight `TASK-*.md` scratch documents are tracked on the branch — BLOCKER
+
+**What.** `git diff --name-status origin/master...HEAD -- '*.md'` reports eight added files: `TASK-774-handoff.md`, `TASK-774-log.md`, `TASK-774-merge-master-handoff.md`, `TASK-774-review.md` (this document), `TASK-774-todo.md`, `TASK-ts7-migration-log.md`, `TASK-ts7-migration-research.md`, `TASK-ts7-migration-todo.md`. These are work-tracking scratch, not documentation, and no new `.md` file may be present when this merges. There is also no `TASK-*` rule in `.gitignore`, so nothing stops them coming back.
+
+**Reproduction.** `git diff --name-status origin/master...HEAD -- '*.md'` — expect only `README.md` and `.github/copilot-instructions.md`; eight `A` lines appear instead. `grep -n TASK .gitignore` returns nothing.
+
+**Recommendation.** Delete all eight in one commit and add a `TASK-*.md` line to `.gitignore` in the same commit, so the files survive locally but never get staged again.
+
+### F2 — #773 is open and conflicted against master, and gates the whole stack — BLOCKER
+
+**What.** This PR's base is `chore/ts7-tsconfig-migration`, which is PR #773. The API reports #773 as `state: open`, `mergeable: false`, `mergeable_state: dirty`, last updated 2026-08-05. Until #773's conflicts are resolved and it lands, #774 cannot reach master no matter how green it is. #774's own state against its base is `mergeable_state: clean`, so this is entirely #773's problem.
+
+**Reproduction.** `curl -s -H "Authorization: Bearer $GITHUB_TOKEN" .../pulls/773` → `mergeable_state: dirty`.
+
+**Recommendation.** Resolve #773's conflicts and land it. It is the single highest-value action available — 30 files, and it unblocks everything downstream.
+
+### F3 — The standing `CHANGES_REQUESTED` review is still open — BLOCKER
+
+**What.** Review `4854993025`, `CHANGES_REQUESTED`, submitted 2026-08-04 against commit `5ef4a984`. Every substantive point in it is now fixed, and I re-verified each one this round:
+
+- _"`runWrite` can abort an already dispatched server write"_ — fixed. `runWrite` hands out an `isStale()` predicate from `SupersedableOperation`, never a signal. The exact path named in the review (`DateSelectionMethods` → `FragmentService` → `FragmentRepository` → `postJson` → `fetch`) is now guard-based: `DateSelectionMethods.ts:43-55` wraps the update in `applyWhenCurrent`, and `postJson` has no signal parameter to abort with. The other three named entry points (`ChapterEditView.tsx:60,81`, `ScriptSelection.tsx:64`, `CuneiformFragment.tsx:146-178`) are the same shape.
+- _"add an integration-level test that reaches a mocked ApiClient or fetch"_ — done. `src/common/hooks/usePromiseEffect.write.integration.test.tsx` renders a real form over a real `ApiClient` with `fetch` mocked, and asserts separately that no signal is attached to a dispatched write, that a second write does not abort the first, and that a superseded write cannot overwrite current UI state.
+- _"files that hit the 250-line ceiling"_ — all seven named files are under the limit; `TextService.ts` went from 597 lines to 70.
+
+The review event itself still stands, and a `CHANGES_REQUESTED` blocks approval regardless of whether the concerns are addressed.
+
+**Recommendation.** Ask the reviewer to re-review and dismiss. Reviewer assignment is never touched automatically.
+
+### F4 — CodeQL has never diff-analysed this PR, and landing #773 will not fix that — BLOCKER
+
+**What.** The `CodeQL` check on the current head is green with the title _"No new alerts in code changed by this pull request"_, but that title is not evidence. The `Analyze (javascript)` check run on the same sha carries a warning annotation:
+
+> `Cannot retrieve the full diff because there are too many (300) changed files in the pull request.`
+
+CodeQL's diff-informed analysis is capped at 300 changed files. This PR shows 707 against its base, so the stage was skipped and the "no new alerts in code changed by this pull request" verdict was reached without ever computing what that code is.
+
+Round 7 recorded this as something the retarget would fix. It will not. `git diff --name-only origin/master...HEAD` is **510 files**, and #773's own diff is only 30 — so after #773 lands and this PR retargets to master, the diff will still be roughly 480-510 files, still well over the 300-file cap. The gap is structural, not an artefact of the stacking.
+
+**Reproduction.** `curl .../check-runs/105254872913/annotations` → the warning above. `git diff --name-only origin/master...HEAD | wc -l` → 510. `git diff --name-only origin/master...origin/chore/ts7-tsconfig-migration | wc -l` → 30.
+
+**Recommendation.** Either split this PR so each piece lands under 300 changed files (the Sass `@import` → `@use` migration is 48 files and entirely separable from the bluebird work, as is the 250-line test split), or accept that CodeQL cannot diff this PR and read the branch-level alerts by hand at `/security/code-scanning?query=pr:774+tool:CodeQL+is:open` before merging. Do not treat the green check as coverage. The alerts REST API returns `403 Resource not accessible by integration` for the available token, so this has to be read in the UI.
+
+### F5 — Seven reads advertise abortability they do not have — MAJOR
+
+**What.** Seven call sites pass an `AbortSignal` into a method that has no signal parameter. The argument is silently discarded and the request is never abortable. They split into two groups by _how_ the type system fails to catch it.
+
+**Group A — hidden behind an implicit `any`.** Four `withData` getters. The middle type argument is written as `{ fragmentService }`, which in a type position means `{ fragmentService: any }`. `tsconfig.json` sets `noImplicitAny: false` (pre-existing on master), so this compiles and passing an extra argument typechecks vacuously:
+
+| Call site                                                           | Calls                                                         | Declared as                                                        |
+| ------------------------------------------------------------------- | ------------------------------------------------------------- | ------------------------------------------------------------------ |
+| `src/fragmentarium/ui/front-page/Statistics.tsx:60`                 | `fragmentService.statistics(signal)`                          | `statistics(): Promise<...>` — `FragmentService.ts:44`             |
+| `src/fragmentarium/ui/line-to-vec/FragmentLineToVecRanking.tsx:100` | `fragmentService.lineToVecRanking(props.number, signal)`      | `lineToVecRanking(number: string)` — `FragmentService.ts:52`       |
+| `src/fragmentarium/ui/fragment/FragmentInCorpus.tsx:23`             | `fragmentService.findInCorpus(props.fragment.number, signal)` | `findInCorpus(number: string)` — `FragmentService.ts:106`          |
+| `src/fragmentarium/ui/fragment/FragmentPager.tsx:55`                | `fragmentService.fragmentPager(props.fragmentNumber, signal)` | `fragmentPager(fragmentNumber: string)` — `FragmentService.ts:148` |
+
+**Group B — fully typed and still wrong.** This is the interesting one, because no `any` is involved. `FragmentInfoRepository` in `src/fragmentarium/application/FragmentSearchService.ts:12-16` declares:
+
+```ts
+random(signal?: AbortSignal): FragmentInfosPromise
+interesting(signal?: AbortSignal): FragmentInfosPromise
+fetchNeedsRevision(signal?: AbortSignal): FragmentInfosPromise
+```
+
+`FragmentRepository` implements all three with **no parameters at all** (`FragmentRepository.ts:94`, `:100`, `:106`), each calling `this._fetch({ ... })`, and `_fetch(params)` at `:112` calls `apiClient.fetchJson(url, false)` with no signal. TypeScript accepts a function of fewer parameters where more are expected, so this assignment is legal and `yarn tsc` stays green. `FragmentSearchService` dutifully threads the signal (`:26`, `:36`, `:46`) into a method that ignores it.
+
+Three live UI call sites rely on that contract:
+
+| Call site                                              | Chain                                                                                                       |
+| ------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------- |
+| `src/fragmentarium/ui/front-page/LuckyButton.tsx:17`   | `FragmentSearchService.random(signal)` → `FragmentRepository.random()` → `_fetch` → `fetchJson(url, false)` |
+| `src/fragmentarium/ui/PioneersButton.tsx:16`           | same, `interesting`                                                                                         |
+| `src/fragmentarium/ui/front-page/NeedsRevision.tsx:33` | same, `fetchNeedsRevision`                                                                                  |
+
+`NeedsRevision.tsx:25-28` even writes the prop type out explicitly as `fetchNeedsRevision: (signal?: AbortSignal) => Promise<readonly FragmentInfo[]>`. The type is deliberate, documented, and unfulfilled.
+
+**Why it matters.** This is not a runtime regression — these reads were not abortable on master either, and `withData`'s `requestSequence` guard still prevents stale state, so nothing renders wrongly. But `README.md` asserts the opposite in the section this PR adds: _"Reads that take no signal ... Everything else reachable from a `withData` getter or `run` threads one."_ That sentence is false for seven reads. The whole point of this PR's design is that the type system, not convention, enforces where signals go; here the type system says "abortable" and the network says otherwise.
+
+**Reproduction.** Open `/fragmentarium` and navigate away while the "needs revision" list is loading — the request continues to completion. Compare `FragmentSearchService.ts:13-15` against `FragmentRepository.ts:94,100,106`. Or attach `signal.addEventListener('abort', ...)` in `NeedsRevision`'s getter and confirm the underlying `fetch` is never cancelled.
+
+**Recommendation.** Thread the signal the last mile: give `FragmentRepository._fetch(params, signal?)` the parameter and pass it to `fetchJson`, then give `random` / `interesting` / `fetchNeedsRevision` the `signal?: AbortSignal` their own port already promises. Do the same for `statistics`, `lineToVecRanking`, `findInCorpus` and `fragmentPager`, and replace the four `{ fragmentService }` type arguments with `{ fragmentService: FragmentService }` so the compiler catches the next one. If any of these are deliberately left unabortable, say so in the README's "Reads that take no signal" list instead of leaving the blanket claim standing.
+
+### F6 — Unasserted `console.error` suppression reintroduced in a new test file — MAJOR
+
+**What.** `src/corpus/application/TextService.misc.test.ts:84`, in the test _"retries provenance preload after a failed first attempt"_:
+
+```ts
+jest.spyOn(console, 'error').mockImplementation(() => undefined)
+```
+
+The spy is never asserted on and never referenced again. That is blanket suppression: any `console.error` this test emits, expected or not, is swallowed. This PR's own achievement was deleting `silenceConsoleErrors` and replacing it with the pattern-scoped `expectConsoleErrors` / `tolerateConsoleErrors` helpers — and this file, which the PR adds, reintroduces exactly the pattern that was removed. The sibling test 30 lines above does it correctly, asserting `expect(consoleErrorSpy).toHaveBeenCalledWith('Failed to preload provenances', provenanceError)`.
+
+**Reproduction.** `sed -n '80,90p' src/corpus/application/TextService.misc.test.ts`. Introduce an unrelated `console.error` anywhere in the `findManuscripts` path and the test still passes silently.
+
+**Recommendation.** Replace with `expectConsoleErrors(/Failed to preload provenances/)` from `setupTests`, which both tolerates the arranged error and asserts it actually occurred, and fails on anything unexpected.
+
+### F7 — Blanket `beforeEach` console spy covers two tests that never assert on it — MINOR
+
+**What.** `src/signs/ui/CuneiformConverter/CuneiformConverterForm.errors.test.tsx:29` installs `jest.spyOn(console, 'error').mockImplementation(...)` in a `beforeEach` that applies to every test in the file. Four of the six tests assert on the spy; _"converts on Shift + Enter"_ (`:71`) and _"does not convert on Enter without Shift"_ (`:84`) never do. For those two, console noise is suppressed with nothing checking it. Same class as F6, smaller blast radius, and also a file this PR adds.
+
+**Recommendation.** Move the spy into the four tests that assert on it, or give the two that do not an `expect(consoleErrorSpy).not.toHaveBeenCalled()`.
+
+### F8 — `BibliographyEntryForm` is documented as a write owner; it guards a read — MINOR
+
+**What.** `README.md` and the PR description both list five components that \*"own a single **write\***" and hold their own `SupersedableOperation`: `TransliterationForm`, `WordEditor`, `BibliographyEntryFormController`, `BibliographyEntryForm` and `CuneiformFragment`. Four of those are writes. `BibliographyEntryForm`'s `loadOperation` (`BibliographyEntryForm.tsx:51,117-121`) guards `Cite.async(value)` — a debounced **read**, which uses the supersession primitive rather than a signal because citation-js has no abort support at all.
+
+The code is right; the sentence is not. This is the same class as round 7's F9 (_"four components"_ → five), so doc accuracy in this area has now been wrong twice.
+
+**Recommendation.** Reword to say the primitive guards _operations that cannot take a signal_ — which covers both the writes and `Cite.async` — and name `BibliographyEntryForm` as the read case explicitly.
+
+### F9 — The PR description misstates CI's build command, and the workflow duplicates a script that already exists — MINOR
+
+**What.** The Verification section claims `yarn build:ci-stable` is _"the command CI's build step runs"_. It is not. `.github/workflows/main.yml:59` runs `GENERATE_SOURCEMAP=false DISABLE_ESLINT_PLUGIN=true NODE_OPTIONS=--max_old_space_size=1536 yarn build`, spelled out inline. The effect is equivalent — `package.json` defines `build:ci-stable` as exactly that env plus `craco build` — but the claim is literally false, and the workflow is hand-copying a script that exists three lines away in `package.json`, which is the DRY gate's whole subject.
+
+**Recommendation.** Change `main.yml:59` to `run: yarn build:ci-stable`. Then the description's claim becomes true and there is one definition of the CI build instead of two.
+
+### F10 — Sass counts in the PR description have drifted — MINOR
+
+**What.** The description says the migration covers _"47 files"_ and that _"all 59 Sass entrypoints"_ compile byte-identically. Actual: 42 modified plus 6 added (the `Realia.sass` split partials) = **48** changed `.sass` files, and **60** entrypoints in `src` (69 total, 9 partials).
+
+**Reproduction.** `git diff --name-status origin/master...HEAD -- '*.sass' '*.scss' | awk '{print $1}' | sort | uniq -c` → `6 A`, `42 M`. `find src \( -name '*.sass' -o -name '*.scss' \) ! -name '_*' | wc -l` → 60.
+
+**Recommendation.** Update both numbers, or drop the counts and keep the byte-identical claim, which is the part that matters.
+
+### F11 — `initializeAnnotations` recomputes `tokens.flat()` once per annotation — MINOR
+
+**What.** `src/fragmentarium/ui/image-annotation/annotation-tool/initializeAnnotations.ts:10-17` calls `tokens.flat()` inside `initialAnnotations.map(...)`, so the whole token matrix is flattened once per annotation — O(annotations × tokens) where O(annotations + tokens) would do. I diffed it against `origin/master:src/.../FragmentAnnotation.tsx:67-81` and the extraction is byte-identical, so this is pre-existing and not a regression. But pulling the function out into its own module was the natural moment to hoist the `flat()` out of the loop, and it was not taken.
+
+**Recommendation.** Hoist `const flatTokens = tokens.flat()` above the `map`. One line, behaviour identical, and the file is already on the 100% coverage list so the existing tests cover it.
+
+### F12 — Two tests were deleted; the removal is justified but needs explicit sign-off — MINOR
+
+**What.** `src/http/ApiClient.edge-cases.test.ts` was split up and two of its tests did not survive: _"Cancelled promise rejects without completing"_ and _"Request cancellation is available on all methods"_. Both assert on `promise.cancel()` / `promise.isCancelled()` — bluebird APIs that no longer exist, so the assertions are genuinely no longer meaningful. Equivalents now exist and are stronger: `ApiClient.requests.test.ts` has _"Forwards the abort signal to fetch"_, _"The abort signal can be passed to the read methods"_ and _"Writes never attach an abort signal"_.
+
+I checked the other five deleted test files and every one of their tests is re-homed — including the security suite, where _"should not allow write operations for guest users"_ survives as an `it.each` over the same six permissions in `react-auth0-spa.guestPermissions.test.ts:25`.
+
+**Recommendation.** No code change needed, but the project rule is that no test is removed without explicit approval. Confirm these two and the record is clean.
+
+### W1 — Dev container and infrastructure — WARNING, read before merging
+
+**`.devcontainer/` is untouched.** `git diff --stat origin/master HEAD -- .devcontainer` is empty. All four files — `Dockerfile`, `devcontainer.json`, `inject-secrets.sh`, `README.md` — are byte-identical to master. **The root `Dockerfile` is also byte-identical to master**; it shows `+4/-4` in the GitHub diff purely because master was merged into this branch and not into the base branch, so that hunk is base-branch drift, not this PR's work.
+
+**The CI workflows are materially changed, and they deserve the scrutiny.** Reviewed line by line against master:
+
+| File                           | Change                                                                                                          | Verdict                                                                                                                                                                |
+| ------------------------------ | --------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `main.yml:7`                   | `pull_request.branches` gains `chore/**`, `feature/**`, `fix/**`                                                | Correct, and the reason this PR has CI at all                                                                                                                          |
+| `main.yml:20,22`               | `checkout@v4` → `v5`, `setup-node@v4` → `v5`                                                                    | Fine, green on this sha                                                                                                                                                |
+| `main.yml:12-14`               | `SLACK_WEBHOOK_URL` env removed                                                                                 | Correct — `grep -rn SLACK .github/ package.json` returns nothing; it was dead and injected into every step's environment                                               |
+| `main.yml:29-35`               | Install retry `break` → `exit 0`, plus an explicit `::error::` and `exit 1` after three attempts                | Correct, and a real fix: the old loop exited 0 after three failures                                                                                                    |
+| `main.yml:37-46`               | New "No bluebird" guard step                                                                                    | Sound; `git grep` inside an `if` condition is not affected by `bash -e`                                                                                                |
+| `main.yml:48-59`               | `if: success() \|\| steps.install.outcome == 'success'` removed from Lint / Compile / Unit Tests / Build        | Behaviour change: the job now fails fast instead of running every step whenever install succeeded. Stricter and correct, but CI will now report only the first failure |
+| `main.yml:56`                  | Unit Tests now `yarn test:ci`                                                                                   | Correct — matches the documented gate                                                                                                                                  |
+| `main.yml:66-70`               | qlty coverage upload gated on `push \|\| base_ref == 'master'`                                                  | Deliberate; see W2                                                                                                                                                     |
+| `main.yml:107`                 | `docker-test` gains `needs: [test]`                                                                             | Real fix: a red master previously still built and pushed `ebl-frontend:test`                                                                                           |
+| `codeql-analysis.yml:24-32`    | Explicit top-level `contents: read` and job-level `actions: read` / `contents: read` / `security-events: write` | Security improvement — stops inheriting the repository default                                                                                                         |
+| `codeql-analysis.yml:48,62,76` | `codeql-action` v3 → v4, `checkout@v4` → `v5`                                                                   | Ahead of the December 2026 v3 deprecation, green on this sha                                                                                                           |
+| `update-sitemaps.yml:14,19`    | `checkout@v4` → `v5`, `setup-node@v4` → `v5`; `persist-credentials: false` preserved                            | Fine                                                                                                                                                                   |
+
+**The thing to actually worry about:** both Docker jobs are `if: github.event_name == 'push' && github.ref == 'refs/heads/master'`, so **no pull request ever builds the Dockerfile**. It carries exact Alpine package pins that rot silently, and the first anyone finds out is a push to master. That is pre-existing, not introduced here, but it is why a Dockerfile change would sail through unchecked.
+
+**Recommendation.** Run `docker build .` locally before merging — I could not, as Docker is unavailable in this container. Longer term, add a build-only (no push, no registry login) Docker job that runs on pull requests.
+
+### W2 — qlty's green check carries no coverage verdict on this PR — WARNING
+
+**What.** `main.yml:66-67` uploads coverage only when `github.event_name == 'push' || github.base_ref == 'master'`. This PR's base is `chore/ts7-tsconfig-migration`, so no `lcov.info` is ever sent. The `qlty check` status is green with _"No blocking issues"_, but that verdict covers static analysis only — coverage was never measured on the qlty side for any commit on this branch.
+
+The reasoning in the workflow comment is sound: a stacked PR is measured against its own base, so uploading it would overwrite the master baseline with a partial figure. The consequence is that the first real qlty coverage check on this work happens **after** the retarget to master, i.e. after review is over.
+
+**Recommendation.** Treat local `yarn test:ci` as the coverage gate until the retarget, then re-check `qlty check` on the retargeted PR before merging. `craco.config.js` enforces the same thresholds locally, so the exposure is small, but the green check should not be read as "coverage is fine".
+
+### W3 — Three commits behind master — INFO
+
+`e281f7ba`, `af0b7942`, `51bfc9ff`. Unchanged since round 7. Not urgent while #773 gates the stack, but merge them before the retarget so conflicts surface here rather than on master.
+
+### W4 — Pre-existing oversized files, none of them this PR's — INFO
+
+The 250-line gate passes for this PR: no `.ts`/`.tsx` file it changes exceeds 250 lines. The repository still has plenty that do — `complexTestText.ts` (3514), `bibliography.tsx` (1290), `react-auth0-spa.test.tsx` (868), `SearchFormDossier.test.tsx` (786), `PdfExport.tsx` (775) — but this PR touches none of them, so they are out of scope here.
+
+### W5 — Two oversized Sass files were touched but not split, while `Realia.sass` was — INFO
+
+`src/Introduction.sass` (727 lines) and `src/about/ui/project.sass` (261) are both over 250 and both touched by this PR — one line each, the `@import` → `@use` migration. The 250-line rule covers `.ts`/`.tsx`, so this is not a gate breach. But the August review's own ceiling list named `src/realia/ui/Realia.sass` (453), and that one _was_ split into six partials. The standard was applied to one Sass file and not to the two larger ones sitting next to it.
+
+**Recommendation.** Either split them too or leave all three alone — but pick one rule. Given both are one-line touches, leaving them is defensible; just do not claim the Sass ceiling was addressed.
 
 ## Reproduction Steps
 
+Every finding above carries its own reproduction inline. The shared setup:
+
 ```bash
-# F1 — the red gate. Full run, CI's exact command, on 18033c77:
-yarn test:ci
-# => Test Suites: 1 failed, 503 passed, 504 total
-# => Tests:       1 failed, 4427 passed, 4428 total
-# => Snapshots:   1 failed, 49 passed, 50 total
-# => FAIL src/fragmentarium/ui/image-annotation/AnnotationsView.integration.test.ts
-#    ● Display annotate view › Snapshot
-#      - style="transform: translate(0px, 0px) scale(1);"   (missing from received)
-# => exit 1
-
-# the same suite in isolation, three times out of three:
-for i in 1 2 3; do npx craco test --runInBand --watch=false --ci \
-  src/fragmentarium/ui/image-annotation/AnnotationsView.integration.test.ts; done
-# => 3 passed, 3 passed, 3 passed
-
-# and GitHub's test check on the identical sha:
-# => Test Suites: 504 passed, 504 total / Tests: 4428 passed / Snapshots: 50 passed
-# the failure is load-dependent, not deterministic
-
-# F2 — the tracked scratch documents:
-git diff --name-status origin/master HEAD -- '*.md'
-# => M .github/copilot-instructions.md, M README.md, and A for the eight TASK-*.md files
-
-# F4 — CodeQL never diffed the PR:
-# job log for Analyze (javascript) on 18033c77:
-#   "Reverting overlay database mode to none because the PR diff ranges could not be computed."
-#   "No precomputed diff ranges found; skipping diff-informed analysis stage."
-# while the check output reads "No new alerts in code changed by this pull request"
-
-# F5 — the base PR is conflicted:
-# GET /repos/.../pulls/773 => mergeable: false, mergeable_state: "dirty"
-
-# F6 — docker-test has no needs:
-sed -n '74,78p;108,113p' .github/workflows/main.yml
-# => docker: needs: [test]    docker-test: (no needs)
-
-# W1 — the Dockerfile is untouched by this PR:
-git diff origin/master HEAD -- Dockerfile .devcontainer
-# => empty
-
-# gates that pass:
-yarn lint    # clean
-yarn tsc     # clean
-# coverage 95.08 / 87.98 / 94.74 / 95.23 against floors 93 / 84 / 93 / 93, no per-file breach
-# zero console output across the full run, locally and in CI
-
-# gates that could not be run here:
-yarn build   # container OOM-kills fork-ts-checker (SIGTERM); CI compiles the same sha cleanly
-yarn start   # same — the dev server dies during compilation at ~2.8 GB available
+git fetch origin
+git checkout chore/remove-bluebird          # ee275e43
+yarn install --frozen-lockfile
+yarn lint && yarn tsc && yarn test:ci
 ```
 
-## Comment and review status
+Scope and drift:
 
-**Timeline review events — 3 total.**
+```bash
+git diff --shortstat origin/chore/ts7-tsconfig-migration...HEAD   # 707 files — what GitHub shows
+git diff --shortstat origin/master...HEAD                         # 510 files — what this PR owns
+git rev-list --count HEAD..origin/master                          # 3
+```
 
-| Reviewer    | State             | Date       | Commit     | Status                                                                  |
-| ----------- | ----------------- | ---------- | ---------- | ----------------------------------------------------------------------- |
-| qltysh[bot] | COMMENTED         | 2026-07-21 | `7ba6f490` | Superseded — its two threads are resolved and outdated                  |
-| qltysh[bot] | COMMENTED         | 2026-07-23 | `01e61b13` | Superseded — its four threads are resolved and outdated                 |
-| Fabdulla1   | CHANGES_REQUESTED | 2026-08-04 | `5ef4a984` | **STILL STANDING — blocks merge (F3).** All three points verified fixed |
+GitHub state (no `gh` CLI in this container; `curl` + `$GITHUB_TOKEN`):
 
-**Inline review comments — 6 total, all resolved, all outdated, all from qltysh[bot].**
-
-| #          | File                                         | Issue                  | Resolved | Outdated |
-| ---------- | -------------------------------------------- | ---------------------- | -------- | -------- |
-| 3623999642 | `src/corpus/application/TextService.ts`      | similar-code, mass 79  | Yes      | Yes      |
-| 3623999655 | `src/corpus/application/TextService.ts`      | similar-code, mass 79  | Yes      | Yes      |
-| 3638370985 | `src/common/hooks/usePromiseEffect.test.tsx` | similar-code, mass 120 | Yes      | Yes      |
-| 3638370997 | `src/common/hooks/usePromiseEffect.test.tsx` | similar-code, mass 120 | Yes      | Yes      |
-| 3638371006 | `src/corpus/application/TextService.ts`      | similar-code, mass 66  | Yes      | Yes      |
-| 3638371019 | `src/corpus/application/TextService.ts`      | similar-code, mass 66  | Yes      | Yes      |
-
-**General / issue comments — 0.**
-
-**Unresolved: 1** — the Fabdulla1 review (F3). **Resolved: 6** — every qlty thread.
-
-**Automated review bots.** qltysh[bot] is the only bot that has reviewed this PR; there is no Sourcery-AI, Copilot or other bot review on it. qlty's current PR status is green with no blocking issues, and all six of its historical threads are resolved against superseded commits.
+```bash
+API=https://api.github.com/repos/ElectronicBabylonianLiterature/ebl-frontend
+curl -s -H "Authorization: Bearer $GITHUB_TOKEN" "$API/pulls/774/reviews?per_page=100"
+curl -s -H "Authorization: Bearer $GITHUB_TOKEN" "$API/pulls/774/comments?per_page=100"
+curl -s -H "Authorization: Bearer $GITHUB_TOKEN" "$API/issues/774/comments?per_page=100"
+curl -s -H "Authorization: Bearer $GITHUB_TOKEN" "$API/commits/ee275e43/check-runs?per_page=100"
+curl -s -H "Authorization: Bearer $GITHUB_TOKEN" "$API/check-runs/105254872913/annotations"   # the CodeQL 300-file warning
+curl -s -H "Authorization: Bearer $GITHUB_TOKEN" "$API/pulls/773"                             # mergeable_state: dirty
+```
 
 ## Recommendation
 
-**Request changes — but the ball is no longer in the code's court.** The design was already right, and after this pass the code, the CI configuration and the documentation are all clean: `yarn lint`, `yarn tsc` and `yarn test:ci` are green, the last one across repeated full runs, and the flaky snapshot that made round 6's green CI unconvincing has a root-caused fix rather than a longer timeout.
+**Still request changes, but the code is now ready.** Every finding inside this diff is fixed: F5 through F11 are applied and verified, and the PR description is corrected on GitHub. What remains is not about the code.
 
-What blocks the merge now is entirely outside the diff. #773 is conflicted against master, and until it lands the PR cannot retarget, the diff stays at 705 files, and CodeQL keeps reporting a per-PR result it never actually computed. The standing `CHANGES_REQUESTED` needs the reviewer. The three master commits need a merge. And the eight scratch documents still have to go before this merges — that was excluded from this pass on purpose, not resolved.
+Four items block a merge and none can be closed from inside the diff. #773 is conflicted and gates the stack (F2). The August `CHANGES_REQUESTED` needs the reviewer to dismiss it (F3) — every concern in it has been verified fixed across two rounds now. CodeQL has never diff-analysed this PR and the retarget will not change that (F4), so either the PR is split under the 300-file cap or the branch alerts get read by hand. And the eight `TASK-*.md` scratch files still have to go (F1), which was excluded from this pass by instruction.
 
-Order of operations: resolve #773's conflicts and land it, let GitHub retarget, confirm CodeQL's log no longer says the diff ranges could not be computed, merge master up, delete the scratch documents, then ask for the re-review.
+Two need a decision rather than work: sign-off on the two deleted bluebird-cancellation tests (F12), and a local `docker build .` before merging, because no pull request ever exercises the Dockerfile (W1).
+
+## Comment Status Tracking
+
+Gathered from the timeline review events, the inline review comments, the issue comments and the GraphQL `reviewThreads` connection on head `ee275e43`.
+
+**Review threads — 6 total, all resolved, all outdated.**
+
+| Thread                 | Author        | Path                                             | Resolved | Outdated | Resolved by   |
+| ---------------------- | ------------- | ------------------------------------------------ | -------- | -------- | ------------- |
+| Similar code, mass 79  | `qltysh[bot]` | `src/corpus/application/TextService.ts:394`      | Yes      | Yes      | `qltysh[bot]` |
+| Similar code, mass 79  | `qltysh[bot]` | `src/corpus/application/TextService.ts:412`      | Yes      | Yes      | `qltysh[bot]` |
+| Similar code, mass 120 | `qltysh[bot]` | `src/common/hooks/usePromiseEffect.test.tsx:52`  | Yes      | Yes      | `qltysh[bot]` |
+| Similar code, mass 120 | `qltysh[bot]` | `src/common/hooks/usePromiseEffect.test.tsx:101` | Yes      | Yes      | `qltysh[bot]` |
+| Similar code, mass 66  | `qltysh[bot]` | `src/corpus/application/TextService.ts:487`      | Yes      | Yes      | `qltysh[bot]` |
+| Similar code, mass 66  | `qltysh[bot]` | `src/corpus/application/TextService.ts:503`      | Yes      | Yes      | `qltysh[bot]` |
+
+All six are outdated against the current head because `TextService.ts` was split (597 lines → 70) and `usePromiseEffect.test.tsx` was restructured, so the flagged ranges no longer exist.
+
+**Timeline review events — 3 total.**
+
+| Review       | Author        | State               | Date       | Commit     | Status                                                                               |
+| ------------ | ------------- | ------------------- | ---------- | ---------- | ------------------------------------------------------------------------------------ |
+| `4746909786` | `qltysh[bot]` | `COMMENTED`         | 2026-07-21 | `7ba6f490` | Resolved, outdated                                                                   |
+| `4764412287` | `qltysh[bot]` | `COMMENTED`         | 2026-07-23 | `01e61b13` | Resolved, outdated                                                                   |
+| `4854993025` | `Fabdulla1`   | `CHANGES_REQUESTED` | 2026-08-04 | `5ef4a984` | **UNRESOLVED — blocks approval (F3).** All three concerns verified fixed this round. |
+
+**Issue comments — 0.** No general PR comments exist.
+
+**Other review bots.** No `sourcery-ai` review, comment or check run exists on this PR; the only bot reviewer is `qltysh[bot]`. GitGuardian and CodeQL report via check runs only, not comments.
+
+**Requested reviewers — none currently assigned.** Reviewer assignment is not touched automatically.
 
 ## What Has To Be Done
 
-Everything in the "Required" sections of the original review has been done except where noted. What is listed below is what genuinely remains.
+Numbered from what genuinely remains. Items 1-10 of the original list were applied on 2026-09-22; see **Remediation applied** for what changed and why.
 
-### Still open — yours
+### Blockers
 
-1. **Resolve the merge conflicts on #773 and land it (F5).** It is `mergeable_state: dirty` against master and it gates the whole stack. Highest value single action: it collapses this PR's diff from 705 files to what it owns and unblocks F4.
-2. **Delete the eight `TASK-*.md` files (F2).** `TASK-774-handoff.md`, `TASK-774-log.md`, `TASK-774-merge-master-handoff.md`, `TASK-774-review.md` (this document), `TASK-774-todo.md`, `TASK-ts7-migration-log.md`, `TASK-ts7-migration-research.md`, `TASK-ts7-migration-todo.md`. Excluded from this pass by instruction, so it is still entirely open. Add a `TASK-*.md` rule to `.gitignore` in the same commit to keep them locally.
-3. **Merge the three master commits (F7)** — `e281f7ba`, `af0b7942`, `51bfc9ff`. Not done here because a merge is a commit.
-4. **Clear the standing `CHANGES_REQUESTED` (F3).** Every point of it is fixed and was re-verified this round. Reviewer assignment is never touched automatically.
-5. **Confirm CodeQL actually diff-analysed the PR (F4)** after the retarget: the `Analyze (javascript)` log must no longer contain "the PR diff ranges could not be computed" or "skipping diff-informed analysis stage". Until then its green check is not evidence.
-6. **Run `docker build .` locally before merging (W1)**, because no pull request ever exercises the Dockerfile and it carries exact Alpine package pins that rot without notice. Docker is not available in this container, so this could not be done here. Consider adding a build-only (no push) Docker job on pull requests.
+1. **Resolve #773's merge conflicts and land it (F2).** It is `mergeable_state: dirty` against master and only 30 files. Nothing downstream can merge until it does. — _yours_
+2. **Clear the standing `CHANGES_REQUESTED` (F3).** Every concern is fixed and has now been re-verified in two consecutive rounds; the review event needs a re-review and dismissal. — _needs the reviewer_
+3. **Delete the eight `TASK-*.md` documents (F1)** — `TASK-774-handoff.md`, `TASK-774-log.md`, `TASK-774-merge-master-handoff.md`, `TASK-774-review.md` (this document), `TASK-774-todo.md`, `TASK-ts7-migration-log.md`, `TASK-ts7-migration-research.md`, `TASK-ts7-migration-todo.md` — and add a `TASK-*.md` rule to `.gitignore` in the same commit. — _excluded from this pass by instruction_
+4. **Decide how CodeQL gets a real verdict (F4).** Either split the PR under the 300-file cap — the Sass migration is 48 files and entirely separable, as is the test split — or read the branch alerts at `/security/code-scanning?query=pr:774+tool:CodeQL+is:open` before merging. Landing #773 will not fix this; the diff against master is 510 files. The alerts REST API returns `403` for the available token, so this has to be done in the UI.
 
-### Done in the working tree — uncommitted
+### Approval needed
 
-7. F1 (snapshot flake, root-caused), F6 (`docker-test` needs `test`), F8 (coverage allowlist validated + floors ratcheted), F9 (README), F10 (unused secret), F11 (CodeQL permissions), F12 (codeql-action v4), F13 (console-error helper split into required/tolerated), F14 (`isBoundingBoxLargeEnough`), F16 (handoff frontmatter). Plus two pre-existing defects fixed at root — see "Remediation applied this round".
+5. **Confirm the removal of two tests (F12)** — _"Cancelled promise rejects without completing"_ and _"Request cancellation is available on all methods"_. Both assert on bluebird's `.cancel()` / `.isCancelled()`, which no longer exist, and both are superseded by stronger `AbortSignal` tests in `ApiClient.requests.test.ts`. Every test in the other six deleted files was verified re-homed. No test is removed without explicit approval. — _yours_
 
-### Done on GitHub
+### Before merge
 
-8. F9 and F15 applied to the PR description: "four components" corrected to five, and the Verification section now cites `yarn test:ci`.
-
-### Re-review follow-up
-
-9. After the retarget, re-run the full gate set against the collapsed diff and confirm the `test`, `CodeQL` and `qlty check` checks are green across more than one run.
-10. **Remember to delete this review document along with the other seven before merging.**
+6. **Run `docker build .` locally (W1).** No pull request ever builds the Dockerfile, and it carries exact Alpine pins. Docker is unavailable in this container. Consider adding a build-only Docker job on pull requests.
+7. **Merge the three master commits (W3)** — `e281f7ba`, `af0b7942`, `51bfc9ff` — so conflicts surface here rather than on master. _Not done: a merge is a commit, and commits are not made unprompted._
+8. **Re-check `qlty check` after the retarget to master (W2)**, when coverage is uploaded for the first time.
+9. **Re-run the full gate set against the collapsed diff** after the retarget, and confirm `test`, `CodeQL` and `qlty check` are green across more than one run.
+10. **Delete this review document** along with the other seven `TASK-*.md` files before merging.

@@ -17,9 +17,9 @@ import {
   createFragment,
   createFragmentPath,
 } from 'fragmentarium/infrastructure/fragmentFactories'
-import { ApiFragmentAttestations } from 'fragmentarium/infrastructure/fragmentRepositoryAttestations'
+import { ApiFragmentInfo } from 'fragmentarium/infrastructure/fragmentRepositoryInfo'
 
-export class ApiFragmentUpdates extends ApiFragmentAttestations {
+export class ApiFragmentUpdates extends ApiFragmentInfo {
   updateGenres(number: string, genres: Genres): Promise<Fragment> {
     const path = createFragmentPath(number, 'genres')
     return this.apiClient

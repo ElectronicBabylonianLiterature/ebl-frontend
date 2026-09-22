@@ -1,3 +1,4 @@
+import { expectConsoleErrors } from 'setupTests'
 import { chapter, chapterDto } from 'test-support/test-corpus-text'
 import {
   chapterId,
@@ -46,16 +47,12 @@ test('listAllChapters', async () => {
 })
 
 describe('findManuscripts provenance preload', () => {
-  afterEach(() => {
-    jest.restoreAllMocks()
-  })
-
   test('logs provenance preload errors and still returns manuscripts', async () => {
     const service = createService()
     const provenanceError = new Error('provenance request failed')
-    const consoleErrorSpy = jest
-      .spyOn(console, 'error')
-      .mockImplementation(() => undefined)
+    expectConsoleErrors(
+      /Failed to preload provenances Error: provenance request failed/,
+    )
 
     fragmentServiceMock.fetchProvenances.mockReturnValueOnce(
       Promise.reject(provenanceError),
@@ -66,10 +63,6 @@ describe('findManuscripts provenance preload', () => {
       chapter.manuscripts,
     )
 
-    expect(consoleErrorSpy).toHaveBeenCalledWith(
-      'Failed to preload provenances',
-      provenanceError,
-    )
     expect(fragmentServiceMock.fetchProvenances).toHaveBeenCalled()
     expect(apiClient.fetchJson).toHaveBeenCalledWith(
       `${chapterUrl}/manuscripts`,
@@ -81,7 +74,7 @@ describe('findManuscripts provenance preload', () => {
     const service = createService()
     const provenanceError = new Error('temporary provenance failure')
 
-    jest.spyOn(console, 'error').mockImplementation(() => undefined)
+    expectConsoleErrors(/Failed to preload provenances/)
 
     fragmentServiceMock.fetchProvenances.mockReturnValueOnce(
       Promise.reject(provenanceError),

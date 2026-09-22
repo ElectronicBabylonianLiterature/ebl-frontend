@@ -2041,3 +2041,68 @@ Both are fixed: the hook declares a budget larger than the waits it contains, an
 Gates: lint PASS, tsc PASS, `yarn test:ci` PASS at 504 suites / 4428 tests / 50 snapshots with zero console output across repeated full runs (the last two fully green end to end), coverage 95.08/87.98/94.74/95.23 with every per-path 100% gate met, 250-line ceiling PASS. `yarn build` and the dev server remain unrunnable in this container — fork-ts-checker is OOM-killed with SIGTERM at roughly 2.8 GB available — so that gate is taken from CI, which compiled this sha green.
 
 **Lesson.** Two this round. First: when a test fails on an attribute, check whether anything waits for that attribute before blaming the value. Second, and more useful: tightening an assertion is a good way to find out that the assertion was never true. F13 was filed as a small hygiene point and it uncovered five suites whose shared setup was asserting something most of their tests never did.
+
+---
+
+## Round 8 — review only — 2026-09-20
+
+Head reviewed: `ee275e43`. No code was changed this round; this was a review pass. `TASK-774-review.md` was rewritten for round 8 and `TASK-774-todo.md` updated.
+
+**Gates, all re-run locally on `ee275e43`.** `yarn lint` PASS (exit 0). `yarn tsc` PASS (exit 0). `yarn test:ci` PASS — 504 suites, 4428 tests, 50 snapshots, 0 failures, exit 0, 621.7 s, and zero `console.error` / `console.warn` / unhandled-rejection output in the whole run. Coverage 95.08 / 87.98 / 94.74 / 95.23 with no threshold breach; `craco.config.js`'s `fullyCoveredPaths` validated at 50 entries, no duplicates, none missing. No changed `.ts`/`.tsx` file exceeds 250 lines. `yarn build` and the dev server remain unrunnable here (fork-ts-checker is OOM-killed), so those are taken from CI, which is green on this sha.
+
+The first `yarn test:ci` run was killed by a session boundary at 319/504 suites with no failures. It was re-run from scratch rather than reported partially; the numbers above are from the complete run. Lint and tsc were deliberately held until the test run finished, because the `AnnotationsView` suite was flaky under CPU load as recently as round 7 and a false red would have cost more than the wait.
+
+**GitHub state gathered before reviewing**, per the review gate. All three timeline review events, all six inline review comments, the GraphQL `reviewThreads` connection with resolution and outdated flags, the issue comments (zero), the eight check runs on the head sha and the combined status. No `sourcery-ai` review, comment or check run exists on this PR — `qltysh[bot]` is the only bot reviewer, and its six threads are all resolved and outdated because `TextService.ts` and `usePromiseEffect.test.tsx` were restructured underneath them.
+
+**F5 is the find of the round, and it came from doubting a README sentence.** The README this PR adds claims "Everything else reachable from a `withData` getter or `run` threads one." Rather than take it, I enumerated every `FragmentService` method and split them by whether the signature declares a signal, then checked which of the signal-less ones are reached from a getter. Four were — and they are called _with_ a signal argument that the method has no parameter for. They compile because the `withData` type argument is written `{ fragmentService }`, which is `{ fragmentService: any }` under this repository's `noImplicitAny: false`.
+
+Widening the sweep to every call site passing `signal` turned up the better case, which needs no `any` at all. `FragmentInfoRepository` declares `random(signal?: AbortSignal)`; `FragmentRepository.random()` implements it with no parameters; TypeScript accepts a narrower function where a wider one is expected, so the assignment is legal and `tsc` stays green while `FragmentSearchService` threads a signal into a method that drops it. `NeedsRevision.tsx` even spells the abortable type out by hand. Three live UI call sites depend on the contract. Seven reads in total advertise abortability they do not have.
+
+None of it is a runtime regression — these reads were not abortable on master either, and `withData`'s `requestSequence` guard still prevents stale state. What makes it worth a Major is that this PR's entire thesis is that the type system, not convention, decides where signals go. Here the type system says one thing and the network does another.
+
+**F6 was found by auditing what replaced `silenceConsoleErrors`.** The PR's removal of blanket console suppression is real, but `TextService.misc.test.ts:84` — a file this PR adds — reintroduces the exact pattern with an unasserted `jest.spyOn(console, 'error').mockImplementation(() => undefined)`. Its sibling test 30 lines above does it correctly. I checked all fourteen surviving `spyOn(console` sites: the pre-existing ones all assert, and of the five in PR-added files only this one and two tests in `CuneiformConverterForm.errors.test.tsx` (F7) do not.
+
+**Deleted tests were checked individually rather than counted.** Seven test files are gone and 76 added, which looks like a split but is not proof. I extracted every `it`/`test` name from the seven deleted files and searched for each in the current tree. Three did not appear. One was a false alarm — "should not allow write operations for guest users" survives as an `it.each` over the same six permissions, which is stronger than the original. The other two assert on bluebird's `.cancel()` / `.isCancelled()` and are genuinely obsolete, with better `AbortSignal` replacements in `ApiClient.requests.test.ts`. Recorded as F12 for explicit sign-off rather than assumed.
+
+**F4 corrects round 7, which had the diagnosis right and the remedy wrong.** Round 7 recorded CodeQL's missing diff analysis as something the retarget would fix. The `Analyze (javascript)` check run carries the actual reason as a warning annotation: "Cannot retrieve the full diff because there are too many (300) changed files in the pull request." Landing #773 does not help — #773 is 30 files and this PR is 510 against master, so the retargeted diff stays well over the cap. The gap is structural.
+
+**Dev container checked explicitly, as instructed.** `.devcontainer/` is byte-identical to master across all four files, and the root `Dockerfile` is byte-identical too — its `+4/-4` in the GitHub diff is base-branch drift. The CI workflows _are_ materially changed, so all twelve changes across `main.yml`, `codeql-analysis.yml` and `update-sitemaps.yml` were reviewed line by line and are recorded with a verdict each in W1. All sound. The real hazard is pre-existing: both Docker jobs are gated on `push` to master, so no pull request ever builds the Dockerfile.
+
+**`tsconfig.json` belongs to #773, not here.** It differs from master (`target` es5 → es2020, `moduleResolution` node → bundler, `baseUrl` → `paths`) but is identical to the base branch. Verified that CRACO compensates for the removed `baseUrl` via `jestConfig.modulePaths` and `webpackConfig.resolve.modules`, both pointing at `src`. `noImplicitAny: false` is pre-existing on master and is what lets F5 Group A compile.
+
+**Verdict: CHANGES REQUESTED.** 17 findings — 4 blockers, 2 major, 6 minor, 2 warnings, 3 info. The design is right and the August review is satisfied; F5 and F6 should be fixed here, the eight `.md` files must go, and three blockers need a different branch, another person, or a decision about CodeQL.
+
+**Lesson.** A documented guarantee is a claim to test, not a fact to reuse. Both majors this round came from checking a sentence the PR itself wrote — one in the README, one implied by deleting `silenceConsoleErrors` — against what the code actually does. Round 7 verified the write side of the signal rule thoroughly and took the read side from the prose; the read side is where the gap was.
+
+---
+
+## Round 8 — remediation — 2026-09-22
+
+Every round-8 finding was addressed except the `.md` cleanup (F1), which was excluded by instruction, and the six that cannot be closed from inside this diff. Head `ee275e43`; nothing committed.
+
+**F5 was the whole job, and fixing it was more interesting than finding it.**
+
+The repository layer was the easy half: `_fetch` takes a `signal` and forwards it to `fetchJson`, and `random` / `interesting` / `fetchNeedsRevision` accept the parameter their own port `FragmentInfoRepository` had been declaring all along. `statistics`, `lineToVecRanking`, `fragmentPager` and `findInCorpus` got the same treatment through the port, the service and the repository.
+
+The hard half was the four `withData` type arguments written `{ fragmentService }`. Replacing that with `{ fragmentService: FragmentService }` turned three previously-invisible errors red immediately, which is the strongest evidence the finding was worth filing:
+
+- `FragmentInCorpus.tsx` was declaring its data as `Array<ManuscriptAttestation>` while the repository returns `ReadonlyArray`. The `any` had been absorbing the mismatch. Fixed by using the shared readonly type rather than widening it back.
+- `Statistics.test.tsx` and `FragmentLineToVecRanking.test.tsx` were passing partial stubs (`{ statistics: jest.fn() }`) where a full `FragmentService` is now required. Both are explicit `as unknown as FragmentService`, matching the `as unknown as Session` already in those files.
+
+`FolioImage.tsx` carried the identical `{ fragmentService }` hole. It was not in the finding — its getter calls `findFolio`, which _does_ accept a signal, so nothing was being dropped — but leaving it open would have defeated the purpose of the fix, which is that the compiler catches the next one. Closed with the other four.
+
+**Threading the signals broke the 250-line ceiling, and the fix was a real improvement rather than a workaround.** `FragmentRepository.ts` went 240 → 253 because prettier expands a two-parameter signature onto four lines. Compressing the signatures would have been the cheap answer. Instead the `FragmentInfoRepository` implementation moved into `fragmentRepositoryInfo.ts` as `ApiFragmentInfo`, slotted into the existing `ApiFragmentAttestations` → `ApiFragmentUpdates` → `ApiFragmentRepository` chain the repository already uses. `FragmentRepository.ts` is now 178 lines, the new module 85, and the port is implemented in one file instead of being scattered. Two hand-built `/fragments/<n>/...` URLs now go through `createFragmentPath`, and the three fragment-info readers share a private `fetchFragmentInfos` helper instead of each repeating `.then(infos => infos.map(createFragmentInfo))`.
+
+Two duplicated inline shapes became named types while in there: `FragmentStatistics` (written out in the port, the repository, the service and a test) and `CorpusAttestations` (the port, the repository, the service and `FragmentInCorpus.tsx`).
+
+**The delegation tests needed updating, and one was missed on the first pass.** This repository's convention, already visible in `folioPager`, is that a method threading an optional signal expects a trailing `undefined` in `toHaveBeenCalledWith`. Seven `TestData` entries and one hand-written assertion were updated. A second `findInCorpus` assertion in `FragmentRepository.query.test.ts:130` was missed and caught by the full run — a reminder that grepping for the method name is not the same as grepping for the URL it builds.
+
+**New test, because the point of the fix is the forwarding.** `FragmentRepository.abortSignal.test.ts` drives all seven reads through a `describe.each` and asserts the caller's `AbortSignal` arrives at `apiClient.fetchJson`. The README now points at it and says to extend it when another abortable read is added.
+
+**F6 had a trap in it.** Swapping the unasserted spy for `expectConsoleErrors` is not enough on its own: that describe block had `afterEach(() => jest.restoreAllMocks())`, and Jest runs describe-level `afterEach` hooks _before_ the root-level one installed by `setupTests`. The restore would have wiped `spy.mock.calls` before the global hook could assert on them, so the test would have failed on the "expected error did not occur" branch. Removing that `afterEach` was part of the fix, not tidying.
+
+**Not code: the PR description was corrected on GitHub** — 48 changed Sass files and 60 entrypoints (it said 47 and 59), the build-command claim now that `main.yml` actually calls `yarn build:ci-stable`, the write-owner list minus `BibliographyEntryForm`, and a new section recording these fixes.
+
+Gates: lint PASS, tsc PASS, `yarn test:ci` PASS at 505 suites / 4435 tests / 50 snapshots with zero console output, exit 0 (the reviewed sha was 504 / 4428; the extra suite and seven tests are `FragmentRepository.abortSignal.test.ts`). Coverage 95.08 / 87.98 / 94.74 / 95.23, identical before and after the remediation, with no threshold breach. No changed or new `.ts`/`.tsx` file exceeds 250 lines. `yarn build` and the dev server remain unrunnable here.
+
+**Lesson.** `noImplicitAny: false` does not just weaken types where it is used — it hides the evidence that a type is wrong elsewhere. Four dropped signals, a readonly/mutable mismatch and two under-specified test stubs were all sitting behind one shorthand `{ fragmentService }`. The fix took ten minutes; the finding took a deliberate decision to distrust a sentence in the README.

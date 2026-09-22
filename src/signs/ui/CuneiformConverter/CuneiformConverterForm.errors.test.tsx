@@ -79,6 +79,7 @@ it('converts on Shift + Enter', async () => {
   await waitFor(() => {
     expect(screen.getByLabelText('Converted Text')).toHaveValue('𒃻')
   })
+  expect(consoleErrorSpy).not.toHaveBeenCalled()
 })
 
 it('does not convert on Enter without Shift', async () => {
@@ -90,6 +91,7 @@ it('does not convert on Enter without Shift', async () => {
   fireEvent.keyDown(inputTextArea, { key: 'Enter', shiftKey: false })
 
   expect(signServiceMock.getUnicodeFromAtf).not.toHaveBeenCalled()
+  expect(consoleErrorSpy).not.toHaveBeenCalled()
 })
 
 it('does not report cancelled conversions', async () => {

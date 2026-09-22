@@ -7,14 +7,13 @@ export default function initializeAnnotations(
   initialAnnotations: readonly Annotation[],
   tokens: ReadonlyArray<ReadonlyArray<AnnotationToken>>,
 ): readonly Annotation[] {
+  const flatTokens = tokens.flat()
   return initialAnnotations.map((annotation) => {
-    const token = tokens
-      .flat()
-      .find(
-        (token) =>
-          _.isEqual(token.path, annotation.data.path) &&
-          token.value === annotation.data.value,
-      )
+    const token = flatTokens.find(
+      (flatToken) =>
+        _.isEqual(flatToken.path, annotation.data.path) &&
+        flatToken.value === annotation.data.value,
+    )
     return token
       ? annotation
       : produce(annotation, (draft) => {

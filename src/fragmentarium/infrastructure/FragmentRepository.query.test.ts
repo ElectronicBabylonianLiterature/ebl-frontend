@@ -130,6 +130,7 @@ describe('FragmentRepository findInCorpus', () => {
     expect(apiClient.fetchJson).toHaveBeenCalledWith(
       `/fragments/${encodeURIComponent(fragmentId)}/corpus`,
       false,
+      undefined,
     )
   })
 

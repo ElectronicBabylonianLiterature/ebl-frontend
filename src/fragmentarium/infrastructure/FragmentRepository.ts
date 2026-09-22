@@ -1,6 +1,6 @@
 import _ from 'lodash'
 import { stringify } from 'query-string'
-import { Fragment, FragmentInfoDto } from 'fragmentarium/domain/fragment'
+import { Fragment } from 'fragmentarium/domain/fragment'
 import Folio from 'fragmentarium/domain/Folio'
 import {
   AnnotationRepository,
@@ -10,17 +10,9 @@ import Annotation, {
   AnnotationData,
   Geometry,
 } from 'fragmentarium/domain/annotation'
-import {
-  FragmentInfoRepository,
-  FragmentInfosDtoPromise,
-  FragmentInfosPromise,
-} from 'fragmentarium/application/FragmentSearchService'
-import { FolioPagerData, FragmentPagerData } from 'fragmentarium/domain/pager'
+import { FragmentInfoRepository } from 'fragmentarium/application/FragmentSearchService'
+import { FolioPagerData } from 'fragmentarium/domain/pager'
 import Word from 'dictionary/domain/Word'
-import {
-  LineToVecRanking,
-  LineToVecRankingDto,
-} from 'fragmentarium/domain/lineToVecRanking'
 import FragmentDto from 'fragmentarium/domain/FragmentDtos'
 import {
   createLatestQueryResult,
@@ -33,9 +25,7 @@ import { QueryResult, FragmentAfoRegisterQueryResult } from 'query/QueryResult'
 import { ProvenanceRecord } from 'fragmentarium/domain/Provenance'
 import {
   createFragment,
-  createFragmentInfo,
   createFragmentPath,
-  createLineToVecRanking,
 } from 'fragmentarium/infrastructure/fragmentFactories'
 
 import { ApiFragmentUpdates } from 'fragmentarium/infrastructure/fragmentRepositoryUpdates'
@@ -51,27 +41,6 @@ class ApiFragmentRepository
   extends ApiFragmentUpdates
   implements FragmentInfoRepository, FragmentRepository, AnnotationRepository
 {
-  statistics(): Promise<{
-    transliteratedFragments: number
-    lines: number
-    totalFragments: number
-  }> {
-    return this.apiClient.fetchJson<{
-      transliteratedFragments: number
-      lines: number
-      totalFragments: number
-    }>(`/statistics`, false)
-  }
-
-  lineToVecRanking(number: string): Promise<LineToVecRanking> {
-    return this.apiClient
-      .fetchJson<LineToVecRankingDto>(
-        createFragmentPath(number, 'match'),
-        false,
-      )
-      .then(createLineToVecRanking)
-  }
-
   find(
     number: string,
     lines?: readonly number[],
@@ -89,31 +58,6 @@ class ApiFragmentRepository
         false,
       )
       .then(createFragment)
-  }
-
-  random(): FragmentInfosPromise {
-    return this._fetch({ random: true }).then((fragmentInfos) =>
-      fragmentInfos.map(createFragmentInfo),
-    )
-  }
-
-  interesting(): FragmentInfosPromise {
-    return this._fetch({ interesting: true }).then((fragmentInfos) =>
-      fragmentInfos.map(createFragmentInfo),
-    )
-  }
-
-  fetchNeedsRevision(): FragmentInfosPromise {
-    return this._fetch({ needsRevision: true }).then((fragmentInfos) =>
-      fragmentInfos.map(createFragmentInfo),
-    )
-  }
-
-  _fetch(params: Record<string, unknown>): FragmentInfosDtoPromise {
-    return this.apiClient.fetchJson<ReadonlyArray<FragmentInfoDto>>(
-      `/fragments?${stringify(params)}`,
-      false,
-    )
   }
 
   fetchGenres(signal?: AbortSignal): Promise<string[][]> {
@@ -163,13 +107,6 @@ class ApiFragmentRepository
       )}/${encodeURIComponent(folio.number)}`,
       false,
       signal,
-    )
-  }
-
-  fragmentPager(fragmentNumber: string): Promise<FragmentPagerData> {
-    return this.apiClient.fetchJson<FragmentPagerData>(
-      `/fragments/${encodeURIComponent(fragmentNumber)}/pager`,
-      false,
     )
   }
 

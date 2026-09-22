@@ -36,12 +36,15 @@ const word: Word = wordFactory.build()
 const lemmaSuggestions = new Map([['foo', new LemmaOption(word)]])
 
 const testData: TestData<FragmentService>[] = [
-  new TestData('statistics', [], fragmentRepository.statistics, resultStub),
+  new TestData('statistics', [], fragmentRepository.statistics, resultStub, [
+    undefined,
+  ]),
   new TestData(
     'lineToVecRanking',
     ['X.0'],
     fragmentRepository.lineToVecRanking,
     resultStub,
+    ['X.0', undefined],
   ),
   new TestData('findFolio', [folio], imageRepository.findFolio, resultStub, [
     folio,
@@ -74,6 +77,7 @@ const testData: TestData<FragmentService>[] = [
     ['K.1'],
     fragmentRepository.fragmentPager,
     resultStub,
+    ['K.1', undefined],
   ),
   new TestData('searchLemma', ['lemma'], wordRepository.searchLemma, [
     resultStub,

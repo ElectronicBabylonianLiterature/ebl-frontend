@@ -85,7 +85,11 @@ describe('findInCorpus', () => {
 
     const result = await fragmentRepository.findInCorpus(fragmentId)
 
-    expect(apiClient.fetchJson).toHaveBeenCalledWith(corpusPath, false)
+    expect(apiClient.fetchJson).toHaveBeenCalledWith(
+      corpusPath,
+      false,
+      undefined,
+    )
     expect(result.manuscriptAttestations).toHaveLength(1)
     expect(result.manuscriptAttestations[0].manuscriptSiglum).toEqual('UrBM1')
     expect(result.uncertainFragmentAttestations).toHaveLength(1)

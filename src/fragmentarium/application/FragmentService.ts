@@ -13,13 +13,13 @@ import { LineToVecRanking } from 'fragmentarium/domain/lineToVecRanking'
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 import { FolioPagerData, FragmentPagerData } from 'fragmentarium/domain/pager'
 import Word from 'dictionary/domain/Word'
-import { ManuscriptAttestation } from 'corpus/domain/manuscriptAttestation'
 import { FragmentQuery } from 'query/FragmentQuery'
 import { FragmentAfoRegisterQueryResult, QueryResult } from 'query/QueryResult'
 import { LemmaSuggestions } from 'fragmentarium/ui/fragment/lemma-annotation/LemmaAnnotation'
-import { UncertainFragmentAttestation } from 'corpus/domain/uncertainFragmentAttestation'
 import { ProvenanceRecord } from 'fragmentarium/domain/Provenance'
 import {
+  CorpusAttestations,
+  FragmentStatistics,
   onError,
   ThumbnailBlob,
   ThumbnailSize,
@@ -41,16 +41,15 @@ import { prefetchFrom } from 'fragmentarium/application/fragmentPrefetch'
 export * from 'fragmentarium/application/fragmentServicePorts'
 
 export class FragmentService extends FragmentServiceBase {
-  statistics(): Promise<{
-    transliteratedFragments: number
-    lines: number
-    totalFragments: number
-  }> {
-    return this.fragmentRepository.statistics()
+  statistics(signal?: AbortSignal): Promise<FragmentStatistics> {
+    return this.fragmentRepository.statistics(signal)
   }
 
-  lineToVecRanking(number: string): Promise<LineToVecRanking> {
-    return this.fragmentRepository.lineToVecRanking(number)
+  lineToVecRanking(
+    number: string,
+    signal?: AbortSignal,
+  ): Promise<LineToVecRanking> {
+    return this.fragmentRepository.lineToVecRanking(number, signal)
   }
 
   find(
@@ -103,11 +102,11 @@ export class FragmentService extends FragmentServiceBase {
     return this.fragmentRepository.listAllFragments()
   }
 
-  findInCorpus(number: string): Promise<{
-    manuscriptAttestations: ReadonlyArray<ManuscriptAttestation>
-    uncertainFragmentAttestations: ReadonlyArray<UncertainFragmentAttestation>
-  }> {
-    return this.fragmentRepository.findInCorpus(number)
+  findInCorpus(
+    number: string,
+    signal?: AbortSignal,
+  ): Promise<CorpusAttestations> {
+    return this.fragmentRepository.findInCorpus(number, signal)
   }
 
   findFolio(folio: Folio, signal?: AbortSignal): Promise<Blob> {
@@ -145,8 +144,11 @@ export class FragmentService extends FragmentServiceBase {
     return this.fragmentRepository.folioPager(folio, fragmentNumber, signal)
   }
 
-  fragmentPager(fragmentNumber: string): Promise<FragmentPagerData> {
-    return this.fragmentRepository.fragmentPager(fragmentNumber)
+  fragmentPager(
+    fragmentNumber: string,
+    signal?: AbortSignal,
+  ): Promise<FragmentPagerData> {
+    return this.fragmentRepository.fragmentPager(fragmentNumber, signal)
   }
 
   searchLemma(lemma: string): Promise<readonly Word[]> {

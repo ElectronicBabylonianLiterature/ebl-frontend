@@ -46,7 +46,7 @@ const testData: TestData<FragmentRepository>[] = [
     [fragmentId],
     apiClient.fetchJson,
     resultStub,
-    [`/fragments/${encodeURIComponent(fragmentId)}/pager`, false],
+    [`/fragments/${encodeURIComponent(fragmentId)}/pager`, false, undefined],
     Promise.resolve(resultStub),
   ),
   new TestData(

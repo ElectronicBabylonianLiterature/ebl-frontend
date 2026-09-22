@@ -9,16 +9,17 @@ import { UncertainFragmentAttestation } from 'corpus/domain/uncertainFragmentAtt
 import { LemmaSuggestions } from 'fragmentarium/ui/fragment/lemma-annotation/LemmaAnnotation'
 import { LemmaOption } from 'fragmentarium/ui/lemmatization/LemmaSelectionForm'
 import Word from 'dictionary/domain/Word'
+import { CorpusAttestations } from 'fragmentarium/application/fragmentServicePorts'
 import { JsonApiClient } from 'http/JsonApiClient'
 import { createFragmentPath } from 'fragmentarium/infrastructure/fragmentFactories'
 
 export class ApiFragmentAttestations {
   constructor(protected readonly apiClient: JsonApiClient) {}
 
-  findInCorpus(number: string): Promise<{
-    manuscriptAttestations: ReadonlyArray<ManuscriptAttestation>
-    uncertainFragmentAttestations: ReadonlyArray<UncertainFragmentAttestation>
-  }> {
+  findInCorpus(
+    number: string,
+    signal?: AbortSignal,
+  ): Promise<CorpusAttestations> {
     return this.apiClient
       .fetchJson<{
         manuscriptAttestations: Array<{
@@ -31,7 +32,7 @@ export class ApiFragmentAttestations {
           text: Record<string, unknown>
           chapterId: ChapterId
         }>
-      }>(`${createFragmentPath(number)}/corpus`, false)
+      }>(createFragmentPath(number, 'corpus'), false, signal)
       .then((response) => ({
         manuscriptAttestations: (response.manuscriptAttestations ?? []).map(
           (manuscriptAttestation) =>

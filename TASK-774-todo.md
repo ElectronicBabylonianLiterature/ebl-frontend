@@ -1,9 +1,9 @@
 # TASK-774 — TODO
 
 PR: [#774](https://github.com/ElectronicBabylonianLiterature/ebl-frontend/pull/774)
-Head reviewed: `eac106a4` · Base: `chore/ts7-tsconfig-migration` (#773)
-Last updated: 2026-09-17 (round 6 review + remediation — every finding fixed except the cleanup, which was excluded by instruction)
-Verdict: **13 of 18 findings fixed in the working tree, nothing committed.** F3 (delete the task docs) excluded by instruction; F4 (clear the review), F9 and F14 (merges) are yours.
+Head reviewed: `ee275e43` · Base: `chore/ts7-tsconfig-migration` (#773)
+Last updated: 2026-09-22 (round 8 remediation — every finding applied except the cleanup, which was excluded by instruction)
+Verdict: **11 of 17 findings closed in the working tree, nothing committed.** F1 excluded by instruction; F2, F3, F4, F12, W1, W2 and W3 need a different branch, another person, or a decision.
 
 ## Round 6 — remediation — DONE
 
@@ -262,3 +262,76 @@ Instruction: address every finding **except** the `.md` cleanup (F2).
 
 - [x] Jest's default 5 s `beforeEach` budget was smaller than the 10 s wait inside it in `AnnotationsView.integration.test.ts` — a latent timeout unrelated to the snapshot
 - [x] `stubMissingBibliography` and `resetAuth0Mocks` ran a strict console-error expectation from a blanket `beforeEach`, so they asserted an error that most tests in those suites never trigger — surfaced by F13 and split into the tolerant mode
+
+## Round 8 — review only — 2026-09-20
+
+No code changed this round. Gates re-run on `ee275e43`: lint PASS, tsc PASS, `yarn test:ci` PASS (504 suites / 4428 tests / 50 snapshots, zero console output), coverage 95.08 / 87.98 / 94.74 / 95.23 with no breach, 250-line ceiling PASS.
+
+### Blockers
+
+- [ ] F1 — delete the eight tracked `TASK-*.md` files and add a `TASK-*.md` rule to `.gitignore` in the same commit
+- [ ] F2 — resolve #773's merge conflicts and land it (`mergeable_state: dirty`, 30 files, gates the whole stack) — **yours**
+- [ ] F3 — clear the standing `CHANGES_REQUESTED` (all three concerns verified fixed) — **needs the reviewer**
+- [ ] F4 — decide how CodeQL gets a real verdict: split under the 300-file cap, or read the branch alerts by hand. Landing #773 does **not** fix this (510 files vs master)
+
+### Code
+
+- [ ] F5 — add `signal?: AbortSignal` to `FragmentRepository._fetch` and pass it to `fetchJson`, then to `random`, `interesting`, `fetchNeedsRevision` (their port already declares it), plus `statistics`, `lineToVecRanking`, `findInCorpus`, `fragmentPager`
+- [ ] F5 — replace `{ fragmentService }` with `{ fragmentService: FragmentService }` in `Statistics.tsx:58`, `FragmentLineToVecRanking.tsx:92`, `FragmentInCorpus.tsx:15`, `FragmentPager.tsx:50`
+- [ ] F11 — hoist `tokens.flat()` out of the `map` in `initializeAnnotations.ts:10-17`
+- [ ] F9 — change `main.yml:59` to `run: yarn build:ci-stable`
+
+### Tests
+
+- [ ] F6 — replace the unasserted spy at `TextService.misc.test.ts:84` with `expectConsoleErrors(/Failed to preload provenances/)`
+- [ ] F7 — scope the `beforeEach` console spy in `CuneiformConverterForm.errors.test.tsx` to the four tests that assert on it
+
+### Documentation
+
+- [ ] F5 — fix the "Reads that take no signal" claim in `README.md`
+- [ ] F8 — reword the `SupersedableOperation` owner list; `BibliographyEntryForm` guards a read (`Cite.async`), not a write
+- [ ] F9 / F10 — correct the PR description: 48 changed Sass files, 60 entrypoints, and CI's build step as actually written
+
+### Approval needed
+
+- [ ] F12 — confirm the removal of "Cancelled promise rejects without completing" and "Request cancellation is available on all methods" (bluebird-only assertions, superseded by `AbortSignal` tests) — **yours**
+
+### Before merge
+
+- [ ] W3 — merge the three master commits (`e281f7ba`, `af0b7942`, `51bfc9ff`) — **needs a merge commit, not requested**
+- [ ] W1 — run `docker build .` locally; no pull request ever builds the Dockerfile. Docker unavailable in this container
+- [ ] W2 — re-check `qlty check` after the retarget, when coverage is uploaded for the first time
+- [ ] W5 — decide whether `Introduction.sass` (727) and `project.sass` (261) get split too, or leave all three
+- [ ] Re-run the full gate set against the collapsed diff after the retarget
+- [ ] Delete `TASK-774-review.md` along with the other seven before merging
+
+## Round 8 — remediation — 2026-09-22
+
+### Done
+
+- [x] F5 — `FragmentRepository._fetch` takes a `signal` and forwards it; `random`, `interesting`, `fetchNeedsRevision` now honour the `signal` their port already declared
+- [x] F5 — `statistics`, `lineToVecRanking`, `findInCorpus`, `fragmentPager` thread a `signal` through the port, the service and the repository
+- [x] F5 — new `FragmentRepository.abortSignal.test.ts` asserts the caller's signal reaches `apiClient.fetchJson` for all seven reads
+- [x] F5 — `{ fragmentService }` replaced with `{ fragmentService: FragmentService }` in `Statistics.tsx`, `FragmentLineToVecRanking.tsx`, `FragmentInCorpus.tsx`, `FragmentPager.tsx` and `FolioImage.tsx` (the fifth was not in the finding but is the identical hole)
+- [x] F5 — the three errors the `any` had been hiding fixed at root: `FragmentInCorpus` uses the shared readonly type, two test stubs are explicit casts
+- [x] DRY — `FragmentStatistics` and `CorpusAttestations` replace the same inline shapes repeated across the port, the repository, the service and two components
+- [x] 250-line ceiling — `ApiFragmentInfo` extracted to `fragmentRepositoryInfo.ts`; `FragmentRepository.ts` 253 → 178 lines
+- [x] F6 — `TextService.misc.test.ts` uses `expectConsoleErrors`; the `afterEach(jest.restoreAllMocks)` that would have defeated it is gone
+- [x] F7 — all six tests in `CuneiformConverterForm.errors.test.tsx` now assert on the shared console spy
+- [x] F8 — `README.md` describes `SupersedableOperation` as guarding operations that cannot take a signal, and names `BibliographyEntryForm`'s `Cite.async` as the read case
+- [x] F5 — `README.md`'s "Reads that take no signal" list is accurate, and records why TypeScript does not catch a dropped signal
+- [x] F9 — `main.yml:59` runs `yarn build:ci-stable`
+- [x] F9 / F10 — PR description corrected on GitHub: 48 Sass files, 60 entrypoints, the build command, the write-owner list, plus a section recording these fixes
+- [x] F11 — `initializeAnnotations` hoists `tokens.flat()` out of the `map`
+- [x] W5 — no claim about the Sass ceiling exists, so nothing to retract
+
+### Still open
+
+- [ ] F1 — delete the eight tracked `TASK-*.md` files and add a `TASK-*.md` rule to `.gitignore` — **excluded by instruction**
+- [ ] F2 — resolve #773's merge conflicts and land it — **yours**
+- [ ] F3 — clear the standing `CHANGES_REQUESTED` — **needs the reviewer**
+- [ ] F4 — split the PR under CodeQL's 300-file cap, or read the branch alerts by hand — **needs a decision**
+- [ ] F12 — approve the removal of the two bluebird-cancellation tests — **yours**
+- [ ] W1 — run `docker build .` locally — **Docker unavailable in this container**
+- [ ] W2 — re-check `qlty check` after the retarget
+- [ ] W3 — merge the three master commits — **needs a merge commit, not requested**

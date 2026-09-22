@@ -24,7 +24,7 @@ const testData: TestData<FragmentRepository>[] = [
     [],
     apiClient.fetchJson,
     resultStub,
-    ['/statistics', false],
+    ['/statistics', false, undefined],
     Promise.resolve(resultStub),
   ),
   new TestData(
@@ -32,7 +32,7 @@ const testData: TestData<FragmentRepository>[] = [
     [fragmentId],
     apiClient.fetchJson,
     lineToVecRanking,
-    [`/fragments/${encodeURIComponent(fragmentId)}/match`, false],
+    [`/fragments/${encodeURIComponent(fragmentId)}/match`, false, undefined],
     Promise.resolve(lineToVecRankingDto),
   ),
   new TestData(
@@ -69,7 +69,7 @@ const testData: TestData<FragmentRepository>[] = [
     [],
     apiClient.fetchJson,
     [fragmentInfo],
-    ['/fragments?random=true', false],
+    ['/fragments?random=true', false, undefined],
     Promise.resolve([fragmentInfoDto]),
   ),
   new TestData(
@@ -77,7 +77,7 @@ const testData: TestData<FragmentRepository>[] = [
     [],
     apiClient.fetchJson,
     [fragmentInfo],
-    ['/fragments?interesting=true', false],
+    ['/fragments?interesting=true', false, undefined],
     Promise.resolve([fragmentInfoDto]),
   ),
   new TestData(
@@ -85,7 +85,7 @@ const testData: TestData<FragmentRepository>[] = [
     [],
     apiClient.fetchJson,
     [fragmentInfo],
-    ['/fragments?needsRevision=true', false],
+    ['/fragments?needsRevision=true', false, undefined],
     Promise.resolve([fragmentInfoDto]),
   ),
   new TestData(
