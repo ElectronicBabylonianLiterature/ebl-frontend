@@ -95,6 +95,7 @@ function LoadedMapTab({
           mode={state.visualization.effectiveMode}
           legend={state.visualization.legend}
           isDensityAvailable={state.visualization.isDensityAvailable}
+          hasUnavailableData={state.visualization.hasUnavailableData}
           onModeChange={experience.setVisualization}
         />
       ),
@@ -155,7 +156,7 @@ function LoadedMapTab({
           describedById="findspot-map-description"
           showFallbackHint={!isPresenting}
           legend={
-            !isPresenting && state.showExcavationAreas ? (
+            state.showExcavationAreas ? (
               <MapLegend
                 mode={state.visualization.effectiveMode}
                 legend={state.visualization.legend}

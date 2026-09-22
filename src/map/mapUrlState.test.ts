@@ -30,6 +30,13 @@ describe('parseMapUrlState', () => {
     })
   })
 
+  it('parses a supported visualization and defaults an invalid one', () => {
+    expect(parseMapUrlState('mv=1&areas=1&viz=evidence').visualization).toBe(
+      'evidence',
+    )
+    expect(parseMapUrlState('mv=1&viz=unknown').visualization).toBe('mapped')
+  })
+
   it('falls back to the default state when the version is missing', () => {
     expect(parseMapUrlState('findspot=Babylon')).toEqual(DEFAULT_MAP_URL_STATE)
   })

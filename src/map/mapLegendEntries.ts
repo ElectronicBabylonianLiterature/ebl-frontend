@@ -1,41 +1,55 @@
 import type {
   ChoroplethLegend,
   MapVisualizationMode,
-} from './mapChoroplethScale'
+} from 'map/mapChoroplethScale'
 import {
+  COLOR_DENSITY_UNCLASSIFIED,
   COLOR_MAPPED_FRAGMENTS,
   COLOR_MAPPED_ZERO,
   COLOR_SELECTED,
+  COLOR_UNAVAILABLE,
   COLOR_UNMAPPED,
-} from './mapPaintColors'
+} from 'map/mapPaintColors'
 import {
   COLOR_EVIDENCE_CURATED,
   COLOR_EVIDENCE_MIXED,
   COLOR_EVIDENCE_VERIFIED,
-} from './mapEvidencePaint'
-import { mappingEvidenceLabel } from './mapResearchLabels'
+} from 'map/mapEvidencePaint'
+import { mappingEvidenceLabel } from 'map/mapResearchLabels'
 
-export type LegendPattern = 'solid' | 'dashed' | 'dash-dot' | 'halo'
+export type LegendPattern = 'solid' | 'dashed' | 'dotted' | 'dash-dot' | 'halo'
 
 export interface MapLegendEntry {
   readonly key: string
   readonly label: string
   readonly color: string
   readonly pattern: LegendPattern
+  readonly outlineWidth?: number
 }
 
+const UNAVAILABLE_ENTRY: MapLegendEntry = {
+  key: 'unavailable',
+  label: 'Linked fragment data unavailable or loading',
+  color: COLOR_UNAVAILABLE,
+  pattern: 'dotted',
+}
 const UNMAPPED_ENTRY: MapLegendEntry = {
   key: 'unmapped',
   label: 'No mapped findspot',
   color: COLOR_UNMAPPED,
   pattern: 'dashed',
 }
-
 const SELECTED_ENTRY: MapLegendEntry = {
   key: 'selected',
   label: 'Selected area',
   color: COLOR_SELECTED,
   pattern: 'halo',
+}
+const DENSITY_UNCLASSIFIED_ENTRY: MapLegendEntry = {
+  key: 'density-unclassified',
+  label: 'Density unavailable (no usable mapped area)',
+  color: COLOR_DENSITY_UNCLASSIFIED,
+  pattern: 'dotted',
 }
 
 const EVIDENCE_ENTRIES: readonly MapLegendEntry[] = [
@@ -49,7 +63,7 @@ const EVIDENCE_ENTRIES: readonly MapLegendEntry[] = [
     key: 'curated',
     label: mappingEvidenceLabel('curated'),
     color: COLOR_EVIDENCE_CURATED,
-    pattern: 'solid',
+    pattern: 'dashed',
   },
   {
     key: 'mixed',
@@ -75,15 +89,13 @@ const MAPPED_ENTRIES: readonly MapLegendEntry[] = [
 ]
 
 function formatBound(value: number): string {
-  return value >= 100 || Number.isInteger(value)
-    ? String(Math.round(value))
-    : value.toPrecision(2)
+  return String(value)
 }
 
 export function classLabel(from: number, to: number | null): string {
   return to === null
-    ? `${formatBound(from)} and above`
-    : `${formatBound(from)} – ${formatBound(to)}`
+    ? `≥ ${formatBound(from)}`
+    : `≥ ${formatBound(from)} and < ${formatBound(to)}`
 }
 
 function classEntries(legend: ChoroplethLegend): readonly MapLegendEntry[] {
@@ -92,27 +104,43 @@ function classEntries(legend: ChoroplethLegend): readonly MapLegendEntry[] {
     label: classLabel(entry.from, entry.to),
     color: entry.color,
     pattern: 'solid' as const,
+    outlineWidth: Number((1.2 + 0.7 * index).toFixed(1)),
   }))
 }
+
 export function mapLegendEntries(
   mode: MapVisualizationMode,
   legend: ChoroplethLegend,
 ): readonly MapLegendEntry[] {
   if (mode === 'evidence') {
-    return [UNMAPPED_ENTRY, ...EVIDENCE_ENTRIES, SELECTED_ENTRY]
+    return [
+      UNAVAILABLE_ENTRY,
+      UNMAPPED_ENTRY,
+      ...EVIDENCE_ENTRIES,
+      SELECTED_ENTRY,
+    ]
   }
-
   if (mode === 'mapped') {
-    return [UNMAPPED_ENTRY, ...MAPPED_ENTRIES, SELECTED_ENTRY]
+    return [
+      UNAVAILABLE_ENTRY,
+      UNMAPPED_ENTRY,
+      ...MAPPED_ENTRIES,
+      SELECTED_ENTRY,
+    ]
   }
 
   return [
+    UNAVAILABLE_ENTRY,
     UNMAPPED_ENTRY,
+    ...(mode === 'density' ? [DENSITY_UNCLASSIFIED_ENTRY] : []),
     {
       key: 'zero',
-      label: 'Zero accessible fragments',
+      label:
+        mode === 'density'
+          ? 'Zero accessible fragments per km²'
+          : 'Zero accessible fragments',
       color: COLOR_MAPPED_ZERO,
-      pattern: 'solid',
+      pattern: 'solid' as const,
     },
     ...classEntries(legend),
     SELECTED_ENTRY,

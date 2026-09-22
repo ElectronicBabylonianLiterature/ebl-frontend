@@ -115,7 +115,7 @@ export default function useMapTabState(
   useMapSourceData(mapRef, filteredProvenances, cameraResetVersion)
 
   const visualization = useMapVisualization(
-    fragmentMapData.polygonSummaries,
+    fragmentMapData,
     polygonIndex,
     experience.visualization,
   )
@@ -158,7 +158,10 @@ export default function useMapTabState(
     if (selectedPolygonId === null && panel.active === 'inspector') {
       closePanel()
     }
-  }, [closePanel, panel.active, selectedPolygonId])
+    if (!canShowExcavationAreas && panel.active === 'visualization') {
+      closePanel()
+    }
+  }, [canShowExcavationAreas, closePanel, panel.active, selectedPolygonId])
 
   useExcavationAreas(mapRef, {
     isVisible: showExcavationAreas,
