@@ -1,7 +1,7 @@
 import { renderHook } from '@testing-library/react'
 import { asLibreMap, createMapMock } from 'test-support/maplibre-map-helpers'
 import { resetMapLibreMock } from 'test-support/maplibre-map-helpers'
-import useMapContainerResize from './useMapContainerResize'
+import useMapContainerResize from 'map/useMapContainerResize'
 
 let triggerResize: () => void = () => undefined
 let mockDisconnect: jest.Mock

@@ -12,6 +12,12 @@ import {
   excavationPaintProperties,
 } from './mapExcavationPaint'
 import { SELECTED } from './mapStateExpressions'
+export {
+  EXCAVATION_AREA_FILL_LAYER_ID,
+  EXCAVATION_AREA_OUTLINE_LAYER_ID,
+  EXCAVATION_AREA_SELECTED_LAYER_ID,
+  EXCAVATION_AREAS_SOURCE_ID,
+} from './mapLayerIds'
 
 export function createExcavationAreasSource(): GeoJSONSourceSpecification {
   return {
@@ -71,3 +77,7 @@ export const excavationAreaSelectedLayer: AddLayerObject = {
 
 export const excavationAreaFillLayer = createExcavationAreaFillLayer()
 export const excavationAreaOutlineLayer = createExcavationAreaOutlineLayer()
+export const EXCAVATION_AREA_LAYER_IDS: readonly string[] = [
+  EXCAVATION_AREA_FILL_LAYER_ID,
+  EXCAVATION_AREA_OUTLINE_LAYER_ID,
+]

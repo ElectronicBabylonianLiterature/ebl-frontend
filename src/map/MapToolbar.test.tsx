@@ -1,6 +1,6 @@
 import React from 'react'
 import { render, screen } from '@testing-library/react'
-import MapToolbar, { type MapPanelDefinition } from './MapToolbar'
+import MapToolbar, { type MapPanelDefinition } from 'map/MapToolbar'
 
 function panel(
   overrides: Partial<MapPanelDefinition> = {},
@@ -32,18 +32,40 @@ describe('MapToolbar', () => {
       <MapToolbar panels={[panel()]} active="layers" onToggle={jest.fn()} />,
     )
 
-    expect(
-      screen.getByRole('button', { name: 'Map layers' }),
-    ).toHaveAttribute('aria-expanded', 'true')
+    expect(screen.getByRole('button', { name: 'Map layers' })).toHaveAttribute(
+      'aria-expanded',
+      'true',
+    )
   })
 
   it('calls onToggle with the panel id when clicked', () => {
     const onToggle = jest.fn()
-    render(
-      <MapToolbar panels={[panel()]} active={null} onToggle={onToggle} />,
-    )
+    render(<MapToolbar panels={[panel()]} active={null} onToggle={onToggle} />)
 
     screen.getByRole('button', { name: 'Map layers' }).click()
     expect(onToggle).toHaveBeenCalledWith('layers')
+  })
+  it('focuses a remaining tool when the closed panel becomes unsupported', () => {
+    const inspector = panel({
+      id: 'inspector',
+      label: 'Selected area',
+    })
+    const { rerender } = render(
+      <MapToolbar
+        panels={[panel(), inspector]}
+        active="inspector"
+        onToggle={jest.fn()}
+      />,
+    )
+
+    rerender(
+      <MapToolbar
+        panels={[panel(), { ...inspector, isSupported: false }]}
+        active={null}
+        onToggle={jest.fn()}
+      />,
+    )
+
+    expect(screen.getByRole('button', { name: 'Map layers' })).toHaveFocus()
   })
 })

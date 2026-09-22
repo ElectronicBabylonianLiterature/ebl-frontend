@@ -1,4 +1,7 @@
-import { act, screen } from '@testing-library/react'
+import fs from 'fs'
+import path from 'path'
+import { act, screen, waitFor } from '@testing-library/react'
+import fetchMock from 'jest-fetch-mock'
 import userEvent from '@testing-library/user-event'
 
 import {
@@ -12,13 +15,28 @@ import {
   triggerMapEvent,
 } from 'map/MapTab.testSupport'
 import { MAP_STYLE_URL } from 'map/mapBackgroundError'
+import { EXCAVATION_AREAS_SOURCE_ID } from 'map/mapExcavationLayers'
 
 jest.mock('maplibre-gl')
 
 const BACKGROUND_WARNING = /The interactive map could not be loaded/
+const EXCAVATION_WARNING = 'Excavation areas are unavailable.'
+const CANONICAL_POLYGON_ASSET = fs.readFileSync(
+  path.resolve(__dirname, '../../public/map-data/findspots/all.geojson'),
+  'utf8',
+)
+
+async function openLayerControls(): Promise<void> {
+  await userEvent.click(
+    await screen.findByRole('button', { name: 'Map layers' }),
+  )
+}
 
 describe('MapTab map errors', () => {
-  beforeEach(resetMapMocks)
+  beforeEach(() => {
+    resetMapMocks()
+    fetchMock.resetMocks()
+  })
 
   it('shows a user-visible warning when the style document fails to load', async () => {
     renderMapTab(makeFragmentService([makeProvenance()]))
@@ -135,6 +153,52 @@ describe('MapTab map errors', () => {
     expect(mockCaptureException).toHaveBeenCalledWith(
       new Error('Failed to fetch'),
     )
+  })
+
+  it('shows an unavailable state when the polygon index fails', async () => {
+    fetchMock.mockRejectOnce(new Error('asset unavailable'))
+
+    renderMapTab(makeFragmentService([makeProvenance()]))
+
+    expect(await screen.findByText(EXCAVATION_WARNING)).toBeInTheDocument()
+    await openLayerControls()
+    expect(screen.getByLabelText('Excavation areas')).toBeDisabled()
+
+    await userEvent.click(
+      screen.getByRole('button', { name: 'Presentation mode' }),
+    )
+    expect(screen.getByText(EXCAVATION_WARNING)).toBeInTheDocument()
+  })
+
+  it('shows an unavailable state for a malformed HTTP-200 asset', async () => {
+    fetchMock.mockResponseOnce(
+      JSON.stringify({ type: 'FeatureCollection', features: [] }),
+    )
+
+    renderMapTab(makeFragmentService([makeProvenance()]))
+
+    expect(await screen.findByText(EXCAVATION_WARNING)).toBeInTheDocument()
+    await openLayerControls()
+    expect(screen.getByLabelText('Excavation areas')).toBeDisabled()
+  })
+
+  it('shows an unavailable state when the rendered polygon source fails', async () => {
+    fetchMock.mockResponseOnce(CANONICAL_POLYGON_ASSET)
+    renderMapTab(makeFragmentService([makeProvenance()]))
+    await openLayerControls()
+
+    await waitFor(() =>
+      expect(screen.getByLabelText('Excavation areas')).toBeEnabled(),
+    )
+    act(() => {
+      triggerMapEvent('error', {
+        error: { message: 'asset unavailable' },
+        sourceId: EXCAVATION_AREAS_SOURCE_ID,
+      })
+    })
+
+    expect(screen.getByText(EXCAVATION_WARNING)).toBeInTheDocument()
+    expect(screen.getByLabelText('Excavation areas')).toBeDisabled()
   })
 
   it('falls back to the findspot list when the map cannot be constructed', async () => {
