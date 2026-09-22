@@ -40,14 +40,24 @@ function LoadedMapTab({
   const mapContainer = useRef<HTMLDivElement>(null)
   const drawerRef = useRef<HTMLElement>(null)
   const [mapBackgroundError, setMapBackgroundError] = useState(false)
+  const [mapExcavationAreasError, setMapExcavationAreasError] = useState(false)
 
   const experience = useMapExperience()
   const panel = useMapPanel()
 
-  const { index: polygonIndex } = useExcavationPolygonIndex()
+  const {
+    index: polygonIndex,
+    isLoaded: isPolygonIndexLoaded,
+    error: polygonIndexError,
+  } = useExcavationPolygonIndex()
+  const excavationAreasUnavailable =
+    polygonIndexError !== null || mapExcavationAreasError
   const canShowExcavationAreas = useMemo(
-    () => anySiteHasExcavationPolygons(deriveMapSiteCapabilities(polygonIndex)),
-    [polygonIndex],
+    () =>
+      isPolygonIndexLoaded &&
+      !excavationAreasUnavailable &&
+      anySiteHasExcavationPolygons(deriveMapSiteCapabilities(polygonIndex)),
+    [excavationAreasUnavailable, isPolygonIndexLoaded, polygonIndex],
   )
   const showExcavationAreas =
     experience.showExcavationAreas && canShowExcavationAreas
@@ -56,17 +66,26 @@ function LoadedMapTab({
     () => filterProvenances(provenances, experience.filter),
     [provenances, experience.filter],
   )
-
   const handleMapBackgroundErrorChange = useCallback((hasError: boolean) => {
     setMapBackgroundError(hasError)
   }, [])
+  const handleExcavationAreasAvailabilityChange = useCallback(
+    (isUnavailable: boolean) => {
+      setMapExcavationAreasError(isUnavailable)
+    },
+    [],
+  )
   const mapRef = useFindspotMap(
     mapContainer,
     filteredProvenances,
     handleMapBackgroundErrorChange,
   )
   useMapSourceData(mapRef, filteredProvenances)
-  useExcavationAreas(mapRef, showExcavationAreas)
+  useExcavationAreas(
+    mapRef,
+    showExcavationAreas,
+    handleExcavationAreasAvailabilityChange,
+  )
   useMapLayoutEffects(mapContainer, mapRef, drawerRef, panel.active)
 
   const resetView = useCallback(() => {
@@ -93,15 +112,16 @@ function LoadedMapTab({
 
   return (
     <div
-      className={`map-tab map-experience${
-        isPresenting ? ' map-experience--presenting' : ''
-      }`}
+      className={`map-tab map-experience${isPresenting ? ' map-experience--presenting' : ''}`}
     >
       {isPresenting ? (
-        <MapPresentationBar title={null} onExit={experience.presentation.exit} />
+        <MapPresentationBar
+          title={null}
+          onExit={experience.presentation.exit}
+        />
       ) : (
         <MapExperienceHeader
-          visibleSiteCount={filteredProvenances?.length ?? 0}
+          visibleSiteCount={filteredProvenances.length}
           onResetView={resetView}
           onEnterPresentation={experience.presentation.enter}
           filterControl={
@@ -120,11 +140,18 @@ function LoadedMapTab({
           describedById="findspot-map-description"
           overlay={
             isPresenting ? null : (
-              <MapPanelDock panels={panels} panel={panel} drawerRef={drawerRef} />
+              <MapPanelDock
+                panels={panels}
+                panel={panel}
+                drawerRef={drawerRef}
+              />
             )
           }
         />
       </div>
+      {!isPresenting && excavationAreasUnavailable ? (
+        <Alert variant="warning">Excavation areas are unavailable.</Alert>
+      ) : null}
       {isPresenting ? null : (
         <>
           <p id="findspot-map-description" className="map-tab__description">

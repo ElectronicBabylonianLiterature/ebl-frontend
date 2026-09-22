@@ -40,6 +40,7 @@ export function makeRejectingFragmentService(reason: unknown): FragmentService {
 }
 
 export const CURRENT_LOCATION_TEST_ID = 'current-location'
+const MAP_ROUTE = '/tools/map'
 
 function CurrentLocation(): JSX.Element {
   const location = useLocation()
@@ -50,11 +51,25 @@ function CurrentLocation(): JSX.Element {
   )
 }
 
-export function renderMapTab(fragmentService: FragmentService): RenderResult {
+function MapRoute({
+  fragmentService,
+}: {
+  fragmentService: FragmentService
+}): JSX.Element | null {
+  const location = useLocation()
+  return location.pathname === MAP_ROUTE ? (
+    <MapTab fragmentService={fragmentService} />
+  ) : null
+}
+
+export function renderMapTab(
+  fragmentService: FragmentService,
+  initialEntry: string = MAP_ROUTE,
+): RenderResult {
   return render(
     <ErrorReporterContext.Provider value={mockErrorReporter}>
-      <MemoryRouter>
-        <MapTab fragmentService={fragmentService} />
+      <MemoryRouter initialEntries={[initialEntry]}>
+        <MapRoute fragmentService={fragmentService} />
         <CurrentLocation />
       </MemoryRouter>
     </ErrorReporterContext.Provider>,

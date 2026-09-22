@@ -3,7 +3,7 @@ import {
   EARTH_RADIUS_METRES,
   geodesicAreaSquareKm,
   geodesicAreaSquareMetres,
-} from './geodesicArea'
+} from 'map/geodesicArea'
 
 function square(west: number, south: number, size: number): Geometry {
   return {

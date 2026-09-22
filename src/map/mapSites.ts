@@ -2,6 +2,13 @@ export const MAP_SITE_IDS = ['assur', 'kalhu', 'nippur', 'uruk'] as const
 
 export type MapSiteId = (typeof MAP_SITE_IDS)[number]
 
+export const MAP_SITE_POLYGON_COUNTS: Readonly<Record<MapSiteId, number>> = {
+  assur: 134,
+  kalhu: 12,
+  nippur: 20,
+  uruk: 128,
+}
+
 export interface MapSiteDefinition {
   readonly siteId: MapSiteId
   readonly siteName: string

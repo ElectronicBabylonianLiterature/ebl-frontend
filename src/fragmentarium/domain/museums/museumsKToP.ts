@@ -1,4 +1,11 @@
 export const museumsKToP = {
+  KAHRAMANMARAS_MUZESI: {
+    key: 'KAHRAMANMARAS_MUZESI',
+    name: 'Kahramanmaraş Müzesi',
+    city: 'Kahramanmaraş',
+    country: 'TR',
+    url: 'https://muze.gov.tr/muze-detay?SectionId=KMM01&DistId=MRK',
+  },
   KATZ_CENTER: {
     key: 'KATZ_CENTER',
     name: 'Katz Center for Advanced Judaic Studies',

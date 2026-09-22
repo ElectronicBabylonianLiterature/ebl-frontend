@@ -1,7 +1,8 @@
-import React, { useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
 import Select from 'react-select'
 import { ProvenanceRecord } from 'fragmentarium/domain/Provenance'
 import { matchesFindspot } from 'map/findspotFilter'
+import { normalizeMapFilter } from 'map/mapUrlState'
 
 interface Props {
   provenances: readonly ProvenanceRecord[]
@@ -19,7 +20,17 @@ export default function FindspotFilterInput({
   filter,
   onFilterChange,
 }: Props): JSX.Element {
-  const [inputValue, setInputValue] = useState('')
+  const [inputValue, setInputValue] = useState(filter)
+  const internallyRequestedFilterRef = useRef<string | null>(null)
+
+  useEffect(() => {
+    if (internallyRequestedFilterRef.current === filter) {
+      internallyRequestedFilterRef.current = null
+      return
+    }
+    internallyRequestedFilterRef.current = null
+    setInputValue(filter)
+  }, [filter])
 
   const options = useMemo<FindspotOption[]>(
     () =>
@@ -44,13 +55,21 @@ export default function FindspotFilterInput({
       inputValue={inputValue}
       onInputChange={(nextInput, meta) => {
         if (meta.action === 'input-change') {
-          setInputValue(nextInput)
-          onFilterChange(nextInput)
+          const nextFilter = normalizeMapFilter(nextInput)
+          if (nextFilter !== filter) {
+            internallyRequestedFilterRef.current = nextFilter
+          }
+          setInputValue(nextFilter)
+          onFilterChange(nextFilter)
         }
       }}
       onChange={(option) => {
+        const nextFilter = option ? option.value : ''
+        if (nextFilter !== filter) {
+          internallyRequestedFilterRef.current = nextFilter
+        }
         setInputValue('')
-        onFilterChange(option ? option.value : '')
+        onFilterChange(nextFilter)
       }}
       options={options}
       filterOption={(option, rawInput) =>
