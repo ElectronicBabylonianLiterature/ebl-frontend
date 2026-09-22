@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react'
 import { Button } from 'react-bootstrap'
-import type { ActiveMapPanel, MapPanelId } from './mapPanel'
+import type { ActiveMapPanel, MapPanelId } from 'map/mapPanel'
 
 export interface MapPanelDefinition {
   readonly id: MapPanelId

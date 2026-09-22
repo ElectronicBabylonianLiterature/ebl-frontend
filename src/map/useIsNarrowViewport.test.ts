@@ -1,5 +1,5 @@
 import { act, renderHook } from '@testing-library/react'
-import useIsNarrowViewport from './useIsNarrowViewport'
+import useIsNarrowViewport from 'map/useIsNarrowViewport'
 
 function mockMatchMedia(initialMatches: boolean): {
   changeListeners: Set<(event: { matches: boolean }) => void>

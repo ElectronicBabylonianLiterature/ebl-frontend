@@ -1,9 +1,29 @@
 import React, { createRef } from 'react'
-import { render, screen } from '@testing-library/react'
+import { act, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import MapPanelDrawer from './MapPanelDrawer'
+import MapPanelDrawer from 'map/MapPanelDrawer'
+
+function mockMatchMedia(initialMatches: boolean): (matches: boolean) => void {
+  let matches = initialMatches
+  const listeners = new Set<() => void>()
+  window.matchMedia = jest.fn().mockImplementation(() => ({
+    get matches() {
+      return matches
+    },
+    addEventListener: (_type: string, listener: () => void) =>
+      listeners.add(listener),
+    removeEventListener: (_type: string, listener: () => void) =>
+      listeners.delete(listener),
+  }))
+
+  return (next: boolean) => {
+    matches = next
+    listeners.forEach((listener) => listener())
+  }
+}
 
 describe('MapPanelDrawer', () => {
+  beforeEach(() => mockMatchMedia(true))
   it('shows the title and the panel content', () => {
     render(
       <MapPanelDrawer title="Export" onClose={jest.fn()}>
@@ -53,6 +73,23 @@ describe('MapPanelDrawer', () => {
     expect(expandHandle).toHaveAttribute('aria-expanded', 'false')
 
     await userEvent.click(expandHandle)
+
+    expect(screen.getByText('Export content')).toBeInTheDocument()
+  })
+
+  it('expands a collapsed mobile drawer when the viewport widens', async () => {
+    const setNarrow = mockMatchMedia(true)
+    render(
+      <MapPanelDrawer title="Export" onClose={jest.fn()}>
+        <p>Export content</p>
+      </MapPanelDrawer>,
+    )
+    await userEvent.click(
+      screen.getByRole('button', { name: 'Collapse Export' }),
+    )
+    expect(screen.queryByText('Export content')).not.toBeInTheDocument()
+
+    act(() => setNarrow(false))
 
     expect(screen.getByText('Export content')).toBeInTheDocument()
   })

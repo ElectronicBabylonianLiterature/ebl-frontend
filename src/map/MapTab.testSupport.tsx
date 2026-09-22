@@ -40,7 +40,12 @@ export function makeRejectingFragmentService(reason: unknown): FragmentService {
   } as unknown as FragmentService
 }
 
+const DEFAULT_FINDSPOT_SERVICE = {
+  fetchMapData: () => Bluebird.resolve([]),
+} as unknown as FindspotService
+
 export const CURRENT_LOCATION_TEST_ID = 'current-location'
+const MAP_ROUTE = '/tools/map'
 
 function CurrentLocation(): JSX.Element {
   const location = useLocation()
@@ -51,18 +56,42 @@ function CurrentLocation(): JSX.Element {
   )
 }
 
+function MapRoute({
+  fragmentService,
+  findspotService,
+}: {
+  readonly fragmentService: FragmentService
+  readonly findspotService: FindspotService
+}): JSX.Element | null {
+  const location = useLocation()
+  return location.pathname === MAP_ROUTE ? (
+    <MapTab
+      findspotService={findspotService}
+      fragmentService={fragmentService}
+    />
+  ) : null
+}
+
 export function renderMapTab(
   fragmentService: FragmentService,
-  findspotService: FindspotService = {
-    fetchMapData: () => Bluebird.resolve([]),
-  } as unknown as FindspotService,
+  initialEntryOrFindspotService: string | FindspotService = MAP_ROUTE,
+  findspotService: FindspotService = DEFAULT_FINDSPOT_SERVICE,
 ): RenderResult {
+  const initialEntry =
+    typeof initialEntryOrFindspotService === 'string'
+      ? initialEntryOrFindspotService
+      : MAP_ROUTE
+  const selectedFindspotService =
+    typeof initialEntryOrFindspotService === 'string'
+      ? findspotService
+      : initialEntryOrFindspotService
+
   return render(
     <ErrorReporterContext.Provider value={mockErrorReporter}>
-      <MemoryRouter>
-        <MapTab
-          findspotService={findspotService}
+      <MemoryRouter initialEntries={[initialEntry]}>
+        <MapRoute
           fragmentService={fragmentService}
+          findspotService={selectedFindspotService}
         />
         <CurrentLocation />
       </MemoryRouter>

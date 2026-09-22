@@ -24,28 +24,62 @@ interface Props {
   readonly onClear: () => void
 }
 
+function hasLoaded(status: FragmentMapDataStatus): boolean {
+  return status === 'loaded-with-mappings' || status === 'loaded-empty'
+}
+
+function LinkedDataStatus({
+  status,
+}: {
+  status: FragmentMapDataStatus
+}): JSX.Element | null {
+  const message = {
+    'not-configured': 'Linked fragment data is not configured for this site.',
+    loading: 'Loading linked fragment data…',
+    error: 'Linked fragment data is unavailable right now.',
+    incompatible: 'Linked fragment data is incompatible with this map.',
+    'loaded-empty': null,
+    'loaded-with-mappings': null,
+  }[status]
+
+  return message ? (
+    <p role="status" aria-live="polite">
+      {message}
+    </p>
+  ) : null
+}
+
 function OverviewTab({
   research,
+  status,
 }: {
   research: PolygonResearchSummary
+  status: FragmentMapDataStatus
 }): JSX.Element {
   return (
-    <dl className="map-inspector__facts">
-      <dt>Site</dt>
-      <dd>{research.siteName}</dd>
-      <dt>Excavation area</dt>
-      <dd>{research.displayName}</dd>
-      {research.areaSquareKm !== null ? (
-        <>
-          <dt>Mapped area</dt>
-          <dd>{research.areaSquareKm.toFixed(3)} km²</dd>
-        </>
-      ) : null}
-      <dt>Mapped findspots</dt>
-      <dd>{countLabel(research.mappedFindspotCount, 'findspot')}</dd>
-      <dt>Accessible fragments</dt>
-      <dd>{countLabel(research.accessibleFragmentCount, 'fragment')}</dd>
-    </dl>
+    <>
+      <dl className="map-inspector__facts">
+        <dt>Site</dt>
+        <dd>{research.siteName}</dd>
+        <dt>Excavation area</dt>
+        <dd>{research.displayName}</dd>
+        {research.areaSquareKm !== null ? (
+          <>
+            <dt>Mapped area</dt>
+            <dd>{research.areaSquareKm.toFixed(3)} km²</dd>
+          </>
+        ) : null}
+        {hasLoaded(status) ? (
+          <>
+            <dt>Mapped findspots</dt>
+            <dd>{countLabel(research.mappedFindspotCount, 'findspot')}</dd>
+            <dt>Accessible fragments</dt>
+            <dd>{countLabel(research.accessibleFragmentCount, 'fragment')}</dd>
+          </>
+        ) : null}
+      </dl>
+      <LinkedDataStatus status={status} />
+    </>
   )
 }
 
@@ -56,9 +90,8 @@ function EvidenceTab({
   research: PolygonResearchSummary
   status: FragmentMapDataStatus
 }): JSX.Element {
-  if (status !== 'loaded') {
-    return <p>Evidence detail needs linked fragment data for this site.</p>
-  }
+  if (!hasLoaded(status)) return <LinkedDataStatus status={status} />
+
   return (
     <>
       <dl className="map-inspector__facts">
@@ -74,13 +107,16 @@ function EvidenceTab({
 
 function FindspotsTab({
   research,
+  status,
   expandedCount,
   onExpand,
 }: {
   research: PolygonResearchSummary
+  status: FragmentMapDataStatus
   expandedCount: number
   onExpand: () => void
 }): JSX.Element {
+  if (!hasLoaded(status)) return <LinkedDataStatus status={status} />
   if (research.findspots.length === 0) {
     return <p>No fragments are linked to this excavation area.</p>
   }
@@ -91,7 +127,7 @@ function FindspotsTab({
         {visible.map((findspot) => (
           <li key={findspot.findspotId}>
             <Link to={buildFindspotFragmentSearchLink(findspot.findspotId)}>
-              {findspot.area ?? `Findspot ${findspot.findspotId}`}
+              {findspot.area ?? 'Findspot ' + findspot.findspotId}
             </Link>{' '}
             ({countLabel(findspot.accessibleFragmentCount, 'fragment')})
           </li>
@@ -125,7 +161,7 @@ export default function MapInspector({
     {
       id: 'overview',
       label: 'Overview',
-      render: () => <OverviewTab research={research} />,
+      render: () => <OverviewTab research={research} status={status} />,
     },
     {
       id: 'evidence',
@@ -138,6 +174,7 @@ export default function MapInspector({
       render: () => (
         <FindspotsTab
           research={research}
+          status={status}
           expandedCount={expandedCount}
           onExpand={() => setExpandedCount(research.findspots.length)}
         />

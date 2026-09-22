@@ -7,18 +7,20 @@ function toRadians(degrees: number): number {
   return (degrees * Math.PI) / 180
 }
 
+function isFinitePosition(value: unknown): value is Position {
+  if (!Array.isArray(value)) return false
+  const [longitude, latitude] = value
+  return (
+    typeof longitude === 'number' &&
+    typeof latitude === 'number' &&
+    Number.isFinite(longitude) &&
+    Number.isFinite(latitude)
+  )
+}
+
 function isRing(value: unknown): value is Position[] {
   return (
-    Array.isArray(value) &&
-    value.length >= 4 &&
-    value.every(
-      (position) =>
-        Array.isArray(position) &&
-        typeof position[0] === 'number' &&
-        typeof position[1] === 'number' &&
-        Number.isFinite(position[0]) &&
-        Number.isFinite(position[1]),
-    )
+    Array.isArray(value) && value.length >= 4 && value.every(isFinitePosition)
   )
 }
 

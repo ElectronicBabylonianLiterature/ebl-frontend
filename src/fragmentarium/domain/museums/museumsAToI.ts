@@ -97,6 +97,20 @@ export const museumsAToI = {
     country: 'FR',
     url: 'https://www.ephe.psl.eu/',
   },
+  ERIMTAN_MUSEUM: {
+    key: 'ERIMTAN_MUSEUM',
+    name: 'Erimtan Museum',
+    city: 'Ankara',
+    country: 'TR',
+    url: 'https://erimtanmuseum.org/',
+  },
+  GAZIANTEP_MUSEUM: {
+    key: 'GAZIANTEP_MUSEUM',
+    name: 'Gaziantep Museum',
+    city: 'Gaziantep',
+    country: 'TR',
+    url: 'https://muze.gov.tr/muze-detay?SectionId=GZA01&DistId=MRK',
+  },
   HARVARD_ART_MUSEUMS: {
     key: 'HARVARD_ART_MUSEUMS',
     name: 'Harvard Art Museums',
