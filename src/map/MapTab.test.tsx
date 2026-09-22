@@ -42,6 +42,30 @@ describe('MapTab', () => {
     expect(screen.getByText('Loading map data...')).toBeInTheDocument()
   })
 
+  it('mounts runtime map effects after deferred provenance loading', async () => {
+    let resolveFetch!: (
+      provenances: readonly ReturnType<typeof makeProvenance>[],
+    ) => void
+    const fragmentService = {
+      fetchProvenances: () =>
+        new Promise((resolve) => {
+          resolveFetch = resolve
+        }),
+    } as unknown as FragmentService
+
+    renderMapTab(fragmentService)
+    expect(screen.getByText('Loading map data...')).toBeInTheDocument()
+
+    await act(async () => {
+      resolveFetch([makeProvenance()])
+    })
+
+    await waitFor(() => expect(mockAddSource).toHaveBeenCalled())
+    expect(mockAddLayer).toHaveBeenCalledWith(
+      expect.objectContaining({ id: 'excavation-area-fill' }),
+    )
+  })
+
   it('renders error state when fetch fails', async () => {
     renderMapTab(makeFailingFragmentService('Network error'))
 
@@ -113,7 +137,7 @@ describe('MapTab', () => {
     expect(sourceCall[1].cluster).toBe(true)
     expect(sourceCall[1].data.features).toHaveLength(2)
 
-    expect(mockAddLayer).toHaveBeenCalledTimes(5)
+    expect(mockAddLayer).toHaveBeenCalledTimes(6)
     const layerIds = mockAddLayer.mock.calls.map(
       (call: unknown[]) => (call[0] as { id: string }).id,
     )
@@ -124,6 +148,7 @@ describe('MapTab', () => {
         'ebl-unclustered-points',
         'excavation-area-fill',
         'excavation-area-outline',
+        'excavation-area-selected',
       ]),
     )
   })
