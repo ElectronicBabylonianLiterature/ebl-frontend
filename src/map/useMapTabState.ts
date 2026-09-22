@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import type { MutableRefObject, RefObject } from 'react'
 import type { Map as MapLibreMap } from 'maplibre-gl'
 import { FindspotService } from 'fragmentarium/application/FindspotService'
@@ -37,6 +37,7 @@ export interface MapTabState {
   readonly showExcavationAreas: boolean
   readonly fragmentMapData: FragmentMapDataState
   readonly selectedPolygon: ExcavationPolygon | null
+  readonly excavationPolygons: readonly ExcavationPolygon[]
   readonly resetView: () => void
 }
 
@@ -70,7 +71,10 @@ export default function useMapTabState(
     isLoaded: isPolygonIndexLoaded,
     error: polygonIndexError,
   } = useExcavationPolygonIndex()
-  const fragmentMapData = useFragmentMapData(findspotService)
+  const fragmentMapData = useFragmentMapData(
+    findspotService,
+    isPolygonIndexLoaded ? polygonIndex : null,
+  )
   const isExcavationAreasUnavailable =
     polygonIndexError !== null || isRenderedAreasUnavailable
 
@@ -114,6 +118,24 @@ export default function useMapTabState(
     experience.selection?.type === 'excavation-area'
       ? experience.selection.polygonId
       : null
+  const selectedPolygon = findPolygon(polygonIndex, selectedPolygonId)
+
+  useEffect(() => {
+    if (
+      isPolygonIndexLoaded &&
+      polygonIndexError === null &&
+      selectedPolygonId !== null &&
+      selectedPolygon === null
+    ) {
+      setSelection(null)
+    }
+  }, [
+    isPolygonIndexLoaded,
+    polygonIndexError,
+    selectedPolygon,
+    selectedPolygonId,
+    setSelection,
+  ])
 
   useExcavationAreas(mapRef, {
     isVisible: showExcavationAreas,
@@ -148,7 +170,14 @@ export default function useMapTabState(
     canShowExcavationAreas,
     showExcavationAreas,
     fragmentMapData,
-    selectedPolygon: findPolygon(polygonIndex, selectedPolygonId),
+    selectedPolygon,
+    excavationPolygons: [...polygonIndex.values()]
+      .flatMap((polygons) => [...polygons])
+      .sort((left, right) =>
+        (left.name ?? left.polygonId).localeCompare(
+          right.name ?? right.polygonId,
+        ),
+      ),
     resetView,
   }
 }

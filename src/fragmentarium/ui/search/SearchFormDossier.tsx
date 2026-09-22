@@ -4,7 +4,7 @@ import AsyncSelect from 'react-select/async'
 import { usePrevious } from 'common/hooks/usePrevious'
 import { DossierRecordSuggestion } from 'dossiers/domain/DossierRecord'
 import { HelpCol, DossierSearchHelp } from 'fragmentarium/ui/SearchHelp'
-import { helpColSize } from 'fragmentarium/ui/SearchForm'
+import { helpColSize } from 'fragmentarium/ui/search/searchFormLayout'
 
 const dossierSuggestionDebounceMilliseconds = 250
 const dossierSuggestionMinimumLength = 1

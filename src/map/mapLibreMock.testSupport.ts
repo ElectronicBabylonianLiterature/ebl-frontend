@@ -1,3 +1,10 @@
+import type {
+  MockErrorEvent,
+  MockEventHandler,
+  MockMapEvent,
+} from 'map/mapLibreMockEvents.testSupport'
+export * from 'map/mapLibreMockEvents.testSupport'
+
 const addedLayerIds = new Set<string>()
 function rememberAddedLayer(layer: { id: string }): void {
   addedLayerIds.add(layer.id)
@@ -33,17 +40,6 @@ export const mockSetDOMContent = jest.fn()
 export const mockSetHTML = jest.fn()
 export const mockPopupAddTo = jest.fn()
 export const mockBoundsExtend = jest.fn()
-export type MockMapEvent = { point: { x: number; y: number } }
-export type MockErrorEvent = {
-  error?: { message?: string; url?: string }
-  sourceId?: string
-  layer?: { id?: string }
-  tile?: unknown
-}
-interface MockEventHandler {
-  (event?: MockMapEvent | MockErrorEvent): void
-  originalHandler?: MockEventHandler
-}
 const mockEventHandlers: Record<string, MockEventHandler[]> = {}
 let mockLoadImmediately = true
 let mockMapConstructionError: unknown = null

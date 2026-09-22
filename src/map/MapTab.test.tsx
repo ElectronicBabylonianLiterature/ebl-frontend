@@ -42,6 +42,30 @@ describe('MapTab', () => {
     expect(screen.getByText('Loading map data...')).toBeInTheDocument()
   })
 
+  it('mounts runtime map effects after deferred provenance loading', async () => {
+    let resolveFetch!: (
+      provenances: readonly ReturnType<typeof makeProvenance>[],
+    ) => void
+    const fragmentService = {
+      fetchProvenances: () =>
+        new Promise((resolve) => {
+          resolveFetch = resolve
+        }),
+    } as unknown as FragmentService
+
+    renderMapTab(fragmentService)
+    expect(screen.getByText('Loading map data...')).toBeInTheDocument()
+
+    await act(async () => {
+      resolveFetch([makeProvenance()])
+    })
+
+    await waitFor(() => expect(mockAddSource).toHaveBeenCalled())
+    expect(mockAddLayer).toHaveBeenCalledWith(
+      expect.objectContaining({ id: 'excavation-area-fill' }),
+    )
+  })
+
   it('renders error state when fetch fails', async () => {
     renderMapTab(makeFailingFragmentService('Network error'))
 

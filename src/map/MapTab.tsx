@@ -13,6 +13,8 @@ import MapPresentationBar from 'map/MapPresentationBar'
 import MapLayerControls from 'map/MapLayerControls'
 import MapSelectedAreaCard from 'map/MapSelectedAreaCard'
 import MapSelectionPill from 'map/MapSelectionPill'
+import MapExcavationAreaSelector from 'map/MapExcavationAreaSelector'
+import { isMapSiteId } from 'map/mapSites'
 import type { MapPanelDefinition } from 'map/MapToolbar'
 import FindspotFilterInput from 'map/FindspotFilterInput'
 import { FindspotEmptyState, FindspotSearchList } from 'map/FindspotResults'
@@ -49,6 +51,11 @@ function LoadedMapTab({
     wasPresentingRef.current = isPresenting
   }, [isPresenting])
 
+  const selectedSiteData =
+    selectedPolygon && isMapSiteId(selectedPolygon.siteId)
+      ? state.fragmentMapData.sites.get(selectedPolygon.siteId)
+      : undefined
+
   const panels: readonly MapPanelDefinition[] = [
     {
       id: 'layers',
@@ -61,14 +68,23 @@ function LoadedMapTab({
             canShowExcavationAreas={state.canShowExcavationAreas}
             onShowExcavationAreasChange={experience.setShowExcavationAreas}
           />
+          <MapExcavationAreaSelector
+            polygons={state.excavationPolygons}
+            selectedPolygonId={selectedPolygon?.polygonId ?? null}
+            onSelect={(polygonId) =>
+              experience.setSelection(
+                polygonId ? { type: 'excavation-area', polygonId } : null,
+              )
+            }
+          />
           {selectedPolygon ? (
             <MapSelectedAreaCard
               polygonId={selectedPolygon.polygonId}
               polygonName={selectedPolygon.name}
-              summary={state.fragmentMapData.polygonSummaries.get(
+              summary={selectedSiteData?.polygonSummaries.get(
                 selectedPolygon.polygonId,
               )}
-              status={state.fragmentMapData.status}
+              status={selectedSiteData?.status ?? 'not-configured'}
               onClear={() => experience.setSelection(null)}
             />
           ) : null}
