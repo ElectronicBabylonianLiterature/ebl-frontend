@@ -5,15 +5,18 @@ import usePresentationMode, {
 } from 'map/usePresentationMode'
 import { DEFAULT_MAP_URL_STATE } from 'map/mapUrlState'
 import type { MapSelection } from 'map/mapSelection'
+import type { MapVisualizationMode } from 'map/mapChoroplethScale'
 
 export interface MapExperience {
   readonly filter: string
   readonly showExcavationAreas: boolean
   readonly selection: MapSelection | null
+  readonly visualization: MapVisualizationMode
   readonly presentation: PresentationMode
   readonly setFilter: (filter: string) => void
   readonly setShowExcavationAreas: (isVisible: boolean) => void
   readonly setSelection: (selection: MapSelection | null) => void
+  readonly setVisualization: (mode: MapVisualizationMode) => void
   readonly resetState: () => void
 }
 
@@ -25,6 +28,7 @@ export default function useMapExperience(): MapExperience {
     filter: state.filter,
     showExcavationAreas: state.showExcavationAreas,
     selection: state.selection,
+    visualization: state.visualization,
     presentation,
     setFilter: useCallback((filter: string) => update({ filter }), [update]),
     setShowExcavationAreas: useCallback(
@@ -35,12 +39,17 @@ export default function useMapExperience(): MapExperience {
       (selection: MapSelection | null) => update({ selection }),
       [update],
     ),
+    setVisualization: useCallback(
+      (visualization: MapVisualizationMode) => update({ visualization }),
+      [update],
+    ),
     resetState: useCallback(
       () =>
         update({
           filter: DEFAULT_MAP_URL_STATE.filter,
           showExcavationAreas: DEFAULT_MAP_URL_STATE.showExcavationAreas,
           selection: DEFAULT_MAP_URL_STATE.selection,
+          visualization: DEFAULT_MAP_URL_STATE.visualization,
         }),
       [update],
     ),

@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from 'react'
 import { act, render } from '@testing-library/react'
 import type { Map as MapLibreMap } from 'maplibre-gl'
 import useExcavationAreas from 'map/useExcavationAreas'
+import type { PolygonVisualizationValues } from 'map/mapVisualizationValues'
 import {
   EXCAVATION_AREAS_SOURCE_ID,
   EXCAVATION_AREA_FILL_LAYER_ID,
@@ -16,6 +17,7 @@ import {
   mockMapInstance,
   mockQueryRenderedFeatures,
   mockRemove,
+  mockSetFeatureState,
   mockSetLayoutProperty,
   mockSetPaintProperty,
   resetMapMocks,
@@ -29,11 +31,13 @@ const ASSUR_POLYGON_ID = 'assur-bb6i-3d76dc1e02af'
 function Harness({
   isVisible = true,
   selectedPolygonId = null,
+  values,
   onSelectPolygon = jest.fn(),
   onAvailabilityChange,
 }: {
   readonly isVisible?: boolean
   readonly selectedPolygonId?: string | null
+  readonly values?: PolygonVisualizationValues
   readonly onSelectPolygon?: (polygonId: string) => void
   readonly onAvailabilityChange?: (isUnavailable: boolean) => void
 }): null {
@@ -43,6 +47,7 @@ function Harness({
   useExcavationAreas(mapRef, {
     isVisible,
     selectedPolygonId,
+    values,
     onSelectPolygon,
     onAvailabilityChange,
   })
@@ -114,10 +119,53 @@ describe('useExcavationAreas', () => {
 
     expect(mockAddSource).toHaveBeenCalledTimes(1)
     expect(mockAddLayer).toHaveBeenCalledTimes(3)
-    expect(mockSetPaintProperty).toHaveBeenCalledWith(
-      EXCAVATION_AREA_SELECTED_LAYER_ID,
-      'line-opacity',
-      ['case', ['==', ['get', 'id'], ASSUR_POLYGON_ID], 0.9, 0],
+    expect(mockSetFeatureState).toHaveBeenCalledWith(
+      { source: EXCAVATION_AREAS_SOURCE_ID, id: ASSUR_POLYGON_ID },
+      { selected: true },
+    )
+  })
+
+  it('updates visualization state without rebuilding source or layers', () => {
+    const value = {
+      polygonId: ASSUR_POLYGON_ID,
+      dataAvailable: true,
+      findspotCount: 2,
+      accessibleFragmentCount: 7,
+      areaSquareKm: 3.5,
+      densityAvailable: true,
+      densityPerSquareKm: 2,
+      mappingEvidence: 'verified-source' as const,
+    }
+    const { rerender } = render(
+      <Harness values={new Map([[ASSUR_POLYGON_ID, value]])} />,
+    )
+    mockSetFeatureState.mockClear()
+
+    const unavailableValue = {
+      ...value,
+      dataAvailable: false,
+      findspotCount: 0,
+      accessibleFragmentCount: 0,
+      densityAvailable: false,
+      densityPerSquareKm: null,
+      mappingEvidence: 'unmapped' as const,
+    }
+    rerender(
+      <Harness values={new Map([[ASSUR_POLYGON_ID, unavailableValue]])} />,
+    )
+
+    expect(mockAddSource).toHaveBeenCalledTimes(1)
+    expect(mockAddLayer).toHaveBeenCalledTimes(3)
+    expect(mockSetFeatureState).toHaveBeenCalledWith(
+      { source: EXCAVATION_AREAS_SOURCE_ID, id: ASSUR_POLYGON_ID },
+      expect.objectContaining({
+        dataAvailable: false,
+        findspotCount: 0,
+        accessibleFragmentCount: 0,
+        evidenceCode: 0,
+        densityAvailable: false,
+        densityPerSquareKm: 0,
+      }),
     )
   })
 
