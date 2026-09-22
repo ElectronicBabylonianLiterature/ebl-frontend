@@ -14,6 +14,15 @@ describe('parseMapUrlState', () => {
     expect(parseMapUrlState('mv=1&findspot=Babylon')).toEqual({
       version: 1,
       filter: 'Babylon',
+      showExcavationAreas: false,
+    })
+  })
+
+  it('parses the excavation-area flag', () => {
+    expect(parseMapUrlState('mv=1&areas=1')).toEqual({
+      version: 1,
+      filter: '',
+      showExcavationAreas: true,
     })
   })
 
@@ -46,6 +55,7 @@ describe('parseMapUrlState', () => {
     expect(parseMapUrlState('mv=1&findspot=a&findspot=b')).toEqual({
       version: 1,
       filter: 'a',
+      showExcavationAreas: false,
     })
   })
 
@@ -70,31 +80,57 @@ describe('parseMapUrlState', () => {
 })
 
 describe('serializeMapUrlState', () => {
-  it('serializes to an empty string when the filter is empty', () => {
+  it('serializes to an empty string for the default state', () => {
     expect(serializeMapUrlState(DEFAULT_MAP_URL_STATE)).toBe('')
   })
 
   it('includes the version and filter when a filter is set', () => {
-    const search = serializeMapUrlState({ version: 1, filter: 'Babylon' })
+    const search = serializeMapUrlState({
+      version: 1,
+      filter: 'Babylon',
+      showExcavationAreas: false,
+    })
     expect(search).toContain('mv=1')
     expect(search).toContain('findspot=Babylon')
   })
 
+  it('includes the version and area flag without a filter', () => {
+    const search = serializeMapUrlState({
+      version: 1,
+      filter: '',
+      showExcavationAreas: true,
+    })
+    expect(search).toContain('mv=1')
+    expect(search).toContain('areas=1')
+  })
+
   it('round-trips through parseMapUrlState', () => {
-    const state = { version: 1, filter: 'Aššur' }
+    const state = {
+      version: 1,
+      filter: 'Aššur',
+      showExcavationAreas: true,
+    }
     expect(parseMapUrlState(serializeMapUrlState(state))).toEqual(state)
   })
 
   it('caps an overlong filter before writing it to the URL', () => {
     const overlong = 'a'.repeat(MAX_FILTER_LENGTH + 50)
-    const search = serializeMapUrlState({ version: 1, filter: overlong })
+    const search = serializeMapUrlState({
+      version: 1,
+      filter: overlong,
+      showExcavationAreas: false,
+    })
     const written = parseMapUrlState(search)
     expect(written.filter).toHaveLength(MAX_FILTER_LENGTH)
   })
 
   it('does not split a Unicode character at the filter limit', () => {
     const boundaryFilter = `${'a'.repeat(MAX_FILTER_LENGTH - 1)}😀`
-    const search = serializeMapUrlState({ version: 1, filter: boundaryFilter })
+    const search = serializeMapUrlState({
+      version: 1,
+      filter: boundaryFilter,
+      showExcavationAreas: false,
+    })
 
     expect(parseMapUrlState(search).filter).toBe(boundaryFilter)
   })
@@ -104,7 +140,11 @@ describe('serializeMapUrlState', () => {
     ['a lone low surrogate', '\uDC00', '\uFFFD'],
     ['an embedded lone surrogate', 'before\uD800after', 'before\uFFFDafter'],
   ])('normalizes %s before serializing', (_label, filter, expected) => {
-    const search = serializeMapUrlState({ version: 1, filter })
+    const search = serializeMapUrlState({
+      version: 1,
+      filter,
+      showExcavationAreas: false,
+    })
 
     expect(parseMapUrlState(search).filter).toBe(expected)
   })
