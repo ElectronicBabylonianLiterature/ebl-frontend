@@ -1,4 +1,3 @@
-import Promise from 'bluebird'
 import Word from 'dictionary/domain/Word'
 import WordRepository from 'dictionary/infrastructure/WordRepository'
 import _ from 'lodash'
@@ -19,24 +18,25 @@ class WordService {
     this.wordRepository = wordRepository
   }
 
-  find(id: string): Promise<Word> {
-    return this.wordRepository.find(id)
+  find(id: string, signal?: AbortSignal): Promise<Word> {
+    return this.wordRepository.find(id, signal)
   }
 
-  findAll(ids: string[]): Promise<readonly Word[]> {
-    return this.wordRepository.findAll(ids)
+  findAll(ids: string[], signal?: AbortSignal): Promise<readonly Word[]> {
+    return this.wordRepository.findAll(ids, signal)
   }
 
-  search(query: WordQuery): Promise<Word[]> {
+  search(query: WordQuery, signal?: AbortSignal): Promise<Word[]> {
     return this.wordRepository.search(
       stringify(query, { skipEmptyString: true, arrayFormat: 'none' }),
+      signal,
     )
   }
 
-  searchLemma(lemma: string): Promise<readonly Word[]> {
+  searchLemma(lemma: string, signal?: AbortSignal): Promise<readonly Word[]> {
     return _.isEmpty(lemma)
       ? Promise.resolve([])
-      : this.wordRepository.searchLemma(lemma)
+      : this.wordRepository.searchLemma(lemma, signal)
   }
 
   update(word: Word): Promise<Word> {
@@ -47,8 +47,8 @@ class WordService {
     return this.wordRepository.createProperNoun(lemma, namedEntityTag)
   }
 
-  listAllWords(): Promise<string[]> {
-    return this.wordRepository.listAllWords()
+  listAllWords(signal?: AbortSignal): Promise<string[]> {
+    return this.wordRepository.listAllWords(signal)
   }
 }
 

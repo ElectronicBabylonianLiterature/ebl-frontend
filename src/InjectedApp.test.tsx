@@ -1,6 +1,5 @@
 import React from 'react'
 import { screen, waitFor } from '@testing-library/react'
-import Bluebird from 'bluebird'
 import { eblNameProperty } from 'auth/Auth'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import TextService from 'corpus/application/TextService'
@@ -82,7 +81,7 @@ describe('InjectedApp', () => {
     const error = new Error('provenance error')
     FragmentService.prototype.fetchProvenances = jest
       .fn()
-      .mockReturnValue(Bluebird.reject(error))
+      .mockReturnValue(Promise.reject(error))
 
     renderInjectedApp()
 
@@ -95,7 +94,7 @@ describe('InjectedApp', () => {
     const error = new Error('list error')
     TextService.prototype.list = jest
       .fn()
-      .mockReturnValue(Bluebird.reject(error))
+      .mockReturnValue(Promise.reject(error))
 
     renderInjectedApp()
 
@@ -108,7 +107,7 @@ describe('InjectedApp', () => {
     const error = new Error('genres error')
     FragmentService.prototype.fetchGenres = jest
       .fn()
-      .mockReturnValue(Bluebird.reject(error))
+      .mockReturnValue(Promise.reject(error))
 
     renderInjectedApp()
 

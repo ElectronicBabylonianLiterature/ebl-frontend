@@ -1,5 +1,4 @@
 import Reference from 'bibliography/domain/Reference'
-import Bluebird from 'bluebird'
 import Annotation from 'fragmentarium/domain/annotation'
 import Folio from 'fragmentarium/domain/Folio'
 import { Fragment, Script } from 'fragmentarium/domain/fragment'
@@ -36,10 +35,10 @@ export interface ThumbnailBlob {
 }
 
 export interface ImageRepository {
-  find(fileName: string): Bluebird<Blob>
-  findFolio(folio: Folio): Bluebird<Blob>
-  findPhoto(number: string): Bluebird<Blob>
-  findThumbnail(number: string, size: ThumbnailSize): Bluebird<ThumbnailBlob>
+  find(fileName: string): Promise<Blob>
+  findFolio(folio: Folio, signal?: AbortSignal): Promise<Blob>
+  findPhoto(number: string, signal?: AbortSignal): Promise<Blob>
+  findThumbnail(number: string, size: ThumbnailSize): Promise<ThumbnailBlob>
 }
 
 export const editionFields = [
@@ -48,84 +47,102 @@ export const editionFields = [
   'introduction',
 ] as const
 
+export type FragmentStatistics = {
+  transliteratedFragments: number
+  lines: number
+  totalFragments: number
+}
+
+export type CorpusAttestations = {
+  manuscriptAttestations: ReadonlyArray<ManuscriptAttestation>
+  uncertainFragmentAttestations: ReadonlyArray<UncertainFragmentAttestation>
+}
+
 export type EditionFields = {
   [K in (typeof editionFields)[number]]: string | null
 }
 
 export interface FragmentRepository {
-  statistics(): Bluebird<{
-    transliteratedFragments: number
-    lines: number
-    totalFragments: number
-  }>
+  statistics(signal?: AbortSignal): Promise<FragmentStatistics>
   find(
     number: string,
     lines?: readonly number[],
     excludeLines?: boolean,
-  ): Bluebird<Fragment>
-  findInCorpus(number: string): Promise<{
-    manuscriptAttestations: ReadonlyArray<ManuscriptAttestation>
-    uncertainFragmentAttestations: ReadonlyArray<UncertainFragmentAttestation>
-  }>
-  fetchGenres(): Bluebird<string[][]>
-  fetchProvenances(): Bluebird<readonly ProvenanceRecord[]>
-  fetchProvenance(id: string): Bluebird<ProvenanceRecord>
-  fetchProvenanceChildren(id: string): Bluebird<readonly ProvenanceRecord[]>
-  fetchPeriods(): Bluebird<string[]>
-  fetchColophonNames(query: string): Bluebird<string[]>
-  updateGenres(number: string, genres: Genres): Bluebird<Fragment>
-  updateScopes(number: string, scopes: string[]): Bluebird<Fragment>
-  updateScript(number: string, script: Script): Bluebird<Fragment>
+  ): Promise<Fragment>
+  findInCorpus(
+    number: string,
+    signal?: AbortSignal,
+  ): Promise<CorpusAttestations>
+  fetchGenres(signal?: AbortSignal): Promise<string[][]>
+  fetchProvenances(): Promise<readonly ProvenanceRecord[]>
+  fetchProvenance(id: string): Promise<ProvenanceRecord>
+  fetchProvenanceChildren(id: string): Promise<readonly ProvenanceRecord[]>
+  fetchPeriods(signal?: AbortSignal): Promise<string[]>
+  fetchColophonNames(query: string): Promise<string[]>
+  updateGenres(number: string, genres: Genres): Promise<Fragment>
+  updateScopes(number: string, scopes: string[]): Promise<Fragment>
+  updateScript(number: string, script: Script): Promise<Fragment>
   updateDate(
     number: string,
     date: MesopotamianDateDto | undefined,
-  ): Bluebird<Fragment>
+  ): Promise<Fragment>
   updateDatesInText(
     number: string,
     date: MesopotamianDateDto[],
-  ): Bluebird<Fragment>
-  updateEdition(number: string, updates: EditionFields): Bluebird<Fragment>
+  ): Promise<Fragment>
+  updateEdition(number: string, updates: EditionFields): Promise<Fragment>
   updateLemmatization(
     number: string,
     lemmatization: LemmatizationDto,
-  ): Bluebird<Fragment>
+  ): Promise<Fragment>
   updateLemmaAnnotation(
     number: string,
     annotations: LineLemmaAnnotations,
-  ): Bluebird<Fragment>
+  ): Promise<Fragment>
   updateReferences(
     number: string,
     references: ReadonlyArray<Reference>,
-  ): Bluebird<Fragment>
+  ): Promise<Fragment>
   updateArchaeology(
     number: string,
     archaeology: ArchaeologyDto,
-  ): Bluebird<Fragment>
-  updateColophon(number: string, colophon: Colophon): Bluebird<Fragment>
-  folioPager(folio: Folio, fragmentNumber: string): Bluebird<FolioPagerData>
-  fragmentPager(fragmentNumber: string): Bluebird<FragmentPagerData>
-  findLemmas(lemma: string, isNormalized: boolean): Bluebird<Word[][]>
-  lineToVecRanking(number: string): Bluebird<LineToVecRanking>
-  query(fragmentQuery: FragmentQuery): Bluebird<QueryResult>
-  queryLatest(): Bluebird<QueryResult>
+  ): Promise<Fragment>
+  updateColophon(number: string, colophon: Colophon): Promise<Fragment>
+  folioPager(
+    folio: Folio,
+    fragmentNumber: string,
+    signal?: AbortSignal,
+  ): Promise<FolioPagerData>
+  fragmentPager(
+    fragmentNumber: string,
+    signal?: AbortSignal,
+  ): Promise<FragmentPagerData>
+  findLemmas(lemma: string, isNormalized: boolean): Promise<Word[][]>
+  lineToVecRanking(
+    number: string,
+    signal?: AbortSignal,
+  ): Promise<LineToVecRanking>
+  query(fragmentQuery: FragmentQuery): Promise<QueryResult>
+  queryLatest(): Promise<QueryResult>
   queryByTraditionalReferences(
     traditionalReferences: string[],
-  ): Bluebird<FragmentAfoRegisterQueryResult>
-  listAllFragments(): Bluebird<string[]>
-  collectLemmaSuggestions(number: string): Bluebird<LemmaSuggestions>
+  ): Promise<FragmentAfoRegisterQueryResult>
+  listAllFragments(): Promise<string[]>
+  collectLemmaSuggestions(number: string): Promise<LemmaSuggestions>
   updateNamedEntityAnnotations(
     number: string,
     annotations: AnnotationSpans,
-  ): Bluebird<Fragment>
+  ): Promise<Fragment>
 }
 
 export interface AnnotationRepository {
   findAnnotations(
     number: string,
     generateAnnotations: boolean,
-  ): Bluebird<readonly Annotation[]>
+    signal?: AbortSignal,
+  ): Promise<readonly Annotation[]>
   updateAnnotations(
     number: string,
     annotations: readonly Annotation[],
-  ): Bluebird<readonly Annotation[]>
+  ): Promise<readonly Annotation[]>
 }

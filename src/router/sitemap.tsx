@@ -5,7 +5,6 @@ import { renderToString } from 'react-dom/server'
 import $ from 'jquery'
 import type Services from 'router/Services'
 import withData from 'http/withData'
-import Bluebird from 'bluebird'
 import convert from 'xml-js'
 import _ from 'lodash'
 import pako from 'pako'
@@ -137,13 +136,13 @@ async function getSlugs(
   getter: string,
   key: string,
   encode = false,
-): Bluebird<SlugsArray> {
+): Promise<SlugsArray> {
   return services[service][getter]().then((array) =>
     mapStringsToSlugs(array, key, encode),
   )
 }
 
-export async function getAllSlugs(services: Services): Bluebird<Slugs> {
+export async function getAllSlugs(services: Services): Promise<Slugs> {
   return {
     signSlugs: await getSlugs(services, 'signService', 'listAllSigns', 'id'),
     dictionarySlugs: await getSlugs(
@@ -180,5 +179,5 @@ export default withData<{ services: Services }, { services: Services }, Slugs>(
   ({ data, services }) => {
     return getSitemapAsFile(services, data)
   },
-  ({ services }): Bluebird<Slugs> => getAllSlugs(services),
+  ({ services }): Promise<Slugs> => Promise.resolve(getAllSlugs(services)),
 )

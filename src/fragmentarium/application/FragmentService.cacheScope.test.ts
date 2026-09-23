@@ -1,4 +1,3 @@
-import Promise from 'bluebird'
 import { ProvenanceRecord } from 'fragmentarium/domain/Provenance'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import { QueryResult } from 'query/QueryResult'

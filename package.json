@@ -25,6 +25,7 @@
     "build": "NODE_OPTIONS=--max_old_space_size=1536 craco build",
     "build:ci-stable": "GENERATE_SOURCEMAP=false DISABLE_ESLINT_PLUGIN=true NODE_OPTIONS=--max_old_space_size=1536 craco build",
     "test": "NODE_OPTIONS=--max_old_space_size=1536 craco test --runInBand",
+    "test:ci": "CI=true NODE_OPTIONS=--max_old_space_size=1536 craco test --runInBand --coverage --forceExit --detectOpenHandles --watch=false",
     "test:fast": "NODE_OPTIONS=--max_old_space_size=1536 craco test --maxWorkers=1 --workerIdleMemoryLimit=512MB --bail --no-coverage --watch=false",
     "test:diag": "CI=true NODE_OPTIONS=--max_old_space_size=1536 craco test --runInBand --coverage --forceExit --detectOpenHandles --watch=false --logHeapUsage",
     "test:secrets": "bash scripts/test-secret-scanning.sh",
@@ -52,7 +53,6 @@
   "dependencies": {
     "@auth0/auth0-spa-js": "^2.1.0",
     "@sentry/react": "^7.99.0",
-    "@types/bluebird": "^3.5.28",
     "@types/jquery": "^3.5.5",
     "@types/lodash": "^4.14.144",
     "@types/luxon": "^3.4.0",
@@ -61,7 +61,6 @@
     "@types/react-dom": "^18.2.0",
     "@types/react-router-bootstrap": "^0.26.0",
     "@types/react-router-dom": "^5.3.0",
-    "bluebird": "^3.5.2",
     "bootstrap": "^5.3.3",
     "citation-js": "^0.6.4",
     "classnames": "^2.2.6",

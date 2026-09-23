@@ -1,4 +1,3 @@
-import Bluebird from 'bluebird'
 import { castDraft, produce } from 'immer'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import ReferenceInjector from 'transliteration/application/ReferenceInjector'
@@ -6,7 +5,7 @@ import ReferenceInjector from 'transliteration/application/ReferenceInjector'
 export function injectReferences(
   referenceInjector: ReferenceInjector,
   fragment: Fragment,
-): Bluebird<Fragment> {
+): Promise<Fragment> {
   return referenceInjector
     .injectReferencesToText(fragment.text)
     .then((text) =>
@@ -15,7 +14,7 @@ export function injectReferences(
       }),
     )
     .then((withText) =>
-      Bluebird.all([
+      Promise.all([
         referenceInjector.injectReferencesToIntroduction(withText.introduction),
         referenceInjector.injectReferencesToNotes(withText.notes),
       ]).then(([introduction, notes]) =>

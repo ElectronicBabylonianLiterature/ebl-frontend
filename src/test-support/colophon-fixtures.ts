@@ -13,7 +13,7 @@ import {
 } from 'fragmentarium/domain/Colophon'
 import { Provenances } from 'corpus/domain/provenance'
 
-const chance = new Chance()
+const chance = new Chance('colophon-fixtures')
 
 const nameAttestationFactory = Factory.define<NameAttestation>(() => ({
   value: chance.name(),

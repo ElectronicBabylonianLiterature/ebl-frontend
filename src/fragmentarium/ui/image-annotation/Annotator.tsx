@@ -65,8 +65,8 @@ const WithAnnotations = withData<
   readonly Annotation[]
 >(
   ({ data, ...props }) => <Annotator {...props} annotations={data} />,
-  ({ fragment, fragmentService }) =>
-    fragmentService.findAnnotations(fragment.number),
+  ({ fragment, fragmentService }, signal) =>
+    fragmentService.findAnnotations(fragment.number, signal),
 )
 
 const WithPhoto = withData<
@@ -79,7 +79,8 @@ const WithPhoto = withData<
   Blob
 >(
   ({ data, ...props }) => <WithAnnotations {...props} image={data} />,
-  ({ fragment, fragmentService }) => fragmentService.findPhoto(fragment),
+  ({ fragment, fragmentService }, signal) =>
+    fragmentService.findPhoto(fragment, signal),
 )
 
 export default withData<

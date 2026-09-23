@@ -27,7 +27,7 @@ const annotations: AnnotationSpans = {
 
 const annotatedFragment = withAnnotationSpans(tokenIdFragment, annotations)
 
-let onSave: jest.Mock<Promise<Fragment>, [Promise<Fragment>]>
+let onSave: jest.Mock<Promise<Fragment>, [() => Promise<Fragment>]>
 
 async function setup(saveFails = false): Promise<void> {
   fragmentServiceMock.find.mockResolvedValue(annotatedFragment)
@@ -41,7 +41,7 @@ async function setup(saveFails = false): Promise<void> {
       refreshError: null,
     })
   }
-  onSave = jest.fn((updatedFragment: Promise<Fragment>) => updatedFragment)
+  onSave = jest.fn((save: () => Promise<Fragment>) => save())
 
   render(
     <ThemeProvider>

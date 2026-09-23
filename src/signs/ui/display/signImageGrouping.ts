@@ -53,37 +53,3 @@ export function sortScriptsByPeriod<Annotation>(
     return index
   })
 }
-
-export async function runWithConcurrencyLimit<T, R>(
-  items: T[],
-  limit: number,
-  task: (item: T) => PromiseLike<R>,
-): Promise<PromiseSettledResult<R>[]> {
-  const results: PromiseSettledResult<R>[] = []
-  let index = 0
-
-  async function worker() {
-    while (index < items.length) {
-      const currentIndex = index
-      index += 1
-
-      try {
-        results[currentIndex] = {
-          status: 'fulfilled',
-          value: await task(items[currentIndex]),
-        }
-      } catch (reason) {
-        results[currentIndex] = {
-          status: 'rejected',
-          reason,
-        }
-      }
-    }
-  }
-
-  await Promise.all(
-    Array.from({ length: Math.min(limit, items.length) }, () => worker()),
-  )
-
-  return results
-}

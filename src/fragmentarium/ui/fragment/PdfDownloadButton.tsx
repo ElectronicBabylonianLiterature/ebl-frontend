@@ -4,9 +4,10 @@ import { Fragment } from 'fragmentarium/domain/fragment'
 import WordService from 'dictionary/application/WordService'
 import { Dropdown } from 'react-bootstrap'
 import Spinner from 'common/ui/Spinner'
+import ErrorAlert from 'common/errors/ErrorAlert'
 import $ from 'jquery'
-import Promise from 'bluebird'
 import usePromiseEffect from 'common/hooks/usePromiseEffect'
+import { applyWhenNotAborted } from 'common/utils/applyWhenCurrent'
 import { jsPDF } from 'jspdf'
 
 type Props = {
@@ -21,18 +22,29 @@ export default function PdfDownloadButton({
   children,
 }: Props): JSX.Element {
   const [isLoading, setIsLoading] = useState(false)
-  const [setPromise, cancelPromise] = usePromiseEffect()
+  const [error, setError] = useState<Error | null>(null)
+  const [runDownload] = usePromiseEffect()
 
   const handleClick = (event) => {
     const jQueryRef = $('#jQueryContainer')
     setIsLoading(true)
-    cancelPromise()
+    setError(null)
 
-    setPromise(
-      getPdfDoc(fragment, wordService, jQueryRef).then((doc) => {
-        doc.save(fragment.number + '.pdf')
-        setIsLoading(false)
-      }),
+    runDownload((signal) =>
+      applyWhenNotAborted(
+        () => getPdfDoc(fragment, wordService, jQueryRef),
+        signal,
+        {
+          onSuccess: (doc) => {
+            doc.save(fragment.number + '.pdf')
+            setIsLoading(false)
+          },
+          onError: (downloadError) => {
+            setError(downloadError)
+            setIsLoading(false)
+          },
+        },
+      ),
     )
   }
 
@@ -41,6 +53,7 @@ export default function PdfDownloadButton({
       <Dropdown.Item onClick={handleClick}>
         {isLoading ? <Spinner /> : children}
       </Dropdown.Item>
+      <ErrorAlert error={error} />
       <div id="jQueryContainer" style={{ display: 'none' }}></div>
     </>
   )

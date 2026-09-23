@@ -1,4 +1,3 @@
-import Bluebird from 'bluebird'
 import { CacheEntry, trimCache } from 'common/utils/cache'
 import getOrFetchCachedValue from 'common/utils/getOrFetchCachedValue'
 
@@ -31,11 +30,11 @@ export class ScopedCache {
 
   getOrFetch<CacheValue>(
     cache: Map<string, CacheEntry<CacheValue>>,
-    requests: Map<string, Bluebird<CacheValue>>,
+    requests: Map<string, Promise<CacheValue>>,
     key: string,
     maximumCacheSize: number,
-    fetchValue: () => Bluebird<CacheValue>,
-  ): Bluebird<CacheValue> {
+    fetchValue: () => Promise<CacheValue>,
+  ): Promise<CacheValue> {
     this.clearWhenScopeChanges()
     return getOrFetchCachedValue({
       cache,

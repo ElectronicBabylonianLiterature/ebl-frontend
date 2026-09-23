@@ -1,7 +1,6 @@
 import React from 'react'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { submitFormByTestId } from 'test-support/utils'
-import { Promise } from 'bluebird'
 
 import TransliterationForm from './TransliterationForm'
 import { act } from 'react'
@@ -184,44 +183,35 @@ it('clears error after successful save', async () => {
   await waitFor(() => expect(editorError()).toBeNull())
 })
 
-it('does not set an error for a cancellation error', async () => {
-  const cancellationError = Object.assign(new Error('cancelled'), {
-    name: 'CancellationError',
-  })
-
-  updateEdition = jest.fn()
-  updateEdition.mockReturnValue(Promise.reject(cancellationError))
-
-  renderForm(updateEdition)
-
-  submitFormByTestId(screen, 'transliteration-form')
-
-  await waitFor(() => expect(updateEdition).toHaveBeenCalledWith({}))
-  await waitFor(() => expect(editorError()).toBeNull())
-})
-
-it('does not set an error when the promise reports cancellation', async () => {
-  const requestError = new Error('request failed')
-  const cancelledPromise = {
-    then: jest.fn(),
-    catch: jest.fn(),
-    isCancelled: jest.fn(() => true),
-    cancel: jest.fn(),
+it('does not surface an error from a superseded update', async () => {
+  const supersededFailure = new Error('superseded request failed')
+  const successfulFragment = {
+    atf: 'saved transliteration',
+    notes: { text: 'saved notes' },
+    introduction: { text: 'saved intro' },
   }
-  cancelledPromise.then.mockReturnValue(cancelledPromise)
-  cancelledPromise.catch.mockImplementation((onRejected) => {
-    queueMicrotask(() => onRejected(requestError))
-    return cancelledPromise
-  })
+  let rejectSuperseded: (error: Error) => void = () => undefined
 
   updateEdition = jest.fn()
-  updateEdition.mockReturnValue(cancelledPromise as unknown as Promise<never>)
+  updateEdition
+    .mockReturnValueOnce(
+      new Promise((_resolve, reject) => {
+        rejectSuperseded = reject
+      }),
+    )
+    .mockReturnValueOnce(Promise.resolve(successfulFragment))
 
   renderForm(updateEdition)
 
   submitFormByTestId(screen, 'transliteration-form')
+  submitFormByTestId(screen, 'transliteration-form')
 
-  await waitFor(() => expect(updateEdition).toHaveBeenCalledWith({}))
-  await waitFor(() => expect(cancelledPromise.isCancelled).toHaveBeenCalled())
+  await waitFor(() => expect(updateEdition).toHaveBeenCalledTimes(2))
+  await act(async () => {
+    rejectSuperseded(supersededFailure)
+    await Promise.resolve()
+  })
+
+  await screen.findByDisplayValue('saved transliteration')
   await waitFor(() => expect(editorError()).toBeNull())
 })

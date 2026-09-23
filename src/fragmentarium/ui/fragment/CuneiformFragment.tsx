@@ -1,12 +1,13 @@
-import React, { useEffect, useState, FunctionComponent } from 'react'
-import Bluebird from 'bluebird'
+import React, { useEffect, useRef, useState, FunctionComponent } from 'react'
 import { Container, Row, Col } from 'react-bootstrap'
 import FragmentInCorpus from 'fragmentarium/ui/fragment/FragmentInCorpus'
 import Images from 'fragmentarium/ui/images/Images'
 import Info from 'fragmentarium/ui/info/Info'
 import ErrorAlert from 'common/errors/ErrorAlert'
 import Spinner from 'common/ui/Spinner'
-import usePromiseEffect from 'common/hooks/usePromiseEffect'
+import SupersedableOperation from 'common/utils/SupersedableOperation'
+import SerialQueue from 'common/utils/SerialQueue'
+import applyWhenCurrent from 'common/utils/applyWhenCurrent'
 import './CuneiformFragment.sass'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import Folio from 'fragmentarium/domain/Folio'
@@ -29,7 +30,7 @@ type CuneiformFragmentProps = {
   findspotService: FindspotService
   activeFolio: Folio | null
   tab: string | null
-  onSave: (updatedFragment: Bluebird<Fragment>) => Bluebird<Fragment>
+  onSave: (save: () => Promise<Fragment>) => Promise<Fragment>
   saving: boolean
   error: Error | null
   activeLine: string
@@ -142,38 +143,40 @@ const CuneiformFragmentController: FunctionComponent<ControllerProps> = ({
 }: ControllerProps) => {
   const [currentFragment, setFragment] = useState(fragment)
   const [isSaving, setIsSaving] = useState(false)
-  const [error, setError] = useState(null)
-  const [setPromise, cancelPromise] = usePromiseEffect()
+  const [error, setError] = useState<Error | null>(null)
+  const saveOperation = useRef(new SupersedableOperation())
+  const saveQueue = useRef(new SerialQueue())
 
   const isCurrentFragment = currentFragment.number === fragment.number
   const visibleFragment = isCurrentFragment ? currentFragment : fragment
 
+  useEffect(() => () => saveOperation.current.supersede(), [])
+
   useEffect(() => {
     if (currentFragment.number !== fragment.number) {
-      cancelPromise()
+      saveOperation.current.supersede()
       setFragment(fragment)
       setError(null)
       setIsSaving(false)
     }
-  }, [cancelPromise, currentFragment.number, fragment])
+  }, [currentFragment.number, fragment])
 
-  const handleSave = (promise) => {
-    cancelPromise()
+  const handleSave = (save: () => Promise<Fragment>): Promise<Fragment> => {
     setError(null)
     setIsSaving(true)
 
-    const updatePromise = promise.then((updatedFragment) => {
-      setFragment(updatedFragment)
-      setIsSaving(false)
-      return updatedFragment
-    })
-    setPromise(
-      updatePromise.catch((error) => {
-        setError(error)
+    const savePromise = saveQueue.current.enqueue(save)
+    applyWhenCurrent(() => savePromise, {
+      onSuccess: (updatedFragment) => {
+        setFragment(updatedFragment)
         setIsSaving(false)
-      }),
-    )
-    return updatePromise
+      },
+      onError: (saveError) => {
+        setError(saveError)
+        setIsSaving(false)
+      },
+    })(saveOperation.current.start())
+    return savePromise
   }
 
   return (

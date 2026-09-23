@@ -1,5 +1,4 @@
 import React from 'react'
-import Bluebird from 'bluebird'
 
 import References from 'fragmentarium/ui/fragment/References'
 import Edition from 'fragmentarium/ui/edition/Edition'
@@ -30,7 +29,7 @@ export type TabsProps = {
   fragmentSearchService
   wordService: WordService
   findspotService: FindspotService
-  onSave: (updatedFragment: Bluebird<Fragment>) => Bluebird<Fragment>
+  onSave: (save: () => Promise<Fragment>) => Promise<Fragment>
   disabled?: boolean
   activeLine: string
   onToggle
@@ -43,7 +42,7 @@ export function DisplayContents(props: TabsProps): JSX.Element {
 
 export function EditionContents(props: TabsProps): JSX.Element {
   const updateEdition = (fields: EditionFields) =>
-    props.onSave(
+    props.onSave(() =>
       props.fragmentService.updateEdition(props.fragment.number, fields),
     )
   return <Edition updateEdition={updateEdition} {...props} />
@@ -51,7 +50,7 @@ export function EditionContents(props: TabsProps): JSX.Element {
 
 export function LemmatizationContents(props: TabsProps): JSX.Element {
   const updateLemmaAnnotation = (annotations: LineLemmaAnnotations) =>
-    props.onSave(
+    props.onSave(() =>
       props.fragmentService.updateLemmaAnnotation(
         props.fragment.number,
         annotations,
@@ -75,7 +74,7 @@ export function NamedEntityAnnotationContents(props: TabsProps): JSX.Element {
     props.fragmentService
       .updateNamedEntityAnnotations(props.fragment.number, annotations)
       .then((result) =>
-        props.onSave(Bluebird.resolve(result.fragment)).then(() => result),
+        props.onSave(() => Promise.resolve(result.fragment)).then(() => result),
       )
   return (
     <TextAnnotation
@@ -88,7 +87,7 @@ export function NamedEntityAnnotationContents(props: TabsProps): JSX.Element {
 
 export function ReferencesContents(props: TabsProps): JSX.Element {
   const updateReferences = (references) =>
-    props.onSave(
+    props.onSave(() =>
       props.fragmentService.updateReferences(
         props.fragment.number,
         references.map(serializeReference),
@@ -108,7 +107,7 @@ export function ReferencesContents(props: TabsProps): JSX.Element {
 
 export function ArchaeologyContents(props: TabsProps): JSX.Element {
   const updateArchaeology = (archaeology: ArchaeologyDto) =>
-    props.onSave(
+    props.onSave(() =>
       props.fragmentService.updateArchaeology(
         props.fragment.number,
         archaeology,
@@ -125,7 +124,7 @@ export function ArchaeologyContents(props: TabsProps): JSX.Element {
 
 export function ColophonContents(props: TabsProps): JSX.Element {
   const updateColophon = async (colophon: Colophon) => {
-    props.onSave(
+    props.onSave(() =>
       props.fragmentService.updateColophon(props.fragment.number, colophon),
     )
   }
@@ -135,7 +134,7 @@ export function ColophonContents(props: TabsProps): JSX.Element {
 
 export function ScopeContents(props: TabsProps, session: Session): JSX.Element {
   const updateScopes = async (scopes: string[]) => {
-    props.onSave(
+    props.onSave(() =>
       props.fragmentService.updateScopes(props.fragment.number, scopes),
     )
   }

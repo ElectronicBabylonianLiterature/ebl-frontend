@@ -9,7 +9,6 @@ import {
 } from 'test-support/glossary'
 import Label from 'transliteration/domain/Label'
 import { Word } from 'transliteration/domain/token'
-import Promise from 'bluebird'
 
 jest.mock('dictionary/application/WordService')
 

@@ -6,7 +6,6 @@ import raw from 'rehype-raw'
 import stringify from 'rehype-stringify'
 import DOMPurify from 'dompurify'
 import withData from 'http/withData'
-import Bluebird from 'bluebird'
 
 async function convertMarkdownAndHtmlMixToSanitizedHtml(
   markdown: string,
@@ -78,7 +77,7 @@ export default withData<Omit<Props, 'htmlString'>, { markdownAndHtml }, string>(
     <HtmlFromString htmlString={data} container={container} {...props} />
   ),
   (props) =>
-    Bluebird.resolve(
+    Promise.resolve(
       convertMarkdownAndHtmlMixToSanitizedHtml(props.markdownAndHtml),
     ),
 )

@@ -1,4 +1,3 @@
-import Promise from 'bluebird'
 import { testDelegation, TestData } from 'test-support/utils'
 import FragmentRepository from 'fragmentarium/infrastructure/FragmentRepository'
 import { fragment, fragmentDto } from 'test-support/test-fragment'
@@ -131,6 +130,7 @@ describe('FragmentRepository findInCorpus', () => {
     expect(apiClient.fetchJson).toHaveBeenCalledWith(
       `/fragments/${encodeURIComponent(fragmentId)}/corpus`,
       false,
+      undefined,
     )
   })
 

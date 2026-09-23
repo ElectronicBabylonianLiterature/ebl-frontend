@@ -1,4 +1,3 @@
-import Bluebird from 'bluebird'
 import FragmentService, {
   EditionFields,
 } from 'fragmentarium/application/FragmentService'
@@ -29,14 +28,14 @@ const fragmentServiceMock = new (FragmentService as jest.Mock<
 >)()
 
 const fragment = fragmentFactory.build()
-const saved = Bluebird.resolve(fragment)
+const saved = Promise.resolve(fragment)
 
-let onSave: jest.Mock<Bluebird<Fragment>, [Bluebird<Fragment>]>
+let onSave: jest.Mock<Promise<Fragment>, [() => Promise<Fragment>]>
 let props: TabsProps
 
 beforeEach(() => {
   jest.clearAllMocks()
-  onSave = jest.fn((updated: Bluebird<Fragment>) => updated)
+  onSave = jest.fn((save: () => Promise<Fragment>) => save())
   props = {
     fragment,
     fragmentService: fragmentServiceMock,
@@ -65,7 +64,7 @@ describe('every editor tab routes its save through onSave', () => {
       fragment.number,
       fields,
     )
-    expect(onSave).toHaveBeenCalledWith(saved)
+    expect(onSave).toHaveBeenCalledWith(expect.any(Function))
   })
 
   it('LemmatizationContents saves the lemma annotation', () => {
@@ -80,7 +79,7 @@ describe('every editor tab routes its save through onSave', () => {
       fragment.number,
       annotations,
     )
-    expect(onSave).toHaveBeenCalledWith(saved)
+    expect(onSave).toHaveBeenCalledWith(expect.any(Function))
   })
 
   it('ArchaeologyContents saves the archaeology', () => {
@@ -95,7 +94,7 @@ describe('every editor tab routes its save through onSave', () => {
       fragment.number,
       archaeology,
     )
-    expect(onSave).toHaveBeenCalledWith(saved)
+    expect(onSave).toHaveBeenCalledWith(expect.any(Function))
   })
 
   it('ColophonContents saves the colophon', async () => {
@@ -110,7 +109,7 @@ describe('every editor tab routes its save through onSave', () => {
       fragment.number,
       colophon,
     )
-    expect(onSave).toHaveBeenCalledWith(saved)
+    expect(onSave).toHaveBeenCalledWith(expect.any(Function))
   })
 
   it('ScopeContents saves the scopes', async () => {
@@ -125,7 +124,7 @@ describe('every editor tab routes its save through onSave', () => {
       fragment.number,
       scopes,
     )
-    expect(onSave).toHaveBeenCalledWith(saved)
+    expect(onSave).toHaveBeenCalledWith(expect.any(Function))
   })
 })
 
@@ -171,11 +170,11 @@ describe('ReferencesContents', () => {
       fragment.number,
       references.map(serializeReference),
     )
-    expect(onSave).toHaveBeenCalledWith(saved)
+    expect(onSave).toHaveBeenCalledWith(expect.any(Function))
   })
 
   it('delegates the bibliography search to the fragment service', () => {
-    const results = Bluebird.resolve([])
+    const results = Promise.resolve([])
     fragmentServiceMock.searchBibliography.mockReturnValue(results)
 
     const returned = propsOf<{

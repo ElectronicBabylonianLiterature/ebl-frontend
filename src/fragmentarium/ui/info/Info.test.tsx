@@ -1,5 +1,4 @@
 import React from 'react'
-import Bluebird from 'bluebird'
 import { render, screen } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 import Info from 'fragmentarium/ui/info/Info'
@@ -62,8 +61,12 @@ const richFragment = fragmentFactory.build({
   projects: [ResearchProjects.CAIC],
   externalNumbers: { cdliNumber: 'P000001' },
 })
-const saved = Bluebird.resolve(fragment)
-const onSave = jest.fn((updated: Bluebird<Fragment>) => updated)
+const saved = Promise.resolve(fragment)
+const onSave = jest.fn<Promise<Fragment>, [() => Promise<Fragment>]>()
+
+beforeEach(() => {
+  onSave.mockImplementation((save: () => Promise<Fragment>) => save())
+})
 
 function renderInfo(shown: Fragment = fragment): void {
   render(
@@ -95,7 +98,7 @@ describe('Info wires the detail editors to the fragment service', () => {
       fragment.number,
       genres,
     )
-    expect(onSave).toHaveBeenCalledWith(saved)
+    expect(onSave).toHaveBeenCalledWith(expect.any(Function))
   })
 
   it('saves a script change directly, without onSave', () => {

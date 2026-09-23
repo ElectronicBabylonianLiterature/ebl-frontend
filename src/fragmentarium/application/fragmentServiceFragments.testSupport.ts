@@ -1,4 +1,3 @@
-import Promise from 'bluebird'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import { Genres } from 'fragmentarium/domain/Genres'
 import { MesopotamianDate } from 'chronology/domain/Date'
@@ -9,7 +8,7 @@ import {
   referenceFactory,
 } from 'test-support/bibliography-fixtures'
 import { fragmentFactory } from 'test-support/fragment-fixtures'
-import { silenceConsoleErrors } from 'setupTests'
+import { tolerateConsoleErrors } from 'setupTests'
 import { bibliographyService } from 'fragmentarium/application/fragmentService.testSupport'
 
 export {
@@ -120,5 +119,5 @@ export function stubMissingBibliography(): void {
   bibliographyService.findMany.mockImplementation((ids: string[]) =>
     Promise.reject(new Error(`${ids} not found.`)),
   )
-  silenceConsoleErrors()
+  tolerateConsoleErrors(/not found\./)
 }

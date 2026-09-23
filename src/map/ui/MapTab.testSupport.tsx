@@ -1,5 +1,4 @@
 import React from 'react'
-import Bluebird from 'bluebird'
 import { render, type RenderResult } from '@testing-library/react'
 import { MemoryRouter, useLocation } from 'react-router-dom'
 import FragmentService from 'fragmentarium/application/FragmentService'
@@ -23,19 +22,19 @@ export function makeFragmentService(
   provenances: readonly ProvenanceRecord[],
 ): FragmentService {
   return {
-    fetchProvenances: () => Bluebird.resolve(provenances),
+    fetchProvenances: () => Promise.resolve(provenances),
   } as unknown as FragmentService
 }
 
 export function makeFailingFragmentService(message: string): FragmentService {
   return {
-    fetchProvenances: () => Bluebird.reject(new Error(message)),
+    fetchProvenances: () => Promise.reject(new Error(message)),
   } as unknown as FragmentService
 }
 
 export function makeRejectingFragmentService(reason: unknown): FragmentService {
   return {
-    fetchProvenances: () => Bluebird.reject(reason),
+    fetchProvenances: () => Promise.reject(reason),
   } as unknown as FragmentService
 }
 

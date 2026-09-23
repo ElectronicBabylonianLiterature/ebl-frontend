@@ -1,5 +1,4 @@
 import React from 'react'
-import Promise from 'bluebird'
 import { render, screen, fireEvent, waitFor } from '@testing-library/react'
 import BibliographyViewer from './BibliographyViewer'
 import { MemoryRouter } from 'react-router-dom'

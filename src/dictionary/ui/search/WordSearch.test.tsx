@@ -2,7 +2,6 @@ import React from 'react'
 import { screen, render } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 import { waitForSpinnerToBeRemoved } from 'test-support/waitForSpinnerToBeRemoved'
-import Promise from 'bluebird'
 import WordSearch from './WordSearch'
 import { wordFactory } from 'test-support/word-fixtures'
 import Word from 'dictionary/domain/Word'
@@ -31,7 +30,7 @@ const setup = async () => {
 
 it('Searches with the query', async () => {
   await setup()
-  expect(wordService.search).toBeCalledWith(query)
+  expect(wordService.search).toBeCalledWith(query, expect.any(AbortSignal))
 })
 
 it('Displays results', async () => {

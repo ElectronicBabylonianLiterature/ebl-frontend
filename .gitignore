@@ -25,6 +25,7 @@ yarn-error.log*
 # Added by ggshield
 .cache_ggshield
 
-# qlty
+# qlty — generated caches, logs and results; keep the checked-in config
 .qlty/*
 !.qlty/qlty.toml
+!.qlty/configs

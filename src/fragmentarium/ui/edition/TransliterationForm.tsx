@@ -1,13 +1,13 @@
 import React, {
   useState,
   useEffect,
+  useRef,
   FormEvent,
   useCallback,
   useMemo,
 } from 'react'
 import { Container, Row, Col } from 'react-bootstrap'
 import _ from 'lodash'
-import Promise from 'bluebird'
 
 import TemplateForm from './TemplateForm'
 import { Fragment } from 'fragmentarium/domain/fragment'
@@ -21,6 +21,9 @@ import {
   SubmitButton,
   TransliterationFormFields,
 } from 'fragmentarium/ui/edition/TransliterationFormControls'
+import SupersedableOperation from 'common/utils/SupersedableOperation'
+import applyWhenCurrent from 'common/utils/applyWhenCurrent'
+import { runBeforeUnloadEvent } from 'fragmentarium/ui/edition/beforeUnloadWarning'
 
 type Props = {
   transliteration: string
@@ -28,37 +31,6 @@ type Props = {
   introduction: string
   updateEdition: (fields: EditionFields) => Promise<Fragment>
   disabled?: boolean
-}
-
-const handleBeforeUnload = (
-  event: BeforeUnloadEvent,
-  hasChanges: () => boolean,
-): string | void => {
-  if (hasChanges()) {
-    const confirmationMessage =
-      'You have unsaved changes. Are you sure you want to leave?'
-    event.returnValue = confirmationMessage
-    return confirmationMessage
-  }
-}
-
-const runBeforeUnloadEvent = ({
-  hasChanges,
-  updatePromise,
-}: {
-  hasChanges: () => boolean
-  updatePromise: Promise<void>
-}) => {
-  const _handleBeforeEvent = (event) => handleBeforeUnload(event, hasChanges)
-  if (hasChanges()) {
-    window.addEventListener('beforeunload', _handleBeforeEvent)
-  } else {
-    window.removeEventListener('beforeunload', _handleBeforeEvent)
-  }
-  return () => {
-    window.removeEventListener('beforeunload', _handleBeforeEvent)
-    updatePromise.cancel()
-  }
 }
 
 const TransliterationForm: React.FC<Props> = ({
@@ -76,7 +48,7 @@ const TransliterationForm: React.FC<Props> = ({
     error: null,
     disabled: false,
   })
-  const [updatePromise, setUpdatePromise] = useState(Promise.resolve())
+  const updateOperation = useRef(new SupersedableOperation())
   const initialValues = useMemo(
     () => ({ transliteration, notes, introduction }),
     [transliteration, notes, introduction],
@@ -107,8 +79,8 @@ const TransliterationForm: React.FC<Props> = ({
       _.pick(formData, editionFields),
       isDirty,
     ) as EditionFields
-    const promise = updateEdition(updatedFields)
-      .then((fragment) => {
+    applyWhenCurrent(() => updateEdition(updatedFields), {
+      onSuccess: (fragment: Fragment) => {
         setFormData((prev) => ({
           ...prev,
           transliteration: fragment.atf,
@@ -116,19 +88,11 @@ const TransliterationForm: React.FC<Props> = ({
           introduction: fragment.introduction.text,
           error: null,
         }))
-      })
-      .catch((error) => {
-        const isCancellationError =
-          (error as { name?: string })?.name === 'CancellationError' ||
-          (typeof (promise as { isCancelled?: () => boolean })?.isCancelled ===
-            'function' &&
-            (promise as { isCancelled: () => boolean }).isCancelled())
-        if (isCancellationError) {
-          return
-        }
+      },
+      onError: (error) => {
         setFormData((prev) => ({ ...prev, error }))
-      })
-    setUpdatePromise(promise)
+      },
+    })(updateOperation.current.start())
   }
 
   const hasChanges = useCallback(
@@ -139,16 +103,11 @@ const TransliterationForm: React.FC<Props> = ({
     [formData, transliteration, notes, introduction],
   )
 
+  useEffect(() => () => updateOperation.current.supersede(), [])
+
   useEffect(() => {
-    return runBeforeUnloadEvent({ hasChanges, updatePromise })
-  }, [
-    formData,
-    transliteration,
-    notes,
-    introduction,
-    updatePromise,
-    hasChanges,
-  ])
+    return runBeforeUnloadEvent({ hasChanges })
+  }, [formData, transliteration, notes, introduction, hasChanges])
 
   return (
     <Container fluid>

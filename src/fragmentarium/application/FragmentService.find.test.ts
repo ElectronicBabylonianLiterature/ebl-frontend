@@ -1,4 +1,3 @@
-import Promise from 'bluebird'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import {
   buildTestFragment,

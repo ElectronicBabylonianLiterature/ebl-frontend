@@ -3,7 +3,6 @@ import FragmentLineToVecRanking from './FragmentLineToVecRanking'
 import { MemoryRouter } from 'react-router-dom'
 import { render, screen } from '@testing-library/react'
 import { waitForSpinnerToBeRemoved } from 'test-support/waitForSpinnerToBeRemoved'
-import Promise from 'bluebird'
 import { LineToVecRanking } from 'fragmentarium/domain/lineToVecRanking'
 import SessionContext from 'auth/SessionContext'
 import { Session } from 'auth/Session'
@@ -11,6 +10,7 @@ import { scriptFactory } from 'test-support/fragment-data-fixtures'
 import { Periods } from 'common/utils/period'
 import { HelmetProvider } from 'react-helmet-async'
 import { helmetContext } from 'router/head'
+import FragmentService from 'fragmentarium/application/FragmentService'
 
 const script = scriptFactory.build(
   {},
@@ -43,7 +43,7 @@ it('Shows the number of transliterated tablets', async () => {
         <SessionContext.Provider value={session as unknown as Session}>
           <FragmentLineToVecRanking
             number={'X.0'}
-            fragmentService={fragmentService}
+            fragmentService={fragmentService as unknown as FragmentService}
           />
         </SessionContext.Provider>
       </MemoryRouter>

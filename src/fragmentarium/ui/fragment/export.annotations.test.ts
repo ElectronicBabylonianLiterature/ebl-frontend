@@ -2,7 +2,6 @@ import fs from 'fs'
 import path from 'path'
 import React from 'react'
 import { renderToString } from 'react-dom/server'
-import Bluebird from 'bluebird'
 import WordService from 'dictionary/application/WordService'
 import { DictionaryContext } from 'dictionary/ui/dictionary-context'
 import RouterLinkModeContext from 'common/ui/RouterLinkModeContext'
@@ -34,7 +33,7 @@ beforeEach(() => {
   jest
     .spyOn(wordService, 'findAll')
     .mockImplementation((ids) =>
-      Bluebird.resolve([...new Set(ids)].map((id) => createDictionaryWord(id))),
+      Promise.resolve([...new Set(ids)].map((id) => createDictionaryWord(id))),
     )
 })
 

@@ -1,7 +1,6 @@
 import React from 'react'
 import { render, screen } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
-import Promise from 'bluebird'
 
 import SessionContext from 'auth/SessionContext'
 import Dictionary from './Dictionary'

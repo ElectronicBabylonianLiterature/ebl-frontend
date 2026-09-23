@@ -11,7 +11,6 @@ import {
   translatedFragment,
 } from 'test-support/fragment-fixtures'
 import { DictionaryContext } from 'dictionary/ui/dictionary-context'
-import Bluebird from 'bluebird'
 import { createDictionaryWord } from 'test-support/glossary'
 import { WithRealiaService } from 'fragmentarium/ui/text-annotation/textAnnotation.testSupport'
 import { annotatedFragment } from 'test-support/named-entity-fixtures'
@@ -48,7 +47,7 @@ beforeEach(async () => {
   wordService = new (WordService as jest.Mock<WordService>)()
   jest.spyOn(wordService, 'findAll').mockImplementation((ids) => {
     const words = [...new Set(ids)].map((id) => createDictionaryWord(id))
-    return Bluebird.resolve(words)
+    return Promise.resolve(words)
   })
 })
 

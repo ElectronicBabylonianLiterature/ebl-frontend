@@ -5,7 +5,7 @@ import Chance from 'chance'
 import FragmentLink from './FragmentLink'
 import Folio from 'fragmentarium/domain/Folio'
 
-const chance = new Chance()
+const chance = new Chance('FragmentLink')
 const children = 'A link'
 const label = 'Link label'
 const number = chance.string()

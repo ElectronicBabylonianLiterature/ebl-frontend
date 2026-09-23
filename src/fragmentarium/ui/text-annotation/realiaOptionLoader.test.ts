@@ -1,4 +1,3 @@
-import Bluebird from 'bluebird'
 import {
   createRealiaOptionLoader,
   loadRealiaOptions,
@@ -125,7 +124,7 @@ describe('responses', () => {
   function pendingSearch(): (entries: readonly (typeof entry)[]) => void {
     let resolveSearch: (entries: readonly (typeof entry)[]) => void = () => {}
     realiaServiceMock.search.mockReturnValue(
-      new Bluebird((resolve) => {
+      new Promise((resolve) => {
         resolveSearch = resolve
       }),
     )
@@ -141,7 +140,7 @@ describe('responses', () => {
 
   it('responds with no options when the search rejects', async () => {
     realiaServiceMock.search.mockImplementation(() =>
-      Bluebird.reject(new Error('Search failed.')),
+      Promise.reject(new Error('Search failed.')),
     )
 
     load('Apk', callback)

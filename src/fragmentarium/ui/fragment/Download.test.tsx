@@ -6,7 +6,6 @@ import { Fragment } from 'fragmentarium/domain/fragment'
 import WordService from 'dictionary/application/WordService'
 import { fragmentFactory } from 'test-support/fragment-fixtures'
 import FragmentService from 'fragmentarium/application/FragmentService'
-import Promise from 'bluebird'
 
 jest.mock('fragmentarium/application/FragmentService')
 

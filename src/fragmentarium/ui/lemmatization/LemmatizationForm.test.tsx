@@ -1,6 +1,5 @@
 import React from 'react'
 import { render, waitFor, screen, Matcher } from '@testing-library/react'
-import Promise from 'bluebird'
 
 import LemmatizationForm from './LemmatizationForm'
 import Lemma from 'transliteration/domain/Lemma'

@@ -1,8 +1,7 @@
 import React, { Component } from 'react'
 import { Form, InputGroup, Button } from 'react-bootstrap'
 import Cite from 'citation-js'
-import _ from 'lodash'
-import Promise from 'bluebird'
+import _, { DebouncedFunc } from 'lodash'
 import { Parser } from 'html-to-react'
 
 import ExternalLink from 'common/ui/ExternalLink'
@@ -11,6 +10,8 @@ import BibliographyEntry, {
   CslData,
 } from 'bibliography/domain/BibliographyEntry'
 import { generateIds } from 'bibliography/domain/GenerateIds'
+import SupersedableOperation from 'common/utils/SupersedableOperation'
+import applyWhenCurrent from 'common/utils/applyWhenCurrent'
 
 import './BibliographyEntryForm.css'
 
@@ -47,14 +48,18 @@ interface State {
 export default class BibliographyEntryForm extends Component<Props, State> {
   static defaultProps = { value: null, disabled: false }
 
-  private promise: Promise<void>
-  private doLoad: (value: string) => Promise<void> | undefined
+  private readonly loadOperation = new SupersedableOperation()
+  private doLoad: DebouncedFunc<(value: string) => Promise<void>>
 
   constructor(props: Props) {
     super(props)
     this.state = this.getInitialState(props.value)
-    this.promise = Promise.resolve()
     this.doLoad = _.debounce(this.load, 500, { leading: false, trailing: true })
+  }
+
+  componentWillUnmount(): void {
+    this.doLoad.cancel()
+    this.loadOperation.supersede()
   }
 
   private getInitialState(value?: BibliographyEntry | null): State {
@@ -106,45 +111,33 @@ export default class BibliographyEntryForm extends Component<Props, State> {
       loading: true,
       isInvalid: false,
     })
-    this.promise = this.doLoad(event.target.value) || this.promise
+    this.doLoad(event.target.value)
   }
 
-  private load = (value: string): Promise<void> => {
-    this.promise.cancel()
+  private load = (value: string): Promise<void> =>
+    applyWhenCurrent<Cite>(() => Cite.async(value), {
+      onSuccess: this.applyCitation,
+      onError: this.applyInvalidEntry,
+    })(this.loadOperation.start())
 
-    const handleSuccess = (cite: Cite): void => {
-      const cslData = cite.get({ format: 'real', type: 'json', style: 'csl' })
-      const customId = generateIds(cslData[0])
+  private applyCitation = (cite: Cite): void => {
+    const cslData = cite.get({ format: 'real', type: 'json', style: 'csl' })
+    this.setState({
+      ...this.state,
+      citation: this.formatCitation(cite),
+      cslData,
+      customId: generateIds(cslData[0]),
+      loading: false,
+    })
+  }
 
-      this.setState({
-        ...this.state,
-        citation: this.formatCitation(cite),
-        cslData,
-        customId,
-        loading: false,
-      })
-    }
-
-    const handleError = (): void => {
-      this.setState({
-        ...this.state,
-        citation: '',
-        cslData: null,
-        loading: false,
-        isInvalid: true,
-      })
-    }
-
-    return new Promise<void>((resolve, reject) => {
-      Cite.async(value)
-        .then((cite: Cite) => {
-          handleSuccess(cite)
-          resolve()
-        })
-        .catch(() => {
-          handleError()
-          reject()
-        })
+  private applyInvalidEntry = (): void => {
+    this.setState({
+      ...this.state,
+      citation: '',
+      cslData: null,
+      loading: false,
+      isInvalid: true,
     })
   }
 
@@ -185,7 +178,10 @@ export default class BibliographyEntryForm extends Component<Props, State> {
     const parsed = Parser().parse(this.state.citation)
     return (
       <>
-        <Form onSubmit={this.handleSubmit}>
+        <Form
+          onSubmit={this.handleSubmit}
+          data-testid="bibliography-entry-form"
+        >
           <Form.Group controlId={'editor'}>
             <BibliographyHelp />
             <InputGroup>

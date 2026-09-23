@@ -234,5 +234,5 @@ export default withData<
       genreOptions={data}
     />
   ),
-  (props) => props.fragmentService.fetchGenres(),
+  (props, signal) => props.fragmentService.fetchGenres(signal),
 )

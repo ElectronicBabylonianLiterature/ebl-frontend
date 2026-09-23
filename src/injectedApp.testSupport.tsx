@@ -1,6 +1,5 @@
 import React from 'react'
 import { render, RenderResult } from '@testing-library/react'
-import Bluebird from 'bluebird'
 import { AuthenticationContext } from 'auth/Auth'
 import type { AuthenticationService } from 'auth/Auth'
 import { guestSession } from 'auth/Session'
@@ -53,9 +52,9 @@ export function stubPrefetches(): void {
   ;(mockAuthService.getUser as jest.Mock).mockReturnValue({})
   FragmentService.prototype.fetchProvenances = jest
     .fn()
-    .mockReturnValue(Bluebird.resolve([]))
+    .mockReturnValue(Promise.resolve([]))
   FragmentService.prototype.fetchGenres = jest
     .fn()
-    .mockReturnValue(Bluebird.resolve([]))
-  TextService.prototype.list = jest.fn().mockReturnValue(Bluebird.resolve([]))
+    .mockReturnValue(Promise.resolve([]))
+  TextService.prototype.list = jest.fn().mockReturnValue(Promise.resolve([]))
 }

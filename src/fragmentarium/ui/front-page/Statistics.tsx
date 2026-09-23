@@ -1,6 +1,7 @@
 import React from 'react'
 import _ from 'lodash'
 import withData from 'http/withData'
+import FragmentService from 'fragmentarium/application/FragmentService'
 
 import './Statistics.css'
 
@@ -55,6 +56,6 @@ function Statistics({ data }: { data: { readonly [key: string]: number } }) {
 
 export default withData<
   unknown,
-  { fragmentService },
+  { fragmentService: FragmentService },
   { readonly [key: string]: number }
->(Statistics, (props) => props.fragmentService.statistics())
+>(Statistics, (props, signal) => props.fragmentService.statistics(signal))

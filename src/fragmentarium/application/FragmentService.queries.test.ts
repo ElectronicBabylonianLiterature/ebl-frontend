@@ -1,4 +1,3 @@
-import Promise from 'bluebird'
 import { TestData, testDelegation } from 'test-support/utils'
 import FragmentService from './FragmentService'
 import { fragmentFactory } from 'test-support/fragment-fixtures'

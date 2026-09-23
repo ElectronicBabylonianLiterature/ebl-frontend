@@ -1,4 +1,3 @@
-import Bluebird from 'bluebird'
 import _ from 'lodash'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import { ProvenanceRecord } from 'fragmentarium/domain/Provenance'
@@ -35,12 +34,12 @@ export class FragmentCache {
   >
   private readonly provenanceRequests: Map<
     string,
-    Bluebird<readonly ProvenanceRecord[]>
+    Promise<readonly ProvenanceRecord[]>
   >
   private readonly provenancesById: Map<string, CacheEntry<ProvenanceRecord>>
   private readonly provenanceByIdRequests: Map<
     string,
-    Bluebird<ProvenanceRecord>
+    Promise<ProvenanceRecord>
   >
   private readonly provenanceChildrenById: Map<
     string,
@@ -48,15 +47,15 @@ export class FragmentCache {
   >
   private readonly provenanceChildrenByIdRequests: Map<
     string,
-    Bluebird<readonly ProvenanceRecord[]>
+    Promise<readonly ProvenanceRecord[]>
   >
   private readonly fragments: Map<string, CacheEntry<Fragment>>
-  private readonly fragmentRequests: Map<string, Bluebird<Fragment>>
+  private readonly fragmentRequests: Map<string, Promise<Fragment>>
   private readonly queryResults: Map<string, CacheEntry<QueryResult>>
-  private readonly queryResultRequests: Map<string, Bluebird<QueryResult>>
+  private readonly queryResultRequests: Map<string, Promise<QueryResult>>
   private readonly prefetchedFragments: Map<string, Fragment>
   private readonly thumbnails: Map<string, CacheEntry<ThumbnailBlob>>
-  private readonly thumbnailRequests: Map<string, Bluebird<ThumbnailBlob>>
+  private readonly thumbnailRequests: Map<string, Promise<ThumbnailBlob>>
 
   constructor(getCacheScope: () => string) {
     this.scoped = new ScopedCache(getCacheScope)
@@ -81,8 +80,8 @@ export class FragmentCache {
 
   fragment(
     key: string,
-    fetchValue: () => Bluebird<Fragment>,
-  ): Bluebird<Fragment> {
+    fetchValue: () => Promise<Fragment>,
+  ): Promise<Fragment> {
     return this.scoped.getOrFetch(
       this.fragments,
       this.fragmentRequests,
@@ -94,8 +93,8 @@ export class FragmentCache {
 
   queryResult(
     key: string,
-    fetchValue: () => Bluebird<QueryResult>,
-  ): Bluebird<QueryResult> {
+    fetchValue: () => Promise<QueryResult>,
+  ): Promise<QueryResult> {
     return this.scoped.getOrFetch(
       this.queryResults,
       this.queryResultRequests,
@@ -107,8 +106,8 @@ export class FragmentCache {
 
   thumbnail(
     key: string,
-    fetchValue: () => Bluebird<ThumbnailBlob>,
-  ): Bluebird<ThumbnailBlob> {
+    fetchValue: () => Promise<ThumbnailBlob>,
+  ): Promise<ThumbnailBlob> {
     return this.scoped.getOrFetch(
       this.thumbnails,
       this.thumbnailRequests,
@@ -119,8 +118,8 @@ export class FragmentCache {
   }
 
   allProvenances(
-    fetchValue: () => Bluebird<readonly ProvenanceRecord[]>,
-  ): Bluebird<readonly ProvenanceRecord[]> {
+    fetchValue: () => Promise<readonly ProvenanceRecord[]>,
+  ): Promise<readonly ProvenanceRecord[]> {
     return this.scoped.getOrFetch(
       this.provenances,
       this.provenanceRequests,
@@ -132,8 +131,8 @@ export class FragmentCache {
 
   provenance(
     id: string,
-    fetchValue: () => Bluebird<ProvenanceRecord>,
-  ): Bluebird<ProvenanceRecord> {
+    fetchValue: () => Promise<ProvenanceRecord>,
+  ): Promise<ProvenanceRecord> {
     return this.scoped.getOrFetch(
       this.provenancesById,
       this.provenanceByIdRequests,
@@ -145,8 +144,8 @@ export class FragmentCache {
 
   provenanceChildren(
     id: string,
-    fetchValue: () => Bluebird<readonly ProvenanceRecord[]>,
-  ): Bluebird<readonly ProvenanceRecord[]> {
+    fetchValue: () => Promise<readonly ProvenanceRecord[]>,
+  ): Promise<readonly ProvenanceRecord[]> {
     return this.scoped.getOrFetch(
       this.provenanceChildrenById,
       this.provenanceChildrenByIdRequests,

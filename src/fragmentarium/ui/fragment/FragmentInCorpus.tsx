@@ -6,29 +6,27 @@ import GenreCrumb from 'corpus/ui/GenreCrumb'
 import CorpusTextCrumb from 'corpus/ui/CorpusTextCrumb'
 import ChapterCrumb from 'corpus/ui/ChapterCrumb'
 import withData from 'http/withData'
+import FragmentService, {
+  CorpusAttestations,
+} from 'fragmentarium/application/FragmentService'
 import { UncertainFragmentAttestation } from 'corpus/domain/uncertainFragmentAttestation'
 
 const FragmentInCorpus = withData<
   {
     fragment: Fragment
   },
-  { fragmentService },
-  {
-    manuscriptAttestations: Array<ManuscriptAttestation>
-    uncertainFragmentAttestations: Array<UncertainFragmentAttestation>
-  }
+  { fragmentService: FragmentService },
+  CorpusAttestations
 >(
   ({ data }): JSX.Element => <FragmentInCorpusDisplay attestations={data} />,
-  (props) => props.fragmentService.findInCorpus(props.fragment.number),
+  (props, signal) =>
+    props.fragmentService.findInCorpus(props.fragment.number, signal),
 )
 
 function FragmentInCorpusDisplay({
   attestations,
 }: {
-  attestations: {
-    manuscriptAttestations: Array<ManuscriptAttestation>
-    uncertainFragmentAttestations: Array<UncertainFragmentAttestation>
-  }
+  attestations: CorpusAttestations
 }): JSX.Element {
   const { manuscriptAttestations = [], uncertainFragmentAttestations = [] } =
     attestations

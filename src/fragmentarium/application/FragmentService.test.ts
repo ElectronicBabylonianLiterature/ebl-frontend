@@ -1,4 +1,3 @@
-import Promise from 'bluebird'
 import Folio from 'fragmentarium/domain/Folio'
 import { fragment } from 'test-support/test-fragment'
 import createLemmatizationTestText from 'test-support/test-text'
@@ -37,21 +36,26 @@ const word: Word = wordFactory.build()
 const lemmaSuggestions = new Map([['foo', new LemmaOption(word)]])
 
 const testData: TestData<FragmentService>[] = [
-  new TestData('statistics', [], fragmentRepository.statistics, resultStub),
+  new TestData('statistics', [], fragmentRepository.statistics, resultStub, [
+    undefined,
+  ]),
   new TestData(
     'lineToVecRanking',
     ['X.0'],
     fragmentRepository.lineToVecRanking,
     resultStub,
+    ['X.0', undefined],
   ),
   new TestData('findFolio', [folio], imageRepository.findFolio, resultStub, [
     folio,
+    undefined,
   ]),
   new TestData('findImage', [fileName], imageRepository.find, resultStub, [
     fileName,
   ]),
   new TestData('findPhoto', [fragment], imageRepository.findPhoto, resultStub, [
     fragment.number,
+    undefined,
   ]),
   new TestData(
     'findThumbnail',
@@ -66,12 +70,14 @@ const testData: TestData<FragmentService>[] = [
     [folio, 'K.1'],
     fragmentRepository.folioPager,
     resultStub,
+    [folio, 'K.1', undefined],
   ),
   new TestData(
     'fragmentPager',
     ['K.1'],
     fragmentRepository.fragmentPager,
     resultStub,
+    ['K.1', undefined],
   ),
   new TestData('searchLemma', ['lemma'], wordRepository.searchLemma, [
     resultStub,
@@ -84,9 +90,10 @@ const testData: TestData<FragmentService>[] = [
   ),
   new TestData(
     'findAnnotations',
-    [fragment.number, false],
+    [fragment.number],
     fragmentRepository.findAnnotations,
     resultStub,
+    [fragment.number, false, undefined],
   ),
   new TestData(
     'generateAnnotations',

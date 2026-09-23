@@ -1,6 +1,5 @@
 import { screen } from '@testing-library/react'
 import { waitForSpinnerToBeRemoved } from 'test-support/waitForSpinnerToBeRemoved'
-import Bluebird from 'bluebird'
 import {
   sortScriptsByPeriod,
   sortVariants,
@@ -24,7 +23,7 @@ describe('Sign Images edge cases', () => {
   }
 
   async function renderWith(annotations: CroppedAnnotation[]): Promise<void> {
-    signService.getCentroidImages.mockReturnValue(Bluebird.resolve(annotations))
+    signService.getCentroidImages.mockReturnValue(Promise.resolve(annotations))
     renderSignImages()
     await waitForSpinnerToBeRemoved(screen)
   }
@@ -61,7 +60,7 @@ describe('Sign Images edge cases', () => {
 
   it('does not refetch the variants when a period is reopened', async () => {
     signService.getClusterVariants.mockReturnValue(
-      Bluebird.resolve([annotationWith({ script: 'MA' })]),
+      Promise.resolve([annotationWith({ script: 'MA' })]),
     )
     await renderWith([annotationWith({ script: 'MA' })])
     const period = screen.getByRole('button', { name: /Middle Assyrian/ })
@@ -96,7 +95,7 @@ describe('Sign Images optional annotation data', () => {
   async function renderWithAnnotations(
     annotations: CroppedAnnotation[],
   ): Promise<void> {
-    signService.getCentroidImages.mockReturnValue(Bluebird.resolve(annotations))
+    signService.getCentroidImages.mockReturnValue(Promise.resolve(annotations))
     renderSignImages()
     await waitForSpinnerToBeRemoved(screen)
   }
@@ -124,7 +123,7 @@ describe('Sign Images optional annotation data', () => {
   })
 
   it('keeps the annotations of a cluster whose variants fail to load', async () => {
-    signService.getClusterVariants.mockReturnValue(Bluebird.resolve([]))
+    signService.getClusterVariants.mockReturnValue(Promise.resolve([]))
     await renderWithAnnotations([
       { ...base, script: 'MA' },
       {
@@ -155,7 +154,7 @@ describe('Sign Images optional annotation data', () => {
   })
 
   it('labels a group whose form is blank', async () => {
-    signService.getClusterVariants.mockReturnValue(Bluebird.resolve([]))
+    signService.getClusterVariants.mockReturnValue(Promise.resolve([]))
     await renderWithAnnotations([
       {
         ...base,

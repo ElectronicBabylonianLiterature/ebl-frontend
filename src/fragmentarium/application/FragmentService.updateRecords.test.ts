@@ -1,4 +1,3 @@
-import Promise from 'bluebird'
 import { castDraft, Draft, produce } from 'immer'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import { Archaeology } from 'fragmentarium/domain/archaeology'

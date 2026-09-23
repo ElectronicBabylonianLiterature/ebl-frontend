@@ -1,7 +1,6 @@
 import React from 'react'
 import { Tabs, Tab } from 'react-bootstrap'
 import _ from 'lodash'
-import Promise from 'bluebird'
 import ChapterManuscripts from 'corpus/ui/manuscripts/ChapterManuscripts'
 import ChapterLines from 'corpus/ui/lines/ChapterLines'
 import ChapterAligner from 'corpus/ui/alignment/ChapterAligner'

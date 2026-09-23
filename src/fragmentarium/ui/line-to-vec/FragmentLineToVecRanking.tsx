@@ -6,6 +6,7 @@ import FragmentCrumb from 'fragmentarium/ui/FragmentCrumb'
 import SessionContext from 'auth/SessionContext'
 import { Session } from 'auth/Session'
 import withData from 'http/withData'
+import FragmentService from 'fragmentarium/application/FragmentService'
 import { LineToVecRanking, LineToVecScore } from '../../domain/lineToVecRanking'
 import { HeadTags } from 'router/head'
 
@@ -89,14 +90,15 @@ function FragmentLineToVecRanking({
 }
 
 export default withData<
-  { fragmentService; number: string },
+  { fragmentService: FragmentService; number: string },
   { number: string },
   LineToVecRanking
 >(
   ({ data, ...props }) => (
     <FragmentLineToVecRanking lineToVecRanking={data} number={props.number} />
   ),
-  (props) => props.fragmentService.lineToVecRanking(props.number),
+  (props, signal) =>
+    props.fragmentService.lineToVecRanking(props.number, signal),
   {
     watch: (props) => [props.number],
   },

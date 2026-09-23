@@ -19,7 +19,7 @@ import { OldSiglumDto } from 'corpus/application/dtos'
 import { oldSiglumDtoFactory, oldSiglumFactory } from './old-siglum-fixtures'
 import { joinFactory } from './join-fixtures'
 
-const defaultChance = new Chance()
+const defaultChance = new Chance('manuscript-fixtures')
 
 class ManuscriptFactory extends Factory<Manuscript> {
   standardText() {

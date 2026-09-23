@@ -4,7 +4,6 @@ import { components } from 'react-select'
 import type { SingleValueProps } from 'react-select'
 import AsyncSelect from 'react-select/async'
 import { usePrevious } from 'common/hooks/usePrevious'
-import Promise from 'bluebird'
 
 interface SelectedOption {
   value: string
