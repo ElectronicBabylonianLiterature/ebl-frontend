@@ -43,10 +43,27 @@ function createLoggerSpy() {
   return { log: jest.fn(), error: jest.fn() }
 }
 
+function setUpSitemapUpdaterTestEnvironment() {
+  const testEnvironment = { logger: createLoggerSpy() }
+  let originalExitCode
+
+  beforeEach(() => {
+    testEnvironment.logger = createLoggerSpy()
+    originalExitCode = process.exitCode
+  })
+
+  afterEach(() => {
+    process.exitCode = originalExitCode
+    jest.restoreAllMocks()
+  })
+
+  return testEnvironment
+}
+
 module.exports = {
   EXISTING_SITEMAPS,
   mockDirectoryContents,
   mockBrowser,
   resolveTimersImmediately,
-  createLoggerSpy,
+  setUpSitemapUpdaterTestEnvironment,
 }

@@ -21,20 +21,10 @@ const {
   mockDirectoryContents,
   mockBrowser,
   resolveTimersImmediately,
-  createLoggerSpy,
+  setUpSitemapUpdaterTestEnvironment,
 } = require('./sitemapUpdaterTestDoubles')
 
-let logger
-let originalExitCode
-
-beforeEach(() => {
-  logger = createLoggerSpy()
-  originalExitCode = process.exitCode
-})
-
-afterEach(() => {
-  process.exitCode = originalExitCode
-})
+const testEnvironment = setUpSitemapUpdaterTestEnvironment()
 
 describe('listSitemapFiles', () => {
   it('returns an empty list when the directory does not exist', () => {
@@ -94,7 +84,7 @@ describe('fetchNewSitemaps', () => {
     const { browser, page, cdpSession } = mockBrowser()
     resolveTimersImmediately()
 
-    await fetchNewSitemaps(logger)
+    await fetchNewSitemaps(testEnvironment.logger)
 
     expect(cdpSession.send).toHaveBeenCalledWith('Page.setDownloadBehavior', {
       behavior: 'allow',
@@ -102,6 +92,28 @@ describe('fetchNewSitemaps', () => {
     })
     expect(page.goto).toHaveBeenCalledWith(SITEMAP_URL, expect.any(Object))
     expect(browser.close).toHaveBeenCalled()
+  })
+
+  it('closes the browser when navigation fails', async () => {
+    const { browser, page } = mockBrowser()
+    const navigationError = new Error('net::ERR_NAME_NOT_RESOLVED')
+    page.goto.mockRejectedValue(navigationError)
+
+    await expect(fetchNewSitemaps(testEnvironment.logger)).rejects.toBe(
+      navigationError,
+    )
+    expect(browser.close).toHaveBeenCalledTimes(1)
+  })
+
+  it('closes the browser when the page cannot be opened', async () => {
+    const { browser } = mockBrowser()
+    const pageError = new Error('Target closed')
+    browser.newPage.mockRejectedValue(pageError)
+
+    await expect(fetchNewSitemaps(testEnvironment.logger)).rejects.toBe(
+      pageError,
+    )
+    expect(browser.close).toHaveBeenCalledTimes(1)
   })
 })
 
@@ -112,7 +124,7 @@ describe('applySitemapUpdate', () => {
       [TEMP_DIR]: EXISTING_SITEMAPS,
     })
 
-    await applySitemapUpdate(logger)
+    await applySitemapUpdate(testEnvironment.logger)
 
     expect(fse.emptyDir).toHaveBeenCalledWith(TARGET_DIR)
     EXISTING_SITEMAPS.forEach((fileName) => {
@@ -129,7 +141,7 @@ describe('applySitemapUpdate', () => {
       [TEMP_DIR]: ['sitemap.xml.gz'],
     })
 
-    await expect(applySitemapUpdate(logger)).rejects.toThrow(
+    await expect(applySitemapUpdate(testEnvironment.logger)).rejects.toThrow(
       'Incomplete sitemap download',
     )
     expect(fse.emptyDir).not.toHaveBeenCalledWith(TARGET_DIR)
@@ -140,13 +152,13 @@ describe('applySitemapUpdate', () => {
 describe('restoreSitemapsFromBackup', () => {
   it('does nothing when no backup was taken', async () => {
     mockDirectoryContents({})
-    await restoreSitemapsFromBackup(logger)
+    await restoreSitemapsFromBackup(testEnvironment.logger)
     expect(fse.copy).not.toHaveBeenCalled()
   })
 
   it('puts the backed up sitemaps back in place', async () => {
     mockDirectoryContents({ [BACKUP_DIR]: EXISTING_SITEMAPS })
-    await restoreSitemapsFromBackup(logger)
+    await restoreSitemapsFromBackup(testEnvironment.logger)
     expect(fse.emptyDir).toHaveBeenCalledWith(TARGET_DIR)
     expect(fse.copy).toHaveBeenCalledWith(BACKUP_DIR, TARGET_DIR)
   })

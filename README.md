@@ -246,7 +246,7 @@ A missing line break in the private key is the usual cause of a "failed to gener
 
 #### 🔒 Failure Behaviour
 
-The workflow has two jobs. `crawl` downloads the sitemaps with Puppeteer and holds no secrets. `publish` receives the crawled files as a build artifact and is the only job that sees the App's private key, so no third-party install script ever runs next to it.
+The workflow has two jobs. `crawl` downloads the sitemaps with Puppeteer and holds no secrets. `publish` receives the crawled files as a build artifact and is the only job that sees the App's private key, so no third-party install script ever runs next to it. Before it mints a token, `publish` rejects the artifact unless every entry is a regular `sitemap*.xml.gz` file that passes `gzip -t`. The jobs time out after 30 and 10 minutes respectively, so a stuck crawl fails quickly instead of holding the run for hours.
 
 The update script fails closed. If the sitemap source is unreachable, or if fewer files download than the site currently has, the `crawl` job **fails**, the existing sitemaps are restored from a backup and `publish` never runs. It never publishes a partial set, and it never opens or closes a pull request on a failed crawl. A red run means the sitemaps on `master` are untouched and the crawl needs looking at. Open the [sitemap page](https://www.ebl.lmu.de/sitemap) in a browser first: an error shown there (for example a failing API endpoint) is the usual cause.
 

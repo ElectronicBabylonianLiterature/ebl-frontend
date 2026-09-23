@@ -34,6 +34,14 @@ async function fetchNewSitemaps(logger) {
     headless: true,
     args: ['--no-sandbox'],
   })
+  try {
+    await downloadSitemapsWithBrowser(browser, logger)
+  } finally {
+    await browser.close()
+  }
+}
+
+async function downloadSitemapsWithBrowser(browser, logger) {
   const page = await browser.newPage()
   const client = await page.target().createCDPSession()
   await client.send('Page.setDownloadBehavior', {
@@ -51,8 +59,6 @@ async function fetchNewSitemaps(logger) {
   await new Promise((resolve) =>
     setTimeout(resolve, DOWNLOAD_WAIT_IN_MILLISECONDS),
   )
-
-  await browser.close()
 }
 
 function assertDownloadIsComplete(downloadedFiles) {

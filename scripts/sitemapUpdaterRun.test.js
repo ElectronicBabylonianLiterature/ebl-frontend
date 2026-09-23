@@ -13,21 +13,14 @@ const {
   mockDirectoryContents,
   mockBrowser,
   resolveTimersImmediately,
-  createLoggerSpy,
+  setUpSitemapUpdaterTestEnvironment,
 } = require('./sitemapUpdaterTestDoubles')
 
-let logger
-let originalExitCode
+const testEnvironment = setUpSitemapUpdaterTestEnvironment()
 
 beforeEach(() => {
-  logger = createLoggerSpy()
-  originalExitCode = process.exitCode
   mockBrowser()
   resolveTimersImmediately()
-})
-
-afterEach(() => {
-  process.exitCode = originalExitCode
 })
 
 describe('updateSitemaps', () => {
@@ -38,10 +31,10 @@ describe('updateSitemaps', () => {
       [TEMP_DIR]: EXISTING_SITEMAPS,
     })
 
-    await updateSitemaps(logger)
+    await updateSitemaps(testEnvironment.logger)
 
     expect(process.exitCode).toBeFalsy()
-    expect(logger.error).not.toHaveBeenCalled()
+    expect(testEnvironment.logger.error).not.toHaveBeenCalled()
     expect(fse.move).toHaveBeenCalledTimes(EXISTING_SITEMAPS.length)
     expect(fse.remove).toHaveBeenCalledWith(TEMP_DIR)
   })
@@ -53,10 +46,10 @@ describe('updateSitemaps', () => {
       [TEMP_DIR]: [],
     })
 
-    await updateSitemaps(logger)
+    await updateSitemaps(testEnvironment.logger)
 
     expect(process.exitCode).toBe(1)
-    expect(logger.error).toHaveBeenCalledWith(
+    expect(testEnvironment.logger.error).toHaveBeenCalledWith(
       '❌ Failed to update sitemaps:',
       expect.objectContaining({
         message: expect.stringContaining('Incomplete sitemap download'),
@@ -74,7 +67,7 @@ describe('updateSitemaps', () => {
       [TEMP_DIR]: ['sitemap.xml.gz'],
     })
 
-    await updateSitemaps(logger)
+    await updateSitemaps(testEnvironment.logger)
 
     expect(process.exitCode).toBe(1)
     expect(fse.copy).toHaveBeenCalledWith(BACKUP_DIR, TARGET_DIR)
@@ -87,13 +80,14 @@ describe('updateSitemaps', () => {
       [BACKUP_DIR]: EXISTING_SITEMAPS,
     })
     const navigationError = new Error('net::ERR_CONNECTION_REFUSED')
-    const { page } = mockBrowser()
+    const { browser, page } = mockBrowser()
     page.goto.mockRejectedValue(navigationError)
 
-    await updateSitemaps(logger)
+    await updateSitemaps(testEnvironment.logger)
 
     expect(process.exitCode).toBe(1)
-    expect(logger.error).toHaveBeenCalledWith(
+    expect(browser.close).toHaveBeenCalledTimes(1)
+    expect(testEnvironment.logger.error).toHaveBeenCalledWith(
       '❌ Failed to update sitemaps:',
       navigationError,
     )
@@ -109,10 +103,10 @@ describe('updateSitemaps', () => {
     const cleanupError = new Error('directory busy')
     fse.remove.mockRejectedValue(cleanupError)
 
-    await updateSitemaps(logger)
+    await updateSitemaps(testEnvironment.logger)
 
     expect(process.exitCode).toBeFalsy()
-    expect(logger.error).toHaveBeenCalledWith(
+    expect(testEnvironment.logger.error).toHaveBeenCalledWith(
       '❌ Failed to remove the temporary download directory:',
       cleanupError,
     )
@@ -127,10 +121,10 @@ describe('updateSitemaps', () => {
     const restoreError = new Error('disk full')
     fse.copy.mockRejectedValue(restoreError)
 
-    await updateSitemaps(logger)
+    await updateSitemaps(testEnvironment.logger)
 
     expect(process.exitCode).toBe(1)
-    expect(logger.error).toHaveBeenCalledWith(
+    expect(testEnvironment.logger.error).toHaveBeenCalledWith(
       '❌ Failed to restore sitemaps from backup:',
       restoreError,
     )
