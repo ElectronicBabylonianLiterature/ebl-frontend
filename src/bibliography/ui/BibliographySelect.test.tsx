@@ -82,6 +82,25 @@ describe('no container short, collection number', () => {
   })
 })
 
+describe('long selected label', () => {
+  function setup(): void {
+    const cslData = cslDataFactory.build({
+      title:
+        'A very long catalogue reference title that should remain accessible while the select renders a constrained selected value',
+    })
+    entry = bibliographyEntryFactory.build({}, { transient: cslData })
+    renderBibliographySelect()
+  }
+
+  it('keeps the full label available on the selected value', async () => {
+    setup()
+    const selectedLabel = await screen.findByTitle(entry.label)
+
+    expect(selectedLabel).toHaveClass('search-form-select__single-value-label')
+    expect(selectedLabel).toHaveTextContent(entry.label)
+  })
+})
+
 function renderBibliographySelect(): void {
   const searchBibliography = jest.fn().mockReturnValue(Promise.resolve([entry]))
   render(

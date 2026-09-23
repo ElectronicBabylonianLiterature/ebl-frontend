@@ -21,12 +21,28 @@ const testData: TestData<RealiaRepository>[] = [
     Promise.resolve(entryDto),
   ),
   new TestData(
+    'findByRealiaId',
+    ['realia_000846'],
+    apiClient.fetchJson,
+    expectedEntry,
+    ['/realia/by-id/realia_000846', false],
+    Promise.resolve(entryDto),
+  ),
+  new TestData(
     'search',
     ['pig'],
     apiClient.fetchJson,
     [expectedEntry],
     ['/realia?query=pig', false],
     Promise.resolve([entryDto]),
+  ),
+  new TestData(
+    'listAllRealia',
+    [],
+    apiClient.fetchJson,
+    ['Pig'],
+    ['/realia/all', false],
+    Promise.resolve(['Pig']),
   ),
 ]
 
@@ -202,4 +218,38 @@ describe('RealiaRepository search query encoding', () => {
       expect(apiClient.fetchJson).toHaveBeenLastCalledWith(expectedUrl, false)
     },
   )
+})
+
+describe('AfO citation parsing', () => {
+  async function afoEntryFrom(afo: string) {
+    const { afoVolume, page, ...rest } = entryDto.afoRegister[0]
+    apiClient.fetchJson.mockReturnValueOnce(
+      Promise.resolve({ ...entryDto, afoRegister: [{ ...rest, AfO: afo }] }),
+    )
+    return (await realiaRepository.find('Pig')).afoRegister[0]
+  }
+
+  it('splits a citation with a parenthesised year', async () => {
+    expect(await afoEntryFrom('AfO 52 (2018), 645')).toMatchObject({
+      afoVolume: 'AfO 52',
+      year: '2018',
+      page: '645',
+    })
+  })
+
+  it('splits on the last comma when there is no year', async () => {
+    expect(await afoEntryFrom('AfO 52, 645')).toMatchObject({
+      afoVolume: 'AfO 52',
+      year: '',
+      page: '645',
+    })
+  })
+
+  it('keeps the whole citation as the volume when it has neither', async () => {
+    expect(await afoEntryFrom('AfO 52')).toMatchObject({
+      afoVolume: 'AfO 52',
+      year: '',
+      page: '',
+    })
+  })
 })

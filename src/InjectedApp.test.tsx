@@ -1,13 +1,15 @@
 import React from 'react'
-import { render, screen, waitFor } from '@testing-library/react'
+import { screen, waitFor } from '@testing-library/react'
 import Bluebird from 'bluebird'
-import { AuthenticationContext, eblNameProperty } from 'auth/Auth'
-import type { AuthenticationService } from 'auth/Auth'
-import { guestSession } from 'auth/Session'
+import { eblNameProperty } from 'auth/Auth'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import TextService from 'corpus/application/TextService'
-import InjectedApp from './InjectedApp'
-import type { ErrorReporter } from 'ErrorReporterContext'
+import {
+  mockAuthService,
+  mockErrorReporter,
+  renderInjectedApp,
+  stubPrefetches,
+} from 'injectedApp.testSupport'
 
 jest.mock('./App', () => {
   return function MockApp() {
@@ -35,30 +37,6 @@ jest.mock('fragmentarium/infrastructure/FindspotRepository')
 jest.mock('dossiers/application/DossiersService')
 jest.mock('dossiers/infrastructure/DossiersRepository')
 
-const mockAuthService: AuthenticationService = {
-  login: jest.fn(),
-  logout: jest.fn().mockResolvedValue(undefined),
-  getSession: jest.fn().mockReturnValue(guestSession),
-  isAuthenticated: jest.fn().mockReturnValue(false),
-  getAccessToken: jest.fn(),
-  getUser: jest.fn(),
-}
-
-const mockErrorReporter: ErrorReporter = {
-  captureException: jest.fn(),
-  showReportDialog: jest.fn(),
-  setUser: jest.fn(),
-  clearScope: jest.fn(),
-}
-
-function renderInjectedApp() {
-  return render(
-    <AuthenticationContext.Provider value={mockAuthService}>
-      <InjectedApp errorReporter={mockErrorReporter} />
-    </AuthenticationContext.Provider>,
-  )
-}
-
 function getCacheScopeResolverFromFragmentServiceConstructor(): () => string {
   const fragmentServiceMock = FragmentService as jest.MockedClass<
     typeof FragmentService
@@ -71,18 +49,7 @@ function getCacheScopeResolverFromFragmentServiceConstructor(): () => string {
   return getCacheScope as () => string
 }
 
-beforeEach(() => {
-  jest.clearAllMocks()
-  ;(mockAuthService.isAuthenticated as jest.Mock).mockReturnValue(false)
-  ;(mockAuthService.getUser as jest.Mock).mockReturnValue({})
-  FragmentService.prototype.fetchProvenances = jest
-    .fn()
-    .mockReturnValue(Bluebird.resolve([]))
-  FragmentService.prototype.fetchGenres = jest
-    .fn()
-    .mockReturnValue(Bluebird.resolve([]))
-  TextService.prototype.list = jest.fn().mockReturnValue(Bluebird.resolve([]))
-})
+beforeEach(stubPrefetches)
 
 describe('InjectedApp', () => {
   test('renders App component', () => {

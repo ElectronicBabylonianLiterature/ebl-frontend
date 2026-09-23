@@ -22,6 +22,7 @@ import AfoRegisterRepository from 'afo-register/infrastructure/AfoRegisterReposi
 import AfoRegisterService from 'afo-register/application/AfoRegisterService'
 import RealiaRepository from 'realia/infrastructure/RealiaRepository'
 import RealiaService from 'realia/application/RealiaService'
+import RealiaServiceContext from 'realia/application/RealiaServiceContext'
 import MarkupService, {
   CachedMarkupService,
 } from 'markup/application/MarkupService'
@@ -208,19 +209,21 @@ export default function InjectedApp({
     })
   }, [fragmentService, textService, errorReporter])
   return (
-    <App
-      wordService={wordService}
-      signService={signService}
-      fragmentService={fragmentService}
-      fragmentSearchService={fragmentSearchService}
-      bibliographyService={bibliographyService}
-      textService={textService}
-      markupService={markupService}
-      cachedMarkupService={cachedMarkupService}
-      afoRegisterService={afoRegisterService}
-      realiaService={realiaService}
-      dossiersService={dossiersService}
-      findspotService={findspotService}
-    />
+    <RealiaServiceContext.Provider value={realiaService}>
+      <App
+        wordService={wordService}
+        signService={signService}
+        fragmentService={fragmentService}
+        fragmentSearchService={fragmentSearchService}
+        bibliographyService={bibliographyService}
+        textService={textService}
+        markupService={markupService}
+        cachedMarkupService={cachedMarkupService}
+        afoRegisterService={afoRegisterService}
+        realiaService={realiaService}
+        dossiersService={dossiersService}
+        findspotService={findspotService}
+      />
+    </RealiaServiceContext.Provider>
   )
 }

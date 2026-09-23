@@ -28,6 +28,7 @@ import { Genres } from 'fragmentarium/domain/Genres'
 import Reference from 'bibliography/domain/Reference'
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 import { PeriodModifiers, Periods } from 'common/utils/period'
+import { externalNumbers } from 'test-support/test-fragment-dto'
 
 const config: Parameters<(typeof Fragment)['create']>[0] = {
   number: 'K.1',
@@ -123,34 +124,12 @@ const config: Parameters<(typeof Fragment)['create']>[0] = {
     uncertain: false,
   },
   externalNumbers: {
-    cdliNumber: 'A38',
-    bmIdNumber: 'W_1848-0720-117',
-    archibabNumber: '42',
-    bdtnsNumber: '99',
-    rstiNumber: '123',
-    chicagoIsacNumber: 'd0be123f-2411-4dcd-b930-74d2eb9f19a4',
-    urOnlineNumber: '123',
+    ...externalNumbers,
     hilprechtJenaNumber: '123',
     hilprechtHeidelbergNumber: '123',
     achemenetNumber: '123',
     nabuccoNumber: '123',
     digitaleKeilschriftBibliothekNumber: '123',
-    metropolitanNumber: '123',
-    pierpontMorganNumber: '123',
-    louvreNumber: '123',
-    ontarioNumber: '123',
-    kelseyNumber: '123',
-    harvardHamNumber: '123',
-    etcsriNumber: '123',
-    sketchfabNumber: '123',
-    arkNumber: '123',
-    dublinTcdNumber: '123',
-    cambridgeMaaNumber: '123',
-    ashmoleanNumber: '123',
-    alalahHpmNumber: '123',
-    australianinstituteofarchaeologyNumber: '123',
-    philadelphiaNumber: '123',
-    spurlockNumber: '123',
   },
   projects: [],
   authorizedScopes: ['CAIC'],

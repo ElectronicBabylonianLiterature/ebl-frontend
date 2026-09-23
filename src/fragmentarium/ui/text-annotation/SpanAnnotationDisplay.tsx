@@ -1,0 +1,170 @@
+import React, { useContext, useRef, useState } from 'react'
+import { Fragment } from 'fragmentarium/domain/fragment'
+import { AbstractLine } from 'transliteration/domain/abstract-line'
+import { defaultLabels, Labels } from 'transliteration/domain/labels'
+import { getCurrentLabels } from 'transliteration/ui/TransliterationLines'
+import { hideLine } from 'fragmentarium/ui/fragment/linguistic-annotation/TokenAnnotation'
+import AnnotationContext from 'fragmentarium/ui/text-annotation/TextAnnotationContext'
+import { clearSelection } from 'fragmentarium/ui/text-annotation/SpanAnnotator'
+import {
+  AnnotationSpans,
+  omitDerivedSpanFields,
+} from 'fragmentarium/ui/text-annotation/annotationSpan'
+import DisplayRow from 'fragmentarium/ui/text-annotation/AnnotationLines'
+import { getSelectedTokens } from 'fragmentarium/ui/text-annotation/selectionUtils'
+import { Alert, Button, Form, Spinner } from 'react-bootstrap'
+import ErrorAlert from 'common/errors/ErrorAlert'
+import {
+  refreshFailedMessage,
+  UpdateNamedEntityAnnotations,
+} from 'fragmentarium/ui/text-annotation/annotationSave'
+import _ from 'lodash'
+import './TextAnnotation.sass'
+import './NamedEntities.sass'
+
+export default function SpanAnnotationDisplay({
+  fragment,
+  initialAnnotations,
+  setInitialAnnotations,
+  updateNamedEntityAnnotations,
+}: {
+  fragment: Fragment
+  initialAnnotations: AnnotationSpans
+  setInitialAnnotations: React.Dispatch<React.SetStateAction<AnnotationSpans>>
+  updateNamedEntityAnnotations: UpdateNamedEntityAnnotations
+}): JSX.Element {
+  const [selection, setSelection] = useState<readonly string[]>([])
+  const [activeSpanId, setActiveSpanId] = React.useState<string | null>(null)
+  const selectionStartTokenIdRef = useRef<string | null>(null)
+  const [spans] = useContext(AnnotationContext)
+  const words = spans.words
+  const isDirty = !_.isEqual(initialAnnotations, omitDerivedSpanFields(spans))
+  const [isSaving, setIsSaving] = useState(false)
+  const [saveError, setSaveError] = useState<Error | null>(null)
+  const [refreshError, setRefreshError] = useState<Error | null>(null)
+
+  const text = fragment.text
+
+  const saveAnnotations = () => {
+    const updatedAnnotations = omitDerivedSpanFields(spans)
+    setIsSaving(true)
+    setSaveError(null)
+    setRefreshError(null)
+    updateNamedEntityAnnotations(updatedAnnotations)
+      .then((result) => {
+        setIsSaving(false)
+        setInitialAnnotations(updatedAnnotations)
+        setRefreshError(result.refreshError)
+      })
+      .catch((error: Error) => {
+        setIsSaving(false)
+        setSaveError(error)
+      })
+  }
+  const resetSelections = () => {
+    setSelection([])
+    clearSelection()
+  }
+
+  const handleMouseUp = () => {
+    const applySelection = (allowRetry: boolean) => {
+      const browserSelection = document.getSelection()
+      if (!browserSelection || browserSelection.isCollapsed) {
+        selectionStartTokenIdRef.current = null
+        resetSelections()
+        return
+      }
+
+      const selectedTokens = getSelectedTokens(words)
+      const startedOnDifferentToken =
+        !!selectionStartTokenIdRef.current &&
+        selectedTokens.length === 1 &&
+        selectionStartTokenIdRef.current !== selectedTokens[0]
+
+      if (startedOnDifferentToken && allowRetry) {
+        window.setTimeout(() => applySelection(false), 0)
+        return
+      }
+
+      if (selectedTokens.length > 0) {
+        setActiveSpanId(null)
+        setSelection(selectedTokens)
+        selectionStartTokenIdRef.current = null
+        clearSelection()
+        return
+      }
+
+      selectionStartTokenIdRef.current = null
+      resetSelections()
+    }
+
+    window.setTimeout(() => applySelection(true), 0)
+  }
+
+  return (
+    <div onMouseUp={handleMouseUp}>
+      <div className="text-annotation__text-wrapper">
+        <table className="Transliteration__lines">
+          <tbody>
+            {
+              text.lines.reduce<[JSX.Element[], Labels]>(
+                (
+                  [elements, labels]: [JSX.Element[], Labels],
+                  line: AbstractLine,
+                  index: number,
+                ) => {
+                  const rows = hideLine(line)
+                    ? elements
+                    : [
+                        ...elements,
+                        <DisplayRow
+                          key={index}
+                          line={line}
+                          lineIndex={index}
+                          columns={text.numberOfColumns}
+                          labels={labels}
+                          notes={text.notes}
+                          selection={selection}
+                          setSelection={setSelection}
+                          activeSpanId={activeSpanId}
+                          setActiveSpanId={setActiveSpanId}
+                          selectionStartTokenIdRef={selectionStartTokenIdRef}
+                        />,
+                      ]
+                  return [rows, getCurrentLabels(labels, line)]
+                },
+                [[], defaultLabels],
+              )[0]
+            }
+          </tbody>
+        </table>
+        <Form className="text-annotation__button-wrapper">
+          <Button
+            disabled={!isDirty || isSaving}
+            variant="primary"
+            onClick={saveAnnotations}
+            aria-label="save-annotations"
+          >
+            {isSaving ? (
+              <Spinner
+                as="span"
+                animation="border"
+                size="sm"
+                role="status"
+                aria-hidden="true"
+              />
+            ) : (
+              <>Save</>
+            )}
+          </Button>
+        </Form>
+        <ErrorAlert error={saveError} />
+        {refreshError && (
+          <Alert variant={'warning'} role={'alert'}>
+            {refreshFailedMessage}
+          </Alert>
+        )}
+      </div>
+    </div>
+  )
+}

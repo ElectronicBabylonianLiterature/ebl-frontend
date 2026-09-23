@@ -42,6 +42,7 @@ export interface LemmatizableToken extends BaseToken {
   readonly hasOmittedAlignment: boolean
   readonly id?: string | null
   readonly namedEntities?: ReadonlyArray<string> | null
+  readonly realia?: ReadonlyArray<string> | null
 }
 
 export interface ValueToken extends NotLemmatizableToken {
@@ -113,6 +114,7 @@ export interface NamedSign extends Sign {
   readonly type: 'Reading' | 'Logogram' | 'Number'
   readonly name: string
   readonly nameParts: readonly (ValueToken | Enclosure)[]
+  readonly nameBreaks?: readonly Enclosure[] | null
   readonly subIndex?: number | null
   readonly sign?: Token | null
   readonly surrogate?: readonly Token[] | null
@@ -210,10 +212,24 @@ export type Token =
   | GreekLetter
   | AnyWord
 
+export function nameTokens(
+  namedSign: NamedSign,
+): readonly (ValueToken | Enclosure)[] {
+  const { nameParts, nameBreaks } = namedSign
+  if (!nameBreaks) {
+    return nameParts
+  }
+  return _.zip(nameParts, nameBreaks).flatMap((pair) =>
+    pair.filter(
+      (token): token is ValueToken | Enclosure => token !== undefined,
+    ),
+  )
+}
+
 function extractEnclosureTypes(
   namedSign: NamedSign,
 ): readonly (readonly EnclosureType[])[] {
-  return namedSign.nameParts.map((part) => part.enclosureType)
+  return nameTokens(namedSign).map((part) => part.enclosureType)
 }
 
 export function effectiveEnclosure(namedSign: NamedSign): EnclosureType[] {

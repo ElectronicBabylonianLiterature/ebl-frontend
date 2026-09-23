@@ -172,12 +172,7 @@ exports[`displays the annotation tool 1`] = `
                         class="dropdown-toggle dropdown-toggle-split btn btn-secondary btn-sm"
                         id="dropdown-split-basic"
                         type="button"
-                      >
-                        <i
-                          aria-hidden="true"
-                          class="fas fa-caret-down"
-                        />
-                      </button>
+                      />
                     </div>
                   </div>
                 </form>

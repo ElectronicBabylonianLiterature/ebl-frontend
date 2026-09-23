@@ -1,15 +1,20 @@
 import SignService from 'signs/application/SignService'
 import React, { useState } from 'react'
 import withData, { WithoutData } from 'http/withData'
-import { Col, Container, Figure, Row } from 'react-bootstrap'
+import { Col, Container, Row } from 'react-bootstrap'
 import Accordion from 'react-bootstrap/Accordion'
 
 import _ from 'lodash'
-import { Link } from 'react-router-dom'
 import { CroppedAnnotation } from 'signs/domain/CroppedAnnotation'
 import './SignImages.css'
-import { periodFromAbbreviation, periods } from 'common/utils/period'
-import DateDisplay from 'chronology/ui/DateDisplay'
+import { periodFromAbbreviation } from 'common/utils/period'
+import { loadClusterAnnotations } from 'signs/ui/display/signClusterAnnotations'
+import { PeriodPreview, VariantGroup } from 'signs/ui/display/SignImageFigures'
+import {
+  sortGroupsByClusterRank,
+  sortScriptsByPeriod,
+  sortVariants,
+} from 'signs/ui/display/signImageGrouping'
 
 type Props = {
   signName: string
@@ -33,141 +38,6 @@ export default withData<
   (props) => props.signService.getCentroidImages(props.signName),
 )
 
-function SignImage({
-  croppedAnnotation,
-  isCentroid = false,
-}: {
-  croppedAnnotation: CroppedAnnotation
-  isCentroid?: boolean
-}): JSX.Element {
-  const label = croppedAnnotation.label ?? ''
-
-  return (
-    <div className={isCentroid ? 'sign-images__centroid-col' : undefined}>
-      <Figure className={isCentroid ? 'sign-images__centroid' : undefined}>
-        <Figure.Image
-          className={'sign-images__sign-image'}
-          src={`data:image/png;base64, ${croppedAnnotation.image}`}
-        />
-        <Figure.Caption>
-          <Link to={`/library/${croppedAnnotation.fragmentNumber}`}>
-            {croppedAnnotation.fragmentNumber}&nbsp;
-          </Link>
-          {label}
-          {croppedAnnotation.date && (
-            <DateDisplay date={croppedAnnotation.date} />
-          )}
-          {croppedAnnotation.provenance && (
-            <span className="provenance">{`${croppedAnnotation.provenance}`}</span>
-          )}
-        </Figure.Caption>
-      </Figure>
-    </div>
-  )
-}
-
-function sortVariants(annotations: CroppedAnnotation[]): CroppedAnnotation[] {
-  return _.sortBy(annotations, [
-    (annotation) => (annotation.date ? 0 : 1),
-    (annotation) => annotation.fragmentNumber,
-  ])
-}
-
-function sortGroupsByClusterRank(
-  annotations: CroppedAnnotation[],
-): [string, CroppedAnnotation[]][] {
-  return _.sortBy(
-    Object.entries(
-      _.groupBy(
-        annotations,
-        (annotation) => annotation.pcaClustering?.clusterId || 'no-cluster',
-      ),
-    ),
-    [
-      ([clusterId]) => (clusterId === 'no-cluster' ? 1 : 0),
-      ([, group]) => group[0].pcaClustering?.clusterRank ?? 999,
-    ],
-  )
-}
-
-function formatFormLabel(form: string): string {
-  if (form.startsWith('canonical')) {
-    const number = form.replace('canonical', '')
-    return number ? `Canonical ${number}` : 'Canonical'
-  }
-  if (form.startsWith('variant')) {
-    const number = form.replace('variant', '')
-    return number ? `Variant ${number}` : 'Variant'
-  }
-  return form
-}
-
-function VariantGroup({
-  form,
-  centroid,
-  variants,
-}: {
-  form: string
-  centroid?: CroppedAnnotation
-  variants: CroppedAnnotation[]
-}) {
-  return (
-    <div className="sign-images__variant-group">
-      <div className="sign-images__variant-header">
-        {formatFormLabel(form)}:
-      </div>
-
-      <div className="sign-images__variant-layout">
-        <div className="sign-images__variant-representative">
-          {centroid && <SignImage croppedAnnotation={centroid} isCentroid />}
-        </div>
-
-        <div className="sign-images__variant-examples">
-          {variants.length === 0 ? (
-            <div className="text-muted">No additional variants</div>
-          ) : (
-            variants.map((annotation, index) => (
-              <div key={index} className="sign-images__variant-example-item">
-                <SignImage croppedAnnotation={annotation} />
-              </div>
-            ))
-          )}
-        </div>
-      </div>
-    </div>
-  )
-}
-
-function PeriodPreview({
-  annotations,
-}: {
-  annotations: CroppedAnnotation[]
-}): JSX.Element {
-  const previewGroups = sortGroupsByClusterRank(annotations)
-
-  return (
-    <div className="sign-images__period-preview">
-      {previewGroups.map(([clusterId, group]) => {
-        const centroid =
-          group.find((annotation) => annotation.pcaClustering?.isCentroid) ??
-          group[0]
-
-        return (
-          <div key={clusterId} className="sign-images__period-preview-item">
-            <Figure.Image
-              className="sign-images__period-preview-image"
-              src={`data:image/png;base64, ${centroid.image}`}
-              title={formatFormLabel(
-                centroid.pcaClustering?.form || 'Unknown form',
-              )}
-            />
-          </div>
-        )
-      })}
-    </div>
-  )
-}
-
 function SignImagePagination({
   croppedAnnotations,
   signService,
@@ -181,18 +51,10 @@ function SignImagePagination({
     croppedAnnotations,
     (croppedAnnotation) => croppedAnnotation.script,
   )
-  const periodsAbbr = [...periods.map((period) => period.abbreviation), '']
 
   const [activePeriod, setActivePeriod] = useState<string | null>(null)
 
-  const scriptsSorted = _.sortBy(Object.entries(scripts), (elem) => {
-    const index = periodsAbbr.indexOf(elem[0])
-    if (index === -1) {
-      throw new Error(`${elem[0]} has to be one of ${periodsAbbr}`)
-    } else {
-      return index
-    }
-  })
+  const scriptsSorted = sortScriptsByPeriod(scripts)
 
   return (
     <Container>
@@ -224,110 +86,6 @@ function SignImagePagination({
       </Row>
     </Container>
   )
-}
-
-async function runWithConcurrencyLimit<T, R>(
-  items: T[],
-  limit: number,
-  task: (item: T) => Promise<R>,
-): Promise<PromiseSettledResult<R>[]> {
-  const results: PromiseSettledResult<R>[] = []
-  let index = 0
-
-  async function worker() {
-    while (index < items.length) {
-      const currentIndex = index
-      index += 1
-
-      try {
-        results[currentIndex] = {
-          status: 'fulfilled',
-          value: await task(items[currentIndex]),
-        }
-      } catch (reason) {
-        results[currentIndex] = {
-          status: 'rejected',
-          reason,
-        }
-      }
-    }
-  }
-
-  await Promise.all(
-    Array.from({ length: Math.min(limit, items.length) }, () => worker()),
-  )
-
-  return results
-}
-
-async function loadClusterAnnotations({
-  croppedAnnotations,
-  signService,
-  signName,
-  scriptAbbr,
-}: {
-  croppedAnnotations: CroppedAnnotation[]
-  signService: SignService
-  signName: string
-  scriptAbbr: string
-}): Promise<{
-  annotations: CroppedAnnotation[]
-  hasFailures: boolean
-}> {
-  const clusterIds = _.uniq(
-    croppedAnnotations
-      .map((annotation) => annotation.pcaClustering?.clusterId)
-      .filter((clusterId): clusterId is string => Boolean(clusterId)),
-  )
-
-  if (!clusterIds.length) {
-    return {
-      annotations: croppedAnnotations,
-      hasFailures: false,
-    }
-  }
-
-  const results = await runWithConcurrencyLimit(clusterIds, 4, (clusterId) =>
-    signService.getClusterVariants(signName, clusterId, scriptAbbr),
-  )
-
-  const fallbackClusterIds = results
-    .map((result, index) =>
-      result.status === 'rejected' ||
-      (result.status === 'fulfilled' && result.value.length === 0)
-        ? clusterIds[index]
-        : null,
-    )
-    .filter((clusterId): clusterId is string => Boolean(clusterId))
-
-  const successfulAnnotations = results
-    .filter(
-      (result): result is PromiseFulfilledResult<CroppedAnnotation[]> =>
-        result.status === 'fulfilled' && result.value.length > 0,
-    )
-    .flatMap((result) => result.value)
-
-  const fallbackAnnotations = croppedAnnotations.filter((annotation) =>
-    fallbackClusterIds.includes(annotation.pcaClustering?.clusterId || ''),
-  )
-
-  const nonPcaAnnotations = croppedAnnotations.filter(
-    (annotation) => !annotation.pcaClustering?.clusterId,
-  )
-
-  return {
-    annotations:
-      successfulAnnotations.length ||
-      fallbackAnnotations.length ||
-      nonPcaAnnotations.length
-        ? [
-            ...successfulAnnotations,
-            ...fallbackAnnotations,
-            ...nonPcaAnnotations,
-          ]
-        : croppedAnnotations,
-    hasFailures: fallbackClusterIds.length > 0,
-  }
 }
 
 function PeriodAccordion({

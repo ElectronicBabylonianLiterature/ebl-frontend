@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useMemo } from 'react'
 import { useLocation } from 'react-router-dom'
-import { useHistory } from 'router/compat'
+import { Redirect, useHistory } from 'router/compat'
 import withData, { WithoutData } from 'http/withData'
 import RealiaService from 'realia/application/RealiaService'
 import {
@@ -8,7 +8,9 @@ import {
   getRealiaCrossReferences,
   getRedirectTarget,
   groupAfoRegisterByVolume,
+  isRealiaId,
 } from 'realia/domain/RealiaEntry'
+import { getRealiaPageUrl } from 'realia/ui/realiaPage'
 import RealiaDevelopmentNotice from 'realia/ui/RealiaDevelopmentNotice'
 import RealiaNavMenu from 'realia/ui/RealiaNavMenu'
 import { AfoRegisterVolumes } from 'realia/ui/RealiaAfoRegister'
@@ -176,9 +178,14 @@ function AuthorizedRealiaEntry({ entry }: { entry: RealiaEntry }): JSX.Element {
 
 function RealiaEntryDisplay({
   data: entry,
+  id,
 }: {
   data: RealiaEntry
+  id: string
 }): JSX.Element {
+  if (isRealiaId(id) && entry.id !== id) {
+    return <Redirect to={getRealiaPageUrl(entry.id)} />
+  }
   const redirectTarget = getRedirectTarget(entry)
   return (
     <AppContent
@@ -206,8 +213,8 @@ function RealiaEntryDisplay({
 }
 
 export default withData<
-  WithoutData<{ data: RealiaEntry }>,
-  { realiaService: RealiaService; id: string },
+  WithoutData<{ data: RealiaEntry; id: string }>,
+  { realiaService: RealiaService },
   RealiaEntry
 >(RealiaEntryDisplay, (props) => props.realiaService.find(props.id), {
   watch: (props) => [props.id],

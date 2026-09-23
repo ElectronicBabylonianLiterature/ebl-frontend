@@ -1,6 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { RealiaEntry } from 'realia/domain/RealiaEntry'
+import { getRealiaPageUrl } from 'realia/ui/realiaPage'
 import 'realia/ui/Realia.sass'
 
 interface SourceBadge {
@@ -32,7 +33,7 @@ function RealiaResultItem({ entry }: { entry: RealiaEntry }): JSX.Element {
       <div className="realia-results-list__header">
         <Link
           className="realia-results-list__title"
-          to={'/tools/realia/' + encodeURIComponent(entry.id)}
+          to={getRealiaPageUrl(entry.id)}
         >
           {entry.id}
         </Link>
