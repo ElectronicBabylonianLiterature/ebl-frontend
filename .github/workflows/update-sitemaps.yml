@@ -13,17 +13,17 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  update-sitemap:
+  crawl:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
 
       - name: Set up Node.js
-        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
           node-version: '20'
 
@@ -49,25 +49,54 @@ jobs:
             wget
 
       - name: Install script-only dependencies in isolated dir
+        env:
+          PUPPETEER_VERSION: 24.43.1
         run: |
+          FS_EXTRA_VERSION=$(node -p "require('./package.json').devDependencies['fs-extra']")
           mkdir tmp-script-env
           cd tmp-script-env
           npm init -y
-          npm install puppeteer fs-extra --legacy-peer-deps
+          npm install --no-audit --no-fund --legacy-peer-deps \
+            "puppeteer@${PUPPETEER_VERSION}" \
+            "fs-extra@${FS_EXTRA_VERSION}"
 
       - name: Run sitemap update script
         run: node scripts/updateSitemaps.js
         env:
           NODE_PATH: tmp-script-env/node_modules
 
-      - name: Remove temporary environment
-        run: rm -rf tmp-script-env
+      - name: Upload crawled sitemaps
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: sitemaps
+          path: public/sitemap
+          if-no-files-found: error
+          retention-days: 1
+
+  publish:
+    needs: crawl
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Remove the committed sitemaps
+        run: rm -rf public/sitemap
+
+      - name: Download crawled sitemaps
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          name: sitemaps
+          path: public/sitemap
 
       - name: Generate automation app token
         id: app-token
         uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3.2.0
         with:
-          app-id: ${{ secrets.EBL_AUTOMATION_APP_ID }}
+          client-id: ${{ vars.EBL_AUTOMATION_CLIENT_ID }}
           private-key: ${{ secrets.EBL_AUTOMATION_PRIVATE_KEY }}
           permission-contents: write
           permission-pull-requests: write

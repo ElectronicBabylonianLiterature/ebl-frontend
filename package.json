@@ -12,6 +12,10 @@
       "prettier --write",
       "eslint --fix"
     ],
+    "scripts/**/*.js": [
+      "prettier --write",
+      "eslint --fix"
+    ],
     "**/*.md": [
       "prettier --write"
     ],
@@ -30,7 +34,7 @@
     "test:secrets": "bash scripts/test-secret-scanning.sh",
     "eject": "react-scripts eject",
     "lighthouse": "node scripts/lighthouse.js",
-    "lint": "eslint 'src/**/*.{ts,tsx}' && stylelint 'src/**/*.{css,sass}'",
+    "lint": "eslint 'src/**/*.{ts,tsx}' 'scripts/**/*.js' && stylelint 'src/**/*.{css,sass}'",
     "prepare": "husky install",
     "postinstall": "patch-package"
   },
@@ -149,6 +153,7 @@
     "chance": "^1.0.16",
     "debug": "^4.3.4",
     "fishery": "^2.1.0",
+    "fs-extra": "10.1.0",
     "husky": "^8.0.0",
     "jest-canvas-mock": "^2.3.1",
     "jest-date-mock": "^1.0.2",

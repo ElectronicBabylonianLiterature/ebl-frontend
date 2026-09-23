@@ -1,7 +1,11 @@
 const fs = require('fs')
 const puppeteer = require('puppeteer')
 
-const EXISTING_SITEMAPS = ['sitemap.xml.gz', 'sitemap1.xml.gz', 'sitemap2.xml.gz']
+const EXISTING_SITEMAPS = [
+  'sitemap.xml.gz',
+  'sitemap1.xml.gz',
+  'sitemap2.xml.gz',
+]
 
 function mockDirectoryContents(contentsByDirectory) {
   jest

@@ -225,44 +225,34 @@ This action will:
 
 #### 🤖 Bot Identity (One-Off Setup, No Yearly Rotation)
 
-The workflow runs as a GitHub App rather than as a person. It mints a short-lived
-installation token at run time, so there is **no token to rotate** and the pull requests
-it opens are authored by the app, not by a maintainer. That matters because GitHub
-forbids self-approval: when a human's token opened these pull requests, the one person
-who would normally merge them was the one person who could not.
+The workflow runs as a GitHub App rather than as a person. It mints a short-lived installation token at run time, so there is **no token to rotate** and the pull requests it opens are authored by the app, not by a maintainer. That matters because GitHub forbids self-approval: when a human's token opened these pull requests, the one person who would normally merge them was the one person who could not.
 
-Two repository secrets must exist for the workflow to run:
+The workflow needs one repository variable and one repository secret:
 
-| Secret                       | Value                                                                      |
-| ---------------------------- | -------------------------------------------------------------------------- |
-| `EBL_AUTOMATION_APP_ID`      | The numeric App ID                                                         |
-| `EBL_AUTOMATION_PRIVATE_KEY` | The entire `.pem` private key, including the `-----BEGIN`/`-----END` lines |
+| Name                         | Kind     | Value                                                                      |
+| ---------------------------- | -------- | -------------------------------------------------------------------------- |
+| `EBL_AUTOMATION_CLIENT_ID`   | Variable | The App's Client ID (it starts with `Iv`)                                  |
+| `EBL_AUTOMATION_PRIVATE_KEY` | Secret   | The entire `.pem` private key, including the `-----BEGIN`/`-----END` lines |
 
 To create them (once):
 
-1. Under the **organisation** settings, create a **New GitHub App** named `eBL Automation`.
-   Untick **Webhook → Active**.
-2. Grant exactly `Contents: Read and write` and `Pull requests: Read and write`; leave
-   everything else at _No access_. Set installation scope to **Only on this account**.
-3. Note the **App ID**, then **Generate a private key** — the `.pem` downloads only once.
-4. **Install App** → the `ElectronicBabylonianLiterature` organisation → **Only select
-   repositories** → `ebl-frontend`.
-5. Add both secrets under **Settings → Secrets and variables → Actions**.
+1. Under the **organisation** settings, create a **New GitHub App** named `eBL Automation`. Untick **Webhook → Active**.
+2. Grant exactly `Contents: Read and write` and `Pull requests: Read and write`; leave everything else at _No access_. Set installation scope to **Only on this account**.
+3. Note the **Client ID**, then **Generate a private key** — the `.pem` downloads only once.
+4. **Install App** → the `ElectronicBabylonianLiterature` organisation → **Only select repositories** → `ebl-frontend`.
+5. Under **Settings → Secrets and variables → Actions**, add the Client ID on the **Variables** tab and the private key on the **Secrets** tab.
 
-A missing line break in the private key is the usual cause of a "failed to generate
-token" error.
+A missing line break in the private key is the usual cause of a "failed to generate token" error.
 
 #### 🔒 Failure Behaviour
 
-The update script fails closed. If the sitemap source is unreachable, or if fewer files
-download than the site currently has, the run **fails** and the existing sitemaps are
-restored from a backup. It never publishes a partial set, and it never opens or closes a
-pull request on a failed crawl. A red run means the sitemaps on `master` are untouched
-and the crawl needs looking at.
+The workflow has two jobs. `crawl` downloads the sitemaps with Puppeteer and holds no secrets. `publish` receives the crawled files as a build artifact and is the only job that sees the App's private key, so no third-party install script ever runs next to it.
 
-The workflow uses a single fixed branch, `autoupdate-sitemap`, so a run that fires while
-a sitemap pull request is still open updates that pull request instead of opening a
-second one. Runs are serialised by a `concurrency` group.
+The update script fails closed. If the sitemap source is unreachable, or if fewer files download than the site currently has, the `crawl` job **fails**, the existing sitemaps are restored from a backup and `publish` never runs. It never publishes a partial set, and it never opens or closes a pull request on a failed crawl. A red run means the sitemaps on `master` are untouched and the crawl needs looking at. Open the [sitemap page](https://www.ebl.lmu.de/sitemap) in a browser first: an error shown there (for example a failing API endpoint) is the usual cause.
+
+If the site legitimately produces fewer sitemap files than before, every run fails with "expected at least N" until the file count on `master` is brought down. Do that once with the manual update below; the next automated run then compares against the new count.
+
+The workflow uses a single fixed branch, `autoupdate-sitemap`, so a run that fires while a sitemap pull request is still open updates that pull request instead of opening a second one. Runs are serialised by a `concurrency` group.
 
 #### 🛠 Manual Update (Legacy Method)
 

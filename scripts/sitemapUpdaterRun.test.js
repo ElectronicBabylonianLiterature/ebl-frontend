@@ -2,7 +2,12 @@ jest.mock('puppeteer', () => ({ launch: jest.fn() }), { virtual: true })
 jest.mock('fs-extra')
 
 const fse = require('fs-extra')
-const { TEMP_DIR, BACKUP_DIR, TARGET_DIR, updateSitemaps } = require('./sitemapUpdater')
+const {
+  TEMP_DIR,
+  BACKUP_DIR,
+  TARGET_DIR,
+  updateSitemaps,
+} = require('./sitemapUpdater')
 const {
   EXISTING_SITEMAPS,
   mockDirectoryContents,
