@@ -21,6 +21,12 @@ interface Deferred<Value> {
   readonly resolve: (value: Value) => void
 }
 
+type CompletionName = 'older' | 'newer'
+type Completion = readonly [
+  Deferred<BibliographyEntry>,
+  Bluebird<BibliographyEntry>,
+  BibliographyEntry,
+]
 type Mutation = 'create' | 'update'
 
 function createDeferred<Value>(): Deferred<Value> {
@@ -56,6 +62,16 @@ function mutate(
 const scopeChanges: ReadonlyArray<[string, string]> = [
   ['authenticated user switch', 'authenticated:user-b'],
   ['logout', 'guest'],
+]
+
+const completionOrders: ReadonlyArray<
+  [string, readonly [CompletionName, CompletionName]]
+> = [
+  ['older completion cannot overwrite a newer mutation', ['newer', 'older']],
+  [
+    'newer mutation wins when the older mutation completes first',
+    ['older', 'newer'],
+  ],
 ]
 
 describe.each<Mutation>(['create', 'update'])(
@@ -135,7 +151,7 @@ describe.each<Mutation>(['create', 'update'])(
       expect(bibliographyRepository.find).toHaveBeenCalledTimes(1)
     })
 
-    test('older completion cannot overwrite a newer mutation', async () => {
+    test.each(completionOrders)('%s', async (_, completionOrder) => {
       const olderResult = createDeferred<BibliographyEntry>()
       const newerResult = createDeferred<BibliographyEntry>()
       const newerEntry = new BibliographyEntry({ id, title: 'Newer result' })
@@ -145,30 +161,17 @@ describe.each<Mutation>(['create', 'update'])(
 
       const olderRequest = mutate(mutation, service, submittedEntry)
       const newerRequest = mutate(mutation, service, submittedEntry)
-      newerResult.resolve(newerEntry)
-      await expect(newerRequest).resolves.toBe(newerEntry)
-      olderResult.resolve(oldMutationEntry)
+      const completions: Readonly<Record<CompletionName, Completion>> = {
+        older: [olderResult, olderRequest, oldMutationEntry],
+        newer: [newerResult, newerRequest, newerEntry],
+      }
 
-      await expect(olderRequest).resolves.toBe(oldMutationEntry)
-      await expect(service.find(id)).resolves.toBe(newerEntry)
-      expect(bibliographyRepository.find).not.toHaveBeenCalled()
-    })
+      for (const completionName of completionOrder) {
+        const [result, request, entry] = completions[completionName]
+        result.resolve(entry)
+        await expect(request).resolves.toBe(entry)
+      }
 
-    test('newer mutation wins when the older mutation completes first', async () => {
-      const olderResult = createDeferred<BibliographyEntry>()
-      const newerResult = createDeferred<BibliographyEntry>()
-      const newerEntry = new BibliographyEntry({ id, title: 'Newer result' })
-      const service = new BibliographyService(bibliographyRepository)
-      setMutationResult(mutation, bibliographyRepository, olderResult.promise)
-      setMutationResult(mutation, bibliographyRepository, newerResult.promise)
-
-      const olderRequest = mutate(mutation, service, submittedEntry)
-      const newerRequest = mutate(mutation, service, submittedEntry)
-      olderResult.resolve(oldMutationEntry)
-      await expect(olderRequest).resolves.toBe(oldMutationEntry)
-      newerResult.resolve(newerEntry)
-
-      await expect(newerRequest).resolves.toBe(newerEntry)
       await expect(service.find(id)).resolves.toBe(newerEntry)
       expect(bibliographyRepository.find).not.toHaveBeenCalled()
     })
