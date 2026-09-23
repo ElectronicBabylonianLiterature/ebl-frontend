@@ -1,408 +1,266 @@
 ---
 task_id: 774
 pull_request: https://github.com/ElectronicBabylonianLiterature/ebl-frontend/pull/774
-title: 'chore: remove bluebird, use AbortController for cancellation'
-reviewed_head_sha: ee275e43248ea13ebf2a828cc1fe30255911c36b
-base_branch: chore/ts7-tsconfig-migration
-base_sha: 4f71cb249bc0db899f1a22ce42ac93ebd961eeda
-pr_state: 'open, mergeable: true, mergeable_state: clean (against its own base)'
-stacked_on: '#773 (chore/ts7-tsconfig-migration) — OPEN and CONFLICTED against master (mergeable_state: dirty, last updated 2026-08-05)'
-master_drift: 3 commits behind master (e281f7ba, af0b7942, 51bfc9ff)
-review_date: 2026-09-20
-review_round: 8
+pr_title: 'chore: remove bluebird, use AbortController for cancellation'
+review_round: 9
+review_date: 2026-09-23
 reviewer: Claude (automated review)
-remediation_date: 2026-09-22
-remediation_state: '11 of 17 findings closed in the working tree (F5-F11, W5) plus three applied to the PR description on GitHub. F1 excluded by instruction; F2, F3, F4, F12, W1, W2 and W3 cannot be closed from inside this diff.'
-verdict: CHANGES REQUESTED — every finding inside the diff is now fixed (F5 through F11, verified by the gates below), and the PR description is corrected. What blocks a merge is outside the code: the eight scratch .md files (excluded from this pass by instruction), the conflicted base PR #773, the outstanding CHANGES_REQUESTED, and CodeQL's inability to diff a PR this size.
-findings_total: 17
-findings_blocking: 4
-findings_major: 2
-findings_minor: 6
-findings_warning: 2
-findings_info: 3
-scope_vs_base: 707 files, +44625 / -22668, 38 commits
-scope_vs_master: 510 files, +19743 / -10796
-scope_note: 'The GitHub diff is inflated: master was merged into this branch but not into the base branch, so roughly 197 files are base-branch drift rather than this PR''s work. Landing #773 (30 files) collapses the GitHub diff to about 510 files — still over CodeQL''s 300-file cap, so it does not fix F4.'
-devcontainer_changes: 'NONE. .devcontainer/ is byte-identical to master (Dockerfile, devcontainer.json, inject-secrets.sh, README.md). The root Dockerfile is also byte-identical to master — its +4/-4 in the GitHub diff is base-branch drift. The CI workflows ARE materially changed; see W1 for a line-by-line verdict. Read W1 before merging: no pull request ever builds the Dockerfile.'
-tsconfig_note: 'tsconfig.json differs from master (target es5 -> es2020, moduleResolution node -> bundler, baseUrl -> paths) but is IDENTICAL to the base branch, so those changes belong to #773, not to this PR. CRACO compensates for the removed baseUrl via jestConfig.modulePaths and webpackConfig.resolve.modules; verified working. noImplicitAny: false is pre-existing on master and is what lets F5 Group A compile.'
+reviewed_head_sha: 2b391cdd (Merge master into chore/remove-bluebird)
+base_branch: 'master (retargeted 2026-09-23; was chore/ts7-tsconfig-migration, whose PR #773 closed without merging)'
+base_sha: 4f71cb24
+pr_state: 'open, mergeable: true, mergeable_state: clean (against the closed base)'
+review_decision: CHANGES_REQUESTED
+master_drift: 0 commits behind origin/master; merges into master with zero conflicts
+verdict: 'CHANGES REQUESTED — Fabdulla1 posted a new CHANGES_REQUESTED on this exact head today (2026-09-23) with nine concerns. All nine were checked against the code and all nine are real. The PR also still targets the closed #773 branch, so merging it as configured would not land anything on master.'
+findings_total: 21
+findings_blocking: 13
+findings_major: '7 — six inside the 13 blockers (reviewer-requested), plus N1 (own finding from the getter sweep)'
+findings_minor: 2
+findings_warning: 3
+findings_info: 2
+reviewer_findings_verified: 9 of 9 confirmed in code (0 disputed)
+own_sweep: 'every withData getter and every .catch( in a signal-threaded repository checked; 2 more dropped-signal reads found (N1), all other signal-less getters are covered by the README exemptions'
+scope_vs_master: 512 files, +20127 / -10919
+devcontainer_changes: 'NONE. .devcontainer/ and the root Dockerfile are byte-identical to origin/master. The CI workflows ARE changed (main.yml, codeql-analysis.yml, update-sitemaps.yml); every change was re-read and is sound. See W1 — no pull request ever builds the Dockerfile.'
+new_md_files: 'FAIL — eight TASK-*.md files are tracked on the branch (B11). The only other .md changes are README.md and .github/copilot-instructions.md, both modifications, not new files.'
 gates:
-  note: 'Two sets. "review" is the reviewed sha ee275e43; "remediated" is the working tree after the round-8 fixes.'
-  lint: PASS (review) / PASS (remediated) — eslint + stylelint clean, exit 0
-  tsc: PASS (review) / PASS (remediated) — clean, exit 0
-  test_ci_local: 'PASS (review) — 504 suites, 4428 tests, 50 snapshots, 0 failures, exit 0, 621.7s. PASS (remediated) — 505 suites, 4435 tests, 50 snapshots, 0 failures, exit 0, 796.9s; +1 suite and +7 tests are FragmentRepository.abortSignal.test.ts.'
-  console_clean: PASS (review) / PASS (remediated) — zero console.error / console.warn / unhandled rejections in both full runs
-  coverage: 'PASS (review) / PASS (remediated) — 95.08 stmts / 87.98 branch / 94.74 funcs / 95.23 lines, identical before and after, no threshold breach. Note Jest subtracts the 50 per-path files from the global figure, so the floors (94 / 86 / 94 / 94) are checked against roughly 94.57 / 86.84 / 94.21, not the printed summary row.'
-  coverage_allowlist: PASS — craco.config.js validates fullyCoveredPaths at load; 50 entries, no duplicates, none missing
-  line_ceiling_250: 'PASS (review) / PASS (remediated) — no changed or new .ts/.tsx file exceeds 250 lines. Threading the signals pushed FragmentRepository.ts to 253, so ApiFragmentInfo was extracted to fragmentRepositoryInfo.ts: 177 and 84 lines respectively.'
-  dry: 'PASS (review, with one exception) / PASS (remediated) — main.yml now calls yarn build:ci-stable instead of repeating its environment; FragmentStatistics and CorpusAttestations replace shapes that were written out four times each; three fragment-info readers share a private helper; two hand-built URLs go through createFragmentPath.'
-  no_new_md: FAIL — 8 TASK-*.md files tracked on the branch (F1); the cleanup was excluded from this pass by instruction
-  build: PASS in CI; NOT runnable locally — the container OOM-kills fork-ts-checker
-  app_runs: NOT VERIFIED — the dev server cannot start in this container (SIGTERM on the type-checker child). Not a code defect; CI compiled the reviewed sha green.
-  docker_build: NOT VERIFIED — Docker is unavailable in this container, and no pull request ever builds the Dockerfile (W1)
+  lint: PASS — eslint + stylelint clean, exit 0
+  tsc: PASS — clean, exit 0
+  test_ci_local: 'PASS — 505 suites, 4445 tests, 50 snapshots, 0 failures, exit 0, 608.7 s'
+  console_clean: PASS — zero console.error / console.warn / unhandled rejections in the full run
+  coverage: 'PASS — 95.09 stmts / 87.99 branch / 94.75 funcs / 95.23 lines, no threshold breach'
+  line_ceiling_250: PASS — no added or modified .ts/.tsx file exceeds 250 lines; every file on the August over-ceiling list is now under it
+  dry: 'PASS for the diff as written; B6 and B7 will add signal threading that must reuse the existing fetchJson(path, auth, signal) path, not a new helper'
+  build: 'PASS in CI (test job, "yarn build:ci-stable"); NOT runnable here — the container OOM-kills fork-ts-checker'
+  app_runs: NOT VERIFIED — the dev server cannot start in this container (OOM). The concurrency findings (B3, B4) were verified by reading code, not by clicking through the app.
+  docker_build: NOT VERIFIED — no Docker here, and no PR job builds it (W1)
 ci_checks_on_head:
   test: success
-  CodeQL: 'success — but the verdict is unearned; the diff stage was skipped (F4)'
-  Analyze (javascript): 'success, with 1 warning annotation: "Cannot retrieve the full diff because there are too many (300) changed files in the pull request."'
-  GitGuardian scan: success
-  GitGuardian Security Checks: success — 38 commits scanned, no secrets
-  qlty check: 'success, "No blocking issues" — static analysis only; coverage was never uploaded for this PR (W2)'
-  docker: skipped — never runs on a pull request
-  docker-test: skipped — never runs on a pull request
-codeql_alert_api: 'not queryable with the available token (403 Resource not accessible by integration) for either ?pr=774 or ?ref=refs/heads/chore/remove-bluebird; the branch alerts have to be read in the UI'
+  CodeQL: 'success, "No new alerts in code changed by this pull request" — but unearned: the diff stage was skipped (B12)'
+  Analyze (javascript): 'success, 1 warning: "Cannot retrieve the full diff because there are too many (300) changed files in the pull request."'
+  GitGuardian Security Checks: success — no secrets
+  GitGuardian scan: 'success (x2), 1 warning each: Node.js 20 deprecation on a SHA-pinned actions/checkout in secret-scan.yml (I1)'
+  qlty check: 'success, "No blocking issues" — static analysis only; coverage is not uploaded for a PR whose base is not master (W2)'
+  docker: skipped — master pushes only
+  docker-test: skipped — master pushes only
+codeql_alert_api: 'not queryable with the available token (403); branch alerts have to be read in the GitHub UI'
 review_threads: 6 total, all qltysh[bot], all resolved and outdated
-standing_reviews: 1 — Fabdulla1 CHANGES_REQUESTED, 2026-08-04, still open (F3); all three of its concerns verified fixed this round
+standing_reviews: 'Fabdulla1 CHANGES_REQUESTED 2026-09-23 on 2b391cdd (current, 9 concerns, all open). Fabdulla1 CHANGES_REQUESTED 2026-08-04 on 5ef4a984 (superseded; all its concerns were fixed in rounds 7-8).'
 issue_comments: 0
 other_review_bots: 'none — no sourcery-ai review, comment or check run exists on this PR; qltysh[bot] is the only bot reviewer'
-requested_reviewers: none currently assigned
+requested_reviewers: none currently assigned (Fabdulla1 was re-requested on 2026-09-22 and has since reviewed)
+remediation_date: 2026-09-23
+remediation_gates: 'lint PASS, tsc PASS, test:ci PASS — 511 suites, 4480 tests, 50 snapshots, 0 failures, zero console output, exit 0; coverage 95.19 / 88.25 branch / 94.87 / 95.34, no threshold breach; 250-line ceiling PASS; every touched source file 100%'
+remediation_state: 'All nine code findings (B2-B9, N1) fixed in the working tree, each with a test that fails without the fix, and every touched source file at 100% coverage. Nothing committed. B1 done (retargeted to master); M1 partly done; M2 approved. Still open: B10 (re-request review after pushing), B11 (delete scratch docs at merge), B12 (read CodeQL alerts in the UI), W1 (docker build), W3 (#779 conflict).'
 ---
 
-# Review — PR #774
+# Review — PR #774, round 9
 
-## Friendly summary
+## Review summary
 
-The design is right and it has held up under eight rounds of looking at it. Reads get a real `AbortSignal`; writes never do, because once a save has left the browser, cutting the connection does not un-save it — it only throws away the answer. And that rule is enforced by the compiler, not by discipline: `postJson` and `putJson` have no signal parameter, and the one method that takes one is `private`. Everything the August review asked for is done, and every gate is green.
+Thanks for sticking with this one. The core idea is still right and still holds up: reads get a real cancel signal, and writes never do, because cutting the connection on a save that has already gone out doesn't undo the save.
 
-One real thing turned up this round. Seven reads _look_ abortable and are not — they pass a signal into a method that has no signal parameter, so it is quietly dropped. Three of those are fully typed and still wrong: `FragmentInfoRepository` declares `random(signal?)` but `FragmentRepository.random()` takes no arguments, and TypeScript accepts that happily. Nothing breaks, but the README now claims otherwise, and that wants fixing before this lands. The rest is bookkeeping — an unasserted `console.error` mock that slipped back in, a few counts that drifted, and the eight `TASK-*.md` scratch files that still have to go. The two hardest blockers are not in this code at all: #773 is still conflicted and gates the stack, and CodeQL has never actually looked at this diff.
+Fabdulla1 went through it again today and asked for nine more changes. I checked every one in the code, and they're all real. Three of them come from the same place. Once writes stopped being cancellable, nothing stops you from starting a second save while the first is still running, and the server can end up with the older value. The fragment sidebar (genres) and both date editors let you do exactly that. Four more are reads that could be cancelled on `master` and now can't: three pages drop the signal they're given, the converter never passes it to the network, and the dossier list treats a cancel as a failure and logs a warning. I checked every other page that loads data this way and found two more with the same gap: the markup renderer and the sign-annotation loader. The last two are small: a one-microtask race in the queue, and save callbacks that stay live after the component is gone.
 
-## Summary
+The biggest issue has nothing to do with the code, though. #773 was closed without merging, and this PR still points at its branch. Merging it now would land nothing on `master`. It needs retargeting before anything else.
 
-PR #774 removes `bluebird` and replaces its cancellable promises with the web-standard `AbortController`/`AbortSignal` for reads and a token-based supersession primitive for writes. Alongside that it carries a Sass `@import` → `@use` migration (48 files), a 250-line-per-file refactor of everything it touches, and CI/CodeQL configuration so stacked PRs based on `chore/**`, `feature/**` and `fix/**` are no longer merged without checks.
+### Details
 
-The central design decision is correct and is enforced structurally rather than by convention: `ApiClient.postJson` and `ApiClient.putJson` accept no `signal`, and `ApiClient.fetch` — the only method that takes one alongside an arbitrary method — is `private`, so a signal cannot reach a write's `fetch` from outside the class. Every service and repository write method was checked; none accepts a signal. `JsonApiClient`'s `postJson` declares no signal either.
-
-All three concerns from the standing August review are resolved, and the requested integration test exists and is genuine. Every local gate is green: lint and tsc clean, 504 suites / 4428 tests / 50 snapshots passing with zero console output, coverage 95.08 / 87.98 / 94.74 / 95.23 with no threshold breach, and no changed `.ts`/`.tsx` file over 250 lines.
-
-Seventeen items are recorded below: four blockers, two major, six minor, two warnings and three informational. Only one blocker is about this code — the other three are the stacked base branch, the outstanding review event, and CodeQL's inability to diff a PR this size. The one substantive code finding is F5: seven reads accept an `AbortSignal` that is dropped before it reaches `fetch`, which contradicts the README section this PR adds.
-
-## Findings
-
-| #   | Finding                                                                                                                       | Severity | Status                         |
-| --- | ----------------------------------------------------------------------------------------------------------------------------- | -------- | ------------------------------ |
-| F1  | Eight `TASK-*.md` scratch documents tracked on the branch; no `.gitignore` rule                                               | Blocker  | Open — excluded by instruction |
-| F2  | #773 open and `mergeable_state: dirty` against master; gates the whole stack                                                  | Blocker  | Open — yours                   |
-| F3  | Standing `CHANGES_REQUESTED` (2026-08-04) still open; all its concerns verified fixed                                         | Blocker  | Open — needs the reviewer      |
-| F4  | CodeQL never diff-analysed the PR (300-file cap); landing #773 will not fix it                                                | Blocker  | Open — needs a decision        |
-| F5  | Seven reads accept an `AbortSignal` that never reaches `fetch`; README claims otherwise                                       | Major    | **Fixed**                      |
-| F6  | Unasserted `console.error` suppression reintroduced in `TextService.misc.test.ts:84`                                          | Major    | **Fixed**                      |
-| F7  | Blanket `beforeEach` console spy covers two non-asserting tests in `CuneiformConverterForm.errors.test.tsx`                   | Minor    | **Fixed**                      |
-| F8  | `BibliographyEntryForm` documented as a write owner; it guards a read                                                         | Minor    | **Fixed**                      |
-| F9  | PR description misstates CI's build command; `main.yml:59` duplicates `build:ci-stable`                                       | Minor    | **Fixed**                      |
-| F10 | Sass counts in the PR description drifted (47 → 48 files, 59 → 60 entrypoints)                                                | Minor    | **Fixed**                      |
-| F11 | `initializeAnnotations` recomputes `tokens.flat()` per annotation (pre-existing, faithfully extracted)                        | Minor    | **Fixed**                      |
-| F12 | Two bluebird-cancellation tests deleted — justified and superseded, but needs explicit sign-off                               | Minor    | Open — needs approval          |
-| W1  | Dev container untouched and Dockerfile identical to master; CI workflows materially changed; no PR ever builds the Dockerfile | Warning  | Open — Docker unavailable here |
-| W2  | qlty coverage never uploaded for stacked PRs, so the green `qlty check` carries no coverage verdict                           | Warning  | Open — after retarget          |
-| W3  | Three commits behind master                                                                                                   | Info     | Open — needs a merge commit    |
-| W4  | Pre-existing oversized files; none touched by this PR                                                                         | Info     | Noted                          |
-| W5  | `Introduction.sass` (727) and `project.sass` (261) touched but not split, while `Realia.sass` was                             | Info     | Addressed — no claim made      |
-
-## Severity
-
-| Severity | Count | Meaning                                                                                                           |
-| -------- | ----- | ----------------------------------------------------------------------------------------------------------------- |
-| Blocker  | 4     | Must be cleared before merge. F1 and F4 are actionable here; F2 and F3 need a different branch or another person. |
-| Major    | 2     | Should be fixed in this PR. F5 contradicts documented behaviour; F6 reintroduces the pattern this PR removed.     |
-| Minor    | 6     | Worth fixing before merge; none changes runtime behaviour.                                                        |
-| Warning  | 2     | Not defects. Read before merging — they describe what the green checks do _not_ cover.                            |
-| Info     | 3     | Context; no action required beyond a decision on W5.                                                              |
+| #   | Severity            | Where                                                                                                                                                                                                                                                         | Finding                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        | What to do                                                                                                                                                                                                                   | Status                                                                                                                                                                                                 |
+| --- | ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| B1  | Blocker             | PR settings                                                                                                                                                                                                                                                   | Base `chore/ts7-tsconfig-migration` belongs to #773, which was closed unmerged on 2026-09-22. Merging #774 would update that dead branch, not `master`.                                                                                                                                                                                                                                                                                                                                                                                                                        | Retarget #774 to `master`. It merges cleanly today (0 commits behind, 0 conflicts). Update the description, which still says GitHub will retarget automatically.                                                             | **Fixed** — retargeted to `master` on GitHub (2026-09-23)                                                                                                                                              |
+| B2  | Blocker (Major)     | `src/bibliography/application/BibliographyEntryLoader.ts:124`, `:134`                                                                                                                                                                                         | A batch `findMany` (and its single-`find` fallback) caches its entries after it settles, even if `clear()` ran in the meantime because the auth scope changed. User B can be served user A's entry. `BibliographyEntryLoader.batch.test.ts:96` asserts this unsafe behaviour. Pre-existing on `master`; this PR moved it and wrote a test that locks it in.                                                                                                                                                                                                                    | Add a generation counter that `clear()` bumps. Cache only if the generation still matches, as `find()` already does with `requestReference`. Invert the test.                                                                | **Fixed** — working tree, not committed                                                                                                                                                                |
+| B3  | Blocker (Major)     | `src/fragmentarium/ui/fragment/CuneiformFragment.tsx:162-178`, `:91`; `src/fragmentarium/ui/info/Info.tsx:39`; `GenreEditor.tsx:168`, `:175`                                                                                                                  | `handleSave` sends every save. `saving` disables only `EditorTabs`, so `Info` → `GenreEditor` stays live. Add a genre, then delete it before the add returns: both POSTs reach the server, the add can land last, and the UI shows the delete.                                                                                                                                                                                                                                                                                                                                 | Disable every fragment write control while `saving`, or serialise saves through one queue. Add a test where the saves resolve in reverse order.                                                                              | **Fixed** — working tree, not committed                                                                                                                                                                |
+| B4  | Blocker (Major)     | `src/chronology/application/DateSelection.tsx:86`, `:102`; `src/chronology/ui/DateEditor/DatesInTextSelection.tsx:65-93`                                                                                                                                      | Delete is hard-coded `disabled={false}` and Save ignores `isSaving`. `DatesInTextSelection` skips `runWrite` entirely, so it has no staleness guard. Its row editors don't share the parent's pending lock. Overlapping date saves can finish out of order.                                                                                                                                                                                                                                                                                                                    | Disable the inputs and Save/Delete/Add while `isSaving`, including the row editors, or serialise the writes. Move `DatesInTextSelection` onto `runWrite`. Add reverse-order tests for both date paths.                       | **Fixed** — working tree, not committed                                                                                                                                                                |
+| B5  | Blocker (Minor)     | `src/common/utils/ConcurrencyLimiter.ts:20-22`                                                                                                                                                                                                                | A queued waiter removes its abort listener on handoff, but `run()` resumes one microtask later. An abort in that gap is lost, and the cancelled operation runs.                                                                                                                                                                                                                                                                                                                                                                                                                | Check `signal?.aborted` inside the `try` after `acquireSlot`, so `finally` still releases the slot. Make the handoff-race test assert that the operation was not called and that the promise rejected with the abort reason. | **Fixed** — working tree, not committed                                                                                                                                                                |
+| B6  | Blocker (Major)     | `src/fragmentarium/ui/image-annotation/Annotator.tsx:82`; `src/fragmentarium/ui/search/SearchFormPeriod.tsx:142`; `src/dictionary/ui/display/WordDisplayLogograms.tsx:91-92`                                                                                  | Three `withData` getters ignore their `signal`, although `findPhoto`, `fetchPeriods` and `signService.search` all accept one. All three were cancellable through the Bluebird chain on `master`, so this is a regression.                                                                                                                                                                                                                                                                                                                                                      | Pass `signal` in all three getters. Add tests that the signal reaches `fetchJson`/`fetchBlob`, in the same style as `FragmentRepository.abortSignal.test.ts`.                                                                | **Fixed** — working tree, not committed                                                                                                                                                                |
+| N1  | Major (own finding) | `src/markup/ui/markup.tsx:44` → `src/markup/application/MarkupService.ts:18`; `src/fragmentarium/ui/image-annotation/annotation-tool/FragmentAnnotation.tsx:50` → `src/signs/application/SignService.ts:29` → `src/signs/infrastructure/SignRepository.ts:58` | A sweep of every `withData` getter found two more reads that were cancellable on `master` (Bluebird) and now take no signal at all. `MarkupService.fromString` is a plain GET and renders on many pages. `associateSigns` sends one sign `search` per annotation token, and none of them can be cancelled. Neither is in the README's list of reads exempt from taking a signal (shared-cache, POST, async-select), so the README's "everything else … threads one all the way into `fetch`" is still false. All other signal-less getters are covered by that exemption list. | Add `signal?` to `fromString` and `associateSigns` (through `attachSignToToken` → `search`), pass it from both getters, and add both to the forwarding tests.                                                                | **Fixed** — working tree, not committed                                                                                                                                                                |
+| B7  | Blocker (Major)     | `src/signs/ui/CuneiformConverter/CuneiformConverterForm.tsx:94-96`; `src/signs/application/SignService.ts:55`; `src/signs/infrastructure/SignRepository.ts:127`                                                                                               | `query(line)` drops the conversion signal, and neither `getUnicodeFromAtf` accepts one. Convert again, or unmount, and every old HTTP request keeps running. Only queued work and stale rendering are cancelled. Also a regression from `master`. The `Promise.resolve(...)` wrapper is now redundant.                                                                                                                                                                                                                                                                         | Thread `signal` through query → service → repository → `fetchJson`, and assert on the real `RequestInit.signal`. Drop the wrapper.                                                                                           | **Fixed** — working tree, not committed                                                                                                                                                                |
+| B8  | Blocker (Major)     | `src/dossiers/infrastructure/DossiersRepository.ts:28-31`                                                                                                                                                                                                     | This PR started passing the signal (`DossiersSearchPage.tsx:133`) but left the catch-all untouched. Navigating away now logs `Failed to fetch dossiers` as a warning and resolves `[]`, so `withData` never sees the cancel. Introduced by this PR.                                                                                                                                                                                                                                                                                                                            | Rethrow aborts with `isAbortError` before the fallback. Add a repository test for the abort case.                                                                                                                            | **Fixed** — working tree, not committed                                                                                                                                                                |
+| B9  | Blocker (Minor)     | `src/common/hooks/usePromiseEffect.ts:18-21`                                                                                                                                                                                                                  | Unmount cleanup aborts only the read slot. A write that finishes after navigation still runs its `applyWhenCurrent` handlers. The PR description and README call this deliberate (React 18 makes `setState` a no-op), but a handler that does more than `setState` would still fire.                                                                                                                                                                                                                                                                                           | Call `writeOperation.current.supersede()` in cleanup, without aborting the request. Update the unmount test to expect a stale token. Fix the README and PR description to match.                                             | **Fixed** — working tree, not committed                                                                                                                                                                |
+| B10 | Blocker             | Review state                                                                                                                                                                                                                                                  | Fabdulla1 posted `CHANGES_REQUESTED` on `2b391cdd` today. The August review is superseded, but the new one blocks approval until B1-B9 are done and re-reviewed.                                                                                                                                                                                                                                                                                                                                                                                                               | Fix B1-B9, then re-request review.                                                                                                                                                                                           | Open — reviewer                                                                                                                                                                                        |
+| B11 | Blocker             | Repo root                                                                                                                                                                                                                                                     | Eight `TASK-*.md` scratch files are tracked on the branch (five `TASK-774-*`, three `TASK-ts7-migration-*`). No new `.md` files may land.                                                                                                                                                                                                                                                                                                                                                                                                                                      | Delete all eight and add `TASK-*.md` to `.gitignore` in the same commit, right before merge.                                                                                                                                 | Open — keep until merge, by decision (2026-09-23)                                                                                                                                                      |
+| B12 | Blocker             | CodeQL                                                                                                                                                                                                                                                        | The `Analyze (javascript)` warning shows CodeQL skipped the diff (300-file cap). The PR is 512 files against `master`, so retargeting doesn't fix it. The green "No new alerts" means nothing was checked.                                                                                                                                                                                                                                                                                                                                                                     | Split the PR (the Sass migration is 48 separable files), or read the branch's CodeQL alerts in the GitHub UI before merging. The token can't read the alerts API (403).                                                      | Open — alerts to be read in the GitHub UI before merge, by decision (2026-09-23)                                                                                                                       |
+| M1  | Minor               | PR description                                                                                                                                                                                                                                                | Stale in three places. It says the PR is stacked on #773 and will auto-retarget; it calls post-unmount write callbacks deliberate (see B9); it says both "60 entrypoints" and "59/59".                                                                                                                                                                                                                                                                                                                                                                                         | Rewrite those three passages once B1 and B9 are done.                                                                                                                                                                        | **Partly fixed** — stacked-on-#773 note and "59/59" corrected on GitHub; the unmount passage and a round-9 section wait until the fixes are pushed, because the pushed code still behaves as described |
+| M2  | Minor               | PR scope                                                                                                                                                                                                                                                      | The two bluebird-cancellation tests deleted in round 8 (F12) still have no sign-off. The deletion is justified, and `ApiClient.requests.test.ts` covers the same ground with `AbortSignal`.                                                                                                                                                                                                                                                                                                                                                                                    | Confirm the deletion, or ask for the tests back.                                                                                                                                                                             | **Approved** — deletion signed off (2026-09-23)                                                                                                                                                        |
+| W1  | Warning             | `.devcontainer/`, `Dockerfile`, `.github/workflows/`                                                                                                                                                                                                          | Dev container and Dockerfile are unchanged. The workflow changes are sound: checkout/setup-node v5, codeql-action v4, least-privilege `permissions`, a real retry-then-fail install loop, the no-bluebird guard, `yarn test:ci` and `yarn build:ci-stable`, and `docker-test` now `needs: [test]`. The dropped `SLACK_WEBHOOK_URL` env was already unused on `master`. No PR ever builds the Dockerfile.                                                                                                                                                                       | Run `docker build .` locally before merging.                                                                                                                                                                                 | Open — no Docker here                                                                                                                                                                                  |
+| W2  | Warning             | `main.yml` qlty step                                                                                                                                                                                                                                          | Coverage uploads only when the PR's base is `master`, so this PR's green `qlty check` is static analysis only.                                                                                                                                                                                                                                                                                                                                                                                                                                                                 | Re-check qlty once B1 retargets to `master`.                                                                                                                                                                                 | Open — after retarget                                                                                                                                                                                  |
+| W3  | Warning             | #779                                                                                                                                                                                                                                                          | #774 and #779 conflict in five files: `codeql-analysis.yml`, `main.yml`, `update-sitemaps.yml`, `craco.config.js`, and `DateSelectionMethods.test.ts` (add/add).                                                                                                                                                                                                                                                                                                                                                                                                               | Whichever PR lands second resolves them. Keep #779's pinned action SHAs and this PR's `test:ci` and `build:ci-stable` steps.                                                                                                 | Open                                                                                                                                                                                                   |
+| I1  | Info                | `secret-scan.yml` (not in this diff)                                                                                                                                                                                                                          | The GitGuardian jobs warn about Node 20 on a SHA-pinned `actions/checkout`. Pre-existing; #779 pins v7.0.1 and fixes it.                                                                                                                                                                                                                                                                                                                                                                                                                                                       | Nothing here.                                                                                                                                                                                                                | Noted                                                                                                                                                                                                  |
+| I2  | Info                | All jobs                                                                                                                                                                                                                                                      | `ubuntu-latest` moves to Ubuntu 26 on 2026-10-19.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              | Nothing here.                                                                                                                                                                                                                | Noted                                                                                                                                                                                                  |
 
 ## Remediation applied
 
-Applied on 2026-09-22 against `ee275e43`, in the working tree. Everything except the `.md` cleanup (F1) was addressed; F2, F3, F4, F12, W1, W2 and W3 cannot be closed from inside this diff and are listed with what each one needs.
+Every code finding is fixed in the working tree, and nothing is committed. Each new or changed test was also run against the unfixed code and fails there, so none of them passes by accident.
 
-**F5 — the signal now reaches `fetch`.** `FragmentRepository._fetch` takes a `signal` and passes it to `fetchJson`; `random`, `interesting` and `fetchNeedsRevision` take the `signal` their own port already declared; `statistics`, `lineToVecRanking`, `fragmentPager` and `findInCorpus` take one through the service and the port. `FragmentRepository.abortSignal.test.ts` is new and asserts, for all seven, that the caller's signal arrives at `apiClient.fetchJson`. The five `withData` type arguments written `{ fragmentService }` are now `{ fragmentService: FragmentService }` — the fifth, `FolioImage.tsx`, was not in the original finding but is the identical hole and was closed with it, which is the point of the fix: the compiler now rejects the next dropped argument rather than swallowing it.
+| #   | Change                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       | Test that proves it                                                                                                                                                                                                                         |
+| --- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| B2  | `BibliographyEntryLoader` keeps a `cacheGeneration` that `clear()` increments. The batch and fallback cache writes only happen if the generation they started with is still current.                                                                                                                                                                                                                                                                                                                                                         | `BibliographyEntryLoader.batch.test.ts` — the old test that asserted the unsafe caching is inverted, and a new test covers the single-`find` fallback.                                                                                      |
+| B3  | `CuneiformFragment` sends every save through a new `SerialQueue` (`common/utils/SerialQueue.ts`, added to `fullyCoveredPaths`). Saves reach the server in click order, and only the latest result is applied. This covers genres and every editor tab at the single `handleSave` entry point.                                                                                                                                                                                                                                                | `CuneiformFragment.navigation-state.test.tsx` (an add-then-delete genre save from `Info`: the delete isn't sent until the add settles). The two `saveErrors` tests now assert the second save waits for the first. `SerialQueue.test.ts`.   |
+| B4  | Date Save and Delete are disabled while `isSaving`. The dates-in-text Add button and every row editor lock on the parent's pending save (new `isParentSaving` prop). `DatesInTextSelection` now uses `runWrite` + `applyWhenCurrent`, so it has the staleness and unmount guards.                                                                                                                                                                                                                                                            | `pendingDateWrites.test.tsx` — both date paths: a second write can't start while one is pending.                                                                                                                                            |
+| B5  | `ConcurrencyLimiter.run` re-checks `signal.aborted` after `acquireSlot`, inside the `try`, so the slot is still released.                                                                                                                                                                                                                                                                                                                                                                                                                    | `ConcurrencyLimiter.handoff.test.ts` aborts exactly inside the handoff gap and asserts the operation never runs and the promise rejects with an `AbortError`.                                                                               |
+| B6  | `Annotator`, `SearchFormPeriod` and `WordDisplayLogograms` pass their `signal` on.                                                                                                                                                                                                                                                                                                                                                                                                                                                           | `withDataGetters.abortSignal.test.tsx`, `wordDisplayLogograms.test.tsx`.                                                                                                                                                                    |
+| B7  | The signal goes through `CuneiformConverterForm` → `SignService.getUnicodeFromAtf` → `SignRepository.getUnicodeFromAtf` → `fetchJson`. The `Promise.resolve` wrapper is gone. Per-line errors that are cancellations are rethrown instead of being reported as `Query Error`. Typing `SignRepository.apiClient`, which had been an implicit `any`, exposed four hidden type errors; they're fixed with `fetchJson` type arguments, and the transliteration call now passes `authenticate: false` explicitly. That was already its behaviour. | `CuneiformConverterForm.test.tsx` (the signal reaches the service and is aborted on reconvert and on unmount), `CuneiformConverterForm.errors.test.tsx` (a network abort is not reported), `SignRepository.test.ts`, `SignService.test.ts`. |
+| B8  | `DossiersRepository.fetchAllDossiers` rethrows `AbortError` before its fallback.                                                                                                                                                                                                                                                                                                                                                                                                                                                             | `DossiersRepository.fetch.test.ts` — the signal is forwarded, and an abort rejects without `console.warn`.                                                                                                                                  |
+| B9  | `usePromiseEffect`'s cleanup now also supersedes the write slot, without aborting the request. The README says so.                                                                                                                                                                                                                                                                                                                                                                                                                           | `usePromiseEffect.test.tsx` — the unmount tests now expect a stale write token.                                                                                                                                                             |
+| N1  | `MarkupService.fromString` and `SignService`/`SignRepository.associateSigns` accept a signal and pass it to `fetchJson` / to every per-token `search`; `markup.tsx` and `FragmentAnnotation.tsx` pass theirs.                                                                                                                                                                                                                                                                                                                                | `withDataGetters.abortSignal.test.tsx`, `MarkupService.test.ts`, `SignRepository.test.ts`.                                                                                                                                                  |
 
-Removing the `any` immediately surfaced three errors that had been invisible, which is the best evidence the finding was real: `FragmentInCorpus.tsx` was declaring a mutable-array shape incompatible with the repository's `ReadonlyArray`, and two test files were passing partial stubs where a `FragmentService` was required. All three are fixed rather than cast away — `FragmentInCorpus` now uses the shared type, and the two stubs are explicit `as unknown as FragmentService`, matching the `as unknown as Session` precedent already in those files.
+**Two pre-existing problems I fixed along the way:**
 
-**Two duplicated shapes became named types.** `statistics`'s `{ transliteratedFragments; lines; totalFragments }` was written out in the port, the repository, the service and a test; `findInCorpus`'s attestation pair was written out in the port, the repository, the service and `FragmentInCorpus.tsx`. Both are now `FragmentStatistics` and `CorpusAttestations` in `fragmentServicePorts.ts`.
+- `SignRepository.test.ts` had an `associateSigns` error test built as a `try`/`catch` that passed even when nothing threw. It now asserts `rejects`.
+- `DatesInTextSelection.tsx`, `DateSelection.test.tsx` and `ConcurrencyLimiter.test.ts` used relative imports. They now use full module paths.
 
-**The `FragmentInfoRepository` implementation moved to its own module.** Threading the signals pushed `FragmentRepository.ts` from 240 to 253 lines, over the ceiling. Rather than compress the signatures, `statistics`, `lineToVecRanking`, `fragmentPager`, `random`, `interesting`, `fetchNeedsRevision` and `_fetch` moved into `fragmentRepositoryInfo.ts` as `ApiFragmentInfo`, inserted into the existing `ApiFragmentAttestations` → `ApiFragmentUpdates` → `ApiFragmentRepository` chain. `FragmentRepository.ts` is now 178 lines, the new module 85, and the `FragmentInfoRepository` port is implemented in one place. The three `fetchFragmentInfos` callers share a private helper instead of repeating `.then(infos => infos.map(createFragmentInfo))`, and two hand-built `/fragments/<n>/...` URLs now go through `createFragmentPath`.
+**Existing tests I changed, and why.** No test was deleted. The two `CuneiformFragment.saveErrors` tests assumed a second save could finish before the first, and serialisation makes that impossible at the server. They keep their intent, that the superseded outcome is ignored, but now settle the first save first. The converter's stale-result test now waits for the first request to be sent before clicking again, because the B5 fix correctly stops a request that was aborted before it started. `usePromiseEffect`'s two unmount tests now expect the write to be stale, which is the behaviour B9 asked for.
 
-**F6, F7 — console suppression.** `TextService.misc.test.ts` no longer installs an unasserted spy; both provenance tests use `expectConsoleErrors`, which asserts the arranged error actually occurred and still fails on anything unexpected. The first test's exact-argument check is preserved by matching the error text in the pattern. The `afterEach(jest.restoreAllMocks)` in that describe was removed — it would have restored the spy before `setupTests`' own `afterEach` could read it. In `CuneiformConverterForm.errors.test.tsx` the two tests that never touched the shared spy now assert `expect(consoleErrorSpy).not.toHaveBeenCalled()`, matching the precedent already in that file; all six tests now check it.
+**README.** It now documents that the write slot is superseded on unmount. It adds the rule that writes which can't be aborted must not overlap. And it points to `withDataGetters.abortSignal.test.tsx` and to the rule that a repository's fallback must rethrow `AbortError`.
 
-**F8, F9, F10 — documentation.** `README.md` no longer calls `BibliographyEntryForm` a write owner; the bullet now describes the primitive as guarding _operations that cannot take a signal_ and names `BibliographyEntryForm`'s `Cite.async` as the read case. The "Reads that take no signal" list is now accurate and says explicitly that an accepted-then-dropped signal is a defect, with the TypeScript reason it is not caught. The shared-cache list gained `fetchProvenance` and `fetchProvenanceChildren`, which are cached paths and were missing from it. The PR description was corrected on GitHub: 48 changed Sass files and 60 entrypoints, the build-command claim, the write-owner list, and a new section recording these fixes. `.github/workflows/main.yml:59` now runs `yarn build:ci-stable` instead of repeating its environment inline, which makes the description's claim true and leaves one definition of the CI build.
+## Summary
 
-**F11.** `initializeAnnotations` hoists `tokens.flat()` above the `map`; the inner `find` parameter was renamed to stop shadowing the outer `token`.
+PR #774 removes `bluebird` and replaces its cancellable promises with the web-standard `AbortController`/`AbortSignal` for reads and a token-based `SupersedableOperation` for writes. It also carries a Sass `@import` → `@use` migration (48 files), a 250-line-per-file refactor of everything it touches, and CI/CodeQL changes so stacked PRs run checks. It is 512 files against `master`.
 
-**W5 — no action needed.** The recommendation was to avoid claiming the Sass ceiling had been addressed. No such claim exists in the PR description or the README, so nothing had to change. `Introduction.sass` and `project.sass` are left alone; both are one-line touches and the 250-line rule covers `.ts`/`.tsx`.
+Since round 8, #773 was closed without merging (2026-09-22) and `master` was merged in (`2b391cdd`), leaving the branch 0 commits behind `master` with no conflicts. Fabdulla1 was re-requested and posted a new `CHANGES_REQUESTED` on this head today with nine concerns. Each concern was traced through the code rather than taken on trust, and every one holds. B2 and B4 are pre-existing on `master`, but this PR moved or rewrote that code and, in B2's case, added a test that asserts the unsafe behaviour. B6, B7 and B8 are regressions against `master`. B3's hazard exists on `master` too, but `master` aborted the older save; now both saves reach the server, so the ordering problem is worse.
 
-**Still open, and why.** F1 is excluded by instruction. F2 needs #773's conflicts resolved on a different branch. F3 needs the reviewer. F4 needs either a split under CodeQL's 300-file cap or a manual read of the branch alerts. F12 needs explicit approval for two test removals. W1's `docker build .` needs an environment with Docker. W2 can only be checked after the retarget. W3 needs a merge commit, which was not requested.
+## Findings
 
-## Details
+Full details for each finding are in the **Details** table above. The notes below add only the evidence that doesn't fit in a table cell.
 
-### F1 — Eight `TASK-*.md` scratch documents are tracked on the branch — BLOCKER
+**B1.** `GET /pulls/773` returns `state: closed, merged: false, closed_at: 2026-09-22T11:59:35Z`, and the closing comment is `-> PR #774`. `git merge-base --is-ancestor origin/chore/ts7-tsconfig-migration origin/master` is false. #773's work is inside #774 (its commits are ancestors of `2b391cdd`), so retargeting to `master` loses nothing. `git merge-tree --write-tree HEAD origin/master` reports no conflicts.
 
-**What.** `git diff --name-status origin/master...HEAD -- '*.md'` reports eight added files: `TASK-774-handoff.md`, `TASK-774-log.md`, `TASK-774-merge-master-handoff.md`, `TASK-774-review.md` (this document), `TASK-774-todo.md`, `TASK-ts7-migration-log.md`, `TASK-ts7-migration-research.md`, `TASK-ts7-migration-todo.md`. These are work-tracking scratch, not documentation, and no new `.md` file may be present when this merges. There is also no `TASK-*` rule in `.gitignore`, so nothing stops them coming back.
+**B2.** `find()` guards its cache write with `this.cachedFindRequests.get(id) === requestReference.current`, so a `clear()` in flight prevents the write. `fetchMany()` has no such guard: `entries.forEach((entry) => this.cacheEntry(entry))` runs unconditionally, and the per-id fallback `.then((resolvedEntry) => this.cacheEntry(resolvedEntry))` likewise. `BibliographyService.clearCachesWhenScopeChanges()` is the only caller of `clear()`, and it fires on the next `find`/`findMany`/write after the scope changes. `master`'s `BibliographyService.fetchMany` has the identical unguarded `setCachedValue` calls.
 
-**Reproduction.** `git diff --name-status origin/master...HEAD -- '*.md'` — expect only `README.md` and `.github/copilot-instructions.md`; eight `A` lines appear instead. `grep -n TASK .gitignore` returns nothing.
+**B3.** `master` called `cancelPromise()` at the top of `handleSave`, which aborted the previous save's fetch. That was Fabdulla1's August concern, and superseding it was the right fix. The consequence is that both saves now reach the server. `CuneiformFragment.tsx` passes `disabled={saving}` only to `EditorTabs`; `Info` receives `onSave` and nothing else.
 
-**Recommendation.** Delete all eight in one commit and add a `TASK-*.md` line to `.gitignore` in the same commit, so the files survive locally but never get staged again.
+**B4.** Both button states are unchanged from `master`. What changed is that `DateSelectionState` now uses `runWrite`, so a superseded date save's response is hidden instead of applied, while the backend still applies it. `DatesInTextSelection.saveDates` awaits `updateDateInArray` and then calls `setDatesInTextDisplay` and `setIsSaving(false)` without any staleness check.
 
-### F2 — #773 is open and conflicted against master, and gates the whole stack — BLOCKER
+**B5.** `waitingResolver` calls `signal?.removeEventListener('abort', abortWhileWaiting)` and then `resolve(...)`. `run()` continues after `await this.acquireSlot(signal)` on a later microtask. An abort in that gap fires no listener, and `operation()` runs anyway.
 
-**What.** This PR's base is `chore/ts7-tsconfig-migration`, which is PR #773. The API reports #773 as `state: open`, `mergeable: false`, `mergeable_state: dirty`, last updated 2026-08-05. Until #773's conflicts are resolved and it lands, #774 cannot reach master no matter how green it is. #774's own state against its base is `mergeable_state: clean`, so this is entirely #773's problem.
+**B6-B8.** On `master`, `withData` called `fetchPromise.cancel()` on cleanup, and `ApiClient` returned Bluebird promises backed by `cancellableFetch`, so these three getters, and the converter's `Bluebird.map` over `getUnicodeFromAtf`, were cancelled at the network. The PR description says reads "abort the network on unmount iff the getter threads the signal". These getters don't, and round 8's F5 fix didn't reach them.
 
-**Reproduction.** `curl -s -H "Authorization: Bearer $GITHUB_TOKEN" .../pulls/773` → `mergeable_state: dirty`.
+**N1.** The sweep listed every `withData` getter that ignores its second argument (19 call sites), then checked each called method's signature against the README's exemption list. Of the 19, 14 call shared-cache methods (`FragmentService.find/query/findThumbnail/fetchProvenances`, `TextService`) or a POST read (AfoRegister `search`); both kinds are guard-based on purpose. Three are B6. The remaining two are `markupService.fromString` and `signService.associateSigns`. Neither accepts a signal, neither is cached or POST, and on `master` both returned Bluebird chains that `withData` cancelled. For catch-alls, only `DossiersRepository.fetchAllDossiers` (B8) swallows errors on a read that receives a signal. `ImageRepository.findThumbnail` and the filtered dossier query receive none. For B8, `master`'s `fetchAllDossiers()` took no signal, so its catch-all could never see an abort. The PR added the signal but didn't update the catch-all.
 
-**Recommendation.** Resolve #773's conflicts and land it. It is the single highest-value action available — 30 files, and it unblocks everything downstream.
+**B9.** The React 18 no-op argument is correct for bare `setState`, but `applyWhenCurrent`'s contract is "apply unless superseded", and nothing supersedes on unmount. The five components that own a `SupersedableOperation` already supersede on unmount; `usePromiseEffect` is the one place that doesn't.
 
-### F3 — The standing `CHANGES_REQUESTED` review is still open — BLOCKER
+## Severity
 
-**What.** Review `4854993025`, `CHANGES_REQUESTED`, submitted 2026-08-04 against commit `5ef4a984`. Every substantive point in it is now fixed, and I re-verified each one this round:
+| Severity | Count | Meaning                                                                                                                                                                                                                      |
+| -------- | ----- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Blocker  | 13    | Must be cleared before merge. B1-B10 come from the reviewer's `CHANGES_REQUESTED` and are blockers by rule. B11 and B12 carry over from round 8. Six of the thirteen are Major on their own merits (B2, B3, B4, B6, B7, B8). |
+| Major    | 1     | N1 — my own finding, not the reviewer's. It is the same class as B6 and should go in the same pass.                                                                                                                          |
+| Minor    | 2     | Description accuracy (M1) and a sign-off (M2).                                                                                                                                                                               |
+| Warning  | 3     | Not defects. They describe what the green checks don't cover, and a known conflict with #779.                                                                                                                                |
+| Info     | 2     | CI platform notices; nothing to do here.                                                                                                                                                                                     |
 
-- _"`runWrite` can abort an already dispatched server write"_ — fixed. `runWrite` hands out an `isStale()` predicate from `SupersedableOperation`, never a signal. The exact path named in the review (`DateSelectionMethods` → `FragmentService` → `FragmentRepository` → `postJson` → `fetch`) is now guard-based: `DateSelectionMethods.ts:43-55` wraps the update in `applyWhenCurrent`, and `postJson` has no signal parameter to abort with. The other three named entry points (`ChapterEditView.tsx:60,81`, `ScriptSelection.tsx:64`, `CuneiformFragment.tsx:146-178`) are the same shape.
-- _"add an integration-level test that reaches a mocked ApiClient or fetch"_ — done. `src/common/hooks/usePromiseEffect.write.integration.test.tsx` renders a real form over a real `ApiClient` with `fetch` mocked, and asserts separately that no signal is attached to a dispatched write, that a second write does not abort the first, and that a superseded write cannot overwrite current UI state.
-- _"files that hit the 250-line ceiling"_ — all seven named files are under the limit; `TextService.ts` went from 597 lines to 70.
-
-The review event itself still stands, and a `CHANGES_REQUESTED` blocks approval regardless of whether the concerns are addressed.
-
-**Recommendation.** Ask the reviewer to re-review and dismiss. Reviewer assignment is never touched automatically.
-
-### F4 — CodeQL has never diff-analysed this PR, and landing #773 will not fix that — BLOCKER
-
-**What.** The `CodeQL` check on the current head is green with the title _"No new alerts in code changed by this pull request"_, but that title is not evidence. The `Analyze (javascript)` check run on the same sha carries a warning annotation:
-
-> `Cannot retrieve the full diff because there are too many (300) changed files in the pull request.`
-
-CodeQL's diff-informed analysis is capped at 300 changed files. This PR shows 707 against its base, so the stage was skipped and the "no new alerts in code changed by this pull request" verdict was reached without ever computing what that code is.
-
-Round 7 recorded this as something the retarget would fix. It will not. `git diff --name-only origin/master...HEAD` is **510 files**, and #773's own diff is only 30 — so after #773 lands and this PR retargets to master, the diff will still be roughly 480-510 files, still well over the 300-file cap. The gap is structural, not an artefact of the stacking.
-
-**Reproduction.** `curl .../check-runs/105254872913/annotations` → the warning above. `git diff --name-only origin/master...HEAD | wc -l` → 510. `git diff --name-only origin/master...origin/chore/ts7-tsconfig-migration | wc -l` → 30.
-
-**Recommendation.** Either split this PR so each piece lands under 300 changed files (the Sass `@import` → `@use` migration is 48 files and entirely separable from the bluebird work, as is the 250-line test split), or accept that CodeQL cannot diff this PR and read the branch-level alerts by hand at `/security/code-scanning?query=pr:774+tool:CodeQL+is:open` before merging. Do not treat the green check as coverage. The alerts REST API returns `403 Resource not accessible by integration` for the available token, so this has to be read in the UI.
-
-### F5 — Seven reads advertise abortability they do not have — MAJOR
-
-**What.** Seven call sites pass an `AbortSignal` into a method that has no signal parameter. The argument is silently discarded and the request is never abortable. They split into two groups by _how_ the type system fails to catch it.
-
-**Group A — hidden behind an implicit `any`.** Four `withData` getters. The middle type argument is written as `{ fragmentService }`, which in a type position means `{ fragmentService: any }`. `tsconfig.json` sets `noImplicitAny: false` (pre-existing on master), so this compiles and passing an extra argument typechecks vacuously:
-
-| Call site                                                           | Calls                                                         | Declared as                                                        |
-| ------------------------------------------------------------------- | ------------------------------------------------------------- | ------------------------------------------------------------------ |
-| `src/fragmentarium/ui/front-page/Statistics.tsx:60`                 | `fragmentService.statistics(signal)`                          | `statistics(): Promise<...>` — `FragmentService.ts:44`             |
-| `src/fragmentarium/ui/line-to-vec/FragmentLineToVecRanking.tsx:100` | `fragmentService.lineToVecRanking(props.number, signal)`      | `lineToVecRanking(number: string)` — `FragmentService.ts:52`       |
-| `src/fragmentarium/ui/fragment/FragmentInCorpus.tsx:23`             | `fragmentService.findInCorpus(props.fragment.number, signal)` | `findInCorpus(number: string)` — `FragmentService.ts:106`          |
-| `src/fragmentarium/ui/fragment/FragmentPager.tsx:55`                | `fragmentService.fragmentPager(props.fragmentNumber, signal)` | `fragmentPager(fragmentNumber: string)` — `FragmentService.ts:148` |
-
-**Group B — fully typed and still wrong.** This is the interesting one, because no `any` is involved. `FragmentInfoRepository` in `src/fragmentarium/application/FragmentSearchService.ts:12-16` declares:
-
-```ts
-random(signal?: AbortSignal): FragmentInfosPromise
-interesting(signal?: AbortSignal): FragmentInfosPromise
-fetchNeedsRevision(signal?: AbortSignal): FragmentInfosPromise
-```
-
-`FragmentRepository` implements all three with **no parameters at all** (`FragmentRepository.ts:94`, `:100`, `:106`), each calling `this._fetch({ ... })`, and `_fetch(params)` at `:112` calls `apiClient.fetchJson(url, false)` with no signal. TypeScript accepts a function of fewer parameters where more are expected, so this assignment is legal and `yarn tsc` stays green. `FragmentSearchService` dutifully threads the signal (`:26`, `:36`, `:46`) into a method that ignores it.
-
-Three live UI call sites rely on that contract:
-
-| Call site                                              | Chain                                                                                                       |
-| ------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------- |
-| `src/fragmentarium/ui/front-page/LuckyButton.tsx:17`   | `FragmentSearchService.random(signal)` → `FragmentRepository.random()` → `_fetch` → `fetchJson(url, false)` |
-| `src/fragmentarium/ui/PioneersButton.tsx:16`           | same, `interesting`                                                                                         |
-| `src/fragmentarium/ui/front-page/NeedsRevision.tsx:33` | same, `fetchNeedsRevision`                                                                                  |
-
-`NeedsRevision.tsx:25-28` even writes the prop type out explicitly as `fetchNeedsRevision: (signal?: AbortSignal) => Promise<readonly FragmentInfo[]>`. The type is deliberate, documented, and unfulfilled.
-
-**Why it matters.** This is not a runtime regression — these reads were not abortable on master either, and `withData`'s `requestSequence` guard still prevents stale state, so nothing renders wrongly. But `README.md` asserts the opposite in the section this PR adds: _"Reads that take no signal ... Everything else reachable from a `withData` getter or `run` threads one."_ That sentence is false for seven reads. The whole point of this PR's design is that the type system, not convention, enforces where signals go; here the type system says "abortable" and the network says otherwise.
-
-**Reproduction.** Open `/fragmentarium` and navigate away while the "needs revision" list is loading — the request continues to completion. Compare `FragmentSearchService.ts:13-15` against `FragmentRepository.ts:94,100,106`. Or attach `signal.addEventListener('abort', ...)` in `NeedsRevision`'s getter and confirm the underlying `fetch` is never cancelled.
-
-**Recommendation.** Thread the signal the last mile: give `FragmentRepository._fetch(params, signal?)` the parameter and pass it to `fetchJson`, then give `random` / `interesting` / `fetchNeedsRevision` the `signal?: AbortSignal` their own port already promises. Do the same for `statistics`, `lineToVecRanking`, `findInCorpus` and `fragmentPager`, and replace the four `{ fragmentService }` type arguments with `{ fragmentService: FragmentService }` so the compiler catches the next one. If any of these are deliberately left unabortable, say so in the README's "Reads that take no signal" list instead of leaving the blanket claim standing.
-
-### F6 — Unasserted `console.error` suppression reintroduced in a new test file — MAJOR
-
-**What.** `src/corpus/application/TextService.misc.test.ts:84`, in the test _"retries provenance preload after a failed first attempt"_:
-
-```ts
-jest.spyOn(console, 'error').mockImplementation(() => undefined)
-```
-
-The spy is never asserted on and never referenced again. That is blanket suppression: any `console.error` this test emits, expected or not, is swallowed. This PR's own achievement was deleting `silenceConsoleErrors` and replacing it with the pattern-scoped `expectConsoleErrors` / `tolerateConsoleErrors` helpers — and this file, which the PR adds, reintroduces exactly the pattern that was removed. The sibling test 30 lines above does it correctly, asserting `expect(consoleErrorSpy).toHaveBeenCalledWith('Failed to preload provenances', provenanceError)`.
-
-**Reproduction.** `sed -n '80,90p' src/corpus/application/TextService.misc.test.ts`. Introduce an unrelated `console.error` anywhere in the `findManuscripts` path and the test still passes silently.
-
-**Recommendation.** Replace with `expectConsoleErrors(/Failed to preload provenances/)` from `setupTests`, which both tolerates the arranged error and asserts it actually occurred, and fails on anything unexpected.
-
-### F7 — Blanket `beforeEach` console spy covers two tests that never assert on it — MINOR
-
-**What.** `src/signs/ui/CuneiformConverter/CuneiformConverterForm.errors.test.tsx:29` installs `jest.spyOn(console, 'error').mockImplementation(...)` in a `beforeEach` that applies to every test in the file. Four of the six tests assert on the spy; _"converts on Shift + Enter"_ (`:71`) and _"does not convert on Enter without Shift"_ (`:84`) never do. For those two, console noise is suppressed with nothing checking it. Same class as F6, smaller blast radius, and also a file this PR adds.
-
-**Recommendation.** Move the spy into the four tests that assert on it, or give the two that do not an `expect(consoleErrorSpy).not.toHaveBeenCalled()`.
-
-### F8 — `BibliographyEntryForm` is documented as a write owner; it guards a read — MINOR
-
-**What.** `README.md` and the PR description both list five components that \*"own a single **write\***" and hold their own `SupersedableOperation`: `TransliterationForm`, `WordEditor`, `BibliographyEntryFormController`, `BibliographyEntryForm` and `CuneiformFragment`. Four of those are writes. `BibliographyEntryForm`'s `loadOperation` (`BibliographyEntryForm.tsx:51,117-121`) guards `Cite.async(value)` — a debounced **read**, which uses the supersession primitive rather than a signal because citation-js has no abort support at all.
-
-The code is right; the sentence is not. This is the same class as round 7's F9 (_"four components"_ → five), so doc accuracy in this area has now been wrong twice.
-
-**Recommendation.** Reword to say the primitive guards _operations that cannot take a signal_ — which covers both the writes and `Cite.async` — and name `BibliographyEntryForm` as the read case explicitly.
-
-### F9 — The PR description misstates CI's build command, and the workflow duplicates a script that already exists — MINOR
-
-**What.** The Verification section claims `yarn build:ci-stable` is _"the command CI's build step runs"_. It is not. `.github/workflows/main.yml:59` runs `GENERATE_SOURCEMAP=false DISABLE_ESLINT_PLUGIN=true NODE_OPTIONS=--max_old_space_size=1536 yarn build`, spelled out inline. The effect is equivalent — `package.json` defines `build:ci-stable` as exactly that env plus `craco build` — but the claim is literally false, and the workflow is hand-copying a script that exists three lines away in `package.json`, which is the DRY gate's whole subject.
-
-**Recommendation.** Change `main.yml:59` to `run: yarn build:ci-stable`. Then the description's claim becomes true and there is one definition of the CI build instead of two.
-
-### F10 — Sass counts in the PR description have drifted — MINOR
-
-**What.** The description says the migration covers _"47 files"_ and that _"all 59 Sass entrypoints"_ compile byte-identically. Actual: 42 modified plus 6 added (the `Realia.sass` split partials) = **48** changed `.sass` files, and **60** entrypoints in `src` (69 total, 9 partials).
-
-**Reproduction.** `git diff --name-status origin/master...HEAD -- '*.sass' '*.scss' | awk '{print $1}' | sort | uniq -c` → `6 A`, `42 M`. `find src \( -name '*.sass' -o -name '*.scss' \) ! -name '_*' | wc -l` → 60.
-
-**Recommendation.** Update both numbers, or drop the counts and keep the byte-identical claim, which is the part that matters.
-
-### F11 — `initializeAnnotations` recomputes `tokens.flat()` once per annotation — MINOR
-
-**What.** `src/fragmentarium/ui/image-annotation/annotation-tool/initializeAnnotations.ts:10-17` calls `tokens.flat()` inside `initialAnnotations.map(...)`, so the whole token matrix is flattened once per annotation — O(annotations × tokens) where O(annotations + tokens) would do. I diffed it against `origin/master:src/.../FragmentAnnotation.tsx:67-81` and the extraction is byte-identical, so this is pre-existing and not a regression. But pulling the function out into its own module was the natural moment to hoist the `flat()` out of the loop, and it was not taken.
-
-**Recommendation.** Hoist `const flatTokens = tokens.flat()` above the `map`. One line, behaviour identical, and the file is already on the 100% coverage list so the existing tests cover it.
-
-### F12 — Two tests were deleted; the removal is justified but needs explicit sign-off — MINOR
-
-**What.** `src/http/ApiClient.edge-cases.test.ts` was split up and two of its tests did not survive: _"Cancelled promise rejects without completing"_ and _"Request cancellation is available on all methods"_. Both assert on `promise.cancel()` / `promise.isCancelled()` — bluebird APIs that no longer exist, so the assertions are genuinely no longer meaningful. Equivalents now exist and are stronger: `ApiClient.requests.test.ts` has _"Forwards the abort signal to fetch"_, _"The abort signal can be passed to the read methods"_ and _"Writes never attach an abort signal"_.
-
-I checked the other five deleted test files and every one of their tests is re-homed — including the security suite, where _"should not allow write operations for guest users"_ survives as an `it.each` over the same six permissions in `react-auth0-spa.guestPermissions.test.ts:25`.
-
-**Recommendation.** No code change needed, but the project rule is that no test is removed without explicit approval. Confirm these two and the record is clean.
-
-### W1 — Dev container and infrastructure — WARNING, read before merging
-
-**`.devcontainer/` is untouched.** `git diff --stat origin/master HEAD -- .devcontainer` is empty. All four files — `Dockerfile`, `devcontainer.json`, `inject-secrets.sh`, `README.md` — are byte-identical to master. **The root `Dockerfile` is also byte-identical to master**; it shows `+4/-4` in the GitHub diff purely because master was merged into this branch and not into the base branch, so that hunk is base-branch drift, not this PR's work.
-
-**The CI workflows are materially changed, and they deserve the scrutiny.** Reviewed line by line against master:
-
-| File                           | Change                                                                                                          | Verdict                                                                                                                                                                |
-| ------------------------------ | --------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `main.yml:7`                   | `pull_request.branches` gains `chore/**`, `feature/**`, `fix/**`                                                | Correct, and the reason this PR has CI at all                                                                                                                          |
-| `main.yml:20,22`               | `checkout@v4` → `v5`, `setup-node@v4` → `v5`                                                                    | Fine, green on this sha                                                                                                                                                |
-| `main.yml:12-14`               | `SLACK_WEBHOOK_URL` env removed                                                                                 | Correct — `grep -rn SLACK .github/ package.json` returns nothing; it was dead and injected into every step's environment                                               |
-| `main.yml:29-35`               | Install retry `break` → `exit 0`, plus an explicit `::error::` and `exit 1` after three attempts                | Correct, and a real fix: the old loop exited 0 after three failures                                                                                                    |
-| `main.yml:37-46`               | New "No bluebird" guard step                                                                                    | Sound; `git grep` inside an `if` condition is not affected by `bash -e`                                                                                                |
-| `main.yml:48-59`               | `if: success() \|\| steps.install.outcome == 'success'` removed from Lint / Compile / Unit Tests / Build        | Behaviour change: the job now fails fast instead of running every step whenever install succeeded. Stricter and correct, but CI will now report only the first failure |
-| `main.yml:56`                  | Unit Tests now `yarn test:ci`                                                                                   | Correct — matches the documented gate                                                                                                                                  |
-| `main.yml:66-70`               | qlty coverage upload gated on `push \|\| base_ref == 'master'`                                                  | Deliberate; see W2                                                                                                                                                     |
-| `main.yml:107`                 | `docker-test` gains `needs: [test]`                                                                             | Real fix: a red master previously still built and pushed `ebl-frontend:test`                                                                                           |
-| `codeql-analysis.yml:24-32`    | Explicit top-level `contents: read` and job-level `actions: read` / `contents: read` / `security-events: write` | Security improvement — stops inheriting the repository default                                                                                                         |
-| `codeql-analysis.yml:48,62,76` | `codeql-action` v3 → v4, `checkout@v4` → `v5`                                                                   | Ahead of the December 2026 v3 deprecation, green on this sha                                                                                                           |
-| `update-sitemaps.yml:14,19`    | `checkout@v4` → `v5`, `setup-node@v4` → `v5`; `persist-credentials: false` preserved                            | Fine                                                                                                                                                                   |
-
-**The thing to actually worry about:** both Docker jobs are `if: github.event_name == 'push' && github.ref == 'refs/heads/master'`, so **no pull request ever builds the Dockerfile**. It carries exact Alpine package pins that rot silently, and the first anyone finds out is a push to master. That is pre-existing, not introduced here, but it is why a Dockerfile change would sail through unchecked.
-
-**Recommendation.** Run `docker build .` locally before merging — I could not, as Docker is unavailable in this container. Longer term, add a build-only (no push, no registry login) Docker job that runs on pull requests.
-
-### W2 — qlty's green check carries no coverage verdict on this PR — WARNING
-
-**What.** `main.yml:66-67` uploads coverage only when `github.event_name == 'push' || github.base_ref == 'master'`. This PR's base is `chore/ts7-tsconfig-migration`, so no `lcov.info` is ever sent. The `qlty check` status is green with _"No blocking issues"_, but that verdict covers static analysis only — coverage was never measured on the qlty side for any commit on this branch.
-
-The reasoning in the workflow comment is sound: a stacked PR is measured against its own base, so uploading it would overwrite the master baseline with a partial figure. The consequence is that the first real qlty coverage check on this work happens **after** the retarget to master, i.e. after review is over.
-
-**Recommendation.** Treat local `yarn test:ci` as the coverage gate until the retarget, then re-check `qlty check` on the retargeted PR before merging. `craco.config.js` enforces the same thresholds locally, so the exposure is small, but the green check should not be read as "coverage is fine".
-
-### W3 — Three commits behind master — INFO
-
-`e281f7ba`, `af0b7942`, `51bfc9ff`. Unchanged since round 7. Not urgent while #773 gates the stack, but merge them before the retarget so conflicts surface here rather than on master.
-
-### W4 — Pre-existing oversized files, none of them this PR's — INFO
-
-The 250-line gate passes for this PR: no `.ts`/`.tsx` file it changes exceeds 250 lines. The repository still has plenty that do — `complexTestText.ts` (3514), `bibliography.tsx` (1290), `react-auth0-spa.test.tsx` (868), `SearchFormDossier.test.tsx` (786), `PdfExport.tsx` (775) — but this PR touches none of them, so they are out of scope here.
-
-### W5 — Two oversized Sass files were touched but not split, while `Realia.sass` was — INFO
-
-`src/Introduction.sass` (727 lines) and `src/about/ui/project.sass` (261) are both over 250 and both touched by this PR — one line each, the `@import` → `@use` migration. The 250-line rule covers `.ts`/`.tsx`, so this is not a gate breach. But the August review's own ceiling list named `src/realia/ui/Realia.sass` (453), and that one _was_ split into six partials. The standard was applied to one Sass file and not to the two larger ones sitting next to it.
-
-**Recommendation.** Either split them too or leave all three alone — but pick one rule. Given both are one-line touches, leaving them is defensible; just do not claim the Sass ceiling was addressed.
+Round-8 carry-over: F1 → B11 (open). F2 → B1 (#773 is now closed rather than conflicted, which is worse). F3 → superseded by the new review (B10). F4 → B12 (open). F5 → partially fixed; B6/B7/B8 are the reads it missed. F12 → M2 (open). W3 (behind `master`) → closed by `2b391cdd`.
 
 ## Reproduction Steps
 
-Every finding above carries its own reproduction inline. The shared setup:
+Shared setup:
 
 ```bash
 git fetch origin
-git checkout chore/remove-bluebird          # ee275e43
+git checkout chore/remove-bluebird          # 2b391cdd
 yarn install --frozen-lockfile
 yarn lint && yarn tsc && yarn test:ci
 ```
 
-Scope and drift:
-
-```bash
-git diff --shortstat origin/chore/ts7-tsconfig-migration...HEAD   # 707 files — what GitHub shows
-git diff --shortstat origin/master...HEAD                         # 510 files — what this PR owns
-git rev-list --count HEAD..origin/master                          # 3
-```
-
-GitHub state (no `gh` CLI in this container; `curl` + `$GITHUB_TOKEN`):
+Base and drift (B1):
 
 ```bash
 API=https://api.github.com/repos/ElectronicBabylonianLiterature/ebl-frontend
-curl -s -H "Authorization: Bearer $GITHUB_TOKEN" "$API/pulls/774/reviews?per_page=100"
-curl -s -H "Authorization: Bearer $GITHUB_TOKEN" "$API/pulls/774/comments?per_page=100"
-curl -s -H "Authorization: Bearer $GITHUB_TOKEN" "$API/issues/774/comments?per_page=100"
-curl -s -H "Authorization: Bearer $GITHUB_TOKEN" "$API/commits/ee275e43/check-runs?per_page=100"
-curl -s -H "Authorization: Bearer $GITHUB_TOKEN" "$API/check-runs/105254872913/annotations"   # the CodeQL 300-file warning
-curl -s -H "Authorization: Bearer $GITHUB_TOKEN" "$API/pulls/773"                             # mergeable_state: dirty
+curl -s -H "Authorization: Bearer $GITHUB_TOKEN" "$API/pulls/773" | jq '{state, merged, closed_at}'
+git merge-base --is-ancestor origin/chore/ts7-tsconfig-migration origin/master; echo $?   # 1
+git rev-list --count HEAD..origin/master                                                  # 0
+git merge-tree --write-tree --name-only HEAD origin/master                                 # no CONFLICT lines
+```
+
+B2 — the existing test documents it: `BibliographyEntryLoader.batch.test.ts:96` _"A batch that settles after a clear still caches its entries"_ passes, and the second `loadEntriesByIds` returns the pre-clear entry with `findMany` called once.
+
+B3 — open a fragment with genre editing rights, and delay `POST /fragments/<n>/genres` (DevTools → throttling). Add a genre, then delete it before the first request returns. Both requests reach the backend; if the add finishes last, the backend holds the genre while the UI shows it removed.
+
+B4 — same procedure on the date editor: save date A, then Delete or save B before A returns, and have A finish last.
+
+B5 — a unit test: `maximumConcurrency = 1`, start op 1, queue op 2 with a controller, release op 1, call `controller.abort()` synchronously right after the release, and assert that op 2 was called (it is, today).
+
+B6/B7 — in a test, render each component with a service whose method records its `signal` argument and unmount it. The recorded signal is `undefined`, so nothing is aborted.
+
+B8 — `DossiersRepository.fetchAllDossiers(abortedSignal)` against an `apiClient.fetchJson` that rejects with an `AbortError` resolves `[]` and calls `console.warn`.
+
+B9 — in `usePromiseEffect.write` tests, start a `runWrite`, unmount, then resolve it: `isStale()` returns `false`.
+
+B12 / W3:
+
+```bash
+curl -s -H "Authorization: Bearer $GITHUB_TOKEN" "$API/check-runs/106736124055/annotations"   # the 300-file warning
+git merge-tree --write-tree --name-only HEAD origin/fix-sitemap-automation-bot-identity         # 5 conflicts with #779
 ```
 
 ## Recommendation
 
-**Still request changes, but the code is now ready.** Every finding inside this diff is fixed: F5 through F11 are applied and verified, and the PR description is corrected on GitHub. What remains is not about the code.
+**Request changes.** The architecture is right, and nothing here argues for going back to aborting writes. But the write-side rule has a consequence this PR hasn't dealt with yet: if writes can't be aborted, they have to be serialised, or the controls that start them have to be locked while one is pending. B3 and B4 are that work. B6-B8 and N1 finish the read-side sweep round 8 started. I've now checked every `withData` getter and every catch-all on a signal-threaded read, so after these five sites the README's claim will actually hold. B2, B5 and B9 are small, local fixes.
 
-Four items block a merge and none can be closed from inside the diff. #773 is conflicted and gates the stack (F2). The August `CHANGES_REQUESTED` needs the reviewer to dismiss it (F3) — every concern in it has been verified fixed across two rounds now. CodeQL has never diff-analysed this PR and the retarget will not change that (F4), so either the PR is split under the 300-file cap or the branch alerts get read by hand. And the eight `TASK-*.md` scratch files still have to go (F1), which was excluded from this pass by instruction.
-
-Two need a decision rather than work: sign-off on the two deleted bluebird-cancellation tests (F12), and a local `docker build .` before merging, because no pull request ever exercises the Dockerfile (W1).
+Retarget to `master` (B1) first. Merging as configured lands nothing, and the retarget is what switches on qlty coverage (W2). Then fix B2-B9 in one pass, rerun the gates, update the description (M1), and re-request Fabdulla1's review. Delete the scratch docs (B11) and settle how CodeQL gets a real verdict (B12) just before merging.
 
 ## Comment Status Tracking
 
-Gathered from the timeline review events, the inline review comments, the issue comments and the GraphQL `reviewThreads` connection on head `ee275e43`.
+Gathered from the timeline review events, the inline review comments, the issue comments and the GraphQL `reviewThreads` connection on head `2b391cdd`.
 
 **Review threads — 6 total, all resolved, all outdated.**
 
-| Thread                 | Author        | Path                                             | Resolved | Outdated | Resolved by   |
-| ---------------------- | ------------- | ------------------------------------------------ | -------- | -------- | ------------- |
-| Similar code, mass 79  | `qltysh[bot]` | `src/corpus/application/TextService.ts:394`      | Yes      | Yes      | `qltysh[bot]` |
-| Similar code, mass 79  | `qltysh[bot]` | `src/corpus/application/TextService.ts:412`      | Yes      | Yes      | `qltysh[bot]` |
-| Similar code, mass 120 | `qltysh[bot]` | `src/common/hooks/usePromiseEffect.test.tsx:52`  | Yes      | Yes      | `qltysh[bot]` |
-| Similar code, mass 120 | `qltysh[bot]` | `src/common/hooks/usePromiseEffect.test.tsx:101` | Yes      | Yes      | `qltysh[bot]` |
-| Similar code, mass 66  | `qltysh[bot]` | `src/corpus/application/TextService.ts:487`      | Yes      | Yes      | `qltysh[bot]` |
-| Similar code, mass 66  | `qltysh[bot]` | `src/corpus/application/TextService.ts:503`      | Yes      | Yes      | `qltysh[bot]` |
+| Thread                 | Author        | Path                                         | Resolved | Outdated |
+| ---------------------- | ------------- | -------------------------------------------- | -------- | -------- |
+| Similar code, mass 79  | `qltysh[bot]` | `src/corpus/application/TextService.ts`      | Yes      | Yes      |
+| Similar code, mass 79  | `qltysh[bot]` | `src/corpus/application/TextService.ts`      | Yes      | Yes      |
+| Similar code, mass 120 | `qltysh[bot]` | `src/common/hooks/usePromiseEffect.test.tsx` | Yes      | Yes      |
+| Similar code, mass 120 | `qltysh[bot]` | `src/common/hooks/usePromiseEffect.test.tsx` | Yes      | Yes      |
+| Similar code, mass 66  | `qltysh[bot]` | `src/corpus/application/TextService.ts`      | Yes      | Yes      |
+| Similar code, mass 66  | `qltysh[bot]` | `src/corpus/application/TextService.ts`      | Yes      | Yes      |
 
-All six are outdated against the current head because `TextService.ts` was split (597 lines → 70) and `usePromiseEffect.test.tsx` was restructured, so the flagged ranges no longer exist.
+**Timeline review events — 4 total.**
 
-**Timeline review events — 3 total.**
+| Review       | Author        | State               | Date       | Commit     | Status                                                                                                                                      |
+| ------------ | ------------- | ------------------- | ---------- | ---------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
+| `4746909786` | `qltysh[bot]` | `COMMENTED`         | 2026-07-21 | `7ba6f490` | Resolved, outdated                                                                                                                          |
+| `4764412287` | `qltysh[bot]` | `COMMENTED`         | 2026-07-23 | `01e61b13` | Resolved, outdated                                                                                                                          |
+| `4854993025` | `Fabdulla1`   | `CHANGES_REQUESTED` | 2026-08-04 | `5ef4a984` | Superseded. All its concerns (write abort, the integration test, the 250-line list) were verified fixed in rounds 7-8 and again this round. |
+| `5292160027` | `Fabdulla1`   | `CHANGES_REQUESTED` | 2026-09-23 | `2b391cdd` | **UNRESOLVED — blocks approval.** 9 concerns, all confirmed: B1-B9. Posted as a review body with no inline threads.                         |
 
-| Review       | Author        | State               | Date       | Commit     | Status                                                                               |
-| ------------ | ------------- | ------------------- | ---------- | ---------- | ------------------------------------------------------------------------------------ |
-| `4746909786` | `qltysh[bot]` | `COMMENTED`         | 2026-07-21 | `7ba6f490` | Resolved, outdated                                                                   |
-| `4764412287` | `qltysh[bot]` | `COMMENTED`         | 2026-07-23 | `01e61b13` | Resolved, outdated                                                                   |
-| `4854993025` | `Fabdulla1`   | `CHANGES_REQUESTED` | 2026-08-04 | `5ef4a984` | **UNRESOLVED — blocks approval (F3).** All three concerns verified fixed this round. |
+**Other timeline events since round 8.** `2b391cdd` pushed on 2026-09-22. #773 closed and cross-referenced to this PR on 2026-09-22. Review re-requested from Fabdulla1 on 2026-09-22. #779 cross-referenced on 2026-09-23.
 
-**Issue comments — 0.** No general PR comments exist.
+**Issue comments — 0.**
 
-**Other review bots.** No `sourcery-ai` review, comment or check run exists on this PR; the only bot reviewer is `qltysh[bot]`. GitGuardian and CodeQL report via check runs only, not comments.
+**Other review bots.** No `sourcery-ai` review, comment or check run exists on this PR. `qltysh[bot]` is the only bot reviewer. GitGuardian and CodeQL report only through check runs.
 
-**Requested reviewers — none currently assigned.** Reviewer assignment is not touched automatically.
+**Requested reviewers — none pending.** Fabdulla1's re-request was fulfilled by today's review.
 
 ## What Has To Be Done
 
-Numbered from what genuinely remains. Items 1-10 of the original list were applied on 2026-09-22; see **Remediation applied** for what changed and why.
+### Blockers — requested by the reviewer
 
-### Blockers
+1. **Retarget #774 to `master` (B1)** and remove the "stacked on #773" note from the description. It merges cleanly today.
+2. **Guard the bibliography batch cache writes with a generation counter (B2)** and invert `BibliographyEntryLoader.batch.test.ts:96` so it expects a refetch after `clear()`.
+3. **Stop overlapping fragment saves (B3)** — disable `Info`/`GenreEditor` (and every other `onSave` caller) while `saving`, or serialise `handleSave`. Add a reverse-resolution test.
+4. **Stop overlapping date saves (B4)** — lock inputs and Save/Delete/Add on `isSaving` in `DateSelection` and `DatesInTextSelection`, including row editors; move `DatesInTextSelection` onto `runWrite`. Add reverse-resolution tests for both.
+5. **Re-check `signal.aborted` after `acquireSlot` in `ConcurrencyLimiter.run` (B5)**, inside the `try`, and tighten the handoff-race test.
+6. **Forward `signal` in `Annotator`, `SearchFormPeriod` and `WordDisplayLogograms` (B6)**, with caller-to-fetch tests.
+   - **Also (N1): add and forward `signal` in `MarkupService.fromString` and `SignService.associateSigns` (N1)** — the sweep's two remaining gaps — with forwarding tests.
+7. **Thread `signal` through the converter's `query` → `SignService.getUnicodeFromAtf` → `SignRepository.getUnicodeFromAtf` → `fetchJson` (B7)**, assert on `RequestInit.signal`, and drop the `Promise.resolve` wrapper.
+8. **Rethrow aborts in `DossiersRepository.fetchAllDossiers` (B8)** before the graceful fallback, with an abort-case test. Sweep `infrastructure/` for other catch-alls on signal-threaded reads.
+9. **Supersede the write slot on unmount in `usePromiseEffect` (B9)**, update the unmount test, and correct the README and PR description.
+10. **Re-request review from Fabdulla1 (B10)** once 1-9 are done and all gates are green.
 
-1. **Resolve #773's merge conflicts and land it (F2).** It is `mergeable_state: dirty` against master and only 30 files. Nothing downstream can merge until it does. — _yours_
-2. **Clear the standing `CHANGES_REQUESTED` (F3).** Every concern is fixed and has now been re-verified in two consecutive rounds; the review event needs a re-review and dismissal. — _needs the reviewer_
-3. **Delete the eight `TASK-*.md` documents (F1)** — `TASK-774-handoff.md`, `TASK-774-log.md`, `TASK-774-merge-master-handoff.md`, `TASK-774-review.md` (this document), `TASK-774-todo.md`, `TASK-ts7-migration-log.md`, `TASK-ts7-migration-research.md`, `TASK-ts7-migration-todo.md` — and add a `TASK-*.md` rule to `.gitignore` in the same commit. — _excluded from this pass by instruction_
-4. **Decide how CodeQL gets a real verdict (F4).** Either split the PR under the 300-file cap — the Sass migration is 48 files and entirely separable, as is the test split — or read the branch alerts at `/security/code-scanning?query=pr:774+tool:CodeQL+is:open` before merging. Landing #773 will not fix this; the diff against master is 510 files. The alerts REST API returns `403` for the available token, so this has to be done in the UI.
+### Blockers — carried over
+
+11. **Delete the eight `TASK-*.md` files (B11)** — `TASK-774-handoff.md`, `TASK-774-log.md`, `TASK-774-merge-master-handoff.md`, `TASK-774-review.md` (this document), `TASK-774-todo.md`, `TASK-ts7-migration-log.md`, `TASK-ts7-migration-research.md`, `TASK-ts7-migration-todo.md` — and add `TASK-*.md` to `.gitignore` in the same commit, right before merge.
+12. **Decide how CodeQL gets a real verdict (B12)**: split the PR under 300 files, or read the branch alerts in the GitHub UI before merging.
 
 ### Approval needed
 
-5. **Confirm the removal of two tests (F12)** — _"Cancelled promise rejects without completing"_ and _"Request cancellation is available on all methods"_. Both assert on bluebird's `.cancel()` / `.isCancelled()`, which no longer exist, and both are superseded by stronger `AbortSignal` tests in `ApiClient.requests.test.ts`. Every test in the other six deleted files was verified re-homed. No test is removed without explicit approval. — _yours_
+13. **Sign off on the two deleted bluebird-cancellation tests (M2)** — _"Cancelled promise rejects without completing"_ and _"Request cancellation is available on all methods"_ — or ask for them back.
 
 ### Before merge
 
-6. **Run `docker build .` locally (W1).** No pull request ever builds the Dockerfile, and it carries exact Alpine pins. Docker is unavailable in this container. Consider adding a build-only Docker job on pull requests.
-7. **Merge the three master commits (W3)** — `e281f7ba`, `af0b7942`, `51bfc9ff` — so conflicts surface here rather than on master. _Not done: a merge is a commit, and commits are not made unprompted._
-8. **Re-check `qlty check` after the retarget to master (W2)**, when coverage is uploaded for the first time.
-9. **Re-run the full gate set against the collapsed diff** after the retarget, and confirm `test`, `CodeQL` and `qlty check` are green across more than one run.
-10. **Delete this review document** along with the other seven `TASK-*.md` files before merging.
+14. **Fix the three stale passages in the PR description (M1).**
+15. **Run `docker build .` locally (W1).** No PR job builds the Dockerfile.
+16. **Re-check `qlty check` after the retarget (W2)**, when coverage uploads for the first time.
+17. **Plan the #779 conflict (W3)** — whichever PR lands second resolves five files.
+18. **Rerun lint, tsc and `yarn test:ci`** after the fixes and confirm `test`, `CodeQL` and `qlty check` are green on the new head.

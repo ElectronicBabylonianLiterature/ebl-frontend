@@ -41,6 +41,13 @@ describe('DossiersRepository - fetchAllDossiers', () => {
     expect(response).toEqual([record])
   })
 
+  it('resolves no dossiers when the wrapper holds no list', async () => {
+    const { apiClient, dossiersRepository } = context
+    apiClient.fetchJson.mockResolvedValueOnce({ dossiers: null })
+    const response = await dossiersRepository.fetchAllDossiers()
+    expect(response).toEqual([])
+  })
+
   it('handles empty response', async () => {
     const { apiClient, dossiersRepository } = context
     apiClient.fetchJson.mockResolvedValueOnce([])
@@ -60,6 +67,32 @@ describe('DossiersRepository - fetchAllDossiers', () => {
       'Failed to fetch dossiers:',
       'API Error',
     )
+
+    consoleWarnSpy.mockRestore()
+  })
+
+  it('passes the abort signal to the request', async () => {
+    const { apiClient, dossiersRepository } = context
+    const controller = new AbortController()
+    apiClient.fetchJson.mockResolvedValueOnce([resultStub])
+
+    await dossiersRepository.fetchAllDossiers(controller.signal)
+
+    expect(apiClient.fetchJson).toHaveBeenCalledWith(
+      '/dossiers',
+      false,
+      controller.signal,
+    )
+  })
+
+  it('rethrows an abort instead of falling back to an empty result', async () => {
+    const { apiClient, dossiersRepository } = context
+    const consoleWarnSpy = jest.spyOn(console, 'warn')
+    const abortError = new DOMException('aborted', 'AbortError')
+    apiClient.fetchJson.mockRejectedValueOnce(abortError)
+
+    await expect(dossiersRepository.fetchAllDossiers()).rejects.toBe(abortError)
+    expect(consoleWarnSpy).not.toHaveBeenCalled()
 
     consoleWarnSpy.mockRestore()
   })

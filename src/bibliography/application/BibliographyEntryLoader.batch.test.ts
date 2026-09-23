@@ -19,6 +19,11 @@ function entriesOf(ids: string[]): BibliographyEntry[] {
   return ids.map((id) => context.entries[id])
 }
 
+async function waitForFallbackRequest(): Promise<void> {
+  await new Promise((resolve) => setTimeout(resolve, 0))
+  expect(context.repository.find).toHaveBeenCalledTimes(1)
+}
+
 test('Fetches the missing entries in one batch', async () => {
   context.repository.findMany.mockResolvedValue(entriesOf([first, second]))
 
@@ -93,19 +98,40 @@ test('An id already in flight is not tracked again by a batch', async () => {
   expect(entriesById.get(second)).toBe(context.entries[second])
 })
 
-test('A batch that settles after a clear still caches its entries', async () => {
+test('A batch that settles after a clear does not cache its entries', async () => {
   const deferred = defer<readonly BibliographyEntry[]>()
-  context.repository.findMany.mockReturnValue(deferred.promise)
+  context.repository.findMany.mockReturnValueOnce(deferred.promise)
 
   const batch = context.loader.loadEntriesByIds([first])
   context.loader.clear()
   deferred.resolve(entriesOf([first]))
-  await batch
+  await expect(batch).resolves.toEqual(
+    new Map([[first, context.entries[first]]]),
+  )
 
-  const entriesById = await context.loader.loadEntriesByIds([first])
+  context.repository.findMany.mockResolvedValueOnce(entriesOf([first]))
+  await context.loader.loadEntriesByIds([first])
 
-  expect(entriesById.get(first)).toBe(context.entries[first])
-  expect(context.repository.findMany).toHaveBeenCalledTimes(1)
+  expect(context.repository.findMany).toHaveBeenCalledTimes(2)
+})
+
+test('A batch fallback that settles after a clear does not cache its entry', async () => {
+  const deferred = defer<BibliographyEntry>()
+  context.repository.findMany.mockResolvedValueOnce([])
+  context.repository.find.mockReturnValueOnce(deferred.promise)
+
+  const batch = context.loader.loadEntriesByIds([first])
+  await waitForFallbackRequest()
+  context.loader.clear()
+  deferred.resolve(context.entries[first])
+  await expect(batch).resolves.toEqual(
+    new Map([[first, context.entries[first]]]),
+  )
+
+  context.repository.findMany.mockResolvedValueOnce(entriesOf([first]))
+  await context.loader.loadEntriesByIds([first])
+
+  expect(context.repository.findMany).toHaveBeenCalledTimes(2)
 })
 
 test('An updated entry is served from the cache', async () => {

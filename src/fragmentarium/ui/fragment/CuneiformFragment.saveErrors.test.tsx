@@ -52,7 +52,7 @@ it('Hides and shows the image column', async () => {
   )
 })
 
-it('Ignores a superseded save outcome', async () => {
+it('Dispatches a second save only after the first settles and ignores the superseded outcome', async () => {
   await setup()
   let resolveFirstSave: (saved: Fragment) => void = () => undefined
   const staleFragment = fragmentFactory.build({
@@ -68,21 +68,22 @@ it('Ignores a superseded save outcome', async () => {
 
   submitFormByTestId(screen, 'transliteration-form')
   submitFormByTestId(screen, 'transliteration-form')
-
-  await screen.findAllByText(
-    context.updatedFragment.getExternalNumber('cdliNumber'),
+  await waitFor(() =>
+    expect(context.fragmentService.updateEdition).toHaveBeenCalledTimes(1),
   )
 
   resolveFirstSave(staleFragment)
 
-  await waitFor(() =>
-    expect(
-      screen.queryByText(staleFragment.getExternalNumber('cdliNumber')),
-    ).not.toBeInTheDocument(),
+  await screen.findAllByText(
+    context.updatedFragment.getExternalNumber('cdliNumber'),
   )
+  expect(context.fragmentService.updateEdition).toHaveBeenCalledTimes(2)
+  expect(
+    screen.queryByText(staleFragment.getExternalNumber('cdliNumber')),
+  ).not.toBeInTheDocument()
 })
 
-it('Ignores a superseded save failure', async () => {
+it('Dispatches a second save after a failed first one and ignores the superseded failure', async () => {
   await setup()
   let rejectFirstSave: (error: Error) => void = () => undefined
   context.fragmentService.updateEdition
@@ -95,14 +96,15 @@ it('Ignores a superseded save failure', async () => {
 
   submitFormByTestId(screen, 'transliteration-form')
   submitFormByTestId(screen, 'transliteration-form')
-
-  await screen.findAllByText(
-    context.updatedFragment.getExternalNumber('cdliNumber'),
+  await waitFor(() =>
+    expect(context.fragmentService.updateEdition).toHaveBeenCalledTimes(1),
   )
 
   rejectFirstSave(new Error('Superseded failure'))
 
-  await waitFor(() =>
-    expect(screen.queryByText('Superseded failure')).not.toBeInTheDocument(),
+  await screen.findAllByText(
+    context.updatedFragment.getExternalNumber('cdliNumber'),
   )
+  expect(context.fragmentService.updateEdition).toHaveBeenCalledTimes(2)
+  expect(screen.queryByText('Superseded failure')).not.toBeInTheDocument()
 })

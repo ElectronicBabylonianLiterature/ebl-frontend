@@ -6,6 +6,7 @@ import Info from 'fragmentarium/ui/info/Info'
 import ErrorAlert from 'common/errors/ErrorAlert'
 import Spinner from 'common/ui/Spinner'
 import SupersedableOperation from 'common/utils/SupersedableOperation'
+import SerialQueue from 'common/utils/SerialQueue'
 import applyWhenCurrent from 'common/utils/applyWhenCurrent'
 import './CuneiformFragment.sass'
 import { Fragment } from 'fragmentarium/domain/fragment'
@@ -144,6 +145,7 @@ const CuneiformFragmentController: FunctionComponent<ControllerProps> = ({
   const [isSaving, setIsSaving] = useState(false)
   const [error, setError] = useState<Error | null>(null)
   const saveOperation = useRef(new SupersedableOperation())
+  const saveQueue = useRef(new SerialQueue())
 
   const isCurrentFragment = currentFragment.number === fragment.number
   const visibleFragment = isCurrentFragment ? currentFragment : fragment
@@ -163,7 +165,7 @@ const CuneiformFragmentController: FunctionComponent<ControllerProps> = ({
     setError(null)
     setIsSaving(true)
 
-    const savePromise = save()
+    const savePromise = saveQueue.current.enqueue(save)
     applyWhenCurrent(() => savePromise, {
       onSuccess: (updatedFragment) => {
         setFragment(updatedFragment)

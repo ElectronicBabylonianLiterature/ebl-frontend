@@ -22,6 +22,7 @@ type Props = {
   inList?: boolean
   index?: number
   saveDateOverride?: (updatedDate?: MesopotamianDate, index?: number) => void
+  isParentSaving?: boolean
 }
 
 interface DateEditorProps extends Omit<DateEditorStateProps, 'setSaveError'> {
@@ -83,7 +84,7 @@ export function DateEditor({
     <Button
       className="m-1"
       variant="danger"
-      disabled={false}
+      disabled={isSaving}
       type="button"
       onClick={() => state.saveDate(undefined, index)}
     >
@@ -99,7 +100,7 @@ export function DateEditor({
   const saveButton = (
     <Button
       className="m-1"
-      disabled={!isSelectedDateValid}
+      disabled={!isSelectedDateValid || isSaving}
       type="button"
       onClick={() => state.saveDate(state.getDate(), index)}
       aria-label="Save date button"
@@ -163,6 +164,7 @@ export default function DateSelection({
   inList = false,
   index,
   saveDateOverride,
+  isParentSaving = false,
 }: Props): JSX.Element {
   const target = useRef(null)
   const [isDisplayed, setIsDisplayed] = useState(false)
@@ -179,7 +181,7 @@ export default function DateSelection({
       updateDate={updateDate}
       target={target}
       isDisplayed={isDisplayed}
-      isSaving={isSaving}
+      isSaving={isSaving || isParentSaving}
       setIsDisplayed={setIsDisplayed}
       setIsSaving={setIsSaving}
       date={date}

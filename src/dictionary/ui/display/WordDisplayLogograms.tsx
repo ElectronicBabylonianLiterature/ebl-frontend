@@ -88,7 +88,7 @@ export default withData<
   ({ data: signs, wordId, ...props }) => {
     return <LogogramsDisplay signs={signs} wordId={wordId} {...props} />
   },
-  ({ signService, wordId }) => {
-    return signService.search({ wordId: decodeURIComponent(wordId) })
+  ({ signService, wordId }, signal) => {
+    return signService.search({ wordId: decodeURIComponent(wordId) }, signal)
   },
 )

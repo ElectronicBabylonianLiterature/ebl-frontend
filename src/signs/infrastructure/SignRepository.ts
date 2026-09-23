@@ -1,5 +1,10 @@
 import ApiClient from 'http/ApiClient'
-import Sign, { OrderedSign, SignQuery, UnicodeAtf } from 'signs/domain/Sign'
+import Sign, {
+  OrderedSign,
+  SignDto,
+  SignQuery,
+  UnicodeAtf,
+} from 'signs/domain/Sign'
 import { stringify } from 'query-string'
 import { AnnotationToken } from 'fragmentarium/domain/annotation-token'
 import { AnnotationTokenType } from 'fragmentarium/domain/annotation'
@@ -8,7 +13,7 @@ import _ from 'lodash'
 import { MesopotamianDate } from 'chronology/domain/Date'
 
 class SignRepository {
-  private readonly apiClient
+  private readonly apiClient: ApiClient
 
   constructor(apiClient: ApiClient) {
     this.apiClient = apiClient
@@ -30,12 +35,16 @@ class SignRepository {
 
   private attachSignToToken(
     token: AnnotationToken,
+    signal?: AbortSignal,
   ): Promise<AnnotationToken> | AnnotationToken {
     if (token.couldCorrespondingSignExist() && !token.hasSign) {
-      return this.search({
-        value: token.name.toLowerCase(),
-        subIndex: token.subIndex as number,
-      }).then((results) => this.handleEmptySignSearchResults(token, results))
+      return this.search(
+        {
+          value: token.name.toLowerCase(),
+          subIndex: token.subIndex as number,
+        },
+        signal,
+      ).then((results) => this.handleEmptySignSearchResults(token, results))
     }
     return token
   }
@@ -57,9 +66,10 @@ class SignRepository {
 
   associateSigns(
     tokens: ReadonlyArray<ReadonlyArray<AnnotationToken>>,
+    signal?: AbortSignal,
   ): Promise<ReadonlyArray<ReadonlyArray<AnnotationToken>>> {
     const tokensWithSigns = tokens.map((tokensRow) =>
-      tokensRow.map((token) => this.attachSignToToken(token)),
+      tokensRow.map((token) => this.attachSignToToken(token, signal)),
     )
     return Promise.all(tokensWithSigns.map((token) => Promise.all(token)))
   }
@@ -69,13 +79,9 @@ class SignRepository {
     signal?: AbortSignal,
   ): Promise<CroppedAnnotation[]> {
     return this.apiClient
-      .fetchJson(
-        `/signs/${encodeURIComponent(
-          signName,
-        )}/images?centroids_only=true&include_unclustered=true`,
-        false,
-        signal,
-      )
+      .fetchJson<
+        CroppedAnnotation[]
+      >(`/signs/${encodeURIComponent(signName)}/images?centroids_only=true&include_unclustered=true`, false, signal)
       .then(this.processCroppedAnnotations)
   }
 
@@ -85,26 +91,25 @@ class SignRepository {
     script: string,
   ): Promise<CroppedAnnotation[]> {
     return this.apiClient
-      .fetchJson(
-        `/signs/${encodeURIComponent(
-          signName,
-        )}/images/cluster/${encodeURIComponent(clusterId)}?script=${encodeURIComponent(
-          script,
-        )}`,
-        false,
-      )
+      .fetchJson<
+        CroppedAnnotation[]
+      >(`/signs/${encodeURIComponent(signName)}/images/cluster/${encodeURIComponent(clusterId)}?script=${encodeURIComponent(script)}`, false)
       .then(this.processCroppedAnnotations)
   }
 
   search(signQuery: SignQuery, signal?: AbortSignal): Promise<Sign[]> {
     return this.apiClient
-      .fetchJson(`/signs?${stringify(signQuery)}`, false, signal)
+      .fetchJson<SignDto[]>(`/signs?${stringify(signQuery)}`, false, signal)
       .then((signDtos) => signDtos.map((signDto) => Sign.fromDto(signDto)))
   }
 
   find(signName: string, signal?: AbortSignal): Promise<Sign> {
     return this.apiClient
-      .fetchJson(`/signs/${encodeURIComponent(signName)}`, false, signal)
+      .fetchJson<SignDto>(
+        `/signs/${encodeURIComponent(signName)}`,
+        false,
+        signal,
+      )
       .then(Sign.fromDto)
   }
 
@@ -124,9 +129,11 @@ class SignRepository {
     )
   }
 
-  getUnicodeFromAtf(text: string): Promise<UnicodeAtf[]> {
+  getUnicodeFromAtf(text: string, signal?: AbortSignal): Promise<UnicodeAtf[]> {
     return this.apiClient.fetchJson(
       `/signs/transliteration/${encodeURIComponent(text)}`,
+      false,
+      signal,
     )
   }
 }

@@ -1,9 +1,9 @@
 # TASK-774 — TODO
 
 PR: [#774](https://github.com/ElectronicBabylonianLiterature/ebl-frontend/pull/774)
-Head reviewed: `ee275e43` · Base: `chore/ts7-tsconfig-migration` (#773)
-Last updated: 2026-09-22 (round 8 remediation — every finding applied except the cleanup, which was excluded by instruction)
-Verdict: **11 of 17 findings closed in the working tree, nothing committed.** F1 excluded by instruction; F2, F3, F4, F12, W1, W2 and W3 need a different branch, another person, or a decision.
+Head reviewed: `2b391cdd` · Base: `chore/ts7-tsconfig-migration` (#773 — closed unmerged 2026-09-22)
+Last updated: 2026-09-23 (round 9 — review + remediation, committed locally, not pushed)
+Verdict: **CHANGES REQUESTED.** Fabdulla1's new review (2026-09-23) raises nine concerns, all confirmed in code; the PR still targets the closed #773 branch. 21 findings, 13 blockers. See `TASK-774-review.md`.
 
 ## Round 6 — remediation — DONE
 
@@ -335,3 +335,49 @@ No code changed this round. Gates re-run on `ee275e43`: lint PASS, tsc PASS, `ya
 - [ ] W1 — run `docker build .` locally — **Docker unavailable in this container**
 - [ ] W2 — re-check `qlty check` after the retarget
 - [ ] W3 — merge the three master commits — **needs a merge commit, not requested**
+
+## Round 9 — review only — 2026-09-23
+
+- [x] Gathered every review event, inline comment, issue comment, review thread (resolved/outdated), check run, annotation and combined status on `2b391cdd`
+- [x] Verified each of Fabdulla1's nine 2026-09-23 concerns against the code — 9 of 9 confirmed
+- [x] Checked `.devcontainer/`, `Dockerfile` (unchanged) and the three changed workflows (sound)
+- [x] Checked tracked `.md` files, 250-line ceiling, master drift (0), conflicts with master (none) and with #779 (5 files)
+- [x] `yarn test:ci` on `2b391cdd` — 505 suites / 4445 tests / 50 snapshots, 0 failures, zero console output, coverage 95.09/87.99/94.75/95.23
+- [x] `yarn lint`, `yarn tsc` on `2b391cdd` — both clean
+- [x] `TASK-774-review.md` rewritten for round 9
+- [x] Swept every `withData` getter (19 without a signal) and every signal-read catch-all → N1 (2 more dropped reads); the rest are README-exempt
+
+### Open — code (reviewer blockers)
+
+- [x] B2 — generation-guard the bibliography batch/fallback cache writes; invert `BibliographyEntryLoader.batch.test.ts:96`
+- [x] B3 — lock or serialise fragment saves (`Info`/`GenreEditor` stay live while `saving`); reverse-resolution test
+- [x] B4 — lock date Save/Delete/Add and inputs on `isSaving`; move `DatesInTextSelection` onto `runWrite`; reverse-resolution tests
+- [x] B5 — re-check `signal.aborted` after `acquireSlot` in `ConcurrencyLimiter.run`; tighten handoff test
+- [x] B6 — forward `signal` in `Annotator`, `SearchFormPeriod`, `WordDisplayLogograms`; caller-to-fetch tests; sweep other getters
+- [x] N1 — add + forward `signal` in `MarkupService.fromString` (`markup.tsx:44`) and `SignService.associateSigns` (`FragmentAnnotation.tsx:50`); forwarding tests
+- [x] B7 — thread `signal` through converter `query` → `SignService` → `SignRepository.getUnicodeFromAtf` → `fetchJson`
+- [x] B8 — rethrow aborts in `DossiersRepository.fetchAllDossiers`; abort-case test
+- [x] B9 — supersede the write slot on unmount in `usePromiseEffect`; update test, README, PR description
+
+### Open — outside the code
+
+- [x] B1 — retargeted #774 to `master` (2026-09-23)
+- [ ] B10 — re-request Fabdulla1's review after the fixes — **yours**
+- [ ] B11 — delete the eight `TASK-*.md` files + `.gitignore` rule — **keep until merge, by decision**
+- [ ] B12 — read branch CodeQL alerts in the UI before merge — **decided, yours**
+- [x] M1 (part) — stacked note and 59/59 fixed on GitHub
+- [ ] M1 (rest) — unmount passage + round-9 section once the fixes are pushed
+- [x] M2 — deletion approved
+- [ ] W1 — `docker build .` locally
+- [ ] W2 — re-check qlty after retarget
+- [ ] W3 — plan the five-file conflict with #779
+
+### Round 9 remediation — gates
+
+- [x] `yarn lint` — clean
+- [x] `yarn tsc` — clean
+- [x] `yarn test:ci` — 511 suites / 4480 tests / 50 snapshots, 0 failures, zero console output; coverage 95.19/88.25/94.87/95.34
+- [x] 250-line ceiling on every touched file
+- [x] Every touched source file at 100% coverage; 13 added to `fullyCoveredPaths` (with `SerialQueue.ts`)
+- [x] Handoff rewritten for round 9; round-9 work committed locally (not pushed)
+- [ ] Push, finish the PR description, re-request review, read CodeQL alerts, docker build, delete scratch docs at merge

@@ -19,6 +19,9 @@ export default class ConcurrencyLimiter {
   ): Promise<ReturnValue> {
     const releaseSlot = await this.acquireSlot(signal)
     try {
+      if (signal?.aborted) {
+        throw createAbortError(signal)
+      }
       return await operation()
     } finally {
       releaseSlot()

@@ -15,13 +15,17 @@ export default class MarkupService {
     this.referenceInjector = new ReferenceInjector(bibliographyService)
   }
 
-  fromString(text: string): Promise<readonly MarkupPart[]> {
+  fromString(
+    text: string,
+    signal?: AbortSignal,
+  ): Promise<readonly MarkupPart[]> {
     return this.apiClient
       .fetchJson(
         `/${this.urlPath}?${stringify({
           text: text,
         })}`,
         false,
+        signal,
       )
       .then((parts) =>
         parts

@@ -28,8 +28,9 @@ export default class SignService {
 
   associateSigns(
     tokens: ReadonlyArray<ReadonlyArray<AnnotationToken>>,
+    signal?: AbortSignal,
   ): Promise<ReadonlyArray<ReadonlyArray<AnnotationToken>>> {
-    return this.signsRepository.associateSigns(tokens)
+    return this.signsRepository.associateSigns(tokens, signal)
   }
 
   search(signQuery: SignQuery, signal?: AbortSignal): Promise<Sign[]> {
@@ -52,7 +53,7 @@ export default class SignService {
     return this.signsRepository.findSignsByOrder(signName, sortEra, signal)
   }
 
-  getUnicodeFromAtf(text: string): Promise<UnicodeAtf[]> {
-    return this.signsRepository.getUnicodeFromAtf(text)
+  getUnicodeFromAtf(text: string, signal?: AbortSignal): Promise<UnicodeAtf[]> {
+    return this.signsRepository.getUnicodeFromAtf(text, signal)
   }
 }

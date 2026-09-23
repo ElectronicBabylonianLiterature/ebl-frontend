@@ -143,6 +143,18 @@ it('Generate Annotations', async () => {
     expect(screen.getAllByTestId('annotation__box').length).toBe(2),
   )
 })
+it('Shows an error when generating annotations fails', async () => {
+  await setup()
+  jest
+    .spyOn(fragmentService, 'generateAnnotations')
+    .mockRejectedValue(new Error('Generating failed'))
+
+  await userEvent.click(
+    screen.getByRole('button', { name: 'Generate Annotations' }),
+  )
+
+  expect(await screen.findByText('Generating failed')).toBeInTheDocument()
+})
 it('Change existing annotation mode and then back to default mode', async () => {
   await setup()
   expect(screen.getByTestId('annotation__box')).toBeVisible()

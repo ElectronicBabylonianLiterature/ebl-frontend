@@ -5,6 +5,7 @@ import { MesopotamianDate } from 'chronology/domain/Date'
 import { mesopotamianDateFactory } from 'test-support/date-fixtures'
 import { fragment as mockFragment } from 'test-support/test-fragment'
 import SessionContext from 'auth/SessionContext'
+import { Fragment } from 'fragmentarium/domain/fragment'
 
 let session
 
@@ -116,6 +117,22 @@ describe('DatesInTextSelection', () => {
     expect(
       await screen.findByText('Saving the dates failed'),
     ).toBeInTheDocument()
+  })
+
+  it('shows no dates when the saved fragment has none', async () => {
+    mockUpdateDatesInText.mockResolvedValueOnce({
+      ...mockFragment,
+      datesInText: undefined,
+    } as Fragment)
+    render(
+      <SessionContext.Provider value={session}>
+        <DatesInTextSelection {...defaultProps} />
+      </SessionContext.Provider>,
+    )
+    fireEvent.click(screen.getAllByLabelText('Edit date button')[0])
+    fireEvent.click(screen.getByText('Delete'))
+
+    await waitFor(() => expect(screen.queryAllByRole('time')).toHaveLength(0))
   })
 
   it('renders add button', () => {

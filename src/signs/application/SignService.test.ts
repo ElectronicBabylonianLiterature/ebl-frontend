@@ -5,6 +5,7 @@ import { TestData, testDelegation } from 'test-support/utils'
 jest.mock('signs/infrastructure/SignRepository')
 
 const resultStub = {}
+const abortSignal = new AbortController().signal
 const signRepository = new (SignRepository as jest.Mock<
   jest.Mocked<SignRepository>
 >)()
@@ -43,6 +44,20 @@ const testData: TestData<SignService>[] = [
     signRepository.findSignsByOrder,
     resultStub,
     ['signName', 'neoBabylonianOnset', undefined],
+  ),
+  new TestData(
+    'getUnicodeFromAtf',
+    ['kur', abortSignal],
+    signRepository.getUnicodeFromAtf,
+    [resultStub],
+    ['kur', abortSignal],
+  ),
+  new TestData(
+    'associateSigns',
+    [[], abortSignal],
+    signRepository.associateSigns,
+    [],
+    [[], abortSignal],
   ),
 ]
 

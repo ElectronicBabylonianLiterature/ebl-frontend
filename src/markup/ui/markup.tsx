@@ -41,5 +41,5 @@ export default withData<
   readonly MarkupPart[]
 >(
   ({ data: parts }): JSX.Element => MarkupText(parts),
-  ({ markupService, text }) => markupService.fromString(text),
+  ({ markupService, text }, signal) => markupService.fromString(text, signal),
 )

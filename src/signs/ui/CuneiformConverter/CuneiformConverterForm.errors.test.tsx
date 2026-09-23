@@ -116,6 +116,29 @@ it('does not report cancelled conversions', async () => {
   expect(consoleErrorSpy).not.toHaveBeenCalled()
 })
 
+it('does not report a conversion aborted at the network', async () => {
+  const signals: AbortSignal[] = []
+  signServiceMock.getUnicodeFromAtf.mockImplementation(
+    (_line: string, signal?: AbortSignal) =>
+      new Promise((_resolve, reject) => {
+        signals.push(signal as AbortSignal)
+        signal?.addEventListener('abort', () =>
+          reject(new DOMException('aborted', 'AbortError')),
+        )
+      }),
+  )
+  setUpForm()
+
+  convert('first')
+  await waitFor(() => expect(signals).toHaveLength(1))
+  convert('second')
+  await waitFor(() => expect(signals).toHaveLength(2))
+  await new Promise((resolve) => setTimeout(resolve, 0))
+
+  expect(signals[0].aborted).toBe(true)
+  expect(consoleErrorSpy).not.toHaveBeenCalled()
+})
+
 it('reports clipboard failures', async () => {
   const clipboardError = new Error('clipboard unavailable')
   setUpForm(jest.fn().mockRejectedValue(clipboardError))

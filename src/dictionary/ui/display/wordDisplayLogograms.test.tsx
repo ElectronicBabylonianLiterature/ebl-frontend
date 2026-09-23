@@ -43,9 +43,12 @@ describe('Fetch logograms', () => {
     signService.search.mockReturnValue(Promise.resolve([sign]))
     renderWordDisplayLogograms()
     await screen.findByText('some notes')
-    expect(signService.search).toBeCalledWith({
-      wordId: sign.logograms[0].wordId[0],
-    })
+    expect(signService.search).toBeCalledWith(
+      {
+        wordId: sign.logograms[0].wordId[0],
+      },
+      expect.any(AbortSignal),
+    )
   }
   it('correctly displays unicode', async () => {
     await setup()

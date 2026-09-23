@@ -162,11 +162,12 @@ describe('runWrite', () => {
     expect(checks[0]()).toBe(false)
   })
 
-  it('Does not make a write stale on unmount', () => {
+  it('Makes a write stale on unmount', () => {
     const { checks, operation } = capturePendingWrites()
     const { unmount } = renderWrites({ operation })
-    unmount()
     expect(checks[0]()).toBe(false)
+    unmount()
+    expect(checks[0]()).toBe(true)
   })
 
   it('Does not make a write stale when cancel is called', () => {
@@ -196,7 +197,7 @@ describe('runWrite', () => {
   })
 })
 
-it('Aborting reads leaves an in-flight write current', () => {
+it('Unmount aborts the read and makes the in-flight write stale', () => {
   let readSignal: AbortSignal | undefined
   let isWriteStale: (() => boolean) | undefined
   const TestComponent: FunctionComponent = () => {
@@ -214,5 +215,5 @@ it('Aborting reads leaves an in-flight write current', () => {
   const { unmount } = render(<TestComponent />)
   unmount()
   expect(readSignal?.aborted).toBe(true)
-  expect(isWriteStale?.()).toBe(false)
+  expect(isWriteStale?.()).toBe(true)
 })

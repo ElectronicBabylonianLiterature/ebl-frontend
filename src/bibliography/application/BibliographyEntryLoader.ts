@@ -18,6 +18,8 @@ export default class BibliographyEntryLoader {
     Promise<BibliographyEntry>
   >()
 
+  private cacheGeneration = 0
+
   constructor(
     private readonly bibliographyRepository: BibliographyRepository,
   ) {}
@@ -100,6 +102,7 @@ export default class BibliographyEntryLoader {
   }
 
   clear(): void {
+    this.cacheGeneration += 1
     this.cachedEntries.clear()
     this.cachedFindRequests.clear()
   }
@@ -114,14 +117,24 @@ export default class BibliographyEntryLoader {
     })
   }
 
+  private cacheEntryFromGeneration(
+    entry: BibliographyEntry,
+    generation: number,
+  ): BibliographyEntry {
+    return generation === this.cacheGeneration ? this.cacheEntry(entry) : entry
+  }
+
   private fetchMany(
     ids: readonly string[],
   ): Promise<readonly BibliographyEntry[]> {
     const sortedUniqueIds = _.uniq(ids).sort()
+    const generation = this.cacheGeneration
     const request = this.bibliographyRepository
       .findMany(sortedUniqueIds)
       .then((entries) => {
-        entries.forEach((entry) => this.cacheEntry(entry))
+        entries.forEach((entry) =>
+          this.cacheEntryFromGeneration(entry, generation),
+        )
 
         const entriesById = _.keyBy(entries, 'id')
         return Promise.all(
@@ -131,7 +144,9 @@ export default class BibliographyEntryLoader {
               ? entry
               : this.bibliographyRepository
                   .find(id)
-                  .then((resolvedEntry) => this.cacheEntry(resolvedEntry))
+                  .then((resolvedEntry) =>
+                    this.cacheEntryFromGeneration(resolvedEntry, generation),
+                  )
           }),
         )
       })

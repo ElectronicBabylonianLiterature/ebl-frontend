@@ -9,6 +9,7 @@ const signServiceMock = new (SignService as jest.Mock<
 >)()
 
 let container: HTMLElement
+let unmountForm: () => void
 
 describe('CuneiformConverterForm', () => {
   const setup = (): void => {
@@ -18,9 +19,11 @@ describe('CuneiformConverterForm', () => {
       },
       writable: true,
     })
-    container = render(
+    const view = render(
       <CuneiformConverterForm signService={signServiceMock} />,
-    ).container
+    )
+    container = view.container
+    unmountForm = view.unmount
   }
 
   afterEach(() => {
@@ -96,6 +99,9 @@ describe('CuneiformConverterForm', () => {
 
     fireEvent.change(inputTextArea, { target: { value: 'first request' } })
     fireEvent.click(convertButton)
+    await waitFor(() =>
+      expect(signServiceMock.getUnicodeFromAtf).toHaveBeenCalledTimes(1),
+    )
 
     fireEvent.change(inputTextArea, { target: { value: 'second request' } })
     fireEvent.click(convertButton)
@@ -109,6 +115,35 @@ describe('CuneiformConverterForm', () => {
     await waitFor(() => {
       expect(screen.getByLabelText('Converted Text')).toHaveValue('𒃻')
     })
+  })
+
+  it('aborts in-flight conversion requests on reconvert and unmount', async () => {
+    setup()
+    const signals: AbortSignal[] = []
+    signServiceMock.getUnicodeFromAtf.mockImplementation(
+      (_line: string, signal?: AbortSignal) => {
+        signals.push(signal as AbortSignal)
+        return new Promise(() => undefined)
+      },
+    )
+    const inputTextArea = screen.getByLabelText('input-atf')
+    const convertButton = screen.getByText('Convert')
+    fireEvent.change(inputTextArea, { target: { value: 'kur' } })
+
+    fireEvent.click(convertButton)
+    await waitFor(() => expect(signals).toHaveLength(1))
+    expect(signServiceMock.getUnicodeFromAtf).toHaveBeenCalledWith(
+      'kur',
+      signals[0],
+    )
+
+    fireEvent.click(convertButton)
+    await waitFor(() => expect(signals).toHaveLength(2))
+    expect(signals[0].aborted).toBe(true)
+    expect(signals[1].aborted).toBe(false)
+
+    unmountForm()
+    expect(signals[1].aborted).toBe(true)
   })
 
   it('copies converted text to clipboard', async () => {

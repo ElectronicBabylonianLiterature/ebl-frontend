@@ -79,7 +79,8 @@ const WithPhoto = withData<
   Blob
 >(
   ({ data, ...props }) => <WithAnnotations {...props} image={data} />,
-  ({ fragment, fragmentService }) => fragmentService.findPhoto(fragment),
+  ({ fragment, fragmentService }, signal) =>
+    fragmentService.findPhoto(fragment, signal),
 )
 
 export default withData<

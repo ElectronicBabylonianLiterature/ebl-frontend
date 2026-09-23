@@ -4,6 +4,7 @@ import DossierRecord, {
 } from 'dossiers/domain/DossierRecord'
 import ApiClient from 'http/ApiClient'
 import { stringify } from 'query-string'
+import { isAbortError } from 'common/utils/abortError'
 
 export default class DossiersRepository {
   private readonly apiClient: ApiClient
@@ -26,6 +27,9 @@ export default class DossiersRepository {
           : []
       })
       .catch((error) => {
+        if (isAbortError(error)) {
+          throw error
+        }
         console.warn('Failed to fetch dossiers:', error.message)
         return []
       })

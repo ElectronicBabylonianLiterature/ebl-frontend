@@ -47,8 +47,8 @@ export default withData<
   ReadonlyArray<ReadonlyArray<AnnotationToken>>
 >(
   ({ data, ...props }) => <FragmentAnnotation {...props} tokens={data} />,
-  ({ fragment, signService }) =>
-    signService.associateSigns(createAnnotationTokens(fragment.text)),
+  ({ fragment, signService }, signal) =>
+    signService.associateSigns(createAnnotationTokens(fragment.text), signal),
 )
 
 function FragmentAnnotation({
@@ -144,12 +144,8 @@ function FragmentAnnotation({
             />
           )
         }}
-        renderOverlay={({ type }) => (
-          <div style={annotationOverlayStyle}>
-            {type === 'POINT'
-              ? 'Click to Annotate'
-              : 'Click and Drag to Annotate'}
-          </div>
+        renderOverlay={() => (
+          <div style={annotationOverlayStyle}>Click and Drag to Annotate</div>
         )}
         onClick={state.onClick}
       />

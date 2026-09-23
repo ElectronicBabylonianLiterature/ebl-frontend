@@ -18,7 +18,13 @@ export default function usePromiseEffect(): [
   const readOperation = useRef(new AbortableOperation())
   const writeOperation = useRef(new SupersedableOperation())
   const cancel = useCallback((): void => readOperation.current.abort(), [])
-  useEffect(() => cancel, [cancel])
+  useEffect(
+    () => (): void => {
+      cancel()
+      writeOperation.current.supersede()
+    },
+    [cancel],
+  )
   const run = useCallback((operation: PromiseOperation): Promise<void> => {
     const signal = readOperation.current.start()
     return operation(signal).then(

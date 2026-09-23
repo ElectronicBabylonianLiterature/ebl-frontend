@@ -12,13 +12,30 @@ import DossiersService from 'dossiers/application/DossiersService'
 import { fragmentFactory } from 'test-support/fragment-fixtures'
 import { Fragment } from 'fragmentarium/domain/fragment'
 
+let mockSavePromise: Promise<Fragment>
+const mockInfoSaves: jest.Mock<Promise<Fragment>>[] = []
+
 jest.mock('fragmentarium/ui/info/Info', () => {
-  return function InfoMock(props: { fragment: { number: string } }) {
-    return <div data-testid="fragment-info">{props.fragment.number}</div>
+  return function InfoMock(props: {
+    fragment: { number: string; publication: string }
+    onSave: (save: () => Promise<Fragment>) => void
+  }) {
+    return (
+      <div data-testid="fragment-info">
+        {props.fragment.number}
+        <span data-testid="fragment-publication">
+          {props.fragment.publication}
+        </span>
+        <button
+          type="button"
+          onClick={() => props.onSave(mockInfoSaves[mockInfoSaves.length - 1])}
+        >
+          Save genres
+        </button>
+      </div>
+    )
   }
 })
-
-let mockSavePromise: Promise<Fragment>
 
 jest.mock('fragmentarium/ui/fragment/CuneiformFragmentEditor', () => {
   const { useState } = jest.requireActual('react')
@@ -133,4 +150,34 @@ it('does not show a previous fragment save error after navigation', async () => 
 
   expect(screen.queryByText('K.1 save failed')).not.toBeInTheDocument()
   expect(screen.getByTestId('fragment-editor')).toHaveTextContent('K.2')
+})
+
+it('dispatches an info save only after the previous one has settled', async () => {
+  const fragment = fragmentFactory.build({ number: 'K.1' })
+  let resolveAdd: (saved: Fragment) => void = () => undefined
+  const addGenre = jest.fn(
+    () =>
+      new Promise<Fragment>((resolve) => {
+        resolveAdd = resolve
+      }),
+  )
+  const deleteGenre = jest.fn(() =>
+    Promise.resolve({ ...fragment, publication: 'deleted' } as Fragment),
+  )
+  render(view(fragment))
+
+  mockInfoSaves.push(addGenre)
+  await userEvent.click(screen.getByRole('button', { name: 'Save genres' }))
+  mockInfoSaves.push(deleteGenre)
+  await userEvent.click(screen.getByRole('button', { name: 'Save genres' }))
+  expect(deleteGenre).not.toHaveBeenCalled()
+
+  await act(async () =>
+    resolveAdd({ ...fragment, publication: 'added' } as Fragment),
+  )
+
+  expect(deleteGenre).toHaveBeenCalledTimes(1)
+  expect(screen.getByTestId('fragment-publication')).toHaveTextContent(
+    'deleted',
+  )
 })

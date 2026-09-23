@@ -51,7 +51,8 @@ function CuneiformConverterForm({
         ({ index, line }): Promise<ConvertedLine> =>
           limiter.run(
             () =>
-              query(line)
+              signService
+                .getUnicodeFromAtf(line, signal)
                 .then((result) => ({
                   index,
                   value: result
@@ -63,6 +64,9 @@ function CuneiformConverterForm({
                     .join(''),
                 }))
                 .catch((error) => {
+                  if (isCancellation(error, signal)) {
+                    throw error
+                  }
                   reportQueryError(error)
                   return { index, value: '' }
                 }),
@@ -89,10 +93,6 @@ function CuneiformConverterForm({
           reportQueryError(error)
         }
       })
-  }
-
-  const query = (content: string) => {
-    return Promise.resolve(signService.getUnicodeFromAtf(content))
   }
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {

@@ -6,7 +6,7 @@ branch: chore/remove-bluebird
 base_branch: chore/ts7-tsconfig-migration (#773)
 merged_from: origin/master (17 commits ahead of the fork point 4db5c9cd)
 date: 2026-09-10
-status: DONE — master reconciled into the branch, all gates green
+status: DONE — master reconciled into the branch, all gates green. SUPERSEDED on 2026-09-23 by TASK-774-handoff.md (#773 closed unmerged; #774 retargeted to master)
 tracked_in_git: false (untracked on purpose; delete before merge)
 ---
 

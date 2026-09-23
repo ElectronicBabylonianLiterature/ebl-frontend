@@ -2106,3 +2106,49 @@ Two duplicated inline shapes became named types while in there: `FragmentStatist
 Gates: lint PASS, tsc PASS, `yarn test:ci` PASS at 505 suites / 4435 tests / 50 snapshots with zero console output, exit 0 (the reviewed sha was 504 / 4428; the extra suite and seven tests are `FragmentRepository.abortSignal.test.ts`). Coverage 95.08 / 87.98 / 94.74 / 95.23, identical before and after the remediation, with no threshold breach. No changed or new `.ts`/`.tsx` file exceeds 250 lines. `yarn build` and the dev server remain unrunnable here.
 
 **Lesson.** `noImplicitAny: false` does not just weaken types where it is used — it hides the evidence that a type is wrong elsewhere. Four dropped signals, a readonly/mutable mismatch and two under-specified test stubs were all sitting behind one shorthand `{ fragmentService }`. The fix took ten minutes; the finding took a deliberate decision to distrust a sentence in the README.
+
+---
+
+## Round 9 — review only — 2026-09-23
+
+Head reviewed: `2b391cdd` (the master merge of 2026-09-22). No code was changed; this was a review pass. `TASK-774-review.md` was rewritten for round 9 and `TASK-774-todo.md` updated.
+
+**What changed since round 8.** #773 was closed without merging on 2026-09-22 (closing comment `-> PR #774`), and its head is not an ancestor of `master`, so this PR now targets a dead branch. `master` was merged in, leaving the branch 0 commits behind and conflict-free against `master`. Fabdulla1 was re-requested and posted a second `CHANGES_REQUESTED` today on this exact head, with nine concerns.
+
+**GitHub state gathered first, per the review gate.** Four review events, six inline comments, six review threads (all `qltysh[bot]`, all resolved and outdated), zero issue comments, eight check runs plus their annotations, and the combined status. No `sourcery-ai` activity exists on this PR.
+
+**Every reviewer concern was traced, none taken on trust.** All nine hold. The useful distinction is where each came from. B2 (bibliography batch cache ignores `clear()`) and the button states in B4 are identical on `master`, but this PR rewrote that code, and B2's new test asserts the unsafe behaviour. B6/B7 are regressions: on `master`, `withData` cancelled the returned Bluebird chain, which reached `cancellableFetch`. B8 was introduced here, because the signal was threaded into `fetchAllDossiers` without updating its catch-all. B3 is the direct consequence of fixing the August concern correctly: once older saves are never aborted, overlapping saves have to be prevented some other way.
+
+**Own findings on top.** The PR description is stale in three places (M1). #774 and #779 conflict in five files, three of them workflows (W3). The Node 20 warning on the GitGuardian job comes from `secret-scan.yml`, which this PR doesn't touch; #779 fixes it (I1). The dev container and root `Dockerfile` are byte-identical to `master`. The workflow changes were re-read, and the dropped `SLACK_WEBHOOK_URL` was confirmed dead on `master`.
+
+**Lesson.** Round 8's F5 sweep went through `FragmentService`, starting from a README sentence. B6-B8 are the same class of bug in `SignService`, `DossiersRepository` and a `FragmentService` getter the sweep didn't reach. A sweep should start from the call sites (every `withData(` getter, every `.catch(` on a signal-threaded read), not from one service's method list.
+
+**Gates on `2b391cdd`.** `yarn test:ci` PASS: 505 suites, 4445 tests, 50 snapshots, 0 failures, exit 0, 608.7 s, zero console output. Coverage 95.09 / 87.99 / 94.75 / 95.23 with no threshold breach. `yarn lint` and `yarn tsc` PASS, both run after the test run finished. No added or modified `.ts`/`.tsx` file exceeds 250 lines. I couldn't run `yarn build` or the dev server here (the container runs out of memory); CI built this commit green.
+
+**Sweep, done rather than just recommended.** The first draft of the recommendation told the author to grep every `withData` getter; I ran that myself instead. Of the 19 getters that ignore their signal, 14 call shared-cache or POST reads, both of which the README exempts; three are B6. The remaining two, `MarkupService.fromString` (`markup.tsx:44`) and `SignService.associateSigns` (`FragmentAnnotation.tsx:50`, one sign search per token), are recorded as N1, Major: cancellable on `master`, not exempt, and a contradiction of the README. Of the catch-alls on signal-threaded reads, only B8 swallows aborts. The review now has 21 findings.
+
+---
+
+## Round 9 — remediation — 2026-09-23
+
+Every code finding (B2-B9, N1) is fixed in the working tree. Nothing is committed. For each fix, the new or changed test was also run against the unfixed file (restored from `HEAD`, then put back) and fails there.
+
+**The B5 fix changed a test's premise, and that's the point.** The converter's stale-result test clicked Convert twice in the same tick. The first conversion was aborted before its operation started, but it still ran, because `run()` never re-checked the signal after `await acquireSlot`. That's the B5 bug on the immediate-slot path, not only the handoff path. With the fix, the first request is never sent, so the test now waits for it to be sent before clicking again. The new handoff test reaches the exact gap by wrapping the queued waiter's resolver in `queueState`.
+
+**B3 went with serialisation rather than locking the UI.** Every fragment write enters through `CuneiformFragmentController.handleSave`, so one `SerialQueue` there covers genres and every editor tab. Locking would have meant threading `saving` through `Info` → `Details` → `GenreEditor` and every other write control. The two `saveErrors` tests that let a second save finish first were reordered, not deleted: serialisation makes that order impossible at the server, and the superseded outcome is still asserted as ignored.
+
+**B4 went with locking.** Date writes don't go through `handleSave`, and `DatesInTextSelection.saveDates` builds its array from the list captured at click time, so overlapping row saves would also lose updates. Disabling Save/Delete/Add while pending, and sharing the parent's pending state with row editors via `isParentSaving`, closes both problems. Inputs stay editable, since they don't write.
+
+**Typing an `any` found four more hidden errors, the same lesson as round 8.** `SignRepository.apiClient` had no type annotation. Under `noImplicitAny: false` that made it `any`, which is why `getUnicodeFromAtf` compiled while calling `fetchJson` without its required `authenticate` argument. Typing the field exposed four `unknown`-typed `fetchJson` results; they're fixed with type arguments.
+
+**A test I wrote and then deleted.** "Does not apply a dates-in-text save that settles after unmount" passed against the unfixed code too, because nothing observable distinguishes the two under React 18. It proved nothing, so it's gone; the unmount guard is tested at the hook level (B9).
+
+**Traps.** jsdom's `AbortController` here ignores `abort(reason)`, so `createAbortError` always falls back to `DOMException('AbortError')`, and tests have to assert `name: 'AbortError'`. Date popovers need `await userEvent.click`: `fireEvent` leaves Overlay transitions outside `act` (console noise) and doesn't trigger root-close, so two popovers stay open.
+
+**100% coverage on the touched files.** The first full run after the fixes left four touched files below 100%. None of those gaps was new; my changes had closed some lines. Two were dead code rather than missing tests. `DatesInTextSelection` passed an `updateDateInArray` to editors that always use `saveDateOverride`, and it had a no-index-no-date branch that can't be reached; `saveDates` now goes through that same function, and the branch chain is a single splice. `FragmentAnnotation`'s `'POINT'` overlay text is unreachable because the selector is fixed to `RectangleSelector.TYPE`, so it's removed. Two pre-existing test problems turned up and are fixed: `MarkupService.test.ts` leaked a prototype stub (`mockClear` → `mockRestore`), and a new test created its rejected promise eagerly, which produced a `PromiseRejectionHandledWarning` (now `mockRejectedValue`). All 17 touched source files are at 100%, and the 13 not already listed are now in `fullyCoveredPaths`, added in place with no reordering.
+
+**GitHub, as decided.** #774 was retargeted to `master`. It now shows 512 files, and qlty coverage will upload from now on. In the description, the stacked-on-#773 note and "59/59" were corrected. The unmount passage and a round-9 fixes section are held back until the fixes are pushed, because the pushed head still behaves the way the description says. Decisions recorded: M2 deletion approved; scratch docs kept until merge; CodeQL alerts to be read in the UI. No reviewer was re-requested.
+
+**Trap.** `pkill -f "craco test"` inside a Bash call matches the calling shell's own command line and kills it (exit 144). Use `TaskStop` for background runs.
+
+**Final gates on the remediated tree.** `yarn lint` and `yarn tsc` PASS. `yarn test:ci` PASS: 511 suites, 4480 tests, 50 snapshots, 0 failures, exit 0, zero console output. Coverage 95.19 / 88.25 / 94.87 / 95.34 (was 95.09 / 87.99 / 94.75 / 95.23), no threshold breach. No touched file is over 250 lines.
