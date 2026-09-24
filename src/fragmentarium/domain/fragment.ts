@@ -3,21 +3,21 @@ import { produce, castDraft, Draft, immerable } from 'immer'
 
 import Reference from 'bibliography/domain/Reference'
 import { Text } from 'transliteration/domain/text'
-import { Museum } from './museum'
-import Folio from './Folio'
+import { Museum } from 'fragmentarium/domain/museum'
+import Folio from 'fragmentarium/domain/Folio'
 import { Genres } from 'fragmentarium/domain/Genres'
-import { Joins } from './join'
-import { Acquisition } from './Acquisition'
+import { Joins } from 'fragmentarium/domain/join'
+import { Acquisition } from 'fragmentarium/domain/Acquisition'
 import { Session } from 'auth/Session'
 import {
   ExternalNumber,
   ExternalNumbers,
   ExternalNumberTypes,
-} from './FragmentDtos'
-import { RecordEntry } from './RecordEntry'
+} from 'fragmentarium/domain/FragmentDtos'
+import { RecordEntry } from 'fragmentarium/domain/RecordEntry'
 import { ResearchProject } from 'research-projects/researchProject'
 import { MesopotamianDate } from 'chronology/domain/Date'
-import { Archaeology } from './archaeology'
+import { Archaeology } from 'fragmentarium/domain/archaeology'
 import { Colophon } from 'fragmentarium/domain/Colophon'
 import { DossierReference } from 'dossiers/domain/DossierReference'
 import {
@@ -38,7 +38,7 @@ interface FragmentProps {
   number: string
   accession: string
   publication: string
-  acquisition: Acquisition | null
+  acquisitions: ReadonlyArray<Acquisition>
   description: string
   joins: Joins
   measures: Measures
@@ -77,7 +77,7 @@ export class Fragment {
   readonly number: string
   readonly accession: string
   readonly publication: string
-  readonly acquisition: Acquisition | null
+  readonly acquisitions: ReadonlyArray<Acquisition>
   readonly description: string
   readonly joins: Joins
   readonly measures: Measures
@@ -113,7 +113,7 @@ export class Fragment {
     this.number = props.number
     this.accession = props.accession
     this.publication = props.publication
-    this.acquisition = props.acquisition ?? null
+    this.acquisitions = props.acquisitions ?? []
     this.description = props.description
     this.joins = props.joins
     this.measures = props.measures
