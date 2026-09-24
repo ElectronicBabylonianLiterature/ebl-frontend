@@ -153,7 +153,7 @@ it('Shows the error and stops saving when a save fails', async () => {
   fragmentService.updateEdition.mockReturnValueOnce(
     Promise.reject(requestError),
   )
-  fireEvent.change(screen.getByLabelText('transliteration'), {
+  fireEvent.change(screen.getByRole('textbox', { name: /^transliteration,/ }), {
     target: { value: 'changed transliteration' },
   })
 

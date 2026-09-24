@@ -95,8 +95,10 @@ class Editor extends Component<Props> {
   }
 
   componentDidMount(): void {
+    const editor = this.aceEditor.current?.editor as Ace.Editor | undefined
     const customMode = new AtfMode() as unknown as Ace.SyntaxMode
-    this.aceEditor.current?.editor.getSession().setMode(customMode)
+    editor?.getSession().setMode(customMode)
+    editor?.textInput.setAriaLabel()
   }
 
   setSnippets(): void {
@@ -167,7 +169,6 @@ class Editor extends Component<Props> {
           theme="kuroir" // AtfMode is designed to be used with kuroir theme
           value={value}
           onChange={onChange}
-          textInputAriaLabel={name}
           showPrintMargin={false}
           showGutter={!_.isEmpty(annotations)}
           wrapEnabled
@@ -179,6 +180,7 @@ class Editor extends Component<Props> {
           }}
           setOptions={{
             showLineNumbers: false,
+            textInputAriaLabel: name,
             // @ts-expect-error https://github.com/securingsincity/react-ace/issues/752
             newLineMode: 'unix',
             autoScrollEditorIntoView: true,

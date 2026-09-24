@@ -49,7 +49,9 @@ test.each([
         error={error}
       />,
     )
-    expect(screen.getByRole('textbox', { name })).toBeInTheDocument()
+    expect(
+      screen.getByRole('textbox', { name: new RegExp(`^${name},`) }),
+    ).toBeInTheDocument()
   },
 )
 
@@ -101,6 +103,6 @@ test('names the editor text input', () => {
   )
 
   expect(
-    screen.getByRole('textbox', { name: 'transliteration' }),
+    screen.getByRole('textbox', { name: /^transliteration,/ }),
   ).toBeInTheDocument()
 })
