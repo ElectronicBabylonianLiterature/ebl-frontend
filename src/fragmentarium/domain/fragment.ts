@@ -3,21 +3,21 @@ import { produce, castDraft, Draft, immerable } from 'immer'
 
 import Reference from 'bibliography/domain/Reference'
 import { Text } from 'transliteration/domain/text'
-import { Museum } from './museum'
-import Folio from './Folio'
+import { Museum } from 'fragmentarium/domain/museum'
+import Folio from 'fragmentarium/domain/Folio'
 import { Genres } from 'fragmentarium/domain/Genres'
-import { Joins } from './join'
-import { Acquisition } from './Acquisition'
+import { Joins } from 'fragmentarium/domain/join'
+import { Acquisition } from 'fragmentarium/domain/Acquisition'
 import { Session } from 'auth/Session'
 import {
   ExternalNumber,
   ExternalNumbers,
   ExternalNumberTypes,
-} from './FragmentDtos'
-import { RecordEntry } from './RecordEntry'
+} from 'fragmentarium/domain/FragmentDtos'
+import { RecordEntry } from 'fragmentarium/domain/RecordEntry'
 import { ResearchProject } from 'research-projects/researchProject'
 import { MesopotamianDate } from 'chronology/domain/Date'
-import { Archaeology } from './archaeology'
+import { Archaeology } from 'fragmentarium/domain/archaeology'
 import { Colophon } from 'fragmentarium/domain/Colophon'
 import { DossierReference } from 'dossiers/domain/DossierReference'
 import {

@@ -73,14 +73,7 @@ export function createFragment(dto: FragmentDto): Fragment {
     ...dto,
     number: museumNumberToString(dto.museumNumber),
     accession: dto.accession ? museumNumberToString(dto.accession) : '',
-    acquisitions: (dto.acquisitions ?? []).map(
-      (acquisitionDto) =>
-        new Acquisition(
-          acquisitionDto.supplier,
-          acquisitionDto.date,
-          acquisitionDto.description,
-        ),
-    ),
+    acquisitions: (dto.acquisitions ?? []).map(Acquisition.fromDto),
     museum: Museums[museumKey],
     joins: createJoins(dto.joins ?? []),
     measures: {

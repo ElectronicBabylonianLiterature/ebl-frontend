@@ -1,5 +1,5 @@
 import { produce, Draft, immerable } from 'immer'
-import { AcquisitionDto } from './FragmentDtos'
+import { AcquisitionDto } from 'fragmentarium/domain/FragmentDtos'
 
 export class Acquisition {
   [immerable] = true
