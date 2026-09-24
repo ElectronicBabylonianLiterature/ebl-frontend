@@ -28,12 +28,21 @@ type EditedValues = Pick<FormData, (typeof editionFields)[number]>
 const retryableErrorStatuses = new Set([408, 429])
 const rejectedAttemptLimit = 20
 
-const isDeterministicFailure = (error: unknown): error is ApiError =>
-  error instanceof ApiError &&
-  typeof error.status === 'number' &&
-  error.status >= 400 &&
-  error.status < 500 &&
-  !retryableErrorStatuses.has(error.status)
+const isDeterministicFailure = (error: unknown): error is ApiError => {
+  if (!(error instanceof ApiError)) {
+    return false
+  }
+  if (typeof error.status !== 'number') {
+    return false
+  }
+  if (error.status < 400) {
+    return false
+  }
+  if (error.status >= 500) {
+    return false
+  }
+  return !retryableErrorStatuses.has(error.status)
+}
 
 const createAttemptKey = (values: EditedValues): string =>
   JSON.stringify(editionFields.map((field) => values[field]))
