@@ -3,6 +3,7 @@ import {
   NamedSign,
   Token,
   ValueToken,
+  nameTokens,
 } from 'transliteration/domain/token'
 
 const vowels: ReadonlySet<string> = new Set([
@@ -114,7 +115,7 @@ class Accumulator {
 export function addAccents(
   namedSign: NamedSign,
 ): readonly [readonly Token[], boolean] {
-  return namedSign.nameParts.reduce(
+  return nameTokens(namedSign).reduce(
     (acc, token) => acc.addToken(token),
     new Accumulator(namedSign.subIndex),
   ).result
