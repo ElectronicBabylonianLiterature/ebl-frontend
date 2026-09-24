@@ -1,6 +1,7 @@
 import React from 'react'
 import _ from 'lodash'
 import { Fragment, Measures } from 'fragmentarium/domain/fragment'
+import { Join } from 'fragmentarium/domain/join'
 import FragmentLink from 'fragmentarium/ui/FragmentLink'
 import ExternalLink from 'common/ui/ExternalLink'
 import { DateRange, PartialDate } from 'fragmentarium/domain/archaeology'
@@ -39,6 +40,68 @@ export function MuseumName({ fragment: { museum } }: Props): JSX.Element {
   )
 }
 
+interface JoinMarkerProps {
+  readonly join: Join
+  readonly groupIndex: number
+  readonly index: number
+}
+
+function JoinPrefix({ join, groupIndex, index }: JoinMarkerProps): JSX.Element {
+  if (join.isEnvelope) {
+    return (
+      <>
+        <br />
+        <i className="fa-solid fa-envelope" aria-label="envelope icon"></i>
+      </>
+    )
+  }
+  if (index > 0) {
+    return (
+      <>
+        <br />+{!join.isChecked && <sup>?</sup>}
+      </>
+    )
+  }
+  if (groupIndex > 0) {
+    return (
+      <>
+        <br />
+        (+{!join.isChecked && <sup>?</sup>})
+      </>
+    )
+  }
+  return <></>
+}
+
+function JoinNumber({
+  join,
+  fragmentNumber,
+}: {
+  readonly join: Join
+  readonly fragmentNumber: string
+}): JSX.Element {
+  return !join.isInFragmentarium || fragmentNumber === join.museumNumber ? (
+    <>{join.museumNumber}</>
+  ) : (
+    <FragmentLink number={join.museumNumber}>{join.museumNumber}</FragmentLink>
+  )
+}
+
+function JoinItem({
+  join,
+  groupIndex,
+  index,
+  fragmentNumber,
+}: JoinMarkerProps & { readonly fragmentNumber: string }): JSX.Element {
+  return (
+    <li className="Details-joins__join" key={`${groupIndex}-${index}`}>
+      <JoinPrefix join={join} groupIndex={groupIndex} index={index} />{' '}
+      <JoinNumber join={join} fragmentNumber={fragmentNumber} />{' '}
+      <sup>{_.compact([join.date, join.joinedBy]).join(', ')}</sup>
+    </li>
+  )
+}
+
 export function Joins({ fragment: { number, joins } }: Props): JSX.Element {
   return (
     <div className="Details-joins">
@@ -49,39 +112,13 @@ export function Joins({ fragment: { number, joins } }: Props): JSX.Element {
         <ol className="Details-joins__list">
           {joins.map((group, groupIndex) =>
             group.map((join, index) => (
-              <li
-                className="Details-joins__join"
+              <JoinItem
                 key={`${groupIndex}-${index}`}
-              >
-                {join.isEnvelope ? (
-                  <>
-                    <br />
-                    <i
-                      className="fa-solid fa-envelope"
-                      aria-label="envelope icon"
-                    ></i>
-                  </>
-                ) : index > 0 ? (
-                  <>
-                    <br />+{!join.isChecked && <sup>?</sup>}
-                  </>
-                ) : groupIndex > 0 ? (
-                  <>
-                    <br />
-                    (+{!join.isChecked && <sup>?</sup>})
-                  </>
-                ) : (
-                  ''
-                )}{' '}
-                {!join.isInFragmentarium || number === join.museumNumber ? (
-                  join.museumNumber
-                ) : (
-                  <FragmentLink number={join.museumNumber}>
-                    {join.museumNumber}
-                  </FragmentLink>
-                )}{' '}
-                <sup>{_.compact([join.date, join.joinedBy]).join(', ')}</sup>
-              </li>
+                join={join}
+                groupIndex={groupIndex}
+                index={index}
+                fragmentNumber={number}
+              />
             )),
           )}
         </ol>
