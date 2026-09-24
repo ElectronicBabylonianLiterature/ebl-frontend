@@ -6,6 +6,28 @@ import {
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 import { ApiError } from 'http/ApiClient'
 
+interface InFlightReaderScenario {
+  readonly name: string
+  readonly generation: number
+  readonly read: (
+    loader: BibliographyBatchLoader,
+    id: string,
+  ) => Promise<BibliographyEntry | undefined> | undefined
+}
+
+const inFlightReaderScenarios: readonly InFlightReaderScenario[] = [
+  {
+    name: 'a direct reader',
+    generation: 6,
+    read: (loader, id) => loader.findInFlight(id),
+  },
+  {
+    name: 'an overlapping subset',
+    generation: 7,
+    read: (loader, id) => loader.findManyInFlight(id),
+  },
+]
+
 describe('BibliographyBatchLoader', () => {
   const bibliographyRepository = createBibliographyRepositoryMock()
   const cacheEntry = jest.fn<void, [string, BibliographyEntry, number]>()
@@ -135,43 +157,26 @@ describe('BibliographyBatchLoader', () => {
     expect(bibliographyRepository.find).toHaveBeenCalledTimes(1)
   })
 
-  test('isolates a direct reader from an unrelated fallback failure', async () => {
-    const foundEntry = new BibliographyEntry({ id: 'found-entry' })
-    const missingId = 'failed-entry'
-    const error = new ApiError('Server Error', {}, 500)
-    const batch = createDeferred<readonly BibliographyEntry[]>()
-    bibliographyRepository.findMany.mockReturnValue(batch.promise)
-    bibliographyRepository.find.mockRejectedValue(error)
-    const loader = new BibliographyBatchLoader(
-      bibliographyRepository,
-      cacheEntry,
-    )
+  test.each(inFlightReaderScenarios)(
+    'isolates $name from an unrelated fallback failure',
+    async ({ generation, read }) => {
+      const foundEntry = new BibliographyEntry({ id: 'found-entry' })
+      const missingId = 'failed-entry'
+      const error = new ApiError('Server Error', {}, 500)
+      const batch = createDeferred<readonly BibliographyEntry[]>()
+      bibliographyRepository.findMany.mockReturnValue(batch.promise)
+      bibliographyRepository.find.mockRejectedValue(error)
+      const loader = new BibliographyBatchLoader(
+        bibliographyRepository,
+        cacheEntry,
+      )
 
-    const batchRequest = loader.load([foundEntry.id, missingId], 6)
-    const directRequest = loader.findInFlight(foundEntry.id)
-    batch.resolve([foundEntry])
+      const batchRequest = loader.load([foundEntry.id, missingId], generation)
+      const readerRequest = read(loader, foundEntry.id)
+      batch.resolve([foundEntry])
 
-    await expect(directRequest).resolves.toBe(foundEntry)
-    await expect(batchRequest).rejects.toBe(error)
-  })
-
-  test('isolates an overlapping subset from an unrelated fallback failure', async () => {
-    const foundEntry = new BibliographyEntry({ id: 'found-entry' })
-    const missingId = 'failed-entry'
-    const error = new ApiError('Server Error', {}, 500)
-    const batch = createDeferred<readonly BibliographyEntry[]>()
-    bibliographyRepository.findMany.mockReturnValue(batch.promise)
-    bibliographyRepository.find.mockRejectedValue(error)
-    const loader = new BibliographyBatchLoader(
-      bibliographyRepository,
-      cacheEntry,
-    )
-
-    const batchRequest = loader.load([foundEntry.id, missingId], 7)
-    const subsetRequest = loader.findManyInFlight(foundEntry.id)
-    batch.resolve([foundEntry])
-
-    await expect(subsetRequest).resolves.toBe(foundEntry)
-    await expect(batchRequest).rejects.toBe(error)
-  })
+      await expect(readerRequest).resolves.toBe(foundEntry)
+      await expect(batchRequest).rejects.toBe(error)
+    },
+  )
 })

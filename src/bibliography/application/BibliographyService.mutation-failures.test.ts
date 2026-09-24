@@ -132,9 +132,7 @@ describe.each<Mutation>(['create', 'update'])(
 )
 
 test('a successful create applies when a newer update rejects', async () => {
-  const bibliographyRepository = new (BibliographyRepository as jest.Mock<
-    jest.Mocked<BibliographyRepository>
-  >)()
+  const bibliographyRepository = createBibliographyRepositoryMock()
   const id = 'canonical-entry-id'
   const cachedEntry = new BibliographyEntry({ id, title: 'Cached' })
   const createdEntry = new BibliographyEntry({ id, title: 'Created' })
