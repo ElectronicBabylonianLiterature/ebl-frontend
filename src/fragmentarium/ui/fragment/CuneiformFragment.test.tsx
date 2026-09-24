@@ -9,6 +9,7 @@ import {
   setup,
   updatedFragment,
 } from 'fragmentarium/ui/fragment/cuneiformFragment.testSupport'
+import { ApiError } from 'http/ApiClient'
 
 it('Renders CDLI number', async () => {
   await setup()
@@ -141,13 +142,27 @@ it('Calls `updateDatesInText` on Dates in text save', async () => {
 
 it('Shows the error and stops saving when a save fails', async () => {
   await setup()
-  fragmentService.updateEdition.mockReturnValueOnce(
-    Promise.reject(new Error('Save failed.')),
+  const requestError = new ApiError(
+    'Fragment is not the lowest join.',
+    {
+      title: '422 Unprocessable Entity',
+      description: 'Fragment is not the lowest join.',
+    },
+    422,
   )
+  fragmentService.updateEdition.mockReturnValueOnce(
+    Promise.reject(requestError),
+  )
+  fireEvent.change(screen.getByLabelText('transliteration'), {
+    target: { value: 'changed transliteration' },
+  })
 
   submitFormByTestId(screen, 'transliteration-form')
 
-  await screen.findByText('Save failed.')
+  expect(await screen.findByRole('alert')).toHaveTextContent(
+    requestError.message,
+  )
+  expect(screen.getByRole('button', { name: 'Save' })).toBeDisabled()
   expect(screen.queryByText('Saving...')).not.toBeInTheDocument()
 })
 

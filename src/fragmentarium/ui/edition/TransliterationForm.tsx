@@ -9,9 +9,10 @@ import { Container, Row, Col } from 'react-bootstrap'
 import _ from 'lodash'
 import Promise from 'bluebird'
 
-import TemplateForm from './TemplateForm'
+import TemplateForm from 'fragmentarium/ui/edition/TemplateForm'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import { ErrorBoundary } from '@sentry/react'
+import { ApiError } from 'http/ApiClient'
 import {
   editionFields,
   EditionFields,
@@ -24,8 +25,30 @@ import {
 
 type EditedValues = Pick<FormData, (typeof editionFields)[number]>
 
-const isValidationError = (error: unknown): boolean =>
-  !_.isEmpty(_.get(error, 'data.errors'))
+const retryableErrorStatuses = new Set([408, 429])
+const rejectedAttemptLimit = 20
+
+const isDeterministicFailure = (error: unknown): error is ApiError =>
+  error instanceof ApiError &&
+  typeof error.status === 'number' &&
+  error.status >= 400 &&
+  error.status < 500 &&
+  !retryableErrorStatuses.has(error.status)
+
+const createAttemptKey = (values: EditedValues): string =>
+  JSON.stringify(editionFields.map((field) => values[field]))
+
+const createUpdatedFields = (
+  editedValues: EditedValues,
+  initialValues: EditedValues,
+): EditionFields =>
+  editionFields.reduce<EditionFields>(
+    (updates, field) =>
+      editedValues[field] === initialValues[field]
+        ? updates
+        : { ...updates, [field]: editedValues[field] },
+    {},
+  )
 
 type Props = {
   transliteration: string
@@ -49,10 +72,8 @@ const handleBeforeUnload = (
 
 const runBeforeUnloadEvent = ({
   hasChanges,
-  updatePromise,
 }: {
   hasChanges: () => boolean
-  updatePromise: Promise<void>
 }) => {
   const _handleBeforeEvent = (event) => handleBeforeUnload(event, hasChanges)
   if (hasChanges()) {
@@ -62,7 +83,6 @@ const runBeforeUnloadEvent = ({
   }
   return () => {
     window.removeEventListener('beforeunload', _handleBeforeEvent)
-    updatePromise.cancel()
   }
 }
 
@@ -73,7 +93,7 @@ const TransliterationForm: React.FC<Props> = ({
   updateEdition,
   disabled: propsDisabled,
 }): JSX.Element => {
-  const formId = _.uniqueId('TransliterationForm-')
+  const formId = useMemo(() => _.uniqueId('TransliterationForm-'), [])
   const [formData, setFormData] = useState<FormData>({
     transliteration,
     notes,
@@ -82,23 +102,21 @@ const TransliterationForm: React.FC<Props> = ({
     disabled: false,
   })
   const [updatePromise, setUpdatePromise] = useState(Promise.resolve())
-  const [lastAttempt, setLastAttempt] = useState<EditedValues | null>(null)
+  const [rejectedAttempts, setRejectedAttempts] = useState<ReadonlySet<string>>(
+    new Set(),
+  )
   const initialValues = useMemo(
     () => ({ transliteration, notes, introduction }),
     [transliteration, notes, introduction],
   )
 
-  const isDirty = (
-    _value: unknown,
-    field: (typeof editionFields)[number],
-  ): boolean => formData[field] !== initialValues[field]
-
-  const update = (property: keyof FormData) => (value: string) => {
-    setFormData((prev) => ({
-      ...prev,
-      [property]: value,
-    }))
-  }
+  const update =
+    (property: (typeof editionFields)[number]) => (value: string) => {
+      setFormData((prev) => ({
+        ...prev,
+        [property]: value,
+      }))
+    }
 
   const onTemplate = (template: string) => {
     setFormData((prev) => ({
@@ -109,11 +127,11 @@ const TransliterationForm: React.FC<Props> = ({
 
   const submit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    const editedValues = _.pick(formData, editionFields) as EditedValues
-    const updatedFields = _.pickBy(editedValues, isDirty) as EditionFields
+    const editedValues = _.pick(formData, editionFields)
+    const updatedFields = createUpdatedFields(editedValues, initialValues)
     const promise = updateEdition(updatedFields)
       .then((fragment) => {
-        setLastAttempt(null)
+        setRejectedAttempts(new Set())
         setFormData((prev) => ({
           ...prev,
           transliteration: fragment.atf,
@@ -131,8 +149,14 @@ const TransliterationForm: React.FC<Props> = ({
         if (isCancellationError) {
           return
         }
-        if (isValidationError(error)) {
-          setLastAttempt(editedValues)
+        if (isDeterministicFailure(error)) {
+          setRejectedAttempts((previousAttempts) => {
+            const attemptKey = createAttemptKey(editedValues)
+            const recent = [...previousAttempts].filter(
+              (key) => key !== attemptKey,
+            )
+            return new Set([...recent, attemptKey].slice(-rejectedAttemptLimit))
+          })
         }
         setFormData((prev) => ({ ...prev, error }))
       })
@@ -147,20 +171,21 @@ const TransliterationForm: React.FC<Props> = ({
     [formData, transliteration, notes, introduction],
   )
 
-  const matchesLastAttempt =
-    lastAttempt !== null &&
-    _.isEqual(_.pick(formData, editionFields), lastAttempt)
+  const matchesRejectedAttempt = rejectedAttempts.has(
+    createAttemptKey(_.pick(formData, editionFields)),
+  )
 
   useEffect(() => {
-    return runBeforeUnloadEvent({ hasChanges, updatePromise })
-  }, [
-    formData,
-    transliteration,
-    notes,
-    introduction,
-    updatePromise,
-    hasChanges,
-  ])
+    const clearRejectedAttempts = () => setRejectedAttempts(new Set())
+    window.addEventListener('focus', clearRejectedAttempts)
+    return () => window.removeEventListener('focus', clearRejectedAttempts)
+  }, [])
+
+  useEffect(() => {
+    return () => updatePromise.cancel()
+  }, [updatePromise])
+
+  useEffect(() => runBeforeUnloadEvent({ hasChanges }), [hasChanges])
 
   return (
     <Container fluid>
@@ -186,7 +211,7 @@ const TransliterationForm: React.FC<Props> = ({
         <Col>
           <SubmitButton
             disabled={propsDisabled}
-            hasChanges={hasChanges() && !matchesLastAttempt}
+            hasChanges={hasChanges() && !matchesRejectedAttempt}
             formId={formId}
           />
         </Col>

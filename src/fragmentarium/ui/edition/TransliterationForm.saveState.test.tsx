@@ -4,13 +4,14 @@ import { submitFormByTestId } from 'test-support/utils'
 import { Promise } from 'bluebird'
 
 import {
+  createUpdateEditionMock,
   editorError,
   failingUpdate,
   renderTransliterationForm,
   saveButton,
   transliterationField,
   validationError,
-} from './TransliterationForm.testSupport'
+} from 'fragmentarium/ui/edition/TransliterationForm.testSupport'
 
 jest.mock('editor/SpecialCharactersHelp', () => {
   return function SpecialCharactersHelpMock() {
@@ -18,7 +19,7 @@ jest.mock('editor/SpecialCharactersHelp', () => {
   }
 })
 
-jest.mock('./TemplateForm', () => {
+jest.mock('fragmentarium/ui/edition/TemplateForm', () => {
   return function TemplateFormMock(): JSX.Element {
     return <span />
   }
@@ -27,6 +28,7 @@ jest.mock('./TemplateForm', () => {
 jest.mock('editor/Editor', () =>
   jest.requireActual('editor/Editor.testSupport'),
 )
+afterEach(() => jest.restoreAllMocks())
 
 it('disables Save after a failed validation attempt without further edits', async () => {
   const requestError = validationError()
@@ -81,8 +83,7 @@ it('disables Save again when reverting to the failed validation attempt', async 
 
 it('keeps Save enabled after a non-validation failure so it can be retried', async () => {
   const transientError = new Error('service unavailable')
-  const updateEdition = jest
-    .fn()
+  const updateEdition = createUpdateEditionMock()
     .mockReturnValueOnce(Promise.reject(transientError))
     .mockReturnValueOnce(new Promise(() => undefined))
   renderTransliterationForm(updateEdition)
@@ -125,8 +126,7 @@ it('still warns about unsaved changes after a failed validation disables Save', 
 })
 
 it('sends every field still differing from the saved version when retrying', async () => {
-  const updateEdition = jest
-    .fn()
+  const updateEdition = createUpdateEditionMock()
     .mockReturnValueOnce(Promise.reject(validationError()))
     .mockReturnValueOnce(new Promise(() => undefined))
   renderTransliterationForm(updateEdition)

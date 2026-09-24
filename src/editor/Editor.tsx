@@ -7,22 +7,42 @@ import 'ace-builds/src-noconflict/ext-searchbox'
 import 'ace-builds/src-noconflict/mode-plain_text'
 import 'ace-builds/src-noconflict/theme-kuroir'
 import 'ace-builds/src-noconflict/ext-rtl'
-import specialCharacters from './SpecialCharacters.json'
-import atSnippets from './atSnippets.json'
-import hashSnippets from './hashSnippets.json'
-import AtfMode from './AtfMode'
+import specialCharacters from 'editor/SpecialCharacters.json'
+import atSnippets from 'editor/atSnippets.json'
+import hashSnippets from 'editor/hashSnippets.json'
+import AtfMode from 'editor/AtfMode'
 import ErrorBoundary from 'common/errors/ErrorBoundary'
 import { setCompleters } from 'ace-builds/src-noconflict/ext-language_tools'
 
-function createAnnotations(compositeError): IAnnotation[] {
-  return _.get(compositeError, 'data.errors', [])
-    .filter((error) => _.has(error, 'lineNumber'))
-    .map((error) => ({
-      row: error.lineNumber - 1,
-      column: 0,
-      type: 'error',
-      text: error.description,
-    }))
+type AnnotationError = {
+  description: string
+  lineNumber: number
+}
+
+function isAnnotationError(error: unknown): error is AnnotationError {
+  if (typeof error !== 'object' || error === null) {
+    return false
+  }
+  const candidate = error as Record<string, unknown>
+  return (
+    typeof candidate.description === 'string' &&
+    typeof candidate.lineNumber === 'number' &&
+    Number.isInteger(candidate.lineNumber) &&
+    candidate.lineNumber >= 1
+  )
+}
+
+export function createAnnotations(compositeError: unknown): IAnnotation[] {
+  const errors = _.get(compositeError, 'data.errors')
+  if (!Array.isArray(errors)) {
+    return []
+  }
+  return errors.filter(isAnnotationError).map((error) => ({
+    row: error.lineNumber - 1,
+    column: 0,
+    type: 'error',
+    text: error.description,
+  }))
 }
 
 function createCompleter(
@@ -147,6 +167,7 @@ class Editor extends Component<Props> {
           theme="kuroir" // AtfMode is designed to be used with kuroir theme
           value={value}
           onChange={onChange}
+          textInputAriaLabel={name}
           showPrintMargin={false}
           showGutter={!_.isEmpty(annotations)}
           wrapEnabled

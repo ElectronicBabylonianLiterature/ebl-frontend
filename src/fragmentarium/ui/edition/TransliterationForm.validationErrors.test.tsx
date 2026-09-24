@@ -4,10 +4,11 @@ import { Promise } from 'bluebird'
 
 import { submitFormByTestId } from 'test-support/utils'
 import {
+  createUpdateEditionMock,
   editorError,
   renderTransliterationForm,
   validationError,
-} from './TransliterationForm.testSupport'
+} from 'fragmentarium/ui/edition/TransliterationForm.testSupport'
 
 jest.mock('editor/SpecialCharactersHelp', () => {
   return function SpecialCharactersHelpMock() {
@@ -28,8 +29,7 @@ jest.mock('editor/Editor', () =>
 it('replaces a visible validation error with the next save error', async () => {
   const firstError = validationError('first validation error')
   const secondError = validationError('second validation error')
-  const updateEdition = jest
-    .fn()
+  const updateEdition = createUpdateEditionMock()
     .mockImplementationOnce(() => Promise.reject(firstError))
     .mockImplementationOnce(() => Promise.reject(secondError))
 

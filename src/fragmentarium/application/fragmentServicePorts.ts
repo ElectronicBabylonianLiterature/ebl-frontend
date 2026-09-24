@@ -48,9 +48,9 @@ export const editionFields = [
   'introduction',
 ] as const
 
-export type EditionFields = {
+export type EditionFields = Partial<{
   [K in (typeof editionFields)[number]]: string | null
-}
+}>
 
 export interface FragmentRepository {
   statistics(): Bluebird<{

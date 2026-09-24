@@ -1,35 +1,68 @@
 import React from 'react'
-import { render, screen } from '@testing-library/react'
+import { render, RenderResult, screen } from '@testing-library/react'
 import { Promise } from 'bluebird'
 
 import { editorErrorOf, resetEditorMock } from 'editor/Editor.testSupport'
-import TransliterationForm from './TransliterationForm'
+import { Fragment } from 'fragmentarium/domain/fragment'
+import { EditionFields } from 'fragmentarium/application/FragmentService'
+import TransliterationForm from 'fragmentarium/ui/edition/TransliterationForm'
+import { ApiError } from 'http/ApiClient'
 
 export const savedTransliteration = 'line1\nline2'
 export const savedNotes = 'notes'
 export const savedIntroduction = 'introduction'
+
+export type UpdateEditionMock = jest.Mock<Promise<Fragment>, [EditionFields]>
 
 export const editorError = (): unknown => editorErrorOf('transliteration')
 
 export const saveButton = (): HTMLElement =>
   screen.getByRole('button', { name: 'Save' })
 
-export const transliterationField = (): HTMLElement =>
-  screen.getByLabelText('transliteration')
+export const transliterationField = (): HTMLTextAreaElement =>
+  screen.getByLabelText<HTMLTextAreaElement>('transliteration')
 
-export const validationError = (
+export const annotatedValidationError = (
   description = 'invalid transliteration',
-): Error =>
-  Object.assign(new Error(description), {
-    data: { errors: [{ lineNumber: 1, description }] },
-  })
+): ApiError =>
+  new ApiError(
+    description,
+    {
+      title: '422 Unprocessable Entity',
+      description,
+      errors: [{ lineNumber: 1, description }],
+    },
+    422,
+  )
 
-export const failingUpdate = (error: Error): jest.Mock =>
-  jest.fn().mockReturnValue(Promise.reject(error))
+export const descriptionOnlyValidationError = (
+  description = 'invalid edition',
+): ApiError =>
+  new ApiError(
+    description,
+    { title: '422 Unprocessable Entity', description },
+    422,
+  )
 
-export const renderTransliterationForm = (updateEdition: jest.Mock): void => {
+export const httpError = (
+  status: number | undefined,
+  description: string,
+): ApiError =>
+  new ApiError(description, { title: String(status), description }, status)
+
+export const validationError = annotatedValidationError
+
+export const createUpdateEditionMock = (): UpdateEditionMock =>
+  jest.fn<Promise<Fragment>, [EditionFields]>()
+
+export const failingUpdate = (error: Error): UpdateEditionMock =>
+  createUpdateEditionMock().mockReturnValue(Promise.reject(error))
+
+export const renderTransliterationForm = (
+  updateEdition: UpdateEditionMock,
+): RenderResult => {
   resetEditorMock()
-  render(
+  return render(
     <TransliterationForm
       transliteration={savedTransliteration}
       notes={savedNotes}
