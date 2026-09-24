@@ -153,9 +153,10 @@ it('Shows the error and stops saving when a save fails', async () => {
   fragmentService.updateEdition.mockReturnValueOnce(
     Promise.reject(requestError),
   )
-  fireEvent.change(screen.getByRole('textbox', { name: /^transliteration,/ }), {
-    target: { value: 'changed transliteration' },
+  fireEvent.change(screen.getByRole('textbox', { name: 'Template' }), {
+    target: { value: '3' },
   })
+  fireEvent.submit(screen.getByRole('form', { name: 'Template form' }))
 
   submitFormByTestId(screen, 'transliteration-form')
 
