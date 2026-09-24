@@ -1,37 +1,13 @@
 import Bluebird from 'bluebird'
 import BibliographyService from 'bibliography/application/BibliographyService'
+import {
+  createBibliographyRepositoryMock,
+  createDeferred,
+} from 'bibliography/application/bibliographyService.testSupport'
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 import BibliographyRepository from 'bibliography/infrastructure/BibliographyRepository'
 
-jest.mock('bibliography/infrastructure/BibliographyRepository', () => {
-  return function () {
-    return {
-      find: jest.fn(),
-      findMany: jest.fn(),
-      search: jest.fn(),
-      update: jest.fn(),
-      create: jest.fn(),
-      listAllBibliography: jest.fn(),
-    }
-  }
-})
-
-interface Deferred<Value> {
-  readonly promise: Bluebird<Value>
-  readonly resolve: (value: Value) => void
-}
-
 type Mutation = 'create' | 'update'
-
-function createDeferred<Value>(): Deferred<Value> {
-  let resolvePromise = (_value: Value): void => {
-    throw new Error('Deferred promise was not initialized')
-  }
-  const promise = new Bluebird<Value>((resolve) => {
-    resolvePromise = resolve
-  })
-  return { promise, resolve: resolvePromise }
-}
 
 function setMutationResults(
   mutation: Mutation,
@@ -59,9 +35,7 @@ function mutate(
 describe.each<Mutation>(['create', 'update'])(
   'BibliographyService %s success before newer failure',
   (mutation) => {
-    const bibliographyRepository = new (BibliographyRepository as jest.Mock<
-      jest.Mocked<BibliographyRepository>
-    >)()
+    const bibliographyRepository = createBibliographyRepositoryMock()
     const id = 'canonical-entry-id'
     const submittedEntry = new BibliographyEntry({ id, title: 'Submitted' })
     const cachedEntry = new BibliographyEntry({ id, title: 'Cached' })

@@ -6,7 +6,7 @@ import {
   MarkupPart,
   UrlPart,
 } from 'transliteration/domain/markup'
-import { LineTokens } from './line-tokens'
+import { LineTokens } from 'transliteration/ui/line-tokens'
 import { Shift } from 'transliteration/domain/token'
 import Reference from 'bibliography/domain/Reference'
 import Citation from 'bibliography/ui/Citation'
@@ -17,7 +17,7 @@ import {
   isParagraphPart,
   isUrlPart,
 } from 'transliteration/domain/type-guards'
-import './markup.css'
+import 'transliteration/ui/markup.css'
 
 const textPartClassMap = {
   EmphasisPart: 'markup-emphasis',
@@ -25,6 +25,33 @@ const textPartClassMap = {
   SuperscriptPart: 'markup-superscript',
   SubscriptPart: 'markup-subscript',
   StringPart: '',
+}
+
+function containsUnsafeUrlCharacter(url: string): boolean {
+  return Array.from(url).some((character) => {
+    const characterCode = character.charCodeAt(0)
+    return character === '\\' || characterCode <= 31 || characterCode === 127
+  })
+}
+
+function isAllowedUrl(url: string): boolean {
+  if (containsUnsafeUrlCharacter(url)) {
+    return false
+  }
+  try {
+    if (url.startsWith('/')) {
+      const sameOriginUrl = new URL(url, window.location.origin)
+      return (
+        !url.startsWith('//') &&
+        sameOriginUrl.origin === window.location.origin &&
+        ['http:', 'https:'].includes(sameOriginUrl.protocol)
+      )
+    }
+    const protocol = new URL(url).protocol
+    return protocol === 'http:' || protocol === 'https:'
+  } catch {
+    return false
+  }
 }
 
 export function DisplayTextPart({
@@ -45,10 +72,13 @@ export function DisplayUrlPart({
 }: {
   part: UrlPart
 }): JSX.Element {
-  return (
+  const label = text || url
+  return isAllowedUrl(url) ? (
     <a href={url} target="_blank" rel="noopener noreferrer">
-      {text || url}
+      {label}
     </a>
+  ) : (
+    <span>{label}</span>
   )
 }
 

@@ -1,24 +1,9 @@
 import BibliographyService from 'bibliography/application/BibliographyService'
+import { createBibliographyRepositoryMock } from 'bibliography/application/bibliographyService.testSupport'
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
-import BibliographyRepository from 'bibliography/infrastructure/BibliographyRepository'
-
-jest.mock('bibliography/infrastructure/BibliographyRepository', () => {
-  return function () {
-    return {
-      find: jest.fn(),
-      findMany: jest.fn(),
-      search: jest.fn(),
-      update: jest.fn(),
-      create: jest.fn(),
-      listAllBibliography: jest.fn(),
-    }
-  }
-})
 
 describe('BibliographyService mutation invalidation', () => {
-  const bibliographyRepository = new (BibliographyRepository as jest.Mock<
-    jest.Mocked<BibliographyRepository>
-  >)()
+  const bibliographyRepository = createBibliographyRepositoryMock()
   const aliasA = 'former-entry-id'
   const aliasB = 'earlier-entry-id'
   const staleEntry = new BibliographyEntry({

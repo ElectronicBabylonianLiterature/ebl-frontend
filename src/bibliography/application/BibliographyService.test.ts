@@ -1,26 +1,11 @@
 import Bluebird from 'bluebird'
 import BibliographyService from 'bibliography/application/BibliographyService'
-import BibliographyRepository from 'bibliography/infrastructure/BibliographyRepository'
+import { createBibliographyRepositoryMock } from 'bibliography/application/bibliographyService.testSupport'
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 import { ApiError } from 'http/ApiClient'
 
-jest.mock('bibliography/infrastructure/BibliographyRepository', () => {
-  return function () {
-    return {
-      find: jest.fn(),
-      findMany: jest.fn(),
-      search: jest.fn(),
-      update: jest.fn(),
-      create: jest.fn(),
-      listAllBibliography: jest.fn(),
-    }
-  }
-})
-
 describe('BibliographyService', () => {
-  const bibliographyRepository = new (BibliographyRepository as jest.Mock<
-    jest.Mocked<BibliographyRepository>
-  >)()
+  const bibliographyRepository = createBibliographyRepositoryMock()
 
   const entryA = new BibliographyEntry({ id: 'RN1', title: 'Entry A' })
   const entryB = new BibliographyEntry({ id: 'RN2', title: 'Entry B' })

@@ -1,25 +1,10 @@
 import BibliographyService from 'bibliography/application/BibliographyService'
+import { createBibliographyRepositoryMock } from 'bibliography/application/bibliographyService.testSupport'
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
-import BibliographyRepository from 'bibliography/infrastructure/BibliographyRepository'
 import { ApiError } from 'http/ApiClient'
 
-jest.mock('bibliography/infrastructure/BibliographyRepository', () => {
-  return function () {
-    return {
-      find: jest.fn(),
-      findMany: jest.fn(),
-      search: jest.fn(),
-      update: jest.fn(),
-      create: jest.fn(),
-      listAllBibliography: jest.fn(),
-    }
-  }
-})
-
 describe('BibliographyService partial batch results', () => {
-  const bibliographyRepository = new (BibliographyRepository as jest.Mock<
-    jest.Mocked<BibliographyRepository>
-  >)()
+  const bibliographyRepository = createBibliographyRepositoryMock()
   const samet = new BibliographyEntry({
     id: 'samet2014lamentation',
     title: 'Lamentation over the Destruction of Ur',

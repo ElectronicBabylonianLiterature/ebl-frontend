@@ -1,41 +1,13 @@
-import Bluebird from 'bluebird'
 import BibliographyBatchLoader from 'bibliography/application/BibliographyBatchLoader'
+import {
+  createBibliographyRepositoryMock,
+  createDeferred,
+} from 'bibliography/application/bibliographyService.testSupport'
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
-import BibliographyRepository from 'bibliography/infrastructure/BibliographyRepository'
 import { ApiError } from 'http/ApiClient'
 
-jest.mock('bibliography/infrastructure/BibliographyRepository', () => {
-  return function () {
-    return {
-      find: jest.fn(),
-      findMany: jest.fn(),
-      search: jest.fn(),
-      update: jest.fn(),
-      create: jest.fn(),
-      listAllBibliography: jest.fn(),
-    }
-  }
-})
-
-interface Deferred<Value> {
-  readonly promise: Bluebird<Value>
-  readonly resolve: (value: Value) => void
-}
-
-function createDeferred<Value>(): Deferred<Value> {
-  let resolvePromise = (_value: Value): void => {
-    throw new Error('Deferred promise was not initialized')
-  }
-  const promise = new Bluebird<Value>((resolve) => {
-    resolvePromise = resolve
-  })
-  return { promise, resolve: resolvePromise }
-}
-
 describe('BibliographyBatchLoader', () => {
-  const bibliographyRepository = new (BibliographyRepository as jest.Mock<
-    jest.Mocked<BibliographyRepository>
-  >)()
+  const bibliographyRepository = createBibliographyRepositoryMock()
   const cacheEntry = jest.fn<void, [string, BibliographyEntry, number]>()
 
   beforeEach(() => {
@@ -161,5 +133,45 @@ describe('BibliographyBatchLoader', () => {
     await expect(directRequest).rejects.toBe(error)
     await expect(optionalRequest).resolves.toBeUndefined()
     expect(bibliographyRepository.find).toHaveBeenCalledTimes(1)
+  })
+
+  test('isolates a direct reader from an unrelated fallback failure', async () => {
+    const foundEntry = new BibliographyEntry({ id: 'found-entry' })
+    const missingId = 'failed-entry'
+    const error = new ApiError('Server Error', {}, 500)
+    const batch = createDeferred<readonly BibliographyEntry[]>()
+    bibliographyRepository.findMany.mockReturnValue(batch.promise)
+    bibliographyRepository.find.mockRejectedValue(error)
+    const loader = new BibliographyBatchLoader(
+      bibliographyRepository,
+      cacheEntry,
+    )
+
+    const batchRequest = loader.load([foundEntry.id, missingId], 6)
+    const directRequest = loader.findInFlight(foundEntry.id)
+    batch.resolve([foundEntry])
+
+    await expect(directRequest).resolves.toBe(foundEntry)
+    await expect(batchRequest).rejects.toBe(error)
+  })
+
+  test('isolates an overlapping subset from an unrelated fallback failure', async () => {
+    const foundEntry = new BibliographyEntry({ id: 'found-entry' })
+    const missingId = 'failed-entry'
+    const error = new ApiError('Server Error', {}, 500)
+    const batch = createDeferred<readonly BibliographyEntry[]>()
+    bibliographyRepository.findMany.mockReturnValue(batch.promise)
+    bibliographyRepository.find.mockRejectedValue(error)
+    const loader = new BibliographyBatchLoader(
+      bibliographyRepository,
+      cacheEntry,
+    )
+
+    const batchRequest = loader.load([foundEntry.id, missingId], 7)
+    const subsetRequest = loader.findManyInFlight(foundEntry.id)
+    batch.resolve([foundEntry])
+
+    await expect(subsetRequest).resolves.toBe(foundEntry)
+    await expect(batchRequest).rejects.toBe(error)
   })
 })

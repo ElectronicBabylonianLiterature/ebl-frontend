@@ -1,20 +1,7 @@
 import Bluebird from 'bluebird'
 import BibliographyService from 'bibliography/application/BibliographyService'
-import BibliographyRepository from 'bibliography/infrastructure/BibliographyRepository'
+import { createBibliographyRepositoryMock } from 'bibliography/application/bibliographyService.testSupport'
 import { ApiError } from 'http/ApiClient'
-
-jest.mock('bibliography/infrastructure/BibliographyRepository', () => {
-  return function () {
-    return {
-      find: jest.fn(),
-      findMany: jest.fn(),
-      search: jest.fn(),
-      update: jest.fn(),
-      create: jest.fn(),
-      listAllBibliography: jest.fn(),
-    }
-  }
-})
 
 const systemicErrors: ReadonlyArray<[string, () => Error]> = [
   ['network', () => new Error('Network unavailable')],
@@ -25,9 +12,7 @@ const systemicErrors: ReadonlyArray<[string, () => Error]> = [
 ]
 
 describe('BibliographyService batch errors', () => {
-  const bibliographyRepository = new (BibliographyRepository as jest.Mock<
-    jest.Mocked<BibliographyRepository>
-  >)()
+  const bibliographyRepository = createBibliographyRepositoryMock()
 
   beforeEach(() => {
     jest.clearAllMocks()
