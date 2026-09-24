@@ -33,7 +33,7 @@ class TemplateForm extends Component<
 
   render(): JSX.Element {
     return (
-      <Form noValidate onSubmit={this.submit}>
+      <Form noValidate onSubmit={this.submit} aria-label="Template form">
         <Form.Group controlId="template">
           <Form.Label>
             <HelpTrigger overlay={TemplateHelp()} />

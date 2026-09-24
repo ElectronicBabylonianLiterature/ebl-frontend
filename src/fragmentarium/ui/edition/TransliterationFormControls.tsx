@@ -5,6 +5,8 @@ import Editor from 'editor/Editor'
 import SpecialCharactersHelp from 'editor/SpecialCharactersHelp'
 import { editionFields } from 'fragmentarium/application/FragmentService'
 
+type EditionField = (typeof editionFields)[number]
+
 export type FormData = {
   transliteration: string
   notes: string
@@ -43,7 +45,7 @@ export function TransliterationFormFields({
   formData: FormData
   formId: string
   disabled?: boolean
-  update: (property: keyof FormData) => (value: string) => void
+  update: (property: EditionField) => (value: string) => void
 }): JSX.Element {
   return (
     <>
