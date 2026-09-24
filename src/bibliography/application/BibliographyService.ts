@@ -1,107 +1,61 @@
 import Promise from 'bluebird'
+import BibliographyCache from 'bibliography/application/BibliographyCache'
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 import BibliographyRepository from 'bibliography/infrastructure/BibliographyRepository'
-import _ from 'lodash'
-import { CacheEntry, getCachedValue, setCachedValue } from 'common/utils/cache'
 
-const cacheEntryLifetimeInMilliseconds = 5 * 60 * 1000
-const maximumCachedEntries = 500
 const defaultCacheScope = 'default'
 
 export interface BibliographySearch {
   search(query: string): Promise<readonly BibliographyEntry[]>
 }
 
+interface MutationWinner {
+  readonly sequence: number
+  readonly entry: BibliographyEntry
+}
+
 export default class BibliographyService implements BibliographySearch {
   private readonly bibliographyRepository: BibliographyRepository
-
   private cacheScope: string | null = null
-
-  private readonly cachedEntries = new Map<
-    string,
-    CacheEntry<BibliographyEntry>
-  >()
-
-  private readonly cachedFindRequests = new Map<
-    string,
-    Promise<BibliographyEntry>
-  >()
-
-  private readonly cachedFindManyRequests = new Map<
-    string,
-    Promise<readonly BibliographyEntry[]>
-  >()
+  private scopeGeneration = 0
+  private mutationSequence = 0
+  private readonly mutationWinners = new Map<string, MutationWinner>()
+  private readonly cache: BibliographyCache
 
   constructor(
     bibliographyRepository: BibliographyRepository,
     private readonly getCacheScope: () => string = () => defaultCacheScope,
   ) {
     this.bibliographyRepository = bibliographyRepository
+    this.cache = new BibliographyCache(bibliographyRepository)
   }
 
   create(entry: BibliographyEntry): Promise<BibliographyEntry> {
-    return this.bibliographyRepository
-      .create(entry)
-      .then((createdEntry) => this.cacheUpdatedEntry(createdEntry))
+    return this.mutate(() => this.bibliographyRepository.create(entry))
   }
 
   find(id: string): Promise<BibliographyEntry> {
     this.clearCachesWhenScopeChanges()
-
-    const cachedEntry = getCachedValue(this.cachedEntries, id)
-    if (cachedEntry) {
-      return Promise.resolve(cachedEntry)
-    }
-
-    const inFlightRequest = this.cachedFindRequests.get(id)
-    if (inFlightRequest) {
-      return inFlightRequest.then((entry) => entry)
-    }
-
-    const requestReference: { current?: Promise<BibliographyEntry> } = {}
-    const request = this.bibliographyRepository
-      .find(id)
-      .then((entry) =>
-        this.cachedFindRequests.get(id) === requestReference.current
-          ? setCachedValue({
-              cache: this.cachedEntries,
-              key: id,
-              value: entry,
-              maximumCacheSize: maximumCachedEntries,
-              cacheEntryLifetimeInMilliseconds,
-            })
-          : entry,
-      )
-      .finally(() => {
-        if (this.cachedFindRequests.get(id) === requestReference.current) {
-          this.cachedFindRequests.delete(id)
-        }
-      })
-
-    requestReference.current = request
-    this.cachedFindRequests.set(id, request)
-    return request.then((entry) => entry)
+    return this.cache.find(id)
   }
 
   findMany(ids: readonly string[]): Promise<readonly BibliographyEntry[]> {
-    this.clearCachesWhenScopeChanges()
-
-    const uniqueIds = _.uniq(ids)
-    if (_.isEmpty(uniqueIds)) {
-      return Promise.resolve([])
-    }
-
-    return this.loadEntriesByIds(uniqueIds).then((entriesById) =>
+    return this.findManyById(ids).then((entriesById) =>
       ids
         .map((id) => entriesById.get(id))
         .filter((entry): entry is BibliographyEntry => entry !== undefined),
     )
   }
 
+  findManyById(
+    ids: readonly string[],
+  ): Promise<ReadonlyMap<string, BibliographyEntry>> {
+    this.clearCachesWhenScopeChanges()
+    return this.cache.findManyById(ids)
+  }
+
   update(entry: BibliographyEntry): Promise<BibliographyEntry> {
-    return this.bibliographyRepository
-      .update(entry)
-      .then((updatedEntry) => this.cacheUpdatedEntry(updatedEntry))
+    return this.mutate(() => this.bibliographyRepository.update(entry))
   }
 
   search(query: string): Promise<readonly BibliographyEntry[]> {
@@ -112,155 +66,35 @@ export default class BibliographyService implements BibliographySearch {
     return this.bibliographyRepository.listAllBibliography()
   }
 
-  private loadEntriesByIds(
-    ids: readonly string[],
-  ): Promise<Map<string, BibliographyEntry>> {
-    const entriesById = new Map<string, BibliographyEntry>()
-    const missingIds: string[] = []
-    const inFlightRequests: Array<Promise<void>> = []
-
-    ids.forEach((id) => {
-      const cachedEntry = getCachedValue(this.cachedEntries, id)
-      if (cachedEntry) {
-        entriesById.set(id, cachedEntry)
-        return
-      }
-
-      const inFlight = this.cachedFindRequests.get(id)
-      if (inFlight) {
-        inFlightRequests.push(
-          inFlight.then((entry) => {
-            entriesById.set(id, entry)
-          }),
-        )
-        return
-      }
-
-      missingIds.push(id)
-    })
-
-    const fetchMissingEntries = _.isEmpty(missingIds)
-      ? Promise.resolve([] as readonly BibliographyEntry[])
-      : this.fetchMany(missingIds)
-
-    return Promise.all([
-      Promise.all(inFlightRequests),
-      fetchMissingEntries,
-    ]).then(([, fetchedEntries]) => {
-      fetchedEntries.forEach((entry) => {
-        entriesById.set(entry.id, entry)
-      })
-      return entriesById
-    })
-  }
-
-  private fetchMany(
-    ids: readonly string[],
-  ): Promise<readonly BibliographyEntry[]> {
-    const sortedUniqueIds = _.uniq(ids).sort()
-    const requestKey = sortedUniqueIds.join('|')
-    const cachedRequest = this.cachedFindManyRequests.get(requestKey)
-    if (cachedRequest) {
-      return cachedRequest.then((entries) => entries)
-    }
-
-    const requestReference: {
-      current?: Promise<readonly BibliographyEntry[]>
-    } = {}
-    const request = this.bibliographyRepository
-      .findMany(sortedUniqueIds)
-      .then((entries) => {
-        entries.forEach((entry) => {
-          setCachedValue({
-            cache: this.cachedEntries,
-            key: entry.id,
-            value: entry,
-            maximumCacheSize: maximumCachedEntries,
-            cacheEntryLifetimeInMilliseconds,
-          })
-        })
-
-        const entriesById = _.keyBy(entries, 'id')
-        return Promise.all(
-          sortedUniqueIds.map((id) => {
-            const entry = entriesById[id]
-            return entry
-              ? entry
-              : this.bibliographyRepository.find(id).then((resolvedEntry) =>
-                  setCachedValue({
-                    cache: this.cachedEntries,
-                    key: resolvedEntry.id,
-                    value: resolvedEntry,
-                    maximumCacheSize: maximumCachedEntries,
-                    cacheEntryLifetimeInMilliseconds,
-                  }),
-                )
-          }),
-        )
-      })
-      .finally(() => {
-        if (
-          this.cachedFindManyRequests.get(requestKey) ===
-          requestReference.current
-        ) {
-          this.cachedFindManyRequests.delete(requestKey)
-        }
-      })
-
-    requestReference.current = request
-    this.cachedFindManyRequests.set(requestKey, request)
-
-    sortedUniqueIds.forEach((id) => {
-      if (this.cachedFindRequests.has(id)) {
-        return
-      }
-
-      const idRequestReference: { current?: Promise<BibliographyEntry> } = {}
-      const idRequest = request
-        .then((entries) => {
-          const entry = entries.find((currentEntry) => currentEntry.id === id)
-          return entry
-            ? entry
-            : this.bibliographyRepository.find(id).then((resolvedEntry) =>
-                setCachedValue({
-                  cache: this.cachedEntries,
-                  key: resolvedEntry.id,
-                  value: resolvedEntry,
-                  maximumCacheSize: maximumCachedEntries,
-                  cacheEntryLifetimeInMilliseconds,
-                }),
-              )
-        })
-        .finally(() => {
-          if (this.cachedFindRequests.get(id) === idRequestReference.current) {
-            this.cachedFindRequests.delete(id)
-          }
-        })
-
-      idRequestReference.current = idRequest
-      this.cachedFindRequests.set(id, idRequest)
-    })
-
-    return request
-  }
-
-  private cacheUpdatedEntry(entry: BibliographyEntry): BibliographyEntry {
+  private mutate(
+    request: () => Promise<BibliographyEntry>,
+  ): Promise<BibliographyEntry> {
     this.clearCachesWhenScopeChanges()
-    this.cachedFindManyRequests.clear()
-    setCachedValue({
-      cache: this.cachedEntries,
-      key: entry.id,
-      value: entry,
-      maximumCacheSize: maximumCachedEntries,
-      cacheEntryLifetimeInMilliseconds,
+    const scopeGeneration = this.scopeGeneration
+    const sequence = ++this.mutationSequence
+    return request().then((entry) => {
+      this.clearCachesWhenScopeChanges()
+      if (scopeGeneration === this.scopeGeneration) {
+        this.applyMutation(sequence, entry)
+      }
+      return entry
     })
-    return entry
   }
 
-  private clearAllCaches(): void {
-    this.cachedEntries.clear()
-    this.cachedFindRequests.clear()
-    this.cachedFindManyRequests.clear()
+  private applyMutation(sequence: number, entry: BibliographyEntry): void {
+    this.cache.invalidateEntryCaches(entry.id)
+    const currentWinner = this.mutationWinners.get(entry.id)
+    const winner =
+      currentWinner && currentWinner.sequence > sequence
+        ? currentWinner
+        : { sequence, entry }
+    this.mutationWinners.set(entry.id, winner)
+    this.cache.cacheEntry(entry.id, winner.entry)
+  }
+
+  private invalidateCaches(): void {
+    this.cache.clear()
+    this.mutationWinners.clear()
   }
 
   private clearCachesWhenScopeChanges(): void {
@@ -272,7 +106,8 @@ export default class BibliographyService implements BibliographySearch {
 
     if (this.cacheScope !== nextScope) {
       this.cacheScope = nextScope
-      this.clearAllCaches()
+      this.scopeGeneration += 1
+      this.invalidateCaches()
     }
   }
 

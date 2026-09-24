@@ -15,14 +15,16 @@ import { Introduction, Notes } from 'fragmentarium/domain/fragment'
 import _ from 'lodash'
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 
+type BibliographyLookup = Pick<BibliographyService, 'find' | 'findManyById'>
+
 function isMarkupLine(line: AbstractLine): line is NoteLine | TranslationLine {
   return ['NoteLine', 'TranslationLine'].includes(line.type)
 }
 
 export default class ReferenceInjector {
-  private readonly bibliographyService: BibliographyService
+  private readonly bibliographyService: BibliographyLookup
 
-  constructor(bibliographyService: BibliographyService) {
+  constructor(bibliographyService: BibliographyLookup) {
     this.bibliographyService = bibliographyService
   }
 
@@ -53,19 +55,21 @@ export default class ReferenceInjector {
 
   private mergeEntries(
     parts: readonly MarkupPart[],
-    entries: readonly BibliographyEntry[],
+    entriesById: ReadonlyMap<string, BibliographyEntry>,
   ): MarkupPart[] {
-    const entryMap = _.keyBy(entries, 'id')
-
     return parts.map((part) => {
       if (isBibliographyPart(part)) {
         const dto = part.reference
+        const entry = entriesById.get(dto.id)
+        if (!entry) {
+          return part
+        }
         const reference = new Reference(
           dto.type,
           dto.pages,
           dto.notes,
           dto.linesCited,
-          entryMap[dto.id],
+          entry,
         )
         return { ...part, reference }
       }
@@ -82,14 +86,10 @@ export default class ReferenceInjector {
     )
 
     return _.isEmpty(ids)
-      ? Promise.resolve(parts as MarkupPart[])
+      ? Promise.resolve([...parts])
       : this.bibliographyService
-          .findMany(ids)
-          .then((entries) => this.mergeEntries(parts, entries))
-          .catch((error) => {
-            console.error(error)
-            return parts as MarkupPart[]
-          })
+          .findManyById(ids)
+          .then((entriesById) => this.mergeEntries(parts, entriesById))
   }
 
   injectReferencesToIntroduction(
