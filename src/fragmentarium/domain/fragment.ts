@@ -38,7 +38,7 @@ interface FragmentProps {
   number: string
   accession: string
   publication: string
-  acquisition: Acquisition | null
+  acquisitions: ReadonlyArray<Acquisition>
   description: string
   joins: Joins
   measures: Measures
@@ -77,7 +77,7 @@ export class Fragment {
   readonly number: string
   readonly accession: string
   readonly publication: string
-  readonly acquisition: Acquisition | null
+  readonly acquisitions: ReadonlyArray<Acquisition>
   readonly description: string
   readonly joins: Joins
   readonly measures: Measures
@@ -113,7 +113,7 @@ export class Fragment {
     this.number = props.number
     this.accession = props.accession
     this.publication = props.publication
-    this.acquisition = props.acquisition ?? null
+    this.acquisitions = props.acquisitions ?? []
     this.description = props.description
     this.joins = props.joins
     this.measures = props.measures

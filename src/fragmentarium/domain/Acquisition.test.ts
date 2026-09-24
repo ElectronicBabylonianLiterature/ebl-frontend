@@ -145,6 +145,16 @@ describe('Acquisition', () => {
         create: () => new Acquisition('Smithsonian', 0, 'Artifact'),
         expected: 'Smithsonian (Artifact)',
       },
+      {
+        name: 'empty supplier',
+        create: () => new Acquisition(''),
+        expected: 'Anonymous',
+      },
+      {
+        name: 'empty supplier with date',
+        create: () => new Acquisition('', 1900),
+        expected: 'Anonymous, 1900',
+      },
     ]
 
     edgeCases.forEach(({ name, create, expected }) => {

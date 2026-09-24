@@ -20,7 +20,7 @@ export const fragment = new Fragment({
   number: 'Test.Fragment',
   accession: 'A.38.b',
   publication: 'electronic Babylonian Library',
-  acquisition: new Acquisition('British Museum', 1925, 'Clay tablet'),
+  acquisitions: [new Acquisition('British Museum', 1925, 'Clay tablet')],
   description: 'A fragment to be used when testing the eBL application',
   joins: [
     [

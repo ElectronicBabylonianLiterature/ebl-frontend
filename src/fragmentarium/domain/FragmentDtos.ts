@@ -124,7 +124,7 @@ export default interface FragmentDto {
   museumNumber: MuseumNumber
   accession: MuseumNumber | null
   publication: string
-  acquisition: AcquisitionDto | null
+  acquisitions: readonly AcquisitionDto[]
   description: string
   joins: unknown
   collection: string

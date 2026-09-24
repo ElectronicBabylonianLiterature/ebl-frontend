@@ -46,11 +46,13 @@ export const fragmentDto: FragmentDto = {
     suffix: 'b',
   },
   publication: 'electronic Babylonian Library',
-  acquisition: {
-    supplier: 'British Museum',
-    date: 1925,
-    description: 'Clay tablet',
-  },
+  acquisitions: [
+    {
+      supplier: 'British Museum',
+      date: 1925,
+      description: 'Clay tablet',
+    },
+  ],
   description: 'A fragment to be used when testing the eBL application',
   joins: [
     [

@@ -44,7 +44,7 @@ export class Acquisition {
   }
 
   toString(): string {
-    const mainParts = [this.supplier]
+    const mainParts = [this.supplier || 'Anonymous']
     if (this.date) {
       mainParts.push(String(this.date))
     }

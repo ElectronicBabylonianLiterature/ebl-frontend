@@ -248,11 +248,11 @@ function Details({
           fragment={fragment}
         />
       </li>
-      {fragment.acquisition && (
-        <li className="Details__item">
-          Acquisition: From {fragment.acquisition.toString()}
+      {fragment.acquisitions.map((acquisition, index) => (
+        <li className="Details__item" key={index}>
+          Acquisition: From {acquisition.toString()}
         </li>
-      )}
+      ))}
       <li className="Details__item">
         <GenreSelection
           fragment={fragment}
