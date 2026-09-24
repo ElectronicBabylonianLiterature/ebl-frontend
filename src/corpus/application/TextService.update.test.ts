@@ -14,6 +14,7 @@ import {
   apiClient,
   chapterId,
   chapterUrl,
+  fragmentServiceMock,
   setupProvenances,
   testService,
 } from 'corpus/application/textService.testSupport'
@@ -218,3 +219,16 @@ beforeEach(() => {
 })
 
 describe('TextService', () => testDelegation(testService, testData))
+
+test('does not start a mutation when provenance preload fails', async () => {
+  const provenanceError = new Error('provenance request failed')
+  fragmentServiceMock.fetchProvenances.mockReturnValueOnce(
+    Bluebird.reject(provenanceError),
+  )
+
+  await expect(testService.importChapter(chapterId, '1. kur')).rejects.toBe(
+    provenanceError,
+  )
+
+  expect(apiClient.postJson).not.toHaveBeenCalled()
+})

@@ -72,10 +72,15 @@ export default class TextServiceCache {
   getTexts(fetchValue: () => Bluebird<Text[]>): Bluebird<Text[]> {
     this.clearWhenScopeChanges()
     if (!this.cachedTexts) {
-      this.cachedTexts = fetchValue().catch((error) => {
-        this.cachedTexts = null
+      const requestReference: { current?: Bluebird<Text[]> } = {}
+      const request = fetchValue().catch((error) => {
+        if (this.cachedTexts === requestReference.current) {
+          this.cachedTexts = null
+        }
         throw error
       })
+      requestReference.current = request
+      this.cachedTexts = request
     }
     return this.cachedTexts
   }

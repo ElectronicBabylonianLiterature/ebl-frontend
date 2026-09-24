@@ -175,6 +175,49 @@ describe.each<Mutation>(['create', 'update'])(
       await expect(service.find(id)).resolves.toBe(newerEntry)
       expect(bibliographyRepository.find).not.toHaveBeenCalled()
     })
+
+    test('isolates cache invalidation between entry mutations', async () => {
+      const otherId = 'other-entry-id'
+      const requestedAlias = 'former-entry-id'
+      const staleEntry = new BibliographyEntry({
+        id,
+        title: 'Stale read',
+      })
+      const freshEntry = new BibliographyEntry({
+        id,
+        title: 'Fresh mutation result',
+      })
+      const otherSubmittedEntry = new BibliographyEntry({
+        id: otherId,
+        title: 'Other submitted entry',
+      })
+      const otherEntry = new BibliographyEntry({
+        id: otherId,
+        title: 'Other mutation result',
+      })
+      const firstResult = createDeferred<BibliographyEntry>()
+      const otherResult = createDeferred<BibliographyEntry>()
+      const service = new BibliographyService(bibliographyRepository)
+      bibliographyRepository.find
+        .mockResolvedValueOnce(staleEntry)
+        .mockResolvedValueOnce(freshEntry)
+      await expect(service.find(requestedAlias)).resolves.toBe(staleEntry)
+      setMutationResult(mutation, bibliographyRepository, firstResult.promise)
+      setMutationResult(mutation, bibliographyRepository, otherResult.promise)
+
+      const firstRequest = mutate(mutation, service, submittedEntry)
+      const otherRequest = mutate(mutation, service, otherSubmittedEntry)
+      otherResult.resolve(otherEntry)
+      await expect(otherRequest).resolves.toBe(otherEntry)
+      await expect(service.find(requestedAlias)).resolves.toBe(staleEntry)
+      firstResult.resolve(freshEntry)
+      await expect(firstRequest).resolves.toBe(freshEntry)
+
+      await expect(service.find(id)).resolves.toBe(freshEntry)
+      await expect(service.find(requestedAlias)).resolves.toBe(freshEntry)
+      await expect(service.find(otherId)).resolves.toBe(otherEntry)
+      expect(bibliographyRepository.find).toHaveBeenCalledTimes(2)
+    })
   },
 )
 

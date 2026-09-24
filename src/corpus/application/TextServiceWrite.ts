@@ -116,9 +116,10 @@ export default class TextServiceWrite {
     path: 'alignment' | 'lemmatization' | 'manuscripts' | 'lines' | 'import',
     dto: unknown,
   ): Bluebird<Chapter> {
-    return Bluebird.all([
-      preloadProvenances(this.fragmentService),
-      this.apiClient.postJson(`${createChapterUrl(id)}/${path}`, dto),
-    ]).then(([, chapter]) => fromChapterDto(chapter))
+    return preloadProvenances(this.fragmentService)
+      .then(() =>
+        this.apiClient.postJson(`${createChapterUrl(id)}/${path}`, dto),
+      )
+      .then(fromChapterDto)
   }
 }

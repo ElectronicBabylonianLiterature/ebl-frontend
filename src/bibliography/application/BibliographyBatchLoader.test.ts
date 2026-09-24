@@ -61,6 +61,50 @@ describe('BibliographyBatchLoader', () => {
     expect(cacheEntry).toHaveBeenCalledWith(entry.id, entry, 3)
   })
 
+  test('does not share requests whose id sets have the same delimiter join', async () => {
+    const combinedIdEntry = new BibliographyEntry({
+      id: 'RN1|RN2',
+      title: 'Combined id',
+    })
+    const firstEntry = new BibliographyEntry({ id: 'RN1', title: 'First' })
+    const secondEntry = new BibliographyEntry({ id: 'RN2', title: 'Second' })
+    bibliographyRepository.findMany
+      .mockResolvedValueOnce([combinedIdEntry])
+      .mockResolvedValueOnce([firstEntry, secondEntry])
+    const loader = new BibliographyBatchLoader(
+      bibliographyRepository,
+      cacheEntry,
+    )
+
+    const combinedIdRequest = loader.load([combinedIdEntry.id], 3)
+    const separateIdsRequest = loader.load([firstEntry.id, secondEntry.id], 3)
+
+    await expect(combinedIdRequest).resolves.toEqual(
+      new Map([[combinedIdEntry.id, combinedIdEntry]]),
+    )
+    await expect(separateIdsRequest).resolves.toEqual(
+      new Map([
+        [firstEntry.id, firstEntry],
+        [secondEntry.id, secondEntry],
+      ]),
+    )
+    expect(bibliographyRepository.findMany).toHaveBeenCalledTimes(2)
+  })
+
+  test('falls back for an id inherited from Object.prototype', async () => {
+    const id = 'constructor'
+    const entry = new BibliographyEntry({ id, title: 'Constructor entry' })
+    bibliographyRepository.findMany.mockResolvedValue([])
+    bibliographyRepository.find.mockResolvedValue(entry)
+    const loader = new BibliographyBatchLoader(
+      bibliographyRepository,
+      cacheEntry,
+    )
+
+    await expect(loader.load([id], 3)).resolves.toEqual(new Map([[id, entry]]))
+    expect(bibliographyRepository.find).toHaveBeenCalledWith(id)
+  })
+
   test('keeps the first per-id request while registering new overlapping ids', async () => {
     const firstA = new BibliographyEntry({ id: 'RN1', title: 'First A' })
     const secondA = new BibliographyEntry({ id: 'RN1', title: 'Second A' })

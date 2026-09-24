@@ -44,7 +44,7 @@ export default class BibliographyBatchLoader {
     generation: number,
   ): Promise<ReadonlyMap<string, BibliographyEntry>> {
     const sortedUniqueIds = _.uniq(ids).sort()
-    const requestKey = sortedUniqueIds.join('|')
+    const requestKey = JSON.stringify(sortedUniqueIds)
     const cachedRequest = this.cachedRequests.get(requestKey)
     if (cachedRequest) {
       return this.onlyFoundEntries(cachedRequest)
@@ -109,11 +109,11 @@ export default class BibliographyBatchLoader {
     generation: number,
   ): Promise<ReadonlyMap<string, EntryResult>> {
     entries.forEach((entry) => this.cacheEntry(entry.id, entry, generation))
-    const entriesById = _.keyBy(entries, 'id')
+    const entriesById = new Map(entries.map((entry) => [entry.id, entry]))
 
     return Promise.all(
       ids.map((id) => {
-        const entry = entriesById[id]
+        const entry = entriesById.get(id)
         return entry
           ? Promise.resolve<RequestedEntryResult>({
               id,

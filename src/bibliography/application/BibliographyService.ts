@@ -15,12 +15,18 @@ export interface BibliographySearch {
   search(query: string): Promise<readonly BibliographyEntry[]>
 }
 
+interface MutationWinner {
+  readonly sequence: number
+  readonly entry: BibliographyEntry
+}
+
 export default class BibliographyService implements BibliographySearch {
   private readonly bibliographyRepository: BibliographyRepository
   private cacheScope: string | null = null
   private cacheGeneration = 0
   private scopeGeneration = 0
-  private readonly mutationState = { started: 0, applied: 0 }
+  private mutationSequence = 0
+  private readonly mutationWinners = new Map<string, MutationWinner>()
   private readonly cachedEntries = new Map<
     string,
     CacheEntry<BibliographyEntry>
@@ -185,20 +191,27 @@ export default class BibliographyService implements BibliographySearch {
   ): Promise<BibliographyEntry> {
     this.clearCachesWhenScopeChanges()
     const scopeGeneration = this.scopeGeneration
-    const sequence = ++this.mutationState.started
+    const sequence = ++this.mutationSequence
     return request().then((entry) => {
       this.clearCachesWhenScopeChanges()
-      if (
-        scopeGeneration === this.scopeGeneration &&
-        sequence > this.mutationState.applied
-      ) {
-        this.mutationState.applied = sequence
-        this.invalidateCaches()
-        return this.cacheEntry(entry.id, entry)
+      if (scopeGeneration === this.scopeGeneration) {
+        this.applyMutation(sequence, entry)
       }
       return entry
     })
   }
+
+  private applyMutation(sequence: number, entry: BibliographyEntry): void {
+    this.invalidateEntryCaches(entry.id)
+    const currentWinner = this.mutationWinners.get(entry.id)
+    const winner =
+      currentWinner && currentWinner.sequence > sequence
+        ? currentWinner
+        : { sequence, entry }
+    this.mutationWinners.set(entry.id, winner)
+    this.cacheEntry(entry.id, winner.entry)
+  }
+
   private cacheEntryForGeneration(
     id: string,
     entry: BibliographyEntry,
@@ -219,9 +232,23 @@ export default class BibliographyService implements BibliographySearch {
     })
   }
 
+  private invalidateEntryCaches(id: string): void {
+    this.invalidateInFlightRequests()
+    this.cachedEntries.forEach((cachedEntry, key) => {
+      if (cachedEntry.value.id === id) {
+        this.cachedEntries.delete(key)
+      }
+    })
+  }
+
   private invalidateCaches(): void {
-    this.cacheGeneration += 1
+    this.invalidateInFlightRequests()
     this.cachedEntries.clear()
+    this.mutationWinners.clear()
+  }
+
+  private invalidateInFlightRequests(): void {
+    this.cacheGeneration += 1
     this.cachedFindRequests.clear()
     this.batchLoader.clear()
   }
