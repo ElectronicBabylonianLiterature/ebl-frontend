@@ -33,7 +33,7 @@ function isAnnotationError(error: unknown): error is AnnotationError {
 }
 
 export function createAnnotations(compositeError: unknown): IAnnotation[] {
-  const errors = _.get(compositeError, 'data.errors')
+  const errors: unknown = _.get(compositeError, 'data.errors')
   if (!Array.isArray(errors)) {
     return []
   }

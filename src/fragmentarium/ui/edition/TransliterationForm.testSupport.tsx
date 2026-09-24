@@ -1,6 +1,6 @@
 import React from 'react'
 import { render, RenderResult, screen } from '@testing-library/react'
-import { Promise } from 'bluebird'
+import Bluebird from 'bluebird'
 
 import { editorErrorOf, resetEditorMock } from 'editor/Editor.testSupport'
 import { Fragment } from 'fragmentarium/domain/fragment'
@@ -12,7 +12,7 @@ export const savedTransliteration = 'line1\nline2'
 export const savedNotes = 'notes'
 export const savedIntroduction = 'introduction'
 
-export type UpdateEditionMock = jest.Mock<Promise<Fragment>, [EditionFields]>
+export type UpdateEditionMock = jest.Mock<Bluebird<Fragment>, [EditionFields]>
 
 export const editorError = (): unknown => editorErrorOf('transliteration')
 
@@ -53,10 +53,10 @@ export const httpError = (
 export const validationError = annotatedValidationError
 
 export const createUpdateEditionMock = (): UpdateEditionMock =>
-  jest.fn<Promise<Fragment>, [EditionFields]>()
+  jest.fn<Bluebird<Fragment>, [EditionFields]>()
 
 export const failingUpdate = (error: Error): UpdateEditionMock =>
-  createUpdateEditionMock().mockReturnValue(Promise.reject(error))
+  createUpdateEditionMock().mockReturnValue(Bluebird.reject(error))
 
 export const renderTransliterationForm = (
   updateEdition: UpdateEditionMock,

@@ -1,7 +1,7 @@
 import React from 'react'
 import { fireEvent, screen, waitFor } from '@testing-library/react'
 import { submitFormByTestId } from 'test-support/utils'
-import { Promise } from 'bluebird'
+import Bluebird from 'bluebird'
 import { act } from 'react'
 import userEvent from '@testing-library/user-event'
 import { fragmentFactory } from 'test-support/fragment-fixtures'
@@ -47,7 +47,7 @@ const setup = () => {
   addEventListenerSpy = jest.spyOn(window, 'addEventListener')
   removeEventListenerSpy = jest.spyOn(window, 'removeEventListener')
   updateEdition = createUpdateEditionMock()
-  updateEdition.mockReturnValue(new Promise(() => undefined))
+  updateEdition.mockReturnValue(new Bluebird(() => undefined))
 
   renderTransliterationForm(updateEdition)
 }
@@ -73,7 +73,7 @@ it('calls updateEdition when submitting the form', async () => {
   setup()
   await act(async () => {
     submitFormByTestId(screen, 'transliteration-form')
-    await Promise.resolve()
+    await Bluebird.resolve()
   })
   expect(updateEdition).toHaveBeenCalledWith({})
 })
@@ -133,7 +133,7 @@ it('Displays warning before closing when unsaved', async () => {
 it('keeps error on editor input change', async () => {
   const requestError = new Error('request failed')
   updateEdition = createUpdateEditionMock()
-  updateEdition.mockReturnValue(Promise.reject(requestError))
+  updateEdition.mockReturnValue(Bluebird.reject(requestError))
 
   renderTransliterationForm(updateEdition)
 
@@ -150,7 +150,7 @@ it('keeps error on editor input change', async () => {
 it('keeps error on template application', async () => {
   const requestError = new Error('request failed')
   updateEdition = createUpdateEditionMock()
-  updateEdition.mockReturnValue(Promise.reject(requestError))
+  updateEdition.mockReturnValue(Bluebird.reject(requestError))
 
   renderTransliterationForm(updateEdition)
 
@@ -173,8 +173,8 @@ it('clears error after successful save', async () => {
 
   updateEdition = createUpdateEditionMock()
   updateEdition
-    .mockReturnValueOnce(Promise.reject(requestError))
-    .mockReturnValueOnce(Promise.resolve(successfulFragment))
+    .mockReturnValueOnce(Bluebird.reject(requestError))
+    .mockReturnValueOnce(Bluebird.resolve(successfulFragment))
 
   renderTransliterationForm(updateEdition)
 
@@ -197,7 +197,7 @@ it('does not set an error for a cancellation error', async () => {
   })
 
   updateEdition = createUpdateEditionMock()
-  updateEdition.mockReturnValue(Promise.reject(cancellationError))
+  updateEdition.mockReturnValue(Bluebird.reject(cancellationError))
 
   renderTransliterationForm(updateEdition)
 
@@ -222,7 +222,7 @@ it('does not set an error when the promise reports cancellation', async () => {
   })
 
   updateEdition = createUpdateEditionMock()
-  updateEdition.mockReturnValue(cancelledPromise as unknown as Promise<never>)
+  updateEdition.mockReturnValue(cancelledPromise as unknown as Bluebird<never>)
 
   renderTransliterationForm(updateEdition)
 
