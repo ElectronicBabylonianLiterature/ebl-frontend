@@ -5,6 +5,7 @@ export type MapPanelId =
   | 'measurement'
   | 'spatial-search'
   | 'export'
+  | 'terrain'
 
 export type ActiveMapPanel = MapPanelId | null
 
