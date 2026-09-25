@@ -7,7 +7,7 @@ import {
   excavationOutlineDash,
   excavationOutlineOpacity,
   excavationOutlineWidth,
-} from './mapPaintExpressions'
+} from 'map/mapPaintExpressions'
 import {
   evidenceFillColor,
   evidenceFillOpacity,
@@ -15,7 +15,7 @@ import {
   evidenceOutlineDash,
   evidenceOutlineOpacity,
   evidenceOutlineWidth,
-} from './mapEvidencePaint'
+} from 'map/mapEvidencePaint'
 export type ExcavationPaint =
   | { readonly kind: 'categorical' }
   | { readonly kind: 'evidence' }
@@ -52,9 +52,9 @@ export function excavationPaintProperties(
   return {
     fillColor: excavationFillColor(scale),
     fillOpacity: excavationFillOpacity(scale),
-    outlineColor: excavationOutlineColor(),
+    outlineColor: excavationOutlineColor(scale),
     outlineWidth: excavationOutlineWidth(scale),
-    outlineDash: excavationOutlineDash(),
+    outlineDash: excavationOutlineDash(scale),
     outlineOpacity: excavationOutlineOpacity(),
   }
 }

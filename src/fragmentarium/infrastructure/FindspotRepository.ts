@@ -9,7 +9,11 @@ import {
   FindspotMapData,
   FindspotMapDataResponseDto,
 } from 'map/findspotMapData'
-import { sanitizeFindspotMapDataResponse } from 'map/findspotMapDataSanitizer'
+import {
+  IncompatibleFindspotMapDataError,
+  requireCompatibleFindspotMapDataResponse,
+} from 'map/findspotMapDataSanitizer'
+import { findMapSiteByDataParam } from 'map/mapSites'
 
 export interface FindspotRepository {
   fetchFindspots(): Bluebird<Findspot[]>
@@ -26,11 +30,26 @@ export class ApiFindspotRepository implements FindspotRepository {
   }
 
   fetchMapData(siteParam: string): Bluebird<readonly FindspotMapData[]> {
+    const site = findMapSiteByDataParam(siteParam)
+    if (!site) {
+      return Bluebird.reject(
+        new IncompatibleFindspotMapDataError(
+          'Unknown map-data site parameter ' + siteParam,
+        ),
+      )
+    }
+
     return this.apiClient
       .fetchJson<FindspotMapDataResponseDto>(
-        `/findspots/map-data?site=${encodeURIComponent(siteParam)}`,
+        '/findspots/map-data?site=' + encodeURIComponent(siteParam),
         false,
       )
-      .then(sanitizeFindspotMapDataResponse)
+      .then((response) =>
+        requireCompatibleFindspotMapDataResponse(
+          response,
+          siteParam,
+          site.siteName,
+        ),
+      )
   }
 }

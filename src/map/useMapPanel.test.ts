@@ -1,5 +1,5 @@
 import { renderHook, act } from '@testing-library/react'
-import useMapPanel from './useMapPanel'
+import useMapPanel from 'map/useMapPanel'
 
 describe('useMapPanel', () => {
   it('starts closed by default', () => {

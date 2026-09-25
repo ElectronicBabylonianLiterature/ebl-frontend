@@ -1,17 +1,24 @@
-import type { PolygonFindspotSummary } from './findspotMapData'
-import type { ExcavationPolygonIndex } from './excavationPolygonIndex'
+import type { ExcavationPolygonIndex } from 'map/excavationPolygonIndex'
+import type { PolygonFindspotSummary } from 'map/findspotMapData'
 import {
   type MapVisualizationMode,
   visualizationValueKey,
-} from './mapChoroplethScale'
-import { type MappingEvidence, mappingEvidenceOf } from './mapResearchSummary'
-import { EVIDENCE_CODES } from './mapEvidencePaint'
+} from 'map/mapChoroplethScale'
+import { EVIDENCE_CODES } from 'map/mapEvidencePaint'
+import { type MappingEvidence, mappingEvidenceOf } from 'map/mapResearchSummary'
+import { isMapSiteId } from 'map/mapSites'
+import type {
+  FragmentMapDataState,
+  FragmentMapDataStatus,
+} from 'map/useFragmentMapData'
 
 export interface PolygonVisualizationValue {
   readonly polygonId: string
+  readonly dataAvailable: boolean
   readonly findspotCount: number
   readonly accessibleFragmentCount: number
   readonly areaSquareKm: number | null
+  readonly densityAvailable: boolean
   readonly densityPerSquareKm: number | null
   readonly mappingEvidence: MappingEvidence
 }
@@ -21,39 +28,60 @@ export type PolygonVisualizationValues = ReadonlyMap<
   PolygonVisualizationValue
 >
 
-function areaByPolygonId(
-  index: ExcavationPolygonIndex,
-): ReadonlyMap<string, number | null> {
-  return new Map(
-    [...index.values()]
-      .flat()
-      .map((polygon) => [polygon.polygonId, polygon.areaSquareKm]),
-  )
+function hasLoaded(status: FragmentMapDataStatus | undefined): boolean {
+  return status === 'loaded-with-mappings' || status === 'loaded-empty'
 }
+
+function valueFor(
+  polygonId: string,
+  areaSquareKm: number | null,
+  dataAvailable: boolean,
+  summary: PolygonFindspotSummary | undefined,
+): PolygonVisualizationValue {
+  const findspotCount = dataAvailable ? (summary?.findspotCount ?? 0) : 0
+  const accessibleFragmentCount = dataAvailable
+    ? (summary?.accessibleFragmentCount ?? 0)
+    : 0
+  const densityAvailable =
+    dataAvailable &&
+    summary !== undefined &&
+    areaSquareKm !== null &&
+    areaSquareKm > 0
+
+  return {
+    polygonId,
+    dataAvailable,
+    findspotCount,
+    accessibleFragmentCount,
+    areaSquareKm,
+    densityAvailable,
+    densityPerSquareKm: densityAvailable
+      ? accessibleFragmentCount / areaSquareKm
+      : null,
+    mappingEvidence: dataAvailable
+      ? mappingEvidenceOf(summary?.findspots ?? [])
+      : 'unmapped',
+  }
+}
+
 export function buildVisualizationValues(
-  summaries: ReadonlyMap<string, PolygonFindspotSummary>,
+  mapData: FragmentMapDataState,
   index: ExcavationPolygonIndex,
 ): PolygonVisualizationValues {
-  const areas = areaByPolygonId(index)
-
   return new Map(
-    [...summaries.values()].map((summary) => {
-      const areaSquareKm = areas.get(summary.polygonId) ?? null
+    [...index.entries()].flatMap(([siteId, polygons]) => {
+      const site = isMapSiteId(siteId) ? mapData.sites.get(siteId) : undefined
+      const dataAvailable = hasLoaded(site?.status)
 
-      return [
-        summary.polygonId,
-        {
-          polygonId: summary.polygonId,
-          findspotCount: summary.findspotCount,
-          accessibleFragmentCount: summary.accessibleFragmentCount,
-          areaSquareKm,
-          densityPerSquareKm:
-            areaSquareKm === null || areaSquareKm <= 0
-              ? null
-              : summary.accessibleFragmentCount / areaSquareKm,
-          mappingEvidence: mappingEvidenceOf(summary.findspots),
-        },
-      ]
+      return polygons.map((polygon) => [
+        polygon.polygonId,
+        valueFor(
+          polygon.polygonId,
+          polygon.areaSquareKm,
+          dataAvailable,
+          site?.polygonSummaries.get(polygon.polygonId),
+        ),
+      ])
     }),
   )
 }
@@ -65,6 +93,8 @@ export function visualizationValuesFor(
   const key = visualizationValueKey(mode)
 
   return [...values.values()].flatMap((value) => {
+    if (!value.dataAvailable) return []
+    if (mode === 'density' && !value.densityAvailable) return []
     const candidate = value[key]
     return typeof candidate === 'number' ? [candidate] : []
   })
@@ -74,19 +104,19 @@ export function isDensityAvailable(
   values: PolygonVisualizationValues,
 ): boolean {
   return [...values.values()].some(
-    (value) =>
-      value.densityPerSquareKm !== null && value.densityPerSquareKm > 0,
+    (value) => value.dataAvailable && value.densityAvailable,
   )
 }
+
 export function featureStateFor(
   value: PolygonVisualizationValue,
-): Record<string, number> {
+): Record<string, number | boolean> {
   return {
+    dataAvailable: value.dataAvailable,
     findspotCount: value.findspotCount,
     accessibleFragmentCount: value.accessibleFragmentCount,
     evidenceCode: EVIDENCE_CODES[value.mappingEvidence],
-    ...(value.densityPerSquareKm === null
-      ? {}
-      : { densityPerSquareKm: value.densityPerSquareKm }),
+    densityAvailable: value.densityAvailable,
+    densityPerSquareKm: value.densityPerSquareKm ?? 0,
   }
 }

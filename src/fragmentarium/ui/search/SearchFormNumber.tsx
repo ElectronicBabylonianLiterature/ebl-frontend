@@ -1,7 +1,7 @@
 import React from 'react'
 import { Form, Row, Col } from 'react-bootstrap'
 import { HelpCol, SiglumSearchHelp } from 'fragmentarium/ui/SearchHelp'
-import { helpColSize } from 'fragmentarium/ui/SearchForm'
+import { helpColSize } from 'fragmentarium/ui/search/searchFormLayout'
 
 interface NumberSearchFormProps {
   value: string | null

@@ -36,8 +36,6 @@ export interface PolygonResearchSummary {
   readonly areaSquareKm: number | null
 }
 
-export const UNNAMED_EXCAVATION_AREA = 'Excavation area'
-
 function distinct<T>(values: readonly T[]): readonly T[] {
   return [...new Set(values)]
 }
@@ -76,9 +74,9 @@ function toFindspotSummary(findspot: FindspotMapData): FindspotSummary {
 }
 export function polygonDisplayName(
   polygon: Pick<ExcavationPolygon, 'name'> | undefined,
-  findspots: readonly Pick<FindspotMapData, 'area'>[],
+  polygonId: string,
 ): string {
-  return polygon?.name ?? findspots[0]?.area ?? UNNAMED_EXCAVATION_AREA
+  return polygon?.name ?? polygonId
 }
 
 export interface PolygonResearchSummaryInput {
@@ -100,7 +98,7 @@ export function derivePolygonResearchSummary({
     polygonId,
     siteId: polygon?.siteId ?? '',
     siteName,
-    displayName: polygonDisplayName(polygon, findspots),
+    displayName: polygonDisplayName(polygon, polygonId),
     mappedFindspotCount: summary?.findspotCount ?? 0,
     accessibleFragmentCount: summary?.accessibleFragmentCount ?? 0,
     findspots: findspots.map(toFindspotSummary),

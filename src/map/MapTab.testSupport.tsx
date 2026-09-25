@@ -1,7 +1,7 @@
 import React from 'react'
 import Bluebird from 'bluebird'
 import { render, type RenderResult } from '@testing-library/react'
-import { MemoryRouter, useLocation } from 'react-router-dom'
+import { MemoryRouter, useLocation, useNavigate } from 'react-router-dom'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import { FindspotService } from 'fragmentarium/application/FindspotService'
 import { ProvenanceRecord } from 'fragmentarium/domain/Provenance'
@@ -40,29 +40,64 @@ export function makeRejectingFragmentService(reason: unknown): FragmentService {
   } as unknown as FragmentService
 }
 
+const DEFAULT_FINDSPOT_SERVICE = {
+  fetchMapData: () => Bluebird.resolve([]),
+} as unknown as FindspotService
+
 export const CURRENT_LOCATION_TEST_ID = 'current-location'
+const MAP_ROUTE = '/tools/map'
 
 function CurrentLocation(): JSX.Element {
   const location = useLocation()
+  const navigate = useNavigate()
   return (
-    <div data-testid={CURRENT_LOCATION_TEST_ID}>
-      {`${location.pathname}${location.search}`}
-    </div>
+    <>
+      <div data-testid={CURRENT_LOCATION_TEST_ID}>
+        {`${location.pathname}${location.search}`}
+      </div>
+      <button type="button" onClick={() => navigate('/tools/map?mv=1&areas=1')}>
+        Navigate without selection
+      </button>
+    </>
   )
+}
+
+function MapRoute({
+  fragmentService,
+  findspotService,
+}: {
+  readonly fragmentService: FragmentService
+  readonly findspotService: FindspotService
+}): JSX.Element | null {
+  const location = useLocation()
+  return location.pathname === MAP_ROUTE ? (
+    <MapTab
+      findspotService={findspotService}
+      fragmentService={fragmentService}
+    />
+  ) : null
 }
 
 export function renderMapTab(
   fragmentService: FragmentService,
-  findspotService: FindspotService = {
-    fetchMapData: () => Bluebird.resolve([]),
-  } as unknown as FindspotService,
+  initialEntryOrFindspotService: string | FindspotService = MAP_ROUTE,
+  findspotService: FindspotService = DEFAULT_FINDSPOT_SERVICE,
 ): RenderResult {
+  const initialEntry =
+    typeof initialEntryOrFindspotService === 'string'
+      ? initialEntryOrFindspotService
+      : MAP_ROUTE
+  const selectedFindspotService =
+    typeof initialEntryOrFindspotService === 'string'
+      ? findspotService
+      : initialEntryOrFindspotService
+
   return render(
     <ErrorReporterContext.Provider value={mockErrorReporter}>
-      <MemoryRouter>
-        <MapTab
-          findspotService={findspotService}
+      <MemoryRouter initialEntries={[initialEntry]}>
+        <MapRoute
           fragmentService={fragmentService}
+          findspotService={selectedFindspotService}
         />
         <CurrentLocation />
       </MemoryRouter>

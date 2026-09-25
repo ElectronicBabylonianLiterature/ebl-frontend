@@ -1,5 +1,5 @@
 import type { Position } from 'geojson'
-import { EARTH_RADIUS_METRES } from './geodesicArea'
+import { EARTH_RADIUS_METRES } from 'map/geodesicArea'
 
 function toRadians(degrees: number): number {
   return (degrees * Math.PI) / 180

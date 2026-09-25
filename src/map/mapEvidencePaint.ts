@@ -1,14 +1,23 @@
 import type { ExpressionSpecification } from 'maplibre-gl'
-import type { MappingEvidence } from './mapResearchSummary'
 import {
   COLOR_SELECTED,
+  COLOR_UNAVAILABLE,
   COLOR_UNMAPPED,
   DASH_MAPPED,
+  DASH_UNAVAILABLE,
   DASH_UNMAPPED,
   OUTLINE_SELECTED,
+  OUTLINE_UNAVAILABLE,
   OUTLINE_UNMAPPED,
-} from './mapPaintColors'
-import { HOVERED, SELECTED, stateNumber } from './mapStateExpressions'
+} from 'map/mapPaintColors'
+import type { MappingEvidence } from 'map/mapResearchSummary'
+import {
+  HOVERED,
+  SELECTED,
+  stateBoolean,
+  stateNumber,
+} from 'map/mapStateExpressions'
+
 export const EVIDENCE_CODES: Readonly<Record<MappingEvidence, number>> = {
   unmapped: 0,
   'verified-source': 1,
@@ -16,27 +25,25 @@ export const EVIDENCE_CODES: Readonly<Record<MappingEvidence, number>> = {
   mixed: 3,
 }
 
-/** Restrained clay — the warm, excavated-earth end of the atlas palette. */
 export const COLOR_EVIDENCE_VERIFIED = '#b3702a'
-/** Equally saturated slate: different in provenance, not weaker in standing. */
 export const COLOR_EVIDENCE_CURATED = '#3f6f8f'
 export const COLOR_EVIDENCE_MIXED = '#6f5f9c'
-
 export const OUTLINE_EVIDENCE_VERIFIED = '#7f4f20'
 export const OUTLINE_EVIDENCE_CURATED = '#2c516b'
 export const OUTLINE_EVIDENCE_MIXED = '#4b3f74'
-
-/** Mixed evidence carries a dash-dot outline so colour is never the only cue. */
+export const DASH_CURATED: readonly number[] = [5, 2]
 export const DASH_MIXED: readonly number[] = [3, 1.2, 1, 1.2]
 
 const EVIDENCE_CODE = stateNumber('evidenceCode')
-
+const IS_UNAVAILABLE: ExpressionSpecification = [
+  '!',
+  stateBoolean('dataAvailable'),
+]
 const HAS_NO_FRAGMENTS: ExpressionSpecification = [
   '==',
   stateNumber('accessibleFragmentCount'),
   0,
 ]
-
 const IS_UNMAPPED: ExpressionSpecification = ['==', EVIDENCE_CODE, 0]
 
 function byEvidence<T>(
@@ -63,6 +70,8 @@ export function evidenceFillColor(): ExpressionSpecification {
     'case',
     SELECTED,
     COLOR_SELECTED,
+    IS_UNAVAILABLE,
+    COLOR_UNAVAILABLE,
     byEvidence(
       COLOR_UNMAPPED,
       COLOR_EVIDENCE_VERIFIED,
@@ -71,6 +80,7 @@ export function evidenceFillColor(): ExpressionSpecification {
     ),
   ] as unknown as ExpressionSpecification
 }
+
 export function evidenceFillOpacity(): ExpressionSpecification {
   return [
     'case',
@@ -78,6 +88,8 @@ export function evidenceFillOpacity(): ExpressionSpecification {
     0.4,
     HOVERED,
     0.34,
+    IS_UNAVAILABLE,
+    0.12,
     IS_UNMAPPED,
     0.07,
     HAS_NO_FRAGMENTS,
@@ -91,6 +103,8 @@ export function evidenceOutlineColor(): ExpressionSpecification {
     'case',
     SELECTED,
     OUTLINE_SELECTED,
+    IS_UNAVAILABLE,
+    OUTLINE_UNAVAILABLE,
     byEvidence(
       OUTLINE_UNMAPPED,
       OUTLINE_EVIDENCE_VERIFIED,
@@ -107,19 +121,26 @@ export function evidenceOutlineWidth(): ExpressionSpecification {
     3.5,
     HOVERED,
     2.4,
+    IS_UNAVAILABLE,
+    1,
     byEvidence(1, 1.7, 1.7, 2.2),
   ] as unknown as ExpressionSpecification
 }
 
 export function evidenceOutlineDash(): ExpressionSpecification {
-  return byEvidence(
-    ['literal', [...DASH_UNMAPPED]],
-    ['literal', [...DASH_MAPPED]],
-    ['literal', [...DASH_MAPPED]],
-    ['literal', [...DASH_MIXED]],
-  )
+  return [
+    'case',
+    IS_UNAVAILABLE,
+    ['literal', [...DASH_UNAVAILABLE]],
+    byEvidence(
+      ['literal', [...DASH_UNMAPPED]],
+      ['literal', [...DASH_MAPPED]],
+      ['literal', [...DASH_CURATED]],
+      ['literal', [...DASH_MIXED]],
+    ),
+  ] as unknown as ExpressionSpecification
 }
 
 export function evidenceOutlineOpacity(): ExpressionSpecification {
-  return ['case', SELECTED, 0.95, IS_UNMAPPED, 0.45, 0.85]
+  return ['case', SELECTED, 0.95, IS_UNAVAILABLE, 0.55, IS_UNMAPPED, 0.45, 0.85]
 }

@@ -7,18 +7,28 @@ function toRadians(degrees: number): number {
   return (degrees * Math.PI) / 180
 }
 
+function longitudeDeltaRadians(from: number, to: number): number {
+  const delta = toRadians(to) - toRadians(from)
+  if (delta >= -Math.PI && delta <= Math.PI) return delta
+
+  const fullTurn = 2 * Math.PI
+  return ((((delta + Math.PI) % fullTurn) + fullTurn) % fullTurn) - Math.PI
+}
+
+function isFinitePosition(value: unknown): value is Position {
+  if (!Array.isArray(value)) return false
+  const [longitude, latitude] = value
+  return (
+    typeof longitude === 'number' &&
+    typeof latitude === 'number' &&
+    Number.isFinite(longitude) &&
+    Number.isFinite(latitude)
+  )
+}
+
 function isRing(value: unknown): value is Position[] {
   return (
-    Array.isArray(value) &&
-    value.length >= 4 &&
-    value.every(
-      (position) =>
-        Array.isArray(position) &&
-        typeof position[0] === 'number' &&
-        typeof position[1] === 'number' &&
-        Number.isFinite(position[0]) &&
-        Number.isFinite(position[1]),
-    )
+    Array.isArray(value) && value.length >= 4 && value.every(isFinitePosition)
   )
 }
 
@@ -31,7 +41,7 @@ function ringArea(ring: readonly Position[]): number {
     const [upperLongitude, upperLatitude] = ring[index + 1]
 
     total +=
-      (toRadians(upperLongitude) - toRadians(lowerLongitude)) *
+      longitudeDeltaRadians(lowerLongitude, upperLongitude) *
       (2 +
         Math.sin(toRadians(lowerLatitude)) +
         Math.sin(toRadians(upperLatitude)))
