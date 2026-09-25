@@ -111,16 +111,10 @@ function LoadedMapTab({
     {
       id: 'spatial-search',
       label: 'Search area',
-      isSupported: state.canShowExcavationAreas,
+      isSupported:
+        state.canShowExcavationAreas && !state.isBackgroundUnavailable,
       render: () => (
-        <MapSpatialSearchPanel
-          shape={state.spatialSearch.shape}
-          result={state.spatialSearch.result}
-          isDrawing={state.spatialSearch.isDrawing}
-          onSearchViewport={state.spatialSearch.searchViewport}
-          onStartDrawing={state.spatialSearch.startDrawing}
-          onClear={state.spatialSearch.clear}
-        />
+        <MapSpatialSearchPanel spatialSearch={state.spatialSearch} />
       ),
     },
     {

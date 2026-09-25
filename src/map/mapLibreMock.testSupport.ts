@@ -1,4 +1,5 @@
 import {
+  mockGetBounds,
   mockGetCenter,
   type MockErrorEvent,
   type MockEventHandler,
@@ -61,6 +62,7 @@ export const mockMapInstance = {
   getSource: mockGetSource,
   getCanvas: mockGetCanvas,
   getCenter: mockGetCenter,
+  getBounds: mockGetBounds,
   on: mockOn,
   off: mockOff,
   fitBounds: mockFitBounds,
@@ -81,7 +83,6 @@ function fireMapEvent(
     handler(eventPayload),
   )
 }
-
 function queryRenderedFeaturesFromStyle(
   point: unknown,
   options?: { layers?: readonly string[] },
@@ -97,14 +98,11 @@ function queryRenderedFeaturesFromStyle(
     })
     return []
   }
-
   return mockQueryRenderedFeatures(point, options)
 }
-
 export function markLayersAdded(...layerIds: readonly string[]): void {
   layerIds.forEach((layerId) => addedLayerIds.add(layerId))
 }
-
 function rememberHandler(
   event: string,
   layerOrCallback: string | MockEventHandler,
@@ -119,7 +117,6 @@ function rememberHandler(
     handler()
   }
 }
-
 class MockMap {
   constructor() {
     if (mockMapConstructionError) {
@@ -128,50 +125,40 @@ class MockMap {
     return mockMapInstance
   }
 }
-
 class MockLngLatBounds {
   private points: [number, number][] = []
-
   extend(coordinates: [number, number]) {
     this.points.push(coordinates)
     mockBoundsExtend(coordinates)
     return this
   }
-
   isEmpty() {
     return this.points.length === 0
   }
 }
-
 class MockPopup {
   setLngLat(coordinates: [number, number]) {
     mockSetLngLat(coordinates)
     return this
   }
-
   setDOMContent(content: Node) {
     mockSetDOMContent(content)
     return this
   }
-
   setHTML(content: string) {
     mockSetHTML(content)
     return this
   }
-
   addTo(map: unknown) {
     mockPopupAddTo(map)
     return this
   }
 }
-
 const NavigationControl = jest.fn()
-
 export function deferMapLoad(): void {
   mockLoadImmediately = false
   mockIsStyleLoaded.mockReturnValue(false)
 }
-
 export function failMapConstruction(error: unknown): void {
   mockMapConstructionError = error
 }
@@ -186,6 +173,12 @@ export function resetMapMocks(): void {
   mockMapConstructionError = null
   mockGetCanvas.mockReturnValue(mockCanvas)
   mockGetCenter.mockReturnValue({ lng: 43.25, lat: 35.45 })
+  mockGetBounds.mockReturnValue({
+    getWest: () => 43,
+    getSouth: () => 35,
+    getEast: () => 44,
+    getNorth: () => 36,
+  })
   mockGetSource.mockReturnValue(undefined)
   mockIsStyleLoaded.mockReturnValue(true)
   mockQueryRenderedFeatures.mockReturnValue([])
@@ -231,7 +224,6 @@ export function resetMapMocks(): void {
     },
   )
 }
-
 export function triggerMapEvent(
   event: string,
   eventPayload?: MockMapEvent | MockErrorEvent,
@@ -239,12 +231,10 @@ export function triggerMapEvent(
 ): void {
   fireMapEvent(event, eventPayload, layerId)
 }
-
 const maplibregl = {
   Map: MockMap,
   NavigationControl,
   LngLatBounds: MockLngLatBounds,
   Popup: MockPopup,
 }
-
 export default maplibregl
