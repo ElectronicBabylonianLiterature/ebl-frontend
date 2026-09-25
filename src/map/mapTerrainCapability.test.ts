@@ -3,12 +3,12 @@ import {
   deriveTerrainCapability,
   isLowPowerDevice,
   terrainExaggeration,
-} from './mapTerrainCapability'
+} from 'map/mapTerrainCapability'
 import {
   DEFAULT_TERRAIN_EXAGGERATION,
   REDUCED_MOTION_TERRAIN_EXAGGERATION,
-} from './mapTerrainLayers'
-import { AWS_TERRAIN_TILES } from './mapTerrainSource'
+} from 'map/mapTerrainLayers'
+import { AWS_TERRAIN_TILES } from 'map/mapTerrainSource'
 
 function setDeviceCapability(
   deviceMemory: number | undefined,

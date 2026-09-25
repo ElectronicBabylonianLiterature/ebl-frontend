@@ -6,7 +6,7 @@ import {
   approvedTerrainSource,
   isTerrainSourceApproved,
   validateTerrainSource,
-} from './mapTerrainSource'
+} from 'map/mapTerrainSource'
 
 function withSource(
   overrides: Partial<TerrainSourceDefinition>,
@@ -30,6 +30,24 @@ describe('the approved AWS terrain source', () => {
     expect(AWS_TERRAIN_TILES.registryUrl).toMatch(/^https:\/\//)
   })
 
+  it('contains every provider in the required global attribution', () => {
+    for (const provider of [
+      'ArcticDEM',
+      'Australia',
+      'Austria',
+      'Canada',
+      'Copernicus',
+      'ETOPO1',
+      'Mexico',
+      'New Zealand',
+      'Norway',
+      'United Kingdom',
+      'United States 3DEP',
+    ]) {
+      expect(TERRAIN_ATTRIBUTION).toContain(provider)
+    }
+  })
+
   it('uses terrarium encoding within the published zoom range', () => {
     expect(AWS_TERRAIN_TILES.encoding).toBe('terrarium')
     expect(AWS_TERRAIN_TILES.maxZoom).toBe(15)
@@ -37,7 +55,7 @@ describe('the approved AWS terrain source', () => {
   })
 
   it('never claims to describe ancient ground level', () => {
-    expect(TERRAIN_PRECISION_NOTE).toContain('Modern elevation model')
+    expect(TERRAIN_PRECISION_NOTE).toContain('mixed-source bare-earth')
     expect(TERRAIN_PRECISION_NOTE).toContain('not ancient ground level')
   })
 })
@@ -54,7 +72,7 @@ describe('validateTerrainSource', () => {
       validateTerrainSource(withSource({ licenceUrl: 'http://example.test' })),
     ).toContainEqual({
       field: 'licenceUrl',
-      message: 'Licence URL is required.',
+      message: 'HTTPS rights and registry URLs are required.',
     })
   })
 
@@ -63,7 +81,7 @@ describe('validateTerrainSource', () => {
       validateTerrainSource(withSource({ licenceUrl: 'not a url' })),
     ).toContainEqual({
       field: 'licenceUrl',
-      message: 'Licence URL is required.',
+      message: 'HTTPS rights and registry URLs are required.',
     })
   })
 
@@ -79,7 +97,8 @@ describe('validateTerrainSource', () => {
     )
     expect(errors).toContainEqual({
       field: 'tiles',
-      message: 'Tile URL is not HTTPS: http://example.test/{z}/{x}/{y}.png',
+      message:
+        'Tile URL is not credential-free HTTPS: http://example.test/{z}/{x}/{y}.png',
     })
   })
 
@@ -88,7 +107,7 @@ describe('validateTerrainSource', () => {
       validateTerrainSource(withSource({ tiles: ['/{z}/{x}/{y}.png'] })),
     ).toContainEqual({
       field: 'tiles',
-      message: 'Tile URL is not HTTPS: /{z}/{x}/{y}.png',
+      message: 'Tile URL is not credential-free HTTPS: /{z}/{x}/{y}.png',
     })
   })
 
@@ -97,6 +116,7 @@ describe('validateTerrainSource', () => {
     'https://dem.test/{z}/{x}/{y}.png?api_key=abc',
     'https://dem.test/{z}/{x}/{y}.png?apikey=abc',
     'https://dem.test/{key}/{z}/{x}/{y}.png',
+    'https://dem.test/{z}/{x}/{y}.png?key=abc',
     'https://dem.test/{z}/{x}/{y}.png?token=abc',
   ])('rejects a tile template requiring a credential: %s', (template) => {
     expect(
@@ -135,6 +155,22 @@ describe('validateTerrainSource', () => {
       'maxZoom',
     ])
     expect(isTerrainSourceApproved(withSource({ attribution: '' }))).toBe(false)
+  })
+
+  it.each([
+    ['minimum zoom', { minZoom: 1 }],
+    ['maximum zoom', { maxZoom: 16 }],
+  ])('rejects a changed curated %s contract', (_name, override) => {
+    expect(isTerrainSourceApproved(withSource(override))).toBe(false)
+  })
+
+  it('rejects structurally valid sources outside the curated allowlist', () => {
+    const unreviewed = withSource({
+      id: 'unreviewed',
+      tiles: ['https://example.test/{z}/{x}/{y}.png'],
+    })
+    expect(validateTerrainSource(unreviewed)).toEqual([])
+    expect(isTerrainSourceApproved(unreviewed)).toBe(false)
   })
 
   it('withholds a candidate that fails a gate', () => {

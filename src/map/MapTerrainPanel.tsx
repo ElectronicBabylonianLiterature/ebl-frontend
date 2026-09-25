@@ -1,17 +1,37 @@
 import React from 'react'
 import { Form } from 'react-bootstrap'
-import type { MapTerrainResult } from './useMapTerrain'
-import { TERRAIN_PRECISION_NOTE } from './mapTerrainSource'
+import { TERRAIN_PRECISION_NOTE } from 'map/mapTerrainSource'
+import type { MapTerrainResult } from 'map/useMapTerrain'
 
 interface Props {
   readonly terrain: MapTerrainResult
-  readonly isRequested: boolean
   readonly onChange: (isEnabled: boolean) => void
+}
+
+function TerrainStatus({
+  terrain,
+}: {
+  terrain: MapTerrainResult
+}): JSX.Element | null {
+  const message =
+    terrain.status === 'loading'
+      ? 'Loading elevation terrain…'
+      : terrain.status === 'error'
+        ? (terrain.errorMessage ?? 'Elevation terrain is unavailable.')
+        : terrain.unavailableReason === 'low-power-device'
+          ? 'Elevation is unavailable because this device reports limited memory or processor cores.'
+          : terrain.unavailableReason === 'no-approved-source'
+            ? 'Elevation is unavailable because no approved terrain source is configured.'
+            : null
+  return message ? (
+    <p className="map-tool-panel__status" role="status">
+      {message}
+    </p>
+  ) : null
 }
 
 export default function MapTerrainPanel({
   terrain,
-  isRequested,
   onChange,
 }: Props): JSX.Element {
   return (
@@ -20,7 +40,8 @@ export default function MapTerrainPanel({
         type="switch"
         id="map-terrain-toggle"
         label="Modern elevation model"
-        checked={isRequested && terrain.isEnabled}
+        checked={terrain.isEnabled}
+        disabled={!terrain.isSupported || terrain.status === 'loading'}
         onChange={(event) => onChange(event.target.checked)}
       />
       <p className="map-tool-panel__note">{TERRAIN_PRECISION_NOTE}</p>
@@ -36,12 +57,7 @@ export default function MapTerrainPanel({
           </a>
         </p>
       ) : null}
-      {terrain.unavailableReason === 'low-power-device' ? (
-        <p className="map-tool-panel__status" role="status">
-          Elevation is disabled on this device because it reports limited memory
-          or processor cores.
-        </p>
-      ) : null}
+      <TerrainStatus terrain={terrain} />
     </div>
   )
 }

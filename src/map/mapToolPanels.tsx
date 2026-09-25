@@ -6,7 +6,7 @@ import MapLayerControls from 'map/MapLayerControls'
 import MapMeasurePanel from 'map/MapMeasurePanel'
 import MapSpatialSearchPanel from 'map/MapSpatialSearchPanel'
 import MapTerrainPanel from 'map/MapTerrainPanel'
-import type { MapTabState } from 'map/useMapTabState'
+import type { MapTabState } from 'map/mapTabState'
 import MapVisualizationControl from 'map/MapVisualizationControl'
 import { exportDataStatuses } from 'map/mapExportData'
 import { assessImageExport } from 'map/mapImageExportRights'
@@ -100,11 +100,10 @@ export default function buildMapToolPanels(
     {
       id: 'terrain',
       label: 'Terrain',
-      isSupported: true,
+      isSupported: !state.isBackgroundUnavailable,
       render: () => (
         <MapTerrainPanel
           terrain={state.terrain}
-          isRequested={experience.terrain}
           onChange={experience.setTerrain}
         />
       ),

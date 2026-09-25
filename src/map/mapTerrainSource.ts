@@ -18,22 +18,31 @@ export interface TerrainSourceValidationError {
   readonly field: keyof TerrainSourceDefinition
   readonly message: string
 }
-export const TERRAIN_ATTRIBUTION =
-  'Elevation tiles hosted by the AWS Open Data terrain-tiles registry. ' +
-  'Global GMTED2010 and SRTM terrain data courtesy of the U.S. Geological Survey; ' +
-  'Europe terrain data produced using Copernicus data and information funded by ' +
-  'the European Union - EU-DEM layers; Global ETOPO1 terrain data U.S. National ' +
-  'Oceanic and Atmospheric Administration.'
+
+export const TERRAIN_ATTRIBUTION = [
+  'ArcticDEM terrain data DEM(s) were created from DigitalGlobe, Inc., imagery and funded under National Science Foundation awards 1043681, 1559691, and 1542736;',
+  'Australia terrain data © Commonwealth of Australia (Geoscience Australia) 2017;',
+  'Austria terrain data © offene Daten Österreichs – Digitales Geländemodell (DGM) Österreich;',
+  'Canada terrain data contains information licensed under the Open Government Licence – Canada;',
+  'Europe terrain data produced using Copernicus data and information funded by the European Union - EU-DEM layers;',
+  'Global ETOPO1 terrain data U.S. National Oceanic and Atmospheric Administration;',
+  'Mexico terrain data source: INEGI, Continental relief, 2016;',
+  'New Zealand terrain data Copyright 2011 Crown copyright (c) Land Information New Zealand and the New Zealand Government (All rights reserved);',
+  'Norway terrain data © Kartverket;',
+  'United Kingdom terrain data © Environment Agency copyright and/or database right 2015. All rights reserved;',
+  'United States 3DEP (formerly NED) and global GMTED2010 and SRTM terrain data courtesy of the U.S. Geological Survey.',
+].join(' ')
 
 export const TERRAIN_PRECISION_NOTE =
-  'Modern elevation model. This is present-day ground elevation, not ancient ground level or excavated stratigraphy.'
+  'Modern-era, mixed-source bare-earth elevation model shown with visual exaggeration. It is not ancient ground level, a current survey, measurement-grade data, or excavated stratigraphy.'
+
+const TERRAIN_TILE_URL =
+  'https://s3.amazonaws.com/elevation-tiles-prod/terrarium/{z}/{x}/{y}.png'
 
 const AWS_TERRAIN_TILES: TerrainSourceDefinition = {
   id: 'aws-terrain-tiles-terrarium',
   label: 'Modern elevation model',
-  tiles: [
-    'https://s3.amazonaws.com/elevation-tiles-prod/terrarium/{z}/{x}/{y}.png',
-  ],
+  tiles: [TERRAIN_TILE_URL],
   encoding: 'terrarium',
   tileSize: 256,
   minZoom: 0,
@@ -45,17 +54,23 @@ const AWS_TERRAIN_TILES: TerrainSourceDefinition = {
   verifiedOn: '2026-08-05',
 }
 
-const CREDENTIAL_PLACEHOLDERS = [
+const CREDENTIAL_MARKERS = [
   'access_token',
   'api_key',
   'apikey',
   '{key}',
+  'key=',
   'token=',
 ]
 
 function isHttps(url: string): boolean {
   try {
-    return new URL(url).protocol === 'https:'
+    const parsed = new URL(url)
+    return (
+      parsed.protocol === 'https:' &&
+      parsed.username === '' &&
+      parsed.password === ''
+    )
   } catch {
     return false
   }
@@ -69,21 +84,28 @@ function validateTiles(
   }
 
   return source.tiles.flatMap((template) => {
+    const lowercase = template.toLowerCase()
     const probe = template
       .replace('{z}', '0')
       .replace('{x}', '0')
       .replace('{y}', '0')
-    const lowercase = template.toLowerCase()
-
+    if (!['{z}', '{x}', '{y}'].every((token) => template.includes(token))) {
+      return [
+        {
+          field: 'tiles' as const,
+          message: `Tile URL is missing z/x/y placeholders: ${template}`,
+        },
+      ]
+    }
     if (!isHttps(probe)) {
       return [
         {
           field: 'tiles' as const,
-          message: `Tile URL is not HTTPS: ${template}`,
+          message: `Tile URL is not credential-free HTTPS: ${template}`,
         },
       ]
     }
-    if (CREDENTIAL_PLACEHOLDERS.some((entry) => lowercase.includes(entry))) {
+    if (CREDENTIAL_MARKERS.some((entry) => lowercase.includes(entry))) {
       return [
         {
           field: 'tiles' as const,
@@ -95,14 +117,6 @@ function validateTiles(
   })
 }
 
-function validateZoom(
-  source: TerrainSourceDefinition,
-): readonly TerrainSourceValidationError[] {
-  return source.minZoom >= source.maxZoom || source.minZoom < 0
-    ? [{ field: 'maxZoom' as const, message: 'Zoom range is not usable.' }]
-    : []
-}
-
 export function validateTerrainSource(
   source: TerrainSourceDefinition,
 ): readonly TerrainSourceValidationError[] {
@@ -110,21 +124,62 @@ export function validateTerrainSource(
     ...(source.attribution.trim() === ''
       ? [{ field: 'attribution' as const, message: 'Attribution is required.' }]
       : []),
-    ...(isHttps(source.licenceUrl)
+    ...(isHttps(source.licenceUrl) && isHttps(source.registryUrl)
       ? []
       : [
-          { field: 'licenceUrl' as const, message: 'Licence URL is required.' },
+          {
+            field: 'licenceUrl' as const,
+            message: 'HTTPS rights and registry URLs are required.',
+          },
+        ]),
+    ...(source.encoding === 'terrarium' || source.encoding === 'mapbox'
+      ? []
+      : [
+          {
+            field: 'encoding' as const,
+            message: 'Terrain encoding is unsupported.',
+          },
+        ]),
+    ...(source.tileSize === 256 || source.tileSize === 512
+      ? []
+      : [
+          {
+            field: 'tileSize' as const,
+            message: 'Terrain tile size is unsupported.',
+          },
         ]),
     ...validateTiles(source),
-    ...validateZoom(source),
+    ...(source.minZoom >= source.maxZoom || source.minZoom < 0
+      ? [{ field: 'maxZoom' as const, message: 'Zoom range is not usable.' }]
+      : []),
   ]
+}
+
+function matchesCuratedSource(source: TerrainSourceDefinition): boolean {
+  return (
+    source.id === AWS_TERRAIN_TILES.id &&
+    source.tiles.length === 1 &&
+    source.tiles[0] === TERRAIN_TILE_URL &&
+    source.encoding === AWS_TERRAIN_TILES.encoding &&
+    source.tileSize === AWS_TERRAIN_TILES.tileSize &&
+    source.minZoom === AWS_TERRAIN_TILES.minZoom &&
+    source.maxZoom === AWS_TERRAIN_TILES.maxZoom &&
+    source.label === AWS_TERRAIN_TILES.label &&
+    source.verifiedOn === AWS_TERRAIN_TILES.verifiedOn &&
+    source.attribution === TERRAIN_ATTRIBUTION &&
+    source.licenceUrl === AWS_TERRAIN_TILES.licenceUrl &&
+    source.registryUrl === AWS_TERRAIN_TILES.registryUrl
+  )
 }
 
 export function isTerrainSourceApproved(
   source: TerrainSourceDefinition,
 ): boolean {
-  return validateTerrainSource(source).length === 0
+  return (
+    matchesCuratedSource(source) && validateTerrainSource(source).length === 0
+  )
 }
+
 export function approvedTerrainSource(
   candidate: TerrainSourceDefinition = AWS_TERRAIN_TILES,
 ): TerrainSourceDefinition | null {
