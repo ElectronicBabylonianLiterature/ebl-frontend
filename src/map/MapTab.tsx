@@ -15,6 +15,7 @@ import MapInspector from 'map/MapInspector'
 import MapLegend from 'map/MapLegend'
 import MapVisualizationControl from 'map/MapVisualizationControl'
 import MapMeasurePanel from 'map/MapMeasurePanel'
+import MapSpatialSearchPanel from 'map/MapSpatialSearchPanel'
 import MapSelectionPill from 'map/MapSelectionPill'
 import MapExcavationAreaSelector from 'map/MapExcavationAreaSelector'
 import { findMapSite, isMapSiteId } from 'map/mapSites'
@@ -106,6 +107,15 @@ function LoadedMapTab({
       label: 'Measure',
       isSupported: !state.isBackgroundUnavailable,
       render: () => <MapMeasurePanel measurement={state.measurement} />,
+    },
+    {
+      id: 'spatial-search',
+      label: 'Search area',
+      isSupported:
+        state.canShowExcavationAreas && !state.isBackgroundUnavailable,
+      render: () => (
+        <MapSpatialSearchPanel spatialSearch={state.spatialSearch} />
+      ),
     },
     {
       id: 'layers',
