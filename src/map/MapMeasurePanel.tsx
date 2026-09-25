@@ -1,6 +1,9 @@
 import React from 'react'
 import { Button, ButtonGroup, Form } from 'react-bootstrap'
-import { MEASUREMENT_DISCLAIMER } from 'map/mapMeasurement'
+import {
+  MAX_MEASUREMENT_POINTS,
+  MEASUREMENT_DISCLAIMER,
+} from 'map/mapMeasurement'
 import type { MeasurementController } from 'map/useMapMeasurement'
 
 interface Props {
@@ -45,8 +48,24 @@ export default function MapMeasurePanel({ measurement }: Props): JSX.Element {
       />
       <p className="map-measure__value" role="status">
         {measurement.measurement.label}
+        {measurement.isAtPointLimit
+          ? ` Maximum of ${MAX_MEASUREMENT_POINTS} points reached.`
+          : null}
+      </p>
+      <p className="map-measure__instructions">
+        Click the map or add its center point (up to {MAX_MEASUREMENT_POINTS}).
+        Backspace undoes; Escape clears.
       </p>
       <div className="map-measure__actions">
+        <Button
+          type="button"
+          size="sm"
+          variant="outline-secondary"
+          disabled={measurement.isAtPointLimit}
+          onClick={measurement.addPointAtCenter}
+        >
+          Add point at map center
+        </Button>
         <Button
           type="button"
           size="sm"

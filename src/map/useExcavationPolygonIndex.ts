@@ -7,26 +7,37 @@ import {
 export interface ExcavationPolygonIndexState {
   readonly index: ExcavationPolygonIndex
   readonly isLoaded: boolean
+  readonly error: Error | null
 }
 
 const EMPTY_INDEX: ExcavationPolygonIndex = new Map()
 
+function asError(reason: unknown): Error {
+  return reason instanceof Error ? reason : new Error(String(reason))
+}
+
 export default function useExcavationPolygonIndex(): ExcavationPolygonIndexState {
-  const [index, setIndex] = useState<ExcavationPolygonIndex>(EMPTY_INDEX)
-  const [isLoaded, setIsLoaded] = useState(false)
+  const [state, setState] = useState<ExcavationPolygonIndexState>({
+    index: EMPTY_INDEX,
+    isLoaded: false,
+    error: null,
+  })
 
   useEffect(() => {
     let ignore = false
 
     fetchExcavationPolygonIndex()
-      .then((fetchedIndex) => {
-        if (!ignore) {
-          setIndex(fetchedIndex)
-          setIsLoaded(true)
-        }
+      .then((index) => {
+        if (!ignore) setState({ index, isLoaded: true, error: null })
       })
-      .catch(() => {
-        if (!ignore) setIsLoaded(true)
+      .catch((reason: unknown) => {
+        if (!ignore) {
+          setState({
+            index: EMPTY_INDEX,
+            isLoaded: true,
+            error: asError(reason),
+          })
+        }
       })
 
     return () => {
@@ -34,5 +45,5 @@ export default function useExcavationPolygonIndex(): ExcavationPolygonIndexState
     }
   }, [])
 
-  return { index, isLoaded }
+  return state
 }

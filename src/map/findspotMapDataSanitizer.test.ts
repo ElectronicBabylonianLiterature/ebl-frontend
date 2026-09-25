@@ -1,4 +1,6 @@
 import {
+  IncompatibleFindspotMapDataError,
+  requireCompatibleFindspotMapDataResponse,
   sanitizeFindspotMapDataResponse,
   sanitizeFindspotMapDataResponseWithDiagnostics,
 } from 'map/findspotMapDataSanitizer'
@@ -36,92 +38,64 @@ describe('sanitizeFindspotMapDataResponse', () => {
     )
   })
 
-  it('rejects non-integer findspotId', () => {
+  it.each([1.5, Number.MAX_SAFE_INTEGER + 1])(
+    'rejects unsafe findspotId %s',
+    (findspotId) => {
+      expect(
+        sanitizeFindspotMapDataResponse({
+          findspots: [findspot({ findspotId })],
+        }),
+      ).toEqual([])
+    },
+  )
+
+  it('rejects negative findspotId while retaining zero', () => {
     expect(
       sanitizeFindspotMapDataResponse({
-        findspots: [findspot({ findspotId: 1.5 })],
+        findspots: [findspot({ findspotId: -1 }), findspot({ findspotId: 0 })],
       }),
-    ).toEqual([])
+    ).toEqual([findspot({ findspotId: 0 })])
   })
 
-  it('rejects negative accessibleFragmentCount', () => {
-    expect(
-      sanitizeFindspotMapDataResponse({
-        findspots: [findspot({ accessibleFragmentCount: -1 })],
-      }),
-    ).toEqual([])
+  it('requires the exact requested site id', () => {
+    const response = { findspots: [findspot({ siteId: 'ASSUR' })] }
+
+    expect(sanitizeFindspotMapDataResponse(response, 'ASSUR')).toHaveLength(1)
+    expect(sanitizeFindspotMapDataResponse(response, 'KALHU')).toEqual([])
+    expect(sanitizeFindspotMapDataResponse(response, 'assur')).toEqual([])
   })
 
-  it('rejects non-finite accessibleFragmentCount', () => {
-    expect(
-      sanitizeFindspotMapDataResponse({
-        findspots: [
-          findspot({ accessibleFragmentCount: Infinity }),
-          findspot({ accessibleFragmentCount: NaN }),
-        ],
-      }),
-    ).toEqual([])
-  })
+  it.each([-1, 1.5, Infinity, NaN, Number.MAX_SAFE_INTEGER + 1])(
+    'rejects invalid accessibleFragmentCount %s',
+    (accessibleFragmentCount) => {
+      expect(
+        sanitizeFindspotMapDataResponse({
+          findspots: [findspot({ accessibleFragmentCount })],
+        }),
+      ).toEqual([])
+    },
+  )
 
-  it('rejects empty siteId or siteName', () => {
-    expect(
-      sanitizeFindspotMapDataResponse({
-        findspots: [findspot({ siteId: '' })],
-      }),
-    ).toEqual([])
-    expect(
-      sanitizeFindspotMapDataResponse({
-        findspots: [findspot({ siteId: '  ' })],
-      }),
-    ).toEqual([])
-    expect(
-      sanitizeFindspotMapDataResponse({
-        findspots: [findspot({ siteName: '' })],
-      }),
-    ).toEqual([])
-  })
+  it.each([{ siteId: '' }, { siteId: '  ' }, { siteName: '' }] as const)(
+    'rejects empty site metadata %#',
+    (overrides) => {
+      expect(
+        sanitizeFindspotMapDataResponse({
+          findspots: [findspot(overrides)],
+        }),
+      ).toEqual([])
+    },
+  )
 
-  it('rejects empty polygonIds array', () => {
+  it.each([
+    { polygonIds: [] },
+    { polygonIds: ['valid', ''] },
+    { polygonIds: ['duplicate', 'duplicate'] },
+    { locationPrecision: 'building' as never },
+    { matchMethod: 'unknown' as never },
+  ])('rejects malformed row fields %#', (overrides) => {
     expect(
-      sanitizeFindspotMapDataResponse({
-        findspots: [findspot({ polygonIds: [] })],
-      }),
-    ).toEqual([])
-  })
-
-  it('rejects polygonIds with empty strings', () => {
-    expect(
-      sanitizeFindspotMapDataResponse({
-        findspots: [findspot({ polygonIds: ['valid', ''] })],
-      }),
-    ).toEqual([])
-  })
-
-  it('rejects duplicate polygon IDs within one row', () => {
-    expect(
-      sanitizeFindspotMapDataResponse({
-        findspots: [
-          findspot({
-            polygonIds: ['assur-area-a-checksum', 'assur-area-a-checksum'],
-          }),
-        ],
-      }),
-    ).toEqual([])
-  })
-
-  it('rejects unsupported locationPrecision', () => {
-    expect(
-      sanitizeFindspotMapDataResponse({
-        findspots: [findspot({ locationPrecision: 'building' as never })],
-      }),
-    ).toEqual([])
-  })
-
-  it('rejects unsupported matchMethod', () => {
-    expect(
-      sanitizeFindspotMapDataResponse({
-        findspots: [findspot({ matchMethod: 'unknown' as never })],
-      }),
+      sanitizeFindspotMapDataResponse({ findspots: [findspot(overrides)] }),
     ).toEqual([])
   })
 
@@ -225,5 +199,46 @@ describe('sanitizeFindspotMapDataResponse', () => {
 
     expect(left).toEqual([findspot({ findspotId: 8 })])
     expect(right).toEqual(left)
+  })
+})
+
+describe('requireCompatibleFindspotMapDataResponse', () => {
+  const requireAssur = (response: unknown): readonly FindspotMapData[] =>
+    requireCompatibleFindspotMapDataResponse(response, 'ASSUR', 'Aššur')
+
+  it.each([
+    null,
+    {},
+    { findspots: 'not-array' },
+    { findspots: [findspot({ polygonIds: [] })] },
+    {
+      findspots: [findspot(), findspot({ findspotId: 2, polygonIds: [] })],
+    },
+    { findspots: [findspot({ siteName: 'Assur' })] },
+    {
+      findspots: [
+        findspot({ findspotId: 7, polygonIds: ['assur-a'] }),
+        findspot({ findspotId: 7, polygonIds: ['assur-b'] }),
+      ],
+    },
+    { findspots: [findspot({ accessibleFragmentCount: 1.5 })] },
+    {
+      findspots: [
+        findspot({ accessibleFragmentCount: Number.MAX_SAFE_INTEGER + 1 }),
+      ],
+    },
+  ])('rejects incompatible response %#', (response) => {
+    expect(() => requireAssur(response)).toThrow(
+      IncompatibleFindspotMapDataError,
+    )
+  })
+
+  it('accepts legitimate empty and zero-count responses', () => {
+    expect(requireAssur({ findspots: [] })).toEqual([])
+    expect(
+      requireAssur({
+        findspots: [findspot({ accessibleFragmentCount: 0 })],
+      }),
+    ).toEqual([findspot({ accessibleFragmentCount: 0 })])
   })
 })

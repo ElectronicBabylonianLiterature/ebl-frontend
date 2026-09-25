@@ -1,7 +1,52 @@
 import type { Geometry, Position } from 'geojson'
-import type { BoundingBox } from './mapGeometry'
+import type { BoundingBox } from 'map/mapGeometry'
 
 export type Ring = readonly Position[]
+
+function isFinitePosition(position: Position): boolean {
+  return (
+    Number.isFinite(position[0]) &&
+    Number.isFinite(position[1]) &&
+    position[1] >= -90 &&
+    position[1] <= 90
+  )
+}
+
+function samePosition(left: Position, right: Position): boolean {
+  return left[0] === right[0] && left[1] === right[1]
+}
+
+function unwrapLongitude(longitude: number, reference: number): number {
+  return longitude + 360 * Math.round((reference - longitude) / 360)
+}
+
+function unwrapRing(ring: Ring, reference: number): Ring {
+  const result: Position[] = []
+  for (const position of ring) {
+    const previous = result[result.length - 1]
+    result.push([
+      unwrapLongitude(position[0], previous?.[0] ?? reference),
+      position[1],
+    ])
+  }
+  return result
+}
+
+function ringArea(ring: Ring): number {
+  return ring.slice(0, -1).reduce((area, [longitude, latitude], index) => {
+    const [nextLongitude, nextLatitude] = ring[index + 1]
+    return area + longitude * nextLatitude - nextLongitude * latitude
+  }, 0)
+}
+
+function validRing(ring: Ring): boolean {
+  return (
+    ring.length >= 4 &&
+    ring.every(isFinitePosition) &&
+    samePosition(ring[0], ring[ring.length - 1]) &&
+    ringArea(unwrapRing(ring, ring[0][0])) !== 0
+  )
+}
 
 export function boundingBoxesIntersect(
   left: BoundingBox,
@@ -26,7 +71,9 @@ export function isPositionInBoundingBox(
     latitude <= north
   )
 }
+
 export function isPositionInRing(position: Position, ring: Ring): boolean {
+  if (!isFinitePosition(position) || !validRing(ring)) return false
   const [longitude, latitude] = position
   let isInside = false
 
@@ -37,7 +84,6 @@ export function isPositionInRing(position: Position, ring: Ring): boolean {
   ) {
     const [currentLongitude, currentLatitude] = ring[index]
     const [previousLongitude, previousLatitude] = ring[previous]
-
     const straddles = currentLatitude > latitude !== previousLatitude > latitude
     if (
       straddles &&
@@ -51,7 +97,6 @@ export function isPositionInRing(position: Position, ring: Ring): boolean {
     }
     previous = index
   }
-
   return isInside
 }
 
@@ -74,13 +119,12 @@ export function segmentsIntersect(
   c: Position,
   d: Position,
 ): boolean {
+  if (![a, b, c, d].every(isFinitePosition)) return false
   const first = orientation(a, b, c)
   const second = orientation(a, b, d)
   const third = orientation(c, d, a)
   const fourth = orientation(c, d, b)
-
   if (first * second < 0 && third * fourth < 0) return true
-
   return (
     (first === 0 && isBetween(a, c, b)) ||
     (second === 0 && isBetween(a, d, b)) ||
@@ -100,46 +144,60 @@ export function boundingBoxRing([west, south, east, north]: BoundingBox): Ring {
 }
 
 function ringsIntersect(left: Ring, right: Ring): boolean {
-  for (let index = 0; index < left.length - 1; index++) {
-    for (let other = 0; other < right.length - 1; other++) {
-      if (
-        segmentsIntersect(
-          left[index],
-          left[index + 1],
-          right[other],
-          right[other + 1],
-        )
-      ) {
-        return true
-      }
-    }
-  }
-  return false
+  return left
+    .slice(0, -1)
+    .some((position, index) =>
+      right
+        .slice(0, -1)
+        .some((other, otherIndex) =>
+          segmentsIntersect(
+            position,
+            left[index + 1],
+            other,
+            right[otherIndex + 1],
+          ),
+        ),
+    )
 }
 
-function outerRingsOf(geometry: Geometry): readonly Ring[] {
-  if (geometry.type === 'Polygon') {
-    return geometry.coordinates.length > 0
-      ? [geometry.coordinates[0] as Ring]
-      : []
-  }
-  if (geometry.type === 'MultiPolygon') {
-    return geometry.coordinates.flatMap((rings) =>
-      rings.length > 0 ? [rings[0] as Ring] : [],
-    )
-  }
-  return []
+function polygonsOf(geometry: Geometry): readonly (readonly Ring[])[] {
+  if (geometry.type === 'Polygon') return [geometry.coordinates]
+  return geometry.type === 'MultiPolygon' ? geometry.coordinates : []
 }
+
+function polygonIntersectsRing(
+  rings: readonly Ring[],
+  searchRing: Ring,
+): boolean {
+  if (rings.length === 0 || !rings.every(validRing)) return false
+  const [outer, ...holes] = rings
+  if (rings.some((ring) => ringsIntersect(ring, searchRing))) return true
+  if (outer.slice(0, -1).some((point) => isPositionInRing(point, searchRing))) {
+    return true
+  }
+  return searchRing
+    .slice(0, -1)
+    .some(
+      (point) =>
+        isPositionInRing(point, outer) &&
+        !holes.some((hole) => isPositionInRing(point, hole)),
+    )
+}
+
 export function geometryIntersectsRing(
   geometry: Geometry,
   searchRing: Ring,
 ): boolean {
-  return outerRingsOf(geometry).some(
-    (ring) =>
-      ring.length > 0 &&
-      (ring.some((position) => isPositionInRing(position, searchRing)) ||
-        searchRing.some((position) => isPositionInRing(position, ring)) ||
-        ringsIntersect(ring, searchRing)),
+  if (!validRing(searchRing)) return false
+  const unwrappedSearch = unwrapRing(searchRing, searchRing[0][0])
+  const longitudes = unwrappedSearch.map(([longitude]) => longitude)
+  const reference = (Math.min(...longitudes) + Math.max(...longitudes)) / 2
+
+  return polygonsOf(geometry).some((rings) =>
+    polygonIntersectsRing(
+      rings.map((ring) => unwrapRing(ring, reference)),
+      unwrappedSearch,
+    ),
   )
 }
 

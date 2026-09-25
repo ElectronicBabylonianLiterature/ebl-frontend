@@ -1,8 +1,11 @@
 import React from 'react'
-import { render, screen } from '@testing-library/react'
+import { render, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import MapLegend from './MapLegend'
-import { buildChoroplethLegend } from './mapChoroplethScale'
+import MapLegend from 'map/MapLegend'
+import {
+  buildChoroplethLegend,
+  buildChoroplethScale,
+} from 'map/mapChoroplethScale'
 
 const evidenceLegend = buildChoroplethLegend('evidence', null, [])
 
@@ -25,16 +28,47 @@ describe('MapLegend', () => {
 
     expect(toggle).toHaveAttribute('aria-expanded', 'true')
     const body = screen.getByLabelText('Map legend')
+    expect(body).toHaveTextContent(
+      'Linked fragment data unavailable or loading',
+    )
     expect(body).toHaveTextContent('No mapped findspot')
     expect(body).toHaveTextContent('Verified-source mapping')
     expect(body).toHaveTextContent('Curated mapping')
     expect(body).toHaveTextContent('Mixed mapping evidence')
     expect(body).toHaveTextContent('Selected area')
+    const marks = within(body).getAllByTestId('map-legend-mark')
+    expect(
+      marks.some((mark) => mark.classList.contains('map-legend__mark--dashed')),
+    ).toBe(true)
+    expect(
+      marks.some((mark) =>
+        mark.classList.contains('map-legend__mark--dash-dot'),
+      ),
+    ).toBe(true)
 
     await userEvent.click(toggle)
 
     expect(toggle).toHaveAttribute('aria-expanded', 'false')
     expect(screen.queryByLabelText('Map legend')).not.toBeInTheDocument()
+  })
+
+  it('shows the numeric outline-width encoding', async () => {
+    const values = [1, 4, 9, 30]
+    const scale = buildChoroplethScale('count', values)
+    render(
+      <MapLegend
+        mode="count"
+        legend={buildChoroplethLegend('count', scale, values)}
+      />,
+    )
+    await userEvent.click(screen.getByRole('button', { name: 'Legend' }))
+
+    const marks = within(screen.getByLabelText('Map legend')).getAllByTestId(
+      'map-legend-mark',
+    )
+    expect(marks.map((mark) => mark.style.borderWidth).filter(Boolean)).toEqual(
+      ['1.2px', '1.9px', '2.6px', '3.3px'],
+    )
   })
 
   it('follows the visualization mode', async () => {

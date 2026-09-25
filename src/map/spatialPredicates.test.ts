@@ -7,7 +7,7 @@ import {
   isPositionInBoundingBox,
   isPositionInRing,
   segmentsIntersect,
-} from './spatialPredicates'
+} from 'map/spatialPredicates'
 
 const UNIT_SQUARE = boundingBoxRing([0, 0, 1, 1])
 

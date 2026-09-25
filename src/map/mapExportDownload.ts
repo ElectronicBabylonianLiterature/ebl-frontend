@@ -4,7 +4,7 @@ import {
   type MapExportRow,
   buildExportCsv,
   buildExportGeoJson,
-} from './mapExportData'
+} from 'map/mapExportData'
 
 export const GEOJSON_MEDIA_TYPE = 'application/geo+json;charset=utf-8'
 export const CSV_MEDIA_TYPE = 'text/csv;charset=utf-8'
@@ -29,7 +29,7 @@ export function downloadExportCsv(
   rows: readonly MapExportRow[],
   context: MapExportContext,
 ): void {
-  const blob = new Blob([buildExportCsv(rows, context)], {
+  const blob = new Blob(['\uFEFF', buildExportCsv(rows, context)], {
     type: CSV_MEDIA_TYPE,
   })
   saveAs(blob, exportFileName('csv', context.exportedAt))

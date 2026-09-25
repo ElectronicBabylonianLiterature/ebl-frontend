@@ -42,6 +42,30 @@ describe('MapTab', () => {
     expect(screen.getByText('Loading map data...')).toBeInTheDocument()
   })
 
+  it('mounts runtime map effects after deferred provenance loading', async () => {
+    let resolveFetch!: (
+      provenances: readonly ReturnType<typeof makeProvenance>[],
+    ) => void
+    const fragmentService = {
+      fetchProvenances: () =>
+        new Promise((resolve) => {
+          resolveFetch = resolve
+        }),
+    } as unknown as FragmentService
+
+    renderMapTab(fragmentService)
+    expect(screen.getByText('Loading map data...')).toBeInTheDocument()
+
+    await act(async () => {
+      resolveFetch([makeProvenance()])
+    })
+
+    await waitFor(() => expect(mockAddSource).toHaveBeenCalled())
+    expect(mockAddLayer).toHaveBeenCalledWith(
+      expect.objectContaining({ id: 'excavation-area-fill' }),
+    )
+  })
+
   it('renders error state when fetch fails', async () => {
     renderMapTab(makeFailingFragmentService('Network error'))
 
@@ -113,15 +137,20 @@ describe('MapTab', () => {
     expect(sourceCall[1].cluster).toBe(true)
     expect(sourceCall[1].data.features).toHaveLength(2)
 
-    expect(mockAddLayer).toHaveBeenCalledTimes(3)
+    expect(mockAddLayer).toHaveBeenCalledTimes(6)
     const layerIds = mockAddLayer.mock.calls.map(
       (call: unknown[]) => (call[0] as { id: string }).id,
     )
-    expect(layerIds).toEqual([
-      'ebl-clusters',
-      'ebl-cluster-count',
-      'ebl-unclustered-points',
-    ])
+    expect(layerIds).toEqual(
+      expect.arrayContaining([
+        'ebl-clusters',
+        'ebl-cluster-count',
+        'ebl-unclustered-points',
+        'excavation-area-fill',
+        'excavation-area-outline',
+        'excavation-area-selected',
+      ]),
+    )
   })
 
   it('creates a map with navigation control', async () => {
@@ -162,6 +191,7 @@ describe('MapTab', () => {
     const sourceCall = mockAddSource.mock.calls[0]
     expect(sourceCall[1].data.features).toHaveLength(1)
     expect(sourceCall[1].data.features[0].properties.name).toBe('Babylon')
+    expect(screen.getByText('1 visible findspot')).toBeInTheDocument()
   })
 
   it('links to searches for provenances that have no map geometry', async () => {

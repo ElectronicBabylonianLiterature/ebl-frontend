@@ -4,10 +4,13 @@ import {
   type ChoroplethLegend,
   type MapVisualizationMode,
   MAP_VISUALIZATION_MODES,
-} from './mapChoroplethScale'
-import { DENSITY_UNAVAILABLE_NOTE, mapLegendEntries } from './mapLegendEntries'
-import MapLegendList from './MapLegendList'
-import MapCompletenessNote from './MapCompletenessNote'
+} from 'map/mapChoroplethScale'
+import {
+  DENSITY_UNAVAILABLE_NOTE,
+  mapLegendEntries,
+} from 'map/mapLegendEntries'
+import MapLegendList from 'map/MapLegendList'
+import MapCompletenessNote from 'map/MapCompletenessNote'
 
 const MODE_LABELS: Readonly<Record<MapVisualizationMode, string>> = {
   mapped: 'Mapped status',
@@ -25,6 +28,7 @@ interface Props {
   readonly mode: MapVisualizationMode
   readonly legend: ChoroplethLegend
   readonly isDensityAvailable: boolean
+  readonly hasUnavailableData: boolean
   readonly onModeChange: (mode: MapVisualizationMode) => void
 }
 
@@ -32,6 +36,7 @@ export default function MapVisualizationControl({
   mode,
   legend,
   isDensityAvailable,
+  hasUnavailableData,
   onModeChange,
 }: Props): JSX.Element {
   const availableModes = MAP_VISUALIZATION_MODES.filter(
@@ -58,6 +63,12 @@ export default function MapVisualizationControl({
         </Form.Control>
       </Form.Group>
       <p className="map-visualization__unit">{legend.unit}</p>
+      {hasUnavailableData ? (
+        <p className="map-visualization__caveat" role="status">
+          Some excavation areas are not classified because their linked fragment
+          data is loading or unavailable.
+        </p>
+      ) : null}
       <div className="map-legend map-legend--inline">
         <MapLegendList entries={entries} label="Map legend classes" />
       </div>
@@ -69,9 +80,12 @@ export default function MapVisualizationControl({
       ) : null}
       {legend.classes.length === 0 &&
       mode !== 'mapped' &&
-      mode !== 'evidence' ? (
+      mode !== 'evidence' &&
+      !hasUnavailableData ? (
         <p className="map-visualization__empty" role="status">
-          No accessible fragment data is available to classify.
+          {mode === 'density'
+            ? 'No positive classifiable density values are available.'
+            : 'No positive accessible fragment values are available to classify.'}
         </p>
       ) : null}
       {mode === 'density' ? (

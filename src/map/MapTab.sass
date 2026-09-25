@@ -6,6 +6,7 @@
 
 .map-stage
   &__background-alert
+    flex: 0 0 auto
     margin-bottom: 0.75rem
 
 .map-share-link
@@ -62,20 +63,23 @@
 
   &__body
     position: relative
-    min-height: min(76vh, 760px)
+    height: min(76vh, 760px)
 
 .map-stage
   position: relative
+  display: flex
+  flex-direction: column
   width: 100%
-  height: min(76vh, 760px)
+  height: 100%
   overflow: hidden
   border: 1px solid $ebl-color-border-default
   border-radius: 0.45rem
   background: $ebl-color-surface-muted
 
   &__container
+    flex: 1 1 auto
+    min-height: 0
     width: 100%
-    height: 100%
 
 .map-presentation-bar
   display: flex
@@ -87,7 +91,7 @@
   border-radius: 0.35rem
 
 .map-experience--presenting .map-experience__body
-  min-height: 82vh
+  height: 82vh
 
 .map-tab
   min-width: 0
@@ -116,8 +120,73 @@
     grid-template-columns: minmax(0, 1fr)
     align-items: stretch
 
-  .map-stage
+  .map-experience__body
     height: 68vh
 
 .findspot-filter__control
   min-height: 38px
+
+
+.map-legend
+  position: absolute
+  z-index: $map-z-toolbar
+  top: 0.75rem
+  left: 0.75rem
+  pointer-events: auto
+
+  &__body
+    width: min(22rem, calc(100vw - 2rem))
+    margin-top: 0.35rem
+    padding: 0.65rem
+    border: 1px solid $ebl-color-border-subtle
+    border-radius: 0.35rem
+    background: $ebl-color-white-alpha-90
+    box-shadow: 0 0.5rem 1.25rem $ebl-color-black-alpha-10
+
+  &__unit
+    margin: 0 0 0.4rem
+    color: $ebl-color-text-secondary
+    font-size: 0.8rem
+    font-weight: 600
+
+  &__entries
+    display: grid
+    gap: 0.35rem
+    margin: 0
+    padding: 0
+    list-style: none
+
+  &__entry
+    display: grid
+    grid-template-columns: 1.4rem minmax(0, 1fr)
+    align-items: center
+    gap: 0.45rem
+
+  &__mark
+    display: inline-block
+    width: 1.15rem
+    height: 1.15rem
+    border: 0.18rem solid
+    border-radius: 0.15rem
+
+    &--dashed
+      border-style: dashed
+
+    &--dotted
+      border-style: dotted
+
+    &--dash-dot
+      border-style: solid
+
+    &--halo
+      border-style: double
+
+  &__label
+    overflow-wrap: anywhere
+    font-size: 0.78rem
+
+  &--inline
+    position: static
+
+    .map-legend__body
+      width: auto
