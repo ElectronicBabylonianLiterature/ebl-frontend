@@ -28,6 +28,8 @@ function inspector(
         summary={summary}
         siteName="Uruk"
         status={status}
+        visualizationMode="count"
+        siteFilter=""
         onClear={jest.fn()}
       />
     </MemoryRouter>
@@ -52,6 +54,12 @@ describe('MapInspector', () => {
       expect(
         screen.queryByText('No fragments are linked to this excavation area.'),
       ).not.toBeInTheDocument()
+      expect(
+        screen.queryByRole('button', { name: 'Copy research summary' }),
+      ).not.toBeInTheDocument()
+      expect(
+        screen.queryByRole('button', { name: 'Download .md' }),
+      ).not.toBeInTheDocument()
     },
   )
 
@@ -64,6 +72,13 @@ describe('MapInspector', () => {
     expect(screen.getByText('Mapped findspots')).toBeInTheDocument()
     expect(screen.getByText('0 findspots')).toBeInTheDocument()
     expect(screen.getByText('0 fragments')).toBeInTheDocument()
+    expect(screen.getAllByRole('status')).toHaveLength(1)
+    expect(
+      screen.getByRole('button', { name: 'Copy research summary' }),
+    ).toBeInTheDocument()
+    expect(
+      screen.getByRole('button', { name: 'Download .md' }),
+    ).toBeInTheDocument()
 
     await userEvent.click(screen.getByRole('tab', { name: 'Findspots' }))
     expect(
