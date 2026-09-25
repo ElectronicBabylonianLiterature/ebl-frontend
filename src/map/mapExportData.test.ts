@@ -1,21 +1,29 @@
-import {
-  excavationPolygon,
-  findspotMapDataDto as findspotMapData,
-} from 'test-support/map-fixtures'
 import { aggregateFindspotMapData } from 'map/findspotMapDataSanitizer'
 import {
   CSV_COLUMNS,
   type MapExportContext,
   buildExportCsv,
   buildExportGeoJson,
+  exportDataStatuses,
   toExportRows,
-} from './mapExportData'
+} from 'map/mapExportData'
+import type {
+  FragmentMapDataState,
+  FragmentMapDataStatus,
+  SiteFragmentMapDataState,
+} from 'map/useFragmentMapData'
+import {
+  excavationPolygon,
+  findspotMapDataDto as findspotMapData,
+} from 'test-support/map-fixtures'
 
 const CONTEXT: MapExportContext = {
   visualization: 'count',
   siteFilter: 'Aššur',
   shareUrl: 'https://www.ebl.lmu.de/map?v=1',
   exportedAt: '2026-08-05T12:00:00.000Z',
+  scope: { type: 'viewport', bounds: [[43, 35, 44, 36]] },
+  dataStatuses: { assur: 'loaded-with-mappings' },
 }
 
 const POLYGONS = [
@@ -23,7 +31,7 @@ const POLYGONS = [
   excavationPolygon({ polygonId: 'assur-a', name: 'Area A' }),
 ]
 
-const SUMMARIES = aggregateFindspotMapData([
+const FINDSPOTS = [
   findspotMapData({
     findspotId: 5,
     polygonIds: ['assur-a'],
@@ -36,15 +44,33 @@ const SUMMARIES = aggregateFindspotMapData([
     accessibleFragmentCount: 1,
     matchMethod: 'verified-source',
   }),
-])
+]
+
+function siteState(
+  status: FragmentMapDataStatus,
+  findspots = FINDSPOTS,
+): SiteFragmentMapDataState {
+  const loaded = status === 'loaded-with-mappings'
+  return {
+    status,
+    findspots: loaded ? findspots : [],
+    polygonSummaries: aggregateFindspotMapData(loaded ? findspots : []),
+  }
+}
+
+function sites(
+  status: FragmentMapDataStatus = 'loaded-with-mappings',
+): FragmentMapDataState['sites'] {
+  return new Map([['assur', siteState(status)]])
+}
 
 describe('toExportRows', () => {
-  it('orders rows by canonical id and carries mapped counts', () => {
-    const rows = toExportRows(POLYGONS, SUMMARIES)
+  it('orders rows by canonical id and carries loaded mapped counts', () => {
+    const rows = toExportRows(POLYGONS, sites())
 
     expect(rows.map((row) => row.polygonId)).toEqual(['assur-a', 'assur-b'])
     expect(rows[0]).toMatchObject({
-      label: 'Area A',
+      dataStatus: 'loaded-with-mappings',
       mappedFindspotIds: [3, 5],
       mappedFindspotCount: 2,
       accessibleFragmentCount: 5,
@@ -53,8 +79,9 @@ describe('toExportRows', () => {
     })
   })
 
-  it('marks an unmapped polygon rather than inventing a precision', () => {
-    expect(toExportRows(POLYGONS, SUMMARIES)[1]).toMatchObject({
+  it('reports truthful zeroes for a successfully loaded empty site', () => {
+    expect(toExportRows(POLYGONS, sites('loaded-empty'))[0]).toMatchObject({
+      dataStatus: 'loaded-empty',
       mappedFindspotIds: [],
       mappedFindspotCount: 0,
       accessibleFragmentCount: 0,
@@ -63,121 +90,134 @@ describe('toExportRows', () => {
     })
   })
 
-  it('falls back to the canonical id when a polygon has no label', () => {
-    expect(
-      toExportRows(
-        [excavationPolygon({ polygonId: 'assur-c', name: null })],
-        SUMMARIES,
-      )[0].label,
-    ).toBe('assur-c')
+  it.each(['loading', 'error', 'incompatible', 'not-configured'] as const)(
+    'leaves linked data blank when site data is %s',
+    (status) => {
+      expect(toExportRows(POLYGONS, sites(status))[0]).toMatchObject({
+        dataStatus: status,
+        mappedFindspotIds: null,
+        mappedFindspotCount: null,
+        accessibleFragmentCount: null,
+        locationPrecision: null,
+        matchMethod: null,
+      })
+    },
+  )
+
+  it('falls back to canonical identity for unknown sites and labels', () => {
+    const row = toExportRows(
+      [
+        excavationPolygon({
+          polygonId: 'unknown-c',
+          siteId: 'unknown',
+          name: null,
+        }),
+      ],
+      sites(),
+    )[0]
+
+    expect(row).toMatchObject({
+      label: 'unknown-c',
+      dataStatus: 'not-configured',
+      mappedFindspotCount: null,
+    })
+  })
+})
+
+describe('exportDataStatuses', () => {
+  it('captures each site status for reproducibility metadata', () => {
+    const states = new Map([
+      ['assur', siteState('loaded-empty')],
+      ['uruk', siteState('error')],
+    ]) as FragmentMapDataState['sites']
+
+    expect(exportDataStatuses(states)).toEqual({
+      assur: 'loaded-empty',
+      uruk: 'error',
+    })
   })
 })
 
 describe('buildExportGeoJson', () => {
-  it('emits EPSG:4326 features with the excavation-area caveat', () => {
+  it('emits geometry, scope, access caveat, and data statuses', () => {
     const collection = buildExportGeoJson(
-      toExportRows(POLYGONS, SUMMARIES),
+      toExportRows(POLYGONS, sites()),
       CONTEXT,
     )
 
-    expect(collection.type).toBe('FeatureCollection')
     expect(collection.features).toHaveLength(2)
     expect(collection.metadata).toMatchObject({
       crs: 'EPSG:4326',
-      visualization: 'count',
-      siteFilter: 'Aššur',
-      shareUrl: CONTEXT.shareUrl,
-      exportedAt: CONTEXT.exportedAt,
+      polygonSource: expect.stringContaining('.geojson'),
+      scope: CONTEXT.scope,
+      dataStatuses: CONTEXT.dataStatuses,
     })
     expect(collection.metadata.note).toContain(
       'not an exact findspot coordinate',
     )
-  })
-
-  it('keeps polygon geometry and canonical identity on each feature', () => {
-    const [feature] = buildExportGeoJson(
-      toExportRows(POLYGONS, SUMMARIES),
-      CONTEXT,
-    ).features
-
-    expect(feature.id).toBe('assur-a')
-    expect(feature.geometry.type).toBe('Polygon')
-    expect(feature.properties).toMatchObject({
-      polygonId: 'assur-a',
-      siteId: 'assur',
-      mappedFindspotIds: [3, 5],
+    expect(collection.metadata.accessNote).toContain('caller-authorized')
+    expect(collection.features[0]).toMatchObject({
+      id: 'assur-a',
+      geometry: { type: 'Polygon' },
+      properties: {
+        polygonId: 'assur-a',
+        siteId: 'assur',
+        mappedFindspotIds: [3, 5],
+      },
     })
   })
 })
 
 describe('buildExportCsv', () => {
-  it('starts with the declared header row', () => {
-    const csv = buildExportCsv(toExportRows(POLYGONS, SUMMARIES), CONTEXT)
+  it('includes scope, data status, filter, and share metadata per row', () => {
+    const csv = buildExportCsv(toExportRows(POLYGONS, sites()), CONTEXT)
+    const [header, row] = csv.split('\r\n')
 
-    expect(csv.split('\r\n')[0]).toBe(CSV_COLUMNS.join(','))
+    expect(header).toBe(CSV_COLUMNS.join(','))
     expect(csv.split('\r\n')).toHaveLength(3)
-  })
-
-  it('writes counts, filters and the share url on each row', () => {
-    const [, row] = buildExportCsv(
-      toExportRows(POLYGONS, SUMMARIES),
-      CONTEXT,
-    ).split('\r\n')
-
-    expect(row).toContain('assur-a')
+    expect(row).toContain('loaded-with-mappings')
+    expect(row).toContain('viewport')
     expect(row).toContain('3 5')
-    expect(row).toContain('count')
     expect(row).toContain(CONTEXT.shareUrl)
   })
 
-  it('leaves the area column empty when no geodesic area exists', () => {
+  it('leaves unavailable linked-data columns empty', () => {
     const csv = buildExportCsv(
       toExportRows(
         [excavationPolygon({ polygonId: 'assur-a', areaSquareKm: null })],
-        new Map(),
+        sites('error'),
       ),
-      CONTEXT,
+      { ...CONTEXT, scope: { type: 'selection', polygonId: 'assur-a' } },
     )
+    const values = csv.split('\r\n')[1].split(',')
 
-    expect(csv.split('\r\n')[1]).toContain(',,not-mapped')
+    expect(values[3]).toBe('error')
+    expect(values.slice(4, 10)).toEqual(['', '', '', '', '', ''])
+    expect(values).toContain('selection')
+    expect(values).toContain('assur-a')
   })
 
-  it('quotes values containing separators or quotes', () => {
+  it('quotes separators, quotes, and newlines', () => {
     const csv = buildExportCsv(
       toExportRows(
-        [excavationPolygon({ polygonId: 'assur-a', name: 'Area "A", north' })],
-        new Map(),
+        [excavationPolygon({ name: 'Area "A",\nnorth' })],
+        sites('loaded-empty'),
       ),
       CONTEXT,
     )
 
-    expect(csv).toContain('"Area ""A"", north"')
+    expect(csv).toContain('"Area ""A"",\nnorth"')
   })
 
-  it('quotes a label containing a newline', () => {
-    const csv = buildExportCsv(
-      toExportRows(
-        [excavationPolygon({ polygonId: 'assur-a', name: 'Area\nA' })],
-        new Map(),
-      ),
-      CONTEXT,
-    )
-
-    expect(csv).toContain('"Area\nA"')
-  })
-
-  it.each(['=cmd()', '+1', '-1', '@ref', '\tlead'])(
-    'neutralises the spreadsheet formula prefix in %s',
+  it.each(['=cmd()', '  +1', '\t-1', '\u00a0@ref', '\n=next'])(
+    'neutralises spreadsheet formula input %j after leading whitespace',
     (name) => {
       const csv = buildExportCsv(
-        toExportRows(
-          [excavationPolygon({ polygonId: 'assur-a', name })],
-          new Map(),
-        ),
+        toExportRows([excavationPolygon({ name })], sites('loaded-empty')),
         CONTEXT,
       )
 
-      expect(csv).toContain(`'${name.replace(/\t/, '\t')}`)
+      expect(csv).toContain(`'${name}`)
     },
   )
 })

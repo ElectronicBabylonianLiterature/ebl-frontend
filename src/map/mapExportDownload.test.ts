@@ -1,13 +1,13 @@
 import { saveAs } from 'file-saver'
 import { excavationPolygon } from 'test-support/map-fixtures'
-import { type MapExportContext, toExportRows } from './mapExportData'
+import { type MapExportContext, toExportRows } from 'map/mapExportData'
 import {
   CSV_MEDIA_TYPE,
   GEOJSON_MEDIA_TYPE,
   downloadExportCsv,
   downloadExportGeoJson,
   exportFileName,
-} from './mapExportDownload'
+} from 'map/mapExportDownload'
 
 jest.mock('file-saver', () => ({ saveAs: jest.fn() }))
 
@@ -16,6 +16,8 @@ const CONTEXT: MapExportContext = {
   siteFilter: '',
   shareUrl: 'https://www.ebl.lmu.de/map?v=1',
   exportedAt: '2026-08-05T12:00:00.000Z',
+  scope: { type: 'viewport', bounds: [[43, 35, 44, 36]] },
+  dataStatuses: { assur: 'not-configured' },
 }
 
 const ROWS = toExportRows([excavationPolygon()], new Map())
@@ -28,6 +30,15 @@ function readBlob(blob: Blob): Promise<string> {
     reader.onload = () => resolve(String(reader.result))
     reader.onerror = () => reject(reader.error)
     reader.readAsText(blob)
+  })
+}
+
+function readBlobBytes(blob: Blob): Promise<Uint8Array> {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader()
+    reader.onload = () => resolve(new Uint8Array(reader.result as ArrayBuffer))
+    reader.onerror = () => reject(reader.error)
+    reader.readAsArrayBuffer(blob)
   })
 }
 
@@ -65,6 +76,10 @@ describe('downloadExportCsv', () => {
     const { text, name } = await savedBlob()
     expect(name).toBe('ebl-map-2026-08-05T12-00-00-000Z.csv')
     expect((saveAs as jest.Mock).mock.calls[0][0].type).toBe(CSV_MEDIA_TYPE)
+    const blob = (saveAs as jest.Mock).mock.calls[0][0] as Blob
+    expect(Array.from((await readBlobBytes(blob)).slice(0, 3))).toEqual([
+      0xef, 0xbb, 0xbf,
+    ])
     expect(text).toContain('assur-area-a-checksum')
   })
 })

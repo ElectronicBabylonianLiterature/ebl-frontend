@@ -225,21 +225,24 @@ export default function MapInspector({
         {linkedDataMessage(status, research)}
       </p>
       <MapInspectorTabs tabs={tabs} label="Excavation area detail" />
-      <MapResearchSummaryActions
-        title={`${research.displayName} — ${research.siteName}`}
-        buildSummary={() => {
-          const generatedAt = new Date().toISOString()
-          return {
-            generatedAt,
-            markdown: polygonResearchMarkdown(research, {
-              visualizationLabel: visualizationModeLabel(visualizationMode),
-              siteFilter,
-              shareUrl: window.location.href,
+      {hasLoaded(status) ? (
+        <MapResearchSummaryActions
+          title={`${research.displayName} — ${research.siteName}`}
+          selectionKey={`${research.siteId}:${research.polygonId}`}
+          buildSummary={() => {
+            const generatedAt = new Date().toISOString()
+            return {
               generatedAt,
-            }),
-          }
-        }}
-      />
+              markdown: polygonResearchMarkdown(research, {
+                visualizationLabel: visualizationModeLabel(visualizationMode),
+                siteFilter,
+                shareUrl: window.location.href,
+                generatedAt,
+              }),
+            }
+          }}
+        />
+      ) : null}
     </div>
   )
 }
