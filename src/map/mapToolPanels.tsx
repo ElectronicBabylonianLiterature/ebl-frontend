@@ -1,180 +1,133 @@
-import React, { useMemo } from 'react'
-import type { HistoricalMapOverlay } from './historicalOverlays'
-import type { PolygonFindspotSummary } from './findspotMapData'
-import type { ExcavationPolygonIndex } from './excavationPolygonIndex'
-import type { MapVisualizationMode } from './mapChoroplethScale'
-import type { MapTools } from './useMapTools'
-import type { MapTerrainResult } from './useMapTerrain'
-import type { MapToolInteractions } from './useMapToolInteractions'
-import { toDatedOverlays } from './overlayPublicationDates'
-import { toExportRows } from './mapExportData'
-import { assessImageExport } from './mapImageExportRights'
-import MapComparePanel from './MapComparePanel'
-import MapExportPanel from './MapExportPanel'
-import MapMeasurePanel from './MapMeasurePanel'
-import MapSpatialSearchPanel from './MapSpatialSearchPanel'
-import MapTerrainPanel from './MapTerrainPanel'
-import MapTimelinePanel from './MapTimelinePanel'
-import Map3dPanel, { type Map3dPanelProps } from './Map3dPanel'
-import type { MapElevationProfile } from './useMapElevationProfile'
-import type { MapPanelDefinition } from './MapToolbar'
+import React from 'react'
+import MapExcavationAreaSelector from 'map/MapExcavationAreaSelector'
+import MapExportPanel from 'map/MapExportPanel'
+import MapInspector from 'map/MapInspector'
+import MapLayerControls from 'map/MapLayerControls'
+import MapMeasurePanel from 'map/MapMeasurePanel'
+import MapSpatialSearchPanel from 'map/MapSpatialSearchPanel'
+import MapTerrainPanel from 'map/MapTerrainPanel'
+import type { MapTabState } from 'map/mapTabState'
+import MapVisualizationControl from 'map/MapVisualizationControl'
+import { exportDataStatuses } from 'map/mapExportData'
+import { assessImageExport } from 'map/mapImageExportRights'
+import { findMapSite, isMapSiteId } from 'map/mapSites'
+import type { MapPanelDefinition } from 'map/MapToolbar'
 
-export interface ToolPanelsInput {
-  readonly tools: MapTools
-  readonly terrain: MapTerrainResult
-  readonly overlays: readonly HistoricalMapOverlay[]
-  readonly activeOverlays: readonly HistoricalMapOverlay[]
-  readonly excavationPolygonIndex: ExcavationPolygonIndex
-  readonly polygonSummaries: ReadonlyMap<string, PolygonFindspotSummary>
-  readonly visualization: MapVisualizationMode
-  readonly siteFilter: string
-  readonly interactions: MapToolInteractions
-  readonly elevation: MapElevationProfile
-  readonly threeD: Map3dPanelProps
-}
+export default function buildMapToolPanels(
+  state: MapTabState,
+  clearSelection: () => void,
+): readonly MapPanelDefinition[] {
+  const { experience, selectedPolygon } = state
+  const selectedSiteData =
+    selectedPolygon && isMapSiteId(selectedPolygon.siteId)
+      ? state.fragmentMapData.sites.get(selectedPolygon.siteId)
+      : undefined
 
-/**
- * Compare, timeline, spatial search, measure, export and terrain — the six
- * feature panels that were previously assembled by `MapAdvancedTools`. Split
- * out from `mapInfoPanels` (inspector/layers/visualization) purely to keep
- * each file within the project's line limit.
- */
-export function useToolPanelDefinitions({
-  tools,
-  terrain,
-  overlays,
-  activeOverlays,
-  excavationPolygonIndex,
-  polygonSummaries,
-  visualization,
-  siteFilter,
-  interactions,
-  elevation,
-  threeD,
-}: ToolPanelsInput): readonly MapPanelDefinition[] {
-  const dated = useMemo(() => toDatedOverlays(overlays), [overlays])
-  const exportRows = useMemo(
-    () =>
-      toExportRows(
-        [...excavationPolygonIndex.values()].flat(),
-        polygonSummaries,
+  return [
+    {
+      id: 'inspector',
+      label: 'Selected area',
+      isSupported: selectedPolygon !== null,
+      render: () =>
+        selectedPolygon ? (
+          <MapInspector
+            polygon={selectedPolygon}
+            summary={selectedSiteData?.polygonSummaries.get(
+              selectedPolygon.polygonId,
+            )}
+            siteName={
+              findMapSite(selectedPolygon.siteId)?.siteName ??
+              selectedPolygon.siteId
+            }
+            status={selectedSiteData?.status ?? 'not-configured'}
+            visualizationMode={state.visualization.effectiveMode}
+            siteFilter={experience.filter}
+            onClear={clearSelection}
+          />
+        ) : (
+          <p>No excavation area is selected.</p>
+        ),
+    },
+    {
+      id: 'visualization',
+      label: 'Visualization',
+      isSupported: state.canShowExcavationAreas,
+      render: () => (
+        <MapVisualizationControl
+          mode={state.visualization.effectiveMode}
+          legend={state.visualization.legend}
+          isDensityAvailable={state.visualization.isDensityAvailable}
+          hasUnavailableData={state.visualization.hasUnavailableData}
+          onModeChange={experience.setVisualization}
+        />
       ),
-    [excavationPolygonIndex, polygonSummaries],
-  )
-  const imageExport = useMemo(
-    () => assessImageExport({ activeOverlays, preservesDrawingBuffer: false }),
-    [activeOverlays],
-  )
-
-  return useMemo(
-    () => [
-      {
-        id: 'comparison' as const,
-        label: 'Compare',
-        isSupported: overlays.length > 0,
-        render: () => (
-          <MapComparePanel
-            overlays={overlays}
-            comparison={tools.comparison}
-            onModeChange={tools.setComparisonMode}
-            onSideChange={tools.setComparisonSide}
-            onPositionChange={tools.setBlendPosition}
-            onToggleSolo={tools.toggleSolo}
+    },
+    {
+      id: 'measurement',
+      label: 'Measure',
+      isSupported: !state.isBackgroundUnavailable,
+      render: () => <MapMeasurePanel measurement={state.measurement} />,
+    },
+    {
+      id: 'spatial-search',
+      label: 'Search area',
+      isSupported:
+        state.canShowExcavationAreas && !state.isBackgroundUnavailable,
+      render: () => (
+        <MapSpatialSearchPanel spatialSearch={state.spatialSearch} />
+      ),
+    },
+    {
+      id: 'export',
+      label: 'Export',
+      isSupported: state.canShowExcavationAreas,
+      render: () => (
+        <MapExportPanel
+          rows={state.exportView.rows}
+          scope={state.exportView.scope}
+          buildContext={() => ({
+            visualization: state.visualization.effectiveMode,
+            siteFilter: experience.filter,
+            shareUrl: window.location.href,
+            exportedAt: new Date().toISOString(),
+            scope: state.exportView.scope,
+            dataStatuses: exportDataStatuses(state.fragmentMapData.sites),
+          })}
+          imageExport={assessImageExport()}
+        />
+      ),
+    },
+    {
+      id: 'terrain',
+      label: 'Terrain',
+      isSupported: !state.isBackgroundUnavailable,
+      render: () => (
+        <MapTerrainPanel
+          terrain={state.terrain}
+          onChange={experience.setTerrain}
+        />
+      ),
+    },
+    {
+      id: 'layers',
+      label: 'Map layers',
+      isSupported: true,
+      render: () => (
+        <>
+          <MapLayerControls
+            showExcavationAreas={state.showExcavationAreas}
+            canShowExcavationAreas={state.canShowExcavationAreas}
+            onShowExcavationAreasChange={experience.setShowExcavationAreas}
           />
-        ),
-      },
-      {
-        id: 'timeline' as const,
-        label: 'Timeline',
-        isSupported: overlays.length > 0,
-        render: () => (
-          <MapTimelinePanel
-            dated={dated}
-            timeline={tools.timeline}
-            onChange={tools.setTimeline}
+          <MapExcavationAreaSelector
+            polygons={state.excavationPolygons}
+            selectedPolygonId={selectedPolygon?.polygonId ?? null}
+            onSelect={(polygonId) =>
+              polygonId ? state.selectPolygon(polygonId) : clearSelection()
+            }
           />
-        ),
-      },
-      {
-        id: 'spatial-search' as const,
-        label: 'Search area',
-        isSupported: excavationPolygonIndex.size > 0,
-        render: () => (
-          <MapSpatialSearchPanel
-            shape={interactions.searchShape}
-            result={interactions.searchResult}
-            isDrawing={interactions.isDrawing}
-            onSearchViewport={interactions.searchViewport}
-            onStartDrawing={interactions.startDrawing}
-            onClear={interactions.clearSearch}
-          />
-        ),
-      },
-      {
-        id: 'measurement' as const,
-        label: 'Measure',
-        isSupported: true,
-        render: () => (
-          <MapMeasurePanel
-            mode={interactions.measurementMode}
-            units={interactions.measurementUnits}
-            positions={interactions.measurementPositions}
-            onModeChange={interactions.setMeasurementMode}
-            onUnitsChange={interactions.setMeasurementUnits}
-            onClear={interactions.clearMeasurement}
-            elevation={elevation}
-          />
-        ),
-      },
-      {
-        id: 'export' as const,
-        label: 'Export',
-        isSupported: true,
-        render: () => (
-          <MapExportPanel
-            rows={exportRows}
-            imageExport={imageExport}
-            buildContext={() => ({
-              visualization,
-              siteFilter,
-              shareUrl: window.location.href,
-              exportedAt: new Date().toISOString(),
-            })}
-          />
-        ),
-      },
-      {
-        id: 'three-d' as const,
-        label: '3D',
-        isSupported: terrain.isSupported || threeD.hasExtrusionData,
-        render: () => <Map3dPanel {...threeD} />,
-      },
-      {
-        id: 'terrain' as const,
-        label: 'Terrain',
-        isSupported: terrain.isSupported || terrain.source !== null,
-        render: () => (
-          <MapTerrainPanel
-            terrain={terrain}
-            isRequested={tools.terrain}
-            onChange={tools.setTerrain}
-          />
-        ),
-      },
-    ],
-    [
-      tools,
-      terrain,
-      overlays,
-      excavationPolygonIndex,
-      dated,
-      exportRows,
-      imageExport,
-      visualization,
-      siteFilter,
-      interactions,
-      elevation,
-      threeD,
-    ],
-  )
+        </>
+      ),
+    },
+  ]
 }

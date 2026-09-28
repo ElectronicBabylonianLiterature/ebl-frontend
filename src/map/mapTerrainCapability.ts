@@ -2,11 +2,11 @@ import prefersReducedMotion from 'common/utils/prefersReducedMotion'
 import {
   DEFAULT_TERRAIN_EXAGGERATION,
   REDUCED_MOTION_TERRAIN_EXAGGERATION,
-} from './mapTerrainLayers'
+} from 'map/mapTerrainLayers'
 import {
   type TerrainSourceDefinition,
   approvedTerrainSource,
-} from './mapTerrainSource'
+} from 'map/mapTerrainSource'
 
 export const MINIMUM_TERRAIN_DEVICE_MEMORY_GB = 2
 export const MINIMUM_TERRAIN_LOGICAL_CORES = 4
@@ -20,14 +20,10 @@ export interface TerrainCapability {
   readonly unavailableReason: TerrainUnavailableReason | null
 }
 
-interface DeviceCapabilityLike {
-  readonly deviceMemory?: number
-  readonly hardwareConcurrency?: number
-}
-
 export function isLowPowerDevice(): boolean {
-  const { deviceMemory, hardwareConcurrency } =
-    navigator as unknown as DeviceCapabilityLike
+  const deviceMemory =
+    'deviceMemory' in navigator ? navigator.deviceMemory : undefined
+  const { hardwareConcurrency } = navigator
 
   return (
     (typeof deviceMemory === 'number' &&

@@ -28,4 +28,8 @@ yarn-error.log*
 # map asset generation
 __pycache__/
 *.pyc
-/scripts/maps/.map-processing
+/.map-processing/
+
+# qlty
+.qlty/*
+!.qlty/qlty.toml

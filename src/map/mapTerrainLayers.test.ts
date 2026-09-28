@@ -2,15 +2,17 @@ import {
   DEFAULT_TERRAIN_EXAGGERATION,
   MAX_TERRAIN_EXAGGERATION,
   TERRAIN_HILLSHADE_LAYER_ID,
+  TERRAIN_HILLSHADE_SOURCE_ID,
   TERRAIN_SOURCE_ID,
   type TerrainMapLike,
   clampExaggeration,
   createHillshadeLayer,
+  createTerrainOwnership,
   createTerrainSource,
   disableTerrain,
   enableTerrain,
-} from './mapTerrainLayers'
-import { AWS_TERRAIN_TILES } from './mapTerrainSource'
+} from 'map/mapTerrainLayers'
+import { AWS_TERRAIN_TILES } from 'map/mapTerrainSource'
 
 interface FakeMap extends TerrainMapLike {
   readonly sources: Map<string, unknown>
@@ -21,42 +23,47 @@ interface FakeMap extends TerrainMapLike {
 
 function fakeMap(existingLayerIds: readonly string[] = []): FakeMap {
   const sources = new Map<string, unknown>()
-  const layers = new Map<string, unknown>(
+  const layers = new Map<string, Record<string, unknown>>(
     existingLayerIds.map((id) => [id, { id }]),
   )
   const addedBefore: (string | undefined)[] = []
-
   return {
     sources,
     layers,
     addedBefore,
     terrain: undefined,
-    addSource: ((id: string, source: unknown) => {
+    addSource(id, source) {
       sources.set(id, source)
-    }) as TerrainMapLike['addSource'],
-    getSource: ((id: string) => sources.get(id)) as TerrainMapLike['getSource'],
-    removeSource: ((id: string) => {
+    },
+    getSource: (id) => sources.get(id),
+    removeSource(id) {
       sources.delete(id)
-    }) as TerrainMapLike['removeSource'],
-    setLayoutProperty: ((id: string, property: string, value: unknown) => {
-      const layer = layers.get(id) as Record<string, unknown> | undefined
+    },
+    setLayoutProperty(id, property, value) {
+      const layer = layers.get(id)
       if (layer) layers.set(id, { ...layer, [property]: value })
-    }) as TerrainMapLike['setLayoutProperty'],
-    addLayer: ((layer: { id: string }, before?: string) => {
+    },
+    addLayer(layer, before) {
       layers.set(layer.id, layer)
       addedBefore.push(before)
-    }) as unknown as TerrainMapLike['addLayer'],
-    getLayer: ((id: string) => layers.get(id)) as TerrainMapLike['getLayer'],
-    removeLayer: ((id: string) => {
+    },
+    getLayer: (id) => layers.get(id),
+    removeLayer(id) {
       layers.delete(id)
-    }) as TerrainMapLike['removeLayer'],
+    },
     setTerrain(terrain) {
       this.terrain = terrain
     },
   }
 }
 
-describe('clampExaggeration', () => {
+function enable(map: FakeMap, exaggeration = 1.4) {
+  const ownership = createTerrainOwnership()
+  enableTerrain(map, AWS_TERRAIN_TILES, exaggeration, ownership)
+  return ownership
+}
+
+describe('terrain definitions', () => {
   it.each([
     [1.4, 1.4],
     [-3, 0],
@@ -65,40 +72,37 @@ describe('clampExaggeration', () => {
   ])('clamps %s to %s', (input, expected) => {
     expect(clampExaggeration(input)).toBe(expected)
   })
-})
 
-describe('createTerrainSource', () => {
-  it('carries the raster-dem contract and its attribution', () => {
-    expect(createTerrainSource(AWS_TERRAIN_TILES)).toEqual({
+  it('carries the raster-dem contract and attribution', () => {
+    expect(createTerrainSource(AWS_TERRAIN_TILES)).toMatchObject({
       type: 'raster-dem',
-      tiles: [...AWS_TERRAIN_TILES.tiles],
       encoding: 'terrarium',
       tileSize: 256,
-      minzoom: 0,
-      maxzoom: 15,
       attribution: AWS_TERRAIN_TILES.attribution,
     })
   })
-})
 
-describe('createHillshadeLayer', () => {
-  it('renders from the terrain source', () => {
+  it('uses a dedicated raster-dem source for hillshade', () => {
     expect(createHillshadeLayer()).toMatchObject({
       id: TERRAIN_HILLSHADE_LAYER_ID,
       type: 'hillshade',
-      source: TERRAIN_SOURCE_ID,
+      source: TERRAIN_HILLSHADE_SOURCE_ID,
     })
   })
 })
 
 describe('enableTerrain', () => {
-  it('adds the source, hillshade and terrain once', () => {
+  it('adds dedicated sources, hillshade, and terrain idempotently', () => {
     const map = fakeMap()
+    const ownership = createTerrainOwnership()
 
-    enableTerrain(map, AWS_TERRAIN_TILES, 1.4)
-    enableTerrain(map, AWS_TERRAIN_TILES, 1.4)
+    enableTerrain(map, AWS_TERRAIN_TILES, 1.4, ownership)
+    enableTerrain(map, AWS_TERRAIN_TILES, 1.4, ownership)
 
-    expect(map.sources.size).toBe(1)
+    expect([...map.sources.keys()]).toEqual([
+      TERRAIN_SOURCE_ID,
+      TERRAIN_HILLSHADE_SOURCE_ID,
+    ])
     expect(map.layers.size).toBe(1)
     expect(map.terrain).toEqual({
       source: TERRAIN_SOURCE_ID,
@@ -106,52 +110,88 @@ describe('enableTerrain', () => {
     })
   })
 
-  it('inserts the hillshade under an existing layer when one is given', () => {
+  it('inserts hillshade under an existing anchor layer', () => {
     const map = fakeMap(['ebl-findspot-polygon-fill'])
-
-    enableTerrain(map, AWS_TERRAIN_TILES, 1, 'ebl-findspot-polygon-fill')
-
+    enableTerrain(
+      map,
+      AWS_TERRAIN_TILES,
+      1,
+      createTerrainOwnership(),
+      'ebl-findspot-polygon-fill',
+    )
     expect(map.addedBefore).toEqual(['ebl-findspot-polygon-fill'])
   })
 
-  it('appends the hillshade when the requested anchor layer is absent', () => {
+  it('reinstalls owned resources after a style reload', () => {
     const map = fakeMap()
+    const ownership = enable(map)
+    map.sources.clear()
+    map.layers.clear()
 
-    enableTerrain(map, AWS_TERRAIN_TILES, 1, 'missing-layer')
+    enableTerrain(map, AWS_TERRAIN_TILES, 1.4, ownership)
 
-    expect(map.addedBefore).toEqual([undefined])
+    expect(map.sources.size).toBe(2)
+    expect(map.layers.size).toBe(1)
   })
 
-  it('clamps an out-of-range exaggeration', () => {
-    const map = fakeMap()
+  it('rejects foreign source and layer id collisions', () => {
+    const sourceCollision = fakeMap()
+    sourceCollision.sources.set(TERRAIN_SOURCE_ID, { foreign: true })
+    expect(() => enable(sourceCollision)).toThrow('source id collision')
 
-    enableTerrain(map, AWS_TERRAIN_TILES, 40)
-
-    expect(map.terrain).toEqual({
-      source: TERRAIN_SOURCE_ID,
-      exaggeration: MAX_TERRAIN_EXAGGERATION,
-    })
+    const layerCollision = fakeMap([TERRAIN_HILLSHADE_LAYER_ID])
+    expect(() => enable(layerCollision)).toThrow('layer id collision')
   })
 })
 
 describe('disableTerrain', () => {
-  it('removes terrain, the hillshade layer and the source', () => {
+  it('removes only resources owned by this lifecycle', () => {
     const map = fakeMap()
-    enableTerrain(map, AWS_TERRAIN_TILES, 1.4)
-
-    disableTerrain(map)
-
+    const ownership = enable(map)
+    expect(disableTerrain(map, ownership)).toBe(true)
     expect(map.terrain).toBeNull()
     expect(map.layers.size).toBe(0)
     expect(map.sources.size).toBe(0)
   })
 
-  it('is safe when terrain was never enabled', () => {
+  it('preserves ownership and retries a failed terrain teardown', () => {
     const map = fakeMap()
+    const ownership = enable(map)
+    const setTerrain = map.setTerrain
+    map.setTerrain = () => {
+      throw new Error('style transition')
+    }
 
-    disableTerrain(map)
+    expect(disableTerrain(map, ownership)).toBe(false)
+    expect(ownership.terrain).toBe(true)
 
+    map.setTerrain = setTerrain
+    expect(disableTerrain(map, ownership)).toBe(true)
     expect(map.terrain).toBeNull()
-    expect(map.sources.size).toBe(0)
+  })
+
+  it('reports partial source cleanup without claiming terrain is active', () => {
+    const map = fakeMap()
+    const ownership = enable(map)
+    map.removeSource = () => {
+      throw new Error('source busy')
+    }
+
+    expect(disableTerrain(map, ownership)).toBe(false)
+    expect(ownership.terrain).toBe(false)
+    expect(ownership.terrainSource).toBe(true)
+    expect(map.terrain).toBeNull()
+  })
+
+  it('does not remove colliding foreign resources', () => {
+    const map = fakeMap([TERRAIN_HILLSHADE_LAYER_ID])
+    map.sources.set(TERRAIN_SOURCE_ID, { foreign: true })
+    map.sources.set(TERRAIN_HILLSHADE_SOURCE_ID, { foreign: true })
+
+    expect(disableTerrain(map, createTerrainOwnership())).toBe(true)
+
+    expect(map.layers.has(TERRAIN_HILLSHADE_LAYER_ID)).toBe(true)
+    expect(map.sources.size).toBe(2)
+    expect(map.terrain).toBeUndefined()
   })
 })

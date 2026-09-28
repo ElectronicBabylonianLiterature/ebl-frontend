@@ -5,12 +5,6 @@ interface Props {
   readonly label: string
   readonly onShow: () => void
 }
-
-/**
- * A compact restore control for when a feature is selected but its inspector
- * panel has been dismissed — recovers the detail view without forcing the
- * user to clear the selection just to get map space back.
- */
 export default function MapSelectionPill({
   label,
   onShow,

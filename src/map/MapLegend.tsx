@@ -3,21 +3,14 @@ import { Button } from 'react-bootstrap'
 import type {
   ChoroplethLegend,
   MapVisualizationMode,
-} from './mapChoroplethScale'
-import { mapLegendEntries } from './mapLegendEntries'
-import MapLegendList from './MapLegendList'
+} from 'map/mapChoroplethScale'
+import { mapLegendEntries } from 'map/mapLegendEntries'
+import MapLegendList from 'map/MapLegendList'
 
 interface Props {
   readonly mode: MapVisualizationMode
   readonly legend: ChoroplethLegend
 }
-
-/**
- * A small, self-contained toggle — deliberately outside the shared panel
- * model. It never competes with a tool panel for the same space, so it may
- * coexist with one open, and its contents follow whichever visualization
- * mode is active.
- */
 export default function MapLegend({ mode, legend }: Props): JSX.Element {
   const [isExpanded, setIsExpanded] = useState(false)
   const entries = useMemo(() => mapLegendEntries(mode, legend), [mode, legend])

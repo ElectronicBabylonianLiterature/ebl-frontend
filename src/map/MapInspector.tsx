@@ -1,105 +1,248 @@
-import React from 'react'
-import { ProvenanceRecord } from 'fragmentarium/domain/Provenance'
-import type { HistoricalMapOverlay } from './historicalOverlays'
-import type { MapSiteCapabilities } from './mapSiteCapabilities'
-import { matchSiteCapabilities } from './provenanceSiteMatch'
-import type { MapSelection } from './mapSelection'
-import type {
-  PolygonResearchSummary,
-  SiteResearchSummary,
-} from './mapResearchSummary'
-import type { MapResearchContext } from './mapResearchSummaryText'
-import MapInspectorArea from './MapInspectorArea'
-import MapInspectorExplorer from './MapInspectorExplorer'
-import MapInspectorSite from './MapInspectorSite'
-import { InspectorBackButton } from './MapInspectorParts'
+import React, { useState } from 'react'
+import { Link } from 'react-router-dom'
+import MapInspectorTabs, { type InspectorTab } from 'map/MapInspectorTabs'
+import MapCompletenessNote from 'map/MapCompletenessNote'
+import MapResearchSummaryActions from 'map/MapResearchSummaryActions'
+import { polygonResearchMarkdown } from 'map/mapResearchSummaryText'
+import { visualizationModeLabel } from 'map/MapVisualizationControl'
+import type { MapVisualizationMode } from 'map/mapChoroplethScale'
+import { buildFindspotFragmentSearchLink } from 'map/mapLinks'
+import {
+  locationPrecisionLabel,
+  mappingEvidenceLabel,
+  countLabel,
+} from 'map/mapResearchLabels'
+import {
+  derivePolygonResearchSummary,
+  type PolygonResearchSummary,
+} from 'map/mapResearchSummary'
+import type { ExcavationPolygon } from 'map/excavationPolygonIndex'
+import type { PolygonFindspotSummary } from 'map/findspotMapData'
+import type { FragmentMapDataStatus } from 'map/useFragmentMapData'
 
-export interface MapInspectorProps {
-  readonly capabilities: readonly MapSiteCapabilities[]
-  readonly filteredProvenances: readonly ProvenanceRecord[]
-  readonly mappedFindspotCount: number
-  readonly linkedExcavationAreaCount: number
-  readonly provenances: readonly ProvenanceRecord[]
-  readonly selectedPolygonSite: MapSiteCapabilities | undefined
-  readonly selectedPolygonSummary: PolygonResearchSummary | null
-  readonly selectedSiteSummary: SiteResearchSummary | undefined
-  readonly selection: MapSelection | null
-  readonly showExcavationAreas: boolean
-  readonly siteOverlays: readonly HistoricalMapOverlay[]
-  readonly activeOverlayIds: ReadonlySet<string>
-  readonly buildResearchContext: () => MapResearchContext
-  readonly onBrowseHistoricalMaps: (siteName: string) => void
-  readonly onClearSelection: () => void
-  readonly onCompareHistoricalMaps: () => void
-  readonly onSelectSite: (provenanceId: string) => void
-  readonly onShowExcavationAreas: () => void
-  readonly onToggleOverlay: (
-    overlay: HistoricalMapOverlay,
-    isActive: boolean,
-  ) => void
+interface Props {
+  readonly polygon: ExcavationPolygon
+  readonly summary: PolygonFindspotSummary | undefined
+  readonly siteName: string
+  readonly status: FragmentMapDataStatus
+  readonly visualizationMode: MapVisualizationMode
+  readonly siteFilter: string
+  readonly onClear: () => void
 }
 
-function SelectedShell({
-  children,
-  onClearSelection,
+function hasLoaded(status: FragmentMapDataStatus): boolean {
+  return status === 'loaded-with-mappings' || status === 'loaded-empty'
+}
+
+function linkedDataMessage(
+  status: FragmentMapDataStatus,
+  research: PolygonResearchSummary,
+): string {
+  if (status === 'loaded-with-mappings' || status === 'loaded-empty') {
+    return `${countLabel(
+      research.accessibleFragmentCount,
+      'accessible fragment',
+    )} across ${countLabel(research.mappedFindspotCount, 'findspot')}.`
+  }
+
+  return {
+    'not-configured': 'Linked fragment data is not configured for this site.',
+    loading: 'Loading linked fragment data…',
+    error: 'Linked fragment data is unavailable right now.',
+    incompatible: 'Linked fragment data is incompatible with this map.',
+  }[status]
+}
+
+function LinkedDataStatus({
+  status,
+  research,
 }: {
-  readonly children: React.ReactNode
-  readonly onClearSelection: () => void
-}): JSX.Element {
-  return (
-    <aside className="map-inspector map-inspector--selected" aria-live="polite">
-      <InspectorBackButton onClick={onClearSelection} />
-      {children}
-    </aside>
+  status: FragmentMapDataStatus
+  research: PolygonResearchSummary
+}): JSX.Element | null {
+  return hasLoaded(status) ? null : (
+    <p aria-hidden="true">{linkedDataMessage(status, research)}</p>
   )
 }
 
-export default function MapInspector(props: MapInspectorProps): JSX.Element {
-  const { selection, selectedPolygonSummary } = props
+function OverviewTab({
+  research,
+  status,
+}: {
+  research: PolygonResearchSummary
+  status: FragmentMapDataStatus
+}): JSX.Element {
+  return (
+    <>
+      <dl className="map-inspector__facts">
+        <dt>Site</dt>
+        <dd>{research.siteName}</dd>
+        <dt>Excavation area</dt>
+        <dd>{research.displayName}</dd>
+        <dt>Polygon ID</dt>
+        <dd>{research.polygonId}</dd>
+        {research.areaSquareKm !== null ? (
+          <>
+            <dt>Mapped area</dt>
+            <dd>{research.areaSquareKm.toFixed(3)} km²</dd>
+          </>
+        ) : null}
+        {hasLoaded(status) ? (
+          <>
+            <dt>Mapped findspots</dt>
+            <dd>{countLabel(research.mappedFindspotCount, 'findspot')}</dd>
+            <dt>Accessible fragments</dt>
+            <dd>{countLabel(research.accessibleFragmentCount, 'fragment')}</dd>
+          </>
+        ) : null}
+      </dl>
+      <LinkedDataStatus status={status} research={research} />
+    </>
+  )
+}
 
-  if (selection?.type === 'excavation-area' && selectedPolygonSummary) {
-    return (
-      <SelectedShell onClearSelection={props.onClearSelection}>
-        <MapInspectorArea
-          summary={selectedPolygonSummary}
-          overlays={props.siteOverlays}
-          activeOverlayIds={props.activeOverlayIds}
-          buildResearchContext={props.buildResearchContext}
-          onToggleOverlay={props.onToggleOverlay}
-          onCompareHistoricalMaps={props.onCompareHistoricalMaps}
-        />
-      </SelectedShell>
-    )
-  }
-
-  if (selection?.type === 'site') {
-    const provenance = props.provenances.find(
-      (entry) => entry.id === selection.provenanceId,
-    )
-
-    return (
-      <SelectedShell onClearSelection={props.onClearSelection}>
-        <MapInspectorSite
-          provenance={provenance}
-          site={matchSiteCapabilities(provenance, props.capabilities)}
-          siteSummary={props.selectedSiteSummary}
-          showExcavationAreas={props.showExcavationAreas}
-          buildResearchContext={props.buildResearchContext}
-          onBrowseHistoricalMaps={props.onBrowseHistoricalMaps}
-          onShowExcavationAreas={props.onShowExcavationAreas}
-        />
-      </SelectedShell>
-    )
+function EvidenceTab({
+  research,
+  status,
+}: {
+  research: PolygonResearchSummary
+  status: FragmentMapDataStatus
+}): JSX.Element {
+  if (!hasLoaded(status)) {
+    return <LinkedDataStatus status={status} research={research} />
   }
 
   return (
-    <MapInspectorExplorer
-      capabilities={props.capabilities}
-      filteredProvenances={props.filteredProvenances}
-      linkedExcavationAreaCount={props.linkedExcavationAreaCount}
-      mappedFindspotCount={props.mappedFindspotCount}
-      selectedProvenanceId={null}
-      onSelectSite={props.onSelectSite}
-    />
+    <>
+      <dl className="map-inspector__facts">
+        <dt>Mapping evidence</dt>
+        <dd>{mappingEvidenceLabel(research.mappingEvidence)}</dd>
+        <dt>Location precision</dt>
+        <dd>{locationPrecisionLabel(research.locationPrecision)}</dd>
+      </dl>
+      <MapCompletenessNote />
+    </>
+  )
+}
+
+function FindspotsTab({
+  research,
+  status,
+  expandedCount,
+  onExpand,
+}: {
+  research: PolygonResearchSummary
+  status: FragmentMapDataStatus
+  expandedCount: number
+  onExpand: () => void
+}): JSX.Element {
+  if (!hasLoaded(status)) {
+    return <LinkedDataStatus status={status} research={research} />
+  }
+  if (research.findspots.length === 0) {
+    return <p>No fragments are linked to this excavation area.</p>
+  }
+  const visible = research.findspots.slice(0, expandedCount)
+  return (
+    <>
+      <ul className="map-inspector__findspots">
+        {visible.map((findspot) => (
+          <li key={findspot.findspotId}>
+            <Link to={buildFindspotFragmentSearchLink(findspot.findspotId)}>
+              {findspot.area
+                ? `${findspot.area} — Findspot ${findspot.findspotId}`
+                : `Findspot ${findspot.findspotId}`}
+            </Link>{' '}
+            ({countLabel(findspot.accessibleFragmentCount, 'fragment')})
+          </li>
+        ))}
+      </ul>
+      {expandedCount < research.findspots.length ? (
+        <button type="button" onClick={onExpand}>
+          Show all {research.findspots.length}
+        </button>
+      ) : null}
+    </>
+  )
+}
+
+export default function MapInspector({
+  polygon,
+  summary,
+  siteName,
+  status,
+  visualizationMode,
+  siteFilter,
+  onClear,
+}: Props): JSX.Element {
+  const [expandedCount, setExpandedCount] = useState(10)
+  const research = derivePolygonResearchSummary({
+    polygonId: polygon.polygonId,
+    polygon,
+    summary,
+    siteName,
+  })
+
+  const tabs: readonly InspectorTab[] = [
+    {
+      id: 'overview',
+      label: 'Overview',
+      render: () => <OverviewTab research={research} status={status} />,
+    },
+    {
+      id: 'evidence',
+      label: 'Evidence',
+      render: () => <EvidenceTab research={research} status={status} />,
+    },
+    {
+      id: 'findspots',
+      label: 'Findspots',
+      render: () => (
+        <FindspotsTab
+          research={research}
+          status={status}
+          expandedCount={expandedCount}
+          onExpand={() => setExpandedCount(research.findspots.length)}
+        />
+      ),
+    },
+  ]
+
+  return (
+    <div className="map-inspector">
+      <header className="map-inspector__header">
+        <strong>{research.displayName}</strong>
+        <button type="button" onClick={onClear}>
+          Clear selection
+        </button>
+      </header>
+      <p
+        className="visually-hidden"
+        role="status"
+        aria-live="polite"
+        aria-atomic="true"
+      >
+        {linkedDataMessage(status, research)}
+      </p>
+      <MapInspectorTabs tabs={tabs} label="Excavation area detail" />
+      {hasLoaded(status) ? (
+        <MapResearchSummaryActions
+          title={`${research.displayName} — ${research.siteName}`}
+          selectionKey={`${research.siteId}:${research.polygonId}`}
+          buildSummary={() => {
+            const generatedAt = new Date().toISOString()
+            return {
+              generatedAt,
+              markdown: polygonResearchMarkdown(research, {
+                visualizationLabel: visualizationModeLabel(visualizationMode),
+                siteFilter,
+                shareUrl: window.location.href,
+                generatedAt,
+              }),
+            }
+          }}
+        />
+      ) : null}
+    </div>
   )
 }
