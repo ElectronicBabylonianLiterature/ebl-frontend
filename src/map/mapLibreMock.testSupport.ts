@@ -4,6 +4,7 @@ import {
   type MockEventHandler,
   type MockMapEvent,
 } from 'map/mapLibreMockEvents.testSupport'
+import { createMapLibreTestDouble } from 'map/mapLibreTestDouble.testSupport'
 export * from 'map/mapLibreMockEvents.testSupport'
 const addedLayerIds = new Set<string>()
 function rememberAddedLayer(layer: { id: string }): void {
@@ -71,6 +72,19 @@ export const mockMapInstance = {
 function eventKey(event: string, layerId?: string): string {
   return layerId ? `${event}:${layerId}` : event
 }
+
+function eventRegistration(
+  event: string,
+  layerOrCallback: string | MockEventHandler,
+  callback?: MockEventHandler,
+): { readonly key: string; readonly handler: MockEventHandler } {
+  const layerId =
+    typeof layerOrCallback === 'string' ? layerOrCallback : undefined
+  return {
+    key: eventKey(event, layerId),
+    handler: (callback ?? layerOrCallback) as MockEventHandler,
+  }
+}
 function fireMapEvent(
   event: string,
   eventPayload?: MockMapEvent | MockErrorEvent,
@@ -110,62 +124,12 @@ function rememberHandler(
   layerOrCallback: string | MockEventHandler,
   callback?: MockEventHandler,
 ): void {
-  const layerId =
-    typeof layerOrCallback === 'string' ? layerOrCallback : undefined
-  const handler = (callback ?? layerOrCallback) as MockEventHandler
-  const key = eventKey(event, layerId)
+  const { key, handler } = eventRegistration(event, layerOrCallback, callback)
   mockEventHandlers[key] = [...(mockEventHandlers[key] ?? []), handler]
   if (event === 'load' && mockLoadImmediately) {
     handler()
   }
 }
-
-class MockMap {
-  constructor() {
-    if (mockMapConstructionError) {
-      throw mockMapConstructionError
-    }
-    return mockMapInstance
-  }
-}
-
-class MockLngLatBounds {
-  private points: [number, number][] = []
-
-  extend(coordinates: [number, number]) {
-    this.points.push(coordinates)
-    mockBoundsExtend(coordinates)
-    return this
-  }
-
-  isEmpty() {
-    return this.points.length === 0
-  }
-}
-
-class MockPopup {
-  setLngLat(coordinates: [number, number]) {
-    mockSetLngLat(coordinates)
-    return this
-  }
-
-  setDOMContent(content: Node) {
-    mockSetDOMContent(content)
-    return this
-  }
-
-  setHTML(content: string) {
-    mockSetHTML(content)
-    return this
-  }
-
-  addTo(map: unknown) {
-    mockPopupAddTo(map)
-    return this
-  }
-}
-
-const NavigationControl = jest.fn()
 
 export function deferMapLoad(): void {
   mockLoadImmediately = false
@@ -175,6 +139,20 @@ export function deferMapLoad(): void {
 export function failMapConstruction(error: unknown): void {
   mockMapConstructionError = error
 }
+
+export function rejectMapAccessAfterRemoval(): void {
+  let isRemoved = false
+  mockRemove.mockImplementation(() => {
+    isRemoved = true
+  })
+  const rejectAfterRemoval = (): undefined => {
+    if (isRemoved) throw new Error('map style has been removed')
+    return undefined
+  }
+  mockGetLayer.mockImplementation(rejectAfterRemoval)
+  mockGetSource.mockImplementation(rejectAfterRemoval)
+}
+
 export function resetMapMocks(): void {
   jest.clearAllMocks()
   Object.keys(mockEventHandlers).forEach((event) => {
@@ -219,10 +197,11 @@ export function resetMapMocks(): void {
       layerOrCallback: string | MockEventHandler,
       callback?: MockEventHandler,
     ) => {
-      const layerId =
-        typeof layerOrCallback === 'string' ? layerOrCallback : undefined
-      const handler = (callback ?? layerOrCallback) as MockEventHandler
-      const key = eventKey(event, layerId)
+      const { key, handler } = eventRegistration(
+        event,
+        layerOrCallback,
+        callback,
+      )
       mockEventHandlers[key] = (mockEventHandlers[key] ?? []).filter(
         (candidate) =>
           candidate !== handler && candidate.originalHandler !== handler,
@@ -240,11 +219,14 @@ export function triggerMapEvent(
   fireMapEvent(event, eventPayload, layerId)
 }
 
-const maplibregl = {
-  Map: MockMap,
-  NavigationControl,
-  LngLatBounds: MockLngLatBounds,
-  Popup: MockPopup,
-}
+const maplibregl = createMapLibreTestDouble({
+  mapInstance: mockMapInstance,
+  constructionError: () => mockMapConstructionError,
+  boundsExtend: mockBoundsExtend,
+  setLngLat: mockSetLngLat,
+  setDOMContent: mockSetDOMContent,
+  setHTML: mockSetHTML,
+  addPopupTo: mockPopupAddTo,
+})
 
 export default maplibregl
