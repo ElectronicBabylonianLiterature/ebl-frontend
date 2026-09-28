@@ -2,7 +2,7 @@ import {
   type ChoroplethScale,
   type ChoroplethValueKey,
   SEQUENTIAL_COLORS,
-} from './mapPaintExpressions'
+} from 'map/mapPaintExpressions'
 
 export const MAP_VISUALIZATION_MODES = [
   'mapped',
@@ -31,7 +31,7 @@ export interface ChoroplethLegend {
 
 const MODE_UNITS: Readonly<Record<MapVisualizationMode, string>> = {
   mapped: 'Mapped status',
-  evidence: 'Strength of the spatial evidence',
+  evidence: 'Mapping evidence source',
   count: 'Accessible fragments',
   log: 'Accessible fragments (log scale)',
   density: 'Accessible fragments per square kilometre',
@@ -84,12 +84,6 @@ function quantile(sorted: readonly number[], fraction: number): number {
     ? sorted[lower]
     : sorted[lower] + (position - lower) * (sorted[upper] - sorted[lower])
 }
-
-/**
- * Quantile breaks keep the classes populated under sparse and skewed
- * distributions; a single extreme outlier therefore cannot collapse every
- * other polygon into one class.
- */
 function quantileBreaks(
   sorted: readonly number[],
   classCount: number,
@@ -98,11 +92,6 @@ function quantileBreaks(
     roundBreak(quantile(sorted, (index + 1) / classCount)),
   )
 }
-
-/**
- * Geometric breaks between the smallest and largest positive values, so an
- * order-of-magnitude spread stays readable.
- */
 function logarithmicBreaks(
   sorted: readonly number[],
   classCount: number,

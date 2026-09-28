@@ -1,12 +1,16 @@
 import { evaluateExpression } from 'test-support/mapExpressionEvaluator'
 import {
+  COLOR_DENSITY_UNCLASSIFIED,
   COLOR_MAPPED_FRAGMENTS,
   COLOR_MAPPED_ZERO,
   COLOR_SELECTED,
+  COLOR_UNAVAILABLE,
   COLOR_UNMAPPED,
   DASH_MAPPED,
+  DASH_UNAVAILABLE,
   DASH_UNMAPPED,
   OUTLINE_SELECTED,
+  OUTLINE_UNAVAILABLE,
   OUTLINE_UNMAPPED,
   SEQUENTIAL_COLORS,
   type ChoroplethScale,
@@ -16,7 +20,7 @@ import {
   excavationOutlineDash,
   excavationOutlineOpacity,
   excavationOutlineWidth,
-} from './mapPaintExpressions'
+} from 'map/mapPaintExpressions'
 
 const scale: ChoroplethScale = {
   valueKey: 'accessibleFragmentCount',
@@ -24,8 +28,16 @@ const scale: ChoroplethScale = {
   colors: [...SEQUENTIAL_COLORS],
 }
 
-const UNMAPPED = { findspotCount: 0, accessibleFragmentCount: 0 }
-const MAPPED_ZERO = { findspotCount: 3, accessibleFragmentCount: 0 }
+const UNMAPPED = {
+  dataAvailable: true,
+  findspotCount: 0,
+  accessibleFragmentCount: 0,
+}
+const MAPPED_ZERO = {
+  dataAvailable: true,
+  findspotCount: 3,
+  accessibleFragmentCount: 0,
+}
 
 function colorFor(
   activeScale: ChoroplethScale | null,
@@ -39,7 +51,11 @@ describe('categorical (mapped-status) mode', () => {
     expect(colorFor(null, UNMAPPED)).toBe(COLOR_UNMAPPED)
     expect(colorFor(null, MAPPED_ZERO)).toBe(COLOR_MAPPED_ZERO)
     expect(
-      colorFor(null, { findspotCount: 3, accessibleFragmentCount: 7 }),
+      colorFor(null, {
+        dataAvailable: true,
+        findspotCount: 3,
+        accessibleFragmentCount: 7,
+      }),
     ).toBe(COLOR_MAPPED_FRAGMENTS)
   })
 
@@ -49,8 +65,8 @@ describe('categorical (mapped-status) mode', () => {
     ).toBe(COLOR_SELECTED)
   })
 
-  it('treats a feature without state as unmapped', () => {
-    expect(colorFor(null, {})).toBe(COLOR_UNMAPPED)
+  it('treats a feature without state as unavailable', () => {
+    expect(colorFor(null, {})).toBe(COLOR_UNAVAILABLE)
   })
 })
 
@@ -65,7 +81,11 @@ describe('classed choropleth colour', () => {
     [900, SEQUENTIAL_COLORS[4]],
   ])('places %s in its class', (count, expected) => {
     expect(
-      colorFor(scale, { findspotCount: 1, accessibleFragmentCount: count }),
+      colorFor(scale, {
+        dataAvailable: true,
+        findspotCount: 1,
+        accessibleFragmentCount: count,
+      }),
     ).toBe(expected)
   })
 
@@ -80,6 +100,7 @@ describe('classed choropleth colour', () => {
   it('gives selection precedence over the classed ramp', () => {
     expect(
       colorFor(scale, {
+        dataAvailable: true,
         findspotCount: 1,
         accessibleFragmentCount: 900,
         selected: true,
@@ -96,12 +117,30 @@ describe('classed choropleth colour', () => {
     expect(
       evaluateExpression(excavationFillColor(densityScale), {
         featureState: {
+          dataAvailable: true,
+          densityAvailable: true,
           findspotCount: 1,
           accessibleFragmentCount: 0,
           densityPerSquareKm: 11,
         },
       }),
     ).toBe(SEQUENTIAL_COLORS[3])
+  })
+
+  it('does not report missing area as zero density', () => {
+    const densityScale: ChoroplethScale = {
+      ...scale,
+      valueKey: 'densityPerSquareKm',
+    }
+
+    expect(
+      colorFor(densityScale, {
+        dataAvailable: true,
+        densityAvailable: false,
+        findspotCount: 1,
+        accessibleFragmentCount: 4,
+      }),
+    ).toBe(COLOR_DENSITY_UNCLASSIFIED)
   })
 })
 
@@ -131,7 +170,11 @@ describe('non-colour encodings', () => {
   it('encodes the choropleth class in outline width', () => {
     const widthFor = (count: number): unknown =>
       evaluateExpression(excavationOutlineWidth(scale), {
-        featureState: { findspotCount: 1, accessibleFragmentCount: count },
+        featureState: {
+          dataAvailable: true,
+          findspotCount: 1,
+          accessibleFragmentCount: count,
+        },
       })
 
     expect(widthFor(1)).toBeCloseTo(1.2)
@@ -165,7 +208,13 @@ describe('non-colour encodings', () => {
     ).toBe(1.2)
   })
 
-  it('dashes unmapped outlines and keeps mapped outlines solid', () => {
+  it('distinguishes unavailable, unmapped, and mapped outlines', () => {
+    expect(
+      evaluateExpression(excavationOutlineDash(), { featureState: {} }),
+    ).toEqual([...DASH_UNAVAILABLE])
+    expect(
+      evaluateExpression(excavationOutlineColor(), { featureState: {} }),
+    ).toBe(OUTLINE_UNAVAILABLE)
     expect(
       evaluateExpression(excavationOutlineDash(), { featureState: UNMAPPED }),
     ).toEqual([...DASH_UNMAPPED])

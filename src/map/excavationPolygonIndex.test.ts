@@ -1,9 +1,21 @@
+import fs from 'fs'
+import path from 'path'
 import {
   EXCAVATION_POLYGON_GEOJSON_URL,
   buildExcavationPolygonIndex,
   fetchExcavationPolygonIndex,
-} from './excavationPolygonIndex'
+  findExcavationPolygon,
+  sortedExcavationPolygons,
+} from 'map/excavationPolygonIndex'
 import { polygonFeature } from 'test-support/map-fixtures'
+
+const root = path.resolve(__dirname, '../..')
+const canonicalCollection = JSON.parse(
+  fs.readFileSync(
+    path.join(root, 'public/map-data/findspots/all.geojson'),
+    'utf8',
+  ),
+) as unknown
 
 function collection(features: unknown[]): unknown {
   return { type: 'FeatureCollection', features }
@@ -40,6 +52,14 @@ describe('buildExcavationPolygonIndex', () => {
 
     expect(index.get('assur')).toHaveLength(1)
     expect(index.get('assur')?.[0].name).toBe('First')
+  })
+
+  it('rejects features from an unknown site', () => {
+    expect(
+      buildExcavationPolygonIndex(
+        collection([polygonFeature('unknown-a', 'unknown')]),
+      ).size,
+    ).toBe(0)
   })
 
   it('rejects features whose feature id does not match the canonical property', () => {
@@ -80,6 +100,22 @@ describe('buildExcavationPolygonIndex', () => {
 
     expect(index.get('assur')?.[0].bounds).toBeNull()
   })
+
+  it('finds polygons by id and sorts them by display label', () => {
+    const index = buildExcavationPolygonIndex(
+      collection([
+        polygonFeature('second', 'assur', 'Zulu'),
+        polygonFeature('first', 'uruk', 'Alpha'),
+      ]),
+    )
+
+    expect(findExcavationPolygon(index, 'second')?.name).toBe('Zulu')
+    expect(findExcavationPolygon(index, 'missing')).toBeNull()
+    expect(findExcavationPolygon(index, null)).toBeNull()
+    expect(
+      sortedExcavationPolygons(index).map(({ polygonId }) => polygonId),
+    ).toEqual(['first', 'second'])
+  })
 })
 
 describe('fetchExcavationPolygonIndex', () => {
@@ -90,17 +126,37 @@ describe('fetchExcavationPolygonIndex', () => {
     global.fetch = fetchMock as unknown as typeof fetch
   })
 
-  it('requests the canonical asset and builds the index', async () => {
+  it('requests the complete canonical asset and builds the index', async () => {
     fetchMock.mockResolvedValue({
       ok: true,
-      json: () =>
-        Promise.resolve(collection([polygonFeature('assur-a', 'assur')])),
+      json: () => Promise.resolve(canonicalCollection),
     })
 
     const index = await fetchExcavationPolygonIndex()
 
     expect(fetchMock).toHaveBeenCalledWith(EXCAVATION_POLYGON_GEOJSON_URL)
-    expect(index.get('assur')).toHaveLength(1)
+    expect(index.get('assur')).toHaveLength(134)
+    expect(index.get('kalhu')).toHaveLength(12)
+    expect(index.get('nippur')).toHaveLength(20)
+    expect(index.get('uruk')).toHaveLength(128)
+  })
+
+  it.each([
+    ['a malformed payload', {}],
+    ['an empty collection', collection([])],
+    [
+      'an incomplete collection',
+      collection([polygonFeature('assur-a', 'assur')]),
+    ],
+  ])('rejects HTTP-200 %s', async (_label, payload) => {
+    fetchMock.mockResolvedValue({
+      ok: true,
+      json: () => Promise.resolve(payload),
+    })
+
+    await expect(fetchExcavationPolygonIndex()).rejects.toThrow(
+      'Excavation polygon asset',
+    )
   })
 
   it('rejects when the asset is unavailable', async () => {

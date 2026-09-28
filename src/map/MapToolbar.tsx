@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react'
 import { Button } from 'react-bootstrap'
-import type { ActiveMapPanel, MapPanelId } from './mapPanel'
+import type { ActiveMapPanel, MapPanelId } from 'map/mapPanel'
 
 export interface MapPanelDefinition {
   readonly id: MapPanelId
@@ -16,12 +16,6 @@ interface Props {
   readonly active: ActiveMapPanel
   readonly onToggle: (panel: MapPanelId) => void
 }
-
-/**
- * The one row of buttons governing the single shared panel drawer. Each
- * button's own DOM node is what focus returns to once its panel closes, so
- * the drawer can send focus back here without the toolbar tracking it itself.
- */
 export default function MapToolbar({
   panels,
   active,
@@ -29,15 +23,19 @@ export default function MapToolbar({
 }: Props): JSX.Element | null {
   const buttonRefs = useRef(new Map<MapPanelId, HTMLButtonElement>())
   const previousActiveRef = useRef<ActiveMapPanel>(active)
+  const supported = panels.filter((panel) => panel.isSupported)
 
   useEffect(() => {
     if (previousActiveRef.current !== null && active === null) {
-      buttonRefs.current.get(previousActiveRef.current)?.focus()
+      const previousButton = buttonRefs.current.get(previousActiveRef.current)
+      if (previousButton && document.contains(previousButton)) {
+        previousButton.focus()
+      } else {
+        buttonRefs.current.get(supported[0]?.id)?.focus()
+      }
     }
     previousActiveRef.current = active
-  }, [active])
-
-  const supported = panels.filter((panel) => panel.isSupported)
+  }, [active, supported])
   if (supported.length === 0) return null
 
   return (

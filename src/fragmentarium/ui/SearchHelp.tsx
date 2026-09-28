@@ -2,7 +2,7 @@ import React from 'react'
 import _ from 'lodash'
 import { Popover, Col } from 'react-bootstrap'
 import HelpTrigger from 'common/ui/HelpTrigger'
-import { helpColSize } from './SearchForm'
+import { helpColSize } from 'fragmentarium/ui/search/searchFormLayout'
 
 interface HelpPopoverProps {
   title: string

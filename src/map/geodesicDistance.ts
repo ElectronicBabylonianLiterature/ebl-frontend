@@ -1,5 +1,5 @@
 import type { Position } from 'geojson'
-import { EARTH_RADIUS_METRES } from './geodesicArea'
+import { EARTH_RADIUS_METRES } from 'map/geodesicArea'
 
 function toRadians(degrees: number): number {
   return (degrees * Math.PI) / 180
@@ -13,11 +13,6 @@ function isPosition(value: unknown): value is Position {
     Number.isFinite(value[1])
   )
 }
-
-/**
- * Great-circle distance on the same sphere used by `geodesicArea`, so distance
- * and area measurements stay mutually consistent.
- */
 export function geodesicDistanceMetres(
   from: Position,
   to: Position,

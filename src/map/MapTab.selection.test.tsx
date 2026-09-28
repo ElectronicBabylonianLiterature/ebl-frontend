@@ -1,239 +1,241 @@
-import { act, screen } from '@testing-library/react'
+import fs from 'fs'
+import path from 'path'
+import { act, screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { lastMapMock, resetMapLibreMock } from '__mocks__/maplibre-gl'
-import type { MapMock } from '__mocks__/maplibre-gl'
-import { renderMapTab } from 'test-support/map-render'
-import { findspotMapData, provenanceRecord } from 'test-support/map-fixtures'
+import Bluebird from 'bluebird'
+import fetchMock from 'jest-fetch-mock'
+import { FindspotService } from 'fragmentarium/application/FindspotService'
 import {
-  excavationAreaFillLayer,
-  unclusteredLayer,
-  EXCAVATION_AREAS_SOURCE_ID,
-  SOURCE_ID,
-} from './mapLayers'
-import { buildFindspotFragmentSearchLink } from './mapLinks'
+  makeFragmentService,
+  makeProvenance,
+  mockAddLayer,
+  mockQueryRenderedFeatures,
+  mockSetLayoutProperty,
+  mockSetPadding,
+  renderMapTab,
+  resetMapMocks,
+  triggerMapEvent,
+} from 'map/MapTab.testSupport'
+import {
+  EXCAVATION_AREA_FILL_LAYER_ID,
+  EXCAVATION_AREA_SELECTED_LAYER_ID,
+} from 'map/mapExcavationLayers'
+import { findspotMapDataDto } from 'test-support/map-fixtures'
 
-const babylon = provenanceRecord()
+jest.mock('maplibre-gl')
+jest.mock('map/useElementSize', () => () => ({ width: 320, height: 200 }))
 
-beforeEach(() => {
-  resetMapLibreMock()
-  global.fetch = jest.fn().mockResolvedValue({
-    ok: true,
-    json: () => Promise.resolve({ type: 'FeatureCollection', features: [] }),
-  }) as unknown as typeof fetch
-})
+const POLYGON_ID = 'assur-bb6i-3d76dc1e02af'
+const CANONICAL_POLYGON_ASSET = fs.readFileSync(
+  path.resolve(__dirname, '../../public/map-data/findspots/all.geojson'),
+  'utf8',
+)
 
-async function mountMapTab(mapData = [findspotMapData()]): Promise<MapMock> {
-  renderMapTab({ provenances: [babylon], mapData })
-  await screen.findByLabelText('Findspot map')
-  await act(async () => {
-    await Promise.resolve()
-  })
-  act(() => lastMapMock().emit('load'))
-  return lastMapMock()
+function makeFindspotService(): FindspotService {
+  return {
+    fetchMapData: jest.fn((siteId: string) =>
+      Bluebird.resolve(
+        siteId === 'assur'
+          ? [
+              findspotMapDataDto({
+                findspotId: 7,
+                polygonIds: [POLYGON_ID],
+                accessibleFragmentCount: 3,
+              }),
+            ]
+          : [],
+      ),
+    ),
+  } as unknown as FindspotService
 }
 
-function clickAt(mapMock: MapMock): void {
-  act(() => mapMock.emit('click', { point: { x: 5, y: 5 } }))
-}
+describe('MapTab excavation selection', () => {
+  beforeEach(() => {
+    resetMapMocks()
+    fetchMock.resetMocks()
+    fetchMock.mockResponse(CANONICAL_POLYGON_ASSET)
+  })
 
-describe('map selection', () => {
-  it('selects a site from the map and shows it in the inspector', async () => {
-    const mapMock = await mountMapTab()
-    mapMock.setRenderedFeatures((layers) =>
-      layers.includes(unclusteredLayer.id)
-        ? [
-            {
-              type: 'Feature',
-              geometry: { type: 'Point', coordinates: [44.42, 32.542] },
-              properties: { id: 'babylon', name: 'Babylon' },
-            },
-          ]
-        : [],
+  it('preserves a deep-link selection when the polygon index is unavailable', async () => {
+    fetchMock.resetMocks()
+    fetchMock.mockRejectOnce(new Error('asset offline'))
+    renderMapTab(
+      makeFragmentService([makeProvenance()]),
+      '/tools/map?mv=1&selected=area%3A' + POLYGON_ID,
+      makeFindspotService(),
     )
 
-    clickAt(mapMock)
-
     expect(
-      await screen.findByRole('heading', { name: 'Babylon' }),
+      await screen.findByText('Excavation areas are unavailable.'),
     ).toBeInTheDocument()
-    expect(
-      mapMock.getFeatureState({ source: SOURCE_ID, id: 'babylon' }),
-    ).toEqual({
-      selected: true,
-    })
+    expect(screen.getByTestId('current-location')).toHaveTextContent(
+      'selected=area%3A' + POLYGON_ID,
+    )
   })
 
-  it('selects an excavation area and links to its findspot fragments', async () => {
-    const mapMock = await mountMapTab()
-    mapMock.setRenderedFeatures((layers) =>
-      layers.includes(excavationAreaFillLayer.id)
-        ? [
-            {
-              type: 'Feature',
-              geometry: {
-                type: 'Polygon',
-                coordinates: [
-                  [
-                    [43.25, 35.45],
-                    [43.26, 35.45],
-                    [43.26, 35.46],
-                    [43.25, 35.45],
-                  ],
-                ],
-              },
-              properties: { id: 'assur-area-a-checksum', name: 'Area A' },
-            },
-          ]
-        : [],
+  it('clears a stale URL selection after loading the canonical index', async () => {
+    renderMapTab(
+      makeFragmentService([makeProvenance()]),
+      '/tools/map?mv=1&selected=area%3Aunknown-polygon',
+      makeFindspotService(),
     )
 
-    clickAt(mapMock)
-
-    expect(
-      await screen.findByRole('heading', { name: 'Area A' }),
-    ).toBeInTheDocument()
-    await userEvent.click(screen.getByRole('tab', { name: 'Findspots' }))
-    expect(screen.getByText('Findspot 123')).toBeInTheDocument()
-    expect(screen.getByText('4 accessible fragments')).toBeInTheDocument()
-    expect(
-      screen.getByRole('link', { name: /View fragments/ }),
-    ).toHaveAttribute('href', buildFindspotFragmentSearchLink(123))
-    expect(
-      mapMock.getFeatureState({
-        source: EXCAVATION_AREAS_SOURCE_ID,
-        id: 'assur-area-a-checksum',
-      }),
-    ).toEqual({
-      accessibleFragmentCount: 4,
-      findspotCount: 1,
-      evidenceCode: 1,
-      selected: true,
-    })
-  })
-
-  it('takes two Escapes to close the inspector then clear the selection', async () => {
-    const mapMock = await mountMapTab()
-    mapMock.setRenderedFeatures((layers) =>
-      layers.includes(unclusteredLayer.id)
-        ? [
-            {
-              type: 'Feature',
-              geometry: { type: 'Point', coordinates: [44.42, 32.542] },
-              properties: { id: 'babylon', name: 'Babylon' },
-            },
-          ]
-        : [],
+    await waitFor(() =>
+      expect(screen.getByTestId('current-location')).not.toHaveTextContent(
+        'selected=',
+      ),
     )
-    clickAt(mapMock)
-    await screen.findByRole('heading', { name: 'Babylon' })
-
-    await userEvent.keyboard('{Escape}')
-
     expect(
-      screen.queryByRole('heading', { name: 'Babylon' }),
+      screen.queryByRole('region', { name: 'Selected excavation area' }),
     ).not.toBeInTheDocument()
-    expect(
-      mapMock.getFeatureState({ source: SOURCE_ID, id: 'babylon' }),
-    ).toEqual({ selected: true })
-
-    await userEvent.keyboard('{Escape}')
-
-    expect(
-      mapMock.getFeatureState({ source: SOURCE_ID, id: 'babylon' }),
-    ).toEqual({ selected: false })
   })
 
-  it('resets the view, closing the panel and re-centring the camera', async () => {
-    const mapMock = await mountMapTab()
-    mapMock.setRenderedFeatures((layers) =>
-      layers.includes(unclusteredLayer.id)
-        ? [
-            {
-              type: 'Feature',
-              geometry: { type: 'Point', coordinates: [44.42, 32.542] },
-              properties: { id: 'babylon', name: 'Babylon' },
-            },
-          ]
-        : [],
+  it('stores a canonical click, highlights it, and opens one evidence inspector', async () => {
+    renderMapTab(
+      makeFragmentService([makeProvenance()]),
+      '/tools/map?mv=1&areas=1',
+      makeFindspotService(),
     )
-    clickAt(mapMock)
-    await screen.findByRole('heading', { name: 'Babylon' })
 
-    await userEvent.click(screen.getByRole('button', { name: 'Reset view' }))
+    await waitFor(() =>
+      expect(mockAddLayer).toHaveBeenCalledWith(
+        expect.objectContaining({ id: EXCAVATION_AREA_FILL_LAYER_ID }),
+      ),
+    )
+    await waitFor(() =>
+      expect(mockSetLayoutProperty).toHaveBeenCalledWith(
+        EXCAVATION_AREA_FILL_LAYER_ID,
+        'visibility',
+        'visible',
+      ),
+    )
+    mockQueryRenderedFeatures.mockReturnValue([{ id: POLYGON_ID }])
 
-    expect(
-      screen.queryByRole('heading', { name: 'Babylon' }),
-    ).not.toBeInTheDocument()
-    expect(mapMock.easeTo).toHaveBeenLastCalledWith({
-      center: [44.4, 33.0],
-      zoom: 5,
+    act(() => {
+      triggerMapEvent(
+        'click',
+        { point: { x: 10, y: 20 } },
+        EXCAVATION_AREA_FILL_LAYER_ID,
+      )
     })
-  })
 
-  it('offers a pill to restore the inspector once a different panel is open', async () => {
-    const mapMock = await mountMapTab()
-    mapMock.setRenderedFeatures((layers) =>
-      layers.includes(unclusteredLayer.id)
-        ? [
-            {
-              type: 'Feature',
-              geometry: { type: 'Point', coordinates: [44.42, 32.542] },
-              properties: { id: 'babylon', name: 'Babylon' },
-            },
-          ]
-        : [],
+    await waitFor(() =>
+      expect(screen.getByTestId('current-location')).toHaveTextContent(
+        `selected=area%3A${POLYGON_ID}`,
+      ),
     )
-    clickAt(mapMock)
-    await screen.findByRole('heading', { name: 'Babylon' })
-
+    expect(mockSetLayoutProperty).toHaveBeenCalled()
+    expect(
+      await screen.findAllByRole('region', { name: 'Selected area' }),
+    ).toHaveLength(1)
     expect(
       screen.queryByRole('button', { name: 'Show selected area' }),
     ).not.toBeInTheDocument()
-
-    await userEvent.click(screen.getByRole('button', { name: 'Export' }))
-
     expect(
-      screen.queryByRole('heading', { name: 'Babylon' }),
-    ).not.toBeInTheDocument()
-    const pill = screen.getByRole('button', { name: 'Show selected area' })
-
-    await userEvent.click(pill)
-
-    expect(
-      await screen.findByRole('heading', { name: 'Babylon' }),
-    ).toBeInTheDocument()
-    expect(
-      screen.queryByRole('button', { name: 'Show selected area' }),
-    ).not.toBeInTheDocument()
-  })
-})
-
-describe('keyboard-accessible explorer', () => {
-  it('selects a site from the semantic site list', async () => {
-    await mountMapTab()
-
-    await userEvent.click(screen.getByRole('button', { name: /Babylon/ }))
-
-    expect(
-      await screen.findByRole('heading', { name: 'Babylon' }),
-    ).toBeInTheDocument()
-    expect(lastMapMock().easeTo).toHaveBeenCalledWith({
-      center: [44.42, 32.542],
-      zoom: 9,
-    })
-  })
-
-  it('returns to the explorer from a selected site', async () => {
-    await mountMapTab()
-    await userEvent.click(screen.getByRole('button', { name: /Babylon/ }))
-    await screen.findByRole('heading', { name: 'Babylon' })
+      within(screen.getByRole('region', { name: 'Selected area' })).getByRole(
+        'status',
+      ),
+    ).toHaveTextContent('3 accessible fragments across 1 findspot.')
 
     await userEvent.click(
-      screen.getByRole('button', { name: 'Back to explore' }),
+      screen.getByRole('button', { name: 'Clear selection' }),
     )
 
     expect(
-      await screen.findByRole('heading', { name: 'Explore the ancient world' }),
+      screen.queryByRole('region', { name: 'Selected area' }),
+    ).not.toBeInTheDocument()
+    await waitFor(() =>
+      expect(
+        screen.getByRole('button', { name: 'Visualization' }),
+      ).toHaveFocus(),
+    )
+    expect(screen.getByTestId('current-location')).not.toHaveTextContent(
+      'selected=',
+    )
+    expect(mockQueryRenderedFeatures).toHaveBeenCalledWith(
+      { x: 10, y: 20 },
+      { layers: [EXCAVATION_AREA_FILL_LAYER_ID] },
+    )
+    expect(mockAddLayer).toHaveBeenCalledWith(
+      expect.objectContaining({ id: EXCAVATION_AREA_SELECTED_LAYER_ID }),
+    )
+  })
+  it('keeps a selected-site error distinct while another site loads', async () => {
+    const fetchMapData = jest.fn((siteId: string) =>
+      siteId === 'assur'
+        ? Bluebird.reject(new Error('Assur API unavailable'))
+        : Bluebird.resolve([]),
+    )
+    renderMapTab(
+      makeFragmentService([makeProvenance()]),
+      '/tools/map?mv=1&areas=1',
+      { fetchMapData } as unknown as FindspotService,
+    )
+
+    await waitFor(() =>
+      expect(mockAddLayer).toHaveBeenCalledWith(
+        expect.objectContaining({ id: EXCAVATION_AREA_FILL_LAYER_ID }),
+      ),
+    )
+    mockQueryRenderedFeatures.mockReturnValue([{ id: POLYGON_ID }])
+
+    act(() => {
+      triggerMapEvent(
+        'click',
+        { point: { x: 10, y: 20 } },
+        EXCAVATION_AREA_FILL_LAYER_ID,
+      )
+    })
+
+    const inspector = within(
+      await screen.findByRole('region', { name: 'Selected area' }),
+    )
+    expect(await inspector.findByRole('status')).toHaveTextContent(
+      'Linked fragment data is unavailable right now.',
+    )
+    expect(inspector.queryByText('Mapped findspots')).not.toBeInTheDocument()
+    expect(fetchMapData).toHaveBeenCalledWith('uruk')
+  })
+  it('closes and unpads the inspector after external navigation clears selection', async () => {
+    renderMapTab(
+      makeFragmentService([makeProvenance()]),
+      '/tools/map?mv=1&areas=1&selected=area%3A' + POLYGON_ID,
+      makeFindspotService(),
+    )
+
+    await userEvent.click(
+      await screen.findByRole('button', { name: 'Show selected area' }),
+    )
+    expect(
+      screen.getByRole('region', { name: 'Selected area' }),
     ).toBeInTheDocument()
+    await waitFor(() =>
+      expect(mockSetPadding).toHaveBeenLastCalledWith({
+        top: 0,
+        right: 320,
+        bottom: 0,
+        left: 0,
+      }),
+    )
+
+    await userEvent.click(
+      screen.getByRole('button', { name: 'Navigate without selection' }),
+    )
+
+    await waitFor(() =>
+      expect(
+        screen.queryByRole('region', { name: 'Selected area' }),
+      ).not.toBeInTheDocument(),
+    )
+    expect(screen.getByTestId('current-location')).not.toHaveTextContent(
+      'selected=',
+    )
+    expect(screen.getByRole('button', { name: 'Visualization' })).toHaveFocus()
+    expect(mockSetPadding).toHaveBeenLastCalledWith({
+      top: 0,
+      right: 0,
+      bottom: 0,
+      left: 0,
+    })
   })
 })

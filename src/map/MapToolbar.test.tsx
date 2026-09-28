@@ -1,13 +1,13 @@
 import React from 'react'
 import { render, screen } from '@testing-library/react'
-import MapToolbar, { type MapPanelDefinition } from './MapToolbar'
+import MapToolbar, { type MapPanelDefinition } from 'map/MapToolbar'
 
 function panel(
   overrides: Partial<MapPanelDefinition> = {},
 ): MapPanelDefinition {
   return {
-    id: 'export',
-    label: 'Export',
+    id: 'layers',
+    label: 'Map layers',
     isSupported: true,
     render: () => <p>content</p>,
     ...overrides,
@@ -27,25 +27,45 @@ describe('MapToolbar', () => {
     expect(container).toBeEmptyDOMElement()
   })
 
-  it('marks the active button as expanded and the rest as not', () => {
+  it('marks the active button as expanded', () => {
     render(
+      <MapToolbar panels={[panel()]} active="layers" onToggle={jest.fn()} />,
+    )
+
+    expect(screen.getByRole('button', { name: 'Map layers' })).toHaveAttribute(
+      'aria-expanded',
+      'true',
+    )
+  })
+
+  it('calls onToggle with the panel id when clicked', () => {
+    const onToggle = jest.fn()
+    render(<MapToolbar panels={[panel()]} active={null} onToggle={onToggle} />)
+
+    screen.getByRole('button', { name: 'Map layers' }).click()
+    expect(onToggle).toHaveBeenCalledWith('layers')
+  })
+  it('focuses a remaining tool when the closed panel becomes unsupported', () => {
+    const inspector = panel({
+      id: 'inspector',
+      label: 'Selected area',
+    })
+    const { rerender } = render(
       <MapToolbar
-        panels={[
-          panel({ id: 'export', label: 'Export' }),
-          panel({ id: 'terrain', label: 'Terrain' }),
-        ]}
-        active="export"
+        panels={[panel(), inspector]}
+        active="inspector"
         onToggle={jest.fn()}
       />,
     )
 
-    expect(screen.getByRole('button', { name: 'Export' })).toHaveAttribute(
-      'aria-expanded',
-      'true',
+    rerender(
+      <MapToolbar
+        panels={[panel(), { ...inspector, isSupported: false }]}
+        active={null}
+        onToggle={jest.fn()}
+      />,
     )
-    expect(screen.getByRole('button', { name: 'Terrain' })).toHaveAttribute(
-      'aria-expanded',
-      'false',
-    )
+
+    expect(screen.getByRole('button', { name: 'Map layers' })).toHaveFocus()
   })
 })

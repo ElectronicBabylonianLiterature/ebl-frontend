@@ -1,12 +1,13 @@
 import type { Position } from 'geojson'
-import { geodesicAreaSquareMetres } from './geodesicArea'
-import { geodesicPathLengthMetres } from './geodesicDistance'
+import { geodesicAreaSquareMetres } from 'map/geodesicArea'
+import { geodesicPathLengthMetres } from 'map/geodesicDistance'
 
 export type MeasurementMode = 'distance' | 'area'
 export type MeasurementUnits = 'metric' | 'imperial'
 
 export const MEASUREMENT_DISCLAIMER =
   'Temporary map measurement. Not an archaeological annotation and not stored with any record.'
+export const MAX_MEASUREMENT_POINTS = 100
 
 const FEET_PER_METRE = 3.280839895013123
 const SQUARE_FEET_PER_SQUARE_METRE = 10.763910416709722
@@ -53,12 +54,18 @@ function formatArea(squareMetres: number, units: MeasurementUnits): string {
     : `${formatNumber(squareMetres / 1_000_000, 3)} km²`
 }
 
-function closedRing(positions: readonly Position[]): Position[] {
-  const [first] = positions
-  const last = positions[positions.length - 1]
+export function measurementPathPositions(
+  mode: MeasurementMode,
+  positions: readonly Position[],
+): Position[] {
+  const path = positions.map((position) => [...position])
+  if (mode !== 'area' || path.length < MINIMUM_AREA_VERTICES) return path
+
+  const [first] = path
+  const last = path[path.length - 1]
   return first[0] === last[0] && first[1] === last[1]
-    ? [...positions]
-    : [...positions, first]
+    ? path
+    : [...path, [...first]]
 }
 
 function measureArea(positions: readonly Position[]): number | null {
@@ -66,8 +73,23 @@ function measureArea(positions: readonly Position[]): number | null {
     ? null
     : geodesicAreaSquareMetres({
         type: 'Polygon',
-        coordinates: [closedRing(positions)],
+        coordinates: [measurementPathPositions('area', positions)],
       })
+}
+
+function pendingLabel(mode: MeasurementMode, vertexCount: number): string {
+  const required = mode === 'distance' ? 2 : MINIMUM_AREA_VERTICES
+  const outstanding = required - vertexCount
+
+  if (vertexCount === 0) {
+    return `Select points on the map to measure ${
+      mode === 'distance' ? 'a distance' : 'an area'
+    }.`
+  }
+
+  return outstanding > 0
+    ? `Add ${outstanding} more point${outstanding === 1 ? '' : 's'}.`
+    : 'These points do not enclose a measurable value.'
 }
 
 export function measure(
@@ -91,17 +113,4 @@ export function measure(
           ? formatDistance(valueInBaseUnits, units)
           : formatArea(valueInBaseUnits, units),
   }
-}
-
-function pendingLabel(mode: MeasurementMode, vertexCount: number): string {
-  const required = mode === 'distance' ? 2 : MINIMUM_AREA_VERTICES
-  const outstanding = required - vertexCount
-
-  if (vertexCount === 0) {
-    return `Select points on the map to measure ${mode === 'distance' ? 'a distance' : 'an area'}.`
-  }
-
-  return outstanding > 0
-    ? `Add ${outstanding} more point${outstanding === 1 ? '' : 's'}.`
-    : 'These points do not enclose a measurable value.'
 }
