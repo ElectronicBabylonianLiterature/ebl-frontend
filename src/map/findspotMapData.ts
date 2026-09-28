@@ -55,6 +55,23 @@ function optionalString(value: unknown): string | null | undefined {
     : undefined
 }
 
+function isNonNegativeSafeInteger(value: unknown): value is number {
+  return typeof value === 'number' && Number.isSafeInteger(value) && value >= 0
+}
+
+function isNonEmptyString(value: unknown): value is string {
+  return typeof value === 'string' && value.trim() !== ''
+}
+
+function hasValidPolygonIds(value: unknown): value is string[] {
+  return (
+    Array.isArray(value) &&
+    value.length > 0 &&
+    value.every(isNonEmptyString) &&
+    new Set(value).size === value.length
+  )
+}
+
 export function sanitizeFindspotMapData(
   value: unknown,
 ): FindspotMapData | null {
@@ -71,55 +88,30 @@ export function sanitizeFindspotMapData(
   const building = optionalString(dto.building)
   const room = optionalString(dto.room)
 
-  if (
-    typeof findspotId !== 'number' ||
-    !Number.isSafeInteger(findspotId) ||
-    findspotId < 0
-  ) {
-    return null
-  }
-  if (
-    typeof accessibleFragmentCount !== 'number' ||
-    !Number.isSafeInteger(accessibleFragmentCount) ||
-    accessibleFragmentCount < 0
-  ) {
-    return null
-  }
-  if (
-    typeof siteId !== 'string' ||
-    siteId.trim() === '' ||
-    typeof siteName !== 'string' ||
-    siteName.trim() === ''
-  ) {
-    return null
-  }
-  if (
-    !Array.isArray(polygonIds) ||
-    polygonIds.length === 0 ||
-    polygonIds.some((id) => typeof id !== 'string' || id.trim() === '')
-  ) {
-    return null
-  }
-  if (new Set(polygonIds).size !== polygonIds.length) return null
-  if (!isLocationPrecision(dto.locationPrecision)) return null
-  if (!isMatchMethod(dto.matchMethod)) return null
-  if (
-    sector === undefined ||
-    area === undefined ||
-    building === undefined ||
-    room === undefined
-  ) {
-    return null
-  }
+  const requiredValuesAreValid = [
+    isNonNegativeSafeInteger(findspotId),
+    isNonNegativeSafeInteger(accessibleFragmentCount),
+    isNonEmptyString(siteId),
+    isNonEmptyString(siteName),
+    hasValidPolygonIds(polygonIds),
+    isLocationPrecision(dto.locationPrecision),
+    isMatchMethod(dto.matchMethod),
+    sector !== undefined,
+    area !== undefined,
+    building !== undefined,
+    room !== undefined,
+  ].every(Boolean)
+
+  if (!requiredValuesAreValid) return null
 
   return {
-    findspotId,
-    siteId,
-    siteName,
-    polygonIds,
-    accessibleFragmentCount,
-    locationPrecision: dto.locationPrecision,
-    matchMethod: dto.matchMethod,
+    findspotId: findspotId as number,
+    siteId: siteId as string,
+    siteName: siteName as string,
+    polygonIds: polygonIds as string[],
+    accessibleFragmentCount: accessibleFragmentCount as number,
+    locationPrecision: dto.locationPrecision as LocationPrecision,
+    matchMethod: dto.matchMethod as MatchMethod,
     sector,
     area,
     building,
