@@ -39,15 +39,14 @@ export default function useMapSpatialSearch(
   fragmentMapData: FragmentMapDataState,
 ): SpatialSearchController {
   const drawing = useSpatialSearchDrawing(mapRef, isActive)
-  useSpatialSearchInteraction(
-    mapRef,
+  useSpatialSearchInteraction(mapRef, {
     isActive,
-    drawing.refs,
-    drawing.drawStart,
-    drawing.shape,
-    drawing.addCorner,
-    drawing.clear,
-  )
+    refs: drawing.refs,
+    drawStart: drawing.drawStart,
+    shape: drawing.shape,
+    addCorner: drawing.addCorner,
+    clear: drawing.clear,
+  })
 
   const data = useMemo<SpatialSearchData>(
     () => ({
