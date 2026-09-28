@@ -1,125 +1,87 @@
-import React from 'react'
+import React, { useCallback, useMemo, useRef, useState } from 'react'
 import { Alert } from 'react-bootstrap'
 import 'maplibre-gl/dist/maplibre-gl.css'
 import FragmentService from 'fragmentarium/application/FragmentService'
-import { FindspotService } from 'fragmentarium/application/FindspotService'
 import Spinner from 'common/ui/Spinner'
-import MapExperienceHeader from './MapExperienceHeader'
-import MapPresentationBar from './MapPresentationBar'
-import Map3dTourControls from './Map3dTourControls'
-import { analyticalHeightDisclaimer } from './map3dLabels'
-import MapStage from './MapStage'
-import MapPanelDock from './MapPanelDock'
-import MapSelectionPill from './MapSelectionPill'
-import useMapTabState from './useMapTabState'
-import './MapTab.sass'
+import { ProvenanceRecord } from 'fragmentarium/domain/Provenance'
+import useFindspotMap from 'map/useFindspotMap'
+import useMapSourceData from 'map/useMapSourceData'
+import useProvenances from 'map/useProvenances'
+import useMapUrlState from 'map/useMapUrlState'
+import MapStage from 'map/MapStage'
+import MapShareLink from 'map/MapShareLink'
+import FindspotFilterInput from 'map/FindspotFilterInput'
+import { FindspotEmptyState, FindspotSearchList } from 'map/FindspotResults'
+import { filterProvenances } from 'map/findspotFilter'
+import 'map/MapTab.sass'
 
 interface Props {
-  findspotService: FindspotService
   fragmentService: FragmentService
 }
 
-export default function MapTab({
-  findspotService,
-  fragmentService,
-}: Props): JSX.Element {
-  const state = useMapTabState(findspotService, fragmentService)
-  const {
-    experience,
-    filteredProvenances,
-    mapPanel,
-    presentation,
-    research,
-    siteData,
-    visualization,
-  } = state
-  const isPresenting = presentation.isActive
+function LoadedMapTab({
+  provenances,
+}: {
+  provenances: readonly ProvenanceRecord[]
+}): JSX.Element {
+  const mapContainer = useRef<HTMLDivElement>(null)
+  const [mapBackgroundError, setMapBackgroundError] = useState(false)
+  const { state, update } = useMapUrlState()
+  const filter = state.filter
+  const setFilter = useCallback(
+    (nextFilter: string) => update({ filter: nextFilter }),
+    [update],
+  )
 
-  if (siteData.provenanceError) {
-    return (
-      <Alert variant="danger">
-        Failed to load map data: {siteData.provenanceError}
-      </Alert>
-    )
+  const filteredProvenances = useMemo(
+    () => filterProvenances(provenances, filter),
+    [provenances, filter],
+  )
+  const handleMapBackgroundErrorChange = useCallback((hasError: boolean) => {
+    setMapBackgroundError(hasError)
+  }, [])
+  const mapRef = useFindspotMap(
+    mapContainer,
+    filteredProvenances,
+    handleMapBackgroundErrorChange,
+  )
+  useMapSourceData(mapRef, filteredProvenances)
+
+  return (
+    <div className="map-tab">
+      <div className="map-tab__search mb-3">
+        <FindspotFilterInput
+          provenances={provenances}
+          filter={filter}
+          onFilterChange={setFilter}
+        />
+        <MapShareLink />
+      </div>
+      <p id="findspot-map-description" className="map-tab__description">
+        Filter findspots by name. Matching fragment search links are available
+        below the map.
+      </p>
+      <FindspotEmptyState provenances={filteredProvenances} filter={filter} />
+      <MapStage
+        containerRef={mapContainer}
+        isBackgroundUnavailable={mapBackgroundError}
+        describedById="findspot-map-description"
+      />
+      <FindspotSearchList provenances={filteredProvenances} />
+    </div>
+  )
+}
+
+export default function MapTab({ fragmentService }: Props): JSX.Element {
+  const { provenances, error } = useProvenances(fragmentService)
+
+  if (error) {
+    return <Alert variant="danger">Failed to load map data: {error}</Alert>
   }
 
-  if (!siteData.provenances) {
+  if (provenances === null) {
     return <Spinner>Loading map data...</Spinner>
   }
 
-  const selectionTitle =
-    research.selectedPolygonSummary?.displayName ??
-    research.selectedSiteSummary?.siteName ??
-    null
-
-  return (
-    <div
-      className={`map-tab map-experience${
-        isPresenting ? ' map-experience--presenting' : ''
-      }`}
-    >
-      {isPresenting ? (
-        <>
-          <MapPresentationBar
-            title={selectionTitle}
-            onExit={presentation.exit}
-          />
-          <Map3dTourControls tour={state.threeD.tour} isCompact />
-        </>
-      ) : (
-        <MapExperienceHeader
-          siteFilter={experience.siteFilter}
-          visibleSiteCount={filteredProvenances?.length ?? 0}
-          hasSelection={experience.selection !== null}
-          onSiteFilterChange={experience.setSiteFilter}
-          onClearSelection={state.dismissSelection}
-          onEnterPresentation={presentation.enter}
-          onResetView={state.resetView}
-        />
-      )}
-      {!isPresenting && filteredProvenances?.length === 0 ? (
-        <Alert variant="info">
-          No findspots match &ldquo;{experience.siteFilter}&rdquo;.
-        </Alert>
-      ) : null}
-      <div className="map-experience__body">
-        <MapStage
-          containerRef={state.mapContainer}
-          hoverPreview={isPresenting ? null : state.hoverPreview}
-          isBackgroundUnavailable={state.isBackgroundUnavailable}
-          legend={visualization.legend}
-          visualizationMode={visualization.effectiveMode}
-          showLegend={!isPresenting}
-          selectionPill={
-            !isPresenting &&
-            experience.selection !== null &&
-            mapPanel.active !== 'inspector' ? (
-              <MapSelectionPill
-                label="Show selected area"
-                onShow={() => mapPanel.open('inspector')}
-              />
-            ) : null
-          }
-          analyticalNote={
-            state.threeD.panel.mode === 'extrusion'
-              ? analyticalHeightDisclaimer(state.threeD.panel.metric)
-              : null
-          }
-          controls={
-            isPresenting ? null : (
-              <MapPanelDock
-                panel={mapPanel}
-                mapRef={state.mapRef}
-                drawerRef={state.drawerRef}
-                excavationPolygonIndex={siteData.excavationPolygonIndex}
-                polygonSummaries={siteData.polygonSummaries}
-                info={state.info}
-                tools={state.tools}
-              />
-            )
-          }
-        />
-      </div>
-    </div>
-  )
+  return <LoadedMapTab provenances={provenances} />
 }
