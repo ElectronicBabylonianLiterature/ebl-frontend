@@ -1,189 +1,205 @@
-import { act, screen } from '@testing-library/react'
+import { act, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { lastMapMock, resetMapLibreMock } from '__mocks__/maplibre-gl'
-import { renderMapTab } from 'test-support/map-render'
-import { findspotMapData, provenanceRecord } from 'test-support/map-fixtures'
+import FragmentService from 'fragmentarium/application/FragmentService'
+import { buildFragmentSearchLink } from 'map/mapLinks'
+
 import {
-  EXCAVATION_AREAS_SOURCE_ID,
-  POLYGON_SOURCE_ID,
-  SOURCE_ID,
-} from './mapLayers'
+  makeFailingFragmentService,
+  makeFragmentService,
+  makeProvenance,
+  makeRejectingFragmentService,
+  mockAddControl,
+  mockAddLayer,
+  mockAddSource,
+  renderMapTab,
+  resetMapMocks,
+} from 'map/MapTab.testSupport'
 
-const babylon = provenanceRecord()
-const assur = provenanceRecord({
-  id: 'assur',
-  longName: 'Aššur',
-  abbreviation: 'Aš',
-  sortKey: 2,
-  coordinates: { latitude: 35.45, longitude: 43.26 },
-})
+jest.mock('maplibre-gl')
 
-beforeEach(() => {
-  resetMapLibreMock()
-  global.fetch = jest.fn().mockResolvedValue({
-    ok: true,
-    json: () => Promise.resolve({ type: 'FeatureCollection', features: [] }),
-  }) as unknown as typeof fetch
-})
-
-async function flushPendingRequests(): Promise<void> {
-  await act(async () => {
-    await Promise.resolve()
-  })
+function mixedGeometryProvenances(): ReturnType<typeof makeProvenance>[] {
+  return [
+    makeProvenance(),
+    makeProvenance({
+      id: 'no-geom',
+      longName: 'No Geometry',
+      coordinates: undefined,
+      polygonCoordinates: undefined,
+    }),
+  ]
 }
 
-async function mountMapTab(
-  harness: Parameters<typeof renderMapTab>[0] = {},
-): Promise<void> {
-  renderMapTab({ provenances: [babylon, assur], ...harness })
-  await screen.findByLabelText('Findspot map')
-  await flushPendingRequests()
-  act(() => lastMapMock().emit('load'))
-}
+describe('MapTab', () => {
+  beforeEach(resetMapMocks)
 
-describe('loading and error states', () => {
-  it('shows a spinner until provenances resolve', async () => {
-    renderMapTab({ provenances: [babylon] })
+  it('renders loading spinner while data is being fetched', () => {
+    const fragmentService = {
+      fetchProvenances: () => new Promise(() => {}),
+    } as unknown as FragmentService
+
+    renderMapTab(fragmentService)
 
     expect(screen.getByText('Loading map data...')).toBeInTheDocument()
-    await flushPendingRequests()
   })
 
-  it('shows an error when provenances fail to load', async () => {
-    renderMapTab({ provenanceError: 'Network error' })
+  it('renders error state when fetch fails', async () => {
+    renderMapTab(makeFailingFragmentService('Network error'))
+
+    await waitFor(() => {
+      expect(
+        screen.getByText('Failed to load map data: Network error'),
+      ).toBeInTheDocument()
+    })
+  })
+
+  it('renders a generic error state when the fetch rejects without an Error', async () => {
+    renderMapTab(makeRejectingFragmentService('offline'))
 
     expect(
-      await screen.findByText('Failed to load map data: Network error'),
+      await screen.findByText('Failed to load map data: Unknown error'),
     ).toBeInTheDocument()
-    await flushPendingRequests()
   })
 
-  it('does not set state after unmounting', async () => {
-    const consoleError = jest.spyOn(console, 'error').mockImplementation()
-    const { unmount } = renderMapTab({ provenances: [babylon] })
-    unmount()
-    await act(async () => undefined)
-
-    expect(consoleError).not.toHaveBeenCalled()
-    consoleError.mockRestore()
-  })
-})
-
-describe('map shell', () => {
-  it('renders the atlas shell and a navigation control', async () => {
-    await mountMapTab()
+  it('renders search input, map region, and findspot links', async () => {
+    renderMapTab(makeFragmentService([makeProvenance()]))
 
     expect(
-      screen.getByRole('heading', { name: 'Archaeological atlas' }),
+      await screen.findByLabelText('Filter findspots by name'),
     ).toBeInTheDocument()
-    expect(screen.getByRole('button', { name: 'Legend' })).toBeInTheDocument()
-    expect(lastMapMock().controls).toHaveLength(1)
+    const mapRegion = screen.getByRole('region', {
+      name: 'Interactive findspot map',
+    })
+    expect(mapRegion).toHaveAttribute('aria-describedby')
+    expect(screen.getByText(/Matching fragment search links/)).toHaveAttribute(
+      'id',
+      mapRegion.getAttribute('aria-describedby'),
+    )
+    expect(screen.getByRole('link', { name: 'Babylon' })).toHaveAttribute(
+      'href',
+      buildFragmentSearchLink('Babylon'),
+    )
   })
 
-  it('creates polygon, excavation and point sources on load', async () => {
-    await mountMapTab()
+  it('shows empty state when filter matches nothing', async () => {
+    renderMapTab(makeFragmentService([makeProvenance({ longName: 'Babylon' })]))
 
-    expect([...lastMapMock().sources.keys()]).toEqual([
-      POLYGON_SOURCE_ID,
-      EXCAVATION_AREAS_SOURCE_ID,
-      SOURCE_ID,
+    const input = await screen.findByLabelText('Filter findspots by name')
+    await userEvent.type(input, 'Nippur')
+
+    expect(
+      await screen.findByText('No findspots match “Nippur”.'),
+    ).toBeInTheDocument()
+  })
+
+  it('passes source and layer configs to map on load', async () => {
+    const provenances = [
+      makeProvenance(),
+      makeProvenance({
+        id: 'uruk',
+        longName: 'Uruk',
+        coordinates: { latitude: 31.32, longitude: 45.64 },
+      }),
+    ]
+
+    renderMapTab(makeFragmentService(provenances))
+
+    await waitFor(() => {
+      expect(mockAddSource).toHaveBeenCalled()
+    })
+
+    const sourceCall = mockAddSource.mock.calls[0]
+    expect(sourceCall[0]).toBe('ebl-findspots')
+    expect(sourceCall[1].type).toBe('geojson')
+    expect(sourceCall[1].cluster).toBe(true)
+    expect(sourceCall[1].data.features).toHaveLength(2)
+
+    expect(mockAddLayer).toHaveBeenCalledTimes(3)
+    const layerIds = mockAddLayer.mock.calls.map(
+      (call: unknown[]) => (call[0] as { id: string }).id,
+    )
+    expect(layerIds).toEqual([
+      'ebl-clusters',
+      'ebl-cluster-count',
+      'ebl-unclustered-points',
     ])
   })
 
-  it('filters provenances case-insensitively', async () => {
-    await mountMapTab()
+  it('creates a map with navigation control', async () => {
+    renderMapTab(makeFragmentService([makeProvenance()]))
 
-    await userEvent.type(screen.getByLabelText('Site name'), 'aš')
-
-    expect(await screen.findByText('1 visible sites')).toBeInTheDocument()
+    await waitFor(() => {
+      expect(mockAddControl).toHaveBeenCalled()
+    })
   })
 
-  it('shows an empty state when the filter matches nothing', async () => {
-    await mountMapTab()
-
-    await userEvent.type(screen.getByLabelText('Site name'), 'nowhere')
-
-    expect(await screen.findByText(/No findspots match/)).toBeInTheDocument()
-  })
-
-  it('removes the map and its listeners on unmount', async () => {
-    const { unmount } = renderMapTab({ provenances: [babylon] })
-    await screen.findByLabelText('Findspot map')
-    await flushPendingRequests()
-    const mapMock = lastMapMock()
-
-    unmount()
-
-    expect(mapMock.removed).toBe(true)
-    expect(mapMock.listenerCount('mousemove')).toBe(0)
-  })
-})
-
-describe('site data support', () => {
-  it('reports fragment data as available only for a configured site', async () => {
-    await mountMapTab({ mapData: [findspotMapData()] })
+  it('does not crash with empty provenance data', async () => {
+    renderMapTab(makeFragmentService([]))
 
     expect(
-      await screen.findByText(
-        'Fragment-linked excavation data is available for Aššur.',
-      ),
+      await screen.findByLabelText('Filter findspots by name'),
+    ).toBeInTheDocument()
+    expect(
+      screen.getByRole('region', { name: 'Interactive findspot map' }),
     ).toBeInTheDocument()
   })
 
-  it('reports unsupported sites honestly rather than as zero', async () => {
-    await mountMapTab({ mapData: [findspotMapData()] })
-
-    const unsupported = await screen.findAllByText(
-      'Fragment-linked excavation data is not yet available for this site.',
-    )
-
-    expect(unsupported).toHaveLength(3)
-  })
-
-  it('reports an empty response as empty, not unavailable', async () => {
-    await mountMapTab({ mapData: [] })
+  it('reports missing data rather than a failed filter match', async () => {
+    renderMapTab(makeFragmentService([]))
 
     expect(
-      await screen.findByText('No mapped excavation fragments available'),
+      await screen.findByText('No findspot locations are available.'),
     ).toBeInTheDocument()
+    expect(screen.queryByText(/No findspots match/)).not.toBeInTheDocument()
   })
 
-  it('reports a failed map-data request as unavailable', async () => {
-    await mountMapTab({ mapDataError: 'boom' })
+  it('handles provenances with no spatial geometry gracefully', async () => {
+    renderMapTab(makeFragmentService(mixedGeometryProvenances()))
 
-    expect(
-      await screen.findByText('Excavation fragment data unavailable'),
-    ).toBeInTheDocument()
-  })
-})
-
-describe('base style failures', () => {
-  it('warns only when the configured style document fails', async () => {
-    await mountMapTab()
-
-    act(() =>
-      lastMapMock().emit('error', {
-        error: { resourceType: 'Style' },
-      }),
-    )
-
-    expect(
-      await screen.findByText(/The map background is unavailable/),
-    ).toBeInTheDocument()
-  })
-
-  it('stays usable when a tile, sprite or glyph fails', async () => {
-    await mountMapTab()
-
-    act(() => {
-      const mapMock = lastMapMock()
-      mapMock.emit('error', { tile: {}, error: { resourceType: 'Tile' } })
-      mapMock.emit('error', { error: { resourceType: 'SpriteJSON' } })
-      mapMock.emit('error', { error: new Error('Failed to fetch') })
+    await waitFor(() => {
+      expect(mockAddSource).toHaveBeenCalled()
     })
 
-    expect(
-      screen.queryByText(/The map background is unavailable/),
-    ).not.toBeInTheDocument()
+    const sourceCall = mockAddSource.mock.calls[0]
+    expect(sourceCall[1].data.features).toHaveLength(1)
+    expect(sourceCall[1].data.features[0].properties.name).toBe('Babylon')
   })
+
+  it('links to searches for provenances that have no map geometry', async () => {
+    renderMapTab(makeFragmentService(mixedGeometryProvenances()))
+
+    expect(
+      await screen.findByRole('link', { name: 'No Geometry' }),
+    ).toHaveAttribute('href', buildFragmentSearchLink('No Geometry'))
+  })
+
+  it.each(['success', 'rejection'])(
+    'does not update state after unmount before fetch %s',
+    async (outcome) => {
+      let resolveFetch!: (
+        provenances: readonly ReturnType<typeof makeProvenance>[],
+      ) => void
+      let rejectFetch!: (error: Error) => void
+      const fragmentService = {
+        fetchProvenances: () =>
+          new Promise((resolve, reject) => {
+            resolveFetch = resolve
+            rejectFetch = reject
+          }),
+      } as unknown as FragmentService
+
+      const { unmount } = renderMapTab(fragmentService)
+      unmount()
+
+      await act(async () => {
+        if (outcome === 'success') {
+          resolveFetch([makeProvenance()])
+        } else {
+          rejectFetch(new Error('Late failure'))
+        }
+      })
+
+      expect(screen.queryByText(/Late failure/)).not.toBeInTheDocument()
+      expect(screen.queryByText('Loading map data...')).not.toBeInTheDocument()
+    },
+  )
 })
