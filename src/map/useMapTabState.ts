@@ -34,6 +34,7 @@ import {
   sortedExcavationPolygons,
   type ExcavationPolygon,
 } from 'map/excavationPolygonIndex'
+import useMapExportView, { type MapExportView } from 'map/useMapExportView'
 
 export interface MapTabState {
   readonly provenances: readonly ProvenanceRecord[]
@@ -53,6 +54,7 @@ export interface MapTabState {
   readonly visualization: MapVisualization
   readonly measurement: MeasurementController
   readonly spatialSearch: SpatialSearchController
+  readonly exportView: MapExportView
   readonly excavationPolygons: readonly ExcavationPolygon[]
   readonly selectPolygon: (polygonId: string) => void
   readonly resetView: () => void
@@ -169,7 +171,10 @@ export default function useMapTabState(
     ) {
       closePanel()
     }
-    if (!canShowExcavationAreas && panel.active === 'spatial-search') {
+    if (
+      !canShowExcavationAreas &&
+      (panel.active === 'spatial-search' || panel.active === 'export')
+    ) {
       closePanel()
     }
   }, [
@@ -201,6 +206,17 @@ export default function useMapTabState(
     fragmentMapData,
   )
   const measurement = useMapMeasurement(mapRef, isMeasurementActive)
+  const excavationPolygons = useMemo(
+    () => sortedExcavationPolygons(polygonIndex),
+    [polygonIndex],
+  )
+  const exportView = useMapExportView(
+    mapRef,
+    showExcavationAreas,
+    excavationPolygons,
+    selectedPolygon,
+    fragmentMapData,
+  )
   const resetView = useCallback(() => {
     setCameraResetVersion((current) => current + 1)
     experience.resetState()
@@ -226,8 +242,9 @@ export default function useMapTabState(
     visualization,
     measurement,
     spatialSearch,
+    exportView,
     selectPolygon: onSelectPolygon,
-    excavationPolygons: sortedExcavationPolygons(polygonIndex),
+    excavationPolygons,
     resetView,
   }
 }

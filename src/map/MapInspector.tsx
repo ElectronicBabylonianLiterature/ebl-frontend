@@ -2,6 +2,10 @@ import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import MapInspectorTabs, { type InspectorTab } from 'map/MapInspectorTabs'
 import MapCompletenessNote from 'map/MapCompletenessNote'
+import MapResearchSummaryActions from 'map/MapResearchSummaryActions'
+import { polygonResearchMarkdown } from 'map/mapResearchSummaryText'
+import { visualizationModeLabel } from 'map/MapVisualizationControl'
+import type { MapVisualizationMode } from 'map/mapChoroplethScale'
 import { buildFindspotFragmentSearchLink } from 'map/mapLinks'
 import {
   locationPrecisionLabel,
@@ -21,6 +25,8 @@ interface Props {
   readonly summary: PolygonFindspotSummary | undefined
   readonly siteName: string
   readonly status: FragmentMapDataStatus
+  readonly visualizationMode: MapVisualizationMode
+  readonly siteFilter: string
   readonly onClear: () => void
 }
 
@@ -165,6 +171,8 @@ export default function MapInspector({
   summary,
   siteName,
   status,
+  visualizationMode,
+  siteFilter,
   onClear,
 }: Props): JSX.Element {
   const [expandedCount, setExpandedCount] = useState(10)
@@ -217,6 +225,24 @@ export default function MapInspector({
         {linkedDataMessage(status, research)}
       </p>
       <MapInspectorTabs tabs={tabs} label="Excavation area detail" />
+      {hasLoaded(status) ? (
+        <MapResearchSummaryActions
+          title={`${research.displayName} — ${research.siteName}`}
+          selectionKey={`${research.siteId}:${research.polygonId}`}
+          buildSummary={() => {
+            const generatedAt = new Date().toISOString()
+            return {
+              generatedAt,
+              markdown: polygonResearchMarkdown(research, {
+                visualizationLabel: visualizationModeLabel(visualizationMode),
+                siteFilter,
+                shareUrl: window.location.href,
+                generatedAt,
+              }),
+            }
+          }}
+        />
+      ) : null}
     </div>
   )
 }
