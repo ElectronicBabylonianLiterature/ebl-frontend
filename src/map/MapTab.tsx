@@ -8,8 +8,15 @@ import useFindspotMap from 'map/useFindspotMap'
 import useMapSourceData from 'map/useMapSourceData'
 import useProvenances from 'map/useProvenances'
 import useMapUrlState from 'map/useMapUrlState'
+import useExcavationAreas from 'map/useExcavationAreas'
+import useExcavationPolygonIndex from 'map/useExcavationPolygonIndex'
+import {
+  anySiteHasExcavationPolygons,
+  deriveMapSiteCapabilities,
+} from 'map/mapSiteCapabilities'
 import MapStage from 'map/MapStage'
 import MapShareLink from 'map/MapShareLink'
+import MapLayerControls from 'map/MapLayerControls'
 import FindspotFilterInput from 'map/FindspotFilterInput'
 import { FindspotEmptyState, FindspotSearchList } from 'map/FindspotResults'
 import { filterProvenances } from 'map/findspotFilter'
@@ -26,12 +33,30 @@ function LoadedMapTab({
 }): JSX.Element {
   const mapContainer = useRef<HTMLDivElement>(null)
   const [mapBackgroundError, setMapBackgroundError] = useState(false)
+  const [mapExcavationAreasError, setMapExcavationAreasError] = useState(false)
   const { state, update } = useMapUrlState()
   const filter = state.filter
   const setFilter = useCallback(
     (nextFilter: string) => update({ filter: nextFilter }),
     [update],
   )
+
+  const {
+    index: polygonIndex,
+    isLoaded: isPolygonIndexLoaded,
+    error: polygonIndexError,
+  } = useExcavationPolygonIndex()
+  const excavationAreasUnavailable =
+    polygonIndexError !== null || mapExcavationAreasError
+  const canShowExcavationAreas = useMemo(
+    () =>
+      isPolygonIndexLoaded &&
+      !excavationAreasUnavailable &&
+      anySiteHasExcavationPolygons(deriveMapSiteCapabilities(polygonIndex)),
+    [excavationAreasUnavailable, isPolygonIndexLoaded, polygonIndex],
+  )
+  const showExcavationAreas =
+    state.showExcavationAreas && canShowExcavationAreas
 
   const filteredProvenances = useMemo(
     () => filterProvenances(provenances, filter),
@@ -40,12 +65,23 @@ function LoadedMapTab({
   const handleMapBackgroundErrorChange = useCallback((hasError: boolean) => {
     setMapBackgroundError(hasError)
   }, [])
+  const handleExcavationAreasAvailabilityChange = useCallback(
+    (isUnavailable: boolean) => {
+      setMapExcavationAreasError(isUnavailable)
+    },
+    [],
+  )
   const mapRef = useFindspotMap(
     mapContainer,
     filteredProvenances,
     handleMapBackgroundErrorChange,
   )
   useMapSourceData(mapRef, filteredProvenances)
+  useExcavationAreas(
+    mapRef,
+    showExcavationAreas,
+    handleExcavationAreasAvailabilityChange,
+  )
 
   return (
     <div className="map-tab">
@@ -57,6 +93,16 @@ function LoadedMapTab({
         />
         <MapShareLink />
       </div>
+      <MapLayerControls
+        showExcavationAreas={showExcavationAreas}
+        canShowExcavationAreas={canShowExcavationAreas}
+        onShowExcavationAreasChange={(isVisible) =>
+          update({ showExcavationAreas: isVisible })
+        }
+      />
+      {excavationAreasUnavailable ? (
+        <Alert variant="warning">Excavation areas are unavailable.</Alert>
+      ) : null}
       <p id="findspot-map-description" className="map-tab__description">
         Filter findspots by name. Matching fragment search links are available
         below the map.

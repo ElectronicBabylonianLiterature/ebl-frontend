@@ -29,7 +29,8 @@ export default function useMapUrlState(): MapUrlStateController {
       const next = normalizeMapUrlState({ ...latestStateRef.current, ...patch })
       if (
         next.version === latestStateRef.current.version &&
-        next.filter === latestStateRef.current.filter
+        next.filter === latestStateRef.current.filter &&
+        next.showExcavationAreas === latestStateRef.current.showExcavationAreas
       ) {
         return
       }

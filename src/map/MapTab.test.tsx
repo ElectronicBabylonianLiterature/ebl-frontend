@@ -113,15 +113,19 @@ describe('MapTab', () => {
     expect(sourceCall[1].cluster).toBe(true)
     expect(sourceCall[1].data.features).toHaveLength(2)
 
-    expect(mockAddLayer).toHaveBeenCalledTimes(3)
+    expect(mockAddLayer).toHaveBeenCalledTimes(5)
     const layerIds = mockAddLayer.mock.calls.map(
       (call: unknown[]) => (call[0] as { id: string }).id,
     )
-    expect(layerIds).toEqual([
-      'ebl-clusters',
-      'ebl-cluster-count',
-      'ebl-unclustered-points',
-    ])
+    expect(layerIds).toEqual(
+      expect.arrayContaining([
+        'ebl-clusters',
+        'ebl-cluster-count',
+        'ebl-unclustered-points',
+        'excavation-area-fill',
+        'excavation-area-outline',
+      ]),
+    )
   })
 
   it('creates a map with navigation control', async () => {
