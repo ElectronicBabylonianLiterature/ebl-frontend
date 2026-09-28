@@ -26,6 +26,12 @@ const CANONICAL_POLYGON_ASSET = fs.readFileSync(
   'utf8',
 )
 
+async function openLayerControls(): Promise<void> {
+  await userEvent.click(
+    await screen.findByRole('button', { name: 'Map layers' }),
+  )
+}
+
 describe('MapTab map errors', () => {
   beforeEach(() => {
     resetMapMocks()
@@ -155,7 +161,13 @@ describe('MapTab map errors', () => {
     renderMapTab(makeFragmentService([makeProvenance()]))
 
     expect(await screen.findByText(EXCAVATION_WARNING)).toBeInTheDocument()
+    await openLayerControls()
     expect(screen.getByLabelText('Excavation areas')).toBeDisabled()
+
+    await userEvent.click(
+      screen.getByRole('button', { name: 'Presentation mode' }),
+    )
+    expect(screen.getByText(EXCAVATION_WARNING)).toBeInTheDocument()
   })
 
   it('shows an unavailable state for a malformed HTTP-200 asset', async () => {
@@ -166,12 +178,14 @@ describe('MapTab map errors', () => {
     renderMapTab(makeFragmentService([makeProvenance()]))
 
     expect(await screen.findByText(EXCAVATION_WARNING)).toBeInTheDocument()
+    await openLayerControls()
     expect(screen.getByLabelText('Excavation areas')).toBeDisabled()
   })
 
   it('shows an unavailable state when the rendered polygon source fails', async () => {
     fetchMock.mockResponseOnce(CANONICAL_POLYGON_ASSET)
     renderMapTab(makeFragmentService([makeProvenance()]))
+    await openLayerControls()
 
     await waitFor(() =>
       expect(screen.getByLabelText('Excavation areas')).toBeEnabled(),

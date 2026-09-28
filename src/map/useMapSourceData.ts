@@ -11,10 +11,16 @@ const FIT_BOUNDS_DEBOUNCE_MS = 250
 export default function useMapSourceData(
   mapRef: MutableRefObject<MapLibreMap | null>,
   provenances: readonly ProvenanceRecord[] | null,
+  cameraResetVersion = 0,
 ): void {
   const fitBoundsTimeoutRef = useRef<ReturnType<typeof setTimeout>>()
+  const previousCameraResetVersionRef = useRef(cameraResetVersion)
 
   useEffect(() => {
+    const cameraWasReset =
+      previousCameraResetVersionRef.current !== cameraResetVersion
+    previousCameraResetVersionRef.current = cameraResetVersion
+
     const map = mapRef.current
     if (!map || provenances === null) return
 
@@ -25,9 +31,11 @@ export default function useMapSourceData(
     source.setData(geoJson)
 
     clearTimeout(fitBoundsTimeoutRef.current)
+    if (cameraWasReset) return
+
     fitBoundsTimeoutRef.current = setTimeout(() => {
       fitMapToData(map, geoJson.features)
     }, FIT_BOUNDS_DEBOUNCE_MS)
     return () => clearTimeout(fitBoundsTimeoutRef.current)
-  }, [mapRef, provenances])
+  }, [cameraResetVersion, mapRef, provenances])
 }

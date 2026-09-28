@@ -166,6 +166,7 @@ describe('MapTab', () => {
     const sourceCall = mockAddSource.mock.calls[0]
     expect(sourceCall[1].data.features).toHaveLength(1)
     expect(sourceCall[1].data.features[0].properties.name).toBe('Babylon')
+    expect(screen.getByText('1 visible findspot')).toBeInTheDocument()
   })
 
   it('links to searches for provenances that have no map geometry', async () => {
