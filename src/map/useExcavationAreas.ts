@@ -110,12 +110,11 @@ export interface ExcavationAreaOptions {
   readonly onAvailabilityChange?: (isUnavailable: boolean) => void
 }
 
-export default function useExcavationAreas(
+function useExcavationAreaLifecycle(
   mapRef: MutableRefObject<MapLibreMap | null>,
   options: ExcavationAreaOptions,
 ): void {
   const latestOptionsRef = useRef(options)
-  const previousSelectedIdRef = useRef<string | null>(null)
   latestOptionsRef.current = options
 
   useEffect(() => {
@@ -151,26 +150,39 @@ export default function useExcavationAreas(
       removeExcavationAreas(map)
     }
   }, [mapRef])
+}
 
+function useExcavationAreaVisibility(
+  mapRef: MutableRefObject<MapLibreMap | null>,
+  isVisible: boolean,
+): void {
   useEffect(() => {
     const map = mapRef.current
     if (!map) return
 
-    const updateVisibility = (): void => setVisible(map, options.isVisible)
+    const updateVisibility = (): void => setVisible(map, isVisible)
     if (map.isStyleLoaded()) updateVisibility()
     else map.once('load', updateVisibility)
 
     return () => {
       if (mapRef.current === map) map.off('load', updateVisibility)
     }
-  }, [mapRef, options.isVisible])
+  }, [mapRef, isVisible])
+}
+
+function useExcavationAreaSelection(
+  mapRef: MutableRefObject<MapLibreMap | null>,
+  isVisible: boolean,
+  selectedPolygonId: string | null,
+): void {
+  const previousSelectedIdRef = useRef<string | null>(null)
 
   useEffect(() => {
     const map = mapRef.current
     if (!map) return
 
     const updateSelection = (): void => {
-      const nextId = options.isVisible ? options.selectedPolygonId : null
+      const nextId = isVisible ? selectedPolygonId : null
       applySelection(map, previousSelectedIdRef.current, nextId)
       previousSelectedIdRef.current = nextId
     }
@@ -180,33 +192,53 @@ export default function useExcavationAreas(
     return () => {
       if (mapRef.current === map) map.off('load', updateSelection)
     }
-  }, [mapRef, options.isVisible, options.selectedPolygonId])
+  }, [mapRef, isVisible, selectedPolygonId])
+}
 
+function useExcavationAreaVisualization(
+  mapRef: MutableRefObject<MapLibreMap | null>,
+  paint: ExcavationPaint | undefined,
+  values: PolygonVisualizationValues | undefined,
+): void {
   useEffect(() => {
     const map = mapRef.current
     if (!map) return
 
     const updatePaint = (): void =>
-      applyExcavationPaint(map, options.paint ?? CATEGORICAL_PAINT)
+      applyExcavationPaint(map, paint ?? CATEGORICAL_PAINT)
     if (map.isStyleLoaded()) updatePaint()
     else map.once('load', updatePaint)
 
     return () => {
       if (mapRef.current === map) map.off('load', updatePaint)
     }
-  }, [mapRef, options.paint])
+  }, [mapRef, paint])
 
   useEffect(() => {
     const map = mapRef.current
     if (!map) return
 
     const updateValues = (): void =>
-      applyVisualizationValues(map, options.values ?? EMPTY_VALUES)
+      applyVisualizationValues(map, values ?? EMPTY_VALUES)
     if (map.isStyleLoaded()) updateValues()
     else map.once('load', updateValues)
 
     return () => {
       if (mapRef.current === map) map.off('load', updateValues)
     }
-  }, [mapRef, options.values])
+  }, [mapRef, values])
+}
+
+export default function useExcavationAreas(
+  mapRef: MutableRefObject<MapLibreMap | null>,
+  options: ExcavationAreaOptions,
+): void {
+  useExcavationAreaLifecycle(mapRef, options)
+  useExcavationAreaVisibility(mapRef, options.isVisible)
+  useExcavationAreaSelection(
+    mapRef,
+    options.isVisible,
+    options.selectedPolygonId,
+  )
+  useExcavationAreaVisualization(mapRef, options.paint, options.values)
 }
