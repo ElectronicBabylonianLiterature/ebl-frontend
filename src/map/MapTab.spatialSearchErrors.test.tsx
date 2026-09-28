@@ -21,6 +21,29 @@ const CANONICAL_POLYGON_ASSET = fs.readFileSync(
   'utf8',
 )
 
+async function expectToolToCloseOnExcavationError(
+  toolName: 'Search area' | 'Export',
+): Promise<void> {
+  fetchMock.mockResponse(CANONICAL_POLYGON_ASSET)
+  renderMapTab(makeFragmentService([makeProvenance()]))
+  await userEvent.click(await screen.findByRole('button', { name: toolName }))
+  expect(screen.getByRole('region', { name: toolName })).toBeInTheDocument()
+
+  act(() => {
+    triggerMapEvent('error', {
+      error: { message: 'asset unavailable' },
+      sourceId: EXCAVATION_AREAS_SOURCE_ID,
+    })
+  })
+
+  expect(
+    screen.queryByRole('region', { name: toolName }),
+  ).not.toBeInTheDocument()
+  expect(
+    screen.queryByRole('button', { name: toolName }),
+  ).not.toBeInTheDocument()
+}
+
 describe('MapTab tool availability', () => {
   beforeEach(() => {
     resetMapMocks()
@@ -40,28 +63,7 @@ describe('MapTab tool availability', () => {
   })
 
   it('closes spatial search when excavation rendering fails', async () => {
-    fetchMock.mockResponse(CANONICAL_POLYGON_ASSET)
-    renderMapTab(makeFragmentService([makeProvenance()]))
-    await userEvent.click(
-      await screen.findByRole('button', { name: 'Search area' }),
-    )
-    expect(
-      screen.getByRole('region', { name: 'Search area' }),
-    ).toBeInTheDocument()
-
-    act(() => {
-      triggerMapEvent('error', {
-        error: { message: 'asset unavailable' },
-        sourceId: EXCAVATION_AREAS_SOURCE_ID,
-      })
-    })
-
-    expect(
-      screen.queryByRole('region', { name: 'Search area' }),
-    ).not.toBeInTheDocument()
-    expect(
-      screen.queryByRole('button', { name: 'Search area' }),
-    ).not.toBeInTheDocument()
+    await expectToolToCloseOnExcavationError('Search area')
   })
 
   it('exports only polygons rendered in the current viewport', async () => {
@@ -85,23 +87,6 @@ describe('MapTab tool availability', () => {
   })
 
   it('closes export when excavation rendering fails', async () => {
-    fetchMock.mockResponse(CANONICAL_POLYGON_ASSET)
-    renderMapTab(makeFragmentService([makeProvenance()]))
-    await userEvent.click(await screen.findByRole('button', { name: 'Export' }))
-    expect(screen.getByRole('region', { name: 'Export' })).toBeInTheDocument()
-
-    act(() => {
-      triggerMapEvent('error', {
-        error: { message: 'asset unavailable' },
-        sourceId: EXCAVATION_AREAS_SOURCE_ID,
-      })
-    })
-
-    expect(
-      screen.queryByRole('region', { name: 'Export' }),
-    ).not.toBeInTheDocument()
-    expect(
-      screen.queryByRole('button', { name: 'Export' }),
-    ).not.toBeInTheDocument()
+    await expectToolToCloseOnExcavationError('Export')
   })
 })
