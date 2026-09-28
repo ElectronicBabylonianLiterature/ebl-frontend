@@ -51,9 +51,8 @@ function isExcavationAreaError(event: MapLibreErrorEvent): boolean {
   )
 }
 
-export default function useExcavationAreas(
+function useExcavationAreaLifecycle(
   mapRef: MutableRefObject<MapLibreMap | null>,
-  isVisible: boolean,
   onAvailabilityChange?: (isUnavailable: boolean) => void,
 ): void {
   useEffect(() => {
@@ -77,7 +76,12 @@ export default function useExcavationAreas(
       removeExcavationAreas(map)
     }
   }, [mapRef, onAvailabilityChange])
+}
 
+function useExcavationAreaVisibility(
+  mapRef: MutableRefObject<MapLibreMap | null>,
+  isVisible: boolean,
+): void {
   useEffect(() => {
     const map = mapRef.current
     if (!map) return
@@ -93,4 +97,13 @@ export default function useExcavationAreas(
       if (isCurrentMap()) map.off('load', updateVisibility)
     }
   }, [mapRef, isVisible])
+}
+
+export default function useExcavationAreas(
+  mapRef: MutableRefObject<MapLibreMap | null>,
+  isVisible: boolean,
+  onAvailabilityChange?: (isUnavailable: boolean) => void,
+): void {
+  useExcavationAreaLifecycle(mapRef, onAvailabilityChange)
+  useExcavationAreaVisibility(mapRef, isVisible)
 }
