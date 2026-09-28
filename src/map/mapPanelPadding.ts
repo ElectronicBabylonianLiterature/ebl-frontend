@@ -8,12 +8,6 @@ export const NO_PANEL_PADDING: PaddingOptions = {
 }
 
 export type PanelPaddingSide = 'right' | 'bottom'
-
-/**
- * Padding reserved for the drawer (desktop/tablet, right edge) or the bottom
- * sheet (mobile, bottom edge) currently covering part of the map, so
- * subsequent camera fits keep the selected feature out from under it.
- */
 export function panelPadding(
   side: PanelPaddingSide,
   sizePx: number,

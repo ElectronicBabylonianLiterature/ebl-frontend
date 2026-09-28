@@ -1,10 +1,16 @@
-export type MapSelection =
-  | { readonly type: 'site'; readonly provenanceId: string }
-  | { readonly type: 'excavation-area'; readonly polygonId: string }
+export type MapSelection = {
+  readonly type: 'excavation-area'
+  readonly polygonId: string
+}
 
-export interface MapHoverPreview {
-  readonly x: number
-  readonly y: number
-  readonly title: string
-  readonly details: readonly string[]
+export function serializeMapSelection(selection: MapSelection | null): string {
+  return selection === null ? '' : `area:${selection.polygonId}`
+}
+
+export function parseMapSelection(value: string): MapSelection | null {
+  const [kind, ...rest] = value.split(':')
+  const polygonId = rest.join(':')
+  return kind === 'area' && polygonId
+    ? { type: 'excavation-area', polygonId }
+    : null
 }

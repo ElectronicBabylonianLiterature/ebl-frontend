@@ -1,133 +1,78 @@
-import { act, screen, waitFor } from '@testing-library/react'
+import { fireEvent, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { lastMapMock, resetMapLibreMock } from '__mocks__/maplibre-gl'
-import { MAP_LOCATION_TEST_ID, renderMapTab } from 'test-support/map-render'
-import { provenanceRecord } from 'test-support/map-fixtures'
+import { MAX_FILTER_LENGTH, parseMapUrlState } from 'map/mapUrlState'
 
-const babylon = provenanceRecord()
-const assur = provenanceRecord({
-  id: 'assur',
-  longName: 'Aššur',
-  abbreviation: 'Aš',
-  sortKey: 2,
-})
+import {
+  CURRENT_LOCATION_TEST_ID,
+  makeFragmentService,
+  makeProvenance,
+  renderMapTab,
+  resetMapMocks,
+} from 'map/MapTab.testSupport'
 
-beforeEach(() => {
-  resetMapLibreMock()
-  global.fetch = jest.fn().mockResolvedValue({
-    ok: true,
-    json: () => Promise.resolve({ type: 'FeatureCollection', features: [] }),
-  }) as unknown as typeof fetch
-})
+jest.mock('maplibre-gl')
 
-function mapSearch(): string {
-  return screen.getByTestId(MAP_LOCATION_TEST_ID).textContent ?? ''
-}
+describe('MapTab URL state', () => {
+  beforeEach(resetMapMocks)
 
-async function mountMapTab(initialEntries?: readonly string[]): Promise<void> {
-  renderMapTab({ provenances: [babylon, assur], initialEntries })
-  await screen.findByLabelText('Findspot map')
-  await act(async () => {
-    await Promise.resolve()
-  })
-  act(() => lastMapMock().emit('load'))
-}
+  it('shows a URL-loaded free-text filter in the input and the results', async () => {
+    const provenances = [
+      makeProvenance({ id: 'babylon', longName: 'Babylon' }),
+      makeProvenance({ id: 'nippur', longName: 'Nippur' }),
+    ]
 
-describe('restoring state from the url', () => {
-  it('restores a site filter and selection from a versioned url', async () => {
-    await mountMapTab(['/?v=1&q=Babylon&site=babylon&l=boundaries,areas'])
+    renderMapTab(
+      makeFragmentService(provenances),
+      '/tools/map?mv=1&findspot=bab',
+    )
 
-    expect(screen.getByLabelText('Site name')).toHaveValue('Babylon')
+    const input = await screen.findByLabelText('Filter findspots by name')
+    await waitFor(() => expect(input).toHaveValue('bab'))
+    expect(screen.getByRole('link', { name: 'Babylon' })).toBeInTheDocument()
     expect(
-      await screen.findByRole('heading', { name: 'Babylon' }),
-    ).toBeInTheDocument()
+      screen.queryByRole('link', { name: 'Nippur' }),
+    ).not.toBeInTheDocument()
   })
 
-  it('ignores an unknown state version', async () => {
-    await mountMapTab(['/?v=99&q=Babylon'])
+  it('does not add a query string on a plain visit with no filter', async () => {
+    renderMapTab(makeFragmentService([makeProvenance()]))
 
-    expect(screen.getByLabelText('Site name')).toHaveValue('')
-  })
+    await screen.findByLabelText('Filter findspots by name')
 
-  it('ignores an unavailable overlay', async () => {
-    await mountMapTab(['/?v=1&o=not-a-real-overlay:0.5'])
-
-    expect(lastMapMock().layers.size).toBeGreaterThan(0)
-    expect(
-      [...lastMapMock().layers.keys()].some((id) =>
-        id.includes('not-a-real-overlay'),
-      ),
-    ).toBe(false)
-  })
-
-  it('restores the camera from the url', async () => {
-    await mountMapTab(['/?v=1&c=43.25,35.45&z=14&b=20&p=30'])
-
-    expect(screen.getByLabelText('Findspot map')).toBeInTheDocument()
-  })
-})
-
-describe('writing state to the url', () => {
-  it('records a selection in the query string', async () => {
-    await mountMapTab()
-
-    await userEvent.click(screen.getByRole('button', { name: /Babylon/ }))
-
-    await waitFor(() => expect(mapSearch()).toContain('site=babylon'))
-  })
-
-  it('records layer visibility', async () => {
-    await mountMapTab()
-
-    await waitFor(() => expect(mapSearch()).toContain('l=boundaries'))
-  })
-
-  it('always records the schema version', async () => {
-    await mountMapTab()
-
-    await waitFor(() => expect(mapSearch()).toContain('v=1'))
-  })
-})
-
-describe('copy map link', () => {
-  it('confirms a successful copy', async () => {
-    const writeText = jest.fn().mockResolvedValue(undefined)
-    Object.assign(navigator, { clipboard: { writeText } })
-    await mountMapTab()
-
-    await userEvent.click(screen.getByRole('button', { name: 'Copy map link' }))
-
-    expect(writeText).toHaveBeenCalledWith(window.location.href)
-    expect(
-      await screen.findByText('Map link copied to clipboard.'),
-    ).toBeInTheDocument()
-  })
-
-  it('reports a clipboard failure without losing the link', async () => {
-    Object.assign(navigator, {
-      clipboard: { writeText: jest.fn().mockRejectedValue(new Error('nope')) },
+    await waitFor(() => {
+      expect(screen.getByTestId(CURRENT_LOCATION_TEST_ID)).toHaveTextContent(
+        '/tools/map',
+      )
     })
-    await mountMapTab()
-
-    await userEvent.click(screen.getByRole('button', { name: 'Copy map link' }))
-
-    expect(
-      await screen.findByText(
-        'Copying failed. Copy the address bar URL instead.',
-      ),
-    ).toBeInTheDocument()
+    expect(screen.getByTestId(CURRENT_LOCATION_TEST_ID)).not.toHaveTextContent(
+      '?',
+    )
   })
 
-  it('reports a missing clipboard api', async () => {
-    Object.assign(navigator, { clipboard: undefined })
-    await mountMapTab()
+  it('writes a typed filter to the URL', async () => {
+    renderMapTab(makeFragmentService([makeProvenance()]))
 
-    await userEvent.click(screen.getByRole('button', { name: 'Copy map link' }))
+    const input = await screen.findByLabelText('Filter findspots by name')
+    await userEvent.type(input, 'bab')
 
-    expect(
-      await screen.findByText(
-        'Copying failed. Copy the address bar URL instead.',
-      ),
-    ).toBeInTheDocument()
+    await waitFor(() => {
+      expect(screen.getByTestId(CURRENT_LOCATION_TEST_ID)).toHaveTextContent(
+        'findspot=bab',
+      )
+    })
+  })
+
+  it('shows the same capped filter that it writes to the URL', async () => {
+    renderMapTab(makeFragmentService([makeProvenance()]))
+    const overlongFilter = 'a'.repeat(MAX_FILTER_LENGTH + 50)
+    const cappedFilter = 'a'.repeat(MAX_FILTER_LENGTH)
+
+    const input = await screen.findByLabelText('Filter findspots by name')
+    fireEvent.change(input, { target: { value: overlongFilter } })
+
+    await waitFor(() => expect(input).toHaveValue(cappedFilter))
+    const location = screen.getByTestId(CURRENT_LOCATION_TEST_ID).textContent
+    const search = location?.split('?')[1] ?? ''
+    expect(parseMapUrlState(search).filter).toBe(cappedFilter)
   })
 })

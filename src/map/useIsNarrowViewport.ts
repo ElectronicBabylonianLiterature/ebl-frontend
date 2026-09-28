@@ -9,12 +9,6 @@ function matches(query: string): boolean {
     window.matchMedia(query).matches
   )
 }
-
-/**
- * Tracks whether the map should use its mobile bottom-sheet layout, so
- * behaviour that differs by breakpoint (camera padding side) can follow the
- * same boundary as the CSS. Reactive, unlike a one-off `matchMedia` check.
- */
 export default function useIsNarrowViewport(
   query: string = MAP_MOBILE_BREAKPOINT_QUERY,
 ): boolean {

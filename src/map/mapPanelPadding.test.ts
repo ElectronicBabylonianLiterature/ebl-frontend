@@ -2,7 +2,7 @@ import {
   NO_PANEL_PADDING,
   paddingEquals,
   panelPadding,
-} from './mapPanelPadding'
+} from 'map/mapPanelPadding'
 
 describe('panelPadding', () => {
   it('reserves the requested side', () => {

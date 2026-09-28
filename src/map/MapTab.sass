@@ -1,15 +1,21 @@
 @import src/design-tokens
 @import src/map/map-zindex
-@import src/map/map-tools
 @import src/map/map-panel-drawer
 @import src/map/map-inspector-content
-@import src/map/map-controls-content
-@import src/map/map-research
-@import src/map/map-presentation
-@import src/map/map-3d
 
-.map-tab
-  min-width: 0
+.map-stage
+  &__background-alert
+    flex: 0 0 auto
+    margin-bottom: 0.75rem
+
+.map-share-link
+  display: flex
+  align-items: center
+  gap: 0.5rem
+
+  &__status
+    color: $ebl-color-text-secondary
+    font-size: 0.875rem
 
 .map-experience
   display: grid
@@ -24,24 +30,20 @@
     padding: 0.8rem 0.95rem
     border: 1px solid $ebl-color-border-subtle
     border-radius: 0.35rem
-    background: linear-gradient(180deg, #fff, #f7f9fb)
-    box-shadow: 0 0.5rem 1.35rem $ebl-color-black-alpha-08
+    background: $ebl-color-surface-primary
 
   &__heading
     min-width: 0
 
     span
       display: block
-      margin-bottom: 0.15rem
-      color: #6b5a42
+      color: $ebl-color-text-secondary
       font-size: 0.72rem
       font-weight: 700
-      letter-spacing: 0
       text-transform: uppercase
 
     h1
       margin: 0
-      color: #172331
       font-size: 1.45rem
       font-weight: 700
       line-height: 1.15
@@ -49,85 +51,76 @@
   &__search
     min-width: 0
 
-    label
-      margin-bottom: 0.25rem
-      color: $ebl-color-text-secondary
-      font-size: 0.8rem
-      font-weight: 600
-
-    input
-      border-color: #cbd4de
-      background: $ebl-color-surface-primary
-
   &__actions
     display: flex
     flex-wrap: wrap
     align-items: center
     justify-content: flex-end
     gap: 0.45rem
-    min-width: 0
     color: $ebl-color-text-secondary
     font-size: 0.875rem
 
-  // Map-first: the body is no longer a two-column grid splitting space with
-  // a permanent inspector. `.map-tab__map-frame` is its only child and the
-  // inspector, layers, visualization and every tool panel are overlays on
-  // top of it — see `_map-panel-drawer.sass`.
   &__body
     position: relative
-    min-height: min(76vh, 760px)
+    height: min(76vh, 760px)
 
-.map-stage,
-.map-tab__map-frame
+.map-stage
   position: relative
-  width: 100%
-  height: min(76vh, 760px)
-  min-width: 0
-  overflow: hidden
-  border: 1px solid #cbd4de
-  border-radius: 0.45rem
-  background: #dfe7ea
-  box-shadow: 0 0.75rem 2rem $ebl-color-black-alpha-10
-
-.map-tab__container
+  display: flex
+  flex-direction: column
   width: 100%
   height: 100%
-  min-height: 540px
+  overflow: hidden
+  border: 1px solid $ebl-color-border-default
+  border-radius: 0.45rem
+  background: $ebl-color-surface-muted
 
-@media (max-width: $ebl-breakpoint-lg-max)
-  .map-experience__topbar
-    grid-template-columns: minmax(0, 1fr) minmax(14rem, 22rem)
+  &__container
+    flex: 1 1 auto
+    min-height: 0
+    width: 100%
 
-  .map-experience__actions
-    grid-column: 1 / -1
-    justify-content: flex-start
+.map-presentation-bar
+  display: flex
+  align-items: center
+  justify-content: space-between
+  gap: 0.5rem
+  padding: 0.5rem 0.75rem
+  border: 1px solid $ebl-color-border-subtle
+  border-radius: 0.35rem
+
+.map-experience--presenting .map-experience__body
+  height: 82vh
+
+.map-tab
+  min-width: 0
+
+  &__description
+    color: $ebl-color-text-secondary
+    margin: 0.75rem 0
+
+  &__findspot-links
+    margin-top: 1rem
+
+    ul
+      columns: 2 14rem
+      padding-left: 1.25rem
+
+  &__findspot-links-heading
+    font-size: 1rem
+    margin-bottom: 0.5rem
+
+  .maplibregl-popup-content a
+    color: $ebl-color-brand-primary
+    font-weight: 500
 
 @media (max-width: $ebl-breakpoint-md-max)
   .map-experience__topbar
     grid-template-columns: minmax(0, 1fr)
     align-items: stretch
 
-  .map-stage,
-  .map-tab__map-frame
+  .map-experience__body
     height: 68vh
-    min-height: 68vh
 
-  .map-tab__container
-    min-height: 430px
-
-@media (max-width: $ebl-breakpoint-sm-max)
-  .map-experience__heading h1
-    font-size: 1.25rem
-
-  .map-experience__actions
-    align-items: stretch
-
-    .btn
-      flex: 1 1 auto
-
-  .map-stage,
-  .map-tab__map-frame
-    height: 64vh
-
-  .map-tab__container
-    min-height: 390px
+.findspot-filter__control
+  min-height: 38px

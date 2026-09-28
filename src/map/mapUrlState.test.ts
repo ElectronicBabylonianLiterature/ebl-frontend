@@ -1,159 +1,196 @@
 import {
   DEFAULT_MAP_URL_STATE,
-  MAX_MAP_URL_LENGTH,
-  type MapUrlState,
+  MAX_FILTER_LENGTH,
   parseMapUrlState,
   serializeMapUrlState,
-} from './mapUrlState'
-
-const context = {
-  knownOverlayIds: new Set(['overlay-a', 'overlay-b']),
-}
-
-const fullState: MapUrlState = {
-  camera: { center: [43.25, 35.45], zoom: 14.5, bearing: 30, pitch: 45 },
-  layers: ['boundaries', 'areas'],
-  overlays: [
-    { id: 'overlay-b', opacity: 0.5, visible: true },
-    { id: 'overlay-a', opacity: 0.75, visible: true },
-  ],
-  selection: { type: 'excavation-area', polygonId: 'assur-area-a' },
-  siteFilter: 'aš',
-  visualization: 'count',
-  tools: DEFAULT_MAP_URL_STATE.tools,
-}
-
-describe('serializeMapUrlState', () => {
-  it('writes a deterministic, ordered query string', () => {
-    expect(serializeMapUrlState(fullState)).toBe(
-      'v=1&c=43.25%2C35.45&z=14.5&b=30&p=45&l=areas%2Cboundaries&o=overlay-b%3A0.5%2Coverlay-a%3A0.75&area=assur-area-a&q=a%C5%A1&viz=count',
-    )
-  })
-
-  it('omits neutral camera angles, overlays and filters', () => {
-    expect(serializeMapUrlState(DEFAULT_MAP_URL_STATE)).toBe(
-      'v=1&c=44.4%2C33&z=5&l=boundaries',
-    )
-  })
-
-  it('keeps a site selection distinct from an area selection', () => {
-    expect(
-      serializeMapUrlState({
-        ...DEFAULT_MAP_URL_STATE,
-        selection: { type: 'site', provenanceId: 'babylon' },
-      }),
-    ).toContain('site=babylon')
-  })
-
-  it('excludes hidden overlays', () => {
-    expect(
-      serializeMapUrlState({
-        ...DEFAULT_MAP_URL_STATE,
-        overlays: [{ id: 'overlay-a', opacity: 1, visible: false }],
-      }),
-    ).not.toContain('o=')
-  })
-
-  it('drops overlays when the url would grow too long', () => {
-    const overlays = Array.from({ length: 40 }, (_entry, index) => ({
-      id: `overlay-${'x'.repeat(60)}-${index}`,
-      opacity: 0.5,
-      visible: true,
-    }))
-    const serialized = serializeMapUrlState({
-      ...DEFAULT_MAP_URL_STATE,
-      overlays,
-    })
-
-    expect(serialized).not.toContain('o=')
-    expect(serialized.length).toBeLessThanOrEqual(MAX_MAP_URL_LENGTH)
-  })
-})
+} from 'map/mapUrlState'
 
 describe('parseMapUrlState', () => {
-  it('round-trips a full state', () => {
-    expect(parseMapUrlState(serializeMapUrlState(fullState), context)).toEqual(
-      fullState,
+  it('returns the default state for an empty search string', () => {
+    expect(parseMapUrlState('')).toEqual(DEFAULT_MAP_URL_STATE)
+  })
+
+  it('parses a filter from a versioned search string', () => {
+    expect(parseMapUrlState('mv=1&findspot=Babylon')).toEqual({
+      version: 1,
+      filter: 'Babylon',
+      showExcavationAreas: false,
+      selection: null,
+    })
+  })
+
+  it('parses the excavation-area flag', () => {
+    expect(parseMapUrlState('mv=1&areas=1')).toEqual({
+      version: 1,
+      filter: '',
+      showExcavationAreas: true,
+      selection: null,
+    })
+  })
+
+  it('falls back to the default state when the version is missing', () => {
+    expect(parseMapUrlState('findspot=Babylon')).toEqual(DEFAULT_MAP_URL_STATE)
+  })
+
+  it('falls back to the default state when the version does not match', () => {
+    expect(parseMapUrlState('mv=2&findspot=Babylon')).toEqual(
+      DEFAULT_MAP_URL_STATE,
     )
   })
 
-  it.each([['v=2&z=9'], ['z=9'], ['v=abc&z=9'], ['']])(
-    'falls back to defaults for %s',
-    (search) => {
-      expect(parseMapUrlState(search, context)).toEqual(DEFAULT_MAP_URL_STATE)
+  it('falls back to the default state when the version is not numeric', () => {
+    expect(parseMapUrlState('mv=abc&findspot=Babylon')).toEqual(
+      DEFAULT_MAP_URL_STATE,
+    )
+  })
+
+  it.each(['1abc', '1.5', '1e3', '01', '+1', '%201'])(
+    'falls back when the version token is %s',
+    (version) => {
+      expect(parseMapUrlState(`mv=${version}&findspot=Babylon`)).toEqual(
+        DEFAULT_MAP_URL_STATE,
+      )
     },
   )
 
-  it('accepts a partial state', () => {
-    expect(parseMapUrlState('v=1&z=11', context)).toEqual({
-      ...DEFAULT_MAP_URL_STATE,
-      camera: { ...DEFAULT_MAP_URL_STATE.camera, zoom: 11 },
+  it('uses the first value when the filter param is duplicated', () => {
+    expect(parseMapUrlState('mv=1&findspot=a&findspot=b')).toEqual({
+      version: 1,
+      filter: 'a',
+      showExcavationAreas: false,
+      selection: null,
     })
   })
 
-  it('clamps out-of-range camera values', () => {
+  it('treats a present but empty filter as the empty string', () => {
+    expect(parseMapUrlState('mv=1')).toEqual(DEFAULT_MAP_URL_STATE)
+  })
+
+  it('caps an overlong filter value', () => {
+    const overlong = 'a'.repeat(MAX_FILTER_LENGTH + 50)
+    const state = parseMapUrlState(`mv=1&findspot=${overlong}`)
+    expect(state.filter).toHaveLength(MAX_FILTER_LENGTH)
+    expect(state.filter).toBe('a'.repeat(MAX_FILTER_LENGTH))
+  })
+
+  it.each([
+    ['a lone high surrogate', '\uD800', '\uFFFD'],
+    ['a lone low surrogate', '\uDC00', '\uFFFD'],
+    ['an embedded lone surrogate', 'before\uD800after', 'before\uFFFDafter'],
+  ])('normalizes %s while parsing', (_label, filter, expected) => {
+    expect(parseMapUrlState(`mv=1&findspot=${filter}`).filter).toBe(expected)
+  })
+})
+
+describe('serializeMapUrlState', () => {
+  it('serializes to an empty string for the default state', () => {
+    expect(serializeMapUrlState(DEFAULT_MAP_URL_STATE)).toBe('')
+  })
+
+  it('includes the version and filter when a filter is set', () => {
+    const search = serializeMapUrlState({
+      version: 1,
+      filter: 'Babylon',
+      showExcavationAreas: false,
+      selection: null,
+    })
+    expect(search).toContain('mv=1')
+    expect(search).toContain('findspot=Babylon')
+  })
+
+  it('includes the version and area flag without a filter', () => {
+    const search = serializeMapUrlState({
+      version: 1,
+      filter: '',
+      showExcavationAreas: true,
+      selection: null,
+    })
+    expect(search).toContain('mv=1')
+    expect(search).toContain('areas=1')
+  })
+
+  it('round-trips through parseMapUrlState', () => {
+    const state = {
+      version: 1,
+      filter: 'Aššur',
+      showExcavationAreas: true,
+      selection: null,
+    }
+    expect(parseMapUrlState(serializeMapUrlState(state))).toEqual(state)
+  })
+
+  it('caps an overlong filter before writing it to the URL', () => {
+    const overlong = 'a'.repeat(MAX_FILTER_LENGTH + 50)
+    const search = serializeMapUrlState({
+      version: 1,
+      filter: overlong,
+      showExcavationAreas: false,
+      selection: null,
+    })
+    const written = parseMapUrlState(search)
+    expect(written.filter).toHaveLength(MAX_FILTER_LENGTH)
+  })
+
+  it('does not split a Unicode character at the filter limit', () => {
+    const boundaryFilter = `${'a'.repeat(MAX_FILTER_LENGTH - 1)}😀`
+    const search = serializeMapUrlState({
+      version: 1,
+      filter: boundaryFilter,
+      showExcavationAreas: false,
+      selection: null,
+    })
+
+    expect(parseMapUrlState(search).filter).toBe(boundaryFilter)
+  })
+
+  it.each([
+    ['a lone high surrogate', '\uD800', '\uFFFD'],
+    ['a lone low surrogate', '\uDC00', '\uFFFD'],
+    ['an embedded lone surrogate', 'before\uD800after', 'before\uFFFDafter'],
+  ])('normalizes %s before serializing', (_label, filter, expected) => {
+    const search = serializeMapUrlState({
+      version: 1,
+      filter,
+      showExcavationAreas: false,
+      selection: null,
+    })
+
+    expect(parseMapUrlState(search).filter).toBe(expected)
+  })
+})
+
+describe('selection URL state', () => {
+  const canonicalPolygonIds = [
+    'assur-bb6i-3d76dc1e02af',
+    'kalhu-kalhu-17049d0f312c',
+    'nippur-scribal-quarter-a566fe34fdbe',
+    'uruk-dc-xiv-2-55d0546c4ba6',
+  ]
+
+  it.each(canonicalPolygonIds)(
+    'round-trips canonical selection %s',
+    (polygonId) => {
+      const state = {
+        ...DEFAULT_MAP_URL_STATE,
+        selection: { type: 'excavation-area' as const, polygonId },
+      }
+
+      expect(parseMapUrlState(serializeMapUrlState(state))).toEqual(state)
+    },
+  )
+
+  it('ignores an invalid selection token', () => {
+    expect(parseMapUrlState('mv=1&selected=unknown').selection).toBeNull()
+  })
+
+  it('uses the first duplicated selection value', () => {
     expect(
-      parseMapUrlState('v=1&c=999,999&z=99&b=999&p=999', context).camera,
+      parseMapUrlState(
+        'mv=1&selected=area%3Aassur-bb6i-3d76dc1e02af&selected=area%3Auruk-dc-xiv-2-55d0546c4ba6',
+      ).selection,
     ).toEqual({
-      center: [180, 85.0511],
-      zoom: 24,
-      bearing: 180,
-      pitch: 85,
+      type: 'excavation-area',
+      polygonId: 'assur-bb6i-3d76dc1e02af',
     })
-  })
-
-  it('ignores malformed camera values', () => {
-    expect(parseMapUrlState('v=1&c=abc&z=abc', context).camera).toEqual(
-      DEFAULT_MAP_URL_STATE.camera,
-    )
-  })
-
-  it('drops unknown layers and overlays', () => {
-    const state = parseMapUrlState(
-      'v=1&l=boundaries,ghosts&o=overlay-a:0.4,missing:1,overlay-a:0.9',
-      context,
-    )
-
-    expect(state.layers).toEqual(['boundaries'])
-    expect(state.overlays).toEqual([
-      { id: 'overlay-a', opacity: 0.4, visible: true },
-    ])
-  })
-
-  it('clamps overlay opacity and defaults a missing one', () => {
-    expect(
-      parseMapUrlState('v=1&o=overlay-a:9,overlay-b', context).overlays,
-    ).toEqual([
-      { id: 'overlay-a', opacity: 1, visible: true },
-      { id: 'overlay-b', opacity: 1, visible: true },
-    ])
-  })
-
-  it('parses an empty layer list', () => {
-    expect(parseMapUrlState('v=1&l=', context).layers).toEqual([])
-  })
-
-  it('drops a polygon selection that no longer exists', () => {
-    expect(
-      parseMapUrlState('v=1&area=removed', {
-        ...context,
-        knownPolygonIds: new Set(['assur-area-a']),
-      }).selection,
-    ).toBeNull()
-  })
-
-  it('keeps a polygon selection that still exists', () => {
-    expect(
-      parseMapUrlState('v=1&area=assur-area-a', {
-        ...context,
-        knownPolygonIds: new Set(['assur-area-a']),
-      }).selection,
-    ).toEqual({ type: 'excavation-area', polygonId: 'assur-area-a' })
-  })
-
-  it('truncates an over-long site filter', () => {
-    expect(
-      parseMapUrlState(`v=1&q=${'a'.repeat(500)}`, context).siteFilter,
-    ).toHaveLength(120)
   })
 })

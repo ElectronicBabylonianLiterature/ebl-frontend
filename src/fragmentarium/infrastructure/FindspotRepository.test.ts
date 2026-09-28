@@ -5,6 +5,7 @@ import {
   fromFindspotDto,
   toFindspotDto,
 } from 'fragmentarium/domain/archaeologyDtos'
+import { IncompatibleFindspotMapDataError } from 'map/findspotMapDataSanitizer'
 
 const apiClient = {
   fetchJson: jest.fn(),
@@ -46,13 +47,59 @@ const testData: TestData<ApiFindspotRepository>[] = [
     apiClient.fetchJson,
     expectedMapData,
     ['/findspots/map-data?site=ASSUR', false],
-    Promise.resolve({
-      findspots: [
-        ...expectedMapData,
-        { ...expectedMapData[0], findspotId: 124, polygonIds: [] },
-      ],
-    }),
+    Promise.resolve({ findspots: expectedMapData }),
   ),
 ]
 
 testDelegation(findspotRepository, testData)
+
+describe('fetchMapData compatibility', () => {
+  beforeEach(() => jest.clearAllMocks())
+
+  it.each([
+    ['ASSUR', 'Aššur'],
+    ['KALHU', 'Kalḫu'],
+    ['NIPPUR', 'Nippur'],
+    ['URUK', 'Uruk'],
+  ])('maps exact verified site contract %s', async (siteId, siteName) => {
+    const row = {
+      ...expectedMapData[0],
+      siteId,
+      siteName,
+      polygonIds: [`${siteId.toLowerCase()}-area-a-checksum`],
+    }
+    apiClient.fetchJson.mockResolvedValueOnce({ findspots: [row] })
+
+    await expect(findspotRepository.fetchMapData(siteId)).resolves.toEqual([
+      row,
+    ])
+    expect(apiClient.fetchJson).toHaveBeenCalledWith(
+      `/findspots/map-data?site=${siteId}`,
+      false,
+    )
+  })
+
+  it('rejects a noncanonical site without making a request', async () => {
+    await expect(
+      findspotRepository.fetchMapData('assur'),
+    ).rejects.toBeInstanceOf(IncompatibleFindspotMapDataError)
+    expect(apiClient.fetchJson).not.toHaveBeenCalled()
+  })
+
+  it.each([
+    {},
+    { findspots: 'not-array' },
+    {
+      findspots: [
+        ...expectedMapData,
+        { ...expectedMapData[0], findspotId: 124, polygonIds: [] },
+      ],
+    },
+  ])('rejects malformed response %#', async (response) => {
+    apiClient.fetchJson.mockResolvedValueOnce(response)
+
+    await expect(
+      findspotRepository.fetchMapData('ASSUR'),
+    ).rejects.toBeInstanceOf(IncompatibleFindspotMapDataError)
+  })
+})

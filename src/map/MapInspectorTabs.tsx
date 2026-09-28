@@ -17,13 +17,6 @@ const NEXT_KEYS: Readonly<Record<string, number>> = {
   ArrowLeft: -1,
   ArrowUp: -1,
 }
-
-/**
- * Compact segmented sections inside the existing panel drawer — deliberately
- * not another panel. Roving tab focus keeps the whole group a single tab stop
- * while the arrow keys move between sections, which is what a researcher
- * driving the inspector from the keyboard expects.
- */
 export default function MapInspectorTabs({ tabs, label }: Props): JSX.Element {
   const [activeId, setActiveId] = useState(tabs[0].id)
   const buttonRefs = useRef(new Map<string, HTMLButtonElement>())
