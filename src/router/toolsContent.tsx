@@ -17,7 +17,6 @@ import type BibliographyService from 'bibliography/application/BibliographyServi
 import type AfoRegisterService from 'afo-register/application/AfoRegisterService'
 import type RealiaService from 'realia/application/RealiaService'
 import type FragmentService from 'fragmentarium/application/FragmentService'
-import type { FindspotService } from 'fragmentarium/application/FindspotService'
 import type DossiersService from 'dossiers/application/DossiersService'
 import DossiersSearchPage from 'dossiers/ui/DossiersSearchPage'
 import GenresPage from 'fragmentarium/ui/GenresPage'
@@ -67,7 +66,6 @@ export function getContent({
   realiaService,
   dossiersService,
   fragmentService,
-  findspotService,
   history,
   location,
   match,
@@ -81,7 +79,6 @@ export function getContent({
   realiaService: RealiaService
   dossiersService: DossiersService
   fragmentService: FragmentService
-  findspotService: FindspotService
   history: ContentHistory
   location: ContentLocation
   match: ContentMatch
@@ -115,10 +112,7 @@ export function getContent({
     'cuneiform-converter': <CuneiformConverterForm signService={signService} />,
     map: (
       <React.Suspense fallback={<Spinner>Loading map...</Spinner>}>
-        <MapTab
-          findspotService={findspotService}
-          fragmentService={fragmentService}
-        />
+        <MapTab fragmentService={fragmentService} />
       </React.Suspense>
     ),
   }

@@ -1,99 +1,68 @@
-import { useCallback, useEffect, useRef } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import {
   type MapUrlState,
-  type MapUrlStateContext,
+  mergeMapUrlStateIntoSearch,
+  normalizeMapUrlState,
   parseMapUrlState,
-  serializeMapUrlState,
-} from './mapUrlState'
+} from 'map/mapUrlState'
 
-export const CAMERA_URL_DEBOUNCE_MS = 400
-
-export function useInitialMapUrlState(
-  context: MapUrlStateContext,
-): MapUrlState {
-  const location = useLocation()
-  const initialStateRef = useRef<MapUrlState | null>(null)
-
-  if (initialStateRef.current === null) {
-    initialStateRef.current = parseMapUrlState(location.search, context)
-  }
-
-  return initialStateRef.current
+export interface MapUrlStateController {
+  readonly state: MapUrlState
+  readonly update: (patch: Partial<MapUrlState>) => void
 }
 
-function isCameraOnlyChange(
-  previous: MapUrlState | null,
-  next: MapUrlState,
-): boolean {
-  return (
-    previous !== null &&
-    previous.selection === next.selection &&
-    previous.layers === next.layers &&
-    previous.overlays === next.overlays &&
-    previous.siteFilter === next.siteFilter &&
-    previous.visualization === next.visualization &&
-    previous.tools.terrain === next.tools.terrain &&
-    previous.tools.comparison === next.tools.comparison &&
-    previous.tools.timeline === next.tools.timeline
-  )
-}
-
-export default function useMapUrlSync(
-  state: MapUrlState,
-  context: MapUrlStateContext,
-  onRestore: (restored: MapUrlState) => void,
-): void {
+export default function useMapUrlState(): MapUrlStateController {
   const location = useLocation()
   const navigate = useNavigate()
-  const contextRef = useRef(context)
-  contextRef.current = context
-  const onRestoreRef = useRef(onRestore)
-  onRestoreRef.current = onRestore
-
+  const [state, setState] = useState<MapUrlState>(() =>
+    parseMapUrlState(location.search),
+  )
+  const latestLocationRef = useRef(location)
+  latestLocationRef.current = location
+  const latestStateRef = useRef(state)
+  latestStateRef.current = state
   const lastWrittenSearchRef = useRef<string | null>(null)
-  const previousStateRef = useRef<MapUrlState | null>(null)
 
-  const writeSearch = useCallback(
-    (search: string, replace: boolean) => {
+  const update = useCallback(
+    (patch: Partial<MapUrlState>) => {
+      const next = normalizeMapUrlState({ ...latestStateRef.current, ...patch })
+      if (
+        next.version === latestStateRef.current.version &&
+        next.filter === latestStateRef.current.filter &&
+        next.showExcavationAreas === latestStateRef.current.showExcavationAreas
+      ) {
+        return
+      }
+      latestStateRef.current = next
+      setState(next)
+      const currentLocation = latestLocationRef.current
+      const search = mergeMapUrlStateIntoSearch(currentLocation.search, next)
+      if (search === currentLocation.search.replace(/^\?/, '')) return
       lastWrittenSearchRef.current = search
-      navigate({ search }, { replace })
+      navigate(
+        {
+          pathname: currentLocation.pathname,
+          search,
+          hash: currentLocation.hash,
+        },
+        { replace: true, state: currentLocation.state },
+      )
     },
     [navigate],
   )
 
   useEffect(() => {
-    const search = serializeMapUrlState(state)
-    if (search === lastWrittenSearchRef.current) {
-      previousStateRef.current = state
-      return
-    }
-
-    const replace = isCameraOnlyChange(previousStateRef.current, state)
-    previousStateRef.current = state
-
-    if (!replace) {
-      writeSearch(search, false)
-      return
-    }
-
-    const timeout = setTimeout(
-      () => writeSearch(search, true),
-      CAMERA_URL_DEBOUNCE_MS,
-    )
-    return () => clearTimeout(timeout)
-  }, [state, writeSearch])
-
-  useEffect(() => {
     const search = location.search.replace(/^\?/, '')
-    if (
-      lastWrittenSearchRef.current === null ||
-      search === lastWrittenSearchRef.current
-    ) {
+    if (search === lastWrittenSearchRef.current) {
+      lastWrittenSearchRef.current = null
       return
     }
-
-    lastWrittenSearchRef.current = search
-    onRestoreRef.current(parseMapUrlState(search, contextRef.current))
+    lastWrittenSearchRef.current = null
+    const next = parseMapUrlState(search)
+    latestStateRef.current = next
+    setState(next)
   }, [location.search])
+
+  return { state, update }
 }
