@@ -6,19 +6,14 @@ import {
   type MockMapEvent,
 } from 'map/mapLibreMockEvents.testSupport'
 import { createMapLibreTestDouble } from 'map/mapLibreTestDouble.testSupport'
+import * as mockLayers from 'map/mapLibreMockLayers.testSupport'
 export * from 'map/mapLibreMockEvents.testSupport'
-const addedLayerIds = new Set<string>()
-function rememberAddedLayer(layer: { id: string }): void {
-  addedLayerIds.add(layer.id)
-}
-function findAddedLayer(layerId: string): { id: string } | undefined {
-  return addedLayerIds.has(layerId) ? { id: layerId } : undefined
-}
+export { markLayersAdded } from 'map/mapLibreMockLayers.testSupport'
 export const mockAddSource = jest.fn()
-export const mockAddLayer = jest.fn(rememberAddedLayer)
-export const mockGetLayer = jest.fn(findAddedLayer)
+export const mockAddLayer = jest.fn(mockLayers.rememberAddedLayer)
+export const mockGetLayer = jest.fn(mockLayers.findAddedLayer)
 export const mockRemoveLayer = jest.fn((layerId: string) => {
-  addedLayerIds.delete(layerId)
+  mockLayers.forgetAddedLayer(layerId)
 })
 export const mockRemoveSource = jest.fn()
 export const mockSetLayoutProperty = jest.fn()
@@ -49,32 +44,38 @@ export const mockBoundsExtend = jest.fn()
 const mockEventHandlers: Record<string, MockEventHandler[]> = {}
 let mockLoadImmediately = true
 let mockMapConstructionError: unknown = null
-export const mockMapInstance = {
-  addSource: mockAddSource,
-  addLayer: mockAddLayer,
-  getLayer: mockGetLayer,
-  removeLayer: mockRemoveLayer,
-  removeSource: mockRemoveSource,
-  setLayoutProperty: mockSetLayoutProperty,
-  setTerrain: mockSetTerrain,
-  setPaintProperty: mockSetPaintProperty,
-  setFeatureState: mockSetFeatureState,
-  isStyleLoaded: mockIsStyleLoaded,
-  once: mockOnce,
-  addControl: mockAddControl,
-  remove: mockRemove,
-  resize: mockResize,
-  getSource: mockGetSource,
-  getCanvas: mockGetCanvas,
-  getCenter: mockGetCenter,
-  getBounds: mockGetBounds,
-  on: mockOn,
-  off: mockOff,
-  fitBounds: mockFitBounds,
-  setPadding: mockSetPadding,
-  queryRenderedFeatures: queryRenderedFeaturesFromStyle,
-  easeTo: mockEaseTo,
-}
+export const mockMapInstance = Object.assign(
+  {
+    addSource: mockAddSource,
+    addLayer: mockAddLayer,
+    getLayer: mockGetLayer,
+    removeLayer: mockRemoveLayer,
+    removeSource: mockRemoveSource,
+    setLayoutProperty: mockSetLayoutProperty,
+    setTerrain: mockSetTerrain,
+    setPaintProperty: mockSetPaintProperty,
+  },
+  {
+    setFeatureState: mockSetFeatureState,
+    isStyleLoaded: mockIsStyleLoaded,
+    once: mockOnce,
+    addControl: mockAddControl,
+    remove: mockRemove,
+    resize: mockResize,
+    getSource: mockGetSource,
+    getCanvas: mockGetCanvas,
+  },
+  {
+    getCenter: mockGetCenter,
+    getBounds: mockGetBounds,
+    on: mockOn,
+    off: mockOff,
+    fitBounds: mockFitBounds,
+    setPadding: mockSetPadding,
+    queryRenderedFeatures: queryRenderedFeaturesFromStyle,
+    easeTo: mockEaseTo,
+  },
+)
 function eventKey(event: string, layerId?: string): string {
   return layerId ? `${event}:${layerId}` : event
 }
@@ -107,7 +108,7 @@ function queryRenderedFeaturesFromStyle(
   options?: { layers?: readonly string[] },
 ): unknown[] {
   const missingLayerId = options?.layers?.find(
-    (layerId) => !addedLayerIds.has(layerId),
+    (layerId) => !mockLayers.isLayerAdded(layerId),
   )
   if (missingLayerId !== undefined) {
     fireMapEvent('error', {
@@ -121,12 +122,8 @@ function queryRenderedFeaturesFromStyle(
   return mockQueryRenderedFeatures(point, options)
 }
 
-export function markLayersAdded(...layerIds: readonly string[]): void {
-  layerIds.forEach((layerId) => addedLayerIds.add(layerId))
-}
-
 export function clearMockStyleResources(): void {
-  addedLayerIds.clear()
+  mockLayers.clearAddedLayers()
   mockGetSource.mockReturnValue(undefined)
 }
 
@@ -169,7 +166,7 @@ export function resetMapMocks(): void {
   Object.keys(mockEventHandlers).forEach((event) => {
     delete mockEventHandlers[event]
   })
-  addedLayerIds.clear()
+  mockLayers.clearAddedLayers()
   mockCanvas.style.cursor = ''
   mockLoadImmediately = true
   mockMapConstructionError = null
@@ -184,8 +181,8 @@ export function resetMapMocks(): void {
   mockGetSource.mockReturnValue(undefined)
   mockIsStyleLoaded.mockReturnValue(true)
   mockQueryRenderedFeatures.mockReturnValue([])
-  mockAddLayer.mockImplementation(rememberAddedLayer)
-  mockGetLayer.mockImplementation(findAddedLayer)
+  mockAddLayer.mockImplementation(mockLayers.rememberAddedLayer)
+  mockGetLayer.mockImplementation(mockLayers.findAddedLayer)
   mockOn.mockImplementation(
     (
       event: string,
