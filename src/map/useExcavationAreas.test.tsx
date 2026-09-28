@@ -12,8 +12,6 @@ import {
   deferMapLoad,
   mockAddLayer,
   mockAddSource,
-  mockGetLayer,
-  mockGetSource,
   mockMapInstance,
   mockQueryRenderedFeatures,
   mockRemove,
@@ -21,6 +19,7 @@ import {
   mockSetLayoutProperty,
   mockSetPaintProperty,
   resetMapMocks,
+  rejectMapAccessAfterRemoval,
   triggerMapEvent,
 } from 'map/mapLibreMock.testSupport'
 
@@ -188,18 +187,7 @@ describe('useExcavationAreas', () => {
   })
 
   it('skips subordinate cleanup after the map owner disposes it', () => {
-    let isRemoved = false
-    mockRemove.mockImplementation(() => {
-      isRemoved = true
-    })
-    mockGetLayer.mockImplementation(() => {
-      if (isRemoved) throw new Error('map style has been removed')
-      return undefined
-    })
-    mockGetSource.mockImplementation(() => {
-      if (isRemoved) throw new Error('map style has been removed')
-      return undefined
-    })
+    rejectMapAccessAfterRemoval()
 
     const { unmount } = render(<OwnerTeardownHarness />)
 
