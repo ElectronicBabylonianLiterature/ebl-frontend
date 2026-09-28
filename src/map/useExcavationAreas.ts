@@ -81,7 +81,7 @@ export interface ExcavationAreaOptions {
   readonly onAvailabilityChange?: (isUnavailable: boolean) => void
 }
 
-export default function useExcavationAreas(
+function useExcavationAreaLifecycle(
   mapRef: MutableRefObject<MapLibreMap | null>,
   options: ExcavationAreaOptions,
 ): void {
@@ -121,34 +121,55 @@ export default function useExcavationAreas(
       removeExcavationAreas(map)
     }
   }, [mapRef])
+}
 
+function useExcavationAreaVisibility(
+  mapRef: MutableRefObject<MapLibreMap | null>,
+  isVisible: boolean,
+): void {
   useEffect(() => {
     const map = mapRef.current
     if (!map) return
 
-    const updateVisibility = (): void => setVisible(map, options.isVisible)
+    const updateVisibility = (): void => setVisible(map, isVisible)
     if (map.isStyleLoaded()) updateVisibility()
     else map.once('load', updateVisibility)
 
     return () => {
       if (mapRef.current === map) map.off('load', updateVisibility)
     }
-  }, [mapRef, options.isVisible])
+  }, [mapRef, isVisible])
+}
 
+function useExcavationAreaSelection(
+  mapRef: MutableRefObject<MapLibreMap | null>,
+  isVisible: boolean,
+  selectedPolygonId: string | null,
+): void {
   useEffect(() => {
     const map = mapRef.current
     if (!map) return
 
     const updateSelection = (): void =>
-      applySelectedState(
-        map,
-        options.isVisible ? options.selectedPolygonId : null,
-      )
+      applySelectedState(map, isVisible ? selectedPolygonId : null)
     if (map.isStyleLoaded()) updateSelection()
     else map.once('load', updateSelection)
 
     return () => {
       if (mapRef.current === map) map.off('load', updateSelection)
     }
-  }, [mapRef, options.isVisible, options.selectedPolygonId])
+  }, [mapRef, isVisible, selectedPolygonId])
+}
+
+export default function useExcavationAreas(
+  mapRef: MutableRefObject<MapLibreMap | null>,
+  options: ExcavationAreaOptions,
+): void {
+  useExcavationAreaLifecycle(mapRef, options)
+  useExcavationAreaVisibility(mapRef, options.isVisible)
+  useExcavationAreaSelection(
+    mapRef,
+    options.isVisible,
+    options.selectedPolygonId,
+  )
 }
