@@ -3,7 +3,7 @@ import {
   EARTH_RADIUS_METRES,
   geodesicAreaSquareKm,
   geodesicAreaSquareMetres,
-} from './geodesicArea'
+} from 'map/geodesicArea'
 
 function square(west: number, south: number, size: number): Geometry {
   return {
@@ -97,6 +97,74 @@ describe('geodesicAreaSquareMetres', () => {
 
     expect(geodesicAreaSquareMetres(multi) as number).toBeCloseTo(
       single * 2,
+      -3,
+    )
+  })
+})
+
+describe('antimeridian geometry', () => {
+  const crossing: Geometry = {
+    type: 'Polygon',
+    coordinates: [
+      [
+        [179, 0],
+        [-179, 0],
+        [-179, 1],
+        [179, 1],
+        [179, 0],
+      ],
+    ],
+  }
+  const equivalent: Geometry = {
+    type: 'Polygon',
+    coordinates: [
+      [
+        [-1, 0],
+        [1, 0],
+        [1, 1],
+        [-1, 1],
+        [-1, 0],
+      ],
+    ],
+  }
+
+  it('normalizes longitude across repeated world copies', () => {
+    const expected = geodesicAreaSquareMetres(equivalent) as number
+    const unwrapped: Geometry = {
+      type: 'Polygon',
+      coordinates: [
+        [
+          [179, 0],
+          [-539, 0],
+          [-539, 1],
+          [179, 1],
+          [179, 0],
+        ],
+      ],
+    }
+
+    expect(geodesicAreaSquareMetres(unwrapped) as number).toBeCloseTo(
+      expected,
+      -3,
+    )
+  })
+
+  it('uses the short longitude span in either winding direction', () => {
+    const expected = geodesicAreaSquareMetres(equivalent) as number
+    expect(geodesicAreaSquareMetres(crossing) as number).toBeCloseTo(
+      expected,
+      -3,
+    )
+    const reversed = {
+      ...crossing,
+      coordinates: [
+        [
+          ...(crossing as { coordinates: number[][][] }).coordinates[0],
+        ].reverse(),
+      ],
+    } as Geometry
+    expect(geodesicAreaSquareMetres(reversed) as number).toBeCloseTo(
+      expected,
       -3,
     )
   })

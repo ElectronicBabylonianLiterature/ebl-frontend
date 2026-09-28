@@ -1,84 +1,91 @@
 import React from 'react'
-import type { Position } from 'geojson'
-import { Button, Form } from 'react-bootstrap'
+import { Button, ButtonGroup, Form } from 'react-bootstrap'
 import {
+  MAX_MEASUREMENT_POINTS,
   MEASUREMENT_DISCLAIMER,
-  type MeasurementMode,
-  type MeasurementUnits,
-  measure,
-} from './mapMeasurement'
-import type { MapElevationProfile } from './useMapElevationProfile'
-import MapElevationProfilePanel from './MapElevationProfilePanel'
+} from 'map/mapMeasurement'
+import type { MeasurementController } from 'map/useMapMeasurement'
 
 interface Props {
-  readonly mode: MeasurementMode
-  readonly units: MeasurementUnits
-  readonly positions: readonly Position[]
-  readonly onModeChange: (mode: MeasurementMode) => void
-  readonly onUnitsChange: (units: MeasurementUnits) => void
-  readonly onClear: () => void
-  readonly elevation: MapElevationProfile
+  readonly measurement: MeasurementController
 }
 
-export default function MapMeasurePanel({
-  mode,
-  units,
-  positions,
-  onModeChange,
-  onUnitsChange,
-  onClear,
-  elevation,
-}: Props): JSX.Element {
-  const measurement = measure(mode, positions, units)
-
+export default function MapMeasurePanel({ measurement }: Props): JSX.Element {
   return (
-    <div className="map-tool-panel">
-      <Form.Group controlId="map-measure-mode">
-        <Form.Label>Measure</Form.Label>
-        <Form.Control
-          as="select"
-          value={mode}
-          onChange={(event) =>
-            onModeChange(event.target.value as MeasurementMode)
+    <div className="map-measure">
+      <ButtonGroup size="sm" aria-label="Measurement type">
+        <Button
+          type="button"
+          variant={
+            measurement.mode === 'distance' ? 'secondary' : 'outline-secondary'
           }
+          aria-pressed={measurement.mode === 'distance'}
+          onClick={() => measurement.setMode('distance')}
         >
-          <option value="distance">Distance</option>
-          <option value="area">Area</option>
-        </Form.Control>
-      </Form.Group>
-      <Form.Group controlId="map-measure-units">
-        <Form.Label>Units</Form.Label>
-        <Form.Control
-          as="select"
-          value={units}
-          onChange={(event) =>
-            onUnitsChange(event.target.value as MeasurementUnits)
+          Distance
+        </Button>
+        <Button
+          type="button"
+          variant={
+            measurement.mode === 'area' ? 'secondary' : 'outline-secondary'
           }
+          aria-pressed={measurement.mode === 'area'}
+          onClick={() => measurement.setMode('area')}
         >
-          <option value="metric">Metric</option>
-          <option value="imperial">Imperial</option>
-        </Form.Control>
-      </Form.Group>
-      <p
-        className="map-tool-panel__measurement"
-        role="status"
-        aria-live="polite"
-      >
-        {measurement.label}
+          Area
+        </Button>
+      </ButtonGroup>
+      <Form.Check
+        type="switch"
+        id="map-measure-units"
+        label="Imperial units"
+        checked={measurement.units === 'imperial'}
+        onChange={(event) =>
+          measurement.setUnits(
+            event.currentTarget.checked ? 'imperial' : 'metric',
+          )
+        }
+      />
+      <p className="map-measure__value" role="status">
+        {measurement.measurement.label}
+        {measurement.isAtPointLimit
+          ? ` Maximum of ${MAX_MEASUREMENT_POINTS} points reached.`
+          : null}
       </p>
-      <Button
-        type="button"
-        size="sm"
-        variant="outline-secondary"
-        disabled={positions.length === 0}
-        onClick={onClear}
-      >
-        Clear measurement
-      </Button>
-      <p className="map-tool-panel__note">{MEASUREMENT_DISCLAIMER}</p>
-      {mode === 'distance' ? (
-        <MapElevationProfilePanel elevation={elevation} />
-      ) : null}
+      <p className="map-measure__instructions">
+        Click the map or add its center point (up to {MAX_MEASUREMENT_POINTS}).
+        Backspace undoes; Escape clears.
+      </p>
+      <div className="map-measure__actions">
+        <Button
+          type="button"
+          size="sm"
+          variant="outline-secondary"
+          disabled={measurement.isAtPointLimit}
+          onClick={measurement.addPointAtCenter}
+        >
+          Add point at map center
+        </Button>
+        <Button
+          type="button"
+          size="sm"
+          variant="outline-secondary"
+          disabled={measurement.pointCount === 0}
+          onClick={measurement.removeLastPoint}
+        >
+          Undo point
+        </Button>
+        <Button
+          type="button"
+          size="sm"
+          variant="outline-secondary"
+          disabled={measurement.pointCount === 0}
+          onClick={measurement.clear}
+        >
+          Clear
+        </Button>
+      </div>
+      <p className="map-measure__disclaimer">{MEASUREMENT_DISCLAIMER}</p>
     </div>
   )
 }

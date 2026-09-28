@@ -1,21 +1,14 @@
-import type {
-  PolygonResearchSummary,
-  SiteResearchSummary,
-} from './mapResearchSummary'
+import type { PolygonResearchSummary } from 'map/mapResearchSummary'
 import {
   EXCAVATION_AREA_NOTE,
   FRAGMENT_ACCESS_NOTE,
-  LINKED_POLYGON_LABEL,
   countLabel,
-  linkedPolygonSentence,
   locationPrecisionLabel,
   mappingEvidenceShortLabel,
-} from './mapResearchLabels'
+} from 'map/mapResearchLabels'
 
 export interface MapResearchContext {
   readonly visualizationLabel: string
-  readonly activeOverlayTitles: readonly string[]
-  readonly isTerrainEnabled: boolean
   readonly siteFilter: string
   readonly shareUrl: string
   readonly generatedAt: string
@@ -25,41 +18,48 @@ function section(title: string, lines: readonly string[]): readonly string[] {
   return lines.length === 0 ? [] : ['', title, ...lines.map((l) => `- ${l}`)]
 }
 
+const MARKDOWN_INLINE_CHARACTERS = /[\\`*_{}<>#|]|\[|\]/g
+
+function inline(value: string): string {
+  return value
+    .replace(/\s+/g, ' ')
+    .trim()
+    .replace(MARKDOWN_INLINE_CHARACTERS, '\\$&')
+}
+
 function contextLines(context: MapResearchContext): readonly string[] {
   return [
-    ...section('Active historical maps:', context.activeOverlayTitles),
-    ...section('Active visualization:', [context.visualizationLabel]),
+    ...section('Active visualization:', [inline(context.visualizationLabel)]),
     ...section(
       'Active filters:',
       context.siteFilter === ''
         ? []
-        : [`Site name contains "${context.siteFilter}"`],
+        : [`Site name contains "${inline(context.siteFilter)}"`],
     ),
-    ...section('Terrain:', [context.isTerrainEnabled ? 'On' : 'Off']),
     '',
     'Map:',
-    context.shareUrl,
+    inline(context.shareUrl),
     '',
-    `Generated: ${context.generatedAt}`,
+    `Generated: ${inline(context.generatedAt)}`,
     '',
     FRAGMENT_ACCESS_NOTE,
     EXCAVATION_AREA_NOTE,
   ]
 }
 
-/**
- * A plain-Markdown record of exactly what is on screen. It never states a
- * value the current view does not already show, and it carries the share URL
- * so the same camera, filters and overlays can be reproduced.
- */
 export function polygonResearchMarkdown(
   summary: PolygonResearchSummary,
   context: MapResearchContext,
 ): string {
   return [
-    `# ${summary.displayName} — ${summary.siteName}`,
+    `# ${inline(summary.displayName)} — ${inline(summary.siteName)}`,
     '',
     'Feature type: Excavation area',
+    `Site ID: ${inline(summary.siteId)}`,
+    `Polygon ID: ${inline(summary.polygonId)}`,
+    ...(summary.areaSquareKm === null || !Number.isFinite(summary.areaSquareKm)
+      ? []
+      : [`Mapped area: ${summary.areaSquareKm.toFixed(3)} km²`]),
     `Mapped findspots: ${summary.mappedFindspotCount}`,
     `Accessible fragments: ${summary.accessibleFragmentCount}`,
     `Mapping evidence: ${mappingEvidenceShortLabel(summary.mappingEvidence)}`,
@@ -68,7 +68,9 @@ export function polygonResearchMarkdown(
       'Mapped findspots:',
       summary.findspots.map(
         (findspot) =>
-          `Findspot ${findspot.findspotId} — ${countLabel(
+          `Findspot ${findspot.findspotId}${
+            findspot.area === null ? '' : ` (${inline(findspot.area)})`
+          } — ${countLabel(
             findspot.accessibleFragmentCount,
             'accessible fragment',
           )}`,
@@ -78,32 +80,8 @@ export function polygonResearchMarkdown(
   ].join('\n')
 }
 
-export function siteResearchMarkdown(
-  summary: SiteResearchSummary,
-  context: MapResearchContext,
-): string {
-  return [
-    `# ${summary.siteName}`,
-    '',
-    'Feature type: Site',
-    `${LINKED_POLYGON_LABEL}: ${linkedPolygonSentence(
-      summary.linkedPolygonCount,
-      summary.totalPolygonCount,
-    )}`,
-    `Mapped findspots: ${summary.mappedFindspotCount}`,
-    `Accessible fragments: ${summary.accessibleFragmentCount}`,
-    `Historical maps available: ${summary.historicalOverlayCount}`,
-    ...contextLines(context),
-  ].join('\n')
-}
-
 const UNSAFE_FILENAME_CHARACTERS = /[^a-z0-9]+/gi
 
-/**
- * Transliteration is not attempted: a name such as "Aššur" reduces to its
- * ASCII skeleton and, failing that, to a stable generic stem, so the download
- * never produces a name the filesystem or the browser has to repair.
- */
 export function researchSummaryFileName(
   title: string,
   generatedAt: string,

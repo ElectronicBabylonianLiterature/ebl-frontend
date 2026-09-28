@@ -7,25 +7,31 @@ function toRadians(degrees: number): number {
   return (degrees * Math.PI) / 180
 }
 
-function isRing(value: unknown): value is Position[] {
+function longitudeDeltaRadians(from: number, to: number): number {
+  const delta = toRadians(to) - toRadians(from)
+  if (delta >= -Math.PI && delta <= Math.PI) return delta
+
+  const fullTurn = 2 * Math.PI
+  return ((((delta + Math.PI) % fullTurn) + fullTurn) % fullTurn) - Math.PI
+}
+
+function isFinitePosition(value: unknown): value is Position {
+  if (!Array.isArray(value)) return false
+  const [longitude, latitude] = value
   return (
-    Array.isArray(value) &&
-    value.length >= 4 &&
-    value.every(
-      (position) =>
-        Array.isArray(position) &&
-        typeof position[0] === 'number' &&
-        typeof position[1] === 'number' &&
-        Number.isFinite(position[0]) &&
-        Number.isFinite(position[1]),
-    )
+    typeof longitude === 'number' &&
+    typeof latitude === 'number' &&
+    Number.isFinite(longitude) &&
+    Number.isFinite(latitude)
   )
 }
 
-/**
- * Signed spherical excess of a closed ring, after the standard
- * Chamberlain–Duquette formulation used by geodesic area libraries.
- */
+function isRing(value: unknown): value is Position[] {
+  return (
+    Array.isArray(value) && value.length >= 4 && value.every(isFinitePosition)
+  )
+}
+
 function ringArea(ring: readonly Position[]): number {
   if (ring.length < 4) return 0
 
@@ -35,7 +41,7 @@ function ringArea(ring: readonly Position[]): number {
     const [upperLongitude, upperLatitude] = ring[index + 1]
 
     total +=
-      (toRadians(upperLongitude) - toRadians(lowerLongitude)) *
+      longitudeDeltaRadians(lowerLongitude, upperLongitude) *
       (2 +
         Math.sin(toRadians(lowerLatitude)) +
         Math.sin(toRadians(upperLatitude)))
@@ -57,10 +63,6 @@ function polygonArea(rings: unknown): number {
   return Math.max(outerArea - holeArea, 0)
 }
 
-/**
- * Geodesic area in square metres, or null when the geometry cannot yield a
- * positive area. Never returns 0 as if it were a measurement.
- */
 export function geodesicAreaSquareMetres(geometry: Geometry): number | null {
   const area =
     geometry.type === 'Polygon'

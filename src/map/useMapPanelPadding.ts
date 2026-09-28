@@ -6,14 +6,7 @@ import {
   type PanelPaddingSide,
   paddingEquals,
   panelPadding,
-} from './mapPanelPadding'
-
-/**
- * Reserves screen space for the open drawer/bottom sheet so later camera
- * fits (selecting a feature, "zoom to overlay") keep it visible. `setPadding`
- * only stores the value for future camera moves — it never itself pans or
- * animates the map, so toggling panels cannot trigger a movement loop.
- */
+} from 'map/mapPanelPadding'
 export default function useMapPanelPadding(
   mapRef: MutableRefObject<MapLibreMap | null>,
   isOpen: boolean,

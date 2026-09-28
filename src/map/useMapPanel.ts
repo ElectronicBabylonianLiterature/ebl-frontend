@@ -1,5 +1,9 @@
 import { useCallback, useState } from 'react'
-import { type ActiveMapPanel, type MapPanelId, toggledPanel } from './mapPanel'
+import {
+  type ActiveMapPanel,
+  type MapPanelId,
+  toggledPanel,
+} from 'map/mapPanel'
 
 export interface MapPanelController {
   readonly active: ActiveMapPanel
@@ -7,12 +11,6 @@ export interface MapPanelController {
   readonly toggle: (panel: MapPanelId) => void
   readonly close: () => void
 }
-
-/**
- * The one place `ActiveMapPanel` state lives. Every surface that opens a
- * panel — the toolbar, a selection, "Show selected area", Escape — goes
- * through this hook so at most one large panel is ever open.
- */
 export default function useMapPanel(
   initial: ActiveMapPanel = null,
 ): MapPanelController {

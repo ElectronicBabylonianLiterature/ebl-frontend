@@ -1,16 +1,20 @@
 import { evaluateExpression } from 'test-support/mapExpressionEvaluator'
 import {
   COLOR_SELECTED,
+  COLOR_UNAVAILABLE,
   COLOR_UNMAPPED,
   DASH_MAPPED,
+  DASH_UNAVAILABLE,
   DASH_UNMAPPED,
   OUTLINE_SELECTED,
+  OUTLINE_UNAVAILABLE,
   OUTLINE_UNMAPPED,
-} from './mapPaintColors'
+} from 'map/mapPaintColors'
 import {
   COLOR_EVIDENCE_CURATED,
   COLOR_EVIDENCE_MIXED,
   COLOR_EVIDENCE_VERIFIED,
+  DASH_CURATED,
   DASH_MIXED,
   EVIDENCE_CODES,
   OUTLINE_EVIDENCE_CURATED,
@@ -22,13 +26,17 @@ import {
   evidenceOutlineDash,
   evidenceOutlineOpacity,
   evidenceOutlineWidth,
-} from './mapEvidencePaint'
+} from 'map/mapEvidencePaint'
 
 function stateFor(
   evidence: keyof typeof EVIDENCE_CODES,
   accessibleFragmentCount = 4,
 ): Record<string, unknown> {
-  return { evidenceCode: EVIDENCE_CODES[evidence], accessibleFragmentCount }
+  return {
+    dataAvailable: true,
+    evidenceCode: EVIDENCE_CODES[evidence],
+    accessibleFragmentCount,
+  }
 }
 
 const evaluate = (
@@ -56,8 +64,10 @@ describe('evidence fill colour', () => {
     ).toBe(COLOR_SELECTED)
   })
 
-  it('treats a feature without state as unmapped', () => {
-    expect(evaluate(evidenceFillColor(), {})).toBe(COLOR_UNMAPPED)
+  it('treats a feature without state as unavailable', () => {
+    expect(evaluate(evidenceFillColor(), {})).toBe(COLOR_UNAVAILABLE)
+    expect(evaluate(evidenceOutlineColor(), {})).toBe(OUTLINE_UNAVAILABLE)
+    expect(evaluate(evidenceOutlineDash(), {})).toEqual([...DASH_UNAVAILABLE])
   })
 })
 
@@ -120,7 +130,7 @@ describe('non-colour evidence encodings', () => {
       evaluate(evidenceOutlineDash(), stateFor('verified-source')),
     ).toEqual([...DASH_MAPPED])
     expect(evaluate(evidenceOutlineDash(), stateFor('curated'))).toEqual([
-      ...DASH_MAPPED,
+      ...DASH_CURATED,
     ])
     expect(evaluate(evidenceOutlineDash(), stateFor('mixed'))).toEqual([
       ...DASH_MIXED,

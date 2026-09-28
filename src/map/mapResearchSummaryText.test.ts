@@ -1,38 +1,32 @@
+import type { PolygonResearchSummary } from 'map/mapResearchSummary'
 import {
   type MapResearchContext,
   polygonResearchMarkdown,
   researchSummaryFileName,
-  siteResearchMarkdown,
-} from './mapResearchSummaryText'
-import type {
-  PolygonResearchSummary,
-  SiteResearchSummary,
-} from './mapResearchSummary'
+} from 'map/mapResearchSummaryText'
 
 const context: MapResearchContext = {
-  visualizationLabel: 'Mapping evidence',
-  activeOverlayTitles: ['Andrae 1938, Beilage'],
-  isTerrainEnabled: true,
-  siteFilter: 'aš',
-  shareUrl: 'https://example.test/map?v=1&viz=evidence',
-  generatedAt: '2026-08-06T10:00:00.000Z',
+  visualizationLabel: 'Mapped status',
+  siteFilter: '',
+  shareUrl: 'https://www.ebl.lmu.de/tools/map?mv=1',
+  generatedAt: '2026-01-02T03:04:05.000Z',
 }
 
-const polygon: PolygonResearchSummary = {
-  polygonId: 'assur-bb6i-3d76dc1e02af',
+const summary: PolygonResearchSummary = {
+  polygonId: 'assur-area-a',
   siteId: 'assur',
   siteName: 'Aššur',
-  displayName: 'bB6I',
-  mappedFindspotCount: 13,
-  accessibleFragmentCount: 23,
+  displayName: 'Area A',
+  mappedFindspotCount: 2,
+  accessibleFragmentCount: 5,
   findspots: [
     {
-      findspotId: 7,
-      accessibleFragmentCount: 1,
+      findspotId: 1,
+      accessibleFragmentCount: 5,
       matchMethod: 'verified-source',
       locationPrecision: 'excavation-area',
       sector: null,
-      area: null,
+      area: 'Area A',
       building: null,
       room: null,
     },
@@ -42,93 +36,79 @@ const polygon: PolygonResearchSummary = {
   areaSquareKm: 0.8,
 }
 
-const site: SiteResearchSummary = {
-  siteId: 'assur',
-  siteName: 'Aššur',
-  totalPolygonCount: 134,
-  linkedPolygonCount: 133,
-  mappedFindspotCount: 317,
-  accessibleFragmentCount: 1245,
-  historicalOverlayCount: 10,
-}
-
 describe('polygonResearchMarkdown', () => {
-  const markdown = polygonResearchMarkdown(polygon, context)
-
-  it('titles the summary with the display name and site', () => {
-    expect(markdown.startsWith('# bB6I — Aššur')).toBe(true)
-  })
-
-  it('records the visible counts, evidence and precision', () => {
-    expect(markdown).toContain('Feature type: Excavation area')
-    expect(markdown).toContain('Mapped findspots: 13')
-    expect(markdown).toContain('Accessible fragments: 23')
-    expect(markdown).toContain('Mapping evidence: Verified source')
-    expect(markdown).toContain('Location precision: Excavation area')
-    expect(markdown).toContain('Findspot 7 — 1 accessible fragment')
-  })
-
-  it('records the reproducible view', () => {
-    expect(markdown).toContain('- Andrae 1938, Beilage')
-    expect(markdown).toContain('- Mapping evidence')
-    expect(markdown).toContain('Site name contains "aš"')
-    expect(markdown).toContain('- On')
+  it('renders canonical identities, area, counts and the share url', () => {
+    const markdown = polygonResearchMarkdown(summary, context)
+    expect(markdown).toContain('# Area A — Aššur')
+    expect(markdown).toContain('Site ID: assur')
+    expect(markdown).toContain('Polygon ID: assur-area-a')
+    expect(markdown).toContain('Mapped area: 0.800 km²')
+    expect(markdown).toContain('Accessible fragments: 5')
+    expect(markdown).toContain('Findspot 1 (Area A) — 5 accessible fragments')
     expect(markdown).toContain(context.shareUrl)
-    expect(markdown).toContain(`Generated: ${context.generatedAt}`)
   })
 
-  it('carries the precision caveats and never the canonical id', () => {
-    expect(markdown).toContain('accessible to the current user')
-    expect(markdown).toContain('not exact fragment coordinates')
-    expect(markdown).not.toContain(polygon.polygonId)
+  it('omits absent filters and mapped area', () => {
+    const markdown = polygonResearchMarkdown(
+      { ...summary, areaSquareKm: null },
+      context,
+    )
+    expect(markdown).not.toContain('Active filters:')
+    expect(markdown).not.toContain('Mapped area:')
   })
 
-  it('omits sections the view has nothing for', () => {
-    const bare = polygonResearchMarkdown(
-      { ...polygon, findspots: [] },
+  it('normalizes newlines and escapes untrusted Markdown values', () => {
+    const markdown = polygonResearchMarkdown(
+      {
+        ...summary,
+        displayName: 'Area [A]\n# injected',
+        siteName: '<Uruk>\n- forged',
+        siteId: 'uruk\n# forged',
+        polygonId: 'poly_[x]',
+        findspots: [{ ...summary.findspots[0], area: '`Area`\n* forged' }],
+      },
       {
         ...context,
-        activeOverlayTitles: [],
-        siteFilter: '',
-        isTerrainEnabled: false,
+        visualizationLabel: 'Mapped *status*\n# forged',
+        siteFilter: 'Uruk"]\n# forged',
+        shareUrl: 'https://example.test/<map>\n# forged',
       },
     )
 
-    expect(bare).not.toContain('Active historical maps:')
-    expect(bare).not.toContain('Active filters:')
-    expect(bare).not.toContain('Mapped findspots:\n-')
-    expect(bare).toContain('- Off')
+    expect(markdown).toContain(
+      '# Area \\[A\\] \\# injected — \\<Uruk\\> - forged',
+    )
+    expect(markdown).toContain('Site ID: uruk \\# forged')
+    expect(markdown).toContain('Polygon ID: poly\\_\\[x\\]')
+    expect(markdown).toContain('Site name contains "Uruk"\\] \\# forged"')
+    expect(markdown).toContain('Findspot 1 (\\`Area\\` \\* forged)')
+    expect(markdown).not.toContain('\n# forged')
+    expect(markdown).not.toContain('\n- forged')
   })
-})
 
-describe('siteResearchMarkdown', () => {
-  it('labels the one ratio for exactly what it counts', () => {
-    const markdown = siteResearchMarkdown(site, context)
+  it('distinguishes duplicate display names by canonical IDs', () => {
+    const first = polygonResearchMarkdown(summary, context)
+    const second = polygonResearchMarkdown(
+      { ...summary, siteId: 'uruk', polygonId: 'uruk-area-a' },
+      context,
+    )
 
-    expect(markdown.startsWith('# Aššur')).toBe(true)
-    expect(markdown).toContain('Excavation polygons linked: 133 of 134')
-    expect(markdown).toContain('Mapped findspots: 317')
-    expect(markdown).toContain('Historical maps available: 10')
-    expect(markdown).not.toContain('coverage')
+    expect(first).not.toBe(second)
+    expect(first).toContain('Polygon ID: assur-area-a')
+    expect(second).toContain('Polygon ID: uruk-area-a')
   })
 })
 
 describe('researchSummaryFileName', () => {
-  it('reduces a diacritic name to a stable ascii slug', () => {
-    expect(researchSummaryFileName('bB6I Aššur', context.generatedAt)).toBe(
-      'ebl-map-bb6i-assur-2026-08-06T10-00-00-000Z.md',
+  it('produces a filesystem-safe markdown filename', () => {
+    expect(researchSummaryFileName('Aššur — Area A', context.generatedAt)).toBe(
+      'ebl-map-assur-area-a-2026-01-02T03-04-05-000Z.md',
     )
   })
 
-  it('falls back to a generic stem when nothing survives', () => {
-    expect(researchSummaryFileName('***', context.generatedAt)).toBe(
-      'ebl-map-summary-2026-08-06T10-00-00-000Z.md',
+  it('falls back to a generic stem when the title has no ascii', () => {
+    expect(researchSummaryFileName('—', context.generatedAt)).toMatch(
+      /^ebl-map-summary-/,
     )
-  })
-
-  it('bounds the slug length', () => {
-    expect(
-      researchSummaryFileName('a'.repeat(200), context.generatedAt),
-    ).toContain(`ebl-map-${'a'.repeat(60)}-`)
   })
 })

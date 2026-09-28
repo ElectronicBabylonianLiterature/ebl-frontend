@@ -1,28 +1,30 @@
-import type { Position } from 'geojson'
-import type { PolygonFindspotSummary } from './findspotMapData'
+import type { PolygonFindspotSummary } from 'map/findspotMapData'
 import type {
   ExcavationPolygon,
   ExcavationPolygonIndex,
-} from './excavationPolygonIndex'
-import { type BoundingBox, boundingBoxOfPositions } from './mapGeometry'
-import {
-  type Ring,
-  boundingBoxesIntersect,
-  boundingBoxRing,
-  geometryIntersectsRing,
-} from './spatialPredicates'
+} from 'map/excavationPolygonIndex'
+import type { BoundingBox } from 'map/mapGeometry'
+import { geometryIntersectsBoundingBox } from 'map/spatialPredicates'
 
 export type SpatialSearchShape =
-  | { readonly type: 'viewport'; readonly bounds: BoundingBox }
-  | { readonly type: 'bounding-box'; readonly bounds: BoundingBox }
-  | { readonly type: 'polygon'; readonly positions: readonly Position[] }
-  | { readonly type: 'excavation-area'; readonly polygonId: string }
+  | { readonly type: 'viewport'; readonly bounds: readonly BoundingBox[] }
+  | { readonly type: 'bounding-box'; readonly bounds: readonly BoundingBox[] }
+
+export type SpatialSearchDataStatus = 'available' | 'loading' | 'unavailable'
+
+export interface SpatialSearchData {
+  readonly summaries: ReadonlyMap<string, PolygonFindspotSummary>
+  readonly siteStatuses: ReadonlyMap<string, SpatialSearchDataStatus>
+}
 
 export interface SpatialSearchResult {
   readonly polygonIds: readonly string[]
   readonly findspotIds: readonly number[]
   readonly mappedPolygonCount: number
   readonly accessibleFragmentCount: number
+  readonly availablePolygonCount: number
+  readonly loadingPolygonCount: number
+  readonly unavailablePolygonCount: number
 }
 
 export const EMPTY_SPATIAL_SEARCH_RESULT: SpatialSearchResult = {
@@ -30,6 +32,9 @@ export const EMPTY_SPATIAL_SEARCH_RESULT: SpatialSearchResult = {
   findspotIds: [],
   mappedPolygonCount: 0,
   accessibleFragmentCount: 0,
+  availablePolygonCount: 0,
+  loadingPolygonCount: 0,
+  unavailablePolygonCount: 0,
 }
 
 function allPolygons(
@@ -38,95 +43,117 @@ function allPolygons(
   return [...index.values()].flat()
 }
 
-function closeRing(positions: readonly Position[]): Ring | null {
-  if (positions.length < 3) return null
-
-  const [first] = positions
-  const last = positions[positions.length - 1]
-  return first[0] === last[0] && first[1] === last[1]
-    ? positions
-    : [...positions, first]
-}
-
-function searchRingOf(
-  shape: SpatialSearchShape,
-  index: ExcavationPolygonIndex,
-): Ring | null {
-  switch (shape.type) {
-    case 'viewport':
-    case 'bounding-box':
-      return boundingBoxRing(shape.bounds)
-    case 'polygon':
-      return closeRing(shape.positions)
-    default: {
-      const polygon = allPolygons(index).find(
-        (entry) => entry.polygonId === shape.polygonId,
-      )
-      return polygon?.bounds ? boundingBoxRing(polygon.bounds) : null
-    }
-  }
+function isValidBounds([west, south, east, north]: BoundingBox): boolean {
+  return (
+    [west, south, east, north].every(Number.isFinite) &&
+    west >= -180 &&
+    east <= 180 &&
+    south >= -90 &&
+    north <= 90 &&
+    west < east &&
+    south < north
+  )
 }
 
 function matchingPolygons(
   index: ExcavationPolygonIndex,
-  searchRing: Ring,
+  bounds: readonly BoundingBox[],
 ): readonly ExcavationPolygon[] {
-  const searchBounds = boundingBoxOfPositions(
-    searchRing.map(([longitude, latitude]) => [longitude, latitude] as const),
+  const byId = new Map(
+    allPolygons(index)
+      .filter((polygon) =>
+        bounds.some((box) =>
+          geometryIntersectsBoundingBox(polygon.geometry, box),
+        ),
+      )
+      .map((polygon) => [polygon.polygonId, polygon]),
   )
-  if (searchBounds === null) return []
+  return [...byId.values()].sort((left, right) =>
+    left.polygonId.localeCompare(right.polygonId),
+  )
+}
 
-  return allPolygons(index).filter(
-    (polygon) =>
-      polygon.bounds !== null &&
-      boundingBoxesIntersect(polygon.bounds, searchBounds) &&
-      geometryIntersectsRing(polygon.geometry, searchRing),
-  )
+interface FindspotMatch {
+  readonly accessibleFragmentCount: number
+}
+
+function addFindspots(
+  summary: PolygonFindspotSummary,
+  matches: Map<number, FindspotMatch>,
+  rejected: Set<number>,
+): void {
+  for (const findspot of summary.findspots) {
+    const id = findspot.findspotId
+    if (rejected.has(id)) continue
+
+    const existing = matches.get(id)
+    if (
+      existing &&
+      existing.accessibleFragmentCount !== findspot.accessibleFragmentCount
+    ) {
+      matches.delete(id)
+      rejected.add(id)
+    } else if (!existing) {
+      matches.set(id, {
+        accessibleFragmentCount: findspot.accessibleFragmentCount,
+      })
+    }
+  }
 }
 
 export function runSpatialSearch(
   shape: SpatialSearchShape,
   index: ExcavationPolygonIndex,
-  summaries: ReadonlyMap<string, PolygonFindspotSummary>,
+  data: SpatialSearchData,
 ): SpatialSearchResult {
-  const searchRing = searchRingOf(shape, index)
-  if (searchRing === null) return EMPTY_SPATIAL_SEARCH_RESULT
+  if (
+    shape.bounds.length === 0 ||
+    shape.bounds.length > 2 ||
+    !shape.bounds.every(isValidBounds)
+  ) {
+    return EMPTY_SPATIAL_SEARCH_RESULT
+  }
 
-  const polygons = matchingPolygons(index, searchRing)
-  const findspotIds = new Set<number>()
+  const polygons = matchingPolygons(index, shape.bounds)
+  const matches = new Map<number, FindspotMatch>()
+  const rejected = new Set<number>()
   let mappedPolygonCount = 0
-  let accessibleFragmentCount = 0
+  let availablePolygonCount = 0
+  let loadingPolygonCount = 0
+  let unavailablePolygonCount = 0
 
   for (const polygon of polygons) {
-    const summary = summaries.get(polygon.polygonId)
-    if (!summary) continue
-
-    mappedPolygonCount += 1
-    accessibleFragmentCount += summary.accessibleFragmentCount
-    for (const findspotId of summary.findspotIds) {
-      findspotIds.add(findspotId)
+    const status = data.siteStatuses.get(polygon.siteId) ?? 'unavailable'
+    if (status === 'loading') {
+      loadingPolygonCount += 1
+      continue
     }
+    if (status === 'unavailable') {
+      unavailablePolygonCount += 1
+      continue
+    }
+
+    availablePolygonCount += 1
+    const summary = data.summaries.get(polygon.polygonId)
+    if (!summary) continue
+    mappedPolygonCount += 1
+    addFindspots(summary, matches, rejected)
   }
 
   return {
-    polygonIds: polygons
-      .map((polygon) => polygon.polygonId)
-      .sort((left, right) => left.localeCompare(right)),
-    findspotIds: [...findspotIds].sort((left, right) => left - right),
+    polygonIds: polygons.map(({ polygonId }) => polygonId),
+    findspotIds: [...matches.keys()].sort((left, right) => left - right),
     mappedPolygonCount,
-    accessibleFragmentCount,
+    accessibleFragmentCount: [...matches.values()].reduce(
+      (total, match) => total + match.accessibleFragmentCount,
+      0,
+    ),
+    availablePolygonCount,
+    loadingPolygonCount,
+    unavailablePolygonCount,
   }
 }
 
 export function spatialSearchDescription(shape: SpatialSearchShape): string {
-  switch (shape.type) {
-    case 'viewport':
-      return 'Current map view'
-    case 'bounding-box':
-      return 'Drawn rectangle'
-    case 'polygon':
-      return 'Drawn area'
-    default:
-      return 'Selected excavation area'
-  }
+  return shape.type === 'viewport' ? 'Current map view' : 'Drawn rectangle'
 }
