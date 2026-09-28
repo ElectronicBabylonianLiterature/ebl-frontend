@@ -1,237 +1,234 @@
-import { useEffect, useRef } from 'react'
+import { useContext, useEffect, useRef } from 'react'
 import type { MutableRefObject, RefObject } from 'react'
+import type { Point } from 'geojson'
 import maplibregl from 'maplibre-gl'
-import type { Map as MapLibreMap } from 'maplibre-gl'
+import ErrorReporterContext from 'ErrorReporterContext'
+import { useHistory } from 'router/compat'
+import type {
+  GeoJSONSource,
+  Map as MapLibreMap,
+  MapGeoJSONFeature,
+  MapMouseEvent,
+} from 'maplibre-gl'
 import { ProvenanceRecord } from 'fragmentarium/domain/Provenance'
-import { INITIAL_CENTER, INITIAL_ZOOM } from './mapCamera'
+import { createFindspotPopup } from 'map/createFindspotPopup'
+import { getPopupProperties } from 'map/findspotPopupProperties'
+import { getFeaturePointCoordinates } from 'map/pointCoordinates'
 import {
-  applyFindspotSummaryState,
-  applySelectionState,
-  applySiteMarkerState,
-} from './mapFeatureState'
-import type { SiteMarkerState, SiteResearchSummaries } from './mapSiteSummaries'
-import type { PolygonVisualizationValues } from './mapVisualizationValues'
-import { applyExcavationPaint } from './mapChoroplethLayers'
-import type { ExcavationPaint } from './mapExcavationPaint'
-import type { ExtrusionScale } from './mapExtrusionScale'
+  INTERACTIVE_LAYER_IDS,
+  resetPointerCursor,
+  setPointerCursor,
+  showPointerCursor,
+} from 'map/mapCursor'
 import {
-  applyExtrusionPaint,
-  pitchForExtrusion,
-  setExtrusionVisibility,
-} from './mapExtrusionLayers'
-import prefersReducedMotion from 'common/utils/prefersReducedMotion'
-import type { PolygonFindspotSummary } from './findspotMapData'
+  SOURCE_ID,
+  clusterCountLayer,
+  clusterLayer,
+  createFindspotsSource,
+  unclusteredLayer,
+} from 'map/mapLayers'
+import { fitMapToData } from 'map/mapBounds'
+import { INITIAL_CENTER, INITIAL_ZOOM } from 'map/mapCamera'
+import { queryFindspotFeatures } from 'map/mapFeatureQuery'
 import {
-  clearHoverState,
-  handleMapClick,
-  handleMapHover,
-} from './mapInteractions'
-import {
-  isBaseStyleFailure,
-  type MapErrorEventLike,
-} from './mapErrorClassification'
-import type { ActiveHistoricalMapOverlay } from './mapOverlayLifecycle'
-import { syncHistoricalOverlays } from './mapOverlayLifecycle'
-import {
-  initializeFindspotSources,
-  setBoundaryVisibility,
-  setExcavationAreaVisibility,
-} from './mapSourceLifecycle'
-import type { MapHoverPreview, MapSelection } from './mapSelection'
+  MAP_STYLE_URL,
+  type MapLibreErrorEvent,
+  getReportableMapError,
+  isMapBackgroundLoadError,
+} from 'map/mapBackgroundError'
+import { provenanceToGeoJson } from 'map/provenanceToGeoJson'
 
-export const MAP_STYLE_URL =
-  'https://basemaps.cartocdn.com/gl/positron-gl-style/style.json'
-
-export interface FindspotMapOptions {
-  readonly provenances: readonly ProvenanceRecord[] | null
-  readonly showBoundaries: boolean
-  readonly activeHistoricalOverlays: readonly ActiveHistoricalMapOverlay[]
-  readonly showExcavationAreas: boolean
-  readonly polygonVisualizationValues: PolygonVisualizationValues
-  readonly excavationPaint: ExcavationPaint
-  readonly extrusionScale: ExtrusionScale | null
-  readonly isExtrusionEnabled: boolean
-  readonly polygonSummaries: ReadonlyMap<string, PolygonFindspotSummary>
-  readonly siteSummaries: SiteResearchSummaries
-  readonly siteMarkerStates: ReadonlyMap<string, SiteMarkerState>
-  readonly selection: MapSelection | null
-  readonly onSelectFeature: (selection: MapSelection) => void
-  readonly onHoverPreview: (preview: MapHoverPreview | null) => void
-  readonly onBaseStyleFailure: () => void
+interface FindspotMapHandlers {
+  isActive: () => boolean
+  navigate: (path: string) => void
+  reportError: (error: Error) => void
 }
 
-function useLatestRef<T>(value: T): MutableRefObject<T> {
-  const ref = useRef(value)
-  ref.current = value
-  return ref
+function initializeFindspotSource(
+  map: MapLibreMap,
+  provenances: readonly ProvenanceRecord[],
+  shouldFitData: boolean,
+): void {
+  const geoJson = provenanceToGeoJson(provenances)
+  map.addSource(SOURCE_ID, createFindspotsSource(geoJson))
+  map.addLayer(clusterLayer)
+  map.addLayer(clusterCountLayer)
+  map.addLayer(unclusteredLayer)
+  if (shouldFitData) fitMapToData(map, geoJson.features)
+}
+
+function expandCluster(
+  map: MapLibreMap,
+  cluster: MapGeoJSONFeature,
+  handlers: FindspotMapHandlers,
+): void {
+  const clusterId = cluster.properties?.cluster_id
+  if (typeof clusterId !== 'number') return
+
+  const source = map.getSource(SOURCE_ID) as GeoJSONSource | undefined
+  if (!source) return
+
+  const center = (cluster.geometry as Point).coordinates.slice() as [
+    number,
+    number,
+  ]
+  const easeToClusterCenter = (zoom?: number): void => {
+    if (handlers.isActive()) {
+      map.easeTo(zoom === undefined ? { center } : { center, zoom })
+    }
+  }
+
+  source
+    .getClusterExpansionZoom(clusterId)
+    .then(easeToClusterCenter)
+    .catch((error: Error) => {
+      handlers.reportError(error)
+      easeToClusterCenter()
+    })
+}
+
+function openFindspotPopup(
+  map: MapLibreMap,
+  feature: MapGeoJSONFeature,
+  navigate: (path: string) => void,
+): void {
+  const coordinates = getFeaturePointCoordinates(feature)
+  if (!coordinates) return
+
+  const popupProperties = getPopupProperties(feature, coordinates)
+  if (!popupProperties) return
+
+  new maplibregl.Popup()
+    .setLngLat(coordinates)
+    .setDOMContent(createFindspotPopup(popupProperties, navigate))
+    .addTo(map)
+}
+
+function handleMapClick(
+  map: MapLibreMap,
+  event: MapMouseEvent,
+  handlers: FindspotMapHandlers,
+): void {
+  const [cluster] = queryFindspotFeatures(map, event.point, [clusterLayer.id])
+  if (cluster) {
+    expandCluster(map, cluster, handlers)
+    return
+  }
+
+  const [findspot] = queryFindspotFeatures(map, event.point, [
+    unclusteredLayer.id,
+  ])
+  if (findspot) {
+    openFindspotPopup(map, findspot, handlers.navigate)
+  }
 }
 
 export default function useFindspotMap(
   containerRef: RefObject<HTMLDivElement>,
-  options: FindspotMapOptions,
+  provenances: readonly ProvenanceRecord[] | null,
+  onMapBackgroundErrorChange?: (hasError: boolean) => void,
+  cameraResetVersion = 0,
 ): MutableRefObject<MapLibreMap | null> {
-  const {
-    provenances,
-    showBoundaries,
-    activeHistoricalOverlays,
-    showExcavationAreas,
-    polygonVisualizationValues,
-    excavationPaint,
-    extrusionScale,
-    isExtrusionEnabled,
-    siteMarkerStates,
-    selection,
-  } = options
-
   const mapRef = useRef<MapLibreMap | null>(null)
-  const latestOptionsRef = useLatestRef(options)
-  const hoveredPolygonIdRef = useRef<string | null>(null)
-  const activeHistoricalOverlayIdsRef = useRef<readonly string[]>([])
-  const previousSelectionRef = useRef<{
-    polygonId: string | null
-    siteId: string | null
-  }>({ polygonId: null, siteId: null })
+  const history = useHistory()
+  const errorReporter = useContext(ErrorReporterContext)
+  const latestProvenancesRef = useRef(provenances)
+  latestProvenancesRef.current = provenances
+  const latestCameraResetVersionRef = useRef(cameraResetVersion)
+  const previousCameraResetVersionRef = useRef(cameraResetVersion)
+  const cameraResetProvenancesRef = useRef(provenances)
+  latestCameraResetVersionRef.current = cameraResetVersion
+  if (previousCameraResetVersionRef.current !== cameraResetVersion) {
+    previousCameraResetVersionRef.current = cameraResetVersion
+    cameraResetProvenancesRef.current = provenances
+  }
+  const latestServicesRef = useRef({ history, errorReporter })
+  latestServicesRef.current = { history, errorReporter }
   const isReady = provenances !== null
 
   useEffect(() => {
     if (!containerRef.current || !isReady) return
 
-    const map = new maplibregl.Map({
-      container: containerRef.current,
-      style: MAP_STYLE_URL,
-      center: INITIAL_CENTER,
-      zoom: INITIAL_ZOOM,
-    })
+    const cameraResetVersionAtCreation = latestCameraResetVersionRef.current
+    let map: MapLibreMap
+    try {
+      map = new maplibregl.Map({
+        container: containerRef.current,
+        style: MAP_STYLE_URL,
+        center: INITIAL_CENTER,
+        zoom: INITIAL_ZOOM,
+      })
+    } catch (error) {
+      latestServicesRef.current.errorReporter.captureException(
+        error instanceof Error ? error : new Error(String(error)),
+      )
+      onMapBackgroundErrorChange?.(true)
+      return
+    }
     mapRef.current = map
     map.addControl(new maplibregl.NavigationControl(), 'top-right')
-
-    map.on('load', () => {
-      const latest = latestOptionsRef.current
-      syncHistoricalOverlays(
-        map,
-        latest.activeHistoricalOverlays,
-        activeHistoricalOverlayIdsRef,
-      )
-      initializeFindspotSources(
-        map,
-        latest.provenances ?? [],
-        latest.showBoundaries,
-        latest.showExcavationAreas,
-      )
-      applyExcavationPaint(map, latest.excavationPaint)
-      applyExtrusionPaint(map, latest.excavationPaint, latest.extrusionScale)
-      setExtrusionVisibility(map, latest.isExtrusionEnabled)
-      applySiteMarkerState(map, latest.siteMarkerStates)
-    })
-    map.on('error', (event: MapErrorEventLike) => {
-      if (isBaseStyleFailure(event, MAP_STYLE_URL)) {
-        latestOptionsRef.current.onBaseStyleFailure()
+    let isActive = true
+    const handlers: FindspotMapHandlers = {
+      isActive: () => isActive,
+      navigate: (path) => latestServicesRef.current.history.push(path),
+      reportError: (error) =>
+        latestServicesRef.current.errorReporter.captureException(error),
+    }
+    const handleLoad = () => {
+      onMapBackgroundErrorChange?.(false)
+      const loadedProvenances = latestProvenancesRef.current
+      if (loadedProvenances) {
+        const resetStillOwnsLatestData =
+          latestCameraResetVersionRef.current !==
+            cameraResetVersionAtCreation &&
+          loadedProvenances === cameraResetProvenancesRef.current
+        initializeFindspotSource(
+          map,
+          loadedProvenances,
+          !resetStillOwnsLatestData,
+        )
       }
+    }
+    const handleClick = (event: MapMouseEvent) =>
+      handleMapClick(map, event, handlers)
+    const handleMouseMove = (event: MapMouseEvent) =>
+      setPointerCursor(map, event)
+    const handleMouseEnter = () => showPointerCursor(map)
+    const handleMouseLeave = () => resetPointerCursor(map)
+    const handleError = (event: MapLibreErrorEvent) => {
+      if (isMapBackgroundLoadError(event)) {
+        onMapBackgroundErrorChange?.(true)
+        return
+      }
+      const reportableError = getReportableMapError(event)
+      if (reportableError) {
+        handlers.reportError(reportableError)
+      }
+    }
+
+    map.on('load', handleLoad)
+    map.on('click', handleClick)
+    map.on('mousemove', handleMouseMove)
+    map.on('error', handleError)
+    INTERACTIVE_LAYER_IDS.forEach((layerId) => {
+      map.on('mouseenter', layerId, handleMouseEnter)
+      map.on('mouseleave', layerId, handleMouseLeave)
     })
-    map.on('click', (event) =>
-      handleMapClick(map, event, latestOptionsRef.current.onSelectFeature),
-    )
-    map.on('mousemove', (event) =>
-      handleMapHover(
-        map,
-        event,
-        hoveredPolygonIdRef,
-        {
-          findspotSummaries: latestOptionsRef.current.polygonSummaries,
-          siteSummaries: latestOptionsRef.current.siteSummaries,
-        },
-        latestOptionsRef.current.onHoverPreview,
-      ),
-    )
-    map.on('mouseleave', () =>
-      clearHoverState(
-        map,
-        hoveredPolygonIdRef,
-        latestOptionsRef.current.onHoverPreview,
-      ),
-    )
 
     return () => {
+      isActive = false
+      map.off('load', handleLoad)
+      map.off('click', handleClick)
+      map.off('mousemove', handleMouseMove)
+      map.off('error', handleError)
+      INTERACTIVE_LAYER_IDS.forEach((layerId) => {
+        map.off('mouseenter', layerId, handleMouseEnter)
+        map.off('mouseleave', layerId, handleMouseLeave)
+      })
       map.remove()
       mapRef.current = null
     }
-  }, [containerRef, isReady, latestOptionsRef])
-
-  useEffect(() => {
-    const map = mapRef.current
-    if (map?.isStyleLoaded()) {
-      setBoundaryVisibility(map, showBoundaries)
-    }
-  }, [showBoundaries])
-
-  useEffect(() => {
-    const map = mapRef.current
-    if (map?.isStyleLoaded()) {
-      setExcavationAreaVisibility(map, showExcavationAreas)
-    }
-  }, [showExcavationAreas])
-
-  useEffect(() => {
-    const map = mapRef.current
-    if (map?.isStyleLoaded()) {
-      syncHistoricalOverlays(
-        map,
-        activeHistoricalOverlays,
-        activeHistoricalOverlayIdsRef,
-      )
-    }
-  }, [activeHistoricalOverlays])
-
-  useEffect(() => {
-    const map = mapRef.current
-    if (map?.isStyleLoaded()) {
-      applyFindspotSummaryState(map, polygonVisualizationValues)
-    }
-  }, [polygonVisualizationValues])
-
-  useEffect(() => {
-    const map = mapRef.current
-    if (map?.isStyleLoaded()) {
-      applyExcavationPaint(map, excavationPaint)
-    }
-  }, [excavationPaint])
-
-  useEffect(() => {
-    const map = mapRef.current
-    if (map?.isStyleLoaded()) {
-      applySiteMarkerState(map, siteMarkerStates)
-    }
-  }, [siteMarkerStates])
-
-  // Metric and mode changes repaint the existing extrusion layer; the polygon
-  // source and the layer itself are never recreated.
-  useEffect(() => {
-    const map = mapRef.current
-    if (map?.isStyleLoaded()) {
-      applyExtrusionPaint(map, excavationPaint, extrusionScale)
-    }
-  }, [excavationPaint, extrusionScale])
-
-  useEffect(() => {
-    const map = mapRef.current
-    if (!map?.isStyleLoaded()) return
-
-    setExtrusionVisibility(map, isExtrusionEnabled)
-    if (isExtrusionEnabled) {
-      pitchForExtrusion(map, prefersReducedMotion())
-    }
-  }, [isExtrusionEnabled])
-
-  useEffect(() => {
-    const map = mapRef.current
-    if (map?.isStyleLoaded()) {
-      previousSelectionRef.current = applySelectionState(
-        map,
-        selection,
-        previousSelectionRef.current,
-      )
-    }
-  }, [selection])
+  }, [containerRef, isReady, onMapBackgroundErrorChange])
 
   return mapRef
 }

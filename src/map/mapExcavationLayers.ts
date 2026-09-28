@@ -1,17 +1,12 @@
 import type { AddLayerObject, GeoJSONSourceSpecification } from 'maplibre-gl'
-import { EXCAVATION_POLYGON_GEOJSON_URL } from './excavationPolygonIndex'
-import {
-  EXCAVATION_AREA_FILL_LAYER_ID,
-  EXCAVATION_AREA_OUTLINE_LAYER_ID,
-  EXCAVATION_AREA_SELECTED_LAYER_ID,
-  EXCAVATION_AREAS_SOURCE_ID,
-} from './mapLayerIds'
-import {
-  CATEGORICAL_PAINT,
-  type ExcavationPaint,
-  excavationPaintProperties,
-} from './mapExcavationPaint'
-import { SELECTED } from './mapStateExpressions'
+import { EXCAVATION_POLYGON_GEOJSON_URL } from 'map/excavationPolygonIndex'
+
+export const EXCAVATION_AREAS_SOURCE_ID = 'excavation-areas'
+export const EXCAVATION_AREA_FILL_LAYER_ID = 'excavation-area-fill'
+export const EXCAVATION_AREA_OUTLINE_LAYER_ID = 'excavation-area-outline'
+
+const NEUTRAL_FILL_COLOR = '#6c757d'
+const NEUTRAL_OUTLINE_COLOR = '#343a40'
 
 export function createExcavationAreasSource(): GeoJSONSourceSpecification {
   return {
@@ -21,59 +16,30 @@ export function createExcavationAreasSource(): GeoJSONSourceSpecification {
   }
 }
 
-export function createExcavationAreaFillLayer(
-  paint: ExcavationPaint = CATEGORICAL_PAINT,
-): AddLayerObject {
-  const properties = excavationPaintProperties(paint)
-
-  return {
-    id: EXCAVATION_AREA_FILL_LAYER_ID,
-    type: 'fill',
-    source: EXCAVATION_AREAS_SOURCE_ID,
-    layout: { visibility: 'visible' },
-    paint: {
-      'fill-color': properties.fillColor,
-      'fill-opacity': properties.fillOpacity,
-    },
-  }
+export const excavationAreaFillLayer: AddLayerObject = {
+  id: EXCAVATION_AREA_FILL_LAYER_ID,
+  type: 'fill',
+  source: EXCAVATION_AREAS_SOURCE_ID,
+  layout: { visibility: 'visible' },
+  paint: {
+    'fill-color': NEUTRAL_FILL_COLOR,
+    'fill-opacity': 0.15,
+  },
 }
 
-export function createExcavationAreaOutlineLayer(
-  paint: ExcavationPaint = CATEGORICAL_PAINT,
-): AddLayerObject {
-  const properties = excavationPaintProperties(paint)
-
-  return {
-    id: EXCAVATION_AREA_OUTLINE_LAYER_ID,
-    type: 'line',
-    source: EXCAVATION_AREAS_SOURCE_ID,
-    layout: { visibility: 'visible', 'line-join': 'round' },
-    paint: {
-      'line-color': properties.outlineColor,
-      'line-width': properties.outlineWidth,
-      'line-opacity': properties.outlineOpacity,
-      'line-dasharray': properties.outlineDash,
-    },
-  }
-}
-
-/**
- * A white halo drawn beneath the outline. It is what keeps a selected polygon
- * unmistakable over a dark historical raster or hillshaded terrain, where a
- * single dark border would otherwise disappear.
- */
-export const excavationAreaSelectedLayer: AddLayerObject = {
-  id: EXCAVATION_AREA_SELECTED_LAYER_ID,
+export const excavationAreaOutlineLayer: AddLayerObject = {
+  id: EXCAVATION_AREA_OUTLINE_LAYER_ID,
   type: 'line',
   source: EXCAVATION_AREAS_SOURCE_ID,
   layout: { visibility: 'visible', 'line-join': 'round' },
   paint: {
-    'line-color': '#ffffff',
-    'line-width': ['case', SELECTED, 7, 0],
-    'line-opacity': ['case', SELECTED, 0.9, 0],
-    'line-blur': ['case', SELECTED, 1.5, 0],
+    'line-color': NEUTRAL_OUTLINE_COLOR,
+    'line-width': 1.5,
+    'line-opacity': 0.7,
   },
 }
 
-export const excavationAreaFillLayer = createExcavationAreaFillLayer()
-export const excavationAreaOutlineLayer = createExcavationAreaOutlineLayer()
+export const EXCAVATION_AREA_LAYER_IDS: readonly string[] = [
+  EXCAVATION_AREA_FILL_LAYER_ID,
+  EXCAVATION_AREA_OUTLINE_LAYER_ID,
+]

@@ -1,89 +1,40 @@
-import React, { useMemo } from 'react'
-import type { MutableRefObject, RefObject } from 'react'
-import type { Map as MapLibreMap } from 'maplibre-gl'
-import type { PolygonFindspotSummary } from './findspotMapData'
-import type { ExcavationPolygonIndex } from './excavationPolygonIndex'
-import type { MapPanelController } from './useMapPanel'
-import useMapToolInteractions from './useMapToolInteractions'
-import useMapElevationProfile from './useMapElevationProfile'
-import { type ToolPanelsInput, useToolPanelDefinitions } from './mapToolPanels'
-import {
-  type InfoPanelsInput,
-  buildInfoPanelDefinitions,
-} from './mapInfoPanels'
-import MapToolbar from './MapToolbar'
-import MapPanelDrawer from './MapPanelDrawer'
+import React from 'react'
+import type { RefObject } from 'react'
+import MapToolbar, { type MapPanelDefinition } from 'map/MapToolbar'
+import MapPanelDrawer from 'map/MapPanelDrawer'
+import type { MapPanelController } from 'map/useMapPanel'
 
-export interface MapPanelDockProps {
+interface Props {
+  readonly panels: readonly MapPanelDefinition[]
   readonly panel: MapPanelController
-  readonly mapRef: MutableRefObject<MapLibreMap | null>
-  readonly drawerRef: RefObject<HTMLElement>
-  readonly excavationPolygonIndex: ExcavationPolygonIndex
-  readonly polygonSummaries: ReadonlyMap<string, PolygonFindspotSummary>
-  readonly info: InfoPanelsInput
-  readonly tools: Omit<
-    ToolPanelsInput,
-    'interactions' | 'excavationPolygonIndex' | 'polygonSummaries' | 'elevation'
-  >
+  readonly drawerRef?: RefObject<HTMLElement>
 }
 
 export default function MapPanelDock({
+  panels,
   panel,
-  mapRef,
   drawerRef,
-  excavationPolygonIndex,
-  polygonSummaries,
-  info,
-  tools,
-}: MapPanelDockProps): JSX.Element {
-  const interactions = useMapToolInteractions(
-    mapRef,
-    excavationPolygonIndex,
-    polygonSummaries,
-    panel.active === 'measurement',
-    panel.active === 'spatial-search',
+}: Props): JSX.Element {
+  const activePanel = panels.find(
+    (definition) => definition.id === panel.active && definition.isSupported,
   )
-
-  // The profile lives beside the measurement state it reads, so it samples
-  // terrain only for a line that has actually been completed.
-  const elevation = useMapElevationProfile(
-    mapRef,
-    interactions.measurementPositions,
-    tools.terrain.isEnabled,
-    tools.terrain.exaggeration,
-  )
-
-  const infoPanels = useMemo(() => buildInfoPanelDefinitions(info), [info])
-  const toolPanels = useToolPanelDefinitions({
-    ...tools,
-    excavationPolygonIndex,
-    polygonSummaries,
-    interactions,
-    elevation,
-  })
-  const panels = useMemo(
-    () => [...infoPanels, ...toolPanels],
-    [infoPanels, toolPanels],
-  )
-
-  const activeDefinition = panels.find((entry) => entry.id === panel.active)
 
   return (
-    <>
+    <div className="map-panel-dock">
       <MapToolbar
         panels={panels}
         active={panel.active}
         onToggle={panel.toggle}
       />
-      {activeDefinition ? (
+      {activePanel ? (
         <MapPanelDrawer
-          rootRef={drawerRef}
-          title={activeDefinition.label}
+          title={activePanel.label}
           onClose={panel.close}
+          rootRef={drawerRef}
         >
-          {activeDefinition.render()}
+          {activePanel.render()}
         </MapPanelDrawer>
       ) : null}
-    </>
+    </div>
   )
 }

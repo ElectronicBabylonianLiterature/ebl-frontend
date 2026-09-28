@@ -1,5 +1,5 @@
 import { act, renderHook } from '@testing-library/react'
-import useElementSize from './useElementSize'
+import useElementSize from 'map/useElementSize'
 
 let triggerEntry: (entry: {
   contentRect: { width: number; height: number }

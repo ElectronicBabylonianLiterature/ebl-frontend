@@ -17,7 +17,6 @@ import type RealiaService from 'realia/application/RealiaService'
 import type FragmentService from 'fragmentarium/application/FragmentService'
 import type TextService from 'corpus/application/TextService'
 import type DossiersService from 'dossiers/application/DossiersService'
-import type { FindspotService } from 'fragmentarium/application/FindspotService'
 import Tools, { tabIds, getDisplayTitle } from 'router/Tools'
 import { tabDescriptions, getEntityRoutes } from 'router/toolsRoutes.entities'
 
@@ -32,7 +31,6 @@ export default function ToolsRoutes({
   realiaService,
   dossiersService,
   fragmentService,
-  findspotService,
   signSlugs,
   dictionarySlugs,
   bibliographySlugs,
@@ -48,7 +46,6 @@ export default function ToolsRoutes({
   realiaService: RealiaService
   dossiersService: DossiersService
   fragmentService: FragmentService
-  findspotService: FindspotService
   signSlugs?: SignSlugs
   dictionarySlugs?: DictionarySlugs
   bibliographySlugs?: BibliographySlugs
@@ -85,7 +82,6 @@ export default function ToolsRoutes({
             realiaService={realiaService}
             dossiersService={dossiersService}
             fragmentService={fragmentService}
-            findspotService={findspotService}
           />
         </HeadTagsService>
       )}
@@ -110,7 +106,6 @@ export default function ToolsRoutes({
               realiaService={realiaService}
               dossiersService={dossiersService}
               fragmentService={fragmentService}
-              findspotService={findspotService}
               activeTab={tabId}
             />
           </HeadTagsService>

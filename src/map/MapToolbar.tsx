@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react'
 import { Button } from 'react-bootstrap'
-import type { ActiveMapPanel, MapPanelId } from './mapPanel'
+import type { ActiveMapPanel, MapPanelId } from 'map/mapPanel'
 
 export interface MapPanelDefinition {
   readonly id: MapPanelId
@@ -16,12 +16,6 @@ interface Props {
   readonly active: ActiveMapPanel
   readonly onToggle: (panel: MapPanelId) => void
 }
-
-/**
- * The one row of buttons governing the single shared panel drawer. Each
- * button's own DOM node is what focus returns to once its panel closes, so
- * the drawer can send focus back here without the toolbar tracking it itself.
- */
 export default function MapToolbar({
   panels,
   active,

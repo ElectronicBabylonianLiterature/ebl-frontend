@@ -1,6 +1,11 @@
 import type { Feature, FeatureCollection, Geometry } from 'geojson'
-import { type BoundingBox, boundingBoxOfGeometry } from './mapGeometry'
-import { geodesicAreaSquareKm } from './geodesicArea'
+import { type BoundingBox, boundingBoxOfGeometry } from 'map/mapGeometry'
+import { geodesicAreaSquareKm } from 'map/geodesicArea'
+import {
+  MAP_SITE_IDS,
+  MAP_SITE_POLYGON_COUNTS,
+  isMapSiteId,
+} from 'map/mapSites'
 
 export const EXCAVATION_POLYGON_GEOJSON_URL = '/map-data/findspots/all.geojson'
 
@@ -31,15 +36,21 @@ function toExcavationPolygon(
 ): ExcavationPolygon | null {
   const polygonId = propertyString(feature, 'id')
   const siteId = propertyString(feature, 'siteId')
+  const geometry = feature.geometry
+  const hasPolygonGeometry =
+    geometry?.type === 'Polygon' || geometry?.type === 'MultiPolygon'
 
-  return polygonId && siteId && feature.id === polygonId
+  return polygonId &&
+    isMapSiteId(siteId) &&
+    feature.id === polygonId &&
+    hasPolygonGeometry
     ? {
         polygonId,
         siteId,
         name: propertyString(feature, 'name'),
-        bounds: boundingBoxOfGeometry(feature.geometry),
-        areaSquareKm: geodesicAreaSquareKm(feature.geometry),
-        geometry: feature.geometry,
+        bounds: boundingBoxOfGeometry(geometry),
+        areaSquareKm: geodesicAreaSquareKm(geometry),
+        geometry,
       }
     : null
 }
@@ -54,6 +65,7 @@ export function buildExcavationPolygonIndex(
   const seenPolygonIds = new Set<string>()
 
   for (const feature of features) {
+    if (!feature || typeof feature !== 'object') continue
     const polygon = toExcavationPolygon(feature)
     if (!polygon || seenPolygonIds.has(polygon.polygonId)) continue
 
@@ -64,6 +76,39 @@ export function buildExcavationPolygonIndex(
   return index
 }
 
+function validateCanonicalCollection(
+  collection: unknown,
+  index: ExcavationPolygonIndex,
+): void {
+  const candidate = collection as Partial<FeatureCollection> | null
+  const expectedTotal = MAP_SITE_IDS.reduce(
+    (total, siteId) => total + MAP_SITE_POLYGON_COUNTS[siteId],
+    0,
+  )
+  if (
+    candidate?.type !== 'FeatureCollection' ||
+    !Array.isArray(candidate.features) ||
+    candidate.features.length !== expectedTotal
+  ) {
+    throw new Error('Excavation polygon asset has an invalid collection shape')
+  }
+
+  for (const siteId of MAP_SITE_IDS) {
+    const polygons = index.get(siteId) ?? []
+    if (
+      polygons.length !== MAP_SITE_POLYGON_COUNTS[siteId] ||
+      polygons.some(
+        (polygon) =>
+          polygon.name === null ||
+          polygon.bounds === null ||
+          polygon.areaSquareKm === null,
+      )
+    ) {
+      throw new Error(`Excavation polygon asset is invalid for ${siteId}`)
+    }
+  }
+}
+
 export async function fetchExcavationPolygonIndex(): Promise<ExcavationPolygonIndex> {
   const response = await fetch(EXCAVATION_POLYGON_GEOJSON_URL)
   if (!response.ok) {
@@ -72,5 +117,8 @@ export async function fetchExcavationPolygonIndex(): Promise<ExcavationPolygonIn
     )
   }
 
-  return buildExcavationPolygonIndex(await response.json())
+  const collection: unknown = await response.json()
+  const index = buildExcavationPolygonIndex(collection)
+  validateCanonicalCollection(collection, index)
+  return index
 }
