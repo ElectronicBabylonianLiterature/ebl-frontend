@@ -44,15 +44,15 @@ function allPolygons(
 }
 
 function isValidBounds([west, south, east, north]: BoundingBox): boolean {
-  return (
-    [west, south, east, north].every(Number.isFinite) &&
-    west >= -180 &&
-    east <= 180 &&
-    south >= -90 &&
-    north <= 90 &&
-    west < east &&
-    south < north
-  )
+  return [
+    [west, south, east, north].every(Number.isFinite),
+    west >= -180,
+    east <= 180,
+    south >= -90,
+    north <= 90,
+    west < east,
+    south < north,
+  ].every(Boolean)
 }
 
 function matchingPolygons(

@@ -6,15 +6,8 @@ import { FindspotService } from 'fragmentarium/application/FindspotService'
 import Spinner from 'common/ui/Spinner'
 import useMapTabState, { type MapTabState } from 'map/useMapTabState'
 import useProvenances from 'map/useProvenances'
-import MapStage from 'map/MapStage'
-import MapPanelDock from 'map/MapPanelDock'
-import MapExperienceHeader from 'map/MapExperienceHeader'
-import MapPresentationBar from 'map/MapPresentationBar'
-import MapLegend from 'map/MapLegend'
-import MapSelectionPill from 'map/MapSelectionPill'
 import buildMapToolPanels from 'map/mapToolPanels'
-import FindspotFilterInput from 'map/FindspotFilterInput'
-import { FindspotEmptyState, FindspotSearchList } from 'map/FindspotResults'
+import MapTabLoadedView from 'map/MapTabLoadedView'
 import 'map/MapTab.sass'
 
 interface Props {
@@ -30,13 +23,7 @@ function LoadedMapTab({
   readonly provenances: MapTabState['provenances']
 }): JSX.Element {
   const state = useMapTabState(findspotService, provenances)
-  const {
-    experience,
-    panel,
-    filteredProvenances,
-    selectedPolygon,
-    visibleFindspotCount,
-  } = state
+  const { experience, panel } = state
   const isPresenting = experience.presentation.isActive
   const presentationTriggerRef = useRef<HTMLButtonElement>(null)
   const wasPresentingRef = useRef(false)
@@ -56,85 +43,11 @@ function LoadedMapTab({
   const panels = buildMapToolPanels(state, clearSelection)
 
   return (
-    <div
-      className={`map-tab map-experience${
-        isPresenting ? ' map-experience--presenting' : ''
-      }`}
-    >
-      {isPresenting ? (
-        <MapPresentationBar
-          title={null}
-          onExit={experience.presentation.exit}
-        />
-      ) : (
-        <MapExperienceHeader
-          visibleSiteCount={visibleFindspotCount}
-          onResetView={state.resetView}
-          presentationTriggerRef={presentationTriggerRef}
-          onEnterPresentation={experience.presentation.enter}
-          filterControl={
-            <FindspotFilterInput
-              provenances={state.provenances}
-              filter={experience.filter}
-              onFilterChange={experience.setFilter}
-            />
-          }
-        />
-      )}
-      <div className="map-experience__body">
-        <MapStage
-          containerRef={state.mapContainer}
-          isBackgroundUnavailable={state.isBackgroundUnavailable}
-          describedById="findspot-map-description"
-          showFallbackHint={!isPresenting}
-          legend={
-            state.showExcavationAreas ? (
-              <MapLegend
-                mode={state.visualization.effectiveMode}
-                legend={state.visualization.legend}
-              />
-            ) : null
-          }
-          overlay={
-            isPresenting ? null : (
-              <>
-                <MapPanelDock
-                  panels={panels}
-                  panel={panel}
-                  drawerRef={state.drawerRef}
-                />
-                {selectedPolygon && panel.active !== 'inspector' ? (
-                  <MapSelectionPill
-                    label="Show selected area"
-                    onShow={() => panel.open('inspector')}
-                  />
-                ) : null}
-              </>
-            )
-          }
-        />
-      </div>
-      {state.isExcavationAreasUnavailable ? (
-        <Alert variant="warning">Excavation areas are unavailable.</Alert>
-      ) : null}
-      <p
-        id="findspot-map-description"
-        className={isPresenting ? 'visually-hidden' : 'map-tab__description'}
-      >
-        {isPresenting
-          ? 'Interactive findspot map in presentation mode.'
-          : 'Matching fragment search links are available below the map.'}
-      </p>
-      {isPresenting ? null : (
-        <>
-          <FindspotEmptyState
-            provenances={filteredProvenances}
-            filter={experience.filter}
-          />
-          <FindspotSearchList provenances={filteredProvenances} />
-        </>
-      )}
-    </div>
+    <MapTabLoadedView
+      state={state}
+      panels={panels}
+      presentationTriggerRef={presentationTriggerRef}
+    />
   )
 }
 

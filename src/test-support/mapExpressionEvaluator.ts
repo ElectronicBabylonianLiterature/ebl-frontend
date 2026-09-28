@@ -12,62 +12,59 @@ function isExpression(value: unknown): value is Expression {
 function asNumber(value: unknown): number {
   return typeof value === 'number' ? value : Number.NaN
 }
+
+type Evaluate = (value: unknown) => unknown
+type ExpressionHandler = (
+  args: readonly unknown[],
+  evaluate: Evaluate,
+  context: FeatureEvaluationContext,
+) => unknown
+
+const EXPRESSION_HANDLERS: Readonly<Record<string, ExpressionHandler>> = {
+  literal: (args) => args[0],
+  'feature-state': (args, evaluate, context) =>
+    context.featureState?.[String(evaluate(args[0]))],
+  get: (args, evaluate, context) =>
+    context.properties?.[String(evaluate(args[0]))],
+  has: (args, evaluate, context) =>
+    Object.hasOwn(context.properties ?? {}, String(evaluate(args[0]))),
+  coalesce: (args, evaluate) =>
+    args.map(evaluate).find((value) => value !== undefined && value !== null) ??
+    null,
+  boolean: (args, evaluate) => {
+    const value = evaluate(args[0])
+    return typeof value === 'boolean' ? value : evaluate(args[1])
+  },
+  '!': (args, evaluate) => !evaluate(args[0]),
+  '==': (args, evaluate) => evaluate(args[0]) === evaluate(args[1]),
+  '>': (args, evaluate) =>
+    asNumber(evaluate(args[0])) > asNumber(evaluate(args[1])),
+  '<': (args, evaluate) =>
+    asNumber(evaluate(args[0])) < asNumber(evaluate(args[1])),
+  '+': (args, evaluate) =>
+    args.reduce<number>((total, arg) => total + asNumber(evaluate(arg)), 0),
+  '*': (args, evaluate) =>
+    args.reduce<number>((total, arg) => total * asNumber(evaluate(arg)), 1),
+  case: (args, evaluate) => evaluateCase(args, evaluate),
+  step: (args, evaluate) => evaluateStep(args, evaluate),
+  interpolate: (args, evaluate) => evaluateInterpolate(args, evaluate),
+}
+
 export function evaluateExpression(
   expression: unknown,
   context: FeatureEvaluationContext = {},
 ): unknown {
   if (!isExpression(expression)) return expression
 
-  const [operator, ...args] = expression
+  const [rawOperator, ...args] = expression
+  const operator = String(rawOperator)
   const evaluate = (value: unknown): unknown =>
     evaluateExpression(value, context)
 
-  switch (operator) {
-    case 'literal':
-      return args[0]
-    case 'feature-state':
-      return context.featureState?.[String(evaluate(args[0]))]
-    case 'get':
-      return context.properties?.[String(evaluate(args[0]))]
-    case 'has':
-      return Object.hasOwn(context.properties ?? {}, String(evaluate(args[0])))
-    case 'coalesce':
-      return (
-        args
-          .map(evaluate)
-          .find((value) => value !== undefined && value !== null) ?? null
-      )
-    case 'boolean': {
-      const value = evaluate(args[0])
-      return typeof value === 'boolean' ? value : evaluate(args[1])
-    }
-    case '!':
-      return !evaluate(args[0])
-    case '==':
-      return evaluate(args[0]) === evaluate(args[1])
-    case '>':
-      return asNumber(evaluate(args[0])) > asNumber(evaluate(args[1]))
-    case '<':
-      return asNumber(evaluate(args[0])) < asNumber(evaluate(args[1]))
-    case '+':
-      return args.reduce<number>(
-        (total, arg) => total + asNumber(evaluate(arg)),
-        0,
-      )
-    case '*':
-      return args.reduce<number>(
-        (total, arg) => total * asNumber(evaluate(arg)),
-        1,
-      )
-    case 'case':
-      return evaluateCase(args, evaluate)
-    case 'step':
-      return evaluateStep(args, evaluate)
-    case 'interpolate':
-      return evaluateInterpolate(args, evaluate)
-    default:
-      throw new Error(`Unsupported map expression operator: ${operator}`)
-  }
+  const handler = EXPRESSION_HANDLERS[operator]
+  if (!handler)
+    throw new Error(`Unsupported map expression operator: ${operator}`)
+  return handler(args, evaluate, context)
 }
 
 function evaluateCase(

@@ -5,12 +5,12 @@ import {
   deferMapLoad,
   mockAddLayer,
   mockAddSource,
-  mockGetLayer,
   mockGetSource,
   mockMapInstance,
   mockRemove,
   mockSetData,
   resetMapMocks,
+  rejectMapAccessAfterRemoval,
   triggerMapEvent,
 } from 'map/mapLibreMock.testSupport'
 import { MAX_MEASUREMENT_POINTS } from 'map/mapMeasurement'
@@ -179,18 +179,7 @@ describe('useMapMeasurement', () => {
   })
 
   it('does not touch a map after its owner disposes it', () => {
-    let isRemoved = false
-    mockRemove.mockImplementation(() => {
-      isRemoved = true
-    })
-    mockGetLayer.mockImplementation(() => {
-      if (isRemoved) throw new Error('map style has been removed')
-      return undefined
-    })
-    mockGetSource.mockImplementation(() => {
-      if (isRemoved) throw new Error('map style has been removed')
-      return undefined
-    })
+    rejectMapAccessAfterRemoval()
 
     const { unmount } = render(<OwnerTeardownHarness />)
 
