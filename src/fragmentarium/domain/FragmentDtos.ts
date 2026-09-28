@@ -4,13 +4,13 @@ import {
   RealiaInfoEntry,
   RealiaNamedEntity,
 } from 'fragmentarium/ui/text-annotation/EntityType'
-import Folio from './Folio'
-import { Introduction, Notes, ScriptDto } from './fragment'
-import { RecordEntry } from './RecordEntry'
-import MuseumNumber from './MuseumNumber'
+import Folio from 'fragmentarium/domain/Folio'
+import { Introduction, Notes, ScriptDto } from 'fragmentarium/domain/fragment'
+import { RecordEntry } from 'fragmentarium/domain/RecordEntry'
+import MuseumNumber from 'fragmentarium/domain/MuseumNumber'
 import { EponymDateField, Ur3Calendar } from 'chronology/domain/DateParameters'
-import { ArchaeologyDto } from './archaeologyDtos'
-import { MuseumKey } from './museum'
+import { ArchaeologyDto } from 'fragmentarium/domain/archaeologyDtos'
+import { MuseumKey } from 'fragmentarium/domain/museum'
 import { ColophonDto } from 'fragmentarium/domain/Colophon'
 import { DossierReference } from 'dossiers/domain/DossierReference'
 
@@ -124,7 +124,7 @@ export default interface FragmentDto {
   museumNumber: MuseumNumber
   accession: MuseumNumber | null
   publication: string
-  acquisition: AcquisitionDto | null
+  acquisitions: readonly AcquisitionDto[]
   description: string
   joins: unknown
   collection: string

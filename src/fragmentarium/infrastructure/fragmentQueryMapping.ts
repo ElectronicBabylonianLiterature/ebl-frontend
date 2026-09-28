@@ -94,7 +94,7 @@ function createQuerySummaryFragment(dto: QuerySummaryItemDto): Fragment {
     number: museumNumberToString(dto.museumNumber),
     accession: dto.accession ? museumNumberToString(dto.accession) : '',
     publication: '',
-    acquisition: null,
+    acquisitions: [],
     description: dto.description,
     joins: [],
     measures: {
