@@ -64,37 +64,66 @@ def load_mapping(
     findspot_ids: set[int] = set()
     mapped_ids: set[str] = set()
     for index, record in enumerate(records, start=1):
-        if not isinstance(record, dict):
-            raise RuntimeError(f"{site} mapping row {index} is not an object")
-        findspot_id = record.get("findspotId")
-        polygon_ids = record.get("polygonIds")
-        if (
-            isinstance(findspot_id, bool)
-            or not isinstance(findspot_id, int)
-            or findspot_id < 0
-        ):
-            raise RuntimeError(f"{site} mapping row {index} has invalid findspotId")
-        if findspot_id in findspot_ids:
-            raise RuntimeError(f"{site} mappings duplicate findspotId {findspot_id}")
-        if not isinstance(polygon_ids, list) or not polygon_ids:
-            raise RuntimeError(f"{site} mapping row {index} has invalid polygonIds")
-        if any(not isinstance(item, str) for item in polygon_ids):
-            raise RuntimeError(f"{site} mapping row {index} has invalid polygonIds")
-        if len(polygon_ids) != len(set(polygon_ids)):
-            raise RuntimeError(f"{site} mapping row {index} duplicates a polygonId")
-        if any(item not in inventory_ids for item in polygon_ids):
-            raise RuntimeError(f"{site} mapping row {index} has unknown polygonIds")
-        if record.get("locationPrecision") != "excavation-area":
-            raise RuntimeError(f"{site} mapping row {index} has invalid precision")
-        if record.get("matchMethod") not in {"verified-source", "curated"}:
-            raise RuntimeError(f"{site} mapping row {index} has invalid matchMethod")
-        if any(
-            not isinstance(record.get(field), str) or not record[field].strip()
-            for field in ("source", "sourceRevision")
-        ):
-            raise RuntimeError(f"{site} mapping row {index} has invalid provenance")
+        mapping = _mapping_record(record, site, index)
+        findspot_id = _mapping_findspot_id(mapping, site, index, findspot_ids)
+        polygon_ids = _mapping_polygon_ids(mapping, site, index, inventory_ids)
+        _validate_mapping_provenance(mapping, site, index)
         findspot_ids.add(findspot_id)
         mapped_ids.update(polygon_ids)
     if len(mapped_ids) != expected_mapped:
         raise RuntimeError(f"{site} mappings must reference {expected_mapped} polygons")
     return mapped_ids, findspot_ids
+
+
+def _mapping_record(record: object, site: str, index: int) -> dict[str, object]:
+    if not isinstance(record, dict):
+        raise RuntimeError(f"{site} mapping row {index} is not an object")
+    return record
+
+
+def _mapping_findspot_id(
+    record: dict[str, object], site: str, index: int, findspot_ids: set[int]
+) -> int:
+    findspot_id = record.get("findspotId")
+    if (
+        isinstance(findspot_id, bool)
+        or not isinstance(findspot_id, int)
+        or findspot_id < 0
+    ):
+        raise RuntimeError(f"{site} mapping row {index} has invalid findspotId")
+    if findspot_id in findspot_ids:
+        raise RuntimeError(f"{site} mappings duplicate findspotId {findspot_id}")
+    return findspot_id
+
+
+def _mapping_polygon_ids(
+    record: dict[str, object],
+    site: str,
+    index: int,
+    inventory_ids: set[str],
+) -> list[str]:
+    polygon_ids = record.get("polygonIds")
+    if not isinstance(polygon_ids, list) or not polygon_ids:
+        raise RuntimeError(f"{site} mapping row {index} has invalid polygonIds")
+    if any(not isinstance(item, str) for item in polygon_ids):
+        raise RuntimeError(f"{site} mapping row {index} has invalid polygonIds")
+    string_ids = [item for item in polygon_ids if isinstance(item, str)]
+    if len(string_ids) != len(set(string_ids)):
+        raise RuntimeError(f"{site} mapping row {index} duplicates a polygonId")
+    if any(item not in inventory_ids for item in string_ids):
+        raise RuntimeError(f"{site} mapping row {index} has unknown polygonIds")
+    return string_ids
+
+
+def _validate_mapping_provenance(
+    record: dict[str, object], site: str, index: int
+) -> None:
+    if record.get("locationPrecision") != "excavation-area":
+        raise RuntimeError(f"{site} mapping row {index} has invalid precision")
+    if record.get("matchMethod") not in {"verified-source", "curated"}:
+        raise RuntimeError(f"{site} mapping row {index} has invalid matchMethod")
+    if any(
+        not isinstance(record.get(field), str) or not str(record[field]).strip()
+        for field in ("source", "sourceRevision")
+    ):
+        raise RuntimeError(f"{site} mapping row {index} has invalid provenance")

@@ -54,6 +54,42 @@ def source_key(value: str) -> str:
     return unicodedata.normalize("NFKC", value).strip()
 
 
+def validated_features(
+    collection: object, site: str, expected_features: int
+) -> list[object]:
+    if not isinstance(collection, dict) or collection.get("type") != "FeatureCollection":
+        raise RuntimeError(f"{site}.geojson is not a FeatureCollection")
+    features = collection.get("features")
+    if not isinstance(features, list) or len(features) != expected_features:
+        raise RuntimeError(f"{site}.geojson must contain {expected_features} features")
+    return features
+
+
+def canonicalize_feature(
+    feature: object,
+    site: str,
+    index: int,
+    inventory: dict[str, dict[str, str]],
+) -> tuple[str, dict[str, Any]]:
+    if not isinstance(feature, dict) or not isinstance(feature.get("properties"), dict):
+        raise RuntimeError(f"{site} feature {index} is invalid")
+    checksum = geometry_checksum(feature.get("geometry"))
+    record = inventory.get(checksum)
+    if record is None:
+        raise RuntimeError(f"{site} feature {index} has no geometry inventory match")
+    properties = feature["properties"]
+    name = properties.get("name")
+    if properties.get("siteId") != site:
+        raise RuntimeError(f"{site} feature {index} has the wrong siteId")
+    if properties.get("siteName") != record["siteName"]:
+        raise RuntimeError(f"{site} feature {index} has the wrong siteName")
+    if not isinstance(name, str) or source_key(name) != source_key(record["name"]):
+        raise RuntimeError(f"{site} feature {index} disagrees with inventory name")
+    polygon_id = record["polygonId"]
+    canonical_properties = {**properties, "id": polygon_id}
+    return polygon_id, {**feature, "id": polygon_id, "properties": canonical_properties}
+
+
 def canonicalize_site(
     collection: object,
     site: str,
@@ -61,34 +97,17 @@ def canonicalize_site(
     mapped_ids: set[str],
     expected_features: int,
 ) -> dict[str, Any]:
-    if not isinstance(collection, dict) or collection.get("type") != "FeatureCollection":
-        raise RuntimeError(f"{site}.geojson is not a FeatureCollection")
-    source_features = collection.get("features")
-    if not isinstance(source_features, list) or len(source_features) != expected_features:
-        raise RuntimeError(f"{site}.geojson must contain {expected_features} features")
+    source_features = validated_features(collection, site, expected_features)
     canonical_ids: set[str] = set()
     features: list[dict[str, Any]] = []
     for index, feature in enumerate(source_features, start=1):
-        if not isinstance(feature, dict) or not isinstance(feature.get("properties"), dict):
-            raise RuntimeError(f"{site} feature {index} is invalid")
-        checksum = geometry_checksum(feature.get("geometry"))
-        record = inventory.get(checksum)
-        if record is None:
-            raise RuntimeError(f"{site} feature {index} has no geometry inventory match")
-        properties = feature["properties"]
-        name = properties.get("name")
-        if properties.get("siteId") != site:
-            raise RuntimeError(f"{site} feature {index} has the wrong siteId")
-        if properties.get("siteName") != record["siteName"]:
-            raise RuntimeError(f"{site} feature {index} has the wrong siteName")
-        if not isinstance(name, str) or source_key(name) != source_key(record["name"]):
-            raise RuntimeError(f"{site} feature {index} disagrees with inventory name")
-        polygon_id = record["polygonId"]
+        polygon_id, canonical_feature = canonicalize_feature(
+            feature, site, index, inventory
+        )
         if polygon_id in canonical_ids:
             raise RuntimeError(f"{site} frontend geometry duplicates {polygon_id}")
         canonical_ids.add(polygon_id)
-        properties = {**feature["properties"], "id": polygon_id}
-        features.append({**feature, "id": polygon_id, "properties": properties})
+        features.append(canonical_feature)
     if canonical_ids != {record["polygonId"] for record in inventory.values()}:
         raise RuntimeError(f"{site} inventory and frontend geometry are not one-to-one")
     if not mapped_ids <= canonical_ids:
