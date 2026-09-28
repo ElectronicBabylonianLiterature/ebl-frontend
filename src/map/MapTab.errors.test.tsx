@@ -190,6 +190,11 @@ describe('MapTab map errors', () => {
     await waitFor(() =>
       expect(screen.getByLabelText('Excavation areas')).toBeEnabled(),
     )
+    await userEvent.click(screen.getByRole('button', { name: 'Visualization' }))
+    expect(
+      screen.getByRole('region', { name: 'Map visualization' }),
+    ).toBeInTheDocument()
+
     act(() => {
       triggerMapEvent('error', {
         error: { message: 'asset unavailable' },
@@ -198,7 +203,12 @@ describe('MapTab map errors', () => {
     })
 
     expect(screen.getByText(EXCAVATION_WARNING)).toBeInTheDocument()
-    expect(screen.getByLabelText('Excavation areas')).toBeDisabled()
+    expect(
+      screen.queryByRole('region', { name: 'Map visualization' }),
+    ).not.toBeInTheDocument()
+    expect(
+      screen.queryByRole('button', { name: 'Visualization' }),
+    ).not.toBeInTheDocument()
   })
 
   it('falls back to the findspot list when the map cannot be constructed', async () => {

@@ -1,4 +1,7 @@
+import fs from 'fs'
+import path from 'path'
 import { act, fireEvent, screen, waitFor } from '@testing-library/react'
+import fetchMock from 'jest-fetch-mock'
 import userEvent from '@testing-library/user-event'
 
 import {
@@ -15,6 +18,10 @@ jest.mock('maplibre-gl')
 jest.mock('map/useMapLayoutEffects')
 
 const mockUseMapLayoutEffects = useMapLayoutEffects as jest.Mock
+const CANONICAL_POLYGON_ASSET = fs.readFileSync(
+  path.resolve(__dirname, '../../public/map-data/findspots/all.geojson'),
+  'utf8',
+)
 
 function lastActivePanel(): unknown {
   const calls = mockUseMapLayoutEffects.mock.calls
@@ -23,6 +30,8 @@ function lastActivePanel(): unknown {
 describe('MapTab presentation mode', () => {
   beforeEach(() => {
     resetMapMocks()
+    fetchMock.resetMocks()
+    fetchMock.mockResponse(CANONICAL_POLYGON_ASSET)
     mockUseMapLayoutEffects.mockClear()
   })
 
@@ -86,6 +95,20 @@ describe('MapTab presentation mode', () => {
     expect(
       screen.getByText('Interactive findspot map in presentation mode.'),
     ).toHaveClass('visually-hidden')
+  })
+
+  it('keeps the active visualization legend while presenting', async () => {
+    renderMapTab(
+      makeFragmentService([makeProvenance()]),
+      '/tools/map?mv=1&areas=1&viz=evidence',
+    )
+
+    expect(await screen.findByRole('button', { name: 'Legend' })).toBeVisible()
+    await userEvent.click(
+      screen.getByRole('button', { name: 'Presentation mode' }),
+    )
+
+    expect(screen.getByRole('button', { name: 'Legend' })).toBeVisible()
   })
 
   it('uses presentation-safe copy for a map background failure', async () => {

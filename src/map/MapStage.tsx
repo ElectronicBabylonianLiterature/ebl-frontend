@@ -5,6 +5,7 @@ interface Props {
   readonly containerRef: React.RefObject<HTMLDivElement>
   readonly isBackgroundUnavailable: boolean
   readonly overlay?: React.ReactNode
+  readonly legend?: React.ReactNode
   readonly describedById?: string
   readonly showFallbackHint?: boolean
 }
@@ -13,6 +14,7 @@ export default function MapStage({
   containerRef,
   isBackgroundUnavailable,
   overlay,
+  legend,
   describedById,
   showFallbackHint = false,
 }: Props): JSX.Element {
@@ -24,6 +26,7 @@ export default function MapStage({
           {showFallbackHint ? ' Findspot links remain available below.' : null}
         </Alert>
       ) : null}
+      {legend}
       {overlay}
       <div
         ref={containerRef}

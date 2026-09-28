@@ -21,6 +21,7 @@ export const mockRemoveLayer = jest.fn((layerId: string) => {
 export const mockRemoveSource = jest.fn()
 export const mockSetLayoutProperty = jest.fn()
 export const mockSetPaintProperty = jest.fn()
+export const mockSetFeatureState = jest.fn()
 export const mockIsStyleLoaded = jest.fn(() => true)
 export const mockOnce = jest.fn()
 export const mockAddControl = jest.fn()
@@ -53,6 +54,7 @@ export const mockMapInstance = {
   removeSource: mockRemoveSource,
   setLayoutProperty: mockSetLayoutProperty,
   setPaintProperty: mockSetPaintProperty,
+  setFeatureState: mockSetFeatureState,
   isStyleLoaded: mockIsStyleLoaded,
   once: mockOnce,
   addControl: mockAddControl,
@@ -66,11 +68,9 @@ export const mockMapInstance = {
   queryRenderedFeatures: queryRenderedFeaturesFromStyle,
   easeTo: mockEaseTo,
 }
-
 function eventKey(event: string, layerId?: string): string {
   return layerId ? `${event}:${layerId}` : event
 }
-
 function fireMapEvent(
   event: string,
   eventPayload?: MockMapEvent | MockErrorEvent,

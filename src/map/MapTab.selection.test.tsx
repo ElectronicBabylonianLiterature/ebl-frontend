@@ -145,7 +145,9 @@ describe('MapTab excavation selection', () => {
       screen.queryByRole('region', { name: 'Selected area' }),
     ).not.toBeInTheDocument()
     await waitFor(() =>
-      expect(screen.getByRole('button', { name: 'Map layers' })).toHaveFocus(),
+      expect(
+        screen.getByRole('button', { name: 'Visualization' }),
+      ).toHaveFocus(),
     )
     expect(screen.getByTestId('current-location')).not.toHaveTextContent(
       'selected=',
@@ -228,7 +230,7 @@ describe('MapTab excavation selection', () => {
     expect(screen.getByTestId('current-location')).not.toHaveTextContent(
       'selected=',
     )
-    expect(screen.getByRole('button', { name: 'Map layers' })).toHaveFocus()
+    expect(screen.getByRole('button', { name: 'Visualization' })).toHaveFocus()
     expect(mockSetPadding).toHaveBeenLastCalledWith({
       top: 0,
       right: 0,
