@@ -8,17 +8,6 @@ export interface ElementSize {
 }
 
 const ZERO_SIZE: ElementSize = { width: 0, height: 0 }
-
-/**
- * The rendered size of an element, tracked live. Used so camera padding for
- * the panel drawer reflects its actual box rather than a constant duplicated
- * from Sass, which would drift out of sync with the real layout.
- *
- * `remeasureKey` should change whenever the ref's target element is expected
- * to have been created or removed (e.g. the panel's open/closed state) —
- * `elementRef` itself never changes identity, so React would not otherwise
- * know to re-attach the observer to a freshly mounted node.
- */
 export default function useElementSize(
   elementRef: RefObject<HTMLElement>,
   remeasureKey: unknown,

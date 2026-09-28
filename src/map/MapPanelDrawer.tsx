@@ -1,7 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react'
 import type { RefObject } from 'react'
 import { Button } from 'react-bootstrap'
-import { MAP_PANEL_CONTAINER_ID } from './MapToolbar'
+import { MAP_PANEL_CONTAINER_ID } from 'map/MapToolbar'
+import useIsNarrowViewport from 'map/useIsNarrowViewport'
 
 interface Props {
   readonly title: string
@@ -9,15 +10,6 @@ interface Props {
   readonly children: React.ReactNode
   readonly rootRef?: RefObject<HTMLElement>
 }
-
-/**
- * The single overlay that hosts whichever panel is active. Desktop/tablet
- * render it as a side drawer; mobile renders the same markup as a bottom
- * sheet (CSS-only distinction, see `_map-panel-drawer.sass`). The
- * collapsed/expanded distinction only matters for the mobile sheet — on
- * larger viewports the handle button is hidden by CSS and the drawer is
- * always fully shown.
- */
 export default function MapPanelDrawer({
   title,
   onClose,
@@ -25,11 +17,16 @@ export default function MapPanelDrawer({
   rootRef,
 }: Props): JSX.Element {
   const [isCollapsed, setIsCollapsed] = useState(false)
+  const isNarrowViewport = useIsNarrowViewport()
   const closeButtonRef = useRef<HTMLButtonElement>(null)
 
   useEffect(() => {
     closeButtonRef.current?.focus()
   }, [])
+
+  useEffect(() => {
+    if (!isNarrowViewport) setIsCollapsed(false)
+  }, [isNarrowViewport])
 
   return (
     <section

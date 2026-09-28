@@ -1,19 +1,6 @@
 import type { Point } from 'geojson'
-import { ProvenanceRecord } from 'fragmentarium/domain/Provenance'
-import { provenanceToGeoJson } from './provenanceToGeoJson'
-
-function makeProvenance(
-  overrides: Partial<ProvenanceRecord> = {},
-): ProvenanceRecord {
-  return {
-    id: 'babylon',
-    longName: 'Babylon',
-    abbreviation: 'Bab',
-    sortKey: 1,
-    coordinates: { latitude: 32.542, longitude: 44.42 },
-    ...overrides,
-  }
-}
+import { provenanceToGeoJson } from 'map/provenanceToGeoJson'
+import { makeProvenance } from 'map/provenanceTestData'
 
 describe('provenanceToGeoJson', () => {
   it('converts a valid point provenance to a GeoJSON feature', () => {
@@ -110,6 +97,30 @@ describe('provenanceToGeoJson', () => {
     const result = provenanceToGeoJson([
       makeProvenance({ coordinates: undefined }),
       makeProvenance({ coordinates: { latitude: Number.NaN, longitude: 0 } }),
+    ])
+
+    expect(result.features).toHaveLength(0)
+  })
+
+  it.each([
+    ['an out-of-range latitude', { latitude: 925.4, longitude: 44.42 }],
+    ['an out-of-range longitude', { latitude: 32.542, longitude: -180.5 }],
+  ])('skips provenances with %s', (_label, coordinates) => {
+    expect(
+      provenanceToGeoJson([makeProvenance({ coordinates })]).features,
+    ).toHaveLength(0)
+  })
+
+  it('skips polygons whose approximate point falls outside the valid range', () => {
+    const result = provenanceToGeoJson([
+      makeProvenance({
+        coordinates: undefined,
+        polygonCoordinates: [
+          { latitude: 120, longitude: 43.1 },
+          { latitude: 130, longitude: 43.2 },
+          { latitude: 140, longitude: 43.15 },
+        ],
+      }),
     ])
 
     expect(result.features).toHaveLength(0)

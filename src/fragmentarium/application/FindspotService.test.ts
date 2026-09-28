@@ -44,3 +44,27 @@ const testData: TestData<FindspotService>[] = [
 ]
 
 testDelegation(findspotService, testData)
+
+describe('map-data site support', () => {
+  it.each([
+    ['assur', 'ASSUR'],
+    ['kalhu', 'KALHU'],
+    ['nippur', 'NIPPUR'],
+    ['uruk', 'URUK'],
+  ])('maps %s to the verified backend site %s', async (siteId, siteParam) => {
+    findspotRepository.fetchMapData.mockResolvedValueOnce(expectedMapData)
+
+    await findspotService.fetchMapData(siteId)
+
+    expect(findspotRepository.fetchMapData).toHaveBeenLastCalledWith(siteParam)
+  })
+
+  it('rejects an unknown site without calling the repository', async () => {
+    findspotRepository.fetchMapData.mockClear()
+
+    await expect(findspotService.fetchMapData('babylon')).rejects.toThrow(
+      'No map-data endpoint is configured',
+    )
+    expect(findspotRepository.fetchMapData).not.toHaveBeenCalled()
+  })
+})

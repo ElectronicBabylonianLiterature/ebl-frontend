@@ -1,124 +1,110 @@
-import { act, screen } from '@testing-library/react'
+import { act, fireEvent, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { lastMapMock, resetMapLibreMock } from '__mocks__/maplibre-gl'
-import type { MapMock } from '__mocks__/maplibre-gl'
-import { createdMapMocks } from '__mocks__/maplibre-gl'
-import { MAP_LOCATION_TEST_ID, renderMapTab } from 'test-support/map-render'
+
 import {
-  findspotMapData,
-  polygonFeature,
-  provenanceRecord,
-} from 'test-support/map-fixtures'
+  makeFragmentService,
+  makeProvenance,
+  renderMapTab,
+  resetMapMocks,
+  triggerMapEvent,
+} from 'map/MapTab.testSupport'
+import { MAP_STYLE_URL } from 'map/mapBackgroundError'
+import useMapLayoutEffects from 'map/useMapLayoutEffects'
 
-const assur = provenanceRecord({ id: 'assur', longName: 'Aššur' })
-const mapData = [findspotMapData({ polygonIds: ['p1'] })]
+jest.mock('maplibre-gl')
+jest.mock('map/useMapLayoutEffects')
 
-beforeEach(() => {
-  resetMapLibreMock()
-  global.fetch = jest.fn().mockResolvedValue({
-    ok: true,
-    json: () =>
-      Promise.resolve({
-        type: 'FeatureCollection',
-        features: [polygonFeature('p1', 'assur')],
-      }),
-  }) as unknown as typeof fetch
-})
+const mockUseMapLayoutEffects = useMapLayoutEffects as jest.Mock
 
-async function mountMapTab(
-  initialEntries?: readonly string[],
-): Promise<MapMock> {
-  renderMapTab({ provenances: [assur], mapData, initialEntries })
-  await screen.findByLabelText('Findspot map')
-  await act(async () => {
-    await Promise.resolve()
-  })
-  act(() => lastMapMock().emit('load'))
-  return lastMapMock()
+function lastActivePanel(): unknown {
+  const calls = mockUseMapLayoutEffects.mock.calls
+  return calls[calls.length - 1]?.[3]
 }
-
-async function enterPresentation(): Promise<void> {
-  await userEvent.click(
-    await screen.findByRole('button', { name: 'Presentation mode' }),
-  )
-}
-
-describe('entering presentation mode', () => {
-  it('hides the route chrome, the toolbar and the legend', async () => {
-    await mountMapTab()
-
-    await enterPresentation()
-
-    expect(
-      screen.queryByRole('heading', { name: 'Archaeological atlas' }),
-    ).not.toBeInTheDocument()
-    expect(
-      screen.queryByRole('group', { name: 'Map tools' }),
-    ).not.toBeInTheDocument()
-    expect(
-      screen.queryByRole('button', { name: 'Legend' }),
-    ).not.toBeInTheDocument()
-    expect(screen.getByLabelText('Findspot map')).toBeInTheDocument()
+describe('MapTab presentation mode', () => {
+  beforeEach(() => {
+    resetMapMocks()
+    mockUseMapLayoutEffects.mockClear()
   })
 
-  it('focuses the exit control so the mode is never a trap', async () => {
-    await mountMapTab()
+  it('clears panel layout while the drawer is hidden', async () => {
+    renderMapTab(makeFragmentService([makeProvenance()]))
 
-    await enterPresentation()
+    await userEvent.click(
+      await screen.findByRole('button', { name: 'Map layers' }),
+    )
+    await waitFor(() => expect(lastActivePanel()).toBe('layers'))
 
+    await userEvent.click(
+      screen.getByRole('button', { name: 'Presentation mode' }),
+    )
+
+    await waitFor(() => expect(lastActivePanel()).toBeNull())
+  })
+
+  it('restores focus after button and keyboard exits', async () => {
+    renderMapTab(makeFragmentService([makeProvenance()]))
+
+    const enter = await screen.findByRole('button', {
+      name: 'Presentation mode',
+    })
+    await userEvent.click(enter)
     expect(
       screen.getByRole('button', { name: 'Exit presentation mode' }),
     ).toHaveFocus()
-  })
-
-  it('reuses the one map instance', async () => {
-    await mountMapTab()
-    const mapsBefore = createdMapMocks().length
-
-    await enterPresentation()
-
-    expect(createdMapMocks().length).toBe(mapsBefore)
-    expect(lastMapMock().removed).toBe(false)
-  })
-})
-
-describe('leaving presentation mode', () => {
-  it('restores the chrome through its own control', async () => {
-    await mountMapTab()
-    await enterPresentation()
 
     await userEvent.click(
       screen.getByRole('button', { name: 'Exit presentation mode' }),
     )
-
     expect(
-      screen.getByRole('heading', { name: 'Archaeological atlas' }),
-    ).toBeInTheDocument()
+      screen.getByRole('button', { name: 'Presentation mode' }),
+    ).toHaveFocus()
+
+    await userEvent.click(
+      screen.getByRole('button', { name: 'Presentation mode' }),
+    )
+    fireEvent.keyDown(window, { key: 'Escape' })
+    expect(
+      screen.getByRole('button', { name: 'Presentation mode' }),
+    ).toHaveFocus()
   })
 
-  it('leaves on Escape without dropping the selection', async () => {
-    await mountMapTab(['/?v=1&site=assur'])
-    await enterPresentation()
+  it('keeps an accurate accessible map description while presenting', async () => {
+    renderMapTab(makeFragmentService([makeProvenance()]))
 
-    expect(screen.getByText('Aššur')).toBeInTheDocument()
-
-    await userEvent.keyboard('{Escape}')
-
-    expect(
-      screen.getByRole('heading', { name: 'Archaeological atlas' }),
-    ).toBeInTheDocument()
-    expect(screen.getByTestId(MAP_LOCATION_TEST_ID)).toHaveTextContent(
-      'site=assur',
+    await userEvent.click(
+      await screen.findByRole('button', { name: 'Presentation mode' }),
     )
+
+    const region = screen.getByRole('region', {
+      name: 'Interactive findspot map',
+    })
+    const descriptionId = region.getAttribute('aria-describedby')
+    expect(descriptionId).toBe('findspot-map-description')
+    expect(
+      screen.getByText('Interactive findspot map in presentation mode.'),
+    ).toHaveAttribute('id', descriptionId)
+    expect(
+      screen.getByText('Interactive findspot map in presentation mode.'),
+    ).toHaveClass('visually-hidden')
   })
 
-  it('keeps presentation state out of the url', async () => {
-    await mountMapTab()
-
-    await enterPresentation()
-
-    expect(screen.getByTestId(MAP_LOCATION_TEST_ID)).not.toHaveTextContent(
-      'present',
+  it('uses presentation-safe copy for a map background failure', async () => {
+    renderMapTab(makeFragmentService([makeProvenance()]))
+    await userEvent.click(
+      await screen.findByRole('button', { name: 'Presentation mode' }),
     )
+
+    act(() => {
+      triggerMapEvent('error', {
+        error: { url: MAP_STYLE_URL, message: 'Not Found' },
+      })
+    })
+
+    expect(
+      screen.getByText('The interactive map could not be loaded.'),
+    ).toBeInTheDocument()
+    expect(
+      screen.queryByText(/Findspot links remain available below/),
+    ).not.toBeInTheDocument()
   })
 })

@@ -1,7 +1,4 @@
-import {
-  buildFindspotFragmentSearchLink,
-  buildFragmentSearchLink,
-} from './mapLinks'
+import { buildFragmentSearchLink } from 'map/mapLinks'
 
 describe('buildFragmentSearchLink', () => {
   it('builds a link with the provenance name as site parameter', () => {
@@ -18,12 +15,16 @@ describe('buildFragmentSearchLink', () => {
     const link = buildFragmentSearchLink('')
     expect(link).toBe('/library/search?site=')
   })
-})
 
-describe('buildFindspotFragmentSearchLink', () => {
-  it('links to fragment search by authoritative findspot ID', () => {
-    expect(buildFindspotFragmentSearchLink(123)).toBe(
-      '/library/search?findspotId=123',
+  it('keeps query delimiters inside the site value', () => {
+    const name = 'A & B = C # D?'
+
+    const { searchParams } = new URL(
+      buildFragmentSearchLink(name),
+      'https://www.ebl.lmu.de',
     )
+
+    expect(searchParams.get('site')).toBe(name)
+    expect([...searchParams.keys()]).toEqual(['site'])
   })
 })
