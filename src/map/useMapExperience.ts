@@ -12,11 +12,13 @@ export interface MapExperience {
   readonly showExcavationAreas: boolean
   readonly selection: MapSelection | null
   readonly visualization: MapVisualizationMode
+  readonly terrain: boolean
   readonly presentation: PresentationMode
   readonly setFilter: (filter: string) => void
   readonly setShowExcavationAreas: (isVisible: boolean) => void
   readonly setSelection: (selection: MapSelection | null) => void
   readonly setVisualization: (mode: MapVisualizationMode) => void
+  readonly setTerrain: (isEnabled: boolean) => void
   readonly resetState: () => void
 }
 
@@ -29,6 +31,7 @@ export default function useMapExperience(): MapExperience {
     showExcavationAreas: state.showExcavationAreas,
     selection: state.selection,
     visualization: state.visualization,
+    terrain: state.terrain,
     presentation,
     setFilter: useCallback((filter: string) => update({ filter }), [update]),
     setShowExcavationAreas: useCallback(
@@ -43,6 +46,10 @@ export default function useMapExperience(): MapExperience {
       (visualization: MapVisualizationMode) => update({ visualization }),
       [update],
     ),
+    setTerrain: useCallback(
+      (terrain: boolean) => update({ terrain }),
+      [update],
+    ),
     resetState: useCallback(
       () =>
         update({
@@ -50,6 +57,7 @@ export default function useMapExperience(): MapExperience {
           showExcavationAreas: DEFAULT_MAP_URL_STATE.showExcavationAreas,
           selection: DEFAULT_MAP_URL_STATE.selection,
           visualization: DEFAULT_MAP_URL_STATE.visualization,
+          terrain: DEFAULT_MAP_URL_STATE.terrain,
         }),
       [update],
     ),

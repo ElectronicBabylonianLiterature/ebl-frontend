@@ -1,26 +1,18 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import type { MutableRefObject, RefObject } from 'react'
-import type { Map as MapLibreMap } from 'maplibre-gl'
 import { FindspotService } from 'fragmentarium/application/FindspotService'
 import { ProvenanceRecord } from 'fragmentarium/domain/Provenance'
+import type { MapTabState } from 'map/mapTabState'
 import useFindspotMap from 'map/useFindspotMap'
 import useMapSourceData from 'map/useMapSourceData'
 import useExcavationAreas from 'map/useExcavationAreas'
 import useExcavationPolygonIndex from 'map/useExcavationPolygonIndex'
-import useFragmentMapData, {
-  type FragmentMapDataState,
-} from 'map/useFragmentMapData'
-import useMapExperience, { type MapExperience } from 'map/useMapExperience'
-import useMapPanel, { type MapPanelController } from 'map/useMapPanel'
-import useMapVisualization, {
-  type MapVisualization,
-} from 'map/useMapVisualization'
-import useMapMeasurement, {
-  type MeasurementController,
-} from 'map/useMapMeasurement'
-import useMapSpatialSearch, {
-  type SpatialSearchController,
-} from 'map/useMapSpatialSearch'
+import useFragmentMapData from 'map/useFragmentMapData'
+import useMapExperience from 'map/useMapExperience'
+import useMapPanel from 'map/useMapPanel'
+import useMapVisualization from 'map/useMapVisualization'
+import useMapMeasurement from 'map/useMapMeasurement'
+import useMapSpatialSearch from 'map/useMapSpatialSearch'
+import useMapTerrain from 'map/useMapTerrain'
 import useMapLayoutEffects from 'map/useMapLayoutEffects'
 import { resetMapCamera } from 'map/mapCamera'
 import { filterProvenances } from 'map/findspotFilter'
@@ -32,33 +24,10 @@ import {
 import {
   findExcavationPolygon,
   sortedExcavationPolygons,
-  type ExcavationPolygon,
 } from 'map/excavationPolygonIndex'
-import useMapExportView, { type MapExportView } from 'map/useMapExportView'
+import useMapExportView from 'map/useMapExportView'
 
-export interface MapTabState {
-  readonly provenances: readonly ProvenanceRecord[]
-  readonly filteredProvenances: readonly ProvenanceRecord[]
-  readonly visibleFindspotCount: number
-  readonly mapContainer: RefObject<HTMLDivElement>
-  readonly drawerRef: RefObject<HTMLElement>
-  readonly mapRef: MutableRefObject<MapLibreMap | null>
-  readonly isBackgroundUnavailable: boolean
-  readonly isExcavationAreasUnavailable: boolean
-  readonly experience: MapExperience
-  readonly panel: MapPanelController
-  readonly canShowExcavationAreas: boolean
-  readonly showExcavationAreas: boolean
-  readonly fragmentMapData: FragmentMapDataState
-  readonly selectedPolygon: ExcavationPolygon | null
-  readonly visualization: MapVisualization
-  readonly measurement: MeasurementController
-  readonly spatialSearch: SpatialSearchController
-  readonly exportView: MapExportView
-  readonly excavationPolygons: readonly ExcavationPolygon[]
-  readonly selectPolygon: (polygonId: string) => void
-  readonly resetView: () => void
-}
+export type { MapTabState } from 'map/mapTabState'
 
 export default function useMapTabState(
   findspotService: FindspotService,
@@ -199,6 +168,9 @@ export default function useMapTabState(
     drawerRef,
     experience.presentation.isActive ? null : panel.active,
   )
+  const terrain = useMapTerrain(mapRef, experience.terrain, {
+    onUnavailable: () => experience.setTerrain(false),
+  })
   const spatialSearch = useMapSpatialSearch(
     mapRef,
     isSpatialSearchActive,
@@ -243,6 +215,7 @@ export default function useMapTabState(
     measurement,
     spatialSearch,
     exportView,
+    terrain,
     selectPolygon: onSelectPolygon,
     excavationPolygons,
     resetView,
