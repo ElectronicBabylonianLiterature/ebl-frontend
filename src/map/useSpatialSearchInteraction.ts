@@ -9,6 +9,15 @@ import type { SpatialSearchDrawingRefs } from 'map/useSpatialSearchDrawing'
 import { finitePosition } from 'map/useSpatialSearchDrawing'
 import type { SpatialSearchShape } from 'map/spatialSearch'
 
+interface SpatialSearchInteractionOptions {
+  readonly isActive: boolean
+  readonly refs: SpatialSearchDrawingRefs
+  readonly drawStart: Position | null
+  readonly shape: SpatialSearchShape | null
+  readonly addCorner: (position: Position) => void
+  readonly clear: () => void
+}
+
 function isEditableTarget(target: EventTarget | null): boolean {
   if (!(target instanceof HTMLElement)) return false
   return [
@@ -19,13 +28,9 @@ function isEditableTarget(target: EventTarget | null): boolean {
 
 export default function useSpatialSearchInteraction(
   mapRef: MutableRefObject<MapLibreMap | null>,
-  isActive: boolean,
-  refs: SpatialSearchDrawingRefs,
-  drawStart: Position | null,
-  shape: SpatialSearchShape | null,
-  addCorner: (position: Position) => void,
-  clear: () => void,
+  options: SpatialSearchInteractionOptions,
 ): void {
+  const { isActive, refs, drawStart, shape, addCorner, clear } = options
   const layerLifecycleRef = useRef<SpatialSearchLayerLifecycle | null>(null)
 
   useEffect(() => {
