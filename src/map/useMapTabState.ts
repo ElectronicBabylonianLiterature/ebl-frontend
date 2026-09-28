@@ -12,6 +12,7 @@ import useFragmentMapData, {
 } from 'map/useFragmentMapData'
 import useMapExperience, { type MapExperience } from 'map/useMapExperience'
 import useMapPanel, { type MapPanelController } from 'map/useMapPanel'
+import useMapPanelAvailability from 'map/useMapPanelAvailability'
 import useMapVisualization, {
   type MapVisualization,
 } from 'map/useMapVisualization'
@@ -58,33 +59,6 @@ export interface MapTabState {
   readonly excavationPolygons: readonly ExcavationPolygon[]
   readonly selectPolygon: (polygonId: string) => void
   readonly resetView: () => void
-}
-
-function usePanelAvailability(
-  panel: MapPanelController,
-  closePanel: () => void,
-  selectedPolygonId: string | null,
-  canShowExcavationAreas: boolean,
-  isBackgroundUnavailable: boolean,
-): void {
-  useEffect(() => {
-    const active = panel.active
-    const shouldClose = [
-      selectedPolygonId === null && active === 'inspector',
-      !canShowExcavationAreas && active === 'visualization',
-      isBackgroundUnavailable &&
-        (active === 'measurement' || active === 'spatial-search'),
-      !canShowExcavationAreas &&
-        (active === 'spatial-search' || active === 'export'),
-    ].some(Boolean)
-    if (shouldClose) closePanel()
-  }, [
-    canShowExcavationAreas,
-    closePanel,
-    isBackgroundUnavailable,
-    panel.active,
-    selectedPolygonId,
-  ])
 }
 
 export default function useMapTabState(
@@ -188,7 +162,7 @@ export default function useMapTabState(
     selectedPolygonId,
     setSelection,
   ])
-  usePanelAvailability(
+  useMapPanelAvailability(
     panel,
     closePanel,
     selectedPolygonId,

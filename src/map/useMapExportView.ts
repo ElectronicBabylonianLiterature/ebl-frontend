@@ -82,7 +82,14 @@ function useMapExportVisibility(
       map.off('idle', update)
       map.off('load', update)
     }
-  }, [isLayerVisible, mapRef, polygonsById, selectedPolygon])
+  }, [
+    isLayerVisible,
+    mapRef,
+    polygonsById,
+    selectedPolygon,
+    setScope,
+    setVisiblePolygons,
+  ])
 }
 
 export default function useMapExportView(
