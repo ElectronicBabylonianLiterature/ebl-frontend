@@ -46,29 +46,35 @@ export const mockBoundsExtend = jest.fn()
 const mockEventHandlers: Record<string, MockEventHandler[]> = {}
 let mockLoadImmediately = true
 let mockMapConstructionError: unknown = null
-export const mockMapInstance = {
-  addSource: mockAddSource,
-  addLayer: mockAddLayer,
-  getLayer: mockGetLayer,
-  removeLayer: mockRemoveLayer,
-  removeSource: mockRemoveSource,
-  setLayoutProperty: mockSetLayoutProperty,
-  setPaintProperty: mockSetPaintProperty,
-  setFeatureState: mockSetFeatureState,
-  isStyleLoaded: mockIsStyleLoaded,
-  once: mockOnce,
-  addControl: mockAddControl,
-  remove: mockRemove,
-  getSource: mockGetSource,
-  getCanvas: mockGetCanvas,
-  getCenter: mockGetCenter,
-  on: mockOn,
-  off: mockOff,
-  fitBounds: mockFitBounds,
-  setPadding: mockSetPadding,
-  queryRenderedFeatures: queryRenderedFeaturesFromStyle,
-  easeTo: mockEaseTo,
-}
+export const mockMapInstance = Object.assign(
+  {
+    addSource: mockAddSource,
+    addLayer: mockAddLayer,
+    getLayer: mockGetLayer,
+    removeLayer: mockRemoveLayer,
+    removeSource: mockRemoveSource,
+    setLayoutProperty: mockSetLayoutProperty,
+    setPaintProperty: mockSetPaintProperty,
+  },
+  {
+    setFeatureState: mockSetFeatureState,
+    isStyleLoaded: mockIsStyleLoaded,
+    once: mockOnce,
+    addControl: mockAddControl,
+    remove: mockRemove,
+    getSource: mockGetSource,
+    getCanvas: mockGetCanvas,
+  },
+  {
+    getCenter: mockGetCenter,
+    on: mockOn,
+    off: mockOff,
+    fitBounds: mockFitBounds,
+    setPadding: mockSetPadding,
+    queryRenderedFeatures: queryRenderedFeaturesFromStyle,
+    easeTo: mockEaseTo,
+  },
+)
 function eventKey(event: string, layerId?: string): string {
   return layerId ? `${event}:${layerId}` : event
 }
