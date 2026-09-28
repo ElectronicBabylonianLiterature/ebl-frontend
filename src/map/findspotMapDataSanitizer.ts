@@ -11,7 +11,6 @@ export class IncompatibleFindspotMapDataError extends Error {
     this.name = 'IncompatibleFindspotMapDataError'
   }
 }
-
 function emptySanitizedResponse(): SanitizedFindspotMapDataResponse {
   return {
     findspots: [],
@@ -23,7 +22,6 @@ function emptySanitizedResponse(): SanitizedFindspotMapDataResponse {
     },
   }
 }
-
 function stableFindspotFingerprint(findspot: FindspotMapData): string {
   return JSON.stringify({
     accessibleFragmentCount: findspot.accessibleFragmentCount,
@@ -38,6 +36,95 @@ function stableFindspotFingerprint(findspot: FindspotMapData): string {
     siteId: findspot.siteId,
     siteName: findspot.siteName,
   })
+}
+interface FindspotRowsById {
+  readonly first: FindspotMapData
+  readonly fingerprints: Map<string, number>
+}
+function belongsToExpectedSite(
+  findspot: FindspotMapData,
+  expectedSiteId?: string,
+  expectedSiteName?: string,
+): boolean {
+  return [
+    !expectedSiteId || findspot.siteId === expectedSiteId,
+    !expectedSiteName || findspot.siteName === expectedSiteName,
+  ].every(Boolean)
+}
+function collectFindspotRows(
+  findspots: readonly unknown[],
+  expectedSiteId?: string,
+  expectedSiteName?: string,
+): {
+  readonly byFindspotId: Map<number, FindspotRowsById>
+  rejectedRows: number
+} {
+  const byFindspotId = new Map<number, FindspotRowsById>()
+  let rejectedRows = 0
+
+  for (const findspot of findspots) {
+    const sanitized = sanitizeFindspotMapData(findspot)
+    if (
+      sanitized === null ||
+      !belongsToExpectedSite(sanitized, expectedSiteId, expectedSiteName)
+    ) {
+      rejectedRows += 1
+      continue
+    }
+
+    const fingerprint = stableFindspotFingerprint(sanitized)
+    const existing = byFindspotId.get(sanitized.findspotId)
+    if (existing) {
+      existing.fingerprints.set(
+        fingerprint,
+        (existing.fingerprints.get(fingerprint) ?? 0) + 1,
+      )
+      continue
+    }
+    byFindspotId.set(sanitized.findspotId, {
+      first: sanitized,
+      fingerprints: new Map([[fingerprint, 1]]),
+    })
+  }
+
+  return { byFindspotId, rejectedRows }
+}
+
+function summarizeFindspotRows(
+  byFindspotId: ReadonlyMap<number, FindspotRowsById>,
+): Omit<SanitizedFindspotMapDataResponse, 'diagnostics'> & {
+  readonly exactDuplicateRows: number
+  readonly conflictingDuplicateFindspots: number
+  readonly conflictingDuplicateRows: number
+} {
+  let exactDuplicateRows = 0
+  let conflictingDuplicateFindspots = 0
+  let conflictingDuplicateRows = 0
+  const sanitizedFindspots: FindspotMapData[] = []
+
+  const entries = [...byFindspotId.values()].sort(
+    (left, right) => left.first.findspotId - right.first.findspotId,
+  )
+  for (const entry of entries) {
+    const rowCount = [...entry.fingerprints.values()].reduce(
+      (total, count) => total + count,
+      0,
+    )
+    if (entry.fingerprints.size === 1) {
+      exactDuplicateRows += rowCount - 1
+      sanitizedFindspots.push(entry.first)
+      continue
+    }
+    conflictingDuplicateFindspots += 1
+    conflictingDuplicateRows += rowCount
+  }
+
+  return {
+    findspots: sanitizedFindspots,
+    exactDuplicateRows,
+    conflictingDuplicateFindspots,
+    conflictingDuplicateRows,
+  }
 }
 
 export function sanitizeFindspotMapDataResponse(
@@ -62,66 +149,19 @@ export function sanitizeFindspotMapDataResponseWithDiagnostics(
   const findspots = (response as Record<string, unknown>).findspots
   if (!Array.isArray(findspots)) return emptySanitizedResponse()
 
-  const byFindspotId = new Map<
-    number,
-    { first: FindspotMapData; fingerprints: Map<string, number> }
-  >()
-  let rejectedRows = 0
-
-  for (const findspot of findspots) {
-    const sanitized = sanitizeFindspotMapData(findspot)
-    if (
-      !sanitized ||
-      (expectedSiteId && sanitized.siteId !== expectedSiteId) ||
-      (expectedSiteName && sanitized.siteName !== expectedSiteName)
-    ) {
-      rejectedRows += 1
-      continue
-    }
-
-    const fingerprint = stableFindspotFingerprint(sanitized)
-    const existing = byFindspotId.get(sanitized.findspotId)
-    if (existing) {
-      existing.fingerprints.set(
-        fingerprint,
-        (existing.fingerprints.get(fingerprint) ?? 0) + 1,
-      )
-    } else {
-      byFindspotId.set(sanitized.findspotId, {
-        first: sanitized,
-        fingerprints: new Map([[fingerprint, 1]]),
-      })
-    }
-  }
-
-  let exactDuplicateRows = 0
-  let conflictingDuplicateFindspots = 0
-  let conflictingDuplicateRows = 0
-  const sanitizedFindspots: FindspotMapData[] = []
-
-  for (const entry of [...byFindspotId.values()].sort(
-    (left, right) => left.first.findspotId - right.first.findspotId,
-  )) {
-    const rowCount = [...entry.fingerprints.values()].reduce(
-      (total, count) => total + count,
-      0,
-    )
-
-    if (entry.fingerprints.size === 1) {
-      exactDuplicateRows += rowCount - 1
-      sanitizedFindspots.push(entry.first)
-    } else {
-      conflictingDuplicateFindspots += 1
-      conflictingDuplicateRows += rowCount
-    }
-  }
+  const { byFindspotId, rejectedRows } = collectFindspotRows(
+    findspots,
+    expectedSiteId,
+    expectedSiteName,
+  )
+  const summary = summarizeFindspotRows(byFindspotId)
 
   return {
-    findspots: sanitizedFindspots,
+    findspots: summary.findspots,
     diagnostics: {
-      exactDuplicateRows,
-      conflictingDuplicateFindspots,
-      conflictingDuplicateRows,
+      exactDuplicateRows: summary.exactDuplicateRows,
+      conflictingDuplicateFindspots: summary.conflictingDuplicateFindspots,
+      conflictingDuplicateRows: summary.conflictingDuplicateRows,
       rejectedRows,
     },
   }
