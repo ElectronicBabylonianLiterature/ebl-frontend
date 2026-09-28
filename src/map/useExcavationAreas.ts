@@ -2,30 +2,18 @@ import { useEffect, useRef } from 'react'
 import type { MutableRefObject } from 'react'
 import type { Map as MapLibreMap, MapMouseEvent } from 'maplibre-gl'
 import type { MapLibreErrorEvent } from 'map/mapBackgroundError'
+import { EXCAVATION_AREA_FILL_LAYER_ID } from 'map/mapLayerIds'
 import {
-  EXCAVATION_AREAS_SOURCE_ID,
-  EXCAVATION_AREA_FILL_LAYER_ID,
-  EXCAVATION_AREA_OUTLINE_LAYER_ID,
-  EXCAVATION_AREA_SELECTED_LAYER_ID,
-} from 'map/mapLayerIds'
-import {
-  createExcavationAreasSource,
-  excavationAreaFillLayer,
-  excavationAreaOutlineLayer,
-  excavationAreaSelectedLayer,
-} from 'map/mapExcavationLayers'
-import { applyExcavationPaint } from 'map/mapChoroplethLayers'
+  addExcavationAreas,
+  applyExcavationAreaSelection,
+  applyExcavationAreaVisualization,
+  isExcavationAreaError,
+  removeExcavationAreas,
+  setExcavationAreasVisible,
+} from 'map/excavationAreaMap'
 import { CATEGORICAL_PAINT, type ExcavationPaint } from 'map/mapExcavationPaint'
-import {
-  featureStateFor,
-  type PolygonVisualizationValues,
-} from 'map/mapVisualizationValues'
+import type { PolygonVisualizationValues } from 'map/mapVisualizationValues'
 
-const ALL_LAYER_IDS: readonly string[] = [
-  EXCAVATION_AREA_FILL_LAYER_ID,
-  EXCAVATION_AREA_OUTLINE_LAYER_ID,
-  EXCAVATION_AREA_SELECTED_LAYER_ID,
-]
 const EMPTY_VALUES: PolygonVisualizationValues = new Map()
 
 function ownsMap(
@@ -35,79 +23,6 @@ function ownsMap(
   return mapRef.current === map
 }
 
-function addExcavationAreas(map: MapLibreMap): void {
-  if (!map.getSource(EXCAVATION_AREAS_SOURCE_ID)) {
-    map.addSource(EXCAVATION_AREAS_SOURCE_ID, createExcavationAreasSource())
-  }
-  ;[
-    excavationAreaFillLayer,
-    excavationAreaOutlineLayer,
-    excavationAreaSelectedLayer,
-  ].forEach((layer) => {
-    if (!map.getLayer(layer.id)) map.addLayer(layer)
-  })
-}
-
-function removeExcavationAreas(map: MapLibreMap): void {
-  ;[...ALL_LAYER_IDS].reverse().forEach((layerId) => {
-    if (map.getLayer(layerId)) map.removeLayer(layerId)
-  })
-  if (map.getSource(EXCAVATION_AREAS_SOURCE_ID)) {
-    map.removeSource(EXCAVATION_AREAS_SOURCE_ID)
-  }
-}
-
-function setVisible(map: MapLibreMap, isVisible: boolean): void {
-  ALL_LAYER_IDS.forEach((layerId) => {
-    if (map.getLayer(layerId)) {
-      map.setLayoutProperty(
-        layerId,
-        'visibility',
-        isVisible ? 'visible' : 'none',
-      )
-    }
-  })
-}
-
-function applySelection(
-  map: MapLibreMap,
-  previousId: string | null,
-  nextId: string | null,
-): void {
-  if (previousId && previousId !== nextId) {
-    map.setFeatureState(
-      { source: EXCAVATION_AREAS_SOURCE_ID, id: previousId },
-      { selected: false },
-    )
-  }
-  if (nextId) {
-    map.setFeatureState(
-      { source: EXCAVATION_AREAS_SOURCE_ID, id: nextId },
-      { selected: true },
-    )
-  }
-}
-
-function applyVisualizationValues(
-  map: MapLibreMap,
-  values: PolygonVisualizationValues,
-): void {
-  values.forEach((value, polygonId) => {
-    map.setFeatureState(
-      { source: EXCAVATION_AREAS_SOURCE_ID, id: polygonId },
-      featureStateFor(value),
-    )
-  })
-}
-
-function isExcavationAreaError(event: MapLibreErrorEvent): boolean {
-  return (
-    event.sourceId === EXCAVATION_AREAS_SOURCE_ID ||
-    (typeof event.layer?.id === 'string' &&
-      ALL_LAYER_IDS.includes(event.layer.id))
-  )
-}
-
 export interface ExcavationAreaOptions {
   readonly isVisible: boolean
   readonly selectedPolygonId: string | null
@@ -115,7 +30,6 @@ export interface ExcavationAreaOptions {
   readonly values?: PolygonVisualizationValues
   readonly onSelectPolygon: (polygonId: string) => void
   readonly onAvailabilityChange?: (isUnavailable: boolean) => void
-  readonly isInteractionEnabled?: boolean
 }
 
 function useExcavationAreaLifecycle(
@@ -137,7 +51,6 @@ function useExcavationAreaLifecycle(
       }
     }
     const handleClick = (event: MapMouseEvent): void => {
-      if (latestOptionsRef.current.isInteractionEnabled === false) return
       const [feature] = map.queryRenderedFeatures(event.point, {
         layers: [EXCAVATION_AREA_FILL_LAYER_ID],
       })
@@ -169,7 +82,8 @@ function useExcavationAreaVisibility(
     const map = mapRef.current
     if (!map) return
 
-    const updateVisibility = (): void => setVisible(map, isVisible)
+    const updateVisibility = (): void =>
+      setExcavationAreasVisible(map, isVisible)
     if (map.isStyleLoaded()) updateVisibility()
     else map.once('load', updateVisibility)
 
@@ -192,7 +106,7 @@ function useExcavationAreaSelection(
 
     const updateSelection = (): void => {
       const nextId = isVisible ? selectedPolygonId : null
-      applySelection(map, previousSelectedIdRef.current, nextId)
+      applyExcavationAreaSelection(map, previousSelectedIdRef.current, nextId)
       previousSelectedIdRef.current = nextId
     }
     if (map.isStyleLoaded()) updateSelection()
@@ -214,7 +128,11 @@ function useExcavationAreaVisualization(
     if (!map) return
 
     const updatePaint = (): void =>
-      applyExcavationPaint(map, paint ?? CATEGORICAL_PAINT)
+      applyExcavationAreaVisualization(
+        map,
+        paint ?? CATEGORICAL_PAINT,
+        EMPTY_VALUES,
+      )
     if (map.isStyleLoaded()) updatePaint()
     else map.once('load', updatePaint)
 
@@ -228,14 +146,18 @@ function useExcavationAreaVisualization(
     if (!map) return
 
     const updateValues = (): void =>
-      applyVisualizationValues(map, values ?? EMPTY_VALUES)
+      applyExcavationAreaVisualization(
+        map,
+        paint ?? CATEGORICAL_PAINT,
+        values ?? EMPTY_VALUES,
+      )
     if (map.isStyleLoaded()) updateValues()
     else map.once('load', updateValues)
 
     return () => {
       if (ownsMap(mapRef, map)) map.off('load', updateValues)
     }
-  }, [mapRef, values])
+  }, [mapRef, paint, values])
 }
 
 export default function useExcavationAreas(
