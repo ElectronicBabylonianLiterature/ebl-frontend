@@ -10,13 +10,12 @@ export function wrapLongitude(longitude: number): number {
 }
 
 function hasValidLatitudes(south: number, north: number): boolean {
-  return (
-    Number.isFinite(south) &&
-    Number.isFinite(north) &&
-    south >= -90 &&
-    north <= 90 &&
-    south < north
-  )
+  return [
+    Number.isFinite(south) && Number.isFinite(north),
+    south >= -90,
+    north <= 90,
+    south < north,
+  ].every(Boolean)
 }
 
 function canonicalInterval(

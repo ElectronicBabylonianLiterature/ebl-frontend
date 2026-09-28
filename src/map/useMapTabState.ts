@@ -9,6 +9,7 @@ import useExcavationPolygonIndex from 'map/useExcavationPolygonIndex'
 import useFragmentMapData from 'map/useFragmentMapData'
 import useMapExperience from 'map/useMapExperience'
 import useMapPanel from 'map/useMapPanel'
+import useMapPanelAvailability from 'map/useMapPanelAvailability'
 import useMapVisualization from 'map/useMapVisualization'
 import useMapMeasurement from 'map/useMapMeasurement'
 import useMapSpatialSearch from 'map/useMapSpatialSearch'
@@ -130,29 +131,13 @@ export default function useMapTabState(
     selectedPolygonId,
     setSelection,
   ])
-  useEffect(() => {
-    if (selectedPolygonId === null && panel.active === 'inspector') closePanel()
-    if (!canShowExcavationAreas && panel.active === 'visualization')
-      closePanel()
-    if (
-      isBackgroundUnavailable &&
-      (panel.active === 'measurement' || panel.active === 'spatial-search')
-    ) {
-      closePanel()
-    }
-    if (
-      !canShowExcavationAreas &&
-      (panel.active === 'spatial-search' || panel.active === 'export')
-    ) {
-      closePanel()
-    }
-  }, [
-    canShowExcavationAreas,
+  useMapPanelAvailability(
+    panel,
     closePanel,
-    isBackgroundUnavailable,
-    panel.active,
     selectedPolygonId,
-  ])
+    canShowExcavationAreas,
+    isBackgroundUnavailable,
+  )
   useExcavationAreas(mapRef, {
     isVisible: showExcavationAreas,
     selectedPolygonId,

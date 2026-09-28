@@ -18,22 +18,14 @@ export interface MapExportView {
 
 const EMPTY_SCOPE: MapExportScope = { type: 'viewport', bounds: [] }
 
-export default function useMapExportView(
+function useMapExportVisibility(
   mapRef: MutableRefObject<MapLibreMap | null>,
   isLayerVisible: boolean,
-  polygons: readonly ExcavationPolygon[],
   selectedPolygon: ExcavationPolygon | null,
-  fragmentMapData: FragmentMapDataState,
-): MapExportView {
-  const [visiblePolygons, setVisiblePolygons] = useState<
-    readonly ExcavationPolygon[]
-  >([])
-  const [scope, setScope] = useState<MapExportScope>(EMPTY_SCOPE)
-  const polygonsById = useMemo(
-    () => new Map(polygons.map((polygon) => [polygon.polygonId, polygon])),
-    [polygons],
-  )
-
+  polygonsById: ReadonlyMap<string, ExcavationPolygon>,
+  setVisiblePolygons: (polygons: readonly ExcavationPolygon[]) => void,
+  setScope: (scope: MapExportScope) => void,
+): void {
   useEffect(() => {
     const map = mapRef.current
     if (selectedPolygon) {
@@ -60,25 +52,24 @@ export default function useMapExportView(
         ) ?? []
       setScope({ type: 'viewport', bounds })
 
-      if (!isLayerVisible || !map.getLayer(EXCAVATION_AREA_FILL_LAYER_ID)) {
-        setVisiblePolygons([])
-        return
-      }
-      const ids = new Set(
-        map
-          .queryRenderedFeatures(undefined, {
-            layers: [EXCAVATION_AREA_FILL_LAYER_ID],
-          })
-          .map(({ id }) => id)
-          .filter((id): id is string => typeof id === 'string'),
-      )
-      setVisiblePolygons(
-        [...ids]
-          .map((id) => polygonsById.get(id))
-          .filter(
-            (polygon): polygon is ExcavationPolygon => polygon !== undefined,
-          ),
-      )
+      const canQuery =
+        isLayerVisible && Boolean(map.getLayer(EXCAVATION_AREA_FILL_LAYER_ID))
+      const ids = canQuery
+        ? new Set(
+            map
+              .queryRenderedFeatures(undefined, {
+                layers: [EXCAVATION_AREA_FILL_LAYER_ID],
+              })
+              .map(({ id }) => id)
+              .filter((id): id is string => typeof id === 'string'),
+          )
+        : new Set<string>()
+      const next = [...ids]
+        .map((id) => polygonsById.get(id))
+        .filter(
+          (polygon): polygon is ExcavationPolygon => polygon !== undefined,
+        )
+      setVisiblePolygons(next)
     }
 
     map.on('moveend', update)
@@ -91,7 +82,39 @@ export default function useMapExportView(
       map.off('idle', update)
       map.off('load', update)
     }
-  }, [isLayerVisible, mapRef, polygonsById, selectedPolygon])
+  }, [
+    isLayerVisible,
+    mapRef,
+    polygonsById,
+    selectedPolygon,
+    setScope,
+    setVisiblePolygons,
+  ])
+}
+
+export default function useMapExportView(
+  mapRef: MutableRefObject<MapLibreMap | null>,
+  isLayerVisible: boolean,
+  polygons: readonly ExcavationPolygon[],
+  selectedPolygon: ExcavationPolygon | null,
+  fragmentMapData: FragmentMapDataState,
+): MapExportView {
+  const [visiblePolygons, setVisiblePolygons] = useState<
+    readonly ExcavationPolygon[]
+  >([])
+  const [scope, setScope] = useState<MapExportScope>(EMPTY_SCOPE)
+  const polygonsById = useMemo(
+    () => new Map(polygons.map((polygon) => [polygon.polygonId, polygon])),
+    [polygons],
+  )
+  useMapExportVisibility(
+    mapRef,
+    isLayerVisible,
+    selectedPolygon,
+    polygonsById,
+    setVisiblePolygons,
+    setScope,
+  )
 
   const rows = useMemo(
     () => toExportRows(visiblePolygons, fragmentMapData.sites),

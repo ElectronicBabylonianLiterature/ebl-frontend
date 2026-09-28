@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import type { MutableRefObject } from 'react'
 import type { Position } from 'geojson'
 import type { Map as MapLibreMap, MapMouseEvent } from 'maplibre-gl'
@@ -29,19 +29,104 @@ export interface MeasurementController {
 }
 
 function isEditableTarget(target: EventTarget | null): boolean {
-  return (
-    target instanceof HTMLElement &&
-    (target.isContentEditable ||
-      target.tagName === 'INPUT' ||
-      target.tagName === 'TEXTAREA' ||
-      target.tagName === 'SELECT')
-  )
+  if (!(target instanceof HTMLElement)) return false
+  return [
+    target.isContentEditable,
+    ['INPUT', 'TEXTAREA', 'SELECT'].includes(target.tagName),
+  ].some(Boolean)
 }
 
 function finitePosition(longitude: number, latitude: number): Position | null {
   return Number.isFinite(longitude) && Number.isFinite(latitude)
     ? [longitude, latitude]
     : null
+}
+
+interface MeasurementRefs {
+  readonly mode: MutableRefObject<MeasurementMode>
+  readonly positions: MutableRefObject<readonly Position[]>
+  readonly isActive: MutableRefObject<boolean>
+}
+
+interface MeasurementActions {
+  readonly addPoint: (position: Position) => void
+  readonly clear: () => void
+  readonly removeLastPoint: () => void
+}
+
+function ownsMap(
+  mapRef: MutableRefObject<MapLibreMap | null>,
+  map: MapLibreMap,
+): boolean {
+  return mapRef.current === map
+}
+
+function createMapClickHandler(
+  refs: MeasurementRefs,
+  addPoint: MeasurementActions['addPoint'],
+): (event: MapMouseEvent) => void {
+  return (event) => {
+    if (!refs.isActive.current) return
+    const position = finitePosition(event.lngLat.lng, event.lngLat.lat)
+    if (position) addPoint(position)
+  }
+}
+
+function createKeyDownHandler(
+  refs: MeasurementRefs,
+  actions: Pick<MeasurementActions, 'clear' | 'removeLastPoint'>,
+): (event: KeyboardEvent) => void {
+  return (event) => {
+    const shouldIgnore = [
+      !refs.isActive.current,
+      isEditableTarget(event.target),
+      refs.positions.current.length === 0,
+    ].some(Boolean)
+    if (shouldIgnore) return
+
+    const action =
+      event.key === 'Escape'
+        ? actions.clear
+        : event.key === 'Backspace'
+          ? actions.removeLastPoint
+          : null
+    if (action) {
+      event.preventDefault()
+      action()
+    }
+  }
+}
+
+function useMeasurementLifecycle(
+  mapRef: MutableRefObject<MapLibreMap | null>,
+  isActive: boolean,
+  refs: MeasurementRefs,
+  actions: MeasurementActions,
+): void {
+  useEffect(() => {
+    const map = mapRef.current
+    if (!map || !isActive) return
+
+    const install = (): void => {
+      addMeasurementLayers(map)
+      updateMeasurementGeometry(map, refs.mode.current, refs.positions.current)
+    }
+    const handleClick = createMapClickHandler(refs, actions.addPoint)
+    const handleKeyDown = createKeyDownHandler(refs, actions)
+
+    if (map.isStyleLoaded()) install()
+    else map.once('load', install)
+    map.on('click', handleClick)
+    window.addEventListener('keydown', handleKeyDown)
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown)
+      if (!ownsMap(mapRef, map)) return
+      map.off('load', install)
+      map.off('click', handleClick)
+      removeMeasurementLayers(map)
+    }
+  }, [actions, isActive, mapRef, refs])
 }
 
 export default function useMapMeasurement(
@@ -95,50 +180,15 @@ export default function useMapMeasurement(
     if (!isActive) clear()
   }, [clear, isActive])
 
-  useEffect(() => {
-    const map = mapRef.current
-    if (!map || !isActive) return
-
-    const isCurrentMap = (): boolean => mapRef.current === map
-    const install = (): void => {
-      addMeasurementLayers(map)
-      updateMeasurementGeometry(map, modeRef.current, positionsRef.current)
-    }
-    const handleClick = (event: MapMouseEvent): void => {
-      if (!isActiveRef.current) return
-      const position = finitePosition(event.lngLat.lng, event.lngLat.lat)
-      if (position) addPoint(position)
-    }
-    const handleKeyDown = (event: KeyboardEvent): void => {
-      if (
-        !isActiveRef.current ||
-        isEditableTarget(event.target) ||
-        positionsRef.current.length === 0
-      ) {
-        return
-      }
-      if (event.key === 'Escape') {
-        event.preventDefault()
-        clear()
-      } else if (event.key === 'Backspace') {
-        event.preventDefault()
-        removeLastPoint()
-      }
-    }
-
-    if (map.isStyleLoaded()) install()
-    else map.once('load', install)
-    map.on('click', handleClick)
-    window.addEventListener('keydown', handleKeyDown)
-
-    return () => {
-      window.removeEventListener('keydown', handleKeyDown)
-      if (!isCurrentMap()) return
-      map.off('load', install)
-      map.off('click', handleClick)
-      removeMeasurementLayers(map)
-    }
-  }, [addPoint, clear, isActive, mapRef, removeLastPoint])
+  const refs = useMemo(
+    () => ({ mode: modeRef, positions: positionsRef, isActive: isActiveRef }),
+    [],
+  )
+  const actions = useMemo(
+    () => ({ addPoint, clear, removeLastPoint }),
+    [addPoint, clear, removeLastPoint],
+  )
+  useMeasurementLifecycle(mapRef, isActive, refs, actions)
 
   useEffect(() => {
     const map = mapRef.current
