@@ -40,12 +40,14 @@ function ringArea(ring: Ring): number {
 }
 
 function validRing(ring: Ring): boolean {
-  return (
-    ring.length >= 4 &&
-    ring.every(isFinitePosition) &&
-    samePosition(ring[0], ring[ring.length - 1]) &&
-    ringArea(unwrapRing(ring, ring[0][0])) !== 0
-  )
+  const first = ring[0] ?? [Number.NaN, Number.NaN]
+  const last = ring[ring.length - 1] ?? [Number.NaN, Number.NaN]
+  return [
+    ring.length >= 4,
+    ring.every(isFinitePosition),
+    samePosition(first, last),
+    ringArea(unwrapRing(ring, first[0])) !== 0,
+  ].every(Boolean)
 }
 
 export function boundingBoxesIntersect(
@@ -105,12 +107,12 @@ function orientation(a: Position, b: Position, c: Position): number {
 }
 
 function isBetween(a: Position, b: Position, c: Position): boolean {
-  return (
-    Math.min(a[0], c[0]) <= b[0] &&
-    b[0] <= Math.max(a[0], c[0]) &&
-    Math.min(a[1], c[1]) <= b[1] &&
-    b[1] <= Math.max(a[1], c[1])
-  )
+  return [
+    Math.min(a[0], c[0]) <= b[0],
+    b[0] <= Math.max(a[0], c[0]),
+    Math.min(a[1], c[1]) <= b[1],
+    b[1] <= Math.max(a[1], c[1]),
+  ].every(Boolean)
 }
 
 export function segmentsIntersect(
@@ -125,12 +127,12 @@ export function segmentsIntersect(
   const third = orientation(c, d, a)
   const fourth = orientation(c, d, b)
   if (first * second < 0 && third * fourth < 0) return true
-  return (
-    (first === 0 && isBetween(a, c, b)) ||
-    (second === 0 && isBetween(a, d, b)) ||
-    (third === 0 && isBetween(c, a, d)) ||
-    (fourth === 0 && isBetween(c, b, d))
-  )
+  return [
+    first === 0 && isBetween(a, c, b),
+    second === 0 && isBetween(a, d, b),
+    third === 0 && isBetween(c, a, d),
+    fourth === 0 && isBetween(c, b, d),
+  ].some(Boolean)
 }
 
 export function boundingBoxRing([west, south, east, north]: BoundingBox): Ring {

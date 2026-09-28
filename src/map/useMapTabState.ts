@@ -58,6 +58,32 @@ export interface MapTabState {
   readonly resetView: () => void
 }
 
+function usePanelAvailability(
+  panel: MapPanelController,
+  closePanel: () => void,
+  selectedPolygonId: string | null,
+  canShowExcavationAreas: boolean,
+  isBackgroundUnavailable: boolean,
+): void {
+  useEffect(() => {
+    const active = panel.active
+    const shouldClose = [
+      selectedPolygonId === null && active === 'inspector',
+      !canShowExcavationAreas && active === 'visualization',
+      isBackgroundUnavailable &&
+        (active === 'measurement' || active === 'spatial-search'),
+      !canShowExcavationAreas && active === 'spatial-search',
+    ].some(Boolean)
+    if (shouldClose) closePanel()
+  }, [
+    canShowExcavationAreas,
+    closePanel,
+    isBackgroundUnavailable,
+    panel.active,
+    selectedPolygonId,
+  ])
+}
+
 export default function useMapTabState(
   findspotService: FindspotService,
   provenances: readonly ProvenanceRecord[],
@@ -159,26 +185,13 @@ export default function useMapTabState(
     selectedPolygonId,
     setSelection,
   ])
-  useEffect(() => {
-    if (selectedPolygonId === null && panel.active === 'inspector') closePanel()
-    if (!canShowExcavationAreas && panel.active === 'visualization')
-      closePanel()
-    if (
-      isBackgroundUnavailable &&
-      (panel.active === 'measurement' || panel.active === 'spatial-search')
-    ) {
-      closePanel()
-    }
-    if (!canShowExcavationAreas && panel.active === 'spatial-search') {
-      closePanel()
-    }
-  }, [
-    canShowExcavationAreas,
+  usePanelAvailability(
+    panel,
     closePanel,
-    isBackgroundUnavailable,
-    panel.active,
     selectedPolygonId,
-  ])
+    canShowExcavationAreas,
+    isBackgroundUnavailable,
+  )
   useExcavationAreas(mapRef, {
     isVisible: showExcavationAreas,
     selectedPolygonId,
