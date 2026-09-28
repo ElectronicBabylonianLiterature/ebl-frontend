@@ -2,12 +2,6 @@ import type {
   MappingEvidence,
   SummaryLocationPrecision,
 } from './mapResearchSummary'
-
-/**
- * The one place evidence and precision states are turned into words. Badges,
- * the legend, hover previews and the copied research summary all read from
- * here, so a state can never be described two different ways in one view.
- */
 const EVIDENCE_LABELS: Readonly<Record<MappingEvidence, string>> = {
   'verified-source': 'Verified-source mapping',
   curated: 'Curated mapping',

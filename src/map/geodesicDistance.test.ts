@@ -1,4 +1,4 @@
-import { EARTH_RADIUS_METRES } from './geodesicArea'
+import { EARTH_RADIUS_METRES } from 'map/geodesicArea'
 import {
   geodesicDistanceMetres,
   geodesicPathLengthMetres,

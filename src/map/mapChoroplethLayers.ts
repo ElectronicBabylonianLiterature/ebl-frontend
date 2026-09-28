@@ -2,18 +2,11 @@ import type { Map as MapLibreMap } from 'maplibre-gl'
 import {
   EXCAVATION_AREA_FILL_LAYER_ID,
   EXCAVATION_AREA_OUTLINE_LAYER_ID,
-} from './mapLayerIds'
+} from 'map/mapLayerIds'
 import {
   type ExcavationPaint,
   excavationPaintProperties,
-} from './mapExcavationPaint'
-
-/**
- * Repaints the excavation layers in place. Sources and layers are reused, so
- * switching visualization mode never recreates map data — and because every
- * mode-dependent property is set here, no stale outline colour or dash can
- * survive a switch between the categorical, evidence and choropleth systems.
- */
+} from 'map/mapExcavationPaint'
 export function applyExcavationPaint(
   map: MapLibreMap,
   paint: ExcavationPaint,
