@@ -31,6 +31,7 @@ export const mockGetCanvas = jest.fn<HTMLCanvasElement, []>(() => mockCanvas)
 export const mockOn = jest.fn()
 export const mockOff = jest.fn()
 export const mockFitBounds = jest.fn()
+export const mockSetPadding = jest.fn()
 export const mockSetData = jest.fn()
 export const mockQueryRenderedFeatures = jest.fn<unknown[], unknown[]>(() => [])
 export const mockEaseTo = jest.fn()
@@ -61,6 +62,7 @@ export const mockMapInstance = {
   on: mockOn,
   off: mockOff,
   fitBounds: mockFitBounds,
+  setPadding: mockSetPadding,
   queryRenderedFeatures: queryRenderedFeaturesFromStyle,
   easeTo: mockEaseTo,
 }

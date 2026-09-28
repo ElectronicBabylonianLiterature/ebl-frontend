@@ -11,10 +11,10 @@ import MapPanelDock from 'map/MapPanelDock'
 import MapExperienceHeader from 'map/MapExperienceHeader'
 import MapPresentationBar from 'map/MapPresentationBar'
 import MapLayerControls from 'map/MapLayerControls'
-import MapSelectedAreaCard from 'map/MapSelectedAreaCard'
+import MapInspector from 'map/MapInspector'
 import MapSelectionPill from 'map/MapSelectionPill'
 import MapExcavationAreaSelector from 'map/MapExcavationAreaSelector'
-import { isMapSiteId } from 'map/mapSites'
+import { findMapSite, isMapSiteId } from 'map/mapSites'
 import type { MapPanelDefinition } from 'map/MapToolbar'
 import FindspotFilterInput from 'map/FindspotFilterInput'
 import { FindspotEmptyState, FindspotSearchList } from 'map/FindspotResults'
@@ -51,12 +51,39 @@ function LoadedMapTab({
     wasPresentingRef.current = isPresenting
   }, [isPresenting])
 
+  const clearSelection = (): void => {
+    experience.setSelection(null)
+    panel.close()
+  }
+
   const selectedSiteData =
     selectedPolygon && isMapSiteId(selectedPolygon.siteId)
       ? state.fragmentMapData.sites.get(selectedPolygon.siteId)
       : undefined
 
   const panels: readonly MapPanelDefinition[] = [
+    {
+      id: 'inspector',
+      label: 'Selected area',
+      isSupported: selectedPolygon !== null,
+      render: () =>
+        selectedPolygon ? (
+          <MapInspector
+            polygon={selectedPolygon}
+            summary={selectedSiteData?.polygonSummaries.get(
+              selectedPolygon.polygonId,
+            )}
+            siteName={
+              findMapSite(selectedPolygon.siteId)?.siteName ??
+              selectedPolygon.siteId
+            }
+            status={selectedSiteData?.status ?? 'not-configured'}
+            onClear={clearSelection}
+          />
+        ) : (
+          <p>No excavation area is selected.</p>
+        ),
+    },
     {
       id: 'layers',
       label: 'Map layers',
@@ -72,22 +99,9 @@ function LoadedMapTab({
             polygons={state.excavationPolygons}
             selectedPolygonId={selectedPolygon?.polygonId ?? null}
             onSelect={(polygonId) =>
-              experience.setSelection(
-                polygonId ? { type: 'excavation-area', polygonId } : null,
-              )
+              polygonId ? state.selectPolygon(polygonId) : clearSelection()
             }
           />
-          {selectedPolygon ? (
-            <MapSelectedAreaCard
-              polygonId={selectedPolygon.polygonId}
-              polygonName={selectedPolygon.name}
-              summary={selectedSiteData?.polygonSummaries.get(
-                selectedPolygon.polygonId,
-              )}
-              status={selectedSiteData?.status ?? 'not-configured'}
-              onClear={() => experience.setSelection(null)}
-            />
-          ) : null}
         </>
       ),
     },
@@ -95,7 +109,9 @@ function LoadedMapTab({
 
   return (
     <div
-      className={`map-tab map-experience${isPresenting ? ' map-experience--presenting' : ''}`}
+      className={`map-tab map-experience${
+        isPresenting ? ' map-experience--presenting' : ''
+      }`}
     >
       {isPresenting ? (
         <MapPresentationBar
@@ -131,10 +147,10 @@ function LoadedMapTab({
                   panel={panel}
                   drawerRef={state.drawerRef}
                 />
-                {selectedPolygon && panel.active !== 'layers' ? (
+                {selectedPolygon && panel.active !== 'inspector' ? (
                   <MapSelectionPill
                     label="Show selected area"
-                    onShow={() => panel.open('layers')}
+                    onShow={() => panel.open('inspector')}
                   />
                 ) : null}
               </>
