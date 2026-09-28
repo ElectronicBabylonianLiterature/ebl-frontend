@@ -5,12 +5,6 @@ interface Props {
   readonly title: string | null
   readonly onExit: () => void
 }
-
-/**
- * The only chrome presentation mode leaves behind: what is selected, and the
- * way out. Focus moves to the exit control on entry so the mode is never a
- * place a keyboard user can be stranded.
- */
 export default function MapPresentationBar({
   title,
   onExit,

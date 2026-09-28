@@ -12,12 +12,6 @@ function isExpression(value: unknown): value is Expression {
 function asNumber(value: unknown): number {
   return typeof value === 'number' ? value : Number.NaN
 }
-
-/**
- * Evaluates the subset of the MapLibre expression language used by the map
- * paint expressions, so tests can assert rendered values per feature state
- * instead of asserting that an expression merely exists.
- */
 export function evaluateExpression(
   expression: unknown,
   context: FeatureEvaluationContext = {},

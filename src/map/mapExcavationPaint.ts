@@ -7,7 +7,7 @@ import {
   excavationOutlineDash,
   excavationOutlineOpacity,
   excavationOutlineWidth,
-} from './mapPaintExpressions'
+} from 'map/mapPaintExpressions'
 import {
   evidenceFillColor,
   evidenceFillOpacity,
@@ -15,14 +15,7 @@ import {
   evidenceOutlineDash,
   evidenceOutlineOpacity,
   evidenceOutlineWidth,
-} from './mapEvidencePaint'
-
-/**
- * Which visual system the excavation polygons are painted with. Keeping the
- * three modes in one discriminated union means every consumer — the initial
- * layer definition, the in-place repaint and the legend — reads the same
- * value, and adding a mode cannot leave one of them behind.
- */
+} from 'map/mapEvidencePaint'
 export type ExcavationPaint =
   | { readonly kind: 'categorical' }
   | { readonly kind: 'evidence' }
@@ -59,9 +52,9 @@ export function excavationPaintProperties(
   return {
     fillColor: excavationFillColor(scale),
     fillOpacity: excavationFillOpacity(scale),
-    outlineColor: excavationOutlineColor(),
+    outlineColor: excavationOutlineColor(scale),
     outlineWidth: excavationOutlineWidth(scale),
-    outlineDash: excavationOutlineDash(),
+    outlineDash: excavationOutlineDash(scale),
     outlineOpacity: excavationOutlineOpacity(),
   }
 }

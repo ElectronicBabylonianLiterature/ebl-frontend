@@ -5,7 +5,7 @@ import {
   isMapVisualizationMode,
   visualizationUnit,
   visualizationValueKey,
-} from './mapChoroplethScale'
+} from 'map/mapChoroplethScale'
 
 describe('mode helpers', () => {
   it('recognises only the supported modes', () => {
