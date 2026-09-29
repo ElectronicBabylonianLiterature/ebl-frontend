@@ -1,0 +1,249 @@
+import {
+  type FindspotMapData,
+  type PolygonFindspotSummary,
+  type SanitizedFindspotMapDataResponse,
+  sanitizeFindspotMapData,
+} from 'map/findspotMapData'
+
+export class IncompatibleFindspotMapDataError extends Error {
+  constructor(message: string) {
+    super(message)
+    this.name = 'IncompatibleFindspotMapDataError'
+  }
+}
+function emptySanitizedResponse(): SanitizedFindspotMapDataResponse {
+  return {
+    findspots: [],
+    diagnostics: {
+      exactDuplicateRows: 0,
+      conflictingDuplicateFindspots: 0,
+      conflictingDuplicateRows: 0,
+      rejectedRows: 0,
+    },
+  }
+}
+function stableFindspotFingerprint(findspot: FindspotMapData): string {
+  return JSON.stringify({
+    accessibleFragmentCount: findspot.accessibleFragmentCount,
+    area: findspot.area,
+    building: findspot.building,
+    findspotId: findspot.findspotId,
+    locationPrecision: findspot.locationPrecision,
+    matchMethod: findspot.matchMethod,
+    polygonIds: [...findspot.polygonIds].sort(),
+    room: findspot.room,
+    sector: findspot.sector,
+    siteId: findspot.siteId,
+    siteName: findspot.siteName,
+  })
+}
+interface FindspotRowsById {
+  readonly first: FindspotMapData
+  readonly fingerprints: Map<string, number>
+}
+function belongsToExpectedSite(
+  findspot: FindspotMapData,
+  expectedSiteId?: string,
+  expectedSiteName?: string,
+): boolean {
+  return [
+    !expectedSiteId || findspot.siteId === expectedSiteId,
+    !expectedSiteName || findspot.siteName === expectedSiteName,
+  ].every(Boolean)
+}
+function collectFindspotRows(
+  findspots: readonly unknown[],
+  expectedSiteId?: string,
+  expectedSiteName?: string,
+): {
+  readonly byFindspotId: Map<number, FindspotRowsById>
+  rejectedRows: number
+} {
+  const byFindspotId = new Map<number, FindspotRowsById>()
+  let rejectedRows = 0
+
+  for (const findspot of findspots) {
+    const sanitized = sanitizeFindspotMapData(findspot)
+    if (
+      sanitized === null ||
+      !belongsToExpectedSite(sanitized, expectedSiteId, expectedSiteName)
+    ) {
+      rejectedRows += 1
+      continue
+    }
+
+    const fingerprint = stableFindspotFingerprint(sanitized)
+    const existing = byFindspotId.get(sanitized.findspotId)
+    if (existing) {
+      existing.fingerprints.set(
+        fingerprint,
+        (existing.fingerprints.get(fingerprint) ?? 0) + 1,
+      )
+      continue
+    }
+    byFindspotId.set(sanitized.findspotId, {
+      first: sanitized,
+      fingerprints: new Map([[fingerprint, 1]]),
+    })
+  }
+
+  return { byFindspotId, rejectedRows }
+}
+
+function summarizeFindspotRows(
+  byFindspotId: ReadonlyMap<number, FindspotRowsById>,
+): Omit<SanitizedFindspotMapDataResponse, 'diagnostics'> & {
+  readonly exactDuplicateRows: number
+  readonly conflictingDuplicateFindspots: number
+  readonly conflictingDuplicateRows: number
+} {
+  let exactDuplicateRows = 0
+  let conflictingDuplicateFindspots = 0
+  let conflictingDuplicateRows = 0
+  const sanitizedFindspots: FindspotMapData[] = []
+
+  const entries = [...byFindspotId.values()].sort(
+    (left, right) => left.first.findspotId - right.first.findspotId,
+  )
+  for (const entry of entries) {
+    const rowCount = [...entry.fingerprints.values()].reduce(
+      (total, count) => total + count,
+      0,
+    )
+    if (entry.fingerprints.size === 1) {
+      exactDuplicateRows += rowCount - 1
+      sanitizedFindspots.push(entry.first)
+      continue
+    }
+    conflictingDuplicateFindspots += 1
+    conflictingDuplicateRows += rowCount
+  }
+
+  return {
+    findspots: sanitizedFindspots,
+    exactDuplicateRows,
+    conflictingDuplicateFindspots,
+    conflictingDuplicateRows,
+  }
+}
+
+export function sanitizeFindspotMapDataResponse(
+  response: unknown,
+  expectedSiteId?: string,
+  expectedSiteName?: string,
+): readonly FindspotMapData[] {
+  return sanitizeFindspotMapDataResponseWithDiagnostics(
+    response,
+    expectedSiteId,
+    expectedSiteName,
+  ).findspots
+}
+
+export function sanitizeFindspotMapDataResponseWithDiagnostics(
+  response: unknown,
+  expectedSiteId?: string,
+  expectedSiteName?: string,
+): SanitizedFindspotMapDataResponse {
+  if (!response || typeof response !== 'object') return emptySanitizedResponse()
+
+  const findspots = (response as Record<string, unknown>).findspots
+  if (!Array.isArray(findspots)) return emptySanitizedResponse()
+
+  const { byFindspotId, rejectedRows } = collectFindspotRows(
+    findspots,
+    expectedSiteId,
+    expectedSiteName,
+  )
+  const summary = summarizeFindspotRows(byFindspotId)
+
+  return {
+    findspots: summary.findspots,
+    diagnostics: {
+      exactDuplicateRows: summary.exactDuplicateRows,
+      conflictingDuplicateFindspots: summary.conflictingDuplicateFindspots,
+      conflictingDuplicateRows: summary.conflictingDuplicateRows,
+      rejectedRows,
+    },
+  }
+}
+
+export function requireCompatibleFindspotMapDataResponse(
+  response: unknown,
+  expectedSiteId: string,
+  expectedSiteName: string,
+): readonly FindspotMapData[] {
+  if (
+    !response ||
+    typeof response !== 'object' ||
+    !Array.isArray((response as Record<string, unknown>).findspots)
+  ) {
+    throw new IncompatibleFindspotMapDataError(
+      'Invalid map-data envelope for ' + expectedSiteId,
+    )
+  }
+
+  const result = sanitizeFindspotMapDataResponseWithDiagnostics(
+    response,
+    expectedSiteId,
+    expectedSiteName,
+  )
+  if (
+    result.diagnostics.rejectedRows > 0 ||
+    result.diagnostics.conflictingDuplicateFindspots > 0
+  ) {
+    throw new IncompatibleFindspotMapDataError(
+      'Rejected map-data rows for ' + expectedSiteId,
+    )
+  }
+  return result.findspots
+}
+
+export function aggregateFindspotMapData(
+  findspots: readonly FindspotMapData[],
+): ReadonlyMap<string, PolygonFindspotSummary> {
+  const summaries = new Map<
+    string,
+    {
+      findspotIds: number[]
+      accessibleFragmentCount: number
+      findspots: FindspotMapData[]
+    }
+  >()
+  const seenFindspotIds = new Set<number>()
+
+  for (const findspot of findspots) {
+    if (seenFindspotIds.has(findspot.findspotId)) continue
+    seenFindspotIds.add(findspot.findspotId)
+
+    for (const polygonId of [...new Set(findspot.polygonIds)].sort()) {
+      const summary = summaries.get(polygonId) ?? {
+        findspotIds: [],
+        accessibleFragmentCount: 0,
+        findspots: [],
+      }
+      summary.findspotIds.push(findspot.findspotId)
+      summary.accessibleFragmentCount += findspot.accessibleFragmentCount
+      summary.findspots.push(findspot)
+      summaries.set(polygonId, summary)
+    }
+  }
+
+  return new Map(
+    [...summaries.entries()]
+      .sort(([left], [right]) => left.localeCompare(right))
+      .map(([polygonId, summary]) => [
+        polygonId,
+        {
+          polygonId,
+          findspotIds: [...summary.findspotIds].sort(
+            (left, right) => left - right,
+          ),
+          findspotCount: summary.findspotIds.length,
+          accessibleFragmentCount: summary.accessibleFragmentCount,
+          findspots: [...summary.findspots].sort(
+            (left, right) => left.findspotId - right.findspotId,
+          ),
+        },
+      ]),
+  )
+}

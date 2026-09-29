@@ -24,4 +24,5 @@ export type FragmentQuery = Partial<{
   project: keyof typeof ResearchProjects | null
   latest: boolean
   dossier: string
+  findspotId: number | string
 }>

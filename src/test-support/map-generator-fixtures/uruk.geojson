@@ -1,0 +1,51 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "id": "uruk-1",
+      "properties": {
+        "id": "uruk-1",
+        "siteId": "uruk",
+        "siteName": "Uruk",
+        "name": "Area 1",
+        "locationType": "excavation_area"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [45.64, 32],
+            [45.641, 32],
+            [45.641, 32.001],
+            [45.64, 32.001],
+            [45.64, 32]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "uruk-2",
+      "properties": {
+        "id": "uruk-2",
+        "siteId": "uruk",
+        "siteName": "Uruk",
+        "name": "Area 1",
+        "locationType": "excavation_area"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [45.65, 32],
+            [45.651, 32],
+            [45.651, 32.001],
+            [45.65, 32.001],
+            [45.65, 32]
+          ]
+        ]
+      }
+    }
+  ]
+}
