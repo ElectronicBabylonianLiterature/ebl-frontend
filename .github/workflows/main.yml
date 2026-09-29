@@ -63,7 +63,7 @@ jobs:
       # overwrite the master baseline with a partial figure. Stacked PRs
       # therefore report no coverage to qlty - check them locally with
       # `yarn test:ci`, which enforces the same thresholds from craco.config.js.
-      - uses: qltysh/qlty-action/coverage@v1
+      - uses: qltysh/qlty-action/coverage@08a0a862c159eae9b9003081da6663d96efef637 # v2.3.0
         if: github.event_name == 'push' || github.base_ref == 'master'
         with:
           token: ${{ secrets.QLTY_COVERAGE_TOKEN }}
