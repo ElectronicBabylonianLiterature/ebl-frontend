@@ -25,6 +25,11 @@ yarn-error.log*
 # Added by ggshield
 .cache_ggshield
 
+# map asset generation
+__pycache__/
+*.pyc
+/.map-processing/
+
 # qlty
 .qlty/*
 !.qlty/qlty.toml

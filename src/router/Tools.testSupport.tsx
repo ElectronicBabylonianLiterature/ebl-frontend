@@ -9,6 +9,7 @@ import type BibliographyService from 'bibliography/application/BibliographyServi
 import type AfoRegisterService from 'afo-register/application/AfoRegisterService'
 import type RealiaService from 'realia/application/RealiaService'
 import type FragmentService from 'fragmentarium/application/FragmentService'
+import type { FindspotService } from 'fragmentarium/application/FindspotService'
 import type DossiersService from 'dossiers/application/DossiersService'
 import SessionContext from 'auth/SessionContext'
 import MemorySession, { Session } from 'auth/Session'
@@ -47,7 +48,7 @@ jest.mock('chronology/ui/Kings/BrinkmanKingsTable', () =>
 jest.mock('signs/ui/CuneiformConverter/CuneiformConverterForm', () =>
   mockToolsContent('cuneiformConverter'),
 )
-jest.mock('map/ui/MapTab', () => mockToolsContent('map'))
+jest.mock('map/MapTab', () => mockToolsContent('map'))
 
 type ToolsProps = Parameters<typeof Tools>[0]
 export type ToolsActiveTab = ToolsProps['activeTab']
@@ -62,6 +63,7 @@ export function toolsServiceProps(): Omit<ToolsProps, 'activeTab'> {
     realiaService: {} as RealiaService,
     dossiersService: {} as DossiersService,
     fragmentService: {} as FragmentService,
+    findspotService: {} as FindspotService,
   }
 }
 
