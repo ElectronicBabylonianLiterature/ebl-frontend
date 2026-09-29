@@ -9,5 +9,5 @@ export default function createReference(referenceDto: ReferenceDto): Reference {
     referenceDto.notes,
     referenceDto.linesCited,
     new BibliographyEntry(referenceDto.document),
-  )
+  ).withIdentity(referenceDto.id)
 }
