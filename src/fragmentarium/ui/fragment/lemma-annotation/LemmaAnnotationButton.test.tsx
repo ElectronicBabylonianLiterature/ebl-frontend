@@ -1,12 +1,14 @@
 import React from 'react'
-import { render, screen, fireEvent } from '@testing-library/react'
+import { screen, fireEvent } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import LemmaActionButton from './LemmaAnnotationButton'
 import EditableToken from 'fragmentarium/ui/fragment/linguistic-annotation/EditableToken'
-import { LemmaOption } from 'fragmentarium/ui/lemmatization/LemmaSelectionForm'
-import SessionContext from 'auth/SessionContext'
-import MemorySession from 'auth/Session'
 import { kurToken } from 'test-support/test-tokens'
+import {
+  dirtyLemmas,
+  getDropdownToggle,
+  mockCallbacks,
+  renderButton,
+} from 'fragmentarium/ui/fragment/lemma-annotation/LemmaAnnotationButton.testSupport'
 
 jest.mock('transliteration/ui/DisplayToken', () => {
   return {
@@ -17,29 +19,7 @@ jest.mock('transliteration/ui/DisplayToken', () => {
   }
 })
 
-const mockCallbacks = {
-  onResetCurrent: jest.fn(),
-  onMouseEnter: jest.fn(),
-  onMouseLeave: jest.fn(),
-  onMultiApply: jest.fn(),
-  onMultiReset: jest.fn(),
-  onCreateProperNoun: jest.fn(),
-}
-
 let token: EditableToken
-const dirtyLemmas: LemmaOption[] = [
-  { value: 'test', homonym: 'I' } as LemmaOption,
-]
-const sessionWithScope = new MemorySession(['create:proper_nouns'])
-const sessionWithoutScope = new MemorySession([])
-
-const renderButton = (session = sessionWithScope) => {
-  render(
-    <SessionContext.Provider value={session}>
-      <LemmaActionButton token={token} {...mockCallbacks} />
-    </SessionContext.Provider>,
-  )
-}
 
 describe('LemmaActionButton', () => {
   beforeEach(() => {
@@ -48,14 +28,14 @@ describe('LemmaActionButton', () => {
   })
 
   it('renders the action button with reset icon', () => {
-    renderButton()
+    renderButton(token)
     const resetButton = screen.getByLabelText('reset-current-token')
     expect(resetButton).toBeInTheDocument()
     expect(resetButton).toContainHTML('fa-rotate-left')
   })
 
   it('renders the dropdown toggle', () => {
-    renderButton()
+    renderButton(token)
     const dropdownToggles = screen.getAllByRole('button')
     const dropdownToggle = dropdownToggles.find(
       (btn) => btn.getAttribute('id') === 'dropdown-split-basic',
@@ -65,7 +45,7 @@ describe('LemmaActionButton', () => {
 
   it('disables reset button when token is not dirty', () => {
     token = new EditableToken(kurToken, 0, 0, 0, [])
-    renderButton()
+    renderButton(token)
     const resetButton = screen.getByLabelText('reset-current-token')
     expect(resetButton).toBeDisabled()
   })
@@ -73,7 +53,7 @@ describe('LemmaActionButton', () => {
   it('enables reset button when token is dirty', () => {
     token = new EditableToken(kurToken, 0, 0, 0, [])
     token.updateLemmas(dirtyLemmas)
-    renderButton()
+    renderButton(token)
     const resetButton = screen.getByLabelText('reset-current-token')
     expect(resetButton).toBeEnabled()
   })
@@ -81,232 +61,16 @@ describe('LemmaActionButton', () => {
   it('calls onResetCurrent when reset button is clicked', () => {
     token = new EditableToken(kurToken, 0, 0, 0, [])
     token.updateLemmas(dirtyLemmas)
-    renderButton()
+    renderButton(token)
     const resetButton = screen.getByLabelText('reset-current-token')
     fireEvent.click(resetButton)
     expect(mockCallbacks.onResetCurrent).toHaveBeenCalledTimes(1)
   })
 
-  describe('Dropdown Menu Items', () => {
-    const getDropdownToggle = () =>
-      screen
-        .getAllByRole('button')
-        .find(
-          (btn) => btn.getAttribute('id') === 'dropdown-split-basic',
-        ) as HTMLElement
-
-    it('renders dropdown menu when toggle is clicked', async () => {
-      renderButton()
-      await userEvent.click(getDropdownToggle())
-
-      expect(screen.getByText(/Update all instances of/)).toBeInTheDocument()
-    })
-
-    it('displays "Update all instances" menu item', async () => {
-      renderButton()
-      await userEvent.click(getDropdownToggle())
-
-      expect(screen.getByText(/Update all instances of/)).toBeInTheDocument()
-    })
-
-    it('displays "Reset all instances" menu item', async () => {
-      renderButton()
-      await userEvent.click(getDropdownToggle())
-
-      expect(screen.getByText(/Reset all instances of/)).toBeInTheDocument()
-    })
-
-    it('displays "Create a new proper noun" menu item for empty unannotated token with scope', async () => {
-      renderButton()
-      await userEvent.click(getDropdownToggle())
-
-      expect(
-        screen.getByText(/Create a new proper noun for/),
-      ).toBeInTheDocument()
-    })
-
-    it('does not display "Create a new proper noun" menu item without scope', async () => {
-      token.updateLemmas(dirtyLemmas)
-      renderButton(sessionWithoutScope)
-      await userEvent.click(getDropdownToggle())
-
-      expect(
-        screen.queryByText(/Create a new proper noun for/),
-      ).not.toBeInTheDocument()
-    })
-
-    it('displays "Create a new proper noun" menu item for empty token (not dirty)', async () => {
-      renderButton()
-      await userEvent.click(getDropdownToggle())
-
-      expect(
-        screen.getByText(/Create a new proper noun for/),
-      ).toBeInTheDocument()
-    })
-
-    it('does not display "Create a new proper noun" menu item for annotated clean token', async () => {
-      token = new EditableToken(kurToken, 0, 0, 0, dirtyLemmas)
-      renderButton()
-      await userEvent.click(getDropdownToggle())
-
-      expect(
-        screen.queryByText(/Create a new proper noun for/),
-      ).not.toBeInTheDocument()
-    })
-
-    it('displays "Create a new proper noun" menu item when token is dirty', async () => {
-      token.updateLemmas(dirtyLemmas)
-      renderButton()
-      await userEvent.click(getDropdownToggle())
-
-      expect(
-        screen.getByText(/Create a new proper noun for/),
-      ).toBeInTheDocument()
-    })
-    it('displays divider between menu items', async () => {
-      renderButton()
-      await userEvent.click(getDropdownToggle())
-
-      expect(screen.getByText(/Update all instances of/)).toBeInTheDocument()
-      expect(screen.getByText(/Reset all instances of/)).toBeInTheDocument()
-    })
-  })
-
-  describe('Menu Item Actions', () => {
-    const getDropdownToggle = () =>
-      screen
-        .getAllByRole('button')
-        .find(
-          (btn) => btn.getAttribute('id') === 'dropdown-split-basic',
-        ) as HTMLElement
-
-    it('calls onMultiApply when "Update all instances" is clicked', async () => {
-      renderButton()
-      await userEvent.click(getDropdownToggle())
-
-      const updateOption = screen.getByText(/Update all instances of/)
-      fireEvent.click(updateOption)
-
-      expect(mockCallbacks.onMultiApply).toHaveBeenCalledTimes(1)
-    })
-
-    it('calls onMultiReset when "Reset all instances" is clicked and token is dirty', async () => {
-      token.updateLemmas(dirtyLemmas)
-      renderButton()
-      await userEvent.click(getDropdownToggle())
-
-      const resetOption = screen.getByText(/Reset all instances of/)
-      fireEvent.click(resetOption)
-
-      expect(mockCallbacks.onMultiReset).toHaveBeenCalledTimes(1)
-    })
-
-    it('disables "Reset all instances" when token is not dirty', async () => {
-      renderButton()
-      await userEvent.click(getDropdownToggle())
-
-      const resetOption = screen.getByText(
-        /Reset all instances of/,
-      ) as HTMLElement
-      fireEvent.click(resetOption)
-      expect(mockCallbacks.onMultiReset).not.toHaveBeenCalled()
-    })
-
-    it('calls onCreateProperNoun when "Create a new proper noun" is clicked', async () => {
-      renderButton()
-      await userEvent.click(getDropdownToggle())
-
-      const createOption = screen.getByText(/Create a new proper noun for/)
-      fireEvent.click(createOption)
-
-      expect(mockCallbacks.onCreateProperNoun).toHaveBeenCalledTimes(1)
-    })
-
-    it('does not call onCreateProperNoun without scope', async () => {
-      token.updateLemmas(dirtyLemmas)
-      renderButton(sessionWithoutScope)
-      await userEvent.click(getDropdownToggle())
-
-      expect(
-        screen.queryByText(/Create a new proper noun for/),
-      ).not.toBeInTheDocument()
-      expect(mockCallbacks.onCreateProperNoun).not.toHaveBeenCalled()
-    })
-  })
-
-  describe('Mouse Events', () => {
-    const getDropdownToggle = () =>
-      screen
-        .getAllByRole('button')
-        .find(
-          (btn) => btn.getAttribute('id') === 'dropdown-split-basic',
-        ) as HTMLElement
-
-    it('calls onMouseEnter on "Update all instances" hover', async () => {
-      renderButton()
-      await userEvent.click(getDropdownToggle())
-
-      const updateOption = screen.getByText(/Update all instances of/)
-      fireEvent.mouseEnter(updateOption)
-
-      expect(mockCallbacks.onMouseEnter).toHaveBeenCalledTimes(1)
-    })
-
-    it('calls onMouseLeave on "Update all instances" hover leave', async () => {
-      renderButton()
-      await userEvent.click(getDropdownToggle())
-
-      const updateOption = screen.getByText(/Update all instances of/)
-      fireEvent.mouseLeave(updateOption)
-
-      expect(mockCallbacks.onMouseLeave).toHaveBeenCalledTimes(1)
-    })
-
-    it('calls onMouseEnter on "Reset all instances" hover', async () => {
-      renderButton()
-      await userEvent.click(getDropdownToggle())
-
-      const resetOption = screen.getByText(/Reset all instances of/)
-      fireEvent.mouseEnter(resetOption)
-
-      expect(mockCallbacks.onMouseEnter).toHaveBeenCalledTimes(1)
-    })
-
-    it('calls onMouseLeave on "Reset all instances" hover leave', async () => {
-      renderButton()
-      await userEvent.click(getDropdownToggle())
-
-      const resetOption = screen.getByText(/Reset all instances of/)
-      fireEvent.mouseLeave(resetOption)
-
-      expect(mockCallbacks.onMouseLeave).toHaveBeenCalledTimes(1)
-    })
-
-    it('calls onMouseEnter on "Create proper noun" hover when visible', async () => {
-      renderButton()
-      await userEvent.click(getDropdownToggle())
-
-      const createOption = screen.getByText(/Create a new proper noun for/)
-      fireEvent.mouseEnter(createOption)
-
-      expect(mockCallbacks.onMouseEnter).toHaveBeenCalledTimes(1)
-    })
-
-    it('calls onMouseLeave on "Create proper noun" hover leave when visible', async () => {
-      renderButton()
-      await userEvent.click(getDropdownToggle())
-
-      const createOption = screen.getByText(/Create a new proper noun for/)
-      fireEvent.mouseLeave(createOption)
-
-      expect(mockCallbacks.onMouseLeave).toHaveBeenCalledTimes(1)
-    })
-  })
-
   describe('Integration', () => {
     it('allows for complete workflow with all Menu items', async () => {
       token.updateLemmas(dirtyLemmas)
-      renderButton()
+      renderButton(token)
 
       expect(mockCallbacks.onResetCurrent).not.toHaveBeenCalled()
       expect(mockCallbacks.onMultiApply).not.toHaveBeenCalled()
@@ -317,11 +81,7 @@ describe('LemmaActionButton', () => {
       fireEvent.click(resetButton)
       expect(mockCallbacks.onResetCurrent).toHaveBeenCalledTimes(1)
 
-      const dropdownToggle = screen
-        .getAllByRole('button')
-        .find(
-          (btn) => btn.getAttribute('id') === 'dropdown-split-basic',
-        ) as HTMLElement
+      const dropdownToggle = getDropdownToggle()
       await userEvent.click(dropdownToggle)
 
       const updateOption = screen.getByText(/Update all instances of/)
