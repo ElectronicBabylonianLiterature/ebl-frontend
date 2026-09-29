@@ -1,0 +1,246 @@
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import type { MutableRefObject, RefObject } from 'react'
+import type { Map as MapLibreMap } from 'maplibre-gl'
+import { FindspotService } from 'fragmentarium/application/FindspotService'
+import { ProvenanceRecord } from 'fragmentarium/domain/Provenance'
+import useFindspotMap from 'map/useFindspotMap'
+import useMapSourceData from 'map/useMapSourceData'
+import useExcavationAreas from 'map/useExcavationAreas'
+import useExcavationPolygonIndex from 'map/useExcavationPolygonIndex'
+import useFragmentMapData, {
+  type FragmentMapDataState,
+} from 'map/useFragmentMapData'
+import useMapExperience, { type MapExperience } from 'map/useMapExperience'
+import useMapPanel, { type MapPanelController } from 'map/useMapPanel'
+import useMapVisualization, {
+  type MapVisualization,
+} from 'map/useMapVisualization'
+import useMapMeasurement, {
+  type MeasurementController,
+} from 'map/useMapMeasurement'
+import useMapSpatialSearch, {
+  type SpatialSearchController,
+} from 'map/useMapSpatialSearch'
+import useMapLayoutEffects from 'map/useMapLayoutEffects'
+import { resetMapCamera } from 'map/mapCamera'
+import { filterProvenances } from 'map/findspotFilter'
+import { provenanceToGeoJson } from 'map/provenanceToGeoJson'
+import {
+  anySiteHasExcavationPolygons,
+  deriveMapSiteCapabilities,
+} from 'map/mapSiteCapabilities'
+import {
+  findExcavationPolygon,
+  sortedExcavationPolygons,
+  type ExcavationPolygon,
+} from 'map/excavationPolygonIndex'
+
+export interface MapTabState {
+  readonly provenances: readonly ProvenanceRecord[]
+  readonly filteredProvenances: readonly ProvenanceRecord[]
+  readonly visibleFindspotCount: number
+  readonly mapContainer: RefObject<HTMLDivElement>
+  readonly drawerRef: RefObject<HTMLElement>
+  readonly mapRef: MutableRefObject<MapLibreMap | null>
+  readonly isBackgroundUnavailable: boolean
+  readonly isExcavationAreasUnavailable: boolean
+  readonly experience: MapExperience
+  readonly panel: MapPanelController
+  readonly canShowExcavationAreas: boolean
+  readonly showExcavationAreas: boolean
+  readonly fragmentMapData: FragmentMapDataState
+  readonly selectedPolygon: ExcavationPolygon | null
+  readonly visualization: MapVisualization
+  readonly measurement: MeasurementController
+  readonly spatialSearch: SpatialSearchController
+  readonly excavationPolygons: readonly ExcavationPolygon[]
+  readonly selectPolygon: (polygonId: string) => void
+  readonly resetView: () => void
+}
+
+function usePanelAvailability(
+  panel: MapPanelController,
+  closePanel: () => void,
+  selectedPolygonId: string | null,
+  canShowExcavationAreas: boolean,
+  isBackgroundUnavailable: boolean,
+): void {
+  useEffect(() => {
+    const active = panel.active
+    const shouldClose = [
+      selectedPolygonId === null && active === 'inspector',
+      !canShowExcavationAreas && active === 'visualization',
+      isBackgroundUnavailable &&
+        (active === 'measurement' || active === 'spatial-search'),
+      !canShowExcavationAreas && active === 'spatial-search',
+    ].some(Boolean)
+    if (shouldClose) closePanel()
+  }, [
+    canShowExcavationAreas,
+    closePanel,
+    isBackgroundUnavailable,
+    panel.active,
+    selectedPolygonId,
+  ])
+}
+
+export default function useMapTabState(
+  findspotService: FindspotService,
+  provenances: readonly ProvenanceRecord[],
+): MapTabState {
+  const mapContainer = useRef<HTMLDivElement>(null)
+  const drawerRef = useRef<HTMLElement>(null)
+  const [isBackgroundUnavailable, setIsBackgroundUnavailable] = useState(false)
+  const [isRenderedAreasUnavailable, setIsRenderedAreasUnavailable] =
+    useState(false)
+  const [cameraResetVersion, setCameraResetVersion] = useState(0)
+  const experience = useMapExperience()
+  const panel = useMapPanel()
+  const {
+    index: polygonIndex,
+    isLoaded: isPolygonIndexLoaded,
+    error: polygonIndexError,
+  } = useExcavationPolygonIndex()
+  const fragmentMapData = useFragmentMapData(
+    findspotService,
+    isPolygonIndexLoaded ? polygonIndex : null,
+  )
+  const isExcavationAreasUnavailable =
+    polygonIndexError !== null || isRenderedAreasUnavailable
+  const canShowExcavationAreas = useMemo(
+    () =>
+      isPolygonIndexLoaded &&
+      !isExcavationAreasUnavailable &&
+      anySiteHasExcavationPolygons(deriveMapSiteCapabilities(polygonIndex)),
+    [isExcavationAreasUnavailable, isPolygonIndexLoaded, polygonIndex],
+  )
+  const showExcavationAreas =
+    experience.showExcavationAreas && canShowExcavationAreas
+  const isMeasurementActive =
+    panel.active === 'measurement' &&
+    !experience.presentation.isActive &&
+    !isBackgroundUnavailable
+  const isSpatialSearchSupported =
+    canShowExcavationAreas && !isBackgroundUnavailable
+  const isSpatialSearchActive =
+    panel.active === 'spatial-search' &&
+    !experience.presentation.isActive &&
+    isSpatialSearchSupported
+  const isInteractiveToolActive = isMeasurementActive || isSpatialSearchActive
+  const filteredProvenances = useMemo(
+    () => filterProvenances(provenances, experience.filter),
+    [provenances, experience.filter],
+  )
+  const visibleFindspotCount = useMemo(
+    () => provenanceToGeoJson(filteredProvenances).features.length,
+    [filteredProvenances],
+  )
+  const onMapBackgroundError = useCallback(
+    (hasError: boolean) => setIsBackgroundUnavailable(hasError),
+    [],
+  )
+  const mapRef = useFindspotMap(
+    mapContainer,
+    filteredProvenances,
+    onMapBackgroundError,
+    cameraResetVersion,
+    !isInteractiveToolActive,
+  )
+  useMapSourceData(mapRef, filteredProvenances, cameraResetVersion)
+  const visualization = useMapVisualization(
+    fragmentMapData,
+    polygonIndex,
+    experience.visualization,
+  )
+  const { setSelection } = experience
+  const { open: openPanel, close: closePanel } = panel
+  const onSelectPolygon = useCallback(
+    (polygonId: string) => {
+      setSelection({ type: 'excavation-area', polygonId })
+      openPanel('inspector')
+    },
+    [setSelection, openPanel],
+  )
+  const selectedPolygonId =
+    experience.selection?.type === 'excavation-area'
+      ? experience.selection.polygonId
+      : null
+  const selectedPolygon = findExcavationPolygon(polygonIndex, selectedPolygonId)
+
+  useEffect(() => {
+    if (
+      isPolygonIndexLoaded &&
+      polygonIndexError === null &&
+      selectedPolygonId !== null &&
+      selectedPolygon === null
+    ) {
+      setSelection(null)
+      closePanel()
+    }
+  }, [
+    closePanel,
+    isPolygonIndexLoaded,
+    polygonIndexError,
+    selectedPolygon,
+    selectedPolygonId,
+    setSelection,
+  ])
+  usePanelAvailability(
+    panel,
+    closePanel,
+    selectedPolygonId,
+    canShowExcavationAreas,
+    isBackgroundUnavailable,
+  )
+  useExcavationAreas(mapRef, {
+    isVisible: showExcavationAreas,
+    selectedPolygonId,
+    paint: visualization.paint,
+    values: visualization.values,
+    onSelectPolygon,
+    onAvailabilityChange: setIsRenderedAreasUnavailable,
+    isInteractionEnabled: !isInteractiveToolActive,
+  })
+  useMapLayoutEffects(
+    mapContainer,
+    mapRef,
+    drawerRef,
+    experience.presentation.isActive ? null : panel.active,
+  )
+  const spatialSearch = useMapSpatialSearch(
+    mapRef,
+    isSpatialSearchActive,
+    polygonIndex,
+    fragmentMapData,
+  )
+  const measurement = useMapMeasurement(mapRef, isMeasurementActive)
+  const resetView = useCallback(() => {
+    setCameraResetVersion((current) => current + 1)
+    experience.resetState()
+    closePanel()
+    resetMapCamera(mapRef.current)
+  }, [closePanel, experience, mapRef])
+
+  return {
+    provenances,
+    filteredProvenances,
+    visibleFindspotCount,
+    mapContainer,
+    drawerRef,
+    mapRef,
+    isBackgroundUnavailable,
+    isExcavationAreasUnavailable,
+    experience,
+    panel,
+    canShowExcavationAreas,
+    showExcavationAreas,
+    fragmentMapData,
+    selectedPolygon,
+    visualization,
+    measurement,
+    spatialSearch,
+    selectPolygon: onSelectPolygon,
+    excavationPolygons: sortedExcavationPolygons(polygonIndex),
+    resetView,
+  }
+}
