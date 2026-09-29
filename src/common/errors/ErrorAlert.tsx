@@ -6,5 +6,11 @@ export default function ErrorAlert({
 }: {
   error: Error | null
 }): JSX.Element | null {
-  return error && <Alert variant="danger">{error.message}</Alert>
+  return (
+    error && (
+      <Alert variant="danger" role="alert">
+        {error.message}
+      </Alert>
+    )
+  )
 }
