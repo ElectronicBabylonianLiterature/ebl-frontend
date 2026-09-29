@@ -70,7 +70,7 @@ const TOOLS_CONTENT_MOCKS: Record<ToolsContentMockName, ToolsContentMock> = {
     'signs/ui/CuneiformConverter/CuneiformConverterForm',
     'Cuneiform Converter Mock',
   ),
-  map: createMockPageModule('map/ui/MapTab', 'Map Mock'),
+  map: createMockPageModule('map/MapTab', 'Map Mock'),
 }
 
 export function toolsContentMock(name: ToolsContentMockName): unknown {
