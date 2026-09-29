@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useRef } from 'react'
 import { Anchor, LineNumber } from './line-number'
 import { LineColumns } from './line-tokens'
 import { TextLine } from 'transliteration/domain/text-line'
@@ -9,6 +9,7 @@ import { Labels, labelsAbbreviation } from 'transliteration/domain/labels'
 import { LemmaPopover } from 'transliteration/ui/WordInfo'
 import { TokenActionWrapperProps } from 'transliteration/ui/LineAccumulator'
 import NamedEntityPreviewToken from 'fragmentarium/ui/text-annotation/NamedEntityPreviewToken'
+import useScrollToActiveLine from 'transliteration/ui/useScrollToActiveLine'
 
 function LemmaPopoverWithNamedEntities({
   token,
@@ -36,11 +37,7 @@ export default function DisplayTextLine({
   const id = createId(labels, textLine)
   const lineRef = useRef<HTMLAnchorElement>(null)
 
-  useEffect(() => {
-    if (id === activeLine) {
-      lineRef.current?.scrollIntoView()
-    }
-  }, [id, activeLine])
+  useScrollToActiveLine(lineRef, id, activeLine)
 
   return (
     <>

@@ -4,14 +4,14 @@ import { Link, useLocation } from 'react-router-dom'
 import SessionContext from 'auth/SessionContext'
 import AppContent from 'common/ui/AppContent'
 import './tools.sass'
-import MarkupService from 'markup/application/MarkupService'
-import SignService from 'signs/application/SignService'
-import WordService from 'dictionary/application/WordService'
-import BibliographyService from 'bibliography/application/BibliographyService'
-import AfoRegisterService from 'afo-register/application/AfoRegisterService'
-import RealiaService from 'realia/application/RealiaService'
-import FragmentService from 'fragmentarium/application/FragmentService'
-import DossiersService from 'dossiers/application/DossiersService'
+import type MarkupService from 'markup/application/MarkupService'
+import type SignService from 'signs/application/SignService'
+import type WordService from 'dictionary/application/WordService'
+import type BibliographyService from 'bibliography/application/BibliographyService'
+import type AfoRegisterService from 'afo-register/application/AfoRegisterService'
+import type RealiaService from 'realia/application/RealiaService'
+import type FragmentService from 'fragmentarium/application/FragmentService'
+import type DossiersService from 'dossiers/application/DossiersService'
 import { useHistory } from 'router/compat'
 import useScrollToHash from 'common/hooks/useScrollToHash'
 import {
@@ -94,7 +94,7 @@ export default function Tools({
                     className={`tools-nav__item ${
                       selectedTab === tab.id ? 'active' : ''
                     }`}
-                    onClick={() => handleSelect(tab.id as TabId)}
+                    onClick={() => handleSelect(tab.id)}
                   >
                     <span className="tools-nav__icon" aria-hidden="true">
                       {tab.icon}

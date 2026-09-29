@@ -26,3 +26,7 @@ yarn-error.log*
 .cache_ggshield
 
 .claude
+
+# qlty
+.qlty/*
+!.qlty/qlty.toml

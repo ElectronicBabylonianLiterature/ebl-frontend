@@ -123,7 +123,7 @@ it('Displays warning before closing when unsaved', async () => {
   )
 })
 
-it('clears error on editor input change', async () => {
+it('keeps error on editor input change', async () => {
   const requestError = new Error('request failed')
   updateEdition = jest.fn()
   updateEdition.mockReturnValue(Promise.reject(requestError))
@@ -137,10 +137,10 @@ it('clears error on editor input change', async () => {
     target: { value: 'changed transliteration' },
   })
 
-  await waitFor(() => expect(editorError()).toBeNull())
+  await waitFor(() => expect(editorError()).toBe(requestError))
 })
 
-it('clears error on template application', async () => {
+it('keeps error on template application', async () => {
   const requestError = new Error('request failed')
   updateEdition = jest.fn()
   updateEdition.mockReturnValue(Promise.reject(requestError))
@@ -152,7 +152,7 @@ it('clears error on template application', async () => {
 
   await userEvent.click(screen.getByRole('button', { name: 'Apply template' }))
 
-  await waitFor(() => expect(editorError()).toBeNull())
+  await waitFor(() => expect(editorError()).toBe(requestError))
   expect(screen.getByLabelText('transliteration')).toHaveValue('template value')
 })
 
@@ -177,6 +177,7 @@ it('clears error after successful save', async () => {
   fireEvent.change(screen.getByLabelText('transliteration'), {
     target: { value: 'dirty value' },
   })
+  await waitFor(() => expect(editorError()).toBe(requestError))
   submitFormByTestId(screen, 'transliteration-form')
 
   await screen.findByDisplayValue('saved transliteration')

@@ -119,7 +119,6 @@ function GenreSelectionForm({
             setSelected(option ? new Genre(option.value, isUncertain) : null)
           }
           isSearchable={true}
-          autoFocus={true}
           value={
             selected
               ? {

@@ -26,10 +26,11 @@ export function loadRealiaOptions(
   excludedRealiaIds: readonly string[] = [],
 ): Promise<RealiaOption[]> {
   return query
-    ? toNativePromise(realiaService.search(query)).then((entries) =>
-        entries
-          .filter((entry) => !excludedRealiaIds.includes(entry.realiaId))
-          .map(toRealiaOption),
+    ? toNativePromise<readonly RealiaEntry[]>(realiaService.search(query)).then(
+        (entries) =>
+          entries
+            .filter((entry) => !excludedRealiaIds.includes(entry.realiaId))
+            .map(toRealiaOption),
       )
     : Promise.resolve([])
 }

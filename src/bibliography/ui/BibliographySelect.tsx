@@ -1,5 +1,7 @@
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 import React, { useEffect, useState } from 'react'
+import { components } from 'react-select'
+import type { SingleValueProps } from 'react-select'
 import AsyncSelect from 'react-select/async'
 import { usePrevious } from 'common/hooks/usePrevious'
 import Promise from 'bluebird'
@@ -31,6 +33,21 @@ interface Props {
 }
 
 const collator = new Intl.Collator([], { numeric: true })
+
+function SelectedSingleValue(
+  props: SingleValueProps<SelectedOption, false>,
+): JSX.Element {
+  return (
+    <components.SingleValue {...props}>
+      <span
+        className="search-form-select__single-value-label"
+        title={props.data.label}
+      >
+        {props.data.label}
+      </span>
+    </components.SingleValue>
+  )
+}
 
 export default function BibliographySelect({
   ariaLabel,
@@ -84,6 +101,7 @@ export default function BibliographySelect({
         value={selectedOption}
         className="SearchForm__select"
         classNamePrefix="search-form-select"
+        components={{ SingleValue: SelectedSingleValue }}
       />
     </>
   )

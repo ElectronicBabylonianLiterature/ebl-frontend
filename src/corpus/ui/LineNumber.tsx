@@ -1,4 +1,4 @@
-import React, { ReactNode, useEffect, useRef } from 'react'
+import React, { ReactNode, useRef } from 'react'
 import lineNumberToString, {
   lineNumberToAtf,
 } from 'transliteration/domain/lineNumberToString'
@@ -8,6 +8,9 @@ import classnames from 'classnames'
 import { LineDisplay } from 'corpus/domain/chapter'
 import _ from 'lodash'
 import prefersReducedMotion from 'common/utils/prefersReducedMotion'
+import useScrollToActiveLine, {
+  scrollLineIntoView,
+} from 'transliteration/ui/useScrollToActiveLine'
 
 const OldLineNumberCitation = referencePopover(({ reference }) => (
   <sup>{reference.authors.join('/')}</sup>
@@ -57,11 +60,7 @@ export default function LineNumber({
   const id = lineNumberToAtf(line.number)
   const hash = `#${encodeURIComponent(id)}`
 
-  useEffect(() => {
-    if (id === activeLine) {
-      ref.current?.scrollIntoView()
-    }
-  }, [id, activeLine])
+  useScrollToActiveLine(ref, id, activeLine)
 
   return (
     <td
@@ -84,7 +83,9 @@ export default function LineNumber({
             event.preventDefault()
             window.history.replaceState(null, '', hash)
             const behavior = prefersReducedMotion() ? 'auto' : 'smooth'
-            ref.current?.scrollIntoView({ behavior })
+            if (ref.current) {
+              scrollLineIntoView(ref.current, { behavior })
+            }
           }}
         >
           {lineNumberToString(line.number)}

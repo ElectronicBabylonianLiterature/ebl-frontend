@@ -136,6 +136,12 @@ describe('Fragmentarium', () => {
       await setupStatistics()
       expect(screen.getByRole('img')).toBeInTheDocument()
     })
+
+    it('adds constrained columns around search and image content', async () => {
+      await setupStatistics()
+      expect(container).toContainHTML('Fragmentarium__search-column')
+      expect(container).toContainHTML('Fragmentarium__image-column')
+    })
   })
 
   describe('Fragment lists', () => {

@@ -202,7 +202,7 @@ export function createQuerySummaryFragment(
     number: museumNumberToString(dto.museumNumber),
     accession: toMuseumNumberString(dto.accession),
     publication: '',
-    acquisition: null,
+    acquisitions: [],
     description: dto.description,
     joins: [],
     measures: {
