@@ -1,7 +1,12 @@
 import React from 'react'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { getKingsByDynasty, findKingByOrderGlobal, KingField } from './Kings'
+import {
+  getKingsByDynasty,
+  findKingByOrderGlobal,
+  KingField,
+  King,
+} from 'chronology/ui/Kings/Kings'
 
 describe('getKingsByDynasty', () => {
   it('returns kings from the specified dynasty', () => {
@@ -60,5 +65,66 @@ describe('KingField Component', () => {
         totalOfYears: '5',
       }),
     )
+  })
+
+  it('shows the calendar field when a Third Dynasty of Ur king is chosen', async () => {
+    const setIsCalenderFieldDisplayed = jest.fn()
+    render(
+      <KingField
+        setKing={jest.fn()}
+        setIsCalenderFieldDisplayed={setIsCalenderFieldDisplayed}
+      />,
+    )
+    const selectInput = screen.getByLabelText(/select-king/i)
+
+    await userEvent.click(selectInput)
+    await userEvent.type(selectInput, 'Ur-Namma')
+    await userEvent.click(
+      screen.getByText('Ur-Namma (2110–2093), Third Dynasty of Ur'),
+    )
+
+    expect(setIsCalenderFieldDisplayed).toHaveBeenCalledWith(true)
+  })
+
+  it('hides the calendar field when a king of another dynasty is chosen', async () => {
+    const setIsCalenderFieldDisplayed = jest.fn()
+    render(
+      <KingField
+        setKing={jest.fn()}
+        setIsCalenderFieldDisplayed={setIsCalenderFieldDisplayed}
+      />,
+    )
+    const selectInput = screen.getByLabelText(/select-king/i)
+
+    await userEvent.click(selectInput)
+    await userEvent.type(selectInput, 'Sargon II')
+    await userEvent.click(
+      screen.getByText('Sargon II (709–705), Miscellaneous Dynasties'),
+    )
+
+    expect(setIsCalenderFieldDisplayed).toHaveBeenCalledWith(false)
+  })
+
+  it('displays the current king regardless of its broken and uncertain flags', () => {
+    const urNamma = findKingByOrderGlobal(12) as King
+    render(
+      <KingField
+        king={{ ...urNamma, isBroken: true, isUncertain: false }}
+        setKing={jest.fn()}
+      />,
+    )
+
+    expect(
+      screen.getByText('Ur-Namma (2110–2093), Third Dynasty of Ur'),
+    ).toBeInTheDocument()
+  })
+
+  it('labels a king without a date by name and dynasty only', () => {
+    const urNanshe = findKingByOrderGlobal(0.11) as King
+    render(<KingField king={urNanshe} setKing={jest.fn()} />)
+
+    expect(
+      screen.getByText('Ur-Nanše, First Dynasty of Lagash'),
+    ).toBeInTheDocument()
   })
 })

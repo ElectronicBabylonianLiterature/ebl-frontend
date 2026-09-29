@@ -94,6 +94,19 @@ module.exports = [
       SharedArrayBuffer: 'readonly',
     },
   }),
+  ...compat.config({
+    overrides: [
+      {
+        files: ['scripts/**/*.js'],
+        env: {
+          node: true,
+        },
+        rules: {
+          '@typescript-eslint/no-require-imports': 'off',
+        },
+      },
+    ],
+  }),
   {
     files: ['src/serviceWorker.ts'],
     plugins: {
