@@ -8,7 +8,10 @@ import { DictionaryContext } from 'dictionary/ui/dictionary-context'
 import WordService from 'dictionary/application/WordService'
 import { fragmentFactory } from 'test-support/fragment-fixtures'
 import { Text } from 'transliteration/domain/text'
-import { FragmentLines } from './FragmentariumSearchResultComponents'
+import { Periods } from 'common/utils/period'
+import { scriptFactory } from 'test-support/fragment-data-fixtures'
+import _ from 'lodash'
+import { FragmentLines } from 'fragmentarium/ui/search/FragmentariumSearchResultComponents'
 
 jest.mock('fragmentarium/application/FragmentService')
 jest.mock('dossiers/application/DossiersService')
@@ -118,5 +121,31 @@ describe('FragmentLines', () => {
     expect(fragmentService.find).toHaveBeenCalledWith('X.1', [1, 2, 3], false)
     expect(await screen.findByLabelText('Spinner')).toBeInTheDocument()
     expect(screen.queryByText('X.1')).not.toBeInTheDocument()
+  })
+
+  it.each([
+    [Periods.None, ''],
+    [Periods['Neo-Assyrian'], ' (NA)'],
+  ])('shows the script period abbreviation of %o', (period, suffix) => {
+    const fragment = fragmentFactory.build(
+      { hasPhoto: false, dossiers: [] },
+      {
+        associations: {
+          script: scriptFactory.build({}, { associations: { period } }),
+        },
+      },
+    )
+
+    renderFragmentLines({
+      museumNumber: fragment.number,
+      matchingLines: [],
+      matchCount: 0,
+      fragment,
+      thumbnailPath: null,
+    })
+
+    expect(screen.getByRole('heading', { level: 4 })).toHaveTextContent(
+      new RegExp(`^${_.escapeRegExp(fragment.number + suffix)}$`),
+    )
   })
 })

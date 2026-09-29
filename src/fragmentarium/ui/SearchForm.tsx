@@ -1,8 +1,7 @@
 import React, { Component } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Button, ButtonToolbar, Col, Form, Row } from 'react-bootstrap'
+import { Button, Col, Form, Row } from 'react-bootstrap'
 import { stringify } from 'query-string'
-import _ from 'lodash'
 import { produce } from 'immer'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import FragmentSearchService from 'fragmentarium/application/FragmentSearchService'
@@ -10,51 +9,26 @@ import BibliographyService from 'bibliography/application/BibliographyService'
 import WordService from 'dictionary/application/WordService'
 import DossiersService from 'dossiers/application/DossiersService'
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
-import {
-  FragmentQuery,
-  PeriodModifierString,
-  PeriodString,
-  QueryType,
-} from 'query/FragmentQuery'
+import { FragmentQuery } from 'query/FragmentQuery'
 import { ResearchProjects } from 'research-projects/researchProject'
-import replaceTransliteration from 'fragmentarium/domain/replaceTransliteration'
-import LuckyButton from 'fragmentarium/ui/front-page/LuckyButton'
-import PioneersButton from 'fragmentarium/ui/PioneersButton'
-import GenreSearchForm from 'fragmentarium/ui/search/SearchFormGenre'
 import LemmaSearchForm from 'fragmentarium/ui/search/SearchFormLemma'
-import MuseumSearchForm from 'fragmentarium/ui/search/SearchFormMuseum'
 import NumberSearchForm from 'fragmentarium/ui/search/SearchFormNumber'
-import PeriodSearchForm from 'fragmentarium/ui/search/SearchFormPeriod'
-import ProvenanceSearchForm from 'fragmentarium/ui/search/SearchFormProvenance'
 import ReferenceSearchForm from 'fragmentarium/ui/search/SearchFormReference'
 import TransliterationSearchForm from 'fragmentarium/ui/search/SearchFormTransliteration'
-import SearchFormDossier from './search/SearchFormDossier'
+import SearchFormAdvancedFields from 'fragmentarium/ui/SearchFormAdvancedFields'
+import SearchFormButtonToolbar from 'fragmentarium/ui/SearchFormButtonToolbar'
+import { helpColSize } from 'fragmentarium/ui/searchFormLayout'
+import {
+  createSearchFormState,
+  flattenSearchFormState,
+  isValidNumber,
+  SearchFormState,
+  SearchFormValue,
+} from 'fragmentarium/ui/SearchFormState'
 import './SearchForm.sass'
 
-interface State {
-  number: string | null
-  referenceEntry: { id: string; label: string }
-  pages: string | null
-  lemmas: string | null
-  lemmaOperator: QueryType | null
-  transliteration: string | null
-  scriptPeriod: PeriodString
-  scriptPeriodModifier: PeriodModifierString
-  genre: string | null
-  project: keyof typeof ResearchProjects | null
-  isValid: boolean
-  site: string | null
-  museum: string | null
-  dossier: string | null
-}
-
-type SearchFormValue =
-  | string
-  | null
-  | undefined
-  | QueryType
-  | BibliographyEntry
-  | keyof typeof ResearchProjects
+export { helpColSize } from 'fragmentarium/ui/searchFormLayout'
+export { isValidNumber } from 'fragmentarium/ui/SearchFormState'
 
 export type SearchFormProps = {
   fragmentSearchService: FragmentSearchService
@@ -68,20 +42,7 @@ export type SearchFormProps = {
   navigate: (options: { pathname: string; search: string }) => void
 }
 
-export function isValidNumber(number?: string): boolean {
-  return !number || !/^\[.*\]+$/.test(number.trim())
-}
-
-export const helpColSize = 1
-
-const SearchField = <T extends React.ElementType>({
-  component: Component,
-  ...props
-}: { component: T } & React.ComponentProps<T>) => {
-  return <Component {...props} />
-}
-
-class SearchForm extends Component<SearchFormProps, State> {
+class SearchForm extends Component<SearchFormProps, SearchFormState> {
   basepath: string
   private showAdvancedSearch: boolean
 
@@ -93,7 +54,7 @@ class SearchForm extends Component<SearchFormProps, State> {
 
     const fragmentQuery = this.props.fragmentQuery || {}
 
-    this.state = this.initializeState(fragmentQuery)
+    this.state = createSearchFormState(fragmentQuery)
     this.showAdvancedSearch = props.showAdvancedSearch ?? false
 
     if (
@@ -101,28 +62,6 @@ class SearchForm extends Component<SearchFormProps, State> {
       this.state.referenceEntry.label === ''
     ) {
       this.fetchReferenceLabel()
-    }
-  }
-
-  initializeState(fragmentQuery): State {
-    return {
-      number: fragmentQuery.number || null,
-      referenceEntry: {
-        id: fragmentQuery.bibId || '',
-        label: fragmentQuery.bibLabel || '',
-      },
-      pages: fragmentQuery.pages || null,
-      lemmas: fragmentQuery.lemmas || '',
-      lemmaOperator: fragmentQuery.lemmaOperator || 'line',
-      transliteration: fragmentQuery.transliteration || '',
-      scriptPeriod: fragmentQuery.scriptPeriod || '',
-      scriptPeriodModifier: fragmentQuery.scriptPeriodModifier || '',
-      genre: fragmentQuery.genre || '',
-      site: fragmentQuery.site || '',
-      isValid: isValidNumber(fragmentQuery.number),
-      project: fragmentQuery.project || null,
-      museum: fragmentQuery.museum || null,
-      dossier: fragmentQuery.dossier || null,
     }
   }
 
@@ -150,43 +89,17 @@ class SearchForm extends Component<SearchFormProps, State> {
 
   onChangeBibliographyReference = (event: BibliographyEntry): void => {
     const newState = produce(this.state, (draftState) => {
-      draftState.referenceEntry.label = event.label || ''
+      draftState.referenceEntry.label = event.label
       draftState.referenceEntry.id = event.id || ''
     })
     this.setState(newState)
-  }
-
-  flattenState(state: State): FragmentQuery {
-    const cleanedTransliteration = _.trimEnd(state.transliteration || '')
-    const stateWithoutNull = _.omitBy(
-      {
-        number: state.number,
-        lemmas: state.lemmas,
-        lemmaOperator: state.lemmas ? state.lemmaOperator : '',
-        bibId: state.referenceEntry.id,
-        label: state.referenceEntry.label,
-        pages: state.pages,
-        transliteration: replaceTransliteration(cleanedTransliteration) ?? '',
-        scriptPeriodModifier: state.scriptPeriod
-          ? state.scriptPeriodModifier
-          : '',
-        scriptPeriod: state.scriptPeriod,
-        genre: state.genre,
-        site: state.site ?? '',
-        project: state.project,
-        museum: state.museum,
-        dossier: state.dossier,
-      },
-      (value) => !value,
-    )
-    return _.omit(stateWithoutNull, 'isValid')
   }
 
   search = (
     event: React.MouseEvent<HTMLElement> | React.KeyboardEvent,
   ): void => {
     event.preventDefault()
-    const updatedState = this.flattenState(this.state)
+    const updatedState = flattenSearchFormState(this.state)
     this.onChange('transliteration')(updatedState.transliteration)
 
     this.props.navigate({
@@ -199,51 +112,6 @@ class SearchForm extends Component<SearchFormProps, State> {
     if (event.ctrlKey && event.key === 'Enter' && this.state.isValid) {
       this.search(event)
     }
-  }
-
-  renderSearchField = (
-    component: React.ElementType,
-    stateValue: string | null,
-    stateKey: string,
-  ) => (
-    <SearchField
-      component={component}
-      value={stateValue}
-      onChange={this.onChange(stateKey)}
-      fragmentService={this.props.fragmentService}
-    />
-  )
-
-  renderButtonToolbar = (): JSX.Element => {
-    return (
-      <Row>
-        <Col sm={helpColSize} className={'SearchForm__help-col'}></Col>
-        <Col>
-          <ButtonToolbar>
-            <Button
-              className="w-25 m-1"
-              onClick={this.search}
-              variant="primary"
-              disabled={!this.state.isValid}
-            >
-              {this.props.project
-                ? `Search in ${this.props.project}`
-                : 'Search'}
-            </Button>
-            {!this.props.project && (
-              <>
-                <LuckyButton
-                  fragmentSearchService={this.props.fragmentSearchService}
-                />
-                <PioneersButton
-                  fragmentSearchService={this.props.fragmentSearchService}
-                />
-              </>
-            )}
-          </ButtonToolbar>
-        </Col>
-      </Row>
-    )
   }
 
   render(): JSX.Element {
@@ -301,54 +169,22 @@ class SearchForm extends Component<SearchFormProps, State> {
               )}
             </Col>
             {this.showAdvancedSearch && (
-              <Col md={6}>
-                {this.renderSearchField(
-                  GenreSearchForm,
-                  this.state.genre,
-                  'genre',
-                )}
-                <SearchField
-                  component={MuseumSearchForm}
-                  value={this.state.museum}
-                  onChange={this.onChange('museum')}
-                />
-                <PeriodSearchForm
-                  scriptPeriod={this.state.scriptPeriod}
-                  scriptPeriodModifier={this.state.scriptPeriodModifier}
-                  onChangeScriptPeriod={this.onChange('scriptPeriod')}
-                  onChangeScriptPeriodModifier={this.onChange(
-                    'scriptPeriodModifier',
-                  )}
-                  fragmentService={this.props.fragmentService}
-                />
-                {this.renderSearchField(
-                  ProvenanceSearchForm,
-                  this.state.site,
-                  'site',
-                )}
-                <SearchFormDossier
-                  ariaLabel="Dossier"
-                  value={this.state.dossier}
-                  searchSuggestions={(inputValue: string, filters) =>
-                    this.props.dossiersService.searchSuggestions(
-                      inputValue,
-                      filters,
-                    )
-                  }
-                  onChange={this.onChange('dossier')}
-                  isClearable={true}
-                  filters={{
-                    provenance: this.state.site,
-                    scriptPeriod: this.state.scriptPeriod,
-                    genre: this.state.genre,
-                  }}
-                />
-              </Col>
+              <SearchFormAdvancedFields
+                state={this.state}
+                onChange={this.onChange}
+                fragmentService={this.props.fragmentService}
+                dossiersService={this.props.dossiersService}
+              />
             )}
           </Row>
           <Row>
             <Col>
-              <this.renderButtonToolbar />
+              <SearchFormButtonToolbar
+                project={this.props.project}
+                isValid={this.state.isValid}
+                onSearch={this.search}
+                fragmentSearchService={this.props.fragmentSearchService}
+              />
             </Col>
           </Row>
         </Form>

@@ -3,57 +3,35 @@ import classNames from 'classnames'
 import _ from 'lodash'
 import {
   effectiveEnclosure,
-  EgyptianMetricalFeetSeparator,
   EnclosureType,
   Gloss,
-  GreekLetter,
   NamedSign,
-  Sign,
   Token,
-  UnknownSign,
   Variant,
   Word,
 } from 'transliteration/domain/token'
 import { addAccents } from 'transliteration/domain/accents'
 import { isEnclosure, isAkkadianWord } from 'transliteration/domain/type-guards'
-import { createModifierClasses, Modifiers } from './modifiers'
-import EnclosureFlags from './EnclosureFlags'
-import Flags from './Flags'
+import { createModifierClasses, Modifiers } from 'transliteration/ui/modifiers'
+import EnclosureFlags from 'transliteration/ui/EnclosureFlags'
+import Flags from 'transliteration/ui/Flags'
 import SubIndex from 'transliteration/ui/Subindex'
 import AkkadianWordComponent from 'akkadian/ui/akkadianWord'
 import { PhoneticProps } from 'akkadian/application/phonetics/segments'
+import {
+  DamagedFlag,
+  EgyptianMetricalFeetSeparatorComponent,
+  GreekLetterComponent,
+  LineBreakComponent,
+  signComponent,
+  TabulationComponent,
+  TokenProps,
+  TokenWrapper,
+  UnknownSignComponent,
+} from 'transliteration/ui/SignTokens'
 
-export type TokenWrapper = FunctionComponent<PropsWithChildren<unknown>>
-
-export interface TokenProps {
-  token: Token
-  Wrapper: TokenWrapper
-  tokenClasses?: readonly string[]
-  phoneticProps?: PhoneticProps
-}
-
-export function DamagedFlag({
-  sign: { flags },
-  Wrapper,
-  children,
-}: PropsWithChildren<{
-  sign: { flags: readonly string[] }
-  Wrapper: TokenWrapper
-}>): JSX.Element {
-  return flags.includes('#') ? (
-    <>
-      <Wrapper>
-        <span className="Transliteration__bracket">⸢</span>
-      </Wrapper>
-      {children}
-      <Wrapper>
-        <span className="Transliteration__bracket">⸣</span>
-      </Wrapper>
-    </>
-  ) : (
-    <>{children}</>
-  )
-}
+export { DamagedFlag } from 'transliteration/ui/SignTokens'
+export type { TokenProps, TokenWrapper } from 'transliteration/ui/SignTokens'
 
 function DefaultToken({ token, Wrapper }: TokenProps): JSX.Element {
   return (
@@ -114,60 +92,6 @@ function GlossComponent({ token, Wrapper }: TokenProps): JSX.Element {
   )
 }
 
-function UnknownSignComponent({ token, Wrapper }: TokenProps): JSX.Element {
-  const sign = token as UnknownSign
-  const signs = {
-    UnclearSign: sign.enclosureType.includes('BROKEN_AWAY') ? 'o' : 'x',
-    UnidentifiedSign: 'X',
-  }
-  return (
-    <DamagedFlag sign={sign} Wrapper={Wrapper}>
-      <Wrapper>
-        <EnclosureFlags token={sign}>
-          {signs[sign.type]}
-          <Flags flags={sign.flags} />
-        </EnclosureFlags>
-      </Wrapper>
-    </DamagedFlag>
-  )
-}
-
-function EgyptianMetricalFeetSeparatorComponent({
-  token,
-  Wrapper,
-}: TokenProps): JSX.Element {
-  const sign = token as EgyptianMetricalFeetSeparator
-  return (
-    <DamagedFlag sign={sign} Wrapper={Wrapper}>
-      <Wrapper>
-        <EnclosureFlags token={token}>
-          <span className="Transliteration__EgyptianMetricalFeetSeparator--colored">
-            {'•'}
-          </span>
-          <Flags flags={sign.flags} />
-        </EnclosureFlags>
-      </Wrapper>
-    </DamagedFlag>
-  )
-}
-
-function signComponent(nameProperty: string) {
-  return function SignComponent({ token, Wrapper }: TokenProps): JSX.Element {
-    const sign = token as Sign
-    return (
-      <DamagedFlag sign={sign} Wrapper={Wrapper}>
-        <Wrapper>
-          <EnclosureFlags token={token}>
-            {sign[nameProperty]}
-            <Modifiers modifiers={sign.modifiers} />
-            <Flags flags={sign.flags} />
-          </EnclosureFlags>
-        </Wrapper>
-      </DamagedFlag>
-    )
-  }
-}
-
 function NamedSignComponent({ token, Wrapper }: TokenProps): JSX.Element {
   const namedSign = token as NamedSign
   const effectiveEnclosures: EnclosureType[] = effectiveEnclosure(namedSign)
@@ -207,32 +131,6 @@ function NamedSignComponent({ token, Wrapper }: TokenProps): JSX.Element {
       </EnclosureFlags>
     </DamagedFlag>
   )
-}
-
-function GreekLetterComponent({ token, Wrapper }: TokenProps): JSX.Element {
-  const letter = token as GreekLetter
-  return (
-    <DamagedFlag sign={letter} Wrapper={Wrapper}>
-      <Wrapper>
-        <EnclosureFlags token={letter}>
-          {letter.letter}
-          <Flags flags={letter.flags} />
-        </EnclosureFlags>
-      </Wrapper>
-    </DamagedFlag>
-  )
-}
-
-function TabulationComponent({ Wrapper }: TokenProps): JSX.Element {
-  return (
-    <Wrapper>
-      <span></span>
-    </Wrapper>
-  )
-}
-
-function LineBreakComponent({ Wrapper }: TokenProps): JSX.Element {
-  return <Wrapper>|</Wrapper>
 }
 
 function WordComponent({

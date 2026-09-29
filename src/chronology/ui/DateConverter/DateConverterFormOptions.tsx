@@ -1,8 +1,13 @@
-import React from 'react'
 import DateConverter from 'chronology/domain/DateConverter'
 import { weekDayNames, monthNames } from 'chronology/domain/DateConverterBase'
 import { Field } from 'chronology/application/DateConverterFormFieldData'
 import data from 'chronology/domain/dateConverterData.json'
+import {
+  getLabelValueOptions,
+  getNumberRangeOptions,
+  getStringOptions,
+  getYearOptionLabel,
+} from 'chronology/ui/DateConverter/DateConverterOptionElements'
 
 type Edges = [number, number]
 
@@ -81,57 +86,6 @@ const getDateFieldPrefixes = (
   }
 }
 
-function getLabelValueOptions(
-  options: { label: string | JSX.Element; value: number | string }[],
-): JSX.Element[] {
-  return options.map(({ label, value }, index) => (
-    <option
-      key={index}
-      value={value}
-      {...(value === '' ? { hidden: true } : {})}
-    >
-      {label}
-    </option>
-  ))
-}
-
-function getYearOptionLabel(
-  year: number,
-  era: 'western' | 'se' = 'western',
-): string {
-  const { eraPrefix, beforeEraPrefix } = {
-    western: { eraPrefix: 'CE', beforeEraPrefix: 'BCE' },
-    se: { eraPrefix: 'SE', beforeEraPrefix: 'BSE' },
-  }[era]
-  return year < 1
-    ? `${Math.abs(year) + 1} ${beforeEraPrefix}`
-    : `${year} ${eraPrefix}`
-}
-
-function getNumberRangeOptions(
-  from: number,
-  to: number,
-  labelFormatter?: (number) => string,
-): JSX.Element[] {
-  const numbersArray = Array.from(
-    { length: to - from + 1 },
-    (_, index) => index + from,
-  )
-  return numbersArray.map((number) => (
-    <option key={number} value={number}>
-      {labelFormatter ? labelFormatter(number) : number}
-    </option>
-  ))
-}
-
-function getStringOptions(options: string[]): JSX.Element[] {
-  return options.map((label, index) => (
-    <option key={index} value={index + 1}>
-      {label}
-    </option>
-  ))
-}
-
 const getYearOptions = (
   field: Field,
   dateConverter: DateConverter,
@@ -139,16 +93,13 @@ const getYearOptions = (
   const seYearLabelGetter = (number) => getYearOptionLabel(number, 'se')
   const labelGetter =
     field.name === 'seBabylonianYear' ? seYearLabelGetter : getYearOptionLabel
-  if (field.name !== 'regnalYear') {
-    return getNumberRangeOptions(
-      ...getValuesAtEdges(field.name, dateConverter),
-      labelGetter,
-    )
-  } else if (field.name === 'regnalYear') {
+  if (field.name === 'regnalYear') {
     return getRegnalYearOptions(dateConverter)
-  } else {
-    return []
   }
+  return getNumberRangeOptions(
+    ...getValuesAtEdges(field.name, dateConverter),
+    labelGetter,
+  )
 }
 
 const getMonthOptions = (

@@ -1,17 +1,20 @@
+import React from 'react'
+import _ from 'lodash'
 import ExternalLink from 'common/ui/ExternalLink'
-import React, { Fragment } from 'react'
+
+export { OraccLinks, SealLinks } from 'fragmentarium/ui/info/ExternalTextLinks'
 
 interface Props {
   number: string
-  baseUrl?: string
+  baseUrl: string
   label: string
-  encodeUri?: boolean
+  encodeUri: boolean
 }
 function ExternalNumberLink({
   baseUrl,
   number,
   label,
-  encodeUri = true,
+  encodeUri,
 }: Props): JSX.Element {
   const url = `${baseUrl}${encodeUri ? encodeURIComponent(number) : number}`
   return (
@@ -25,369 +28,169 @@ function ExternalNumberLink({
   )
 }
 
-export function BmIdLink({ number }: { number: string }): JSX.Element {
-  return (
-    <ExternalNumberLink
-      number={number}
-      baseUrl={'https://www.britishmuseum.org/collection/object/'}
-      label={'The British Museum'}
-    />
-  )
-}
-export function CdliLink({ number }: { number: string }): JSX.Element {
-  return (
-    <ExternalNumberLink
-      number={number}
-      baseUrl={'https://cdli.earth/'}
-      label={'CDLI'}
-    />
-  )
-}
-export function BdtnsLink({ number }: { number: string }): JSX.Element {
-  return (
-    <ExternalNumberLink
-      number={number}
-      baseUrl={'http://bdtns.cesga.es/'}
-      label={'BDTNS'}
-    />
-  )
-}
-export function RstiLink({ number }: { number: string }): JSX.Element {
-  return (
-    <ExternalNumberLink
-      number={number}
-      baseUrl={'https://pi.lib.uchicago.edu/1001/org/ochre/'}
-      label={'RSTI'}
-    />
-  )
-}
-export function ChicagoIsacLink({ number }: { number: string }): JSX.Element {
-  return (
-    <ExternalNumberLink
-      number={number}
-      baseUrl={'https://isac-idb.uchicago.edu/id/'}
-      label={'Chicago ISAC'}
-    />
-  )
-}
-export function ArchibabLink({ number }: { number: string }): JSX.Element {
-  return (
-    <ExternalNumberLink
-      number={number}
-      baseUrl={'http://www.archibab.fr/'}
-      label={'Archibab'}
-    />
-  )
-}
-export function UrOnlineLink({ number }: { number: string }): JSX.Element {
-  return (
-    <ExternalNumberLink
-      number={number}
-      baseUrl={'http://www.ur-online.org/subject/'}
-      label={'Ur Online'}
-    />
-  )
-}
-export function HilprechtJenaLink({ number }: { number: string }): JSX.Element {
-  return (
-    <ExternalNumberLink
-      number={number}
-      baseUrl={'https://hilprecht.mpiwg-berlin.mpg.de/object3d/'}
-      label={'Hilprecht Collection'}
-    />
-  )
-}
-export function HilprechtHeidelbergLink({
-  number,
-}: {
-  number: string
-}): JSX.Element {
-  return (
-    <ExternalNumberLink
-      number={number}
-      baseUrl={'https://doi.org/10.11588/heidicon/'}
-      label={'Hilprecht Collection – HeiCuBeDa'}
-    />
-  )
-}
-export function YalePeabodyLink({ number }: { number: string }): JSX.Element {
-  const formattedNumber = number.replace(/^BC\./g, 'BC-')
-  return (
-    <ExternalNumberLink
-      number={formattedNumber}
-      baseUrl={'https://collections.peabody.yale.edu/search/Record/YPM-'}
-      label={'Yale Babylonian Collection'}
-    />
-  )
-}
-export function AchemenetLink({ number }: { number: string }): JSX.Element {
-  return (
-    <ExternalNumberLink
-      number={number}
-      baseUrl={
-        'http://www.achemenet.com/en/item/?/textual-sources/texts-by-languages-and-scripts/babylonian/'
-      }
-      label={'Achemenet'}
-    />
-  )
-}
-export function NabuccoLink({ number }: { number: string }): JSX.Element {
-  return (
-    <ExternalNumberLink
-      number={number}
-      baseUrl={'https://nabucco.acdh.oeaw.ac.at/archiv/tablet/detail/'}
-      label={'NaBuCCo'}
-    />
-  )
-}
-export function DigitaleKeilschriftBibliothekLink({
-  number,
-}: {
-  number: string
-}): JSX.Element {
-  return (
-    <ExternalNumberLink
-      number={number}
-      baseUrl={
-        'https://gwdu64.gwdg.de/pls/tlinnemann/keilpublic_1$tafel.QueryViewByKey?'
-      }
-      label={'Digitale Keilschrift Bibliothek'}
-      encodeUri={false}
-    />
-  )
-}
-export function MetropolitanLink({ number }: { number: string }): JSX.Element {
-  return (
-    <ExternalNumberLink
-      number={number}
-      baseUrl={'https://www.metmuseum.org/art/collection/search/'}
-      label={'The Metropolitan Museum of Art'}
-    />
-  )
-}
-export function pierpontMorganLink({
-  number,
-}: {
-  number: string
-}): JSX.Element {
-  return (
-    <ExternalNumberLink
-      number={number}
-      baseUrl={'https://www.themorgan.org/seals-and-tablets/'}
-      label={'Pierpont Morgan Library'}
-    />
-  )
-}
-export function LouvreLink({ number }: { number: string }): JSX.Element {
-  return (
-    <ExternalNumberLink
-      number={number}
-      baseUrl={'https://collections.louvre.fr/ark:/53355/'}
-      label={'Louvre'}
-    />
-  )
-}
-export function ontarioLink({ number }: { number: string }): JSX.Element {
-  return (
-    <ExternalNumberLink
-      number={number}
-      baseUrl={'https://collections.rom.on.ca/objects/'}
-      label={'Royal Ontario Museum'}
-    />
-  )
-}
-export function kelseyLink({ number }: { number: string }): JSX.Element {
-  return (
-    <ExternalNumberLink
-      number={number}
-      baseUrl={'https://quod.lib.umich.edu/k/kelsey/x-'}
-      label={'Kelsey Museum'}
-    />
-  )
-}
-export function harvardHamLink({ number }: { number: string }): JSX.Element {
-  return (
-    <ExternalNumberLink
-      number={number}
-      baseUrl={'https://harvardartmuseums.org/collections/object/'}
-      label={'Harvard Art Museums'}
-    />
-  )
-}
-export function etcsriLink({ number }: { number: string }): JSX.Element {
-  return (
-    <ExternalNumberLink
-      number={number}
-      baseUrl={'https://oracc.museum.upenn.edu/etcsri/'}
-      label={'ETCSRI'}
-    />
-  )
-}
-export function sketchfabLink({ number }: { number: string }): JSX.Element {
-  return (
-    <ExternalNumberLink
-      number={number}
-      baseUrl={'https://sketchfab.com/3d-models/'}
-      label={'SketchFab'}
-    />
-  )
-}
-export function arkLink({ number }: { number: string }): JSX.Element {
-  return (
-    <ExternalNumberLink
-      number={number}
-      baseUrl={'https://n2t.net/ark:/'}
-      label={'ark'}
-    />
-  )
-}
-export function dublinTcdLink({ number }: { number: string }): JSX.Element {
-  return (
-    <ExternalNumberLink
-      number={number}
-      baseUrl={'https://digitalcollections.tcd.ie/concern/works/'}
-      label={'Trinity College Dublin'}
-    />
-  )
-}
-export function cambridgeMaaLink({ number }: { number: string }): JSX.Element {
-  return (
-    <ExternalNumberLink
-      number={number}
-      baseUrl={'https://collections.maa.cam.ac.uk/objects/'}
-      label={'MAA Cambridge'}
-    />
-  )
-}
-export function ashmoleanLink({ number }: { number: string }): JSX.Element {
-  return (
-    <ExternalNumberLink
-      number={number}
-      baseUrl={'https://collections.ashmolean.org/object/'}
-      label={'Ashmolean Museum'}
-    />
-  )
-}
-export function alalahHpmLink({ number }: { number: string }): JSX.Element {
-  return (
-    <ExternalNumberLink
-      number={number}
-      baseUrl={
-        'https://www.hethport.uni-wuerzburg.de/Alalach/bildpraep.php?fundnr='
-      }
-      label={'Alalah HPM Number'}
-    />
-  )
-}
-export function sealLink({ number }: { number: string }): JSX.Element {
-  return (
-    <ExternalNumberLink
-      number={number}
-      baseUrl={'https://seal.huji.ac.il/node/'}
-      label={'SEAL Number'}
-    />
-  )
-}
-export function australianinstituteofarchaeologyLink({
-  number,
-}: {
-  number: string
-}): JSX.Element {
-  return (
-    <ExternalNumberLink
-      number={number}
-      baseUrl={'https://aiarch.pedestal3d.com/r/'}
-      label={'Australian Institute of Archaeology'}
-    />
-  )
-}
-export function PhiladelphiaLink({ number }: { number: string }): JSX.Element {
-  return (
-    <ExternalNumberLink
-      number={number}
-      baseUrl={'https://www.penn.museum/collections/object/'}
-      label={'Penn Museum'}
-    />
-  )
-}
-export function spurlockLink({ number }: { number: string }): JSX.Element {
-  return (
-    <ExternalNumberLink
-      number={number}
-      baseUrl={
-        'https://www.spurlock.illinois.edu/collections/search-collection/details.php?a='
-      }
-      label={'Spurlock Museum'}
-    />
-  )
-}
-function OraccLink({
-  project,
-  cdliNumber,
-}: {
-  project: string
-  cdliNumber: string
-}): JSX.Element {
-  const baseUrl =
-    project === 'ccp'
-      ? 'https://ccp.yale.edu/'
-      : `http://oracc.museum.upenn.edu/${project}/`
-  return (
-    <ExternalLink
-      href={`${baseUrl}${encodeURIComponent(cdliNumber)}`}
-      aria-label={`Oracc text ${project} ${cdliNumber}`}
-    >
-      {project.toUpperCase()}
-    </ExternalLink>
-  )
-}
-function SealLink({ sealTextNumber }: { sealTextNumber: string }): JSX.Element {
-  const url = `https://seal.huji.ac.il/node/${encodeURIComponent(
-    sealTextNumber,
-  )}`
-  return (
-    <ExternalLink href={url} aria-label={`Seal text ${sealTextNumber}`}>
-      {sealTextNumber}
-    </ExternalLink>
-  )
+type NumberLinkComponent = ({ number }: { number: string }) => JSX.Element
+
+interface NumberLinkOptions {
+  encodeUri?: boolean
+  formatNumber?: (number: string) => string
 }
 
-export function OraccLinks({
-  projects,
-  cdliNumber,
-}: {
-  projects: readonly string[]
-  cdliNumber: string
-}): JSX.Element {
-  return (
-    <>
-      {'Oracc ('}
-      {projects.map((project, index) => (
-        <Fragment key={index}>
-          {index !== 0 && ', '}
-          <OraccLink project={project} cdliNumber={cdliNumber} />
-        </Fragment>
-      ))}
-      {')'}
-    </>
-  )
+export function createNumberLink(
+  baseUrl: string,
+  label: string,
+  { encodeUri = true, formatNumber = _.identity }: NumberLinkOptions = {},
+): NumberLinkComponent {
+  return function NumberLink({ number }: { number: string }): JSX.Element {
+    return (
+      <ExternalNumberLink
+        number={formatNumber(number)}
+        baseUrl={baseUrl}
+        label={label}
+        encodeUri={encodeUri}
+      />
+    )
+  }
 }
 
-export function SealLinks({
-  sealTextNumbers,
-}: {
-  sealTextNumbers: readonly string[]
-}): JSX.Element {
-  return (
-    <>
-      {'SEAL ('}
-      {sealTextNumbers.map((sealTextNumber, index) => (
-        <Fragment key={index}>
-          {index !== 0 && ', '}
-          <SealLink sealTextNumber={sealTextNumber} />
-        </Fragment>
-      ))}
-      {')'}
-    </>
-  )
-}
+export const BmIdLink = createNumberLink(
+  'https://www.britishmuseum.org/collection/object/',
+  'The British Museum',
+)
+
+export const CdliLink = createNumberLink('https://cdli.earth/', 'CDLI')
+
+export const BdtnsLink = createNumberLink('http://bdtns.cesga.es/', 'BDTNS')
+
+export const RstiLink = createNumberLink(
+  'https://pi.lib.uchicago.edu/1001/org/ochre/',
+  'RSTI',
+)
+
+export const ChicagoIsacLink = createNumberLink(
+  'https://isac-idb.uchicago.edu/id/',
+  'Chicago ISAC',
+)
+
+export const ArchibabLink = createNumberLink(
+  'http://www.archibab.fr/',
+  'Archibab',
+)
+
+export const UrOnlineLink = createNumberLink(
+  'http://www.ur-online.org/subject/',
+  'Ur Online',
+)
+
+export const HilprechtJenaLink = createNumberLink(
+  'https://hilprecht.mpiwg-berlin.mpg.de/object3d/',
+  'Hilprecht Collection',
+)
+
+export const HilprechtHeidelbergLink = createNumberLink(
+  'https://doi.org/10.11588/heidicon/',
+  'Hilprecht Collection – HeiCuBeDa',
+)
+
+export const YalePeabodyLink = createNumberLink(
+  'https://collections.peabody.yale.edu/search/Record/YPM-',
+  'Yale Babylonian Collection',
+  { formatNumber: (number) => number.replace(/^BC\./g, 'BC-') },
+)
+
+export const AchemenetLink = createNumberLink(
+  'http://www.achemenet.com/en/item/?/textual-sources/texts-by-languages-and-scripts/babylonian/',
+  'Achemenet',
+)
+
+export const NabuccoLink = createNumberLink(
+  'https://nabucco.acdh.oeaw.ac.at/archiv/tablet/detail/',
+  'NaBuCCo',
+)
+
+export const DigitaleKeilschriftBibliothekLink = createNumberLink(
+  'https://gwdu64.gwdg.de/pls/tlinnemann/keilpublic_1$tafel.QueryViewByKey?',
+  'Digitale Keilschrift Bibliothek',
+  { encodeUri: false },
+)
+
+export const MetropolitanLink = createNumberLink(
+  'https://www.metmuseum.org/art/collection/search/',
+  'The Metropolitan Museum of Art',
+)
+
+export const pierpontMorganLink = createNumberLink(
+  'https://www.themorgan.org/seals-and-tablets/',
+  'Pierpont Morgan Library',
+)
+
+export const LouvreLink = createNumberLink(
+  'https://collections.louvre.fr/ark:/53355/',
+  'Louvre',
+)
+
+export const ontarioLink = createNumberLink(
+  'https://collections.rom.on.ca/objects/',
+  'Royal Ontario Museum',
+)
+
+export const kelseyLink = createNumberLink(
+  'https://quod.lib.umich.edu/k/kelsey/x-',
+  'Kelsey Museum',
+)
+
+export const harvardHamLink = createNumberLink(
+  'https://harvardartmuseums.org/collections/object/',
+  'Harvard Art Museums',
+)
+
+export const etcsriLink = createNumberLink(
+  'https://oracc.museum.upenn.edu/etcsri/',
+  'ETCSRI',
+)
+
+export const sketchfabLink = createNumberLink(
+  'https://sketchfab.com/3d-models/',
+  'SketchFab',
+)
+
+export const arkLink = createNumberLink('https://n2t.net/ark:/', 'ark')
+
+export const dublinTcdLink = createNumberLink(
+  'https://digitalcollections.tcd.ie/concern/works/',
+  'Trinity College Dublin',
+)
+
+export const cambridgeMaaLink = createNumberLink(
+  'https://collections.maa.cam.ac.uk/objects/',
+  'MAA Cambridge',
+)
+
+export const ashmoleanLink = createNumberLink(
+  'https://collections.ashmolean.org/object/',
+  'Ashmolean Museum',
+)
+
+export const alalahHpmLink = createNumberLink(
+  'https://www.hethport.uni-wuerzburg.de/Alalach/bildpraep.php?fundnr=',
+  'Alalah HPM Number',
+)
+
+export const sealLink = createNumberLink(
+  'https://seal.huji.ac.il/node/',
+  'SEAL Number',
+)
+
+export const australianinstituteofarchaeologyLink = createNumberLink(
+  'https://aiarch.pedestal3d.com/r/',
+  'Australian Institute of Archaeology',
+)
+
+export const PhiladelphiaLink = createNumberLink(
+  'https://www.penn.museum/collections/object/',
+  'Penn Museum',
+)
+
+export const spurlockLink = createNumberLink(
+  'https://www.spurlock.illinois.edu/collections/search-collection/details.php?a=',
+  'Spurlock Museum',
+)

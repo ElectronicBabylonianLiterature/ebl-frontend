@@ -1,97 +1,38 @@
-import React, { PropsWithChildren, useContext, useMemo, useState } from 'react'
+import React, { useContext, useMemo } from 'react'
 import _ from 'lodash'
 import {
   ChapterDisplay,
   LineDisplay,
   LineVariantDisplay,
 } from 'corpus/domain/chapter'
-import { LineColumns } from 'transliteration/ui/line-tokens'
 import Markup from 'transliteration/ui/markup'
-import lineNumberToString from 'transliteration/domain/lineNumberToString'
 import { TextLineColumn } from 'transliteration/domain/columns'
 import classNames from 'classnames'
 import TextService from 'corpus/application/TextService'
-import { Collapse } from 'react-bootstrap'
-import RowsContext from './RowsContext'
-import TranslationContext from './TranslationContext'
-import Score from './Score'
-import Parallels from './Parallels'
-import { createColumns } from 'transliteration/domain/columns'
-import { numberToUnicodeSubscript } from 'transliteration/application/SubIndex'
-import LineNumber from './LineNumber'
-import { LineGroup, LineInfo } from 'transliteration/ui/LineGroup'
-import { AlignmentPopover } from 'transliteration/ui/AlignmentPopover'
-import { Token } from 'transliteration/domain/token'
-import { isBreak } from 'transliteration/domain/type-guards'
+import RowsContext from 'corpus/ui/RowsContext'
+import TranslationContext from 'corpus/ui/TranslationContext'
+import Score from 'corpus/ui/Score'
+import Parallels from 'corpus/ui/Parallels'
+import {
+  CollapsibleRow,
+  InterText,
+  lineNumberColumns,
+  toggleColumns,
+  Translation,
+  translationColumns,
+} from 'corpus/ui/ChapterViewLineRows'
+import { ToggleCell, ToggleIcon } from 'corpus/ui/ChapterViewLineToggles'
+import { useVariantTransliteration } from 'corpus/ui/useVariantTransliteration'
 
-const lineNumberColumns = 1
-const toggleColumns = 3
-const translationColumns = lineNumberColumns + 1
-
-function InterText({
-  variant,
-  colSpan,
-  hasIntertext,
-}: {
-  variant: LineVariantDisplay
-  colSpan: number
-  hasIntertext: boolean
-}): JSX.Element {
-  return (
-    <>
-      {hasIntertext && (
-        <tr>
-          <td colSpan={colSpan} className="chapter-display__intertext">
-            (
-            <Markup container="span" parts={variant.intertext} />)
-          </td>
-        </tr>
-      )}
-    </>
-  )
-}
-
-function Translation({
-  line,
-  language,
-}: {
+interface ChapterViewLineProps {
+  chapter: ChapterDisplay
+  lineIndex: number
   line: LineDisplay
-  language: string
-}): JSX.Element {
-  const translation = line.translation.filter(
-    (translation) => translation.language === language,
-  )
-  return translation.length > 0 ? (
-    <>
-      <td className="chapter-display__line-number">
-        {lineNumberToString(line.number)}
-      </td>
-      <td className="chapter-display__translation">
-        <Markup parts={translation[0].parts} />
-      </td>
-    </>
-  ) : (
-    <td colSpan={translationColumns} />
-  )
-}
-
-function CollapsibleRow({
-  show,
-  id,
-  totalColumns,
-  children,
-}: PropsWithChildren<{
-  show: boolean
-  id: string
-  totalColumns: number
-}>): JSX.Element {
-  return (
-    <Collapse in={show} mountOnEnter>
-      <tr id={id}>
-        <td colSpan={totalColumns}>{children}</td>
-      </tr>
-    </Collapse>
-  )
+  columns: readonly TextLineColumn[]
+  maxColumns: number
+  textService: TextService
+  activeLine: string
+  expandLineLinks?: boolean
 }
 
 export function ChapterViewLine({
@@ -103,16 +44,7 @@ export function ChapterViewLine({
   textService,
   activeLine,
   expandLineLinks,
-}: {
-  chapter: ChapterDisplay
-  lineIndex: number
-  line: LineDisplay
-  columns: readonly TextLineColumn[]
-  maxColumns: number
-  textService: TextService
-  activeLine: string
-  expandLineLinks?: boolean
-}): JSX.Element {
+}: ChapterViewLineProps): JSX.Element {
   return (
     <>
       {line.variants.map((variant, variantIndex) => (
@@ -142,17 +74,7 @@ export function ChapterViewLineVariant({
   textService,
   activeLine,
   expandLineLinks,
-}: {
-  chapter: ChapterDisplay
-  lineIndex: number
-  variant: LineVariantDisplay
-  line: LineDisplay
-  columns: readonly TextLineColumn[]
-  maxColumns: number
-  textService: TextService
-  activeLine: string
-  expandLineLinks?: boolean
-}): JSX.Element {
+}: ChapterViewLineProps & { variant: LineVariantDisplay }): JSX.Element {
   const scoreId = _.uniqueId('score-')
   const noteId = _.uniqueId('note-')
   const parallelsId = _.uniqueId('parallels-')
@@ -175,91 +97,18 @@ export function ChapterViewLineVariant({
   const [{ language }] = useContext(TranslationContext)
   const hasIntertext = variant.intertext.length > 0
 
-  const columns = useMemo(
-    () => createColumns(variant.reconstruction),
-    [variant.reconstruction],
-  )
-
-  const [, highlightIndexSetter] = useState(0)
-  const lineGroup = useMemo(() => {
-    const lineInfo: LineInfo = {
-      chapterId: chapter.id,
-      lineNumber: line.originalIndex,
-      variantNumber: variant.originalIndex,
-      textService: textService,
-    }
-    return new LineGroup(variant.reconstruction, lineInfo, highlightIndexSetter)
-  }, [
-    chapter.id,
-    line.originalIndex,
-    variant.originalIndex,
-    variant.reconstruction,
-    textService,
-  ])
-
-  const transliteration = useMemo(() => {
-    const variantLabel = (
-      <span className="chapter-display__variant">{`variant${numberToUnicodeSubscript(
-        variant.originalIndex,
-      )}:\xa0`}</span>
-    )
-
-    const ReconstructionTokenPopover = ({
-      token,
-      children,
-    }: PropsWithChildren<{
-      token: Token
-    }>): JSX.Element => {
-      return (
-        <AlignmentPopover
-          token={token}
-          lineGroup={lineGroup}
-          showMeter={showMeter}
-          showIpa={showIpa}
-        >
-          {children}
-        </AlignmentPopover>
-      )
-    }
-
-    return (
-      <>
-        {variant.isPrimaryVariant ? (
-          <LineNumber
-            line={line}
-            activeLine={activeLine}
-            showOldLineNumbers={showOldLineNumbers}
-            url={expandLineLinks ? chapter.url : null}
-          >
-            {variant.originalIndex > 0 && variantLabel}
-          </LineNumber>
-        ) : (
-          <td>{variantLabel}</td>
-        )}
-        <LineColumns
-          columns={columns}
-          maxColumns={maxColumns}
-          TokenActionWrapper={ReconstructionTokenPopover}
-          conditionalBemModifiers={(token) =>
-            isBreak(token) && !showMeter ? ['hidden'] : []
-          }
-        />
-      </>
-    )
-  }, [
-    variant.originalIndex,
-    variant.isPrimaryVariant,
+  const { lineGroup, transliteration } = useVariantTransliteration({
+    chapter,
     line,
-    activeLine,
-    showOldLineNumbers,
-    expandLineLinks,
-    chapter.url,
-    columns,
+    variant,
     maxColumns,
+    textService,
+    activeLine,
+    expandLineLinks,
+    showOldLineNumbers,
     showMeter,
     showIpa,
-    lineGroup,
-  ])
+  })
   const score = useMemo(
     () => (
       <CollapsibleRow show={showScore} id={scoreId} totalColumns={totalColumns}>
@@ -278,7 +127,7 @@ export function ChapterViewLineVariant({
         >
           <Markup
             className="chapter-display__note"
-            parts={variant.note?.parts ?? []}
+            parts={variant.note.parts}
           />
         </CollapsibleRow>
       ),
@@ -298,19 +147,8 @@ export function ChapterViewLineVariant({
     [variant, parallelsId, showParallels, totalColumns],
   )
 
-  const scoreCaret = (
-    <i
-      className={classNames({
-        fas: true,
-        'fa-caret-right': !showScore,
-        'fa-caret-down': showScore,
-      })}
-      aria-expanded={showScore}
-      aria-controls={scoreId}
-      aria-label="Show score"
-      role="button"
-    ></i>
-  )
+  const toggleRow = (target: 'score' | 'notes' | 'parallels') => (): void =>
+    dispatchRows({ type: 'toggle', target, row: lineIndex })
 
   return (
     <>
@@ -328,58 +166,48 @@ export function ChapterViewLineVariant({
             line.isBeginningOfSection,
         })}
       >
-        <td
-          className="chapter-display__toggle"
-          onClick={() =>
-            dispatchRows({ type: 'toggle', target: 'score', row: lineIndex })
-          }
-        >
-          {variant.isPrimaryVariant && scoreCaret}
-        </td>
+        <ToggleCell onToggle={toggleRow('score')}>
+          {variant.isPrimaryVariant && (
+            <ToggleIcon
+              className={classNames({
+                fas: true,
+                'fa-caret-right': !showScore,
+                'fa-caret-down': showScore,
+              })}
+              expanded={showScore}
+              controls={scoreId}
+              label="Show score"
+            />
+          )}
+        </ToggleCell>
         {transliteration}
-        <td
-          className="chapter-display__toggle"
-          onClick={() =>
-            dispatchRows({ type: 'toggle', target: 'notes', row: lineIndex })
-          }
-        >
+        <ToggleCell onToggle={toggleRow('notes')}>
           {variant.note && (
-            <i
+            <ToggleIcon
               className={classNames({
                 fas: true,
                 'fa-book': !showNotes,
                 'fa-book-open': showNotes,
               })}
-              aria-expanded={showNotes}
-              aria-controls={noteId}
-              aria-label="Show notes"
-              role="button"
-            ></i>
+              expanded={showNotes}
+              controls={noteId}
+              label="Show notes"
+            />
           )}
-        </td>
-        <td
-          className="chapter-display__toggle"
-          onClick={() =>
-            dispatchRows({
-              type: 'toggle',
-              target: 'parallels',
-              row: lineIndex,
-            })
-          }
-        >
+        </ToggleCell>
+        <ToggleCell onToggle={toggleRow('parallels')}>
           {variant.parallelLines.length > 0 && (
-            <i
+            <ToggleIcon
               className={classNames({
                 fas: true,
                 'fa-quote-right': true,
               })}
-              aria-expanded={showParallels}
-              aria-controls={parallelsId}
-              aria-label="Show parallels"
-              role="button"
-            ></i>
+              expanded={showParallels}
+              controls={parallelsId}
+              label="Show parallels"
+            />
           )}
-        </td>
+        </ToggleCell>
         {variant.isPrimaryVariant && (
           <Translation line={line} language={language} />
         )}

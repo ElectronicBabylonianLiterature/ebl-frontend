@@ -8,18 +8,19 @@ import { chapterDisplayFactory } from 'test-support/chapter-fixtures'
 import { ChapterDisplay } from 'corpus/domain/chapter'
 import { textIdToString } from 'transliteration/domain/text-id'
 import { textDto } from 'test-support/test-corpus-text'
-import { lines } from 'test-support/test-fragment'
-import { singleRulingDto } from 'test-support/lines/dollar'
 import { waitFor } from '@testing-library/react'
-import { oldSiglumDtoFactory } from 'test-support/old-siglum-fixtures'
-import { referenceDtoFactory } from 'test-support/bibliography-fixtures'
-import { joinDtoFactory } from 'test-support/join-fixtures'
-import { stageToAbbreviation } from 'common/utils/period'
 import {
   restoreProvenanceState,
   snapshotProvenanceState,
   upsertProvenanceRecords,
 } from 'test-support/provenance-state'
+import {
+  chapterViewProvenanceRecords,
+  createChapterViewApi,
+  createChapterViewPath,
+  createShowManuscriptsLineDetails,
+  createSidebarLineDetails,
+} from 'corpus/ui/ChapterView.integration.testSupport'
 
 const chance = new Chance('chapter-view-integration-test')
 
@@ -46,22 +47,7 @@ afterEach(() => {
 describe('Display chapter', () => {
   beforeEach(async () => {
     provenanceSnapshot = snapshotProvenanceState()
-    upsertProvenanceRecords([
-      {
-        id: 'standard-text',
-        longName: 'Standard Text',
-        abbreviation: 'Std',
-        parent: null,
-        sortKey: 1,
-      },
-      {
-        id: 'nippur',
-        longName: 'Nippur',
-        abbreviation: 'Nip',
-        parent: null,
-        sortKey: 2,
-      },
-    ])
+    upsertProvenanceRecords(chapterViewProvenanceRecords)
     ;(URL.createObjectURL as jest.Mock).mockReturnValue('mock url')
     await setup(chapter)
   })
@@ -89,106 +75,11 @@ describe('Display chapter', () => {
   })
 
   test('Show manuscripts', async () => {
-    fakeApi.expectLineDetails(chapter.id, 0, {
-      variants: [
-        {
-          originalIndex: 0,
-          reconstruction: [],
-          note: null,
-          manuscripts: [
-            {
-              provenance: 'Standard Text',
-              periodModifier: 'None',
-              period: 'None',
-              siglumDisambiguator: '1',
-              oldSigla: [],
-              type: 'None',
-              labels: ['o'],
-              line: lines[0],
-              paratext: [singleRulingDto],
-              references: [],
-              joins: [],
-              museumNumber: 'BM.X',
-              isInFragmentarium: false,
-              accession: 'X.1',
-            },
-            {
-              provenance: 'Nippur',
-              periodModifier: 'Early',
-              period: 'Ur III',
-              siglumDisambiguator: '1',
-              oldSigla: [],
-              type: 'Parallel',
-              labels: [''],
-              line: lines[0],
-              paratext: [],
-              references: [],
-              joins: [],
-              museumNumber: 'BM.X',
-              isInFragmentarium: false,
-              accession: 'X.1',
-            },
-            {
-              provenance: 'Nippur',
-              periodModifier: 'None',
-              period: 'Ur III',
-              siglumDisambiguator: '1',
-              oldSigla: [],
-              type: 'School',
-              labels: [''],
-              line: { type: 'EmptyLine', content: [], prefix: '' },
-              paratext: [],
-              references: [],
-              joins: [],
-              museumNumber: 'BM.X',
-              isInFragmentarium: false,
-              accession: 'X.1',
-            },
-            {
-              provenance: 'Nippur',
-              periodModifier: 'None',
-              period: 'Ur III',
-              siglumDisambiguator: '1',
-              oldSigla: oldSiglumDtoFactory.buildList(
-                2,
-                {},
-                { transient: { chance: chance } },
-              ),
-              type: 'School',
-              labels: [''],
-              line: { type: 'EmptyLine', content: [], prefix: '' },
-              paratext: [],
-              references: referenceDtoFactory.buildList(
-                1,
-                {},
-                { transient: { chance: chance } },
-              ),
-              joins: [
-                [
-                  joinDtoFactory.build(
-                    {
-                      isInFragmentarium: true,
-                    },
-                    { transient: { chance: chance } },
-                  ),
-                  joinDtoFactory.build(
-                    {
-                      isInFragmentarium: false,
-                    },
-                    { transient: { chance: chance } },
-                  ),
-                ],
-              ],
-              museumNumber: 'BM.X',
-              isInFragmentarium: false,
-              accession: 'X.1',
-            },
-          ],
-          parallelLines: [],
-          intertext: [],
-        },
-      ],
-    })
+    fakeApi.expectLineDetails(
+      chapter.id,
+      0,
+      createShowManuscriptsLineDetails(chance),
+    )
     appDriver.clickByRole('button', 'Show score', 0)
     await appDriver.waitForText(/single ruling/)
     expect(appDriver.getView().container).toMatchSnapshot()
@@ -207,31 +98,11 @@ describe('Display chapter', () => {
 
   test('Sidebar', async () => {
     chapter.lines.forEach((line) => {
-      fakeApi.expectLineDetails(chapter.id, line.originalIndex, {
-        variants: [
-          {
-            originalIndex: 0,
-            manuscripts: [
-              {
-                provenance: 'Standard Text',
-                periodModifier: 'None',
-                period: 'None',
-                siglumDisambiguator: '',
-                oldSigla: [],
-                type: 'None',
-                labels: [],
-                line: lines[line.originalIndex],
-                paratext: [singleRulingDto],
-                references: [],
-                joins: [],
-                museumNumber: 'BM.X',
-                isInFragmentarium: false,
-                accession: 'X.1',
-              },
-            ],
-          },
-        ],
-      })
+      fakeApi.expectLineDetails(
+        chapter.id,
+        line.originalIndex,
+        createSidebarLineDetails(line.originalIndex),
+      )
     })
     appDriver.click('Settings')
     await appDriver.waitForText('Score')
@@ -273,25 +144,11 @@ describe('Display chapter', () => {
   })
 })
 
-async function setup(chapter: ChapterDisplay) {
-  const provenanceSnapshotDtos = provenanceSnapshot.map((record) =>
-    Object.fromEntries(Object.entries(record)),
-  )
-  fakeApi = new FakeApi()
-    .allowProvenances(provenanceSnapshotDtos)
-    .expectChapterDisplay(chapter)
-    .expectText(textDto)
+async function setup(chapter: ChapterDisplay): Promise<void> {
+  fakeApi = createChapterViewApi(chapter, provenanceSnapshot)
   appDriver = new AppDriver(fakeApi.client)
     .withSession()
-    .withPath(
-      `/corpus/${encodeURIComponent(
-        chapter.id.textId.genre,
-      )}/${encodeURIComponent(chapter.id.textId.category)}/${encodeURIComponent(
-        chapter.id.textId.index,
-      )}/${encodeURIComponent(
-        stageToAbbreviation(chapter.id.stage),
-      )}/${encodeURIComponent(chapter.id.name)}`,
-    )
+    .withPath(createChapterViewPath(chapter))
     .render()
 
   const stage = chapter.isSingleStage ? '' : `${chapter.id.stage} `

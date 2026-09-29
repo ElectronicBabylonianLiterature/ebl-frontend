@@ -1,4 +1,5 @@
-import { createManuscriptLine } from './line'
+import { createManuscriptLine } from 'corpus/domain/line'
+import { readingPart } from 'corpus/domain/LineVariant.testSupport'
 import {
   NamedSign,
   UnknownSign,
@@ -8,29 +9,7 @@ import {
 } from 'transliteration/domain/token'
 import { atfToken } from 'test-support/test-tokens'
 
-function makeReading(value: string): NamedSign {
-  return {
-    enclosureType: [],
-    cleanValue: value,
-    value: value,
-    name: value,
-    nameParts: [
-      {
-        enclosureType: [],
-        cleanValue: value,
-        value: value,
-        type: 'ValueToken',
-      },
-    ],
-    subIndex: 1,
-    modifiers: [],
-    flags: [],
-    sign: null,
-    type: 'Reading',
-  }
-}
-
-const reading: NamedSign = makeReading('ra')
+const reading: NamedSign = readingPart('ra')
 
 function makeAtfToken(
   token: NamedSign | UnknownSign | UnknownNumberOfSigns,
@@ -92,7 +71,7 @@ test.each([
 test('findMatchingWords', () => {
   const query: Word = makeAtfToken(reading)
   const line = createManuscriptLine({
-    atfTokens: [unclearSign, query, makeReading('kur')],
+    atfTokens: [unclearSign, query, readingPart('kur')],
   })
 
   expect(line.findMatchingWords(query)).toEqual([1])

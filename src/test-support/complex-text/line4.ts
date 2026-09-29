@@ -1,0 +1,130 @@
+import { TextLine } from 'transliteration/domain/text-line'
+
+const line4 = new TextLine({
+  prefix: '2.',
+  content: [
+    {
+      enclosureType: [],
+      cleanValue: '|KUR.KUR|',
+      value: '|KUR.KUR|',
+      language: 'AKKADIAN',
+      normalized: false,
+      lemmatizable: true,
+      alignable: true,
+      uniqueLemma: [],
+      erasure: 'NONE',
+      alignment: null,
+      variant: null,
+      parts: [
+        {
+          enclosureType: [],
+          cleanValue: '|KUR.KUR|',
+          value: '|KUR.KUR|',
+          type: 'CompoundGrapheme',
+        },
+      ],
+      type: 'Word',
+      hasVariantAlignment: false,
+      hasOmittedAlignment: false,
+    },
+    {
+      enclosureType: [],
+      cleanValue: 'ø',
+      value: 'ø',
+      type: 'WordOmitted',
+    },
+    {
+      enclosureType: [],
+      cleanValue: '($___$)',
+      value: '($___$)',
+      type: 'Tabulation',
+    },
+    {
+      enclosureType: [],
+      cleanValue: '($___$)',
+      value: '($___$)',
+      type: 'Tabulation',
+    },
+    {
+      enclosureType: [],
+      cleanValue: 'kur/|RA|',
+      value: 'kur/|RA|',
+      language: 'AKKADIAN',
+      normalized: false,
+      lemmatizable: false,
+      alignable: false,
+      uniqueLemma: [],
+      erasure: 'NONE',
+      alignment: null,
+      variant: null,
+      parts: [
+        {
+          enclosureType: [],
+          cleanValue: 'kur/|RA|',
+          value: 'kur/|RA|',
+          tokens: [
+            {
+              enclosureType: [],
+              cleanValue: 'kur',
+              value: 'kur',
+              name: 'kur',
+              nameParts: [
+                {
+                  enclosureType: [],
+                  cleanValue: 'kur',
+                  value: 'kur',
+                  type: 'ValueToken',
+                },
+              ],
+              subIndex: 1,
+              modifiers: [],
+              flags: [],
+              sign: null,
+              type: 'Reading',
+            },
+            {
+              enclosureType: [],
+              cleanValue: '|RA|',
+              value: '|RA|',
+              type: 'CompoundGrapheme',
+            },
+          ],
+          type: 'Variant',
+        },
+      ],
+      type: 'Word',
+      hasVariantAlignment: false,
+      hasOmittedAlignment: false,
+    },
+    {
+      enclosureType: [],
+      cleanValue: '',
+      value: '[',
+      side: 'LEFT',
+      type: 'BrokenAway',
+    },
+    {
+      enclosureType: ['BROKEN_AWAY'],
+      cleanValue: '...',
+      value: '...',
+      type: 'UnknownNumberOfSigns',
+    },
+    {
+      enclosureType: ['BROKEN_AWAY'],
+      cleanValue: '',
+      value: ']',
+      side: 'RIGHT',
+      type: 'BrokenAway',
+    },
+  ],
+  lineNumber: {
+    number: 2,
+    hasPrime: false,
+    prefixModifier: null,
+    suffixModifier: null,
+    type: 'LineNumber',
+  },
+  type: 'TextLine',
+})
+
+export default line4

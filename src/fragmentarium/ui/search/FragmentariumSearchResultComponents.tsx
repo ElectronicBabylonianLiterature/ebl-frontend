@@ -1,109 +1,27 @@
 import React from 'react'
 import _ from 'lodash'
-import FragmentService, {
-  ThumbnailBlob,
-} from 'fragmentarium/application/FragmentService'
+import FragmentService from 'fragmentarium/application/FragmentService'
 import withData from 'http/withData'
 import { QueryItem } from 'query/QueryResult'
-import { Col, Container, Image, Row } from 'react-bootstrap'
+import { Container, Row } from 'react-bootstrap'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import { RenderFragmentLines } from 'dictionary/ui/search/FragmentLemmaLines'
-import FragmentLink, { createFragmentUrl } from '../FragmentLink'
-import { Genres } from 'fragmentarium/domain/Genres'
+import FragmentLink from 'fragmentarium/ui/FragmentLink'
 import ReferenceList from 'bibliography/ui/ReferenceList'
 import './FragmentariumSearchResult.sass'
 import DateDisplay from 'chronology/ui/DateDisplay'
-import { ProjectList } from '../info/ResearchProjects'
-import { RecordList } from 'fragmentarium/ui/info/Record'
-import { RecordEntry } from 'fragmentarium/domain/RecordEntry'
+import { ProjectList } from 'fragmentarium/ui/info/ResearchProjects'
 import ErrorBoundary from 'common/errors/ErrorBoundary'
-import { ThumbnailImage } from 'common/ui/BlobImage'
 import DossiersService from 'dossiers/application/DossiersService'
 import useNearViewport from 'common/hooks/useNearViewport'
 import FragmentDossierRecordsDisplay from 'dossiers/ui/DossiersDisplay'
-
-function GenresDisplay({ genres }: { genres: Genres }): JSX.Element {
-  return (
-    <ul>
-      {genres.genres.map((genreItem, index) => {
-        return (
-          <ul key={index}>
-            <small>{genreItem.toString()}</small>
-          </ul>
-        )
-      })}
-    </ul>
-  )
-}
-
-const FragmentThumbnail = withData<
-  { fragment: Fragment },
-  { fragmentService: FragmentService },
-  ThumbnailBlob
->(
-  ({ data, fragment }) => {
-    return data.blob ? (
-      <ThumbnailImage
-        photo={data.blob}
-        alt={`Preview of ${fragment.number}`}
-        url={createFragmentUrl(fragment.number)}
-      />
-    ) : (
-      <></>
-    )
-  },
-  ({ fragment, fragmentService }) =>
-    fragmentService.findThumbnail(fragment, 'small'),
-)
-
-function SummaryThumbnail({
-  fragmentNumber,
-  thumbnailPath,
-}: {
-  fragmentNumber: string
-  thumbnailPath: string | null
-}): JSX.Element {
-  const [isBroken, setIsBroken] = React.useState(false)
-
-  if (!thumbnailPath || isBroken) {
-    return <></>
-  }
-
-  return (
-    <a href={createFragmentUrl(fragmentNumber)}>
-      <Image
-        src={thumbnailPath}
-        alt={`Preview of ${fragmentNumber}`}
-        fluid
-        loading="lazy"
-        decoding="async"
-        onError={() => setIsBroken(true)}
-      />
-    </a>
-  )
-}
-
-function TransliterationRecord({
-  record,
-  className,
-}: {
-  record: readonly RecordEntry[]
-  className?: string
-}): JSX.Element {
-  const latestRecord = _(record)
-    .filter((record) => record.type === 'Transliteration')
-    .first()
-  return (
-    <RecordList
-      record={latestRecord ? [latestRecord] : []}
-      className={className}
-    />
-  )
-}
-
-function ResponsiveCol({ ...props }): JSX.Element {
-  return <Col xs={12} sm={4} {...props}></Col>
-}
+import {
+  FragmentThumbnail,
+  GenresDisplay,
+  ResponsiveCol,
+  SummaryThumbnail,
+  TransliterationRecord,
+} from 'fragmentarium/ui/search/FragmentResultParts'
 
 type FragmentLinesProps = {
   queryLemmas?: readonly string[]
