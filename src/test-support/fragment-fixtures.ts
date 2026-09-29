@@ -50,13 +50,13 @@ export const fragmentFactory = Factory.define<Fragment>(
       number: museumNumber,
       accession: `${chance.word()}.${sequence}`,
       publication: chance.sentence({ words: 4 }),
-      acquisition:
-        associations.acquisition ??
+      acquisitions: associations.acquisitions ?? [
         new Acquisition(
           chance.company(),
           chance.year({ min: 1800, max: 2020 }),
           chance.sentence({ words: 3 }),
         ),
+      ],
       description: fragmentDescription(chance),
       joins: associations.joins ?? [
         [

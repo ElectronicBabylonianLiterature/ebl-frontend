@@ -129,7 +129,7 @@ describe('createFragment fills in every optional field', () => {
   const minimalDto = {
     ...fragmentDto,
     accession: null,
-    acquisition: null,
+    acquisitions: undefined,
     joins: undefined,
     length: {},
     width: {},
@@ -153,7 +153,7 @@ describe('createFragment fills in every optional field', () => {
     const result = await fragmentRepository.find(fragmentId)
 
     expect(result.accession).toEqual('')
-    expect(result.acquisition).toBeNull()
+    expect(result.acquisitions).toEqual([])
     expect(result.joins).toEqual([])
     expect(result.measures).toEqual({
       length: null,

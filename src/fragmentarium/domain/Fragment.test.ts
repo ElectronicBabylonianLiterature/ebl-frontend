@@ -48,7 +48,7 @@ const config: Parameters<(typeof Fragment)['create']>[0] = {
       },
     ],
   ],
-  acquisition: new Acquisition('British Museum', 1925, 'Clay tablet'),
+  acquisitions: [new Acquisition('British Museum', 1925, 'Clay tablet')],
   description: 'A clay tabled',
   measures: {
     length: 1,
