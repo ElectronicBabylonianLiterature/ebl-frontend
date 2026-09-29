@@ -2,14 +2,13 @@ import React from 'react'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import CuneiformConverterForm from 'signs/ui/CuneiformConverter/CuneiformConverterForm'
 import SignService from 'signs/application/SignService'
+import { expectConsoleErrors, observeConsole } from 'setupTests'
 
 jest.mock('signs/application/SignService')
 
 const signServiceMock = new (SignService as jest.Mock<
   jest.Mocked<SignService>
 >)()
-
-let consoleErrorSpy: jest.SpyInstance
 
 function setUpForm(writeText: jest.Mock = jest.fn().mockResolvedValue(true)) {
   Object.defineProperty(window.navigator, 'clipboard', {
@@ -26,13 +25,6 @@ function convert(value: string): void {
 
 beforeEach(() => {
   jest.resetAllMocks()
-  consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {
-    return undefined
-  })
-})
-
-afterEach(() => {
-  consoleErrorSpy.mockRestore()
 })
 
 it('reports a failed line conversion and leaves that line empty', async () => {
@@ -40,6 +32,7 @@ it('reports a failed line conversion and leaves that line empty', async () => {
   signServiceMock.getUnicodeFromAtf
     .mockRejectedValueOnce(queryError)
     .mockResolvedValueOnce([{ unicode: [73979] }])
+  const consoleError = expectConsoleErrors(/^Query Error: Error: query failed$/)
   setUpForm()
 
   convert('first\nsecond')
@@ -47,7 +40,7 @@ it('reports a failed line conversion and leaves that line empty', async () => {
   await waitFor(() => {
     expect(screen.getByLabelText('Converted Text')).toHaveValue('\n𒃻')
   })
-  expect(consoleErrorSpy).toHaveBeenCalledWith('Query Error:', queryError)
+  expect(consoleError).toHaveBeenCalledWith('Query Error:', queryError)
 })
 
 it('reports conversion failures that are not cancellations', async () => {
@@ -55,20 +48,21 @@ it('reports conversion failures that are not cancellations', async () => {
   signServiceMock.getUnicodeFromAtf.mockImplementation(() => {
     throw conversionError
   })
+  const consoleError = expectConsoleErrors(
+    /^Query Error: Error: conversion failed$/,
+  )
   setUpForm()
 
   convert('first')
 
   await waitFor(() => {
-    expect(consoleErrorSpy).toHaveBeenCalledWith(
-      'Query Error:',
-      conversionError,
-    )
+    expect(consoleError).toHaveBeenCalledWith('Query Error:', conversionError)
   })
   expect(screen.getByLabelText('Converted Text')).toHaveValue('')
 })
 
 it('converts on Shift + Enter', async () => {
+  const consoleError = observeConsole('error')
   signServiceMock.getUnicodeFromAtf.mockResolvedValue([{ unicode: [73979] }])
   setUpForm()
 
@@ -79,10 +73,11 @@ it('converts on Shift + Enter', async () => {
   await waitFor(() => {
     expect(screen.getByLabelText('Converted Text')).toHaveValue('𒃻')
   })
-  expect(consoleErrorSpy).not.toHaveBeenCalled()
+  expect(consoleError).not.toHaveBeenCalled()
 })
 
 it('does not convert on Enter without Shift', async () => {
+  const consoleError = observeConsole('error')
   signServiceMock.getUnicodeFromAtf.mockResolvedValue([{ unicode: [73979] }])
   setUpForm()
 
@@ -91,10 +86,11 @@ it('does not convert on Enter without Shift', async () => {
   fireEvent.keyDown(inputTextArea, { key: 'Enter', shiftKey: false })
 
   expect(signServiceMock.getUnicodeFromAtf).not.toHaveBeenCalled()
-  expect(consoleErrorSpy).not.toHaveBeenCalled()
+  expect(consoleError).not.toHaveBeenCalled()
 })
 
 it('does not report cancelled conversions', async () => {
+  const consoleError = observeConsole('error')
   const pendingQueries: Array<() => void> = []
   signServiceMock.getUnicodeFromAtf.mockImplementation(
     () =>
@@ -113,10 +109,11 @@ it('does not report cancelled conversions', async () => {
   await waitFor(() => {
     expect(screen.getByLabelText('Converted Text')).toHaveValue('')
   })
-  expect(consoleErrorSpy).not.toHaveBeenCalled()
+  expect(consoleError).not.toHaveBeenCalled()
 })
 
 it('does not report a conversion aborted at the network', async () => {
+  const consoleError = observeConsole('error')
   const signals: AbortSignal[] = []
   signServiceMock.getUnicodeFromAtf.mockImplementation(
     (_line: string, signal?: AbortSignal) =>
@@ -136,17 +133,20 @@ it('does not report a conversion aborted at the network', async () => {
   await new Promise((resolve) => setTimeout(resolve, 0))
 
   expect(signals[0].aborted).toBe(true)
-  expect(consoleErrorSpy).not.toHaveBeenCalled()
+  expect(consoleError).not.toHaveBeenCalled()
 })
 
 it('reports clipboard failures', async () => {
   const clipboardError = new Error('clipboard unavailable')
+  const consoleError = expectConsoleErrors(
+    /^Failed to copy text: {2}Error: clipboard unavailable$/,
+  )
   setUpForm(jest.fn().mockRejectedValue(clipboardError))
 
   fireEvent.click(screen.getByText('Copy'))
 
   await waitFor(() => {
-    expect(consoleErrorSpy).toHaveBeenCalledWith(
+    expect(consoleError).toHaveBeenCalledWith(
       'Failed to copy text: ',
       clipboardError,
     )

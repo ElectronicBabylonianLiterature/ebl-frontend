@@ -155,6 +155,7 @@ const CuneiformFragmentController: FunctionComponent<ControllerProps> = ({
   useEffect(() => {
     if (currentFragment.number !== fragment.number) {
       saveOperation.current.supersede()
+      saveQueue.current = new SerialQueue()
       setFragment(fragment)
       setError(null)
       setIsSaving(false)

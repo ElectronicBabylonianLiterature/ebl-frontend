@@ -381,3 +381,34 @@ No code changed this round. Gates re-run on `ee275e43`: lint PASS, tsc PASS, `ya
 - [x] Every touched source file at 100% coverage; 13 added to `fullyCoveredPaths` (with `SerialQueue.ts`)
 - [x] Handoff rewritten for round 9; round-9 work committed locally (not pushed)
 - [ ] Push, finish the PR description, re-request review, read CodeQL alerts, docker build, delete scratch docs at merge
+
+## Round 10 review (2026-09-29, head `eb730de4`)
+
+- [x] Fetch all timeline review events, inline threads (GraphQL, resolved/outdated), issue comments — nothing new since round 9
+- [x] Checks, qlty and CodeQL on `eb730de4` — qlty "1 blocking issue", diff coverage not computed (521 > 500 files), CodeQL 300-file cap
+- [x] Dev container / Dockerfile unchanged; workflows re-read in full
+- [x] New `.md` files — still the eight scratch docs (B11)
+- [x] Verify each round-9 fix in code and its proving test (B2–B9, N1)
+- [x] Reproduce the qlty blocker locally (`qlty smells` head vs master → `CuneiformConverterForm` complexity 22)
+- [x] Master drift — conflict in `Details.tsx` with #821; #779 conflicts now six files
+- [x] `yarn lint`, `yarn tsc` — clean
+- [ ] `yarn test:ci` alone — results and console check
+- [x] Write round-10 `TASK-774-review.md`
+
+### Round 10 remediation (2026-09-29, working tree on `eb730de4`, nothing committed)
+
+- [x] R2 — named-entity write goes through `onSave` (the queue); test proves the write waits for the queue; README states the rule
+- [x] R4 — `convertAtfLines.ts` extracted from `CuneiformConverterForm` (171 → 117 lines); unit tests; added to `fullyCoveredPaths`; `qlty smells` clean on both files
+- [x] R5 — `SignService.abortSignal.test.ts` asserts the real `RequestInit.signal` through `SignService` → `SignRepository` → `ApiClient` → `fetch`
+- [x] R6 — no change: jsdom 16.7 has no `AbortSignal.reason`, so `rejects.toBe(signal.reason)` compares with `undefined`; the `AbortError` assertion stays (verified by trying it)
+- [x] R7 — `SerialQueue` calls `operation()` with no argument; test
+- [x] R8 — save queue replaced when the displayed fragment changes; test
+- [x] R9 — `expectConsoleWarnings` and pass-through `observeConsole` added to `setupTests.ts`; converter errors test, both Dossiers tests and the auth test support use the shared helpers
+- [x] New tests proven to fail without their fixes (R2, R5, R7, R8)
+- [x] R1 — merge with `master` resolved and verified in a scratch worktree (tsc clean, 29 suites / 477 tests); not applied, because it needs a commit
+- [x] M1 / W2 — proposed PR description written to the scratchpad; not posted
+- [x] `yarn lint`, `yarn tsc` clean; all changed/new script files ≤ 250 lines
+- [x] `yarn test:ci` on the remediated tree — 513 suites, 4488 tests, exit 0, zero console output, changed files 100%
+- [x] Commit round-10 remediation (code + docs, one commit; not pushed)
+- [ ] Separate PR for the 45 over-ceiling script files
+- [ ] Waiting on the user: merge master (R1), push, post the description (M1/W2), re-review request (B10), CodeQL UI (B12), docker build (W1), #779 plan (W3), scratch-doc removal at merge (B11)

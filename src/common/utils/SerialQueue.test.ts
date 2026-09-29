@@ -28,3 +28,13 @@ it('runs the next operation after a failed one', async () => {
   await expect(firstResult).rejects.toBe(failure)
   await expect(secondResult).resolves.toBe('second')
 })
+
+it('does not pass the previous result to the next operation', async () => {
+  const queue = new SerialQueue()
+  const second = jest.fn(() => Promise.resolve('second'))
+
+  queue.enqueue(() => Promise.resolve('first'))
+  await queue.enqueue(second)
+
+  expect(second).toHaveBeenCalledWith()
+})

@@ -181,3 +181,18 @@ it('dispatches an info save only after the previous one has settled', async () =
     'deleted',
   )
 })
+
+it('does not hold a new fragment save behind a pending save of the previous fragment', async () => {
+  const firstFragment = fragmentFactory.build({ number: 'K.1' })
+  const secondFragment = fragmentFactory.build({ number: 'K.2' })
+  mockSavePromise = new Promise<Fragment>(() => undefined)
+  const { rerender } = render(view(firstFragment))
+
+  await userEvent.click(screen.getByRole('button', { name: 'Save fragment' }))
+  rerender(view(secondFragment))
+  const saveSecond = jest.fn(() => Promise.resolve(secondFragment))
+  mockInfoSaves.push(saveSecond)
+  await userEvent.click(screen.getByRole('button', { name: 'Save genres' }))
+
+  expect(saveSecond).toHaveBeenCalledTimes(1)
+})

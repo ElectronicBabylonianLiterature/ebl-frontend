@@ -1,23 +1,14 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { Form, Button } from 'react-bootstrap'
 import SignService from 'signs/application/SignService'
-import ConcurrencyLimiter from 'common/utils/ConcurrencyLimiter'
 import AbortableOperation from 'common/utils/AbortableOperation'
 import { isCancellation } from 'common/utils/abortError'
-import replaceTransliteration from 'fragmentarium/domain/replaceTransliteration'
-import { displayUnicode } from 'signs/ui/search/SignsSearch'
+import convertAtfLines from 'signs/ui/CuneiformConverter/convertAtfLines'
 import './CuneiformConverterForm.sass'
 import 'signs/ui/display/SignDisplay.css'
 
-const conversionConcurrencyLimit = 4
-
 function reportQueryError(error: unknown): void {
   console.error('Query Error:', error)
-}
-
-type ConvertedLine = {
-  index: number
-  value: string
 }
 
 function CuneiformConverterForm({
@@ -37,56 +28,11 @@ function CuneiformConverterForm({
 
   const handleConvert = () => {
     const signal = conversionOperation.current.start()
-    const replacedLines = content
-      .split('\n')
-      .map((line) => replaceTransliteration(line.toLowerCase()))
-    const nonEmptyLines = replacedLines
-      .map((line, index) => ({ index, line }))
-      .filter(({ line }) => line.trim() !== '')
-
-    const limiter = new ConcurrencyLimiter(conversionConcurrencyLimit)
-
-    Promise.all(
-      nonEmptyLines.map(
-        ({ index, line }): Promise<ConvertedLine> =>
-          limiter.run(
-            () =>
-              signService
-                .getUnicodeFromAtf(line, signal)
-                .then((result) => ({
-                  index,
-                  value: result
-                    .map((entry) =>
-                      entry.unicode[0] === 9999
-                        ? ' '
-                        : displayUnicode(entry.unicode),
-                    )
-                    .join(''),
-                }))
-                .catch((error) => {
-                  if (isCancellation(error, signal)) {
-                    throw error
-                  }
-                  reportQueryError(error)
-                  return { index, value: '' }
-                }),
-            signal,
-          ),
-      ),
-    )
-      .then((convertedLines) => {
-        if (signal.aborted) {
-          return
+    convertAtfLines(signService, content, signal, reportQueryError)
+      .then((convertedText) => {
+        if (!signal.aborted) {
+          setConvertedContent(convertedText)
         }
-
-        const convertedByIndex = new Map<number, string>(
-          convertedLines.map(({ index, value }) => [index, value]),
-        )
-        const convertedText = replacedLines
-          .map((_, index) => convertedByIndex.get(index) ?? '')
-          .join('\n')
-
-        setConvertedContent(convertedText)
       })
       .catch((error) => {
         if (!isCancellation(error, signal)) {

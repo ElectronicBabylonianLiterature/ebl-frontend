@@ -2,7 +2,7 @@ import React from 'react'
 import { render, screen, waitFor } from '@testing-library/react'
 import { Auth0Client, createAuth0Client } from '@auth0/auth0-spa-js'
 import { Auth0Provider } from 'auth/react-auth0-spa'
-import { tolerateConsoleErrors } from 'setupTests'
+import { expectConsoleWarnings, tolerateConsoleErrors } from 'setupTests'
 
 export const guestFallbackWarning =
   'Session check failed, falling back to guest:'
@@ -84,11 +84,12 @@ export async function expectGuestFallbackOnSessionFailure(
     checkSession: jest.fn().mockRejectedValue(sessionError),
     isAuthenticated: jest.fn().mockResolvedValue(false),
   })
-  const consoleWarn = jest.spyOn(console, 'warn').mockImplementation()
+  const consoleWarn = expectConsoleWarnings(
+    /^Session check failed, falling back to guest:/,
+  )
 
   await renderAndWaitForLabel(label)
 
   expect(consoleWarn).toHaveBeenCalledWith(guestFallbackWarning, sessionError)
-  consoleWarn.mockRestore()
   return mockClient
 }

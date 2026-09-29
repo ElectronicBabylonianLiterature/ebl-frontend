@@ -109,42 +109,72 @@ if (global.document) {
   }
 }
 
-let consoleErrorSpy: jest.SpyInstance | null = null
-let expectedConsoleError: RegExp | null = null
-let isExpectedConsoleErrorRequired = true
+type CapturedConsoleMethod = 'error' | 'warn'
 
-function captureConsoleErrors(pattern: RegExp, isRequired: boolean): void {
-  consoleErrorSpy?.mockRestore()
-  expectedConsoleError = pattern
-  isExpectedConsoleErrorRequired = isRequired
-  consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation()
+type ConsoleCapture = {
+  readonly spy: jest.SpyInstance
+  readonly pattern: RegExp
+  readonly isRequired: boolean
 }
 
-export function expectConsoleErrors(pattern: RegExp): void {
-  captureConsoleErrors(pattern, true)
+const consoleCaptures = new Map<CapturedConsoleMethod, ConsoleCapture>()
+
+function captureConsole(
+  method: CapturedConsoleMethod,
+  pattern: RegExp,
+  isRequired: boolean,
+): jest.SpyInstance {
+  consoleCaptures.get(method)?.spy.mockRestore()
+  const spy = jest.spyOn(console, method).mockImplementation()
+  consoleCaptures.set(method, { spy, pattern, isRequired })
+  return spy
 }
 
-export function tolerateConsoleErrors(pattern: RegExp): void {
-  captureConsoleErrors(pattern, false)
+export function expectConsoleErrors(pattern: RegExp): jest.SpyInstance {
+  return captureConsole('error', pattern, true)
 }
 
-afterEach(() => {
-  const spy = consoleErrorSpy
-  const pattern = expectedConsoleError
-  const isRequired = isExpectedConsoleErrorRequired
-  consoleErrorSpy = null
-  expectedConsoleError = null
-  isExpectedConsoleErrorRequired = true
+export function tolerateConsoleErrors(pattern: RegExp): jest.SpyInstance {
+  return captureConsole('error', pattern, false)
+}
 
-  if (!spy || !pattern) {
-    return
-  }
+export function expectConsoleWarnings(pattern: RegExp): jest.SpyInstance {
+  return captureConsole('warn', pattern, true)
+}
 
+const consoleObservers: jest.SpyInstance[] = []
+
+export function observeConsole(
+  method: CapturedConsoleMethod,
+): jest.SpyInstance {
+  const spy = jest.spyOn(console, method)
+  consoleObservers.push(spy)
+  return spy
+}
+
+type CapturedMessages = {
+  readonly messages: readonly string[]
+  readonly pattern: RegExp
+  readonly isRequired: boolean
+}
+
+function releaseConsoleCapture({
+  spy,
+  pattern,
+  isRequired,
+}: ConsoleCapture): CapturedMessages {
   const messages = spy.mock.calls.map((call) =>
     call.map((argument) => String(argument)).join(' '),
   )
   spy.mockRestore()
+  return { messages, pattern, isRequired }
+}
 
+function verifyCapturedMessages({
+  messages,
+  pattern,
+  isRequired,
+}: CapturedMessages): void {
   const unexpected = messages.filter((message) => !pattern.test(message))
   const matched = messages.filter((message) => pattern.test(message))
 
@@ -152,4 +182,11 @@ afterEach(() => {
   if (isRequired) {
     expect(matched).not.toEqual([])
   }
+}
+
+afterEach(() => {
+  consoleObservers.splice(0).forEach((spy) => spy.mockRestore())
+  const captured = [...consoleCaptures.values()].map(releaseConsoleCapture)
+  consoleCaptures.clear()
+  captured.forEach(verifyCapturedMessages)
 })

@@ -1,5 +1,5 @@
 import React from 'react'
-import { render, screen, waitFor } from '@testing-library/react'
+import { act, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { ThemeProvider } from 'react-bootstrap'
 import FragmentService from 'fragmentarium/application/FragmentService'
@@ -76,6 +76,37 @@ describe('NamedEntityAnnotationContents', () => {
       realia: [],
     })
     expect(onSave).toHaveBeenCalledTimes(1)
+  })
+
+  it('sends the annotation write only when the save queue runs it', async () => {
+    await setup()
+    let releaseQueue: () => void = () => undefined
+    onSave.mockImplementation((save) =>
+      new Promise<void>((resolve) => {
+        releaseQueue = resolve
+      }).then(save),
+    )
+
+    await userEvent.click(screen.getByTestId('Word-2__Entity-1'))
+    await userEvent.click(
+      await screen.findByLabelText('delete-name-annotation'),
+    )
+    await userEvent.click(screen.getByLabelText('save-annotations'))
+
+    expect(onSave).toHaveBeenCalledTimes(1)
+    expect(
+      fragmentServiceMock.updateNamedEntityAnnotations,
+    ).not.toHaveBeenCalled()
+
+    await act(async () => releaseQueue())
+
+    expect(
+      fragmentServiceMock.updateNamedEntityAnnotations,
+    ).toHaveBeenCalledTimes(1)
+    await waitFor(() =>
+      expect(screen.getByLabelText('save-annotations')).toBeDisabled(),
+    )
+    expect(screen.queryByRole('alert')).not.toBeInTheDocument()
   })
 
   it('leaves the save button usable when the save fails', async () => {

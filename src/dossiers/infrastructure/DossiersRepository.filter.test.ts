@@ -5,6 +5,8 @@ import {
   resultStub,
 } from 'dossiers/infrastructure/DossiersRepository.testSupport'
 
+import { expectConsoleWarnings } from 'setupTests'
+
 jest.mock('http/ApiClient')
 jest.mock('dossiers/application/DossiersService')
 
@@ -121,7 +123,9 @@ describe('Dossiers Repository - fetchFilteredDossiers', () => {
 
   it('falls back to fetchAllDossiers when filter endpoint fails', async () => {
     const { apiClient, dossiersRepository } = context
-    const consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation()
+    const consoleWarn = expectConsoleWarnings(
+      /^Failed to fetch filtered dossiers: Filter endpoint not found$/,
+    )
     apiClient.fetchJson
       .mockRejectedValueOnce(new Error('Filter endpoint not found'))
       .mockResolvedValueOnce([resultStub])
@@ -143,12 +147,10 @@ describe('Dossiers Repository - fetchFilteredDossiers', () => {
       false,
       undefined,
     )
-    expect(consoleWarnSpy).toHaveBeenCalledWith(
+    expect(consoleWarn).toHaveBeenCalledWith(
       'Failed to fetch filtered dossiers:',
       'Filter endpoint not found',
     )
-
-    consoleWarnSpy.mockRestore()
   })
 
   it('handles empty results', async () => {

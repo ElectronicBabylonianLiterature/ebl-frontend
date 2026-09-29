@@ -1,4 +1,5 @@
 import DossierRecord from 'dossiers/domain/DossierRecord'
+import { expectConsoleWarnings, observeConsole } from 'setupTests'
 import {
   createDossiersRepositoryTestContext,
   DossiersRepositoryTestContext,
@@ -57,18 +58,18 @@ describe('DossiersRepository - fetchAllDossiers', () => {
 
   it('handles API errors gracefully', async () => {
     const { apiClient, dossiersRepository } = context
-    const consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation()
+    const consoleWarn = expectConsoleWarnings(
+      /^Failed to fetch dossiers: API Error$/,
+    )
     apiClient.fetchJson.mockRejectedValueOnce(new Error('API Error'))
 
     const response = await dossiersRepository.fetchAllDossiers()
 
     expect(response).toEqual([])
-    expect(consoleWarnSpy).toHaveBeenCalledWith(
+    expect(consoleWarn).toHaveBeenCalledWith(
       'Failed to fetch dossiers:',
       'API Error',
     )
-
-    consoleWarnSpy.mockRestore()
   })
 
   it('passes the abort signal to the request', async () => {
@@ -87,14 +88,12 @@ describe('DossiersRepository - fetchAllDossiers', () => {
 
   it('rethrows an abort instead of falling back to an empty result', async () => {
     const { apiClient, dossiersRepository } = context
-    const consoleWarnSpy = jest.spyOn(console, 'warn')
+    const consoleWarn = observeConsole('warn')
     const abortError = new DOMException('aborted', 'AbortError')
     apiClient.fetchJson.mockRejectedValueOnce(abortError)
 
     await expect(dossiersRepository.fetchAllDossiers()).rejects.toBe(abortError)
-    expect(consoleWarnSpy).not.toHaveBeenCalled()
-
-    consoleWarnSpy.mockRestore()
+    expect(consoleWarn).not.toHaveBeenCalled()
   })
 })
 

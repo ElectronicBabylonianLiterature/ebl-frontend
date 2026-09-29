@@ -2152,3 +2152,43 @@ Every code finding (B2-B9, N1) is fixed in the working tree. Nothing is committe
 **Trap.** `pkill -f "craco test"` inside a Bash call matches the calling shell's own command line and kills it (exit 144). Use `TaskStop` for background runs.
 
 **Final gates on the remediated tree.** `yarn lint` and `yarn tsc` PASS. `yarn test:ci` PASS: 511 suites, 4480 tests, 50 snapshots, 0 failures, exit 0, zero console output. Coverage 95.19 / 88.25 / 94.87 / 95.34 (was 95.09 / 87.99 / 94.75 / 95.23), no threshold breach. No touched file is over 250 lines.
+
+## 2026-09-29 — Round 10 review of `eb730de4`
+
+**GitHub.** No reviews, inline threads or comments since round 9. Fabdulla1's `CHANGES_REQUESTED` on `2b391cdd` still stands; no reviewer is requested. PR is `mergeable_state: dirty`.
+
+**Master drift.** `ca8ba82b` (#821, Acquisition → array) landed; `git merge-tree` shows a content conflict in `src/fragmentarium/ui/info/Details.tsx`. CI's green run used merge ref `0016eae` against `e281f7ba`.
+
+**qlty.** Status says "1 blocking issue" (round 9: none). The qlty page needs JS, so it was reproduced locally with qlty 0.639.0. `qlty check --upstream origin/master` wrongly reported "no modified files"; passing the 510 added/modified paths explicitly gave "No issues". `qlty smells` on those paths, head vs. a temporary `origin/master` worktree (removed afterwards): the only new smell is `CuneiformConverterForm` complexity 22 → R4. Diff coverage isn't computed above 500 files → W2.
+
+**Round-9 fixes.** Verified in code with their proving tests (read-only subagent pass, then key claims re-read by hand): B2, B4, B5, B6/N1, B8, B9 fixed. B7 fixed in code, but no test asserts the real `RequestInit.signal` (R5). B3 partial: `NamedEntityAnnotationContents` sends its write before enqueueing, and the NE tab isn't disabled while saving (R2) — confirmed at `editorTabContents.tsx:70-78` and `CuneiformFragmentEditor.tsx:131`. New minor items: R6 (handoff test asserts `name` instead of the abort reason), R7 (`SerialQueue` passes the previous result on), R8 (queue not reset on fragment change; `CuneiformFragment` isn't keyed in `FragmentView.tsx:113`), R9 (four tests hand-roll console spies instead of `expectConsoleErrors`).
+
+**Config.** `.devcontainer/` and `Dockerfile` byte-identical to master. Workflow diff re-read; unchanged since round 9. `SLACK_WEBHOOK_URL` was never read on master.
+
+**Gates.** `yarn lint` exit 0, `yarn tsc` exit 0 (run before the suite, not alongside).
+
+## 2026-09-29 — Round 10 remediation
+
+Baseline `yarn test:ci` on `eb730de4` before any change: 511 suites, 4480 tests, 50 snapshots, exit 0, 553 s, zero console output; coverage 95.19 / 88.25 / 94.87 / 95.34.
+
+**R2.** `NamedEntityAnnotationContents` now passes the service call itself to `onSave` and returns the captured `AnnotationSaveResult` once the queued save settles. A failed NE save now also reaches `handleSave`, so the page-level `ErrorAlert` shows it alongside the tab's own message; the edition tab already behaves that way, so this is consistent. New test "sends the annotation write only when the save queue runs it" holds the queue and asserts the service is not called until it is released.
+
+**R4.** Per-line conversion moved to `signs/ui/CuneiformConverter/convertAtfLines.ts` (kept in the UI layer because it uses `displayUnicode` from `signs/ui`). `qlty smells` reports nothing for either file afterwards. `convertAtfLines.test.ts` covers order and blank lines, the word separator, a failed line, an abort, and the four-line concurrency limit.
+
+**R5.** `SignService.abortSignal.test.ts` builds a real `ApiClient` (`createApiClientTestContext`) and asserts the `signal` on the captured `RequestInit`. Removing `signal` from `SignRepository.getUnicodeFromAtf` makes it fail.
+
+**R6 — not changed, on evidence.** `expect(queued).rejects.toBe(controller.signal.reason)` failed with "Expected: undefined": the test environment's jsdom 16.7.0 does not implement `AbortSignal.reason`, so `createAbortError` falls back to a fresh `DOMException`. The existing `{ name: 'AbortError' }` assertion is the strongest correct one here. Reverted.
+
+**R7, R8.** `SerialQueue.enqueue` uses `() => operation()`. `CuneiformFragment`'s fragment-change effect replaces the queue; the controller component is not keyed (`FragmentView.tsx:113`), only the inner view is, so the ref survived navigation.
+
+**R9.** `setupTests.ts` capture state is now per console method; `expectConsoleWarnings` was added, the helpers return their spy (so a test can wait on it), and `observeConsole(method)` is a pass-through spy restored automatically. All spies are restored before any verification `expect` runs, so a failing check can't leak a spy into the next test. Migrated: `CuneiformConverterForm.errors.test.tsx`, `DossiersRepository.fetch.test.ts`, `DossiersRepository.filter.test.ts`, `react-auth0-spa.testSupport.tsx`.
+
+**Fail-without-fix check.** With the pre-fix `editorTabContents.tsx`, `CuneiformFragment.tsx` and `SerialQueue.ts` restored temporarily, exactly the three new tests failed (R2, R8, R7); the fixed files were then put back.
+
+**R1 — prepared, not applied.** A merge needs a commit, and merging into the dirty working tree would fold these fixes into the merge commit. Trial merge in a detached scratch worktree: #821 had split `Details.tsx` into its own `DetailsItems.tsx`, while this PR split it into `DetailsFields.tsx`. Resolution: keep this PR's `Details.tsx` and `DetailsFields.tsx`, port #821's only behaviour change (`fragment.acquisitions.map(...)` instead of the single `fragment.acquisition`), and delete `DetailsItems.tsx`. On the merged tree: `yarn tsc` exit 0; `src/fragmentarium/ui/info`, `src/fragmentarium/domain` and `FragmentRepository.delegation` → 29 suites, 477 tests passed, no console output.
+
+**Pre-existing, not fixed here — needs a decision.** 45 `.ts/.tsx` files on the branch exceed the 250-line ceiling (75 on master); none is touched by this round. Three of them (`react-auth0-spa.test.tsx` 868, `ErrorBoundary.comprehensive.test.tsx` 684, `ResultPageButtons.edge-cases.test.tsx` 495) also hand-roll console mocks; migrating them would make them modified files over the ceiling, so they belong in a separate split-up PR. The local-only Browserslist "caniuse-lite is 8 months old" notice printed at the start of the Jest run is absent from CI's log; fixing it would change `yarn.lock`.
+
+**Gates.** `yarn lint` exit 0; `yarn tsc` exit 0; no changed or new script file over 250 lines.
+
+**Final gates on the remediated tree.** `yarn test:ci`: 513 suites, 4488 tests, 50 snapshots, 0 failures, exit 0, 464 s, zero console output. Coverage 95.2 / 88.25 / 94.87 / 95.34 (baseline 95.19 / 88.25 / 94.87 / 95.34), no threshold breach; `convertAtfLines.ts`, `CuneiformConverterForm.tsx`, `editorTabContents.tsx`, `CuneiformFragment.tsx`, `SerialQueue.ts` at 100%. `qlty smells` over every changed file: nothing new against master.

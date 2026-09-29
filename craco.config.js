@@ -60,6 +60,7 @@ const fullyCoveredPaths = [
   'src/markup/ui/markup.tsx',
   'src/signs/application/SignService.ts',
   'src/signs/infrastructure/SignRepository.ts',
+  'src/signs/ui/CuneiformConverter/convertAtfLines.ts',
   'src/signs/ui/CuneiformConverter/CuneiformConverterForm.tsx',
   'src/signs/ui/display/loadClusterAnnotations.ts',
   'src/signs/ui/display/PeriodAccordion.tsx',
