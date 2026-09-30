@@ -93,6 +93,10 @@ describe('media architecture isolation: mutation fixtures', () => {
       "import type { MediaResource } from 'fragmentarium/domain/media'",
     ],
     [
+      'inline type-only import',
+      "import { type MediaResource } from 'fragmentarium/domain/media'",
+    ],
+    [
       'type-only re-export',
       "export type { MediaResource } from 'fragmentarium/domain/media'",
     ],

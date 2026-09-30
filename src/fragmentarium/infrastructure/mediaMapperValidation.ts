@@ -40,7 +40,12 @@ export function normalizeRelativeMediaUrl(value: unknown): string | undefined {
   }
 
   const segments = url.split('/')
-  const decodedSegments = segments.map(decodeUrlSegment)
+  const decodedSegments = segments.flatMap((segment) => {
+    const decodedSegment = decodeUrlSegment(segment)
+    return decodedSegment === undefined
+      ? [undefined]
+      : decodedSegment.split('/')
+  })
   if (
     decodedSegments.includes(undefined) ||
     decodedSegments.includes(TRAVERSAL_SEGMENT) ||

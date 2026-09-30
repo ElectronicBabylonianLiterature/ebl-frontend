@@ -30,6 +30,7 @@ const rejectedUrls = [
   '/fragments/../admin',
   '/fragments/%2e%2e/admin',
   '/fragments/%2E%2E/admin',
+  '/fragments/%2e%2e%2fadmin',
   '/fragments/.%2e/admin',
   '/fragments/%0Aadmin',
   '/fragments/%7Fadmin',
@@ -116,6 +117,7 @@ describe('unsafe legacy thumbnail paths', () => {
       mediaSummary: { count: 1, types: ['PHOTO'] },
       legacyThumbnailPath: '/fragments/K.1/thumbnail/small',
       newSummaryIsMalformed: false,
+      hasUnrecognizedMedia: false,
     })
   })
 
@@ -131,6 +133,7 @@ describe('unsafe legacy thumbnail paths', () => {
         mediaSummary: { count: 1, types: ['PHOTO'] },
         legacyThumbnailPath: null,
         newSummaryIsMalformed: false,
+        hasUnrecognizedMedia: false,
       })
     },
   )

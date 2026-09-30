@@ -38,6 +38,7 @@ describe('compatible media summary normalization', () => {
       },
       legacyThumbnailPath: null,
       newSummaryIsMalformed: false,
+      hasUnrecognizedMedia: false,
     })
   })
 
@@ -66,6 +67,7 @@ describe('compatible media summary normalization', () => {
       },
       legacyThumbnailPath: '/legacy-thumbnail',
       newSummaryIsMalformed: false,
+      hasUnrecognizedMedia: false,
     })
   })
 
@@ -86,6 +88,7 @@ describe('compatible media summary normalization', () => {
       },
       legacyThumbnailPath: '/legacy-thumbnail',
       newSummaryIsMalformed: true,
+      hasUnrecognizedMedia: false,
     })
   })
 
@@ -106,6 +109,7 @@ describe('compatible media summary normalization', () => {
       },
       legacyThumbnailPath: '/legacy-thumbnail',
       newSummaryIsMalformed: true,
+      hasUnrecognizedMedia: true,
     })
   })
 
@@ -120,6 +124,7 @@ describe('compatible media summary normalization', () => {
       mediaSummary: { count: 1, types: ['PHOTO'] },
       legacyThumbnailPath: '/legacy-thumbnail',
       newSummaryIsMalformed: true,
+      hasUnrecognizedMedia: false,
     })
   })
 
@@ -134,6 +139,7 @@ describe('compatible media summary normalization', () => {
       mediaSummary: null,
       legacyThumbnailPath: '/legacy-thumbnail',
       newSummaryIsMalformed: false,
+      hasUnrecognizedMedia: false,
     })
   })
 
@@ -151,6 +157,7 @@ describe('compatible media summary normalization', () => {
       mediaSummary: null,
       legacyThumbnailPath: null,
       newSummaryIsMalformed: true,
+      hasUnrecognizedMedia: false,
     })
   })
 
@@ -165,6 +172,7 @@ describe('compatible media summary normalization', () => {
       mediaSummary: null,
       legacyThumbnailPath: '/fragments/K.1/thumbnail/small',
       newSummaryIsMalformed: true,
+      hasUnrecognizedMedia: true,
     })
   })
 
@@ -179,6 +187,7 @@ describe('compatible media summary normalization', () => {
       mediaSummary: { count: 1, types: ['PHOTO'] },
       legacyThumbnailPath: '/fragments/K.1/thumbnail/small',
       newSummaryIsMalformed: false,
+      hasUnrecognizedMedia: false,
     })
   })
 
@@ -193,6 +202,7 @@ describe('compatible media summary normalization', () => {
       mediaSummary: { count: 0, types: [] },
       legacyThumbnailPath: '/fragments/K.1/thumbnail/small',
       newSummaryIsMalformed: false,
+      hasUnrecognizedMedia: false,
     })
   })
 })

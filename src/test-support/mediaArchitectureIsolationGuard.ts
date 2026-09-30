@@ -34,6 +34,21 @@ function stringLiteralText(node: ts.Node | undefined): string | undefined {
   return node && ts.isStringLiteral(node) ? node.text : undefined
 }
 
+function isTypeOnlyImport(node: ts.ImportDeclaration): boolean {
+  if (node.importClause?.isTypeOnly) {
+    return true
+  }
+
+  const namedBindings = node.importClause?.namedBindings
+  return (
+    node.importClause?.name === undefined &&
+    namedBindings !== undefined &&
+    ts.isNamedImports(namedBindings) &&
+    namedBindings.elements.length > 0 &&
+    namedBindings.elements.every((element) => element.isTypeOnly)
+  )
+}
+
 export function collectModuleReferences(
   fileName: string,
   source: string,
@@ -51,7 +66,7 @@ export function collectModuleReferences(
   const references: ModuleReference[] = []
 
   function visit(node: ts.Node): void {
-    if (ts.isImportDeclaration(node) && !node.importClause?.isTypeOnly) {
+    if (ts.isImportDeclaration(node) && !isTypeOnlyImport(node)) {
       const specifier = stringLiteralText(node.moduleSpecifier)
       if (specifier) {
         references.push({ kind: 'import', specifier })

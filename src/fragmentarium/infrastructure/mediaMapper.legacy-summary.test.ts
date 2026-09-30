@@ -11,6 +11,7 @@ describe('legacy media summary normalization', () => {
       },
       legacyThumbnailPath: '/fragments/K.1/thumbnail/small',
       newSummaryIsMalformed: false,
+      hasUnrecognizedMedia: false,
     })
   })
 
@@ -22,6 +23,7 @@ describe('legacy media summary normalization', () => {
       },
       legacyThumbnailPath: null,
       newSummaryIsMalformed: false,
+      hasUnrecognizedMedia: false,
     })
   })
 
@@ -33,6 +35,7 @@ describe('legacy media summary normalization', () => {
       },
       legacyThumbnailPath: null,
       newSummaryIsMalformed: false,
+      hasUnrecognizedMedia: false,
     })
   })
 
@@ -43,6 +46,7 @@ describe('legacy media summary normalization', () => {
       mediaSummary: null,
       legacyThumbnailPath: '/fragments/K.1/thumbnail/small',
       newSummaryIsMalformed: false,
+      hasUnrecognizedMedia: false,
     })
   })
 
@@ -51,6 +55,7 @@ describe('legacy media summary normalization', () => {
       mediaSummary: null,
       legacyThumbnailPath: null,
       newSummaryIsMalformed: false,
+      hasUnrecognizedMedia: false,
     })
   })
 })

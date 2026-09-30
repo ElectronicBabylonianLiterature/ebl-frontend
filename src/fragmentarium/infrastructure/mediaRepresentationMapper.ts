@@ -39,7 +39,7 @@ function normalizeRepresentationFields(
   const { url, mimeType, width, height } =
     representation as MediaRepresentationDto
   const normalizedUrl = normalizeRelativeMediaUrl(url)
-  const normalizedMimeType = normalizeNonEmptyString(mimeType)
+  const normalizedMimeType = normalizeNonEmptyString(mimeType)?.toLowerCase()
 
   if (!normalizedUrl || !normalizedMimeType) {
     return undefined

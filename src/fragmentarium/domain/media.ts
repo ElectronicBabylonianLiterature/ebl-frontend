@@ -71,6 +71,7 @@ export interface MediaResource {
 
 export interface FragmentMedia {
   readonly media: readonly MediaResource[]
+  readonly hasUnrecognizedMedia: boolean
 }
 
 export function isMediaType(value: unknown): value is MediaType {

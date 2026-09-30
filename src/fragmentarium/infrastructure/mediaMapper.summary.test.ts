@@ -41,32 +41,26 @@ describe('media summary normalization', () => {
     })
   })
 
-  test('drops invalid primary types but keeps valid summary types', () => {
+  test('rejects a summary with an unrecognized primary type', () => {
     expect(
       normalizeMediaSummary({
         count: 1,
         types: ['PHOTO'],
         primary: {
           id: 'media-id',
-          type: 'BAD',
+          type: 'LINE_DRAWING',
         },
       }),
-    ).toEqual({
-      count: 1,
-      types: ['PHOTO'],
-    })
+    ).toBeNull()
   })
 
-  test('deduplicates valid media types and discards invalid ones', () => {
+  test('rejects mixed recognized and unrecognized media types', () => {
     expect(
       normalizeMediaSummary({
         count: 2,
-        types: ['PHOTO', 'COPY', 'PHOTO', 'INVALID'],
+        types: ['PHOTO', 'LINE_DRAWING'],
       }),
-    ).toEqual({
-      count: 2,
-      types: ['PHOTO', 'COPY'],
-    })
+    ).toBeNull()
   })
 
   test('adds a valid primary type that is missing from the type list', () => {

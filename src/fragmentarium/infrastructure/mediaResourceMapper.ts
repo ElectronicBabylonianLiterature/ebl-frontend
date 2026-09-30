@@ -94,10 +94,17 @@ export function normalizeFragmentMediaResponse(
   response: FragmentMediaResponseDto | null | undefined,
 ): FragmentMedia {
   const media = Array.isArray(response?.media) ? response.media : []
+  const hasUnrecognizedMedia = media.some(
+    (resource) =>
+      isRecord(resource) &&
+      typeof (resource as MediaResourceDto).type === 'string' &&
+      !isMediaType((resource as MediaResourceDto).type),
+  )
 
   return {
     media: media
       .map((resource) => normalizeMediaResource(resource))
       .filter((resource): resource is MediaResource => Boolean(resource)),
+    hasUnrecognizedMedia,
   }
 }

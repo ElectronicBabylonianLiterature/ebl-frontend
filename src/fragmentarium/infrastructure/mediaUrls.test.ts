@@ -56,7 +56,6 @@ describe('route segment encoding', () => {
     'K 1',
     'K?1',
     'K#1',
-    '../admin',
     '//evil.example',
     'https://evil.example',
   ])(
@@ -66,6 +65,13 @@ describe('route segment encoding', () => {
       expect(normalizeRelativeMediaUrl(url)).toBe(url)
     },
   )
+
+  test('does not trust an encoded traversal fragment number', () => {
+    const url = fragmentMediaOriginalUrl('../admin', mediaId)
+
+    expect(url).toContain('..%2Fadmin')
+    expect(normalizeRelativeMediaUrl(url)).toBeUndefined()
+  })
 })
 
 describe('binary request routing', () => {

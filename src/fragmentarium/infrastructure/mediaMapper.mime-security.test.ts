@@ -53,6 +53,21 @@ describe('original representation mime policy', () => {
     })
   })
 
+  test.each([
+    ['IMAGE/JPEG', 'image/jpeg'],
+    ['Image/Svg+Xml', 'image/svg+xml'],
+  ])('normalizes mixed-case original mime %p', (mimeType, expectedMimeType) => {
+    expect(
+      normalizeMediaResource(
+        resourceWith('COPY', {
+          original: { url: originalUrl, mimeType },
+        }),
+      ),
+    ).toMatchObject({
+      representations: { original: { mimeType: expectedMimeType } },
+    })
+  })
+
   test('rejects an SVG original for PHOTO', () => {
     expect(
       normalizeMediaResource(
@@ -68,7 +83,6 @@ describe('original representation mime policy', () => {
     'image/tiff',
     'application/pdf',
     'text/html',
-    'IMAGE/JPEG',
     'image/jpeg; charset=utf-8',
   ])('rejects unsupported original mime %p', (mimeType) => {
     expect(

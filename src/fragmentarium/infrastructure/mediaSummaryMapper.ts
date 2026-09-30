@@ -21,11 +21,13 @@ export interface NormalizedMediaSummaryCompatibility {
   readonly mediaSummary: MediaSummary | null
   readonly legacyThumbnailPath: string | null
   readonly newSummaryIsMalformed: boolean
+  readonly hasUnrecognizedMedia: boolean
 }
 
 interface MediaSummaryNormalizationResult {
   readonly mediaSummary: MediaSummary | null
   readonly hasCriticalError: boolean
+  readonly hasUnrecognizedMedia: boolean
 }
 
 function normalizeMediaTypes(values: readonly unknown[]): MediaType[] {
@@ -63,17 +65,31 @@ function normalizeMediaSummaryWithDiagnostics(
   mediaSummary: unknown,
 ): MediaSummaryNormalizationResult {
   if (!isRecord(mediaSummary)) {
-    return { mediaSummary: null, hasCriticalError: true }
+    return {
+      mediaSummary: null,
+      hasCriticalError: true,
+      hasUnrecognizedMedia: false,
+    }
   }
 
   const { count, types, primary } = mediaSummary as MediaSummaryDto
   const normalizedCount = normalizeNonNegativeInteger(count)
   if (normalizedCount === undefined || !Array.isArray(types)) {
-    return { mediaSummary: null, hasCriticalError: true }
+    return {
+      mediaSummary: null,
+      hasCriticalError: true,
+      hasUnrecognizedMedia: false,
+    }
   }
 
   const normalizedPrimary = normalizeMediaSummaryPrimaryInternal(primary)
   const normalizedTypes = normalizeMediaTypes(types)
+  const hasUnrecognizedMedia =
+    types.some((type) => typeof type === 'string' && !isMediaType(type)) ||
+    (isRecord(primary) &&
+      typeof (primary as MediaSummaryPrimaryDto).type === 'string' &&
+      !isMediaType((primary as MediaSummaryPrimaryDto).type))
+
   if (normalizedPrimary && !normalizedTypes.includes(normalizedPrimary.type)) {
     normalizedTypes.push(normalizedPrimary.type)
   }
@@ -88,6 +104,7 @@ function normalizeMediaSummaryWithDiagnostics(
     return {
       mediaSummary: { count: 0, types: [] },
       hasCriticalError,
+      hasUnrecognizedMedia,
     }
   }
 
@@ -103,6 +120,7 @@ function normalizeMediaSummaryWithDiagnostics(
           types: normalizedTypes,
         },
     hasCriticalError,
+    hasUnrecognizedMedia,
   }
 }
 
@@ -125,7 +143,9 @@ export function normalizeMediaSummary(
   mediaSummary: unknown,
 ): MediaSummary | null {
   const normalized = normalizeMediaSummaryWithDiagnostics(mediaSummary)
-  return normalized.hasCriticalError ? null : normalized.mediaSummary
+  return normalized.hasCriticalError || normalized.hasUnrecognizedMedia
+    ? null
+    : normalized.mediaSummary
 }
 
 export function normalizeLegacyMediaSummary(
@@ -136,6 +156,7 @@ export function normalizeLegacyMediaSummary(
     mediaSummary: hasPhoto === true ? createLegacyPhotoSummary() : null,
     legacyThumbnailPath: normalizeLegacyThumbnailPath(thumbnailPath),
     newSummaryIsMalformed: false,
+    hasUnrecognizedMedia: false,
   }
 }
 
@@ -158,6 +179,7 @@ export function normalizeCompatibleMediaSummary(
   const newSummaryIsMalformed =
     wasNewSummaryProvided(compatibility?.mediaSummary) &&
     normalizedNewSummary.hasCriticalError
+  const { hasUnrecognizedMedia } = normalizedNewSummary
 
   if (
     normalizedNewSummary.mediaSummary &&
@@ -167,7 +189,11 @@ export function normalizeCompatibleMediaSummary(
       normalizedNewSummary.mediaSummary.count === 0 &&
       normalizedLegacySummary.mediaSummary
     ) {
-      return { ...normalizedLegacySummary, newSummaryIsMalformed }
+      return {
+        ...normalizedLegacySummary,
+        newSummaryIsMalformed,
+        hasUnrecognizedMedia,
+      }
     }
 
     return {
@@ -178,14 +204,20 @@ export function normalizeCompatibleMediaSummary(
         ? null
         : normalizedLegacySummary.legacyThumbnailPath,
       newSummaryIsMalformed,
+      hasUnrecognizedMedia,
     }
   }
 
   return normalizedLegacySummary.mediaSummary
-    ? { ...normalizedLegacySummary, newSummaryIsMalformed }
+    ? {
+        ...normalizedLegacySummary,
+        newSummaryIsMalformed,
+        hasUnrecognizedMedia,
+      }
     : {
         mediaSummary: null,
         legacyThumbnailPath: normalizedLegacySummary.legacyThumbnailPath,
         newSummaryIsMalformed,
+        hasUnrecognizedMedia,
       }
 }
