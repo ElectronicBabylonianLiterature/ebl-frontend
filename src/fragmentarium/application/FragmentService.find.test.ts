@@ -1,6 +1,7 @@
 import Promise from 'bluebird'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import {
+  bibliographyService,
   buildTestFragment,
   createFragmentService,
   fragmentRepository,
@@ -32,6 +33,16 @@ describe('find', () => {
       undefined,
       undefined,
     )
+  })
+})
+describe('bibliography errors', () => {
+  test('propagates a systemic lookup failure unchanged', async () => {
+    const error = new Error('Bibliography unavailable')
+    const service = createFragmentService()
+    fragmentRepository.find.mockReturnValue(Promise.resolve(fragment))
+    bibliographyService.findManyById.mockRejectedValue(error)
+
+    await expect(service.find(number)).rejects.toBe(error)
   })
 })
 
