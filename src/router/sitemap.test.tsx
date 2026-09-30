@@ -1,4 +1,6 @@
-import { getSitemapAsFile, getAllSlugs } from 'router/sitemap'
+import React from 'react'
+import { render, waitFor } from '@testing-library/react'
+import SitemapDownload, { getSitemapAsFile, getAllSlugs } from 'router/sitemap'
 
 import SignService from 'signs/application/SignService'
 import BibliographyService from 'bibliography/application/BibliographyService'
@@ -144,6 +146,15 @@ it('get all slugs', async () => {
   expect(services.textService.listAllChapters).toHaveBeenCalled()
 })
 
+it('downloads the sitemap once the slugs have loaded', async () => {
+  render(<SitemapDownload services={services} />)
+
+  await waitFor(() =>
+    expect(saveAs).toHaveBeenCalledWith(expect.anything(), 'sitemap.xml.gz'),
+  )
+  expect(services.textService.listAllChapters).toHaveBeenCalled()
+})
+
 it('get sitemap as file', async () => {
   const slugs = await getAllSlugs(services)
   getSitemapAsFile(services, slugs)
@@ -161,6 +172,14 @@ it('does not include projects wildcard route in sitemap xml', async () => {
   expect(sitemapXml).toContain('/projects')
   expect(sitemapXml).toContain('/projects/CAIC')
   expect(sitemapXml).not.toContain('/projects/*')
+})
+
+it('omits interactive library search but keeps library content routes', async () => {
+  const sitemapXml = await generateSitemapXml()
+
+  expect(sitemapXml).toContain('/library</loc>')
+  expect(sitemapXml).toContain('/library/BM.42')
+  expect(sitemapXml).not.toContain('/library/search')
 })
 
 it('includes a URL for every Realia slug in sitemap xml', async () => {

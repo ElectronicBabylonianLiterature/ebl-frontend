@@ -3,16 +3,16 @@ import { createRoot } from 'react-dom/client'
 import { BrowserRouter as Router } from 'react-router-dom'
 import { useHistory } from 'router/compat'
 import ErrorBoundary from 'common/errors/ErrorBoundary'
-import * as serviceWorker from './serviceWorker'
+import * as serviceWorker from 'serviceWorker'
 
-import ErrorReporterContext from './ErrorReporterContext'
+import ErrorReporterContext from 'ErrorReporterContext'
 import SentryErrorReporter from 'common/errors/SentryErrorReporter'
 import createAuth0Config from 'auth/createAuth0Config'
 import { Auth0Provider } from 'auth/react-auth0-spa'
 import { scopeString } from 'auth/Auth'
 import 'bootstrap/dist/css/bootstrap.min.css'
-import './index.sass'
-import InjectedApp from './InjectedApp'
+import 'index.sass'
+import InjectedApp from 'InjectedApp'
 
 if (process.env.REACT_APP_SENTRY_DSN && process.env.NODE_ENV) {
   SentryErrorReporter.init(

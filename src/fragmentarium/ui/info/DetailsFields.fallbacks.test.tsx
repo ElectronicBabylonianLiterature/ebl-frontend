@@ -9,13 +9,14 @@ import {
 import { Fragment } from 'fragmentarium/domain/fragment'
 import { Museums } from 'fragmentarium/domain/museum'
 import { fragmentFactory } from 'test-support/fragment-fixtures'
+import { PartialDate } from 'fragmentarium/domain/archaeology'
 
 function renderField(element: JSX.Element): void {
   render(<MemoryRouter>{element}</MemoryRouter>)
 }
 
 function buildFragment(overrides: Partial<Fragment>): Fragment {
-  return { ...fragmentFactory.build(), ...overrides } as Fragment
+  return Fragment.create({ ...fragmentFactory.build(), ...overrides })
 }
 
 test('A museum without a URL is shown as plain text', () => {
@@ -51,12 +52,9 @@ test('An irregular excavation with a date is labelled and dated', () => {
       fragment={buildFragment({
         archaeology: {
           isRegularExcavation: false,
-          date: {
-            start: { year: 1900, month: null, day: null },
-            notes: 'noted',
-          },
+          date: { start: new PartialDate(1900), notes: 'noted' },
         },
-      } as unknown as Partial<Fragment>)}
+      })}
     />,
   )
 
@@ -69,7 +67,7 @@ test('An irregular excavation without a date renders no label', () => {
     <ExcavationDate
       fragment={buildFragment({
         archaeology: { isRegularExcavation: false },
-      } as unknown as Partial<Fragment>)}
+      })}
     />,
   )
 

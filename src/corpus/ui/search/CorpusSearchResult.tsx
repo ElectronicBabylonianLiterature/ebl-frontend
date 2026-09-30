@@ -8,13 +8,13 @@ import _ from 'lodash'
 import { ResultPageButtons } from 'common/ui/ResultPageButtons'
 import { ChapterId, chapterIdToString } from 'transliteration/domain/chapter-id'
 import { ChapterDisplay } from 'corpus/domain/chapter'
-import { ChapterViewTable } from '../ChapterView'
-import RowsContext, { useRowsContext } from '../RowsContext'
+import { ChapterViewTable } from 'corpus/ui/ChapterView'
+import RowsContext, { useRowsContext } from 'corpus/ui/RowsContext'
 import TranslationContext, {
   useTranslationContext,
-} from '../TranslationContext'
+} from 'corpus/ui/TranslationContext'
 import { Markdown } from 'common/ui/Markdown'
-import { genreFromAbbr } from '../Corpus'
+import { genreFromAbbr } from 'corpus/ui/Corpus'
 
 type CorpusQueryItemWithChapterDisplay = CorpusQueryItem & {
   readonly chapterDisplay?: ChapterDisplay
@@ -212,7 +212,8 @@ export const CorpusSearchResult = withData<
       </>
     )
   },
-  ({ textService, corpusQuery }) => textService.query(corpusQuery),
+  ({ textService, corpusQuery }, signal) =>
+    textService.query(corpusQuery, signal),
   {
     watch: ({ corpusQuery }) => [corpusQuery],
   },

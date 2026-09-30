@@ -1,6 +1,7 @@
 import { fireEvent, screen, waitFor } from '@testing-library/react'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import { fragmentFactory } from 'test-support/fragment-fixtures'
+import { RecordEntry } from 'fragmentarium/domain/RecordEntry'
 import {
   chance,
   createLatestTransliterationsTestContext,
@@ -42,6 +43,24 @@ function renderSummaryItem(
   renderLatest()
 }
 
+function buildSummaryFragment(hasPhoto: boolean): Fragment {
+  return fragmentFactory.build(
+    { hasPhoto },
+    {
+      transient: { chance },
+      associations: {
+        record: [
+          new RecordEntry({
+            type: 'Transliteration',
+            user: 'Tester',
+            date: '2024-02-03T00:00:00.000Z',
+          }),
+        ],
+      },
+    },
+  )
+}
+
 function expectNoPrefetches(): void {
   expect(context.fragmentService.find).not.toHaveBeenCalled()
   expect(context.fragmentService.findThumbnail).not.toHaveBeenCalled()
@@ -49,10 +68,7 @@ function expectNoPrefetches(): void {
 
 describe('summary-backed thumbnails', () => {
   test('uses prefetched summary fragments and thumbnail paths without extra fetches', async () => {
-    const fragmentWithPhoto = fragmentFactory.build(
-      { hasPhoto: true },
-      { transient: { chance } },
-    )
+    const fragmentWithPhoto = buildSummaryFragment(true)
     const thumbnailPath = '/images/summary-thumbnail.jpg'
 
     renderSummaryItem(fragmentWithPhoto, thumbnailPath)
@@ -61,7 +77,10 @@ describe('summary-backed thumbnails', () => {
       `Preview of ${fragmentWithPhoto.number}`,
     )
 
-    expect(thumbnail).toHaveAttribute('src', thumbnailPath)
+    expect(thumbnail).toHaveAttribute(
+      'src',
+      `http://example.com${thumbnailPath}`,
+    )
     expect(thumbnail).toHaveAttribute('loading', 'lazy')
     expect(
       screen.getByRole('link', {
@@ -72,10 +91,7 @@ describe('summary-backed thumbnails', () => {
   })
 
   test('does not show a summary thumbnail when the fragment has no photo', async () => {
-    const fragmentWithoutPhoto = fragmentFactory.build(
-      { hasPhoto: false },
-      { transient: { chance } },
-    )
+    const fragmentWithoutPhoto = buildSummaryFragment(false)
 
     renderSummaryItem(fragmentWithoutPhoto, '/images/not-shown.jpg')
 
@@ -88,10 +104,7 @@ describe('summary-backed thumbnails', () => {
   })
 
   test('does not show a summary thumbnail when the thumbnail path is null', async () => {
-    const fragmentWithPhoto = fragmentFactory.build(
-      { hasPhoto: true },
-      { transient: { chance } },
-    )
+    const fragmentWithPhoto = buildSummaryFragment(true)
 
     renderSummaryItem(fragmentWithPhoto, null)
 
@@ -104,10 +117,7 @@ describe('summary-backed thumbnails', () => {
   })
 
   test('removes broken summary thumbnails after an image error', async () => {
-    const fragmentWithPhoto = fragmentFactory.build(
-      { hasPhoto: true },
-      { transient: { chance } },
-    )
+    const fragmentWithPhoto = buildSummaryFragment(true)
 
     renderSummaryItem(fragmentWithPhoto, '/images/broken-thumbnail.jpg')
 

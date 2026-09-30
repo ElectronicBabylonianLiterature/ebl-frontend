@@ -3,46 +3,45 @@ import { waitForSpinnerToBeRemoved } from 'test-support/waitForSpinnerToBeRemove
 import { fragmentFactory } from 'test-support/fragment-fixtures'
 import { folioFactory } from 'test-support/fragment-data-fixtures'
 import { Fragment } from 'fragmentarium/domain/fragment'
-import Folio from 'fragmentarium/domain/Folio'
-import MemorySession from 'auth/Session'
-import ResizeObserver from 'resize-observer-polyfill'
 import {
-  createFragmentViewTestContext,
-  FragmentViewTestContext,
+  createFragmentViewHarness,
   fragmentNumber,
 } from 'fragmentarium/ui/fragment/FragmentView.testSupport'
 
-jest.mock('dictionary/application/WordService')
-jest.mock('fragmentarium/application/FindspotService')
-jest.mock('fragmentarium/application/FragmentService')
-jest.mock('fragmentarium/application/FragmentSearchService')
-jest.mock('afo-register/application/AfoRegisterService')
-jest.mock('dossiers/application/DossiersService')
+describe('On error', () => {
+  let harness: ReturnType<typeof createFragmentViewHarness>
+  const message = 'message'
 
-global.ResizeObserver = ResizeObserver
+  beforeEach(() => {
+    harness = createFragmentViewHarness()
+  })
 
-let context: FragmentViewTestContext
-
-beforeEach(() => {
-  context = createFragmentViewTestContext()
+  it('Shows the error message', async () => {
+    harness.fragmentService.find.mockReturnValue(
+      Promise.reject(new Error(message)),
+    )
+    harness.renderFragmentView(fragmentNumber, null, null, null)
+    await waitForSpinnerToBeRemoved(screen)
+    await screen.findByText(message)
+  })
 })
 
 describe('Filter folios', () => {
   let fragment: Fragment
-  let folios: readonly Folio[]
-  const openFolios: readonly Folio[] = [
+  const openFolios = [
     folioFactory.build({ name: 'WGL' }),
     folioFactory.build({ name: 'AKG' }),
   ]
+  let harness: ReturnType<typeof createFragmentViewHarness>
 
   async function renderAndWaitForFragment(): Promise<void> {
-    context.renderFragmentView(fragment.number, null, null, null)
+    harness.renderFragmentView(fragment.number, null, null, null)
     await waitForSpinnerToBeRemoved(screen)
   }
 
-  beforeEach(async () => {
-    context.session = new MemorySession(['read:WGL-folios', 'read:AKG-folios'])
-    folios = [
+  beforeEach(() => {
+    harness = createFragmentViewHarness(['read:WGL-folios', 'read:AKG-folios'])
+    const folios = [
       ...openFolios,
       folioFactory.build({}, { associations: { name: 'WRM' } }),
     ]
@@ -52,13 +51,13 @@ describe('Filter folios', () => {
         atf: '1. ku',
         hasPhoto: true,
       },
-      { associations: { folios: folios } },
+      { associations: { folios } },
     )
-    context.fragmentService.find.mockReturnValue(Promise.resolve(fragment))
+    harness.fragmentService.find.mockReturnValue(Promise.resolve(fragment))
   })
 
   it("excludes folios the user doesn't have access to", async () => {
-    expect(fragment.filterFolios(context.session).folios).toEqual(openFolios)
+    expect(fragment.filterFolios(harness.session).folios).toEqual(openFolios)
   })
 
   it.each(openFolios)('shows the included folio %#', async (folio) => {
@@ -72,7 +71,7 @@ describe('Filter folios', () => {
     await renderAndWaitForFragment()
     expect(
       screen.queryByText(
-        `${folios[2].humanizedName} Folio ${folios[2].number}`,
+        `${fragment.folios[2].humanizedName} Folio ${fragment.folios[2].number}`,
       ),
     ).not.toBeInTheDocument()
   })

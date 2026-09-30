@@ -2,7 +2,7 @@ import { column, object, surface } from 'test-support/lines/at'
 import { lemmatized } from 'test-support/lines/text-lemmatization'
 import WordService from 'dictionary/application/WordService'
 import { Text } from 'transliteration/domain/text'
-import GlossaryFactory from './GlossaryFactory'
+import GlossaryFactory from 'transliteration/application/GlossaryFactory'
 import {
   createDictionaryWord,
   createGlossaryToken,

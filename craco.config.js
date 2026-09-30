@@ -30,6 +30,7 @@ const fullyCoveredPaths = [
   'src/corpus/application/textServiceConstants.ts',
   'src/corpus/application/TextServiceCore.ts',
   'src/corpus/ui/ChapterEditView.tsx',
+  'src/corpus/ui/import/ChapterImport.tsx',
   'src/corpus/ui/ManuscriptsTable.tsx',
   'src/corpus/ui/manuscriptTableCells.tsx',
   'src/dictionary/ui/display/WordDisplayLogograms.tsx',
@@ -37,6 +38,8 @@ const fullyCoveredPaths = [
   'src/dossiers/application/DossierCache.ts',
   'src/dossiers/application/DossiersQueryByIdsBatcher.ts',
   'src/dossiers/infrastructure/DossiersRepository.ts',
+  'src/fragmentarium/application/fragmentPrefetch.ts',
+  'src/fragmentarium/infrastructure/fragmentRepositoryInfo.ts',
   'src/fragmentarium/ui/edition/beforeUnloadWarning.ts',
   'src/fragmentarium/ui/edition/TransliterationForm.tsx',
   'src/fragmentarium/ui/fragment/ArchaeologyEditorFields.tsx',
@@ -45,9 +48,9 @@ const fullyCoveredPaths = [
   'src/fragmentarium/ui/image-annotation/annotation-tool/annotationSelection.ts',
   'src/fragmentarium/ui/image-annotation/annotation-tool/FragmentAnnotation.tsx',
   'src/fragmentarium/ui/image-annotation/annotation-tool/FragmentAnnotationToolbar.tsx',
-  'src/fragmentarium/ui/image-annotation/annotation-tool/useAnnotationPersistence.ts',
   'src/fragmentarium/ui/image-annotation/annotation-tool/initializeAnnotations.ts',
   'src/fragmentarium/ui/image-annotation/annotation-tool/useAnnotationKeyboardShortcuts.ts',
+  'src/fragmentarium/ui/image-annotation/annotation-tool/useAnnotationPersistence.ts',
   'src/fragmentarium/ui/image-annotation/annotation-tool/useFragmentAnnotationState.ts',
   'src/fragmentarium/ui/image-annotation/Annotator.tsx',
   'src/fragmentarium/ui/info/DetailsFields.tsx',
@@ -95,6 +98,84 @@ function validateFullyCoveredPaths(paths) {
   return paths
 }
 
+function configureResolve(webpackConfig) {
+  webpackConfig.resolve = webpackConfig.resolve || {}
+  webpackConfig.resolve.fallback = {
+    ...(webpackConfig.resolve.fallback || {}),
+    stream: require.resolve('stream-browserify'),
+  }
+  webpackConfig.resolve.modules = Array.from(
+    new Set([
+      ...(webpackConfig.resolve.modules || ['node_modules']),
+      sourceDirectory,
+    ]),
+  )
+}
+
+function pluginName(plugin) {
+  return plugin?.constructor?.name
+}
+
+function configurePlugins(webpackConfig) {
+  if (!Array.isArray(webpackConfig.plugins)) {
+    return
+  }
+  webpackConfig.plugins = webpackConfig.plugins
+    .filter(
+      (plugin) =>
+        !isFastDev || pluginName(plugin) !== 'ForkTsCheckerWebpackPlugin',
+    )
+    .map((plugin) => {
+      if (pluginName(plugin) === 'MiniCssExtractPlugin') {
+        plugin.options = { ...(plugin.options || {}), ignoreOrder: true }
+      }
+      return plugin
+    })
+}
+
+function isSourceMapPreLoader(rule) {
+  return (
+    rule.enforce === 'pre' &&
+    typeof rule.loader === 'string' &&
+    rule.loader.includes('source-map-loader')
+  )
+}
+
+function withNodeModulesExcluded(exclude) {
+  if (!exclude) {
+    return /node_modules/
+  }
+  return [...(Array.isArray(exclude) ? exclude : [exclude]), /node_modules/]
+}
+
+function isSassLoader(loaderEntry) {
+  return (
+    Boolean(loaderEntry) &&
+    typeof loaderEntry === 'object' &&
+    typeof loaderEntry.loader === 'string' &&
+    loaderEntry.loader.includes('sass-loader')
+  )
+}
+
+function quietSassLoader(loaderEntry) {
+  loaderEntry.options = loaderEntry.options || {}
+  loaderEntry.options.sassOptions = {
+    ...(loaderEntry.options.sassOptions || {}),
+    quietDeps: true,
+    silenceDeprecations: ['legacy-js-api'],
+  }
+}
+
+function configureRule(rule) {
+  if (isSourceMapPreLoader(rule)) {
+    rule.exclude = withNodeModulesExcluded(rule.exclude)
+  }
+  ;(Array.isArray(rule.oneOf) ? rule.oneOf : [])
+    .flatMap((oneOfRule) => (Array.isArray(oneOfRule.use) ? oneOfRule.use : []))
+    .filter(isSassLoader)
+    .forEach(quietSassLoader)
+}
+
 module.exports = {
   ...(isFastDev ? { eslint: { enable: false } } : {}),
   jest: {
@@ -129,82 +210,14 @@ module.exports = {
   },
   webpack: {
     configure: (webpackConfig) => {
-      webpackConfig.resolve = webpackConfig.resolve || {}
-      webpackConfig.resolve.fallback = {
-        ...(webpackConfig.resolve.fallback || {}),
-        stream: require.resolve('stream-browserify'),
-      }
-      webpackConfig.resolve.modules = Array.from(
-        new Set([
-          ...(webpackConfig.resolve.modules || ['node_modules']),
-          sourceDirectory,
-        ]),
-      )
-
-      if (isFastDev && Array.isArray(webpackConfig.plugins)) {
-        webpackConfig.plugins = webpackConfig.plugins.filter(
-          (plugin) =>
-            plugin?.constructor?.name !== 'ForkTsCheckerWebpackPlugin',
-        )
-      }
-
-      if (Array.isArray(webpackConfig.plugins)) {
-        webpackConfig.plugins = webpackConfig.plugins.map((plugin) => {
-          if (plugin?.constructor?.name === 'MiniCssExtractPlugin') {
-            plugin.options = {
-              ...(plugin.options || {}),
-              ignoreOrder: true,
-            }
-          }
-          return plugin
-        })
-      }
-
-      if (webpackConfig.module?.rules) {
-        webpackConfig.module.rules.forEach((rule) => {
-          if (
-            rule.enforce === 'pre' &&
-            typeof rule.loader === 'string' &&
-            rule.loader.includes('source-map-loader')
-          ) {
-            const existingExclude = rule.exclude
-            rule.exclude = existingExclude
-              ? Array.isArray(existingExclude)
-                ? [...existingExclude, /node_modules/]
-                : [existingExclude, /node_modules/]
-              : /node_modules/
-          }
-
-          if (Array.isArray(rule.oneOf)) {
-            rule.oneOf.forEach((oneOfRule) => {
-              if (Array.isArray(oneOfRule.use)) {
-                oneOfRule.use.forEach((loaderEntry) => {
-                  if (
-                    loaderEntry &&
-                    typeof loaderEntry === 'object' &&
-                    typeof loaderEntry.loader === 'string' &&
-                    loaderEntry.loader.includes('sass-loader')
-                  ) {
-                    loaderEntry.options = loaderEntry.options || {}
-                    loaderEntry.options.sassOptions = {
-                      ...(loaderEntry.options.sassOptions || {}),
-                      quietDeps: true,
-                      silenceDeprecations: ['legacy-js-api'],
-                    }
-                  }
-                })
-              }
-            })
-          }
-        })
-      }
-
+      configureResolve(webpackConfig)
+      configurePlugins(webpackConfig)
+      ;(webpackConfig.module?.rules || []).forEach(configureRule)
       webpackConfig.ignoreWarnings = [
         ...(webpackConfig.ignoreWarnings || []),
         /Failed to parse source map/,
         /Deprecation .* legacy JS API/,
       ]
-
       return webpackConfig
     },
   },

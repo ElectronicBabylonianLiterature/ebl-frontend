@@ -1,7 +1,7 @@
 import React from 'react'
 import { render, screen } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
-import FragmentPager from './FragmentPager'
+import FragmentPager from 'fragmentarium/ui/fragment/FragmentPager'
 
 const number = 'K.00000'
 let fragmentService

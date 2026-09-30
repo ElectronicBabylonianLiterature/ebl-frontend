@@ -1,7 +1,7 @@
 import { testDelegation, TestData } from 'test-support/utils'
-import WordService from './WordService'
+import WordService from 'dictionary/application/WordService'
 import WordRepository from 'dictionary/infrastructure/WordRepository'
-import Word from 'dictionary/domain/Word'
+import { wordFactory } from 'test-support/word-fixtures'
 
 jest.mock('dictionary/infrastructure/WordRepository')
 
@@ -11,6 +11,8 @@ const wordRepository = new (WordRepository as jest.Mock<
 >)()
 
 const wordService = new WordService(wordRepository)
+
+const wordToUpdate = wordFactory.build({ _id: 'id' })
 
 const testData: TestData<WordService>[] = [
   new TestData('find', ['id'], wordRepository.find, resultStub, [
@@ -28,8 +30,8 @@ const testData: TestData<WordService>[] = [
     resultStub,
     ['word=aklu', undefined],
   ),
-  new TestData('update', [{ _id: 'id' }], wordRepository.update, resultStub, [
-    { _id: 'id' } as unknown as Word,
+  new TestData('update', [wordToUpdate], wordRepository.update, resultStub, [
+    wordToUpdate,
   ]),
   new TestData(
     'createProperNoun',

@@ -3,6 +3,8 @@ import DossierRecord, {
   DossierRecordSuggestion,
 } from 'dossiers/domain/DossierRecord'
 import DossiersService from 'dossiers/application/DossiersService'
+import { cacheEntryLifetimeInMilliseconds } from 'dossiers/application/DossierCache'
+import { advanceBy, clear } from 'jest-date-mock'
 
 jest.mock('dossiers/infrastructure/DossiersRepository')
 
@@ -69,5 +71,26 @@ describe('DossiersService delegation', () => {
       filters,
     )
     expect(result).toEqual([suggestion])
+  })
+
+  it('expires cached dossiers by the wall clock by default', async () => {
+    const record = createRecord('D001')
+    dossiersRepository.queryByIds.mockResolvedValue([record])
+
+    await expect(dossiersService.queryByIds(['D001'])).resolves.toEqual([
+      record,
+    ])
+    await expect(dossiersService.queryByIds(['D001'])).resolves.toEqual([
+      record,
+    ])
+    expect(dossiersRepository.queryByIds).toHaveBeenCalledTimes(1)
+
+    advanceBy(cacheEntryLifetimeInMilliseconds + 1)
+    await expect(dossiersService.queryByIds(['D001'])).resolves.toEqual([
+      record,
+    ])
+
+    expect(dossiersRepository.queryByIds).toHaveBeenCalledTimes(2)
+    clear()
   })
 })

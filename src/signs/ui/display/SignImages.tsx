@@ -5,7 +5,7 @@ import { Col, Container, Row } from 'react-bootstrap'
 
 import _ from 'lodash'
 import { CroppedAnnotation } from 'signs/domain/CroppedAnnotation'
-import './SignImages.css'
+import 'signs/ui/display/SignImages.css'
 import PeriodAccordion from 'signs/ui/display/PeriodAccordion'
 import { sortScriptsByPeriod } from 'signs/ui/display/signImageGrouping'
 

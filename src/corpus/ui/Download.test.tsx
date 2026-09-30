@@ -1,6 +1,7 @@
 import React from 'react'
 import { render, screen, RenderResult } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import { describeDownloadLinks } from 'test-support/downloadLinks'
 import Download from 'corpus/ui/Download'
 import { ChapterDisplay } from 'corpus/domain/chapter'
 import { chapterDisplayFactory } from 'test-support/chapter-fixtures'
@@ -35,26 +36,14 @@ async function setup() {
   await userEvent.click(screen.getByRole('button'))
 }
 
-describe.each([
-  ['Download as JSON File', 'json', jsonUrl],
-  ['Download as ATF', 'atf', atfUrl],
-])('%s download link', (name: string, type: string, url: string) => {
-  test('href', async () => {
-    await setup()
-    expect(screen.getByRole('link', { name: `${name}` })).toHaveAttribute(
-      'href',
-      url,
-    )
-  })
-
-  test('download', async () => {
-    await setup()
-    expect(screen.getByRole('link', { name: `${name}` })).toHaveAttribute(
-      'download',
-      `${chapter.uniqueIdentifier}.${type}`,
-    )
-  })
-})
+describeDownloadLinks(
+  [
+    ['Download as JSON File', 'json', jsonUrl],
+    ['Download as ATF', 'atf', atfUrl],
+  ],
+  setup,
+  () => chapter.uniqueIdentifier,
+)
 
 test('Revoke object URLs on unmount', async () => {
   await setup()

@@ -10,8 +10,8 @@ import {
   LemmaMap,
   createLemmaMap,
   LineLemmasContext,
-} from './LineLemmasContext'
-import { AlignmentPopover } from './AlignmentPopover'
+} from 'transliteration/ui/LineLemmasContext'
+import { AlignmentPopover } from 'transliteration/ui/AlignmentPopover'
 import {
   highlightIndexSetterMock,
   lemmatizableToken,
@@ -27,7 +27,7 @@ import {
 import { LineDetails } from 'corpus/domain/line-details'
 import { manuscriptLineDisplayFactory } from 'test-support/line-details-fixtures'
 import { TextLine } from 'transliteration/domain/text-line'
-import { LineGroup } from './LineGroup'
+import { LineGroup } from 'transliteration/ui/LineGroup'
 import { lineVariantDisplayFactory } from 'test-support/dictionary-line-fixtures'
 
 jest.mock('dictionary/application/WordService')

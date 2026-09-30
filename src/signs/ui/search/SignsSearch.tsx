@@ -8,7 +8,7 @@ import InlineMarkdown from 'common/ui/InlineMarkdown'
 import 'dictionary/ui/search/WordSearch.css'
 import 'dictionary/ui/search/Word.css'
 import { compareCleanedAkkadianString } from 'dictionary/domain/compareAkkadianStrings'
-import './Signs.sass'
+import 'signs/ui/search/Signs.sass'
 import MesZL from 'signs/ui/search/MesZL'
 
 interface Props {
@@ -27,49 +27,99 @@ export function displayUnicode(unicode: readonly number[]): string {
   return unicode.map((unicode) => String.fromCodePoint(unicode)).join('')
 }
 
-function renderSimilarText(label, isFirstSubArray, direction, language) {
-  if (label === 'before' && isFirstSubArray) {
-    return (
-      <td className="similar_text">{`Similar ${direction} (${language}): `}</td>
-    )
-  } else if (label === 'before' && !isFirstSubArray) {
-    return <td className="similar_text"></td>
-  } else {
-    return null
-  }
+type ColumnPosition = 'before' | 'center' | 'after'
+
+type SignRowContext = {
+  direction: string
+  language: string
+  isFirstSubArray: boolean
 }
 
-const renderSignColumn = (
-  data,
-  startIndex,
-  endIndex,
-  label,
-  direction,
-  language,
-  isFirstSubArray,
-) => (
-  <>
-    {renderSimilarText(label, isFirstSubArray, direction, language)}
-    <td className={label}>
-      {data.slice(startIndex, endIndex).map((item, index) => (
-        <span
-          key={index}
-          className={
-            label === 'center' ? language : `${language} secondary ${direction}`
-          }
-        >
-          {label === 'center' ? (
-            displayUnicode(item.unicode)
-          ) : (
-            <a href={`/tools/signs?listsName=MZL&listsNumber=${item.mzl}`}>
-              {displayUnicode(item.unicode)}
-            </a>
-          )}
-        </span>
-      ))}
+function SimilarText({
+  position,
+  context,
+}: {
+  position: ColumnPosition
+  context: SignRowContext
+}): JSX.Element | null {
+  if (position !== 'before') {
+    return null
+  }
+  return (
+    <td className="similar_text">
+      {context.isFirstSubArray &&
+        `Similar ${context.direction} (${context.language}): `}
     </td>
-  </>
-)
+  )
+}
+
+function SignColumn({
+  signs,
+  position,
+  context,
+}: {
+  signs: readonly OrderedSign[]
+  position: ColumnPosition
+  context: SignRowContext
+}): JSX.Element {
+  const isCenter = position === 'center'
+  return (
+    <>
+      <SimilarText position={position} context={context} />
+      <td className={position}>
+        {signs.map((item, index) => (
+          <span
+            key={index}
+            className={
+              isCenter
+                ? context.language
+                : `${context.language} secondary ${context.direction}`
+            }
+          >
+            {isCenter ? (
+              displayUnicode(item.unicode)
+            ) : (
+              <a href={`/tools/signs?listsName=MZL&listsNumber=${item.mzl}`}>
+                {displayUnicode(item.unicode)}
+              </a>
+            )}
+          </span>
+        ))}
+      </td>
+    </>
+  )
+}
+
+function SignRow({
+  signs,
+  signIndex,
+  context,
+}: {
+  signs: readonly OrderedSign[]
+  signIndex: number
+  context: SignRowContext
+}): JSX.Element {
+  return (
+    <>
+      <SignColumn
+        signs={signs.slice(0, signIndex)}
+        position="before"
+        context={context}
+      />
+      <SignColumn
+        signs={signs.slice(signIndex, signIndex + 1)}
+        position="center"
+        context={context}
+      />
+      <SignColumn
+        signs={signs.slice(signIndex + 1)}
+        position="after"
+        context={context}
+      />
+    </>
+  )
+}
+
 const SignLists = withData<
   { sign: Sign; sortEra: string },
   { signService: SignService },
@@ -81,44 +131,6 @@ const SignLists = withData<
       ? 'Neo-Babylonian'
       : 'Neo-Assyrian'
 
-    const renderColumns = (
-      subArray,
-      signIndex,
-      direction,
-      language,
-      isFirstSubArray,
-    ) => (
-      <>
-        {renderSignColumn(
-          subArray,
-          0,
-          signIndex,
-          'before',
-          direction,
-          language,
-          isFirstSubArray,
-        )}
-        {renderSignColumn(
-          subArray,
-          signIndex,
-          signIndex + 1,
-          'center',
-          direction,
-          language,
-          isFirstSubArray,
-        )}
-        {renderSignColumn(
-          subArray,
-          signIndex + 1,
-          subArray.length,
-          'after',
-          direction,
-          language,
-          isFirstSubArray,
-        )}
-      </>
-    )
-
     return _.isEmpty(data) ? null : (
       <table>
         <tbody>
@@ -129,13 +141,11 @@ const SignLists = withData<
             const isFirstSubArray = index === 0
             return (
               <tr key={index}>
-                {renderColumns(
-                  subArray,
-                  signIndex,
-                  direction,
-                  language,
-                  isFirstSubArray,
-                )}
+                <SignRow
+                  signs={subArray}
+                  signIndex={signIndex}
+                  context={{ direction, language, isFirstSubArray }}
+                />
               </tr>
             )
           })}

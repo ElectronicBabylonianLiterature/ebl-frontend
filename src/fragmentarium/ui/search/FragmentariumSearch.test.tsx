@@ -1,130 +1,141 @@
-import { render, screen } from '@testing-library/react'
-import { Fragment } from 'fragmentarium/domain/fragment'
-import { fragmentFactory } from 'test-support/fragment-fixtures'
-import { QueryResult } from 'query/QueryResult'
-import { queryItemOf } from 'test-support/utils'
+import { screen } from '@testing-library/react'
 import {
-  chance,
-  createFragmentariumSearchTestContext,
-  FragmentariumSearchTestContext,
+  createFragmentariumSearchHarness,
+  queryResult,
+  FragmentariumSearchHarness,
 } from 'fragmentarium/ui/search/FragmentariumSearch.testSupport'
+import { fragmentFactory } from 'test-support/fragment-fixtures'
+import {
+  createFragmentCardSummary,
+  productionSummaryReferences,
+  summaryBibliographyDocuments,
+} from 'test-support/fragment-query-summary'
+import {
+  tokenWithClass,
+  withPreviewLines,
+} from 'test-support/fragment-query-preview'
+import createReference from 'bibliography/application/createReference'
+import { Fragment } from 'fragmentarium/domain/fragment'
 
-jest.mock('fragmentarium/application/FragmentSearchService')
-jest.mock('dictionary/application/WordService')
-jest.mock('fragmentarium/application/FragmentService')
-jest.mock('corpus/application/TextService')
-jest.mock('bibliography/application/BibliographyService')
-jest.mock('dossiers/application/DossiersService')
-
-let context: FragmentariumSearchTestContext
+let harness: FragmentariumSearchHarness
 
 beforeEach(() => {
-  context = createFragmentariumSearchTestContext()
+  jest.clearAllMocks()
+  harness = createFragmentariumSearchHarness()
 })
 
-describe('Search', () => {
-  let fragments: Fragment[]
+test('renders the empty Library search page without querying results', async () => {
+  harness.renderSearch()
 
-  describe('Searching fragments by number', () => {
-    const museumNumber = 'K.2'
+  expect(
+    await screen.findByText(
+      'Search for fragments and chapters in the Library.',
+    ),
+  ).toBeVisible()
+  expect(harness.fragmentService.query).not.toHaveBeenCalled()
+})
 
-    async function setupSearchByNumber(): Promise<void> {
-      const { fragmentService, wordService, textService } = context
-      fragments = fragmentFactory.buildList(2, {}, { transient: { chance } })
-      fragmentService.query.mockReturnValueOnce(
-        Promise.resolve({
-          items: fragments.map(queryItemOf),
-          matchCountTotal: 0,
+test('fills in the search form query', async () => {
+  harness.fragmentService.query.mockResolvedValue(queryResult())
+
+  harness.renderSearch({ number: 'K.1' })
+
+  expect(await screen.findByLabelText('Number')).toHaveValue('K.1')
+  await screen.findByText('Found 0 chapters')
+})
+
+test('does not refetch on an equivalent query with a new object reference', async () => {
+  harness.fragmentService.query.mockResolvedValue(queryResult())
+  const transliteration = 'kur'
+
+  const { rerender } = harness.renderSearch({ transliteration })
+
+  await screen.findByText('Found 2 matching lines. Showing documents 1-1')
+  expect(harness.fragmentService.query).toHaveBeenCalledTimes(1)
+
+  rerender(harness.buildSearchElement({ transliteration }))
+
+  expect(harness.fragmentService.query).toHaveBeenCalledTimes(1)
+  await screen.findByText('Found 0 chapters')
+})
+
+test('labels inexact line totals without using page size as document total', async () => {
+  harness.fragmentService.query.mockResolvedValue({
+    ...queryResult(7, true),
+    isMatchCountTotalExact: false,
+  })
+
+  harness.renderSearch({ transliteration: 'kur' })
+
+  expect(
+    await screen.findByText(
+      'Found about 7 matching lines. Showing documents 1-1',
+    ),
+  ).toBeVisible()
+  expect(screen.queryByText(/in 1 document/)).not.toBeInTheDocument()
+  expect(
+    screen.queryByText(/more results are available/),
+  ).not.toBeInTheDocument()
+  await screen.findByText('Found 0 chapters')
+})
+
+test('renders summary-backed rows without hydrating the fragment', async () => {
+  const result = queryResult(7)
+  harness.fragmentService.query.mockResolvedValue(result)
+
+  harness.renderSearch({ lemmas: 'test-lemma' })
+
+  expect(
+    await screen.findByText('Found 7 matching lines. Showing documents 1-1'),
+  ).toBeVisible()
+  expect(harness.fragmentService.find).not.toHaveBeenCalled()
+  expect(screen.queryByLabelText('Spinner')).not.toBeInTheDocument()
+  expect(screen.getByText(result.items[0].museumNumber)).toBeVisible()
+  await screen.findByText('Found 0 chapters')
+})
+
+test('keeps one bounded query and zero card hydration calls for 50 summaries', async () => {
+  const summaryFragment = withPreviewLines(
+    Fragment.create({
+      ...fragmentFactory.build({ hasPhoto: true, dossiers: [] }),
+      references: productionSummaryReferences.map((reference) =>
+        createReference({
+          ...reference,
+          document: summaryBibliographyDocuments[reference.id],
         }),
-      )
-      fragmentService.find
-        .mockReturnValueOnce(Promise.resolve(fragments[0]))
-        .mockReturnValueOnce(Promise.resolve(fragments[1]))
-      wordService.findAll.mockReturnValue(Promise.resolve([]))
-      textService.query.mockReturnValueOnce(
-        Promise.resolve({ items: [], matchCountTotal: 0 }),
-      )
-      await context.renderSearch(fragments[0].number, {
-        number: museumNumber,
-      })
-    }
-
-    it('Displays result on successful query', async () => {
-      await setupSearchByNumber()
-      expect(context.container).toHaveTextContent(fragments[1].number)
-    })
-
-    it('Fills in search form query', async () => {
-      await setupSearchByNumber()
-      expect(screen.getByLabelText('Number')).toHaveValue(museumNumber)
-    })
+      ),
+    }),
+  )
+  const thumbnailPath = '/fragments/summary/thumbnail/small'
+  harness.fragmentService.query.mockResolvedValue({
+    items: Array.from({ length: 50 }, (_, index) => ({
+      museumNumber: `Summary.${index + 1}`,
+      matchingLines: [1, 2],
+      matchCount: 2,
+      fragment: summaryFragment,
+      cardSummary: createFragmentCardSummary(),
+      thumbnailPath,
+    })),
+    matchCountTotal: null,
+    hasNextPage: false,
   })
 
-  it('Does not refetch on equivalent query with new object reference', async () => {
-    const { fragmentService, wordService, textService, createSearch } = context
-    const transliteration = 'LI₂₃ ši₂-ṣa-pel₃-ṭa₃'
-    const fragments = fragmentFactory.buildList(
-      2,
-      {},
-      { transient: { chance } },
-    )
-    const result: QueryResult = {
-      items: fragments.map(queryItemOf),
-      matchCountTotal: 2,
-    }
+  harness.renderSearch({ number: 'Summary' })
 
-    fragmentService.query.mockResolvedValue(result)
-    fragmentService.find.mockResolvedValue(fragments[0])
-    wordService.findAll.mockReturnValue(Promise.resolve([]))
-    textService.query.mockReturnValue(
-      Promise.resolve({ items: [], matchCountTotal: 0 }),
-    )
-
-    const { rerender } = render(createSearch({ transliteration }))
-
-    await screen.findByText('Found 2 lines in 2 documents')
-    expect(fragmentService.query).toHaveBeenCalledTimes(1)
-
-    rerender(createSearch({ transliteration }))
-
-    expect(fragmentService.query).toHaveBeenCalledTimes(1)
-    expect(screen.getByText('Found 2 lines in 2 documents')).toBeVisible()
-
-    const differentResult: QueryResult = {
-      items: [
-        {
-          museumNumber: fragments[0].number,
-          matchingLines: [],
-          matchCount: 0,
-        },
-      ],
-      matchCountTotal: 5,
-    }
-    fragmentService.query.mockResolvedValue(differentResult)
-
-    rerender(createSearch({ transliteration: 'different text' }))
-
-    await screen.findByText('Found 5 lines in 1 document')
-    expect(fragmentService.query).toHaveBeenCalledTimes(2)
+  expect(await screen.findAllByText(summaryFragment.number)).toHaveLength(50)
+  expect(harness.fragmentService.query).toHaveBeenCalledTimes(1)
+  expect(harness.fragmentService.query).toHaveBeenCalledWith({
+    number: 'Summary',
+    limit: 51,
+    offset: 0,
+    count: 'page',
   })
-
-  it('Shows suggestion when entering wrong number format', async () => {
-    const { fragmentService, wordService, textService } = context
-    fragmentService.query.mockReturnValueOnce(
-      Promise.resolve({
-        items: [],
-        matchCountTotal: 0,
-      }),
-    )
-    wordService.findAll.mockReturnValue(Promise.resolve([]))
-    textService.query.mockReturnValueOnce(
-      Promise.resolve({ items: [], matchCountTotal: 0 }),
-    )
-    await context.renderSearch('K.2', {
-      number: 'K 2',
-    })
-
-    expect(context.container).toMatchSnapshot()
-    expect(context.container).toHaveTextContent('Did you mean K.2?')
-  })
+  expect(harness.fragmentService.find).not.toHaveBeenCalled()
+  expect(harness.fragmentService.findThumbnail).not.toHaveBeenCalled()
+  expect(harness.bibliographyService.find).not.toHaveBeenCalled()
+  expect(harness.bibliographyService.findMany).not.toHaveBeenCalled()
+  expect(screen.getAllByText(/Borger, 1957/).length).toBeGreaterThan(0)
+  expect(
+    screen.getAllByText(tokenWithClass('Transliteration__Reading', 'kur')),
+  ).toHaveLength(50)
 })

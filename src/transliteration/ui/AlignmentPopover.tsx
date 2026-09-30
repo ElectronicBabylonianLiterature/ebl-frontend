@@ -5,15 +5,22 @@ import { AnyWord } from 'transliteration/domain/token'
 import { OverlayTrigger, Popover } from 'react-bootstrap'
 import { useDictionary } from 'dictionary/ui/dictionary-context'
 
-import { LineGroup } from './LineGroup'
-import { Alignments } from './WordInfoAlignments'
-import LemmaInfo from './WordInfoLemmas'
+import { LineGroup } from 'transliteration/ui/LineGroup'
+import { Alignments } from 'transliteration/ui/WordInfoAlignments'
+import LemmaInfo from 'transliteration/ui/WordInfoLemmas'
 import { isAkkadianWord, isAnyWord } from 'transliteration/domain/type-guards'
 import { TokenActionWrapperProps } from 'transliteration/ui/LineAccumulator'
 import AkkadianWordAnalysis from 'akkadian/ui/akkadianWordAnalysis'
-import { LineLemmasContext, useLineLemmasContext } from './LineLemmasContext'
+import {
+  LineLemmasContext,
+  useLineLemmasContext,
+} from 'transliteration/ui/LineLemmasContext'
 import RouterLinkModeContext from 'common/ui/RouterLinkModeContext'
-import { VariantAlignmentIndicator, PopoverTitle, hasLemma } from './WordInfo'
+import {
+  VariantAlignmentIndicator,
+  PopoverTitle,
+  hasLemma,
+} from 'transliteration/ui/WordInfo'
 
 function AlignmentHoverTrigger({
   token,

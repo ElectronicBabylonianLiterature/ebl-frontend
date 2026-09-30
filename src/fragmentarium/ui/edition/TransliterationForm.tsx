@@ -9,7 +9,7 @@ import React, {
 import { Container, Row, Col } from 'react-bootstrap'
 import _ from 'lodash'
 
-import TemplateForm from './TemplateForm'
+import TemplateForm from 'fragmentarium/ui/edition/TemplateForm'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import { ErrorBoundary } from '@sentry/react'
 import {

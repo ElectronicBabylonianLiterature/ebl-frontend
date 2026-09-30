@@ -4,7 +4,7 @@ import userEvent from '@testing-library/user-event'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import complexText from 'test-support/complexTestText'
 import WordService from 'dictionary/application/WordService'
-import Display from './Display'
+import Display from 'fragmentarium/ui/display/Display'
 import { MemoryRouter } from 'react-router-dom'
 import {
   fragmentFactory,

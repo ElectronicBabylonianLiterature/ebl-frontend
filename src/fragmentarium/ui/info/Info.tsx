@@ -12,12 +12,12 @@ import {
 import { Genres } from 'fragmentarium/domain/Genres'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import { ReferencesHelp } from 'bibliography/ui/ReferencesHelp'
-import './info.sass'
+import 'fragmentarium/ui/info/info.sass'
 import { ProjectList } from 'fragmentarium/ui/info/ResearchProjects'
 import _ from 'lodash'
 import AfoRegisterService from 'afo-register/application/AfoRegisterService'
 import AfoRegisterFragmentRecords from 'afo-register/ui/AfoRegisterFragmentRecords'
-import ColophonInfo from './Colophon'
+import ColophonInfo from 'fragmentarium/ui/info/Colophon'
 import DossiersService from 'dossiers/application/DossiersService'
 import { MesopotamianDate } from 'chronology/domain/Date'
 
@@ -27,6 +27,7 @@ interface Props {
   dossiersService: DossiersService
   afoRegisterService: AfoRegisterService
   onSave: (save: () => Promise<Fragment>) => void
+  enqueueSave: (save: () => Promise<Fragment>) => Promise<Fragment>
 }
 
 export default function Info({
@@ -35,19 +36,24 @@ export default function Info({
   dossiersService,
   afoRegisterService,
   onSave,
+  enqueueSave,
 }: Props): JSX.Element {
   const updateGenres = (genres: Genres) =>
     onSave(() => fragmentService.updateGenres(fragment.number, genres))
-  const updateScript = (script: Script) =>
-    fragmentService.updateScript(fragment.number, script)
+  const updateScript = (script: Script): Promise<Fragment> =>
+    enqueueSave(() => fragmentService.updateScript(fragment.number, script))
   const updateDate = (date?: MesopotamianDate): Promise<Fragment> =>
-    fragmentService.updateDate(fragment.number, date?.toDto())
+    enqueueSave(() =>
+      fragmentService.updateDate(fragment.number, date?.toDto()),
+    )
   const updateDatesInText = (
     datesInText: readonly MesopotamianDate[],
   ): Promise<Fragment> =>
-    fragmentService.updateDatesInText(
-      fragment.number,
-      datesInText.filter((date) => date).map((date) => date.toDto()),
+    enqueueSave(() =>
+      fragmentService.updateDatesInText(
+        fragment.number,
+        datesInText.filter((date) => date).map((date) => date.toDto()),
+      ),
     )
 
   return (

@@ -2,7 +2,7 @@ import React from 'react'
 import { screen, render } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 import { waitForSpinnerToBeRemoved } from 'test-support/waitForSpinnerToBeRemoved'
-import WordSearch from './WordSearch'
+import WordSearch from 'dictionary/ui/search/WordSearch'
 import { wordFactory } from 'test-support/word-fixtures'
 import Word from 'dictionary/domain/Word'
 

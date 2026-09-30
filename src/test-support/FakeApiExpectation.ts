@@ -6,12 +6,10 @@ export class Expectation {
   method: 'POST' | 'GET' = 'GET'
   path = ''
   authenticate: boolean | undefined = false
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  response: any = {}
+  response: unknown = {}
   verify = false
   called = false
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  body: any = null
+  body: unknown = null
   isBlob = false
 
   constructor(data: Partial<Expectation>) {

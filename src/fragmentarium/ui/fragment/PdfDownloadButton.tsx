@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { pdfExport } from './PdfExport'
+import { pdfExport } from 'fragmentarium/ui/fragment/PdfExport'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import WordService from 'dictionary/application/WordService'
 import { Dropdown } from 'react-bootstrap'

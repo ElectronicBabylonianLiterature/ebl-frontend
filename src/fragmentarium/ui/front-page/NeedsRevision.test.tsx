@@ -2,7 +2,7 @@ import React from 'react'
 import _ from 'lodash'
 import { render, screen } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
-import NeedsRevision from './NeedsRevision'
+import NeedsRevision from 'fragmentarium/ui/front-page/NeedsRevision'
 import { FragmentInfo } from 'fragmentarium/domain/fragment'
 import { fragmentInfoFactory } from 'test-support/fragment-fixtures'
 

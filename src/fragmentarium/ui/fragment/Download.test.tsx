@@ -1,6 +1,7 @@
 import React from 'react'
 import { render, screen, RenderResult } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import { describeDownloadLinks } from 'test-support/downloadLinks'
 import Download from 'fragmentarium/ui/fragment/Download'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import WordService from 'dictionary/application/WordService'
@@ -40,27 +41,15 @@ const setup = async () => {
   await userEvent.click(screen.getByRole('button'))
 }
 
-describe.each([
-  ['Download as ATF', 'atf', atfUrl],
-  ['Download as JSON File', 'json', jsonUrl],
-  ['Download as TEI XML File', 'xml', teiUrl],
-])('%s download link', (name: string, type: string, url: string) => {
-  test('href', async () => {
-    await setup()
-    expect(screen.getByRole('link', { name: `${name}` })).toHaveAttribute(
-      'href',
-      url,
-    )
-  })
-
-  test('download', async () => {
-    await setup()
-    expect(screen.getByRole('link', { name: `${name}` })).toHaveAttribute(
-      'download',
-      `${fragment.number}.${type}`,
-    )
-  })
-})
+describeDownloadLinks(
+  [
+    ['Download as ATF', 'atf', atfUrl],
+    ['Download as JSON File', 'json', jsonUrl],
+    ['Download as TEI XML File', 'xml', teiUrl],
+  ],
+  setup,
+  () => fragment.number,
+)
 
 test('Revoke object URLs on unmount', async () => {
   await setup()

@@ -6,7 +6,7 @@ import {
   buildSummaryBackedFragment,
   createFragmentariumSearchTestContext,
   FragmentariumSearchTestContext,
-} from 'fragmentarium/ui/search/FragmentariumSearch.testSupport'
+} from 'fragmentarium/ui/search/FragmentariumSearch.context.testSupport'
 
 jest.mock('fragmentarium/application/FragmentSearchService')
 jest.mock('dictionary/application/WordService')
@@ -58,7 +58,9 @@ describe('Searching fragments from summary-backed results', () => {
 
     expect(fragmentService.find).not.toHaveBeenCalled()
     expect(screen.queryByLabelText('Spinner')).not.toBeInTheDocument()
-    expect(screen.getByText('Found 7 lines in 1 document')).toBeVisible()
+    expect(
+      screen.getByText('Found 7 matching lines. Showing documents 1-1'),
+    ).toBeVisible()
     expect(
       screen.getByRole('heading', {
         name: `${summaryFragment.number} (${summaryFragment.script.period.abbreviation})`,
@@ -87,6 +89,6 @@ describe('Searching fragments from summary-backed results', () => {
     expect(screen.getByAltText(ResearchProjects.CAIC.name)).toBeVisible()
     expect(screen.getByAltText(ResearchProjects.RECC.name)).toBeVisible()
     expect(screen.getByRole('button', { name: 'D001' })).toBeVisible()
-    expect(screen.getByText('And 2 more')).toBeVisible()
+    expect(screen.getByText('And 5 more')).toBeVisible()
   })
 })

@@ -4,12 +4,12 @@ import createLemmatizationTestText from 'test-support/test-text'
 import { TestData, testDelegation } from 'test-support/utils'
 import Lemma from 'transliteration/domain/Lemma'
 import Lemmatization from 'transliteration/domain/Lemmatization'
-import FragmentService from './FragmentService'
+import FragmentService from 'fragmentarium/application/FragmentService'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import { produce, Draft } from 'immer'
 import Word from 'dictionary/domain/Word'
 import { ManuscriptAttestation } from 'corpus/domain/manuscriptAttestation'
-import LemmatizationFactory from './LemmatizationFactory'
+import LemmatizationFactory from 'fragmentarium/application/LemmatizationFactory'
 import {
   fragmentFactory,
   manuscriptAttestationFactory,
@@ -28,7 +28,7 @@ import {
   wordRepository,
 } from 'fragmentarium/application/fragmentService.testSupport'
 
-jest.mock('./LemmatizationFactory')
+jest.mock('fragmentarium/application/LemmatizationFactory')
 
 const folio = new Folio({ name: 'AKG', number: '375' })
 const fileName = 'Babel_Project_01_cropped.svg'

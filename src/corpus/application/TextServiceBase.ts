@@ -25,12 +25,18 @@ import TextServiceCore from 'corpus/application/TextServiceCore'
 import { defaultCacheScope } from 'corpus/application/textServiceConstants'
 
 export class TextServiceBase extends TextServiceCore {
-  findColophons(id: ChapterId): Promise<SiglumAndTransliteration[]> {
-    return this.fetchSiglaAndTransliterations(id, 'colophons')
+  findColophons(
+    id: ChapterId,
+    signal?: AbortSignal,
+  ): Promise<SiglumAndTransliteration[]> {
+    return this.fetchSiglaAndTransliterations(id, 'colophons', signal)
   }
 
-  findUnplacedLines(id: ChapterId): Promise<SiglumAndTransliteration[]> {
-    return this.fetchSiglaAndTransliterations(id, 'unplaced_lines')
+  findUnplacedLines(
+    id: ChapterId,
+    signal?: AbortSignal,
+  ): Promise<SiglumAndTransliteration[]> {
+    return this.fetchSiglaAndTransliterations(id, 'unplaced_lines', signal)
   }
 
   findExtantLines(id: ChapterId, signal?: AbortSignal): Promise<ExtantLines> {
@@ -41,12 +47,13 @@ export class TextServiceBase extends TextServiceCore {
     )
   }
 
-  findManuscripts(id: ChapterId): Promise<Manuscript[]> {
+  findManuscripts(id: ChapterId, signal?: AbortSignal): Promise<Manuscript[]> {
     return Promise.all([
       this.loadProvenances(),
       this.apiClient.fetchJson<unknown[]>(
         `${createChapterUrl(id)}/manuscripts`,
         false,
+        signal,
       ),
     ]).then(([, manuscripts]) => manuscripts.map(fromManuscriptDto))
   }
@@ -83,11 +90,12 @@ export class TextServiceBase extends TextServiceCore {
       .then((dtos) => dtos.map(fromDictionaryLineDto))
   }
 
-  query(query: CorpusQuery): Promise<CorpusQueryResult> {
+  query(query: CorpusQuery, signal?: AbortSignal): Promise<CorpusQueryResult> {
     this.clearCachesWhenScopeChanges()
     return this.apiClient.fetchJson<CorpusQueryResult>(
       `/corpus/query?${stringify(query)}`,
       false,
+      signal,
     )
   }
 

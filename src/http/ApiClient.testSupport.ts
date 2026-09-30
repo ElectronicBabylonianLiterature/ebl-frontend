@@ -1,21 +1,20 @@
-import ApiClient from 'http/ApiClient'
-import { AuthenticationService } from 'auth/Auth'
+import ApiClient, { AccessTokenProvider } from 'http/ApiClient'
 
 export const accessToken = 'test-token'
 export const path = '/test-endpoint'
 
 export interface ApiClientTestContext {
   apiClient: ApiClient
-  auth: jest.Mocked<AuthenticationService>
+  auth: jest.Mocked<AccessTokenProvider>
   errorReporter: { captureException: jest.Mock }
 }
 
 export function createApiClientTestContext(): ApiClientTestContext {
   fetchMock.resetMocks()
-  const auth = {
+  const auth: jest.Mocked<AccessTokenProvider> = {
     getAccessToken: jest.fn().mockResolvedValue(accessToken),
     isAuthenticated: jest.fn().mockReturnValue(true),
-  } as unknown as jest.Mocked<AuthenticationService>
+  }
   const errorReporter = { captureException: jest.fn() }
 
   return {
@@ -37,7 +36,7 @@ export function createJsonResponse({
   status = 200,
   statusText = 'OK',
   body = null,
-}: JsonResponseOptions = {}): Response {
+}: JsonResponseOptions): Response {
   const serializedBody = body === null ? '' : JSON.stringify(body)
   return {
     ok: ok,

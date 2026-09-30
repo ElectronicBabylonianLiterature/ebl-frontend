@@ -1,24 +1,72 @@
 import _ from 'lodash'
 import { parse } from 'query-string'
+import { FragmentQuery, FragmentSearchCriteria } from 'query/FragmentQuery'
 
 export const paginationURLParam = 'paginationIndex'
+export const pageSizeURLParam = 'limit'
+export const RESULTS_PER_PAGE = 50
+export const RESULT_PAGE_SIZES = [25, 50, 100] as const
+
+export type SearchPagination = {
+  readonly pageIndex: number
+  readonly pageSize: number
+}
 
 export function getRequestedPaginationIndex(
   search: string,
 ): number | undefined {
-  const query = parse(search, {
-    parseNumbers: true,
-  })
-  const paginationIndex = _.isArray(query[paginationURLParam])
-    ? query[paginationURLParam][0]
-    : query[paginationURLParam]
-  const parsedPaginationIndex = _.isNumber(paginationIndex)
-    ? paginationIndex
-    : Number(paginationIndex)
+  const paginationIndex = new URLSearchParams(search).get(paginationURLParam)
+  const parsedPaginationIndex =
+    paginationIndex === null || paginationIndex.trim() === ''
+      ? Number.NaN
+      : Number(paginationIndex)
 
-  return Number.isFinite(parsedPaginationIndex)
-    ? Math.trunc(parsedPaginationIndex)
+  return Number.isSafeInteger(parsedPaginationIndex) &&
+    parsedPaginationIndex >= 0
+    ? parsedPaginationIndex
     : undefined
+}
+
+function updateRawSearchParams(
+  search: string,
+  updates: ReadonlyMap<string, string>,
+): string {
+  const encodedUpdateKeys = new Set(
+    [...updates.keys()].map((key) => encodeURIComponent(key)),
+  )
+  const params = search.replace(/^\?/, '').split('&').filter(Boolean)
+  const usedKeys = new Set<string>()
+
+  const nextParams = params.flatMap((searchParam) => {
+    const [key] = searchParam.split('=')
+
+    if (!encodedUpdateKeys.has(key)) {
+      return [searchParam]
+    }
+
+    const updateKey = [...updates.keys()].find(
+      (candidate) => encodeURIComponent(candidate) === key,
+    )
+
+    if (!updateKey || usedKeys.has(updateKey)) {
+      return []
+    }
+
+    usedKeys.add(updateKey)
+    return [
+      `${encodeURIComponent(updateKey)}=${encodeURIComponent(
+        updates.get(updateKey) as string,
+      )}`,
+    ]
+  })
+
+  updates.forEach((value, key) => {
+    if (!usedKeys.has(key)) {
+      nextParams.push(`${encodeURIComponent(key)}=${encodeURIComponent(value)}`)
+    }
+  })
+
+  return nextParams.join('&')
 }
 
 export function updatePaginationSearchParam(
@@ -26,30 +74,79 @@ export function updatePaginationSearchParam(
   param: string,
   index: number,
 ): string {
-  const params = search.replace(/^\?/, '').split('&').filter(Boolean)
-  const paginationParam = `${encodeURIComponent(param)}=${encodeURIComponent(
-    index.toString(),
-  )}`
-  let updated = false
+  return updateRawSearchParams(search, new Map([[param, index.toString()]]))
+}
 
-  const nextParams = params.flatMap((searchParam) => {
-    const [key] = searchParam.split('=')
+export function getPageIndex(search: string): number {
+  return getRequestedPaginationIndex(search) ?? 0
+}
 
-    if (key !== encodeURIComponent(param)) {
-      return [searchParam]
-    }
+export function getValidatedPageSize(
+  value: number | string | null | undefined,
+): number {
+  const parsedValue = Number(value)
+  return RESULT_PAGE_SIZES.includes(
+    parsedValue as (typeof RESULT_PAGE_SIZES)[number],
+  )
+    ? parsedValue
+    : RESULTS_PER_PAGE
+}
 
-    if (!updated) {
-      updated = true
-      return [paginationParam]
-    }
-
-    return []
-  })
-
-  if (!updated) {
-    nextParams.push(paginationParam)
+export function parseSearchPagination(search: string): SearchPagination {
+  return {
+    pageIndex: getPageIndex(search),
+    pageSize: getValidatedPageSize(
+      new URLSearchParams(search).get(pageSizeURLParam),
+    ),
   }
+}
 
-  return nextParams.join('&')
+export function parseSearchCriteria(search: string): FragmentSearchCriteria {
+  return _.omit(parse(search, { decode: true }), [
+    paginationURLParam,
+    pageSizeURLParam,
+    'offset',
+    'count',
+  ]) as FragmentSearchCriteria
+}
+
+export function hasSearchCriteria(search: string): boolean {
+  return !_.isEmpty(parseSearchCriteria(search))
+}
+
+export function isLineQuery(fragmentQuery: FragmentSearchCriteria): boolean {
+  return Boolean(fragmentQuery.lemmas || fragmentQuery.transliteration)
+}
+
+export function createPagedFragmentQuery(
+  fragmentQuery: FragmentSearchCriteria,
+  { pageIndex, pageSize }: SearchPagination,
+): FragmentQuery {
+  return {
+    ...fragmentQuery,
+    limit: pageSize + 1,
+    offset: pageIndex * pageSize,
+    count: isLineQuery(fragmentQuery) ? 'exact' : 'page',
+  }
+}
+
+export function hasNextPageAfter(
+  items: readonly unknown[],
+  pageSize: number,
+  reportedHasNextPage: boolean | null | undefined,
+): boolean {
+  return reportedHasNextPage === true || items.length > pageSize
+}
+
+export function updatePageSizeSearchParam(
+  search: string,
+  limit: number,
+): string {
+  return updateRawSearchParams(
+    search,
+    new Map([
+      [pageSizeURLParam, String(getValidatedPageSize(limit))],
+      [paginationURLParam, '0'],
+    ]),
+  )
 }

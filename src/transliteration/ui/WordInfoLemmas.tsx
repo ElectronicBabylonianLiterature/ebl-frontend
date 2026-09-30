@@ -5,12 +5,12 @@ import withData from 'http/withData'
 import { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { LemmatizableToken } from 'transliteration/domain/token'
-import { OneOfLineToken } from './line-tokens'
+import { OneOfLineToken } from 'transliteration/ui/line-tokens'
 import {
   LemmaMap,
   updateLemmaMapKeys,
   useLineLemmasContext,
-} from './LineLemmasContext'
+} from 'transliteration/ui/LineLemmasContext'
 import DictionaryWord from 'dictionary/domain/Word'
 import { isLemma } from 'transliteration/domain/type-guards'
 import RouterLinkModeContext from 'common/ui/RouterLinkModeContext'

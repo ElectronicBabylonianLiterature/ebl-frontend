@@ -2,11 +2,11 @@ import React from 'react'
 import _ from 'lodash'
 
 import Word from 'dictionary/domain/Word'
-import WordComponent from './Word'
+import WordComponent from 'dictionary/ui/search/Word'
 import withData from 'http/withData'
 import WordService, { WordQuery } from 'dictionary/application/WordService'
 
-import './WordSearch.css'
+import 'dictionary/ui/search/WordSearch.css'
 
 interface Props {
   data: readonly Word[]

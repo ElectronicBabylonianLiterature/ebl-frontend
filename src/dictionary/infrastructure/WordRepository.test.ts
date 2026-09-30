@@ -1,5 +1,5 @@
 import { testDelegation, TestData } from 'test-support/utils'
-import WordRepository from './WordRepository'
+import WordRepository from 'dictionary/infrastructure/WordRepository'
 import ApiClient from 'http/ApiClient'
 
 jest.mock('http/ApiClient')

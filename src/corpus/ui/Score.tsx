@@ -9,7 +9,7 @@ import classnames from 'classnames'
 import { OverlayTrigger, Popover } from 'react-bootstrap'
 import { isTextLine } from 'transliteration/domain/type-guards'
 import { parallelLinePrefix } from 'transliteration/domain/parallel-line'
-import ManuscriptPopOver from './ManuscriptPopover'
+import ManuscriptPopOver from 'corpus/ui/ManuscriptPopover'
 import { LineGroup } from 'transliteration/ui/LineGroup'
 import { LemmaPopover } from 'transliteration/ui/WordInfo'
 import { Token } from 'transliteration/domain/token'
@@ -132,7 +132,7 @@ const Score = withData<
       </table>
     )
   },
-  ({ lineGroup }) => lineGroup.findChapterLine(),
+  ({ lineGroup }, signal) => lineGroup.findChapterLine(signal),
   {
     filter: (props) => !props.lineGroup.hasManuscriptLines,
     defaultData: (props) => props.lineGroup.lineDetails,

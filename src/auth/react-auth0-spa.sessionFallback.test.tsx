@@ -1,5 +1,6 @@
 import {
   expectGuestFallbackOnSessionFailure,
+  expectSessionCreationFailure,
   expectTokenValidatedOnRender,
   provideAuth0Client,
   renderAndWaitForLabel,
@@ -17,6 +18,7 @@ describe('Security: session fallback', () => {
     it.each([['Login required'], ['Consent required']])(
       'should fall back to guest session when the token fails with "%s"',
       async (tokenError: string) => {
+        expectSessionCreationFailure()
         await expectTokenValidatedOnRender('Test', {
           isAuthenticated: jest.fn().mockResolvedValue(true),
           getUser: jest.fn().mockResolvedValue({ name: 'Test User' }),
@@ -26,6 +28,7 @@ describe('Security: session fallback', () => {
     )
 
     it('should handle corrupted token by falling back to guest session', async () => {
+      expectSessionCreationFailure()
       provideAuth0Client({
         isAuthenticated: jest.fn().mockResolvedValue(true),
         getUser: jest.fn().mockRejectedValue(new Error('Invalid token')),

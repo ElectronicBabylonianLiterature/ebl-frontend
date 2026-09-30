@@ -4,7 +4,7 @@ import _ from 'lodash'
 
 import SessionContext from 'auth/SessionContext'
 import { submitForm } from 'test-support/utils'
-import WordEditor from './WordEditor'
+import WordEditor from 'dictionary/ui/editor/WordEditor'
 import { MemoryRouter } from 'react-router-dom'
 import { Route } from 'router/compat'
 import Word from 'dictionary/domain/Word'

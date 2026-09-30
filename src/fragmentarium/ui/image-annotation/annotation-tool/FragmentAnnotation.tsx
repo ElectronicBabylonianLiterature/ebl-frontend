@@ -74,6 +74,7 @@ function FragmentAnnotation({
         isAutomaticSelected={state.isAutomaticSelected}
         isDeleting={state.isDeleting}
         isSaving={state.isSaving}
+        isWriting={state.isWriting}
         displayCards={state.displayCards}
         isChangeExistingMode={state.isChangeExistingMode}
         generateAnnotations={state.generateAnnotations}

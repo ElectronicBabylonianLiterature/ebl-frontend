@@ -1,7 +1,9 @@
 import {
   expectGuestFallbackOnSessionFailure,
+  expectSessionCreationFailure,
   expectTokenValidatedOnRender,
   resetAuth0Mocks,
+  unsignedAccessToken,
 } from 'auth/react-auth0-spa.testSupport'
 
 jest.mock('@auth0/auth0-spa-js', () => ({
@@ -14,6 +16,7 @@ describe('Security: token handling', () => {
   describe('localStorage Token Security', () => {
     it('should not trust localStorage tokens without validation', async () => {
       localStorage.setItem('auth0.token', 'expired-token')
+      expectSessionCreationFailure()
 
       await expectTokenValidatedOnRender('App', {
         isAuthenticated: jest.fn().mockResolvedValue(true),
@@ -42,7 +45,7 @@ describe('Security: token handling', () => {
         getUser: jest.fn().mockResolvedValue({ name: 'Test' }),
         getTokenSilently: jest
           .fn()
-          .mockResolvedValueOnce('valid-token')
+          .mockResolvedValueOnce(unsignedAccessToken({ permissions: [] }))
           .mockRejectedValueOnce(new Error('Refresh failed')),
       })
     })

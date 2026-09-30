@@ -8,7 +8,7 @@ import WordService from 'dictionary/application/WordService'
 import TextService from 'corpus/application/TextService'
 import SignService from 'signs/application/SignService'
 import MemorySession from 'auth/Session'
-import { DictionaryContext } from '../dictionary-context'
+import { DictionaryContext } from 'dictionary/ui/dictionary-context'
 import { Chance } from 'chance'
 import { dictionaryLineDisplayFactory } from 'test-support/dictionary-line-fixtures'
 import FragmentService from 'fragmentarium/application/FragmentService'
@@ -92,7 +92,10 @@ describe('Fetch word', () => {
     )
 
     await waitFor(() =>
-      expect(textService.query).toBeCalledWith({ lemmas: word._id }),
+      expect(textService.query).toBeCalledWith(
+        { lemmas: word._id },
+        expect.any(AbortSignal),
+      ),
     )
     await waitFor(() =>
       expect(textService.searchLemma).toBeCalledWith(

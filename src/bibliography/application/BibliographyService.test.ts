@@ -1,4 +1,4 @@
-import BibliographyService from './BibliographyService'
+import BibliographyService from 'bibliography/application/BibliographyService'
 import BibliographyRepository from 'bibliography/infrastructure/BibliographyRepository'
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 
@@ -90,5 +90,25 @@ describe('BibliographyService', () => {
     await expect(service.find('RN1')).resolves.toBe(entryA)
 
     expect(bibliographyRepository.find).toHaveBeenCalledTimes(2)
+  })
+
+  test('search forwards the query and the signal', async () => {
+    const service = new BibliographyService(bibliographyRepository)
+    const signal = new AbortController().signal
+    bibliographyRepository.search.mockResolvedValue([entryA])
+
+    await expect(service.search('Borger', signal)).resolves.toEqual([entryA])
+
+    expect(bibliographyRepository.search).toHaveBeenCalledWith('Borger', signal)
+  })
+
+  test('update caches the saved entry for later lookups', async () => {
+    const service = new BibliographyService(bibliographyRepository)
+    bibliographyRepository.update.mockResolvedValue(entryB)
+
+    await expect(service.update(entryB)).resolves.toBe(entryB)
+    await expect(service.find('RN2')).resolves.toBe(entryB)
+
+    expect(bibliographyRepository.find).not.toHaveBeenCalled()
   })
 })

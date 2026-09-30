@@ -1,13 +1,14 @@
-import ConcurrencyLimiter from 'common/utils/ConcurrencyLimiter'
 import {
+  InspectableConcurrencyLimiter,
   deferred,
   queueState,
   settle,
 } from 'test-support/concurrencyLimiterHelpers'
+import { abortedSignalWithReason } from 'test-support/abortedSignal'
 
 describe('ConcurrencyLimiter cancellation', () => {
   it('rejects without running the operation when the signal is already aborted', async () => {
-    const limiter = new ConcurrencyLimiter(1)
+    const limiter = new InspectableConcurrencyLimiter(1)
     const operation = jest.fn(() => Promise.resolve('never runs'))
     const controller = new AbortController()
     controller.abort()
@@ -21,9 +22,9 @@ describe('ConcurrencyLimiter cancellation', () => {
   })
 
   it('rejects with the abort reason carried by the signal', async () => {
-    const limiter = new ConcurrencyLimiter(1)
+    const limiter = new InspectableConcurrencyLimiter(1)
     const reason = new Error('caller gave up')
-    const signal = { aborted: true, reason } as unknown as AbortSignal
+    const signal = abortedSignalWithReason(reason)
 
     await expect(
       limiter.run(() => Promise.resolve('never runs'), signal),
@@ -31,7 +32,7 @@ describe('ConcurrencyLimiter cancellation', () => {
   })
 
   it('stops listening to the signal once the slot is granted', async () => {
-    const limiter = new ConcurrencyLimiter(1)
+    const limiter = new InspectableConcurrencyLimiter(1)
     const activeCompletion = deferred<string>()
     const controller = new AbortController()
     const removeEventListener = jest.spyOn(
@@ -66,7 +67,7 @@ describe('ConcurrencyLimiter cancellation', () => {
   })
 
   it('does not leak slots when queued operations are canceled', async () => {
-    const limiter = new ConcurrencyLimiter(2)
+    const limiter = new InspectableConcurrencyLimiter(2)
     const activeCompletions = [deferred<string>(), deferred<string>()]
     const canceledOperations = [jest.fn(), jest.fn(), jest.fn()]
     let activeWork = 0
@@ -118,7 +119,7 @@ describe('ConcurrencyLimiter cancellation', () => {
   })
 
   it('does not interrupt a running operation when its signal aborts', async () => {
-    const limiter = new ConcurrencyLimiter(1)
+    const limiter = new InspectableConcurrencyLimiter(1)
     const activeCompletion = deferred<string>()
     const controller = new AbortController()
     const queuedOperation = jest.fn(() => Promise.resolve('queued done'))
@@ -156,7 +157,7 @@ describe('ConcurrencyLimiter cancellation', () => {
   })
 
   it('continues running fresh work after repeated queued cancellations', async () => {
-    const limiter = new ConcurrencyLimiter(1)
+    const limiter = new InspectableConcurrencyLimiter(1)
 
     for (const iteration of [1, 2, 3]) {
       const activeCompletion = deferred<string>()

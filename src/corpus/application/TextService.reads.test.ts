@@ -44,6 +44,7 @@ const testData: TestData<TextService>[] = [
         text.category,
       )}/${encodeURIComponent(text.index)}`,
       false,
+      undefined,
     ],
     Promise.resolve(textDto),
   ),
@@ -60,7 +61,7 @@ const testData: TestData<TextService>[] = [
     [chapterId],
     apiClient.fetchJson,
     chapter,
-    [chapterUrl, false],
+    [chapterUrl, false, undefined],
     Promise.resolve(chapterDto),
   ),
   new TestData(
@@ -110,7 +111,7 @@ const testData: TestData<TextService>[] = [
       ],
       0,
     ),
-    [`${chapterUrl}/lines/0`, false],
+    [`${chapterUrl}/lines/0`, false, undefined],
     Promise.resolve({
       variants: [
         {
@@ -161,7 +162,7 @@ const testData: TestData<TextService>[] = [
     [chapterId],
     apiClient.fetchJson,
     [{ siglum: 'NinNA1a', text: fragment.text }],
-    [`${chapterUrl}/colophons`, false],
+    [`${chapterUrl}/colophons`, false, undefined],
     Promise.resolve([{ siglum: 'NinNA1a', text: fragmentDto.text }]),
   ),
   new TestData(
@@ -169,7 +170,7 @@ const testData: TestData<TextService>[] = [
     [chapterId],
     apiClient.fetchJson,
     [{ siglum: 'NinNA1a', text: fragment.text }],
-    [`${chapterUrl}/unplaced_lines`, false],
+    [`${chapterUrl}/unplaced_lines`, false, undefined],
     Promise.resolve([{ siglum: 'NinNA1a', text: fragmentDto.text }]),
   ),
   new TestData(
@@ -185,7 +186,7 @@ const testData: TestData<TextService>[] = [
     [chapterId],
     apiClient.fetchJson,
     chapter.manuscripts,
-    [`${chapterUrl}/manuscripts`, false],
+    [`${chapterUrl}/manuscripts`, false, undefined],
     Promise.resolve(chapterDto.manuscripts),
   ),
 ]

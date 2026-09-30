@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import ReactMarkdown from 'react-markdown'
 
 import AppContent from 'common/ui/AppContent'
-import WordForm from './WordForm'
+import WordForm from 'dictionary/ui/editor/WordForm'
 import Spinner from 'common/ui/Spinner'
 import ErrorAlert from 'common/errors/ErrorAlert'
 import withData, { WithoutData } from 'http/withData'

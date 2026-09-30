@@ -16,30 +16,29 @@ import {
 
 type LabeledLine = readonly [Label, TextLine]
 
+function updateLabel(label: Label, line: AbstractLine): Label {
+  if (isObjectAtLine(line)) {
+    return label.setObject(line.label)
+  }
+  if (isSurfaceAtLine(line)) {
+    return label.setSurface(line.label)
+  }
+  if (isColumnAtLine(line)) {
+    return label.setColumn(line.label)
+  }
+  return label
+}
+
 function labelLines(text: Text): LabeledLine[] {
-  const [, labeledLines] = _.reduce(
-    text.lines,
-    (
-      [current, lines]: [Label, LabeledLine[]],
-      line: AbstractLine,
-    ): [Label, LabeledLine[]] => {
-      if (isTextLine(line)) {
-        return [
-          current,
-          [...lines, [current.setLineNumber(line.lineNumber), line]],
-        ]
-      } else if (isObjectAtLine(line)) {
-        return [current.setObject(line.label), lines]
-      } else if (isSurfaceAtLine(line)) {
-        return [current.setSurface(line.label), lines]
-      } else if (isColumnAtLine(line)) {
-        return [current.setColumn(line.label), lines]
-      } else {
-        return [current, lines]
-      }
-    },
-    [new Label(), []],
-  )
+  let label = new Label()
+  const labeledLines: LabeledLine[] = []
+  text.lines.forEach((line) => {
+    if (isTextLine(line)) {
+      labeledLines.push([label.setLineNumber(line.lineNumber), line])
+    } else {
+      label = updateLabel(label, line)
+    }
+  })
   return labeledLines
 }
 

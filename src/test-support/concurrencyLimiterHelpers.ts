@@ -1,8 +1,13 @@
-import ConcurrencyLimiter from 'common/utils/ConcurrencyLimiter'
+import ConcurrencyLimiter, { QueueState } from 'common/utils/ConcurrencyLimiter'
 
-export type QueueState = {
-  activeCount: number
-  waitingResolvers: unknown[]
+export class InspectableConcurrencyLimiter extends ConcurrencyLimiter {
+  get state(): QueueState {
+    return this.queueState
+  }
+
+  acquire(signal?: AbortSignal): Promise<() => void> {
+    return this.acquireSlot(signal)
+  }
 }
 
 export type Deferred<Value> = {
@@ -19,8 +24,8 @@ export function deferred<Value>(): Deferred<Value> {
   return { promise, resolve: resolvePromise }
 }
 
-export function queueState(limiter: ConcurrencyLimiter): QueueState {
-  return (limiter as unknown as { queueState: QueueState }).queueState
+export function queueState(limiter: InspectableConcurrencyLimiter): QueueState {
+  return limiter.state
 }
 
 export async function settle(): Promise<void> {

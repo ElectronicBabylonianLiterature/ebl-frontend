@@ -10,10 +10,10 @@ import SessionContext from 'auth/SessionContext'
 import InlineMarkdown from 'common/ui/InlineMarkdown'
 import { TextInfo } from 'corpus/domain/text'
 import { SectionCrumb } from 'common/ui/Breadcrumbs'
-import createGenreLink from './createGenreLink'
+import createGenreLink from 'corpus/ui/createGenreLink'
 import { useHistory } from 'router/compat'
 import AboutInlineLink from 'common/ui/AboutInlineLink'
-import './Corpus.sass'
+import 'corpus/ui/Corpus.sass'
 
 type SelectCallback = (eventKey: string | null) => void
 

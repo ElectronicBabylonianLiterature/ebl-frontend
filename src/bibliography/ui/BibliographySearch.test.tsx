@@ -1,7 +1,7 @@
 import React from 'react'
 import { MemoryRouter } from 'react-router-dom'
 import { render, screen, within } from '@testing-library/react'
-import BibliographySearch from './BibliographySearch'
+import BibliographySearch from 'bibliography/ui/BibliographySearch'
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 import createAuthorRegExp from 'test-support/createAuthorRexExp'
 import { bibliographyEntryFactory } from 'test-support/bibliography-fixtures'

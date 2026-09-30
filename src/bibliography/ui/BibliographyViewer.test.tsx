@@ -1,6 +1,6 @@
 import React from 'react'
 import { render, screen, fireEvent, waitFor } from '@testing-library/react'
-import BibliographyViewer from './BibliographyViewer'
+import BibliographyViewer from 'bibliography/ui/BibliographyViewer'
 import { MemoryRouter } from 'react-router-dom'
 import { Route } from 'router/compat'
 import { createMemoryHistory } from 'history'

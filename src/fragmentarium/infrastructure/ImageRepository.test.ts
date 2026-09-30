@@ -1,4 +1,4 @@
-import ApiImageRepository from './ImageRepository'
+import ApiImageRepository from 'fragmentarium/infrastructure/ImageRepository'
 import Folio from 'fragmentarium/domain/Folio'
 import { folioFactory } from 'test-support/fragment-data-fixtures'
 import { ThumbnailSize } from 'fragmentarium/application/FragmentService'

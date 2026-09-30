@@ -7,7 +7,7 @@ import userEvent from '@testing-library/user-event'
 import { Genres } from 'fragmentarium/domain/Genres'
 import SessionContext from 'auth/SessionContext'
 import { fragmentFactory } from 'test-support/fragment-fixtures'
-import { waitForSpinnerToBeRemoved } from '../../../test-support/waitForSpinnerToBeRemoved'
+import { waitForSpinnerToBeRemoved } from 'test-support/waitForSpinnerToBeRemoved'
 import FragmentService from 'fragmentarium/application/FragmentService'
 
 jest.mock('fragmentarium/application/FragmentService')

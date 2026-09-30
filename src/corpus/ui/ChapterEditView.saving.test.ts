@@ -1,5 +1,7 @@
+import { fireEvent } from '@testing-library/react'
 import AppDriver from 'test-support/AppDriver'
 import FakeApi from 'test-support/FakeApi'
+import { createChapterUrl } from 'test-support/FakeApiExpectation'
 import {
   chapterDtos,
   setUpChapterEditView,
@@ -51,4 +53,22 @@ test('Shows an error when saving the alignment fails', async () => {
   appDriver.click('Save alignment')
 
   await appDriver.waitForText(/Unexpected postJson/)
+})
+
+test('Import sends a single request when Save is double-clicked', async () => {
+  const chapter = chapterDtos[0]
+  await setup(chapter)
+  fakeApi.expectImportChapter(chapter, '')
+  const importPath = `${createChapterUrl(chapter)}/import`
+
+  appDriver.click('Import')
+  const saveButton = appDriver.getView().getByRole('button', { name: 'Save' })
+  fireEvent.click(saveButton)
+  fireEvent.click(saveButton)
+
+  expect(saveButton).toBeDisabled()
+  await appDriver.waitForTextToDisappear('Saving...')
+  expect(
+    fakeApi.client.postJson.mock.calls.filter(([path]) => path === importPath),
+  ).toHaveLength(1)
 })

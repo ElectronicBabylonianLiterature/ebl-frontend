@@ -6,8 +6,8 @@ import { TransformComponent, TransformWrapper } from 'react-zoom-pan-pinch'
 import ImageButtonGroup, {
   useImageActions,
   getImageActions,
-} from './ImageButtonGroup'
-import './Photo.css'
+} from 'fragmentarium/ui/images/ImageButtonGroup'
+import 'fragmentarium/ui/images/Photo.css'
 
 export default withData<
   { folio: Folio },
@@ -57,4 +57,5 @@ export default withData<
     )
   },
   (props, signal) => props.fragmentService.findFolio(props.folio, signal),
+  { retry: true },
 )

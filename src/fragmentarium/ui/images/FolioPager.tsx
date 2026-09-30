@@ -65,6 +65,7 @@ export default withData<
   (props, signal) =>
     props.fragmentService.folioPager(props.folio, props.fragmentNumber, signal),
   {
+    retry: true,
     watch: (props) => [props.folio, props.fragmentNumber],
   },
 )

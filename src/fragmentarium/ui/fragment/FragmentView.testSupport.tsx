@@ -7,9 +7,8 @@ import Lemmatization from 'transliteration/domain/Lemmatization'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import WordService from 'dictionary/application/WordService'
 import FragmentSearchService from 'fragmentarium/application/FragmentSearchService'
-import MemorySession, { Session } from 'auth/Session'
+import MemorySession from 'auth/Session'
 import { DictionaryContext } from 'dictionary/ui/dictionary-context'
-import { folioPagerFactory } from 'test-support/fragment-data-fixtures'
 import { FragmentPagerData } from 'fragmentarium/domain/pager'
 import { wordFactory } from 'test-support/word-fixtures'
 import { helmetContext } from 'router/head'
@@ -17,27 +16,23 @@ import { HelmetProvider } from 'react-helmet-async'
 import { FindspotService } from 'fragmentarium/application/FindspotService'
 import AfoRegisterService from 'afo-register/application/AfoRegisterService'
 import DossiersService from 'dossiers/application/DossiersService'
+import ResizeObserver from 'resize-observer-polyfill'
+import { folioPagerFactory } from 'test-support/fragment-data-fixtures'
+
+jest.mock('dictionary/application/WordService')
+jest.mock('fragmentarium/application/FindspotService')
+jest.mock('fragmentarium/application/FragmentService')
+jest.mock('fragmentarium/application/FragmentSearchService')
+jest.mock('afo-register/application/AfoRegisterService')
+jest.mock('dossiers/application/DossiersService')
+
+global.ResizeObserver = ResizeObserver
 
 export const fragmentNumber = 'K,K.1'
 
-export interface FragmentViewTestContext {
-  fragmentService: jest.Mocked<FragmentService>
-  fragmentSearchService: jest.Mocked<FragmentSearchService>
-  wordService: jest.Mocked<WordService>
-  findspotService: jest.Mocked<FindspotService>
-  afoRegisterService: jest.Mocked<AfoRegisterService>
-  dossiersService: jest.Mocked<DossiersService>
-  session: Session
-  container: HTMLElement
-  renderFragmentView: (
-    number: string,
-    folioName: string | null,
-    folioNumber: string | null,
-    tab: string | null,
-  ) => void
-}
-
-export function createFragmentViewTestContext(): FragmentViewTestContext {
+export function createFragmentViewHarness(
+  sessionScopes = ['read:fragments', 'read:WGL-folios', 'read:AKG-folios'],
+) {
   const folioPager = folioPagerFactory.build()
   const fragmentPagerData: FragmentPagerData = {
     next: 'K.00001',
@@ -68,6 +63,8 @@ export function createFragmentViewTestContext(): FragmentViewTestContext {
   const dossiersService = new (DossiersService as jest.Mock<
     jest.Mocked<DossiersService>
   >)()
+  const session = new MemorySession(sessionScopes)
+
   ;(URL.createObjectURL as jest.Mock).mockReturnValue('url')
   fragmentService.findFolio.mockReturnValue(
     Promise.resolve(new Blob([''], { type: 'image/jpeg' })),
@@ -90,46 +87,46 @@ export function createFragmentViewTestContext(): FragmentViewTestContext {
   afoRegisterService.searchTextsAndNumbers.mockResolvedValue([])
   dossiersService.queryByIds.mockResolvedValue([])
 
-  const context: FragmentViewTestContext = {
-    fragmentService: fragmentService,
-    fragmentSearchService: fragmentSearchService,
-    wordService: wordService,
-    findspotService: findspotService,
-    afoRegisterService: afoRegisterService,
-    dossiersService: dossiersService,
-    session: new MemorySession([
-      'read:fragments',
-      'read:WGL-folios',
-      'read:AKG-folios',
-    ]),
-    container: document.createElement('div'),
-    renderFragmentView: (number, folioName, folioNumber, tab): void => {
-      context.container = render(
-        <HelmetProvider context={helmetContext}>
-          <MemoryRouter>
-            <SessionContext.Provider value={context.session}>
-              <DictionaryContext.Provider value={wordService}>
-                <FragmentView
-                  number={number}
-                  folioName={folioName}
-                  folioNumber={folioNumber}
-                  tab={tab}
-                  fragmentService={fragmentService}
-                  fragmentSearchService={fragmentSearchService}
-                  wordService={wordService}
-                  findspotService={findspotService}
-                  afoRegisterService={afoRegisterService}
-                  dossiersService={dossiersService}
-                  activeLine=""
-                  session={context.session}
-                />
-              </DictionaryContext.Provider>
-            </SessionContext.Provider>
-          </MemoryRouter>
-        </HelmetProvider>,
-      ).container
-    },
+  function renderFragmentView(
+    number: string,
+    folioName: string | null,
+    folioNumber: string | null,
+    tab: string | null,
+  ) {
+    return render(
+      <HelmetProvider context={helmetContext}>
+        <MemoryRouter>
+          <SessionContext.Provider value={session}>
+            <DictionaryContext.Provider value={wordService}>
+              <FragmentView
+                number={number}
+                folioName={folioName}
+                folioNumber={folioNumber}
+                tab={tab}
+                fragmentService={fragmentService}
+                fragmentSearchService={fragmentSearchService}
+                wordService={wordService}
+                findspotService={findspotService}
+                afoRegisterService={afoRegisterService}
+                dossiersService={dossiersService}
+                activeLine=""
+                session={session}
+              />
+            </DictionaryContext.Provider>
+          </SessionContext.Provider>
+        </MemoryRouter>
+      </HelmetProvider>,
+    )
   }
 
-  return context
+  return {
+    afoRegisterService,
+    dossiersService,
+    findspotService,
+    fragmentSearchService,
+    fragmentService,
+    renderFragmentView,
+    session,
+    wordService,
+  }
 }

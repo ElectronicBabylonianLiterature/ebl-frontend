@@ -1,5 +1,4 @@
-import { AuthenticationService } from 'auth/Auth'
-import { guestSession } from 'auth/Session'
+import { AccessTokenProvider } from 'http/ApiClient'
 
 export const mockErrorReporter = {
   captureException: jest.fn(),
@@ -8,14 +7,10 @@ export const mockErrorReporter = {
 export function createMockAuthService(
   isAuth: boolean,
   token = 'test-token',
-): AuthenticationService {
+): AccessTokenProvider {
   return {
     isAuthenticated: () => isAuth,
     getAccessToken: jest.fn().mockResolvedValue(token),
-    getSession: () => guestSession,
-    login: jest.fn(),
-    logout: jest.fn(),
-    getUser: () => ({}),
   }
 }
 

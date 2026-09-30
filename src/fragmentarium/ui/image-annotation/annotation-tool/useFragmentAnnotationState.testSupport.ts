@@ -1,10 +1,12 @@
 import { renderHook, RenderHookResult } from '@testing-library/react'
 import Annotation from 'fragmentarium/domain/annotation'
 import { AnnotationToken } from 'fragmentarium/domain/annotation-token'
-import FragmentService from 'fragmentarium/application/FragmentService'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import useFragmentAnnotationState from 'fragmentarium/ui/image-annotation/annotation-tool/useFragmentAnnotationState'
-import { FragmentAnnotationState } from 'fragmentarium/ui/image-annotation/annotation-tool/fragmentAnnotationStateTypes'
+import {
+  AnnotationFragmentService,
+  FragmentAnnotationState,
+} from 'fragmentarium/ui/image-annotation/annotation-tool/fragmentAnnotationStateTypes'
 import { annotations as existingAnnotations } from 'test-support/test-annotation'
 
 export const largeGeometry = {
@@ -25,10 +27,10 @@ export const tinyGeometry = {
 const fragment = { number: 'K.1' } as Fragment
 const tokens = [[AnnotationToken.blank()]]
 
-export const fragmentService = {
+export const fragmentService: jest.Mocked<AnnotationFragmentService> = {
   updateAnnotations: jest.fn(),
   generateAnnotations: jest.fn(),
-} as unknown as jest.Mocked<FragmentService>
+}
 
 export function setUp(
   initialAnnotations: readonly Annotation[] = existingAnnotations,

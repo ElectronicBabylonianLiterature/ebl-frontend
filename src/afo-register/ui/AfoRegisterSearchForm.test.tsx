@@ -1,7 +1,7 @@
 import React from 'react'
 import { render, fireEvent, waitFor, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import AfoRegisterSearchForm from './AfoRegisterSearchForm'
+import AfoRegisterSearchForm from 'afo-register/ui/AfoRegisterSearchForm'
 import AfoRegisterService from 'afo-register/application/AfoRegisterService'
 import { MemoryRouter } from 'react-router-dom'
 import { AfoRegisterRecordSuggestion } from 'afo-register/domain/Record'

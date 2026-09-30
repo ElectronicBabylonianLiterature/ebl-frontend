@@ -4,7 +4,7 @@ import _ from 'lodash'
 import ChapterManuscripts from 'corpus/ui/manuscripts/ChapterManuscripts'
 import ChapterLines from 'corpus/ui/lines/ChapterLines'
 import ChapterAligner from 'corpus/ui/alignment/ChapterAligner'
-import ChapterDetails from './ChapterDetails'
+import ChapterDetails from 'corpus/ui/ChapterDetails'
 import { Chapter } from 'corpus/domain/chapter'
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 import FragmentService from 'fragmentarium/application/FragmentService'
@@ -12,7 +12,7 @@ import ChapterLemmatizer from 'corpus/ui/lemmatization/ChapterLemmatization'
 import TextService from 'corpus/application/TextService'
 import { ChapterLemmatization } from 'corpus/domain/lemmatization'
 import { ChapterAlignment } from 'corpus/domain/alignment'
-import ChapterImport from './import/ChapterImport'
+import ChapterImport from 'corpus/ui/import/ChapterImport'
 
 interface Props {
   onSaveLines: () => void

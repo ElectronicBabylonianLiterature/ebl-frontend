@@ -2,7 +2,7 @@ import React from 'react'
 import { render, screen } from '@testing-library/react'
 import ResizeObserver from 'resize-observer-polyfill'
 import userEvent from '@testing-library/user-event'
-import FolioImage from './FolioImage'
+import FolioImage from 'fragmentarium/ui/images/FolioImage'
 import Folio from 'fragmentarium/domain/Folio'
 
 global.ResizeObserver = ResizeObserver

@@ -7,12 +7,12 @@ import { PeriodModifiers, Periods } from 'common/utils/period'
 import { Provenances } from 'corpus/domain/provenance'
 import { Factory } from 'fishery'
 import { EmptyLine } from 'transliteration/domain/line'
-import { singleRuling } from './lines/dollar'
-import note from './lines/note'
-import textLine from './lines/text-line'
-import { referenceFactory } from './bibliography-fixtures'
-import { oldSiglumFactory } from './old-siglum-fixtures'
-import { joinFactory } from './join-fixtures'
+import { singleRuling } from 'test-support/lines/dollar'
+import note from 'test-support/lines/note'
+import textLine from 'test-support/lines/text-line'
+import { referenceFactory } from 'test-support/bibliography-fixtures'
+import { oldSiglumFactory } from 'test-support/old-siglum-fixtures'
+import { joinFactory } from 'test-support/join-fixtures'
 
 const defaultChance = new Chance('line-details-fixtures')
 

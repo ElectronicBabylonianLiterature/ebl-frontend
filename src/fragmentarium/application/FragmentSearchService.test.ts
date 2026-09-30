@@ -1,6 +1,6 @@
 import { createScript } from 'fragmentarium/infrastructure/FragmentRepository'
 import { testDelegation, TestData } from 'test-support/utils'
-import FragmentSearchService from './FragmentSearchService'
+import FragmentSearchService from 'fragmentarium/application/FragmentSearchService'
 
 const resultStub = {
   script: { period: 'None', periodModifier: 'None', uncertain: false },

@@ -2,8 +2,7 @@ import React, { FunctionComponent, useState } from 'react'
 import { render, screen, act } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import usePromiseEffect from 'common/hooks/usePromiseEffect'
-import ApiClient from 'http/ApiClient'
-import { AuthenticationService } from 'auth/Auth'
+import ApiClient, { AccessTokenProvider } from 'http/ApiClient'
 
 type ResolveBody = (body: string) => void
 
@@ -73,10 +72,10 @@ beforeEach(() => {
         resolveRequests.push(resolve)
       }),
   )
-  const auth = {
+  const auth: jest.Mocked<AccessTokenProvider> = {
     getAccessToken: jest.fn().mockResolvedValue('token'),
     isAuthenticated: jest.fn().mockReturnValue(true),
-  } as unknown as jest.Mocked<AuthenticationService>
+  }
   apiClient = new ApiClient(auth, { captureException: jest.fn() })
 })
 

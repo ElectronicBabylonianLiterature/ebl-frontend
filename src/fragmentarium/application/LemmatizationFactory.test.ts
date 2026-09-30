@@ -4,12 +4,12 @@ import Lemma from 'transliteration/domain/Lemma'
 import Lemmatization, {
   LemmatizationToken,
 } from 'transliteration/domain/Lemmatization'
-import FragmentService from './FragmentService'
-import LemmatizationFactory from './LemmatizationFactory'
+import FragmentService from 'fragmentarium/application/FragmentService'
+import LemmatizationFactory from 'fragmentarium/application/LemmatizationFactory'
 import WordRepository from 'dictionary/infrastructure/WordRepository'
 
 jest.mock('dictionary/infrastructure/WordRepository')
-jest.mock('./FragmentService')
+jest.mock('fragmentarium/application/FragmentService')
 
 const MockWordRepository = WordRepository as jest.Mock<WordRepository>
 const wordRepositoryMock = new MockWordRepository()

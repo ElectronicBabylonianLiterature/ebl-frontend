@@ -4,17 +4,19 @@ import { SectionCrumb } from 'common/ui/Breadcrumbs'
 import { createChapterId, Text } from 'corpus/domain/text'
 import { TextId } from 'transliteration/domain/text-id'
 import withData from 'http/withData'
-import CorpusTextCrumb from './CorpusTextCrumb'
+import CorpusTextCrumb from 'corpus/ui/CorpusTextCrumb'
 
-import './TextView.sass'
+import 'corpus/ui/TextView.sass'
 import SessionContext from 'auth/SessionContext'
 import { Session } from 'auth/Session'
 import CollapsibleSection from 'corpus/ui/CollapsibleSection'
-import Introduction from './Introduction'
-import ChapterSiglumsAndTransliterations from './ChapterSiglumsAndTransliterations'
-import Chapters from './Chapters'
-import GenreCrumb from './GenreCrumb'
+import Introduction from 'corpus/ui/Introduction'
+import ChapterSiglumsAndTransliterations from 'corpus/ui/ChapterSiglumsAndTransliterations'
+import Chapters from 'corpus/ui/Chapters'
+import GenreCrumb from 'corpus/ui/GenreCrumb'
 import { HeadTags } from 'router/head'
+import TextService from 'corpus/application/TextService'
+import FragmentService from 'fragmentarium/application/FragmentService'
 
 function TextView({
   text,
@@ -22,8 +24,8 @@ function TextView({
   fragmentService,
 }: {
   text: Text
-  textService
-  fragmentService
+  textService: TextService
+  fragmentService: FragmentService
 }): JSX.Element {
   return (
     <div className="text-view ebl-consistent-links">
@@ -65,8 +67,8 @@ function TextViewWrapper({
   fragmentService,
 }: {
   text: Text
-  textService
-  fragmentService
+  textService: TextService
+  fragmentService: FragmentService
 }): JSX.Element {
   return (
     <AppContent
@@ -100,10 +102,8 @@ function TextViewWrapper({
 
 export default withData<
   {
-    textService: {
-      find(id: TextId): Promise<Text>
-    }
-    fragmentService
+    textService: TextService
+    fragmentService: FragmentService
   },
   {
     id: TextId
@@ -117,5 +117,5 @@ export default withData<
       fragmentService={fragmentService}
     />
   ),
-  ({ id, textService }) => textService.find(id),
+  ({ id, textService }, signal) => textService.find(id, signal),
 )

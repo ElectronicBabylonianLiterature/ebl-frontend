@@ -8,7 +8,7 @@ import Spinner from 'common/ui/Spinner'
 import SupersedableOperation from 'common/utils/SupersedableOperation'
 import SerialQueue from 'common/utils/SerialQueue'
 import applyWhenCurrent from 'common/utils/applyWhenCurrent'
-import './CuneiformFragment.sass'
+import 'fragmentarium/ui/fragment/CuneiformFragment.sass'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import Folio from 'fragmentarium/domain/Folio'
 import WordService from 'dictionary/application/WordService'
@@ -31,6 +31,7 @@ type CuneiformFragmentProps = {
   activeFolio: Folio | null
   tab: string | null
   onSave: (save: () => Promise<Fragment>) => Promise<Fragment>
+  enqueueSave: (save: () => Promise<Fragment>) => Promise<Fragment>
   saving: boolean
   error: Error | null
   activeLine: string
@@ -51,6 +52,7 @@ const CuneiformFragment: FunctionComponent<CuneiformFragmentProps> = ({
   activeFolio,
   tab,
   onSave,
+  enqueueSave,
   saving,
   error,
   activeLine,
@@ -72,6 +74,7 @@ const CuneiformFragment: FunctionComponent<CuneiformFragmentProps> = ({
               dossiersService={dossiersService}
               afoRegisterService={afoRegisterService}
               onSave={onSave}
+              enqueueSave={enqueueSave}
             />,
           )}
         </Col>
@@ -103,6 +106,7 @@ const CuneiformFragment: FunctionComponent<CuneiformFragmentProps> = ({
           <Col xs={12} md={5}>
             {withErrorBoundary(
               <Images
+                key={fragment.number}
                 fragment={fragment}
                 fragmentService={fragmentService}
                 activeFolio={activeFolio}
@@ -194,6 +198,7 @@ const CuneiformFragmentController: FunctionComponent<ControllerProps> = ({
         activeFolio={activeFolio}
         tab={tab}
         onSave={handleSave}
+        enqueueSave={(save) => saveQueue.current.enqueue(save)}
         saving={isCurrentFragment && isSaving}
         error={isCurrentFragment ? error : null}
         activeLine={activeLine}

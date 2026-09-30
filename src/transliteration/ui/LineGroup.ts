@@ -1,6 +1,10 @@
 import { LineDetails, ManuscriptLineDisplay } from 'corpus/domain/line-details'
 import { LemmatizableToken, Token } from 'transliteration/domain/token'
-import { EmptyLineToken, LineToken, OneOfLineToken } from './line-tokens'
+import {
+  EmptyLineToken,
+  LineToken,
+  OneOfLineToken,
+} from 'transliteration/ui/line-tokens'
 import { ChapterId } from 'transliteration/domain/chapter-id'
 import TextService from 'corpus/application/TextService'
 
@@ -32,7 +36,7 @@ export class LineGroup {
   highlightIndex = 0
   highlightIndexSetter: React.Dispatch<React.SetStateAction<number>>
   lineInfo: LineInfo
-  findChapterLine: () => Promise<LineDetails>
+  findChapterLine: (signal?: AbortSignal) => Promise<LineDetails>
   lineDetails: LineDetails | null = null
 
   constructor(
@@ -43,11 +47,12 @@ export class LineGroup {
     this.reconstruction = reconstruction.map(
       (token) => new LineToken(token as LemmatizableToken),
     )
-    this.findChapterLine = () =>
+    this.findChapterLine = (signal?: AbortSignal) =>
       lineInfo.textService.findChapterLine(
         lineInfo.chapterId,
         lineInfo.lineNumber,
         lineInfo.variantNumber,
+        signal,
       )
 
     this.lineInfo = lineInfo

@@ -13,11 +13,14 @@ import {
   cslDataFactory,
   referenceDtoFactory,
   referenceFactory,
-} from './bibliography-fixtures'
+} from 'test-support/bibliography-fixtures'
 import { ReferenceDto } from 'bibliography/domain/referenceDto'
 import { OldSiglumDto } from 'corpus/application/dtos'
-import { oldSiglumDtoFactory, oldSiglumFactory } from './old-siglum-fixtures'
-import { joinFactory } from './join-fixtures'
+import {
+  oldSiglumDtoFactory,
+  oldSiglumFactory,
+} from 'test-support/old-siglum-fixtures'
+import { joinFactory } from 'test-support/join-fixtures'
 
 const defaultChance = new Chance('manuscript-fixtures')
 

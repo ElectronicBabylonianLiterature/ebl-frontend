@@ -1,4 +1,4 @@
-import ApiClient, { ApiError } from './ApiClient'
+import ApiClient, { ApiError } from 'http/ApiClient'
 
 const path = '/resource'
 const expectedUrl = `${process.env.REACT_APP_DICTIONARY_API_URL}${path}`

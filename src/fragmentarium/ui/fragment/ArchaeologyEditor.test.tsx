@@ -2,7 +2,7 @@ import React from 'react'
 import { render, screen } from '@testing-library/react'
 import { changeValueByLabel, submitFormByTestId } from 'test-support/utils'
 
-import ArchaeologyEditor from './ArchaeologyEditor'
+import ArchaeologyEditor from 'fragmentarium/ui/fragment/ArchaeologyEditor'
 import {
   archaeologyFactory,
   findspotFactory,
@@ -38,13 +38,13 @@ const MockFragmentService = FragmentService as jest.Mock<
 const fragmentServiceMock = new MockFragmentService()
 const defaultSite = 'Babylon'
 
-const setup = async () => {
+const setup = async ({ hasFindspot } = { hasFindspot: true }) => {
   updateArchaeology = jest.fn()
   updateArchaeology.mockReturnValue(Promise.resolve())
   findspot = new Findspot(42, undefined, 'some area')
   archaeology = archaeologyFactory.build({
     site: excavationSites[defaultSite],
-    findspot: findspot,
+    findspot: hasFindspot ? findspot : null,
   })
   archaeologyDto = _.omitBy(
     toArchaeologyDto(archaeology),
@@ -129,4 +129,15 @@ it('updates isFindspotUncertain on change', async () => {
   } else {
     expect(checkbox).toBeChecked()
   }
+})
+
+it('opens without a stored findspot and leaves it unset on submit', async () => {
+  await setup({ hasFindspot: false })
+  updateArchaeology.mockReturnValueOnce(new Promise(() => undefined))
+
+  expect(screen.queryByText(findspot.toString())).not.toBeInTheDocument()
+  submitFormByTestId(screen, 'archaeology-form')
+  expect(updateArchaeology).toHaveBeenCalledWith(
+    expect.not.objectContaining({ findspotId: expect.anything() }),
+  )
 })

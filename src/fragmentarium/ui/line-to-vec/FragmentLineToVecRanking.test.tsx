@@ -1,16 +1,15 @@
 import React from 'react'
-import FragmentLineToVecRanking from './FragmentLineToVecRanking'
+import FragmentLineToVecRanking from 'fragmentarium/ui/line-to-vec/FragmentLineToVecRanking'
 import { MemoryRouter } from 'react-router-dom'
 import { render, screen } from '@testing-library/react'
 import { waitForSpinnerToBeRemoved } from 'test-support/waitForSpinnerToBeRemoved'
 import { LineToVecRanking } from 'fragmentarium/domain/lineToVecRanking'
 import SessionContext from 'auth/SessionContext'
-import { Session } from 'auth/Session'
+import MemorySession from 'auth/Session'
 import { scriptFactory } from 'test-support/fragment-data-fixtures'
 import { Periods } from 'common/utils/period'
 import { HelmetProvider } from 'react-helmet-async'
 import { helmetContext } from 'router/head'
-import FragmentService from 'fragmentarium/application/FragmentService'
 
 const script = scriptFactory.build(
   {},
@@ -18,9 +17,7 @@ const script = scriptFactory.build(
 )
 
 it('Shows the number of transliterated tablets', async () => {
-  const session = {
-    isAllowedToReadFragments: jest.fn().mockReturnValue(true),
-  }
+  const session = new MemorySession(['read:fragments'])
   const lineToVecRankingsResults: LineToVecRanking = {
     score: [
       { museumNumber: 'X.1', script: script, score: 10 },
@@ -40,10 +37,10 @@ it('Shows the number of transliterated tablets', async () => {
   render(
     <HelmetProvider context={helmetContext}>
       <MemoryRouter>
-        <SessionContext.Provider value={session as unknown as Session}>
+        <SessionContext.Provider value={session}>
           <FragmentLineToVecRanking
             number={'X.0'}
-            fragmentService={fragmentService as unknown as FragmentService}
+            fragmentService={fragmentService}
           />
         </SessionContext.Provider>
       </MemoryRouter>

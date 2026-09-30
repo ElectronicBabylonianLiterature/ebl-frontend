@@ -104,12 +104,14 @@ export class TextServiceCore {
     id: ChapterId,
     number: number,
     variantNumber: number,
+    signal?: AbortSignal,
   ): Promise<LineDetails> {
     return Promise.all([
       this.loadProvenances(),
       this.apiClient.fetchJson(
         `${createChapterUrl(id)}/lines/${number}`,
         false,
+        signal,
       ),
     ])
       .then(([, json]) => fromLineDetailsDto(json, variantNumber))
@@ -147,9 +149,10 @@ export class TextServiceCore {
   protected fetchSiglaAndTransliterations(
     id: ChapterId,
     endpoint: string,
+    signal?: AbortSignal,
   ): Promise<SiglumAndTransliteration[]> {
     return this.apiClient
-      .fetchJson(`${createChapterUrl(id)}/${endpoint}`, false)
+      .fetchJson(`${createChapterUrl(id)}/${endpoint}`, false, signal)
       .then(fromSiglumAndTransliterationDto)
       .then((entries) =>
         Promise.all(

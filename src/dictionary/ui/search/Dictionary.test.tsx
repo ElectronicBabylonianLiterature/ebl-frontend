@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 
 import SessionContext from 'auth/SessionContext'
-import Dictionary from './Dictionary'
+import Dictionary from 'dictionary/ui/search/Dictionary'
 import Word from 'dictionary/domain/Word'
 import WordService from 'dictionary/application/WordService'
 import MemorySession from 'auth/Session'

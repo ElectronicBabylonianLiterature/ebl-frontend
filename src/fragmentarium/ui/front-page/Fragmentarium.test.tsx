@@ -5,7 +5,7 @@ import SessionContext from 'auth/SessionContext'
 import FragmentSearchService from 'fragmentarium/application/FragmentSearchService'
 import MemorySession, { Session } from 'auth/Session'
 import FragmentService from 'fragmentarium/application/FragmentService'
-import Fragmentarium from './Fragmentarium'
+import Fragmentarium from 'fragmentarium/ui/front-page/Fragmentarium'
 import {
   fragmentFactory,
   fragmentInfoFactory,

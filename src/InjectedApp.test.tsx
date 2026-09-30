@@ -10,7 +10,7 @@ import {
   stubPrefetches,
 } from 'injectedApp.testSupport'
 
-jest.mock('./App', () => {
+jest.mock('App', () => {
   return function MockApp() {
     return <div data-testid="app">App</div>
   }

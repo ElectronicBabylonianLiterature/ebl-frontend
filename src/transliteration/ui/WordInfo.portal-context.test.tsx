@@ -1,9 +1,12 @@
 import React, { useState } from 'react'
 import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { LemmaPopover } from './WordInfo'
+import { LemmaPopover } from 'transliteration/ui/WordInfo'
 import { DictionaryContext } from 'dictionary/ui/dictionary-context'
-import { LineLemmasContext, createLemmaMap } from './LineLemmasContext'
+import {
+  LineLemmasContext,
+  createLemmaMap,
+} from 'transliteration/ui/LineLemmasContext'
 import WordService from 'dictionary/application/WordService'
 import DictionaryWord from 'dictionary/domain/Word'
 import { MemoryRouter } from 'react-router-dom'

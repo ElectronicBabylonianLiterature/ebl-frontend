@@ -63,9 +63,11 @@ const richFragment = fragmentFactory.build({
 })
 const saved = Promise.resolve(fragment)
 const onSave = jest.fn<Promise<Fragment>, [() => Promise<Fragment>]>()
+const enqueueSave = jest.fn<Promise<Fragment>, [() => Promise<Fragment>]>()
 
 beforeEach(() => {
   onSave.mockImplementation((save: () => Promise<Fragment>) => save())
+  enqueueSave.mockImplementation((save: () => Promise<Fragment>) => save())
 })
 
 function renderInfo(shown: Fragment = fragment): void {
@@ -77,6 +79,7 @@ function renderInfo(shown: Fragment = fragment): void {
         dossiersService={dossiersServiceMock}
         afoRegisterService={afoRegisterServiceMock}
         onSave={onSave}
+        enqueueSave={enqueueSave}
       />
     </MemoryRouter>,
   )
@@ -101,7 +104,7 @@ describe('Info wires the detail editors to the fragment service', () => {
     expect(onSave).toHaveBeenCalledWith(expect.any(Function))
   })
 
-  it('saves a script change directly, without onSave', () => {
+  it('routes a script change through the save queue', () => {
     renderInfo()
     fragmentServiceMock.updateScript.mockReturnValue(saved)
 
@@ -112,6 +115,7 @@ describe('Info wires the detail editors to the fragment service', () => {
       fragment.script,
     )
     expect(returned).toBe(saved)
+    expect(enqueueSave).toHaveBeenCalledWith(expect.any(Function))
     expect(onSave).not.toHaveBeenCalled()
   })
 
@@ -126,6 +130,7 @@ describe('Info wires the detail editors to the fragment service', () => {
       fragment.number,
       date.toDto(),
     )
+    expect(enqueueSave).toHaveBeenCalledWith(expect.any(Function))
   })
 
   it('clears the date when there is none', () => {
@@ -151,6 +156,7 @@ describe('Info wires the detail editors to the fragment service', () => {
       fragment.number,
       [date.toDto()],
     )
+    expect(enqueueSave).toHaveBeenCalledWith(expect.any(Function))
   })
 })
 

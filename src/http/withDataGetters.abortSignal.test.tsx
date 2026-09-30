@@ -1,5 +1,5 @@
 import React from 'react'
-import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { fireEvent, render, screen } from '@testing-library/react'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import SignService from 'signs/application/SignService'
 import MarkupService from 'markup/application/MarkupService'
@@ -9,26 +9,11 @@ import PeriodSearchFormGroup from 'fragmentarium/ui/search/SearchFormPeriod'
 import Markup from 'markup/ui/markup'
 import { fragmentFactory } from 'test-support/fragment-fixtures'
 import { PeriodString } from 'query/FragmentQuery'
+import { expectAbortedOnUnmount, pendingRead } from 'test-support/pendingRead'
 
 jest.mock('fragmentarium/application/FragmentService')
 jest.mock('signs/application/SignService')
 jest.mock('markup/application/MarkupService')
-
-type PendingRead = {
-  signals: AbortSignal[]
-  read: (...parameters: unknown[]) => Promise<never>
-}
-
-function pendingRead(): PendingRead {
-  const signals: AbortSignal[] = []
-  return {
-    signals,
-    read: (...parameters: unknown[]): Promise<never> => {
-      signals.push(parameters[parameters.length - 1] as AbortSignal)
-      return new Promise<never>(() => undefined)
-    },
-  }
-}
 
 const fragmentService = new (FragmentService as jest.Mock<
   jest.Mocked<FragmentService>
@@ -38,17 +23,6 @@ const markupService = new (MarkupService as jest.Mock<
   jest.Mocked<MarkupService>
 >)()
 const fragment = fragmentFactory.build()
-
-async function expectAbortedOnUnmount(
-  pending: PendingRead,
-  unmount: () => void,
-): Promise<void> {
-  await waitFor(() => expect(pending.signals).toHaveLength(1))
-  expect(pending.signals[0]).toBeInstanceOf(AbortSignal)
-  expect(pending.signals[0].aborted).toBe(false)
-  unmount()
-  expect(pending.signals[0].aborted).toBe(true)
-}
 
 it('Annotator passes its signal to findPhoto', async () => {
   const pending = pendingRead()

@@ -1,9 +1,8 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { MemoryRouter } from 'react-router-dom'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import PaginationItems from 'fragmentarium/ui/search/PaginationItems'
-import _ from 'lodash'
 
 const mockHistoryPush = jest.fn()
 
@@ -16,158 +15,102 @@ jest.mock('router/compat', () => ({
   }),
 }))
 
-function PaginationItemsWrapper({
-  startPage,
-  totalPages,
-}: {
-  startPage: number
-  totalPages: number
-}) {
-  const [activePage, setActivePage] = useState(startPage)
-  return (
-    <PaginationItems
-      paginationURLParam={'paginationIndex'}
-      activePage={activePage}
-      setActivePage={setActivePage}
-      lastPage={totalPages}
-    />
-  )
-}
-
 function renderPaginationItems(
-  startPage = 0,
-  totalPages: number,
+  activePage = 0,
+  hasNextPage = true,
   initialEntry = '/library/search/',
+  pageSize = 50,
 ) {
   return render(
     <MemoryRouter initialEntries={[initialEntry]}>
-      <PaginationItemsWrapper startPage={startPage} totalPages={totalPages} />
+      <PaginationItems
+        paginationURLParam="paginationIndex"
+        activePage={activePage}
+        pageSize={pageSize}
+        hasNextPage={hasNextPage}
+        position="top"
+      />
     </MemoryRouter>,
   )
-}
-function expectPaginationElementControlToBeVisible(page: number) {
-  expect(screen.getByRole('button', { name: page.toString() })).toBeVisible()
-}
-function expectPaginationElementControlsToBeVisible(
-  start: number,
-  end: number,
-) {
-  for (const page of _.range(start, end + 1, 1)) {
-    expectPaginationElementControlToBeVisible(page)
-  }
 }
 
 beforeEach(() => {
   mockHistoryPush.mockClear()
 })
 
-describe('Click through Pagination Component Beginning', () => {
-  it('1,2,3,4,...,100', async () => {
-    renderPaginationItems(0, 99)
-    /*First Pagination Item with Number '1' is active but has not 'button' role
-      unactive Pagination Items have role button */
-    await screen.findByText('1')
-    expectPaginationElementControlsToBeVisible(2, 4)
-    expect(screen.getByText('…')).toBeInTheDocument()
-    expectPaginationElementControlToBeVisible(100)
+describe('PaginationItems', () => {
+  it('renders a named navigation landmark with centered control groups', () => {
+    renderPaginationItems()
+
     expect(
-      screen.queryByRole('button', { name: '101' }),
-    ).not.toBeInTheDocument()
-  })
-  it('1,2,3,4,5', async () => {
-    renderPaginationItems(0, 4)
-    await screen.findByText('1')
-    expectPaginationElementControlsToBeVisible(2, 5)
-    expect(screen.queryByText('…')).not.toBeInTheDocument()
-    expect(screen.queryByRole('button', { name: '6' })).not.toBeInTheDocument()
-  })
-  it('1,2,3,4,5', async () => {
-    renderPaginationItems(1, 4)
-    await screen.findByText('2')
-    expectPaginationElementControlsToBeVisible(3, 5)
-    expect(screen.queryByText('…')).not.toBeInTheDocument()
-    expect(screen.queryByRole('button', { name: '6' })).not.toBeInTheDocument()
-  })
-  it('1,2,3,4,...,9', async () => {
-    renderPaginationItems(0, 8)
-    await screen.findByText('1')
-    expectPaginationElementControlsToBeVisible(2, 4)
-    expect(screen.getByText('…')).toBeInTheDocument()
-    expect(screen.queryByRole('button', { name: '5' })).not.toBeInTheDocument()
-    expectPaginationElementControlToBeVisible(9)
-    expect(screen.queryByRole('button', { name: '10' })).not.toBeInTheDocument()
-  })
-  it('1,...,5,6,7,8,9', async () => {
-    renderPaginationItems(7, 8)
-    await screen.findByText('8')
-    expectPaginationElementControlsToBeVisible(5, 7)
-    expectPaginationElementControlToBeVisible(9)
-    expect(screen.getByText('…')).toBeInTheDocument()
-    expect(screen.queryByRole('button', { name: '4' })).not.toBeInTheDocument()
-    expect(screen.queryByRole('button', { name: '10' })).not.toBeInTheDocument()
-  })
-  it('1,...,9,10,11,12,13,14,15,16', async () => {
-    renderPaginationItems(11, 15)
-    await screen.findByText('12')
-    expectPaginationElementControlsToBeVisible(9, 11)
-    expectPaginationElementControlsToBeVisible(13, 16)
-    expect(screen.getByText('…')).toBeInTheDocument()
-    expect(screen.queryByRole('button', { name: '8' })).not.toBeInTheDocument()
+      screen.getByRole('navigation', {
+        name: 'Search results pagination, top',
+      }),
+    ).toHaveClass('fragment-result__pagination')
+    expect(screen.getByText('Go to page')).toBeVisible()
+    expect(screen.getByText('Results per page')).toBeVisible()
+    expect(screen.getByLabelText('Go to page')).toHaveClass(
+      'fragment-result__pagination-page-input',
+    )
+    expect(screen.getByLabelText('Results per page')).toHaveClass(
+      'fragment-result__pagination-page-size',
+    )
+    expect(screen.getByRole('list', { name: 'Pages' })).toHaveClass(
+      'pagination-sm',
+      'fragment-result__pagination-pages',
+    )
   })
 
-  it('1,2,3,4,5,6,7,8,9', async () => {
-    renderPaginationItems(4, 8)
-    await screen.findByText('5')
-    expectPaginationElementControlsToBeVisible(6, 9)
-    expectPaginationElementControlsToBeVisible(1, 4)
-    expect(screen.queryByText('…')).not.toBeInTheDocument()
+  it('associates each visible label with its own control', () => {
+    renderPaginationItems()
+
+    const pageJumpLabel = screen.getByText('Go to page')
+    const pageSizeLabel = screen.getByText('Results per page')
+
+    expect(pageJumpLabel).toHaveAttribute(
+      'for',
+      screen.getByLabelText('Go to page').id,
+    )
+    expect(pageSizeLabel).toHaveAttribute(
+      'for',
+      screen.getByLabelText('Results per page').id,
+    )
+    expect(screen.getByLabelText('Go to page').id).not.toEqual(
+      screen.getByLabelText('Results per page').id,
+    )
+  })
+  it('disables Previous on page zero and shows the one-based page number', () => {
+    renderPaginationItems(0, true)
+
+    expect(screen.getAllByRole('listitem')[0]).toHaveClass('disabled')
+    expect(screen.getByText('Page 1')).toBeInTheDocument()
+    expect(screen.getAllByRole('listitem')[2]).not.toHaveClass('disabled')
   })
 
-  it('Click next Pages', async () => {
-    renderPaginationItems(0, 99)
-    for (const page of [2, 3, 4, 5, 6, 7]) {
-      await userEvent.click(
-        screen.getByRole('button', { name: page.toString() }),
-      )
-      expect(await screen.findByText(page.toString())).toBeInTheDocument()
-      expect(mockHistoryPush).toHaveBeenLastCalledWith({
-        search: `paginationIndex=${page - 1}`,
-      })
-      await screen.findByRole('button', { name: (page + 3).toString() })
-    }
-    await screen.findByRole('button', { name: '9' })
-    expect(screen.queryByRole('button', { name: '2' })).not.toBeInTheDocument()
-  })
-})
+  it('ignores clicks on the disabled Previous control', async () => {
+    renderPaginationItems(0, true)
 
-describe('Click through Pagination Component End', () => {
-  it('Click next Pages', async () => {
-    renderPaginationItems(95, 99)
-    await screen.findByText('96')
-    for (const page of [97, 98, 99]) {
-      await userEvent.click(
-        screen.getByRole('button', { name: page.toString() }),
-      )
-      expect(mockHistoryPush).toHaveBeenLastCalledWith({
-        search: `paginationIndex=${page - 1}`,
-      })
-      expect(await screen.findByText(page.toString())).toBeInTheDocument()
-      await screen.findByRole('button', {
-        name: Math.min(page + 3, 100).toString(),
-      })
-    }
-    expect(screen.queryByRole('button', { name: '95' })).not.toBeInTheDocument()
+    await userEvent.click(screen.getByText('Previous'))
+
+    expect(mockHistoryPush).not.toHaveBeenCalled()
   })
 
-  it('preserves existing numeric text and encoded query values when paginating', async () => {
+  it('uses hasNextPage as the only Next navigation signal', () => {
+    renderPaginationItems(4, false)
+
+    expect(screen.getAllByRole('listitem')[0]).not.toHaveClass('disabled')
+    expect(screen.getByText('Page 5')).toBeInTheDocument()
+    expect(screen.getAllByRole('listitem')[2]).toHaveClass('disabled')
+  })
+
+  it('preserves encoded query values when going next', async () => {
     renderPaginationItems(
       0,
-      99,
+      true,
       '/library/search/?museum=BM&number=000123&genre=CANONICAL%3ATechnical%3AAstronomy%3AAstronomical%20Diaries',
     )
 
-    await screen.findByText('1')
-    await userEvent.click(screen.getByRole('button', { name: '2' }))
+    await userEvent.click(screen.getByText('Next'))
 
     expect(mockHistoryPush).toHaveBeenLastCalledWith({
       search:
@@ -178,15 +121,90 @@ describe('Click through Pagination Component End', () => {
   it('removes duplicate paginationIndex params when paginating', async () => {
     renderPaginationItems(
       4,
-      99,
+      true,
       '/library/search/?museum=BM&paginationIndex=4&genre=letters&paginationIndex=99',
     )
 
-    await screen.findByText('5')
-    await userEvent.click(screen.getByRole('button', { name: '2' }))
+    await userEvent.click(screen.getByText('Previous'))
 
     expect(mockHistoryPush).toHaveBeenLastCalledWith({
-      search: 'museum=BM&paginationIndex=1&genre=letters',
+      search: 'museum=BM&paginationIndex=3&genre=letters',
     })
+  })
+
+  it('preserves encoded query values when changing page size', async () => {
+    renderPaginationItems(
+      2,
+      true,
+      '/library/search/?museum=BM&genre=CANONICAL%3ATechnical%3AAstronomy%3AAstronomical%20Diaries&transliteration=a%2Bb&number=000123',
+    )
+
+    await userEvent.selectOptions(
+      screen.getByLabelText('Results per page'),
+      '100',
+    )
+
+    expect(mockHistoryPush).toHaveBeenLastCalledWith({
+      search:
+        'museum=BM&genre=CANONICAL%3ATechnical%3AAstronomy%3AAstronomical%20Diaries&transliteration=a%2Bb&number=000123&limit=100&paginationIndex=0',
+    })
+  })
+
+  it('shows the page size it was given rather than re-deriving it', () => {
+    renderPaginationItems(0, true, '/library/search/?limit=50', 25)
+
+    expect(screen.getByLabelText('Results per page')).toHaveValue('25')
+  })
+
+  it('jumps directly to a requested page and clears the input afterwards', async () => {
+    renderPaginationItems(0, true, '/library/search/?number=K.1')
+
+    const pageJumpInput = screen.getByLabelText('Go to page')
+    await userEvent.type(pageJumpInput, '4')
+    await userEvent.click(screen.getByText('Go'))
+
+    expect(mockHistoryPush).toHaveBeenLastCalledWith({
+      search: 'number=K.1&paginationIndex=3',
+    })
+    expect(pageJumpInput).toHaveValue(null)
+  })
+
+  it('ignores invalid and current page jump requests', async () => {
+    renderPaginationItems(2, true, '/library/search/?number=K.1')
+
+    await userEvent.type(screen.getByLabelText('Go to page'), '0')
+    await userEvent.click(screen.getByText('Go'))
+    expect(mockHistoryPush).not.toHaveBeenCalled()
+
+    await userEvent.clear(screen.getByLabelText('Go to page'))
+    await userEvent.type(screen.getByLabelText('Go to page'), '3')
+    await userEvent.click(screen.getByText('Go'))
+    expect(mockHistoryPush).not.toHaveBeenCalled()
+  })
+
+  it('rejects a page jump beyond the safe integer range', async () => {
+    renderPaginationItems(0, true, '/library/search/?number=K.1')
+
+    const unsafePage = '99999999999999999'
+    expect(Number(unsafePage)).toBeGreaterThan(Number.MAX_SAFE_INTEGER)
+
+    const pageJumpInput = screen.getByLabelText('Go to page')
+    await userEvent.type(pageJumpInput, unsafePage)
+    await userEvent.click(screen.getByText('Go'))
+
+    expect(mockHistoryPush).not.toHaveBeenCalled()
+    expect(pageJumpInput).toHaveValue(Number(unsafePage))
+  })
+
+  it('requires the page-jump input and rejects an empty submission', async () => {
+    renderPaginationItems(0, true, '/library/search/?number=K.1')
+
+    const pageJumpInput = screen.getByLabelText('Go to page')
+    expect(pageJumpInput).toBeRequired()
+    expect(pageJumpInput).toHaveAttribute('min', '1')
+
+    await userEvent.click(screen.getByText('Go'))
+
+    expect(mockHistoryPush).not.toHaveBeenCalled()
   })
 })

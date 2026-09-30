@@ -24,11 +24,15 @@ import {
 } from 'corpus/application/textServiceConstants'
 
 export class TextReadService extends TextServiceBase {
-  find({ genre, category, index }: TextId): Promise<Text> {
+  find(
+    { genre, category, index }: TextId,
+    signal?: AbortSignal,
+  ): Promise<Text> {
     return this.apiClient
       .fetchJson<Record<string, unknown>>(
         createTextUrl(genre, category, index),
         false,
+        signal,
       )
       .then(fromDto)
       .then((text) =>
@@ -49,12 +53,13 @@ export class TextReadService extends TextServiceBase {
       )
   }
 
-  findChapter(id: ChapterId): Promise<Chapter> {
+  findChapter(id: ChapterId, signal?: AbortSignal): Promise<Chapter> {
     return Promise.all([
       this.loadProvenances(),
       this.apiClient.fetchJson<Record<string, unknown>>(
         createChapterUrl(id),
         false,
+        signal,
       ),
     ]).then(([, dto]) => fromChapterDto(dto))
   }
@@ -134,16 +139,16 @@ export class TextReadService extends TextServiceBase {
         ),
       ).then(
         (chapterLines) =>
-          new ChapterDisplay(
-            chapter.id,
-            chapter.textHasDoi,
-            chapter.textName,
-            chapter.isSingleStage,
-            chapter.title,
-            chapterLines,
-            chapter.record,
-            chapter.atf,
-          ),
+          new ChapterDisplay({
+            id: chapter.id,
+            textHasDoi: chapter.textHasDoi,
+            textName: chapter.textName,
+            isSingleStage: chapter.isSingleStage,
+            title: chapter.title,
+            lines: chapterLines,
+            record: chapter.record,
+            atf: chapter.atf,
+          }),
       ),
     )
   }

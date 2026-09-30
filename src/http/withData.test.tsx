@@ -1,4 +1,5 @@
-import { RenderResult, screen, waitFor } from '@testing-library/react'
+import React from 'react'
+import { act, RenderResult, screen, waitFor } from '@testing-library/react'
 import _ from 'lodash'
 import {
   WithDataHarness,
@@ -163,6 +164,62 @@ describe('When unmounting', () => {
     const { unmount } = renderWithData(harness)
     unmount()
     expect(harness.InnerComponent).not.toHaveBeenCalled()
+  })
+
+  describe('when a getter ignores the signal and settles afterwards', () => {
+    const stateUpdates = jest.fn()
+
+    beforeEach(() => {
+      const actualUseState = React.useState
+      jest.spyOn(React, 'useState').mockImplementation(((
+        initialState: unknown,
+      ) => {
+        const [state, setState] = actualUseState(initialState)
+        const recordingSetState = (next: unknown): void => {
+          stateUpdates(next)
+          setState(next)
+        }
+        return [state, recordingSetState]
+      }) as typeof React.useState)
+    })
+
+    afterEach(() => {
+      jest.restoreAllMocks()
+    })
+
+    async function settleAfterUnmount(
+      settle: (
+        resolve: (value: string) => void,
+        reject: (error: Error) => void,
+      ) => void,
+    ): Promise<void> {
+      let resolveRequest: (value: string) => void = _.noop
+      let rejectRequest: (error: Error) => void = _.noop
+      harness.getter.mockReturnValueOnce(
+        new Promise<string>((resolve, reject) => {
+          resolveRequest = resolve
+          rejectRequest = reject
+        }),
+      )
+      const { unmount } = renderWithData(harness)
+      unmount()
+      stateUpdates.mockClear()
+      await act(async () => settle(resolveRequest, rejectRequest))
+    }
+
+    it('does not apply data that resolves after unmount', async () => {
+      await settleAfterUnmount((resolve) => resolve(data))
+
+      expect(stateUpdates).not.toHaveBeenCalled()
+    })
+
+    it('does not apply an error that arrives after unmount', async () => {
+      await settleAfterUnmount((_resolve, reject) =>
+        reject(new Error(errorMessage)),
+      )
+
+      expect(stateUpdates).not.toHaveBeenCalled()
+    })
   })
 })
 

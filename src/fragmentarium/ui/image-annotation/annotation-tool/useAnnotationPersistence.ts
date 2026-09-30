@@ -1,7 +1,10 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import Annotation from 'fragmentarium/domain/annotation'
-import FragmentService from 'fragmentarium/application/FragmentService'
-import { AnnotationPersistence } from 'fragmentarium/ui/image-annotation/annotation-tool/fragmentAnnotationStateTypes'
+import SerialQueue from 'common/utils/SerialQueue'
+import {
+  AnnotationFragmentService,
+  AnnotationPersistence,
+} from 'fragmentarium/ui/image-annotation/annotation-tool/fragmentAnnotationStateTypes'
 
 export default function useAnnotationPersistence({
   fragmentService,
@@ -11,7 +14,7 @@ export default function useAnnotationPersistence({
   setSavedAnnotations,
   reset,
 }: {
-  fragmentService: FragmentService
+  fragmentService: AnnotationFragmentService
   fragmentNumber: string
   annotations: readonly Annotation[]
   setAnnotations: (annotations: readonly Annotation[]) => void
@@ -20,18 +23,32 @@ export default function useAnnotationPersistence({
 }): AnnotationPersistence {
   const [isSaving, setIsSaving] = useState(false)
   const [isDeleting, setIsDeleting] = useState(false)
+  const [pendingWrites, setPendingWrites] = useState(0)
   const [isGenerateAnnotationsLoading, setIsGenerateAnnotationsLoading] =
     useState(false)
   const [error, setError] = useState<Error | null>(null)
+  const writeQueue = useRef(new SerialQueue())
 
-  const saveAnnotations = async (
+  const saveAnnotations = (
     updatedAnnotations: readonly Annotation[],
-  ): Promise<void> => {
+  ): Promise<boolean> => {
     setAnnotations(updatedAnnotations)
-    return fragmentService
-      .updateAnnotations(fragmentNumber, updatedAnnotations)
-      .then(() => setSavedAnnotations(updatedAnnotations))
-      .catch(setError)
+    setPendingWrites((count) => count + 1)
+    return writeQueue.current
+      .enqueue(() =>
+        fragmentService.updateAnnotations(fragmentNumber, updatedAnnotations),
+      )
+      .then(
+        () => {
+          setSavedAnnotations(updatedAnnotations)
+          return true
+        },
+        (saveError: Error) => {
+          setError(saveError)
+          return false
+        },
+      )
+      .finally(() => setPendingWrites((count) => count - 1))
   }
 
   return {
@@ -39,10 +56,11 @@ export default function useAnnotationPersistence({
     isDeleting,
     isGenerateAnnotationsLoading,
     isSaving,
+    isWriting: pendingWrites > 0,
     onDelete: (annotation: Annotation): Promise<void> =>
       saveAnnotations(
         annotations.filter((other) => annotation.data.id !== other.data.id),
-      ),
+      ).then(() => undefined),
     saveCurrentAnnotations: (): void => {
       setIsSaving(true)
       saveAnnotations(annotations).finally(() => setIsSaving(false))
@@ -51,7 +69,7 @@ export default function useAnnotationPersistence({
       if (window.confirm('Sure you want to delete everything ?')) {
         setIsDeleting(true)
         saveAnnotations([])
-          .then(reset)
+          .then((isSaved) => isSaved && reset())
           .finally(() => setIsDeleting(false))
       }
     },

@@ -7,7 +7,6 @@ import {
   fragmentRepository,
   fragmentService,
   genres,
-  stubMissingBibliography,
 } from 'fragmentarium/application/fragmentServiceFragments.testSupport'
 
 let fragment: Fragment
@@ -16,7 +15,6 @@ let result: Fragment
 beforeEach(() => {
   jest.clearAllMocks()
   fragment = buildTestFragment()
-  stubMissingBibliography()
 })
 
 describe('update genre', () => {

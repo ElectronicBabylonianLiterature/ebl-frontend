@@ -1,4 +1,8 @@
 import { ApiError } from 'http/ApiClient'
+import {
+  CaptureStackTraceOverride,
+  overrideCaptureStackTrace,
+} from 'test-support/captureStackTraceOverride'
 
 test.each([
   ['Description', { title: 'hide', description: 'Description' }],
@@ -61,17 +65,15 @@ describe('ApiError Construction', () => {
 })
 
 describe('On an engine without Error.captureStackTrace', () => {
-  type ErrorWithOptionalCapture = { captureStackTrace?: unknown }
-  const errorConstructor = Error as unknown as ErrorWithOptionalCapture
-  let originalCaptureStackTrace: unknown
+  let captureStackTraceOverride: CaptureStackTraceOverride
 
   beforeEach(() => {
-    originalCaptureStackTrace = errorConstructor.captureStackTrace
-    delete errorConstructor.captureStackTrace
+    captureStackTraceOverride = overrideCaptureStackTrace()
+    captureStackTraceOverride.remove()
   })
 
   afterEach(() => {
-    errorConstructor.captureStackTrace = originalCaptureStackTrace
+    captureStackTraceOverride.restore()
   })
 
   test('Constructing an ApiError does not throw', () => {

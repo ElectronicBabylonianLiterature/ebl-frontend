@@ -17,6 +17,29 @@ import Editor from 'editor/Editor'
 
 const indent = '\u00A0'.repeat(4)
 
+function AtfEditorField({
+  idPrefix,
+  label,
+  value,
+  onChange,
+}: {
+  idPrefix: string
+  label: string
+  value: string
+  onChange: (atf: string) => void
+}): JSX.Element {
+  return (
+    <Form.Group controlId={_.uniqueId(`${idPrefix}-`)}>
+      <Form.Label>{label}</Form.Label>{' '}
+      <Editor
+        name={_.uniqueId(`${idPrefix}-editor-`)}
+        value={value}
+        onChange={onChange}
+      />
+    </Form.Group>
+  )
+}
+
 export default function ManuscriptForm({
   manuscript,
   provenanceOptions,
@@ -34,6 +57,14 @@ export default function ManuscriptForm({
       onChange(
         produce(manuscript, (draft: Draft<Manuscript>) => {
           draft[property] = event.target.value
+        }),
+      )
+  const updateAtf =
+    (property: 'colophon' | 'unplacedLines') =>
+    (atf: string): void =>
+      onChange(
+        produce(manuscript, (draft: Draft<Manuscript>) => {
+          draft[property] = atf
         }),
       )
   const handleEnumChange =
@@ -162,34 +193,18 @@ export default function ManuscriptForm({
           onChange={handleChange('notes')}
         />
       </Form.Group>
-      <Form.Group controlId={_.uniqueId('colophon-')}>
-        <Form.Label>Colophon</Form.Label>{' '}
-        <Editor
-          name={_.uniqueId('colophon-editor-')}
-          value={manuscript.colophon}
-          onChange={(atf) =>
-            onChange(
-              produce(manuscript, (draft) => {
-                draft.colophon = atf
-              }),
-            )
-          }
-        />
-      </Form.Group>
-      <Form.Group controlId={_.uniqueId('unplaced-lines-')}>
-        <Form.Label>Unplaced Lines</Form.Label>{' '}
-        <Editor
-          name={_.uniqueId('unplaced-lines-editor-')}
-          value={manuscript.unplacedLines}
-          onChange={(atf) =>
-            onChange(
-              produce(manuscript, (draft) => {
-                draft.unplacedLines = atf
-              }),
-            )
-          }
-        />
-      </Form.Group>
+      <AtfEditorField
+        idPrefix="colophon"
+        label="Colophon"
+        value={manuscript.colophon}
+        onChange={updateAtf('colophon')}
+      />
+      <AtfEditorField
+        idPrefix="unplaced-lines"
+        label="Unplaced Lines"
+        value={manuscript.unplacedLines}
+        onChange={updateAtf('unplacedLines')}
+      />
       <ReferencesForm
         value={manuscript.references}
         label="References"

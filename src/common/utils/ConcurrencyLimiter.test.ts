@@ -1,6 +1,6 @@
-import ConcurrencyLimiter from 'common/utils/ConcurrencyLimiter'
 import {
   Deferred,
+  InspectableConcurrencyLimiter,
   deferred,
   queueState,
   settle,
@@ -8,7 +8,7 @@ import {
 
 describe('ConcurrencyLimiter', () => {
   it('limits normal concurrency', async () => {
-    const limiter = new ConcurrencyLimiter(2)
+    const limiter = new InspectableConcurrencyLimiter(2)
     const started: string[] = []
     const completions = new Map<string, Deferred<string>>()
     let activeWork = 0
@@ -59,7 +59,7 @@ describe('ConcurrencyLimiter', () => {
   })
 
   it('runs queued operations after active operations finish', async () => {
-    const limiter = new ConcurrencyLimiter(1)
+    const limiter = new InspectableConcurrencyLimiter(1)
     const firstCompletion = deferred<string>()
     const started: string[] = []
 
@@ -88,7 +88,7 @@ describe('ConcurrencyLimiter', () => {
   })
 
   it('releases the slot when an operation rejects', async () => {
-    const limiter = new ConcurrencyLimiter(1)
+    const limiter = new InspectableConcurrencyLimiter(1)
     const failure = new Error('failure')
     const queuedOperation = jest.fn(() => Promise.resolve('queued done'))
 
@@ -103,7 +103,7 @@ describe('ConcurrencyLimiter', () => {
   })
 
   it('releases the slot when an operation throws synchronously', async () => {
-    const limiter = new ConcurrencyLimiter(1)
+    const limiter = new InspectableConcurrencyLimiter(1)
     const boom = new Error('boom')
     const subsequentOperation = jest.fn(() =>
       Promise.resolve('subsequent done'),
@@ -122,10 +122,8 @@ describe('ConcurrencyLimiter', () => {
   })
 
   it('ignores repeated release calls for the same acquired slot', async () => {
-    const limiter = new ConcurrencyLimiter(1)
-    const releaseSlot = await (
-      limiter as unknown as { acquireSlot: () => Promise<() => void> }
-    ).acquireSlot()
+    const limiter = new InspectableConcurrencyLimiter(1)
+    const releaseSlot = await limiter.acquire()
 
     expect(queueState(limiter).activeCount).toBe(1)
 

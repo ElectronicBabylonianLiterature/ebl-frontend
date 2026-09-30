@@ -1,6 +1,12 @@
 import { Dispatch, SetStateAction } from 'react'
 import { AnnotationToken } from 'fragmentarium/domain/annotation-token'
 import Annotation, { RawAnnotation } from 'fragmentarium/domain/annotation'
+import FragmentService from 'fragmentarium/application/FragmentService'
+
+export type AnnotationFragmentService = Pick<
+  FragmentService,
+  'updateAnnotations' | 'generateAnnotations'
+>
 
 export type ZoomEvent = { state: { scale: number } }
 
@@ -11,6 +17,7 @@ export type AnnotationPersistence = {
   isDeleting: boolean
   isGenerateAnnotationsLoading: boolean
   isSaving: boolean
+  isWriting: boolean
   onDelete: (annotation: Annotation) => Promise<void>
   saveCurrentAnnotations: () => void
 }
@@ -31,6 +38,7 @@ export type FragmentAnnotationState = {
   isDisableAnnotating: boolean
   isGenerateAnnotationsLoading: boolean
   isSaving: boolean
+  isWriting: boolean
   onChange: (annotation: RawAnnotation) => void
   onClick: () => void
   onDelete: (annotation: Annotation) => Promise<void>

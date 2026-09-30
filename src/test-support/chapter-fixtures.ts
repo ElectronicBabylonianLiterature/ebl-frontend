@@ -62,18 +62,18 @@ class ChapterDisplayFactory extends Factory<
 export const chapterDisplayFactory = ChapterDisplayFactory.define(
   ({ transientParams }) => {
     const chance = transientParams.chance ?? chapterFixtureChance
-    return new ChapterDisplay(
-      chapterIdFactory.build({}, { transient: { chance } }),
-      chance.bool(),
-      chance.sentence(),
-      chance.bool(),
-      [
+    return new ChapterDisplay({
+      id: chapterIdFactory.build({}, { transient: { chance } }),
+      textHasDoi: chance.bool(),
+      textName: chance.sentence(),
+      isSingleStage: chance.bool(),
+      title: [
         {
           text: chance.sentence(),
           type: 'StringPart',
         },
       ],
-      [
+      lines: [
         lineDisplayFactory.build(
           { originalIndex: 0 },
           { transient: { chance } },
@@ -83,8 +83,8 @@ export const chapterDisplayFactory = ChapterDisplayFactory.define(
           { transient: { chance } },
         ),
       ],
-      { authors: [], translators: [], publicationDate: '' },
-      chance.sentence(),
-    )
+      record: { authors: [], translators: [], publicationDate: '' },
+      atf: chance.sentence(),
+    })
   },
 )

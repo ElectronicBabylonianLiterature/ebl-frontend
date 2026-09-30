@@ -11,7 +11,7 @@ import {
   toLemmatizationDto,
   toLinesDto,
   toManuscriptsDto,
-} from './dtos'
+} from 'corpus/application/dtos'
 
 import { createChapterUrl } from 'corpus/application/chapterUrls'
 import TextReadService from 'corpus/application/TextReadService'

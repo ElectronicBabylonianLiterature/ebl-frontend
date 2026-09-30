@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react'
 import _ from 'lodash'
 
 import { changeValueByLabel, clickNth } from 'test-support/utils'
-import ReferencesForm from './ReferencesForm'
+import ReferencesForm from 'bibliography/ui/ReferencesForm'
 import Reference from 'bibliography/domain/Reference'
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 import {

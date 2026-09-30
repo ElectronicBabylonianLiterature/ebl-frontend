@@ -1,6 +1,6 @@
 import React from 'react'
 import ListForm from 'common/ui/List'
-import ReferenceForm from './ReferenceForm'
+import ReferenceForm from 'bibliography/ui/ReferenceForm'
 import Reference from 'bibliography/domain/Reference'
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 

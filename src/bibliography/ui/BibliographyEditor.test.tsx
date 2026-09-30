@@ -6,7 +6,7 @@ import _ from 'lodash'
 import { act } from 'react'
 import SessionContext from 'auth/SessionContext'
 import { submitForm } from 'test-support/utils'
-import BibliographyEditor from './BibliographyEditor'
+import BibliographyEditor from 'bibliography/ui/BibliographyEditor'
 import BibliographyEntry, {
   template,
 } from 'bibliography/domain/BibliographyEntry'

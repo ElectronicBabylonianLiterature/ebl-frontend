@@ -4,6 +4,11 @@ import { ErrorReporter } from 'ErrorReporterContext'
 import { isAbortError } from 'common/utils/abortError'
 import captureStackTrace from 'common/utils/captureStackTrace'
 
+export type AccessTokenProvider = Pick<
+  AuthenticationService,
+  'getAccessToken' | 'isAuthenticated'
+>
+
 type Options = Omit<RequestInit, 'headers'> & {
   headers?: Record<string, string>
 }
@@ -86,10 +91,10 @@ export class ApiError extends Error {
 }
 
 export default class ApiClient {
-  private readonly auth: AuthenticationService
+  private readonly auth: AccessTokenProvider
   private readonly errorReporter: ErrorCapturer
 
-  constructor(auth: AuthenticationService, errorReporter: ErrorCapturer) {
+  constructor(auth: AccessTokenProvider, errorReporter: ErrorCapturer) {
     this.auth = auth
     this.errorReporter = errorReporter
   }

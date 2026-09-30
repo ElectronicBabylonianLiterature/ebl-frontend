@@ -6,7 +6,7 @@ import withData from 'http/withData'
 import LinkedImage from 'common/ui/LinkedImage'
 import { Fragment } from 'fragmentarium/domain/fragment'
 
-import './CdliImages.css'
+import 'fragmentarium/ui/images/CdliImages.css'
 
 const CDLI_PHOTO = 'cdli_photo'
 const CDLI_LINE_ART = 'cdli_line_art'
