@@ -40,13 +40,19 @@ function isTypeOnlyImport(node: ts.ImportDeclaration): boolean {
   }
 
   const namedBindings = node.importClause?.namedBindings
-  return (
-    node.importClause?.name === undefined &&
-    namedBindings !== undefined &&
-    ts.isNamedImports(namedBindings) &&
-    namedBindings.elements.length > 0 &&
-    namedBindings.elements.every((element) => element.isTypeOnly)
-  )
+  if (node.importClause?.name !== undefined) {
+    return false
+  }
+
+  if (namedBindings === undefined || !ts.isNamedImports(namedBindings)) {
+    return false
+  }
+
+  if (namedBindings.elements.length === 0) {
+    return false
+  }
+
+  return namedBindings.elements.every((element) => element.isTypeOnly)
 }
 
 export function collectModuleReferences(
