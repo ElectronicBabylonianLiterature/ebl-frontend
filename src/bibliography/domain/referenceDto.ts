@@ -1,4 +1,4 @@
-import { CslData } from './BibliographyEntry'
+import { CslData } from 'bibliography/domain/BibliographyEntry'
 
 export interface ReferenceDto {
   readonly id: string

@@ -1,7 +1,7 @@
-import Promise from 'bluebird'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import { QueryResult } from 'query/QueryResult'
+import * as fragmentReferences from 'fragmentarium/application/fragmentReferences'
 import {
   createScopedService,
   fragmentRepository,
@@ -179,13 +179,8 @@ describe('latest query caching', () => {
       matchCountTotal: 1,
     }
     const injectReferencesMock = jest
-      .spyOn(
-        service as unknown as {
-          injectReferences: (fragment: Fragment) => Promise<Fragment>
-        },
-        'injectReferences',
-      )
-      .mockReturnValue(Promise.reject(new Error('403 Forbidden')))
+      .spyOn(fragmentReferences, 'injectReferences')
+      .mockRejectedValue(new Error('403 Forbidden'))
     fragmentRepository.queryLatest.mockReturnValue(
       Promise.resolve(queryResultWithPrefetchedFragment),
     )

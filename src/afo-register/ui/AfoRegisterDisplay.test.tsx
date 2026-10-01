@@ -3,7 +3,7 @@ import { render, screen, waitFor } from '@testing-library/react'
 import {
   AfoRegisterRecordDisplay,
   AfoRegisterRecordsListDisplay,
-} from './AfoRegisterDisplay'
+} from 'afo-register/ui/AfoRegisterDisplay'
 import { afoRegisterRecordFactory } from 'test-support/afo-register-fixtures'
 import { waitForSpinnerToBeRemoved } from 'test-support/waitForSpinnerToBeRemoved'
 

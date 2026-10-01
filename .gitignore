@@ -27,6 +27,7 @@ yarn-error.log*
 
 .claude
 
-# qlty
+# qlty — generated caches, logs and results; keep the checked-in config
 .qlty/*
 !.qlty/qlty.toml
+!.qlty/configs

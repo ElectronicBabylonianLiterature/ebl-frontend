@@ -2,13 +2,13 @@ import React from 'react'
 import { Text } from 'transliteration/domain/text'
 import withData from 'http/withData'
 import WordService from 'dictionary/application/WordService'
-import GlossaryLine from './GlossaryLine'
+import GlossaryLine from 'transliteration/ui/GlossaryLine'
 import {
   GlossaryData,
   compareGlossaryEntries,
 } from 'transliteration/domain/glossary'
 
-import './Glossary.sass'
+import 'transliteration/ui/Glossary.sass'
 import GlossaryFactory from 'transliteration/application/GlossaryFactory'
 import _ from 'lodash'
 

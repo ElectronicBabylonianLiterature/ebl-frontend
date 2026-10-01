@@ -13,106 +13,14 @@ import {
   ManuscriptTypes,
   OldSiglum,
 } from 'corpus/domain/manuscript'
-import { Token } from 'transliteration/domain/token'
 import { ResearchProjects } from 'research-projects/researchProject'
 
-export const reconstructionTokens: Token[] = [
-  {
-    value: '%n',
-    cleanValue: '%n',
-    enclosureType: [],
-    erasure: 'NONE',
-    language: 'AKKADIAN',
-    normalized: true,
-    type: 'LanguageShift',
-  },
-  {
-    value: 'kur-kur',
-    cleanValue: 'kur-kur',
-    enclosureType: [],
-    erasure: 'NONE',
-    lemmatizable: true,
-    alignable: true,
-    alignment: null,
-    variant: null,
-    uniqueLemma: [],
-    normalized: true,
-    language: 'AKKADIAN',
-    parts: [
-      {
-        value: 'kur-kur',
-        cleanValue: 'kur-kur',
-        enclosureType: [],
-        erasure: 'NONE',
-        type: 'ValueToken',
-      },
-    ],
-    modifiers: [],
-    type: 'AkkadianWord',
-    hasVariantAlignment: false,
-    hasOmittedAlignment: false,
-  },
-]
+import {
+  atfTokens,
+  reconstructionTokens,
+} from 'test-support/test-corpus-tokens'
 
-const atfTokens: Token[] = [
-  {
-    type: 'Word',
-    value: 'kur',
-    parts: [],
-    cleanValue: 'kur',
-    uniqueLemma: [],
-    normalized: false,
-    language: 'AKKADIAN',
-    lemmatizable: true,
-    alignable: true,
-    erasure: 'NONE',
-    alignment: null,
-    variant: null,
-    enclosureType: [],
-    hasVariantAlignment: false,
-    hasOmittedAlignment: false,
-  },
-  {
-    type: 'Word',
-    value: 'ra',
-    parts: [],
-    cleanValue: 'ra',
-    uniqueLemma: ['aklu I'],
-    normalized: false,
-    language: 'AKKADIAN',
-    lemmatizable: true,
-    alignable: true,
-    erasure: 'NONE',
-    alignment: 1,
-    variant: {
-      type: 'Word',
-      value: 'ra',
-      parts: [],
-      cleanValue: 'ra',
-      uniqueLemma: ['aklu I'],
-      normalized: false,
-      language: 'AKKADIAN',
-      lemmatizable: true,
-      alignable: true,
-      erasure: 'NONE',
-      alignment: null,
-      variant: null,
-      enclosureType: [],
-      hasVariantAlignment: false,
-      hasOmittedAlignment: false,
-    },
-    enclosureType: [],
-    hasVariantAlignment: false,
-    hasOmittedAlignment: false,
-  },
-  {
-    value: '...',
-    cleanValue: '...',
-    enclosureType: [],
-    erasure: 'NONE',
-    type: 'UnknownNumberOfSigns',
-  },
-]
+export { reconstructionTokens }
 
 export const chapterDto = {
   classification: 'Ancient',
@@ -222,10 +130,10 @@ export const chapter = createChapter({
   order: 1,
   uncertainFragments: ['K.1'],
   manuscripts: [
-    new Manuscript(
-      1,
-      '1',
-      [
+    new Manuscript({
+      id: 1,
+      siglumDisambiguator: '1',
+      oldSigla: [
         new OldSiglum(
           'os-test',
           new Reference(
@@ -237,16 +145,16 @@ export const chapter = createChapter({
           ).withIdentity('RN1853'),
         ),
       ],
-      'BM.X',
-      'X.1',
-      PeriodModifiers['Early'],
-      Periods['Ur III'],
-      Provenances.Nippur,
-      ManuscriptTypes.School,
-      'a note',
-      '1. kur',
-      '1. bu',
-      [
+      museumNumber: 'BM.X',
+      accession: 'X.1',
+      periodModifier: PeriodModifiers['Early'],
+      period: Periods['Ur III'],
+      provenance: Provenances.Nippur,
+      type: ManuscriptTypes.School,
+      notes: 'a note',
+      colophon: '1. kur',
+      unplacedLines: '1. bu',
+      references: [
         new Reference(
           'DISCUSSION',
           '34-54',
@@ -255,9 +163,9 @@ export const chapter = createChapter({
           new BibliographyEntry({ id: 'RN1853' }),
         ).withIdentity('RN1853'),
       ],
-      [],
-      false,
-    ),
+      joins: [],
+      isInFragmentarium: false,
+    }),
   ],
   lines: [
     createLine({

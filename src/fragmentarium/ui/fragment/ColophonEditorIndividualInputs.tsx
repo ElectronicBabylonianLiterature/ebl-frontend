@@ -3,8 +3,8 @@ import Select from 'react-select'
 import type { SingleValue } from 'react-select'
 import AsyncCreatableSelect from 'react-select/async-creatable'
 import { IndividualType } from 'fragmentarium/domain/Colophon'
-import ProvenanceSearchForm from '../search/SearchFormProvenance'
-import { IndividualProps } from './ColophonEditorIndividualForm'
+import ProvenanceSearchForm from 'fragmentarium/ui/search/SearchFormProvenance'
+import { IndividualProps } from 'fragmentarium/ui/fragment/ColophonEditorIndividualForm'
 
 export const getSelectField = ({
   key,

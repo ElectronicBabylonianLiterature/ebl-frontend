@@ -1,6 +1,6 @@
 import React from 'react'
 import { render, screen } from '@testing-library/react'
-import { Anchor, LineNumber } from './line-number'
+import { Anchor, LineNumber } from 'transliteration/ui/line-number'
 import textLine from 'test-support/lines/text-line'
 import lineNumberToString from 'transliteration/domain/lineNumberToString'
 

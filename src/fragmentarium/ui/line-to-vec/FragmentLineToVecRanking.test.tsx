@@ -1,12 +1,11 @@
 import React from 'react'
-import FragmentLineToVecRanking from './FragmentLineToVecRanking'
+import FragmentLineToVecRanking from 'fragmentarium/ui/line-to-vec/FragmentLineToVecRanking'
 import { MemoryRouter } from 'react-router-dom'
 import { render, screen } from '@testing-library/react'
 import { waitForSpinnerToBeRemoved } from 'test-support/waitForSpinnerToBeRemoved'
-import Promise from 'bluebird'
 import { LineToVecRanking } from 'fragmentarium/domain/lineToVecRanking'
 import SessionContext from 'auth/SessionContext'
-import { Session } from 'auth/Session'
+import MemorySession from 'auth/Session'
 import { scriptFactory } from 'test-support/fragment-data-fixtures'
 import { Periods } from 'common/utils/period'
 import { HelmetProvider } from 'react-helmet-async'
@@ -18,9 +17,7 @@ const script = scriptFactory.build(
 )
 
 it('Shows the number of transliterated tablets', async () => {
-  const session = {
-    isAllowedToReadFragments: jest.fn().mockReturnValue(true),
-  }
+  const session = new MemorySession(['read:fragments'])
   const lineToVecRankingsResults: LineToVecRanking = {
     score: [
       { museumNumber: 'X.1', script: script, score: 10 },
@@ -40,7 +37,7 @@ it('Shows the number of transliterated tablets', async () => {
   render(
     <HelmetProvider context={helmetContext}>
       <MemoryRouter>
-        <SessionContext.Provider value={session as unknown as Session}>
+        <SessionContext.Provider value={session}>
           <FragmentLineToVecRanking
             number={'X.0'}
             fragmentService={fragmentService}
@@ -52,4 +49,29 @@ it('Shows the number of transliterated tablets', async () => {
   await waitForSpinnerToBeRemoved(screen)
   expect(screen.getAllByText(/X.1/)[0]).toBeVisible()
   expect(screen.getByText(/,\s*Neo-Assyrian:\s*10/)).toBeVisible()
+})
+
+it('Asks to log in when the session cannot read fragments', async () => {
+  const fragmentService = {
+    lineToVecRanking: jest.fn(),
+  }
+  fragmentService.lineToVecRanking.mockResolvedValueOnce({
+    score: [],
+    scoreWeighted: [],
+  })
+  render(
+    <HelmetProvider context={helmetContext}>
+      <MemoryRouter>
+        <SessionContext.Provider value={new MemorySession([])}>
+          <FragmentLineToVecRanking
+            number={'X.0'}
+            fragmentService={fragmentService}
+          />
+        </SessionContext.Provider>
+      </MemoryRouter>
+    </HelmetProvider>,
+  )
+  expect(
+    await screen.findByText('Please log in to look up matching Fragments'),
+  ).toBeVisible()
 })

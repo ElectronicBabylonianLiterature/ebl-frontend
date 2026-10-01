@@ -1,7 +1,7 @@
 import _ from 'lodash'
 import { produce, Draft, immerable } from 'immer'
 
-import BibliographyEntry from './BibliographyEntry'
+import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 
 export type ReferenceType =
   | 'EDITION'
@@ -131,6 +131,6 @@ export default class Reference {
   }
 
   toHtml(): string {
-    return this.document?.toHtml() ?? ''
+    return this.document.toHtml()
   }
 }

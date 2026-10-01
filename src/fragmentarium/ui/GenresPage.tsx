@@ -49,17 +49,17 @@ function GenreTree({ genres }: { genres: string[][] }): JSX.Element {
 
 const GenresContentWithData = withData<
   object,
-  { fragmentService: FragmentService },
+  { fragmentService: Pick<FragmentService, 'fetchGenres'> },
   string[][]
 >(
   ({ data }) => <GenreTree genres={data} />,
-  (props) => props.fragmentService.fetchGenres(),
+  (props, signal) => props.fragmentService.fetchGenres(signal),
 )
 
 export default function GenresPage({
   fragmentService,
 }: {
-  fragmentService: FragmentService
+  fragmentService: Pick<FragmentService, 'fetchGenres'>
 }): JSX.Element {
   return (
     <>

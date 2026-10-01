@@ -1,0 +1,44 @@
+# TASK-774-r12 — Work log
+
+## 2026-09-30
+
+- Created TODO and log before starting work.
+- Read memories (review-doc-format, container-tooling-limits, no-deferring-preexisting, github-identity).
+- PR for branch chore/remove-bluebird is #774 (open), head 7c5a04cc, same as origin. Previous review round 11 was on d3a1b4dc.
+- Started `yarn test:ci` in background (output: /workspaces/ebl-frontend.worktrees/r12/test-ci.log).
+- GitHub data (curl, REST + GraphQL): 5 reviews (2 qltysh COMMENTED, 3 Fabdulla1 CHANGES_REQUESTED; latest 2026-09-29 on d3a1b4dc), 6 inline comments all qltysh, all 6 threads resolved+outdated, 0 issue comments, no sourcery-ai or other bots. No re-review request since the 7c5a04cc push.
+- Checks at 7c5a04cc: all green. test ran on merge ref f66ac57 (includes master #765): 565/565 suites, 5163 tests, 47 snapshots, build compiled; no punycode warning, no console output lines. CodeQL "No new alerts" but Analyze log line 985 still warns diff truncated at 300 files. qlty check: no blocking; qlty coverage 95.9% (+1.6%); qlty coverage diff not computed (555 files > 500).
+- #787 (merged into branch) feedback: qltysh 4 inline (Reference.ts 7 params, querySummaryFragment boolean-logic) — neither file touched by this PR; user's own approval 2026-09-02.
+- master moved to 95282785 (#765, 30 files); merge-tree clean; #765 adds 3 files with relative imports.
+- Dev container: .devcontainer/, Dockerfile, .dockerignore, .nvmrc byte-identical to master. CI workflows changed (same as round 11). No new .md files (README.md, .github/copilot-instructions.md modified only).
+- Open decided items from round 11 NOT done at 7c5a04cc: relative-import sweep (375 remain), Node 20→24 bump (would change .devcontainer/Dockerfile).
+- No touched .ts/.tsx over 250 lines; 42 untracked-by-PR files over 250 repo-wide (#823).
+- Launched 3 read-only review subagents (withData/corpus signals; write serialization; tests/suppressions/coverage config).
+- PR description reviewed: current except 'uncommitted merge resolved' wording for #787 (now committed and pushed).
+- Session restarted: test:ci killed after 57/57 PASS suites; 2 review agents stopped. Restarting test:ci and resuming agents.
+- Agent 1 (withData/corpus/images) done: no blockers. Verified myself at 7c5a04cc:
+  - Images.tsx:71-96 `Number.parseInt` accepts `0abc` → `activeKey` returns a key no TabPane has (empty image area). From #787, kept by the merge; file is touched by this PR → pre-existing, must be fixed.
+  - Images.tsx:158/219 `visitedTabs: ReadonlySet<string>` mixes tab names and folio indexes, told apart by parseInt probing → data-shape hard gate.
+  - withData.retry.test.tsx:84-112 mocks React.useState by call order; production withData.tsx calls `React.useState` to suit it.
+- Agents 2 and 3 done. Verified at 7c5a04cc:
+  - CONFIRMED CuneiformFragment.tsx:169-185 handleSave: each save start()s the shared SupersedableOperation, so an earlier failed save's onError is stale → error hidden if a later (e.g. sidebar genre) save is in flight. editorTabContents.tsx:136-150 updateColophon/updateScopes are async but don't return props.onSave(...).
+  - CONFIRMED annotation-tool/Content.tsx:26-66 per-card and keyboard Delete not gated by isWriting; generateAnnotations builds from stale `annotations` closure → a delete during generation reappears in UI.
+  - CONFIRMED useAnnotationPersistence.ts saveAnnotations never clears error.
+  - ChapterEditView.tsx:167-176 `[Text, Chapter]` Promise.all tuple — changed line (signal added), same on master; data-shape gate names tuples → Minor.
+  - CONFIRMED ReferenceInjector.test.ts (modified) dropped 'injects references to text' and 'injects references to OldLineNumbers' tests without approval; no other direct test.
+  - CONFIRMED chapterDisplay.ts (new, runtime class) missing from fullyCoveredPaths.
+  - CONFIRMED ErrorBoundary.comprehensive.test.tsx:13-15, 433-435 raw console.error silencing (pre-existing, untouched file, #692).
+  - Pre-existing casts in touched files: ReferenceInjector.ts:41 production `as unknown as`; test-support/utils.ts eslint-disable + any (TestData → #823 per your 2026-09-30 decision); ~13 test `as unknown as` service mocks.
+- yarn test:ci (rerun) at 7c5a04cc: EXIT 0, 549/549 suites, 4907/4907 tests, 47/47 snapshots, 552 s, zero console/Warning/Unhandled lines. Coverage 95.64/89.09/95.52/95.79, no threshold breach.
+- Diff coverage (PR-added lines ∩ lcov): 100% lines and branches. But 52 PR-touched files have pre-existing uncovered lines/branches (e.g. Content.tsx 29-30, ArchaeologyEditor 17 lines, LemmaAnnotation 14 lines, index.tsx 0%).
+- yarn lint exit 0; yarn tsc exit 0 (run after tests, not concurrently).
+- qlty smells --all --include-tests at head vs detached master worktree: nothing new that is real (complexTestText.ts regrouping in an unchanged file; WordDisplay↔DateFieldPatternsHelp is two unrelated data tables, false positive also present on master). Touched-file smells: WordDisplay (false positive, justified), test-support/utils.ts TestData 6 params (#823 per your decision).
+- Fabdulla1's 8 points of 2026-09-29 spot-checked at head: all addressed (enqueueSave, ChapterImport disabled, annotation queue, corpus signals, mapSeries.test, coverage paths, suppressions, Sass trailing newline). chapterDisplay.ts (added later in round 11) is the one gap in fullyCoveredPaths.
+- Started local CodeQL 2.27.1 (javascript-code-scanning.qls) on merge tree c608a868 (7c5a04cc + master 95282785) and on master 95282785, background.
+- Backed up round-11 review to /workspaces/ebl-frontend.worktrees/r12/TASK-774-review.round11.bak; writing round 12 into TASK-774-review.md.
+- Wrote round-12 TASK-774-review.md (frontmatter, friendly summary + Details table, required sections, unwrapped lines, "you"/"your" for the PR author).
+- Error: first draft numbered the later lists 13-15, which markdownlint's MD029 flags (from IDE diagnostics). Fixed by restarting each list at 1. No markdownlint CLI in the repo (npx failed), so I relied on the IDE's markdownlint diagnostics.
+- Waiting for local CodeQL; CODEQL_RESULT placeholder in the review's Local gates table.
+- Local CodeQL 2.27.1 (javascript-code-scanning, 87 rules): 0 results on merge tree c608a868 and 0 on master 95282785, both executionSuccessful. Filled into review (W2 mitigated).
+- Removed the temporary master worktree used for the qlty comparison.
+- Re-read both instruction files and checked every gate (see final report). No commits, no pushes, no reviewer requests.

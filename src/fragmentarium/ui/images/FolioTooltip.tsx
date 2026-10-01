@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Overlay, Tooltip, TooltipProps } from 'react-bootstrap'
 import { getMappedFolio } from 'fragmentarium/domain/Folio'
-import './FolioTooltip.css'
+import 'fragmentarium/ui/images/FolioTooltip.css'
 
 interface FolioTooltipProps {
   folioInitials: string
@@ -27,7 +27,7 @@ export default function FolioTooltip({
       if (!document.querySelector('.folio-tooltip:hover')) {
         setShow(false)
       }
-    }, 100) // Small delay to allow transition to tooltip
+    }, 100)
   }
 
   const handleMouseEnterTooltip = () => {

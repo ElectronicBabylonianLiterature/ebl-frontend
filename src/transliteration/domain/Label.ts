@@ -1,6 +1,10 @@
 import { produce, immerable, Draft, castDraft } from 'immer'
-import { LineNumber, LineNumberRange } from './line-number'
-import { ObjectLabel, SurfaceLabel, ColumnLabel } from './labels'
+import { LineNumber, LineNumberRange } from 'transliteration/domain/line-number'
+import {
+  ObjectLabel,
+  SurfaceLabel,
+  ColumnLabel,
+} from 'transliteration/domain/labels'
 
 export default class Label {
   readonly [immerable] = true

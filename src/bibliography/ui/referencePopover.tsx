@@ -1,10 +1,10 @@
 import React from 'react'
 import _ from 'lodash'
 import { Popover, OverlayTrigger } from 'react-bootstrap'
-import FullCitation from './FullCitation'
+import FullCitation from 'bibliography/ui/FullCitation'
 import Reference from 'bibliography/domain/Reference'
 
-import './referencePopover.css'
+import 'bibliography/ui/referencePopover.css'
 
 export default function referencePopover<P extends { reference: Reference }>(
   Component: React.ComponentType<P>,

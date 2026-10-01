@@ -1,6 +1,6 @@
-import replaceSpecialCharacters from './replaceSpecialCharacters'
-import normalizeNumbers from './normalizeNumbers'
-import normalizeAccents from './normalizeAccents'
+import replaceSpecialCharacters from 'fragmentarium/domain/replaceSpecialCharacters'
+import normalizeNumbers from 'fragmentarium/domain/normalizeNumbers'
+import normalizeAccents from 'fragmentarium/domain/normalizeAccents'
 import _ from 'lodash'
 
 function replaceAlternativeDamage(input: string): string {

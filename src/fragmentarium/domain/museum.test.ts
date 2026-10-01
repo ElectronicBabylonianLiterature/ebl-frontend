@@ -1,4 +1,4 @@
-import { Museum, Museums } from './museum'
+import { Museum, Museums } from 'fragmentarium/domain/museum'
 
 describe.each([
   [

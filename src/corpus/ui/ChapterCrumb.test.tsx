@@ -1,7 +1,7 @@
 import React from 'react'
 import { render, screen } from '@testing-library/react'
 import { chapterIdFactory } from 'test-support/chapter-fixtures'
-import ChapterCrumb from './ChapterCrumb'
+import ChapterCrumb from 'corpus/ui/ChapterCrumb'
 import { stageToAbbreviation } from 'common/utils/period'
 
 const id = chapterIdFactory.build()

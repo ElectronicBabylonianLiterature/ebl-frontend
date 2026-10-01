@@ -1,7 +1,7 @@
 import React, { Component, Fragment, ReactNode } from 'react'
 import { Link } from 'react-router-dom'
 import _ from 'lodash'
-import './Word.css'
+import 'dictionary/ui/search/Word.css'
 import InlineMarkdown from 'common/ui/InlineMarkdown'
 import Word, {
   Form as WordForm,
@@ -11,10 +11,10 @@ import Word, {
 import ErrorBoundary from 'common/errors/ErrorBoundary'
 
 export function Lemma({
-  container = 'em',
+  container,
   word,
 }: {
-  container?: string
+  container: string
   word: {
     _id?: string
     attested?: boolean
@@ -54,7 +54,7 @@ function Notes({
     <Fragment>
       {!_.isEmpty(preNote) && (
         <span className="Notes-note">
-          <InlineMarkdown source={preNote as string} />{' '}
+          <InlineMarkdown source={preNote} />{' '}
         </span>
       )}
       {children}
@@ -68,14 +68,8 @@ function Notes({
   )
 }
 
-function Form({
-  value,
-}: {
-  value: string | WordForm | WordDerived
-}): JSX.Element {
-  return _.isString(value) ? (
-    <InlineMarkdown source={value} />
-  ) : (
+function Form({ value }: { value: WordForm | WordDerived }): JSX.Element {
+  return (
     <Notes notes={value.notes}>
       <Lemma word={value} container="em" />
     </Notes>

@@ -1,6 +1,6 @@
 import React from 'react'
 import _ from 'lodash'
-import FormList from './FormList'
+import FormList from 'dictionary/ui/editor/FormList'
 import { render, screen } from '@testing-library/react'
 
 import { whenClicked, whenChangedByValue } from 'test-support/utils'
@@ -55,6 +55,22 @@ it('Calls onChange with updated value on change', () => {
         lemma: [newValue],
       },
       ..._.tail(value),
+    ])
+})
+
+it('New entry has all fields when none are given', async () => {
+  onChange = jest.fn()
+  value = formFactory.buildList(1)
+  render(
+    <FormList value={value} onChange={onChange}>
+      {label}
+    </FormList>,
+  )
+  await whenClicked(screen, 'Add form')
+    .expect(onChange)
+    .toHaveBeenCalledWith([
+      ...value,
+      { lemma: [], attested: true, homonym: '', notes: [] },
     ])
 })
 

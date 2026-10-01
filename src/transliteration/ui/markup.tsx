@@ -6,7 +6,7 @@ import {
   MarkupPart,
   UrlPart,
 } from 'transliteration/domain/markup'
-import { LineTokens } from './line-tokens'
+import { LineTokens } from 'transliteration/ui/line-tokens'
 import { Shift } from 'transliteration/domain/token'
 import Reference from 'bibliography/domain/Reference'
 import Citation from 'bibliography/ui/Citation'
@@ -17,7 +17,7 @@ import {
   isParagraphPart,
   isUrlPart,
 } from 'transliteration/domain/type-guards'
-import './markup.css'
+import 'transliteration/ui/markup.css'
 
 const textPartClassMap = {
   EmphasisPart: 'markup-emphasis',

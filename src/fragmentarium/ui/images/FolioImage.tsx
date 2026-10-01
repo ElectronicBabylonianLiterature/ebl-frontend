@@ -1,14 +1,19 @@
 import React from 'react'
 import withData from 'http/withData'
+import { ImageFragmentService } from 'fragmentarium/ui/images/ImageFragmentService'
 import Folio from 'fragmentarium/domain/Folio'
 import { TransformComponent, TransformWrapper } from 'react-zoom-pan-pinch'
 import ImageButtonGroup, {
   useImageActions,
   getImageActions,
-} from './ImageButtonGroup'
-import './Photo.css'
+} from 'fragmentarium/ui/images/ImageButtonGroup'
+import 'fragmentarium/ui/images/Photo.css'
 
-export default withData<{ folio: Folio }, { fragmentService }, Blob>(
+export default withData<
+  { folio: Folio },
+  { fragmentService: Pick<ImageFragmentService, 'findFolio'> },
+  Blob
+>(
   ({ data, folio }) => {
     const { handleDownload, handleOpenInNewTab, imageUrl } = useImageActions(
       data,
@@ -51,6 +56,6 @@ export default withData<{ folio: Folio }, { fragmentService }, Blob>(
       </article>
     )
   },
-  (props) => props.fragmentService.findFolio(props.folio),
+  (props, signal) => props.fragmentService.findFolio(props.folio, signal),
   { retry: true },
 )

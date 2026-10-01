@@ -1,7 +1,6 @@
 import React from 'react'
 import { MemoryRouter } from 'react-router-dom'
 import { render } from '@testing-library/react'
-import Promise from 'bluebird'
 import SessionContext from 'auth/SessionContext'
 import FragmentView from 'fragmentarium/ui/fragment/FragmentView'
 import Lemmatization from 'transliteration/domain/Lemmatization'

@@ -12,7 +12,7 @@ import { LemmaOption } from 'fragmentarium/ui/lemmatization/LemmaSelectionForm'
 import { Button, Form, Spinner } from 'react-bootstrap'
 import Word from 'dictionary/domain/Word'
 
-interface Callbacks extends LemmaActionCallbacks {
+interface Callbacks extends Omit<LemmaActionCallbacks, 'onCreateProperNoun'> {
   handleChange: (options: LemmaOption[] | null) => void
   selectNextToken: () => void
   selectPreviousToken: () => void

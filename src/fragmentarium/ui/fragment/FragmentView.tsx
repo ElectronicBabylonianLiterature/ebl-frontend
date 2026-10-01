@@ -1,8 +1,8 @@
 import React from 'react'
 
 import AppContent from 'common/ui/AppContent'
-import CuneiformFragment from './CuneiformFragment'
-import FragmentPager from './FragmentPager'
+import CuneiformFragment from 'fragmentarium/ui/fragment/CuneiformFragment'
+import FragmentPager from 'fragmentarium/ui/fragment/FragmentPager'
 import withData from 'http/withData'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import Folio from 'fragmentarium/domain/Folio'

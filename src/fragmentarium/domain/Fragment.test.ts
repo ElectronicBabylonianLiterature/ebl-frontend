@@ -1,8 +1,8 @@
 import _ from 'lodash'
-import { Fragment, UncuratedReference } from './fragment'
-import { RecordEntry } from './RecordEntry'
-import Folio from './Folio'
-import { Acquisition } from './Acquisition'
+import { Fragment, UncuratedReference } from 'fragmentarium/domain/fragment'
+import { RecordEntry } from 'fragmentarium/domain/RecordEntry'
+import Folio from 'fragmentarium/domain/Folio'
+import { Acquisition } from 'fragmentarium/domain/Acquisition'
 import { Text } from 'transliteration/domain/text'
 import {
   atEleven,
@@ -22,7 +22,7 @@ import {
   year2017,
   year2018,
 } from 'test-support/record-fixtures'
-import { Museums } from './museum'
+import { Museums } from 'fragmentarium/domain/museum'
 import { LooseDollarLine } from 'transliteration/domain/dollar-lines'
 import { Genres } from 'fragmentarium/domain/Genres'
 import Reference from 'bibliography/domain/Reference'

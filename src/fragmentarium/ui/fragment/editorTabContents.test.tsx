@@ -1,20 +1,21 @@
 import React from 'react'
-import { render, screen, waitFor } from '@testing-library/react'
+import { act, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { ThemeProvider } from 'react-bootstrap'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import { Fragment } from 'fragmentarium/domain/fragment'
-import {
-  NamedEntityAnnotationContents,
-  TabsProps,
-} from 'fragmentarium/ui/fragment/editorTabContents'
+import { NamedEntityAnnotationContents } from 'fragmentarium/ui/fragment/editorTabContents'
 import { AnnotationSpans } from 'fragmentarium/ui/text-annotation/annotationSpan'
 import { WithRealiaService } from 'fragmentarium/ui/text-annotation/textAnnotation.testSupport'
 import { tokenIdFragment } from 'test-support/fragment-fixtures'
 import { withAnnotationSpans } from 'test-support/annotated-fragment'
+import { createTabsProps } from 'fragmentarium/ui/fragment/editorTabContents.testSupport'
 
 jest.mock('realia/application/RealiaService')
 jest.mock('fragmentarium/application/FragmentService')
+jest.mock('fragmentarium/application/FragmentSearchService')
+jest.mock('fragmentarium/application/FindspotService')
+jest.mock('dictionary/application/WordService')
 
 const fragmentServiceMock = new (FragmentService as jest.Mock<
   jest.Mocked<FragmentService>
@@ -27,7 +28,7 @@ const annotations: AnnotationSpans = {
 
 const annotatedFragment = withAnnotationSpans(tokenIdFragment, annotations)
 
-let onSave: jest.Mock<Promise<Fragment>, [Promise<Fragment>]>
+let onSave: jest.Mock<Promise<Fragment>, [() => Promise<Fragment>]>
 
 async function setup(saveFails = false): Promise<void> {
   fragmentServiceMock.find.mockResolvedValue(annotatedFragment)
@@ -41,17 +42,17 @@ async function setup(saveFails = false): Promise<void> {
       refreshError: null,
     })
   }
-  onSave = jest.fn((updatedFragment: Promise<Fragment>) => updatedFragment)
+  onSave = jest.fn((save: () => Promise<Fragment>) => save())
 
   render(
     <ThemeProvider>
       <WithRealiaService>
         <NamedEntityAnnotationContents
-          {...({
+          {...createTabsProps({
             fragment: tokenIdFragment,
             fragmentService: fragmentServiceMock,
             onSave,
-          } as unknown as TabsProps)}
+          })}
         />
       </WithRealiaService>
     </ThemeProvider>,
@@ -76,6 +77,37 @@ describe('NamedEntityAnnotationContents', () => {
       realia: [],
     })
     expect(onSave).toHaveBeenCalledTimes(1)
+  })
+
+  it('sends the annotation write only when the save queue runs it', async () => {
+    await setup()
+    let releaseQueue: () => void = () => undefined
+    onSave.mockImplementation((save) =>
+      new Promise<void>((resolve) => {
+        releaseQueue = resolve
+      }).then(save),
+    )
+
+    await userEvent.click(screen.getByTestId('Word-2__Entity-1'))
+    await userEvent.click(
+      await screen.findByLabelText('delete-name-annotation'),
+    )
+    await userEvent.click(screen.getByLabelText('save-annotations'))
+
+    expect(onSave).toHaveBeenCalledTimes(1)
+    expect(
+      fragmentServiceMock.updateNamedEntityAnnotations,
+    ).not.toHaveBeenCalled()
+
+    await act(async () => releaseQueue())
+
+    expect(
+      fragmentServiceMock.updateNamedEntityAnnotations,
+    ).toHaveBeenCalledTimes(1)
+    await waitFor(() =>
+      expect(screen.getByLabelText('save-annotations')).toBeDisabled(),
+    )
+    expect(screen.queryByRole('alert')).not.toBeInTheDocument()
   })
 
   it('leaves the save button usable when the save fails', async () => {

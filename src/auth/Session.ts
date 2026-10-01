@@ -1,5 +1,5 @@
 import Folio from 'fragmentarium/domain/Folio'
-import applicationScopes from './applicationScopes.json'
+import applicationScopes from 'auth/applicationScopes.json'
 
 export interface Session {
   isAllowedToReadWords(): boolean

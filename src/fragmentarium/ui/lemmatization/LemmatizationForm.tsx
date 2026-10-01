@@ -4,7 +4,6 @@ import AsyncSelect from 'react-select/async'
 import _ from 'lodash'
 import Lemma from 'transliteration/domain/Lemma'
 import { LemmatizationToken } from 'transliteration/domain/Lemmatization'
-import Promise from 'bluebird'
 import Word from 'dictionary/domain/Word'
 import InlineMarkdown from 'common/ui/InlineMarkdown'
 import { components } from 'react-select'
@@ -52,17 +51,12 @@ class LemmatizationForm extends Component<Props, State> {
 
   constructor(props: Props) {
     super(props)
-    const isComplex = (props.token.uniqueLemma?.length ?? 0) > 1
-    const singleLemmaToOption = (): Lemma | null =>
-      (props.token.uniqueLemma?.length ?? 0) === 1
-        ? (props.token.uniqueLemma?.[0] ?? null)
-        : null
+    const uniqueLemma = props.token.uniqueLemma ?? []
+    const isComplex = uniqueLemma.length > 1
 
     this.state = {
       isComplex: isComplex,
-      selectedOption: isComplex
-        ? props.token.uniqueLemma
-        : singleLemmaToOption(),
+      selectedOption: isComplex ? uniqueLemma : (uniqueLemma[0] ?? null),
       menuIsOpen: (props.token.suggestions?.length ?? 0) > 0 || undefined,
     }
     this.checkboxId = _.uniqueId('LemmatizationForm-Complex-')

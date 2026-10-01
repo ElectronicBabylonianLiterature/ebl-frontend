@@ -1,6 +1,5 @@
-import Promise from 'bluebird'
 import { TestData, testDelegation } from 'test-support/utils'
-import FragmentService from './FragmentService'
+import FragmentService from 'fragmentarium/application/FragmentService'
 import { fragmentFactory } from 'test-support/fragment-fixtures'
 import { FragmentAfoRegisterQueryResult, QueryResult } from 'query/QueryResult'
 import {

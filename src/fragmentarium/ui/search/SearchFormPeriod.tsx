@@ -139,7 +139,7 @@ const PeriodSearchFormGroup = withData<
       </Form.Group>
     )
   },
-  ({ fragmentService }) => fragmentService.fetchPeriods(),
+  ({ fragmentService }, signal) => fragmentService.fetchPeriods(signal),
 )
 
 export default PeriodSearchFormGroup

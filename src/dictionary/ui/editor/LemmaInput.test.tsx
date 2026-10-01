@@ -1,5 +1,5 @@
 import React from 'react'
-import LemmaInput from './LemmaInput'
+import LemmaInput from 'dictionary/ui/editor/LemmaInput'
 import { render, fireEvent, screen } from '@testing-library/react'
 import { changeValueByLabel } from 'test-support/utils'
 

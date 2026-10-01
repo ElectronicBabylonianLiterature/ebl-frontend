@@ -5,7 +5,7 @@ import withData, { WithoutData } from 'http/withData'
 import FragmentLink from 'fragmentarium/ui/FragmentLink'
 import Folio from 'fragmentarium/domain/Folio'
 import { FolioPagerData } from 'fragmentarium/domain/pager'
-import FragmentService from 'fragmentarium/application/FragmentService'
+import { ImageFragmentService } from 'fragmentarium/ui/images/ImageFragmentService'
 
 type Props = {
   data: FolioPagerData
@@ -58,12 +58,12 @@ function FolioPager({ data, folio }: Props): JSX.Element {
 
 export default withData<
   WithoutData<Props>,
-  { fragmentNumber: string; fragmentService: FragmentService },
+  { fragmentNumber: string; fragmentService: ImageFragmentService },
   FolioPagerData
 >(
   ({ data, ...props }) => <FolioPager data={data} {...props} />,
-  (props) =>
-    props.fragmentService.folioPager(props.folio, props.fragmentNumber),
+  (props, signal) =>
+    props.fragmentService.folioPager(props.folio, props.fragmentNumber, signal),
   {
     retry: true,
     watch: (props) => [props.folio, props.fragmentNumber],

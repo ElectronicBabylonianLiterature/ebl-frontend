@@ -1,7 +1,7 @@
 import React from 'react'
 import { render, screen } from '@testing-library/react'
 import { text } from 'test-support/test-corpus-text'
-import CorpusTextCrumb from './CorpusTextCrumb'
+import CorpusTextCrumb from 'corpus/ui/CorpusTextCrumb'
 import { chapterDisplayFactory } from 'test-support/chapter-fixtures'
 import { textIdToString } from 'transliteration/domain/text-id'
 

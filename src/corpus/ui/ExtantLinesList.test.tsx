@@ -1,6 +1,6 @@
 import React from 'react'
 import { render, screen } from '@testing-library/react'
-import ExtantLinesList from './ExtantLinesList'
+import ExtantLinesList from 'corpus/ui/ExtantLinesList'
 import { ManuscriptExtantLines } from 'corpus/domain/extant-lines'
 
 const boundaryCssClass = 'extant-lines__line-number--boundary'
@@ -49,4 +49,24 @@ test('Emphasises side boundary numbers', () => {
 test('Does not emphasise other numbers', () => {
   setup()
   expect(screen.getByText('2')).not.toHaveClass(boundaryCssClass)
+})
+
+test('Separates ranges with commas', () => {
+  const lineNumber = (number: number) => ({
+    number,
+    hasPrime: false,
+    prefixModifier: null,
+    suffixModifier: null,
+  })
+  render(
+    <ExtantLinesList
+      extantLines={{
+        r: [
+          { lineNumber: lineNumber(1), isSideBoundary: false },
+          { lineNumber: lineNumber(5), isSideBoundary: false },
+        ],
+      }}
+    />,
+  )
+  expect(screen.getByRole('listitem')).toHaveTextContent('r: 1, 5')
 })

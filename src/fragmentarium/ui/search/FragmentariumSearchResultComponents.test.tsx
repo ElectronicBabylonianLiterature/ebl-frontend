@@ -1,5 +1,4 @@
 import React from 'react'
-import Bluebird from 'bluebird'
 import { MemoryRouter } from 'react-router-dom'
 import { render, screen } from '@testing-library/react'
 import { QueryItem } from 'query/QueryResult'
@@ -23,7 +22,7 @@ import createReference from 'bibliography/application/createReference'
 import { createResearchProject } from 'research-projects/researchProject'
 import DossierRecord from 'dossiers/domain/DossierRecord'
 import { Fragment } from 'fragmentarium/domain/fragment'
-import { FragmentLines } from './FragmentariumSearchResultComponents'
+import { FragmentLines } from 'fragmentarium/ui/search/FragmentariumSearchResultComponents'
 import mockObjectUrl from 'test-support/mockObjectUrl'
 
 jest.mock('fragmentarium/application/FragmentService')
@@ -133,7 +132,7 @@ describe('FragmentLines', () => {
 
   it('shows the hydration spinner when the query item is not render-ready', async () => {
     fragmentService.find.mockReturnValueOnce(
-      new Bluebird(() => undefined) as unknown as Bluebird<never>,
+      new Promise<never>(() => undefined),
     )
 
     renderFragmentLines({

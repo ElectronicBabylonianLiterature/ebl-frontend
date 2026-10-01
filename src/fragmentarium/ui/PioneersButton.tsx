@@ -1,6 +1,6 @@
 import React from 'react'
 import SessionContext from 'auth/SessionContext'
-import FragmentButton from './FragmentButton'
+import FragmentButton from 'fragmentarium/ui/FragmentButton'
 import FragmentSearchService from 'fragmentarium/application/FragmentSearchService'
 
 export default function PioneersButton({
@@ -12,7 +12,9 @@ export default function PioneersButton({
     <SessionContext.Consumer>
       {(session) =>
         session.isAllowedToTransliterateFragments() && (
-          <FragmentButton query={() => fragmentSearchService.interesting()}>
+          <FragmentButton
+            query={(signal) => fragmentSearchService.interesting(signal)}
+          >
             Path of the Pioneers
           </FragmentButton>
         )

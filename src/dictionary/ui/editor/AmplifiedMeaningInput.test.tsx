@@ -1,6 +1,6 @@
 import React from 'react'
 import _ from 'lodash'
-import AmplifiedMeaningInput from './AmplifiedMeaningInput'
+import AmplifiedMeaningInput from 'dictionary/ui/editor/AmplifiedMeaningInput'
 import { render, screen } from '@testing-library/react'
 
 import { whenChangedByValue } from 'test-support/utils'

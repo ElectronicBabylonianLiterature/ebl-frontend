@@ -1,6 +1,6 @@
 import React from 'react'
-import { LineProps } from './LineProps'
-import TransliterationTd from './TransliterationTd'
+import { LineProps } from 'transliteration/ui/LineProps'
+import TransliterationTd from 'transliteration/ui/TransliterationTd'
 
 export default function DisplayControlLine({
   line: { type, prefix, content },

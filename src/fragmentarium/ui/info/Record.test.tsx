@@ -1,7 +1,7 @@
 import React from 'react'
 import { render, screen } from '@testing-library/react'
 import { DateTime } from 'luxon'
-import Record, { TruncatedRecord } from './Record'
+import Record, { TruncatedRecord } from 'fragmentarium/ui/info/Record'
 import { recordFactory } from 'test-support/fragment-data-fixtures'
 import { MemoryRouter } from 'react-router-dom'
 
@@ -84,5 +84,45 @@ describe('TruncatedRecord', () => {
       'href',
       '/library/Foo.Bar/record',
     )
+  })
+})
+
+describe('TruncatedRecord without router links', () => {
+  it('links to the full record page with a plain anchor', () => {
+    render(
+      <TruncatedRecord
+        record={recordFactory.buildList(10)}
+        number={'Foo.Bar'}
+        useRouterLinks={false}
+      />,
+    )
+    expect(screen.getByRole('link')).toHaveAttribute(
+      'href',
+      '/library/Foo.Bar/record',
+    )
+  })
+})
+
+describe('Historical transliteration with an invalid range', () => {
+  it('leaves out the years', () => {
+    const entry = recordFactory
+      .historical('1981-10-28T00:00:00/1975-02-09T00:00:00')
+      .build()
+    const { container } = render(<Record record={[entry]} />)
+    expect(container).toHaveTextContent(`${entry.user} (Transliteration, –)`)
+  })
+})
+
+describe('TruncatedRecord with a short record', () => {
+  it('shows every entry without a link to the full record', () => {
+    render(
+      <TruncatedRecord
+        record={recordFactory.buildList(2)}
+        number={'Foo.Bar'}
+      />,
+    )
+    expect(screen.getAllByRole('listitem')).toHaveLength(2)
+    expect(screen.queryByText('[…]')).not.toBeInTheDocument()
+    expect(screen.queryByRole('link')).not.toBeInTheDocument()
   })
 })

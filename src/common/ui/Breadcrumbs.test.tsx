@@ -1,7 +1,7 @@
 import React from 'react'
 import { render, screen } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
-import Breadcrumbs, { SectionCrumb, TextCrumb } from './Breadcrumbs'
+import Breadcrumbs, { SectionCrumb, TextCrumb } from 'common/ui/Breadcrumbs'
 
 describe('Three crumbs', () => {
   function renderBreadcrumbs(): void {

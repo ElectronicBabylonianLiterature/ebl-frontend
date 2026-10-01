@@ -1,6 +1,5 @@
 import React from 'react'
 import { render, screen, waitFor } from '@testing-library/react'
-import { Promise } from 'bluebird'
 
 import BibliographySelect from 'bibliography/ui/BibliographySelect'
 import userEvent from '@testing-library/user-event'
@@ -101,12 +100,54 @@ describe('long selected label', () => {
   })
 })
 
-function renderBibliographySelect(): void {
+describe('clearable selection', () => {
+  it('reports an empty entry when the selection is cleared', async () => {
+    entry = bibliographyEntryFactory.build()
+    renderBibliographySelect(true)
+    await screen.findByText(entry.label)
+    onChange.mockClear()
+
+    await userEvent.type(screen.getByLabelText('label'), '{backspace}')
+
+    await waitFor(() =>
+      expect(onChange).toHaveBeenCalledWith(new BibliographyEntry()),
+    )
+  })
+})
+
+describe('search options', () => {
+  it('lists only identified entries in natural label order', async () => {
+    const entries = [
+      bibliographyEntryFactory.build({}, { transient: { id: 'RN10' } }),
+      new BibliographyEntry(),
+      bibliographyEntryFactory.build({}, { transient: { id: 'RN2' } }),
+    ]
+    const sortedLabels = [entries[0].label, entries[2].label].sort((a, b) =>
+      new Intl.Collator([], { numeric: true }).compare(a, b),
+    )
+    render(
+      <BibliographySelect
+        isClearable={false}
+        ariaLabel="label"
+        searchBibliography={jest.fn().mockResolvedValue(entries)}
+        value={new BibliographyEntry()}
+        onChange={jest.fn()}
+      />,
+    )
+
+    await userEvent.type(screen.getByLabelText('label'), 'a')
+    const options = await screen.findAllByRole('option')
+
+    expect(options.map((option) => option.textContent)).toEqual(sortedLabels)
+  })
+})
+
+function renderBibliographySelect(isClearable = false): void {
   const searchBibliography = jest.fn().mockReturnValue(Promise.resolve([entry]))
   render(
     <>
       <BibliographySelect
-        isClearable={false}
+        isClearable={isClearable}
         ariaLabel="label"
         searchBibliography={searchBibliography}
         value={entry}

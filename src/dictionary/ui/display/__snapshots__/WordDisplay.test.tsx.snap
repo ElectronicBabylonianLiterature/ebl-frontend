@@ -627,10 +627,9 @@ exports[`Fetch word correctly displays word parts 1`] = `
           </div>
         </div>
         <div
-          class="fade alert alert-danger show"
-          role="alert"
+          class="ml-5 empty-section row"
         >
-          expecting an array or an iterable object but got [object Null]
+          No entries
         </div>
         <div
           class="row"

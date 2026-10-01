@@ -4,16 +4,16 @@ import { Fragment, FragmentInfo } from 'fragmentarium/domain/fragment'
 import { Museums } from 'fragmentarium/domain/museum'
 import { Acquisition } from 'fragmentarium/domain/Acquisition'
 import { Genre, Genres } from 'fragmentarium/domain/Genres'
-import { referenceFactory } from './bibliography-fixtures'
-import complexText from './complexTestText'
-import { joinFactory } from './join-fixtures'
+import { referenceFactory } from 'test-support/bibliography-fixtures'
+import complexText from 'test-support/complexTestText'
+import { joinFactory } from 'test-support/join-fixtures'
 import { ManuscriptAttestation } from 'corpus/domain/manuscriptAttestation'
-import { chapterIdFactory } from './chapter-fixtures'
-import { manuscriptFactory } from './manuscript-fixtures'
+import { chapterIdFactory } from 'test-support/chapter-fixtures'
+import { manuscriptFactory } from 'test-support/manuscript-fixtures'
 import { createText, Text as CorpusText } from 'corpus/domain/text'
 import { Text } from 'transliteration/domain/text'
 import { MesopotamianDate } from 'chronology/domain/Date'
-import { mesopotamianDateFactory } from './date-fixtures'
+import { mesopotamianDateFactory } from 'test-support/date-fixtures'
 import {
   archaeologyFactory,
   externalNumbersFactory,
@@ -24,7 +24,7 @@ import {
   measuresFactory,
   recordFactory,
   scriptFactory,
-} from './fragment-data-fixtures'
+} from 'test-support/fragment-data-fixtures'
 import textLine, { textLineDto } from 'test-support/lines/text-line'
 import { TextLine } from 'transliteration/domain/text-line'
 import { lineNumberFactory } from 'test-support/linenumber-factory'
@@ -38,7 +38,8 @@ import { produce, castDraft, Draft } from 'immer'
 import { AbstractLine } from 'transliteration/domain/abstract-line'
 import { isIdToken } from 'transliteration/domain/type-guards'
 
-const defaultChance = new Chance()
+const defaultChance = new Chance('fragment-fixtures')
+const editionDateKey = 'edition_date'
 
 export const fragmentFactory = Factory.define<Fragment>(
   ({ associations, sequence, transientParams }) => {
@@ -147,8 +148,7 @@ export const fragmentInfoFactory = Factory.define<FragmentInfo>(
       },
       () => mesopotamianDateFactory.build(),
     ),
-    // eslint-disable-next-line camelcase
-    edition_date: fragmentDate(),
+    [editionDateKey]: fragmentDate(),
     references: associations.references ?? [],
     genres: new Genres([]),
   }),

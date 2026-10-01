@@ -1,7 +1,7 @@
 import React from 'react'
 import { render, screen, fireEvent, within } from '@testing-library/react'
 import { Kings, brinkmanDynasties } from 'chronology/ui/Kings/Kings'
-import ListOfKings from './BrinkmanKingsTable'
+import ListOfKings from 'chronology/ui/Kings/BrinkmanKingsTable'
 import { setReducedMotionMatchMedia } from 'test-support/matchMedia'
 
 test('renders intro and table', () => {

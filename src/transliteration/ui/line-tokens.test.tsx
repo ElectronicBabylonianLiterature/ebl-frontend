@@ -5,7 +5,7 @@ import {
   LineColumns,
   LineToken,
   LineTokens,
-} from './line-tokens'
+} from 'transliteration/ui/line-tokens'
 import { lemmatizableToken } from 'test-support/line-group-fixtures'
 import WordService from 'dictionary/application/WordService'
 import { DictionaryContext } from 'dictionary/ui/dictionary-context'

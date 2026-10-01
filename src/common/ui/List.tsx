@@ -2,8 +2,8 @@ import React, { ReactNode } from 'react'
 import { Badge, Button, Card, ListGroup } from 'react-bootstrap'
 import _ from 'lodash'
 
-import './List.css'
-import { CollapsibleCard } from './CollabsibleCard'
+import 'common/ui/List.css'
+import { CollapsibleCard } from 'common/ui/CollabsibleCard'
 import { produce } from 'immer'
 
 function SizeBadge({

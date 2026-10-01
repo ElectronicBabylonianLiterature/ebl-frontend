@@ -10,11 +10,10 @@ import SessionContext from 'auth/SessionContext'
 import InlineMarkdown from 'common/ui/InlineMarkdown'
 import { TextInfo } from 'corpus/domain/text'
 import { SectionCrumb } from 'common/ui/Breadcrumbs'
-import Promise from 'bluebird'
-import createGenreLink from './createGenreLink'
+import createGenreLink from 'corpus/ui/createGenreLink'
 import { useHistory } from 'router/compat'
 import AboutInlineLink from 'common/ui/AboutInlineLink'
-import './Corpus.sass'
+import 'corpus/ui/Corpus.sass'
 
 type SelectCallback = (eventKey: string | null) => void
 
@@ -156,12 +155,8 @@ function Corpus({
   const routerHistory = useHistory()
   const activeHistory = history ?? routerHistory
 
-  const openTab: SelectCallback = (eventKey: string | null): void => {
-    if (eventKey !== null) {
-      const url = createGenreLink(eventKey)
-      activeHistory.push(url)
-    }
-  }
+  const openTab: SelectCallback = (eventKey: string | null): void =>
+    activeHistory.push(createGenreLink(String(eventKey)))
 
   return (
     <AppContent

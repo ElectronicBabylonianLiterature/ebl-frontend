@@ -1,4 +1,4 @@
-import { Token } from './token'
+import { Token } from 'transliteration/domain/token'
 import { immerable } from 'immer'
 
 export interface LineBaseDto {

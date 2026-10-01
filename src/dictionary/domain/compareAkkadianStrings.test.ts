@@ -1,6 +1,6 @@
 import compareAkkadianStrings, {
   compareCleanedAkkadianString,
-} from './compareAkkadianStrings'
+} from 'dictionary/domain/compareAkkadianStrings'
 
 test.each([
   ['Abullu', 'abullu', -1],

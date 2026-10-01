@@ -1,4 +1,4 @@
-import escapeRegExp from './escapeRegExp'
+import escapeRegExp from 'fragmentarium/domain/escapeRegExp'
 
 const consonantsBasic = {
   sz: 'š',
@@ -66,5 +66,5 @@ export default function replaceSpecialCharacters(
   }
   const specialCharacters = escapeRegExp(Object.keys(characters))
   const regExp = new RegExp(specialCharacters, 'g')
-  return userInput.replace(regExp, (match) => characters[match] || match)
+  return userInput.replace(regExp, (match) => characters[match])
 }

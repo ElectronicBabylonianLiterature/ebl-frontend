@@ -1,6 +1,6 @@
 import React from 'react'
 import ExternalLink from 'common/ui/ExternalLink'
-import ProjectHome, { ProjectHomeProps } from '../Home'
+import ProjectHome, { ProjectHomeProps } from 'research-projects/subpages/Home'
 
 export default function CaicHome(
   props: Omit<ProjectHomeProps, 'title'>,

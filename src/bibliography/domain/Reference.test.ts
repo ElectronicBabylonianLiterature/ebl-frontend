@@ -3,8 +3,11 @@ import {
   buildReferenceWithContainerTitle,
   referenceFactory,
 } from 'test-support/bibliography-fixtures'
-import Reference, { groupReferences, ReferenceType } from './Reference'
-import BibliographyEntry from './BibliographyEntry'
+import Reference, {
+  groupReferences,
+  ReferenceType,
+} from 'bibliography/domain/Reference'
+import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 
 test('default reference', () => {
   expect(new Reference()).toEqual(

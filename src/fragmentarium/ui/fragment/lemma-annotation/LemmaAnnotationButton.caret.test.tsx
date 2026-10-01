@@ -1,11 +1,10 @@
 import React from 'react'
-import { render, screen } from '@testing-library/react'
-
-import SessionContext from 'auth/SessionContext'
-import LemmaActionButton from 'fragmentarium/ui/fragment/lemma-annotation/LemmaAnnotationButton'
 import EditableToken from 'fragmentarium/ui/fragment/linguistic-annotation/EditableToken'
 import { kurToken } from 'test-support/test-tokens'
-import MemorySession from 'auth/Session'
+import {
+  getDropdownToggle,
+  renderButton,
+} from 'fragmentarium/ui/fragment/lemma-annotation/LemmaAnnotationButton.testSupport'
 
 jest.mock('transliteration/ui/DisplayToken', () => {
   return {
@@ -16,26 +15,8 @@ jest.mock('transliteration/ui/DisplayToken', () => {
   }
 })
 
-const callbacks = {
-  onResetCurrent: jest.fn(),
-  onMouseEnter: jest.fn(),
-  onMouseLeave: jest.fn(),
-  onMultiApply: jest.fn(),
-  onMultiReset: jest.fn(),
-  onCreateProperNoun: jest.fn(),
-}
-
 it('relies on the split toggle caret instead of rendering a second icon', () => {
-  render(
-    <SessionContext.Provider value={new MemorySession(['create:proper_nouns'])}>
-      <LemmaActionButton
-        token={new EditableToken(kurToken, 0, 0, 0, [])}
-        {...callbacks}
-      />
-    </SessionContext.Provider>,
-  )
+  renderButton(new EditableToken(kurToken, 0, 0, 0, []))
 
-  expect(
-    screen.getByRole('button', { name: 'Open token actions' }),
-  ).toBeEmptyDOMElement()
+  expect(getDropdownToggle()).toBeEmptyDOMElement()
 })

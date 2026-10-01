@@ -1,5 +1,5 @@
-import specialTransliterationCharacters from './specialTransliterationCharacters.json'
-import escapeRegExp from './escapeRegExp'
+import specialTransliterationCharacters from 'fragmentarium/domain/specialTransliterationCharacters.json'
+import escapeRegExp from 'fragmentarium/domain/escapeRegExp'
 
 function convertNumbers(number) {
   const numbers = {

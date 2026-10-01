@@ -7,6 +7,7 @@ import { MemoryRouter } from 'react-router-dom'
 import { Provenances } from 'corpus/domain/provenance'
 import { Periods } from 'common/utils/period'
 import Chance from 'chance'
+import { oldSiglumFactory } from 'test-support/old-siglum-fixtures'
 import {
   restoreProvenanceState,
   snapshotProvenanceState,
@@ -52,10 +53,10 @@ const manuscript = manuscriptLineDisplayFactory.build(
 )
 const oldSiglum = manuscript.oldSigla[0]
 
-function setup() {
+function setup(shown = manuscript) {
   render(
     <MemoryRouter>
-      <ManuscriptPopOver manuscript={manuscript} />
+      <ManuscriptPopOver manuscript={shown} />
     </MemoryRouter>,
   )
 }
@@ -97,4 +98,50 @@ test.each(manuscriptAttributes)('%s', async (attribute) => {
   await waitFor(() => expect(screen.getByRole('tooltip')).toBeVisible())
 
   expect(screen.getByRole('tooltip')).toHaveTextContent(attribute)
+})
+
+async function openPopover(shown: typeof manuscript): Promise<void> {
+  setup(shown)
+  await userEvent.click(screen.getByText(shown.siglum))
+  await waitFor(() => expect(screen.getByRole('tooltip')).toBeVisible())
+}
+
+test('Separates several old sigla', async () => {
+  const withOldSigla = manuscriptLineDisplayFactory.build(
+    {},
+    {
+      associations: {
+        oldSigla: oldSiglumFactory.buildList(2),
+        provenance: Provenances.Babylon,
+      },
+      transient: { chance },
+    },
+  )
+  await openPopover(withOldSigla)
+
+  expect(screen.getByRole('heading', { level: 3 })).toHaveTextContent(
+    `${withOldSigla.oldSigla[0].siglum}`,
+  )
+  expect(screen.getByRole('heading', { level: 3 })).toHaveTextContent('; ')
+})
+
+test('Links the manuscript itself when it has no joins', async () => {
+  const unjoined = manuscriptLineDisplayFactory.build(
+    {},
+    {
+      associations: {
+        oldSigla: [],
+        joins: [],
+        isInFragmentarium: true,
+        provenance: Provenances.Babylon,
+      },
+      transient: { chance },
+    },
+  )
+  await openPopover(unjoined)
+
+  expect(screen.getByRole('heading', { level: 3 })).not.toHaveTextContent('(')
+  expect(
+    screen.getByRole('link', { name: unjoined.museumNumber }),
+  ).toHaveAttribute('href', `/library/${unjoined.museumNumber}`)
 })

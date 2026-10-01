@@ -4,7 +4,6 @@ import {
   JulianProps,
   SeBabylonianProps,
 } from 'chronology/domain/DateConverterBase'
-import DateConverter from './DateConverter'
 
 interface RangeParams {
   year: number
@@ -13,6 +12,21 @@ interface RangeParams {
   yearLimit: number
   monthLimit: number
   dayLimit: number
+}
+
+function compareToLimit({
+  year,
+  month,
+  day,
+  yearLimit,
+  monthLimit,
+  dayLimit,
+}: RangeParams): number {
+  return (
+    4 * Math.sign(year - yearLimit) +
+    2 * Math.sign(month - monthLimit) +
+    Math.sign(day - dayLimit)
+  )
 }
 
 export default class DateConverterChecks {
@@ -36,19 +50,6 @@ export default class DateConverterChecks {
     ]
   }
 
-  isIncomingDateHasCorrespondingIntercalary(
-    mesopotamianMonth: number,
-    dateConverter: DateConverter,
-  ): boolean {
-    const mesopotamianMonthsInYear =
-      dateConverter.getMesopotamianMonthsOfSeYear(
-        dateConverter.calendar.seBabylonianYear,
-      )
-    return !!mesopotamianMonthsInYear.find(
-      (month) => month.value === mesopotamianMonth,
-    )
-  }
-
   private paramsToYearMonthDay(
     params:
       | GregorianProps
@@ -62,7 +63,7 @@ export default class DateConverterChecks {
         result.year = params[fieldName]
       } else if (fieldName.includes('Month')) {
         result.month = params[fieldName]
-      } else if (fieldName.includes('Day')) {
+      } else {
         result.day = params[fieldName]
       }
     })
@@ -90,33 +91,11 @@ export default class DateConverterChecks {
     }
   }
 
-  private isDateBeforeValidRange({
-    year,
-    month,
-    day,
-    yearLimit,
-    monthLimit,
-    dayLimit,
-  }: RangeParams): boolean {
-    return (
-      year < yearLimit ||
-      (year === yearLimit &&
-        (month < monthLimit || (month === monthLimit && day < dayLimit)))
-    )
+  private isDateBeforeValidRange(params: RangeParams): boolean {
+    return compareToLimit(params) < 0
   }
 
-  private isDateAfterValidRange({
-    year,
-    month,
-    day,
-    yearLimit,
-    monthLimit,
-    dayLimit,
-  }: RangeParams): boolean {
-    return (
-      year > yearLimit ||
-      (year === yearLimit &&
-        (month > monthLimit || (month === monthLimit && day > dayLimit)))
-    )
+  private isDateAfterValidRange(params: RangeParams): boolean {
+    return compareToLimit(params) > 0
   }
 }

@@ -15,7 +15,7 @@ import {
   syllableToMeter,
   MeterProps,
 } from 'akkadian/application/phonetics/meter'
-import { PhoneticProps } from './segments'
+import { PhoneticProps } from 'akkadian/application/phonetics/segments'
 
 export interface Syllable {
   readonly transcription: string

@@ -1,4 +1,6 @@
-import { getSitemapAsFile, getAllSlugs } from 'router/sitemap'
+import React from 'react'
+import { render, waitFor } from '@testing-library/react'
+import SitemapDownload, { getSitemapAsFile, getAllSlugs } from 'router/sitemap'
 
 import SignService from 'signs/application/SignService'
 import BibliographyService from 'bibliography/application/BibliographyService'
@@ -11,7 +13,6 @@ import MarkupService, {
 } from 'markup/application/MarkupService'
 import AfoRegisterService from 'afo-register/application/AfoRegisterService'
 import RealiaService from 'realia/application/RealiaService'
-import Bluebird from 'bluebird'
 import { saveAs } from 'file-saver'
 import pako from 'pako'
 import { FindspotService } from 'fragmentarium/application/FindspotService'
@@ -65,7 +66,7 @@ function mockRealiaEntries(entries: string[]): void {
     services.realiaService.listAllRealia as jest.MockedFunction<
       typeof services.realiaService.listAllRealia
     >
-  ).mockReturnValue(Bluebird.resolve(entries))
+  ).mockReturnValue(Promise.resolve(entries))
 }
 
 beforeEach(() => {
@@ -102,18 +103,18 @@ beforeEach(() => {
     jest.Mocked<DossiersService>
   >)()
 
-  signService.listAllSigns.mockReturnValue(Bluebird.resolve(['a2']))
+  signService.listAllSigns.mockReturnValue(Promise.resolve(['a2']))
   bibliographyService.listAllBibliography.mockReturnValue(
-    Bluebird.resolve(['ref1']),
+    Promise.resolve(['ref1']),
   )
-  wordService.listAllWords.mockReturnValue(Bluebird.resolve(['awīlum I']))
-  realiaService.listAllRealia.mockReturnValue(Bluebird.resolve(['Pig']))
-  fragmentService.listAllFragments.mockReturnValue(Bluebird.resolve(['BM.42']))
+  wordService.listAllWords.mockReturnValue(Promise.resolve(['awīlum I']))
+  realiaService.listAllRealia.mockReturnValue(Promise.resolve(['Pig']))
+  fragmentService.listAllFragments.mockReturnValue(Promise.resolve(['BM.42']))
   textService.listAllTexts.mockReturnValue(
-    Bluebird.resolve([{ index: 1, category: 1, genre: 'L' }]),
+    Promise.resolve([{ index: 1, category: 1, genre: 'L' }]),
   )
   textService.listAllChapters.mockReturnValue(
-    Bluebird.resolve([
+    Promise.resolve([
       { index: 1, category: 1, genre: 'L', stage: 'OB', chapter: '-' },
     ]),
   )
@@ -142,6 +143,15 @@ it('get all slugs', async () => {
   expect(services.realiaService.listAllRealia).toHaveBeenCalled()
   expect(services.fragmentService.listAllFragments).toHaveBeenCalled()
   expect(services.textService.listAllTexts).toHaveBeenCalled()
+  expect(services.textService.listAllChapters).toHaveBeenCalled()
+})
+
+it('downloads the sitemap once the slugs have loaded', async () => {
+  render(<SitemapDownload services={services} />)
+
+  await waitFor(() =>
+    expect(saveAs).toHaveBeenCalledWith(expect.anything(), 'sitemap.xml.gz'),
+  )
   expect(services.textService.listAllChapters).toHaveBeenCalled()
 })
 

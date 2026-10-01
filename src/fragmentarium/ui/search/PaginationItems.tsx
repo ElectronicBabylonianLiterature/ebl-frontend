@@ -6,7 +6,7 @@ import {
   RESULT_PAGE_SIZES,
   updatePageSizeSearchParam,
   updatePaginationSearchParam,
-} from './pagination'
+} from 'fragmentarium/ui/search/pagination'
 
 function PaginationControl({
   paginationURLParam,

@@ -1,5 +1,4 @@
 import { screen, waitFor } from '@testing-library/react'
-import Promise from 'bluebird'
 import { waitForSpinnerToBeRemoved } from 'test-support/waitForSpinnerToBeRemoved'
 import { referenceFactory } from 'test-support/bibliography-fixtures'
 import { fragmentFactory } from 'test-support/fragment-fixtures'
@@ -8,7 +7,7 @@ import { Fragment } from 'fragmentarium/domain/fragment'
 import {
   createFragmentViewHarness,
   fragmentNumber,
-} from './FragmentView.testSupport'
+} from 'fragmentarium/ui/fragment/FragmentView.testSupport'
 
 describe('Fragment is loaded', () => {
   let fragment: Fragment

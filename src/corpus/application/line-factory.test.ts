@@ -4,7 +4,7 @@ import {
   createManuscriptLine,
   EditStatus,
 } from 'corpus/domain/line'
-import { createDefaultLineFactory } from './line-factory'
+import { createDefaultLineFactory } from 'corpus/application/line-factory'
 import { produce } from 'immer'
 
 const defaultReconstruction = '%n '

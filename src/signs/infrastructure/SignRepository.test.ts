@@ -1,4 +1,3 @@
-import Promise from 'bluebird'
 import { testDelegation, TestData } from 'test-support/utils'
 import ApiClient from 'http/ApiClient'
 import SignRepository from 'signs/infrastructure/SignRepository'
@@ -14,6 +13,7 @@ const apiClient = new (ApiClient as jest.Mock<jest.Mocked<ApiClient>>)()
 const signsRepository = new SignRepository(apiClient)
 const signName = 'BAR'
 const query = { value: 'bar', subIndex: 1 }
+const abortSignal = new AbortController().signal
 
 const resultStub = Sign.fromDto({
   name: '|E₂.BAR|',
@@ -38,7 +38,7 @@ const testData: TestData<SignRepository>[] = [
     [signName],
     apiClient.fetchJson,
     resultStub,
-    [`/signs/${encodeURIComponent(signName)}`, false],
+    [`/signs/${encodeURIComponent(signName)}`, false, undefined],
     Promise.resolve(resultStub),
   ),
   new TestData(
@@ -46,7 +46,7 @@ const testData: TestData<SignRepository>[] = [
     [query],
     apiClient.fetchJson,
     [resultStub],
-    [`/signs?${stringify(query)}`, false],
+    [`/signs?${stringify(query)}`, false, undefined],
     Promise.resolve([resultStub]),
   ),
   new TestData(
@@ -57,6 +57,7 @@ const testData: TestData<SignRepository>[] = [
     [
       `/signs/${encodeURIComponent(signName)}/images?centroids_only=true&include_unclustered=true`,
       false,
+      undefined,
     ],
     Promise.resolve([getImagesResult]),
   ),
@@ -79,6 +80,14 @@ const testData: TestData<SignRepository>[] = [
     apiClient.fetchJson,
     [],
     ['/signs/all', false],
+    Promise.resolve([]),
+  ),
+  new TestData(
+    'getUnicodeFromAtf',
+    ['kur', abortSignal],
+    apiClient.fetchJson,
+    [],
+    ['/signs/transliteration/kur', false, abortSignal],
     Promise.resolve([]),
   ),
 ]
@@ -170,14 +179,18 @@ describe('associate signs', () => {
     jest
       .spyOn(signsRepository, 'search')
       .mockImplementation(() => Promise.resolve([]))
-    try {
-      await signsRepository.associateSigns(tokens)
-    } catch (e) {
-      expect(e).toEqual(
-        new Error(
-          "Reading 'kur1' with subIndex '1' has no corresponding Sign.",
-        ),
-      )
-    }
+    await expect(signsRepository.associateSigns(tokens)).rejects.toEqual(
+      new Error("Reading 'kur1' with subIndex '1' has no corresponding Sign."),
+    )
+  })
+  it('passes the abort signal to every sign search', async () => {
+    const search = jest
+      .spyOn(signsRepository, 'search')
+      .mockImplementation(() => Promise.resolve([signFactory.build()]))
+
+    await signsRepository.associateSigns(tokens, abortSignal)
+
+    expect(search).toHaveBeenCalledTimes(2)
+    search.mock.calls.forEach(([, signal]) => expect(signal).toBe(abortSignal))
   })
 })

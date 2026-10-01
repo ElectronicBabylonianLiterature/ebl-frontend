@@ -11,7 +11,7 @@ import { QueryItem } from 'query/QueryResult'
 import { fragmentDto } from 'test-support/test-fragment'
 import mockObjectUrl from 'test-support/mockObjectUrl'
 import ErrorReporterContext from 'ErrorReporterContext'
-import { silenceConsoleErrors } from 'setupTests'
+import { expectConsoleErrors } from 'setupTests'
 import {
   previewLine,
   withPreviewLines,
@@ -37,7 +37,7 @@ mockObjectUrl('blob:url')
 beforeEach(() => {
   jest.clearAllMocks()
   dossiersService.queryByIds.mockResolvedValue([])
-  fragmentService.find.mockReturnValue(new Promise(() => undefined) as never)
+  fragmentService.find.mockReturnValue(new Promise<Fragment>(() => undefined))
 })
 
 function mapItems(
@@ -120,7 +120,9 @@ describe('summary contract guardrail', () => {
   })
 
   it('contains a card rendering failure without losing sibling cards', () => {
-    silenceConsoleErrors()
+    expectConsoleErrors(
+      /Cannot read properties of undefined \(reading 'map'\)|The above error occurred/,
+    )
     const [first, broken, last] = mapItems([
       summaryItemDto(1),
       summaryItemDto(2),

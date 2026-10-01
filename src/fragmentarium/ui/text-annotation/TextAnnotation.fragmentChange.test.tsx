@@ -1,5 +1,4 @@
 import React from 'react'
-import Bluebird from 'bluebird'
 import { render, screen, waitFor } from '@testing-library/react'
 import { ThemeProvider } from 'react-bootstrap'
 import FragmentService from 'fragmentarium/application/FragmentService'
@@ -76,7 +75,7 @@ function renderAt(number: string): { rerender: (number: string) => void } {
 beforeEach(() => {
   jest.clearAllMocks()
   fragmentServiceMock.find.mockImplementation((number: string) =>
-    Bluebird.resolve(
+    Promise.resolve(
       number === tokenIdFragment.number ? firstFragment : otherFragment,
     ),
   )

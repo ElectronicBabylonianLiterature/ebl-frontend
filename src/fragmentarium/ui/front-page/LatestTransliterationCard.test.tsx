@@ -1,7 +1,6 @@
 import React from 'react'
 import { MemoryRouter } from 'react-router-dom'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
-import Promise from 'bluebird'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import { CompactFragmentCard } from 'fragmentarium/ui/front-page/LatestTransliterationCard'
 import { fragmentFactory } from 'test-support/fragment-fixtures'

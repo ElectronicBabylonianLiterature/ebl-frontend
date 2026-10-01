@@ -3,7 +3,7 @@ import ReactMarkdown from 'react-markdown'
 import { Container } from 'react-bootstrap'
 import NewsletterTimeline from 'about/ui/NewsletterTimeline'
 import { useHistory } from 'router/compat'
-import './news.sass'
+import 'about/ui/news.sass'
 import newsletter22 from 'about/ui/newsletter/022.md'
 import newsletter21 from 'about/ui/newsletter/021.md'
 import newsletter20 from 'about/ui/newsletter/020.md'
@@ -81,7 +81,10 @@ const onHistoryChange = ({
   setActiveNewsletter: React.Dispatch<React.SetStateAction<Newsletter>>
   pathname: string
 }): void => {
-  const newsletterNumber = parseInt(pathname.split('/').pop() ?? '', 10)
+  const newsletterNumber = parseInt(
+    pathname.substring(pathname.lastIndexOf('/') + 1),
+    10,
+  )
   if (newsletterNumber !== activeNewsletter.number) {
     setActiveNewsletter(getActiveNewsletter(newsletterNumber))
   }

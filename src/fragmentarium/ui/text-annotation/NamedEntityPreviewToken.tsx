@@ -5,7 +5,7 @@ import SpanIndicatorView from 'fragmentarium/ui/text-annotation/SpanIndicatorVie
 import { AnnotationSpan } from 'fragmentarium/ui/text-annotation/annotationSpan'
 import { Token } from 'transliteration/domain/token'
 import { isIdToken } from 'transliteration/domain/type-guards'
-import './NamedEntities.sass'
+import 'fragmentarium/ui/text-annotation/NamedEntities.sass'
 
 function renderIndicator(span: AnnotationSpan, tokenId: string): JSX.Element {
   return <SpanIndicatorView tokenId={tokenId} entitySpan={span} />

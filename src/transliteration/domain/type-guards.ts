@@ -13,9 +13,7 @@ import {
   UrlPart,
 } from 'transliteration/domain/markup'
 import {
-  CommentaryProtocol,
   Enclosure,
-  Shift,
   Token,
   Word,
   Column,
@@ -29,9 +27,9 @@ import {
 } from 'transliteration/domain/token'
 import DictionaryWord from 'dictionary/domain/Word'
 import _ from 'lodash'
-import { AbstractLine } from './abstract-line'
+import { AbstractLine } from 'transliteration/domain/abstract-line'
 import { EmptyLine } from 'transliteration/domain/line'
-import { DollarLine } from './dollar-lines'
+import { DollarLine } from 'transliteration/domain/dollar-lines'
 import {
   ParallelComposition,
   ParallelFragment,
@@ -54,20 +52,6 @@ export function isEnclosure(token: Token): token is Enclosure {
 
 export function isBreak(token: Token): token is Break {
   return ['MetricalFootSeparator', 'Caesura'].includes(token.type)
-}
-
-export function isDocumentOrientedGloss(token: Token): token is Enclosure {
-  return token.type === 'DocumentOrientedGloss'
-}
-
-export function isShift(token: Token): token is Shift {
-  return token.type === 'LanguageShift'
-}
-
-export function isCommentaryProtocol(
-  token: Token,
-): token is CommentaryProtocol {
-  return token.type === 'CommentaryProtocol'
 }
 
 export function isWord(token: Token): token is Word {

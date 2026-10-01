@@ -4,14 +4,14 @@ import withData from 'http/withData'
 import InlineMarkdown from 'common/ui/InlineMarkdown'
 import Spinner from 'common/ui/Spinner'
 import ErrorAlert from 'common/errors/ErrorAlert'
-import ChapterEditor from './ChapterEditor'
-import ChapterNavigation from './ChapterNavigation'
+import ChapterEditor from 'corpus/ui/ChapterEditor'
+import ChapterNavigation from 'corpus/ui/ChapterNavigation'
 import usePromiseEffect from 'common/hooks/usePromiseEffect'
+import applyWhenCurrent from 'common/utils/applyWhenCurrent'
 import { Text } from 'corpus/domain/text'
 import { Chapter } from 'corpus/domain/chapter'
 import { ChapterId } from 'transliteration/domain/chapter-id'
 import { SectionCrumb, TextCrumb } from 'common/ui/Breadcrumbs'
-import Promise from 'bluebird'
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 import { BibliographySearch } from 'bibliography/application/BibliographyService'
 import TextService from 'corpus/application/TextService'
@@ -19,10 +19,10 @@ import FragmentService from 'fragmentarium/application/FragmentService'
 import WordService from 'dictionary/application/WordService'
 import { ChapterLemmatization } from 'corpus/domain/lemmatization'
 import { ChapterAlignment } from 'corpus/domain/alignment'
-import CorpusTextCrumb from './CorpusTextCrumb'
-import GenreCrumb from './GenreCrumb'
-import ChapterCrumb from './ChapterCrumb'
-import './ChapterEditView.sass'
+import CorpusTextCrumb from 'corpus/ui/CorpusTextCrumb'
+import GenreCrumb from 'corpus/ui/GenreCrumb'
+import ChapterCrumb from 'corpus/ui/ChapterCrumb'
+import 'corpus/ui/ChapterEditView.sass'
 
 function EditChapterTitle({
   text,
@@ -57,7 +57,7 @@ function ChapterEditView({
   const [isDirty, setIsDirty] = useState(false)
   const [isSaving, setIsSaving] = useState(false)
   const [error, setError] = useState<Error | null>(null)
-  const [setUpdatePromise, cancelUpdatePromise] = usePromiseEffect<void>()
+  const [, , runUpdate] = usePromiseEffect()
 
   const setStateUpdating = (): void => {
     setIsSaving(true)
@@ -77,9 +77,13 @@ function ChapterEditView({
   }
 
   const update = (updater: () => Promise<Chapter>): void => {
-    cancelUpdatePromise()
     setStateUpdating()
-    setUpdatePromise(updater().then(setStateUpdated).catch(setStateError))
+    runUpdate(
+      applyWhenCurrent(updater, {
+        onSuccess: setStateUpdated,
+        onError: setStateError,
+      }),
+    )
   }
 
   const updateAlignment = (alignment: ChapterAlignment): void => {
@@ -154,19 +158,22 @@ function ChapterEditView({
 
 export default withData<
   {
-    textService
+    textService: TextService
     bibliographyService: BibliographySearch
     fragmentService: FragmentService
     wordService: WordService
   },
   { id: ChapterId },
-  [Text, Chapter]
+  { text: Text; chapter: Chapter }
 >(
-  ({ data: [text, chapter], ...props }) => (
+  ({ data: { text, chapter }, ...props }) => (
     <ChapterEditView text={text} chapter={chapter} {...props} />
   ),
-  ({ id, textService }) =>
-    Promise.all([textService.find(id.textId), textService.findChapter(id)]),
+  ({ id, textService }, signal) =>
+    Promise.all([
+      textService.find(id.textId, signal),
+      textService.findChapter(id, signal),
+    ]).then(([text, chapter]) => ({ text, chapter })),
   {
     watch: (props) => [props.id],
   },

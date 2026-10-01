@@ -4,7 +4,6 @@ import AfoRegisterService from 'afo-register/application/AfoRegisterService'
 import AfoRegisterSearch from 'afo-register/ui/AfoRegisterSearch'
 import { waitForSpinnerToBeRemoved } from 'test-support/waitForSpinnerToBeRemoved'
 import FragmentService from 'fragmentarium/application/FragmentService'
-import Bluebird from 'bluebird'
 import { afoRegisterRecordFactory } from 'test-support/afo-register-fixtures'
 
 jest.mock('afo-register/application/AfoRegisterService')
@@ -31,7 +30,7 @@ describe('AfO-Register search display', () => {
   })
 
   it('renders correctly with initial state', async () => {
-    afoRegisterService.search.mockReturnValue(Bluebird.resolve([record]))
+    afoRegisterService.search.mockReturnValue(Promise.resolve([record]))
     render(
       <AfoRegisterSearch
         query={mockQuery}
@@ -49,7 +48,7 @@ describe('AfO-Register search display', () => {
   })
 
   it('renders correctly with empty result', async () => {
-    afoRegisterService.search.mockReturnValue(Bluebird.resolve([]))
+    afoRegisterService.search.mockReturnValue(Promise.resolve([]))
     render(
       <AfoRegisterSearch
         query={mockQuery}

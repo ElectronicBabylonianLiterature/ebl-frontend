@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
-import LemmatizationForm from './LemmatizationForm'
-import Word from './Word'
+import LemmatizationForm from 'fragmentarium/ui/lemmatization/LemmatizationForm'
+import Word from 'fragmentarium/ui/lemmatization/Word'
 
-import './WordLemmatizer.css'
+import 'fragmentarium/ui/lemmatization/WordLemmatizer.css'
 import {
   LemmatizationToken,
   UniqueLemma,
@@ -11,7 +11,7 @@ import FragmentService from 'fragmentarium/application/FragmentService'
 import ModalButton from 'common/ui/ModalButton'
 
 interface Props {
-  fragmentService: FragmentService
+  fragmentService: Pick<FragmentService, 'searchLemma'>
   token: LemmatizationToken
   onChange: (uniqueLemma: UniqueLemma) => void
 }

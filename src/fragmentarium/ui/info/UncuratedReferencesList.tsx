@@ -2,7 +2,7 @@ import React from 'react'
 import { ListGroup, ListGroupProps } from 'react-bootstrap'
 import _ from 'lodash'
 import { UncuratedReference } from 'fragmentarium/domain/fragment'
-import './UncuratedReferencesList.css'
+import 'fragmentarium/ui/info/UncuratedReferencesList.css'
 
 export default function UncuratedReferencesList({
   uncuratedReferences,

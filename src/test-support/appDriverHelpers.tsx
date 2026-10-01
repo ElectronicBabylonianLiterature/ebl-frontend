@@ -1,6 +1,9 @@
 import React from 'react'
 import { screen, within } from '@testing-library/react'
+import _ from 'lodash'
 import App from 'App'
+import { AuthenticationService, eblNameProperty, User } from 'auth/Auth'
+import { guestSession, Session } from 'auth/Session'
 import WordRepository from 'dictionary/infrastructure/WordRepository'
 import FragmentRepository from 'fragmentarium/infrastructure/FragmentRepository'
 import ApiImageRepository from 'fragmentarium/infrastructure/ImageRepository'
@@ -10,7 +13,6 @@ import TextService from 'corpus/application/TextService'
 import BibliographyRepository from 'bibliography/infrastructure/BibliographyRepository'
 import BibliographyService from 'bibliography/application/BibliographyService'
 import FragmentSearchService from 'fragmentarium/application/FragmentSearchService'
-import Promise from 'bluebird'
 import SignRepository from 'signs/infrastructure/SignRepository'
 import SignService from 'signs/application/SignService'
 import MarkupService, {
@@ -25,17 +27,8 @@ import { ApiFindspotRepository } from 'fragmentarium/infrastructure/FindspotRepo
 import FakeApi from 'test-support/FakeApi'
 import DossiersService from 'dossiers/application/DossiersService'
 import DossiersRepository from 'dossiers/infrastructure/DossiersRepository'
-import ApiClient from 'http/ApiClient'
-
-export type JsonApiClient = {
-  fetchJson: <T = unknown>(url: string, authorize: boolean) => Promise<T>
-  postJson: <T = unknown>(
-    url: string,
-    body: Record<string, unknown>,
-    authorize?: boolean,
-  ) => Promise<T>
-  fetchBlob: (url: string, authorize: boolean) => Promise<Blob>
-}
+import JsonApiClientAdapter from 'test-support/JsonApiClientAdapter'
+import { JsonApiClient } from 'http/JsonApiClient'
 
 export function getServices(api: JsonApiClient = new FakeApi().client): {
   signService: SignService
@@ -51,7 +44,7 @@ export function getServices(api: JsonApiClient = new FakeApi().client): {
   dossiersService: DossiersService
   findspotService: FindspotService
 } {
-  const apiClient = api as unknown as ApiClient
+  const apiClient = new JsonApiClientAdapter(api)
   const wordRepository = new WordRepository(apiClient)
   const fragmentRepository = new FragmentRepository(api)
   const imageRepository = new ApiImageRepository(api)
@@ -103,7 +96,21 @@ export function getServices(api: JsonApiClient = new FakeApi().client): {
   }
 }
 
-export function createApp(api): JSX.Element {
+export function driverAuthentication(
+  getSession: () => Session | null,
+): AuthenticationService {
+  return {
+    login: _.noop,
+    logout: () => Promise.resolve(),
+    getSession: (): Session => getSession() ?? guestSession,
+    isAuthenticated: (): boolean => getSession() !== null,
+    getAccessToken: (): Promise<string> =>
+      Promise.reject(new Error('Not implemented')),
+    getUser: (): User => ({ [eblNameProperty]: 'Test' }),
+  }
+}
+
+export function createApp(api: JsonApiClient): JSX.Element {
   return <App {...getServices(api)} />
 }
 

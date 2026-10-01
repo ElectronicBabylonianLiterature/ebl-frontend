@@ -2,20 +2,19 @@ import React from 'react'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { act } from 'react'
-import { Text } from 'transliteration/domain/text'
 import LemmaAnnotation, {
   LemmaAnnotatorProps,
 } from 'fragmentarium/ui/fragment/lemma-annotation/LemmaAnnotation'
-import { TextLine } from 'transliteration/domain/text-line'
-import { lineNumberFactory } from 'test-support/linenumber-factory'
-import { kurToken, raToken } from 'test-support/test-tokens'
 import EditableToken from 'fragmentarium/ui/fragment/linguistic-annotation/EditableToken'
-import { AkkadianWord } from 'transliteration/domain/token'
 import WordService from 'dictionary/application/WordService'
 import FragmentService from 'fragmentarium/application/FragmentService'
-import Promise from 'bluebird'
 import { LemmaOption } from 'fragmentarium/ui/lemmatization/LemmaSelectionForm'
 import { wordFactory } from 'test-support/word-fixtures'
+import {
+  createEditableTokens,
+  mockWord,
+  text,
+} from 'fragmentarium/ui/fragment/lemma-annotation/LemmaAnnotation.testSupport'
 
 jest.mock('dictionary/application/WordService')
 jest.mock('fragmentarium/application/FragmentService')
@@ -26,11 +25,6 @@ const MockFragmentService = FragmentService as jest.Mock<
   jest.Mocked<FragmentService>
 >
 const fragmentServiceMock = new MockFragmentService()
-const mockWord = wordFactory.build({
-  _id: 'mockLemma',
-  lemma: ['mockLemma'],
-  homonym: 'I',
-})
 const suggestion = new LemmaOption(mockWord)
 const updateAnnotationMock = jest.fn()
 const setTextMock = jest.fn()
@@ -41,48 +35,13 @@ let props: LemmaAnnotatorProps
 let raUnselectSpy: jest.SpyInstance
 let kurSelectSpy: jest.SpyInstance
 
-const brokenKurToken = {
-  ...kurToken,
-  value: 'ku[r',
-  parts: [
-    {
-      value: 'ku[r',
-      cleanValue: 'kur',
-      enclosureType: [],
-      erasure: 'NONE',
-      type: 'ValueToken',
-    },
-  ],
-} as AkkadianWord
-
 function getTokenMarkable(searchString: RegExp | string) {
   return screen.getByRole('button', { name: searchString })
 }
 
-const text = new Text({
-  lines: [
-    new TextLine({
-      type: 'TextLine',
-      lineNumber: lineNumberFactory.build({ number: 1 }),
-      prefix: '',
-      content: [raToken, kurToken],
-    }),
-    new TextLine({
-      type: 'TextLine',
-      lineNumber: lineNumberFactory.build({ number: 1 }),
-      prefix: '',
-      content: [brokenKurToken],
-    }),
-  ],
-})
-
 describe('LemmaAnnotation', () => {
   beforeEach(() => {
-    editableTokens = [
-      new EditableToken(raToken, 0, 0, 0, []),
-      new EditableToken(kurToken, 1, 1, 0, []),
-      new EditableToken(brokenKurToken, 2, 0, 1, []),
-    ]
+    editableTokens = createEditableTokens()
     raUnselectSpy = jest.spyOn(editableTokens[0], 'select')
     kurSelectSpy = jest.spyOn(editableTokens[0], 'select')
 

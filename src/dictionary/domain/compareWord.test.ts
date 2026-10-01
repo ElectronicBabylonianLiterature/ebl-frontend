@@ -1,5 +1,5 @@
 import { wordFactory } from 'test-support/word-fixtures'
-import compareWord from './compareWord'
+import compareWord from 'dictionary/domain/compareWord'
 
 test.each([
   ['Abullu', 'abullu', -1],

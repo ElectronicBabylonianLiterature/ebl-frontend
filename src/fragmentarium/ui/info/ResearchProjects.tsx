@@ -1,7 +1,7 @@
 import ExternalLink from 'common/ui/ExternalLink'
 import React from 'react'
 import { ResearchProject } from 'research-projects/researchProject'
-import './ResearchProjectList.sass'
+import 'fragmentarium/ui/info/ResearchProjectList.sass'
 
 export function ProjectList({
   projects,

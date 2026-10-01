@@ -4,13 +4,13 @@ import TextService from 'corpus/application/TextService'
 import { DictionaryLineDisplay } from 'corpus/domain/chapter'
 import { genres } from 'corpus/ui/Corpus'
 
-import './LinesWithLemma.sass'
+import 'dictionary/ui/search/LinesWithLemma.sass'
 import { Col, Row, Tab, Tabs } from 'react-bootstrap'
 import LemmaLineTable from 'dictionary/ui/search/LemmaLineTable'
 import _ from 'lodash'
-import { EmptySection } from '../display/EmptySection'
+import { EmptySection } from 'dictionary/ui/display/EmptySection'
 import { CorpusQueryResult } from 'query/QueryResult'
-import LemmaQueryLink from '../display/LemmaQueryLink'
+import LemmaQueryLink from 'dictionary/ui/display/LemmaQueryLink'
 
 const CorpusLines = withData<
   { lemmaId: string },
@@ -41,7 +41,8 @@ const CorpusLines = withData<
       </Tabs>
     )
   },
-  (props) => props.textService.searchLemma(props.lemmaId, props.genre),
+  (props, signal) =>
+    props.textService.searchLemma(props.lemmaId, props.genre, signal),
 )
 
 export default withData<
@@ -89,5 +90,6 @@ export default withData<
       </>
     )
   },
-  ({ textService, lemmaId }) => textService.query({ lemmas: lemmaId }),
+  ({ textService, lemmaId }, signal) =>
+    textService.query({ lemmas: lemmaId }, signal),
 )

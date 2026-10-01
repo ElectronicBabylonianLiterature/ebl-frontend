@@ -15,7 +15,7 @@ import {
   textIdFactory,
 } from 'test-support/chapter-fixtures'
 
-const defaultChance = new Chance()
+const defaultChance = new Chance('dictionary-line-fixtures')
 
 export const lineVariantDisplayFactory = Factory.define<
   LineVariantDisplay,

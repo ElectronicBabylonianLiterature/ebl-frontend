@@ -4,28 +4,54 @@ import Timeline, { TimelineItem } from 'about/ui/Timeline'
 
 let observerCallback: IntersectionObserverCallback
 const mockDisconnect = jest.fn()
-const mockObserve = jest.fn()
+const mockObserve: jest.MockedFunction<IntersectionObserver['observe']> =
+  jest.fn()
 
 function getObservedElement(index: number): Element {
-  return mockObserve.mock.calls[index][0] as Element
+  return mockObserve.mock.calls[index][0]
+}
+
+const observer: IntersectionObserver = {
+  observe: mockObserve,
+  unobserve: jest.fn(),
+  disconnect: mockDisconnect,
+  root: null,
+  rootMargin: '',
+  thresholds: [],
+  takeRecords: jest.fn(),
+}
+
+function intersect(target: Element, isIntersecting: boolean): void {
+  const rect = target.getBoundingClientRect()
+  act(() => {
+    observerCallback(
+      [
+        {
+          target,
+          isIntersecting,
+          boundingClientRect: rect,
+          intersectionRect: rect,
+          intersectionRatio: isIntersecting ? 1 : 0,
+          rootBounds: null,
+          time: 0,
+        },
+      ],
+      observer,
+    )
+  })
 }
 
 beforeEach(() => {
   mockDisconnect.mockClear()
   mockObserve.mockClear()
-  ;(window as unknown as Record<string, unknown>).IntersectionObserver =
-    jest.fn((callback: IntersectionObserverCallback) => {
+  Object.defineProperty(window, 'IntersectionObserver', {
+    configurable: true,
+    writable: true,
+    value: jest.fn((callback: IntersectionObserverCallback) => {
       observerCallback = callback
-      return {
-        observe: mockObserve,
-        unobserve: jest.fn(),
-        disconnect: mockDisconnect,
-        root: null,
-        rootMargin: '',
-        thresholds: [],
-        takeRecords: jest.fn(),
-      }
-    })
+      return observer
+    }),
+  })
 })
 
 const items: TimelineItem[] = [
@@ -65,17 +91,7 @@ test('adds visible class when item intersects', () => {
   render(<Timeline items={items} />)
   const firstItem = getObservedElement(0)
 
-  act(() => {
-    observerCallback(
-      [
-        {
-          target: firstItem,
-          isIntersecting: true,
-        } as IntersectionObserverEntry,
-      ],
-      {} as IntersectionObserver,
-    )
-  })
+  intersect(firstItem, true)
 
   expect(firstItem).toHaveClass('timeline-item--visible')
 })
@@ -84,17 +100,7 @@ test('does not add visible class when item is not intersecting', () => {
   render(<Timeline items={items} />)
   const firstItem = getObservedElement(0)
 
-  act(() => {
-    observerCallback(
-      [
-        {
-          target: firstItem,
-          isIntersecting: false,
-        } as IntersectionObserverEntry,
-      ],
-      {} as IntersectionObserver,
-    )
-  })
+  intersect(firstItem, false)
 
   expect(firstItem).not.toHaveClass('timeline-item--visible')
 })
@@ -112,7 +118,7 @@ test('alternates left and right positioning', () => {
 })
 
 test('shows all items when IntersectionObserver is unavailable', () => {
-  delete (window as unknown as Record<string, unknown>).IntersectionObserver
+  Reflect.deleteProperty(window, 'IntersectionObserver')
 
   render(<Timeline items={items} />)
 

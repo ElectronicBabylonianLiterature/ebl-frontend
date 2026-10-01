@@ -1,32 +1,33 @@
 import React, { useContext, useMemo } from 'react'
-import Bluebird from 'bluebird'
 import AppContent from 'common/ui/AppContent'
 import { Link } from 'react-router-dom'
 import { SectionCrumb } from 'common/ui/Breadcrumbs'
 import { ChapterDisplay } from 'corpus/domain/chapter'
 import { ChapterId } from 'transliteration/domain/chapter-id'
 import withData from 'http/withData'
-import CorpusTextCrumb from './CorpusTextCrumb'
-import GenreCrumb from './GenreCrumb'
-import { ChapterTitle } from './chapter-title'
+import CorpusTextCrumb from 'corpus/ui/CorpusTextCrumb'
+import GenreCrumb from 'corpus/ui/GenreCrumb'
+import { ChapterTitle } from 'corpus/ui/chapter-title'
 import InlineMarkdown from 'common/ui/InlineMarkdown'
 import { createColumns, maxColumns } from 'transliteration/domain/columns'
 import { Button, ButtonGroup } from 'react-bootstrap'
 import SessionContext from 'auth/SessionContext'
-import ChapterCrumb from './ChapterCrumb'
+import ChapterCrumb from 'corpus/ui/ChapterCrumb'
 import { Text } from 'corpus/domain/text'
 import Download from 'corpus/ui/Download'
-import GotoButton from './GotoButton'
+import GotoButton from 'corpus/ui/GotoButton'
 import SubmitCorrectionsButton from 'common/ui/SubmitCorrectionsButton'
 import TextService from 'corpus/application/TextService'
-import { ChapterViewLine } from './ChapterViewLine'
-import RowsContext, { useRowsContext } from './RowsContext'
-import { SideBar } from './ChapterViewSideBar'
-import { HowToCite } from './HowToCite'
-import TranslationContext, { useTranslationContext } from './TranslationContext'
+import { ChapterViewLine } from 'corpus/ui/ChapterViewLine'
+import RowsContext, { useRowsContext } from 'corpus/ui/RowsContext'
+import { SideBar } from 'corpus/ui/ChapterViewSideBar'
+import { HowToCite } from 'corpus/ui/HowToCite'
+import TranslationContext, {
+  useTranslationContext,
+} from 'corpus/ui/TranslationContext'
 import { stageToAbbreviation } from 'common/utils/period'
 
-import './ChapterView.sass'
+import 'corpus/ui/ChapterView.sass'
 import WordService from 'dictionary/application/WordService'
 import { HeadTags } from 'router/head'
 import MarkupService from 'markup/application/MarkupService'
@@ -56,7 +57,7 @@ function Title({ chapter }: Props): JSX.Element {
   )
 }
 
-function EditChapterButton({ chapter }: Props): JSX.Element {
+export function EditChapterButton({ chapter }: Props): JSX.Element {
   const session = useContext(SessionContext)
   const editUrl = `/corpus/${encodeURIComponent(
     chapter.id.textId.genre,
@@ -218,16 +219,16 @@ export default withData<
     activeLine: string
   },
   { id: ChapterId },
-  [ChapterDisplay, Text]
+  { chapter: ChapterDisplay; text: Text }
 >(
-  ({ data: [chapter, text], ...props }) => (
+  ({ data: { chapter, text }, ...props }) => (
     <ChapterView chapter={chapter} text={text} {...props} />
   ),
-  ({ id, textService }) =>
-    Bluebird.all([
+  ({ id, textService }, signal) =>
+    Promise.all([
       textService.findChapterDisplay(id),
-      textService.find(id.textId),
-    ]),
+      textService.find(id.textId, signal),
+    ]).then(([chapter, text]) => ({ chapter, text })),
   {
     watch: (props) => [props.id],
   },

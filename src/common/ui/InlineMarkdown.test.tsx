@@ -1,6 +1,6 @@
 import React from 'react'
 import { render, screen } from '@testing-library/react'
-import InlineMarkdown from './InlineMarkdown'
+import InlineMarkdown from 'common/ui/InlineMarkdown'
 
 describe('InlineMarkdown', () => {
   describe('Basic text rendering', () => {
