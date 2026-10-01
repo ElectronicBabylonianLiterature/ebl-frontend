@@ -4,7 +4,7 @@ This directory contains the development container configuration for the EBL Fron
 
 ## Files
 
-- `devcontainer.json` – Main dev container configuration
+- `devcontainer.json` – Main dev container configuration (features: Git LFS, GitHub CLI)
 - `Dockerfile` – Container image definition (Node 24 + ggshield)
 - `inject-secrets.sh` – Post-create script that runs inside the container to inject Codespaces secrets and sync missing keys
 - `README.md` – This file

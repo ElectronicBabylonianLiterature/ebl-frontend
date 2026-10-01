@@ -6,7 +6,8 @@
   },
 
   "features": {
-    "ghcr.io/devcontainers/features/git-lfs:1": {}
+    "ghcr.io/devcontainers/features/git-lfs:1": {},
+    "ghcr.io/devcontainers/features/github-cli:1": {}
   },
 
   "customizations": {
@@ -20,7 +21,11 @@
     }
   },
 
-  "initializeCommand": ["sh", "-c", "test -f .env.local || cp .env.test .env.local"],
+  "initializeCommand": [
+    "sh",
+    "-c",
+    "test -f .env.local || cp .env.test .env.local"
+  ],
   "postCreateCommand": "git config --global core.autocrlf input && git config --global core.eol lf && git config --global core.safecrlf true && yarn install && bash .devcontainer/inject-secrets.sh",
 
   "forwardPorts": [3000],

@@ -4,9 +4,9 @@ document: handoff / continuation prompt
 pull_request: https://github.com/ElectronicBabylonianLiterature/ebl-frontend/pull/774
 branch: chore/remove-bluebird
 base_branch: master
-head: 'local commit (2026-10-01) concluding the merge of origin/master 95282785 (#765) plus all round-12 fixes — NOT pushed'
+head: '716df2ba (2026-10-01), pushed; uncommitted on top: the C1–C3 CI/devcontainer fix (TASK-774-ci-canvas-*.md)'
 date: 2026-10-01
-state: 'Round-12 findings fixed and committed locally. Open: rebuild the dev container, push, CI on Node 24, PR description, Fabdulla1 re-review, #823 rebase.'
+state: 'Container rebuilt, 716df2ba pushed. CI test failed at Install (canvas has no Node 24 prebuild; runner lacks cairo/pixman) — fixed locally, uncommitted. Open: commit + push the fix (your request), CI green, PR description, Fabdulla1 re-review, #823 rebase.'
 tracked_in_git: 'yes — TASK-*.md are no longer gitignored (your request, 2026-09-30) and are committed with the code; remove them in their own cleanup commit before merge'
 gates: 'lint PASS, tsc PASS, test:ci PASS on Node 20 and Node 24.21.0 (646 suites / 5546 tests / 47 snapshots, zero console output), coverage 98.35/95.75/98.35/98.45, every touched file 100%, no touched file over 250 lines, CodeQL 0, qlty smells 55 → 21 files repo-wide'
 follow_up_pr: '#823 (chore/split-oversized-files), stacked on this branch: needs a rebase dropping its splits of the 17 files split here; keeps PdfExport complexity, TestData and the 42 untouched oversized files'
@@ -22,8 +22,8 @@ Round 12 reviewed the pushed round-11 commit, found a handful of real problems, 
 
 ## Next steps, in order
 
-1. ⚠️ **Rebuild the dev container.** `.devcontainer/Dockerfile` is now `javascript-node:24` (same Debian 13 base), and `package.json` `engines` is `^24.0.0`, so `yarn` refuses to run on the current Node 20 container. After the rebuild run `yarn install` (the lockfile changes only `@types/node` and `undici-types`).
-2. **Push** the branch (`git push`, upstream is `origin/chore/remove-bluebird`; check with `git config --get branch.chore/remove-bluebird.merge`).
+1. ~~Rebuild the dev container~~ — done 2026-10-01. ~~Push~~ — done (716df2ba).
+2. **Commit and push the CI fix** (only on your explicit request): `.github/workflows/main.yml` installs the canvas build libraries; `.devcontainer/devcontainer.json` gains the GitHub CLI feature (and is now Prettier-formatted); `.devcontainer/README.md`. See `TASK-774-ci-canvas-log.md`.
 3. **Check CI** on the merge ref: the `test` job now runs on Node 24; GitHub's CodeQL must stay green (its diff view is still truncated at 300 files; the local run found 0 on the full tree).
 4. **m5 — update the PR description** with the draft in `TASK-774-review.md` ("Draft PR description update (m5)").
 5. **B1 — Fabdulla1's re-review.** Their CHANGES_REQUESTED review of 2026-09-29 is fully addressed; reviewer assignment is yours.
@@ -78,6 +78,9 @@ Round 12 reviewed the pushed round-11 commit, found a handful of real problems, 
 - **Signals:** `withDataGetters.abortSignal.test.tsx`, `corpusGetters.abortSignal.test.tsx` and `TextService.abortSignal.test.ts` show how to prove a signal reaches `fetch`; `test-support/pendingRead.ts` is the shared helper.
 
 ## Traps met
+
+- The dev container ships cairo/pango/pixman dev packages, so `canvas` 2.11 builds from source there on Node 24; GitHub's ubuntu runner does not have them. A local Node 24 install proves nothing about CI's install step.
+- `gh` is provided by the dev container's `github-cli` feature; on a container built before that feature, install it from cli.github.com's apt repo.
 
 - jsdom 16.7 has no `AbortSignal.reason`; expect `name: 'AbortError'`.
 - `qlty check --upstream origin/master` sees "no modified files" here; pass paths explicitly.

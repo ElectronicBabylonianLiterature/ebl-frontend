@@ -204,9 +204,17 @@ This round covers head `7c5a04cc`. It concludes the #787 merge and carries all t
 
 **Changes requested.** Fix M1 and M2 with the tests described, restore the two `ReferenceInjector` tests (M3), split the Images tab keys (M4), add `chapterDisplay.ts` to the coverage gate (M5), move `ErrorBoundary.comprehensive.test.tsx` to `expectConsoleErrors` (M6), close the touched-file coverage gaps (M7), and tidy m1 to m5. Then merge `master` (#765), run the relative-import sweep over the merged tree (M8), and do the Node 24 bump (M9) as its own commit with the dev container change reviewed on its own terms (W3). Run the full gate set, then ask Fabdulla1 for the re-review (B1).
 
+## Post-push finding (2026-10-01): CI install fails on Node 24
+
+| ID  | Severity | Finding                                                                                                                                                                                                                                                                                                                                             | Fix                                                                                                                                                                                                                  | Status                                 |
+| --- | -------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------- |
+| C1  | Blocker  | CI `test` on 716df2ba fails at Install (run 36861530827): `canvas@2.11.2` has no Node 24 prebuild (ABI 137), and its source build needs cairo/pixman dev libraries that ubuntu-latest lacks (`Package 'pixman-1' was not found`). The round-12 Node 24 validation ran in a Debian container that ships those libraries, so it could not catch this. | `main.yml`: "Install canvas build dependencies" step (`libcairo2-dev libgif-dev libjpeg-dev libpango1.0-dev libpixman-1-dev`, the Dockerfile's set) before Install. The production Dockerfile already installs them. | Fixed locally, not committed or pushed |
+| C2  | Minor    | `gh` missing after the dev container rebuild; it was never part of the config.                                                                                                                                                                                                                                                                      | `devcontainer.json`: `github-cli` feature; installed in the running container.                                                                                                                                       | Fixed locally, not committed or pushed |
+| C3  | Minor    | `.devcontainer/devcontainer.json` failed `prettier --check` (also on master).                                                                                                                                                                                                                                                                       | `prettier --write`.                                                                                                                                                                                                  | Fixed locally, not committed or pushed |
+
 ## Draft PR description update (m5)
 
-To apply after the push, as you chose. Three edits to the current description.
+To apply after the CI fix is pushed and green. Three edits to the current description.
 
 **1. In "Round-11 review fixes", first bullet:** replace "(#787, uncommitted merge resolved on this branch)" with "(#787)".
 
@@ -225,6 +233,7 @@ To apply after the push, as you chose. Three edits to the current description.
 >   - Dockerfile: `node:24.21.0-alpine3.23` pinned by digest; the Alpine release is unchanged, so every `apk` pin still applies.
 >   - Dev container: `javascript-node:24`. **Rebuild it after pulling.**
 >   - Also updated: `.nvmrc`, CI `node-version`, `engines`, `@types/node`.
+>   - CI installs the cairo/pango/pixman build libraries, because `canvas` 2.11 has no prebuilt binary for Node 24 and compiles from source. The dev container gains the GitHub CLI feature.
 > - **Repository-wide tidy-up.**
 >   - All relative imports are now `src`-rooted.
 >   - Every file this PR touches is at 100% line and branch coverage.
@@ -265,11 +274,12 @@ M1–M9, m1–m4, the #765 merge, the 17 splits and the full gate set are done; 
 
 ### Your next steps
 
-1. ⚠️ **Rebuild the dev container.** `.devcontainer/Dockerfile` is now `javascript-node:24`, and `engines` requires Node 24, so `yarn` refuses to run on the current Node 20 container until it is rebuilt. Then run `yarn install`.
-2. ~~Commit~~ — done 2026-10-01 (local; concludes the merge of master). The `TASK-*.md` documents are in that commit; remove them in their own commit before merge.
-3. **Push**, then check CI on the merge ref: the `test` job on Node 24, and that GitHub's CodeQL check stays green.
-4. **m5:** apply the PR description draft.
-5. **#823:** rebase onto this branch and drop its splits of the 17 files split here.
+1. ~~Rebuild the dev container~~ — done 2026-10-01; `yarn install` ran in postCreate.
+2. ~~Commit~~ — done 2026-10-01. ~~Push~~ — done (origin at 716df2ba).
+3. ~~Check CI~~ — `test` failed at Install (C1); fixed locally together with C2 and C3.
+4. **Commit and push the C1–C3 fix** (needs your explicit request), then confirm `test` and CodeQL are green.
+5. **m5:** apply the PR description draft (after step 4 is green).
+6. **#823:** rebase onto this branch and drop its splits of the 17 files split here.
 
 ### After the push
 
