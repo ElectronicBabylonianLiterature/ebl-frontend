@@ -1,6 +1,6 @@
 import React from 'react'
 import { render, screen } from '@testing-library/react'
-import BlobImage from './BlobImage'
+import BlobImage from 'common/ui/BlobImage'
 
 const objectUrl = 'object URL mock'
 let data: Blob

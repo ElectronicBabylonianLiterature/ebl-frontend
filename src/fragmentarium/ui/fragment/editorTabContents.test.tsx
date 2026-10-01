@@ -4,17 +4,18 @@ import userEvent from '@testing-library/user-event'
 import { ThemeProvider } from 'react-bootstrap'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import { Fragment } from 'fragmentarium/domain/fragment'
-import {
-  NamedEntityAnnotationContents,
-  TabsProps,
-} from 'fragmentarium/ui/fragment/editorTabContents'
+import { NamedEntityAnnotationContents } from 'fragmentarium/ui/fragment/editorTabContents'
 import { AnnotationSpans } from 'fragmentarium/ui/text-annotation/annotationSpan'
 import { WithRealiaService } from 'fragmentarium/ui/text-annotation/textAnnotation.testSupport'
 import { tokenIdFragment } from 'test-support/fragment-fixtures'
 import { withAnnotationSpans } from 'test-support/annotated-fragment'
+import { createTabsProps } from 'fragmentarium/ui/fragment/editorTabContents.testSupport'
 
 jest.mock('realia/application/RealiaService')
 jest.mock('fragmentarium/application/FragmentService')
+jest.mock('fragmentarium/application/FragmentSearchService')
+jest.mock('fragmentarium/application/FindspotService')
+jest.mock('dictionary/application/WordService')
 
 const fragmentServiceMock = new (FragmentService as jest.Mock<
   jest.Mocked<FragmentService>
@@ -47,11 +48,11 @@ async function setup(saveFails = false): Promise<void> {
     <ThemeProvider>
       <WithRealiaService>
         <NamedEntityAnnotationContents
-          {...({
+          {...createTabsProps({
             fragment: tokenIdFragment,
             fragmentService: fragmentServiceMock,
             onSave,
-          } as unknown as TabsProps)}
+          })}
         />
       </WithRealiaService>
     </ThemeProvider>,

@@ -16,7 +16,7 @@ export interface CroppedAnnotation {
   fragmentNumber: string
   provenance?: string
   script: string
-  label: string
+  label?: string
   date?: MesopotamianDate
   annotationId: string
   pcaClustering?: PcaClustering

@@ -1,10 +1,18 @@
-import React from 'react'
 import DateConverter from 'chronology/domain/DateConverter'
 import { weekDayNames, monthNames } from 'chronology/domain/DateConverterBase'
 import { Field } from 'chronology/application/DateConverterFormFieldData'
 import data from 'chronology/domain/dateConverterData.json'
-
-type Edges = [number, number]
+import {
+  getValuesAtEdges,
+  getAllFieldTypeEdges,
+  getFieldTypeYearAndMonth,
+} from 'chronology/ui/DateConverter/dateConverterFieldEdges'
+import {
+  getLabelValueOptions,
+  getYearOptionLabel,
+  getNumberRangeOptions,
+  getStringOptions,
+} from 'chronology/ui/DateConverter/dateConverterOptionElements'
 
 export default function getOptions({
   field,
@@ -13,123 +21,14 @@ export default function getOptions({
   field: Field
   dateConverter: DateConverter
 }): JSX.Element[] {
-  const optionsMap = {
-    Year: () => getYearOptions(field, dateConverter),
-    Month: () => getMonthOptions(field, dateConverter),
-    Day: () => getDayOptions(field, dateConverter),
-    ruler: () => getRulerOptions(dateConverter),
+  if (field.name.includes('Year')) {
+    return getYearOptions(field, dateConverter)
+  } else if (field.name.includes('Month')) {
+    return getMonthOptions(field, dateConverter)
+  } else if (field.name.includes('Day')) {
+    return getDayOptions(field, dateConverter)
   }
-  for (const key in optionsMap) {
-    if (field.name.includes(key)) {
-      return optionsMap[key]()
-    }
-  }
-  return []
-}
-
-const getValuesAtEdges = (
-  fieldName: string,
-  dateConverter: DateConverter,
-): Edges => {
-  return [
-    dateConverter.earliestDate[fieldName],
-    dateConverter.latestDate[fieldName],
-  ]
-}
-
-const getAllFieldTypeEdges = (
-  field: Field,
-  dateConverter: DateConverter,
-): { yearEdges: Edges; monthEdges: Edges; dayEdges: Edges } => {
-  const prefixes = getDateFieldPrefixes(field)
-  const [yearEdges, monthEdges, dayEdges] = [
-    `${prefixes.yearPrefix}Year`,
-    `${prefixes.monthPrefix}Month`,
-    `${prefixes.dayPrefix}Day`,
-  ].map((fieldName) => getValuesAtEdges(fieldName, dateConverter))
-  return { yearEdges, monthEdges, dayEdges }
-}
-
-const getFieldTypeYearAndMonth = (
-  field: Field,
-  dateConverter: DateConverter,
-): { year: number; month: number } => {
-  const prefixes = getDateFieldPrefixes(field)
-  const year = dateConverter.calendar[`${prefixes.yearPrefix}Year`]
-  const month = dateConverter.calendar[`${prefixes.yearPrefix}Month`]
-  return { year, month }
-}
-
-const getDateFieldPrefixes = (
-  field: Field,
-): { yearPrefix: string; monthPrefix: string; dayPrefix: string } => {
-  const toPlainPrefix = (prefix: string) => ({
-    yearPrefix: prefix,
-    monthPrefix: prefix,
-    dayPrefix: prefix,
-  })
-  if (field.name.includes('gregorian')) {
-    return toPlainPrefix('gregorian')
-  } else if (field.name.includes('julian')) {
-    return toPlainPrefix('julian')
-  } else {
-    return {
-      yearPrefix: 'seBabylonian',
-      monthPrefix: 'mesopotamian',
-      dayPrefix: 'mesopotamian',
-    }
-  }
-}
-
-function getLabelValueOptions(
-  options: { label: string | JSX.Element; value: number | string }[],
-): JSX.Element[] {
-  return options.map(({ label, value }, index) => (
-    <option
-      key={index}
-      value={value}
-      {...(value === '' ? { hidden: true } : {})}
-    >
-      {label}
-    </option>
-  ))
-}
-
-function getYearOptionLabel(
-  year: number,
-  era: 'western' | 'se' = 'western',
-): string {
-  const { eraPrefix, beforeEraPrefix } = {
-    western: { eraPrefix: 'CE', beforeEraPrefix: 'BCE' },
-    se: { eraPrefix: 'SE', beforeEraPrefix: 'BSE' },
-  }[era]
-  return year < 1
-    ? `${Math.abs(year) + 1} ${beforeEraPrefix}`
-    : `${year} ${eraPrefix}`
-}
-
-function getNumberRangeOptions(
-  from: number,
-  to: number,
-  labelFormatter?: (number) => string,
-): JSX.Element[] {
-  const numbersArray = Array.from(
-    { length: to - from + 1 },
-    (_, index) => index + from,
-  )
-  return numbersArray.map((number) => (
-    <option key={number} value={number}>
-      {labelFormatter ? labelFormatter(number) : number}
-    </option>
-  ))
-}
-
-function getStringOptions(options: string[]): JSX.Element[] {
-  return options.map((label, index) => (
-    <option key={index} value={index + 1}>
-      {label}
-    </option>
-  ))
+  return getRulerOptions(dateConverter)
 }
 
 const getYearOptions = (
@@ -139,28 +38,22 @@ const getYearOptions = (
   const seYearLabelGetter = (number) => getYearOptionLabel(number, 'se')
   const labelGetter =
     field.name === 'seBabylonianYear' ? seYearLabelGetter : getYearOptionLabel
-  if (field.name !== 'regnalYear') {
-    return getNumberRangeOptions(
-      ...getValuesAtEdges(field.name, dateConverter),
-      labelGetter,
-    )
-  } else if (field.name === 'regnalYear') {
+  if (field.name === 'regnalYear') {
     return getRegnalYearOptions(dateConverter)
-  } else {
-    return []
   }
+  return getNumberRangeOptions(
+    ...getValuesAtEdges(field.name, dateConverter),
+    labelGetter,
+  )
 }
 
 const getMonthOptions = (
   field: Field,
   dateConverter: DateConverter,
 ): JSX.Element[] => {
-  const optionsMap: { [key: string]: () => JSX.Element[] } = {
-    gregorianMonth: () => getGregorianJulianMonthOptions(field, dateConverter),
-    julianMonth: () => getGregorianJulianMonthOptions(field, dateConverter),
-    mesopotamianMonth: () => getMesopotamianMonthOptions(field, dateConverter),
-  }
-  return optionsMap[field.name]?.() ?? []
+  return field.name === 'mesopotamianMonth'
+    ? getMesopotamianMonthOptions(field, dateConverter)
+    : getGregorianJulianMonthOptions(field, dateConverter)
 }
 
 const getDayOptions = (
@@ -179,7 +72,7 @@ const getDayOptions = (
 
 const getMonthLength = (field: Field, dateConverter: DateConverter): number => {
   if (field.name.includes('mesopotamian')) {
-    return dateConverter.calendar.mesopotamianMonthLength ?? 30
+    return dateConverter.calendar.mesopotamianMonthLength
   } else {
     return dateConverter.getMonthLength(field.name.includes('julian'))
   }

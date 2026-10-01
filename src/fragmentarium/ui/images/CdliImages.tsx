@@ -43,7 +43,7 @@ function cdliTab(eventKey: string, url: string | null): JSX.Element | null {
 }
 
 interface CdliImagesProps {
-  cdliImages: string[]
+  cdliImages: readonly string[]
 }
 
 function CdliImages({ cdliImages }: CdliImagesProps): JSX.Element {
@@ -74,13 +74,12 @@ function CdliImages({ cdliImages }: CdliImagesProps): JSX.Element {
 
 interface Props {
   fragment: Fragment
-  fragmentService
 }
 
-export default withData<unknown, Props, { cdliImages: string[] }>(
+export default withData<unknown, Props, { cdliImages: readonly string[] }>(
   ({ data }) => <CdliImages cdliImages={data.cdliImages} />,
   ({ fragment }) =>
     Promise.resolve({
-      cdliImages: (fragment.cdliImages || []) as string[],
+      cdliImages: fragment.cdliImages ?? [],
     }),
 )

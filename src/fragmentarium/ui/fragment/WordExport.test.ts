@@ -7,6 +7,8 @@ import { fragmentFactory } from 'test-support/fragment-fixtures'
 import { Document } from 'docx'
 import { createDictionaryWord } from 'test-support/glossary'
 import type { ReactNode } from 'react'
+import * as htmlToWord from 'common/utils/HtmlToWord'
+import recordCredit from 'fragmentarium/ui/info/recordCredit'
 
 jest.mock('dictionary/application/WordService')
 jest.mock('react-bootstrap', () => {
@@ -50,4 +52,17 @@ beforeEach(async () => {
 
 test('outputType', () => {
   expect(wordBlob).toBeInstanceOf(Document)
+})
+
+test('credits the record entries in the header', async () => {
+  const creditForHead = jest.spyOn(htmlToWord, 'getCreditForHead')
+
+  await wordExport(fragment, wordService, $('#jQueryContainer'))
+
+  expect(creditForHead).toHaveBeenCalledWith(
+    recordCredit(fragment.uniqueRecord),
+  )
+  expect(recordCredit(fragment.uniqueRecord)).not.toEqual(
+    'Credit: electronic Babylonian Library Project; ',
+  )
 })

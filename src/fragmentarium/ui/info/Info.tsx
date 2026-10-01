@@ -52,7 +52,7 @@ export default function Info({
     enqueueSave(() =>
       fragmentService.updateDatesInText(
         fragment.number,
-        datesInText.filter((date) => date).map((date) => date.toDto()),
+        datesInText.map((date) => date.toDto()),
       ),
     )
 

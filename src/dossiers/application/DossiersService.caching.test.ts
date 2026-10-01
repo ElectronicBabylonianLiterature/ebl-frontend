@@ -1,6 +1,7 @@
 import DossiersRepository from 'dossiers/infrastructure/DossiersRepository'
 import DossierRecord from 'dossiers/domain/DossierRecord'
 import DossiersService from 'dossiers/application/DossiersService'
+import { defaultCacheScope } from 'dossiers/application/DossierCache'
 
 jest.mock('dossiers/infrastructure/DossiersRepository')
 
@@ -177,5 +178,27 @@ describe('DossiersService caching', () => {
     await expect(dossiersService.queryByIds(['B'])).resolves.toEqual([recordB])
     expect(dossiersRepository.queryByIds).toHaveBeenCalledTimes(1)
     expect(dossiersRepository.queryByIds).toHaveBeenCalledWith(['B'])
+  })
+  it('uses the default cache scope when the scope lookup fails', async () => {
+    const recordA = createRecord('A')
+    let scopeLookupFails = true
+    const service = new DossiersService(
+      dossiersRepository,
+      () => {
+        if (scopeLookupFails) {
+          throw new Error('No session')
+        }
+        return defaultCacheScope
+      },
+      () => currentTime,
+    )
+    dossiersRepository.queryByIds.mockResolvedValueOnce([recordA])
+
+    await expect(service.queryByIds(['A'])).resolves.toEqual([recordA])
+    dossiersRepository.queryByIds.mockClear()
+    scopeLookupFails = false
+
+    await expect(service.queryByIds(['A'])).resolves.toEqual([recordA])
+    expect(dossiersRepository.queryByIds).not.toHaveBeenCalled()
   })
 })

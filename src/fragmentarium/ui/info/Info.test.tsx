@@ -7,9 +7,8 @@ import DossiersService from 'dossiers/application/DossiersService'
 import AfoRegisterService from 'afo-register/application/AfoRegisterService'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import { Genres } from 'fragmentarium/domain/Genres'
-import { Script } from 'fragmentarium/domain/fragment'
 import { fragmentFactory } from 'test-support/fragment-fixtures'
-import { MesopotamianDate } from 'chronology/domain/Date'
+import Details from 'fragmentarium/ui/info/Details'
 import { mesopotamianDateFactory } from 'test-support/date-fixtures'
 import { colophonFactory } from 'test-support/colophon-fixtures'
 import { ResearchProjects } from 'research-projects/researchProject'
@@ -18,12 +17,10 @@ jest.mock('fragmentarium/application/FragmentService')
 jest.mock('dossiers/application/DossiersService')
 jest.mock('afo-register/application/AfoRegisterService')
 
-interface DetailsProps {
-  updateGenres: (genres: Genres) => unknown
-  updateScript: (script: Script) => unknown
-  updateDate: (date?: MesopotamianDate) => unknown
-  updateDatesInText: (dates: readonly MesopotamianDate[]) => unknown
-}
+type DetailsProps = Pick<
+  React.ComponentProps<typeof Details>,
+  'updateGenres' | 'updateScript' | 'updateDate' | 'updateDatesInText'
+>
 
 let detailsProps: DetailsProps
 
@@ -145,16 +142,16 @@ describe('Info wires the detail editors to the fragment service', () => {
     )
   })
 
-  it('drops empty entries from the dates in text', () => {
+  it('saves every date in text as a dto', () => {
     renderInfo()
     fragmentServiceMock.updateDatesInText.mockReturnValue(saved)
-    const date = mesopotamianDateFactory.build()
+    const [date, otherDate] = mesopotamianDateFactory.buildList(2)
 
-    detailsProps.updateDatesInText([date, null as unknown as MesopotamianDate])
+    detailsProps.updateDatesInText([date, otherDate])
 
     expect(fragmentServiceMock.updateDatesInText).toHaveBeenCalledWith(
       fragment.number,
-      [date.toDto()],
+      [date.toDto(), otherDate.toDto()],
     )
     expect(enqueueSave).toHaveBeenCalledWith(expect.any(Function))
   })

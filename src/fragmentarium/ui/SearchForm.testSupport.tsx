@@ -36,8 +36,6 @@ export const genres = [
 
 export const provenances = provenanceRecords
 
-const query: FragmentQuery = {}
-
 export function TestMemoryRouter({
   children,
   ...props
@@ -58,7 +56,9 @@ export function TestMemoryRouter({
 export interface SearchFormTestContext {
   fragmentService: jest.Mocked<FragmentService>
   wordService: jest.Mocked<WordService>
-  renderSearchForm: () => Promise<void>
+  bibliographyService: jest.Mocked<BibliographyService>
+  dossiersService: jest.Mocked<DossiersService>
+  renderSearchForm: (query?: FragmentQuery) => Promise<void>
   expectNavigation: (search: string) => Promise<void>
 }
 
@@ -93,6 +93,7 @@ export function createSearchFormTestContext(
   fragmentService.fetchProvenances.mockReturnValue(Promise.resolve(provenances))
   dossiersService.fetchAllDossiers.mockReturnValue(Promise.resolve([]))
   dossiersService.fetchFilteredDossiers.mockReturnValue(Promise.resolve([]))
+  dossiersService.searchSuggestions.mockReturnValue(Promise.resolve([]))
   bibliographyService.find.mockReturnValue(Promise.resolve(searchEntry))
   wordService.searchLemma.mockReturnValue(Promise.resolve([word]))
   wordService.findAll.mockReturnValue(Promise.resolve([]))
@@ -102,7 +103,9 @@ export function createSearchFormTestContext(
   return {
     fragmentService: fragmentService,
     wordService: wordService,
-    renderSearchForm: async (): Promise<void> => {
+    bibliographyService: bibliographyService,
+    dossiersService: dossiersService,
+    renderSearchForm: async (query: FragmentQuery = {}): Promise<void> => {
       render(
         <TestMemoryRouter>
           <SessionContext.Provider value={session}>

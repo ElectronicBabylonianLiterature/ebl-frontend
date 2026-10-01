@@ -23,6 +23,14 @@ const testData: TestData<WordRepository>[] = [
     Promise.resolve(resultStub),
   ),
   new TestData(
+    'findAll',
+    [['hepû I', 'hepû II']],
+    apiClient.fetchJson,
+    [resultStub],
+    [`/words?lemmas=${encodeURIComponent('hepû I,hepû II')}`, false, undefined],
+    Promise.resolve([resultStub]),
+  ),
+  new TestData(
     'search',
     [query],
     apiClient.fetchJson,

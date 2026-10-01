@@ -1,6 +1,6 @@
 import React from 'react'
 import { render, screen } from '@testing-library/react'
-import UncuratedReferencesList from './UncuratedReferencesList'
+import UncuratedReferencesList from 'fragmentarium/ui/info/UncuratedReferencesList'
 import { UncuratedReference } from 'fragmentarium/domain/fragment'
 
 it('List references with searchTerm and sorted correctly', () => {

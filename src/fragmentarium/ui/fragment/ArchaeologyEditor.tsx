@@ -33,7 +33,7 @@ interface State {
   isRegularExcavation: boolean
   isFindspotUncertain: boolean
   findspotId: number | null
-  findspot: Findspot | null
+  findspot: Findspot | null | undefined
   error: Error | null
 }
 
@@ -99,7 +99,7 @@ class ArchaeologyEditor extends Component<Props, State> {
     }
   updateFindspotState = (
     findspotId: number | null,
-    findspot: Findspot | null,
+    findspot: Findspot | null | undefined,
   ): void => {
     const updatedState = {
       ...this.state,
@@ -134,10 +134,7 @@ class ArchaeologyEditor extends Component<Props, State> {
     if (!event || !event.value) {
       this.updateFindspotState(null, null)
     } else {
-      this.updateFindspotState(
-        event.value,
-        this.findspotsById.get(event.value) || null,
-      )
+      this.updateFindspotState(event.value, this.findspotsById.get(event.value))
     }
   }
 
@@ -221,7 +218,10 @@ export default withData<
     updateArchaeology: (archaeology: ArchaeologyDto) => Promise<Fragment>
     disabled?: boolean
   },
-  { findspotService: FindspotService; fragmentService: FragmentService },
+  {
+    findspotService: Pick<FindspotService, 'fetchFindspots'>
+    fragmentService: Pick<FragmentService, 'fetchProvenances'>
+  },
   { findspots: readonly Findspot[]; provenances: readonly ProvenanceRecord[] }
 >(
   ({ archaeology, updateArchaeology, disabled, data }) => {

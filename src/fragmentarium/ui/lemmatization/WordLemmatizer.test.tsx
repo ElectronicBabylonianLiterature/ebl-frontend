@@ -7,9 +7,9 @@ import Lemma from 'transliteration/domain/Lemma'
 import { wordFactory } from 'test-support/word-fixtures'
 import FragmentService from 'fragmentarium/application/FragmentService'
 
-const fragmentService = {
+const fragmentService: Pick<FragmentService, 'searchLemma'> = {
   searchLemma: jest.fn(),
-} as unknown as FragmentService
+}
 
 describe('WordLemmatizer', () => {
   beforeEach(() => {

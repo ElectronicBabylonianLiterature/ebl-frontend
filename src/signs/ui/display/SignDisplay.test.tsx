@@ -88,11 +88,11 @@ const croppedAnnotation: CroppedAnnotation = {
   },
 }
 
-function renderSignDisplay(signName: string) {
+function renderSignDisplay(signName: string, currentSession = session) {
   return render(
     <HelmetProvider context={helmetContext}>
       <MemoryRouter initialEntries={[`/signs/${signName}`]}>
-        <SessionContext.Provider value={session}>
+        <SessionContext.Provider value={currentSession}>
           <Route
             path="/signs/:id"
             render={({ match }) => (
@@ -138,5 +138,13 @@ describe('Sign Display', () => {
     ).toBeInTheDocument()
 
     expect(container).toMatchSnapshot()
+  })
+  it('asks guests to log in', async () => {
+    signService.find.mockReturnValue(Promise.resolve(sign))
+    renderSignDisplay(sign.name, new MemorySession([]))
+
+    expect(
+      await screen.findByText('Please log in to browse the Signs.'),
+    ).toBeVisible()
   })
 })

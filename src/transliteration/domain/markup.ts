@@ -1,7 +1,6 @@
-import { Token } from './token'
+import { Token } from 'transliteration/domain/token'
 import Reference from 'bibliography/domain/Reference'
 import { ReferenceDto } from 'bibliography/domain/referenceDto'
-import './markup.css'
 
 export interface TextPart {
   readonly type:

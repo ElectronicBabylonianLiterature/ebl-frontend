@@ -1,6 +1,6 @@
 import React from 'react'
 import withData from 'http/withData'
-import FragmentService from 'fragmentarium/application/FragmentService'
+import { ImageFragmentService } from 'fragmentarium/ui/images/ImageFragmentService'
 import Folio from 'fragmentarium/domain/Folio'
 import { TransformComponent, TransformWrapper } from 'react-zoom-pan-pinch'
 import ImageButtonGroup, {
@@ -11,7 +11,7 @@ import 'fragmentarium/ui/images/Photo.css'
 
 export default withData<
   { folio: Folio },
-  { fragmentService: FragmentService },
+  { fragmentService: Pick<ImageFragmentService, 'findFolio'> },
   Blob
 >(
   ({ data, folio }) => {

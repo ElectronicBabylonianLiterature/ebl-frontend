@@ -4,7 +4,7 @@ import classnames from 'classnames'
 import { Popover } from 'react-bootstrap'
 import HelpTrigger from 'common/ui/HelpTrigger'
 
-import './ReferencesHelp.sass'
+import 'bibliography/ui/ReferencesHelp.sass'
 
 function HelpEntry({
   abbreviation,

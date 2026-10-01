@@ -1,4 +1,4 @@
-import normalizeAccents from './normalizeAccents'
+import normalizeAccents from 'fragmentarium/domain/normalizeAccents'
 
 test.each([
   ['á', 'a₂'],

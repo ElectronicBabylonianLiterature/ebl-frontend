@@ -16,10 +16,6 @@ import TranslationContext, {
 import { Markdown } from 'common/ui/Markdown'
 import { genreFromAbbr } from 'corpus/ui/Corpus'
 
-type CorpusQueryItemWithChapterDisplay = CorpusQueryItem & {
-  readonly chapterDisplay?: ChapterDisplay
-}
-
 function GenreInfoRow({
   chapterId,
   textName,
@@ -59,7 +55,6 @@ const ChapterResult = withData<
     lines: readonly number[]
     variants: readonly number[]
     variantsToShow: number
-    queryItem: CorpusQueryItem
   },
   {
     textService: TextService
@@ -108,18 +103,12 @@ const ChapterResult = withData<
       </>
     )
   },
-  ({ textService, chapterId, lines, variants, variantsToShow, queryItem }) => {
-    const prefetchedChapterDisplay =
-      (queryItem as CorpusQueryItemWithChapterDisplay).chapterDisplay ?? null
-
-    return prefetchedChapterDisplay
-      ? Promise.resolve(prefetchedChapterDisplay)
-      : textService.findChapterDisplay(
-          chapterId,
-          _.take(lines, variantsToShow),
-          _.take(variants, variantsToShow),
-        )
-  },
+  ({ textService, chapterId, lines, variants, variantsToShow }) =>
+    textService.findChapterDisplay(
+      chapterId,
+      _.take(lines, variantsToShow),
+      _.take(variants, variantsToShow),
+    ),
   {
     watch: ({ active }) => [active],
   },
@@ -163,7 +152,6 @@ function ResultPages({
             lines={chapter.lines}
             variants={chapter.variants}
             variantsToShow={variantsToShow}
-            queryItem={chapter}
           />
         )
       })}

@@ -7,6 +7,7 @@ import {
 import { CroppedAnnotation } from 'signs/domain/CroppedAnnotation'
 import userEvent from '@testing-library/user-event'
 import { mesopotamianDateFactory } from 'test-support/date-fixtures'
+import { pcaClusteringFactory } from 'test-support/cropped-annotation-fixtures'
 import {
   croppedAnnotations,
   renderSignImages,
@@ -32,11 +33,11 @@ describe('Sign Images edge cases', () => {
     await renderWith([
       annotationWith({
         annotationId: 'odd-form',
-        pcaClustering: {
+        pcaClustering: pcaClusteringFactory.build({
           ...croppedAnnotations[0].pcaClustering,
           form: 'unclustered',
-        },
-      } as Partial<CroppedAnnotation>),
+        }),
+      }),
     ])
 
     expect(screen.getByTitle('unclustered')).toBeInTheDocument()
@@ -101,9 +102,7 @@ describe('Sign Images optional annotation data', () => {
   }
 
   it('renders an annotation without a label', async () => {
-    await renderWithAnnotations([
-      { ...base, label: undefined as unknown as string },
-    ])
+    await renderWithAnnotations([{ ...base, label: undefined }])
 
     expect(screen.getByTitle('Canonical 1')).toBeInTheDocument()
   })
@@ -115,8 +114,11 @@ describe('Sign Images optional annotation data', () => {
     await renderWithAnnotations([
       {
         ...base,
-        pcaClustering: { ...base.pcaClustering, form },
-      } as CroppedAnnotation,
+        pcaClustering: pcaClusteringFactory.build({
+          ...base.pcaClustering,
+          form,
+        }),
+      },
     ])
 
     expect(screen.getByTitle(title)).toBeInTheDocument()
@@ -159,8 +161,11 @@ describe('Sign Images optional annotation data', () => {
       {
         ...base,
         script: 'MA',
-        pcaClustering: { ...base.pcaClustering, form: '' },
-      } as CroppedAnnotation,
+        pcaClustering: pcaClusteringFactory.build({
+          ...base.pcaClustering,
+          form: '',
+        }),
+      },
     ])
 
     await userEvent.click(

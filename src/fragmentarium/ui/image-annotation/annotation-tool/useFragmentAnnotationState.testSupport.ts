@@ -47,6 +47,6 @@ export function setUp(
 
 export function resetAnnotationState(): void {
   jest.clearAllMocks()
-  fragmentService.updateAnnotations.mockResolvedValue(undefined as never)
-  fragmentService.generateAnnotations.mockResolvedValue([] as never)
+  fragmentService.updateAnnotations.mockResolvedValue([])
+  fragmentService.generateAnnotations.mockResolvedValue([])
 }

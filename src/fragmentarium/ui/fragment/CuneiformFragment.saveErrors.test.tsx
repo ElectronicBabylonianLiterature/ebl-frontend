@@ -83,7 +83,7 @@ it('Dispatches a second save only after the first settles and ignores the supers
   ).not.toBeInTheDocument()
 })
 
-it('Dispatches a second save after a failed first one and ignores the superseded failure', async () => {
+it('Dispatches a second save after a failed first one and still reports that failure', async () => {
   await setup()
   let rejectFirstSave: (error: Error) => void = () => undefined
   context.fragmentService.updateEdition
@@ -100,11 +100,13 @@ it('Dispatches a second save after a failed first one and ignores the superseded
     expect(context.fragmentService.updateEdition).toHaveBeenCalledTimes(1),
   )
 
-  rejectFirstSave(new Error('Superseded failure'))
+  rejectFirstSave(new Error('Earlier save failed'))
 
+  expect(await screen.findByText('Earlier save failed')).toBeInTheDocument()
   await screen.findAllByText(
     context.updatedFragment.getExternalNumber('cdliNumber'),
   )
   expect(context.fragmentService.updateEdition).toHaveBeenCalledTimes(2)
-  expect(screen.queryByText('Superseded failure')).not.toBeInTheDocument()
+  expect(screen.getByText('Earlier save failed')).toBeInTheDocument()
+  expect(screen.queryByText('Saving...')).not.toBeInTheDocument()
 })

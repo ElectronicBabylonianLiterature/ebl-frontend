@@ -1,8 +1,8 @@
 import React from 'react'
 import { NoteLine } from 'transliteration/domain/note-line'
 import { noteNumber } from 'transliteration/domain/text'
-import { LinkToLine } from './note-links'
-import Markup from './markup'
+import { LinkToLine } from 'transliteration/ui/note-links'
+import Markup from 'transliteration/ui/markup'
 
 export default function TransliterationNotes({
   notes,

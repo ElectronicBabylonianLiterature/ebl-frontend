@@ -1,7 +1,11 @@
 import React from 'react'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { getKingsByDynasty, findKingByOrderGlobal, KingField } from './Kings'
+import {
+  getKingsByDynasty,
+  findKingByOrderGlobal,
+  KingField,
+} from 'chronology/ui/Kings/Kings'
 
 describe('getKingsByDynasty', () => {
   it('returns kings from the specified dynasty', () => {

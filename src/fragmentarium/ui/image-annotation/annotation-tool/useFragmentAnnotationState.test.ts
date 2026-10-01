@@ -164,7 +164,7 @@ it('saving the current annotations clears the saving flag', async () => {
 
 it('generating annotations appends them', async () => {
   const generated = existingAnnotations
-  fragmentService.generateAnnotations.mockResolvedValueOnce(generated as never)
+  fragmentService.generateAnnotations.mockResolvedValueOnce(generated)
   const { result } = setUp([])
 
   await act(async () => result.current.generateAnnotations())

@@ -60,7 +60,7 @@ const Info = withData<
     dictionary: WordService
     lemmaKeys: readonly string[]
   },
-  [string, DictionaryWord][]
+  [string, DictionaryWord | null][]
 >(
   ({ data: lemmaEntries, word, lemmaSetter }): JSX.Element => {
     const lemmaMap = useMemo(() => new Map(lemmaEntries), [lemmaEntries])
@@ -94,8 +94,7 @@ const Info = withData<
       !props.word.uniqueLemma.every((lemmaKey: string) =>
         props.lemmaMap.get(lemmaKey),
       ),
-    defaultData: (props) =>
-      [...props.lemmaMap.entries()] as [string, DictionaryWord][],
+    defaultData: (props) => [...props.lemmaMap.entries()],
   },
 )
 

@@ -39,6 +39,7 @@ import { AbstractLine } from 'transliteration/domain/abstract-line'
 import { isIdToken } from 'transliteration/domain/type-guards'
 
 const defaultChance = new Chance('fragment-fixtures')
+const editionDateKey = 'edition_date'
 
 export const fragmentFactory = Factory.define<Fragment>(
   ({ associations, sequence, transientParams }) => {
@@ -147,8 +148,7 @@ export const fragmentInfoFactory = Factory.define<FragmentInfo>(
       },
       () => mesopotamianDateFactory.build(),
     ),
-    // eslint-disable-next-line camelcase
-    edition_date: fragmentDate(),
+    [editionDateKey]: fragmentDate(),
     references: associations.references ?? [],
     genres: new Genres([]),
   }),

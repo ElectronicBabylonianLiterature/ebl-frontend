@@ -1,4 +1,4 @@
-import GenreCrumb from './GenreCrumb'
+import GenreCrumb from 'corpus/ui/GenreCrumb'
 
 const genre = 'L'
 const crumb = new GenreCrumb(genre)

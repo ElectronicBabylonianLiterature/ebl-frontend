@@ -50,3 +50,28 @@ it('Shows the number of transliterated tablets', async () => {
   expect(screen.getAllByText(/X.1/)[0]).toBeVisible()
   expect(screen.getByText(/,\s*Neo-Assyrian:\s*10/)).toBeVisible()
 })
+
+it('Asks to log in when the session cannot read fragments', async () => {
+  const fragmentService = {
+    lineToVecRanking: jest.fn(),
+  }
+  fragmentService.lineToVecRanking.mockResolvedValueOnce({
+    score: [],
+    scoreWeighted: [],
+  })
+  render(
+    <HelmetProvider context={helmetContext}>
+      <MemoryRouter>
+        <SessionContext.Provider value={new MemorySession([])}>
+          <FragmentLineToVecRanking
+            number={'X.0'}
+            fragmentService={fragmentService}
+          />
+        </SessionContext.Provider>
+      </MemoryRouter>
+    </HelmetProvider>,
+  )
+  expect(
+    await screen.findByText('Please log in to look up matching Fragments'),
+  ).toBeVisible()
+})

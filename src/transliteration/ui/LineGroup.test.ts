@@ -8,7 +8,8 @@ import {
 } from 'test-support/line-group-fixtures'
 import { implicitFirstColumn } from 'test-support/lines/text-columns'
 import { LemmatizableToken } from 'transliteration/domain/token'
-import { LineToken } from 'transliteration/ui/line-tokens'
+import { EmptyLineToken, LineToken } from 'transliteration/ui/line-tokens'
+import { LineGroup } from 'transliteration/ui/LineGroup'
 import { lineVariantDisplayFactory } from 'test-support/dictionary-line-fixtures'
 
 const manuscriptLine = manuscriptLineDisplayFactory.build(
@@ -62,5 +63,44 @@ describe('LineGroup.findChapterLine', () => {
       lineInfo.variantNumber,
       signal,
     )
+  })
+})
+
+describe('LineGroup without line details', () => {
+  const emptyGroup = new LineGroup(undefined, lineInfo, jest.fn())
+
+  it('has no reconstruction, manuscripts or columns', () => {
+    expect(emptyGroup.reconstruction).toEqual([])
+    expect(emptyGroup.hasManuscriptLines).toBe(false)
+    expect(emptyGroup.manuscripts).toEqual([])
+    expect(emptyGroup.manuscriptLines).toEqual([])
+    expect(emptyGroup.numberOfColumns).toEqual(0)
+  })
+})
+
+describe('LineGroup with omitted words', () => {
+  it('appends an empty line token for each omitted word', () => {
+    const omittingLine = manuscriptLineDisplayFactory.build(
+      { omittedWords: [3] },
+      { associations: { line: implicitFirstColumn } },
+    )
+    const group = new LineGroup([], lineInfo, jest.fn())
+
+    group.setLineDetails(
+      new LineDetails(
+        [
+          lineVariantDisplayFactory.build({
+            reconstruction: [],
+            manuscripts: [omittingLine],
+          }),
+        ],
+        0,
+      ),
+    )
+
+    expect(group.numberOfColumns).toBeGreaterThan(0)
+    expect(group.manuscriptLines[0].slice(-1)).toEqual([
+      new EmptyLineToken(omittingLine.siglum, 3),
+    ])
   })
 })

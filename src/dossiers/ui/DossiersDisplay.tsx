@@ -183,7 +183,7 @@ export function DossierRecordsListDisplay({
 const FragmentDossierRecordsDisplay = withData<
   unknown,
   {
-    dossiersService: DossiersService
+    dossiersService: Pick<DossiersService, 'queryByIds'>
     fragment: Fragment
   },
   { records: readonly DossierRecord[] }

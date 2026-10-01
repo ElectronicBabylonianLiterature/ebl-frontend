@@ -5,6 +5,9 @@ import {
   setUp,
 } from 'fragmentarium/ui/image-annotation/annotation-tool/useFragmentAnnotationState.testSupport'
 import { annotations as existingAnnotations } from 'test-support/test-annotation'
+import Annotation, {
+  AnnotationTokenType,
+} from 'fragmentarium/domain/annotation'
 
 type PendingWrite = {
   resolve: () => void
@@ -16,7 +19,7 @@ function holdNextWrite(): PendingWrite {
   fragmentService.updateAnnotations.mockImplementationOnce(
     () =>
       new Promise((resolve, reject) => {
-        pending.resolve = () => resolve(undefined as never)
+        pending.resolve = () => resolve([])
         pending.reject = reject
       }),
   )
@@ -82,4 +85,43 @@ it('still sends a queued write when the earlier one fails', async () => {
   await expect(deletion).resolves.toBeUndefined()
   expect(fragmentService.updateAnnotations).toHaveBeenCalledTimes(2)
   expect(result.current.error).toBe(error)
+})
+
+it('clears an earlier error once a later write succeeds', async () => {
+  fragmentService.updateAnnotations.mockRejectedValueOnce(
+    new Error('save failed'),
+  )
+  const { result } = setUp()
+
+  await act(async () => result.current.saveCurrentAnnotations())
+  expect(result.current.error).toEqual(new Error('save failed'))
+
+  await act(async () => result.current.saveCurrentAnnotations())
+  expect(result.current.error).toBeNull()
+})
+
+it('keeps an annotation deleted while generation was loading', async () => {
+  const generated = new Annotation(
+    { x: 1, y: 1, width: 2, height: 2, type: 'RECTANGLE' },
+    {
+      id: 'generated',
+      value: 'ma',
+      type: AnnotationTokenType.HasSign,
+      path: [0, 0, 0],
+      signName: 'MA',
+    },
+  )
+  let finishGeneration: (annotations: Annotation[]) => void = () => undefined
+  fragmentService.generateAnnotations.mockReturnValueOnce(
+    new Promise((resolve) => {
+      finishGeneration = resolve
+    }),
+  )
+  const { result } = setUp()
+
+  act(() => result.current.generateAnnotations())
+  await act(async () => result.current.onDelete(existingAnnotations[0]))
+  await act(async () => finishGeneration([generated]))
+
+  expect(result.current.annotations).toEqual([generated])
 })

@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom'
 function isWord(
   logogramWord: Word | Record<string, never>,
 ): logogramWord is Word {
-  return (logogramWord as Word)._id !== undefined
+  return '_id' in logogramWord
 }
 
 function LogogramWord({
@@ -16,7 +16,7 @@ function LogogramWord({
   word: Word | Record<string, never>
 }): JSX.Element | null {
   if (isWord(word)) {
-    const attested = (word as Word).attested === false ? '*' : ''
+    const attested = word.attested === false ? '*' : ''
     const lemma = word.lemma.join(' ')
     return (
       <Fragment>
@@ -39,12 +39,12 @@ function LogogramWord({
 
 type Props = {
   data: Word
-  wordService: WordService
+  wordService: Pick<WordService, 'find'>
 }
 
 export default withData<
   WithoutData<Props>,
-  { wordId },
+  { wordId: string },
   Word | Record<string, never>
 >(
   ({ data }) => <LogogramWord word={data} />,

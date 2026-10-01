@@ -1,9 +1,9 @@
 import { singleRuling } from 'test-support/lines/dollar'
 import note from 'test-support/lines/note'
-import { ManuscriptLineDisplay } from './line-details'
-import { ManuscriptTypes } from './manuscript'
+import { ManuscriptLineDisplay } from 'corpus/domain/line-details'
+import { ManuscriptTypes } from 'corpus/domain/manuscript'
 import { PeriodModifiers, Periods } from 'common/utils/period'
-import { Provenances } from './provenance'
+import { Provenances } from 'corpus/domain/provenance'
 import textLine from 'test-support/lines/text-line'
 import { manuscriptLineDisplayFactory } from 'test-support/line-details-fixtures'
 import { referenceFactory } from 'test-support/bibliography-fixtures'
@@ -26,22 +26,22 @@ test('constructor', () => {
   const isInFragmentarium = false
   const accession = 'A 42'
 
-  const manuscriptLineDisplay = new ManuscriptLineDisplay(
-    provenance,
-    modifier,
-    period,
-    type,
-    disambiguator,
-    oldSigla,
-    labels,
-    line,
-    paratext,
-    references,
-    joins,
-    museumNumber,
-    isInFragmentarium,
-    accession,
-  )
+  const manuscriptLineDisplay = new ManuscriptLineDisplay({
+    provenance: provenance,
+    periodModifier: modifier,
+    period: period,
+    type: type,
+    siglumDisambiguator: disambiguator,
+    oldSigla: oldSigla,
+    labels: labels,
+    line: line,
+    paratext: paratext,
+    references: references,
+    joins: joins,
+    museumNumber: museumNumber,
+    isInFragmentarium: isInFragmentarium,
+    accession: accession,
+  })
 
   expect(manuscriptLineDisplay.provenance).toEqual(provenance)
   expect(manuscriptLineDisplay.periodModifier).toEqual(modifier)

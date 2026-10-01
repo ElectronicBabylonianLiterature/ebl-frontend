@@ -7,6 +7,7 @@ import {
   createDictionaryWord,
   createGlossaryToken,
 } from 'test-support/glossary'
+import { singleRuling } from 'test-support/lines/dollar'
 import Label from 'transliteration/domain/Label'
 import { Word } from 'transliteration/domain/token'
 
@@ -65,4 +66,29 @@ test('create glossary', async () => {
     .mockImplementation(() => Promise.resolve([hepuI, hepuII]))
   const glossaryFactory = new GlossaryFactory(wordServiceMock)
   await expect(glossaryFactory.createGlossary(text)).resolves.toEqual(expected)
+})
+
+test('create glossary ignoring other lines and unknown lemmas', async () => {
+  const [firstLine] = lemmatized
+  const hepuI = createDictionaryWord('hepû I')
+  const wordServiceMock = new (WordService as jest.Mock<
+    jest.Mocked<WordService>
+  >)()
+  wordServiceMock.findAll.mockResolvedValue([hepuI])
+  const glossaryFactory = new GlossaryFactory(wordServiceMock)
+
+  const glossary = await glossaryFactory.createGlossary(
+    new Text({ lines: [singleRuling, firstLine] }),
+  )
+
+  expect(
+    glossary.map(([lemma, [token]]) => [
+      lemma,
+      token.label,
+      token.dictionaryWord,
+    ]),
+  ).toEqual([
+    ['hepû I', new Label().setLineNumber(firstLine.lineNumber), hepuI],
+    ['hepû II', new Label().setLineNumber(firstLine.lineNumber), null],
+  ])
 })

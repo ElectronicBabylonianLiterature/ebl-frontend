@@ -1,18 +1,15 @@
 import React from 'react'
 import Chance from 'chance'
 import { produce, castDraft } from 'immer'
-import { MemoryRouter } from 'react-router-dom'
 import { render, screen } from '@testing-library/react'
-import FragmentariumSearch from 'fragmentarium/ui/search/FragmentariumSearch'
+import { createSearchElement } from 'fragmentarium/ui/search/FragmentariumSearch.element.testSupport'
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 import Reference from 'bibliography/domain/Reference'
-import SessionContext from 'auth/SessionContext'
 import FragmentSearchService from 'fragmentarium/application/FragmentSearchService'
 import MemorySession, { Session } from 'auth/Session'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import { fragment, lines } from 'test-support/test-fragment'
 import WordService from 'dictionary/application/WordService'
-import { DictionaryContext } from 'dictionary/ui/dictionary-context'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import BibliographyService from 'bibliography/application/BibliographyService'
 import { FragmentQuery } from 'query/FragmentQuery'
@@ -68,25 +65,20 @@ export function createFragmentariumSearchTestContext(): FragmentariumSearchTestC
   const createSearch = (
     query: Partial<FragmentQuery>,
     activeTab: string,
-  ): React.ReactElement => (
-    <MemoryRouter>
-      <DictionaryContext.Provider value={wordService}>
-        <SessionContext.Provider value={session}>
-          <FragmentariumSearch
-            fragmentSearchService={fragmentSearchService}
-            fragmentService={fragmentService}
-            bibliographyService={bibliographyService}
-            dossiersService={dossiersService}
-            fragmentQuery={query}
-            pagination={{ pageIndex: 0, pageSize: 50 }}
-            wordService={wordService}
-            textService={textService}
-            activeTab={activeTab}
-          />
-        </SessionContext.Provider>
-      </DictionaryContext.Provider>
-    </MemoryRouter>
-  )
+  ): React.ReactElement =>
+    createSearchElement(
+      {
+        fragmentSearchService,
+        fragmentService,
+        bibliographyService,
+        dossiersService,
+        wordService,
+        textService,
+        session,
+      },
+      query,
+      activeTab,
+    )
 
   const context: FragmentariumSearchTestContext = {
     fragmentService: fragmentService,

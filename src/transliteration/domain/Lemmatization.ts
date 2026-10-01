@@ -1,7 +1,7 @@
 import _ from 'lodash'
 import { produce, castDraft, Draft, immerable } from 'immer'
 
-import Lemma from './Lemma'
+import Lemma from 'transliteration/domain/Lemma'
 
 export type UniqueLemma = ReadonlyArray<Lemma>
 
@@ -71,7 +71,7 @@ export class LemmatizationToken {
         }
       : {
           value: this.value,
-          uniqueLemma: (this.uniqueLemma || []).map((lemma) => lemma.value),
+          uniqueLemma: this.uniqueLemma.map((lemma) => lemma.value),
         }
   }
 }
@@ -87,10 +87,6 @@ export default class Lemmatization {
   ) {
     this.lines = lines
     this.tokens = tokens
-  }
-
-  getRowPrefix(rowIndex: number): string {
-    return this.lines[rowIndex]
   }
 
   setLemma(

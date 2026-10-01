@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { whenClicked, clickNth } from 'test-support/utils'
 import { ChapterAlignment } from 'corpus/domain/alignment'
-import ChapterAligner from './ChapterAligner'
+import ChapterAligner from 'corpus/ui/alignment/ChapterAligner'
 import { chapter } from 'test-support/test-corpus-text'
 import { produce, Draft } from 'immer'
 

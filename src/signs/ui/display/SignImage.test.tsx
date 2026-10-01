@@ -10,15 +10,13 @@ function renderSignImage(overrides: Partial<CroppedAnnotation>): void {
   render(
     <MemoryRouter>
       <SignImage
-        croppedAnnotation={
-          {
-            fragmentNumber: 'K.1',
-            image: imageString,
-            script: '',
-            annotationId: 'annotation-1',
-            ...overrides,
-          } as CroppedAnnotation
-        }
+        croppedAnnotation={{
+          fragmentNumber: 'K.1',
+          image: imageString,
+          script: '',
+          annotationId: 'annotation-1',
+          ...overrides,
+        }}
       />
     </MemoryRouter>,
   )

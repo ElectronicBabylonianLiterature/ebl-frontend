@@ -1,13 +1,13 @@
 import React from 'react'
-import FolioPager from './FolioPager'
-import FolioImage from './FolioImage'
+import FolioPager from 'fragmentarium/ui/images/FolioPager'
+import FolioImage from 'fragmentarium/ui/images/FolioImage'
 
-import './FolioDetails.css'
-import FragmentService from 'fragmentarium/application/FragmentService'
+import 'fragmentarium/ui/images/FolioDetails.css'
+import { ImageFragmentService } from 'fragmentarium/ui/images/ImageFragmentService'
 import Folio from 'fragmentarium/domain/Folio'
 
 interface Props {
-  fragmentService: FragmentService
+  fragmentService: ImageFragmentService
   fragmentNumber: string
   folio: Folio
 }

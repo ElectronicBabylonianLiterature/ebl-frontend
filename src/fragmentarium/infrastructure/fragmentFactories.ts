@@ -44,7 +44,7 @@ function createPeriod(periodName: string): Period {
   )
 }
 
-export function createScript(dto: ScriptDto): Script {
+export function createScript(dto?: ScriptDto): Script {
   const period =
     dto && typeof dto.period === 'string'
       ? createPeriod(dto.period)

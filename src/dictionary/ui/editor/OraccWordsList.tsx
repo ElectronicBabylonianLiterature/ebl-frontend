@@ -2,7 +2,7 @@ import React from 'react'
 import { FormGroup } from 'react-bootstrap'
 
 import List from 'common/ui/List'
-import TextInput from './TextInput'
+import TextInput from 'dictionary/ui/editor/TextInput'
 import { OraccWord } from 'dictionary/domain/Word'
 
 interface Props {

@@ -1,7 +1,7 @@
 import React from 'react'
 import _ from 'lodash'
 import { render, screen, fireEvent, waitFor } from '@testing-library/react'
-import LemmaAnnotationForm from './LemmaAnnotationForm'
+import LemmaAnnotationForm from 'fragmentarium/ui/fragment/lemma-annotation/LemmaAnnotationForm'
 import WordService from 'dictionary/application/WordService'
 import EditableToken from 'fragmentarium/ui/fragment/linguistic-annotation/EditableToken'
 import { atfTokenKur, kurToken } from 'test-support/test-tokens'

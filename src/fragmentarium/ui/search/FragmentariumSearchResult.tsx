@@ -5,12 +5,17 @@ import withData from 'http/withData'
 import { QueryItem, QueryResult } from 'query/QueryResult'
 import { Col, Row } from 'react-bootstrap'
 import { FragmentSearchCriteria } from 'query/FragmentQuery'
-import { linesToShow } from './FragmentariumSearch'
-import './FragmentariumSearchResult.sass'
+import { linesToShow } from 'fragmentarium/ui/search/FragmentariumSearch'
+import 'fragmentarium/ui/search/FragmentariumSearchResult.sass'
 import { stringify } from 'query-string'
-import { FragmentLines } from './FragmentariumSearchResultComponents'
+import {
+  FragmentLines,
+  FragmentLinesService,
+} from 'fragmentarium/ui/search/FragmentariumSearchResultComponents'
 import DossiersService from 'dossiers/application/DossiersService'
-import PaginationItems, { PaginationPosition } from './PaginationItems'
+import PaginationItems, {
+  PaginationPosition,
+} from 'fragmentarium/ui/search/PaginationItems'
 import {
   createPagedFragmentQuery,
   hasNextPageAfter,
@@ -32,7 +37,7 @@ function ResultPages({
   showPaginationControls,
 }: {
   fragments: readonly QueryItem[]
-  fragmentService: FragmentService
+  fragmentService: FragmentLinesService
   dossiersService: DossiersService
   linesToShow: number
   queryLemmas?: readonly string[]
@@ -83,9 +88,12 @@ function ResultPages({
   )
 }
 
+export type SearchResultFragmentService = FragmentLinesService &
+  Pick<FragmentService, 'query'>
+
 export const SearchResult = withData<
   {
-    fragmentService: FragmentService
+    fragmentService: SearchResultFragmentService
     dossiersService: DossiersService
     fragmentQuery: FragmentSearchCriteria
     pagination: SearchPagination

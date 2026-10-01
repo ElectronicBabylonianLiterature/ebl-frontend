@@ -1,22 +1,23 @@
 import React from 'react'
-import { render, screen } from '@testing-library/react'
+import { fireEvent, render, screen } from '@testing-library/react'
 import ResizeObserver from 'resize-observer-polyfill'
 import userEvent from '@testing-library/user-event'
 import FolioImage from 'fragmentarium/ui/images/FolioImage'
 import Folio from 'fragmentarium/domain/Folio'
+import { ImageFragmentService } from 'fragmentarium/ui/images/ImageFragmentService'
 
 global.ResizeObserver = ResizeObserver
 HTMLAnchorElement.prototype.click = jest.fn()
 
 const folio = new Folio({ name: 'WGL', number: '00000' })
 const objectUrl = 'object URL mock'
-let fragmentService
+let fragmentService: jest.Mocked<Pick<ImageFragmentService, 'findFolio'>>
 
 beforeEach(() => {
   fragmentService = {
     findFolio: jest.fn(),
   }
-  ;(URL.createObjectURL as jest.Mock).mockReturnValue(objectUrl)
+  jest.spyOn(URL, 'createObjectURL').mockReturnValue(objectUrl)
   fragmentService.findFolio.mockReturnValue(
     Promise.resolve(new Blob([''], { type: 'image/jpeg' })),
   )
@@ -82,4 +83,11 @@ describe('Zoom buttons', () => {
 
     expect(screen.getByLabelText('Reset')).toBeInTheDocument()
   })
+})
+
+it('Keeps a click on the image from following it', async () => {
+  render(<FolioImage fragmentService={fragmentService} folio={folio} />)
+  const image = await screen.findByAltText(folio.fileName)
+
+  expect(fireEvent.click(image)).toBe(false)
 })

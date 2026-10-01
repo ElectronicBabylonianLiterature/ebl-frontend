@@ -2,12 +2,12 @@ import React from 'react'
 import { screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { useLocation } from 'react-router-dom'
-import FragmentService from 'fragmentarium/application/FragmentService'
+import { SearchResultFragmentService } from 'fragmentarium/ui/search/FragmentariumSearchResult'
 import { QueryResult } from 'query/QueryResult'
 import {
   buildQueryResult,
   renderSearchResult,
-} from './FragmentariumSearchResult.testSupport'
+} from 'fragmentarium/ui/search/FragmentariumSearchResult.testSupport'
 
 function LocationDisplay(): JSX.Element {
   const location = useLocation()
@@ -180,7 +180,9 @@ describe('FragmentariumSearchResult pagination', () => {
   it('ignores stale responses when the effective page query changes', async () => {
     let resolveFirst: (value: QueryResult) => void = () => undefined
     let resolveSecond: (value: QueryResult) => void = () => undefined
-    const fragmentService = {
+    const fragmentService: jest.Mocked<SearchResultFragmentService> = {
+      find: jest.fn(),
+      findThumbnail: jest.fn(),
       query: jest
         .fn()
         .mockReturnValueOnce(
@@ -193,7 +195,7 @@ describe('FragmentariumSearchResult pagination', () => {
             resolveSecond = resolve
           }),
         ),
-    } as unknown as jest.Mocked<FragmentService>
+    }
 
     const view = renderSearchResult({
       search: '?number=K.1',

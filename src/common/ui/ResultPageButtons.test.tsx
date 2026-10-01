@@ -1,7 +1,7 @@
 import React from 'react'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { ResultPageButtons } from './ResultPageButtons'
+import { ResultPageButtons } from 'common/ui/ResultPageButtons'
 import { queryItemFactory } from 'test-support/query-item-factory'
 
 const setActive = jest.fn()

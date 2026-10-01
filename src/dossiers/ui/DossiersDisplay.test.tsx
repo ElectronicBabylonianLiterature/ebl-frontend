@@ -1,13 +1,11 @@
 import React from 'react'
-import { render, screen } from '@testing-library/react'
+import { render, screen, waitFor } from '@testing-library/react'
 import '@testing-library/jest-dom'
 import DossierRecord from 'dossiers/domain/DossierRecord'
-import DossiersService from 'dossiers/application/DossiersService'
-import { Fragment } from 'fragmentarium/domain/fragment'
 import FragmentDossierRecordsDisplay, {
   DossierRecordDisplay,
   DossierRecordsListDisplay,
-} from './DossiersDisplay'
+} from 'dossiers/ui/DossiersDisplay'
 import { fragmentFactory } from 'test-support/fragment-fixtures'
 import { referenceDtoFactory } from 'test-support/bibliography-fixtures'
 import userEvent from '@testing-library/user-event'
@@ -113,9 +111,43 @@ describe('DossierRecordsListDisplay', () => {
 
     expect(await screen.findByRole('tooltip')).toBeInTheDocument()
   })
+
+  it('closes the dossier popup when the dossier is clicked again', async () => {
+    render(<DossierRecordsListDisplay data={{ records: [mockRecord] }} />)
+    const dossierButton = screen.getByRole('button', { name: 'test' })
+    await userEvent.click(dossierButton)
+    await userEvent.click(dossierButton)
+
+    expect(dossierButton).toHaveAttribute('aria-expanded', 'false')
+  })
+
+  it('closes the dossier popup on a click outside', async () => {
+    render(<DossierRecordsListDisplay data={{ records: [mockRecord] }} />)
+    const dossierButton = screen.getByRole('button', { name: 'test' })
+    await userEvent.click(dossierButton)
+    expect(await screen.findByRole('tooltip')).toBeInTheDocument()
+
+    await userEvent.click(document.body)
+
+    expect(screen.queryByRole('tooltip')).not.toBeInTheDocument()
+    expect(dossierButton).toHaveAttribute('aria-expanded', 'false')
+  })
 })
 
 describe('withData HOC integration', () => {
+  it('shows no dossiers without querying when the fragment has none', async () => {
+    const mockDossiersService = { queryByIds: jest.fn() }
+    const { container } = render(
+      <FragmentDossierRecordsDisplay
+        dossiersService={mockDossiersService}
+        fragment={fragmentFactory.build({ dossiers: [] })}
+      />,
+    )
+
+    await waitFor(() => expect(container).toBeEmptyDOMElement())
+    expect(mockDossiersService.queryByIds).not.toHaveBeenCalled()
+  })
+
   it('fetches data and passes it to the wrapped component', async () => {
     const mockDossiersService = {
       queryByIds: jest.fn().mockResolvedValueOnce([mockRecord]),
@@ -126,8 +158,8 @@ describe('withData HOC integration', () => {
 
     render(
       <FragmentDossierRecordsDisplay
-        dossiersService={mockDossiersService as unknown as DossiersService}
-        fragment={mockFragment as Fragment}
+        dossiersService={mockDossiersService}
+        fragment={mockFragment}
       />,
     )
     const dossierButton = await screen.findByRole('button', { name: /test/ })
@@ -145,8 +177,8 @@ describe('withData HOC integration', () => {
 
     const { rerender } = render(
       <FragmentDossierRecordsDisplay
-        dossiersService={mockDossiersService as unknown as DossiersService}
-        fragment={fragmentA as Fragment}
+        dossiersService={mockDossiersService}
+        fragment={fragmentA}
       />,
     )
 
@@ -159,8 +191,8 @@ describe('withData HOC integration', () => {
 
     rerender(
       <FragmentDossierRecordsDisplay
-        dossiersService={mockDossiersService as unknown as DossiersService}
-        fragment={fragmentB as Fragment}
+        dossiersService={mockDossiersService}
+        fragment={fragmentB}
       />,
     )
 
@@ -176,8 +208,8 @@ describe('withData HOC integration', () => {
 
     const { rerender } = render(
       <FragmentDossierRecordsDisplay
-        dossiersService={mockDossiersService as unknown as DossiersService}
-        fragment={fragmentA as Fragment}
+        dossiersService={mockDossiersService}
+        fragment={fragmentA}
       />,
     )
 
@@ -190,8 +222,8 @@ describe('withData HOC integration', () => {
 
     rerender(
       <FragmentDossierRecordsDisplay
-        dossiersService={mockDossiersService as unknown as DossiersService}
-        fragment={fragmentB as Fragment}
+        dossiersService={mockDossiersService}
+        fragment={fragmentB}
       />,
     )
 

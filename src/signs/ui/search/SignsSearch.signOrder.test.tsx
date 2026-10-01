@@ -1,5 +1,5 @@
 import React from 'react'
-import { render, screen, within } from '@testing-library/react'
+import { render, screen, waitFor, within } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 import SignService from 'signs/application/SignService'
 import SignsSearch, { displayUnicode } from 'signs/ui/search/SignsSearch'
@@ -19,7 +19,7 @@ beforeEach(() => {
   signService.findSignsByOrder.mockResolvedValue([[before, center, after]])
 })
 
-async function findFirstSignRow(): Promise<HTMLElement> {
+function renderSignsSearch(): void {
   render(
     <MemoryRouter>
       <SignsSearch
@@ -28,6 +28,10 @@ async function findFirstSignRow(): Promise<HTMLElement> {
       />
     </MemoryRouter>,
   )
+}
+
+async function findFirstSignRow(): Promise<HTMLElement> {
+  renderSignsSearch()
   const [firstRow] = await screen.findAllByRole('row')
   return firstRow
 }
@@ -58,4 +62,26 @@ it('shows the searched sign itself unlinked in the centre', async () => {
   expect(centerCell).toHaveClass('center')
   expect(centerCell).toHaveTextContent(displayUnicode(center.unicode))
   expect(within(centerCell).queryByRole('link')).not.toBeInTheDocument()
+})
+
+it('shows no sign order table when there are no neighbouring signs', async () => {
+  signService.findSignsByOrder.mockResolvedValue([])
+  renderSignsSearch()
+
+  await screen.findByRole('link', { name: sign.displaySignName })
+  await waitFor(() =>
+    expect(signService.findSignsByOrder).toHaveBeenCalledTimes(4),
+  )
+  expect(screen.queryByRole('table')).not.toBeInTheDocument()
+})
+
+it('omits the readings of a sign without values', async () => {
+  signService.search.mockResolvedValue([
+    signFactory.build({ name: 'BA', values: [] }),
+  ])
+  renderSignsSearch()
+
+  await screen.findAllByRole('row')
+  expect(screen.queryByText(/—/)).not.toBeInTheDocument()
+  expect(screen.queryByText(/^\(/)).not.toBeInTheDocument()
 })

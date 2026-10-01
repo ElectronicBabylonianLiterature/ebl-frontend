@@ -19,8 +19,8 @@ import {
   UpdateNamedEntityAnnotations,
 } from 'fragmentarium/ui/text-annotation/annotationSave'
 import _ from 'lodash'
-import './TextAnnotation.sass'
-import './NamedEntities.sass'
+import 'fragmentarium/ui/text-annotation/TextAnnotation.sass'
+import 'fragmentarium/ui/text-annotation/NamedEntities.sass'
 
 export default function SpanAnnotationDisplay({
   fragment,

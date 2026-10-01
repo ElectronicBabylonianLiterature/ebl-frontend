@@ -142,6 +142,7 @@ function FragmentAnnotation({
               setHovering={state.setHovering}
               contentScale={state.contentScale}
               onDelete={state.onDelete}
+              disabled={state.isWriting || state.isGenerateAnnotationsLoading}
             />
           )
         }}

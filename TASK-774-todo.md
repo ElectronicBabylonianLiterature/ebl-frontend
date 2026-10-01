@@ -1,0 +1,486 @@
+# TASK-774 — TODO
+
+> **Current state (2026-09-29):** every item is done. The round sections below are kept as history; unchecked boxes in earlier rounds were settled in later rounds. The authoritative list is the last section, "Closing every open item".
+
+PR: [#774](https://github.com/ElectronicBabylonianLiterature/ebl-frontend/pull/774)
+Head reviewed: `2b391cdd` · Base: `chore/ts7-tsconfig-migration` (#773 — closed unmerged 2026-09-22)
+Last updated: 2026-09-23 (round 9 — review + remediation, committed locally, not pushed)
+Verdict: **CHANGES REQUESTED.** Fabdulla1's new review (2026-09-23) raises nine concerns, all confirmed in code; the PR still targets the closed #773 branch. 21 findings, 13 blockers. See `TASK-774-review.md`.
+
+## Round 6 — remediation — DONE
+
+- [x] F1 — `RealiaDisplay.redirectFetching.test.tsx` now waits on the landed redirect, not a call counter on a 1000 ms budget
+- [x] F1 — `LocationProbe`/`RealiaRouteEntry`/`expectLocation`/`waitForLocation`/`renderRealiaRoute` extracted into `RealiaDisplay.testSupport.tsx` (DRY)
+- [x] F2 — deleted the verbatim duplicate `createScript.test.ts`
+- [ ] F3 — delete the eight tracked `TASK-*.md` files — **excluded by instruction**
+- [ ] F4 — dismiss / re-request the CHANGES_REQUESTED review — **yours**
+- [x] F5 — PR description corrected on GitHub (the task docs are now described as deliberately tracked and due for deletion before merge)
+- [x] F6 — `useAnnotationKeyboardShortcuts.ts` and `useFragmentAnnotationState.ts` brought to 100/100/100/100
+- [x] F7 — `fullyCoveredPaths` extended from 35 to 47 paths, including every write-path file this PR touches
+- [x] F8 — documented why stacked PRs do not upload coverage to qlty
+- [ ] F9 — **needs a merge commit, not requested** — merge master into the base branch, or land #773 first
+- [x] F10 — bluebird guard widened to subpaths, `require.resolve` and `package.json`; verified against a scratch repository
+- [x] F11 — the install retry loop can now fail the step (pre-existing bug)
+- [x] F12 — fail-fast restored across the CI job's steps
+- [x] F13 — the `isCancellation` trade-off documented in `README.md`; behaviour deliberately unchanged
+- [ ] F14 — merge the three outstanding master commits — **needs a merge commit, not requested**
+- [x] F15 — `caniuse-lite` refreshed; "No target browser changes"
+- [x] F16 — type annotations added, shadowing removed, redundant `onClick` branch dropped
+- [x] Pre-existing — fixed the leaked `keyup` listener in `useAnnotationKeyboardShortcuts`'s effect cleanup
+- [x] qlty — the last blocking issue (`useFragmentAnnotationState` complexity 23) cleared by splitting the hook into `annotationSelection.ts` + `useAnnotationPersistence.ts`; all five files in the folder now report clean
+
+### Gates after remediation
+
+- [x] `yarn lint` — PASS
+- [x] `yarn tsc` — PASS
+- [x] 250-line ceiling — PASS, largest touched file is 219 lines
+- [x] `yarn test:ci` — PASS (504 suites, 4428 tests, 50 snapshots, exit 0)
+- [x] Console-clean — PASS (zero console output; the `browserslist` line is gone too)
+- [x] `yarn build:ci-stable` — PASS ("Compiled successfully", zero warnings)
+- [x] Coverage — global 95.09 / 87.97 / 94.73 / 95.23 (up from 94.84 / 87.49 / 94.63 / 94.98); all 48 per-path gates at 100%
+
+## Review pass — round 4 — DONE
+
+- [x] Fetch all timeline review events (3: qltysh[bot] COMMENTED ×2, Fabdulla1 CHANGES_REQUESTED — still standing)
+- [x] Fetch all inline review comments (6, all qltysh[bot]) with resolution + outdated status via GraphQL (6/6 resolved, 6/6 outdated)
+- [x] Fetch all general/issue comments (0)
+- [x] Check for sourcery-ai and other bot reviewers (sourcery-ai absent — not installed on this repo)
+- [x] Check CI checks on head `502c1ccf` (all green: test, CodeQL, Analyze (javascript), GitGuardian ×3, qlty check; docker/docker-test skipped)
+- [x] Check qlty status (`qlty check` = success; 0 blocking issues remaining)
+- [x] Check CodeQL (both check runs green; alerts API returns `Resource not accessible by integration` for this token — noted as a limitation in the review)
+- [x] Check for dev container configuration changes (**NONE** — verified vs base _and_ vs master; only the two workflow files changed in the whole stack)
+- [x] Check for new `.md` files (**5 tracked `TASK-774-*.md` added**; `.gitignore` guard reverted in the head commit)
+- [x] Gate: `yarn lint` — PASS
+- [x] Gate: `yarn tsc` — PASS
+- [x] Gate: full test suite — PASS (426 suites, 3695 passed, 2 skipped, 50 snapshots, exit 0)
+- [x] Gate: console-clean — PASS (zero console errors, warnings, act warnings, unhandled rejections)
+- [x] Gate: 250-line ceiling on touched `.ts`/`.tsx` — PASS (max 249, `LemmaAnnotation.tsx`)
+- [x] Gate: coverage — global 94.22/86.07/93.92/94.34 vs 93/85/93/93; all 10 per-path gates at 100%
+- [x] Independently verify the Sass claim by recompiling both trees — 59/59 byte-identical, 0 differ, 0 fail
+- [x] Verify bluebird is gone from this branch (0 refs in `src`, absent from `package.json`, `cancellableFetch` deleted)
+- [x] Verify the write-cancellation guarantee is structural (`postJson`/`putJson`/`JsonApiClient`/`getOrFetch` take no signal)
+- [x] Review the CI `pull_request` base-glob widening for secret exposure (`pull_request` not `pull_request_target`; docker still master-gated)
+- [x] Reproduce the `Error.captureStackTrace` regression in Node with the API deleted
+- [x] Re-run `git merge-tree --write-tree HEAD origin/master` against the current head
+- [x] Rewrite `TASK-774-review.md` — metadata header, friendly summary, Details table, per-finding detail, What Has To Be Done
+
+## Remediation — 2026-09-10 — DONE (uncommitted working tree)
+
+- [x] **F1** `captureStackTrace` helper extracted to `src/common/utils/captureStackTrace.ts`; `ApiError` uses it; 3 regression tests in `ApiError.test.ts` + 4 helper tests, all failing without the fix
+- [x] **F1b** Re-verified the `deserializeJson` guard removal — genuinely test-only, stays removed
+- [x] **F3** Five `TASK-774-*.md` untracked with `git rm --cached`; `.md` delta vs master is `README.md` only
+- [x] **F5** `doLoad` typed `DebouncedFunc`; `componentWillUnmount` calls `.cancel()`; `BibliographyEntryForm.unmount.test.tsx` added (2 tests, one fails without the fix)
+- [x] **F6** Write integration test now records each write's settled outcome and asserts the first resolved; verified it fails when the first request is disturbed
+- [x] **F7** Per-path 100% gate widened from 10 to 49 production modules; global floor re-measured against untouched code only and set to 93/84/93/93 (measured 93.60/84.80/93.20/93.73)
+- [x] **F8** qlty coverage upload gated on `push` or a `master` base
+- [x] **F2 (partial)** `No bluebird` CI step added — fails the build on any bluebird import under `src`; verified clean here, matches all 232 files on master
+- [x] README updated to document why a debounced write must cancel its timer as well as supersede
+- [x] Gates re-run: lint PASS, tsc PASS, 428 suites / 3704 passed / zero console output / all touched files ≤ 249 lines
+
+## Gate re-audit — 2026-09-10 — DONE
+
+- [x] **Pre-existing** `BibliographyEntryForm.tsx` was at 97.67/96/93.75/97.61 despite being modified this round — the "100% on affected code" gate was not met and I had reported completion without checking. Root cause: the suite only drove the happy path, leaving `applyInvalidEntry` and the empty-submit branch uncovered
+- [x] Added `BibliographyEntryForm.invalidEntry.test.tsx` (3 tests) — file is now 100/100/100/100 and added to `fullyCoveredPaths` (50 gated modules)
+- [x] **DRY** Extracted the shared debounce/mock helpers to `BibliographyEntryForm.testSupport.tsx`; the unmount suite dropped 52 → 37 lines
+- [x] Fixed two lint errors at the root: renamed `useFakeTimersAroundTests` (tripped `react-hooks/rules-of-hooks`) and replaced `.closest('form')` with a `data-testid`, following `TransliterationForm`'s convention
+- [x] **Review gate** `yarn build:ci-stable` — exit 0, zero warnings
+- [x] **Review gate** Verified the guard survives minification in the shipped bundle; 0 unguarded `Error.captureStackTrace(` calls remain, and 9 vendor calls in the same bundle are already optional-chained — independent confirmation that F1 was real
+- [x] Verified every file this PR changed is at 100/100/100/100
+
+## Could not be fully satisfied
+
+- [ ] **Running the modified application interactively** — `REACT_APP_DICTIONARY_API_URL` is `http://localhost:8001`, which is not running here. The production build and a bundle inspection were done instead; a jsdom boot of the built app was inconclusive (no auth0/API) and is not claimed as verification.
+
+## Deliberately not done
+
+- [ ] **`.gitignore` `TASK-*.md` rule** — round 3 reverted it at your request; re-adding would undo an explicit instruction. Untracking the files achieves the same result. Ask and I will add it back.
+- [ ] **Deleting the three untracked `TASK-ts7-migration-*.md`** — untracked, so they cannot reach the PR; deleting your scratch files is your call.
+
+## NEXT STEPS — what is actually left
+
+In order. None of these are code changes to this branch.
+
+1. [ ] **Commit this merge** — done as of this commit; the tree was staged with `MERGE_HEAD` set until then.
+2. [ ] **Land #773.** One conflict with master: `src/router/sitemap.tsx`. The sides are orthogonal — #773 changes `Bluebird<SlugsArray>` to `Promise<SlugsArray>`, master adds an `encode` parameter. Take both. Minutes of work.
+3. [ ] **Let GitHub retarget #774 to master** once #773 lands.
+4. [ ] **Re-request review from Fabdulla1** to clear the standing `CHANGES_REQUESTED` (2026-08-04). Every point in it is fixed in the code. Reviewer assignment is yours — I never touch it.
+5. [ ] **Push and confirm CI is green** on the retargeted PR.
+6. [ ] **Delete the eight scratch `.md` files** before merge: five `TASK-774-*.md`, three `TASK-ts7-migration-*.md`. All untracked, so none can reach the PR, but they are still on disk.
+7. [ ] **Re-check `Edition.test.tsx`** after retargeting — master's two assertions should win, minus master's bluebird import.
+
+## Known debt inherited from master — not this PR's to fix
+
+- [ ] **46 files exceed the 250-line ceiling**, e.g. `about/ui/bibliography.tsx` (1290), `test-support/complexTestText.ts` (3514), `auth/react-auth0-spa.test.tsx` (868). These arrive with the merge untouched. Worth a separate ticket; fixing them here would bury the bluebird diff.
+- [ ] **`REACT_APP_DICTIONARY_API_URL` points at `localhost:8001`**, which is not running in this devcontainer, so the app could never be verified interactively. The production build and a shipped-bundle inspection were done instead.
+
+## Master merge — DONE 2026-09-10
+
+- [x] **F2 COMPLETE** — 24 conflicts resolved by rule, #791 decided as supersede-not-abort, 500 suites / 4395 tests green, tsc + lint + build clean, zero console output, zero coverage-threshold failures, zero bluebird, zero casing collisions. Global coverage 94.87 / 87.60 / 94.65 / 95.00. Full account in `TASK-774-merge-master-handoff.md`.
+- [x] Deleted this PR's competing `fragmentarium/application` split and its 23 orphaned tests; master's structure wins
+- [x] Restored `PeriodAccordion.test.tsx` and `SignImages.empty.test.tsx` after cutting them too hastily — they cover live code
+- [x] Replaced master's bluebird-cancellation query test with the equivalent under the new model
+- [x] Removed master's `silenceConsoleErrors()` blanket mock in favour of `expectConsoleErrors(/not found\./)`
+- [x] Re-applied signal threading to master's `FragmentService` / `fragmentServicePorts` / `FragmentRepository` / `SignImages`
+- [x] Kept the two files I pushed over the 250-line ceiling under it: `FragmentService.ts` 252 → 246, `RealiaRepository.test.ts` 258 → 204
+
+## Superseded blocker list
+
+## Blockers — still open, not fixable in this diff
+
+- [x] **F2 COMPLETE 2026-09-10** — master reconciled, all gates green, merge staged uncommitted. Earlier attempt: all 24 conflicts resolved and the #791 question decided (supersede, don't abort), but stopped at 220 TS errors — two competing `fragmentarium/application` implementations, 5 filename casing collisions, 56 bluebird files and ~17 unseen master modules. Merge aborted; attempt preserved as `merge-resolved.patch`. **Land #773 first** — it has exactly one conflict with master (`sitemap.tsx`, orthogonal sides)
+- [ ] **F4** Re-request review from Fabdulla1 to clear the standing `CHANGES_REQUESTED` — reviewer assignment is yours
+- [ ] **F9** At merge, take master's two `Edition.test.tsx` assertions minus its bluebird import
+- [x] ~~Correct the `502c1ccf` claim about the `.md` delta in the PR description~~ — done on GitHub
+
+## Original blocker list (round 4 review)
+
+### As reviewed, before remediation
+
+- [ ] **F1** Restore the `Error.captureStackTrace` guard in `src/http/ApiClient.ts:45`; extract into a tested helper so the 100% gate still holds
+- [ ] **F2** Resolve the master merge — 44 new bluebird-importing files on master, 55 in the merged tree, 27 conflicting paths, and master's #791 save-cancellation fix to reconcile
+- [ ] **F3** `git rm` the five `TASK-774-*.md` files and restore the `TASK-*.md` `.gitignore` rule
+- [ ] **F4** Re-request review from Fabdulla1 to clear the standing `CHANGES_REQUESTED`
+
+## Non-blocking
+
+- [ ] **F5** Cancel the debounced `doLoad` in `BibliographyEntryForm.componentWillUnmount`; type it as `DebouncedFunc`
+- [ ] **F6** Tighten or rename the "does not abort the first write in flight" test — it currently cannot fail
+- [ ] **F7** Optionally widen the per-path 100% coverage gate to `src/common/utils/**` and `src/http/**`
+
+## Informational — acknowledged, no action required
+
+- [x] **F8** CI base-glob widening reviewed — low risk, correct trigger choice; optional qlty-upload gate on `github.base_ref`
+- [x] **F9** Two `xit` tests in `Edition.test.tsx` inherited from #773; master has working versions — take master's side at merge
+- [x] **F10** No dev container configuration changes anywhere in the stack
+
+## Housekeeping before merge
+
+- [x] ~~Delete the five tracked `TASK-774-*.md` files~~ — untracked instead, so they stay usable on disk while leaving the PR
+- [ ] Delete the five `TASK-774-*.md` and three `TASK-ts7-migration-*.md` files from disk when the PR merges
+- [x] ~~Add a CI guard against bluebird~~ — the `No bluebird` step
+- [x] ~~Re-run all gates after the F1 fix~~
+
+## Nothing committed
+
+- [ ] No commits, branches or pushes were made. All remediation sits in the working tree awaiting your decision.
+
+---
+
+## Review pass — round 5 — 2026-09-16 — DONE
+
+Review only. No code, config or test file was modified; the only file written is `TASK-774-review.md` plus this todo and the log.
+
+- [x] Fetch all timeline review events (3 — unchanged: qltysh[bot] COMMENTED x2, Fabdulla1 CHANGES_REQUESTED still standing)
+- [x] Fetch all inline review comments with resolution + outdated status via GraphQL (6/6 resolved, 6/6 outdated)
+- [x] Fetch all general/issue comments (0)
+- [x] Confirm no sourcery-ai or other bot reviewer participates (only qltysh[bot]; full timeline of 44 events checked)
+- [x] Check CI checks on head `7c9b1d01` — **`test` FAILURE**; CodeQL, Analyze (javascript), GitGuardian x3 all SUCCESS; docker/docker-test skipped
+- [x] Check qlty (`qlty check` status green, **9 blocking issues** on the dashboard; dashboard needs its own credentials, not available here — reproduced locally with `qlty smells --all` instead)
+- [x] Check CodeQL ("No new alerts in code changed by this pull request"; repo-wide alert list still `Resource not accessible by integration` for this token)
+- [x] Check for dev container configuration changes — **none in `.devcontainer/`**, but GitHub shows `Dockerfile +4/-4` (master's digest pin arriving via the stale base). Raised as F10 for explicit confirmation.
+- [x] Check for new `.md` files — **5 `TASK-774-*.md` tracked again** (re-added by `7c9b1d01`), 8 against master counting #773's three
+- [x] Gate: `yarn lint` — PASS
+- [x] Gate: `yarn tsc` — PASS
+- [x] Gate: `CI=true yarn build:ci-stable` — PASS, "Compiled successfully", zero warnings
+- [x] Gate: full suite under the documented command — PASS, 500 suites, zero console output
+- [x] Gate: full suite under **CI's** command — **FAIL**, `FragmentService.queries.test.ts` (F1); reproduced locally and root-caused
+- [x] Gate: 250-line ceiling on touched files — 1 over (`FragmentAnnotation.tsx`, 432; pre-existing) — F6
+- [x] Gate: DRY — **FAIL**, 93 duplicated lines + a duplicated concurrency primitive — F2
+- [x] Verify Fabdulla1's three findings are genuinely fixed, by call path and not by PR description (all three confirmed fixed)
+- [x] Verify bluebird removal (0 references in `src` and `package.json`; 3 transitive in `yarn.lock`)
+- [x] Verify the Sass migration (47 files on `@use`, 0 `darken()`, 1 `@import` left in `MapTab.sass`) — F7
+
+## Round 5 — remediation — 2026-09-16 — DONE
+
+Applied to the working tree. **Nothing committed.**
+
+- [x] **F1** `FragmentService.queries.test.ts` awaits the call and asserts on the resolved value; `result` typed `FragmentAfoRegisterQueryResult`; verified under CI's flags (22 passed)
+- [x] **F1** Swept the suite — only occurrence; `testDelegation` already awaits, the other promise variable uses `toBe` (identity, safe)
+- [x] **F2** Inline `PeriodAccordion` removed from `SignImages.tsx`; imports the extracted component
+- [x] **F2** `SignImageFigures.tsx` and `signClusterAnnotations.ts` deleted; `runWithConcurrencyLimit` removed from `signImageGrouping.ts`
+- [x] **F2** Live path now uses `ConcurrencyLimiter` — the PR's stated migration actually ships
+- [x] **F2** `SignImages.tsx` added to `fullyCoveredPaths`; all 7 `signs/ui/display` modules at 100/100/100/100
+- [x] **F3** All 8 `TASK-*.md` untracked, then **re-tracked and committed on explicit instruction** — they are part of the branch on purpose
+- [x] **F5** `yarn test:ci` added with CI's exact flags; `main.yml` calls it; copilot-instructions names it as the gate
+- [x] **F6** `FragmentAnnotation.tsx` split 432 → 158, plus 4 focused modules, all ≤ 216; 8 existing tests pass unchanged
+- [x] **F6** `reset` made `useCallback`-stable so the keyboard hook depends on it honestly (removes a pre-existing exhaustive-deps warning without suppressing it)
+- [x] **F7** `MapTab.sass` migrated to `@use`; recompiled — byte-identical CSS (768 bytes); zero `@import` left in `src`
+- [x] **F8** Guard regex widened (7/7 import spellings incl. double quotes and dynamic import); PR number dropped from the message
+- [x] **F9** `ApiClient.fetch` made `private`; README claim now literally true
+- [x] **F12** `actions/checkout` and `actions/setup-node` bumped v4 → v5 in 3 workflows
+- [x] On request: `.qlty/` generated output git-ignored, `.qlty/qlty.toml` still tracked
+- [x] Gate: `yarn lint` — PASS
+- [x] Gate: `yarn tsc` — PASS
+- [x] Gate: `yarn test:ci` — PASS, 500/500 suites, 4395/4395 tests, 50 snapshots, exit 0, zero console output
+- [x] Gate: coverage — global 94.84/87.49/94.63/94.98 vs floors 93/84/93/93; all per-path 100% gates met
+- [x] Gate: `CI=true yarn build:ci-stable` — PASS, zero warnings
+- [x] Gate: 250-line ceiling — every file this PR changes is ≤ 250
+- [x] Gate: DRY — duplicate module removed, one concurrency primitive remains
+
+## Round 5 — what remains (yours)
+
+- [ ] **F4** Clear Fabdulla1's standing `CHANGES_REQUESTED` — reviewer assignment not touched
+- [ ] **F10** Confirm the `Dockerfile` digest pin + package bumps (master's change via the stale base; HEAD == master)
+- [x] **F3** `.gitignore` rule deliberately not added — the task docs are tracked on purpose
+- [ ] Correct the PR description — it still says only `README.md` changes, which is not true while the task docs are tracked
+- [x] Committed as `75c1d81b` on `chore/remove-bluebird` (not pushed)
+- [ ] Confirm the `test` check is green on GitHub before re-review
+- [ ] Land #773, let GitHub retarget to master, re-verify
+- [ ] Delete the task-tracking docs before merge
+
+## Noted, not acted on
+
+- [ ] 3 files over the ceiling are byte-identical to master and unchanged by this PR: `about/ui/bibliography.tsx` (1290), `corpus/ui/ChapterViewLine.tsx` (392), `corpus/domain/manuscript.test.ts` (265) — own PR
+
+## Round 7 — remediation (this pass)
+
+Instruction: address every finding **except** the `.md` cleanup (F2).
+
+- [x] **F1** `AnnotationsView.integration.test.ts` snapshot flake — root-caused and fixed twice over: the hook waited 10 s for the Save button inside Jest's default 5 s `beforeEach` budget, and nothing waited for the `react-zoom-pan-pinch` transform the snapshot asserts. Added an explicit hook timeout and a `waitFor` on the transform attribute itself.
+- [x] **F6** `docker-test` given `needs: [test]` — a red master can no longer publish the `:test` image
+- [x] **F8** `fullyCoveredPaths` now validated at config load (every path must exist, no duplicates, throws with the offending paths) and the global floors ratcheted 93/84/93/93 → 94/86/94/94
+- [x] **F9** README corrected to five components; `CuneiformFragment` added with a note on its per-fragment supersede
+- [x] **F10** unused `SLACK_WEBHOOK_URL` removed from the workflow-level `env`
+- [x] **F11** explicit `permissions:` added to `codeql-analysis.yml` — `contents: read` at workflow level, `actions: read` / `contents: read` / `security-events: write` on the analyze job
+- [x] **F12** `github/codeql-action/{init,autobuild,analyze}` bumped v3 → v4
+- [x] **F13** `expectConsoleErrors` now asserts the expected error actually occurred; added `tolerateConsoleErrors` for the two blanket setups that arrange an error without requiring it
+- [x] **F14** `isBoundingBoxTooSmall` → `isBoundingBoxLargeEnough` (it returns `minSize >= 0.3`); test fixtures renamed to match
+- [x] **F15** PR description's Verification section now cites `yarn test:ci`
+- [x] **F9/F15** PR description updated on GitHub (also "four components" → five)
+- [x] **F16** handoff frontmatter `head_reviewed` corrected to `18033c77`
+
+### Excluded by instruction
+
+- [ ] **F2** delete the eight `TASK-*.md` files — explicitly out of scope this pass
+
+### Still not actionable from inside the diff
+
+- [ ] **F3** clear the standing `CHANGES_REQUESTED` — needs the reviewer; assignment never touched automatically
+- [ ] **F4** CodeQL diff ranges — clears when the PR retargets to master and the diff collapses
+- [ ] **F5** resolve #773's merge conflicts against master — different branch, and it gates the whole stack
+- [ ] **F7** merge the three master commits — a merge is a commit; not done without an explicit request
+
+### Pre-existing issues found and fixed at root during this pass
+
+- [x] Jest's default 5 s `beforeEach` budget was smaller than the 10 s wait inside it in `AnnotationsView.integration.test.ts` — a latent timeout unrelated to the snapshot
+- [x] `stubMissingBibliography` and `resetAuth0Mocks` ran a strict console-error expectation from a blanket `beforeEach`, so they asserted an error that most tests in those suites never trigger — surfaced by F13 and split into the tolerant mode
+
+## Round 8 — review only — 2026-09-20
+
+No code changed this round. Gates re-run on `ee275e43`: lint PASS, tsc PASS, `yarn test:ci` PASS (504 suites / 4428 tests / 50 snapshots, zero console output), coverage 95.08 / 87.98 / 94.74 / 95.23 with no breach, 250-line ceiling PASS.
+
+### Blockers
+
+- [ ] F1 — delete the eight tracked `TASK-*.md` files and add a `TASK-*.md` rule to `.gitignore` in the same commit
+- [ ] F2 — resolve #773's merge conflicts and land it (`mergeable_state: dirty`, 30 files, gates the whole stack) — **yours**
+- [ ] F3 — clear the standing `CHANGES_REQUESTED` (all three concerns verified fixed) — **needs the reviewer**
+- [ ] F4 — decide how CodeQL gets a real verdict: split under the 300-file cap, or read the branch alerts by hand. Landing #773 does **not** fix this (510 files vs master)
+
+### Code
+
+- [ ] F5 — add `signal?: AbortSignal` to `FragmentRepository._fetch` and pass it to `fetchJson`, then to `random`, `interesting`, `fetchNeedsRevision` (their port already declares it), plus `statistics`, `lineToVecRanking`, `findInCorpus`, `fragmentPager`
+- [ ] F5 — replace `{ fragmentService }` with `{ fragmentService: FragmentService }` in `Statistics.tsx:58`, `FragmentLineToVecRanking.tsx:92`, `FragmentInCorpus.tsx:15`, `FragmentPager.tsx:50`
+- [ ] F11 — hoist `tokens.flat()` out of the `map` in `initializeAnnotations.ts:10-17`
+- [ ] F9 — change `main.yml:59` to `run: yarn build:ci-stable`
+
+### Tests
+
+- [ ] F6 — replace the unasserted spy at `TextService.misc.test.ts:84` with `expectConsoleErrors(/Failed to preload provenances/)`
+- [ ] F7 — scope the `beforeEach` console spy in `CuneiformConverterForm.errors.test.tsx` to the four tests that assert on it
+
+### Documentation
+
+- [ ] F5 — fix the "Reads that take no signal" claim in `README.md`
+- [ ] F8 — reword the `SupersedableOperation` owner list; `BibliographyEntryForm` guards a read (`Cite.async`), not a write
+- [ ] F9 / F10 — correct the PR description: 48 changed Sass files, 60 entrypoints, and CI's build step as actually written
+
+### Approval needed
+
+- [ ] F12 — confirm the removal of "Cancelled promise rejects without completing" and "Request cancellation is available on all methods" (bluebird-only assertions, superseded by `AbortSignal` tests) — **yours**
+
+### Before merge
+
+- [ ] W3 — merge the three master commits (`e281f7ba`, `af0b7942`, `51bfc9ff`) — **needs a merge commit, not requested**
+- [ ] W1 — run `docker build .` locally; no pull request ever builds the Dockerfile. Docker unavailable in this container
+- [ ] W2 — re-check `qlty check` after the retarget, when coverage is uploaded for the first time
+- [ ] W5 — decide whether `Introduction.sass` (727) and `project.sass` (261) get split too, or leave all three
+- [ ] Re-run the full gate set against the collapsed diff after the retarget
+- [ ] Delete `TASK-774-review.md` along with the other seven before merging
+
+## Round 8 — remediation — 2026-09-22
+
+### Done
+
+- [x] F5 — `FragmentRepository._fetch` takes a `signal` and forwards it; `random`, `interesting`, `fetchNeedsRevision` now honour the `signal` their port already declared
+- [x] F5 — `statistics`, `lineToVecRanking`, `findInCorpus`, `fragmentPager` thread a `signal` through the port, the service and the repository
+- [x] F5 — new `FragmentRepository.abortSignal.test.ts` asserts the caller's signal reaches `apiClient.fetchJson` for all seven reads
+- [x] F5 — `{ fragmentService }` replaced with `{ fragmentService: FragmentService }` in `Statistics.tsx`, `FragmentLineToVecRanking.tsx`, `FragmentInCorpus.tsx`, `FragmentPager.tsx` and `FolioImage.tsx` (the fifth was not in the finding but is the identical hole)
+- [x] F5 — the three errors the `any` had been hiding fixed at root: `FragmentInCorpus` uses the shared readonly type, two test stubs are explicit casts
+- [x] DRY — `FragmentStatistics` and `CorpusAttestations` replace the same inline shapes repeated across the port, the repository, the service and two components
+- [x] 250-line ceiling — `ApiFragmentInfo` extracted to `fragmentRepositoryInfo.ts`; `FragmentRepository.ts` 253 → 178 lines
+- [x] F6 — `TextService.misc.test.ts` uses `expectConsoleErrors`; the `afterEach(jest.restoreAllMocks)` that would have defeated it is gone
+- [x] F7 — all six tests in `CuneiformConverterForm.errors.test.tsx` now assert on the shared console spy
+- [x] F8 — `README.md` describes `SupersedableOperation` as guarding operations that cannot take a signal, and names `BibliographyEntryForm`'s `Cite.async` as the read case
+- [x] F5 — `README.md`'s "Reads that take no signal" list is accurate, and records why TypeScript does not catch a dropped signal
+- [x] F9 — `main.yml:59` runs `yarn build:ci-stable`
+- [x] F9 / F10 — PR description corrected on GitHub: 48 Sass files, 60 entrypoints, the build command, the write-owner list, plus a section recording these fixes
+- [x] F11 — `initializeAnnotations` hoists `tokens.flat()` out of the `map`
+- [x] W5 — no claim about the Sass ceiling exists, so nothing to retract
+
+### Still open
+
+- [ ] F1 — delete the eight tracked `TASK-*.md` files and add a `TASK-*.md` rule to `.gitignore` — **excluded by instruction**
+- [ ] F2 — resolve #773's merge conflicts and land it — **yours**
+- [ ] F3 — clear the standing `CHANGES_REQUESTED` — **needs the reviewer**
+- [ ] F4 — split the PR under CodeQL's 300-file cap, or read the branch alerts by hand — **needs a decision**
+- [ ] F12 — approve the removal of the two bluebird-cancellation tests — **yours**
+- [ ] W1 — run `docker build .` locally — **Docker unavailable in this container**
+- [ ] W2 — re-check `qlty check` after the retarget
+- [ ] W3 — merge the three master commits — **needs a merge commit, not requested**
+
+## Round 9 — review only — 2026-09-23
+
+- [x] Gathered every review event, inline comment, issue comment, review thread (resolved/outdated), check run, annotation and combined status on `2b391cdd`
+- [x] Verified each of Fabdulla1's nine 2026-09-23 concerns against the code — 9 of 9 confirmed
+- [x] Checked `.devcontainer/`, `Dockerfile` (unchanged) and the three changed workflows (sound)
+- [x] Checked tracked `.md` files, 250-line ceiling, master drift (0), conflicts with master (none) and with #779 (5 files)
+- [x] `yarn test:ci` on `2b391cdd` — 505 suites / 4445 tests / 50 snapshots, 0 failures, zero console output, coverage 95.09/87.99/94.75/95.23
+- [x] `yarn lint`, `yarn tsc` on `2b391cdd` — both clean
+- [x] `TASK-774-review.md` rewritten for round 9
+- [x] Swept every `withData` getter (19 without a signal) and every signal-read catch-all → N1 (2 more dropped reads); the rest are README-exempt
+
+### Open — code (reviewer blockers)
+
+- [x] B2 — generation-guard the bibliography batch/fallback cache writes; invert `BibliographyEntryLoader.batch.test.ts:96`
+- [x] B3 — lock or serialise fragment saves (`Info`/`GenreEditor` stay live while `saving`); reverse-resolution test
+- [x] B4 — lock date Save/Delete/Add and inputs on `isSaving`; move `DatesInTextSelection` onto `runWrite`; reverse-resolution tests
+- [x] B5 — re-check `signal.aborted` after `acquireSlot` in `ConcurrencyLimiter.run`; tighten handoff test
+- [x] B6 — forward `signal` in `Annotator`, `SearchFormPeriod`, `WordDisplayLogograms`; caller-to-fetch tests; sweep other getters
+- [x] N1 — add + forward `signal` in `MarkupService.fromString` (`markup.tsx:44`) and `SignService.associateSigns` (`FragmentAnnotation.tsx:50`); forwarding tests
+- [x] B7 — thread `signal` through converter `query` → `SignService` → `SignRepository.getUnicodeFromAtf` → `fetchJson`
+- [x] B8 — rethrow aborts in `DossiersRepository.fetchAllDossiers`; abort-case test
+- [x] B9 — supersede the write slot on unmount in `usePromiseEffect`; update test, README, PR description
+
+### Open — outside the code
+
+- [x] B1 — retargeted #774 to `master` (2026-09-23)
+- [ ] B10 — re-request Fabdulla1's review after the fixes — **yours**
+- [ ] B11 — delete the eight `TASK-*.md` files + `.gitignore` rule — **keep until merge, by decision**
+- [ ] B12 — read branch CodeQL alerts in the UI before merge — **decided, yours**
+- [x] M1 (part) — stacked note and 59/59 fixed on GitHub
+- [ ] M1 (rest) — unmount passage + round-9 section once the fixes are pushed
+- [x] M2 — deletion approved
+- [ ] W1 — `docker build .` locally
+- [ ] W2 — re-check qlty after retarget
+- [ ] W3 — plan the five-file conflict with #779
+
+### Round 9 remediation — gates
+
+- [x] `yarn lint` — clean
+- [x] `yarn tsc` — clean
+- [x] `yarn test:ci` — 511 suites / 4480 tests / 50 snapshots, 0 failures, zero console output; coverage 95.19/88.25/94.87/95.34
+- [x] 250-line ceiling on every touched file
+- [x] Every touched source file at 100% coverage; 13 added to `fullyCoveredPaths` (with `SerialQueue.ts`)
+- [x] Handoff rewritten for round 9; round-9 work committed locally (not pushed)
+- [x] Push, finish the PR description, re-request review, read CodeQL alerts, docker build, delete scratch docs — done in round 10 (see "Closing every open item")
+
+## Round 10 review (2026-09-29, head `eb730de4`)
+
+- [x] Fetch all timeline review events, inline threads (GraphQL, resolved/outdated), issue comments — nothing new since round 9
+- [x] Checks, qlty and CodeQL on `eb730de4` — qlty "1 blocking issue", diff coverage not computed (521 > 500 files), CodeQL 300-file cap
+- [x] Dev container / Dockerfile unchanged; workflows re-read in full
+- [x] New `.md` files — still the eight scratch docs (B11)
+- [x] Verify each round-9 fix in code and its proving test (B2–B9, N1)
+- [x] Reproduce the qlty blocker locally (`qlty smells` head vs master → `CuneiformConverterForm` complexity 22)
+- [x] Master drift — conflict in `Details.tsx` with #821; #779 conflicts now six files
+- [x] `yarn lint`, `yarn tsc` — clean
+- [x] `yarn test:ci` alone — 511 suites green on `eb730de4`, zero console output (round-10 baseline)
+- [x] Write round-10 `TASK-774-review.md`
+
+### Round 10 remediation (2026-09-29, working tree on `eb730de4`, nothing committed)
+
+- [x] R2 — named-entity write goes through `onSave` (the queue); test proves the write waits for the queue; README states the rule
+- [x] R4 — `convertAtfLines.ts` extracted from `CuneiformConverterForm` (171 → 117 lines); unit tests; added to `fullyCoveredPaths`; `qlty smells` clean on both files
+- [x] R5 — `SignService.abortSignal.test.ts` asserts the real `RequestInit.signal` through `SignService` → `SignRepository` → `ApiClient` → `fetch`
+- [x] R6 — no change: jsdom 16.7 has no `AbortSignal.reason`, so `rejects.toBe(signal.reason)` compares with `undefined`; the `AbortError` assertion stays (verified by trying it)
+- [x] R7 — `SerialQueue` calls `operation()` with no argument; test
+- [x] R8 — save queue replaced when the displayed fragment changes; test
+- [x] R9 — `expectConsoleWarnings` and pass-through `observeConsole` added to `setupTests.ts`; converter errors test, both Dossiers tests and the auth test support use the shared helpers
+- [x] New tests proven to fail without their fixes (R2, R5, R7, R8)
+- [x] R1 — merge with `master` resolved and verified in a scratch worktree (tsc clean, 29 suites / 477 tests); not applied, because it needs a commit
+- [x] M1 / W2 — proposed PR description written to the scratchpad; not posted
+- [x] `yarn lint`, `yarn tsc` clean; all changed/new script files ≤ 250 lines
+- [x] `yarn test:ci` on the remediated tree — 513 suites, 4488 tests, exit 0, zero console output, changed files 100%
+- [x] Commit round-10 remediation (code + docs, one commit; not pushed)
+- [x] Separate PR for the 45 over-ceiling script files (stacked on this branch) — `chore/split-oversized-files`
+
+### Closing every open item (2026-09-29)
+
+- [x] Push `f8204f90`
+- [x] M1 / W2 — PR description updated on GitHub
+- [x] R1 — merge `master`: lint + tsc clean, `test:ci` 513 suites green, committed `c742c21e`, pushed
+- [x] qlty action → pinned v2.3.0 (`node24`), same SHA as #779
+- [x] Browserslist notice — stale local `node_modules` re-synced to the lockfile
+- [x] W1 — Docker-pruned copy type-checks; Dockerfile unchanged and built on master
+- [x] B12 — local CodeQL: 0 results on branch and master (87 rules)
+- [x] W3 — trial merge with #779 resolved and verified; recipe in the handoff
+- [x] CI green on `c742c21e`: `test`, `CodeQL`, `qlty` no blocking issues
+- [ ] B10 — re-request Fabdulla1's review
+- [ ] B11 — untrack the eight `TASK-*.md` files and add `TASK-*.md` to `.gitignore` (files kept locally)
+
+## Round 11 review (2026-09-30, head d3a1b4dc)
+
+- [x] Read `.github/copilot-instructions.md` and review memories
+- [x] Identify PR (#774, head d3a1b4dc, base master)
+- [x] Start `yarn test:ci` alone in background
+- [x] Fetch reviews (5), inline comments (6), issue comments (0), GraphQL thread status, timeline
+- [x] Check for sourcery-ai / other bot activity (none besides qltysh[bot])
+- [x] Fetch check runs + commit statuses at head
+- [x] Check mergeability vs master (CONFLICTING — 11 files, incl. withData.tsx)
+- [x] Inspect master drift (#787 adds bluebird usage + withData `retry`)
+- [x] Dev container / Docker / CI workflow diff review
+- [x] New `.md` files check
+- [x] Verify each round-11 reviewer point at head (8 points)
+- [x] Spot-check round-9/10 fixes still in place
+- [x] 250-line gate on touched files
+- [x] Suppressions / console-capture helpers audit
+- [x] CI job logs: test/build/CodeQL warnings
+- [x] qlty smells vs merge base
+- [x] `yarn test:ci` — 513/513 suites, 4490 tests, 50 snapshots, exit 0, zero console output; thresholds pass
+- [x] `yarn lint` — exit 0
+- [x] `yarn tsc` — exit 0
+- [x] `qlty check` — no plugins enabled locally (checks nothing); smells covered by `qlty smells`
+- [x] Diff coverage from lcov vs merge base — 4 production files + 6 test-support files with uncovered changed lines (M5)
+- [x] Write `TASK-774-review.md` (frontmatter, friendly summary + Details, template sections, What Has To Be Done)
+- [x] Remind: remove TASK-774-\*.md before merge (gitignored, not tracked)
+
+## Round 11 remediation (2026-09-30) — no commits; merge left uncommitted (`git merge --no-commit`)
+
+- [x] B1 merge origin/master (#787) --no-commit; resolve 11 conflicts; port withData `retry` to AbortController; remove bluebird from #787 files
+- [x] B2 Info.tsx: script/date/datesInText through onSave + reverse-completion test
+- [x] B3 ChapterImport Save disabled + double-click test
+- [x] B4 annotation writes serialized/locked; failed delete-all must not reset; tests
+- [x] B5 TextReadService find/findChapter signal; getters forward; withData success gated on !aborted; resolve-after-unmount test; abortSignal getter test for corpus
+- [ ] B6 re-review — needs your push, then Fabdulla1 (reported)
+- [x] M1 mapSeries.test.ts
+- [x] M2 fragmentPrefetch.ts + fragmentRepositoryInfo.ts into fullyCoveredPaths
+- [x] M3 FakeApiExpectation any; ManuscriptsTable exhaustive-deps; AnnotationsView no-node-access; avoidable `as unknown as`
+- [x] M4 remove tolerateConsoleErrors; migrate 6 raw console spies
+- [x] M5 cover changed lines (BibliographyService, DossiersService, ArchaeologyEditor, sitemap, ChapterImport); delete dead test helpers
+- [x] m1 sass trailing blank lines
+- [x] m2 rename TransliterationForm.mocks.tsx; README + PR description text
+- [x] m3 qlty smells (duplications + complexity)
+- [x] W1 simulate Docker build context type-check
+- [x] W2 CodeQL local run on merged tree
+- [x] W3 setup-node bump; verify punycode gone from action bundle
+- [x] Gates: lint, tsc, test:ci, console clean, diff coverage 100%, 250-line, qlty smells
+
+## Round 11 — next steps (2026-09-30)
+
+- [x] Commit the merge + round-11 fixes (user asked 2026-09-30) — not pushed
+- [ ] Push; apply the drafted PR description; confirm CI (punycode gone, test green)
+- [ ] B6 Fabdulla1 re-review
+- [ ] Sweep 375 relative imports outside the PR's files (user: here)
+- [ ] Node 20 → 24: .nvmrc, workflows, Dockerfile (digest + apk pins), .devcontainer/Dockerfile (warn), READMEs; validate in a separate Node 24 checkout
+- [ ] #823: PdfExport + TestData; reconcile its auth/ResultPageButtons splits with this round
+- [ ] After merge: watch docker jobs; delete local TASK files

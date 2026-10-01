@@ -50,7 +50,7 @@ function BibliographySearch({ data }: { data: readonly BibliographyEntry[] }) {
 export default withData<
   unknown,
   {
-    bibliographyService: BibliographyService
+    bibliographyService: Pick<BibliographyService, 'search'>
     query: string
   },
   readonly BibliographyEntry[]

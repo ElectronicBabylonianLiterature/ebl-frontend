@@ -51,3 +51,13 @@ test('updates the URL anchor when switching between result tabs', async () => {
   await userEvent.click(screen.getByRole('tab', { name: 'Library' }))
   expect(window.location.hash).toBe('#library')
 })
+
+test('opens the Library tab when no tab is requested', async () => {
+  harness.fragmentService.query.mockResolvedValue(queryResult())
+
+  harness.renderSearch({ number: 'K.1' }, '')
+
+  expect(
+    await screen.findByRole('tab', { name: 'Library', selected: true }),
+  ).toBeVisible()
+})

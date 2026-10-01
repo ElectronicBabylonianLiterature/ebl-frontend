@@ -1,5 +1,5 @@
 import React from 'react'
-import { render, screen, RenderResult } from '@testing-library/react'
+import { render, screen, RenderResult, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { describeDownloadLinks } from 'test-support/downloadLinks'
 import Download from 'corpus/ui/Download'
@@ -7,6 +7,20 @@ import { ChapterDisplay } from 'corpus/domain/chapter'
 import { chapterDisplayFactory } from 'test-support/chapter-fixtures'
 import WordService from 'dictionary/application/WordService'
 import TextService from 'corpus/application/TextService'
+import { wordExport } from 'corpus/ui/WordExport'
+import { Document } from 'docx'
+import { saveAs } from 'file-saver'
+
+const mockWordExport: jest.MockedFunction<typeof wordExport> = jest.fn()
+jest.mock('corpus/ui/WordExport', () => ({
+  wordExport: (...args: Parameters<typeof wordExport>) =>
+    mockWordExport(...args),
+}))
+jest.mock('file-saver', () => ({ saveAs: jest.fn() }))
+
+const createObjectURL: jest.MockedFunction<typeof URL.createObjectURL> =
+  jest.fn()
+URL.createObjectURL = createObjectURL
 
 const jsonUrl = 'JSON URL mock'
 const atfUrl = 'ATF URL mock'
@@ -21,9 +35,7 @@ let chapter: ChapterDisplay
 let element: RenderResult
 
 async function setup() {
-  ;(URL.createObjectURL as jest.Mock)
-    .mockReturnValueOnce(jsonUrl)
-    .mockReturnValueOnce(atfUrl)
+  createObjectURL.mockReturnValueOnce(jsonUrl).mockReturnValueOnce(atfUrl)
 
   chapter = chapterDisplayFactory.build()
   element = render(
@@ -50,4 +62,25 @@ test('Revoke object URLs on unmount', async () => {
   element.unmount()
   expect(URL.revokeObjectURL).toHaveBeenCalledWith(jsonUrl)
   expect(URL.revokeObjectURL).toHaveBeenCalledWith(atfUrl)
+})
+
+test('Exports the chapter as a Word document', async () => {
+  mockWordExport.mockResolvedValueOnce(new Document())
+  await setup()
+  await userEvent.click(screen.getByText('Download as Word'))
+
+  await waitFor(() =>
+    expect(saveAs).toHaveBeenCalledWith(
+      expect.any(Blob),
+      `${chapter.uniqueIdentifier}.docx`,
+    ),
+  )
+  expect(mockWordExport).toHaveBeenCalledWith(
+    chapter,
+    expect.objectContaining({
+      wordService: wordServiceMock,
+      textService: textServiceMock,
+    }),
+    expect.anything(),
+  )
 })

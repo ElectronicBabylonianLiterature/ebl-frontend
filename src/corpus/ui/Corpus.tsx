@@ -155,12 +155,8 @@ function Corpus({
   const routerHistory = useHistory()
   const activeHistory = history ?? routerHistory
 
-  const openTab: SelectCallback = (eventKey: string | null): void => {
-    if (eventKey !== null) {
-      const url = createGenreLink(eventKey)
-      activeHistory.push(url)
-    }
-  }
+  const openTab: SelectCallback = (eventKey: string | null): void =>
+    activeHistory.push(createGenreLink(String(eventKey)))
 
   return (
     <AppContent

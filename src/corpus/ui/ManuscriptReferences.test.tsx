@@ -1,7 +1,7 @@
 import React from 'react'
 import { render, screen } from '@testing-library/react'
 import { referenceFactory } from 'test-support/bibliography-fixtures'
-import ManuscriptReferences from './ManuscriptReferences'
+import ManuscriptReferences from 'corpus/ui/ManuscriptReferences'
 
 const references = referenceFactory.buildList(1)
 

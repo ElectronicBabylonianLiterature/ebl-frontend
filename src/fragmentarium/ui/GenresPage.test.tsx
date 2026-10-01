@@ -18,10 +18,12 @@ const mockGenres: string[][] = [
   ['SCIENTIFIC'],
 ]
 
-function makeFragmentService(genres = mockGenres): FragmentService {
+function makeFragmentService(
+  genres = mockGenres,
+): Pick<FragmentService, 'fetchGenres'> {
   return {
     fetchGenres: jest.fn().mockReturnValue(Promise.resolve(genres)),
-  } as unknown as FragmentService
+  }
 }
 
 describe('GenresPage', () => {

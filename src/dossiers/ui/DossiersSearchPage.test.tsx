@@ -53,10 +53,10 @@ const records = [
 
 function makeDossiersService(
   data: readonly DossierRecord[] = records,
-): DossiersService {
+): Pick<DossiersService, 'fetchAllDossiers'> {
   return {
     fetchAllDossiers: jest.fn().mockReturnValue(Promise.resolve(data)),
-  } as unknown as DossiersService
+  }
 }
 
 describe('DossiersSearchPage', () => {

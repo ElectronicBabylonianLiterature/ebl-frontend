@@ -42,3 +42,16 @@ const testData: TestData<FragmentSearchService>[] = [
 ]
 
 testDelegation(fragmentSearchService, testData)
+
+describe.each(['random', 'interesting'] as const)(
+  '%s without results',
+  (method) => {
+    it('rejects when the repository finds no fragments', async () => {
+      fragmentRepository[method].mockResolvedValueOnce([])
+
+      await expect(fragmentSearchService[method]()).rejects.toThrow(
+        'No fragments found.',
+      )
+    })
+  },
+)

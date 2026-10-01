@@ -4,6 +4,7 @@ import { eblNameProperty } from 'auth/Auth'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import TextService from 'corpus/application/TextService'
 import {
+  cacheScopeResolverOf,
   mockAuthService,
   mockErrorReporter,
   renderInjectedApp,
@@ -37,15 +38,7 @@ jest.mock('dossiers/application/DossiersService')
 jest.mock('dossiers/infrastructure/DossiersRepository')
 
 function getCacheScopeResolverFromFragmentServiceConstructor(): () => string {
-  const fragmentServiceMock = FragmentService as jest.MockedClass<
-    typeof FragmentService
-  >
-  const constructorCalls = fragmentServiceMock.mock.calls
-  const lastConstructorCall = constructorCalls[constructorCalls.length - 1]
-  expect(lastConstructorCall).toBeDefined()
-  const getCacheScope = lastConstructorCall[4]
-  expect(getCacheScope).toBeDefined()
-  return getCacheScope as () => string
+  return cacheScopeResolverOf(FragmentService, 4)
 }
 
 beforeEach(stubPrefetches)
@@ -117,7 +110,7 @@ describe('InjectedApp', () => {
   })
 
   test('uses guest cache scope when user is not authenticated', () => {
-    ;(mockAuthService.isAuthenticated as jest.Mock).mockReturnValue(false)
+    mockAuthService.isAuthenticated.mockReturnValue(false)
 
     renderInjectedApp()
 
@@ -127,8 +120,8 @@ describe('InjectedApp', () => {
   })
 
   test('uses subject cache scope as primary identity for authenticated users', () => {
-    ;(mockAuthService.isAuthenticated as jest.Mock).mockReturnValue(true)
-    ;(mockAuthService.getUser as jest.Mock).mockReturnValue({
+    mockAuthService.isAuthenticated.mockReturnValue(true)
+    mockAuthService.getUser.mockReturnValue({
       [eblNameProperty]: '  user-a  ',
       name: 'name-a',
       sub: 'auth0|subject-a',
@@ -142,8 +135,8 @@ describe('InjectedApp', () => {
   })
 
   test('uses subject cache scope when profile names are empty', () => {
-    ;(mockAuthService.isAuthenticated as jest.Mock).mockReturnValue(true)
-    ;(mockAuthService.getUser as jest.Mock).mockReturnValue({
+    mockAuthService.isAuthenticated.mockReturnValue(true)
+    mockAuthService.getUser.mockReturnValue({
       [eblNameProperty]: '  ',
       name: ' ',
       sub: 'auth0|subject-b',
@@ -157,8 +150,8 @@ describe('InjectedApp', () => {
   })
 
   test('uses uncacheable authenticated scope when no identifier is available', () => {
-    ;(mockAuthService.isAuthenticated as jest.Mock).mockReturnValue(true)
-    ;(mockAuthService.getUser as jest.Mock).mockReturnValue({
+    mockAuthService.isAuthenticated.mockReturnValue(true)
+    mockAuthService.getUser.mockReturnValue({
       [eblNameProperty]: ' ',
       name: '',
       sub: ' ',
@@ -177,8 +170,8 @@ describe('InjectedApp', () => {
   })
 
   test('uses uncacheable authenticated scope when user lookup throws', () => {
-    ;(mockAuthService.isAuthenticated as jest.Mock).mockReturnValue(true)
-    ;(mockAuthService.getUser as jest.Mock).mockImplementation(() => {
+    mockAuthService.isAuthenticated.mockReturnValue(true)
+    mockAuthService.getUser.mockImplementation(() => {
       throw new Error('lookup failed')
     })
 
@@ -195,8 +188,8 @@ describe('InjectedApp', () => {
   })
 
   test('isolates cache scope when authenticated user changes', () => {
-    ;(mockAuthService.isAuthenticated as jest.Mock).mockReturnValue(true)
-    ;(mockAuthService.getUser as jest.Mock).mockReturnValue({
+    mockAuthService.isAuthenticated.mockReturnValue(true)
+    mockAuthService.getUser.mockReturnValue({
       sub: 'auth0|subject-a',
     })
 
@@ -205,7 +198,7 @@ describe('InjectedApp', () => {
     const getCacheScope = getCacheScopeResolverFromFragmentServiceConstructor()
 
     expect(getCacheScope()).toBe('authenticated:auth0|subject-a')
-    ;(mockAuthService.getUser as jest.Mock).mockReturnValue({
+    mockAuthService.getUser.mockReturnValue({
       sub: 'auth0|subject-b',
     })
 

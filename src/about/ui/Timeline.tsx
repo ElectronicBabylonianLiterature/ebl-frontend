@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react'
-import './Timeline.sass'
+import 'about/ui/Timeline.sass'
 
 export interface TimelineItem {
   id: string
@@ -15,7 +15,6 @@ interface TimelineProps {
 
 export default function Timeline({ items }: TimelineProps): JSX.Element {
   const [visibleItems, setVisibleItems] = useState<Set<string>>(new Set())
-  const observerRef = useRef<IntersectionObserver | null>(null)
   const itemRefs = useRef<Map<string, HTMLDivElement>>(new Map())
 
   const setItemRef = useCallback(
@@ -30,15 +29,12 @@ export default function Timeline({ items }: TimelineProps): JSX.Element {
   )
 
   useEffect(() => {
-    if (
-      typeof window === 'undefined' ||
-      typeof window.IntersectionObserver !== 'function'
-    ) {
+    if (typeof window.IntersectionObserver !== 'function') {
       setVisibleItems(new Set(items.map((item) => item.id)))
       return
     }
 
-    observerRef.current = new window.IntersectionObserver(
+    const observer = new window.IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
@@ -53,14 +49,11 @@ export default function Timeline({ items }: TimelineProps): JSX.Element {
     )
 
     itemRefs.current.forEach((element) => {
-      observerRef.current?.observe(element)
+      observer.observe(element)
     })
 
     return () => {
-      if (observerRef.current) {
-        observerRef.current.disconnect()
-        observerRef.current = null
-      }
+      observer.disconnect()
     }
   }, [items])
 

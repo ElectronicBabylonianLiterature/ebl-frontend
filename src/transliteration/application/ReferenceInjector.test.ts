@@ -4,6 +4,8 @@ import Reference from 'bibliography/domain/Reference'
 import { BibliographyPart, MarkupPart } from 'transliteration/domain/markup'
 import { bibliographyEntryFactory } from 'test-support/bibliography-fixtures'
 import { expectConsoleErrors } from 'setupTests'
+import { Text } from 'transliteration/domain/text'
+import { NoteLine } from 'transliteration/domain/note-line'
 
 jest.mock('bibliography/application/BibliographyService')
 
@@ -60,4 +62,39 @@ it('keeps the original parts and reports the error when lookup fails', async () 
   await expect(
     referenceInjector.injectReferencesToMarkup([bibliographyPart]),
   ).resolves.toEqual([bibliographyPart])
+})
+
+it('injects references to the markup lines of a text', async () => {
+  bibliographyService.findMany.mockResolvedValue([entry])
+  const text = new Text({
+    lines: [new NoteLine({ content: [], parts: [bibliographyPart] })],
+  })
+
+  const injectedText = await referenceInjector.injectReferencesToText(text)
+
+  expect(injectedText.allLines).toEqual([
+    new NoteLine({
+      content: [],
+      parts: [
+        {
+          type: 'BibliographyPart',
+          reference: new Reference('DISCUSSION', '12', '', [], entry),
+        },
+      ],
+    }),
+  ])
+})
+
+it('injects the reference of an old line number', async () => {
+  bibliographyService.find.mockResolvedValue(entry)
+
+  await expect(
+    referenceInjector.injectReferenceToOldLineNumber({
+      number: 'A38',
+      reference: bibliographyPart.reference,
+    }),
+  ).resolves.toEqual({
+    number: 'A38',
+    reference: new Reference('DISCUSSION', '12', '', [], entry),
+  })
 })

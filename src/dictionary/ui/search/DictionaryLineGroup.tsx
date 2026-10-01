@@ -8,7 +8,7 @@ import { highlightLemmas, LineColumns } from 'transliteration/ui/line-tokens'
 import { TextId, textIdToString } from 'transliteration/domain/text-id'
 import _ from 'lodash'
 
-import './LinesWithLemma.sass'
+import 'dictionary/ui/search/LinesWithLemma.sass'
 import Markup from 'transliteration/ui/markup'
 import { stageToAbbreviation } from 'common/utils/period'
 import InlineMarkdown from 'common/ui/InlineMarkdown'

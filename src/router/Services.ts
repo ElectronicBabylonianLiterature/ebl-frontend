@@ -11,7 +11,7 @@ import AfoRegisterService from 'afo-register/application/AfoRegisterService'
 import RealiaService from 'realia/application/RealiaService'
 
 import { FindspotService } from 'fragmentarium/application/FindspotService'
-import './router.sass'
+import 'router/router.sass'
 import DossiersService from 'dossiers/application/DossiersService'
 
 export default interface Services {

@@ -3,34 +3,12 @@ import { render, screen, waitFor } from '@testing-library/react'
 import '@testing-library/jest-dom'
 import userEvent from '@testing-library/user-event'
 import 'test-support/mockMarkdownRenderers'
-import { DossiersGroupedDisplay } from './DossiersGroupedDisplay'
+import { DossiersGroupedDisplay } from 'dossiers/ui/DossiersGroupedDisplay'
 import DossierRecord from 'dossiers/domain/DossierRecord'
-import { referenceDtoFactory } from 'test-support/bibliography-fixtures'
-
-const createMockRecordDto = (
-  id: string,
-  description: string,
-  period: string,
-  periodModifier: string,
-  provenance: string,
-) => ({
-  _id: id,
-  description,
-  isApproximateDate: false,
-  yearRangeFrom: -500,
-  yearRangeTo: -470,
-  relatedKings: [],
-  provenance,
-  script: {
-    period,
-    periodModifier,
-    uncertain: false,
-  },
-  references: referenceDtoFactory.buildList(1),
-})
-
-const getDossierSearchLabel = (recordId: string): string =>
-  `Open fragment search results for dossier ${recordId}`
+import {
+  createMockRecordDto,
+  getDossierSearchLabel,
+} from 'dossiers/ui/DossiersGroupedDisplay.testSupport'
 
 describe('DossiersGroupedDisplay', () => {
   it('renders nothing when given empty array', () => {
@@ -211,143 +189,5 @@ describe('DossiersGroupedDisplay', () => {
     await user.tab()
 
     expect(dossierButton).toHaveFocus()
-  })
-
-  it('sorts groups by script period order and provenance name', () => {
-    const records = [
-      new DossierRecord(
-        createMockRecordDto(
-          'D001',
-          'First',
-          'Old Babylonian',
-          'None',
-          'Nippur',
-        ),
-      ),
-      new DossierRecord(
-        createMockRecordDto('D002', 'Second', 'Ur III', 'None', 'Ur'),
-      ),
-      new DossierRecord(
-        createMockRecordDto('D003', 'Third', 'Ur III', 'None', 'Larsa'),
-      ),
-      new DossierRecord(
-        createMockRecordDto(
-          'D004',
-          'Fourth',
-          'Old Babylonian',
-          'None',
-          'Babylon',
-        ),
-      ),
-    ]
-    render(<DossiersGroupedDisplay records={records} />)
-
-    const groupHeaders = screen.getAllByText(
-      /^\*\*(Ur III|Old Babylonian).*\*\*$/,
-    )
-
-    expect(groupHeaders).toEqual([
-      screen.getByText('**Ur III — Larsa**'),
-      screen.getByText('**Ur III — Ur**'),
-      screen.getByText('**Old Babylonian — Babylon**'),
-      screen.getByText('**Old Babylonian — Nippur**'),
-    ])
-  })
-
-  it('sorts dossiers by id within the same group', () => {
-    const records = [
-      new DossierRecord(
-        createMockRecordDto(
-          'D010',
-          'First',
-          'Neo-Babylonian',
-          'Late',
-          'Nippur',
-        ),
-      ),
-      new DossierRecord(
-        createMockRecordDto(
-          'D002',
-          'Second',
-          'Neo-Babylonian',
-          'Late',
-          'Nippur',
-        ),
-      ),
-      new DossierRecord(
-        createMockRecordDto(
-          'D001',
-          'Third',
-          'Neo-Babylonian',
-          'Late',
-          'Nippur',
-        ),
-      ),
-    ]
-    render(<DossiersGroupedDisplay records={records} />)
-
-    const dossierButtons = screen
-      .getAllByRole('button')
-      .map((button) => button.textContent)
-
-    expect(dossierButtons).toEqual(['D001', 'D002', 'D010'])
-  })
-
-  it('handles missing script or provenance gracefully', () => {
-    const recordDto = {
-      _id: 'D001',
-      description: 'Test',
-      isApproximateDate: false,
-      yearRangeFrom: -500,
-      yearRangeTo: -470,
-      relatedKings: [],
-      references: [],
-    }
-    const record = new DossierRecord(recordDto)
-    render(<DossiersGroupedDisplay records={[record]} />)
-
-    expect(
-      screen.getByText(/Unknown Period — Unknown Provenance/),
-    ).toBeInTheDocument()
-  })
-
-  it('applies correct CSS classes for styling', () => {
-    const record = new DossierRecord(
-      createMockRecordDto('D001', 'Test', 'Neo-Babylonian', 'Late', 'Nippur'),
-    )
-    render(<DossiersGroupedDisplay records={[record]} />)
-
-    expect(
-      screen.getByText(/Neo-Babylonian \(Late\) — Nippur/),
-    ).toBeInTheDocument()
-    expect(screen.getByText('Dossiers:')).toBeInTheDocument()
-    expect(screen.getByText('D001')).toBeInTheDocument()
-  })
-
-  it('groups multiple provenances correctly', () => {
-    const records = [
-      new DossierRecord(
-        createMockRecordDto(
-          'D001',
-          'First',
-          'Neo-Babylonian',
-          'Late',
-          'Nippur',
-        ),
-      ),
-      new DossierRecord(
-        createMockRecordDto('D002', 'Second', 'Neo-Babylonian', 'Late', 'Ur'),
-      ),
-      new DossierRecord(
-        createMockRecordDto('D003', 'Third', 'Old Babylonian', '', 'Nippur'),
-      ),
-    ]
-    render(<DossiersGroupedDisplay records={records} />)
-
-    expect(
-      screen.getByText(/Neo-Babylonian \(Late\) — Nippur/),
-    ).toBeInTheDocument()
-    expect(screen.getByText(/Neo-Babylonian \(Late\) — Ur/)).toBeInTheDocument()
-    expect(screen.getByText(/Old Babylonian — Nippur/)).toBeInTheDocument()
   })
 })

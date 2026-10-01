@@ -1,4 +1,8 @@
-import { isNext, LineNumber, LineNumberRange } from './line-number'
+import {
+  isNext,
+  LineNumber,
+  LineNumberRange,
+} from 'transliteration/domain/line-number'
 
 const testData: [
   LineNumber | LineNumberRange,

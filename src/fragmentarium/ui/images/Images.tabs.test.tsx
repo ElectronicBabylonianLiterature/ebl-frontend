@@ -3,7 +3,7 @@ import ResizeObserver from 'resize-observer-polyfill'
 import { MemoryRouter } from 'react-router-dom'
 import { render, screen, waitFor } from '@testing-library/react'
 import Images from 'fragmentarium/ui/images/Images'
-import FragmentService from 'fragmentarium/application/FragmentService'
+import { ImageFragmentService } from 'fragmentarium/ui/images/ImageFragmentService'
 import Folio from 'fragmentarium/domain/Folio'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import { fragmentFactory } from 'test-support/fragment-fixtures'
@@ -14,7 +14,7 @@ import {
 
 global.ResizeObserver = ResizeObserver
 
-function createFragmentService(): jest.Mocked<FragmentService> {
+function createFragmentService(): jest.Mocked<ImageFragmentService> {
   return {
     findFolio: jest
       .fn()
@@ -25,7 +25,7 @@ function createFragmentService(): jest.Mocked<FragmentService> {
     folioPager: jest
       .fn()
       .mockReturnValue(Promise.resolve(folioPagerFactory.build())),
-  } as unknown as jest.Mocked<FragmentService>
+  }
 }
 
 function renderImages({
@@ -35,7 +35,7 @@ function renderImages({
   tab = activeFolio ? 'folio' : null,
 }: {
   fragment: Fragment
-  fragmentService?: jest.Mocked<FragmentService>
+  fragmentService?: jest.Mocked<ImageFragmentService>
   activeFolio?: Folio | null
   tab?: string | null
 }) {

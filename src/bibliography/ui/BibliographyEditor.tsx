@@ -5,7 +5,7 @@ import BibliographyEntryFormController from 'bibliography/ui/BibliographyEntryFo
 import BibliographyEntry, {
   template,
 } from 'bibliography/domain/BibliographyEntry'
-import { Crumb, SectionCrumb, TextCrumb } from 'common/ui/Breadcrumbs'
+import { SectionCrumb, TextCrumb } from 'common/ui/Breadcrumbs'
 import { Button } from 'react-bootstrap'
 import { useNavigate } from 'react-router-dom'
 import { referencesEntryRoute } from 'bibliography/ui/referencesRouteContext'
@@ -50,14 +50,12 @@ function BibliographyEditor({
 
   return (
     <AppContent
-      crumbs={
-        [
-          new SectionCrumb('Bibliography'),
-          new SectionCrumb('References'),
-          new TextCrumb(create ? 'New entry' : data.id),
-          !create && new TextCrumb('Edit'),
-        ].filter(Boolean) as Crumb[]
-      }
+      crumbs={[
+        new SectionCrumb('Bibliography'),
+        new SectionCrumb('References'),
+        new TextCrumb(create ? 'New entry' : data.id),
+        ...(create ? [] : [new TextCrumb('Edit')]),
+      ]}
       title={create ? 'Create' : `Edit ${data.id}`}
       actions={
         !create && (

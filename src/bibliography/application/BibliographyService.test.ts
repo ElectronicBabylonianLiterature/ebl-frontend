@@ -111,4 +111,43 @@ describe('BibliographyService', () => {
 
     expect(bibliographyRepository.find).not.toHaveBeenCalled()
   })
+
+  test('create caches the created entry for later lookups', async () => {
+    const service = new BibliographyService(bibliographyRepository)
+    bibliographyRepository.create.mockResolvedValue(entryA)
+
+    await expect(service.create(entryA)).resolves.toBe(entryA)
+    await expect(service.find('RN1')).resolves.toBe(entryA)
+
+    expect(bibliographyRepository.create).toHaveBeenCalledWith(entryA)
+    expect(bibliographyRepository.find).not.toHaveBeenCalled()
+  })
+
+  test('findMany resolves to an empty list without a request for no ids', async () => {
+    const service = new BibliographyService(bibliographyRepository)
+
+    await expect(service.findMany([])).resolves.toEqual([])
+
+    expect(bibliographyRepository.findMany).not.toHaveBeenCalled()
+    expect(bibliographyRepository.find).not.toHaveBeenCalled()
+  })
+
+  test('listAllBibliography forwards to the repository', async () => {
+    const service = new BibliographyService(bibliographyRepository)
+    bibliographyRepository.listAllBibliography.mockResolvedValue(['RN1'])
+
+    await expect(service.listAllBibliography()).resolves.toEqual(['RN1'])
+  })
+
+  test('keeps the cache when resolving the cache scope throws', async () => {
+    const service = new BibliographyService(bibliographyRepository, () => {
+      throw new Error('scope unavailable')
+    })
+    bibliographyRepository.find.mockResolvedValue(entryA)
+
+    await expect(service.find('RN1')).resolves.toBe(entryA)
+    await expect(service.find('RN1')).resolves.toBe(entryA)
+
+    expect(bibliographyRepository.find).toHaveBeenCalledTimes(1)
+  })
 })

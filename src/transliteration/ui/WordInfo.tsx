@@ -5,12 +5,15 @@ import { AnyWord, Token } from 'transliteration/domain/token'
 import { OverlayTrigger, Popover } from 'react-bootstrap'
 import { useDictionary } from 'dictionary/ui/dictionary-context'
 
-import './WordInfo.sass'
-import { LineGroup } from './LineGroup'
-import LemmaInfo from './WordInfoLemmas'
+import 'transliteration/ui/WordInfo.sass'
+import { LineGroup } from 'transliteration/ui/LineGroup'
+import LemmaInfo from 'transliteration/ui/WordInfoLemmas'
 import { isAnyWord } from 'transliteration/domain/type-guards'
 import { TokenActionWrapperProps } from 'transliteration/ui/LineAccumulator'
-import { LineLemmasContext, useLineLemmasContext } from './LineLemmasContext'
+import {
+  LineLemmasContext,
+  useLineLemmasContext,
+} from 'transliteration/ui/LineLemmasContext'
 import RouterLinkModeContext from 'common/ui/RouterLinkModeContext'
 
 export function VariantAlignmentIndicator({

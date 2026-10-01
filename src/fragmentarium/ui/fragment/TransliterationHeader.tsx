@@ -1,6 +1,6 @@
 import React from 'react'
 
-import './TransliterationHeader.css'
+import 'fragmentarium/ui/fragment/TransliterationHeader.css'
 import { Fragment } from 'fragmentarium/domain/fragment'
 
 export default function TransliterationHeader({

@@ -31,10 +31,6 @@ export function fragmentDate(chance: Chance.Chance = defaultChance): string {
   return chance.date().toISOString()
 }
 
-export function fragmentDateRange(): string {
-  return `${fragmentDate()}/${fragmentDate()}`
-}
-
 export function fragmentDescription(
   chance: Chance.Chance = defaultChance,
 ): string {

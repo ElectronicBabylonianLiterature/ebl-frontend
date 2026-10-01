@@ -57,7 +57,7 @@ function Title({ chapter }: Props): JSX.Element {
   )
 }
 
-function EditChapterButton({ chapter }: Props): JSX.Element {
+export function EditChapterButton({ chapter }: Props): JSX.Element {
   const session = useContext(SessionContext)
   const editUrl = `/corpus/${encodeURIComponent(
     chapter.id.textId.genre,
@@ -219,16 +219,16 @@ export default withData<
     activeLine: string
   },
   { id: ChapterId },
-  [ChapterDisplay, Text]
+  { chapter: ChapterDisplay; text: Text }
 >(
-  ({ data: [chapter, text], ...props }) => (
+  ({ data: { chapter, text }, ...props }) => (
     <ChapterView chapter={chapter} text={text} {...props} />
   ),
   ({ id, textService }, signal) =>
     Promise.all([
       textService.findChapterDisplay(id),
       textService.find(id.textId, signal),
-    ]),
+    ]).then(([chapter, text]) => ({ chapter, text })),
   {
     watch: (props) => [props.id],
   },

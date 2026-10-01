@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { Dispatch, SetStateAction, useRef, useState } from 'react'
 import Annotation from 'fragmentarium/domain/annotation'
 import SerialQueue from 'common/utils/SerialQueue'
 import {
@@ -17,7 +17,7 @@ export default function useAnnotationPersistence({
   fragmentService: AnnotationFragmentService
   fragmentNumber: string
   annotations: readonly Annotation[]
-  setAnnotations: (annotations: readonly Annotation[]) => void
+  setAnnotations: Dispatch<SetStateAction<readonly Annotation[]>>
   setSavedAnnotations: (annotations: readonly Annotation[]) => void
   reset: () => void
 }): AnnotationPersistence {
@@ -33,6 +33,7 @@ export default function useAnnotationPersistence({
     updatedAnnotations: readonly Annotation[],
   ): Promise<boolean> => {
     setAnnotations(updatedAnnotations)
+    setError(null)
     setPendingWrites((count) => count + 1)
     return writeQueue.current
       .enqueue(() =>
@@ -77,7 +78,9 @@ export default function useAnnotationPersistence({
       setIsGenerateAnnotationsLoading(true)
       fragmentService
         .generateAnnotations(fragmentNumber)
-        .then((generated) => setAnnotations([...annotations, ...generated]))
+        .then((generated) =>
+          setAnnotations((current) => [...current, ...generated]),
+        )
         .catch(setError)
         .finally(() => setIsGenerateAnnotationsLoading(false))
     },

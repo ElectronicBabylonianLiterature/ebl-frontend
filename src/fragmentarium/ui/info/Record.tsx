@@ -2,7 +2,7 @@ import React from 'react'
 
 import _ from 'lodash'
 import { DateTime, Interval } from 'luxon'
-import './Record.sass'
+import 'fragmentarium/ui/info/Record.sass'
 import { RecordEntry } from 'fragmentarium/domain/RecordEntry'
 import classnames from 'classnames'
 import { Link } from 'react-router-dom'

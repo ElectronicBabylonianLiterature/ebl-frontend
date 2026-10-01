@@ -13,6 +13,7 @@ import FragmentService, {
 import ArchaeologyEditor from 'fragmentarium/ui/fragment/ArchaeologyEditor'
 import { ArchaeologyDto } from 'fragmentarium/domain/archaeologyDtos'
 import { FindspotService } from 'fragmentarium/application/FindspotService'
+import FragmentSearchService from 'fragmentarium/application/FragmentSearchService'
 import { Session } from 'auth/Session'
 import ColophonEditor from 'fragmentarium/ui/fragment/ColophonEditor'
 import { Colophon } from 'fragmentarium/domain/Colophon'
@@ -29,14 +30,21 @@ import {
 export type TabsProps = {
   fragment: Fragment
   fragmentService: FragmentService
-  fragmentSearchService
+  fragmentSearchService: FragmentSearchService
   wordService: WordService
   findspotService: FindspotService
   onSave: (save: () => Promise<Fragment>) => Promise<Fragment>
   disabled?: boolean
   activeLine: string
-  onToggle
+  onToggle: (isCollapsed: boolean) => void
   isColumnVisible: boolean
+}
+
+function afterSaveSettles(save: Promise<Fragment>): Promise<void> {
+  return save.then(
+    () => undefined,
+    () => undefined,
+  )
 }
 
 export function DisplayContents(props: TabsProps): JSX.Element {
@@ -133,21 +141,23 @@ export function ArchaeologyContents(props: TabsProps): JSX.Element {
 }
 
 export function ColophonContents(props: TabsProps): JSX.Element {
-  const updateColophon = async (colophon: Colophon) => {
-    props.onSave(() =>
-      props.fragmentService.updateColophon(props.fragment.number, colophon),
+  const updateColophon = (colophon: Colophon): Promise<void> =>
+    afterSaveSettles(
+      props.onSave(() =>
+        props.fragmentService.updateColophon(props.fragment.number, colophon),
+      ),
     )
-  }
 
   return <ColophonEditor updateColophon={updateColophon} {...props} />
 }
 
 export function ScopeContents(props: TabsProps, session: Session): JSX.Element {
-  const updateScopes = async (scopes: string[]) => {
-    props.onSave(() =>
-      props.fragmentService.updateScopes(props.fragment.number, scopes),
+  const updateScopes = (scopes: string[]): Promise<void> =>
+    afterSaveSettles(
+      props.onSave(() =>
+        props.fragmentService.updateScopes(props.fragment.number, scopes),
+      ),
     )
-  }
 
   return (
     <ScopeEditor session={session} updateScopes={updateScopes} {...props} />

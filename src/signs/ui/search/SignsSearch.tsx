@@ -123,7 +123,7 @@ function SignRow({
 const SignLists = withData<
   { sign: Sign; sortEra: string },
   { signService: SignService },
-  [OrderedSign[]]
+  OrderedSign[][]
 >(
   ({ data, sign, sortEra }) => {
     const direction = sortEra.includes('Onset') ? 'beginning' : 'ending'

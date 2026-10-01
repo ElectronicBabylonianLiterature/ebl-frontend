@@ -13,7 +13,7 @@ import {
   productionSummaryReferences,
   seriesDocument,
 } from 'test-support/fragment-query-summary'
-import CompactCitation from './CompactCitation'
+import CompactCitation from 'bibliography/ui/CompactCitation'
 
 test('Shows compact citation', () => {
   const reference = referenceFactory.build()

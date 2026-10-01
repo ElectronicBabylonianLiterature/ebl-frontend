@@ -37,7 +37,7 @@ mockObjectUrl('blob:url')
 beforeEach(() => {
   jest.clearAllMocks()
   dossiersService.queryByIds.mockResolvedValue([])
-  fragmentService.find.mockReturnValue(new Promise(() => undefined) as never)
+  fragmentService.find.mockReturnValue(new Promise<Fragment>(() => undefined))
 })
 
 function mapItems(

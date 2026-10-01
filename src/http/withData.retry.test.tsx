@@ -82,33 +82,17 @@ test('keeps re-querying the API on every repeated retry', async () => {
   expect(getter).toHaveBeenCalledTimes(3)
 })
 
-test('updates the retry counter from its current value', () => {
-  const originalUseState = React.useState
-  const setRetryCount = jest.fn()
-  let useStateCall = 0
-  const useStateSpy = jest.spyOn(React, 'useState').mockImplementation(((
-    initialState: unknown,
-  ) => {
-    useStateCall += 1
-    if (useStateCall === 2) {
-      return [new Error(errorMessage), jest.fn()]
-    }
-    if (useStateCall === 3) {
-      return [0, setRetryCount]
-    }
-    return originalUseState(initialState)
-  }) as typeof React.useState)
+test('clears the error and shows the spinner while a retry is pending', async () => {
+  const getter = jest
+    .fn()
+    .mockReturnValueOnce(Promise.reject(new Error(errorMessage)))
+    .mockReturnValueOnce(new Promise(() => undefined))
+  renderWithConfig(true, getter)
 
-  try {
-    renderWithConfig(
-      true,
-      jest.fn(() => new Promise(() => undefined)),
-    )
-    screen.getByRole('button', { name: 'Retry' }).click()
+  await screen.findByText(errorMessage)
+  await userEvent.click(screen.getByRole('button', { name: 'Retry' }))
 
-    const updateRetryCount = setRetryCount.mock.calls[0][0]
-    expect(updateRetryCount(7)).toBe(8)
-  } finally {
-    useStateSpy.mockRestore()
-  }
+  expect(screen.queryByText(errorMessage)).not.toBeInTheDocument()
+  expect(screen.getByLabelText('Spinner')).toBeInTheDocument()
+  expect(getter).toHaveBeenCalledTimes(2)
 })

@@ -1,6 +1,6 @@
 import React from 'react'
 import { render, screen } from '@testing-library/react'
-import LinkedImage from './LinkedImage'
+import LinkedImage from 'common/ui/LinkedImage'
 
 describe('CDLI number provided', () => {
   const url = `https://cdli.earth/dl/photo/P000000.jpg`

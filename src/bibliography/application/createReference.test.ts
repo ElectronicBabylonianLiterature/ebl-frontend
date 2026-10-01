@@ -1,5 +1,5 @@
 import Reference from 'bibliography/domain/Reference'
-import createReference from './createReference'
+import createReference from 'bibliography/application/createReference'
 import {
   cslDataFactory,
   referenceDtoFactory,

@@ -99,7 +99,8 @@ function Manuscript({
           >
             <i
               className="fas fa-book chapter-display__manuscript-info-toggle"
-              aria-hidden="true"
+              role="button"
+              aria-label="Notes"
             ></i>
           </OverlayTrigger>
         )}

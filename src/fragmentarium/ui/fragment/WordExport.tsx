@@ -1,6 +1,6 @@
 import React from 'react'
 import { Fragment } from 'fragmentarium/domain/fragment'
-import Record from 'fragmentarium/ui/info/Record'
+import recordCredit from 'fragmentarium/ui/info/recordCredit'
 import { CANONICAL_ORIGIN } from 'router/domain'
 import {
   Document,
@@ -64,9 +64,6 @@ export async function wordExport(
       </DictionaryContext.Provider>,
     ),
   )
-  const records: JQuery = $(
-    renderToString(Record({ record: fragment.uniqueRecord })),
-  )
   const footNotes: Paragraph[] = getFootNotes(notesHtml, jQueryRef)
   const tableWithFootnotes = getMainTableWithFootnotes(
     tableHtml,
@@ -78,7 +75,7 @@ export async function wordExport(
     [
       getHeading(fragment.number, true),
       getHyperLinkParagraph(),
-      getCreditForHead(records),
+      getCreditForHead(recordCredit(fragment.uniqueRecord)),
       ...getIntroduction(fragment),
       ...tableWithFootnotes.table,
       ...(await getGlossaryOrEmpty(fragment, wordService, jQueryRef)),

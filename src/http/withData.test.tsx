@@ -86,15 +86,15 @@ describe('On successful get', () => {
     harness.getter
       .mockImplementationOnce(
         () =>
-          new globalThis.Promise<string>((resolve) => {
+          new Promise<string>((resolve) => {
             resolveFirst = resolve
-          }) as unknown as Promise<string>,
+          }),
       )
       .mockImplementationOnce(
         () =>
-          new globalThis.Promise<string>((resolve) => {
+          new Promise<string>((resolve) => {
             resolveSecond = resolve
-          }) as unknown as Promise<string>,
+          }),
       )
 
     const { rerender } = renderWithData(harness)

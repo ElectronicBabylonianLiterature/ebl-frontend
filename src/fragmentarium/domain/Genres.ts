@@ -1,6 +1,6 @@
 import { produce, castDraft, Draft, immerable } from 'immer'
 import _ from 'lodash'
-import { GenreDto } from './FragmentDtos'
+import { GenreDto } from 'fragmentarium/domain/FragmentDtos'
 
 export class Genre {
   [immerable] = true

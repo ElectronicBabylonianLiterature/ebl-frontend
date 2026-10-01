@@ -144,7 +144,7 @@ function DossiersContent({
 
 const DossiersContentWithData = withData<
   object,
-  { dossiersService: DossiersService },
+  { dossiersService: Pick<DossiersService, 'fetchAllDossiers'> },
   readonly DossierRecord[]
 >(
   ({ data }) => <DossiersContent data={data} />,
@@ -154,7 +154,7 @@ const DossiersContentWithData = withData<
 export default function DossiersSearchPage({
   dossiersService,
 }: {
-  dossiersService: DossiersService
+  dossiersService: Pick<DossiersService, 'fetchAllDossiers'>
 }): JSX.Element {
   return (
     <>

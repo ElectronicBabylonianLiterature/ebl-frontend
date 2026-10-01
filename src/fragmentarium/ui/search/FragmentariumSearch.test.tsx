@@ -16,6 +16,7 @@ import {
 } from 'test-support/fragment-query-preview'
 import createReference from 'bibliography/application/createReference'
 import { Fragment } from 'fragmentarium/domain/fragment'
+import MemorySession from 'auth/Session'
 
 let harness: FragmentariumSearchHarness
 
@@ -33,6 +34,14 @@ test('renders the empty Library search page without querying results', async () 
     ),
   ).toBeVisible()
   expect(harness.fragmentService.query).not.toHaveBeenCalled()
+})
+
+test('asks to log in when the session cannot read fragments', async () => {
+  createFragmentariumSearchHarness(new MemorySession([])).renderSearch()
+
+  expect(
+    await screen.findByText('Please log in to browse the Library.'),
+  ).toBeVisible()
 })
 
 test('fills in the search form query', async () => {
@@ -53,7 +62,7 @@ test('does not refetch on an equivalent query with a new object reference', asyn
   await screen.findByText('Found 2 matching lines. Showing documents 1-1')
   expect(harness.fragmentService.query).toHaveBeenCalledTimes(1)
 
-  rerender(harness.buildSearchElement({ transliteration }))
+  rerender(harness.buildSearchElement({ transliteration }, 'library'))
 
   expect(harness.fragmentService.query).toHaveBeenCalledTimes(1)
   await screen.findByText('Found 0 chapters')

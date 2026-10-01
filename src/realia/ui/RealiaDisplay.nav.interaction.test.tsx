@@ -159,8 +159,10 @@ describe('RealiaDisplay navigation interaction', () => {
     )
     await waitForSpinnerToBeRemoved(screen)
     await waitFor(() => expect(scrollIntoView).toHaveBeenCalled())
-    const scrolled = scrollIntoView.mock.instances[0] as unknown as HTMLElement
-    expect(scrolled).toHaveAttribute('id', afoVolumeId('AfO 25'))
+    expect(scrollIntoView.mock.instances[0]).toHaveAttribute(
+      'id',
+      afoVolumeId('AfO 25'),
+    )
     scrollIntoView.mockRestore()
   })
 

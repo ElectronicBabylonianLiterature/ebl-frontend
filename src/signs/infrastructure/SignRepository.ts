@@ -121,7 +121,7 @@ class SignRepository {
     signName: string,
     sortEra: string,
     signal?: AbortSignal,
-  ): Promise<[OrderedSign[]]> {
+  ): Promise<OrderedSign[][]> {
     return this.apiClient.fetchJson(
       `/signs/${encodeURIComponent(signName)}/${sortEra}`,
       false,

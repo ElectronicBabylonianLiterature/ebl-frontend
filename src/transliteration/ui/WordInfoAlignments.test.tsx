@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { produce } from 'immer'
 import TextService from 'corpus/application/TextService'
 import WordService from 'dictionary/application/WordService'
 import { Word } from 'transliteration/domain/token'
@@ -112,7 +113,10 @@ const lineDetailsWithVariant = new LineDetails(
   0,
 )
 
-async function renderAndOpen(dictionaryWord: DictionaryWord) {
+async function renderAndOpen(
+  dictionaryWord: DictionaryWord,
+  knownLineDetails: LineDetails | null = null,
+) {
   wordServiceMock.find.mockReturnValue(Promise.resolve(dictionaryWord))
 
   const lineGroup = new LineGroup(
@@ -123,6 +127,9 @@ async function renderAndOpen(dictionaryWord: DictionaryWord) {
     },
     highlightIndexSetterMock,
   )
+  if (knownLineDetails) {
+    lineGroup.setLineDetails(knownLineDetails)
+  }
 
   render(
     <WrappedWordInfoWithPopover
@@ -182,5 +189,39 @@ describe('WordInfoWithPopover with variant', () => {
     expect(
       within(view).getAllByText(dictionaryWord.lemma.join(' ')),
     ).toHaveLength(2)
+  })
+})
+
+describe('WordInfoWithPopover with known line details', () => {
+  it('shows the aligned manuscript without querying the line', async () => {
+    textServiceMock.findChapterLine.mockClear()
+    view = await renderAndOpen(dictionaryWord, lineDetails)
+
+    expect(within(view).getByText(manuscriptLine.siglum)).toBeVisible()
+    expect(textServiceMock.findChapterLine).not.toHaveBeenCalled()
+  })
+})
+
+describe('WordInfoWithPopover with an omitted word', () => {
+  it('shows the omission of the manuscript', async () => {
+    const omittingLine = produce(manuscriptLine, (draft) => {
+      draft.omittedWords = [reconstructionToken.sentenceIndex]
+    })
+    textServiceMock.findChapterLine.mockReturnValue(
+      Promise.resolve(
+        new LineDetails(
+          [
+            lineVariantDisplayFactory.build({
+              reconstruction: [],
+              manuscripts: [omittingLine],
+            }),
+          ],
+          0,
+        ),
+      ),
+    )
+    view = await renderAndOpen(dictionaryWord)
+
+    expect(await within(view).findByText('ø')).toBeVisible()
   })
 })

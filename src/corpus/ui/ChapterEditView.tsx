@@ -164,16 +164,16 @@ export default withData<
     wordService: WordService
   },
   { id: ChapterId },
-  [Text, Chapter]
+  { text: Text; chapter: Chapter }
 >(
-  ({ data: [text, chapter], ...props }) => (
+  ({ data: { text, chapter }, ...props }) => (
     <ChapterEditView text={text} chapter={chapter} {...props} />
   ),
   ({ id, textService }, signal) =>
     Promise.all([
       textService.find(id.textId, signal),
       textService.findChapter(id, signal),
-    ]),
+    ]).then(([text, chapter]) => ({ text, chapter })),
   {
     watch: (props) => [props.id],
   },

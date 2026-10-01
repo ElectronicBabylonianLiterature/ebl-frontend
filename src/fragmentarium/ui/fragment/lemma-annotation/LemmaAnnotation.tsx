@@ -91,7 +91,7 @@ export default class LemmaAnnotation extends TokenAnnotation {
   }
 
   handleChange = (selected: OnChangeValue<LemmaOption, true>): void => {
-    this.state.activeToken?.updateLemmas((selected || []) as LemmaOption[])
+    this.state.activeToken?.updateLemmas([...selected])
     this.setActiveToken(this.state.activeToken)
   }
 
@@ -114,7 +114,7 @@ export default class LemmaAnnotation extends TokenAnnotation {
     this.state.activeToken?.confirmSuggestion()
     const pendingTokens = this.tokens.filter((token) => token.isPending)
     pendingTokens.forEach((token) =>
-      token.updateLemmas(this.state.activeToken?.lemmas || []),
+      token.updateLemmas(_.toArray(this.state.activeToken?.lemmas)),
     )
     this.unselectSimilarTokens()
   }
@@ -169,7 +169,7 @@ export default class LemmaAnnotation extends TokenAnnotation {
         _.setWith(
           annotations,
           [lineIndex, indexInLine],
-          newLemmas?.map((option) => option.value) || [],
+          _.map(newLemmas, (option) => option.value),
           Object,
         )
       }
@@ -211,7 +211,6 @@ export default class LemmaAnnotation extends TokenAnnotation {
     onResetCurrent: this.resetActiveToken,
     onMultiApply: this.applyToPendingInstances,
     onMultiReset: this.undoPendingInstances,
-    onCreateProperNoun: (): void => undefined,
     onProperNounCreated: this.onCreateProperNoun,
   }
 

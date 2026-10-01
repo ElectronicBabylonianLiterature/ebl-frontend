@@ -1,11 +1,11 @@
 import _ from 'lodash'
 import React, { FunctionComponent, PropsWithChildren } from 'react'
 import { Text, Notes } from 'transliteration/domain/text'
-import { NoteLinks, createLineId } from './note-links'
-import DisplayRulingDollarLine from './rulings'
-import DisplayTextLine from './text-line'
-import { DisplayDollarAndAtLine } from './dollar-and-at-lines'
-import { LineProps } from './LineProps'
+import { NoteLinks, createLineId } from 'transliteration/ui/note-links'
+import DisplayRulingDollarLine from 'transliteration/ui/rulings'
+import DisplayTextLine from 'transliteration/ui/text-line'
+import { DisplayDollarAndAtLine } from 'transliteration/ui/dollar-and-at-lines'
+import { LineProps } from 'transliteration/ui/LineProps'
 import { AbstractLine } from 'transliteration/domain/abstract-line'
 import { defaultLabels, Labels } from 'transliteration/domain/labels'
 import {
@@ -14,9 +14,9 @@ import {
   isSurfaceAtLine,
   isTranslationLine,
 } from 'transliteration/domain/type-guards'
-import DisplayTranslationLine from './DisplayTranslationLine'
-import DisplayControlLine from './DisplayControlLine'
-import { DisplayParallelLine } from './parallel-line'
+import DisplayTranslationLine from 'transliteration/ui/DisplayTranslationLine'
+import DisplayControlLine from 'transliteration/ui/DisplayControlLine'
+import { DisplayParallelLine } from 'transliteration/ui/parallel-line'
 import TranslationColumn from 'transliteration/ui/TranslationColumn'
 
 export type LineComponentMap = ReadonlyMap<string, FunctionComponent<LineProps>>
@@ -124,7 +124,7 @@ function skipLine(line: AbstractLine, language: string | null): boolean {
 
 function DisplaySingleColumnText({
   text,
-  activeLine = '',
+  activeLine,
   language,
 }: TextDisplayProps): JSX.Element {
   return (
@@ -160,7 +160,7 @@ function DisplaySingleColumnText({
 }
 function DisplayTwoColumnText({
   text,
-  activeLine = '',
+  activeLine,
   language,
 }: TextDisplayProps): JSX.Element {
   return (

@@ -8,12 +8,12 @@ import { QueryItem } from 'query/QueryResult'
 import { Col, Container, Row } from 'react-bootstrap'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import RenderFragmentLines from 'dictionary/ui/search/RenderFragmentLines'
-import FragmentLink, { createFragmentUrl } from '../FragmentLink'
+import FragmentLink, { createFragmentUrl } from 'fragmentarium/ui/FragmentLink'
 import { Genres } from 'fragmentarium/domain/Genres'
 import ReferenceList from 'bibliography/ui/ReferenceList'
-import './FragmentariumSearchResult.sass'
+import 'fragmentarium/ui/search/FragmentariumSearchResult.sass'
 import DateDisplay from 'chronology/ui/DateDisplay'
-import { ProjectList } from '../info/ResearchProjects'
+import { ProjectList } from 'fragmentarium/ui/info/ResearchProjects'
 import { RecordList } from 'fragmentarium/ui/info/Record'
 import ErrorBoundary from 'common/errors/ErrorBoundary'
 import { ThumbnailImage } from 'common/ui/BlobImage'
@@ -42,9 +42,14 @@ function GenresDisplay({ genres }: { genres: Genres }): JSX.Element {
   )
 }
 
+export type FragmentLinesService = Pick<
+  FragmentService,
+  'find' | 'findThumbnail'
+>
+
 const FragmentThumbnail = withData<
   { fragment: Fragment },
-  { fragmentService: FragmentService },
+  { fragmentService: FragmentLinesService },
   ThumbnailBlob
 >(
   ({ data, fragment }) => {
@@ -87,7 +92,7 @@ type FragmentLinesProps = {
   queryItem: QueryItem
   linesToShow: number
   includeLatestRecord?: boolean
-  fragmentService: FragmentService
+  fragmentService: FragmentLinesService
   dossiersService: DossiersService
   active?: number
 }

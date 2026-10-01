@@ -1,7 +1,7 @@
 import React from 'react'
 import { render, screen, fireEvent } from '@testing-library/react'
 import '@testing-library/jest-dom'
-import ScopeEditor from './ScopeEditor'
+import ScopeEditor from 'fragmentarium/ui/fragment/ScopeEditor'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import MemorySession from 'auth/Session'
 

@@ -1,7 +1,9 @@
 import FragmentService from 'fragmentarium/application/FragmentService'
-import { Fragment } from 'fragmentarium/domain/fragment'
 import BibliographyService from 'bibliography/application/BibliographyService'
 import WordRepository from 'dictionary/infrastructure/WordRepository'
+import ApiFragmentRepository from 'fragmentarium/infrastructure/FragmentRepository'
+import ApiImageRepository from 'fragmentarium/infrastructure/ImageRepository'
+import { Fragment } from 'fragmentarium/domain/fragment'
 import { fragmentFactory } from 'test-support/fragment-fixtures'
 import { Genres } from 'fragmentarium/domain/Genres'
 import { AnnotationSpans } from 'fragmentarium/ui/text-annotation/annotationSpan'
@@ -11,12 +13,10 @@ const mockInjectReferencesToText = jest.fn()
 const mockInjectReferencesToIntroduction = jest.fn()
 const mockInjectReferencesToNotes = jest.fn()
 
-jest.mock('bibliography/application/BibliographyService', () => {
-  return function () {
-    return { find: jest.fn(), findMany: jest.fn(), search: jest.fn() }
-  }
-})
+jest.mock('bibliography/application/BibliographyService')
 jest.mock('dictionary/infrastructure/WordRepository')
+jest.mock('fragmentarium/infrastructure/FragmentRepository')
+jest.mock('fragmentarium/infrastructure/ImageRepository')
 jest.mock('transliteration/application/ReferenceInjector', () => {
   return function () {
     return {
@@ -27,19 +27,16 @@ jest.mock('transliteration/application/ReferenceInjector', () => {
   }
 })
 
-const fragmentRepository = {
-  updateNamedEntityAnnotations: jest.fn(),
-}
-const imageRepository = { find: jest.fn() }
-const bibliographyService = new (BibliographyService as jest.Mock)()
-const wordRepository = new (WordRepository as jest.Mock)()
+const fragmentRepository = new (ApiFragmentRepository as jest.Mock<
+  jest.Mocked<ApiFragmentRepository>
+>)()
 
-function createService(): FragmentService {
+function createFragmentService(): FragmentService {
   return new FragmentService(
-    fragmentRepository as never,
-    imageRepository as never,
-    wordRepository,
-    bibliographyService,
+    fragmentRepository,
+    new (ApiImageRepository as jest.Mock<jest.Mocked<ApiImageRepository>>)(),
+    new (WordRepository as jest.Mock<jest.Mocked<WordRepository>>)(),
+    new (BibliographyService as jest.Mock<jest.Mocked<BibliographyService>>)(),
   )
 }
 
@@ -66,7 +63,7 @@ beforeEach(() => {
     { associations: { references: [], genres: new Genres([]) } },
   )
   stubSuccessfulInjection(fragment)
-  fragmentService = createService()
+  fragmentService = createFragmentService()
 })
 
 describe('updateNamedEntityAnnotations', () => {

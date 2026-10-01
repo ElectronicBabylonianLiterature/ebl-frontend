@@ -1,6 +1,6 @@
 import React from 'react'
 import { render, screen } from '@testing-library/react'
-import Reconstruction from './Reconstruction'
+import Reconstruction from 'corpus/ui/Reconstruction'
 import { chapter } from 'test-support/test-corpus-text'
 
 const line = chapter.lines[0].variants[0]

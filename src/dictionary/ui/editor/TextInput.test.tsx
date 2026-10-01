@@ -1,6 +1,6 @@
 import React from 'react'
 import _ from 'lodash'
-import TextInput from './TextInput'
+import TextInput from 'dictionary/ui/editor/TextInput'
 import { render, screen } from '@testing-library/react'
 import { whenChangedByValue } from 'test-support/utils'
 

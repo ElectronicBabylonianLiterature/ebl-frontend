@@ -30,6 +30,13 @@ const testData: TestData<WordService>[] = [
     resultStub,
     ['word=aklu', undefined],
   ),
+  new TestData(
+    'searchLemma',
+    ['aklu I'],
+    wordRepository.searchLemma,
+    resultStub,
+    ['aklu I', undefined],
+  ),
   new TestData('update', [wordToUpdate], wordRepository.update, resultStub, [
     wordToUpdate,
   ]),
@@ -50,4 +57,10 @@ const testData: TestData<WordService>[] = [
 ]
 describe('test word Service', () => {
   testDelegation(wordService, testData)
+})
+
+test('searchLemma resolves to no words for an empty lemma', async () => {
+  jest.clearAllMocks()
+  await expect(wordService.searchLemma('')).resolves.toEqual([])
+  expect(wordRepository.searchLemma).not.toHaveBeenCalled()
 })

@@ -2,8 +2,8 @@ import { immerable } from 'immer'
 import _ from 'lodash'
 import { NoteLine } from 'transliteration/domain/note-line'
 import { isTextLine } from 'transliteration/domain/type-guards'
-import { isNoteLine } from './type-guards'
-import { AbstractLine } from './abstract-line'
+import { isNoteLine } from 'transliteration/domain/type-guards'
+import { AbstractLine } from 'transliteration/domain/abstract-line'
 
 export type Notes = ReadonlyMap<number, readonly NoteLine[]>
 

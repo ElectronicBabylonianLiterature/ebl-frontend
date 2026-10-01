@@ -1,4 +1,4 @@
-import compareAfO from './compareWordAGI'
+import compareAfO from 'dictionary/domain/compareWordAGI'
 
 test.each([
   ['AfO 50 (2003/2004) 608', 'AfO 42/43 (1995/1996) 457', -1],

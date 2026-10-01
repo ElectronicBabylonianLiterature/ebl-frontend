@@ -1,6 +1,6 @@
 import _ from 'lodash'
 import data from 'chronology/domain/dateConverterData.json'
-import { CalendarProps } from './DateConverterBase'
+import { CalendarProps } from 'chronology/domain/DateConverterBase'
 
 function divmod(
   numerator: number,
@@ -24,6 +24,13 @@ export default class DateConverterCompute {
     mesopotamianMonth: 0,
     seBabylonianYear: 0,
     lunationNabonassar: 0,
+    bcJulianYear: undefined,
+    bcGregorianYear: undefined,
+    mesopotamianDay: undefined,
+    mesopotamianMonthLength: 0,
+    ruler: undefined,
+    regnalYear: undefined,
+    regnalYears: 0,
   }
 
   computeCjdnFromSeBabylonian(
@@ -93,17 +100,15 @@ export default class DateConverterCompute {
     julianMonth: number
     julianDay: number
   }): number {
-    if (julianMonth < 3 && this.calendar.julianMonth > 2) {
-      julianYear -= 1
-      julianMonth += 12
-      this.calendar = { ...this.calendar, julianMonth }
-    }
-    const cjdn =
-      Math.floor(365.25 * (julianYear + 4716)) +
-      Math.floor(30.6001 * (julianMonth + 1)) +
+    const isBeforeMarch = julianMonth < 3
+    const computationYear = isBeforeMarch ? julianYear - 1 : julianYear
+    const computationMonth = isBeforeMarch ? julianMonth + 12 : julianMonth
+    return (
+      Math.floor(365.25 * (computationYear + 4716)) +
+      Math.floor(30.6001 * (computationMonth + 1)) +
       julianDay -
       1524
-    return cjdn
+    )
   }
 
   computeCjdnFromGregorianDate({
@@ -120,7 +125,7 @@ export default class DateConverterCompute {
       gregorianMonth += 12
     }
     const monthDays = Math.floor(30.6001 * (gregorianMonth + 1))
-    const century = gregorianYear === 0 ? -1 : Math.floor(gregorianYear / 100)
+    const century = Math.floor(gregorianYear / 100)
     const leapYearCorrection = Math.floor(century / 4)
     const fixedDay = 2 - century + leapYearCorrection
     const yearDays = Math.floor(365.25 * (gregorianYear + 4716))

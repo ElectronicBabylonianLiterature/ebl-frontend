@@ -7,10 +7,10 @@ import {
   ColophonTypeInput,
   ColophonNotesToScribalProcessInput,
   ProvenanceAttestationInput,
-} from './ColophonEditorInputs'
+} from 'fragmentarium/ui/fragment/ColophonEditorInputs'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import { Colophon } from 'fragmentarium/domain/Colophon'
-import { ColophonIndividualsInput } from './ColophonEditorIndividualForm'
+import { ColophonIndividualsInput } from 'fragmentarium/ui/fragment/ColophonEditorIndividualForm'
 
 interface Props {
   fragment: Fragment

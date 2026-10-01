@@ -2,8 +2,8 @@ import { MesopotamianDateBase } from 'chronology/domain/DateBase'
 import { DateType } from 'chronology/domain/DateParameters'
 import normalizeMesopotamianMonth from 'chronology/domain/normalizeMesopotamianMonth'
 import parseDateFieldNumber from 'chronology/domain/parseDateFieldNumber'
-import DateConverter from './DateConverter'
-import { CalendarProps } from './DateConverterBase'
+import DateConverter from 'chronology/domain/DateConverter'
+import { CalendarProps } from 'chronology/domain/DateConverterBase'
 
 export default class DateRange {
   start: CalendarProps
@@ -109,9 +109,9 @@ export default class DateRange {
         dateValues.month,
         dateValues.day,
       )
-    } else if (date.dateType === DateType.nabonassarEraDate) {
+    } else {
       this._converter.setToMesopotamianDate(
-        date.kingName as string,
+        date.kingName,
         dateValues.year,
         dateValues.month,
         dateValues.day,
@@ -124,61 +124,48 @@ export default class DateRange {
     date: MesopotamianDateBase,
     field: 'year' | 'month' | 'day',
   ): string {
-    const { dateType } = date
-    if (dateType === DateType.seleucidDate) {
-      return {
-        year: () => `${this.seleucidRangeEndYear}`,
-        month: () => `${this.getSeleucidDateEndMonth(date)}`,
-        day: () => `${this.getSeleucidDateEndDay(date)}`,
-      }[field]()
-    } else if (dateType === DateType.nabonassarEraDate) {
-      return {
-        year: () => `${this.getNabonassarRangeEndYear(date)}`,
-        month: () => `${this.getNabonassarDateEndMonth(date)}`,
-        day: () => `${this.getNabonassarDateEndDay(date)}`,
-      }[field]()
-    }
-    return ''
-  }
-
-  private get seleucidRangeEndYear(): number {
-    return this._converter.latestDate.seBabylonianYear
-  }
-
-  private getSeleucidRangeEndYear(date: MesopotamianDateBase): number {
-    return date.getEmptyFields().includes('year')
-      ? this.seleucidRangeEndYear
-      : parseDateFieldNumber(date.year.value)
+    const isSeleucidDate = date.dateType === DateType.seleucidDate
+    return `${{
+      year: () => this.getRangeEndYear(date),
+      month: () =>
+        isSeleucidDate
+          ? this.getSeleucidDateEndMonth(date)
+          : this.getNabonassarDateEndMonth(date),
+      day: () =>
+        isSeleucidDate
+          ? this.getSeleucidDateEndDay(date)
+          : this.getNabonassarDateEndDay(date),
+    }[field]()}`
   }
 
   private getSeleucidDateEndMonth(date: MesopotamianDateBase): number {
-    const year = this.getSeleucidRangeEndYear(date)
+    const year = this.getRangeEndYear(date)
     return date.getEmptyFields().includes('month')
       ? this._converter.getMesopotamianMonthsOfSeYear(year).slice(-1)[0].value
       : normalizeMesopotamianMonth(
-          parseDateFieldNumber(date.month.value) ?? 12,
+          parseDateFieldNumber(date.month.value),
           date.month.isIntercalary,
         )
   }
 
   private getSeleucidDateEndDay(date: MesopotamianDateBase): number {
-    const year = this.getSeleucidRangeEndYear(date)
+    const year = this.getRangeEndYear(date)
     const month = this.getSeleucidDateEndMonth(date)
     this._converter.setToSeBabylonianDate(year, month, 1)
-    return this._converter.calendar.mesopotamianMonthLength ?? 28
+    return this._converter.calendar.mesopotamianMonthLength
   }
 
-  private getNabonassarRangeEndYear(date: MesopotamianDateBase): number {
+  private getRangeEndYear(date: MesopotamianDateBase): number {
     if (!date.getEmptyFields().includes('year')) {
       return parseDateFieldNumber(date.year.value)
     }
-    this._converter.setToMesopotamianDate(date.kingName as string, 1, 1, 1)
-    return this._converter.calendar.regnalYears ?? 1
+    this._converter.setToMesopotamianDate(date.kingName, 1, 1, 1)
+    return this._converter.calendar.regnalYears
   }
 
   private getNabonassarDateEndMonth(date: MesopotamianDateBase): number {
-    const year = this.getNabonassarRangeEndYear(date)
-    this._converter.setToMesopotamianDate(date.kingName as string, year, 1, 1)
+    const year = this.getRangeEndYear(date)
+    this._converter.setToMesopotamianDate(date.kingName, year, 1, 1)
     return date.getEmptyFields().includes('month')
       ? this._converter.getMesopotamianMonthsOfSeYear(year).slice(-1)[0].value
       : normalizeMesopotamianMonth(
@@ -188,15 +175,10 @@ export default class DateRange {
   }
 
   private getNabonassarDateEndDay(date: MesopotamianDateBase): number {
-    const year = this.getNabonassarRangeEndYear(date)
+    const year = this.getRangeEndYear(date)
     const month = this.getNabonassarDateEndMonth(date)
-    this._converter.setToMesopotamianDate(
-      date.kingName as string,
-      year,
-      month,
-      1,
-    )
-    return this._converter.calendar.mesopotamianMonthLength ?? 28
+    this._converter.setToMesopotamianDate(date.kingName, year, month, 1)
+    return this._converter.calendar.mesopotamianMonthLength
   }
 
   static getRangeFromPartialDate(date: MesopotamianDateBase): DateRange {

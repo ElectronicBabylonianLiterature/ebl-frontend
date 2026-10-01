@@ -1,5 +1,5 @@
 import React from 'react'
-import { render, screen, RenderResult } from '@testing-library/react'
+import { render, screen, RenderResult, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { describeDownloadLinks } from 'test-support/downloadLinks'
 import Download from 'fragmentarium/ui/fragment/Download'
@@ -7,7 +7,16 @@ import { Fragment } from 'fragmentarium/domain/fragment'
 import WordService from 'dictionary/application/WordService'
 import { fragmentFactory } from 'test-support/fragment-fixtures'
 import FragmentService from 'fragmentarium/application/FragmentService'
+import { wordExport } from 'fragmentarium/ui/fragment/WordExport'
+import { Document } from 'docx'
+import { saveAs } from 'file-saver'
 
+const mockWordExport: jest.MockedFunction<typeof wordExport> = jest.fn()
+jest.mock('fragmentarium/ui/fragment/WordExport', () => ({
+  wordExport: (...args: Parameters<typeof wordExport>) =>
+    mockWordExport(...args),
+}))
+jest.mock('file-saver', () => ({ saveAs: jest.fn() }))
 jest.mock('fragmentarium/application/FragmentService')
 
 const atfUrl = 'ATF URL mock'
@@ -57,4 +66,22 @@ test('Revoke object URLs on unmount', async () => {
   expect(URL.revokeObjectURL).toHaveBeenCalledWith(atfUrl)
   expect(URL.revokeObjectURL).toHaveBeenCalledWith(jsonUrl)
   expect(URL.revokeObjectURL).toHaveBeenCalledWith(teiUrl)
+})
+
+test('Exports the fragment as a Word document', async () => {
+  mockWordExport.mockResolvedValueOnce(new Document())
+  await setup()
+  await userEvent.click(screen.getByText('Download as Word'))
+
+  await waitFor(() =>
+    expect(saveAs).toHaveBeenCalledWith(
+      expect.any(Blob),
+      `${fragment.number}.docx`,
+    ),
+  )
+  expect(mockWordExport).toHaveBeenCalledWith(
+    fragment,
+    wordServiceMock,
+    expect.anything(),
+  )
 })
