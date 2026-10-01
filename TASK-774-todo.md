@@ -491,8 +491,11 @@ No code changed this round. Gates re-run on `ee275e43`: lint PASS, tsc PASS, `ya
 - [x] Push 716df2ba (done before this session)
 - [x] CI `test` failed at Install (C1: canvas source build, runner lacks cairo/pixman) — fixed locally, see TASK-774-ci-canvas-\*.md
 - [x] C2 `gh` missing — devcontainer `github-cli` feature + installed now; C3 devcontainer.json Prettier
-- [ ] Commit + push the C1–C3 fix (on explicit request only); confirm CI green
-- [ ] m5 PR description (draft updated with the CI note)
+- [x] Commit + push the C1–C3 fix (fe1041ec); CI green
+- [x] m5 PR description published
 - [ ] B1 Fabdulla1 re-review
 - [ ] #823 rebase
 - [ ] After merge: watch docker jobs; remove TASK files in their own commit
+- [x] Commit `patches/react-dev-utils+12.0.1.patch` (DEP0176 in Build) — committed on request 2026-10-01
+- [ ] Push it (explicit request) and check the Build step
+- [x] DEP0169 `url.parse()` from Yarn 1.22.22 — documented; #824

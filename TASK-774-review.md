@@ -212,7 +212,16 @@ This round covers head `7c5a04cc`. It concludes the #787 merge and carries all t
 | C2  | Minor    | `gh` missing after the dev container rebuild; it was never part of the config.                                                                                                                                                                                                                                                                      | `devcontainer.json`: `github-cli` feature; installed in the running container.                                                                                                                                       | Fixed locally, not committed or pushed |
 | C3  | Minor    | `.devcontainer/devcontainer.json` failed `prettier --check` (also on master).                                                                                                                                                                                                                                                                       | `prettier --write`.                                                                                                                                                                                                  | Fixed locally, not committed or pushed |
 
+Follow-up on fe1041ec (CI green; the test step had zero console output):
+
+| ID  | Severity | Finding                                                                                                           | Fix                                                                                                     | Status                               |
+| --- | -------- | ----------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- | ------------------------------------ |
+| C4  | Minor    | Build step prints Node 24's DEP0176 (`fs.F_OK`) from `react-dev-utils@12.0.1` `checkRequiredFiles.js:19`.         | `patches/react-dev-utils+12.0.1.patch` → `fs.constants.F_OK`; traced build clean.                       | Fixed, committed locally, not pushed |
+| C5  | Minor    | Install step prints Node 24's DEP0169 (`url.parse()`) from Yarn 1.22.22's `GitResolver.isVersion`; Yarn 1 is EOL. | Your decision: document, no suppression; Yarn 4 migration tracked in #824; noted in the PR description. | Documented                           |
+
 ## Draft PR description update (m5)
+
+**Published 2026-10-01** (with the corrections in TASK-774-ci-canvas-log.md).
 
 To apply after the CI fix is pushed and green. Three edits to the current description.
 
@@ -277,9 +286,11 @@ M1–M9, m1–m4, the #765 merge, the 17 splits and the full gate set are done; 
 1. ~~Rebuild the dev container~~ — done 2026-10-01; `yarn install` ran in postCreate.
 2. ~~Commit~~ — done 2026-10-01. ~~Push~~ — done (origin at 716df2ba).
 3. ~~Check CI~~ — `test` failed at Install (C1); fixed locally together with C2 and C3.
-4. **Commit and push the C1–C3 fix** (needs your explicit request), then confirm `test` and CodeQL are green.
-5. **m5:** apply the PR description draft (after step 4 is green).
-6. **#823:** rebase onto this branch and drop its splits of the 17 files split here.
+4. ~~Commit and push the C1–C3 fix~~ — fe1041ec; CI all green.
+5. ~~m5~~ — published 2026-10-01.
+6. **Push the C4 commit** (react-dev-utils patch; committed locally, needs your request), then confirm the Build step has no DEP0176.
+7. **#823:** rebase onto this branch (force-push, your call) and drop its splits of the 17 files split here.
+8. **C5:** documented; Yarn 4 migration in #824 (separate PR).
 
 ### After the push
 

@@ -4,12 +4,12 @@ document: handoff / continuation prompt
 pull_request: https://github.com/ElectronicBabylonianLiterature/ebl-frontend/pull/774
 branch: chore/remove-bluebird
 base_branch: master
-head: '716df2ba (2026-10-01), pushed; uncommitted on top: the C1–C3 CI/devcontainer fix (TASK-774-ci-canvas-*.md)'
+head: 'fe1041ec pushed (CI all green); one local commit on top (react-dev-utils patch + docs), NOT pushed'
 date: 2026-10-01
-state: 'Container rebuilt, 716df2ba pushed. CI test failed at Install (canvas has no Node 24 prebuild; runner lacks cairo/pixman) — fixed locally, uncommitted. Open: commit + push the fix (your request), CI green, PR description, Fabdulla1 re-review, #823 rebase.'
+state: 'CI fixed (fe1041ec, all green), PR description (m5) published, Yarn 1 warning documented (#824). Open: push the local patch commit, Fabdulla1 re-review, #823 rebase, post-merge checks.'
 tracked_in_git: 'yes — TASK-*.md are no longer gitignored (your request, 2026-09-30) and are committed with the code; remove them in their own cleanup commit before merge'
 gates: 'lint PASS, tsc PASS, test:ci PASS on Node 20 and Node 24.21.0 (646 suites / 5546 tests / 47 snapshots, zero console output), coverage 98.35/95.75/98.35/98.45, every touched file 100%, no touched file over 250 lines, CodeQL 0, qlty smells 55 → 21 files repo-wide'
-follow_up_pr: '#823 (chore/split-oversized-files), stacked on this branch: needs a rebase dropping its splits of the 17 files split here; keeps PdfExport complexity, TestData and the 42 untouched oversized files'
+follow_up_pr: '#823 (chore/split-oversized-files), stacked on this branch: needs a rebase dropping its splits of the 17 files split here; keeps PdfExport complexity, TestData and the 16 untouched oversized .ts/.tsx files (all 16 are in its file list)'
 ---
 
 # TASK-774 — Handoff
@@ -18,27 +18,30 @@ follow_up_pr: '#823 (chore/split-oversized-files), stacked on this branch: needs
 
 This PR removes the `bluebird` library and cancels requests with the browser's own `AbortController`. Reads can be cancelled; writes never are, and saves that could overlap wait in a queue.
 
-Round 12 reviewed the pushed round-11 commit, found a handful of real problems, and fixed all of them together with everything left over: the newest `master` (#765) is merged, all relative imports are gone, the project runs on Node 24, every file the PR touches is fully tested and under 250 lines, and two old bugs were fixed (Julian January/February dates were off by a day or two; the export credit line never listed who worked on a fragment). Everything is committed locally, nothing is pushed.
+Round 12 reviewed the pushed round-11 commit, found a handful of real problems, and fixed all of them together with everything left over: the newest `master` (#765) is merged, all relative imports are gone, the project runs on Node 24, every file the PR touches is fully tested and under 250 lines, and two old bugs were fixed (Julian January/February dates were off by a day or two; the export credit line never listed who worked on a fragment). All of that is pushed.
+
+After the dev container rebuild (2026-10-01), CI failed while installing packages: the `canvas` package must be compiled on Node 24, and GitHub's machine lacked the needed libraries. CI now installs them and is green. The CI log also showed two Node 24 warnings outside the tests: one from `react-dev-utils` (fixed with a small patch, committed locally, not pushed) and one from Yarn 1 itself (cannot be fixed without moving to Yarn 4; documented, tracked in #824).
 
 ## Next steps, in order
 
-1. ~~Rebuild the dev container~~ — done 2026-10-01. ~~Push~~ — done (716df2ba).
-2. **Commit and push the CI fix** (only on your explicit request): `.github/workflows/main.yml` installs the canvas build libraries; `.devcontainer/devcontainer.json` gains the GitHub CLI feature (and is now Prettier-formatted); `.devcontainer/README.md`. See `TASK-774-ci-canvas-log.md`.
-3. **Check CI** on the merge ref: the `test` job now runs on Node 24; GitHub's CodeQL must stay green (its diff view is still truncated at 300 files; the local run found 0 on the full tree).
-4. **m5 — update the PR description** with the draft in `TASK-774-review.md` ("Draft PR description update (m5)").
-5. **B1 — Fabdulla1's re-review.** Their CHANGES_REQUESTED review of 2026-09-29 is fully addressed; reviewer assignment is yours.
-6. **#823** — rebase onto this branch and drop its versions of the 17 files split here (`complexTestText.ts`, `PdfExport.tsx`, `SearchFormDossier.test.tsx`, `ChapterViewLine.tsx`, `LineVariant.test.ts`, `notFoundRoutes.test.tsx`, `SearchForm.tsx`, `LemmaAnnotationButton.test.tsx`, `useObjectUrl.regression.test.tsx`, `DisplayToken.tsx`, `line.ts`, `text.test.ts`, `Introduction.tsx`, `DateBase.ts`, `ChapterLines.tsx`, `manuscript.test.ts`, `DateConverterFormOptions.tsx`), plus `ErrorBoundary.comprehensive.test.tsx`, `ChapterView.integration.test.ts`, `dtos.ts` and `test-corpus-text.ts`, which were also split here.
-7. **After merge:** watch the first `docker` / `docker-test` run on master (the Docker image now builds on `node:24.21.0-alpine3.23`; no PR job builds it). Then remove the `TASK-*.md` files in their own commit.
+1. **Push** the local commit on top of fe1041ec (`patches/react-dev-utils+12.0.1.patch` + TASK docs; only on your explicit request). Then check that CI's Build step no longer prints DEP0176 (`fs.F_OK`). The Install step will still print DEP0169 (Yarn 1, documented, #824).
+2. **B1 — Fabdulla1's re-review.** Their CHANGES_REQUESTED review of 2026-09-29 is fully addressed; reviewer assignment is yours.
+3. **#823** — rebase onto this branch (needs a force-push, your call) and drop its versions of the 17 files split here (`complexTestText.ts`, `PdfExport.tsx`, `SearchFormDossier.test.tsx`, `ChapterViewLine.tsx`, `LineVariant.test.ts`, `notFoundRoutes.test.tsx`, `SearchForm.tsx`, `LemmaAnnotationButton.test.tsx`, `useObjectUrl.regression.test.tsx`, `DisplayToken.tsx`, `line.ts`, `text.test.ts`, `Introduction.tsx`, `DateBase.ts`, `ChapterLines.tsx`, `manuscript.test.ts`, `DateConverterFormOptions.tsx`), plus `ErrorBoundary.comprehensive.test.tsx`, `ChapterView.integration.test.ts`, `dtos.ts` and `test-corpus-text.ts`, which were also split here.
+4. **After merge:** watch the first `docker` / `docker-test` run on master (the Docker image now builds on `node:24.21.0-alpine3.23`; no PR job builds it). Then remove the `TASK-*.md` files in their own commit.
+5. **Later, separate PR:** #824 — Yarn 1 → Yarn 4 (removes DEP0169).
+
+Done on 2026-10-01: dev container rebuilt; CI install fix + GitHub CLI dev container feature (fe1041ec, CI green); m5 PR description published; react-dev-utils patch (local commit); #824 opened; stale local `master` fast-forwarded.
 
 ## What is still open
 
 | Item                                                                                                     | Why it is open                                                                                                                                                 | Where it goes                                                                                                      |
 | -------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------ |
-| B1 — reviewer re-review                                                                                  | Needs the push and Fabdulla1                                                                                                                                   | You                                                                                                                |
-| m5 — PR description                                                                                      | Drafted; you chose to publish after the push                                                                                                                   | You, after step 2                                                                                                  |
+| Local commit (react-dev-utils patch, C4) not pushed                                                      | Pushing needs your request                                                                                                                                     | You                                                                                                                |
+| B1 — reviewer re-review                                                                                  | Needs Fabdulla1                                                                                                                                                | You                                                                                                                |
+| C5 — DEP0169 `url.parse()` printed by Yarn 1.22.22 in every `yarn install` on Node 24                    | Yarn 1 is end-of-life; no suppression (your decision)                                                                                                          | #824 (Yarn 4 migration)                                                                                            |
 | Running the app                                                                                          | The dev server runs out of memory in this container; never verified locally                                                                                    | CI build after the push; a quick manual check of the fragment editor, annotation tool and image tabs is worthwhile |
 | `PdfExport` complexity (6 qlty smells in the split modules), `TestData` (6-parameter constructor, `any`) | Assigned to #823 by your 2026-09-29/30 decision                                                                                                                | #823                                                                                                               |
-| 42 untouched files over 250 lines                                                                        | Not touched by this PR                                                                                                                                         | #823                                                                                                               |
+| 16 untouched .ts/.tsx files over 250 lines                                                               | Not touched by this PR                                                                                                                                         | #823                                                                                                               |
 | 7 justified casts/suppressions                                                                           | Not defects: 3 deliberately invalid test payloads, exif-js typing (`getData(url: string)` but reads a `Blob`), `withData`'s dynamic `watch()` deps, `TestData` | Keep (TestData → #823)                                                                                             |
 | `ChapterInfoLine` type unused after a dead-code removal in `dtos.ts`                                     | Noticed by a worker, not removed                                                                                                                               | Next touch of `corpus/domain/ChapterInfo`                                                                          |
 
@@ -78,6 +81,9 @@ Round 12 reviewed the pushed round-11 commit, found a handful of real problems, 
 - **Signals:** `withDataGetters.abortSignal.test.tsx`, `corpusGetters.abortSignal.test.tsx` and `TextService.abortSignal.test.ts` show how to prove a signal reaches `fetch`; `test-support/pendingRead.ts` is the shared helper.
 
 ## Traps met
+
+- Local `refs/heads/master` can go stale (it was 24 commits behind on 2026-10-01 and made `git diff master...HEAD` list #782's 1290-line `bibliography.tsx` as touched). Compare against `origin/master`, or `git fetch origin master:master` first.
+- `gh run view --log` / `gh api …/logs` refuse logs with terminal escape codes; fetch with `curl -H "Authorization: Bearer $GITHUB_TOKEN"` and strip them with sed.
 
 - The dev container ships cairo/pango/pixman dev packages, so `canvas` 2.11 builds from source there on Node 24; GitHub's ubuntu runner does not have them. A local Node 24 install proves nothing about CI's install step.
 - `gh` is provided by the dev container's `github-cli` feature; on a container built before that feature, install it from cli.github.com's apt repo.

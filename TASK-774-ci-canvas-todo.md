@@ -10,3 +10,12 @@
 - [x] Run `yarn lint`, `yarn tsc`, `yarn test:ci` (sequentially) in the rebuilt Node 24 container, zero console output
 - [x] Update TASK-774-handoff.md, TASK-774-todo.md, TASK-774-log.md
 - [x] Report; no commit or push without explicit request
+
+## CI log on fe1041ec: two Node 24 deprecation warnings (outside the test step)
+
+- [x] Commit fe1041ec + push (your request); CI all green: test (646/646 suites, 5546 tests), CodeQL, Analyze, GitGuardian, qlty
+- [x] DEP0176 `fs.F_OK` in Build — `react-dev-utils@12.0.1` checkRequiredFiles.js:19; fix with a patch-package patch (`fs.constants.F_OK`)
+- [x] DEP0169 `url.parse()` in Install — documented (your decision); Yarn 4 migration #824; PR description note
+- [x] Verify locally with `--trace-deprecation`; re-run gates
+- [x] m5: publish the PR description (draft ready in scratchpad; build line must stay truthful)
+- [x] Update handoff/review/TODO/log with remaining findings and next steps; commit (your request); no push
