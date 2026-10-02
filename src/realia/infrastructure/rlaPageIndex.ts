@@ -1,8 +1,11 @@
+export type RlaPageFormat = 'jpg' | 'pdf'
+
 export interface RlaPageInfo {
   readonly volume: string
   readonly startScan: number
   readonly endScan: number
   readonly pageLabel: string
+  readonly format: RlaPageFormat
 }
 
 interface RlaIndexCell {
@@ -19,16 +22,21 @@ interface ParsedArticle {
   readonly volume: string
   readonly scan: number
   readonly pageLabel: string
+  readonly format: RlaPageFormat
 }
 
 export const RLA_INDEX_URL =
   'https://publikationen.badw.de/de/rla/index/index.json'
-const RLA_IMAGE_BASE = 'https://publikationen.badw.de/de/rla/a/'
-const IMAGE_CALL = /rI\(event,'[^']*\/(\d+)\.(\d+)\.jpg'/
+const RLA_PAGE_BASE = 'https://publikationen.badw.de/de/rla/a/'
+const PAGE_CALL = /rI\(event,'[^']*\/(\d+)\.(\d+)\.(jpg|pdf)'/
 const PAGE_LABEL = /S\.\s*(\d+[a-z]?)/i
 
-export function rlaImageUrl(volume: string, scan: number): string {
-  return `${RLA_IMAGE_BASE}${volume}.${scan}.jpg`
+export function rlaPageUrl(
+  volume: string,
+  scan: number,
+  format: RlaPageFormat,
+): string {
+  return `${RLA_PAGE_BASE}${volume}.${scan}.${format}`
 }
 
 function parseArticle(row: RlaIndexRow): ParsedArticle | null {
@@ -38,16 +46,17 @@ function parseArticle(row: RlaIndexRow): ParsedArticle | null {
   if (id === undefined || !markup) {
     return null
   }
-  const image = IMAGE_CALL.exec(markup)
-  if (!image) {
+  const page = PAGE_CALL.exec(markup)
+  if (!page) {
     return null
   }
   const label = PAGE_LABEL.exec(markup)
   return {
     id: String(id),
-    volume: image[1],
-    scan: Number(image[2]),
+    volume: page[1],
+    scan: Number(page[2]),
     pageLabel: label ? label[1] : '',
+    format: page[3] as RlaPageFormat,
   }
 }
 
@@ -74,6 +83,7 @@ export function parseRlaPageIndex(
         startScan: article.scan,
         endScan: Math.max(boundary, article.scan),
         pageLabel: article.pageLabel,
+        format: article.format,
       })
     })
   }

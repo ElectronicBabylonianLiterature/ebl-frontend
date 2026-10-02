@@ -4,7 +4,7 @@ import {
   clearRlaPageIndexCache,
   loadRlaPageIndex,
   parseRlaPageIndex,
-  rlaImageUrl,
+  rlaPageUrl,
 } from 'realia/infrastructure/rlaPageIndex'
 
 type IndexRows = Parameters<typeof parseRlaPageIndex>[0]
@@ -22,6 +22,8 @@ const rows: IndexRows = [
   row(6603, 'a/6.92.jpg', '59'),
   row(6610, 'a/6.98.jpg', '65'),
   row(700, 'a/1.18.jpg', '1'),
+  row(12826, 'a/15.354.pdf', '354'),
+  row(12827, 'a/15.355.pdf', '355'),
   { DT_RowId: 999, '6': { _: '<a onclick="rowAt(6603)">x</a>' } },
   { DT_RowId: 998, '0': { _: 'cross-reference lemma without a page image' } },
   { DT_RowId: 997, '0': 5 },
@@ -31,10 +33,16 @@ const rows: IndexRows = [
   },
 ]
 
-describe('rlaImageUrl', () => {
+describe('rlaPageUrl', () => {
   it('builds the badw page-image url from volume and scan', () => {
-    expect(rlaImageUrl('6', 92)).toBe(
+    expect(rlaPageUrl('6', 92, 'jpg')).toBe(
       'https://publikationen.badw.de/de/rla/a/6.92.jpg',
+    )
+  })
+
+  it('builds the badw page-document url for a pdf page', () => {
+    expect(rlaPageUrl('15', 354, 'pdf')).toBe(
+      'https://publikationen.badw.de/de/rla/a/15.354.pdf',
     )
   })
 })
@@ -48,6 +56,17 @@ describe('parseRlaPageIndex', () => {
       startScan: 92,
       endScan: 98,
       pageLabel: '59',
+      format: 'jpg',
+    })
+  })
+
+  it('includes articles whose pages are published as pdf documents', () => {
+    expect(index.get('12826')).toEqual({
+      volume: '15',
+      startScan: 354,
+      endScan: 355,
+      pageLabel: '354',
+      format: 'pdf',
     })
   })
 
