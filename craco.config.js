@@ -64,6 +64,7 @@ const fullyCoveredPaths = [
   'src/fragmentarium/ui/fragment/PdfExport.headline.ts',
   'src/fragmentarium/ui/fragment/PdfExport.layout.ts',
   'src/fragmentarium/ui/fragment/PdfExport.table.ts',
+  'src/fragmentarium/ui/fragment/PdfExport.tableRow.ts',
   'src/fragmentarium/ui/fragment/useFragmentSaves.ts',
   'src/fragmentarium/ui/image-annotation/annotation-tool/annotationSelection.ts',
   'src/fragmentarium/ui/image-annotation/annotation-tool/Content.tsx',

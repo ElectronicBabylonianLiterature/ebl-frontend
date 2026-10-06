@@ -5,8 +5,9 @@ import {
   PdfNode,
   addText,
   getTextHeight,
-  getTransliterationText,
   setDocStyle,
+  startsWithText,
+  writeTransliteration,
   writeWrappedBlocks,
 } from 'fragmentarium/ui/fragment/PdfExport.layout'
 
@@ -24,60 +25,64 @@ export function addFootnotes(
 
   const lis: JQuery = notes.find('li')
 
-  yPos = writeWrappedBlocks(lis, padding, yPos, doc, dealWithFootNotesHtml)
+  yPos = writeWrappedBlocks(lis, padding, yPos, doc, writeFootnoteNode)
 
   notes.remove()
 
   return yPos
 }
 
-function dealWithFootNotesHtml(
+function writeFootnoteNode(
   el: PdfNode,
   doc: jsPDF,
   xPos: number,
   yPos: number,
 ): number {
-  let wordLength = 0
-  const text = $(el).text()
-
-  if ($(el).is('a')) {
-    setDocStyle($(el), doc)
-    wordLength = addText(text + ' ', xPos, yPos, doc)
-  } else if ($(el).is('span.Transliteration__NoteLine')) {
-    let subWordLength = xPos
-    $(el)
-      .find('span,em,sup')
-      .each((i, el) => {
-        if ($(el).is('span.Transliteration__Word')) {
-          if (
-            $(el).contents().text().length > 0 &&
-            $(el).contents()[0].nodeType === 3
-          ) {
-            subWordLength += getTransliterationText(
-              el,
-              doc,
-              subWordLength,
-              yPos,
-              true,
-            )
-          }
-        } else {
-          if (
-            $(el).contents().text().length > 0 &&
-            $(el).contents()[0].nodeType === 3
-          ) {
-            if ($(el).text() !== ' ') {
-              setDocStyle($(el), doc)
-              subWordLength += addText($(el).text(), subWordLength, yPos, doc)
-            }
-          }
-        }
-      })
-    wordLength = subWordLength - xPos
-  } else if ($(el).is('sup')) {
-    setDocStyle($(el), doc)
-    wordLength = addText(text, xPos, yPos - getTextHeight(doc, text) / 2, doc)
+  const node = $(el)
+  if (node.is('a')) {
+    setDocStyle(node, doc)
+    return addText(node.text() + ' ', xPos, yPos, doc)
   }
+  if (node.is('span.Transliteration__NoteLine')) {
+    return writeNoteLine(node, doc, xPos, yPos)
+  }
+  if (node.is('sup')) {
+    setDocStyle(node, doc)
+    const text = node.text()
+    return addText(text, xPos, yPos - getTextHeight(doc, text) / 2, doc)
+  }
+  return 0
+}
 
-  return wordLength
+function writeNoteLine(
+  noteLine: JQuery<PdfNode>,
+  doc: jsPDF,
+  xPos: number,
+  yPos: number,
+): number {
+  let lineEnd = xPos
+  noteLine.find('span,em,sup').each((index, part) => {
+    lineEnd += writeNoteLinePart(part, doc, lineEnd, yPos)
+  })
+  return lineEnd - xPos
+}
+
+function writeNoteLinePart(
+  part: HTMLElement,
+  doc: jsPDF,
+  xPos: number,
+  yPos: number,
+): number {
+  const element = $(part)
+  if (!startsWithText(element)) {
+    return 0
+  }
+  if (element.is('span.Transliteration__Word')) {
+    return writeTransliteration(part, doc, xPos, yPos)
+  }
+  if (element.text() === ' ') {
+    return 0
+  }
+  setDocStyle(element, doc)
+  return addText(element.text(), xPos, yPos, doc)
 }

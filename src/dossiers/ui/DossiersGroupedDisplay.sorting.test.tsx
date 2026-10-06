@@ -112,11 +112,11 @@ describe('DossiersGroupedDisplay ordering', () => {
     )
     render(<DossiersGroupedDisplay records={[record]} />)
 
-    expect(
-      screen.getByText(/Neo-Babylonian \(Late\) — Nippur/),
-    ).toBeInTheDocument()
-    expect(screen.getByText('Dossiers:')).toBeInTheDocument()
-    expect(screen.getByText('D001')).toBeInTheDocument()
+    expect(screen.getByText('Dossiers:')).toHaveClass('dossier-prefix')
+    expect(screen.getByRole('button', { name: 'D001' })).toHaveClass(
+      'dossier-name',
+    )
+    expect(screen.getByRole('link')).toHaveClass('dossier-search-link')
   })
 
   it('groups multiple provenances correctly', () => {

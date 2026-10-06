@@ -17,7 +17,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
 
       - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
@@ -45,6 +45,7 @@ jobs:
           exit 1
 
       - name: No bluebird
+        if: ${{ !cancelled() && steps.install.outcome == 'success' }}
         run: |
           if git grep -lE "(from|import|require(\\.resolve)?)[[:space:]]*\\(?[[:space:]]*['\"]bluebird(/[^'\"]*)?['\"]" -- src; then
             echo "::error::bluebird was removed from this project; the files above import it again."
@@ -56,16 +57,20 @@ jobs:
           fi
 
       - name: Lint
+        if: ${{ !cancelled() && steps.install.outcome == 'success' }}
         run: yarn lint
 
       - name: Compile
+        if: ${{ !cancelled() && steps.install.outcome == 'success' }}
         run: yarn tsc
 
       - name: Unit Tests
+        if: ${{ !cancelled() && steps.install.outcome == 'success' }}
         id: unit_tests
         run: yarn test:ci
 
       - name: Build
+        if: ${{ !cancelled() && steps.install.outcome == 'success' }}
         run: yarn build:ci-stable
 
       # Coverage is uploaded only from master pushes and PRs based on master.
@@ -83,18 +88,18 @@ jobs:
     needs: [test]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
 
-      - uses: docker/setup-buildx-action@v3
+      - uses: docker/setup-buildx-action@8d2750c68a42422c14e847fe6c8ac0403b4cbd6f # v3.12.0
 
-      - uses: docker/login-action@v3
+      - uses: docker/login-action@c94ce9fb468520275223c153574b00df6fe4bcc9 # v3.7.0
         with:
           registry: ebl.badw.de
           username: ${{ secrets.EBL_REGISTRY_USERNAME }}
           password: ${{ secrets.EBL_REGISTRY_PASSWORD }}
 
       - id: docker_build
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@ca052bb54ab0790a636c9b5f226502c73d547a25 # v5.4.0
         with:
           build-args: |
             REACT_APP_AUTH0_DOMAIN=auth.ebl.lmu.de
@@ -117,18 +122,18 @@ jobs:
     needs: [test]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
 
-      - uses: docker/setup-buildx-action@v3
+      - uses: docker/setup-buildx-action@8d2750c68a42422c14e847fe6c8ac0403b4cbd6f # v3.12.0
 
-      - uses: docker/login-action@v3
+      - uses: docker/login-action@c94ce9fb468520275223c153574b00df6fe4bcc9 # v3.7.0
         with:
           registry: ebl.badw.de
           username: ${{ secrets.EBL_REGISTRY_USERNAME }}
           password: ${{ secrets.EBL_REGISTRY_PASSWORD }}
 
       - id: docker_build
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@ca052bb54ab0790a636c9b5f226502c73d547a25 # v5.4.0
         with:
           build-args: |
             REACT_APP_AUTH0_DOMAIN=auth.ebl.lmu.de

@@ -100,59 +100,38 @@ function unSetJQueryRef1000Px(jQueryRef: JQuery) {
   jQueryRef.css('width', '')
 }
 
+interface RulingSpan {
+  startXPos: number
+  endXPos: number
+}
+
+const rulingLineStep = 1
+
 export function addLines(
   linePositions: Record<string, LinePosition>,
   maxXPos: number,
   endposFirstColumn: number,
   doc: jsPDF,
 ): void {
-  for (const yPos in linePositions) {
-    addUnderLine(
-      Number(yPos),
-      maxXPos,
-      linePositions[yPos].num,
-      linePositions[yPos].page,
-      endposFirstColumn,
-      doc,
-    )
-  }
+  const span = { startXPos: endposFirstColumn, endXPos: maxXPos }
+  Object.entries(linePositions).forEach(([yPos, linePosition]) => {
+    doc.setPage(linePosition.page)
+    addRuling(Number(yPos), linePosition.num, span, doc)
+  })
 }
 
-function addUnderLine(
+function rulingLineCount(num: number): number {
+  return num === 2 || num === 3 ? num : 1
+}
+
+function addRuling(
   yPos: number,
-  endpos: number,
   num: number,
-  page: number,
-  endposFirstColumn: number,
+  span: RulingSpan,
   doc: jsPDF,
-) {
-  doc.setPage(page)
-
-  const smallLineStep = 1
-
-  if (num === 3) {
-    doc.line(endposFirstColumn, yPos, endpos, yPos)
-    doc.line(
-      endposFirstColumn,
-      yPos + smallLineStep,
-      endpos,
-      yPos + smallLineStep,
-    )
-    doc.line(
-      endposFirstColumn,
-      yPos + smallLineStep * 2,
-      endpos,
-      yPos + smallLineStep * 2,
-    )
-  } else if (num === 2) {
-    doc.line(endposFirstColumn, yPos, endpos, yPos)
-    doc.line(
-      endposFirstColumn,
-      yPos + smallLineStep,
-      endpos,
-      yPos + smallLineStep,
-    )
-  } else doc.line(endposFirstColumn, yPos, endpos, yPos)
-
-  return yPos
+): void {
+  for (let line = 0; line < rulingLineCount(num); line++) {
+    const lineYPos = yPos + rulingLineStep * line
+    doc.line(span.startXPos, lineYPos, span.endXPos, lineYPos)
+  }
 }

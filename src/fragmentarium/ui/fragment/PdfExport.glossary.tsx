@@ -14,8 +14,9 @@ import {
   addText,
   getLineHeight,
   getTextHeight,
-  getTransliterationText,
   setDocStyle,
+  startsWithText,
+  writeTransliteration,
   writeWrappedBlocks,
 } from 'fragmentarium/ui/fragment/PdfExport.layout'
 
@@ -88,7 +89,7 @@ function dealWithGlossaryHtml(
   if ($(el).is('a')) {
     setDocStyle($(el), doc)
     wordLength = addText(text, xPos, yPos, doc)
-  } else if ($(el)[0].nodeType === 3) {
+  } else if ($(el)[0].nodeType === Node.TEXT_NODE) {
     setDocStyle($(el).parent(), doc)
     wordLength = addText(text, xPos, yPos, doc)
   } else if ($(el).is('span.Transliteration')) {
@@ -96,17 +97,8 @@ function dealWithGlossaryHtml(
     $(el)
       .find('span,sup')
       .each((i, el) => {
-        if (
-          $(el).contents().text().length > 0 &&
-          $(el).contents()[0].nodeType === 3
-        ) {
-          subWordLength += getTransliterationText(
-            el,
-            doc,
-            subWordLength,
-            yPos,
-            true,
-          )
+        if (startsWithText($(el))) {
+          subWordLength += writeTransliteration(el, doc, subWordLength, yPos)
         }
       })
     wordLength = subWordLength - xPos

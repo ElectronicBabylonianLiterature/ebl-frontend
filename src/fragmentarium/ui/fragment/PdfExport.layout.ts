@@ -46,40 +46,56 @@ export function addText(
   return getTextWidth(doc, text)
 }
 
-export function getTransliterationText(
+export function startsWithText(element: JQuery<PdfNode>): boolean {
+  return (
+    element.contents().text().length > 0 &&
+    element.contents()[0].nodeType === Node.TEXT_NODE
+  )
+}
+
+function isVisibleText(element: JQuery<PdfNode>): boolean {
+  return (
+    element.children().length === 0 &&
+    element.text().trim().length > 0 &&
+    element.parent().css('display') !== 'none'
+  )
+}
+
+function transliterationCharacters(el: PdfNode, doc: jsPDF): string[] {
+  const element = $(el)
+  setDocStyle(element, doc)
+  return isVisibleText(element) ||
+    element.hasClass('Transliteration__wordSeparator')
+    ? element.text().split('')
+    : []
+}
+
+function characterAdvance(doc: jsPDF, character: string): number {
+  return getTextWidth(doc, character) + 0.2
+}
+
+export function measureTransliteration(el: PdfNode, doc: jsPDF): number {
+  return transliterationCharacters(el, doc).reduce(
+    (width, character) => width + characterAdvance(doc, character),
+    0,
+  )
+}
+
+export function writeTransliteration(
   el: PdfNode,
   doc: jsPDF,
   xPos: number,
   yPos: number,
-  add: boolean,
 ): number {
-  setDocStyle($(el), doc)
-
-  const superScript: boolean = $(el).is('sup') ? true : false
-
-  let wordLength = 0
-
-  if (
-    ($(el).children().length === 0 &&
-      $(el).text().trim().length &&
-      $(el).parent().css('display') !== 'none') ||
-    $(el).hasClass('Transliteration__wordSeparator')
-  ) {
-    const text = $(el).text()
-    for (let i = 0; i < text.length; i++) {
-      const char = text[i]
-      const width = getTextWidth(doc, char)
-      if (superScript) {
-        if (add)
-          doc.text(char, xPos + wordLength, yPos - getTextHeight(doc, char) / 2)
-      } else {
-        if (add) doc.text(char, xPos + wordLength, yPos)
-      }
-      wordLength += width + 0.2
-    }
-  }
-
-  return wordLength
+  const isSuperscript = $(el).is('sup')
+  return transliterationCharacters(el, doc).reduce((width, character) => {
+    const advance = characterAdvance(doc, character)
+    const characterYPos = isSuperscript
+      ? yPos - getTextHeight(doc, character) / 2
+      : yPos
+    doc.text(character, xPos + width, characterYPos)
+    return width + advance
+  }, 0)
 }
 
 export function setDocStyle(el: JQuery<PdfNode>, doc: jsPDF): void {
