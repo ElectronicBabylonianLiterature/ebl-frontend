@@ -2,15 +2,28 @@ import { Auth0Client } from '@auth0/auth0-spa-js'
 import { Session, guestSession } from 'auth/Session'
 import { AuthenticationService, User } from 'auth/Auth'
 
+export type Auth0ClientApi = Pick<
+  Auth0Client,
+  | 'getTokenSilently'
+  | 'loginWithRedirect'
+  | 'logout'
+  | 'isAuthenticated'
+  | 'getUser'
+  | 'handleRedirectCallback'
+  | 'checkSession'
+>
+
+export type RedirectAppState = { targetUrl?: string }
+
 export default class Auth0AuthenticationService implements AuthenticationService {
-  private readonly auth0Client: Auth0Client
+  private readonly auth0Client: Auth0ClientApi
   private readonly user: User
   private readonly session: Session
   private readonly returnTo: string
   private readonly _isAuthenticated: boolean
 
   constructor(
-    auth0Client: Auth0Client,
+    auth0Client: Auth0ClientApi,
     returnTo: string,
     isAuthenticated = false,
     user: User = {},

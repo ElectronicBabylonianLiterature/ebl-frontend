@@ -1,18 +1,11 @@
-import React from 'react'
-import { render, screen, waitFor } from '@testing-library/react'
-import {
-  MemoryRouter,
-  Route,
-  Routes,
-  useLocation,
-  useParams,
-} from 'react-router-dom'
-import Bluebird from 'bluebird'
-import SessionContext from 'auth/SessionContext'
-import MemorySession from 'auth/Session'
-import RealiaDisplay from 'realia/ui/RealiaDisplay'
+import { screen } from '@testing-library/react'
 import { RealiaEntry } from 'realia/domain/RealiaEntry'
-import { realiaService } from 'realia/ui/RealiaDisplay.testSupport'
+import {
+  expectLocation,
+  realiaService,
+  renderRealiaRoute,
+  waitForLocation,
+} from 'realia/ui/RealiaDisplay.testSupport'
 import { realiaSectionIds } from 'realia/ui/realiaSections'
 import { installMockIntersectionObserver } from 'test-support/intersectionObserverMock'
 import { realiaEntryFactory } from 'test-support/realia-fixtures'
@@ -23,41 +16,9 @@ jest.mock('realia/application/RealiaService')
 const lemma = 'Apkallu'
 const realiaId = 'realia_000846'
 
-function LocationProbe(): JSX.Element {
-  const location = useLocation()
-  return (
-    <span data-testid="location">{`${location.pathname}${location.hash}`}</span>
-  )
-}
-
-function RealiaRouteEntry(): JSX.Element {
-  const { id } = useParams()
-  return (
-    <RealiaDisplay
-      id={decodeURIComponent(id ?? '')}
-      realiaService={realiaService}
-    />
-  )
-}
-
 function renderAtUrl(entry: RealiaEntry, url: string): void {
-  realiaService.find.mockReturnValue(Bluebird.resolve(entry))
-  render(
-    <MemoryRouter initialEntries={[url]}>
-      <SessionContext.Provider value={new MemorySession(['read:realia'])}>
-        <Routes>
-          <Route path="/tools/realia/:id" element={<RealiaRouteEntry />} />
-        </Routes>
-        <LocationProbe />
-      </SessionContext.Provider>
-    </MemoryRouter>,
-  )
-}
-
-function expectLocation(expected: string): void {
-  expect(screen.getByTestId('location')).toHaveTextContent(
-    new RegExp(`^${expected.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}$`),
-  )
+  realiaService.find.mockReturnValue(Promise.resolve(entry))
+  renderRealiaRoute(realiaService, url)
 }
 
 describe('a realia id URL redirects to the lemma URL', () => {
@@ -72,7 +33,7 @@ describe('a realia id URL redirects to the lemma URL', () => {
       `/tools/realia/${realiaId}`,
     )
 
-    await waitFor(() => expectLocation(`/tools/realia/${lemma}`))
+    await waitForLocation(`/tools/realia/${lemma}`)
   })
 
   it('resolves the entry by realia id, then re-resolves it by lemma', async () => {
@@ -81,9 +42,15 @@ describe('a realia id URL redirects to the lemma URL', () => {
       `/tools/realia/${realiaId}`,
     )
 
-    await waitFor(() => expectLocation(`/tools/realia/${lemma}`))
-    expect(realiaService.find).toHaveBeenCalledWith(realiaId)
-    expect(realiaService.find).toHaveBeenCalledWith(lemma)
+    await waitForLocation(`/tools/realia/${lemma}`)
+    expect(realiaService.find).toHaveBeenCalledWith(
+      realiaId,
+      expect.any(AbortSignal),
+    )
+    expect(realiaService.find).toHaveBeenCalledWith(
+      lemma,
+      expect.any(AbortSignal),
+    )
   })
 
   it('renders the entry once it has redirected', async () => {
@@ -92,7 +59,7 @@ describe('a realia id URL redirects to the lemma URL', () => {
       `/tools/realia/${realiaId}`,
     )
 
-    await waitFor(() => expectLocation(`/tools/realia/${lemma}`))
+    await waitForLocation(`/tools/realia/${lemma}`)
     await waitForSpinnerToBeRemoved(screen)
 
     expect(
@@ -111,7 +78,7 @@ describe('a realia id URL redirects to the lemma URL', () => {
       `/tools/realia/${realiaId}${hash}`,
     )
 
-    await waitFor(() => expectLocation(`/tools/realia/${lemma}${hash}`))
+    await waitForLocation(`/tools/realia/${lemma}${hash}`)
   })
 })
 

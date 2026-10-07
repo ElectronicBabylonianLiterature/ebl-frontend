@@ -18,6 +18,42 @@ function DossiersIntroduction(): JSX.Element {
   )
 }
 
+function FilterSelect({
+  controlId,
+  label,
+  allLabel,
+  value,
+  options,
+  onChange,
+}: {
+  controlId: string
+  label: string
+  allLabel: string
+  value: string
+  options: readonly string[]
+  onChange: (value: string) => void
+}): JSX.Element {
+  return (
+    <Col sm={6}>
+      <Form.Group controlId={controlId}>
+        <Form.Label>{label}</Form.Label>
+        <Form.Select
+          value={value}
+          onChange={(event) => onChange(event.target.value)}
+          aria-label={`Filter by ${label.toLowerCase()}`}
+        >
+          <option value="">{allLabel}</option>
+          {options.map((option) => (
+            <option key={option} value={option}>
+              {option}
+            </option>
+          ))}
+        </Form.Select>
+      </Form.Group>
+    </Col>
+  )
+}
+
 function DossiersFilters({
   records,
   period,
@@ -44,40 +80,22 @@ function DossiersFilters({
   return (
     <Form className="dossiers-search-page__filters">
       <Row>
-        <Col sm={6}>
-          <Form.Group controlId="dossiers-period-filter">
-            <Form.Label>Period</Form.Label>
-            <Form.Select
-              value={period}
-              onChange={(event) => onPeriodChange(event.target.value)}
-              aria-label="Filter by period"
-            >
-              <option value="">All Periods</option>
-              {periods.map((periodName) => (
-                <option key={periodName} value={periodName}>
-                  {periodName}
-                </option>
-              ))}
-            </Form.Select>
-          </Form.Group>
-        </Col>
-        <Col sm={6}>
-          <Form.Group controlId="dossiers-provenance-filter">
-            <Form.Label>Provenance</Form.Label>
-            <Form.Select
-              value={provenance}
-              onChange={(event) => onProvenanceChange(event.target.value)}
-              aria-label="Filter by provenance"
-            >
-              <option value="">All Provenances</option>
-              {provenances.map((provenanceName) => (
-                <option key={provenanceName} value={provenanceName}>
-                  {provenanceName}
-                </option>
-              ))}
-            </Form.Select>
-          </Form.Group>
-        </Col>
+        <FilterSelect
+          controlId="dossiers-period-filter"
+          label="Period"
+          allLabel="All Periods"
+          value={period}
+          options={periods}
+          onChange={onPeriodChange}
+        />
+        <FilterSelect
+          controlId="dossiers-provenance-filter"
+          label="Provenance"
+          allLabel="All Provenances"
+          value={provenance}
+          options={provenances}
+          onChange={onProvenanceChange}
+        />
       </Row>
     </Form>
   )
@@ -126,17 +144,17 @@ function DossiersContent({
 
 const DossiersContentWithData = withData<
   object,
-  { dossiersService: DossiersService },
+  { dossiersService: Pick<DossiersService, 'fetchAllDossiers'> },
   readonly DossierRecord[]
 >(
   ({ data }) => <DossiersContent data={data} />,
-  (props) => props.dossiersService.fetchAllDossiers(),
+  (props, signal) => props.dossiersService.fetchAllDossiers(signal),
 )
 
 export default function DossiersSearchPage({
   dossiersService,
 }: {
-  dossiersService: DossiersService
+  dossiersService: Pick<DossiersService, 'fetchAllDossiers'>
 }): JSX.Element {
   return (
     <>

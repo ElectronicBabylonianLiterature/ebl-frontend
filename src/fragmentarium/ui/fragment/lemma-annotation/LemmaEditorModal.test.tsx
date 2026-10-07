@@ -1,22 +1,28 @@
 import React from 'react'
 import { render, screen, fireEvent } from '@testing-library/react'
-import LemmaEditorModal from './LemmaEditorModal'
+import userEvent from '@testing-library/user-event'
+import SessionContext from 'auth/SessionContext'
+import MemorySession from 'auth/Session'
+import LemmaEditorModal from 'fragmentarium/ui/fragment/lemma-annotation/LemmaEditorModal'
 import WordService from 'dictionary/application/WordService'
 import EditableToken from 'fragmentarium/ui/fragment/linguistic-annotation/EditableToken'
 import { kurToken } from 'test-support/test-tokens'
 import { wordFactory } from 'test-support/word-fixtures'
 
 jest.mock('dictionary/application/WordService')
-jest.mock('./ProperNounCreationPanel', () => ({
-  __esModule: true,
-  default: ({ onClose }: { onClose: () => void; onCreated: () => void }) => (
-    <div data-testid="proper-noun-panel">
-      <button onClick={onClose} data-testid="close-panel">
-        Close Panel
-      </button>
-    </div>
-  ),
-}))
+jest.mock(
+  'fragmentarium/ui/fragment/lemma-annotation/ProperNounCreationPanel',
+  () => ({
+    __esModule: true,
+    default: ({ onClose }: { onClose: () => void; onCreated: () => void }) => (
+      <div data-testid="proper-noun-panel">
+        <button onClick={onClose} data-testid="close-panel">
+          Close Panel
+        </button>
+      </div>
+    ),
+  }),
+)
 
 const MockWordService = WordService as jest.Mock<jest.Mocked<WordService>>
 const wordServiceMock = new MockWordService()
@@ -37,7 +43,6 @@ const mockCallbacks = {
   onMouseLeave: jest.fn(),
   onMultiApply: jest.fn(),
   onMultiReset: jest.fn(),
-  onCreateProperNoun: jest.fn(),
   onProperNounCreated: jest.fn(),
 }
 let confirmSuggestionSpy: jest.SpyInstance
@@ -137,5 +142,36 @@ describe('LemmaEditorModal', () => {
       renderLemmaEditorModal()
       expect(screen.queryByTestId('proper-noun-panel')).not.toBeInTheDocument()
     })
+  })
+
+  it('opens and closes the proper noun creation panel', async () => {
+    render(
+      <SessionContext.Provider
+        value={new MemorySession(['create:proper_nouns'])}
+      >
+        <LemmaEditorModal
+          token={token}
+          title="Lemma Editor"
+          process={null}
+          isDirty={false}
+          wordService={wordServiceMock}
+          {...mockCallbacks}
+        />
+      </SessionContext.Provider>,
+    )
+
+    await userEvent.click(screen.getByLabelText('Open token actions'))
+    await userEvent.click(screen.getByText(/Create a new proper noun for/))
+    expect(screen.getByTestId('proper-noun-panel')).toBeInTheDocument()
+
+    await userEvent.click(screen.getByTestId('close-panel'))
+    expect(screen.queryByTestId('proper-noun-panel')).not.toBeInTheDocument()
+  })
+
+  it('shows no editor controls without a selected token', () => {
+    renderLemmaEditorModal({ token: null })
+
+    expect(screen.queryByLabelText('autofill-lemmas')).not.toBeInTheDocument()
+    expect(screen.queryByLabelText('edit-token-lemmas')).not.toBeInTheDocument()
   })
 })

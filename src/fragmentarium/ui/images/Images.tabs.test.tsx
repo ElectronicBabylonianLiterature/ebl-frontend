@@ -2,9 +2,8 @@ import React from 'react'
 import ResizeObserver from 'resize-observer-polyfill'
 import { MemoryRouter } from 'react-router-dom'
 import { render, screen, waitFor } from '@testing-library/react'
-import Promise from 'bluebird'
 import Images from 'fragmentarium/ui/images/Images'
-import FragmentService from 'fragmentarium/application/FragmentService'
+import { ImageFragmentService } from 'fragmentarium/ui/images/ImageFragmentService'
 import Folio from 'fragmentarium/domain/Folio'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import { fragmentFactory } from 'test-support/fragment-fixtures'
@@ -15,7 +14,7 @@ import {
 
 global.ResizeObserver = ResizeObserver
 
-function createFragmentService(): jest.Mocked<FragmentService> {
+function createFragmentService(): jest.Mocked<ImageFragmentService> {
   return {
     findFolio: jest
       .fn()
@@ -26,7 +25,7 @@ function createFragmentService(): jest.Mocked<FragmentService> {
     folioPager: jest
       .fn()
       .mockReturnValue(Promise.resolve(folioPagerFactory.build())),
-  } as unknown as jest.Mocked<FragmentService>
+  }
 }
 
 function renderImages({
@@ -36,7 +35,7 @@ function renderImages({
   tab = activeFolio ? 'folio' : null,
 }: {
   fragment: Fragment
-  fragmentService?: jest.Mocked<FragmentService>
+  fragmentService?: jest.Mocked<ImageFragmentService>
   activeFolio?: Folio | null
   tab?: string | null
 }) {
@@ -116,8 +115,16 @@ test('keeps visited folios mounted when switching away and back', async () => {
   await waitFor(() =>
     expect(fragmentService.folioPager).toHaveBeenCalledTimes(2),
   )
-  expect(fragmentService.findFolio).toHaveBeenNthCalledWith(1, folios[0])
-  expect(fragmentService.findFolio).toHaveBeenNthCalledWith(2, folios[1])
+  expect(fragmentService.findFolio).toHaveBeenNthCalledWith(
+    1,
+    folios[0],
+    expect.any(AbortSignal),
+  )
+  expect(fragmentService.findFolio).toHaveBeenNthCalledWith(
+    2,
+    folios[1],
+    expect.any(AbortSignal),
+  )
 })
 
 test('resets visited media tabs when navigating to another fragment', async () => {

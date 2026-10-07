@@ -1,14 +1,13 @@
 import React from 'react'
-import _ from 'lodash'
 
 import withData from 'http/withData'
 
 import AfoRegisterRecord from 'afo-register/domain/Record'
 import AfoRegisterService from 'afo-register/application/AfoRegisterService'
 import { LiteratureRedirectBox } from 'common/ui/LiteratureRedirectBox'
-import { AfoRegisterQuery } from './AfoRegisterSearchForm'
+import { AfoRegisterQuery } from 'afo-register/ui/AfoRegisterSearchForm'
 import { stringify } from 'query-string'
-import { AfoRegisterRecordsListDisplay } from './AfoRegisterDisplay'
+import { AfoRegisterRecordsListDisplay } from 'afo-register/ui/AfoRegisterDisplay'
 import FragmentService from 'fragmentarium/application/FragmentService'
 
 export const AfoRegisterRedirectBox = (
@@ -52,7 +51,5 @@ export default withData<
     ),
   {
     watch: (props) => [props.query],
-    filter: (props) => !_.isEmpty(props.query),
-    defaultData: () => [],
   },
 )

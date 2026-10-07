@@ -2,7 +2,7 @@ import React from 'react'
 import { render, screen } from '@testing-library/react'
 import { changeValueByLabel, submitForm } from 'test-support/utils'
 
-import TemplateForm from './TemplateForm'
+import TemplateForm from 'fragmentarium/ui/edition/TemplateForm'
 
 let onSubmit
 let container: HTMLElement

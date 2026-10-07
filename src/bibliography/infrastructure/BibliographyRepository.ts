@@ -1,5 +1,4 @@
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
-import Promise from 'bluebird'
 import ApiClient from 'http/ApiClient'
 import { stringify } from 'query-string'
 
@@ -30,11 +29,11 @@ export default class BibliographyRepository {
       .then((result) => result.map(createEntry))
   }
 
-  search(query: string): Promise<BibliographyEntry[]> {
+  search(query: string, signal?: AbortSignal): Promise<BibliographyEntry[]> {
     return this.apiClient
       .fetchJson<
         Record<string, unknown>[]
-      >(`/bibliography?query=${encodeURIComponent(query)}`, false)
+      >(`/bibliography?query=${encodeURIComponent(query)}`, false, signal)
       .then((result) => result.map(createEntry))
   }
 

@@ -8,7 +8,7 @@ export interface Geometry {
   readonly type: string
 }
 
-export function isBoundingBoxTooSmall(geometry: Geometry): boolean {
+export function isBoundingBoxLargeEnough(geometry: Geometry): boolean {
   const minSize = Math.min(geometry.height, geometry.width)
   return minSize >= 0.3
 }

@@ -1,7 +1,7 @@
 import { wordFactory } from 'test-support/word-fixtures'
 import { TextLine, TextLineDto } from 'transliteration/domain/text-line'
 import { Word } from 'transliteration/domain/token'
-import { alignedManuscriptToken } from './line-group-fixtures'
+import { alignedManuscriptToken } from 'test-support/line-group-fixtures'
 import { Provenances } from 'corpus/domain/provenance'
 import { Periods } from 'common/utils/period'
 import { ManuscriptTypes } from 'corpus/domain/manuscript'

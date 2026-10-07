@@ -1,5 +1,5 @@
 import React from 'react'
-import ArrayInput from './ArrayInput'
+import ArrayInput from 'common/ui/ArrayInput'
 import { render, screen } from '@testing-library/react'
 import { whenChangedByValue } from 'test-support/utils'
 

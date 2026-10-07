@@ -2,8 +2,9 @@ import React, { Component } from 'react'
 import { FormGroup, FormLabel, FormControl } from 'react-bootstrap'
 import _ from 'lodash'
 
-import TextListInput from './TextListInput'
+import TextListInput from 'dictionary/ui/editor/TextListInput'
 import { NAMED_ENTITY_TAGS } from 'dictionary/domain/namedEntityTags'
+import Word from 'dictionary/domain/Word'
 
 const verb = 'V'
 
@@ -53,7 +54,7 @@ function MultiSelectFormGroup({
 }: {
   idPrefix: string
   label: string
-  value: string[]
+  value: readonly string[]
   options: readonly SelectOption[]
   onChange: React.ChangeEventHandler<
     HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
@@ -62,7 +63,7 @@ function MultiSelectFormGroup({
   return (
     <FormGroup controlId={_.uniqueId(idPrefix)}>
       <FormLabel>{label}</FormLabel>
-      <FormControl as="select" value={value} onChange={onChange} multiple>
+      <FormControl as="select" value={[...value]} onChange={onChange} multiple>
         {options.map((option) => (
           <option key={option.value} value={option.value}>
             {option.label}
@@ -73,7 +74,12 @@ function MultiSelectFormGroup({
   )
 }
 
-class PosInput extends Component<{ value; onChange }> {
+type PosValue = Pick<Word, 'pos' | 'namedEntityTags' | 'roots'>
+
+class PosInput extends Component<{
+  value: PosValue
+  onChange: (update: Partial<PosValue>) => void
+}> {
   updatePos = (
     event: React.ChangeEvent<
       HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
@@ -94,7 +100,7 @@ class PosInput extends Component<{ value; onChange }> {
     })
   }
 
-  updateRoots = (roots): void => {
+  updateRoots = (roots: readonly string[]): void => {
     this.props.onChange({ roots: roots })
   }
 

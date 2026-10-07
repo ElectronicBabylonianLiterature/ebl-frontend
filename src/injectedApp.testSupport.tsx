@@ -1,6 +1,6 @@
+import _ from 'lodash'
 import React from 'react'
 import { render, RenderResult } from '@testing-library/react'
-import Bluebird from 'bluebird'
 import { AuthenticationContext } from 'auth/Auth'
 import type { AuthenticationService } from 'auth/Auth'
 import { guestSession } from 'auth/Session'
@@ -9,7 +9,7 @@ import TextService from 'corpus/application/TextService'
 import InjectedApp from 'InjectedApp'
 import type { ErrorReporter } from 'ErrorReporterContext'
 
-export const mockAuthService: AuthenticationService = {
+export const mockAuthService: jest.Mocked<AuthenticationService> = {
   login: jest.fn(),
   logout: jest.fn().mockResolvedValue(undefined),
   getSession: jest.fn().mockReturnValue(guestSession),
@@ -33,29 +33,28 @@ export function renderInjectedApp(): RenderResult {
   )
 }
 
-interface MockedConstructorCalls {
-  mock: { calls: readonly (readonly unknown[])[] }
-}
-
 export function cacheScopeResolverOf(
-  mockClass: MockedConstructorCalls,
+  mockClass: object,
   argumentIndex: number,
 ): () => string {
-  const calls = mockClass.mock.calls
-  const resolver = calls[calls.length - 1][argumentIndex]
-  expect(resolver).toBeDefined()
-  return resolver as () => string
+  const [constructorCalls] = [mockClass]
+    .filter(jest.isMockFunction)
+    .map((mockedClass) => mockedClass.mock.calls)
+  expect(constructorCalls).toBeDefined()
+  const resolver: () => string = _.last(constructorCalls)[argumentIndex]
+  expect(resolver).toEqual(expect.any(Function))
+  return resolver
 }
 
 export function stubPrefetches(): void {
   jest.clearAllMocks()
-  ;(mockAuthService.isAuthenticated as jest.Mock).mockReturnValue(false)
-  ;(mockAuthService.getUser as jest.Mock).mockReturnValue({})
+  mockAuthService.isAuthenticated.mockReturnValue(false)
+  mockAuthService.getUser.mockReturnValue({})
   FragmentService.prototype.fetchProvenances = jest
     .fn()
-    .mockReturnValue(Bluebird.resolve([]))
+    .mockReturnValue(Promise.resolve([]))
   FragmentService.prototype.fetchGenres = jest
     .fn()
-    .mockReturnValue(Bluebird.resolve([]))
-  TextService.prototype.list = jest.fn().mockReturnValue(Bluebird.resolve([]))
+    .mockReturnValue(Promise.resolve([]))
+  TextService.prototype.list = jest.fn().mockReturnValue(Promise.resolve([]))
 }

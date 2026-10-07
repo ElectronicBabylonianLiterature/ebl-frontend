@@ -4,7 +4,7 @@ import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { Text } from 'corpus/domain/text'
 import { text } from 'test-support/test-corpus-text'
-import GotoButton from './GotoButton'
+import GotoButton from 'corpus/ui/GotoButton'
 
 const title = 'goto'
 

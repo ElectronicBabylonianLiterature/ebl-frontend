@@ -1,7 +1,7 @@
 import React from 'react'
 import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import ModalButton from './ModalButton'
+import ModalButton from 'common/ui/ModalButton'
 
 describe('ModalButton', () => {
   it('shows modal dialog when button is clicked', async () => {

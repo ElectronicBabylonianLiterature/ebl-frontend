@@ -1,4 +1,4 @@
-import { getNewsletterPreview } from 'Introduction'
+import { getNewsletterPreview } from 'IntroductionNews'
 
 describe('getNewsletterPreview', () => {
   test('keeps markdown links intact in preview lines', () => {

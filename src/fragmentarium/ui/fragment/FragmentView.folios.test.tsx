@@ -1,5 +1,4 @@
 import { screen } from '@testing-library/react'
-import Promise from 'bluebird'
 import { waitForSpinnerToBeRemoved } from 'test-support/waitForSpinnerToBeRemoved'
 import { fragmentFactory } from 'test-support/fragment-fixtures'
 import { folioFactory } from 'test-support/fragment-data-fixtures'

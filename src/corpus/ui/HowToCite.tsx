@@ -2,18 +2,18 @@ import React, { PropsWithChildren, useEffect, useState } from 'react'
 import _ from 'lodash'
 import { ChapterDisplay } from 'corpus/domain/chapter'
 import { Button, ButtonToolbar, ButtonGroup } from 'react-bootstrap'
-import CollapsibleSection from './CollapsibleSection'
+import CollapsibleSection from 'corpus/ui/CollapsibleSection'
 
 function ExportButton({
   data,
   children,
   fileName,
-  fileExtension = 'txt',
+  fileExtension,
   contentType = 'text/plain',
 }: PropsWithChildren<{
   data: string
   fileName: string
-  fileExtension?: string
+  fileExtension: string
   contentType?: string
 }>): JSX.Element {
   const [url, setUrl] = useState<string>()
@@ -44,29 +44,28 @@ function ExportButton({
   )
 }
 
+type NameFormat = 'Name, GivenName' | 'GivenName Name'
+
 function nameToString(
   name: { family: string; given: string },
-  format = 'Name, GivenName',
-  initials = false,
+  format: NameFormat,
+  initials: boolean,
 ) {
-  const givenName =
-    initials === true
-      ? name.given
-          .split(/[\s,-]+/)
-          .map((n) => `${n[0]}.`)
-          .join(' ')
-      : name.given
+  const givenName = initials
+    ? name.given
+        .split(/[\s,-]+/)
+        .map((n) => `${n[0]}.`)
+        .join(' ')
+    : name.given
   return format === 'Name, GivenName'
     ? `${name.family}, ${givenName}`
-    : format === 'GivenName Name'
-      ? `${givenName} ${name.family}`
-      : `${givenName}, ${name.family}`
+    : `${givenName} ${name.family}`
 }
 
 function namesToString(
   names: Array<{ family: string; given: string }>,
-  prefix = '',
-  format = 'Name, GivenName',
+  prefix: string,
+  format: NameFormat,
   initials = false,
 ) {
   prefix = prefix ? `${prefix} ` : prefix

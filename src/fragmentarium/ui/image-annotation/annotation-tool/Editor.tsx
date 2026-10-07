@@ -3,7 +3,7 @@ import { Card, Col, Row } from 'react-bootstrap'
 import Annotation, { RawAnnotation } from 'fragmentarium/domain/annotation'
 import { AnnotationToken } from 'fragmentarium/domain/annotation-token'
 import SubmitAnnotationButton from 'fragmentarium/ui/image-annotation/annotation-tool/SubmitAnnotationButton'
-import './editor.css'
+import 'fragmentarium/ui/image-annotation/annotation-tool/editor.css'
 
 export type EditorProps = {
   disabled: boolean

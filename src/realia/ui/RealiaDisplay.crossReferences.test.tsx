@@ -4,7 +4,6 @@ import { MemoryRouter } from 'react-router-dom'
 import RealiaDisplay from 'realia/ui/RealiaDisplay'
 import SessionContext from 'auth/SessionContext'
 import MemorySession from 'auth/Session'
-import Bluebird from 'bluebird'
 import { waitForSpinnerToBeRemoved } from 'test-support/waitForSpinnerToBeRemoved'
 import {
   realiaEntryFactory,
@@ -101,7 +100,7 @@ describe('RealiaDisplay cross-references and access', () => {
     const first = realiaEntryFactory.build({ id: 'Pig' })
     const second = realiaEntryFactory.build({ id: 'Anu' })
     realiaService.find.mockImplementation((id: string) =>
-      Bluebird.resolve(id === 'Anu' ? second : first),
+      Promise.resolve(id === 'Anu' ? second : first),
     )
     const session = new MemorySession(['read:realia'])
     const { rerender } = render(
@@ -127,7 +126,10 @@ describe('RealiaDisplay cross-references and access', () => {
     expect(
       screen.getByRole('heading', { level: 1, name: 'Anu' }),
     ).toBeInTheDocument()
-    expect(realiaService.find).toHaveBeenCalledWith('Anu')
+    expect(realiaService.find).toHaveBeenCalledWith(
+      'Anu',
+      expect.any(AbortSignal),
+    )
   })
 
   it('shows the development notice for an authorized session', async () => {

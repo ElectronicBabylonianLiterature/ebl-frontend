@@ -1,12 +1,11 @@
 import React from 'react'
 import { Fragment, Script } from 'fragmentarium/domain/fragment'
-import './Details.sass'
+import 'fragmentarium/ui/info/Details.sass'
 import GenreSelection from 'fragmentarium/ui/info/GenreEditor'
 import { Genres } from 'fragmentarium/domain/Genres'
 import ScriptSelection from 'fragmentarium/ui/info/ScriptSelection'
 import DateSelection from 'chronology/application/DateSelection'
 import FragmentService from 'fragmentarium/application/FragmentService'
-import Bluebird from 'bluebird'
 import { MesopotamianDate } from 'chronology/domain/Date'
 import DatesInTextSelection from 'chronology/ui/DateEditor/DatesInTextSelection'
 import FragmentDossierRecordsDisplay from 'dossiers/ui/DossiersDisplay'
@@ -20,18 +19,18 @@ import {
   Measurements,
   MuseumName,
   Provenance,
-} from 'fragmentarium/ui/info/DetailsItems'
+} from 'fragmentarium/ui/info/DetailsFields'
 
-export { formatMeasurements } from 'fragmentarium/ui/info/DetailsItems'
+export { formatMeasurements } from 'fragmentarium/ui/info/DetailsFields'
 
 interface DetailsProps {
   readonly fragment: Fragment
   readonly updateGenres: (genres: Genres) => void
-  readonly updateScript: (script: Script) => Bluebird<Fragment>
-  readonly updateDate: (date?: MesopotamianDate) => Bluebird<Fragment>
+  readonly updateScript: (script: Script) => Promise<Fragment>
+  readonly updateDate: (date?: MesopotamianDate) => Promise<Fragment>
   readonly updateDatesInText: (
     datesInText: readonly MesopotamianDate[],
-  ) => Bluebird<Fragment>
+  ) => Promise<Fragment>
   readonly fragmentService: FragmentService
   readonly dossiersService: DossiersService
 }
@@ -107,7 +106,10 @@ function Details({
         />
       </li>
       <li className="Details__item">
-        <DateSelection dateProp={fragment?.date} updateDate={updateDate} />
+        <DateSelection
+          dateProp={fragment?.date}
+          updateDate={(date) => updateDate(date)}
+        />
       </li>
       <li className="Details__item">
         <DatesInTextSelection

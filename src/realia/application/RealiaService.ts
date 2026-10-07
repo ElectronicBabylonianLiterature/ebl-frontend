@@ -1,4 +1,3 @@
-import Promise from 'bluebird'
 import { CacheEntry, getCachedValue, setCachedValue } from 'common/utils/cache'
 import { isRealiaId, RealiaEntry } from 'realia/domain/RealiaEntry'
 import RealiaRepository from 'realia/infrastructure/RealiaRepository'
@@ -15,17 +14,17 @@ export default class RealiaService {
     this.realiaRepository = realiaRepository
   }
 
-  find(id: string): Promise<RealiaEntry> {
+  find(id: string, signal?: AbortSignal): Promise<RealiaEntry> {
     const cachedEntry = getCachedValue(this.cachedEntries, id)
     return cachedEntry
       ? Promise.resolve(cachedEntry)
-      : this.fetchEntry(id).then((entry) => this.cacheEntry(id, entry))
+      : this.fetchEntry(id, signal).then((entry) => this.cacheEntry(id, entry))
   }
 
-  private fetchEntry(id: string): Promise<RealiaEntry> {
+  private fetchEntry(id: string, signal?: AbortSignal): Promise<RealiaEntry> {
     return isRealiaId(id)
-      ? this.realiaRepository.findByRealiaId(id)
-      : this.realiaRepository.find(id)
+      ? this.realiaRepository.findByRealiaId(id, signal)
+      : this.realiaRepository.find(id, signal)
   }
 
   private cacheEntry(requestedId: string, entry: RealiaEntry): RealiaEntry {
@@ -41,8 +40,8 @@ export default class RealiaService {
     return entry
   }
 
-  search(query: string): Promise<readonly RealiaEntry[]> {
-    return this.realiaRepository.search(query)
+  search(query: string, signal?: AbortSignal): Promise<readonly RealiaEntry[]> {
+    return this.realiaRepository.search(query, signal)
   }
 
   listAllRealia(): Promise<string[]> {

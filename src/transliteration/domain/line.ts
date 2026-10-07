@@ -1,4 +1,4 @@
-import { AbstractLine, LineBaseDto } from './abstract-line'
+import { AbstractLine, LineBaseDto } from 'transliteration/domain/abstract-line'
 
 export class ControlLine extends AbstractLine {
   readonly type = 'ControlLine'

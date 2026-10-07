@@ -1,8 +1,8 @@
 import React from 'react'
 import _ from 'lodash'
 import Reference, { groupReferences } from 'bibliography/domain/Reference'
-import CompactCitation from './CompactCitation'
-import './ReferenceList.css'
+import CompactCitation from 'bibliography/ui/CompactCitation'
+import 'bibliography/ui/ReferenceList.css'
 
 function groupReferencesById(references: readonly Reference[]): Reference[][] {
   return _.values(

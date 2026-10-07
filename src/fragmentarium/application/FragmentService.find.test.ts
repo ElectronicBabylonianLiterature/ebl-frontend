@@ -1,4 +1,3 @@
-import Promise from 'bluebird'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import {
   buildTestFragment,
@@ -6,7 +5,6 @@ import {
   fragmentRepository,
   fragmentService,
   number,
-  stubMissingBibliography,
 } from 'fragmentarium/application/fragmentServiceFragments.testSupport'
 
 let fragment: Fragment
@@ -15,7 +13,6 @@ let result: Fragment
 beforeEach(() => {
   jest.clearAllMocks()
   fragment = buildTestFragment()
-  stubMissingBibliography()
 })
 
 describe('find', () => {

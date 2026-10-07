@@ -1,4 +1,4 @@
-import { createManuscriptLine } from './line'
+import { createManuscriptLine } from 'corpus/domain/line'
 import {
   NamedSign,
   UnknownSign,
@@ -6,7 +6,7 @@ import {
   Word,
   Token,
 } from 'transliteration/domain/token'
-import { atfToken } from 'test-support/test-tokens'
+import { atfToken, raToken } from 'test-support/test-tokens'
 
 function makeReading(value: string): NamedSign {
   return {
@@ -96,4 +96,27 @@ test('findMatchingWords', () => {
   })
 
   expect(line.findMatchingWords(query)).toEqual([1])
+})
+
+test('an Akkadian word is not a lacuna', () => {
+  const line = createManuscriptLine({ atfTokens: [raToken] })
+
+  expect(line.beginsWithLacuna).toBe(false)
+  expect(line.endsWithLacuna).toBe(false)
+})
+
+test('maps words from the left when the line ends with a lacuna', () => {
+  const line = createManuscriptLine({
+    atfTokens: [lineBreak, makeAtfToken(reading), makeAtfToken(unclearSign)],
+  })
+
+  expect(line.createAlignmentIndexMap(5)).toEqual([-1, 0, 1])
+})
+
+test('maps words from the right when the line does not end with a lacuna', () => {
+  const line = createManuscriptLine({
+    atfTokens: [makeAtfToken(reading), lineBreak, makeAtfToken(reading)],
+  })
+
+  expect(line.createAlignmentIndexMap(5)).toEqual([3, 4, 4])
 })

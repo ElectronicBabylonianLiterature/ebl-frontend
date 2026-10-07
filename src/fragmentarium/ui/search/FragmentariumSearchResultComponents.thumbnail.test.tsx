@@ -1,5 +1,4 @@
 import React from 'react'
-import Bluebird from 'bluebird'
 import { MemoryRouter } from 'react-router-dom'
 import { render, screen } from '@testing-library/react'
 import { QueryItem } from 'query/QueryResult'
@@ -84,7 +83,7 @@ describe('thumbnail variants', () => {
   it('falls back to the blob thumbnail for a legacy prefetched fragment', async () => {
     const legacyFragment = photoFragment()
     fragmentService.findThumbnail.mockReturnValue(
-      Bluebird.resolve({ blob: new Blob([''], { type: 'image/jpeg' }) }),
+      Promise.resolve({ blob: new Blob([''], { type: 'image/jpeg' }) }),
     )
 
     renderFragmentLines({
@@ -107,7 +106,7 @@ describe('thumbnail variants', () => {
   it('renders nothing when the legacy thumbnail has no blob', async () => {
     const legacyFragment = photoFragment()
     fragmentService.findThumbnail.mockReturnValue(
-      Bluebird.resolve({ blob: null }),
+      Promise.resolve({ blob: null }),
     )
 
     renderFragmentLines({
@@ -166,7 +165,7 @@ describe('latest transliteration record display', () => {
 
   it('shows no record for a hydrated fragment without a current record', async () => {
     const fragment = recordFragment([historical])
-    fragmentService.find.mockReturnValue(Bluebird.resolve(fragment))
+    fragmentService.find.mockReturnValue(Promise.resolve(fragment))
 
     renderFragmentLines(
       { museumNumber: fragment.number, matchingLines: [1], matchCount: 1 },

@@ -1,16 +1,15 @@
 import React from 'react'
 import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import WordLemmatizer from './WordLemmatizer'
+import WordLemmatizer from 'fragmentarium/ui/lemmatization/WordLemmatizer'
 import { LemmatizationToken } from 'transliteration/domain/Lemmatization'
 import Lemma from 'transliteration/domain/Lemma'
 import { wordFactory } from 'test-support/word-fixtures'
 import FragmentService from 'fragmentarium/application/FragmentService'
-import Promise from 'bluebird'
 
-const fragmentService = {
+const fragmentService: Pick<FragmentService, 'searchLemma'> = {
   searchLemma: jest.fn(),
-} as unknown as FragmentService
+}
 
 describe('WordLemmatizer', () => {
   beforeEach(() => {

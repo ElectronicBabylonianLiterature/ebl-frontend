@@ -1,30 +1,32 @@
 import { ChangeEvent } from 'react'
-import { handleDateConverterFormChange } from './DateConverterFormChange'
+import { handleDateConverterFormChange } from 'chronology/application/DateConverterFormChange'
 import DateConverter from 'chronology/domain/DateConverter'
 
 const createMockEvent = (
   name: string,
   value: string,
-): ChangeEvent<HTMLInputElement> => ({
-  target: {
-    name,
-    value,
-  } as unknown as HTMLInputElement,
-  nativeEvent: new Event('change'),
-  currentTarget: document.createElement('input'),
-  bubbles: true,
-  cancelable: true,
-  defaultPrevented: false,
-  eventPhase: Event.NONE,
-  isTrusted: false,
-  preventDefault: jest.fn(),
-  isDefaultPrevented: jest.fn(),
-  stopPropagation: jest.fn(),
-  isPropagationStopped: jest.fn(),
-  persist: jest.fn(),
-  timeStamp: Date.now(),
-  type: 'change',
-})
+): ChangeEvent<HTMLInputElement> => {
+  const input = document.createElement('input')
+  input.name = name
+  input.value = value
+  return {
+    target: input,
+    nativeEvent: new Event('change'),
+    currentTarget: input,
+    bubbles: true,
+    cancelable: true,
+    defaultPrevented: false,
+    eventPhase: Event.NONE,
+    isTrusted: false,
+    preventDefault: jest.fn(),
+    isDefaultPrevented: jest.fn(),
+    stopPropagation: jest.fn(),
+    isPropagationStopped: jest.fn(),
+    persist: jest.fn(),
+    timeStamp: Date.now(),
+    type: 'change',
+  }
+}
 
 const setScenario = jest.fn()
 const dateConverter = new DateConverter()

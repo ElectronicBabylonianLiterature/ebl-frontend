@@ -1,6 +1,6 @@
 import React from 'react'
 import { render, screen, waitFor } from '@testing-library/react'
-import CollapsibleSection from './CollapsibleSection'
+import CollapsibleSection from 'corpus/ui/CollapsibleSection'
 import { clickNth } from 'test-support/utils'
 
 const content = 'Content'

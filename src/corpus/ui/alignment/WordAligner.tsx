@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
 import { Button, Col, Form, Row } from 'react-bootstrap'
 import _ from 'lodash'
-import Word from './Word'
+import Word from 'corpus/ui/alignment/Word'
 
-import './WordAligner.css'
+import 'corpus/ui/alignment/WordAligner.css'
 
 import { Token } from 'transliteration/domain/token'
 import { AlignmentToken } from 'corpus/domain/alignment'

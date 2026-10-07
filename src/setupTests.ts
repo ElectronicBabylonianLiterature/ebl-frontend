@@ -3,7 +3,6 @@ import { resolve } from 'path'
 import { parse as parseEnv } from 'dotenv'
 import 'jest-date-mock'
 import '@testing-library/jest-dom'
-import Promise from 'bluebird'
 import _ from 'lodash'
 import { TextEncoder, TextDecoder } from 'util'
 
@@ -17,7 +16,7 @@ import fetchMock from 'jest-fetch-mock'
 
 const testEnv = parseEnv(readFileSync(resolve(__dirname, '..', '.env.test')))
 Object.entries(testEnv).forEach(([key, value]) => {
-  process.env[key] = value
+  process.env[key] = String(value)
 })
 
 jest.mock('react-router-dom', () => {
@@ -69,51 +68,111 @@ afterEach(() => {
   onAbort.mockReset()
 })
 
-Promise.config({
-  cancellation: true,
-})
-
 afterEach(() => localStorage.clear())
 
+function rangeFallbacks(range: Range): Record<string, unknown> {
+  const emptyRectangle = {
+    right: 0,
+    left: 0,
+    top: 0,
+    bottom: 0,
+    width: 0,
+    height: 0,
+  }
+  return {
+    setStart: _.noop,
+    setEnd: _.noop,
+    collapse: _.noop,
+    selectNodeContents: _.noop,
+    cloneRange: () => range,
+    getBoundingClientRect: () => emptyRectangle,
+    getClientRects: () => {
+      const rectangles: unknown[] = []
+      return Object.assign(rectangles, {
+        item: (index: number) => rectangles[index] ?? null,
+      })
+    },
+    commonAncestorContainer: { nodeName: 'BODY', ownerDocument: document },
+  }
+}
+
 if (global.document) {
-  const originalCreateRange = document.createRange?.bind(document)
-  document.createRange = () => {
-    const range = originalCreateRange ? originalCreateRange() : ({} as Range)
-    if (!range.setStart) range.setStart = _.noop
-    if (!range.setEnd) range.setEnd = _.noop
-    if (!range.collapse) range.collapse = _.noop
-    if (!range.selectNodeContents) range.selectNodeContents = _.noop
-    if (!range.cloneRange) range.cloneRange = () => range
-    if (!range.getBoundingClientRect) {
-      range.getBoundingClientRect = () =>
-        ({
-          right: 0,
-          left: 0,
-          top: 0,
-          bottom: 0,
-          width: 0,
-          height: 0,
-        }) as DOMRect
-    }
-    if (!range.getClientRects) {
-      range.getClientRects = () => {
-        const rects: DOMRect[] = []
-        return Object.assign(rects, {
-          item: (index: number) => rects[index] ?? null,
-        }) as DOMRectList
+  const originalCreateRange = document.createRange.bind(document)
+  document.createRange = (): Range => {
+    const range = originalCreateRange()
+    Object.entries(rangeFallbacks(range)).forEach(([member, fallback]) => {
+      if (!Reflect.get(range, member)) {
+        Reflect.set(range, member, fallback)
       }
-    }
-    if (!range.commonAncestorContainer) {
-      // @ts-expect-error - partial mock for testing
-      range.commonAncestorContainer = {
-        nodeName: 'BODY',
-        ownerDocument: document,
-      }
-    }
+    })
     return range
   }
 }
 
-export function silenceConsoleErrors(): void {
-  jest.spyOn(console, 'error').mockImplementation()
+type CapturedConsoleMethod = 'error' | 'warn'
+
+type ConsoleCapture = {
+  readonly spy: jest.SpyInstance
+  readonly pattern: RegExp
 }
+
+const consoleCaptures = new Map<CapturedConsoleMethod, ConsoleCapture>()
+
+function captureConsole(
+  method: CapturedConsoleMethod,
+  pattern: RegExp,
+): jest.SpyInstance {
+  consoleCaptures.get(method)?.spy.mockRestore()
+  const spy = jest.spyOn(console, method).mockImplementation()
+  consoleCaptures.set(method, { spy, pattern })
+  return spy
+}
+
+export function expectConsoleErrors(pattern: RegExp): jest.SpyInstance {
+  return captureConsole('error', pattern)
+}
+
+export function expectConsoleWarnings(pattern: RegExp): jest.SpyInstance {
+  return captureConsole('warn', pattern)
+}
+
+const consoleObservers: jest.SpyInstance[] = []
+
+export function observeConsole(
+  method: CapturedConsoleMethod,
+): jest.SpyInstance {
+  const spy = jest.spyOn(console, method)
+  consoleObservers.push(spy)
+  return spy
+}
+
+type CapturedMessages = {
+  readonly messages: readonly string[]
+  readonly pattern: RegExp
+}
+
+function releaseConsoleCapture({
+  spy,
+  pattern,
+}: ConsoleCapture): CapturedMessages {
+  const messages = spy.mock.calls.map((call) =>
+    call.map((argument) => String(argument)).join(' '),
+  )
+  spy.mockRestore()
+  return { messages, pattern }
+}
+
+function verifyCapturedMessages({ messages, pattern }: CapturedMessages): void {
+  const unexpected = messages.filter((message) => !pattern.test(message))
+  const matched = messages.filter((message) => pattern.test(message))
+
+  expect(unexpected).toEqual([])
+  expect(matched).not.toEqual([])
+}
+
+afterEach(() => {
+  consoleObservers.splice(0).forEach((spy) => spy.mockRestore())
+  const captured = [...consoleCaptures.values()].map(releaseConsoleCapture)
+  consoleCaptures.clear()
+  captured.forEach(verifyCapturedMessages)
+})

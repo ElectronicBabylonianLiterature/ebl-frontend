@@ -1,7 +1,7 @@
 import React from 'react'
 import _ from 'lodash'
 import { FormControl } from 'react-bootstrap'
-import List from './List'
+import List from 'common/ui/List'
 import { render, screen } from '@testing-library/react'
 import { whenClicked, whenChangedByValue } from 'test-support/utils'
 

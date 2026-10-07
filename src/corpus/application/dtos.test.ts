@@ -3,7 +3,14 @@ import {
   manuscriptDtoFactory,
 } from 'test-support/manuscript-fixtures'
 import { ManuscriptTypes } from 'corpus/domain/manuscript'
-import { fromManuscriptDto, toManuscriptsDto } from './dtos'
+import {
+  fromLineDetailsDto,
+  fromLineDto,
+  fromManuscriptDto,
+  toManuscriptsDto,
+} from 'corpus/application/dtos'
+import { EditStatus } from 'corpus/domain/line'
+import { EmptyLine } from 'transliteration/domain/line'
 
 const newManuscriptTypes = [
   [ManuscriptTypes['Multi-column tablet'], 'Multi-column tablet'],
@@ -38,3 +45,54 @@ test.each(newManuscriptTypes)(
     expect(manuscript.type).toEqual(type)
   },
 )
+
+test('a line without variants has none', () => {
+  const line = fromLineDto({ number: '1', translation: '' })
+
+  expect(line.variants).toEqual([])
+  expect(line.status).toEqual(EditStatus.CLEAN)
+})
+
+function lineDetailsDtoWithManuscriptLine(type: string) {
+  return {
+    variants: [
+      {
+        note: null,
+        manuscripts: [
+          {
+            provenance: 'Nippur',
+            periodModifier: 'None',
+            period: 'Ur III',
+            type: 'School',
+            siglumDisambiguator: '1',
+            oldSigla: [],
+            labels: [],
+            line: { type, prefix: '', content: [] },
+            paratext: [],
+            references: [],
+            joins: [],
+            museumNumber: 'X.1',
+            isInFragmentarium: false,
+            accession: '',
+            omittedWords: [],
+          },
+        ],
+      },
+    ],
+  }
+}
+
+test('a manuscript line can be empty', () => {
+  const lineDetails = fromLineDetailsDto(
+    lineDetailsDtoWithManuscriptLine('EmptyLine'),
+    0,
+  )
+
+  expect(lineDetails.variants[0].manuscripts[0].line).toBeInstanceOf(EmptyLine)
+})
+
+test('a manuscript line must be a text line or empty', () => {
+  expect(() =>
+    fromLineDetailsDto(lineDetailsDtoWithManuscriptLine('ControlLine'), 0),
+  ).toThrow('Unexpected manuscript line type "ControlLine".')
+})

@@ -1,6 +1,6 @@
 import React from 'react'
 import { render, screen } from '@testing-library/react'
-import ExternalResources from './ExternalResources'
+import ExternalResources from 'fragmentarium/ui/info/ExternalResources'
 
 import { fragmentFactory } from 'test-support/fragment-fixtures'
 import { externalNumbersFactory } from 'test-support/fragment-data-fixtures'

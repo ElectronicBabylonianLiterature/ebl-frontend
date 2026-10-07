@@ -2,14 +2,13 @@ import React from 'react'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import { render, screen } from '@testing-library/react'
 import { dictionaryWord } from 'test-support/word-info-fixtures'
-import FragmentLemmaLines from './FragmentLemmaLines'
+import FragmentLemmaLines from 'dictionary/ui/search/FragmentLemmaLines'
 import RenderFragmentLines from 'dictionary/ui/search/RenderFragmentLines'
 import { fragment, lines } from 'test-support/test-fragment'
 import { QueryItem, QueryResult } from 'query/QueryResult'
-import Bluebird from 'bluebird'
 import WordService from 'dictionary/application/WordService'
 import { MemoryRouter } from 'react-router-dom'
-import { DictionaryContext } from '../dictionary-context'
+import { DictionaryContext } from 'dictionary/ui/dictionary-context'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import { produce, castDraft, Draft } from 'immer'
 import { Text } from 'transliteration/domain/text'
@@ -86,8 +85,8 @@ describe('Show Library entries', () => {
       matchCount: 1,
     }
     const queryResult: QueryResult = { items: [queryItem], matchCountTotal: 1 }
-    fragmentService.query.mockReturnValue(Bluebird.resolve(queryResult))
-    fragmentService.find.mockReturnValue(Bluebird.resolve(fragmentWithLemma))
+    fragmentService.query.mockReturnValue(Promise.resolve(queryResult))
+    fragmentService.find.mockReturnValue(Promise.resolve(fragmentWithLemma))
 
     renderFragmentLemmaLines()
 
@@ -118,9 +117,9 @@ describe('Show Library entries', () => {
       matchCount: 1,
     }
     fragmentService.query.mockReturnValue(
-      Bluebird.resolve({ items: [queryItem], matchCountTotal: null }),
+      Promise.resolve({ items: [queryItem], matchCountTotal: null }),
     )
-    fragmentService.find.mockReturnValue(Bluebird.resolve(fragmentWithLemma))
+    fragmentService.find.mockReturnValue(Promise.resolve(fragmentWithLemma))
 
     renderFragmentLemmaLines()
 
@@ -139,7 +138,7 @@ describe('Show Library entries', () => {
       cardSummary: createFragmentCardSummary(),
     }
     fragmentService.query.mockReturnValue(
-      Bluebird.resolve({ items: [queryItem], matchCountTotal: null }),
+      Promise.resolve({ items: [queryItem], matchCountTotal: null }),
     )
 
     renderFragmentLemmaLines()
@@ -162,7 +161,7 @@ describe('Show Library entries', () => {
       cardSummary: { type: 'UnsupportedFragmentCardSummary' },
     }
     fragmentService.query.mockReturnValue(
-      Bluebird.resolve({ items: [queryItem], matchCountTotal: null }),
+      Promise.resolve({ items: [queryItem], matchCountTotal: null }),
     )
 
     renderFragmentLemmaLines()
@@ -185,7 +184,7 @@ describe('Show Library entries', () => {
       }),
     )
     fragmentService.query.mockReturnValue(
-      Bluebird.resolve({ items, matchCountTotal: null }),
+      Promise.resolve({ items, matchCountTotal: null }),
     )
 
     renderFragmentLemmaLines()

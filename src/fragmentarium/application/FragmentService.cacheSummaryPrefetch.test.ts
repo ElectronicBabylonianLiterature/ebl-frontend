@@ -1,4 +1,3 @@
-import Promise from 'bluebird'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import { QueryItem, QueryResult } from 'query/QueryResult'

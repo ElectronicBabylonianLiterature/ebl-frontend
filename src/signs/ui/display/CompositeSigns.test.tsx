@@ -1,6 +1,5 @@
 import SignService from 'signs/application/SignService'
 import { signFactory } from 'test-support/sign-fixtures'
-import Bluebird from 'bluebird'
 import CompositeSigns from 'signs/ui/display/CompositeSigns'
 import { render, screen } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
@@ -15,7 +14,7 @@ const sign2 = signFactory.build({ name: 'PI' })
 
 describe('Composite Signs', () => {
   const setup = async (): Promise<void> => {
-    signService.search.mockReturnValue(Bluebird.resolve([sign1, sign2]))
+    signService.search.mockReturnValue(Promise.resolve([sign1, sign2]))
     render(
       <MemoryRouter>
         <Route

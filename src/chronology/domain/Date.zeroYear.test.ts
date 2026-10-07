@@ -172,3 +172,27 @@ describe('handles king date with non-numeric characters', () => {
     expect(date.toModernDate()).toBe('ca. 814 BCE PJC')
   })
 })
+
+describe('king date without a known year', () => {
+  it('omits the modern date of a king with an unknown reign', () => {
+    const date = new MesopotamianDate({
+      year: { value: '' },
+      month: { value: '1' },
+      day: { value: '1' },
+      king: { ...king, date: '?' },
+    })
+
+    expect(date.toModernDate()).toBe('')
+  })
+
+  it('gives the reign of a king when the year is missing', () => {
+    const date = new MesopotamianDate({
+      year: { value: '' },
+      month: { value: '1' },
+      day: { value: '1' },
+      king,
+    })
+
+    expect(date.toModernDate()).toBe('ca. 2334–2279 BCE PJC')
+  })
+})

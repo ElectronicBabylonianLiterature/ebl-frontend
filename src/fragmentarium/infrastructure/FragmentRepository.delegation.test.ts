@@ -1,4 +1,3 @@
-import Promise from 'bluebird'
 import { testDelegation, TestData } from 'test-support/utils'
 import FragmentRepository from 'fragmentarium/infrastructure/FragmentRepository'
 import { fragment, fragmentDto } from 'test-support/test-fragment'
@@ -24,6 +23,7 @@ const path = (...parts: string[]): string =>
 const colophon = colophonFactory.build()
 const lemmaAnnotations = {}
 const scopes = ['CAIC']
+const authorizedScopesField = 'authorized_scopes'
 const colophonNames = ['Nabû-balāssu-iqbi']
 
 const testData: TestData<FragmentRepository>[] = [
@@ -40,8 +40,7 @@ const testData: TestData<FragmentRepository>[] = [
     [fragmentId, scopes],
     apiClient.postJson,
     fragment,
-    // eslint-disable-next-line camelcase
-    [path('scopes'), { authorized_scopes: scopes }],
+    [path('scopes'), { [authorizedScopesField]: scopes }],
     Promise.resolve(fragmentDto),
   ),
   new TestData(
@@ -86,7 +85,11 @@ describe('findInCorpus', () => {
 
     const result = await fragmentRepository.findInCorpus(fragmentId)
 
-    expect(apiClient.fetchJson).toHaveBeenCalledWith(corpusPath, false)
+    expect(apiClient.fetchJson).toHaveBeenCalledWith(
+      corpusPath,
+      false,
+      undefined,
+    )
     expect(result.manuscriptAttestations).toHaveLength(1)
     expect(result.manuscriptAttestations[0].manuscriptSiglum).toEqual('UrBM1')
     expect(result.uncertainFragmentAttestations).toHaveLength(1)

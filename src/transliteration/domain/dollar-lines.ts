@@ -1,4 +1,8 @@
-import { AbstractLine, DollarAndAtLineDto, Ruling } from './abstract-line'
+import {
+  AbstractLine,
+  DollarAndAtLineDto,
+  Ruling,
+} from 'transliteration/domain/abstract-line'
 
 function addParenthesisToDisplayValue(
   data: DollarAndAtLineDto,

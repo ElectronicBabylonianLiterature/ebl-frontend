@@ -7,15 +7,14 @@ import {
   waitFor,
   ByRoleMatcher,
 } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import { MemoryRouter } from 'react-router-dom'
-import _ from 'lodash'
-import MemorySession, { Session, guestSession } from 'auth/Session'
-import { eblNameProperty, AuthenticationContext } from 'auth/Auth'
-import Promise from 'bluebird'
+import MemorySession, { Session } from 'auth/Session'
+import { AuthenticationContext } from 'auth/Auth'
+import { JsonApiClient } from 'http/JsonApiClient'
 import {
   breadcrumbs,
   createApp,
+  driverAuthentication,
   getServices,
 } from 'test-support/appDriverHelpers'
 
@@ -29,7 +28,7 @@ export default class AppDriver {
   private view: RenderResult | null = null
   private session: Session | null = null
 
-  constructor(private readonly api) {}
+  constructor(private readonly api: JsonApiClient) {}
 
   getView(): RenderResult {
     if (this.view) {
@@ -59,18 +58,7 @@ export default class AppDriver {
     this.view = render(
       <MemoryRouter initialEntries={this.initialEntries}>
         <AuthenticationContext.Provider
-          value={{
-            login: _.noop,
-            logout: async () => {},
-            getSession: (): Session => this.session ?? guestSession,
-            isAuthenticated: (): boolean => this.session !== null,
-            getAccessToken(): Promise<string> {
-              throw new Error('Not implemented')
-            },
-            getUser(): { [eblNameProperty]: string } {
-              return { [eblNameProperty]: 'Test' }
-            },
-          }}
+          value={driverAuthentication(() => this.session)}
         >
           {createApp(this.api)}
         </AuthenticationContext.Provider>
@@ -84,37 +72,21 @@ export default class AppDriver {
     await this.getView().findAllByText(text, {}, { timeout: this.waitTimeout })
   }
 
-  async waitForRouteLoadingToDisappear(
-    options: Parameters<typeof waitFor>[1] = {},
-  ): Promise<void> {
-    await this.waitForTextToDisappear('Route loading...', options)
+  async waitForRouteLoadingToDisappear(): Promise<void> {
+    await this.waitForTextToDisappear('Route loading...')
   }
 
-  async waitForTextToDisappear(
-    text: Matcher,
-    options: Parameters<typeof waitFor>[1] = {},
-  ): Promise<void> {
+  async waitForTextToDisappear(text: Matcher): Promise<void> {
     await waitFor(
       () => {
         this.expectNotInContent(text)
       },
-      {
-        timeout: this.waitTimeout,
-        ...options,
-      },
+      { timeout: this.waitTimeout },
     )
-  }
-
-  expectTextContent(text: string | RegExp): void {
-    expect(this.getView().container).toHaveTextContent(text)
   }
 
   expectNotInContent(text: Matcher): void {
     expect(this.getView().queryByText(text)).not.toBeInTheDocument()
-  }
-
-  expectLink(text: Matcher, expectedHref: string): void {
-    expect(this.getView().getByText(text)).toHaveAttribute('href', expectedHref)
   }
 
   expectInputElement(label: Matcher, expectedValue: unknown): void {
@@ -144,19 +116,5 @@ export default class AppDriver {
   clickByRole(role: ByRoleMatcher, name: string | RegExp, n = 0): void {
     const clickable = this.getView().getAllByRole(role, { name })[n]
     fireEvent.click(clickable)
-  }
-
-  async clickasync(text: Matcher, n = 0): Promise<void> {
-    const clickable = this.getView().getAllByText(text)[n]
-    await userEvent.click(clickable)
-  }
-
-  async clickByRoleasync(
-    role: ByRoleMatcher,
-    name: string | RegExp,
-    n = 0,
-  ): Promise<void> {
-    const clickable = this.getView().getAllByRole(role, { name })[n]
-    await userEvent.click(clickable)
   }
 }

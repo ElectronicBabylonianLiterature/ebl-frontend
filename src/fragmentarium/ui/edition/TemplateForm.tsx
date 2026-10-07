@@ -1,9 +1,9 @@
 import React, { ChangeEvent, Component, FormEvent } from 'react'
 import { Form } from 'react-bootstrap'
-import Template from './Template'
+import Template from 'fragmentarium/ui/edition/Template'
 
 import HelpTrigger from 'common/ui/HelpTrigger'
-import TemplateHelp from './TemplateHelp'
+import TemplateHelp from 'fragmentarium/ui/edition/TemplateHelp'
 
 class TemplateForm extends Component<
   { onSubmit },

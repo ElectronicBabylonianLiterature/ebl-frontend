@@ -55,8 +55,8 @@ Provide project context and coding guidelines that AI should follow when generat
 - Tests must run without any console errors, warnings, or other noise. Any `console.error`, `console.warn`, or unhandled-rejection output is a defect that must be fixed at its root cause.
 - Suppressing console output (e.g. mocking `console.error`/`console.warn` to silence warnings or similar) is **never** an acceptable solution. Fix the source of the warning instead.
 - Treat console-clean runs as a hard gate: do not stop after changes until a full test run produces zero console output.
-- After any code change, always run the full test suite (`yarn test --watchAll=false`) before finalizing work.
-- Treat the full test suite as a hard gate: do not stop after changes until `yarn test --watchAll=false` reports zero failures and zero console output. Snapshot failures caused by legitimate UI changes must be fixed by updating snapshots with `--updateSnapshot` on the affected test files; never update snapshots globally without inspecting the diff first.
+- After any code change, always run the full test suite with `yarn test:ci` before finalizing work. This is the exact command CI runs; `yarn test --watchAll=false` omits `--detectOpenHandles`, which changes runtime behaviour (it enables `async_hooks`) and can therefore pass locally while CI fails.
+- Treat the full test suite as a hard gate: do not stop after changes until `yarn test:ci` reports zero failures and zero console output. Snapshot failures caused by legitimate UI changes must be fixed by updating snapshots with `--updateSnapshot` on the affected test files; never update snapshots globally without inspecting the diff first.
 - Never remove, disable, skip, or comment out existing tests without explicit user confirmation.
 - Only propose removing a test when the underlying code path was removed or changed such that the assertion is no longer meaningful.
 - If test removal is proposed, provide detailed justification first and wait for explicit user approval before making that change.

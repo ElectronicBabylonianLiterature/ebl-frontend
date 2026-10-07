@@ -2,7 +2,7 @@ import React, { Fragment } from 'react'
 import classNames from 'classnames'
 import _ from 'lodash'
 
-import './Word.css'
+import 'fragmentarium/ui/lemmatization/Word.css'
 import { LemmatizationToken } from 'transliteration/domain/Lemmatization'
 
 interface Props {

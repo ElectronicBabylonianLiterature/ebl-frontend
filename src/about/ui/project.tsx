@@ -5,7 +5,7 @@ import MarkupService from 'markup/application/MarkupService'
 import eblteam2020 from 'about/ui/static/eblteam2020.jpg'
 import eblteam2023 from 'about/ui/static/eblteam2023.jpg'
 
-import './project.sass'
+import 'about/ui/project.sass'
 
 export default function AboutProject(
   markupService: MarkupService,

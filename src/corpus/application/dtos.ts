@@ -1,16 +1,9 @@
-import _ from 'lodash'
-
 import createReference from 'bibliography/application/createReference'
-import serializeReference from 'bibliography/application/serializeReference'
-import { AlignmentToken, ChapterAlignment } from 'corpus/domain/alignment'
 import {
   Chapter,
-  ChapterDisplay,
   DictionaryLineDisplay,
-  LineDisplay,
   LineVariantDisplay,
 } from 'corpus/domain/chapter'
-import { ChapterLemmatization } from 'corpus/domain/lemmatization'
 import {
   createLine,
   createManuscriptLine,
@@ -42,58 +35,17 @@ import {
   fromTransliterationLineDto,
 } from 'transliteration/application/dtos'
 import { EmptyLine } from 'transliteration/domain/line'
-import { TextLine, TextLineDto } from 'transliteration/domain/text-line'
-import TranslationLine, {
-  Extent,
-} from 'transliteration/domain/translation-line'
-import { MarkupPart } from 'transliteration/domain/markup'
-import { Token } from 'transliteration/domain/token'
-import { NoteLine, NoteLineDto } from 'transliteration/domain/note-line'
-import { ParallelLineDto } from 'transliteration/domain/parallel-line'
-import Reference from 'bibliography/domain/Reference'
-import { ChapterInfoLine } from 'corpus/domain/ChapterInfo'
+import { TextLine } from 'transliteration/domain/text-line'
+import { isEmptyLine, isTextLine } from 'transliteration/domain/type-guards'
+import { NoteLine } from 'transliteration/domain/note-line'
 import { createResearchProject } from 'research-projects/researchProject'
 
-export type LineVariantDisplayDto = Pick<
-  LineVariantDisplay,
-  'originalIndex' | 'reconstruction' | 'manuscripts' | 'intertext'
-> & {
-  note: Omit<NoteLineDto, 'type'> | null
-  parallelLines: ParallelLineDto[]
-}
-
-export type OldLineNumberDto = {
-  number: string
-  reference: ReferenceDto
-}
-
-export type LineDisplayDto = Pick<
-  LineDisplay,
-  | 'number'
-  | 'isSecondLineOfParallelism'
-  | 'isBeginningOfSection'
-  | 'originalIndex'
-> & {
-  translation: {
-    language: string
-    extent: Extent | null
-    parts: MarkupPart[]
-    content: Token[]
-  }[]
-  variants: LineVariantDisplayDto[]
-  oldLineNumbers: OldLineNumberDto[]
-}
-
-export type ChapterDisplayDto = Pick<
-  ChapterDisplay,
-  | 'id'
-  | 'textHasDoi'
-  | 'textName'
-  | 'isSingleStage'
-  | 'title'
-  | 'record'
-  | 'atf'
-> & { lines: LineDisplayDto[] }
+export type {
+  LineVariantDisplayDto,
+  OldLineNumberDto,
+  LineDisplayDto,
+  ChapterDisplayDto,
+} from 'corpus/application/chapterDisplayDtos'
 
 export function fromSiglumAndTransliterationDto(
   dto,
@@ -145,23 +97,23 @@ export function createOldSiglum(oldSiglumDto: OldSiglumDto): OldSiglum {
 }
 
 export function fromManuscriptDto(manuscriptDto): Manuscript {
-  return new Manuscript(
-    manuscriptDto.id,
-    manuscriptDto.siglumDisambiguator,
-    manuscriptDto.oldSigla.map(createOldSiglum),
-    manuscriptDto.museumNumber,
-    manuscriptDto.accession,
-    PeriodModifiers[manuscriptDto.periodModifier],
-    Periods[manuscriptDto.period],
-    getProvenanceByName(manuscriptDto.provenance),
-    ManuscriptTypes[manuscriptDto.type],
-    manuscriptDto.notes,
-    manuscriptDto.colophon,
-    manuscriptDto.unplacedLines,
-    manuscriptDto.references.map(createReference),
-    createJoins(manuscriptDto.joins),
-    manuscriptDto.isInFragmentarium,
-  )
+  return new Manuscript({
+    id: manuscriptDto.id,
+    siglumDisambiguator: manuscriptDto.siglumDisambiguator,
+    oldSigla: manuscriptDto.oldSigla.map(createOldSiglum),
+    museumNumber: manuscriptDto.museumNumber,
+    accession: manuscriptDto.accession,
+    periodModifier: PeriodModifiers[manuscriptDto.periodModifier],
+    period: Periods[manuscriptDto.period],
+    provenance: getProvenanceByName(manuscriptDto.provenance),
+    type: ManuscriptTypes[manuscriptDto.type],
+    notes: manuscriptDto.notes,
+    colophon: manuscriptDto.colophon,
+    unplacedLines: manuscriptDto.unplacedLines,
+    references: manuscriptDto.references.map(createReference),
+    joins: createJoins(manuscriptDto.joins),
+    isInFragmentarium: manuscriptDto.isInFragmentarium,
+  })
 }
 
 function fromLineVariantDto(variantDto): LineVariant {
@@ -180,19 +132,6 @@ function fromLineVariantDto(variantDto): LineVariant {
   })
 }
 
-export function fromMatchingColophonLinesDto(
-  matchingColophonLinesDto: Record<string, unknown>,
-): Record<string, readonly TextLine[]> {
-  return Object.entries(matchingColophonLinesDto).reduce<
-    Record<string, readonly TextLine[]>
-  >((previousValue, [key, value]) => {
-    const lines = (value as unknown[]).map(
-      (textLine) => new TextLine(textLine as TextLineDto),
-    )
-    return { ...previousValue, [key]: lines }
-  }, {})
-}
-
 export function fromLineDto(lineDto): Line {
   return createLine({
     ...lineDto,
@@ -200,39 +139,33 @@ export function fromLineDto(lineDto): Line {
     status: EditStatus.CLEAN,
   })
 }
-export function fromMatchingLineDto(lineDto): ChapterInfoLine {
-  return {
-    ...createLine({
-      ...lineDto,
-      variants: lineDto.variants?.map(fromLineVariantDto) ?? [],
-      status: EditStatus.CLEAN,
-    }),
-    translation: lineDto.translation.map(
-      (translation) => new TranslationLine(translation),
-    ),
+
+function fromManuscriptLineDto(lineDto): TextLine | EmptyLine {
+  const line = fromTransliterationLineDto(lineDto)
+  if (isTextLine(line) || isEmptyLine(line)) {
+    return line
   }
+  throw new Error(`Unexpected manuscript line type "${line.type}".`)
 }
 
 function fromManuscriptLineDisplay(manuscript): ManuscriptLineDisplay {
-  return new ManuscriptLineDisplay(
-    getProvenanceByName(manuscript.provenance),
-    PeriodModifiers[manuscript.periodModifier],
-    Periods[manuscript.period],
-    ManuscriptTypes[manuscript.type],
-    manuscript.siglumDisambiguator,
-    manuscript.oldSigla.map(createOldSiglum),
-    manuscript.labels,
-    fromTransliterationLineDto(manuscript.line) as unknown as
-      | TextLine
-      | EmptyLine,
-    manuscript.paratext.map(fromTransliterationLineDto),
-    manuscript.references.map(createReference),
-    createJoins(manuscript.joins),
-    manuscript.museumNumber,
-    manuscript.isInFragmentarium,
-    manuscript.accession,
-    manuscript.omittedWords,
-  )
+  return new ManuscriptLineDisplay({
+    provenance: getProvenanceByName(manuscript.provenance),
+    periodModifier: PeriodModifiers[manuscript.periodModifier],
+    period: Periods[manuscript.period],
+    type: ManuscriptTypes[manuscript.type],
+    siglumDisambiguator: manuscript.siglumDisambiguator,
+    oldSigla: manuscript.oldSigla.map(createOldSiglum),
+    labels: manuscript.labels,
+    line: fromManuscriptLineDto(manuscript.line),
+    paratext: manuscript.paratext.map(fromTransliterationLineDto),
+    references: manuscript.references.map(createReference),
+    joins: createJoins(manuscript.joins),
+    museumNumber: manuscript.museumNumber,
+    isInFragmentarium: manuscript.isInFragmentarium,
+    accession: manuscript.accession,
+    omittedWords: manuscript.omittedWords,
+  })
 }
 
 function fromLineVariantDisplay(variant): LineVariantDisplay {
@@ -252,128 +185,12 @@ export function fromLineDetailsDto(line, activeVariant: number): LineDetails {
   )
 }
 
-function toName(record: { name: string }): string {
-  return record.name
-}
-
-function serializeOldSiglum(oldSiglum: OldSiglum): {
-  siglum: string
-  reference: Pick<Reference, 'type' | 'pages' | 'notes' | 'linesCited'> & {
-    id: string
-  }
-} {
-  return {
-    siglum: oldSiglum.siglum,
-    reference: serializeReference(oldSiglum.reference),
-  }
-}
-
-function toManuscriptDto(manuscript: Manuscript) {
-  return {
-    id: manuscript.id,
-    siglumDisambiguator: manuscript.siglumDisambiguator,
-    oldSigla: manuscript.oldSigla.map(serializeOldSiglum),
-    museumNumber: manuscript.museumNumber,
-    accession: manuscript.accession,
-    provenance: toName(manuscript.provenance),
-    periodModifier: toName(manuscript.periodModifier),
-    period: toName(manuscript.period),
-    type: toName(manuscript.type),
-    notes: manuscript.notes,
-    colophon: manuscript.colophon,
-    unplacedLines: manuscript.unplacedLines,
-    references: manuscript.references.map(serializeReference),
-  } as const
-}
-
-function toLineDto(line: Line) {
-  return {
-    ..._.omit(line, 'status'),
-    variants: line.variants.map((variant) => ({
-      reconstruction: variant.reconstruction,
-      intertext: variant.intertext,
-      manuscripts: variant.manuscripts.map((manuscript) => ({
-        manuscriptId: manuscript.manuscriptId,
-        labels: manuscript.labels,
-        number: manuscript.number,
-        atf: manuscript.atf,
-        omittedWords: manuscript.omittedWords,
-      })),
-    })),
-  } as const
-}
-
-function toAlignmentTokenDto(token: AlignmentToken) {
-  return token.isAlignable
-    ? ({
-        value: token.value,
-        alignment: token.alignment,
-        variant: token.variant?.value ?? '',
-        type: token.variant?.type ?? '',
-        language: token.variant?.language ?? '',
-      } as const)
-    : ({
-        value: token.value,
-      } as const)
-}
-
-export function toAlignmentDto(
-  alignment: ChapterAlignment,
-): Record<string, unknown> {
-  return {
-    alignment: alignment.lines.map((line) =>
-      line.map((variant) =>
-        variant.map((manuscript) => ({
-          alignment: manuscript.alignment.map(toAlignmentTokenDto),
-          omittedWords: manuscript.omittedWords,
-        })),
-      ),
-    ),
-  } as const
-}
-
-export function toLemmatizationDto(lemmatization: ChapterLemmatization) {
-  return {
-    lemmatization: lemmatization.map((line) =>
-      line.map((variant) => ({
-        reconstruction: variant[0].map((token) => token.toDto()),
-        manuscripts: variant[1].map((line) =>
-          line.map((token) => token.toDto()),
-        ),
-      })),
-    ),
-  } as const
-}
-
-export function toManuscriptsDto(
-  manuscripts: readonly Manuscript[],
-  uncertainChapters: readonly string[],
-): Record<string, unknown> {
-  return {
-    manuscripts: manuscripts.map(toManuscriptDto),
-    uncertainFragments: uncertainChapters,
-  } as const
-}
-
-export const toLinesDto = (lines: readonly Line[]) =>
-  ({
-    edited: _(lines)
-      .map((line, index) =>
-        line.status === EditStatus.EDITED
-          ? { line: toLineDto(line), index: index }
-          : null,
-      )
-      .reject(_.isNil)
-      .value(),
-    deleted: _(lines)
-      .map((line, index) => (line.status === EditStatus.DELETED ? index : null))
-      .reject(_.isNil)
-      .value(),
-    new: _(lines)
-      .filter((line) => line.status === EditStatus.NEW)
-      .map(toLineDto)
-      .value(),
-  }) as const
+export {
+  toAlignmentDto,
+  toLemmatizationDto,
+  toManuscriptsDto,
+  toLinesDto,
+} from 'corpus/application/chapterDtoSerialization'
 
 export function fromDictionaryLineDto(dto): DictionaryLineDisplay {
   return { ...dto, lineDetails: fromLineDetailsDto(dto.lineDetails, 0) }

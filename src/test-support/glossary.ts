@@ -2,7 +2,7 @@ import { GlossaryToken } from 'transliteration/domain/glossary'
 import Label from 'transliteration/domain/Label'
 import { Word } from 'transliteration/domain/token'
 import DictionaryWord from 'dictionary/domain/Word'
-import { wordFactory } from './word-fixtures'
+import { wordFactory } from 'test-support/word-fixtures'
 
 export function createGlossaryToken(
   label: Label,

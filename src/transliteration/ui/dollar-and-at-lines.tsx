@@ -1,8 +1,8 @@
 import React from 'react'
 import { DollarLine } from 'transliteration/domain/dollar-lines'
 import { AtLine } from 'transliteration/domain/at-lines'
-import { LineProps } from './LineProps'
-import TransliterationTd from './TransliterationTd'
+import { LineProps } from 'transliteration/ui/LineProps'
+import TransliterationTd from 'transliteration/ui/TransliterationTd'
 
 export function DisplayDollarAndAtLine({
   line,

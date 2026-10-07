@@ -14,12 +14,12 @@ import {
 } from 'transliteration/ui/LineLemmasContext'
 import _ from 'lodash'
 
-import './LinesWithLemma.sass'
+import 'dictionary/ui/search/LinesWithLemma.sass'
 import { Token } from 'transliteration/domain/token'
 import { stageToAbbreviation } from 'common/utils/period'
 import { numberToUnicodeSubscript } from 'transliteration/application/SubIndex'
 import { LemmaPopover } from 'transliteration/ui/WordInfo'
-import './DictionaryLineVariant.sass'
+import 'dictionary/ui/search/DictionaryLineVariant.sass'
 import classNames from 'classnames'
 
 function createCorpusChapterUrl(

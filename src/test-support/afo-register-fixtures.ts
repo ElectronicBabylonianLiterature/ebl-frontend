@@ -1,10 +1,8 @@
 import { Factory } from 'fishery'
 import Chance from 'chance'
-import AfoRegisterRecord, {
-  AfoRegisterRecordSuggestion,
-} from 'afo-register/domain/Record'
+import AfoRegisterRecord from 'afo-register/domain/Record'
 
-const chance = new Chance()
+const chance = new Chance('afo-register-fixtures')
 const PUBLICATIONS = [
   'StOr',
   'Al.T.',
@@ -28,9 +26,6 @@ const getText = (): string =>
 
 const getTextNumber = (): string =>
   `Nr. ${chance.integer({ min: 1, max: 300 })}`
-
-const getTextNumbers = (): string[] =>
-  Array.from({ length: chance.integer({ min: 1, max: 15 }) }, getTextNumber)
 
 const getLinesDiscussed = (): string =>
   `${chance.integer({ min: 1, max: 40 })}f.`
@@ -60,12 +55,3 @@ export const afoRegisterRecordFactory = Factory.define<AfoRegisterRecord>(
       fragmentNumbers: getFragmentNumber(),
     }),
 )
-
-export const afoRegisterRecordSuggestionFactory =
-  Factory.define<AfoRegisterRecordSuggestion>(
-    () =>
-      new AfoRegisterRecordSuggestion({
-        text: getText(),
-        textNumbers: getTextNumbers().sort(),
-      }),
-  )

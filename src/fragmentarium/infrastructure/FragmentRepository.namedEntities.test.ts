@@ -1,4 +1,3 @@
-import Promise from 'bluebird'
 import { fragmentDto } from 'test-support/test-fragment'
 import {
   apiClient,

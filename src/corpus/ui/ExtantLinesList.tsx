@@ -7,7 +7,7 @@ import {
   groupExtantLines,
   ManuscriptExtantLines,
 } from 'corpus/domain/extant-lines'
-import './ExtantLinesList.sass'
+import 'corpus/ui/ExtantLinesList.sass'
 import classNames from 'classnames'
 
 function LineNumber({ line }: { line: ExtantLine }): JSX.Element {

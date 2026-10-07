@@ -1,7 +1,7 @@
 import React from 'react'
 import { render, screen } from '@testing-library/react'
 
-import ReferenceList from './ReferenceList'
+import ReferenceList from 'bibliography/ui/ReferenceList'
 import { referenceFactory } from 'test-support/bibliography-fixtures'
 import createReference from 'bibliography/application/createReference'
 import { productionSummaryReferences } from 'test-support/fragment-query-summary'

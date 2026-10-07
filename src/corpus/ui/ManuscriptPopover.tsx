@@ -1,11 +1,11 @@
 import React from 'react'
 import _ from 'lodash'
 import { Popover, OverlayTrigger } from 'react-bootstrap'
-import './ManuscriptPopover.sass'
+import 'corpus/ui/ManuscriptPopover.sass'
 import { ManuscriptLineDisplay } from 'corpus/domain/line-details'
 import { OldSiglum } from 'corpus/domain/manuscript'
-import ManuscriptJoins from './ManuscriptJoins'
-import ManuscriptReferences from './ManuscriptReferences'
+import ManuscriptJoins from 'corpus/ui/ManuscriptJoins'
+import ManuscriptReferences from 'corpus/ui/ManuscriptReferences'
 import Citation from 'bibliography/ui/Citation'
 import { Markdown } from 'common/ui/Markdown'
 
@@ -22,7 +22,6 @@ function OldSiglumList({
           {index > 0 && '; '}
           <span className="manuscript-popover__old-sigla__bibliography">
             <Markdown text={oldSiglum.siglum} />
-            {/* add bibliography info popover here */}
 
             <sup>
               <Citation reference={oldSiglum.reference} />

@@ -1,7 +1,6 @@
 import React from 'react'
-import Promise from 'bluebird'
 import { Fragment } from 'fragmentarium/domain/fragment'
-import Record from 'fragmentarium/ui/info/Record'
+import recordCredit from 'fragmentarium/ui/info/recordCredit'
 import { CANONICAL_ORIGIN } from 'router/domain'
 import {
   Document,
@@ -65,9 +64,6 @@ export async function wordExport(
       </DictionaryContext.Provider>,
     ),
   )
-  const records: JQuery = $(
-    renderToString(Record({ record: fragment.uniqueRecord })),
-  )
   const footNotes: Paragraph[] = getFootNotes(notesHtml, jQueryRef)
   const tableWithFootnotes = getMainTableWithFootnotes(
     tableHtml,
@@ -79,12 +75,63 @@ export async function wordExport(
     [
       getHeading(fragment.number, true),
       getHyperLinkParagraph(),
-      getCreditForHead(records),
+      getCreditForHead(recordCredit(fragment.uniqueRecord)),
       ...getIntroduction(fragment),
       ...tableWithFootnotes.table,
       ...(await getGlossaryOrEmpty(fragment, wordService, jQueryRef)),
     ],
     getHyperLink(fragment),
+  )
+}
+
+function transliterationRuns(cell: JQuery): TextRun[] {
+  const runs: TextRun[] = []
+  cell.find('span,em,sup').each((i, element) => {
+    const contents = $(element).contents()
+    if (contents.text().length > 0 && contents[0].nodeType === 3) {
+      getTransliterationText($(element), runs)
+    }
+  })
+  return runs
+}
+
+function cellRuns(
+  cell: JQuery,
+  lineType: string,
+  footNotesLines: Paragraph[],
+  footNotes: Paragraph[],
+): TextRun[] {
+  if (isNoteCell(cell)) {
+    footNotes.push(footNotesLines[footNotes.length])
+    return [new FootnoteReferenceRun(footNotes.length)]
+  }
+  if (lineType === 'textLine') {
+    return transliterationRuns(cell)
+  }
+  return lineType === 'rulingDollarLine' ? [] : [getTextRun(cell)]
+}
+
+function cellColspan(cell: JQuery): number {
+  const colspan = cell.attr('colspan')
+  return colspan ? parseInt(colspan) : 1
+}
+
+function tableCell(
+  cell: JQuery,
+  runs: TextRun[],
+  nextLineType: string,
+  nextElement: JQuery,
+): TableCell {
+  const paragraph = new Paragraph({
+    children: runs,
+    style: 'wellSpaced',
+    heading: HeadingLevel.HEADING_1,
+  })
+  return getFormatedTableCell(
+    [paragraph],
+    nextLineType,
+    nextElement,
+    cellColspan(cell),
   )
 }
 
@@ -100,60 +147,23 @@ function getMainTableWithFootnotes(
   const tablelines: JQuery = table.find('tr')
   fixHtmlParseOrder(tablelines)
 
-  let footNotesCounter = 1
-
   const rows: TableRow[] = []
   const footNotes: Paragraph[] = []
 
   tablelines.each((i, el) => {
     const lineType = getLineTypeByHtml($(el))
+    if (lineType === 'emptyLine') return
     const nextElement = $(el).next()
     const nextLineType = getLineTypeByHtml(nextElement)
-    if (lineType === 'emptyLine') return
-    const tds: TableCell[] = []
+    const cells: TableCell[] = []
     $(el)
       .find('td')
-      .each((i, el) => {
-        const runs: TextRun[] = []
-
-        if (isNoteCell($(el))) {
-          runs.push(new FootnoteReferenceRun(footNotesCounter))
-          footNotes.push(footNotesLines[footNotesCounter - 1])
-          footNotesCounter++
-        } else if (lineType === 'textLine') {
-          $(el)
-            .find('span,em,sup')
-            .each((i, el) => {
-              if (
-                $(el).contents().text().length > 0 &&
-                $(el).contents()[0].nodeType === 3
-              ) {
-                getTransliterationText($(el), runs)
-              }
-            })
-        } else if (lineType !== 'rulingDollarLine') {
-          runs.push(getTextRun($(el)))
-        }
-
-        const para: Paragraph[] = [
-          new Paragraph({
-            children: runs,
-            style: 'wellSpaced',
-            heading: HeadingLevel.HEADING_1,
-          }),
-        ]
-
-        const colspan: string | undefined = $(el).is('[colspan]')
-          ? $(el).attr('colspan')
-          : '1'
-        const colspanInt: number = colspan ? parseInt(colspan) : 1
-
-        tds.push(
-          getFormatedTableCell(para, nextLineType, nextElement, colspanInt),
-        )
-      }) //td
-    rows.push(new TableRow({ children: tds }))
-  }) //tr
+      .each((i, cell) => {
+        const runs = cellRuns($(cell), lineType, footNotesLines, footNotes)
+        cells.push(tableCell($(cell), runs, nextLineType, nextElement))
+      })
+    rows.push(new TableRow({ children: cells }))
+  })
 
   table.remove()
   const wordTable: Array<Table | Paragraph> =

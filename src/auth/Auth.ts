@@ -2,7 +2,7 @@ import React, { useContext } from 'react'
 import _ from 'lodash'
 import { guestSession, Session } from 'auth/Session'
 
-import applicationScopes from './applicationScopes.json'
+import applicationScopes from 'auth/applicationScopes.json'
 
 export const eblNameProperty = 'https://ebabylon.org/eblName'
 

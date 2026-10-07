@@ -1,5 +1,5 @@
 import Folio from 'fragmentarium/domain/Folio'
-import MemorySession, { guestSession } from './Session'
+import MemorySession, { guestSession } from 'auth/Session'
 
 describe('GuestSession', () => {
   test('returns expected baseline permissions for unauthorized users', () => {

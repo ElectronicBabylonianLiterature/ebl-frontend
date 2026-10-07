@@ -6,8 +6,8 @@ import {
   screen,
   waitForElementToBeRemoved,
 } from '@testing-library/react'
-import Promise from 'bluebird'
-import Images, { FragmentPhoto, TabController } from './Images'
+import Images, { FragmentPhoto } from 'fragmentarium/ui/images/Images'
+import { TabController } from 'fragmentarium/ui/images/ImageTabController'
 import Folio from 'fragmentarium/domain/Folio'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import {
@@ -35,7 +35,7 @@ beforeEach(() => {
     folioPager: jest.fn(),
   }
   folioPager = folioPagerFactory.build()
-  ;(URL.createObjectURL as jest.Mock).mockReturnValue('url')
+  jest.spyOn(URL, 'createObjectURL').mockReturnValue('url')
   fragmentService.findFolio.mockReturnValue(
     Promise.resolve(new Blob([''], { type: 'image/jpeg' })),
   )

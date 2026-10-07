@@ -4,10 +4,10 @@ import { QueryItem, QueryResult } from 'query/QueryResult'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import FragmentLink from 'fragmentarium/ui/FragmentLink'
-import './FragmentLemmaLines.sass'
+import 'dictionary/ui/search/FragmentLemmaLines.sass'
 import _ from 'lodash'
 import { Col, Row } from 'react-bootstrap'
-import LemmaQueryLink from '../display/LemmaQueryLink'
+import LemmaQueryLink from 'dictionary/ui/display/LemmaQueryLink'
 import RenderFragmentLines from 'dictionary/ui/search/RenderFragmentLines'
 import {
   hasRenderReadyFragment,

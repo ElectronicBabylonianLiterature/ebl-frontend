@@ -1,4 +1,4 @@
-import * as TeiExport from './TeiExport'
+import * as TeiExport from 'fragmentarium/ui/fragment/TeiExport'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import { XMLValidator } from 'fast-xml-parser'
 import { fragmentFactory } from 'test-support/fragment-fixtures'

@@ -1,49 +1,22 @@
-import React from 'react'
-import { render, screen } from '@testing-library/react'
-import ColophonEditor from './ColophonEditor'
-import { ColophonStatus, ColophonType } from 'fragmentarium/domain/Colophon'
+import { screen } from '@testing-library/react'
+import {
+  Colophon,
+  ColophonStatus,
+  ColophonType,
+} from 'fragmentarium/domain/Colophon'
 import { fragmentFactory } from 'test-support/fragment-fixtures'
+import {
+  mockColophonLookups,
+  renderColophonEditor,
+} from 'fragmentarium/ui/fragment/ColophonEditor.testSupport'
 import FragmentService from 'fragmentarium/application/FragmentService'
-import { Promise } from 'bluebird'
 import userEvent from '@testing-library/user-event'
-import { Fragment } from 'fragmentarium/domain/fragment'
 import { act } from '@testing-library/react'
 
 jest.mock('fragmentarium/application/FragmentService')
 const fragmentServiceMock = new (FragmentService as jest.Mock<
   jest.Mocked<FragmentService>
 >)()
-const provenances = [
-  {
-    id: 'standard-text',
-    longName: 'Standard Text',
-    abbreviation: 'Std',
-    parent: null,
-    sortKey: 1,
-  },
-  {
-    id: 'assyria',
-    longName: 'Assyria',
-    abbreviation: 'Assa',
-    parent: null,
-    sortKey: 2,
-  },
-  {
-    id: 'assur',
-    longName: 'Aššur',
-    abbreviation: 'Ašš',
-    parent: 'Assyria',
-    sortKey: 3,
-  },
-  {
-    id: 'dur-katlimmu',
-    longName: 'Dūr-Katlimmu',
-    abbreviation: 'Dka',
-    parent: 'Assyria',
-    sortKey: 4,
-  },
-]
-const names = ['Humbaba', 'Zababa', 'Enkidu']
 
 const selectOption = async function (
   dropdown: HTMLElement,
@@ -58,31 +31,11 @@ const selectOption = async function (
   }
 }
 
-const renderColophonEditor = async function (
-  initialFragment: Fragment,
-  mockUpdateColophon,
-  fragmentServiceMock: jest.Mocked<FragmentService>,
-) {
-  render(
-    <ColophonEditor
-      fragment={initialFragment}
-      updateColophon={mockUpdateColophon}
-      fragmentService={fragmentServiceMock}
-    />,
-  )
-  await screen.findByLabelText('save-colophon')
-}
-
 describe('ColophonEditor', () => {
-  let mockUpdateColophon
+  let mockUpdateColophon: jest.Mock<Promise<void>, [Colophon]>
   beforeEach(() => {
-    fragmentServiceMock.fetchProvenances.mockReturnValue(
-      Promise.resolve(provenances),
-    )
-    fragmentServiceMock.fetchColophonNames.mockReturnValue(
-      Promise.resolve(names),
-    )
-    mockUpdateColophon = jest.fn()
+    mockColophonLookups(fragmentServiceMock)
+    mockUpdateColophon = jest.fn<Promise<void>, [Colophon]>()
   })
   afterEach(() => mockUpdateColophon.mockClear())
 

@@ -1,6 +1,6 @@
 import React from 'react'
 import { render, screen } from '@testing-library/react'
-import BibliographyDownloadButton from './BibliographyDownloadButton'
+import BibliographyDownloadButton from 'bibliography/ui/BibliographyDownloadButton'
 
 describe('BibliographyDownloadButton', () => {
   const mockOnClick = jest.fn()

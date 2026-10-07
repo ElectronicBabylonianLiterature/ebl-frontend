@@ -1,13 +1,12 @@
-import React, { useEffect, useState, FunctionComponent } from 'react'
-import Bluebird from 'bluebird'
+import React, { useState, FunctionComponent } from 'react'
 import { Container, Row, Col } from 'react-bootstrap'
 import FragmentInCorpus from 'fragmentarium/ui/fragment/FragmentInCorpus'
 import Images from 'fragmentarium/ui/images/Images'
 import Info from 'fragmentarium/ui/info/Info'
 import ErrorAlert from 'common/errors/ErrorAlert'
 import Spinner from 'common/ui/Spinner'
-import usePromiseEffect from 'common/hooks/usePromiseEffect'
-import './CuneiformFragment.sass'
+import useFragmentSaves from 'fragmentarium/ui/fragment/useFragmentSaves'
+import 'fragmentarium/ui/fragment/CuneiformFragment.sass'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import Folio from 'fragmentarium/domain/Folio'
 import WordService from 'dictionary/application/WordService'
@@ -29,7 +28,8 @@ type CuneiformFragmentProps = {
   findspotService: FindspotService
   activeFolio: Folio | null
   tab: string | null
-  onSave: (updatedFragment: Bluebird<Fragment>) => Bluebird<Fragment>
+  onSave: (save: () => Promise<Fragment>) => Promise<Fragment>
+  enqueueSave: (save: () => Promise<Fragment>) => Promise<Fragment>
   saving: boolean
   error: Error | null
   activeLine: string
@@ -50,6 +50,7 @@ const CuneiformFragment: FunctionComponent<CuneiformFragmentProps> = ({
   activeFolio,
   tab,
   onSave,
+  enqueueSave,
   saving,
   error,
   activeLine,
@@ -71,6 +72,7 @@ const CuneiformFragment: FunctionComponent<CuneiformFragmentProps> = ({
               dossiersService={dossiersService}
               afoRegisterService={afoRegisterService}
               onSave={onSave}
+              enqueueSave={enqueueSave}
             />,
           )}
         </Col>
@@ -141,41 +143,14 @@ const CuneiformFragmentController: FunctionComponent<ControllerProps> = ({
   tab = null,
   activeLine,
 }: ControllerProps) => {
-  const [currentFragment, setFragment] = useState(fragment)
-  const [isSaving, setIsSaving] = useState(false)
-  const [error, setError] = useState(null)
-  const [setPromise, cancelPromise] = usePromiseEffect()
-
-  const isCurrentFragment = currentFragment.number === fragment.number
-  const visibleFragment = isCurrentFragment ? currentFragment : fragment
-
-  useEffect(() => {
-    if (currentFragment.number !== fragment.number) {
-      cancelPromise()
-      setFragment(fragment)
-      setError(null)
-      setIsSaving(false)
-    }
-  }, [cancelPromise, currentFragment.number, fragment])
-
-  const handleSave = (promise) => {
-    cancelPromise()
-    setError(null)
-    setIsSaving(true)
-
-    const updatePromise = promise.then((updatedFragment) => {
-      setFragment(updatedFragment)
-      setIsSaving(false)
-      return updatedFragment
-    })
-    setPromise(
-      updatePromise.catch((error) => {
-        setError(error)
-        setIsSaving(false)
-      }),
-    )
-    return updatePromise
-  }
+  const {
+    visibleFragment,
+    isCurrentFragment,
+    isSaving,
+    error,
+    handleSave,
+    enqueueSave,
+  } = useFragmentSaves(fragment)
 
   return (
     <>
@@ -191,6 +166,7 @@ const CuneiformFragmentController: FunctionComponent<ControllerProps> = ({
         activeFolio={activeFolio}
         tab={tab}
         onSave={handleSave}
+        enqueueSave={enqueueSave}
         saving={isCurrentFragment && isSaving}
         error={isCurrentFragment ? error : null}
         activeLine={activeLine}

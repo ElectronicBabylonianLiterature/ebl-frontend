@@ -2,8 +2,10 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { render } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
-import { SearchResult } from 'fragmentarium/ui/search/FragmentariumSearchResult'
-import FragmentService from 'fragmentarium/application/FragmentService'
+import {
+  SearchResult,
+  SearchResultFragmentService,
+} from 'fragmentarium/ui/search/FragmentariumSearchResult'
 import DossiersService from 'dossiers/application/DossiersService'
 import { QueryItem, QueryResult } from 'query/QueryResult'
 import { FragmentSearchCriteria } from 'query/FragmentQuery'
@@ -32,7 +34,7 @@ type RenderSearchResultOptions = {
   fragmentQuery?: FragmentSearchCriteria
   pagination?: SearchPagination
   leadingContent?: React.ReactNode
-  fragmentService?: jest.Mocked<FragmentService>
+  fragmentService?: jest.Mocked<SearchResultFragmentService>
 }
 
 const defaultFragmentQuery: FragmentSearchCriteria = { number: 'K.1' }
@@ -65,12 +67,12 @@ export function renderSearchResult({
   pagination = defaultPagination,
   leadingContent,
   fragmentService: providedFragmentService,
-}: RenderSearchResultOptions = {}) {
-  const fragmentService =
-    providedFragmentService ??
-    ({
-      query: jest.fn().mockResolvedValue(queryResult),
-    } as unknown as jest.Mocked<FragmentService>)
+}: RenderSearchResultOptions) {
+  const fragmentService = providedFragmentService ?? {
+    query: jest.fn().mockResolvedValue(queryResult),
+    find: jest.fn(),
+    findThumbnail: jest.fn(),
+  }
   let renderResult: ReturnType<typeof render> | undefined
 
   function renderView(nextOptions: Partial<RenderSearchResultOptions> = {}) {

@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { produce } from 'immer'
 import TextService from 'corpus/application/TextService'
 import WordService from 'dictionary/application/WordService'
 import { Word } from 'transliteration/domain/token'
@@ -10,15 +11,14 @@ import {
   LemmaMap,
   createLemmaMap,
   LineLemmasContext,
-} from './LineLemmasContext'
-import { AlignmentPopover } from './AlignmentPopover'
+} from 'transliteration/ui/LineLemmasContext'
+import { AlignmentPopover } from 'transliteration/ui/AlignmentPopover'
 import {
   highlightIndexSetterMock,
   lemmatizableToken,
   lineInfo,
 } from 'test-support/line-group-fixtures'
 import userEvent from '@testing-library/user-event'
-import Bluebird from 'bluebird'
 import {
   alignedManuscriptLineDto,
   dictionaryWord,
@@ -28,7 +28,7 @@ import {
 import { LineDetails } from 'corpus/domain/line-details'
 import { manuscriptLineDisplayFactory } from 'test-support/line-details-fixtures'
 import { TextLine } from 'transliteration/domain/text-line'
-import { LineGroup } from './LineGroup'
+import { LineGroup } from 'transliteration/ui/LineGroup'
 import { lineVariantDisplayFactory } from 'test-support/dictionary-line-fixtures'
 
 jest.mock('dictionary/application/WordService')
@@ -113,8 +113,11 @@ const lineDetailsWithVariant = new LineDetails(
   0,
 )
 
-async function renderAndOpen(dictionaryWord: DictionaryWord) {
-  wordServiceMock.find.mockReturnValue(Bluebird.resolve(dictionaryWord))
+async function renderAndOpen(
+  dictionaryWord: DictionaryWord,
+  knownLineDetails: LineDetails | null = null,
+) {
+  wordServiceMock.find.mockReturnValue(Promise.resolve(dictionaryWord))
 
   const lineGroup = new LineGroup(
     [reconstructionToken],
@@ -124,6 +127,9 @@ async function renderAndOpen(dictionaryWord: DictionaryWord) {
     },
     highlightIndexSetterMock,
   )
+  if (knownLineDetails) {
+    lineGroup.setLineDetails(knownLineDetails)
+  }
 
   render(
     <WrappedWordInfoWithPopover
@@ -139,7 +145,7 @@ async function renderAndOpen(dictionaryWord: DictionaryWord) {
 describe('WordInfoWithPopover', () => {
   async function setup(): Promise<void> {
     textServiceMock.findChapterLine.mockReturnValue(
-      Bluebird.resolve(lineDetails),
+      Promise.resolve(lineDetails),
     )
     view = await renderAndOpen(dictionaryWord)
   }
@@ -168,7 +174,7 @@ describe('WordInfoWithPopover', () => {
 describe('WordInfoWithPopover with variant', () => {
   async function setup(): Promise<void> {
     textServiceMock.findChapterLine.mockReturnValue(
-      Bluebird.resolve(lineDetailsWithVariant),
+      Promise.resolve(lineDetailsWithVariant),
     )
     view = await renderAndOpen(dictionaryWord)
   }
@@ -183,5 +189,39 @@ describe('WordInfoWithPopover with variant', () => {
     expect(
       within(view).getAllByText(dictionaryWord.lemma.join(' ')),
     ).toHaveLength(2)
+  })
+})
+
+describe('WordInfoWithPopover with known line details', () => {
+  it('shows the aligned manuscript without querying the line', async () => {
+    textServiceMock.findChapterLine.mockClear()
+    view = await renderAndOpen(dictionaryWord, lineDetails)
+
+    expect(within(view).getByText(manuscriptLine.siglum)).toBeVisible()
+    expect(textServiceMock.findChapterLine).not.toHaveBeenCalled()
+  })
+})
+
+describe('WordInfoWithPopover with an omitted word', () => {
+  it('shows the omission of the manuscript', async () => {
+    const omittingLine = produce(manuscriptLine, (draft) => {
+      draft.omittedWords = [reconstructionToken.sentenceIndex]
+    })
+    textServiceMock.findChapterLine.mockReturnValue(
+      Promise.resolve(
+        new LineDetails(
+          [
+            lineVariantDisplayFactory.build({
+              reconstruction: [],
+              manuscripts: [omittingLine],
+            }),
+          ],
+          0,
+        ),
+      ),
+    )
+    view = await renderAndOpen(dictionaryWord)
+
+    expect(await within(view).findByText('ø')).toBeVisible()
   })
 })

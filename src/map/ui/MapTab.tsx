@@ -1,19 +1,18 @@
 import React, { useCallback, useMemo, useRef, useState } from 'react'
 import { Alert } from 'react-bootstrap'
 import 'maplibre-gl/dist/maplibre-gl.css'
-import FragmentService from 'fragmentarium/application/FragmentService'
 import Spinner from 'common/ui/Spinner'
 import { ProvenanceRecord } from 'fragmentarium/domain/Provenance'
 import useFindspotMap from 'map/maplibre/useFindspotMap'
 import useMapSourceData from 'map/maplibre/useMapSourceData'
-import useProvenances from 'map/ui/useProvenances'
+import useProvenances, { ProvenanceSource } from 'map/ui/useProvenances'
 import FindspotFilterInput from 'map/ui/FindspotFilterInput'
 import { FindspotEmptyState, FindspotSearchList } from 'map/ui/FindspotResults'
 import { filterProvenances } from 'map/domain/findspotFilter'
 import 'map/ui/MapTab.sass'
 
 interface Props {
-  fragmentService: FragmentService
+  fragmentService: ProvenanceSource
 }
 
 function LoadedMapTab({

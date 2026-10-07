@@ -2,12 +2,12 @@ import React from 'react'
 import ResizeObserver from 'resize-observer-polyfill'
 import { MemoryRouter } from 'react-router-dom'
 import { render, screen, waitFor } from '@testing-library/react'
-import Promise from 'bluebird'
-import Images, {
+import Images from 'fragmentarium/ui/images/Images'
+import {
   hasUsableCdliTab,
   TabController,
-} from 'fragmentarium/ui/images/Images'
-import FragmentService from 'fragmentarium/application/FragmentService'
+} from 'fragmentarium/ui/images/ImageTabController'
+import { ImageFragmentService } from 'fragmentarium/ui/images/ImageFragmentService'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import { fragmentFactory } from 'test-support/fragment-fixtures'
 import { folioFactory } from 'test-support/fragment-data-fixtures'
@@ -17,12 +17,12 @@ global.ResizeObserver = ResizeObserver
 const folios = [folioFactory.build({ name: 'WGL' })]
 const pending = (): Promise<never> => new Promise(() => undefined)
 
-function fragmentService(): jest.Mocked<FragmentService> {
+function fragmentService(): ImageFragmentService {
   return {
-    findFolio: jest.fn(pending),
-    findPhoto: jest.fn(pending),
-    folioPager: jest.fn(pending),
-  } as unknown as jest.Mocked<FragmentService>
+    findFolio: pending,
+    findPhoto: pending,
+    folioPager: pending,
+  }
 }
 
 function buildFragment({
@@ -88,6 +88,12 @@ describe('the selected tab always exists', () => {
 
   it('falls back to an available tab when the requested one is missing', async () => {
     renderImages(buildFragment({ hasPhoto: true }), 'cdli')
+
+    await waitFor(() => expect(selectedTabNames()).toEqual(['Photo']))
+  })
+
+  it('falls back to the default tab for a key that only starts with a digit', async () => {
+    renderImages(buildFragment({ hasPhoto: true, withFolios: true }), '0abc')
 
     await waitFor(() => expect(selectedTabNames()).toEqual(['Photo']))
   })

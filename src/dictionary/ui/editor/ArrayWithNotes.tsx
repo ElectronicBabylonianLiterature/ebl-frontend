@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import _ from 'lodash'
 
-import TextListInput from './TextListInput'
+import TextListInput from 'dictionary/ui/editor/TextListInput'
 import ArrayInput from 'common/ui/ArrayInput'
 
 class ArrayWithNotes extends Component<{

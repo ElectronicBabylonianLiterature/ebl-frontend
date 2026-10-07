@@ -6,7 +6,7 @@ import {
 } from 'test-support/bibliography-fixtures'
 import createReference from 'bibliography/application/createReference'
 import { ReferenceDto } from 'bibliography/domain/referenceDto'
-import serializeReference from './serializeReference'
+import serializeReference from 'bibliography/application/serializeReference'
 
 function buildPersistedReferenceDto(): ReferenceDto {
   return referenceDtoFactory.build(

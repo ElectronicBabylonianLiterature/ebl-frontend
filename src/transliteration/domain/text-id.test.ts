@@ -1,4 +1,4 @@
-import { textIdToDoiString } from './text-id'
+import { textIdToDoiString } from 'transliteration/domain/text-id'
 
 test('doi', () => {
   const textId = {

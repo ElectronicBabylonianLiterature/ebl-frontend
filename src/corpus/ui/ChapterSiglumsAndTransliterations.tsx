@@ -5,6 +5,7 @@ import { Transliteration } from 'transliteration/ui/Transliteration'
 import SiglumAndTransliteration from 'corpus/domain/SiglumAndTransliteration'
 import { Col, Container, Row } from 'react-bootstrap'
 import { ChapterId } from 'transliteration/domain/chapter-id'
+import TextService from 'corpus/application/TextService'
 
 function SiglumsAndTansliterationsSection({
   name,
@@ -35,7 +36,7 @@ function SiglumsAndTansliterationsSection({
 export default withData<
   { id: ChapterId },
   {
-    textService
+    textService: Pick<TextService, 'findColophons' | 'findUnplacedLines'>
     method: 'findColophons' | 'findUnplacedLines'
   },
   readonly SiglumAndTransliteration[]
@@ -44,7 +45,7 @@ export default withData<
     _.isEmpty(data) ? null : (
       <SiglumsAndTansliterationsSection name={id.name} data={data} />
     ),
-  ({ id, textService, method }) => textService[method](id),
+  ({ id, textService, method }, signal) => textService[method](id, signal),
   {
     watch: (props) => [props.id],
   },

@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react'
 
 import { fragmentFactory } from 'test-support/fragment-fixtures'
 import { Fragment } from 'fragmentarium/domain/fragment'
-import { ProjectList } from './ResearchProjects'
+import { ProjectList } from 'fragmentarium/ui/info/ResearchProjects'
 import { ResearchProjects } from 'research-projects/researchProject'
 
 let fragment: Fragment

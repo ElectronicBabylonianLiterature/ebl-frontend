@@ -1,6 +1,12 @@
 import React from 'react'
-import { render, screen, fireEvent } from '@testing-library/react'
-import FolioTooltip from './FolioTooltip'
+import {
+  render,
+  screen,
+  fireEvent,
+  waitFor,
+  waitForElementToBeRemoved,
+} from '@testing-library/react'
+import FolioTooltip from 'fragmentarium/ui/images/FolioTooltip'
 import '@testing-library/jest-dom'
 
 describe('FolioTooltip', () => {
@@ -62,6 +68,60 @@ describe('FolioTooltip', () => {
 
       const link = await screen.findByRole('link')
       expect(link).toHaveAttribute('href', '/about/library#ARG')
+    })
+  })
+
+  describe('hover behaviour', () => {
+    const showTooltip = async (): Promise<HTMLElement> => {
+      render(<FolioTooltip folioInitials="GS" folioName="Smith Folio" />)
+      fireEvent.mouseEnter(screen.getByTestId('tooltip-trigger'))
+      return screen.findByRole('tooltip')
+    }
+
+    it('hides the tooltip shortly after the pointer leaves the trigger', async () => {
+      await showTooltip()
+
+      fireEvent.mouseLeave(screen.getByTestId('tooltip-trigger'))
+
+      await waitForElementToBeRemoved(() => screen.queryByRole('tooltip'))
+    })
+
+    it('keeps the tooltip while the pointer has moved onto it', async () => {
+      const tooltip = await showTooltip()
+      const querySelector = jest
+        .spyOn(document, 'querySelector')
+        .mockReturnValue(tooltip)
+
+      fireEvent.mouseLeave(screen.getByTestId('tooltip-trigger'))
+      await waitFor(() =>
+        expect(querySelector).toHaveBeenCalledWith('.folio-tooltip:hover'),
+      )
+
+      expect(screen.getByRole('tooltip')).toBeInTheDocument()
+      querySelector.mockRestore()
+    })
+
+    it('closes when the pointer leaves the tooltip', async () => {
+      const tooltip = await showTooltip()
+
+      fireEvent.mouseEnter(tooltip)
+      fireEvent.mouseLeave(tooltip)
+
+      await waitForElementToBeRemoved(() => screen.queryByRole('tooltip'))
+    })
+
+    it('keeps a click on the link from reaching the surrounding tab', async () => {
+      const onTabClick = jest.fn()
+      render(
+        <div onClick={onTabClick}>
+          <FolioTooltip folioInitials="GS" folioName="Smith Folio" />
+        </div>,
+      )
+      fireEvent.mouseEnter(screen.getByTestId('tooltip-trigger'))
+
+      fireEvent.click(await screen.findByRole('link'))
+
+      expect(onTabClick).not.toHaveBeenCalled()
     })
   })
 })

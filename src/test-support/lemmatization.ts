@@ -1,5 +1,5 @@
 import { screen } from '@testing-library/react'
-import { clickNth, changeValueByLabel } from './utils'
+import { clickNth, changeValueByLabel } from 'test-support/utils'
 import Lemma from 'transliteration/domain/Lemma'
 
 export async function lemmatizeWord(word: string, lemma: Lemma): Promise<void> {

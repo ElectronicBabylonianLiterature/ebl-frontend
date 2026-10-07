@@ -1,7 +1,6 @@
 import React from 'react'
 import { MemoryRouter } from 'react-router-dom'
 import { render, screen } from '@testing-library/react'
-import { Promise } from 'bluebird'
 
 import FragmentInCorpus from 'fragmentarium/ui/fragment/FragmentInCorpus'
 import { FragmentService } from 'fragmentarium/application/FragmentService'

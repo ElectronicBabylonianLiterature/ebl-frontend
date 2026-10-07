@@ -1,4 +1,3 @@
-import Bluebird from 'bluebird'
 import {
   ProvenanceRecord,
   sanitizeProvenanceRecord,
@@ -14,7 +13,7 @@ import { FragmentRepository } from 'fragmentarium/application/fragmentServicePor
 export function fetchProvenances(
   repository: FragmentRepository,
   cache: FragmentCache,
-): Bluebird<readonly ProvenanceRecord[]> {
+): Promise<readonly ProvenanceRecord[]> {
   return cache.allProvenances(() =>
     repository.fetchProvenances().then((provenances) => {
       const sanitized = provenances.map(sanitizeProvenanceRecord)
@@ -29,7 +28,7 @@ export function fetchProvenance(
   repository: FragmentRepository,
   cache: FragmentCache,
   id: string,
-): Bluebird<ProvenanceRecord> {
+): Promise<ProvenanceRecord> {
   return cache.provenance(id, () =>
     repository.fetchProvenance(id).then((provenance) => {
       const sanitized = sanitizeProvenanceRecord(provenance)
@@ -43,7 +42,7 @@ export function fetchProvenanceChildren(
   repository: FragmentRepository,
   cache: FragmentCache,
   id: string,
-): Bluebird<readonly ProvenanceRecord[]> {
+): Promise<readonly ProvenanceRecord[]> {
   return cache.provenanceChildren(id, () =>
     repository.fetchProvenanceChildren(id).then((children) => {
       const sorted = sortProvenances(children.map(sanitizeProvenanceRecord))

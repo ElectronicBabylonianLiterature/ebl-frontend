@@ -3,12 +3,12 @@ import {
   createFragmentCanonicalUrl,
   createFragmentUrl,
   createFragmentUrlWithFolio,
-} from './FragmentLink'
+} from 'fragmentarium/ui/FragmentLink'
 import { parseUrl } from 'query-string'
 import { folioFactory } from 'test-support/fragment-data-fixtures'
 import { CANONICAL_ORIGIN } from 'router/domain'
 
-const chance = new Chance()
+const chance = new Chance('createFragmentUrl')
 
 it('Creates encoded URL', () => {
   const number = chance.string()

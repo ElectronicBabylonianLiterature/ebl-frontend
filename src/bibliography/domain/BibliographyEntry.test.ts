@@ -1,6 +1,8 @@
 import _ from 'lodash'
 import Cite from 'citation-js'
-import BibliographyEntry, { CslData } from './BibliographyEntry'
+import BibliographyEntry, {
+  CslData,
+} from 'bibliography/domain/BibliographyEntry'
 import { cslDataFactory } from 'test-support/bibliography-fixtures'
 
 let cslData: CslData

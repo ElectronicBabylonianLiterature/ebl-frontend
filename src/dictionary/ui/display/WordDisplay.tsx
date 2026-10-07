@@ -3,7 +3,7 @@ import Word from 'dictionary/domain/Word'
 import AppContent from 'common/ui/AppContent'
 import { SectionCrumb, TextCrumb } from 'common/ui/Breadcrumbs'
 import { Col, Row } from 'react-bootstrap'
-import './wordInformationDisplay.sass'
+import 'dictionary/ui/display/wordInformationDisplay.sass'
 import withData, { WithoutData } from 'http/withData'
 import { LiteratureRedirectBox } from 'common/ui/LiteratureRedirectBox'
 import { AGI } from 'dictionary/ui/display/WordDisplayAGI'
@@ -16,7 +16,7 @@ import SignService from 'signs/application/SignService'
 import CorpusLemmaLines from 'dictionary/ui/search/CorpusLemmaLines'
 import { EmptySection } from 'dictionary/ui/display/EmptySection'
 import WordTitle from 'dictionary/ui/display/WordTitle'
-import FragmentLemmaLines from '../search/FragmentLemmaLines'
+import FragmentLemmaLines from 'dictionary/ui/search/FragmentLemmaLines'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import { HeadTags } from 'router/head'
 import { AfoRegisterRedirectBox } from 'afo-register/ui/AfoRegisterSearch'
@@ -108,7 +108,7 @@ function WordDisplay({
     <LogogramsDisplay signService={signService} wordId={word._id} />
   )
 
-  const akkadischeGlossareUndIndices = word.akkadischeGlossareUndIndices ? (
+  const akkadischeGlossareUndIndices = (
     <Fragment key="AkkadischeGlossareUndIndices">
       <AGI AkkadischeGlossareUndIndices={word.akkadischeGlossareUndIndices} />
       {AfoRegisterRedirectBox}{' '}
@@ -122,8 +122,6 @@ function WordDisplay({
         icon="pointer__hover my-2 fas fa-external-link-square-alt"
       />
     </Fragment>
-  ) : (
-    <EmptySection key="akkadischeGlossareUndIndices" />
   )
 
   const supplementsAkkadianDictionaries =
@@ -213,5 +211,5 @@ export default withData<
       fragmentService={fragmentService}
     />
   ),
-  (props) => props.wordService.find(props.wordId),
+  (props, signal) => props.wordService.find(props.wordId, signal),
 )

@@ -9,13 +9,13 @@ import {
   Token,
 } from 'transliteration/domain/token'
 import { isEnclosure } from 'transliteration/domain/type-guards'
-import DisplayToken from './DisplayToken'
+import DisplayToken from 'transliteration/ui/DisplayToken'
 import { PhoneticProps } from 'akkadian/application/phonetics/segments'
 
 function WordSeparator({
-  modifiers: bemModifiers = [],
+  modifiers: bemModifiers,
 }: {
-  modifiers?: readonly string[]
+  modifiers: readonly string[]
 }): JSX.Element {
   const element = 'Transliteration__wordSeparator'
   return (
@@ -106,11 +106,11 @@ export class LineAccumulator {
     this.protocol = token.value
   }
 
-  pushToken(
+  private pushToken(
     token: Token,
     index: number,
-    phoneticProps?: PhoneticProps,
-    bemModifiers: string[] = [],
+    phoneticProps: PhoneticProps | undefined,
+    bemModifiers: string[],
   ): void {
     if (_.isEmpty(this.columns)) {
       this.addColumn(1)

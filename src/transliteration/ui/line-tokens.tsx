@@ -6,8 +6,11 @@ import {
   createLemmaMap,
   LemmaMap,
   LineLemmasContext,
-} from './LineLemmasContext'
-import { LineAccumulator, TokenActionWrapperProps } from './LineAccumulator'
+} from 'transliteration/ui/LineLemmasContext'
+import {
+  LineAccumulator,
+  TokenActionWrapperProps,
+} from 'transliteration/ui/LineAccumulator'
 import {
   TextLineColumn,
   updatePhoneticPropsContext,

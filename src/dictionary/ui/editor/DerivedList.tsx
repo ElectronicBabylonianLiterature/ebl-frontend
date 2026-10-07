@@ -1,7 +1,7 @@
 import React, { ReactNode } from 'react'
 import { FormGroup } from 'react-bootstrap'
 
-import FormList from './FormList'
+import FormList from 'dictionary/ui/editor/FormList'
 import List from 'common/ui/List'
 import { Derived } from 'dictionary/domain/Word'
 

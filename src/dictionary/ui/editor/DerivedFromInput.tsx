@@ -1,7 +1,7 @@
 import React from 'react'
 import { Button, Card } from 'react-bootstrap'
 
-import FormInput from './FormInput'
+import FormInput from 'dictionary/ui/editor/FormInput'
 import { Derived } from 'dictionary/domain/Word'
 
 function DerivedFromInput({

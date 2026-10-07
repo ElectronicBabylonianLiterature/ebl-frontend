@@ -11,7 +11,7 @@ import {
   isTranslationLine,
 } from 'transliteration/domain/type-guards'
 import lineNumberToString from 'transliteration/domain/lineNumberToString'
-import './TranslationColumn.sass'
+import 'transliteration/ui/TranslationColumn.sass'
 import { LineNumber, LineNumberRange } from 'transliteration/domain/line-number'
 import classNames from 'classnames'
 

@@ -1,4 +1,3 @@
-import Promise from 'bluebird'
 import { ProvenanceRecord } from 'fragmentarium/domain/Provenance'
 import {
   childrenOptions,
@@ -6,14 +5,12 @@ import {
   fragmentRepository,
   fragmentService,
   provenanceOptions,
-  stubMissingBibliography,
 } from 'fragmentarium/application/fragmentServiceFragments.testSupport'
 
 let provenanceResult: readonly ProvenanceRecord[]
 
 beforeEach(() => {
   jest.clearAllMocks()
-  stubMissingBibliography()
 })
 
 describe('fetch provenances', () => {

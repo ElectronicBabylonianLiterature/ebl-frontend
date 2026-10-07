@@ -1,6 +1,7 @@
 import { testDelegation, TestData } from 'test-support/utils'
-import WordService from './WordService'
+import WordService from 'dictionary/application/WordService'
 import WordRepository from 'dictionary/infrastructure/WordRepository'
+import { wordFactory } from 'test-support/word-fixtures'
 
 jest.mock('dictionary/infrastructure/WordRepository')
 
@@ -11,25 +12,55 @@ const wordRepository = new (WordRepository as jest.Mock<
 
 const wordService = new WordService(wordRepository)
 
+const wordToUpdate = wordFactory.build({ _id: 'id' })
+
 const testData: TestData<WordService>[] = [
-  new TestData('find', ['id'], wordRepository.find, resultStub),
-  new TestData('findAll', [['id', 'id2']], wordRepository.findAll, resultStub),
+  new TestData('find', ['id'], wordRepository.find, resultStub, [
+    'id',
+    undefined,
+  ]),
+  new TestData('findAll', [['id', 'id2']], wordRepository.findAll, resultStub, [
+    ['id', 'id2'],
+    undefined,
+  ]),
   new TestData(
     'search',
     [{ word: 'aklu' }],
     wordRepository.search,
     resultStub,
-    ['word=aklu'],
+    ['word=aklu', undefined],
   ),
-  new TestData('update', [{ _id: 'id' }], wordRepository.update, resultStub),
+  new TestData(
+    'searchLemma',
+    ['aklu I'],
+    wordRepository.searchLemma,
+    resultStub,
+    ['aklu I', undefined],
+  ),
+  new TestData('update', [wordToUpdate], wordRepository.update, resultStub, [
+    wordToUpdate,
+  ]),
   new TestData(
     'createProperNoun',
     ['Shamash', 'DN'],
     wordRepository.createProperNoun,
     resultStub,
+    ['Shamash', 'DN'],
   ),
-  new TestData('listAllWords', [], wordRepository.listAllWords, []),
+  new TestData(
+    'listAllWords',
+    [],
+    wordRepository.listAllWords,
+    [],
+    [undefined],
+  ),
 ]
 describe('test word Service', () => {
   testDelegation(wordService, testData)
+})
+
+test('searchLemma resolves to no words for an empty lemma', async () => {
+  jest.clearAllMocks()
+  await expect(wordService.searchLemma('')).resolves.toEqual([])
+  expect(wordRepository.searchLemma).not.toHaveBeenCalled()
 })
