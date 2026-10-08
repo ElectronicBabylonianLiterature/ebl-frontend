@@ -1,5 +1,5 @@
 import _ from 'lodash'
-import { parse } from 'query-string'
+import { parse } from 'common/utils/queryString'
 import { FragmentQuery, FragmentSearchCriteria } from 'query/FragmentQuery'
 
 export const paginationURLParam = 'paginationIndex'

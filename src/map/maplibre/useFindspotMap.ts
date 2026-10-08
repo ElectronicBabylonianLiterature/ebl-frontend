@@ -1,8 +1,9 @@
 import { useContext, useEffect, useRef } from 'react'
 import type { MutableRefObject, RefObject } from 'react'
 import type { Point } from 'geojson'
-import maplibregl from 'maplibre-gl'
+import * as maplibregl from 'maplibre-gl'
 import ErrorReporterContext from 'ErrorReporterContext'
+import maplibreWorkerUrl from 'maplibre-gl/dist/maplibre-gl-worker.mjs'
 import { useHistory } from 'router/compat'
 import type {
   GeoJSONSource,
@@ -143,6 +144,7 @@ export default function useFindspotMap(
 
     let map: MapLibreMap
     try {
+      maplibregl.setWorkerUrl(maplibreWorkerUrl)
       map = new maplibregl.Map({
         container: containerRef.current,
         style: MAP_STYLE_URL,

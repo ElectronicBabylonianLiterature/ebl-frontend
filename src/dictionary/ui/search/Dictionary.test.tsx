@@ -8,7 +8,7 @@ import Word from 'dictionary/domain/Word'
 import WordService from 'dictionary/application/WordService'
 import MemorySession from 'auth/Session'
 import { wordFactory } from 'test-support/word-fixtures'
-import { stringify } from 'query-string'
+import { stringify } from 'common/utils/queryString'
 
 jest.mock('dictionary/application/WordService')
 

@@ -1,6 +1,6 @@
 import React, { ReactNode } from 'react'
 import _ from 'lodash'
-import { parse } from 'query-string'
+import { parse } from 'common/utils/queryString'
 import { Route } from 'router/compat'
 import { Location } from 'history'
 import SessionContext from 'auth/SessionContext'

@@ -27,11 +27,6 @@ beforeEach(async () => {
   mockNavigate.mockReset()
 })
 
-const routerFuture = Object.fromEntries([
-  ['v7_startTransition', true],
-  ['v7_relativeSplatPath', true],
-])
-
 it('Redirects to interesting when clicked', async () => {
   renderLuckyButton(true)
   const fragment = fragmentFactory.build()
@@ -49,7 +44,7 @@ it('Hides button if user does not have fragmentarium rights', async () => {
 function renderLuckyButton(isAllowedTo) {
   session.isAllowedToReadFragments.mockReturnValue(isAllowedTo)
   element = render(
-    <MemoryRouter future={routerFuture}>
+    <MemoryRouter>
       <SessionContext.Provider value={session}>
         <LuckyButton fragmentSearchService={fragmentSearchService} />
       </SessionContext.Provider>

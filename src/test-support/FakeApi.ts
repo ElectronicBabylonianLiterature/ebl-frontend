@@ -4,7 +4,7 @@ import { ExtantLines } from 'corpus/domain/extant-lines'
 import Word from 'dictionary/domain/Word'
 import { museumNumberToString } from 'fragmentarium/domain/MuseumNumber'
 import FragmentDto from 'fragmentarium/domain/FragmentDtos'
-import { stringify } from 'query-string'
+import { stringify } from 'common/utils/queryString'
 import { WordQuery } from 'dictionary/application/WordService'
 import FakeApiBase from 'test-support/FakeApiBase'
 import {

@@ -40,17 +40,7 @@ export function TestMemoryRouter({
   children,
   ...props
 }: React.PropsWithChildren<Record<string, unknown>>): JSX.Element {
-  return (
-    <MemoryRouter
-      {...props}
-      future={Object.fromEntries([
-        ['v7_startTransition', true],
-        ['v7_relativeSplatPath', true],
-      ])}
-    >
-      {children}
-    </MemoryRouter>
-  )
+  return <MemoryRouter {...props}>{children}</MemoryRouter>
 }
 
 export interface SearchFormTestContext {

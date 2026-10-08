@@ -8,8 +8,10 @@ import {
   mockCaptureException,
   mockOn,
   resetMapMocks,
+  setWorkerUrl,
   triggerMapEvent,
 } from 'map/ui/MapTab.testSupport'
+import maplibreWorkerUrlStub from 'map/testSupport/maplibreWorkerUrlStub'
 import {
   HookHarness,
   renderHarness,
@@ -19,6 +21,12 @@ jest.mock('maplibre-gl')
 
 describe('useFindspotMap', () => {
   beforeEach(resetMapMocks)
+
+  it('points maplibre at its bundled worker before creating the map', () => {
+    renderHarness(<HookHarness provenances={[makeProvenance()]} />)
+
+    expect(setWorkerUrl).toHaveBeenCalledWith(maplibreWorkerUrlStub)
+  })
 
   it('does not initialize a map before data is ready', () => {
     renderHarness(<HookHarness provenances={null} />)

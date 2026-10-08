@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { stringify } from 'query-string'
+import { stringify } from 'common/utils/queryString'
 import _ from 'lodash'
 import { Form, FormControl, Button, Row, Col } from 'react-bootstrap'
 import { useNavigate } from 'react-router-dom'

@@ -6,7 +6,7 @@ import AfoRegisterRecord from 'afo-register/domain/Record'
 import AfoRegisterService from 'afo-register/application/AfoRegisterService'
 import { LiteratureRedirectBox } from 'common/ui/LiteratureRedirectBox'
 import { AfoRegisterQuery } from 'afo-register/ui/AfoRegisterSearchForm'
-import { stringify } from 'query-string'
+import { stringify } from 'common/utils/queryString'
 import { AfoRegisterRecordsListDisplay } from 'afo-register/ui/AfoRegisterDisplay'
 import FragmentService from 'fragmentarium/application/FragmentService'
 

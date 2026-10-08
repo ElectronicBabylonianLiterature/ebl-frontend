@@ -3,7 +3,7 @@ import AfoRegisterRepository from 'afo-register/infrastructure/AfoRegisterReposi
 import AfoRegisterRecord, {
   AfoRegisterRecordSuggestion,
 } from 'afo-register/domain/Record'
-import { stringify } from 'query-string'
+import { stringify } from 'common/utils/queryString'
 import ApiClient from 'http/ApiClient'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import { FragmentAfoRegisterQueryResult } from 'query/QueryResult'
