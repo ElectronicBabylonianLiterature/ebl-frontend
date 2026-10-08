@@ -4,19 +4,10 @@ import { fireEvent, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { changeValueByLabel, submitForm } from 'test-support/utils'
 import WordSearchForm from 'dictionary/ui/search/WordSearchForm'
-import { stringify } from 'query-string'
+import { stringify } from 'common/utils/queryString'
 
 function TestMemoryRouter({ children }: React.PropsWithChildren): JSX.Element {
-  return (
-    <MemoryRouter
-      future={Object.fromEntries([
-        ['v7_startTransition', true],
-        ['v7_relativeSplatPath', true],
-      ])}
-    >
-      {children}
-    </MemoryRouter>
-  )
+  return <MemoryRouter>{children}</MemoryRouter>
 }
 
 const mockNavigate = jest.fn()

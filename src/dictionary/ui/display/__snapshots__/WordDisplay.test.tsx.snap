@@ -22,6 +22,7 @@ exports[`Fetch word correctly displays word parts 1`] = `
               class="breadcrumb-item"
             >
               <a
+                data-discover="true"
                 href="/"
               >
                 eBL
@@ -31,6 +32,7 @@ exports[`Fetch word correctly displays word parts 1`] = `
               class="breadcrumb-item"
             >
               <a
+                data-discover="true"
                 href="/tools/dictionary"
               >
                 Akkadian Dictionary
@@ -191,6 +193,7 @@ exports[`Fetch word correctly displays word parts 1`] = `
                     Attested stems: 
                     <span>
                       <a
+                        data-discover="true"
                         href="/dictionary/c49ca1a96f9ce4d45bdc9962307a703eba53c0a8#attested-stem-0"
                       >
                         Dtt
@@ -199,6 +202,7 @@ exports[`Fetch word correctly displays word parts 1`] = `
                     </span>
                     <span>
                       <a
+                        data-discover="true"
                         href="/dictionary/c49ca1a96f9ce4d45bdc9962307a703eba53c0a8#attested-stem-1"
                       >
                         N
@@ -922,6 +926,7 @@ exports[`Fetch word correctly displays word parts 1`] = `
             class="col-1"
           >
             <a
+              data-discover="true"
               href="/library/Test.Fragment"
             >
               Test.Fragment

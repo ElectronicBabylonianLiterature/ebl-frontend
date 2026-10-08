@@ -16,6 +16,7 @@ exports[`Chapter Show chapter 1`] = `
         >
           <a
             class="navbar-brand"
+            data-discover="true"
             href="/"
             title="electronic Babylonian Library (eBL)"
           >
@@ -81,6 +82,7 @@ exports[`Chapter Show chapter 1`] = `
               >
                 <a
                   class="nav-link"
+                  data-discover="true"
                   data-rr-ui-event-key="/library"
                   href="/library"
                 >
@@ -92,6 +94,7 @@ exports[`Chapter Show chapter 1`] = `
               >
                 <a
                   class="nav-link"
+                  data-discover="true"
                   data-rr-ui-event-key="/corpus"
                   href="/corpus"
                 >
@@ -103,6 +106,7 @@ exports[`Chapter Show chapter 1`] = `
               >
                 <a
                   class="nav-link"
+                  data-discover="true"
                   data-rr-ui-event-key="/about"
                   href="/about"
                 >
@@ -114,6 +118,7 @@ exports[`Chapter Show chapter 1`] = `
               >
                 <a
                   class="nav-link"
+                  data-discover="true"
                   data-rr-ui-event-key="/tools"
                   href="/tools"
                 >
@@ -125,6 +130,7 @@ exports[`Chapter Show chapter 1`] = `
               >
                 <a
                   class="nav-link"
+                  data-discover="true"
                   data-rr-ui-event-key="/projects"
                   href="/projects"
                 >
@@ -221,6 +227,7 @@ exports[`Chapter Show chapter 1`] = `
                 class="breadcrumb-item"
               >
                 <a
+                  data-discover="true"
                   href="/"
                 >
                   eBL
@@ -230,6 +237,7 @@ exports[`Chapter Show chapter 1`] = `
                 class="breadcrumb-item"
               >
                 <a
+                  data-discover="true"
                   href="/corpus"
                 >
                   Corpus
@@ -239,6 +247,7 @@ exports[`Chapter Show chapter 1`] = `
                 class="breadcrumb-item"
               >
                 <a
+                  data-discover="true"
                   href="/corpus/L"
                 >
                   L
@@ -330,6 +339,7 @@ exports[`Chapter Show chapter 1`] = `
               <section>
                 <h4>
                   <a
+                    data-discover="true"
                     href="/corpus/L/1/1/OB/The Only Chapter"
                   >
                     The Only Chapter
@@ -413,6 +423,7 @@ exports[`Chapter Show chapter 1`] = `
             >
               <li>
                 <a
+                  data-discover="true"
                   href="/about"
                 >
                   About
@@ -420,6 +431,7 @@ exports[`Chapter Show chapter 1`] = `
               </li>
               <li>
                 <a
+                  data-discover="true"
                   href="/projects"
                 >
                   Research Projects
@@ -449,6 +461,7 @@ exports[`Chapter Show chapter 1`] = `
             >
               <li>
                 <a
+                  data-discover="true"
                   href="/tools/signs"
                 >
                   Signs
@@ -456,6 +469,7 @@ exports[`Chapter Show chapter 1`] = `
               </li>
               <li>
                 <a
+                  data-discover="true"
                   href="/tools/dictionary"
                 >
                   Dictionary
@@ -463,6 +477,7 @@ exports[`Chapter Show chapter 1`] = `
               </li>
               <li>
                 <a
+                  data-discover="true"
                   href="/tools/references"
                 >
                   Bibliography
@@ -483,6 +498,7 @@ exports[`Chapter Show chapter 1`] = `
             >
               <li>
                 <a
+                  data-discover="true"
                   href="/impressum"
                 >
                   Impressum
@@ -490,6 +506,7 @@ exports[`Chapter Show chapter 1`] = `
               </li>
               <li>
                 <a
+                  data-discover="true"
                   href="/datenschutz"
                 >
                   Datenschutz
@@ -647,6 +664,7 @@ exports[`Chapter Show list of manuscripts 1`] = `
         >
           <a
             class="navbar-brand"
+            data-discover="true"
             href="/"
             title="electronic Babylonian Library (eBL)"
           >
@@ -712,6 +730,7 @@ exports[`Chapter Show list of manuscripts 1`] = `
               >
                 <a
                   class="nav-link"
+                  data-discover="true"
                   data-rr-ui-event-key="/library"
                   href="/library"
                 >
@@ -723,6 +742,7 @@ exports[`Chapter Show list of manuscripts 1`] = `
               >
                 <a
                   class="nav-link"
+                  data-discover="true"
                   data-rr-ui-event-key="/corpus"
                   href="/corpus"
                 >
@@ -734,6 +754,7 @@ exports[`Chapter Show list of manuscripts 1`] = `
               >
                 <a
                   class="nav-link"
+                  data-discover="true"
                   data-rr-ui-event-key="/about"
                   href="/about"
                 >
@@ -745,6 +766,7 @@ exports[`Chapter Show list of manuscripts 1`] = `
               >
                 <a
                   class="nav-link"
+                  data-discover="true"
                   data-rr-ui-event-key="/tools"
                   href="/tools"
                 >
@@ -756,6 +778,7 @@ exports[`Chapter Show list of manuscripts 1`] = `
               >
                 <a
                   class="nav-link"
+                  data-discover="true"
                   data-rr-ui-event-key="/projects"
                   href="/projects"
                 >
@@ -852,6 +875,7 @@ exports[`Chapter Show list of manuscripts 1`] = `
                 class="breadcrumb-item"
               >
                 <a
+                  data-discover="true"
                   href="/"
                 >
                   eBL
@@ -861,6 +885,7 @@ exports[`Chapter Show list of manuscripts 1`] = `
                 class="breadcrumb-item"
               >
                 <a
+                  data-discover="true"
                   href="/corpus"
                 >
                   Corpus
@@ -870,6 +895,7 @@ exports[`Chapter Show list of manuscripts 1`] = `
                 class="breadcrumb-item"
               >
                 <a
+                  data-discover="true"
                   href="/corpus/L"
                 >
                   L
@@ -961,6 +987,7 @@ exports[`Chapter Show list of manuscripts 1`] = `
               <section>
                 <h4>
                   <a
+                    data-discover="true"
                     href="/corpus/L/1/1/OB/The Only Chapter"
                   >
                     The Only Chapter
@@ -1060,6 +1087,7 @@ exports[`Chapter Show list of manuscripts 1`] = `
                             headers="provenace-36 row-37 museumNumber-32"
                           >
                             <a
+                              data-discover="true"
                               href="/library/X.1"
                             >
                               X.1
@@ -1073,6 +1101,7 @@ exports[`Chapter Show list of manuscripts 1`] = `
                              (+
                             ) 
                             <a
+                              data-discover="true"
                               href="/library/X.3"
                             >
                               X.3
@@ -1149,6 +1178,7 @@ exports[`Chapter Show list of manuscripts 1`] = `
                             >
                               <li>
                                 <a
+                                  data-discover="true"
                                   href="/library/X.1"
                                 >
                                   X.1
@@ -1221,6 +1251,7 @@ exports[`Chapter Show list of manuscripts 1`] = `
             >
               <li>
                 <a
+                  data-discover="true"
                   href="/about"
                 >
                   About
@@ -1228,6 +1259,7 @@ exports[`Chapter Show list of manuscripts 1`] = `
               </li>
               <li>
                 <a
+                  data-discover="true"
                   href="/projects"
                 >
                   Research Projects
@@ -1257,6 +1289,7 @@ exports[`Chapter Show list of manuscripts 1`] = `
             >
               <li>
                 <a
+                  data-discover="true"
                   href="/tools/signs"
                 >
                   Signs
@@ -1264,6 +1297,7 @@ exports[`Chapter Show list of manuscripts 1`] = `
               </li>
               <li>
                 <a
+                  data-discover="true"
                   href="/tools/dictionary"
                 >
                   Dictionary
@@ -1271,6 +1305,7 @@ exports[`Chapter Show list of manuscripts 1`] = `
               </li>
               <li>
                 <a
+                  data-discover="true"
                   href="/tools/references"
                 >
                   Bibliography
@@ -1291,6 +1326,7 @@ exports[`Chapter Show list of manuscripts 1`] = `
             >
               <li>
                 <a
+                  data-discover="true"
                   href="/impressum"
                 >
                   Impressum
@@ -1298,6 +1334,7 @@ exports[`Chapter Show list of manuscripts 1`] = `
               </li>
               <li>
                 <a
+                  data-discover="true"
                   href="/datenschutz"
                 >
                   Datenschutz
@@ -1455,6 +1492,7 @@ exports[`With session 1`] = `
         >
           <a
             class="navbar-brand"
+            data-discover="true"
             href="/"
             title="electronic Babylonian Library (eBL)"
           >
@@ -1520,6 +1558,7 @@ exports[`With session 1`] = `
               >
                 <a
                   class="nav-link"
+                  data-discover="true"
                   data-rr-ui-event-key="/library"
                   href="/library"
                 >
@@ -1531,6 +1570,7 @@ exports[`With session 1`] = `
               >
                 <a
                   class="nav-link"
+                  data-discover="true"
                   data-rr-ui-event-key="/corpus"
                   href="/corpus"
                 >
@@ -1542,6 +1582,7 @@ exports[`With session 1`] = `
               >
                 <a
                   class="nav-link"
+                  data-discover="true"
                   data-rr-ui-event-key="/about"
                   href="/about"
                 >
@@ -1553,6 +1594,7 @@ exports[`With session 1`] = `
               >
                 <a
                   class="nav-link"
+                  data-discover="true"
                   data-rr-ui-event-key="/tools"
                   href="/tools"
                 >
@@ -1564,6 +1606,7 @@ exports[`With session 1`] = `
               >
                 <a
                   class="nav-link"
+                  data-discover="true"
                   data-rr-ui-event-key="/projects"
                   href="/projects"
                 >
@@ -1660,6 +1703,7 @@ exports[`With session 1`] = `
                 class="breadcrumb-item"
               >
                 <a
+                  data-discover="true"
                   href="/"
                 >
                   eBL
@@ -1669,6 +1713,7 @@ exports[`With session 1`] = `
                 class="breadcrumb-item"
               >
                 <a
+                  data-discover="true"
                   href="/corpus"
                 >
                   Corpus
@@ -1678,6 +1723,7 @@ exports[`With session 1`] = `
                 class="breadcrumb-item"
               >
                 <a
+                  data-discover="true"
                   href="/corpus/L"
                 >
                   L
@@ -1769,6 +1815,7 @@ exports[`With session 1`] = `
               <section>
                 <h4>
                   <a
+                    data-discover="true"
                     href="/corpus/L/1/1/OB/The Only Chapter"
                   >
                     The Only Chapter
@@ -1852,6 +1899,7 @@ exports[`With session 1`] = `
             >
               <li>
                 <a
+                  data-discover="true"
                   href="/about"
                 >
                   About
@@ -1859,6 +1907,7 @@ exports[`With session 1`] = `
               </li>
               <li>
                 <a
+                  data-discover="true"
                   href="/projects"
                 >
                   Research Projects
@@ -1888,6 +1937,7 @@ exports[`With session 1`] = `
             >
               <li>
                 <a
+                  data-discover="true"
                   href="/tools/signs"
                 >
                   Signs
@@ -1895,6 +1945,7 @@ exports[`With session 1`] = `
               </li>
               <li>
                 <a
+                  data-discover="true"
                   href="/tools/dictionary"
                 >
                   Dictionary
@@ -1902,6 +1953,7 @@ exports[`With session 1`] = `
               </li>
               <li>
                 <a
+                  data-discover="true"
                   href="/tools/references"
                 >
                   Bibliography
@@ -1922,6 +1974,7 @@ exports[`With session 1`] = `
             >
               <li>
                 <a
+                  data-discover="true"
                   href="/impressum"
                 >
                   Impressum
@@ -1929,6 +1982,7 @@ exports[`With session 1`] = `
               </li>
               <li>
                 <a
+                  data-discover="true"
                   href="/datenschutz"
                 >
                   Datenschutz

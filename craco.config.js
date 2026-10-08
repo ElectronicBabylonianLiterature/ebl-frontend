@@ -198,7 +198,15 @@ function quietSassLoader(loaderEntry) {
   }
 }
 
+const maplibreWorkerAssetRule = {
+  test: /[\\/]maplibre-gl[\\/]dist[\\/]maplibre-gl-worker\.mjs$/,
+  type: 'asset/resource',
+}
+
 function configureRule(rule) {
+  if (Array.isArray(rule.oneOf)) {
+    rule.oneOf.unshift(maplibreWorkerAssetRule)
+  }
   if (isSourceMapPreLoader(rule)) {
     rule.exclude = withNodeModulesExcluded(rule.exclude)
   }
@@ -208,8 +216,27 @@ function configureRule(rule) {
     .forEach(quietSassLoader)
 }
 
+function configureDevServer(devServerConfig) {
+  const { https, onBeforeSetupMiddleware, onAfterSetupMiddleware, ...config } =
+    devServerConfig
+  return {
+    ...config,
+    server: https
+      ? { type: 'https', options: https === true ? {} : https }
+      : 'http',
+    setupMiddlewares: (middlewares, devServer) => {
+      onBeforeSetupMiddleware(devServer)
+      onAfterSetupMiddleware({
+        app: { use: (middleware) => middlewares.push(middleware) },
+      })
+      return middlewares
+    },
+  }
+}
+
 module.exports = {
   ...(isFastDev ? { eslint: { enable: false } } : {}),
+  devServer: configureDevServer,
   jest: {
     configure: (jestConfig) => {
       jestConfig.modulePaths = Array.from(
@@ -249,6 +276,10 @@ module.exports = {
         ...(webpackConfig.ignoreWarnings || []),
         /Failed to parse source map/,
         /Deprecation .* legacy JS API/,
+        {
+          module: /node_modules[\\/]maplibre-gl[\\/]/,
+          message: /the request of a dependency is an expression/,
+        },
       ]
       return webpackConfig
     },

@@ -17,18 +17,13 @@ jest.mock('react-router-dom', () => ({
   useNavigate: () => mockNavigate,
 }))
 
-const routerFuture = Object.fromEntries([
-  ['v7_startTransition', true],
-  ['v7_relativeSplatPath', true],
-])
-
 let afoRegisterServiceMock: jest.Mocked<AfoRegisterService>
 
 function renderSearchForm(queryProp: AfoRegisterQuery): {
   unmount: () => void
 } {
   const { unmount } = render(
-    <MemoryRouter future={routerFuture}>
+    <MemoryRouter>
       <AfoRegisterSearchForm
         queryProp={queryProp}
         afoRegisterService={afoRegisterServiceMock}

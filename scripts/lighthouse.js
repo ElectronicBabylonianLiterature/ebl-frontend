@@ -1,7 +1,7 @@
 // See: https://github.com/GoogleChrome/lighthouse/blob/master/docs/readme.md#using-programmatically
-const lighthouse = require('lighthouse')
+const lighthouse = require('lighthouse').default
 const chromeLauncher = require('chrome-launcher')
-const log = require('lighthouse-logger')
+const log = require('lighthouse-logger').default
 
 function launchChromeAndRunLighthouse(url, flags, config = null) {
   return chromeLauncher

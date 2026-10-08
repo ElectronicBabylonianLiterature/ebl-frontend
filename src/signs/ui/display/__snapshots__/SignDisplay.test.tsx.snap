@@ -22,6 +22,7 @@ exports[`Sign Display Sign Display Snapshot 1`] = `
               class="breadcrumb-item"
             >
               <a
+                data-discover="true"
                 href="/"
               >
                 eBL
@@ -31,6 +32,7 @@ exports[`Sign Display Sign Display Snapshot 1`] = `
               class="breadcrumb-item"
             >
               <a
+                data-discover="true"
                 href="/tools/signs"
               >
                 Signs
@@ -633,6 +635,7 @@ exports[`Sign Display Sign Display Snapshot 1`] = `
                                   class="figure-caption"
                                 >
                                   <a
+                                    data-discover="true"
                                     href="/library/"
                                   >
                                      

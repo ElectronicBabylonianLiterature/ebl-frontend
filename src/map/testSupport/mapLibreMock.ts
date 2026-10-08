@@ -28,6 +28,7 @@ export const mockSetDOMContent = jest.fn()
 export const mockSetHTML = jest.fn()
 export const mockPopupAddTo = jest.fn()
 export const mockBoundsExtend = jest.fn()
+export const setWorkerUrl = jest.fn()
 
 export type MockMapEvent = { point: { x: number; y: number } }
 export type MockErrorEvent = {
@@ -201,6 +202,13 @@ const maplibregl = {
   NavigationControl,
   LngLatBounds: MockLngLatBounds,
   Popup: MockPopup,
+  setWorkerUrl,
 }
 
+export {
+  MockMap as Map,
+  NavigationControl,
+  MockLngLatBounds as LngLatBounds,
+  MockPopup as Popup,
+}
 export default maplibregl

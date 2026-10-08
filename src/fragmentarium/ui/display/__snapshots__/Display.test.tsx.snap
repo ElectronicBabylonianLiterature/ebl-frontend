@@ -6115,6 +6115,7 @@ exports[`correctly displays simple fragments 1`] = `
               colspan="4"
             >
               <a
+                data-discover="true"
                 href="/library/X.1#1'"
               >
                 F 
@@ -6312,6 +6313,7 @@ exports[`correctly displays simple fragments 1`] = `
     </h4>
     <div>
       <a
+        data-discover="true"
         href="/dictionary/hepû II"
       >
         <span

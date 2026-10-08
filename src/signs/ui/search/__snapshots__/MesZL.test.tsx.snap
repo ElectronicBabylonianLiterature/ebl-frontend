@@ -36,6 +36,7 @@ exports[`MesZl MesZl Content 1`] = `
     <br />
     <strong>
       <a
+        data-discover="true"
         href="/signs/ALSK13"
       >
         (Read more ...)

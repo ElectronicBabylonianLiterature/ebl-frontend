@@ -1,4 +1,4 @@
-import { stringify } from 'query-string'
+import { stringify } from 'common/utils/queryString'
 import { FragmentQuery } from 'query/FragmentQuery'
 import { ThumbnailSize } from 'fragmentarium/application/fragmentServicePorts'
 

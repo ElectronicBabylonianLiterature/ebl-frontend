@@ -20,16 +20,7 @@ let bibliographyService
 let session
 
 function TestMemoryRouter({ children }: React.PropsWithChildren): JSX.Element {
-  return (
-    <MemoryRouter
-      future={Object.fromEntries([
-        ['v7_startTransition', true],
-        ['v7_relativeSplatPath', true],
-      ])}
-    >
-      {children}
-    </MemoryRouter>
-  )
+  return <MemoryRouter>{children}</MemoryRouter>
 }
 
 beforeEach(async () => {

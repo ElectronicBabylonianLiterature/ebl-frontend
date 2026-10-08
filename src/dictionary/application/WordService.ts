@@ -1,7 +1,7 @@
 import Word from 'dictionary/domain/Word'
 import WordRepository from 'dictionary/infrastructure/WordRepository'
 import _ from 'lodash'
-import { stringify } from 'query-string'
+import { stringify } from 'common/utils/queryString'
 
 export interface WordQuery {
   word?: string

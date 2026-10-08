@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { stringify } from 'query-string'
+import { stringify } from 'common/utils/queryString'
 import { Button, Col, Form, FormControl, Row } from 'react-bootstrap'
 import { useNavigate } from 'react-router-dom'
 import HelpTrigger from 'common/ui/HelpTrigger'
