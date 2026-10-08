@@ -16,6 +16,7 @@ exports[`Display chapter Show manuscripts 1`] = `
         >
           <a
             class="navbar-brand"
+            data-discover="true"
             href="/"
             title="electronic Babylonian Library (eBL)"
           >
@@ -81,6 +82,7 @@ exports[`Display chapter Show manuscripts 1`] = `
               >
                 <a
                   class="nav-link"
+                  data-discover="true"
                   data-rr-ui-event-key="/library"
                   href="/library"
                 >
@@ -92,6 +94,7 @@ exports[`Display chapter Show manuscripts 1`] = `
               >
                 <a
                   class="nav-link"
+                  data-discover="true"
                   data-rr-ui-event-key="/corpus"
                   href="/corpus"
                 >
@@ -103,6 +106,7 @@ exports[`Display chapter Show manuscripts 1`] = `
               >
                 <a
                   class="nav-link"
+                  data-discover="true"
                   data-rr-ui-event-key="/about"
                   href="/about"
                 >
@@ -114,6 +118,7 @@ exports[`Display chapter Show manuscripts 1`] = `
               >
                 <a
                   class="nav-link"
+                  data-discover="true"
                   data-rr-ui-event-key="/tools"
                   href="/tools"
                 >
@@ -125,6 +130,7 @@ exports[`Display chapter Show manuscripts 1`] = `
               >
                 <a
                   class="nav-link"
+                  data-discover="true"
                   data-rr-ui-event-key="/projects"
                   href="/projects"
                 >
@@ -221,6 +227,7 @@ exports[`Display chapter Show manuscripts 1`] = `
                 class="breadcrumb-item"
               >
                 <a
+                  data-discover="true"
                   href="/"
                 >
                   eBL
@@ -230,6 +237,7 @@ exports[`Display chapter Show manuscripts 1`] = `
                 class="breadcrumb-item"
               >
                 <a
+                  data-discover="true"
                   href="/corpus"
                 >
                   Corpus
@@ -239,6 +247,7 @@ exports[`Display chapter Show manuscripts 1`] = `
                 class="breadcrumb-item"
               >
                 <a
+                  data-discover="true"
                   href="/corpus/L"
                 >
                   L
@@ -248,6 +257,7 @@ exports[`Display chapter Show manuscripts 1`] = `
                 class="breadcrumb-item"
               >
                 <a
+                  data-discover="true"
                   href="/corpus/L/1/1"
                 >
                   I.1 Vu siscedeh ir lino oveagfes bohhi watil te zulreziv weemwin fodiric ipagiiki.
@@ -317,6 +327,7 @@ exports[`Display chapter Show manuscripts 1`] = `
               </div>
               <a
                 class="btn btn-outline-primary"
+                data-discover="true"
                 href="/corpus/L/1/1/OB/The%20Only%20Chapter/edit"
               >
                 <i
@@ -950,6 +961,7 @@ exports[`Display chapter Show manuscripts 1`] = `
             >
               <li>
                 <a
+                  data-discover="true"
                   href="/about"
                 >
                   About
@@ -957,6 +969,7 @@ exports[`Display chapter Show manuscripts 1`] = `
               </li>
               <li>
                 <a
+                  data-discover="true"
                   href="/projects"
                 >
                   Research Projects
@@ -986,6 +999,7 @@ exports[`Display chapter Show manuscripts 1`] = `
             >
               <li>
                 <a
+                  data-discover="true"
                   href="/tools/signs"
                 >
                   Signs
@@ -993,6 +1007,7 @@ exports[`Display chapter Show manuscripts 1`] = `
               </li>
               <li>
                 <a
+                  data-discover="true"
                   href="/tools/dictionary"
                 >
                   Dictionary
@@ -1000,6 +1015,7 @@ exports[`Display chapter Show manuscripts 1`] = `
               </li>
               <li>
                 <a
+                  data-discover="true"
                   href="/tools/references"
                 >
                   Bibliography
@@ -1020,6 +1036,7 @@ exports[`Display chapter Show manuscripts 1`] = `
             >
               <li>
                 <a
+                  data-discover="true"
                   href="/impressum"
                 >
                   Impressum
@@ -1027,6 +1044,7 @@ exports[`Display chapter Show manuscripts 1`] = `
               </li>
               <li>
                 <a
+                  data-discover="true"
                   href="/datenschutz"
                 >
                   Datenschutz

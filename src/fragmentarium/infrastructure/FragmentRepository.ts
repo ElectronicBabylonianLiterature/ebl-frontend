@@ -1,5 +1,5 @@
 import _ from 'lodash'
-import { stringify } from 'query-string'
+import { stringify } from 'common/utils/queryString'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import Folio from 'fragmentarium/domain/Folio'
 import {

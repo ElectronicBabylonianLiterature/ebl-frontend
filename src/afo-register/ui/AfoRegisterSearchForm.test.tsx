@@ -14,11 +14,6 @@ jest.mock('react-router-dom', () => ({
   useNavigate: () => mockNavigate,
 }))
 
-const routerFuture = Object.fromEntries([
-  ['v7_startTransition', true],
-  ['v7_relativeSplatPath', true],
-])
-
 describe('AfoRegisterSearch Component Tests', () => {
   let afoRegisterServiceMock
 
@@ -26,7 +21,7 @@ describe('AfoRegisterSearch Component Tests', () => {
     children: JSX.Element,
     path?: string,
   ): Promise<void> {
-    render(<MemoryRouter future={routerFuture}>{children}</MemoryRouter>)
+    render(<MemoryRouter>{children}</MemoryRouter>)
     await waitFor(() =>
       expect(afoRegisterServiceMock.searchSuggestions).toHaveBeenCalled(),
     )

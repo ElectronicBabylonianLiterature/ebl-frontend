@@ -19,18 +19,13 @@ const MockFragmentService = FragmentService as jest.Mock<
 >
 const mockGenres = [['ARCHIVAL'], ['CANONICAL'], ['ARCHIVAL', 'Administrative']]
 const fragmentServiceMock = new MockFragmentService()
-const routerFuture = Object.fromEntries([
-  ['v7_startTransition', true],
-  ['v7_relativeSplatPath', true],
-])
-
 let fragment: Fragment
 let session
 
 async function renderGenreSelection() {
   render(
     <SessionContext.Provider value={session}>
-      <Router future={routerFuture}>
+      <Router>
         <GenreSelection
           fragment={fragment}
           updateGenres={updateGenres}

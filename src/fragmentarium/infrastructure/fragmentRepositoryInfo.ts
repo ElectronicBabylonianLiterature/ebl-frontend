@@ -1,4 +1,4 @@
-import { stringify } from 'query-string'
+import { stringify } from 'common/utils/queryString'
 import { FragmentInfoDto } from 'fragmentarium/domain/fragment'
 import {
   FragmentInfosDtoPromise,

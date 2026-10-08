@@ -1,6 +1,6 @@
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 import ApiClient from 'http/ApiClient'
-import { stringify } from 'query-string'
+import { stringify } from 'common/utils/queryString'
 
 function createEntry(cslData) {
   return new BibliographyEntry(cslData)

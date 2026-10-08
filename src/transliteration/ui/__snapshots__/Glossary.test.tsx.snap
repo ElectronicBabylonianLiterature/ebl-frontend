@@ -8,6 +8,7 @@ exports[`Glossary snapshot 1`] = `
     </h4>
     <div>
       <a
+        data-discover="true"
         href="/dictionary/hepû I"
       >
         <span
@@ -87,6 +88,7 @@ exports[`Glossary snapshot 1`] = `
     </div>
     <div>
       <a
+        data-discover="true"
         href="/dictionary/hepû II"
       >
         <span

@@ -3,7 +3,7 @@ import DossierRecord, {
   DossierRecordSuggestion,
 } from 'dossiers/domain/DossierRecord'
 import ApiClient from 'http/ApiClient'
-import { stringify } from 'query-string'
+import { stringify } from 'common/utils/queryString'
 import { isAbortError } from 'common/utils/abortError'
 
 export default class DossiersRepository {

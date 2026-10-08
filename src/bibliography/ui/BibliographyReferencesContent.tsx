@@ -1,5 +1,5 @@
 import React from 'react'
-import { parse } from 'query-string'
+import { parse } from 'common/utils/queryString'
 import { Link, useLocation } from 'react-router-dom'
 import { Button } from 'react-bootstrap'
 import _ from 'lodash'

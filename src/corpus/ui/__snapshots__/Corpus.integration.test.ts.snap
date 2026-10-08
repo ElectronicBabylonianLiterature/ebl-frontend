@@ -16,6 +16,7 @@ exports[`With session 1`] = `
         >
           <a
             class="navbar-brand"
+            data-discover="true"
             href="/"
             title="electronic Babylonian Library (eBL)"
           >
@@ -81,6 +82,7 @@ exports[`With session 1`] = `
               >
                 <a
                   class="nav-link"
+                  data-discover="true"
                   data-rr-ui-event-key="/library"
                   href="/library"
                 >
@@ -92,6 +94,7 @@ exports[`With session 1`] = `
               >
                 <a
                   class="nav-link active"
+                  data-discover="true"
                   data-rr-ui-event-key="/corpus"
                   href="/corpus"
                 >
@@ -103,6 +106,7 @@ exports[`With session 1`] = `
               >
                 <a
                   class="nav-link"
+                  data-discover="true"
                   data-rr-ui-event-key="/about"
                   href="/about"
                 >
@@ -114,6 +118,7 @@ exports[`With session 1`] = `
               >
                 <a
                   class="nav-link"
+                  data-discover="true"
                   data-rr-ui-event-key="/tools"
                   href="/tools"
                 >
@@ -125,6 +130,7 @@ exports[`With session 1`] = `
               >
                 <a
                   class="nav-link"
+                  data-discover="true"
                   data-rr-ui-event-key="/projects"
                   href="/projects"
                 >
@@ -221,6 +227,7 @@ exports[`With session 1`] = `
                 class="breadcrumb-item"
               >
                 <a
+                  data-discover="true"
                   href="/"
                 >
                   eBL
@@ -262,6 +269,7 @@ exports[`With session 1`] = `
                   <a
                     aria-label="Learn more about Corpus"
                     class="AboutInlineLink Corpus__about-link"
+                    data-discover="true"
                     href="/about/corpus"
                     title="Learn more about Corpus"
                   >
@@ -382,6 +390,7 @@ exports[`With session 1`] = `
                             class="col"
                           >
                             <a
+                              data-discover="true"
                               href="/corpus/L/1/1"
                             >
                               1
@@ -401,6 +410,7 @@ exports[`With session 1`] = `
                             class="col"
                           >
                             <a
+                              data-discover="true"
                               href="/corpus/L/1/2"
                             >
                               2
@@ -431,6 +441,7 @@ exports[`With session 1`] = `
                             class="col"
                           >
                             <a
+                              data-discover="true"
                               href="/corpus/L/2/1"
                             >
                               1
@@ -461,6 +472,7 @@ exports[`With session 1`] = `
                             class="col"
                           >
                             <a
+                              data-discover="true"
                               href="/corpus/L/3/1"
                             >
                               1
@@ -539,6 +551,7 @@ exports[`With session 1`] = `
                             class="col"
                           >
                             <a
+                              data-discover="true"
                               href="/corpus/D/3/1"
                             >
                               1
@@ -585,6 +598,7 @@ exports[`With session 1`] = `
                             class="col"
                           >
                             <a
+                              data-discover="true"
                               href="/corpus/Med/1/1"
                             >
                               1
@@ -679,6 +693,7 @@ exports[`With session 1`] = `
             >
               <li>
                 <a
+                  data-discover="true"
                   href="/about"
                 >
                   About
@@ -686,6 +701,7 @@ exports[`With session 1`] = `
               </li>
               <li>
                 <a
+                  data-discover="true"
                   href="/projects"
                 >
                   Research Projects
@@ -715,6 +731,7 @@ exports[`With session 1`] = `
             >
               <li>
                 <a
+                  data-discover="true"
                   href="/tools/signs"
                 >
                   Signs
@@ -722,6 +739,7 @@ exports[`With session 1`] = `
               </li>
               <li>
                 <a
+                  data-discover="true"
                   href="/tools/dictionary"
                 >
                   Dictionary
@@ -729,6 +747,7 @@ exports[`With session 1`] = `
               </li>
               <li>
                 <a
+                  data-discover="true"
                   href="/tools/references"
                 >
                   Bibliography
@@ -749,6 +768,7 @@ exports[`With session 1`] = `
             >
               <li>
                 <a
+                  data-discover="true"
                   href="/impressum"
                 >
                   Impressum
@@ -756,6 +776,7 @@ exports[`With session 1`] = `
               </li>
               <li>
                 <a
+                  data-discover="true"
                   href="/datenschutz"
                 >
                   Datenschutz
@@ -913,6 +934,7 @@ exports[`Without session 1`] = `
         >
           <a
             class="navbar-brand"
+            data-discover="true"
             href="/"
             title="electronic Babylonian Library (eBL)"
           >
@@ -978,6 +1000,7 @@ exports[`Without session 1`] = `
               >
                 <a
                   class="nav-link"
+                  data-discover="true"
                   data-rr-ui-event-key="/library"
                   href="/library"
                 >
@@ -989,6 +1012,7 @@ exports[`Without session 1`] = `
               >
                 <a
                   class="nav-link active"
+                  data-discover="true"
                   data-rr-ui-event-key="/corpus"
                   href="/corpus"
                 >
@@ -1000,6 +1024,7 @@ exports[`Without session 1`] = `
               >
                 <a
                   class="nav-link"
+                  data-discover="true"
                   data-rr-ui-event-key="/about"
                   href="/about"
                 >
@@ -1011,6 +1036,7 @@ exports[`Without session 1`] = `
               >
                 <a
                   class="nav-link"
+                  data-discover="true"
                   data-rr-ui-event-key="/tools"
                   href="/tools"
                 >
@@ -1022,6 +1048,7 @@ exports[`Without session 1`] = `
               >
                 <a
                   class="nav-link"
+                  data-discover="true"
                   data-rr-ui-event-key="/projects"
                   href="/projects"
                 >
@@ -1115,6 +1142,7 @@ exports[`Without session 1`] = `
                 class="breadcrumb-item"
               >
                 <a
+                  data-discover="true"
                   href="/"
                 >
                   eBL
@@ -1156,6 +1184,7 @@ exports[`Without session 1`] = `
                   <a
                     aria-label="Learn more about Corpus"
                     class="AboutInlineLink Corpus__about-link"
+                    data-discover="true"
                     href="/about/corpus"
                     title="Learn more about Corpus"
                   >
@@ -1276,6 +1305,7 @@ exports[`Without session 1`] = `
                             class="col"
                           >
                             <a
+                              data-discover="true"
                               href="/corpus/L/1/1"
                             >
                               1
@@ -1295,6 +1325,7 @@ exports[`Without session 1`] = `
                             class="col"
                           >
                             <a
+                              data-discover="true"
                               href="/corpus/L/1/2"
                             >
                               2
@@ -1325,6 +1356,7 @@ exports[`Without session 1`] = `
                             class="col"
                           >
                             <a
+                              data-discover="true"
                               href="/corpus/L/2/1"
                             >
                               1
@@ -1355,6 +1387,7 @@ exports[`Without session 1`] = `
                             class="col"
                           >
                             <a
+                              data-discover="true"
                               href="/corpus/L/3/1"
                             >
                               1
@@ -1433,6 +1466,7 @@ exports[`Without session 1`] = `
                             class="col"
                           >
                             <a
+                              data-discover="true"
                               href="/corpus/D/3/1"
                             >
                               1
@@ -1479,6 +1513,7 @@ exports[`Without session 1`] = `
                             class="col"
                           >
                             <a
+                              data-discover="true"
                               href="/corpus/Med/1/1"
                             >
                               1
@@ -1573,6 +1608,7 @@ exports[`Without session 1`] = `
             >
               <li>
                 <a
+                  data-discover="true"
                   href="/about"
                 >
                   About
@@ -1580,6 +1616,7 @@ exports[`Without session 1`] = `
               </li>
               <li>
                 <a
+                  data-discover="true"
                   href="/projects"
                 >
                   Research Projects
@@ -1609,6 +1646,7 @@ exports[`Without session 1`] = `
             >
               <li>
                 <a
+                  data-discover="true"
                   href="/tools/signs"
                 >
                   Signs
@@ -1616,6 +1654,7 @@ exports[`Without session 1`] = `
               </li>
               <li>
                 <a
+                  data-discover="true"
                   href="/tools/dictionary"
                 >
                   Dictionary
@@ -1623,6 +1662,7 @@ exports[`Without session 1`] = `
               </li>
               <li>
                 <a
+                  data-discover="true"
                   href="/tools/references"
                 >
                   Bibliography
@@ -1643,6 +1683,7 @@ exports[`Without session 1`] = `
             >
               <li>
                 <a
+                  data-discover="true"
                   href="/impressum"
                 >
                   Impressum
@@ -1650,6 +1691,7 @@ exports[`Without session 1`] = `
               </li>
               <li>
                 <a
+                  data-discover="true"
                   href="/datenschutz"
                 >
                   Datenschutz

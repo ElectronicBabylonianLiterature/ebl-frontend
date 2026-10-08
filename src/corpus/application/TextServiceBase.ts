@@ -1,4 +1,4 @@
-import { stringify } from 'query-string'
+import { stringify } from 'common/utils/queryString'
 
 import { Chapter, DictionaryLineDisplay } from 'corpus/domain/chapter'
 import { ChapterId } from 'transliteration/domain/chapter-id'

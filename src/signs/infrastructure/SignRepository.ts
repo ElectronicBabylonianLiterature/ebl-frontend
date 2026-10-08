@@ -5,7 +5,7 @@ import Sign, {
   SignQuery,
   UnicodeAtf,
 } from 'signs/domain/Sign'
-import { stringify } from 'query-string'
+import { stringify } from 'common/utils/queryString'
 import { AnnotationToken } from 'fragmentarium/domain/annotation-token'
 import { AnnotationTokenType } from 'fragmentarium/domain/annotation'
 import { CroppedAnnotation } from 'signs/domain/CroppedAnnotation'

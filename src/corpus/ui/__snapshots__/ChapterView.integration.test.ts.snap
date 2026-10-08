@@ -16,6 +16,7 @@ exports[`Display chapter How to cite 1`] = `
         >
           <a
             class="navbar-brand"
+            data-discover="true"
             href="/"
             title="electronic Babylonian Library (eBL)"
           >
@@ -81,6 +82,7 @@ exports[`Display chapter How to cite 1`] = `
               >
                 <a
                   class="nav-link"
+                  data-discover="true"
                   data-rr-ui-event-key="/library"
                   href="/library"
                 >
@@ -92,6 +94,7 @@ exports[`Display chapter How to cite 1`] = `
               >
                 <a
                   class="nav-link"
+                  data-discover="true"
                   data-rr-ui-event-key="/corpus"
                   href="/corpus"
                 >
@@ -103,6 +106,7 @@ exports[`Display chapter How to cite 1`] = `
               >
                 <a
                   class="nav-link"
+                  data-discover="true"
                   data-rr-ui-event-key="/about"
                   href="/about"
                 >
@@ -114,6 +118,7 @@ exports[`Display chapter How to cite 1`] = `
               >
                 <a
                   class="nav-link"
+                  data-discover="true"
                   data-rr-ui-event-key="/tools"
                   href="/tools"
                 >
@@ -125,6 +130,7 @@ exports[`Display chapter How to cite 1`] = `
               >
                 <a
                   class="nav-link"
+                  data-discover="true"
                   data-rr-ui-event-key="/projects"
                   href="/projects"
                 >
@@ -221,6 +227,7 @@ exports[`Display chapter How to cite 1`] = `
                 class="breadcrumb-item"
               >
                 <a
+                  data-discover="true"
                   href="/"
                 >
                   eBL
@@ -230,6 +237,7 @@ exports[`Display chapter How to cite 1`] = `
                 class="breadcrumb-item"
               >
                 <a
+                  data-discover="true"
                   href="/corpus"
                 >
                   Corpus
@@ -239,6 +247,7 @@ exports[`Display chapter How to cite 1`] = `
                 class="breadcrumb-item"
               >
                 <a
+                  data-discover="true"
                   href="/corpus/L"
                 >
                   L
@@ -248,6 +257,7 @@ exports[`Display chapter How to cite 1`] = `
                 class="breadcrumb-item"
               >
                 <a
+                  data-discover="true"
                   href="/corpus/L/1/1"
                 >
                   I.1 Vu siscedeh ir lino oveagfes bohhi watil te zulreziv weemwin fodiric ipagiiki.
@@ -317,6 +327,7 @@ exports[`Display chapter How to cite 1`] = `
               </div>
               <a
                 class="btn btn-outline-primary"
+                data-discover="true"
                 href="/corpus/L/1/1/OB/The%20Only%20Chapter/edit"
               >
                 <i
@@ -696,6 +707,7 @@ exports[`Display chapter How to cite 1`] = `
             >
               <li>
                 <a
+                  data-discover="true"
                   href="/about"
                 >
                   About
@@ -703,6 +715,7 @@ exports[`Display chapter How to cite 1`] = `
               </li>
               <li>
                 <a
+                  data-discover="true"
                   href="/projects"
                 >
                   Research Projects
@@ -732,6 +745,7 @@ exports[`Display chapter How to cite 1`] = `
             >
               <li>
                 <a
+                  data-discover="true"
                   href="/tools/signs"
                 >
                   Signs
@@ -739,6 +753,7 @@ exports[`Display chapter How to cite 1`] = `
               </li>
               <li>
                 <a
+                  data-discover="true"
                   href="/tools/dictionary"
                 >
                   Dictionary
@@ -746,6 +761,7 @@ exports[`Display chapter How to cite 1`] = `
               </li>
               <li>
                 <a
+                  data-discover="true"
                   href="/tools/references"
                 >
                   Bibliography
@@ -766,6 +782,7 @@ exports[`Display chapter How to cite 1`] = `
             >
               <li>
                 <a
+                  data-discover="true"
                   href="/impressum"
                 >
                   Impressum
@@ -773,6 +790,7 @@ exports[`Display chapter How to cite 1`] = `
               </li>
               <li>
                 <a
+                  data-discover="true"
                   href="/datenschutz"
                 >
                   Datenschutz
@@ -930,6 +948,7 @@ exports[`Display chapter Show notes 1`] = `
         >
           <a
             class="navbar-brand"
+            data-discover="true"
             href="/"
             title="electronic Babylonian Library (eBL)"
           >
@@ -995,6 +1014,7 @@ exports[`Display chapter Show notes 1`] = `
               >
                 <a
                   class="nav-link"
+                  data-discover="true"
                   data-rr-ui-event-key="/library"
                   href="/library"
                 >
@@ -1006,6 +1026,7 @@ exports[`Display chapter Show notes 1`] = `
               >
                 <a
                   class="nav-link"
+                  data-discover="true"
                   data-rr-ui-event-key="/corpus"
                   href="/corpus"
                 >
@@ -1017,6 +1038,7 @@ exports[`Display chapter Show notes 1`] = `
               >
                 <a
                   class="nav-link"
+                  data-discover="true"
                   data-rr-ui-event-key="/about"
                   href="/about"
                 >
@@ -1028,6 +1050,7 @@ exports[`Display chapter Show notes 1`] = `
               >
                 <a
                   class="nav-link"
+                  data-discover="true"
                   data-rr-ui-event-key="/tools"
                   href="/tools"
                 >
@@ -1039,6 +1062,7 @@ exports[`Display chapter Show notes 1`] = `
               >
                 <a
                   class="nav-link"
+                  data-discover="true"
                   data-rr-ui-event-key="/projects"
                   href="/projects"
                 >
@@ -1135,6 +1159,7 @@ exports[`Display chapter Show notes 1`] = `
                 class="breadcrumb-item"
               >
                 <a
+                  data-discover="true"
                   href="/"
                 >
                   eBL
@@ -1144,6 +1169,7 @@ exports[`Display chapter Show notes 1`] = `
                 class="breadcrumb-item"
               >
                 <a
+                  data-discover="true"
                   href="/corpus"
                 >
                   Corpus
@@ -1153,6 +1179,7 @@ exports[`Display chapter Show notes 1`] = `
                 class="breadcrumb-item"
               >
                 <a
+                  data-discover="true"
                   href="/corpus/L"
                 >
                   L
@@ -1162,6 +1189,7 @@ exports[`Display chapter Show notes 1`] = `
                 class="breadcrumb-item"
               >
                 <a
+                  data-discover="true"
                   href="/corpus/L/1/1"
                 >
                   I.1 Vu siscedeh ir lino oveagfes bohhi watil te zulreziv weemwin fodiric ipagiiki.
@@ -1231,6 +1259,7 @@ exports[`Display chapter Show notes 1`] = `
               </div>
               <a
                 class="btn btn-outline-primary"
+                data-discover="true"
                 href="/corpus/L/1/1/OB/The%20Only%20Chapter/edit"
               >
                 <i
@@ -1627,6 +1656,7 @@ exports[`Display chapter Show notes 1`] = `
             >
               <li>
                 <a
+                  data-discover="true"
                   href="/about"
                 >
                   About
@@ -1634,6 +1664,7 @@ exports[`Display chapter Show notes 1`] = `
               </li>
               <li>
                 <a
+                  data-discover="true"
                   href="/projects"
                 >
                   Research Projects
@@ -1663,6 +1694,7 @@ exports[`Display chapter Show notes 1`] = `
             >
               <li>
                 <a
+                  data-discover="true"
                   href="/tools/signs"
                 >
                   Signs
@@ -1670,6 +1702,7 @@ exports[`Display chapter Show notes 1`] = `
               </li>
               <li>
                 <a
+                  data-discover="true"
                   href="/tools/dictionary"
                 >
                   Dictionary
@@ -1677,6 +1710,7 @@ exports[`Display chapter Show notes 1`] = `
               </li>
               <li>
                 <a
+                  data-discover="true"
                   href="/tools/references"
                 >
                   Bibliography
@@ -1697,6 +1731,7 @@ exports[`Display chapter Show notes 1`] = `
             >
               <li>
                 <a
+                  data-discover="true"
                   href="/impressum"
                 >
                   Impressum
@@ -1704,6 +1739,7 @@ exports[`Display chapter Show notes 1`] = `
               </li>
               <li>
                 <a
+                  data-discover="true"
                   href="/datenschutz"
                 >
                   Datenschutz
@@ -1861,6 +1897,7 @@ exports[`Display chapter Show parallels 1`] = `
         >
           <a
             class="navbar-brand"
+            data-discover="true"
             href="/"
             title="electronic Babylonian Library (eBL)"
           >
@@ -1926,6 +1963,7 @@ exports[`Display chapter Show parallels 1`] = `
               >
                 <a
                   class="nav-link"
+                  data-discover="true"
                   data-rr-ui-event-key="/library"
                   href="/library"
                 >
@@ -1937,6 +1975,7 @@ exports[`Display chapter Show parallels 1`] = `
               >
                 <a
                   class="nav-link"
+                  data-discover="true"
                   data-rr-ui-event-key="/corpus"
                   href="/corpus"
                 >
@@ -1948,6 +1987,7 @@ exports[`Display chapter Show parallels 1`] = `
               >
                 <a
                   class="nav-link"
+                  data-discover="true"
                   data-rr-ui-event-key="/about"
                   href="/about"
                 >
@@ -1959,6 +1999,7 @@ exports[`Display chapter Show parallels 1`] = `
               >
                 <a
                   class="nav-link"
+                  data-discover="true"
                   data-rr-ui-event-key="/tools"
                   href="/tools"
                 >
@@ -1970,6 +2011,7 @@ exports[`Display chapter Show parallels 1`] = `
               >
                 <a
                   class="nav-link"
+                  data-discover="true"
                   data-rr-ui-event-key="/projects"
                   href="/projects"
                 >
@@ -2066,6 +2108,7 @@ exports[`Display chapter Show parallels 1`] = `
                 class="breadcrumb-item"
               >
                 <a
+                  data-discover="true"
                   href="/"
                 >
                   eBL
@@ -2075,6 +2118,7 @@ exports[`Display chapter Show parallels 1`] = `
                 class="breadcrumb-item"
               >
                 <a
+                  data-discover="true"
                   href="/corpus"
                 >
                   Corpus
@@ -2084,6 +2128,7 @@ exports[`Display chapter Show parallels 1`] = `
                 class="breadcrumb-item"
               >
                 <a
+                  data-discover="true"
                   href="/corpus/L"
                 >
                   L
@@ -2093,6 +2138,7 @@ exports[`Display chapter Show parallels 1`] = `
                 class="breadcrumb-item"
               >
                 <a
+                  data-discover="true"
                   href="/corpus/L/1/1"
                 >
                   I.1 Vu siscedeh ir lino oveagfes bohhi watil te zulreziv weemwin fodiric ipagiiki.
@@ -2162,6 +2208,7 @@ exports[`Display chapter Show parallels 1`] = `
               </div>
               <a
                 class="btn btn-outline-primary"
+                data-discover="true"
                 href="/corpus/L/1/1/OB/The%20Only%20Chapter/edit"
               >
                 <i
@@ -2563,6 +2610,7 @@ exports[`Display chapter Show parallels 1`] = `
             >
               <li>
                 <a
+                  data-discover="true"
                   href="/about"
                 >
                   About
@@ -2570,6 +2618,7 @@ exports[`Display chapter Show parallels 1`] = `
               </li>
               <li>
                 <a
+                  data-discover="true"
                   href="/projects"
                 >
                   Research Projects
@@ -2599,6 +2648,7 @@ exports[`Display chapter Show parallels 1`] = `
             >
               <li>
                 <a
+                  data-discover="true"
                   href="/tools/signs"
                 >
                   Signs
@@ -2606,6 +2656,7 @@ exports[`Display chapter Show parallels 1`] = `
               </li>
               <li>
                 <a
+                  data-discover="true"
                   href="/tools/dictionary"
                 >
                   Dictionary
@@ -2613,6 +2664,7 @@ exports[`Display chapter Show parallels 1`] = `
               </li>
               <li>
                 <a
+                  data-discover="true"
                   href="/tools/references"
                 >
                   Bibliography
@@ -2633,6 +2685,7 @@ exports[`Display chapter Show parallels 1`] = `
             >
               <li>
                 <a
+                  data-discover="true"
                   href="/impressum"
                 >
                   Impressum
@@ -2640,6 +2693,7 @@ exports[`Display chapter Show parallels 1`] = `
               </li>
               <li>
                 <a
+                  data-discover="true"
                   href="/datenschutz"
                 >
                   Datenschutz
@@ -2797,6 +2851,7 @@ exports[`Display chapter Sidebar 1`] = `
         >
           <a
             class="navbar-brand"
+            data-discover="true"
             href="/"
             title="electronic Babylonian Library (eBL)"
           >
@@ -2862,6 +2917,7 @@ exports[`Display chapter Sidebar 1`] = `
               >
                 <a
                   class="nav-link"
+                  data-discover="true"
                   data-rr-ui-event-key="/library"
                   href="/library"
                 >
@@ -2873,6 +2929,7 @@ exports[`Display chapter Sidebar 1`] = `
               >
                 <a
                   class="nav-link"
+                  data-discover="true"
                   data-rr-ui-event-key="/corpus"
                   href="/corpus"
                 >
@@ -2884,6 +2941,7 @@ exports[`Display chapter Sidebar 1`] = `
               >
                 <a
                   class="nav-link"
+                  data-discover="true"
                   data-rr-ui-event-key="/about"
                   href="/about"
                 >
@@ -2895,6 +2953,7 @@ exports[`Display chapter Sidebar 1`] = `
               >
                 <a
                   class="nav-link"
+                  data-discover="true"
                   data-rr-ui-event-key="/tools"
                   href="/tools"
                 >
@@ -2906,6 +2965,7 @@ exports[`Display chapter Sidebar 1`] = `
               >
                 <a
                   class="nav-link"
+                  data-discover="true"
                   data-rr-ui-event-key="/projects"
                   href="/projects"
                 >
@@ -3002,6 +3062,7 @@ exports[`Display chapter Sidebar 1`] = `
                 class="breadcrumb-item"
               >
                 <a
+                  data-discover="true"
                   href="/"
                 >
                   eBL
@@ -3011,6 +3072,7 @@ exports[`Display chapter Sidebar 1`] = `
                 class="breadcrumb-item"
               >
                 <a
+                  data-discover="true"
                   href="/corpus"
                 >
                   Corpus
@@ -3020,6 +3082,7 @@ exports[`Display chapter Sidebar 1`] = `
                 class="breadcrumb-item"
               >
                 <a
+                  data-discover="true"
                   href="/corpus/L"
                 >
                   L
@@ -3029,6 +3092,7 @@ exports[`Display chapter Sidebar 1`] = `
                 class="breadcrumb-item"
               >
                 <a
+                  data-discover="true"
                   href="/corpus/L/1/1"
                 >
                   I.1 Vu siscedeh ir lino oveagfes bohhi watil te zulreziv weemwin fodiric ipagiiki.
@@ -3098,6 +3162,7 @@ exports[`Display chapter Sidebar 1`] = `
               </div>
               <a
                 class="btn btn-outline-primary"
+                data-discover="true"
                 href="/corpus/L/1/1/OB/The%20Only%20Chapter/edit"
               >
                 <i
@@ -3725,6 +3790,7 @@ exports[`Display chapter Sidebar 1`] = `
             >
               <li>
                 <a
+                  data-discover="true"
                   href="/about"
                 >
                   About
@@ -3732,6 +3798,7 @@ exports[`Display chapter Sidebar 1`] = `
               </li>
               <li>
                 <a
+                  data-discover="true"
                   href="/projects"
                 >
                   Research Projects
@@ -3761,6 +3828,7 @@ exports[`Display chapter Sidebar 1`] = `
             >
               <li>
                 <a
+                  data-discover="true"
                   href="/tools/signs"
                 >
                   Signs
@@ -3768,6 +3836,7 @@ exports[`Display chapter Sidebar 1`] = `
               </li>
               <li>
                 <a
+                  data-discover="true"
                   href="/tools/dictionary"
                 >
                   Dictionary
@@ -3775,6 +3844,7 @@ exports[`Display chapter Sidebar 1`] = `
               </li>
               <li>
                 <a
+                  data-discover="true"
                   href="/tools/references"
                 >
                   Bibliography
@@ -3795,6 +3865,7 @@ exports[`Display chapter Sidebar 1`] = `
             >
               <li>
                 <a
+                  data-discover="true"
                   href="/impressum"
                 >
                   Impressum
@@ -3802,6 +3873,7 @@ exports[`Display chapter Sidebar 1`] = `
               </li>
               <li>
                 <a
+                  data-discover="true"
                   href="/datenschutz"
                 >
                   Datenschutz
@@ -3959,6 +4031,7 @@ exports[`Display chapter Snapshot 1`] = `
         >
           <a
             class="navbar-brand"
+            data-discover="true"
             href="/"
             title="electronic Babylonian Library (eBL)"
           >
@@ -4024,6 +4097,7 @@ exports[`Display chapter Snapshot 1`] = `
               >
                 <a
                   class="nav-link"
+                  data-discover="true"
                   data-rr-ui-event-key="/library"
                   href="/library"
                 >
@@ -4035,6 +4109,7 @@ exports[`Display chapter Snapshot 1`] = `
               >
                 <a
                   class="nav-link"
+                  data-discover="true"
                   data-rr-ui-event-key="/corpus"
                   href="/corpus"
                 >
@@ -4046,6 +4121,7 @@ exports[`Display chapter Snapshot 1`] = `
               >
                 <a
                   class="nav-link"
+                  data-discover="true"
                   data-rr-ui-event-key="/about"
                   href="/about"
                 >
@@ -4057,6 +4133,7 @@ exports[`Display chapter Snapshot 1`] = `
               >
                 <a
                   class="nav-link"
+                  data-discover="true"
                   data-rr-ui-event-key="/tools"
                   href="/tools"
                 >
@@ -4068,6 +4145,7 @@ exports[`Display chapter Snapshot 1`] = `
               >
                 <a
                   class="nav-link"
+                  data-discover="true"
                   data-rr-ui-event-key="/projects"
                   href="/projects"
                 >
@@ -4164,6 +4242,7 @@ exports[`Display chapter Snapshot 1`] = `
                 class="breadcrumb-item"
               >
                 <a
+                  data-discover="true"
                   href="/"
                 >
                   eBL
@@ -4173,6 +4252,7 @@ exports[`Display chapter Snapshot 1`] = `
                 class="breadcrumb-item"
               >
                 <a
+                  data-discover="true"
                   href="/corpus"
                 >
                   Corpus
@@ -4182,6 +4262,7 @@ exports[`Display chapter Snapshot 1`] = `
                 class="breadcrumb-item"
               >
                 <a
+                  data-discover="true"
                   href="/corpus/L"
                 >
                   L
@@ -4191,6 +4272,7 @@ exports[`Display chapter Snapshot 1`] = `
                 class="breadcrumb-item"
               >
                 <a
+                  data-discover="true"
                   href="/corpus/L/1/1"
                 >
                   I.1 Vu siscedeh ir lino oveagfes bohhi watil te zulreziv weemwin fodiric ipagiiki.
@@ -4260,6 +4342,7 @@ exports[`Display chapter Snapshot 1`] = `
               </div>
               <a
                 class="btn btn-outline-primary"
+                data-discover="true"
                 href="/corpus/L/1/1/OB/The%20Only%20Chapter/edit"
               >
                 <i
@@ -4639,6 +4722,7 @@ exports[`Display chapter Snapshot 1`] = `
             >
               <li>
                 <a
+                  data-discover="true"
                   href="/about"
                 >
                   About
@@ -4646,6 +4730,7 @@ exports[`Display chapter Snapshot 1`] = `
               </li>
               <li>
                 <a
+                  data-discover="true"
                   href="/projects"
                 >
                   Research Projects
@@ -4675,6 +4760,7 @@ exports[`Display chapter Snapshot 1`] = `
             >
               <li>
                 <a
+                  data-discover="true"
                   href="/tools/signs"
                 >
                   Signs
@@ -4682,6 +4768,7 @@ exports[`Display chapter Snapshot 1`] = `
               </li>
               <li>
                 <a
+                  data-discover="true"
                   href="/tools/dictionary"
                 >
                   Dictionary
@@ -4689,6 +4776,7 @@ exports[`Display chapter Snapshot 1`] = `
               </li>
               <li>
                 <a
+                  data-discover="true"
                   href="/tools/references"
                 >
                   Bibliography
@@ -4709,6 +4797,7 @@ exports[`Display chapter Snapshot 1`] = `
             >
               <li>
                 <a
+                  data-discover="true"
                   href="/impressum"
                 >
                   Impressum
@@ -4716,6 +4805,7 @@ exports[`Display chapter Snapshot 1`] = `
               </li>
               <li>
                 <a
+                  data-discover="true"
                   href="/datenschutz"
                 >
                   Datenschutz
