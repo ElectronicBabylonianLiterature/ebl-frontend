@@ -18,6 +18,7 @@ on:
     # Base branches to analyse pull requests against. Stacked PRs target a
     # long-lived branch rather than master, so those bases are listed too.
     branches: [master, 'chore/**', 'feature/**', 'fix/**']
+  merge_group:
   schedule:
     - cron: '16 15 * * 1'
 
