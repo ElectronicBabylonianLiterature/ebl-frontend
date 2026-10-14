@@ -1,18 +1,8 @@
 import React from 'react'
 import { render, screen, waitFor } from '@testing-library/react'
-import { MemoryRouter, useLocation } from 'react-router-dom'
+import { MemoryRouter } from 'react-router-dom'
+import LocationDisplay from 'test-support/LocationDisplay'
 import { Redirect } from 'router/compat'
-
-function LocationDisplay(): JSX.Element {
-  const location = useLocation()
-  return (
-    <span data-testid="location">
-      {location.pathname}
-      {location.search}
-      {location.hash}
-    </span>
-  )
-}
 
 function renderRedirect(initialEntry: string, to: string): void {
   render(

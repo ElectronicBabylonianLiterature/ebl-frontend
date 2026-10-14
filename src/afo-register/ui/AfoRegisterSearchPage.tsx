@@ -11,11 +11,7 @@ import { Markdown } from 'common/ui/Markdown'
 import AboutInlineLink from 'common/ui/AboutInlineLink'
 
 function getAfoRegisterQueryFromLocation(search: string): AfoRegisterQuery {
-  const query = parse(search) as AfoRegisterQuery
-  if (!query) {
-    return { text: '', textNumber: '' }
-  }
-  const { text, textNumber } = query
+  const { text, textNumber } = parse(search) as AfoRegisterQuery
   return { text: text ?? '', textNumber: textNumber ?? '' }
 }
 

@@ -56,7 +56,7 @@ function SignsSearchForm({ sign, signQuery }: Props): JSX.Element {
       : undefined,
   )
 
-  const query = (event) => {
+  const query = (event: React.MouseEvent<HTMLButtonElement>): void => {
     event.preventDefault()
     if (unnormalizedSignQuery) {
       navigate(
@@ -72,7 +72,7 @@ function SignsSearchForm({ sign, signQuery }: Props): JSX.Element {
       )
     }
   }
-  const querySignList = (event) => {
+  const querySignList = (event: React.MouseEvent<HTMLButtonElement>): void => {
     event.preventDefault()
     if (signQueryState.listsName && signQueryState.listsNumber) {
       navigate(
@@ -112,6 +112,7 @@ function SignsSearchForm({ sign, signQuery }: Props): JSX.Element {
             <Form.Check
               readOnly
               type="radio"
+              id="signs-search-include-homophones"
               label="Include Homophones"
               checked={signQueryState.isIncludeHomophones || false}
               onClick={() =>
@@ -127,6 +128,7 @@ function SignsSearchForm({ sign, signQuery }: Props): JSX.Element {
             <Form.Check
               type="radio"
               readOnly
+              id="signs-search-composite-signs"
               label="Composite Signs"
               checked={signQueryState.isComposite || false}
               onClick={() =>

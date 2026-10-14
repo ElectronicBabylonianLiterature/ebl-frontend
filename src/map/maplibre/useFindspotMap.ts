@@ -22,6 +22,7 @@ import {
   showPointerCursor,
 } from 'map/maplibre/mapCursor'
 import {
+  MAP_STYLE_LOAD_EVENT,
   SOURCE_ID,
   clusterCountLayer,
   clusterLayer,
@@ -167,7 +168,7 @@ export default function useFindspotMap(
       reportError: (error) =>
         latestServicesRef.current.errorReporter.captureException(error),
     }
-    const handleLoad = () => {
+    const handleStyleLoad = () => {
       onMapBackgroundErrorChange?.(false)
       const loadedProvenances = latestProvenancesRef.current
       if (loadedProvenances) {
@@ -191,7 +192,7 @@ export default function useFindspotMap(
       }
     }
 
-    map.on('load', handleLoad)
+    map.on(MAP_STYLE_LOAD_EVENT, handleStyleLoad)
     map.on('click', handleClick)
     map.on('mousemove', handleMouseMove)
     map.on('error', handleError)
@@ -202,7 +203,7 @@ export default function useFindspotMap(
 
     return () => {
       isActive = false
-      map.off('load', handleLoad)
+      map.off(MAP_STYLE_LOAD_EVENT, handleStyleLoad)
       map.off('click', handleClick)
       map.off('mousemove', handleMouseMove)
       map.off('error', handleError)

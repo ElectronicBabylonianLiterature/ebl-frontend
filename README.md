@@ -170,6 +170,8 @@ In production environments [INLINE_RUNTIME_CHUNK](https://create-react-app.dev/d
 Updating [react-image-annotation](https://github.com/Secretmapper/react-image-annotation) could break `Annotation.js`
 in the annotation-tool.
 
+`package.json` forces `webpack-dev-server` 5 through `resolutions`, although `react-scripts` asks for version 4. `configureDevServer` in `craco.config.js` translates the version 4 options that `react-scripts` produces (`https`, `onBeforeSetupMiddleware`, `onAfterSetupMiddleware`) into the version 5 `server` and `setupMiddlewares` options. When updating `react-scripts`, `@craco/craco` or `webpack-dev-server`, check that `yarn start` still compiles and serves the app, including with `HTTPS=true`.
+
 ## Lighthouse
 
 Google [Lighthouse](https://developers.google.com/web/tools/lighthouse/) is installed as a development dependency and can be run via yarn:

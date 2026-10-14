@@ -1,6 +1,7 @@
 import React from 'react'
 import { act, render, screen } from '@testing-library/react'
-import { MemoryRouter, useLocation } from 'react-router-dom'
+import { MemoryRouter } from 'react-router-dom'
+import LocationDisplay from 'test-support/LocationDisplay'
 import createAuth0Config from 'auth/createAuth0Config'
 import { Auth0Provider } from 'auth/react-auth0-spa'
 import { scopeString } from 'auth/Auth'
@@ -26,15 +27,11 @@ const mockAuth0Config = {
   audience: 'test-audience',
 }
 
-function LocationProbe(): JSX.Element {
-  return <div data-testid="location">{useLocation().pathname}</div>
-}
-
 function renderProvider(): ReturnType<typeof render> {
   return render(
     <MemoryRouter initialEntries={['/start']}>
       <InjectedAuth0Provider>
-        <LocationProbe />
+        <LocationDisplay />
       </InjectedAuth0Provider>
     </MemoryRouter>,
   )
@@ -66,7 +63,7 @@ describe('auth0 configuration', () => {
     rerender(
       <MemoryRouter>
         <InjectedAuth0Provider>
-          <LocationProbe />
+          <LocationDisplay />
         </InjectedAuth0Provider>
       </MemoryRouter>,
     )
@@ -102,7 +99,7 @@ describe('auth0 configuration', () => {
     rerender(
       <MemoryRouter>
         <InjectedAuth0Provider>
-          <LocationProbe />
+          <LocationDisplay />
         </InjectedAuth0Provider>
       </MemoryRouter>,
     )

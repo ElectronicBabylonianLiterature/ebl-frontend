@@ -2,7 +2,9 @@ import React from 'react'
 import { render, screen } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 import Chance from 'chance'
-import FragmentLink from 'fragmentarium/ui/FragmentLink'
+import FragmentLink, {
+  encodeFragmentNumber,
+} from 'fragmentarium/ui/FragmentLink'
 import Folio from 'fragmentarium/domain/Folio'
 
 const chance = new Chance('FragmentLink')
@@ -92,3 +94,24 @@ function expectToRenderChildren(renderFragmentLink: () => void) {
     expect(screen.getByText(children)).toBeInTheDocument()
   })
 }
+
+describe('encodeFragmentNumber', () => {
+  it('replaces lone surrogates before encoding', () => {
+    expect(encodeFragmentNumber('K.\uD800')).toBe('K.%EF%BF%BD')
+  })
+
+  it('encodes the number as is without String.prototype.toWellFormed', () => {
+    const toWellFormed = Object.getOwnPropertyDescriptor(
+      String.prototype,
+      'toWellFormed',
+    )
+    Reflect.deleteProperty(String.prototype, 'toWellFormed')
+    try {
+      expect(encodeFragmentNumber('K.1 a')).toBe('K.1%20a')
+    } finally {
+      if (toWellFormed) {
+        Reflect.defineProperty(String.prototype, 'toWellFormed', toWellFormed)
+      }
+    }
+  })
+})

@@ -1,10 +1,11 @@
 import React from 'react'
 import { render, type RenderResult } from '@testing-library/react'
-import { MemoryRouter, useLocation } from 'react-router-dom'
+import { MemoryRouter } from 'react-router-dom'
 import { ProvenanceSource } from 'map/ui/useProvenances'
 import { ProvenanceRecord } from 'fragmentarium/domain/Provenance'
 import ErrorReporterContext, { type ErrorReporter } from 'ErrorReporterContext'
 import MapTab from 'map/ui/MapTab'
+import LocationDisplay from 'test-support/LocationDisplay'
 
 export const mockCaptureException = jest.fn()
 
@@ -40,21 +41,12 @@ export function makeRejectingFragmentService(reason: string): ProvenanceSource {
 
 export const CURRENT_LOCATION_TEST_ID = 'current-location'
 
-function CurrentLocation(): JSX.Element {
-  const location = useLocation()
-  return (
-    <div data-testid={CURRENT_LOCATION_TEST_ID}>
-      {`${location.pathname}${location.search}`}
-    </div>
-  )
-}
-
 export function renderMapTab(fragmentService: ProvenanceSource): RenderResult {
   return render(
     <ErrorReporterContext.Provider value={mockErrorReporter}>
       <MemoryRouter>
         <MapTab fragmentService={fragmentService} />
-        <CurrentLocation />
+        <LocationDisplay testId={CURRENT_LOCATION_TEST_ID} />
       </MemoryRouter>
     </ErrorReporterContext.Provider>,
   )

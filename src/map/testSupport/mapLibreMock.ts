@@ -1,3 +1,4 @@
+import { MAP_STYLE_LOAD_EVENT } from 'map/maplibre/mapLayers'
 const addedLayerIds = new Set<string>()
 
 function rememberAddedLayer(layer: { id: string }): void {
@@ -102,7 +103,7 @@ function rememberHandler(
     typeof layerOrCallback === 'string' ? layerOrCallback : undefined
   const handler = (callback ?? layerOrCallback) as MockEventHandler
   mockEventHandlers[eventKey(event, layerId)] = handler
-  if (event === 'load' && mockLoadImmediately) {
+  if (event === MAP_STYLE_LOAD_EVENT && mockLoadImmediately) {
     handler()
   }
 }

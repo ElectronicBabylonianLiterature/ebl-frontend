@@ -12,6 +12,7 @@ import {
   triggerMapEvent,
 } from 'map/ui/MapTab.testSupport'
 import { MAP_STYLE_URL } from 'map/maplibre/mapBackgroundError'
+import { MAP_STYLE_LOAD_EVENT } from 'map/maplibre/mapLayers'
 
 jest.mock('maplibre-gl')
 
@@ -85,7 +86,7 @@ describe('MapTab map errors', () => {
     expect(screen.getByText(BACKGROUND_WARNING)).toBeInTheDocument()
 
     act(() => {
-      triggerMapEvent('load')
+      triggerMapEvent(MAP_STYLE_LOAD_EVENT)
     })
 
     expect(screen.queryByText(BACKGROUND_WARNING)).not.toBeInTheDocument()
