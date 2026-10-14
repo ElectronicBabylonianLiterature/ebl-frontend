@@ -5,6 +5,7 @@ on:
     branches: [master]
   pull_request:
     branches: [master, 'chore/**', 'feature/**', 'fix/**']
+  merge_group:
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -73,21 +74,44 @@ jobs:
         if: ${{ !cancelled() && steps.install.outcome == 'success' }}
         run: yarn build:ci-stable
 
-      # Coverage is uploaded only from master pushes and PRs based on master.
+      # Coverage is uploaded only from master pushes, merge queue builds and
+      # PRs based on master.
       # A stacked PR is measured against its own base, so uploading it would
       # overwrite the master baseline with a partial figure. Stacked PRs
       # therefore report no coverage to qlty - check them locally with
       # `yarn test:ci`, which enforces the same thresholds from craco.config.js.
       - uses: qltysh/qlty-action/coverage@08a0a862c159eae9b9003081da6663d96efef637 # v2.3.0
-        if: github.event_name == 'push' || github.base_ref == 'master'
+        if: github.event_name == 'push' || github.event_name == 'merge_group' || github.base_ref == 'master'
         with:
           token: ${{ secrets.QLTY_COVERAGE_TOKEN }}
           files: coverage/lcov.info
+
+  docker-build:
+    if: github.event_name == 'merge_group'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
+
+      - uses: docker/setup-buildx-action@8d2750c68a42422c14e847fe6c8ac0403b4cbd6f # v3.12.0
+
+      - uses: docker/build-push-action@ca052bb54ab0790a636c9b5f226502c73d547a25 # v5.4.0
+        with:
+          build-args: |
+            REACT_APP_DICTIONARY_API_URL=/api
+          context: .
+          file: ./Dockerfile
+          push: false
+
   docker:
     if: github.event_name == 'push' && github.ref == 'refs/heads/master'
     needs: [test]
     runs-on: ubuntu-latest
-    steps:
+    env:
+      DICTIONARY_API_URL: /api
+      IMAGE_TAGS: |
+        ebl.badw.de/ebl-frontend:master
+        ebl.badw.de/ebl-frontend:master.${{ github.run_number }}
+    steps: &docker-steps
       - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
 
       - uses: docker/setup-buildx-action@8d2750c68a42422c14e847fe6c8ac0403b4cbd6f # v3.12.0
@@ -98,8 +122,7 @@ jobs:
           username: ${{ secrets.EBL_REGISTRY_USERNAME }}
           password: ${{ secrets.EBL_REGISTRY_PASSWORD }}
 
-      - id: docker_build
-        uses: docker/build-push-action@ca052bb54ab0790a636c9b5f226502c73d547a25 # v5.4.0
+      - uses: docker/build-push-action@ca052bb54ab0790a636c9b5f226502c73d547a25 # v5.4.0
         with:
           build-args: |
             REACT_APP_AUTH0_DOMAIN=auth.ebl.lmu.de
@@ -107,45 +130,19 @@ jobs:
             REACT_APP_INFO_EMAIL=ebl-info@culture.lmu.de
             REACT_APP_AUTH0_CLIENT_ID=${{ secrets.REACT_APP_AUTH0_CLIENT_ID }}
             REACT_APP_AUTH0_AUDIENCE=${{ secrets.REACT_APP_AUTH0_AUDIENCE }}
-            REACT_APP_DICTIONARY_API_URL=/api
+            REACT_APP_DICTIONARY_API_URL=${{ env.DICTIONARY_API_URL }}
             REACT_APP_SENTRY_DSN=${{ secrets.REACT_APP_SENTRY_DSN }}
             REACT_APP_GA_TRACKING_ID=${{ secrets.REACT_APP_GA_TRACKING_ID }}
           context: .
           file: ./Dockerfile
           push: true
-          tags: |
-            ebl.badw.de/ebl-frontend:master
-            ${{format('ebl.badw.de/ebl-frontend:master.{0}', github.run_number)}}
+          tags: ${{ env.IMAGE_TAGS }}
 
   docker-test:
     if: github.event_name == 'push' && github.ref == 'refs/heads/master'
     needs: [test]
     runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
-
-      - uses: docker/setup-buildx-action@8d2750c68a42422c14e847fe6c8ac0403b4cbd6f # v3.12.0
-
-      - uses: docker/login-action@c94ce9fb468520275223c153574b00df6fe4bcc9 # v3.7.0
-        with:
-          registry: ebl.badw.de
-          username: ${{ secrets.EBL_REGISTRY_USERNAME }}
-          password: ${{ secrets.EBL_REGISTRY_PASSWORD }}
-
-      - id: docker_build
-        uses: docker/build-push-action@ca052bb54ab0790a636c9b5f226502c73d547a25 # v5.4.0
-        with:
-          build-args: |
-            REACT_APP_AUTH0_DOMAIN=auth.ebl.lmu.de
-            REACT_APP_CORRECTIONS_EMAIL=ebl-support+corrections@culture.lmu.de
-            REACT_APP_INFO_EMAIL=ebl-info@culture.lmu.de
-            REACT_APP_AUTH0_CLIENT_ID=${{ secrets.REACT_APP_AUTH0_CLIENT_ID }}
-            REACT_APP_AUTH0_AUDIENCE=${{ secrets.REACT_APP_AUTH0_AUDIENCE }}
-            REACT_APP_DICTIONARY_API_URL=/test/api
-            REACT_APP_SENTRY_DSN=${{ secrets.REACT_APP_SENTRY_DSN }}
-            REACT_APP_GA_TRACKING_ID=${{ secrets.REACT_APP_GA_TRACKING_ID }}
-          context: .
-          file: ./Dockerfile
-          push: true
-          tags: |
-            ebl.badw.de/ebl-frontend:test
+    env:
+      DICTIONARY_API_URL: /test/api
+      IMAGE_TAGS: ebl.badw.de/ebl-frontend:test
+    steps: *docker-steps
