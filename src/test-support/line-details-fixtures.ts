@@ -7,14 +7,14 @@ import { PeriodModifiers, Periods } from 'common/utils/period'
 import { Provenances } from 'corpus/domain/provenance'
 import { Factory } from 'fishery'
 import { EmptyLine } from 'transliteration/domain/line'
-import { singleRuling } from './lines/dollar'
-import note from './lines/note'
-import textLine from './lines/text-line'
-import { referenceFactory } from './bibliography-fixtures'
-import { oldSiglumFactory } from './old-siglum-fixtures'
-import { joinFactory } from './join-fixtures'
+import { singleRuling } from 'test-support/lines/dollar'
+import note from 'test-support/lines/note'
+import textLine from 'test-support/lines/text-line'
+import { referenceFactory } from 'test-support/bibliography-fixtures'
+import { oldSiglumFactory } from 'test-support/old-siglum-fixtures'
+import { joinFactory } from 'test-support/join-fixtures'
 
-const defaultChance = new Chance()
+const defaultChance = new Chance('line-details-fixtures')
 
 class ManuscriptLineDisplayFactory extends Factory<
   ManuscriptLineDisplay,
@@ -47,16 +47,20 @@ export const manuscriptLineDisplayFactory = ManuscriptLineDisplayFactory.define(
     const chance = transientParams.chance ?? defaultChance
     const museumNumber = `${defaultChance.word()}.${sequence}`
 
-    return new ManuscriptLineDisplay(
-      associations.provenance ??
+    return new ManuscriptLineDisplay({
+      provenance:
+        associations.provenance ??
         chance.pickone(
           _.without(Object.values(Provenances), Provenances['Standard Text']),
         ),
-      associations.periodModifier ??
+      periodModifier:
+        associations.periodModifier ??
         chance.pickone(Object.values(PeriodModifiers)),
-      associations.period ??
+      period:
+        associations.period ??
         chance.pickone(_.without(Object.values(Periods), Periods.None)),
-      associations.type ??
+      type:
+        associations.type ??
         chance.pickone(
           _.without(
             Object.values(ManuscriptTypes),
@@ -64,8 +68,9 @@ export const manuscriptLineDisplayFactory = ManuscriptLineDisplayFactory.define(
             ManuscriptTypes.Parallel,
           ),
         ),
-      chance.word(),
-      associations.oldSigla ??
+      siglumDisambiguator: chance.word(),
+      oldSigla:
+        associations.oldSigla ??
         oldSiglumFactory.buildList(
           1,
           {},
@@ -73,18 +78,19 @@ export const manuscriptLineDisplayFactory = ManuscriptLineDisplayFactory.define(
             transient: { chance },
           },
         ),
-      chance.pickone([[], ['r'], ['o'], ['o', 'i'], ['iii']]),
-      associations.line ?? textLine,
-      associations.paratext ??
+      labels: chance.pickone([[], ['r'], ['o'], ['o', 'i'], ['iii']]),
+      line: associations.line ?? textLine,
+      paratext:
+        associations.paratext ??
         chance.pickone([[], [singleRuling], [note], [note, singleRuling]]),
-      associations.references ?? referenceFactory.buildList(2),
-      associations.joins ?? [
+      references: associations.references ?? referenceFactory.buildList(2),
+      joins: associations.joins ?? [
         [joinFactory.build({ museumNumber, isInFragmentarium: true })],
         [joinFactory.build()],
       ],
-      museumNumber,
-      associations.isInFragmentarium ?? false,
-      associations.accession ?? chance.word(),
-    )
+      museumNumber: museumNumber,
+      isInFragmentarium: associations.isInFragmentarium ?? false,
+      accession: associations.accession ?? chance.word(),
+    })
   },
 )

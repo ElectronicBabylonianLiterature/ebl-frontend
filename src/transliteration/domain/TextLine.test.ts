@@ -5,7 +5,7 @@ import {
   implicitFirstColumn,
   span,
 } from 'test-support/lines/text-columns'
-import { createColumns, numberOfColumns } from './columns'
+import { createColumns, numberOfColumns } from 'transliteration/domain/columns'
 
 test.each([
   emptyFirstColumn,

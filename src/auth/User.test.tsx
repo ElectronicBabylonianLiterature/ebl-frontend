@@ -1,11 +1,11 @@
 import React from 'react'
 import { render, fireEvent, screen } from '@testing-library/react'
-import User from './User'
+import User from 'auth/User'
 import {
   AuthenticationContext,
   AuthenticationService,
   User as EblUser,
-} from './Auth'
+} from 'auth/Auth'
 import { Session } from 'auth/Session'
 
 let auth: AuthenticationService

@@ -72,7 +72,7 @@ export const alignedManuscriptToken: Token = {
 jest.mock('corpus/application/TextService')
 
 const MockTextService = TextService as jest.Mock<jest.Mocked<TextService>>
-const textServiceMock = new MockTextService()
+export const textServiceMock = new MockTextService()
 
 export const lineInfo: LineInfo = {
   chapterId: {

@@ -14,7 +14,7 @@ import {
   compareStandardText,
   getProvenanceByName,
   Provenance,
-} from './provenance'
+} from 'corpus/domain/provenance'
 
 export const ManuscriptTypes = {
   None: { name: 'None', abbreviation: '', displayName: '-', order: null },
@@ -123,26 +123,75 @@ export class OldSiglum {
   ) {}
 }
 
+export interface ManuscriptProps {
+  readonly id: number | null
+  readonly siglumDisambiguator: string
+  readonly oldSigla: OldSiglum[]
+  readonly museumNumber: string
+  readonly accession: string
+  readonly periodModifier: PeriodModifier
+  readonly period: Period
+  readonly provenance: Provenance
+  readonly type: ManuscriptType
+  readonly notes: string
+  readonly colophon: string
+  readonly unplacedLines: string
+  readonly references: readonly Reference[]
+  readonly joins: Joins
+  readonly isInFragmentarium: boolean
+}
+
 export class Manuscript {
   readonly [immerable] = true
+  readonly id: number | null
+  readonly siglumDisambiguator: string
+  readonly oldSigla: OldSiglum[]
+  readonly museumNumber: string
+  readonly accession: string
+  readonly periodModifier: PeriodModifier
+  readonly period: Period
+  readonly provenance: Provenance
+  readonly type: ManuscriptType
+  readonly notes: string
+  readonly colophon: string
+  readonly unplacedLines: string
+  readonly references: readonly Reference[]
+  readonly joins: Joins
+  readonly isInFragmentarium: boolean
 
-  constructor(
-    readonly id: number | null = null,
-    readonly siglumDisambiguator: string = '',
-    readonly oldSigla: OldSiglum[] = [],
-    readonly museumNumber: string = '',
-    readonly accession: string = '',
-    readonly periodModifier: PeriodModifier = PeriodModifiers.None,
-    readonly period: Period = Periods['Neo-Assyrian'],
-    readonly provenance: Provenance = getProvenanceByName('Nineveh'),
-    readonly type: ManuscriptType = ManuscriptTypes.Library,
-    readonly notes: string = '',
-    readonly colophon: string = '',
-    readonly unplacedLines: string = '',
-    readonly references: readonly Reference[] = [],
-    readonly joins: Joins = [],
-    readonly isInFragmentarium: boolean = false,
-  ) {}
+  constructor({
+    id = null,
+    siglumDisambiguator = '',
+    oldSigla = [],
+    museumNumber = '',
+    accession = '',
+    periodModifier = PeriodModifiers.None,
+    period = Periods['Neo-Assyrian'],
+    provenance = getProvenanceByName('Nineveh'),
+    type = ManuscriptTypes.Library,
+    notes = '',
+    colophon = '',
+    unplacedLines = '',
+    references = [],
+    joins = [],
+    isInFragmentarium = false,
+  }: Partial<ManuscriptProps> = {}) {
+    this.id = id
+    this.siglumDisambiguator = siglumDisambiguator
+    this.oldSigla = oldSigla
+    this.museumNumber = museumNumber
+    this.accession = accession
+    this.periodModifier = periodModifier
+    this.period = period
+    this.provenance = provenance
+    this.type = type
+    this.notes = notes
+    this.colophon = colophon
+    this.unplacedLines = unplacedLines
+    this.references = references
+    this.joins = joins
+    this.isInFragmentarium = isInFragmentarium
+  }
 
   get siglum(): string {
     return [

@@ -4,8 +4,8 @@ import { Popover, OverlayTrigger, Button } from 'react-bootstrap'
 import _ from 'lodash'
 import HelpTrigger from 'common/ui/HelpTrigger'
 import { UncuratedReference } from 'fragmentarium/domain/fragment'
-import UncuratedReferencesList from './UncuratedReferencesList'
-import './UncuratedReferences.css'
+import UncuratedReferencesList from 'fragmentarium/ui/info/UncuratedReferencesList'
+import 'fragmentarium/ui/info/UncuratedReferences.css'
 
 type Props = {
   readonly uncuratedReferences: ReadonlyArray<UncuratedReference>

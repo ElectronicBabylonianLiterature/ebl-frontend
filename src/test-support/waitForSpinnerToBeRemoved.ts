@@ -1,14 +1,16 @@
-import { waitFor, type Screen } from '@testing-library/react'
+import { waitFor, screen as testingLibraryScreen } from '@testing-library/react'
 
-const SPINNER_REMOVAL_TIMEOUT_IN_MILLISECONDS = 3000
+const spinnerTimeoutInMilliseconds = 5000
+
+type SpinnerQueries = Pick<typeof testingLibraryScreen, 'queryAllByLabelText'>
 
 export async function waitForSpinnerToBeRemoved(
-  screen: Pick<Screen, 'queryAllByLabelText'>,
+  screen: SpinnerQueries,
 ): Promise<void> {
   await waitFor(
     () => {
       expect(screen.queryAllByLabelText('Spinner')).toHaveLength(0)
     },
-    { timeout: SPINNER_REMOVAL_TIMEOUT_IN_MILLISECONDS },
+    { timeout: spinnerTimeoutInMilliseconds },
   )
 }

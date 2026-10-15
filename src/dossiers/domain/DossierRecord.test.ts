@@ -3,6 +3,7 @@ import { PeriodModifiers, Periods } from 'common/utils/period'
 import { Provenances } from 'corpus/domain/provenance'
 import { referenceDtoFactory } from 'test-support/bibliography-fixtures'
 import Reference from 'bibliography/domain/Reference'
+import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 import _kings from 'chronology/domain/Kings.json'
 
 describe('DossierRecord', () => {
@@ -39,14 +40,14 @@ describe('DossierRecord', () => {
         uncertain: false,
       })
       expect(record.references).toEqual(
-        references.map(
-          (reference) =>
-            new Reference(
-              reference.type,
-              reference.pages,
-              reference.notes,
-              reference.linesCited,
-            ),
+        references.map((reference) =>
+          new Reference(
+            reference.type,
+            reference.pages,
+            reference.notes,
+            reference.linesCited,
+            new BibliographyEntry(reference.document),
+          ).withIdentity(reference.id),
         ),
       )
     })

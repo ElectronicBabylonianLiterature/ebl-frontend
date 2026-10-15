@@ -1,11 +1,11 @@
 import React, { FunctionComponent } from 'react'
-import { render } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import { clickNth } from 'test-support/utils'
-import ErrorBoundary from './ErrorBoundary'
+import ErrorBoundary from 'common/errors/ErrorBoundary'
 import ErrorReporterContext, {
   ConsoleErrorReporter,
 } from 'ErrorReporterContext'
-import { silenceConsoleErrors } from 'setupTests'
+import { expectConsoleErrors } from 'setupTests'
 
 describe('Children throw an error', () => {
   let element
@@ -13,7 +13,9 @@ describe('Children throw an error', () => {
   let errorReportingService
 
   function setup() {
-    silenceConsoleErrors()
+    expectConsoleErrors(
+      /Uncaught \[Error: Error happened!\]|The above error occurred/,
+    )
     error = new Error('Error happened!')
     errorReportingService = {
       captureException: jest.fn(),
@@ -59,4 +61,34 @@ it('Displays children if they do not crash', () => {
     </ErrorReporterContext.Provider>,
   )
   expect(container).toHaveTextContent(content)
+})
+
+describe('Custom fallback prop', () => {
+  function renderWithFallback(fallback: React.ReactNode) {
+    expectConsoleErrors(/Error happened!|The above error occurred/)
+    const CrashingComponent: FunctionComponent = () => {
+      throw new Error('Error happened!')
+    }
+    return render(
+      <ErrorReporterContext.Provider value={new ConsoleErrorReporter()}>
+        <ErrorBoundary fallback={fallback}>
+          <CrashingComponent />
+        </ErrorBoundary>
+      </ErrorReporterContext.Provider>,
+    )
+  }
+
+  it('Renders the custom fallback instead of the default alert', () => {
+    const { container } = renderWithFallback(<div>Custom fallback</div>)
+
+    expect(container).toHaveTextContent('Custom fallback')
+    expect(screen.queryByText("Something's gone wrong")).not.toBeInTheDocument()
+  })
+
+  it('Renders nothing when fallback is explicitly null', () => {
+    const { container } = renderWithFallback(null)
+
+    expect(container).toBeEmptyDOMElement()
+    expect(screen.queryByText("Something's gone wrong")).not.toBeInTheDocument()
+  })
 })

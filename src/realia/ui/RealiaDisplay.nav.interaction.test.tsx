@@ -11,7 +11,6 @@ import { MemoryRouter } from 'react-router-dom'
 import RealiaDisplay from 'realia/ui/RealiaDisplay'
 import SessionContext from 'auth/SessionContext'
 import MemorySession from 'auth/Session'
-import Bluebird from 'bluebird'
 import { waitForSpinnerToBeRemoved } from 'test-support/waitForSpinnerToBeRemoved'
 import {
   realiaEntryFactory,
@@ -148,7 +147,7 @@ describe('RealiaDisplay navigation interaction', () => {
         }),
       ],
     })
-    realiaService.find.mockReturnValue(Bluebird.resolve(entry))
+    realiaService.find.mockReturnValue(Promise.resolve(entry))
     render(
       <MemoryRouter
         initialEntries={[{ pathname: '/', hash: `#${afoVolumeId('AfO 25')}` }]}
@@ -160,8 +159,10 @@ describe('RealiaDisplay navigation interaction', () => {
     )
     await waitForSpinnerToBeRemoved(screen)
     await waitFor(() => expect(scrollIntoView).toHaveBeenCalled())
-    const scrolled = scrollIntoView.mock.instances[0] as unknown as HTMLElement
-    expect(scrolled).toHaveAttribute('id', afoVolumeId('AfO 25'))
+    expect(scrollIntoView.mock.instances[0]).toHaveAttribute(
+      'id',
+      afoVolumeId('AfO 25'),
+    )
     scrollIntoView.mockRestore()
   })
 

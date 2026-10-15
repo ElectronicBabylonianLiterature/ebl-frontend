@@ -1,8 +1,8 @@
 import React from 'react'
-import { Colophon } from 'fragmentarium/domain/Colophon'
+import { Colophon, IndividualAttestation } from 'fragmentarium/domain/Colophon'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import _ from 'lodash'
-import './Colophon.sass'
+import 'fragmentarium/ui/info/Colophon.sass'
 
 const getGeneralInfoItems = (colophon: Colophon) =>
   ['colophonStatus', 'colophonOwnership', 'notesToScribalProcess']
@@ -21,10 +21,12 @@ const getTypesItem = (colophon: Colophon) =>
     ? [`Types: ${colophon?.colophonTypes.join(', ')}`]
     : []
 
-const getIndividualsItems = (colophon: Colophon) =>
-  colophon?.individuals
-    ?.map((individual) => individual.toString())
-    .filter((value) => !!value) ?? []
+const getIndividualsItems = (
+  individuals: ReadonlyArray<IndividualAttestation>,
+) =>
+  individuals
+    .map((individual) => individual.toString())
+    .filter((value) => !!value)
 
 const ColophonInfo = ({ fragment }: { fragment: Fragment }): JSX.Element => {
   const { colophon } = fragment
@@ -32,12 +34,12 @@ const ColophonInfo = ({ fragment }: { fragment: Fragment }): JSX.Element => {
     return <></>
   }
   const mapToList = (text, index) => <li key={index}>{text}</li>
-  const individuals = colophon?.individuals &&
-    colophon?.individuals.length > 0 && (
+  const individuals = colophon.individuals &&
+    colophon.individuals.length > 0 && (
       <li>
         Individuals:{' '}
         <ol style={{ listStylePosition: 'outside' }}>
-          {getIndividualsItems(colophon).map(mapToList)}
+          {getIndividualsItems(colophon.individuals).map(mapToList)}
         </ol>
       </li>
     )

@@ -1,4 +1,4 @@
-import { JoinWithMuseumNumber } from './join-fixtures'
+import { JoinWithMuseumNumber } from 'test-support/join-fixtures'
 
 const basicJoinDto = {
   joinedBy: 'Mustermann',
