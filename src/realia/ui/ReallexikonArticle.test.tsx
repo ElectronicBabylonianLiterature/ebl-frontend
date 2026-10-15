@@ -42,7 +42,7 @@ function open(): void {
 
 beforeEach(() => jest.clearAllMocks())
 
-it('loads the first page image on demand and captions a multi-page article', async () => {
+it('loads the first page on demand and captions a multi-page article', async () => {
   loadMock.mockResolvedValue(
     indexWith({ volume: '6', startScan: 92, endScan: 97, pageLabel: '59' }),
   )
@@ -53,6 +53,9 @@ it('loads the first page image on demand and captions a multi-page article', asy
   expect(image).toHaveAttribute('src', 'jpg:6:92')
   expect(image).toHaveAttribute('alt', 'Königsinschriften, page 1 of 6')
   expect(screen.getByText('Seite 59 ff. — 1 / 6')).toBeInTheDocument()
+  expect(
+    screen.queryByRole('link', { name: 'Open PDF' }),
+  ).not.toBeInTheDocument()
 })
 
 it('pages within the article and disables the ends', async () => {
@@ -103,7 +106,7 @@ it('collapses the page and reopens it without refetching the index', async () =>
   expect(loadMock).toHaveBeenCalledTimes(1)
 })
 
-it('reports an unavailable page image and drops the pointless toggle', async () => {
+it('reports an unavailable page and drops the pointless toggle', async () => {
   loadMock.mockResolvedValue(new Map())
   open()
   expect(
@@ -146,6 +149,13 @@ it('embeds a pdf page document with a fallback link to the pdf', async () => {
       name: 'Open Königsinschriften, page 1 of 2 (PDF)',
     }),
   ).toHaveAttribute('href', 'pdf:15:354')
+  const openLink = screen.getByRole('link', { name: 'Open PDF' })
+  expect(openLink).toHaveAttribute('href', 'pdf:15:354')
+  expect(openLink).toHaveAttribute('target', '_blank')
+  expect(openLink).toHaveAttribute(
+    'title',
+    'Open Königsinschriften, page 1 of 2 in a new tab',
+  )
   expect(screen.queryByRole('img')).not.toBeInTheDocument()
 })
 
@@ -164,4 +174,8 @@ it('pages through pdf page documents', async () => {
     'pdf:15:355#navpanes=0&statusbar=0&toolbar=0&view=FitH',
   )
   expect(screen.getByText('Seite 354 ff. — 2 / 2')).toBeInTheDocument()
+  expect(screen.getByRole('link', { name: 'Open PDF' })).toHaveAttribute(
+    'href',
+    'pdf:15:355',
+  )
 })

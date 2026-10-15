@@ -34,16 +34,13 @@ const PDF_VIEW_PARAMETERS = '#navpanes=0&statusbar=0&toolbar=0&view=FitH'
 
 function RlaPageView({
   info,
-  scan,
-  title,
+  url,
+  description,
 }: {
   info: RlaPageInfo
-  scan: number
-  title: string
+  url: string
+  description: string
 }): JSX.Element {
-  const { pageNumber, pageCount } = pagePosition(info, scan)
-  const description = `${title}, page ${pageNumber} of ${pageCount}`
-  const url = rlaPageUrl(info.volume, scan, info.format)
   return info.format === 'pdf' ? (
     <object
       key={url}
@@ -77,6 +74,9 @@ function RlaPage({
   onStep: (delta: number) => void
   onHide: () => void
 }): JSX.Element {
+  const { pageNumber, pageCount } = pagePosition(info, scan)
+  const description = `${title}, page ${pageNumber} of ${pageCount}`
+  const url = rlaPageUrl(info.volume, scan, info.format)
   return (
     <div className="Realia__rla-page">
       <div className="Realia__rla-page-controls">
@@ -101,11 +101,20 @@ function RlaPage({
         >
           <i className="fas fa-chevron-right" aria-hidden="true" />
         </Button>
+        {info.format === 'pdf' && (
+          <ExternalLink
+            href={url}
+            className="btn btn-outline-secondary btn-sm"
+            title={`Open ${description} in a new tab`}
+          >
+            Open PDF
+          </ExternalLink>
+        )}
         <Button variant="outline-secondary" size="sm" onClick={onHide}>
           Hide
         </Button>
       </div>
-      <RlaPageView info={info} scan={scan} title={title} />
+      <RlaPageView info={info} url={url} description={description} />
     </div>
   )
 }
