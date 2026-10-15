@@ -4,7 +4,7 @@ import {
   createFragmentUrl,
   createFragmentUrlWithFolio,
 } from 'fragmentarium/ui/FragmentLink'
-import { parseUrl } from 'query-string'
+import { parseUrl } from 'common/utils/queryString'
 import { folioFactory } from 'test-support/fragment-data-fixtures'
 import { CANONICAL_ORIGIN } from 'router/domain'
 

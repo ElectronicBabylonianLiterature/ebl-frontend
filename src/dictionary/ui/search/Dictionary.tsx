@@ -1,5 +1,4 @@
 import React, { useMemo } from 'react'
-import { parse } from 'query-string'
 import { useLocation } from 'react-router-dom'
 
 import AppContent from 'common/ui/AppContent'
@@ -11,6 +10,7 @@ import AboutInlineLink from 'common/ui/AboutInlineLink'
 import 'dictionary/ui/search/Dictionary.css'
 import { Session } from 'auth/Session'
 import WordService from 'dictionary/application/WordService'
+import parseWordQuery from 'dictionary/application/parseWordQuery'
 
 export default function Dictionary({
   wordService,
@@ -19,7 +19,7 @@ export default function Dictionary({
 }): JSX.Element {
   const location = useLocation()
   const query = useMemo(
-    () => parse(location.search, { arrayFormat: 'none' }),
+    () => parseWordQuery(location.search),
     [location.search],
   )
 

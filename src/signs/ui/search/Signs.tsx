@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react'
-import { parse } from 'query-string'
+import { parse } from 'common/utils/queryString'
 import { useLocation } from 'react-router-dom'
 
 import AppContent from 'common/ui/AppContent'

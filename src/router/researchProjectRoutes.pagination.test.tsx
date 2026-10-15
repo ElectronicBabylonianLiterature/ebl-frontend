@@ -1,7 +1,8 @@
 import React from 'react'
 import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { MemoryRouter, useLocation } from 'react-router-dom'
+import { MemoryRouter } from 'react-router-dom'
+import LocationDisplay from 'test-support/LocationDisplay'
 import { Switch } from 'router/compat'
 import SessionContext from 'auth/SessionContext'
 import MemorySession from 'auth/Session'
@@ -29,11 +30,6 @@ jest.mock(
     ),
   }),
 )
-
-function LocationDisplay(): JSX.Element {
-  const location = useLocation()
-  return <div data-testid="location">{location.search}</div>
-}
 
 function buildQueryResult(query: FragmentQuery): QueryResult {
   const first = (query.offset ?? 0) + 1

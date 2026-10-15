@@ -2,7 +2,7 @@ import ApiClient from 'http/ApiClient'
 import ReferenceInjector from 'transliteration/application/ReferenceInjector'
 import BibliographyService from 'bibliography/application/BibliographyService'
 import { MarkupPart } from 'transliteration/domain/markup'
-import { stringify } from 'query-string'
+import { stringify } from 'common/utils/queryString'
 
 export default class MarkupService {
   protected readonly referenceInjector: ReferenceInjector

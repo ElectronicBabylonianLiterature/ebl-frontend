@@ -14,6 +14,7 @@ import {
   resetMapMocks,
   triggerMapEvent,
 } from 'map/ui/MapTab.testSupport'
+import { MAP_STYLE_LOAD_EVENT } from 'map/maplibre/mapLayers'
 
 jest.mock('maplibre-gl')
 
@@ -123,7 +124,7 @@ describe('MapTab filtering', () => {
     expect(mockAddSource).not.toHaveBeenCalled()
 
     act(() => {
-      triggerMapEvent('load')
+      triggerMapEvent(MAP_STYLE_LOAD_EVENT)
     })
 
     expect(mockAddSource).toHaveBeenCalledTimes(1)

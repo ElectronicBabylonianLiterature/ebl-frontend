@@ -1,17 +1,12 @@
 import React from 'react'
 import { render, RenderResult, screen, waitFor } from '@testing-library/react'
-import {
-  MemoryRouter,
-  Route,
-  Routes,
-  useLocation,
-  useParams,
-} from 'react-router-dom'
+import { MemoryRouter, Route, Routes, useParams } from 'react-router-dom'
 import RealiaDisplay from 'realia/ui/RealiaDisplay'
 import RealiaService from 'realia/application/RealiaService'
 import SessionContext from 'auth/SessionContext'
 import MemorySession from 'auth/Session'
 import { RealiaEntry } from 'realia/domain/RealiaEntry'
+import LocationDisplay from 'test-support/LocationDisplay'
 
 const locationTimeoutInMilliseconds = 5000
 
@@ -33,11 +28,6 @@ export function renderDisplay(
   )
 }
 
-function LocationHashProbe(): JSX.Element {
-  const location = useLocation()
-  return <span data-testid="location-hash">{location.hash}</span>
-}
-
 export function renderDisplayWithLocation(
   entry: RealiaEntry,
   initialEntry: string | { pathname: string; hash: string } = '/',
@@ -47,16 +37,9 @@ export function renderDisplayWithLocation(
     <MemoryRouter initialEntries={[initialEntry]}>
       <SessionContext.Provider value={new MemorySession(['read:realia'])}>
         <RealiaDisplay id={entry.id} realiaService={realiaService} />
-        <LocationHashProbe />
+        <LocationDisplay />
       </SessionContext.Provider>
     </MemoryRouter>,
-  )
-}
-
-export function LocationProbe(): JSX.Element {
-  const location = useLocation()
-  return (
-    <span data-testid="location">{`${location.pathname}${location.hash}`}</span>
   )
 }
 
@@ -99,7 +82,7 @@ export function renderRealiaRoute(
             element={<RealiaRouteEntry realiaService={service} />}
           />
         </Routes>
-        <LocationProbe />
+        <LocationDisplay />
       </SessionContext.Provider>
     </MemoryRouter>,
   )

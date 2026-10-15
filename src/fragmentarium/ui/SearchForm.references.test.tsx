@@ -1,6 +1,6 @@
 import { screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { stringify } from 'query-string'
+import { stringify } from 'common/utils/queryString'
 import { bibliographyEntryFactory } from 'test-support/bibliography-fixtures'
 import {
   createSearchFormTestContext,

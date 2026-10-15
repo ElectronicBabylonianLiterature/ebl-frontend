@@ -1,6 +1,6 @@
 import React from 'react'
 import { render } from '@testing-library/react'
-import { MemoryRouter, useLocation } from 'react-router-dom'
+import { MemoryRouter } from 'react-router-dom'
 import { Switch } from 'router/compat'
 import SessionContext from 'auth/SessionContext'
 import MemorySession from 'auth/Session'
@@ -10,13 +10,9 @@ import FragmentService from 'fragmentarium/application/FragmentService'
 import { FragmentQuery } from 'query/FragmentQuery'
 import { QueryResult } from 'query/QueryResult'
 import { getServices } from 'test-support/AppDriver'
+import LocationDisplay from 'test-support/LocationDisplay'
 
 export type QueryResultBuilder = (query: FragmentQuery) => QueryResult
-
-export function LocationDisplay(): JSX.Element {
-  const location = useLocation()
-  return <div data-testid="location">{location.search}</div>
-}
 
 function createServices(
   buildQueryResult: QueryResultBuilder,

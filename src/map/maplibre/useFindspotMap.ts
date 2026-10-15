@@ -1,8 +1,9 @@
 import { useContext, useEffect, useRef } from 'react'
 import type { MutableRefObject, RefObject } from 'react'
 import type { Point } from 'geojson'
-import maplibregl from 'maplibre-gl'
+import * as maplibregl from 'maplibre-gl'
 import ErrorReporterContext from 'ErrorReporterContext'
+import maplibreWorkerUrl from 'maplibre-gl/dist/maplibre-gl-worker.mjs'
 import { useHistory } from 'router/compat'
 import type {
   GeoJSONSource,
@@ -21,6 +22,7 @@ import {
   showPointerCursor,
 } from 'map/maplibre/mapCursor'
 import {
+  MAP_STYLE_LOAD_EVENT,
   SOURCE_ID,
   clusterCountLayer,
   clusterLayer,
@@ -143,6 +145,7 @@ export default function useFindspotMap(
 
     let map: MapLibreMap
     try {
+      maplibregl.setWorkerUrl(maplibreWorkerUrl)
       map = new maplibregl.Map({
         container: containerRef.current,
         style: MAP_STYLE_URL,
@@ -165,7 +168,7 @@ export default function useFindspotMap(
       reportError: (error) =>
         latestServicesRef.current.errorReporter.captureException(error),
     }
-    const handleLoad = () => {
+    const handleStyleLoad = () => {
       onMapBackgroundErrorChange?.(false)
       const loadedProvenances = latestProvenancesRef.current
       if (loadedProvenances) {
@@ -189,7 +192,7 @@ export default function useFindspotMap(
       }
     }
 
-    map.on('load', handleLoad)
+    map.on(MAP_STYLE_LOAD_EVENT, handleStyleLoad)
     map.on('click', handleClick)
     map.on('mousemove', handleMouseMove)
     map.on('error', handleError)
@@ -200,7 +203,7 @@ export default function useFindspotMap(
 
     return () => {
       isActive = false
-      map.off('load', handleLoad)
+      map.off(MAP_STYLE_LOAD_EVENT, handleStyleLoad)
       map.off('click', handleClick)
       map.off('mousemove', handleMouseMove)
       map.off('error', handleError)
