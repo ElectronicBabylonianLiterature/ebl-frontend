@@ -89,6 +89,8 @@ const fullyCoveredPaths = [
   'src/IntroductionNews.tsx',
   'src/markup/application/MarkupService.ts',
   'src/markup/ui/markup.tsx',
+  'src/realia/infrastructure/rlaPageIndex.ts',
+  'src/realia/ui/ReallexikonArticle.tsx',
   'src/research-projects/subpages/IntroductionHome.tsx',
   'src/signs/application/SignService.ts',
   'src/signs/infrastructure/SignRepository.ts',

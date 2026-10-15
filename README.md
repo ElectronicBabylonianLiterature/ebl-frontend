@@ -145,6 +145,10 @@ An organization and project need to be setup in Sentry. The applications domain 
 
 In a production environment the api domain must be added to _img-src_ in CSP.
 
+### Reallexikon der Assyriologie (RlA)
+
+The realia pages show the RlA page for an article from `https://publikationen.badw.de`: volumes 1–14 as `.jpg` scans and volume 15 as single-page PDFs embedded in an `<object>`. In a production environment this domain must be in _img-src_, _object-src_ and _frame-src_ in CSP, because browsers frame the PDF viewer.
+
 ## Running the application
 
 The application reads the configuration from following environment variables:
