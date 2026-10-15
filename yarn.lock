@@ -9197,7 +9197,7 @@ launch-editor@^2.14.1:
     picocolors "^1.1.1"
     shell-quote "^1.8.4"
 
-legacy-javascript@latest:
+legacy-javascript@0.0.3, legacy-javascript@latest:
   version "0.0.3"
   resolved "https://registry.yarnpkg.com/legacy-javascript/-/legacy-javascript-0.0.3.tgz#85da0a5bec7db88440dd8a85b4e4c7dfea138628"
   integrity sha512-1r6MT4dVaJyXt4G07Cm2cQ0AUaLJdefiEp4SmIAylA++gnEQ82YvmzE58RkM5EP0fk5hROLCslUPGnwIYdZQVA==

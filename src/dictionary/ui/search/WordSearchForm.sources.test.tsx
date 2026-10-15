@@ -46,7 +46,7 @@ it('Keeps array inputs for vowelClass and origin', () => {
   expect(screen.getByRole('checkbox', { name: 'AfO Register' })).toBeChecked()
 })
 
-it('Parses single URL values for vowelClass and origin into arrays', () => {
+it('Checks the vowel class and source from a single-value URL query', () => {
   renderWordSearchForm(parseWordQuery('?vowelClass=a%2Fu&origin=SAD'))
 
   expect(screen.getByRole('checkbox', { name: 'a/u' })).toBeChecked()

@@ -174,6 +174,8 @@ in the annotation-tool.
 
 Jest 27, which `react-scripts` 5 pins, can't resolve package `exports`, so `jest.moduleNameMapper` in `package.json` maps `react-router/dom` to react-router's internal `dist/development/dom-export.js`. When updating `react-router` or `react-router-dom`, check that this file still exists and run `yarn test:ci`.
 
+Lighthouse 13 depends on `@paulirish/trace_engine`, which asks for `third-party-web` and `legacy-javascript` by the `latest` tag. `resolutions` pins both to the versions in `yarn.lock` (`^0.30.0` and `0.0.3`), so regenerating the lockfile can't silently move them. `yarn install` still prints "Pattern … is trying to unpack in the same destination" for these two packages; that's yarn 1 noticing that the tag and the pinned range resolve to the same version, and it's harmless. When updating `lighthouse`, check whether `@paulirish/trace_engine` still uses `latest` and update or drop these two entries.
+
 ## Lighthouse
 
 Google [Lighthouse](https://developers.google.com/web/tools/lighthouse/) is installed as a development dependency and can be run via yarn:

@@ -52,7 +52,6 @@ describe('Searching for word', () => {
   })
 
   it('treats keys without values as an empty query', async () => {
-    wordService.search.mockClear()
     await renderDictionary('/dictionary?word&meaning=&vowelClass')
     await userEvent.type(screen.getByLabelText('Word'), 'lemma')
 

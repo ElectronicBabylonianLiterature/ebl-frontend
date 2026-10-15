@@ -244,7 +244,9 @@
     "postcss-selector-parser": "^7.1.6",
     "**/http-proxy-agent/@tootallnate/once": "^2.0.1",
     "**/@svgr/plugin-svgo/svgo": "^2.8.4",
-    "**/@istanbuljs/load-nyc-config/js-yaml": "^4.3.2"
+    "**/@istanbuljs/load-nyc-config/js-yaml": "^4.3.2",
+    "@paulirish/trace_engine/third-party-web": "^0.30.0",
+    "@paulirish/trace_engine/legacy-javascript": "0.0.3"
   },
   "browserslist": [
     ">0.2%",
