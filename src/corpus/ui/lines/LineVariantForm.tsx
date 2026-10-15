@@ -11,15 +11,15 @@ interface VariantFormProps {
   value: LineVariant
   manuscripts: readonly Manuscript[]
   onChange: (line: LineVariant) => void
-  disabled?: boolean
+  disabled: boolean
 }
 
 export default function LineVariantForm({
   value,
   manuscripts,
   onChange,
-  disabled = false,
-}: VariantFormProps): JSX.Element {
+  disabled,
+}: VariantFormProps) {
   const handleChange =
     (property: string) =>
     (propertyValue): void =>

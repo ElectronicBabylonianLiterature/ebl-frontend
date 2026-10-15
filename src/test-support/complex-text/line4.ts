@@ -1,38 +1,22 @@
 import { TextLine } from 'transliteration/domain/text-line'
+import {
+  enclosure,
+  reading,
+  word,
+} from 'test-support/complex-text/tokenBuilders'
 
 const line4 = new TextLine({
   prefix: '2.',
   content: [
-    {
-      enclosureType: [],
-      cleanValue: '|KUR.KUR|',
-      value: '|KUR.KUR|',
-      language: 'AKKADIAN',
-      normalized: false,
-      lemmatizable: true,
-      alignable: true,
-      uniqueLemma: [],
-      erasure: 'NONE',
-      alignment: null,
-      variant: null,
-      parts: [
-        {
-          enclosureType: [],
-          cleanValue: '|KUR.KUR|',
-          value: '|KUR.KUR|',
-          type: 'CompoundGrapheme',
-        },
-      ],
-      type: 'Word',
-      hasVariantAlignment: false,
-      hasOmittedAlignment: false,
-    },
-    {
-      enclosureType: [],
-      cleanValue: 'ø',
-      value: 'ø',
-      type: 'WordOmitted',
-    },
+    word('|KUR.KUR|', [
+      {
+        enclosureType: [],
+        cleanValue: '|KUR.KUR|',
+        value: '|KUR.KUR|',
+        type: 'CompoundGrapheme',
+      },
+    ]),
+    { enclosureType: [], cleanValue: 'ø', value: 'ø', type: 'WordOmitted' },
     {
       enclosureType: [],
       cleanValue: '($___$)',
@@ -45,43 +29,15 @@ const line4 = new TextLine({
       value: '($___$)',
       type: 'Tabulation',
     },
-    {
-      enclosureType: [],
-      cleanValue: 'kur/|RA|',
-      value: 'kur/|RA|',
-      language: 'AKKADIAN',
-      normalized: false,
-      lemmatizable: false,
-      alignable: false,
-      uniqueLemma: [],
-      erasure: 'NONE',
-      alignment: null,
-      variant: null,
-      parts: [
+    word(
+      'kur/|RA|',
+      [
         {
           enclosureType: [],
           cleanValue: 'kur/|RA|',
           value: 'kur/|RA|',
           tokens: [
-            {
-              enclosureType: [],
-              cleanValue: 'kur',
-              value: 'kur',
-              name: 'kur',
-              nameParts: [
-                {
-                  enclosureType: [],
-                  cleanValue: 'kur',
-                  value: 'kur',
-                  type: 'ValueToken',
-                },
-              ],
-              subIndex: 1,
-              modifiers: [],
-              flags: [],
-              sign: null,
-              type: 'Reading',
-            },
+            reading('kur', 'kur'),
             {
               enclosureType: [],
               cleanValue: '|RA|',
@@ -92,30 +48,16 @@ const line4 = new TextLine({
           type: 'Variant',
         },
       ],
-      type: 'Word',
-      hasVariantAlignment: false,
-      hasOmittedAlignment: false,
-    },
-    {
-      enclosureType: [],
-      cleanValue: '',
-      value: '[',
-      side: 'LEFT',
-      type: 'BrokenAway',
-    },
+      { lemmatizable: false, alignable: false },
+    ),
+    enclosure('BrokenAway', '[', 'LEFT'),
     {
       enclosureType: ['BROKEN_AWAY'],
       cleanValue: '...',
       value: '...',
       type: 'UnknownNumberOfSigns',
     },
-    {
-      enclosureType: ['BROKEN_AWAY'],
-      cleanValue: '',
-      value: ']',
-      side: 'RIGHT',
-      type: 'BrokenAway',
-    },
+    enclosure('BrokenAway', ']', 'RIGHT', { enclosureType: ['BROKEN_AWAY'] }),
   ],
   lineNumber: {
     number: 2,

@@ -8,11 +8,11 @@ import { ReferenceDto } from 'bibliography/domain/referenceDto'
 
 const defaultChance = new Chance('bibliography-fixtures')
 
-function integer(min: number, max: number, chance?: Chance.Chance): number {
-  return (chance || defaultChance).integer({ min: min, max: max })
+function integer(min: number, max: number, chance: Chance.Chance): number {
+  return chance.integer({ min: min, max: max })
 }
 
-function type(chance = defaultChance): ReferenceType {
+function type(chance: Chance.Chance): ReferenceType {
   return chance.pickone([
     'EDITION',
     'DISCUSSION',
@@ -25,16 +25,12 @@ function type(chance = defaultChance): ReferenceType {
   ])
 }
 
-const authorFactory = Factory.define<
-  { given: string; family: string },
-  { chance: Chance.Chance }
->(({ transientParams }) => {
-  const chance = transientParams.chance ?? defaultChance
+function author(chance: Chance.Chance): { given: string; family: string } {
   return {
     given: chance.first(),
     family: chance.last(),
   }
-})
+}
 
 export const cslDataFactory = Factory.define<
   CslData,
@@ -55,7 +51,7 @@ export const cslDataFactory = Factory.define<
     page: `${integer(1, 99, chance)}-${integer(100, 999, chance)}`,
     issue: integer(1, 99, chance),
     'container-title': chance.sentence(),
-    author: authorFactory.buildList(2, {}, { transient: { chance: chance } }),
+    author: [author(chance), author(chance)],
     URL: chance.url(),
   }
 })
@@ -138,7 +134,11 @@ export function buildReferenceWithManyAuthors(): Reference {
     type: 'COPY',
     document: bibliographyEntryFactory.build(
       {},
-      { transient: { author: authorFactory.buildList(4) } },
+      {
+        transient: {
+          author: Array.from({ length: 4 }, () => author(defaultChance)),
+        },
+      },
     ),
   })
 }

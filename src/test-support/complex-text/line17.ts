@@ -1,110 +1,63 @@
 import { TextLine } from 'transliteration/domain/text-line'
+import {
+  enclosure,
+  joiner,
+  reading,
+  valueToken,
+  word,
+} from 'test-support/complex-text/tokenBuilders'
 
 const line17 = new TextLine({
   prefix: '7.',
   content: [
-    {
-      enclosureType: [],
-      cleanValue: '',
-      value: '[',
-      side: 'LEFT',
-      type: 'BrokenAway',
-    },
+    enclosure('BrokenAway', '[', 'LEFT'),
     {
       enclosureType: ['BROKEN_AWAY'],
       cleanValue: '...',
       value: '...',
       type: 'UnknownNumberOfSigns',
     },
-    {
+    enclosure('DocumentOrientedGloss', '{(', 'LEFT', {
       enclosureType: ['BROKEN_AWAY'],
-      cleanValue: '',
-      value: '{(',
-      side: 'LEFT',
-      type: 'DocumentOrientedGloss',
-    },
-    {
-      enclosureType: ['BROKEN_AWAY', 'DOCUMENT_ORIENTED_GLOSS'],
-      cleanValue: 'he-pi₂',
-      value: 'he-p]i₂',
-      language: 'AKKADIAN',
-      normalized: false,
-      lemmatizable: true,
-      alignable: true,
-      uniqueLemma: ['hepû II'],
-      erasure: 'NONE',
-      alignment: null,
-      variant: null,
-      parts: [
-        {
+    }),
+    word(
+      'he-p]i₂',
+      [
+        reading('he', 'he', {
           enclosureType: ['BROKEN_AWAY', 'DOCUMENT_ORIENTED_GLOSS'],
-          cleanValue: 'he',
-          value: 'he',
-          name: 'he',
           nameParts: [
-            {
+            valueToken('he', {
               enclosureType: ['BROKEN_AWAY', 'DOCUMENT_ORIENTED_GLOSS'],
-              cleanValue: 'he',
-              value: 'he',
-              type: 'ValueToken',
-            },
+            }),
           ],
-          subIndex: 1,
-          modifiers: [],
-          flags: [],
-          sign: null,
-          type: 'Reading',
-        },
-        {
+        }),
+        joiner('-', {
           enclosureType: ['BROKEN_AWAY', 'DOCUMENT_ORIENTED_GLOSS'],
-          cleanValue: '-',
-          value: '-',
-          type: 'Joiner',
-        },
-        {
+        }),
+        reading('p]i₂', 'pi', {
           enclosureType: ['BROKEN_AWAY', 'DOCUMENT_ORIENTED_GLOSS'],
           cleanValue: 'pi₂',
-          value: 'p]i₂',
-          name: 'pi',
           nameParts: [
-            {
+            valueToken('p', {
               enclosureType: ['BROKEN_AWAY', 'DOCUMENT_ORIENTED_GLOSS'],
-              cleanValue: 'p',
-              value: 'p',
-              type: 'ValueToken',
-            },
-            {
+            }),
+            enclosure('BrokenAway', ']', 'RIGHT', {
               enclosureType: ['BROKEN_AWAY', 'DOCUMENT_ORIENTED_GLOSS'],
-              cleanValue: '',
-              value: ']',
-              side: 'RIGHT',
-              type: 'BrokenAway',
-            },
-            {
-              enclosureType: ['DOCUMENT_ORIENTED_GLOSS'],
-              cleanValue: 'i',
-              value: 'i',
-              type: 'ValueToken',
-            },
+            }),
+            valueToken('i', { enclosureType: ['DOCUMENT_ORIENTED_GLOSS'] }),
           ],
           subIndex: 2,
-          modifiers: [],
-          flags: [],
-          sign: null,
-          type: 'Reading',
-        },
+        }),
       ],
-      type: 'Word',
-      hasVariantAlignment: false,
-      hasOmittedAlignment: false,
-    },
-    {
+      {
+        enclosureType: ['BROKEN_AWAY', 'DOCUMENT_ORIENTED_GLOSS'],
+        cleanValue: 'he-pi₂',
+        uniqueLemma: ['hepû II'],
+      },
+    ),
+    enclosure('DocumentOrientedGloss', ')}', 'RIGHT', {
       enclosureType: ['DOCUMENT_ORIENTED_GLOSS'],
-      cleanValue: '',
-      value: ')}',
-      side: 'RIGHT',
-      type: 'DocumentOrientedGloss',
-    },
+    }),
   ],
   lineNumber: {
     number: 7,

@@ -26,8 +26,7 @@ import {
   type RouteModuleProps,
 } from 'router/websiteRouteGroups'
 import IntroductionRoute from 'router/introductionRoute'
-
-const DOMAIN = 'www.ebl.lmu.de'
+import { CANONICAL_DOMAIN } from 'router/domain'
 
 const lazyWebsiteRouteModules: Record<LazyWebsiteRouteGroup, RouteModule> = {
   tools: ToolsRoutes,
@@ -97,7 +96,9 @@ function mapArchiveDownloadSitemap(xmlStrings: string[]): void {
     'sitemap.xml.gz',
   )
   xmlStrings.forEach((xmlString, index) => {
-    const archive = pako.gzip(xmlString.replaceAll('localhost', DOMAIN))
+    const archive = pako.gzip(
+      xmlString.replaceAll('localhost', CANONICAL_DOMAIN),
+    )
     const archiveBlob = new Blob([archive], {
       type: 'application/gzip',
     })
@@ -111,7 +112,7 @@ function getSitemapIndex(filenames: string[]): string {
       ${filenames
         .map(
           (filename) => `<sitemap>
-          <loc>https://${DOMAIN}/sitemap/${filename}</loc>
+          <loc>https://${CANONICAL_DOMAIN}/sitemap/${filename}</loc>
           <lastmod>${new Date().toISOString()}</lastmod>
         </sitemap>`,
         )
@@ -179,5 +180,5 @@ export default withData<{ services: Services }, { services: Services }, Slugs>(
   ({ data, services }) => {
     return getSitemapAsFile(services, data)
   },
-  ({ services }): Promise<Slugs> => Promise.resolve(getAllSlugs(services)),
+  ({ services }): Promise<Slugs> => getAllSlugs(services),
 )

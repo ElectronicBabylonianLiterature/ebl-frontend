@@ -1,6 +1,6 @@
 import React from 'react'
 import { render, screen } from '@testing-library/react'
-import ApiImage from './ApiImage'
+import ApiImage from 'common/ui/ApiImage'
 
 const fileName = 'Babel_Project_01_cropped.svg'
 

@@ -3,7 +3,6 @@ import {
   fragmentRepository,
   fragmentService,
   genreOptions,
-  stubMissingBibliography,
 } from 'fragmentarium/application/fragmentServiceFragments.testSupport'
 
 let genreResult: string[][]
@@ -11,7 +10,6 @@ let colophonNamesResult: string[]
 
 beforeEach(() => {
   jest.clearAllMocks()
-  stubMissingBibliography()
 })
 
 describe('fetch genres', () => {

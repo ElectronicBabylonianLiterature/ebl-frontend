@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 
-import BibliographyEntryForm from './BibliographyEntryForm'
+import BibliographyEntryForm from 'bibliography/ui/BibliographyEntryForm'
 import Spinner from 'common/ui/Spinner'
 import ErrorAlert from 'common/errors/ErrorAlert'
 import SessionContext from 'auth/SessionContext'

@@ -9,6 +9,7 @@ export default function FragmentAnnotationToolbar({
   isAutomaticSelected,
   isDeleting,
   isSaving,
+  isWriting,
   displayCards,
   isChangeExistingMode,
   generateAnnotations,
@@ -21,6 +22,7 @@ export default function FragmentAnnotationToolbar({
   isAutomaticSelected: boolean
   isDeleting: boolean
   isSaving: boolean
+  isWriting: boolean
   displayCards: boolean
   isChangeExistingMode: boolean
   generateAnnotations: () => void
@@ -32,7 +34,11 @@ export default function FragmentAnnotationToolbar({
   return (
     <>
       <ButtonGroup>
-        <Button variant="outline-dark" onClick={generateAnnotations}>
+        <Button
+          variant="outline-dark"
+          onClick={generateAnnotations}
+          disabled={isWriting}
+        >
           {isGenerateAnnotationsLoading ? (
             <Spinner loading={true} />
           ) : (
@@ -46,10 +52,18 @@ export default function FragmentAnnotationToolbar({
         >
           Automatic Selection
         </Button>
-        <Button variant="outline-dark" onClick={deleteAllAnnotations}>
+        <Button
+          variant="outline-dark"
+          onClick={deleteAllAnnotations}
+          disabled={isWriting}
+        >
           {isDeleting ? <Spinner loading={true} /> : 'Delete all'}
         </Button>
-        <Button variant="outline-dark" onClick={saveCurrentAnnotations}>
+        <Button
+          variant="outline-dark"
+          onClick={saveCurrentAnnotations}
+          disabled={isWriting}
+        >
           {isSaving ? <Spinner loading={true} /> : 'Save'}
         </Button>
         <Button

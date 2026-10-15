@@ -1,15 +1,11 @@
 import React from 'react'
-import Markup from 'markup/ui/markup'
+import MarkupParagraph from 'about/ui/MarkupParagraph'
 import MarkupService from 'markup/application/MarkupService'
 import { MarkdownParagraph } from 'common/ui/Markdown'
 
 export default function AboutArchaeology(
   markupService: MarkupService,
 ): JSX.Element {
-  function MarkupParagraph({ text }: { text: string }): JSX.Element {
-    return <Markup markupService={markupService} text={text} />
-  }
-
   return (
     <>
       <MarkdownParagraph
@@ -37,6 +33,8 @@ export default function AboutArchaeology(
       />
       <h3>II. Nippur</h3>
       <MarkupParagraph
+        markupService={markupService}
+        isWrapped={false}
         text="The catalog of the finds of the first three post-war Nippur campaigns
               (@bib{nippur_catalogue}), prepared by the excavators, was part of Erle
               Leichty's Nachlass (see below). This catalog was partially digitized between

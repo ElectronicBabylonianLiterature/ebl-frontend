@@ -43,3 +43,23 @@ test('An operation started after superseding is current', () => {
 
   expect(operation.start()()).toBe(false)
 })
+
+test('Observing does not make earlier operations stale', () => {
+  const operation = new SupersedableOperation()
+  const isStarted = operation.start()
+  const isObserved = operation.observe()
+
+  expect(isStarted()).toBe(false)
+  expect(isObserved()).toBe(false)
+})
+
+test('An observation goes stale when the operation is superseded or restarted', () => {
+  const operation = new SupersedableOperation()
+  const isObservedBeforeSupersede = operation.observe()
+  operation.supersede()
+  const isObservedBeforeStart = operation.observe()
+  operation.start()
+
+  expect(isObservedBeforeSupersede()).toBe(true)
+  expect(isObservedBeforeStart()).toBe(true)
+})

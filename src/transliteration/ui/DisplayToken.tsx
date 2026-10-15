@@ -1,37 +1,27 @@
 import React, { FunctionComponent, PropsWithChildren } from 'react'
 import classNames from 'classnames'
-import _ from 'lodash'
-import {
-  effectiveEnclosure,
-  EnclosureType,
-  Gloss,
-  NamedSign,
-  Token,
-  Variant,
-  Word,
-} from 'transliteration/domain/token'
-import { addAccents } from 'transliteration/domain/accents'
+import { Gloss, Token, Variant, Word } from 'transliteration/domain/token'
 import { isEnclosure, isAkkadianWord } from 'transliteration/domain/type-guards'
-import { createModifierClasses, Modifiers } from 'transliteration/ui/modifiers'
+import { createModifierClasses } from 'transliteration/ui/modifiers'
 import EnclosureFlags from 'transliteration/ui/EnclosureFlags'
-import Flags from 'transliteration/ui/Flags'
-import SubIndex from 'transliteration/ui/Subindex'
 import AkkadianWordComponent from 'akkadian/ui/akkadianWord'
 import { PhoneticProps } from 'akkadian/application/phonetics/segments'
+import { TokenProps, TokenWrapper } from 'transliteration/ui/DisplayTokenParts'
 import {
-  DamagedFlag,
   EgyptianMetricalFeetSeparatorComponent,
   GreekLetterComponent,
   LineBreakComponent,
+  NamedSignComponent,
   signComponent,
   TabulationComponent,
+  UnknownSignComponent,
+} from 'transliteration/ui/DisplaySignTokens'
+
+export { DamagedFlag } from 'transliteration/ui/DisplayTokenParts'
+export type {
   TokenProps,
   TokenWrapper,
-  UnknownSignComponent,
-} from 'transliteration/ui/SignTokens'
-
-export { DamagedFlag } from 'transliteration/ui/SignTokens'
-export type { TokenProps, TokenWrapper } from 'transliteration/ui/SignTokens'
+} from 'transliteration/ui/DisplayTokenParts'
 
 function DefaultToken({ token, Wrapper }: TokenProps): JSX.Element {
   return (
@@ -89,47 +79,6 @@ function GlossComponent({ token, Wrapper }: TokenProps): JSX.Element {
         ),
       )}
     </>
-  )
-}
-
-function NamedSignComponent({ token, Wrapper }: TokenProps): JSX.Element {
-  const namedSign = token as NamedSign
-  const effectiveEnclosures: EnclosureType[] = effectiveEnclosure(namedSign)
-  const [parts, isSubIndexConverted] = addAccents(namedSign)
-  const omitSubindex = namedSign.subIndex === 1 || isSubIndexConverted
-  return (
-    <DamagedFlag sign={namedSign} Wrapper={Wrapper}>
-      <EnclosureFlags token={namedSign} enclosures={effectiveEnclosures}>
-        {parts.map((token, index) =>
-          isEnclosure(token) ? (
-            <DisplayToken key={index} token={token} />
-          ) : (
-            <DisplayToken key={index} token={token} Wrapper={Wrapper} />
-          ),
-        )}
-        <Wrapper>
-          {!omitSubindex && <SubIndex token={namedSign} />}
-          <Modifiers modifiers={namedSign.modifiers} />
-          <Flags flags={namedSign.flags} />
-        </Wrapper>
-        {namedSign.sign && (
-          <>
-            <span className="Transliteration__bracket">(</span>
-            <DisplayToken token={namedSign.sign} Wrapper={Wrapper} />
-            <span className="Transliteration__bracket">)</span>
-          </>
-        )}
-        {namedSign.surrogate && !_.isEmpty(namedSign.surrogate) && (
-          <>
-            <span className="Transliteration__bracket">&lt;(</span>
-            {namedSign.surrogate.map((token, index) => (
-              <DisplayToken key={index} token={token} Wrapper={Wrapper} />
-            ))}
-            <span className="Transliteration__bracket">)&gt;</span>
-          </>
-        )}
-      </EnclosureFlags>
-    </DamagedFlag>
   )
 }
 

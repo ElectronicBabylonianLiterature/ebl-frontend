@@ -1,21 +1,12 @@
 import { TextLine } from 'transliteration/domain/text-line'
+import { joiner, reading, word } from 'test-support/complex-text/tokenBuilders'
 
 const line18 = new TextLine({
   prefix: "D+3'a-4b.",
   content: [
-    {
-      enclosureType: [],
-      cleanValue: 'x',
-      value: 'x',
-      language: 'AKKADIAN',
-      normalized: false,
-      lemmatizable: false,
-      alignable: false,
-      uniqueLemma: [],
-      erasure: 'NONE',
-      alignment: null,
-      variant: null,
-      parts: [
+    word(
+      'x',
+      [
         {
           enclosureType: [],
           cleanValue: 'x',
@@ -24,48 +15,13 @@ const line18 = new TextLine({
           type: 'UnclearSign',
         },
       ],
-      type: 'Word',
-      hasVariantAlignment: false,
-      hasOmittedAlignment: false,
-    },
-    {
-      enclosureType: [],
-      cleanValue: 'a-•',
-      value: 'a-•?',
-      language: 'AKKADIAN',
-      normalized: false,
-      lemmatizable: false,
-      alignable: false,
-      uniqueLemma: [],
-      erasure: 'NONE',
-      alignment: null,
-      variant: null,
-      parts: [
-        {
-          enclosureType: [],
-          cleanValue: 'a',
-          value: 'a',
-          name: 'a',
-          nameParts: [
-            {
-              enclosureType: [],
-              cleanValue: 'a',
-              value: 'a',
-              type: 'ValueToken',
-            },
-          ],
-          subIndex: 1,
-          modifiers: [],
-          flags: [],
-          sign: null,
-          type: 'Reading',
-        },
-        {
-          enclosureType: [],
-          cleanValue: '-',
-          value: '-',
-          type: 'Joiner',
-        },
+      { lemmatizable: false, alignable: false },
+    ),
+    word(
+      'a-•?',
+      [
+        reading('a', 'a'),
+        joiner('-'),
         {
           enclosureType: [],
           cleanValue: '•',
@@ -74,10 +30,8 @@ const line18 = new TextLine({
           type: 'EgyptianMetricalFeetSeparator',
         },
       ],
-      type: 'Word',
-      hasVariantAlignment: false,
-      hasOmittedAlignment: false,
-    },
+      { cleanValue: 'a-•', lemmatizable: false, alignable: false },
+    ),
   ],
   lineNumber: {
     start: {

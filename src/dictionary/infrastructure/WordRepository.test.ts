@@ -1,5 +1,5 @@
 import { testDelegation, TestData } from 'test-support/utils'
-import WordRepository from './WordRepository'
+import WordRepository from 'dictionary/infrastructure/WordRepository'
 import ApiClient from 'http/ApiClient'
 
 jest.mock('http/ApiClient')
@@ -21,6 +21,14 @@ const testData: TestData<WordRepository>[] = [
     resultStub,
     [`/words/${encodeURIComponent(wordId)}`, false, undefined],
     Promise.resolve(resultStub),
+  ),
+  new TestData(
+    'findAll',
+    [['hepû I', 'hepû II']],
+    apiClient.fetchJson,
+    [resultStub],
+    [`/words?lemmas=${encodeURIComponent('hepû I,hepû II')}`, false, undefined],
+    Promise.resolve([resultStub]),
   ),
   new TestData(
     'search',

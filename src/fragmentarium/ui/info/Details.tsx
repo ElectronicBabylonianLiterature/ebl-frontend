@@ -1,6 +1,6 @@
 import React from 'react'
 import { Fragment, Script } from 'fragmentarium/domain/fragment'
-import './Details.sass'
+import 'fragmentarium/ui/info/Details.sass'
 import GenreSelection from 'fragmentarium/ui/info/GenreEditor'
 import { Genres } from 'fragmentarium/domain/Genres'
 import ScriptSelection from 'fragmentarium/ui/info/ScriptSelection'

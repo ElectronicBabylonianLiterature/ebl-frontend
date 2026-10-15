@@ -5,7 +5,8 @@ import {
   createManuscriptLine,
   createVariant,
 } from 'corpus/domain/line'
-import { PeriodModifiers, Periods } from 'common/utils/period'
+import { PeriodModifiers } from 'common/utils/period'
+import { Periods } from 'common/utils/periodDefinitions'
 import { Provenances } from 'corpus/domain/provenance'
 import { createChapter, createText } from 'corpus/domain/text'
 import {
@@ -14,6 +15,7 @@ import {
   OldSiglum,
 } from 'corpus/domain/manuscript'
 import { ResearchProjects } from 'research-projects/researchProject'
+
 import {
   atfTokens,
   reconstructionTokens,
@@ -129,10 +131,10 @@ export const chapter = createChapter({
   order: 1,
   uncertainFragments: ['K.1'],
   manuscripts: [
-    new Manuscript(
-      1,
-      '1',
-      [
+    new Manuscript({
+      id: 1,
+      siglumDisambiguator: '1',
+      oldSigla: [
         new OldSiglum(
           'os-test',
           new Reference(
@@ -141,30 +143,30 @@ export const chapter = createChapter({
             '',
             [],
             new BibliographyEntry({ id: 'RN1853' }),
-          ),
+          ).withIdentity('RN1853'),
         ),
       ],
-      'BM.X',
-      'X.1',
-      PeriodModifiers['Early'],
-      Periods['Ur III'],
-      Provenances.Nippur,
-      ManuscriptTypes.School,
-      'a note',
-      '1. kur',
-      '1. bu',
-      [
+      museumNumber: 'BM.X',
+      accession: 'X.1',
+      periodModifier: PeriodModifiers['Early'],
+      period: Periods['Ur III'],
+      provenance: Provenances.Nippur,
+      type: ManuscriptTypes.School,
+      notes: 'a note',
+      colophon: '1. kur',
+      unplacedLines: '1. bu',
+      references: [
         new Reference(
           'DISCUSSION',
           '34-54',
           '',
           [],
           new BibliographyEntry({ id: 'RN1853' }),
-        ),
+        ).withIdentity('RN1853'),
       ],
-      [],
-      false,
-    ),
+      joins: [],
+      isInFragmentarium: false,
+    }),
   ],
   lines: [
     createLine({

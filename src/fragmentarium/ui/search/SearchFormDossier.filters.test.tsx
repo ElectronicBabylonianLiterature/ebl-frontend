@@ -5,14 +5,12 @@ import userEvent from '@testing-library/user-event'
 import SearchFormDossier from 'fragmentarium/ui/search/SearchFormDossier'
 import { DossierRecordSuggestion } from 'dossiers/domain/DossierRecord'
 import {
-  dossierSearchProps,
-  mockSearchSuggestions,
   mockSuggestionDto,
-  resetDossierSearchMocks,
+  setupDossierMocks,
 } from 'fragmentarium/ui/search/SearchFormDossier.testSupport'
 
 describe('SearchFormDossier filters', () => {
-  beforeEach(resetDossierSearchMocks)
+  const { mockSearchSuggestions, mockOnChange } = setupDossierMocks()
 
   it('passes filters to searchSuggestions', async () => {
     const filters = {
@@ -26,8 +24,10 @@ describe('SearchFormDossier filters', () => {
 
     render(
       <SearchFormDossier
-        {...dossierSearchProps}
+        ariaLabel="Dossier Search"
         value={null}
+        searchSuggestions={mockSearchSuggestions}
+        onChange={mockOnChange}
         filters={filters}
       />,
     )
@@ -49,8 +49,10 @@ describe('SearchFormDossier filters', () => {
 
     const { rerender } = render(
       <SearchFormDossier
-        {...dossierSearchProps}
+        ariaLabel="Dossier Search"
         value={null}
+        searchSuggestions={mockSearchSuggestions}
+        onChange={mockOnChange}
         filters={filters1}
       />,
     )
@@ -66,8 +68,10 @@ describe('SearchFormDossier filters', () => {
 
     rerender(
       <SearchFormDossier
-        {...dossierSearchProps}
+        ariaLabel="Dossier Search"
         value={null}
+        searchSuggestions={mockSearchSuggestions}
+        onChange={mockOnChange}
         filters={filters2}
       />,
     )
@@ -87,8 +91,10 @@ describe('SearchFormDossier filters', () => {
 
     render(
       <SearchFormDossier
-        {...dossierSearchProps}
+        ariaLabel="Dossier Search"
         value={null}
+        searchSuggestions={mockSearchSuggestions}
+        onChange={mockOnChange}
         filters={filters}
       />,
     )
@@ -108,8 +114,10 @@ describe('SearchFormDossier filters', () => {
 
     render(
       <SearchFormDossier
-        {...dossierSearchProps}
+        ariaLabel="Dossier Search"
         value={null}
+        searchSuggestions={mockSearchSuggestions}
+        onChange={mockOnChange}
         filters={undefined}
       />,
     )

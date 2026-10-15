@@ -7,7 +7,8 @@ import { Museums } from 'fragmentarium/domain/museum'
 import { Genres } from 'fragmentarium/domain/Genres'
 import Reference from 'bibliography/domain/Reference'
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
-import { PeriodModifiers, Periods } from 'common/utils/period'
+import { PeriodModifiers } from 'common/utils/period'
+import { Periods } from 'common/utils/periodDefinitions'
 import { MesopotamianDate } from 'chronology/domain/Date'
 import { Acquisition } from 'fragmentarium/domain/Acquisition'
 import { lines } from 'test-support/test-fragment-lines'
@@ -85,7 +86,7 @@ export const fragment = new Fragment({
       '',
       [],
       new BibliographyEntry({ id: 'RN52' }),
-    ),
+    ).withIdentity('RN52'),
   ],
   uncuratedReferences: null,
   traditionalReferences: ['text 1'],

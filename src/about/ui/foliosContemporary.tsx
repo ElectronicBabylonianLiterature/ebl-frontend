@@ -1,4 +1,5 @@
 import React from 'react'
+import AboutFigure from 'about/ui/AboutFigure'
 import { MarkdownParagraph } from 'common/ui/Markdown'
 import MarkupParagraph from 'about/ui/MarkupParagraph'
 import { FolioEntry } from 'about/ui/FolioEntry'
@@ -32,17 +33,15 @@ export const contemporaryFolios: FolioEntry[] = [
     title: 'Simo Parpola',
     content: (markupService) => (
       <>
-        <figure className="Introduction__photoLeft">
-          <img
-            className="Introduction__300px"
-            src={parpola}
-            alt="Parpola’s transliteration and identification of Rm.468"
-          />
-          <figcaption className="Introduction__caption">
-            Parpola’s transliteration and identification of{' '}
-            <a href="/library/Rm.468">Rm.468</a>
-          </figcaption>
-        </figure>
+        <AboutFigure
+          side="Left"
+          width="300px"
+          src={parpola}
+          alt="Parpola’s transliteration and identification of Rm.468"
+        >
+          Parpola’s transliteration and identification of{' '}
+          <a href="/library/Rm.468">Rm.468</a>
+        </AboutFigure>
         <MarkdownParagraph text="The Finnish Assyriologist Simo Parpola is the founder and leader of the [*State Archives of Assyria*](https://assyriologia.fi/natcp/saa/) project, perhaps the most influential, field-defining project in the history of the discipline. With unrivalled erudition and inexhaustible energy, Parpola and his team have reconstructed and published almost all first-millennium Assyrian administrative texts, and made them accessible in the prestigious *SAA* series and multiple subseries. Parpola was a pioneer in the use of computers for cuneiform philology, and the technologies developed by him at the beginning of the *SAA* project are still in use today. In the course of his reconstruction of the archives of the Assyrian empire, Parpola transliterated and identified dozens of tablets in the British Museum. Parpola has kindly digitized his transliterations and made them available for their use in the Library." />
       </>
     ),
@@ -52,16 +51,14 @@ export const contemporaryFolios: FolioEntry[] = [
     title: 'Irving L. Finkel',
     content: (markupService) => (
       <>
-        <figure className="Introduction__photoRight">
-          <img
-            className="Introduction__400px"
-            src={finkeljoins}
-            alt="List of “joins” in a notebook by I. L. Finkel"
-          />
-          <figcaption className="Introduction__caption">
-            List of “joins” in a notebook by I. L. Finkel
-          </figcaption>
-        </figure>
+        <AboutFigure
+          side="Right"
+          width="400px"
+          src={finkeljoins}
+          alt="List of “joins” in a notebook by I. L. Finkel"
+        >
+          List of “joins” in a notebook by I. L. Finkel
+        </AboutFigure>
         <p>
           Irving L. Finkel is a leading authority in the field of Mesopotamian
           scholarship, whose areas of expertise encompass a wide range of
@@ -113,16 +110,14 @@ export const contemporaryFolios: FolioEntry[] = [
     title: 'Andrew R. George',
     content: (markupService) => (
       <>
-        <figure className="Introduction__photoLeft">
-          <img
-            className="Introduction__300px"
-            src={georgetransliteration}
-            alt="Transliteration by A. R. George"
-          />
-          <figcaption className="Introduction__caption">
-            Transliteration by A. R. George
-          </figcaption>
-        </figure>
+        <AboutFigure
+          side="Left"
+          width="300px"
+          src={georgetransliteration}
+          alt="Transliteration by A. R. George"
+        >
+          Transliteration by A. R. George
+        </AboutFigure>
         <MarkupParagraph
           markupService={markupService}
           text="Andrew R. George is a highly respected Assyriologist with expertise in Mesopotamian literature, religion, and scholarship, gifted with an unrivalled epigraphic eye and philological acumen. George boasts a broad range of interests, covering topics such as Mesopotamian temples and cultic topography, literature, incantations, divination, royal inscriptions, and private letters. George is perhaps most recognized for his monumental edition of the Gilgamesh Epic (@bib{RN117}), which he has updated for the eBL Corpus (see @url{/corpus/L/1/4}{here}). Along with J. Taniguchi, George catalogued and digitized Lambert’s notebooks and also processed and published over 650 cuneiform copies from Lambert’s Nachlass (@bib{RN1013a}, @bib{RN1013ab}). George has generously donated his notebooks of transliterations for their use in the Library. George’s notebooks are a treasure trove of texts and fragments, including transliterations of hundreds of tablets in the British Museum’s “Sippar Collection”, as well as accurate editions of under-explored genres such as Late Babylonian temple rituals."

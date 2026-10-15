@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Button, Col, Form, Row } from 'react-bootstrap'
+import { Button, ButtonToolbar, Col, Form, Row } from 'react-bootstrap'
 import { stringify } from 'query-string'
 import { produce } from 'immer'
 import FragmentService from 'fragmentarium/application/FragmentService'
@@ -11,24 +11,23 @@ import DossiersService from 'dossiers/application/DossiersService'
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 import { FragmentQuery } from 'query/FragmentQuery'
 import { ResearchProjects } from 'research-projects/researchProject'
+import LuckyButton from 'fragmentarium/ui/front-page/LuckyButton'
+import PioneersButton from 'fragmentarium/ui/PioneersButton'
 import LemmaSearchForm from 'fragmentarium/ui/search/SearchFormLemma'
 import NumberSearchForm from 'fragmentarium/ui/search/SearchFormNumber'
 import ReferenceSearchForm from 'fragmentarium/ui/search/SearchFormReference'
 import TransliterationSearchForm from 'fragmentarium/ui/search/SearchFormTransliteration'
-import SearchFormAdvancedFields from 'fragmentarium/ui/SearchFormAdvancedFields'
-import SearchFormButtonToolbar from 'fragmentarium/ui/SearchFormButtonToolbar'
-import { helpColSize } from 'fragmentarium/ui/searchFormLayout'
+import SearchFormAdvanced from 'fragmentarium/ui/search/SearchFormAdvanced'
 import {
-  createSearchFormState,
-  flattenSearchFormState,
-  isValidNumber,
   SearchFormState,
   SearchFormValue,
-} from 'fragmentarium/ui/SearchFormState'
-import './SearchForm.sass'
+  flattenSearchFormState,
+  initializeSearchFormState,
+  isValidNumber,
+} from 'fragmentarium/ui/SearchForm.state'
+import 'fragmentarium/ui/SearchForm.sass'
 
-export { helpColSize } from 'fragmentarium/ui/searchFormLayout'
-export { isValidNumber } from 'fragmentarium/ui/SearchFormState'
+export { isValidNumber }
 
 export type SearchFormProps = {
   fragmentSearchService: FragmentSearchService
@@ -42,6 +41,8 @@ export type SearchFormProps = {
   navigate: (options: { pathname: string; search: string }) => void
 }
 
+export const helpColSize = 1
+
 class SearchForm extends Component<SearchFormProps, SearchFormState> {
   basepath: string
   private showAdvancedSearch: boolean
@@ -54,7 +55,7 @@ class SearchForm extends Component<SearchFormProps, SearchFormState> {
 
     const fragmentQuery = this.props.fragmentQuery || {}
 
-    this.state = createSearchFormState(fragmentQuery)
+    this.state = initializeSearchFormState(fragmentQuery)
     this.showAdvancedSearch = props.showAdvancedSearch ?? false
 
     if (
@@ -90,7 +91,7 @@ class SearchForm extends Component<SearchFormProps, SearchFormState> {
   onChangeBibliographyReference = (event: BibliographyEntry): void => {
     const newState = produce(this.state, (draftState) => {
       draftState.referenceEntry.label = event.label
-      draftState.referenceEntry.id = event.id || ''
+      draftState.referenceEntry.id = event.id
     })
     this.setState(newState)
   }
@@ -112,6 +113,38 @@ class SearchForm extends Component<SearchFormProps, SearchFormState> {
     if (event.ctrlKey && event.key === 'Enter' && this.state.isValid) {
       this.search(event)
     }
+  }
+
+  renderButtonToolbar = (): JSX.Element => {
+    return (
+      <Row>
+        <Col sm={helpColSize} className={'SearchForm__help-col'}></Col>
+        <Col>
+          <ButtonToolbar>
+            <Button
+              className="w-25 m-1"
+              onClick={this.search}
+              variant="primary"
+              disabled={!this.state.isValid}
+            >
+              {this.props.project
+                ? `Search in ${this.props.project}`
+                : 'Search'}
+            </Button>
+            {!this.props.project && (
+              <>
+                <LuckyButton
+                  fragmentSearchService={this.props.fragmentSearchService}
+                />
+                <PioneersButton
+                  fragmentSearchService={this.props.fragmentSearchService}
+                />
+              </>
+            )}
+          </ButtonToolbar>
+        </Col>
+      </Row>
+    )
   }
 
   render(): JSX.Element {
@@ -169,8 +202,13 @@ class SearchForm extends Component<SearchFormProps, SearchFormState> {
               )}
             </Col>
             {this.showAdvancedSearch && (
-              <SearchFormAdvancedFields
-                state={this.state}
+              <SearchFormAdvanced
+                genre={this.state.genre}
+                museum={this.state.museum}
+                scriptPeriod={this.state.scriptPeriod}
+                scriptPeriodModifier={this.state.scriptPeriodModifier}
+                site={this.state.site}
+                dossier={this.state.dossier}
                 onChange={this.onChange}
                 fragmentService={this.props.fragmentService}
                 dossiersService={this.props.dossiersService}
@@ -179,12 +217,7 @@ class SearchForm extends Component<SearchFormProps, SearchFormState> {
           </Row>
           <Row>
             <Col>
-              <SearchFormButtonToolbar
-                project={this.props.project}
-                isValid={this.state.isValid}
-                onSearch={this.search}
-                fragmentSearchService={this.props.fragmentSearchService}
-              />
+              <this.renderButtonToolbar />
             </Col>
           </Row>
         </Form>

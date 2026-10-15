@@ -80,6 +80,7 @@ test('Injects references into a paratext note line', async () => {
   expect(apiClient.fetchJson).toHaveBeenCalledWith(
     `${chapterUrl}/lines/0`,
     false,
+    undefined,
   )
   expect(isNoteLine(noteLine)).toBe(true)
   expect(isNoteLine(noteLine) && noteLine.parts).toEqual([

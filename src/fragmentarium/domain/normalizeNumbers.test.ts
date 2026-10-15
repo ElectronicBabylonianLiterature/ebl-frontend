@@ -1,4 +1,4 @@
-import normalizeNumbers from './normalizeNumbers'
+import normalizeNumbers from 'fragmentarium/domain/normalizeNumbers'
 
 test.each([
   ['a2', 'a₂'],

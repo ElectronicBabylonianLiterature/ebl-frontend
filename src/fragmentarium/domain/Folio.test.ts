@@ -1,5 +1,5 @@
 import Chance from 'chance'
-import Folio from './Folio'
+import Folio from 'fragmentarium/domain/Folio'
 
 describe('Folio', () => {
   const chance = new Chance('Folio')

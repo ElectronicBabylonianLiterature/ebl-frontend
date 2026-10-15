@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react'
 import _ from 'lodash'
 
 import { changeValueByLabel, clickNth, submitForm } from 'test-support/utils'
-import References from './References'
+import References from 'fragmentarium/ui/fragment/References'
 import Reference from 'bibliography/domain/Reference'
 import {
   buildBorger1957,

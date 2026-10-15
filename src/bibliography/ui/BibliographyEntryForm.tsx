@@ -13,7 +13,7 @@ import { generateIds } from 'bibliography/domain/GenerateIds'
 import SupersedableOperation from 'common/utils/SupersedableOperation'
 import applyWhenCurrent from 'common/utils/applyWhenCurrent'
 
-import './BibliographyEntryForm.css'
+import 'bibliography/ui/BibliographyEntryForm.css'
 
 const BibliographyHelp = () => (
   <p>

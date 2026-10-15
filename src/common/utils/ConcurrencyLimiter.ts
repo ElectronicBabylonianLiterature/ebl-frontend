@@ -1,12 +1,12 @@
 import { createAbortError } from 'common/utils/abortError'
 
-type QueueState = {
+export type QueueState = {
   activeCount: number
   waitingResolvers: (() => void)[]
 }
 
 export default class ConcurrencyLimiter {
-  private readonly queueState: QueueState = {
+  protected readonly queueState: QueueState = {
     activeCount: 0,
     waitingResolvers: [],
   }
@@ -28,7 +28,7 @@ export default class ConcurrencyLimiter {
     }
   }
 
-  private acquireSlot(signal?: AbortSignal): Promise<() => void> {
+  protected acquireSlot(signal?: AbortSignal): Promise<() => void> {
     if (signal?.aborted) {
       return Promise.reject(createAbortError(signal))
     }

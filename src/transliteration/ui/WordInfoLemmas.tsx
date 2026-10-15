@@ -5,12 +5,12 @@ import withData from 'http/withData'
 import { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { LemmatizableToken } from 'transliteration/domain/token'
-import { OneOfLineToken } from './line-tokens'
+import { OneOfLineToken } from 'transliteration/ui/line-tokens'
 import {
   LemmaMap,
   updateLemmaMapKeys,
   useLineLemmasContext,
-} from './LineLemmasContext'
+} from 'transliteration/ui/LineLemmasContext'
 import DictionaryWord from 'dictionary/domain/Word'
 import { isLemma } from 'transliteration/domain/type-guards'
 import RouterLinkModeContext from 'common/ui/RouterLinkModeContext'
@@ -60,7 +60,7 @@ const Info = withData<
     dictionary: WordService
     lemmaKeys: readonly string[]
   },
-  [string, DictionaryWord][]
+  [string, DictionaryWord | null][]
 >(
   ({ data: lemmaEntries, word, lemmaSetter }): JSX.Element => {
     const lemmaMap = useMemo(() => new Map(lemmaEntries), [lemmaEntries])
@@ -94,8 +94,7 @@ const Info = withData<
       !props.word.uniqueLemma.every((lemmaKey: string) =>
         props.lemmaMap.get(lemmaKey),
       ),
-    defaultData: (props) =>
-      [...props.lemmaMap.entries()] as [string, DictionaryWord][],
+    defaultData: (props) => [...props.lemmaMap.entries()],
   },
 )
 

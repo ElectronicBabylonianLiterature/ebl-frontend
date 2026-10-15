@@ -3,7 +3,7 @@ import _ from 'lodash'
 import withData from 'http/withData'
 import FragmentService from 'fragmentarium/application/FragmentService'
 
-import './Statistics.css'
+import 'fragmentarium/ui/front-page/Statistics.css'
 
 const statConfig = [
   { key: 'totalFragments', label: 'tablets indexed', icon: '𒀭' },
@@ -56,6 +56,6 @@ function Statistics({ data }: { data: { readonly [key: string]: number } }) {
 
 export default withData<
   unknown,
-  { fragmentService: FragmentService },
+  { fragmentService: Pick<FragmentService, 'statistics'> },
   { readonly [key: string]: number }
 >(Statistics, (props, signal) => props.fragmentService.statistics(signal))

@@ -1,6 +1,6 @@
 import React from 'react'
 import { render } from '@testing-library/react'
-import Editor from './Editor'
+import Editor from 'editor/Editor'
 
 test.each([
   ['text\nmore text', false, null],

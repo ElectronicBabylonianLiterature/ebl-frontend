@@ -6,7 +6,7 @@ import DossiersService from 'dossiers/application/DossiersService'
 import _ from 'lodash'
 import { Popover, Overlay } from 'react-bootstrap'
 import { Fragment } from 'fragmentarium/domain/fragment'
-import './DossiersDisplay.sass'
+import 'dossiers/ui/DossiersDisplay.sass'
 import ReferencePopover from 'bibliography/ui/referencePopover'
 import Citation from 'bibliography/domain/Citation'
 import InlineMarkdown from 'common/ui/InlineMarkdown'
@@ -183,7 +183,7 @@ export function DossierRecordsListDisplay({
 const FragmentDossierRecordsDisplay = withData<
   unknown,
   {
-    dossiersService: DossiersService
+    dossiersService: Pick<DossiersService, 'queryByIds'>
     fragment: Fragment
   },
   { records: readonly DossierRecord[] }

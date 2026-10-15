@@ -1,34 +1,22 @@
 import { TextLine } from 'transliteration/domain/text-line'
+import {
+  enclosure,
+  valueToken,
+  word,
+} from 'test-support/complex-text/tokenBuilders'
 
 const line6 = new TextLine({
   prefix: '3.',
   content: [
-    {
-      enclosureType: [],
-      cleanValue: '1@v',
-      value: '1@v#*',
-      language: 'AKKADIAN',
-      normalized: false,
-      lemmatizable: true,
-      alignable: true,
-      uniqueLemma: [],
-      erasure: 'NONE',
-      alignment: null,
-      variant: null,
-      parts: [
+    word(
+      '1@v#*',
+      [
         {
           enclosureType: [],
           cleanValue: '1@v',
           value: '1@v#*',
           name: '1',
-          nameParts: [
-            {
-              enclosureType: [],
-              cleanValue: '1',
-              value: '1',
-              type: 'ValueToken',
-            },
-          ],
+          nameParts: [valueToken('1')],
           subIndex: 1,
           modifiers: ['@v'],
           flags: ['#', '*'],
@@ -36,23 +24,11 @@ const line6 = new TextLine({
           type: 'Number',
         },
       ],
-      type: 'Word',
-      hasVariantAlignment: false,
-      hasOmittedAlignment: false,
-    },
-    {
-      enclosureType: [],
-      cleanValue: 'x',
-      value: 'x#!',
-      language: 'AKKADIAN',
-      normalized: false,
-      lemmatizable: false,
-      alignable: false,
-      uniqueLemma: [],
-      erasure: 'NONE',
-      alignment: null,
-      variant: null,
-      parts: [
+      { cleanValue: '1@v' },
+    ),
+    word(
+      'x#!',
+      [
         {
           enclosureType: [],
           cleanValue: 'x',
@@ -61,23 +37,11 @@ const line6 = new TextLine({
           type: 'UnclearSign',
         },
       ],
-      type: 'Word',
-      hasVariantAlignment: false,
-      hasOmittedAlignment: false,
-    },
-    {
-      enclosureType: [],
-      cleanValue: 'X',
-      value: 'X#?',
-      language: 'AKKADIAN',
-      normalized: false,
-      lemmatizable: false,
-      alignable: false,
-      uniqueLemma: [],
-      erasure: 'NONE',
-      alignment: null,
-      variant: null,
-      parts: [
+      { cleanValue: 'x', lemmatizable: false, alignable: false },
+    ),
+    word(
+      'X#?',
+      [
         {
           enclosureType: [],
           cleanValue: 'X',
@@ -86,10 +50,8 @@ const line6 = new TextLine({
           type: 'UnidentifiedSign',
         },
       ],
-      type: 'Word',
-      hasVariantAlignment: false,
-      hasOmittedAlignment: false,
-    },
+      { cleanValue: 'X', lemmatizable: false, alignable: false },
+    ),
     {
       enclosureType: [],
       cleanValue: '::@v@44',
@@ -99,39 +61,14 @@ const line6 = new TextLine({
       flags: ['?', '#'],
       type: 'Divider',
     },
-    {
-      enclosureType: [],
-      cleanValue: '|',
-      value: '|',
-      type: 'LineBreak',
-    },
-    {
-      enclosureType: [],
-      cleanValue: 'x',
-      value: '[(x)',
-      language: 'AKKADIAN',
-      normalized: false,
-      lemmatizable: false,
-      alignable: false,
-      uniqueLemma: [],
-      erasure: 'NONE',
-      alignment: null,
-      variant: null,
-      parts: [
-        {
-          enclosureType: [],
-          cleanValue: '',
-          value: '[',
-          side: 'LEFT',
-          type: 'BrokenAway',
-        },
-        {
+    { enclosureType: [], cleanValue: '|', value: '|', type: 'LineBreak' },
+    word(
+      '[(x)',
+      [
+        enclosure('BrokenAway', '[', 'LEFT'),
+        enclosure('PerhapsBrokenAway', '(', 'LEFT', {
           enclosureType: ['BROKEN_AWAY'],
-          cleanValue: '',
-          value: '(',
-          side: 'LEFT',
-          type: 'PerhapsBrokenAway',
-        },
+        }),
         {
           enclosureType: ['BROKEN_AWAY', 'PERHAPS_BROKEN_AWAY'],
           cleanValue: 'x',
@@ -139,31 +76,15 @@ const line6 = new TextLine({
           flags: [],
           type: 'UnclearSign',
         },
-        {
+        enclosure('PerhapsBrokenAway', ')', 'RIGHT', {
           enclosureType: ['BROKEN_AWAY', 'PERHAPS_BROKEN_AWAY'],
-          cleanValue: '',
-          value: ')',
-          side: 'RIGHT',
-          type: 'PerhapsBrokenAway',
-        },
+        }),
       ],
-      type: 'Word',
-      hasVariantAlignment: false,
-      hasOmittedAlignment: false,
-    },
-    {
-      enclosureType: ['BROKEN_AWAY'],
-      cleanValue: 'x',
-      value: 'x]',
-      language: 'AKKADIAN',
-      normalized: false,
-      lemmatizable: false,
-      alignable: false,
-      uniqueLemma: [],
-      erasure: 'NONE',
-      alignment: null,
-      variant: null,
-      parts: [
+      { cleanValue: 'x', lemmatizable: false, alignable: false },
+    ),
+    word(
+      'x]',
+      [
         {
           enclosureType: ['BROKEN_AWAY'],
           cleanValue: 'x',
@@ -171,18 +92,17 @@ const line6 = new TextLine({
           flags: [],
           type: 'UnclearSign',
         },
-        {
+        enclosure('BrokenAway', ']', 'RIGHT', {
           enclosureType: ['BROKEN_AWAY'],
-          cleanValue: '',
-          value: ']',
-          side: 'RIGHT',
-          type: 'BrokenAway',
-        },
+        }),
       ],
-      type: 'Word',
-      hasVariantAlignment: false,
-      hasOmittedAlignment: false,
-    },
+      {
+        enclosureType: ['BROKEN_AWAY'],
+        cleanValue: 'x',
+        lemmatizable: false,
+        alignable: false,
+      },
+    ),
   ],
   lineNumber: {
     number: 3,

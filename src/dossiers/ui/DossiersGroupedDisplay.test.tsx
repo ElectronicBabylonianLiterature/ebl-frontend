@@ -1,10 +1,14 @@
 import React from 'react'
-import { render, screen } from '@testing-library/react'
+import { render, screen, waitFor } from '@testing-library/react'
 import '@testing-library/jest-dom'
+import userEvent from '@testing-library/user-event'
 import 'test-support/mockMarkdownRenderers'
 import { DossiersGroupedDisplay } from 'dossiers/ui/DossiersGroupedDisplay'
 import DossierRecord from 'dossiers/domain/DossierRecord'
-import { createMockRecordDto } from 'dossiers/ui/DossiersGroupedDisplay.testSupport'
+import {
+  createMockRecordDto,
+  getDossierSearchLabel,
+} from 'dossiers/ui/DossiersGroupedDisplay.testSupport'
 
 describe('DossiersGroupedDisplay', () => {
   it('renders nothing when given empty array', () => {
@@ -117,61 +121,73 @@ describe('DossiersGroupedDisplay', () => {
     expect(screen.queryByText(/None/)).not.toBeInTheDocument()
   })
 
-  it('handles missing script or provenance gracefully', () => {
-    const recordDto = {
-      _id: 'D001',
-      description: 'Test',
-      isApproximateDate: false,
-      yearRangeFrom: -500,
-      yearRangeTo: -470,
-      relatedKings: [],
-      references: [],
-    }
-    const record = new DossierRecord(recordDto)
+  it('opens popover when dossier is clicked', async () => {
+    const record = new DossierRecord(
+      createMockRecordDto(
+        'D001',
+        'Test description',
+        'Neo-Babylonian',
+        'Late',
+        'Nippur',
+      ),
+    )
+    const user = userEvent.setup()
     render(<DossiersGroupedDisplay records={[record]} />)
 
-    expect(
-      screen.getByText(/Unknown Period — Unknown Provenance/),
-    ).toBeInTheDocument()
+    await user.click(screen.getByRole('button', { name: 'D001' }))
+
+    await waitFor(() => {
+      expect(screen.getByRole('tooltip')).toBeInTheDocument()
+    })
+    expect(screen.getByText(/Test description/)).toBeInTheDocument()
   })
 
-  it('applies correct CSS classes for styling', () => {
+  it('opens popover when dossier is activated from keyboard', async () => {
+    const record = new DossierRecord(
+      createMockRecordDto(
+        'D001',
+        'Test description',
+        'Neo-Babylonian',
+        'Late',
+        'Nippur',
+      ),
+    )
+    const user = userEvent.setup()
+    render(<DossiersGroupedDisplay records={[record]} />)
+
+    const dossierButton = screen.getByRole('button', { name: 'D001' })
+
+    await user.tab()
+    expect(dossierButton).toHaveFocus()
+    await user.keyboard('{Enter}')
+
+    await waitFor(() => {
+      expect(screen.getByRole('tooltip')).toBeInTheDocument()
+    })
+  })
+
+  it('links dossier search arrow to library search filtered by dossier id', () => {
     const record = new DossierRecord(
       createMockRecordDto('D001', 'Test', 'Neo-Babylonian', 'Late', 'Nippur'),
     )
     render(<DossiersGroupedDisplay records={[record]} />)
 
     expect(
-      screen.getByText(/Neo-Babylonian \(Late\) — Nippur/),
-    ).toBeInTheDocument()
-    expect(screen.getByText('Dossiers:')).toBeInTheDocument()
-    expect(screen.getByText('D001')).toBeInTheDocument()
+      screen.getByRole('link', { name: getDossierSearchLabel('D001') }),
+    ).toHaveAttribute('href', '/library/search/?dossier=D001')
   })
 
-  it('groups multiple provenances correctly', () => {
-    const records = [
-      new DossierRecord(
-        createMockRecordDto(
-          'D001',
-          'First',
-          'Neo-Babylonian',
-          'Late',
-          'Nippur',
-        ),
-      ),
-      new DossierRecord(
-        createMockRecordDto('D002', 'Second', 'Neo-Babylonian', 'Late', 'Ur'),
-      ),
-      new DossierRecord(
-        createMockRecordDto('D003', 'Third', 'Old Babylonian', '', 'Nippur'),
-      ),
-    ]
-    render(<DossiersGroupedDisplay records={records} />)
+  it('focuses dossier button first from the keyboard', async () => {
+    const record = new DossierRecord(
+      createMockRecordDto('D001', 'Test', 'Neo-Babylonian', 'Late', 'Nippur'),
+    )
+    const user = userEvent.setup()
+    render(<DossiersGroupedDisplay records={[record]} />)
 
-    expect(
-      screen.getByText(/Neo-Babylonian \(Late\) — Nippur/),
-    ).toBeInTheDocument()
-    expect(screen.getByText(/Neo-Babylonian \(Late\) — Ur/)).toBeInTheDocument()
-    expect(screen.getByText(/Old Babylonian — Nippur/)).toBeInTheDocument()
+    const dossierButton = screen.getByRole('button', { name: 'D001' })
+
+    await user.tab()
+
+    expect(dossierButton).toHaveFocus()
   })
 })

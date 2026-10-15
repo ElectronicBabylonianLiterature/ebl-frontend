@@ -1,87 +1,38 @@
 import { TextLine } from 'transliteration/domain/text-line'
+import {
+  enclosure,
+  reading,
+  valueToken,
+  word,
+} from 'test-support/complex-text/tokenBuilders'
 
 const line16 = new TextLine({
   prefix: '6.',
   content: [
-    {
-      enclosureType: [],
-      cleanValue: '',
-      value: '[',
-      side: 'LEFT',
-      type: 'BrokenAway',
-    },
-    {
+    enclosure('BrokenAway', '[', 'LEFT'),
+    enclosure('BrokenAway', ']', 'RIGHT', { enclosureType: ['BROKEN_AWAY'] }),
+    enclosure('BrokenAway', '[', 'LEFT'),
+    enclosure('DocumentOrientedGloss', '{(', 'LEFT', {
       enclosureType: ['BROKEN_AWAY'],
-      cleanValue: '',
-      value: ']',
-      side: 'RIGHT',
-      type: 'BrokenAway',
-    },
-    {
-      enclosureType: [],
-      cleanValue: '',
-      value: '[',
-      side: 'LEFT',
-      type: 'BrokenAway',
-    },
-    {
-      enclosureType: ['BROKEN_AWAY'],
-      cleanValue: '',
-      value: '{(',
-      side: 'LEFT',
-      type: 'DocumentOrientedGloss',
-    },
-    {
-      enclosureType: ['BROKEN_AWAY', 'DOCUMENT_ORIENTED_GLOSS'],
-      cleanValue: 'ra',
-      value: 'ra',
-      language: 'AKKADIAN',
-      normalized: false,
-      lemmatizable: true,
-      alignable: true,
-      uniqueLemma: [],
-      erasure: 'NONE',
-      alignment: null,
-      variant: null,
-      parts: [
-        {
+    }),
+    word(
+      'ra',
+      [
+        reading('ra', 'ra', {
           enclosureType: ['BROKEN_AWAY', 'DOCUMENT_ORIENTED_GLOSS'],
-          cleanValue: 'ra',
-          value: 'ra',
-          name: 'ra',
           nameParts: [
-            {
+            valueToken('ra', {
               enclosureType: ['BROKEN_AWAY', 'DOCUMENT_ORIENTED_GLOSS'],
-              cleanValue: 'ra',
-              value: 'ra',
-              type: 'ValueToken',
-            },
+            }),
           ],
-          subIndex: 1,
-          modifiers: [],
-          flags: [],
-          sign: null,
-          type: 'Reading',
-        },
+        }),
       ],
-      type: 'Word',
-      hasVariantAlignment: false,
-      hasOmittedAlignment: false,
-    },
-    {
+      { enclosureType: ['BROKEN_AWAY', 'DOCUMENT_ORIENTED_GLOSS'] },
+    ),
+    enclosure('DocumentOrientedGloss', ')}', 'RIGHT', {
       enclosureType: ['BROKEN_AWAY', 'DOCUMENT_ORIENTED_GLOSS'],
-      cleanValue: '',
-      value: ')}',
-      side: 'RIGHT',
-      type: 'DocumentOrientedGloss',
-    },
-    {
-      enclosureType: ['BROKEN_AWAY'],
-      cleanValue: '',
-      value: ']',
-      side: 'RIGHT',
-      type: 'BrokenAway',
-    },
+    }),
+    enclosure('BrokenAway', ']', 'RIGHT', { enclosureType: ['BROKEN_AWAY'] }),
   ],
   lineNumber: {
     number: 6,

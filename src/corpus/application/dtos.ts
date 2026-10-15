@@ -19,7 +19,8 @@ import {
   OldSiglum,
 } from 'corpus/domain/manuscript'
 import { ReferenceDto } from 'bibliography/domain/referenceDto'
-import { PeriodModifiers, Periods } from 'common/utils/period'
+import { PeriodModifiers } from 'common/utils/period'
+import { Periods } from 'common/utils/periodDefinitions'
 import { getProvenanceByName } from 'corpus/domain/provenance'
 import SiglumAndTransliteration from 'corpus/domain/SiglumAndTransliteration'
 import {
@@ -35,24 +36,17 @@ import {
   fromTransliterationLineDto,
 } from 'transliteration/application/dtos'
 import { EmptyLine } from 'transliteration/domain/line'
-import { TextLine, TextLineDto } from 'transliteration/domain/text-line'
-import TranslationLine from 'transliteration/domain/translation-line'
+import { TextLine } from 'transliteration/domain/text-line'
+import { isEmptyLine, isTextLine } from 'transliteration/domain/type-guards'
 import { NoteLine } from 'transliteration/domain/note-line'
-import { ChapterInfoLine } from 'corpus/domain/ChapterInfo'
 import { createResearchProject } from 'research-projects/researchProject'
 
 export type {
-  ChapterDisplayDto,
-  LineDisplayDto,
   LineVariantDisplayDto,
   OldLineNumberDto,
+  LineDisplayDto,
+  ChapterDisplayDto,
 } from 'corpus/application/chapterDisplayDtos'
-export {
-  toAlignmentDto,
-  toLemmatizationDto,
-  toLinesDto,
-  toManuscriptsDto,
-} from 'corpus/application/toDtos'
 
 export function fromSiglumAndTransliterationDto(
   dto,
@@ -104,23 +98,23 @@ export function createOldSiglum(oldSiglumDto: OldSiglumDto): OldSiglum {
 }
 
 export function fromManuscriptDto(manuscriptDto): Manuscript {
-  return new Manuscript(
-    manuscriptDto.id,
-    manuscriptDto.siglumDisambiguator,
-    manuscriptDto.oldSigla.map(createOldSiglum),
-    manuscriptDto.museumNumber,
-    manuscriptDto.accession,
-    PeriodModifiers[manuscriptDto.periodModifier],
-    Periods[manuscriptDto.period],
-    getProvenanceByName(manuscriptDto.provenance),
-    ManuscriptTypes[manuscriptDto.type],
-    manuscriptDto.notes,
-    manuscriptDto.colophon,
-    manuscriptDto.unplacedLines,
-    manuscriptDto.references.map(createReference),
-    createJoins(manuscriptDto.joins),
-    manuscriptDto.isInFragmentarium,
-  )
+  return new Manuscript({
+    id: manuscriptDto.id,
+    siglumDisambiguator: manuscriptDto.siglumDisambiguator,
+    oldSigla: manuscriptDto.oldSigla.map(createOldSiglum),
+    museumNumber: manuscriptDto.museumNumber,
+    accession: manuscriptDto.accession,
+    periodModifier: PeriodModifiers[manuscriptDto.periodModifier],
+    period: Periods[manuscriptDto.period],
+    provenance: getProvenanceByName(manuscriptDto.provenance),
+    type: ManuscriptTypes[manuscriptDto.type],
+    notes: manuscriptDto.notes,
+    colophon: manuscriptDto.colophon,
+    unplacedLines: manuscriptDto.unplacedLines,
+    references: manuscriptDto.references.map(createReference),
+    joins: createJoins(manuscriptDto.joins),
+    isInFragmentarium: manuscriptDto.isInFragmentarium,
+  })
 }
 
 function fromLineVariantDto(variantDto): LineVariant {
@@ -139,19 +133,6 @@ function fromLineVariantDto(variantDto): LineVariant {
   })
 }
 
-export function fromMatchingColophonLinesDto(
-  matchingColophonLinesDto: Record<string, unknown>,
-): Record<string, readonly TextLine[]> {
-  return Object.entries(matchingColophonLinesDto).reduce<
-    Record<string, readonly TextLine[]>
-  >((previousValue, [key, value]) => {
-    const lines = (value as unknown[]).map(
-      (textLine) => new TextLine(textLine as TextLineDto),
-    )
-    return { ...previousValue, [key]: lines }
-  }, {})
-}
-
 export function fromLineDto(lineDto): Line {
   return createLine({
     ...lineDto,
@@ -160,35 +141,32 @@ export function fromLineDto(lineDto): Line {
   })
 }
 
-export function fromMatchingLineDto(lineDto): ChapterInfoLine {
-  return {
-    ...fromLineDto(lineDto),
-    translation: lineDto.translation.map(
-      (translation) => new TranslationLine(translation),
-    ),
+function fromManuscriptLineDto(lineDto): TextLine | EmptyLine {
+  const line = fromTransliterationLineDto(lineDto)
+  if (isTextLine(line) || isEmptyLine(line)) {
+    return line
   }
+  throw new Error(`Unexpected manuscript line type "${line.type}".`)
 }
 
 function fromManuscriptLineDisplay(manuscript): ManuscriptLineDisplay {
-  return new ManuscriptLineDisplay(
-    getProvenanceByName(manuscript.provenance),
-    PeriodModifiers[manuscript.periodModifier],
-    Periods[manuscript.period],
-    ManuscriptTypes[manuscript.type],
-    manuscript.siglumDisambiguator,
-    manuscript.oldSigla.map(createOldSiglum),
-    manuscript.labels,
-    fromTransliterationLineDto(manuscript.line) as unknown as
-      | TextLine
-      | EmptyLine,
-    manuscript.paratext.map(fromTransliterationLineDto),
-    manuscript.references.map(createReference),
-    createJoins(manuscript.joins),
-    manuscript.museumNumber,
-    manuscript.isInFragmentarium,
-    manuscript.accession,
-    manuscript.omittedWords,
-  )
+  return new ManuscriptLineDisplay({
+    provenance: getProvenanceByName(manuscript.provenance),
+    periodModifier: PeriodModifiers[manuscript.periodModifier],
+    period: Periods[manuscript.period],
+    type: ManuscriptTypes[manuscript.type],
+    siglumDisambiguator: manuscript.siglumDisambiguator,
+    oldSigla: manuscript.oldSigla.map(createOldSiglum),
+    labels: manuscript.labels,
+    line: fromManuscriptLineDto(manuscript.line),
+    paratext: manuscript.paratext.map(fromTransliterationLineDto),
+    references: manuscript.references.map(createReference),
+    joins: createJoins(manuscript.joins),
+    museumNumber: manuscript.museumNumber,
+    isInFragmentarium: manuscript.isInFragmentarium,
+    accession: manuscript.accession,
+    omittedWords: manuscript.omittedWords,
+  })
 }
 
 function fromLineVariantDisplay(variant): LineVariantDisplay {
@@ -207,6 +185,13 @@ export function fromLineDetailsDto(line, activeVariant: number): LineDetails {
     activeVariant,
   )
 }
+
+export {
+  toAlignmentDto,
+  toLemmatizationDto,
+  toManuscriptsDto,
+  toLinesDto,
+} from 'corpus/application/chapterDtoSerialization'
 
 export function fromDictionaryLineDto(dto): DictionaryLineDisplay {
   return { ...dto, lineDetails: fromLineDetailsDto(dto.lineDetails, 0) }

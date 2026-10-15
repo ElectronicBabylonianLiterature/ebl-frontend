@@ -1,14 +1,12 @@
-import React, { useEffect, useRef, useState, FunctionComponent } from 'react'
+import React, { useState, FunctionComponent } from 'react'
 import { Container, Row, Col } from 'react-bootstrap'
 import FragmentInCorpus from 'fragmentarium/ui/fragment/FragmentInCorpus'
 import Images from 'fragmentarium/ui/images/Images'
 import Info from 'fragmentarium/ui/info/Info'
 import ErrorAlert from 'common/errors/ErrorAlert'
 import Spinner from 'common/ui/Spinner'
-import SupersedableOperation from 'common/utils/SupersedableOperation'
-import SerialQueue from 'common/utils/SerialQueue'
-import applyWhenCurrent from 'common/utils/applyWhenCurrent'
-import './CuneiformFragment.sass'
+import useFragmentSaves from 'fragmentarium/ui/fragment/useFragmentSaves'
+import 'fragmentarium/ui/fragment/CuneiformFragment.sass'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import Folio from 'fragmentarium/domain/Folio'
 import WordService from 'dictionary/application/WordService'
@@ -31,6 +29,7 @@ type CuneiformFragmentProps = {
   activeFolio: Folio | null
   tab: string | null
   onSave: (save: () => Promise<Fragment>) => Promise<Fragment>
+  enqueueSave: (save: () => Promise<Fragment>) => Promise<Fragment>
   saving: boolean
   error: Error | null
   activeLine: string
@@ -51,6 +50,7 @@ const CuneiformFragment: FunctionComponent<CuneiformFragmentProps> = ({
   activeFolio,
   tab,
   onSave,
+  enqueueSave,
   saving,
   error,
   activeLine,
@@ -72,6 +72,7 @@ const CuneiformFragment: FunctionComponent<CuneiformFragmentProps> = ({
               dossiersService={dossiersService}
               afoRegisterService={afoRegisterService}
               onSave={onSave}
+              enqueueSave={enqueueSave}
             />,
           )}
         </Col>
@@ -103,6 +104,7 @@ const CuneiformFragment: FunctionComponent<CuneiformFragmentProps> = ({
           <Col xs={12} md={5}>
             {withErrorBoundary(
               <Images
+                key={fragment.number}
                 fragment={fragment}
                 fragmentService={fragmentService}
                 activeFolio={activeFolio}
@@ -141,44 +143,14 @@ const CuneiformFragmentController: FunctionComponent<ControllerProps> = ({
   tab = null,
   activeLine,
 }: ControllerProps) => {
-  const [currentFragment, setFragment] = useState(fragment)
-  const [isSaving, setIsSaving] = useState(false)
-  const [error, setError] = useState<Error | null>(null)
-  const saveOperation = useRef(new SupersedableOperation())
-  const saveQueue = useRef(new SerialQueue())
-
-  const isCurrentFragment = currentFragment.number === fragment.number
-  const visibleFragment = isCurrentFragment ? currentFragment : fragment
-
-  useEffect(() => () => saveOperation.current.supersede(), [])
-
-  useEffect(() => {
-    if (currentFragment.number !== fragment.number) {
-      saveOperation.current.supersede()
-      saveQueue.current = new SerialQueue()
-      setFragment(fragment)
-      setError(null)
-      setIsSaving(false)
-    }
-  }, [currentFragment.number, fragment])
-
-  const handleSave = (save: () => Promise<Fragment>): Promise<Fragment> => {
-    setError(null)
-    setIsSaving(true)
-
-    const savePromise = saveQueue.current.enqueue(save)
-    applyWhenCurrent(() => savePromise, {
-      onSuccess: (updatedFragment) => {
-        setFragment(updatedFragment)
-        setIsSaving(false)
-      },
-      onError: (saveError) => {
-        setError(saveError)
-        setIsSaving(false)
-      },
-    })(saveOperation.current.start())
-    return savePromise
-  }
+  const {
+    visibleFragment,
+    isCurrentFragment,
+    isSaving,
+    error,
+    handleSave,
+    enqueueSave,
+  } = useFragmentSaves(fragment)
 
   return (
     <>
@@ -194,6 +166,7 @@ const CuneiformFragmentController: FunctionComponent<ControllerProps> = ({
         activeFolio={activeFolio}
         tab={tab}
         onSave={handleSave}
+        enqueueSave={enqueueSave}
         saving={isCurrentFragment && isSaving}
         error={isCurrentFragment ? error : null}
         activeLine={activeLine}

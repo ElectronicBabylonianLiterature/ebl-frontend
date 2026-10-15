@@ -1,7 +1,7 @@
 import React from 'react'
 import _ from 'lodash'
 import { Joins } from 'fragmentarium/domain/join'
-import FragmentariumLink from './FragmentariumLink'
+import FragmentariumLink from 'corpus/ui/FragmentariumLink'
 
 export default function ManuscriptJoins({
   manuscript,

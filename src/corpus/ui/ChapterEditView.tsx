@@ -4,8 +4,8 @@ import withData from 'http/withData'
 import InlineMarkdown from 'common/ui/InlineMarkdown'
 import Spinner from 'common/ui/Spinner'
 import ErrorAlert from 'common/errors/ErrorAlert'
-import ChapterEditor from './ChapterEditor'
-import ChapterNavigation from './ChapterNavigation'
+import ChapterEditor from 'corpus/ui/ChapterEditor'
+import ChapterNavigation from 'corpus/ui/ChapterNavigation'
 import usePromiseEffect from 'common/hooks/usePromiseEffect'
 import applyWhenCurrent from 'common/utils/applyWhenCurrent'
 import { Text } from 'corpus/domain/text'
@@ -19,10 +19,10 @@ import FragmentService from 'fragmentarium/application/FragmentService'
 import WordService from 'dictionary/application/WordService'
 import { ChapterLemmatization } from 'corpus/domain/lemmatization'
 import { ChapterAlignment } from 'corpus/domain/alignment'
-import CorpusTextCrumb from './CorpusTextCrumb'
-import GenreCrumb from './GenreCrumb'
-import ChapterCrumb from './ChapterCrumb'
-import './ChapterEditView.sass'
+import CorpusTextCrumb from 'corpus/ui/CorpusTextCrumb'
+import GenreCrumb from 'corpus/ui/GenreCrumb'
+import ChapterCrumb from 'corpus/ui/ChapterCrumb'
+import 'corpus/ui/ChapterEditView.sass'
 
 function EditChapterTitle({
   text,
@@ -158,19 +158,22 @@ function ChapterEditView({
 
 export default withData<
   {
-    textService
+    textService: TextService
     bibliographyService: BibliographySearch
     fragmentService: FragmentService
     wordService: WordService
   },
   { id: ChapterId },
-  [Text, Chapter]
+  { text: Text; chapter: Chapter }
 >(
-  ({ data: [text, chapter], ...props }) => (
+  ({ data: { text, chapter }, ...props }) => (
     <ChapterEditView text={text} chapter={chapter} {...props} />
   ),
-  ({ id, textService }) =>
-    Promise.all([textService.find(id.textId), textService.findChapter(id)]),
+  ({ id, textService }, signal) =>
+    Promise.all([
+      textService.find(id.textId, signal),
+      textService.findChapter(id, signal),
+    ]).then(([text, chapter]) => ({ text, chapter })),
   {
     watch: (props) => [props.id],
   },

@@ -23,6 +23,7 @@ const path = (...parts: string[]): string =>
 const colophon = colophonFactory.build()
 const lemmaAnnotations = {}
 const scopes = ['CAIC']
+const authorizedScopesField = 'authorized_scopes'
 const colophonNames = ['Nabû-balāssu-iqbi']
 
 const testData: TestData<FragmentRepository>[] = [
@@ -39,8 +40,7 @@ const testData: TestData<FragmentRepository>[] = [
     [fragmentId, scopes],
     apiClient.postJson,
     fragment,
-    // eslint-disable-next-line camelcase
-    [path('scopes'), { authorized_scopes: scopes }],
+    [path('scopes'), { [authorizedScopesField]: scopes }],
     Promise.resolve(fragmentDto),
   ),
   new TestData(

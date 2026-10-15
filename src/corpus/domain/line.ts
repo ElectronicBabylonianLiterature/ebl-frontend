@@ -4,9 +4,9 @@ import { isWord } from 'transliteration/domain/type-guards'
 import { ManuscriptAlignment, AlignmentToken } from 'corpus/domain/alignment'
 import { immerable } from 'immer'
 import {
-  isAlignmentRelevant,
   ManuscriptLine,
   TokenWithIndex,
+  isAlignmentRelevant,
 } from 'corpus/domain/manuscript-line'
 
 export {

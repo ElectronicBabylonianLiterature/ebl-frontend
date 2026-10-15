@@ -15,7 +15,6 @@ import {
   buildTestFragment,
   fragmentRepository,
   fragmentService,
-  stubMissingBibliography,
 } from 'fragmentarium/application/fragmentServiceFragments.testSupport'
 
 let archaeology: Archaeology
@@ -27,7 +26,6 @@ let result: Fragment
 beforeEach(() => {
   jest.clearAllMocks()
   fragment = buildTestFragment()
-  stubMissingBibliography()
 })
 
 describe('update archaeology', () => {

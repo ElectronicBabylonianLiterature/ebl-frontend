@@ -1,7 +1,7 @@
 import React from 'react'
 import { render, screen } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
-import FolioPager from './FolioPager'
+import FolioPager from 'fragmentarium/ui/images/FolioPager'
 import { fragmentFactory } from 'test-support/fragment-fixtures'
 import { folioPagerFactory } from 'test-support/fragment-data-fixtures'
 import { Fragment } from 'fragmentarium/domain/fragment'

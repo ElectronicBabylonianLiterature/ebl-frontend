@@ -11,7 +11,8 @@ import { LineDetails, ManuscriptLineDisplay } from 'corpus/domain/line-details'
 import { TextLine } from 'transliteration/domain/text-line'
 import { ManuscriptTypes, OldSiglum } from 'corpus/domain/manuscript'
 import { lineVariantDisplayFactory } from 'test-support/dictionary-line-fixtures'
-import { PeriodModifiers, Periods } from 'common/utils/period'
+import { PeriodModifiers } from 'common/utils/period'
+import { Periods } from 'common/utils/periodDefinitions'
 import { Provenances } from 'corpus/domain/provenance'
 import { NoteLine } from 'transliteration/domain/note-line'
 import createReference from 'bibliography/application/createReference'
@@ -44,6 +45,7 @@ const testData: TestData<TextService>[] = [
         text.category,
       )}/${encodeURIComponent(text.index)}`,
       false,
+      undefined,
     ],
     Promise.resolve(textDto),
   ),
@@ -60,7 +62,7 @@ const testData: TestData<TextService>[] = [
     [chapterId],
     apiClient.fetchJson,
     chapter,
-    [chapterUrl, false],
+    [chapterUrl, false, undefined],
     Promise.resolve(chapterDto),
   ),
   new TestData(
@@ -89,28 +91,30 @@ const testData: TestData<TextService>[] = [
             ],
           }),
           manuscripts: [
-            new ManuscriptLineDisplay(
-              Provenances.Nippur,
-              PeriodModifiers['Early'],
-              Periods['Ur III'],
-              ManuscriptTypes.School,
-              '1',
-              [new OldSiglum('OS1', createReference(oldSiglumReferenceDto))],
-              ['o'],
-              new TextLine(lines[0]),
-              [],
-              [],
-              [],
-              'BM.X',
-              false,
-              'X.1',
-            ),
+            new ManuscriptLineDisplay({
+              provenance: Provenances.Nippur,
+              periodModifier: PeriodModifiers['Early'],
+              period: Periods['Ur III'],
+              type: ManuscriptTypes.School,
+              siglumDisambiguator: '1',
+              oldSigla: [
+                new OldSiglum('OS1', createReference(oldSiglumReferenceDto)),
+              ],
+              labels: ['o'],
+              line: new TextLine(lines[0]),
+              paratext: [],
+              references: [],
+              joins: [],
+              museumNumber: 'BM.X',
+              isInFragmentarium: false,
+              accession: 'X.1',
+            }),
           ],
         }),
       ],
       0,
     ),
-    [`${chapterUrl}/lines/0`, false],
+    [`${chapterUrl}/lines/0`, false, undefined],
     Promise.resolve({
       variants: [
         {
@@ -161,7 +165,7 @@ const testData: TestData<TextService>[] = [
     [chapterId],
     apiClient.fetchJson,
     [{ siglum: 'NinNA1a', text: fragment.text }],
-    [`${chapterUrl}/colophons`, false],
+    [`${chapterUrl}/colophons`, false, undefined],
     Promise.resolve([{ siglum: 'NinNA1a', text: fragmentDto.text }]),
   ),
   new TestData(
@@ -169,7 +173,7 @@ const testData: TestData<TextService>[] = [
     [chapterId],
     apiClient.fetchJson,
     [{ siglum: 'NinNA1a', text: fragment.text }],
-    [`${chapterUrl}/unplaced_lines`, false],
+    [`${chapterUrl}/unplaced_lines`, false, undefined],
     Promise.resolve([{ siglum: 'NinNA1a', text: fragmentDto.text }]),
   ),
   new TestData(
@@ -185,7 +189,7 @@ const testData: TestData<TextService>[] = [
     [chapterId],
     apiClient.fetchJson,
     chapter.manuscripts,
-    [`${chapterUrl}/manuscripts`, false],
+    [`${chapterUrl}/manuscripts`, false, undefined],
     Promise.resolve(chapterDto.manuscripts),
   ),
 ]

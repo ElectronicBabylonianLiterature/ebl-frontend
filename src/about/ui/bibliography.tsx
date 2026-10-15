@@ -1,10 +1,12 @@
 import React from 'react'
+import AboutFigure from 'about/ui/AboutFigure'
 import { MarkdownParagraph } from 'common/ui/Markdown'
 import Markup from 'markup/ui/markup'
 import MarkupService from 'markup/application/MarkupService'
 
 import afoRegisterCover from 'about/ui/static/afoRegister.png'
 import { indexedPublications } from 'about/ui/indexedPublications'
+import { indexedPublicationsMarkup } from 'about/ui/indexedPublications/IndexedPublicationsSection'
 
 export default function AboutBibliography(
   markupService: MarkupService,
@@ -41,16 +43,14 @@ export default function AboutBibliography(
         enhancing its accessibility for researchers, students, and enthusiasts interested
         in the history and culture of Ancient Mesopotamia."
       />
-      <figure className="Introduction__photoRight">
-        <img
-          className="Introduction__250px"
-          src={afoRegisterCover}
-          alt="Cover of AfO-Register"
-        />
-        <figcaption className="Introduction__caption">
-          Cover of AfO-Register 2015.
-        </figcaption>
-      </figure>
+      <AboutFigure
+        side="Right"
+        width="250px"
+        src={afoRegisterCover}
+        alt="Cover of AfO-Register"
+      >
+        Cover of AfO-Register 2015.
+      </AboutFigure>
       <MarkdownParagraph
         text="The digitization has been carried out in two phases. W. Sommerfeld and his
         team started the digitization of the AfO Registers Textstellen in the 2000s, and
@@ -78,10 +78,13 @@ export default function AboutBibliography(
         seems appropriate to release the database in its current state and refine it further in the future."
       />
       <h3>III. Fully Indexed Books and Articles</h3>
-      {indexedPublications.map(({ letter, references }) => (
-        <React.Fragment key={letter}>
-          <h4>{letter}</h4>
-          <Markup markupService={markupService} text={references.join(' ')} />
+      {indexedPublications.map((section) => (
+        <React.Fragment key={section.letter}>
+          <h4>{section.letter}</h4>
+          <Markup
+            markupService={markupService}
+            text={indexedPublicationsMarkup(section)}
+          />
         </React.Fragment>
       ))}
     </>

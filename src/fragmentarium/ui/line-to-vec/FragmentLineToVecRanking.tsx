@@ -7,7 +7,10 @@ import SessionContext from 'auth/SessionContext'
 import { Session } from 'auth/Session'
 import withData from 'http/withData'
 import FragmentService from 'fragmentarium/application/FragmentService'
-import { LineToVecRanking, LineToVecScore } from '../../domain/lineToVecRanking'
+import {
+  LineToVecRanking,
+  LineToVecScore,
+} from 'fragmentarium/domain/lineToVecRanking'
 import { HeadTags } from 'router/head'
 
 function FragmentLineToVecRankingHeadTags({
@@ -90,7 +93,10 @@ function FragmentLineToVecRanking({
 }
 
 export default withData<
-  { fragmentService: FragmentService; number: string },
+  {
+    fragmentService: Pick<FragmentService, 'lineToVecRanking'>
+    number: string
+  },
   { number: string },
   LineToVecRanking
 >(

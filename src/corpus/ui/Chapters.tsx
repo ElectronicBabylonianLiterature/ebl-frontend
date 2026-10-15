@@ -3,7 +3,7 @@ import { createChapterId, Text } from 'corpus/domain/text'
 import CollapsibleSection from 'corpus/ui/CollapsibleSection'
 import { ChapterTitleLink } from 'corpus/ui/chapter-title'
 
-import './Chapters.sass'
+import 'corpus/ui/Chapters.sass'
 import Manuscripts from 'corpus/ui/ManuscriptsTable'
 
 export default function Chapters({

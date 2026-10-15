@@ -3,17 +3,18 @@ export const mockSuggestionDto = {
   description: 'Test dossier description',
 }
 
-export const mockSearchSuggestions = jest.fn()
-export const mockOnChange = jest.fn()
+export function setupDossierMocks(): {
+  mockSearchSuggestions: jest.Mock
+  mockOnChange: jest.Mock
+} {
+  const mockSearchSuggestions = jest.fn()
+  const mockOnChange = jest.fn()
 
-export const dossierSearchProps = {
-  ariaLabel: 'Dossier Search',
-  searchSuggestions: mockSearchSuggestions,
-  onChange: mockOnChange,
-}
+  beforeEach(() => {
+    mockSearchSuggestions.mockClear()
+    mockSearchSuggestions.mockResolvedValue([])
+    mockOnChange.mockClear()
+  })
 
-export function resetDossierSearchMocks(): void {
-  mockSearchSuggestions.mockClear()
-  mockSearchSuggestions.mockResolvedValue([])
-  mockOnChange.mockClear()
+  return { mockSearchSuggestions, mockOnChange }
 }

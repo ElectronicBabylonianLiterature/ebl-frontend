@@ -1,6 +1,10 @@
 import SignService from 'signs/application/SignService'
 import { CroppedAnnotation } from 'signs/domain/CroppedAnnotation'
 import loadClusterAnnotations from 'signs/ui/display/loadClusterAnnotations'
+import {
+  croppedAnnotationFactory,
+  pcaClusteringFactory,
+} from 'test-support/cropped-annotation-fixtures'
 
 jest.mock('signs/application/SignService')
 
@@ -15,10 +19,12 @@ function annotation(
   fragmentNumber: string,
   clusterId?: string,
 ): CroppedAnnotation {
-  return {
+  return croppedAnnotationFactory.build({
     fragmentNumber,
-    ...(clusterId ? { pcaClustering: { clusterId, clusterRank: 1 } } : {}),
-  } as unknown as CroppedAnnotation
+    ...(clusterId
+      ? { pcaClustering: pcaClusteringFactory.build({ clusterId }) }
+      : {}),
+  })
 }
 
 function load(croppedAnnotations: CroppedAnnotation[]) {

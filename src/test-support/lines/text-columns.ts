@@ -1,3 +1,4 @@
+import { readingWord } from 'test-support/complex-text/tokenBuilders'
 import { TextLine } from 'transliteration/domain/text-line'
 
 export const emptyFirstColumn: TextLine = new TextLine({
@@ -58,45 +59,7 @@ export const emptyFirstColumn: TextLine = new TextLine({
       type: 'Column',
       number: null,
     },
-    {
-      enclosureType: [],
-      erasure: 'NONE',
-      cleanValue: 'kur',
-      value: 'kur',
-      language: 'AKKADIAN',
-      normalized: false,
-      lemmatizable: true,
-      alignable: true,
-      uniqueLemma: [],
-      alignment: null,
-      variant: null,
-      parts: [
-        {
-          enclosureType: [],
-          erasure: 'NONE',
-          cleanValue: 'kur',
-          value: 'kur',
-          name: 'kur',
-          nameParts: [
-            {
-              enclosureType: [],
-              erasure: 'NONE',
-              cleanValue: 'kur',
-              value: 'kur',
-              type: 'ValueToken',
-            },
-          ],
-          subIndex: 1,
-          modifiers: [],
-          flags: [],
-          sign: null,
-          type: 'Reading',
-        },
-      ],
-      type: 'Word',
-      hasVariantAlignment: false,
-      hasOmittedAlignment: false,
-    },
+    readingWord('kur'),
     {
       enclosureType: [],
       erasure: 'NONE',
@@ -105,45 +68,7 @@ export const emptyFirstColumn: TextLine = new TextLine({
       type: 'Column',
       number: null,
     },
-    {
-      enclosureType: [],
-      erasure: 'NONE',
-      cleanValue: 'kur',
-      value: 'kur',
-      language: 'AKKADIAN',
-      normalized: false,
-      lemmatizable: true,
-      alignable: true,
-      uniqueLemma: [],
-      alignment: null,
-      variant: null,
-      parts: [
-        {
-          enclosureType: [],
-          erasure: 'NONE',
-          cleanValue: 'kur',
-          value: 'kur',
-          name: 'kur',
-          nameParts: [
-            {
-              enclosureType: [],
-              erasure: 'NONE',
-              cleanValue: 'kur',
-              value: 'kur',
-              type: 'ValueToken',
-            },
-          ],
-          subIndex: 1,
-          modifiers: [],
-          flags: [],
-          sign: null,
-          type: 'Reading',
-        },
-      ],
-      type: 'Word',
-      hasVariantAlignment: false,
-      hasOmittedAlignment: false,
-    },
+    readingWord('kur'),
   ],
   lineNumber: {
     number: 1,
@@ -154,6 +79,3 @@ export const emptyFirstColumn: TextLine = new TextLine({
   },
   type: 'TextLine',
 })
-
-export { implicitFirstColumn } from 'test-support/lines/text-columns-implicit'
-export { firstColumnSpan, span } from 'test-support/lines/text-columns-spans'

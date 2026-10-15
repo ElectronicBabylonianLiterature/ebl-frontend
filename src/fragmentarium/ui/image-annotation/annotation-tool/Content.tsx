@@ -8,6 +8,7 @@ export type ContentProps = {
   contentScale: number
   setHovering: (annotation: Annotation | null) => void
   displayCards: boolean
+  disabled: boolean
 }
 
 export default function Content({
@@ -16,6 +17,7 @@ export default function Content({
   annotation,
   onDelete,
   displayCards,
+  disabled,
 }: ContentProps): ReactElement {
   const { geometry, data, outdated } = annotation
 
@@ -26,7 +28,7 @@ export default function Content({
   useEffect(() => {
     setHovering(annotation)
     function debug(event) {
-      if (event.code === 'Delete') {
+      if (event.code === 'Delete' && !disabled) {
         onDelete(annotation).then()
       }
     }
@@ -36,7 +38,7 @@ export default function Content({
       document.removeEventListener('keypress', debug, false)
       setHovering(null)
     }
-  }, [annotation, setHovering, onDelete])
+  }, [annotation, setHovering, onDelete, disabled])
 
   return (
     <div
@@ -60,6 +62,7 @@ export default function Content({
             <Button
               size={'sm'}
               variant="danger"
+              disabled={disabled}
               onClick={() => onDelete(annotation)}
             >
               Delete

@@ -2,7 +2,7 @@ import React from 'react'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { submitFormByTestId } from 'test-support/utils'
 
-import TransliterationForm from './TransliterationForm'
+import TransliterationForm from 'fragmentarium/ui/edition/TransliterationForm'
 import { act } from 'react'
 import userEvent from '@testing-library/user-event'
 import { editorErrorOf, resetEditorMock } from 'editor/Editor.testSupport'
@@ -17,7 +17,7 @@ jest.mock('editor/SpecialCharactersHelp', () => {
   }
 })
 
-jest.mock('./TemplateForm', () => {
+jest.mock('fragmentarium/ui/edition/TemplateForm', () => {
   return function TemplateFormMock({
     onSubmit,
   }: TemplateFormMockProps): JSX.Element {

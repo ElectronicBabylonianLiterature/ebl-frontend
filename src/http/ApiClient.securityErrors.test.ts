@@ -146,14 +146,9 @@ describe('Security: API Error Messages', () => {
   })
 
   it('should handle malformed error responses safely', async () => {
-    const apiError = await ApiError.fromResponse({
-      ok: false,
-      status: 400,
-      statusText: 'Bad Request',
-      json: async () => {
-        throw new Error('Invalid JSON')
-      },
-    } as unknown as Response)
+    const apiError = await ApiError.fromResponse(
+      new Response('not json', { status: 400, statusText: 'Bad Request' }),
+    )
 
     expect(apiError.message).toBe('Bad Request')
     expect(apiError.status).toBe(400)

@@ -186,4 +186,15 @@ describe('AfoRegisterRepository - search with fragmentService', () => {
       record.id,
     ])
   })
+  it('keeps records without a matching fragment unchanged', async () => {
+    fragmentService.queryByTraditionalReferences.mockResolvedValueOnce({
+      items: [{ traditionalReference: 'other reference', fragmentNumbers: [] }],
+    })
+    apiClient.fetchJson.mockResolvedValueOnce([resultStub])
+    const response = await afoRegisterRepository.search(
+      stringify(query),
+      fragmentService,
+    )
+    expect(response).toEqual([record])
+  })
 })

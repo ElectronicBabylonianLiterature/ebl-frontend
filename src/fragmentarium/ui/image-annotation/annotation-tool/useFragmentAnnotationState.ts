@@ -2,7 +2,6 @@ import { useCallback, useState } from 'react'
 import { AnnotationToken } from 'fragmentarium/domain/annotation-token'
 import Annotation, { RawAnnotation } from 'fragmentarium/domain/annotation'
 import { Fragment } from 'fragmentarium/domain/fragment'
-import FragmentService from 'fragmentarium/application/FragmentService'
 import automaticAlignment from 'fragmentarium/ui/image-annotation/annotation-tool/automatic-alignment'
 import initializeAnnotations from 'fragmentarium/ui/image-annotation/annotation-tool/initializeAnnotations'
 import useAnnotationKeyboardShortcuts from 'fragmentarium/ui/image-annotation/annotation-tool/useAnnotationKeyboardShortcuts'
@@ -14,6 +13,7 @@ import {
   toAutomaticAnnotation,
 } from 'fragmentarium/ui/image-annotation/annotation-tool/annotationSelection'
 import {
+  AnnotationFragmentService,
   FragmentAnnotationState,
   ZoomEvent,
 } from 'fragmentarium/ui/image-annotation/annotation-tool/fragmentAnnotationStateTypes'
@@ -27,7 +27,7 @@ export default function useFragmentAnnotationState({
   tokens: ReadonlyArray<ReadonlyArray<AnnotationToken>>
   fragment: Fragment
   initialAnnotations: readonly Annotation[]
-  fragmentService: FragmentService
+  fragmentService: AnnotationFragmentService
 }): FragmentAnnotationState {
   const [isChangeExistingMode, setIsChangeExistingMode] = useState(false)
   const [isAutomaticSelected, setIsAutomaticSelected] = useState(false)

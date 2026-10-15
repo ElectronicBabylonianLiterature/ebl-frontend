@@ -1,6 +1,6 @@
 import React from 'react'
 import { render, screen, fireEvent, waitFor } from '@testing-library/react'
-import AfoRegisterTextSelect from './AfoRegisterTextSelect'
+import AfoRegisterTextSelect from 'afo-register/ui/AfoRegisterTextSelect'
 import userEvent from '@testing-library/user-event'
 import { AfoRegisterRecordSuggestion } from 'afo-register/domain/Record'
 

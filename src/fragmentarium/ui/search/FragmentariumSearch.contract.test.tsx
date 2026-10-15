@@ -4,7 +4,7 @@ import { QueryResult } from 'query/QueryResult'
 import {
   createFragmentariumSearchTestContext,
   FragmentariumSearchTestContext,
-} from 'fragmentarium/ui/search/FragmentariumSearch.testSupport'
+} from 'fragmentarium/ui/search/FragmentariumSearch.context.testSupport'
 
 jest.mock('fragmentarium/application/FragmentSearchService')
 jest.mock('dictionary/application/WordService')
@@ -35,11 +35,7 @@ describe('Search result contract compatibility', () => {
         ? `Found ${result.items.length} document${
             result.items.length === 1 ? '' : 's'
           }`
-        : `Found about ${result.matchCountTotal} lines in ${
-            result.items.length
-          } document${
-            result.items.length === 1 ? '' : 's'
-          }; more results are available`,
+        : `Found about ${result.matchCountTotal} matching lines. Showing documents 1-${result.items.length}`,
       { transliteration },
     )
   }
@@ -91,9 +87,7 @@ describe('Search result contract compatibility', () => {
     })
 
     expect(
-      screen.getByText(
-        'Found about 7 lines in 1 document; more results are available',
-      ),
+      screen.getByText('Found about 7 matching lines. Showing documents 1-1'),
     ).toBeVisible()
   })
 

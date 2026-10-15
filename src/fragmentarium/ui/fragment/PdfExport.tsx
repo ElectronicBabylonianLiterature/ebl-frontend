@@ -1,22 +1,22 @@
 import React from 'react'
+import $ from 'jquery'
+import { jsPDF } from 'jspdf'
+import { renderToString } from 'react-dom/server'
 import { Fragment } from 'fragmentarium/domain/fragment'
-
+import WordService from 'dictionary/application/WordService'
 import TransliterationLines from 'transliteration/ui/TransliterationLines'
 import TransliterationNotes from 'transliteration/ui/TransliterationNotes'
-import { renderToString } from 'react-dom/server'
-import $ from 'jquery'
-import WordService from 'dictionary/application/WordService'
-
-import { jsPDF } from 'jspdf'
 import { DictionaryContext } from 'dictionary/ui/dictionary-context'
 import RouterLinkModeContext from 'common/ui/RouterLinkModeContext'
-import { addCustomFonts } from 'fragmentarium/ui/fragment/PdfExportFonts'
-import { addPdfHeadLine } from 'fragmentarium/ui/fragment/PdfExportHeadline'
-import { addMainTableWithFootnotes } from 'fragmentarium/ui/fragment/PdfExportTable'
+import getJunicodeRegular from 'fragmentarium/ui/fragment/pdf-fonts/Junicode'
+import getJunicodeBold from 'fragmentarium/ui/fragment/pdf-fonts/JunicodeBold'
+import getJunicodeItalic from 'fragmentarium/ui/fragment/pdf-fonts/JunicodeItalic'
+import { addPdfHeadLine } from 'fragmentarium/ui/fragment/PdfExport.headline'
+import { addMainTableWithFootnotes } from 'fragmentarium/ui/fragment/PdfExport.table'
 import {
   addGlossary,
   getGlossaryHtml,
-} from 'fragmentarium/ui/fragment/PdfExportGlossary'
+} from 'fragmentarium/ui/fragment/PdfExport.glossary'
 
 export async function pdfExport(
   fragment: Fragment,
@@ -80,4 +80,15 @@ async function getPdfDoc(
     addGlossary(glossaryHtml, jQueryRef, posAfterTable, doc)
 
   return doc
+}
+
+export function addCustomFonts(doc: jsPDF) {
+  doc.addFileToVFS('Junicode.ttf', getJunicodeRegular())
+  doc.addFont('Junicode.ttf', 'Junicode', 'normal')
+
+  doc.addFileToVFS('JunicodeBold.ttf', getJunicodeBold())
+  doc.addFont('JunicodeBold.ttf', 'JunicodeBold', 'normal')
+
+  doc.addFileToVFS('JunicodeItalic.ttf', getJunicodeItalic())
+  doc.addFont('JunicodeItalic.ttf', 'JunicodeItalic', 'normal')
 }

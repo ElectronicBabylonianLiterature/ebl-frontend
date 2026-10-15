@@ -3,10 +3,10 @@ import { Nav, Navbar, Container } from 'react-bootstrap'
 import { Link, useLocation } from 'react-router-dom'
 import _ from 'lodash'
 
-import User from './auth/User'
-import './Header.sass'
-import lmuLogo from './LMU_Logo.svg'
-import badwLogo from './BAdW_Logo.svg'
+import User from 'auth/User'
+import 'Header.sass'
+import lmuLogo from 'LMU_Logo.svg'
+import badwLogo from 'BAdW_Logo.svg'
 import ExternalLink from 'common/ui/ExternalLink'
 
 function EblLogo(): JSX.Element {
@@ -97,11 +97,7 @@ export default function Header(): JSX.Element {
           </Navbar.Brand>
           <Navbar.Toggle aria-controls={id} className="Header__toggle" />
           <Navbar.Collapse id={id}>
-            <Nav
-              activeKey={activeKey}
-              onSelect={(key) => setActiveKey(key ?? undefined)}
-              className="Header__nav mx-auto"
-            >
+            <Nav activeKey={activeKey} className="Header__nav mx-auto">
               <NavItem href="/library" title="Library" />
               <NavItem href="/corpus" title="Corpus" />
               <NavItem href="/about" title="About" />

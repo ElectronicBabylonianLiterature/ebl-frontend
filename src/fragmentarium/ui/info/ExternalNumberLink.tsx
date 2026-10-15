@@ -2,8 +2,6 @@ import React from 'react'
 import _ from 'lodash'
 import ExternalLink from 'common/ui/ExternalLink'
 
-export { OraccLinks, SealLinks } from 'fragmentarium/ui/info/ExternalTextLinks'
-
 interface Props {
   number: string
   baseUrl: string
@@ -35,7 +33,7 @@ interface NumberLinkOptions {
   formatNumber?: (number: string) => string
 }
 
-export function createNumberLink(
+function createNumberLink(
   baseUrl: string,
   label: string,
   { encodeUri = true, formatNumber = _.identity }: NumberLinkOptions = {},

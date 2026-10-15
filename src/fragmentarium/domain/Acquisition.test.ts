@@ -1,4 +1,4 @@
-import { Acquisition } from './Acquisition'
+import { Acquisition } from 'fragmentarium/domain/Acquisition'
 
 describe('Acquisition', () => {
   describe('Basic functionality', () => {

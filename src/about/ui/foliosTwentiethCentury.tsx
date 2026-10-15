@@ -1,4 +1,5 @@
 import React from 'react'
+import AboutFigure from 'about/ui/AboutFigure'
 import { MarkdownParagraph } from 'common/ui/Markdown'
 import MarkupParagraph from 'about/ui/MarkupParagraph'
 import { FolioEntry } from 'about/ui/FolioEntry'
@@ -29,16 +30,14 @@ export const twentiethCenturyFolios: FolioEntry[] = [
     title: 'Erica Reiner (4 August 1924 – 31 December 2005)',
     content: (markupService) => (
       <>
-        <figure className="Introduction__photoRight">
-          <img
-            className="Introduction__300px"
-            src={reinernotebooks}
-            alt="Notebooks by E. Reiner"
-          />
-          <figcaption className="Introduction__caption">
-            Notebooks by E. Reiner
-          </figcaption>
-        </figure>
+        <AboutFigure
+          side="Right"
+          width="300px"
+          src={reinernotebooks}
+          alt="Notebooks by E. Reiner"
+        >
+          Notebooks by E. Reiner
+        </AboutFigure>
         <MarkdownParagraph text="Erica Reiner was a Hungarian-American Assyriologist, one of the main forces behind the epoch-making *The Assyrian Dictionary of the Oriental Institute of the University of Chicago*. During her long and productive career, Reiner was the world’s foremost expert in Mesopotamian celestial divination, a field in which she produced several fundamental studies, such as the series of monographs *Babylonian Planetary Omens* (with D. Pingree)." />
         <MarkupParagraph
           markupService={markupService}
@@ -56,16 +55,14 @@ export const twentiethCenturyFolios: FolioEntry[] = [
           markupService={markupService}
           text="W. G. Lambert “made a greater contribution to the continuing task of recovering and understanding Babylonian literature than any other member of his generation” (@bib{RN3226@337}). Author of the influential monographs @i{Babylonian Wisdom Literature} and @i{Babylonian Creation Myths}, Lambert was the leading expert in Babylonian literature for over fifty years. In his several books and dozens of articles, Lambert reconstructed an astonishing number of previously unknown texts, setting high philological standards for the field. The thousands of fragments that he assessed in his pursuit were carefully transliterated in his collection notebooks, which represent the fruits of over fifty years of painstaking labor. Lambert granted access to his notebooks to several scholars throughout his life. R. Borger was able to use this “ungeheuer reichhaltige Material” (@bib{RN1445@viii}) for the compilation of the second band of his @i{Handbuch der Keilschriftliteratur} (@bib{RN1445@1975}). This collection of notebooks, catalogued and digitized by Lambert’s academic executor, A. R. George, and used here with his permission, forms the core of the Library."
         />
-        <figure className="Introduction__photoLeft">
-          <img
-            className="Introduction__200px"
-            src={lambert}
-            alt="W. G. Lambert in Wassenaar, 1990 (courtesy U. Kasten)"
-          />
-          <figcaption className="Introduction__caption">
-            W. G. Lambert in Wassenaar, 1990 (courtesy U. Kasten)
-          </figcaption>
-        </figure>
+        <AboutFigure
+          side="Left"
+          width="200px"
+          src={lambert}
+          alt="W. G. Lambert in Wassenaar, 1990 (courtesy U. Kasten)"
+        >
+          W. G. Lambert in Wassenaar, 1990 (courtesy U. Kasten)
+        </AboutFigure>
         <MarkupParagraph
           markupService={markupService}
           text="Another source of transliterations is Lambert’s notebook of divinatory texts. The @i{Chicago Assyrian Dictionary} requested from Lambert a standard edition of the vast divinatory treatise @i{Šumma ālu}, “If a City,” in order for the Chicago lexicographers to excerpt it for their work (@bib{RN3226@344}). In preparation for that edition, Lambert undertook the colossal task of transliterating all known manuscripts of the treatise and related texts, both published an unpublished. Lambert shared his “Heft mit Omentexten” (@bib{RN1445@viii}) with several scholars around the world: the copy used in the Library was, in fact, found among Leichty’s papers."
@@ -82,16 +79,14 @@ export const twentiethCenturyFolios: FolioEntry[] = [
     title: 'Jussi Aro (5 June 1928 – 11 March 1983)',
     content: (markupService) => (
       <>
-        <figure className="Introduction__photoLeft">
-          <img
-            className="Introduction__150px"
-            src={aro}
-            alt="J. Aro in 1955 (courtesy S. Aro-Valjus)"
-          />
-          <figcaption className="Introduction__caption">
-            J. Aro in 1955 (courtesy S. Aro-Valjus)
-          </figcaption>
-        </figure>
+        <AboutFigure
+          side="Left"
+          width="150px"
+          src={aro}
+          alt="J. Aro in 1955 (courtesy S. Aro-Valjus)"
+        >
+          J. Aro in 1955 (courtesy S. Aro-Valjus)
+        </AboutFigure>
         <MarkupParagraph
           markupService={markupService}
           text="The Finnish Assyriologist and Semitist Jussi Aro was a prolific author, translator, and commentator, renowned for his extensive knowledge of the ancient and modern Near East. He held the chair of Oriental Literature (later Semitic Languages) at the University of Helsinki from 1965 until his untimely death in 1983. Aro was a polyglot whose passion for languages began in early childhood, leading him to study theology, Greek literature, Semitic languages, and Assyriology at the University of Helsinki, with additional studies in Chicago (where he also worked for the @i{Chicago Assyrian Dictionary}) and Göttingen. His dissertation on Middle Babylonian grammar (@bib{aro1955studien}) was the fourth Assyriological dissertation written in Finland (after Knut Tallqvist, Harri Holma, and Armas Salonen, Aro’s teacher in Assyriology, see @bib{arovaljus2012assyriologiksi}). After his appointment as professor of Oriental Literature in 1965, Aro concentrated on Arabic and other Semitic languages. However, the numerous reviews of Assyriological publications he wrote afterward demonstrate his continued keen interest in the Akkadian language and cuneiform sources."
@@ -105,17 +100,14 @@ export const twentiethCenturyFolios: FolioEntry[] = [
     title: 'Riekele Borger (24 May 1929 – 27 December 2010)',
     content: (markupService) => (
       <>
-        <figure className="Introduction__photoRight">
-          <img
-            className="Introduction__350px"
-            src={borgerlambert}
-            alt="R. Borger and W. G. Lambert in the British Museum (courtesy J. Taylor)"
-          />
-          <figcaption className="Introduction__caption">
-            R. Borger and W. G. Lambert in the British Museum (courtesy J.
-            Taylor)
-          </figcaption>
-        </figure>
+        <AboutFigure
+          side="Right"
+          width="350px"
+          src={borgerlambert}
+          alt="R. Borger and W. G. Lambert in the British Museum (courtesy J. Taylor)"
+        >
+          R. Borger and W. G. Lambert in the British Museum (courtesy J. Taylor)
+        </AboutFigure>
         <MarkupParagraph
           markupService={markupService}
           text="Riekele Borger, professor of Assyriology in Göttingen, was one of the most prominent Assyriologists in the 20th century. His monumental reference works (@i{Handbuch der Keilschriftliteratur} and @i{Mesopotamisches Zeichenlexikon}, among others) are a testimony to Borger’s life-long interest in providing Assyriology with the bibliographical, lexicographical, and epigraphical foundations he so sorely missed during his studies, a time he referred to as the “düstere handbuchlose Zeitalter der Assyriologie” (@bib{RN680@v}). Two additional unfinished monumental works by Borger, the @i{Sumerisches Handwörterbuch hauptsächlich aufgrund der Bilinguen} and his @i{Katalog der Kuyunjik-Sammlung}, are published posthumously on the website of the electronic Babylonian Literature project."
@@ -129,16 +121,14 @@ export const twentiethCenturyFolios: FolioEntry[] = [
     title: 'Aaron Shaffer (2 January 1933 – 5 April 2004)',
     content: (markupService) => (
       <>
-        <figure className="Introduction__photoLeft">
-          <img
-            className="Introduction__250px"
-            src={shaffer}
-            alt="Aaron Shaffer in Chicago (courtesy N. Wasserman)"
-          />
-          <figcaption className="Introduction__caption">
-            Aaron Shaffer working in Chicago (courtesy N. Wasserman)
-          </figcaption>
-        </figure>
+        <AboutFigure
+          side="Left"
+          width="250px"
+          src={shaffer}
+          alt="Aaron Shaffer in Chicago (courtesy N. Wasserman)"
+        >
+          Aaron Shaffer working in Chicago (courtesy N. Wasserman)
+        </AboutFigure>
         <MarkupParagraph
           markupService={markupService}
           text="Aaron Shaffer was professor at the Hebrew University of Jerusalem. Educated at the University of Toronto and the University of Pennsylvania, Shaffer wrote his dissertation on the Sumerian sources of the Epic of Gilgamesh (@bib{shaffer1963sumerian}), two topics – the Sumerian language’s relationship to Akkadian and the Epic of Gilgamesh – which he pursued throughout his life. At the Hebrew University, he pioneered the use of computers by creating a database of Sumerian literary and lexical texts (@bib{WassermanObitShaffer@339}). Over more than three decades Shaffer visited the British Museum every year and prepared copies of Sumerian and Akkadian literary texts. His work, which focused mostly on the Old Babylonian literary texts from Ur, resulted in the posthumous publication of @i{Ur Excavations Texts VI: Literary and Religious Texts, Third Part} in 2006 (@bib{UET_6_3})."
@@ -164,16 +154,14 @@ export const twentiethCenturyFolios: FolioEntry[] = [
           markupService={markupService}
           text="Erle Leichty spent most summers of his career in London (@bib{RN3227}), where he painstakingly prepared catalogues of the vast “Sippar Collection” of the British Museum, consisting of over 40,000 tablets. Published in Leichty 1986, Leichty/Grayson 1987, and Leichty/Finkelstein/Walker 1988, the catalogues made the invaluable wealth of these collections, until then largely inaccessible, fully available to researchers. While preparing the catalogues, Leichty transliterated hundreds of tablets, focusing on divinatory texts and on Neo-Babylonian administrative documents, in notebooks and loose pages of paper."
         />
-        <figure className="Introduction__photoLeft">
-          <img
-            className="Introduction__400px"
-            src={leichty}
-            alt="E. Leichty’s note on notebook NB 911"
-          />
-          <figcaption className="Introduction__caption">
-            E. Leichty’s note on notebook NB 911
-          </figcaption>
-        </figure>
+        <AboutFigure
+          side="Left"
+          width="400px"
+          src={leichty}
+          alt="E. Leichty’s note on notebook NB 911"
+        >
+          E. Leichty’s note on notebook NB 911
+        </AboutFigure>
         <p>
           Leichty must have imagined that his notebooks would one day be used
           for the digital reconstruction of cuneiform literature, since in one
@@ -196,16 +184,14 @@ export const twentiethCenturyFolios: FolioEntry[] = [
     title: 'Werner R. Mayer, S.J. (5 November 1939 – 15 December 2025)',
     content: (markupService) => (
       <>
-        <figure className="Introduction__photoRight">
-          <img
-            className="Introduction__400px"
-            src={mayertransliteration}
-            alt="Transliteration by W. R. Mayer"
-          />
-          <figcaption className="Introduction__caption">
-            Transliteration by W. R. Mayer
-          </figcaption>
-        </figure>
+        <AboutFigure
+          side="Right"
+          width="400px"
+          src={mayertransliteration}
+          alt="Transliteration by W. R. Mayer"
+        >
+          Transliteration by W. R. Mayer
+        </AboutFigure>
         <MarkdownParagraph text="Werner R. Mayer is an Assyriologist specializing in Akkadian grammar and literature from the first millennium BCE. Mayer’s work combines in an unparalleled manner philological rigor and literary inventiveness, a rare conjunction that has led to many far-reaching lexical and grammatical discoveries. Mayer has also worked extensively on the reconstruction of first-millennium devotional poetry, both on the basis of the Strassmaier’s folios (s. above), and in the course of numerous visits to the British Museum. Mayer has generously made available his large collection of accurate transliterations of literary texts for use in the Library." />
       </>
     ),

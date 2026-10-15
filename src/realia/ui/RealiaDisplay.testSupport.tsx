@@ -67,7 +67,10 @@ export function RealiaRouteEntry({
 }): JSX.Element {
   const { id } = useParams()
   return (
-    <RealiaDisplay id={decodeURIComponent(id ?? '')} realiaService={service} />
+    <RealiaDisplay
+      id={decodeURIComponent(String(id))}
+      realiaService={service}
+    />
   )
 }
 

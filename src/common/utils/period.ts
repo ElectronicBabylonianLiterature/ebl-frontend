@@ -1,8 +1,6 @@
 import _ from 'lodash'
 import { Periods } from 'common/utils/periodDefinitions'
 
-export { Periods }
-
 export const PeriodModifiers = {
   None: { name: 'None', displayName: '-' },
   Early: { name: 'Early', displayName: 'Early' },

@@ -1,6 +1,7 @@
 import { render, screen, waitFor } from '@testing-library/react'
 import AboutBibliography from 'about/ui/bibliography'
 import { indexedPublications } from 'about/ui/indexedPublications'
+import { indexedPublicationsMarkup } from 'about/ui/indexedPublications/IndexedPublicationsSection'
 import MarkupService from 'markup/application/MarkupService'
 import { markupDtoSerialized } from 'test-support/markup-fixtures'
 
@@ -26,6 +27,15 @@ test('renders a heading and references for every indexed letter', async () => {
       .map(({ textContent }) => textContent),
   ).toEqual(indexedPublications.map(({ letter }) => letter))
   expect(markupServiceMock.fromString.mock.calls.map(([text]) => text)).toEqual(
-    indexedPublications.map(({ references }) => references.join(' ')),
+    indexedPublications.map(indexedPublicationsMarkup),
   )
+})
+
+it('separates indexed publication references with a space', () => {
+  expect(
+    indexedPublicationsMarkup({
+      letter: 'A',
+      references: ['@bib{RN2544};', '@bib{RN108};'],
+    }),
+  ).toBe('@bib{RN2544}; @bib{RN108};')
 })

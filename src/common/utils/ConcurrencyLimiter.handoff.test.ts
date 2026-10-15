@@ -1,16 +1,16 @@
-import ConcurrencyLimiter from 'common/utils/ConcurrencyLimiter'
 import {
+  InspectableConcurrencyLimiter,
   deferred,
   queueState,
   settle,
 } from 'test-support/concurrencyLimiterHelpers'
 
 function abortDuringHandoff(
-  limiter: ConcurrencyLimiter,
+  limiter: InspectableConcurrencyLimiter,
   controller: AbortController,
 ): void {
   const state = queueState(limiter)
-  const handoff = state.waitingResolvers[0] as () => void
+  const handoff = state.waitingResolvers[0]
   state.waitingResolvers[0] = (): void => {
     handoff()
     controller.abort()
@@ -19,7 +19,7 @@ function abortDuringHandoff(
 
 describe('ConcurrencyLimiter slot handoff', () => {
   it('does not run a queued operation aborted after its slot was handed over', async () => {
-    const limiter = new ConcurrencyLimiter(1)
+    const limiter = new InspectableConcurrencyLimiter(1)
     const firstCompletion = deferred<string>()
     const queuedOperation = jest.fn(() => Promise.resolve('queued done'))
     const controller = new AbortController()
@@ -39,7 +39,7 @@ describe('ConcurrencyLimiter slot handoff', () => {
   })
 
   it('does not deadlock when queued cancellation races with slot handoff', async () => {
-    const limiter = new ConcurrencyLimiter(1)
+    const limiter = new InspectableConcurrencyLimiter(1)
     const firstCompletion = deferred<string>()
     const queuedOperation = jest.fn(() => Promise.resolve('queued done'))
 

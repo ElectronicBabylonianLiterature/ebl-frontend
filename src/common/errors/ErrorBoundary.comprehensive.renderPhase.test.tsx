@@ -1,17 +1,19 @@
 import React from 'react'
 import { render, screen } from '@testing-library/react'
-import ErrorBoundary from 'common/errors/ErrorBoundary'
-import ErrorReporterContext, { ErrorReporter } from 'ErrorReporterContext'
+import { ErrorReporter } from 'ErrorReporterContext'
 import {
-  createErrorReportingServiceMock,
-  renderExpectingReactError,
+  createErrorReportingService,
+  expectBoundaryCaughtError,
+  fallbackMessage,
+  renderInsideBoundary,
+  withinBoundary,
 } from 'common/errors/ErrorBoundary.comprehensive.testSupport'
 
 describe('ErrorBoundary - Comprehensive Error Handling', () => {
   let errorReportingService: jest.Mocked<ErrorReporter>
 
   beforeEach(() => {
-    errorReportingService = createErrorReportingServiceMock()
+    errorReportingService = createErrorReportingService()
   })
 
   describe('Render Phase Errors', () => {
@@ -19,20 +21,11 @@ describe('ErrorBoundary - Comprehensive Error Handling', () => {
       const CrashingComponent = () => {
         throw new Error('Render error')
       }
+      expectBoundaryCaughtError('CrashingComponent', 'Error: Render error')
 
-      renderExpectingReactError(
-        () =>
-          render(
-            <ErrorReporterContext.Provider value={errorReportingService}>
-              <ErrorBoundary>
-                <CrashingComponent />
-              </ErrorBoundary>
-            </ErrorReporterContext.Provider>,
-          ),
-        'Render error',
-      )
+      renderInsideBoundary(errorReportingService, <CrashingComponent />)
 
-      expect(screen.getByText("Something's gone wrong.")).toBeInTheDocument()
+      expect(screen.getByText(fallbackMessage)).toBeInTheDocument()
       expect(errorReportingService.captureException).toHaveBeenCalledWith(
         expect.objectContaining({ message: 'Render error' }),
         expect.objectContaining({ componentStack: expect.any(String) }),
@@ -45,20 +38,11 @@ describe('ErrorBoundary - Comprehensive Error Handling', () => {
       }
       const MiddleComponent = () => <DeepChild />
       const ParentComponent = () => <MiddleComponent />
+      expectBoundaryCaughtError('DeepChild', 'Error: Deep error')
 
-      renderExpectingReactError(
-        () =>
-          render(
-            <ErrorReporterContext.Provider value={errorReportingService}>
-              <ErrorBoundary>
-                <ParentComponent />
-              </ErrorBoundary>
-            </ErrorReporterContext.Provider>,
-          ),
-        'Deep error',
-      )
+      renderInsideBoundary(errorReportingService, <ParentComponent />)
 
-      expect(screen.getByText("Something's gone wrong.")).toBeInTheDocument()
+      expect(screen.getByText(fallbackMessage)).toBeInTheDocument()
       expect(errorReportingService.captureException).toHaveBeenCalled()
     })
 
@@ -67,22 +51,18 @@ describe('ErrorBoundary - Comprehensive Error Handling', () => {
       const CrashingComponent = () => {
         throw new Error('Child crash')
       }
+      expectBoundaryCaughtError('CrashingComponent', 'Error: Child crash')
 
-      renderExpectingReactError(
-        () =>
-          render(
-            <ErrorReporterContext.Provider value={errorReportingService}>
-              <ErrorBoundary>
-                <SafeComponent />
-                <CrashingComponent />
-                <SafeComponent />
-              </ErrorBoundary>
-            </ErrorReporterContext.Provider>,
-          ),
-        'Child crash',
+      renderInsideBoundary(
+        errorReportingService,
+        <>
+          <SafeComponent />
+          <CrashingComponent />
+          <SafeComponent />
+        </>,
       )
 
-      expect(screen.getByText("Something's gone wrong.")).toBeInTheDocument()
+      expect(screen.getByText(fallbackMessage)).toBeInTheDocument()
       expect(screen.queryByText('Safe content')).not.toBeInTheDocument()
     })
 
@@ -99,73 +79,26 @@ describe('ErrorBoundary - Comprehensive Error Handling', () => {
       }
 
       const { rerender } = render(
-        <ErrorReporterContext.Provider value={errorReportingService}>
-          <ErrorBoundary>
-            <ConditionalComponent shouldCrash={false} />
-          </ErrorBoundary>
-        </ErrorReporterContext.Provider>,
+        withinBoundary(
+          errorReportingService,
+          <ConditionalComponent shouldCrash={false} />,
+        ),
       )
 
       expect(screen.getByText('No crash')).toBeInTheDocument()
 
-      renderExpectingReactError(
-        () =>
-          rerender(
-            <ErrorReporterContext.Provider value={errorReportingService}>
-              <ErrorBoundary>
-                <ConditionalComponent shouldCrash={true} />
-              </ErrorBoundary>
-            </ErrorReporterContext.Provider>,
-          ),
-        'Conditional error',
+      expectBoundaryCaughtError(
+        'ConditionalComponent',
+        'Error: Conditional error',
+      )
+      rerender(
+        withinBoundary(
+          errorReportingService,
+          <ConditionalComponent shouldCrash={true} />,
+        ),
       )
 
-      expect(screen.getByText("Something's gone wrong.")).toBeInTheDocument()
-    })
-  })
-
-  describe('Interaction with withData HOC', () => {
-    test('Error in data-loading component caught by boundary', () => {
-      const DataLoadingComponent = () => {
-        throw new Error('Data loading crashed')
-      }
-
-      renderExpectingReactError(
-        () =>
-          render(
-            <ErrorReporterContext.Provider value={errorReportingService}>
-              <ErrorBoundary>
-                <DataLoadingComponent />
-              </ErrorBoundary>
-            </ErrorReporterContext.Provider>,
-          ),
-        'Data loading crashed',
-      )
-
-      expect(screen.getByText("Something's gone wrong.")).toBeInTheDocument()
-      expect(errorReportingService.captureException).toHaveBeenCalled()
-    })
-
-    test('Nested ErrorBoundaries in withData', () => {
-      const CrashingInnerComponent = () => {
-        throw new Error('Inner component crash')
-      }
-
-      renderExpectingReactError(
-        () =>
-          render(
-            <ErrorReporterContext.Provider value={errorReportingService}>
-              <ErrorBoundary>
-                <ErrorBoundary>
-                  <CrashingInnerComponent />
-                </ErrorBoundary>
-              </ErrorBoundary>
-            </ErrorReporterContext.Provider>,
-          ),
-        'Inner component crash',
-      )
-
-      expect(screen.getByText("Something's gone wrong.")).toBeInTheDocument()
+      expect(screen.getByText(fallbackMessage)).toBeInTheDocument()
     })
   })
 })

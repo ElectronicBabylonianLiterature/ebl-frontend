@@ -15,13 +15,22 @@ import {
 import { Session } from 'auth/Session'
 import { Colophon } from 'fragmentarium/domain/Colophon'
 import { colophonFactory } from 'test-support/colophon-fixtures'
-import { ArchaeologyDto } from 'fragmentarium/domain/archaeologyDtos'
+import {
+  ArchaeologyDto,
+  toArchaeologyDto,
+} from 'fragmentarium/domain/archaeologyDtos'
+import { archaeologyFactory } from 'test-support/archaeology-fixtures'
 import { LineLemmaAnnotations } from 'fragmentarium/ui/fragment/lemma-annotation/LemmaAnnotation'
 import { fragmentFactory } from 'test-support/fragment-fixtures'
 import { referenceFactory } from 'test-support/bibliography-fixtures'
 import serializeReference from 'bibliography/application/serializeReference'
 
+import { createTabsProps } from 'fragmentarium/ui/fragment/editorTabContents.testSupport'
+
 jest.mock('fragmentarium/application/FragmentService')
+jest.mock('fragmentarium/application/FragmentSearchService')
+jest.mock('fragmentarium/application/FindspotService')
+jest.mock('dictionary/application/WordService')
 
 const fragmentServiceMock = new (FragmentService as jest.Mock<
   jest.Mocked<FragmentService>
@@ -36,11 +45,11 @@ let props: TabsProps
 beforeEach(() => {
   jest.clearAllMocks()
   onSave = jest.fn((save: () => Promise<Fragment>) => save())
-  props = {
+  props = createTabsProps({
     fragment,
     fragmentService: fragmentServiceMock,
     onSave,
-  } as unknown as TabsProps
+  })
 })
 
 function propsOf<Props>(element: JSX.Element): Props {
@@ -84,7 +93,7 @@ describe('every editor tab routes its save through onSave', () => {
 
   it('ArchaeologyContents saves the archaeology', () => {
     fragmentServiceMock.updateArchaeology.mockReturnValue(saved)
-    const archaeology = { excavationNumber: 'X.1' } as ArchaeologyDto
+    const archaeology = toArchaeologyDto(archaeologyFactory.build())
 
     propsOf<{ updateArchaeology: (dto: ArchaeologyDto) => unknown }>(
       ArchaeologyContents(props),
@@ -128,13 +137,59 @@ describe('every editor tab routes its save through onSave', () => {
   })
 })
 
+describe('Colophon and scope updates settle with their save', () => {
+  const updates: [string, () => Promise<void>][] = [
+    [
+      'colophon',
+      () =>
+        propsOf<{ updateColophon: (colophon: Colophon) => Promise<void> }>(
+          ColophonContents(props),
+        ).updateColophon(colophonFactory.build()),
+    ],
+    [
+      'scopes',
+      () =>
+        propsOf<{ updateScopes: (scopes: string[]) => Promise<void> }>(
+          ScopeContents(props, {} as Session),
+        ).updateScopes(['CAIC']),
+    ],
+  ]
+
+  it.each(updates)('%s waits for the queued save', async (_name, update) => {
+    let finishSave: (saved: Fragment) => void = () => undefined
+    onSave.mockReturnValue(
+      new Promise<Fragment>((resolve) => {
+        finishSave = resolve
+      }),
+    )
+    const settled = jest.fn()
+
+    const updating = update().then(settled)
+    await Promise.resolve()
+    expect(settled).not.toHaveBeenCalled()
+
+    finishSave(fragment)
+    await updating
+    expect(settled).toHaveBeenCalled()
+  })
+
+  it.each(updates)(
+    '%s resolves after a failed save, which the fragment view reports',
+    async (_name, update) => {
+      onSave.mockReturnValue(Promise.reject(new Error('Save failed')))
+
+      await expect(update()).resolves.toBeUndefined()
+    },
+  )
+})
+
 describe('ArchaeologyContents passes the archaeology it has', () => {
   it('passes the fragment archaeology when there is one', () => {
-    const archaeology = { excavationNumber: 'X.1' } as ArchaeologyDto
+    const archaeology = archaeologyFactory.build()
     const element = ArchaeologyContents({
       ...props,
-      fragment: { ...fragment, archaeology },
-    } as unknown as TabsProps)
+      fragment: fragmentFactory.build({}, { associations: { archaeology } }),
+    })
 
     expect(propsOf<{ archaeology: unknown }>(element).archaeology).toEqual(
       archaeology,
@@ -144,8 +199,8 @@ describe('ArchaeologyContents passes the archaeology it has', () => {
   it('passes null when the fragment has none', () => {
     const element = ArchaeologyContents({
       ...props,
-      fragment: { ...fragment, archaeology: undefined },
-    } as unknown as TabsProps)
+      fragment: fragmentFactory.build({ archaeology: undefined }),
+    })
 
     expect(propsOf<{ archaeology: unknown }>(element).archaeology).toBeNull()
   })

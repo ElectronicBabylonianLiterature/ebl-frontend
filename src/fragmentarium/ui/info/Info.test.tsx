@@ -7,9 +7,8 @@ import DossiersService from 'dossiers/application/DossiersService'
 import AfoRegisterService from 'afo-register/application/AfoRegisterService'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import { Genres } from 'fragmentarium/domain/Genres'
-import { Script } from 'fragmentarium/domain/fragment'
 import { fragmentFactory } from 'test-support/fragment-fixtures'
-import { MesopotamianDate } from 'chronology/domain/Date'
+import Details from 'fragmentarium/ui/info/Details'
 import { mesopotamianDateFactory } from 'test-support/date-fixtures'
 import { colophonFactory } from 'test-support/colophon-fixtures'
 import { ResearchProjects } from 'research-projects/researchProject'
@@ -18,12 +17,10 @@ jest.mock('fragmentarium/application/FragmentService')
 jest.mock('dossiers/application/DossiersService')
 jest.mock('afo-register/application/AfoRegisterService')
 
-interface DetailsProps {
-  updateGenres: (genres: Genres) => unknown
-  updateScript: (script: Script) => unknown
-  updateDate: (date?: MesopotamianDate) => unknown
-  updateDatesInText: (dates: readonly MesopotamianDate[]) => unknown
-}
+type DetailsProps = Pick<
+  React.ComponentProps<typeof Details>,
+  'updateGenres' | 'updateScript' | 'updateDate' | 'updateDatesInText'
+>
 
 let detailsProps: DetailsProps
 
@@ -63,9 +60,11 @@ const richFragment = fragmentFactory.build({
 })
 const saved = Promise.resolve(fragment)
 const onSave = jest.fn<Promise<Fragment>, [() => Promise<Fragment>]>()
+const enqueueSave = jest.fn<Promise<Fragment>, [() => Promise<Fragment>]>()
 
 beforeEach(() => {
   onSave.mockImplementation((save: () => Promise<Fragment>) => save())
+  enqueueSave.mockImplementation((save: () => Promise<Fragment>) => save())
 })
 
 function renderInfo(shown: Fragment = fragment): void {
@@ -77,6 +76,7 @@ function renderInfo(shown: Fragment = fragment): void {
         dossiersService={dossiersServiceMock}
         afoRegisterService={afoRegisterServiceMock}
         onSave={onSave}
+        enqueueSave={enqueueSave}
       />
     </MemoryRouter>,
   )
@@ -101,7 +101,7 @@ describe('Info wires the detail editors to the fragment service', () => {
     expect(onSave).toHaveBeenCalledWith(expect.any(Function))
   })
 
-  it('saves a script change directly, without onSave', () => {
+  it('routes a script change through the save queue', () => {
     renderInfo()
     fragmentServiceMock.updateScript.mockReturnValue(saved)
 
@@ -112,6 +112,7 @@ describe('Info wires the detail editors to the fragment service', () => {
       fragment.script,
     )
     expect(returned).toBe(saved)
+    expect(enqueueSave).toHaveBeenCalledWith(expect.any(Function))
     expect(onSave).not.toHaveBeenCalled()
   })
 
@@ -126,6 +127,7 @@ describe('Info wires the detail editors to the fragment service', () => {
       fragment.number,
       date.toDto(),
     )
+    expect(enqueueSave).toHaveBeenCalledWith(expect.any(Function))
   })
 
   it('clears the date when there is none', () => {
@@ -140,17 +142,18 @@ describe('Info wires the detail editors to the fragment service', () => {
     )
   })
 
-  it('drops empty entries from the dates in text', () => {
+  it('saves every date in text as a dto', () => {
     renderInfo()
     fragmentServiceMock.updateDatesInText.mockReturnValue(saved)
-    const date = mesopotamianDateFactory.build()
+    const [date, otherDate] = mesopotamianDateFactory.buildList(2)
 
-    detailsProps.updateDatesInText([date, null as unknown as MesopotamianDate])
+    detailsProps.updateDatesInText([date, otherDate])
 
     expect(fragmentServiceMock.updateDatesInText).toHaveBeenCalledWith(
       fragment.number,
-      [date.toDto()],
+      [date.toDto(), otherDate.toDto()],
     )
+    expect(enqueueSave).toHaveBeenCalledWith(expect.any(Function))
   })
 })
 

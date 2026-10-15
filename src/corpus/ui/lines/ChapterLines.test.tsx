@@ -1,38 +1,96 @@
 import React from 'react'
-import { render, screen } from '@testing-library/react'
+import { fireEvent, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { produce, castDraft } from 'immer'
-import { chapter } from 'test-support/test-corpus-text'
-import { createLine, EditStatus } from 'corpus/domain/line'
-import { Chapter } from 'corpus/domain/chapter'
-import { createDefaultLineFactory } from 'corpus/application/line-factory'
+import { castDraft, produce } from 'immer'
 import ChapterLines from 'corpus/ui/lines/ChapterLines'
+import { Chapter } from 'corpus/domain/chapter'
+import { EditStatus, Line } from 'corpus/domain/line'
+import { chapter } from 'test-support/test-corpus-text'
 
-jest.mock('editor/Editor', () =>
-  jest.requireActual('editor/Editor.testSupport'),
-)
+const onChange = jest.fn<void, [Chapter]>()
 
-const lastLine = chapter.lines[0]
-const deletedLine = createLine({ number: '5', status: EditStatus.DELETED })
-const chapterWithDeletedLine = produce(chapter, (draft) => {
-  draft.lines = castDraft([lastLine, deletedLine])
-})
-
-test('Add line continues from the last line that is not deleted', async () => {
-  const onChange = jest.fn<void, [Chapter]>()
+function renderLines(lines: readonly Line[]): void {
   render(
     <ChapterLines
-      chapter={chapterWithDeletedLine}
+      chapter={produce(chapter, (draft) => {
+        draft.lines = castDraft(lines)
+      })}
       onChange={onChange}
       onSave={jest.fn()}
     />,
   )
+}
+
+function changedLines(): readonly Line[] {
+  return onChange.mock.calls[0][0].lines
+}
+
+beforeEach(() => {
+  onChange.mockClear()
+})
+
+it('adds a line after the last line', async () => {
+  renderLines(chapter.lines)
 
   await userEvent.click(screen.getByRole('button', { name: 'Add line' }))
 
-  expect(onChange).toHaveBeenCalledWith(
-    produce(chapterWithDeletedLine, (draft) => {
-      draft.lines.push(castDraft(createDefaultLineFactory(lastLine)()))
-    }),
+  expect(changedLines()).toHaveLength(chapter.lines.length + 1)
+  expect(changedLines()[chapter.lines.length].status).toEqual(EditStatus.NEW)
+})
+
+it.each([
+  [EditStatus.CLEAN, EditStatus.EDITED],
+  [EditStatus.NEW, EditStatus.NEW],
+])(
+  'adds a variant to a line with status %s and marks it %s',
+  async (status, expectedStatus) => {
+    const line = { ...chapter.lines[0], status }
+    renderLines([line])
+
+    await userEvent.click(screen.getByRole('button', { name: 'Add variant' }))
+
+    expect(changedLines()[0].variants).toHaveLength(line.variants.length + 1)
+    expect(changedLines()[0].status).toEqual(expectedStatus)
+  },
+)
+
+it('adds a manuscript line to a variant', async () => {
+  const line = chapter.lines[0]
+  renderLines([line])
+
+  await userEvent.click(
+    screen.getAllByRole('button', { name: 'Add manuscript' })[0],
+  )
+
+  expect(changedLines()[0].variants[0].manuscripts).toHaveLength(
+    line.variants[0].manuscripts.length + 1,
+  )
+})
+
+it.each([
+  [EditStatus.CLEAN, EditStatus.EDITED],
+  [EditStatus.NEW, EditStatus.NEW],
+])(
+  'changes the number of a line with status %s and marks it %s',
+  (status, expectedStatus) => {
+    renderLines([{ ...chapter.lines[0], status }])
+
+    fireEvent.change(screen.getByLabelText('Number'), {
+      target: { value: '42' },
+    })
+
+    expect(changedLines()[0].number).toEqual('42')
+    expect(changedLines()[0].status).toEqual(expectedStatus)
+  },
+)
+
+it('keeps a new line new when a flag changes', async () => {
+  renderLines([{ ...chapter.lines[0], status: EditStatus.NEW }])
+
+  await userEvent.click(screen.getByLabelText('beginning of a section'))
+
+  expect(changedLines()[0].status).toEqual(EditStatus.NEW)
+  expect(changedLines()[0].isBeginningOfSection).toEqual(
+    !chapter.lines[0].isBeginningOfSection,
   )
 })

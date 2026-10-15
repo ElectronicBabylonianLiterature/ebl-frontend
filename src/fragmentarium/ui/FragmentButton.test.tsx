@@ -4,7 +4,7 @@ import { MemoryRouter } from 'react-router-dom'
 import { render, RenderResult, screen } from '@testing-library/react'
 import _ from 'lodash'
 import { whenClicked, clickNth } from 'test-support/utils'
-import FragmentButton from './FragmentButton'
+import FragmentButton from 'fragmentarium/ui/FragmentButton'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import { fragmentFactory } from 'test-support/fragment-fixtures'
 

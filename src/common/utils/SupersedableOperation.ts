@@ -9,6 +9,11 @@ export default class SupersedableOperation {
     return () => this.currentToken !== startedToken
   }
 
+  observe(): StalenessCheck {
+    const observedToken = this.currentToken
+    return () => this.currentToken !== observedToken
+  }
+
   supersede(): void {
     this.currentToken += 1
   }

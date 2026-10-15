@@ -1,25 +1,23 @@
 import captureStackTrace from 'common/utils/captureStackTrace'
+import {
+  CaptureStackTraceOverride,
+  overrideCaptureStackTrace,
+} from 'test-support/captureStackTraceOverride'
 
-type ErrorWithOptionalCapture = {
-  captureStackTrace?: (error: Error, constructorReference: unknown) => void
-}
-
-const errorConstructor = Error as unknown as ErrorWithOptionalCapture
-
-let originalCaptureStackTrace: ErrorWithOptionalCapture['captureStackTrace']
+let captureStackTraceOverride: CaptureStackTraceOverride
 
 beforeEach(() => {
-  originalCaptureStackTrace = errorConstructor.captureStackTrace
+  captureStackTraceOverride = overrideCaptureStackTrace()
 })
 
 afterEach(() => {
-  errorConstructor.captureStackTrace = originalCaptureStackTrace
+  captureStackTraceOverride.restore()
 })
 
 describe('When the engine provides Error.captureStackTrace', () => {
   it('Delegates to it with the error and the constructor reference', () => {
     const capture = jest.fn()
-    errorConstructor.captureStackTrace = capture
+    captureStackTraceOverride.replace(capture)
     const error = new Error('delegated')
 
     captureStackTrace(error, MyError)
@@ -30,7 +28,7 @@ describe('When the engine provides Error.captureStackTrace', () => {
 
 describe('When the engine does not provide Error.captureStackTrace', () => {
   beforeEach(() => {
-    delete errorConstructor.captureStackTrace
+    captureStackTraceOverride.remove()
   })
 
   it('Does not throw', () => {

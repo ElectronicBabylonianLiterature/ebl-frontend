@@ -2,6 +2,8 @@ import { Text } from 'transliteration/domain/text'
 import { commentaryProtocols } from 'test-support/lines/text-commentary-protocols'
 import * as at from 'test-support/lines/at'
 import * as columns from 'test-support/lines/text-columns'
+import { implicitFirstColumn } from 'test-support/lines/text-columns-implicit'
+import { firstColumnSpan } from 'test-support/lines/text-columns-spans'
 import * as normalized from 'test-support/lines/text-normalized'
 import * as greek from 'test-support/lines/text-greek'
 import * as composite from 'test-support/lines/composite'
@@ -56,8 +58,8 @@ const complexTestText = new Text({
     line17,
     line18,
     columns.emptyFirstColumn,
-    columns.implicitFirstColumn,
-    columns.firstColumnSpan,
+    implicitFirstColumn,
+    firstColumnSpan,
     empty,
     commentaryProtocols,
     dollar.state,

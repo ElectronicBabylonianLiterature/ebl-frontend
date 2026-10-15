@@ -2,7 +2,7 @@ import React from 'react'
 import { render, screen } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 import Chance from 'chance'
-import FragmentLink from './FragmentLink'
+import FragmentLink from 'fragmentarium/ui/FragmentLink'
 import Folio from 'fragmentarium/domain/Folio'
 
 const chance = new Chance('FragmentLink')

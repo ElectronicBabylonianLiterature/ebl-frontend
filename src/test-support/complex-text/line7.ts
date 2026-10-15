@@ -1,4 +1,10 @@
 import { TextLine } from 'transliteration/domain/text-line'
+import {
+  joiner,
+  logogram,
+  reading,
+  word,
+} from 'test-support/complex-text/tokenBuilders'
 
 const line7 = new TextLine({
   prefix: '4.',
@@ -9,32 +15,11 @@ const line7 = new TextLine({
       value: '($___$)',
       type: 'Tabulation',
     },
-    {
-      enclosureType: [],
-      cleanValue: 'kurₓ@v(KUR@v#?)-KUR₂@v<(kur-kur)>',
-      value: 'kurₓ@v#!(KUR@v#?)-KUR₂@v#?<(kur-kur)>',
-      language: 'AKKADIAN',
-      normalized: false,
-      lemmatizable: true,
-      alignable: true,
-      uniqueLemma: [],
-      erasure: 'NONE',
-      alignment: null,
-      variant: null,
-      parts: [
-        {
-          enclosureType: [],
+    word(
+      'kurₓ@v#!(KUR@v#?)-KUR₂@v#?<(kur-kur)>',
+      [
+        reading('kurₓ@v#!(KUR@v#?)', 'kur', {
           cleanValue: 'kurₓ@v(KUR@v#?)',
-          value: 'kurₓ@v#!(KUR@v#?)',
-          name: 'kur',
-          nameParts: [
-            {
-              enclosureType: [],
-              cleanValue: 'kur',
-              value: 'kur',
-              type: 'ValueToken',
-            },
-          ],
           subIndex: null,
           modifiers: ['@v'],
           flags: ['#', '!'],
@@ -47,84 +32,22 @@ const line7 = new TextLine({
             flags: ['#', '?'],
             type: 'Grapheme',
           },
-          type: 'Reading',
-        },
-        {
-          enclosureType: [],
-          cleanValue: '-',
-          value: '-',
-          type: 'Joiner',
-        },
-        {
-          enclosureType: [],
+        }),
+        joiner('-'),
+        logogram('KUR₂@v#?<(kur-kur)>', 'KUR', {
           cleanValue: 'KUR₂@v<(kur-kur)>',
-          value: 'KUR₂@v#?<(kur-kur)>',
-          name: 'KUR',
-          nameParts: [
-            {
-              enclosureType: [],
-              cleanValue: 'KUR',
-              value: 'KUR',
-              type: 'ValueToken',
-            },
-          ],
           subIndex: 2,
           modifiers: ['@v'],
           flags: ['#', '?'],
-          sign: null,
           surrogate: [
-            {
-              enclosureType: [],
-              cleanValue: 'kur',
-              value: 'kur',
-              name: 'kur',
-              nameParts: [
-                {
-                  enclosureType: [],
-                  cleanValue: 'kur',
-                  value: 'kur',
-                  type: 'ValueToken',
-                },
-              ],
-              subIndex: 1,
-              modifiers: [],
-              flags: [],
-              sign: null,
-              type: 'Reading',
-            },
-            {
-              enclosureType: [],
-              cleanValue: '-',
-              value: '-',
-              type: 'Joiner',
-            },
-            {
-              enclosureType: [],
-              cleanValue: 'kur',
-              value: 'kur',
-              name: 'kur',
-              nameParts: [
-                {
-                  enclosureType: [],
-                  cleanValue: 'kur',
-                  value: 'kur',
-                  type: 'ValueToken',
-                },
-              ],
-              subIndex: 1,
-              modifiers: [],
-              flags: [],
-              sign: null,
-              type: 'Reading',
-            },
+            reading('kur', 'kur'),
+            joiner('-'),
+            reading('kur', 'kur'),
           ],
-          type: 'Logogram',
-        },
+        }),
       ],
-      type: 'Word',
-      hasVariantAlignment: false,
-      hasOmittedAlignment: false,
-    },
+      { cleanValue: 'kurₓ@v(KUR@v#?)-KUR₂@v<(kur-kur)>' },
+    ),
   ],
   lineNumber: {
     number: 4,

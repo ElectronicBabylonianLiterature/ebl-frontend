@@ -15,7 +15,7 @@ import {
   chance,
   createFragmentariumSearchTestContext,
   FragmentariumSearchTestContext,
-} from 'fragmentarium/ui/search/FragmentariumSearch.testSupport'
+} from 'fragmentarium/ui/search/FragmentariumSearch.context.testSupport'
 
 jest.mock('fragmentarium/application/FragmentSearchService')
 jest.mock('dictionary/application/WordService')

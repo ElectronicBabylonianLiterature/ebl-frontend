@@ -99,12 +99,10 @@ function GenreSelectionForm({
       }
     })
 
-  function handleAdd() {
-    if (selected) {
-      addGenre(selected)
-      setIsUncertain(false)
-      setSelected(null)
-    }
+  function handleAdd(genre: Genre) {
+    addGenre(genre)
+    setIsUncertain(false)
+    setSelected(null)
   }
 
   return (
@@ -143,7 +141,7 @@ function GenreSelectionForm({
         <Button
           aria-label={'add-genre'}
           disabled={!selected}
-          onClick={() => handleAdd()}
+          onClick={selected ? () => handleAdd(selected) : undefined}
         >
           Add
         </Button>

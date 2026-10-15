@@ -5,14 +5,12 @@ import {
   fragmentRepository,
   fragmentService,
   provenanceOptions,
-  stubMissingBibliography,
 } from 'fragmentarium/application/fragmentServiceFragments.testSupport'
 
 let provenanceResult: readonly ProvenanceRecord[]
 
 beforeEach(() => {
   jest.clearAllMocks()
-  stubMissingBibliography()
 })
 
 describe('fetch provenances', () => {

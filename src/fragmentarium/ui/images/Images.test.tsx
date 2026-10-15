@@ -6,7 +6,8 @@ import {
   screen,
   waitForElementToBeRemoved,
 } from '@testing-library/react'
-import Images, { FragmentPhoto, TabController } from './Images'
+import Images, { FragmentPhoto } from 'fragmentarium/ui/images/Images'
+import { TabController } from 'fragmentarium/ui/images/ImageTabController'
 import Folio from 'fragmentarium/domain/Folio'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import {
@@ -34,7 +35,7 @@ beforeEach(() => {
     folioPager: jest.fn(),
   }
   folioPager = folioPagerFactory.build()
-  ;(URL.createObjectURL as jest.Mock).mockReturnValue('url')
+  jest.spyOn(URL, 'createObjectURL').mockReturnValue('url')
   fragmentService.findFolio.mockReturnValue(
     Promise.resolve(new Blob([''], { type: 'image/jpeg' })),
   )
@@ -109,10 +110,7 @@ it('Displays photo if no folio specified', async () => {
 })
 
 it('Displays CDLI photo if no photo and no folio specified', async () => {
-  folios = [
-    folioFactory.build({ name: 'WGL' }),
-    folioFactory.build({ name: 'AKG' }),
-  ]
+  folios = []
   fragment = fragmentFactory.build(
     { hasPhoto: false, cdliImages: ['dl/photo/P550449.jpg'] },
     { associations: { folios: folios } },
@@ -128,7 +126,6 @@ test('No photo, folios, CDLI photo', async () => {
     { associations: { folios: [] } },
   )
   renderImages()
-  await waitForElementToBeRemoved(() => screen.queryAllByLabelText('Spinner'))
   expect(screen.queryByText('CDLI')).not.toBeInTheDocument()
 })
 
@@ -174,6 +171,21 @@ describe('TabController', () => {
 
   it('Returns correct activeKey when tab is null', () => {
     const controller = new TabController(fragment, null, null, navigate)
+    expect(controller.activeKey).toBe('photo')
+  })
+
+  it('Returns the raw tab as activeKey when it is a valid folio index', () => {
+    const controller = new TabController(fragment, '1', null, navigate)
+    expect(controller.activeKey).toBe('1')
+  })
+
+  it('Falls back to defaultKey when the tab is not available', () => {
+    const controller = new TabController(
+      fragment,
+      'unknown-tab',
+      null,
+      navigate,
+    )
     expect(controller.activeKey).toBe('photo')
   })
 

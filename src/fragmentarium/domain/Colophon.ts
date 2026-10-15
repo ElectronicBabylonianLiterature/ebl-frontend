@@ -4,17 +4,6 @@ import {
   ProvenanceAttestation,
 } from 'fragmentarium/domain/IndividualAttestation'
 
-export {
-  IndividualAttestation,
-  IndividualType,
-} from 'fragmentarium/domain/IndividualAttestation'
-export type {
-  IndividualAttestationDto,
-  IndividualTypeAttestation,
-  NameAttestation,
-  ProvenanceAttestation,
-} from 'fragmentarium/domain/IndividualAttestation'
-
 export enum ColophonStatus {
   Yes = 'Yes',
   No = 'No',

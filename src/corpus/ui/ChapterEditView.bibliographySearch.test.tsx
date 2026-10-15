@@ -30,19 +30,22 @@ const chapterId: ChapterId = {
   name: chapter.name,
 }
 
-const textService = {
-  find: jest.fn(),
-  findChapter: jest.fn(),
-} as unknown as TextService
+jest.mock('corpus/application/TextService')
+jest.mock('fragmentarium/application/FragmentService')
+jest.mock('dictionary/application/WordService')
+
+const textService = new (TextService as jest.Mock<jest.Mocked<TextService>>)()
 const bibliographyService = { search: jest.fn() }
-const fragmentService = {} as FragmentService
-const wordService = {} as WordService
+const fragmentService = new (FragmentService as jest.Mock<
+  jest.Mocked<FragmentService>
+>)()
+const wordService = new (WordService as jest.Mock<jest.Mocked<WordService>>)()
 
 beforeEach(() => {
   jest.clearAllMocks()
   bibliographyService.search.mockReturnValue(Promise.resolve(entries))
-  textService.find = jest.fn().mockReturnValue(Promise.resolve(text))
-  textService.findChapter = jest.fn().mockReturnValue(Promise.resolve(chapter))
+  textService.find.mockResolvedValue(text)
+  textService.findChapter.mockResolvedValue(chapter)
 })
 
 async function renderEditView(): Promise<void> {

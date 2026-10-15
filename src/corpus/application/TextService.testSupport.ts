@@ -93,13 +93,13 @@ export function createOldLineNumbers(
 
 export const chapterDisplayDto = chapterDisplayDtoFactory.build()
 
-export const chapterDisplay = new ChapterDisplay(
-  chapterDisplayDto.id,
-  chapterDisplayDto.textHasDoi,
-  chapterDisplayDto.textName,
-  chapterDisplayDto.isSingleStage,
-  chapterDisplayDto.title,
-  chapterDisplayDto.lines.map((dto, index) => ({
+export const chapterDisplay = new ChapterDisplay({
+  id: chapterDisplayDto.id,
+  textHasDoi: chapterDisplayDto.textHasDoi,
+  textName: chapterDisplayDto.textName,
+  isSingleStage: chapterDisplayDto.isSingleStage,
+  title: chapterDisplayDto.title,
+  lines: chapterDisplayDto.lines.map((dto, index) => ({
     ...dto,
     originalIndex: index,
     oldLineNumbers: createOldLineNumbers(dto.oldLineNumbers),
@@ -119,9 +119,9 @@ export const chapterDisplay = new ChapterDisplay(
       isPrimaryVariant: index === 0,
     })),
   })),
-  chapterDisplayDto.record,
-  chapterDisplayDto.atf,
-)
+  record: chapterDisplayDto.record,
+  atf: chapterDisplayDto.atf,
+})
 
 export const chapterId = chapter.id
 

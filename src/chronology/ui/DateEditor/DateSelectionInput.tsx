@@ -11,9 +11,6 @@ import {
 } from 'chronology/ui/DateEditor/DateOptionsInput'
 import 'chronology/ui/DateEditor/DateSelectionInput.sass'
 
-export { DateOptionsInput } from 'chronology/ui/DateEditor/DateOptionsInput'
-export type { DateOptionsProps } from 'chronology/ui/DateEditor/DateOptionsInput'
-
 type DateFieldName = 'year' | 'month' | 'day'
 
 function DateFieldWarnings({

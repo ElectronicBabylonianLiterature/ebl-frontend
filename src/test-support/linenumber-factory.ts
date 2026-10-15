@@ -1,7 +1,7 @@
 import { Factory } from 'fishery'
 import Chance from 'chance'
 import { LineNumber, OldLineNumber } from 'transliteration/domain/line-number'
-import { referenceFactory } from './bibliography-fixtures'
+import { referenceFactory } from 'test-support/bibliography-fixtures'
 
 const defaultChance = new Chance('linenumber-factory')
 

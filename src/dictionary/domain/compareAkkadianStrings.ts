@@ -1,5 +1,5 @@
 import _ from 'lodash'
-import alphabet from './alphabet.json'
+import alphabet from 'dictionary/domain/alphabet.json'
 
 const ignoredCharacters: readonly string[] = [
   'ʾ',

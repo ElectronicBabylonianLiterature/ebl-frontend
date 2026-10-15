@@ -31,9 +31,39 @@ export function expectRedirectWithLocationPreserved({
   expect(screen.getByText(expectedLocation)).toBeInTheDocument()
 }
 
-const notFoundPagePattern = /The page you are looking for does not exist./i
+const redirectTargetText = 'Redirect Target'
 
-function renderRoutesAtPath({
+export function expectRedirectToTarget({
+  initialEntry,
+  targetPath,
+  routes,
+  routesFirst,
+}: {
+  initialEntry: string
+  targetPath: string
+  routes: JSX.Element[]
+  routesFirst: boolean
+}): void {
+  const target = (
+    <Route
+      key={redirectTargetText}
+      path={targetPath}
+      render={() => <div>{redirectTargetText}</div>}
+    />
+  )
+  render(
+    <MemoryRouter initialEntries={[initialEntry]}>
+      <Switch>{routesFirst ? [...routes, target] : [target, ...routes]}</Switch>
+    </MemoryRouter>,
+  )
+
+  expect(screen.getByText(redirectTargetText)).toBeInTheDocument()
+}
+
+export const notFoundPagePattern =
+  /The page you are looking for does not exist./i
+
+export function renderRoutesAtPath({
   initialEntry,
   routes,
 }: {

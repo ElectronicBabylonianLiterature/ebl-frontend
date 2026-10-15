@@ -4,11 +4,11 @@ import {
   periodModifiers,
   PeriodModifiers,
   periods,
-  Periods,
   stageFromAbbreviation,
   Stages,
   stageToAbbreviation,
 } from 'common/utils/period'
+import { Periods } from 'common/utils/periodDefinitions'
 
 testContainsAllValues(PeriodModifiers, periodModifiers, 'period modifiers')
 testContainsAllValues(Periods, periods, 'periods')

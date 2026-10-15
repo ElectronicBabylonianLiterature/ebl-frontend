@@ -162,4 +162,13 @@ describe('DateConverterForm', () => {
       JSON.stringify(expected),
     )
   })
+  it('converts the date when a field changes', () => {
+    render(<DateConverterForm />)
+    fireEvent.change(screen.getByLabelText('Year'), {
+      target: { value: '-300' },
+    })
+    expect(screen.getByLabelText('Year')).toHaveValue('-300')
+    expect(screen.getByLabelText('Julian Year')).toHaveValue('-300')
+    expect(screen.getByLabelText('SE Babylonian Year')).toHaveValue('10')
+  })
 })

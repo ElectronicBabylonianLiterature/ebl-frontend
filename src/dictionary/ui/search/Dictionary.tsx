@@ -3,12 +3,12 @@ import { parse } from 'query-string'
 import { useLocation } from 'react-router-dom'
 
 import AppContent from 'common/ui/AppContent'
-import WordSearchForm from './WordSearchForm'
-import WordSearch from './WordSearch'
+import WordSearchForm from 'dictionary/ui/search/WordSearchForm'
+import WordSearch from 'dictionary/ui/search/WordSearch'
 import SessionContext from 'auth/SessionContext'
 import AboutInlineLink from 'common/ui/AboutInlineLink'
 
-import './Dictionary.css'
+import 'dictionary/ui/search/Dictionary.css'
 import { Session } from 'auth/Session'
 import WordService from 'dictionary/application/WordService'
 

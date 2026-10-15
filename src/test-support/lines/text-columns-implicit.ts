@@ -1,47 +1,10 @@
+import { readingWord } from 'test-support/complex-text/tokenBuilders'
 import { TextLine } from 'transliteration/domain/text-line'
 
 export const implicitFirstColumn: TextLine = new TextLine({
   prefix: 'c2.',
   content: [
-    {
-      enclosureType: [],
-      erasure: 'NONE',
-      cleanValue: 'kur',
-      value: 'kur',
-      language: 'AKKADIAN',
-      normalized: false,
-      lemmatizable: true,
-      alignable: true,
-      uniqueLemma: [],
-      alignment: null,
-      variant: null,
-      parts: [
-        {
-          enclosureType: [],
-          erasure: 'NONE',
-          cleanValue: 'kur',
-          value: 'kur',
-          name: 'kur',
-          nameParts: [
-            {
-              enclosureType: [],
-              erasure: 'NONE',
-              cleanValue: 'kur',
-              value: 'kur',
-              type: 'ValueToken',
-            },
-          ],
-          subIndex: 1,
-          modifiers: [],
-          flags: [],
-          sign: null,
-          type: 'Reading',
-        },
-      ],
-      type: 'Word',
-      hasVariantAlignment: false,
-      hasOmittedAlignment: false,
-    },
+    readingWord('kur'),
     {
       enclosureType: [],
       erasure: 'NONE',
@@ -50,45 +13,7 @@ export const implicitFirstColumn: TextLine = new TextLine({
       type: 'Column',
       number: null,
     },
-    {
-      enclosureType: [],
-      erasure: 'NONE',
-      cleanValue: 'kur',
-      value: 'kur',
-      language: 'AKKADIAN',
-      normalized: false,
-      lemmatizable: true,
-      alignable: true,
-      uniqueLemma: [],
-      alignment: null,
-      variant: null,
-      parts: [
-        {
-          enclosureType: [],
-          erasure: 'NONE',
-          cleanValue: 'kur',
-          value: 'kur',
-          name: 'kur',
-          nameParts: [
-            {
-              enclosureType: [],
-              erasure: 'NONE',
-              cleanValue: 'kur',
-              value: 'kur',
-              type: 'ValueToken',
-            },
-          ],
-          subIndex: 1,
-          modifiers: [],
-          flags: [],
-          sign: null,
-          type: 'Reading',
-        },
-      ],
-      type: 'Word',
-      hasVariantAlignment: false,
-      hasOmittedAlignment: false,
-    },
+    readingWord('kur'),
   ],
   lineNumber: {
     number: 2,

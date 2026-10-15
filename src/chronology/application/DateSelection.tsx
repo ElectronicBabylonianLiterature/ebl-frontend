@@ -5,10 +5,8 @@ import { Button, Overlay, Popover } from 'react-bootstrap'
 import Spinner from 'common/ui/Spinner'
 import ErrorAlert from 'common/errors/ErrorAlert'
 import DateDisplay from 'chronology/ui/DateDisplay'
-import {
-  DateOptionsInput,
-  DateInputGroups,
-} from 'chronology/ui/DateEditor/DateSelectionInput'
+import { DateInputGroups } from 'chronology/ui/DateEditor/DateSelectionInput'
+import { DateOptionsInput } from 'chronology/ui/DateEditor/DateOptionsInput'
 import useDateSelectionState, {
   DateEditorStateProps,
   DateSelectionState,

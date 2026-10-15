@@ -3,6 +3,7 @@ import {
   isAbortError,
   isCancellation,
 } from 'common/utils/abortError'
+import { abortedSignalWithReason } from 'test-support/abortedSignal'
 
 describe('isAbortError', () => {
   it.each([
@@ -41,7 +42,7 @@ describe('isCancellation', () => {
 describe('createAbortError', () => {
   it('uses the abort reason when the signal provides one', () => {
     const reason = new Error('caller gave up')
-    const signal = { aborted: true, reason } as unknown as AbortSignal
+    const signal = abortedSignalWithReason(reason)
     expect(createAbortError(signal)).toBe(reason)
   })
 

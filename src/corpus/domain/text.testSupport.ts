@@ -8,7 +8,8 @@ import {
   LineVariant,
   ManuscriptLine,
 } from 'corpus/domain/line'
-import { PeriodModifiers, Periods } from 'common/utils/period'
+import { PeriodModifiers } from 'common/utils/period'
+import { Periods } from 'common/utils/periodDefinitions'
 import { Provenances } from 'corpus/domain/provenance'
 import { Text } from 'corpus/domain/text'
 import { Chapter } from 'corpus/domain/chapter'
@@ -32,7 +33,7 @@ export const manuscriptConfig: Partial<Manuscript> = {
   isInFragmentarium: true,
 }
 
-export const manuscriptLineConfig: Partial<ManuscriptLine> = {
+export const manuscrpitLineConfig: Partial<ManuscriptLine> = {
   manuscriptId: 1,
   labels: ['iii'],
   number: 'a+1',
@@ -118,7 +119,7 @@ export const lineConfig: Line = {
           hasOmittedAlignment: false,
         },
       ],
-      [createManuscriptLine(manuscriptLineConfig)],
+      [createManuscriptLine(manuscrpitLineConfig)],
       'intertext',
       'note',
     ),
@@ -158,7 +159,7 @@ export const textConfig: Partial<Text> = {
 export function testProperties<T>(
   config: Partial<T>,
   factory: (config: Partial<T>) => T,
-): void {
+) {
   test.each(_.toPairs(config))('%s', (property, expected) => {
     expect(factory(config)[property]).toEqual(expected)
   })

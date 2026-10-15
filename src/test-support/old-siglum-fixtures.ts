@@ -6,7 +6,7 @@ import {
   cslDataFactory,
   referenceDtoFactory,
   referenceFactory,
-} from './bibliography-fixtures'
+} from 'test-support/bibliography-fixtures'
 import { OldSiglumDto } from 'corpus/application/dtos'
 
 const defaultChance = new Chance('old-siglum-fixtures')

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import _ from 'lodash'
 import withData from 'http/withData'
 import { UncertainFragment } from 'corpus/domain/text'
@@ -14,6 +14,8 @@ import { ChapterId, chapterIdToString } from 'transliteration/domain/chapter-id'
 import ErrorAlert from 'common/errors/ErrorAlert'
 import ManuscriptJoins from 'corpus/ui/ManuscriptJoins'
 import ManuscriptReferences from 'corpus/ui/ManuscriptReferences'
+import TextService from 'corpus/application/TextService'
+import FragmentService from 'fragmentarium/application/FragmentService'
 import {
   ExtantLinesCell,
   excludeIndirectJoins,
@@ -23,8 +25,8 @@ import {
 export default withData<
   {
     uncertainFragments: readonly UncertainFragment[]
-    textService
-    fragmentService
+    textService: TextService
+    fragmentService: FragmentService
     id: ChapterId
   },
   unknown,
@@ -41,15 +43,16 @@ export default withData<
     const [extantLines, setExtantLines] = useState<ExtantLines>()
     const [extantLinesError, setExtantLinesError] = useState<Error | null>(null)
     const chapterIdKey = chapterIdToString(id)
+    const latestId = useRef(id)
+    latestId.current = id
     useEffect(() => {
       runExtantLines((signal) =>
         applyWhenNotAborted(
-          () => textService.findExtantLines(id, signal),
+          () => textService.findExtantLines(latestId.current, signal),
           signal,
           { onSuccess: setExtantLines, onError: setExtantLinesError },
         ),
       )
-      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [chapterIdKey, textService, runExtantLines])
 
     const siglumId = _.uniqueId('siglum-')
@@ -190,5 +193,5 @@ export default withData<
       </>
     )
   },
-  ({ id, textService }) => textService.findManuscripts(id),
+  ({ id, textService }, signal) => textService.findManuscripts(id, signal),
 )

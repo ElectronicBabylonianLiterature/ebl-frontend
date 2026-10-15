@@ -1,3 +1,4 @@
+import { enclosedValue } from 'test-support/complex-text/tokenBuilders'
 import { Token } from 'transliteration/domain/token'
 
 export const akkadianWordsOpeningTokens: Token[] = [
@@ -48,31 +49,7 @@ export const akkadianWordsOpeningTokens: Token[] = [
     uniqueLemma: [],
     normalized: true,
     language: 'AKKADIAN',
-    parts: [
-      {
-        value: '<',
-        cleanValue: '',
-        enclosureType: [],
-        erasure: 'NONE',
-        side: 'LEFT',
-        type: 'Emendation',
-      },
-      {
-        value: 'hur',
-        cleanValue: 'hur',
-        enclosureType: ['EMENDATION'],
-        erasure: 'NONE',
-        type: 'ValueToken',
-      },
-      {
-        value: '>',
-        cleanValue: '',
-        enclosureType: ['EMENDATION'],
-        erasure: 'NONE',
-        side: 'RIGHT',
-        type: 'Emendation',
-      },
-    ],
+    parts: enclosedValue('Emendation', ['<', '>'], 'EMENDATION', 'hur'),
     modifiers: ['!'],
     type: 'AkkadianWord',
     hasVariantAlignment: false,

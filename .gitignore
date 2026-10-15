@@ -25,10 +25,9 @@ yarn-error.log*
 # Added by ggshield
 .cache_ggshield
 
+.claude
+
 # qlty — generated caches, logs and results; keep the checked-in config
 .qlty/*
 !.qlty/qlty.toml
 !.qlty/configs
-
-# Local task-tracking docs (TODO, log, review, handoff); never committed
-TASK-*.md

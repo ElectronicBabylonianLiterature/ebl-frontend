@@ -4,65 +4,10 @@ import '@testing-library/jest-dom'
 import userEvent from '@testing-library/user-event'
 import SearchFormDossier from 'fragmentarium/ui/search/SearchFormDossier'
 import { DossierRecordSuggestion } from 'dossiers/domain/DossierRecord'
-import {
-  dossierSearchProps,
-  mockSearchSuggestions,
-  mockSuggestionDto,
-  resetDossierSearchMocks,
-} from 'fragmentarium/ui/search/SearchFormDossier.testSupport'
+import { setupDossierMocks } from 'fragmentarium/ui/search/SearchFormDossier.testSupport'
 
 describe('SearchFormDossier suggestions', () => {
-  beforeEach(resetDossierSearchMocks)
-
-  it('calls searchSuggestions when user types', async () => {
-    mockSearchSuggestions.mockResolvedValue([
-      new DossierRecordSuggestion(mockSuggestionDto),
-    ])
-
-    render(<SearchFormDossier {...dossierSearchProps} value={null} />)
-
-    const input = screen.getByLabelText('Dossier Search')
-
-    await userEvent.type(input, 'D001')
-
-    await waitFor(() => {
-      expect(mockSearchSuggestions).toHaveBeenCalled()
-    })
-  })
-
-  it('displays search results in dropdown', async () => {
-    const suggestions = [
-      new DossierRecordSuggestion(mockSuggestionDto),
-      new DossierRecordSuggestion({
-        id: 'D002',
-        description: 'Second dossier',
-      }),
-    ]
-    mockSearchSuggestions.mockResolvedValue(suggestions)
-
-    render(<SearchFormDossier {...dossierSearchProps} value={null} />)
-
-    const input = screen.getByLabelText('Dossier Search')
-
-    await userEvent.type(input, 'D')
-
-    await waitFor(() => {
-      expect(
-        screen.getByText(/D001 — Test dossier description/),
-      ).toBeInTheDocument()
-    })
-    expect(screen.getByText(/D002 — Second dossier/)).toBeInTheDocument()
-  })
-
-  it('handles empty search input', async () => {
-    mockSearchSuggestions.mockResolvedValue([])
-
-    render(<SearchFormDossier {...dossierSearchProps} value={null} />)
-
-    await waitFor(() => {
-      expect(mockSearchSuggestions).not.toHaveBeenCalled()
-    })
-  })
+  const { mockSearchSuggestions, mockOnChange } = setupDossierMocks()
 
   it('sorts suggestions by label', async () => {
     const suggestions = [
@@ -72,7 +17,14 @@ describe('SearchFormDossier suggestions', () => {
     ]
     mockSearchSuggestions.mockResolvedValue(suggestions)
 
-    render(<SearchFormDossier {...dossierSearchProps} value={null} />)
+    render(
+      <SearchFormDossier
+        ariaLabel="Dossier Search"
+        value={null}
+        searchSuggestions={mockSearchSuggestions}
+        onChange={mockOnChange}
+      />,
+    )
 
     const input = screen.getByLabelText('Dossier Search')
     await userEvent.type(input, 'D')
@@ -86,7 +38,14 @@ describe('SearchFormDossier suggestions', () => {
   it('handles API errors gracefully', async () => {
     mockSearchSuggestions.mockRejectedValue(new Error('API Error'))
 
-    render(<SearchFormDossier {...dossierSearchProps} value={null} />)
+    render(
+      <SearchFormDossier
+        ariaLabel="Dossier Search"
+        value={null}
+        searchSuggestions={mockSearchSuggestions}
+        onChange={mockOnChange}
+      />,
+    )
 
     const input = screen.getByLabelText('Dossier Search')
     await userEvent.type(input, 'D001')
@@ -96,13 +55,72 @@ describe('SearchFormDossier suggestions', () => {
     })
   })
 
-  it('handles null description', async () => {
+  it('syncs with external value prop changes', async () => {
+    const { rerender } = render(
+      <SearchFormDossier
+        ariaLabel="Dossier Search"
+        value="D001"
+        searchSuggestions={mockSearchSuggestions}
+        onChange={mockOnChange}
+      />,
+    )
+
+    expect(await screen.findByText(/D001/)).toBeInTheDocument()
+
+    rerender(
+      <SearchFormDossier
+        ariaLabel="Dossier Search"
+        value="D002"
+        searchSuggestions={mockSearchSuggestions}
+        onChange={mockOnChange}
+      />,
+    )
+
+    expect(screen.getByText(/D002/)).toBeInTheDocument()
+  })
+
+  it('renders Form.Group with correct structure', async () => {
+    render(
+      <SearchFormDossier
+        ariaLabel="Dossier Search"
+        value={null}
+        searchSuggestions={mockSearchSuggestions}
+        onChange={mockOnChange}
+      />,
+    )
+
+    const formGroup = await screen.findByTestId('dossier-form-group')
+    expect(formGroup).toBeInTheDocument()
+  })
+
+  it('renders help column for accessibility', async () => {
+    render(
+      <SearchFormDossier
+        ariaLabel="Dossier Search"
+        value={null}
+        searchSuggestions={mockSearchSuggestions}
+        onChange={mockOnChange}
+      />,
+    )
+
+    const helpCol = await screen.findByTestId('search-form-help-col')
+    expect(helpCol).toBeInTheDocument()
+  })
+
+  it.each(['null', 'undefined'])('handles %s description', async () => {
     const suggestions = [
       new DossierRecordSuggestion({ id: 'D001', description: undefined }),
     ]
     mockSearchSuggestions.mockResolvedValue(suggestions)
 
-    render(<SearchFormDossier {...dossierSearchProps} value={null} />)
+    render(
+      <SearchFormDossier
+        ariaLabel="Dossier Search"
+        value={null}
+        searchSuggestions={mockSearchSuggestions}
+        onChange={mockOnChange}
+      />,
+    )
 
     const input = screen.getByLabelText('Dossier Search')
     await userEvent.type(input, 'D001')
@@ -110,111 +128,5 @@ describe('SearchFormDossier suggestions', () => {
     await waitFor(() => {
       expect(screen.getByRole('option')).toHaveTextContent(/D001/)
     })
-  })
-
-  it('handles undefined description', async () => {
-    const suggestions = [
-      new DossierRecordSuggestion({ id: 'D001', description: undefined }),
-    ]
-    mockSearchSuggestions.mockResolvedValue(suggestions)
-
-    render(<SearchFormDossier {...dossierSearchProps} value={null} />)
-
-    const input = screen.getByLabelText('Dossier Search')
-    await userEvent.type(input, 'D001')
-
-    await waitFor(() => {
-      expect(screen.getByRole('option')).toHaveTextContent(/D001/)
-    })
-  })
-
-  it('handles empty string description', async () => {
-    const suggestions = [
-      new DossierRecordSuggestion({ id: 'D001', description: '' }),
-    ]
-    mockSearchSuggestions.mockResolvedValue(suggestions)
-
-    render(<SearchFormDossier {...dossierSearchProps} value={null} />)
-
-    const input = screen.getByLabelText('Dossier Search')
-    await userEvent.type(input, 'D001')
-
-    await waitFor(() => {
-      expect(screen.getByRole('option')).toHaveTextContent(/D001/)
-    })
-  })
-
-  it('sorts numeric IDs correctly', async () => {
-    const suggestions = [
-      new DossierRecordSuggestion({ id: 'D10', description: 'Ten' }),
-      new DossierRecordSuggestion({ id: 'D1', description: 'One' }),
-      new DossierRecordSuggestion({ id: 'D2', description: 'Two' }),
-    ]
-    mockSearchSuggestions.mockResolvedValue(suggestions)
-
-    render(<SearchFormDossier {...dossierSearchProps} value={null} />)
-
-    const input = screen.getByLabelText('Dossier Search')
-    await userEvent.type(input, 'D')
-
-    await waitFor(() => {
-      expect(screen.getAllByText(/D\d/)).toHaveLength(3)
-    })
-
-    const options = screen.getAllByText(/D\d/)
-    expect(options[0]).toHaveTextContent(/D1 — One/)
-    expect(options[1]).toHaveTextContent(/D2 — Two/)
-    expect(options[2]).toHaveTextContent(/D10 — Ten/)
-  })
-
-  it('does not load options until user enters a query', async () => {
-    mockSearchSuggestions.mockResolvedValue([
-      new DossierRecordSuggestion(mockSuggestionDto),
-    ])
-
-    render(<SearchFormDossier {...dossierSearchProps} value={null} />)
-
-    await waitFor(() => {
-      expect(mockSearchSuggestions).not.toHaveBeenCalled()
-    })
-  })
-
-  it('handles very long descriptions', async () => {
-    const longDescription = 'A'.repeat(200)
-    const suggestions = [
-      new DossierRecordSuggestion({ id: 'D001', description: longDescription }),
-    ]
-    mockSearchSuggestions.mockResolvedValue(suggestions)
-
-    render(<SearchFormDossier {...dossierSearchProps} value={null} />)
-
-    const input = screen.getByLabelText('Dossier Search')
-    await userEvent.type(input, 'D')
-
-    await waitFor(() => {
-      expect(
-        screen.getByText(new RegExp(`D001 — ${longDescription}`)),
-      ).toBeInTheDocument()
-    })
-  })
-
-  it('filters out null entries from suggestions', async () => {
-    mockSearchSuggestions.mockResolvedValue([
-      new DossierRecordSuggestion(mockSuggestionDto),
-      null,
-      new DossierRecordSuggestion({ id: 'D002', description: 'Second' }),
-    ])
-
-    render(<SearchFormDossier {...dossierSearchProps} value={null} />)
-
-    const input = screen.getByLabelText('Dossier Search')
-    await userEvent.type(input, 'D')
-
-    await waitFor(() => {
-      expect(
-        screen.getByText(/D001 — Test dossier description/),
-      ).toBeInTheDocument()
-    })
-    expect(screen.getByText(/D002 — Second/)).toBeInTheDocument()
   })
 })

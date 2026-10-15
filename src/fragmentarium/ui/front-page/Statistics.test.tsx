@@ -1,11 +1,9 @@
 import React from 'react'
 import { render, screen } from '@testing-library/react'
 import { waitForSpinnerToBeRemoved } from 'test-support/waitForSpinnerToBeRemoved'
-import Statistics from './Statistics'
+import Statistics from 'fragmentarium/ui/front-page/Statistics'
 import { statisticsFactory } from 'test-support/fragment-data-fixtures'
-import FragmentService, {
-  FragmentStatistics,
-} from 'fragmentarium/application/FragmentService'
+import { FragmentStatistics } from 'fragmentarium/application/FragmentService'
 
 let fragmentService: { statistics: jest.Mock }
 let statistics: FragmentStatistics
@@ -20,11 +18,7 @@ const setup = async (): Promise<void> => {
     statistics: jest.fn(),
   }
   fragmentService.statistics.mockReturnValueOnce(Promise.resolve(statistics))
-  render(
-    <Statistics
-      fragmentService={fragmentService as unknown as FragmentService}
-    />,
-  )
+  render(<Statistics fragmentService={fragmentService} />)
   await waitForSpinnerToBeRemoved(screen)
 }
 

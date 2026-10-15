@@ -3,7 +3,7 @@ import { MemoryRouter } from 'react-router-dom'
 import { render, screen } from '@testing-library/react'
 
 import SessionContext from 'auth/SessionContext'
-import CuneiformFragment from './CuneiformFragment'
+import CuneiformFragment from 'fragmentarium/ui/fragment/CuneiformFragment'
 import Lemmatization from 'transliteration/domain/Lemmatization'
 import WordService from 'dictionary/application/WordService'
 import FragmentService from 'fragmentarium/application/FragmentService'

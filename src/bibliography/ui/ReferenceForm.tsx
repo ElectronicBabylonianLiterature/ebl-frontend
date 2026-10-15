@@ -5,7 +5,7 @@ import _ from 'lodash'
 import ArrayInput from 'common/ui/ArrayInput'
 import HelpTrigger from 'common/ui/HelpTrigger'
 import BibliographySelect from 'bibliography/ui/BibliographySelect'
-import NotesHelp from './NotesHelp'
+import NotesHelp from 'bibliography/ui/NotesHelp'
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 interface Props {
   value

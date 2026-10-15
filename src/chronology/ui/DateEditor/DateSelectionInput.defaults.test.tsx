@@ -1,11 +1,11 @@
 import React from 'react'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import { DateInputGroups } from 'chronology/ui/DateEditor/DateSelectionInput'
 import {
-  DateInputGroups,
   DateOptionsInput,
   DateOptionsProps,
-} from 'chronology/ui/DateEditor/DateSelectionInput'
+} from 'chronology/ui/DateEditor/DateOptionsInput'
 import { eponym } from 'test-support/date-fixtures'
 
 it('Toggles intercalary without a setter', async () => {

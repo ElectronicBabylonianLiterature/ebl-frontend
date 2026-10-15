@@ -1,13 +1,19 @@
 import { chapter } from 'test-support/test-corpus-text'
 import { ChapterAlignment } from 'corpus/domain/alignment'
+import { createLine, createManuscriptLine } from 'corpus/domain/line'
 import { createChapter, createText } from 'corpus/domain/text'
 import { textIdToString } from 'transliteration/domain/text-id'
+import { Manuscript } from 'corpus/domain/manuscript'
+
 import {
-  chapterConfig,
-  name,
+  manuscriptConfig,
+  manuscrpitLineConfig,
+  lineConfig,
   stage,
-  testProperties,
+  name,
+  chapterConfig,
   textConfig,
+  testProperties,
 } from 'corpus/domain/text.testSupport'
 
 test.each([
@@ -103,4 +109,16 @@ describe('Chapter', () => {
       ]),
     )
   })
+})
+
+describe('Manuscript', () => {
+  testProperties(manuscriptConfig, () => new Manuscript(manuscriptConfig))
+})
+
+describe('Manuscript line', () => {
+  testProperties(manuscrpitLineConfig, createManuscriptLine)
+})
+
+describe('Line', () => {
+  testProperties(lineConfig, createLine)
 })

@@ -6,27 +6,13 @@ import {
   raToken,
 } from 'test-support/test-tokens'
 import { createVariant, createManuscriptLine } from 'corpus/domain/line'
-import {
-  brokenKurRaPaWord,
-  kurPlusRaRaWord,
-  uncertainKurRaPaWord,
-} from 'corpus/domain/LineVariant.testSupport'
+import { prefixAlignmentManuscripts } from 'corpus/domain/LineVariant.prefixAlignment.testSupport'
 
-describe('alignment', () => {
+describe('prefix alignment', () => {
   test('Prefix alignment.', () => {
     const variant = createVariant({
       reconstructionTokens: [languageShiftToken, kurToken],
-      manuscripts: [
-        createManuscriptLine({
-          atfTokens: [brokenKurRaPaWord],
-        }),
-        createManuscriptLine({
-          atfTokens: [uncertainKurRaPaWord],
-        }),
-        createManuscriptLine({
-          atfTokens: [atfTokenEllipsis, kurPlusRaRaWord, atfTokenEllipsis],
-        }),
-      ],
+      manuscripts: prefixAlignmentManuscripts,
     })
 
     expect(variant.alignment).toEqual([

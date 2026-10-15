@@ -80,18 +80,16 @@ class LemmaSelectionForm extends Component<Props, State> {
     query: MultiValue<LemmaOption>,
     { action, removedValue }: ActionMeta<LemmaOption>,
   ): void => {
-    const current = this.state.query || []
-
     const update =
       action === 'remove-value'
-        ? current.filter((option) => option.id !== removedValue?.id)
+        ? this.state.query.filter((option) => option.id !== removedValue?.id)
         : query
 
     this.setState({
       ...this.state,
       query: update,
     })
-    this.props.onChange(_.isNil(update) ? [] : update)
+    this.props.onChange(update)
   }
 
   onInputChange = (

@@ -19,6 +19,7 @@ jest.mock('fragmentarium/ui/info/Info', () => {
   return function InfoMock(props: {
     fragment: { number: string; publication: string }
     onSave: (save: () => Promise<Fragment>) => void
+    enqueueSave: (save: () => Promise<Fragment>) => Promise<Fragment>
   }) {
     return (
       <div data-testid="fragment-info">
@@ -31,6 +32,14 @@ jest.mock('fragmentarium/ui/info/Info', () => {
           onClick={() => props.onSave(mockInfoSaves[mockInfoSaves.length - 1])}
         >
           Save genres
+        </button>
+        <button
+          type="button"
+          onClick={() =>
+            props.enqueueSave(mockInfoSaves[mockInfoSaves.length - 1])
+          }
+        >
+          Save script
         </button>
       </div>
     )
@@ -195,4 +204,30 @@ it('does not hold a new fragment save behind a pending save of the previous frag
   await userEvent.click(screen.getByRole('button', { name: 'Save genres' }))
 
   expect(saveSecond).toHaveBeenCalledTimes(1)
+})
+
+it('holds a genre save behind a pending sidebar script save', async () => {
+  const fragment = fragmentFactory.build({ number: 'K.1' })
+  let resolveScript: (saved: Fragment) => void = () => undefined
+  const saveScript = jest.fn(
+    () =>
+      new Promise<Fragment>((resolve) => {
+        resolveScript = resolve
+      }),
+  )
+  const saveGenres = jest.fn(() =>
+    Promise.resolve({ ...fragment, publication: 'genres' } as Fragment),
+  )
+  render(view(fragment))
+
+  mockInfoSaves.push(saveScript)
+  await userEvent.click(screen.getByRole('button', { name: 'Save script' }))
+  mockInfoSaves.push(saveGenres)
+  await userEvent.click(screen.getByRole('button', { name: 'Save genres' }))
+  expect(saveGenres).not.toHaveBeenCalled()
+
+  await act(async () => resolveScript(fragment))
+
+  expect(saveGenres).toHaveBeenCalledTimes(1)
+  expect(screen.getByTestId('fragment-publication')).toHaveTextContent('genres')
 })

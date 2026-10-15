@@ -19,6 +19,8 @@ import {
 } from 'fragmentarium/infrastructure/fragmentFactories'
 import { ApiFragmentInfo } from 'fragmentarium/infrastructure/fragmentRepositoryInfo'
 
+const authorizedScopesField = 'authorized_scopes'
+
 export class ApiFragmentUpdates extends ApiFragmentInfo {
   updateGenres(number: string, genres: Genres): Promise<Fragment> {
     const path = createFragmentPath(number, 'genres')
@@ -30,12 +32,9 @@ export class ApiFragmentUpdates extends ApiFragmentInfo {
   }
   updateScopes(number: string, scopes: string[]): Promise<Fragment> {
     const path = createFragmentPath(number, 'scopes')
-    return (
-      this.apiClient
-        // eslint-disable-next-line camelcase
-        .postJson<FragmentDto>(path, { authorized_scopes: scopes })
-        .then(createFragment)
-    )
+    return this.apiClient
+      .postJson<FragmentDto>(path, { [authorizedScopesField]: scopes })
+      .then(createFragment)
   }
   updateScript(number: string, script: Script): Promise<Fragment> {
     const path = createFragmentPath(number, 'script')

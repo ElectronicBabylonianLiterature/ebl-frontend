@@ -5,13 +5,28 @@ const isFastDev = process.env.FAST_DEV === 'true'
 const sourceDirectory = path.resolve(__dirname, 'src')
 
 const fullyCoveredPaths = [
+  'src/about/ui/AboutFigure.tsx',
+  'src/about/ui/bibliography.tsx',
+  'src/about/ui/folios.tsx',
+  'src/about/ui/foliosContemporary.tsx',
+  'src/about/ui/foliosEarly.tsx',
+  'src/about/ui/foliosTwentiethCentury.tsx',
+  'src/about/ui/indexedPublications/IndexedPublicationsSection.ts',
+  'src/about/ui/MarkupParagraph.tsx',
   'src/afo-register/ui/AfoRegisterSearchFields.tsx',
+  'src/auth/InjectedAuth0Provider.tsx',
   'src/bibliography/application/BibliographyEntryLoader.ts',
   'src/bibliography/ui/BibliographyEntryForm.tsx',
   'src/bibliography/ui/BibliographyEntryFormController.tsx',
   'src/chronology/application/DateSelection.tsx',
+  'src/chronology/application/DateSelectionInputConfig.ts',
   'src/chronology/application/DateSelectionMethods.ts',
   'src/chronology/application/DateSelectionState.ts',
+  'src/chronology/domain/modernDateParts.ts',
+  'src/chronology/ui/DateConverter/dateConverterFieldEdges.ts',
+  'src/chronology/ui/DateConverter/dateConverterOptionElements.tsx',
+  'src/chronology/ui/DateEditor/DateOptionsInput.tsx',
+  'src/chronology/ui/DateEditor/DateSelectionInput.tsx',
   'src/chronology/ui/DateEditor/DatesInTextSelection.tsx',
   'src/common/hooks/usePromiseEffect.ts',
   'src/common/utils/AbortableOperation.ts',
@@ -21,43 +36,83 @@ const fullyCoveredPaths = [
   'src/common/utils/ConcurrencyLimiter.ts',
   'src/common/utils/getOrFetchCachedValue.ts',
   'src/common/utils/mapSeries.ts',
+  'src/common/utils/period.ts',
   'src/common/utils/SerialQueue.ts',
   'src/common/utils/SupersedableOperation.ts',
+  'src/corpus/application/chapterDtoSerialization.ts',
   'src/corpus/application/chapterUrls.ts',
   'src/corpus/application/CorpusLemmatizationFactory.ts',
   'src/corpus/application/TextReadService.ts',
   'src/corpus/application/TextServiceBase.ts',
   'src/corpus/application/textServiceConstants.ts',
   'src/corpus/application/TextServiceCore.ts',
+  'src/corpus/domain/chapterDisplay.ts',
+  'src/corpus/domain/manuscript-line.ts',
   'src/corpus/ui/ChapterEditView.tsx',
+  'src/corpus/ui/ChapterViewLineParts.tsx',
+  'src/corpus/ui/ChapterViewLineToggles.tsx',
+  'src/corpus/ui/ChapterViewLineVariant.tsx',
+  'src/corpus/ui/ChapterViewVariantTransliteration.tsx',
+  'src/corpus/ui/import/ChapterImport.tsx',
+  'src/corpus/ui/lemmatization/ChapterLemmatization.tsx',
+  'src/corpus/ui/lemmatization/LineLemmatizers.tsx',
+  'src/corpus/ui/lines/LineVariantForm.tsx',
   'src/corpus/ui/ManuscriptsTable.tsx',
   'src/corpus/ui/manuscriptTableCells.tsx',
   'src/dictionary/ui/display/WordDisplayLogograms.tsx',
   'src/dictionary/ui/editor/WordEditor.tsx',
   'src/dossiers/application/DossierCache.ts',
   'src/dossiers/application/DossiersQueryByIdsBatcher.ts',
+  'src/dossiers/domain/DossierRecord.ts',
   'src/dossiers/infrastructure/DossiersRepository.ts',
+  'src/footer/ui/Datenschutz.tsx',
+  'src/footer/ui/DatenschutzThirdPartiesAndRights.tsx',
+  'src/fragmentarium/application/fragmentPrefetch.ts',
+  'src/fragmentarium/domain/Colophon.ts',
+  'src/fragmentarium/domain/IndividualAttestation.ts',
+  'src/fragmentarium/infrastructure/fragmentRepositoryInfo.ts',
   'src/fragmentarium/ui/edition/beforeUnloadWarning.ts',
   'src/fragmentarium/ui/edition/TransliterationForm.tsx',
   'src/fragmentarium/ui/fragment/ArchaeologyEditorFields.tsx',
   'src/fragmentarium/ui/fragment/colophonNameSuggestions.ts',
   'src/fragmentarium/ui/fragment/CuneiformFragment.tsx',
+  'src/fragmentarium/ui/fragment/editorTabContents.tsx',
+  'src/fragmentarium/ui/fragment/lemma-annotation/properNounCreation.ts',
+  'src/fragmentarium/ui/fragment/lemma-annotation/ProperNounCreationPanel.tsx',
+  'src/fragmentarium/ui/fragment/PdfExport.columns.ts',
+  'src/fragmentarium/ui/fragment/PdfExport.footnotes.ts',
+  'src/fragmentarium/ui/fragment/PdfExport.glossary.tsx',
+  'src/fragmentarium/ui/fragment/PdfExport.headline.ts',
+  'src/fragmentarium/ui/fragment/PdfExport.layout.ts',
+  'src/fragmentarium/ui/fragment/PdfExport.table.ts',
+  'src/fragmentarium/ui/fragment/PdfExport.tableRow.ts',
+  'src/fragmentarium/ui/fragment/useFragmentSaves.ts',
   'src/fragmentarium/ui/image-annotation/annotation-tool/annotationSelection.ts',
+  'src/fragmentarium/ui/image-annotation/annotation-tool/Content.tsx',
   'src/fragmentarium/ui/image-annotation/annotation-tool/FragmentAnnotation.tsx',
   'src/fragmentarium/ui/image-annotation/annotation-tool/FragmentAnnotationToolbar.tsx',
-  'src/fragmentarium/ui/image-annotation/annotation-tool/useAnnotationPersistence.ts',
   'src/fragmentarium/ui/image-annotation/annotation-tool/initializeAnnotations.ts',
   'src/fragmentarium/ui/image-annotation/annotation-tool/useAnnotationKeyboardShortcuts.ts',
+  'src/fragmentarium/ui/image-annotation/annotation-tool/useAnnotationPersistence.ts',
   'src/fragmentarium/ui/image-annotation/annotation-tool/useFragmentAnnotationState.ts',
   'src/fragmentarium/ui/image-annotation/Annotator.tsx',
+  'src/fragmentarium/ui/images/Images.tsx',
+  'src/fragmentarium/ui/images/ImageTabController.ts',
   'src/fragmentarium/ui/info/DetailsFields.tsx',
+  'src/fragmentarium/ui/info/ExternalNumberLink.tsx',
+  'src/fragmentarium/ui/info/ExternalTextLinks.tsx',
+  'src/fragmentarium/ui/info/recordCredit.tsx',
   'src/fragmentarium/ui/info/ScriptSelection.tsx',
+  'src/fragmentarium/ui/search/SearchFormAdvanced.tsx',
   'src/fragmentarium/ui/search/SearchFormPeriod.tsx',
+  'src/fragmentarium/ui/SearchForm.state.ts',
   'src/fragmentarium/ui/text-annotation/SpanAnnotationDisplay.tsx',
   'src/http/ApiClient.ts',
   'src/http/withData.tsx',
+  'src/IntroductionNews.tsx',
   'src/markup/application/MarkupService.ts',
   'src/markup/ui/markup.tsx',
+  'src/research-projects/subpages/IntroductionHome.tsx',
   'src/signs/application/SignService.ts',
   'src/signs/infrastructure/SignRepository.ts',
   'src/signs/ui/CuneiformConverter/convertAtfLines.ts',
@@ -69,6 +124,9 @@ const fullyCoveredPaths = [
   'src/signs/ui/display/signImageGrouping.ts',
   'src/signs/ui/display/SignImages.tsx',
   'src/signs/ui/display/VariantGroup.tsx',
+  'src/transliteration/application/ReferenceInjector.ts',
+  'src/transliteration/ui/DisplaySignTokens.tsx',
+  'src/transliteration/ui/DisplayTokenParts.tsx',
 ]
 
 function validateFullyCoveredPaths(paths) {
@@ -93,6 +151,84 @@ function validateFullyCoveredPaths(paths) {
     )
   }
   return paths
+}
+
+function configureResolve(webpackConfig) {
+  webpackConfig.resolve = webpackConfig.resolve || {}
+  webpackConfig.resolve.fallback = {
+    ...(webpackConfig.resolve.fallback || {}),
+    stream: require.resolve('stream-browserify'),
+  }
+  webpackConfig.resolve.modules = Array.from(
+    new Set([
+      ...(webpackConfig.resolve.modules || ['node_modules']),
+      sourceDirectory,
+    ]),
+  )
+}
+
+function pluginName(plugin) {
+  return plugin?.constructor?.name
+}
+
+function configurePlugins(webpackConfig) {
+  if (!Array.isArray(webpackConfig.plugins)) {
+    return
+  }
+  webpackConfig.plugins = webpackConfig.plugins
+    .filter(
+      (plugin) =>
+        !isFastDev || pluginName(plugin) !== 'ForkTsCheckerWebpackPlugin',
+    )
+    .map((plugin) => {
+      if (pluginName(plugin) === 'MiniCssExtractPlugin') {
+        plugin.options = { ...(plugin.options || {}), ignoreOrder: true }
+      }
+      return plugin
+    })
+}
+
+function isSourceMapPreLoader(rule) {
+  return (
+    rule.enforce === 'pre' &&
+    typeof rule.loader === 'string' &&
+    rule.loader.includes('source-map-loader')
+  )
+}
+
+function withNodeModulesExcluded(exclude) {
+  if (!exclude) {
+    return /node_modules/
+  }
+  return [...(Array.isArray(exclude) ? exclude : [exclude]), /node_modules/]
+}
+
+function isSassLoader(loaderEntry) {
+  return (
+    Boolean(loaderEntry) &&
+    typeof loaderEntry === 'object' &&
+    typeof loaderEntry.loader === 'string' &&
+    loaderEntry.loader.includes('sass-loader')
+  )
+}
+
+function quietSassLoader(loaderEntry) {
+  loaderEntry.options = loaderEntry.options || {}
+  loaderEntry.options.sassOptions = {
+    ...(loaderEntry.options.sassOptions || {}),
+    quietDeps: true,
+    silenceDeprecations: ['legacy-js-api'],
+  }
+}
+
+function configureRule(rule) {
+  if (isSourceMapPreLoader(rule)) {
+    rule.exclude = withNodeModulesExcluded(rule.exclude)
+  }
+  ;(Array.isArray(rule.oneOf) ? rule.oneOf : [])
+    .flatMap((oneOfRule) => (Array.isArray(oneOfRule.use) ? oneOfRule.use : []))
+    .filter(isSassLoader)
+    .forEach(quietSassLoader)
 }
 
 module.exports = {
@@ -129,82 +265,14 @@ module.exports = {
   },
   webpack: {
     configure: (webpackConfig) => {
-      webpackConfig.resolve = webpackConfig.resolve || {}
-      webpackConfig.resolve.fallback = {
-        ...(webpackConfig.resolve.fallback || {}),
-        stream: require.resolve('stream-browserify'),
-      }
-      webpackConfig.resolve.modules = Array.from(
-        new Set([
-          ...(webpackConfig.resolve.modules || ['node_modules']),
-          sourceDirectory,
-        ]),
-      )
-
-      if (isFastDev && Array.isArray(webpackConfig.plugins)) {
-        webpackConfig.plugins = webpackConfig.plugins.filter(
-          (plugin) =>
-            plugin?.constructor?.name !== 'ForkTsCheckerWebpackPlugin',
-        )
-      }
-
-      if (Array.isArray(webpackConfig.plugins)) {
-        webpackConfig.plugins = webpackConfig.plugins.map((plugin) => {
-          if (plugin?.constructor?.name === 'MiniCssExtractPlugin') {
-            plugin.options = {
-              ...(plugin.options || {}),
-              ignoreOrder: true,
-            }
-          }
-          return plugin
-        })
-      }
-
-      if (webpackConfig.module?.rules) {
-        webpackConfig.module.rules.forEach((rule) => {
-          if (
-            rule.enforce === 'pre' &&
-            typeof rule.loader === 'string' &&
-            rule.loader.includes('source-map-loader')
-          ) {
-            const existingExclude = rule.exclude
-            rule.exclude = existingExclude
-              ? Array.isArray(existingExclude)
-                ? [...existingExclude, /node_modules/]
-                : [existingExclude, /node_modules/]
-              : /node_modules/
-          }
-
-          if (Array.isArray(rule.oneOf)) {
-            rule.oneOf.forEach((oneOfRule) => {
-              if (Array.isArray(oneOfRule.use)) {
-                oneOfRule.use.forEach((loaderEntry) => {
-                  if (
-                    loaderEntry &&
-                    typeof loaderEntry === 'object' &&
-                    typeof loaderEntry.loader === 'string' &&
-                    loaderEntry.loader.includes('sass-loader')
-                  ) {
-                    loaderEntry.options = loaderEntry.options || {}
-                    loaderEntry.options.sassOptions = {
-                      ...(loaderEntry.options.sassOptions || {}),
-                      quietDeps: true,
-                      silenceDeprecations: ['legacy-js-api'],
-                    }
-                  }
-                })
-              }
-            })
-          }
-        })
-      }
-
+      configureResolve(webpackConfig)
+      configurePlugins(webpackConfig)
+      ;(webpackConfig.module?.rules || []).forEach(configureRule)
       webpackConfig.ignoreWarnings = [
         ...(webpackConfig.ignoreWarnings || []),
         /Failed to parse source map/,
         /Deprecation .* legacy JS API/,
       ]
-
       return webpackConfig
     },
   },

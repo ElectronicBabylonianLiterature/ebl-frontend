@@ -10,13 +10,14 @@ export const emptyMatchState: MatchState = {
   lengthMatch: null,
 }
 
+function hasNonEmptyStringId(value: object): boolean {
+  const id = (value as { _id?: unknown })._id
+  return typeof id === 'string' && id.length > 0
+}
+
 function hasWordId(value: Word): value is Word {
-  return Boolean(
-    value &&
-    typeof value === 'object' &&
-    '_id' in value &&
-    typeof (value as { _id?: unknown })._id === 'string' &&
-    (value as { _id?: string })._id,
+  return (
+    Boolean(value) && typeof value === 'object' && hasNonEmptyStringId(value)
   )
 }
 

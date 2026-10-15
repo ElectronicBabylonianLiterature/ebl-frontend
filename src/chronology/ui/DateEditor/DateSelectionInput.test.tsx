@@ -2,10 +2,8 @@ import React from 'react'
 import { render, screen, waitFor } from '@testing-library/react'
 import '@testing-library/jest-dom'
 import userEvent from '@testing-library/user-event'
-import {
-  DateOptionsInput,
-  exportedForTesting,
-} from 'chronology/ui/DateEditor/DateSelectionInput'
+import { exportedForTesting } from 'chronology/ui/DateEditor/DateSelectionInput'
+import { DateOptionsInput } from 'chronology/ui/DateEditor/DateOptionsInput'
 import { mesopotamianDateFactory } from 'test-support/date-fixtures'
 import { Ur3Calendar } from 'chronology/domain/DateBase'
 import { EponymField } from 'chronology/ui/DateEditor/Eponyms'

@@ -3,13 +3,16 @@ import { weekDayNames, monthNames } from 'chronology/domain/DateConverterBase'
 import { Field } from 'chronology/application/DateConverterFormFieldData'
 import data from 'chronology/domain/dateConverterData.json'
 import {
+  getValuesAtEdges,
+  getAllFieldTypeEdges,
+  getFieldTypeYearAndMonth,
+} from 'chronology/ui/DateConverter/dateConverterFieldEdges'
+import {
   getLabelValueOptions,
+  getYearOptionLabel,
   getNumberRangeOptions,
   getStringOptions,
-  getYearOptionLabel,
-} from 'chronology/ui/DateConverter/DateConverterOptionElements'
-
-type Edges = [number, number]
+} from 'chronology/ui/DateConverter/dateConverterOptionElements'
 
 export default function getOptions({
   field,
@@ -18,72 +21,14 @@ export default function getOptions({
   field: Field
   dateConverter: DateConverter
 }): JSX.Element[] {
-  const optionsMap = {
-    Year: () => getYearOptions(field, dateConverter),
-    Month: () => getMonthOptions(field, dateConverter),
-    Day: () => getDayOptions(field, dateConverter),
-    ruler: () => getRulerOptions(dateConverter),
+  if (field.name.includes('Year')) {
+    return getYearOptions(field, dateConverter)
+  } else if (field.name.includes('Month')) {
+    return getMonthOptions(field, dateConverter)
+  } else if (field.name.includes('Day')) {
+    return getDayOptions(field, dateConverter)
   }
-  for (const key in optionsMap) {
-    if (field.name.includes(key)) {
-      return optionsMap[key]()
-    }
-  }
-  return []
-}
-
-const getValuesAtEdges = (
-  fieldName: string,
-  dateConverter: DateConverter,
-): Edges => {
-  return [
-    dateConverter.earliestDate[fieldName],
-    dateConverter.latestDate[fieldName],
-  ]
-}
-
-const getAllFieldTypeEdges = (
-  field: Field,
-  dateConverter: DateConverter,
-): { yearEdges: Edges; monthEdges: Edges; dayEdges: Edges } => {
-  const prefixes = getDateFieldPrefixes(field)
-  const [yearEdges, monthEdges, dayEdges] = [
-    `${prefixes.yearPrefix}Year`,
-    `${prefixes.monthPrefix}Month`,
-    `${prefixes.dayPrefix}Day`,
-  ].map((fieldName) => getValuesAtEdges(fieldName, dateConverter))
-  return { yearEdges, monthEdges, dayEdges }
-}
-
-const getFieldTypeYearAndMonth = (
-  field: Field,
-  dateConverter: DateConverter,
-): { year: number; month: number } => {
-  const prefixes = getDateFieldPrefixes(field)
-  const year = dateConverter.calendar[`${prefixes.yearPrefix}Year`]
-  const month = dateConverter.calendar[`${prefixes.yearPrefix}Month`]
-  return { year, month }
-}
-
-const getDateFieldPrefixes = (
-  field: Field,
-): { yearPrefix: string; monthPrefix: string; dayPrefix: string } => {
-  const toPlainPrefix = (prefix: string) => ({
-    yearPrefix: prefix,
-    monthPrefix: prefix,
-    dayPrefix: prefix,
-  })
-  if (field.name.includes('gregorian')) {
-    return toPlainPrefix('gregorian')
-  } else if (field.name.includes('julian')) {
-    return toPlainPrefix('julian')
-  } else {
-    return {
-      yearPrefix: 'seBabylonian',
-      monthPrefix: 'mesopotamian',
-      dayPrefix: 'mesopotamian',
-    }
-  }
+  return getRulerOptions(dateConverter)
 }
 
 const getYearOptions = (
@@ -106,12 +51,9 @@ const getMonthOptions = (
   field: Field,
   dateConverter: DateConverter,
 ): JSX.Element[] => {
-  const optionsMap: { [key: string]: () => JSX.Element[] } = {
-    gregorianMonth: () => getGregorianJulianMonthOptions(field, dateConverter),
-    julianMonth: () => getGregorianJulianMonthOptions(field, dateConverter),
-    mesopotamianMonth: () => getMesopotamianMonthOptions(field, dateConverter),
-  }
-  return optionsMap[field.name]?.() ?? []
+  return field.name === 'mesopotamianMonth'
+    ? getMesopotamianMonthOptions(field, dateConverter)
+    : getGregorianJulianMonthOptions(field, dateConverter)
 }
 
 const getDayOptions = (
@@ -130,7 +72,7 @@ const getDayOptions = (
 
 const getMonthLength = (field: Field, dateConverter: DateConverter): number => {
   if (field.name.includes('mesopotamian')) {
-    return dateConverter.calendar.mesopotamianMonthLength ?? 30
+    return dateConverter.calendar.mesopotamianMonthLength
   } else {
     return dateConverter.getMonthLength(field.name.includes('julian'))
   }

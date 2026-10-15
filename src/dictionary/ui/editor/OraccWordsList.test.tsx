@@ -2,7 +2,7 @@ import React from 'react'
 import _ from 'lodash'
 import { render, screen } from '@testing-library/react'
 import { whenClicked, whenChangedByValue } from 'test-support/utils'
-import OraccWordsList from './OraccWordsList'
+import OraccWordsList from 'dictionary/ui/editor/OraccWordsList'
 
 let value
 let onChange
@@ -37,6 +37,16 @@ it('Calls onChange with updated value on change', () => {
     .expect(onChange)
     .toHaveBeenCalledWith((newValue) => [
       { ...value[0], lemma: 'new' },
+      ..._.tail(value),
+    ])
+})
+
+it('Calls onChange with updated guide word on change', () => {
+  setup()
+  whenChangedByValue(screen, value[0].guideWord, 'new')
+    .expect(onChange)
+    .toHaveBeenCalledWith((newValue) => [
+      { ...value[0], guideWord: 'new' },
       ..._.tail(value),
     ])
 })

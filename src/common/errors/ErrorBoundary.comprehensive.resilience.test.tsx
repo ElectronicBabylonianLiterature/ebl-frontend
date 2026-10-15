@@ -1,45 +1,57 @@
 import React from 'react'
-import { render, screen } from '@testing-library/react'
-import ErrorBoundary from 'common/errors/ErrorBoundary'
-import ErrorReporterContext, { ErrorReporter } from 'ErrorReporterContext'
+import { screen } from '@testing-library/react'
+import { ErrorReporter } from 'ErrorReporterContext'
 import {
-  createErrorReportingServiceMock,
-  renderExpectingReactError,
+  createErrorReportingService,
+  expectBoundaryCaughtError,
+  fallbackMessage,
+  renderInsideBoundary,
 } from 'common/errors/ErrorBoundary.comprehensive.testSupport'
 
 describe('ErrorBoundary - Comprehensive Error Handling', () => {
   let errorReportingService: jest.Mocked<ErrorReporter>
 
   beforeEach(() => {
-    errorReportingService = createErrorReportingServiceMock()
+    errorReportingService = createErrorReportingService()
   })
 
   describe('Performance and Memory', () => {
     test('Multiple errors do not cause memory leak', () => {
-      const errors = Array.from({ length: 10 }, (_, i) => `Error ${i}`)
+      const errorMessages = Array.from(
+        { length: 10 },
+        (_, errorIndex) => `Error ${errorIndex}`,
+      )
+      const consoleErrorSpy = expectBoundaryCaughtError(
+        'CrashingComponent',
+        ...errorMessages.map((errorMessage) => `Error: ${errorMessage}`),
+      )
 
-      errors.forEach((errorMsg) => {
+      errorMessages.forEach((errorMessage) => {
         errorReportingService.captureException.mockClear()
+        const loggedCallsBeforeRender = consoleErrorSpy.mock.calls.length
 
         const CrashingComponent = () => {
-          throw new Error(errorMsg)
+          throw new Error(errorMessage)
         }
 
-        let unmount = (): void => undefined
+        const { unmount } = renderInsideBoundary(
+          errorReportingService,
+          <CrashingComponent />,
+        )
 
-        renderExpectingReactError(() => {
-          const view = render(
-            <ErrorReporterContext.Provider value={errorReportingService}>
-              <ErrorBoundary>
-                <CrashingComponent />
-              </ErrorBoundary>
-            </ErrorReporterContext.Provider>,
-          )
-          unmount = view.unmount
-        }, errorMsg)
-
+        expect(
+          consoleErrorSpy.mock.calls
+            .slice(loggedCallsBeforeRender)
+            .some((call) =>
+              call.some(
+                (argument) =>
+                  argument instanceof Error &&
+                  argument.message === errorMessage,
+              ),
+            ),
+        ).toBe(true)
         expect(errorReportingService.captureException).toHaveBeenCalledWith(
-          expect.objectContaining({ message: errorMsg }),
+          expect.objectContaining({ message: errorMessage }),
           expect.any(Object),
         )
 
@@ -57,20 +69,11 @@ describe('ErrorBoundary - Comprehensive Error Handling', () => {
         }
         return <div>Leaf</div>
       }
+      expectBoundaryCaughtError('DeepComponent', 'Error: Deep error')
 
-      renderExpectingReactError(
-        () =>
-          render(
-            <ErrorReporterContext.Provider value={errorReportingService}>
-              <ErrorBoundary>
-                <DeepComponent depth={0} />
-              </ErrorBoundary>
-            </ErrorReporterContext.Provider>,
-          ),
-        'Deep error',
-      )
+      renderInsideBoundary(errorReportingService, <DeepComponent depth={0} />)
 
-      expect(screen.getByText("Something's gone wrong.")).toBeInTheDocument()
+      expect(screen.getByText(fallbackMessage)).toBeInTheDocument()
     })
   })
 
@@ -79,20 +82,14 @@ describe('ErrorBoundary - Comprehensive Error Handling', () => {
       const NetworkComponent = () => {
         throw new Error('Network error: Failed to fetch')
       }
-
-      renderExpectingReactError(
-        () =>
-          render(
-            <ErrorReporterContext.Provider value={errorReportingService}>
-              <ErrorBoundary>
-                <NetworkComponent />
-              </ErrorBoundary>
-            </ErrorReporterContext.Provider>,
-          ),
-        'Network error: Failed to fetch',
+      expectBoundaryCaughtError(
+        'NetworkComponent',
+        'Error: Network error: Failed to fetch',
       )
 
-      expect(screen.getByText("Something's gone wrong.")).toBeInTheDocument()
+      renderInsideBoundary(errorReportingService, <NetworkComponent />)
+
+      expect(screen.getByText(fallbackMessage)).toBeInTheDocument()
       expect(errorReportingService.captureException).toHaveBeenCalledWith(
         expect.objectContaining({
           message: expect.stringContaining('Network error'),
@@ -105,40 +102,28 @@ describe('ErrorBoundary - Comprehensive Error Handling', () => {
       const Auth0Component = () => {
         throw new Error('Auth0: Invalid configuration')
       }
-
-      renderExpectingReactError(
-        () =>
-          render(
-            <ErrorReporterContext.Provider value={errorReportingService}>
-              <ErrorBoundary>
-                <Auth0Component />
-              </ErrorBoundary>
-            </ErrorReporterContext.Provider>,
-          ),
-        'Auth0: Invalid configuration',
+      expectBoundaryCaughtError(
+        'Auth0Component',
+        'Error: Auth0: Invalid configuration',
       )
 
-      expect(screen.getByText("Something's gone wrong.")).toBeInTheDocument()
+      renderInsideBoundary(errorReportingService, <Auth0Component />)
+
+      expect(screen.getByText(fallbackMessage)).toBeInTheDocument()
     })
 
     test('Third-party library throws in render', () => {
       const ThirdPartyComponent = () => {
         throw new Error('React Bootstrap: Invalid props')
       }
-
-      renderExpectingReactError(
-        () =>
-          render(
-            <ErrorReporterContext.Provider value={errorReportingService}>
-              <ErrorBoundary>
-                <ThirdPartyComponent />
-              </ErrorBoundary>
-            </ErrorReporterContext.Provider>,
-          ),
-        'React Bootstrap: Invalid props',
+      expectBoundaryCaughtError(
+        'ThirdPartyComponent',
+        'Error: React Bootstrap: Invalid props',
       )
 
-      expect(screen.getByText("Something's gone wrong.")).toBeInTheDocument()
+      renderInsideBoundary(errorReportingService, <ThirdPartyComponent />)
+
+      expect(screen.getByText(fallbackMessage)).toBeInTheDocument()
     })
   })
 })

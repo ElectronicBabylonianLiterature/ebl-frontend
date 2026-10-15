@@ -10,7 +10,7 @@ import Word from 'dictionary/domain/Word'
 import { lemmatizeWord } from 'test-support/lemmatization'
 import { LemmatizationToken } from 'transliteration/domain/Lemmatization'
 import { ChapterLemmatization } from 'corpus/domain/lemmatization'
-import ChapterLemmatizer from './ChapterLemmatization'
+import ChapterLemmatizer from 'corpus/ui/lemmatization/ChapterLemmatization'
 import { chapter as chapter_ } from 'test-support/test-corpus-text'
 import { wordFactory } from 'test-support/word-fixtures'
 

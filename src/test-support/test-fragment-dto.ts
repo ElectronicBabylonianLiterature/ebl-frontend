@@ -1,6 +1,7 @@
 import FragmentDto from 'fragmentarium/domain/FragmentDtos'
 import { MuseumKey } from 'fragmentarium/domain/museum'
-import { PeriodModifiers, Periods } from 'common/utils/period'
+import { PeriodModifiers } from 'common/utils/period'
+import { Periods } from 'common/utils/periodDefinitions'
 import { lines } from 'test-support/test-fragment-lines'
 
 export const externalNumbers = {

@@ -67,6 +67,7 @@ describe('findManuscripts provenance preload', () => {
     expect(apiClient.fetchJson).toHaveBeenCalledWith(
       `${chapterUrl}/manuscripts`,
       false,
+      undefined,
     )
   })
 
@@ -107,6 +108,7 @@ test('query', async () => {
   expect(apiClient.fetchJson).toHaveBeenCalledWith(
     '/corpus/query?lemmas=foo',
     false,
+    undefined,
   )
 })
 
@@ -134,5 +136,6 @@ test('A failing cache scope falls back to the default scope', async () => {
   expect(apiClient.fetchJson).toHaveBeenCalledWith(
     '/corpus/query?lemmas=foo',
     false,
+    undefined,
   )
 })

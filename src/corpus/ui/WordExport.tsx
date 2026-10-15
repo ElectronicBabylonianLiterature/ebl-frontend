@@ -196,10 +196,7 @@ function getTableCells(el: HTMLElement): TableCell[] {
       } else if (!['emptyLine', 'otherLine'].includes(lineType)) {
         para.push(HtmlToWordParagraph($(el)))
       }
-      const colspan: string | undefined = $(el).is('[colspan]')
-        ? $(el).attr('colspan')
-        : '1'
-      const colspanInt: number = colspan ? parseInt(colspan) : 1
+      const colspanInt = parseInt($(el).attr('colspan') ?? '1')
       tds.push(
         getFormatedTableCell(para, nextLineType, nextElement, colspanInt),
       )

@@ -1,3 +1,4 @@
+import { readingWord } from 'test-support/complex-text/tokenBuilders'
 import { TextLine, TextLineDto } from 'transliteration/domain/text-line'
 import { textLineOpeningTokens } from 'test-support/lines/text-line-opening-tokens'
 
@@ -5,45 +6,7 @@ export const textLineDto: TextLineDto = {
   prefix: '1.',
   content: [
     ...textLineOpeningTokens,
-    {
-      enclosureType: [],
-      erasure: 'NONE',
-      cleanValue: 'kur',
-      value: 'kur',
-      language: 'AKKADIAN',
-      normalized: false,
-      lemmatizable: true,
-      alignable: true,
-      uniqueLemma: [],
-      alignment: null,
-      variant: null,
-      parts: [
-        {
-          enclosureType: [],
-          erasure: 'NONE',
-          cleanValue: 'kur',
-          value: 'kur',
-          name: 'kur',
-          nameParts: [
-            {
-              enclosureType: [],
-              erasure: 'NONE',
-              cleanValue: 'kur',
-              value: 'kur',
-              type: 'ValueToken',
-            },
-          ],
-          subIndex: 1,
-          modifiers: [],
-          flags: [],
-          sign: null,
-          type: 'Reading',
-        },
-      ],
-      type: 'Word',
-      hasVariantAlignment: false,
-      hasOmittedAlignment: false,
-    },
+    readingWord('kur'),
     {
       enclosureType: ['BROKEN_AWAY'],
       erasure: 'NONE',

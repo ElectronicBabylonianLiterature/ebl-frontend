@@ -8,7 +8,7 @@ import Lemmatization, {
   UniqueLemma,
 } from 'transliteration/domain/Lemmatization'
 import { Text } from 'transliteration/domain/text'
-import LemmatizationFactory from './LemmatizationFactory'
+import LemmatizationFactory from 'fragmentarium/application/LemmatizationFactory'
 import { LineToVecRanking } from 'fragmentarium/domain/lineToVecRanking'
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 import { FolioPagerData, FragmentPagerData } from 'fragmentarium/domain/pager'

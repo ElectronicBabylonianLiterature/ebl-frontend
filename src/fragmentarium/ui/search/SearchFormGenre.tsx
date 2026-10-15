@@ -2,7 +2,7 @@ import React from 'react'
 import withData from 'http/withData'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import { GenreSearchHelp } from 'fragmentarium/ui/SearchHelp'
-import SelectFormGroup from './SelectFromGroup'
+import SelectFormGroup from 'fragmentarium/ui/search/SelectFromGroup'
 
 interface GenreSearchFormGroupProps {
   value: string | null

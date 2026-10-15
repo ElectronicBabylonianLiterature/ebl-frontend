@@ -1,42 +1,43 @@
 import React from 'react'
 import { render, screen, waitFor } from '@testing-library/react'
-import { Auth0Client, createAuth0Client } from '@auth0/auth0-spa-js'
+import * as auth0 from '@auth0/auth0-spa-js'
 import { Auth0Provider } from 'auth/react-auth0-spa'
-import { expectConsoleWarnings, tolerateConsoleErrors } from 'setupTests'
+import { Auth0ClientApi } from 'auth/Auth0AuthenticationService'
+import { expectConsoleErrors, expectConsoleWarnings } from 'setupTests'
 
 export const guestFallbackWarning =
   'Session check failed, falling back to guest:'
 
 export function createMockAuth0Client(
-  overrides: Partial<Auth0Client>,
-): jest.Mocked<Auth0Client> {
+  overrides: Partial<jest.Mocked<Auth0ClientApi>> = {},
+): jest.Mocked<Auth0ClientApi> {
   return {
     getTokenSilently: jest.fn(),
     loginWithRedirect: jest.fn(),
     logout: jest.fn(),
-    isAuthenticated: jest.fn(),
+    isAuthenticated: jest.fn().mockResolvedValue(false),
     getUser: jest.fn(),
     handleRedirectCallback: jest.fn(),
-    checkSession: jest.fn(),
+    checkSession: jest.fn().mockResolvedValue(undefined),
     ...overrides,
-  } as unknown as jest.Mocked<Auth0Client>
+  }
 }
 
-export function mockedCreateAuth0Client(): jest.MockedFunction<
-  typeof createAuth0Client
+export function mockedCreateAuth0Client(): jest.SpyInstance<
+  Promise<Auth0ClientApi>,
+  [auth0.Auth0ClientOptions]
 > {
-  return createAuth0Client as jest.MockedFunction<typeof createAuth0Client>
+  return jest.spyOn(auth0, 'createAuth0Client')
 }
 
 export function resetAuth0Mocks(): void {
-  tolerateConsoleErrors(/Failed to create authenticated session/)
   jest.clearAllMocks()
   localStorage.clear()
 }
 
 export function provideAuth0Client(
-  overrides: Partial<Auth0Client>,
-): jest.Mocked<Auth0Client> {
+  overrides: Partial<jest.Mocked<Auth0ClientApi>>,
+): jest.Mocked<Auth0ClientApi> {
   const mockClient = createMockAuth0Client(overrides)
   mockedCreateAuth0Client().mockResolvedValue(mockClient)
   return mockClient
@@ -56,6 +57,16 @@ export function renderWithAuth0Provider(label: string): void {
   )
 }
 
+export function unsignedAccessToken(payload: Record<string, unknown>): string {
+  const encode = (part: Record<string, unknown>): string =>
+    btoa(JSON.stringify(part))
+  return `${encode({ alg: 'none', typ: 'JWT' })}.${encode(payload)}.`
+}
+
+export function expectSessionCreationFailure(): jest.SpyInstance {
+  return expectConsoleErrors(/^Failed to create authenticated session:/)
+}
+
 export async function renderAndWaitForLabel(label: string): Promise<void> {
   renderWithAuth0Provider(label)
 
@@ -66,8 +77,8 @@ export async function renderAndWaitForLabel(label: string): Promise<void> {
 
 export async function expectTokenValidatedOnRender(
   label: string,
-  overrides: Partial<Auth0Client>,
-): Promise<jest.Mocked<Auth0Client>> {
+  overrides: Partial<jest.Mocked<Auth0ClientApi>>,
+): Promise<jest.Mocked<Auth0ClientApi>> {
   const mockClient = provideAuth0Client(overrides)
 
   await renderAndWaitForLabel(label)
@@ -79,7 +90,7 @@ export async function expectTokenValidatedOnRender(
 export async function expectGuestFallbackOnSessionFailure(
   label: string,
   sessionError: Error,
-): Promise<jest.Mocked<Auth0Client>> {
+): Promise<jest.Mocked<Auth0ClientApi>> {
   const mockClient = provideAuth0Client({
     checkSession: jest.fn().mockRejectedValue(sessionError),
     isAuthenticated: jest.fn().mockResolvedValue(false),

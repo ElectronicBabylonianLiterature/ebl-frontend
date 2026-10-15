@@ -4,30 +4,34 @@ import {
   formatFormLabel,
 } from 'signs/ui/display/signImageGrouping'
 import { CroppedAnnotation } from 'signs/domain/CroppedAnnotation'
+import {
+  croppedAnnotationFactory,
+  pcaClusteringFactory,
+} from 'test-support/cropped-annotation-fixtures'
+import { mesopotamianDateFactory } from 'test-support/date-fixtures'
 
 function croppedAnnotation(
-  properties: Record<string, unknown>,
+  properties: Partial<CroppedAnnotation>,
 ): CroppedAnnotation {
-  return {
+  return croppedAnnotationFactory.build({
     fragmentNumber: 'K.1',
-    image: 'image',
-    script: { period: { name: 'Ur III' } },
-    label: 'label',
     ...properties,
-  } as unknown as CroppedAnnotation
+  })
 }
+
+const date = mesopotamianDateFactory.build()
 
 describe('sortVariants', () => {
   test('Puts dated annotations before undated ones', () => {
-    const dated = croppedAnnotation({ fragmentNumber: 'K.2', date: '1900' })
+    const dated = croppedAnnotation({ fragmentNumber: 'K.2', date })
     const undated = croppedAnnotation({ fragmentNumber: 'K.1' })
 
     expect(sortVariants([undated, dated])).toEqual([dated, undated])
   })
 
   test('Orders annotations sharing a date state by fragment number', () => {
-    const second = croppedAnnotation({ fragmentNumber: 'K.2', date: '1900' })
-    const first = croppedAnnotation({ fragmentNumber: 'K.1', date: '1900' })
+    const second = croppedAnnotation({ fragmentNumber: 'K.2', date })
+    const first = croppedAnnotation({ fragmentNumber: 'K.1', date })
 
     expect(sortVariants([second, first])).toEqual([first, second])
   })
@@ -35,7 +39,9 @@ describe('sortVariants', () => {
 
 describe('sortGroupsByClusterRank', () => {
   const clustered = (clusterId: string, clusterRank: number) =>
-    croppedAnnotation({ pcaClustering: { clusterId, clusterRank } })
+    croppedAnnotation({
+      pcaClustering: pcaClusteringFactory.build({ clusterId, clusterRank }),
+    })
 
   test('Groups by cluster id and orders by cluster rank', () => {
     const second = clustered('b', 2)
@@ -59,7 +65,9 @@ describe('sortGroupsByClusterRank', () => {
 
   test('Ranks a group without a cluster rank last among clustered groups', () => {
     const ranked = clustered('a', 1)
-    const unranked = croppedAnnotation({ pcaClustering: { clusterId: 'b' } })
+    const clustering = pcaClusteringFactory.build({ clusterId: 'b' })
+    Reflect.deleteProperty(clustering, 'clusterRank')
+    const unranked = croppedAnnotation({ pcaClustering: clustering })
 
     expect(
       sortGroupsByClusterRank([unranked, ranked]).map(

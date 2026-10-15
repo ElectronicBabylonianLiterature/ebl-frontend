@@ -1,5 +1,5 @@
 import { testDelegation, TestData } from 'test-support/utils'
-import BibliographyRepository from './BibliographyRepository'
+import BibliographyRepository from 'bibliography/infrastructure/BibliographyRepository'
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 import ApiClient from 'http/ApiClient'
 import { stringify } from 'query-string'

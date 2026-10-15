@@ -2,26 +2,26 @@ import React from 'react'
 import { render, screen } from '@testing-library/react'
 import { OraccLinks, SealLinks } from 'fragmentarium/ui/info/ExternalTextLinks'
 
-it('renders comma separated Oracc project links', () => {
+it('links Oracc projects and the Yale CCP site, separated by commas', () => {
   const { container } = render(
-    <OraccLinks projects={['ccp', 'dcclt']} cdliNumber="P 1" />,
+    <OraccLinks projects={['saao', 'ccp']} cdliNumber="P 1" />,
   )
 
-  expect(container).toHaveTextContent('Oracc (CCP, DCCLT)')
+  expect(container).toHaveTextContent('Oracc (SAAO, CCP)')
+  expect(
+    screen.getByRole('link', { name: 'Oracc text saao P 1' }),
+  ).toHaveAttribute('href', 'http://oracc.museum.upenn.edu/saao/P%201')
   expect(
     screen.getByRole('link', { name: 'Oracc text ccp P 1' }),
   ).toHaveAttribute('href', 'https://ccp.yale.edu/P%201')
-  expect(
-    screen.getByRole('link', { name: 'Oracc text dcclt P 1' }),
-  ).toHaveAttribute('href', 'http://oracc.museum.upenn.edu/dcclt/P%201')
 })
 
-it('renders comma separated SEAL links', () => {
-  const { container } = render(<SealLinks sealTextNumbers={['1', '2 a']} />)
+it('links SEAL texts, separated by commas', () => {
+  const { container } = render(<SealLinks sealTextNumbers={['7', '8 a']} />)
 
-  expect(container).toHaveTextContent('SEAL (1, 2 a)')
-  expect(screen.getByRole('link', { name: 'Seal text 2 a' })).toHaveAttribute(
+  expect(container).toHaveTextContent('SEAL (7, 8 a)')
+  expect(screen.getByRole('link', { name: 'Seal text 8 a' })).toHaveAttribute(
     'href',
-    'https://seal.huji.ac.il/node/2%20a',
+    'https://seal.huji.ac.il/node/8%20a',
   )
 })

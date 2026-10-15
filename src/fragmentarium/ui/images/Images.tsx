@@ -1,103 +1,46 @@
 import React from 'react'
 import { Nav, Tab } from 'react-bootstrap'
 import { useNavigate } from 'react-router-dom'
-import _ from 'lodash'
-
 import withData from 'http/withData'
 import Photo from 'fragmentarium/ui/images/Photo'
 import FolioDetails from 'fragmentarium/ui/images/FolioDetails'
-import {
-  createFragmentUrlWithFolio,
-  createFragmentUrlWithTab,
-} from 'fragmentarium/ui/FragmentLink'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import Folio from 'fragmentarium/domain/Folio'
 import CdliImages from 'fragmentarium/ui/images/CdliImages'
-import FragmentService from 'fragmentarium/application/FragmentService'
+import { ImageFragmentService } from 'fragmentarium/ui/images/ImageFragmentService'
 import FolioDropdown from 'fragmentarium/ui/images/FolioDropdown'
 import FolioTooltip from 'fragmentarium/ui/images/FolioTooltip'
-
-const FOLIO = 'folio'
-const PHOTO = 'photo'
-const CDLI = 'cdli'
-
-export class TabController {
-  readonly fragment: Fragment
-  readonly tab: string | null
-  readonly activeFolio: Folio | null
-  readonly navigate: (url: string) => void
-
-  constructor(
-    fragment: Fragment,
-    tab: string | null,
-    activeFolio: Folio | null,
-    navigate: (url: string) => void,
-  ) {
-    this.fragment = fragment
-    this.tab = tab
-    this.activeFolio = activeFolio
-    this.navigate = navigate
-  }
-
-  get defaultKey(): string {
-    return (
-      _([
-        this.fragment.hasPhoto && PHOTO,
-        ...this.fragment.folios.map((folio, index) => String(index)),
-      ])
-        .compact()
-        .head() ?? CDLI
-    )
-  }
-
-  get activeKey(): string {
-    if (this.tab === FOLIO) {
-      const index = this.fragment.folios.findIndex((folio) =>
-        _.isEqual(folio, this.activeFolio),
-      )
-      return index >= 0 ? String(index) : '0'
-    } else {
-      return this.tab ?? this.defaultKey
-    }
-  }
-
-  openTab = (eventKey: string | null): void => {
-    if (eventKey !== null) {
-      const index = Number.parseInt(eventKey, 10)
-      const isFolioKey = !isNaN(index) && this.fragment.folios[index]
-
-      const url = isFolioKey
-        ? this.createFolioTabUrl(eventKey)
-        : createFragmentUrlWithTab(this.fragment.number, eventKey)
-
-      this.navigate(url)
-    }
-  }
-
-  private createFolioTabUrl(key: string): string {
-    const index = Number.parseInt(key, 10)
-    const folio = this.fragment.folios[index]
-    return createFragmentUrlWithFolio(this.fragment.number, folio)
-  }
-}
+import {
+  CDLI,
+  PHOTO,
+  TabController,
+  VisitedImageTabs,
+  folioTabKey,
+  hasUsableCdliTab,
+  visitImageTab,
+} from 'fragmentarium/ui/images/ImageTabController'
 
 export const FragmentPhoto = withData<
   { fragment: Fragment },
-  { fragmentService: FragmentService },
+  { fragmentService: ImageFragmentService },
   Blob
 >(
   ({ data, fragment }) => <Photo fragment={fragment} photo={data} />,
   ({ fragment, fragmentService }, signal) =>
     fragmentService.findPhoto(fragment, signal),
+  { retry: true },
 )
 
 interface TabPaneProps {
   eventKey: string
+  activeKey: string | undefined
   children: React.ReactNode
 }
 
-const TabPane: React.FC<TabPaneProps> = ({ eventKey, children }) => (
-  <Tab.Pane eventKey={eventKey}>{children}</Tab.Pane>
+const TabPane: React.FC<TabPaneProps> = ({ eventKey, activeKey, children }) => (
+  <Tab.Pane eventKey={eventKey} hidden={activeKey !== eventKey}>
+    {children}
+  </Tab.Pane>
 )
 
 interface NavItemProps {
@@ -134,21 +77,24 @@ function Images({
   const navigate = useNavigate()
   const controller = new TabController(fragment, tab, activeFolio, navigate)
   const folios = fragment.folios
+  const activeKey = controller.activeKey
+  const [visitedTabs, setVisitedTabs] = React.useState<VisitedImageTabs>(() =>
+    visitImageTab({ namedTabs: new Set(), folioIndexes: new Set() }, activeKey),
+  )
   const FOLIO_DROPDOWN_THRESHOLD = 3
 
+  React.useEffect(() => {
+    setVisitedTabs((visited) => visitImageTab(visited, activeKey))
+  }, [activeKey])
+
   return (
-    <Tab.Container
-      activeKey={controller.activeKey}
-      onSelect={controller.openTab}
-    >
+    <Tab.Container activeKey={activeKey} onSelect={controller.openTab}>
       <Nav variant="tabs" id="folio-container">
         {fragment.hasPhoto && <NavItem eventKey={PHOTO} label="Photo" />}
-        {fragment.cdliImages && fragment.cdliImages.length > 0 && (
-          <NavItem eventKey={CDLI} label="CDLI" />
-        )}
+        {hasUsableCdliTab(fragment) && <NavItem eventKey={CDLI} label="CDLI" />}
         {folios.length > FOLIO_DROPDOWN_THRESHOLD ? (
           <Nav.Item>
-            <FolioDropdown folios={folios} controller={controller} />
+            <FolioDropdown folios={folios} onOpenFolio={controller.openFolio} />
           </Nav.Item>
         ) : (
           folios.map((folio, index) => {
@@ -156,7 +102,7 @@ function Images({
             return (
               <NavItem
                 key={index}
-                eventKey={String(index)}
+                eventKey={folioTabKey(index)}
                 label={label}
                 folioInitials={folio.name}
                 folioName={folio.humanizedName}
@@ -168,25 +114,35 @@ function Images({
 
       <Tab.Content>
         {fragment.hasPhoto && (
-          <TabPane eventKey={PHOTO}>
-            <FragmentPhoto
-              fragment={fragment}
-              fragmentService={fragmentService}
-            />
+          <TabPane eventKey={PHOTO} activeKey={activeKey}>
+            {visitedTabs.namedTabs.has(PHOTO) && (
+              <FragmentPhoto
+                fragment={fragment}
+                fragmentService={fragmentService}
+              />
+            )}
           </TabPane>
         )}
-        {fragment.getExternalNumber('cdliNumber') && (
-          <TabPane eventKey={CDLI}>
-            <CdliImages fragment={fragment} fragmentService={fragmentService} />
+        {hasUsableCdliTab(fragment) && (
+          <TabPane eventKey={CDLI} activeKey={activeKey}>
+            {visitedTabs.namedTabs.has(CDLI) && (
+              <CdliImages fragment={fragment} />
+            )}
           </TabPane>
         )}
         {folios.map((folio, index) => (
-          <TabPane key={index} eventKey={String(index)}>
-            <FolioDetails
-              fragmentService={fragmentService}
-              fragmentNumber={fragment.number}
-              folio={folio}
-            />
+          <TabPane
+            key={index}
+            eventKey={folioTabKey(index)}
+            activeKey={activeKey}
+          >
+            {visitedTabs.folioIndexes.has(index) && (
+              <FolioDetails
+                fragmentService={fragmentService}
+                fragmentNumber={fragment.number}
+                folio={folio}
+              />
+            )}
           </TabPane>
         ))}
       </Tab.Content>
@@ -196,7 +152,7 @@ function Images({
 
 interface Props {
   fragment: Fragment
-  fragmentService: FragmentService
+  fragmentService: ImageFragmentService
   tab: string | null
   activeFolio: Folio | null
 }

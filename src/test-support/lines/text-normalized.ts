@@ -1,3 +1,4 @@
+import { enclosedValue } from 'test-support/complex-text/tokenBuilders'
 import { TextLine } from 'transliteration/domain/text-line'
 import { akkadianWordsOpeningTokens } from 'test-support/lines/text-normalized-opening-tokens'
 
@@ -17,31 +18,7 @@ export const akkadianWords: TextLine = new TextLine({
       uniqueLemma: [],
       normalized: true,
       language: 'AKKADIAN',
-      parts: [
-        {
-          value: '(',
-          cleanValue: '',
-          enclosureType: [],
-          erasure: 'NONE',
-          side: 'LEFT',
-          type: 'PerhapsBrokenAway',
-        },
-        {
-          value: 'kur',
-          cleanValue: 'kur',
-          enclosureType: ['PERHAPS'],
-          erasure: 'NONE',
-          type: 'ValueToken',
-        },
-        {
-          value: ')',
-          cleanValue: '',
-          enclosureType: ['PERHAPS'],
-          erasure: 'NONE',
-          side: 'RIGHT',
-          type: 'PerhapsBrokenAway',
-        },
-      ],
+      parts: enclosedValue('PerhapsBrokenAway', ['(', ')'], 'PERHAPS', 'kur'),
       modifiers: [],
       type: 'AkkadianWord',
       hasVariantAlignment: false,

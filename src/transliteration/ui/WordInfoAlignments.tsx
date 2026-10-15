@@ -5,10 +5,14 @@ import withData from 'http/withData'
 import _ from 'lodash'
 import { Container, Row, Col } from 'react-bootstrap'
 import { numberToUnicodeSubscript } from 'transliteration/application/SubIndex'
-import DisplayToken from './DisplayToken'
-import { EmptyLineToken, LineToken, OneOfLineToken } from './line-tokens'
-import { LineGroup } from './LineGroup'
-import LemmaInfo from './WordInfoLemmas'
+import DisplayToken from 'transliteration/ui/DisplayToken'
+import {
+  EmptyLineToken,
+  LineToken,
+  OneOfLineToken,
+} from 'transliteration/ui/line-tokens'
+import { LineGroup } from 'transliteration/ui/LineGroup'
+import LemmaInfo from 'transliteration/ui/WordInfoLemmas'
 import { Token } from 'transliteration/domain/token'
 
 function isVariantToken(token: OneOfLineToken): token is LineToken {
@@ -115,7 +119,7 @@ const AlignedTokens = withData<
       </Container>
     )
   },
-  ({ lineGroup }) => lineGroup.findChapterLine(),
+  ({ lineGroup }, signal) => lineGroup.findChapterLine(signal),
   {
     filter: (props) => !props.lineGroup.hasManuscriptLines,
     defaultData: (props) => props.lineGroup.lineDetails,

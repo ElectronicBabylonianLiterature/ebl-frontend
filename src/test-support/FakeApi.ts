@@ -18,36 +18,8 @@ export default class FakeApi extends FakeApiBase {
     return this.expectGet('/texts', texts)
   }
 
-  expectProvenances(provenances: Dto[]): FakeApi {
-    return this.expectGet('/provenances', provenances)
-  }
-
   allowProvenances(provenances: Dto[]): FakeApi {
     return this.allowGet('/provenances', provenances)
-  }
-
-  expectProvenance(id: string, provenance: Dto): FakeApi {
-    return this.expectGet(`/provenances/${id}`, provenance)
-  }
-
-  expectProvenanceChildren(id: string, children: Dto[]): FakeApi {
-    return this.expectGet(`/provenances/${id}/children`, children)
-  }
-
-  allowProvenance(id: string, provenance: Dto): FakeApi {
-    return this.allowGet(`/provenances/${id}`, provenance)
-  }
-
-  allowProvenanceChildren(id: string, children: Dto[]): FakeApi {
-    return this.allowGet(`/provenances/${id}/children`, children)
-  }
-
-  allowText(text: Dto): FakeApi {
-    return this.allowGet(createTextUrl(text), text)
-  }
-
-  allowChapter(chapter: ChapterId): FakeApi {
-    return this.allowGet(createChapterUrl(chapter), chapter)
   }
 
   expectText(text: Dto): FakeApi {
@@ -122,17 +94,6 @@ export default class FakeApi extends FakeApiBase {
   expectAnnotations(number: string, annotationDtos: readonly Dto[]): FakeApi {
     return this.expectGet(
       `/fragments/${number}/annotations?generateAnnotations=false`,
-      { annotations: annotationDtos },
-    )
-  }
-
-  expectUpdateAnnotations(
-    number: string,
-    annotationDtos: readonly Dto[],
-  ): FakeApi {
-    return this.expectPost(
-      `/fragments/${number}/annotations`,
-      { fragmentNumber: number, annotations: annotationDtos },
       { annotations: annotationDtos },
     )
   }

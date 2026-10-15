@@ -1,27 +1,30 @@
 import { screen, waitFor } from '@testing-library/react'
 import { submitFormByTestId } from 'test-support/utils'
-import { editorState } from 'fragmentarium/ui/edition/TransliterationForm.mocks'
+import { editorState } from 'fragmentarium/ui/edition/TransliterationForm.abort.testSupport'
 import { renderTransliterationForm } from 'fragmentarium/ui/edition/TransliterationForm.testSupport'
 
 jest.mock(
   'editor/SpecialCharactersHelp',
   () =>
-    jest.requireActual('fragmentarium/ui/edition/TransliterationForm.mocks')
-      .SpecialCharactersHelpMock,
+    jest.requireActual(
+      'fragmentarium/ui/edition/TransliterationForm.abort.testSupport',
+    ).SpecialCharactersHelpMock,
 )
 
 jest.mock(
   'fragmentarium/ui/edition/TemplateForm',
   () =>
-    jest.requireActual('fragmentarium/ui/edition/TransliterationForm.mocks')
-      .TemplateFormMock,
+    jest.requireActual(
+      'fragmentarium/ui/edition/TransliterationForm.abort.testSupport',
+    ).TemplateFormMock,
 )
 
 jest.mock(
   'editor/Editor',
   () =>
-    jest.requireActual('fragmentarium/ui/edition/TransliterationForm.mocks')
-      .EditorMock,
+    jest.requireActual(
+      'fragmentarium/ui/edition/TransliterationForm.abort.testSupport',
+    ).EditorMock,
 )
 
 beforeEach(() => {

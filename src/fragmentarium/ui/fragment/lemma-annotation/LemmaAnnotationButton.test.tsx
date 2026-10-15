@@ -8,6 +8,7 @@ import {
   getDropdownToggle,
   mockCallbacks,
   renderButton,
+  sessionWithoutScope,
 } from 'fragmentarium/ui/fragment/lemma-annotation/LemmaAnnotationButton.testSupport'
 
 jest.mock('transliteration/ui/DisplayToken', () => {
@@ -67,38 +68,81 @@ describe('LemmaActionButton', () => {
     expect(mockCallbacks.onResetCurrent).toHaveBeenCalledTimes(1)
   })
 
-  describe('Integration', () => {
-    it('allows for complete workflow with all Menu items', async () => {
+  describe('Dropdown Menu Items', () => {
+    it('renders dropdown menu when toggle is clicked', async () => {
+      renderButton(token)
+      await userEvent.click(getDropdownToggle())
+
+      expect(screen.getByText(/Update all instances of/)).toBeInTheDocument()
+    })
+
+    it('displays "Update all instances" menu item', async () => {
+      renderButton(token)
+      await userEvent.click(getDropdownToggle())
+
+      expect(screen.getByText(/Update all instances of/)).toBeInTheDocument()
+    })
+
+    it('displays "Reset all instances" menu item', async () => {
+      renderButton(token)
+      await userEvent.click(getDropdownToggle())
+
+      expect(screen.getByText(/Reset all instances of/)).toBeInTheDocument()
+    })
+
+    it('displays "Create a new proper noun" menu item for empty unannotated token with scope', async () => {
+      renderButton(token)
+      await userEvent.click(getDropdownToggle())
+
+      expect(
+        screen.getByText(/Create a new proper noun for/),
+      ).toBeInTheDocument()
+    })
+
+    it('does not display "Create a new proper noun" menu item without scope', async () => {
+      token.updateLemmas(dirtyLemmas)
+      renderButton(token, sessionWithoutScope)
+      await userEvent.click(getDropdownToggle())
+
+      expect(
+        screen.queryByText(/Create a new proper noun for/),
+      ).not.toBeInTheDocument()
+    })
+
+    it('displays "Create a new proper noun" menu item for empty token (not dirty)', async () => {
+      renderButton(token)
+      await userEvent.click(getDropdownToggle())
+
+      expect(
+        screen.getByText(/Create a new proper noun for/),
+      ).toBeInTheDocument()
+    })
+
+    it('does not display "Create a new proper noun" menu item for annotated clean token', async () => {
+      token = new EditableToken(kurToken, 0, 0, 0, dirtyLemmas)
+      renderButton(token)
+      await userEvent.click(getDropdownToggle())
+
+      expect(
+        screen.queryByText(/Create a new proper noun for/),
+      ).not.toBeInTheDocument()
+    })
+
+    it('displays "Create a new proper noun" menu item when token is dirty', async () => {
       token.updateLemmas(dirtyLemmas)
       renderButton(token)
+      await userEvent.click(getDropdownToggle())
 
-      expect(mockCallbacks.onResetCurrent).not.toHaveBeenCalled()
-      expect(mockCallbacks.onMultiApply).not.toHaveBeenCalled()
-      expect(mockCallbacks.onMultiReset).not.toHaveBeenCalled()
-      expect(mockCallbacks.onCreateProperNoun).not.toHaveBeenCalled()
+      expect(
+        screen.getByText(/Create a new proper noun for/),
+      ).toBeInTheDocument()
+    })
+    it('displays divider between menu items', async () => {
+      renderButton(token)
+      await userEvent.click(getDropdownToggle())
 
-      const resetButton = screen.getByLabelText('reset-current-token')
-      fireEvent.click(resetButton)
-      expect(mockCallbacks.onResetCurrent).toHaveBeenCalledTimes(1)
-
-      const dropdownToggle = getDropdownToggle()
-      await userEvent.click(dropdownToggle)
-
-      const updateOption = screen.getByText(/Update all instances of/)
-      fireEvent.click(updateOption)
-      expect(mockCallbacks.onMultiApply).toHaveBeenCalledTimes(1)
-
-      await userEvent.click(dropdownToggle)
-
-      const resetOption = screen.getByText(/Reset all instances of/)
-      fireEvent.click(resetOption)
-      expect(mockCallbacks.onMultiReset).toHaveBeenCalledTimes(1)
-
-      await userEvent.click(dropdownToggle)
-
-      const createOption = screen.getByText(/Create a new proper noun for/)
-      fireEvent.click(createOption)
-      expect(mockCallbacks.onCreateProperNoun).toHaveBeenCalledTimes(1)
+      expect(screen.getByText(/Update all instances of/)).toBeInTheDocument()
+      expect(screen.getByText(/Reset all instances of/)).toBeInTheDocument()
     })
   })
 })

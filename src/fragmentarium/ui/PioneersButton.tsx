@@ -1,6 +1,6 @@
 import React from 'react'
 import SessionContext from 'auth/SessionContext'
-import FragmentButton from './FragmentButton'
+import FragmentButton from 'fragmentarium/ui/FragmentButton'
 import FragmentSearchService from 'fragmentarium/application/FragmentSearchService'
 
 export default function PioneersButton({

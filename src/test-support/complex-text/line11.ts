@@ -1,204 +1,82 @@
 import { TextLine } from 'transliteration/domain/text-line'
+import {
+  enclosure,
+  gloss,
+  joiner,
+  reading,
+  valueToken,
+  word,
+} from 'test-support/complex-text/tokenBuilders'
 
 const line11 = new TextLine({
   prefix: '1.',
   content: [
-    {
-      enclosureType: [],
-      cleanValue: 'kur-{{kur-kur}}kur',
-      value: '[(kur)]-[{{k]ur-[kur}}]k[ur]',
-      language: 'AKKADIAN',
-      normalized: false,
-      lemmatizable: true,
-      alignable: true,
-      uniqueLemma: [],
-      erasure: 'NONE',
-      alignment: null,
-      variant: null,
-      parts: [
-        {
-          enclosureType: [],
-          cleanValue: '',
-          value: '[',
-          side: 'LEFT',
-          type: 'BrokenAway',
-        },
-        {
+    word(
+      '[(kur)]-[{{k]ur-[kur}}]k[ur]',
+      [
+        enclosure('BrokenAway', '[', 'LEFT'),
+        enclosure('PerhapsBrokenAway', '(', 'LEFT', {
           enclosureType: ['BROKEN_AWAY'],
-          cleanValue: '',
-          value: '(',
-          side: 'LEFT',
-          type: 'PerhapsBrokenAway',
-        },
-        {
+        }),
+        reading('kur', 'kur', {
           enclosureType: ['BROKEN_AWAY', 'PERHAPS_BROKEN_AWAY'],
-          cleanValue: 'kur',
-          value: 'kur',
-          name: 'kur',
           nameParts: [
-            {
+            valueToken('kur', {
               enclosureType: ['BROKEN_AWAY', 'PERHAPS_BROKEN_AWAY'],
-              cleanValue: 'kur',
-              value: 'kur',
-              type: 'ValueToken',
-            },
+            }),
           ],
-          subIndex: 1,
-          modifiers: [],
-          flags: [],
-          sign: null,
-          type: 'Reading',
-        },
-        {
+        }),
+        enclosure('PerhapsBrokenAway', ')', 'RIGHT', {
           enclosureType: ['BROKEN_AWAY', 'PERHAPS_BROKEN_AWAY'],
-          cleanValue: '',
-          value: ')',
-          side: 'RIGHT',
-          type: 'PerhapsBrokenAway',
-        },
-        {
+        }),
+        enclosure('BrokenAway', ']', 'RIGHT', {
           enclosureType: ['BROKEN_AWAY'],
-          cleanValue: '',
-          value: ']',
-          side: 'RIGHT',
-          type: 'BrokenAway',
-        },
-        {
-          enclosureType: [],
-          cleanValue: '-',
-          value: '-',
-          type: 'Joiner',
-        },
-        {
-          enclosureType: [],
-          cleanValue: '',
-          value: '[',
-          side: 'LEFT',
-          type: 'BrokenAway',
-        },
-        {
-          enclosureType: ['BROKEN_AWAY'],
-          cleanValue: '{{kur-kur}}',
-          value: '{{k]ur-[kur}}',
-          parts: [
-            {
+        }),
+        joiner('-'),
+        enclosure('BrokenAway', '[', 'LEFT'),
+        gloss(
+          'LinguisticGloss',
+          '{{k]ur-[kur}}',
+          [
+            reading('k]ur', 'kur', {
               enclosureType: ['BROKEN_AWAY'],
               cleanValue: 'kur',
-              value: 'k]ur',
-              name: 'kur',
               nameParts: [
-                {
+                valueToken('k', { enclosureType: ['BROKEN_AWAY'] }),
+                enclosure('BrokenAway', ']', 'RIGHT', {
                   enclosureType: ['BROKEN_AWAY'],
-                  cleanValue: 'k',
-                  value: 'k',
-                  type: 'ValueToken',
-                },
-                {
-                  enclosureType: ['BROKEN_AWAY'],
-                  cleanValue: '',
-                  value: ']',
-                  side: 'RIGHT',
-                  type: 'BrokenAway',
-                },
-                {
-                  enclosureType: [],
-                  cleanValue: 'ur',
-                  value: 'ur',
-                  type: 'ValueToken',
-                },
+                }),
+                valueToken('ur'),
               ],
-              subIndex: 1,
-              modifiers: [],
-              flags: [],
-              sign: null,
-              type: 'Reading',
-            },
-            {
-              enclosureType: [],
-              cleanValue: '-',
-              value: '-',
-              type: 'Joiner',
-            },
-            {
-              enclosureType: [],
-              cleanValue: '',
-              value: '[',
-              side: 'LEFT',
-              type: 'BrokenAway',
-            },
-            {
+            }),
+            joiner('-'),
+            enclosure('BrokenAway', '[', 'LEFT'),
+            reading('kur', 'kur', {
               enclosureType: ['BROKEN_AWAY'],
-              cleanValue: 'kur',
-              value: 'kur',
-              name: 'kur',
               nameParts: [
-                {
-                  enclosureType: ['BROKEN_AWAY'],
-                  cleanValue: 'kur',
-                  value: 'kur',
-                  type: 'ValueToken',
-                },
+                valueToken('kur', { enclosureType: ['BROKEN_AWAY'] }),
               ],
-              subIndex: 1,
-              modifiers: [],
-              flags: [],
-              sign: null,
-              type: 'Reading',
-            },
+            }),
           ],
-          type: 'LinguisticGloss',
-        },
-        {
+          { enclosureType: ['BROKEN_AWAY'], cleanValue: '{{kur-kur}}' },
+        ),
+        enclosure('BrokenAway', ']', 'RIGHT', {
           enclosureType: ['BROKEN_AWAY'],
-          cleanValue: '',
-          value: ']',
-          side: 'RIGHT',
-          type: 'BrokenAway',
-        },
-        {
-          enclosureType: [],
+        }),
+        reading('k[ur', 'kur', {
           cleanValue: 'kur',
-          value: 'k[ur',
-          name: 'kur',
           nameParts: [
-            {
-              enclosureType: [],
-              cleanValue: 'k',
-              value: 'k',
-              type: 'ValueToken',
-            },
-            {
-              enclosureType: [],
-              cleanValue: '',
-              value: '[',
-              side: 'LEFT',
-              type: 'BrokenAway',
-            },
-            {
-              enclosureType: ['BROKEN_AWAY'],
-              cleanValue: 'ur',
-              value: 'ur',
-              type: 'ValueToken',
-            },
+            valueToken('k'),
+            enclosure('BrokenAway', '[', 'LEFT'),
+            valueToken('ur', { enclosureType: ['BROKEN_AWAY'] }),
           ],
-          subIndex: 1,
-          modifiers: [],
-          flags: [],
-          sign: null,
-          type: 'Reading',
-        },
-        {
+        }),
+        enclosure('BrokenAway', ']', 'RIGHT', {
           enclosureType: ['BROKEN_AWAY'],
-          cleanValue: '',
-          value: ']',
-          side: 'RIGHT',
-          type: 'BrokenAway',
-        },
+        }),
       ],
-      type: 'Word',
-      hasVariantAlignment: false,
-      hasOmittedAlignment: false,
-    },
+      { cleanValue: 'kur-{{kur-kur}}kur' },
+    ),
   ],
   lineNumber: {
     number: 1,

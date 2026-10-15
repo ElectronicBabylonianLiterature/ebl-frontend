@@ -1,7 +1,7 @@
 import React from 'react'
 import { render, screen } from '@testing-library/react'
 import {
-  createNumberLink,
+  CdliLink,
   DigitaleKeilschriftBibliothekLink,
   sealLink,
   YalePeabodyLink,
@@ -39,11 +39,11 @@ it('formats the Yale Peabody number', () => {
   )
 })
 
-it('creates a link component with encoded numbers by default', () => {
-  const ExampleLink = createNumberLink('https://example.org/', 'Example')
-  render(<ExampleLink number="A/1" />)
+it('encodes numbers in links by default', () => {
+  render(<CdliLink number="A/1" />)
 
-  expect(
-    screen.getByRole('link', { name: 'Example text A/1' }),
-  ).toHaveAttribute('href', 'https://example.org/A%2F1')
+  expect(screen.getByRole('link', { name: 'CDLI text A/1' })).toHaveAttribute(
+    'href',
+    'https://cdli.earth/A%2F1',
+  )
 })

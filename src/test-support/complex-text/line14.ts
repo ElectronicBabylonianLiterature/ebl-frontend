@@ -1,10 +1,9 @@
 import { TextLine } from 'transliteration/domain/text-line'
-import { line14OpeningTokens } from 'test-support/complex-text/line14-opening-tokens'
-import { line14ClosingTokens } from 'test-support/complex-text/line14-closing-tokens'
+import languageShiftedTokens from 'test-support/complex-text/languageShiftedTokens'
 
 const line14 = new TextLine({
   prefix: '4.',
-  content: [...line14OpeningTokens, ...line14ClosingTokens],
+  content: languageShiftedTokens('%es', 'EMESAL'),
   lineNumber: {
     number: 4,
     hasPrime: false,

@@ -1,12 +1,15 @@
 import React from 'react'
 import { render, screen } from '@testing-library/react'
-import LemmaActionButton from 'fragmentarium/ui/fragment/lemma-annotation/LemmaAnnotationButton'
+import LemmaActionButton, {
+  LemmaActionCallbacks,
+} from 'fragmentarium/ui/fragment/lemma-annotation/LemmaAnnotationButton'
 import EditableToken from 'fragmentarium/ui/fragment/linguistic-annotation/EditableToken'
 import { LemmaOption } from 'fragmentarium/ui/lemmatization/LemmaSelectionForm'
 import SessionContext from 'auth/SessionContext'
 import MemorySession from 'auth/Session'
+import { wordFactory } from 'test-support/word-fixtures'
 
-export const mockCallbacks = {
+export const mockCallbacks: jest.Mocked<LemmaActionCallbacks> = {
   onResetCurrent: jest.fn(),
   onMouseEnter: jest.fn(),
   onMouseLeave: jest.fn(),
@@ -16,15 +19,15 @@ export const mockCallbacks = {
 }
 
 export const dirtyLemmas: LemmaOption[] = [
-  { value: 'test', homonym: 'I' } as LemmaOption,
+  new LemmaOption(wordFactory.build({ _id: 'test' })),
 ]
 export const sessionWithScope = new MemorySession(['create:proper_nouns'])
 export const sessionWithoutScope = new MemorySession([])
 
-export const renderButton = (
+export function renderButton(
   token: EditableToken,
   session: MemorySession = sessionWithScope,
-): void => {
+): void {
   render(
     <SessionContext.Provider value={session}>
       <LemmaActionButton token={token} {...mockCallbacks} />
@@ -32,9 +35,6 @@ export const renderButton = (
   )
 }
 
-export const getDropdownToggle = (): HTMLElement =>
-  screen
-    .getAllByRole('button')
-    .find(
-      (btn) => btn.getAttribute('id') === 'dropdown-split-basic',
-    ) as HTMLElement
+export function getDropdownToggle(): HTMLElement {
+  return screen.getByRole('button', { name: 'Open token actions' })
+}

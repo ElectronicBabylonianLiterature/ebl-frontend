@@ -9,14 +9,6 @@ import {
 } from 'transliteration/domain/type-guards'
 import { createAlignmentToken, AlignmentToken } from 'corpus/domain/alignment'
 import { immerable } from 'immer'
-import {
-  Segment,
-  getPhoneticSegments,
-} from 'akkadian/application/phonetics/segments'
-
-export type TokenWithIndex = Token & {
-  originalIndex: number
-}
 
 function isLacuna(token: Token | undefined) {
   const lacunaTypes: readonly string[] = ['UnclearSign', 'UnknownNumberOfSigns']
@@ -38,27 +30,63 @@ function isPrefixEqual(first: Word, second: Word): boolean {
   )
     .take(signsToCompare)
     .every(([signOfFirstWord, signOfSecondWord]) => {
-      return (
-        signOfFirstWord &&
-        signOfSecondWord &&
-        isNamedSign(signOfFirstWord) &&
-        isNamedSign(signOfSecondWord) &&
-        signOfFirstWord.name === signOfSecondWord.name
-      )
+      const name = signName(signOfFirstWord)
+      return name !== null && name === signName(signOfSecondWord)
     })
+}
+
+function signName(token: Token | undefined): string | null {
+  return token && isNamedSign(token) ? token.name : null
+}
+
+type AlignableToken = Extract<AlignmentToken, { isAlignable: true }>
+
+function isUnalignedAlignable(
+  alignment: AlignmentToken,
+): alignment is AlignableToken {
+  return alignment.isAlignable && _.isNil(alignment.alignment)
+}
+
+function isReconstructedWord(
+  token: TokenWithIndex | undefined,
+): token is TokenWithIndex {
+  return !!token && isAnyWord(token)
+}
+
+export interface ManuscriptLineProps {
+  readonly manuscriptId: number
+  readonly labels: readonly string[]
+  readonly number: string
+  readonly atf: string
+  readonly atfTokens: readonly Token[]
+  readonly omittedWords: readonly number[]
 }
 
 export class ManuscriptLine {
   readonly [immerable] = true
 
-  constructor(
-    readonly manuscriptId: number,
-    readonly labels: readonly string[],
-    readonly number: string,
-    readonly atf: string,
-    readonly atfTokens: readonly Token[],
-    readonly omittedWords: readonly number[],
-  ) {}
+  readonly manuscriptId: number
+  readonly labels: readonly string[]
+  readonly number: string
+  readonly atf: string
+  readonly atfTokens: readonly Token[]
+  readonly omittedWords: readonly number[]
+
+  constructor({
+    manuscriptId,
+    labels,
+    number,
+    atf,
+    atfTokens,
+    omittedWords,
+  }: ManuscriptLineProps) {
+    this.manuscriptId = manuscriptId
+    this.labels = labels
+    this.number = number
+    this.atf = atf
+    this.atfTokens = atfTokens
+    this.omittedWords = omittedWords
+  }
 
   get beginsWithLacuna(): boolean {
     return isLacuna(this.signs.first())
@@ -77,31 +105,20 @@ export class ManuscriptLine {
       ) as _.Collection<Token>
   }
 
-  get phonetics(): Segment[] {
-    const result = _(this.atfTokens)
-      .filter((token) => isAkkadianWord(token))
-      .map((token) => getPhoneticSegments(token.cleanValue, {}))
-      .value()
-    return result
-  }
-
   alignTo(reconstruction: TokenWithIndex[]): AlignmentToken[] {
-    const begingsAndEndsWithLacuna =
-      this.beginsWithLacuna && this.endsWithLacuna
+    const mayBeSuggested = !(this.beginsWithLacuna && this.endsWithLacuna)
     const indexMap = this.createAlignmentIndexMap(reconstruction.length)
     const hasNoAlignments = this.atfTokens.every((token) =>
       _.isNil(token.alignment),
     )
+    const canSuggest = hasNoAlignments && mayBeSuggested
     return this.atfTokens.map((token, index) => {
       const alignment = createAlignmentToken(token)
       const reconstructedWord: TokenWithIndex | undefined =
         reconstruction[indexMap[index]]
-      return hasNoAlignments &&
-        !begingsAndEndsWithLacuna &&
-        alignment.isAlignable &&
-        _.isNil(alignment.alignment) &&
-        reconstructedWord &&
-        isAnyWord(reconstructedWord)
+      return canSuggest &&
+        isUnalignedAlignable(alignment) &&
+        isReconstructedWord(reconstructedWord)
         ? {
             ...alignment,
             alignment: reconstructedWord.originalIndex,
@@ -151,12 +168,16 @@ export class ManuscriptLine {
 export function createManuscriptLine(
   config: Partial<ManuscriptLine>,
 ): ManuscriptLine {
-  return new ManuscriptLine(
-    config.manuscriptId ?? 0,
-    config.labels ?? [],
-    config.number ?? '',
-    config.atf ?? '',
-    config.atfTokens ?? [],
-    config.omittedWords ?? [],
-  )
+  return new ManuscriptLine({
+    manuscriptId: config.manuscriptId ?? 0,
+    labels: config.labels ?? [],
+    number: config.number ?? '',
+    atf: config.atf ?? '',
+    atfTokens: config.atfTokens ?? [],
+    omittedWords: config.omittedWords ?? [],
+  })
+}
+
+export type TokenWithIndex = Token & {
+  originalIndex: number
 }

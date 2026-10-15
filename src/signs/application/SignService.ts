@@ -49,7 +49,7 @@ export default class SignService {
     signName: string,
     sortEra: string,
     signal?: AbortSignal,
-  ): Promise<[OrderedSign[]]> {
+  ): Promise<OrderedSign[][]> {
     return this.signsRepository.findSignsByOrder(signName, sortEra, signal)
   }
 
