@@ -69,13 +69,6 @@ Provide project context and coding guidelines that AI should follow when generat
 - Keep both the task TODO list and task log constantly updated while working.
 - Before a PR is merged, check for these task TODO/log `.md` files and remind to remove them.
 
-## GitHub Interactions
-
-- Treat posting to GitHub as a hard gate: never post or change anything on GitHub without the user's explicit request for that specific action. This covers comments, review replies, reviews, resolving threads, requesting reviewers, editing PR or issue titles, descriptions or labels, opening, closing or merging PRs, dismissing alerts, and pushing or force-pushing branches.
-- Permission covers only the action it was given for; it never carries over to later actions.
-- Read-only queries (fetching PRs, reviews, comments, checks and alerts) are always allowed.
-- Draft any text meant for GitHub in a local file or in the reply to the user, and post it only when explicitly asked.
-
 ## Review Guidelines
 
 - Treat fetching all pre-existing GitHub reviews and comments as a hard gate before any review: never start a review without first gathering every existing review (timeline review events) and every comment (inline review comments and general/issue comments) from GitHub for the PR. Include their resolution status (resolved vs unresolved) and whether each is outdated against the current head.

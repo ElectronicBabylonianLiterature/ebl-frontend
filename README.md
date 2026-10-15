@@ -223,7 +223,7 @@ The sitemap is now updated automatically using a GitHub Actions workflow. This r
 
 1. Go to the repository's **"Actions"** tab on GitHub.
 2. Select the workflow named **"Update Sitemap"**.
-3. Click **"Run workflow"** (top right) and confirm.
+3. Click **"Run workflow"** (top right), keep the branch set to `master` and confirm. Runs started from any other branch are skipped, so a sitemap pull request never carries unrelated commits.
 
 This action will:
 
@@ -251,6 +251,7 @@ To create them (once):
 3. Note the **Client ID**, then **Generate a private key** — the `.pem` downloads only once.
 4. **Install App** → the `ElectronicBabylonianLiterature` organisation → **Only select repositories** → `ebl-frontend`.
 5. Under **Settings → Secrets and variables → Actions**, add the Client ID on the **Variables** tab and the private key on the **Secrets** tab.
+6. After the first green run with the App, delete the old `SITEMAP_AUTOUPDATE` secret and revoke the personal access token it held.
 
 A missing line break in the private key is the usual cause of a "failed to generate token" error.
 
