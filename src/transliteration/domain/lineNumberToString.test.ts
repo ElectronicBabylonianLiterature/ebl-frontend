@@ -1,5 +1,5 @@
-import lineNumberToString from './lineNumberToString'
-import { LineNumber, LineNumberRange } from './line-number'
+import lineNumberToString from 'transliteration/domain/lineNumberToString'
+import { LineNumber, LineNumberRange } from 'transliteration/domain/line-number'
 
 test.each<[string, LineNumber | LineNumberRange]>([
   [

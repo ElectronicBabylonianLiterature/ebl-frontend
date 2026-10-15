@@ -1,4 +1,8 @@
-export type RlaPageFormat = 'jpg' | 'pdf'
+import { RLA_ONLINE_BASE, RLA_ROOT } from 'realia/domain/RealiaEntry'
+
+export const RLA_PAGE_FORMATS = ['jpg', 'pdf'] as const
+
+export type RlaPageFormat = (typeof RLA_PAGE_FORMATS)[number]
 
 export interface RlaPageInfo {
   readonly volume: string
@@ -25,10 +29,9 @@ interface ParsedArticle {
   readonly format: RlaPageFormat
 }
 
-export const RLA_INDEX_URL =
-  'https://publikationen.badw.de/de/rla/index/index.json'
-const RLA_PAGE_BASE = 'https://publikationen.badw.de/de/rla/a/'
-const PAGE_CALL = /rI\(event,'[^']*\/(\d+)\.(\d+)\.(jpg|pdf)'/
+export const RLA_INDEX_URL = `${RLA_ONLINE_BASE}/index.json`
+const RLA_PAGE_BASE = `${RLA_ROOT}/a/`
+const PAGE_CALL = /rI\(event,'[^']*\/(\d+)\.(\d+)\.(\w+)'/
 const PAGE_LABEL = /S\.\s*(\d+[a-z]?)/i
 
 export function rlaPageUrl(
@@ -39,6 +42,10 @@ export function rlaPageUrl(
   return `${RLA_PAGE_BASE}${volume}.${scan}.${format}`
 }
 
+function isRlaPageFormat(extension: string): extension is RlaPageFormat {
+  return RLA_PAGE_FORMATS.some((format) => format === extension)
+}
+
 function parseArticle(row: RlaIndexRow): ParsedArticle | null {
   const id = row.DT_RowId
   const cell = row['0']
@@ -47,16 +54,17 @@ function parseArticle(row: RlaIndexRow): ParsedArticle | null {
     return null
   }
   const page = PAGE_CALL.exec(markup)
-  if (!page) {
+  if (!page || !isRlaPageFormat(page[3])) {
     return null
   }
+  const format = page[3]
   const label = PAGE_LABEL.exec(markup)
   return {
     id: String(id),
     volume: page[1],
     scan: Number(page[2]),
     pageLabel: label ? label[1] : '',
-    format: page[3] as RlaPageFormat,
+    format,
   }
 }
 

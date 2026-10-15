@@ -1,0 +1,178 @@
+import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
+import BibliographyRepository from 'bibliography/infrastructure/BibliographyRepository'
+import _ from 'lodash'
+import { CacheEntry, getCachedValue, setCachedValue } from 'common/utils/cache'
+
+export const cacheEntryLifetimeInMilliseconds = 5 * 60 * 1000
+export const maximumCachedEntries = 500
+export const defaultCacheScope = 'default'
+
+export default class BibliographyEntryLoader {
+  private readonly cachedEntries = new Map<
+    string,
+    CacheEntry<BibliographyEntry>
+  >()
+
+  private readonly cachedFindRequests = new Map<
+    string,
+    Promise<BibliographyEntry>
+  >()
+
+  private cacheGeneration = 0
+
+  constructor(
+    private readonly bibliographyRepository: BibliographyRepository,
+  ) {}
+
+  find(id: string): Promise<BibliographyEntry> {
+    const cachedEntry = getCachedValue(this.cachedEntries, id)
+    if (cachedEntry) {
+      return Promise.resolve(cachedEntry)
+    }
+
+    const inFlightRequest = this.cachedFindRequests.get(id)
+    if (inFlightRequest) {
+      return inFlightRequest.then((entry) => entry)
+    }
+
+    const requestReference: { current?: Promise<BibliographyEntry> } = {}
+    const request = this.bibliographyRepository
+      .find(id)
+      .then((entry) =>
+        this.cachedFindRequests.get(id) === requestReference.current
+          ? this.cacheEntry(entry)
+          : entry,
+      )
+      .finally(() => {
+        if (this.cachedFindRequests.get(id) === requestReference.current) {
+          this.cachedFindRequests.delete(id)
+        }
+      })
+
+    requestReference.current = request
+    this.cachedFindRequests.set(id, request)
+    return request.then((entry) => entry)
+  }
+
+  loadEntriesByIds(
+    ids: readonly string[],
+  ): Promise<Map<string, BibliographyEntry>> {
+    const entriesById = new Map<string, BibliographyEntry>()
+    const missingIds: string[] = []
+    const inFlightRequests: Array<Promise<void>> = []
+
+    ids.forEach((id) => {
+      const cachedEntry = getCachedValue(this.cachedEntries, id)
+      if (cachedEntry) {
+        entriesById.set(id, cachedEntry)
+        return
+      }
+
+      const inFlight = this.cachedFindRequests.get(id)
+      if (inFlight) {
+        inFlightRequests.push(
+          inFlight.then((entry) => {
+            entriesById.set(id, entry)
+          }),
+        )
+        return
+      }
+
+      missingIds.push(id)
+    })
+
+    const fetchMissingEntries = _.isEmpty(missingIds)
+      ? Promise.resolve([] as readonly BibliographyEntry[])
+      : this.fetchMany(missingIds)
+
+    return Promise.all([
+      Promise.all(inFlightRequests),
+      fetchMissingEntries,
+    ]).then(([, fetchedEntries]) => {
+      fetchedEntries.forEach((entry) => {
+        entriesById.set(entry.id, entry)
+      })
+      return entriesById
+    })
+  }
+
+  cacheUpdatedEntry(entry: BibliographyEntry): BibliographyEntry {
+    this.cacheEntry(entry)
+    return entry
+  }
+
+  clear(): void {
+    this.cacheGeneration += 1
+    this.cachedEntries.clear()
+    this.cachedFindRequests.clear()
+  }
+
+  private cacheEntry(entry: BibliographyEntry): BibliographyEntry {
+    return setCachedValue({
+      cache: this.cachedEntries,
+      key: entry.id,
+      value: entry,
+      maximumCacheSize: maximumCachedEntries,
+      cacheEntryLifetimeInMilliseconds,
+    })
+  }
+
+  private cacheEntryFromGeneration(
+    entry: BibliographyEntry,
+    generation: number,
+  ): BibliographyEntry {
+    return generation === this.cacheGeneration ? this.cacheEntry(entry) : entry
+  }
+
+  private fetchMany(
+    ids: readonly string[],
+  ): Promise<readonly BibliographyEntry[]> {
+    const sortedUniqueIds = _.uniq(ids).sort()
+    const generation = this.cacheGeneration
+    const request = this.bibliographyRepository
+      .findMany(sortedUniqueIds)
+      .then((entries) => {
+        entries.forEach((entry) =>
+          this.cacheEntryFromGeneration(entry, generation),
+        )
+
+        const entriesById = _.keyBy(entries, 'id')
+        return Promise.all(
+          sortedUniqueIds.map((id) => {
+            const entry = entriesById[id]
+            return entry
+              ? entry
+              : this.bibliographyRepository
+                  .find(id)
+                  .then((resolvedEntry) =>
+                    this.cacheEntryFromGeneration(resolvedEntry, generation),
+                  )
+          }),
+        )
+      })
+
+    sortedUniqueIds.forEach((id, index) =>
+      this.trackIdRequest(id, index, request),
+    )
+
+    return request
+  }
+
+  private trackIdRequest(
+    id: string,
+    index: number,
+    request: Promise<readonly BibliographyEntry[]>,
+  ): void {
+    const idRequestReference: { current?: Promise<BibliographyEntry> } = {}
+    const idRequest = request
+      .then((entries) => entries[index])
+      .finally(() => {
+        if (this.cachedFindRequests.get(id) === idRequestReference.current) {
+          this.cachedFindRequests.delete(id)
+        }
+      })
+
+    idRequestReference.current = idRequest
+    this.cachedFindRequests.set(id, idRequest)
+  }
+}

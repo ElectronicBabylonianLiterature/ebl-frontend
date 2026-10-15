@@ -7,9 +7,8 @@ import { Parser } from 'html-to-react'
 import { SectionCrumb, TextCrumb } from 'common/ui/Breadcrumbs'
 import AppContent from 'common/ui/AppContent'
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
-import Bluebird from 'bluebird'
 import Citation from 'bibliography/domain/Citation'
-import DownloadButton from './BibliographyDownloadButton'
+import DownloadButton from 'bibliography/ui/BibliographyDownloadButton'
 import ExternalLink from 'common/ui/ExternalLink'
 import InlineMarkdown from 'common/ui/InlineMarkdown'
 import Reference from 'bibliography/domain/Reference'
@@ -137,5 +136,5 @@ export default withData<
   BibliographyEntry
 >(BibliographyViewer, (props) => {
   const decodedId = decodeURIComponent(props.match.params.id ?? '')
-  return Bluebird.resolve(props.bibliographyService.find(decodedId))
+  return Promise.resolve(props.bibliographyService.find(decodedId))
 })

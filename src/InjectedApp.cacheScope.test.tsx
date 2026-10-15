@@ -9,7 +9,7 @@ import {
   stubPrefetches,
 } from 'injectedApp.testSupport'
 
-jest.mock('./App', () => {
+jest.mock('App', () => {
   return function MockApp() {
     return <div data-testid="app">App</div>
   }
@@ -38,44 +38,32 @@ jest.mock('dossiers/infrastructure/DossiersRepository')
 beforeEach(stubPrefetches)
 
 describe('every cache-scoped service resolves the same scope', () => {
-  const services: ReadonlyArray<
-    [string, () => jest.MockedClass<never>, number]
-  > = [
-    [
-      'BibliographyService',
-      () => BibliographyService as unknown as jest.MockedClass<never>,
-      1,
-    ],
-    ['TextService', () => TextService as unknown as jest.MockedClass<never>, 4],
-    [
-      'DossiersService',
-      () => DossiersService as unknown as jest.MockedClass<never>,
-      1,
-    ],
+  const services: ReadonlyArray<[string, object, number]> = [
+    ['BibliographyService', BibliographyService, 1],
+    ['TextService', TextService, 4],
+    ['DossiersService', DossiersService, 1],
   ]
 
   it.each(services)(
     '%s resolves the guest scope',
-    (_name, getMockClass, argumentIndex) => {
+    (_name, mockClass, argumentIndex) => {
       renderInjectedApp()
 
-      expect(cacheScopeResolverOf(getMockClass(), argumentIndex)()).toBe(
-        'guest',
-      )
+      expect(cacheScopeResolverOf(mockClass, argumentIndex)()).toBe('guest')
     },
   )
 
   it.each(services)(
     '%s follows the authenticated user',
-    (_name, getMockClass, argumentIndex) => {
-      ;(mockAuthService.isAuthenticated as jest.Mock).mockReturnValue(true)
-      ;(mockAuthService.getUser as jest.Mock).mockReturnValue({
+    (_name, mockClass, argumentIndex) => {
+      mockAuthService.isAuthenticated.mockReturnValue(true)
+      mockAuthService.getUser.mockReturnValue({
         sub: 'auth0|subject-a',
       })
 
       renderInjectedApp()
 
-      expect(cacheScopeResolverOf(getMockClass(), argumentIndex)()).toBe(
+      expect(cacheScopeResolverOf(mockClass, argumentIndex)()).toBe(
         'authenticated:auth0|subject-a',
       )
     },

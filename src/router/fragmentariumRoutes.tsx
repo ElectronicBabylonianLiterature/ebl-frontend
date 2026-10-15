@@ -22,8 +22,10 @@ import AfoRegisterService from 'afo-register/application/AfoRegisterService'
 import NotFoundPage from 'NotFoundPage'
 import DossiersService from 'dossiers/application/DossiersService'
 import RecordView from 'fragmentarium/ui/fragment/RecordView'
-import { FragmentQuery } from 'query/FragmentQuery'
-import { paginationURLParam } from 'fragmentarium/ui/search/pagination'
+import {
+  parseSearchCriteria,
+  parseSearchPagination,
+} from 'fragmentarium/ui/search/pagination'
 
 function parseStringParam(location: Location, param: string): string | null {
   const value = parse(location.search)[param]
@@ -81,31 +83,27 @@ export default function FragmentariumRoutes({
       key="FragmentariumSearch"
       path="/library/search"
       exact
-      render={(routeProps): ReactNode => (
-        <HeadTagsService
-          title="Library search: eBL"
-          description="Search for cuneiform manuscripts in the electronic Babylonian Library (eBL)."
-        >
-          <FragmentariumSearch
-            fragmentSearchService={fragmentSearchService}
-            fragmentService={fragmentService}
-            fragmentQuery={
-              _.omit(
-                parse(routeProps.location.search, {
-                  decode: true,
-                }),
-                paginationURLParam,
-              ) as FragmentQuery
-            }
-            bibliographyService={bibliographyService}
-            wordService={wordService}
-            textService={textService}
-            dossiersService={dossiersService}
-            activeTab={_.trimStart(routeProps.location.hash, '#')}
-          />
-        </HeadTagsService>
-      )}
-      {...(sitemap && sitemapDefaults)}
+      render={(routeProps): ReactNode => {
+        const fragmentQuery = parseSearchCriteria(routeProps.location.search)
+        return (
+          <HeadTagsService
+            title="Library search: eBL"
+            description="Search for cuneiform manuscripts in the electronic Babylonian Library (eBL)."
+          >
+            <FragmentariumSearch
+              fragmentSearchService={fragmentSearchService}
+              fragmentService={fragmentService}
+              fragmentQuery={fragmentQuery}
+              pagination={parseSearchPagination(routeProps.location.search)}
+              bibliographyService={bibliographyService}
+              wordService={wordService}
+              textService={textService}
+              dossiersService={dossiersService}
+              activeTab={_.trimStart(routeProps.location.hash, '#')}
+            />
+          </HeadTagsService>
+        )
+      }}
     />,
     <Route
       key="FragmentLineToVecRanking"

@@ -2,6 +2,7 @@ import React, { Fragment, FunctionComponent } from 'react'
 import classNames from 'classnames'
 
 import withData, { WithoutData } from 'http/withData'
+import FragmentService from 'fragmentarium/application/FragmentService'
 import FragmentLink from 'fragmentarium/ui/FragmentLink'
 import { FragmentPagerData } from 'fragmentarium/domain/pager'
 
@@ -47,11 +48,12 @@ const FragmentPager: FunctionComponent<Props> = ({
 
 export default withData<
   WithoutData<Props>,
-  { fragmentService },
+  { fragmentService: FragmentService },
   FragmentPagerData
 >(
   ({ data, ...props }) => <FragmentPager data={data} {...props} />,
-  (props) => props.fragmentService.fragmentPager(props.fragmentNumber),
+  (props, signal) =>
+    props.fragmentService.fragmentPager(props.fragmentNumber, signal),
   {
     watch: (props) => [props.fragmentNumber],
   },

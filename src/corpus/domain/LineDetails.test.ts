@@ -2,8 +2,8 @@ import { manuscriptLineDisplayFactory } from 'test-support/line-details-fixtures
 import { implicitFirstColumn } from 'test-support/lines/text-columns'
 import textLine from 'test-support/lines/text-line'
 import { EmptyLine } from 'transliteration/domain/line'
-import { LineDetails } from './line-details'
-import { compareManuscripts } from './manuscript'
+import { LineDetails } from 'corpus/domain/line-details'
+import { compareManuscripts } from 'corpus/domain/manuscript'
 import { lineVariantDisplayFactory } from 'test-support/dictionary-line-fixtures'
 
 const empty = manuscriptLineDisplayFactory.build(

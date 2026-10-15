@@ -13,13 +13,16 @@ import {
   cslDataFactory,
   referenceDtoFactory,
   referenceFactory,
-} from './bibliography-fixtures'
+} from 'test-support/bibliography-fixtures'
 import { ReferenceDto } from 'bibliography/domain/referenceDto'
 import { OldSiglumDto } from 'corpus/application/dtos'
-import { oldSiglumDtoFactory, oldSiglumFactory } from './old-siglum-fixtures'
-import { joinFactory } from './join-fixtures'
+import {
+  oldSiglumDtoFactory,
+  oldSiglumFactory,
+} from 'test-support/old-siglum-fixtures'
+import { joinFactory } from 'test-support/join-fixtures'
 
-const defaultChance = new Chance()
+const defaultChance = new Chance('manuscript-fixtures')
 
 class ManuscriptFactory extends Factory<Manuscript> {
   standardText() {
@@ -75,31 +78,35 @@ export const manuscriptFactory = ManuscriptFactory.define(
     const museumNumber =
       (associations.museumNumber ?? hasMuseumNumber) ? `X.${sequence}` : ''
     const accessionNumber = !museumNumber ? `A ${sequence}` : ''
-    return new Manuscript(
-      defaultChance.natural(),
-      defaultChance.string(),
-      associations.oldSigla ?? oldSiglumFactory.buildList(1),
-      museumNumber,
-      accessionNumber,
-      associations.periodModifier ??
+    return new Manuscript({
+      id: defaultChance.natural(),
+      siglumDisambiguator: defaultChance.string(),
+      oldSigla: associations.oldSigla ?? oldSiglumFactory.buildList(1),
+      museumNumber: museumNumber,
+      accession: accessionNumber,
+      periodModifier:
+        associations.periodModifier ??
         defaultChance.pickone(Object.values(PeriodModifiers)),
-      associations.period ??
+      period:
+        associations.period ??
         defaultChance.pickone(_.without(Object.values(Periods), Periods.None)),
-      associations.provenance ??
+      provenance:
+        associations.provenance ??
         defaultChance.pickone(
           _.without(Object.values(Provenances), Provenances['Standard Text']),
         ),
-      associations.type ??
+      type:
+        associations.type ??
         defaultChance.pickone(
           _.without(Object.values(ManuscriptTypes), ManuscriptTypes.None),
         ),
-      defaultChance.sentence(),
-      associations.colophon ?? '',
-      associations.unplacedLines ?? '',
-      associations.references ?? referenceFactory.buildList(2),
-      associations.joins ?? [[joinFactory.build()]],
-      associations.isInFragmentarium ?? false,
-    )
+      notes: defaultChance.sentence(),
+      colophon: associations.colophon ?? '',
+      unplacedLines: associations.unplacedLines ?? '',
+      references: associations.references ?? referenceFactory.buildList(2),
+      joins: associations.joins ?? [[joinFactory.build()]],
+      isInFragmentarium: associations.isInFragmentarium ?? false,
+    })
   },
 )
 

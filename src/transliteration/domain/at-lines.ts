@@ -1,5 +1,12 @@
-import { ColumnLabel, SurfaceLabel, ObjectLabel } from './labels'
-import { AbstractLine, DollarAndAtLineDto } from './abstract-line'
+import {
+  ColumnLabel,
+  SurfaceLabel,
+  ObjectLabel,
+} from 'transliteration/domain/labels'
+import {
+  AbstractLine,
+  DollarAndAtLineDto,
+} from 'transliteration/domain/abstract-line'
 
 export abstract class AtLine extends AbstractLine {
   readonly displayValue: string

@@ -1,6 +1,6 @@
 import React from 'react'
 import _ from 'lodash'
-import AmplifiedMeaningList from './AmplifiedMeaningList'
+import AmplifiedMeaningList from 'dictionary/ui/editor/AmplifiedMeaningList'
 import { render, screen } from '@testing-library/react'
 
 import { whenClicked, whenChangedByValue } from 'test-support/utils'

@@ -1,5 +1,4 @@
 import Reference from 'bibliography/domain/Reference'
-import Bluebird from 'bluebird'
 import Annotation from 'fragmentarium/domain/annotation'
 import { Fragment, Script } from 'fragmentarium/domain/fragment'
 import { LemmatizationDto } from 'transliteration/domain/Lemmatization'
@@ -51,42 +50,42 @@ export class FragmentServiceBase {
     this.cache = new FragmentCache(getCacheScope)
   }
 
-  updateGenres(number: string, genres: Genres): Bluebird<Fragment> {
+  updateGenres(number: string, genres: Genres): Promise<Fragment> {
     return this.refresh(this.fragmentRepository.updateGenres(number, genres))
   }
 
-  updateScript(number: string, script: Script): Bluebird<Fragment> {
+  updateScript(number: string, script: Script): Promise<Fragment> {
     return this.refresh(this.fragmentRepository.updateScript(number, script))
   }
 
-  updateScopes(number: string, scopes: string[]): Bluebird<Fragment> {
+  updateScopes(number: string, scopes: string[]): Promise<Fragment> {
     return this.refresh(this.fragmentRepository.updateScopes(number, scopes))
   }
 
   updateDate(
     number: string,
     date: MesopotamianDateDto | undefined,
-  ): Bluebird<Fragment> {
+  ): Promise<Fragment> {
     return this.refresh(this.fragmentRepository.updateDate(number, date))
   }
 
   updateDatesInText(
     number: string,
     datesInText: MesopotamianDateDto[],
-  ): Bluebird<Fragment> {
+  ): Promise<Fragment> {
     return this.refresh(
       this.fragmentRepository.updateDatesInText(number, datesInText),
     )
   }
 
-  updateEdition(number: string, updates: EditionFields): Bluebird<Fragment> {
+  updateEdition(number: string, updates: EditionFields): Promise<Fragment> {
     return this.refresh(this.fragmentRepository.updateEdition(number, updates))
   }
 
   updateLemmatization(
     number: string,
     lemmatization: LemmatizationDto,
-  ): Bluebird<Fragment> {
+  ): Promise<Fragment> {
     return this.refresh(
       this.fragmentRepository.updateLemmatization(number, lemmatization),
     )
@@ -95,7 +94,7 @@ export class FragmentServiceBase {
   updateLemmaAnnotation(
     number: string,
     annotations: LineLemmaAnnotations,
-  ): Bluebird<Fragment> {
+  ): Promise<Fragment> {
     return this.refresh(
       this.fragmentRepository.updateLemmaAnnotation(number, annotations),
     )
@@ -104,7 +103,7 @@ export class FragmentServiceBase {
   updateReferences(
     number: string,
     references: readonly Reference[],
-  ): Bluebird<Fragment> {
+  ): Promise<Fragment> {
     return this.refresh(
       this.fragmentRepository.updateReferences(number, references),
     )
@@ -113,13 +112,13 @@ export class FragmentServiceBase {
   updateArchaeology(
     number: string,
     archaeology: ArchaeologyDto,
-  ): Bluebird<Fragment> {
+  ): Promise<Fragment> {
     return this.refresh(
       this.fragmentRepository.updateArchaeology(number, archaeology),
     )
   }
 
-  updateColophon(number: string, colophon: Colophon): Bluebird<Fragment> {
+  updateColophon(number: string, colophon: Colophon): Promise<Fragment> {
     return this.refresh(
       this.fragmentRepository.updateColophon(number, colophon),
     )
@@ -128,7 +127,7 @@ export class FragmentServiceBase {
   updateAnnotations(
     number: string,
     annotations: readonly Annotation[],
-  ): Bluebird<readonly Annotation[]> {
+  ): Promise<readonly Annotation[]> {
     return this.fragmentRepository
       .updateAnnotations(number, annotations)
       .then((updatedAnnotations) => {
@@ -141,7 +140,7 @@ export class FragmentServiceBase {
   updateNamedEntityAnnotations(
     number: string,
     annotations: AnnotationSpans,
-  ): Bluebird<AnnotationSaveResult> {
+  ): Promise<AnnotationSaveResult> {
     return this.fragmentRepository
       .updateNamedEntityAnnotations(number, annotations)
       .then((persisted: Fragment) =>
@@ -157,13 +156,13 @@ export class FragmentServiceBase {
       )
   }
 
-  protected refresh(updated: Bluebird<Fragment>): Bluebird<Fragment> {
+  protected refresh(updated: Promise<Fragment>): Promise<Fragment> {
     return updated
       .then((fragment: Fragment) => this.injectReferences(fragment))
       .then((fragment: Fragment) => this.cache.storeUpdatedFragment(fragment))
   }
 
-  protected injectReferences(fragment: Fragment): Bluebird<Fragment> {
+  protected injectReferences(fragment: Fragment): Promise<Fragment> {
     return injectReferences(this.referenceInjector, fragment)
   }
 }

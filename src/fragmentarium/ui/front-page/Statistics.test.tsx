@@ -1,25 +1,19 @@
 import React from 'react'
 import { render, screen } from '@testing-library/react'
 import { waitForSpinnerToBeRemoved } from 'test-support/waitForSpinnerToBeRemoved'
-import Promise from 'bluebird'
-import Statistics from './Statistics'
+import Statistics from 'fragmentarium/ui/front-page/Statistics'
 import { statisticsFactory } from 'test-support/fragment-data-fixtures'
-
-interface ExtendedStatistics {
-  transliteratedFragments: number
-  lines: number
-  totalFragments: number
-}
+import { FragmentStatistics } from 'fragmentarium/application/FragmentService'
 
 let fragmentService: { statistics: jest.Mock }
-let statistics: ExtendedStatistics
+let statistics: FragmentStatistics
 
 const setup = async (): Promise<void> => {
   statistics = statisticsFactory.build({
     transliteratedFragments: 1234,
     lines: 5678,
     totalFragments: 9012,
-  }) as ExtendedStatistics
+  }) as FragmentStatistics
   fragmentService = {
     statistics: jest.fn(),
   }

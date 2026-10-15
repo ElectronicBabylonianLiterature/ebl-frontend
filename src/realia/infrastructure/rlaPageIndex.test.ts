@@ -24,6 +24,7 @@ const rows: IndexRows = [
   row(700, 'a/1.18.jpg', '1'),
   row(12826, 'a/15.354.pdf', '354'),
   row(12827, 'a/15.355.pdf', '355'),
+  row(12900, 'a/16.10.tif', '10'),
   { DT_RowId: 999, '6': { _: '<a onclick="rowAt(6603)">x</a>' } },
   { DT_RowId: 998, '0': { _: 'cross-reference lemma without a page image' } },
   { DT_RowId: 997, '0': 5 },
@@ -86,6 +87,10 @@ describe('parseRlaPageIndex', () => {
     expect(index.has('999')).toBe(false)
     expect(index.has('998')).toBe(false)
     expect(index.has('997')).toBe(false)
+  })
+
+  it('skips rows whose page is published in an unsupported format', () => {
+    expect(index.has('12900')).toBe(false)
   })
 })
 

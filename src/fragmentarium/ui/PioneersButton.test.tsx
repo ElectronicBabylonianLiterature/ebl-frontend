@@ -2,10 +2,9 @@ import React from 'react'
 import { MemoryRouter } from 'react-router-dom'
 
 import { render } from '@testing-library/react'
-import Promise from 'bluebird'
 import { whenClicked } from 'test-support/utils'
 import SessionContext from 'auth/SessionContext'
-import PioneersButton from './PioneersButton'
+import PioneersButton from 'fragmentarium/ui/PioneersButton'
 import { fragmentFactory } from 'test-support/fragment-fixtures'
 
 let fragmentSearchService

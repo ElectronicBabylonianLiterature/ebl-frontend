@@ -1,4 +1,4 @@
-/* eslint-disable testing-library/prefer-screen-queries */
+import _ from 'lodash'
 import {
   fireEvent,
   waitFor,
@@ -6,8 +6,8 @@ import {
   RenderResult,
   Screen,
   Matcher,
+  within,
 } from '@testing-library/react'
-import Bluebird from 'bluebird'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import { QueryItem } from 'query/QueryResult'
 
@@ -30,6 +30,10 @@ function when<T, A = unknown>(
   }
 }
 
+function queriesOf(element: RenderResult | Screen): ReturnType<typeof within> {
+  return within('baseElement' in element ? element.baseElement : document.body)
+}
+
 export function changeValue<T>(input: Element, newValue: T): void {
   fireEvent.change(input, { target: { value: newValue } })
 }
@@ -39,7 +43,7 @@ export function clickNth(
   text: Matcher,
   n = 0,
 ): void {
-  const clickable = element.getAllByText(text)[n]
+  const clickable = queriesOf(element).getAllByText(text)[n]
   fireEvent.click(clickable)
 }
 
@@ -56,7 +60,7 @@ export function changeValueByValue<T>(
   newValue: T,
   n = 0,
 ): void {
-  changeValue(element.getAllByDisplayValue(value)[n], newValue)
+  changeValue(queriesOf(element).getAllByDisplayValue(value)[n], newValue)
 }
 
 export function changeValueByLabel<T>(
@@ -65,7 +69,7 @@ export function changeValueByLabel<T>(
   newValue: T,
   n = 0,
 ): void {
-  changeValue(element.getAllByLabelText(label)[n], newValue)
+  changeValue(queriesOf(element).getAllByLabelText(label)[n], newValue)
 }
 
 export function whenClicked(
@@ -114,8 +118,9 @@ export function whenChangedByLabel<T>(
 
 export async function submitForm(container: HTMLElement): Promise<void> {
   await act(async () => {
-    // eslint-disable-next-line
-    const result = container.querySelector('form')
+    const result = Array.from(document.forms).find((form) =>
+      container.contains(form),
+    )
     result && fireEvent.submit(result)
   })
 }
@@ -124,7 +129,7 @@ export function submitFormByTestId(
   element: RenderResult | Screen,
   testId: Matcher,
 ): void {
-  fireEvent.submit(element.getByTestId(testId))
+  fireEvent.submit(queriesOf(element).getByTestId(testId))
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -158,13 +163,11 @@ export function testDelegation<S>(
       beforeEach(() => {
         jest.clearAllMocks()
         target.mockReturnValueOnce(targetResult ?? expectedResult)
-        const instance = (
-          typeof object === 'function' ? (object as () => S)() : object
-        ) as S
-        const delegate = instance[method] as unknown as (
-          ...args: unknown[]
-        ) => unknown
-        result = delegate.apply(instance, params)
+        const instance =
+          typeof object === 'function'
+            ? Reflect.apply(object, undefined, [])
+            : object
+        result = _.invoke(instance, method, ...params)
       })
 
       it('Delegates', () => {
@@ -172,7 +175,7 @@ export function testDelegation<S>(
       })
 
       it('Returns', async () => {
-        if (result instanceof Bluebird || result instanceof Promise) {
+        if (result instanceof Promise) {
           const resolvedResult = await result
           await expect(resolvedResult).toEqual(expectedResult)
         } else {

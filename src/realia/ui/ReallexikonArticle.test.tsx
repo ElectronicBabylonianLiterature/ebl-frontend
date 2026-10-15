@@ -10,7 +10,7 @@ import {
 
 jest.mock('realia/infrastructure/rlaPageIndex', () => ({
   loadRlaPageIndex: jest.fn(),
-  rlaPageUrl: (volume: string, scan: number, format: string): string =>
+  rlaPageUrl: (volume: string, scan: number, format: RlaPageFormat): string =>
     `${format}:${volume}:${scan}`,
 }))
 
@@ -107,7 +107,7 @@ it('reports an unavailable page image and drops the pointless toggle', async () 
   loadMock.mockResolvedValue(new Map())
   open()
   expect(
-    await screen.findByText(/No RlA page image is available/),
+    await screen.findByText(/No RlA page is available/),
   ).toBeInTheDocument()
   expect(
     screen.queryByRole('button', { name: 'Show RlA page' }),
@@ -133,9 +133,11 @@ it('embeds a pdf page document with a fallback link to the pdf', async () => {
     ),
   )
   open()
-  const document = await screen.findByTitle('Königsinschriften, page 1 of 2')
-  expect(document).toHaveAttribute('type', 'application/pdf')
-  expect(document).toHaveAttribute(
+  const pageDocument = await screen.findByTitle(
+    'Königsinschriften, page 1 of 2',
+  )
+  expect(pageDocument).toHaveAttribute('type', 'application/pdf')
+  expect(pageDocument).toHaveAttribute(
     'data',
     'pdf:15:354#navpanes=0&statusbar=0&toolbar=0&view=FitH',
   )

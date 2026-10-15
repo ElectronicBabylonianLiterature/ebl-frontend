@@ -1,4 +1,3 @@
-import Promise from 'bluebird'
 import {
   createJoins,
   createScript,
@@ -6,7 +5,6 @@ import {
 import { fragmentDto } from 'test-support/test-fragment'
 import { museumNumberToString } from 'fragmentarium/domain/MuseumNumber'
 import { PeriodModifiers, Periods } from 'common/utils/period'
-import { ScriptDto } from 'fragmentarium/domain/fragment'
 import {
   apiClient,
   fragmentId,
@@ -56,7 +54,7 @@ describe('createFragmentInfo without an accession', () => {
 
 describe('createScript without a dto', () => {
   it('falls back to an uncertain, unmodified, certain script', () => {
-    const result = createScript(undefined as unknown as ScriptDto)
+    const result = createScript(undefined)
 
     expect(result).toEqual({
       period: Periods.Uncertain,

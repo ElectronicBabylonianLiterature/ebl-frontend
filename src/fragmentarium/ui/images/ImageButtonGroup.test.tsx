@@ -1,6 +1,8 @@
 import React from 'react'
 import { render, screen, fireEvent } from '@testing-library/react'
-import ImageButtonGroup, { useImageActions } from './ImageButtonGroup'
+import ImageButtonGroup, {
+  useImageActions,
+} from 'fragmentarium/ui/images/ImageButtonGroup'
 import { act } from 'react'
 
 HTMLAnchorElement.prototype.click = jest.fn()
@@ -130,5 +132,45 @@ describe('useImageActions hook', () => {
 
     unmount()
     expect(URL.revokeObjectURL).toHaveBeenCalledWith('blob:test-url')
+  })
+
+  it('does not start a download before the object URL exists', () => {
+    const click = jest.fn()
+    HTMLAnchorElement.prototype.click = click
+    jest.spyOn(URL, 'createObjectURL').mockReturnValue('')
+    let download: () => void = () => undefined
+
+    const TestComponent = ({ image }: { image: Blob }) => {
+      download = useImageActions(image, 'test-image').handleDownload
+      return null
+    }
+    render(<TestComponent image={new Blob([''], { type: 'image/png' })} />)
+
+    download()
+
+    expect(click).not.toHaveBeenCalled()
+  })
+
+  it('revokes the new-tab URL a minute after opening it', () => {
+    jest.useFakeTimers()
+    jest.spyOn(URL, 'createObjectURL').mockReturnValue('blob:new-tab')
+    const open = jest.spyOn(window, 'open').mockReturnValue(null)
+    let openInNewTab: () => void = () => undefined
+
+    const TestComponent = ({ image }: { image: Blob }) => {
+      openInNewTab = useImageActions(image, 'test-image').handleOpenInNewTab
+      return null
+    }
+    render(<TestComponent image={new Blob([''], { type: 'image/png' })} />)
+
+    openInNewTab()
+    expect(open).toHaveBeenCalledWith('blob:new-tab', '_blank')
+    expect(URL.revokeObjectURL).not.toHaveBeenCalledWith('blob:new-tab')
+
+    jest.advanceTimersByTime(60000)
+
+    expect(URL.revokeObjectURL).toHaveBeenCalledWith('blob:new-tab')
+    open.mockRestore()
+    jest.useRealTimers()
   })
 })

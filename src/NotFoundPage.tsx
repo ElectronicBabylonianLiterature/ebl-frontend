@@ -1,5 +1,5 @@
 import React from 'react'
-import './NotFoundPage.sass'
+import 'NotFoundPage.sass'
 
 const NotFoundPage: React.FC = () => (
   <div className="page-not-found">

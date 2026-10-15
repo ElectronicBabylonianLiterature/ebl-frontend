@@ -6,16 +6,13 @@ import { stringify } from 'query-string'
 import { PeriodModifiers, periods } from 'common/utils/period'
 import { Overlay, Popover } from 'react-bootstrap'
 import { DossierRecordDisplay } from 'dossiers/ui/DossiersDisplay'
-import './DossiersDisplay.sass'
+import 'dossiers/ui/DossiersDisplay.sass'
 
 interface GroupedDossiers {
   [key: string]: DossierRecord[]
 }
 
 const collator = new Intl.Collator([], { numeric: true, sensitivity: 'base' })
-const scriptPeriodOrder: ReadonlyMap<string, number> = new Map(
-  periods.map((period, index) => [period.name, index]),
-)
 const unknownScriptPeriodOrder = periods.length
 
 function getPeriodName(record: DossierRecord): string {
@@ -41,10 +38,9 @@ function getScriptDescription(record: DossierRecord): string {
 }
 
 function getScriptPeriodOrder(record: DossierRecord): number {
-  const periodName = record.script?.period?.name
-  return !periodName
-    ? unknownScriptPeriodOrder
-    : (scriptPeriodOrder.get(periodName) ?? unknownScriptPeriodOrder)
+  return record.script
+    ? periods.indexOf(record.script.period)
+    : unknownScriptPeriodOrder
 }
 
 function compareDossierRecords(

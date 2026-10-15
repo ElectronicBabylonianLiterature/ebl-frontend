@@ -14,8 +14,8 @@ import {
   ParallelText,
 } from 'transliteration/domain/parallel-line'
 import { textIdToString } from 'transliteration/domain/text-id'
-import { LineProps } from './LineProps'
-import TransliterationTd from './TransliterationTd'
+import { LineProps } from 'transliteration/ui/LineProps'
+import TransliterationTd from 'transliteration/ui/TransliterationTd'
 
 function Prefix({ type }: { type: string }): JSX.Element {
   return <TransliterationTd type={type}>{parallelLinePrefix}</TransliterationTd>
@@ -111,10 +111,8 @@ export function DisplayParallel({ line }: { line: ParallelLine }): JSX.Element {
     return <DisplayParallelFragment fragment={line} />
   } else if (line instanceof ParallelText) {
     return <DisplayParallelText text={line} />
-  } else if (line instanceof ParallelComposition) {
-    return <DisplayParallelComposition composition={line} />
   } else {
-    throw new Error(`Invalid type of line ${typeof line}.`)
+    return <DisplayParallelComposition composition={line} />
   }
 }
 

@@ -2,7 +2,7 @@ import React from 'react'
 import { Table } from 'react-bootstrap'
 import _ from 'lodash'
 import FragmentLink from 'fragmentarium/ui/FragmentLink'
-import './FragmentList.css'
+import 'fragmentarium/ui/FragmentList.css'
 import { FragmentInfo } from 'fragmentarium/domain/fragment'
 
 export type Columns = Record<
@@ -43,9 +43,6 @@ function FragmentList({
                   ? property(fragment)
                   : (() => {
                       const value = _.get(fragment, property)
-                      if (React.isValidElement(value)) {
-                        return value
-                      }
                       return _.isNil(value) ? '' : String(value)
                     })()}
               </td>

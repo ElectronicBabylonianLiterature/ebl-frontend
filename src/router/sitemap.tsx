@@ -5,7 +5,6 @@ import { renderToString } from 'react-dom/server'
 import $ from 'jquery'
 import type Services from 'router/Services'
 import withData from 'http/withData'
-import Bluebird from 'bluebird'
 import convert from 'xml-js'
 import _ from 'lodash'
 import pako from 'pako'
@@ -27,8 +26,7 @@ import {
   type RouteModuleProps,
 } from 'router/websiteRouteGroups'
 import IntroductionRoute from 'router/introductionRoute'
-
-const DOMAIN = 'www.ebl.lmu.de'
+import { CANONICAL_DOMAIN } from 'router/domain'
 
 const lazyWebsiteRouteModules: Record<LazyWebsiteRouteGroup, RouteModule> = {
   tools: ToolsRoutes,
@@ -98,7 +96,9 @@ function mapArchiveDownloadSitemap(xmlStrings: string[]): void {
     'sitemap.xml.gz',
   )
   xmlStrings.forEach((xmlString, index) => {
-    const archive = pako.gzip(xmlString.replaceAll('localhost', DOMAIN))
+    const archive = pako.gzip(
+      xmlString.replaceAll('localhost', CANONICAL_DOMAIN),
+    )
     const archiveBlob = new Blob([archive], {
       type: 'application/gzip',
     })
@@ -112,7 +112,7 @@ function getSitemapIndex(filenames: string[]): string {
       ${filenames
         .map(
           (filename) => `<sitemap>
-          <loc>https://${DOMAIN}/sitemap/${filename}</loc>
+          <loc>https://${CANONICAL_DOMAIN}/sitemap/${filename}</loc>
           <lastmod>${new Date().toISOString()}</lastmod>
         </sitemap>`,
         )
@@ -137,13 +137,13 @@ async function getSlugs(
   getter: string,
   key: string,
   encode = false,
-): Bluebird<SlugsArray> {
+): Promise<SlugsArray> {
   return services[service][getter]().then((array) =>
     mapStringsToSlugs(array, key, encode),
   )
 }
 
-export async function getAllSlugs(services: Services): Bluebird<Slugs> {
+export async function getAllSlugs(services: Services): Promise<Slugs> {
   return {
     signSlugs: await getSlugs(services, 'signService', 'listAllSigns', 'id'),
     dictionarySlugs: await getSlugs(
@@ -180,5 +180,5 @@ export default withData<{ services: Services }, { services: Services }, Slugs>(
   ({ data, services }) => {
     return getSitemapAsFile(services, data)
   },
-  ({ services }): Bluebird<Slugs> => getAllSlugs(services),
+  ({ services }): Promise<Slugs> => getAllSlugs(services),
 )

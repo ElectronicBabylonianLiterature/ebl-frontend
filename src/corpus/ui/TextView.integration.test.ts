@@ -1,5 +1,4 @@
 import Chance from 'chance'
-import Promise from 'bluebird'
 import { produce } from 'immer'
 import { ChapterId } from 'transliteration/domain/chapter-id'
 import { ManuscriptTypes } from 'corpus/domain/manuscript'

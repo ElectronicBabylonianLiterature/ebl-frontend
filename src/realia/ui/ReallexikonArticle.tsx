@@ -183,7 +183,7 @@ export function ReallexikonArticle({
       )}
       {status === 'unavailable' && (
         <p className="Realia__rla-page-status">
-          No RlA page image is available for this article.
+          No RlA page is available for this article.
         </p>
       )}
       {info && (

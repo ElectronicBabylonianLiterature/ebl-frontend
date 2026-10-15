@@ -1,15 +1,14 @@
 import React, { useState, useEffect, PropsWithChildren, useRef } from 'react'
-import {
-  createAuth0Client,
-  Auth0Client,
-  Auth0ClientOptions,
-} from '@auth0/auth0-spa-js'
+import { createAuth0Client, Auth0ClientOptions } from '@auth0/auth0-spa-js'
 import decode from 'jwt-decode'
 import MemorySession, { Session } from 'auth/Session'
 import applicationScopes from 'auth/applicationScopes.json'
 import Spinner from 'common/ui/Spinner'
 import { AuthenticationContext, AuthenticationService } from 'auth/Auth'
-import Auth0AuthenticationService from 'auth/Auth0AuthenticationService'
+import Auth0AuthenticationService, {
+  Auth0ClientApi,
+  RedirectAppState,
+} from 'auth/Auth0AuthenticationService'
 import 'auth/AuthenticationSpinner.css'
 
 const BASIC_GUEST_PERMISSIONS = [
@@ -37,13 +36,13 @@ function getSessionPermissions(decoded: DecodedAccessToken): string[] {
   return BASIC_GUEST_PERMISSIONS
 }
 
-async function createSession(auth0Client: Auth0Client): Promise<Session> {
+async function createSession(auth0Client: Auth0ClientApi): Promise<Session> {
   const accessToken = await auth0Client.getTokenSilently()
   const decoded = decode<DecodedAccessToken>(accessToken)
   return new MemorySession(getSessionPermissions(decoded))
 }
 
-const DEFAULT_REDIRECT_CALLBACK = (state: unknown): void =>
+const DEFAULT_REDIRECT_CALLBACK = (): void =>
   window.history.replaceState({}, document.title, window.location.pathname)
 
 function isRedirect(): boolean {
@@ -54,7 +53,7 @@ function isRedirect(): boolean {
 }
 
 async function createAuthenticationService(
-  auth0Client: Auth0Client,
+  auth0Client: Auth0ClientApi,
   returnTo: string,
 ): Promise<AuthenticationService> {
   const isAuthenticated = await auth0Client.isAuthenticated()
@@ -80,7 +79,7 @@ async function createAuthenticationService(
 
 type Auth0ProviderProps = PropsWithChildren<
   Auth0ClientOptions & {
-    onRedirectCallback?: (state: unknown) => void
+    onRedirectCallback?: (appState?: RedirectAppState) => void
     returnTo: string
   }
 >
@@ -102,7 +101,8 @@ export const Auth0Provider = ({
       const auth0Client = await createAuth0Client(initOptionsRef.current)
 
       if (isRedirect()) {
-        const { appState } = await auth0Client.handleRedirectCallback()
+        const { appState } =
+          await auth0Client.handleRedirectCallback<RedirectAppState>()
         onRedirectCallbackRef.current(appState)
       } else {
         try {

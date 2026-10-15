@@ -11,7 +11,7 @@ import { Session } from 'auth/Session'
 import BibliographyService from 'bibliography/application/BibliographyService'
 import { Markdown } from 'common/ui/Markdown'
 import { referencesNewRoute } from 'bibliography/ui/referencesRouteContext'
-import './Bibliography.css'
+import 'bibliography/ui/Bibliography.css'
 
 function getReferencesQueryFromLocation(search: string): string {
   const rawQuery = parse(search).query || ''
@@ -54,7 +54,7 @@ function CreateReferenceButton({ session }: { session: Session }): JSX.Element {
 export default function BibliographyReferencesContent({
   bibliographyService,
 }: {
-  bibliographyService: BibliographyService
+  bibliographyService: Pick<BibliographyService, 'search'>
 }): JSX.Element {
   const location = useLocation()
   const query = getReferencesQueryFromLocation(location.search)
