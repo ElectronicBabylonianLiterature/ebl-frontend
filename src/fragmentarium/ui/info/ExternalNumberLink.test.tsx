@@ -47,3 +47,11 @@ it('encodes numbers in links by default', () => {
     'https://cdli.earth/A%2F1',
   )
 })
+
+it('names each number link after its label', () => {
+  expect(CdliLink).toHaveProperty('displayName', 'NumberLink(CDLI)')
+  expect(YalePeabodyLink).toHaveProperty(
+    'displayName',
+    'NumberLink(Yale Babylonian Collection)',
+  )
+})

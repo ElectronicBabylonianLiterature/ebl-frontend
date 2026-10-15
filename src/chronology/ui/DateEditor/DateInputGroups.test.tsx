@@ -142,3 +142,33 @@ describe('Date Input Groups', () => {
     ).toHaveLength(2)
   })
 })
+
+it('Toggles intercalary without a setter', async () => {
+  const setMonthValue = jest.fn()
+  render(
+    DateInputGroups({
+      yearValue: '',
+      yearBroken: false,
+      yearUncertain: false,
+      monthValue: '',
+      monthBroken: false,
+      monthUncertain: false,
+      dayValue: '',
+      dayBroken: false,
+      dayUncertain: false,
+      setYearValue: jest.fn(),
+      setYearBroken: jest.fn(),
+      setYearUncertain: jest.fn(),
+      setMonthValue,
+      setMonthBroken: jest.fn(),
+      setMonthUncertain: jest.fn(),
+      setDayValue: jest.fn(),
+      setDayBroken: jest.fn(),
+      setDayUncertain: jest.fn(),
+    }),
+  )
+  const intercalary = screen.getByLabelText('Intercalary')
+  await userEvent.click(intercalary)
+  expect(intercalary).not.toBeChecked()
+  expect(setMonthValue).not.toHaveBeenCalled()
+})

@@ -2,39 +2,13 @@ import React, { useState } from 'react'
 import _ from 'lodash'
 import { InputGroup } from 'react-bootstrap'
 import Select from 'react-select'
-import {
-  EponymDateField,
-  KingDateField,
-  Ur3Calendar,
-} from 'chronology/domain/DateParameters'
+import { Ur3Calendar } from 'chronology/domain/DateParameters'
 import { KingField } from 'chronology/ui/Kings/Kings'
 import { EponymField } from 'chronology/ui/DateEditor/Eponyms'
 import getDateConfigs from 'chronology/application/DateSelectionInputConfig'
+import { DateOptionsProps } from 'chronology/application/DateOptionsProps'
 import { RadioButton } from 'chronology/ui/DateEditor/DateSelectionInputBase'
 import { BrokenAndUncertainSwitches } from 'common/ui/BrokenAndUncertain'
-
-export interface DateOptionsProps {
-  king?: KingDateField
-  kingBroken?: boolean
-  kingUncertain?: boolean
-  eponym?: EponymDateField
-  eponymBroken?: boolean
-  eponymUncertain?: boolean
-  ur3Calendar?: Ur3Calendar
-  isSeleucidEra: boolean
-  isAssyrianDate: boolean
-  isCalendarFieldDisplayed: boolean
-  setKing: React.Dispatch<React.SetStateAction<KingDateField | undefined>>
-  setKingBroken: React.Dispatch<React.SetStateAction<boolean>>
-  setKingUncertain: React.Dispatch<React.SetStateAction<boolean>>
-  setEponym: React.Dispatch<React.SetStateAction<EponymDateField | undefined>>
-  setEponymBroken: React.Dispatch<React.SetStateAction<boolean>>
-  setEponymUncertain: React.Dispatch<React.SetStateAction<boolean>>
-  setIsSeleucidEra: React.Dispatch<React.SetStateAction<boolean>>
-  setIsAssyrianDate: React.Dispatch<React.SetStateAction<boolean>>
-  setIsCalenderFieldDisplayed: React.Dispatch<React.SetStateAction<boolean>>
-  setUr3Calendar: React.Dispatch<React.SetStateAction<Ur3Calendar | undefined>>
-}
 
 export function DateOptionsInput(props: DateOptionsProps): JSX.Element {
   const [assyrianPhase, setAssyrianPhase] = useState(

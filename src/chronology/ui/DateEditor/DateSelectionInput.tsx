@@ -5,10 +5,6 @@ import { InputGroup, Form } from 'react-bootstrap'
 import { InputGroupProps } from 'chronology/ui/DateEditor/DateSelectionInputBase'
 import { BrokenAndUncertainSwitches } from 'common/ui/BrokenAndUncertain'
 import getDateFieldWarnings from 'chronology/ui/DateEditor/dateFieldWarnings'
-import {
-  getAssyrianDateSwitch,
-  getUr3CalendarField,
-} from 'chronology/ui/DateEditor/DateOptionsInput'
 import 'chronology/ui/DateEditor/DateSelectionInput.sass'
 
 type DateFieldName = 'year' | 'month' | 'day'
@@ -199,10 +195,4 @@ export function DateInputGroups(props: InputGroupsProps): JSX.Element {
       {getDayInputGroup(props)}
     </>
   )
-}
-
-export const exportedForTesting = {
-  getUr3CalendarField,
-  getAssyrianDateSwitch,
-  getDateFieldWarnings,
 }

@@ -10,9 +10,8 @@ export const emptyMatchState: MatchState = {
   lengthMatch: null,
 }
 
-function hasNonEmptyStringId(value: object): boolean {
-  const id = (value as { _id?: unknown })._id
-  return typeof id === 'string' && id.length > 0
+function hasNonEmptyStringId(value: Partial<Pick<Word, '_id'>>): boolean {
+  return typeof value._id === 'string' && value._id.length > 0
 }
 
 function hasWordId(value: Word): value is Word {

@@ -2,9 +2,13 @@ import React from 'react'
 import { render, screen, waitFor } from '@testing-library/react'
 import '@testing-library/jest-dom'
 import userEvent from '@testing-library/user-event'
-import { exportedForTesting } from 'chronology/ui/DateEditor/DateSelectionInput'
-import { DateOptionsInput } from 'chronology/ui/DateEditor/DateOptionsInput'
-import { mesopotamianDateFactory } from 'test-support/date-fixtures'
+import {
+  DateOptionsInput,
+  getAssyrianDateSwitch,
+  getUr3CalendarField,
+} from 'chronology/ui/DateEditor/DateOptionsInput'
+import { dateOptionsProps } from 'chronology/application/DateOptionsProps.testSupport'
+import { eponym, mesopotamianDateFactory } from 'test-support/date-fixtures'
 import { Ur3Calendar } from 'chronology/domain/DateBase'
 import { EponymField } from 'chronology/ui/DateEditor/Eponyms'
 
@@ -14,21 +18,7 @@ describe('Date options input', () => {
     const setIsAssyrianDate = jest.fn()
     render(
       <DateOptionsInput
-        king={undefined}
-        isSeleucidEra={false}
-        isCalendarFieldDisplayed={false}
-        ur3Calendar={undefined}
-        isAssyrianDate={false}
-        setKing={jest.fn()}
-        setIsSeleucidEra={setIsSeleucidEra}
-        setIsCalenderFieldDisplayed={jest.fn()}
-        setUr3Calendar={jest.fn()}
-        setIsAssyrianDate={setIsAssyrianDate}
-        setEponym={jest.fn()}
-        setKingBroken={jest.fn()}
-        setKingUncertain={jest.fn()}
-        setEponymBroken={jest.fn()}
-        setEponymUncertain={jest.fn()}
+        {...dateOptionsProps({ setIsSeleucidEra, setIsAssyrianDate })}
       />,
     )
     const seleucidRadioElem = screen.getByLabelText('Seleucid')
@@ -46,7 +36,7 @@ it('Renders and handels the Assyrian phase radios', async () => {
   const setAssyrianPhase = jest.fn()
   const assyrianPhase = 'NA'
   render(
-    exportedForTesting.getAssyrianDateSwitch({
+    getAssyrianDateSwitch({
       setAssyrianPhase,
       assyrianPhase,
     }),
@@ -70,24 +60,15 @@ describe('Ur3 Calendar Field', () => {
     const setUr3Calendar = jest.fn()
 
     render(
-      exportedForTesting.getUr3CalendarField({
-        king: mesopotamianDateFactory.build({ ur3Calendar: Ur3Calendar.UMMA })
-          .king,
-        isSeleucidEra: false,
-        isCalendarFieldDisplayed: true,
-        ur3Calendar: Ur3Calendar.UMMA,
-        isAssyrianDate: false,
-        setKing: jest.fn(),
-        setUr3Calendar,
-        setIsSeleucidEra: jest.fn(),
-        setIsCalenderFieldDisplayed: jest.fn(),
-        setIsAssyrianDate: jest.fn(),
-        setEponym: jest.fn(),
-        setKingBroken: jest.fn(),
-        setKingUncertain: jest.fn(),
-        setEponymBroken: jest.fn(),
-        setEponymUncertain: jest.fn(),
-      }),
+      getUr3CalendarField(
+        dateOptionsProps({
+          king: mesopotamianDateFactory.build({ ur3Calendar: Ur3Calendar.UMMA })
+            .king,
+          isCalendarFieldDisplayed: true,
+          ur3Calendar: Ur3Calendar.UMMA,
+          setUr3Calendar,
+        }),
+      ),
     )
     const selectElem = screen.getByLabelText('select-calendar')
     expect(selectElem).toBeInTheDocument()
@@ -107,25 +88,7 @@ describe('Ur3 Calendar Field', () => {
 
 describe('Date options input with Eponyms', () => {
   it('Renders and handles the Eponym selection', async () => {
-    render(
-      <DateOptionsInput
-        king={undefined}
-        isSeleucidEra={false}
-        isCalendarFieldDisplayed={false}
-        ur3Calendar={undefined}
-        isAssyrianDate={true}
-        setKing={jest.fn()}
-        setIsSeleucidEra={jest.fn()}
-        setIsCalenderFieldDisplayed={jest.fn()}
-        setUr3Calendar={jest.fn()}
-        setIsAssyrianDate={jest.fn()}
-        setEponym={jest.fn()}
-        setKingBroken={jest.fn()}
-        setKingUncertain={jest.fn()}
-        setEponymBroken={jest.fn()}
-        setEponymUncertain={jest.fn()}
-      />,
-    )
+    render(<DateOptionsInput {...dateOptionsProps({ isAssyrianDate: true })} />)
     const eponymSelectElem = await screen.findByLabelText('select-eponym')
     expect(eponymSelectElem).toBeInTheDocument()
   })
@@ -155,5 +118,28 @@ describe('EponymField Component', () => {
         title: 'king',
       }),
     )
+  })
+})
+
+describe('Date options input defaults', () => {
+  it('Starts with the Assyrian phase of the eponym', () => {
+    render(
+      <DateOptionsInput
+        {...dateOptionsProps({
+          eponym: { ...eponym, phase: 'MA' },
+          isAssyrianDate: true,
+        })}
+      />,
+    )
+    expect(screen.getByLabelText('Middle-Assyrian')).toBeChecked()
+  })
+
+  it('Displays the Ur III calendar field', () => {
+    render(
+      <DateOptionsInput
+        {...dateOptionsProps({ isCalendarFieldDisplayed: true })}
+      />,
+    )
+    expect(screen.getByLabelText('select-calendar')).toBeInTheDocument()
   })
 })

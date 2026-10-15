@@ -7,17 +7,20 @@ export default function AboutFigure({
   width,
   src,
   alt,
+  href,
   children,
 }: {
   side: FigureSide
   width: string
   src: string
   alt: string
+  href?: string
   children: React.ReactNode
 }): JSX.Element {
+  const image = <img className={`Introduction__${width}`} src={src} alt={alt} />
   return (
     <figure className={`Introduction__photo${side}`}>
-      <img className={`Introduction__${width}`} src={src} alt={alt} />
+      {href ? <a href={href}>{image}</a> : image}
       <figcaption className="Introduction__caption">{children}</figcaption>
     </figure>
   )

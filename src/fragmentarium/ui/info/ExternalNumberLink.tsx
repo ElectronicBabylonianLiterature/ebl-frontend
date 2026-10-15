@@ -38,7 +38,7 @@ function createNumberLink(
   label: string,
   { encodeUri = true, formatNumber = _.identity }: NumberLinkOptions = {},
 ): NumberLinkComponent {
-  return function NumberLink({ number }: { number: string }): JSX.Element {
+  function NumberLink({ number }: { number: string }): JSX.Element {
     return (
       <ExternalNumberLink
         number={formatNumber(number)}
@@ -48,6 +48,8 @@ function createNumberLink(
       />
     )
   }
+  NumberLink.displayName = `NumberLink(${label})`
+  return NumberLink
 }
 
 export const BmIdLink = createNumberLink(
