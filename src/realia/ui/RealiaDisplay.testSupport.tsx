@@ -37,7 +37,7 @@ export function renderDisplayWithLocation(
     <MemoryRouter initialEntries={[initialEntry]}>
       <SessionContext.Provider value={new MemorySession(['read:realia'])}>
         <RealiaDisplay id={entry.id} realiaService={realiaService} />
-        <LocationDisplay testId="location-hash" />
+        <LocationDisplay />
       </SessionContext.Provider>
     </MemoryRouter>,
   )

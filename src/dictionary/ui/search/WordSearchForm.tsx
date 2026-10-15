@@ -13,16 +13,6 @@ import {
 import VowelClassSelector from 'dictionary/ui/search/VowelClassSelector'
 import DictionarySourceFormGroup from 'dictionary/ui/search/DictionarySourceFormGroup'
 
-function toArray(
-  value: string | string[] | undefined,
-  fallback: string[],
-): string[] {
-  if (Array.isArray(value)) {
-    return value
-  }
-  return value ? [value] : fallback
-}
-
 type Props = {
   query: WordQuery
   navigate: (url: string) => void
@@ -43,8 +33,8 @@ class WordSearch extends Component<Props, State> {
 
       return {
         ...baseQuery,
-        vowelClass: toArray(baseQuery.vowelClass, []),
-        origin: toArray(baseQuery.origin, ['CDA']),
+        vowelClass: baseQuery.vowelClass ?? [],
+        origin: baseQuery.origin ?? ['CDA'],
       }
     })(),
   }

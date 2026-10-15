@@ -1,7 +1,7 @@
 import { fireEvent, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { submitForm } from 'test-support/utils'
-import { parse } from 'common/utils/queryString'
+import parseWordQuery from 'dictionary/application/parseWordQuery'
 import { renderWordSearchForm } from 'dictionary/ui/search/WordSearchForm.testSupport'
 
 const mockNavigate = jest.fn()
@@ -47,9 +47,7 @@ it('Keeps array inputs for vowelClass and origin', () => {
 })
 
 it('Parses single URL values for vowelClass and origin into arrays', () => {
-  renderWordSearchForm(
-    parse('vowelClass=a%2Fu&origin=SAD', { arrayFormat: 'none' }),
-  )
+  renderWordSearchForm(parseWordQuery('?vowelClass=a%2Fu&origin=SAD'))
 
   expect(screen.getByRole('checkbox', { name: 'a/u' })).toBeChecked()
   expect(

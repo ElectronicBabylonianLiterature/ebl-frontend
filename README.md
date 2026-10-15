@@ -172,6 +172,8 @@ in the annotation-tool.
 
 `package.json` forces `webpack-dev-server` 5 through `resolutions`, although `react-scripts` asks for version 4. `configureDevServer` in `craco.config.js` translates the version 4 options that `react-scripts` produces (`https`, `onBeforeSetupMiddleware`, `onAfterSetupMiddleware`) into the version 5 `server` and `setupMiddlewares` options. When updating `react-scripts`, `@craco/craco` or `webpack-dev-server`, check that `yarn start` still compiles and serves the app, including with `HTTPS=true`.
 
+Jest 27, which `react-scripts` 5 pins, can't resolve package `exports`, so `jest.moduleNameMapper` in `package.json` maps `react-router/dom` to react-router's internal `dist/development/dom-export.js`. When updating `react-router` or `react-router-dom`, check that this file still exists and run `yarn test:ci`.
+
 ## Lighthouse
 
 Google [Lighthouse](https://developers.google.com/web/tools/lighthouse/) is installed as a development dependency and can be run via yarn:

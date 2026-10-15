@@ -1,5 +1,6 @@
 import React from 'react'
 import { render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import { MemoryRouter } from 'react-router-dom'
 
 import SessionContext from 'auth/SessionContext'
@@ -48,6 +49,17 @@ describe('Searching for word', () => {
     expect(screen.getByLabelText('Meaning')).toHaveValue('')
     expect(screen.getByLabelText('Root')).toHaveValue('')
     expect(screen.getByRole('checkbox', { name: 'a/a' })).not.toBeChecked()
+  })
+
+  it('treats keys without values as an empty query', async () => {
+    wordService.search.mockClear()
+    await renderDictionary('/dictionary?word&meaning=&vowelClass')
+    await userEvent.type(screen.getByLabelText('Word'), 'lemma')
+
+    expect(screen.getByLabelText('Word')).toHaveValue('lemma')
+    expect(screen.getByLabelText('Meaning')).toHaveValue('')
+    expect(screen.getByRole('checkbox', { name: 'a/a' })).not.toBeChecked()
+    expect(wordService.search).not.toHaveBeenCalled()
   })
 
   it('does not refetch on rerender when query is unchanged', async () => {
