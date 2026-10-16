@@ -6,7 +6,7 @@ import { Genres } from 'fragmentarium/domain/Genres'
 import { fragmentFactory } from 'test-support/fragment-fixtures'
 import { archaeologyFactory } from 'test-support/fragment-data-fixtures'
 import { joinFactory } from 'test-support/join-fixtures'
-import { Periods } from 'common/utils/period'
+import { Periods } from 'common/utils/periodDefinitions'
 import { excavationSites } from 'fragmentarium/domain/archaeology'
 import {
   createDetailsTestContext,

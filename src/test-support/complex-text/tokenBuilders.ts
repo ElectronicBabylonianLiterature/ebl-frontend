@@ -1,5 +1,6 @@
 import {
   Enclosure,
+  EnclosureType,
   Gloss,
   Joiner,
   NamedSign,
@@ -86,6 +87,15 @@ export function word(
   }
 }
 
+export function readingWord(value: string): Word {
+  return word(value, [
+    reading(value, value, {
+      erasure: 'NONE',
+      nameParts: [valueToken(value, { erasure: 'NONE' })],
+    }),
+  ])
+}
+
 export function joiner(value: string, overrides?: Partial<Joiner>): Joiner {
   return {
     enclosureType: [],
@@ -110,6 +120,23 @@ export function enclosure(
     type,
     ...overrides,
   }
+}
+
+export function enclosedValue(
+  type: Enclosure['type'],
+  brackets: readonly [string, string],
+  enclosureType: EnclosureType,
+  value: string,
+): readonly Token[] {
+  const [open, close] = brackets
+  return [
+    enclosure(type, open, 'LEFT', { erasure: 'NONE' }),
+    valueToken(value, { enclosureType: [enclosureType], erasure: 'NONE' }),
+    enclosure(type, close, 'RIGHT', {
+      enclosureType: [enclosureType],
+      erasure: 'NONE',
+    }),
+  ]
 }
 
 export function gloss(

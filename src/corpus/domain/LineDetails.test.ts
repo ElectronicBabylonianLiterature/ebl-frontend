@@ -1,5 +1,5 @@
 import { manuscriptLineDisplayFactory } from 'test-support/line-details-fixtures'
-import { implicitFirstColumn } from 'test-support/lines/text-columns'
+import { implicitFirstColumn } from 'test-support/lines/text-columns-implicit'
 import textLine from 'test-support/lines/text-line'
 import { EmptyLine } from 'transliteration/domain/line'
 import { LineDetails } from 'corpus/domain/line-details'

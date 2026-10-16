@@ -1,9 +1,6 @@
-import {
-  emptyFirstColumn,
-  firstColumnSpan,
-  implicitFirstColumn,
-  span,
-} from 'test-support/lines/text-columns'
+import { emptyFirstColumn } from 'test-support/lines/text-columns'
+import { firstColumnSpan, span } from 'test-support/lines/text-columns-spans'
+import { implicitFirstColumn } from 'test-support/lines/text-columns-implicit'
 import { lemmatized } from 'test-support/lines/text-lemmatization'
 import {
   containsColumns,

@@ -2,11 +2,11 @@ import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import selectEvent from 'react-select-event'
 import FragmentService from 'fragmentarium/application/FragmentService'
+import { Colophon } from 'fragmentarium/domain/Colophon'
 import {
-  Colophon,
   IndividualAttestation,
   IndividualType,
-} from 'fragmentarium/domain/Colophon'
+} from 'fragmentarium/domain/IndividualAttestation'
 import { fragmentFactory } from 'test-support/fragment-fixtures'
 import {
   mockColophonLookups,

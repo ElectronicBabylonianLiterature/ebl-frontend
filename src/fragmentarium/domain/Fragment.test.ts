@@ -27,7 +27,8 @@ import { LooseDollarLine } from 'transliteration/domain/dollar-lines'
 import { Genres } from 'fragmentarium/domain/Genres'
 import Reference from 'bibliography/domain/Reference'
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
-import { PeriodModifiers, Periods } from 'common/utils/period'
+import { PeriodModifiers } from 'common/utils/period'
+import { Periods } from 'common/utils/periodDefinitions'
 import { externalNumbers } from 'test-support/test-fragment-dto'
 
 const config: Parameters<(typeof Fragment)['create']>[0] = {

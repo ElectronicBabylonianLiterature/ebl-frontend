@@ -1,9 +1,9 @@
-import { Periods, PeriodModifiers } from 'common/utils/period'
+import { PeriodModifiers } from 'common/utils/period'
+import { Periods } from 'common/utils/periodDefinitions'
 import { ResearchProjects } from 'research-projects/researchProject'
 import { MuseumKey } from 'fragmentarium/domain/museum'
 
-export const QueryTypes = ['and', 'or', 'line', 'phrase'] as const
-export type QueryType = (typeof QueryTypes)[number]
+export type QueryType = 'and' | 'or' | 'line' | 'phrase'
 export type PeriodString = keyof typeof Periods | ''
 export type PeriodModifierString = keyof typeof PeriodModifiers | ''
 

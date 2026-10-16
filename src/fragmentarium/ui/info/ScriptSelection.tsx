@@ -5,12 +5,8 @@ import Select from 'react-select'
 import withData from 'http/withData'
 import _ from 'lodash'
 import FragmentService from 'fragmentarium/application/FragmentService'
-import {
-  Period,
-  PeriodModifiers,
-  periodModifiers,
-  Periods,
-} from 'common/utils/period'
+import { Period, PeriodModifiers, periodModifiers } from 'common/utils/period'
+import { Periods } from 'common/utils/periodDefinitions'
 import { Button, Overlay, Popover } from 'react-bootstrap'
 import usePromiseEffect from 'common/hooks/usePromiseEffect'
 import applyWhenCurrent from 'common/utils/applyWhenCurrent'
