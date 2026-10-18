@@ -178,7 +178,7 @@ describe('RealiaDisplay navigation interaction', () => {
     await waitForSpinnerToBeRemoved(screen)
     const navMenu = screen.getByRole('navigation', { name: 'On this page' })
     fireEvent.click(within(navMenu).getByRole('link', { name: 'References' }))
-    expect(screen.getByTestId('location-hash')).toHaveTextContent(
+    expect(screen.getByTestId('location')).toHaveTextContent(
       '#realia-section-references',
     )
   })
@@ -198,7 +198,7 @@ describe('RealiaDisplay navigation interaction', () => {
     await waitForSpinnerToBeRemoved(screen)
     const navMenu = screen.getByRole('navigation', { name: 'On this page' })
     fireEvent.click(within(navMenu).getByRole('link', { name: 'AfO 25' }))
-    expect(screen.getByTestId('location-hash')).toHaveTextContent(
+    expect(screen.getByTestId('location')).toHaveTextContent(
       `#${afoVolumeId('AfO 25')}`,
     )
   })

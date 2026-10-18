@@ -1,18 +1,13 @@
 import React from 'react'
 import { screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { useLocation } from 'react-router-dom'
+import LocationDisplay from 'test-support/LocationDisplay'
 import { SearchResultFragmentService } from 'fragmentarium/ui/search/FragmentariumSearchResult'
 import { QueryResult } from 'query/QueryResult'
 import {
   buildQueryResult,
   renderSearchResult,
 } from 'fragmentarium/ui/search/FragmentariumSearchResult.testSupport'
-
-function LocationDisplay(): JSX.Element {
-  const location = useLocation()
-  return <div data-testid="location">{location.search}</div>
-}
 
 describe('FragmentariumSearchResult pagination', () => {
   it('renders the current server page and request range without chunking', async () => {

@@ -7,8 +7,8 @@ import {
   ColophonOwnership,
   ColophonStatus,
   ColophonType,
-  IndividualAttestation,
 } from 'fragmentarium/domain/Colophon'
+import { IndividualAttestation } from 'fragmentarium/domain/IndividualAttestation'
 
 const mockColophon = colophonFactory.build({
   colophonStatus: ColophonStatus.Yes,

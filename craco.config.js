@@ -10,17 +10,38 @@ const sitemapScriptPaths = [
 ]
 
 const fullyCoveredPaths = [
+  'src/about/ui/AboutFigure.tsx',
+  'src/about/ui/bibliography.tsx',
+  'src/about/ui/folios.tsx',
+  'src/about/ui/foliosContemporary.tsx',
+  'src/about/ui/foliosEarly.tsx',
+  'src/about/ui/foliosTwentiethCentury.tsx',
+  'src/about/ui/indexedPublications/index.ts',
+  'src/about/ui/indexedPublications/indexedPublicationsAToC.ts',
+  'src/about/ui/indexedPublications/indexedPublicationsDToF.ts',
+  'src/about/ui/indexedPublications/indexedPublicationsGToJ.ts',
+  'src/about/ui/indexedPublications/indexedPublicationsKToL.ts',
+  'src/about/ui/indexedPublications/indexedPublicationsMToP.ts',
+  'src/about/ui/indexedPublications/indexedPublicationsRToV.ts',
+  'src/about/ui/indexedPublications/IndexedPublicationsSection.ts',
+  'src/about/ui/indexedPublications/indexedPublicationsWToZ.ts',
+  'src/about/ui/MarkupParagraph.tsx',
   'src/afo-register/ui/AfoRegisterSearchFields.tsx',
+  'src/afo-register/ui/AfoRegisterSearchPage.tsx',
   'src/auth/InjectedAuth0Provider.tsx',
   'src/bibliography/application/BibliographyEntryLoader.ts',
   'src/bibliography/ui/BibliographyEntryForm.tsx',
   'src/bibliography/ui/BibliographyEntryFormController.tsx',
+  'src/bibliography/ui/BibliographySearchForm.tsx',
   'src/chronology/application/DateSelection.tsx',
+  'src/chronology/application/DateSelectionInputConfig.ts',
   'src/chronology/application/DateSelectionMethods.ts',
   'src/chronology/application/DateSelectionState.ts',
   'src/chronology/domain/modernDateParts.ts',
   'src/chronology/ui/DateConverter/dateConverterFieldEdges.ts',
   'src/chronology/ui/DateConverter/dateConverterOptionElements.tsx',
+  'src/chronology/ui/DateEditor/DateOptionsInput.tsx',
+  'src/chronology/ui/DateEditor/DateSelectionInput.tsx',
   'src/chronology/ui/DateEditor/DatesInTextSelection.tsx',
   'src/common/hooks/usePromiseEffect.ts',
   'src/common/utils/AbortableOperation.ts',
@@ -30,6 +51,8 @@ const fullyCoveredPaths = [
   'src/common/utils/ConcurrencyLimiter.ts',
   'src/common/utils/getOrFetchCachedValue.ts',
   'src/common/utils/mapSeries.ts',
+  'src/common/utils/period.ts',
+  'src/common/utils/periodDefinitions.ts',
   'src/common/utils/SerialQueue.ts',
   'src/common/utils/SupersedableOperation.ts',
   'src/corpus/application/chapterDtoSerialization.ts',
@@ -47,15 +70,27 @@ const fullyCoveredPaths = [
   'src/corpus/ui/ChapterViewLineVariant.tsx',
   'src/corpus/ui/ChapterViewVariantTransliteration.tsx',
   'src/corpus/ui/import/ChapterImport.tsx',
+  'src/corpus/ui/lemmatization/ChapterLemmatization.tsx',
+  'src/corpus/ui/lemmatization/LineLemmatizers.tsx',
   'src/corpus/ui/lines/LineVariantForm.tsx',
   'src/corpus/ui/ManuscriptsTable.tsx',
   'src/corpus/ui/manuscriptTableCells.tsx',
+  'src/dictionary/application/parseWordQuery.ts',
   'src/dictionary/ui/display/WordDisplayLogograms.tsx',
   'src/dictionary/ui/editor/WordEditor.tsx',
+  'src/dictionary/ui/search/Dictionary.tsx',
+  'src/dictionary/ui/search/DictionarySourceFormGroup.tsx',
+  'src/dictionary/ui/search/VowelClassSelector.tsx',
+  'src/dictionary/ui/search/WordSearchForm.tsx',
   'src/dossiers/application/DossierCache.ts',
   'src/dossiers/application/DossiersQueryByIdsBatcher.ts',
+  'src/dossiers/domain/DossierRecord.ts',
   'src/dossiers/infrastructure/DossiersRepository.ts',
+  'src/footer/ui/Datenschutz.tsx',
+  'src/footer/ui/DatenschutzThirdPartiesAndRights.tsx',
   'src/fragmentarium/application/fragmentPrefetch.ts',
+  'src/fragmentarium/domain/Colophon.ts',
+  'src/fragmentarium/domain/IndividualAttestation.ts',
   'src/fragmentarium/infrastructure/fragmentRepositoryInfo.ts',
   'src/fragmentarium/ui/edition/beforeUnloadWarning.ts',
   'src/fragmentarium/ui/edition/TransliterationForm.tsx',
@@ -63,6 +98,8 @@ const fullyCoveredPaths = [
   'src/fragmentarium/ui/fragment/colophonNameSuggestions.ts',
   'src/fragmentarium/ui/fragment/CuneiformFragment.tsx',
   'src/fragmentarium/ui/fragment/editorTabContents.tsx',
+  'src/fragmentarium/ui/fragment/lemma-annotation/properNounCreation.ts',
+  'src/fragmentarium/ui/fragment/lemma-annotation/ProperNounCreationPanel.tsx',
   'src/fragmentarium/ui/fragment/PdfExport.columns.ts',
   'src/fragmentarium/ui/fragment/PdfExport.footnotes.ts',
   'src/fragmentarium/ui/fragment/PdfExport.glossary.tsx',
@@ -71,6 +108,7 @@ const fullyCoveredPaths = [
   'src/fragmentarium/ui/fragment/PdfExport.table.ts',
   'src/fragmentarium/ui/fragment/PdfExport.tableRow.ts',
   'src/fragmentarium/ui/fragment/useFragmentSaves.ts',
+  'src/fragmentarium/ui/FragmentLink.tsx',
   'src/fragmentarium/ui/image-annotation/annotation-tool/annotationSelection.ts',
   'src/fragmentarium/ui/image-annotation/annotation-tool/Content.tsx',
   'src/fragmentarium/ui/image-annotation/annotation-tool/FragmentAnnotation.tsx',
@@ -83,6 +121,8 @@ const fullyCoveredPaths = [
   'src/fragmentarium/ui/images/Images.tsx',
   'src/fragmentarium/ui/images/ImageTabController.ts',
   'src/fragmentarium/ui/info/DetailsFields.tsx',
+  'src/fragmentarium/ui/info/ExternalNumberLink.tsx',
+  'src/fragmentarium/ui/info/ExternalTextLinks.tsx',
   'src/fragmentarium/ui/info/recordCredit.tsx',
   'src/fragmentarium/ui/info/ScriptSelection.tsx',
   'src/fragmentarium/ui/search/SearchFormAdvanced.tsx',
@@ -94,7 +134,10 @@ const fullyCoveredPaths = [
   'src/IntroductionNews.tsx',
   'src/markup/application/MarkupService.ts',
   'src/markup/ui/markup.tsx',
+  'src/realia/infrastructure/rlaPageIndex.ts',
+  'src/realia/ui/ReallexikonArticle.tsx',
   'src/research-projects/subpages/IntroductionHome.tsx',
+  'src/router/fragmentariumRoutes.tsx',
   'src/signs/application/SignService.ts',
   'src/signs/infrastructure/SignRepository.ts',
   'src/signs/ui/CuneiformConverter/convertAtfLines.ts',
@@ -106,6 +149,7 @@ const fullyCoveredPaths = [
   'src/signs/ui/display/signImageGrouping.ts',
   'src/signs/ui/display/SignImages.tsx',
   'src/signs/ui/display/VariantGroup.tsx',
+  'src/signs/ui/search/SignsSearchForm.tsx',
   'src/transliteration/application/ReferenceInjector.ts',
   'src/transliteration/ui/DisplaySignTokens.tsx',
   'src/transliteration/ui/DisplayTokenParts.tsx',
@@ -204,7 +248,15 @@ function quietSassLoader(loaderEntry) {
   }
 }
 
+const maplibreWorkerAssetRule = {
+  test: /[\\/]maplibre-gl[\\/]dist[\\/]maplibre-gl-worker\.mjs$/,
+  type: 'asset/resource',
+}
+
 function configureRule(rule) {
+  if (Array.isArray(rule.oneOf)) {
+    rule.oneOf.unshift(maplibreWorkerAssetRule)
+  }
   if (isSourceMapPreLoader(rule)) {
     rule.exclude = withNodeModulesExcluded(rule.exclude)
   }
@@ -214,8 +266,27 @@ function configureRule(rule) {
     .forEach(quietSassLoader)
 }
 
+function configureDevServer(devServerConfig) {
+  const { https, onBeforeSetupMiddleware, onAfterSetupMiddleware, ...config } =
+    devServerConfig
+  return {
+    ...config,
+    server: https
+      ? { type: 'https', options: https === true ? {} : https }
+      : 'http',
+    setupMiddlewares: (middlewares, devServer) => {
+      onBeforeSetupMiddleware(devServer)
+      onAfterSetupMiddleware({
+        app: { use: (middleware) => middlewares.push(middleware) },
+      })
+      return middlewares
+    },
+  }
+}
+
 module.exports = {
   ...(isFastDev ? { eslint: { enable: false } } : {}),
+  devServer: configureDevServer,
   jest: {
     configure: (jestConfig) => {
       jestConfig.modulePaths = Array.from(
@@ -264,6 +335,10 @@ module.exports = {
         ...(webpackConfig.ignoreWarnings || []),
         /Failed to parse source map/,
         /Deprecation .* legacy JS API/,
+        {
+          module: /node_modules[\\/]maplibre-gl[\\/]/,
+          message: /the request of a dependency is an expression/,
+        },
       ]
       return webpackConfig
     },

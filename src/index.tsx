@@ -11,13 +11,6 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import 'index.sass'
 import InjectedApp from 'InjectedApp'
 
-const startTransitionFlag = 'v7_startTransition'
-const relativeSplatPathFlag = 'v7_relativeSplatPath'
-const routerFuture = {
-  [startTransitionFlag]: true,
-  [relativeSplatPathFlag]: true,
-}
-
 if (process.env.REACT_APP_SENTRY_DSN && process.env.NODE_ENV) {
   SentryErrorReporter.init(
     process.env.REACT_APP_SENTRY_DSN,
@@ -33,7 +26,7 @@ const root = createRoot(container)
 root.render(
   <ErrorReporterContext.Provider value={errorReporter}>
     <ErrorBoundary>
-      <Router future={routerFuture}>
+      <Router>
         <div className="mh-100">
           <div>
             <InjectedAuth0Provider>

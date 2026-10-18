@@ -1,6 +1,6 @@
 import React, { ReactNode, PropsWithChildren, useContext } from 'react'
 import { Link } from 'react-router-dom'
-import { stringify } from 'query-string'
+import { stringify } from 'common/utils/queryString'
 import Folio from 'fragmentarium/domain/Folio'
 import RouterLinkModeContext from 'common/ui/RouterLinkModeContext'
 import { CANONICAL_ORIGIN } from 'router/domain'

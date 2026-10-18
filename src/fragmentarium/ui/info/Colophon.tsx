@@ -1,5 +1,6 @@
 import React from 'react'
-import { Colophon, IndividualAttestation } from 'fragmentarium/domain/Colophon'
+import { Colophon } from 'fragmentarium/domain/Colophon'
+import { IndividualAttestation } from 'fragmentarium/domain/IndividualAttestation'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import _ from 'lodash'
 import 'fragmentarium/ui/info/Colophon.sass'

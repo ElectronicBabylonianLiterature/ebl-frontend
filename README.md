@@ -145,6 +145,10 @@ An organization and project need to be setup in Sentry. The applications domain 
 
 In a production environment the api domain must be added to _img-src_ in CSP.
 
+### Reallexikon der Assyriologie (RlA)
+
+The realia pages show the RlA page for an article from `https://publikationen.badw.de`: volumes 1–14 as `.jpg` scans and volume 15 as single-page PDFs embedded in an `<object>`. In a production environment this domain must be in _img-src_, _object-src_ and _frame-src_ in CSP, because browsers frame the PDF viewer.
+
 ## Running the application
 
 The application reads the configuration from following environment variables:
@@ -169,6 +173,12 @@ In production environments [INLINE_RUNTIME_CHUNK](https://create-react-app.dev/d
 
 Updating [react-image-annotation](https://github.com/Secretmapper/react-image-annotation) could break `Annotation.js`
 in the annotation-tool.
+
+`package.json` forces `webpack-dev-server` 5 through `resolutions`, although `react-scripts` asks for version 4. `configureDevServer` in `craco.config.js` translates the version 4 options that `react-scripts` produces (`https`, `onBeforeSetupMiddleware`, `onAfterSetupMiddleware`) into the version 5 `server` and `setupMiddlewares` options. When updating `react-scripts`, `@craco/craco` or `webpack-dev-server`, check that `yarn start` still compiles and serves the app, including with `HTTPS=true`.
+
+Jest 27, which `react-scripts` 5 pins, can't resolve package `exports`, so `jest.moduleNameMapper` in `package.json` maps `react-router/dom` to react-router's internal `dist/development/dom-export.js`. When updating `react-router` or `react-router-dom`, check that this file still exists and run `yarn test:ci`.
+
+Lighthouse 13 depends on `@paulirish/trace_engine`, which asks for `third-party-web` and `legacy-javascript` by the `latest` tag. `resolutions` pins both to the versions in `yarn.lock` (`^0.30.0` and `0.0.3`), so regenerating the lockfile can't silently move them. `yarn install` still prints "Pattern … is trying to unpack in the same destination" for these two packages; that's yarn 1 noticing that the tag and the pinned range resolve to the same version, and it's harmless. When updating `lighthouse`, check whether `@paulirish/trace_engine` still uses `latest` and update or drop these two entries.
 
 ## Lighthouse
 

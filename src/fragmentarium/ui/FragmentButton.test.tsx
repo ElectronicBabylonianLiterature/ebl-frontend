@@ -20,15 +20,10 @@ jest.mock('react-router-dom', () => ({
 let query
 let element: RenderResult
 
-const routerFuture = Object.fromEntries([
-  ['v7_startTransition', true],
-  ['v7_relativeSplatPath', true],
-])
-
 const setup = (): void => {
   query = jest.fn()
   element = render(
-    <MemoryRouter future={routerFuture}>
+    <MemoryRouter>
       <FragmentButton query={query}>{buttonText}</FragmentButton>
     </MemoryRouter>,
   )

@@ -8,7 +8,7 @@ import {
   lineVariantDisplayFactory,
 } from 'test-support/dictionary-line-fixtures'
 import { manuscriptLineDisplayFactory } from 'test-support/line-details-fixtures'
-import { implicitFirstColumn } from 'test-support/lines/text-columns'
+import { implicitFirstColumn } from 'test-support/lines/text-columns-implicit'
 import { LineDetails } from 'corpus/domain/line-details'
 import { EmptyLine } from 'transliteration/domain/line'
 import { ManuscriptTypes } from 'corpus/domain/manuscript'

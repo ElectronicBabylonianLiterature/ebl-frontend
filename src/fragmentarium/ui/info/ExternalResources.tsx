@@ -31,9 +31,8 @@ import {
   BmIdLink,
   YalePeabodyLink,
   spurlockLink,
-  OraccLinks,
-  SealLinks,
 } from 'fragmentarium/ui/info/ExternalNumberLink'
+import { OraccLinks, SealLinks } from 'fragmentarium/ui/info/ExternalTextLinks'
 import _ from 'lodash'
 
 type ExternalLinkComponent = ({ number }: { number: string }) => JSX.Element

@@ -6,7 +6,7 @@ import DossiersService from 'dossiers/application/DossiersService'
 import LatestTransliterations from 'fragmentarium/ui/front-page/LatestTransliterations'
 import { fragmentFactory } from 'test-support/fragment-fixtures'
 import { RecordEntry } from 'fragmentarium/domain/RecordEntry'
-import { Periods } from 'common/utils/period'
+import { Periods } from 'common/utils/periodDefinitions'
 import { ResearchProjects } from 'research-projects/researchProject'
 import { QueryItem, QueryResult } from 'query/QueryResult'
 

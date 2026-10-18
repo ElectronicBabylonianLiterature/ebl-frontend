@@ -1,5 +1,5 @@
 import { testDelegation, TestData } from 'test-support/utils'
-import { stringify } from 'query-string'
+import { stringify } from 'common/utils/queryString'
 
 import MarkupService, {
   CachedMarkupService,

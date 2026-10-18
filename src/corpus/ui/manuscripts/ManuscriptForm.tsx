@@ -5,12 +5,8 @@ import { produce, castDraft, Draft } from 'immer'
 import { ManuscriptTypes, Manuscript, types } from 'corpus/domain/manuscript'
 import ReferencesForm from 'bibliography/ui/ReferencesForm'
 import Reference from 'bibliography/domain/Reference'
-import {
-  periodModifiers,
-  PeriodModifiers,
-  periods,
-  Periods,
-} from 'common/utils/period'
+import { periodModifiers, PeriodModifiers, periods } from 'common/utils/period'
+import { Periods } from 'common/utils/periodDefinitions'
 import { getProvenanceByName, Provenance } from 'corpus/domain/provenance'
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 import Editor from 'editor/Editor'

@@ -1,6 +1,6 @@
 import { produce, castDraft } from 'immer'
 import _ from 'lodash'
-import { stringify } from 'query-string'
+import { stringify } from 'common/utils/queryString'
 
 import { Chapter, ChapterDisplay } from 'corpus/domain/chapter'
 import { ChapterId } from 'transliteration/domain/chapter-id'

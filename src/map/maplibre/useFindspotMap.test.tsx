@@ -8,17 +8,26 @@ import {
   mockCaptureException,
   mockOn,
   resetMapMocks,
+  setWorkerUrl,
   triggerMapEvent,
 } from 'map/ui/MapTab.testSupport'
+import maplibreWorkerUrlStub from 'map/testSupport/maplibreWorkerUrlStub'
 import {
   HookHarness,
   renderHarness,
 } from 'map/maplibre/useFindspotMap.testSupport'
+import { MAP_STYLE_LOAD_EVENT } from 'map/maplibre/mapLayers'
 
 jest.mock('maplibre-gl')
 
 describe('useFindspotMap', () => {
   beforeEach(resetMapMocks)
+
+  it('points maplibre at its bundled worker before creating the map', () => {
+    renderHarness(<HookHarness provenances={[makeProvenance()]} />)
+
+    expect(setWorkerUrl).toHaveBeenCalledWith(maplibreWorkerUrlStub)
+  })
 
   it('does not initialize a map before data is ready', () => {
     renderHarness(<HookHarness provenances={null} />)
@@ -34,6 +43,18 @@ describe('useFindspotMap', () => {
     expect(mockOn).not.toHaveBeenCalled()
   })
 
+  it('adds the findspot layers once the style loads without waiting for basemap tiles', () => {
+    deferMapLoad()
+    renderHarness(<HookHarness provenances={[makeProvenance()]} />)
+
+    act(() => {
+      triggerMapEvent(MAP_STYLE_LOAD_EVENT)
+    })
+
+    expect(mockAddSource).toHaveBeenCalledTimes(1)
+    expect(mockOn).not.toHaveBeenCalledWith('load', expect.any(Function))
+  })
+
   it('does not initialize a source when the data is gone before the style loads', () => {
     deferMapLoad()
     const { rerender } = renderHarness(
@@ -42,7 +63,7 @@ describe('useFindspotMap', () => {
 
     rerender(<HookHarness provenances={null} />)
     act(() => {
-      triggerMapEvent('load')
+      triggerMapEvent(MAP_STYLE_LOAD_EVENT)
     })
 
     expect(mockAddSource).not.toHaveBeenCalled()

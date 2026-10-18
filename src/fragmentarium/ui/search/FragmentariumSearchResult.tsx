@@ -7,7 +7,7 @@ import { Col, Row } from 'react-bootstrap'
 import { FragmentSearchCriteria } from 'query/FragmentQuery'
 import { linesToShow } from 'fragmentarium/ui/search/FragmentariumSearch'
 import 'fragmentarium/ui/search/FragmentariumSearchResult.sass'
-import { stringify } from 'query-string'
+import { stringify } from 'common/utils/queryString'
 import {
   FragmentLines,
   FragmentLinesService,

@@ -6,7 +6,7 @@ import {
   lineInfo,
   textServiceMock,
 } from 'test-support/line-group-fixtures'
-import { implicitFirstColumn } from 'test-support/lines/text-columns'
+import { implicitFirstColumn } from 'test-support/lines/text-columns-implicit'
 import { LemmatizableToken } from 'transliteration/domain/token'
 import { EmptyLineToken, LineToken } from 'transliteration/ui/line-tokens'
 import { LineGroup } from 'transliteration/ui/LineGroup'

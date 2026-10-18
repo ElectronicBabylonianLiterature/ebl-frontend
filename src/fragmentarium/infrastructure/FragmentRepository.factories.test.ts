@@ -4,7 +4,8 @@ import {
 } from 'fragmentarium/infrastructure/FragmentRepository'
 import { fragmentDto } from 'test-support/test-fragment'
 import { museumNumberToString } from 'fragmentarium/domain/MuseumNumber'
-import { PeriodModifiers, Periods } from 'common/utils/period'
+import { PeriodModifiers } from 'common/utils/period'
+import { Periods } from 'common/utils/periodDefinitions'
 import {
   apiClient,
   fragmentId,

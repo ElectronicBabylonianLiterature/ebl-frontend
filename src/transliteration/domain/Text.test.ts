@@ -2,7 +2,7 @@ import note from 'test-support/lines/note'
 import { singleRuling } from 'test-support/lines/dollar'
 import { noteNumber, Text } from 'transliteration/domain/text'
 import { lemmatized } from 'test-support/lines/text-lemmatization'
-import { firstColumnSpan } from 'test-support/lines/text-columns'
+import { firstColumnSpan } from 'test-support/lines/text-columns-spans'
 
 const text = new Text({ lines: [note, singleRuling, note, note, singleRuling] })
 

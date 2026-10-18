@@ -1,10 +1,10 @@
 import React, { useMemo, useState } from 'react'
 import { Accordion, Form, Row } from 'react-bootstrap'
+import { Colophon } from 'fragmentarium/domain/Colophon'
 import {
-  Colophon,
   IndividualAttestation,
   IndividualType,
-} from 'fragmentarium/domain/Colophon'
+} from 'fragmentarium/domain/IndividualAttestation'
 import _ from 'lodash'
 import ListForm from 'common/ui/List'
 import { BrokenAndUncertainSwitches } from 'common/ui/BrokenAndUncertain'

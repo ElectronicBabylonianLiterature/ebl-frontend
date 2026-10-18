@@ -3,7 +3,7 @@ import { render, screen, waitFor, fireEvent } from '@testing-library/react'
 import { bibliographyEntryFactory } from 'test-support/bibliography-fixtures'
 import { provenanceRecords } from 'test-support/provenance-records'
 import { FragmentQuery } from 'query/FragmentQuery'
-import { Periods } from 'common/utils/period'
+import { Periods } from 'common/utils/periodDefinitions'
 import { MemoryRouter } from 'react-router-dom'
 import { wordFactory } from 'test-support/word-fixtures'
 import BibliographyService from 'bibliography/application/BibliographyService'
@@ -40,17 +40,7 @@ export function TestMemoryRouter({
   children,
   ...props
 }: React.PropsWithChildren<Record<string, unknown>>): JSX.Element {
-  return (
-    <MemoryRouter
-      {...props}
-      future={Object.fromEntries([
-        ['v7_startTransition', true],
-        ['v7_relativeSplatPath', true],
-      ])}
-    >
-      {children}
-    </MemoryRouter>
-  )
+  return <MemoryRouter {...props}>{children}</MemoryRouter>
 }
 
 export interface SearchFormTestContext {

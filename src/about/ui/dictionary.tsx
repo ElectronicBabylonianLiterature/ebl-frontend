@@ -4,6 +4,7 @@ import Markup from 'markup/ui/markup'
 import MarkupService from 'markup/application/MarkupService'
 
 import cda from 'about/ui/static/cda.png'
+import AboutFigure from 'about/ui/AboutFigure'
 
 export default function AboutDictionary(
   markupService: MarkupService,
@@ -18,18 +19,15 @@ export default function AboutDictionary(
         of the contents is not possible without the permission of the publisher."
       />
       <h3>I. A Concise Dictionary of Akkadian</h3>
-      <figure className="Introduction__photoRight">
-        <a href="https://www.harrassowitz-verlag.de/isbn_978-3-447-04264-2.ahtml">
-          <img
-            className="Introduction__300px"
-            src={cda}
-            alt="Black, George, Postgate, A Concise Dictionary of Akkadian"
-          />
-        </a>
-        <figcaption className="Introduction__caption">
-          Black, George, Postgate, <em>A Concise Dictionary of Akkadian</em>
-        </figcaption>
-      </figure>
+      <AboutFigure
+        side="Right"
+        width="300px"
+        src={cda}
+        alt="Black, George, Postgate, A Concise Dictionary of Akkadian"
+        href="https://www.harrassowitz-verlag.de/isbn_978-3-447-04264-2.ahtml"
+      >
+        Black, George, Postgate, <em>A Concise Dictionary of Akkadian</em>
+      </AboutFigure>
       <Markdown
         text="The very useful *CDA* (Black, J.; George, A.R.; Postgate, N., *A Concise 
               Dictionary of Akkadian*. Second (corrected) printing. SANTAG Arbeiten und 
