@@ -1,7 +1,8 @@
 import { useEffect, useRef } from 'react'
 import type { MutableRefObject } from 'react'
 import type { Map as MapLibreMap, MapMouseEvent } from 'maplibre-gl'
-import type { MapLibreErrorEvent } from 'map/mapBackgroundError'
+import { MAP_STYLE_LOAD_EVENT } from 'map/mapLayers'
+import { observeExcavationAvailability } from 'map/mapExcavationAvailability'
 import {
   EXCAVATION_AREAS_SOURCE_ID,
   EXCAVATION_AREA_FILL_LAYER_ID,
@@ -17,6 +18,13 @@ const ALL_LAYER_IDS: readonly string[] = [
   ...EXCAVATION_AREA_LAYER_IDS,
   EXCAVATION_AREA_SELECTED_LAYER_ID,
 ]
+
+function ownsMap(
+  mapRef: MutableRefObject<MapLibreMap | null>,
+  map: MapLibreMap,
+): boolean {
+  return mapRef.current === map
+}
 
 function addExcavationAreas(map: MapLibreMap): void {
   if (!map.getSource(EXCAVATION_AREAS_SOURCE_ID)) {
@@ -66,14 +74,6 @@ function applySelectedState(
   )
 }
 
-function isExcavationAreaError(event: MapLibreErrorEvent): boolean {
-  return (
-    event.sourceId === EXCAVATION_AREAS_SOURCE_ID ||
-    (typeof event.layer?.id === 'string' &&
-      ALL_LAYER_IDS.includes(event.layer.id))
-  )
-}
-
 export interface ExcavationAreaOptions {
   readonly isVisible: boolean
   readonly selectedPolygonId: string | null
@@ -94,11 +94,7 @@ function useExcavationAreaLifecycle(
 
     const isCurrentMap = (): boolean => mapRef.current === map
     const install = (): void => addExcavationAreas(map)
-    const handleError = (event: MapLibreErrorEvent): void => {
-      if (isExcavationAreaError(event)) {
-        latestOptionsRef.current.onAvailabilityChange?.(true)
-      }
-    }
+
     const handleClick = (event: MapMouseEvent): void => {
       const [feature] = map.queryRenderedFeatures(event.point, {
         layers: [EXCAVATION_AREA_FILL_LAYER_ID],
@@ -108,15 +104,20 @@ function useExcavationAreaLifecycle(
       }
     }
 
-    map.on('error', handleError)
+    const stopObservingAvailability = observeExcavationAvailability(
+      map,
+      ALL_LAYER_IDS,
+      (unavailable) =>
+        latestOptionsRef.current.onAvailabilityChange?.(unavailable),
+    )
     map.on('click', EXCAVATION_AREA_FILL_LAYER_ID, handleClick)
-    if (map.isStyleLoaded()) install()
-    else map.once('load', install)
+    map.on(MAP_STYLE_LOAD_EVENT, install)
+    if (map.getStyle()) install()
 
     return () => {
       if (!isCurrentMap()) return
-      map.off('error', handleError)
-      map.off('load', install)
+      stopObservingAvailability()
+      map.off(MAP_STYLE_LOAD_EVENT, install)
       map.off('click', EXCAVATION_AREA_FILL_LAYER_ID, handleClick)
       removeExcavationAreas(map)
     }
@@ -132,11 +133,11 @@ function useExcavationAreaVisibility(
     if (!map) return
 
     const updateVisibility = (): void => setVisible(map, isVisible)
-    if (map.isStyleLoaded()) updateVisibility()
-    else map.once('load', updateVisibility)
+    map.on(MAP_STYLE_LOAD_EVENT, updateVisibility)
+    updateVisibility()
 
     return () => {
-      if (mapRef.current === map) map.off('load', updateVisibility)
+      if (ownsMap(mapRef, map)) map.off(MAP_STYLE_LOAD_EVENT, updateVisibility)
     }
   }, [mapRef, isVisible])
 }
@@ -152,11 +153,11 @@ function useExcavationAreaSelection(
 
     const updateSelection = (): void =>
       applySelectedState(map, isVisible ? selectedPolygonId : null)
-    if (map.isStyleLoaded()) updateSelection()
-    else map.once('load', updateSelection)
+    map.on(MAP_STYLE_LOAD_EVENT, updateSelection)
+    updateSelection()
 
     return () => {
-      if (mapRef.current === map) map.off('load', updateSelection)
+      if (ownsMap(mapRef, map)) map.off(MAP_STYLE_LOAD_EVENT, updateSelection)
     }
   }, [mapRef, isVisible, selectedPolygonId])
 }

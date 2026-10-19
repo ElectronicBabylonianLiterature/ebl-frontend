@@ -1,4 +1,3 @@
-import Bluebird from 'bluebird'
 import { FindspotService } from 'fragmentarium/application/FindspotService'
 import type { ExcavationPolygonIndex } from 'map/excavationPolygonIndex'
 import type { FindspotMapData } from 'map/findspotMapData'
@@ -42,7 +41,7 @@ export const SITES = {
 } as const
 
 type MapData = readonly FindspotMapData[]
-type Responder = (siteId: string) => Bluebird<MapData>
+type Responder = (siteId: string) => Promise<MapData>
 
 export function canonicalIndex(): ExcavationPolygonIndex {
   return new Map(
@@ -84,11 +83,11 @@ export function status(
 }
 
 export function deferredMapData(): {
-  promise: Bluebird<MapData>
+  promise: Promise<MapData>
   resolve: (value: MapData) => void
 } {
   let resolve!: (value: MapData) => void
-  const promise = new Bluebird<MapData>((fulfill) => {
+  const promise = new Promise<MapData>((fulfill) => {
     resolve = (value) => fulfill(value)
   })
   return { promise, resolve }

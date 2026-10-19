@@ -1,7 +1,6 @@
 import React from 'react'
 import { act, fireEvent, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import Bluebird from 'bluebird'
 
 import CuneiformFragment from 'fragmentarium/ui/fragment/CuneiformFragment'
 import FragmentSearchService from 'fragmentarium/application/FragmentSearchService'
@@ -13,20 +12,46 @@ import DossiersService from 'dossiers/application/DossiersService'
 import { fragmentFactory } from 'test-support/fragment-fixtures'
 import { Fragment } from 'fragmentarium/domain/fragment'
 
+let mockSavePromise: Promise<Fragment>
+const mockInfoSaves: jest.Mock<Promise<Fragment>>[] = []
+
 jest.mock('fragmentarium/ui/info/Info', () => {
-  return function InfoMock(props: { fragment: { number: string } }) {
-    return <div data-testid="fragment-info">{props.fragment.number}</div>
+  return function InfoMock(props: {
+    fragment: { number: string; publication: string }
+    onSave: (save: () => Promise<Fragment>) => void
+    enqueueSave: (save: () => Promise<Fragment>) => Promise<Fragment>
+  }) {
+    return (
+      <div data-testid="fragment-info">
+        {props.fragment.number}
+        <span data-testid="fragment-publication">
+          {props.fragment.publication}
+        </span>
+        <button
+          type="button"
+          onClick={() => props.onSave(mockInfoSaves[mockInfoSaves.length - 1])}
+        >
+          Save genres
+        </button>
+        <button
+          type="button"
+          onClick={() =>
+            props.enqueueSave(mockInfoSaves[mockInfoSaves.length - 1])
+          }
+        >
+          Save script
+        </button>
+      </div>
+    )
   }
 })
-
-let mockSavePromise: Bluebird<Fragment>
 
 jest.mock('fragmentarium/ui/fragment/CuneiformFragmentEditor', () => {
   const { useState } = jest.requireActual('react')
   return {
     EditorTabs: function EditorTabsMock(props: {
       fragment: { number: string }
-      onSave: (promise: Bluebird<Fragment>) => Bluebird<Fragment>
+      onSave: (save: () => Promise<Fragment>) => Promise<Fragment>
     }) {
       const [draft, setDraft] = useState(props.fragment.number)
       return (
@@ -39,7 +64,10 @@ jest.mock('fragmentarium/ui/fragment/CuneiformFragmentEditor', () => {
               onChange={(event) => setDraft(event.target.value)}
             />
           </label>
-          <button type="button" onClick={() => props.onSave(mockSavePromise)}>
+          <button
+            type="button"
+            onClick={() => props.onSave(() => mockSavePromise)}
+          >
             Save fragment
           </button>
         </div>
@@ -120,7 +148,7 @@ it('does not show a previous fragment save error after navigation', async () => 
   const firstFragment = fragmentFactory.build({ number: 'K.1' })
   const secondFragment = fragmentFactory.build({ number: 'K.2' })
   let rejectSave: (error: Error) => void = () => undefined
-  mockSavePromise = new Bluebird<Fragment>((_resolve, reject) => {
+  mockSavePromise = new Promise<Fragment>((_resolve, reject) => {
     rejectSave = reject
   })
   const { rerender } = render(view(firstFragment))
@@ -131,4 +159,75 @@ it('does not show a previous fragment save error after navigation', async () => 
 
   expect(screen.queryByText('K.1 save failed')).not.toBeInTheDocument()
   expect(screen.getByTestId('fragment-editor')).toHaveTextContent('K.2')
+})
+
+it('dispatches an info save only after the previous one has settled', async () => {
+  const fragment = fragmentFactory.build({ number: 'K.1' })
+  let resolveAdd: (saved: Fragment) => void = () => undefined
+  const addGenre = jest.fn(
+    () =>
+      new Promise<Fragment>((resolve) => {
+        resolveAdd = resolve
+      }),
+  )
+  const deleteGenre = jest.fn(() =>
+    Promise.resolve({ ...fragment, publication: 'deleted' } as Fragment),
+  )
+  render(view(fragment))
+
+  mockInfoSaves.push(addGenre)
+  await userEvent.click(screen.getByRole('button', { name: 'Save genres' }))
+  mockInfoSaves.push(deleteGenre)
+  await userEvent.click(screen.getByRole('button', { name: 'Save genres' }))
+  expect(deleteGenre).not.toHaveBeenCalled()
+
+  await act(async () =>
+    resolveAdd({ ...fragment, publication: 'added' } as Fragment),
+  )
+
+  expect(deleteGenre).toHaveBeenCalledTimes(1)
+  expect(screen.getByTestId('fragment-publication')).toHaveTextContent(
+    'deleted',
+  )
+})
+
+it('does not hold a new fragment save behind a pending save of the previous fragment', async () => {
+  const firstFragment = fragmentFactory.build({ number: 'K.1' })
+  const secondFragment = fragmentFactory.build({ number: 'K.2' })
+  mockSavePromise = new Promise<Fragment>(() => undefined)
+  const { rerender } = render(view(firstFragment))
+
+  await userEvent.click(screen.getByRole('button', { name: 'Save fragment' }))
+  rerender(view(secondFragment))
+  const saveSecond = jest.fn(() => Promise.resolve(secondFragment))
+  mockInfoSaves.push(saveSecond)
+  await userEvent.click(screen.getByRole('button', { name: 'Save genres' }))
+
+  expect(saveSecond).toHaveBeenCalledTimes(1)
+})
+
+it('holds a genre save behind a pending sidebar script save', async () => {
+  const fragment = fragmentFactory.build({ number: 'K.1' })
+  let resolveScript: (saved: Fragment) => void = () => undefined
+  const saveScript = jest.fn(
+    () =>
+      new Promise<Fragment>((resolve) => {
+        resolveScript = resolve
+      }),
+  )
+  const saveGenres = jest.fn(() =>
+    Promise.resolve({ ...fragment, publication: 'genres' } as Fragment),
+  )
+  render(view(fragment))
+
+  mockInfoSaves.push(saveScript)
+  await userEvent.click(screen.getByRole('button', { name: 'Save script' }))
+  mockInfoSaves.push(saveGenres)
+  await userEvent.click(screen.getByRole('button', { name: 'Save genres' }))
+  expect(saveGenres).not.toHaveBeenCalled()
+
+  await act(async () => resolveScript(fragment))
+
+  expect(saveGenres).toHaveBeenCalledTimes(1)
+  expect(screen.getByTestId('fragment-publication')).toHaveTextContent('genres')
 })

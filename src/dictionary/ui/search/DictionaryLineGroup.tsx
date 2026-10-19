@@ -1,4 +1,5 @@
 import React from 'react'
+import { CANONICAL_ORIGIN } from 'router/domain'
 import {
   DictionaryLineDisplay,
   LineVariantDisplay,
@@ -7,7 +8,7 @@ import { highlightLemmas, LineColumns } from 'transliteration/ui/line-tokens'
 import { TextId, textIdToString } from 'transliteration/domain/text-id'
 import _ from 'lodash'
 
-import './LinesWithLemma.sass'
+import 'dictionary/ui/search/LinesWithLemma.sass'
 import Markup from 'transliteration/ui/markup'
 import { stageToAbbreviation } from 'common/utils/period'
 import InlineMarkdown from 'common/ui/InlineMarkdown'
@@ -31,7 +32,7 @@ function createCorpusChapterUrl(
     name,
   ]
 
-  return `https://www.ebl.lmu.de/corpus/${urlParts
+  return `${CANONICAL_ORIGIN}/corpus/${urlParts
     .map(encodeURIComponent)
     .join('/')}`
 }

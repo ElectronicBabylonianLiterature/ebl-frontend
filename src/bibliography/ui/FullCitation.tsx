@@ -4,7 +4,7 @@ import MarkdownAndHtmlToHtml from 'common/utils/MarkdownAndHtmlToHtml'
 import ExternalLink from 'common/ui/ExternalLink'
 import Reference from 'bibliography/domain/Reference'
 
-import './FullCitation.css'
+import 'bibliography/ui/FullCitation.css'
 
 export default function FullCitation({
   reference,

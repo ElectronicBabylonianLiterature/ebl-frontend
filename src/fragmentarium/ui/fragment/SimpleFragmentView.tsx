@@ -4,9 +4,9 @@ import withData from 'http/withData'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import { Session } from 'auth/Session'
 import { Transliteration } from 'transliteration/ui/Transliteration'
-import './SimpleFragmentView.sass'
+import 'fragmentarium/ui/fragment/SimpleFragmentView.sass'
 import { useHistory } from 'router/compat'
-import { parse } from 'query-string'
+import { parse } from 'common/utils/queryString'
 
 function getLanguageUrlParam(query: string): string | undefined {
   const lang = parse(query).lang

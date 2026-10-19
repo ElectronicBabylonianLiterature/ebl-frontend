@@ -8,6 +8,7 @@ import {
   EXCAVATION_AREA_SELECTED_LAYER_ID,
 } from 'map/mapExcavationLayers'
 import {
+  clearMockStyleResources,
   deferMapLoad,
   mockAddLayer,
   mockAddSource,
@@ -159,17 +160,35 @@ describe('useExcavationAreas', () => {
     expect(mockRemove).toHaveBeenCalled()
   })
 
-  it('removes pending one-time load listeners on cleanup', () => {
+  it('removes style load listeners on cleanup', () => {
     deferMapLoad()
     const { unmount } = render(<Harness />)
 
     expect(mockAddSource).not.toHaveBeenCalled()
     unmount()
     act(() => {
-      triggerMapEvent('load')
+      triggerMapEvent('style.load')
     })
 
     expect(mockAddSource).not.toHaveBeenCalled()
+  })
+
+  it('restores layers, visibility and selection after a style reload', () => {
+    render(<Harness selectedPolygonId={ASSUR_POLYGON_ID} />)
+    clearMockStyleResources()
+    mockAddLayer.mockClear()
+    mockSetLayoutProperty.mockClear()
+    mockSetPaintProperty.mockClear()
+
+    act(() => triggerMapEvent('style.load'))
+
+    expect(mockAddLayer).toHaveBeenCalledTimes(3)
+    expect(mockSetLayoutProperty).toHaveBeenCalledTimes(3)
+    expect(mockSetPaintProperty).toHaveBeenCalledWith(
+      EXCAVATION_AREA_SELECTED_LAYER_ID,
+      'line-opacity',
+      ['case', ['==', ['get', 'id'], ASSUR_POLYGON_ID], 0.9, 0],
+    )
   })
 
   it('reports only excavation source and layer failures', () => {

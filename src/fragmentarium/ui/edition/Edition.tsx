@@ -1,9 +1,8 @@
 import React from 'react'
-import Bluebird from 'bluebird'
-import TransliterationForm from './TransliterationForm'
+import TransliterationForm from 'fragmentarium/ui/edition/TransliterationForm'
 import PioneersButton from 'fragmentarium/ui/PioneersButton'
 import CollapseExpandButton from 'fragmentarium/ui/CollapseExpandButton'
-import './Edition.css'
+import 'fragmentarium/ui/edition/Edition.css'
 import TransliterationHeader from 'fragmentarium/ui/fragment/TransliterationHeader'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import FragmentSearchService from 'fragmentarium/application/FragmentSearchService'
@@ -11,10 +10,10 @@ import { EditionFields } from 'fragmentarium/application/FragmentService'
 
 type Props = {
   fragment: Fragment
-  updateEdition: (fields: EditionFields) => Bluebird<Fragment>
+  updateEdition: (fields: EditionFields) => Promise<Fragment>
   fragmentSearchService: FragmentSearchService
   disabled?: boolean
-  onToggle: () => void
+  onToggle: (isCollapsed: boolean) => void
   isColumnVisible: boolean
 }
 

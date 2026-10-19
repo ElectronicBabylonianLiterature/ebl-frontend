@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { stringify } from 'query-string'
+import { stringify } from 'common/utils/queryString'
 import _ from 'lodash'
 import { produce } from 'immer'
 import FragmentService from 'fragmentarium/application/FragmentService'
@@ -11,12 +11,15 @@ import DossiersService from 'dossiers/application/DossiersService'
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 import { FragmentQuery } from 'query/FragmentQuery'
 import { ResearchProjects } from 'research-projects/researchProject'
-import replaceTransliteration from 'fragmentarium/domain/replaceTransliteration'
-import SearchFormFields, {
-  type SearchFormState,
-  type SearchFormValue,
-} from 'fragmentarium/ui/SearchFormFields'
-import './SearchForm.sass'
+import SearchFormFields from 'fragmentarium/ui/SearchFormFields'
+import {
+  SearchFormState,
+  SearchFormValue,
+  initializeSearchFormState,
+  flattenSearchFormState,
+  isValidNumber,
+} from 'fragmentarium/ui/SearchForm.state'
+import 'fragmentarium/ui/SearchForm.sass'
 
 export { helpColSize } from 'fragmentarium/ui/search/searchFormLayout'
 
@@ -32,9 +35,7 @@ export type SearchFormProps = {
   navigate: (options: { pathname: string; search: string }) => void
 }
 
-export function isValidNumber(number?: string): boolean {
-  return !number || !/^\[.*\]+$/.test(number.trim())
-}
+export { isValidNumber }
 
 export class SearchForm extends Component<SearchFormProps, SearchFormState> {
   private readonly basepath: string
@@ -46,7 +47,7 @@ export class SearchForm extends Component<SearchFormProps, SearchFormState> {
     this.basepath = props.project
       ? '/projects/' + props.project.toLowerCase() + '/search/'
       : '/library/search/'
-    this.state = this.initializeState(props.fragmentQuery ?? {})
+    this.state = initializeSearchFormState(props.fragmentQuery ?? {})
     this.showAdvancedSearch = props.showAdvancedSearch ?? false
   }
 
@@ -62,32 +63,9 @@ export class SearchForm extends Component<SearchFormProps, SearchFormState> {
   componentDidUpdate(previousProps: SearchFormProps): void {
     if (!_.isEqual(previousProps.fragmentQuery, this.props.fragmentQuery)) {
       this.setState(
-        this.initializeState(this.props.fragmentQuery ?? {}),
+        initializeSearchFormState(this.props.fragmentQuery ?? {}),
         this.fetchMissingReferenceLabel,
       )
-    }
-  }
-
-  private initializeState(fragmentQuery: FragmentQuery): SearchFormState {
-    return {
-      number: fragmentQuery.number || null,
-      referenceEntry: {
-        id: fragmentQuery.bibId || '',
-        label: fragmentQuery.bibLabel || '',
-      },
-      pages: fragmentQuery.pages || null,
-      lemmas: fragmentQuery.lemmas || '',
-      lemmaOperator: fragmentQuery.lemmaOperator || 'line',
-      transliteration: fragmentQuery.transliteration || '',
-      scriptPeriod: fragmentQuery.scriptPeriod || '',
-      scriptPeriodModifier: fragmentQuery.scriptPeriodModifier || '',
-      genre: fragmentQuery.genre || '',
-      site: fragmentQuery.site || '',
-      isValid: isValidNumber(fragmentQuery.number),
-      project: fragmentQuery.project || null,
-      museum: fragmentQuery.museum || null,
-      dossier: fragmentQuery.dossier || null,
-      findspotId: fragmentQuery.findspotId ?? null,
     }
   }
 
@@ -124,34 +102,8 @@ export class SearchForm extends Component<SearchFormProps, SearchFormState> {
     )
   }
 
-  private flattenState(state: SearchFormState): FragmentQuery {
-    const transliteration = _.trimEnd(state.transliteration || '')
-    return _.omitBy(
-      {
-        number: state.number,
-        lemmas: state.lemmas,
-        lemmaOperator: state.lemmas ? state.lemmaOperator : '',
-        bibId: state.referenceEntry.id,
-        label: state.referenceEntry.label,
-        pages: state.pages,
-        transliteration: replaceTransliteration(transliteration) ?? '',
-        scriptPeriodModifier: state.scriptPeriod
-          ? state.scriptPeriodModifier
-          : '',
-        scriptPeriod: state.scriptPeriod,
-        genre: state.genre,
-        site: state.site ?? '',
-        project: state.project,
-        museum: state.museum,
-        dossier: state.dossier,
-        findspotId: state.findspotId,
-      },
-      (value) => value === null || value === undefined || value === '',
-    )
-  }
-
   private navigateWithState = (state: SearchFormState): void => {
-    const query = this.flattenState(state)
+    const query = flattenSearchFormState(state)
     this.onChange('transliteration')(query.transliteration)
     this.props.navigate({
       pathname: this.basepath,

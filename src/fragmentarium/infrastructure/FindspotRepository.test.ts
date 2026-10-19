@@ -1,5 +1,5 @@
 import { findspotFactory } from 'test-support/fragment-data-fixtures'
-import { ApiFindspotRepository } from './FindspotRepository'
+import { ApiFindspotRepository } from 'fragmentarium/infrastructure/FindspotRepository'
 import { testDelegation, TestData } from 'test-support/utils'
 import {
   fromFindspotDto,

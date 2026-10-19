@@ -6,7 +6,7 @@ import {
   labelsAbbreviation,
   Status,
   statusAbbreviation,
-} from './labels'
+} from 'transliteration/domain/labels'
 
 test.each<[Status, string]>([
   ['UNCERTAIN', '?'],

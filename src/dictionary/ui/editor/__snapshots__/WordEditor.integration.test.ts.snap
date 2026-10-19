@@ -16,6 +16,7 @@ exports[`Edit 1`] = `
         >
           <a
             class="navbar-brand"
+            data-discover="true"
             href="/"
             title="electronic Babylonian Library (eBL)"
           >
@@ -81,6 +82,7 @@ exports[`Edit 1`] = `
               >
                 <a
                   class="nav-link"
+                  data-discover="true"
                   data-rr-ui-event-key="/library"
                   href="/library"
                 >
@@ -92,6 +94,7 @@ exports[`Edit 1`] = `
               >
                 <a
                   class="nav-link"
+                  data-discover="true"
                   data-rr-ui-event-key="/corpus"
                   href="/corpus"
                 >
@@ -103,6 +106,7 @@ exports[`Edit 1`] = `
               >
                 <a
                   class="nav-link"
+                  data-discover="true"
                   data-rr-ui-event-key="/about"
                   href="/about"
                 >
@@ -114,6 +118,7 @@ exports[`Edit 1`] = `
               >
                 <a
                   class="nav-link"
+                  data-discover="true"
                   data-rr-ui-event-key="/tools"
                   href="/tools"
                 >
@@ -125,6 +130,7 @@ exports[`Edit 1`] = `
               >
                 <a
                   class="nav-link"
+                  data-discover="true"
                   data-rr-ui-event-key="/projects"
                   href="/projects"
                 >
@@ -221,6 +227,7 @@ exports[`Edit 1`] = `
                 class="breadcrumb-item"
               >
                 <a
+                  data-discover="true"
                   href="/"
                 >
                   eBL
@@ -230,6 +237,7 @@ exports[`Edit 1`] = `
                 class="breadcrumb-item"
               >
                 <a
+                  data-discover="true"
                   href="/tools/dictionary"
                 >
                   Akkadian Dictionary
@@ -1850,6 +1858,7 @@ exports[`Edit 1`] = `
             >
               <li>
                 <a
+                  data-discover="true"
                   href="/about"
                 >
                   About
@@ -1857,6 +1866,7 @@ exports[`Edit 1`] = `
               </li>
               <li>
                 <a
+                  data-discover="true"
                   href="/projects"
                 >
                   Research Projects
@@ -1886,6 +1896,7 @@ exports[`Edit 1`] = `
             >
               <li>
                 <a
+                  data-discover="true"
                   href="/tools/signs"
                 >
                   Signs
@@ -1893,6 +1904,7 @@ exports[`Edit 1`] = `
               </li>
               <li>
                 <a
+                  data-discover="true"
                   href="/tools/dictionary"
                 >
                   Dictionary
@@ -1900,6 +1912,7 @@ exports[`Edit 1`] = `
               </li>
               <li>
                 <a
+                  data-discover="true"
                   href="/tools/references"
                 >
                   Bibliography
@@ -1920,6 +1933,7 @@ exports[`Edit 1`] = `
             >
               <li>
                 <a
+                  data-discover="true"
                   href="/impressum"
                 >
                   Impressum
@@ -1927,6 +1941,7 @@ exports[`Edit 1`] = `
               </li>
               <li>
                 <a
+                  data-discover="true"
                   href="/datenschutz"
                 >
                   Datenschutz
@@ -2084,6 +2099,7 @@ exports[`renders editor 1`] = `
         >
           <a
             class="navbar-brand"
+            data-discover="true"
             href="/"
             title="electronic Babylonian Library (eBL)"
           >
@@ -2149,6 +2165,7 @@ exports[`renders editor 1`] = `
               >
                 <a
                   class="nav-link"
+                  data-discover="true"
                   data-rr-ui-event-key="/library"
                   href="/library"
                 >
@@ -2160,6 +2177,7 @@ exports[`renders editor 1`] = `
               >
                 <a
                   class="nav-link"
+                  data-discover="true"
                   data-rr-ui-event-key="/corpus"
                   href="/corpus"
                 >
@@ -2171,6 +2189,7 @@ exports[`renders editor 1`] = `
               >
                 <a
                   class="nav-link"
+                  data-discover="true"
                   data-rr-ui-event-key="/about"
                   href="/about"
                 >
@@ -2182,6 +2201,7 @@ exports[`renders editor 1`] = `
               >
                 <a
                   class="nav-link"
+                  data-discover="true"
                   data-rr-ui-event-key="/tools"
                   href="/tools"
                 >
@@ -2193,6 +2213,7 @@ exports[`renders editor 1`] = `
               >
                 <a
                   class="nav-link"
+                  data-discover="true"
                   data-rr-ui-event-key="/projects"
                   href="/projects"
                 >
@@ -2289,6 +2310,7 @@ exports[`renders editor 1`] = `
                 class="breadcrumb-item"
               >
                 <a
+                  data-discover="true"
                   href="/"
                 >
                   eBL
@@ -2298,6 +2320,7 @@ exports[`renders editor 1`] = `
                 class="breadcrumb-item"
               >
                 <a
+                  data-discover="true"
                   href="/tools/dictionary"
                 >
                   Akkadian Dictionary
@@ -3918,6 +3941,7 @@ exports[`renders editor 1`] = `
             >
               <li>
                 <a
+                  data-discover="true"
                   href="/about"
                 >
                   About
@@ -3925,6 +3949,7 @@ exports[`renders editor 1`] = `
               </li>
               <li>
                 <a
+                  data-discover="true"
                   href="/projects"
                 >
                   Research Projects
@@ -3954,6 +3979,7 @@ exports[`renders editor 1`] = `
             >
               <li>
                 <a
+                  data-discover="true"
                   href="/tools/signs"
                 >
                   Signs
@@ -3961,6 +3987,7 @@ exports[`renders editor 1`] = `
               </li>
               <li>
                 <a
+                  data-discover="true"
                   href="/tools/dictionary"
                 >
                   Dictionary
@@ -3968,6 +3995,7 @@ exports[`renders editor 1`] = `
               </li>
               <li>
                 <a
+                  data-discover="true"
                   href="/tools/references"
                 >
                   Bibliography
@@ -3988,6 +4016,7 @@ exports[`renders editor 1`] = `
             >
               <li>
                 <a
+                  data-discover="true"
                   href="/impressum"
                 >
                   Impressum
@@ -3995,6 +4024,7 @@ exports[`renders editor 1`] = `
               </li>
               <li>
                 <a
+                  data-discover="true"
                   href="/datenschutz"
                 >
                   Datenschutz

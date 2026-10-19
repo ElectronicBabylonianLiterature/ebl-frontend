@@ -2,10 +2,11 @@ import React, { useState } from 'react'
 import { Dropdown } from 'react-bootstrap'
 import { saveAs } from 'file-saver'
 import Spinner from 'common/ui/Spinner'
+import ErrorAlert from 'common/errors/ErrorAlert'
 import { Document, Packer } from 'docx'
 import $ from 'jquery'
-import Promise from 'bluebird'
 import usePromiseEffect from 'common/hooks/usePromiseEffect'
+import { applyWhenNotAborted } from 'common/utils/applyWhenCurrent'
 import { FragmentWordExportContext } from 'fragmentarium/ui/fragment/Download'
 import { CorpusWordExportContext } from 'corpus/ui/Download'
 
@@ -23,23 +24,31 @@ export default function WordDownloadButton({
   getWordDoc,
 }: Props): JSX.Element {
   const [isLoading, setIsLoading] = useState(false)
-  const [setPromise, cancelPromise] = usePromiseEffect()
+  const [error, setError] = useState<Error | null>(null)
+  const [runDownload] = usePromiseEffect()
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     event.preventDefault()
 
     const jQueryRef = $('#jQueryContainer')
     setIsLoading(true)
-    cancelPromise()
+    setError(null)
 
-    setPromise(
-      getWordDoc
-        .call(context, jQueryRef)
-        .then(packWordDoc)
-        .then((blob) => {
-          saveAs(blob, `${baseFileName}.docx`)
-          setIsLoading(false)
-        }),
+    runDownload((signal) =>
+      applyWhenNotAborted(
+        () => getWordDoc.call(context, jQueryRef).then(packWordDoc),
+        signal,
+        {
+          onSuccess: (blob) => {
+            saveAs(blob, `${baseFileName}.docx`)
+            setIsLoading(false)
+          },
+          onError: (downloadError) => {
+            setError(downloadError)
+            setIsLoading(false)
+          },
+        },
+      ),
     )
   }
 
@@ -48,6 +57,7 @@ export default function WordDownloadButton({
       <Dropdown.Item as="button" onClick={handleClick}>
         {isLoading ? <Spinner /> : children}
       </Dropdown.Item>
+      <ErrorAlert error={error} />
       <div id="jQueryContainer" style={{ display: 'none' }}></div>
     </>
   )

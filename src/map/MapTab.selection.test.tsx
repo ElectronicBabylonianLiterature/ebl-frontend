@@ -2,7 +2,6 @@ import fs from 'fs'
 import path from 'path'
 import { act, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import Bluebird from 'bluebird'
 import fetchMock from 'jest-fetch-mock'
 import { FindspotService } from 'fragmentarium/application/FindspotService'
 import {
@@ -32,7 +31,7 @@ const CANONICAL_POLYGON_ASSET = fs.readFileSync(
 function makeFindspotService(): FindspotService {
   return {
     fetchMapData: jest.fn((siteId: string) =>
-      Bluebird.resolve(
+      Promise.resolve(
         siteId === 'assur'
           ? [
               findspotMapDataDto({

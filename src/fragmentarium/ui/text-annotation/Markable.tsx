@@ -1,6 +1,6 @@
 import React, { PropsWithChildren, useContext, useRef } from 'react'
 import { AnyWord } from 'transliteration/domain/token'
-import './TextAnnotation.sass'
+import 'fragmentarium/ui/text-annotation/TextAnnotation.sass'
 import classNames from 'classnames'
 import _ from 'lodash'
 import SpanAnnotator, {

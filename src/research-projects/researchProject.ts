@@ -1,8 +1,8 @@
 import _ from 'lodash'
-import caicLogo from './logos/CAIC Briefkopf 2023.png'
-import aluLogo from './logos/Alu.png'
-import ampsLogo from './logos/AMPS.png'
-import reccLogo from './logos/RECC.png'
+import caicLogo from 'research-projects/logos/CAIC Briefkopf 2023.png'
+import aluLogo from 'research-projects/logos/Alu.png'
+import ampsLogo from 'research-projects/logos/AMPS.png'
+import reccLogo from 'research-projects/logos/RECC.png'
 
 export interface ResearchProject {
   name: string

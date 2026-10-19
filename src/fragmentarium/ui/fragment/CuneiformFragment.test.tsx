@@ -1,5 +1,4 @@
 import { fireEvent, screen, waitFor, within } from '@testing-library/react'
-import { Promise } from 'bluebird'
 import _ from 'lodash'
 import { submitFormByTestId, clickNth } from 'test-support/utils'
 import {

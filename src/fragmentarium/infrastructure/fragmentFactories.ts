@@ -1,3 +1,4 @@
+import _ from 'lodash'
 import {
   Fragment,
   FragmentInfo,
@@ -21,16 +22,34 @@ import createReference from 'bibliography/application/createReference'
 import { createTransliteration } from 'transliteration/application/dtos'
 import { Joins } from 'fragmentarium/domain/join'
 import FragmentDto from 'fragmentarium/domain/FragmentDtos'
-import { PeriodModifiers, Periods } from 'common/utils/period'
+import { Period, PeriodModifiers } from 'common/utils/period'
+import { Periods } from 'common/utils/periodDefinitions'
 import { createResearchProject } from 'research-projects/researchProject'
 import { MesopotamianDate } from 'chronology/domain/Date'
 import { createArchaeology } from 'fragmentarium/domain/archaeologyDtos'
 import { Colophon } from 'fragmentarium/domain/Colophon'
 
-export function createScript(dto: ScriptDto): Script {
-  const period =
-    Periods[dto && typeof dto.period === 'string' ? dto.period : ''] ??
+const periodValues: readonly Period[] = _.values(Periods)
+const periodsByName = new Map<string, Period>(
+  periodValues.map((period) => [period.name, period]),
+)
+const periodsByAbbreviation = new Map<string, Period>(
+  periodValues.map((period) => [period.abbreviation, period]),
+)
+
+function createPeriod(periodName: string): Period {
+  return (
+    periodsByName.get(periodName) ??
+    periodsByAbbreviation.get(periodName) ??
     Periods.Uncertain
+  )
+}
+
+export function createScript(dto?: ScriptDto): Script {
+  const period =
+    dto && typeof dto.period === 'string'
+      ? createPeriod(dto.period)
+      : Periods.Uncertain
   const periodModifier =
     PeriodModifiers[
       dto && typeof dto.periodModifier === 'string'
@@ -73,13 +92,7 @@ export function createFragment(dto: FragmentDto): Fragment {
     ...dto,
     number: museumNumberToString(dto.museumNumber),
     accession: dto.accession ? museumNumberToString(dto.accession) : '',
-    acquisition: dto.acquisition
-      ? new Acquisition(
-          dto.acquisition.supplier,
-          dto.acquisition.date,
-          dto.acquisition.description,
-        )
-      : null,
+    acquisitions: (dto.acquisitions ?? []).map(Acquisition.fromDto),
     museum: Museums[museumKey],
     joins: createJoins(dto.joins ?? []),
     measures: {
