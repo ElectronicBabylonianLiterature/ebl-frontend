@@ -2,29 +2,11 @@ import React from 'react'
 import { act, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { MemoryRouter, useLocation } from 'react-router-dom'
-import FragmentService from 'fragmentarium/application/FragmentService'
-import FragmentSearchService from 'fragmentarium/application/FragmentSearchService'
 import BibliographyService from 'bibliography/application/BibliographyService'
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
-import WordService from 'dictionary/application/WordService'
-import DossiersService from 'dossiers/application/DossiersService'
 import FindspotConstraint from 'fragmentarium/ui/FindspotConstraint'
-import SearchFormWithRouter, {
-  SearchForm,
-  type SearchFormProps,
-} from 'fragmentarium/ui/SearchForm'
-
-function formProps(overrides: Partial<SearchFormProps> = {}): SearchFormProps {
-  return {
-    fragmentSearchService: {} as FragmentSearchService,
-    fragmentService: {} as FragmentService,
-    dossiersService: {} as DossiersService,
-    bibliographyService: {} as BibliographyService,
-    wordService: {} as WordService,
-    navigate: jest.fn(),
-    ...overrides,
-  }
-}
+import SearchFormWithRouter, { SearchForm } from 'fragmentarium/ui/SearchForm'
+import { searchFormProps as formProps } from 'fragmentarium/ui/SearchForm.props.testSupport'
 
 function CurrentLocation(): JSX.Element {
   const location = useLocation()
