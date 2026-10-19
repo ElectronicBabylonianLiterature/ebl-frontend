@@ -1,6 +1,6 @@
-import charactersWithAccents from './charactersWithAccents.json'
-import specialTransliterationCharacters from './specialTransliterationCharacters.json'
-import escapeRegExp from './escapeRegExp'
+import charactersWithAccents from 'fragmentarium/domain/charactersWithAccents.json'
+import specialTransliterationCharacters from 'fragmentarium/domain/specialTransliterationCharacters.json'
+import escapeRegExp from 'fragmentarium/domain/escapeRegExp'
 
 const charactersWithAccentsAsString = escapeRegExp(
   Object.keys(charactersWithAccents),

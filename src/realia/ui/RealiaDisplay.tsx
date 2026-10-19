@@ -216,6 +216,10 @@ export default withData<
   WithoutData<{ data: RealiaEntry; id: string }>,
   { realiaService: RealiaService },
   RealiaEntry
->(RealiaEntryDisplay, (props) => props.realiaService.find(props.id), {
-  watch: (props) => [props.id],
-})
+>(
+  RealiaEntryDisplay,
+  (props, signal) => props.realiaService.find(props.id, signal),
+  {
+    watch: (props) => [props.id],
+  },
+)

@@ -2,7 +2,7 @@ import Sign, { OrderedSign, Value } from 'signs/domain/Sign'
 import Chance from 'chance'
 import { Factory } from 'fishery'
 
-const chance = new Chance()
+const chance = new Chance('sign-fixtures')
 
 const mesZL = `123	**ALSK13**	𒁇𒍴
 Lorem ipsum dolor *sit* amet, consetetur <span style="color: #00610F;">*sadipscing*(*l*)*ubasd*</span>sadipscing elitr, sed diam *nonumy*

@@ -1,6 +1,6 @@
 import _ from 'lodash'
-import { Token } from './token'
-import { isAkkadianWord, isColumn } from './type-guards'
+import { Token } from 'transliteration/domain/token'
+import { isAkkadianWord, isColumn } from 'transliteration/domain/type-guards'
 import { PhoneticProps } from 'akkadian/application/phonetics/segments'
 
 export interface TextLineColumn {
@@ -13,23 +13,13 @@ export function updatePhoneticPropsContext(
   index: number,
   phoneticProps?: PhoneticProps,
 ): PhoneticProps {
-  const previousWord = _.find(content.slice(0, index).reverse(), (token) =>
-    isAkkadianWord(token),
-  )
-  const nextWord = _.find(content.slice(index + 1), (token) =>
-    isAkkadianWord(token),
-  )
+  const previousWord = content.slice(0, index).reverse().find(isAkkadianWord)
+  const nextWord = content.slice(index + 1).find(isAkkadianWord)
   return {
     ...phoneticProps,
     wordContext: {
-      ...(previousWord &&
-        isAkkadianWord(previousWord) && {
-          previousWord,
-        }),
-      ...(nextWord &&
-        isAkkadianWord(nextWord) && {
-          nextWord,
-        }),
+      ...(previousWord && { previousWord }),
+      ...(nextWord && { nextWord }),
     },
   }
 }

@@ -1,13 +1,12 @@
 import React from 'react'
 import { render, screen, fireEvent } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import FolioDropdown from './FolioDropdown'
+import FolioDropdown from 'fragmentarium/ui/images/FolioDropdown'
 import Folio from 'fragmentarium/domain/Folio'
-import { TabController } from 'fragmentarium/ui/images/Images'
 
 describe('FolioDropdown', () => {
   let folios: Folio[]
-  let controller: TabController
+  let onOpenFolio: jest.Mock
 
   const setup = (): void => {
     folios = [
@@ -15,11 +14,9 @@ describe('FolioDropdown', () => {
       new Folio({ name: 'ER', number: '2' }),
     ]
 
-    controller = {
-      openTab: jest.fn(),
-    } as unknown as TabController
+    onOpenFolio = jest.fn()
 
-    render(<FolioDropdown folios={folios} controller={controller} />)
+    render(<FolioDropdown folios={folios} onOpenFolio={onOpenFolio} />)
   }
 
   it('renders the dropdown toggle', () => {
@@ -35,12 +32,12 @@ describe('FolioDropdown', () => {
     expect(screen.getByText('Reiner Folio 2')).toBeInTheDocument()
   })
 
-  it('calls controller.openTab when a dropdown item is clicked', async () => {
+  it('opens the clicked folio', async () => {
     setup()
     await userEvent.click(screen.getByText('Folios'))
 
     fireEvent.click(screen.getByText('Smith Folio 1'))
 
-    expect(controller.openTab).toHaveBeenCalledWith('0')
+    expect(onOpenFolio).toHaveBeenCalledWith(0)
   })
 })

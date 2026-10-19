@@ -2,10 +2,9 @@ import React from 'react'
 import { MemoryRouter } from 'react-router-dom'
 
 import { render } from '@testing-library/react'
-import Promise from 'bluebird'
 import { whenClicked } from 'test-support/utils'
 import SessionContext from 'auth/SessionContext'
-import PioneersButton from './PioneersButton'
+import PioneersButton from 'fragmentarium/ui/PioneersButton'
 import { fragmentFactory } from 'test-support/fragment-fixtures'
 
 let fragmentSearchService
@@ -28,11 +27,6 @@ beforeEach(async () => {
   mockNavigate.mockReset()
 })
 
-const routerFuture = Object.fromEntries([
-  ['v7_startTransition', true],
-  ['v7_relativeSplatPath', true],
-])
-
 it('Redirects to interesting when clicked', async () => {
   renderPioneersButton(true)
   const fragment = fragmentFactory.build()
@@ -52,7 +46,7 @@ it('Hides button if user does not have transliteration rights', async () => {
 function renderPioneersButton(isAllowedTo) {
   session.isAllowedToTransliterateFragments.mockReturnValue(isAllowedTo)
   element = render(
-    <MemoryRouter future={routerFuture}>
+    <MemoryRouter>
       <SessionContext.Provider value={session}>
         <PioneersButton fragmentSearchService={fragmentSearchService} />
       </SessionContext.Provider>

@@ -1,4 +1,4 @@
-import { Acquisition } from './Acquisition'
+import { Acquisition } from 'fragmentarium/domain/Acquisition'
 
 describe('Acquisition', () => {
   describe('Basic functionality', () => {
@@ -144,6 +144,16 @@ describe('Acquisition', () => {
         name: 'zero date with description',
         create: () => new Acquisition('Smithsonian', 0, 'Artifact'),
         expected: 'Smithsonian (Artifact)',
+      },
+      {
+        name: 'empty supplier',
+        create: () => new Acquisition(''),
+        expected: 'Anonymous',
+      },
+      {
+        name: 'empty supplier with date',
+        create: () => new Acquisition('', 1900),
+        expected: 'Anonymous, 1900',
       },
     ]
 

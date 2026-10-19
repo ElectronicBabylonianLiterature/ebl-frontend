@@ -1,4 +1,4 @@
-import { generateIds } from './GenerateIds'
+import { generateIds } from 'bibliography/domain/GenerateIds'
 import { CslData } from 'bibliography/domain/BibliographyEntry'
 
 const testEntry: CslData = {

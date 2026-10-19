@@ -1,10 +1,21 @@
 import createReference from 'bibliography/application/createReference'
 import { ReferenceDto } from 'bibliography/domain/referenceDto'
 import _ from 'lodash'
-import { Findspot, ExcavationPlan, PartialDate, DateRange } from './archaeology'
-import { Archaeology, excavationSites, SiteKey } from './archaeology'
+import {
+  Findspot,
+  ExcavationPlan,
+  PartialDate,
+  DateRange,
+} from 'fragmentarium/domain/archaeology'
+import {
+  Archaeology,
+  excavationSites,
+  SiteKey,
+} from 'fragmentarium/domain/archaeology'
 
-import MuseumNumber, { museumNumberToString } from './MuseumNumber'
+import MuseumNumber, {
+  museumNumberToString,
+} from 'fragmentarium/domain/MuseumNumber'
 
 function getExcavationSite(site?: SiteKey | string) {
   if (!site) {

@@ -1,12 +1,12 @@
 import React from 'react'
 import _ from 'lodash'
-import { LineProps } from './LineProps'
+import { LineProps } from 'transliteration/ui/LineProps'
 import TranslationLine, {
   Extent,
 } from 'transliteration/domain/translation-line'
 import Markup from 'transliteration/ui/markup'
 import lineNumberToString from 'transliteration/domain/lineNumberToString'
-import TransliterationTd from './TransliterationTd'
+import TransliterationTd from 'transliteration/ui/TransliterationTd'
 
 function DisplayExtent({ extent }: { extent: Extent }): JSX.Element {
   const labels = extent.labels.join(' ')

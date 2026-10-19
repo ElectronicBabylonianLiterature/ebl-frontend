@@ -3,7 +3,7 @@ import {
   sanitizeProvenanceRecord,
   sortProvenances,
   ProvenanceRecord,
-} from './Provenance'
+} from 'fragmentarium/domain/Provenance'
 
 describe('sanitizeProvenanceRecord', () => {
   it('keeps valid point and polygon geometry', () => {

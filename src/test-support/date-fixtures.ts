@@ -27,13 +27,13 @@ export const kingUr3 = {
   notes: '',
 }
 
-export const eponym = {
+export const eponym: Eponym = {
   date: '910',
   name: 'Adad-nērārī (II)',
   title: 'king',
   isKing: true,
   phase: 'NA',
-} as Eponym
+}
 
 export const nabonassarEraKing = {
   orderGlobal: 172,
@@ -90,7 +90,7 @@ export const rimushKing = {
   notes: '',
 }
 
-const chance = new Chance()
+const chance = new Chance('date-fixtures')
 
 export const mesopotamianDateFactory = Factory.define<MesopotamianDate>(() => {
   const isSeleucidEra = chance.bool()

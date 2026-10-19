@@ -9,8 +9,8 @@ import {
 import { LineVariant, ManuscriptLine } from 'corpus/domain/line'
 import { Chapter } from 'corpus/domain/chapter'
 import Reconstruction from 'corpus/ui/Reconstruction'
-import OmittedWordsSelect from './OmittedWordsSelect'
-import WordAligner from './WordAligner'
+import OmittedWordsSelect from 'corpus/ui/alignment/OmittedWordsSelect'
+import WordAligner from 'corpus/ui/alignment/WordAligner'
 import { isAnyWord } from 'transliteration/domain/type-guards'
 
 const setAlignment = produce(

@@ -1,3 +1,4 @@
+import { MAP_STYLE_LOAD_EVENT } from 'map/mapLayers'
 import type { FeatureCollection, Position } from 'geojson'
 import type {
   AddLayerObject,
@@ -150,19 +151,19 @@ export function createSpatialSearchLayerLifecycle(
     updateSpatialSearchGeometry(map, latestCorner, latestBounds)
   }
 
-  if (map.isStyleLoaded()) install()
-  else map.once('load', install)
+  map.on(MAP_STYLE_LOAD_EVENT, install)
+  if (map.getStyle()) install()
 
   return {
     update(firstCorner, bounds): void {
       latestCorner = firstCorner
       latestBounds = bounds
-      if (!disposed && isCurrentMap() && map.isStyleLoaded()) install()
+      if (!disposed && isCurrentMap() && map.getStyle()) install()
     },
     dispose(): void {
       disposed = true
       if (!isCurrentMap()) return
-      map.off('load', install)
+      map.off(MAP_STYLE_LOAD_EVENT, install)
       removeSpatialSearchLayers(map)
     },
   }

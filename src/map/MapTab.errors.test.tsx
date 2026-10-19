@@ -1,3 +1,4 @@
+import { openLayerControls } from 'map/mapLayerControls.testSupport'
 import fs from 'fs'
 import path from 'path'
 import { act, screen, waitFor } from '@testing-library/react'
@@ -17,6 +18,8 @@ import {
 import { MAP_STYLE_URL } from 'map/mapBackgroundError'
 import { EXCAVATION_AREAS_SOURCE_ID } from 'map/mapExcavationLayers'
 
+import { MAP_STYLE_LOAD_EVENT } from 'map/mapLayers'
+
 jest.mock('maplibre-gl')
 
 const BACKGROUND_WARNING = /The interactive map could not be loaded/
@@ -25,12 +28,6 @@ const CANONICAL_POLYGON_ASSET = fs.readFileSync(
   path.resolve(__dirname, '../../public/map-data/findspots/all.geojson'),
   'utf8',
 )
-
-async function openLayerControls(): Promise<void> {
-  await userEvent.click(
-    await screen.findByRole('button', { name: 'Map layers' }),
-  )
-}
 
 describe('MapTab map errors', () => {
   beforeEach(() => {
@@ -103,7 +100,7 @@ describe('MapTab map errors', () => {
     expect(screen.getByText(BACKGROUND_WARNING)).toBeInTheDocument()
 
     act(() => {
-      triggerMapEvent('load')
+      triggerMapEvent(MAP_STYLE_LOAD_EVENT)
     })
 
     expect(screen.queryByText(BACKGROUND_WARNING)).not.toBeInTheDocument()
