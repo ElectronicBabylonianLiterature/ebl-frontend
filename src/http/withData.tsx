@@ -1,8 +1,8 @@
-import React, { useState, useEffect, useRef } from 'react'
-import Promise from 'bluebird'
+import React, { useEffect, useRef, useState } from 'react'
 import Spinner from 'common/ui/Spinner'
 import ErrorAlert from 'common/errors/ErrorAlert'
 import ErrorBoundary from 'common/errors/ErrorBoundary'
+import { isCancellation } from 'common/utils/abortError'
 
 export type WithoutData<T> = Omit<T, 'data'>
 
@@ -14,49 +14,48 @@ export type Config<PROPS, DATA> = {
   watch: (props: PROPS) => unknown[]
   filter: (props: PROPS) => boolean
   defaultData: (props: PROPS) => DATA | null
+  retry?: boolean
 }
 
 export default function withData<PROPS, GETTER_PROPS, DATA>(
   WrappedComponent: React.ComponentType<WithData<PROPS, DATA>>,
-  getter: (props: PROPS & GETTER_PROPS) => Promise<DATA>,
+  getter: (props: PROPS & GETTER_PROPS, signal: AbortSignal) => Promise<DATA>,
   config: Partial<Config<PROPS & GETTER_PROPS, DATA>> = {},
 ): React.ComponentType<PROPS & GETTER_PROPS> {
   const fullConfig: Config<PROPS & GETTER_PROPS, DATA> = {
     watch: () => [],
     filter: () => true,
     defaultData: () => null,
+    retry: false,
     ...config,
   }
   return function ComponentWithData(props: PROPS & GETTER_PROPS): JSX.Element {
     const [data, setData] = useState<DATA | null>(null)
     const [error, setError] = useState<Error | null>(null)
+    const [retryCount, setRetryCount] = useState(0)
     const requestSequence = useRef(0)
 
     useEffect(
       () => {
         const requestId = requestSequence.current + 1
         requestSequence.current = requestId
-        let fetchPromise: Promise<DATA> | undefined
+        const abortController = new AbortController()
+        const isCurrent = (): boolean =>
+          requestSequence.current === requestId &&
+          !abortController.signal.aborted
         setError(null)
         if (fullConfig.filter(props)) {
           setData(null)
-          fetchPromise = getter(props)
-          fetchPromise
+          getter(props, abortController.signal)
             .then((resolvedData) => {
-              if (requestSequence.current === requestId) {
+              if (isCurrent()) {
                 setData(resolvedData)
               }
             })
             .catch((resolvedError) => {
-              const isCancellationError =
-                (resolvedError as { name?: string })?.name ===
-                  'CancellationError' ||
-                (typeof fetchPromise?.isCancelled === 'function' &&
-                  fetchPromise.isCancelled())
-
               if (
-                requestSequence.current === requestId &&
-                !isCancellationError
+                isCurrent() &&
+                !isCancellation(resolvedError, abortController.signal)
               ) {
                 setError(resolvedError as Error)
               }
@@ -65,13 +64,11 @@ export default function withData<PROPS, GETTER_PROPS, DATA>(
           setData(fullConfig.defaultData(props))
         }
         return (): void => {
-          if (fetchPromise?.cancel) {
-            fetchPromise.cancel()
-          }
+          abortController.abort()
         }
       },
       // eslint-disable-next-line react-hooks/exhaustive-deps
-      fullConfig.watch(props),
+      [...fullConfig.watch(props), retryCount],
     )
 
     return (
@@ -81,7 +78,15 @@ export default function withData<PROPS, GETTER_PROPS, DATA>(
             <Spinner />
           </div>
         )}
-        <ErrorAlert error={error} />
+        <ErrorAlert
+          error={error}
+          onRetry={
+            fullConfig.retry === true
+              ? () =>
+                  setRetryCount((currentRetryCount) => currentRetryCount + 1)
+              : undefined
+          }
+        />
         {data && <WrappedComponent data={data} {...props} />}
       </ErrorBoundary>
     )

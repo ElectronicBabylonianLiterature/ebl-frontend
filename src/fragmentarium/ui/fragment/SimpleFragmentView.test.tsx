@@ -65,3 +65,14 @@ describe('language url parameter', () => {
     expect(screen.getByText('Arabic translation')).toBeVisible()
   })
 })
+
+it('explains that the fragment cannot be read without permission', async () => {
+  session.isAllowedToReadFragments.mockReturnValue(false)
+
+  await renderSimpleFragmentView()
+
+  expect(
+    screen.getByText("You don't have permissions to view this fragment."),
+  ).toBeVisible()
+  expect(screen.queryByText('English translation')).not.toBeInTheDocument()
+})

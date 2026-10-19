@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo } from 'react'
-import App from './App'
+import App from 'App'
 
 import ApiClient from 'http/ApiClient'
 import WordRepository from 'dictionary/infrastructure/WordRepository'

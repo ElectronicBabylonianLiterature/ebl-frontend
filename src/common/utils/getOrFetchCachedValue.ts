@@ -1,13 +1,12 @@
-import Bluebird from 'bluebird'
 import { CacheEntry, getCachedValue, setCachedValue } from 'common/utils/cache'
 
 type GetOrFetchCachedValueParams<CacheKey, CacheValue> = {
   readonly cache: Map<CacheKey, CacheEntry<CacheValue>>
-  readonly requests: Map<CacheKey, Bluebird<CacheValue>>
+  readonly requests: Map<CacheKey, Promise<CacheValue>>
   readonly key: CacheKey
   readonly maximumCacheSize: number
   readonly cacheEntryLifetimeInMilliseconds: number
-  readonly fetchValue: () => Bluebird<CacheValue>
+  readonly fetchValue: () => Promise<CacheValue>
   readonly getCurrentTime?: () => number
 }
 
@@ -19,24 +18,20 @@ export default function getOrFetchCachedValue<CacheKey, CacheValue>({
   cacheEntryLifetimeInMilliseconds,
   fetchValue,
   getCurrentTime = () => Date.now(),
-}: GetOrFetchCachedValueParams<CacheKey, CacheValue>): Bluebird<CacheValue> {
+}: GetOrFetchCachedValueParams<CacheKey, CacheValue>): Promise<CacheValue> {
   const cachedValue = getCachedValue(cache, key, getCurrentTime)
 
   if (cachedValue !== null) {
-    return Bluebird.resolve(cachedValue)
+    return Promise.resolve(cachedValue)
   }
 
   const inFlightRequest = requests.get(key)
 
   if (inFlightRequest) {
-    if (inFlightRequest.isCancelled()) {
-      requests.delete(key)
-    } else {
-      return inFlightRequest
-    }
+    return inFlightRequest
   }
 
-  const requestReference: { current?: Bluebird<CacheValue> } = {}
+  const requestReference: { current?: Promise<CacheValue> } = {}
   const request = fetchValue()
     .then((value) =>
       requests.get(key) === requestReference.current

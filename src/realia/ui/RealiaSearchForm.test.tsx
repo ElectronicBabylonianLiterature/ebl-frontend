@@ -5,11 +5,6 @@ import RealiaSearchForm from 'realia/ui/RealiaSearchForm'
 
 const mockNavigate = jest.fn()
 
-const routerFuture = Object.fromEntries([
-  ['v7_startTransition', true],
-  ['v7_relativeSplatPath', true],
-])
-
 jest.mock('react-router-dom', () => ({
   ...jest.requireActual('react-router-dom'),
   useNavigate: () => mockNavigate,
@@ -17,7 +12,7 @@ jest.mock('react-router-dom', () => ({
 
 function renderForm(query = ''): void {
   render(
-    <MemoryRouter future={routerFuture}>
+    <MemoryRouter>
       <RealiaSearchForm query={query} />
     </MemoryRouter>,
   )

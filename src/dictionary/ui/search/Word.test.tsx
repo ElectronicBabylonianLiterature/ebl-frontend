@@ -2,7 +2,7 @@ import React from 'react'
 import { render, screen } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 import DictionaryWord from 'dictionary/domain/Word'
-import Word from './Word'
+import Word from 'dictionary/ui/search/Word'
 import { wordFactory } from 'test-support/word-fixtures'
 
 let word: DictionaryWord

@@ -5,7 +5,8 @@ import Citation from 'bibliography/domain/Citation'
 import Reference from 'bibliography/domain/Reference'
 import { ReferenceDto } from 'bibliography/domain/referenceDto'
 import createReference from 'bibliography/application/createReference'
-import { PeriodModifiers, Periods } from 'common/utils/period'
+import { PeriodModifiers } from 'common/utils/period'
+import { Periods } from 'common/utils/periodDefinitions'
 import { createScript } from 'fragmentarium/infrastructure/FragmentRepository'
 import _kings from 'chronology/domain/Kings.json'
 import { King } from 'chronology/ui/Kings/Kings'
@@ -138,21 +139,20 @@ export default class DossierRecord {
     if (!this.yearRangeFrom) {
       return null
     }
-    const years = this.formatYears()
+    const years = this.formatYears(this.yearRangeFrom)
     return `${this.isApproximateDate ? 'ca. ' : ''}${years}`
   }
 
-  private formatYears(): string {
-    const yearFrom = this.formatYear(this.yearRangeFrom)
-    if (this.yearRangeFrom === this.yearRangeTo || !this.yearRangeTo) {
+  private formatYears(yearRangeFrom: number): string {
+    const yearFrom = this.formatYear(yearRangeFrom)
+    if (yearRangeFrom === this.yearRangeTo || !this.yearRangeTo) {
       return yearFrom
     }
     const yearTo = this.formatYear(this.yearRangeTo)
     return `${yearFrom} - ${yearTo}`
   }
 
-  private formatYear(year: number | undefined): string {
-    if (year === undefined) return ''
+  private formatYear(year: number): string {
     const prefix = year < 0 ? 'BCE' : 'CE'
     return `${Math.abs(year)} ${prefix}`
   }

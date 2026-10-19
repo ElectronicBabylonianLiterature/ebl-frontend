@@ -1,8 +1,8 @@
 import React, { Component, Fragment, ReactNode } from 'react'
 
-import ArrayWithNotesList from './ArrayWithNotesList'
-import TextInput from './TextInput'
-import AmplifiedMeaningList from './AmplifiedMeaningList'
+import ArrayWithNotesList from 'dictionary/ui/editor/ArrayWithNotesList'
+import TextInput from 'dictionary/ui/editor/TextInput'
+import AmplifiedMeaningList from 'dictionary/ui/editor/AmplifiedMeaningList'
 
 class AmplifiedMeaningInput extends Component<{ value; onChange; entry }> {
   onChange =

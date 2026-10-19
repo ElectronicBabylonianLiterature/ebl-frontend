@@ -1,4 +1,4 @@
-import replaceTransliteration from './replaceTransliteration'
+import replaceTransliteration from 'fragmentarium/domain/replaceTransliteration'
 
 test('Replaces transliteration', () => {
   const transliteration =

@@ -1,5 +1,4 @@
-import Bluebird from 'bluebird'
-import BibliographyService from './BibliographyService'
+import BibliographyService from 'bibliography/application/BibliographyService'
 import BibliographyRepository from 'bibliography/infrastructure/BibliographyRepository'
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 
@@ -57,7 +56,7 @@ describe('BibliographyService', () => {
     const service = new BibliographyService(bibliographyRepository)
     let resolveFind: ((entry: BibliographyEntry) => void) | undefined
     bibliographyRepository.find.mockReturnValue(
-      new Bluebird((resolve) => {
+      new Promise((resolve) => {
         resolveFind = resolve
       }),
     )
@@ -91,5 +90,64 @@ describe('BibliographyService', () => {
     await expect(service.find('RN1')).resolves.toBe(entryA)
 
     expect(bibliographyRepository.find).toHaveBeenCalledTimes(2)
+  })
+
+  test('search forwards the query and the signal', async () => {
+    const service = new BibliographyService(bibliographyRepository)
+    const signal = new AbortController().signal
+    bibliographyRepository.search.mockResolvedValue([entryA])
+
+    await expect(service.search('Borger', signal)).resolves.toEqual([entryA])
+
+    expect(bibliographyRepository.search).toHaveBeenCalledWith('Borger', signal)
+  })
+
+  test('update caches the saved entry for later lookups', async () => {
+    const service = new BibliographyService(bibliographyRepository)
+    bibliographyRepository.update.mockResolvedValue(entryB)
+
+    await expect(service.update(entryB)).resolves.toBe(entryB)
+    await expect(service.find('RN2')).resolves.toBe(entryB)
+
+    expect(bibliographyRepository.find).not.toHaveBeenCalled()
+  })
+
+  test('create caches the created entry for later lookups', async () => {
+    const service = new BibliographyService(bibliographyRepository)
+    bibliographyRepository.create.mockResolvedValue(entryA)
+
+    await expect(service.create(entryA)).resolves.toBe(entryA)
+    await expect(service.find('RN1')).resolves.toBe(entryA)
+
+    expect(bibliographyRepository.create).toHaveBeenCalledWith(entryA)
+    expect(bibliographyRepository.find).not.toHaveBeenCalled()
+  })
+
+  test('findMany resolves to an empty list without a request for no ids', async () => {
+    const service = new BibliographyService(bibliographyRepository)
+
+    await expect(service.findMany([])).resolves.toEqual([])
+
+    expect(bibliographyRepository.findMany).not.toHaveBeenCalled()
+    expect(bibliographyRepository.find).not.toHaveBeenCalled()
+  })
+
+  test('listAllBibliography forwards to the repository', async () => {
+    const service = new BibliographyService(bibliographyRepository)
+    bibliographyRepository.listAllBibliography.mockResolvedValue(['RN1'])
+
+    await expect(service.listAllBibliography()).resolves.toEqual(['RN1'])
+  })
+
+  test('keeps the cache when resolving the cache scope throws', async () => {
+    const service = new BibliographyService(bibliographyRepository, () => {
+      throw new Error('scope unavailable')
+    })
+    bibliographyRepository.find.mockResolvedValue(entryA)
+
+    await expect(service.find('RN1')).resolves.toBe(entryA)
+    await expect(service.find('RN1')).resolves.toBe(entryA)
+
+    expect(bibliographyRepository.find).toHaveBeenCalledTimes(1)
   })
 })
