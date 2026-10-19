@@ -1,11 +1,8 @@
 import { lemmatized } from 'test-support/lines/text-lemmatization'
-import {
-  emptyFirstColumn,
-  firstColumnSpan,
-  implicitFirstColumn,
-  span,
-} from 'test-support/lines/text-columns'
-import { createColumns, numberOfColumns } from './columns'
+import { emptyFirstColumn } from 'test-support/lines/text-columns'
+import { firstColumnSpan, span } from 'test-support/lines/text-columns-spans'
+import { implicitFirstColumn } from 'test-support/lines/text-columns-implicit'
+import { createColumns, numberOfColumns } from 'transliteration/domain/columns'
 
 test.each([
   emptyFirstColumn,

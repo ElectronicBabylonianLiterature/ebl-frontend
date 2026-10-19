@@ -1,4 +1,6 @@
-import MuseumNumber, { museumNumberToString } from './MuseumNumber'
+import MuseumNumber, {
+  museumNumberToString,
+} from 'fragmentarium/domain/MuseumNumber'
 
 test.each([
   [{ prefix: 'K', number: '1', suffix: '' }, 'K.1'],

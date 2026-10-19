@@ -5,51 +5,25 @@ import FragmentSearchService from 'fragmentarium/application/FragmentSearchServi
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 import WordService from 'dictionary/application/WordService'
 import DossiersService from 'dossiers/application/DossiersService'
-import {
-  PeriodModifierString,
-  PeriodString,
-  QueryType,
-} from 'query/FragmentQuery'
 import { ResearchProjects } from 'research-projects/researchProject'
 import LuckyButton from 'fragmentarium/ui/front-page/LuckyButton'
 import PioneersButton from 'fragmentarium/ui/PioneersButton'
 import FindspotConstraint from 'fragmentarium/ui/FindspotConstraint'
-import GenreSearchForm from 'fragmentarium/ui/search/SearchFormGenre'
+import SearchFormAdvanced from 'fragmentarium/ui/search/SearchFormAdvanced'
 import LemmaSearchForm from 'fragmentarium/ui/search/SearchFormLemma'
-import MuseumSearchForm from 'fragmentarium/ui/search/SearchFormMuseum'
 import NumberSearchForm from 'fragmentarium/ui/search/SearchFormNumber'
-import PeriodSearchForm from 'fragmentarium/ui/search/SearchFormPeriod'
-import ProvenanceSearchForm from 'fragmentarium/ui/search/SearchFormProvenance'
 import ReferenceSearchForm from 'fragmentarium/ui/search/SearchFormReference'
 import TransliterationSearchForm from 'fragmentarium/ui/search/SearchFormTransliteration'
-import SearchFormDossier from 'fragmentarium/ui/search/SearchFormDossier'
 import { helpColSize } from 'fragmentarium/ui/search/searchFormLayout'
 
-export interface SearchFormState {
-  number: string | null
-  referenceEntry: { id: string; label: string }
-  pages: string | null
-  lemmas: string | null
-  lemmaOperator: QueryType | null
-  transliteration: string | null
-  scriptPeriod: PeriodString
-  scriptPeriodModifier: PeriodModifierString
-  genre: string | null
-  project: keyof typeof ResearchProjects | null
-  isValid: boolean
-  site: string | null
-  museum: string | null
-  dossier: string | null
-  findspotId: number | string | null
-}
-
-export type SearchFormValue =
-  | string
-  | null
-  | undefined
-  | QueryType
-  | BibliographyEntry
-  | keyof typeof ResearchProjects
+import {
+  SearchFormState,
+  SearchFormValue,
+} from 'fragmentarium/ui/SearchForm.state'
+export type {
+  SearchFormState,
+  SearchFormValue,
+} from 'fragmentarium/ui/SearchForm.state'
 
 interface Props {
   readonly state: SearchFormState
@@ -69,11 +43,6 @@ interface Props {
   readonly onKeyDown: (event: React.KeyboardEvent) => void
 }
 
-const SearchField = <T extends React.ElementType>({
-  component: Component,
-  ...props
-}: { component: T } & React.ComponentProps<T>) => <Component {...props} />
-
 export default function SearchFormFields({
   state,
   showAdvancedSearch,
@@ -90,19 +59,6 @@ export default function SearchFormFields({
   onKeyDown,
 }: Props): JSX.Element {
   const rows = state.number?.split('\n').length ?? 0
-  const serviceField = (
-    component: React.ElementType,
-    value: string | null,
-    key: string,
-  ) => (
-    <SearchField
-      component={component}
-      value={value}
-      onChange={onChange(key)}
-      fragmentService={fragmentService}
-    />
-  )
-
   return (
     <>
       <FindspotConstraint
@@ -149,36 +105,17 @@ export default function SearchFormFields({
             ) : null}
           </Col>
           {showAdvancedSearch ? (
-            <Col md={6}>
-              {serviceField(GenreSearchForm, state.genre, 'genre')}
-              <SearchField
-                component={MuseumSearchForm}
-                value={state.museum}
-                onChange={onChange('museum')}
-              />
-              <PeriodSearchForm
-                scriptPeriod={state.scriptPeriod}
-                scriptPeriodModifier={state.scriptPeriodModifier}
-                onChangeScriptPeriod={onChange('scriptPeriod')}
-                onChangeScriptPeriodModifier={onChange('scriptPeriodModifier')}
-                fragmentService={fragmentService}
-              />
-              {serviceField(ProvenanceSearchForm, state.site, 'site')}
-              <SearchFormDossier
-                ariaLabel="Dossier"
-                value={state.dossier}
-                searchSuggestions={(inputValue, filters) =>
-                  dossiersService.searchSuggestions(inputValue, filters)
-                }
-                onChange={onChange('dossier')}
-                isClearable={true}
-                filters={{
-                  provenance: state.site,
-                  scriptPeriod: state.scriptPeriod,
-                  genre: state.genre,
-                }}
-              />
-            </Col>
+            <SearchFormAdvanced
+              genre={state.genre}
+              museum={state.museum}
+              scriptPeriod={state.scriptPeriod}
+              scriptPeriodModifier={state.scriptPeriodModifier}
+              site={state.site}
+              dossier={state.dossier}
+              onChange={onChange}
+              fragmentService={fragmentService}
+              dossiersService={dossiersService}
+            />
           ) : null}
         </Row>
         <Row>

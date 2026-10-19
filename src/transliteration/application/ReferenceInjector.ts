@@ -1,5 +1,4 @@
 import { produce, Draft, castDraft } from 'immer'
-import Promise from 'bluebird'
 import Reference from 'bibliography/domain/Reference'
 import BibliographyService from 'bibliography/application/BibliographyService'
 import { NoteLine } from 'transliteration/domain/note-line'
@@ -15,8 +14,16 @@ import { Introduction, Notes } from 'fragmentarium/domain/fragment'
 import _ from 'lodash'
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 
+const markupLineTypes = ['NoteLine', 'TranslationLine']
+
 function isMarkupLine(line: AbstractLine): line is NoteLine | TranslationLine {
-  return ['NoteLine', 'TranslationLine'].includes(line.type)
+  return markupLineTypes.includes(line.type)
+}
+
+function isMarkupDraftLine(
+  line: Draft<AbstractLine>,
+): line is Draft<NoteLine | TranslationLine> {
+  return markupLineTypes.includes(line.type)
 }
 
 export default class ReferenceInjector {
@@ -37,16 +44,10 @@ export default class ReferenceInjector {
       .then(({ currentText, updatedParts }) =>
         produce(currentText, (draft: Draft<Text>) => {
           let index = 0
-          draft.allLines
-            .filter(
-              isMarkupLine as unknown as (
-                line: Draft<AbstractLine>,
-              ) => line is Draft<NoteLine | TranslationLine>,
-            )
-            .forEach((line) => {
-              line.parts = castDraft(updatedParts[index])
-              index += 1
-            })
+          draft.allLines.filter(isMarkupDraftLine).forEach((line) => {
+            line.parts = castDraft(updatedParts[index])
+            index += 1
+          })
         }),
       )
   }

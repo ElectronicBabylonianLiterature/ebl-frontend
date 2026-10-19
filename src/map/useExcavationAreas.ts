@@ -1,7 +1,8 @@
 import { useEffect, useRef } from 'react'
 import type { MutableRefObject } from 'react'
 import type { Map as MapLibreMap, MapMouseEvent } from 'maplibre-gl'
-import type { MapLibreErrorEvent } from 'map/mapBackgroundError'
+import { MAP_STYLE_LOAD_EVENT } from 'map/mapLayers'
+import { observeExcavationAvailability } from 'map/mapExcavationAvailability'
 import {
   EXCAVATION_AREAS_SOURCE_ID,
   EXCAVATION_AREA_FILL_LAYER_ID,
@@ -93,14 +94,6 @@ function applyVisualizationValues(
   })
 }
 
-function isExcavationAreaError(event: MapLibreErrorEvent): boolean {
-  return (
-    event.sourceId === EXCAVATION_AREAS_SOURCE_ID ||
-    (typeof event.layer?.id === 'string' &&
-      ALL_LAYER_IDS.includes(event.layer.id))
-  )
-}
-
 export interface ExcavationAreaOptions {
   readonly isVisible: boolean
   readonly selectedPolygonId: string | null
@@ -123,11 +116,7 @@ function useExcavationAreaLifecycle(
 
     const isCurrentMap = (): boolean => mapRef.current === map
     const install = (): void => addExcavationAreas(map)
-    const handleError = (event: MapLibreErrorEvent): void => {
-      if (isExcavationAreaError(event)) {
-        latestOptionsRef.current.onAvailabilityChange?.(true)
-      }
-    }
+
     const handleClick = (event: MapMouseEvent): void => {
       const [feature] = map.queryRenderedFeatures(event.point, {
         layers: [EXCAVATION_AREA_FILL_LAYER_ID],
@@ -137,15 +126,20 @@ function useExcavationAreaLifecycle(
       }
     }
 
-    map.on('error', handleError)
+    const stopObservingAvailability = observeExcavationAvailability(
+      map,
+      ALL_LAYER_IDS,
+      (unavailable) =>
+        latestOptionsRef.current.onAvailabilityChange?.(unavailable),
+    )
     map.on('click', EXCAVATION_AREA_FILL_LAYER_ID, handleClick)
-    if (map.isStyleLoaded()) install()
-    else map.once('load', install)
+    map.on(MAP_STYLE_LOAD_EVENT, install)
+    if (map.getStyle()) install()
 
     return () => {
       if (!isCurrentMap()) return
-      map.off('error', handleError)
-      map.off('load', install)
+      stopObservingAvailability()
+      map.off(MAP_STYLE_LOAD_EVENT, install)
       map.off('click', EXCAVATION_AREA_FILL_LAYER_ID, handleClick)
       removeExcavationAreas(map)
     }
@@ -161,11 +155,12 @@ function useExcavationAreaVisibility(
     if (!map) return
 
     const updateVisibility = (): void => setVisible(map, isVisible)
-    if (map.isStyleLoaded()) updateVisibility()
-    else map.once('load', updateVisibility)
+    map.on(MAP_STYLE_LOAD_EVENT, updateVisibility)
+    updateVisibility()
 
     return () => {
-      if (mapRef.current === map) map.off('load', updateVisibility)
+      if (mapRef.current === map)
+        map.off(MAP_STYLE_LOAD_EVENT, updateVisibility)
     }
   }, [mapRef, isVisible])
 }
@@ -182,15 +177,16 @@ function useExcavationAreaSelection(
     if (!map) return
 
     const updateSelection = (): void => {
+      if (!map.getSource(EXCAVATION_AREAS_SOURCE_ID)) return
       const nextId = isVisible ? selectedPolygonId : null
       applySelection(map, previousSelectedIdRef.current, nextId)
       previousSelectedIdRef.current = nextId
     }
-    if (map.isStyleLoaded()) updateSelection()
-    else map.once('load', updateSelection)
+    map.on(MAP_STYLE_LOAD_EVENT, updateSelection)
+    updateSelection()
 
     return () => {
-      if (mapRef.current === map) map.off('load', updateSelection)
+      if (mapRef.current === map) map.off(MAP_STYLE_LOAD_EVENT, updateSelection)
     }
   }, [mapRef, isVisible, selectedPolygonId])
 }
@@ -206,11 +202,11 @@ function useExcavationAreaVisualization(
 
     const updatePaint = (): void =>
       applyExcavationPaint(map, paint ?? CATEGORICAL_PAINT)
-    if (map.isStyleLoaded()) updatePaint()
-    else map.once('load', updatePaint)
+    map.on(MAP_STYLE_LOAD_EVENT, updatePaint)
+    updatePaint()
 
     return () => {
-      if (mapRef.current === map) map.off('load', updatePaint)
+      if (mapRef.current === map) map.off(MAP_STYLE_LOAD_EVENT, updatePaint)
     }
   }, [mapRef, paint])
 
@@ -218,13 +214,16 @@ function useExcavationAreaVisualization(
     const map = mapRef.current
     if (!map) return
 
-    const updateValues = (): void =>
-      applyVisualizationValues(map, values ?? EMPTY_VALUES)
-    if (map.isStyleLoaded()) updateValues()
-    else map.once('load', updateValues)
+    const updateValues = (): void => {
+      if (map.getSource(EXCAVATION_AREAS_SOURCE_ID)) {
+        applyVisualizationValues(map, values ?? EMPTY_VALUES)
+      }
+    }
+    map.on(MAP_STYLE_LOAD_EVENT, updateValues)
+    updateValues()
 
     return () => {
-      if (mapRef.current === map) map.off('load', updateValues)
+      if (mapRef.current === map) map.off(MAP_STYLE_LOAD_EVENT, updateValues)
     }
   }, [mapRef, values])
 }

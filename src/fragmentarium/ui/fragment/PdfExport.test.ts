@@ -2,10 +2,9 @@ import $ from 'jquery'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import complexText from 'test-support/complexTestText'
 import WordService from 'dictionary/application/WordService'
-import { pdfExport } from './PdfExport'
+import { pdfExport } from 'fragmentarium/ui/fragment/PdfExport'
 import { jsPDF } from 'jspdf'
 import { fragmentFactory } from 'test-support/fragment-fixtures'
-import Promise from 'bluebird'
 import { createDictionaryWord } from 'test-support/glossary'
 
 jest.mock('dictionary/application/WordService')

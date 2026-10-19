@@ -1,11 +1,13 @@
 import {
   Colophon,
-  IndividualAttestation,
   ColophonStatus,
   ColophonOwnership,
   ColophonType,
-  IndividualType,
 } from 'fragmentarium/domain/Colophon'
+import {
+  IndividualAttestation,
+  IndividualType,
+} from 'fragmentarium/domain/IndividualAttestation'
 
 describe('Colophon', () => {
   describe('constructor', () => {

@@ -1,7 +1,7 @@
 import React from 'react'
 import { render } from '@testing-library/react'
 
-import TransliterationHeader from './TransliterationHeader'
+import TransliterationHeader from 'fragmentarium/ui/fragment/TransliterationHeader'
 import { fragmentFactory } from 'test-support/fragment-fixtures'
 import { Fragment } from 'fragmentarium/domain/fragment'
 

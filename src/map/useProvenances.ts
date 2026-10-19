@@ -7,8 +7,10 @@ export interface ProvenancesState {
   error: string | null
 }
 
+export type ProvenanceSource = Pick<FragmentService, 'fetchProvenances'>
+
 export default function useProvenances(
-  fragmentService: FragmentService,
+  fragmentService: ProvenanceSource,
 ): ProvenancesState {
   const [provenances, setProvenances] = useState<
     readonly ProvenanceRecord[] | null
@@ -17,6 +19,8 @@ export default function useProvenances(
 
   useEffect(() => {
     let ignore = false
+    setProvenances(null)
+    setError(null)
 
     fragmentService
       .fetchProvenances()

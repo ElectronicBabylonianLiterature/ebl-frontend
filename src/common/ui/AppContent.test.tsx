@@ -1,8 +1,8 @@
 import React from 'react'
 import { render, screen, within } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
-import AppContent from './AppContent'
-import { SectionCrumb } from './Breadcrumbs'
+import AppContent from 'common/ui/AppContent'
+import { SectionCrumb } from 'common/ui/Breadcrumbs'
 
 function breadCrumbs() {
   return within(screen.getByRole('navigation', { name: 'breadcrumb' }))

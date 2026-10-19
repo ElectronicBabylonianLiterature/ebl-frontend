@@ -1,5 +1,4 @@
 import { act, renderHook, waitFor } from '@testing-library/react'
-import Bluebird from 'bluebird'
 import type { ExcavationPolygonIndex } from 'map/excavationPolygonIndex'
 import { IncompatibleFindspotMapDataError } from 'map/findspotMapDataSanitizer'
 import type { MapSiteId } from 'map/mapSites'
@@ -18,7 +17,7 @@ import { findspotMapDataDto } from 'test-support/map-fixtures'
 describe('useFragmentMapData', () => {
   it('waits for a canonical index, then calls and aggregates all sites', async () => {
     const service = serviceReturning((siteId) =>
-      Bluebird.resolve([
+      Promise.resolve([
         mappedFindspot(
           siteId as MapSiteId,
           SITE_IDS.indexOf(siteId as MapSiteId) + 1,
@@ -64,7 +63,7 @@ describe('useFragmentMapData', () => {
     ) as Record<Exclude<MapSiteId, 'kalhu'>, ReturnType<typeof deferredMapData>>
     const service = serviceReturning((siteId) =>
       siteId === 'kalhu'
-        ? Bluebird.reject(new Error('network failure'))
+        ? Promise.reject(new Error('network failure'))
         : pending[siteId as Exclude<MapSiteId, 'kalhu'>].promise,
     )
     const index = canonicalIndex()
@@ -80,7 +79,7 @@ describe('useFragmentMapData', () => {
       pending.assur.resolve([mappedFindspot('assur', 1)])
       pending.nippur.resolve([mappedFindspot('nippur', 3)])
       pending.uruk.resolve([mappedFindspot('uruk', 4)])
-      await Bluebird.all(Object.values(pending).map(({ promise }) => promise))
+      await Promise.all(Object.values(pending).map(({ promise }) => promise))
     })
     expect(status(result.current, 'assur')).toBe('loaded-with-mappings')
     expect(status(result.current, 'nippur')).toBe('loaded-with-mappings')
@@ -118,7 +117,7 @@ describe('useFragmentMapData', () => {
     await act(async () => {
       pending.nippur.resolve([mappedFindspot('nippur', 3)])
       pending.uruk.resolve([mappedFindspot('uruk', 4)])
-      await Bluebird.all([pending.nippur.promise, pending.uruk.promise])
+      await Promise.all([pending.nippur.promise, pending.uruk.promise])
     })
     expect(status(result.current, 'nippur')).toBe('loaded-with-mappings')
     expect(status(result.current, 'uruk')).toBe('loaded-with-mappings')
@@ -129,7 +128,7 @@ describe('useFragmentMapData', () => {
     ['cross-site', SITES.kalhu.polygonId],
   ])('marks an %s polygon as incompatible', async (_label, polygonId) => {
     const service = serviceReturning((siteId) =>
-      Bluebird.resolve(
+      Promise.resolve(
         siteId === 'assur'
           ? [
               findspotMapDataDto({
@@ -153,10 +152,10 @@ describe('useFragmentMapData', () => {
   it('maps an incompatible-response error to incompatible', async () => {
     const service = serviceReturning((siteId) =>
       siteId === 'nippur'
-        ? Bluebird.reject(
+        ? Promise.reject(
             new IncompatibleFindspotMapDataError('invalid NIPPUR response'),
           )
-        : Bluebird.resolve([]),
+        : Promise.resolve([]),
     )
     const index = canonicalIndex()
     const { result } = renderHook(() => useFragmentMapData(service, index))
@@ -177,7 +176,7 @@ describe('useFragmentMapData', () => {
       (siteId) => pending[siteId as MapSiteId].promise,
     )
     const currentService = serviceReturning((siteId) =>
-      Bluebird.resolve([
+      Promise.resolve([
         mappedFindspot(
           siteId as MapSiteId,
           SITE_IDS.indexOf(siteId as MapSiteId) + 101,
@@ -201,8 +200,8 @@ describe('useFragmentMapData', () => {
       SITE_IDS.forEach((siteId, siteIndex) =>
         pending[siteId].resolve([mappedFindspot(siteId, siteIndex + 1)]),
       )
-      await Bluebird.all(Object.values(pending).map(({ promise }) => promise))
-      await Bluebird.delay(0)
+      await Promise.all(Object.values(pending).map(({ promise }) => promise))
+      await new Promise((resolve) => setTimeout(resolve, 0))
     })
     expect(
       result.current.findspots.map(({ findspotId }) => findspotId),
