@@ -1,7 +1,7 @@
 import React from 'react'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import CollapseExpandButton from './CollapseExpandButton'
+import CollapseExpandButton from 'fragmentarium/ui/CollapseExpandButton'
 
 describe('CollapseExpandButton', () => {
   it('renders with initial text', () => {

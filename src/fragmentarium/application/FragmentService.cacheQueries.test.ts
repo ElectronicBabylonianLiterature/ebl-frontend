@@ -1,4 +1,3 @@
-import Promise from 'bluebird'
 import { FragmentQuery } from 'query/FragmentQuery'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import { Fragment } from 'fragmentarium/domain/fragment'
@@ -111,20 +110,15 @@ describe('query result caching', () => {
     expect(fragmentRepository.query).toHaveBeenCalledTimes(1)
   })
 
-  test('does not return cancelled in-flight query when re-requested', async () => {
-    const deferredQuery = new Promise<QueryResult>(() => {})
+  test('re-requests after an in-flight query has failed', async () => {
+    const failure = new Error('network down')
 
     fragmentRepository.query
-      .mockReturnValueOnce(deferredQuery)
+      .mockReturnValueOnce(Promise.reject(failure))
       .mockReturnValueOnce(Promise.resolve(updatedQueryResult))
 
-    const firstQuery = service.query(query)
-
-    firstQuery.cancel()
-
-    const secondQuery = service.query(query)
-
-    await expect(secondQuery).resolves.toEqual(updatedQueryResult)
+    await expect(service.query(query)).rejects.toThrow(failure)
+    await expect(service.query(query)).resolves.toEqual(updatedQueryResult)
 
     expect(fragmentRepository.query).toHaveBeenCalledTimes(2)
   })

@@ -1,24 +1,25 @@
-import Bluebird from 'bluebird'
 import { MesopotamianDate } from 'chronology/domain/Date'
 import { DateFieldDto, MonthFieldDto } from 'fragmentarium/domain/FragmentDtos'
 import { Fragment } from 'fragmentarium/domain/fragment'
-import { DateSelectionStateParams } from './DateSelectionState'
+import { DateSelectionStateParams } from 'chronology/application/DateSelectionState'
 import {
   EponymDateField,
   KingDateField,
 } from 'chronology/domain/DateParameters'
+import { RunWriteOperation } from 'common/hooks/usePromiseEffect'
+import applyWhenCurrent from 'common/utils/applyWhenCurrent'
 
 interface SaveDateParams {
   date?: MesopotamianDate
   updatedDate?: MesopotamianDate
   index?: number
-  cancelUpdatePromise: () => void
+  runUpdate: RunWriteOperation
   setIsSaving: React.Dispatch<React.SetStateAction<boolean>>
-  setUpdatePromise: (promise: Bluebird<void>) => void
+  setSaveError: React.Dispatch<React.SetStateAction<Error | null>>
   updateDate: (
     date?: MesopotamianDate | undefined,
     index?: number | undefined,
-  ) => Bluebird<Fragment>
+  ) => Promise<Fragment>
   setDate: React.Dispatch<React.SetStateAction<MesopotamianDate | undefined>>
   setIsDisplayed: React.Dispatch<React.SetStateAction<boolean>>
 }
@@ -27,25 +28,31 @@ export function saveDateDefault({
   date,
   updatedDate,
   index,
-  cancelUpdatePromise,
+  runUpdate,
   setIsSaving,
-  setUpdatePromise,
+  setSaveError,
   updateDate,
   setDate,
   setIsDisplayed,
 }: SaveDateParams): void {
-  if (updatedDate !== date) {
-    cancelUpdatePromise()
-    setIsSaving(true)
-    setUpdatePromise(
-      updateDate(updatedDate, index)
-        .then(() => {
-          setIsDisplayed(false)
-        })
-        .finally(() => setIsSaving(false))
-        .then(() => setDate(updatedDate)),
-    )
+  if (updatedDate === date) {
+    return
   }
+  setIsSaving(true)
+  setSaveError(null)
+  runUpdate(
+    applyWhenCurrent(() => updateDate(updatedDate, index), {
+      onSuccess: () => {
+        setIsSaving(false)
+        setIsDisplayed(false)
+        setDate(updatedDate)
+      },
+      onError: (error) => {
+        setIsSaving(false)
+        setSaveError(error)
+      },
+    }),
+  )
 }
 
 export function getDate(params: DateSelectionStateParams): MesopotamianDate {

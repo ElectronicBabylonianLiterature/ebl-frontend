@@ -2,11 +2,11 @@ import React, { useContext, useState } from 'react'
 import _ from 'lodash'
 import classNames from 'classnames'
 import { Fade, Form } from 'react-bootstrap'
-import RowsContext, { RowState } from './RowsContext'
-import TranslationContext from './TranslationContext'
+import RowsContext, { RowState } from 'corpus/ui/RowsContext'
+import TranslationContext from 'corpus/ui/TranslationContext'
 import { ChapterDisplay } from 'corpus/domain/chapter'
 
-import './ChapterViewSideBar.sass'
+import 'corpus/ui/ChapterViewSideBar.sass'
 
 function Switch({
   target,
@@ -90,9 +90,7 @@ function LanguageItem({
   return (
     <li>
       <span
-        className={classNames({
-          // eslint-disable-next-line camelcase
-          settings__language: true,
+        className={classNames('settings__language', {
           'settings__language--active': isActive,
         })}
         role="button"
@@ -113,6 +111,7 @@ function getLanguageDisplayName(language: string): string {
   try {
     const displayName = new Intl.DisplayNames([language], {
       type: 'language',
+      fallback: 'none',
     }).of(language)
     return displayName || language
   } catch {

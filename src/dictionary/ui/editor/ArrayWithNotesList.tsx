@@ -1,7 +1,7 @@
 import React from 'react'
 import { FormGroup } from 'react-bootstrap'
 
-import ArrayWithNotes from './ArrayWithNotes'
+import ArrayWithNotes from 'dictionary/ui/editor/ArrayWithNotes'
 import List from 'common/ui/List'
 
 export default function ArrayWithNotesList({

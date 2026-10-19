@@ -1,11 +1,18 @@
 import {
+  MockLngLatBounds,
+  MockPopup,
+} from 'map/mapLibreMockObjects.testSupport'
+import {
   mockGetBounds,
   mockGetCenter,
   type MockErrorEvent,
   type MockEventHandler,
   type MockMapEvent,
 } from 'map/mapLibreMockEvents.testSupport'
+import { MAP_STYLE_LOAD_EVENT } from 'map/mapLayers'
+export * from 'map/mapLibreMockObjects.testSupport'
 export * from 'map/mapLibreMockEvents.testSupport'
+
 const addedLayerIds = new Set<string>()
 function rememberAddedLayer(layer: { id: string }): void {
   addedLayerIds.add(layer.id)
@@ -24,6 +31,7 @@ export const mockSetLayoutProperty = jest.fn()
 export const mockSetPaintProperty = jest.fn()
 export const mockSetFeatureState = jest.fn()
 export const mockIsStyleLoaded = jest.fn(() => true)
+export const mockGetStyle = jest.fn<object | undefined, []>(() => ({}))
 export const mockOnce = jest.fn()
 export const mockAddControl = jest.fn()
 export const mockRemove = jest.fn()
@@ -38,11 +46,7 @@ export const mockSetData = jest.fn()
 export const mockQueryRenderedFeatures = jest.fn<unknown[], unknown[]>(() => [])
 export const mockEaseTo = jest.fn()
 export const mockGetClusterExpansionZoom = jest.fn()
-export const mockSetLngLat = jest.fn()
-export const mockSetDOMContent = jest.fn()
-export const mockSetHTML = jest.fn()
-export const mockPopupAddTo = jest.fn()
-export const mockBoundsExtend = jest.fn()
+export const setWorkerUrl = jest.fn()
 const mockEventHandlers: Record<string, MockEventHandler[]> = {}
 let mockLoadImmediately = true
 let mockMapConstructionError: unknown = null
@@ -56,6 +60,7 @@ export const mockMapInstance = {
   setPaintProperty: mockSetPaintProperty,
   setFeatureState: mockSetFeatureState,
   isStyleLoaded: mockIsStyleLoaded,
+  getStyle: mockGetStyle,
   once: mockOnce,
   addControl: mockAddControl,
   remove: mockRemove,
@@ -78,7 +83,10 @@ function fireMapEvent(
   eventPayload?: MockMapEvent | MockErrorEvent,
   layerId?: string,
 ): void {
-  if (event === 'load') mockIsStyleLoaded.mockReturnValue(true)
+  if (event === 'load' || event === MAP_STYLE_LOAD_EVENT) {
+    mockIsStyleLoaded.mockReturnValue(true)
+    mockGetStyle.mockReturnValue({})
+  }
   mockEventHandlers[eventKey(event, layerId)]?.forEach((handler) =>
     handler(eventPayload),
   )
@@ -100,6 +108,12 @@ function queryRenderedFeaturesFromStyle(
   }
   return mockQueryRenderedFeatures(point, options)
 }
+
+export function clearMockStyleResources(): void {
+  addedLayerIds.clear()
+  mockGetSource.mockReturnValue(undefined)
+}
+
 export function markLayersAdded(...layerIds: readonly string[]): void {
   layerIds.forEach((layerId) => addedLayerIds.add(layerId))
 }
@@ -125,39 +139,12 @@ class MockMap {
     return mockMapInstance
   }
 }
-class MockLngLatBounds {
-  private points: [number, number][] = []
-  extend(coordinates: [number, number]) {
-    this.points.push(coordinates)
-    mockBoundsExtend(coordinates)
-    return this
-  }
-  isEmpty() {
-    return this.points.length === 0
-  }
-}
-class MockPopup {
-  setLngLat(coordinates: [number, number]) {
-    mockSetLngLat(coordinates)
-    return this
-  }
-  setDOMContent(content: Node) {
-    mockSetDOMContent(content)
-    return this
-  }
-  setHTML(content: string) {
-    mockSetHTML(content)
-    return this
-  }
-  addTo(map: unknown) {
-    mockPopupAddTo(map)
-    return this
-  }
-}
+
 const NavigationControl = jest.fn()
 export function deferMapLoad(): void {
   mockLoadImmediately = false
   mockIsStyleLoaded.mockReturnValue(false)
+  mockGetStyle.mockReturnValue(undefined)
 }
 export function failMapConstruction(error: unknown): void {
   mockMapConstructionError = error
@@ -181,6 +168,7 @@ export function resetMapMocks(): void {
   })
   mockGetSource.mockReturnValue(undefined)
   mockIsStyleLoaded.mockReturnValue(true)
+  mockGetStyle.mockReturnValue({})
   mockQueryRenderedFeatures.mockReturnValue([])
   mockAddLayer.mockImplementation(rememberAddedLayer)
   mockGetLayer.mockImplementation(findAddedLayer)
@@ -236,5 +224,13 @@ const maplibregl = {
   NavigationControl,
   LngLatBounds: MockLngLatBounds,
   Popup: MockPopup,
+  setWorkerUrl,
+}
+
+export {
+  MockMap as Map,
+  NavigationControl,
+  MockLngLatBounds as LngLatBounds,
+  MockPopup as Popup,
 }
 export default maplibregl

@@ -1,5 +1,5 @@
 import data from 'chronology/domain/dateConverterData.json'
-import DateConverterCompute from './DateConverterCompute'
+import DateConverterCompute from 'chronology/domain/DateConverterCompute'
 
 export const monthNames = [
   'January',
@@ -70,10 +70,10 @@ export interface CalendarProps
   lunationNabonassar: number
   seMacedonianYear?: number
   seArsacidYear?: number
-  mesopotamianMonthLength?: number
+  mesopotamianMonthLength: number
   ruler?: string
   regnalYear?: number
-  regnalYears?: number
+  regnalYears: number
 }
 
 interface CalendarUpdateProps {
@@ -87,7 +87,7 @@ interface CalendarUpdateProps {
   mesopotamianMonth: number
   ruler?: string
   regnalYear?: number
-  regnalYears?: number
+  regnalYears: number
   i: number
 }
 
@@ -113,12 +113,10 @@ export default class DateConverterBase extends DateConverterCompute {
     ]
   }
 
-  getMonthLength(isJulian = false, year?: number, month?: number): number {
-    if (!year || !month) {
-      const { year, month } = this.getYearAndMonth(isJulian)
-      return this.getDaysInMonth(year, isJulian)[month - 1]
-    }
-    return this.getDaysInMonth(year, isJulian)[month - 1]
+  getMonthLength(isJulian: boolean, year?: number, month?: number): number {
+    const date =
+      year && month ? { year, month } : this.getYearAndMonth(isJulian)
+    return this.getDaysInMonth(date.year, isJulian)[date.month - 1]
   }
 
   getMesopotamianMonthsOfSeYear(
@@ -129,12 +127,7 @@ export default class DateConverterBase extends DateConverterCompute {
         (seBabylonianYearMonth) =>
           seBabylonianYearMonth[0] === seBabylonianYear,
       )
-      .map(
-        (seBabylonianYearMonth) =>
-          babylonianMonths.find(
-            (_month) => _month.value === seBabylonianYearMonth[1],
-          ) ?? babylonianMonths[0],
-      )
+      .map(([, mesopotamianMonth]) => babylonianMonths[mesopotamianMonth - 1])
   }
 
   applyDate(
@@ -233,13 +226,16 @@ export default class DateConverterBase extends DateConverterCompute {
     }
   }
 
-  private isLeapYear(year: number, isJulian = false): boolean {
+  private isLeapYear(year: number, isJulian: boolean): boolean {
     return isJulian
       ? year % 4 === 0
       : year % 4 === 0 && (year % 100 !== 0 || year % 400 === 0)
   }
 
-  private getYearAndMonth(isJulian = false): { year: number; month: number } {
+  private getYearAndMonth(isJulian: boolean): {
+    year: number
+    month: number
+  } {
     return isJulian
       ? { year: this.calendar.julianYear, month: this.calendar.julianMonth }
       : {

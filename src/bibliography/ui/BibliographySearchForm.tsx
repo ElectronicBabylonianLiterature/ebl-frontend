@@ -1,21 +1,21 @@
 import React, { useState } from 'react'
-import { stringify } from 'query-string'
+import { stringify } from 'common/utils/queryString'
 import _ from 'lodash'
 import { Form, FormControl, Button, Row, Col } from 'react-bootstrap'
 import { useNavigate } from 'react-router-dom'
 
 type Props = { query: string | null | undefined }
 
-function BibliographySearch({ query: initialQuery }: Props) {
+function BibliographySearch({ query: initialQuery }: Props): JSX.Element {
   const navigate = useNavigate()
   const [query, setQuery] = useState(initialQuery || '')
   const id = _.uniqueId('BibliographySearch-')
 
-  const onChange = (event) => {
+  const onChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
     setQuery(event.target.value)
   }
 
-  const submit = (event) => {
+  const submit = (event: React.FormEvent<HTMLFormElement>): void => {
     event.preventDefault()
     navigate(`?${stringify({ query })}`)
   }

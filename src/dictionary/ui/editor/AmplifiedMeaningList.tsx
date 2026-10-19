@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import List from 'common/ui/List'
 import { FormGroup } from 'react-bootstrap'
 
-import AmplifiedMeaningInput from './AmplifiedMeaningInput'
+import AmplifiedMeaningInput from 'dictionary/ui/editor/AmplifiedMeaningInput'
 
 class AmplifiedMeaningList extends Component<{
   entry: boolean

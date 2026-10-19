@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from 'react'
 import { act, render, renderHook } from '@testing-library/react'
 import type { Map as MapLibreMap } from 'maplibre-gl'
 import {
+  clearMockStyleResources,
   deferMapLoad,
   mockAddLayer,
   mockAddSource,
@@ -53,6 +54,25 @@ describe('useMapMeasurement', () => {
     expect(mockAddLayer).toHaveBeenCalledTimes(2)
   })
 
+  it('restores the current measurement after a style reload', () => {
+    mockGetSource.mockReturnValue({ setData: mockSetData })
+    const { result } = renderHook(() => useHarness(true))
+    act(() => result.current.addPointAtCenter())
+    const geometry = mockSetData.mock.calls.at(-1)?.[0]
+    clearMockStyleResources()
+    mockAddSource.mockImplementationOnce(() => {
+      mockGetSource.mockReturnValue({ setData: mockSetData })
+    })
+    mockAddLayer.mockClear()
+    mockSetData.mockClear()
+
+    act(() => triggerMapEvent('style.load'))
+
+    expect(mockAddLayer).toHaveBeenCalledTimes(2)
+    expect(mockSetData).toHaveBeenLastCalledWith(geometry)
+    expect(result.current.pointCount).toBe(1)
+  })
+
   it('adds clicked positions and exposes a center-point keyboard alternative', () => {
     mockGetSource.mockReturnValue({ setData: mockSetData })
     const { result } = renderHook(() => useHarness(true))
@@ -99,7 +119,7 @@ describe('useMapMeasurement', () => {
     })
     expect(result.current.pointCount).toBe(1)
 
-    act(() => triggerMapEvent('load'))
+    act(() => triggerMapEvent('style.load'))
 
     expect(mockSetData).toHaveBeenLastCalledWith(
       expect.objectContaining({ features: [expect.any(Object)] }),

@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import type { MutableRefObject } from 'react'
+import { MAP_STYLE_LOAD_EVENT } from 'map/mapLayers'
 import type { Position } from 'geojson'
 import type { Map as MapLibreMap, MapMouseEvent } from 'maplibre-gl'
 import {
@@ -126,15 +127,15 @@ export default function useMapMeasurement(
       }
     }
 
-    if (map.isStyleLoaded()) install()
-    else map.once('load', install)
+    map.on(MAP_STYLE_LOAD_EVENT, install)
+    if (map.getStyle()) install()
     map.on('click', handleClick)
     window.addEventListener('keydown', handleKeyDown)
 
     return () => {
       window.removeEventListener('keydown', handleKeyDown)
       if (!isCurrentMap()) return
-      map.off('load', install)
+      map.off(MAP_STYLE_LOAD_EVENT, install)
       map.off('click', handleClick)
       removeMeasurementLayers(map)
     }

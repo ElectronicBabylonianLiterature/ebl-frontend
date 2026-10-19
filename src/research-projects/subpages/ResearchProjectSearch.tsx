@@ -7,6 +7,8 @@ import {
   ResearchProjects,
 } from 'research-projects/researchProject'
 import PageContent from 'research-projects/subpages/PageContent'
+import { FragmentSearchCriteria } from 'query/FragmentQuery'
+import { SearchPagination } from 'fragmentarium/ui/search/pagination'
 
 export default function Search({
   fragmentService,
@@ -15,6 +17,7 @@ export default function Search({
   wordService,
   dossiersService,
   fragmentQuery,
+  pagination,
   project,
 }: Pick<
   SearchFormProps,
@@ -23,8 +26,11 @@ export default function Search({
   | 'bibliographyService'
   | 'wordService'
   | 'dossiersService'
-  | 'fragmentQuery'
-> & { project: ResearchProject }): JSX.Element {
+> & {
+  fragmentQuery: FragmentSearchCriteria
+  pagination: SearchPagination
+  project: ResearchProject
+}): JSX.Element {
   return (
     <PageContent title={'Search'} project={project}>
       <div className={'project-page__search'}>
@@ -41,13 +47,12 @@ export default function Search({
           />
         </Container>
       </div>
-      {fragmentQuery && (
-        <SearchResult
-          fragmentService={fragmentService}
-          dossiersService={dossiersService}
-          fragmentQuery={fragmentQuery}
-        />
-      )}
+      <SearchResult
+        fragmentService={fragmentService}
+        dossiersService={dossiersService}
+        fragmentQuery={fragmentQuery}
+        pagination={pagination}
+      />
     </PageContent>
   )
 }

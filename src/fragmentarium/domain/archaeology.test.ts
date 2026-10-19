@@ -4,16 +4,26 @@ import {
   dateRangeFactory,
   findspotFactory,
 } from 'test-support/fragment-data-fixtures'
-import { BuildingType, Findspot, PartialDate, SiteKey } from './archaeology'
+import {
+  BuildingType,
+  Findspot,
+  PartialDate,
+  SiteKey,
+} from 'fragmentarium/domain/archaeology'
 import {
   FindspotDto,
   fromFindspotDto,
   fromPlanDto,
   toFindspotDto,
   toPlanDto,
-} from './archaeologyDtos'
-import { createArchaeology, toArchaeologyDto } from './archaeologyDtos'
-import MuseumNumber, { museumNumberToString } from './MuseumNumber'
+} from 'fragmentarium/domain/archaeologyDtos'
+import {
+  createArchaeology,
+  toArchaeologyDto,
+} from 'fragmentarium/domain/archaeologyDtos'
+import MuseumNumber, {
+  museumNumberToString,
+} from 'fragmentarium/domain/MuseumNumber'
 import {
   cslDataFactory,
   referenceDtoFactory,

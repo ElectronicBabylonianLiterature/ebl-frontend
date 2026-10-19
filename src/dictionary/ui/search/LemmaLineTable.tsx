@@ -2,7 +2,7 @@ import React from 'react'
 import { DictionaryLineDisplay } from 'corpus/domain/chapter'
 import _ from 'lodash'
 
-import './LinesWithLemma.sass'
+import 'dictionary/ui/search/LinesWithLemma.sass'
 import { EmptySection } from 'dictionary/ui/display/EmptySection'
 import DictionaryLineGroup from 'dictionary/ui/search/DictionaryLineGroup'
 

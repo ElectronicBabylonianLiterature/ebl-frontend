@@ -1,7 +1,9 @@
 import _ from 'lodash'
 
-import Lemma from './Lemma'
-import Lemmatization, { LemmatizationToken } from './Lemmatization'
+import Lemma from 'transliteration/domain/Lemma'
+import Lemmatization, {
+  LemmatizationToken,
+} from 'transliteration/domain/Lemmatization'
 import Word from 'dictionary/domain/Word'
 import { wordFactory } from 'test-support/word-fixtures'
 

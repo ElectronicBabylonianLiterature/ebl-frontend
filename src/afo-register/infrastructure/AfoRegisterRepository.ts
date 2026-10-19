@@ -1,8 +1,6 @@
 import AfoRegisterRecord, {
   AfoRegisterRecordSuggestion,
 } from 'afo-register/domain/Record'
-import Bluebird from 'bluebird'
-import Promise from 'bluebird'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import ApiClient from 'http/ApiClient'
 
@@ -52,9 +50,7 @@ export default class AfoRegisterRepository {
       .then((result) => result.map(createAfoRegisterRecord))
       .then((records) => {
         if (fragmentService) {
-          return Bluebird.all(
-            injectFragmentReferencesToRecords(records, fragmentService),
-          )
+          return injectFragmentReferencesToRecords(records, fragmentService)
         } else {
           return records
         }

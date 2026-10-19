@@ -1,7 +1,7 @@
 import React from 'react'
 import { render, screen, waitFor } from '@testing-library/react'
 import { changeValueByLabel, clickNth } from 'test-support/utils'
-import BibliographyEntryForm from './BibliographyEntryForm'
+import BibliographyEntryForm from 'bibliography/ui/BibliographyEntryForm'
 import { bibliographyEntryFactory } from 'test-support/bibliography-fixtures'
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 
