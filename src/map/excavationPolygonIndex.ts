@@ -89,7 +89,8 @@ export function buildExcavationPolygonIndex(
   const seenPolygonIds = new Set<string>()
 
   for (const feature of features) {
-    if (!feature || typeof feature !== 'object') continue
+    if (!feature || typeof feature !== 'object' || feature.type !== 'Feature')
+      continue
     const polygon = toExcavationPolygon(feature)
     if (!polygon || seenPolygonIds.has(polygon.polygonId)) continue
 

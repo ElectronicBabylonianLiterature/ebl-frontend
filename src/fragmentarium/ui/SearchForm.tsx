@@ -41,6 +41,7 @@ export class SearchForm extends Component<SearchFormProps, SearchFormState> {
   private readonly basepath: string
   private readonly showAdvancedSearch: boolean
   private isComponentMounted = false
+  private referenceRequestGeneration = 0
 
   constructor(props: SearchFormProps) {
     super(props)
@@ -58,10 +59,12 @@ export class SearchForm extends Component<SearchFormProps, SearchFormState> {
 
   componentWillUnmount(): void {
     this.isComponentMounted = false
+    this.referenceRequestGeneration += 1
   }
 
   componentDidUpdate(previousProps: SearchFormProps): void {
     if (!_.isEqual(previousProps.fragmentQuery, this.props.fragmentQuery)) {
+      this.referenceRequestGeneration += 1
       this.setState(
         initializeSearchFormState(this.props.fragmentQuery ?? {}),
         this.fetchMissingReferenceLabel,
@@ -77,9 +80,32 @@ export class SearchForm extends Component<SearchFormProps, SearchFormState> {
 
   private fetchReferenceLabel = async (): Promise<void> => {
     const { id } = this.state.referenceEntry
-    const reference = await this.props.bibliographyService.find(id)
-    if (this.isComponentMounted && this.state.referenceEntry.id === id) {
-      this.setState({ referenceEntry: { id, label: reference.label } })
+    const generation = ++this.referenceRequestGeneration
+    try {
+      const reference = await this.props.bibliographyService.find(id)
+      this.setReferenceLabel(id, reference.label, generation)
+    } catch {
+      this.setReferenceLabel(
+        id,
+        id,
+        generation,
+        `Unable to load bibliography entry ${id}. The reference filter is still active.`,
+      )
+    }
+  }
+
+  private setReferenceLabel = (
+    id: string,
+    label: string,
+    generation: number,
+    referenceLabelError: string | null = null,
+  ): void => {
+    if (
+      this.isComponentMounted &&
+      this.state.referenceEntry.id === id &&
+      this.referenceRequestGeneration === generation
+    ) {
+      this.setState({ referenceEntry: { id, label }, referenceLabelError })
     }
   }
 
@@ -94,10 +120,12 @@ export class SearchForm extends Component<SearchFormProps, SearchFormState> {
   }
 
   private onChangeBibliographyReference = (event: BibliographyEntry): void => {
+    this.referenceRequestGeneration += 1
     this.setState(
       produce(this.state, (state) => {
-        state.referenceEntry.label = event.label || ''
+        state.referenceEntry.label = event.id ? event.label : ''
         state.referenceEntry.id = event.id || ''
+        state.referenceLabelError = null
       }),
     )
   }

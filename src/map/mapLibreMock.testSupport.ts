@@ -28,6 +28,7 @@ export const mockRemoveLayer = jest.fn((layerId: string) => {
 })
 export const mockRemoveSource = jest.fn()
 export const mockSetLayoutProperty = jest.fn()
+export const mockSetTerrain = jest.fn()
 export const mockSetPaintProperty = jest.fn()
 export const mockSetFeatureState = jest.fn()
 export const mockIsStyleLoaded = jest.fn(() => true)
@@ -35,6 +36,7 @@ export const mockGetStyle = jest.fn<object | undefined, []>(() => ({}))
 export const mockOnce = jest.fn()
 export const mockAddControl = jest.fn()
 export const mockRemove = jest.fn()
+export const mockResize = jest.fn()
 export const mockGetSource = jest.fn()
 export const mockCanvas = document.createElement('canvas')
 export const mockGetCanvas = jest.fn<HTMLCanvasElement, []>(() => mockCanvas)
@@ -57,6 +59,7 @@ export const mockMapInstance = {
   removeLayer: mockRemoveLayer,
   removeSource: mockRemoveSource,
   setLayoutProperty: mockSetLayoutProperty,
+  setTerrain: mockSetTerrain,
   setPaintProperty: mockSetPaintProperty,
   setFeatureState: mockSetFeatureState,
   isStyleLoaded: mockIsStyleLoaded,
@@ -64,6 +67,7 @@ export const mockMapInstance = {
   once: mockOnce,
   addControl: mockAddControl,
   remove: mockRemove,
+  resize: mockResize,
   getSource: mockGetSource,
   getCanvas: mockGetCanvas,
   getCenter: mockGetCenter,

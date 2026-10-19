@@ -2,7 +2,7 @@ import { EARTH_RADIUS_METRES } from 'map/geodesicArea'
 import {
   geodesicDistanceMetres,
   geodesicPathLengthMetres,
-} from './geodesicDistance'
+} from 'map/geodesicDistance'
 
 const QUARTER_MERIDIAN = (Math.PI / 2) * EARTH_RADIUS_METRES
 
