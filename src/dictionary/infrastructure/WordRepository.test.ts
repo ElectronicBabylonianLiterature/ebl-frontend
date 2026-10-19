@@ -1,6 +1,5 @@
-import Promise from 'bluebird'
 import { testDelegation, TestData } from 'test-support/utils'
-import WordRepository from './WordRepository'
+import WordRepository from 'dictionary/infrastructure/WordRepository'
 import ApiClient from 'http/ApiClient'
 
 jest.mock('http/ApiClient')
@@ -20,15 +19,23 @@ const testData: TestData<WordRepository>[] = [
     [wordId],
     apiClient.fetchJson,
     resultStub,
-    [`/words/${encodeURIComponent(wordId)}`, false],
+    [`/words/${encodeURIComponent(wordId)}`, false, undefined],
     Promise.resolve(resultStub),
+  ),
+  new TestData(
+    'findAll',
+    [['hepû I', 'hepû II']],
+    apiClient.fetchJson,
+    [resultStub],
+    [`/words?lemmas=${encodeURIComponent('hepû I,hepû II')}`, false, undefined],
+    Promise.resolve([resultStub]),
   ),
   new TestData(
     'search',
     [query],
     apiClient.fetchJson,
     [resultStub],
-    [`/words?query=${encodeURIComponent(query)}`, false],
+    [`/words?query=${encodeURIComponent(query)}`, false, undefined],
     Promise.resolve([resultStub]),
   ),
   new TestData(
@@ -36,7 +43,7 @@ const testData: TestData<WordRepository>[] = [
     [query],
     apiClient.fetchJson,
     [resultStub],
-    [`/words?lemma=${encodeURIComponent(query)}`, false],
+    [`/words?lemma=${encodeURIComponent(query)}`, false, undefined],
     Promise.resolve([resultStub]),
   ),
   new TestData(
@@ -63,7 +70,7 @@ const testData: TestData<WordRepository>[] = [
     [],
     apiClient.fetchJson,
     [word._id],
-    ['/words/all', false],
+    ['/words/all', false, undefined],
     Promise.resolve([word._id]),
   ),
 ]

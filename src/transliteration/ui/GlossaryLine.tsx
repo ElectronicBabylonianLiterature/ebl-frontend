@@ -10,7 +10,7 @@ import {
   createLemmaMap,
   LemmaMap,
   LineLemmasContext,
-} from './LineLemmasContext'
+} from 'transliteration/ui/LineLemmasContext'
 import { LemmaPopover } from 'transliteration/ui/WordInfo'
 import RouterLinkModeContext from 'common/ui/RouterLinkModeContext'
 

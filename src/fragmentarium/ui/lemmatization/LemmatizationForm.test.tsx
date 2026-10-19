@@ -1,8 +1,7 @@
 import React from 'react'
 import { render, waitFor, screen, Matcher } from '@testing-library/react'
-import Promise from 'bluebird'
 
-import LemmatizationForm from './LemmatizationForm'
+import LemmatizationForm from 'fragmentarium/ui/lemmatization/LemmatizationForm'
 import Lemma from 'transliteration/domain/Lemma'
 import { changeValueByLabel, clickNth } from 'test-support/utils'
 import { LemmatizationToken } from 'transliteration/domain/Lemmatization'

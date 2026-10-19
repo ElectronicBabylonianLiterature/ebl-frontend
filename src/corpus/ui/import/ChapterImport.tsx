@@ -5,12 +5,12 @@ import Editor from 'editor/Editor'
 
 interface ChapterImportProps {
   onSave: (atf: string) => unknown
-  disabled?: boolean
+  disabled: boolean
 }
 
 export default function ChapterImport({
   onSave,
-  disabled = false,
+  disabled,
 }: ChapterImportProps): JSX.Element {
   const [atf, setAtf] = useState('')
   return (
@@ -25,7 +25,7 @@ export default function ChapterImport({
         onChange={setAtf}
         disabled={disabled}
       />
-      <Button className="m-1" onClick={() => onSave(atf)}>
+      <Button className="m-1" onClick={() => onSave(atf)} disabled={disabled}>
         Save
       </Button>
     </>

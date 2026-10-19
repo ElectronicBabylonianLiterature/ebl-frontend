@@ -1,5 +1,5 @@
 import React from 'react'
-import { parse } from 'query-string'
+import { parse } from 'common/utils/queryString'
 import { useLocation } from 'react-router-dom'
 import AfoRegisterSearch from 'afo-register/ui/AfoRegisterSearch'
 import AfoRegisterSearchForm, {
@@ -11,11 +11,7 @@ import { Markdown } from 'common/ui/Markdown'
 import AboutInlineLink from 'common/ui/AboutInlineLink'
 
 function getAfoRegisterQueryFromLocation(search: string): AfoRegisterQuery {
-  const query = parse(search) as AfoRegisterQuery
-  if (!query) {
-    return { text: '', textNumber: '' }
-  }
-  const { text, textNumber } = query
+  const { text, textNumber } = parse(search) as AfoRegisterQuery
   return { text: text ?? '', textNumber: textNumber ?? '' }
 }
 

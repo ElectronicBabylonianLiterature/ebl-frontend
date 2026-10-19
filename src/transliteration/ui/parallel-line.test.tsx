@@ -2,7 +2,10 @@ import React from 'react'
 import { render, screen } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 import * as parallel from 'test-support/lines/parallel'
-import { DisplayParallel } from './parallel-line'
+import {
+  DisplayParallel,
+  DisplayParallelLine,
+} from 'transliteration/ui/parallel-line'
 import lineNumberToString, {
   lineNumberToAtf,
 } from 'transliteration/domain/lineNumberToString'
@@ -111,4 +114,34 @@ test('parallel composition', () => {
 
   expect(screen.getByText(content)).toBeVisible()
   expect(screen.queryByRole('link')).not.toBeInTheDocument()
+})
+
+test('parallel fragment with duplicates', () => {
+  const fragment = new ParallelFragment({
+    ...parallel.fragment,
+    hasDuplicates: true,
+    exists: false,
+  })
+  const { container } = render(<DisplayParallel line={fragment} />)
+
+  expect(container).toHaveTextContent('F &d X.1 1′')
+})
+
+test('parallel line row shows the prefix and the parallel', () => {
+  render(
+    <MemoryRouter>
+      <table>
+        <tbody>
+          <tr>
+            <DisplayParallelLine line={parallel.composition} columns={3} />
+          </tr>
+        </tbody>
+      </table>
+    </MemoryRouter>,
+  )
+
+  const [prefix, content] = screen.getAllByRole('cell')
+  expect(prefix).toHaveTextContent('//')
+  expect(content).toHaveAttribute('colspan', '3')
+  expect(content).toHaveTextContent(parallel.composition.name)
 })

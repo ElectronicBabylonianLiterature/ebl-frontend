@@ -6,6 +6,7 @@ import MarkupService from 'markup/application/MarkupService'
 
 import fossey from 'about/ui/static/fossey.jpg'
 import meszl from 'about/ui/static/meszl.jpg'
+import AboutFigure from 'about/ui/AboutFigure'
 
 export default function AboutSigns(markupService: MarkupService): JSX.Element {
   return (
@@ -37,18 +38,15 @@ export default function AboutSigns(markupService: MarkupService): JSX.Element {
               The book is used by permission of its author."
       />
       <h3>II. Mesopotamisches Zeichenlexikon</h3>
-      <figure className="Introduction__photoLeft">
-        <a href="https://ugarit-verlag.com/en/products/0e8e7ca5d1f5493aa351e3ebc42fb514">
-          <img
-            className="Introduction__300px"
-            src={meszl}
-            alt="Borger, Mesopotamisches Zeichenlexikon"
-          />
-        </a>
-        <figcaption className="Introduction__caption">
-          Borger, <em>Mesopotamisches Zeichenlexikon</em>
-        </figcaption>
-      </figure>
+      <AboutFigure
+        side="Left"
+        width="300px"
+        src={meszl}
+        alt="Borger, Mesopotamisches Zeichenlexikon"
+        href="https://ugarit-verlag.com/en/products/0e8e7ca5d1f5493aa351e3ebc42fb514"
+      >
+        Borger, <em>Mesopotamisches Zeichenlexikon</em>
+      </AboutFigure>
       <MarkdownParagraph
         text="A great debt of gratitude is owed to Thomas R. Kämmerer, editor-in-chief
               of Ugarit-Verlag, for his permission to digitize and make publicly available on
@@ -93,16 +91,14 @@ export default function AboutSigns(markupService: MarkupService): JSX.Element {
               [this link](https://ugarit-verlag.com/en/products/0e8e7ca5d1f5493aa351e3ebc42fb514)."
       />
       <h3>III. Fossey, Manuel d’assyriologie II</h3>
-      <figure className="Introduction__photoRight">
-        <img
-          className="Introduction__250px"
-          src={fossey}
-          alt="Fossey, Manuel d’assyriologie II"
-        />
-        <figcaption className="Introduction__caption">
-          Fossey, <em>Manuel d’assyriologie II</em>
-        </figcaption>
-      </figure>
+      <AboutFigure
+        side="Right"
+        width="250px"
+        src={fossey}
+        alt="Fossey, Manuel d’assyriologie II"
+      >
+        Fossey, <em>Manuel d’assyriologie II</em>
+      </AboutFigure>
       <MarkdownParagraph
         text="Fossey’s monumental *Manuel d’assyriologie* II (Paris, 1926) is still today
               the most comprehensive repertoire of cuneiform signs. The collection of signs from all periods

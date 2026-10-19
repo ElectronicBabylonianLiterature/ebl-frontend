@@ -5,7 +5,7 @@ import _ from 'lodash'
 import { Row, Col } from 'react-bootstrap'
 import InlineMarkdown from 'common/ui/InlineMarkdown'
 import withData from 'http/withData'
-import './BibliographySearch.css'
+import 'bibliography/ui/BibliographySearch.css'
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 import BibliographyService from 'bibliography/application/BibliographyService'
 import Citation from 'bibliography/domain/Citation'
@@ -50,13 +50,13 @@ function BibliographySearch({ data }: { data: readonly BibliographyEntry[] }) {
 export default withData<
   unknown,
   {
-    bibliographyService: BibliographyService
+    bibliographyService: Pick<BibliographyService, 'search'>
     query: string
   },
   readonly BibliographyEntry[]
 >(
   BibliographySearch,
-  (props) => props.bibliographyService.search(props.query),
+  (props, signal) => props.bibliographyService.search(props.query, signal),
   {
     watch: (props) => [props.query],
     filter: (props) => !_.isEmpty(props.query),

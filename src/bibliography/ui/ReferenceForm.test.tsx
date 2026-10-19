@@ -6,7 +6,7 @@ import {
   changeValueByLabel,
   clickNth,
 } from 'test-support/utils'
-import ReferenceForm from './ReferenceForm'
+import ReferenceForm from 'bibliography/ui/ReferenceForm'
 import {
   buildBorger1957,
   referenceFactory,

@@ -1,6 +1,10 @@
-import { LineNumber, LineNumberRange } from './line-number'
-import { AbstractLine, LineBaseDto } from './abstract-line'
-import { TextLineColumn, createColumns, numberOfColumns } from './columns'
+import { LineNumber, LineNumberRange } from 'transliteration/domain/line-number'
+import { AbstractLine, LineBaseDto } from 'transliteration/domain/abstract-line'
+import {
+  TextLineColumn,
+  createColumns,
+  numberOfColumns,
+} from 'transliteration/domain/columns'
 
 export interface TextLineDto extends LineBaseDto {
   readonly type: 'TextLine'
