@@ -86,4 +86,16 @@ describe('aggregateFindspotMapData', () => {
     const frozen = Object.freeze(input[0])
     expect(() => aggregateFindspotMapData([frozen])).not.toThrow()
   })
+
+  it('counts a repeated findspot only once per polygon', () => {
+    const record = findspot({ accessibleFragmentCount: 7 })
+    const summaries = aggregateFindspotMapData([record, record])
+
+    expect(summaries.get('assur-area-a-checksum')).toMatchObject({
+      findspotIds: [1],
+      findspotCount: 1,
+      accessibleFragmentCount: 7,
+      findspots: [record],
+    })
+  })
 })

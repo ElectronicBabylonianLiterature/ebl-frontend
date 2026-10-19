@@ -71,7 +71,9 @@ def geometry_checksum(geometry: object) -> str:
     coordinates = geometry.get("coordinates")
     if not isinstance(coordinates, list) or not coordinates:
         raise RuntimeError("Polygon must contain at least one ring")
-    canonical = sorted(
-        _serialize_ring(_canonical_ring(ring)) for ring in coordinates
-    )
+    exterior, *holes = coordinates
+    canonical = [
+        _serialize_ring(_canonical_ring(exterior)),
+        *sorted(_serialize_ring(_canonical_ring(hole)) for hole in holes),
+    ]
     return hashlib.sha1("|".join(canonical).encode("utf-8")).hexdigest()[:12]
