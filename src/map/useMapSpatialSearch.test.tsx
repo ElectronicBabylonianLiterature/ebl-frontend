@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useRef } from 'react'
 import { act, render, renderHook } from '@testing-library/react'
 import type { Map as MapLibreMap } from 'maplibre-gl'
 import type { ExcavationPolygonIndex } from 'map/excavationPolygonIndex'
@@ -8,44 +8,37 @@ import {
   mockAddSource,
   mockGetBounds,
   mockGetCenter,
-  mockGetLayer,
   mockGetSource,
   mockMapInstance,
-  mockRemove,
   mockSetData,
   resetMapMocks,
   triggerMapEvent,
 } from 'map/mapLibreMock.testSupport'
 import type { FragmentMapDataState } from 'map/useFragmentMapData'
 import useMapSpatialSearch from 'map/useMapSpatialSearch'
+import type { SpatialSearchController } from 'map/useMapSpatialSearch'
+import { asLibreMap } from 'test-support/maplibre-map-helpers'
+import {
+  rejectDisposedMapAccess,
+  useDisposingMockMap,
+} from 'map/mapLibreDisposedMock.testSupport'
 
 jest.mock('maplibre-gl')
 
 const EMPTY_INDEX: ExcavationPolygonIndex = new Map()
-const EMPTY_DATA = {
+const EMPTY_DATA: FragmentMapDataState = {
   sites: new Map(),
   findspots: [],
   polygonSummaries: new Map(),
-} as unknown as FragmentMapDataState
+}
 
-function useHarness(isActive: boolean) {
-  const mapRef = useRef<MapLibreMap | null>(
-    mockMapInstance as unknown as MapLibreMap,
-  )
+function useHarness(isActive: boolean): SpatialSearchController {
+  const mapRef = useRef<MapLibreMap | null>(asLibreMap(mockMapInstance))
   return useMapSpatialSearch(mapRef, isActive, EMPTY_INDEX, EMPTY_DATA)
 }
 
 function OwnerTeardownHarness(): null {
-  const mapRef = useRef<MapLibreMap | null>(
-    mockMapInstance as unknown as MapLibreMap,
-  )
-  useEffect(
-    () => () => {
-      mockRemove()
-      mapRef.current = null
-    },
-    [],
-  )
+  const mapRef = useDisposingMockMap()
   useMapSpatialSearch(mapRef, true, EMPTY_INDEX, EMPTY_DATA)
   return null
 }
@@ -205,18 +198,7 @@ describe('useMapSpatialSearch', () => {
     rerender({ active: false })
     expect(result.current.isDrawing).toBe(false)
 
-    let isRemoved = false
-    mockRemove.mockImplementation(() => {
-      isRemoved = true
-    })
-    mockGetLayer.mockImplementation(() => {
-      if (isRemoved) throw new Error('map style has been removed')
-      return undefined
-    })
-    mockGetSource.mockImplementation(() => {
-      if (isRemoved) throw new Error('map style has been removed')
-      return undefined
-    })
+    rejectDisposedMapAccess()
     const { unmount } = render(<OwnerTeardownHarness />)
     expect(unmount).not.toThrow()
   })

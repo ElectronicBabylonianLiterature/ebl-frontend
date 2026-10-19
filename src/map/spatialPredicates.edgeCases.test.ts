@@ -1,4 +1,5 @@
 import type { Geometry } from 'geojson'
+import type { BoundingBox } from 'map/mapGeometry'
 import { geometryIntersectsBoundingBox } from 'map/spatialPredicates'
 
 function square(west: number, south: number, size: number): Geometry {
@@ -85,9 +86,32 @@ describe('polygon holes and wrapped worlds', () => {
       ),
     ).toBe(true)
   })
+
+  it.each<BoundingBox>([
+    [-90, -80, 90, 80],
+    [-140, -80, 140, 80],
+    [-180, -80, 180, 80],
+  ])('preserves the full longitude span of viewport %p', (...bounds) => {
+    expect(geometryIntersectsBoundingBox(square(43, 35, 1), bounds)).toBe(true)
+    expect(geometryIntersectsBoundingBox(square(43, 85, 1), bounds)).toBe(false)
+  })
+
+  it('does not substitute the antimeridian complement of a wide viewport', () => {
+    expect(
+      geometryIntersectsBoundingBox(square(150, 35, 1), [-140, -80, 140, 80]),
+    ).toBe(false)
+  })
 })
 
 describe('invalid geometry', () => {
+  it.each<BoundingBox>([
+    [Number.NaN, 0, 1, 1],
+    [1, 0, 0, 1],
+    [0, 1, 1, 0],
+  ])('rejects invalid explicit search bounds %p', (...bounds) => {
+    expect(geometryIntersectsBoundingBox(square(0, 0, 1), bounds)).toBe(false)
+  })
+
   it.each<Geometry>([
     {
       type: 'Polygon',

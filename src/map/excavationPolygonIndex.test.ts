@@ -63,6 +63,24 @@ describe('buildExcavationPolygonIndex', () => {
     expect(index.get('assur')?.[0].name).toBe('First')
   })
 
+  it('accepts multipolygons and sorts unnamed polygons by id', () => {
+    const first = polygonFeature('assur-a', 'assur')
+    const second = polygonFeature('uruk-b', 'uruk')
+    const features = [second, first].map((feature) => ({
+      ...feature,
+      properties: { ...feature.properties, name: null },
+      geometry: {
+        type: 'MultiPolygon',
+        coordinates: [feature.geometry.coordinates],
+      },
+    }))
+    const index = buildExcavationPolygonIndex(collection(features))
+
+    expect(
+      sortedExcavationPolygons(index).map(({ polygonId }) => polygonId),
+    ).toEqual(['assur-a', 'uruk-b'])
+  })
+
   it('rejects features from an unknown site', () => {
     expect(
       buildExcavationPolygonIndex(
