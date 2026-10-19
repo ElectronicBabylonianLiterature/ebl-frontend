@@ -86,5 +86,5 @@ export default withData<
   ({ data, query }) => (
     <CompositeSign signComposites={data} mainSign={query.value} />
   ),
-  (props) => props.signService.search(props.query),
+  (props, signal) => props.signService.search(props.query, signal),
 )

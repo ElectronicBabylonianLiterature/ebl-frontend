@@ -2,7 +2,6 @@ import fs from 'fs'
 import path from 'path'
 import { act, screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import Bluebird from 'bluebird'
 import fetchMock from 'jest-fetch-mock'
 import { FindspotService } from 'fragmentarium/application/FindspotService'
 import {
@@ -34,7 +33,7 @@ const CANONICAL_POLYGON_ASSET = fs.readFileSync(
 function makeFindspotService(): FindspotService {
   return {
     fetchMapData: jest.fn((siteId: string) =>
-      Bluebird.resolve(
+      Promise.resolve(
         siteId === 'assur'
           ? [
               findspotMapDataDto({
@@ -161,8 +160,8 @@ describe('MapTab excavation selection', () => {
   it('keeps a selected-site error distinct while another site loads', async () => {
     const fetchMapData = jest.fn((siteId: string) =>
       siteId === 'assur'
-        ? Bluebird.reject(new Error('Assur API unavailable'))
-        : Bluebird.resolve([]),
+        ? Promise.reject(new Error('Assur API unavailable'))
+        : Promise.resolve([]),
     )
     renderMapTab(
       makeFragmentService([makeProvenance()]),

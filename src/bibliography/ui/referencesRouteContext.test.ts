@@ -3,7 +3,7 @@ import {
   referencesNewRoute,
   referencesEntryRoute,
   referencesEditRoute,
-} from './referencesRouteContext'
+} from 'bibliography/ui/referencesRouteContext'
 
 describe('referencesRouteContext', () => {
   test('resolves route root', () => {

@@ -1,4 +1,4 @@
-import { ExtantLine, groupExtantLines } from './extant-lines'
+import { ExtantLine, groupExtantLines } from 'corpus/domain/extant-lines'
 
 const line1: ExtantLine = {
   lineNumber: {

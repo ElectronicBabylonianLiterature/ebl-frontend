@@ -1,16 +1,15 @@
-import {
-  emptyFirstColumn,
-  firstColumnSpan,
-  implicitFirstColumn,
-  span,
-} from 'test-support/lines/text-columns'
+import { emptyFirstColumn } from 'test-support/lines/text-columns'
+import { firstColumnSpan, span } from 'test-support/lines/text-columns-spans'
+import { implicitFirstColumn } from 'test-support/lines/text-columns-implicit'
 import { lemmatized } from 'test-support/lines/text-lemmatization'
 import {
   containsColumns,
   createColumns,
   maxColumns,
   numberOfColumns,
-} from './columns'
+  updatePhoneticPropsContext,
+} from 'transliteration/domain/columns'
+import { kurToken, languageShiftToken, raToken } from 'test-support/test-tokens'
 
 test.each([
   [lemmatized[0], false],
@@ -112,4 +111,25 @@ test('maxColumns', () => {
     createColumns(implicitFirstColumn.content),
   ]
   expect(maxColumns(columns)).toEqual(4)
+})
+
+test('maxColumns of no lines is one column', () => {
+  expect(maxColumns([])).toEqual(1)
+})
+
+test('updatePhoneticPropsContext finds the neighbouring Akkadian words', () => {
+  const content = [raToken, languageShiftToken, kurToken, languageShiftToken]
+  expect(
+    updatePhoneticPropsContext(content, 1, {
+      wordContext: { nextWord: raToken },
+    }),
+  ).toEqual({
+    wordContext: { previousWord: raToken, nextWord: kurToken },
+  })
+})
+
+test('updatePhoneticPropsContext without neighbouring Akkadian words', () => {
+  expect(updatePhoneticPropsContext([languageShiftToken], 0)).toEqual({
+    wordContext: {},
+  })
 })

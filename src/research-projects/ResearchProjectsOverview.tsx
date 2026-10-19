@@ -1,10 +1,13 @@
 import React from 'react'
 import AppContent from 'common/ui/AppContent'
 import { SectionCrumb } from 'common/ui/Breadcrumbs'
-import { ResearchProject, ResearchProjects } from './researchProject'
+import {
+  ResearchProject,
+  ResearchProjects,
+} from 'research-projects/researchProject'
 import { Link } from 'react-router-dom'
 import { Container, Row, Col, Card } from 'react-bootstrap'
-import './projects.sass'
+import 'research-projects/projects.sass'
 
 interface ProjectCardProps {
   project: ResearchProject

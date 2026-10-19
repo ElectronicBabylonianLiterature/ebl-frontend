@@ -3,9 +3,17 @@ import { render } from '@testing-library/react'
 import { HelmetProvider } from 'react-helmet-async'
 import { helmetContext, HeadTags, HeadTagsService } from 'router/head'
 
-HelmetProvider.canUseDOM = false
+const originalCanUseDOM = HelmetProvider.canUseDOM
 
-it('should render all metadata', () => {
+beforeAll(() => {
+  HelmetProvider.canUseDOM = false
+})
+
+afterAll(() => {
+  HelmetProvider.canUseDOM = originalCanUseDOM
+})
+
+it('should render all metadata through HeadTags', () => {
   render(
     <HelmetProvider context={helmetContext}>
       <HeadTags title={'title'} description={''} />
@@ -19,7 +27,7 @@ it('should render all metadata', () => {
   )
 })
 
-it('should render all metadata', () => {
+it('should render all metadata through HeadTagsService', () => {
   render(
     <HelmetProvider context={helmetContext}>
       <HeadTagsService title={'title'} description={''}></HeadTagsService>
@@ -30,5 +38,20 @@ it('should render all metadata', () => {
   )
   expect(helmetContext['helmet']['meta']['toString']()).toEqual(
     '<meta data-rh="true" name="description" content=""/><meta data-rh="true" property="og:title" content="title"/><meta data-rh="true" property="og:description" content=""/><meta data-rh="true" name="twitter:title" content="title"/><meta data-rh="true" name="twitter:description" content=""/>',
+  )
+})
+
+it('should render canonical link metadata', () => {
+  render(
+    <HelmetProvider context={helmetContext}>
+      <HeadTags
+        title={'title'}
+        description={''}
+        canonicalUrl={'https://www.ebl.lmu.de/library/K.1'}
+      />
+    </HelmetProvider>,
+  )
+  expect(helmetContext['helmet']['link']['toString']()).toEqual(
+    '<link data-rh="true" rel="canonical" href="https://www.ebl.lmu.de/library/K.1"/>',
   )
 })

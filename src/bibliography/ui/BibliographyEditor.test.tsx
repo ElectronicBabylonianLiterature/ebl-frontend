@@ -2,12 +2,11 @@ import React from 'react'
 import { MemoryRouter } from 'react-router'
 import { matchPath } from 'react-router-dom'
 import { render, Matcher, screen } from '@testing-library/react'
-import { Promise } from 'bluebird'
 import _ from 'lodash'
 import { act } from 'react'
 import SessionContext from 'auth/SessionContext'
 import { submitForm } from 'test-support/utils'
-import BibliographyEditor from './BibliographyEditor'
+import BibliographyEditor from 'bibliography/ui/BibliographyEditor'
 import BibliographyEntry, {
   template,
 } from 'bibliography/domain/BibliographyEntry'
@@ -21,16 +20,7 @@ let bibliographyService
 let session
 
 function TestMemoryRouter({ children }: React.PropsWithChildren): JSX.Element {
-  return (
-    <MemoryRouter
-      future={Object.fromEntries([
-        ['v7_startTransition', true],
-        ['v7_relativeSplatPath', true],
-      ])}
-    >
-      {children}
-    </MemoryRouter>
-  )
+  return <MemoryRouter>{children}</MemoryRouter>
 }
 
 beforeEach(async () => {
@@ -127,15 +117,37 @@ function commonTests(create, waitFor): void {
     await screen.findByText(errorMessage)
   })
 
-  test('Cancels promise on unmount', async () => {
-    const promise = new Promise(_.noop)
-    jest.spyOn(promise, 'cancel')
-    bibliographyService.update.mockReturnValueOnce(promise)
-    bibliographyService.create.mockReturnValueOnce(promise)
+  test('Ignores the update result after unmount', async () => {
+    let resolveUpdate: () => void = _.noop
+    const pending = new Promise<void>((resolve) => {
+      resolveUpdate = resolve
+    })
+    bibliographyService.update.mockReturnValueOnce(pending)
+    bibliographyService.create.mockReturnValueOnce(pending)
     const { unmount, container } = await renderWithRouter(true, create, waitFor)
     await submitForm(container)
     unmount()
-    expect(promise.isCancelled()).toBe(true)
+    await expect(
+      (async () => {
+        resolveUpdate()
+        await Promise.resolve()
+      })(),
+    ).resolves.toBeUndefined()
+  })
+
+  test('Ignores an update failure after unmount', async () => {
+    let rejectUpdate: (error: Error) => void = _.noop
+    const pending = new Promise<void>((resolve, reject) => {
+      rejectUpdate = reject
+    })
+    bibliographyService.update.mockReturnValueOnce(pending)
+    bibliographyService.create.mockReturnValueOnce(pending)
+    const { unmount, container } = await renderWithRouter(true, create, waitFor)
+    await submitForm(container)
+    unmount()
+    rejectUpdate(new Error(errorMessage))
+    await expect(pending).rejects.toThrow(errorMessage)
+    expect(screen.queryByText(errorMessage)).not.toBeInTheDocument()
   })
 
   test('Saving is disabled when not allowed to write:bibliography', async () => {

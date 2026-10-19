@@ -1,10 +1,9 @@
-import Bluebird from 'bluebird'
 import { Findspot } from 'fragmentarium/domain/archaeology'
 import {
   FindspotDto,
   fromFindspotDto,
 } from 'fragmentarium/domain/archaeologyDtos'
-import { JsonApiClient } from 'index'
+import { JsonApiClient } from 'http/JsonApiClient'
 import {
   FindspotMapData,
   FindspotMapDataResponseDto,
@@ -16,23 +15,23 @@ import {
 import { findMapSiteByDataParam } from 'map/mapSites'
 
 export interface FindspotRepository {
-  fetchFindspots(): Bluebird<Findspot[]>
-  fetchMapData(siteParam: string): Bluebird<readonly FindspotMapData[]>
+  fetchFindspots(): Promise<Findspot[]>
+  fetchMapData(siteParam: string): Promise<readonly FindspotMapData[]>
 }
 
 export class ApiFindspotRepository implements FindspotRepository {
   constructor(private readonly apiClient: JsonApiClient) {}
 
-  fetchFindspots(): Bluebird<Findspot[]> {
+  fetchFindspots(): Promise<Findspot[]> {
     return this.apiClient
       .fetchJson<FindspotDto[]>('/findspots', false)
       .then((findspots) => findspots.map(fromFindspotDto))
   }
 
-  fetchMapData(siteParam: string): Bluebird<readonly FindspotMapData[]> {
+  fetchMapData(siteParam: string): Promise<readonly FindspotMapData[]> {
     const site = findMapSiteByDataParam(siteParam)
     if (!site) {
-      return Bluebird.reject(
+      return Promise.reject(
         new IncompatibleFindspotMapDataError(
           'Unknown map-data site parameter ' + siteParam,
         ),

@@ -1,5 +1,5 @@
 import React from 'react'
-import DerivedFromInput from './DerivedFromInput'
+import DerivedFromInput from 'dictionary/ui/editor/DerivedFromInput'
 import { render, screen } from '@testing-library/react'
 
 import { whenClicked, whenChangedByValue } from 'test-support/utils'

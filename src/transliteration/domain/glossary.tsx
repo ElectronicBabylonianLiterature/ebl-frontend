@@ -1,4 +1,4 @@
-import Label from './Label'
+import Label from 'transliteration/domain/Label'
 import { AnyWord } from 'transliteration/domain/token'
 import DictionaryWord from 'dictionary/domain/Word'
 import compareWord from 'dictionary/domain/compareWord'

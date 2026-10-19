@@ -1,4 +1,3 @@
-import Bluebird from 'bluebird'
 import { Findspot } from 'fragmentarium/domain/archaeology'
 import { FindspotRepository } from 'fragmentarium/infrastructure/FindspotRepository'
 import { FindspotMapData } from 'map/findspotMapData'
@@ -14,7 +13,7 @@ export class UnsupportedMapDataSiteError extends Error {
 export class FindspotService {
   constructor(private readonly findspotRepository: FindspotRepository) {}
 
-  fetchFindspots(): Bluebird<Findspot[]> {
+  fetchFindspots(): Promise<Findspot[]> {
     return this.findspotRepository.fetchFindspots()
   }
 
@@ -22,10 +21,10 @@ export class FindspotService {
     return mapDataSiteParam(siteId) !== null
   }
 
-  fetchMapData(siteId: string): Bluebird<readonly FindspotMapData[]> {
+  fetchMapData(siteId: string): Promise<readonly FindspotMapData[]> {
     const siteParam = mapDataSiteParam(siteId)
     return siteParam === null
-      ? Bluebird.reject(new UnsupportedMapDataSiteError(siteId))
+      ? Promise.reject(new UnsupportedMapDataSiteError(siteId))
       : this.findspotRepository.fetchMapData(siteParam)
   }
 }

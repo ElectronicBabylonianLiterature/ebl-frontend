@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import Button from 'react-bootstrap/Button'
 
 type CollapseExpandButtonProps = {
-  onToggle
+  onToggle: (isCollapsed: boolean) => void
   initialCollapsed?: boolean
 }
 

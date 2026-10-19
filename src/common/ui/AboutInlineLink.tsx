@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import './AboutInlineLink.sass'
+import 'common/ui/AboutInlineLink.sass'
 
 type Props = {
   to: string

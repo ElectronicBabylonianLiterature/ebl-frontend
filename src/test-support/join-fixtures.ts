@@ -2,7 +2,7 @@ import { Factory } from 'fishery'
 import { Chance } from 'chance'
 import { Join } from 'fragmentarium/domain/join'
 
-const defaultChance = new Chance()
+const defaultChance = new Chance('join-fixtures')
 
 export type JoinWithMuseumNumber =
   | Omit<Join, 'museumNumber'>
