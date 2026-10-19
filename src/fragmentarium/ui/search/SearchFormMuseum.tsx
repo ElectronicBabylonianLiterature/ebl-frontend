@@ -1,6 +1,6 @@
 import React from 'react'
 import { Museums } from 'fragmentarium/domain/museum'
-import SelectFormGroup from './SelectFromGroup'
+import SelectFormGroup from 'fragmentarium/ui/search/SelectFromGroup'
 import { MuseumSearchHelp } from 'fragmentarium/ui/SearchHelp'
 
 interface MuseumSearchFormGroupProps {
@@ -8,12 +8,15 @@ interface MuseumSearchFormGroupProps {
   onChange: (value: string | null) => void
 }
 
-const getCountryName = (countryCode: string): string => {
+export const getCountryName = (countryCode: string): string => {
   const isValidCode = countryCode && countryCode.length === 2
   if (!isValidCode) return 'Unknown Country'
 
-  const displayNames = new Intl.DisplayNames(undefined, { type: 'region' })
-  return displayNames.of(countryCode) || 'Unknown Country'
+  const displayNames = new Intl.DisplayNames(undefined, {
+    type: 'region',
+    fallback: 'none',
+  })
+  return displayNames.of(countryCode) || countryCode
 }
 
 export default function MuseumSearchFormGroup({

@@ -1,4 +1,3 @@
-import Promise from 'bluebird'
 import { testDelegation, TestData } from 'test-support/utils'
 import FragmentRepository, {
   createScript,
@@ -38,6 +37,7 @@ const testData: TestData<FragmentRepository>[] = [
         folio.name,
       )}/${encodeURIComponent(folio.number)}`,
       false,
+      undefined,
     ],
     Promise.resolve(resultStub),
   ),
@@ -46,7 +46,7 @@ const testData: TestData<FragmentRepository>[] = [
     [fragmentId],
     apiClient.fetchJson,
     resultStub,
-    [`/fragments/${encodeURIComponent(fragmentId)}/pager`, false],
+    [`/fragments/${encodeURIComponent(fragmentId)}/pager`, false, undefined],
     Promise.resolve(resultStub),
   ),
   new TestData(
@@ -67,6 +67,7 @@ const testData: TestData<FragmentRepository>[] = [
         fragmentId,
       )}/annotations?generateAnnotations=true`,
       false,
+      undefined,
     ],
     Promise.resolve({ annotations: annotationsDto }),
   ),
@@ -80,6 +81,7 @@ const testData: TestData<FragmentRepository>[] = [
         fragmentId,
       )}/annotations?generateAnnotations=false`,
       false,
+      undefined,
     ],
     Promise.resolve({ annotations: annotationsDto }),
   ),

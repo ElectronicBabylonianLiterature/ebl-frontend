@@ -1,8 +1,9 @@
 import { useContext, useEffect, useRef } from 'react'
 import type { MutableRefObject, RefObject } from 'react'
 import type { Point } from 'geojson'
-import maplibregl from 'maplibre-gl'
+import * as maplibregl from 'maplibre-gl'
 import ErrorReporterContext from 'ErrorReporterContext'
+import maplibreWorkerUrl from 'maplibre-gl/dist/maplibre-gl-worker.mjs'
 import { useHistory } from 'router/compat'
 import type {
   GeoJSONSource,
@@ -21,13 +22,12 @@ import {
   showPointerCursor,
 } from 'map/mapCursor'
 import {
+  MAP_STYLE_LOAD_EVENT,
   SOURCE_ID,
-  clusterCountLayer,
   clusterLayer,
-  createFindspotsSource,
   unclusteredLayer,
 } from 'map/mapLayers'
-import { fitMapToData } from 'map/mapBounds'
+import { initializeFindspotSource } from 'map/mapFindspotSource'
 import { queryFindspotFeatures } from 'map/mapFeatureQuery'
 import {
   MAP_STYLE_URL,
@@ -35,7 +35,6 @@ import {
   getReportableMapError,
   isMapBackgroundLoadError,
 } from 'map/mapBackgroundError'
-import { provenanceToGeoJson } from 'map/provenanceToGeoJson'
 
 const INITIAL_CENTER: [number, number] = [44.4, 33.0]
 const INITIAL_ZOOM = 5
@@ -44,18 +43,6 @@ interface FindspotMapHandlers {
   isActive: () => boolean
   navigate: (path: string) => void
   reportError: (error: Error) => void
-}
-
-function initializeFindspotSource(
-  map: MapLibreMap,
-  provenances: readonly ProvenanceRecord[],
-): void {
-  const geoJson = provenanceToGeoJson(provenances)
-  map.addSource(SOURCE_ID, createFindspotsSource(geoJson))
-  map.addLayer(clusterLayer)
-  map.addLayer(clusterCountLayer)
-  map.addLayer(unclusteredLayer)
-  fitMapToData(map, geoJson.features)
 }
 
 function expandCluster(
@@ -143,6 +130,7 @@ export default function useFindspotMap(
 
     let map: MapLibreMap
     try {
+      maplibregl.setWorkerUrl(maplibreWorkerUrl)
       map = new maplibregl.Map({
         container: containerRef.current,
         style: MAP_STYLE_URL,
@@ -165,7 +153,7 @@ export default function useFindspotMap(
       reportError: (error) =>
         latestServicesRef.current.errorReporter.captureException(error),
     }
-    const handleLoad = () => {
+    const handleStyleLoad = () => {
       onMapBackgroundErrorChange?.(false)
       const loadedProvenances = latestProvenancesRef.current
       if (loadedProvenances) {
@@ -189,7 +177,8 @@ export default function useFindspotMap(
       }
     }
 
-    map.on('load', handleLoad)
+    map.on(MAP_STYLE_LOAD_EVENT, handleStyleLoad)
+    if (map.getStyle()) handleStyleLoad()
     map.on('click', handleClick)
     map.on('mousemove', handleMouseMove)
     map.on('error', handleError)
@@ -200,7 +189,7 @@ export default function useFindspotMap(
 
     return () => {
       isActive = false
-      map.off('load', handleLoad)
+      map.off(MAP_STYLE_LOAD_EVENT, handleStyleLoad)
       map.off('click', handleClick)
       map.off('mousemove', handleMouseMove)
       map.off('error', handleError)

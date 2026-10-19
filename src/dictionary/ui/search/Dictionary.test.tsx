@@ -1,15 +1,15 @@
 import React from 'react'
 import { render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import { MemoryRouter } from 'react-router-dom'
-import Promise from 'bluebird'
 
 import SessionContext from 'auth/SessionContext'
-import Dictionary from './Dictionary'
+import Dictionary from 'dictionary/ui/search/Dictionary'
 import Word from 'dictionary/domain/Word'
 import WordService from 'dictionary/application/WordService'
 import MemorySession from 'auth/Session'
 import { wordFactory } from 'test-support/word-fixtures'
-import { stringify } from 'query-string'
+import { stringify } from 'common/utils/queryString'
 
 jest.mock('dictionary/application/WordService')
 
@@ -49,6 +49,16 @@ describe('Searching for word', () => {
     expect(screen.getByLabelText('Meaning')).toHaveValue('')
     expect(screen.getByLabelText('Root')).toHaveValue('')
     expect(screen.getByRole('checkbox', { name: 'a/a' })).not.toBeChecked()
+  })
+
+  it('treats keys without values as an empty query', async () => {
+    await renderDictionary('/dictionary?word&meaning=&vowelClass')
+    await userEvent.type(screen.getByLabelText('Word'), 'lemma')
+
+    expect(screen.getByLabelText('Word')).toHaveValue('lemma')
+    expect(screen.getByLabelText('Meaning')).toHaveValue('')
+    expect(screen.getByRole('checkbox', { name: 'a/a' })).not.toBeChecked()
+    expect(wordService.search).not.toHaveBeenCalled()
   })
 
   it('does not refetch on rerender when query is unchanged', async () => {

@@ -1,5 +1,5 @@
 import { Crumb } from 'common/ui/Breadcrumbs'
-import createGenreLink from './createGenreLink'
+import createGenreLink from 'corpus/ui/createGenreLink'
 
 export default class GenreCrumb implements Crumb {
   constructor(

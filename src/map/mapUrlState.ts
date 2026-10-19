@@ -1,4 +1,4 @@
-import { parse, stringify } from 'query-string'
+import { parse, stringify } from 'common/utils/queryString'
 
 export const MAP_URL_STATE_VERSION = 1
 export const MAX_FILTER_LENGTH = 200

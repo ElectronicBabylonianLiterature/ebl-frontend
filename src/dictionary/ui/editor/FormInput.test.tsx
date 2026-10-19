@@ -1,5 +1,5 @@
 import React from 'react'
-import FormInput from './FormInput'
+import FormInput from 'dictionary/ui/editor/FormInput'
 import { render, screen } from '@testing-library/react'
 
 import { whenClicked, changeValueByLabel } from 'test-support/utils'

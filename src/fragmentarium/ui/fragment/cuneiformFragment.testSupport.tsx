@@ -1,10 +1,9 @@
 import React from 'react'
 import { MemoryRouter } from 'react-router-dom'
 import { render, screen } from '@testing-library/react'
-import { Promise } from 'bluebird'
 
 import SessionContext from 'auth/SessionContext'
-import CuneiformFragment from './CuneiformFragment'
+import CuneiformFragment from 'fragmentarium/ui/fragment/CuneiformFragment'
 import Lemmatization from 'transliteration/domain/Lemmatization'
 import WordService from 'dictionary/application/WordService'
 import FragmentService from 'fragmentarium/application/FragmentService'
@@ -136,3 +135,32 @@ test.each(['collection', 'accession'])('Renders %s', async (property) => {
   await setup()
   expect(container).toHaveTextContent(fragment[property])
 })
+
+export interface CuneiformFragmentTestContext {
+  fragment: Fragment
+  updatedFragment: Fragment
+  container: HTMLElement
+  fragmentService: jest.Mocked<FragmentService>
+  fragmentSearchService: jest.Mocked<FragmentSearchService>
+  wordService: jest.Mocked<WordService>
+  findspotService: jest.Mocked<FindspotService>
+  afoRegisterService: jest.Mocked<AfoRegisterService>
+  dossiersService: jest.Mocked<DossiersService>
+  session: jest.Mocked<Session>
+}
+
+export async function setUpCuneiformFragment(): Promise<CuneiformFragmentTestContext> {
+  await setup()
+  return {
+    fragment: fragment,
+    updatedFragment: updatedFragment,
+    container: container,
+    fragmentService: fragmentService,
+    fragmentSearchService: fragmentSearchService,
+    wordService: wordService,
+    findspotService: findspotService,
+    afoRegisterService: afoRegisterService,
+    dossiersService: dossiersService,
+    session: session,
+  }
+}

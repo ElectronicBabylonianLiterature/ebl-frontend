@@ -1,14 +1,14 @@
 import React from 'react'
 import { render, screen } from '@testing-library/react'
-import ColophonInfo from './Colophon'
+import ColophonInfo from 'fragmentarium/ui/info/Colophon'
 import { fragmentFactory } from 'test-support/fragment-fixtures'
 import { colophonFactory } from 'test-support/colophon-fixtures'
 import {
   ColophonOwnership,
   ColophonStatus,
   ColophonType,
-  IndividualAttestation,
 } from 'fragmentarium/domain/Colophon'
+import { IndividualAttestation } from 'fragmentarium/domain/IndividualAttestation'
 
 const mockColophon = colophonFactory.build({
   colophonStatus: ColophonStatus.Yes,

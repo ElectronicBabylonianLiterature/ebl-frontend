@@ -4,7 +4,7 @@ import { AbstractLine } from 'transliteration/domain/abstract-line'
 import { LineNumber, LineNumberRange } from 'transliteration/domain/line-number'
 import { MarkupPart } from 'transliteration/domain/markup'
 import lineNumberToString from 'transliteration/domain/lineNumberToString'
-import { Token } from './token'
+import { Token } from 'transliteration/domain/token'
 
 export interface Extent {
   readonly number: LineNumber | LineNumberRange

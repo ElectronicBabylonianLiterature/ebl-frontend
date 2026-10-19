@@ -4,6 +4,7 @@ import type { Map as MapLibreMap } from 'maplibre-gl'
 import useExcavationAreas from 'map/useExcavationAreas'
 import { EXCAVATION_AREAS_SOURCE_ID } from 'map/mapExcavationLayers'
 import {
+  clearMockStyleResources,
   deferMapLoad,
   mockAddLayer,
   mockAddSource,
@@ -108,17 +109,35 @@ describe('useExcavationAreas', () => {
     expect(mockRemove).toHaveBeenCalled()
   })
 
-  it('removes a pending one-time load listener on cleanup', () => {
+  it('removes its style load listener on cleanup', () => {
     deferMapLoad()
     const { unmount } = render(<Harness />)
 
     expect(mockAddSource).not.toHaveBeenCalled()
     unmount()
     act(() => {
-      triggerMapEvent('load')
+      triggerMapEvent('style.load')
     })
 
     expect(mockAddSource).not.toHaveBeenCalled()
+  })
+
+  it('restores layers and latest visibility after a style reload', () => {
+    const { rerender } = render(<Harness isVisible />)
+    rerender(<Harness isVisible={false} />)
+    clearMockStyleResources()
+    mockAddLayer.mockClear()
+    mockSetLayoutProperty.mockClear()
+
+    act(() => triggerMapEvent('style.load'))
+
+    expect(mockAddLayer).toHaveBeenCalledTimes(2)
+    expect(mockSetLayoutProperty).toHaveBeenCalledTimes(2)
+    expect(mockSetLayoutProperty).toHaveBeenLastCalledWith(
+      expect.any(String),
+      'visibility',
+      'none',
+    )
   })
 
   it('reports only excavation-source failures as unavailable', () => {

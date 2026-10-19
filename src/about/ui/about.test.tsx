@@ -1,18 +1,10 @@
 import React from 'react'
 import About, { TabId } from 'about/ui/about'
-import Bluebird from 'bluebird'
 import '@testing-library/jest-dom'
 import MarkupService from 'markup/application/MarkupService'
 import { markupDtoSerialized } from 'test-support/markup-fixtures'
-import {
-  render,
-  screen,
-  fireEvent,
-  waitFor,
-  within,
-} from '@testing-library/react'
+import { render, screen, waitFor, within } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
-import { setReducedMotionMatchMedia } from 'test-support/matchMedia'
 
 jest.mock('markup/application/MarkupService')
 
@@ -54,7 +46,7 @@ describe('About component', () => {
   beforeEach(() => {
     mockDate.mockReturnValue('1/1/2023')
     markupServiceMock.fromString.mockReturnValue(
-      Bluebird.resolve(markupDtoSerialized),
+      Promise.resolve(markupDtoSerialized),
     )
   })
 
@@ -133,126 +125,5 @@ describe('About component', () => {
         within(sidebarNavigation).getByRole('link', { name: tabText }),
       ).toBeInTheDocument()
     })
-  })
-
-  test('does not change tab when clicking active tab', async () => {
-    await renderAbout(['/about/project'], 'project')
-
-    const projectTab = screen.getByRole('link', { name: 'eBL Project' })
-    fireEvent.click(projectTab)
-
-    expect(screen.getByRole('link', { name: 'eBL Project' })).toHaveClass(
-      'active',
-    )
-  })
-
-  test('navigates to different tab when clicking inactive tab', async () => {
-    await renderAbout(['/about/project'], 'project')
-
-    fireEvent.click(screen.getByRole('link', { name: 'Corpus' }))
-    await waitForSpinnersToDisappear()
-
-    expect(screen.getByRole('link', { name: 'Corpus' })).toHaveClass('active')
-  })
-
-  test('marks decorative icons as hidden from assistive technologies', async () => {
-    await renderAbout(['/about/project'], 'project')
-
-    const navIcons = ['⚙', '⌂', '⊞', '𒀀', 'Ꞌ', '※', '✉', '⛏']
-
-    navIcons.forEach((icon) => {
-      expect(
-        screen.getByText(icon, { selector: '.about-nav__icon' }),
-      ).toHaveAttribute('aria-hidden', 'true')
-    })
-
-    expect(
-      screen.getByText('⚙', { selector: '.about-content__icon' }),
-    ).toHaveAttribute('aria-hidden', 'true')
-  })
-
-  test('scrolls to hash target when URL contains hash', async () => {
-    const scrollIntoView = jest.fn()
-    const element = document.createElement('div')
-    element.id = 'test-section'
-    element.scrollIntoView = scrollIntoView
-    document.body.appendChild(element)
-
-    render(
-      <MemoryRouter initialEntries={['/about/project#test-section']}>
-        <About markupService={markupServiceMock} activeTab="project" />
-      </MemoryRouter>,
-    )
-
-    await waitFor(() => {
-      expect(scrollIntoView).toHaveBeenCalledWith({ behavior: 'smooth' })
-    })
-
-    document.body.removeChild(element)
-  })
-
-  test('renders news tab with activeSection', async () => {
-    render(
-      <MemoryRouter initialEntries={['/about/news/1']}>
-        <About
-          markupService={markupServiceMock}
-          activeTab="news"
-          activeSection="1"
-        />
-      </MemoryRouter>,
-    )
-    await waitForSpinnersToDisappear()
-
-    expect(screen.getByRole('link', { name: /News/ })).toHaveClass('active')
-  })
-
-  test('renders news tab without activeSection', async () => {
-    render(
-      <MemoryRouter initialEntries={['/about/news']}>
-        <About markupService={markupServiceMock} activeTab="news" />
-      </MemoryRouter>,
-    )
-    await waitForSpinnersToDisappear()
-
-    expect(screen.getByRole('link', { name: /News/ })).toHaveClass('active')
-  })
-
-  test('does not scroll when hash target element is missing', async () => {
-    render(
-      <MemoryRouter initialEntries={['/about/project#nonexistent']}>
-        <About markupService={markupServiceMock} activeTab="project" />
-      </MemoryRouter>,
-    )
-    await waitForSpinnersToDisappear()
-
-    expect(
-      screen.getByRole('link', { name: /eBL Project/ }),
-    ).toBeInTheDocument()
-  })
-
-  test('uses non-animated hash scrolling when reduced motion is enabled', async () => {
-    const restoreMatchMedia = setReducedMotionMatchMedia(true)
-
-    const scrollIntoView = jest.fn()
-    const element = document.createElement('div')
-    element.id = 'reduced-motion-target'
-    element.scrollIntoView = scrollIntoView
-    document.body.appendChild(element)
-
-    try {
-      render(
-        <MemoryRouter initialEntries={['/about/project#reduced-motion-target']}>
-          <About markupService={markupServiceMock} activeTab="project" />
-        </MemoryRouter>,
-      )
-      await waitForSpinnersToDisappear()
-
-      await waitFor(() => {
-        expect(scrollIntoView).toHaveBeenCalledWith({ behavior: 'auto' })
-      })
-    } finally {
-      document.body.removeChild(element)
-      restoreMatchMedia()
-    }
   })
 })

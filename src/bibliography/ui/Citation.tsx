@@ -1,6 +1,6 @@
 import React from 'react'
 import Reference from 'bibliography/domain/Reference'
-import CompactCitation from './CompactCitation'
+import CompactCitation from 'bibliography/ui/CompactCitation'
 
 export default function Citation({
   reference,

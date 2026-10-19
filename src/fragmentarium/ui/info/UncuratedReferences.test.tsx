@@ -1,6 +1,6 @@
 import React from 'react'
 import { render, screen } from '@testing-library/react'
-import UncuratedReferences from './UncuratedReferences'
+import UncuratedReferences from 'fragmentarium/ui/info/UncuratedReferences'
 import { uncuratedReferenceFactory } from 'test-support/fragment-data-fixtures'
 import { UncuratedReference } from 'fragmentarium/domain/fragment'
 

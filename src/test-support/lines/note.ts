@@ -1,3 +1,4 @@
+import { readingWord } from 'test-support/complex-text/tokenBuilders'
 import { NoteLine } from 'transliteration/domain/note-line'
 import Reference from 'bibliography/domain/Reference'
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
@@ -69,47 +70,7 @@ export const note: NoteLine = new NoteLine({
     },
     {
       language: 'AKKADIAN',
-      tokens: [
-        {
-          enclosureType: [],
-          erasure: 'NONE',
-          cleanValue: 'kur',
-          value: 'kur',
-          language: 'AKKADIAN',
-          normalized: false,
-          lemmatizable: true,
-          alignable: true,
-          uniqueLemma: [],
-          alignment: null,
-          variant: null,
-          parts: [
-            {
-              enclosureType: [],
-              erasure: 'NONE',
-              cleanValue: 'kur',
-              value: 'kur',
-              name: 'kur',
-              nameParts: [
-                {
-                  enclosureType: [],
-                  erasure: 'NONE',
-                  cleanValue: 'kur',
-                  value: 'kur',
-                  type: 'ValueToken',
-                },
-              ],
-              subIndex: 1,
-              modifiers: [],
-              flags: [],
-              sign: null,
-              type: 'Reading',
-            },
-          ],
-          type: 'Word',
-          hasVariantAlignment: false,
-          hasOmittedAlignment: false,
-        },
-      ],
+      tokens: [readingWord('kur')],
       type: 'LanguagePart',
     },
     {

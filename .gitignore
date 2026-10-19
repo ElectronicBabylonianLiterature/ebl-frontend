@@ -30,6 +30,9 @@ __pycache__/
 *.pyc
 /.map-processing/
 
-# qlty
+.claude
+
+# qlty — generated caches, logs and results; keep the checked-in config
 .qlty/*
 !.qlty/qlty.toml
+!.qlty/configs
