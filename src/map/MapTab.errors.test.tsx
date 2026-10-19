@@ -13,6 +13,8 @@ import {
 } from 'map/MapTab.testSupport'
 import { MAP_STYLE_URL } from 'map/mapBackgroundError'
 
+import { MAP_STYLE_LOAD_EVENT } from 'map/mapLayers'
+
 jest.mock('maplibre-gl')
 
 const BACKGROUND_WARNING = /The interactive map could not be loaded/
@@ -85,7 +87,7 @@ describe('MapTab map errors', () => {
     expect(screen.getByText(BACKGROUND_WARNING)).toBeInTheDocument()
 
     act(() => {
-      triggerMapEvent('load')
+      triggerMapEvent(MAP_STYLE_LOAD_EVENT)
     })
 
     expect(screen.queryByText(BACKGROUND_WARNING)).not.toBeInTheDocument()

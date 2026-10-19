@@ -1,12 +1,11 @@
 import React, { useCallback, useMemo, useRef, useState } from 'react'
 import { Alert } from 'react-bootstrap'
 import 'maplibre-gl/dist/maplibre-gl.css'
-import FragmentService from 'fragmentarium/application/FragmentService'
 import Spinner from 'common/ui/Spinner'
 import { ProvenanceRecord } from 'fragmentarium/domain/Provenance'
 import useFindspotMap from 'map/useFindspotMap'
 import useMapSourceData from 'map/useMapSourceData'
-import useProvenances from 'map/useProvenances'
+import useProvenances, { ProvenanceSource } from 'map/useProvenances'
 import useMapUrlState from 'map/useMapUrlState'
 import MapStage from 'map/MapStage'
 import MapShareLink from 'map/MapShareLink'
@@ -16,7 +15,7 @@ import { filterProvenances } from 'map/findspotFilter'
 import 'map/MapTab.sass'
 
 interface Props {
-  fragmentService: FragmentService
+  fragmentService: ProvenanceSource
 }
 
 function LoadedMapTab({

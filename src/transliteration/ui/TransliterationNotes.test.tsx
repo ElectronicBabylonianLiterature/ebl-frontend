@@ -3,7 +3,7 @@ import WordService from 'dictionary/application/WordService'
 import { DictionaryContext } from 'dictionary/ui/dictionary-context'
 import React from 'react'
 import { hydratedNote, note } from 'test-support/lines/note'
-import TransliterationNotes from './TransliterationNotes'
+import TransliterationNotes from 'transliteration/ui/TransliterationNotes'
 
 jest.mock('dictionary/application/WordService')
 

@@ -2,24 +2,24 @@ import Reference from 'bibliography/domain/Reference'
 import { produce, Draft, immerable } from 'immer'
 import _ from 'lodash'
 import { MarkupPart } from 'transliteration/domain/markup'
-import { Chapter } from './chapter'
+import { Chapter } from 'corpus/domain/chapter'
 import { ChapterId } from 'transliteration/domain/chapter-id'
 import { TextId } from 'transliteration/domain/text-id'
 import { ResearchProject } from 'research-projects/researchProject'
 
 export function createChapter(data: Partial<Chapter>): Chapter {
-  return new Chapter(
-    data.textId ?? { genre: 'L', category: 0, index: 0 },
-    data.textHasDoi ?? false,
-    data.classification ?? 'Ancient',
-    data.stage ?? 'Neo-Assyrian',
-    data.version ?? '',
-    data.name ?? '',
-    data.order ?? 0,
-    data.manuscripts ?? [],
-    data.uncertainFragments ?? [],
-    data.lines ?? [],
-  )
+  return new Chapter({
+    textId: data.textId ?? { genre: 'L', category: 0, index: 0 },
+    textHasDoi: data.textHasDoi ?? false,
+    classification: data.classification ?? 'Ancient',
+    stage: data.stage ?? 'Neo-Assyrian',
+    version: data.version ?? '',
+    name: data.name ?? '',
+    order: data.order ?? 0,
+    manuscripts: data.manuscripts ?? [],
+    uncertainFragments: data.uncertainFragments ?? [],
+    lines: data.lines ?? [],
+  })
 }
 export interface TextInfo {
   readonly genre: string

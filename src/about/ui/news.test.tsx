@@ -1,7 +1,7 @@
 import React from 'react'
 import { render, screen } from '@testing-library/react'
-import AboutNews from './news'
-import { newsletters } from './news'
+import AboutNews from 'about/ui/news'
+import { newsletters } from 'about/ui/news'
 import { MemoryRouter } from 'react-router-dom'
 import { fireEvent } from '@testing-library/react'
 

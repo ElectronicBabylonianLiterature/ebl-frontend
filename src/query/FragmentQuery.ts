@@ -1,9 +1,9 @@
-import { Periods, PeriodModifiers } from 'common/utils/period'
+import { PeriodModifiers } from 'common/utils/period'
+import { Periods } from 'common/utils/periodDefinitions'
 import { ResearchProjects } from 'research-projects/researchProject'
 import { MuseumKey } from 'fragmentarium/domain/museum'
 
-export const QueryTypes = ['and', 'or', 'line', 'phrase'] as const
-export type QueryType = (typeof QueryTypes)[number]
+export type QueryType = 'and' | 'or' | 'line' | 'phrase'
 export type PeriodString = keyof typeof Periods | ''
 export type PeriodModifierString = keyof typeof PeriodModifiers | ''
 
@@ -11,6 +11,8 @@ export type FragmentQuery = Partial<{
   lemmas: string
   lemmaOperator: QueryType
   limit: number
+  offset: number
+  count: 'exact' | 'page' | 'none'
   number: string
   pages: string
   transliteration: string
@@ -25,3 +27,8 @@ export type FragmentQuery = Partial<{
   latest: boolean
   dossier: string
 }>
+
+export type FragmentSearchCriteria = Omit<
+  FragmentQuery,
+  'limit' | 'offset' | 'count'
+>

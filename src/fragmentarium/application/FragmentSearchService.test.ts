@@ -1,7 +1,6 @@
-import Promise from 'bluebird'
 import { createScript } from 'fragmentarium/infrastructure/FragmentRepository'
 import { testDelegation, TestData } from 'test-support/utils'
-import FragmentSearchService from './FragmentSearchService'
+import FragmentSearchService from 'fragmentarium/application/FragmentSearchService'
 
 const resultStub = {
   script: { period: 'None', periodModifier: 'None', uncertain: false },
@@ -21,7 +20,7 @@ const testData: TestData<FragmentSearchService>[] = [
     [],
     fragmentRepository.random,
     expectedResultStub,
-    null,
+    [undefined],
     Promise.resolve([expectedResultStub]),
   ),
   new TestData(
@@ -29,7 +28,7 @@ const testData: TestData<FragmentSearchService>[] = [
     [],
     fragmentRepository.interesting,
     expectedResultStub,
-    null,
+    [undefined],
     Promise.resolve([expectedResultStub]),
   ),
   new TestData(
@@ -37,9 +36,22 @@ const testData: TestData<FragmentSearchService>[] = [
     [],
     fragmentRepository.fetchNeedsRevision,
     [expectedResultStub],
-    null,
+    [undefined],
     Promise.resolve([expectedResultStub]),
   ),
 ]
 
 testDelegation(fragmentSearchService, testData)
+
+describe.each(['random', 'interesting'] as const)(
+  '%s without results',
+  (method) => {
+    it('rejects when the repository finds no fragments', async () => {
+      fragmentRepository[method].mockResolvedValueOnce([])
+
+      await expect(fragmentSearchService[method]()).rejects.toThrow(
+        'No fragments found.',
+      )
+    })
+  },
+)

@@ -1,6 +1,6 @@
 import React from 'react'
 import { render, screen } from '@testing-library/react'
-import AfoRegisterFragmentRecords from './AfoRegisterFragmentRecords'
+import AfoRegisterFragmentRecords from 'afo-register/ui/AfoRegisterFragmentRecords'
 import AfoRegisterService from 'afo-register/application/AfoRegisterService'
 import { fragmentFactory } from 'test-support/fragment-fixtures'
 import { afoRegisterRecordFactory } from 'test-support/afo-register-fixtures'

@@ -1,5 +1,5 @@
-import { AbstractLine, LineBaseDto } from './abstract-line'
-import { MarkupPart } from './markup'
+import { AbstractLine, LineBaseDto } from 'transliteration/domain/abstract-line'
+import { MarkupPart } from 'transliteration/domain/markup'
 
 export interface NoteLineDto extends LineBaseDto {
   readonly type: 'NoteLine'

@@ -1,3 +1,4 @@
+import { MAP_STYLE_LOAD_EVENT } from 'map/mapLayers'
 const addedLayerIds = new Set<string>()
 
 function rememberAddedLayer(layer: { id: string }): void {
@@ -28,6 +29,7 @@ export const mockSetDOMContent = jest.fn()
 export const mockSetHTML = jest.fn()
 export const mockPopupAddTo = jest.fn()
 export const mockBoundsExtend = jest.fn()
+export const setWorkerUrl = jest.fn()
 
 export type MockMapEvent = { point: { x: number; y: number } }
 export type MockErrorEvent = {
@@ -101,7 +103,7 @@ function rememberHandler(
     typeof layerOrCallback === 'string' ? layerOrCallback : undefined
   const handler = (callback ?? layerOrCallback) as MockEventHandler
   mockEventHandlers[eventKey(event, layerId)] = handler
-  if (event === 'load' && mockLoadImmediately) {
+  if (event === MAP_STYLE_LOAD_EVENT && mockLoadImmediately) {
     handler()
   }
 }
@@ -201,6 +203,13 @@ const maplibregl = {
   NavigationControl,
   LngLatBounds: MockLngLatBounds,
   Popup: MockPopup,
+  setWorkerUrl,
 }
 
+export {
+  MockMap as Map,
+  NavigationControl,
+  MockLngLatBounds as LngLatBounds,
+  MockPopup as Popup,
+}
 export default maplibregl

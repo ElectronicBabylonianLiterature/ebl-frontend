@@ -1,15 +1,19 @@
 import React, { useRef, useState } from 'react'
 import { MesopotamianDate } from 'chronology/domain/Date'
-import Bluebird from 'bluebird'
 import { Fragment } from 'fragmentarium/domain/fragment'
-import DateSelection, { DateEditor } from '../../application/DateSelection'
+import DateSelection, { DateEditor } from 'chronology/application/DateSelection'
 import { MetaAddButton } from 'fragmentarium/ui/info/MetaEditButton'
+import ErrorAlert from 'common/errors/ErrorAlert'
+import usePromiseEffect, {
+  RunWriteOperation,
+} from 'common/hooks/usePromiseEffect'
+import applyWhenCurrent from 'common/utils/applyWhenCurrent'
 
 interface Props {
   datesInText: readonly MesopotamianDate[]
   updateDatesInText: (
     datesInText: readonly MesopotamianDate[],
-  ) => Bluebird<Fragment>
+  ) => Promise<Fragment>
 }
 
 interface DatesInTextSelectionAttrs {
@@ -19,6 +23,8 @@ interface DatesInTextSelectionAttrs {
   datesInTextDisplay: readonly MesopotamianDate[]
   setIsAddDateEditorDisplayed: React.Dispatch<React.SetStateAction<boolean>>
   setIsSaving: React.Dispatch<React.SetStateAction<boolean>>
+  saveError: Error | null
+  setSaveError: React.Dispatch<React.SetStateAction<Error | null>>
   setNewDate: React.Dispatch<React.SetStateAction<MesopotamianDate | undefined>>
   setDatesInTextDisplay: React.Dispatch<
     React.SetStateAction<readonly MesopotamianDate[]>
@@ -30,13 +36,13 @@ interface DatesInTextSelectionMethods {
   updateDateInArray: (
     date?: MesopotamianDate | undefined,
     index?: number,
-  ) => Bluebird<Fragment>
+  ) => Promise<Fragment>
 }
 
 interface DatesInTextSelectionState
   extends DatesInTextSelectionAttrs, DatesInTextSelectionMethods {}
 
-async function updateDateInArray({
+function updateDateInArray({
   updateDatesInText,
   datesInTextDisplay,
   date,
@@ -46,90 +52,97 @@ async function updateDateInArray({
   datesInTextDisplay: DatesInTextSelectionAttrs['datesInTextDisplay']
   date?: MesopotamianDate | undefined
   index?: number
-}): Bluebird<Fragment> {
-  const updatedDatesInText = datesInTextDisplay.concat()
-  if (index !== undefined && date !== undefined) {
-    updatedDatesInText[index] = date
-  } else if (index !== undefined) {
-    updatedDatesInText.splice(index, 1)
-  } else if (date !== undefined) {
-    updatedDatesInText.push(date)
+}): Promise<Fragment> {
+  const replacement = date === undefined ? [] : [date]
+  if (index === undefined) {
+    return updateDatesInText([...datesInTextDisplay, ...replacement])
   }
+  const updatedDatesInText = datesInTextDisplay.concat()
+  updatedDatesInText.splice(index, 1, ...replacement)
   return updateDatesInText(updatedDatesInText)
 }
 
-const saveDates = async ({
-  updateDatesInText,
-  datesInTextDisplay,
+const saveDates = ({
+  updateDate,
   setIsSaving,
+  setSaveError,
   setDatesInTextDisplay,
   setIsAddDateEditorDisplayed,
+  runWrite,
   updatedDate,
   index,
 }: {
-  updateDatesInText: Props['updateDatesInText']
-  datesInTextDisplay: DatesInTextSelectionAttrs['datesInTextDisplay']
+  updateDate: DatesInTextSelectionMethods['updateDateInArray']
   setIsSaving: DatesInTextSelectionAttrs['setIsSaving']
+  setSaveError: DatesInTextSelectionAttrs['setSaveError']
   setDatesInTextDisplay: DatesInTextSelectionAttrs['setDatesInTextDisplay']
   setIsAddDateEditorDisplayed: DatesInTextSelectionAttrs['setIsAddDateEditorDisplayed']
+  runWrite: RunWriteOperation
   updatedDate?: MesopotamianDate
   index?: number
-}) => {
-  setIsSaving(true)
-  try {
-    updateDateInArray({
-      updateDatesInText,
-      datesInTextDisplay,
-      date: updatedDate,
-      index,
-    }).then((fragment) => {
-      setDatesInTextDisplay(fragment.datesInText ?? [])
-    })
-  } finally {
+}): Promise<void> => {
+  const finishSaving = (): void => {
     setIsAddDateEditorDisplayed(false)
     setIsSaving(false)
   }
+  setIsSaving(true)
+  setSaveError(null)
+  return runWrite(
+    applyWhenCurrent(() => updateDate(updatedDate, index), {
+      onSuccess: (fragment) => {
+        setDatesInTextDisplay(fragment.datesInText ?? [])
+        finishSaving()
+      },
+      onError: (error) => {
+        setSaveError(error)
+        finishSaving()
+      },
+    }),
+  )
 }
 
 function useDateInTextSelectionState({
   datesInText,
   updateDatesInText,
 }: Props): DatesInTextSelectionState {
+  const [, , runWrite] = usePromiseEffect()
   const [newDate, setNewDate] = useState<MesopotamianDate | undefined>(
     undefined,
   )
   const [isAddDateEditorDisplayed, setIsAddDateEditorDisplayed] =
     useState(false)
   const [isSaving, setIsSaving] = useState(false)
+  const [saveError, setSaveError] = useState<Error | null>(null)
   const [datesInTextDisplay, setDatesInTextDisplay] = useState(datesInText)
 
   const attrs = {
     newDate,
     isAddDateEditorDisplayed,
     isSaving,
+    saveError,
     datesInTextDisplay,
     setIsAddDateEditorDisplayed,
     setIsSaving,
+    setSaveError,
     setNewDate,
     setDatesInTextDisplay,
   }
 
+  const updateDate: DatesInTextSelectionMethods['updateDateInArray'] = (
+    date,
+    index,
+  ) => updateDateInArray({ updateDatesInText, datesInTextDisplay, date, index })
+
   return {
     ...attrs,
     saveDates: (updatedDate, index) =>
-      saveDates({
-        updateDatesInText,
-        ...attrs,
-        updatedDate,
-        index,
-      }),
-    updateDateInArray: (date, index) =>
-      updateDateInArray({ updateDatesInText, ...attrs, date, index }),
+      saveDates({ ...attrs, updateDate, runWrite, updatedDate, index }),
+    updateDateInArray: updateDate,
   }
 }
 
 export default function DatesInTextSelection({
-  datesInText = [],
+  datesInText,
   updateDatesInText,
 }: Props): JSX.Element {
   const target = useRef(null)
@@ -153,10 +166,12 @@ export default function DatesInTextSelection({
       Dates in text:
       <MetaAddButton
         aria-label="Add date button"
+        disabled={state.isSaving}
         onClick={() => state.setIsAddDateEditorDisplayed(true)}
         buttonRef={target}
       />
       {popover}
+      <ErrorAlert error={state.saveError} />
       {state.datesInTextDisplay.map((date, index) => {
         return (
           <DateSelection
@@ -166,6 +181,7 @@ export default function DatesInTextSelection({
             inList={true}
             index={index}
             saveDateOverride={state.saveDates}
+            isParentSaving={state.isSaving}
           />
         )
       })}

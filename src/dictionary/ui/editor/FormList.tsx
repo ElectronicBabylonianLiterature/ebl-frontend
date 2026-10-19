@@ -2,7 +2,7 @@ import React from 'react'
 import { FormGroup } from 'react-bootstrap'
 import _ from 'lodash'
 
-import FormInput from './FormInput'
+import FormInput from 'dictionary/ui/editor/FormInput'
 import List from 'common/ui/List'
 
 const defaultForm = {

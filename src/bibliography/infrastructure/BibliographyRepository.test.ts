@@ -1,9 +1,8 @@
-import Promise from 'bluebird'
 import { testDelegation, TestData } from 'test-support/utils'
-import BibliographyRepository from './BibliographyRepository'
+import BibliographyRepository from 'bibliography/infrastructure/BibliographyRepository'
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 import ApiClient from 'http/ApiClient'
-import { stringify } from 'query-string'
+import { stringify } from 'common/utils/queryString'
 
 jest.mock('http/ApiClient')
 
@@ -45,7 +44,7 @@ const testData: TestData<BibliographyRepository>[] = [
     [query],
     apiClient.fetchJson,
     [entry],
-    [`/bibliography?query=${encodeURIComponent(query)}`, false],
+    [`/bibliography?query=${encodeURIComponent(query)}`, false, undefined],
     Promise.resolve([resultStub]),
   ),
   new TestData(

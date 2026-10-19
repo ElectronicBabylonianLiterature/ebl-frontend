@@ -1,6 +1,6 @@
 import React from 'react'
+import MarkupParagraph from 'about/ui/MarkupParagraph'
 import { Markdown, MarkdownParagraph } from 'common/ui/Markdown'
-import Markup from 'markup/ui/markup'
 import MarkupService from 'markup/application/MarkupService'
 import Timeline from 'about/ui/Timeline'
 
@@ -9,17 +9,16 @@ import fragmentstorevise from 'about/ui/static/fragmentstorevise.jpg'
 import kerslakebm from 'about/ui/static/kerslakebm.jpg'
 
 import { folios } from 'about/ui/folios'
+import AboutFigure from 'about/ui/AboutFigure'
 
 export default function AboutFragmentarium(
   markupService: MarkupService,
 ): JSX.Element {
-  function MarkupParagraph({ text }: { text: string }): JSX.Element {
-    return <Markup markupService={markupService} text={text} />
-  }
-
   return (
     <>
       <MarkupParagraph
+        markupService={markupService}
+        isWrapped={false}
         text="In 1850, in the ruins of the South-West Palace at Nineveh (modern Mosul), in
               two rooms flanked by colossal reliefs of sages, the pioneer archaeologist
               Austen H. Layard found thousands of clay tablets inscribed with cuneiform
@@ -33,6 +32,8 @@ export default function AboutFragmentarium(
               texts without fragments."
       />
       <MarkupParagraph
+        markupService={markupService}
+        isWrapped={false}
         text="The existence of a large mass of fragments vaguely described in museum
               catalogues by broad categories such as “religious,” “literary,” or “hymnic” has
               been a problem for cuneiformists since the inception of the field. The
@@ -84,6 +85,8 @@ export default function AboutFragmentarium(
       </p>
       <h3>II. Sources of the Catalogue</h3>
       <MarkupParagraph
+        markupService={markupService}
+        isWrapped={false}
         text="The initial catalogue of the Library was compiled using the catalogue of
               @url{https://www.britishmuseum.org/collection}{The British Museum digital collections},
               the catalogue of the @url{https://cdli.earth/}{Cuneiform Digital Library Initiative},
@@ -124,16 +127,14 @@ export default function AboutFragmentarium(
         eBL website courtesy of Dr. Jon Taylor, director of the “Ashurbanipal
         Library Project.”
       </p>
-      <figure className="Introduction__photoLeft">
-        <img
-          className="Introduction__400px"
-          src={kerslakebm}
-          alt="I. Kerslake in the British Museum"
-        />
-        <figcaption className="Introduction__caption">
-          I. Kerslake photographs tablets in the British Museum, 2019
-        </figcaption>
-      </figure>
+      <AboutFigure
+        side="Left"
+        width="400px"
+        src={kerslakebm}
+        alt="I. Kerslake in the British Museum"
+      >
+        I. Kerslake photographs tablets in the British Museum, 2019
+      </AboutFigure>
       <p>
         The photographs of the The British Museum’s Babylon collection are taken
         by Alberto Giannese and Ivor Kerslake (2019–present) in the framework of
@@ -164,16 +165,14 @@ export default function AboutFragmentarium(
         images.
       </p>
       <h3>IV. Editions in the Library</h3>
-      <figure className="Introduction__photoRight">
-        <img
-          className="Introduction__250px"
-          src={fragmentstorevise}
-          alt="List of fragments to revise"
-        />
-        <figcaption className="Introduction__caption">
-          List of texts to revise, eBL team
-        </figcaption>
-      </figure>
+      <AboutFigure
+        side="Right"
+        width="250px"
+        src={fragmentstorevise}
+        alt="List of fragments to revise"
+      >
+        List of texts to revise, eBL team
+      </AboutFigure>
       <p>
         The editions in the Library have been produced by the entire eBL Team,
         starting in 2018. Thousands of them were produced on the basis of

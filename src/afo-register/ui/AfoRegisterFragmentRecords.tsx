@@ -4,7 +4,7 @@ import { Fragment } from 'fragmentarium/domain/fragment'
 import withData from 'http/withData'
 import AfoRegisterRecord from 'afo-register/domain/Record'
 import _ from 'lodash'
-import { AfoRegisterRecordsListDisplay } from './AfoRegisterDisplay'
+import { AfoRegisterRecordsListDisplay } from 'afo-register/ui/AfoRegisterDisplay'
 
 function AfoRegisterFragmentRecords({
   data,
