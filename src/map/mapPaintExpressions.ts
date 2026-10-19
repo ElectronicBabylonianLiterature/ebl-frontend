@@ -51,7 +51,9 @@ function isDensityUnclassified(
     : false
 }
 
-function stepColors(scale: ChoroplethScale): ExpressionSpecification {
+function stepColors(scale: ChoroplethScale): ExpressionSpecification | string {
+  if (scale.breaks.length === 0) return scale.colors[0]
+
   const stops = scale.breaks.flatMap((breakValue, index) => [
     breakValue,
     scale.colors[index + 1] ?? scale.colors[scale.colors.length - 1],
@@ -65,7 +67,11 @@ function stepColors(scale: ChoroplethScale): ExpressionSpecification {
   ] as ExpressionSpecification
 }
 
-function stepClassIndex(scale: ChoroplethScale): ExpressionSpecification {
+function stepClassIndex(
+  scale: ChoroplethScale,
+): ExpressionSpecification | number {
+  if (scale.breaks.length === 0) return 0
+
   const stops = scale.breaks.flatMap((breakValue, index) => [
     breakValue,
     index + 1,

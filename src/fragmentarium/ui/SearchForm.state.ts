@@ -12,6 +12,7 @@ import replaceTransliteration from 'fragmentarium/domain/replaceTransliteration'
 export interface SearchFormState {
   number: string | null
   referenceEntry: { id: string; label: string }
+  referenceLabelError: string | null
   pages: string | null
   lemmas: string | null
   lemmaOperator: QueryType | null
@@ -48,6 +49,7 @@ export function initializeSearchFormState(
       id: fragmentQuery.bibId || '',
       label: fragmentQuery.bibLabel || '',
     },
+    referenceLabelError: null,
     pages: fragmentQuery.pages || null,
     lemmas: fragmentQuery.lemmas || '',
     lemmaOperator: fragmentQuery.lemmaOperator || 'line',
