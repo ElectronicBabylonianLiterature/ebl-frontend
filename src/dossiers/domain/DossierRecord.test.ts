@@ -1,8 +1,10 @@
 import DossierRecord from 'dossiers/domain/DossierRecord'
-import { PeriodModifiers, Periods } from 'common/utils/period'
+import { PeriodModifiers } from 'common/utils/period'
+import { Periods } from 'common/utils/periodDefinitions'
 import { Provenances } from 'corpus/domain/provenance'
 import { referenceDtoFactory } from 'test-support/bibliography-fixtures'
 import Reference from 'bibliography/domain/Reference'
+import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 import _kings from 'chronology/domain/Kings.json'
 
 describe('DossierRecord', () => {
@@ -39,14 +41,14 @@ describe('DossierRecord', () => {
         uncertain: false,
       })
       expect(record.references).toEqual(
-        references.map(
-          (reference) =>
-            new Reference(
-              reference.type,
-              reference.pages,
-              reference.notes,
-              reference.linesCited,
-            ),
+        references.map((reference) =>
+          new Reference(
+            reference.type,
+            reference.pages,
+            reference.notes,
+            reference.linesCited,
+            new BibliographyEntry(reference.document),
+          ).withIdentity(reference.id),
         ),
       )
     })
@@ -77,6 +79,16 @@ describe('DossierRecord', () => {
       expect(markdown).toContain('**Provenance**: Assyria')
       expect(markdown).toContain('**Period**: Neo-Assyrian')
       expect(markdown).toContain('**Bibliography**:')
+    })
+
+    it('lists a related king without a date by name only', () => {
+      const record = new DossierRecord({
+        ...mockRecordDto,
+        relatedKings: [0.11],
+      })
+      expect(record.toMarkdownString()).toContain(
+        '**Related Kings**: Ur-Nanše\n',
+      )
     })
 
     it('handle missing optional fields gracefully', () => {
@@ -174,6 +186,19 @@ describe('DossierRecord', () => {
       })
       const markdown = record.toMarkdownString()
       expect(markdown).toContain('**Period**: Neo-Assyrian (?)')
+    })
+
+    it('shows only the uncertainty for a script without a period', () => {
+      const record = new DossierRecord({
+        ...mockRecordDto,
+        script: { period: 'None', periodModifier: 'None', uncertain: true },
+      })
+      expect(record.toMarkdownString()).toContain('**Period**: (?)')
+    })
+
+    it('omits the period without a script', () => {
+      const record = new DossierRecord({ ...mockRecordDto, script: undefined })
+      expect(record.toMarkdownString()).not.toContain('**Period**')
     })
   })
 })

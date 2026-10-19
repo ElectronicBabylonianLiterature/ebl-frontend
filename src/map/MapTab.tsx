@@ -1,12 +1,11 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Alert } from 'react-bootstrap'
 import 'maplibre-gl/dist/maplibre-gl.css'
-import FragmentService from 'fragmentarium/application/FragmentService'
 import Spinner from 'common/ui/Spinner'
 import { ProvenanceRecord } from 'fragmentarium/domain/Provenance'
 import useFindspotMap from 'map/useFindspotMap'
 import useMapSourceData from 'map/useMapSourceData'
-import useProvenances from 'map/useProvenances'
+import useProvenances, { ProvenanceSource } from 'map/useProvenances'
 import useExcavationAreas from 'map/useExcavationAreas'
 import useExcavationPolygonIndex from 'map/useExcavationPolygonIndex'
 import useMapExperience from 'map/useMapExperience'
@@ -30,7 +29,7 @@ import { provenanceToGeoJson } from 'map/provenanceToGeoJson'
 import 'map/MapTab.sass'
 
 interface Props {
-  fragmentService: FragmentService
+  fragmentService: ProvenanceSource
 }
 
 function LoadedMapTab({

@@ -6,7 +6,7 @@ import Markup, {
   DisplayLanguagePart,
   DisplayTextPart,
   DisplayUrlPart,
-} from './markup'
+} from 'transliteration/ui/markup'
 import {
   BibliographyPart,
   LanguagePart,
@@ -111,4 +111,18 @@ test('Markup', () => {
     </DictionaryContext.Provider>,
   )
   expect(container).toMatchSnapshot()
+})
+
+test('Markup rejects an unsplit paragraph part', () => {
+  expect(() =>
+    Markup({ parts: [{ type: 'ParagraphPart', text: '' }] }),
+  ).toThrow(
+    'Unexpected ParagraphPart. Use createParagraphs to split parts into paragraphs',
+  )
+})
+
+test('DisplayUrlPart without text shows the url', () => {
+  render(<DisplayUrlPart part={{ ...urlPart, text: '' }} />)
+
+  expect(screen.getByText(url)).toHaveAttribute('href', url)
 })

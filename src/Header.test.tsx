@@ -1,7 +1,7 @@
 import React from 'react'
 import { render, screen, fireEvent } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
-import Header from './Header'
+import Header from 'Header'
 
 import { AuthenticationContext, User } from 'auth/Auth'
 

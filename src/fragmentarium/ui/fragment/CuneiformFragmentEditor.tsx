@@ -4,7 +4,7 @@ import _ from 'lodash'
 
 import SessionContext from 'auth/SessionContext'
 
-import './CuneiformFragment.sass'
+import 'fragmentarium/ui/fragment/CuneiformFragment.sass'
 import ErrorBoundary from 'common/errors/ErrorBoundary'
 import { Session } from 'auth/Session'
 import { realiaIcon } from 'realia/ui/realiaIcon'

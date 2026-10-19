@@ -1,7 +1,8 @@
 import { useEffect } from 'react'
 import type { MutableRefObject } from 'react'
 import type { Map as MapLibreMap } from 'maplibre-gl'
-import type { MapLibreErrorEvent } from 'map/mapBackgroundError'
+import { MAP_STYLE_LOAD_EVENT } from 'map/mapLayers'
+import { observeExcavationAvailability } from 'map/mapExcavationAvailability'
 import {
   EXCAVATION_AREAS_SOURCE_ID,
   EXCAVATION_AREA_LAYER_IDS,
@@ -43,14 +44,6 @@ function setExcavationAreasVisible(map: MapLibreMap, isVisible: boolean): void {
   })
 }
 
-function isExcavationAreaError(event: MapLibreErrorEvent): boolean {
-  return (
-    event.sourceId === EXCAVATION_AREAS_SOURCE_ID ||
-    (typeof event.layer?.id === 'string' &&
-      EXCAVATION_AREA_LAYER_IDS.includes(event.layer.id))
-  )
-}
-
 function useExcavationAreaLifecycle(
   mapRef: MutableRefObject<MapLibreMap | null>,
   onAvailabilityChange?: (isUnavailable: boolean) => void,
@@ -61,18 +54,19 @@ function useExcavationAreaLifecycle(
 
     const isCurrentMap = (): boolean => mapRef.current === map
     const install = (): void => addExcavationAreas(map)
-    const handleError = (event: MapLibreErrorEvent): void => {
-      if (isExcavationAreaError(event)) onAvailabilityChange?.(true)
-    }
 
-    map.on('error', handleError)
-    if (map.isStyleLoaded()) install()
-    else map.once('load', install)
+    const stopObservingAvailability = observeExcavationAvailability(
+      map,
+      EXCAVATION_AREA_LAYER_IDS,
+      onAvailabilityChange,
+    )
+    map.on(MAP_STYLE_LOAD_EVENT, install)
+    if (map.getStyle()) install()
 
     return () => {
       if (!isCurrentMap()) return
-      map.off('error', handleError)
-      map.off('load', install)
+      stopObservingAvailability()
+      map.off(MAP_STYLE_LOAD_EVENT, install)
       removeExcavationAreas(map)
     }
   }, [mapRef, onAvailabilityChange])
@@ -90,11 +84,11 @@ function useExcavationAreaVisibility(
     const updateVisibility = (): void =>
       setExcavationAreasVisible(map, isVisible)
 
-    if (map.isStyleLoaded()) updateVisibility()
-    else map.once('load', updateVisibility)
+    map.on(MAP_STYLE_LOAD_EVENT, updateVisibility)
+    updateVisibility()
 
     return () => {
-      if (isCurrentMap()) map.off('load', updateVisibility)
+      if (isCurrentMap()) map.off(MAP_STYLE_LOAD_EVENT, updateVisibility)
     }
   }, [mapRef, isVisible])
 }

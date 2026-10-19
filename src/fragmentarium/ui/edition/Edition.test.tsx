@@ -1,10 +1,9 @@
 import React from 'react'
 import { MemoryRouter } from 'react-router-dom'
 import { render, screen } from '@testing-library/react'
-import { Promise } from 'bluebird'
 
 import { submitFormByTestId } from 'test-support/utils'
-import Edition from './Edition'
+import Edition from 'fragmentarium/ui/edition/Edition'
 import { fragmentFactory } from 'test-support/fragment-fixtures'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import FragmentSearchService from 'fragmentarium/application/FragmentSearchService'

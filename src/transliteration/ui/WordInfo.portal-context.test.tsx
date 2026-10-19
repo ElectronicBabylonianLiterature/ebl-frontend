@@ -1,13 +1,15 @@
 import React, { useState } from 'react'
 import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { LemmaPopover } from './WordInfo'
+import { LemmaPopover } from 'transliteration/ui/WordInfo'
 import { DictionaryContext } from 'dictionary/ui/dictionary-context'
-import { LineLemmasContext, createLemmaMap } from './LineLemmasContext'
+import {
+  LineLemmasContext,
+  createLemmaMap,
+} from 'transliteration/ui/LineLemmasContext'
 import WordService from 'dictionary/application/WordService'
 import DictionaryWord from 'dictionary/domain/Word'
 import { MemoryRouter } from 'react-router-dom'
-import Bluebird from 'bluebird'
 import { Word } from 'transliteration/domain/token'
 import {
   dictionaryWord,
@@ -45,7 +47,7 @@ function TestWrapper({ children }: { children: React.ReactNode }) {
 
 describe('LemmaPopover portal context', () => {
   beforeEach(() => {
-    wordServiceMock.find.mockReturnValue(Bluebird.resolve(dictionaryWord))
+    wordServiceMock.find.mockReturnValue(Promise.resolve(dictionaryWord))
   })
 
   afterEach(() => {
@@ -129,7 +131,7 @@ describe('LemmaPopover portal context', () => {
     }
 
     wordServiceMock.find.mockReturnValue(
-      Bluebird.resolve({
+      Promise.resolve({
         ...dictionaryWord,
         _id: 'test-lemma-id',
       } as DictionaryWord),

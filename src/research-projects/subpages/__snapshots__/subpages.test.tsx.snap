@@ -22,6 +22,7 @@ exports[`Project pages displays AMPS page 1`] = `
               class="breadcrumb-item"
             >
               <a
+                data-discover="true"
                 href="/"
               >
                 eBL
@@ -31,6 +32,7 @@ exports[`Project pages displays AMPS page 1`] = `
               class="breadcrumb-item"
             >
               <a
+                data-discover="true"
                 href="/projects"
               >
                 Projects
@@ -40,6 +42,7 @@ exports[`Project pages displays AMPS page 1`] = `
               class="breadcrumb-item"
             >
               <a
+                data-discover="true"
                 href="/projects/AMPS"
               >
                 AMPS
@@ -597,6 +600,7 @@ exports[`Project pages displays CAIC page 1`] = `
               class="breadcrumb-item"
             >
               <a
+                data-discover="true"
                 href="/"
               >
                 eBL
@@ -606,6 +610,7 @@ exports[`Project pages displays CAIC page 1`] = `
               class="breadcrumb-item"
             >
               <a
+                data-discover="true"
                 href="/projects"
               >
                 Projects
@@ -615,6 +620,7 @@ exports[`Project pages displays CAIC page 1`] = `
               class="breadcrumb-item"
             >
               <a
+                data-discover="true"
                 href="/projects/CAIC"
               >
                 CAIC
@@ -1166,6 +1172,7 @@ exports[`Project pages displays RECC page 1`] = `
               class="breadcrumb-item"
             >
               <a
+                data-discover="true"
                 href="/"
               >
                 eBL
@@ -1175,6 +1182,7 @@ exports[`Project pages displays RECC page 1`] = `
               class="breadcrumb-item"
             >
               <a
+                data-discover="true"
                 href="/projects"
               >
                 Projects
@@ -1184,6 +1192,7 @@ exports[`Project pages displays RECC page 1`] = `
               class="breadcrumb-item"
             >
               <a
+                data-discover="true"
                 href="/projects/RECC"
               >
                 RECC
@@ -1741,6 +1750,7 @@ exports[`Project pages displays aluGeneva page 1`] = `
               class="breadcrumb-item"
             >
               <a
+                data-discover="true"
                 href="/"
               >
                 eBL
@@ -1750,6 +1760,7 @@ exports[`Project pages displays aluGeneva page 1`] = `
               class="breadcrumb-item"
             >
               <a
+                data-discover="true"
                 href="/projects"
               >
                 Projects
@@ -1759,6 +1770,7 @@ exports[`Project pages displays aluGeneva page 1`] = `
               class="breadcrumb-item"
             >
               <a
+                data-discover="true"
                 href="/projects/aluGeneva"
               >
                 aluGeneva

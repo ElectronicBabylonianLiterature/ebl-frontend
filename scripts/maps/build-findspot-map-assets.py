@@ -15,10 +15,10 @@ ROOT = Path(__file__).resolve().parents[2]
 DEFAULT_ARTIFACT_DIR = ROOT / ".map-processing" / "backend-artifacts"
 SITES = ("assur", "kalhu", "nippur", "uruk")
 DEFAULT_EXPECTATIONS = {
-    "assur": {"features": 134, "inventory": 134, "mappings": 317, "mapped": 133},
-    "kalhu": {"features": 12, "inventory": 12, "mappings": 8, "mapped": 8},
-    "nippur": {"features": 20, "inventory": 20, "mappings": 20, "mapped": 9},
-    "uruk": {"features": 128, "inventory": 128, "mappings": 131, "mapped": 126},
+    "assur": {"features": 134, "inventory": 134, "mappings": 315, "mapped": 133},
+    "kalhu": {"features": 12, "inventory": 12, "mappings": 7, "mapped": 7},
+    "nippur": {"features": 20, "inventory": 20, "mappings": 18, "mapped": 9},
+    "uruk": {"features": 128, "inventory": 128, "mappings": 129, "mapped": 125},
 }
 
 
@@ -57,7 +57,10 @@ def source_key(value: str) -> str:
 def validated_features(
     collection: object, site: str, expected_features: int
 ) -> list[object]:
-    if not isinstance(collection, dict) or collection.get("type") != "FeatureCollection":
+    if (
+        not isinstance(collection, dict)
+        or collection.get("type") != "FeatureCollection"
+    ):
         raise RuntimeError(f"{site}.geojson is not a FeatureCollection")
     features = collection.get("features")
     if not isinstance(features, list) or len(features) != expected_features:
@@ -162,9 +165,7 @@ def atomic_write_outputs(
     with tempfile.TemporaryDirectory(dir=findspot_dir) as temporary:
         temporary_dir = Path(temporary)
         outputs = {**collections, "all": all_sites}
-        output_paths = {
-            name: findspot_dir / f"{name}.geojson" for name in outputs
-        }
+        output_paths = {name: findspot_dir / f"{name}.geojson" for name in outputs}
         originals = {
             name: path.read_bytes() if path.exists() else None
             for name, path in output_paths.items()

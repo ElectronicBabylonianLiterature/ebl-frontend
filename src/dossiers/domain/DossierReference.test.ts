@@ -1,4 +1,4 @@
-import { DossierReference } from './DossierReference'
+import { DossierReference } from 'dossiers/domain/DossierReference'
 
 describe('DossierReference', () => {
   it('should allow creation of a valid DossierReference object', () => {

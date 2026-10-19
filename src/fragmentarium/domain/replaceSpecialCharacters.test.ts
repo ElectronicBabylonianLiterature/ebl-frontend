@@ -1,4 +1,4 @@
-import replaceSpecialCharacters from './replaceSpecialCharacters'
+import replaceSpecialCharacters from 'fragmentarium/domain/replaceSpecialCharacters'
 
 test.each([
   ['c', 'š'],

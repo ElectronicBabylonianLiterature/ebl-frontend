@@ -1,6 +1,6 @@
 import React from 'react'
 import { Fragment } from 'fragmentarium/domain/fragment'
-import './ExternalResources.sass'
+import 'fragmentarium/ui/info/ExternalResources.sass'
 import {
   BdtnsLink,
   RstiLink,
@@ -31,9 +31,8 @@ import {
   BmIdLink,
   YalePeabodyLink,
   spurlockLink,
-  OraccLinks,
-  SealLinks,
-} from './ExternalNumberLink'
+} from 'fragmentarium/ui/info/ExternalNumberLink'
+import { OraccLinks, SealLinks } from 'fragmentarium/ui/info/ExternalTextLinks'
 import _ from 'lodash'
 
 type ExternalLinkComponent = ({ number }: { number: string }) => JSX.Element
@@ -43,9 +42,9 @@ type ExternalLinkTypes = {
   LinkComponent: ExternalLinkComponent
 }
 
-const ExternalLink = ({ number, LinkComponent }: ExternalLinkTypes) => {
-  return number ? <LinkComponent number={number} /> : null
-}
+const ExternalLink = ({ number, LinkComponent }: ExternalLinkTypes) => (
+  <LinkComponent number={number} />
+)
 export default function ExternalResources({
   fragment,
 }: {

@@ -1,4 +1,4 @@
-import Template from './Template'
+import Template from 'fragmentarium/ui/edition/Template'
 
 test.each([
   ['', true],
