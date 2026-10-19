@@ -2,31 +2,7 @@ import type { Feature, Geometry } from 'geojson'
 
 export type BoundingBox = readonly [number, number, number, number]
 
-export interface GeographicPoint {
-  readonly latitude: number
-  readonly longitude: number
-}
-
 export type Position = readonly [number, number]
-
-export function centroidOf(
-  coordinates: readonly GeographicPoint[],
-): GeographicPoint | null {
-  if (coordinates.length === 0) return null
-
-  const sum = coordinates.reduce(
-    (accumulated, coordinate) => ({
-      latitude: accumulated.latitude + coordinate.latitude,
-      longitude: accumulated.longitude + coordinate.longitude,
-    }),
-    { latitude: 0, longitude: 0 },
-  )
-
-  return {
-    latitude: sum.latitude / coordinates.length,
-    longitude: sum.longitude / coordinates.length,
-  }
-}
 
 export function collectPositions(coordinates: unknown): Position[] {
   if (!Array.isArray(coordinates)) return []
