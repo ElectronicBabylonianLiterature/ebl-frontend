@@ -11,6 +11,7 @@ import {
   createTerrainSource,
   disableTerrain,
   enableTerrain,
+  setHillshadeVisibility,
 } from 'map/mapTerrainLayers'
 import { AWS_TERRAIN_TILES } from 'map/mapTerrainSource'
 
@@ -112,13 +113,9 @@ describe('enableTerrain', () => {
 
   it('inserts hillshade under an existing anchor layer', () => {
     const map = fakeMap(['ebl-findspot-polygon-fill'])
-    enableTerrain(
-      map,
-      AWS_TERRAIN_TILES,
-      1,
-      createTerrainOwnership(),
-      'ebl-findspot-polygon-fill',
-    )
+    enableTerrain(map, AWS_TERRAIN_TILES, 1, createTerrainOwnership(), {
+      beforeLayerId: 'ebl-findspot-polygon-fill',
+    })
     expect(map.addedBefore).toEqual(['ebl-findspot-polygon-fill'])
   })
 
@@ -145,6 +142,22 @@ describe('enableTerrain', () => {
 })
 
 describe('disableTerrain', () => {
+  it('handles hillshade visibility and previously removed style resources', () => {
+    const map = fakeMap()
+    setHillshadeVisibility(map, false)
+    expect(map.layers.size).toBe(0)
+    const ownership = enable(map)
+
+    setHillshadeVisibility(map, false)
+    expect(map.layers.get(TERRAIN_HILLSHADE_LAYER_ID)).toMatchObject({
+      visibility: 'none',
+    })
+    map.layers.clear()
+    map.sources.clear()
+
+    expect(disableTerrain(map, ownership)).toBe(true)
+  })
+
   it('removes only resources owned by this lifecycle', () => {
     const map = fakeMap()
     const ownership = enable(map)

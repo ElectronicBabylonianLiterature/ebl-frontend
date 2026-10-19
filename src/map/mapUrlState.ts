@@ -83,17 +83,24 @@ export function parseMapUrlState(search: string): MapUrlState {
   })
 }
 
+function hasNonDefaultMapState(
+  state: MapUrlState,
+  serializedSelection: string,
+): boolean {
+  return Boolean(
+    state.filter ||
+    state.showExcavationAreas ||
+    serializedSelection ||
+    state.visualization !== DEFAULT_VISUALIZATION ||
+    state.terrain,
+  )
+}
+
 export function serializeMapUrlState(state: MapUrlState): string {
   const normalized = normalizeMapUrlState(state)
   const serializedSelection = serializeMapSelection(normalized.selection)
 
-  if (
-    !normalized.filter &&
-    !normalized.showExcavationAreas &&
-    !serializedSelection &&
-    normalized.visualization === DEFAULT_VISUALIZATION &&
-    !normalized.terrain
-  ) {
+  if (!hasNonDefaultMapState(normalized, serializedSelection)) {
     return ''
   }
 
@@ -127,13 +134,7 @@ export function mergeMapUrlStateIntoSearch(
   parameters.delete(SELECTION_PARAM)
   parameters.delete(VISUALIZATION_PARAM)
   parameters.delete(TERRAIN_PARAM)
-  if (
-    normalized.filter ||
-    normalized.showExcavationAreas ||
-    serializedSelection ||
-    normalized.visualization !== DEFAULT_VISUALIZATION ||
-    normalized.terrain
-  ) {
+  if (hasNonDefaultMapState(normalized, serializedSelection)) {
     parameters.set(VERSION_PARAM, String(MAP_URL_STATE_VERSION))
   }
   if (normalized.filter) parameters.set(FILTER_PARAM, normalized.filter)

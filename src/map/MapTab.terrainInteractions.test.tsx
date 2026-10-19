@@ -81,4 +81,26 @@ describe('MapTab terrain interactions', () => {
       'terrain=1',
     )
   })
+
+  it('clears requested terrain from the URL when elevation tiles fail', async () => {
+    renderMapTab(
+      makeFragmentService([makeProvenance()]),
+      '/tools/map?mv=1&terrain=1',
+    )
+    await userEvent.click(
+      await screen.findByRole('button', { name: 'Terrain' }),
+    )
+    const toggle = screen.getByRole('checkbox', {
+      name: 'Modern elevation model',
+    })
+    await waitFor(() => expect(toggle).toBeChecked())
+
+    act(() => triggerMapEvent('error', { sourceId: TERRAIN_SOURCE_ID }))
+
+    await waitFor(() => expect(toggle).not.toBeChecked())
+    expect(mockSetTerrain).toHaveBeenLastCalledWith(null)
+    expect(screen.getByTestId(CURRENT_LOCATION_TEST_ID)).not.toHaveTextContent(
+      'terrain=1',
+    )
+  })
 })

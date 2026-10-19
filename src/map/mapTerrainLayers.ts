@@ -103,14 +103,19 @@ function addOwnedSource(
   return true
 }
 
+interface TerrainLayerOptions {
+  readonly beforeLayerId?: string
+  readonly isHillshadeVisible?: boolean
+}
+
 export function enableTerrain(
   map: TerrainMapLike,
   source: TerrainSourceDefinition,
   exaggeration: number,
   ownership: TerrainOwnership,
-  beforeLayerId?: string,
-  isHillshadeVisible = true,
+  options: TerrainLayerOptions = {},
 ): void {
+  const { beforeLayerId, isHillshadeVisible = true } = options
   ownership.terrainSource = addOwnedSource(
     map,
     TERRAIN_SOURCE_ID,
@@ -153,40 +158,36 @@ export function disableTerrain(
   map: TerrainMapLike,
   ownership: TerrainOwnership,
 ): boolean {
-  if (ownership.terrain) {
-    try {
-      map.setTerrain(null)
-      ownership.terrain = false
-    } catch {
-      // Preserve ownership so cleanup can retry after the style transition.
+  releaseOwnedResource(ownership, 'terrain', () => map.setTerrain(null))
+  releaseOwnedResource(ownership, 'hillshadeLayer', () => {
+    if (map.getLayer(TERRAIN_HILLSHADE_LAYER_ID)) {
+      map.removeLayer(TERRAIN_HILLSHADE_LAYER_ID)
     }
-  }
-
-  if (ownership.hillshadeLayer) {
-    try {
-      if (map.getLayer(TERRAIN_HILLSHADE_LAYER_ID)) {
-        map.removeLayer(TERRAIN_HILLSHADE_LAYER_ID)
-      }
-      ownership.hillshadeLayer = false
-    } catch {
-      // Preserve ownership so cleanup can retry after the style transition.
-    }
-  }
+  })
 
   for (const [id, key] of [
     [TERRAIN_HILLSHADE_SOURCE_ID, 'hillshadeSource'],
     [TERRAIN_SOURCE_ID, 'terrainSource'],
   ] as const) {
-    if (ownership[key]) {
-      try {
-        if (map.getSource(id)) map.removeSource(id)
-        ownership[key] = false
-      } catch {
-        // Preserve ownership so cleanup can retry after the style transition.
-      }
-    }
+    releaseOwnedResource(ownership, key, () => {
+      if (map.getSource(id)) map.removeSource(id)
+    })
   }
   return !Object.values(ownership).some(Boolean)
+}
+
+function releaseOwnedResource(
+  ownership: TerrainOwnership,
+  key: keyof TerrainOwnership,
+  release: () => void,
+): void {
+  if (!ownership[key]) return
+  try {
+    release()
+    ownership[key] = false
+  } catch {
+    return
+  }
 }
 
 export function releaseTerrainOwnership(ownership: TerrainOwnership): void {
