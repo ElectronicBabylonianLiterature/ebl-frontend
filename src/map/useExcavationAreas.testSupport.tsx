@@ -1,8 +1,9 @@
-import { useEffect, useRef } from 'react'
+import { useRef } from 'react'
 import type { Map as MapLibreMap } from 'maplibre-gl'
 import useExcavationAreas from 'map/useExcavationAreas'
 import type { PolygonVisualizationValues } from 'map/mapVisualizationValues'
-import { mockMapInstance, mockRemove } from 'map/mapLibreMock.testSupport'
+import { mockMapInstance } from 'map/mapLibreMock.testSupport'
+import { useDisposingMockMap } from 'map/mapLibreDisposedMock.testSupport'
 
 export function Harness({
   isVisible = true,
@@ -31,16 +32,7 @@ export function Harness({
 }
 
 export function OwnerTeardownHarness(): null {
-  const mapRef = useRef<MapLibreMap | null>(
-    mockMapInstance as unknown as MapLibreMap,
-  )
-  useEffect(
-    () => () => {
-      mockRemove()
-      mapRef.current = null
-    },
-    [],
-  )
+  const mapRef = useDisposingMockMap()
   useExcavationAreas(mapRef, {
     isVisible: true,
     selectedPolygonId: null,

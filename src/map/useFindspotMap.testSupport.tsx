@@ -21,8 +21,8 @@ export function HookHarness({
   withContainer = true,
   provenances,
   onMapBackgroundErrorChange,
-  cameraResetVersion = 0,
-  isInteractionEnabled = true,
+  cameraResetVersion,
+  isInteractionEnabled,
 }: {
   withContainer?: boolean
   provenances: Parameters<typeof useFindspotMap>[1]
