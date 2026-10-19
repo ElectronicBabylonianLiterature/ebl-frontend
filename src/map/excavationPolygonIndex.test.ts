@@ -1,5 +1,6 @@
 import fs from 'fs'
 import path from 'path'
+import type { FeatureCollection } from 'geojson'
 import {
   EXCAVATION_POLYGON_GEOJSON_URL,
   buildExcavationPolygonIndex,
@@ -15,13 +16,21 @@ const canonicalCollection = JSON.parse(
     path.join(root, 'public/map-data/findspots/all.geojson'),
     'utf8',
   ),
-) as unknown
+) as FeatureCollection
 
 function collection(features: unknown[]): unknown {
   return { type: 'FeatureCollection', features }
 }
 
 describe('buildExcavationPolygonIndex', () => {
+  it.each([undefined, 'Polygon'])('rejects a feature with type %s', (type) => {
+    expect(
+      buildExcavationPolygonIndex(
+        collection([{ ...polygonFeature('assur-a', 'assur'), type }]),
+      ).size,
+    ).toBe(0)
+  })
+
   it('groups polygons by canonical site id', () => {
     const index = buildExcavationPolygonIndex(
       collection([
@@ -52,6 +61,24 @@ describe('buildExcavationPolygonIndex', () => {
 
     expect(index.get('assur')).toHaveLength(1)
     expect(index.get('assur')?.[0].name).toBe('First')
+  })
+
+  it('accepts multipolygons and sorts unnamed polygons by id', () => {
+    const first = polygonFeature('assur-a', 'assur')
+    const second = polygonFeature('uruk-b', 'uruk')
+    const features = [second, first].map((feature) => ({
+      ...feature,
+      properties: { ...feature.properties, name: null },
+      geometry: {
+        type: 'MultiPolygon',
+        coordinates: [feature.geometry.coordinates],
+      },
+    }))
+    const index = buildExcavationPolygonIndex(collection(features))
+
+    expect(
+      sortedExcavationPolygons(index).map(({ polygonId }) => polygonId),
+    ).toEqual(['assur-a', 'uruk-b'])
   })
 
   it('rejects features from an unknown site', () => {
@@ -141,6 +168,26 @@ describe('fetchExcavationPolygonIndex', () => {
     expect(index.get('uruk')).toHaveLength(128)
   })
 
+  it.each([undefined, 'Polygon'])(
+    'rejects a canonical asset containing a feature with type %s',
+    async (type) => {
+      fetchMock.mockResolvedValue({
+        ok: true,
+        json: () =>
+          Promise.resolve({
+            ...canonicalCollection,
+            features: canonicalCollection.features.map((feature, index) =>
+              index === 0 ? { ...feature, type } : feature,
+            ),
+          }),
+      })
+
+      await expect(fetchExcavationPolygonIndex()).rejects.toThrow(
+        'Excavation polygon asset is invalid for assur',
+      )
+    },
+  )
+
   it.each([
     ['a malformed payload', {}],
     ['an empty collection', collection([])],
@@ -156,6 +203,24 @@ describe('fetchExcavationPolygonIndex', () => {
 
     await expect(fetchExcavationPolygonIndex()).rejects.toThrow(
       'Excavation polygon asset',
+    )
+  })
+
+  it('rejects a full-size asset with no recognized sites', async () => {
+    fetchMock.mockResolvedValue({
+      ok: true,
+      json: () =>
+        Promise.resolve({
+          ...canonicalCollection,
+          features: canonicalCollection.features.map((feature) => ({
+            ...feature,
+            properties: { ...feature.properties, siteId: 'unknown' },
+          })),
+        }),
+    })
+
+    await expect(fetchExcavationPolygonIndex()).rejects.toThrow(
+      'Excavation polygon asset is invalid for assur',
     )
   })
 

@@ -1,0 +1,68 @@
+import { subscribeSpatialSearch } from 'map/mapSpatialSearchLifecycle'
+import { addSpatialSearchCorner } from 'map/mapSpatialSearchDrawing'
+import {
+  mockMapInstance,
+  resetMapMocks,
+  triggerMapEvent,
+} from 'map/mapLibreMock.testSupport'
+import { asLibreMap } from 'test-support/maplibre-map-helpers'
+
+jest.mock('maplibre-gl')
+
+beforeEach(resetMapMocks)
+
+it('ignores stale and malformed clicks and leaves unrelated keys alone', () => {
+  const mapRef = { current: asLibreMap(mockMapInstance) }
+  const addCorner = jest.fn()
+  const clear = jest.fn()
+  let isActive = true
+  let isDrawing = true
+  const lifecycle = subscribeSpatialSearch(
+    mapRef,
+    () => ({ isActive, isDrawing }),
+    addCorner,
+    clear,
+  )
+
+  triggerMapEvent('click', {
+    point: { x: 0, y: 0 },
+    lngLat: { lng: Number.NaN, lat: 0 },
+  })
+  const unrelated = new KeyboardEvent('keydown', {
+    key: 'Enter',
+    cancelable: true,
+  })
+  window.dispatchEvent(unrelated)
+  expect(unrelated.defaultPrevented).toBe(false)
+
+  isDrawing = false
+  triggerMapEvent('click', {
+    point: { x: 0, y: 0 },
+    lngLat: { lng: 0, lat: 0 },
+  })
+  isActive = false
+  triggerMapEvent('click', {
+    point: { x: 0, y: 0 },
+    lngLat: { lng: 0, lat: 0 },
+  })
+  window.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' }))
+  expect(addCorner).not.toHaveBeenCalled()
+  expect(clear).not.toHaveBeenCalled()
+  lifecycle?.dispose()
+})
+
+it.each([
+  { isActive: false, isDrawing: true },
+  { isActive: true, isDrawing: false },
+])('does not alter a drawing when its tool is inactive: %p', (state) => {
+  const actions = {
+    setValidationMessage: jest.fn(),
+    replaceDrawStart: jest.fn(),
+    replaceShape: jest.fn(),
+    replaceDrawing: jest.fn(),
+  }
+  addSpatialSearchCorner([43, 35], { ...state, firstCorner: null }, actions)
+  Object.values(actions).forEach((action) =>
+    expect(action).not.toHaveBeenCalled(),
+  )
+})

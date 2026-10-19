@@ -74,7 +74,11 @@ def canonicalize_feature(
     index: int,
     inventory: dict[str, dict[str, str]],
 ) -> tuple[str, dict[str, Any]]:
-    if not isinstance(feature, dict) or not isinstance(feature.get("properties"), dict):
+    if (
+        not isinstance(feature, dict)
+        or feature.get("type") != "Feature"
+        or not isinstance(feature.get("properties"), dict)
+    ):
         raise RuntimeError(f"{site} feature {index} is invalid")
     checksum = geometry_checksum(feature.get("geometry"))
     record = inventory.get(checksum)

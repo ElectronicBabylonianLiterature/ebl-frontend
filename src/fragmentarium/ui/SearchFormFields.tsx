@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button, ButtonToolbar, Col, Form, Row } from 'react-bootstrap'
+import { Alert, Button, ButtonToolbar, Col, Form, Row } from 'react-bootstrap'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import FragmentSearchService from 'fragmentarium/application/FragmentSearchService'
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
@@ -65,6 +65,9 @@ export default function SearchFormFields({
         findspotId={state.findspotId}
         onClear={onClearFindspot}
       />
+      {state.referenceLabelError ? (
+        <Alert variant="warning">{state.referenceLabelError}</Alert>
+      ) : null}
       <Form onKeyDown={onKeyDown} className="SearchForm SearchForm__wrapper">
         <Row>
           <Col>

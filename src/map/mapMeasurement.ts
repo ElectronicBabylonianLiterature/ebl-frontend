@@ -59,13 +59,17 @@ export function measurementPathPositions(
   positions: readonly Position[],
 ): Position[] {
   const path = positions.map((position) => [...position])
-  if (mode !== 'area' || path.length < MINIMUM_AREA_VERTICES) return path
-
-  const [first] = path
-  const last = path[path.length - 1]
-  return first[0] === last[0] && first[1] === last[1]
-    ? path
-    : [...path, [...first]]
+  if (mode === 'area' && path.length >= MINIMUM_AREA_VERTICES) {
+    const [first] = path
+    const last = path[path.length - 1]
+    if (first[0] !== last[0] || first[1] !== last[1]) path.push([...first])
+  }
+  for (let index = 1; index < path.length; index += 1) {
+    const previousLongitude = path[index - 1][0]
+    const position = path[index]
+    position[0] += 360 * Math.round((previousLongitude - position[0]) / 360)
+  }
+  return path
 }
 
 function measureArea(positions: readonly Position[]): number | null {

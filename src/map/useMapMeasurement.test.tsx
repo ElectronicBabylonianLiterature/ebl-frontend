@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useRef } from 'react'
 import { act, render, renderHook } from '@testing-library/react'
 import type { Map as MapLibreMap } from 'maplibre-gl'
 import {
@@ -6,7 +6,6 @@ import {
   deferMapLoad,
   mockAddLayer,
   mockAddSource,
-  mockGetLayer,
   mockGetSource,
   mockMapInstance,
   mockRemove,
@@ -16,27 +15,22 @@ import {
 } from 'map/mapLibreMock.testSupport'
 import { MAX_MEASUREMENT_POINTS } from 'map/mapMeasurement'
 import useMapMeasurement from 'map/useMapMeasurement'
+import type { MeasurementController } from 'map/useMapMeasurement'
+import { asLibreMap } from 'test-support/maplibre-map-helpers'
+import {
+  rejectDisposedMapAccess,
+  useDisposingMockMap,
+} from 'map/mapLibreDisposedMock.testSupport'
 
 jest.mock('maplibre-gl')
 
-function useHarness(isActive: boolean) {
-  const mapRef = useRef<MapLibreMap | null>(
-    mockMapInstance as unknown as MapLibreMap,
-  )
+function useHarness(isActive: boolean): MeasurementController {
+  const mapRef = useRef<MapLibreMap | null>(asLibreMap(mockMapInstance))
   return useMapMeasurement(mapRef, isActive)
 }
 
 function OwnerTeardownHarness(): null {
-  const mapRef = useRef<MapLibreMap | null>(
-    mockMapInstance as unknown as MapLibreMap,
-  )
-  useEffect(
-    () => () => {
-      mockRemove()
-      mapRef.current = null
-    },
-    [],
-  )
+  const mapRef = useDisposingMockMap()
   useMapMeasurement(mapRef, true)
   return null
 }
@@ -199,18 +193,7 @@ describe('useMapMeasurement', () => {
   })
 
   it('does not touch a map after its owner disposes it', () => {
-    let isRemoved = false
-    mockRemove.mockImplementation(() => {
-      isRemoved = true
-    })
-    mockGetLayer.mockImplementation(() => {
-      if (isRemoved) throw new Error('map style has been removed')
-      return undefined
-    })
-    mockGetSource.mockImplementation(() => {
-      if (isRemoved) throw new Error('map style has been removed')
-      return undefined
-    })
+    rejectDisposedMapAccess()
 
     const { unmount } = render(<OwnerTeardownHarness />)
 
