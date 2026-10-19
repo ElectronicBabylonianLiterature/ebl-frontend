@@ -2,13 +2,12 @@ import { useEffect, useMemo, useState } from 'react'
 import type { MutableRefObject } from 'react'
 import type { Map as MapLibreMap } from 'maplibre-gl'
 import type { ExcavationPolygon } from 'map/excavationPolygonIndex'
-import { EXCAVATION_AREA_FILL_LAYER_ID } from 'map/mapLayerIds'
 import {
   toExportRows,
   type MapExportRow,
   type MapExportScope,
 } from 'map/mapExportData'
-import { viewportSearchBounds } from 'map/spatialBounds'
+import { subscribeExportViewport } from 'map/mapExportViewport'
 import type { FragmentMapDataState } from 'map/useFragmentMapData'
 
 export interface MapExportView {
@@ -47,50 +46,12 @@ export default function useMapExportView(
       return
     }
 
-    const isCurrentMap = (): boolean => mapRef.current === map
-    const update = (): void => {
-      if (!isCurrentMap()) return
-      const mapBounds = map.getBounds()
-      const bounds =
-        viewportSearchBounds(
-          mapBounds.getWest(),
-          mapBounds.getSouth(),
-          mapBounds.getEast(),
-          mapBounds.getNorth(),
-        ) ?? []
-      setScope({ type: 'viewport', bounds })
-
-      if (!isLayerVisible || !map.getLayer(EXCAVATION_AREA_FILL_LAYER_ID)) {
-        setVisiblePolygons([])
-        return
-      }
-      const ids = new Set(
-        map
-          .queryRenderedFeatures(undefined, {
-            layers: [EXCAVATION_AREA_FILL_LAYER_ID],
-          })
-          .map(({ id }) => id)
-          .filter((id): id is string => typeof id === 'string'),
-      )
-      setVisiblePolygons(
-        [...ids]
-          .map((id) => polygonsById.get(id))
-          .filter(
-            (polygon): polygon is ExcavationPolygon => polygon !== undefined,
-          ),
-      )
-    }
-
-    map.on('moveend', update)
-    map.on('idle', update)
-    if (map.isStyleLoaded()) update()
-    else map.once('load', update)
-
-    return () => {
-      map.off('moveend', update)
-      map.off('idle', update)
-      map.off('load', update)
-    }
+    return subscribeExportViewport(map, mapRef, {
+      isLayerVisible,
+      polygonsById,
+      setVisiblePolygons,
+      setScope,
+    })
   }, [isLayerVisible, mapRef, polygonsById, selectedPolygon])
 
   const rows = useMemo(

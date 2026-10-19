@@ -52,20 +52,22 @@ export function sanitizeFindspotMapDataResponse(
   ).findspots
 }
 
-export function sanitizeFindspotMapDataResponseWithDiagnostics(
-  response: unknown,
+interface FindspotGroup {
+  readonly first: FindspotMapData
+  readonly fingerprints: Map<string, number>
+}
+
+interface GroupedFindspots {
+  readonly byFindspotId: ReadonlyMap<number, FindspotGroup>
+  readonly rejectedRows: number
+}
+
+function groupFindspotMapData(
+  findspots: readonly unknown[],
   expectedSiteId?: string,
   expectedSiteName?: string,
-): SanitizedFindspotMapDataResponse {
-  if (!response || typeof response !== 'object') return emptySanitizedResponse()
-
-  const findspots = (response as Record<string, unknown>).findspots
-  if (!Array.isArray(findspots)) return emptySanitizedResponse()
-
-  const byFindspotId = new Map<
-    number,
-    { first: FindspotMapData; fingerprints: Map<string, number> }
-  >()
+): GroupedFindspots {
+  const byFindspotId = new Map<number, FindspotGroup>()
   let rejectedRows = 0
 
   for (const findspot of findspots) {
@@ -94,6 +96,13 @@ export function sanitizeFindspotMapDataResponseWithDiagnostics(
     }
   }
 
+  return { byFindspotId, rejectedRows }
+}
+
+function summarizeFindspotGroups({
+  byFindspotId,
+  rejectedRows,
+}: GroupedFindspots): SanitizedFindspotMapDataResponse {
   let exactDuplicateRows = 0
   let conflictingDuplicateFindspots = 0
   let conflictingDuplicateRows = 0
@@ -125,6 +134,21 @@ export function sanitizeFindspotMapDataResponseWithDiagnostics(
       rejectedRows,
     },
   }
+}
+
+export function sanitizeFindspotMapDataResponseWithDiagnostics(
+  response: unknown,
+  expectedSiteId?: string,
+  expectedSiteName?: string,
+): SanitizedFindspotMapDataResponse {
+  if (!response || typeof response !== 'object') return emptySanitizedResponse()
+
+  const findspots = (response as Record<string, unknown>).findspots
+  if (!Array.isArray(findspots)) return emptySanitizedResponse()
+
+  return summarizeFindspotGroups(
+    groupFindspotMapData(findspots, expectedSiteId, expectedSiteName),
+  )
 }
 
 export function requireCompatibleFindspotMapDataResponse(

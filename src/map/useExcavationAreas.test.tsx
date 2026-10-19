@@ -10,7 +10,6 @@ import {
   deferMapLoad,
   mockAddLayer,
   mockAddSource,
-  mockGetLayer,
   mockGetSource,
   mockQueryRenderedFeatures,
   mockRemove,
@@ -25,6 +24,7 @@ import {
   Harness,
   OwnerTeardownHarness,
 } from 'map/useExcavationAreas.testSupport'
+import { rejectDisposedMapAccess } from 'map/mapLibreDisposedMock.testSupport'
 
 jest.mock('maplibre-gl')
 
@@ -150,18 +150,7 @@ describe('useExcavationAreas', () => {
   })
 
   it('skips subordinate cleanup after the map owner disposes it', () => {
-    let isRemoved = false
-    mockRemove.mockImplementation(() => {
-      isRemoved = true
-    })
-    mockGetLayer.mockImplementation(() => {
-      if (isRemoved) throw new Error('map style has been removed')
-      return undefined
-    })
-    mockGetSource.mockImplementation(() => {
-      if (isRemoved) throw new Error('map style has been removed')
-      return undefined
-    })
+    rejectDisposedMapAccess()
 
     const { unmount } = render(<OwnerTeardownHarness />)
 

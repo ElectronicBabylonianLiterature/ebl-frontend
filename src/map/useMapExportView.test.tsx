@@ -189,4 +189,21 @@ describe('useMapExportView', () => {
     expect(mockOff).toHaveBeenCalledWith('idle', expect.any(Function))
     expect(mockOff).toHaveBeenCalledWith('load', expect.any(Function))
   })
+
+  it('ignores events from a replaced map and records invalid bounds as unavailable', () => {
+    mockGetBounds.mockReturnValue({
+      getWest: () => Number.NaN,
+      getSouth: () => 36,
+      getEast: () => 45,
+      getNorth: () => 37,
+    })
+    const { result } = renderExportView()
+    expect(result.current.scope).toEqual({ type: 'viewport', bounds: [] })
+    const previousScope = result.current.scope
+    mapRef.current = null
+
+    act(() => triggerMapEvent('idle'))
+
+    expect(result.current.scope).toBe(previousScope)
+  })
 })

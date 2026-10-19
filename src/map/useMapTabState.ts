@@ -16,6 +16,7 @@ import useMapTerrain from 'map/useMapTerrain'
 import useMapLayoutEffects from 'map/useMapLayoutEffects'
 import { resetMapCamera } from 'map/mapCamera'
 import { filterProvenances } from 'map/findspotFilter'
+import useMapPanelAvailability from 'map/useMapPanelAvailability'
 import { provenanceToGeoJson } from 'map/provenanceToGeoJson'
 import {
   anySiteHasExcavationPolygons,
@@ -130,29 +131,11 @@ export default function useMapTabState(
     selectedPolygonId,
     setSelection,
   ])
-  useEffect(() => {
-    if (selectedPolygonId === null && panel.active === 'inspector') closePanel()
-    if (!canShowExcavationAreas && panel.active === 'visualization')
-      closePanel()
-    if (
-      isBackgroundUnavailable &&
-      (panel.active === 'measurement' || panel.active === 'spatial-search')
-    ) {
-      closePanel()
-    }
-    if (
-      !canShowExcavationAreas &&
-      (panel.active === 'spatial-search' || panel.active === 'export')
-    ) {
-      closePanel()
-    }
-  }, [
+  useMapPanelAvailability(panel, {
     canShowExcavationAreas,
-    closePanel,
     isBackgroundUnavailable,
-    panel.active,
     selectedPolygonId,
-  ])
+  })
   useExcavationAreas(mapRef, {
     isVisible: showExcavationAreas,
     selectedPolygonId,
