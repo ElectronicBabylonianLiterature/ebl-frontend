@@ -1,19 +1,18 @@
 import React, { useState } from 'react'
 import { Dropdown, Nav } from 'react-bootstrap'
 import Folio from 'fragmentarium/domain/Folio'
-import { TabController } from 'fragmentarium/ui/images/Images'
 import FolioTooltip from 'fragmentarium/ui/images/FolioTooltip'
-import './FolioDropdown.sass'
+import 'fragmentarium/ui/images/FolioDropdown.sass'
 import classNames from 'classnames'
 
 interface FolioDropdownProps {
   folios: readonly Folio[]
-  controller: TabController
+  onOpenFolio: (index: number) => void
 }
 
 export default function FolioDropdown({
   folios,
-  controller,
+  onOpenFolio,
 }: FolioDropdownProps): JSX.Element {
   const [isOpen, setIsOpen] = useState(false)
 
@@ -37,7 +36,7 @@ export default function FolioDropdown({
               key={index}
               onClick={(event) => {
                 event.preventDefault()
-                controller.openTab(String(index))
+                onOpenFolio(index)
               }}
             >
               {label}

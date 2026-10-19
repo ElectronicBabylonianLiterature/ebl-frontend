@@ -1,9 +1,10 @@
 import React from 'react'
-import { render } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import SignService from 'signs/application/SignService'
 import SignImages from 'signs/ui/display/SignImages'
 import { MemoryRouter } from 'react-router-dom'
 import { CroppedAnnotation } from 'signs/domain/CroppedAnnotation'
+import { waitForSpinnerToBeRemoved } from 'test-support/waitForSpinnerToBeRemoved'
 
 jest.mock('signs/application/SignService')
 
@@ -68,5 +69,28 @@ export function renderSignImages(): void {
     <MemoryRouter>
       <SignImages signName={signName} signService={signService} />
     </MemoryRouter>,
+  )
+}
+
+export function createMockSignService(): jest.Mocked<SignService> {
+  return new (SignService as jest.Mock<jest.Mocked<SignService>>)()
+}
+
+export async function setUpSignImages(
+  mockedSignService: jest.Mocked<SignService>,
+  centroidImages: CroppedAnnotation[],
+): Promise<void> {
+  mockedSignService.getCentroidImages.mockReturnValue(
+    Promise.resolve(centroidImages),
+  )
+  render(
+    <MemoryRouter>
+      <SignImages signName={signName} signService={mockedSignService} />
+    </MemoryRouter>,
+  )
+  await waitForSpinnerToBeRemoved(screen)
+  expect(mockedSignService.getCentroidImages).toHaveBeenCalledWith(
+    signName,
+    expect.any(AbortSignal),
   )
 }

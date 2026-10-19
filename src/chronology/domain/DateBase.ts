@@ -1,7 +1,7 @@
 import DateConverter from 'chronology/domain/DateConverter'
 import data from 'chronology/domain/dateConverterData.json'
 import _ from 'lodash'
-import DateRange from './DateRange'
+import DateRange from 'chronology/domain/DateRange'
 import {
   DateField,
   DateProps,
@@ -14,13 +14,13 @@ import {
   YearMonthDay,
 } from 'chronology/domain/DateParameters'
 import normalizeMesopotamianMonth from 'chronology/domain/normalizeMesopotamianMonth'
-import parseDateFieldNumber, {
-  isApproximateDateFieldValue,
-} from 'chronology/domain/parseDateFieldNumber'
-import getPreviousKingAndYearIfYearZero from './ZeroYearKingFinder'
-
-const calendarToAbbreviation = (calendar: ModernCalendar): string =>
-  ({ Julian: 'PJC', Gregorian: 'PGC' })[calendar]
+import parseDateFieldNumber from 'chronology/domain/parseDateFieldNumber'
+import {
+  calendarToAbbreviation,
+  isApproximateDate,
+  kingDateToModernDate,
+} from 'chronology/domain/modernDateParts'
+import getPreviousKingAndYearIfYearZero from 'chronology/domain/ZeroYearKingFinder'
 
 export class MesopotamianDateBase {
   year: DateField
@@ -79,8 +79,8 @@ export class MesopotamianDateBase {
     }
   }
 
-  private isSeleucidEraApplicable(year?: number | string): boolean {
-    year = typeof year === 'number' ? year : parseDateFieldNumber(year ?? '')
+  private isSeleucidEraApplicable(yearValue: string): boolean {
+    const year = parseDateFieldNumber(yearValue)
     return !!this.isSeleucidEra && !isNaN(year) && year > 0
   }
 
@@ -128,19 +128,16 @@ export class MesopotamianDateBase {
           ...dateProps,
           year: year > 0 ? year : 1,
         }),
-      assyrianDate: () => this.getAssyrianDate({ calendar: 'Julian' }),
-      kingDate: () =>
-        this.kingToModernDate({ ...dateProps, calendar: 'Julian' }),
+      assyrianDate: () => this.getAssyrianDate(),
+      kingDate: () => kingDateToModernDate(_.toString(this.king?.date), year),
     }[type]()
   }
 
-  private getAssyrianDate({
-    calendar = 'Julian',
-  }: Pick<DateProps, 'calendar'>): string {
-    return `ca. ${this.eponym?.date} BCE ${calendarToAbbreviation(calendar)}`
+  private getAssyrianDate(): string {
+    return `ca. ${this.eponym?.date} BCE ${calendarToAbbreviation('Julian')}`
   }
 
-  private getDateProps(calendar: ModernCalendar = 'Julian'): {
+  private getDateProps(calendar: ModernCalendar): {
     year: number
     month: number
     day: number
@@ -148,12 +145,12 @@ export class MesopotamianDateBase {
     calendar: ModernCalendar
   } {
     return {
-      year: parseDateFieldNumber(this.year.value) ?? -1,
+      year: parseDateFieldNumber(this.year.value),
       month: normalizeMesopotamianMonth(
-        parseDateFieldNumber(this.month.value) ?? 1,
+        parseDateFieldNumber(this.month.value),
         this.month.isIntercalary,
       ),
-      day: parseDateFieldNumber(this.day.value) ?? 1,
+      day: parseDateFieldNumber(this.day.value),
       isApproximate: this.isApproximate(),
       calendar,
     }
@@ -172,27 +169,7 @@ export class MesopotamianDateBase {
   }
 
   private isApproximate(): boolean {
-    return [
-      _.some(
-        [
-          parseDateFieldNumber(this.year.value),
-          parseDateFieldNumber(this.month.value),
-          parseDateFieldNumber(this.day.value),
-        ],
-        _.isNaN,
-      ),
-      [
-        this.year.isBroken,
-        this.month.isBroken,
-        this.day.isBroken,
-        this.year.isUncertain,
-        this.month.isUncertain,
-        this.day.isUncertain,
-      ].includes(true),
-      [this.year.value, this.month.value, this.day.value].some(
-        isApproximateDateFieldValue,
-      ),
-    ].includes(true)
+    return isApproximateDate([this.year, this.month, this.day])
   }
 
   private seleucidToModernDate({
@@ -221,19 +198,16 @@ export class MesopotamianDateBase {
     isApproximate,
     calendar,
   }: DateProps): string {
-    if (this.kingName) {
-      const dateRangeString = this.getDateRangeString(calendar)
-      if (dateRangeString) {
-        return dateRangeString
-      }
-      const converter = new DateConverter()
-      converter.setToMesopotamianDate(this.kingName, year, month, day)
-      return this.insertDateApproximation(
-        converter.toDateString(calendar),
-        isApproximate,
-      )
+    const dateRangeString = this.getDateRangeString(calendar)
+    if (dateRangeString) {
+      return dateRangeString
     }
-    return ''
+    const converter = new DateConverter()
+    converter.setToMesopotamianDate(this.kingName, year, month, day)
+    return this.insertDateApproximation(
+      converter.toDateString(calendar),
+      isApproximate,
+    )
   }
 
   getDateRangeString(calendar: ModernCalendar): string | undefined {
@@ -245,33 +219,12 @@ export class MesopotamianDateBase {
     }
   }
 
-  get kingName(): string | undefined {
-    return Object.keys(data.rulerToBrinkmanKings).find(
-      (key) => data.rulerToBrinkmanKings[key] === this.king?.orderGlobal,
+  get kingName(): string {
+    return _.toString(
+      Object.keys(data.rulerToBrinkmanKings).find(
+        (key) => data.rulerToBrinkmanKings[key] === this.king?.orderGlobal,
+      ),
     )
-  }
-
-  private kingToModernDate({
-    year,
-    calendar = 'Julian',
-  }: Pick<DateProps, 'year' | 'calendar'>): string {
-    const parseKingDate = (date: string): string => {
-      return date.replace(/[^\d-–]/g, '')
-    }
-
-    const firstReignYear = this.king?.date
-      ? parseKingDate(this.king.date).split(/[-–]/)[0]
-      : undefined
-
-    return firstReignYear !== undefined && year > 0
-      ? `ca. ${
-          parseInt(firstReignYear) - year + 1
-        } BCE ${calendarToAbbreviation(calendar)}`
-      : this.king?.date && !['', '?'].includes(this.king?.date)
-        ? `ca. ${parseKingDate(this.king?.date)} BCE ${calendarToAbbreviation(
-            calendar,
-          )}`
-        : ''
   }
 
   private insertDateApproximation(

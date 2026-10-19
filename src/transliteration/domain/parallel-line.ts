@@ -1,6 +1,6 @@
-import { AbstractLine, LineBaseDto } from './abstract-line'
-import { Labels } from './labels'
-import { LineNumber, LineNumberRange } from './line-number'
+import { AbstractLine, LineBaseDto } from 'transliteration/domain/abstract-line'
+import { Labels } from 'transliteration/domain/labels'
+import { LineNumber, LineNumberRange } from 'transliteration/domain/line-number'
 import MuseumNumber from 'fragmentarium/domain/MuseumNumber'
 import { TextId } from 'transliteration/domain/text-id'
 
@@ -21,33 +21,36 @@ export interface ParallelFragmentDto extends ParallelLineBaseDto {
   readonly exists: boolean | null
 }
 
-export class ParallelFragment extends AbstractLine {
-  readonly type = 'ParallelFragment'
+abstract class ParallelLineBase extends AbstractLine {
   readonly hasCf: boolean
-  readonly museumNumber: MuseumNumber
-  readonly hasDuplicates: boolean
-  readonly labels: Labels
   readonly lineNumber: LineNumber | LineNumberRange
-  readonly exists: boolean | null
 
   constructor(
-    data: Pick<
-      ParallelFragmentDto,
-      | 'content'
-      | 'hasCf'
-      | 'museumNumber'
-      | 'hasDuplicates'
-      | 'labels'
-      | 'lineNumber'
-      | 'exists'
-    >,
+    data: Pick<ParallelLineBaseDto, 'content' | 'hasCf' | 'lineNumber'>,
   ) {
     super(parallelLinePrefix, data.content)
     this.hasCf = data.hasCf
+    this.lineNumber = data.lineNumber
+  }
+}
+
+type ParallelLineData<T extends ParallelLineBaseDto> = Omit<
+  T,
+  'type' | 'prefix'
+>
+
+export class ParallelFragment extends ParallelLineBase {
+  readonly type = 'ParallelFragment'
+  readonly museumNumber: MuseumNumber
+  readonly hasDuplicates: boolean
+  readonly labels: Labels
+  readonly exists: boolean | null
+
+  constructor(data: ParallelLineData<ParallelFragmentDto>) {
+    super(data)
     this.museumNumber = data.museumNumber
     this.hasDuplicates = data.hasDuplicates
     this.labels = data.labels
-    this.lineNumber = data.lineNumber
     this.exists = data.exists
   }
 }
@@ -66,32 +69,17 @@ export interface ParallelTextDto extends ParallelLineBaseDto {
   readonly implicitChapter: ChapterName | null
 }
 
-export class ParallelText extends AbstractLine {
+export class ParallelText extends ParallelLineBase {
   readonly type = 'ParallelText'
-  readonly hasCf: boolean
   readonly text: TextId
   readonly chapter: ChapterName | null
-  readonly lineNumber: LineNumber | LineNumberRange
   readonly exists: boolean | null
   readonly implicitChapter: ChapterName | null
 
-  constructor(
-    data: Pick<
-      ParallelTextDto,
-      | 'content'
-      | 'hasCf'
-      | 'text'
-      | 'chapter'
-      | 'lineNumber'
-      | 'exists'
-      | 'implicitChapter'
-    >,
-  ) {
-    super(parallelLinePrefix, data.content)
-    this.hasCf = data.hasCf
+  constructor(data: ParallelLineData<ParallelTextDto>) {
+    super(data)
     this.text = data.text
     this.chapter = data.chapter
-    this.lineNumber = data.lineNumber
     this.exists = data.exists
     this.implicitChapter = data.implicitChapter
   }
@@ -102,22 +90,13 @@ export interface ParallelCompositionDto extends ParallelLineBaseDto {
   readonly name: string
 }
 
-export class ParallelComposition extends AbstractLine {
+export class ParallelComposition extends ParallelLineBase {
   readonly type = 'ParallelComposition'
-  readonly hasCf: boolean
   readonly name: string
-  readonly lineNumber: LineNumber | LineNumberRange
 
-  constructor(
-    data: Pick<
-      ParallelCompositionDto,
-      'content' | 'hasCf' | 'name' | 'lineNumber'
-    >,
-  ) {
-    super(parallelLinePrefix, data.content)
-    this.hasCf = data.hasCf
+  constructor(data: ParallelLineData<ParallelCompositionDto>) {
+    super(data)
     this.name = data.name
-    this.lineNumber = data.lineNumber
   }
 }
 

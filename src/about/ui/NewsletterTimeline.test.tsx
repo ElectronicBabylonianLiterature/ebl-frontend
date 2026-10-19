@@ -161,3 +161,17 @@ test('newsletter items are keyboard accessible buttons', () => {
   const buttons = screen.getAllByRole('button')
   expect(buttons).toHaveLength(3)
 })
+
+test('does not scroll when the active newsletter is not listed', () => {
+  render(
+    <NewsletterTimeline
+      newsletters={newsletters.slice(1)}
+      activeNewsletter={newsletters[0]}
+      onSelectNewsletter={jest.fn()}
+    />,
+  )
+  expect(mockScrollIntoView).not.toHaveBeenCalled()
+  expect(
+    screen.queryByRole('button', { current: true }),
+  ).not.toBeInTheDocument()
+})

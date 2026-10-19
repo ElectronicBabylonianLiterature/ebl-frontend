@@ -1,19 +1,21 @@
 import { Factory } from 'fishery'
 import { Chance } from 'chance'
 import {
-  IndividualType,
   ColophonStatus,
   ColophonOwnership,
   ColophonType,
+  Colophon,
+} from 'fragmentarium/domain/Colophon'
+import {
+  IndividualType,
   NameAttestation,
   IndividualAttestation,
-  Colophon,
   ProvenanceAttestation,
   IndividualTypeAttestation,
-} from 'fragmentarium/domain/Colophon'
+} from 'fragmentarium/domain/IndividualAttestation'
 import { Provenances } from 'corpus/domain/provenance'
 
-const chance = new Chance()
+const chance = new Chance('colophon-fixtures')
 
 const nameAttestationFactory = Factory.define<NameAttestation>(() => ({
   value: chance.name(),

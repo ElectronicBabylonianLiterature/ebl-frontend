@@ -3,6 +3,7 @@ import type { MutableRefObject } from 'react'
 import type { Map as MapLibreMap } from 'maplibre-gl'
 import {
   clearMockStyleResources,
+  deferMapLoad,
   mockAddSource,
   mockIsStyleLoaded,
   mockMapInstance,
@@ -27,7 +28,7 @@ describe('useMapTerrain', () => {
   })
 
   it('waits for initial style load and reports actual activation', async () => {
-    mockIsStyleLoaded.mockReturnValue(false)
+    deferMapLoad()
     const { result } = renderHook(() => useMapTerrain(mapRef, true))
 
     expect(result.current.status).toBe('loading')
@@ -42,6 +43,16 @@ describe('useMapTerrain', () => {
 
     await waitFor(() => expect(result.current.status).toBe('enabled'))
     expect(mockSetTerrain).toHaveBeenCalledTimes(1)
+    expect(mockSetTerrain).toHaveBeenCalledWith({
+      source: TERRAIN_SOURCE_ID,
+      exaggeration: 1.4,
+    })
+  })
+
+  it('enables requested terrain while other sources are still loading', () => {
+    mockIsStyleLoaded.mockReturnValue(false)
+    const { result } = renderHook(() => useMapTerrain(mapRef, true))
+    expect(result.current.status).toBe('enabled')
     expect(mockSetTerrain).toHaveBeenCalledWith({
       source: TERRAIN_SOURCE_ID,
       exaggeration: 1.4,

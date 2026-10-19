@@ -189,7 +189,7 @@ describe('useMapSpatialSearch', () => {
       })
     })
 
-    act(() => triggerMapEvent('load'))
+    act(() => triggerMapEvent('style.load'))
 
     expect(mockSetData).toHaveBeenLastCalledWith(
       expect.objectContaining({ features: [expect.any(Object)] }),

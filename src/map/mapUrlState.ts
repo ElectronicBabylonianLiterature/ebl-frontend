@@ -1,4 +1,4 @@
-import { parse, stringify } from 'query-string'
+import { parse, stringify } from 'common/utils/queryString'
 import {
   type MapSelection,
   parseMapSelection,

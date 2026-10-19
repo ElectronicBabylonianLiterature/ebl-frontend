@@ -1,6 +1,6 @@
 import React from 'react'
 import { render, screen } from '@testing-library/react'
-import ExternalLink from './ExternalLink'
+import ExternalLink from 'common/ui/ExternalLink'
 
 const href = 'http://example.com'
 const title = 'The Title'

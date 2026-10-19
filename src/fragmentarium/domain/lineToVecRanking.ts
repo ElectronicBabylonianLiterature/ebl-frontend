@@ -1,4 +1,4 @@
-import { Script, ScriptDto } from './fragment'
+import { Script, ScriptDto } from 'fragmentarium/domain/fragment'
 
 export interface LineToVecRanking {
   score: ReadonlyArray<LineToVecScore>

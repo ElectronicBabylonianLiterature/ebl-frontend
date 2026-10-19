@@ -109,7 +109,7 @@ export default function useMapTerrain(
         !isCurrent ||
         !isRequested ||
         mapRef.current !== currentMap ||
-        !currentMap.isStyleLoaded() ||
+        !currentMap.getStyle() ||
         !capability.source
       ) {
         return
@@ -147,15 +147,13 @@ export default function useMapTerrain(
     currentMap.on('error', handleError)
     if (isRequested) {
       setErrorMessage(null)
-      if (currentMap.isStyleLoaded()) enable()
-      else currentMap.on('load', enable)
+      enable()
     } else {
       safelyDisable()
     }
 
     return () => {
       isCurrent = false
-      currentMap.off('load', enable)
       currentMap.off('style.load', handleStyleLoad)
       currentMap.off('error', handleError)
       safelyDisable()

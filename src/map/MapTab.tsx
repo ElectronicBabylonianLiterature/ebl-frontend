@@ -1,12 +1,11 @@
 import React, { useEffect, useRef } from 'react'
 import { Alert } from 'react-bootstrap'
 import 'maplibre-gl/dist/maplibre-gl.css'
-import FragmentService from 'fragmentarium/application/FragmentService'
 import { FindspotService } from 'fragmentarium/application/FindspotService'
 import Spinner from 'common/ui/Spinner'
 import type { MapTabState } from 'map/mapTabState'
 import useMapTabState from 'map/useMapTabState'
-import useProvenances from 'map/useProvenances'
+import useProvenances, { ProvenanceSource } from 'map/useProvenances'
 import MapStage from 'map/MapStage'
 import MapPanelDock from 'map/MapPanelDock'
 import MapExperienceHeader from 'map/MapExperienceHeader'
@@ -20,7 +19,7 @@ import 'map/MapTab.sass'
 
 interface Props {
   readonly findspotService: FindspotService
-  readonly fragmentService: FragmentService
+  readonly fragmentService: ProvenanceSource
 }
 
 function LoadedMapTab({

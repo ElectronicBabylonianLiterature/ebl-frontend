@@ -11,14 +11,14 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
         with:
           persist-credentials: false
 
       - name: Set up Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
-          node-version: '20'
+          node-version: '24'
 
       - name: Install Puppeteer dependencies (Ubuntu 24.04-compatible)
         run: |
@@ -73,7 +73,7 @@ jobs:
       - name: Create Pull Request
         if: steps.commit.outputs.commit-needed == 'true'
         id: create-pull-request
-        uses: peter-evans/create-pull-request@v5
+        uses: peter-evans/create-pull-request@153407881ec5c347639a548ade7d8ad1d6740e38 # v5.0.2
         with:
           token: ${{ secrets.SITEMAP_AUTOUPDATE }}
           commit-message: Update sitemap files
@@ -85,7 +85,7 @@ jobs:
 
       - name: Enable auto-merge for PR
         if: steps.create-pull-request.outputs.pull-request-number != ''
-        uses: peter-evans/enable-pull-request-automerge@v3
+        uses: peter-evans/enable-pull-request-automerge@a660677d5469627102a1c1e11409dd063606628d # v3.0.0
         with:
           token: ${{ secrets.SITEMAP_AUTOUPDATE }}
           pull-request-number: ${{ steps.create-pull-request.outputs.pull-request-number }}

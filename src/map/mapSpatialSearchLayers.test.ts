@@ -29,7 +29,8 @@ function createMap(isStyleLoaded = true) {
     getLayer: jest.fn((id: string) => (layerIds.has(id) ? { id } : undefined)),
     removeLayer: jest.fn((id: string) => layerIds.delete(id)),
     isStyleLoaded: jest.fn(() => styleLoaded),
-    once: jest.fn((_event: string, handler: () => void) => {
+    getStyle: jest.fn(() => (styleLoaded ? {} : undefined)),
+    on: jest.fn((_event: string, handler: () => void) => {
       loadHandler = handler
     }),
     off: jest.fn(),
@@ -40,6 +41,12 @@ function createMap(isStyleLoaded = true) {
     methods,
     source,
     load: () => loadHandler?.(),
+    reloadStyle: () => {
+      hasSource = false
+      layerIds.clear()
+      styleLoaded = true
+      loadHandler?.()
+    },
     finishStyleLoad: () => {
       styleLoaded = true
     },
@@ -165,13 +172,29 @@ describe('createSpatialSearchLayerLifecycle', () => {
     expect(source.setData.mock.calls[0][0].features).toHaveLength(2)
   })
 
+  it('restores the latest search rectangle when the style reloads', () => {
+    const { map, methods, source, reloadStyle } = createMap()
+    const lifecycle = createSpatialSearchLayerLifecycle(map)
+    lifecycle.update(null, [[43, 35, 44, 36]])
+    const geometry = source.setData.mock.calls.at(-1)?.[0]
+    methods.addSource.mockClear()
+    methods.addLayer.mockClear()
+    source.setData.mockClear()
+
+    reloadStyle()
+
+    expect(methods.addSource).toHaveBeenCalledTimes(1)
+    expect(methods.addLayer).toHaveBeenCalledTimes(3)
+    expect(source.setData).toHaveBeenLastCalledWith(geometry)
+  })
+
   it('removes installed data and detaches the delayed-load handler', () => {
     const { map, methods } = createMap()
     const lifecycle = createSpatialSearchLayerLifecycle(map)
 
     lifecycle.dispose()
 
-    expect(methods.off).toHaveBeenCalledWith('load', expect.any(Function))
+    expect(methods.off).toHaveBeenCalledWith('style.load', expect.any(Function))
     expect(methods.removeSource).toHaveBeenCalledWith(SPATIAL_SEARCH_SOURCE_ID)
   })
 

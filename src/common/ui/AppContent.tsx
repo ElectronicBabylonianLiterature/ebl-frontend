@@ -5,7 +5,7 @@ import _ from 'lodash'
 
 import Breadcrumbs, { Crumb } from 'common/ui/Breadcrumbs'
 
-import './AppContent.sass'
+import 'common/ui/AppContent.sass'
 
 interface Props {
   crumbs?: readonly Crumb[]

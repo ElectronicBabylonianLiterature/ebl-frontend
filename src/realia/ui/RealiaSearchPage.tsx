@@ -1,5 +1,5 @@
 import React from 'react'
-import { parse } from 'query-string'
+import { parse } from 'common/utils/queryString'
 import { useLocation } from 'react-router-dom'
 import SessionContext from 'auth/SessionContext'
 import { Session } from 'auth/Session'

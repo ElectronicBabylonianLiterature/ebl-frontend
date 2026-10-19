@@ -1,18 +1,19 @@
+import { Ace, require as acequire } from 'ace-builds'
 import 'ace-builds/src-noconflict/mode-plain_text'
 
-// @ts-expect-error - ace is not typed
-const acequire = window.ace.acequire
+const TextHighlightRules: new () => Ace.HighlightRules = acequire(
+  'ace/mode/text_highlight_rules',
+).TextHighlightRules
+const PlainTextMode: new () => Ace.SyntaxMode = acequire(
+  'ace/mode/plain_text',
+).Mode
 
-export class AtfHighlightRules
-  extends acequire('ace/mode/text_highlight_rules').TextHighlightRules
-{
-  $rules
+export class AtfHighlightRules extends TextHighlightRules {
+  $rules: Ace.HighlightRulesMap
 
   constructor() {
     super()
     this.$rules = {
-      /* Token values are chosen based on color in the theme kuroir and not the semantics.
-         If a different theme is used, the rules may have to be updated. */
       start: [
         {
           token: 'variable.parameter',
@@ -39,8 +40,8 @@ export class AtfHighlightRules
   }
 }
 
-export default class AtfMode extends acequire('ace/mode/plain_text').Mode {
-  HighlightRules
+export default class AtfMode extends PlainTextMode {
+  HighlightRules: new () => Ace.HighlightRules
 
   constructor() {
     super()

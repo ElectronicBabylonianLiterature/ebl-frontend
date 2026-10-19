@@ -1,6 +1,6 @@
 import React from 'react'
 import _ from 'lodash'
-import ArrayWithNotes from './ArrayWithNotes'
+import ArrayWithNotes from 'dictionary/ui/editor/ArrayWithNotes'
 import { render, screen } from '@testing-library/react'
 import { whenClicked, whenChangedByValue } from 'test-support/utils'
 

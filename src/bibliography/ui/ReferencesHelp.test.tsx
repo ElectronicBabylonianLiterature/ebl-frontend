@@ -1,6 +1,6 @@
 import React from 'react'
 import { render, screen } from '@testing-library/react'
-import { ReferencesHelp } from './ReferencesHelp'
+import { ReferencesHelp } from 'bibliography/ui/ReferencesHelp'
 
 jest.mock('common/ui/HelpTrigger', () => {
   const MockedHelpTrigger = (props: { overlay: React.ReactNode }) => (

@@ -28,7 +28,7 @@ describe('MapTab terrain interactions', () => {
     expect(await screen.findByRole('button', { name: 'Terrain' })).toBeVisible()
     expect(mockSetTerrain).not.toHaveBeenCalled()
 
-    act(() => triggerMapEvent('load'))
+    act(() => triggerMapEvent('style.load'))
 
     await waitFor(() =>
       expect(mockSetTerrain).toHaveBeenCalledWith({

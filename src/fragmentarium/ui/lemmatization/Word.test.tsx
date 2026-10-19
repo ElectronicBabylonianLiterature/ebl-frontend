@@ -1,7 +1,7 @@
 import React from 'react'
 import { render, screen } from '@testing-library/react'
 
-import Word from './Word'
+import Word from 'fragmentarium/ui/lemmatization/Word'
 import Lemma from 'transliteration/domain/Lemma'
 import _ from 'lodash'
 import { wordFactory } from 'test-support/word-fixtures'

@@ -1,5 +1,4 @@
 import React from 'react'
-import Bluebird from 'bluebird'
 import { act, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import RealiaSelect from 'fragmentarium/ui/text-annotation/RealiaSelect'
@@ -91,7 +90,7 @@ describe('searching', () => {
 describe('when the search fails', () => {
   beforeEach(() => {
     realiaServiceMock.search.mockImplementation(() =>
-      Bluebird.reject(new Error('Search failed.')),
+      Promise.reject(new Error('Search failed.')),
     )
   })
 
@@ -125,11 +124,11 @@ describe('when a request is superseded', () => {
     let resolveStale: (entries: readonly (typeof stale)[]) => void = () => {}
     realiaServiceMock.search
       .mockReturnValueOnce(
-        new Bluebird((resolve) => {
+        new Promise((resolve) => {
           resolveStale = resolve
         }),
       )
-      .mockReturnValueOnce(Bluebird.resolve([entry]))
+      .mockReturnValueOnce(Promise.resolve([entry]))
 
     const user = setupUser()
     renderSelect()
@@ -156,7 +155,7 @@ describe('when unmounted during a request', () => {
   it('updates no state after the request resolves', async () => {
     let resolveSearch: (entries: readonly (typeof entry)[]) => void = () => {}
     realiaServiceMock.search.mockReturnValue(
-      new Bluebird((resolve) => {
+      new Promise((resolve) => {
         resolveSearch = resolve
       }),
     )

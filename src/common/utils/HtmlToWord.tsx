@@ -36,10 +36,10 @@ export function generateWordDocument(
   return doc
 }
 
-export function getCreditForHead(records: JQuery): Paragraph {
+export function getCreditForHead(credit: string): Paragraph {
   return new Paragraph({
     children: [
-      new TextRun({ text: getCredit(records), size: 16, break: 1 }),
+      new TextRun({ text: credit, size: 16, break: 1 }),
       new TextRun({ break: 1 }),
     ],
     alignment: AlignmentType.CENTER,
@@ -111,18 +111,6 @@ function dealWithGlossaryHTML(el, runs: TextRun[]): void {
   } else if (el.is('sup')) {
     runs.push(getTextRun(el))
   }
-}
-
-function getCredit(records: JQuery) {
-  return (
-    'Credit: electronic Babylonian Library Project; ' +
-    records
-      .find('.Record__entry')
-      .map((i, el) => $(el).text() + ', ')
-      .get()
-      .join('')
-      .slice(0, -2)
-  )
 }
 
 export function getTransliterationText(el: JQuery, runs: TextRun[]): void {
