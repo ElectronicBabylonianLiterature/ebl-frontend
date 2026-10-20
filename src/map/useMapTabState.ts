@@ -12,6 +12,7 @@ import useFragmentMapData, {
 } from 'map/useFragmentMapData'
 import useMapExperience, { type MapExperience } from 'map/useMapExperience'
 import useMapPanel, { type MapPanelController } from 'map/useMapPanel'
+import useMapPanelAvailability from 'map/useMapPanelAvailability'
 import useMapVisualization, {
   type MapVisualization,
 } from 'map/useMapVisualization'
@@ -159,26 +160,11 @@ export default function useMapTabState(
     selectedPolygonId,
     setSelection,
   ])
-  useEffect(() => {
-    if (selectedPolygonId === null && panel.active === 'inspector') closePanel()
-    if (!canShowExcavationAreas && panel.active === 'visualization')
-      closePanel()
-    if (
-      isBackgroundUnavailable &&
-      (panel.active === 'measurement' || panel.active === 'spatial-search')
-    ) {
-      closePanel()
-    }
-    if (!canShowExcavationAreas && panel.active === 'spatial-search') {
-      closePanel()
-    }
-  }, [
+  useMapPanelAvailability(panel, {
     canShowExcavationAreas,
-    closePanel,
     isBackgroundUnavailable,
-    panel.active,
     selectedPolygonId,
-  ])
+  })
   useExcavationAreas(mapRef, {
     isVisible: showExcavationAreas,
     selectedPolygonId,

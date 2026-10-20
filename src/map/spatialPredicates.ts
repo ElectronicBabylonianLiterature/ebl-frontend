@@ -1,14 +1,12 @@
 import type { Geometry, Position } from 'geojson'
 import type { BoundingBox } from 'map/mapGeometry'
+import { isCoordinateInRange } from 'map/spatialCoordinateValidation'
 
 export type Ring = readonly Position[]
 
 function isFinitePosition(position: Position): boolean {
   return (
-    Number.isFinite(position[0]) &&
-    Number.isFinite(position[1]) &&
-    position[1] >= -90 &&
-    position[1] <= 90
+    Number.isFinite(position[0]) && isCoordinateInRange(position[1], -90, 90)
   )
 }
 
@@ -113,6 +111,16 @@ function isBetween(a: Position, b: Position, c: Position): boolean {
   )
 }
 
+function isPositionOnSegment(
+  position: Position,
+  start: Position,
+  end: Position,
+): boolean {
+  return (
+    orientation(start, end, position) === 0 && isBetween(start, position, end)
+  )
+}
+
 export function segmentsIntersect(
   a: Position,
   b: Position,
@@ -126,10 +134,10 @@ export function segmentsIntersect(
   const fourth = orientation(c, d, b)
   if (first * second < 0 && third * fourth < 0) return true
   return (
-    (first === 0 && isBetween(a, c, b)) ||
-    (second === 0 && isBetween(a, d, b)) ||
-    (third === 0 && isBetween(c, a, d)) ||
-    (fourth === 0 && isBetween(c, b, d))
+    isPositionOnSegment(c, a, b) ||
+    isPositionOnSegment(d, a, b) ||
+    isPositionOnSegment(a, c, d) ||
+    isPositionOnSegment(b, c, d)
   )
 }
 

@@ -1,5 +1,6 @@
 import type { MultiPolygon, Polygon, Position } from 'geojson'
 import type { BoundingBox } from 'map/mapGeometry'
+import { isCoordinateIntervalInRange } from 'map/spatialCoordinateValidation'
 
 const WEST = -180
 const EAST = 180
@@ -7,16 +8,6 @@ const EAST = 180
 export function wrapLongitude(longitude: number): number {
   if (!Number.isFinite(longitude)) return Number.NaN
   return ((((longitude - WEST) % 360) + 360) % 360) + WEST
-}
-
-function hasValidLatitudes(south: number, north: number): boolean {
-  return (
-    Number.isFinite(south) &&
-    Number.isFinite(north) &&
-    south >= -90 &&
-    north <= 90 &&
-    south < north
-  )
 }
 
 function canonicalInterval(
@@ -29,7 +20,7 @@ function canonicalInterval(
   if (
     !Number.isFinite(west) ||
     !Number.isFinite(east) ||
-    !hasValidLatitudes(south, north) ||
+    !isCoordinateIntervalInRange(south, north, -90, 90) ||
     width <= 0
   ) {
     return null
