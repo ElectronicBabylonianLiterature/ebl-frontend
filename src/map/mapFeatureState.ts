@@ -1,11 +1,11 @@
 import type { Map as MapLibreMap, MapGeoJSONFeature } from 'maplibre-gl'
-import { EXCAVATION_AREAS_SOURCE_ID, SOURCE_ID } from './mapLayers'
+import { EXCAVATION_AREAS_SOURCE_ID, SOURCE_ID } from 'map/mapLayers'
 import {
   type PolygonVisualizationValues,
   featureStateFor,
-} from './mapVisualizationValues'
-import type { MapSelection } from './mapSelection'
-import type { SiteMarkerState } from './mapSiteSummaries'
+} from 'map/mapVisualizationValues'
+import type { MapSelection } from 'map/mapSelection'
+import type { SiteMarkerState } from 'map/mapSiteSummaries'
 
 export function featureStringProperty(
   feature: MapGeoJSONFeature,
@@ -20,6 +20,7 @@ export function setExcavationFeatureState(
   polygonId: string,
   state: Record<string, unknown>,
 ): void {
+  if (!map.getSource(EXCAVATION_AREAS_SOURCE_ID)) return
   map.setFeatureState(
     { source: EXCAVATION_AREAS_SOURCE_ID, id: polygonId },
     state,
@@ -54,6 +55,7 @@ export function applySiteMarkerState(
   map: MapLibreMap,
   states: ReadonlyMap<string, SiteMarkerState>,
 ): void {
+  if (!map.getSource(SOURCE_ID)) return
   for (const [provenanceId, state] of states) {
     map.setFeatureState({ source: SOURCE_ID, id: provenanceId }, state)
   }
@@ -65,6 +67,7 @@ function moveSelectedState(
   previousId: string | null,
   nextId: string | null,
 ): void {
+  if (!map.getSource(sourceId)) return
   if (previousId && previousId !== nextId) {
     map.setFeatureState(
       { source: sourceId, id: previousId },

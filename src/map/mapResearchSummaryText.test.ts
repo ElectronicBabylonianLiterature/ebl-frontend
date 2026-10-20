@@ -62,10 +62,12 @@ describe('polygonResearchMarkdown', () => {
   it('records the visible counts, evidence and precision', () => {
     expect(markdown).toContain('Feature type: Excavation area')
     expect(markdown).toContain('Mapped findspots: 13')
-    expect(markdown).toContain('Accessible fragments: 23')
+    expect(markdown).toContain('Accessible tablets: 23')
     expect(markdown).toContain('Mapping evidence: Verified source')
     expect(markdown).toContain('Location precision: Excavation area')
-    expect(markdown).toContain('Findspot 7 — 1 accessible fragment')
+    expect(markdown).toContain(
+      'Location details unavailable — 1 accessible tablet',
+    )
   })
 
   it('records the reproducible view', () => {
@@ -79,8 +81,45 @@ describe('polygonResearchMarkdown', () => {
 
   it('carries the precision caveats and never the canonical id', () => {
     expect(markdown).toContain('accessible to the current user')
-    expect(markdown).toContain('not exact fragment coordinates')
+    expect(markdown).toContain('not exact tablet coordinates')
     expect(markdown).not.toContain(polygon.polygonId)
+  })
+
+  it('escapes all untrusted Markdown fields and includes complete location labels', () => {
+    const markdown = polygonResearchMarkdown(
+      {
+        ...polygon,
+        displayName: 'Area [A]\n# forged',
+        siteName: '<Uruk>',
+        findspots: [
+          {
+            ...polygon.findspots[0],
+            sector: 'Sector',
+            area: '*Area*',
+            building: 'Temple',
+            room: 'Room',
+          },
+        ],
+      },
+      {
+        ...context,
+        activeOverlayTitles: ['Map\n# forged'],
+        visualizationLabel: '*counts*',
+        siteFilter: 'x\n# forged',
+        shareUrl: 'https://example.test/<map>',
+      },
+    )
+    expect(markdown).toContain('Area \\[A\\] \\# forged — \\<Uruk\\>')
+    expect(markdown).toContain(
+      'Sector · \\*Area\\* · Temple · Room — 1 accessible tablet',
+    )
+    expect(markdown).toContain('Map \\# forged')
+    expect(markdown).toContain('\\*counts\\*')
+    expect(markdown).toContain('https://example.test/\\<map\\>')
+    expect(markdown).not.toContain('\n# forged')
+    expect(
+      siteResearchMarkdown({ ...site, siteName: '*Site*' }, context),
+    ).toContain('# \\*Site\\*')
   })
 
   it('omits sections the view has nothing for', () => {

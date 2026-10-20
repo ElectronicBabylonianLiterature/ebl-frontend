@@ -78,4 +78,19 @@ describe('useTimelineOverlays', () => {
       }).active,
     ).toEqual(SELECTED)
   })
+
+  it.each([{ soloSide: 'left' as const }, { blendPosition: 0 }])(
+    'keeps a ready base-map-only comparison authoritative: %s',
+    (overrides) => {
+      expect(
+        render(DEFAULT_TIMELINE_STATE, {
+          ...DEFAULT_COMPARISON_STATE,
+          mode: 'opacity',
+          leftOverlayId: null,
+          rightOverlayId: 'overlay-b',
+          ...overrides,
+        }).active,
+      ).toEqual([])
+    },
+  )
 })

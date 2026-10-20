@@ -1,8 +1,8 @@
 import React from 'react'
 import { MemoryRouter } from 'react-router-dom'
 import { act, renderHook } from '@testing-library/react'
-import useMapExperience from './useMapExperience'
-import { DEFAULT_MAP_URL_STATE } from './mapUrlState'
+import useMapExperience from 'map/useMapExperience'
+import { DEFAULT_MAP_URL_STATE } from 'map/mapUrlState'
 import { historicalMapOverlay } from 'test-support/map-fixtures'
 
 const overlayA = historicalMapOverlay({ id: 'overlay-a', defaultOpacity: 0.7 })

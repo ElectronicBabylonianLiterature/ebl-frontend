@@ -2,14 +2,14 @@ import { useMemo } from 'react'
 import type {
   ActiveHistoricalOverlay,
   HistoricalMapOverlay,
-} from './historicalOverlays'
-import { comparisonOverlays } from './mapComparison'
-import type { ComparisonState } from './mapComparison'
-import { toDatedOverlays } from './overlayPublicationDates'
+} from 'map/historicalOverlays'
+import { comparisonOverlays, isComparisonReady } from 'map/mapComparison'
+import type { ComparisonState } from 'map/mapComparison'
+import { toDatedOverlays } from 'map/overlayPublicationDates'
 import {
   type PublicationTimelineState,
   filterByPublicationTimeline,
-} from './overlayTimelineFilter'
+} from 'map/overlayTimelineFilter'
 
 export interface TimelineOverlays {
   /** Overlays offered in the catalogue after the publication-date filter. */
@@ -39,10 +39,9 @@ export default function useTimelineOverlays(
 
     return {
       available,
-      active:
-        compared.length > 0
-          ? compared
-          : selected.filter((overlay) => availableIds.has(overlay.id)),
+      active: isComparisonReady(comparison)
+        ? compared
+        : selected.filter((overlay) => availableIds.has(overlay.id)),
     }
   }, [overlays, selected, timeline, comparison])
 }

@@ -1,10 +1,11 @@
+import { EXCAVATION_EXTRUSION_LAYER_ID } from 'map/mapExtrusionLayers'
 import { asLibreMap, createMapMock } from 'test-support/maplibre-map-helpers'
 import { resetMapLibreMock } from '__mocks__/maplibre-gl'
 import {
   initializeFindspotSources,
   setBoundaryVisibility,
   setExcavationAreaVisibility,
-} from './mapSourceLifecycle'
+} from 'map/mapSourceLifecycle'
 import {
   historicalRasterLayerId,
   historicalRasterSourceId,
@@ -19,8 +20,8 @@ import {
   EXCAVATION_AREAS_SOURCE_ID,
   POLYGON_SOURCE_ID,
   SOURCE_ID,
-} from './mapLayers'
-import { syncHistoricalOverlays } from './mapOverlayLifecycle'
+} from 'map/mapLayers'
+import { syncHistoricalOverlays } from 'map/mapOverlayLifecycle'
 import {
   historicalMapOverlay,
   provenanceRecord,
@@ -51,6 +52,7 @@ describe('initializeFindspotSources', () => {
       polygonOutlineLayer.id,
       EXCAVATION_AREA_FILL_LAYER_ID,
       EXCAVATION_AREA_OUTLINE_LAYER_ID,
+      EXCAVATION_EXTRUSION_LAYER_ID,
       excavationAreaSelectedLayer.id,
       clusterLayer.id,
       clusterCountLayer.id,

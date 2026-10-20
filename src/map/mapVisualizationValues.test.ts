@@ -1,11 +1,11 @@
-import { aggregateFindspotMapData } from './findspotMapData'
+import { aggregateFindspotMapData } from 'map/findspotMapData'
 import {
   buildVisualizationValues,
   featureStateFor,
   isDensityAvailable,
   visualizationValuesFor,
-} from './mapVisualizationValues'
-import { EVIDENCE_CODES } from './mapEvidencePaint'
+} from 'map/mapVisualizationValues'
+import { EVIDENCE_CODES } from 'map/mapEvidencePaint'
 import { excavationPolygon, findspotMapData } from 'test-support/map-fixtures'
 
 function summariesFor(
@@ -132,7 +132,7 @@ describe('isDensityAvailable', () => {
     ).toBe(false)
   })
 
-  it('is false when every mapped polygon has zero accessible fragments', () => {
+  it('is false when every mapped polygon has zero accessible tablets', () => {
     expect(
       isDensityAvailable(
         buildVisualizationValues(

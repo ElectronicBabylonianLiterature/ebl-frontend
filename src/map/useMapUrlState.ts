@@ -1,11 +1,12 @@
 import { useCallback, useEffect, useRef } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import {
+  DEFAULT_MAP_URL_STATE,
   type MapUrlState,
   type MapUrlStateContext,
   parseMapUrlState,
   serializeMapUrlState,
-} from './mapUrlState'
+} from 'map/mapUrlState'
 
 export const CAMERA_URL_DEBOUNCE_MS = 400
 
@@ -22,20 +23,22 @@ export function useInitialMapUrlState(
   return initialStateRef.current
 }
 
-function isCameraOnlyChange(
+function isReplaceableChange(
   previous: MapUrlState | null,
   next: MapUrlState,
 ): boolean {
+  if (previous === null) return false
   return (
-    previous !== null &&
-    previous.selection === next.selection &&
-    previous.layers === next.layers &&
-    previous.overlays === next.overlays &&
-    previous.siteFilter === next.siteFilter &&
-    previous.visualization === next.visualization &&
-    previous.tools.terrain === next.tools.terrain &&
-    previous.tools.comparison === next.tools.comparison &&
-    previous.tools.timeline === next.tools.timeline
+    serializeMapUrlState({
+      ...previous,
+      camera: DEFAULT_MAP_URL_STATE.camera,
+      siteFilter: '',
+    }) ===
+    serializeMapUrlState({
+      ...next,
+      camera: DEFAULT_MAP_URL_STATE.camera,
+      siteFilter: '',
+    })
   )
 }
 
@@ -51,8 +54,9 @@ export default function useMapUrlSync(
   const onRestoreRef = useRef(onRestore)
   onRestoreRef.current = onRestore
 
-  const lastWrittenSearchRef = useRef<string | null>(null)
+  const lastWrittenSearchRef = useRef(location.search.replace(/^\?/, ''))
   const previousStateRef = useRef<MapUrlState | null>(null)
+  const lastObservedSearchRef = useRef(location.search.replace(/^\?/, ''))
 
   const writeSearch = useCallback(
     (search: string, replace: boolean) => {
@@ -63,17 +67,20 @@ export default function useMapUrlSync(
   )
 
   useEffect(() => {
+    if (location.search.replace(/^\?/, '') !== lastWrittenSearchRef.current)
+      return
     const search = serializeMapUrlState(state)
     if (search === lastWrittenSearchRef.current) {
       previousStateRef.current = state
       return
     }
 
-    const replace = isCameraOnlyChange(previousStateRef.current, state)
+    const initial = previousStateRef.current === null
+    const replace = isReplaceableChange(previousStateRef.current, state)
     previousStateRef.current = state
 
     if (!replace) {
-      writeSearch(search, false)
+      writeSearch(search, initial)
       return
     }
 
@@ -82,18 +89,18 @@ export default function useMapUrlSync(
       CAMERA_URL_DEBOUNCE_MS,
     )
     return () => clearTimeout(timeout)
-  }, [state, writeSearch])
+  }, [state, writeSearch, location.search])
 
   useEffect(() => {
     const search = location.search.replace(/^\?/, '')
-    if (
-      lastWrittenSearchRef.current === null ||
-      search === lastWrittenSearchRef.current
-    ) {
+    if (search === lastObservedSearchRef.current) return
+    lastObservedSearchRef.current = search
+    if (search === lastWrittenSearchRef.current) {
       return
     }
 
     lastWrittenSearchRef.current = search
+    previousStateRef.current = null
     onRestoreRef.current(parseMapUrlState(search, contextRef.current))
   }, [location.search])
 }

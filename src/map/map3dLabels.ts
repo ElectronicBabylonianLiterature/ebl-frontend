@@ -1,12 +1,12 @@
-import type { MapDimensionMode, MapExtrusionMetric } from './map3dState'
+import type { MapDimensionMode, MapExtrusionMetric } from 'map/map3dState'
 
 export const EXTRUSION_METRIC_LABELS: Readonly<
   Record<MapExtrusionMetric, string>
 > = {
-  'accessible-fragments': 'Accessible fragments',
+  'accessible-fragments': 'Accessible tablets',
   'mapped-findspots': 'Mapped findspots',
-  'log-fragments': 'Accessible fragments (log)',
-  'fragment-density': 'Accessible fragments per km²',
+  'log-fragments': 'Accessible tablets (log)',
+  'fragment-density': 'Accessible tablets per km²',
 }
 
 export const DIMENSION_MODE_LABELS: Readonly<Record<MapDimensionMode, string>> =

@@ -219,7 +219,11 @@ describe('runSpatialSearch', () => {
         INDEX,
         summaries,
       ),
-    ).toMatchObject({ findspotIds: [4], mappedPolygonCount: 2 })
+    ).toMatchObject({
+      findspotIds: [4],
+      mappedPolygonCount: 2,
+      accessibleFragmentCount: 2,
+    })
   })
 })
 

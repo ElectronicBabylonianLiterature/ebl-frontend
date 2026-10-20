@@ -68,6 +68,7 @@ export default function MapTab({
         </>
       ) : (
         <MapExperienceHeader
+          provenances={siteData.provenances}
           siteFilter={experience.siteFilter}
           visibleSiteCount={filteredProvenances?.length ?? 0}
           hasSelection={experience.selection !== null}

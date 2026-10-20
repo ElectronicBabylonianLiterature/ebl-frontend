@@ -1,4 +1,8 @@
-import { asLibreMap, createMapMock } from 'test-support/maplibre-map-helpers'
+import { initializeFindspotSources } from 'map/mapSourceLifecycle'
+import {
+  asLibreMap,
+  createMapMock as createBareMapMock,
+} from 'test-support/maplibre-map-helpers'
 import type { MapMouseEvent } from 'maplibre-gl'
 import {
   resetMapLibreMock,
@@ -10,13 +14,19 @@ import {
   polygonFillLayer,
   unclusteredLayer,
   SOURCE_ID,
-} from './mapLayers'
-import { handleMapClick } from './mapInteractions'
+} from 'map/mapLayers'
+import { handleMapClick } from 'map/mapInteractions'
 import { polygonFeature } from 'test-support/map-fixtures'
 import {
   clusterFeature,
   pointFeature,
 } from 'test-support/map-interaction-fixtures'
+
+function createMapMock() {
+  const map = createBareMapMock()
+  initializeFindspotSources(asLibreMap(map), [], true, true)
+  return map
+}
 
 const event = { point: { x: 12, y: 34 } } as MapMouseEvent
 
@@ -72,7 +82,7 @@ describe('handleMapClick', () => {
     })
     expect(map.easeTo).toHaveBeenCalledWith({
       center: [43.25, 35.45],
-      zoom: 9,
+      zoom: 14,
     })
   })
 

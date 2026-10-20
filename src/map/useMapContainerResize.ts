@@ -13,10 +13,11 @@ import type { Map as MapLibreMap } from 'maplibre-gl'
 export default function useMapContainerResize(
   containerRef: RefObject<HTMLElement>,
   mapRef: MutableRefObject<MapLibreMap | null>,
+  isReady: boolean,
 ): void {
   useEffect(() => {
     const container = containerRef.current
-    if (!container) return
+    if (!isReady || !container) return
 
     let frame: number | null = null
     const observer = new ResizeObserver(() => {
@@ -32,5 +33,5 @@ export default function useMapContainerResize(
       observer.disconnect()
       if (frame !== null) cancelAnimationFrame(frame)
     }
-  }, [containerRef, mapRef])
+  }, [containerRef, mapRef, isReady])
 }

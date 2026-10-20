@@ -1,8 +1,11 @@
 import { renderHook } from '@testing-library/react'
 import { asLibreMap, createMapMock } from 'test-support/maplibre-map-helpers'
 import { resetMapLibreMock } from '__mocks__/maplibre-gl'
-import useMapPanelPadding from './useMapPanelPadding'
-import { NO_PANEL_PADDING, panelPadding } from './mapPanelPadding'
+import useMapPanelPadding from 'map/useMapPanelPadding'
+import { NO_PANEL_PADDING, panelPadding } from 'map/mapPanelPadding'
+import { runMapFocus } from 'map/mapFocusTransition'
+import { focusProvenance } from 'map/mapCamera'
+import { provenanceRecord } from 'test-support/map-fixtures'
 
 beforeEach(() => resetMapLibreMock())
 
@@ -72,5 +75,69 @@ describe('useMapPanelPadding', () => {
     expect(() =>
       renderHook(() => useMapPanelPadding(mapRef, true, 'right', 360)),
     ).not.toThrow()
+  })
+
+  it('resumes an interrupted target after applying the new drawer padding', () => {
+    const mapMock = createMapMock()
+    const map = asLibreMap(mapMock)
+    jest.spyOn(map, 'isMoving').mockReturnValue(true)
+    const targetPadding = panelPadding('bottom', 320)
+    const focus = jest.fn(() => mapMock.padding)
+    runMapFocus(map, focus)
+    mapMock.setPadding.mockImplementation((padding) => {
+      mapMock.emit('moveend')
+      mapMock.padding = padding
+    })
+
+    renderHook(() => useMapPanelPadding({ current: map }, true, 'bottom', 320))
+
+    expect(focus).toHaveBeenCalledTimes(2)
+    expect(focus).toHaveNthReturnedWith(1, NO_PANEL_PADDING)
+    expect(focus).toHaveNthReturnedWith(2, targetPadding)
+  })
+
+  it('does not replay a completed focus when the drawer padding changes', () => {
+    const mapMock = createMapMock()
+    const map = asLibreMap(mapMock)
+    jest.spyOn(map, 'isMoving').mockReturnValue(true)
+    const focus = jest.fn()
+    runMapFocus(map, focus)
+    mapMock.emit('moveend')
+
+    renderHook(() => useMapPanelPadding({ current: map }, true, 'bottom', 320))
+
+    expect(focus).toHaveBeenCalledTimes(1)
+    expect(mapMock.setPadding).toHaveBeenCalledWith(panelPadding('bottom', 320))
+  })
+
+  it('reframes a synchronous site selection after the closed drawer mounts', () => {
+    const mapMock = createMapMock()
+    const map = asLibreMap(mapMock)
+    mapMock.fitBounds.mockImplementation(() => mapMock.padding)
+    focusProvenance(
+      map,
+      provenanceRecord({
+        polygonCoordinates: [
+          { longitude: 43.25, latitude: 35.44 },
+          { longitude: 43.27, latitude: 35.44 },
+          { longitude: 43.27, latitude: 35.46 },
+          { longitude: 43.25, latitude: 35.46 },
+        ],
+      }),
+    )
+    mapMock.setPadding.mockImplementation((padding) => {
+      mapMock.emit('movestart')
+      mapMock.padding = padding
+      mapMock.emit('moveend')
+    })
+
+    renderHook(() => useMapPanelPadding({ current: map }, true, 'bottom', 382))
+
+    expect(mapMock.fitBounds).toHaveBeenCalledTimes(2)
+    expect(mapMock.fitBounds).toHaveNthReturnedWith(1, NO_PANEL_PADDING)
+    expect(mapMock.fitBounds).toHaveNthReturnedWith(
+      2,
+      panelPadding('bottom', 382),
+    )
   })
 })

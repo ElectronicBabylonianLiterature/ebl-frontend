@@ -1,5 +1,5 @@
 import type { ExpressionSpecification } from 'maplibre-gl'
-import type { MappingEvidence } from './mapResearchSummary'
+import type { MappingEvidence } from 'map/mapResearchSummary'
 import {
   COLOR_SELECTED,
   COLOR_UNMAPPED,
@@ -7,8 +7,8 @@ import {
   DASH_UNMAPPED,
   OUTLINE_SELECTED,
   OUTLINE_UNMAPPED,
-} from './mapPaintColors'
-import { HOVERED, SELECTED, stateNumber } from './mapStateExpressions'
+} from 'map/mapPaintColors'
+import { HOVERED, SELECTED, stateNumber } from 'map/mapStateExpressions'
 
 /**
  * Evidence states travel to the GPU as an ordered numeric feature-state, so a
@@ -79,7 +79,7 @@ export function evidenceFillColor(): ExpressionSpecification {
 }
 
 /**
- * A mapped polygon with no accessible fragments keeps its evidence colour and
+ * A mapped polygon with no accessible tablets keeps its evidence colour and
  * outline and only loses fill weight — it must never read as unmapped.
  */
 export function evidenceFillOpacity(): ExpressionSpecification {

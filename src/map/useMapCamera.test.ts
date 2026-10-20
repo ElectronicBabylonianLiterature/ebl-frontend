@@ -3,8 +3,8 @@ import { act, renderHook } from '@testing-library/react'
 import type { MutableRefObject } from 'react'
 import type { Map as MapLibreMap } from 'maplibre-gl'
 import { resetMapLibreMock } from '__mocks__/maplibre-gl'
-import useMapCamera, { applyMapCamera, readMapCamera } from './useMapCamera'
-import { DEFAULT_MAP_URL_STATE } from './mapUrlState'
+import useMapCamera, { applyMapCamera, readMapCamera } from 'map/useMapCamera'
+import { DEFAULT_MAP_URL_STATE, MapCameraState } from 'map/mapUrlState'
 
 beforeEach(() => {
   resetMapLibreMock()
@@ -56,10 +56,11 @@ describe('useMapCamera', () => {
     expect(mapMock.listenerCount('moveend')).toBe(0)
   })
 
-  it('tracks the camera on moveend only', () => {
+  it('reads the initial camera and then tracks changes on moveend only', () => {
     const mapMock = createMapMock()
     const mapRef = { current: asLibreMap(mapMock) }
     const { result } = mountCamera(mapRef, true)
+    const initialCamera = readMapCamera(asLibreMap(mapMock))
 
     act(() => {
       applyMapCamera(asLibreMap(mapMock), {
@@ -69,12 +70,39 @@ describe('useMapCamera', () => {
         pitch: 0,
       })
     })
-    expect(result.current).toEqual(DEFAULT_MAP_URL_STATE.camera)
+    expect(result.current).toEqual(initialCamera)
 
     act(() => mapMock.emit('moveend'))
     expect(result.current).toEqual({
       center: [1, 2],
       zoom: 9,
+      bearing: 0,
+      pitch: 0,
+    })
+  })
+
+  it('observes the live camera when navigation stops requesting one', () => {
+    const mapMock = createMapMock()
+    const mapRef = { current: asLibreMap(mapMock) }
+    const requested: MapCameraState = {
+      center: [12, 34],
+      zoom: 13,
+      bearing: 0,
+      pitch: 0,
+    }
+    const { result, rerender } = renderHook(
+      ({ camera }: { camera: MapCameraState | null }) =>
+        useMapCamera(mapRef, true, camera),
+      { initialProps: { camera: requested as MapCameraState | null } },
+    )
+    // A source-data effect can fit the new filter before the camera effect runs.
+    act(() => mapMock.jumpTo({ center: [43.26, 35.45], zoom: 12 }))
+
+    rerender({ camera: null })
+
+    expect(result.current).toEqual({
+      center: [43.26, 35.45],
+      zoom: 12,
       bearing: 0,
       pitch: 0,
     })

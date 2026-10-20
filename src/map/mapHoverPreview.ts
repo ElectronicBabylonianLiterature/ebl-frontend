@@ -1,12 +1,12 @@
-import type { PolygonFindspotSummary } from './findspotMapData'
-import type { SiteResearchSummary } from './mapResearchSummary'
-import { mappingEvidenceOf } from './mapResearchSummary'
+import type { PolygonFindspotSummary } from 'map/findspotMapData'
+import type { SiteResearchSummary } from 'map/mapResearchSummary'
+import { mappingEvidenceOf } from 'map/mapResearchSummary'
 import {
   countLabel,
   mappingEvidenceLabel,
   pluralize,
-} from './mapResearchLabels'
-import type { MapHoverPreview } from './mapSelection'
+} from 'map/mapResearchLabels'
+import type { MapHoverPreview } from 'map/mapSelection'
 
 const INSPECT_HINT = 'Click to inspect'
 const EXPLORE_HINT = 'Click to explore'
@@ -40,7 +40,7 @@ export function polygonHoverPreview(
     title,
     details: [
       `${countLabel(summary.findspotCount, 'mapped findspot')}`,
-      `${countLabel(summary.accessibleFragmentCount, 'accessible fragment')}`,
+      `${countLabel(summary.accessibleFragmentCount, 'accessible tablet')}`,
       mappingEvidenceLabel(mappingEvidenceOf(summary.findspots)),
       INSPECT_HINT,
     ],

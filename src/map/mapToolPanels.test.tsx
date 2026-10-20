@@ -33,6 +33,8 @@ const interactions: MapToolInteractions = {
   searchShape: null,
   searchResult: EMPTY_SPATIAL_SEARCH_RESULT,
   isDrawing: false,
+  cornerCount: 0,
+  addCornerAtCenter: jest.fn(),
   startDrawing: jest.fn(),
   searchViewport: jest.fn(),
   clearSearch: jest.fn(),
@@ -71,6 +73,8 @@ function threeDProps(terrain: MapTerrainResult): ToolPanelsInput['threeD'] {
 function baseInput(terrain: MapTerrainResult): ToolPanelsInput {
   return {
     tools,
+    mapRef: { current: null },
+    dataStatus: 'loaded',
     terrain,
     elevation: { status: 'empty', profile: null, sampleCount: 0 },
     threeD: threeDProps(terrain),

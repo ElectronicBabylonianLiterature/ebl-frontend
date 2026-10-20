@@ -73,20 +73,23 @@ jest.mock('signs/ui/CuneiformConverter/CuneiformConverterForm', () => ({
   default: () => <div>Cuneiform Converter Mock</div>,
 }))
 
+function createToolsProps(): React.ComponentProps<typeof Tools> {
+  return {
+    markupService: {} as MarkupService,
+    signService: {} as SignService,
+    wordService: {} as WordService,
+    bibliographyService: {} as BibliographyService,
+    afoRegisterService: {} as AfoRegisterService,
+    realiaService: {} as RealiaService,
+    dossiersService: {} as DossiersService,
+    fragmentService: {} as FragmentService,
+    findspotService: {} as FindspotService,
+  }
+}
+
 describe('Tools routes', () => {
   it('syncs selected tab when activeTab prop changes', () => {
-    const props = {
-      markupService: {} as MarkupService,
-      signService: {} as SignService,
-      wordService: {} as WordService,
-      bibliographyService: {} as BibliographyService,
-      afoRegisterService: {} as AfoRegisterService,
-      realiaService: {} as RealiaService,
-      dossiersService: {} as DossiersService,
-      fragmentService: {} as FragmentService,
-      findspotService: {} as FindspotService,
-      activeTab: 'signs' as Parameters<typeof Tools>[0]['activeTab'],
-    }
+    const props = { ...createToolsProps(), activeTab: 'signs' as const }
 
     const { rerender } = render(
       <MemoryRouter>
@@ -116,17 +119,7 @@ describe('Tools routes', () => {
 
     render(
       <MemoryRouter initialEntries={['/tools#target-section']}>
-        <Tools
-          markupService={{} as MarkupService}
-          signService={{} as SignService}
-          wordService={{} as WordService}
-          bibliographyService={{} as BibliographyService}
-          afoRegisterService={{} as AfoRegisterService}
-          realiaService={{} as RealiaService}
-          dossiersService={{} as DossiersService}
-          fragmentService={{} as FragmentService}
-          findspotService={{} as FindspotService}
-        />
+        <Tools {...createToolsProps()} />
       </MemoryRouter>,
     )
 
@@ -146,17 +139,7 @@ describe('Tools routes', () => {
 
     render(
       <MemoryRouter initialEntries={['/tools#missing-section']}>
-        <Tools
-          markupService={{} as MarkupService}
-          signService={{} as SignService}
-          wordService={{} as WordService}
-          bibliographyService={{} as BibliographyService}
-          afoRegisterService={{} as AfoRegisterService}
-          realiaService={{} as RealiaService}
-          dossiersService={{} as DossiersService}
-          fragmentService={{} as FragmentService}
-          findspotService={{} as FindspotService}
-        />
+        <Tools {...createToolsProps()} />
       </MemoryRouter>,
     )
 
@@ -181,17 +164,7 @@ describe('Tools routes', () => {
     try {
       render(
         <MemoryRouter initialEntries={['/tools#target-section']}>
-          <Tools
-            markupService={{} as MarkupService}
-            signService={{} as SignService}
-            wordService={{} as WordService}
-            bibliographyService={{} as BibliographyService}
-            afoRegisterService={{} as AfoRegisterService}
-            realiaService={{} as RealiaService}
-            dossiersService={{} as DossiersService}
-            fragmentService={{} as FragmentService}
-            findspotService={{} as FindspotService}
-          />
+          <Tools {...createToolsProps()} />
         </MemoryRouter>,
       )
 

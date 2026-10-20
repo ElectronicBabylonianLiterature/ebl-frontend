@@ -1,7 +1,7 @@
-import type { HistoricalMapOverlay } from './historicalOverlays'
-import type { FindspotMapData } from './findspotMapData'
-import type { ExcavationPolygon } from './excavationPolygonIndex'
-import { type MapSiteDefinition, mapSites } from './mapSites'
+import type { HistoricalMapOverlay } from 'map/historicalOverlays'
+import type { FindspotMapData } from 'map/findspotMapData'
+import type { ExcavationPolygon } from 'map/excavationPolygonIndex'
+import { type MapSiteDefinition, mapSites } from 'map/mapSites'
 
 export type MapFragmentDataState =
   | 'not-configured'
@@ -92,15 +92,24 @@ export function fragmentDataStatusText(
 ): string {
   switch (capabilities.fragmentDataState) {
     case 'not-configured':
-      return 'Fragment-linked excavation data is not yet available for this site.'
+      return 'Tablet-linked excavation data is not yet available for this site.'
     case 'loading':
     case 'idle':
-      return 'Loading excavation fragment data...'
+      return 'Loading excavation tablet data...'
     case 'error':
-      return 'Excavation fragment data unavailable'
+      return 'Excavation tablet data unavailable'
     case 'empty':
-      return 'No mapped excavation fragments available'
+      return 'No mapped excavation tablets available'
     default:
-      return `Fragment-linked excavation data is available for ${capabilities.siteName}.`
+      return `Tablet-linked excavation data is available for ${capabilities.siteName}.`
   }
+}
+
+export function isLinkedDataLoaded(
+  site: MapSiteCapabilities | undefined,
+): boolean {
+  return (
+    site?.fragmentDataState === 'available' ||
+    site?.fragmentDataState === 'empty'
+  )
 }

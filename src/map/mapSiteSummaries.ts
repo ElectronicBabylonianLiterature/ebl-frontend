@@ -1,12 +1,12 @@
 import { ProvenanceRecord } from 'fragmentarium/domain/Provenance'
-import type { PolygonFindspotSummary } from './findspotMapData'
-import type { ExcavationPolygonIndex } from './excavationPolygonIndex'
-import type { MapSiteCapabilities } from './mapSiteCapabilities'
-import { matchSiteCapabilities } from './provenanceSiteMatch'
+import type { PolygonFindspotSummary } from 'map/findspotMapData'
+import type { ExcavationPolygonIndex } from 'map/excavationPolygonIndex'
+import type { MapSiteCapabilities } from 'map/mapSiteCapabilities'
+import { matchSiteCapabilities } from 'map/provenanceSiteMatch'
 import {
   type SiteResearchSummary,
   deriveSiteResearchSummary,
-} from './mapResearchSummary'
+} from 'map/mapResearchSummary'
 
 export type SiteResearchSummaries = ReadonlyMap<string, SiteResearchSummary>
 
@@ -54,7 +54,7 @@ export function buildSiteResearchSummaries(
  * How much evidence a marker stands for, as an ordered code the marker paint
  * expressions class with `step`. Only states the data actually supports are
  * represented: coordinates, mapped excavation polygons, and live
- * fragment-linked map data.
+ * tablet-linked map data.
  */
 export const SITE_MARKER_CODES = {
   coordinates: 0,

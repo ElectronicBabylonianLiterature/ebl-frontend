@@ -1,17 +1,17 @@
 import { asLibreMap, createMapMock } from 'test-support/maplibre-map-helpers'
 import type { MapGeoJSONFeature } from 'maplibre-gl'
 import { resetMapLibreMock } from '__mocks__/maplibre-gl'
-import { EXCAVATION_AREAS_SOURCE_ID, SOURCE_ID } from './mapLayers'
+import { EXCAVATION_AREAS_SOURCE_ID, SOURCE_ID } from 'map/mapLayers'
 import {
   applyFindspotSummaryState,
   applySelectionState,
   featureStringProperty,
   selectedPolygonId,
   selectedSiteId,
-} from './mapFeatureState'
-import { aggregateFindspotMapData } from './findspotMapData'
-import { buildVisualizationValues } from './mapVisualizationValues'
-import { EVIDENCE_CODES } from './mapEvidencePaint'
+} from 'map/mapFeatureState'
+import { aggregateFindspotMapData } from 'map/findspotMapData'
+import { buildVisualizationValues } from 'map/mapVisualizationValues'
+import { EVIDENCE_CODES } from 'map/mapEvidencePaint'
 import { excavationPolygon, findspotMapData } from 'test-support/map-fixtures'
 
 beforeEach(() => {
@@ -66,6 +66,8 @@ describe('selection accessors', () => {
 describe('applyFindspotSummaryState', () => {
   it('writes authorized counts as feature state', () => {
     const map = createMapMock()
+    map.addSource(SOURCE_ID, {})
+    map.addSource(EXCAVATION_AREAS_SOURCE_ID, {})
 
     applyFindspotSummaryState(
       asLibreMap(map),
@@ -98,6 +100,8 @@ describe('applySelectionState', () => {
 
   it('marks a newly selected polygon', () => {
     const map = createMapMock()
+    map.addSource(SOURCE_ID, {})
+    map.addSource(EXCAVATION_AREAS_SOURCE_ID, {})
 
     const next = applySelectionState(
       asLibreMap(map),
@@ -116,6 +120,8 @@ describe('applySelectionState', () => {
 
   it('clears the previously selected polygon', () => {
     const map = createMapMock()
+    map.addSource(SOURCE_ID, {})
+    map.addSource(EXCAVATION_AREAS_SOURCE_ID, {})
 
     applySelectionState(asLibreMap(map), null, {
       polygonId: 'assur-area-a',
@@ -132,6 +138,8 @@ describe('applySelectionState', () => {
 
   it('moves the selection between sites', () => {
     const map = createMapMock()
+    map.addSource(SOURCE_ID, {})
+    map.addSource(EXCAVATION_AREAS_SOURCE_ID, {})
 
     const next = applySelectionState(
       asLibreMap(map),
@@ -150,6 +158,8 @@ describe('applySelectionState', () => {
 
   it('leaves an unchanged selection alone', () => {
     const map = createMapMock()
+    map.addSource(SOURCE_ID, {})
+    map.addSource(EXCAVATION_AREAS_SOURCE_ID, {})
     const setFeatureState = jest.spyOn(map, 'setFeatureState')
 
     applySelectionState(

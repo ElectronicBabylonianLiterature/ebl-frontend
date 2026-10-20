@@ -4,7 +4,7 @@ import {
   type MapUrlState,
   parseMapUrlState,
   serializeMapUrlState,
-} from './mapUrlState'
+} from 'map/mapUrlState'
 
 const context = {
   knownOverlayIds: new Set(['overlay-a', 'overlay-b']),
@@ -106,6 +106,21 @@ describe('parseMapUrlState', () => {
     expect(parseMapUrlState('v=1&c=abc&z=abc', context).camera).toEqual(
       DEFAULT_MAP_URL_STATE.camera,
     )
+  })
+
+  it.each(['v=1&q=Assur', 'v=1&c=43', 'v=1&c=bad&z=bad'])(
+    'does not request a camera when none is usable: %s',
+    (search) => {
+      expect(parseMapUrlState(search, context).camera).toBe(
+        DEFAULT_MAP_URL_STATE.camera,
+      )
+    },
+  )
+
+  it('preserves an explicitly requested default camera', () => {
+    const camera = parseMapUrlState('v=1&c=44.4,33&z=5', context).camera
+    expect(camera).toEqual(DEFAULT_MAP_URL_STATE.camera)
+    expect(camera).not.toBe(DEFAULT_MAP_URL_STATE.camera)
   })
 
   it('drops unknown layers and overlays', () => {

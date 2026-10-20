@@ -1,18 +1,18 @@
 import React from 'react'
 import { ProvenanceRecord } from 'fragmentarium/domain/Provenance'
-import type { HistoricalMapOverlay } from './historicalOverlays'
-import type { MapSiteCapabilities } from './mapSiteCapabilities'
-import { matchSiteCapabilities } from './provenanceSiteMatch'
-import type { MapSelection } from './mapSelection'
+import type { HistoricalMapOverlay } from 'map/historicalOverlays'
+import type { MapSiteCapabilities } from 'map/mapSiteCapabilities'
+import { matchSiteCapabilities } from 'map/provenanceSiteMatch'
+import type { MapSelection } from 'map/mapSelection'
 import type {
   PolygonResearchSummary,
   SiteResearchSummary,
-} from './mapResearchSummary'
-import type { MapResearchContext } from './mapResearchSummaryText'
-import MapInspectorArea from './MapInspectorArea'
-import MapInspectorExplorer from './MapInspectorExplorer'
-import MapInspectorSite from './MapInspectorSite'
-import { InspectorBackButton } from './MapInspectorParts'
+} from 'map/mapResearchSummary'
+import type { MapResearchContext } from 'map/mapResearchSummaryText'
+import MapInspectorArea from 'map/MapInspectorArea'
+import MapInspectorExplorer from 'map/MapInspectorExplorer'
+import MapInspectorSite from 'map/MapInspectorSite'
+import { InspectorBackButton } from 'map/MapInspectorParts'
 
 export interface MapInspectorProps {
   readonly capabilities: readonly MapSiteCapabilities[]
@@ -62,6 +62,7 @@ export default function MapInspector(props: MapInspectorProps): JSX.Element {
       <SelectedShell onClearSelection={props.onClearSelection}>
         <MapInspectorArea
           summary={selectedPolygonSummary}
+          site={props.selectedPolygonSite}
           overlays={props.siteOverlays}
           activeOverlayIds={props.activeOverlayIds}
           buildResearchContext={props.buildResearchContext}

@@ -1,16 +1,16 @@
 import type { Position } from 'geojson'
-import type { PolygonFindspotSummary } from './findspotMapData'
+import type { PolygonFindspotSummary } from 'map/findspotMapData'
 import type {
   ExcavationPolygon,
   ExcavationPolygonIndex,
-} from './excavationPolygonIndex'
-import { type BoundingBox, boundingBoxOfPositions } from './mapGeometry'
+} from 'map/excavationPolygonIndex'
+import { type BoundingBox, boundingBoxOfPositions } from 'map/mapGeometry'
 import {
   type Ring,
   boundingBoxesIntersect,
   boundingBoxRing,
   geometryIntersectsRing,
-} from './spatialPredicates'
+} from 'map/spatialPredicates'
 
 export type SpatialSearchShape =
   | { readonly type: 'viewport'; readonly bounds: BoundingBox }
@@ -93,18 +93,28 @@ export function runSpatialSearch(
   if (searchRing === null) return EMPTY_SPATIAL_SEARCH_RESULT
 
   const polygons = matchingPolygons(index, searchRing)
-  const findspotIds = new Set<number>()
+  const findspots = new Map<number, number>()
+  const rejectedIds = new Set<number>()
   let mappedPolygonCount = 0
-  let accessibleFragmentCount = 0
 
   for (const polygon of polygons) {
     const summary = summaries.get(polygon.polygonId)
     if (!summary) continue
 
     mappedPolygonCount += 1
-    accessibleFragmentCount += summary.accessibleFragmentCount
-    for (const findspotId of summary.findspotIds) {
-      findspotIds.add(findspotId)
+    for (const findspot of summary.findspots) {
+      const id = findspot.findspotId
+      if (rejectedIds.has(id)) continue
+      const existing = findspots.get(id)
+      if (
+        existing !== undefined &&
+        existing !== findspot.accessibleFragmentCount
+      ) {
+        findspots.delete(id)
+        rejectedIds.add(id)
+      } else {
+        findspots.set(id, findspot.accessibleFragmentCount)
+      }
     }
   }
 
@@ -112,9 +122,12 @@ export function runSpatialSearch(
     polygonIds: polygons
       .map((polygon) => polygon.polygonId)
       .sort((left, right) => left.localeCompare(right)),
-    findspotIds: [...findspotIds].sort((left, right) => left - right),
+    findspotIds: [...findspots.keys()].sort((left, right) => left - right),
     mappedPolygonCount,
-    accessibleFragmentCount,
+    accessibleFragmentCount: [...findspots.values()].reduce(
+      (total, count) => total + count,
+      0,
+    ),
   }
 }
 

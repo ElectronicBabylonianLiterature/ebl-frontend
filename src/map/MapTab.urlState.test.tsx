@@ -63,7 +63,13 @@ describe('restoring state from the url', () => {
   it('restores the camera from the url', async () => {
     await mountMapTab(['/?v=1&c=43.25,35.45&z=14&b=20&p=30'])
 
-    expect(screen.getByLabelText('Findspot map')).toBeInTheDocument()
+    const map = lastMapMock()
+    expect(map.getCenter()).toEqual({ lng: 43.25, lat: 35.45 })
+    expect(map.getZoom()).toBe(14)
+    expect(map.getBearing()).toBe(20)
+    expect(map.getPitch()).toBe(30)
+    expect(map.fitBounds).not.toHaveBeenCalled()
+    expect(mapSearch()).toContain('z=14')
   })
 })
 

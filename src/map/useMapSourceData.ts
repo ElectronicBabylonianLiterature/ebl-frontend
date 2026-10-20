@@ -2,10 +2,10 @@ import { useEffect } from 'react'
 import type { MutableRefObject } from 'react'
 import type { GeoJSONSource, Map as MapLibreMap } from 'maplibre-gl'
 import { ProvenanceRecord } from 'fragmentarium/domain/Provenance'
-import { POLYGON_SOURCE_ID, SOURCE_ID } from './mapLayers'
-import { provenanceToGeoJson } from './provenanceToGeoJson'
-import { provenancesToPolygonGeoJson } from './provenanceToPolygonGeoJson'
-import { fitMapToData } from './mapCamera'
+import { POLYGON_SOURCE_ID, SOURCE_ID } from 'map/mapLayers'
+import { provenanceToGeoJson } from 'map/provenanceToGeoJson'
+import { provenancesToPolygonGeoJson } from 'map/provenanceToPolygonGeoJson'
+import { fitMapToData } from 'map/mapCamera'
 
 export default function useMapSourceData(
   mapRef: MutableRefObject<MapLibreMap | null>,
@@ -22,8 +22,9 @@ export default function useMapSourceData(
       | GeoJSONSource
       | undefined
 
-    pointSource?.setData(pointGeoJson)
-    polygonSource?.setData(polygonGeoJson)
+    if (!pointSource || !polygonSource) return
+    pointSource.setData(pointGeoJson)
+    polygonSource.setData(polygonGeoJson)
     fitMapToData(map, pointGeoJson.features)
   }, [mapRef, provenances])
 }

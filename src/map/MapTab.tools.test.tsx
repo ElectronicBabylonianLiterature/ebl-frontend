@@ -8,7 +8,7 @@ import {
   polygonFeature,
   provenanceRecord,
 } from 'test-support/map-fixtures'
-import { TERRAIN_HILLSHADE_LAYER_ID } from './mapTerrainLayers'
+import { TERRAIN_HILLSHADE_LAYER_ID } from 'map/mapTerrainLayers'
 
 const assur = provenanceRecord({ id: 'assur', longName: 'Aššur' })
 
@@ -176,7 +176,7 @@ describe('the export tool', () => {
       screen.queryByRole('button', { name: 'Download image' }),
     ).not.toBeInTheDocument()
     expect(
-      screen.getByText(/never include unrestricted fragment totals/),
+      screen.getByText(/never include unrestricted tablet totals/),
     ).toBeInTheDocument()
   })
 })

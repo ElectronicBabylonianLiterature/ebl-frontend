@@ -2,52 +2,28 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import type { MutableRefObject } from 'react'
 import type { Position } from 'geojson'
 import type { Map as MapLibreMap } from 'maplibre-gl'
-import type { PolygonFindspotSummary } from './findspotMapData'
-import type { ExcavationPolygonIndex } from './excavationPolygonIndex'
-import type { BoundingBox } from './mapGeometry'
-import type { MeasurementMode, MeasurementUnits } from './mapMeasurement'
+import type { PolygonFindspotSummary } from 'map/findspotMapData'
+import type { ExcavationPolygonIndex } from 'map/excavationPolygonIndex'
+import type { MeasurementMode, MeasurementUnits } from 'map/mapMeasurement'
 import {
   EMPTY_SPATIAL_SEARCH_RESULT,
-  type SpatialSearchShape,
   runSpatialSearch,
-} from './spatialSearch'
+} from 'map/spatialSearch'
 
-const RECTANGLE_CORNERS = 2
+import { isFiniteToolPosition, subscribeToolInput } from 'map/mapToolInput'
 
-export interface MapToolInteractions {
+import useMapSpatialDrawing, {
+  type MapSpatialDrawing,
+} from 'map/useMapSpatialDrawing'
+
+export interface MapToolInteractions extends MapSpatialDrawing {
   readonly measurementPositions: readonly Position[]
   readonly measurementMode: MeasurementMode
   readonly measurementUnits: MeasurementUnits
   readonly setMeasurementMode: (mode: MeasurementMode) => void
   readonly setMeasurementUnits: (units: MeasurementUnits) => void
   readonly clearMeasurement: () => void
-  readonly searchShape: SpatialSearchShape | null
   readonly searchResult: ReturnType<typeof runSpatialSearch>
-  readonly isDrawing: boolean
-  readonly startDrawing: () => void
-  readonly searchViewport: () => void
-  readonly clearSearch: () => void
-  readonly addPosition: (position: Position) => void
-}
-
-function viewportBounds(map: MapLibreMap | null): BoundingBox | null {
-  const bounds = map?.getBounds?.()
-  return bounds
-    ? [bounds.getWest(), bounds.getSouth(), bounds.getEast(), bounds.getNorth()]
-    : null
-}
-
-function rectangleFrom(corners: readonly Position[]): SpatialSearchShape {
-  const [[west, south], [east, north]] = corners
-  return {
-    type: 'bounding-box',
-    bounds: [
-      Math.min(west, east),
-      Math.min(south, north),
-      Math.max(west, east),
-      Math.max(south, north),
-    ],
-  }
 }
 
 export default function useMapToolInteractions(
@@ -64,56 +40,47 @@ export default function useMapToolInteractions(
     useState<MeasurementMode>('distance')
   const [measurementUnits, setMeasurementUnits] =
     useState<MeasurementUnits>('metric')
-  const [, setCorners] = useState<readonly Position[]>([])
-  const [isDrawing, setIsDrawing] = useState(false)
-  const [searchShape, setSearchShape] = useState<SpatialSearchShape | null>(
-    null,
+  const clearMeasurement = useCallback(
+    (): void => setMeasurementPositions([]),
+    [],
   )
 
   useEffect(() => {
-    if (!isMeasuring) setMeasurementPositions([])
-  }, [isMeasuring])
+    if (!isMeasuring) clearMeasurement()
+  }, [isMeasuring, clearMeasurement])
 
-  useEffect(() => {
-    if (!isSearching) {
-      setIsDrawing(false)
-      setCorners([])
-    }
-  }, [isSearching])
-
+  const drawing = useMapSpatialDrawing(mapRef, isSearching)
+  const {
+    searchShape,
+    isDrawing,
+    clearSearch,
+    addPosition: addCorner,
+  } = drawing
   const addPosition = useCallback(
-    (position: Position) => {
-      if (isMeasuring) {
+    (position: Position): void => {
+      if (!isFiniteToolPosition(position)) return
+      if (isMeasuring)
         setMeasurementPositions((current) => [...current, position])
-        return
-      }
-
-      if (!isDrawing) return
-
-      setCorners((current) => {
-        const next = [...current, position]
-        if (next.length < RECTANGLE_CORNERS) return next
-
-        setSearchShape(rectangleFrom(next))
-        setIsDrawing(false)
-        return []
-      })
+      else addCorner(position)
     },
-    [isMeasuring, isDrawing],
+    [isMeasuring, addCorner],
   )
 
   useEffect(() => {
-    const map = mapRef.current
-    if (map === null || !(isMeasuring || isDrawing)) return
-
-    const collect = (event: { lngLat: { lng: number; lat: number } }): void =>
-      addPosition([event.lngLat.lng, event.lngLat.lat])
-
-    map.on('click', collect)
-    return () => {
-      map.off('click', collect)
-    }
-  }, [mapRef, isMeasuring, isDrawing, addPosition])
+    if (!isMeasuring && !isDrawing) return
+    return subscribeToolInput(
+      mapRef,
+      addPosition,
+      isDrawing ? clearSearch : clearMeasurement,
+    )
+  }, [
+    mapRef,
+    isMeasuring,
+    isDrawing,
+    addPosition,
+    clearSearch,
+    clearMeasurement,
+  ])
 
   const searchResult = useMemo(
     () =>
@@ -124,28 +91,14 @@ export default function useMapToolInteractions(
   )
 
   return {
+    ...drawing,
     measurementPositions,
     measurementMode,
     measurementUnits,
     setMeasurementMode,
     setMeasurementUnits,
-    clearMeasurement: useCallback(() => setMeasurementPositions([]), []),
-    searchShape,
+    clearMeasurement,
     searchResult,
-    isDrawing,
-    startDrawing: useCallback(() => {
-      setCorners([])
-      setIsDrawing(true)
-    }, []),
-    searchViewport: useCallback(() => {
-      const bounds = viewportBounds(mapRef.current)
-      setSearchShape(bounds === null ? null : { type: 'viewport', bounds })
-    }, [mapRef]),
-    clearSearch: useCallback(() => {
-      setSearchShape(null)
-      setCorners([])
-      setIsDrawing(false)
-    }, []),
     addPosition,
   }
 }

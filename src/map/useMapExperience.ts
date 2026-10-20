@@ -2,25 +2,27 @@ import { useCallback, useMemo, useState } from 'react'
 import type {
   ActiveHistoricalOverlay,
   HistoricalMapOverlay,
-} from './historicalOverlays'
-import type { MapSelection } from './mapSelection'
-import type { MapVisualizationMode } from './mapChoroplethScale'
+} from 'map/historicalOverlays'
+import type { MapSelection } from 'map/mapSelection'
+import type { MapVisualizationMode } from 'map/mapChoroplethScale'
 import {
   DEFAULT_MAP_URL_STATE,
   type MapLayerKey,
+  type MapCameraState,
   type MapUrlState,
   type MapUrlStateContext,
-} from './mapUrlState'
-import { useInitialMapUrlState } from './useMapUrlState'
+} from 'map/mapUrlState'
+import { useInitialMapUrlState } from 'map/useMapUrlState'
 import {
   withOverlayActive,
   withOverlayOpacity,
   withSeriesActive,
-} from './historicalOverlayActions'
-import type { HistoricalMapOverlaySeries } from './historicalOverlays'
-import useMapTools, { type MapTools } from './useMapTools'
+} from 'map/historicalOverlayActions'
+import type { HistoricalMapOverlaySeries } from 'map/historicalOverlays'
+import useMapTools, { type MapTools } from 'map/useMapTools'
 
 export interface MapExperience {
+  readonly requestedCamera: MapCameraState | null
   readonly tools: MapTools
   readonly selection: MapSelection | null
   readonly siteFilter: string
@@ -62,6 +64,9 @@ export default function useMapExperience(
   context: MapUrlStateContext,
 ): MapExperience {
   const initial = useInitialMapUrlState(context)
+  const [requestedCamera, setRequestedCamera] = useState<MapCameraState | null>(
+    initial.camera === DEFAULT_MAP_URL_STATE.camera ? null : initial.camera,
+  )
   const [selection, setSelection] = useState(initial.selection)
   const [siteFilter, setSiteFilter] = useState(initial.siteFilter)
   const [showBoundaries, setShowBoundaries] = useState(
@@ -77,6 +82,9 @@ export default function useMapExperience(
   const { restoreTools } = tools
   const restore = useCallback(
     (state: MapUrlState) => {
+      setRequestedCamera(
+        state.camera === DEFAULT_MAP_URL_STATE.camera ? null : state.camera,
+      )
       setSelection(state.selection)
       setSiteFilter(state.siteFilter)
       setShowBoundaries(state.layers.includes('boundaries'))
@@ -96,6 +104,7 @@ export default function useMapExperience(
   )
 
   return {
+    requestedCamera,
     tools,
     selection,
     siteFilter,

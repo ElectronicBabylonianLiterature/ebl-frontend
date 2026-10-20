@@ -73,13 +73,17 @@ function parseNumber(value: string | null | undefined): number | null {
 }
 
 function parseCamera(query: Record<string, unknown>): MapCameraState {
-  const [longitude, latitude] = String(firstValue(query.c) ?? '')
+  const [longitude = null, latitude = null] = String(firstValue(query.c) ?? '')
     .split(',')
     .map((entry) => parseNumber(entry))
   const zoom = parseNumber(firstValue(query.z))
   const bearing = parseNumber(firstValue(query.b))
   const pitch = parseNumber(firstValue(query.p))
   const fallback = DEFAULT_MAP_URL_STATE.camera
+  const hasCenter = longitude !== null && latitude !== null
+  // Preserve fallback identity when the URL does not request a camera.
+  if (!hasCenter && zoom === null && bearing === null && pitch === null)
+    return fallback
 
   return {
     center:

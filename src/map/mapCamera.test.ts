@@ -8,7 +8,7 @@ import {
   focusFeature,
   focusProvenance,
   resetCamera,
-} from './mapCamera'
+} from 'map/mapCamera'
 import { polygonFeature, provenanceRecord } from 'test-support/map-fixtures'
 
 beforeEach(() => {
@@ -48,7 +48,7 @@ describe('fitMapToData', () => {
     expect(map.fitBounds).not.toHaveBeenCalled()
   })
 
-  it('fits the union of point features', () => {
+  it('fits data immediately before later panel measurements can interrupt it', () => {
     const map = createMapMock()
 
     fitMapToData(asLibreMap(map), [
@@ -69,7 +69,7 @@ describe('fitMapToData', () => {
         [1, 2],
         [5, 6],
       ],
-      { padding: 40, maxZoom: 12 },
+      { padding: 40, maxZoom: 12, animate: false },
     )
   })
 })
@@ -86,7 +86,7 @@ describe('focusFeature', () => {
 
     expect(map.easeTo).toHaveBeenCalledWith({
       center: [43.25, 35.45],
-      zoom: 9,
+      zoom: 14,
     })
   })
 
@@ -116,7 +116,7 @@ describe('focusFeature', () => {
         [43.26, 35.46],
       ],
       {
-        padding: { top: 48, right: 48, bottom: 48, left: 360 },
+        padding: 48,
         maxZoom: 16,
       },
     )
@@ -131,11 +131,11 @@ describe('focusProvenance', () => {
 
     expect(map.easeTo).toHaveBeenCalledWith({
       center: [44.42, 32.542],
-      zoom: 9,
+      zoom: 14,
     })
   })
 
-  it('eases to the centroid of a polygon provenance', () => {
+  it('fits the bounds of a polygon provenance', () => {
     const map = createMapMock()
 
     focusProvenance(
@@ -150,10 +150,14 @@ describe('focusProvenance', () => {
       }),
     )
 
-    expect(map.easeTo).toHaveBeenCalledWith({
-      center: [8 / 3, 4 / 3],
-      zoom: 9,
-    })
+    expect(map.fitBounds).toHaveBeenCalledWith(
+      [
+        [0, 0],
+        [4, 4],
+      ],
+      { padding: 48, maxZoom: 16 },
+    )
+    expect(map.easeTo).not.toHaveBeenCalled()
   })
 
   it.each([
@@ -163,6 +167,18 @@ describe('focusProvenance', () => {
     expect(() =>
       focusProvenance(map && asLibreMap(map as MapMock), provenance),
     ).not.toThrow()
+  })
+
+  it('preserves a closer view when focusing a point', () => {
+    const map = createMapMock()
+    map.jumpTo({ zoom: 18 })
+
+    focusProvenance(asLibreMap(map), provenanceRecord())
+
+    expect(map.easeTo).toHaveBeenCalledWith({
+      center: [44.42, 32.542],
+      zoom: 18,
+    })
   })
 
   it('ignores a provenance without geometry', () => {
@@ -186,6 +202,8 @@ describe('resetCamera', () => {
     expect(map.easeTo).toHaveBeenCalledWith({
       center: INITIAL_CENTER,
       zoom: INITIAL_ZOOM,
+      pitch: 0,
+      bearing: 0,
     })
   })
 

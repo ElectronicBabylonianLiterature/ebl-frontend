@@ -5,7 +5,7 @@ import {
   isMapVisualizationMode,
   visualizationUnit,
   visualizationValueKey,
-} from './mapChoroplethScale'
+} from 'map/mapChoroplethScale'
 
 describe('mode helpers', () => {
   it('recognises only the supported modes', () => {
@@ -23,9 +23,9 @@ describe('mode helpers', () => {
 
   it('labels density with an explicit area unit', () => {
     expect(visualizationUnit('density')).toBe(
-      'Accessible fragments per square kilometre',
+      'Accessible tablets per square kilometre',
     )
-    expect(visualizationUnit('count')).toBe('Accessible fragments')
+    expect(visualizationUnit('count')).toBe('Accessible tablets')
     expect(visualizationUnit('mapped')).toBe('Mapped status')
   })
 })
@@ -107,7 +107,7 @@ describe('buildChoroplethLegend', () => {
 
     expect(legend.classes).toEqual([])
     expect(legend.classifiedFeatureCount).toBe(0)
-    expect(legend.unit).toBe('Accessible fragments')
+    expect(legend.unit).toBe('Accessible tablets')
   })
 
   it('describes contiguous ranges ending with an open class', () => {

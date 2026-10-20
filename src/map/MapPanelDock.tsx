@@ -23,7 +23,11 @@ export interface MapPanelDockProps {
   readonly info: InfoPanelsInput
   readonly tools: Omit<
     ToolPanelsInput,
-    'interactions' | 'excavationPolygonIndex' | 'polygonSummaries' | 'elevation'
+    | 'interactions'
+    | 'excavationPolygonIndex'
+    | 'polygonSummaries'
+    | 'elevation'
+    | 'mapRef'
   >
 }
 
@@ -56,6 +60,7 @@ export default function MapPanelDock({
   const infoPanels = useMemo(() => buildInfoPanelDefinitions(info), [info])
   const toolPanels = useToolPanelDefinitions({
     ...tools,
+    mapRef,
     excavationPolygonIndex,
     polygonSummaries,
     interactions,

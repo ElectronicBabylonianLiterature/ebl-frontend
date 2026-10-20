@@ -1,19 +1,19 @@
 import type {
   ChoroplethLegend,
   MapVisualizationMode,
-} from './mapChoroplethScale'
+} from 'map/mapChoroplethScale'
 import {
   COLOR_MAPPED_FRAGMENTS,
   COLOR_MAPPED_ZERO,
   COLOR_SELECTED,
   COLOR_UNMAPPED,
-} from './mapPaintColors'
+} from 'map/mapPaintColors'
 import {
   COLOR_EVIDENCE_CURATED,
   COLOR_EVIDENCE_MIXED,
   COLOR_EVIDENCE_VERIFIED,
-} from './mapEvidencePaint'
-import { mappingEvidenceLabel } from './mapResearchLabels'
+} from 'map/mapEvidencePaint'
+import { mappingEvidenceLabel } from 'map/mapResearchLabels'
 
 export type LegendPattern = 'solid' | 'dashed' | 'dash-dot' | 'halo'
 
@@ -62,13 +62,13 @@ const EVIDENCE_ENTRIES: readonly MapLegendEntry[] = [
 const MAPPED_ENTRIES: readonly MapLegendEntry[] = [
   {
     key: 'mapped-zero',
-    label: 'Mapped, zero accessible fragments',
+    label: 'Mapped, zero accessible tablets',
     color: COLOR_MAPPED_ZERO,
     pattern: 'solid',
   },
   {
     key: 'mapped-fragments',
-    label: 'Mapped with accessible fragments',
+    label: 'Mapped with accessible tablets',
     color: COLOR_MAPPED_FRAGMENTS,
     pattern: 'solid',
   },
@@ -116,7 +116,7 @@ export function mapLegendEntries(
     UNMAPPED_ENTRY,
     {
       key: 'zero',
-      label: 'Zero accessible fragments',
+      label: 'Zero accessible tablets',
       color: COLOR_MAPPED_ZERO,
       pattern: 'solid',
     },

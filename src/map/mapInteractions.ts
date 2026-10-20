@@ -11,18 +11,19 @@ import {
   polygonFillLayer,
   unclusteredLayer,
   SOURCE_ID,
-} from './mapLayers'
-import { focusFeature } from './mapCamera'
-import { firstPosition } from './mapGeometry'
+} from 'map/mapLayers'
+import { focusFeature, focusProvenance } from 'map/mapCamera'
+import type { ProvenanceRecord } from 'fragmentarium/domain/Provenance'
+import { firstPosition } from 'map/mapGeometry'
 import {
   featureStringProperty,
   setExcavationFeatureState,
-} from './mapFeatureState'
-import type { PolygonFindspotSummary } from './findspotMapData'
-import type { SiteResearchSummaries } from './mapSiteSummaries'
-import { polygonHoverPreview, siteHoverPreview } from './mapHoverPreview'
-import { UNNAMED_EXCAVATION_AREA } from './mapResearchSummary'
-import type { MapHoverPreview, MapSelection } from './mapSelection'
+} from 'map/mapFeatureState'
+import type { PolygonFindspotSummary } from 'map/findspotMapData'
+import type { SiteResearchSummaries } from 'map/mapSiteSummaries'
+import { polygonHoverPreview, siteHoverPreview } from 'map/mapHoverPreview'
+import { UNNAMED_EXCAVATION_AREA } from 'map/mapResearchSummary'
+import type { MapHoverPreview, MapSelection } from 'map/mapSelection'
 
 export const INTERACTIVE_LAYER_IDS = [
   clusterLayer.id,
@@ -36,21 +37,32 @@ function queryFirstFeature(
   event: MapMouseEvent,
   layerId: string,
 ): MapGeoJSONFeature | undefined {
+  if (!map.getLayer(layerId)) return undefined
   const [feature] = map.queryRenderedFeatures(event.point, {
     layers: [layerId],
   })
   return feature
 }
 
-function expandCluster(map: MapLibreMap, cluster: MapGeoJSONFeature): void {
+function expandCluster(
+  map: MapLibreMap,
+  cluster: MapGeoJSONFeature,
+  isCurrent: () => boolean,
+): void {
   const clusterId = cluster.properties?.cluster_id
   const center = firstPosition(cluster.geometry)
   if (typeof clusterId !== 'number' || !center) return
 
-  const source = map.getSource(SOURCE_ID) as GeoJSONSource
+  const source = map.getSource(SOURCE_ID) as GeoJSONSource | undefined
+  if (!source?.getClusterExpansionZoom) return
   void source
     .getClusterExpansionZoom(clusterId)
-    .then((zoom) => map.easeTo({ center: [...center], zoom }))
+    .then((zoom) => {
+      if (!isCurrent() || !Number.isFinite(zoom)) return
+      if (map.getSource(SOURCE_ID) === source)
+        map.easeTo({ center: [...center], zoom })
+    })
+    .catch(() => undefined)
 }
 
 function selectFeature(
@@ -58,11 +70,14 @@ function selectFeature(
   feature: MapGeoJSONFeature,
   toSelection: (id: string) => MapSelection,
   onSelectFeature: (selection: MapSelection) => void,
+  provenances?: readonly ProvenanceRecord[],
 ): void {
   const id = featureStringProperty(feature, 'id')
   if (!id) return
 
-  focusFeature(map, feature)
+  const provenance = provenances?.find((entry) => entry.id === id)
+  if (provenance) focusProvenance(map, provenance)
+  else focusFeature(map, feature)
   onSelectFeature(toSelection(id))
 }
 
@@ -70,10 +85,12 @@ export function handleMapClick(
   map: MapLibreMap,
   event: MapMouseEvent,
   onSelectFeature: (selection: MapSelection) => void,
+  isCurrent: () => boolean = () => true,
+  provenances?: readonly ProvenanceRecord[],
 ): void {
   const cluster = queryFirstFeature(map, event, clusterLayer.id)
   if (cluster) {
-    expandCluster(map, cluster)
+    expandCluster(map, cluster, isCurrent)
     return
   }
 
@@ -84,6 +101,7 @@ export function handleMapClick(
       findspot,
       (provenanceId) => ({ type: 'site', provenanceId }),
       onSelectFeature,
+      provenances,
     )
     return
   }
@@ -110,6 +128,7 @@ export function handleMapClick(
       polygon,
       (provenanceId) => ({ type: 'site', provenanceId }),
       onSelectFeature,
+      provenances,
     )
   }
 }
@@ -146,9 +165,10 @@ export function handleMapHover(
   context: MapHoverContext,
   onHoverPreview: (preview: MapHoverPreview | null) => void,
 ): void {
+  const layers = INTERACTIVE_LAYER_IDS.filter((id) => map.getLayer(id))
   const hasPointerTarget =
-    map.queryRenderedFeatures(event.point, { layers: INTERACTIVE_LAYER_IDS })
-      .length > 0
+    layers.length > 0 &&
+    map.queryRenderedFeatures(event.point, { layers }).length > 0
   map.getCanvas().style.cursor = hasPointerTarget ? 'pointer' : ''
 
   const excavationArea = queryFirstFeature(

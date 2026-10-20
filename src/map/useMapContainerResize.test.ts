@@ -1,7 +1,7 @@
 import { renderHook } from '@testing-library/react'
 import { asLibreMap, createMapMock } from 'test-support/maplibre-map-helpers'
 import { resetMapLibreMock } from '__mocks__/maplibre-gl'
-import useMapContainerResize from './useMapContainerResize'
+import useMapContainerResize from 'map/useMapContainerResize'
 
 let triggerResize: () => void = () => undefined
 let mockDisconnect: jest.Mock
@@ -39,7 +39,7 @@ describe('useMapContainerResize', () => {
     const container = document.createElement('div')
     const containerRef = { current: container }
 
-    renderHook(() => useMapContainerResize(containerRef, mapRef))
+    renderHook(() => useMapContainerResize(containerRef, mapRef, true))
     expect(mockObserve).toHaveBeenCalledWith(container)
 
     triggerResize()
@@ -53,7 +53,7 @@ describe('useMapContainerResize', () => {
     const mapRef = { current: asLibreMap(mapMock) }
     const containerRef = { current: document.createElement('div') }
 
-    renderHook(() => useMapContainerResize(containerRef, mapRef))
+    renderHook(() => useMapContainerResize(containerRef, mapRef, true))
 
     triggerResize()
     triggerResize()
@@ -69,7 +69,7 @@ describe('useMapContainerResize', () => {
     const containerRef = { current: document.createElement('div') }
 
     const { unmount } = renderHook(() =>
-      useMapContainerResize(containerRef, mapRef),
+      useMapContainerResize(containerRef, mapRef, true),
     )
     triggerResize()
     unmount()
@@ -85,7 +85,7 @@ describe('useMapContainerResize', () => {
     const containerRef = { current: null }
 
     expect(() =>
-      renderHook(() => useMapContainerResize(containerRef, mapRef)),
+      renderHook(() => useMapContainerResize(containerRef, mapRef, true)),
     ).not.toThrow()
   })
 })

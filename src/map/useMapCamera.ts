@@ -1,7 +1,7 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import type { MutableRefObject } from 'react'
 import type { Map as MapLibreMap } from 'maplibre-gl'
-import { DEFAULT_MAP_URL_STATE, type MapCameraState } from './mapUrlState'
+import { DEFAULT_MAP_URL_STATE, type MapCameraState } from 'map/mapUrlState'
 
 export function readMapCamera(map: MapLibreMap): MapCameraState {
   const center = map.getCenter()
@@ -22,41 +22,37 @@ export function applyMapCamera(map: MapLibreMap, camera: MapCameraState): void {
   })
 }
 
-/**
- * Tracks the camera on `moveend` only, so continuous panning and zooming
- * never triggers a React update.
- */
 export default function useMapCamera(
   mapRef: MutableRefObject<MapLibreMap | null>,
   isReady: boolean,
+  requestedCamera: MapCameraState | null = null,
 ): MapCameraState {
-  const [camera, setCamera] = useState<MapCameraState>(
-    DEFAULT_MAP_URL_STATE.camera,
-  )
-  const isMountedRef = useRef(true)
-
-  useEffect(() => {
-    isMountedRef.current = true
-    return () => {
-      isMountedRef.current = false
-    }
-  }, [])
+  const [observed, setObserved] = useState({
+    request: requestedCamera,
+    camera: requestedCamera ?? DEFAULT_MAP_URL_STATE.camera,
+  })
 
   useEffect(() => {
     const map = mapRef.current
     if (!map || !isReady) return
-
+    let active = true
     const updateCamera = (): void => {
-      if (isMountedRef.current) {
-        setCamera(readMapCamera(map))
+      if (active && mapRef.current === map) {
+        setObserved({ request: requestedCamera, camera: readMapCamera(map) })
       }
     }
-
+    if (requestedCamera) applyMapCamera(map, requestedCamera)
+    updateCamera()
     map.on('moveend', updateCamera)
+    map.on('load', updateCamera)
     return () => {
+      active = false
       map.off('moveend', updateCamera)
+      map.off('load', updateCamera)
     }
-  }, [mapRef, isReady])
+  }, [mapRef, isReady, requestedCamera])
 
-  return camera
+  return observed.request === requestedCamera
+    ? observed.camera
+    : (requestedCamera ?? DEFAULT_MAP_URL_STATE.camera)
 }

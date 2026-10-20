@@ -4,17 +4,20 @@ import {
   type ChoroplethLegend,
   type MapVisualizationMode,
   MAP_VISUALIZATION_MODES,
-} from './mapChoroplethScale'
-import { DENSITY_UNAVAILABLE_NOTE, mapLegendEntries } from './mapLegendEntries'
-import MapLegendList from './MapLegendList'
-import MapCompletenessNote from './MapCompletenessNote'
+} from 'map/mapChoroplethScale'
+import {
+  DENSITY_UNAVAILABLE_NOTE,
+  mapLegendEntries,
+} from 'map/mapLegendEntries'
+import MapLegendList from 'map/MapLegendList'
+import MapCompletenessNote from 'map/MapCompletenessNote'
 
 const MODE_LABELS: Readonly<Record<MapVisualizationMode, string>> = {
   mapped: 'Mapped status',
   evidence: 'Mapping evidence',
-  count: 'Accessible fragments',
-  log: 'Accessible fragments (log)',
-  density: 'Fragments per km²',
+  count: 'Accessible tablets',
+  log: 'Accessible tablets (log)',
+  density: 'Tablets per km²',
 }
 
 export function visualizationModeLabel(mode: MapVisualizationMode): string {
@@ -71,12 +74,12 @@ export default function MapVisualizationControl({
       mode !== 'mapped' &&
       mode !== 'evidence' ? (
         <p className="map-visualization__empty" role="status">
-          No accessible fragment data is available to classify.
+          No accessible tablet data is available to classify.
         </p>
       ) : null}
       {mode === 'density' ? (
         <p className="map-visualization__caveat">
-          Density is fragments per square kilometre of excavation area. It
+          Density is tablets per square kilometre of excavation area. It
           describes association with a mapped excavation area, not the density
           of exact findspot points. {DENSITY_UNAVAILABLE_NOTE}
         </p>

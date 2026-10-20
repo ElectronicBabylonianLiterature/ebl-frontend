@@ -1,25 +1,32 @@
-import React, { useMemo } from 'react'
-import type { HistoricalMapOverlay } from './historicalOverlays'
-import type { PolygonFindspotSummary } from './findspotMapData'
-import type { ExcavationPolygonIndex } from './excavationPolygonIndex'
-import type { MapVisualizationMode } from './mapChoroplethScale'
-import type { MapTools } from './useMapTools'
-import type { MapTerrainResult } from './useMapTerrain'
-import type { MapToolInteractions } from './useMapToolInteractions'
-import { toDatedOverlays } from './overlayPublicationDates'
-import { toExportRows } from './mapExportData'
-import { assessImageExport } from './mapImageExportRights'
-import MapComparePanel from './MapComparePanel'
-import MapExportPanel from './MapExportPanel'
-import MapMeasurePanel from './MapMeasurePanel'
-import MapSpatialSearchPanel from './MapSpatialSearchPanel'
-import MapTerrainPanel from './MapTerrainPanel'
-import MapTimelinePanel from './MapTimelinePanel'
-import Map3dPanel, { type Map3dPanelProps } from './Map3dPanel'
-import type { MapElevationProfile } from './useMapElevationProfile'
-import type { MapPanelDefinition } from './MapToolbar'
+import React, { useMemo, type MutableRefObject } from 'react'
+import type { Map as MapLibreMap } from 'maplibre-gl'
+import useMapExportPolygons from 'map/useMapExportPolygons'
+import type { HistoricalMapOverlay } from 'map/historicalOverlays'
+import type {
+  FindspotMapDataStatus,
+  PolygonFindspotSummary,
+} from 'map/findspotMapData'
+import type { ExcavationPolygonIndex } from 'map/excavationPolygonIndex'
+import type { MapVisualizationMode } from 'map/mapChoroplethScale'
+import type { MapTools } from 'map/useMapTools'
+import type { MapTerrainResult } from 'map/useMapTerrain'
+import type { MapToolInteractions } from 'map/useMapToolInteractions'
+import { toDatedOverlays } from 'map/overlayPublicationDates'
+import { toExportRows } from 'map/mapExportData'
+import { assessImageExport } from 'map/mapImageExportRights'
+import MapComparePanel from 'map/MapComparePanel'
+import MapExportPanel from 'map/MapExportPanel'
+import MapMeasurePanel from 'map/MapMeasurePanel'
+import MapSpatialSearchPanel from 'map/MapSpatialSearchPanel'
+import MapTerrainPanel from 'map/MapTerrainPanel'
+import MapTimelinePanel from 'map/MapTimelinePanel'
+import Map3dPanel, { type Map3dPanelProps } from 'map/Map3dPanel'
+import type { MapElevationProfile } from 'map/useMapElevationProfile'
+import type { MapPanelDefinition } from 'map/MapToolbar'
 
 export interface ToolPanelsInput {
+  readonly mapRef: MutableRefObject<MapLibreMap | null>
+  readonly dataStatus: FindspotMapDataStatus
   readonly tools: MapTools
   readonly terrain: MapTerrainResult
   readonly overlays: readonly HistoricalMapOverlay[]
@@ -40,6 +47,8 @@ export interface ToolPanelsInput {
  * each file within the project's line limit.
  */
 export function useToolPanelDefinitions({
+  mapRef,
+  dataStatus,
   tools,
   terrain,
   overlays,
@@ -53,13 +62,18 @@ export function useToolPanelDefinitions({
   threeD,
 }: ToolPanelsInput): readonly MapPanelDefinition[] {
   const dated = useMemo(() => toDatedOverlays(overlays), [overlays])
+  const visiblePolygons = useMapExportPolygons(mapRef, excavationPolygonIndex)
+  const findspots = useMemo(
+    () =>
+      [...polygonSummaries.values()].flatMap((summary) => summary.findspots),
+    [polygonSummaries],
+  )
   const exportRows = useMemo(
     () =>
-      toExportRows(
-        [...excavationPolygonIndex.values()].flat(),
-        polygonSummaries,
-      ),
-    [excavationPolygonIndex, polygonSummaries],
+      dataStatus === 'loaded'
+        ? toExportRows(visiblePolygons, polygonSummaries)
+        : [],
+    [dataStatus, visiblePolygons, polygonSummaries],
   )
   const imageExport = useMemo(
     () => assessImageExport({ activeOverlays, preservesDrawingBuffer: false }),
@@ -104,6 +118,10 @@ export function useToolPanelDefinitions({
             shape={interactions.searchShape}
             result={interactions.searchResult}
             isDrawing={interactions.isDrawing}
+            cornerCount={interactions.cornerCount}
+            onAddCornerAtCenter={interactions.addCornerAtCenter}
+            findspots={findspots}
+            dataStatus={dataStatus}
             onSearchViewport={interactions.searchViewport}
             onStartDrawing={interactions.startDrawing}
             onClear={interactions.clearSearch}
@@ -133,6 +151,7 @@ export function useToolPanelDefinitions({
         render: () => (
           <MapExportPanel
             rows={exportRows}
+            dataStatus={dataStatus}
             imageExport={imageExport}
             buildContext={() => ({
               visualization,
@@ -169,6 +188,8 @@ export function useToolPanelDefinitions({
       excavationPolygonIndex,
       dated,
       exportRows,
+      findspots,
+      dataStatus,
       imageExport,
       visualization,
       siteFilter,

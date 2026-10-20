@@ -1,5 +1,6 @@
 import type { Feature } from 'geojson'
 import type { FitBoundsOptions, Map as MapLibreMap } from 'maplibre-gl'
+import { runMapFocus } from 'map/mapFocusTransition'
 import {
   ProvenanceRecord,
   getRenderableProvenanceGeometry as getProvenanceShape,
@@ -8,17 +9,23 @@ import {
   type BoundingBox,
   boundingBoxOfFeatures,
   boundingBoxOfGeometry,
-  centroidOf,
+  boundingBoxOfPositions,
   firstPosition,
-} from './mapGeometry'
+} from 'map/mapGeometry'
 
 export const INITIAL_CENTER: [number, number] = [44.4, 33.0]
 export const INITIAL_ZOOM = 5
-export const SITE_FOCUS_ZOOM = 9
+export const SITE_FOCUS_ZOOM = 14
 
-const DATA_FIT_OPTIONS: FitBoundsOptions = { padding: 40, maxZoom: 12 }
+// Automatic data framing must finish before delayed layout measurements update padding.
+const DATA_FIT_OPTIONS: FitBoundsOptions = {
+  padding: 40,
+  maxZoom: 12,
+  animate: false,
+}
+// MapLibre adds this margin to the measured drawer or bottom-sheet padding.
 const FEATURE_FOCUS_OPTIONS: FitBoundsOptions = {
-  padding: { top: 48, right: 48, bottom: 48, left: 360 },
+  padding: 48,
   maxZoom: 16,
 }
 
@@ -26,15 +33,21 @@ export function fitMapToBoundingBox(
   map: MapLibreMap,
   bounds: BoundingBox | null,
   options: FitBoundsOptions,
+  waitForPanel = false,
 ): void {
   if (!bounds) return
 
-  map.fitBounds(
-    [
-      [bounds[0], bounds[1]],
-      [bounds[2], bounds[3]],
-    ],
-    options,
+  runMapFocus(
+    map,
+    () =>
+      map.fitBounds(
+        [
+          [bounds[0], bounds[1]],
+          [bounds[2], bounds[3]],
+        ],
+        options,
+      ),
+    waitForPanel,
   )
 }
 
@@ -49,7 +62,15 @@ export function focusFeature(map: MapLibreMap, feature: Feature): void {
   if (feature.geometry.type === 'Point') {
     const position = firstPosition(feature.geometry)
     if (position) {
-      map.easeTo({ center: [...position], zoom: SITE_FOCUS_ZOOM })
+      runMapFocus(
+        map,
+        () =>
+          map.easeTo({
+            center: [...position],
+            zoom: Math.max(map.getZoom(), SITE_FOCUS_ZOOM),
+          }),
+        true,
+      )
     }
     return
   }
@@ -58,6 +79,7 @@ export function focusFeature(map: MapLibreMap, feature: Feature): void {
     map,
     boundingBoxOfGeometry(feature.geometry),
     FEATURE_FOCUS_OPTIONS,
+    true,
   )
 }
 
@@ -70,16 +92,37 @@ export function focusProvenance(
   const shape = getProvenanceShape(provenance)
   if (!shape) return
 
-  const point =
-    shape.type === 'point' ? shape.coordinates : centroidOf(shape.coordinates)
-  if (!point) return
+  if (shape.type === 'polygon') {
+    fitMapToBoundingBox(
+      map,
+      boundingBoxOfPositions(
+        shape.coordinates.map(({ longitude, latitude }) => [
+          longitude,
+          latitude,
+        ]),
+      ),
+      FEATURE_FOCUS_OPTIONS,
+      true,
+    )
+    return
+  }
 
-  map.easeTo({
-    center: [point.longitude, point.latitude],
-    zoom: SITE_FOCUS_ZOOM,
-  })
+  runMapFocus(
+    map,
+    () =>
+      map.easeTo({
+        center: [shape.coordinates.longitude, shape.coordinates.latitude],
+        zoom: Math.max(map.getZoom(), SITE_FOCUS_ZOOM),
+      }),
+    true,
+  )
 }
 
 export function resetCamera(map: MapLibreMap | null): void {
-  map?.easeTo({ center: INITIAL_CENTER, zoom: INITIAL_ZOOM })
+  map?.easeTo({
+    center: INITIAL_CENTER,
+    zoom: INITIAL_ZOOM,
+    pitch: 0,
+    bearing: 0,
+  })
 }

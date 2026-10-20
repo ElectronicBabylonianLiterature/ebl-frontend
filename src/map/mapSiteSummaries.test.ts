@@ -1,12 +1,12 @@
-import { aggregateFindspotMapData } from './findspotMapData'
-import { deriveMapSiteCapabilities } from './mapSiteCapabilities'
-import { findMapSite } from './mapSites'
+import { aggregateFindspotMapData } from 'map/findspotMapData'
+import { deriveMapSiteCapabilities } from 'map/mapSiteCapabilities'
+import { findMapSite } from 'map/mapSites'
 import {
   SITE_MARKER_CODES,
   buildSiteResearchSummaries,
   siteMarkerState,
   siteMarkerStates,
-} from './mapSiteSummaries'
+} from 'map/mapSiteSummaries'
 import {
   excavationPolygon,
   findspotMapData,
@@ -71,7 +71,7 @@ describe('buildSiteResearchSummaries', () => {
 })
 
 describe('siteMarkerState', () => {
-  it('promotes a site with live fragment-linked map data', () => {
+  it('promotes a site with live tablet-linked map data', () => {
     expect(siteMarkerState(summaries.get('assur'))).toEqual({
       siteCode: SITE_MARKER_CODES.fragmentMapData,
       historicalMapCount: 2,

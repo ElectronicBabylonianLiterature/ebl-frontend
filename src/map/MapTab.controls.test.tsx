@@ -3,7 +3,11 @@ import userEvent from '@testing-library/user-event'
 import { lastMapMock, resetMapLibreMock } from '__mocks__/maplibre-gl'
 import type { MapMock } from '__mocks__/maplibre-gl'
 import { renderMapTab } from 'test-support/map-render'
-import { findspotMapData, provenanceRecord } from 'test-support/map-fixtures'
+import {
+  findspotMapData,
+  polygonFeature,
+  provenanceRecord,
+} from 'test-support/map-fixtures'
 import {
   excavationAreaFillLayer,
   historicalRasterLayerId,
@@ -20,6 +24,7 @@ const assur = provenanceRecord({ id: 'assur', longName: 'Aššur' })
 const manyFindspots = Array.from({ length: 8 }, (_entry, index) =>
   findspotMapData({
     findspotId: 100 + index,
+    room: `Room ${index}`,
     polygonIds: ['assur-area-a-checksum'],
   }),
 )
@@ -28,7 +33,11 @@ beforeEach(() => {
   resetMapLibreMock()
   global.fetch = jest.fn().mockResolvedValue({
     ok: true,
-    json: () => Promise.resolve({ type: 'FeatureCollection', features: [] }),
+    json: () =>
+      Promise.resolve({
+        type: 'FeatureCollection',
+        features: [polygonFeature('assur-area-a-checksum', 'assur')],
+      }),
   }) as unknown as typeof fetch
 })
 
@@ -153,12 +162,12 @@ describe('findspot list expansion', () => {
     await screen.findByRole('heading', { name: 'Area A' })
     await userEvent.click(screen.getByRole('tab', { name: 'Findspots' }))
 
-    expect(screen.queryByText('Findspot 107')).not.toBeInTheDocument()
+    expect(screen.queryByText('Area A · Room 7')).not.toBeInTheDocument()
 
     await userEvent.click(screen.getByRole('button', { name: 'Show all 8' }))
-    expect(screen.getByText('Findspot 107')).toBeInTheDocument()
+    expect(screen.getByText('Area A · Room 7')).toBeInTheDocument()
 
     await userEvent.click(screen.getByRole('button', { name: 'Show fewer' }))
-    expect(screen.queryByText('Findspot 107')).not.toBeInTheDocument()
+    expect(screen.queryByText('Area A · Room 7')).not.toBeInTheDocument()
   })
 })

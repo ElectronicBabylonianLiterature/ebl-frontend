@@ -16,7 +16,7 @@ import {
   excavationOutlineDash,
   excavationOutlineOpacity,
   excavationOutlineWidth,
-} from './mapPaintExpressions'
+} from 'map/mapPaintExpressions'
 
 const scale: ChoroplethScale = {
   valueKey: 'accessibleFragmentCount',
@@ -73,7 +73,7 @@ describe('classed choropleth colour', () => {
     expect(colorFor(scale, UNMAPPED)).toBe(COLOR_UNMAPPED)
   })
 
-  it('keeps mapped polygons with no accessible fragments distinct', () => {
+  it('keeps mapped polygons with no accessible tablets distinct', () => {
     expect(colorFor(scale, MAPPED_ZERO)).toBe(COLOR_MAPPED_ZERO)
   })
 

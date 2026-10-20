@@ -1,8 +1,13 @@
+import {
+  fragmentDataStatusText,
+  type MapSiteCapabilities,
+} from 'map/mapSiteCapabilities'
+import { findspotLabel } from 'map/findspotLabel'
 import React, { useState } from 'react'
 import { Button } from 'react-bootstrap'
-import type { FindspotSummary } from './mapResearchSummary'
-import { countLabel } from './mapResearchLabels'
-import { buildFindspotFragmentSearchLink } from './mapLinks'
+import type { FindspotSummary } from 'map/mapResearchSummary'
+import { countLabel } from 'map/mapResearchLabels'
+import { buildFindspotFragmentSearchLink } from 'map/mapLinks'
 
 const COLLAPSED_FINDSPOT_COUNT = 6
 
@@ -87,15 +92,15 @@ export function FindspotRows({
           href={buildFindspotFragmentSearchLink(findspot.findspotId)}
         >
           <span>
-            <strong>Findspot {findspot.findspotId}</strong>
+            <strong>{findspotLabel(findspot)}</strong>
             <small>
               {countLabel(
                 findspot.accessibleFragmentCount,
-                'accessible fragment',
+                'accessible tablet',
               )}
             </small>
           </span>
-          <span>View fragments</span>
+          <span>View tablets</span>
         </a>
       ))}
       {findspots.length > COLLAPSED_FINDSPOT_COUNT ? (
@@ -109,5 +114,19 @@ export function FindspotRows({
         </Button>
       ) : null}
     </div>
+  )
+}
+
+export function LinkedDataUnavailable({
+  site,
+}: {
+  readonly site: MapSiteCapabilities | undefined
+}): JSX.Element {
+  return (
+    <p>
+      {site
+        ? fragmentDataStatusText(site)
+        : 'Linked tablet data is not configured for this site.'}
+    </p>
   )
 }

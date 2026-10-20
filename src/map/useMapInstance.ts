@@ -2,20 +2,20 @@ import type { RefObject } from 'react'
 import type { MutableRefObject } from 'react'
 import type { Map as MapLibreMap } from 'maplibre-gl'
 import { ProvenanceRecord } from 'fragmentarium/domain/Provenance'
-import type { ActiveMapPanel } from './mapPanel'
-import type { MapExperience } from './useMapExperience'
-import type { MapResearch } from './useMapResearch'
-import type { MapVisualization } from './useMapVisualization'
-import type { ExtrusionScale } from './mapExtrusionScale'
-import type { ActiveOverlayEntry } from './historicalOverlayActions'
-import type { MapHoverPreview, MapSelection } from './mapSelection'
-import type { MapSiteData } from './useMapSiteData'
-import type { MapCameraState } from './mapUrlState'
-import useFindspotMap from './useFindspotMap'
-import useMapSourceData from './useMapSourceData'
-import useMapCamera from './useMapCamera'
-import useMapTerrain, { type MapTerrainResult } from './useMapTerrain'
-import useMapLayoutEffects from './useMapLayoutEffects'
+import { isInteractivePanel, type ActiveMapPanel } from 'map/mapPanel'
+import type { MapExperience } from 'map/useMapExperience'
+import type { MapResearch } from 'map/useMapResearch'
+import type { MapVisualization } from 'map/useMapVisualization'
+import type { ExtrusionScale } from 'map/mapExtrusionScale'
+import type { ActiveOverlayEntry } from 'map/historicalOverlayActions'
+import type { MapHoverPreview, MapSelection } from 'map/mapSelection'
+import type { MapSiteData } from 'map/useMapSiteData'
+import type { MapCameraState } from 'map/mapUrlState'
+import useFindspotMap from 'map/useFindspotMap'
+import useMapSourceData from 'map/useMapSourceData'
+import useMapCamera from 'map/useMapCamera'
+import useMapTerrain, { type MapTerrainResult } from 'map/useMapTerrain'
+import useMapLayoutEffects from 'map/useMapLayoutEffects'
 
 export interface MapInstanceInput {
   readonly mapContainer: RefObject<HTMLDivElement>
@@ -28,6 +28,7 @@ export interface MapInstanceInput {
   readonly filteredProvenances: readonly ProvenanceRecord[] | null
   readonly activeOverlayEntries: readonly ActiveOverlayEntry[]
   readonly activePanel: ActiveMapPanel
+  readonly visiblePanel: ActiveMapPanel
   readonly onSelectFeature: (selection: MapSelection) => void
   readonly onHoverPreview: (preview: MapHoverPreview | null) => void
   readonly onBaseStyleFailure: () => void
@@ -50,6 +51,8 @@ export default function useMapInstance(input: MapInstanceInput): MapInstance {
 
   const mapRef = useFindspotMap(input.mapContainer, {
     provenances: input.filteredProvenances,
+    requestedCamera: experience.requestedCamera,
+    isSelectionEnabled: !isInteractivePanel(input.activePanel),
     showBoundaries: experience.showBoundaries,
     activeHistoricalOverlays: input.activeOverlayEntries,
     showExcavationAreas: experience.showExcavationAreas,
@@ -67,7 +70,11 @@ export default function useMapInstance(input: MapInstanceInput): MapInstance {
   })
 
   useMapSourceData(mapRef, input.filteredProvenances)
-  const camera = useMapCamera(mapRef, siteData.provenances !== null)
+  const camera = useMapCamera(
+    mapRef,
+    siteData.provenances !== null,
+    experience.requestedCamera,
+  )
   const terrain = useMapTerrain(mapRef, experience.tools.terrain, {
     exaggeration: experience.tools.threeD.terrainExaggeration,
     isHillshadeVisible: experience.tools.threeD.hillshadeVisible,
@@ -76,7 +83,8 @@ export default function useMapInstance(input: MapInstanceInput): MapInstance {
     input.mapContainer,
     mapRef,
     input.drawerRef,
-    input.activePanel,
+    input.visiblePanel,
+    siteData.provenances !== null,
   )
 
   return { mapRef, camera, terrain }

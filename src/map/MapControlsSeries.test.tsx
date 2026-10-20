@@ -135,30 +135,36 @@ describe('ActiveHistoricalMaps', () => {
     expect(setOverlayActive).toHaveBeenCalledWith(overlayA, false)
   })
 
-  it('disables zoom for an overlay without bounds and hides an unsafe source link', () => {
-    const overlayWithoutBounds = historicalMapOverlay({
-      id: 'c',
-      bounds: undefined,
-      sourceUrl: 'javascript:alert(1)',
-    })
+  it.each([
+    { scheme: 'javascript', payload: 'alert(1)' },
+    { scheme: 'data', payload: 'text/html,<script>alert(1)</script>' },
+  ])(
+    'disables unbounded zoom and hides a $scheme source link',
+    ({ scheme, payload }) => {
+      const overlayWithoutBounds = historicalMapOverlay({
+        id: 'c',
+        bounds: undefined,
+        sourceUrl: `${scheme}:${payload}`,
+      })
 
-    render(
-      <ActiveHistoricalMaps
-        activeOverlayEntries={[
-          { overlay: overlayWithoutBounds, opacity: 1, visible: true },
-        ]}
-        setOverlayActive={jest.fn()}
-        setOverlayOpacity={jest.fn()}
-        zoomToActiveOverlays={jest.fn()}
-        zoomToOverlay={jest.fn()}
-      />,
-    )
+      render(
+        <ActiveHistoricalMaps
+          activeOverlayEntries={[
+            { overlay: overlayWithoutBounds, opacity: 1, visible: true },
+          ]}
+          setOverlayActive={jest.fn()}
+          setOverlayOpacity={jest.fn()}
+          zoomToActiveOverlays={jest.fn()}
+          zoomToOverlay={jest.fn()}
+        />,
+      )
 
-    expect(screen.getByRole('button', { name: 'Zoom' })).toBeDisabled()
-    expect(
-      screen.queryByRole('link', { name: 'Source' }),
-    ).not.toBeInTheDocument()
-  })
+      expect(screen.getByRole('button', { name: 'Zoom' })).toBeDisabled()
+      expect(
+        screen.queryByRole('link', { name: 'Source' }),
+      ).not.toBeInTheDocument()
+    },
+  )
 
   it('shows a source link for a safe overlay url', () => {
     const overlayWithSource = historicalMapOverlay({

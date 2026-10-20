@@ -86,9 +86,7 @@ describe('buildExportGeoJson', () => {
       shareUrl: CONTEXT.shareUrl,
       exportedAt: CONTEXT.exportedAt,
     })
-    expect(collection.metadata.note).toContain(
-      'not an exact findspot coordinate',
-    )
+    expect(collection.metadata.note).toContain('not exact tablet coordinates')
   })
 
   it('keeps polygon geometry and canonical identity on each feature', () => {
@@ -163,18 +161,25 @@ describe('buildExportCsv', () => {
     expect(csv).toContain('"Area\nA"')
   })
 
-  it.each(['=cmd()', '+1', '-1', '@ref', '\tlead'])(
-    'neutralises the spreadsheet formula prefix in %s',
-    (name) => {
-      const csv = buildExportCsv(
-        toExportRows(
-          [excavationPolygon({ polygonId: 'assur-a', name })],
-          new Map(),
-        ),
-        CONTEXT,
-      )
+  it.each([
+    '=cmd()',
+    '+1',
+    '-1',
+    '@ref',
+    '\tlead',
+    '  =cmd()',
+    '\u0000 +1',
+    '\u0085@ref',
+    '\n-1',
+  ])('neutralises the spreadsheet formula prefix in %s', (name) => {
+    const csv = buildExportCsv(
+      toExportRows(
+        [excavationPolygon({ polygonId: 'assur-a', name })],
+        new Map(),
+      ),
+      CONTEXT,
+    )
 
-      expect(csv).toContain(`'${name.replace(/\t/, '\t')}`)
-    },
-  )
+    expect(csv).toContain(`'${name}`)
+  })
 })

@@ -1,14 +1,14 @@
 import { renderHook } from '@testing-library/react'
-import useMapLayoutEffects from './useMapLayoutEffects'
-import useMapContainerResize from './useMapContainerResize'
-import useMapPanelPadding from './useMapPanelPadding'
-import useElementSize from './useElementSize'
-import useIsNarrowViewport from './useIsNarrowViewport'
+import useMapLayoutEffects from 'map/useMapLayoutEffects'
+import useMapContainerResize from 'map/useMapContainerResize'
+import useMapPanelPadding from 'map/useMapPanelPadding'
+import useElementSize from 'map/useElementSize'
+import useIsNarrowViewport from 'map/useIsNarrowViewport'
 
-jest.mock('./useMapContainerResize')
-jest.mock('./useMapPanelPadding')
-jest.mock('./useElementSize')
-jest.mock('./useIsNarrowViewport')
+jest.mock('map/useMapContainerResize')
+jest.mock('map/useMapPanelPadding')
+jest.mock('map/useElementSize')
+jest.mock('map/useIsNarrowViewport')
 
 const mockUseMapContainerResize = useMapContainerResize as jest.Mock
 const mockUseMapPanelPadding = useMapPanelPadding as jest.Mock
@@ -27,9 +27,15 @@ describe('useMapLayoutEffects', () => {
     const mapRef = { current: null }
     const drawerRef = { current: null }
 
-    renderHook(() => useMapLayoutEffects(containerRef, mapRef, drawerRef, null))
+    renderHook(() =>
+      useMapLayoutEffects(containerRef, mapRef, drawerRef, null, true),
+    )
 
-    expect(mockUseMapContainerResize).toHaveBeenCalledWith(containerRef, mapRef)
+    expect(mockUseMapContainerResize).toHaveBeenCalledWith(
+      containerRef,
+      mapRef,
+      true,
+    )
   })
 
   it('reserves right-side padding sized to the drawer on wide viewports', () => {
@@ -42,6 +48,7 @@ describe('useMapLayoutEffects', () => {
         mapRef,
         { current: null },
         'layers',
+        true,
       ),
     )
 
@@ -63,6 +70,7 @@ describe('useMapLayoutEffects', () => {
         mapRef,
         { current: null },
         'layers',
+        true,
       ),
     )
 
@@ -78,7 +86,13 @@ describe('useMapLayoutEffects', () => {
     const mapRef = { current: null }
 
     renderHook(() =>
-      useMapLayoutEffects({ current: null }, mapRef, { current: null }, null),
+      useMapLayoutEffects(
+        { current: null },
+        mapRef,
+        { current: null },
+        null,
+        true,
+      ),
     )
 
     expect(mockUseMapPanelPadding).toHaveBeenCalledWith(
@@ -98,6 +112,7 @@ describe('useMapLayoutEffects', () => {
         { current: null },
         drawerRef,
         'export',
+        true,
       ),
     )
 

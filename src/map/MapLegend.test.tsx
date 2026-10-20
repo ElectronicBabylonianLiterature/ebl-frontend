@@ -1,8 +1,8 @@
 import React from 'react'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import MapLegend from './MapLegend'
-import { buildChoroplethLegend } from './mapChoroplethScale'
+import MapLegend from 'map/MapLegend'
+import { buildChoroplethLegend } from 'map/mapChoroplethScale'
 
 const evidenceLegend = buildChoroplethLegend('evidence', null, [])
 
@@ -48,7 +48,7 @@ describe('MapLegend', () => {
     await userEvent.click(screen.getByRole('button', { name: 'Legend' }))
 
     const body = screen.getByLabelText('Map legend')
-    expect(body).toHaveTextContent('Mapped with accessible fragments')
+    expect(body).toHaveTextContent('Mapped with accessible tablets')
     expect(body).not.toHaveTextContent('Curated mapping')
   })
 })

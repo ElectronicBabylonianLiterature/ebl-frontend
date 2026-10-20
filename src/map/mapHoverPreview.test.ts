@@ -1,8 +1,8 @@
 import {
   type PolygonFindspotSummary,
   aggregateFindspotMapData,
-} from './findspotMapData'
-import { polygonHoverPreview, siteHoverPreview } from './mapHoverPreview'
+} from 'map/findspotMapData'
+import { polygonHoverPreview, siteHoverPreview } from 'map/mapHoverPreview'
 import { findspotMapData } from 'test-support/map-fixtures'
 
 const POINT = { x: 12, y: 34 }
@@ -35,7 +35,7 @@ describe('polygonHoverPreview', () => {
       title: 'bB6I',
       details: [
         '2 mapped findspots',
-        '23 accessible fragments',
+        '23 accessible tablets',
         'Verified-source mapping',
         'Click to inspect',
       ],

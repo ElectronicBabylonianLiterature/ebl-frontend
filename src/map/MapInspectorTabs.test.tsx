@@ -1,9 +1,9 @@
 import React from 'react'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import MapInspectorTabs from './MapInspectorTabs'
-import MapInspectorMaps from './MapInspectorMaps'
-import MapCompletenessNote from './MapCompletenessNote'
+import MapInspectorTabs from 'map/MapInspectorTabs'
+import MapInspectorMaps from 'map/MapInspectorMaps'
+import MapCompletenessNote from 'map/MapCompletenessNote'
 import { historicalMapOverlay } from 'test-support/map-fixtures'
 
 const tabs = [
@@ -138,8 +138,6 @@ describe('MapCompletenessNote', () => {
     expect(
       screen.getByText(/accessible to the current user/),
     ).toBeInTheDocument()
-    expect(
-      screen.getByText(/not exact fragment coordinates/),
-    ).toBeInTheDocument()
+    expect(screen.getByText(/not exact tablet coordinates/)).toBeInTheDocument()
   })
 })

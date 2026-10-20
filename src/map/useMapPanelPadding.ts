@@ -1,18 +1,18 @@
 import { useEffect, useRef } from 'react'
 import type { MutableRefObject } from 'react'
 import type { Map as MapLibreMap, PaddingOptions } from 'maplibre-gl'
+import { captureMapFocus } from 'map/mapFocusTransition'
 import {
   NO_PANEL_PADDING,
   type PanelPaddingSide,
   paddingEquals,
   panelPadding,
-} from './mapPanelPadding'
+} from 'map/mapPanelPadding'
 
 /**
  * Reserves screen space for the open drawer/bottom sheet so later camera
- * fits (selecting a feature, "zoom to overlay") keep it visible. `setPadding`
- * only stores the value for future camera moves — it never itself pans or
- * animates the map, so toggling panels cannot trigger a movement loop.
+ * fits (selecting a feature, "zoom to overlay") keep it visible. MapLibre
+ * applies padding through jumpTo, which cancels an active camera animation.
  */
 export default function useMapPanelPadding(
   mapRef: MutableRefObject<MapLibreMap | null>,
@@ -29,7 +29,9 @@ export default function useMapPanelPadding(
     const next = isOpen ? panelPadding(side, sizePx) : NO_PANEL_PADDING
     if (paddingEquals(appliedRef.current, next)) return
 
+    const resumeFocus = captureMapFocus(map)
     map.setPadding(next)
     appliedRef.current = next
+    resumeFocus?.()
   }, [mapRef, isOpen, side, sizePx])
 }

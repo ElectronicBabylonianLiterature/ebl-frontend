@@ -46,7 +46,7 @@ describe('site view', () => {
     expect(screen.queryByText('Mapped findspots')).not.toBeInTheDocument()
     expect(
       screen.getByText(
-        'Fragment-linked excavation data is not yet available for this site.',
+        'Tablet-linked excavation data is not yet available for this site.',
       ),
     ).toBeInTheDocument()
   })
@@ -109,8 +109,8 @@ describe('excavation-area view', () => {
     renderArea()
     await openTab('Findspots')
 
-    expect(screen.getByText('Findspot 123')).toBeInTheDocument()
-    expect(screen.getByRole('link', { name: /Findspot 123/ })).toHaveAttribute(
+    expect(screen.getByRole('link', { name: /Area A/ })).toBeInTheDocument()
+    expect(screen.getByRole('link', { name: /Area A/ })).toHaveAttribute(
       'href',
       '/library/search?findspotId=123',
     )

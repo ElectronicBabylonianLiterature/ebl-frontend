@@ -1,8 +1,11 @@
 import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { deriveMapSiteCapabilities } from './mapSiteCapabilities'
-import { findMapSite } from './mapSites'
-import { matchSiteCapabilities, normalizeSiteName } from './provenanceSiteMatch'
+import { deriveMapSiteCapabilities } from 'map/mapSiteCapabilities'
+import { findMapSite } from 'map/mapSites'
+import {
+  matchSiteCapabilities,
+  normalizeSiteName,
+} from 'map/provenanceSiteMatch'
 import {
   historicalMapOverlay,
   provenanceRecord,
@@ -55,13 +58,11 @@ describe('explorer view', () => {
     renderInspector()
 
     expect(
-      screen.getByText(
-        'Fragment-linked excavation data is available for Aššur.',
-      ),
+      screen.getByText('Tablet-linked excavation data is available for Aššur.'),
     ).toBeInTheDocument()
     expect(
       screen.getByText(
-        'Fragment-linked excavation data is not yet available for this site.',
+        'Tablet-linked excavation data is not yet available for this site.',
       ),
     ).toBeInTheDocument()
   })
@@ -69,7 +70,7 @@ describe('explorer view', () => {
   it('labels sites by their strongest available data', () => {
     renderInspector()
 
-    expect(screen.getByText('Fragment-linked areas')).toBeInTheDocument()
+    expect(screen.getByText('Tablet-linked areas')).toBeInTheDocument()
     expect(screen.getByText('Excavation areas')).toBeInTheDocument()
   })
 

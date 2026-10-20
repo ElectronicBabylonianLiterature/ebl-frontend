@@ -1,10 +1,10 @@
 import type { MutableRefObject, RefObject } from 'react'
 import type { Map as MapLibreMap } from 'maplibre-gl'
-import type { ActiveMapPanel } from './mapPanel'
-import useElementSize from './useElementSize'
-import useIsNarrowViewport from './useIsNarrowViewport'
-import useMapContainerResize from './useMapContainerResize'
-import useMapPanelPadding from './useMapPanelPadding'
+import type { ActiveMapPanel } from 'map/mapPanel'
+import useElementSize from 'map/useElementSize'
+import useIsNarrowViewport from 'map/useIsNarrowViewport'
+import useMapContainerResize from 'map/useMapContainerResize'
+import useMapPanelPadding from 'map/useMapPanelPadding'
 
 /**
  * The purely mechanical side effects a map-first layout needs: resizing the
@@ -18,11 +18,15 @@ export default function useMapLayoutEffects(
   mapRef: MutableRefObject<MapLibreMap | null>,
   drawerRef: RefObject<HTMLElement>,
   activePanel: ActiveMapPanel,
+  isReady: boolean,
 ): void {
-  useMapContainerResize(mapContainerRef, mapRef)
+  useMapContainerResize(mapContainerRef, mapRef, isReady)
 
   const isNarrowViewport = useIsNarrowViewport()
-  const drawerSize = useElementSize(drawerRef, activePanel)
+  const drawerSize = useElementSize(
+    drawerRef,
+    isReady ? activePanel : undefined,
+  )
 
   useMapPanelPadding(
     mapRef,

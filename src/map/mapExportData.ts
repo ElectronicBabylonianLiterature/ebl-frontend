@@ -1,7 +1,8 @@
+import { EXCAVATION_AREA_NOTE } from 'map/mapResearchLabels'
 import type { Feature, FeatureCollection, Geometry } from 'geojson'
-import type { PolygonFindspotSummary } from './findspotMapData'
-import type { ExcavationPolygon } from './excavationPolygonIndex'
-import type { MapVisualizationMode } from './mapChoroplethScale'
+import type { PolygonFindspotSummary } from 'map/findspotMapData'
+import type { ExcavationPolygon } from 'map/excavationPolygonIndex'
+import type { MapVisualizationMode } from 'map/mapChoroplethScale'
 
 export interface MapExportContext {
   readonly visualization: MapVisualizationMode
@@ -104,7 +105,7 @@ export function buildExportGeoJson(
     features: rows.map(toFeature),
     metadata: {
       source: 'electronic Babylonian Library map',
-      note: 'Excavation-area geometry. Fragments are associated with an excavation area, not an exact findspot coordinate.',
+      note: EXCAVATION_AREA_NOTE,
       crs: 'EPSG:4326',
       visualization: context.visualization,
       siteFilter: context.siteFilter,
@@ -130,10 +131,24 @@ export const CSV_COLUMNS = [
   'shareUrl',
 ] as const
 
-const SPREADSHEET_FORMULA_PREFIX = /^[=+\-@\t\r]/
+function startsWithFormula(value: string): boolean {
+  for (const character of value) {
+    const codePoint = character.charCodeAt(0)
+    if (
+      /\s/.test(character) ||
+      codePoint <= 0x1f ||
+      (codePoint >= 0x7f && codePoint <= 0x9f)
+    ) {
+      continue
+    }
+    return '=+-@'.includes(character)
+  }
+  return false
+}
 
 function escapeCsvValue(value: string): string {
-  const guarded = SPREADSHEET_FORMULA_PREFIX.test(value) ? `'${value}` : value
+  const guarded =
+    /^[\t\r]/.test(value) || startsWithFormula(value) ? `'${value}` : value
   return /[",\r\n]/.test(guarded) ? `"${guarded.replace(/"/g, '""')}"` : guarded
 }
 

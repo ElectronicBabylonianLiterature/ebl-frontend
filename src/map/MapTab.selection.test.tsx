@@ -3,22 +3,29 @@ import userEvent from '@testing-library/user-event'
 import { lastMapMock, resetMapLibreMock } from '__mocks__/maplibre-gl'
 import type { MapMock } from '__mocks__/maplibre-gl'
 import { renderMapTab } from 'test-support/map-render'
-import { findspotMapData, provenanceRecord } from 'test-support/map-fixtures'
+import {
+  findspotMapData,
+  polygonFeature,
+  provenanceRecord,
+} from 'test-support/map-fixtures'
 import {
   excavationAreaFillLayer,
   unclusteredLayer,
   EXCAVATION_AREAS_SOURCE_ID,
   SOURCE_ID,
-} from './mapLayers'
-import { buildFindspotFragmentSearchLink } from './mapLinks'
+} from 'map/mapLayers'
+import { buildFindspotFragmentSearchLink } from 'map/mapLinks'
 
 const babylon = provenanceRecord()
-
 beforeEach(() => {
   resetMapLibreMock()
   global.fetch = jest.fn().mockResolvedValue({
     ok: true,
-    json: () => Promise.resolve({ type: 'FeatureCollection', features: [] }),
+    json: () =>
+      Promise.resolve({
+        type: 'FeatureCollection',
+        features: [polygonFeature('assur-area-a-checksum', 'assur')],
+      }),
   }) as unknown as typeof fetch
 })
 
@@ -93,11 +100,12 @@ describe('map selection', () => {
       await screen.findByRole('heading', { name: 'Area A' }),
     ).toBeInTheDocument()
     await userEvent.click(screen.getByRole('tab', { name: 'Findspots' }))
-    expect(screen.getByText('Findspot 123')).toBeInTheDocument()
-    expect(screen.getByText('4 accessible fragments')).toBeInTheDocument()
-    expect(
-      screen.getByRole('link', { name: /View fragments/ }),
-    ).toHaveAttribute('href', buildFindspotFragmentSearchLink(123))
+    expect(screen.getByRole('link', { name: /Area A/ })).toBeInTheDocument()
+    expect(screen.getByText('4 accessible tablets')).toBeInTheDocument()
+    expect(screen.getByRole('link', { name: /View tablets/ })).toHaveAttribute(
+      'href',
+      buildFindspotFragmentSearchLink(123),
+    )
     expect(
       mapMock.getFeatureState({
         source: EXCAVATION_AREAS_SOURCE_ID,
@@ -105,6 +113,7 @@ describe('map selection', () => {
       }),
     ).toEqual({
       accessibleFragmentCount: 4,
+      densityPerSquareKm: expect.any(Number),
       findspotCount: 1,
       evidenceCode: 1,
       selected: true,
@@ -167,6 +176,8 @@ describe('map selection', () => {
     expect(mapMock.easeTo).toHaveBeenLastCalledWith({
       center: [44.4, 33.0],
       zoom: 5,
+      pitch: 0,
+      bearing: 0,
     })
   })
 
@@ -219,7 +230,7 @@ describe('keyboard-accessible explorer', () => {
     ).toBeInTheDocument()
     expect(lastMapMock().easeTo).toHaveBeenCalledWith({
       center: [44.42, 32.542],
-      zoom: 9,
+      zoom: 14,
     })
   })
 

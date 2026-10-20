@@ -1,8 +1,11 @@
 import React from 'react'
 import { Button, Form } from 'react-bootstrap'
-import MapShareLink from './MapShareLink'
+import MapShareLink from 'map/MapShareLink'
+import MapSiteFilter from 'map/MapSiteFilter'
+import type { ProvenanceRecord } from 'fragmentarium/domain/Provenance'
 
 interface Props {
+  readonly provenances: readonly ProvenanceRecord[]
   readonly siteFilter: string
   readonly visibleSiteCount: number
   readonly hasSelection: boolean
@@ -13,6 +16,7 @@ interface Props {
 }
 
 export default function MapExperienceHeader({
+  provenances,
   siteFilter,
   visibleSiteCount,
   hasSelection,
@@ -32,11 +36,10 @@ export default function MapExperienceHeader({
         controlId="map-site-filter"
       >
         <Form.Label>Site name</Form.Label>
-        <Form.Control
-          type="search"
-          placeholder="Filter by site name..."
-          value={siteFilter}
-          onChange={(event) => onSiteFilterChange(event.target.value)}
+        <MapSiteFilter
+          provenances={provenances}
+          filter={siteFilter}
+          onFilterChange={onSiteFilterChange}
         />
       </Form.Group>
       <div className="map-experience__actions">

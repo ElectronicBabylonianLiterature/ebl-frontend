@@ -41,7 +41,11 @@ export interface MapPanelDockPropGroups {
   readonly info: InfoPanelsInput
   readonly tools: Omit<
     ToolPanelsInput,
-    'interactions' | 'excavationPolygonIndex' | 'polygonSummaries' | 'elevation'
+    | 'interactions'
+    | 'excavationPolygonIndex'
+    | 'polygonSummaries'
+    | 'elevation'
+    | 'mapRef'
   >
 }
 
@@ -137,6 +141,7 @@ export default function useMapPanelDockProps(
   const tools = useMemo<MapPanelDockPropGroups['tools']>(
     () => ({
       tools: experience.tools,
+      dataStatus: siteData.fragmentMapDataStatus,
       terrain,
       overlays: availableOverlays,
       activeOverlays: activeOverlayEntries.map((entry) => entry.overlay),
@@ -146,6 +151,7 @@ export default function useMapPanelDockProps(
     }),
     [
       experience,
+      siteData.fragmentMapDataStatus,
       terrain,
       availableOverlays,
       activeOverlayEntries,

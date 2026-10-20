@@ -1,7 +1,8 @@
+import { findspotLabel } from 'map/findspotLabel'
 import type {
   PolygonResearchSummary,
   SiteResearchSummary,
-} from './mapResearchSummary'
+} from 'map/mapResearchSummary'
 import {
   EXCAVATION_AREA_NOTE,
   FRAGMENT_ACCESS_NOTE,
@@ -10,7 +11,7 @@ import {
   linkedPolygonSentence,
   locationPrecisionLabel,
   mappingEvidenceShortLabel,
-} from './mapResearchLabels'
+} from 'map/mapResearchLabels'
 
 export interface MapResearchContext {
   readonly visualizationLabel: string
@@ -25,22 +26,34 @@ function section(title: string, lines: readonly string[]): readonly string[] {
   return lines.length === 0 ? [] : ['', title, ...lines.map((l) => `- ${l}`)]
 }
 
+const MARKDOWN_INLINE_CHARACTERS = /[\\`*_{}<>#|]|\[|\]/g
+
+function inline(value: string): string {
+  return value
+    .replace(/\s+/g, ' ')
+    .trim()
+    .replace(MARKDOWN_INLINE_CHARACTERS, '\\$&')
+}
+
 function contextLines(context: MapResearchContext): readonly string[] {
   return [
-    ...section('Active historical maps:', context.activeOverlayTitles),
-    ...section('Active visualization:', [context.visualizationLabel]),
+    ...section(
+      'Active historical maps:',
+      context.activeOverlayTitles.map(inline),
+    ),
+    ...section('Active visualization:', [inline(context.visualizationLabel)]),
     ...section(
       'Active filters:',
       context.siteFilter === ''
         ? []
-        : [`Site name contains "${context.siteFilter}"`],
+        : [`Site name contains "${inline(context.siteFilter)}"`],
     ),
     ...section('Terrain:', [context.isTerrainEnabled ? 'On' : 'Off']),
     '',
     'Map:',
-    context.shareUrl,
+    inline(context.shareUrl),
     '',
-    `Generated: ${context.generatedAt}`,
+    `Generated: ${inline(context.generatedAt)}`,
     '',
     FRAGMENT_ACCESS_NOTE,
     EXCAVATION_AREA_NOTE,
@@ -57,20 +70,20 @@ export function polygonResearchMarkdown(
   context: MapResearchContext,
 ): string {
   return [
-    `# ${summary.displayName} — ${summary.siteName}`,
+    `# ${inline(summary.displayName)} — ${inline(summary.siteName)}`,
     '',
     'Feature type: Excavation area',
     `Mapped findspots: ${summary.mappedFindspotCount}`,
-    `Accessible fragments: ${summary.accessibleFragmentCount}`,
+    `Accessible tablets: ${summary.accessibleFragmentCount}`,
     `Mapping evidence: ${mappingEvidenceShortLabel(summary.mappingEvidence)}`,
     `Location precision: ${locationPrecisionLabel(summary.locationPrecision)}`,
     ...section(
       'Mapped findspots:',
       summary.findspots.map(
         (findspot) =>
-          `Findspot ${findspot.findspotId} — ${countLabel(
+          `${inline(findspotLabel(findspot))} — ${countLabel(
             findspot.accessibleFragmentCount,
-            'accessible fragment',
+            'accessible tablet',
           )}`,
       ),
     ),
@@ -83,7 +96,7 @@ export function siteResearchMarkdown(
   context: MapResearchContext,
 ): string {
   return [
-    `# ${summary.siteName}`,
+    `# ${inline(summary.siteName)}`,
     '',
     'Feature type: Site',
     `${LINKED_POLYGON_LABEL}: ${linkedPolygonSentence(
@@ -91,7 +104,7 @@ export function siteResearchMarkdown(
       summary.totalPolygonCount,
     )}`,
     `Mapped findspots: ${summary.mappedFindspotCount}`,
-    `Accessible fragments: ${summary.accessibleFragmentCount}`,
+    `Accessible tablets: ${summary.accessibleFragmentCount}`,
     `Historical maps available: ${summary.historicalOverlayCount}`,
     ...contextLines(context),
   ].join('\n')

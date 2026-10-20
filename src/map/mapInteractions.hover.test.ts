@@ -1,19 +1,29 @@
-import { asLibreMap, createMapMock } from 'test-support/maplibre-map-helpers'
+import { initializeFindspotSources } from 'map/mapSourceLifecycle'
+import {
+  asLibreMap,
+  createMapMock as createBareMapMock,
+} from 'test-support/maplibre-map-helpers'
 import type { MapMouseEvent } from 'maplibre-gl'
 import { resetMapLibreMock } from '__mocks__/maplibre-gl'
-import { unclusteredLayer, EXCAVATION_AREAS_SOURCE_ID } from './mapLayers'
+import { unclusteredLayer, EXCAVATION_AREAS_SOURCE_ID } from 'map/mapLayers'
 import {
   clearHoverState,
   handleMapHover,
   type MapHoverContext,
-} from './mapInteractions'
+} from 'map/mapInteractions'
 import {
   aggregateFindspotMapData,
   type PolygonFindspotSummary,
-} from './findspotMapData'
-import type { SiteResearchSummaries } from './mapSiteSummaries'
+} from 'map/findspotMapData'
+import type { SiteResearchSummaries } from 'map/mapSiteSummaries'
 import { findspotMapData, polygonFeature } from 'test-support/map-fixtures'
 import { pointFeature } from 'test-support/map-interaction-fixtures'
+
+function createMapMock() {
+  const map = createBareMapMock()
+  initializeFindspotSources(asLibreMap(map), [], true, true)
+  return map
+}
 
 const event = { point: { x: 12, y: 34 } } as MapMouseEvent
 
@@ -75,7 +85,7 @@ describe('handleMapHover', () => {
       title: 'Area A',
       details: [
         '1 mapped findspot',
-        '4 accessible fragments',
+        '4 accessible tablets',
         'Verified-source mapping',
         'Click to inspect',
       ],

@@ -17,15 +17,15 @@ import {
   polygonFillLayer,
   polygonOutlineLayer,
   unclusteredLayer,
-} from './mapLayers'
+} from 'map/mapLayers'
 import {
   EXCAVATION_EXTRUSION_LAYER_ID,
   createExcavationExtrusionLayer,
-} from './mapExtrusionLayers'
-import { CATEGORICAL_PAINT } from './mapExcavationPaint'
-import { fitMapToData } from './mapCamera'
-import { provenanceToGeoJson } from './provenanceToGeoJson'
-import { provenancesToPolygonGeoJson } from './provenanceToPolygonGeoJson'
+} from 'map/mapExtrusionLayers'
+import { CATEGORICAL_PAINT } from 'map/mapExcavationPaint'
+import { fitMapToData } from 'map/mapCamera'
+import { provenanceToGeoJson } from 'map/provenanceToGeoJson'
+import { provenancesToPolygonGeoJson } from 'map/provenanceToPolygonGeoJson'
 
 function setLayerVisibility(
   map: MapLibreMap,
@@ -78,6 +78,7 @@ export function initializeFindspotSources(
   provenances: readonly ProvenanceRecord[],
   showBoundaries: boolean,
   showExcavationAreas: boolean,
+  fitToProvenances = true,
 ): void {
   const pointGeoJson = provenanceToGeoJson(provenances)
 
@@ -100,5 +101,5 @@ export function initializeFindspotSources(
   map.addLayer(clusterLayer)
   map.addLayer(clusterCountLayer)
   map.addLayer(unclusteredLayer)
-  fitMapToData(map, pointGeoJson.features)
+  if (fitToProvenances) fitMapToData(map, pointGeoJson.features)
 }

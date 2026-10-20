@@ -26,7 +26,7 @@ PROCESSING_DIR = ROOT / '.map-processing'
 HISTORICAL_PROCESSING_DIR = PROCESSING_DIR / 'historical-maps'
 PUBLIC_HISTORICAL_DIR = ROOT / 'public' / 'historical-maps'
 PUBLIC_MAP_DATA_DIR = ROOT / 'public' / 'map-data'
-GENERATED_OVERLAYS_TS = ROOT / 'src' / 'map' / 'historicalOverlays.generated.ts'
+GENERATED_OVERLAYS_JSON = ROOT / 'src' / 'map' / 'historicalOverlays.generated.json'
 INVENTORY_JSON = PROCESSING_DIR / 'map-inventory.json'
 REPORT_JSON = PROCESSING_DIR / 'map-processing-report.json'
 BACKEND_MAP_DIR = Path('/workspaces/ebl-api/ebl/fragmentarium/data/map')
@@ -654,15 +654,8 @@ def normalize_ods(valid_map_ids: set[str]) -> dict[str, Any]:
     return report
 
 
-def write_overlays_ts(overlays: list[dict[str, Any]]) -> None:
-    lines = [
-        "import type { HistoricalMapOverlay } from './historicalOverlays'",
-        '',
-        'export const generatedHistoricalMapOverlays: readonly HistoricalMapOverlay[] = ',
-        json.dumps(overlays, ensure_ascii=False, indent=2),
-        '',
-    ]
-    GENERATED_OVERLAYS_TS.write_text('\n'.join(lines))
+def write_overlays_json(overlays: list[dict[str, Any]]) -> None:
+    GENERATED_OVERLAYS_JSON.write_text(json.dumps(overlays, ensure_ascii=False, indent=2) + '\n')
 
 
 def write_catalog(overlays: list[dict[str, Any]], findspots: dict[str, Any], ods: dict[str, Any]) -> None:
@@ -797,7 +790,7 @@ def main() -> None:
         }
 
     overlays.sort(key=lambda overlay: (overlay['siteId'], overlay.get('dateLabel') or '', overlay['title']))
-    write_overlays_ts(overlays)
+    write_overlays_json(overlays)
     findspots = normalize_findspots()
     ods = normalize_ods({overlay['id'] for overlay in overlays})
     write_catalog(overlays, findspots, ods)

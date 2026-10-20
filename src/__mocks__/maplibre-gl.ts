@@ -1,19 +1,11 @@
 import { LngLatBoundsMock } from 'test-support/maplibre-bounds-mock'
 
-type MapEventListener = (event?: unknown) => void
-
-export interface SourceMock {
-  data: unknown
-  readonly setData: jest.Mock<void, [unknown]>
-  readonly getClusterExpansionZoom: jest.Mock<Promise<number>, [number]>
-}
-
-export interface CameraOptions {
-  readonly center?: [number, number]
-  readonly zoom?: number
-  readonly bearing?: number
-  readonly pitch?: number
-}
+import type {
+  MapEventListener,
+  SourceMock,
+  CameraOptions,
+} from 'test-support/maplibre-types'
+export type { SourceMock, CameraOptions } from 'test-support/maplibre-types'
 
 let clusterExpansionZoom = 8
 export class MapMock {
@@ -67,6 +59,8 @@ export class MapMock {
     this.padding = padding
   })
   readonly resize = jest.fn()
+  readonly isMoving = jest.fn(() => false)
+  readonly getPadding = jest.fn(() => this.padding)
 
   removed = false
   terrain: unknown = null

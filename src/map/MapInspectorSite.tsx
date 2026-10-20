@@ -1,18 +1,18 @@
 import React from 'react'
 import { Button } from 'react-bootstrap'
 import { ProvenanceRecord } from 'fragmentarium/domain/Provenance'
-import type { MapSiteCapabilities } from './mapSiteCapabilities'
-import { fragmentDataStatusText } from './mapSiteCapabilities'
-import type { SiteResearchSummary } from './mapResearchSummary'
+import type { MapSiteCapabilities } from 'map/mapSiteCapabilities'
+import { isLinkedDataLoaded } from 'map/mapSiteCapabilities'
+import type { SiteResearchSummary } from 'map/mapResearchSummary'
 import {
   LINKED_POLYGON_LABEL,
   linkedPolygonSentence,
-} from './mapResearchLabels'
-import type { MapResearchContext } from './mapResearchSummaryText'
-import { siteResearchMarkdown } from './mapResearchSummaryText'
-import { InspectorMetric } from './MapInspectorParts'
-import MapCompletenessNote from './MapCompletenessNote'
-import MapResearchSummaryActions from './MapResearchSummaryActions'
+} from 'map/mapResearchLabels'
+import type { MapResearchContext } from 'map/mapResearchSummaryText'
+import { siteResearchMarkdown } from 'map/mapResearchSummaryText'
+import { InspectorMetric, LinkedDataUnavailable } from 'map/MapInspectorParts'
+import MapCompletenessNote from 'map/MapCompletenessNote'
+import MapResearchSummaryActions from 'map/MapResearchSummaryActions'
 
 interface Props {
   readonly provenance: ProvenanceRecord | undefined
@@ -48,7 +48,7 @@ function CoverageMetrics({
         value={summary.mappedFindspotCount}
       />
       <InspectorMetric
-        label="Accessible fragments"
+        label="Accessible tablets"
         value={summary.accessibleFragmentCount}
       />
       <InspectorMetric
@@ -68,18 +68,17 @@ export default function MapInspectorSite({
   onBrowseHistoricalMaps,
   onShowExcavationAreas,
 }: Props): JSX.Element {
+  const hasLoadedData = isLinkedDataLoaded(site)
   return (
     <>
       <div className="map-inspector__eyebrow">Site</div>
       <h2>{provenance?.longName ?? 'Selected site'}</h2>
       {provenance?.parent ? <p>{provenance.parent}</p> : null}
-      {siteSummary ? <CoverageMetrics summary={siteSummary} /> : null}
-      {site && !site.hasFragmentMapData ? (
-        <p className="map-inspector__unsupported">
-          {fragmentDataStatusText(site)}
-        </p>
+      {siteSummary && hasLoadedData ? (
+        <CoverageMetrics summary={siteSummary} />
       ) : null}
-      {siteSummary ? (
+      {!hasLoadedData ? <LinkedDataUnavailable site={site} /> : null}
+      {siteSummary && hasLoadedData ? (
         <MapResearchSummaryActions
           title={siteSummary.siteName}
           buildSummary={() => {

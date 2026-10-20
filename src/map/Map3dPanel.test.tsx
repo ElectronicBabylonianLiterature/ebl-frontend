@@ -1,11 +1,11 @@
 import React from 'react'
 import { fireEvent, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import Map3dPanel, { type Map3dPanelProps } from './Map3dPanel'
-import { buildExtrusionScale } from './mapExtrusionScale'
-import { buildVisualizationValues } from './mapVisualizationValues'
-import { aggregateFindspotMapData } from './findspotMapData'
-import { AWS_TERRAIN_TILES } from './mapTerrainSource'
+import Map3dPanel, { type Map3dPanelProps } from 'map/Map3dPanel'
+import { buildExtrusionScale } from 'map/mapExtrusionScale'
+import { buildVisualizationValues } from 'map/mapVisualizationValues'
+import { aggregateFindspotMapData } from 'map/findspotMapData'
+import { AWS_TERRAIN_TILES } from 'map/mapTerrainSource'
 import { excavationPolygon, findspotMapData } from 'test-support/map-fixtures'
 
 const values = buildVisualizationValues(
@@ -118,7 +118,7 @@ describe('extrusion controls', () => {
     renderPanel({ isDensityAvailable: false })
 
     expect(
-      screen.queryByRole('option', { name: 'Accessible fragments per km²' }),
+      screen.queryByRole('option', { name: 'Accessible tablets per km²' }),
     ).not.toBeInTheDocument()
   })
 

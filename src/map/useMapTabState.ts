@@ -1,37 +1,38 @@
+import { filterProvenances } from 'map/findspotFilter'
 import { useCallback, useMemo, useRef, useState } from 'react'
 import type { MutableRefObject, RefObject } from 'react'
 import type { Map as MapLibreMap } from 'maplibre-gl'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import { FindspotService } from 'fragmentarium/application/FindspotService'
 import { ProvenanceRecord } from 'fragmentarium/domain/Provenance'
-import { validatedHistoricalMapOverlays } from './historicalOverlays'
-import type { MapHoverPreview } from './mapSelection'
-import useHistoricalMapPanel from './useHistoricalMapPanel'
-import useMapExperience, { type MapExperience } from './useMapExperience'
-import useMapPanel, { type MapPanelController } from './useMapPanel'
-import useMapSiteData, { type MapSiteData } from './useMapSiteData'
-import useMapUrlPersistence from './useMapUrlPersistence'
-import useMapCapabilities from './useMapCapabilities'
+import { validatedHistoricalMapOverlays } from 'map/historicalOverlays'
+import type { MapHoverPreview } from 'map/mapSelection'
+import useHistoricalMapPanel from 'map/useHistoricalMapPanel'
+import useMapExperience, { type MapExperience } from 'map/useMapExperience'
+import useMapPanel, { type MapPanelController } from 'map/useMapPanel'
+import useMapSiteData, { type MapSiteData } from 'map/useMapSiteData'
+import useMapUrlPersistence from 'map/useMapUrlPersistence'
+import useMapCapabilities from 'map/useMapCapabilities'
 import useMapVisualization, {
   type MapVisualization,
-} from './useMapVisualization'
-import useMapResearch, { type MapResearch } from './useMapResearch'
+} from 'map/useMapVisualization'
+import useMapResearch, { type MapResearch } from 'map/useMapResearch'
 import {
   useMapResearchContext,
   useSelectedSiteOverlays,
-} from './useMapResearchContext'
-import useMapInstance from './useMapInstance'
-import useMap3d, { type Map3d, useExtrusionScale } from './useMap3d'
-import useTimelineOverlays from './useTimelineOverlays'
+} from 'map/useMapResearchContext'
+import useMapInstance from 'map/useMapInstance'
+import useMap3d, { type Map3d, useExtrusionScale } from 'map/useMap3d'
+import useTimelineOverlays from 'map/useTimelineOverlays'
 import useMapPanelDockProps, {
   type MapPanelDockPropGroups,
-} from './useMapPanelDockProps'
-import useMapSelectionActions from './useMapSelectionActions'
+} from 'map/useMapPanelDockProps'
+import useMapSelectionActions from 'map/useMapSelectionActions'
 import usePresentationMode, {
   type PresentationMode,
-} from './usePresentationMode'
-import { focusProvenance, resetCamera } from './mapCamera'
-import { activeOverlayEntries as toActiveOverlayEntries } from './historicalOverlayActions'
+} from 'map/usePresentationMode'
+import { focusProvenance, resetCamera } from 'map/mapCamera'
+import { activeOverlayEntries as toActiveOverlayEntries } from 'map/historicalOverlayActions'
 
 export interface MapTabState extends MapPanelDockPropGroups {
   readonly mapContainer: RefObject<HTMLDivElement>
@@ -49,20 +50,6 @@ export interface MapTabState extends MapPanelDockPropGroups {
   readonly isBackgroundUnavailable: boolean
   readonly dismissSelection: () => void
   readonly resetView: () => void
-}
-
-function filterProvenances(
-  provenances: readonly ProvenanceRecord[] | null,
-  filter: string,
-): readonly ProvenanceRecord[] | null {
-  if (!provenances) return null
-
-  const normalizedFilter = filter.trim().toLowerCase()
-  return normalizedFilter
-    ? provenances.filter((provenance) =>
-        provenance.longName.toLowerCase().includes(normalizedFilter),
-      )
-    : provenances
 }
 
 /**
@@ -169,6 +156,7 @@ export default function useMapTabState(
     filteredProvenances,
     activeOverlayEntries,
     activePanel: mapPanel.active,
+    visiblePanel: presentation.isActive ? null : mapPanel.active,
     onSelectFeature: selectFeature,
     onHoverPreview: setHoverPreview,
     onBaseStyleFailure: () => setIsBackgroundUnavailable(true),

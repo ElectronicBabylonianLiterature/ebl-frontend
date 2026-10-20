@@ -1,26 +1,32 @@
+import {
+  isLinkedDataLoaded,
+  type MapSiteCapabilities,
+} from 'map/mapSiteCapabilities'
 import React from 'react'
-import type { HistoricalMapOverlay } from './historicalOverlays'
-import type { PolygonResearchSummary } from './mapResearchSummary'
+import type { HistoricalMapOverlay } from 'map/historicalOverlays'
+import type { PolygonResearchSummary } from 'map/mapResearchSummary'
 import {
   countLabel,
   locationPrecisionLabel,
   mappingEvidenceShortLabel,
-} from './mapResearchLabels'
-import type { MapResearchContext } from './mapResearchSummaryText'
-import { polygonResearchMarkdown } from './mapResearchSummaryText'
+} from 'map/mapResearchLabels'
+import type { MapResearchContext } from 'map/mapResearchSummaryText'
+import { polygonResearchMarkdown } from 'map/mapResearchSummaryText'
 import {
   FindspotRows,
+  LinkedDataUnavailable,
   InspectorBadge,
   InspectorMetric,
-} from './MapInspectorParts'
-import MapInspectorEvidence from './MapInspectorEvidence'
-import MapInspectorMaps from './MapInspectorMaps'
-import MapInspectorTabs from './MapInspectorTabs'
-import MapCompletenessNote from './MapCompletenessNote'
-import MapResearchSummaryActions from './MapResearchSummaryActions'
+} from 'map/MapInspectorParts'
+import MapInspectorEvidence from 'map/MapInspectorEvidence'
+import MapInspectorMaps from 'map/MapInspectorMaps'
+import MapInspectorTabs from 'map/MapInspectorTabs'
+import MapCompletenessNote from 'map/MapCompletenessNote'
+import MapResearchSummaryActions from 'map/MapResearchSummaryActions'
 
 export interface MapInspectorAreaProps {
   readonly summary: PolygonResearchSummary
+  readonly site: MapSiteCapabilities | undefined
   readonly overlays: readonly HistoricalMapOverlay[]
   readonly activeOverlayIds: ReadonlySet<string>
   readonly buildResearchContext: () => MapResearchContext
@@ -54,7 +60,7 @@ function Overview({
           value={summary.mappedFindspotCount}
         />
         <InspectorMetric
-          label="Accessible fragments"
+          label="Accessible tablets"
           value={summary.accessibleFragmentCount}
         />
       </div>
@@ -65,46 +71,62 @@ function Overview({
 
 export default function MapInspectorArea({
   summary,
+  site,
   overlays,
   activeOverlayIds,
   buildResearchContext,
   onToggleOverlay,
   onCompareHistoricalMaps,
 }: MapInspectorAreaProps): JSX.Element {
+  const hasLoadedData = isLinkedDataLoaded(site)
   return (
     <>
       <div className="map-inspector__eyebrow">
         Excavation area · {summary.siteName}
       </div>
       <h2>{summary.displayName}</h2>
-      <MapResearchSummaryActions
-        title={`${summary.displayName} ${summary.siteName}`}
-        buildSummary={() => {
-          const context = buildResearchContext()
-          return {
-            markdown: polygonResearchMarkdown(summary, context),
-            generatedAt: context.generatedAt,
-          }
-        }}
-      />
+      {hasLoadedData ? (
+        <MapResearchSummaryActions
+          title={`${summary.displayName} ${summary.siteName}`}
+          buildSummary={() => {
+            const context = buildResearchContext()
+            return {
+              markdown: polygonResearchMarkdown(summary, context),
+              generatedAt: context.generatedAt,
+            }
+          }}
+        />
+      ) : null}
       <MapInspectorTabs
         label="Excavation area sections"
         tabs={[
           {
             id: 'overview',
             label: 'Overview',
-            render: () => <Overview summary={summary} />,
+            render: () =>
+              hasLoadedData ? (
+                <Overview summary={summary} />
+              ) : (
+                <LinkedDataUnavailable site={site} />
+              ),
           },
           {
             id: 'evidence',
             label: 'Evidence',
-            render: () => <MapInspectorEvidence summary={summary} />,
+            render: () =>
+              hasLoadedData ? (
+                <MapInspectorEvidence summary={summary} />
+              ) : (
+                <LinkedDataUnavailable site={site} />
+              ),
           },
           {
             id: 'findspots',
             label: 'Findspots',
             render: () =>
-              summary.findspots.length === 0 ? (
+              !hasLoadedData ? (
+                <LinkedDataUnavailable site={site} />
+              ) : summary.findspots.length === 0 ? (
                 <p>No mapped findspots are linked to this excavation area.</p>
               ) : (
                 <>

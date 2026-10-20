@@ -7,7 +7,7 @@ import {
   EXCAVATION_AREAS_SOURCE_ID,
   POLYGON_SOURCE_ID,
   SOURCE_ID,
-} from './mapLayers'
+} from 'map/mapLayers'
 
 const babylon = provenanceRecord()
 const assur = provenanceRecord({
@@ -59,7 +59,7 @@ describe('loading and error states', () => {
   })
 
   it('does not set state after unmounting', async () => {
-    const consoleError = jest.spyOn(console, 'error').mockImplementation()
+    const consoleError = jest.spyOn(console, 'error')
     const { unmount } = renderMapTab({ provenances: [babylon] })
     unmount()
     await act(async () => undefined)
@@ -98,6 +98,15 @@ describe('map shell', () => {
     expect(await screen.findByText('1 visible sites')).toBeInTheDocument()
   })
 
+  it('matches diacritic site names from a plain spelling', async () => {
+    await mountMapTab()
+
+    await userEvent.type(screen.getByLabelText('Site name'), 'assur')
+
+    expect(await screen.findByText('1 visible sites')).toBeInTheDocument()
+    expect(screen.queryByText(/No findspots match/)).not.toBeInTheDocument()
+  })
+
   it('shows an empty state when the filter matches nothing', async () => {
     await mountMapTab()
 
@@ -125,7 +134,7 @@ describe('site data support', () => {
 
     expect(
       await screen.findByText(
-        'Fragment-linked excavation data is available for Aššur.',
+        'Tablet-linked excavation data is available for Aššur.',
       ),
     ).toBeInTheDocument()
   })
@@ -134,7 +143,7 @@ describe('site data support', () => {
     await mountMapTab({ mapData: [findspotMapData()] })
 
     const unsupported = await screen.findAllByText(
-      'Fragment-linked excavation data is not yet available for this site.',
+      'Tablet-linked excavation data is not yet available for this site.',
     )
 
     expect(unsupported).toHaveLength(3)
@@ -144,7 +153,7 @@ describe('site data support', () => {
     await mountMapTab({ mapData: [] })
 
     expect(
-      await screen.findByText('No mapped excavation fragments available'),
+      await screen.findByText('No mapped excavation tablets available'),
     ).toBeInTheDocument()
   })
 
@@ -152,7 +161,7 @@ describe('site data support', () => {
     await mountMapTab({ mapDataError: 'boom' })
 
     expect(
-      await screen.findByText('Excavation fragment data unavailable'),
+      await screen.findByText('Excavation tablet data unavailable'),
     ).toBeInTheDocument()
   })
 })

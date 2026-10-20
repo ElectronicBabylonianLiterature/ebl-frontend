@@ -9,8 +9,8 @@ import {
   provenanceRecord,
 } from 'test-support/map-fixtures'
 import { evaluateExpression } from 'test-support/mapExpressionEvaluator'
-import { EXCAVATION_AREA_FILL_LAYER_ID } from './mapLayerIds'
-import { COLOR_MAPPED_ZERO, SEQUENTIAL_COLORS } from './mapPaintExpressions'
+import { EXCAVATION_AREA_FILL_LAYER_ID } from 'map/mapLayerIds'
+import { COLOR_MAPPED_ZERO, SEQUENTIAL_COLORS } from 'map/mapPaintExpressions'
 
 const assur = provenanceRecord({ id: 'assur', longName: 'Aššur' })
 
@@ -90,8 +90,8 @@ describe('visualization control', () => {
 
     expect(options).toContain('Mapped status')
     expect(options).toContain('Mapping evidence')
-    expect(options).toContain('Accessible fragments')
-    expect(options).toContain('Fragments per km²')
+    expect(options).toContain('Accessible tablets')
+    expect(options).toContain('Tablets per km²')
   })
 
   it('starts in categorical mapped-status mode', async () => {
@@ -100,7 +100,7 @@ describe('visualization control', () => {
     expect(visualizationSelect()).toHaveValue('mapped')
     expect(screen.getByText('No mapped findspot')).toBeInTheDocument()
     expect(
-      screen.getByText('Mapped with accessible fragments'),
+      screen.getByText('Mapped with accessible tablets'),
     ).toBeInTheDocument()
   })
 
@@ -108,7 +108,7 @@ describe('visualization control', () => {
     await mountMapTab(['/?v=1&viz=density'])
 
     expect(
-      screen.getByText('Accessible fragments per square kilometre'),
+      screen.getByText('Accessible tablets per square kilometre'),
     ).toBeInTheDocument()
     expect(
       screen.getByText(/not the density of exact findspot points/),

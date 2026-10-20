@@ -1,8 +1,8 @@
 import {
   buildChoroplethLegend,
   buildChoroplethScale,
-} from './mapChoroplethScale'
-import { classLabel, mapLegendEntries } from './mapLegendEntries'
+} from 'map/mapChoroplethScale'
+import { classLabel, mapLegendEntries } from 'map/mapLegendEntries'
 
 function labelsFor(
   mode: Parameters<typeof mapLegendEntries>[0],
@@ -39,8 +39,8 @@ describe('mapLegendEntries', () => {
   it('describes the mapped-status states', () => {
     expect(labelsFor('mapped')).toEqual([
       'No mapped findspot',
-      'Mapped, zero accessible fragments',
-      'Mapped with accessible fragments',
+      'Mapped, zero accessible tablets',
+      'Mapped with accessible tablets',
       'Selected area',
     ])
   })
@@ -49,7 +49,7 @@ describe('mapLegendEntries', () => {
     const labels = labelsFor('count', [1, 4, 9, 30])
 
     expect(labels[0]).toBe('No mapped findspot')
-    expect(labels[1]).toBe('Zero accessible fragments')
+    expect(labels[1]).toBe('Zero accessible tablets')
     expect(labels[labels.length - 1]).toBe('Selected area')
     expect(labels.length).toBeGreaterThan(4)
   })
@@ -57,7 +57,7 @@ describe('mapLegendEntries', () => {
   it('still describes the categorical states when nothing can be classified', () => {
     expect(labelsFor('density')).toEqual([
       'No mapped findspot',
-      'Zero accessible fragments',
+      'Zero accessible tablets',
       'Selected area',
     ])
   })

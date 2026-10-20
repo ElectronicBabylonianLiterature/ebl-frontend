@@ -2,13 +2,13 @@ import {
   deriveAllMapSiteCapabilities,
   deriveMapSiteCapabilities,
   fragmentDataStatusText,
-} from './mapSiteCapabilities'
+} from 'map/mapSiteCapabilities'
 import {
   findMapSite,
   isMapSiteId,
   mapDataSiteParam,
   mapSites,
-} from './mapSites'
+} from 'map/mapSites'
 import {
   excavationPolygon,
   findspotMapData,
@@ -140,10 +140,10 @@ describe('fragmentDataStatusText', () => {
 
   it.each([
     ['not-configured', 'not yet available'],
-    ['loading', 'Loading excavation fragment data'],
-    ['idle', 'Loading excavation fragment data'],
+    ['loading', 'Loading excavation tablet data'],
+    ['idle', 'Loading excavation tablet data'],
     ['error', 'unavailable'],
-    ['empty', 'No mapped excavation fragments'],
+    ['empty', 'No mapped excavation tablets'],
     ['available', 'is available for Aššur'],
   ])('describes %s', (state, expected) => {
     expect(
