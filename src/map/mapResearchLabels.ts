@@ -1,7 +1,7 @@
 import type {
   MappingEvidence,
   SummaryLocationPrecision,
-} from './mapResearchSummary'
+} from 'map/mapResearchSummary'
 const EVIDENCE_LABELS: Readonly<Record<MappingEvidence, string>> = {
   'verified-source': 'Verified-source mapping',
   curated: 'Curated mapping',
@@ -37,10 +37,10 @@ export function locationPrecisionLabel(
 }
 
 export const FRAGMENT_ACCESS_NOTE =
-  'Fragment counts reflect records accessible to the current user.'
+  'Tablet counts reflect records accessible to the current user.'
 
 export const EXCAVATION_AREA_NOTE =
-  'Excavation polygons represent mapped archaeological areas, not exact fragment coordinates.'
+  'Excavation polygons represent mapped archaeological areas, not exact tablet coordinates.'
 
 export const MAPPING_PROVENANCE_NOTE =
   'Detailed mapping provenance is not exposed by the current map-data response.'

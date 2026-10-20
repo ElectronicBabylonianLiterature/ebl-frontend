@@ -29,7 +29,7 @@ export interface MapLegendEntry {
 
 const UNAVAILABLE_ENTRY: MapLegendEntry = {
   key: 'unavailable',
-  label: 'Linked fragment data unavailable or loading',
+  label: 'Linked tablet data unavailable or loading',
   color: COLOR_UNAVAILABLE,
   pattern: 'dotted',
 }
@@ -76,13 +76,13 @@ const EVIDENCE_ENTRIES: readonly MapLegendEntry[] = [
 const MAPPED_ENTRIES: readonly MapLegendEntry[] = [
   {
     key: 'mapped-zero',
-    label: 'Mapped, zero accessible fragments',
+    label: 'Mapped, zero accessible tablets',
     color: COLOR_MAPPED_ZERO,
     pattern: 'solid',
   },
   {
     key: 'mapped-fragments',
-    label: 'Mapped with accessible fragments',
+    label: 'Mapped with accessible tablets',
     color: COLOR_MAPPED_FRAGMENTS,
     pattern: 'solid',
   },
@@ -137,8 +137,8 @@ export function mapLegendEntries(
       key: 'zero',
       label:
         mode === 'density'
-          ? 'Zero accessible fragments per km²'
-          : 'Zero accessible fragments',
+          ? 'Zero accessible tablets per km²'
+          : 'Zero accessible tablets',
       color: COLOR_MAPPED_ZERO,
       pattern: 'solid' as const,
     },

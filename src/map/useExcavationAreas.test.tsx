@@ -214,7 +214,7 @@ describe('useExcavationAreas', () => {
     expect(mockAddSource).not.toHaveBeenCalled()
     unmount()
     act(() => {
-      triggerMapEvent('load')
+      triggerMapEvent('style.load')
     })
 
     expect(mockAddSource).not.toHaveBeenCalled()
