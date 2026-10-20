@@ -155,20 +155,29 @@ export function validateTerrainSource(
   ]
 }
 
+const CURATED_SOURCE_FIELDS: readonly Exclude<
+  keyof TerrainSourceDefinition,
+  'tiles' | 'attribution'
+>[] = [
+  'id',
+  'label',
+  'encoding',
+  'tileSize',
+  'minZoom',
+  'maxZoom',
+  'licenceUrl',
+  'registryUrl',
+  'verifiedOn',
+]
+
 function matchesCuratedSource(source: TerrainSourceDefinition): boolean {
   return (
-    source.id === AWS_TERRAIN_TILES.id &&
     source.tiles.length === 1 &&
     source.tiles[0] === TERRAIN_TILE_URL &&
-    source.encoding === AWS_TERRAIN_TILES.encoding &&
-    source.tileSize === AWS_TERRAIN_TILES.tileSize &&
-    source.minZoom === AWS_TERRAIN_TILES.minZoom &&
-    source.maxZoom === AWS_TERRAIN_TILES.maxZoom &&
-    source.label === AWS_TERRAIN_TILES.label &&
-    source.verifiedOn === AWS_TERRAIN_TILES.verifiedOn &&
     source.attribution === TERRAIN_ATTRIBUTION &&
-    source.licenceUrl === AWS_TERRAIN_TILES.licenceUrl &&
-    source.registryUrl === AWS_TERRAIN_TILES.registryUrl
+    CURATED_SOURCE_FIELDS.every(
+      (field) => source[field] === AWS_TERRAIN_TILES[field],
+    )
   )
 }
 

@@ -54,3 +54,26 @@ it('treats repeated valueless fields as empty strings', () => {
     DEFAULT_MAP_URL_STATE,
   )
 })
+
+it('preserves standalone encoding and merged parameter order for every map field', () => {
+  const state: MapUrlState = {
+    ...DEFAULT_MAP_URL_STATE,
+    filter: 'Ur uk',
+    showExcavationAreas: true,
+    selection: { type: 'excavation-area', polygonId: 'uruk-area' },
+    visualization: 'count',
+    terrain: true,
+  }
+
+  expect(serializeMapUrlState(state)).toBe(
+    'areas=1&findspot=Ur%20uk&mv=1&selected=area%3Auruk-area&terrain=1&viz=count',
+  )
+  expect(
+    mergeMapUrlStateIntoSearch(
+      '?outside=first&mv=999&findspot=old&outside=second&areas=0&selected=area:old&viz=evidence&terrain=0',
+      state,
+    ),
+  ).toBe(
+    'outside=first&outside=second&mv=1&findspot=Ur+uk&areas=1&selected=area%3Auruk-area&viz=count&terrain=1',
+  )
+})
