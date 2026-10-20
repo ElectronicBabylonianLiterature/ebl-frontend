@@ -5,6 +5,8 @@ from pathlib import Path
 
 from findspot_geometry_identity import area_name, polygon_id as build_polygon_id
 
+MAX_FINDSPOT_ID = 2**63 - 1
+
 SITE_NAMES = {
     "assur": "Aššur",
     "kalhu": "Kalḫu",
@@ -88,7 +90,7 @@ def _mapping_findspot_id(
     if (
         isinstance(findspot_id, bool)
         or not isinstance(findspot_id, int)
-        or findspot_id < 0
+        or not 0 <= findspot_id <= MAX_FINDSPOT_ID
     ):
         raise RuntimeError(f"{site} mapping row {index} has invalid findspotId")
     if findspot_id in findspot_ids:
