@@ -33,16 +33,22 @@ export function subscribeSpatialSearch(
 ): SpatialSearchLayerLifecycle | null {
   const map = mapRef.current
   if (!map || !getState().isActive) return null
+  let isDisposed = false
   const isCurrentMap = (): boolean => mapRef.current === map
+  const isCurrentSubscription = (): boolean => !isDisposed && isCurrentMap()
   const lifecycle = createSpatialSearchLayerLifecycle(map, isCurrentMap)
   const handleClick = (event: MapMouseEvent): void => {
+    if (!isCurrentSubscription()) return
     const { isActive, isDrawing } = getState()
     if (!isActive || !isDrawing) return
     const position = finitePosition(event.lngLat.lng, event.lngLat.lat)
     if (position) addCorner(position)
   }
-  const handleKeyDown = (event: KeyboardEvent): void =>
-    handleDrawingKeyDown(event, getState(), clear)
+  const handleKeyDown = (event: KeyboardEvent): void => {
+    if (isCurrentSubscription()) {
+      handleDrawingKeyDown(event, getState(), clear)
+    }
+  }
 
   map.on('click', handleClick)
   window.addEventListener('keydown', handleKeyDown)
@@ -50,8 +56,9 @@ export function subscribeSpatialSearch(
   return {
     update: lifecycle.update,
     dispose(): void {
+      isDisposed = true
       window.removeEventListener('keydown', handleKeyDown)
-      if (isCurrentMap()) map.off('click', handleClick)
+      map.off('click', handleClick)
       lifecycle.dispose()
     },
   }

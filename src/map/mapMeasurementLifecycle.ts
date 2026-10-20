@@ -50,19 +50,26 @@ export function subscribeMeasurement(
 ): (() => void) | undefined {
   const map = mapRef.current
   if (!map || !getState().isActive) return
+  let isDisposed = false
+  const isCurrentSubscription = (): boolean =>
+    !isDisposed && mapRef.current === map
 
   const install = (): void => {
+    if (!isCurrentSubscription()) return
     const { mode, positions } = getState()
     addMeasurementLayers(map)
     updateMeasurementGeometry(map, mode, positions)
   }
   const handleClick = (event: MapMouseEvent): void => {
-    if (!getState().isActive) return
+    if (!isCurrentSubscription() || !getState().isActive) return
     const position = finitePosition(event.lngLat.lng, event.lngLat.lat)
     if (position) actions.addPoint(position)
   }
-  const handleKeyDown = (event: KeyboardEvent): void =>
-    handleMeasurementKeyDown(event, getState(), actions)
+  const handleKeyDown = (event: KeyboardEvent): void => {
+    if (isCurrentSubscription()) {
+      handleMeasurementKeyDown(event, getState(), actions)
+    }
+  }
 
   map.on(MAP_STYLE_LOAD_EVENT, install)
   if (map.getStyle()) install()
@@ -70,10 +77,10 @@ export function subscribeMeasurement(
   window.addEventListener('keydown', handleKeyDown)
 
   return () => {
+    isDisposed = true
     window.removeEventListener('keydown', handleKeyDown)
-    if (mapRef.current !== map) return
     map.off(MAP_STYLE_LOAD_EVENT, install)
     map.off('click', handleClick)
-    removeMeasurementLayers(map)
+    if (mapRef.current === map) removeMeasurementLayers(map)
   }
 }

@@ -7,6 +7,8 @@ import type {
   MapMouseEvent,
 } from 'maplibre-gl'
 import { createFindspotPopup } from 'map/createFindspotPopup'
+import { focusFindspot } from 'map/focusFindspot'
+import type { ProvenanceRecord } from 'fragmentarium/domain/Provenance'
 import { getPopupProperties } from 'map/findspotPopupProperties'
 import { getFeaturePointCoordinates } from 'map/pointCoordinates'
 import {
@@ -20,6 +22,8 @@ import { queryFindspotFeatures } from 'map/mapFeatureQuery'
 
 export interface FindspotMapHandlers {
   isActive: () => boolean
+  isCurrentMap: () => boolean
+  provenances: () => readonly ProvenanceRecord[] | null
   getInteractionVersion: () => number
   navigate: (path: string) => void
   reportError: (error: Error) => void
@@ -54,7 +58,12 @@ function expandCluster(
     .getClusterExpansionZoom(clusterId)
     .then(easeToClusterCenter)
     .catch((error: Error) => {
-      handlers.reportError(error)
+      if (
+        handlers.isActive() &&
+        handlers.getInteractionVersion() === interactionVersion
+      ) {
+        handlers.reportError(error)
+      }
       easeToClusterCenter()
     })
 }
@@ -62,7 +71,7 @@ function expandCluster(
 function openFindspotPopup(
   map: MapLibreMap,
   feature: MapGeoJSONFeature,
-  navigate: (path: string) => void,
+  handlers: FindspotMapHandlers,
 ): void {
   const coordinates = getFeaturePointCoordinates(feature)
   if (!coordinates) return
@@ -70,9 +79,15 @@ function openFindspotPopup(
   const popupProperties = getPopupProperties(feature, coordinates)
   if (!popupProperties) return
 
+  focusFindspot(
+    map,
+    coordinates,
+    handlers.provenances()?.find(({ id }) => id === feature.properties?.id),
+  )
+
   new Popup()
     .setLngLat(coordinates)
-    .setDOMContent(createFindspotPopup(popupProperties, navigate))
+    .setDOMContent(createFindspotPopup(popupProperties, handlers.navigate))
     .addTo(map)
 }
 
@@ -91,7 +106,7 @@ function handleMapClick(
     unclusteredLayer.id,
   ])
   if (findspot) {
-    openFindspotPopup(map, findspot, handlers.navigate)
+    openFindspotPopup(map, findspot, handlers)
   }
 }
 
@@ -111,13 +126,16 @@ export function subscribeFindspotInteractions(
     })
   }
   const handleMouseMove = (event: MapMouseEvent): void => {
+    if (!handlers.isCurrentMap()) return
     if (handlers.isActive()) setPointerCursor(map, event)
     else resetPointerCursor(map)
   }
   const handleMouseEnter = (): void => {
     if (handlers.isActive()) showPointerCursor(map)
   }
-  const handleMouseLeave = (): void => resetPointerCursor(map)
+  const handleMouseLeave = (): void => {
+    if (handlers.isCurrentMap()) resetPointerCursor(map)
+  }
 
   map.on('click', handleClick)
   map.on('mousemove', handleMouseMove)
