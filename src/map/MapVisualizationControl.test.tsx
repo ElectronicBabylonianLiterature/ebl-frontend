@@ -23,17 +23,17 @@ describe('MapVisualizationControl', () => {
     renderControl(false, true)
 
     expect(screen.getByRole('status')).toHaveTextContent(
-      /linked fragment data is loading or unavailable/,
+      /linked tablet data is loading or unavailable/,
     )
     expect(
-      screen.getByText('Linked fragment data unavailable or loading'),
+      screen.getByText('Linked tablet data unavailable or loading'),
     ).toBeInTheDocument()
   })
 
   it('only offers density when at least one polygon has usable area', () => {
     const { rerender } = renderControl()
     expect(
-      screen.queryByRole('option', { name: /Fragments per/ }),
+      screen.queryByRole('option', { name: /Tablets per/ }),
     ).not.toBeInTheDocument()
 
     rerender(
@@ -46,7 +46,7 @@ describe('MapVisualizationControl', () => {
       />,
     )
     expect(
-      screen.getByRole('option', { name: /Fragments per/ }),
+      screen.getByRole('option', { name: /Tablets per/ }),
     ).toBeInTheDocument()
   })
 

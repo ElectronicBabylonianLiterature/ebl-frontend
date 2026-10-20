@@ -92,16 +92,22 @@ export function initializeFindspotMap(
   mapRef.current = map
   map.addControl(new maplibregl.NavigationControl(), 'top-right')
   let isActive = true
+  const isCurrentMap = (): boolean => isActive && mapRef.current === map
   const handlers: FindspotMapHandlers = {
-    isActive: () => isActive && options.getState().isInteractionEnabled,
+    isActive: () => isCurrentMap() && options.getState().isInteractionEnabled,
+    isCurrentMap,
+    provenances: () => options.getState().provenances,
     getInteractionVersion: () => options.getState().interactionVersion,
     navigate: options.navigate,
     reportError: options.reportError,
   }
-  const handleStyleLoad = (): void =>
-    initializeStyle(map, options, cameraResetVersionAtCreation)
-  const handleError = (event: MapLibreErrorEvent): void =>
-    handleMapError(event, options)
+  const handleStyleLoad = (): void => {
+    if (isCurrentMap())
+      initializeStyle(map, options, cameraResetVersionAtCreation)
+  }
+  const handleError = (event: MapLibreErrorEvent): void => {
+    if (isCurrentMap()) handleMapError(event, options)
+  }
 
   map.on(MAP_STYLE_LOAD_EVENT, handleStyleLoad)
   if (map.getStyle()) handleStyleLoad()

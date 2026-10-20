@@ -112,7 +112,10 @@ function LoadedMapTab({
       isSupported:
         state.canShowExcavationAreas && !state.isBackgroundUnavailable,
       render: () => (
-        <MapSpatialSearchPanel spatialSearch={state.spatialSearch} />
+        <MapSpatialSearchPanel
+          spatialSearch={state.spatialSearch}
+          findspots={state.fragmentMapData.findspots}
+        />
       ),
     },
     {
@@ -193,7 +196,7 @@ function LoadedMapTab({
       >
         {isPresenting
           ? 'Interactive findspot map in presentation mode.'
-          : 'Matching fragment search links are available below the map.'}
+          : 'Matching tablet search links are available below the map.'}
       </p>
       {isPresenting ? null : (
         <>

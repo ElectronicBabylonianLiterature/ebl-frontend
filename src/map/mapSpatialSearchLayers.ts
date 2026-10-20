@@ -162,9 +162,8 @@ export function createSpatialSearchLayerLifecycle(
     },
     dispose(): void {
       disposed = true
-      if (!isCurrentMap()) return
       map.off(MAP_STYLE_LOAD_EVENT, install)
-      removeSpatialSearchLayers(map)
+      if (isCurrentMap()) removeSpatialSearchLayers(map)
     },
   }
 }
