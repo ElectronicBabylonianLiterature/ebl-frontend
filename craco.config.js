@@ -4,6 +4,11 @@ const path = require('path')
 const isFastDev = process.env.FAST_DEV === 'true'
 const sourceDirectory = path.resolve(__dirname, 'src')
 
+const sitemapScriptPaths = [
+  'scripts/sitemapUpdater.js',
+  'scripts/updateSitemaps.js',
+]
+
 const fullyCoveredPaths = [
   'src/about/ui/AboutFigure.tsx',
   'src/about/ui/bibliography.tsx',
@@ -148,6 +153,7 @@ const fullyCoveredPaths = [
   'src/transliteration/application/ReferenceInjector.ts',
   'src/transliteration/ui/DisplaySignTokens.tsx',
   'src/transliteration/ui/DisplayTokenParts.tsx',
+  ...sitemapScriptPaths,
 ]
 
 function validateFullyCoveredPaths(paths) {
@@ -286,6 +292,15 @@ module.exports = {
       jestConfig.modulePaths = Array.from(
         new Set([...(jestConfig.modulePaths || []), sourceDirectory]),
       )
+      jestConfig.roots = [...(jestConfig.roots || []), '<rootDir>/scripts']
+      jestConfig.testMatch = [
+        ...(jestConfig.testMatch || []),
+        '<rootDir>/scripts/**/*.{spec,test}.{js,jsx,ts,tsx}',
+      ]
+      jestConfig.collectCoverageFrom = [
+        ...(jestConfig.collectCoverageFrom || []),
+        ...sitemapScriptPaths,
+      ]
       const fullCoverage = {
         statements: 100,
         branches: 100,
