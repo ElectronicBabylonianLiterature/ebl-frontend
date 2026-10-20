@@ -52,22 +52,27 @@ function useExcavationAreaLifecycle(
     const map = mapRef.current
     if (!map) return
 
-    const isCurrentMap = (): boolean => mapRef.current === map
-    const install = (): void => addExcavationAreas(map)
+    let isActive = true
+    const ownsMap = (): boolean => mapRef.current === map
+    const isCurrentMap = (): boolean => isActive && ownsMap()
+    const install = (): void => {
+      if (isCurrentMap()) addExcavationAreas(map)
+    }
 
     const stopObservingAvailability = observeExcavationAvailability(
       map,
       EXCAVATION_AREA_LAYER_IDS,
       onAvailabilityChange,
+      isCurrentMap,
     )
     map.on(MAP_STYLE_LOAD_EVENT, install)
     if (map.getStyle()) install()
 
     return () => {
-      if (!isCurrentMap()) return
+      isActive = false
       stopObservingAvailability()
       map.off(MAP_STYLE_LOAD_EVENT, install)
-      removeExcavationAreas(map)
+      if (ownsMap()) removeExcavationAreas(map)
     }
   }, [mapRef, onAvailabilityChange])
 }
@@ -80,15 +85,18 @@ function useExcavationAreaVisibility(
     const map = mapRef.current
     if (!map) return
 
-    const isCurrentMap = (): boolean => mapRef.current === map
-    const updateVisibility = (): void =>
-      setExcavationAreasVisible(map, isVisible)
+    let isActive = true
+    const updateVisibility = (): void => {
+      if (isActive && mapRef.current === map)
+        setExcavationAreasVisible(map, isVisible)
+    }
 
     map.on(MAP_STYLE_LOAD_EVENT, updateVisibility)
     updateVisibility()
 
     return () => {
-      if (isCurrentMap()) map.off(MAP_STYLE_LOAD_EVENT, updateVisibility)
+      isActive = false
+      map.off(MAP_STYLE_LOAD_EVENT, updateVisibility)
     }
   }, [mapRef, isVisible])
 }
