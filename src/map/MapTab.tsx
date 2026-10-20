@@ -9,11 +9,8 @@ import MapStage from 'map/MapStage'
 import MapPanelDock from 'map/MapPanelDock'
 import MapExperienceHeader from 'map/MapExperienceHeader'
 import MapPresentationBar from 'map/MapPresentationBar'
-import MapLayerControls from 'map/MapLayerControls'
-import MapSelectedAreaCard from 'map/MapSelectedAreaCard'
 import MapSelectionPill from 'map/MapSelectionPill'
-import MapExcavationAreaSelector from 'map/MapExcavationAreaSelector'
-import { isMapSiteId } from 'map/mapSites'
+import MapLayerPanel from 'map/MapLayerPanel'
 import type { MapPanelDefinition } from 'map/MapToolbar'
 import FindspotFilterInput from 'map/FindspotFilterInput'
 import { FindspotEmptyState, FindspotSearchList } from 'map/FindspotResults'
@@ -50,45 +47,12 @@ function LoadedMapTab({
     wasPresentingRef.current = isPresenting
   }, [isPresenting])
 
-  const selectedSiteData =
-    selectedPolygon && isMapSiteId(selectedPolygon.siteId)
-      ? state.fragmentMapData.sites.get(selectedPolygon.siteId)
-      : undefined
-
   const panels: readonly MapPanelDefinition[] = [
     {
       id: 'layers',
       label: 'Map layers',
       isSupported: true,
-      render: () => (
-        <>
-          <MapLayerControls
-            showExcavationAreas={state.showExcavationAreas}
-            canShowExcavationAreas={state.canShowExcavationAreas}
-            onShowExcavationAreasChange={experience.setShowExcavationAreas}
-          />
-          <MapExcavationAreaSelector
-            polygons={state.excavationPolygons}
-            selectedPolygonId={selectedPolygon?.polygonId ?? null}
-            onSelect={(polygonId) =>
-              experience.setSelection(
-                polygonId ? { type: 'excavation-area', polygonId } : null,
-              )
-            }
-          />
-          {selectedPolygon ? (
-            <MapSelectedAreaCard
-              polygonId={selectedPolygon.polygonId}
-              polygonName={selectedPolygon.name}
-              summary={selectedSiteData?.polygonSummaries.get(
-                selectedPolygon.polygonId,
-              )}
-              status={selectedSiteData?.status ?? 'not-configured'}
-              onClear={() => experience.setSelection(null)}
-            />
-          ) : null}
-        </>
-      ),
+      render: () => <MapLayerPanel state={state} />,
     },
   ]
 
