@@ -28,6 +28,7 @@ export default function MapPanelDock({
       />
       {activePanel ? (
         <MapPanelDrawer
+          key={activePanel.id}
           title={activePanel.label}
           onClose={panel.close}
           rootRef={drawerRef}

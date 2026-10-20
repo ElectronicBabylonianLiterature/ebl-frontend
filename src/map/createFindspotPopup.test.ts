@@ -41,7 +41,7 @@ describe('createFindspotPopup', () => {
     expect(popup.getByText('32.54°N, 44.42°E')).toBeInTheDocument()
     expect(popup.getByText('Single point')).toBeInTheDocument()
 
-    const link = popup.getByRole('link', { name: 'View fragments' })
+    const link = popup.getByRole('link', { name: 'View tablets' })
     expect(link).toHaveAttribute('href', buildFragmentSearchLink('Babylon'))
   })
 
@@ -98,7 +98,7 @@ describe('createFindspotPopup', () => {
 
     expect(popup.queryByText(/°/)).not.toBeInTheDocument()
     expect(popup.getByText('Single point')).toBeInTheDocument()
-    expect(popup.getByRole('link', { name: 'View fragments' })).toHaveAttribute(
+    expect(popup.getByRole('link', { name: 'View tablets' })).toHaveAttribute(
       'href',
       buildFragmentSearchLink('Babylon'),
     )
@@ -107,7 +107,7 @@ describe('createFindspotPopup', () => {
   function clickFragmentLink(init: MouseEventInit = {}): MouseEvent {
     const content = createFindspotPopup(makePopupProperties(), onNavigate)
     document.body.append(content)
-    const link = within(content).getByRole('link', { name: 'View fragments' })
+    const link = within(content).getByRole('link', { name: 'View tablets' })
     const clickEvent = new MouseEvent('click', {
       bubbles: true,
       cancelable: true,
