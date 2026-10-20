@@ -3,6 +3,7 @@ import type { AddLayerObject, GeoJSONSourceSpecification } from 'maplibre-gl'
 import { EBL_COLOR_BRAND_PRIMARY } from 'designTokens'
 
 export const SOURCE_ID = 'ebl-findspots'
+export const MAP_STYLE_LOAD_EVENT = 'style.load'
 export const CLUSTER_RADIUS = 50
 export const CLUSTER_MAX_ZOOM = 14
 

@@ -27,12 +27,12 @@ describe('MapSelectedAreaCard', () => {
   it.each([
     [
       'not-configured',
-      'No linked fragment data is configured for this site yet.',
+      'No linked tablet data is configured for this site yet.',
     ],
-    ['loading', 'Loading linked fragments…'],
-    ['loaded-empty', 'No fragments are linked to this excavation area.'],
-    ['error', 'Linked fragment data is unavailable right now.'],
-    ['incompatible', 'Linked fragment data is incompatible with this map.'],
+    ['loading', 'Loading linked tablets…'],
+    ['loaded-empty', 'No tablets are linked to this excavation area.'],
+    ['error', 'Linked tablet data is unavailable right now.'],
+    ['incompatible', 'Linked tablet data is incompatible with this map.'],
   ] as const)('announces the %s state honestly', (status, message) => {
     renderCard(status)
 
@@ -41,15 +41,13 @@ describe('MapSelectedAreaCard', () => {
     expect(statusRegion).toHaveAttribute('aria-live', 'polite')
     expect(statusRegion).toHaveAttribute('aria-atomic', 'true')
     if (status === 'error' || status === 'incompatible') {
-      expect(
-        screen.queryByText(/0 accessible fragments/),
-      ).not.toBeInTheDocument()
+      expect(screen.queryByText(/0 accessible tablets/)).not.toBeInTheDocument()
     }
   })
   it.each([
-    [1, '1 accessible fragment across 1 findspot.'],
-    [2, '2 accessible fragments across 1 findspot.'],
-  ] as const)('uses count-aware fragment grammar for %s', (count, text) => {
+    [1, '1 accessible tablet across 1 findspot.'],
+    [2, '2 accessible tablets across 1 findspot.'],
+  ] as const)('uses count-aware tablet grammar for %s', (count, text) => {
     const findspot = findspotMapDataDto({ accessibleFragmentCount: count })
     renderCard('loaded-with-mappings', {
       polygonId: 'assur-area-a-checksum',
@@ -60,5 +58,12 @@ describe('MapSelectedAreaCard', () => {
     })
 
     expect(screen.getByText(text)).toBeInTheDocument()
+    expect(
+      screen.getByRole('link', { name: `Area A (${count})` }),
+    ).toHaveAttribute(
+      'href',
+      `/library/search?findspotId=${findspot.findspotId}`,
+    )
+    expect(screen.queryByText(/Findspot \d/)).not.toBeInTheDocument()
   })
 })

@@ -8,6 +8,7 @@ import {
   EXCAVATION_AREA_SELECTED_LAYER_ID,
 } from 'map/mapExcavationLayers'
 import {
+  clearMockStyleResources,
   deferMapLoad,
   mockAddLayer,
   mockAddSource,
@@ -159,17 +160,35 @@ describe('useExcavationAreas', () => {
     expect(mockRemove).toHaveBeenCalled()
   })
 
-  it('removes pending one-time load listeners on cleanup', () => {
+  it('removes its style load listener on cleanup', () => {
     deferMapLoad()
     const { unmount } = render(<Harness />)
 
     expect(mockAddSource).not.toHaveBeenCalled()
     unmount()
     act(() => {
-      triggerMapEvent('load')
+      triggerMapEvent('style.load')
     })
 
     expect(mockAddSource).not.toHaveBeenCalled()
+  })
+
+  it('restores layers and latest visibility after a style reload', () => {
+    const { rerender } = render(<Harness isVisible />)
+    rerender(<Harness isVisible={false} />)
+    clearMockStyleResources()
+    mockAddLayer.mockClear()
+    mockSetLayoutProperty.mockClear()
+
+    act(() => triggerMapEvent('style.load'))
+
+    expect(mockAddLayer).toHaveBeenCalledTimes(3)
+    expect(mockSetLayoutProperty).toHaveBeenCalledTimes(3)
+    expect(mockSetLayoutProperty).toHaveBeenLastCalledWith(
+      expect.any(String),
+      'visibility',
+      'none',
+    )
   })
 
   it('reports only excavation source and layer failures', () => {
