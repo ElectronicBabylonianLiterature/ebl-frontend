@@ -198,7 +198,7 @@ describe('createSpatialSearchLayerLifecycle', () => {
     expect(methods.removeSource).toHaveBeenCalledWith(SPATIAL_SEARCH_SOURCE_ID)
   })
 
-  it('does not touch a disposed map after ownership changes', () => {
+  it('detaches listeners without accessing a replaced map style', () => {
     const { map, methods } = createMap()
     let isCurrent = true
     const lifecycle = createSpatialSearchLayerLifecycle(map, () => isCurrent)
@@ -209,7 +209,7 @@ describe('createSpatialSearchLayerLifecycle', () => {
     lifecycle.dispose()
 
     expect(methods.isStyleLoaded).not.toHaveBeenCalled()
-    expect(methods.off).not.toHaveBeenCalled()
+    expect(methods.off).toHaveBeenCalledWith('style.load', expect.any(Function))
     expect(methods.getLayer).not.toHaveBeenCalled()
     expect(methods.getSource).not.toHaveBeenCalled()
   })

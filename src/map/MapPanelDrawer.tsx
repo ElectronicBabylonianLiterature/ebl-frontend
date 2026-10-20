@@ -36,6 +36,12 @@ export default function MapPanelDrawer({
         isCollapsed ? ' map-panel-drawer--collapsed' : ''
       }`}
       aria-label={title}
+      onKeyDown={(event) => {
+        if (event.key === 'Escape' && !event.defaultPrevented) {
+          event.stopPropagation()
+          onClose()
+        }
+      }}
     >
       <div className="map-panel-drawer__header">
         <button

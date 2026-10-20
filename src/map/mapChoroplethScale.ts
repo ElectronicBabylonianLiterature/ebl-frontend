@@ -32,9 +32,9 @@ export interface ChoroplethLegend {
 const MODE_UNITS: Readonly<Record<MapVisualizationMode, string>> = {
   mapped: 'Mapped status',
   evidence: 'Mapping evidence source',
-  count: 'Accessible fragments',
-  log: 'Accessible fragments (log scale)',
-  density: 'Accessible fragments per square kilometre',
+  count: 'Accessible tablets',
+  log: 'Accessible tablets (log scale)',
+  density: 'Accessible tablets per square kilometre',
 }
 
 /** The two categorical modes classify by state, never by a numeric ramp. */

@@ -12,7 +12,7 @@ export default function FindspotConstraint({
 }: Props): JSX.Element | null {
   return findspotId === null ? null : (
     <Alert variant="info">
-      Results are limited to findspot {findspotId}.{' '}
+      Results are limited to the selected findspot.{' '}
       <Button
         type="button"
         size="sm"

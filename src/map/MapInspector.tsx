@@ -7,6 +7,7 @@ import { polygonResearchMarkdown } from 'map/mapResearchSummaryText'
 import { visualizationModeLabel } from 'map/MapVisualizationControl'
 import type { MapVisualizationMode } from 'map/mapChoroplethScale'
 import { buildFindspotFragmentSearchLink } from 'map/mapLinks'
+import { findspotLabel } from 'map/findspotLabel'
 import {
   locationPrecisionLabel,
   mappingEvidenceLabel,
@@ -41,15 +42,15 @@ function linkedDataMessage(
   if (status === 'loaded-with-mappings' || status === 'loaded-empty') {
     return `${countLabel(
       research.accessibleFragmentCount,
-      'accessible fragment',
+      'accessible tablet',
     )} across ${countLabel(research.mappedFindspotCount, 'findspot')}.`
   }
 
   return {
-    'not-configured': 'Linked fragment data is not configured for this site.',
-    loading: 'Loading linked fragment data…',
-    error: 'Linked fragment data is unavailable right now.',
-    incompatible: 'Linked fragment data is incompatible with this map.',
+    'not-configured': 'Linked tablet data is not configured for this site.',
+    loading: 'Loading linked tablet data…',
+    error: 'Linked tablet data is unavailable right now.',
+    incompatible: 'Linked tablet data is incompatible with this map.',
   }[status]
 }
 
@@ -91,8 +92,8 @@ function OverviewTab({
           <>
             <dt>Mapped findspots</dt>
             <dd>{countLabel(research.mappedFindspotCount, 'findspot')}</dd>
-            <dt>Accessible fragments</dt>
-            <dd>{countLabel(research.accessibleFragmentCount, 'fragment')}</dd>
+            <dt>Accessible tablets</dt>
+            <dd>{countLabel(research.accessibleFragmentCount, 'tablet')}</dd>
           </>
         ) : null}
       </dl>
@@ -140,7 +141,7 @@ function FindspotsTab({
     return <LinkedDataStatus status={status} research={research} />
   }
   if (research.findspots.length === 0) {
-    return <p>No fragments are linked to this excavation area.</p>
+    return <p>No tablets are linked to this excavation area.</p>
   }
   const visible = research.findspots.slice(0, expandedCount)
   return (
@@ -149,11 +150,9 @@ function FindspotsTab({
         {visible.map((findspot) => (
           <li key={findspot.findspotId}>
             <Link to={buildFindspotFragmentSearchLink(findspot.findspotId)}>
-              {findspot.area
-                ? `${findspot.area} — Findspot ${findspot.findspotId}`
-                : `Findspot ${findspot.findspotId}`}
+              {findspotLabel(findspot)}
             </Link>{' '}
-            ({countLabel(findspot.accessibleFragmentCount, 'fragment')})
+            ({countLabel(findspot.accessibleFragmentCount, 'tablet')})
           </li>
         ))}
       </ul>
