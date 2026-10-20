@@ -132,4 +132,32 @@ describe('spatial search data availability', () => {
       })
     }
   })
+
+  it('does not restore a rejected findspot when a later polygon repeats its count', () => {
+    const polygonIds = ['first', 'second', 'third']
+    const summaries = polygonIds.map((polygonId, index) =>
+      aggregateFindspotMapData([
+        findspotMapData({
+          findspotId: 4,
+          polygonIds: [polygonId],
+          accessibleFragmentCount: index === 1 ? 3 : 2,
+        }),
+      ]),
+    )
+    const index: ExcavationPolygonIndex = new Map([
+      ['assur', polygonIds.map((polygonId) => polygon(polygonId, 'assur'))],
+    ])
+
+    expect(
+      runSpatialSearch(SHAPE, index, {
+        summaries: new Map(summaries.flatMap((summary) => [...summary])),
+        siteStatuses: new Map([['assur', 'available']]),
+      }),
+    ).toMatchObject({
+      polygonIds,
+      findspotIds: [],
+      accessibleFragmentCount: 0,
+      availablePolygonCount: 3,
+    })
+  })
 })

@@ -15,6 +15,13 @@ describe('wrapLongitude', () => {
   ])('wraps %s to %s', (longitude, expected) => {
     expect(wrapLongitude(longitude)).toBe(expected)
   })
+
+  it.each([Number.NaN, Number.NEGATIVE_INFINITY, Number.POSITIVE_INFINITY])(
+    'rejects non-finite longitude %s without creating a canonical coordinate',
+    (longitude) => {
+      expect(wrapLongitude(longitude)).toBeNaN()
+    },
+  )
 })
 
 describe('viewportSearchBounds', () => {

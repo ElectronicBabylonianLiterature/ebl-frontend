@@ -6,15 +6,13 @@ import { observeExcavationAvailability } from 'map/mapExcavationAvailability'
 import {
   EXCAVATION_AREAS_SOURCE_ID,
   EXCAVATION_AREA_FILL_LAYER_ID,
-  EXCAVATION_AREA_OUTLINE_LAYER_ID,
-  EXCAVATION_AREA_SELECTED_LAYER_ID,
 } from 'map/mapLayerIds'
 import {
-  createExcavationAreasSource,
-  excavationAreaFillLayer,
-  excavationAreaOutlineLayer,
-  excavationAreaSelectedLayer,
-} from 'map/mapExcavationLayers'
+  ALL_EXCAVATION_AREA_LAYER_IDS,
+  addExcavationAreas,
+  removeExcavationAreas,
+  setExcavationAreasVisible,
+} from 'map/mapExcavationResources'
 import { applyExcavationPaint } from 'map/mapChoroplethLayers'
 import { CATEGORICAL_PAINT, type ExcavationPaint } from 'map/mapExcavationPaint'
 import type { PolygonVisualizationValues } from 'map/mapVisualizationValues'
@@ -23,11 +21,6 @@ import {
   applyVisualizationValues,
 } from 'map/mapExcavationFeatureState'
 
-const ALL_LAYER_IDS: readonly string[] = [
-  EXCAVATION_AREA_FILL_LAYER_ID,
-  EXCAVATION_AREA_OUTLINE_LAYER_ID,
-  EXCAVATION_AREA_SELECTED_LAYER_ID,
-]
 const EMPTY_VALUES: PolygonVisualizationValues = new Map()
 
 function ownsMap(
@@ -35,40 +28,6 @@ function ownsMap(
   map: MapLibreMap,
 ): boolean {
   return mapRef.current === map
-}
-
-function addExcavationAreas(map: MapLibreMap): void {
-  if (!map.getSource(EXCAVATION_AREAS_SOURCE_ID)) {
-    map.addSource(EXCAVATION_AREAS_SOURCE_ID, createExcavationAreasSource())
-  }
-  ;[
-    excavationAreaFillLayer,
-    excavationAreaOutlineLayer,
-    excavationAreaSelectedLayer,
-  ].forEach((layer) => {
-    if (!map.getLayer(layer.id)) map.addLayer(layer)
-  })
-}
-
-function removeExcavationAreas(map: MapLibreMap): void {
-  ;[...ALL_LAYER_IDS].reverse().forEach((layerId) => {
-    if (map.getLayer(layerId)) map.removeLayer(layerId)
-  })
-  if (map.getSource(EXCAVATION_AREAS_SOURCE_ID)) {
-    map.removeSource(EXCAVATION_AREAS_SOURCE_ID)
-  }
-}
-
-function setVisible(map: MapLibreMap, isVisible: boolean): void {
-  ALL_LAYER_IDS.forEach((layerId) => {
-    if (map.getLayer(layerId)) {
-      map.setLayoutProperty(
-        layerId,
-        'visibility',
-        isVisible ? 'visible' : 'none',
-      )
-    }
-  })
 }
 
 export interface ExcavationAreaOptions {
@@ -107,7 +66,7 @@ function useExcavationAreaLifecycle(
 
     const stopObservingAvailability = observeExcavationAvailability(
       map,
-      ALL_LAYER_IDS,
+      ALL_EXCAVATION_AREA_LAYER_IDS,
       (unavailable) =>
         latestOptionsRef.current.onAvailabilityChange?.(unavailable),
     )
@@ -133,7 +92,8 @@ function useExcavationAreaVisibility(
     const map = mapRef.current
     if (!map) return
 
-    const updateVisibility = (): void => setVisible(map, isVisible)
+    const updateVisibility = (): void =>
+      setExcavationAreasVisible(map, isVisible)
     map.on(MAP_STYLE_LOAD_EVENT, updateVisibility)
     updateVisibility()
 
