@@ -69,3 +69,36 @@ it('does not require an availability callback', () => {
     })
   }).not.toThrow()
 })
+
+it.each(['disposed', 'replaced'])(
+  'ignores queued events after the map is %s',
+  (state) => {
+    const { map, handlers, methods } = sourceEvents()
+    const onChange = jest.fn()
+    const isCurrentMap = jest.fn(() => true)
+    const dispose = observeExcavationAvailability(
+      map,
+      [],
+      onChange,
+      isCurrentMap,
+    )
+    const handleData = handlers.get('sourcedata')
+    const handleError = handlers.get('error')
+    if (state === 'disposed') dispose()
+    else isCurrentMap.mockReturnValue(false)
+    methods.getSource.mockImplementation(() => {
+      throw new Error('map style has been removed')
+    })
+
+    expect(() => {
+      handleData?.({
+        sourceId: EXCAVATION_AREAS_SOURCE_ID,
+        sourceDataType: 'content',
+        isSourceLoaded: true,
+      })
+      handleError?.({ sourceId: EXCAVATION_AREAS_SOURCE_ID })
+    }).not.toThrow()
+    expect(onChange).not.toHaveBeenCalled()
+    expect(methods.getSource).not.toHaveBeenCalled()
+  },
+)
