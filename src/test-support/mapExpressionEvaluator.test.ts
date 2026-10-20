@@ -1,4 +1,7 @@
-import { evaluateExpression, evaluatePaint } from './mapExpressionEvaluator'
+import {
+  evaluateExpression,
+  evaluatePaint,
+} from 'test-support/mapExpressionEvaluator'
 
 const CLUSTER_COUNT_PROPERTY = 'point_count'
 
@@ -25,6 +28,7 @@ describe('literals and lookups', () => {
 
     expect(evaluateExpression(['feature-state', 'count'], context)).toBe(4)
     expect(evaluateExpression(['get', 'name'], context)).toBe('Area A')
+    expect(evaluateExpression(['get', 'name'])).toBeUndefined()
     expect(
       evaluateExpression(['feature-state', 'missing'], context),
     ).toBeUndefined()
@@ -146,9 +150,12 @@ describe('evaluatePaint', () => {
 })
 
 describe('unsupported operators', () => {
-  it('fails loudly rather than silently returning a wrong value', () => {
-    expect(() => evaluateExpression(['zoom-scale', 1])).toThrow(
-      'Unsupported map expression operator: zoom-scale',
-    )
-  })
+  it.each(['zoom-scale', 'constructor', 'toString', '__proto__'])(
+    'rejects unsupported operator %s',
+    (operator) => {
+      expect(() => evaluateExpression([operator, 1])).toThrow(
+        `Unsupported map expression operator: ${operator}`,
+      )
+    },
+  )
 })
