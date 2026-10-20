@@ -104,7 +104,7 @@ function LoadedMapTab({
         <Alert variant="warning">Excavation areas are unavailable.</Alert>
       ) : null}
       <p id="findspot-map-description" className="map-tab__description">
-        Filter findspots by name. Matching fragment search links are available
+        Filter findspots by name. Matching tablet search links are available
         below the map.
       </p>
       <FindspotEmptyState provenances={filteredProvenances} filter={filter} />

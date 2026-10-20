@@ -130,6 +130,25 @@ describe('multi-site canonicalization contract', () => {
 })
 
 describe('invalid inputs leave every output untouched', () => {
+  it.each([undefined, 'Polygon'])(
+    'rejects a feature with type %s without replacing outputs',
+    (type) => {
+      const directory = makeWorkDir()
+      const file = path.join(directory, 'assur.geojson')
+      const collection = readJson<FeatureCollection<Polygon>>(file)
+      writeJson(file, {
+        ...collection,
+        features: collection.features.map((feature, index) =>
+          index === 0 ? { ...feature, type } : feature,
+        ),
+      })
+      const before = outputHashes(directory)
+
+      expect(() => runGenerator(directory)).toThrow()
+      expect(outputHashes(directory)).toEqual(before)
+    },
+  )
+
   it('rejects geometry without an exact inventory checksum', () => {
     expectFailureKeepsEveryOutput((directory) => {
       mutateInventory(directory, 'kalhu', (records) => {
