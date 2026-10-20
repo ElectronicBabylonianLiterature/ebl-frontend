@@ -19,13 +19,6 @@ const ALL_LAYER_IDS: readonly string[] = [
   EXCAVATION_AREA_SELECTED_LAYER_ID,
 ]
 
-function ownsMap(
-  mapRef: MutableRefObject<MapLibreMap | null>,
-  map: MapLibreMap,
-): boolean {
-  return mapRef.current === map
-}
-
 function addExcavationAreas(map: MapLibreMap): void {
   if (!map.getSource(EXCAVATION_AREAS_SOURCE_ID)) {
     map.addSource(EXCAVATION_AREAS_SOURCE_ID, createExcavationAreasSource())
@@ -92,10 +85,15 @@ function useExcavationAreaLifecycle(
     const map = mapRef.current
     if (!map) return
 
-    const isCurrentMap = (): boolean => mapRef.current === map
-    const install = (): void => addExcavationAreas(map)
+    let isActive = true
+    const ownsMap = (): boolean => mapRef.current === map
+    const isCurrentMap = (): boolean => isActive && ownsMap()
+    const install = (): void => {
+      if (isCurrentMap()) addExcavationAreas(map)
+    }
 
     const handleClick = (event: MapMouseEvent): void => {
+      if (!isCurrentMap()) return
       const [feature] = map.queryRenderedFeatures(event.point, {
         layers: [EXCAVATION_AREA_FILL_LAYER_ID],
       })
@@ -109,17 +107,18 @@ function useExcavationAreaLifecycle(
       ALL_LAYER_IDS,
       (unavailable) =>
         latestOptionsRef.current.onAvailabilityChange?.(unavailable),
+      isCurrentMap,
     )
     map.on('click', EXCAVATION_AREA_FILL_LAYER_ID, handleClick)
     map.on(MAP_STYLE_LOAD_EVENT, install)
     if (map.getStyle()) install()
 
     return () => {
-      if (!isCurrentMap()) return
+      isActive = false
       stopObservingAvailability()
       map.off(MAP_STYLE_LOAD_EVENT, install)
       map.off('click', EXCAVATION_AREA_FILL_LAYER_ID, handleClick)
-      removeExcavationAreas(map)
+      if (ownsMap()) removeExcavationAreas(map)
     }
   }, [mapRef])
 }
@@ -132,12 +131,17 @@ function useExcavationAreaVisibility(
     const map = mapRef.current
     if (!map) return
 
-    const updateVisibility = (): void => setVisible(map, isVisible)
+    let isActive = true
+    const updateVisibility = (): void => {
+      if (isActive && mapRef.current === map) setVisible(map, isVisible)
+    }
+
     map.on(MAP_STYLE_LOAD_EVENT, updateVisibility)
     updateVisibility()
 
     return () => {
-      if (ownsMap(mapRef, map)) map.off(MAP_STYLE_LOAD_EVENT, updateVisibility)
+      isActive = false
+      map.off(MAP_STYLE_LOAD_EVENT, updateVisibility)
     }
   }, [mapRef, isVisible])
 }
@@ -151,13 +155,17 @@ function useExcavationAreaSelection(
     const map = mapRef.current
     if (!map) return
 
-    const updateSelection = (): void =>
-      applySelectedState(map, isVisible ? selectedPolygonId : null)
+    let isActive = true
+    const updateSelection = (): void => {
+      if (isActive && mapRef.current === map)
+        applySelectedState(map, isVisible ? selectedPolygonId : null)
+    }
     map.on(MAP_STYLE_LOAD_EVENT, updateSelection)
     updateSelection()
 
     return () => {
-      if (ownsMap(mapRef, map)) map.off(MAP_STYLE_LOAD_EVENT, updateSelection)
+      isActive = false
+      map.off(MAP_STYLE_LOAD_EVENT, updateSelection)
     }
   }, [mapRef, isVisible, selectedPolygonId])
 }

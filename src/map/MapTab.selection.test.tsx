@@ -134,7 +134,7 @@ describe('MapTab excavation selection', () => {
       within(screen.getByRole('region', { name: 'Selected area' })).getByRole(
         'status',
       ),
-    ).toHaveTextContent('3 accessible fragments across 1 findspot.')
+    ).toHaveTextContent('3 accessible tablets across 1 findspot.')
 
     await userEvent.click(
       screen.getByRole('button', { name: 'Clear selection' }),
@@ -188,7 +188,7 @@ describe('MapTab excavation selection', () => {
       await screen.findByRole('region', { name: 'Selected area' }),
     )
     expect(await inspector.findByRole('status')).toHaveTextContent(
-      'Linked fragment data is unavailable right now.',
+      'Linked tablet data is unavailable right now.',
     )
     expect(inspector.queryByText('Mapped findspots')).not.toBeInTheDocument()
     expect(fetchMapData).toHaveBeenCalledWith('uruk')
