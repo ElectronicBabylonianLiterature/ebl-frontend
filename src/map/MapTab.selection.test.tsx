@@ -132,7 +132,7 @@ describe('MapTab excavation selection', () => {
       screen.getAllByRole('region', { name: 'Selected excavation area' }),
     ).toHaveLength(1)
     expect(
-      await screen.findByText('3 accessible fragments across 1 findspot.'),
+      await screen.findByText('3 accessible tablets across 1 findspot.'),
     ).toBeInTheDocument()
 
     await userEvent.click(screen.getByRole('button', { name: 'Clear' }))

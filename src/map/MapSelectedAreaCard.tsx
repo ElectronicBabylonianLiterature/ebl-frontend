@@ -1,6 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { buildFindspotFragmentSearchLink } from 'map/mapLinks'
+import { findspotLabel } from 'map/findspotLabel'
 import type { PolygonFindspotSummary } from 'map/findspotMapData'
 import type { FragmentMapDataStatus } from 'map/useFragmentMapData'
 
@@ -31,27 +32,27 @@ export default function MapSelectedAreaCard({
         </button>
       </header>
       <div role="status" aria-live="polite" aria-atomic="true">
-        {status === 'loading' ? <p>Loading linked fragments…</p> : null}
+        {status === 'loading' ? <p>Loading linked tablets…</p> : null}
         {status === 'error' ? (
-          <p>Linked fragment data is unavailable right now.</p>
+          <p>Linked tablet data is unavailable right now.</p>
         ) : null}
         {status === 'incompatible' ? (
-          <p>Linked fragment data is incompatible with this map.</p>
+          <p>Linked tablet data is incompatible with this map.</p>
         ) : null}
         {status === 'not-configured' ? (
-          <p>No linked fragment data is configured for this site yet.</p>
+          <p>No linked tablet data is configured for this site yet.</p>
         ) : null}
         {(status === 'loaded-empty' || status === 'loaded-with-mappings') &&
         !summary ? (
-          <p>No fragments are linked to this excavation area.</p>
+          <p>No tablets are linked to this excavation area.</p>
         ) : null}
         {status === 'loaded-with-mappings' && summary ? (
           <>
             <p>
               {summary.accessibleFragmentCount}{' '}
               {summary.accessibleFragmentCount === 1
-                ? 'accessible fragment'
-                : 'accessible fragments'}{' '}
+                ? 'accessible tablet'
+                : 'accessible tablets'}{' '}
               across {summary.findspotCount}{' '}
               {summary.findspotCount === 1 ? 'findspot' : 'findspots'}.
             </p>
@@ -61,7 +62,7 @@ export default function MapSelectedAreaCard({
                   <Link
                     to={buildFindspotFragmentSearchLink(findspot.findspotId)}
                   >
-                    {findspot.area ?? 'Findspot ' + findspot.findspotId} (
+                    {findspotLabel(findspot)} (
                     {findspot.accessibleFragmentCount})
                   </Link>
                 </li>
