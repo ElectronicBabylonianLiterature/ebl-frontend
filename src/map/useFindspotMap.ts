@@ -13,14 +13,10 @@ import type {
 } from 'maplibre-gl'
 import { ProvenanceRecord } from 'fragmentarium/domain/Provenance'
 import { createFindspotPopup } from 'map/createFindspotPopup'
+import { focusFindspot } from 'map/focusFindspot'
 import { getPopupProperties } from 'map/findspotPopupProperties'
 import { getFeaturePointCoordinates } from 'map/pointCoordinates'
-import {
-  INTERACTIVE_LAYER_IDS,
-  resetPointerCursor,
-  setPointerCursor,
-  showPointerCursor,
-} from 'map/mapCursor'
+import { subscribeFindspotMapEvents } from 'map/mapFindspotEvents'
 import {
   MAP_STYLE_LOAD_EVENT,
   SOURCE_ID,
@@ -30,15 +26,11 @@ import {
 import { initializeFindspotSource } from 'map/mapFindspotSource'
 import { INITIAL_CENTER, INITIAL_ZOOM } from 'map/mapCamera'
 import { queryFindspotFeatures } from 'map/mapFeatureQuery'
-import {
-  MAP_STYLE_URL,
-  type MapLibreErrorEvent,
-  getReportableMapError,
-  isMapBackgroundLoadError,
-} from 'map/mapBackgroundError'
+import { MAP_STYLE_URL } from 'map/mapBackgroundError'
 
 interface FindspotMapHandlers {
   isActive: () => boolean
+  provenances: () => readonly ProvenanceRecord[] | null
   navigate: (path: string) => void
   reportError: (error: Error) => void
 }
@@ -68,7 +60,7 @@ function expandCluster(
     .getClusterExpansionZoom(clusterId)
     .then(easeToClusterCenter)
     .catch((error: Error) => {
-      handlers.reportError(error)
+      if (handlers.isActive()) handlers.reportError(error)
       easeToClusterCenter()
     })
 }
@@ -76,7 +68,7 @@ function expandCluster(
 function openFindspotPopup(
   map: MapLibreMap,
   feature: MapGeoJSONFeature,
-  navigate: (path: string) => void,
+  handlers: FindspotMapHandlers,
 ): void {
   const coordinates = getFeaturePointCoordinates(feature)
   if (!coordinates) return
@@ -84,9 +76,15 @@ function openFindspotPopup(
   const popupProperties = getPopupProperties(feature, coordinates)
   if (!popupProperties) return
 
+  focusFindspot(
+    map,
+    coordinates,
+    handlers.provenances()?.find(({ id }) => id === feature.properties?.id),
+  )
+
   new maplibregl.Popup()
     .setLngLat(coordinates)
-    .setDOMContent(createFindspotPopup(popupProperties, navigate))
+    .setDOMContent(createFindspotPopup(popupProperties, handlers.navigate))
     .addTo(map)
 }
 
@@ -105,7 +103,7 @@ function handleMapClick(
     unclusteredLayer.id,
   ])
   if (findspot) {
-    openFindspotPopup(map, findspot, handlers.navigate)
+    openFindspotPopup(map, findspot, handlers)
   }
 }
 
@@ -155,8 +153,10 @@ export default function useFindspotMap(
     mapRef.current = map
     map.addControl(new maplibregl.NavigationControl(), 'top-right')
     let isActive = true
+    let clickVersion = 0
     const handlers: FindspotMapHandlers = {
-      isActive: () => isActive,
+      isActive: () => isActive && mapRef.current === map,
+      provenances: () => latestProvenancesRef.current,
       navigate: (path) => latestServicesRef.current.history.push(path),
       reportError: (error) =>
         latestServicesRef.current.errorReporter.captureException(error),
@@ -176,43 +176,25 @@ export default function useFindspotMap(
         )
       }
     }
-    const handleClick = (event: MapMouseEvent) =>
-      handleMapClick(map, event, handlers)
-    const handleMouseMove = (event: MapMouseEvent) =>
-      setPointerCursor(map, event)
-    const handleMouseEnter = () => showPointerCursor(map)
-    const handleMouseLeave = () => resetPointerCursor(map)
-    const handleError = (event: MapLibreErrorEvent) => {
-      if (isMapBackgroundLoadError(event)) {
-        onMapBackgroundErrorChange?.(true)
-        return
-      }
-      const reportableError = getReportableMapError(event)
-      if (reportableError) {
-        handlers.reportError(reportableError)
-      }
-    }
-
-    map.on(MAP_STYLE_LOAD_EVENT, handleStyleLoad)
-    if (map.getStyle()) handleStyleLoad()
-    map.on('click', handleClick)
-    map.on('mousemove', handleMouseMove)
-    map.on('error', handleError)
-    INTERACTIVE_LAYER_IDS.forEach((layerId) => {
-      map.on('mouseenter', layerId, handleMouseEnter)
-      map.on('mouseleave', layerId, handleMouseLeave)
+    const unsubscribe = subscribeFindspotMapEvents(map, MAP_STYLE_LOAD_EVENT, {
+      isActive: handlers.isActive,
+      onStyleLoad: handleStyleLoad,
+      onClick: (event) => {
+        const currentClickVersion = ++clickVersion
+        handleMapClick(map, event, {
+          ...handlers,
+          isActive: () =>
+            handlers.isActive() && currentClickVersion === clickVersion,
+        })
+      },
+      reportError: handlers.reportError,
+      onBackgroundErrorChange: onMapBackgroundErrorChange,
     })
+    if (map.getStyle()) handleStyleLoad()
 
     return () => {
       isActive = false
-      map.off(MAP_STYLE_LOAD_EVENT, handleStyleLoad)
-      map.off('click', handleClick)
-      map.off('mousemove', handleMouseMove)
-      map.off('error', handleError)
-      INTERACTIVE_LAYER_IDS.forEach((layerId) => {
-        map.off('mouseenter', layerId, handleMouseEnter)
-        map.off('mouseleave', layerId, handleMouseLeave)
-      })
+      unsubscribe()
       map.remove()
       mapRef.current = null
     }

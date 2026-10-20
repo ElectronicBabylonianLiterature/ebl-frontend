@@ -15,9 +15,9 @@ import MapCompletenessNote from 'map/MapCompletenessNote'
 const MODE_LABELS: Readonly<Record<MapVisualizationMode, string>> = {
   mapped: 'Mapped status',
   evidence: 'Mapping evidence',
-  count: 'Accessible fragments',
-  log: 'Accessible fragments (log)',
-  density: 'Fragments per km²',
+  count: 'Accessible tablets',
+  log: 'Accessible tablets (log)',
+  density: 'Tablets per km²',
 }
 
 export function visualizationModeLabel(mode: MapVisualizationMode): string {
@@ -65,7 +65,7 @@ export default function MapVisualizationControl({
       <p className="map-visualization__unit">{legend.unit}</p>
       {hasUnavailableData ? (
         <p className="map-visualization__caveat" role="status">
-          Some excavation areas are not classified because their linked fragment
+          Some excavation areas are not classified because their linked tablet
           data is loading or unavailable.
         </p>
       ) : null}
@@ -85,12 +85,12 @@ export default function MapVisualizationControl({
         <p className="map-visualization__empty" role="status">
           {mode === 'density'
             ? 'No positive classifiable density values are available.'
-            : 'No positive accessible fragment values are available to classify.'}
+            : 'No positive accessible tablet values are available to classify.'}
         </p>
       ) : null}
       {mode === 'density' ? (
         <p className="map-visualization__caveat">
-          Density is fragments per square kilometre of excavation area. It
+          Density is tablets per square kilometre of excavation area. It
           describes association with a mapped excavation area, not the density
           of exact findspot points. {DENSITY_UNAVAILABLE_NOTE}
         </p>

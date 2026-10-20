@@ -1,3 +1,4 @@
+import { createMapMock } from 'test-support/maplibre-map-helpers'
 import {
   MockLngLatBounds,
   MockPopup,
@@ -11,6 +12,7 @@ import { MAP_STYLE_LOAD_EVENT } from 'map/mapLayers'
 export * from 'map/mapLibreMockObjects.testSupport'
 export * from 'map/mapLibreMockEvents.testSupport'
 
+const mockMapMethods = createMapMock()
 const addedLayerIds = new Set<string>()
 function rememberAddedLayer(layer: { id: string }): void {
   addedLayerIds.add(layer.id)
@@ -18,31 +20,36 @@ function rememberAddedLayer(layer: { id: string }): void {
 function findAddedLayer(layerId: string): { id: string } | undefined {
   return addedLayerIds.has(layerId) ? { id: layerId } : undefined
 }
-export const mockAddSource = jest.fn()
-export const mockAddLayer = jest.fn(rememberAddedLayer)
-export const mockGetLayer = jest.fn(findAddedLayer)
-export const mockRemoveLayer = jest.fn((layerId: string) => {
-  addedLayerIds.delete(layerId)
-})
-export const mockRemoveSource = jest.fn()
-export const mockSetLayoutProperty = jest.fn()
-export const mockSetPaintProperty = jest.fn()
+export const mockAddSource = mockMapMethods.addSource
+export const mockAddLayer =
+  mockMapMethods.addLayer.mockImplementation(rememberAddedLayer)
+export const mockGetLayer =
+  mockMapMethods.getLayer.mockImplementation(findAddedLayer)
+export const mockRemoveLayer = mockMapMethods.removeLayer.mockImplementation(
+  (layerId: string) => {
+    addedLayerIds.delete(layerId)
+  },
+)
+export const mockRemoveSource = mockMapMethods.removeSource
+export const mockSetLayoutProperty = mockMapMethods.setLayoutProperty
+export const mockSetPaintProperty = mockMapMethods.setPaintProperty
 export const mockSetFeatureState = jest.fn()
-export const mockIsStyleLoaded = jest.fn(() => true)
+export const mockIsStyleLoaded = mockMapMethods.isStyleLoaded
 export const mockGetStyle = jest.fn<object | undefined, []>(() => ({}))
-export const mockOnce = jest.fn()
+export const mockOnce = mockMapMethods.once
 export const mockAddControl = jest.fn()
-export const mockRemove = jest.fn()
-export const mockGetSource = jest.fn()
+export const mockRemove = mockMapMethods.remove
+export const mockGetSource = mockMapMethods.getSource
 export const mockCanvas = document.createElement('canvas')
 export const mockGetCanvas = jest.fn<HTMLCanvasElement, []>(() => mockCanvas)
-export const mockOn = jest.fn()
-export const mockOff = jest.fn()
-export const mockFitBounds = jest.fn()
-export const mockSetPadding = jest.fn()
+export const mockOn = mockMapMethods.on
+export const mockOff = mockMapMethods.off
+export const mockFitBounds = mockMapMethods.fitBounds
+export const mockSetPadding = mockMapMethods.setPadding
 export const mockSetData = jest.fn()
 export const mockQueryRenderedFeatures = jest.fn<unknown[], unknown[]>(() => [])
-export const mockEaseTo = jest.fn()
+export const mockEaseTo = mockMapMethods.easeTo
+export const mockGetZoom = jest.fn(() => 5)
 export const mockGetClusterExpansionZoom = jest.fn()
 export const setWorkerUrl = jest.fn()
 const mockEventHandlers: Record<string, MockEventHandler[]> = {}
@@ -50,28 +57,15 @@ let mockLoadImmediately = true
 let mockMapConstructionError: unknown = null
 
 export const mockMapInstance = {
-  addSource: mockAddSource,
-  addLayer: mockAddLayer,
-  getLayer: mockGetLayer,
-  removeLayer: mockRemoveLayer,
-  removeSource: mockRemoveSource,
-  setLayoutProperty: mockSetLayoutProperty,
-  setPaintProperty: mockSetPaintProperty,
+  ...mockMapMethods,
   setFeatureState: mockSetFeatureState,
-  isStyleLoaded: mockIsStyleLoaded,
   getStyle: mockGetStyle,
-  once: mockOnce,
   addControl: mockAddControl,
-  remove: mockRemove,
-  getSource: mockGetSource,
   getCanvas: mockGetCanvas,
-  on: mockOn,
-  off: mockOff,
-  fitBounds: mockFitBounds,
-  setPadding: mockSetPadding,
   queryRenderedFeatures: queryRenderedFeaturesFromStyle,
-  easeTo: mockEaseTo,
+  getZoom: mockGetZoom,
 }
+
 function eventKey(event: string, layerId?: string): string {
   return layerId ? `${event}:${layerId}` : event
 }
@@ -166,6 +160,7 @@ export function resetMapMocks(): void {
   mockGetSource.mockReturnValue(undefined)
   mockIsStyleLoaded.mockReturnValue(true)
   mockGetStyle.mockReturnValue({})
+  mockGetZoom.mockReturnValue(5)
   mockQueryRenderedFeatures.mockReturnValue([])
   mockAddLayer.mockImplementation(rememberAddedLayer)
   mockGetLayer.mockImplementation(findAddedLayer)

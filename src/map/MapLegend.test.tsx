@@ -28,9 +28,7 @@ describe('MapLegend', () => {
 
     expect(toggle).toHaveAttribute('aria-expanded', 'true')
     const body = screen.getByLabelText('Map legend')
-    expect(body).toHaveTextContent(
-      'Linked fragment data unavailable or loading',
-    )
+    expect(body).toHaveTextContent('Linked tablet data unavailable or loading')
     expect(body).toHaveTextContent('No mapped findspot')
     expect(body).toHaveTextContent('Verified-source mapping')
     expect(body).toHaveTextContent('Curated mapping')
@@ -82,7 +80,7 @@ describe('MapLegend', () => {
     await userEvent.click(screen.getByRole('button', { name: 'Legend' }))
 
     const body = screen.getByLabelText('Map legend')
-    expect(body).toHaveTextContent('Mapped with accessible fragments')
+    expect(body).toHaveTextContent('Mapped with accessible tablets')
     expect(body).not.toHaveTextContent('Curated mapping')
   })
 })
