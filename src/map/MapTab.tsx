@@ -9,14 +9,13 @@ import MapStage from 'map/MapStage'
 import MapPanelDock from 'map/MapPanelDock'
 import MapExperienceHeader from 'map/MapExperienceHeader'
 import MapPresentationBar from 'map/MapPresentationBar'
-import MapLayerControls from 'map/MapLayerControls'
+import MapLayerPanel from 'map/MapLayerPanel'
 import MapInspector from 'map/MapInspector'
 import MapLegend from 'map/MapLegend'
 import MapVisualizationControl from 'map/MapVisualizationControl'
 import MapMeasurePanel from 'map/MapMeasurePanel'
 import MapSpatialSearchPanel from 'map/MapSpatialSearchPanel'
 import MapSelectionPill from 'map/MapSelectionPill'
-import MapExcavationAreaSelector from 'map/MapExcavationAreaSelector'
 import { findMapSite, isMapSiteId } from 'map/mapSites'
 import type { MapPanelDefinition } from 'map/MapToolbar'
 import FindspotFilterInput from 'map/FindspotFilterInput'
@@ -121,20 +120,7 @@ function LoadedMapTab({
       label: 'Map layers',
       isSupported: true,
       render: () => (
-        <>
-          <MapLayerControls
-            showExcavationAreas={state.showExcavationAreas}
-            canShowExcavationAreas={state.canShowExcavationAreas}
-            onShowExcavationAreasChange={experience.setShowExcavationAreas}
-          />
-          <MapExcavationAreaSelector
-            polygons={state.excavationPolygons}
-            selectedPolygonId={selectedPolygon?.polygonId ?? null}
-            onSelect={(polygonId) =>
-              polygonId ? state.selectPolygon(polygonId) : clearSelection()
-            }
-          />
-        </>
+        <MapLayerPanel state={state} clearSelection={clearSelection} />
       ),
     },
   ]
