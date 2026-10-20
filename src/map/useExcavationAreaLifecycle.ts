@@ -1,13 +1,37 @@
 import { useEffect, useRef, type MutableRefObject } from 'react'
 import type { Map as MapLibreMap, MapMouseEvent } from 'maplibre-gl'
-import type { MapLibreErrorEvent } from 'map/mapBackgroundError'
+import { observeExcavationAvailability } from 'map/mapExcavationAvailability'
+import { MAP_STYLE_LOAD_EVENT } from 'map/mapLayers'
+import {
+  EXCAVATION_AREA_LAYER_IDS,
+  EXCAVATION_AREA_SELECTED_LAYER_ID,
+} from 'map/mapExcavationLayers'
 import {
   addExcavationAreas,
-  isExcavationAreaError,
   removeExcavationAreas,
 } from 'map/excavationAreaMap'
 import type { ExcavationAreaOptions } from 'map/excavationAreaOptions'
 import { EXCAVATION_AREA_FILL_LAYER_ID } from 'map/mapLayerIds'
+
+function createPolygonClickHandler(
+  map: MapLibreMap,
+  latestOptionsRef: MutableRefObject<ExcavationAreaOptions>,
+  isCurrentMap: () => boolean,
+): (event: MapMouseEvent) => void {
+  return (event) => {
+    if (
+      !isCurrentMap() ||
+      latestOptionsRef.current.isInteractionEnabled === false
+    )
+      return
+    const [feature] = map.queryRenderedFeatures(event.point, {
+      layers: [EXCAVATION_AREA_FILL_LAYER_ID],
+    })
+    if (typeof feature?.id === 'string') {
+      latestOptionsRef.current.onSelectPolygon(feature.id)
+    }
+  }
+}
 
 export default function useExcavationAreaLifecycle(
   mapRef: MutableRefObject<MapLibreMap | null>,
@@ -20,34 +44,35 @@ export default function useExcavationAreaLifecycle(
     const map = mapRef.current
     if (!map) return
 
-    const isCurrentMap = (): boolean => mapRef.current === map
-    const install = (): void => addExcavationAreas(map)
-    const handleError = (event: MapLibreErrorEvent): void => {
-      if (isExcavationAreaError(event)) {
-        latestOptionsRef.current.onAvailabilityChange?.(true)
-      }
+    let isActive = true
+    const ownsMap = (): boolean => mapRef.current === map
+    const isCurrentMap = (): boolean => isActive && ownsMap()
+    const install = (): void => {
+      if (isCurrentMap()) addExcavationAreas(map)
     }
-    const handleClick = (event: MapMouseEvent): void => {
-      if (latestOptionsRef.current.isInteractionEnabled === false) return
-      const [feature] = map.queryRenderedFeatures(event.point, {
-        layers: [EXCAVATION_AREA_FILL_LAYER_ID],
-      })
-      if (typeof feature?.id === 'string') {
-        latestOptionsRef.current.onSelectPolygon(feature.id)
-      }
-    }
+    const handleClick = createPolygonClickHandler(
+      map,
+      latestOptionsRef,
+      isCurrentMap,
+    )
 
-    map.on('error', handleError)
+    const stopObservingAvailability = observeExcavationAvailability(
+      map,
+      [...EXCAVATION_AREA_LAYER_IDS, EXCAVATION_AREA_SELECTED_LAYER_ID],
+      (unavailable) =>
+        latestOptionsRef.current.onAvailabilityChange?.(unavailable),
+      isCurrentMap,
+    )
     map.on('click', EXCAVATION_AREA_FILL_LAYER_ID, handleClick)
-    if (map.isStyleLoaded()) install()
-    else map.once('load', install)
+    map.on(MAP_STYLE_LOAD_EVENT, install)
+    if (map.getStyle()) install()
 
     return () => {
-      if (!isCurrentMap()) return
-      map.off('error', handleError)
-      map.off('load', install)
+      isActive = false
+      stopObservingAvailability()
+      map.off(MAP_STYLE_LOAD_EVENT, install)
       map.off('click', EXCAVATION_AREA_FILL_LAYER_ID, handleClick)
-      removeExcavationAreas(map)
+      if (ownsMap()) removeExcavationAreas(map)
     }
   }, [mapRef])
 }

@@ -1,104 +1,86 @@
+import { createMapMock } from 'test-support/maplibre-map-helpers'
+import * as mockLayers from 'map/mapLibreMockLayers.testSupport'
 import {
-  mockGetBounds,
-  mockGetCenter,
-  type MockErrorEvent,
-  type MockEventHandler,
-  type MockMapEvent,
+  MockLngLatBounds,
+  MockPopup,
+} from 'map/mapLibreMockObjects.testSupport'
+import type {
+  MockErrorEvent,
+  MockEventHandler,
+  MockMapEvent,
 } from 'map/mapLibreMockEvents.testSupport'
-import { createMapLibreTestDouble } from 'map/mapLibreTestDouble.testSupport'
+import { MAP_STYLE_LOAD_EVENT } from 'map/mapLayers'
+import {
+  mockGetCenter,
+  mockGetBounds,
+} from 'map/mapLibreMockEvents.testSupport'
+export { markLayersAdded } from 'map/mapLibreMockLayers.testSupport'
+export * from 'map/mapLibreMockObjects.testSupport'
 export * from 'map/mapLibreMockEvents.testSupport'
-const addedLayerIds = new Set<string>()
-function rememberAddedLayer(layer: { id: string }): void {
-  addedLayerIds.add(layer.id)
-}
-function findAddedLayer(layerId: string): { id: string } | undefined {
-  return addedLayerIds.has(layerId) ? { id: layerId } : undefined
-}
-export const mockAddSource = jest.fn()
-export const mockAddLayer = jest.fn(rememberAddedLayer)
-export const mockGetLayer = jest.fn(findAddedLayer)
-export const mockRemoveLayer = jest.fn((layerId: string) => {
-  addedLayerIds.delete(layerId)
-})
-export const mockRemoveSource = jest.fn()
-export const mockSetLayoutProperty = jest.fn()
-export const mockSetPaintProperty = jest.fn()
+
+const mockMapMethods = createMapMock()
+export const mockAddSource = mockMapMethods.addSource
+export const mockAddLayer = mockMapMethods.addLayer.mockImplementation(
+  mockLayers.rememberAddedLayer,
+)
+export const mockGetLayer = mockMapMethods.getLayer.mockImplementation(
+  mockLayers.findAddedLayer,
+)
+export const mockRemoveLayer = mockMapMethods.removeLayer.mockImplementation(
+  mockLayers.forgetAddedLayer,
+)
+export const mockRemoveSource = mockMapMethods.removeSource
+export const mockSetLayoutProperty = mockMapMethods.setLayoutProperty
+export const mockSetTerrain = mockMapMethods.setTerrain
+export const mockResize = mockMapMethods.resize
+export const mockSetPaintProperty = mockMapMethods.setPaintProperty
 export const mockSetFeatureState = jest.fn()
-export const mockIsStyleLoaded = jest.fn(() => true)
-export const mockOnce = jest.fn()
+export const mockIsStyleLoaded = mockMapMethods.isStyleLoaded
+export const mockGetStyle = jest.fn<object | undefined, []>(() => ({}))
+export const mockOnce = mockMapMethods.once
 export const mockAddControl = jest.fn()
-export const mockRemove = jest.fn()
-export const mockGetSource = jest.fn()
+export const mockRemove = mockMapMethods.remove
+export const mockGetSource = mockMapMethods.getSource
 export const mockCanvas = document.createElement('canvas')
 export const mockGetCanvas = jest.fn<HTMLCanvasElement, []>(() => mockCanvas)
-export const mockOn = jest.fn()
-export const mockOff = jest.fn()
-export const mockFitBounds = jest.fn()
-export const mockSetPadding = jest.fn()
+export const mockOn = mockMapMethods.on
+export const mockOff = mockMapMethods.off
+export const mockFitBounds = mockMapMethods.fitBounds
+export const mockSetPadding = mockMapMethods.setPadding
 export const mockSetData = jest.fn()
 export const mockQueryRenderedFeatures = jest.fn<unknown[], unknown[]>(() => [])
-export const mockEaseTo = jest.fn()
+export const mockEaseTo = mockMapMethods.easeTo
+export const mockGetZoom = jest.fn(() => 5)
 export const mockGetClusterExpansionZoom = jest.fn()
-export const mockSetLngLat = jest.fn()
-export const mockSetDOMContent = jest.fn()
-export const mockSetHTML = jest.fn()
-export const mockPopupAddTo = jest.fn()
-export const mockBoundsExtend = jest.fn()
+export const setWorkerUrl = jest.fn()
 const mockEventHandlers: Record<string, MockEventHandler[]> = {}
 let mockLoadImmediately = true
 let mockMapConstructionError: unknown = null
-export const mockMapInstance = Object.assign(
-  {
-    addSource: mockAddSource,
-    addLayer: mockAddLayer,
-    getLayer: mockGetLayer,
-    removeLayer: mockRemoveLayer,
-    removeSource: mockRemoveSource,
-    setLayoutProperty: mockSetLayoutProperty,
-    setPaintProperty: mockSetPaintProperty,
-  },
-  {
-    setFeatureState: mockSetFeatureState,
-    isStyleLoaded: mockIsStyleLoaded,
-    once: mockOnce,
-    addControl: mockAddControl,
-    remove: mockRemove,
-    getSource: mockGetSource,
-    getCanvas: mockGetCanvas,
-  },
-  {
-    getCenter: mockGetCenter,
-    getBounds: mockGetBounds,
-    on: mockOn,
-    off: mockOff,
-    fitBounds: mockFitBounds,
-    setPadding: mockSetPadding,
-    queryRenderedFeatures: queryRenderedFeaturesFromStyle,
-    easeTo: mockEaseTo,
-  },
-)
-function eventKey(event: string, layerId?: string): string {
-  return layerId ? `${event}:${layerId}` : event
+
+export const mockMapInstance = {
+  ...mockMapMethods,
+  setFeatureState: mockSetFeatureState,
+  getStyle: mockGetStyle,
+  addControl: mockAddControl,
+  getCanvas: mockGetCanvas,
+  queryRenderedFeatures: queryRenderedFeaturesFromStyle,
+  getZoom: mockGetZoom,
+  getCenter: mockGetCenter,
+  getBounds: mockGetBounds,
 }
 
-function eventRegistration(
-  event: string,
-  layerOrCallback: string | MockEventHandler,
-  callback?: MockEventHandler,
-): { readonly key: string; readonly handler: MockEventHandler } {
-  const layerId =
-    typeof layerOrCallback === 'string' ? layerOrCallback : undefined
-  return {
-    key: eventKey(event, layerId),
-    handler: (callback ?? layerOrCallback) as MockEventHandler,
-  }
+function eventKey(event: string, layerId?: string): string {
+  return layerId ? `${event}:${layerId}` : event
 }
 function fireMapEvent(
   event: string,
   eventPayload?: MockMapEvent | MockErrorEvent,
   layerId?: string,
 ): void {
-  if (event === 'load') mockIsStyleLoaded.mockReturnValue(true)
+  if (event === 'load' || event === MAP_STYLE_LOAD_EVENT) {
+    mockIsStyleLoaded.mockReturnValue(true)
+    mockGetStyle.mockReturnValue({})
+  }
   mockEventHandlers[eventKey(event, layerId)]?.forEach((handler) =>
     handler(eventPayload),
   )
@@ -109,7 +91,7 @@ function queryRenderedFeaturesFromStyle(
   options?: { layers?: readonly string[] },
 ): unknown[] {
   const missingLayerId = options?.layers?.find(
-    (layerId) => !addedLayerIds.has(layerId),
+    (layerId) => !mockLayers.isLayerAdded(layerId),
   )
   if (missingLayerId !== undefined) {
     fireMapEvent('error', {
@@ -123,8 +105,9 @@ function queryRenderedFeaturesFromStyle(
   return mockQueryRenderedFeatures(point, options)
 }
 
-export function markLayersAdded(...layerIds: readonly string[]): void {
-  layerIds.forEach((layerId) => addedLayerIds.add(layerId))
+export function clearMockStyleResources(): void {
+  mockLayers.clearAddedLayers()
+  mockGetSource.mockReturnValue(undefined)
 }
 
 function rememberHandler(
@@ -132,16 +115,31 @@ function rememberHandler(
   layerOrCallback: string | MockEventHandler,
   callback?: MockEventHandler,
 ): void {
-  const { key, handler } = eventRegistration(event, layerOrCallback, callback)
+  const layerId =
+    typeof layerOrCallback === 'string' ? layerOrCallback : undefined
+  const handler = (callback ?? layerOrCallback) as MockEventHandler
+  const key = eventKey(event, layerId)
   mockEventHandlers[key] = [...(mockEventHandlers[key] ?? []), handler]
   if (event === 'load' && mockLoadImmediately) {
     handler()
   }
 }
 
+class MockMap {
+  constructor() {
+    if (mockMapConstructionError) {
+      throw mockMapConstructionError
+    }
+    return mockMapInstance
+  }
+}
+
+const NavigationControl = jest.fn()
+
 export function deferMapLoad(): void {
   mockLoadImmediately = false
   mockIsStyleLoaded.mockReturnValue(false)
+  mockGetStyle.mockReturnValue(undefined)
 }
 
 export function failMapConstruction(error: unknown): void {
@@ -166,11 +164,15 @@ export function resetMapMocks(): void {
   Object.keys(mockEventHandlers).forEach((event) => {
     delete mockEventHandlers[event]
   })
-  addedLayerIds.clear()
+  mockLayers.clearAddedLayers()
   mockCanvas.style.cursor = ''
   mockLoadImmediately = true
   mockMapConstructionError = null
   mockGetCanvas.mockReturnValue(mockCanvas)
+  mockGetSource.mockReturnValue(undefined)
+  mockIsStyleLoaded.mockReturnValue(true)
+  mockGetStyle.mockReturnValue({})
+  mockGetZoom.mockReturnValue(5)
   mockGetCenter.mockReturnValue({ lng: 43.25, lat: 35.45 })
   mockGetBounds.mockReturnValue({
     getWest: () => 43,
@@ -178,11 +180,9 @@ export function resetMapMocks(): void {
     getEast: () => 44,
     getNorth: () => 36,
   })
-  mockGetSource.mockReturnValue(undefined)
-  mockIsStyleLoaded.mockReturnValue(true)
   mockQueryRenderedFeatures.mockReturnValue([])
-  mockAddLayer.mockImplementation(rememberAddedLayer)
-  mockGetLayer.mockImplementation(findAddedLayer)
+  mockAddLayer.mockImplementation(mockLayers.rememberAddedLayer)
+  mockGetLayer.mockImplementation(mockLayers.findAddedLayer)
   mockOn.mockImplementation(
     (
       event: string,
@@ -211,11 +211,10 @@ export function resetMapMocks(): void {
       layerOrCallback: string | MockEventHandler,
       callback?: MockEventHandler,
     ) => {
-      const { key, handler } = eventRegistration(
-        event,
-        layerOrCallback,
-        callback,
-      )
+      const layerId =
+        typeof layerOrCallback === 'string' ? layerOrCallback : undefined
+      const handler = (callback ?? layerOrCallback) as MockEventHandler
+      const key = eventKey(event, layerId)
       mockEventHandlers[key] = (mockEventHandlers[key] ?? []).filter(
         (candidate) =>
           candidate !== handler && candidate.originalHandler !== handler,
@@ -233,14 +232,18 @@ export function triggerMapEvent(
   fireMapEvent(event, eventPayload, layerId)
 }
 
-const maplibregl = createMapLibreTestDouble({
-  mapInstance: mockMapInstance,
-  constructionError: () => mockMapConstructionError,
-  boundsExtend: mockBoundsExtend,
-  setLngLat: mockSetLngLat,
-  setDOMContent: mockSetDOMContent,
-  setHTML: mockSetHTML,
-  addPopupTo: mockPopupAddTo,
-})
+const maplibregl = {
+  Map: MockMap,
+  NavigationControl,
+  LngLatBounds: MockLngLatBounds,
+  Popup: MockPopup,
+  setWorkerUrl,
+}
 
+export {
+  MockMap as Map,
+  NavigationControl,
+  MockLngLatBounds as LngLatBounds,
+  MockPopup as Popup,
+}
 export default maplibregl

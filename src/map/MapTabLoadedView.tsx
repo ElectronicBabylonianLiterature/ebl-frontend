@@ -97,7 +97,7 @@ export default function MapTabLoadedView({
       >
         {isPresenting
           ? 'Interactive findspot map in presentation mode.'
-          : 'Matching fragment search links are available below the map.'}
+          : 'Matching tablet search links are available below the map.'}
       </p>
       {isPresenting ? null : (
         <>

@@ -1,6 +1,8 @@
 import React from 'react'
 import { Button } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
+import { findspotLabel } from 'map/findspotLabel'
+import type { FindspotMapData } from 'map/findspotMapData'
 import { buildFindspotFragmentSearchLink } from 'map/mapLinks'
 import { spatialSearchDescription } from 'map/spatialSearch'
 import type { SpatialSearchController } from 'map/useMapSpatialSearch'
@@ -9,6 +11,7 @@ const MAX_LISTED_FINDSPOTS = 25
 
 interface Props {
   readonly spatialSearch: SpatialSearchController
+  readonly findspots: readonly FindspotMapData[]
 }
 
 function resultDescription(spatialSearch: SpatialSearchController): string {
@@ -23,13 +26,17 @@ function resultDescription(spatialSearch: SpatialSearchController): string {
       : prompt
   }
 
-  return `${spatialSearchDescription(shape)}: ${result.polygonIds.length} excavation areas; ${result.availablePolygonCount} with data available, ${result.loadingPolygonCount} loading, ${result.unavailablePolygonCount} unavailable. ${result.mappedPolygonCount} with mapped findspots, ${result.findspotIds.length} mapped findspots, ${result.accessibleFragmentCount} accessible fragments.`
+  return `${spatialSearchDescription(shape)}: ${result.polygonIds.length} excavation areas; ${result.availablePolygonCount} with data available, ${result.loadingPolygonCount} loading, ${result.unavailablePolygonCount} unavailable. ${result.mappedPolygonCount} with mapped findspots, ${result.findspotIds.length} mapped findspots, ${result.accessibleFragmentCount} accessible tablets.`
 }
 
 export default function MapSpatialSearchPanel({
   spatialSearch,
+  findspots,
 }: Props): JSX.Element {
   const { shape, result, isDrawing } = spatialSearch
+  const findspotsById = new Map(
+    findspots.map((findspot) => [findspot.findspotId, findspot]),
+  )
 
   return (
     <div className="map-tool-panel">
@@ -85,14 +92,14 @@ export default function MapSpatialSearchPanel({
       {shape === null ? null : (
         <>
           <p className="map-tool-panel__note">
-            Fragments are associated with an excavation area, not an exact
+            Tablets are associated with an excavation area, not an exact
             findspot coordinate.
           </p>
           <ul className="map-tool-panel__findspots">
             {result.findspotIds.slice(0, MAX_LISTED_FINDSPOTS).map((id) => (
               <li key={id}>
                 <Link to={buildFindspotFragmentSearchLink(id)}>
-                  Fragments from findspot {id}
+                  Tablets from {findspotLabel(findspotsById.get(id) ?? {})}
                 </Link>
               </li>
             ))}
@@ -100,8 +107,8 @@ export default function MapSpatialSearchPanel({
           {result.findspotIds.length > MAX_LISTED_FINDSPOTS ? (
             <p className="map-tool-panel__note">
               Showing the first {MAX_LISTED_FINDSPOTS} of{' '}
-              {result.findspotIds.length} mapped findspots. A combined
-              multi-findspot query needs a verified backend contract.
+              {result.findspotIds.length} mapped findspots. Open each location
+              to browse its tablets.
             </p>
           ) : null}
         </>

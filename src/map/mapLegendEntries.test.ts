@@ -28,7 +28,7 @@ describe('classLabel', () => {
 describe('mapLegendEntries', () => {
   it('describes the evidence states', () => {
     expect(labelsFor('evidence')).toEqual([
-      'Linked fragment data unavailable or loading',
+      'Linked tablet data unavailable or loading',
       'No mapped findspot',
       'Verified-source mapping',
       'Curated mapping',
@@ -39,10 +39,10 @@ describe('mapLegendEntries', () => {
 
   it('describes the mapped-status states', () => {
     expect(labelsFor('mapped')).toEqual([
-      'Linked fragment data unavailable or loading',
+      'Linked tablet data unavailable or loading',
       'No mapped findspot',
-      'Mapped, zero accessible fragments',
-      'Mapped with accessible fragments',
+      'Mapped, zero accessible tablets',
+      'Mapped with accessible tablets',
       'Selected area',
     ])
   })
@@ -50,9 +50,9 @@ describe('mapLegendEntries', () => {
   it('lists class ranges around the zero and unmapped states', () => {
     const labels = labelsFor('count', [1, 4, 9, 30])
 
-    expect(labels[0]).toBe('Linked fragment data unavailable or loading')
+    expect(labels[0]).toBe('Linked tablet data unavailable or loading')
     expect(labels[1]).toBe('No mapped findspot')
-    expect(labels[2]).toBe('Zero accessible fragments')
+    expect(labels[2]).toBe('Zero accessible tablets')
     expect(labels[labels.length - 1]).toBe('Selected area')
     expect(labels.length).toBeGreaterThan(4)
 
@@ -71,10 +71,10 @@ describe('mapLegendEntries', () => {
 
   it('still describes the categorical states when nothing can be classified', () => {
     expect(labelsFor('density')).toEqual([
-      'Linked fragment data unavailable or loading',
+      'Linked tablet data unavailable or loading',
       'No mapped findspot',
       'Density unavailable (no usable mapped area)',
-      'Zero accessible fragments per km²',
+      'Zero accessible tablets per km²',
       'Selected area',
     ])
   })
