@@ -125,6 +125,22 @@ jobs:
             echo "::error::The sitemap index sitemap.xml.gz is missing from the artifact."
             exit 1
           fi
+          referenced=$(gzip -dc public/sitemap/sitemap.xml.gz | grep -o '<loc>[^<]*</loc>' | sed -E 's#^<loc>[[:space:]]*##; s#[[:space:]]*</loc>$##; s#.*/##' | sort -u)
+          crawled=$(for file in "${files[@]}"; do basename "$file"; done | grep -vx 'sitemap\.xml\.gz' | sort)
+          if [ -z "$referenced" ]; then
+            echo "::error::The sitemap index sitemap.xml.gz references no sitemap files."
+            exit 1
+          fi
+          missing=$(comm -23 <(printf '%s\n' "$referenced") <(printf '%s\n' "$crawled"))
+          unreferenced=$(comm -13 <(printf '%s\n' "$referenced") <(printf '%s\n' "$crawled"))
+          if [ -n "$missing" ]; then
+            echo "::error::The sitemap index references files missing from the artifact: ${missing//$'\n'/ }"
+            exit 1
+          fi
+          if [ -n "$unreferenced" ]; then
+            echo "::error::The artifact has files the sitemap index does not reference: ${unreferenced//$'\n'/ }"
+            exit 1
+          fi
           if [ "${#files[@]}" -lt "$COMMITTED_COUNT" ]; then
             echo "::error::The artifact has ${#files[@]} sitemap files, expected at least $COMMITTED_COUNT."
             exit 1
