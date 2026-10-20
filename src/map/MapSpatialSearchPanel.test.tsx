@@ -3,6 +3,8 @@ import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { MemoryRouter } from 'react-router-dom'
 import MapSpatialSearchPanel from 'map/MapSpatialSearchPanel'
+import type { FindspotMapData } from 'map/findspotMapData'
+import { findspotMapDataDto } from 'test-support/map-fixtures'
 import type { SpatialSearchController } from 'map/useMapSpatialSearch'
 
 function controller(
@@ -30,10 +32,16 @@ function controller(
   }
 }
 
-function renderPanel(spatialSearch: SpatialSearchController): void {
+function renderPanel(
+  spatialSearch: SpatialSearchController,
+  findspots: readonly FindspotMapData[] = [],
+): void {
   render(
     <MemoryRouter>
-      <MapSpatialSearchPanel spatialSearch={spatialSearch} />
+      <MapSpatialSearchPanel
+        spatialSearch={spatialSearch}
+        findspots={findspots}
+      />
     </MemoryRouter>,
   )
 }
@@ -126,16 +134,29 @@ describe('MapSpatialSearchPanel', () => {
           unavailablePolygonCount: 1,
         },
       }),
+      [
+        findspotMapDataDto({
+          findspotId: 0,
+          sector: 'Sector A',
+          area: 'Area B',
+          building: 'Temple',
+          room: 'Room C',
+        }),
+      ],
     )
 
     expect(screen.getByRole('status')).toHaveTextContent(
-      'Current map view: 4 excavation areas; 2 with data available, 1 loading, 1 unavailable. 2 with mapped findspots, 2 mapped findspots, 8 accessible fragments.',
+      'Current map view: 4 excavation areas; 2 with data available, 1 loading, 1 unavailable. 2 with mapped findspots, 2 mapped findspots, 8 accessible tablets.',
     )
     expect(
-      screen.getByRole('link', { name: 'Fragments from findspot 0' }),
+      screen.getByRole('link', {
+        name: 'Tablets from Sector A · Area B · Temple · Room C',
+      }),
     ).toHaveAttribute('href', '/library/search?findspotId=0')
     expect(
-      screen.getByRole('link', { name: 'Fragments from findspot 7' }),
+      screen.getByRole('link', {
+        name: 'Tablets from Location details unavailable',
+      }),
     ).toHaveAttribute('href', '/library/search?findspotId=7')
   })
 
@@ -154,11 +175,14 @@ describe('MapSpatialSearchPanel', () => {
           unavailablePolygonCount: 0,
         },
       }),
+      findspotIds.map((findspotId) =>
+        findspotMapDataDto({ findspotId, area: `Area ${findspotId}` }),
+      ),
     )
 
     expect(screen.getAllByRole('link')).toHaveLength(25)
     expect(
-      screen.queryByRole('link', { name: 'Fragments from findspot 25' }),
+      screen.queryByRole('link', { name: 'Tablets from Area 25' }),
     ).not.toBeInTheDocument()
     expect(screen.getByText(/Showing the first 25 of 27/)).toBeVisible()
   })

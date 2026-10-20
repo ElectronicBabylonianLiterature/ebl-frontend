@@ -1,5 +1,8 @@
 import React, { useState } from 'react'
-import { EXCAVATION_AREA_NOTE, FRAGMENT_ACCESS_NOTE } from './mapResearchLabels'
+import {
+  EXCAVATION_AREA_NOTE,
+  FRAGMENT_ACCESS_NOTE,
+} from 'map/mapResearchLabels'
 export default function MapCompletenessNote(): JSX.Element {
   const [isExpanded, setIsExpanded] = useState(false)
 

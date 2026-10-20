@@ -18,13 +18,23 @@ export interface MapExportView {
 
 const EMPTY_SCOPE: MapExportScope = { type: 'viewport', bounds: [] }
 
+interface ExportVisibilityOptions {
+  readonly isLayerVisible: boolean
+  readonly selectedPolygon: ExcavationPolygon | null
+  readonly polygonsById: ReadonlyMap<string, ExcavationPolygon>
+  readonly setVisiblePolygons: (polygons: readonly ExcavationPolygon[]) => void
+  readonly setScope: (scope: MapExportScope) => void
+}
+
 function useMapExportVisibility(
   mapRef: MutableRefObject<MapLibreMap | null>,
-  isLayerVisible: boolean,
-  selectedPolygon: ExcavationPolygon | null,
-  polygonsById: ReadonlyMap<string, ExcavationPolygon>,
-  setVisiblePolygons: (polygons: readonly ExcavationPolygon[]) => void,
-  setScope: (scope: MapExportScope) => void,
+  {
+    isLayerVisible,
+    selectedPolygon,
+    polygonsById,
+    setVisiblePolygons,
+    setScope,
+  }: ExportVisibilityOptions,
 ): void {
   useEffect(() => {
     const map = mapRef.current
@@ -107,14 +117,13 @@ export default function useMapExportView(
     () => new Map(polygons.map((polygon) => [polygon.polygonId, polygon])),
     [polygons],
   )
-  useMapExportVisibility(
-    mapRef,
+  useMapExportVisibility(mapRef, {
     isLayerVisible,
     selectedPolygon,
     polygonsById,
     setVisiblePolygons,
     setScope,
-  )
+  })
 
   const rows = useMemo(
     () => toExportRows(visiblePolygons, fragmentMapData.sites),

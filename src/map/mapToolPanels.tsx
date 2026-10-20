@@ -73,7 +73,10 @@ export default function buildMapToolPanels(
       isSupported:
         state.canShowExcavationAreas && !state.isBackgroundUnavailable,
       render: () => (
-        <MapSpatialSearchPanel spatialSearch={state.spatialSearch} />
+        <MapSpatialSearchPanel
+          spatialSearch={state.spatialSearch}
+          findspots={state.fragmentMapData.findspots}
+        />
       ),
     },
     {

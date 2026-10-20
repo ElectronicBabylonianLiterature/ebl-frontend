@@ -1,3 +1,4 @@
+import { findspotLabel } from 'map/findspotLabel'
 import type { PolygonResearchSummary } from 'map/mapResearchSummary'
 import {
   EXCAVATION_AREA_NOTE,
@@ -61,18 +62,16 @@ export function polygonResearchMarkdown(
       ? []
       : [`Mapped area: ${summary.areaSquareKm.toFixed(3)} km²`]),
     `Mapped findspots: ${summary.mappedFindspotCount}`,
-    `Accessible fragments: ${summary.accessibleFragmentCount}`,
+    `Accessible tablets: ${summary.accessibleFragmentCount}`,
     `Mapping evidence: ${mappingEvidenceShortLabel(summary.mappingEvidence)}`,
     `Location precision: ${locationPrecisionLabel(summary.locationPrecision)}`,
     ...section(
       'Mapped findspots:',
       summary.findspots.map(
         (findspot) =>
-          `Findspot ${findspot.findspotId}${
-            findspot.area === null ? '' : ` (${inline(findspot.area)})`
-          } — ${countLabel(
+          `${inline(findspotLabel(findspot))} — ${countLabel(
             findspot.accessibleFragmentCount,
-            'accessible fragment',
+            'accessible tablet',
           )}`,
       ),
     ),

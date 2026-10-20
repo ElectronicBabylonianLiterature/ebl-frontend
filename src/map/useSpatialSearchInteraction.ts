@@ -36,18 +36,26 @@ export default function useSpatialSearchInteraction(
   useEffect(() => {
     const map = mapRef.current
     if (!map || !isActive) return
+    let isDisposed = false
     const isCurrentMap = (): boolean => mapRef.current === map
+    const isCurrentSubscription = (): boolean => !isDisposed && isCurrentMap()
     const lifecycle = createSpatialSearchLayerLifecycle(map, isCurrentMap)
     layerLifecycleRef.current = lifecycle
     lifecycle.update(refs.drawStart.current, refs.shape.current?.bounds ?? [])
 
     const handleClick = (event: MapMouseEvent): void => {
-      if (!refs.isActive.current || !refs.isDrawing.current) return
+      const shouldIgnore = [
+        !isCurrentSubscription(),
+        !refs.isActive.current,
+        !refs.isDrawing.current,
+      ].some(Boolean)
+      if (shouldIgnore) return
       const position = finitePosition(event.lngLat.lng, event.lngLat.lat)
       if (position) addCorner(position)
     }
     const handleKeyDown = (event: KeyboardEvent): void => {
       const shouldIgnore = [
+        !isCurrentSubscription(),
         !refs.isActive.current,
         !refs.isDrawing.current,
         isEditableTarget(event.target),
@@ -61,9 +69,10 @@ export default function useSpatialSearchInteraction(
     window.addEventListener('keydown', handleKeyDown)
 
     return () => {
+      isDisposed = true
       window.removeEventListener('keydown', handleKeyDown)
       layerLifecycleRef.current = null
-      if (isCurrentMap()) map.off('click', handleClick)
+      map.off('click', handleClick)
       lifecycle.dispose()
     }
   }, [addCorner, clear, isActive, mapRef, refs])

@@ -3,8 +3,8 @@ import type {
   LocationPrecision,
   MatchMethod,
   PolygonFindspotSummary,
-} from './findspotMapData'
-import type { ExcavationPolygon } from './excavationPolygonIndex'
+} from 'map/findspotMapData'
+import type { ExcavationPolygon } from 'map/excavationPolygonIndex'
 export type MappingEvidence =
   | 'verified-source'
   | 'curated'
