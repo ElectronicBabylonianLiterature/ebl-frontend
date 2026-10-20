@@ -1,7 +1,7 @@
 import React from 'react'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import MapInspectorTabs, { type InspectorTab } from './MapInspectorTabs'
+import MapInspectorTabs, { type InspectorTab } from 'map/MapInspectorTabs'
 
 const tabs: readonly InspectorTab[] = [
   { id: 'a', label: 'Overview', render: () => <p>overview body</p> },

@@ -152,9 +152,7 @@ describe('buildExportGeoJson', () => {
       scope: CONTEXT.scope,
       dataStatuses: CONTEXT.dataStatuses,
     })
-    expect(collection.metadata.note).toContain(
-      'not an exact findspot coordinate',
-    )
+    expect(collection.metadata.note).toContain('not exact tablet coordinates')
     expect(collection.metadata.accessNote).toContain('caller-authorized')
     expect(collection.features[0]).toMatchObject({
       id: 'assur-a',

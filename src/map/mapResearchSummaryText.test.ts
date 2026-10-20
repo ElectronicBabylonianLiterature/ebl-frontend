@@ -43,9 +43,31 @@ describe('polygonResearchMarkdown', () => {
     expect(markdown).toContain('Site ID: assur')
     expect(markdown).toContain('Polygon ID: assur-area-a')
     expect(markdown).toContain('Mapped area: 0.800 km²')
-    expect(markdown).toContain('Accessible fragments: 5')
-    expect(markdown).toContain('Findspot 1 (Area A) — 5 accessible fragments')
+    expect(markdown).toContain('Accessible tablets: 5')
+    expect(markdown).toContain('Area A — 5 accessible tablets')
     expect(markdown).toContain(context.shareUrl)
+  })
+
+  it('includes the complete location description without internal findspot IDs', () => {
+    const markdown = polygonResearchMarkdown(
+      {
+        ...summary,
+        findspots: [
+          {
+            ...summary.findspots[0],
+            sector: 'Sector A',
+            building: 'Temple',
+            room: 'Room B',
+          },
+        ],
+      },
+      context,
+    )
+
+    expect(markdown).toContain(
+      'Sector A · Area A · Temple · Room B — 5 accessible tablets',
+    )
+    expect(markdown).not.toContain('Findspot 1')
   })
 
   it('omits absent filters and mapped area', () => {
@@ -81,7 +103,7 @@ describe('polygonResearchMarkdown', () => {
     expect(markdown).toContain('Site ID: uruk \\# forged')
     expect(markdown).toContain('Polygon ID: poly\\_\\[x\\]')
     expect(markdown).toContain('Site name contains "Uruk"\\] \\# forged"')
-    expect(markdown).toContain('Findspot 1 (\\`Area\\` \\* forged)')
+    expect(markdown).toContain('\\`Area\\` \\* forged')
     expect(markdown).not.toContain('\n# forged')
     expect(markdown).not.toContain('\n- forged')
   })

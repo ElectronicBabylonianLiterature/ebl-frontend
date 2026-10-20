@@ -40,7 +40,9 @@ describe('FindspotConstraint', () => {
     const onClear = jest.fn()
     render(<FindspotConstraint findspotId={0} onClear={onClear} />)
 
-    expect(screen.getByText(/limited to findspot 0/)).toBeInTheDocument()
+    expect(
+      screen.getByText(/limited to the selected findspot/),
+    ).toBeInTheDocument()
     await userEvent.click(
       screen.getByRole('button', { name: 'Clear findspot filter' }),
     )
@@ -124,13 +126,16 @@ describe('FindspotConstraint', () => {
   })
 
   it('synchronizes the visible constraint with route query changes', async () => {
-    const props = formProps({ fragmentQuery: { findspotId: 7 } })
+    const navigate = jest.fn()
+    const props = formProps({ fragmentQuery: { findspotId: 7 }, navigate })
     const { rerender } = render(
       <MemoryRouter>
         <SearchForm {...props} />
       </MemoryRouter>,
     )
-    expect(screen.getByText(/limited to findspot 7/)).toBeInTheDocument()
+    expect(
+      screen.getByText(/limited to the selected findspot/),
+    ).toBeInTheDocument()
 
     rerender(
       <MemoryRouter>
@@ -138,7 +143,14 @@ describe('FindspotConstraint', () => {
       </MemoryRouter>,
     )
 
-    expect(await screen.findByText(/limited to findspot 8/)).toBeInTheDocument()
-    expect(screen.queryByText(/limited to findspot 7/)).not.toBeInTheDocument()
+    expect(
+      await screen.findByText(/limited to the selected findspot/),
+    ).toBeInTheDocument()
+    await userEvent.click(screen.getByRole('button', { name: 'Search' }))
+    expect(navigate).toHaveBeenLastCalledWith({
+      pathname: '/library/search/',
+      search: '?findspotId=8',
+    })
+    expect(screen.queryByText(/findspot [78]/)).not.toBeInTheDocument()
   })
 })

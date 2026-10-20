@@ -37,10 +37,10 @@ function inspector(
 }
 
 const unavailableStates: readonly [FragmentMapDataStatus, string][] = [
-  ['not-configured', 'Linked fragment data is not configured for this site.'],
-  ['loading', 'Loading linked fragment data…'],
-  ['error', 'Linked fragment data is unavailable right now.'],
-  ['incompatible', 'Linked fragment data is incompatible with this map.'],
+  ['not-configured', 'Linked tablet data is not configured for this site.'],
+  ['loading', 'Loading linked tablet data…'],
+  ['error', 'Linked tablet data is unavailable right now.'],
+  ['incompatible', 'Linked tablet data is incompatible with this map.'],
 ]
 
 describe('MapInspector', () => {
@@ -52,7 +52,7 @@ describe('MapInspector', () => {
       expect(screen.getByRole('status')).toHaveTextContent(message)
       expect(screen.queryByText('Mapped findspots')).not.toBeInTheDocument()
       expect(
-        screen.queryByText('No fragments are linked to this excavation area.'),
+        screen.queryByText('No tablets are linked to this excavation area.'),
       ).not.toBeInTheDocument()
       expect(
         screen.queryByRole('button', { name: 'Copy research summary' }),
@@ -67,11 +67,11 @@ describe('MapInspector', () => {
     render(inspector('loaded-empty'))
 
     expect(screen.getByRole('status')).toHaveTextContent(
-      '0 accessible fragments across 0 findspots.',
+      '0 accessible tablets across 0 findspots.',
     )
     expect(screen.getByText('Mapped findspots')).toBeInTheDocument()
     expect(screen.getByText('0 findspots')).toBeInTheDocument()
-    expect(screen.getByText('0 fragments')).toBeInTheDocument()
+    expect(screen.getByText('0 tablets')).toBeInTheDocument()
     expect(screen.getAllByRole('status')).toHaveLength(1)
     expect(
       screen.getByRole('button', { name: 'Copy research summary' }),
@@ -82,11 +82,11 @@ describe('MapInspector', () => {
 
     await userEvent.click(screen.getByRole('tab', { name: 'Findspots' }))
     expect(
-      screen.getByText('No fragments are linked to this excavation area.'),
+      screen.getByText('No tablets are linked to this excavation area.'),
     ).toBeInTheDocument()
   })
 
-  it('exposes canonical polygon and findspot identities, including ID zero', async () => {
+  it('shows findspot descriptions while retaining canonical search identities', async () => {
     const summary: PolygonFindspotSummary = {
       polygonId: POLYGON_ID,
       findspotIds: [0, 7],
@@ -99,6 +99,7 @@ describe('MapInspector', () => {
           siteName: 'Uruk',
           polygonIds: [POLYGON_ID],
           area: 'Pd XVI/4',
+          room: 'Room A',
           accessibleFragmentCount: 1,
         }),
         findspotMapDataDto({
@@ -107,6 +108,7 @@ describe('MapInspector', () => {
           siteName: 'Uruk',
           polygonIds: [POLYGON_ID],
           area: 'Pd XVI/4',
+          room: 'Room B',
           accessibleFragmentCount: 2,
         }),
       ],
@@ -116,15 +118,15 @@ describe('MapInspector', () => {
     expect(screen.getByText('Polygon ID')).toBeInTheDocument()
     expect(screen.getByText(POLYGON_ID)).toBeInTheDocument()
     expect(screen.getByRole('status')).toHaveTextContent(
-      '3 accessible fragments across 2 findspots.',
+      '3 accessible tablets across 2 findspots.',
     )
 
     await userEvent.click(screen.getByRole('tab', { name: 'Findspots' }))
     expect(
-      screen.getByRole('link', { name: 'Pd XVI/4 — Findspot 0' }),
+      screen.getByRole('link', { name: 'Pd XVI/4 · Room A' }),
     ).toHaveAttribute('href', '/library/search?findspotId=0')
     expect(
-      screen.getByRole('link', { name: 'Pd XVI/4 — Findspot 7' }),
+      screen.getByRole('link', { name: 'Pd XVI/4 · Room B' }),
     ).toHaveAttribute('href', '/library/search?findspotId=7')
   })
 
@@ -137,7 +139,7 @@ describe('MapInspector', () => {
     rerender(inspector('loaded-empty'))
 
     expect(screen.getByRole('status')).toHaveTextContent(
-      '0 accessible fragments across 0 findspots.',
+      '0 accessible tablets across 0 findspots.',
     )
   })
 })

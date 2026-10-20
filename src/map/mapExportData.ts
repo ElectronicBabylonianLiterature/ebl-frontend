@@ -1,4 +1,5 @@
 import type { Feature, FeatureCollection, Geometry } from 'geojson'
+import { EXCAVATION_AREA_NOTE } from 'map/mapResearchLabels'
 import type { BoundingBox } from 'map/mapGeometry'
 import { EXCAVATION_POLYGON_GEOJSON_URL } from 'map/excavationPolygonIndex'
 import type { ExcavationPolygon } from 'map/excavationPolygonIndex'
@@ -143,7 +144,7 @@ export function buildExportGeoJson(
     metadata: {
       source: 'electronic Babylonian Library map',
       polygonSource: EXCAVATION_POLYGON_GEOJSON_URL,
-      note: 'Excavation-area geometry. Fragments are associated with an excavation area, not an exact findspot coordinate.',
+      note: EXCAVATION_AREA_NOTE,
       accessNote:
         'Counts are caller-authorized snapshots at the export time; blank linked-data fields mean that site data was unavailable.',
       crs: 'EPSG:4326',
