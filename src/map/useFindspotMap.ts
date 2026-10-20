@@ -26,7 +26,11 @@ export default function useFindspotMap(
   const latestProvenancesRef = useRef(provenances)
   latestProvenancesRef.current = provenances
   const latestInteractionEnabledRef = useRef(isInteractionEnabled)
-  latestInteractionEnabledRef.current = isInteractionEnabled
+  const interactionVersionRef = useRef(0)
+  if (latestInteractionEnabledRef.current !== isInteractionEnabled) {
+    interactionVersionRef.current += 1
+    latestInteractionEnabledRef.current = isInteractionEnabled
+  }
   const latestCameraResetVersionRef = useRef(cameraResetVersion)
   const previousCameraResetVersionRef = useRef(cameraResetVersion)
   const cameraResetProvenancesRef = useRef(provenances)
@@ -55,13 +59,18 @@ export default function useFindspotMap(
     mapRef.current = map
     map.addControl(new maplibregl.NavigationControl(), 'top-right')
     let isActive = true
+    const isCurrentMap = (): boolean => isActive && mapRef.current === map
     const handlers: FindspotMapHandlers = {
-      isActive: () => isActive && latestInteractionEnabledRef.current,
+      isActive: () => isCurrentMap() && latestInteractionEnabledRef.current,
+      isCurrentMap,
+      getInteractionVersion: () => interactionVersionRef.current,
+      provenances: () => latestProvenancesRef.current,
       navigate: (path) => latestServicesRef.current.history.push(path),
       reportError: (error) =>
         latestServicesRef.current.errorReporter.captureException(error),
     }
     const handleLoad = () => {
+      if (!isCurrentMap()) return
       onMapBackgroundErrorChange?.(false)
       const loadedProvenances = latestProvenancesRef.current
       if (loadedProvenances) {

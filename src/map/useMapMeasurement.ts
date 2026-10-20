@@ -64,9 +64,10 @@ function ownsMap(
 function createMapClickHandler(
   refs: MeasurementRefs,
   addPoint: MeasurementActions['addPoint'],
+  isCurrentSubscription: () => boolean,
 ): (event: MapMouseEvent) => void {
   return (event) => {
-    if (!refs.isActive.current) return
+    if (!isCurrentSubscription() || !refs.isActive.current) return
     const position = finitePosition(event.lngLat.lng, event.lngLat.lat)
     if (position) addPoint(position)
   }
@@ -75,9 +76,11 @@ function createMapClickHandler(
 function createKeyDownHandler(
   refs: MeasurementRefs,
   actions: Pick<MeasurementActions, 'clear' | 'removeLastPoint'>,
+  isCurrentSubscription: () => boolean,
 ): (event: KeyboardEvent) => void {
   return (event) => {
     const shouldIgnore = [
+      !isCurrentSubscription(),
       !refs.isActive.current,
       isEditableTarget(event.target),
       refs.positions.current.length === 0,
@@ -106,13 +109,25 @@ function useMeasurementLifecycle(
   useEffect(() => {
     const map = mapRef.current
     if (!map || !isActive) return
+    let isDisposed = false
+    const isCurrentSubscription = (): boolean =>
+      !isDisposed && ownsMap(mapRef, map)
 
     const install = (): void => {
+      if (!isCurrentSubscription()) return
       addMeasurementLayers(map)
       updateMeasurementGeometry(map, refs.mode.current, refs.positions.current)
     }
-    const handleClick = createMapClickHandler(refs, actions.addPoint)
-    const handleKeyDown = createKeyDownHandler(refs, actions)
+    const handleClick = createMapClickHandler(
+      refs,
+      actions.addPoint,
+      isCurrentSubscription,
+    )
+    const handleKeyDown = createKeyDownHandler(
+      refs,
+      actions,
+      isCurrentSubscription,
+    )
 
     if (map.isStyleLoaded()) install()
     else map.once('load', install)
@@ -120,11 +135,11 @@ function useMeasurementLifecycle(
     window.addEventListener('keydown', handleKeyDown)
 
     return () => {
+      isDisposed = true
       window.removeEventListener('keydown', handleKeyDown)
-      if (!ownsMap(mapRef, map)) return
       map.off('load', install)
       map.off('click', handleClick)
-      removeMeasurementLayers(map)
+      if (ownsMap(mapRef, map)) removeMeasurementLayers(map)
     }
   }, [actions, isActive, mapRef, refs])
 }
