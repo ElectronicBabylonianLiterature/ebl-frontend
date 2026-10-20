@@ -85,10 +85,13 @@ export function status(
 export function deferredMapData(): {
   promise: Promise<MapData>
   resolve: (value: MapData) => void
+  reject: (error: Error) => void
 } {
   let resolve!: (value: MapData) => void
-  const promise = new Promise<MapData>((fulfill) => {
+  let reject!: (error: Error) => void
+  const promise = new Promise<MapData>((fulfill, fail) => {
     resolve = (value) => fulfill(value)
+    reject = (error) => fail(error)
   })
-  return { promise, resolve }
+  return { promise, resolve, reject }
 }

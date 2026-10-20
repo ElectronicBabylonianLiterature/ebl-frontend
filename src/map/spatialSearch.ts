@@ -4,6 +4,7 @@ import type {
   ExcavationPolygonIndex,
 } from 'map/excavationPolygonIndex'
 import type { BoundingBox } from 'map/mapGeometry'
+import { isCoordinateIntervalInRange } from 'map/spatialCoordinateValidation'
 import { geometryIntersectsBoundingBox } from 'map/spatialPredicates'
 
 export type SpatialSearchShape =
@@ -45,13 +46,8 @@ function allPolygons(
 
 function isValidBounds([west, south, east, north]: BoundingBox): boolean {
   return (
-    [west, south, east, north].every(Number.isFinite) &&
-    west >= -180 &&
-    east <= 180 &&
-    south >= -90 &&
-    north <= 90 &&
-    west < east &&
-    south < north
+    isCoordinateIntervalInRange(west, east, -180, 180) &&
+    isCoordinateIntervalInRange(south, north, -90, 90)
   )
 }
 

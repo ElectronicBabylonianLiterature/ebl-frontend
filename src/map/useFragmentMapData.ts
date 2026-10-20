@@ -67,6 +67,30 @@ function isCompatibleWithCanonicalPolygons(
   )
 }
 
+async function fetchSiteState(
+  findspotService: FindspotService,
+  site: MapSiteDefinition,
+  polygonIndex: ReadonlyMap<string, readonly ExcavationPolygon[]>,
+): Promise<SiteFragmentMapDataState> {
+  try {
+    const findspots = await findspotService.fetchMapData(site.siteId)
+    return isCompatibleWithCanonicalPolygons(site, findspots, polygonIndex)
+      ? {
+          status:
+            findspots.length === 0 ? 'loaded-empty' : 'loaded-with-mappings',
+          findspots,
+          polygonSummaries: aggregateFindspotMapData(findspots),
+        }
+      : emptySiteState('incompatible')
+  } catch (error) {
+    return emptySiteState(
+      error instanceof IncompatibleFindspotMapDataError
+        ? 'incompatible'
+        : 'error',
+    )
+  }
+}
+
 export default function useFragmentMapData(
   findspotService: FindspotService,
   polygonIndex: ReadonlyMap<string, readonly ExcavationPolygon[]> | null,
@@ -89,33 +113,9 @@ export default function useFragmentMapData(
     mapSites().forEach((site) => {
       if (!site.mapDataSiteParam) return
 
-      findspotService
-        .fetchMapData(site.siteId)
-        .then((findspots) => {
-          if (
-            !isCompatibleWithCanonicalPolygons(site, findspots, polygonIndex)
-          ) {
-            updateSite(site.siteId, emptySiteState('incompatible'))
-            return
-          }
-
-          updateSite(site.siteId, {
-            status:
-              findspots.length === 0 ? 'loaded-empty' : 'loaded-with-mappings',
-            findspots,
-            polygonSummaries: aggregateFindspotMapData(findspots),
-          })
-        })
-        .catch((error: unknown) => {
-          updateSite(
-            site.siteId,
-            emptySiteState(
-              error instanceof IncompatibleFindspotMapDataError
-                ? 'incompatible'
-                : 'error',
-            ),
-          )
-        })
+      void fetchSiteState(findspotService, site, polygonIndex).then((next) =>
+        updateSite(site.siteId, next),
+      )
     })
 
     return () => {

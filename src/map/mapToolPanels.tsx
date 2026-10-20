@@ -1,8 +1,7 @@
 import React from 'react'
-import MapExcavationAreaSelector from 'map/MapExcavationAreaSelector'
 import MapExportPanel from 'map/MapExportPanel'
 import MapInspector from 'map/MapInspector'
-import MapLayerControls from 'map/MapLayerControls'
+import MapLayerPanel from 'map/MapLayerPanel'
 import MapMeasurePanel from 'map/MapMeasurePanel'
 import MapSpatialSearchPanel from 'map/MapSpatialSearchPanel'
 import MapTerrainPanel from 'map/MapTerrainPanel'
@@ -113,20 +112,7 @@ export default function buildMapToolPanels(
       label: 'Map layers',
       isSupported: true,
       render: () => (
-        <>
-          <MapLayerControls
-            showExcavationAreas={state.showExcavationAreas}
-            canShowExcavationAreas={state.canShowExcavationAreas}
-            onShowExcavationAreasChange={experience.setShowExcavationAreas}
-          />
-          <MapExcavationAreaSelector
-            polygons={state.excavationPolygons}
-            selectedPolygonId={selectedPolygon?.polygonId ?? null}
-            onSelect={(polygonId) =>
-              polygonId ? state.selectPolygon(polygonId) : clearSelection()
-            }
-          />
-        </>
+        <MapLayerPanel state={state} clearSelection={clearSelection} />
       ),
     },
   ]
