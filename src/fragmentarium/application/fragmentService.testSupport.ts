@@ -6,7 +6,6 @@ jest.mock('bibliography/application/BibliographyService', () => {
   return function () {
     return {
       find: jest.fn(),
-      findMany: jest.fn(),
       findManyById: jest.fn(),
       search: jest.fn(),
     }

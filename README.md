@@ -11,7 +11,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 ## Requirements
 
 - yarn
-- Node 20
+- Node 24
 - Chrome (for Lighthouse)
 
 The following services are needed to run application:
@@ -26,7 +26,7 @@ This project supports two development setup options: **GitHub Codespaces with de
 
 ### Option 1: GitHub Codespaces with Dev Containers (Recommended)
 
-This project is configured to work with [GitHub Codespaces](https://github.com/features/codespaces) using dev containers. The dev container provides a pre-configured development environment with all necessary dependencies (Node 20, yarn, Chrome, etc.) without requiring local installation.
+This project is configured to work with [GitHub Codespaces](https://github.com/features/codespaces) using dev containers. The dev container provides a pre-configured development environment with all necessary dependencies (Node 24, yarn, Chrome, etc.) without requiring local installation.
 
 **To use GitHub Codespaces:**
 
@@ -49,7 +49,7 @@ If you prefer to develop locally without using Codespaces, follow these steps:
 
 **Prerequisites:**
 
-- Install [Node 20](https://nodejs.org/)
+- Install [Node 24](https://nodejs.org/)
 - Install [yarn](https://yarnpkg.com/getting-started/install)
 - Install [Git LFS](https://git-lfs.github.com/) (required for the Git hooks)
 - Install [ggshield](https://docs.gitguardian.com/ggshield-docs/getting-started) (required for secret-scanning hook)
@@ -145,6 +145,10 @@ An organization and project need to be setup in Sentry. The applications domain 
 
 In a production environment the api domain must be added to _img-src_ in CSP.
 
+### Reallexikon der Assyriologie (RlA)
+
+The realia pages show the RlA page for an article from `https://publikationen.badw.de`: volumes 1–14 as `.jpg` scans and volume 15 as single-page PDFs embedded in an `<object>`. In a production environment this domain must be in _img-src_, _object-src_ and _frame-src_ in CSP, because browsers frame the PDF viewer.
+
 ## Running the application
 
 The application reads the configuration from following environment variables:
@@ -170,6 +174,12 @@ In production environments [INLINE_RUNTIME_CHUNK](https://create-react-app.dev/d
 Updating [react-image-annotation](https://github.com/Secretmapper/react-image-annotation) could break `Annotation.js`
 in the annotation-tool.
 
+`package.json` forces `webpack-dev-server` 5 through `resolutions`, although `react-scripts` asks for version 4. `configureDevServer` in `craco.config.js` translates the version 4 options that `react-scripts` produces (`https`, `onBeforeSetupMiddleware`, `onAfterSetupMiddleware`) into the version 5 `server` and `setupMiddlewares` options. When updating `react-scripts`, `@craco/craco` or `webpack-dev-server`, check that `yarn start` still compiles and serves the app, including with `HTTPS=true`.
+
+Jest 27, which `react-scripts` 5 pins, can't resolve package `exports`, so `jest.moduleNameMapper` in `package.json` maps `react-router/dom` to react-router's internal `dist/development/dom-export.js`. When updating `react-router` or `react-router-dom`, check that this file still exists and run `yarn test:ci`.
+
+Lighthouse 13 depends on `@paulirish/trace_engine`, which asks for `third-party-web` and `legacy-javascript` by the `latest` tag. `resolutions` pins both to the versions in `yarn.lock` (`^0.30.0` and `0.0.3`), so regenerating the lockfile can't silently move them. `yarn install` still prints "Pattern … is trying to unpack in the same destination" for these two packages; that's yarn 1 noticing that the tag and the pinned range resolve to the same version, and it's harmless. When updating `lighthouse`, check whether `@paulirish/trace_engine` still uses `latest` and update or drop these two entries.
+
 ## Lighthouse
 
 Google [Lighthouse](https://developers.google.com/web/tools/lighthouse/) is installed as a development dependency and can be run via yarn:
@@ -178,9 +188,19 @@ Google [Lighthouse](https://developers.google.com/web/tools/lighthouse/) is inst
 yarn lighthouse <url>
 ```
 
-## Promises
+## Promises and cancellation
 
-[bluebird](http://bluebirdjs.com) promises are used whenever a cancellable promise is needed. E.g. when loading data to components (see [isMounted is an Antipattern](https://reactjs.org/blog/2015/12/16/ismounted-antipattern.html)). bluebird is compatible with native JavaScript promises, but care should taken that a bluebird promise is always used when `Promise.cancel()` is needed.
+Native promises are used throughout. Cancellation uses the web-standard `AbortController`/`AbortSignal`: the controller lives in the React layer and a `signal` is threaded down through the service and repository methods into `ApiClient`, which passes it to `fetch` (see [isMounted is an Antipattern](https://reactjs.org/blog/2015/12/16/ismounted-antipattern.html)).
+
+- **Reads.** `withData` owns an `AbortController`, passes its `signal` as the getter's second argument and aborts it on unmount or when the watched props change. Getters that thread the signal through abort the network request; either way a result is applied only while it is the latest request **and** its signal has not been aborted, so a getter that ignores the signal still cannot update a view that has unmounted. With `retry: true` in its config, `withData` offers a Retry button on failure, which starts a fresh request with a fresh controller.
+- **Writes are never aborted.** `usePromiseEffect` returns `[run, cancel, runWrite]`. `run` is for reads: it hands the operation an `AbortSignal` and aborts it on unmount or supersession. `runWrite` is for saves and hands the operation an `isStale()` predicate instead of a signal, backed by `SupersedableOperation`. A superseded write keeps running to completion and only its _UI update_ is discarded — once a write has been dispatched the client cannot know whether the server applied it, so aborting the connection would lose that outcome silently. **`ApiClient.postJson` and `ApiClient.putJson` do not accept a `signal` at all**, and `ApiClient.fetch` — the only method that does take one alongside an arbitrary `method` — is `private`. A signal therefore cannot reach a write's `fetch` from outside the class, so the guarantee is enforced by the type system rather than by convention. Reads that are issued over POST (`queryByIds`, the annotation and AfoRegister queries) are guard-based for the same reason as the shared-cache paths below. Both `run` and `runWrite` return a promise that rejects with the operation's error, so the operation must handle its own failures (typically by rendering an `ErrorAlert`).
+- **Superseding an operation that cannot take a signal, outside the hook.** Components that own such an operation and are not using `usePromiseEffect` hold their own `SupersedableOperation` and call `supersede()` from `componentWillUnmount` (or a `useEffect` cleanup): `TransliterationForm`, `WordEditor`, `BibliographyEntryFormController` and `CuneiformFragment` own a **write**, and `BibliographyEntryForm` owns a **read** — its `loadOperation` guards `Cite.async`, which is citation-js and accepts no signal, so supersession is the only guard available to it. `CuneiformFragment` keeps this state in its `useFragmentSaves` hook, which supersedes on unmount and again whenever the displayed fragment changes, so a save dispatched for the previous fragment can no longer update the new one. Superseding hides only an older save's success: a save that fails is still reported while the same fragment is displayed, even when a later save is queued behind it. Where the write is debounced, the timer has to be cancelled too — `BibliographyEntryForm` calls `doLoad.cancel()` alongside `supersede()`, because a debounce that fires after unmount would otherwise call `start()` again and mint a fresh, non-stale token. `usePromiseEffect`'s cleanup aborts the read and supersedes the write it holds without aborting the write's request, so a save started from a component that then unmounts still reaches the server but its handlers no longer run. `cancel()` aborts the read only. `AbortableOperation` is now a read-only primitive: it is used by `usePromiseEffect`'s read slot and by `CuneiformConverterForm`, and by nothing that writes.
+- **Writes that cannot be aborted must not overlap.** Superseding only hides an older write's result; the backend still applies it, possibly after the newer one. `CuneiformFragment` (through `useFragmentSaves`) therefore routes every fragment save through a `SerialQueue`, so saves reach the server in the order they were made: the editor tabs and the genre editor go through `onSave`, and the sidebar's script, date and dates-in-text editors go through `enqueueSave`, which uses the same queue but leaves the UI to the editor because each renders its own error. The date editors also disable Save, Delete and Add while a date save is pending. The same rule applies elsewhere: annotation-list writes (Save, Delete all, card and keyboard delete) share one `SerialQueue`, and the toolbar, the card Delete buttons and the Delete key lock while a write or annotation generation is pending, and `ChapterEditView` disables every chapter save control, the import Save button included, while a chapter write is pending. A caller must hand `onSave` the request itself, never a request it has already sent, or the queue orders only the UI update: the named-entity tab wraps its `updateNamedEntityAnnotations` call in `onSave` for this reason. The queue is replaced when the displayed fragment changes, so a save still pending on one fragment never delays saves on the next.
+- **Applying a result only when it is still current.** `applyWhenCurrent(operation, { onSuccess, onError })(isStale)` is the one place the "run it, then apply the result unless it has been superseded" guard lives; `applyWhenNotAborted(operation, signal, handlers)` is the same guard keyed on `signal.aborted` instead. Use one of them rather than hand-writing `if (!isStale())` / `if (!signal.aborted)` around each handler.
+- **Shared cached requests must not take a signal.** `getOrFetchCachedValue` hands the _same_ in-flight promise to every caller for a given key, so a per-caller abort would reject the request for all the other live consumers. The `fetchValue` callback therefore takes no arguments, and the cached paths in `FragmentService` (`find`, `fetchProvenances`, `fetchProvenance`, `fetchProvenanceChildren`, `query`, `queryLatest`, `findThumbnail`), `TextService` (`list`, `findChapterDisplay`), `DossiersService.queryByIds` and `BibliographyService` stay guard-based on purpose. The uncached corpus reads (`find`, `findChapter`, `findManuscripts`, `findColophons`, `findUnplacedLines`, `findChapterLine`, `query`) take a signal like any other read.
+- **Reads that take no signal.** Besides the shared-cache paths above, a read omits `signal` only when no caller owns a controller to pass — every one of these is an async-select loader or a script, not a getter: `fetchColophonNames`, `searchBibliography`, `findLemmas`, `findSuggestions`, `searchLemma` and `collectLemmaSuggestions` (react-select `loadOptions` and the lemmatisation editors), and `listAllFragments` (sitemap generation). Everything else reachable from a `withData` getter or `run` threads one **all the way into `fetch`**. A `signal` parameter that is accepted and then dropped is a defect, not a harmless no-op, and TypeScript will not catch it: an implementation declaring _fewer_ parameters is assignable to a port that declares a `signal`, so `FragmentRepository.random()` satisfied `FragmentInfoRepository.random(signal?)` while silently discarding it. `FragmentRepository.abortSignal.test.ts` asserts the forwarding for every fragment read that claims to be abortable, `withDataGetters.abortSignal.test.tsx` and `corpusGetters.abortSignal.test.tsx` assert that getters hand their signal on; extend them when you add another. A repository that falls back to a default on failure must rethrow an `AbortError` first, or a cancellation turns into a successful empty result.
+- Aborted operations reject with an `AbortError`. Use `isCancellation(error, signal)` from `common/utils/abortError` to distinguish a cancellation from a real failure; `ApiClient` skips error reporting for them.
+- **`isCancellation` is deliberately wider than `isAbortError`.** `isAbortError(error)` is true only for a genuine `AbortError`; `isCancellation(error, signal)` is _also_ true whenever `signal.aborted` is set, whatever the error is. That second clause is what suppresses the UI update for a getter that does not thread the signal and therefore rejects with something other than an `AbortError` after its view has gone away. The cost is that a real bug thrown from inside a getter at the exact moment of unmount is not surfaced to the user. It is not lost, though: `ApiClient` rethrows `AbortError` untouched and reports every other failure to Sentry before it ever reaches this check, so only a failure originating _after_ the HTTP layer - in a domain factory, say - goes unreported. Prefer `isAbortError` where you only mean "was this aborted", and keep `isCancellation` for the "can this result still be applied" question at the React boundary.
 
 ## Authentication and Authorization
 
@@ -213,7 +233,7 @@ The sitemap is now updated automatically using a GitHub Actions workflow. This r
 
 1. Go to the repository's **"Actions"** tab on GitHub.
 2. Select the workflow named **"Update Sitemap"**.
-3. Click **"Run workflow"** (top right) and confirm.
+3. Click **"Run workflow"** (top right), keep the branch set to `master` and confirm. Runs started from any other branch are skipped, so a sitemap pull request never carries unrelated commits.
 
 This action will:
 
@@ -223,20 +243,39 @@ This action will:
 
 ⚠️ Note that an application redeploy ([Swarmpit](https://www.ebl.lmu.de/cluster/swarmpit/#/stacks/ebl)) is still needed for the sitemap to refresh.
 
-#### 🔑 Personal Access Token (PAT) Setup (Yearly Maintenance)
+#### 🤖 Bot Identity (One-Off Setup, No Yearly Rotation)
 
-To keep the automation working, you must refresh the `SITEMAP_AUTOUPDATE` secret approximately **once per year**, as PATs expire.
+The workflow runs as a GitHub App rather than as a person. It mints a short-lived installation token at run time, so there is **no token to rotate** and the pull requests it opens are authored by the app, not by a maintainer. That matters because GitHub forbids self-approval: when a human's token opened these pull requests, the one person who would normally merge them was the one person who could not.
 
-1. Go to your GitHub [Developer Settings → Fine-Grained Tokens](https://github.com/settings/personal-access-tokens).
-2. Create a Fine-Grained Token:
-   - Restrict it to just the ElectronicBabylonianLiterature/ebl-frontend repo.
-   - Minimal scopes. Contents: Read and write, Pull requests: Read and write.
-3. Name the token `sitemap-autoupdate` and set an expiration period (max. 12 months).
-4. Save the value of the new token.
-5. In the repository, go to **Settings → Secrets and variables → Actions → Repository secrets**.
-6. Find `SITEMAP_AUTOUPDATE` and update the value with the token you just generated.
-7. Save the secret. The next time the workflow runs, it will use the updated token.
-8. If the PAT user changes, update `git config user.name` and `git config user.email` information in `.github/workflows/update-sitemaps.yml`.
+The workflow needs one repository variable and one repository secret:
+
+| Name                         | Kind     | Value                                                                      |
+| ---------------------------- | -------- | -------------------------------------------------------------------------- |
+| `EBL_AUTOMATION_CLIENT_ID`   | Variable | The App's Client ID (it starts with `Iv`)                                  |
+| `EBL_AUTOMATION_PRIVATE_KEY` | Secret   | The entire `.pem` private key, including the `-----BEGIN`/`-----END` lines |
+
+To create them (once):
+
+1. Under the **organisation** settings, create a **New GitHub App** named `eBL Automation`. Untick **Webhook → Active**.
+2. Grant exactly `Contents: Read and write` and `Pull requests: Read and write`; leave everything else at _No access_. Set installation scope to **Only on this account**.
+3. Note the **Client ID**, then **Generate a private key** — the `.pem` downloads only once.
+4. **Install App** → the `ElectronicBabylonianLiterature` organisation → **Only select repositories** → `ebl-frontend`.
+5. Under **Settings → Secrets and variables → Actions**, add the Client ID on the **Variables** tab and the private key on the **Secrets** tab.
+6. After the first green run with the App, delete the old `SITEMAP_AUTOUPDATE` secret and revoke the personal access token it held.
+
+A missing line break in the private key is the usual cause of a "failed to generate token" error.
+
+#### 🔒 Failure Behaviour
+
+The workflow has two jobs. `crawl` downloads the sitemaps with Puppeteer and holds no secrets. `publish` receives the crawled files as a build artifact and is the only job that sees the App's private key, so no third-party install script ever runs next to it. Before it mints a token, `publish` rejects the artifact unless every entry is a regular `sitemap*.xml.gz` file that passes `gzip -t`, the `sitemap.xml.gz` index that `robots.txt` points to is present, the index references exactly the other files in the artifact (none missing, none extra), and there are at least as many files as `master` has. `crawl` runs on `ubuntu-24.04`, because its Puppeteer system packages use the Ubuntu 24.04 names; move it to a newer image deliberately and check that list. The jobs time out after 30 and 10 minutes respectively, so a stuck crawl fails quickly instead of holding the run for hours.
+
+The update script fails closed. If the sitemap source is unreachable, or if fewer files download than the site currently has, the `crawl` job **fails**, the existing sitemaps are restored from a backup and `publish` never runs. It never publishes a partial set: if the site grows and the crawl misses one of the new files, the count check can't tell, but the index check in `publish` does, and the run fails before a pull request is opened. It never opens or closes a pull request on a failed crawl. A red run means the sitemaps on `master` are untouched and the crawl needs looking at. Open the [sitemap page](https://www.ebl.lmu.de/sitemap) in a browser first: an error shown there (for example a failing API endpoint) is the usual cause.
+
+If the site legitimately produces fewer sitemap files than before, every run fails with "expected at least N" until the file count on `master` is brought down. Do that once with the manual update below; the next automated run then compares against the new count.
+
+If a crawl succeeds but its files are identical to `master`, there is nothing to publish: the workflow deletes the `autoupdate-sitemap` branch, which also closes a still-open sitemap pull request, because that pull request is then stale.
+
+The workflow uses a single fixed branch, `autoupdate-sitemap`, so a run that fires while a sitemap pull request is still open updates that pull request instead of opening a second one. Runs are serialised by a `concurrency` group.
 
 #### 🛠 Manual Update (Legacy Method)
 
@@ -245,7 +284,7 @@ Manual update is possible if automation fails.
 1. Visit the sitemap page: [https://www.ebl.lmu.de/sitemap](https://www.ebl.lmu.de/sitemap)
 2. Wait until all files (`sitemap.xml.gz`, `sitemap1.xml.gz`, etc.) are downloaded.
 3. Replace the content of the `public/sitemap` directory with the downloaded files.
-4. Commit the changes to the `master` branch.
+4. Open a pull request with the changes against `master`.
 
 ## Coding Conventions
 

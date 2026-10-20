@@ -2,7 +2,7 @@ import BibliographyBatchLoader from 'bibliography/application/BibliographyBatchL
 import {
   createBibliographyRepositoryMock,
   createDeferred,
-} from 'bibliography/application/bibliographyService.testSupport'
+} from 'bibliography/application/BibliographyService.testSupport'
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 import { ApiError } from 'http/ApiClient'
 

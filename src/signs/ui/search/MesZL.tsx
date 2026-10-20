@@ -1,7 +1,7 @@
 import { Button, OverlayTrigger, Popover } from 'react-bootstrap'
 import _ from 'lodash'
 import React from 'react'
-import './Signs.sass'
+import 'signs/ui/search/Signs.sass'
 import MesZlContent from 'signs/ui/search/MesZLContent'
 import { SignListRecord } from 'signs/domain/Sign'
 import { getDisplayName } from 'signs/ui/display/SignInformation'

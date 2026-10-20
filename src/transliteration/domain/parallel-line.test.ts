@@ -3,7 +3,7 @@ import {
   ParallelComposition,
   ParallelFragment,
   ParallelText,
-} from './parallel-line'
+} from 'transliteration/domain/parallel-line'
 
 const fragmentData = {
   content: [],

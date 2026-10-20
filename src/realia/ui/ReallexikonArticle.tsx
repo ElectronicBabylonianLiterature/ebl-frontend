@@ -7,7 +7,7 @@ import { rlaArticleId } from 'realia/ui/realiaSections'
 import {
   RlaPageInfo,
   loadRlaPageIndex,
-  rlaImageUrl,
+  rlaPageUrl,
 } from 'realia/infrastructure/rlaPageIndex'
 
 type Status = 'idle' | 'loading' | 'error' | 'unavailable' | 'ready'
@@ -30,6 +30,37 @@ function pageCaption(info: RlaPageInfo, scan: number): string {
   return pageCount > 1 ? `${start} ff. — ${pageNumber} / ${pageCount}` : start
 }
 
+const PDF_VIEW_PARAMETERS = '#navpanes=0&statusbar=0&toolbar=0&view=FitH'
+
+function RlaPageView({
+  info,
+  url,
+  description,
+}: {
+  info: RlaPageInfo
+  url: string
+  description: string
+}): JSX.Element {
+  return info.format === 'pdf' ? (
+    <object
+      key={url}
+      className="Realia__rla-page-document"
+      data={`${url}${PDF_VIEW_PARAMETERS}`}
+      type="application/pdf"
+      title={description}
+    >
+      <ExternalLink href={url}>Open {description} (PDF)</ExternalLink>
+    </object>
+  ) : (
+    <img
+      className="Realia__rla-page-image"
+      src={url}
+      alt={description}
+      loading="lazy"
+    />
+  )
+}
+
 function RlaPage({
   info,
   scan,
@@ -44,6 +75,8 @@ function RlaPage({
   onHide: () => void
 }): JSX.Element {
   const { pageNumber, pageCount } = pagePosition(info, scan)
+  const description = `${title}, page ${pageNumber} of ${pageCount}`
+  const url = rlaPageUrl(info.volume, scan, info.format)
   return (
     <div className="Realia__rla-page">
       <div className="Realia__rla-page-controls">
@@ -68,16 +101,20 @@ function RlaPage({
         >
           <i className="fas fa-chevron-right" aria-hidden="true" />
         </Button>
+        {info.format === 'pdf' && (
+          <ExternalLink
+            href={url}
+            className="btn btn-outline-secondary btn-sm"
+            title={`Open ${description} in a new tab`}
+          >
+            Open PDF
+          </ExternalLink>
+        )}
         <Button variant="outline-secondary" size="sm" onClick={onHide}>
           Hide
         </Button>
       </div>
-      <img
-        className="Realia__rla-page-image"
-        src={rlaImageUrl(info.volume, scan)}
-        alt={`${title}, page ${pageNumber} of ${pageCount}`}
-        loading="lazy"
-      />
+      <RlaPageView info={info} url={url} description={description} />
     </div>
   )
 }
@@ -155,7 +192,7 @@ export function ReallexikonArticle({
       )}
       {status === 'unavailable' && (
         <p className="Realia__rla-page-status">
-          No RlA page image is available for this article.
+          No RlA page is available for this article.
         </p>
       )}
       {info && (

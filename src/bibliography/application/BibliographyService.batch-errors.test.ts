@@ -1,6 +1,5 @@
-import Bluebird from 'bluebird'
 import BibliographyService from 'bibliography/application/BibliographyService'
-import { createBibliographyRepositoryMock } from 'bibliography/application/bibliographyService.testSupport'
+import { createBibliographyRepositoryMock } from 'bibliography/application/BibliographyService.testSupport'
 import { ApiError } from 'http/ApiClient'
 
 const systemicErrors: ReadonlyArray<[string, () => Error]> = [
@@ -26,7 +25,7 @@ describe('BibliographyService batch errors', () => {
       bibliographyRepository.findMany.mockResolvedValue([])
       bibliographyRepository.find.mockRejectedValue(error)
 
-      await expect(service.findMany(['RN1'])).rejects.toBe(error)
+      await expect(service.findManyById(['RN1'])).rejects.toBe(error)
       expect(bibliographyRepository.find).toHaveBeenCalledTimes(1)
     },
   )
@@ -39,7 +38,7 @@ describe('BibliographyService batch errors', () => {
     const service = new BibliographyService(bibliographyRepository)
     bibliographyRepository.findMany.mockRejectedValue(error)
 
-    await expect(service.findMany(['RN1'])).rejects.toBe(error)
+    await expect(service.findManyById(['RN1'])).rejects.toBe(error)
     expect(bibliographyRepository.find).not.toHaveBeenCalled()
   })
 
@@ -47,14 +46,14 @@ describe('BibliographyService batch errors', () => {
     const error = new ApiError('Not Found', {}, 404)
     let rejectBatch: ((error: Error) => void) | undefined
     bibliographyRepository.findMany.mockReturnValue(
-      new Bluebird((_, reject) => {
+      new Promise((_, reject) => {
         rejectBatch = (reason) => reject(reason)
       }),
     )
     const service = new BibliographyService(bibliographyRepository)
 
-    const firstRequest = service.findMany(['RN1'])
-    const secondRequest = service.findMany(['RN1'])
+    const firstRequest = service.findManyById(['RN1'])
+    const secondRequest = service.findManyById(['RN1'])
     const firstExpectation = expect(firstRequest).rejects.toBe(error)
     const secondExpectation = expect(secondRequest).rejects.toBe(error)
     rejectBatch?.(error)

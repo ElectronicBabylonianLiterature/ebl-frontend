@@ -1,13 +1,12 @@
 import React from 'react'
 import { Tab, Tabs } from 'react-bootstrap'
 import _ from 'lodash'
-import Bluebird from 'bluebird'
 
 import withData from 'http/withData'
 import LinkedImage from 'common/ui/LinkedImage'
 import { Fragment } from 'fragmentarium/domain/fragment'
 
-import './CdliImages.css'
+import 'fragmentarium/ui/images/CdliImages.css'
 
 const CDLI_PHOTO = 'cdli_photo'
 const CDLI_LINE_ART = 'cdli_line_art'
@@ -44,7 +43,7 @@ function cdliTab(eventKey: string, url: string | null): JSX.Element | null {
 }
 
 interface CdliImagesProps {
-  cdliImages: string[]
+  cdliImages: readonly string[]
 }
 
 function CdliImages({ cdliImages }: CdliImagesProps): JSX.Element {
@@ -75,13 +74,12 @@ function CdliImages({ cdliImages }: CdliImagesProps): JSX.Element {
 
 interface Props {
   fragment: Fragment
-  fragmentService
 }
 
-export default withData<unknown, Props, { cdliImages: string[] }>(
+export default withData<unknown, Props, { cdliImages: readonly string[] }>(
   ({ data }) => <CdliImages cdliImages={data.cdliImages} />,
   ({ fragment }) =>
-    Bluebird.resolve({
-      cdliImages: (fragment.cdliImages || []) as string[],
+    Promise.resolve({
+      cdliImages: fragment.cdliImages ?? [],
     }),
 )

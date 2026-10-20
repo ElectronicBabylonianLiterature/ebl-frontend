@@ -3,7 +3,7 @@ import _ from 'lodash'
 import { render, RenderResult, screen, within } from '@testing-library/react'
 import noteLine from 'test-support/lines/note'
 import { singleRuling } from 'test-support/lines/dollar'
-import TransliterationLines from './TransliterationLines'
+import TransliterationLines from 'transliteration/ui/TransliterationLines'
 import { Text } from 'transliteration/domain/text'
 
 const textWithNormalFirstLine = new Text({

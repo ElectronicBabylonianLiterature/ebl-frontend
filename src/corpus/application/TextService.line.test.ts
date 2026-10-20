@@ -1,9 +1,9 @@
-import Bluebird from 'bluebird'
 import TextService from 'corpus/application/TextService'
 import { LineDetails, ManuscriptLineDisplay } from 'corpus/domain/line-details'
 import { ManuscriptTypes, OldSiglum } from 'corpus/domain/manuscript'
 import { Provenances } from 'corpus/domain/provenance'
-import { PeriodModifiers, Periods } from 'common/utils/period'
+import { PeriodModifiers } from 'common/utils/period'
+import { Periods } from 'common/utils/periodDefinitions'
 import { TextLine } from 'transliteration/domain/text-line'
 import { NoteLine } from 'transliteration/domain/note-line'
 import createReference from 'bibliography/application/createReference'
@@ -23,7 +23,7 @@ import {
   chapterUrl,
   setupProvenances,
   testService,
-} from 'corpus/application/textService.testSupport'
+} from 'corpus/application/TextService.regression.testSupport'
 
 const cslData = cslDataFactory.build()
 const oldSiglumReferenceDto = referenceDtoFactory.build(
@@ -50,29 +50,31 @@ const testData: TestData<TextService>[] = [
             ],
           }),
           manuscripts: [
-            new ManuscriptLineDisplay(
-              Provenances.Nippur,
-              PeriodModifiers['Early'],
-              Periods['Ur III'],
-              ManuscriptTypes.School,
-              '1',
-              [new OldSiglum('OS1', createReference(oldSiglumReferenceDto))],
-              ['o'],
-              new TextLine(lines[0]),
-              [],
-              [],
-              [],
-              'BM.X',
-              false,
-              'X.1',
-            ),
+            new ManuscriptLineDisplay({
+              provenance: Provenances.Nippur,
+              periodModifier: PeriodModifiers['Early'],
+              period: Periods['Ur III'],
+              type: ManuscriptTypes.School,
+              siglumDisambiguator: '1',
+              oldSigla: [
+                new OldSiglum('OS1', createReference(oldSiglumReferenceDto)),
+              ],
+              labels: ['o'],
+              line: new TextLine(lines[0]),
+              paratext: [],
+              references: [],
+              joins: [],
+              museumNumber: 'BM.X',
+              isInFragmentarium: false,
+              accession: 'X.1',
+            }),
           ],
         }),
       ],
       0,
     ),
-    [`${chapterUrl}/lines/0`, false],
-    Bluebird.resolve({
+    [`${chapterUrl}/lines/0`, false, undefined],
+    Promise.resolve({
       variants: [
         {
           reconstruction: [],

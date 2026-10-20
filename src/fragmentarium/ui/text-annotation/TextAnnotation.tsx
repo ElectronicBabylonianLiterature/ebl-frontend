@@ -17,8 +17,8 @@ import {
 import AnnotationInstructions from 'fragmentarium/ui/text-annotation/AnnotationInstructions'
 import SpanAnnotationDisplay from 'fragmentarium/ui/text-annotation/SpanAnnotationDisplay'
 import { UpdateNamedEntityAnnotations } from 'fragmentarium/ui/text-annotation/annotationSave'
-import './TextAnnotation.sass'
-import './NamedEntities.sass'
+import 'fragmentarium/ui/text-annotation/TextAnnotation.sass'
+import 'fragmentarium/ui/text-annotation/NamedEntities.sass'
 
 function TextAnnotationView({
   fragment,

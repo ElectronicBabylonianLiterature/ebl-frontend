@@ -5,22 +5,19 @@ import Select from 'react-select'
 import withData from 'http/withData'
 import _ from 'lodash'
 import FragmentService from 'fragmentarium/application/FragmentService'
-import {
-  Period,
-  PeriodModifiers,
-  periodModifiers,
-  Periods,
-} from 'common/utils/period'
+import { Period, PeriodModifiers, periodModifiers } from 'common/utils/period'
+import { Periods } from 'common/utils/periodDefinitions'
 import { Button, Overlay, Popover } from 'react-bootstrap'
-import Bluebird from 'bluebird'
 import usePromiseEffect from 'common/hooks/usePromiseEffect'
+import applyWhenCurrent from 'common/utils/applyWhenCurrent'
 import Spinner from 'common/ui/Spinner'
+import ErrorAlert from 'common/errors/ErrorAlert'
 import { MetaEditButton } from 'fragmentarium/ui/info/MetaEditButton'
 import ExternalLink from 'common/ui/ExternalLink'
 
 type Props = {
   fragment: Fragment
-  updateScript: (script: Script) => Bluebird<Fragment>
+  updateScript: (script: Script) => Promise<Fragment>
   periodOptions: readonly Period[]
 }
 
@@ -57,9 +54,10 @@ function ScriptSelection({
   const [updates, setUpdates] = useState<Script>(fragment.script)
   const [isDisplayed, setIsDisplayed] = useState(false)
   const [isSaving, setIsSaving] = useState(false)
+  const [saveError, setSaveError] = useState<Error | null>(null)
   const [isDirty, setIsDirty] = useState(false)
   const target = useRef<HTMLButtonElement | null>(null)
-  const [setUpdatePromise, cancelUpdatePromise] = usePromiseEffect<void>()
+  const [, , runUpdate] = usePromiseEffect()
 
   function updatePeriod(event) {
     setUpdates({ ...updates, period: Periods[event.value] })
@@ -128,23 +126,29 @@ function ScriptSelection({
         <div>
           <Button
             className="m-1"
-            disabled={!isDirty}
+            disabled={!isDirty || isSaving}
             onClick={() => {
-              if (updates !== script) {
-                cancelUpdatePromise()
-                setIsSaving(true)
-                setUpdatePromise(
-                  updateScript(updates)
-                    .then(() => setIsSaving(false))
-                    .then(() => setIsDisplayed(false))
-                    .then(() => setScript(updates)),
-                )
-              }
+              setIsSaving(true)
+              setSaveError(null)
+              runUpdate(
+                applyWhenCurrent(() => updateScript(updates), {
+                  onSuccess: () => {
+                    setIsSaving(false)
+                    setIsDisplayed(false)
+                    setScript(updates)
+                  },
+                  onError: (error) => {
+                    setIsSaving(false)
+                    setSaveError(error)
+                  },
+                }),
+              )
             }}
           >
             Save
           </Button>
           <Spinner loading={isSaving}>Saving...</Spinner>
+          <ErrorAlert error={saveError} />
         </div>
       </Popover.Body>
     </Popover>
@@ -179,7 +183,7 @@ function ScriptSelection({
 }
 
 export default withData<
-  { fragment: Fragment; updateScript: (script: Script) => Bluebird<Fragment> },
+  { fragment: Fragment; updateScript: (script: Script) => Promise<Fragment> },
   { fragmentService: FragmentService },
   readonly string[]
 >(
@@ -196,5 +200,5 @@ export default withData<
       />
     )
   },
-  (props) => props.fragmentService.fetchPeriods(),
+  (props, signal) => props.fragmentService.fetchPeriods(signal),
 )

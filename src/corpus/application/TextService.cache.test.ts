@@ -1,4 +1,3 @@
-import Bluebird from 'bluebird'
 import TextService from 'corpus/application/TextService'
 import {
   chapter,
@@ -17,7 +16,7 @@ import {
   setupProvenances,
   testService,
   wordServiceMock,
-} from 'corpus/application/textService.testSupport'
+} from 'corpus/application/TextService.regression.testSupport'
 
 const textsDto = [textDto]
 
@@ -26,7 +25,7 @@ beforeEach(() => {
 })
 
 describe('findManuscripts provenance preload', () => {
-  test('propagates provenance preload errors', async () => {
+  test('preserves manuscripts when provenance preload fails', async () => {
     const service = new TextService(
       apiClient,
       fragmentServiceMock,
@@ -36,18 +35,19 @@ describe('findManuscripts provenance preload', () => {
     const provenanceError = new Error('provenance request failed')
 
     fragmentServiceMock.fetchProvenances.mockReturnValueOnce(
-      Bluebird.reject(provenanceError),
+      Promise.reject(provenanceError),
     )
     apiClient.fetchJson.mockResolvedValueOnce(chapterDto.manuscripts)
 
-    await expect(service.findManuscripts(chapterId)).rejects.toBe(
-      provenanceError,
+    await expect(service.findManuscripts(chapterId)).resolves.toEqual(
+      chapter.manuscripts,
     )
 
     expect(fragmentServiceMock.fetchProvenances).toHaveBeenCalledTimes(1)
     expect(apiClient.fetchJson).toHaveBeenCalledWith(
       `${chapterUrl}/manuscripts`,
       false,
+      undefined,
     )
   })
 
@@ -61,17 +61,17 @@ describe('findManuscripts provenance preload', () => {
     const provenanceError = new Error('temporary provenance failure')
 
     fragmentServiceMock.fetchProvenances.mockReturnValueOnce(
-      Bluebird.reject(provenanceError),
+      Promise.reject(provenanceError),
     )
     apiClient.fetchJson.mockResolvedValueOnce(chapterDto.manuscripts)
 
     fragmentServiceMock.fetchProvenances.mockReturnValueOnce(
-      Bluebird.resolve([]),
+      Promise.resolve([]),
     )
     apiClient.fetchJson.mockResolvedValueOnce(chapterDto.manuscripts)
 
-    await expect(service.findManuscripts(chapterId)).rejects.toBe(
-      provenanceError,
+    await expect(service.findManuscripts(chapterId)).resolves.toEqual(
+      chapter.manuscripts,
     )
     await expect(service.findManuscripts(chapterId)).resolves.toEqual(
       chapter.manuscripts,
@@ -95,7 +95,7 @@ describe('list caching', () => {
   })
 
   test('returns cached result on second call', async () => {
-    apiClient.fetchJson.mockReturnValue(Bluebird.resolve(textsDto))
+    apiClient.fetchJson.mockReturnValue(Promise.resolve(textsDto))
 
     const first = await service.list()
     const second = await service.list()
@@ -108,11 +108,11 @@ describe('list caching', () => {
   test('clears cache on error and allows retry', async () => {
     const error = new Error('network error')
 
-    apiClient.fetchJson.mockReturnValueOnce(Bluebird.reject(error))
+    apiClient.fetchJson.mockReturnValueOnce(Promise.reject(error))
 
     await expect(service.list()).rejects.toThrow('network error')
 
-    apiClient.fetchJson.mockReturnValueOnce(Bluebird.resolve(textsDto))
+    apiClient.fetchJson.mockReturnValueOnce(Promise.resolve(textsDto))
 
     await expect(service.list()).resolves.toEqual([text])
     expect(apiClient.fetchJson).toHaveBeenCalledTimes(2)
@@ -129,12 +129,12 @@ describe('list caching', () => {
     )
     const staleError = new Error('stale request failed')
     let rejectStaleRequest: (error: Error) => void = () => undefined
-    const staleRequest = new Bluebird<unknown[]>((_resolve, reject) => {
+    const staleRequest = new Promise<unknown[]>((_resolve, reject) => {
       rejectStaleRequest = reject
     })
     apiClient.fetchJson
       .mockReturnValueOnce(staleRequest)
-      .mockReturnValueOnce(Bluebird.resolve(textsDto))
+      .mockReturnValueOnce(Promise.resolve(textsDto))
 
     const firstRequest = service.list()
     scope.current = 'authenticated:user-a'
@@ -157,7 +157,7 @@ describe('findChapterDisplay caching', () => {
       wordServiceMock,
       bibliographyServiceMock,
     )
-    fragmentServiceMock.fetchProvenances.mockReturnValue(Bluebird.resolve([]))
+    fragmentServiceMock.fetchProvenances.mockReturnValue(Promise.resolve([]))
 
     apiClient.fetchJson.mockResolvedValue(chapterDisplayDto)
 
@@ -185,7 +185,7 @@ describe('findChapterDisplay caching', () => {
       () => scope.current,
     )
 
-    fragmentServiceMock.fetchProvenances.mockReturnValue(Bluebird.resolve([]))
+    fragmentServiceMock.fetchProvenances.mockReturnValue(Promise.resolve([]))
     apiClient.fetchJson.mockResolvedValue(chapterDisplayDto)
 
     await expect(service.findChapterDisplay(chapterId)).resolves.toMatchObject({
@@ -207,8 +207,8 @@ describe('findChapterDisplay caching', () => {
 
 describe('loadProvenances delegation', () => {
   test('delegates to fragmentService.fetchProvenances', async () => {
-    fragmentServiceMock.fetchProvenances.mockReturnValue(Bluebird.resolve([]))
-    apiClient.fetchJson.mockReturnValue(Bluebird.resolve(chapterDto))
+    fragmentServiceMock.fetchProvenances.mockReturnValue(Promise.resolve([]))
+    apiClient.fetchJson.mockReturnValue(Promise.resolve(chapterDto))
 
     await testService.findChapter(chapterId)
 

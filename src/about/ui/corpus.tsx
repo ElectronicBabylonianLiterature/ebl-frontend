@@ -8,6 +8,7 @@ import ee49 from 'about/ui/static/ee49.png'
 import geneva from 'about/ui/static/geneva.jpg'
 import muses from 'about/ui/static/muses.jpg'
 import snf from 'about/ui/static/snf.png'
+import AboutFigure from 'about/ui/AboutFigure'
 
 export default function AboutCorpus(markupService: MarkupService): JSX.Element {
   return (
@@ -48,18 +49,15 @@ export default function AboutCorpus(markupService: MarkupService): JSX.Element {
               closely with B. R. Foster and, in the case of @i{Gilgameš}, with A. R. George."
       />
       <h3>II. Translations</h3>
-      <figure className="Introduction__photoRight">
-        <a href="https://www.eisenbrauns.org/books/titles/978-1-883053-76-5.html">
-          <img
-            className="Introduction__200px"
-            src={muses}
-            alt="Foster, Before the Muses"
-          />
-        </a>
-        <figcaption className="Introduction__caption">
-          Foster, <em>Before the Muses</em>
-        </figcaption>
-      </figure>
+      <AboutFigure
+        side="Right"
+        width="200px"
+        src={muses}
+        alt="Foster, Before the Muses"
+        href="https://www.eisenbrauns.org/books/titles/978-1-883053-76-5.html"
+      >
+        Foster, <em>Before the Muses</em>
+      </AboutFigure>
       <Markup
         markupService={markupService}
         text="The English translations on the eBL platform have been prepared by Benjamin R. 
@@ -92,17 +90,15 @@ export default function AboutCorpus(markupService: MarkupService): JSX.Element {
               study, and as such convey their message only through the interplay of form and 
               content."
       />
-      <figure className="Introduction__photoLeft">
-        <img
-          className="Introduction__450px"
-          src={ee49}
-          alt="eBL edition of Enūma eliš I 49"
-        />
-        <figcaption className="Introduction__caption">
-          eBL edition of <em>Enūma eliš</em>{' '}
-          <a href="/corpus/L/1/2/SB/I#49">I 49</a>
-        </figcaption>
-      </figure>
+      <AboutFigure
+        side="Left"
+        width="450px"
+        src={ee49}
+        alt="eBL edition of Enūma eliš I 49"
+      >
+        eBL edition of <em>Enūma eliš</em>{' '}
+        <a href="/corpus/L/1/2/SB/I#49">I 49</a>
+      </AboutFigure>
       <MarkdownParagraph
         text="The practice of using a phonetic transcription as the main text no doubt has 
               disadvantages: for instance, it obscures the way in which the text is written 
@@ -125,17 +121,15 @@ export default function AboutCorpus(markupService: MarkupService): JSX.Element {
               bound form *muṭaḫḫid*, since *mu-ṭaḫ-ḫi-du* is the spelling of all manuscripts."
       />
       <h3>IV. Score Edition</h3>
-      <figure className="Introduction__photoRight">
-        <img
-          className="Introduction__450px"
-          src={shamash134}
-          alt="eBL edition of Šamaš Hymn 134"
-        />
-        <figcaption className="Introduction__caption">
-          eBL edition of <em>Šamaš Hymn</em>{' '}
-          <a href="/corpus/L/3/4/SB/-#134">134</a>
-        </figcaption>
-      </figure>
+      <AboutFigure
+        side="Right"
+        width="450px"
+        src={shamash134}
+        alt="eBL edition of Šamaš Hymn 134"
+      >
+        eBL edition of <em>Šamaš Hymn</em>{' '}
+        <a href="/corpus/L/3/4/SB/-#134">134</a>
+      </AboutFigure>
       <MarkdownParagraph
         text="Since the number of manuscripts of each text is constantly growing, cuneiform 
               studies is reaching the point where it is no longer possible to print text 

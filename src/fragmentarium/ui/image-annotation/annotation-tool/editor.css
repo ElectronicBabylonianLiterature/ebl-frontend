@@ -1,7 +1,6 @@
-/* stylelint-disable property-no-vendor-prefix */
 input[type='range'][orient='vertical'] {
-  writing-mode: bt-lr; /* IE */
-  -webkit-appearance: slider-vertical; /* Chromium */
+  writing-mode: vertical-lr;
+  direction: rtl;
   width: 8px;
   height: 175px;
   padding: 0 5px;
@@ -12,4 +11,3 @@ input[type='range'][orient='vertical'] {
   width: 100%;
   max-width: 100%;
 }
-/* stylelint-enable property-no-vendor-prefix */

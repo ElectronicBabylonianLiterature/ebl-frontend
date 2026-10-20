@@ -1,5 +1,5 @@
 import BibliographyService from 'bibliography/application/BibliographyService'
-import { createBibliographyRepositoryMock } from 'bibliography/application/bibliographyService.testSupport'
+import { createBibliographyRepositoryMock } from 'bibliography/application/BibliographyService.testSupport'
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 import { ApiError } from 'http/ApiClient'
 
@@ -27,14 +27,19 @@ describe('BibliographyService partial batch results', () => {
     )
 
     await expect(
-      service.findMany([samet.id, missingId, attinger.id]),
-    ).resolves.toEqual([samet, attinger])
+      service.findManyById([samet.id, missingId, attinger.id]),
+    ).resolves.toEqual(
+      new Map([
+        [samet.id, samet],
+        [attinger.id, attinger],
+      ]),
+    )
 
     expect(bibliographyRepository.find).toHaveBeenCalledTimes(1)
     expect(bibliographyRepository.find).toHaveBeenCalledWith(missingId)
   })
 
-  test('looks up each unique missing id once and preserves duplicates', async () => {
+  test('looks up each unique missing id once', async () => {
     const secondMissingId = 'unknown-lamentation'
     const service = new BibliographyService(bibliographyRepository)
     bibliographyRepository.findMany.mockResolvedValue([samet])
@@ -42,8 +47,8 @@ describe('BibliographyService partial batch results', () => {
       new ApiError('Not Found', {}, 404),
     )
     await expect(
-      service.findMany([missingId, samet.id, missingId, secondMissingId]),
-    ).resolves.toEqual([samet])
+      service.findManyById([missingId, samet.id, missingId, secondMissingId]),
+    ).resolves.toEqual(new Map([[samet.id, samet]]))
     expect(bibliographyRepository.find).toHaveBeenCalledTimes(2)
     expect(bibliographyRepository.find).toHaveBeenCalledWith(missingId)
     expect(bibliographyRepository.find).toHaveBeenCalledWith(secondMissingId)
@@ -58,8 +63,10 @@ describe('BibliographyService partial batch results', () => {
       new ApiError('Not Found', {}, 404),
     )
 
-    await expect(service.findMany([samet.id])).resolves.toEqual([])
-    await expect(service.findMany([samet.id])).resolves.toEqual([samet])
+    await expect(service.findManyById([samet.id])).resolves.toEqual(new Map())
+    await expect(service.findManyById([samet.id])).resolves.toEqual(
+      new Map([[samet.id, samet]]),
+    )
 
     expect(bibliographyRepository.findMany).toHaveBeenCalledTimes(2)
     expect(bibliographyRepository.find).toHaveBeenCalledTimes(1)
@@ -75,9 +82,9 @@ describe('BibliographyService partial batch results', () => {
     bibliographyRepository.findMany.mockResolvedValue([])
     bibliographyRepository.find.mockResolvedValue(canonicalEntry)
 
-    await expect(service.findMany([requestedId, requestedId])).resolves.toEqual(
-      [canonicalEntry, canonicalEntry],
-    )
+    await expect(
+      service.findManyById([requestedId, requestedId]),
+    ).resolves.toEqual(new Map([[requestedId, canonicalEntry]]))
     await expect(service.find(requestedId)).resolves.toBe(canonicalEntry)
     await expect(service.find(canonicalEntry.id)).resolves.toBe(canonicalEntry)
 
@@ -93,10 +100,12 @@ describe('BibliographyService partial batch results', () => {
     bibliographyRepository.findMany.mockResolvedValue([])
     bibliographyRepository.find.mockResolvedValue(canonicalEntry)
 
-    const findManyRequest = service.findMany([requestedId])
+    const findManyRequest = service.findManyById([requestedId])
     const findRequest = service.find(requestedId)
 
-    await expect(findManyRequest).resolves.toEqual([canonicalEntry])
+    await expect(findManyRequest).resolves.toEqual(
+      new Map([[requestedId, canonicalEntry]]),
+    )
     await expect(findRequest).resolves.toBe(canonicalEntry)
     expect(bibliographyRepository.findMany).toHaveBeenCalledTimes(1)
     expect(bibliographyRepository.find).toHaveBeenCalledTimes(1)

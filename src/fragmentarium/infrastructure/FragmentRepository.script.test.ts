@@ -1,7 +1,8 @@
 import { createScript } from 'fragmentarium/infrastructure/FragmentRepository'
 import { fragment } from 'test-support/test-fragment'
 import { ScriptDto } from 'fragmentarium/domain/fragment'
-import { PeriodModifiers, Periods } from 'common/utils/period'
+import { PeriodModifiers } from 'common/utils/period'
+import { Periods } from 'common/utils/periodDefinitions'
 import {
   apiClient,
   createSummaryItemDto,
@@ -9,16 +10,32 @@ import {
 } from 'fragmentarium/infrastructure/fragmentRepository.testSupport'
 
 describe('createScript fallback behavior', () => {
-  it('maps a known period string to its Period object', () => {
-    const dto: ScriptDto = {
-      period: 'Old Babylonian',
+  it.each([
+    ['OB', Periods['Old Babylonian']],
+    ['LB', Periods['Late Babylonian']],
+    ['', Periods.None],
+    ['Old Babylonian', Periods['Old Babylonian']],
+  ])('maps period value %p to its canonical Period', (period, expected) => {
+    const result = createScript({
+      period,
       periodModifier: 'None',
       uncertain: false,
-    }
-    const result = createScript(dto)
-    expect(result.period).toBe(Periods['Old Babylonian'])
-    expect(result.period.abbreviation).toBe('OB')
+    })
+
+    expect(result.period).toBe(expected)
     expect(result.periodModifier).toBe(PeriodModifiers.None)
+  })
+
+  it('preserves period modifiers and uncertainty with abbreviations', () => {
+    const result = createScript({
+      period: 'OB',
+      periodModifier: 'Late',
+      uncertain: true,
+    })
+
+    expect(result.period).toBe(Periods['Old Babylonian'])
+    expect(result.periodModifier).toBe(PeriodModifiers.Late)
+    expect(result.uncertain).toBe(true)
   })
 
   it('falls back to Periods.Uncertain for unrecognized period strings', () => {

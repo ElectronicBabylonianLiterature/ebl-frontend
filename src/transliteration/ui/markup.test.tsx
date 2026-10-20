@@ -86,24 +86,27 @@ test('DisplayLanguagePart', () => {
   expect(screen.getByText('ra')).toBeVisible()
 })
 
-test.each(['http://www.ebl.lmu.de/', url, '/corpus/L/1/4'])(
-  'DisplayUrlPart links an allowed URL: %s',
-  (allowedUrl) => {
-    render(<DisplayUrlPart part={{ ...urlPart, url: allowedUrl }} />)
+test.each([
+  'http://www.ebl.lmu.de/',
+  url,
+  '/corpus/L/1/4',
+  'relative/path',
+  '#note',
+  'mailto:editor@example.org',
+])('DisplayUrlPart links an allowed URL: %s', (allowedUrl) => {
+  render(<DisplayUrlPart part={{ ...urlPart, url: allowedUrl }} />)
 
-    expect(screen.getByRole('link', { name: linkText })).toHaveAttribute(
-      'href',
-      allowedUrl,
-    )
-  },
-)
+  expect(screen.getByRole('link', { name: linkText })).toHaveAttribute(
+    'href',
+    allowedUrl,
+  )
+})
 
 test.each([
   ['java', 'script:alert(document.domain)'].join(''),
   'java\nscript:alert(document.domain)',
   'data:text/html,<script>alert(document.domain)</script>',
   'not a URL',
-  'relative/path',
   '//evil.example/path',
   ['/', '\\', 'evil.example/path'].join(''),
   ['/corpus/', String.fromCharCode(0), 'L/1/4'].join(''),
@@ -212,4 +215,18 @@ test('Markup', () => {
     </DictionaryContext.Provider>,
   )
   expect(container).toMatchSnapshot()
+})
+
+test('Markup rejects an unsplit paragraph part', () => {
+  expect(() =>
+    Markup({ parts: [{ type: 'ParagraphPart', text: '' }] }),
+  ).toThrow(
+    'Unexpected ParagraphPart. Use createParagraphs to split parts into paragraphs',
+  )
+})
+
+test('DisplayUrlPart without text shows the url', () => {
+  render(<DisplayUrlPart part={{ ...urlPart, text: '' }} />)
+
+  expect(screen.getByText(url)).toHaveAttribute('href', url)
 })

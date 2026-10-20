@@ -32,16 +32,21 @@ const systemicErrors: ReadonlyArray<[string, () => Error]> = [
 
 describe('ReferenceInjector errors', () => {
   test.each(systemicErrors)(
-    'propagates the identical %s error',
+    'preserves markup and reports a %s error',
     async (_, createError) => {
       const error = createError()
       const bibliographyService = new MockBibliographyService()
-      const referenceInjector = new ReferenceInjector(bibliographyService)
+      const reportError = jest.fn()
+      const referenceInjector = new ReferenceInjector(
+        bibliographyService,
+        reportError,
+      )
       bibliographyService.findManyById.mockRejectedValue(error)
 
       await expect(
         referenceInjector.injectReferencesToMarkup([bibliographyPart]),
-      ).rejects.toBe(error)
+      ).resolves.toEqual([bibliographyPart])
+      expect(reportError).toHaveBeenCalledWith(error)
     },
   )
 

@@ -1,4 +1,3 @@
-import Bluebird from 'bluebird'
 import TextService from 'corpus/application/TextService'
 import { ExtantLines } from 'corpus/domain/extant-lines'
 import { TestData, testDelegation } from 'test-support/utils'
@@ -16,7 +15,7 @@ import {
   chapterUrl,
   setupProvenances,
   testService,
-} from 'corpus/application/textService.testSupport'
+} from 'corpus/application/TextService.regression.testSupport'
 
 const textsDto = [textDto]
 
@@ -47,8 +46,9 @@ const testData: TestData<TextService>[] = [
         text.category,
       )}/${encodeURIComponent(text.index)}`,
       false,
+      undefined,
     ],
-    Bluebird.resolve(textDto),
+    Promise.resolve(textDto),
   ),
   new TestData(
     'list',
@@ -56,15 +56,15 @@ const testData: TestData<TextService>[] = [
     apiClient.fetchJson,
     [text],
     ['/texts', false],
-    Bluebird.resolve(textsDto),
+    Promise.resolve(textsDto),
   ),
   new TestData(
     'findChapter',
     [chapterId],
     apiClient.fetchJson,
     chapter,
-    [chapterUrl, false],
-    Bluebird.resolve(chapterDto),
+    [chapterUrl, false, undefined],
+    Promise.resolve(chapterDto),
   ),
   new TestData(
     'findChapterDisplay',
@@ -72,39 +72,39 @@ const testData: TestData<TextService>[] = [
     apiClient.fetchJson,
     chapterDisplay,
     [`${chapterUrl}/display`, false],
-    Bluebird.resolve(chapterDisplay),
+    Promise.resolve(chapterDisplay),
   ),
   new TestData(
     'findColophons',
     [chapterId],
     apiClient.fetchJson,
     [{ siglum: 'NinNA1a', text: fragment.text }],
-    [`${chapterUrl}/colophons`, false],
-    Bluebird.resolve([{ siglum: 'NinNA1a', text: fragmentDto.text }]),
+    [`${chapterUrl}/colophons`, false, undefined],
+    Promise.resolve([{ siglum: 'NinNA1a', text: fragmentDto.text }]),
   ),
   new TestData(
     'findUnplacedLines',
     [chapterId],
     apiClient.fetchJson,
     [{ siglum: 'NinNA1a', text: fragment.text }],
-    [`${chapterUrl}/unplaced_lines`, false],
-    Bluebird.resolve([{ siglum: 'NinNA1a', text: fragmentDto.text }]),
+    [`${chapterUrl}/unplaced_lines`, false, undefined],
+    Promise.resolve([{ siglum: 'NinNA1a', text: fragmentDto.text }]),
   ),
   new TestData(
     'findExtantLines',
     [chapterId],
     apiClient.fetchJson,
     extantLines,
-    [`${chapterUrl}/extant_lines`, false],
-    Bluebird.resolve(extantLines),
+    [`${chapterUrl}/extant_lines`, false, undefined],
+    Promise.resolve(extantLines),
   ),
   new TestData(
     'findManuscripts',
     [chapterId],
     apiClient.fetchJson,
     chapter.manuscripts,
-    [`${chapterUrl}/manuscripts`, false],
-    Bluebird.resolve(chapterDto.manuscripts),
+    [`${chapterUrl}/manuscripts`, false, undefined],
+    Promise.resolve(chapterDto.manuscripts),
   ),
 ]
 

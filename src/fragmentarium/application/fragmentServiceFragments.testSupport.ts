@@ -8,7 +8,8 @@ import {
   referenceFactory,
 } from 'test-support/bibliography-fixtures'
 import { fragmentFactory } from 'test-support/fragment-fixtures'
-import { bibliographyService } from 'fragmentarium/application/fragmentService.testSupport'
+import { Text } from 'transliteration/domain/text'
+import textLine from 'test-support/lines/text-line'
 
 export {
   bibliographyService,
@@ -110,12 +111,12 @@ export function buildTestFragment(): Fragment {
     )
   return fragmentFactory.build(
     { number: number },
-    { associations: { references: references, genres: new Genres([]) } },
-  )
-}
-
-export function stubMissingBibliography(): void {
-  bibliographyService.findManyById.mockResolvedValue(
-    new Map<string, BibliographyEntry>(),
+    {
+      associations: {
+        references: references,
+        genres: new Genres([]),
+        text: new Text({ lines: [textLine] }),
+      },
+    },
   )
 }

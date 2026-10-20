@@ -1,7 +1,6 @@
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
-import Promise from 'bluebird'
 import ApiClient from 'http/ApiClient'
-import { stringify } from 'query-string'
+import { stringify } from 'common/utils/queryString'
 
 function createEntry(cslData) {
   return new BibliographyEntry(cslData)
@@ -14,27 +13,30 @@ export default class BibliographyRepository {
     this.apiClient = apiClient
   }
 
-  find(id: string): Promise<BibliographyEntry> {
+  find(id: string, signal?: AbortSignal): Promise<BibliographyEntry> {
     return this.apiClient
       .fetchJson<
         Record<string, unknown>
-      >(`/bibliography/${encodeURIComponent(id)}`, false)
+      >(`/bibliography/${encodeURIComponent(id)}`, false, signal)
       .then(createEntry)
   }
 
-  findMany(ids: readonly string[]): Promise<readonly BibliographyEntry[]> {
+  findMany(
+    ids: readonly string[],
+    signal?: AbortSignal,
+  ): Promise<readonly BibliographyEntry[]> {
     return this.apiClient
       .fetchJson<
         Record<string, unknown>[]
-      >(`/bibliography/list?${stringify({ ids }, { arrayFormat: 'comma' })}`, false)
+      >(`/bibliography/list?${stringify({ ids }, { arrayFormat: 'comma' })}`, false, signal)
       .then((result) => result.map(createEntry))
   }
 
-  search(query: string): Promise<BibliographyEntry[]> {
+  search(query: string, signal?: AbortSignal): Promise<BibliographyEntry[]> {
     return this.apiClient
       .fetchJson<
         Record<string, unknown>[]
-      >(`/bibliography?query=${encodeURIComponent(query)}`, false)
+      >(`/bibliography?query=${encodeURIComponent(query)}`, false, signal)
       .then((result) => result.map(createEntry))
   }
 

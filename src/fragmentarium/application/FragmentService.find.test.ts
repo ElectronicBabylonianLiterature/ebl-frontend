@@ -1,4 +1,4 @@
-import Promise from 'bluebird'
+import { produce } from 'immer'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import {
   bibliographyService,
@@ -7,7 +7,6 @@ import {
   fragmentRepository,
   fragmentService,
   number,
-  stubMissingBibliography,
 } from 'fragmentarium/application/fragmentServiceFragments.testSupport'
 
 let fragment: Fragment
@@ -16,7 +15,6 @@ let result: Fragment
 beforeEach(() => {
   jest.clearAllMocks()
   fragment = buildTestFragment()
-  stubMissingBibliography()
 })
 
 describe('find', () => {
@@ -36,13 +34,33 @@ describe('find', () => {
   })
 })
 describe('bibliography errors', () => {
-  test('propagates a systemic lookup failure unchanged', async () => {
+  test('preserves fragment content when bibliography is unavailable', async () => {
     const error = new Error('Bibliography unavailable')
     const service = createFragmentService()
-    fragmentRepository.find.mockReturnValue(Promise.resolve(fragment))
+    const fragmentWithCitation = produce(fragment, (draft) => {
+      draft.notes = {
+        text: '@bib{unavailable}',
+        parts: [
+          {
+            type: 'BibliographyPart',
+            reference: {
+              id: 'unavailable',
+              type: 'DISCUSSION',
+              pages: '',
+              notes: '',
+              linesCited: [],
+            },
+          },
+        ],
+      }
+    })
+    fragmentRepository.find.mockResolvedValue(fragmentWithCitation)
     bibliographyService.findManyById.mockRejectedValue(error)
 
-    await expect(service.find(number)).rejects.toBe(error)
+    await expect(service.find(number)).resolves.toEqual(fragmentWithCitation)
+    expect(bibliographyService.findManyById).toHaveBeenCalledWith([
+      'unavailable',
+    ])
   })
 })
 

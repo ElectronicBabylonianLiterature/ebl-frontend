@@ -1,5 +1,5 @@
 import BibliographyService from 'bibliography/application/BibliographyService'
-import { createBibliographyRepositoryMock } from 'bibliography/application/bibliographyService.testSupport'
+import { createBibliographyRepositoryMock } from 'bibliography/application/BibliographyService.testSupport'
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 
 describe('BibliographyService mutation invalidation', () => {

@@ -2,7 +2,7 @@ import BibliographyService from 'bibliography/application/BibliographyService'
 import {
   createBibliographyRepositoryMock,
   createDeferred,
-} from 'bibliography/application/bibliographyService.testSupport'
+} from 'bibliography/application/BibliographyService.testSupport'
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 
 describe('BibliographyService scope races', () => {

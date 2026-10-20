@@ -1,5 +1,4 @@
 import React from 'react'
-import Promise from 'bluebird'
 import WordService from 'dictionary/application/WordService'
 import FragmentSearchService from 'fragmentarium/application/FragmentSearchService'
 import FragmentService from 'fragmentarium/application/FragmentService'
@@ -14,7 +13,7 @@ import {
   ResearchProjects,
 } from 'research-projects/researchProject'
 import CAICHome from 'research-projects/subpages/caic/Home'
-import AluGenevaHome from './aluGeneva/Home'
+import AluGenevaHome from 'research-projects/subpages/aluGeneva/Home'
 import AmpsHome from 'research-projects/subpages/amps/Home'
 import ReccHome from 'research-projects/subpages/recc/Home'
 

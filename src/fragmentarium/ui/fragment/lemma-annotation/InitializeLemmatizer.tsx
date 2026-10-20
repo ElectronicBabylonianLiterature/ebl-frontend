@@ -1,7 +1,7 @@
 import React from 'react'
 import { useState } from 'react'
 import { Text } from 'transliteration/domain/text'
-import './Lemmatizer.sass'
+import 'fragmentarium/ui/fragment/lemma-annotation/Lemmatizer.sass'
 import WordService from 'dictionary/application/WordService'
 import EditableToken from 'fragmentarium/ui/fragment/linguistic-annotation/EditableToken'
 import Word from 'dictionary/domain/Word'

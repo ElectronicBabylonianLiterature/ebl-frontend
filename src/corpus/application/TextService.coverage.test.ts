@@ -1,5 +1,3 @@
-import Bluebird from 'bluebird'
-
 import TextService from 'corpus/application/TextService'
 import {
   apiClient,
@@ -10,7 +8,7 @@ import {
   fragmentServiceMock,
   setupProvenances,
   wordServiceMock,
-} from 'corpus/application/textService.testSupport'
+} from 'corpus/application/TextService.regression.testSupport'
 import {
   bibliographyEntryFactory,
   referenceDtoFactory,
@@ -36,25 +34,27 @@ test('queries after a throwing cache-scope resolver', async () => {
   const service = createService(() => {
     throw new Error('scope unavailable')
   })
-  apiClient.fetchJson.mockReturnValue(Bluebird.resolve(result))
+  apiClient.fetchJson.mockReturnValue(Promise.resolve(result))
 
   await expect(service.query({ lemmas: 'ina I' })).resolves.toBe(result)
 
   expect(apiClient.fetchJson).toHaveBeenCalledWith(
     '/corpus/query?lemmas=ina%20I',
     false,
+    undefined,
   )
 })
 
 test('searches without a genre', async () => {
   const service = createService()
-  apiClient.fetchJson.mockReturnValue(Bluebird.resolve([]))
+  apiClient.fetchJson.mockReturnValue(Promise.resolve([]))
 
   await expect(service.searchLemma('ina I')).resolves.toEqual([])
 
   expect(apiClient.fetchJson).toHaveBeenCalledWith(
     '/lemmasearch?genre&lemma=ina%20I',
     false,
+    undefined,
   )
 })
 
@@ -84,8 +84,8 @@ test('loads selected display lines and injects old-line references', async () =>
       },
     ],
   }
-  bibliographyServiceMock.find.mockReturnValue(Bluebird.resolve(entry))
-  apiClient.fetchJson.mockReturnValue(Bluebird.resolve(displayDto))
+  bibliographyServiceMock.find.mockReturnValue(Promise.resolve(entry))
+  apiClient.fetchJson.mockReturnValue(Promise.resolve(displayDto))
 
   const display = await service.findChapterDisplay(chapterId, [2], [1])
 

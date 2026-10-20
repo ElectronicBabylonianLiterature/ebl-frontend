@@ -1,4 +1,3 @@
-import Bluebird from 'bluebird'
 import _ from 'lodash'
 import TextService from 'corpus/application/TextService'
 import Word from 'dictionary/domain/Word'
@@ -17,7 +16,7 @@ import {
   fragmentServiceMock,
   setupProvenances,
   testService,
-} from 'corpus/application/textService.testSupport'
+} from 'corpus/application/TextService.regression.testSupport'
 
 const alignmentDto = {
   alignment: [
@@ -154,7 +153,7 @@ const testData: TestData<TextService>[] = [
     apiClient.postJson,
     chapter,
     [`${chapterUrl}/alignment`, alignmentDto],
-    Bluebird.resolve(chapterDto),
+    Promise.resolve(chapterDto),
   ),
   new TestData(
     'updateLemmatization',
@@ -162,7 +161,7 @@ const testData: TestData<TextService>[] = [
     apiClient.postJson,
     chapter,
     [`${chapterUrl}/lemmatization`, lemmatizationDto],
-    Bluebird.resolve(chapterDto),
+    Promise.resolve(chapterDto),
   ),
   new TestData(
     'updateManuscripts',
@@ -170,7 +169,7 @@ const testData: TestData<TextService>[] = [
     apiClient.postJson,
     chapter,
     [`${chapterUrl}/manuscripts`, manuscriptsDto],
-    Bluebird.resolve(chapterDto),
+    Promise.resolve(chapterDto),
   ),
   new TestData(
     'updateLines',
@@ -194,7 +193,7 @@ const testData: TestData<TextService>[] = [
         new: [_.omit(createLine({ number: '3' }), 'status')],
       },
     ],
-    Bluebird.resolve(chapterDto),
+    Promise.resolve(chapterDto),
   ),
   new TestData(
     'importChapter',
@@ -202,15 +201,19 @@ const testData: TestData<TextService>[] = [
     apiClient.postJson,
     chapter,
     [`${chapterUrl}/import`, { atf: '1. kur' }],
-    Bluebird.resolve(chapterDto),
+    Promise.resolve(chapterDto),
   ),
   new TestData(
     'searchLemma',
     ['qanû I', 'L'],
     apiClient.fetchJson,
     [fromDictionaryLineDto(dictionaryLineDisplayDto)],
-    [`/lemmasearch?genre=L&lemma=${encodeURIComponent('qanû I')}`, false],
-    Bluebird.resolve([dictionaryLineDisplayDto]),
+    [
+      `/lemmasearch?genre=L&lemma=${encodeURIComponent('qanû I')}`,
+      false,
+      undefined,
+    ],
+    Promise.resolve([dictionaryLineDisplayDto]),
   ),
 ]
 
@@ -220,15 +223,18 @@ beforeEach(() => {
 
 describe('TextService', () => testDelegation(testService, testData))
 
-test('does not start a mutation when provenance preload fails', async () => {
+test('saves a chapter when provenance preload fails', async () => {
   const provenanceError = new Error('provenance request failed')
   fragmentServiceMock.fetchProvenances.mockReturnValueOnce(
-    Bluebird.reject(provenanceError),
+    Promise.reject(provenanceError),
   )
 
-  await expect(testService.importChapter(chapterId, '1. kur')).rejects.toBe(
-    provenanceError,
+  apiClient.postJson.mockResolvedValueOnce(chapterDto)
+  await expect(testService.importChapter(chapterId, '1. kur')).resolves.toEqual(
+    chapter,
   )
 
-  expect(apiClient.postJson).not.toHaveBeenCalled()
+  expect(apiClient.postJson).toHaveBeenCalledWith(`${chapterUrl}/import`, {
+    atf: '1. kur',
+  })
 })

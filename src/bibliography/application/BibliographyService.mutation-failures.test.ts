@@ -1,9 +1,8 @@
-import Bluebird from 'bluebird'
 import BibliographyService from 'bibliography/application/BibliographyService'
 import {
   createBibliographyRepositoryMock,
   createDeferred,
-} from 'bibliography/application/bibliographyService.testSupport'
+} from 'bibliography/application/BibliographyService.testSupport'
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 import BibliographyRepository from 'bibliography/infrastructure/BibliographyRepository'
 
@@ -12,7 +11,7 @@ type Mutation = 'create' | 'update'
 function setMutationResults(
   mutation: Mutation,
   bibliographyRepository: jest.Mocked<BibliographyRepository>,
-  success: Bluebird<BibliographyEntry>,
+  success: Promise<BibliographyEntry>,
   failure: Error,
 ): void {
   const repositoryMutation =
@@ -21,14 +20,14 @@ function setMutationResults(
       : bibliographyRepository.update
   repositoryMutation
     .mockReturnValueOnce(success)
-    .mockReturnValueOnce(Bluebird.reject(failure))
+    .mockReturnValueOnce(Promise.reject(failure))
 }
 
 function mutate(
   mutation: Mutation,
   service: BibliographyService,
   entry: BibliographyEntry,
-): Bluebird<BibliographyEntry> {
+): Promise<BibliographyEntry> {
   return mutation === 'create' ? service.create(entry) : service.update(entry)
 }
 

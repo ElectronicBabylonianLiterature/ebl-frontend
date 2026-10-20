@@ -1,4 +1,4 @@
-import Reference, { ReferenceType } from './Reference'
+import Reference, { ReferenceType } from 'bibliography/domain/Reference'
 
 export default abstract class Citation {
   static readonly CONTAINER_CITATION_TYPES: ReadonlyArray<ReferenceType> = [

@@ -2,7 +2,7 @@ import React from 'react'
 import { MemoryRouter } from 'react-router-dom'
 import { render, screen } from '@testing-library/react'
 import _ from 'lodash'
-import FragmentList, { Columns } from './FragmentList'
+import FragmentList, { Columns } from 'fragmentarium/ui/FragmentList'
 import { FragmentInfo } from 'fragmentarium/domain/fragment'
 import { fragmentInfoFactory } from 'test-support/fragment-fixtures'
 
@@ -78,4 +78,13 @@ describe.each([
       )
     })
   })
+})
+
+test('Shows a message when there are no fragments', () => {
+  render(
+    <MemoryRouter>
+      <FragmentList fragments={[]} columns={{ Accession: 'accession' }} />
+    </MemoryRouter>,
+  )
+  expect(screen.getByText('No fragments found.')).toBeVisible()
 })

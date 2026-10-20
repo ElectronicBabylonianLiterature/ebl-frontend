@@ -43,7 +43,8 @@ export interface ReallexikonEntry {
   readonly reference: Reference | null
 }
 
-export const RLA_ONLINE_BASE = 'https://publikationen.badw.de/de/rla/index'
+export const RLA_ROOT = 'https://publikationen.badw.de/de/rla'
+export const RLA_ONLINE_BASE = `${RLA_ROOT}/index`
 
 export function rlaArticleUrl(id: string): string {
   return `${RLA_ONLINE_BASE}#${encodeURIComponent(id)}`

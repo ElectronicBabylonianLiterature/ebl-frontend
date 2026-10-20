@@ -3,7 +3,7 @@ import _ from 'lodash'
 import InlineMarkdown from 'common/ui/InlineMarkdown'
 import Reference from 'bibliography/domain/Reference'
 import Citation from 'bibliography/domain/Citation'
-import referencePopover from './referencePopover'
+import referencePopover from 'bibliography/ui/referencePopover'
 
 const ReferenceDetails = ({ reference }: { reference: Reference }) => {
   const linesCited =
@@ -14,6 +14,62 @@ const ReferenceDetails = ({ reference }: { reference: Reference }) => {
     <span className="reference-popover__interactive">
       {reference.pages}
       {linesCited}
+    </span>
+  )
+}
+
+function hasFallbackDetails(reference: Reference): boolean {
+  return Boolean(
+    reference.pages || reference.linesCited.length > 0 || reference.notes,
+  )
+}
+
+function FallbackReferenceDetails({
+  reference,
+}: {
+  reference: Reference
+}): JSX.Element {
+  const linesCited =
+    reference.linesCited.length > 0
+      ? ` [l. ${reference.linesCited.join(', ')}]`
+      : ''
+
+  return (
+    <>
+      {reference.pages}
+      {linesCited}
+      {reference.notes && (
+        <>
+          {' ['}
+          <InlineMarkdown source={reference.notes} />
+          {']'}
+        </>
+      )}
+    </>
+  )
+}
+
+function FallbackReferences({
+  references,
+}: {
+  references: readonly Reference[]
+}): JSX.Element {
+  const primaryReference = references[0]
+  const details = references.filter(hasFallbackDetails)
+
+  return (
+    <span className="reference-summary-fallback">
+      {primaryReference.id || 'Unknown reference'}
+      {details.length > 0 && ': '}
+      {details.map((reference, index) => (
+        <React.Fragment key={index}>
+          {index > 0 && '; '}
+          <FallbackReferenceDetails reference={reference} />
+        </React.Fragment>
+      ))}
+      <span className="type-abbreviation">
+        {` (${primaryReference.typeAbbreviation})`}
+      </span>
     </span>
   )
 }
@@ -42,6 +98,10 @@ export default function CompactCitation({ references }: Props): JSX.Element {
 
   if (!primaryReference) {
     return <></>
+  }
+
+  if (primaryReference.hasUnresolvedDocument) {
+    return <FallbackReferences references={references} />
   }
 
   if (references.length === 1) {

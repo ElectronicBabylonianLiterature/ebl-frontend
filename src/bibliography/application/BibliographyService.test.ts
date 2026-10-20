@@ -1,6 +1,5 @@
-import Bluebird from 'bluebird'
 import BibliographyService from 'bibliography/application/BibliographyService'
-import { createBibliographyRepositoryMock } from 'bibliography/application/bibliographyService.testSupport'
+import { createBibliographyRepositoryMock } from 'bibliography/application/BibliographyService.testSupport'
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 import { ApiError } from 'http/ApiClient'
 
@@ -25,15 +24,16 @@ describe('BibliographyService', () => {
     expect(bibliographyRepository.find).toHaveBeenCalledWith('RN1')
   })
 
-  test('deduplicates findMany ids while preserving requested order', async () => {
+  test('deduplicates requested ids in the keyed result', async () => {
     const service = new BibliographyService(bibliographyRepository)
     bibliographyRepository.findMany.mockResolvedValue([entryA, entryB])
 
-    await expect(service.findMany(['RN2', 'RN1', 'RN1'])).resolves.toEqual([
-      entryB,
-      entryA,
-      entryA,
-    ])
+    await expect(service.findManyById(['RN2', 'RN1', 'RN1'])).resolves.toEqual(
+      new Map([
+        [entryA.id, entryA],
+        [entryB.id, entryB],
+      ]),
+    )
 
     expect(bibliographyRepository.findMany).toHaveBeenCalledTimes(1)
     expect(bibliographyRepository.findMany).toHaveBeenCalledWith(['RN1', 'RN2'])
@@ -43,18 +43,20 @@ describe('BibliographyService', () => {
     const service = new BibliographyService(bibliographyRepository)
     let resolveFind: ((entry: BibliographyEntry) => void) | undefined
     bibliographyRepository.find.mockReturnValue(
-      new Bluebird((resolve) => {
+      new Promise((resolve) => {
         resolveFind = resolve
       }),
     )
 
     const inFlightFind = service.find('RN1')
-    const inFlightFindMany = service.findMany(['RN1'])
+    const inFlightFindMany = service.findManyById(['RN1'])
 
     resolveFind?.(entryA)
 
     await expect(inFlightFind).resolves.toBe(entryA)
-    await expect(inFlightFindMany).resolves.toEqual([entryA])
+    await expect(inFlightFindMany).resolves.toEqual(
+      new Map([[entryA.id, entryA]]),
+    )
     expect(bibliographyRepository.findMany).not.toHaveBeenCalled()
   })
 
@@ -93,7 +95,10 @@ describe('BibliographyService', () => {
 
     await expect(service.search('Aššur')).resolves.toEqual([entryA])
     await expect(service.listAllBibliography()).resolves.toEqual(['RN1'])
-    expect(bibliographyRepository.search).toHaveBeenCalledWith('Aššur')
+    expect(bibliographyRepository.search).toHaveBeenCalledWith(
+      'Aššur',
+      undefined,
+    )
     expect(bibliographyRepository.listAllBibliography).toHaveBeenCalledTimes(1)
   })
 
@@ -102,7 +107,9 @@ describe('BibliographyService', () => {
     bibliographyRepository.find.mockResolvedValue(entryA)
 
     await expect(service.find(entryA.id)).resolves.toBe(entryA)
-    await expect(service.findMany([entryA.id])).resolves.toEqual([entryA])
+    await expect(service.findManyById([entryA.id])).resolves.toEqual(
+      new Map([[entryA.id, entryA]]),
+    )
     expect(bibliographyRepository.find).toHaveBeenCalledTimes(1)
     expect(bibliographyRepository.findMany).not.toHaveBeenCalled()
   })
@@ -113,19 +120,19 @@ describe('BibliographyService', () => {
       throw new Error('Find promise was not initialized')
     }
     bibliographyRepository.find.mockReturnValue(
-      new Bluebird((_, reject) => {
+      new Promise((_, reject) => {
         rejectFind = reject
       }),
     )
     const service = new BibliographyService(bibliographyRepository)
 
     const directRequest = service.find('missing-entry')
-    const findManyRequest = service.findMany(['missing-entry'])
+    const findManyRequest = service.findManyById(['missing-entry'])
     const directExpectation = expect(directRequest).rejects.toBe(error)
     rejectFind(error)
 
     await directExpectation
-    await expect(findManyRequest).resolves.toEqual([])
+    await expect(findManyRequest).resolves.toEqual(new Map())
     expect(bibliographyRepository.findMany).not.toHaveBeenCalled()
   })
 
@@ -135,14 +142,14 @@ describe('BibliographyService', () => {
       throw new Error('Find promise was not initialized')
     }
     bibliographyRepository.find.mockReturnValue(
-      new Bluebird((_, reject) => {
+      new Promise((_, reject) => {
         rejectFind = reject
       }),
     )
     const service = new BibliographyService(bibliographyRepository)
 
     const directRequest = service.find(entryA.id)
-    const findManyRequest = service.findMany([entryA.id])
+    const findManyRequest = service.findManyById([entryA.id])
     const directExpectation = expect(directRequest).rejects.toBe(error)
     const findManyExpectation = expect(findManyRequest).rejects.toBe(error)
     rejectFind(error)
@@ -158,19 +165,19 @@ describe('BibliographyService', () => {
       throw new Error('Batch promise was not initialized')
     }
     bibliographyRepository.findMany.mockReturnValue(
-      new Bluebird((resolve) => {
+      new Promise((resolve) => {
         resolveBatch = resolve
       }),
     )
     bibliographyRepository.find.mockRejectedValue(error)
     const service = new BibliographyService(bibliographyRepository)
 
-    const firstRequest = service.findMany(['missing-entry'])
-    const secondRequest = service.findMany(['missing-entry'])
+    const firstRequest = service.findManyById(['missing-entry'])
+    const secondRequest = service.findManyById(['missing-entry'])
     resolveBatch([])
 
-    await expect(firstRequest).resolves.toEqual([])
-    await expect(secondRequest).resolves.toEqual([])
+    await expect(firstRequest).resolves.toEqual(new Map())
+    await expect(secondRequest).resolves.toEqual(new Map())
     expect(bibliographyRepository.findMany).toHaveBeenCalledTimes(1)
     expect(bibliographyRepository.find).toHaveBeenCalledTimes(1)
   })
