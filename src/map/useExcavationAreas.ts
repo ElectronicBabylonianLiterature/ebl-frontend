@@ -1,7 +1,8 @@
 import { useEffect } from 'react'
 import type { MutableRefObject } from 'react'
 import type { Map as MapLibreMap } from 'maplibre-gl'
-import type { MapLibreErrorEvent } from 'map/mapBackgroundError'
+import { MAP_STYLE_LOAD_EVENT } from 'map/mapLayers'
+import { observeExcavationAvailability } from 'map/mapExcavationAvailability'
 import {
   EXCAVATION_AREAS_SOURCE_ID,
   EXCAVATION_AREA_LAYER_IDS,
@@ -43,14 +44,6 @@ function setExcavationAreasVisible(map: MapLibreMap, isVisible: boolean): void {
   })
 }
 
-function isExcavationAreaError(event: MapLibreErrorEvent): boolean {
-  return (
-    event.sourceId === EXCAVATION_AREAS_SOURCE_ID ||
-    (typeof event.layer?.id === 'string' &&
-      EXCAVATION_AREA_LAYER_IDS.includes(event.layer.id))
-  )
-}
-
 function useExcavationAreaLifecycle(
   mapRef: MutableRefObject<MapLibreMap | null>,
   onAvailabilityChange?: (isUnavailable: boolean) => void,
@@ -59,21 +52,27 @@ function useExcavationAreaLifecycle(
     const map = mapRef.current
     if (!map) return
 
-    const isCurrentMap = (): boolean => mapRef.current === map
-    const install = (): void => addExcavationAreas(map)
-    const handleError = (event: MapLibreErrorEvent): void => {
-      if (isExcavationAreaError(event)) onAvailabilityChange?.(true)
+    let isActive = true
+    const ownsMap = (): boolean => mapRef.current === map
+    const isCurrentMap = (): boolean => isActive && ownsMap()
+    const install = (): void => {
+      if (isCurrentMap()) addExcavationAreas(map)
     }
 
-    map.on('error', handleError)
-    if (map.isStyleLoaded()) install()
-    else map.once('load', install)
+    const stopObservingAvailability = observeExcavationAvailability(
+      map,
+      EXCAVATION_AREA_LAYER_IDS,
+      onAvailabilityChange,
+      isCurrentMap,
+    )
+    map.on(MAP_STYLE_LOAD_EVENT, install)
+    if (map.getStyle()) install()
 
     return () => {
-      if (!isCurrentMap()) return
-      map.off('error', handleError)
-      map.off('load', install)
-      removeExcavationAreas(map)
+      isActive = false
+      stopObservingAvailability()
+      map.off(MAP_STYLE_LOAD_EVENT, install)
+      if (ownsMap()) removeExcavationAreas(map)
     }
   }, [mapRef, onAvailabilityChange])
 }
@@ -86,15 +85,18 @@ function useExcavationAreaVisibility(
     const map = mapRef.current
     if (!map) return
 
-    const isCurrentMap = (): boolean => mapRef.current === map
-    const updateVisibility = (): void =>
-      setExcavationAreasVisible(map, isVisible)
+    let isActive = true
+    const updateVisibility = (): void => {
+      if (isActive && mapRef.current === map)
+        setExcavationAreasVisible(map, isVisible)
+    }
 
-    if (map.isStyleLoaded()) updateVisibility()
-    else map.once('load', updateVisibility)
+    map.on(MAP_STYLE_LOAD_EVENT, updateVisibility)
+    updateVisibility()
 
     return () => {
-      if (isCurrentMap()) map.off('load', updateVisibility)
+      isActive = false
+      map.off(MAP_STYLE_LOAD_EVENT, updateVisibility)
     }
   }, [mapRef, isVisible])
 }

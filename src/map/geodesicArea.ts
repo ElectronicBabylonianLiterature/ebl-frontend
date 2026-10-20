@@ -7,26 +7,35 @@ function toRadians(degrees: number): number {
   return (degrees * Math.PI) / 180
 }
 
+function isValidLatitude(value: unknown): value is number {
+  return (
+    typeof value === 'number' && Number.isFinite(value) && Math.abs(value) <= 90
+  )
+}
+
 function isFinitePosition(value: unknown): value is Position {
   if (!Array.isArray(value)) return false
   const [longitude, latitude] = value
   return (
     typeof longitude === 'number' &&
-    typeof latitude === 'number' &&
     Number.isFinite(longitude) &&
-    Number.isFinite(latitude)
+    isValidLatitude(latitude)
   )
 }
 
 function isRing(value: unknown): value is Position[] {
-  return (
-    Array.isArray(value) && value.length >= 4 && value.every(isFinitePosition)
+  if (
+    !Array.isArray(value) ||
+    value.length < 4 ||
+    !value.every(isFinitePosition)
   )
+    return false
+  const first = value[0]
+  const last = value[value.length - 1]
+  return first[0] === last[0] && first[1] === last[1]
 }
 
 function ringArea(ring: readonly Position[]): number {
-  if (ring.length < 4) return 0
-
   let total = 0
   for (let index = 0; index < ring.length - 1; index += 1) {
     const [lowerLongitude, lowerLatitude] = ring[index]
@@ -42,17 +51,28 @@ function ringArea(ring: readonly Position[]): number {
   return (total * EARTH_RADIUS_METRES * EARTH_RADIUS_METRES) / 2
 }
 
-function polygonArea(rings: unknown): number {
-  if (!Array.isArray(rings) || !isRing(rings[0])) return 0
+function polygonArea(rings: unknown): number | null {
+  if (!Array.isArray(rings) || rings.length === 0 || !rings.every(isRing))
+    return null
 
   const [outer, ...holes] = rings
-  const outerArea = Math.abs(ringArea(outer as Position[]))
+  const outerArea = Math.abs(ringArea(outer))
   const holeArea = holes.reduce<number>(
-    (total, hole) => total + (isRing(hole) ? Math.abs(ringArea(hole)) : 0),
+    (total, hole) => total + Math.abs(ringArea(hole)),
     0,
   )
 
   return Math.max(outerArea - holeArea, 0)
+}
+
+function multiPolygonArea(polygons: unknown[]): number | null {
+  let total = 0
+  for (const polygon of polygons) {
+    const area = polygonArea(polygon)
+    if (area === null) return null
+    total += area
+  }
+  return total
 }
 
 export function geodesicAreaSquareMetres(geometry: Geometry): number | null {
@@ -60,13 +80,10 @@ export function geodesicAreaSquareMetres(geometry: Geometry): number | null {
     geometry.type === 'Polygon'
       ? polygonArea(geometry.coordinates)
       : geometry.type === 'MultiPolygon' && Array.isArray(geometry.coordinates)
-        ? geometry.coordinates.reduce<number>(
-            (total, rings) => total + polygonArea(rings),
-            0,
-          )
-        : 0
+        ? multiPolygonArea(geometry.coordinates)
+        : null
 
-  return Number.isFinite(area) && area > 0 ? area : null
+  return area !== null && Number.isFinite(area) && area > 0 ? area : null
 }
 
 export function geodesicAreaSquareKm(geometry: Geometry): number | null {
