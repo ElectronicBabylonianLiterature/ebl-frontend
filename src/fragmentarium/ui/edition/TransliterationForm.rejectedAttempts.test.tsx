@@ -1,6 +1,5 @@
 import React from 'react'
 import { fireEvent, screen, waitFor } from '@testing-library/react'
-import { Promise } from 'bluebird'
 
 import { submitFormByTestId } from 'test-support/utils'
 import { fragmentFactory } from 'test-support/fragment-fixtures'
@@ -99,6 +98,7 @@ it('records a rejection after editing while the save is pending', async () => {
 
 it.each([
   ['network error', new Error('network error')],
+  ['401 response', httpError(401, 'Unauthorized')],
   ['408 response', httpError(408, 'Request Timeout')],
   ['statusless API response', httpError(undefined, 'Unknown response')],
   ['399 response', httpError(399, 'Unexpected response')],
@@ -116,8 +116,8 @@ it.each([
 
 it('remembers every rejected snapshot', async () => {
   const updateEdition = createUpdateEditionMock()
-    .mockReturnValueOnce(Promise.reject(validationError('B rejected')))
-    .mockReturnValueOnce(Promise.reject(validationError('C rejected')))
+    .mockImplementationOnce(() => Promise.reject(validationError('B rejected')))
+    .mockImplementationOnce(() => Promise.reject(validationError('C rejected')))
   renderTransliterationForm(updateEdition)
 
   editTransliteration('B')
@@ -152,7 +152,7 @@ it('clears rejected snapshots after a successful save', async () => {
     introduction: { text: 'introduction', parts: [] },
   })
   const updateEdition = createUpdateEditionMock()
-    .mockReturnValueOnce(Promise.reject(validationError('B rejected')))
+    .mockImplementationOnce(() => Promise.reject(validationError('B rejected')))
     .mockReturnValueOnce(Promise.resolve(successfulFragment))
   renderTransliterationForm(updateEdition)
 
@@ -184,4 +184,56 @@ it('keeps form identifiers stable after an edit', () => {
     formId,
   )
   expect(saveButton()).toHaveAttribute('form', formId)
+})
+
+it('ignores direct form submissions of an already rejected snapshot', async () => {
+  const updateEdition = failingUpdate(validationError())
+  renderTransliterationForm(updateEdition)
+  editTransliteration('rejected text')
+  submitTransliteration()
+  await waitFor(() => expect(saveButton()).toBeDisabled())
+
+  submitTransliteration()
+
+  expect(updateEdition).toHaveBeenCalledTimes(1)
+})
+
+it('preserves parent-managed queuing for direct submissions while saving', () => {
+  const updateEdition = createUpdateEditionMock().mockImplementation(
+    () => new Promise(() => undefined),
+  )
+  renderTransliterationForm(updateEdition, true)
+
+  submitTransliteration()
+
+  expect(updateEdition).toHaveBeenCalledWith({})
+})
+
+it('preserves newer template edits when a pending save succeeds', async () => {
+  let resolveUpdate!: (fragment: Fragment) => void
+  const updateEdition = createUpdateEditionMock().mockImplementation(
+    () =>
+      new Promise<Fragment>((resolve) => {
+        resolveUpdate = resolve
+      }),
+  )
+  renderTransliterationForm(updateEdition)
+  editTransliteration('submitted text')
+  submitTransliteration()
+  await waitFor(() => expect(updateEdition).toHaveBeenCalledTimes(1))
+
+  fireEvent.click(screen.getByRole('button', { name: 'Apply template' }))
+  resolveUpdate(
+    fragmentFactory.build({
+      atf: 'submitted text',
+      notes: { text: 'saved notes', parts: [] },
+      introduction: { text: 'saved introduction', parts: [] },
+    }),
+  )
+
+  await waitFor(() =>
+    expect(screen.getByLabelText('notes')).toHaveValue('saved notes'),
+  )
+  expect(transliterationField()).toHaveValue('template value')
+  expect(saveButton()).toBeEnabled()
 })

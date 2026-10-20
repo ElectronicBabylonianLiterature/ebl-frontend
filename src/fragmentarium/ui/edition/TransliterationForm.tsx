@@ -1,18 +1,17 @@
 import React, {
   useState,
   useEffect,
+  useRef,
   FormEvent,
   useCallback,
   useMemo,
 } from 'react'
 import { Container, Row, Col } from 'react-bootstrap'
 import _ from 'lodash'
-import Promise from 'bluebird'
 
 import TemplateForm from 'fragmentarium/ui/edition/TemplateForm'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import { ErrorBoundary } from '@sentry/react'
-import { ApiError } from 'http/ApiClient'
 import {
   editionFields,
   EditionFields,
@@ -22,42 +21,16 @@ import {
   SubmitButton,
   TransliterationFormFields,
 } from 'fragmentarium/ui/edition/TransliterationFormControls'
-
-type EditedValues = Pick<FormData, (typeof editionFields)[number]>
-
-const retryableErrorStatuses = new Set([408, 429])
-const rejectedAttemptLimit = 20
-
-const isDeterministicFailure = (error: unknown): error is ApiError => {
-  if (!(error instanceof ApiError)) {
-    return false
-  }
-  if (typeof error.status !== 'number') {
-    return false
-  }
-  if (error.status < 400) {
-    return false
-  }
-  if (error.status >= 500) {
-    return false
-  }
-  return !retryableErrorStatuses.has(error.status)
-}
-
-const createAttemptKey = (values: EditedValues): string =>
-  JSON.stringify(editionFields.map((field) => values[field]))
-
-const createUpdatedFields = (
-  editedValues: EditedValues,
-  initialValues: EditedValues,
-): EditionFields =>
-  editionFields.reduce<EditionFields>(
-    (updates, field) =>
-      editedValues[field] === initialValues[field]
-        ? updates
-        : { ...updates, [field]: editedValues[field] },
-    {},
-  )
+import SupersedableOperation from 'common/utils/SupersedableOperation'
+import applyWhenCurrent from 'common/utils/applyWhenCurrent'
+import {
+  createAttemptKey,
+  createUpdatedFields,
+  rememberRejectedAttempt,
+  isDeterministicFailure,
+  mergeSavedValues,
+} from 'fragmentarium/ui/edition/rejectedEditionAttempts'
+import { runBeforeUnloadEvent } from 'fragmentarium/ui/edition/beforeUnloadWarning'
 
 type Props = {
   transliteration: string
@@ -65,34 +38,6 @@ type Props = {
   introduction: string
   updateEdition: (fields: EditionFields) => Promise<Fragment>
   disabled?: boolean
-}
-
-const handleBeforeUnload = (
-  event: BeforeUnloadEvent,
-  hasChanges: () => boolean,
-): string | void => {
-  if (hasChanges()) {
-    const confirmationMessage =
-      'You have unsaved changes. Are you sure you want to leave?'
-    event.returnValue = confirmationMessage
-    return confirmationMessage
-  }
-}
-
-const runBeforeUnloadEvent = ({
-  hasChanges,
-}: {
-  hasChanges: () => boolean
-}) => {
-  const _handleBeforeEvent = (event) => handleBeforeUnload(event, hasChanges)
-  if (hasChanges()) {
-    window.addEventListener('beforeunload', _handleBeforeEvent)
-  } else {
-    window.removeEventListener('beforeunload', _handleBeforeEvent)
-  }
-  return () => {
-    window.removeEventListener('beforeunload', _handleBeforeEvent)
-  }
 }
 
 const TransliterationForm: React.FC<Props> = ({
@@ -110,10 +55,10 @@ const TransliterationForm: React.FC<Props> = ({
     error: null,
     disabled: false,
   })
-  const [updatePromise, setUpdatePromise] = useState(Promise.resolve())
   const [rejectedAttempts, setRejectedAttempts] = useState<ReadonlySet<string>>(
     new Set(),
   )
+  const updateOperation = useRef(new SupersedableOperation())
   const initialValues = useMemo(
     () => ({ transliteration, notes, introduction }),
     [transliteration, notes, introduction],
@@ -137,39 +82,35 @@ const TransliterationForm: React.FC<Props> = ({
   const submit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     const editedValues = _.pick(formData, editionFields)
+    if (rejectedAttempts.has(createAttemptKey(editedValues))) {
+      return
+    }
     const updatedFields = createUpdatedFields(editedValues, initialValues)
-    const promise = updateEdition(updatedFields)
-      .then((fragment) => {
+    applyWhenCurrent(() => updateEdition(updatedFields), {
+      onSuccess: (fragment: Fragment) => {
         setRejectedAttempts(new Set())
         setFormData((prev) => ({
           ...prev,
-          transliteration: fragment.atf,
-          notes: fragment.notes.text,
-          introduction: fragment.introduction.text,
+          ...mergeSavedValues(prev, editedValues, {
+            transliteration: fragment.atf,
+            notes: fragment.notes.text,
+            introduction: fragment.introduction.text,
+          }),
           error: null,
         }))
-      })
-      .catch((error) => {
-        const isCancellationError =
-          (error as { name?: string })?.name === 'CancellationError' ||
-          (typeof (promise as { isCancelled?: () => boolean })?.isCancelled ===
-            'function' &&
-            (promise as { isCancelled: () => boolean }).isCancelled())
-        if (isCancellationError) {
-          return
-        }
+      },
+      onError: (error) => {
         if (isDeterministicFailure(error)) {
-          setRejectedAttempts((previousAttempts) => {
-            const attemptKey = createAttemptKey(editedValues)
-            const recent = [...previousAttempts].filter(
-              (key) => key !== attemptKey,
-            )
-            return new Set([...recent, attemptKey].slice(-rejectedAttemptLimit))
-          })
+          setRejectedAttempts((previousAttempts) =>
+            rememberRejectedAttempt(
+              previousAttempts,
+              createAttemptKey(editedValues),
+            ),
+          )
         }
         setFormData((prev) => ({ ...prev, error }))
-      })
-    setUpdatePromise(promise)
+      },
+    })(updateOperation.current.start())
   }
 
   const hasChanges = useCallback(
@@ -181,20 +122,20 @@ const TransliterationForm: React.FC<Props> = ({
   )
 
   const matchesRejectedAttempt = rejectedAttempts.has(
-    createAttemptKey(_.pick(formData, editionFields)),
+    createAttemptKey(formData),
   )
 
   useEffect(() => {
-    const clearRejectedAttempts = () => setRejectedAttempts(new Set())
+    const clearRejectedAttempts = () => setRejectedAttempts(new Set<string>())
     window.addEventListener('focus', clearRejectedAttempts)
     return () => window.removeEventListener('focus', clearRejectedAttempts)
   }, [])
 
-  useEffect(() => {
-    return () => updatePromise.cancel()
-  }, [updatePromise])
+  useEffect(() => () => updateOperation.current.supersede(), [])
 
-  useEffect(() => runBeforeUnloadEvent({ hasChanges }), [hasChanges])
+  useEffect(() => {
+    return runBeforeUnloadEvent({ hasChanges })
+  }, [formData, transliteration, notes, introduction, hasChanges])
 
   return (
     <Container fluid>

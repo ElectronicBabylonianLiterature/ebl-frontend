@@ -1,59 +1,27 @@
 import React, { Component } from 'react'
-import AceEditor, { IAnnotation, ICommand } from 'react-ace'
+import AceEditor, { ICommand } from 'react-ace'
 import { Ace, Range } from 'ace-builds'
 import _ from 'lodash'
 
 import 'ace-builds/src-noconflict/ext-searchbox'
-import 'ace-builds/src-noconflict/mode-plain_text'
 import 'ace-builds/src-noconflict/theme-kuroir'
 import 'ace-builds/src-noconflict/ext-rtl'
 import specialCharacters from 'editor/SpecialCharacters.json'
 import atSnippets from 'editor/atSnippets.json'
 import hashSnippets from 'editor/hashSnippets.json'
 import AtfMode from 'editor/AtfMode'
+import createAnnotations from 'editor/createAnnotations'
 import ErrorBoundary from 'common/errors/ErrorBoundary'
 import { setCompleters } from 'ace-builds/src-noconflict/ext-language_tools'
 
-type AnnotationError = {
-  description: string
-  lineNumber: number
-}
-
-function isAnnotationError(error: unknown): error is AnnotationError {
-  if (typeof error !== 'object' || error === null) {
-    return false
-  }
-  const candidate = error as Record<string, unknown>
-  return (
-    typeof candidate.description === 'string' &&
-    typeof candidate.lineNumber === 'number' &&
-    Number.isInteger(candidate.lineNumber) &&
-    candidate.lineNumber >= 1
-  )
-}
-
-export function createAnnotations(compositeError: unknown): IAnnotation[] {
-  const errors: unknown = _.get(compositeError, 'data.errors')
-  if (!Array.isArray(errors)) {
-    return []
-  }
-  return errors.filter(isAnnotationError).map((error) => ({
-    row: error.lineNumber - 1,
-    column: 0,
-    type: 'error',
-    text: error.description,
-  }))
-}
-
 function createCompleter(
   triggerRegex: RegExp,
-  snippets,
+  snippets: Ace.Completion[],
   lineStartOnly = false,
-) {
+): Ace.Completer {
   return {
     getCompletions: function (editor, session, pos, prefix, callback) {
-      const isTriggerPosition =
-        !lineStartOnly || (lineStartOnly && pos.column === 1)
+      const isTriggerPosition = !lineStartOnly || pos.column === 1
 
       if (prefix.match(triggerRegex) && isTriggerPosition) {
         callback(null, snippets)
@@ -75,6 +43,7 @@ const specialCharacterKeys: ICommand[] = Object.entries(specialCharacters).map(
 
 interface Props {
   readonly name: string
+  readonly inputId?: string
   readonly value: string
   readonly onChange: (value: string, event?: unknown) => void | undefined
   readonly disabled: boolean
@@ -86,19 +55,20 @@ class Editor extends Component<Props> {
     error: null,
     disabled: false,
   }
-  readonly aceEditor = React.createRef<AceEditor>()
+  readonly atfMode = new AtfMode()
 
   constructor(props: Props) {
     super(props)
-    this.aceEditor = React.createRef()
     this.setSnippets()
   }
 
-  componentDidMount(): void {
-    const editor = this.aceEditor.current?.editor as Ace.Editor | undefined
-    const customMode = new AtfMode() as unknown as Ace.SyntaxMode
-    editor?.getSession().setMode(customMode)
-    editor?.textInput.setAriaLabel()
+  configureSession = (editor: Ace.Editor): void => {
+    editor.getSession().setNewLineMode('unix')
+    editor.setOption('textInputAriaLabel', _.capitalize(this.props.name))
+    editor.textInput.setAriaLabel()
+    if (this.props.inputId) {
+      editor.textInput.getElement().id = this.props.inputId
+    }
   }
 
   setSnippets(): void {
@@ -159,14 +129,13 @@ class Editor extends Component<Props> {
     return (
       <ErrorBoundary>
         <AceEditor
-          ref={this.aceEditor}
           name={name}
           width="100%"
-          heigth="auto"
           minLines={2}
           maxLines={2 * value.split('\n').length + 2}
-          mode="plain_text"
-          theme="kuroir" // AtfMode is designed to be used with kuroir theme
+          mode={this.atfMode}
+          onLoad={this.configureSession}
+          theme="kuroir"
           value={value}
           onChange={onChange}
           showPrintMargin={false}
@@ -180,9 +149,7 @@ class Editor extends Component<Props> {
           }}
           setOptions={{
             showLineNumbers: false,
-            textInputAriaLabel: name,
-            // @ts-expect-error https://github.com/securingsincity/react-ace/issues/752
-            newLineMode: 'unix',
+            textInputAriaLabel: _.capitalize(name),
             autoScrollEditorIntoView: true,
             rtlText: true,
           }}

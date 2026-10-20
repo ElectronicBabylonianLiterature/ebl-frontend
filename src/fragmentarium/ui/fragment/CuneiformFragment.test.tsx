@@ -1,5 +1,4 @@
 import { fireEvent, screen, waitFor, within } from '@testing-library/react'
-import { Promise } from 'bluebird'
 import _ from 'lodash'
 import { submitFormByTestId, clickNth } from 'test-support/utils'
 import {
@@ -10,6 +9,7 @@ import {
   updatedFragment,
 } from 'fragmentarium/ui/fragment/cuneiformFragment.testSupport'
 import { ApiError } from 'http/ApiClient'
+import userEvent from '@testing-library/user-event'
 
 it('Renders CDLI number', async () => {
   await setup()
@@ -150,13 +150,11 @@ it('Shows the error and stops saving when a save fails', async () => {
     },
     422,
   )
-  fragmentService.updateEdition.mockReturnValueOnce(
-    Promise.reject(requestError),
+  fragmentService.updateEdition.mockRejectedValueOnce(requestError)
+  await userEvent.type(
+    screen.getByRole('textbox', { name: 'Template' }),
+    '3{Enter}',
   )
-  fireEvent.change(screen.getByRole('textbox', { name: 'Template' }), {
-    target: { value: '3' },
-  })
-  fireEvent.submit(screen.getByRole('form', { name: 'Template form' }))
 
   submitFormByTestId(screen, 'transliteration-form')
 

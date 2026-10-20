@@ -3,7 +3,7 @@ import _ from 'lodash'
 import classNames from 'classnames'
 import { Collapse } from 'react-bootstrap'
 
-import './CollapsibleSection.sass'
+import 'corpus/ui/CollapsibleSection.sass'
 
 export default function CollapsibleSection({
   heading,

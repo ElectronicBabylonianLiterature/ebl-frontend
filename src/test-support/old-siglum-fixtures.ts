@@ -6,10 +6,10 @@ import {
   cslDataFactory,
   referenceDtoFactory,
   referenceFactory,
-} from './bibliography-fixtures'
+} from 'test-support/bibliography-fixtures'
 import { OldSiglumDto } from 'corpus/application/dtos'
 
-const defaultChance = new Chance()
+const defaultChance = new Chance('old-siglum-fixtures')
 
 export const oldSiglumFactory = Factory.define<OldSiglum>(
   ({ transientParams }) => {

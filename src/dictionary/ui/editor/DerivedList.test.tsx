@@ -1,6 +1,6 @@
 import React from 'react'
 import _ from 'lodash'
-import DerivedList from './DerivedList'
+import DerivedList from 'dictionary/ui/editor/DerivedList'
 import { render, screen } from '@testing-library/react'
 
 import { whenClicked, whenChangedByValue } from 'test-support/utils'

@@ -1,6 +1,5 @@
 import { screen } from '@testing-library/react'
 import { waitForSpinnerToBeRemoved } from 'test-support/waitForSpinnerToBeRemoved'
-import Bluebird from 'bluebird'
 import {
   sortScriptsByPeriod,
   sortVariants,
@@ -8,6 +7,7 @@ import {
 import { CroppedAnnotation } from 'signs/domain/CroppedAnnotation'
 import userEvent from '@testing-library/user-event'
 import { mesopotamianDateFactory } from 'test-support/date-fixtures'
+import { pcaClusteringFactory } from 'test-support/cropped-annotation-fixtures'
 import {
   croppedAnnotations,
   renderSignImages,
@@ -24,7 +24,7 @@ describe('Sign Images edge cases', () => {
   }
 
   async function renderWith(annotations: CroppedAnnotation[]): Promise<void> {
-    signService.getCentroidImages.mockReturnValue(Bluebird.resolve(annotations))
+    signService.getCentroidImages.mockReturnValue(Promise.resolve(annotations))
     renderSignImages()
     await waitForSpinnerToBeRemoved(screen)
   }
@@ -33,11 +33,11 @@ describe('Sign Images edge cases', () => {
     await renderWith([
       annotationWith({
         annotationId: 'odd-form',
-        pcaClustering: {
+        pcaClustering: pcaClusteringFactory.build({
           ...croppedAnnotations[0].pcaClustering,
           form: 'unclustered',
-        },
-      } as Partial<CroppedAnnotation>),
+        }),
+      }),
     ])
 
     expect(screen.getByTitle('unclustered')).toBeInTheDocument()
@@ -61,7 +61,7 @@ describe('Sign Images edge cases', () => {
 
   it('does not refetch the variants when a period is reopened', async () => {
     signService.getClusterVariants.mockReturnValue(
-      Bluebird.resolve([annotationWith({ script: 'MA' })]),
+      Promise.resolve([annotationWith({ script: 'MA' })]),
     )
     await renderWith([annotationWith({ script: 'MA' })])
     const period = screen.getByRole('button', { name: /Middle Assyrian/ })
@@ -96,15 +96,13 @@ describe('Sign Images optional annotation data', () => {
   async function renderWithAnnotations(
     annotations: CroppedAnnotation[],
   ): Promise<void> {
-    signService.getCentroidImages.mockReturnValue(Bluebird.resolve(annotations))
+    signService.getCentroidImages.mockReturnValue(Promise.resolve(annotations))
     renderSignImages()
     await waitForSpinnerToBeRemoved(screen)
   }
 
   it('renders an annotation without a label', async () => {
-    await renderWithAnnotations([
-      { ...base, label: undefined as unknown as string },
-    ])
+    await renderWithAnnotations([{ ...base, label: undefined }])
 
     expect(screen.getByTitle('Canonical 1')).toBeInTheDocument()
   })
@@ -116,15 +114,18 @@ describe('Sign Images optional annotation data', () => {
     await renderWithAnnotations([
       {
         ...base,
-        pcaClustering: { ...base.pcaClustering, form },
-      } as CroppedAnnotation,
+        pcaClustering: pcaClusteringFactory.build({
+          ...base.pcaClustering,
+          form,
+        }),
+      },
     ])
 
     expect(screen.getByTitle(title)).toBeInTheDocument()
   })
 
   it('keeps the annotations of a cluster whose variants fail to load', async () => {
-    signService.getClusterVariants.mockReturnValue(Bluebird.resolve([]))
+    signService.getClusterVariants.mockReturnValue(Promise.resolve([]))
     await renderWithAnnotations([
       { ...base, script: 'MA' },
       {
@@ -155,13 +156,16 @@ describe('Sign Images optional annotation data', () => {
   })
 
   it('labels a group whose form is blank', async () => {
-    signService.getClusterVariants.mockReturnValue(Bluebird.resolve([]))
+    signService.getClusterVariants.mockReturnValue(Promise.resolve([]))
     await renderWithAnnotations([
       {
         ...base,
         script: 'MA',
-        pcaClustering: { ...base.pcaClustering, form: '' },
-      } as CroppedAnnotation,
+        pcaClustering: pcaClusteringFactory.build({
+          ...base.pcaClustering,
+          form: '',
+        }),
+      },
     ])
 
     await userEvent.click(

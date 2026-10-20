@@ -4,7 +4,7 @@ import AfoRegisterRecord, {
   AfoRegisterRecordSuggestion,
 } from 'afo-register/domain/Record'
 import AfoRegisterService from 'afo-register/application/AfoRegisterService'
-import { stringify } from 'query-string'
+import { stringify } from 'common/utils/queryString'
 
 jest.mock('afo-register/infrastructure/AfoRegisterRepository')
 const afoRegisterRepository = new (AfoRegisterRepository as jest.Mock)()

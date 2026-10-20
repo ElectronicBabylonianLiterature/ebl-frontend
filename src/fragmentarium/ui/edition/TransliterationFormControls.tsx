@@ -55,6 +55,7 @@ export function TransliterationFormFields({
           {name === 'transliteration' && <SpecialCharactersHelp />}
           <Editor
             name={name}
+            inputId={`${formId}-${name}`}
             value={formData[name]}
             onChange={update(name)}
             disabled={disabled}

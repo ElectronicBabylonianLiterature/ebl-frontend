@@ -1,6 +1,7 @@
 import React from 'react'
 import { render, screen } from '@testing-library/react'
-import Editor, { createAnnotations } from 'editor/Editor'
+import Editor from 'editor/Editor'
+import createAnnotations from 'editor/createAnnotations'
 
 test.each([
   ['text\nmore text', false, null],
@@ -50,7 +51,9 @@ test.each([
       />,
     )
     expect(
-      screen.getByRole('textbox', { name: new RegExp(`^${name},`) }),
+      screen.getByRole('textbox', {
+        name: new RegExp(`^${name.charAt(0).toUpperCase() + name.slice(1)},`),
+      }),
     ).toBeInTheDocument()
   },
 )
@@ -80,6 +83,8 @@ test.each([null, 'invalid', { transliteration: ['Invalid transliteration'] }])(
 )
 
 test.each([
+  ['null error', null],
+  ['string error', 'invalid'],
   ['missing line', { description: 'Invalid transliteration' }],
   ['non-string description', { description: 7, lineNumber: 2 }],
   ['infinite line', { description: 'Invalid line', lineNumber: Infinity }],
@@ -103,6 +108,25 @@ test('names the editor text input', () => {
   )
 
   expect(
-    screen.getByRole('textbox', { name: /^transliteration,/ }),
+    screen.getByRole('textbox', { name: /^Transliteration,/ }),
   ).toBeInTheDocument()
+})
+
+test('connects the field label to the actual Ace text input', () => {
+  render(
+    <>
+      <label htmlFor="edition-notes">Notes</label>
+      <Editor
+        name="notes"
+        inputId="edition-notes"
+        value="value"
+        onChange={jest.fn()}
+      />
+    </>,
+  )
+
+  expect(screen.getByLabelText('Notes')).toHaveAttribute('id', 'edition-notes')
+  expect(screen.getByRole('textbox', { name: /^Notes,/ })).toBe(
+    screen.getByLabelText('Notes'),
+  )
 })

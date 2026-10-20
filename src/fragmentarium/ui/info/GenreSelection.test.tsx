@@ -2,13 +2,13 @@ import React from 'react'
 import { BrowserRouter as Router } from 'react-router-dom'
 import { render, screen, waitFor } from '@testing-library/react'
 import { Fragment } from 'fragmentarium/domain/fragment'
-import Promise from 'bluebird'
 import GenreSelection from 'fragmentarium/ui/info/GenreEditor'
 import userEvent from '@testing-library/user-event'
-import { Genres } from 'fragmentarium/domain/Genres'
+import selectEvent from 'react-select-event'
+import { Genre, Genres } from 'fragmentarium/domain/Genres'
 import SessionContext from 'auth/SessionContext'
 import { fragmentFactory } from 'test-support/fragment-fixtures'
-import { waitForSpinnerToBeRemoved } from '../../../test-support/waitForSpinnerToBeRemoved'
+import { waitForSpinnerToBeRemoved } from 'test-support/waitForSpinnerToBeRemoved'
 import FragmentService from 'fragmentarium/application/FragmentService'
 
 jest.mock('fragmentarium/application/FragmentService')
@@ -19,18 +19,13 @@ const MockFragmentService = FragmentService as jest.Mock<
 >
 const mockGenres = [['ARCHIVAL'], ['CANONICAL'], ['ARCHIVAL', 'Administrative']]
 const fragmentServiceMock = new MockFragmentService()
-const routerFuture = Object.fromEntries([
-  ['v7_startTransition', true],
-  ['v7_relativeSplatPath', true],
-])
-
 let fragment: Fragment
 let session
 
 async function renderGenreSelection() {
   render(
     <SessionContext.Provider value={session}>
-      <Router future={routerFuture}>
+      <Router>
         <GenreSelection
           fragment={fragment}
           updateGenres={updateGenres}
@@ -114,5 +109,55 @@ describe('Genre Editor', () => {
     await userEvent.click(screen.getByLabelText('delete-genre'))
     await waitFor(() => expect(updateGenres).toHaveBeenCalled())
     expect(screen.queryByText('ARCHIVAL')).not.toBeInTheDocument()
+  })
+  it('clears the selected genre', async () => {
+    await setup()
+    await selectGenreOption('CANONICAL')
+    expect(screen.getByLabelText('add-genre')).toBeEnabled()
+
+    await selectEvent.clearFirst(screen.getByLabelText('select-genre'))
+
+    expect(screen.getByLabelText('add-genre')).toBeDisabled()
+  })
+  it('does not add a genre that is already present', async () => {
+    await setup()
+    await selectGenreOption('CANONICAL')
+    await userEvent.click(screen.getByLabelText('add-genre'))
+    await waitFor(() => expect(updateGenres).toHaveBeenCalledTimes(1))
+
+    await userEvent.click(screen.getByLabelText('toggle-uncertain'))
+    await selectGenreOption('CANONICAL')
+    await userEvent.click(screen.getByLabelText('toggle-uncertain'))
+    await userEvent.click(screen.getByLabelText('add-genre'))
+
+    expect(updateGenres).toHaveBeenCalledTimes(1)
+  })
+  it('hides the editor when the user clicks outside of it', async () => {
+    await setup()
+
+    await userEvent.click(document.body)
+
+    await waitFor(() =>
+      expect(screen.queryByLabelText('select-genre')).not.toBeInTheDocument(),
+    )
+  })
+  it('lists several genres separated by bars', async () => {
+    fragment = fragmentFactory.build(
+      {},
+      {
+        associations: {
+          genres: new Genres([
+            new Genre(['ARCHIVAL'], false),
+            new Genre(['CANONICAL'], false),
+          ]),
+        },
+      },
+    )
+    fragmentServiceMock.fetchGenres.mockResolvedValue(mockGenres)
+    session = { isAllowedToTransliterateFragments: jest.fn(() => true) }
+    await renderGenreSelection()
+
+    expect(screen.getByText(/^Genres:/)).toBeVisible()
+    expect(screen.getByText(/\|/)).toBeVisible()
   })
 })

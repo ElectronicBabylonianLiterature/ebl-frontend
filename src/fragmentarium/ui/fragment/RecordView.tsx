@@ -6,7 +6,7 @@ import { Fragment } from 'fragmentarium/domain/fragment'
 import FragmentCrumb from 'fragmentarium/ui/FragmentCrumb'
 import { RecordList } from 'fragmentarium/ui/info/Record'
 import withData from 'http/withData'
-import './RecordView.sass'
+import 'fragmentarium/ui/fragment/RecordView.sass'
 
 function RecordView({ fragment }: { fragment: Fragment }): JSX.Element {
   return (
@@ -28,7 +28,7 @@ function RecordView({ fragment }: { fragment: Fragment }): JSX.Element {
 
 const FragmentWithData = withData<
   unknown,
-  { number: string; fragmentService: FragmentService },
+  { number: string; fragmentService: Pick<FragmentService, 'find'> },
   Fragment
 >(
   ({ data, ...props }) => <RecordView fragment={data} {...props} />,

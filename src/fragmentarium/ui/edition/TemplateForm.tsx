@@ -1,9 +1,9 @@
 import React, { ChangeEvent, Component, FormEvent } from 'react'
 import { Form } from 'react-bootstrap'
-import Template from './Template'
+import Template from 'fragmentarium/ui/edition/Template'
 
 import HelpTrigger from 'common/ui/HelpTrigger'
-import TemplateHelp from './TemplateHelp'
+import TemplateHelp from 'fragmentarium/ui/edition/TemplateHelp'
 
 class TemplateForm extends Component<
   { onSubmit },
@@ -33,7 +33,7 @@ class TemplateForm extends Component<
 
   render(): JSX.Element {
     return (
-      <Form noValidate onSubmit={this.submit} aria-label="Template form">
+      <Form noValidate onSubmit={this.submit}>
         <Form.Group controlId="template">
           <Form.Label>
             <HelpTrigger overlay={TemplateHelp()} />

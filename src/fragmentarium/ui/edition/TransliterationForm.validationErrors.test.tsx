@@ -1,6 +1,5 @@
 import React from 'react'
 import { fireEvent, screen, waitFor } from '@testing-library/react'
-import { Promise } from 'bluebird'
 
 import { submitFormByTestId } from 'test-support/utils'
 import {

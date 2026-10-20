@@ -1,9 +1,13 @@
 import React from 'react'
-import PosInput from './PosInput'
+import PosInput from 'dictionary/ui/editor/PosInput'
 import { render, screen } from '@testing-library/react'
 import _ from 'lodash'
 
-import { whenChangedByValue, whenChangedByLabel } from 'test-support/utils'
+import {
+  whenChangedByValue,
+  whenChangedByLabel,
+  whenClicked,
+} from 'test-support/utils'
 import Word from 'dictionary/domain/Word'
 import { wordFactory } from 'test-support/word-fixtures'
 import { NAMED_ENTITY_TAGS } from 'dictionary/domain/namedEntityTags'
@@ -146,3 +150,30 @@ describe('Named entity tags', () => {
 function renderPosInput() {
   render(<PosInput value={value} onChange={onChange} />)
 }
+
+describe('Word without optional fields', () => {
+  function setup(): void {
+    value = {
+      ...wordFactory.build({ pos: ['V'] }),
+      namedEntityTags: undefined,
+      roots: undefined,
+    }
+    renderPosInput()
+  }
+
+  it('selects no named entity tags', () => {
+    setup()
+    for (const label of Object.values(NAMED_ENTITY_TAGS)) {
+      expect((screen.getByText(label) as HTMLOptionElement).selected).toBe(
+        false,
+      )
+    }
+  })
+
+  it('adds the first root to an empty root list', async () => {
+    setup()
+    await whenClicked(screen, 'Add')
+      .expect(onChange)
+      .toHaveBeenCalledWith({ roots: [''] })
+  })
+})

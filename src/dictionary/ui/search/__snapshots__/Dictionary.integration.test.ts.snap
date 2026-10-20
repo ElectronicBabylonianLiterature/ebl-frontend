@@ -16,6 +16,7 @@ exports[`Meaning 1`] = `
         >
           <a
             class="navbar-brand"
+            data-discover="true"
             href="/"
             title="electronic Babylonian Library (eBL)"
           >
@@ -81,6 +82,7 @@ exports[`Meaning 1`] = `
               >
                 <a
                   class="nav-link"
+                  data-discover="true"
                   data-rr-ui-event-key="/library"
                   href="/library"
                 >
@@ -92,6 +94,7 @@ exports[`Meaning 1`] = `
               >
                 <a
                   class="nav-link"
+                  data-discover="true"
                   data-rr-ui-event-key="/corpus"
                   href="/corpus"
                 >
@@ -103,6 +106,7 @@ exports[`Meaning 1`] = `
               >
                 <a
                   class="nav-link"
+                  data-discover="true"
                   data-rr-ui-event-key="/about"
                   href="/about"
                 >
@@ -114,6 +118,7 @@ exports[`Meaning 1`] = `
               >
                 <a
                   class="nav-link"
+                  data-discover="true"
                   data-rr-ui-event-key="/tools"
                   href="/tools"
                 >
@@ -125,6 +130,7 @@ exports[`Meaning 1`] = `
               >
                 <a
                   class="nav-link"
+                  data-discover="true"
                   data-rr-ui-event-key="/projects"
                   href="/projects"
                 >
@@ -221,6 +227,7 @@ exports[`Meaning 1`] = `
                 class="breadcrumb-item"
               >
                 <a
+                  data-discover="true"
                   href="/"
                 >
                   eBL
@@ -230,6 +237,7 @@ exports[`Meaning 1`] = `
                 class="breadcrumb-item"
               >
                 <a
+                  data-discover="true"
                   href="/tools"
                 >
                   Tools
@@ -267,6 +275,7 @@ exports[`Meaning 1`] = `
               >
                 <a
                   class="tools-nav__item  nav-link"
+                  data-discover="true"
                   href="/tools/signs"
                 >
                   <span
@@ -283,6 +292,7 @@ exports[`Meaning 1`] = `
                 </a>
                 <a
                   class="tools-nav__item active nav-link"
+                  data-discover="true"
                   href="/tools/dictionary"
                 >
                   <span
@@ -299,6 +309,7 @@ exports[`Meaning 1`] = `
                 </a>
                 <a
                   class="tools-nav__item  nav-link"
+                  data-discover="true"
                   href="/tools/date-converter"
                 >
                   <span
@@ -315,6 +326,7 @@ exports[`Meaning 1`] = `
                 </a>
                 <a
                   class="tools-nav__item  nav-link"
+                  data-discover="true"
                   href="/tools/list-of-kings"
                 >
                   <span
@@ -331,6 +343,7 @@ exports[`Meaning 1`] = `
                 </a>
                 <a
                   class="tools-nav__item  nav-link"
+                  data-discover="true"
                   href="/tools/genres"
                 >
                   <span
@@ -347,6 +360,7 @@ exports[`Meaning 1`] = `
                 </a>
                 <a
                   class="tools-nav__item  nav-link"
+                  data-discover="true"
                   href="/tools/dossiers"
                 >
                   <span
@@ -363,6 +377,7 @@ exports[`Meaning 1`] = `
                 </a>
                 <a
                   class="tools-nav__item  nav-link"
+                  data-discover="true"
                   href="/tools/references"
                 >
                   <span
@@ -379,6 +394,7 @@ exports[`Meaning 1`] = `
                 </a>
                 <a
                   class="tools-nav__item  nav-link"
+                  data-discover="true"
                   href="/tools/afo-register"
                 >
                   <span
@@ -395,6 +411,7 @@ exports[`Meaning 1`] = `
                 </a>
                 <a
                   class="tools-nav__item  nav-link"
+                  data-discover="true"
                   href="/tools/cuneiform-converter"
                 >
                   <span
@@ -411,6 +428,7 @@ exports[`Meaning 1`] = `
                 </a>
                 <a
                   class="tools-nav__item  nav-link"
+                  data-discover="true"
                   href="/tools/map"
                 >
                   <span
@@ -798,6 +816,7 @@ exports[`Meaning 1`] = `
                       <a
                         aria-label="Learn more about Akkadian Dictionary"
                         class="AboutInlineLink Dictionary-search-header__about"
+                        data-discover="true"
                         href="/about/akkadian-dictionary"
                         title="Learn more about Akkadian Dictionary"
                       >
@@ -824,6 +843,7 @@ exports[`Meaning 1`] = `
                           <a
                             aria-label="Edit test I"
                             class="BibliographySearch__edit"
+                            data-discover="true"
                             href="/dictionary/test I/edit"
                           >
                             <i
@@ -836,6 +856,7 @@ exports[`Meaning 1`] = `
                           >
                             <strong>
                               <a
+                                data-discover="true"
                                 href="/dictionary/test%20I"
                               >
                                 test
@@ -959,6 +980,7 @@ exports[`Meaning 1`] = `
             >
               <li>
                 <a
+                  data-discover="true"
                   href="/about"
                 >
                   About
@@ -966,6 +988,7 @@ exports[`Meaning 1`] = `
               </li>
               <li>
                 <a
+                  data-discover="true"
                   href="/projects"
                 >
                   Research Projects
@@ -995,6 +1018,7 @@ exports[`Meaning 1`] = `
             >
               <li>
                 <a
+                  data-discover="true"
                   href="/tools/signs"
                 >
                   Signs
@@ -1002,6 +1026,7 @@ exports[`Meaning 1`] = `
               </li>
               <li>
                 <a
+                  data-discover="true"
                   href="/tools/dictionary"
                 >
                   Dictionary
@@ -1009,6 +1034,7 @@ exports[`Meaning 1`] = `
               </li>
               <li>
                 <a
+                  data-discover="true"
                   href="/tools/references"
                 >
                   Bibliography
@@ -1029,6 +1055,7 @@ exports[`Meaning 1`] = `
             >
               <li>
                 <a
+                  data-discover="true"
                   href="/impressum"
                 >
                   Impressum
@@ -1036,6 +1063,7 @@ exports[`Meaning 1`] = `
               </li>
               <li>
                 <a
+                  data-discover="true"
                   href="/datenschutz"
                 >
                   Datenschutz
@@ -1193,6 +1221,7 @@ exports[`Root 1`] = `
         >
           <a
             class="navbar-brand"
+            data-discover="true"
             href="/"
             title="electronic Babylonian Library (eBL)"
           >
@@ -1258,6 +1287,7 @@ exports[`Root 1`] = `
               >
                 <a
                   class="nav-link"
+                  data-discover="true"
                   data-rr-ui-event-key="/library"
                   href="/library"
                 >
@@ -1269,6 +1299,7 @@ exports[`Root 1`] = `
               >
                 <a
                   class="nav-link"
+                  data-discover="true"
                   data-rr-ui-event-key="/corpus"
                   href="/corpus"
                 >
@@ -1280,6 +1311,7 @@ exports[`Root 1`] = `
               >
                 <a
                   class="nav-link"
+                  data-discover="true"
                   data-rr-ui-event-key="/about"
                   href="/about"
                 >
@@ -1291,6 +1323,7 @@ exports[`Root 1`] = `
               >
                 <a
                   class="nav-link"
+                  data-discover="true"
                   data-rr-ui-event-key="/tools"
                   href="/tools"
                 >
@@ -1302,6 +1335,7 @@ exports[`Root 1`] = `
               >
                 <a
                   class="nav-link"
+                  data-discover="true"
                   data-rr-ui-event-key="/projects"
                   href="/projects"
                 >
@@ -1398,6 +1432,7 @@ exports[`Root 1`] = `
                 class="breadcrumb-item"
               >
                 <a
+                  data-discover="true"
                   href="/"
                 >
                   eBL
@@ -1407,6 +1442,7 @@ exports[`Root 1`] = `
                 class="breadcrumb-item"
               >
                 <a
+                  data-discover="true"
                   href="/tools"
                 >
                   Tools
@@ -1444,6 +1480,7 @@ exports[`Root 1`] = `
               >
                 <a
                   class="tools-nav__item  nav-link"
+                  data-discover="true"
                   href="/tools/signs"
                 >
                   <span
@@ -1460,6 +1497,7 @@ exports[`Root 1`] = `
                 </a>
                 <a
                   class="tools-nav__item active nav-link"
+                  data-discover="true"
                   href="/tools/dictionary"
                 >
                   <span
@@ -1476,6 +1514,7 @@ exports[`Root 1`] = `
                 </a>
                 <a
                   class="tools-nav__item  nav-link"
+                  data-discover="true"
                   href="/tools/date-converter"
                 >
                   <span
@@ -1492,6 +1531,7 @@ exports[`Root 1`] = `
                 </a>
                 <a
                   class="tools-nav__item  nav-link"
+                  data-discover="true"
                   href="/tools/list-of-kings"
                 >
                   <span
@@ -1508,6 +1548,7 @@ exports[`Root 1`] = `
                 </a>
                 <a
                   class="tools-nav__item  nav-link"
+                  data-discover="true"
                   href="/tools/genres"
                 >
                   <span
@@ -1524,6 +1565,7 @@ exports[`Root 1`] = `
                 </a>
                 <a
                   class="tools-nav__item  nav-link"
+                  data-discover="true"
                   href="/tools/dossiers"
                 >
                   <span
@@ -1540,6 +1582,7 @@ exports[`Root 1`] = `
                 </a>
                 <a
                   class="tools-nav__item  nav-link"
+                  data-discover="true"
                   href="/tools/references"
                 >
                   <span
@@ -1556,6 +1599,7 @@ exports[`Root 1`] = `
                 </a>
                 <a
                   class="tools-nav__item  nav-link"
+                  data-discover="true"
                   href="/tools/afo-register"
                 >
                   <span
@@ -1572,6 +1616,7 @@ exports[`Root 1`] = `
                 </a>
                 <a
                   class="tools-nav__item  nav-link"
+                  data-discover="true"
                   href="/tools/cuneiform-converter"
                 >
                   <span
@@ -1588,6 +1633,7 @@ exports[`Root 1`] = `
                 </a>
                 <a
                   class="tools-nav__item  nav-link"
+                  data-discover="true"
                   href="/tools/map"
                 >
                   <span
@@ -1975,6 +2021,7 @@ exports[`Root 1`] = `
                       <a
                         aria-label="Learn more about Akkadian Dictionary"
                         class="AboutInlineLink Dictionary-search-header__about"
+                        data-discover="true"
                         href="/about/akkadian-dictionary"
                         title="Learn more about Akkadian Dictionary"
                       >
@@ -2001,6 +2048,7 @@ exports[`Root 1`] = `
                           <a
                             aria-label="Edit test I"
                             class="BibliographySearch__edit"
+                            data-discover="true"
                             href="/dictionary/test I/edit"
                           >
                             <i
@@ -2013,6 +2061,7 @@ exports[`Root 1`] = `
                           >
                             <strong>
                               <a
+                                data-discover="true"
                                 href="/dictionary/test%20I"
                               >
                                 test
@@ -2136,6 +2185,7 @@ exports[`Root 1`] = `
             >
               <li>
                 <a
+                  data-discover="true"
                   href="/about"
                 >
                   About
@@ -2143,6 +2193,7 @@ exports[`Root 1`] = `
               </li>
               <li>
                 <a
+                  data-discover="true"
                   href="/projects"
                 >
                   Research Projects
@@ -2172,6 +2223,7 @@ exports[`Root 1`] = `
             >
               <li>
                 <a
+                  data-discover="true"
                   href="/tools/signs"
                 >
                   Signs
@@ -2179,6 +2231,7 @@ exports[`Root 1`] = `
               </li>
               <li>
                 <a
+                  data-discover="true"
                   href="/tools/dictionary"
                 >
                   Dictionary
@@ -2186,6 +2239,7 @@ exports[`Root 1`] = `
               </li>
               <li>
                 <a
+                  data-discover="true"
                   href="/tools/references"
                 >
                   Bibliography
@@ -2206,6 +2260,7 @@ exports[`Root 1`] = `
             >
               <li>
                 <a
+                  data-discover="true"
                   href="/impressum"
                 >
                   Impressum
@@ -2213,6 +2268,7 @@ exports[`Root 1`] = `
               </li>
               <li>
                 <a
+                  data-discover="true"
                   href="/datenschutz"
                 >
                   Datenschutz
@@ -2370,6 +2426,7 @@ exports[`Vowel class 1`] = `
         >
           <a
             class="navbar-brand"
+            data-discover="true"
             href="/"
             title="electronic Babylonian Library (eBL)"
           >
@@ -2435,6 +2492,7 @@ exports[`Vowel class 1`] = `
               >
                 <a
                   class="nav-link"
+                  data-discover="true"
                   data-rr-ui-event-key="/library"
                   href="/library"
                 >
@@ -2446,6 +2504,7 @@ exports[`Vowel class 1`] = `
               >
                 <a
                   class="nav-link"
+                  data-discover="true"
                   data-rr-ui-event-key="/corpus"
                   href="/corpus"
                 >
@@ -2457,6 +2516,7 @@ exports[`Vowel class 1`] = `
               >
                 <a
                   class="nav-link"
+                  data-discover="true"
                   data-rr-ui-event-key="/about"
                   href="/about"
                 >
@@ -2468,6 +2528,7 @@ exports[`Vowel class 1`] = `
               >
                 <a
                   class="nav-link"
+                  data-discover="true"
                   data-rr-ui-event-key="/tools"
                   href="/tools"
                 >
@@ -2479,6 +2540,7 @@ exports[`Vowel class 1`] = `
               >
                 <a
                   class="nav-link"
+                  data-discover="true"
                   data-rr-ui-event-key="/projects"
                   href="/projects"
                 >
@@ -2575,6 +2637,7 @@ exports[`Vowel class 1`] = `
                 class="breadcrumb-item"
               >
                 <a
+                  data-discover="true"
                   href="/"
                 >
                   eBL
@@ -2584,6 +2647,7 @@ exports[`Vowel class 1`] = `
                 class="breadcrumb-item"
               >
                 <a
+                  data-discover="true"
                   href="/tools"
                 >
                   Tools
@@ -2621,6 +2685,7 @@ exports[`Vowel class 1`] = `
               >
                 <a
                   class="tools-nav__item  nav-link"
+                  data-discover="true"
                   href="/tools/signs"
                 >
                   <span
@@ -2637,6 +2702,7 @@ exports[`Vowel class 1`] = `
                 </a>
                 <a
                   class="tools-nav__item active nav-link"
+                  data-discover="true"
                   href="/tools/dictionary"
                 >
                   <span
@@ -2653,6 +2719,7 @@ exports[`Vowel class 1`] = `
                 </a>
                 <a
                   class="tools-nav__item  nav-link"
+                  data-discover="true"
                   href="/tools/date-converter"
                 >
                   <span
@@ -2669,6 +2736,7 @@ exports[`Vowel class 1`] = `
                 </a>
                 <a
                   class="tools-nav__item  nav-link"
+                  data-discover="true"
                   href="/tools/list-of-kings"
                 >
                   <span
@@ -2685,6 +2753,7 @@ exports[`Vowel class 1`] = `
                 </a>
                 <a
                   class="tools-nav__item  nav-link"
+                  data-discover="true"
                   href="/tools/genres"
                 >
                   <span
@@ -2701,6 +2770,7 @@ exports[`Vowel class 1`] = `
                 </a>
                 <a
                   class="tools-nav__item  nav-link"
+                  data-discover="true"
                   href="/tools/dossiers"
                 >
                   <span
@@ -2717,6 +2787,7 @@ exports[`Vowel class 1`] = `
                 </a>
                 <a
                   class="tools-nav__item  nav-link"
+                  data-discover="true"
                   href="/tools/references"
                 >
                   <span
@@ -2733,6 +2804,7 @@ exports[`Vowel class 1`] = `
                 </a>
                 <a
                   class="tools-nav__item  nav-link"
+                  data-discover="true"
                   href="/tools/afo-register"
                 >
                   <span
@@ -2749,6 +2821,7 @@ exports[`Vowel class 1`] = `
                 </a>
                 <a
                   class="tools-nav__item  nav-link"
+                  data-discover="true"
                   href="/tools/cuneiform-converter"
                 >
                   <span
@@ -2765,6 +2838,7 @@ exports[`Vowel class 1`] = `
                 </a>
                 <a
                   class="tools-nav__item  nav-link"
+                  data-discover="true"
                   href="/tools/map"
                 >
                   <span
@@ -3152,6 +3226,7 @@ exports[`Vowel class 1`] = `
                       <a
                         aria-label="Learn more about Akkadian Dictionary"
                         class="AboutInlineLink Dictionary-search-header__about"
+                        data-discover="true"
                         href="/about/akkadian-dictionary"
                         title="Learn more about Akkadian Dictionary"
                       >
@@ -3178,6 +3253,7 @@ exports[`Vowel class 1`] = `
                           <a
                             aria-label="Edit test I"
                             class="BibliographySearch__edit"
+                            data-discover="true"
                             href="/dictionary/test I/edit"
                           >
                             <i
@@ -3190,6 +3266,7 @@ exports[`Vowel class 1`] = `
                           >
                             <strong>
                               <a
+                                data-discover="true"
                                 href="/dictionary/test%20I"
                               >
                                 test
@@ -3313,6 +3390,7 @@ exports[`Vowel class 1`] = `
             >
               <li>
                 <a
+                  data-discover="true"
                   href="/about"
                 >
                   About
@@ -3320,6 +3398,7 @@ exports[`Vowel class 1`] = `
               </li>
               <li>
                 <a
+                  data-discover="true"
                   href="/projects"
                 >
                   Research Projects
@@ -3349,6 +3428,7 @@ exports[`Vowel class 1`] = `
             >
               <li>
                 <a
+                  data-discover="true"
                   href="/tools/signs"
                 >
                   Signs
@@ -3356,6 +3436,7 @@ exports[`Vowel class 1`] = `
               </li>
               <li>
                 <a
+                  data-discover="true"
                   href="/tools/dictionary"
                 >
                   Dictionary
@@ -3363,6 +3444,7 @@ exports[`Vowel class 1`] = `
               </li>
               <li>
                 <a
+                  data-discover="true"
                   href="/tools/references"
                 >
                   Bibliography
@@ -3383,6 +3465,7 @@ exports[`Vowel class 1`] = `
             >
               <li>
                 <a
+                  data-discover="true"
                   href="/impressum"
                 >
                   Impressum
@@ -3390,6 +3473,7 @@ exports[`Vowel class 1`] = `
               </li>
               <li>
                 <a
+                  data-discover="true"
                   href="/datenschutz"
                 >
                   Datenschutz
@@ -3547,6 +3631,7 @@ exports[`Word 1`] = `
         >
           <a
             class="navbar-brand"
+            data-discover="true"
             href="/"
             title="electronic Babylonian Library (eBL)"
           >
@@ -3612,6 +3697,7 @@ exports[`Word 1`] = `
               >
                 <a
                   class="nav-link"
+                  data-discover="true"
                   data-rr-ui-event-key="/library"
                   href="/library"
                 >
@@ -3623,6 +3709,7 @@ exports[`Word 1`] = `
               >
                 <a
                   class="nav-link"
+                  data-discover="true"
                   data-rr-ui-event-key="/corpus"
                   href="/corpus"
                 >
@@ -3634,6 +3721,7 @@ exports[`Word 1`] = `
               >
                 <a
                   class="nav-link"
+                  data-discover="true"
                   data-rr-ui-event-key="/about"
                   href="/about"
                 >
@@ -3645,6 +3733,7 @@ exports[`Word 1`] = `
               >
                 <a
                   class="nav-link"
+                  data-discover="true"
                   data-rr-ui-event-key="/tools"
                   href="/tools"
                 >
@@ -3656,6 +3745,7 @@ exports[`Word 1`] = `
               >
                 <a
                   class="nav-link"
+                  data-discover="true"
                   data-rr-ui-event-key="/projects"
                   href="/projects"
                 >
@@ -3752,6 +3842,7 @@ exports[`Word 1`] = `
                 class="breadcrumb-item"
               >
                 <a
+                  data-discover="true"
                   href="/"
                 >
                   eBL
@@ -3761,6 +3852,7 @@ exports[`Word 1`] = `
                 class="breadcrumb-item"
               >
                 <a
+                  data-discover="true"
                   href="/tools"
                 >
                   Tools
@@ -3798,6 +3890,7 @@ exports[`Word 1`] = `
               >
                 <a
                   class="tools-nav__item  nav-link"
+                  data-discover="true"
                   href="/tools/signs"
                 >
                   <span
@@ -3814,6 +3907,7 @@ exports[`Word 1`] = `
                 </a>
                 <a
                   class="tools-nav__item active nav-link"
+                  data-discover="true"
                   href="/tools/dictionary"
                 >
                   <span
@@ -3830,6 +3924,7 @@ exports[`Word 1`] = `
                 </a>
                 <a
                   class="tools-nav__item  nav-link"
+                  data-discover="true"
                   href="/tools/date-converter"
                 >
                   <span
@@ -3846,6 +3941,7 @@ exports[`Word 1`] = `
                 </a>
                 <a
                   class="tools-nav__item  nav-link"
+                  data-discover="true"
                   href="/tools/list-of-kings"
                 >
                   <span
@@ -3862,6 +3958,7 @@ exports[`Word 1`] = `
                 </a>
                 <a
                   class="tools-nav__item  nav-link"
+                  data-discover="true"
                   href="/tools/genres"
                 >
                   <span
@@ -3878,6 +3975,7 @@ exports[`Word 1`] = `
                 </a>
                 <a
                   class="tools-nav__item  nav-link"
+                  data-discover="true"
                   href="/tools/dossiers"
                 >
                   <span
@@ -3894,6 +3992,7 @@ exports[`Word 1`] = `
                 </a>
                 <a
                   class="tools-nav__item  nav-link"
+                  data-discover="true"
                   href="/tools/references"
                 >
                   <span
@@ -3910,6 +4009,7 @@ exports[`Word 1`] = `
                 </a>
                 <a
                   class="tools-nav__item  nav-link"
+                  data-discover="true"
                   href="/tools/afo-register"
                 >
                   <span
@@ -3926,6 +4026,7 @@ exports[`Word 1`] = `
                 </a>
                 <a
                   class="tools-nav__item  nav-link"
+                  data-discover="true"
                   href="/tools/cuneiform-converter"
                 >
                   <span
@@ -3942,6 +4043,7 @@ exports[`Word 1`] = `
                 </a>
                 <a
                   class="tools-nav__item  nav-link"
+                  data-discover="true"
                   href="/tools/map"
                 >
                   <span
@@ -4329,6 +4431,7 @@ exports[`Word 1`] = `
                       <a
                         aria-label="Learn more about Akkadian Dictionary"
                         class="AboutInlineLink Dictionary-search-header__about"
+                        data-discover="true"
                         href="/about/akkadian-dictionary"
                         title="Learn more about Akkadian Dictionary"
                       >
@@ -4355,6 +4458,7 @@ exports[`Word 1`] = `
                           <a
                             aria-label="Edit test I"
                             class="BibliographySearch__edit"
+                            data-discover="true"
                             href="/dictionary/test I/edit"
                           >
                             <i
@@ -4367,6 +4471,7 @@ exports[`Word 1`] = `
                           >
                             <strong>
                               <a
+                                data-discover="true"
                                 href="/dictionary/test%20I"
                               >
                                 test
@@ -4490,6 +4595,7 @@ exports[`Word 1`] = `
             >
               <li>
                 <a
+                  data-discover="true"
                   href="/about"
                 >
                   About
@@ -4497,6 +4603,7 @@ exports[`Word 1`] = `
               </li>
               <li>
                 <a
+                  data-discover="true"
                   href="/projects"
                 >
                   Research Projects
@@ -4526,6 +4633,7 @@ exports[`Word 1`] = `
             >
               <li>
                 <a
+                  data-discover="true"
                   href="/tools/signs"
                 >
                   Signs
@@ -4533,6 +4641,7 @@ exports[`Word 1`] = `
               </li>
               <li>
                 <a
+                  data-discover="true"
                   href="/tools/dictionary"
                 >
                   Dictionary
@@ -4540,6 +4649,7 @@ exports[`Word 1`] = `
               </li>
               <li>
                 <a
+                  data-discover="true"
                   href="/tools/references"
                 >
                   Bibliography
@@ -4560,6 +4670,7 @@ exports[`Word 1`] = `
             >
               <li>
                 <a
+                  data-discover="true"
                   href="/impressum"
                 >
                   Impressum
@@ -4567,6 +4678,7 @@ exports[`Word 1`] = `
               </li>
               <li>
                 <a
+                  data-discover="true"
                   href="/datenschutz"
                 >
                   Datenschutz
@@ -4724,6 +4836,7 @@ exports[`renders dictionary search page 1`] = `
         >
           <a
             class="navbar-brand"
+            data-discover="true"
             href="/"
             title="electronic Babylonian Library (eBL)"
           >
@@ -4789,6 +4902,7 @@ exports[`renders dictionary search page 1`] = `
               >
                 <a
                   class="nav-link"
+                  data-discover="true"
                   data-rr-ui-event-key="/library"
                   href="/library"
                 >
@@ -4800,6 +4914,7 @@ exports[`renders dictionary search page 1`] = `
               >
                 <a
                   class="nav-link"
+                  data-discover="true"
                   data-rr-ui-event-key="/corpus"
                   href="/corpus"
                 >
@@ -4811,6 +4926,7 @@ exports[`renders dictionary search page 1`] = `
               >
                 <a
                   class="nav-link"
+                  data-discover="true"
                   data-rr-ui-event-key="/about"
                   href="/about"
                 >
@@ -4822,6 +4938,7 @@ exports[`renders dictionary search page 1`] = `
               >
                 <a
                   class="nav-link"
+                  data-discover="true"
                   data-rr-ui-event-key="/tools"
                   href="/tools"
                 >
@@ -4833,6 +4950,7 @@ exports[`renders dictionary search page 1`] = `
               >
                 <a
                   class="nav-link"
+                  data-discover="true"
                   data-rr-ui-event-key="/projects"
                   href="/projects"
                 >
@@ -4929,6 +5047,7 @@ exports[`renders dictionary search page 1`] = `
                 class="breadcrumb-item"
               >
                 <a
+                  data-discover="true"
                   href="/"
                 >
                   eBL
@@ -4938,6 +5057,7 @@ exports[`renders dictionary search page 1`] = `
                 class="breadcrumb-item"
               >
                 <a
+                  data-discover="true"
                   href="/tools"
                 >
                   Tools
@@ -4975,6 +5095,7 @@ exports[`renders dictionary search page 1`] = `
               >
                 <a
                   class="tools-nav__item  nav-link"
+                  data-discover="true"
                   href="/tools/signs"
                 >
                   <span
@@ -4991,6 +5112,7 @@ exports[`renders dictionary search page 1`] = `
                 </a>
                 <a
                   class="tools-nav__item active nav-link"
+                  data-discover="true"
                   href="/tools/dictionary"
                 >
                   <span
@@ -5007,6 +5129,7 @@ exports[`renders dictionary search page 1`] = `
                 </a>
                 <a
                   class="tools-nav__item  nav-link"
+                  data-discover="true"
                   href="/tools/date-converter"
                 >
                   <span
@@ -5023,6 +5146,7 @@ exports[`renders dictionary search page 1`] = `
                 </a>
                 <a
                   class="tools-nav__item  nav-link"
+                  data-discover="true"
                   href="/tools/list-of-kings"
                 >
                   <span
@@ -5039,6 +5163,7 @@ exports[`renders dictionary search page 1`] = `
                 </a>
                 <a
                   class="tools-nav__item  nav-link"
+                  data-discover="true"
                   href="/tools/genres"
                 >
                   <span
@@ -5055,6 +5180,7 @@ exports[`renders dictionary search page 1`] = `
                 </a>
                 <a
                   class="tools-nav__item  nav-link"
+                  data-discover="true"
                   href="/tools/dossiers"
                 >
                   <span
@@ -5071,6 +5197,7 @@ exports[`renders dictionary search page 1`] = `
                 </a>
                 <a
                   class="tools-nav__item  nav-link"
+                  data-discover="true"
                   href="/tools/references"
                 >
                   <span
@@ -5087,6 +5214,7 @@ exports[`renders dictionary search page 1`] = `
                 </a>
                 <a
                   class="tools-nav__item  nav-link"
+                  data-discover="true"
                   href="/tools/afo-register"
                 >
                   <span
@@ -5103,6 +5231,7 @@ exports[`renders dictionary search page 1`] = `
                 </a>
                 <a
                   class="tools-nav__item  nav-link"
+                  data-discover="true"
                   href="/tools/cuneiform-converter"
                 >
                   <span
@@ -5119,6 +5248,7 @@ exports[`renders dictionary search page 1`] = `
                 </a>
                 <a
                   class="tools-nav__item  nav-link"
+                  data-discover="true"
                   href="/tools/map"
                 >
                   <span
@@ -5507,6 +5637,7 @@ exports[`renders dictionary search page 1`] = `
                       <a
                         aria-label="Learn more about Akkadian Dictionary"
                         class="AboutInlineLink Dictionary-search-header__about"
+                        data-discover="true"
                         href="/about/akkadian-dictionary"
                         title="Learn more about Akkadian Dictionary"
                       >
@@ -5554,6 +5685,7 @@ exports[`renders dictionary search page 1`] = `
             >
               <li>
                 <a
+                  data-discover="true"
                   href="/about"
                 >
                   About
@@ -5561,6 +5693,7 @@ exports[`renders dictionary search page 1`] = `
               </li>
               <li>
                 <a
+                  data-discover="true"
                   href="/projects"
                 >
                   Research Projects
@@ -5590,6 +5723,7 @@ exports[`renders dictionary search page 1`] = `
             >
               <li>
                 <a
+                  data-discover="true"
                   href="/tools/signs"
                 >
                   Signs
@@ -5597,6 +5731,7 @@ exports[`renders dictionary search page 1`] = `
               </li>
               <li>
                 <a
+                  data-discover="true"
                   href="/tools/dictionary"
                 >
                   Dictionary
@@ -5604,6 +5739,7 @@ exports[`renders dictionary search page 1`] = `
               </li>
               <li>
                 <a
+                  data-discover="true"
                   href="/tools/references"
                 >
                   Bibliography
@@ -5624,6 +5760,7 @@ exports[`renders dictionary search page 1`] = `
             >
               <li>
                 <a
+                  data-discover="true"
                   href="/impressum"
                 >
                   Impressum
@@ -5631,6 +5768,7 @@ exports[`renders dictionary search page 1`] = `
               </li>
               <li>
                 <a
+                  data-discover="true"
                   href="/datenschutz"
                 >
                   Datenschutz

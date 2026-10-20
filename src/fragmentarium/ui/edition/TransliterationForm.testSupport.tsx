@@ -1,6 +1,5 @@
 import React from 'react'
 import { render, RenderResult, screen } from '@testing-library/react'
-import Bluebird from 'bluebird'
 
 import { editorErrorOf, resetEditorMock } from 'editor/Editor.testSupport'
 import { Fragment } from 'fragmentarium/domain/fragment'
@@ -11,8 +10,11 @@ import { ApiError } from 'http/ApiClient'
 export const savedTransliteration = 'line1\nline2'
 export const savedNotes = 'notes'
 export const savedIntroduction = 'introduction'
+export const transliteration = savedTransliteration
+export const notes = savedNotes
+export const introduction = savedIntroduction
 
-export type UpdateEditionMock = jest.Mock<Bluebird<Fragment>, [EditionFields]>
+export type UpdateEditionMock = jest.Mock<Promise<Fragment>, [EditionFields]>
 
 export const editorError = (): unknown => editorErrorOf('transliteration')
 
@@ -53,13 +55,14 @@ export const httpError = (
 export const validationError = annotatedValidationError
 
 export const createUpdateEditionMock = (): UpdateEditionMock =>
-  jest.fn<Bluebird<Fragment>, [EditionFields]>()
+  jest.fn<Promise<Fragment>, [EditionFields]>()
 
 export const failingUpdate = (error: Error): UpdateEditionMock =>
-  createUpdateEditionMock().mockReturnValue(Bluebird.reject(error))
+  createUpdateEditionMock().mockImplementation(() => Promise.reject(error))
 
 export const renderTransliterationForm = (
   updateEdition: UpdateEditionMock,
+  disabled = false,
 ): RenderResult => {
   resetEditorMock()
   return render(
@@ -68,6 +71,7 @@ export const renderTransliterationForm = (
       notes={savedNotes}
       introduction={savedIntroduction}
       updateEdition={updateEdition}
+      disabled={disabled}
     />,
   )
 }

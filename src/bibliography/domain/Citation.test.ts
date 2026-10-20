@@ -5,7 +5,10 @@ import {
 } from 'test-support/bibliography-fixtures'
 import Reference from 'bibliography/domain/Reference'
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
-import Citation, { CompactCitation, ContainerCitation } from './Citation'
+import Citation, {
+  CompactCitation,
+  ContainerCitation,
+} from 'bibliography/domain/Citation'
 
 function buildReferenceWithoutAuthor(pages: string): Reference {
   return new Reference(
@@ -117,4 +120,12 @@ test('ContainerCitation with lines cites and collection number', async () => {
       reference.pages
     } \\[l. ${linesCited.join(', ')}\\]`,
   )
+})
+
+test('ContainerCitation without pages shows only the container title', () => {
+  const reference = buildReferenceWithContainerTitle('COPY')
+    .setPages('')
+    .setLinesCited([])
+  const citation = new ContainerCitation(reference)
+  expect(citation.getMarkdown()).toEqual(`*${reference.shortContainerTitle}*`)
 })

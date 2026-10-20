@@ -1,7 +1,6 @@
 import React from 'react'
 import { fireEvent, screen, waitFor } from '@testing-library/react'
 import { submitFormByTestId } from 'test-support/utils'
-import { Promise } from 'bluebird'
 
 import {
   createUpdateEditionMock,
@@ -84,7 +83,7 @@ it('disables Save again when reverting to the failed validation attempt', async 
 it('keeps Save enabled after a non-validation failure so it can be retried', async () => {
   const transientError = new Error('service unavailable')
   const updateEdition = createUpdateEditionMock()
-    .mockReturnValueOnce(Promise.reject(transientError))
+    .mockImplementationOnce(() => Promise.reject(transientError))
     .mockReturnValueOnce(new Promise(() => undefined))
   renderTransliterationForm(updateEdition)
 
@@ -113,10 +112,12 @@ it('still warns about unsaved changes after a failed validation disables Save', 
   const beforeUnloadCall = addEventListenerSpy.mock.calls.find(
     (call) => call[0] === 'beforeunload',
   )
-  const beforeUnloadHandler = beforeUnloadCall?.[1] as unknown as (event: {
-    returnValue: string
-  }) => void
-  const mockEvent = { returnValue: '' }
+  const beforeUnloadHandler = beforeUnloadCall?.[1]
+  const mockEvent = new Event('beforeunload')
+  Object.defineProperty(mockEvent, 'returnValue', { value: '', writable: true })
+  if (typeof beforeUnloadHandler !== 'function') {
+    throw new Error('Expected a beforeunload handler')
+  }
   beforeUnloadHandler(mockEvent)
 
   expect(mockEvent.returnValue).toBe(
@@ -127,7 +128,7 @@ it('still warns about unsaved changes after a failed validation disables Save', 
 
 it('sends every field still differing from the saved version when retrying', async () => {
   const updateEdition = createUpdateEditionMock()
-    .mockReturnValueOnce(Promise.reject(validationError()))
+    .mockImplementationOnce(() => Promise.reject(validationError()))
     .mockReturnValueOnce(new Promise(() => undefined))
   renderTransliterationForm(updateEdition)
 

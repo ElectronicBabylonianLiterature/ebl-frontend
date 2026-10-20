@@ -1,7 +1,7 @@
 import React from 'react'
 import _ from 'lodash'
 
-import './Word.css'
+import 'corpus/ui/alignment/Word.css'
 import { Token } from 'transliteration/domain/token'
 import { AlignmentToken } from 'corpus/domain/alignment'
 import classNames from 'classnames'

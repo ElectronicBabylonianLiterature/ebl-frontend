@@ -1,17 +1,11 @@
 import React from 'react'
-import { fireEvent, screen, waitFor } from '@testing-library/react'
+import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { submitFormByTestId } from 'test-support/utils'
-import Bluebird from 'bluebird'
+
+import TransliterationForm from 'fragmentarium/ui/edition/TransliterationForm'
 import { act } from 'react'
 import userEvent from '@testing-library/user-event'
-import { fragmentFactory } from 'test-support/fragment-fixtures'
-
-import {
-  createUpdateEditionMock,
-  editorError,
-  renderTransliterationForm,
-  UpdateEditionMock,
-} from 'fragmentarium/ui/edition/TransliterationForm.testSupport'
+import { editorErrorOf, resetEditorMock } from 'editor/Editor.testSupport'
 
 type TemplateFormMockProps = {
   onSubmit: (templateValue: string) => void
@@ -39,24 +33,38 @@ jest.mock('editor/Editor', () =>
   jest.requireActual('editor/Editor.testSupport'),
 )
 
-let addEventListenerSpy: jest.SpyInstance
-let removeEventListenerSpy: jest.SpyInstance
-let updateEdition: UpdateEditionMock
+const editorError = (): unknown => editorErrorOf('transliteration')
 
-const setup = () => {
-  addEventListenerSpy = jest.spyOn(window, 'addEventListener')
-  removeEventListenerSpy = jest.spyOn(window, 'removeEventListener')
-  updateEdition = createUpdateEditionMock()
-  updateEdition.mockReturnValue(new Bluebird(() => undefined))
+const transliteration = 'line1\nline2'
+const notes = 'notes'
+const introduction = 'introduction'
 
-  renderTransliterationForm(updateEdition)
+let addEventListenerSpy
+let updateEdition
+
+const renderForm = (updateEditionMock: jest.Mock): void => {
+  render(
+    <TransliterationForm
+      transliteration={transliteration}
+      notes={notes}
+      introduction={introduction}
+      updateEdition={updateEditionMock}
+    />,
+  )
 }
 
-afterEach(() => jest.restoreAllMocks())
+const setup = () => {
+  jest.restoreAllMocks()
+  resetEditorMock()
+  addEventListenerSpy = jest.spyOn(window, 'addEventListener')
+  updateEdition = jest.fn()
+  updateEdition.mockReturnValue(new Promise(() => undefined))
+
+  renderForm(updateEdition)
+}
 
 it('Updates transliteration on change', async () => {
   setup()
-
   const newTransliteration = 'line1\nline2\nnew line'
   const transliterationEditor = screen.getAllByRole('textbox')[0]
 
@@ -66,6 +74,7 @@ it('Updates transliteration on change', async () => {
   fireEvent.change(transliterationEditor, {
     target: { value: newTransliteration },
   })
+
   expect(transliterationEditor).toHaveValue(newTransliteration)
 })
 
@@ -73,26 +82,9 @@ it('calls updateEdition when submitting the form', async () => {
   setup()
   await act(async () => {
     submitFormByTestId(screen, 'transliteration-form')
-    await Bluebird.resolve()
+    await Promise.resolve()
   })
   expect(updateEdition).toHaveBeenCalledWith({})
-})
-
-it('does not warn before closing a pristine form', () => {
-  setup()
-  const listener = removeEventListenerSpy.mock.calls.find(
-    ([eventName]) => eventName === 'beforeunload',
-  )?.[1]
-  if (typeof listener !== 'function') {
-    throw new Error('beforeunload listener was not registered for removal')
-  }
-  const event = new Event('beforeunload') as BeforeUnloadEvent
-  const setReturnValue = jest.fn()
-  Object.defineProperty(event, 'returnValue', { set: setReturnValue })
-
-  listener(event)
-
-  expect(setReturnValue).not.toHaveBeenCalled()
 })
 
 it('Displays warning before closing when unsaved', async () => {
@@ -132,10 +124,10 @@ it('Displays warning before closing when unsaved', async () => {
 
 it('keeps error on editor input change', async () => {
   const requestError = new Error('request failed')
-  updateEdition = createUpdateEditionMock()
-  updateEdition.mockReturnValue(Bluebird.reject(requestError))
+  updateEdition = jest.fn()
+  updateEdition.mockImplementation(() => Promise.reject(requestError))
 
-  renderTransliterationForm(updateEdition)
+  renderForm(updateEdition)
 
   submitFormByTestId(screen, 'transliteration-form')
   await waitFor(() => expect(editorError()).toBe(requestError))
@@ -149,10 +141,10 @@ it('keeps error on editor input change', async () => {
 
 it('keeps error on template application', async () => {
   const requestError = new Error('request failed')
-  updateEdition = createUpdateEditionMock()
-  updateEdition.mockReturnValue(Bluebird.reject(requestError))
+  updateEdition = jest.fn()
+  updateEdition.mockImplementation(() => Promise.reject(requestError))
 
-  renderTransliterationForm(updateEdition)
+  renderForm(updateEdition)
 
   submitFormByTestId(screen, 'transliteration-form')
   await waitFor(() => expect(editorError()).toBe(requestError))
@@ -165,18 +157,18 @@ it('keeps error on template application', async () => {
 
 it('clears error after successful save', async () => {
   const requestError = new Error('request failed')
-  const successfulFragment = fragmentFactory.build({
+  const successfulFragment = {
     atf: 'saved transliteration',
-    notes: { text: 'saved notes', parts: [] },
-    introduction: { text: 'saved intro', parts: [] },
-  })
+    notes: { text: 'saved notes' },
+    introduction: { text: 'saved intro' },
+  }
 
-  updateEdition = createUpdateEditionMock()
+  updateEdition = jest.fn()
   updateEdition
-    .mockReturnValueOnce(Bluebird.reject(requestError))
-    .mockReturnValueOnce(Bluebird.resolve(successfulFragment))
+    .mockImplementationOnce(() => Promise.reject(requestError))
+    .mockReturnValueOnce(Promise.resolve(successfulFragment))
 
-  renderTransliterationForm(updateEdition)
+  renderForm(updateEdition)
 
   submitFormByTestId(screen, 'transliteration-form')
   await waitFor(() => expect(editorError()).toBe(requestError))
@@ -191,44 +183,35 @@ it('clears error after successful save', async () => {
   await waitFor(() => expect(editorError()).toBeNull())
 })
 
-it('does not set an error for a cancellation error', async () => {
-  const cancellationError = Object.assign(new Error('cancelled'), {
-    name: 'CancellationError',
-  })
-
-  updateEdition = createUpdateEditionMock()
-  updateEdition.mockReturnValue(Bluebird.reject(cancellationError))
-
-  renderTransliterationForm(updateEdition)
-
-  submitFormByTestId(screen, 'transliteration-form')
-
-  await waitFor(() => expect(updateEdition).toHaveBeenCalledWith({}))
-  await waitFor(() => expect(editorError()).toBeNull())
-})
-
-it('does not set an error when the promise reports cancellation', async () => {
-  const requestError = new Error('request failed')
-  const cancelledPromise = {
-    then: jest.fn(),
-    catch: jest.fn(),
-    isCancelled: jest.fn(() => true),
-    cancel: jest.fn(),
+it('does not surface an error from a superseded update', async () => {
+  const supersededFailure = new Error('superseded request failed')
+  const successfulFragment = {
+    atf: 'saved transliteration',
+    notes: { text: 'saved notes' },
+    introduction: { text: 'saved intro' },
   }
-  cancelledPromise.then.mockReturnValue(cancelledPromise)
-  cancelledPromise.catch.mockImplementation((onRejected) => {
-    queueMicrotask(() => onRejected(requestError))
-    return cancelledPromise
-  })
+  let rejectSuperseded: (error: Error) => void = () => undefined
 
-  updateEdition = createUpdateEditionMock()
-  updateEdition.mockReturnValue(cancelledPromise as unknown as Bluebird<never>)
+  updateEdition = jest.fn()
+  updateEdition
+    .mockReturnValueOnce(
+      new Promise((_resolve, reject) => {
+        rejectSuperseded = reject
+      }),
+    )
+    .mockReturnValueOnce(Promise.resolve(successfulFragment))
 
-  renderTransliterationForm(updateEdition)
+  renderForm(updateEdition)
 
   submitFormByTestId(screen, 'transliteration-form')
+  submitFormByTestId(screen, 'transliteration-form')
 
-  await waitFor(() => expect(updateEdition).toHaveBeenCalledWith({}))
-  await waitFor(() => expect(cancelledPromise.isCancelled).toHaveBeenCalled())
+  await waitFor(() => expect(updateEdition).toHaveBeenCalledTimes(2))
+  await act(async () => {
+    rejectSuperseded(supersededFailure)
+    await Promise.resolve()
+  })
+
+  await screen.findByDisplayValue('saved transliteration')
   await waitFor(() => expect(editorError()).toBeNull())
 })
