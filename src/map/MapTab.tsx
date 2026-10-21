@@ -96,19 +96,19 @@ function LoadedMapTab({
           }
           overlay={
             isPresenting ? null : (
-              <>
-                <MapPanelDock
-                  panels={panels}
-                  panel={panel}
-                  drawerRef={state.drawerRef}
-                />
-                {selectedPolygon && panel.active !== 'inspector' ? (
-                  <MapSelectionPill
-                    label="Show selected area"
-                    onShow={() => panel.open('inspector')}
-                  />
-                ) : null}
-              </>
+              <MapPanelDock
+                panels={panels}
+                panel={panel}
+                drawerRef={state.drawerRef}
+                selectionAction={
+                  selectedPolygon && panel.active !== 'inspector' ? (
+                    <MapSelectionPill
+                      label="Show selected area"
+                      onShow={() => panel.open('inspector')}
+                    />
+                  ) : null
+                }
+              />
             )
           }
         />
