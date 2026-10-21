@@ -177,6 +177,9 @@ describe('the comparison tool', () => {
 describe('the export tool', () => {
   it('downloads GeoJSON and CSV of the visible areas', async () => {
     await mountMapTab()
+    const map = lastMapMock()
+    map.setRenderedFeatures(() => [{ id: 'assur-area-a-checksum' }])
+    act(() => map.emit('idle'))
     const panel = await openTool('Export')
 
     expect(

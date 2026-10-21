@@ -57,6 +57,7 @@ describe('the advanced tool bar', () => {
       'Search area',
       'Measure',
       'Export',
+      '3D',
       'Terrain',
     ])
 
@@ -94,19 +95,20 @@ describe('the measurement tool', () => {
     const map = await mountMapTab()
     const panel = await openTool('Measure')
 
-    expect(within(panel).getByRole('status')).toHaveTextContent(
+    const measurementStatus = within(panel).getByText(
       'Select points on the map to measure a distance.',
     )
+    expect(measurementStatus).toHaveAttribute('role', 'status')
 
     act(() => map.emit('click', { lngLat: { lng: 43.25, lat: 35.45 } }))
     act(() => map.emit('click', { lngLat: { lng: 43.26, lat: 35.45 } }))
 
-    expect(within(panel).getByRole('status')).toHaveTextContent(/ m$/)
+    expect(measurementStatus).toHaveTextContent(/ m$/)
 
     await userEvent.click(
       within(panel).getByRole('button', { name: 'Clear measurement' }),
     )
-    expect(within(panel).getByRole('status')).toHaveTextContent(
+    expect(measurementStatus).toHaveTextContent(
       'Select points on the map to measure a distance.',
     )
   })

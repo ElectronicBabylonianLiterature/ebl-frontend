@@ -52,11 +52,19 @@ describe('MapElevationProfilePanel', () => {
   it('states every metric as text beside the chart', () => {
     render(<MapElevationProfilePanel elevation={profile} />)
 
-    expect(screen.getByText('Minimum')).toBeInTheDocument()
-    expect(screen.getByText('100 m')).toBeInTheDocument()
-    expect(screen.getByText('130 m')).toBeInTheDocument()
-    expect(screen.getByText('30 m')).toBeInTheDocument()
-    expect(screen.getByText('10 m')).toBeInTheDocument()
+    const values = screen.getAllByRole('definition')
+    expect(
+      screen
+        .getAllByRole('term')
+        .map((term, index) => [term.textContent, values[index].textContent]),
+    ).toEqual([
+      ['Minimum', '100 m'],
+      ['Maximum', '130 m'],
+      ['Start', '100 m'],
+      ['End', '120 m'],
+      ['Total ascent', '30 m'],
+      ['Total descent', '10 m'],
+    ])
     expect(screen.getByText('3 samples along 100 m')).toBeInTheDocument()
   })
 
