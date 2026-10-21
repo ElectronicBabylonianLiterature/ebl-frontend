@@ -2,7 +2,7 @@ name: CI
 
 on:
   push:
-    branches: [master]
+    branches: [master, map/frontend-01-module-v2-foundation]
   pull_request:
     branches: [master]
 
