@@ -4,6 +4,7 @@ import type { Map as MapLibreMap } from 'maplibre-gl'
 import {
   clearMockStyleResources,
   mockAddSource,
+  mockGetStyle,
   mockIsStyleLoaded,
   mockMapInstance,
   mockRemoveLayer,
@@ -28,6 +29,7 @@ describe('useMapTerrain', () => {
 
   it('waits for initial style load and reports actual activation', async () => {
     mockIsStyleLoaded.mockReturnValue(false)
+    mockGetStyle.mockReturnValue(undefined)
     const { result } = renderHook(() => useMapTerrain(mapRef, true))
 
     expect(result.current.status).toBe('loading')
@@ -46,6 +48,33 @@ describe('useMapTerrain', () => {
       source: TERRAIN_SOURCE_ID,
       exaggeration: 1.4,
     })
+  })
+
+  it('enables an available style while its existing sources are still loading', () => {
+    mockIsStyleLoaded.mockReturnValue(false)
+
+    const { result } = renderHook(() => useMapTerrain(mapRef, true))
+
+    expect(result.current.status).toBe('enabled')
+    expect(mockSetTerrain).toHaveBeenCalledWith({
+      source: TERRAIN_SOURCE_ID,
+      exaggeration: 1.4,
+    })
+  })
+
+  it('enables when an earlier style listener starts loading another source', () => {
+    mockGetStyle.mockReturnValue(undefined)
+    mockIsStyleLoaded.mockReturnValue(false)
+    mockMapInstance.on('style.load', () =>
+      mockIsStyleLoaded.mockReturnValue(false),
+    )
+    const { result } = renderHook(() => useMapTerrain(mapRef, true))
+
+    act(() => triggerMapEvent('style.load'))
+
+    expect(mockIsStyleLoaded()).toBe(false)
+    expect(result.current.status).toBe('enabled')
+    expect(mockSetTerrain).toHaveBeenCalledTimes(1)
   })
 
   it('reinstalls terrain after the map style reloads', () => {

@@ -3,6 +3,10 @@
 .map-panel-dock
   position: absolute
   inset: 0
+  display: grid
+  grid-template-rows: minmax(0, 1fr) auto
+  gap: 0.75rem
+  padding: 0.75rem
   pointer-events: none
 
   .map-toolbar__bar,
@@ -10,24 +14,29 @@
     pointer-events: auto
 
 .map-toolbar__bar
-  position: absolute
+  position: relative
   z-index: $map-z-toolbar
-  bottom: 0.75rem
-  left: 0.75rem
+  grid-row: 2
+  grid-column: 1
+  align-self: end
+  justify-self: start
   display: flex
   flex-wrap: wrap
   gap: 0.35rem
-  max-width: calc(100% - 1.5rem)
+  max-width: 100%
 
 .map-panel-drawer
-  position: absolute
+  position: relative
   z-index: $map-z-panel
-  top: 0.75rem
-  right: 0.75rem
-  bottom: 1.75rem
+  grid-row: 1
+  grid-column: 1
+  justify-self: end
   display: flex
   flex-direction: column
-  width: min(24rem, calc(100% - 1.5rem))
+  width: min(24rem, calc(100% - 2.5rem))
+  margin-right: 2.5rem
+  min-height: 0
+  max-height: 100%
   overflow: hidden
   border: 1px solid $ebl-color-border-subtle
   border-radius: 0.45rem
@@ -60,26 +69,65 @@
     padding: 0.75rem
     overscroll-behavior: contain
 
-@media (max-width: $ebl-breakpoint-md-max)
-  .map-toolbar__bar
-    left: 0.5rem
-    bottom: 0.5rem
+.map-stage > .map-legend
+  z-index: $map-z-panel + 1
+  right: 0.75rem
+  bottom: 0.75rem
+  display: flex
+  flex-direction: column
+  align-items: flex-start
+  pointer-events: none
 
+  > button
+    flex: 0 0 auto
+    pointer-events: auto
+
+  .map-legend__body
+    flex: 0 1 auto
+    width: min(22rem, 100%)
+    min-height: 0
+    max-width: 100%
+    overflow-y: auto
+    overscroll-behavior: contain
+    pointer-events: auto
+
+@media (max-width: $ebl-breakpoint-md-max)
+  .map-stage .maplibregl-ctrl-top-right .maplibregl-ctrl-group
+    display: flex
+
+    button
+      width: 2.75rem
+      height: 2.75rem
+
+      + button
+        border-top: 0
+        border-left: 1px solid $ebl-color-border-subtle
+
+  .map-stage > .map-legend .map-legend__body
+    margin-top: 1rem
+
+  .map-stage > .map-legend > button
+    min-height: 2.75rem
+
+  .map-panel-dock
+    gap: 0.5rem
+    padding: 0.5rem
+
+  .map-toolbar__bar
     .btn
       min-height: 2.75rem
 
   .map-panel-drawer
-    top: auto
-    right: 0.5rem
-    bottom: 0.5rem
-    left: 0.5rem
+    align-self: end
+    justify-self: stretch
     width: auto
+    margin-right: 0
     height: min(55vh, 28rem)
-    max-height: min(55vh, 28rem)
+    max-height: 60%
 
     &--collapsed
       height: auto
-      max-height: none
+      max-height: 100%
 
     &__handle
       display: flex
@@ -95,8 +143,7 @@
       text-align: left
 
     &__title
-      flex: 0 0 auto
-      order: -1
+      display: none
 
   .map-panel-drawer__grip
     display: block
