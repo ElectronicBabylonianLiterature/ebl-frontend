@@ -1,7 +1,8 @@
 function containsUnsafeCharacter(url: string): boolean {
+  if (url.startsWith(' ') || url.endsWith(' ')) return true
   return Array.from(url).some((character) => {
     const code = character.charCodeAt(0)
-    return character === '\\' || code <= 32 || code === 127
+    return character === '\\' || code < 32 || code === 127
   })
 }
 

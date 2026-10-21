@@ -16,7 +16,10 @@ import {
 import { raToken } from 'test-support/test-tokens'
 import { DictionaryContext } from 'dictionary/ui/dictionary-context'
 import WordService from 'dictionary/application/WordService'
-import { referenceFactory } from 'test-support/bibliography-fixtures'
+import {
+  referenceDtoFactory,
+  referenceFactory,
+} from 'test-support/bibliography-fixtures'
 
 const chance = new Chance('markup.test.tsx')
 const MockWordService = WordService as jest.Mock<jest.Mocked<WordService>>
@@ -94,6 +97,13 @@ test.each([
   'relative/path',
   '#note',
   'mailto:editor@example.org',
+  'https://example.org/path with spaces',
+  'https://example.org/?query=some words',
+  '../path with spaces',
+  '?query=some words',
+  '#note with spaces',
+  'mailto:editor@example.org?subject=Please review&body=Some text',
+  'not a URL',
 ])('DisplayUrlPart links an allowed URL: %s', (allowedUrl) => {
   render(<DisplayUrlPart part={{ ...urlPart, url: allowedUrl }} />)
 
@@ -115,7 +125,7 @@ test.each([
   ['java', 'script:alert(document.domain)'].join(''),
   'java\nscript:alert(document.domain)',
   'data:text/html,<script>alert(document.domain)</script>',
-  'not a URL',
+  'https://exa mple.org/path',
   '//evil.example/path',
   ['/', '\\', 'evil.example/path'].join(''),
   ['/corpus/', String.fromCharCode(0), 'L/1/4'].join(''),
@@ -132,12 +142,40 @@ test('DisplayUrlPart uses the URL when text is empty', () => {
   expect(screen.getByText(url)).toHaveAttribute('href', url)
 })
 
+test('DisplayUrlPart preserves a backend URL with Unicode and spaces', () => {
+  const backendUrl = 'www.example.com/#špecial cḫars'
+  render(
+    <DisplayUrlPart part={{ type: 'UrlPart', url: backendUrl, text: '' }} />,
+  )
+
+  const link = screen.getByRole('link', { name: backendUrl })
+  expect(link).toHaveAttribute('href', backendUrl)
+  expect(link).toHaveProperty('hash', '#%C5%A1pecial%20c%E1%B8%ABars')
+  expect(link).toHaveProperty('origin', window.location.origin)
+})
+
 test('DisplayBibliographyPart', () => {
   const { container } = render(
     <DisplayBibliographyPart part={bibliographyPart} />,
   )
 
   expect(container).toHaveTextContent(reference.document.primaryAuthor)
+})
+
+test('DisplayBibliographyPart preserves an unresolved reference', () => {
+  render(
+    <DisplayBibliographyPart
+      part={{
+        type: 'BibliographyPart',
+        reference: referenceDtoFactory.build({
+          id: 'MISSING',
+          pages: '1–2',
+        }),
+      }}
+    />,
+  )
+
+  expect(screen.getByText('@bib{MISSING@1–2}')).toBeVisible()
 })
 
 test('Markup', () => {
