@@ -2,7 +2,7 @@ name: CI
 
 on:
   push:
-    branches: [master]
+    branches: [master, map/frontend-04-map-first-layout]
   pull_request:
     branches: [master]
 
