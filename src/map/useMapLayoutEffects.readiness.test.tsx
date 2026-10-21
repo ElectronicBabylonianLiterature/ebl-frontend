@@ -7,7 +7,8 @@ import useMapLayoutEffects from 'map/useMapLayoutEffects'
 import useIsNarrowViewport from 'map/useIsNarrowViewport'
 
 type ResizeEntry = { contentRect: { width: number; height: number } }
-const mockObservers = new Map<Element, (entries: ResizeEntry[]) => void>()
+type ResizeCallback = (entries: ResizeEntry[]) => void
+const mockObservers = new Map<Element, Set<ResizeCallback>>()
 const mockUseIsNarrowViewport = useIsNarrowViewport as jest.MockedFunction<
   typeof useIsNarrowViewport
 >
@@ -15,7 +16,7 @@ const mockUseIsNarrowViewport = useIsNarrowViewport as jest.MockedFunction<
 jest.mock('map/useIsNarrowViewport')
 jest.mock('resize-observer-polyfill', () => {
   return class MockResizeObserver {
-    private element: Element | null = null
+    private readonly elements: Element[] = []
     private readonly callback: (entries: ResizeEntry[]) => void
 
     constructor(callback: (entries: ResizeEntry[]) => void) {
@@ -23,15 +24,40 @@ jest.mock('resize-observer-polyfill', () => {
     }
 
     observe(element: Element): void {
-      this.element = element
-      mockObservers.set(element, this.callback)
+      this.elements.push(element)
+      const callbacks = mockObservers.get(element) ?? new Set<ResizeCallback>()
+      callbacks.add(this.callback)
+      mockObservers.set(element, callbacks)
     }
 
     disconnect(): void {
-      if (this.element) mockObservers.delete(this.element)
+      this.elements.forEach((element) => {
+        const callbacks = mockObservers.get(element)
+        callbacks?.delete(this.callback)
+        if (callbacks?.size === 0) mockObservers.delete(element)
+      })
     }
   }
 })
+
+function measurePanel(container: HTMLElement, drawer: HTMLElement): void {
+  jest.spyOn(container, 'getBoundingClientRect').mockReturnValue({
+    left: 0,
+    top: 0,
+    right: 800,
+    bottom: 600,
+    width: 800,
+    height: 600,
+  } as DOMRect)
+  jest.spyOn(drawer, 'getBoundingClientRect').mockReturnValue({
+    left: 440,
+    top: 120,
+    right: 800,
+    bottom: 600,
+    width: 360,
+    height: 480,
+  } as DOMRect)
+}
 
 function LoadingMap({
   isReady,
@@ -89,13 +115,16 @@ it.each([
     rerender(<LoadingMap isReady map={map} />)
     const drawer = screen.getByTestId('map-drawer')
     const container = screen.getByTestId('map-container')
+    measurePanel(container, drawer)
     expect(mockObservers.has(drawer)).toBe(true)
     expect(mockObservers.has(container)).toBe(true)
     act(() => {
-      mockObservers.get(drawer)?.([
-        { contentRect: { width: 360, height: 480 } },
-      ])
-      mockObservers.get(container)?.([])
+      mockObservers
+        .get(drawer)
+        ?.forEach((callback) =>
+          callback([{ contentRect: { width: 360, height: 480 } }]),
+        )
+      mockObservers.get(container)?.forEach((callback) => callback([]))
       jest.runOnlyPendingTimers()
     })
 
@@ -117,11 +146,14 @@ it.each([
 
     rerender(<LoadingMap isReady map={map} />)
     const restoredDrawer = screen.getByTestId('map-drawer')
+    measurePanel(container, restoredDrawer)
     expect(mockObservers.has(restoredDrawer)).toBe(true)
     act(() => {
-      mockObservers.get(restoredDrawer)?.([
-        { contentRect: { width: 360, height: 480 } },
-      ])
+      mockObservers
+        .get(restoredDrawer)
+        ?.forEach((callback) =>
+          callback([{ contentRect: { width: 360, height: 480 } }]),
+        )
     })
     expect(mapMock.setPadding).toHaveBeenLastCalledWith({
       top: 0,

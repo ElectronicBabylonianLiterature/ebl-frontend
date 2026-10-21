@@ -10,7 +10,6 @@ import MapLegend from './MapLegend'
 interface Props {
   readonly containerRef: React.RefObject<HTMLDivElement>
   readonly controls: React.ReactNode
-  readonly selectionPill: React.ReactNode
   readonly hoverPreview: MapHoverPreview | null
   readonly isBackgroundUnavailable: boolean
   readonly legend: ChoroplethLegend
@@ -22,7 +21,6 @@ interface Props {
 export default function MapStage({
   containerRef,
   controls,
-  selectionPill,
   hoverPreview,
   isBackgroundUnavailable,
   legend,
@@ -36,7 +34,6 @@ export default function MapStage({
         <MapLegend mode={visualizationMode} legend={legend} />
       ) : null}
       {controls}
-      {selectionPill}
       {analyticalNote === null ? null : (
         <p className="map-stage__analytical-note">{analyticalNote}</p>
       )}

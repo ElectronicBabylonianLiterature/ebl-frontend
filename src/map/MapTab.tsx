@@ -91,16 +91,6 @@ export default function MapTab({
           legend={visualization.legend}
           visualizationMode={visualization.effectiveMode}
           showLegend={!isPresenting}
-          selectionPill={
-            !isPresenting &&
-            experience.selection !== null &&
-            mapPanel.active !== 'inspector' ? (
-              <MapSelectionPill
-                label="Show selected area"
-                onShow={() => mapPanel.open('inspector')}
-              />
-            ) : null
-          }
           analyticalNote={
             state.threeD.panel.mode === 'extrusion'
               ? analyticalHeightDisclaimer(state.threeD.panel.metric)
@@ -112,6 +102,16 @@ export default function MapTab({
                 panel={mapPanel}
                 mapRef={state.mapRef}
                 drawerRef={state.drawerRef}
+                selectionAction={
+                  !isPresenting &&
+                  experience.selection !== null &&
+                  mapPanel.active !== 'inspector' ? (
+                    <MapSelectionPill
+                      label="Show selected area"
+                      onShow={() => mapPanel.open('inspector')}
+                    />
+                  ) : null
+                }
                 excavationPolygonIndex={siteData.excavationPolygonIndex}
                 polygonSummaries={siteData.polygonSummaries}
                 info={state.info}

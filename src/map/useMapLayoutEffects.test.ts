@@ -2,22 +2,22 @@ import { renderHook } from '@testing-library/react'
 import useMapLayoutEffects from 'map/useMapLayoutEffects'
 import useMapContainerResize from 'map/useMapContainerResize'
 import useMapPanelPadding from 'map/useMapPanelPadding'
-import useElementSize from 'map/useElementSize'
+import useMapPanelFootprint from 'map/useMapPanelFootprint'
 import useIsNarrowViewport from 'map/useIsNarrowViewport'
 
 jest.mock('map/useMapContainerResize')
 jest.mock('map/useMapPanelPadding')
-jest.mock('map/useElementSize')
+jest.mock('map/useMapPanelFootprint')
 jest.mock('map/useIsNarrowViewport')
 
 const mockUseMapContainerResize = useMapContainerResize as jest.Mock
 const mockUseMapPanelPadding = useMapPanelPadding as jest.Mock
-const mockUseElementSize = useElementSize as jest.Mock
+const mockUseMapPanelFootprint = useMapPanelFootprint as jest.Mock
 const mockUseIsNarrowViewport = useIsNarrowViewport as jest.Mock
 
 beforeEach(() => {
   jest.clearAllMocks()
-  mockUseElementSize.mockReturnValue({ width: 360, height: 480 })
+  mockUseMapPanelFootprint.mockReturnValue({ width: 360, height: 480 })
   mockUseIsNarrowViewport.mockReturnValue(false)
 })
 
@@ -105,10 +105,11 @@ describe('useMapLayoutEffects', () => {
 
   it('remeasures the drawer against the active panel identity', () => {
     const drawerRef = { current: null }
+    const containerRef = { current: null }
 
     renderHook(() =>
       useMapLayoutEffects(
-        { current: null },
+        containerRef,
         { current: null },
         drawerRef,
         'export',
@@ -116,6 +117,10 @@ describe('useMapLayoutEffects', () => {
       ),
     )
 
-    expect(mockUseElementSize).toHaveBeenCalledWith(drawerRef, 'export')
+    expect(mockUseMapPanelFootprint).toHaveBeenCalledWith(
+      containerRef,
+      drawerRef,
+      'export',
+    )
   })
 })

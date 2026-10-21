@@ -30,7 +30,9 @@ const IS_UNMAPPED: ExpressionSpecification = [
   0,
 ]
 
-function stepColors(scale: ChoroplethScale): ExpressionSpecification {
+function stepColors(scale: ChoroplethScale): ExpressionSpecification | string {
+  if (scale.breaks.length === 0) return scale.colors[0]
+
   const stops = scale.breaks.flatMap((breakValue, index) => [
     breakValue,
     scale.colors[index + 1] ?? scale.colors[scale.colors.length - 1],
@@ -48,7 +50,11 @@ function stepColors(scale: ChoroplethScale): ExpressionSpecification {
  * Class index of a feature under the active scale, used to encode the same
  * information as colour through outline width.
  */
-function stepClassIndex(scale: ChoroplethScale): ExpressionSpecification {
+function stepClassIndex(
+  scale: ChoroplethScale,
+): ExpressionSpecification | number {
+  if (scale.breaks.length === 0) return 0
+
   const stops = scale.breaks.flatMap((breakValue, index) => [
     breakValue,
     index + 1,

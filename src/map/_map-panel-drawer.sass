@@ -6,22 +6,33 @@
 // shared panel and the legend sit, and never both cover the same corner as
 // MapLibre's own navigation and attribution controls.
 
-.map-toolbar__bar
+.map-panel-dock
   position: absolute
+  inset: 0
+  display: grid
+  grid-template-rows: minmax(0, 1fr) auto
+  gap: 0.75rem
+  padding: 0.75rem
+  pointer-events: none
+
+  .map-toolbar__bar,
+  .map-panel-drawer
+    pointer-events: auto
+
+.map-toolbar__bar
+  position: relative
   z-index: $map-z-toolbar
-  bottom: 0.75rem
-  left: 0.75rem
+  grid-row: 2
+  grid-column: 1
+  align-self: end
+  justify-self: start
   display: flex
   flex-wrap: wrap
   gap: 0.35rem
-  max-width: calc(100% - 1.5rem)
+  max-width: 100%
 
 .map-selection-pill
-  position: absolute
-  z-index: $map-z-toolbar
-  bottom: 3.35rem
-  left: 0.75rem
-  max-width: calc(100% - 1.5rem)
+  max-width: 100%
 
 .map-legend
   position: absolute
@@ -123,14 +134,17 @@
     display: none
 
 .map-panel-drawer
-  position: absolute
+  position: relative
   z-index: $map-z-panel
-  top: 3.5rem
-  right: 0.75rem
-  bottom: 1.75rem
+  grid-row: 1
+  grid-column: 1
+  justify-self: end
+  margin-top: 2.75rem
   display: flex
   flex-direction: column
-  width: min(24rem, calc(100% - 1.5rem))
+  width: min(24rem, 100%)
+  min-height: 0
+  max-height: 100%
   overflow: hidden
   border: 1px solid #d5dce3
   border-radius: 0.45rem
@@ -168,13 +182,14 @@
 
 @media (max-width: $ebl-breakpoint-lg-max)
   .map-panel-drawer
-    width: min(19rem, calc(100% - 1.25rem))
+    width: min(19rem, 100%)
 
 @media (max-width: $ebl-breakpoint-md-max)
-  .map-toolbar__bar
-    left: 0.5rem
-    bottom: 0.5rem
+  .map-panel-dock
+    gap: 0.5rem
+    padding: 0.5rem
 
+  .map-toolbar__bar
     .btn
       min-height: 2.75rem
 
@@ -182,29 +197,21 @@
     min-height: 2.75rem
     min-width: 2.75rem
 
-  .map-toolbar__bar--panel-open
-    bottom: 4rem
-
-  .map-selection-pill
-    left: 0.5rem
-    bottom: 4.6rem
-
   .map-legend
     top: 0.5rem
     left: 0.5rem
 
   .map-panel-drawer
-    top: auto
-    right: 0.5rem
-    bottom: 0.5rem
-    left: 0.5rem
+    align-self: end
+    justify-self: stretch
+    margin-top: 0
     width: auto
     height: min(55vh, 28rem)
-    max-height: min(55vh, 28rem)
+    max-height: 60%
 
     &--collapsed
       height: auto
-      max-height: none
+      max-height: 100%
 
     &__handle
       display: flex
@@ -220,8 +227,7 @@
       text-align: left
 
     &__title
-      flex: 0 0 auto
-      order: -1
+      display: none
 
   .map-panel-drawer__grip
     display: block
@@ -231,12 +237,8 @@
     background: #c9c2b4
 
 @media (max-width: $ebl-breakpoint-sm-max)
-  .map-panel-drawer
-    right: 0.4rem
-    left: 0.4rem
-    bottom: 0.4rem
+  .map-panel-drawer:not(.map-panel-drawer--collapsed)
     height: min(50vh, 24rem)
-    max-height: min(50vh, 24rem)
 
 @media (prefers-reduced-motion: reduce)
   .map-panel-drawer

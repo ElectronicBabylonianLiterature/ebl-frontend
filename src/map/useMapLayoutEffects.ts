@@ -1,7 +1,7 @@
 import type { MutableRefObject, RefObject } from 'react'
 import type { Map as MapLibreMap } from 'maplibre-gl'
 import type { ActiveMapPanel } from 'map/mapPanel'
-import useElementSize from 'map/useElementSize'
+import useMapPanelFootprint from 'map/useMapPanelFootprint'
 import useIsNarrowViewport from 'map/useIsNarrowViewport'
 import useMapContainerResize from 'map/useMapContainerResize'
 import useMapPanelPadding from 'map/useMapPanelPadding'
@@ -23,7 +23,8 @@ export default function useMapLayoutEffects(
   useMapContainerResize(mapContainerRef, mapRef, isReady)
 
   const isNarrowViewport = useIsNarrowViewport()
-  const drawerSize = useElementSize(
+  const drawerSize = useMapPanelFootprint(
+    mapContainerRef,
     drawerRef,
     isReady ? activePanel : undefined,
   )

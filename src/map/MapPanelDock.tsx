@@ -16,6 +16,7 @@ import MapPanelDrawer from './MapPanelDrawer'
 
 export interface MapPanelDockProps {
   readonly panel: MapPanelController
+  readonly selectionAction?: React.ReactNode
   readonly mapRef: MutableRefObject<MapLibreMap | null>
   readonly drawerRef: RefObject<HTMLElement>
   readonly excavationPolygonIndex: ExcavationPolygonIndex
@@ -33,6 +34,7 @@ export interface MapPanelDockProps {
 
 export default function MapPanelDock({
   panel,
+  selectionAction,
   mapRef,
   drawerRef,
   excavationPolygonIndex,
@@ -74,11 +76,12 @@ export default function MapPanelDock({
   const activeDefinition = panels.find((entry) => entry.id === panel.active)
 
   return (
-    <>
+    <div className="map-panel-dock">
       <MapToolbar
         panels={panels}
         active={panel.active}
         onToggle={panel.toggle}
+        extraAction={selectionAction}
       />
       {activeDefinition ? (
         <MapPanelDrawer
@@ -89,6 +92,6 @@ export default function MapPanelDock({
           {activeDefinition.render()}
         </MapPanelDrawer>
       ) : null}
-    </>
+    </div>
   )
 }
