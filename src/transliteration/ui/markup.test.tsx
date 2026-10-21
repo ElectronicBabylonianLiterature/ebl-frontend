@@ -87,6 +87,51 @@ test('DisplayUrlPart', () => {
   expect(screen.getByText(linkText)).toHaveAttribute('href', url)
 })
 
+test.each([
+  'http://www.ebl.lmu.de/',
+  url,
+  '/corpus/L/1/4',
+  'relative/path',
+  '#note',
+  'mailto:editor@example.org',
+])('DisplayUrlPart links an allowed URL: %s', (allowedUrl) => {
+  render(<DisplayUrlPart part={{ ...urlPart, url: allowedUrl }} />)
+
+  expect(screen.getByRole('link', { name: linkText })).toHaveAttribute(
+    'href',
+    allowedUrl,
+  )
+  expect(screen.getByRole('link', { name: linkText })).toHaveAttribute(
+    'target',
+    '_blank',
+  )
+  expect(screen.getByRole('link', { name: linkText })).toHaveAttribute(
+    'rel',
+    'noopener noreferrer',
+  )
+})
+
+test.each([
+  ['java', 'script:alert(document.domain)'].join(''),
+  'java\nscript:alert(document.domain)',
+  'data:text/html,<script>alert(document.domain)</script>',
+  'not a URL',
+  '//evil.example/path',
+  ['/', '\\', 'evil.example/path'].join(''),
+  ['/corpus/', String.fromCharCode(0), 'L/1/4'].join(''),
+])('DisplayUrlPart does not link a disallowed URL: %s', (disallowedUrl) => {
+  render(<DisplayUrlPart part={{ ...urlPart, url: disallowedUrl }} />)
+
+  expect(screen.getByText(linkText)).toBeVisible()
+  expect(screen.queryByRole('link', { name: linkText })).not.toBeInTheDocument()
+})
+
+test('DisplayUrlPart uses the URL when text is empty', () => {
+  render(<DisplayUrlPart part={{ ...urlPart, text: '' }} />)
+
+  expect(screen.getByText(url)).toHaveAttribute('href', url)
+})
+
 test('DisplayBibliographyPart', () => {
   const { container } = render(
     <DisplayBibliographyPart part={bibliographyPart} />,
