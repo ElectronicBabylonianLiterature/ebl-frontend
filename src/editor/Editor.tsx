@@ -23,9 +23,10 @@ function createCompleter(
     getCompletions: function (editor, session, pos, prefix, callback) {
       const isTriggerPosition = !lineStartOnly || pos.column === 1
 
-      if (prefix.match(triggerRegex) && isTriggerPosition) {
-        callback(null, snippets)
-      }
+      callback(
+        null,
+        prefix.match(triggerRegex) && isTriggerPosition ? snippets : [],
+      )
     },
     identifierRegexps: [triggerRegex],
   }

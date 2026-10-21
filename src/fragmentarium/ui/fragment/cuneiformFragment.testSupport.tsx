@@ -20,7 +20,14 @@ import ResizeObserver from 'resize-observer-polyfill'
 
 jest.mock('dictionary/application/WordService')
 jest.mock('fragmentarium/application/FindspotService')
-jest.mock('fragmentarium/application/FragmentService')
+jest.mock('fragmentarium/application/FragmentService', () => ({
+  ...jest.createMockFromModule<
+    typeof import('fragmentarium/application/FragmentService')
+  >('fragmentarium/application/FragmentService'),
+  editionFields: jest.requireActual<
+    typeof import('fragmentarium/application/FragmentService')
+  >('fragmentarium/application/FragmentService').editionFields,
+}))
 jest.mock('fragmentarium/application/FragmentSearchService')
 jest.mock('afo-register/application/AfoRegisterService')
 jest.mock('auth/Session')
