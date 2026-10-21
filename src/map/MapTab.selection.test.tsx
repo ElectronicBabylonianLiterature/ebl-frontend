@@ -22,7 +22,7 @@ import {
 import { findspotMapDataDto } from 'test-support/map-fixtures'
 
 jest.mock('maplibre-gl')
-jest.mock('map/useElementSize', () => () => ({ width: 320, height: 200 }))
+jest.mock('map/useMapPanelFootprint', () => () => ({ width: 320, height: 200 }))
 
 const POLYGON_ID = 'assur-bb6i-3d76dc1e02af'
 const CANONICAL_POLYGON_ASSET = fs.readFileSync(
