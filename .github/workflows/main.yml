@@ -2,7 +2,7 @@ name: CI
 
 on:
   push:
-    branches: [master]
+    branches: [master, map/frontend-10-research-exports]
   pull_request:
     branches: [master]
 

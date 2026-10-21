@@ -1,12 +1,13 @@
 import React from 'react'
 import Bluebird from 'bluebird'
-import { render, type RenderResult } from '@testing-library/react'
+import { act, render, type RenderResult } from '@testing-library/react'
 import { MemoryRouter, useLocation, useNavigate } from 'react-router-dom'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import { FindspotService } from 'fragmentarium/application/FindspotService'
 import { ProvenanceRecord } from 'fragmentarium/domain/Provenance'
 import ErrorReporterContext, { type ErrorReporter } from 'ErrorReporterContext'
 import MapTab from 'map/MapTab'
+import { makeProvenance } from 'map/provenanceTestData'
 
 export const mockCaptureException = jest.fn()
 
@@ -18,7 +19,7 @@ export const mockErrorReporter: ErrorReporter = {
 }
 
 export * from 'map/mapLibreMock.testSupport'
-export { makeProvenance } from 'map/provenanceTestData'
+export { makeProvenance }
 
 export function makeFragmentService(
   provenances: readonly ProvenanceRecord[],
@@ -103,4 +104,9 @@ export function renderMapTab(
       </MemoryRouter>
     </ErrorReporterContext.Provider>,
   )
+}
+
+export async function renderMapWithProvenance(): Promise<void> {
+  renderMapTab(makeFragmentService([makeProvenance()]))
+  await act(() => Promise.resolve())
 }
