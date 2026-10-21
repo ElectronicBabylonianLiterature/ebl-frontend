@@ -34,7 +34,8 @@
   justify-self: end
   display: flex
   flex-direction: column
-  width: min(24rem, 100%)
+  width: min(24rem, calc(100% - 2.5rem))
+  margin-right: 2.5rem
   min-height: 0
   max-height: 100%
   overflow: hidden
@@ -69,7 +70,46 @@
     padding: 0.75rem
     overscroll-behavior: contain
 
+.map-stage > .map-legend
+  z-index: $map-z-panel + 1
+  right: 0.75rem
+  bottom: 0.75rem
+  display: flex
+  flex-direction: column
+  align-items: flex-start
+  pointer-events: none
+
+  > button
+    flex: 0 0 auto
+    pointer-events: auto
+
+  .map-legend__body
+    flex: 0 1 auto
+    width: min(22rem, 100%)
+    min-height: 0
+    max-width: 100%
+    overflow-y: auto
+    overscroll-behavior: contain
+    pointer-events: auto
+
 @media (max-width: $ebl-breakpoint-md-max)
+  .map-stage .maplibregl-ctrl-top-right .maplibregl-ctrl-group
+    display: flex
+
+    button
+      width: 2.75rem
+      height: 2.75rem
+
+      + button
+        border-top: 0
+        border-left: 1px solid $ebl-color-border-subtle
+
+  .map-stage > .map-legend .map-legend__body
+    margin-top: 1rem
+
+  .map-stage > .map-legend > button
+    min-height: 2.75rem
+
   .map-panel-dock
     gap: 0.5rem
     padding: 0.5rem
@@ -82,6 +122,7 @@
     align-self: end
     justify-self: stretch
     width: auto
+    margin-right: 0
     height: min(55vh, 28rem)
     max-height: 60%
 
