@@ -62,7 +62,7 @@ it.each(['assur', 'unknown-site'])(
 
     expect(
       screen.getByText(
-        'No linked fragment data is configured for this site yet.',
+        'No linked tablet data is configured for this site yet.',
       ),
     ).toBeInTheDocument()
     await userEvent.click(screen.getByRole('button', { name: 'Clear' }))
@@ -97,9 +97,9 @@ it('shows the selected site failure instead of a different site empty result', (
   )
 
   expect(
-    screen.getByText('Linked fragment data is unavailable right now.'),
+    screen.getByText('Linked tablet data is unavailable right now.'),
   ).toBeInTheDocument()
   expect(
-    screen.queryByText('No fragments are linked to this excavation area.'),
+    screen.queryByText('No tablets are linked to this excavation area.'),
   ).not.toBeInTheDocument()
 })
