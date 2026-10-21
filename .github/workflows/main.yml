@@ -2,7 +2,7 @@ name: CI
 
 on:
   push:
-    branches: [master]
+    branches: [master, map/frontend-06-evidence-inspector]
   pull_request:
     branches: [master]
 

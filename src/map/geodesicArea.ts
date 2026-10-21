@@ -7,15 +7,19 @@ function toRadians(degrees: number): number {
   return (degrees * Math.PI) / 180
 }
 
+function isValidLatitude(value: unknown): value is number {
+  return (
+    typeof value === 'number' && Number.isFinite(value) && Math.abs(value) <= 90
+  )
+}
+
 function isFinitePosition(value: unknown): value is Position {
   if (!Array.isArray(value)) return false
   const [longitude, latitude] = value
   return (
     typeof longitude === 'number' &&
-    typeof latitude === 'number' &&
     Number.isFinite(longitude) &&
-    Number.isFinite(latitude) &&
-    Math.abs(latitude) <= 90
+    isValidLatitude(latitude)
   )
 }
 
