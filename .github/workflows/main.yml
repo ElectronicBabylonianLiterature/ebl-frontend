@@ -2,7 +2,7 @@ name: CI
 
 on:
   push:
-    branches: [master]
+    branches: [master, map/frontend-05-assur-linkage]
   pull_request:
     branches: [master]
 
