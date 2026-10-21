@@ -1,13 +1,13 @@
 import React from 'react'
 import classNames from 'classnames'
 import { Collapse } from 'react-bootstrap'
-import { RealiaNavSection } from 'realia/ui/realiaSections'
+import { EntryNavSection } from 'common/ui/entry-page/entryNavSections'
 
 interface Props {
-  title: string
-  typeLabel: string | null
+  title: React.ReactNode
+  subtitle: string | null
   topId: string
-  sections: readonly RealiaNavSection[]
+  sections: readonly EntryNavSection[]
   openSections: Readonly<Record<string, boolean>>
   activeId: string | null
   selectedId: string | null
@@ -55,7 +55,7 @@ function NavSubsections({
   selectedId,
   onNavigate,
 }: {
-  section: RealiaNavSection
+  section: EntryNavSection
   open: boolean
   activeId: string | null
   selectedId: string | null
@@ -63,12 +63,12 @@ function NavSubsections({
 }): JSX.Element {
   return (
     <Collapse in={open}>
-      <ul className="Realia__nav-sublist">
+      <ul className="EntryPage__nav-sublist">
         {section.subsections.map((subsection) => (
-          <li key={subsection.id} className="Realia__nav-subitem">
+          <li key={subsection.id} className="EntryPage__nav-subitem">
             <NavAnchor
               id={subsection.id}
-              className="Realia__nav-sublink"
+              className="EntryPage__nav-sublink"
               activeId={activeId}
               selectedId={selectedId}
               onNavigate={onNavigate}
@@ -82,9 +82,9 @@ function NavSubsections({
   )
 }
 
-export default function RealiaNavMenu({
+export default function EntryNavMenu({
   title,
-  typeLabel,
+  subtitle,
   topId,
   sections,
   openSections,
@@ -94,18 +94,20 @@ export default function RealiaNavMenu({
   onNavigate,
 }: Props): JSX.Element {
   return (
-    <nav className="Realia__nav" aria-label="On this page">
+    <nav className="EntryPage__nav" aria-label="On this page">
       <NavAnchor
         id={topId}
-        className="Realia__nav-top"
+        className="EntryPage__nav-top"
         activeId={activeId}
         selectedId={selectedId}
         onNavigate={onNavigate}
       >
-        <span className="Realia__nav-top-title">{title}</span>
-        {typeLabel && <span className="Realia__nav-top-type">{typeLabel}</span>}
+        <span className="EntryPage__nav-top-title">{title}</span>
+        {subtitle && (
+          <span className="EntryPage__nav-top-type">{subtitle}</span>
+        )}
       </NavAnchor>
-      <ul className="Realia__nav-list">
+      <ul className="EntryPage__nav-list">
         {sections.map((section) => {
           const open = openSections[section.id]
           const isActiveGroup =
@@ -114,14 +116,14 @@ export default function RealiaNavMenu({
           return (
             <li
               key={section.id}
-              className={classNames('Realia__nav-item', {
+              className={classNames('EntryPage__nav-item', {
                 'is-active-group': isActiveGroup,
               })}
             >
-              <div className="Realia__nav-row">
+              <div className="EntryPage__nav-row">
                 <button
                   type="button"
-                  className="Realia__nav-toggle"
+                  className="EntryPage__nav-toggle"
                   aria-expanded={open}
                   aria-label={`${open ? 'Collapse' : 'Expand'} ${
                     section.label
@@ -138,7 +140,7 @@ export default function RealiaNavMenu({
                 </button>
                 <NavAnchor
                   id={section.id}
-                  className="Realia__nav-link"
+                  className="EntryPage__nav-link"
                   activeId={activeId}
                   selectedId={selectedId}
                   onNavigate={onNavigate}

@@ -42,5 +42,6 @@
   "readUrukLBUFragments": "read:URUKLBU-fragments",
   "readSipparIstanbulFragments": "read:SIPPARISTANBUL-fragments",
   "readCopenhagenFragments": "read:COPENHAGEN-fragments",
-  "readRealia": "read:realia"
+  "readRealia": "read:realia",
+  "readSumerianWords": "read:sumerian-words"
 }
