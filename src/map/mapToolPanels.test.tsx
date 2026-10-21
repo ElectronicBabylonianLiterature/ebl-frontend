@@ -80,7 +80,7 @@ it.each([
 
     expect(screen.getByText(siteName)).toBeVisible()
     expect(screen.getByRole('status')).toHaveTextContent(
-      'Linked fragment data is not configured for this site.',
+      'Linked tablet data is not configured for this site.',
     )
     expect(screen.queryByText('Mapped findspots')).not.toBeInTheDocument()
   },
