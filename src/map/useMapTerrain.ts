@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import type { MutableRefObject } from 'react'
 import type { Map as MapLibreMap } from 'maplibre-gl'
 import { POLYGON_FILL_LAYER_ID } from './mapLayerIds'
@@ -24,6 +24,7 @@ function asTerrainMap(map: MapLibreMap | null): TerrainMapLike | null {
 }
 
 export interface MapTerrainOptions {
+  readonly isReady?: boolean
   readonly exaggeration?: number
   readonly isHillshadeVisible?: boolean
 }
@@ -34,16 +35,24 @@ export default function useMapTerrain(
   options: MapTerrainOptions = {},
 ): MapTerrainResult {
   const capability = useMemo(() => deriveTerrainCapability(), [])
-  const isEnabled = isRequested && capability.isSupported
+  const [isEnabled, setIsEnabled] = useState(false)
+  const isReady = options.isReady ?? true
+  const shouldEnable = isRequested && capability.isSupported
   const exaggeration = options.exaggeration ?? capability.exaggeration
   const isHillshadeVisible = options.isHillshadeVisible ?? true
 
   useEffect(() => {
+    setIsEnabled(false)
     const currentMap = mapRef.current
     const map = asTerrainMap(currentMap)
-    if (map === null || !currentMap?.isStyleLoaded()) return
+    if (!isReady || !currentMap || !map || !shouldEnable) return
 
-    if (isEnabled && capability.source) {
+    let isActive = true
+    let isApplied = false
+    const ownsMap = (): boolean => mapRef.current === currentMap
+    const isCurrent = (): boolean => isActive && ownsMap()
+    const apply = (): void => {
+      if (!currentMap.getStyle() || !capability.source) return
       enableTerrain(
         map,
         capability.source,
@@ -51,16 +60,33 @@ export default function useMapTerrain(
         POLYGON_FILL_LAYER_ID,
         isHillshadeVisible,
       )
-    } else {
-      disableTerrain(map)
+      isApplied = true
+      setIsEnabled(true)
+    }
+    const handleStyleLoad = (): void => {
+      if (!isCurrent()) return
+      isApplied = false
+      setIsEnabled(false)
+      apply()
     }
 
+    currentMap.on('style.load', handleStyleLoad)
+    apply()
     return () => {
-      if (currentMap.isStyleLoaded()) {
+      isActive = false
+      currentMap.off('style.load', handleStyleLoad)
+      if (ownsMap() && isApplied && currentMap.getStyle()) {
         disableTerrain(map)
       }
     }
-  }, [mapRef, isEnabled, capability.source, exaggeration, isHillshadeVisible])
+  }, [
+    mapRef,
+    isReady,
+    shouldEnable,
+    capability.source,
+    exaggeration,
+    isHillshadeVisible,
+  ])
 
   return { ...capability, exaggeration, isEnabled }
 }

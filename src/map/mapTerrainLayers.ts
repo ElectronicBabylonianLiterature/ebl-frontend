@@ -2,6 +2,7 @@ import type { Map as MapLibreMap } from 'maplibre-gl'
 import type { TerrainSourceDefinition } from './mapTerrainSource'
 
 export const TERRAIN_SOURCE_ID = 'ebl-terrain-dem'
+export const TERRAIN_HILLSHADE_SOURCE_ID = 'ebl-terrain-hillshade-dem'
 export const TERRAIN_HILLSHADE_LAYER_ID = 'ebl-terrain-hillshade'
 
 export const DEFAULT_TERRAIN_EXAGGERATION = 1.4
@@ -42,7 +43,7 @@ export function createHillshadeLayer(): Record<string, unknown> {
   return {
     id: TERRAIN_HILLSHADE_LAYER_ID,
     type: 'hillshade',
-    source: TERRAIN_SOURCE_ID,
+    source: TERRAIN_HILLSHADE_SOURCE_ID,
     paint: {
       'hillshade-exaggeration': 0.35,
       'hillshade-shadow-color': '#4a4133',
@@ -76,11 +77,13 @@ export function enableTerrain(
   beforeLayerId?: string,
   isHillshadeVisible = true,
 ): void {
-  if (!map.getSource(TERRAIN_SOURCE_ID)) {
-    map.addSource(
-      TERRAIN_SOURCE_ID,
-      createTerrainSource(source) as Parameters<MapLibreMap['addSource']>[1],
-    )
+  for (const id of [TERRAIN_SOURCE_ID, TERRAIN_HILLSHADE_SOURCE_ID]) {
+    if (!map.getSource(id)) {
+      map.addSource(
+        id,
+        createTerrainSource(source) as Parameters<MapLibreMap['addSource']>[1],
+      )
+    }
   }
 
   if (!map.getLayer(TERRAIN_HILLSHADE_LAYER_ID)) {
@@ -109,7 +112,7 @@ export function disableTerrain(map: TerrainMapLike): void {
     map.removeLayer(TERRAIN_HILLSHADE_LAYER_ID)
   }
 
-  if (map.getSource(TERRAIN_SOURCE_ID)) {
-    map.removeSource(TERRAIN_SOURCE_ID)
+  for (const id of [TERRAIN_HILLSHADE_SOURCE_ID, TERRAIN_SOURCE_ID]) {
+    if (map.getSource(id)) map.removeSource(id)
   }
 }

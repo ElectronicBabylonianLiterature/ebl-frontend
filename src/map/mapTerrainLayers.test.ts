@@ -2,6 +2,7 @@ import {
   DEFAULT_TERRAIN_EXAGGERATION,
   MAX_TERRAIN_EXAGGERATION,
   TERRAIN_HILLSHADE_LAYER_ID,
+  TERRAIN_HILLSHADE_SOURCE_ID,
   TERRAIN_SOURCE_ID,
   type TerrainMapLike,
   clampExaggeration,
@@ -9,6 +10,7 @@ import {
   createTerrainSource,
   disableTerrain,
   enableTerrain,
+  setHillshadeVisibility,
 } from './mapTerrainLayers'
 import { AWS_TERRAIN_TILES } from './mapTerrainSource'
 
@@ -82,23 +84,34 @@ describe('createTerrainSource', () => {
 })
 
 describe('createHillshadeLayer', () => {
-  it('renders from the terrain source', () => {
+  it('renders from its own source, separate from terrain', () => {
     expect(createHillshadeLayer()).toMatchObject({
       id: TERRAIN_HILLSHADE_LAYER_ID,
       type: 'hillshade',
-      source: TERRAIN_SOURCE_ID,
+      source: TERRAIN_HILLSHADE_SOURCE_ID,
     })
   })
 })
 
+describe('setHillshadeVisibility', () => {
+  it('does nothing before a hillshade layer exists', () => {
+    const map = fakeMap()
+    setHillshadeVisibility(map, false)
+    expect(map.layers.size).toBe(0)
+  })
+})
+
 describe('enableTerrain', () => {
-  it('adds the source, hillshade and terrain once', () => {
+  it('adds separate DEM sources, hillshade and terrain once', () => {
     const map = fakeMap()
 
     enableTerrain(map, AWS_TERRAIN_TILES, 1.4)
     enableTerrain(map, AWS_TERRAIN_TILES, 1.4)
 
-    expect(map.sources.size).toBe(1)
+    expect(map.sources.size).toBe(2)
+    expect(map.sources.get(TERRAIN_HILLSHADE_SOURCE_ID)).toEqual(
+      map.sources.get(TERRAIN_SOURCE_ID),
+    )
     expect(map.layers.size).toBe(1)
     expect(map.terrain).toEqual({
       source: TERRAIN_SOURCE_ID,
@@ -135,6 +148,17 @@ describe('enableTerrain', () => {
 })
 
 describe('disableTerrain', () => {
+  it('keeps unrelated style resources when releasing both DEM sources', () => {
+    const map = fakeMap(['unrelated-layer'])
+    map.sources.set('unrelated-source', createTerrainSource(AWS_TERRAIN_TILES))
+    enableTerrain(map, AWS_TERRAIN_TILES, 1.4)
+
+    disableTerrain(map)
+
+    expect([...map.sources.keys()]).toEqual(['unrelated-source'])
+    expect([...map.layers.keys()]).toEqual(['unrelated-layer'])
+  })
+
   it('removes terrain, the hillshade layer and the source', () => {
     const map = fakeMap()
     enableTerrain(map, AWS_TERRAIN_TILES, 1.4)

@@ -25,6 +25,7 @@ export class MapMock {
     this.controls.push(control)
     return this
   })
+  readonly getStyle = jest.fn<object | undefined, []>(() => ({}))
   readonly fitBounds = jest.fn()
   readonly easeTo = jest.fn((options: CameraOptions) =>
     this.applyCamera(options),

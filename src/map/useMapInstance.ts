@@ -76,6 +76,7 @@ export default function useMapInstance(input: MapInstanceInput): MapInstance {
     experience.requestedCamera,
   )
   const terrain = useMapTerrain(mapRef, experience.tools.terrain, {
+    isReady: siteData.provenances !== null,
     exaggeration: experience.tools.threeD.terrainExaggeration,
     isHillshadeVisible: experience.tools.threeD.hillshadeVisible,
   })
