@@ -1,12 +1,10 @@
+import { word } from 'corpus/application/TextService.testSupport'
+import { lemmatization } from 'corpus/application/TextService.update.testSupport'
 import { produce, castDraft } from 'immer'
 import type { Draft } from 'immer'
 import TextService from 'corpus/application/TextService'
-import Word from 'dictionary/domain/Word'
-import Lemma from 'transliteration/domain/Lemma'
-import { LemmatizationToken } from 'transliteration/domain/Lemmatization'
 import Reference from 'bibliography/domain/Reference'
 import { BibliographyPart } from 'transliteration/domain/markup'
-import { wordFactory } from 'test-support/word-fixtures'
 import {
   bibliographyEntryFactory,
   referenceFactory,
@@ -24,29 +22,10 @@ import {
   wordServiceMock,
 } from 'corpus/application/TextService.regression.testSupport'
 
-const word: Word = wordFactory.build({
-  _id: 'aklu I',
-  lemma: ['aklu'],
-  homonym: 'I',
-})
-
-const lemmatization = [
-  [
-    [
-      [
-        new LemmatizationToken('%n', false, null, null),
-        new LemmatizationToken('kur-kur', true, [], []),
-      ],
-      [
-        [
-          new LemmatizationToken('kur', true, [], []),
-          new LemmatizationToken('ra', true, [new Lemma(word)], []),
-          new LemmatizationToken('...', false, null, null),
-        ],
-      ],
-    ],
-  ],
-]
+jest.mock('bibliography/application/BibliographyService')
+jest.mock('dictionary/application/WordService')
+jest.mock('fragmentarium/application/FragmentService')
+jest.mock('http/ApiClient')
 
 beforeEach(() => {
   setupProvenances()

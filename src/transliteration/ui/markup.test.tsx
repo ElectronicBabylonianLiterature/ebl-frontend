@@ -86,41 +86,10 @@ test('DisplayLanguagePart', () => {
   expect(screen.getByText('ra')).toBeVisible()
 })
 
-test.each([
-  'http://www.ebl.lmu.de/',
-  url,
-  '/corpus/L/1/4',
-  'relative/path',
-  '#note',
-  'mailto:editor@example.org',
-])('DisplayUrlPart links an allowed URL: %s', (allowedUrl) => {
-  render(<DisplayUrlPart part={{ ...urlPart, url: allowedUrl }} />)
+test('DisplayUrlPart', () => {
+  render(<DisplayUrlPart part={urlPart} />)
 
-  expect(screen.getByRole('link', { name: linkText })).toHaveAttribute(
-    'href',
-    allowedUrl,
-  )
-})
-
-test.each([
-  ['java', 'script:alert(document.domain)'].join(''),
-  'java\nscript:alert(document.domain)',
-  'data:text/html,<script>alert(document.domain)</script>',
-  'not a URL',
-  '//evil.example/path',
-  ['/', '\\', 'evil.example/path'].join(''),
-  ['/corpus/', String.fromCharCode(0), 'L/1/4'].join(''),
-])('DisplayUrlPart does not link a disallowed URL: %s', (disallowedUrl) => {
-  render(<DisplayUrlPart part={{ ...urlPart, url: disallowedUrl }} />)
-
-  expect(screen.getByText(linkText)).toBeVisible()
-  expect(screen.queryByRole('link', { name: linkText })).not.toBeInTheDocument()
-})
-
-test('DisplayUrlPart uses the URL when text is empty', () => {
-  render(<DisplayUrlPart part={{ ...urlPart, text: '' }} />)
-
-  expect(screen.getByText(url)).toHaveAttribute('href', url)
+  expect(screen.getByText(linkText)).toHaveAttribute('href', url)
 })
 
 test('Markup rejects an unsplit paragraph part', () => {

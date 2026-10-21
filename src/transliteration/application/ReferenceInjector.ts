@@ -128,17 +128,18 @@ export default class ReferenceInjector {
   }
 
   private createReference(data: ReferenceDto): Promise<Reference> {
+    const reference = new Reference(
+      data.type,
+      data.pages,
+      data.notes,
+      data.linesCited,
+    )
     return this.bibliographyService
       .find(data.id)
-      .then(
-        (entry) =>
-          new Reference(
-            data.type,
-            data.pages,
-            data.notes,
-            data.linesCited,
-            entry,
-          ),
-      )
+      .then((entry) => reference.setDocument(entry))
+      .catch((error) => {
+        this.reportError(error)
+        return reference.withIdentity(data.id, true)
+      })
   }
 }

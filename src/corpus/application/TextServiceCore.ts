@@ -36,10 +36,12 @@ export class TextServiceCore {
     return Promise.resolve(this.fragmentService.fetchProvenances())
       .then(() => undefined)
       .catch((error) => {
-        this.reportError(error)
+        this.errorReporter.captureException(error)
       })
   }
   protected readonly referenceInjector: ReferenceInjector
+
+  private readonly errorReporter = new SentryErrorReporter()
 
   protected cacheScope: string | null = null
 
@@ -65,8 +67,6 @@ export class TextServiceCore {
     protected readonly wordService: WordService,
     bibliographyService: BibliographyService,
     protected readonly getCacheScope: () => string = () => defaultCacheScope,
-    protected readonly reportError: (error: Error) => void = (error) =>
-      new SentryErrorReporter().captureException(error),
   ) {
     this.referenceInjector = new ReferenceInjector(bibliographyService)
   }

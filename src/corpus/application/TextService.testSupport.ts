@@ -99,9 +99,8 @@ export const chapterDisplay = new ChapterDisplay({
   textName: chapterDisplayDto.textName,
   isSingleStage: chapterDisplayDto.isSingleStage,
   title: chapterDisplayDto.title,
-  lines: chapterDisplayDto.lines.map((dto, index) => ({
+  lines: chapterDisplayDto.lines.map((dto) => ({
     ...dto,
-    originalIndex: index,
     oldLineNumbers: createOldLineNumbers(dto.oldLineNumbers),
     translation: dto.translation.map(
       (translation) => new TranslationLine(translation),

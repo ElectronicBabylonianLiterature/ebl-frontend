@@ -1,6 +1,7 @@
 import BibliographyService from 'bibliography/application/BibliographyService'
 import { ReferenceDto } from 'bibliography/domain/referenceDto'
 import { ApiError } from 'http/ApiClient'
+import Reference from 'bibliography/domain/Reference'
 import ReferenceInjector from 'transliteration/application/ReferenceInjector'
 import { MarkupPart } from 'transliteration/domain/markup'
 
@@ -31,6 +32,34 @@ const systemicErrors: ReadonlyArray<[string, () => Error]> = [
 ]
 
 describe('ReferenceInjector errors', () => {
+  test.each(systemicErrors)(
+    'preserves an old line citation and reports a %s error',
+    async (_, createError) => {
+      const error = createError()
+      const bibliographyService = new MockBibliographyService()
+      const reportError = jest.fn()
+      const referenceInjector = new ReferenceInjector(
+        bibliographyService,
+        reportError,
+      )
+      bibliographyService.find.mockRejectedValue(error)
+
+      const result = await referenceInjector.injectReferenceToOldLineNumber({
+        number: 'A38',
+        reference,
+      })
+
+      expect(result.number).toBe('A38')
+      expect(result.reference).toBeInstanceOf(Reference)
+      expect(result.reference).toMatchObject({
+        ...reference,
+        referenceId: reference.id,
+        hasUnresolvedDocument: true,
+      })
+      expect(reportError).toHaveBeenCalledWith(error)
+    },
+  )
+
   test.each(systemicErrors)(
     'preserves markup and reports a %s error',
     async (_, createError) => {

@@ -32,22 +32,23 @@ export default class BibliographyEntryLoader {
 
   find(id: string, signal?: AbortSignal): Promise<BibliographyEntry> {
     if (signal?.aborted) return Promise.reject(createAbortError(signal))
-    if (signal) return this.bibliographyRepository.find(id, signal)
+    return signal
+      ? this.bibliographyRepository.find(id, signal)
+      : this.findCachedEntry(id)
+  }
+
+  private findCachedEntry(id: string): Promise<BibliographyEntry> {
     const cachedEntry = getCachedValue(this.entries, id)
     if (cachedEntry) {
       return Promise.resolve(cachedEntry)
     }
 
-    const inFlightRequest = this.findRequests.get(id)
-    if (inFlightRequest) {
-      return inFlightRequest.then((entry) => entry)
-    }
+    const inFlightRequest =
+      this.findRequests.get(id) ?? this.batchLoader.findInFlight(id)
+    return (inFlightRequest ?? this.fetchEntry(id)).then((entry) => entry)
+  }
 
-    const inFlightBatchRequest = this.batchLoader.findInFlight(id)
-    if (inFlightBatchRequest) {
-      return inFlightBatchRequest
-    }
-
+  private fetchEntry(id: string): Promise<BibliographyEntry> {
     const requestReference: { current?: Promise<BibliographyEntry> } = {}
     const generation = this.generation
     const request = this.bibliographyRepository
@@ -66,7 +67,7 @@ export default class BibliographyEntryLoader {
 
     requestReference.current = request
     this.findRequests.set(id, request)
-    return request.then((entry) => entry)
+    return request
   }
 
   findManyById(
@@ -125,41 +126,18 @@ export default class BibliographyEntryLoader {
     const inFlightRequests: Array<Promise<void>> = []
 
     ids.forEach((id) => {
-      const cachedEntry = getCachedValue(this.entries, id)
-      if (cachedEntry) {
-        entriesById.set(id, cachedEntry)
-        return
-      }
-
-      const directFindRequest = this.findRequests.get(id)
-      if (directFindRequest) {
+      const existingEntry = this.findAvailableEntry(id)
+      if (existingEntry) {
         inFlightRequests.push(
-          directFindRequest
-            .then((entry) => {
-              entriesById.set(id, entry)
-            })
-            .catch((error) => {
-              if (!isNotFoundError(error)) {
-                throw error
-              }
-            }),
-        )
-        return
-      }
-
-      const batchFindRequest = this.batchLoader.findManyInFlight(id)
-      if (batchFindRequest) {
-        inFlightRequests.push(
-          batchFindRequest.then((entry) => {
+          existingEntry.then((entry) => {
             if (entry) {
               entriesById.set(id, entry)
             }
           }),
         )
-        return
+      } else {
+        missingIds.push(id)
       }
-
-      missingIds.push(id)
     })
 
     const fetchMissingEntries = _.isEmpty(missingIds)
@@ -175,6 +153,25 @@ export default class BibliographyEntryLoader {
       })
       return entriesById
     })
+  }
+
+  private findAvailableEntry(
+    id: string,
+  ): Promise<BibliographyEntry | undefined> | undefined {
+    const cachedEntry = getCachedValue(this.entries, id)
+    if (cachedEntry) {
+      return Promise.resolve(cachedEntry)
+    }
+
+    const directFindRequest = this.findRequests.get(id)
+    return directFindRequest
+      ? directFindRequest.catch((error) => {
+          if (!isNotFoundError(error)) {
+            throw error
+          }
+          return undefined
+        })
+      : this.batchLoader.findManyInFlight(id)
   }
 
   private invalidateInFlightRequests(): void {
