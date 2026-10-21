@@ -15,15 +15,19 @@ function longitudeDeltaRadians(from: number, to: number): number {
   return ((((delta + Math.PI) % fullTurn) + fullTurn) % fullTurn) - Math.PI
 }
 
+function isValidLatitude(value: unknown): value is number {
+  return (
+    typeof value === 'number' && Number.isFinite(value) && Math.abs(value) <= 90
+  )
+}
+
 function isFinitePosition(value: unknown): value is Position {
   if (!Array.isArray(value)) return false
   const [longitude, latitude] = value
   return (
     typeof longitude === 'number' &&
-    typeof latitude === 'number' &&
     Number.isFinite(longitude) &&
-    Number.isFinite(latitude) &&
-    Math.abs(latitude) <= 90
+    isValidLatitude(latitude)
   )
 }
 

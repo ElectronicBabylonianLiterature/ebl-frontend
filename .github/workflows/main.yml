@@ -2,7 +2,7 @@ name: CI
 
 on:
   push:
-    branches: [master]
+    branches: [master, map/frontend-09-spatial-search]
   pull_request:
     branches: [master]
 
