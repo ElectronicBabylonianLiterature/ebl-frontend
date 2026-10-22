@@ -9,10 +9,18 @@ export function encodeFragmentNumber(number: string): string {
   return encodeURIComponent(number.toWellFormed?.() ?? number)
 }
 
-export function createFragmentUrl(number: string, hash = ''): string {
-  return `/library/${encodeFragmentNumber(number)}${
+function createFragmentLocation(
+  number: string,
+  hash: string,
+  query = '',
+): string {
+  return `/library/${encodeFragmentNumber(number)}${query && '?'}${query}${
     hash && '#'
   }${encodeURIComponent(hash)}`
+}
+
+export function createFragmentUrl(number: string, hash = ''): string {
+  return createFragmentLocation(number, hash)
 }
 
 export function createFragmentCanonicalUrl(number: string): string {
@@ -28,7 +36,7 @@ export function createFragmentUrlWithFolio(
     { tab: 'folio', folioName: folio.name, folioNumber: folio.number },
     { strict: false },
   )
-  return `${createFragmentUrl(number, hash)}?${query}`
+  return createFragmentLocation(number, hash, query)
 }
 
 export function createFragmentUrlWithTab(
@@ -37,7 +45,7 @@ export function createFragmentUrlWithTab(
   hash = '',
 ): string {
   const query = stringify({ tab }, { strict: false })
-  return `${createFragmentUrl(number, hash)}?${query}`
+  return createFragmentLocation(number, hash, query)
 }
 
 export default function FragmentLink({
