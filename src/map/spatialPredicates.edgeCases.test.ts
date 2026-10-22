@@ -1,5 +1,12 @@
 import type { Geometry } from 'geojson'
-import { geometryIntersectsBoundingBox } from 'map/spatialPredicates'
+import type { BoundingBox } from 'map/mapGeometry'
+import {
+  boundingBoxRing,
+  geometryIntersectsBoundingBox,
+  geometryIntersectsRing,
+  isPositionInRing,
+  segmentsIntersect,
+} from 'map/spatialPredicates'
 
 function square(west: number, south: number, size: number): Geometry {
   return {
@@ -88,6 +95,27 @@ describe('polygon holes and wrapped worlds', () => {
 })
 
 describe('invalid geometry', () => {
+  it('rejects invalid points and segment endpoints', () => {
+    expect(
+      isPositionInRing([Number.NaN, 0], boundingBoxRing([0, 0, 1, 1])),
+    ).toBe(false)
+    expect(
+      segmentsIntersect([0, 0], [1, 1], [0, 1], [1, Number.POSITIVE_INFINITY]),
+    ).toBe(false)
+  })
+
+  it('rejects an unclosed search ring', () => {
+    const ring = [
+      [0, 0],
+      [1, 0],
+      [1, 1],
+      [0, 1],
+    ]
+
+    expect(isPositionInRing([0.5, 0.5], ring)).toBe(false)
+    expect(geometryIntersectsRing(square(0, 0, 1), ring)).toBe(false)
+  })
+
   it.each<Geometry>([
     {
       type: 'Polygon',
@@ -124,5 +152,18 @@ describe('invalid geometry', () => {
     },
   ])('fails closed for malformed rings %#', (geometry) => {
     expect(geometryIntersectsBoundingBox(geometry, [0, 0, 1, 1])).toBe(false)
+  })
+})
+
+describe('invalid search boxes', () => {
+  it.each<{ bounds: BoundingBox }>([
+    { bounds: [0, 0, Number.POSITIVE_INFINITY, 1] },
+    { bounds: [Number.NaN, 0, 1, 1] },
+    { bounds: [0, 0, 0, 1] },
+    { bounds: [1, 0, 0, 1] },
+    { bounds: [0, 0, 1, 0] },
+    { bounds: [0, 1, 1, 0] },
+  ])('rejects invalid bounds before splitting %#', ({ bounds }) => {
+    expect(geometryIntersectsBoundingBox(square(0, 0, 1), bounds)).toBe(false)
   })
 })

@@ -207,5 +207,16 @@ export function geometryIntersectsBoundingBox(
   geometry: Geometry,
   box: BoundingBox,
 ): boolean {
+  const [west, south, east, north] = box
+  if (!box.every(Number.isFinite) || west >= east || south >= north) {
+    return false
+  }
+  if (east - west >= 180) {
+    const middle = (west + east) / 2
+    return (
+      geometryIntersectsBoundingBox(geometry, [west, south, middle, north]) ||
+      geometryIntersectsBoundingBox(geometry, [middle, south, east, north])
+    )
+  }
   return geometryIntersectsRing(geometry, boundingBoxRing(box))
 }
