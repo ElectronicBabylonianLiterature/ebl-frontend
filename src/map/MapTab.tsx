@@ -86,9 +86,7 @@ function LoadedMapTab({
       id: 'layers',
       label: 'Map layers',
       isSupported: true,
-      render: () => (
-        <MapLayerPanel state={state} clearSelection={clearSelection} />
-      ),
+      render: () => <MapLayerPanel state={state} />,
     },
   ]
 
