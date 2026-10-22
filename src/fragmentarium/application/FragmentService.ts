@@ -37,6 +37,7 @@ import {
 } from 'fragmentarium/application/fragmentProvenance'
 import { FragmentServiceBase } from 'fragmentarium/application/fragmentServiceBase'
 import { prefetchFrom } from 'fragmentarium/application/fragmentPrefetch'
+import findFragmentExistence from 'fragmentarium/application/fragmentExistence'
 
 export * from 'fragmentarium/application/fragmentServicePorts'
 
@@ -65,13 +66,8 @@ export class FragmentService extends FragmentServiceBase {
     )
   }
 
-  isInFragmentarium(number: string): boolean {
-    try {
-      this.fragmentRepository.find(number)
-      return true
-    } catch {
-      return false
-    }
+  isInFragmentarium(number: string): Promise<boolean> {
+    return findFragmentExistence(this.fragmentRepository, number)
   }
 
   fetchGenres(signal?: AbortSignal): Promise<string[][]> {
