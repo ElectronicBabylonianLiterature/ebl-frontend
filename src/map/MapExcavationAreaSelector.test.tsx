@@ -32,6 +32,7 @@ describe('MapExcavationAreaSelector', () => {
         polygons={polygons}
         selectedPolygonId={null}
         onSelect={jest.fn()}
+        onView={jest.fn()}
       />,
     )
 
@@ -69,6 +70,7 @@ describe('MapExcavationAreaSelector', () => {
         polygons={polygons}
         selectedPolygonId="assur-area-a-checksum"
         onSelect={onSelect}
+        onView={jest.fn()}
       />,
     )
     const selector = screen.getByRole('combobox', {
@@ -83,4 +85,50 @@ describe('MapExcavationAreaSelector', () => {
     await userEvent.selectOptions(selector, '')
     expect(onSelect).toHaveBeenLastCalledWith(null)
   })
+})
+
+it('requires an explicit keyboard action to view the selected area', async () => {
+  const onSelect = jest.fn()
+  const onView = jest.fn()
+  const view = render(
+    <MapExcavationAreaSelector
+      polygons={polygons}
+      selectedPolygonId={null}
+      onSelect={onSelect}
+      onView={onView}
+    />,
+  )
+  const viewButton = screen.getByRole('button', { name: 'View area' })
+  expect(viewButton).toBeDisabled()
+  await userEvent.click(viewButton)
+  expect(onView).not.toHaveBeenCalled()
+
+  view.rerender(
+    <MapExcavationAreaSelector
+      polygons={polygons}
+      selectedPolygonId="assur-area-a-checksum"
+      onSelect={onSelect}
+      onView={onView}
+    />,
+  )
+  screen.getByRole('combobox', { name: 'Select excavation area' }).focus()
+  await userEvent.tab()
+  expect(viewButton).toHaveFocus()
+  await userEvent.keyboard('{Enter}')
+  expect(onView).toHaveBeenCalledTimes(1)
+  expect(onSelect).not.toHaveBeenCalled()
+})
+
+it('keeps an unfamiliar site identifier readable in its option label', () => {
+  render(
+    <MapExcavationAreaSelector
+      polygons={[excavationPolygon({ siteId: 'unlisted', name: 'Area A' })]}
+      selectedPolygonId={null}
+      onSelect={jest.fn()}
+      onView={jest.fn()}
+    />,
+  )
+  expect(
+    screen.getByRole('option', { name: 'unlisted — Area A' }),
+  ).toBeInTheDocument()
 })
