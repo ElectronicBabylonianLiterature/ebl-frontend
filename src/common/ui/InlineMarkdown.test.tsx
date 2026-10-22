@@ -3,6 +3,29 @@ import { render, screen } from '@testing-library/react'
 import InlineMarkdown from 'common/ui/InlineMarkdown'
 
 describe('InlineMarkdown', () => {
+  it('preserves links by default', () => {
+    render(
+      <InlineMarkdown source="[Reference](https://example.org/reference)" />,
+    )
+    expect(screen.getByRole('link', { name: 'Reference' })).toHaveAttribute(
+      'href',
+      'https://example.org/reference',
+    )
+  })
+
+  it('unwraps markdown and HTML links when used inside another control', () => {
+    render(
+      <InlineMarkdown
+        source={
+          '[Markdown](https://example.org) <a href="https://example.org">HTML</a>'
+        }
+        allowLinks={false}
+      />,
+    )
+    expect(screen.queryByRole('link')).not.toBeInTheDocument()
+    expect(screen.getByText(/Markdown HTML/)).toBeInTheDocument()
+  })
+
   describe('Basic text rendering', () => {
     const source = 'Hello world'
 

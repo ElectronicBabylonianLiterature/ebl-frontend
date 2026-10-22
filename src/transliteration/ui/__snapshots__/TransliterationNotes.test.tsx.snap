@@ -209,8 +209,10 @@ exports[`Snapshot 1`] = `
         >
           @bib{RN1@5}
         </span>
-        <span
+        <button
+          aria-expanded="false"
           class="reference-popover__citation"
+          type="button"
         >
           <span
             class="reference-popover__interactive"
@@ -222,7 +224,7 @@ exports[`Snapshot 1`] = `
                (D)
             </span>
           </span>
-        </span>
+        </button>
       </span>
     </li>
   </ol>
