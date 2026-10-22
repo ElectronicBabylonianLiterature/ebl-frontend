@@ -120,6 +120,22 @@ export class TextServiceBase extends TextServiceCore {
     this.cachedChapterDisplayRequests.clear()
   }
 
+  protected invalidateChapterDisplayCache(id: ChapterId): void {
+    this.clearCachesWhenScopeChanges()
+    const chapterPrefix = `${createChapterUrl(id)}?`
+    const cacheKeys = new Set([
+      ...this.cachedChapterDisplays.keys(),
+      ...this.cachedChapterDisplayRequests.keys(),
+    ])
+
+    for (const cacheKey of cacheKeys) {
+      if (cacheKey.startsWith(chapterPrefix)) {
+        this.cachedChapterDisplays.delete(cacheKey)
+        this.cachedChapterDisplayRequests.delete(cacheKey)
+      }
+    }
+  }
+
   protected clearCachesWhenScopeChanges(): void {
     const nextScope = this.resolveCacheScope()
 
