@@ -126,8 +126,13 @@ export default function buildMapToolPanels(
             polygons={state.excavationPolygons}
             selectedPolygonId={selectedPolygon?.polygonId ?? null}
             onSelect={(polygonId) =>
-              polygonId ? state.selectPolygon(polygonId) : clearSelection()
+              experience.setSelection(
+                polygonId === null
+                  ? null
+                  : { type: 'excavation-area', polygonId },
+              )
             }
+            onView={() => state.panel.open('inspector')}
           />
         </>
       ),
