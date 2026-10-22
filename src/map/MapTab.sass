@@ -9,10 +9,15 @@
 
 .map-share-link
   display: flex
+  flex-wrap: wrap
   align-items: center
   gap: 0.5rem
+  min-width: 0
+  max-width: 100%
 
   &__status
+    min-width: 0
+    overflow-wrap: anywhere
     color: $ebl-color-text-secondary
     font-size: 0.875rem
 
@@ -22,9 +27,9 @@
   color: $ebl-color-text-primary
 
   &__topbar
-    display: grid
-    grid-template-columns: minmax(12rem, 1fr) minmax(16rem, 24rem) auto
-    align-items: end
+    display: flex
+    flex-wrap: wrap
+    align-items: flex-end
     gap: 0.75rem 1rem
     padding: 0.8rem 0.95rem
     border: 1px solid $ebl-color-border-subtle
@@ -32,7 +37,9 @@
     background: $ebl-color-surface-primary
 
   &__heading
+    flex: 1 1 12rem
     min-width: 0
+    overflow-wrap: anywhere
 
     span
       display: block
@@ -48,14 +55,19 @@
       line-height: 1.15
 
   &__search
+    flex: 2 1 16rem
     min-width: 0
+    max-width: 24rem
 
   &__actions
     display: flex
+    flex: 1 1 auto
     flex-wrap: wrap
     align-items: center
     justify-content: flex-end
     gap: 0.45rem
+    min-width: 0
+    max-width: 100%
     color: $ebl-color-text-secondary
     font-size: 0.875rem
 
@@ -115,8 +127,13 @@
 
 @media (max-width: $ebl-breakpoint-md-max)
   .map-experience__topbar
-    grid-template-columns: minmax(0, 1fr)
     align-items: stretch
+
+  .map-experience__heading,
+  .map-experience__search,
+  .map-experience__actions
+    flex-basis: 100%
+    max-width: 100%
 
   .map-experience__body
     height: 68vh
