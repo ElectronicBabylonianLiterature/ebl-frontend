@@ -1,50 +1,7 @@
-import React from 'react'
-import { render, screen } from '@testing-library/react'
+import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { MemoryRouter } from 'react-router-dom'
-import MapSpatialSearchPanel from 'map/MapSpatialSearchPanel'
-import type { FindspotMapData } from 'map/findspotMapData'
 import { findspotMapDataDto } from 'test-support/map-fixtures'
-import type { SpatialSearchController } from 'map/useMapSpatialSearch'
-
-function controller(
-  overrides: Partial<SpatialSearchController> = {},
-): SpatialSearchController {
-  return {
-    shape: null,
-    result: {
-      polygonIds: [],
-      findspotIds: [],
-      mappedPolygonCount: 0,
-      accessibleFragmentCount: 0,
-      availablePolygonCount: 0,
-      loadingPolygonCount: 0,
-      unavailablePolygonCount: 0,
-    },
-    isDrawing: false,
-    cornerCount: 0,
-    validationMessage: null,
-    searchViewport: jest.fn(),
-    startDrawing: jest.fn(),
-    addCornerAtCenter: jest.fn(),
-    clear: jest.fn(),
-    ...overrides,
-  }
-}
-
-function renderPanel(
-  spatialSearch: SpatialSearchController,
-  findspots: readonly FindspotMapData[] = [],
-): void {
-  render(
-    <MemoryRouter>
-      <MapSpatialSearchPanel
-        spatialSearch={spatialSearch}
-        findspots={findspots}
-      />
-    </MemoryRouter>,
-  )
-}
+import { controller, renderPanel } from 'map/MapSpatialSearchPanel.testSupport'
 
 describe('MapSpatialSearchPanel', () => {
   it('offers viewport, pointer, and keyboard-accessible rectangle searches', async () => {
@@ -160,7 +117,7 @@ describe('MapSpatialSearchPanel', () => {
     ).toHaveAttribute('href', '/library/search?findspotId=7')
   })
 
-  it('lists only the first 25 findspots and explains the truncation', () => {
+  it('makes every match reachable through keyboard-accessible pages', async () => {
     const findspotIds = Array.from({ length: 27 }, (_, index) => index)
     renderPanel(
       controller({
@@ -184,6 +141,37 @@ describe('MapSpatialSearchPanel', () => {
     expect(
       screen.queryByRole('link', { name: 'Tablets from Area 25' }),
     ).not.toBeInTheDocument()
-    expect(screen.getByText(/Showing the first 25 of 27/)).toBeVisible()
+    const range = screen.getByText('Showing 1–25 of 27 mapped findspots.')
+    expect(range).toHaveAttribute('aria-live', 'polite')
+    expect(screen.getByRole('status')).toHaveTextContent('27 mapped findspots')
+    expect(
+      screen.getByRole('button', { name: 'Previous findspots' }),
+    ).toBeDisabled()
+
+    screen.getByRole('button', { name: 'Next findspots' }).focus()
+    await userEvent.keyboard('{Enter}')
+
+    expect(screen.getAllByRole('link')).toHaveLength(2)
+    expect(
+      screen.getByRole('link', { name: 'Tablets from Area 25' }),
+    ).toHaveFocus()
+    expect(
+      screen.getByRole('link', { name: 'Tablets from Area 26' }),
+    ).toHaveAttribute('href', '/library/search?findspotId=26')
+    expect(
+      screen.getByText('Showing 26–27 of 27 mapped findspots.'),
+    ).toBeVisible()
+    expect(screen.getByRole('status')).toHaveTextContent('27 mapped findspots')
+    expect(
+      screen.getByRole('button', { name: 'Next findspots' }),
+    ).toBeDisabled()
+
+    await userEvent.click(
+      screen.getByRole('button', { name: 'Previous findspots' }),
+    )
+    expect(screen.getAllByRole('link')).toHaveLength(25)
+    expect(
+      screen.getByRole('link', { name: 'Tablets from Area 0' }),
+    ).toHaveFocus()
   })
 })
