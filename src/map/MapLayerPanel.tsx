@@ -5,7 +5,6 @@ import type { MapTabState } from 'map/useMapTabState'
 
 export default function MapLayerPanel({
   state,
-  clearSelection,
 }: {
   readonly state: Pick<
     MapTabState,
@@ -13,14 +12,13 @@ export default function MapLayerPanel({
     | 'showExcavationAreas'
     | 'canShowExcavationAreas'
     | 'excavationPolygons'
-    | 'selectPolygon'
   > & {
     readonly experience: Pick<
       MapTabState['experience'],
-      'setShowExcavationAreas'
+      'setShowExcavationAreas' | 'setSelection'
     >
+    readonly panel: Pick<MapTabState['panel'], 'open'>
   }
-  readonly clearSelection: () => void
 }): JSX.Element {
   return (
     <>
@@ -33,8 +31,11 @@ export default function MapLayerPanel({
         polygons={state.excavationPolygons}
         selectedPolygonId={state.selectedPolygon?.polygonId ?? null}
         onSelect={(polygonId) =>
-          polygonId ? state.selectPolygon(polygonId) : clearSelection()
+          state.experience.setSelection(
+            polygonId === null ? null : { type: 'excavation-area', polygonId },
+          )
         }
+        onView={() => state.panel.open('inspector')}
       />
     </>
   )
