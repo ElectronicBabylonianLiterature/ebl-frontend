@@ -91,6 +91,14 @@ describe('SumerianDictionaryService.find caching', () => {
     expect(repository.find).toHaveBeenCalledTimes(1)
   })
 
+  it('caches a word under the requested and the returned id', async () => {
+    const service = createService()
+    await service.find('sux-006390')
+    await expect(service.find('sux-006390')).resolves.toEqual(word)
+    await expect(service.find('o0033341')).resolves.toEqual(word)
+    expect(repository.find).toHaveBeenCalledTimes(1)
+  })
+
   it('refetches once the cached word has expired', async () => {
     const service = createService()
     await service.find('o0033341')

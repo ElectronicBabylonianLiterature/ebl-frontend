@@ -58,6 +58,18 @@ it('keeps ĝ as typed', async () => {
   )
 })
 
+it.each([
+  ['fève', '/tools/sumerian-dictionary?query=f%C3%A8ve'],
+  ['gods, kings', '/tools/sumerian-dictionary?query=gods%2C%20kings'],
+])('sends the meaning query %p as typed', async (query, url) => {
+  renderSearchPage()
+  fireEvent.change(screen.getByLabelText('Search Sumerian lemmas'), {
+    target: { value: query },
+  })
+  fireEvent.click(screen.getByRole('button', { name: 'Search' }))
+  await waitFor(() => expect(location()).toHaveTextContent(url))
+})
+
 it('offers the example queries as links keeping the filters', async () => {
   renderSearchPage('/tools/sumerian-dictionary?query=x&source=epsd2')
   await screen.findByText('No results found.')

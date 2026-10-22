@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Button, Form } from 'react-bootstrap'
 import { Link, useNavigate } from 'react-router-dom'
-import replaceTransliteration from 'fragmentarium/domain/replaceTransliteration'
+import normalizeSumerianQuery from 'sumerian-dictionary/domain/normalizeSumerianQuery'
 import {
   SumerianSourceFilter,
   SumerianWordKind,
@@ -71,7 +71,7 @@ export default function SumerianDictionarySearchForm({
     event.preventDefault()
     navigate(
       getSumerianSearchUrl({
-        query: replaceTransliteration(query.trim(), false, false, true),
+        query: normalizeSumerianQuery(query),
         kind,
         source,
       }),
@@ -119,7 +119,7 @@ export default function SumerianDictionarySearchForm({
             <Link
               key={example}
               to={getSumerianSearchUrl({
-                query: replaceTransliteration(example, false, false, true),
+                query: normalizeSumerianQuery(example),
                 kind,
                 source,
               })}

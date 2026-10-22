@@ -15,7 +15,7 @@ export function RealiaMetadata({ entry }: { entry: RealiaEntry }): JSX.Element {
         <span key={wikidataId}>
           <ExternalLink href={`https://www.wikidata.org/wiki/${wikidataId}`}>
             Wikidata: {wikidataId}
-          </ExternalLink>{' '}
+          </ExternalLink>
         </span>
       ))}
       {entry.relatedTerms.length > 0 && (

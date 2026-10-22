@@ -6,9 +6,15 @@ import {
   wordLinkFactory,
 } from 'test-support/sumerian-dictionary-fixtures'
 
+interface SectionSummary {
+  readonly heading: string
+  readonly parts: readonly string[]
+  readonly subsections: readonly string[]
+}
+
 function summarize(
   sections: ReturnType<typeof buildSumerianWordSections>,
-): unknown {
+): readonly SectionSummary[] {
   return sections.map((section) => ({
     heading: section.heading,
     parts: section.parts.map((part) => part.id),

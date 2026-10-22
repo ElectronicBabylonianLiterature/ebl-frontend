@@ -93,6 +93,15 @@ it('builds external links', () => {
   )
 })
 
+it('encodes the ids in external links', () => {
+  expect(getEtcslUrl('1.8 & 2#3')).toEqual(
+    'https://etcsl.orinst.ox.ac.uk/cgi-bin/etcsl.cgi?text=c.1.8%20%26%202%233',
+  )
+  expect(getEpsd2Url('o1/x#y')).toEqual(
+    'https://oracc.museum.upenn.edu/epsd2/o1%2Fx%23y',
+  )
+})
+
 it('formats counts with English grouping', () => {
   expect(formatCount(181438)).toEqual('181,438')
 })

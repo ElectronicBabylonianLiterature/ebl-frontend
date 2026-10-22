@@ -56,7 +56,14 @@ export function EntryMetadata({
       role="group"
       aria-label="Entry details"
     >
-      {children}
+      {React.Children.toArray(children)
+        .filter((item) => item !== '')
+        .map((item, index) => (
+          <React.Fragment key={index}>
+            {index > 0 && ' '}
+            {item}
+          </React.Fragment>
+        ))}
     </div>
   )
 }
@@ -71,7 +78,7 @@ export function EntryMetadataItem({
   return (
     <span>
       <span className="EntryPage__metadata-label">{label}: </span>
-      {children}{' '}
+      {children}
     </span>
   )
 }

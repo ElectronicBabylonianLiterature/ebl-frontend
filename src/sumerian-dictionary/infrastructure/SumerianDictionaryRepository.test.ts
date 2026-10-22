@@ -112,6 +112,11 @@ it('finds summaries by id, keeping a matched alias', async () => {
   expect(summaries[0]).toMatchObject({ id: 'o0033341', matchedAlias: 'lu-gal' })
 })
 
+it('answers an empty id list without a request', async () => {
+  expect(await repository.findSummaries([], signal)).toEqual([])
+  expect(apiClient.fetchJson).not.toHaveBeenCalled()
+})
+
 it('fetches the statistics', async () => {
   const statistics = { lemmas: 1 }
   apiClient.fetchJson.mockResolvedValueOnce(statistics)

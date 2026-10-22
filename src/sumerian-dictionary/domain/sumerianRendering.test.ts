@@ -106,6 +106,30 @@ describe('getSpellingCuneiform', () => {
     })
   })
 
+  it('falls back to the partial rendering when the complete one is empty', () => {
+    const renderings = [
+      renderingFactory.build({
+        spelling: 'ab-si-n',
+        complete: true,
+        cuneiform: [''],
+      }),
+      renderingFactory.build({
+        spelling: 'ab-si-n',
+        complete: false,
+        cuneiform: ['𒀊?'],
+        unrendered: [{ token: 'si', reason: 'unread' }],
+      }),
+    ]
+    expect(getSpellingCuneiform(renderings, 'attinger', 'ab-si-n')).toEqual({
+      complete: '',
+      partial: [
+        { kind: 'sign', value: '𒀊' },
+        { kind: 'missing', value: 'si' },
+      ],
+      knownWrongCharacters: [],
+    })
+  })
+
   it('is empty when nothing renders the spelling', () => {
     expect(getSpellingCuneiform([], 'epsd2', 'lugal')).toEqual({
       complete: '',

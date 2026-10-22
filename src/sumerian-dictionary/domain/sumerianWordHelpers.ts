@@ -60,11 +60,11 @@ export function hasEblSignPage(sign: SignEntry): boolean {
 }
 
 export function getEtcslUrl(etcsl: string): string {
-  return `https://etcsl.orinst.ox.ac.uk/cgi-bin/etcsl.cgi?text=c.${etcsl}`
+  return `https://etcsl.orinst.ox.ac.uk/cgi-bin/etcsl.cgi?text=c.${encodeURIComponent(etcsl)}`
 }
 
 export function getEpsd2Url(oid: string): string {
-  return `https://oracc.museum.upenn.edu/epsd2/${oid}`
+  return `https://oracc.museum.upenn.edu/epsd2/${encodeURIComponent(oid)}`
 }
 
 export function formatCount(count: number): string {

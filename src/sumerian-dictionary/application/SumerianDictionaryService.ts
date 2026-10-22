@@ -1,4 +1,8 @@
-import { CacheEntry, getCachedValue, setCachedValue } from 'common/utils/cache'
+import {
+  CacheEntry,
+  getCachedValue,
+  setCachedValueForKeys,
+} from 'common/utils/cache'
 import { SumerianWord } from 'sumerian-dictionary/domain/SumerianWord'
 import {
   SumerianDictionaryStatistics,
@@ -24,18 +28,19 @@ export default class SumerianDictionaryService {
     const cachedWord = getCachedValue(this.cachedWords, id)
     return cachedWord
       ? Promise.resolve(cachedWord)
-      : this.repository.find(id, signal).then((word) => this.cacheWord(word))
+      : this.repository
+          .find(id, signal)
+          .then((word) => this.cacheWord(id, word))
   }
 
-  private cacheWord(word: SumerianWord): SumerianWord {
-    setCachedValue({
+  private cacheWord(requestedId: string, word: SumerianWord): SumerianWord {
+    return setCachedValueForKeys({
       cache: this.cachedWords,
-      key: word.id,
+      keys: [requestedId, word.id],
       value: word,
       maximumCacheSize: maximumCachedEntries,
       cacheEntryLifetimeInMilliseconds,
     })
-    return word
   }
 
   search(

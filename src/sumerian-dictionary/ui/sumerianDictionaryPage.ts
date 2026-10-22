@@ -1,3 +1,4 @@
+import type { ParsedQuery } from 'query-string'
 import { parse, stringify } from 'common/utils/queryString'
 import {
   SumerianSourceFilter,
@@ -16,7 +17,7 @@ const kinds: readonly SumerianWordKind[] = ['all', 'words', 'names']
 const sources: readonly SumerianSourceFilter[] = ['any', 'attinger', 'epsd2']
 
 function pick<T extends string>(
-  value: unknown,
+  value: ParsedQuery[string] | undefined,
   allowed: readonly T[],
 ): T | undefined {
   return allowed.find((candidate) => candidate === value)

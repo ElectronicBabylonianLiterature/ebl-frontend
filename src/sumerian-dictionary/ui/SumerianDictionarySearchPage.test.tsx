@@ -28,6 +28,18 @@ it('refuses the page without the scope and fetches nothing', () => {
   expect(sumerianDictionaryService.findSummaries).not.toHaveBeenCalled()
 })
 
+it('does not search a linked query without the scope', () => {
+  renderSearchPage(
+    '/tools/sumerian-dictionary?query=lugal',
+    new MemorySession(['read:realia']),
+  )
+  expect(
+    screen.getByText(/available to authorised users only/),
+  ).toBeInTheDocument()
+  expect(sumerianDictionaryService.search).not.toHaveBeenCalled()
+  expect(sumerianDictionaryService.statistics).not.toHaveBeenCalled()
+})
+
 it('shows the notice, the introduction and the statistics in order', async () => {
   sumerianDictionaryService.findSummaries.mockResolvedValue([])
   renderSearchPage()

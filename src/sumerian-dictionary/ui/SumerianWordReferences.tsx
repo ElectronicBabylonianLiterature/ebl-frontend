@@ -22,7 +22,9 @@ export function SumerianWordAkkadian({
     <>
       <ul className="SumerianDictionary__links">
         {word.akkadianEquivalents.map((equivalent) => (
-          <li key={equivalent.wordId}>
+          <li
+            key={`${equivalent.wordId}|${equivalent.source}|${equivalent.indexNumbers}`}
+          >
             <Link
               to={`/tools/dictionary/${encodeURIComponent(equivalent.wordId)}`}
             >

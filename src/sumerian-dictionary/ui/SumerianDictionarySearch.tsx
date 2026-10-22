@@ -35,6 +35,8 @@ function SearchResults({
   ...props
 }: SearchProps & { data: SumerianSearchResult }): JSX.Element {
   const [more, setMore] = useState<readonly SumerianWordSummary[]>([])
+  const [offset, setOffset] = useState(data.entries.length)
+  const [exhausted, setExhausted] = useState(false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<Error | null>(null)
   const [run] = usePromiseEffect()
@@ -45,8 +47,12 @@ function SearchResults({
     setLoading(true)
     setError(null)
     run((signal) =>
-      searchPage(props, entries.length, signal).then((result) => {
-        setMore((previous) => [...previous, ...result.entries])
+      searchPage(props, offset, signal).then((result) => {
+        const shown = new Set(entries.map((entry) => entry.id))
+        const unseen = result.entries.filter((entry) => !shown.has(entry.id))
+        setMore((previous) => [...previous, ...unseen])
+        setOffset(offset + result.entries.length)
+        setExhausted(unseen.length === 0)
         setLoading(false)
       }),
     ).catch((searchError: Error) => {
@@ -65,7 +71,7 @@ function SearchResults({
       </p>
       <SumerianDictionaryResultsList summaries={entries} />
       <ErrorAlert error={error} />
-      {remaining > 0 && (
+      {remaining > 0 && !exhausted && (
         <div className="SumerianDictionary__more">
           {loading ? (
             <Spinner />

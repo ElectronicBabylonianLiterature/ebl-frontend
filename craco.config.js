@@ -157,6 +157,7 @@ const fullyCoveredPaths = [
   'src/signs/ui/display/VariantGroup.tsx',
   'src/signs/ui/search/SignsSearchForm.tsx',
   'src/sumerian-dictionary/application/SumerianDictionaryService.ts',
+  'src/sumerian-dictionary/domain/normalizeSumerianQuery.ts',
   'src/sumerian-dictionary/domain/sumerianDictionaryLabels.ts',
   'src/sumerian-dictionary/domain/sumerianRendering.ts',
   'src/sumerian-dictionary/domain/sumerianWordHelpers.ts',

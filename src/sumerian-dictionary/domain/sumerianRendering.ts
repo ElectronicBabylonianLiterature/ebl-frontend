@@ -36,7 +36,7 @@ function rendersSpelling(
 }
 
 function isShownComplete(rendering: Rendering): boolean {
-  return rendering.complete && rendering.cuneiform.length > 0
+  return rendering.complete && Boolean(rendering.cuneiform[0])
 }
 
 function unrenderedTokenText({ token, reason }: UnrenderedToken): string {

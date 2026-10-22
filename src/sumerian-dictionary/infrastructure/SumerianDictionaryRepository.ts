@@ -57,6 +57,9 @@ export default class SumerianDictionaryRepository {
     ids: readonly string[],
     signal?: AbortSignal,
   ): Promise<readonly SumerianWordSummary[]> {
+    if (ids.length === 0) {
+      return Promise.resolve([])
+    }
     return this.apiClient
       .fetchJson<
         readonly SumerianWordSummaryDto[]
