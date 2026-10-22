@@ -1,16 +1,12 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
-import { findspotLabel } from 'map/findspotLabel'
+import React, { useMemo, useState } from 'react'
 import type {
   FindspotMapData,
   FindspotMapDataStatus,
 } from 'map/findspotMapData'
 import { Button } from 'react-bootstrap'
-import { buildFindspotFragmentSearchLink } from 'map/mapLinks'
+import MapSpatialSearchResults from 'map/MapSpatialSearchResults'
 import type { SpatialSearchResult, SpatialSearchShape } from 'map/spatialSearch'
 import { spatialSearchDescription } from 'map/spatialSearch'
-
-const MAX_LISTED_FINDSPOTS = 25
 
 interface Props {
   readonly findspots: readonly FindspotMapData[]
@@ -37,9 +33,15 @@ export default function MapSpatialSearchPanel({
   onStartDrawing,
   onClear,
 }: Props): JSX.Element {
-  const findspotsById = new Map(
-    findspots.map((findspot) => [findspot.findspotId, findspot]),
+  const [searchVersion, setSearchVersion] = useState(0)
+  const resultsKey = useMemo(
+    () => JSON.stringify([searchVersion, shape]),
+    [searchVersion, shape],
   )
+  const searchViewport = (): void => {
+    setSearchVersion((current) => current + 1)
+    onSearchViewport()
+  }
   return (
     <div className="map-tool-panel">
       <div className="map-tool-panel__actions">
@@ -47,7 +49,7 @@ export default function MapSpatialSearchPanel({
           type="button"
           size="sm"
           variant="outline-secondary"
-          onClick={onSearchViewport}
+          onClick={searchViewport}
         >
           Search current view
         </Button>
@@ -102,22 +104,11 @@ export default function MapSpatialSearchPanel({
             Tablets are associated with an excavation area, not an exact
             findspot coordinate.
           </p>
-          <ul className="map-tool-panel__findspots">
-            {result.findspotIds.slice(0, MAX_LISTED_FINDSPOTS).map((id) => (
-              <li key={id}>
-                <Link to={buildFindspotFragmentSearchLink(id)}>
-                  Tablets from {findspotLabel(findspotsById.get(id) ?? {})}
-                </Link>
-              </li>
-            ))}
-          </ul>
-          {result.findspotIds.length > MAX_LISTED_FINDSPOTS ? (
-            <p className="map-tool-panel__note">
-              Showing the first {MAX_LISTED_FINDSPOTS} of{' '}
-              {result.findspotIds.length} mapped findspots. Open each location
-              to browse its tablets.
-            </p>
-          ) : null}
+          <MapSpatialSearchResults
+            key={resultsKey}
+            findspotIds={result.findspotIds}
+            findspots={findspots}
+          />
         </>
       )}
     </div>

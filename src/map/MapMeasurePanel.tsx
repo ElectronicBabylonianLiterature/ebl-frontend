@@ -6,9 +6,9 @@ import {
   type MeasurementMode,
   type MeasurementUnits,
   measure,
-} from './mapMeasurement'
-import type { MapElevationProfile } from './useMapElevationProfile'
-import MapElevationProfilePanel from './MapElevationProfilePanel'
+} from 'map/mapMeasurement'
+import type { MapElevationProfile } from 'map/useMapElevationProfile'
+import MapElevationProfilePanel from 'map/MapElevationProfilePanel'
 
 interface Props {
   readonly mode: MeasurementMode
@@ -16,6 +16,7 @@ interface Props {
   readonly positions: readonly Position[]
   readonly onModeChange: (mode: MeasurementMode) => void
   readonly onUnitsChange: (units: MeasurementUnits) => void
+  readonly onAddPointAtCenter: () => void
   readonly onClear: () => void
   readonly elevation: MapElevationProfile
 }
@@ -26,6 +27,7 @@ export default function MapMeasurePanel({
   positions,
   onModeChange,
   onUnitsChange,
+  onAddPointAtCenter,
   onClear,
   elevation,
 }: Props): JSX.Element {
@@ -66,6 +68,18 @@ export default function MapMeasurePanel({
       >
         {measurement.label}
       </p>
+      <p className="map-tool-panel__note">
+        Click points on the map, or focus the map and use arrow keys to move it,
+        then add its center. Escape clears the measurement.
+      </p>
+      <Button
+        type="button"
+        size="sm"
+        variant="outline-secondary"
+        onClick={onAddPointAtCenter}
+      >
+        Add point at map center
+      </Button>
       <Button
         type="button"
         size="sm"

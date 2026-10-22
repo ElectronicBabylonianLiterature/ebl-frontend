@@ -29,6 +29,7 @@ const interactions: MapToolInteractions = {
   measurementUnits: 'metric',
   setMeasurementMode: jest.fn(),
   setMeasurementUnits: jest.fn(),
+  addMeasurementAtCenter: jest.fn(),
   clearMeasurement: jest.fn(),
   searchShape: null,
   searchResult: EMPTY_SPATIAL_SEARCH_RESULT,

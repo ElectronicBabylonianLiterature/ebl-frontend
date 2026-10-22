@@ -1,7 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react'
 import type { RefObject } from 'react'
 import { Button } from 'react-bootstrap'
-import { MAP_PANEL_CONTAINER_ID } from './MapToolbar'
+import { MAP_PANEL_CONTAINER_ID } from 'map/MapToolbar'
+import useIsNarrowViewport from 'map/useIsNarrowViewport'
 
 interface Props {
   readonly title: string
@@ -24,7 +25,9 @@ export default function MapPanelDrawer({
   children,
   rootRef,
 }: Props): JSX.Element {
-  const [isCollapsed, setIsCollapsed] = useState(false)
+  const [isCollapsedOnMobile, setIsCollapsed] = useState(false)
+  const isNarrowViewport = useIsNarrowViewport()
+  const isCollapsed = isNarrowViewport && isCollapsedOnMobile
   const closeButtonRef = useRef<HTMLButtonElement>(null)
 
   useEffect(() => {

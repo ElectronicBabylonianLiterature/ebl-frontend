@@ -139,6 +139,7 @@ export function useToolPanelDefinitions({
             positions={interactions.measurementPositions}
             onModeChange={interactions.setMeasurementMode}
             onUnitsChange={interactions.setMeasurementUnits}
+            onAddPointAtCenter={interactions.addMeasurementAtCenter}
             onClear={interactions.clearMeasurement}
             elevation={elevation}
           />

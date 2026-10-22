@@ -22,6 +22,7 @@ export interface MapToolInteractions extends MapSpatialDrawing {
   readonly measurementUnits: MeasurementUnits
   readonly setMeasurementMode: (mode: MeasurementMode) => void
   readonly setMeasurementUnits: (units: MeasurementUnits) => void
+  readonly addMeasurementAtCenter: () => void
   readonly clearMeasurement: () => void
   readonly searchResult: ReturnType<typeof runSpatialSearch>
 }
@@ -66,6 +67,12 @@ export default function useMapToolInteractions(
     [isMeasuring, addCorner],
   )
 
+  const addMeasurementAtCenter = useCallback((): void => {
+    if (!isMeasuring) return
+    const center = mapRef.current?.getCenter()
+    if (center) addPosition([center.lng, center.lat])
+  }, [mapRef, isMeasuring, addPosition])
+
   useEffect(() => {
     if (!isMeasuring && !isDrawing) return
     return subscribeToolInput(
@@ -97,6 +104,7 @@ export default function useMapToolInteractions(
     measurementUnits,
     setMeasurementMode,
     setMeasurementUnits,
+    addMeasurementAtCenter,
     clearMeasurement,
     searchResult,
     addPosition,
