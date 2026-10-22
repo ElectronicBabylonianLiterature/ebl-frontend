@@ -14,6 +14,7 @@ import {
   triggerMapEvent,
 } from 'map/mapLibreMock.testSupport'
 import { MAX_MEASUREMENT_POINTS } from 'map/mapMeasurement'
+import { MAP_STYLE_LOAD_EVENT } from 'map/mapLayers'
 import useMapMeasurement from 'map/useMapMeasurement'
 
 jest.mock('maplibre-gl')
@@ -91,6 +92,7 @@ describe('useMapMeasurement', () => {
     )
     const { result } = renderHook(() => useHarness(true))
 
+    expect(mockAddSource).not.toHaveBeenCalled()
     act(() => {
       triggerMapEvent('click', {
         point: { x: 1, y: 2 },
@@ -99,7 +101,7 @@ describe('useMapMeasurement', () => {
     })
     expect(result.current.pointCount).toBe(1)
 
-    act(() => triggerMapEvent('load'))
+    act(() => triggerMapEvent(MAP_STYLE_LOAD_EVENT))
 
     expect(mockSetData).toHaveBeenLastCalledWith(
       expect.objectContaining({ features: [expect.any(Object)] }),
