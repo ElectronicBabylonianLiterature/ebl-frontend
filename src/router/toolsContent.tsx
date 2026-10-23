@@ -12,10 +12,12 @@ import Dictionary from 'dictionary/ui/search/Dictionary'
 import BibliographyReferencesContent from 'bibliography/ui/BibliographyReferencesContent'
 import AfoRegisterSearchPage from 'afo-register/ui/AfoRegisterSearchPage'
 import RealiaSearchPage from 'realia/ui/RealiaSearchPage'
+import SumerianDictionarySearchPage from 'sumerian-dictionary/ui/SumerianDictionarySearchPage'
 import type WordService from 'dictionary/application/WordService'
 import type BibliographyService from 'bibliography/application/BibliographyService'
 import type AfoRegisterService from 'afo-register/application/AfoRegisterService'
 import type RealiaService from 'realia/application/RealiaService'
+import type SumerianDictionaryService from 'sumerian-dictionary/application/SumerianDictionaryService'
 import type FragmentService from 'fragmentarium/application/FragmentService'
 import type DossiersService from 'dossiers/application/DossiersService'
 import DossiersSearchPage from 'dossiers/ui/DossiersSearchPage'
@@ -64,6 +66,7 @@ export function getContent({
   bibliographyService,
   afoRegisterService,
   realiaService,
+  sumerianDictionaryService,
   dossiersService,
   fragmentService,
   history,
@@ -77,6 +80,7 @@ export function getContent({
   bibliographyService: BibliographyService
   afoRegisterService: AfoRegisterService
   realiaService: RealiaService
+  sumerianDictionaryService: SumerianDictionaryService
   dossiersService: DossiersService
   fragmentService: FragmentService
   history: ContentHistory
@@ -88,6 +92,11 @@ export function getContent({
   const contentByTab: Partial<Record<TabId, React.ReactElement>> = {
     signs: <Signs {...routeProps} signService={signService} />,
     dictionary: <Dictionary wordService={wordService} {...routeProps} />,
+    'sumerian-dictionary': (
+      <SumerianDictionarySearchPage
+        sumerianDictionaryService={sumerianDictionaryService}
+      />
+    ),
     references: (
       <BibliographyReferencesContent
         bibliographyService={bibliographyService}

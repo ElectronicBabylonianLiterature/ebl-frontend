@@ -1,4 +1,8 @@
-import { CacheEntry, getCachedValue, setCachedValue } from 'common/utils/cache'
+import {
+  CacheEntry,
+  getCachedValue,
+  setCachedValueForKeys,
+} from 'common/utils/cache'
 import { isRealiaId, RealiaEntry } from 'realia/domain/RealiaEntry'
 import RealiaRepository from 'realia/infrastructure/RealiaRepository'
 
@@ -28,16 +32,13 @@ export default class RealiaService {
   }
 
   private cacheEntry(requestedId: string, entry: RealiaEntry): RealiaEntry {
-    new Set([requestedId, entry.id]).forEach((key) =>
-      setCachedValue({
-        cache: this.cachedEntries,
-        key,
-        value: entry,
-        maximumCacheSize: maximumCachedEntries,
-        cacheEntryLifetimeInMilliseconds,
-      }),
-    )
-    return entry
+    return setCachedValueForKeys({
+      cache: this.cachedEntries,
+      keys: [requestedId, entry.id],
+      value: entry,
+      maximumCacheSize: maximumCachedEntries,
+      cacheEntryLifetimeInMilliseconds,
+    })
   }
 
   search(query: string, signal?: AbortSignal): Promise<readonly RealiaEntry[]> {

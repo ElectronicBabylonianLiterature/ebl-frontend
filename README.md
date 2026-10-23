@@ -149,6 +149,10 @@ In a production environment the api domain must be added to _img-src_ in CSP.
 
 The realia pages show the RlA page for an article from `https://publikationen.badw.de`: volumes 1–14 as `.jpg` scans and volume 15 as single-page PDFs embedded in an `<object>`. In a production environment this domain must be in _img-src_, _object-src_ and _frame-src_ in CSP, because browsers frame the PDF viewer.
 
+### Sumerian Dictionary
+
+The Sumerian Dictionary (`/tools/sumerian-dictionary`) is readable only with the `read:sumerian-words` scope. The scope must exist on the Auth0 API before the frontend is released, because every login asks for all scopes in `src/auth/applicationScopes.json`. Without the scope the tab is hidden and both pages show a notice without fetching anything. The pages read `/sumerian-words` from the eBL API with the access token, so the API endpoints and the data import have to be deployed first. The search box only rewrites transliteration (`sz` → `š`, digits → subscripts, see `normalizeSumerianQuery`); accents and punctuation are sent as typed, so meaning searches such as `fève` work, and the API folds `ĝ`/`g`, `š`/`s` and the like.
+
 ## Running the application
 
 The application reads the configuration from following environment variables:

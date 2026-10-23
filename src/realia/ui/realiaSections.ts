@@ -1,20 +1,10 @@
+import { EntryNavSection } from 'common/ui/entry-page/entryNavSections'
 import {
   afoVolumeLabel,
   AfoRegisterVolumeGroup,
   RealiaCrossReference,
   RealiaEntry,
 } from 'realia/domain/RealiaEntry'
-
-export interface RealiaNavSubsection {
-  readonly id: string
-  readonly label: string
-}
-
-export interface RealiaNavSection {
-  readonly id: string
-  readonly label: string
-  readonly subsections: readonly RealiaNavSubsection[]
-}
 
 export const realiaSectionIds = {
   top: 'realia-top',
@@ -47,8 +37,8 @@ export function buildRealiaNav({
   entry: RealiaEntry
   volumeGroups: readonly AfoRegisterVolumeGroup[]
   crossReferences: readonly RealiaCrossReference[]
-}): readonly RealiaNavSection[] {
-  const sections: RealiaNavSection[] = []
+}): readonly EntryNavSection[] {
+  const sections: EntryNavSection[] = []
   if (entry.reallexikon.length > 0) {
     sections.push({
       id: realiaSectionIds.reallexikon,

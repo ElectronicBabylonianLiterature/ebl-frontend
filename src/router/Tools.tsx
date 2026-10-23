@@ -10,6 +10,7 @@ import type WordService from 'dictionary/application/WordService'
 import type BibliographyService from 'bibliography/application/BibliographyService'
 import type AfoRegisterService from 'afo-register/application/AfoRegisterService'
 import type RealiaService from 'realia/application/RealiaService'
+import type SumerianDictionaryService from 'sumerian-dictionary/application/SumerianDictionaryService'
 import type FragmentService from 'fragmentarium/application/FragmentService'
 import type DossiersService from 'dossiers/application/DossiersService'
 import { useHistory } from 'router/compat'
@@ -39,6 +40,7 @@ export default function Tools({
   bibliographyService,
   afoRegisterService,
   realiaService,
+  sumerianDictionaryService,
   dossiersService,
   fragmentService,
   activeTab,
@@ -49,6 +51,7 @@ export default function Tools({
   bibliographyService: BibliographyService
   afoRegisterService: AfoRegisterService
   realiaService: RealiaService
+  sumerianDictionaryService: SumerianDictionaryService
   dossiersService: DossiersService
   fragmentService: FragmentService
   activeTab?: TabId
@@ -123,6 +126,7 @@ export default function Tools({
                 bibliographyService,
                 afoRegisterService,
                 realiaService,
+                sumerianDictionaryService,
                 dossiersService,
                 fragmentService,
                 history,
