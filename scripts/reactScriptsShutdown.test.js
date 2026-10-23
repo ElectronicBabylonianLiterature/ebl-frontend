@@ -117,29 +117,76 @@ test.each(['SIGINT', 'SIGTERM', 'stdin'])(
   },
 )
 
-test('coalesces repeated signals and stdin end during cleanup', async () => {
+test('coalesces repeated stdin end during cleanup', async () => {
   const application = await startApplication()
-  for (const event of ['SIGINT', 'SIGTERM', 'stdin', 'SIGINT']) {
+  for (const event of ['stdin', 'stdin']) {
     triggerShutdown(application, event)
   }
   expect(application.stopServer).toHaveBeenCalledTimes(1)
   application.stopServer.mock.calls[0][0]()
-  triggerShutdown(application, 'SIGTERM')
+  triggerShutdown(application, 'stdin')
   expect(application.closeCompiler).toHaveBeenCalledTimes(1)
   expect(application.exit).not.toHaveBeenCalled()
   application.closeCompiler.mock.calls[0][0]()
-  expect(application.exit).toHaveBeenCalledTimes(1)
+  expect(application.exit).toHaveBeenCalledWith(0)
 })
 
-test('consumes stdin so pipe EOF starts shutdown', async () => {
+test.each(['before server stop', 'during compiler close'])(
+  'a second signal forces exit %s',
+  async (phase) => {
+    const application = await startApplication()
+    triggerShutdown(application, 'SIGINT')
+    triggerShutdown(application, 'stdin')
+    expect(application.stopServer).toHaveBeenCalledTimes(1)
+    if (phase === 'during compiler close') {
+      application.stopServer.mock.calls[0][0]()
+      expect(application.closeCompiler).toHaveBeenCalledTimes(1)
+    }
+
+    triggerShutdown(application, 'SIGTERM')
+    expect(application.exit).toHaveBeenCalledTimes(1)
+    expect(application.exit).toHaveBeenCalledWith(1)
+    expect(application.stopServer).toHaveBeenCalledTimes(1)
+  },
+)
+
+test('does not consume stdin just to detect pipe EOF', async () => {
   const application = await startApplication()
   application.stdin.end()
   await new Promise((resolve) => setTimeout(resolve, 0))
 
-  expect(application.stopServer).toHaveBeenCalledTimes(1)
+  expect(application.stopServer).not.toHaveBeenCalled()
+  expect(application.exit).not.toHaveBeenCalled()
+  triggerShutdown(application, 'SIGINT')
   application.stopServer.mock.calls[0][0]()
   application.closeCompiler.mock.calls[0][0]()
   expect(application.exit).toHaveBeenCalledWith(0)
+})
+
+test('ignores a duplicate server stop callback', async () => {
+  const application = await startApplication()
+  triggerShutdown(application, 'SIGINT')
+  application.stopServer.mock.calls[0][0]()
+  application.stopServer.mock.calls[0][0](new Error('late stop error'))
+  expect(application.closeCompiler).toHaveBeenCalledTimes(1)
+  application.closeCompiler.mock.calls[0][0]()
+  expect(application.exit).toHaveBeenCalledTimes(1)
+  expect(application.errors).toEqual([])
+})
+
+test('reports a synchronous compiler close error once', async () => {
+  const application = await startApplication()
+  const closeError = new Error('compiler close threw')
+  application.closeCompiler.mockImplementation(() => {
+    throw closeError
+  })
+  triggerShutdown(application, 'SIGINT')
+  application.stopServer.mock.calls[0][0]()
+  application.stopServer.mock.calls[0][0](closeError)
+  expect(application.closeCompiler).toHaveBeenCalledTimes(1)
+  expect(application.errors).toEqual([closeError])
+  expect(application.exit).toHaveBeenCalledTimes(1)
+  expect(application.exit).toHaveBeenCalledWith(1)
 })
 
 test.each([
