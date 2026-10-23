@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react'
+import { ApiError } from 'http/ApiClient'
 import {
   MediaGalleryContext,
   MediaGalleryServices,
@@ -24,10 +25,14 @@ function LoadedThumbnail({
   size: ThumbnailSize
   services: MediaGalleryServices
   linked: boolean
+  fallback: React.ReactNode
 }): JSX.Element {
   const [image, setImage] = useState<Blob | null>(null)
+  const [missing, setMissing] = useState(false)
   useEffect(() => {
     const controller = new AbortController()
+    setImage(null)
+    setMissing(false)
     services.binaryLoader
       .fetch(
         { fragmentNumber, mediaId, representation: size },
@@ -38,9 +43,20 @@ function LoadedThumbnail({
           setImage(blob)
         }
       })
-      .catch(() => undefined)
+      .catch((error: Error) => {
+        if (
+          !controller.signal.aborted &&
+          error instanceof ApiError &&
+          error.status === 404
+        ) {
+          setMissing(true)
+        }
+      })
     return (): void => controller.abort()
   }, [fragmentNumber, mediaId, size, services])
+  if (missing) {
+    return <>{fallback}</>
+  }
   return (
     <SummaryThumbnail
       fragmentNumber={fragmentNumber}
@@ -77,6 +93,7 @@ export default function MediaSummaryThumbnail({
       size={size}
       services={services}
       linked={linked}
+      fallback={fallback}
     />
   ) : (
     <>{fallback}</>
