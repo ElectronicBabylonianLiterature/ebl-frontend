@@ -4,6 +4,8 @@ import userEvent from '@testing-library/user-event'
 import { MediaGalleryProvider } from 'fragmentarium/infrastructure/MediaGalleryProvider'
 import { MediaGalleryContext } from 'fragmentarium/application/MediaGalleryContext'
 
+const originalMediaGalleryEnabled = process.env.REACT_APP_MEDIA_GALLERY_ENABLED
+
 const apiClient = {
   fetchJson: jest.fn(),
   fetchBlob: jest.fn(),
@@ -21,7 +23,15 @@ function Child(): JSX.Element {
   )
 }
 
-afterEach(() => delete process.env.REACT_APP_MEDIA_GALLERY_ENABLED)
+beforeEach(() => delete process.env.REACT_APP_MEDIA_GALLERY_ENABLED)
+
+afterEach(() => {
+  if (originalMediaGalleryEnabled === undefined) {
+    delete process.env.REACT_APP_MEDIA_GALLERY_ENABLED
+  } else {
+    process.env.REACT_APP_MEDIA_GALLERY_ENABLED = originalMediaGalleryEnabled
+  }
+})
 
 test('defaults to disabled and preserves application state on provider rerenders', async () => {
   const element = (scope: string): JSX.Element => (

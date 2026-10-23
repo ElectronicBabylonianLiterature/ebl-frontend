@@ -5,6 +5,7 @@ import {
   isRasterMediaMimeType,
   MediaResource,
   ThumbnailSize,
+  ThumbnailSizes,
 } from 'fragmentarium/domain/media'
 
 export default function MediaThumbnail({
@@ -18,7 +19,7 @@ export default function MediaThumbnail({
 }): JSX.Element | null {
   const [image, setImage] = useState<Blob | null>(null)
   const imageUrl = useObjectUrl(image)
-  const size = (['small', 'medium', 'large'] as const).find(
+  const size = ThumbnailSizes.find(
     (candidate: ThumbnailSize) => media.representations.thumbnails[candidate],
   )
   useEffect(() => {
