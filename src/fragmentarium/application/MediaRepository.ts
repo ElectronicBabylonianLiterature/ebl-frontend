@@ -6,3 +6,5 @@ export default interface MediaRepository {
     signal?: AbortSignal,
   ): Promise<readonly MediaResource[]>
 }
+
+export class UnsupportedMediaResponseError extends Error {}

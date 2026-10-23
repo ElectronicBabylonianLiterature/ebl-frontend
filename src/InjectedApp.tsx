@@ -2,6 +2,7 @@ import React, { useEffect, useMemo } from 'react'
 import App from 'App'
 
 import ApiClient from 'http/ApiClient'
+import { MediaGalleryProvider } from 'fragmentarium/infrastructure/MediaGalleryProvider'
 import WordRepository from 'dictionary/infrastructure/WordRepository'
 import FragmentRepository from 'fragmentarium/infrastructure/FragmentRepository'
 import ApiImageRepository from 'fragmentarium/infrastructure/ImageRepository'
@@ -209,21 +210,26 @@ export default function InjectedApp({
     })
   }, [fragmentService, textService, errorReporter])
   return (
-    <RealiaServiceContext.Provider value={realiaService}>
-      <App
-        wordService={wordService}
-        signService={signService}
-        fragmentService={fragmentService}
-        fragmentSearchService={fragmentSearchService}
-        bibliographyService={bibliographyService}
-        textService={textService}
-        markupService={markupService}
-        cachedMarkupService={cachedMarkupService}
-        afoRegisterService={afoRegisterService}
-        realiaService={realiaService}
-        dossiersService={dossiersService}
-        findspotService={findspotService}
-      />
-    </RealiaServiceContext.Provider>
+    <MediaGalleryProvider
+      scope={`${authenticationService.isAuthenticated()}:${resolveAuthenticatedIdentity(authenticationService) ?? ''}`}
+      apiClient={apiClient}
+    >
+      <RealiaServiceContext.Provider value={realiaService}>
+        <App
+          wordService={wordService}
+          signService={signService}
+          fragmentService={fragmentService}
+          fragmentSearchService={fragmentSearchService}
+          bibliographyService={bibliographyService}
+          textService={textService}
+          markupService={markupService}
+          cachedMarkupService={cachedMarkupService}
+          afoRegisterService={afoRegisterService}
+          realiaService={realiaService}
+          dossiersService={dossiersService}
+          findspotService={findspotService}
+        />
+      </RealiaServiceContext.Provider>
+    </MediaGalleryProvider>
   )
 }

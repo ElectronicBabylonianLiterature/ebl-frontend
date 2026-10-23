@@ -1,4 +1,6 @@
-import React from 'react'
+import React, { useContext } from 'react'
+import { MediaGalleryContext } from 'fragmentarium/application/MediaGalleryContext'
+import FragmentMediaGallery from 'fragmentarium/ui/images/FragmentMediaGallery'
 import { Nav, Tab } from 'react-bootstrap'
 import { useNavigate } from 'react-router-dom'
 import withData from 'http/withData'
@@ -75,7 +77,18 @@ function Images({
   activeFolio,
 }: Props): JSX.Element {
   const navigate = useNavigate()
-  const controller = new TabController(fragment, tab, activeFolio, navigate)
+  const mediaServices = useContext(MediaGalleryContext)
+  const hasLegacyPhoto = fragment.legacyHasPhoto ?? fragment.hasPhoto
+  const hasMedia = mediaServices
+    ? fragment.hasPhoto || Boolean(fragment.mediaSummary?.count)
+    : hasLegacyPhoto
+  const controller = new TabController(
+    fragment,
+    tab,
+    activeFolio,
+    navigate,
+    hasMedia,
+  )
   const folios = fragment.folios
   const activeKey = controller.activeKey
   const [visitedTabs, setVisitedTabs] = React.useState<VisitedImageTabs>(() =>
@@ -90,7 +103,12 @@ function Images({
   return (
     <Tab.Container activeKey={activeKey} onSelect={controller.openTab}>
       <Nav variant="tabs" id="folio-container">
-        {fragment.hasPhoto && <NavItem eventKey={PHOTO} label="Photo" />}
+        {hasMedia && (
+          <NavItem
+            eventKey={PHOTO}
+            label={mediaServices ? 'Images' : 'Photo'}
+          />
+        )}
         {hasUsableCdliTab(fragment) && <NavItem eventKey={CDLI} label="CDLI" />}
         {folios.length > FOLIO_DROPDOWN_THRESHOLD ? (
           <Nav.Item>
@@ -113,14 +131,31 @@ function Images({
       </Nav>
 
       <Tab.Content>
-        {fragment.hasPhoto && (
+        {hasMedia && (
           <TabPane eventKey={PHOTO} activeKey={activeKey}>
-            {visitedTabs.namedTabs.has(PHOTO) && (
-              <FragmentPhoto
-                fragment={fragment}
-                fragmentService={fragmentService}
-              />
-            )}
+            {visitedTabs.namedTabs.has(PHOTO) &&
+              (mediaServices ? (
+                <FragmentMediaGallery
+                  key={`${mediaServices.sessionKey ?? 'default'}:${fragment.number}`}
+                  fragment={fragment}
+                  services={mediaServices}
+                  fallback={
+                    hasLegacyPhoto ? (
+                      <FragmentPhoto
+                        fragment={fragment}
+                        fragmentService={fragmentService}
+                      />
+                    ) : (
+                      <p>No images available.</p>
+                    )
+                  }
+                />
+              ) : (
+                <FragmentPhoto
+                  fragment={fragment}
+                  fragmentService={fragmentService}
+                />
+              ))}
           </TabPane>
         )}
         {hasUsableCdliTab(fragment) && (

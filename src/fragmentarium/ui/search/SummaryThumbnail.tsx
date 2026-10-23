@@ -1,3 +1,4 @@
+import useObjectUrl from 'common/hooks/useObjectUrl'
 import React from 'react'
 import { Image } from 'react-bootstrap'
 import ExternalLink from 'common/ui/ExternalLink'
@@ -7,21 +8,28 @@ import { apiUrl } from 'http/ApiClient'
 export default function SummaryThumbnail({
   fragmentNumber,
   thumbnailPath,
+  image: imageBlob,
   linked = true,
 }: {
   fragmentNumber: string
   thumbnailPath: string | null
+  image?: Blob | null
   linked?: boolean
 }): JSX.Element {
+  const objectUrl = useObjectUrl(imageBlob)
   const [isBroken, setIsBroken] = React.useState(false)
 
-  if (!thumbnailPath || isBroken) {
+  const thumbnailUrl =
+    objectUrl ??
+    (thumbnailPath
+      ? /^https?:\/\//i.test(thumbnailPath)
+        ? thumbnailPath
+        : apiUrl(thumbnailPath)
+      : null)
+  if (!thumbnailUrl || isBroken) {
     return <></>
   }
 
-  const thumbnailUrl = /^https?:\/\//i.test(thumbnailPath)
-    ? thumbnailPath
-    : apiUrl(thumbnailPath)
   const image = (
     <Image
       src={thumbnailUrl}
