@@ -53,8 +53,10 @@ export default function useFragmentSaves(fragment: Fragment): FragmentSaves {
     const isFragmentStale = fragmentOperation.current.observe()
     savePromise.then(
       (updatedFragment) => {
-        if (!isSaveStale()) {
+        if (!isFragmentStale()) {
           setFragment(updatedFragment)
+        }
+        if (!isSaveStale()) {
           setIsSaving(false)
         }
       },
