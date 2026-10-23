@@ -19,6 +19,7 @@ function LoadedThumbnail({
   size,
   services,
   linked,
+  fallback,
 }: {
   fragmentNumber: string
   mediaId: string
