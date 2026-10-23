@@ -3,9 +3,10 @@ import { Button, FormGroup, FormLabel } from 'react-bootstrap'
 import _ from 'lodash'
 import Editor from 'editor/Editor'
 import SpecialCharactersHelp from 'editor/SpecialCharactersHelp'
-import { editionFields } from 'fragmentarium/application/FragmentService'
-
-type EditionField = (typeof editionFields)[number]
+import {
+  editionFields,
+  EditionField,
+} from 'fragmentarium/application/FragmentService'
 
 export type FormData = {
   transliteration: string

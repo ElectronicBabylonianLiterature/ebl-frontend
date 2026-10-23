@@ -1,4 +1,3 @@
-import React from 'react'
 import { fireEvent, screen, waitFor } from '@testing-library/react'
 
 import { submitFormByTestId } from 'test-support/utils'
@@ -16,27 +15,15 @@ import {
   validationError,
 } from 'fragmentarium/ui/edition/TransliterationForm.testSupport'
 
-type TemplateFormMockProps = {
-  onSubmit: (templateValue: string) => void
-}
-
 jest.mock('editor/SpecialCharactersHelp', () => {
   return function SpecialCharactersHelpMock() {
     return null
   }
 })
 
-jest.mock('fragmentarium/ui/edition/TemplateForm', () => {
-  return function TemplateFormMock({
-    onSubmit,
-  }: TemplateFormMockProps): JSX.Element {
-    return (
-      <button onClick={() => onSubmit('template value')} type="button">
-        Apply template
-      </button>
-    )
-  }
-})
+jest.mock('fragmentarium/ui/edition/TemplateForm', () =>
+  jest.requireActual('fragmentarium/ui/edition/TemplateForm.testSupport'),
+)
 
 jest.mock('editor/Editor', () =>
   jest.requireActual('editor/Editor.testSupport'),
@@ -198,7 +185,7 @@ it('ignores direct form submissions of an already rejected snapshot', async () =
   expect(updateEdition).toHaveBeenCalledTimes(1)
 })
 
-it('preserves parent-managed queuing for direct submissions while saving', () => {
+it('submits an empty edition update when the form has no changes', () => {
   const updateEdition = createUpdateEditionMock().mockImplementation(
     () => new Promise(() => undefined),
   )

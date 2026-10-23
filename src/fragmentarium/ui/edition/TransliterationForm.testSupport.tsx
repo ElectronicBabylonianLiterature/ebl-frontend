@@ -7,12 +7,9 @@ import { EditionFields } from 'fragmentarium/application/FragmentService'
 import TransliterationForm from 'fragmentarium/ui/edition/TransliterationForm'
 import { ApiError } from 'http/ApiClient'
 
-export const savedTransliteration = 'line1\nline2'
-export const savedNotes = 'notes'
-export const savedIntroduction = 'introduction'
-export const transliteration = savedTransliteration
-export const notes = savedNotes
-export const introduction = savedIntroduction
+const savedTransliteration = 'line1\nline2'
+const savedNotes = 'notes'
+const savedIntroduction = 'introduction'
 
 export type UpdateEditionMock = jest.Mock<Promise<Fragment>, [EditionFields]>
 
@@ -24,7 +21,7 @@ export const saveButton = (): HTMLElement =>
 export const transliterationField = (): HTMLTextAreaElement =>
   screen.getByLabelText<HTMLTextAreaElement>('transliteration')
 
-export const annotatedValidationError = (
+export const validationError = (
   description = 'invalid transliteration',
 ): ApiError =>
   new ApiError(
@@ -51,8 +48,6 @@ export const httpError = (
   description: string,
 ): ApiError =>
   new ApiError(description, { title: String(status), description }, status)
-
-export const validationError = annotatedValidationError
 
 export const createUpdateEditionMock = (): UpdateEditionMock =>
   jest.fn<Promise<Fragment>, [EditionFields]>()

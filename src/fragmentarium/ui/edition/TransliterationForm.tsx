@@ -14,6 +14,7 @@ import { Fragment } from 'fragmentarium/domain/fragment'
 import { ErrorBoundary } from '@sentry/react'
 import {
   editionFields,
+  EditionField,
   EditionFields,
 } from 'fragmentarium/application/FragmentService'
 import {
@@ -29,7 +30,7 @@ import {
   rememberRejectedAttempt,
   isDeterministicFailure,
   mergeSavedValues,
-} from 'fragmentarium/ui/edition/rejectedEditionAttempts'
+} from 'fragmentarium/ui/edition/editionSaveState'
 import { runBeforeUnloadEvent } from 'fragmentarium/ui/edition/beforeUnloadWarning'
 
 type Props = {
@@ -64,13 +65,12 @@ const TransliterationForm: React.FC<Props> = ({
     [transliteration, notes, introduction],
   )
 
-  const update =
-    (property: (typeof editionFields)[number]) => (value: string) => {
-      setFormData((prev) => ({
-        ...prev,
-        [property]: value,
-      }))
-    }
+  const update = (property: EditionField) => (value: string) => {
+    setFormData((prev) => ({
+      ...prev,
+      [property]: value,
+    }))
+  }
 
   const onTemplate = (template: string) => {
     setFormData((prev) => ({

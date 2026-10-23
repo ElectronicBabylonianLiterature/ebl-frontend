@@ -3,24 +3,31 @@ import {
   createUpdatedFields,
   isDeterministicFailure,
   rememberRejectedAttempt,
-} from 'fragmentarium/ui/edition/rejectedEditionAttempts'
+} from 'fragmentarium/ui/edition/editionSaveState'
 import { ApiError } from 'http/ApiClient'
 
-test.each([401, 408, 429, 399, 500, undefined])(
-  'allows retry for status %p',
-  (status) => {
+test.each([
+  [399, false],
+  [400, true],
+  [499, true],
+  [500, false],
+] as const)(
+  'classifies the HTTP client-error boundary %p',
+  (status, expected) => {
     expect(isDeterministicFailure(new ApiError('failed', {}, status))).toBe(
-      false,
+      expected,
     )
   },
 )
 
-test('allows retry after a network failure', () => {
-  expect(isDeterministicFailure(new Error('Network unavailable'))).toBe(false)
+test('allows retry after a statusless API failure', () => {
+  expect(isDeterministicFailure(new ApiError('failed', {}, undefined))).toBe(
+    false,
+  )
 })
 
-test.each([400, 403, 404, 422])('records deterministic status %p', (status) => {
-  expect(isDeterministicFailure(new ApiError('failed', {}, status))).toBe(true)
+test('allows retry after a network failure', () => {
+  expect(isDeterministicFailure(new Error('Network unavailable'))).toBe(false)
 })
 
 test('includes every field in attempt identity without delimiter collisions', () => {

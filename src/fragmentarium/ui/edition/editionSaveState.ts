@@ -1,10 +1,11 @@
 import { ApiError } from 'http/ApiClient'
 import {
   editionFields,
+  EditionField,
   EditionFields,
 } from 'fragmentarium/application/FragmentService'
 
-type EditedValues = Record<(typeof editionFields)[number], string>
+type EditedValues = Record<EditionField, string>
 
 const retryableErrorStatuses = new Set([401, 408, 429])
 const rejectedAttemptLimit = 20

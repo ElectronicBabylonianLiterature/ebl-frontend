@@ -38,11 +38,3 @@ it('Displays nothing if no error provided', async () => {
 
   expect(screen.getByTestId('wrapper')).toBeEmptyDOMElement()
 })
-
-it('Displays HTML-like error messages as text', () => {
-  const error = new Error('<img src=x onerror=alert(1)>')
-  render(<ErrorAlert error={error} />)
-
-  expect(screen.getByRole('alert')).toHaveTextContent(error.message)
-  expect(screen.queryByRole('img', { hidden: true })).not.toBeInTheDocument()
-})

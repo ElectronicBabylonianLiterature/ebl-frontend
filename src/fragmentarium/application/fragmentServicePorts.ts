@@ -49,6 +49,8 @@ export const editionFields = [
   'introduction',
 ] as const
 
+export type EditionField = (typeof editionFields)[number]
+
 export type FragmentStatistics = {
   transliteratedFragments: number
   lines: number
@@ -61,7 +63,7 @@ export type CorpusAttestations = {
 }
 
 export type EditionFields = Partial<{
-  [K in (typeof editionFields)[number]]: string | null
+  [K in EditionField]: string | null
 }>
 
 export interface FragmentRepository {

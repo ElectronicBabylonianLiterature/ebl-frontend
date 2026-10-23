@@ -65,7 +65,6 @@ class Editor extends Component<Props> {
 
   configureSession = (editor: Ace.Editor): void => {
     editor.getSession().setNewLineMode('unix')
-    editor.setOption('textInputAriaLabel', _.capitalize(this.props.name))
     editor.textInput.setAriaLabel()
     if (this.props.inputId) {
       editor.textInput.getElement().id = this.props.inputId
