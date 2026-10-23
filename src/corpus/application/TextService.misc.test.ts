@@ -1,4 +1,4 @@
-import { expectConsoleErrors } from 'setupTests'
+import SentryErrorReporter from 'common/errors/SentryErrorReporter'
 import { chapter, chapterDto } from 'test-support/test-corpus-text'
 import {
   chapterId,
@@ -12,6 +12,7 @@ jest.mock('bibliography/application/BibliographyService')
 jest.mock('dictionary/application/WordService')
 jest.mock('fragmentarium/application/FragmentService')
 jest.mock('http/ApiClient')
+jest.mock('common/errors/SentryErrorReporter')
 
 const {
   apiClient,
@@ -47,12 +48,9 @@ test('listAllChapters', async () => {
 })
 
 describe('findManuscripts provenance preload', () => {
-  test('logs provenance preload errors and still returns manuscripts', async () => {
+  test('reports provenance preload errors and still returns manuscripts', async () => {
     const service = createService()
     const provenanceError = new Error('provenance request failed')
-    expectConsoleErrors(
-      /Failed to preload provenances Error: provenance request failed/,
-    )
 
     fragmentServiceMock.fetchProvenances.mockReturnValueOnce(
       Promise.reject(provenanceError),
@@ -63,6 +61,9 @@ describe('findManuscripts provenance preload', () => {
       chapter.manuscripts,
     )
 
+    expect(SentryErrorReporter.prototype.captureException).toHaveBeenCalledWith(
+      provenanceError,
+    )
     expect(fragmentServiceMock.fetchProvenances).toHaveBeenCalled()
     expect(apiClient.fetchJson).toHaveBeenCalledWith(
       `${chapterUrl}/manuscripts`,
@@ -74,8 +75,6 @@ describe('findManuscripts provenance preload', () => {
   test('retries provenance preload after a failed first attempt', async () => {
     const service = createService()
     const provenanceError = new Error('temporary provenance failure')
-
-    expectConsoleErrors(/Failed to preload provenances/)
 
     fragmentServiceMock.fetchProvenances.mockReturnValueOnce(
       Promise.reject(provenanceError),

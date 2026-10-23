@@ -77,7 +77,9 @@ export function DisplayBibliographyPart({
     <Citation reference={reference} />
   ) : (
     <Badge bg="danger">
-      @bib&#123;{reference.id}@{reference.pages}&#125;
+      {reference.pages
+        ? `@bib{${reference.id}@${reference.pages}}`
+        : `@bib{${reference.id}}`}
     </Badge>
   )
 }

@@ -1,100 +1,144 @@
-import ReferenceInjector from 'transliteration/application/ReferenceInjector'
 import BibliographyService from 'bibliography/application/BibliographyService'
-import Reference from 'bibliography/domain/Reference'
-import { BibliographyPart, MarkupPart } from 'transliteration/domain/markup'
-import { bibliographyEntryFactory } from 'test-support/bibliography-fixtures'
-import { expectConsoleErrors } from 'setupTests'
+import ReferenceInjector from 'transliteration/application/ReferenceInjector'
 import { Text } from 'transliteration/domain/text'
+import { bibliographyEntryFactory } from 'test-support/bibliography-fixtures'
+import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
+import Reference from 'bibliography/domain/Reference'
+import { MarkupPart, TextPart } from 'transliteration/domain/markup'
 import { NoteLine } from 'transliteration/domain/note-line'
+import { ReferenceDto } from 'bibliography/domain/referenceDto'
 
 jest.mock('bibliography/application/BibliographyService')
 
-const bibliographyService = new (BibliographyService as jest.Mock<
+const MockBibliographyService = BibliographyService as jest.Mock<
   jest.Mocked<BibliographyService>
->)()
-const referenceInjector = new ReferenceInjector(bibliographyService)
+>
+const bibliographyServiceMock = new MockBibliographyService()
 
-const entry = bibliographyEntryFactory.build({ id: 'RN1' })
-const bibliographyPart: BibliographyPart = {
-  type: 'BibliographyPart',
-  reference: {
-    id: entry.id,
+const referenceInjector = new ReferenceInjector(bibliographyServiceMock)
+const referenceId = 'RN1'
+
+describe('ReferenceInjector', () => {
+  const entry = bibliographyEntryFactory.build(
+    {},
+    { associations: { id: referenceId } },
+  )
+  const referenceDto: ReferenceDto = {
+    id: referenceId,
     type: 'DISCUSSION',
-    pages: '12',
+    pages: '5',
     notes: '',
     linesCited: [],
-  },
-}
-const stringPart: MarkupPart = { type: 'StringPart', text: 'see ' }
-
-beforeEach(() => {
-  jest.clearAllMocks()
-})
-
-it('returns parts without bibliography unchanged and fetches nothing', async () => {
-  await expect(
-    referenceInjector.injectReferencesToMarkup([stringPart]),
-  ).resolves.toEqual([stringPart])
-  expect(bibliographyService.findMany).not.toHaveBeenCalled()
-})
-
-it('replaces a bibliography reference with its resolved entry', async () => {
-  bibliographyService.findMany.mockResolvedValue([entry])
-
-  const [first, second] = await referenceInjector.injectReferencesToMarkup([
-    stringPart,
-    bibliographyPart,
-    bibliographyPart,
-  ])
-
-  expect(bibliographyService.findMany).toHaveBeenCalledWith([entry.id])
-  expect(first).toEqual(stringPart)
-  expect(second).toEqual({
+  }
+  const bibliographyPart: MarkupPart = {
+    reference: referenceDto,
     type: 'BibliographyPart',
-    reference: new Reference('DISCUSSION', '12', '', [], entry),
-  })
-})
-
-it('keeps the original parts and reports the error when lookup fails', async () => {
-  expectConsoleErrors(/RN1 not found/)
-  bibliographyService.findMany.mockRejectedValue(new Error('RN1 not found'))
-
-  await expect(
-    referenceInjector.injectReferencesToMarkup([bibliographyPart]),
-  ).resolves.toEqual([bibliographyPart])
-})
-
-it('injects references to the markup lines of a text', async () => {
-  bibliographyService.findMany.mockResolvedValue([entry])
+  }
+  const stringPart: TextPart = {
+    text: 'Lorem ipsum',
+    type: 'StringPart',
+  }
+  const emphasisPart: TextPart = {
+    text: 'Lorem ipsum',
+    type: 'EmphasisPart',
+  }
+  const reference = new Reference('DISCUSSION', '5', '', [], entry)
+  const injectedParts = [
+    {
+      reference: reference,
+      type: 'BibliographyPart',
+    },
+  ]
+  const noteLine = new NoteLine({ content: [], parts: [bibliographyPart] })
   const text = new Text({
-    lines: [new NoteLine({ content: [], parts: [bibliographyPart] })],
+    lines: [noteLine],
   })
 
-  const injectedText = await referenceInjector.injectReferencesToText(text)
+  beforeEach(() => {
+    bibliographyServiceMock.find.mockReturnValueOnce(Promise.resolve(entry))
+    bibliographyServiceMock.findManyById.mockReturnValueOnce(
+      Promise.resolve(new Map([[entry.id, entry]])),
+    )
+  })
 
-  expect(injectedText.allLines).toEqual([
-    new NoteLine({
-      content: [],
-      parts: [
-        {
-          type: 'BibliographyPart',
-          reference: new Reference('DISCUSSION', '12', '', [], entry),
-        },
-      ],
-    }),
-  ])
-})
+  it('injects references to text', async () => {
+    return referenceInjector
+      .injectReferencesToText(text)
+      .then((injectedText) =>
+        expect(injectedText.allLines).toEqual([
+          { ...noteLine, parts: injectedParts },
+        ]),
+      )
+  })
 
-it('injects the reference of an old line number', async () => {
-  bibliographyService.find.mockResolvedValue(entry)
+  it('injects references to MarkupParts', async () => {
+    return referenceInjector
+      .injectReferencesToMarkup([emphasisPart, bibliographyPart, stringPart])
+      .then((parts) =>
+        expect(parts).toEqual([emphasisPart, ...injectedParts, stringPart]),
+      )
+  })
 
-  await expect(
-    referenceInjector.injectReferenceToOldLineNumber({
-      number: 'A38',
-      reference: bibliographyPart.reference,
-    }),
-  ).resolves.toEqual({
-    number: 'A38',
-    reference: new Reference('DISCUSSION', '12', '', [], entry),
+  it('looks up unique requested ids and hydrates aliases from their map keys', async () => {
+    const requestedAlias = 'former-entry-id'
+    const canonicalEntry = bibliographyEntryFactory.build(
+      {},
+      { associations: { id: 'canonical-entry-id' } },
+    )
+    const aliasPart: MarkupPart = {
+      type: 'BibliographyPart',
+      reference: { ...referenceDto, id: requestedAlias },
+    }
+    const bibliographyService = {
+      find: jest.fn<Promise<BibliographyEntry>, [string]>(),
+      findManyById: jest
+        .fn<
+          Promise<ReadonlyMap<string, BibliographyEntry>>,
+          [readonly string[]]
+        >()
+        .mockReturnValue(
+          Promise.resolve(
+            new Map([
+              [referenceId, entry],
+              [requestedAlias, canonicalEntry],
+            ]),
+          ),
+        ),
+    }
+    const injector = new ReferenceInjector(bibliographyService)
+    const canonicalReference = new Reference(
+      referenceDto.type,
+      referenceDto.pages,
+      referenceDto.notes,
+      referenceDto.linesCited,
+      canonicalEntry,
+    )
+
+    await expect(
+      injector.injectReferencesToMarkup([
+        bibliographyPart,
+        aliasPart,
+        bibliographyPart,
+      ]),
+    ).resolves.toEqual([
+      ...injectedParts,
+      { type: 'BibliographyPart', reference: canonicalReference },
+      ...injectedParts,
+    ])
+    expect(bibliographyService.findManyById).toHaveBeenCalledWith([
+      referenceId,
+      requestedAlias,
+    ])
+  })
+
+  it('injects references to OldLineNumbers', async () => {
+    return referenceInjector
+      .injectReferenceToOldLineNumber({
+        number: 'A38',
+        reference: referenceDto as Reference,
+      })
+      .then((oldLineNumber) =>
+        expect(oldLineNumber).toEqual({ number: 'A38', reference: reference }),
+      )
   })
 })

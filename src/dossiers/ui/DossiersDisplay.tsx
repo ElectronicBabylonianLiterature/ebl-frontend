@@ -19,7 +19,12 @@ function ReferencesDisplay({
 }): JSX.Element {
   const InlineMarkdownWithPopover = ReferencePopover(
     ({ reference }: { reference: Reference }) => (
-      <InlineMarkdown source={Citation.for(reference).getMarkdown()} />
+      <InlineMarkdown
+        source={
+          Citation.for(reference).getMarkdown() || reference.id || 'Reference'
+        }
+        allowLinks={false}
+      />
     ),
   )
   return (

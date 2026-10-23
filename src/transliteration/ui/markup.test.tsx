@@ -10,6 +10,7 @@ import Markup, {
 import {
   BibliographyPart,
   LanguagePart,
+  ParagraphPart,
   TextPart,
   UrlPart,
 } from 'transliteration/domain/markup'
@@ -40,6 +41,10 @@ const urlPart: UrlPart = {
   type: 'UrlPart',
   url: url,
   text: linkText,
+}
+const paragraphPart: ParagraphPart = {
+  type: 'ParagraphPart',
+  text: '',
 }
 const bibliographyPart: BibliographyPart = {
   type: 'BibliographyPart',
@@ -87,12 +92,80 @@ test('DisplayUrlPart', () => {
   expect(screen.getByText(linkText)).toHaveAttribute('href', url)
 })
 
+test('Markup rejects an unsplit paragraph part', () => {
+  expect(() => Markup({ parts: [paragraphPart] })).toThrow(
+    'Unexpected ParagraphPart. Use createParagraphs to split parts into paragraphs',
+  )
+})
+
 test('DisplayBibliographyPart', () => {
   const { container } = render(
     <DisplayBibliographyPart part={bibliographyPart} />,
   )
 
   expect(container).toHaveTextContent(reference.document.primaryAuthor)
+})
+
+test('DisplayBibliographyPart renders a resolved reference without pages normally', () => {
+  const pageLessReference = reference.setPages('')
+  const { container } = render(
+    <DisplayBibliographyPart
+      part={{ type: 'BibliographyPart', reference: pageLessReference }}
+    />,
+  )
+
+  expect(container).toHaveTextContent(pageLessReference.document.primaryAuthor)
+  expect(container).not.toHaveTextContent('@bib{')
+})
+
+test('DisplayBibliographyPart renders a resolved reference with pages normally', () => {
+  const pagedReference = reference.setPages('12–14')
+  const { container } = render(
+    <DisplayBibliographyPart
+      part={{ type: 'BibliographyPart', reference: pagedReference }}
+    />,
+  )
+
+  expect(container).toHaveTextContent('12–14')
+  expect(container).not.toHaveTextContent('@bib{')
+})
+
+test('DisplayBibliographyPart omits the page separator from an empty fallback', () => {
+  render(
+    <DisplayBibliographyPart
+      part={{
+        type: 'BibliographyPart',
+        reference: {
+          id: 'attinger2014lamentation',
+          type: 'DISCUSSION',
+          pages: '',
+          notes: '',
+          linesCited: [],
+        },
+      }}
+    />,
+  )
+
+  expect(screen.getByText('@bib{attinger2014lamentation}')).toBeVisible()
+})
+
+test('DisplayBibliographyPart includes pages in a paged fallback', () => {
+  render(
+    <DisplayBibliographyPart
+      part={{
+        type: 'BibliographyPart',
+        reference: {
+          id: 'attinger2014lamentation',
+          type: 'DISCUSSION',
+          pages: '12–14',
+          notes: '',
+          linesCited: [],
+        },
+      }}
+    />,
+  )
+
+  expect(screen.getByText('@bib{attinger2014lamentation@12–14}')).toBeVisible()
 })
 
 test('Markup', () => {

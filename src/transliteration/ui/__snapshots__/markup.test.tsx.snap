@@ -50,8 +50,10 @@ exports[`Markup 1`] = `
     >
       link to eBL
     </a>
-    <span
+    <button
+      aria-expanded="false"
       class="reference-popover__citation"
+      type="button"
     >
       <span
         class="reference-popover__interactive"
@@ -63,7 +65,7 @@ exports[`Markup 1`] = `
            (T)
         </span>
       </span>
-    </span>
+    </button>
   </div>
 </div>
 `;

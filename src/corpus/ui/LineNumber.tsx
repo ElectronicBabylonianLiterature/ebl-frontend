@@ -4,6 +4,7 @@ import lineNumberToString, {
 } from 'transliteration/domain/lineNumberToString'
 import { OldLineNumber } from 'transliteration/domain/line-number'
 import referencePopover from 'bibliography/ui/referencePopover'
+import Citation from 'bibliography/ui/Citation'
 import classnames from 'classnames'
 import { LineDisplay } from 'corpus/domain/chapter'
 import _ from 'lodash'
@@ -13,11 +14,11 @@ import useScrollToActiveLine, {
 } from 'transliteration/ui/useScrollToActiveLine'
 
 const OldLineNumberCitation = referencePopover(({ reference }) => (
-  <sup>{reference.authors.join('/')}</sup>
+  <sup>{reference.authors.join('/') || reference.id || 'Reference'}</sup>
 ))
 
 function OldLineNumbers({
-  oldLineNumbers = [],
+  oldLineNumbers,
   show,
 }: {
   oldLineNumbers: readonly OldLineNumber[]
@@ -35,7 +36,13 @@ function OldLineNumbers({
         <React.Fragment key={index}>
           {index > 0 && '; '}
           <span>{oldLineNumber.number}</span>
-          <OldLineNumberCitation reference={oldLineNumber.reference} />
+          {oldLineNumber.reference.hasUnresolvedDocument ? (
+            <sup>
+              <Citation reference={oldLineNumber.reference} />
+            </sup>
+          ) : (
+            <OldLineNumberCitation reference={oldLineNumber.reference} />
+          )}
         </React.Fragment>
       ))}
       )
@@ -83,9 +90,7 @@ export default function LineNumber({
             event.preventDefault()
             window.history.replaceState(null, '', hash)
             const behavior = prefersReducedMotion() ? 'auto' : 'smooth'
-            if (ref.current) {
-              scrollLineIntoView(ref.current, { behavior })
-            }
+            scrollLineIntoView(event.currentTarget, { behavior })
           }}
         >
           {lineNumberToString(line.number)}

@@ -7,10 +7,12 @@ export default function InlineMarkdown({
   source,
   className = '',
   allowParagraphs = false,
+  allowLinks = true,
 }: {
   source: string
   className?: string
   allowParagraphs?: boolean
+  allowLinks?: boolean
 }): JSX.Element {
   const sanitizeSchema = {
     ...defaultSchema,
@@ -27,7 +29,10 @@ export default function InlineMarkdown({
         rehypeRaw as unknown as never,
         [rehypeSanitize, sanitizeSchema] as unknown as never,
       ]}
-      disallowedElements={allowParagraphs ? [] : ['p']}
+      disallowedElements={[
+        ...(allowParagraphs ? [] : ['p']),
+        ...(allowLinks ? [] : ['a']),
+      ]}
       unwrapDisallowed
       components={{
         sub: ({ children }) => <sub>{children}</sub>,

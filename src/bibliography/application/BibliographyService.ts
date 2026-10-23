@@ -1,9 +1,8 @@
-import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
-import BibliographyRepository from 'bibliography/infrastructure/BibliographyRepository'
-import _ from 'lodash'
 import BibliographyEntryLoader, {
   defaultCacheScope,
 } from 'bibliography/application/BibliographyEntryLoader'
+import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
+import BibliographyRepository from 'bibliography/infrastructure/BibliographyRepository'
 
 export interface BibliographySearch {
   search(
@@ -12,52 +11,50 @@ export interface BibliographySearch {
   ): Promise<readonly BibliographyEntry[]>
 }
 
+interface MutationState {
+  pending: number
+  winner?: { readonly sequence: number; readonly entry: BibliographyEntry }
+}
+
 export default class BibliographyService implements BibliographySearch {
   private readonly bibliographyRepository: BibliographyRepository
-  private readonly entryLoader: BibliographyEntryLoader
-
   private cacheScope: string | null = null
+  private scopeGeneration = 0
+  private mutationSequence = 0
+  private readonly mutations = new Map<string, MutationState>()
+  private readonly cache: BibliographyEntryLoader
 
   constructor(
     bibliographyRepository: BibliographyRepository,
     private readonly getCacheScope: () => string = () => defaultCacheScope,
   ) {
     this.bibliographyRepository = bibliographyRepository
-    this.entryLoader = new BibliographyEntryLoader(bibliographyRepository)
+    this.cache = new BibliographyEntryLoader(bibliographyRepository)
   }
 
   create(entry: BibliographyEntry): Promise<BibliographyEntry> {
-    return this.bibliographyRepository
-      .create(entry)
-      .then((createdEntry) => this.cacheUpdatedEntry(createdEntry))
+    return this.mutate(entry.id, () =>
+      this.bibliographyRepository.create(entry),
+    )
   }
 
-  find(id: string): Promise<BibliographyEntry> {
+  find(id: string, signal?: AbortSignal): Promise<BibliographyEntry> {
     this.clearCachesWhenScopeChanges()
-    return this.entryLoader.find(id)
+    return this.cache.find(id, signal)
   }
 
-  findMany(ids: readonly string[]): Promise<readonly BibliographyEntry[]> {
+  findManyById(
+    ids: readonly string[],
+    signal?: AbortSignal,
+  ): Promise<ReadonlyMap<string, BibliographyEntry>> {
     this.clearCachesWhenScopeChanges()
-
-    const uniqueIds = _.uniq(ids)
-    if (_.isEmpty(uniqueIds)) {
-      return Promise.resolve([])
-    }
-
-    return this.entryLoader
-      .loadEntriesByIds(uniqueIds)
-      .then((entriesById) =>
-        ids
-          .map((id) => entriesById.get(id))
-          .filter((entry): entry is BibliographyEntry => entry !== undefined),
-      )
+    return this.cache.findManyById(ids, signal)
   }
 
   update(entry: BibliographyEntry): Promise<BibliographyEntry> {
-    return this.bibliographyRepository
-      .update(entry)
-      .then((updatedEntry) => this.cacheUpdatedEntry(updatedEntry))
+    return this.mutate(entry.id, () =>
+      this.bibliographyRepository.update(entry),
+    )
   }
 
   search(
@@ -71,9 +68,39 @@ export default class BibliographyService implements BibliographySearch {
     return this.bibliographyRepository.listAllBibliography()
   }
 
-  private cacheUpdatedEntry(entry: BibliographyEntry): BibliographyEntry {
+  private mutate(
+    id: string,
+    request: () => Promise<BibliographyEntry>,
+  ): Promise<BibliographyEntry> {
     this.clearCachesWhenScopeChanges()
-    return this.entryLoader.cacheUpdatedEntry(entry)
+    const scopeGeneration = this.scopeGeneration
+    const sequence = ++this.mutationSequence
+    const state = this.mutations.get(id) ?? { pending: 0 }
+    state.pending += 1
+    this.mutations.set(id, state)
+    return request()
+      .then((entry) => {
+        this.clearCachesWhenScopeChanges()
+        if (scopeGeneration === this.scopeGeneration) {
+          const winner = state.winner
+          if (!winner || winner.sequence < sequence) {
+            state.winner = { sequence, entry }
+          }
+          this.cache.cacheUpdatedEntry(state.winner!.entry)
+        }
+        return entry
+      })
+      .finally(() => {
+        state.pending -= 1
+        if (state.pending === 0 && this.mutations.get(id) === state) {
+          this.mutations.delete(id)
+        }
+      })
+  }
+
+  private invalidateCaches(): void {
+    this.cache.clear()
+    this.mutations.clear()
   }
 
   private clearCachesWhenScopeChanges(): void {
@@ -85,7 +112,8 @@ export default class BibliographyService implements BibliographySearch {
 
     if (this.cacheScope !== nextScope) {
       this.cacheScope = nextScope
-      this.entryLoader.clear()
+      this.scopeGeneration += 1
+      this.invalidateCaches()
     }
   }
 

@@ -16,8 +16,10 @@ exports[`Show manuscript line details 1`] = `
         fuwriv
       </span>
       <sup>
-        <span
+        <button
+          aria-expanded="false"
           class="reference-popover__citation"
+          type="button"
         >
           <span
             class="reference-popover__interactive"
@@ -29,7 +31,7 @@ exports[`Show manuscript line details 1`] = `
                (P)
             </span>
           </span>
-        </span>
+        </button>
       </sup>
     </span>
     )
