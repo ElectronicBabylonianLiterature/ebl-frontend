@@ -1,18 +1,15 @@
+import FragmentCardThumbnail from 'fragmentarium/ui/search/FragmentCardThumbnail'
 import React from 'react'
 import _ from 'lodash'
 import { Link } from 'react-router-dom'
 import { DateTime } from 'luxon'
 import withData from 'http/withData'
-import FragmentService, {
-  ThumbnailBlob,
-} from 'fragmentarium/application/FragmentService'
+import FragmentService from 'fragmentarium/application/FragmentService'
 import { QueryItem } from 'query/QueryResult'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import { createFragmentUrl } from 'fragmentarium/ui/FragmentLink'
 import ErrorBoundary from 'common/errors/ErrorBoundary'
-import { ThumbnailImage } from 'common/ui/BlobImage'
 import useNearViewport from 'common/hooks/useNearViewport'
-import SummaryThumbnail from 'fragmentarium/ui/search/SummaryThumbnail'
 import {
   getLatestTransliterationRecord,
   hasRenderReadyFragment,
@@ -21,21 +18,6 @@ import {
 import UnavailableFragmentCard from 'fragmentarium/ui/search/UnavailableFragmentCard'
 
 const LATEST_CARD_LINES_TO_SHOW = 3
-
-const LatestAdditionThumbnail = withData<
-  { fragment: Fragment; fragmentService: FragmentService },
-  unknown,
-  ThumbnailBlob
->(
-  ({ data, fragment }): JSX.Element =>
-    data.blob ? (
-      <ThumbnailImage photo={data.blob} alt={`Preview of ${fragment.number}`} />
-    ) : (
-      <></>
-    ),
-  ({ fragment, fragmentService }) =>
-    fragmentService.findThumbnail(fragment, 'small'),
-)
 
 function CompactFragmentCardContent({
   fragment,
@@ -60,24 +42,19 @@ function CompactFragmentCardContent({
       className="latest-addition-card"
     >
       <div ref={thumbnailContainerRef}>
-        {fragment.hasPhoto && isNearViewport && (
-          <ErrorBoundary>
-            <div className="latest-addition-card__thumbnail">
-              {'thumbnailPath' in queryItem ? (
-                <SummaryThumbnail
-                  fragmentNumber={fragment.number}
-                  thumbnailPath={queryItem.thumbnailPath ?? null}
+        {(fragment.hasPhoto || Boolean(fragment.mediaSummary?.count)) &&
+          isNearViewport && (
+            <ErrorBoundary>
+              <div className="latest-addition-card__thumbnail">
+                <FragmentCardThumbnail
+                  fragment={fragment}
+                  fragmentService={fragmentService}
+                  queryItem={queryItem}
                   linked={false}
                 />
-              ) : (
-                <LatestAdditionThumbnail
-                  fragmentService={fragmentService}
-                  fragment={fragment}
-                />
-              )}
-            </div>
-          </ErrorBoundary>
-        )}
+              </div>
+            </ErrorBoundary>
+          )}
       </div>
       <div className="latest-addition-card__body">
         <div className="latest-addition-card__header">

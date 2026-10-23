@@ -22,6 +22,14 @@ function writeFixtureTree(files: readonly string[]): string {
 }
 
 describe('collectModuleReferences', () => {
+  test('treats an empty named import as a runtime import', () => {
+    expect(
+      collectModuleReferences(
+        'a.ts',
+        "import {} from 'fragmentarium/domain/media'",
+      ),
+    ).toEqual([{ kind: 'import', specifier: 'fragmentarium/domain/media' }])
+  })
   test('ignores dynamic imports with a non-literal specifier', () => {
     expect(collectModuleReferences('a.ts', 'import(modulePath)')).toEqual([])
   })

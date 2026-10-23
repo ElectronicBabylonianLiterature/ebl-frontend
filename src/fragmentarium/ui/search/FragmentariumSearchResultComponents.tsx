@@ -1,14 +1,13 @@
+import FragmentCardThumbnail from 'fragmentarium/ui/search/FragmentCardThumbnail'
 import React from 'react'
 import _ from 'lodash'
-import FragmentService, {
-  ThumbnailBlob,
-} from 'fragmentarium/application/FragmentService'
+import FragmentService from 'fragmentarium/application/FragmentService'
 import withData from 'http/withData'
 import { QueryItem } from 'query/QueryResult'
 import { Col, Container, Row } from 'react-bootstrap'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import RenderFragmentLines from 'dictionary/ui/search/RenderFragmentLines'
-import FragmentLink, { createFragmentUrl } from 'fragmentarium/ui/FragmentLink'
+import FragmentLink from 'fragmentarium/ui/FragmentLink'
 import { Genres } from 'fragmentarium/domain/Genres'
 import ReferenceList from 'bibliography/ui/ReferenceList'
 import 'fragmentarium/ui/search/FragmentariumSearchResult.sass'
@@ -16,11 +15,9 @@ import DateDisplay from 'chronology/ui/DateDisplay'
 import { ProjectList } from 'fragmentarium/ui/info/ResearchProjects'
 import { RecordList } from 'fragmentarium/ui/info/Record'
 import ErrorBoundary from 'common/errors/ErrorBoundary'
-import { ThumbnailImage } from 'common/ui/BlobImage'
 import DossiersService from 'dossiers/application/DossiersService'
 import useNearViewport from 'common/hooks/useNearViewport'
 import FragmentDossierRecordsDisplay from 'dossiers/ui/DossiersDisplay'
-import SummaryThumbnail from 'fragmentarium/ui/search/SummaryThumbnail'
 import {
   getLatestTransliterationRecord,
   hasRenderReadyFragment,
@@ -46,26 +43,6 @@ export type FragmentLinesService = Pick<
   FragmentService,
   'find' | 'findThumbnail'
 >
-
-const FragmentThumbnail = withData<
-  { fragment: Fragment },
-  { fragmentService: FragmentLinesService },
-  ThumbnailBlob
->(
-  ({ data, fragment }) => {
-    return data.blob ? (
-      <ThumbnailImage
-        photo={data.blob}
-        alt={`Preview of ${fragment.number}`}
-        url={createFragmentUrl(fragment.number)}
-      />
-    ) : (
-      <></>
-    )
-  },
-  ({ fragment, fragmentService }) =>
-    fragmentService.findThumbnail(fragment, 'small'),
-)
 
 function TransliterationRecord({
   fragment,
@@ -111,7 +88,6 @@ function FragmentLinesContent({
   const script = fragment.script.period.abbreviation
     ? ` (${fragment.script.period.abbreviation})`
     : ''
-  const usesSummaryThumbnail = 'thumbnailPath' in queryItem
 
   return (
     <Container>
@@ -176,21 +152,16 @@ function FragmentLinesContent({
         <ResponsiveCol className={'fragment-result__preview'}>
           <ErrorBoundary>
             <div ref={thumbnailContainerRef}>
-              {fragment.hasPhoto && isNearViewport && (
-                <>
-                  {usesSummaryThumbnail ? (
-                    <SummaryThumbnail
-                      fragmentNumber={fragment.number}
-                      thumbnailPath={queryItem.thumbnailPath ?? null}
-                    />
-                  ) : (
-                    <FragmentThumbnail
-                      fragmentService={fragmentService}
+              {(fragment.hasPhoto || Boolean(fragment.mediaSummary?.count)) &&
+                isNearViewport && (
+                  <>
+                    <FragmentCardThumbnail
                       fragment={fragment}
+                      fragmentService={fragmentService}
+                      queryItem={queryItem}
                     />
-                  )}
-                </>
-              )}
+                  </>
+                )}
             </div>
           </ErrorBoundary>
         </ResponsiveCol>

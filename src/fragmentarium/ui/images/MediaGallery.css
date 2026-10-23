@@ -1,0 +1,32 @@
+.MediaGallery__thumbnails {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-block: 1rem;
+}
+
+.MediaGallery__thumbnails button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  min-height: 44px;
+  max-width: 10rem;
+  overflow-wrap: anywhere;
+}
+
+.MediaGallery__thumbnails img {
+  width: 6rem;
+  height: 4rem;
+  object-fit: contain;
+}
+
+.MediaGallery__pagination {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-block: 1rem;
+}

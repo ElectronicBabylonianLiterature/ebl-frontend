@@ -1,3 +1,4 @@
+import type { MediaSummary } from 'fragmentarium/domain/media'
 import _ from 'lodash'
 import { produce, castDraft, Draft, immerable } from 'immer'
 
@@ -55,6 +56,8 @@ interface FragmentProps {
   traditionalReferences: readonly string[]
   atf: string
   hasPhoto: boolean
+  legacyHasPhoto?: boolean
+  mediaSummary?: MediaSummary
   genres: Genres
   introduction: Introduction
   script: Script
@@ -94,6 +97,8 @@ export class Fragment {
   readonly traditionalReferences: readonly string[]
   readonly atf: string
   readonly hasPhoto: boolean
+  readonly legacyHasPhoto?: boolean
+  readonly mediaSummary?: MediaSummary
   readonly genres: Genres
   readonly introduction: Introduction
   readonly script: Script
@@ -130,6 +135,12 @@ export class Fragment {
     this.traditionalReferences = props.traditionalReferences
     this.atf = props.atf
     this.hasPhoto = props.hasPhoto
+    if (typeof props.legacyHasPhoto === 'boolean') {
+      this.legacyHasPhoto = props.legacyHasPhoto
+    }
+    if (props.mediaSummary) {
+      this.mediaSummary = props.mediaSummary
+    }
     this.genres = props.genres
     this.introduction = props.introduction
     this.script = props.script
