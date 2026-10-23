@@ -97,6 +97,7 @@ jobs:
       - uses: docker/build-push-action@ca052bb54ab0790a636c9b5f226502c73d547a25 # v5.4.0
         with:
           build-args: |
+            REACT_APP_MEDIA_GALLERY_ENABLED=${{ vars.MEDIA_GALLERY_ENABLED || 'false' }}
             REACT_APP_DICTIONARY_API_URL=/api
           context: .
           file: ./Dockerfile
@@ -130,6 +131,7 @@ jobs:
             REACT_APP_INFO_EMAIL=ebl-info@culture.lmu.de
             REACT_APP_AUTH0_CLIENT_ID=${{ secrets.REACT_APP_AUTH0_CLIENT_ID }}
             REACT_APP_AUTH0_AUDIENCE=${{ secrets.REACT_APP_AUTH0_AUDIENCE }}
+            REACT_APP_MEDIA_GALLERY_ENABLED=${{ vars.MEDIA_GALLERY_ENABLED || 'false' }}
             REACT_APP_DICTIONARY_API_URL=${{ env.DICTIONARY_API_URL }}
             REACT_APP_SENTRY_DSN=${{ secrets.REACT_APP_SENTRY_DSN }}
             REACT_APP_GA_TRACKING_ID=${{ secrets.REACT_APP_GA_TRACKING_ID }}

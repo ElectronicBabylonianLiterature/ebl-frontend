@@ -1,3 +1,4 @@
+import { normalizeMediaSummary } from 'fragmentarium/infrastructure/mediaMapper'
 import _ from 'lodash'
 import {
   Fragment,
@@ -90,6 +91,7 @@ export function createFragment(dto: FragmentDto): Fragment {
   const museumKey: MuseumKey = dto.museum
   return Fragment.create({
     ...dto,
+    mediaSummary: normalizeMediaSummary(dto.mediaSummary) ?? undefined,
     number: museumNumberToString(dto.museumNumber),
     accession: dto.accession ? museumNumberToString(dto.accession) : '',
     acquisitions: (dto.acquisitions ?? []).map(Acquisition.fromDto),
