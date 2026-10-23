@@ -1,5 +1,6 @@
 import React from 'react'
 import { act, render, screen } from '@testing-library/react'
+import { ApiError } from 'http/ApiClient'
 import FragmentCardThumbnail from 'fragmentarium/ui/search/FragmentCardThumbnail'
 import { MediaGalleryContext } from 'fragmentarium/application/MediaGalleryContext'
 import { fragmentFactory } from 'test-support/fragment-fixtures'
@@ -96,4 +97,43 @@ test('uses scoped gallery thumbnails for new-only search results', async () => {
   expect(await screen.findByAltText('Preview of K.1')).toBeVisible()
   expect(service.findThumbnail).not.toHaveBeenCalled()
   expect(services.binaryLoader.fetch).toHaveBeenCalledTimes(1)
+})
+
+test('restores a legacy card image when its new preview is missing', async () => {
+  const media = mediaFixture()
+  const services = galleryServices([media])
+  services.binaryLoader.fetch.mockRejectedValue(
+    new ApiError('Missing new thumbnail', {}, 404),
+  )
+  const fragmentService = {
+    findThumbnail: jest.fn().mockResolvedValue({ blob: imageBlob }),
+  }
+  const fragment = fragmentFactory.build({
+    number: 'K.1',
+    hasPhoto: true,
+    legacyHasPhoto: true,
+    mediaSummary: {
+      count: 1,
+      types: ['PHOTO'],
+      primary: {
+        id: media.id,
+        type: 'PHOTO',
+        thumbnail: media.representations.thumbnails.small,
+      },
+    },
+  })
+  render(
+    <MediaGalleryContext.Provider value={services}>
+      <FragmentCardThumbnail
+        fragment={fragment}
+        fragmentService={fragmentService}
+        queryItem={queryItem}
+      />
+    </MediaGalleryContext.Provider>,
+  )
+  expect(await screen.findByAltText('Preview of K.1')).toHaveAttribute(
+    'src',
+    'blob:card',
+  )
+  expect(fragmentService.findThumbnail).toHaveBeenCalledTimes(1)
 })
