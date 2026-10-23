@@ -1,0 +1,66 @@
+diff --git a/node_modules/react-scripts/scripts/start.js b/node_modules/react-scripts/scripts/start.js
+index 8b9a2c2..a017c82 100644
+--- a/node_modules/react-scripts/scripts/start.js
++++ b/node_modules/react-scripts/scripts/start.js
+@@ -119,6 +119,7 @@ checkBrowsers(paths.appPath, isInteractive)
+       ...createDevServerConfig(proxyConfig, urls.lanUrlForConfig),
+       host: HOST,
+       port,
++      setupExitSignals: false,
+     };
+     const devServer = new WebpackDevServer(serverConfig, compiler);
+     // Launch WebpackDevServer.
+@@ -139,19 +140,45 @@ checkBrowsers(paths.appPath, isInteractive)
+       openBrowser(urls.localUrlForBrowser);
+     });
+ 
+-    ['SIGINT', 'SIGTERM'].forEach(function (sig) {
+-      process.on(sig, function () {
+-        devServer.close();
+-        process.exit();
++    let shuttingDown = false;
++    function shutdown(signal) {
++      if (shuttingDown) {
++        if (signal) {
++          process.exit(1);
++        }
++        return;
++      }
++      shuttingDown = true;
++      let serverStopped = false;
++      devServer.stopCallback(stopError => {
++        if (serverStopped) {
++          return;
++        }
++        serverStopped = true;
++        if (stopError) {
++          console.error(stopError);
++        }
++        try {
++          compiler.close(closeError => {
++            if (closeError) {
++              console.error(closeError);
++            }
++            process.exit(stopError || closeError ? 1 : 0);
++          });
++        } catch (closeError) {
++          console.error(closeError);
++          process.exit(1);
++        }
+       });
++    }
++
++    ['SIGINT', 'SIGTERM'].forEach(function (sig) {
++      process.on(sig, () => shutdown(true));
+     });
+ 
+     if (process.env.CI !== 'true') {
+       // Gracefully exit when stdin ends
+-      process.stdin.on('end', function () {
+-        devServer.close();
+-        process.exit();
+-      });
++      process.stdin.on('end', shutdown);
+     }
+   })
+   .catch(err => {
