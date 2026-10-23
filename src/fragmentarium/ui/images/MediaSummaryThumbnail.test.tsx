@@ -1,5 +1,6 @@
 import React from 'react'
 import { act, render, screen } from '@testing-library/react'
+import { ApiError } from 'http/ApiClient'
 import MediaSummaryThumbnail from 'fragmentarium/ui/images/MediaSummaryThumbnail'
 import { MediaGalleryContext } from 'fragmentarium/application/MediaGalleryContext'
 import { fragmentFactory } from 'test-support/fragment-fixtures'
@@ -85,6 +86,22 @@ test('ignores unscoped response URLs and keeps the legacy fallback', () => {
   )
   expect(screen.getByText('Legacy')).toBeVisible()
   expect(services.binaryLoader.fetch).not.toHaveBeenCalled()
+})
+
+test('uses a legacy fallback when a new-media thumbnail returns 404', async () => {
+  const services = galleryServices()
+  services.binaryLoader.fetch.mockRejectedValue(
+    new ApiError('Preview not found', {}, 404),
+  )
+  render(
+    <MediaGalleryContext.Provider value={services}>
+      <MediaSummaryThumbnail
+        fragment={fragmentWithPreview()}
+        fallback={<span>Legacy thumbnail</span>}
+      />
+    </MediaGalleryContext.Provider>,
+  )
+  expect(await screen.findByText('Legacy thumbnail')).toBeVisible()
 })
 
 test('does not fall back after denied preview access', async () => {
