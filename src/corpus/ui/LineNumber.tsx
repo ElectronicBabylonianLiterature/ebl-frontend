@@ -14,7 +14,7 @@ import useScrollToActiveLine, {
 } from 'transliteration/ui/useScrollToActiveLine'
 
 const OldLineNumberCitation = referencePopover(({ reference }) => (
-  <sup>{reference.authors.join('/') || reference.id || 'Reference'}</sup>
+  <sup>{reference.authors.join('/')}</sup>
 ))
 
 function OldLineNumbers({

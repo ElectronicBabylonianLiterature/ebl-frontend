@@ -8,12 +8,7 @@ import Citation from 'bibliography/domain/Citation'
 import { ProjectList } from 'fragmentarium/ui/info/ResearchProjects'
 
 const TextCitation = referencePopover(({ reference }) => (
-  <InlineMarkdown
-    source={
-      Citation.for(reference).getMarkdown() || reference.id || 'Reference'
-    }
-    allowLinks={false}
-  />
+  <InlineMarkdown source={Citation.for(reference).getMarkdown()} />
 ))
 
 function References({

@@ -1025,14 +1025,14 @@ exports[`Chapter Show list of manuscripts 1`] = `
                         >
                           <th
                             class="list-of-manuscripts__column-heading"
-                            id="siglum-30"
+                            id="siglum-31"
                             scope="col"
                           >
                             Siglum
                           </th>
                           <th
                             class="list-of-manuscripts__column-heading"
-                            id="museumNumber-31"
+                            id="museumNumber-32"
                             scope="col"
                           >
                             Museum Number
@@ -1047,7 +1047,7 @@ exports[`Chapter Show list of manuscripts 1`] = `
                           </th>
                           <th
                             class="list-of-manuscripts__column-heading"
-                            id="extantLines-33"
+                            id="extantLines-34"
                             scope="col"
                           >
                             Extant Lines
@@ -1067,7 +1067,7 @@ exports[`Chapter Show list of manuscripts 1`] = `
                           <th
                             class="list-of-manuscripts__provenance-heading"
                             colspan="3"
-                            id="provenace-35"
+                            id="provenace-36"
                             scope="colgroup"
                           >
                             Assyria
@@ -1076,15 +1076,15 @@ exports[`Chapter Show list of manuscripts 1`] = `
                         <tr>
                           <th
                             class="list-of-manuscripts__siglum-heading"
-                            headers="provenace-35 siglum-30"
-                            id="row-36"
+                            headers="provenace-36 siglum-31"
+                            id="row-37"
                             scope="row"
                           >
                             AssaOBSch1
                           </th>
                           <td
                             class="list-of-manuscripts__museum-numbers"
-                            headers="provenace-35 row-36 museumNumber-31"
+                            headers="provenace-36 row-37 museumNumber-32"
                           >
                             <a
                               data-discover="true"
@@ -1116,10 +1116,8 @@ exports[`Chapter Show list of manuscripts 1`] = `
                                 class="list-of-manuscripts__references"
                               >
                                 <li>
-                                  <button
-                                    aria-expanded="false"
+                                  <span
                                     class="reference-popover__citation"
-                                    type="button"
                                   >
                                     <span
                                       class="reference-popover__interactive"
@@ -1131,14 +1129,14 @@ exports[`Chapter Show list of manuscripts 1`] = `
                                          (E)
                                       </span>
                                     </span>
-                                  </button>
+                                  </span>
                                 </li>
                               </ul>
                             </span>
                           </td>
                           <td
                             class="list-of-manuscripts__extant-lines"
-                            headers="extantLines-33 row-36 museumNumber-31"
+                            headers="extantLines-34 row-37 museumNumber-32"
                           >
                             <ol
                               class="extant-lines"
@@ -1166,7 +1164,7 @@ exports[`Chapter Show list of manuscripts 1`] = `
                           <th
                             class="list-of-manuscripts__provenance-heading"
                             colspan="3"
-                            id="uncertainFragmets-32"
+                            id="uncertainFragmets-33"
                             scope="colgroup"
                           >
                             Uncertain Fragments

@@ -1,5 +1,5 @@
 import React from 'react'
-import { render, screen, waitFor, within } from '@testing-library/react'
+import { render, screen, waitFor } from '@testing-library/react'
 import '@testing-library/jest-dom'
 import DossierRecord from 'dossiers/domain/DossierRecord'
 import FragmentDossierRecordsDisplay, {
@@ -77,14 +77,11 @@ describe('DossierRecordsListDisplay', () => {
       new DossierRecord({ ...mockRecordDto, _id: 'test2' }),
     ]
     render(<DossierRecordsListDisplay data={{ records }} />)
-    expect(screen.getAllByRole('button')).toHaveLength(records.length)
 
     const dossierButton = screen.getByRole('button', { name: 'test' })
     await userEvent.click(dossierButton)
 
-    expect(
-      within(await screen.findByRole('tooltip')).getAllByRole('button'),
-    ).toHaveLength(mockRecord.references.length)
+    expect(screen.getAllByRole('button')).toHaveLength(records.length)
     expect(screen.getByText(/ca. 500 BCE - 470 BCE/)).toBeInTheDocument()
     const firstReferenceMarkdown = Citation.for(
       mockRecord.references[0],

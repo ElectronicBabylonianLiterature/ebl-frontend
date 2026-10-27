@@ -12,7 +12,7 @@ const ReferenceDetails = ({ reference }: { reference: Reference }) => {
       : ''
   return (
     <span className="reference-popover__interactive">
-      {reference.pages || (!linesCited && 'Reference')}
+      {reference.pages}
       {linesCited}
     </span>
   )
@@ -79,10 +79,7 @@ const PopoverReferenceDetails = referencePopover(ReferenceDetails)
 const SingleReferenceEntry = ({ reference }: { reference: Reference }) => {
   return (
     <span className="reference-popover__interactive">
-      <InlineMarkdown
-        source={Citation.for(reference).getMarkdown()}
-        allowLinks={false}
-      />
+      <InlineMarkdown source={Citation.for(reference).getMarkdown()} />
       <span className="type-abbreviation">
         {` (${reference.typeAbbreviation})`}
       </span>

@@ -1,17 +1,5 @@
 .reference-popover__citation {
-  background: none;
-  border: 0;
-  padding: 0;
-  color: inherit;
-  font: inherit;
-  text-align: inherit;
-  overflow-wrap: anywhere;
-  cursor: pointer;
-}
-
-.reference-popover__citation:focus-visible {
-  outline: 2px solid var(--ebl-color-brand-primary);
-  outline-offset: 2px;
+  cursor: help;
 }
 
 .reference-popover__popover {
