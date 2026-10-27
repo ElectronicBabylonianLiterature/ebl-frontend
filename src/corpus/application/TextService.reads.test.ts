@@ -7,7 +7,12 @@ import {
   chapter,
   chapterDto,
 } from 'test-support/test-corpus-text'
-import { fragment, fragmentDto } from 'test-support/test-fragment'
+import { fragment, fragmentDto, lines } from 'test-support/test-fragment'
+import {
+  bibliographyEntryFactory,
+  referenceDtoFactory,
+} from 'test-support/bibliography-fixtures'
+import { singleRulingDto } from 'test-support/lines/dollar'
 import {
   chapterDisplay,
   chapterId,
@@ -22,7 +27,7 @@ jest.mock('dictionary/application/WordService')
 jest.mock('fragmentarium/application/FragmentService')
 jest.mock('http/ApiClient')
 
-const { apiClient, fragmentServiceMock, textService } =
+const { apiClient, fragmentServiceMock, bibliographyServiceMock, textService } =
   createTextServiceTestContext()
 
 const testData: TestData<TextService>[] = [
@@ -104,3 +109,66 @@ beforeEach(() => {
 })
 
 describe('TextService reads', () => testDelegation(textService, testData))
+
+test('injects note paratext and preserves non-note paratext', async () => {
+  const entry = bibliographyEntryFactory.build()
+  const reference = referenceDtoFactory.build()
+  bibliographyServiceMock.findManyById.mockResolvedValue(
+    new Map([[reference.id, entry]]),
+  )
+  apiClient.fetchJson.mockResolvedValue({
+    variants: [
+      {
+        reconstruction: [],
+        note: null,
+        manuscripts: [
+          {
+            provenance: 'Nippur',
+            periodModifier: 'Early',
+            period: 'Ur III',
+            siglumDisambiguator: '1',
+            oldSigla: [],
+            type: 'School',
+            labels: ['o'],
+            line: lines[0],
+            paratext: [
+              {
+                prefix: '#note: ',
+                content: [],
+                parts: [{ reference, type: 'BibliographyPart' }],
+                type: 'NoteLine',
+              },
+              singleRulingDto,
+            ],
+            references: [],
+            joins: [],
+            museumNumber: 'BM.X',
+            isInFragmentarium: false,
+            accession: 'X.1',
+          },
+        ],
+        parallelLines: [],
+        intertext: [],
+        originalIndex: 0,
+        isPrimaryVariant: true,
+      },
+    ],
+  })
+
+  const result = await textService.findChapterLine(chapterId, 0, 0)
+  const paratext = result.variants[0].manuscripts[0].paratext
+
+  expect(bibliographyServiceMock.findManyById).toHaveBeenCalledWith([
+    reference.id,
+  ])
+  expect(paratext[0]).toMatchObject({
+    type: 'NoteLine',
+    parts: [
+      {
+        type: 'BibliographyPart',
+        reference: { document: entry },
+      },
+    ],
+  })
+  expect(paratext[1]).toMatchObject({ type: 'RulingDollarLine' })
+})

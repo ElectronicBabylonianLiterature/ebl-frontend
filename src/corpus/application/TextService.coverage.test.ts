@@ -1,32 +1,29 @@
-import TextService from 'corpus/application/TextService'
 import {
-  apiClient,
-  bibliographyServiceMock,
   chapterDisplayDto,
   chapterId,
   chapterUrl,
-  fragmentServiceMock,
-  setupProvenances,
-  wordServiceMock,
-} from 'corpus/application/TextService.regression.testSupport'
+  createTextServiceTestContext,
+} from 'corpus/application/TextService.testSupport'
 import {
   bibliographyEntryFactory,
   referenceDtoFactory,
 } from 'test-support/bibliography-fixtures'
 
-function createService(getCacheScope?: () => string): TextService {
-  return new TextService(
-    apiClient,
-    fragmentServiceMock,
-    wordServiceMock,
-    bibliographyServiceMock,
-    getCacheScope,
-  )
-}
+jest.mock('bibliography/application/BibliographyService')
+jest.mock('dictionary/application/WordService')
+jest.mock('fragmentarium/application/FragmentService')
+jest.mock('http/ApiClient')
+
+const {
+  apiClient,
+  fragmentServiceMock,
+  bibliographyServiceMock,
+  createService,
+} = createTextServiceTestContext()
 
 beforeEach(() => {
   jest.clearAllMocks()
-  setupProvenances()
+  fragmentServiceMock.fetchProvenances.mockResolvedValue([])
 })
 
 test('queries after a throwing cache-scope resolver', async () => {
