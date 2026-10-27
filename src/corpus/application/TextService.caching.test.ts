@@ -72,7 +72,6 @@ describe('list caching', () => {
     await expect(service.list()).resolves.toEqual([text])
     expect(apiClient.fetchJson).toHaveBeenCalledTimes(2)
   })
-
 })
 
 describe('loadProvenances delegation', () => {
